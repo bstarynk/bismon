@@ -321,6 +321,10 @@ abort_BM (void)
 int
 main (int argc, char **argv)
 {
+  bool batch = false;
+  for (int ix = 1; ix < argc; ix++)
+    if (!strcmp (argv[ix], "-B") || !strcmp (argv[ix], "--batch"))
+      batch = true;
 }                               /* end main */
 
 /// for Emacs
