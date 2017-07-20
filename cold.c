@@ -12,9 +12,22 @@ struct typedhead_stBM
 {
   unsigned htyp:24;
   unsigned hgc:8;
-  hash_tyBM hash;
+  union
+  {
+    hash_tyBM hash;
+    uint32_t rlen;
+  };
 };
 typedef struct typedhead_stBM typedhead_tyBM;
+typedef struct typedhead_stBM typedintern_tyBM;
+
+struct typedsize_stBM
+{
+  typedhead_tyBM pA;
+  uint32_t size;
+};
+typedef struct typedsize_stBM typedsize_tyBM;
+
 typedef uint64_t serial63_tyBM;
 
 struct rawid_stBM
@@ -58,9 +71,12 @@ extern int serial63tocbuf16_BM (serial63_tyBM s, char cbuf[static 16]);
 extern serial63_tyBM parse_serial63_BM (const char *buf, const char **pend);
 extern rawid_tyBM randomid_BM (void);
 inline bool validid_BM (rawid_tyBM id);
+inline hash_tyBM hashid_BM (rawid_tyBM id);
 extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32]);
 extern rawid_tyBM parse_rawid_BM (const char *buf, const char **pend);
-extern void *allocty_BM (unsigned type, size_t sz);
+extern void *allocgcty_BM (unsigned type, size_t sz);
+extern void *allocinternalty_BM (unsigned type, size_t sz);
+
 
 
 
@@ -174,6 +190,18 @@ validid_BM (rawid_tyBM id)
   return (validserial63_BM (id.id_hi) && validserial63_BM (id.id_lo));
 }
 
+hash_tyBM
+hashid_BM (rawid_tyBM id)
+{
+  if (!validid_BM (id))
+    return 0;
+  hash_tyBM h = (id.id_hi % 1073741939) ^ (id.id_lo % 596789351);
+  if (h == 0)
+    h = (id.id_hi & 0xffffff) + (id.id_lo & 0x3ffffff) + 17;
+  assert (h > 0);
+  return h;
+}                               /* end hashid_BM */
+
 // return the number of bytes written into cbuf
 int
 idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32])
@@ -236,7 +264,7 @@ struct allalloc_stBM *allocationvec_vBM;
 
 
 void *
-allocty_BM (unsigned type, size_t sz)
+allocgcty_BM (unsigned type, size_t sz)
 {
   unsigned long alloc_size =
     allocationvec_vBM ? allocationvec_vBM->al_size : 0;
@@ -261,13 +289,27 @@ allocty_BM (unsigned type, size_t sz)
   assert (sz > sizeof (typedhead_tyBM));
   typedhead_tyBM *newzon = malloc (sz);
   if (!newzon)
-    FATAL_BM ("failed fresh allocation of new zone %zd bytes (%m)", sz);
+    FATAL_BM ("failed fresh GC allocation of new zone %zd bytes (%m)", sz);
   memset (newzon, 0, sz);
   newzon->htyp = type;
   allocationvec_vBM->al_ptr[alloc_nb++] = newzon;
   allocationvec_vBM->al_nb = alloc_nb;
   return newzon;
-}                               /* end allocty_BM */
+}                               /* end allocgcty_BM */
+
+
+
+void *
+allocinternalty_BM (unsigned type, size_t sz)
+{
+  assert (sz > sizeof (typedintern_tyBM));
+  typedintern_tyBM *newizon = malloc (sz);
+  if (!newizon)
+    FATAL_BM ("failed internal allocation of %zd bytes (%m)", sz);
+  memset (newizon, 0, sz);
+  newizon->htyp = type;
+  return newizon;
+}                               /* end allocinternalty_BM  */
 
 void
 abort_BM (void)
