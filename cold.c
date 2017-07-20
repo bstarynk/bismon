@@ -53,6 +53,22 @@ struct stringval_stBM
 };
 typedef struct stringval_stBM stringval_tyBM;
 
+// forward
+typedef struct object_stBM objectval_tyBM;
+
+struct seqobval_stBM
+{
+  typedsize_tyBM pA;
+  objectval_tyBM *seq_objs[];
+};
+
+typedef struct seqobval_stBM seqobval_tyBM;
+typedef struct seqobval_stBM tupleval_tyBM;
+typedef struct seqobval_stBM setval_tyBM;
+
+
+
+
 extern const int64_t primes_tab_BM[];
 extern int64_t prime_above_BM (int64_t);
 extern int64_t prime_below_BM (int64_t);
@@ -104,7 +120,10 @@ extern const stringval_tyBM *stringmake_BM (const char *str);
 extern const stringval_tyBM *stringprintf_BM (const char *fmt, ...)
   __attribute__ ((format (printf, 1, 2)));
 extern int lenstring_BM (const stringval_tyBM *);
-const char *bytstring_BM (const stringval_tyBM *);
+extern const char *bytstring_BM (const stringval_tyBM *);
+
+extern const tupleval_tyBM *tuplemake_BM (objectval_tyBM ** arr,
+                                          unsigned rawsiz);
 
 // an array of primes, gotten with something similar to
 //   /usr/games/primes 3  | awk '($1>p+p/9){print $1, ","; p=$1}' 
@@ -550,6 +569,32 @@ bytstring_BM (const stringval_tyBM * strv)
     return NULL;
   return strv->strv_bytes;
 }                               /* end bytstring_BM */
+
+
+////////////////////////////////////////////////////////////////
+//// tuple support
+
+const tupleval_tyBM *
+tuplemake_BM (objectval_tyBM ** arr, unsigned rawsiz)
+{
+  if (!arr)
+    rawsiz = 0;
+  if (rawsiz > MAXSIZE_BM)
+    FATAL_BM ("tuplemake too wide %ld raw array", (long) rawsiz);
+  unsigned siz = 0;
+  for (unsigned ix = 0; ix < rawsiz; ix++)
+    if (arr[ix])
+      siz++;
+  tupleval_tyBM *tup =
+    allocgcty_BM (tyTuple_BM,
+                  sizeof (tyTuple_BM) + siz * sizeof (objectval_tyBM *));
+  unsigned cnt = 0;
+  for (unsigned ix = 0; ix < rawsiz; ix++)
+    if (arr[ix])
+      tup->seq_objs[cnt++] = arr[ix];
+#warning should compute the hash of a tuple given iuts components
+  FATAL_BM ("incomplete tuplemake_BM siz=%u", siz);
+}                               /* end tuplemake_BM */
 
 ////////////////////////////////////////////////////////////////
 int
