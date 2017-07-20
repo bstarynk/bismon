@@ -1,8 +1,10 @@
 // GPLv3+ licensed cold.c file
 // by basile@starynkevitch.net
+#define _GNU_SOURCE
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 #include <assert.h>
 #include <gtk/gtk.h>
@@ -46,9 +48,10 @@ struct allalloc_stBM
 extern struct allalloc_stBM *allocationvec_vBM;
 struct stringval_stBM
 {
-  struct typedsize_tyBM pA;
+  typedsize_tyBM pA;
   char strv_bytes[];
 };
+typedef struct stringval_stBM stringval_tyBM;
 
 extern const int64_t primes_tab_BM[];
 extern int64_t prime_above_BM (int64_t);
@@ -65,7 +68,7 @@ extern int64_t prime_below_BM (int64_t);
 #define MAXSIZE_BM ((1<<30)-1)
 #define FATAL_AT_BIS_BM(Fil,Lin,Fmt,...) do { \
 fprintf(stderr, "BM FATAL:%s:%d: " Fmt "\n", \
-	Fil, Lin, __VA_ARGS__); abort_BM(); } while(0)
+	Fil, Lin, ##__VA_ARGS__); abort_BM(); } while(0)
 
 #define FATAL_AT_BM(Fil,Lin,Fmt,...) FATAL_AT_BIS_BM(Fil,Lin,Fmt,##__VA_ARGS__)
 
@@ -84,8 +87,24 @@ extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32]);
 extern rawid_tyBM parse_rawid_BM (const char *buf, const char **pend);
 extern void *allocgcty_BM (unsigned type, size_t sz);
 extern void *allocinternalty_BM (unsigned type, size_t sz);
+// types of garbage collected values
+enum gctyenum_BM
+{
+  tyInt_BM = -1,
+  tyNone_BM = 0,
+  tyString_BM = 1,
+  tySet_BM = 2,
+  tyTuple_BM = 3,
+  tyNode_BM = 4,
+  tyClosure_BM = 5,
+  tyObject_BM = 6,
+};
 extern hash_tyBM stringhash_BM (const char *str);
-
+extern const stringval_tyBM *stringmake_BM (const char *str);
+extern const stringval_tyBM *stringprintf_BM (const char *fmt, ...)
+  __attribute__ ((format (printf, 1, 2)));
+extern int lenstring_BM (const stringval_tyBM *);
+const char *bytstring_BM (const stringval_tyBM *);
 
 // an array of primes, gotten with something similar to
 //   /usr/games/primes 3  | awk '($1>p+p/9){print $1, ","; p=$1}' 
@@ -428,11 +447,11 @@ stringhash_BM (const char *cstr)
     return 0;
   assert (g_utf8_validate (cstr, -1, NULL));
   long ll = strlen (cstr);
-  if (l >= MAXSIZE_BM)
-    FATAL_BM ("too long string %ld", ld);
+  if (ll >= MAXSIZE_BM)
+    FATAL_BM ("too long string %ld", ll);
   int l = ll;
   const char *str = cstr;
-  hash_tyBM h1 = 0, h2 = l, h = 0;
+  hash_tyBM h1 = l % 13, h2 = l, h = 0;
   while (l > 4)
     {
       h1 =
@@ -470,12 +489,69 @@ stringhash_BM (const char *cstr)
         {
           h = h2;
           if (!h)
-            h = (len & 0xffffff) + 11;
+            h = (ll & 0xffffff) + 11;
         }
     }
   return h;
 }                               /* end stringhash_BM */
 
+extern const stringval_tyBM *
+stringmake_BM (const char *cstr)
+{
+  if (!cstr)
+    return NULL;
+  size_t sll = strlen (cstr);
+  if (sll > MAXSIZE_BM)
+    FATAL_BM ("stringmake too long %ld string", (long) sll);
+  if (!g_utf8_validate (cstr, -1, NULL))
+    FATAL_BM ("stringmake invalid string");
+  int l = sll;
+  hash_tyBM h = stringhash_BM (cstr);
+  stringval_tyBM *strv =
+    allocgcty_BM (tyString_BM, sizeof (stringval_tyBM) + sll + 1);
+  ((typedhead_tyBM *) strv)->hash = h;
+  ((typedhead_tyBM *) strv)->rlen = l;
+  memcpy (strv->strv_bytes, cstr, l);
+  return strv;
+}                               /* end stringmake_BM */
+
+extern const stringval_tyBM *
+stringprintf_BM (const char *fmt, ...)
+{
+  va_list args;
+  char *buf = NULL;
+  int ln = 0;
+  if (!fmt)
+    return NULL;
+  if (!fmt[0])
+    return stringmake_BM ("");
+  va_start (args, fmt);
+  ln = vasprintf (&buf, fmt, args);
+  va_end (args);
+  if (ln < 0 || buf == NULL)
+    FATAL_BM ("stringprintf failure %m");
+  const stringval_tyBM *res = stringmake_BM (buf);
+  free (buf);
+  return res;
+}                               /* end stringprintf_BM */
+
+int
+lenstring_BM (const stringval_tyBM * strv)
+{
+  if (!strv || ((typedhead_tyBM *) strv)->htyp != tyString_BM)
+    return 0;
+  return ((typedhead_tyBM *) strv)->rlen;
+}                               /* end lenstring_BM */
+
+const char *
+bytstring_BM (const stringval_tyBM * strv)
+{
+  if (!strv || ((typedhead_tyBM *) strv)->htyp != tyString_BM)
+    return NULL;
+  return strv->strv_bytes;
+}                               /* end bytstring_BM */
+
+////////////////////////////////////////////////////////////////
 int
 main (int argc, char **argv)
 {
