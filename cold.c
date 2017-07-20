@@ -44,6 +44,11 @@ struct allalloc_stBM
   void *al_ptr[];
 };
 extern struct allalloc_stBM *allocationvec_vBM;
+struct stringval_stBM
+{
+  struct typedsize_tyBM pA;
+  char strv_bytes[];
+};
 
 extern const int64_t primes_tab_BM[];
 extern int64_t prime_above_BM (int64_t);
@@ -57,7 +62,7 @@ extern int64_t prime_below_BM (int64_t);
 
 #define SERIALDIGITS_BM 11
 #define SERIALBASE_BM 62
-
+#define MAXSIZE_BM ((1<<30)-1)
 #define FATAL_AT_BIS_BM(Fil,Lin,Fmt,...) do { \
 fprintf(stderr, "BM FATAL:%s:%d: " Fmt "\n", \
 	Fil, Lin, __VA_ARGS__); abort_BM(); } while(0)
@@ -79,7 +84,7 @@ extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32]);
 extern rawid_tyBM parse_rawid_BM (const char *buf, const char **pend);
 extern void *allocgcty_BM (unsigned type, size_t sz);
 extern void *allocinternalty_BM (unsigned type, size_t sz);
-
+extern hash_tyBM stringhash_BM (const char *str);
 
 
 // an array of primes, gotten with something similar to
@@ -410,6 +415,66 @@ abort_BM (void)
   fflush (NULL);
   abort ();
 }
+
+
+
+////////////////////////////////////////////////////////////////
+//// string support
+
+hash_tyBM
+stringhash_BM (const char *cstr)
+{
+  if (!cstr)
+    return 0;
+  assert (g_utf8_validate (cstr, -1, NULL));
+  long ll = strlen (cstr);
+  if (l >= MAXSIZE_BM)
+    FATAL_BM ("too long string %ld", ld);
+  int l = ll;
+  const char *str = cstr;
+  hash_tyBM h1 = 0, h2 = l, h = 0;
+  while (l > 4)
+    {
+      h1 =
+        (509 * h2 +
+         307 * ((signed char *) str)[0]) ^ (1319 * ((signed char *) str)[1]);
+      h2 =
+        (17 * l + 5 + 5309 * h2) ^ ((3313 * ((signed char *) str)[2]) +
+                                    9337 * ((signed char *) str)[3] + 517);
+      l -= 4;
+      str += 4;
+    }
+  if (l > 0)
+    {
+      h1 = (h1 * 7703) ^ (503 * ((signed char *) str)[0]);
+      if (l > 1)
+        {
+          h2 = (h2 * 7717) ^ (509 * ((signed char *) str)[1]);
+          if (l > 2)
+            {
+              h1 = (h1 * 9323) ^ (11 + 523 * ((signed char *) str)[2]);
+              if (l > 3)
+                {
+                  h2 =
+                    (h2 * 7727 + 127) ^ (313 +
+                                         547 * ((signed char *) str)[3]);
+                }
+            }
+        }
+    }
+  h = (h1 * 29311 + 59) ^ (h2 * 7321 + 120501);
+  if (!h)
+    {
+      h = h1;
+      if (!h)
+        {
+          h = h2;
+          if (!h)
+            h = (len & 0xffffff) + 11;
+        }
+    }
+  return h;
+}                               /* end stringhash_BM */
 
 int
 main (int argc, char **argv)
