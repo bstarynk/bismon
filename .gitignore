@@ -1,0 +1,7 @@
+## file .gitignore
+*.o
+*.so
+*prog
+.ninja*
+*~
+*%
