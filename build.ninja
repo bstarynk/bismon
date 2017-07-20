@@ -8,9 +8,10 @@ c_include_flags= $$(pkg-config --cflags $packages)
 c_warn_flags= -Wall -Wextra
 c_flags= ${c_include_flags} ${c_optim_flags} ${c_warn_flags}
 libs= $$(pkg-config --libs $packages)
-rule build_bismon
+rule build_bismon_r
      command= ${cc} ${c_flags} $in ${libs} -o $out
 
-build bismonprog: build_bismon cold.c
+build bismonprog: build_bismon_r cold.c
 
 default bismonprog
+
