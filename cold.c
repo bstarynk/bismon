@@ -570,7 +570,7 @@ stringmake_BM (const char *cstr)
   stringval_tyBM *strv =
     allocgcty_BM (tyString_BM, sizeof (stringval_tyBM) + (sll | 0xf) + 1);
   ((typedhead_tyBM *) strv)->hash = h;
-  ((typedhead_tyBM *) strv)->rlen = l;
+  ((typedsize_tyBM *) strv)->size = l;
   memcpy (strv->strv_bytes, cstr, l);
   return strv;
 }                               /* end stringmake_BM */
@@ -600,7 +600,7 @@ lenstring_BM (const stringval_tyBM * strv)
 {
   if (!strv || ((typedhead_tyBM *) strv)->htyp != tyString_BM)
     return 0;
-  return ((typedhead_tyBM *) strv)->rlen;
+  return ((typedsize_tyBM *) strv)->size;
 }                               /* end lenstring_BM */
 
 const char *
@@ -648,7 +648,7 @@ tuplemake_BM (objectval_tyBM ** arr, unsigned rawsiz)
   if (!h)
     h = (h1 & 0xffffff) + (h2 & 0xffffff) + 3 * (siz & 0xffff) + 35;
   assert (h > 0);
-  ((typedhead_tyBM *) tup)->rlen = siz;
+  ((typedsize_tyBM *) tup)->size = siz;
   ((typedhead_tyBM *) tup)->hash = h;
   return tup;
 }                               /* end tuplemake_BM */
@@ -708,7 +708,7 @@ setmake_BM (objectval_tyBM ** arr, unsigned rawsiz)
                           siz * sizeof (objectval_tyBM *));
       memcpy (set->seq_objs, tmparr, siz * sizeof (objectval_tyBM *));
     };
-  ((typedhead_tyBM *) set)->rlen = siz;
+  ((typedsize_tyBM *) set)->size = siz;
   // compute the hash
   hash_tyBM h1 = 31 + siz / 3, h2 = 5 + siz, h = 0;
   for (unsigned ix = 0; ix < siz; ix++)
