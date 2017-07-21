@@ -105,6 +105,8 @@ extern serial63_tyBM parse_serial63_BM (const char *buf, const char **pend);
 extern rawid_tyBM randomid_BM (void);
 inline bool validid_BM (rawid_tyBM id);
 inline hash_tyBM hashid_BM (rawid_tyBM id);
+inline int cmpid_BM (rawid_tyBM id1, rawid_tyBM id2);
+inline bool equalid_BM (rawid_tyBM id1, rawid_tyBM id2);
 extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32]);
 extern rawid_tyBM parse_rawid_BM (const char *buf, const char **pend);
 extern void *allocgcty_BM (unsigned type, size_t sz);
@@ -131,6 +133,9 @@ extern const char *bytstring_BM (const stringval_tyBM *);
 extern const tupleval_tyBM *tuplemake_BM (objectval_tyBM ** arr,
                                           unsigned rawsiz);
 extern hash_tyBM objecthash_BM (const objectval_tyBM *);
+extern int objectcmp_BM (const objectval_tyBM * ob1,
+                         const objectval_tyBM * ob2);
+extern void sortobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz);
 
 // an array of primes, gotten with something similar to
 //   /usr/games/primes 3  | awk '($1>p+p/9){print $1, ","; p=$1}' 
@@ -331,7 +336,7 @@ bool
 validid_BM (rawid_tyBM id)
 {
   return (validserial63_BM (id.id_hi) && validserial63_BM (id.id_lo));
-}
+}                               /* end validid_BM */
 
 hash_tyBM
 hashid_BM (rawid_tyBM id)
@@ -344,6 +349,32 @@ hashid_BM (rawid_tyBM id)
   assert (h > 0);
   return h;
 }                               /* end hashid_BM */
+
+int
+cmpid_BM (rawid_tyBM id1, rawid_tyBM id2)
+{
+  if (id1.id_hi == id2.id_hi)
+    {
+      if (id1.id_lo == id2.id_lo)
+        return 0;
+      else if (id1.id_lo < id2.id_lo)
+        return -1;
+      else
+        return +1;
+    }
+  else if (id1.id_hi < id2.id_hi)
+    return -1;
+  else
+    return +1;
+}                               /* end cmpid_BM */
+
+bool
+equalid_BM (rawid_tyBM id1, rawid_tyBM id2)
+{
+  return id1.id_hi == id2.id_hi && id1.id_lo == id2.id_lo;
+}                               /* end equalid_BM */
+
+
 
 // return the number of bytes written into cbuf
 int
@@ -534,7 +565,7 @@ stringmake_BM (const char *cstr)
   int l = sll;
   hash_tyBM h = stringhash_BM (cstr);
   stringval_tyBM *strv =
-    allocgcty_BM (tyString_BM, sizeof (stringval_tyBM) + sll + 1);
+    allocgcty_BM (tyString_BM, sizeof (stringval_tyBM) + (sll | 0xf) + 1);
   ((typedhead_tyBM *) strv)->hash = h;
   ((typedhead_tyBM *) strv)->rlen = l;
   memcpy (strv->strv_bytes, cstr, l);
@@ -630,6 +661,39 @@ objecthash_BM (const objectval_tyBM * pob)
     return 0;
   return ((typedhead_tyBM *) pob)->hash;
 }                               /* end objecthash_BM */
+
+int
+objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)
+{
+  if (ob1 == ob2)
+    return 0;
+  if (ob1 && ((typedhead_tyBM *) ob1)->htyp != tyObject_BM)
+    FATAL_BM ("bad ob1@%p for objectcmp_BM", ob1);
+  if (ob2 && ((typedhead_tyBM *) ob2)->htyp != tyObject_BM)
+    FATAL_BM ("bad ob2@%p for objectcmp_BM", ob2);
+  if (!ob1)
+    return -1;
+  if (!ob2)
+    return +1;
+  return cmpid_BM (ob1->ob_id, ob2->ob_id);
+}                               /* end objectcmp_BM */
+
+// for qsort
+static int
+objptrqcmp_BM (const void *p1, const void *p2)
+{
+  return objectcmp_BM (*(const objectval_tyBM **) p1,
+                       *(const objectval_tyBM **) p2);
+}                               /* end objptrqcmp_BM */
+
+void
+sortobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz)
+{
+  if (obarr == NULL)
+    arrsiz = 0;
+  if (arrsiz > 1)
+    qsort (obarr, arrsiz, sizeof (const objectval_tyBM *), objptrqcmp_BM);
+}                               /* end sortobjarr_BM */
 
 ////////////////////////////////////////////////////////////////
 int
