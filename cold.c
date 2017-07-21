@@ -88,6 +88,7 @@ extern int64_t prime_below_BM (int64_t);
 #define SERIALDIGITS_BM 11
 #define SERIALBASE_BM 62
 #define MAXSIZE_BM ((1<<30)-1)
+#define TINYSIZE_BM 15
 #define FATAL_AT_BIS_BM(Fil,Lin,Fmt,...) do { \
 fprintf(stderr, "BM FATAL:%s:%d: " Fmt "\n", \
 	Fil, Lin, ##__VA_ARGS__); abort_BM(); } while(0)
@@ -132,6 +133,8 @@ extern const char *bytstring_BM (const stringval_tyBM *);
 
 extern const tupleval_tyBM *tuplemake_BM (objectval_tyBM ** arr,
                                           unsigned rawsiz);
+
+extern const setval_tyBM *setmake_BM (objectval_tyBM ** arr, unsigned rawsiz);
 extern hash_tyBM objecthash_BM (const objectval_tyBM *);
 extern int objectcmp_BM (const objectval_tyBM * ob1,
                          const objectval_tyBM * ob2);
@@ -649,6 +652,35 @@ tuplemake_BM (objectval_tyBM ** arr, unsigned rawsiz)
   return tup;
 }                               /* end tuplemake_BM */
 
+////////////////////////////////////////////////////////////////
+///// set support
+
+extern const setval_tyBM *
+setmake_BM (objectval_tyBM ** arr, unsigned rawsiz)
+{
+  objectval_tyBM *tinyarr[TINYSIZE_BM];
+  objectval_tyBM **tmparr;
+  memset (tinyarr, 0, sizeof (tinyarr));
+  if (!arr)
+    rawsiz = 0;
+  if (rawsiz > MAXSIZE_BM)
+    FATAL_BM ("setmake too wide %ld raw array", (long) rawsiz);
+  unsigned siz = 0;
+  for (unsigned ix = 0; ix < rawsiz; ix++)
+    if (arr[ix])
+      {
+        siz++;
+      };
+  if (siz < TINYSIZE_BM)
+    tmparr = tinyarr;
+  else
+    tmparr = calloc (siz + 1, sizeof (void *));
+  if (!tmparr)
+    FATAL_BM ("tuplemake cannot allocate tmparr siz=%u", siz);
+  sortobjarr_BM ((const objectval_tyBM **) tmparr, siz);
+#warning setmake_BM incomplete
+  FATAL_BM ("setmake_BM incomplete");
+}                               /* end setmake_BM */
 
 ////////////////////////////////////////////////////////////////
 /// object support
