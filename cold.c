@@ -648,6 +648,7 @@ tuplemake_BM (objectval_tyBM ** arr, unsigned rawsiz)
   if (!h)
     h = (h1 & 0xffffff) + (h2 & 0xffffff) + 3 * (siz & 0xffff) + 35;
   assert (h > 0);
+  ((typedhead_tyBM *) tup)->rlen = siz;
   ((typedhead_tyBM *) tup)->hash = h;
   return tup;
 }                               /* end tuplemake_BM */
@@ -678,9 +679,58 @@ setmake_BM (objectval_tyBM ** arr, unsigned rawsiz)
   if (!tmparr)
     FATAL_BM ("tuplemake cannot allocate tmparr siz=%u", siz);
   sortobjarr_BM ((const objectval_tyBM **) tmparr, siz);
-#warning setmake_BM incomplete
-  FATAL_BM ("setmake_BM incomplete");
+  int nbdup = 0;
+  setval_tyBM *set = NULL;
+  for (unsigned nix = 1; nix < siz; nix++)
+    if (tmparr[nix] == tmparr[nix - 1])
+      nbdup++;
+  if (nbdup > 0)
+    {
+      assert (nbdup < (int) siz);
+      unsigned dupsiz = siz;
+      siz = dupsiz - nbdup;
+      set = allocgcty_BM (tySet_BM,
+                          sizeof (tySet_BM) +
+                          siz * sizeof (objectval_tyBM *));
+      set->seq_objs[0] = tmparr[0];
+      unsigned cnt = 1;
+      for (unsigned dix = 1; dix < dupsiz; dix++)
+        {
+          if (tmparr[dix] != set->seq_objs[cnt - 1])
+            set->seq_objs[cnt++] = tmparr[dix];
+        }
+      assert (cnt == siz);
+    }
+  else
+    {
+      set = allocgcty_BM (tySet_BM,
+                          sizeof (tySet_BM) +
+                          siz * sizeof (objectval_tyBM *));
+      memcpy (set->seq_objs, tmparr, siz * sizeof (objectval_tyBM *));
+    };
+  ((typedhead_tyBM *) set)->rlen = siz;
+  // compute the hash
+  hash_tyBM h1 = 31 + siz / 3, h2 = 5 + siz, h = 0;
+  for (unsigned ix = 0; ix < siz; ix++)
+    {
+      const objectval_tyBM *curob = set->seq_objs[ix];
+      hash_tyBM curhash = objecthash_BM (curob);
+      if (curhash == 0)
+        FATAL_BM ("invalid object#%d in set", ix);
+      if (ix % 2 == 0)
+        h1 = (156707 * h1 - 19 * ix + 180) ^ (curhash * 6337);
+      else
+        h2 = (363179 * h2) ^ (curhash * 12433 - 13 * ix);
+    }
+  h = h1 ^ (h2 * 31 - siz);
+  if (!h)
+    h = (h1 & 0xffffff) + 3 * (h2 & 0x3fffff) + 11 * (siz & 0xffff) + 59;
+  assert (h > 0);
+  ((typedhead_tyBM *) set)->hash = siz;
+  return set;
 }                               /* end setmake_BM */
+
+
 
 ////////////////////////////////////////////////////////////////
 /// object support
