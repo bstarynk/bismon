@@ -66,6 +66,12 @@ typedef struct seqobval_stBM seqobval_tyBM;
 typedef struct seqobval_stBM tupleval_tyBM;
 typedef struct seqobval_stBM setval_tyBM;
 
+struct object_stBM
+{
+  typedhead_tyBM pA;
+  rawid_tyBM ob_id;
+  // other fields are missing
+};
 
 
 
@@ -106,8 +112,8 @@ extern void *allocinternalty_BM (unsigned type, size_t sz);
 // types of garbage collected values
 enum gctyenum_BM
 {
-  tyInt_BM = -1,
-  tyNone_BM = 0,
+  tyInt_BM = -1,                /* actually a tagged int */
+  tyNone_BM = 0,                /* e.g. for nil */
   tyString_BM = 1,
   tySet_BM = 2,
   tyTuple_BM = 3,
@@ -124,6 +130,7 @@ extern const char *bytstring_BM (const stringval_tyBM *);
 
 extern const tupleval_tyBM *tuplemake_BM (objectval_tyBM ** arr,
                                           unsigned rawsiz);
+extern hash_tyBM objecthash_BM (const objectval_tyBM *);
 
 // an array of primes, gotten with something similar to
 //   /usr/games/primes 3  | awk '($1>p+p/9){print $1, ","; p=$1}' 
@@ -585,16 +592,44 @@ tuplemake_BM (objectval_tyBM ** arr, unsigned rawsiz)
   for (unsigned ix = 0; ix < rawsiz; ix++)
     if (arr[ix])
       siz++;
-  tupleval_tyBM *tup =
-    allocgcty_BM (tyTuple_BM,
-                  sizeof (tyTuple_BM) + siz * sizeof (objectval_tyBM *));
+  tupleval_tyBM *tup = allocgcty_BM (tyTuple_BM,
+                                     sizeof (tyTuple_BM) +
+                                     siz * sizeof (objectval_tyBM *));
   unsigned cnt = 0;
+  hash_tyBM h1 = 0, h2 = siz;
   for (unsigned ix = 0; ix < rawsiz; ix++)
     if (arr[ix])
-      tup->seq_objs[cnt++] = arr[ix];
-#warning should compute the hash of a tuple given iuts components
-  FATAL_BM ("incomplete tuplemake_BM siz=%u", siz);
+      {
+        const objectval_tyBM *curob = arr[ix];
+        hash_tyBM curhash = objecthash_BM (curob);
+        if (curhash == 0)
+          FATAL_BM ("invalid object#%d in tuple", ix);
+        if (ix % 2 == 0)
+          h1 = (121453 * h1 + ix + 17) ^ (curhash * 5483);
+        else
+          h2 = (421973 * h2) ^ (curhash * 8971 - 7 * ix);
+        tup->seq_objs[cnt++] = (objectval_tyBM *) curob;
+      };
+  hash_tyBM h = h1 ^ h2;
+  if (!h)
+    h = (h1 & 0xffffff) + (h2 & 0xffffff) + 3 * (siz & 0xffff) + 35;
+  assert (h > 0);
+  ((typedhead_tyBM *) tup)->hash = h;
+  return tup;
 }                               /* end tuplemake_BM */
+
+
+////////////////////////////////////////////////////////////////
+/// object support
+hash_tyBM
+objecthash_BM (const objectval_tyBM * pob)
+{
+  if (!pob)
+    return 0;
+  if (((typedhead_tyBM *) pob)->htyp != tyObject_BM)
+    return 0;
+  return ((typedhead_tyBM *) pob)->hash;
+}                               /* end objecthash_BM */
 
 ////////////////////////////////////////////////////////////////
 int
