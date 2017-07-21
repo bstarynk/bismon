@@ -607,7 +607,8 @@ stringprintf_BM (const char *fmt, ...)
 int
 lenstring_BM (const stringval_tyBM * strv)
 {
-  if (!strv || ((typedhead_tyBM *) strv)->htyp != tyString_BM)
+  if (!strv || ((intptr_t) strv & 3)
+      || ((typedhead_tyBM *) strv)->htyp != tyString_BM)
     return 0;
   return ((typedsize_tyBM *) strv)->size;
 }                               /* end lenstring_BM */
@@ -615,7 +616,8 @@ lenstring_BM (const stringval_tyBM * strv)
 const char *
 bytstring_BM (const stringval_tyBM * strv)
 {
-  if (!strv || ((typedhead_tyBM *) strv)->htyp != tyString_BM)
+  if (!strv || ((intptr_t) strv & 3)
+      || ((typedhead_tyBM *) strv)->htyp != tyString_BM)
     return NULL;
   return strv->strv_bytes;
 }                               /* end bytstring_BM */
@@ -665,7 +667,7 @@ tuplemake_BM (objectval_tyBM ** arr, unsigned rawsiz)
 unsigned
 tuplesize_BM (const tupleval_tyBM * tup)
 {
-  if (!tup)
+  if (!tup || ((intptr_t) tup & 3))
     return 0;
   if (((typedhead_tyBM *) tup)->htyp != tyTuple_BM)
     return 0;
@@ -675,7 +677,7 @@ tuplesize_BM (const tupleval_tyBM * tup)
 objectval_tyBM *
 tuplecompnth_BM (const tupleval_tyBM * tup, int rk)
 {
-  if (!tup)
+  if (!tup || ((intptr_t) tup & 3))
     return NULL;
   if (((typedhead_tyBM *) tup)->htyp != tyTuple_BM)
     return NULL;
@@ -768,7 +770,7 @@ setmake_BM (objectval_tyBM ** arr, unsigned rawsiz)
 extern bool
 setcontains_BM (const objectval_tyBM * obelem, const setval_tyBM * setv)
 {
-  if (!obelem || !setv)
+  if (!obelem || ((intptr_t) obelem & 3) || !setv || ((intptr_t) setv & 3))
     return false;
   if (((typedhead_tyBM *) obelem)->htyp != tyObject_BM)
     return false;
@@ -805,7 +807,7 @@ setcontains_BM (const objectval_tyBM * obelem, const setval_tyBM * setv)
 unsigned
 setcardinal_BM (const setval_tyBM * setv)
 {
-  if (!setv)
+  if (!setv || ((intptr_t) setv & 3))
     return 0;
   if (((typedhead_tyBM *) setv)->htyp != tySet_BM)
     return 0;
@@ -815,7 +817,7 @@ setcardinal_BM (const setval_tyBM * setv)
 objectval_tyBM *
 setelemnth_BM (const setval_tyBM * set, int rk)
 {
-  if (!set)
+  if (!set || ((intptr_t) set & 3))
     return NULL;
   if (((typedhead_tyBM *) set)->htyp != tySet_BM)
     return NULL;
@@ -834,7 +836,7 @@ setelemnth_BM (const setval_tyBM * set, int rk)
 hash_tyBM
 objecthash_BM (const objectval_tyBM * pob)
 {
-  if (!pob)
+  if (!pob || ((intptr_t) pob & 3))
     return 0;
   if (((typedhead_tyBM *) pob)->htyp != tyObject_BM)
     return 0;
