@@ -884,6 +884,8 @@ sortobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz)
 int
 main (int argc, char **argv)
 {
+  /// should actually use gtk_init_with_args so define some
+  /// GOptionEntry array
   bool batch = false;
   for (int ix = 1; ix < argc; ix++)
     if (!strcmp (argv[ix], "-B") || !strcmp (argv[ix], "--batch"))
