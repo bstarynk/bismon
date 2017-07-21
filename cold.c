@@ -848,9 +848,13 @@ objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)
 {
   if (ob1 == ob2)
     return 0;
-  if (ob1 && ((typedhead_tyBM *) ob1)->htyp != tyObject_BM)
+  if (ob1
+      && (((intptr_t) ob1 & 3)
+          || ((typedhead_tyBM *) ob1)->htyp != tyObject_BM))
     FATAL_BM ("bad ob1@%p for objectcmp_BM", ob1);
-  if (ob2 && ((typedhead_tyBM *) ob2)->htyp != tyObject_BM)
+  if (ob2
+      && (((intptr_t) ob1 & 3)
+          || ((typedhead_tyBM *) ob2)->htyp != tyObject_BM))
     FATAL_BM ("bad ob2@%p for objectcmp_BM", ob2);
   if (!ob1)
     return -1;
