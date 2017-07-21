@@ -133,12 +133,18 @@ extern const char *bytstring_BM (const stringval_tyBM *);
 
 extern const tupleval_tyBM *tuplemake_BM (objectval_tyBM ** arr,
                                           unsigned rawsiz);
+extern unsigned tuplesize_BM (const tupleval_tyBM * tup);
+extern objectval_tyBM *tuplecompnth_BM (const tupleval_tyBM * tup, int rk);
 
 extern const setval_tyBM *setmake_BM (objectval_tyBM ** arr, unsigned rawsiz);
 extern bool setcontains_BM (const objectval_tyBM * obelem,
                             const setval_tyBM * setv);
 extern unsigned setcardinal_BM (const setval_tyBM * setv);
+extern objectval_tyBM *setelemnth_BM (const setval_tyBM * set, int rk);
+
+
 extern hash_tyBM objecthash_BM (const objectval_tyBM *);
+
 extern int objectcmp_BM (const objectval_tyBM * ob1,
                          const objectval_tyBM * ob2);
 extern void sortobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz);
@@ -656,6 +662,31 @@ tuplemake_BM (objectval_tyBM ** arr, unsigned rawsiz)
   return tup;
 }                               /* end tuplemake_BM */
 
+unsigned
+tuplesize_BM (const tupleval_tyBM * tup)
+{
+  if (!tup)
+    return 0;
+  if (((typedhead_tyBM *) tup)->htyp != tyTuple_BM)
+    return 0;
+  return ((typedsize_tyBM *) tup)->size;
+}                               /* end tuplesize_BM */
+
+objectval_tyBM *
+tuplecompnth_BM (const tupleval_tyBM * tup, int rk)
+{
+  if (!tup)
+    return NULL;
+  if (((typedhead_tyBM *) tup)->htyp != tyTuple_BM)
+    return NULL;
+  unsigned siz = ((typedsize_tyBM *) tup)->size;
+  if (rk < 0)
+    rk += siz;
+  if (rk < 0 || rk >= (int) siz)
+    return NULL;
+  return tup->seq_objs[rk];
+}                               /* end tuplecompnth_BM */
+
 ////////////////////////////////////////////////////////////////
 ///// set support
 
@@ -780,6 +811,23 @@ setcardinal_BM (const setval_tyBM * setv)
     return 0;
   return ((typedsize_tyBM *) setv)->size;
 }                               /* end setcardinal_BM */
+
+objectval_tyBM *
+setelemnth_BM (const setval_tyBM * set, int rk)
+{
+  if (!set)
+    return NULL;
+  if (((typedhead_tyBM *) set)->htyp != tySet_BM)
+    return NULL;
+  unsigned siz = ((typedsize_tyBM *) set)->size;
+  if (rk < 0)
+    rk += siz;
+  if (rk < 0 || rk >= (int) siz)
+    return NULL;
+  return set->seq_objs[rk];
+}                               /* end setelemnth_BM */
+
+
 
 ////////////////////////////////////////////////////////////////
 /// object support
