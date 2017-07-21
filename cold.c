@@ -135,6 +135,9 @@ extern const tupleval_tyBM *tuplemake_BM (objectval_tyBM ** arr,
                                           unsigned rawsiz);
 
 extern const setval_tyBM *setmake_BM (objectval_tyBM ** arr, unsigned rawsiz);
+extern bool setcontains_BM (const objectval_tyBM * obelem,
+                            const setval_tyBM * setv);
+extern unsigned setcardinal_BM (const setval_tyBM * setv);
 extern hash_tyBM objecthash_BM (const objectval_tyBM *);
 extern int objectcmp_BM (const objectval_tyBM * ob1,
                          const objectval_tyBM * ob2);
@@ -726,11 +729,57 @@ setmake_BM (objectval_tyBM ** arr, unsigned rawsiz)
   if (!h)
     h = (h1 & 0xffffff) + 3 * (h2 & 0x3fffff) + 11 * (siz & 0xffff) + 59;
   assert (h > 0);
-  ((typedhead_tyBM *) set)->hash = siz;
+  ((typedhead_tyBM *) set)->hash = h;
   return set;
 }                               /* end setmake_BM */
 
 
+extern bool
+setcontains_BM (const objectval_tyBM * obelem, const setval_tyBM * setv)
+{
+  if (!obelem || !setv)
+    return false;
+  if (((typedhead_tyBM *) obelem)->htyp != tyObject_BM)
+    return false;
+  if (((typedhead_tyBM *) setv)->htyp != tySet_BM)
+    return false;
+  unsigned card = ((typedsize_tyBM *) setv)->size;
+  unsigned lo = 0, hi = card, md = 0;
+  while (lo + 15 < hi)
+    {
+      md = (lo + hi) / 2;
+      const objectval_tyBM *mdob = setv->seq_objs[md];
+      assert (mdob != NULL && ((typedhead_tyBM *) mdob)->htyp == tyObject_BM);
+      if (obelem == mdob)
+        return true;
+      int cmp = objectcmp_BM (obelem, mdob);
+      if (cmp < 0)
+        hi = md;
+      else
+        {
+          assert (cmp > 0);
+          lo = md;
+        }
+    };
+  for (md = lo; md < hi; md++)
+    {
+      const objectval_tyBM *mdob = setv->seq_objs[md];
+      assert (mdob != NULL && ((typedhead_tyBM *) mdob)->htyp == tyObject_BM);
+      if (obelem == mdob)
+        return true;
+    }
+  return false;
+}                               /* end setcontains_BM */
+
+unsigned
+setcardinal_BM (const setval_tyBM * setv)
+{
+  if (!setv)
+    return 0;
+  if (((typedhead_tyBM *) setv)->htyp != tySet_BM)
+    return 0;
+  return ((typedsize_tyBM *) setv)->size;
+}                               /* end setcardinal_BM */
 
 ////////////////////////////////////////////////////////////////
 /// object support
