@@ -12,4 +12,10 @@ extern const char bismon_makefile[];
 
 extern struct allalloc_stBM* allocationvec_vBM /*¤ allocgc_BM.c*/;
 
+#define BM_HAS_PREDEF(Id,Hi,Lo,Hash) \
+  extern objectval_tyBM predefdata##Id##_BM; \
+  extern objectval_tyBM* predefptr##Id##_BM;
+#include "_bm_predef.h"
+
+#define BM_PREDEF(Id) (predefptr##Id##_BM)
 #endif /*GLOBALS_BM_INCLUDED*/
