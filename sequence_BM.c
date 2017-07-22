@@ -64,7 +64,7 @@ tuplecompnth_BM (const tupleval_tyBM * tup, int rk)
     rk += siz;
   if (rk < 0 || rk >= (int) siz)
     return NULL;
-  return tup->seq_objs[rk];
+  return (objectval_tyBM*)tup->seq_objs[rk];
 }                               /* end tuplecompnth_BM */
 
 ////////////////////////////////////////////////////////////////
@@ -204,5 +204,5 @@ setelemnth_BM (const setval_tyBM * set, int rk)
     rk += siz;
   if (rk < 0 || rk >= (int) siz)
     return NULL;
-  return set->seq_objs[rk];
+  return (objectval_tyBM*)set->seq_objs[rk];
 }                               /* end setelemnth_BM */
