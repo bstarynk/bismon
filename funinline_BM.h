@@ -126,4 +126,27 @@ objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)
   return cmpid_BM (ob1->ob_id, ob2->ob_id);
 }                               /* end objectcmp_BM */
 
+bool
+isassoc_BM (value_BM v)
+{
+  int ty = valtype_BM (v);
+  return ty == tydata_assocbucket_BM || ty == tydata_assocpairs_BM;
+}                               /* end isassoc_BM */
+
+unsigned
+assoc_nbkeys_BM (anyassoc_tyBM * assoc)
+{
+  int ty = valtype_BM (assoc);
+  if (ty == tydata_assocpairs_BM)
+    {
+      struct assocpairs_stBM *apair = (struct assocpairs_stBM *) assoc;
+      return apair->apair_count;
+    }
+  else if (ty == tydata_assocbucket_BM)
+    {
+      struct assocbucket_stBM *abuck = (struct assocbucket_stBM *) assoc;
+      return abuck->abuck_nbkeys;
+    }
+  return 0;
+}                               /* end assoc_nbkeys_BM */
 #endif /*FUNINLINE_BM_INCLUDED */

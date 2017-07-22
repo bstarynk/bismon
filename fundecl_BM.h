@@ -51,4 +51,19 @@ extern void sortobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz);
 
 extern int64_t prime_above_BM (int64_t n);
 extern int64_t prime_below_BM (int64_t n);
+
+static inline bool isassoc_BM (value_BM);
+static inline unsigned assoc_nbkeys_BM (anyassoc_tyBM * assoc);
+
+extern void assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap);
+
+extern const setval_tyBM *assoc_setattr_BM (const anyassoc_tyBM * assoc);
+extern value_BM assoc_getattr_BM (anyassoc_tyBM * assoc,
+                                  const objectval_tyBM * obattr);
+extern anyassoc_tyBM *assoc_addattr_BM (anyassoc_tyBM * assoc,
+                                        const objectval_tyBM * obattr,
+                                        value_BM val);
+extern anyassoc_tyBM *assoc_removeattr_BM (anyassoc_tyBM * assoc,
+                                           const objectval_tyBM * obattr);
+
 #endif /*FUNDECL_BM_INCLUDED */
