@@ -2,6 +2,42 @@
 #ifndef FUNINLINE_BM_INCLUDED
 #define FUNINLINE_BM_INCLUDED
 
+
+bool
+istaggedint_BM (value_BM v)
+{
+  return (uintptr_t) v & 1;
+}                               /* end istaggedint_BM */
+
+intptr_t
+getint_BM (value_BM v)
+{
+  if (istaggedint_BM (v))
+    return ((intptr_t) v) >> 1;
+}                               /* end getint_BM */
+
+value_BM
+taggedint_BM (intptr_t i)
+{
+  return (value_BM) ((i << 1) | 1);
+}                               /* end taggedint_BM */
+
+int
+valtype_BM (value_BM v)
+{
+  if (!v)
+    return tyNone_BM;
+  if (istaggedint_BM (v))
+    return tyInt_BM;
+  if (((uintptr_t) v & 3) == 0)
+    {
+      typedhead_tyBM *ht = (typedhead_tyBM *) v;
+      assert (ht->htyp != 0);
+      return ht->htyp;
+    }
+  return tyNone_BM;
+}                               /* end valtype_BM */
+
 bool
 validserial63_BM (serial63_tyBM s)
 {

@@ -4,6 +4,12 @@
 
 extern void abort_BM (void) __attribute__ ((noreturn));
 
+static inline bool istaggedint_BM (value_BM v);
+static inline intptr_t getint_BM (value_BM v);
+static inline value_BM taggedint_BM (intptr_t i);
+
+static inline int valtype_BM (value_BM v);
+
 static inline bool validserial63_BM (serial63_tyBM s);
 extern serial63_tyBM randomserial63_BM (void);
 extern int serial63tocbuf16_BM (serial63_tyBM s, char cbuf[static 16]);

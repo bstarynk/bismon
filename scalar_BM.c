@@ -1,6 +1,11 @@
 // file scalar_BM.c
 #include "bismon.h"
 
+const typedhead_tyBM unspecifieddata_BM = {
+  .htyp = tyUnspecified_BM,
+  .hgc = 0
+};
+
 //// string support
 
 hash_tyBM
