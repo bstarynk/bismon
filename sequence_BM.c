@@ -71,10 +71,10 @@ tuplecompnth_BM (const tupleval_tyBM * tup, int rk)
 ///// set support
 
 extern const setval_tyBM *
-setmake_BM (objectval_tyBM ** arr, unsigned rawsiz)
+setmake_BM (const objectval_tyBM ** arr, unsigned rawsiz)
 {
-  objectval_tyBM *tinyarr[TINYSIZE_BM];
-  objectval_tyBM **tmparr;
+  const objectval_tyBM *tinyarr[TINYSIZE_BM];
+  const objectval_tyBM **tmparr = NULL;
   memset (tinyarr, 0, sizeof (tinyarr));
   if (!arr)
     rawsiz = 0;

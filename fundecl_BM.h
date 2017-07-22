@@ -36,7 +36,8 @@ extern const tupleval_tyBM *tuplemake_BM (objectval_tyBM ** arr,
 extern unsigned tuplesize_BM (const tupleval_tyBM * tup);
 extern objectval_tyBM *tuplecompnth_BM (const tupleval_tyBM * tup, int rk);
 
-extern const setval_tyBM *setmake_BM (objectval_tyBM ** arr, unsigned rawsiz);
+extern const setval_tyBM *setmake_BM (const objectval_tyBM ** arr,
+                                      unsigned rawsiz);
 extern bool setcontains_BM (const objectval_tyBM * obelem,
                             const setval_tyBM * setv);
 extern unsigned setcardinal_BM (const setval_tyBM * setv);

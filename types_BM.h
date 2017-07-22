@@ -80,7 +80,7 @@ typedef struct object_stBM objectval_tyBM;      /*tyObject_BM */
 struct seqobval_stBM
 {
   typedsize_tyBM pA;
-  objectval_tyBM *seq_objs[];
+  const objectval_tyBM *seq_objs[];
 };
 
 typedef struct seqobval_stBM seqobval_tyBM;
@@ -133,7 +133,7 @@ struct assocbucket_stBM
 
 struct assocentry_stBM
 {
-  objectval_tyBM *asso_keyob;
+  const objectval_tyBM *asso_keyob;
   value_tyBM asso_val;
 };
 
