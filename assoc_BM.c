@@ -88,11 +88,11 @@ assocpair_put_BM (struct assocpairs_stBM *apairs, objectval_tyBM * keyob,
 }                               /* end assocpair_put_BM */
 
 static unsigned
-assoc_buckix_for_key_BM (struct assocbucket_stBM *abuck,
-                         objectval_tyBM * obkey)
+assoc_buckix_for_key_BM (const struct assocbucket_stBM *abuck,
+                         const objectval_tyBM * obkey)
 {
-  assert (valtype_BM (abuck) == tydata_assocbucket_BM);
-  assert (valtype_BM (obkey) == tyObject_BM);
+  assert (valtype_BM ((const value_tyBM) abuck) == tydata_assocbucket_BM);
+  assert (valtype_BM ((const value_tyBM) obkey) == tyObject_BM);
   hash_tyBM hkey = objecthash_BM (obkey);
   assert (hkey != 0);
   unsigned nbuckets = ((typedhead_tyBM *) abuck)->rlen;
@@ -279,14 +279,99 @@ assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap)
 
 
 const setval_tyBM *
-assoc_setattr_BM (const anyassoc_tyBM * assoc)
+assoc_setattrs_BM (const anyassoc_tyBM * assoc)
 {
-}                               /* end assoc_setattr_BM */
+  if (!assoc)
+    return setmake_BM (NULL, 0);
+  if (!isassoc_BM ((const value_tyBM) assoc))
+    return NULL;
+  unsigned nbkeys = assoc_nbkeys_BM (assoc);
+  if (nbkeys == 0)
+    return setmake_BM (NULL, 0);
+  objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+  objectval_tyBM **arr =
+    (nbkeys < TINYSIZE_BM) ? tinyarr : calloc (nbkeys, sizeof (void *));
+  if (!arr)
+    FATAL_BM ("out of memory for %u keys in assoc", nbkeys);
+  unsigned keycnt = 0;
+  if (valtype_BM ((const value_tyBM) assoc) == tydata_assocbucket_BM)
+    {
+      unsigned nbuckets = ((typedhead_tyBM *) assoc)->rlen;
+      for (unsigned buckix = 0; buckix < nbuckets; buckix++)
+        {
+          struct assocpairs_stBM *curbuckpair =
+            ((struct assocbucket_stBM *) assoc)->abuck_pairs[buckix];
+          if (curbuckpair)
+            {
+              assert (valtype_BM (curbuckpair) == tydata_assocpairs_BM);
+              unsigned bucklen = ((typedhead_tyBM *) curbuckpair)->rlen;
+              for (unsigned pix = 0; pix < bucklen; pix++)
+                {
+                  objectval_tyBM *curkeyob =
+                    curbuckpair->apairs_ent[pix].asso_keyob;
+                  value_tyBM curval = curbuckpair->apairs_ent[pix].asso_val;
+                  if (curkeyob && curval)
+                    {
+                      assert (keycnt < nbkeys);
+                      arr[keycnt++] = curkeyob;
+                    }
+                }
+            }
+        }
+    }
+  else if (valtype_BM ((const value_tyBM) assoc) == tydata_assocpairs_BM)
+    {
+      const struct assocpairs_stBM *curpairs = assoc;
+      unsigned bucklen = ((typedhead_tyBM *) curpairs)->rlen;
+      for (unsigned pix = 0; pix < bucklen; pix++)
+        {
+          objectval_tyBM *curkeyob = curpairs->apairs_ent[pix].asso_keyob;
+          value_tyBM curval = curpairs->apairs_ent[pix].asso_val;
+          if (curkeyob && curval)
+            {
+              assert (keycnt < nbkeys);
+              arr[keycnt++] = curkeyob;
+            }
+        }
+    }
+  else
+    FATAL_BM ("unexpected assoc @%p", assoc);
+  assert (keycnt == nbkeys);
+  const setval_tyBM *keyset = setmake_BM (arr, keycnt);
+  assert (setcardinal_BM (keyset) == nbkeys);
+  if (arr != tinyarr)
+    free (arr);
+  return keyset;
+}                               /* end assoc_setattrs_BM */
 
 
 value_tyBM
-assoc_getattr_BM (anyassoc_tyBM * assoc, const objectval_tyBM * obattr)
+assoc_getattr_BM (const anyassoc_tyBM * assoc, const objectval_tyBM * obattr)
 {
+  if (!isassoc_BM ((const value_tyBM) assoc))
+    return NULL;
+  if (valtype_BM ((const value_tyBM) obattr) != tyObject_BM)
+    return NULL;
+  const struct assocpairs_stBM *curpairs = NULL;
+  if (valtype_BM ((const value_tyBM) assoc) == tydata_assocbucket_BM)
+    {
+      unsigned buckix = assoc_buckix_for_key_BM (assoc, obattr);
+      curpairs =
+        ((const struct assocbucket_stBM *) assoc)->abuck_pairs[buckix];
+    }
+  else if (valtype_BM ((const value_tyBM) assoc) == tydata_assocpairs_BM)
+    curpairs = assoc;
+  if (!curpairs)
+    return NULL;
+  unsigned nbent = ((typedhead_tyBM *) curpairs)->rlen;
+  for (unsigned pix = 0; pix < nbent; pix++)
+    {
+      objectval_tyBM *curkeyob = curpairs->apairs_ent[pix].asso_keyob;
+      value_tyBM curval = curpairs->apairs_ent[pix].asso_val;
+      if (curkeyob == obattr)
+        return curval;
+    }
+  return NULL;
 }                               /* end assoc_getattr_BM */
 
 anyassoc_tyBM *

@@ -8,7 +8,7 @@ static inline bool istaggedint_BM (value_tyBM v);
 static inline intptr_t getint_BM (value_tyBM v);
 static inline value_tyBM taggedint_BM (intptr_t i);
 
-static inline int valtype_BM (value_tyBM v);
+static inline int valtype_BM (const value_tyBM v);
 
 static inline bool validserial63_BM (serial63_tyBM s);
 extern serial63_tyBM randomserial63_BM (void);
@@ -53,12 +53,12 @@ extern int64_t prime_above_BM (int64_t n);
 extern int64_t prime_below_BM (int64_t n);
 
 static inline bool isassoc_BM (value_tyBM);
-static inline unsigned assoc_nbkeys_BM (anyassoc_tyBM * assoc);
+static inline unsigned assoc_nbkeys_BM (const anyassoc_tyBM * assoc);
 
 extern void assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap);
 
-extern const setval_tyBM *assoc_setattr_BM (const anyassoc_tyBM * assoc);
-extern value_tyBM assoc_getattr_BM (anyassoc_tyBM * assoc,
+extern const setval_tyBM *assoc_setattrs_BM (const anyassoc_tyBM * assoc);
+extern value_tyBM assoc_getattr_BM (const anyassoc_tyBM * assoc,
                                     const objectval_tyBM * obattr);
 extern anyassoc_tyBM *assoc_addattr_BM (anyassoc_tyBM * assoc,
                                         const objectval_tyBM * obattr,

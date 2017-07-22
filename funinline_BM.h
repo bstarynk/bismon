@@ -23,7 +23,7 @@ taggedint_BM (intptr_t i)
 }                               /* end taggedint_BM */
 
 int
-valtype_BM (value_tyBM v)
+valtype_BM (const value_tyBM v)
 {
   if (!v)
     return tyNone_BM;
@@ -127,16 +127,16 @@ objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)
 }                               /* end objectcmp_BM */
 
 bool
-isassoc_BM (value_tyBM v)
+isassoc_BM (const value_tyBM v)
 {
   int ty = valtype_BM (v);
   return ty == tydata_assocbucket_BM || ty == tydata_assocpairs_BM;
 }                               /* end isassoc_BM */
 
 unsigned
-assoc_nbkeys_BM (anyassoc_tyBM * assoc)
+assoc_nbkeys_BM (const anyassoc_tyBM * assoc)
 {
-  int ty = valtype_BM (assoc);
+  int ty = valtype_BM ((value_tyBM) assoc);
   if (ty == tydata_assocpairs_BM)
     {
       struct assocpairs_stBM *apair = (struct assocpairs_stBM *) assoc;
