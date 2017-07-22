@@ -52,7 +52,7 @@ indent: .indent.pro
 ## some backslash escapes itself
 
 __timestamp.c: Makefile
-	@date +'const char bismon_timestamp[]="%c"; const unsigned long bismon_timelong=%sL;' > __timestamp.tmp
+	@date +'const char bismon_timestamp[]="%c";%n const unsigned long bismon_timelong=%sL;' > __timestamp.tmp
 	@(echo -n 'const char bismon_lastgitcommit[]="' ; \
 	   git log --format=oneline --abbrev=12 --abbrev-commit -q  \
 	     | head -1 | tr -d '\n\r\f\"\\\\' ; \
