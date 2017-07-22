@@ -396,9 +396,52 @@ assoc_addattr_BM (anyassoc_tyBM * assoc,
     {
       return assocpair_put_BM (NULL, obattr, val);
     }
+  unsigned nbkeys = assoc_nbkeys_BM (assoc);
   if (valtype_BM ((const value_tyBM) assoc) == tydata_assocpairs_BM)
     {
+      struct assocpairs_stBM *curpairs = assoc;
+      if (nbkeys < TINYSIZE_BM)
+        {
+          return assocpair_put_BM (curpairs, obattr, val);
+        };
+      assoc_reorganize_BM (&assoc, 2 + nbkeys / 8);
     };
+  if (valtype_BM ((const value_tyBM) assoc) == tydata_assocbucket_BM)
+    {
+      struct assocbucket_stBM *abuck = (struct assocbucket_stBM *) assoc;
+      unsigned nbbuckets = ((typedhead_tyBM *) abuck)->rlen;
+      if (nbkeys > nbbuckets * TINYSIZE_BM)
+        assoc_reorganize_BM (&assoc, 3 + nbkeys / 64);
+    };
+  if (valtype_BM ((const value_tyBM) assoc) == tydata_assocpairs_BM)
+    {
+      return assocpair_put_BM ((struct assocpairs_stBM *) assoc, obattr, val);
+    }
+  else if (valtype_BM ((const value_tyBM) assoc) == tydata_assocbucket_BM)
+    {
+      unsigned buckix = assoc_buckix_for_key_BM (assoc, obattr);
+      struct assocpairs_stBM *curpairs =
+        ((const struct assocbucket_stBM *) assoc)->abuck_pairs[buckix];
+      assert (!curpairs
+              || valtype_BM ((const value_tyBM) curpairs) ==
+              tydata_assocpairs_BM);
+      unsigned oldpaircnt =
+        curpairs ? ((typedsize_tyBM *) curpairs)->size : 0;
+      struct assocpairs_stBM *newpairs =
+        assocpair_put_BM (curpairs, obattr, val);
+      if (newpairs != curpairs)
+        ((struct assocbucket_stBM *) assoc)->abuck_pairs[buckix] = newpairs;
+      unsigned newpaircnt =
+        newpairs ? ((typedsize_tyBM *) newpairs)->size : 0;
+      if (newpaircnt > oldpaircnt)
+        {
+          assert (newpaircnt == oldpaircnt + 1);
+          ((typedsize_tyBM *) assoc)->size = nbkeys + 1;
+        }
+      return assoc;
+    }
+  // should never be reached
+  FATAL_BM ("something corrupted in assoc@%p", assoc);
 }                               /* end assoc_addattr_BM */
 
 
@@ -406,4 +449,8 @@ assoc_addattr_BM (anyassoc_tyBM * assoc,
 anyassoc_tyBM *
 assoc_removeattr_BM (anyassoc_tyBM * assoc, const objectval_tyBM * obattr)
 {
+  if (!isassoc_BM (assoc))
+    return NULL;
+  if (valtype_BM ((const value_tyBM) obattr) != tyObject_BM)
+    return assoc;
 }                               /* end assoc_removeattr_BM */
