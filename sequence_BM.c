@@ -302,12 +302,10 @@ datavect_append_BM (struct datavectval_stBM *dvec, value_tyBM val)
   if (oldlen + 1 >= MAXSIZE_BM)
     FATAL_BM ("datavect_append too big %u", oldlen);
   unsigned newsiz = prime_above_BM (oldlen + oldcnt / 16 + 3);
-  struct datavectval_stBM *newdvec = allocinternalty_BM (tydata_vectval_BM,
-                                                         sizeof (struct
-                                                                 datavectval_stBM)
-                                                         +
-                                                         newsiz *
-                                                         sizeof (void *));
+  struct datavectval_stBM *newdvec =    //
+    allocinternalty_BM (tydata_vectval_BM,
+                        sizeof (struct datavectval_stBM)
+                        + newsiz * sizeof (void *));
   ((typedhead_tyBM *) newdvec)->rlen = newsiz;
   ((typedsize_tyBM *) newdvec)->size = oldcnt + 1;
   memcpy (newdvec->vec_data, dvec->vec_data, oldcnt * sizeof (void *));
