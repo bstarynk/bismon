@@ -453,4 +453,66 @@ assoc_removeattr_BM (anyassoc_tyBM * assoc, const objectval_tyBM * obattr)
     return NULL;
   if (valtype_BM ((const value_tyBM) obattr) != tyObject_BM)
     return assoc;
+  unsigned nbkeys = assoc_nbkeys_BM (assoc);
+  if (valtype_BM ((const value_tyBM) assoc) == tydata_assocbucket_BM)
+    {
+      struct assocbucket_stBM *abuck = (struct assocbucket_stBM *) assoc;
+      unsigned nbbuckets = ((typedhead_tyBM *) abuck)->rlen;
+      if (nbkeys < (nbbuckets * TINYSIZE_BM) / 2)
+        assoc_reorganize_BM (&assoc, 2);
+      if (valtype_BM ((const value_tyBM) assoc) == tydata_assocbucket_BM)
+        {
+          unsigned buckix = assoc_buckix_for_key_BM (assoc, obattr);
+          struct assocpairs_stBM *curpairs =
+            ((const struct assocbucket_stBM *) assoc)->abuck_pairs[buckix];
+          assert (!curpairs
+                  || valtype_BM ((const value_tyBM) curpairs) ==
+                  tydata_assocpairs_BM);
+          if (curpairs)
+            {
+              unsigned nbent = ((typedhead_tyBM *) curpairs)->rlen;
+              for (unsigned pix = 0; pix < nbent; pix++)
+                {
+                  const objectval_tyBM *curkeyob =
+                    curpairs->apairs_ent[pix].asso_keyob;
+                  if (curkeyob == obattr)
+                    {
+                      curpairs->apairs_ent[pix].asso_keyob = NULL;
+                      curpairs->apairs_ent[pix].asso_val = NULL;
+                      ((typedsize_tyBM *) curpairs)->size--;
+                      ((typedsize_tyBM *) abuck)->size--;
+                      return assoc;
+                    }
+                }
+            }
+        }
+    }
+  if (valtype_BM ((const value_tyBM) assoc) == tydata_assocpairs_BM)
+    {
+      struct assocpairs_stBM *curpairs = assoc;
+      unsigned nbent = ((typedhead_tyBM *) curpairs)->rlen;
+      unsigned cnt = ((typedsize_tyBM *) curpairs)->size;
+      if (cnt < TINYSIZE_BM / 2)
+        {
+          assoc_reorganize_BM (&assoc, 1);
+          assert (valtype_BM ((const value_tyBM) assoc) ==
+                  tydata_assocpairs_BM);
+          curpairs = assoc;
+        }
+      nbent = ((typedhead_tyBM *) curpairs)->rlen;
+      for (unsigned pix = 0; pix < nbent; pix++)
+        {
+          const objectval_tyBM *curkeyob =
+            curpairs->apairs_ent[pix].asso_keyob;
+          if (curkeyob == obattr)
+            {
+              assert (cnt > 0);
+              curpairs->apairs_ent[pix].asso_keyob = NULL;
+              curpairs->apairs_ent[pix].asso_val = NULL;
+              ((typedsize_tyBM *) curpairs)->size = cnt - 1;
+              return curpairs;
+            }
+        }
+    }
+  return assoc;                 // key not found
 }                               /* end assoc_removeattr_BM */
