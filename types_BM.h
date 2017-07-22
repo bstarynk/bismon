@@ -119,26 +119,27 @@ struct object_stBM              /*tyObject_BM */
 
 struct datavectval_BM
 {                               /* tydata_vectval_BM */
-  typedsize_tyBM pA;            /// size is allocated size
-  uint32_t vec_len;             /// used length
-  value_BM vec_data[];          // of size elements
+  typedsize_tyBM pA;            /// rlen is allocated size, siz is used length
+  value_BM vec_data[];          // of rlen elements
 };
 
 struct assocbucket_stBM
 {                               /* tydata_assocbucket_BM */
   typedsize_tyBM pA;
-  uint32_t abuck_nbkeys;
-  struct assocpairs_stBM *abuck_pairs[];
+  // rlen is allocated length of abuck_pairs,
+  // size is total count of entries
+  struct assocpairs_stBM *abuck_pairs[];        // of rlen assocpairs
+};
+
+struct assocentry_stBM
+{
+  objectval_tyBM *asso_keyob;
+  value_BM asso_val;
 };
 
 struct assocpairs_stBM
 {                               /* tydata_assocpairs_BM */
-  typedsize_tyBM pa;            // size is allocated size
-  unsigned apair_count;         /* actual count of pairs */
-  struct
-  {
-    objectval_tyBM *asso_keyob;
-    value_BM asso_val;
-  } apairs[];
+  typedsize_tyBM pa;            // rlen is allocated size, size is used count
+  struct assocentry_stBM apairs_ent[];
 };
 #endif /*TYPES_BM_INCLUDED */

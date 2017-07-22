@@ -140,13 +140,14 @@ assoc_nbkeys_BM (anyassoc_tyBM * assoc)
   if (ty == tydata_assocpairs_BM)
     {
       struct assocpairs_stBM *apair = (struct assocpairs_stBM *) assoc;
-      return apair->apair_count;
+      return ((typedsize_tyBM *) apair)->size;
     }
   else if (ty == tydata_assocbucket_BM)
     {
       struct assocbucket_stBM *abuck = (struct assocbucket_stBM *) assoc;
-      return abuck->abuck_nbkeys;
+      return ((typedsize_tyBM *) abuck)->size;
     }
   return 0;
 }                               /* end assoc_nbkeys_BM */
+
 #endif /*FUNINLINE_BM_INCLUDED */
