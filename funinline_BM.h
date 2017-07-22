@@ -4,26 +4,26 @@
 
 
 bool
-istaggedint_BM (value_BM v)
+istaggedint_BM (value_tyBM v)
 {
   return (uintptr_t) v & 1;
 }                               /* end istaggedint_BM */
 
 intptr_t
-getint_BM (value_BM v)
+getint_BM (value_tyBM v)
 {
   if (istaggedint_BM (v))
     return ((intptr_t) v) >> 1;
 }                               /* end getint_BM */
 
-value_BM
+value_tyBM
 taggedint_BM (intptr_t i)
 {
-  return (value_BM) ((i << 1) | 1);
+  return (value_tyBM) ((i << 1) | 1);
 }                               /* end taggedint_BM */
 
 int
-valtype_BM (value_BM v)
+valtype_BM (value_tyBM v)
 {
   if (!v)
     return tyNone_BM;
@@ -127,7 +127,7 @@ objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)
 }                               /* end objectcmp_BM */
 
 bool
-isassoc_BM (value_BM v)
+isassoc_BM (value_tyBM v)
 {
   int ty = valtype_BM (v);
   return ty == tydata_assocbucket_BM || ty == tydata_assocpairs_BM;

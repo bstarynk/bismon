@@ -3,7 +3,7 @@
 #define TYPES_BM_INCLUDED
 
 
-typedef void *value_BM;
+typedef void *value_tyBM;
 
 typedef uint32_t hash_tyBM;
 struct typedhead_stBM
@@ -120,7 +120,7 @@ struct object_stBM              /*tyObject_BM */
 struct datavectval_BM
 {                               /* tydata_vectval_BM */
   typedsize_tyBM pA;            /// rlen is allocated size, siz is used length
-  value_BM vec_data[];          // of rlen elements
+  value_tyBM vec_data[];        // of rlen elements
 };
 
 struct assocbucket_stBM
@@ -134,7 +134,7 @@ struct assocbucket_stBM
 struct assocentry_stBM
 {
   objectval_tyBM *asso_keyob;
-  value_BM asso_val;
+  value_tyBM asso_val;
 };
 
 struct assocpairs_stBM
