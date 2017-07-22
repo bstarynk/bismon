@@ -2,6 +2,20 @@
 #ifndef TYPES_BM_INCLUDED
 #define TYPES_BM_INCLUDED
 
+// types of garbage collected first-class values
+enum gctyenum_BM
+{
+  tyInt_BM = -1,                /* actually a tagged int */
+  tyNone_BM = 0,                /* e.g. for nil */
+  tyString_BM = 1,
+  tySet_BM = 2,
+  tyTuple_BM = 3,
+  tyNode_BM = 4,
+  tyClosure_BM = 5,
+  tyObject_BM = 6,
+  tyUnspecified_BM = 7,
+};
+
 typedef uint32_t hash_tyBM;
 struct typedhead_stBM
 {
@@ -66,16 +80,4 @@ struct object_stBM
 };
 
 
-// types of garbage collected values
-enum gctyenum_BM
-{
-  tyInt_BM = -1,                /* actually a tagged int */
-  tyNone_BM = 0,                /* e.g. for nil */
-  tyString_BM = 1,
-  tySet_BM = 2,
-  tyTuple_BM = 3,
-  tyNode_BM = 4,
-  tyClosure_BM = 5,
-  tyObject_BM = 6,
-};
 #endif /*TYPES_BM_INCLUDED */
