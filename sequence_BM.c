@@ -206,5 +206,3 @@ setelemnth_BM (const setval_tyBM * set, int rk)
     return NULL;
   return set->seq_objs[rk];
 }                               /* end setelemnth_BM */
-
-

@@ -32,17 +32,19 @@ clean:
 
 
 indent: .indent.pro
-	for h in $(BM_HEADERS); do \
+	@for h in $(BM_HEADERS); do \
 	  cp -a $$h $$h% ; \
 	  $(INDENT) $(INDENTFLAGS) $$h ; \
 	  $(INDENT) $(INDENTFLAGS) $$h ; \
-	  cmp -s $$h $$h% && mv $$h% $$h ; \
+	  if cmp -s $$h $$h% ; then echo unchanged $$h ; mv $$h% $$h ; \
+          else echo indented $$h ; fi \
 	done
-	for c in $(BM_COLDSOURCES); do \
+	@for c in $(BM_COLDSOURCES); do \
 	  cp -a $$c $$c% ; \
 	  $(INDENT) $(INDENTFLAGS) $$c ; \
 	  $(INDENT) $(INDENTFLAGS) $$c ; \
-	  cmp -s $$c $$c% && mv $$c% $$c ; \
+	  if cmp -s $$c $$c% ; then echo unchanged $$c ; mv $$c% $$c ; \
+	  else echo indented $$c ; fi ; \
 	done
 
 ## we could use git rev-parse HEAD for the lastgitcommit, but it does
