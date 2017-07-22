@@ -25,7 +25,7 @@ GENERATED_CSOURCES= $(sort $(wildcard _[a-z0-9]*.c))
 
 OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES))
 
-.PHONY: all clean indent
+.PHONY: all clean indent count
 all: bismon
 clean:
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
@@ -77,3 +77,6 @@ bismon: $(OBJECTS)
 	$(MAKE) __timestamp.c __timestamp.o
 	$(LINK.c)  $(LINKFLAGS) -rdynamic $(OBJECTS) $(LIBES) -o $@  __timestamp.o
 	$(RM) __timestamp.*
+
+count:
+	wc -cl *.c *.h | sort -n
