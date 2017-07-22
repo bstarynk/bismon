@@ -7,7 +7,7 @@ abort_BM (void)
 {
   fflush (NULL);
   abort ();
-} /* end abort_BM */
+}                               /* end abort_BM */
 
 
 ////////////////////////////////////////////////////////////////

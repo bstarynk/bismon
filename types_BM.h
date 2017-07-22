@@ -78,4 +78,4 @@ enum gctyenum_BM
   tyClosure_BM = 5,
   tyObject_BM = 6,
 };
-#endif /*TYPES_BM_INCLUDED*/
+#endif /*TYPES_BM_INCLUDED */

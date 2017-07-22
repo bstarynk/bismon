@@ -1,6 +1,6 @@
 // file primes_BM.c
 
-#include <stdint.h>
+#include "bismon.h"
 // an array of primes, gotten with something similar to
 //   /usr/games/primes 3  | awk '($1>p+p/9){print $1, ","; p=$1}' 
 static const int64_t primes_tab_BM[] = {

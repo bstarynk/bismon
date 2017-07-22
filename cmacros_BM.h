@@ -20,4 +20,4 @@ fprintf(stderr, "BM FATAL:%s:%d: " Fmt "\n", \
 
 #define FATAL_BM(Fmt,...) FATAL_AT_BM(__FILE__,__LINE__,Fmt,##__VA_ARGS__)
 
-#endif /*CMACROS_BM_INCLUDED*/
+#endif /*CMACROS_BM_INCLUDED */

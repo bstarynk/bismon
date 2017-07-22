@@ -12,7 +12,7 @@ randomserial63_BM (void)
     }
   while (!validserial63_BM (s));
   return s;
-} /* end randomserial63_BM */
+}                               /* end randomserial63_BM */
 
 
 // return the number of bytes written into cbuf
@@ -152,5 +152,7 @@ parse_rawid_BM (const char *buf, const char **pend)
     };
   if (pend)
     *pend = buf;
-  return (rawid_tyBM){0, 0};
+  return (rawid_tyBM)
+  {
+  0, 0};
 }                               /* end parse_rawid_BM */

@@ -1,6 +1,7 @@
 ## the Makefile
 CC=gcc
-WARNFLAGS= -Wall -Wextra -fdiagnostics-color=auto
+CCACHE= ccache
+WARNFLAGS= -Wall -Wextra -Wmissing-prototypes -fdiagnostics-color=auto
 OPTIMFLAGS= -O1 -g3
 CFLAGS= -std=gnu11 $(WARNFLAGS) $(PREPROFLAGS) $(OPTIMFLAGS)
 INDENT= indent
@@ -64,7 +65,10 @@ __timestamp.c: Makefile
 bismon.h.gch: bismon.h $(GENERATED_HEADERS) $(BM_HEADERS)
 	$(COMPILE.c) $(CFLAGS) -c $< -o $@
 
-$(OBJECTS): bismon.h.gch 
+$(OBJECTS): bismon.h.gch
+
+%_BM.o: %_BM.c bismon.h.gch
+	$(CCACHE) $(COMPILE.c) $(CFLAGS) -c $< -o $@
 
 bismon: $(OBJECTS)
 	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi

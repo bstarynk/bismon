@@ -6,7 +6,7 @@ bool
 validserial63_BM (serial63_tyBM s)
 {
   return (s > MINSERIAL_BM && s < MAXSERIAL_BM);
-}      /* end validserial63_BM */
+}                               /* end validserial63_BM */
 
 
 
@@ -59,4 +59,35 @@ equalid_BM (rawid_tyBM id1, rawid_tyBM id2)
 
 
 
-#endif /*FUNINLINE_BM_INCLUDED*/
+/// object support
+hash_tyBM
+objecthash_BM (const objectval_tyBM * pob)
+{
+  if (!pob || ((intptr_t) pob & 3))
+    return 0;
+  if (((typedhead_tyBM *) pob)->htyp != tyObject_BM)
+    return 0;
+  return ((typedhead_tyBM *) pob)->hash;
+}                               /* end objecthash_BM */
+
+int
+objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)
+{
+  if (ob1 == ob2)
+    return 0;
+  if (ob1
+      && (((intptr_t) ob1 & 3)
+          || ((typedhead_tyBM *) ob1)->htyp != tyObject_BM))
+    FATAL_BM ("bad ob1@%p for objectcmp_BM", ob1);
+  if (ob2
+      && (((intptr_t) ob1 & 3)
+          || ((typedhead_tyBM *) ob2)->htyp != tyObject_BM))
+    FATAL_BM ("bad ob2@%p for objectcmp_BM", ob2);
+  if (!ob1)
+    return -1;
+  if (!ob2)
+    return +1;
+  return cmpid_BM (ob1->ob_id, ob2->ob_id);
+}                               /* end objectcmp_BM */
+
+#endif /*FUNINLINE_BM_INCLUDED */

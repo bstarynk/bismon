@@ -37,12 +37,12 @@ extern unsigned setcardinal_BM (const setval_tyBM * setv);
 extern objectval_tyBM *setelemnth_BM (const setval_tyBM * set, int rk);
 
 
-extern hash_tyBM objecthash_BM (const objectval_tyBM *);
+static inline hash_tyBM objecthash_BM (const objectval_tyBM *);
 
-extern int objectcmp_BM (const objectval_tyBM * ob1,
-                         const objectval_tyBM * ob2);
+static inline int objectcmp_BM (const objectval_tyBM * ob1,
+                                const objectval_tyBM * ob2);
 extern void sortobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz);
 
 extern int64_t prime_above_BM (int64_t n);
 extern int64_t prime_below_BM (int64_t n);
-#endif /*FUNDECL_BM_INCLUDED*/
+#endif /*FUNDECL_BM_INCLUDED */
