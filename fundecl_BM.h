@@ -67,4 +67,18 @@ extern anyassoc_tyBM *assoc_addattr_BM (anyassoc_tyBM * assoc,
 extern anyassoc_tyBM *assoc_removeattr_BM (anyassoc_tyBM * assoc,
                                            const objectval_tyBM * obattr);
 
+
+static inline unsigned datavectlen_BM (const struct datavectval_stBM *dvec);
+
+struct datavectval_stBM *datavect_grow_BM (struct datavectval_stBM *dvec,
+                                           unsigned gap);
+
+struct datavectval_stBM *datavect_reserve_BM (struct datavectval_stBM *dvec,
+                                              unsigned gap);
+
+struct datavectval_stBM *datavect_append_BM (struct datavectval_stBM *dvec,
+                                             value_tyBM val);
+
+static inline value_tyBM datavectnth_BM (const struct datavectval_stBM *dvec,
+                                         int rk);
 #endif /*FUNDECL_BM_INCLUDED */

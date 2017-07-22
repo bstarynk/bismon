@@ -117,7 +117,7 @@ struct object_stBM              /*tyObject_BM */
   // other fields are missing
 };
 
-struct datavectval_BM
+struct datavectval_stBM
 {                               /* tydata_vectval_BM */
   typedsize_tyBM pA;            /// rlen is allocated size, siz is used length
   value_tyBM vec_data[];        // of rlen elements

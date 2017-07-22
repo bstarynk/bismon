@@ -64,7 +64,7 @@ tuplecompnth_BM (const tupleval_tyBM * tup, int rk)
     rk += siz;
   if (rk < 0 || rk >= (int) siz)
     return NULL;
-  return (objectval_tyBM*)tup->seq_objs[rk];
+  return (objectval_tyBM *) tup->seq_objs[rk];
 }                               /* end tuplecompnth_BM */
 
 ////////////////////////////////////////////////////////////////
@@ -204,5 +204,114 @@ setelemnth_BM (const setval_tyBM * set, int rk)
     rk += siz;
   if (rk < 0 || rk >= (int) siz)
     return NULL;
-  return (objectval_tyBM*)set->seq_objs[rk];
+  return (objectval_tyBM *) set->seq_objs[rk];
 }                               /* end setelemnth_BM */
+
+struct datavectval_stBM *
+datavect_grow_BM (struct datavectval_stBM *dvec, unsigned gap)
+{
+  if (valtype_BM ((const value_tyBM) dvec) != tydata_vectval_BM)
+    {
+      unsigned siz = prime_above_BM (gap);
+      dvec =
+        allocinternalty_BM (tydata_vectval_BM,
+                            sizeof (struct datavectval_stBM)
+                            + siz * sizeof (void *));
+      ((typedhead_tyBM *) dvec)->rlen = siz;
+      ((typedsize_tyBM *) dvec)->size = gap;
+      return dvec;
+    }
+  unsigned oldlen = ((typedhead_tyBM *) dvec)->rlen;
+  unsigned oldcnt = ((typedsize_tyBM *) dvec)->size;
+  if (oldcnt + gap <= oldlen)
+    return dvec;
+  unsigned long siz = prime_above_BM (oldlen + gap);
+  if (siz > MAXSIZE_BM)
+    FATAL_BM ("too big datavect %ld", siz);
+  struct datavectval_stBM *newdvec = allocinternalty_BM (tydata_vectval_BM,
+                                                         sizeof (struct
+                                                                 datavectval_stBM)
+                                                         +
+                                                         siz *
+                                                         sizeof (void *));
+  ((typedhead_tyBM *) newdvec)->rlen = siz;
+  ((typedsize_tyBM *) newdvec)->size = oldcnt + gap;
+  memcpy (newdvec->vec_data, dvec->vec_data, oldcnt * sizeof (void *));
+  free (dvec);
+  return newdvec;
+}                               /* end of datavect_grow_BM */
+
+
+
+struct datavectval_stBM *
+datavect_reserve_BM (struct datavectval_stBM *dvec, unsigned gap)
+{
+  if (valtype_BM ((const value_tyBM) dvec) != tydata_vectval_BM)
+    {
+      unsigned siz = prime_above_BM (gap);
+      dvec =
+        allocinternalty_BM (tydata_vectval_BM,
+                            sizeof (struct datavectval_stBM)
+                            + siz * sizeof (void *));
+      ((typedhead_tyBM *) dvec)->rlen = siz;
+      return dvec;
+    }
+  unsigned oldlen = ((typedhead_tyBM *) dvec)->rlen;
+  unsigned oldcnt = ((typedsize_tyBM *) dvec)->size;
+  if (oldcnt + gap <= oldlen)
+    return dvec;
+  unsigned long siz = prime_above_BM (oldlen + gap);
+  if (siz > MAXSIZE_BM)
+    FATAL_BM ("too big datavect %ld", siz);
+  struct datavectval_stBM *newdvec = allocinternalty_BM (tydata_vectval_BM,
+                                                         sizeof (struct
+                                                                 datavectval_stBM)
+                                                         +
+                                                         siz *
+                                                         sizeof (void *));
+  ((typedhead_tyBM *) newdvec)->rlen = siz;
+  ((typedsize_tyBM *) newdvec)->size = oldcnt;
+  memcpy (newdvec->vec_data, dvec->vec_data, oldcnt * sizeof (void *));
+  free (dvec);
+  return newdvec;
+}                               /* end of datavect_reserve_BM */
+
+struct datavectval_stBM *
+datavect_append_BM (struct datavectval_stBM *dvec, value_tyBM val)
+{
+  if (valtype_BM ((const value_tyBM) dvec) != tydata_vectval_BM)
+    {
+      unsigned siz = TINYSIZE_BM / 2;
+      dvec =
+        allocinternalty_BM (tydata_vectval_BM,
+                            sizeof (struct datavectval_stBM)
+                            + siz * sizeof (void *));
+      ((typedhead_tyBM *) dvec)->rlen = siz;
+      ((typedsize_tyBM *) dvec)->size = 1;
+      dvec->vec_data[0] = val;
+      return dvec;
+    }
+  unsigned oldlen = ((typedhead_tyBM *) dvec)->rlen;
+  unsigned oldcnt = ((typedsize_tyBM *) dvec)->size;
+  if (oldcnt + 1 <= oldlen)
+    {
+      dvec->vec_data[oldcnt] = val;
+      ((typedsize_tyBM *) dvec)->size = oldcnt + 1;
+      return dvec;
+    }
+  if (oldlen + 1 >= MAXSIZE_BM)
+    FATAL_BM ("datavect_append too big %u", oldlen);
+  unsigned newsiz = prime_above_BM (oldlen + oldcnt / 16 + 3);
+  struct datavectval_stBM *newdvec = allocinternalty_BM (tydata_vectval_BM,
+                                                         sizeof (struct
+                                                                 datavectval_stBM)
+                                                         +
+                                                         newsiz *
+                                                         sizeof (void *));
+  ((typedhead_tyBM *) newdvec)->rlen = newsiz;
+  ((typedsize_tyBM *) newdvec)->size = oldcnt + 1;
+  memcpy (newdvec->vec_data, dvec->vec_data, oldcnt * sizeof (void *));
+  newdvec->vec_data[oldcnt] = val;
+  free (dvec);
+  return newdvec;
+}                               /* end datavect_append_BM */

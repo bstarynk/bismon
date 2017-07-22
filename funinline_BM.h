@@ -150,4 +150,25 @@ assoc_nbkeys_BM (const anyassoc_tyBM * assoc)
   return 0;
 }                               /* end assoc_nbkeys_BM */
 
+
+unsigned
+datavectlen_BM (const struct datavectval_stBM *dvec)
+{
+  if (valtype_BM ((const value_tyBM) dvec) != tydata_vectval_BM)
+    return 0;
+  return ((typedsize_tyBM *) dvec)->size;
+}                               /* end datavectlen_BM */
+
+value_tyBM
+datavectnth_BM (const struct datavectval_stBM * dvec, int rk)
+{
+  unsigned sz = datavectlen_BM (dvec);
+  if (rk < 0)
+    rk += (int) sz;
+  if (rk >= 0 && rk < (int) sz)
+    return dvec->vec_data[rk];
+  return NULL;
+}                               /* end datavectnth_BM */
+
+
 #endif /*FUNINLINE_BM_INCLUDED */
