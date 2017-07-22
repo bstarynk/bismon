@@ -14,6 +14,9 @@ static inline bool validserial63_BM (serial63_tyBM s);
 extern serial63_tyBM randomserial63_BM (void);
 extern int serial63tocbuf16_BM (serial63_tyBM s, char cbuf[static 16]);
 extern serial63_tyBM parse_serial63_BM (const char *buf, const char **pend);
+static inline unsigned bucknumserial63_BM (serial63_tyBM s);
+static inline uint64_t buckoffserial63_BM (serial63_tyBM s);
+
 extern rawid_tyBM randomid_BM (void);
 static inline bool validid_BM (rawid_tyBM id);
 static inline hash_tyBM hashid_BM (rawid_tyBM id);
@@ -44,11 +47,16 @@ extern unsigned setcardinal_BM (const setval_tyBM * setv);
 extern objectval_tyBM *setelemnth_BM (const setval_tyBM * set, int rk);
 
 
+
+
 static inline hash_tyBM objecthash_BM (const objectval_tyBM *);
 
 static inline int objectcmp_BM (const objectval_tyBM * ob1,
                                 const objectval_tyBM * ob2);
 extern void sortobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz);
+
+extern objectval_tyBM *findobjofid_BM (const rawid_tyBM id);
+extern objectval_tyBM *makeobjofid_BM (const rawid_tyBM id);
 
 extern int64_t prime_above_BM (int64_t n);
 extern int64_t prime_below_BM (int64_t n);

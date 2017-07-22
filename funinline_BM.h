@@ -45,6 +45,17 @@ validserial63_BM (serial63_tyBM s)
 }                               /* end validserial63_BM */
 
 
+unsigned
+bucknumserial63_BM (serial63_tyBM s)
+{
+  return s / (DELTASERIAL_BM / MAXBUCKETS_BM);
+}
+
+uint64_t
+buckoffserial63_BM (serial63_tyBM s)
+{
+  return s % (DELTASERIAL_BM / MAXBUCKETS_BM);
+}
 
 bool
 validid_BM (rawid_tyBM id)

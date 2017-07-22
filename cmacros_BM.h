@@ -5,7 +5,7 @@
 #define MINSERIAL_BM (62*62)    /*3884 */
 #define MAXSERIAL_BM ((uint64_t)10 * 62 * (62* 62*62) * (62*62*62) * (62*62*62))        /*8392993658683402240 */
 #define DELTASERIAL_BM (MAXSERIAL_BM-MINSERIAL_BM)
-
+#define MAXBUCKETS_BM (10*62)
 #define B62DIGITS_BM   "0123456789"  "abcdefghijklmnopqrstuvwxyz"  "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 #define SERIALDIGITS_BM 11
