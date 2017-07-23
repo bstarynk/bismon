@@ -63,4 +63,5 @@ main (int argc, char **argv)
       fprintf (stderr, "%s forcing batch (gtk init failed)\n", argv[0]);
       batch_bm = true;
     };
+  load_initial_BM (load_dir_bm);
 }                               /* end main */

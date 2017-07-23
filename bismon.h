@@ -13,6 +13,13 @@
 #include <time.h>
 #include <math.h>
 #include <dlfcn.h>
+#include <dirent.h>
+#include <ctype.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+
 
 #include <gtk/gtk.h>
 
