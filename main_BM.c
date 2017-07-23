@@ -1,6 +1,8 @@
 // file main_BM.c
 #include "bismon.h"
 
+struct timespec startrealtimespec_BM;
+void *dlprog_BM;
 
 void
 abort_BM (void)
@@ -42,6 +44,14 @@ const GOptionEntry optab[] = {
 int
 main (int argc, char **argv)
 {
+  clock_gettime (CLOCK_MONOTONIC, &startrealtimespec_BM);
+  dlprog_BM = dlopen (NULL, RTLD_NOW | RTLD_GLOBAL);
+  if (!dlprog_BM)
+    {
+      fprintf (stderr, "%s: dlopen for whole program fails %s\n",
+               argv[0], dlerror ());
+      exit (EXIT_FAILURE);
+    }
   initialize_predefined_objects_BM ();
   /// should actually use gtk_init_with_args so define some
   /// GOptionEntry array

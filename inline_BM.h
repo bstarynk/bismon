@@ -2,6 +2,32 @@
 #ifndef INLINE_BM_INCLUDED
 #define INLINE_BM_INCLUDED
 
+double
+clocktime_BM (clockid_t clid)
+{
+  struct timespec ts = { 0, 0 };
+  if (clock_gettime (clid, &ts))
+    return NAN;
+  return (double) ts.tv_sec + 1.0e-9 * ts.tv_nsec;
+}
+
+double
+cputime_BM (void)
+{
+  return clocktime_BM (CLOCK_PROCESS_CPUTIME_ID);
+}                               /* end cputime_BM */
+
+double
+elapsedtime_BM (void)
+{
+  struct timespec ts = { 0, 0 };
+  if (clock_gettime (CLOCK_MONOTONIC, &ts))
+    return NAN;
+  return (double) (ts.tv_sec - startrealtimespec_BM.tv_sec)
+    + 1.0e-9 * (ts.tv_nsec - startrealtimespec_BM.tv_nsec);
+}                               /* end elapsedtime_BM */
+
+
 
 bool
 istaggedint_BM (value_tyBM v)
@@ -97,6 +123,34 @@ cmpid_BM (rawid_tyBM id1, rawid_tyBM id2)
     return +1;
 }                               /* end cmpid_BM */
 
+
+rawid_tyBM
+objid_BM (const objectval_tyBM * obj)
+{
+  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+    return (rawid_tyBM)
+    {
+    0, 0};
+  return obj->ob_id;
+}                               /* end objid_BM */
+
+
+void
+objtouchmtime_BM (objectval_tyBM * obj, double mtime)
+{
+  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+    return;
+  obj->ob_mtime = mtime;
+}                               /* end objtouchmtime_BM */
+
+
+void
+objtouchnow_BM (objectval_tyBM * obj)
+{
+  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+    return;
+  obj->ob_mtime = clocktime_BM (CLOCK_MONOTONIC);
+}                               /* end objtouchnow_BM */
 
 bool
 equalid_BM (rawid_tyBM id1, rawid_tyBM id2)

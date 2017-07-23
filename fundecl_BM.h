@@ -4,6 +4,9 @@
 
 extern void abort_BM (void) __attribute__ ((noreturn));
 
+static inline double clocktime_BM (clockid_t);
+static inline double cputime_BM (void);
+static inline double elapsedtime_BM (void);
 static inline bool istaggedint_BM (value_tyBM v);
 static inline intptr_t getint_BM (value_tyBM v);
 static inline value_tyBM taggedint_BM (intptr_t i);
@@ -58,6 +61,9 @@ extern void sortobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz);
 extern objectval_tyBM *findobjofid_BM (const rawid_tyBM id);
 extern objectval_tyBM *makeobjofid_BM (const rawid_tyBM id);
 extern objectval_tyBM *makeobj_BM (void);
+static inline rawid_tyBM objid_BM (const objectval_tyBM * obj);
+static inline void objtouchmtime_BM (objectval_tyBM * obj, double mtime);
+static inline void objtouchnow_BM (objectval_tyBM * obj);
 extern void initialize_predefined_objects_BM (void);
 
 extern int64_t prime_above_BM (int64_t n);

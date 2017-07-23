@@ -112,6 +112,7 @@ struct object_stBM              /*tyObject_BM */
   typedhead_tyBM pA;
   rawid_tyBM ob_id;
   uint8_t ob_space;
+  double ob_mtime;
   struct datavectval_BM *ob_compvec;
   anyassoc_tyBM *ob_attrassoc;
   // other fields are missing

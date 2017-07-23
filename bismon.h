@@ -10,6 +10,10 @@
 #include <stdarg.h>
 #include <string.h>
 #include <assert.h>
+#include <time.h>
+#include <math.h>
+#include <dlfcn.h>
+
 #include <gtk/gtk.h>
 
 #include "cmacros_BM.h"

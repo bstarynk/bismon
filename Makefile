@@ -13,7 +13,7 @@ PACKAGES= gtk+-3.0
 PKGCONFIG= pkg-config
 PREPROFLAGS= -I. -I/usr/local/include $(shell $(PKGCONFIG) --cflags $(PACKAGES))
 
-LIBES= -L/usr/local/lib $(shell $(PKGCONFIG) --libs $(PACKAGES))
+LIBES= -L/usr/local/lib $(shell $(PKGCONFIG) --libs $(PACKAGES)) -ldl -lm
 RM= rm -fv
 
 
