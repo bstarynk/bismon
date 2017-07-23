@@ -29,7 +29,7 @@ OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES))
 all: bismon
 clean:
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
-
+	$(RM) core*
 
 indent: .indent.pro
 	@for h in $(BM_HEADERS); do \
