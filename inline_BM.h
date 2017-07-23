@@ -40,6 +40,7 @@ getint_BM (value_tyBM v)
 {
   if (istaggedint_BM (v))
     return ((intptr_t) v) >> 1;
+  return 0;
 }                               /* end getint_BM */
 
 value_tyBM
