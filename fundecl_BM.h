@@ -86,18 +86,20 @@ extern anyassoc_tyBM *assoc_removeattr_BM (anyassoc_tyBM * assoc,
 
 static inline unsigned datavectlen_BM (const struct datavectval_stBM *dvec);
 
-struct datavectval_stBM *datavect_grow_BM (struct datavectval_stBM *dvec,
-                                           unsigned gap);
+extern struct datavectval_stBM *datavect_grow_BM (struct datavectval_stBM
+                                                  *dvec, unsigned gap);
 
-struct datavectval_stBM *datavect_reserve_BM (struct datavectval_stBM *dvec,
-                                              unsigned gap);
+extern struct datavectval_stBM *datavect_reserve_BM (struct datavectval_stBM
+                                                     *dvec, unsigned gap);
 
-struct datavectval_stBM *datavect_append_BM (struct datavectval_stBM *dvec,
-                                             value_tyBM val);
+extern struct datavectval_stBM *datavect_append_BM (struct datavectval_stBM
+                                                    *dvec, value_tyBM val);
 
 static inline value_tyBM datavectnth_BM (const struct datavectval_stBM *dvec,
                                          int rk);
 
-struct hashsetobj_stBM *hashsetobj_grow_BM (struct hashsetobj_stBM *hset,
-                                            unsigned gap);
+extern struct hashsetobj_stBM *hashsetobj_grow_BM (struct hashsetobj_stBM
+                                                   *hset, unsigned gap);
+extern bool hashsetobj_contains_BM (struct hashsetobj_stBM *hset,
+                                    const objectval_tyBM * obj);
 #endif /*FUNDECL_BM_INCLUDED */

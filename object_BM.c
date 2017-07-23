@@ -224,7 +224,7 @@ hashsetobj_insert_BM (struct hashsetobj_stBM *hset,
         {
           if (pos < 0)
             pos = (int) ix;
-          hset->hashset_objs[pox] = obj;
+          hset->hashset_objs[pos] = obj;
           ((typedsize_tyBM *) hset)->size = ucnt + 1;
           return true;
         };
@@ -243,7 +243,7 @@ hashsetobj_insert_BM (struct hashsetobj_stBM *hset,
         {
           if (pos < 0)
             pos = (int) ix;
-          hset->hashset_objs[pox] = obj;
+          hset->hashset_objs[pos] = obj;
           ((typedsize_tyBM *) hset)->size = ucnt + 1;
           return true;
         };
@@ -255,7 +255,7 @@ hashsetobj_insert_BM (struct hashsetobj_stBM *hset,
     }
   if (pos >= 0)
     {
-      hset->hashset_objs[pox] = obj;
+      hset->hashset_objs[pos] = obj;
       ((typedsize_tyBM *) hset)->size = ucnt + 1;
       return true;
     }
@@ -269,7 +269,7 @@ hashsetobj_grow_BM (struct hashsetobj_stBM *hset, unsigned gap)
   if (valtype_BM ((const value_tyBM) hset) != tydata_hashsetobj_BM)
     {
       unsigned newsiz = prime_above_BM (4 * gap / 3 + 10);
-      hset = //
+      hset =                    //
         allocinternalty_BM (tydata_hashsetobj_BM,
                             sizeof (struct hashsetobj_stBM)
                             + newsiz * sizeof (void *));
@@ -279,7 +279,7 @@ hashsetobj_grow_BM (struct hashsetobj_stBM *hset, unsigned gap)
     }
   unsigned alsiz = ((typedhead_tyBM *) hset)->rlen;
   unsigned ucnt = ((typedsize_tyBM *) hset)->size;
-  if (4 * (ucnt + gap) < 3 * alsiz)
+  if (4 * (ucnt + gap) + 5 < 3 * alsiz)
     return hset;
   unsigned newsiz = prime_above_BM ((4 * (ucnt + gap)) / 3 + 10);
   if (alsiz >= newsiz)
@@ -300,10 +300,40 @@ hashsetobj_grow_BM (struct hashsetobj_stBM *hset, unsigned gap)
     }
   free (hset);
   return newhset;
-}                               /* end hashsetobj_grow */
+}                               /* end hashsetobj_grow_BM */
 
 
-
+bool
+hashsetobj_contains_BM (struct hashsetobj_stBM * hset,
+                        const objectval_tyBM * obj)
+{
+  if (valtype_BM ((const value_tyBM) obj) != tyObject_BM)
+    return false;
+  if (valtype_BM ((const value_tyBM) hset) != tydata_hashsetobj_BM)
+    return false;
+  unsigned alsiz = ((typedhead_tyBM *) hset)->rlen;
+  unsigned ucnt = ((typedsize_tyBM *) hset)->size;
+  assert (ucnt < alsiz && alsiz > 3);
+  hash_tyBM hob = objecthash_BM (obj);
+  unsigned startix = hob % alsiz;
+  for (unsigned ix = startix; ix < alsiz; ix++)
+    {
+      objectval_tyBM *curobj = hset->hashset_objs[ix];
+      if (curobj == obj)
+        return true;
+      if (!curobj)
+        return false;
+    };
+  for (unsigned ix = 0; ix < startix; ix++)
+    {
+      objectval_tyBM *curobj = hset->hashset_objs[ix];
+      if (curobj == obj)
+        return true;
+      if (!curobj)
+        return false;
+    };
+  return false;
+}                               /* end hashsetobj_contains_BM */
 
 
 ////////////////////////////////////////////////////////////////
