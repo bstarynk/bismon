@@ -224,7 +224,7 @@ hashsetobj_insert_BM (struct hashsetobj_stBM *hset,
         {
           if (pos < 0)
             pos = (int) ix;
-          hset->hashset_objs[pos] = obj;
+          hset->hashset_objs[pos] = (objectval_tyBM *) obj;
           ((typedsize_tyBM *) hset)->size = ucnt + 1;
           return true;
         };
@@ -243,7 +243,7 @@ hashsetobj_insert_BM (struct hashsetobj_stBM *hset,
         {
           if (pos < 0)
             pos = (int) ix;
-          hset->hashset_objs[pos] = obj;
+          hset->hashset_objs[pos] = (objectval_tyBM *) obj;
           ((typedsize_tyBM *) hset)->size = ucnt + 1;
           return true;
         };
@@ -255,7 +255,7 @@ hashsetobj_insert_BM (struct hashsetobj_stBM *hset,
     }
   if (pos >= 0)
     {
-      hset->hashset_objs[pos] = obj;
+      hset->hashset_objs[pos] = (objectval_tyBM *) obj;
       ((typedsize_tyBM *) hset)->size = ucnt + 1;
       return true;
     }
@@ -420,6 +420,34 @@ hashsetobj_remove_BM (struct hashsetobj_stBM *hset,
     };
   return hset;
 }                               /* end hashsetobj_remove_BM  */
+
+const setval_tyBM *
+hashsetobj_to_set_BM (struct hashsetobj_stBM *hset)
+{
+  if (valtype_BM ((const value_tyBM) hset) != tydata_hashsetobj_BM)
+    return NULL;
+  unsigned alsiz = ((typedhead_tyBM *) hset)->rlen;
+  unsigned ucnt = ((typedsize_tyBM *) hset)->size;
+  if (ucnt == 0)
+    return setmake_BM (NULL, 0);
+  const objectval_tyBM **arr = calloc (ucnt, sizeof (objectval_tyBM *));
+  if (!arr)
+    FATAL_BM ("calloc %u objptrs failed %m", ucnt);
+  unsigned elcnt = 0;
+  for (unsigned ix = 0; ix < alsiz; ix++)
+    {
+      objectval_tyBM *curobj = hset->hashset_objs[ix];
+      if (!curobj || curobj == HASHSETEMPTYSLOT_BM)
+        continue;
+      assert (valtype_BM ((const value_tyBM) curobj) == tyObject_BM);
+      assert (elcnt < ucnt);
+      arr[elcnt++] = (const objectval_tyBM *) curobj;
+    };
+  assert (elcnt == ucnt);
+  const setval_tyBM *set = setmake_BM (arr, elcnt);
+  free (arr);
+  return set;
+}                               /* end hashsetobj_to_set_BM */
 
 ////////////////////////////////////////////////////////////////
 static void

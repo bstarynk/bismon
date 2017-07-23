@@ -109,5 +109,5 @@ extern struct hashsetobj_stBM *hashsetobj_remove_BM (struct hashsetobj_stBM
                                                      *hset,
                                                      const objectval_tyBM *
                                                      obj);
-extern setval_tyBM *hashsetobj_to_set_BM (struct hashsetobj_stBM *hset);
+extern const setval_tyBM *hashsetobj_to_set_BM (struct hashsetobj_stBM *hset);
 #endif /*FUNDECL_BM_INCLUDED */
