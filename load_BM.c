@@ -29,7 +29,8 @@ load_initial_BM (const char *ldirpath)
         continue;
       int num = 0;
       int pos = 0;
-      if (sscanf (de->d_name, "store%d_%*[a-zA-Z0-9_].bismon%n", &num, &pos)
+      if ((sscanf (de->d_name, "store%d_%*[a-zA-Z0-9_].bismon%n", &num, &pos)
+           > 0 || sscanf (de->d_name, "store%d.bismon%n", &num, &pos) > 0)
           && num > 0 && pos > 0 && de->d_name[pos] == 0)
         {
           char *buf = NULL;
@@ -51,5 +52,7 @@ load_initial_BM (const char *ldirpath)
   if (g_tree_nnodes (trent) == 0)
     FATAL_BM ("no file matching store[0-9]+_*.bismon in loaded directory %s",
               ldirpath);
+  printf ("got %d store entries in loaded directory %s\n",
+          (int) g_tree_nnodes (trent), ldirpath);
   /// should add to the agenda the first pass scanning then the second pass loading these files
 }                               /* end load_initial_BM */
