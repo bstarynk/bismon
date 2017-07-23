@@ -336,6 +336,91 @@ hashsetobj_contains_BM (struct hashsetobj_stBM * hset,
 }                               /* end hashsetobj_contains_BM */
 
 
+struct hashsetobj_stBM *
+hashsetobj_add_BM (struct hashsetobj_stBM *hset, const objectval_tyBM * obj)
+{
+  if (valtype_BM ((const value_tyBM) hset) != tydata_hashsetobj_BM)
+    {
+      if (valtype_BM ((const value_tyBM) obj) != tyObject_BM)
+        return NULL;
+      hset = hashsetobj_grow_BM (NULL, TINYSIZE_BM / 2);
+      if (!hashsetobj_insert_BM (hset, obj))
+        FATAL_BM ("corrupted hashset");
+      return hset;
+    };
+  if (valtype_BM ((const value_tyBM) obj) != tyObject_BM)
+    return hset;
+  unsigned alsiz = ((typedhead_tyBM *) hset)->rlen;
+  unsigned ucnt = ((typedsize_tyBM *) hset)->size;
+  assert (ucnt < alsiz && alsiz > 3);
+  if (4 * ucnt + 8 >= 3 * alsiz)
+    {
+      hset = hashsetobj_grow_BM (hset, ucnt / 64 + 4);
+      alsiz = ((typedhead_tyBM *) hset)->rlen;
+      ucnt = ((typedsize_tyBM *) hset)->size;
+    };
+  if (!hashsetobj_insert_BM (hset, obj))
+    FATAL_BM ("corrupted hashset");
+  return hset;
+}                               /* end hashsetobj_add_BM */
+
+
+struct hashsetobj_stBM *
+hashsetobj_remove_BM (struct hashsetobj_stBM *hset,
+                      const objectval_tyBM * obj)
+{
+  if (valtype_BM ((const value_tyBM) hset) != tydata_hashsetobj_BM)
+    return NULL;
+  if (valtype_BM ((const value_tyBM) obj) != tyObject_BM)
+    return hset;
+  unsigned alsiz = ((typedhead_tyBM *) hset)->rlen;
+  unsigned ucnt = ((typedsize_tyBM *) hset)->size;
+  if (alsiz > TINYSIZE_BM && 3 * ucnt < alsiz)
+    {
+      struct hashsetobj_stBM *newhset =
+        hashsetobj_grow_BM (NULL, (3 * ucnt / 2) + ucnt / 32 + 3);
+      for (unsigned ix = 0; ix < alsiz; ix++)
+        {
+          objectval_tyBM *curobj = hset->hashset_objs[ix];
+          if (curobj != NULL && curobj != HASHSETEMPTYSLOT_BM
+              && curobj != obj)
+            {
+              if (!hashsetobj_insert_BM (newhset, obj))
+                FATAL_BM ("corrupted hashset");
+            }
+        }
+      free (hset);
+      return newhset;
+    }
+  hash_tyBM hob = objecthash_BM (obj);
+  unsigned startix = hob % alsiz;
+  for (unsigned ix = startix; ix < alsiz; ix++)
+    {
+      objectval_tyBM *curobj = hset->hashset_objs[ix];
+      if (curobj == obj)
+        {
+          hset->hashset_objs[ix] = HASHSETEMPTYSLOT_BM;
+          ((typedsize_tyBM *) hset)->size = ucnt - 1;
+          return hset;
+        }
+      if (!curobj)
+        return hset;
+    };
+  for (unsigned ix = 0; ix < startix; ix++)
+    {
+      objectval_tyBM *curobj = hset->hashset_objs[ix];
+      if (curobj == obj)
+        {
+          hset->hashset_objs[ix] = HASHSETEMPTYSLOT_BM;
+          ((typedsize_tyBM *) hset)->size = ucnt - 1;
+          return hset;
+        }
+      if (!curobj)
+        return hset;
+    };
+  return hset;
+}                               /* end hashsetobj_remove_BM  */
+
 ////////////////////////////////////////////////////////////////
 static void
 register_predefined_object_BM (objectval_tyBM * pob)
