@@ -1,6 +1,6 @@
-// file funinline_BM.h
-#ifndef FUNINLINE_BM_INCLUDED
-#define FUNINLINE_BM_INCLUDED
+// file inline_BM.h
+#ifndef INLINE_BM_INCLUDED
+#define INLINE_BM_INCLUDED
 
 
 bool
@@ -182,4 +182,4 @@ datavectnth_BM (const struct datavectval_stBM * dvec, int rk)
 }                               /* end datavectnth_BM */
 
 
-#endif /*FUNINLINE_BM_INCLUDED */
+#endif /*INLINE_BM_INCLUDED */

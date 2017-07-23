@@ -159,6 +159,7 @@ growobucket_BM (unsigned bucknum, unsigned gap)
   buckarr_BM[bucknum] = newbuck;
 }                               /* end growobucket_BM */
 
+
 extern objectval_tyBM *
 makeobjofid_BM (const rawid_tyBM id)
 {
@@ -176,11 +177,42 @@ makeobjofid_BM (const rawid_tyBM id)
       growobucket_BM (bucknum, 6);
       curbuck = buckarr_BM[bucknum];
       assert (curbuck);
-      unsigned oldsiz = curbuck->bucksize;
-      unsigned oldcnt = curbuck->buckcount;
     }
   pob = allocgcty_BM (tyObject_BM, sizeof (objectval_tyBM));
   pob->ob_id = id;
   addtobucket_BM (curbuck, pob);
   return pob;
 }                               /* end of makeobjofid_BM */
+
+extern objectval_tyBM *
+makeobj_BM (void)
+{
+  for (;;)
+    {
+      rawid_tyBM id = randomid_BM ();
+      objectval_tyBM *pob = findobjofid_BM (id);
+      if (pob)
+        continue;
+      return makeobjofid_BM (id);
+    }
+}                               /* end of makeobj_BM */
+
+static void
+register_predefined_object_BM (objectval_tyBM * pob)
+{
+  assert (valtype_BM ((const value_tyBM) pob) == tyObject_BM);
+  assert (findobjofid_BM (pob->ob_id) == NULL);
+  unsigned bucknum = bucknumserial63_BM (pob->ob_id.id_hi);
+  growobucket_BM (bucknum, 6);
+  struct objbucket_stBM *curbuck = buckarr_BM[bucknum];
+  assert (curbuck != NULL);
+  addtobucket_BM (curbuck, pob);
+}                               /* end register_predefined_object_BM */
+
+void
+initialize_predefined_objects_BM (void)
+{
+#define HAS_PREDEF_BM(Id,Hi,Lo,Hash) \
+  register_predefined_object_BM(PREDEF_BM(Id));
+#include "_bm_predef.h"
+}                               /* end initialize_predefined_objects_BM */

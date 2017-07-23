@@ -57,6 +57,8 @@ extern void sortobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz);
 
 extern objectval_tyBM *findobjofid_BM (const rawid_tyBM id);
 extern objectval_tyBM *makeobjofid_BM (const rawid_tyBM id);
+extern objectval_tyBM *makeobj_BM (void);
+extern void initialize_predefined_objects_BM (void);
 
 extern int64_t prime_above_BM (int64_t n);
 extern int64_t prime_below_BM (int64_t n);

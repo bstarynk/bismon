@@ -16,6 +16,6 @@
 #include "types_BM.h"
 #include "globals_BM.h"
 #include "fundecl_BM.h"
-#include "funinline_BM.h"
+#include "inline_BM.h"
 
 #endif /*BISMON_INCLUDED*/

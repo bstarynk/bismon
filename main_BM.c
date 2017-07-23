@@ -35,9 +35,14 @@ const GOptionEntry optab[] = {
   {}
 };
 
+
+//// see also https://github.com/dtrebbien/GNOME.supp and
+//// https://stackoverflow.com/q/16659781/841108 to use valgrind with
+//// GTK appplications
 int
 main (int argc, char **argv)
 {
+  initialize_predefined_objects_BM ();
   /// should actually use gtk_init_with_args so define some
   /// GOptionEntry array
   GError *err = NULL;
