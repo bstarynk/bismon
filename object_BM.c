@@ -197,6 +197,116 @@ makeobj_BM (void)
     }
 }                               /* end of makeobj_BM */
 
+////////////////////////////////////////////////////////////////
+
+#define HASHSETEMPTYSLOT_BM ((void*)(-1))
+
+static bool
+hashsetobj_insert_BM (struct hashsetobj_stBM *hset,
+                      const objectval_tyBM * obj)
+{
+  if (valtype_BM ((const value_tyBM) obj) != tyObject_BM)
+    return false;
+  if (valtype_BM ((const value_tyBM) hset) != tydata_hashsetobj_BM)
+    return false;
+  unsigned alsiz = ((typedhead_tyBM *) hset)->rlen;
+  unsigned ucnt = ((typedsize_tyBM *) hset)->size;
+  assert (ucnt < alsiz && alsiz > 3);
+  hash_tyBM hob = objecthash_BM (obj);
+  unsigned startix = hob % alsiz;
+  int pos = -1;
+  for (unsigned ix = startix; ix < alsiz; ix++)
+    {
+      objectval_tyBM *curobj = hset->hashset_objs[ix];
+      if (curobj == obj)
+        return true;
+      if (!curobj)
+        {
+          if (pos < 0)
+            pos = (int) ix;
+          hset->hashset_objs[pox] = obj;
+          ((typedsize_tyBM *) hset)->size = ucnt + 1;
+          return true;
+        };
+      if (curobj == HASHSETEMPTYSLOT_BM)
+        {
+          if (pos < 0)
+            pos = (int) ix;
+        };
+    }
+  for (unsigned ix = 0; ix < startix; ix++)
+    {
+      objectval_tyBM *curobj = hset->hashset_objs[ix];
+      if (curobj == obj)
+        return true;
+      if (!curobj)
+        {
+          if (pos < 0)
+            pos = (int) ix;
+          hset->hashset_objs[pox] = obj;
+          ((typedsize_tyBM *) hset)->size = ucnt + 1;
+          return true;
+        };
+      if (curobj == HASHSETEMPTYSLOT_BM)
+        {
+          if (pos < 0)
+            pos = (int) ix;
+        };
+    }
+  if (pos >= 0)
+    {
+      hset->hashset_objs[pox] = obj;
+      ((typedsize_tyBM *) hset)->size = ucnt + 1;
+      return true;
+    }
+  return false;
+}                               /* end hashsetobj_insert_BM */
+
+
+struct hashsetobj_stBM *
+hashsetobj_grow_BM (struct hashsetobj_stBM *hset, unsigned gap)
+{
+  if (valtype_BM ((const value_tyBM) hset) != tydata_hashsetobj_BM)
+    {
+      unsigned newsiz = prime_above_BM (4 * gap / 3 + 10);
+      hset = //
+        allocinternalty_BM (tydata_hashsetobj_BM,
+                            sizeof (struct hashsetobj_stBM)
+                            + newsiz * sizeof (void *));
+      ((typedhead_tyBM *) hset)->rlen = newsiz;
+      ((typedsize_tyBM *) hset)->size = 0;
+      return hset;
+    }
+  unsigned alsiz = ((typedhead_tyBM *) hset)->rlen;
+  unsigned ucnt = ((typedsize_tyBM *) hset)->size;
+  if (4 * (ucnt + gap) < 3 * alsiz)
+    return hset;
+  unsigned newsiz = prime_above_BM ((4 * (ucnt + gap)) / 3 + 10);
+  if (alsiz >= newsiz)
+    return hset;
+  struct hashsetobj_stBM *newhset =     //
+    allocinternalty_BM (tydata_hashsetobj_BM,
+                        sizeof (struct hashsetobj_stBM)
+                        + newsiz * sizeof (void *));
+  ((typedhead_tyBM *) newhset)->rlen = newsiz;
+  ((typedsize_tyBM *) newhset)->size = 0;
+  for (unsigned oix = 0; oix < alsiz; oix++)
+    {
+      const objectval_tyBM *oldobj = hset->hashset_objs[oix];
+      if (!oldobj || oldobj == HASHSETEMPTYSLOT_BM)
+        continue;
+      if (!hashsetobj_insert_BM (newhset, oldobj))
+        FATAL_BM ("corrupted hashset");
+    }
+  free (hset);
+  return newhset;
+}                               /* end hashsetobj_grow */
+
+
+
+
+
+////////////////////////////////////////////////////////////////
 static void
 register_predefined_object_BM (objectval_tyBM * pob)
 {

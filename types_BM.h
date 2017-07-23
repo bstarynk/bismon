@@ -42,6 +42,7 @@ enum gcdataenum_BM
   tydata_vectval_BM = ty_LAST_TYENUM_BM,
   tydata_assocbucket_BM,
   tydata_assocpairs_BM,
+  tydata_hashsetobj_BM,
 };
 
 struct typedsize_stBM
@@ -143,4 +144,11 @@ struct assocpairs_stBM
   typedsize_tyBM pa;            // rlen is allocated size, size is used count
   struct assocentry_stBM apairs_ent[];
 };
+
+struct hashsetobj_stBM
+{                               /* tydata_hashsetobj_BM */
+  typedsize_tyBM pa;            // rlen is allocated size, size is used count
+  objectval_tyBM *hashset_objs[];
+};
+
 #endif /*TYPES_BM_INCLUDED */

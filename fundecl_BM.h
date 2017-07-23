@@ -97,4 +97,7 @@ struct datavectval_stBM *datavect_append_BM (struct datavectval_stBM *dvec,
 
 static inline value_tyBM datavectnth_BM (const struct datavectval_stBM *dvec,
                                          int rk);
+
+struct hashsetobj_stBM *hashsetobj_grow_BM (struct hashsetobj_stBM *hset,
+                                            unsigned gap);
 #endif /*FUNDECL_BM_INCLUDED */
