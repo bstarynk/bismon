@@ -31,18 +31,18 @@ extern void *allocgcty_BM (unsigned type, size_t sz);
 extern void *allocinternalty_BM (unsigned type, size_t sz);
 
 extern hash_tyBM stringhash_BM (const char *str);
-extern const stringval_tyBM *stringmake_BM (const char *str);
-extern const stringval_tyBM *stringprintf_BM (const char *fmt, ...)
+extern const stringval_tyBM *makestring_BM (const char *str);
+extern const stringval_tyBM *sprintfstring_BM (const char *fmt, ...)
   __attribute__ ((format (printf, 1, 2)));
 extern int lenstring_BM (const stringval_tyBM *);
 extern const char *bytstring_BM (const stringval_tyBM *);
 
-extern const tupleval_tyBM *tuplemake_BM (objectval_tyBM ** arr,
+extern const tupleval_tyBM *maketuple_BM (objectval_tyBM ** arr,
                                           unsigned rawsiz);
 extern unsigned tuplesize_BM (const tupleval_tyBM * tup);
 extern objectval_tyBM *tuplecompnth_BM (const tupleval_tyBM * tup, int rk);
 
-extern const setval_tyBM *setmake_BM (const objectval_tyBM ** arr,
+extern const setval_tyBM *makeset_BM (const objectval_tyBM ** arr,
                                       unsigned rawsiz);
 extern bool setcontains_BM (const objectval_tyBM * obelem,
                             const setval_tyBM * setv);
@@ -111,7 +111,7 @@ extern struct hashsetobj_stBM *hashsetobj_remove_BM (struct hashsetobj_stBM
                                                      obj);
 extern const setval_tyBM *hashsetobj_to_set_BM (struct hashsetobj_stBM *hset);
 
-extern struct listtop_stBM *listmake_BM (void);
+extern struct listtop_stBM *makelist_BM (void);
 static inline bool islist_BM (const value_tyBM);
 static inline value_tyBM listfirst_BM (const struct listtop_stBM *);
 static inline value_tyBM listlast_BM (const struct listtop_stBM *);
@@ -127,6 +127,7 @@ extern const node_tyBM *list_to_node_BM (const struct listtop_stBM *lis,
                                          const objectval_tyBM * conn);
 // make a tuple from the objects in the list
 extern const tupleval_tyBM *list_to_tuple_BM (const struct listtop_stBM *lis);
+
 
 
 

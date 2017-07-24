@@ -2,7 +2,7 @@
 #include "bismon.h"
 
 struct listtop_stBM *
-listmake_BM (void)
+makelist_BM (void)
 {
   struct listtop_stBM *lis =    //
     allocinternalty_BM (tydata_listtop_BM,
@@ -11,7 +11,7 @@ listmake_BM (void)
   lis->list_first = NULL;
   lis->list_last = NULL;
   return lis;
-}                               /* end listmake_BM */
+}                               /* end makelist_BM */
 
 
 void
@@ -261,7 +261,7 @@ list_to_tuple_BM (const struct listtop_stBM *lis)
     }
   if (cnt > MAXSIZE_BM)
     FATAL_BM ("too huge list %u", cnt);
-  tup = tuplemake_BM (arr, cnt);
+  tup = maketuple_BM (arr, cnt);
   if (arr != tinyarr)
     free (arr);
   return tup;

@@ -64,15 +64,15 @@ stringhash_BM (const char *cstr)
 }                               /* end stringhash_BM */
 
 extern const stringval_tyBM *
-stringmake_BM (const char *cstr)
+makestring_BM (const char *cstr)
 {
   if (!cstr)
     return NULL;
   size_t sll = strlen (cstr);
   if (sll > MAXSIZE_BM)
-    FATAL_BM ("stringmake too long %ld string", (long) sll);
+    FATAL_BM ("makestring too long %ld string", (long) sll);
   if (!g_utf8_validate (cstr, -1, NULL))
-    FATAL_BM ("stringmake invalid string");
+    FATAL_BM ("makestring invalid string");
   int l = sll;
   hash_tyBM h = stringhash_BM (cstr);
   stringval_tyBM *strv =
@@ -81,10 +81,10 @@ stringmake_BM (const char *cstr)
   ((typedsize_tyBM *) strv)->size = l;
   memcpy (strv->strv_bytes, cstr, l);
   return strv;
-}                               /* end stringmake_BM */
+}                               /* end makestring_BM */
 
 extern const stringval_tyBM *
-stringprintf_BM (const char *fmt, ...)
+sprintfstring_BM (const char *fmt, ...)
 {
   va_list args;
   char *buf = NULL;
@@ -92,16 +92,16 @@ stringprintf_BM (const char *fmt, ...)
   if (!fmt)
     return NULL;
   if (!fmt[0])
-    return stringmake_BM ("");
+    return makestring_BM ("");
   va_start (args, fmt);
   ln = vasprintf (&buf, fmt, args);
   va_end (args);
   if (ln < 0 || buf == NULL)
-    FATAL_BM ("stringprintf failure %m");
-  const stringval_tyBM *res = stringmake_BM (buf);
+    FATAL_BM ("sprintfstring failure %m");
+  const stringval_tyBM *res = makestring_BM (buf);
   free (buf);
   return res;
-}                               /* end stringprintf_BM */
+}                               /* end sprintfstring_BM */
 
 int
 lenstring_BM (const stringval_tyBM * strv)

@@ -5,12 +5,12 @@
 //// tuple support
 
 const tupleval_tyBM *
-tuplemake_BM (objectval_tyBM ** arr, unsigned rawsiz)
+maketuple_BM (objectval_tyBM ** arr, unsigned rawsiz)
 {
   if (!arr)
     rawsiz = 0;
   if (rawsiz > MAXSIZE_BM)
-    FATAL_BM ("tuplemake too wide %ld raw array", (long) rawsiz);
+    FATAL_BM ("maketuple too wide %ld raw array", (long) rawsiz);
   unsigned siz = 0;
   for (unsigned ix = 0; ix < rawsiz; ix++)
     if (arr[ix])
@@ -40,7 +40,7 @@ tuplemake_BM (objectval_tyBM ** arr, unsigned rawsiz)
   ((typedsize_tyBM *) tup)->size = siz;
   ((typedhead_tyBM *) tup)->hash = h;
   return tup;
-}                               /* end tuplemake_BM */
+}                               /* end maketuple_BM */
 
 unsigned
 tuplesize_BM (const tupleval_tyBM * tup)
@@ -71,7 +71,7 @@ tuplecompnth_BM (const tupleval_tyBM * tup, int rk)
 ///// set support
 
 extern const setval_tyBM *
-setmake_BM (const objectval_tyBM ** arr, unsigned rawsiz)
+makeset_BM (const objectval_tyBM ** arr, unsigned rawsiz)
 {
   const objectval_tyBM *tinyarr[TINYSIZE_BM];
   const objectval_tyBM **tmparr = NULL;
@@ -79,7 +79,7 @@ setmake_BM (const objectval_tyBM ** arr, unsigned rawsiz)
   if (!arr)
     rawsiz = 0;
   if (rawsiz > MAXSIZE_BM)
-    FATAL_BM ("setmake too wide %ld raw array", (long) rawsiz);
+    FATAL_BM ("makeset too wide %ld raw array", (long) rawsiz);
   unsigned siz = 0;
   for (unsigned ix = 0; ix < rawsiz; ix++)
     if (arr[ix])
@@ -91,7 +91,7 @@ setmake_BM (const objectval_tyBM ** arr, unsigned rawsiz)
   else
     tmparr = calloc (siz + 1, sizeof (void *));
   if (!tmparr)
-    FATAL_BM ("tuplemake cannot allocate tmparr siz=%u", siz);
+    FATAL_BM ("maketuple cannot allocate tmparr siz=%u", siz);
   sortobjarr_BM ((const objectval_tyBM **) tmparr, siz);
   int nbdup = 0;
   setval_tyBM *set = NULL;
@@ -142,7 +142,7 @@ setmake_BM (const objectval_tyBM ** arr, unsigned rawsiz)
   assert (h > 0);
   ((typedhead_tyBM *) set)->hash = h;
   return set;
-}                               /* end setmake_BM */
+}                               /* end makeset_BM */
 
 
 extern bool

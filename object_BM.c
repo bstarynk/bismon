@@ -429,7 +429,7 @@ hashsetobj_to_set_BM (struct hashsetobj_stBM *hset)
   unsigned alsiz = ((typedhead_tyBM *) hset)->rlen;
   unsigned ucnt = ((typedsize_tyBM *) hset)->size;
   if (ucnt == 0)
-    return setmake_BM (NULL, 0);
+    return makeset_BM (NULL, 0);
   const objectval_tyBM **arr = calloc (ucnt, sizeof (objectval_tyBM *));
   if (!arr)
     FATAL_BM ("calloc %u objptrs failed %m", ucnt);
@@ -444,7 +444,7 @@ hashsetobj_to_set_BM (struct hashsetobj_stBM *hset)
       arr[elcnt++] = (const objectval_tyBM *) curobj;
     };
   assert (elcnt == ucnt);
-  const setval_tyBM *set = setmake_BM (arr, elcnt);
+  const setval_tyBM *set = makeset_BM (arr, elcnt);
   free (arr);
   return set;
 }                               /* end hashsetobj_to_set_BM */

@@ -286,12 +286,12 @@ const setval_tyBM *
 assoc_setattrs_BM (const anyassoc_tyBM * assoc)
 {
   if (!assoc)
-    return setmake_BM (NULL, 0);
+    return makeset_BM (NULL, 0);
   if (!isassoc_BM ((const value_tyBM) assoc))
     return NULL;
   unsigned nbkeys = assoc_nbkeys_BM (assoc);
   if (nbkeys == 0)
-    return setmake_BM (NULL, 0);
+    return makeset_BM (NULL, 0);
   const objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
   const objectval_tyBM **arr =
     (nbkeys < TINYSIZE_BM) ? tinyarr : calloc (nbkeys, sizeof (void *));
@@ -342,7 +342,7 @@ assoc_setattrs_BM (const anyassoc_tyBM * assoc)
   else
     FATAL_BM ("unexpected assoc @%p", assoc);
   assert (keycnt == nbkeys);
-  const setval_tyBM *keyset = setmake_BM (arr, keycnt);
+  const setval_tyBM *keyset = makeset_BM (arr, keycnt);
   assert (setcardinal_BM (keyset) == nbkeys);
   if (arr != tinyarr)
     free (arr);
