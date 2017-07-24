@@ -23,7 +23,7 @@ makeclosure_BM (const objectval_tyBM * connob, unsigned nbval,
   hash_tyBM h1 = objecthash_BM (connob);
   hash_tyBM h2 = cnt;
   ((typedsize_tyBM *) clos)->size = cnt;
-  clos->nodt_conn = connob;
+  clos->nodt_conn = (objectval_tyBM *) connob;
   unsigned newcnt = 0;
   for (unsigned ix = 0; ix < nbval; ix++)
     {
@@ -87,7 +87,7 @@ makenode_BM (const objectval_tyBM * connob, unsigned nbval,
   hash_tyBM h1 = objecthash_BM (connob);
   hash_tyBM h2 = cnt;
   ((typedsize_tyBM *) node)->size = cnt;
-  node->nodt_conn = connob;
+  node->nodt_conn = (objectval_tyBM *) connob;
   unsigned newcnt = 0;
   for (unsigned ix = 0; ix < nbval; ix++)
     {

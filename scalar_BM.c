@@ -141,7 +141,7 @@ valsamecontent_BM (const value_tyBM v1, const value_tyBM v2)
       return true;
     case tyString_BM:
       return (((const typedsize_tyBM *) v1)->size ==
-              ((const typedsize_tyBM *) v1)->size)
+              ((const typedsize_tyBM *) v2)->size)
         && !strcmp (((stringval_tyBM *) v1)->strv_bytes,
                     ((stringval_tyBM *) v2)->strv_bytes);
     case tySet_BM:

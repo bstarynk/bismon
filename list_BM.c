@@ -247,7 +247,8 @@ list_to_node_BM (const struct listtop_stBM *lis,
     FATAL_BM ("too huge list %u", cnt);
   value_tyBM *valarr = calloc (prime_above_BM (cnt + 1), sizeof (void *));
   if (!valarr)
-    FATAL_BM ("calloc failed for %u (%m)", prime_above_BM (cnt + 1));
+    FATAL_BM ("calloc failed for %lld (%m)",
+              (long long) prime_above_BM (cnt + 1));
   unsigned vacnt = 0;
   for (struct listlink_stBM * link = lis->list_first;
        link != NULL; link = link->link_next)
@@ -314,6 +315,7 @@ listgcmark_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis, int depth)
     return;
   ((typedhead_tyBM *) lis)->hgc = MARKGC_BM;
   unsigned cnt = 0;
+  int nblinks = 0;
   for (struct listlink_stBM * link = lis->list_first;
        link != NULL; link = link->link_next)
     {
@@ -321,7 +323,11 @@ listgcmark_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis, int depth)
         {
           const value_tyBM val = link->link_mems[ix];
           gcmark_BM (gc, val, depth + 1);
-        }
+          cnt++;
+          if (cnt > MAXSIZE_BM)
+            FATAL_BM ("huge or circular list %u with %d links", cnt, nblinks);
+        };
+      nblinks++;
     }
 }                               /* end listgcmark_BM  */
 

@@ -548,7 +548,7 @@ assocgcmark_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc, int depth)
                   value_tyBM curval = curbuckpair->apairs_ent[pix].asso_val;
                   if (curkeyob && curval)
                     {
-                      gcobjmark_BM (gc, curkeyob);
+                      gcobjmark_BM (gc, (objectval_tyBM *) curkeyob);
                       gcmark_BM (gc, curval, depth + 1);
                     }
                 }
@@ -566,7 +566,7 @@ assocgcmark_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc, int depth)
           value_tyBM curval = curpairs->apairs_ent[pix].asso_val;
           if (curkeyob && curval)
             {
-              gcobjmark_BM (gc, curkeyob);
+              gcobjmark_BM (gc, (objectval_tyBM *) curkeyob);
               gcmark_BM (gc, curval, depth + 1);
             }
         }
