@@ -12,9 +12,11 @@
 #define SERIALBASE_BM 62
 #define MAXSIZE_BM ((1<<30)-1)
 #define TINYSIZE_BM 15
-#define FATAL_AT_BIS_BM(Fil,Lin,Fmt,...) do { \
-fprintf(stderr, "BM FATAL:%s:%d: " Fmt "\n", \
-	Fil, Lin, ##__VA_ARGS__); abort_BM(); } while(0)
+
+#define FATAL_AT_BIS_BM(Fil,Lin,Fmt,...) do {		\
+    fprintf(stderr, "BM FATAL:%s:%d: <%s> " Fmt "\n",	\
+	    Fil, Lin, __func__, ##__VA_ARGS__);		\
+    abort_BM(); } while(0)
 
 #define FATAL_AT_BM(Fil,Lin,Fmt,...) FATAL_AT_BIS_BM(Fil,Lin,Fmt,##__VA_ARGS__)
 

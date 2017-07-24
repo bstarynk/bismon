@@ -250,8 +250,7 @@ listfirst_BM (const struct listtop_stBM * lis)
   struct listlink_stBM *firstl = lis->list_first;
   if (!firstl)
     return NULL;
-  assert (((typedhead_tyBM *) firstl)->htyp == tydata_listlink_BM);
-  for (unsigned ix = 0; ix < TINYSIZE_BM; ix++)
+  for (unsigned ix = 0; ix < LINKSIZE_BM; ix++)
     {
       value_tyBM curmem = firstl->link_mems[ix];
       if (curmem)
@@ -269,8 +268,7 @@ listlast_BM (const struct listtop_stBM * lis)
   struct listlink_stBM *lastl = lis->list_last;
   if (!lastl)
     return NULL;
-  assert (((typedhead_tyBM *) lastl)->htyp == tydata_listlink_BM);
-  for (int ix = TINYSIZE_BM - 1; ix >= 0; ix--)
+  for (int ix = LINKSIZE_BM - 1; ix >= 0; ix--)
     {
       value_tyBM curmem = lastl->link_mems[ix];
       if (curmem)

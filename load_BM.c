@@ -44,9 +44,9 @@ load_initial_BM (const char *ldirpath)
                 FATAL_BM ("failed to stat %s : %m", buf);
               if ((fst.st_mode & S_IFMT) != S_IFREG)
                 FATAL_BM ("%s is not a plain file", buf);
-              if (g_tree_lookup (trent, (void *) num))
+              if (g_tree_lookup (trent, (void *) (intptr_t) num))
                 FATAL_BM ("duplicate store%d* entries in %s", num, ldirpath);
-              g_tree_insert (trent, (void *) num, buf);
+              g_tree_insert (trent, (void *) (intptr_t) num, buf);
             }
         }
     }

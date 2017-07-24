@@ -44,7 +44,6 @@ enum gcdataenum_BM
   tydata_assocpairs_BM,
   tydata_hashsetobj_BM,
   tydata_listtop_BM,
-  tydata_listlink_BM,
 };
 
 struct typedsize_stBM
@@ -153,12 +152,12 @@ struct hashsetobj_stBM
   objectval_tyBM *hashset_objs[];
 };
 
+#define LINKSIZE_BM 14
 struct listlink_stBM
-{                               // for tydata_listlink_BM
-  typedhead_tyBM pa;            // hash & rlen unused
+{
   struct listlink_stBM *link_next;
   struct listlink_stBM *link_prev;
-  value_tyBM link_mems[TINYSIZE_BM];
+  value_tyBM link_mems[LINKSIZE_BM];
 };
 
 struct listtop_stBM

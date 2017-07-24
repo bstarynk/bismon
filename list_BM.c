@@ -42,7 +42,45 @@ listappend_BM (struct listtop_stBM *lis, value_tyBM val)
   if (!lastl)
     {
       assert (lis->list_first == NULL);
+      assert (((typedhead_tyBM *) lis)->rlen == 0);
+      struct listlink_stBM *newl =      //
+        malloc (sizeof (struct listlink_stBM));
+      if (!newl)
+        FATAL_BM ("out of memory for listlink");
+      memset (newl, 0, sizeof (*newl));
+      lis->list_first = lis->list_last = newl;
+      newl->link_mems[0] = val;
+      ((typedhead_tyBM *) lis)->rlen = 1;
+      return;
     }
+  value_tyBM lvals[LINKSIZE_BM] = { };
+  unsigned cntl = 0;
+  for (unsigned ix = 0; ix < LINKSIZE_BM; ix++)
+    {
+      const value_tyBM v = lastl->link_mems[ix];
+      if (v)
+        {
+          lvals[cntl++] = v;
+        }
+    };
+  assert (cntl > 0);
+  if (cntl < LINKSIZE_BM)
+    {
+      lvals[cntl++] = val;
+      memcpy (lastl->link_mems, lvals, LINKSIZE_BM * sizeof (value_tyBM));
+      ((typedhead_tyBM *) lis)->rlen++;
+      return;
+    }
+  struct listlink_stBM *newl =  //
+    malloc (sizeof (struct listlink_stBM));
+  if (!newl)
+    FATAL_BM ("out of memory for listlink");
+  memset (newl, 0, sizeof (*newl));
+  lastl->link_next = newl;
+  newl->link_prev = lastl;
+  newl->link_mems[0] = val;
+  ((typedhead_tyBM *) lis)->rlen++;
+  lis->list_last = newl;
 }                               /* end listappend_BM */
 
 void
@@ -52,6 +90,48 @@ listprepend_BM (struct listtop_stBM *lis, value_tyBM val)
     return;
   if (!val)
     return;
+  struct listlink_stBM *firstl = lis->list_first;
+  if (!firstl)
+    {
+      assert (lis->list_last == NULL);
+      assert (((typedhead_tyBM *) lis)->rlen == 0);
+      struct listlink_stBM *newl =      //
+        malloc (sizeof (struct listlink_stBM));
+      if (!newl)
+        FATAL_BM ("out of memory for listlink");
+      memset (newl, 0, sizeof (*newl));
+      lis->list_first = lis->list_last = newl;
+      newl->link_mems[0] = val;
+      ((typedhead_tyBM *) lis)->rlen = 1;
+      return;
+    }
+  value_tyBM lvals[LINKSIZE_BM + 1] = { };
+  unsigned cntl = 1;
+  lvals[0] = val;
+  for (unsigned ix = 0; ix < LINKSIZE_BM; ix++)
+    {
+      const value_tyBM v = firstl->link_mems[ix];
+      if (v)
+        {
+          lvals[cntl++] = v;
+        }
+    };
+  assert (cntl > 1);
+  if (cntl <= LINKSIZE_BM)
+    {
+      memcpy (firstl->link_mems, lvals, LINKSIZE_BM * sizeof (value_tyBM));
+      ((typedhead_tyBM *) lis)->rlen++;
+      return;
+    }
+  struct listlink_stBM *newl =  //
+    malloc (sizeof (struct listlink_stBM));
+  if (!newl)
+    FATAL_BM ("out of memory for listlink");
+  memset (newl, 0, sizeof (*newl));
+  newl->link_next = firstl;
+  firstl->link_prev = newl;
+  lis->list_first = newl;
+  ((typedhead_tyBM *) lis)->rlen++;
 }                               /* end listprepend_BM */
 
 void
