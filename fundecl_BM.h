@@ -108,6 +108,8 @@ static inline value_tyBM datavectnth_BM (const struct datavectval_stBM *dvec,
 
 extern struct hashsetobj_stBM *hashsetobj_grow_BM (struct hashsetobj_stBM
                                                    *hset, unsigned gap);
+void hashsetgcmark_BM (struct garbcoll_stBM *gc,
+                       struct hashsetobj_stBM *hset);
 extern bool hashsetobj_contains_BM (struct hashsetobj_stBM *hset,
                                     const objectval_tyBM * obj);
 extern struct hashsetobj_stBM *hashsetobj_add_BM (struct hashsetobj_stBM

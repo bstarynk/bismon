@@ -449,6 +449,33 @@ hashsetobj_to_set_BM (struct hashsetobj_stBM *hset)
   return set;
 }                               /* end hashsetobj_to_set_BM */
 
+
+void
+hashsetgcmark_BM (struct garbcoll_stBM *gc, struct hashsetobj_stBM *hset)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (valtype_BM ((const value_tyBM) hset) == tydata_hashsetobj_BM);
+  uint8_t oldmark = ((typedhead_tyBM *) hset)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) hset)->hgc = MARKGC_BM;
+  unsigned alsiz = ((typedhead_tyBM *) hset)->rlen;
+  unsigned ucnt = ((typedsize_tyBM *) hset)->size;
+  unsigned elcnt = 0;
+  for (unsigned ix = 0; ix < alsiz; ix++)
+    {
+      objectval_tyBM *curobj = hset->hashset_objs[ix];
+      if (!curobj || curobj == HASHSETEMPTYSLOT_BM)
+        continue;
+      assert (valtype_BM ((const value_tyBM) curobj) == tyObject_BM);
+      assert (elcnt < ucnt);
+      gcobjmark_BM (gc, curobj);
+      elcnt++;
+    };
+  assert (elcnt == ucnt);
+}                               /* end hashsetgcmark_BM */
+
+
 ////////////////////////////////////////////////////////////////
 static void
 register_predefined_object_BM (objectval_tyBM * pob)
