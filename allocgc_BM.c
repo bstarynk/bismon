@@ -95,7 +95,9 @@ gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
     case tydata_hashsetobj_BM:
       hashsetgcmark_BM (gc, (struct hashsetobj_stBM *) val);
       return;
-#warning should also gcmark secondary data types like list, hashset, ...
+    case tydata_listtop_BM:
+      listgcmark_BM (gc, (struct listtop_stBM *) val, depth);
+      return;
     default:
       FATAL_BM ("gcmark ty#%d unexpected for val@%p depth=%d",
                 ty, val, depth);

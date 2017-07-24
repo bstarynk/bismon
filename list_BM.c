@@ -267,6 +267,26 @@ list_to_tuple_BM (const struct listtop_stBM *lis)
   return tup;
 }                               /* end list_to_tuple_BM */
 
+void
+listgcmark_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis, int depth)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (valtype_BM ((const value_tyBM) lis) == tydata_listtop_BM);
+  uint8_t oldmark = ((typedhead_tyBM *) lis)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) lis)->hgc = MARKGC_BM;
+  unsigned cnt = 0;
+  for (struct listlink_stBM * link = lis->list_first;
+       link != NULL; link = link->link_next)
+    {
+      for (unsigned ix = 0; ix < LINKSIZE_BM; ix++)
+        {
+          const value_tyBM val = link->link_mems[ix];
+          gcmark_BM (gc, val, depth + 1);
+        }
+    }
+}                               /* end listgcmark_BM  */
 
 void
 list_destroy_BM (struct listtop_stBM *lis)
