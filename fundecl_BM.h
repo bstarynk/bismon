@@ -51,7 +51,7 @@ extern objectval_tyBM *setelemnth_BM (const setval_tyBM * set, int rk);
 
 
 
-
+static inline bool isobject_BM (const value_tyBM v);
 static inline hash_tyBM objecthash_BM (const objectval_tyBM *);
 
 static inline int objectcmp_BM (const objectval_tyBM * ob1,
@@ -145,6 +145,11 @@ static inline const value_tyBM treenthson_BM (const value_tyBM tr, int rk);
 static inline const value_tyBM closurenthson_BM (const value_tyBM clo,
                                                  int rk);
 static inline const value_tyBM nodenthson_BM (const value_tyBM nod, int rk);
+
+
+extern const closure_tyBM *makeclosure_BM (const objectval_tyBM * conn,
+                                           unsigned nbclos,
+                                           const value_tyBM * closvalarr);
 
 extern void load_initial_BM (const char *);
 #endif /*FUNDECL_BM_INCLUDED */

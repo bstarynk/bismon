@@ -162,6 +162,13 @@ equalid_BM (rawid_tyBM id1, rawid_tyBM id2)
 
 
 /// object support
+
+bool
+isobject_BM (const value_tyBM v)
+{
+  return valtype_BM (v) == tyObject_BM;
+}                               /* end isobject_BM */
+
 hash_tyBM
 objecthash_BM (const objectval_tyBM * pob)
 {

@@ -16,7 +16,7 @@ maketuple_BM (objectval_tyBM ** arr, unsigned rawsiz)
     if (arr[ix])
       siz++;
   tupleval_tyBM *tup = allocgcty_BM (tyTuple_BM,
-                                     sizeof (tyTuple_BM) +
+                                     sizeof (tupleval_tyBM) +
                                      siz * sizeof (objectval_tyBM *));
   unsigned cnt = 0;
   hash_tyBM h1 = 0, h2 = siz;
@@ -27,7 +27,7 @@ maketuple_BM (objectval_tyBM ** arr, unsigned rawsiz)
         hash_tyBM curhash = objecthash_BM (curob);
         if (curhash == 0)
           FATAL_BM ("invalid object#%d in tuple", ix);
-        if (ix % 2 == 0)
+        if (cnt % 2 == 0)
           h1 = (121453 * h1 + ix + 17) ^ (curhash * 5483);
         else
           h2 = (421973 * h2) ^ (curhash * 8971 - 7 * ix);
@@ -104,7 +104,7 @@ makeset_BM (const objectval_tyBM ** arr, unsigned rawsiz)
       unsigned dupsiz = siz;
       siz = dupsiz - nbdup;
       set = allocgcty_BM (tySet_BM,
-                          sizeof (tySet_BM) +
+                          sizeof (setval_tyBM) +
                           siz * sizeof (objectval_tyBM *));
       set->seq_objs[0] = tmparr[0];
       unsigned cnt = 1;
@@ -118,7 +118,7 @@ makeset_BM (const objectval_tyBM ** arr, unsigned rawsiz)
   else
     {
       set = allocgcty_BM (tySet_BM,
-                          sizeof (tySet_BM) +
+                          sizeof (setval_tyBM) +
                           siz * sizeof (objectval_tyBM *));
       memcpy (set->seq_objs, tmparr, siz * sizeof (objectval_tyBM *));
     };
