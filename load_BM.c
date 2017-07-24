@@ -80,6 +80,6 @@ load_initial_BM (const char *ldirpath)
        ldirpath);
   printf ("got %d store entries in loaded directory %s\n",
           (int) g_tree_nnodes (trent), ldirpath);
-  // should create a loader
+  // should create a loader, and probably have a special frame for it.
 #warning load_initial_BM incomplete
 }                               /* end load_initial_BM */
