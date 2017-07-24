@@ -15,7 +15,7 @@ abort_BM (void)
 ////////////////////////////////////////////////////////////////
 char *load_dir_bm;
 char *dump_dir_bm;
-bool batch_bm;
+
 const GOptionEntry optab[] = {
   {.long_name = "load",.short_name = 'l',
    .flags = G_OPTION_FLAG_NONE,
@@ -29,11 +29,6 @@ const GOptionEntry optab[] = {
    .arg_data = &dump_dir_bm,
    .description = "dump directory DIR",
    .arg_description = "DIR"},
-  {.long_name = "batch",.short_name = 'B',
-   .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_NONE,
-   .arg_data = &batch_bm,
-   .description = "disable GUI"},
   {}
 };
 
@@ -58,16 +53,7 @@ main (int argc, char **argv)
   GError *err = NULL;
   bool guiok = gtk_init_with_args (&argc, &argv, " - The bismon program",
                                    optab, NULL, &err);
-  if (!guiok && !batch_bm)
-    {
-      fprintf (stderr, "%s forcing batch (gtk init failed)\n", argv[0]);
-      batch_bm = true;
-    };
+  if (!guiok)
+    FATAL_BM ("gtk_init_with_args failed");
   load_initial_BM (load_dir_bm);
-  if (batch_bm)
-    {
-    }
-  else
-    {
-    }
 }                               /* end main */
