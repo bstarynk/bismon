@@ -120,3 +120,64 @@ bytstring_BM (const stringval_tyBM * strv)
     return NULL;
   return strv->strv_bytes;
 }                               /* end bytstring_BM */
+
+
+bool
+valdifferentcontent_BM (const value_tyBM v1, const value_tyBM v2)
+{
+  if (v1 == v2)
+    return false;
+  int ty1 = valtype_BM (v1);
+  int ty2 = valtype_BM (v2);
+  if (ty1 != ty2)
+    return true;
+  hash_tyBM h1 = valhash_BM (v1);
+  hash_tyBM h2 = valhash_BM (v2);
+  if (h1 != h2)
+    return true;
+  switch (ty1)                  /* same as ty2 */
+    {
+    case tyInt_BM:
+      return true;
+    case tyString_BM:
+      return strcmp (((stringval_tyBM *) v1)->strv_bytes,
+                     ((stringval_tyBM *) v2)->strv_bytes);
+    case tySet_BM:
+    case tyTuple_BM:
+      {
+        const seqobval_tyBM *seq1 = v1;
+        const seqobval_tyBM *seq2 = v2;
+        if (((const typedsize_tyBM *) seq1)->size !=
+            ((const typedsize_tyBM *) seq2)->size)
+          return true;
+        for (int ix = (int)(((const typedsize_tyBM *)seq1)->size) - 1;
+             ix >= 0; ix--)
+          if (seq1->seq_objs[ix] != seq2->seq_objs[ix])
+            return true;
+      }
+      return false;
+    case tyNode_BM:
+    case tyClosure_BM:
+      {
+        const tree_tyBM *tr1 = v1;
+        const tree_tyBM *tr2 = v2;
+        if (tr1->nodt_conn != tr2->nodt_conn)
+          return true;
+        if (((const typedsize_tyBM *) tr1)->size !=
+            ((const typedsize_tyBM *) tr2)->size)
+          return true;
+        for (int ix = (int)(((const typedsize_tyBM *)tr1)->size) - 1; ix >= 0;
+             ix--)
+          {
+            if (tr1->nodt_sons[ix] == tr2->nodt_sons[ix])
+              continue;
+            if (!valequal_BM (tr1->nodt_sons[ix], tr2->nodt_sons[ix]))
+              return true;
+          }
+      }
+      return false;
+    case tyObject_BM:
+    default:
+      return true;
+    }
+}                               /* end valdifferentcontent_BM */
