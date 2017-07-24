@@ -43,6 +43,8 @@ enum gcdataenum_BM
   tydata_assocbucket_BM,
   tydata_assocpairs_BM,
   tydata_hashsetobj_BM,
+  tydata_listtop_BM,
+  tydata_listlink_BM,
 };
 
 struct typedsize_stBM
@@ -150,5 +152,31 @@ struct hashsetobj_stBM
   typedsize_tyBM pa;            // rlen is allocated size, size is used count
   objectval_tyBM *hashset_objs[];
 };
+
+struct listlink_stBM
+{                               // for tydata_listlink_BM
+  typedhead_tyBM pa;            // hash & rlen unused
+  struct listlink_stBM *link_next;
+  struct listlink_stBM *link_prev;
+  value_tyBM link_mems[TINYSIZE_BM];
+};
+
+struct listtop_stBM
+{                               // for  tydata_listtop_BM
+  typedhead_tyBM pa;            // rlen is number of values in the list
+  struct listlink_stBM *list_first;
+  struct listlink_stBM *list_last;
+};
+
+
+struct nodetree_stBM
+{                               // for tyNode_BM && tyClosure_BM
+  typedsize_tyBM pA;
+  objectval_tyBM *nodt_conn;
+  value_tyBM nodt_sons[];
+};
+
+typedef struct nodetree_stBM node_tyBM; /* for tyNode_BM */
+typedef struct nodetree_stBM closure_tyBM;      /* for tyClosure_BM */
 
 #endif /*TYPES_BM_INCLUDED */

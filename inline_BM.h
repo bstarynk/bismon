@@ -236,5 +236,56 @@ datavectnth_BM (const struct datavectval_stBM * dvec, int rk)
   return NULL;
 }                               /* end datavectnth_BM */
 
+bool
+islist_BM (const value_tyBM v)
+{
+  return (valtype_BM (v) == tydata_listtop_BM);
+}
+
+value_tyBM
+listfirst_BM (const struct listtop_stBM * lis)
+{
+  if (!islist_BM ((const value_tyBM) lis))
+    return NULL;
+  struct listlink_stBM *firstl = lis->list_first;
+  if (!firstl)
+    return NULL;
+  assert (((typedhead_tyBM *) firstl)->htyp == tydata_listlink_BM);
+  for (unsigned ix = 0; ix < TINYSIZE_BM; ix++)
+    {
+      value_tyBM curmem = firstl->link_mems[ix];
+      if (curmem)
+        return curmem;
+    };
+  // should never happen
+  FATAL_BM ("corrupted list@%p", lis);
+}
+
+value_tyBM
+listlast_BM (const struct listtop_stBM * lis)
+{
+  if (!islist_BM ((const value_tyBM) lis))
+    return NULL;
+  struct listlink_stBM *lastl = lis->list_last;
+  if (!lastl)
+    return NULL;
+  assert (((typedhead_tyBM *) lastl)->htyp == tydata_listlink_BM);
+  for (int ix = TINYSIZE_BM - 1; ix >= 0; ix--)
+    {
+      value_tyBM curmem = lastl->link_mems[ix];
+      if (curmem)
+        return curmem;
+    };
+  // should never happen
+  FATAL_BM ("corrupted list@%p", lis);
+}
+
+unsigned
+listlength_BM (const struct listtop_stBM *lis)
+{
+  if (!islist_BM (lis))
+    return 0;
+  return ((typedhead_tyBM *) lis)->rlen;
+}
 
 #endif /*INLINE_BM_INCLUDED */

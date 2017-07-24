@@ -64,4 +64,10 @@ main (int argc, char **argv)
       batch_bm = true;
     };
   load_initial_BM (load_dir_bm);
+  if (batch_bm)
+    {
+    }
+  else
+    {
+    }
 }                               /* end main */

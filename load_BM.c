@@ -52,8 +52,9 @@ load_initial_BM (const char *ldirpath)
     }
   closedir (ldir);
   if (g_tree_nnodes (trent) == 0)
-    FATAL_BM ("no file matching store[0-9]+.bismon or store[0-9]+_*.bismon in loaded directory %s",
-              ldirpath);
+    FATAL_BM
+      ("no file matching store[0-9]+.bismon or store[0-9]+_*.bismon in loaded directory %s",
+       ldirpath);
   printf ("got %d store entries in loaded directory %s\n",
           (int) g_tree_nnodes (trent), ldirpath);
   /// should add to the agenda the first pass scanning then the second pass loading these files
