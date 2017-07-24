@@ -116,10 +116,12 @@ static inline bool islist_BM (const value_tyBM);
 static inline value_tyBM listfirst_BM (const struct listtop_stBM *);
 static inline value_tyBM listlast_BM (const struct listtop_stBM *);
 static inline unsigned listlength_BM (const struct listtop_stBM *);
+extern void listclear_BM (struct listtop_stBM *lis);
 extern void listappend_BM (struct listtop_stBM *lis, value_tyBM val);
 extern void listprepend_BM (struct listtop_stBM *lis, value_tyBM val);
 extern void listpopfirst (struct listtop_stBM *lis);
 extern void listpoplast (struct listtop_stBM *lis);
+extern void list_destroy_BM (struct listtop_stBM *lis);
 extern const node_tyBM *list_to_node_BM (const struct listtop_stBM *lis,
                                          const objectval_tyBM * conn);
 
