@@ -120,3 +120,26 @@ gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
   assert (islist_BM (gc->gc_scanlist));
   listappend_BM (gc->gc_scanlist, obj);
 }                               /* end gcobjmark_BM */
+
+void
+gcframemark_BM (struct garbcoll_stBM *gc, struct stackframe_stBM *stkfram,
+                int depth)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  if (depth >= MAXDEPTHGC_BM)
+    FATAL_BM ("too deep %u gcframemark", depth);
+  unsigned framcnt = 0;
+  // it is on purpose that we don't test the oldmark or set it
+  for (; stkfram; stkfram = stkfram->stkfram_next)
+    {
+      assert (((typedhead_tyBM *) stkfram)->htyp == tydata_StackFrame_BM);
+      // this really should never happen
+      if (framcnt++ > MAXSIZE_BM / 4)
+        FATAL_BM ("too big framcnt=%u", framcnt);
+      if (stkfram->stkfram_descr)
+        gcobjmark_BM (gc, stkfram->stkfram_descr);
+      unsigned framsize = ((typedsize_tyBM *) stkfram)->size;
+      for (unsigned ix = 0; ix < framsize; ix++)
+        gcmark_BM (gc, stkfram->stkfram_locals[ix], depth + 1);
+    }
+}                               /* end gcframemark_BM */

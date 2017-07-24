@@ -174,5 +174,7 @@ extern void load_initial_BM (const char *);
 // internal routines
 void gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth);
 void gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj);
+void gcframemark_BM (struct garbcoll_stBM *gc,
+                     struct stackframe_stBM *stkfram, int depth);
 
 #endif /*FUNDECL_BM_INCLUDED */

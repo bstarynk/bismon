@@ -214,7 +214,16 @@ typedef struct nodetree_stBM tree_tyBM; /* for tyClosure_BM or tyNode_BM */
 typedef struct nodetree_stBM node_tyBM; /* for tyNode_BM */
 typedef struct nodetree_stBM closure_tyBM;      /* for tyClosure_BM */
 
+struct stackframe_stBM
+{                               // for tydata_StackFrame_BM, sitting on the callstack
 
+  typedsize_tyBM pA;            // size is the number of values
+  objectval_tyBM *stkfram_descr;
+  struct stackframe_stBM *stkfram_next;
+  int stkfram_state;
+  int stkfram_xtra;
+  value_tyBM stkfram_locals[];
+};
 
 struct garbcoll_stBM
 {
