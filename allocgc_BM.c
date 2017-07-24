@@ -132,14 +132,30 @@ gcframemark_BM (struct garbcoll_stBM *gc, struct stackframe_stBM *stkfram,
   // it is on purpose that we don't test the oldmark or set it
   for (; stkfram; stkfram = stkfram->stkfram_next)
     {
-      assert (((typedhead_tyBM *) stkfram)->htyp == tydata_StackFrame_BM);
       // this really should never happen
       if (framcnt++ > MAXSIZE_BM / 4)
-        FATAL_BM ("too big framcnt=%u", framcnt);
-      if (stkfram->stkfram_descr)
-        gcobjmark_BM (gc, stkfram->stkfram_descr);
-      unsigned framsize = ((typedsize_tyBM *) stkfram)->size;
-      for (unsigned ix = 0; ix < framsize; ix++)
-        gcmark_BM (gc, stkfram->stkfram_locals[ix], depth + 1);
-    }
+        FATAL_BM ("too big framcnt=%u, curfram=%p", framcnt, stkfram);
+      if (((typedhead_tyBM *) stkfram)->htyp == tydata_StackFrame_BM)
+        {
+          if (stkfram->stkfram_descr)
+            gcobjmark_BM (gc, stkfram->stkfram_descr);
+          unsigned framsize = ((typedsize_tyBM *) stkfram)->size;
+          if (framsize > MAXSIZE_BM / 2)
+            FATAL_BM ("too big framesize %u, curfram=%p, framcnt#%d",
+                      framsize, stkfram, framcnt);
+          for (unsigned ix = 0; ix < framsize; ix++)
+            gcmark_BM (gc, stkfram->stkfram_locals[ix], depth + 1);
+        }
+      else if (((typedhead_tyBM *) stkfram)->htyp == tydata_SpecialFrame_BM)
+        {
+          struct specialframe_stBM *specfram = stkfram;
+          if (specfram->specfram_descr)
+            gcobjmark_BM (gc, specfram->specfram_descr);
+          if (specfram->specfram_markerout)
+            specfram->specfram_markerout (gc, specfram);
+        }
+      else
+        FATAL_BM ("invalid stackframe @%p of type#%d", stkfram,
+                  (((typedhead_tyBM *) stkfram)->htyp));
+    };
 }                               /* end gcframemark_BM */

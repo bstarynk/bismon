@@ -78,6 +78,7 @@ enum gcdataenum_BM
   tydata__SpareY_BM,
   tydata__SpareZ_BM,
   //
+  tydata_SpecialFrame_BM = 0xfffe,
   tydata_StackFrame_BM = 0xffff
 };
 
@@ -216,14 +217,28 @@ typedef struct nodetree_stBM closure_tyBM;      /* for tyClosure_BM */
 
 struct stackframe_stBM
 {                               // for tydata_StackFrame_BM, sitting on the callstack
-
   typedsize_tyBM pA;            // size is the number of values
-  objectval_tyBM *stkfram_descr;
   struct stackframe_stBM *stkfram_next;
+  objectval_tyBM *stkfram_descr;
   int stkfram_state;
   int stkfram_xtra;
   value_tyBM stkfram_locals[];
 };
+
+struct specialframe_stBM;
+struct garbcoll_stBM;
+typedef void specialframe_marker_sigBM (struct garbcoll_stBM *,
+                                        struct specialframe_stBM *);
+struct specialframe_stBM        // for tydata_SpecialFrame_BM
+{
+  typedsize_tyBM pA;            // size is unused
+  struct stackframe_stBM *specfram_next;
+  objectval_tyBM *specfram_descr;
+  specialframe_marker_sigBM *specfram_markerout;
+  intptr_t specfram_intp;
+  void *specfram_cdata[];
+};
+
 
 struct garbcoll_stBM
 {
