@@ -123,25 +123,27 @@ bytstring_BM (const stringval_tyBM * strv)
 
 
 bool
-valdifferentcontent_BM (const value_tyBM v1, const value_tyBM v2)
+valsamecontent_BM (const value_tyBM v1, const value_tyBM v2)
 {
   if (v1 == v2)
-    return false;
+    return true;
   int ty1 = valtype_BM (v1);
   int ty2 = valtype_BM (v2);
   if (ty1 != ty2)
-    return true;
+    return false;
   hash_tyBM h1 = valhash_BM (v1);
   hash_tyBM h2 = valhash_BM (v2);
   if (h1 != h2)
-    return true;
+    return false;
   switch (ty1)                  /* same as ty2 */
     {
     case tyInt_BM:
       return true;
     case tyString_BM:
-      return strcmp (((stringval_tyBM *) v1)->strv_bytes,
-                     ((stringval_tyBM *) v2)->strv_bytes);
+      return (((const typedsize_tyBM *) v1)->size ==
+              ((const typedsize_tyBM *) v1)->size)
+        && !strcmp (((stringval_tyBM *) v1)->strv_bytes,
+                    ((stringval_tyBM *) v2)->strv_bytes);
     case tySet_BM:
     case tyTuple_BM:
       {
@@ -149,35 +151,35 @@ valdifferentcontent_BM (const value_tyBM v1, const value_tyBM v2)
         const seqobval_tyBM *seq2 = v2;
         if (((const typedsize_tyBM *) seq1)->size !=
             ((const typedsize_tyBM *) seq2)->size)
-          return true;
+          return false;
         for (int ix = (int)(((const typedsize_tyBM *)seq1)->size) - 1;
              ix >= 0; ix--)
           if (seq1->seq_objs[ix] != seq2->seq_objs[ix])
-            return true;
+            return false;
       }
-      return false;
+      return true;
     case tyNode_BM:
     case tyClosure_BM:
       {
         const tree_tyBM *tr1 = v1;
         const tree_tyBM *tr2 = v2;
         if (tr1->nodt_conn != tr2->nodt_conn)
-          return true;
+          return false;
         if (((const typedsize_tyBM *) tr1)->size !=
             ((const typedsize_tyBM *) tr2)->size)
-          return true;
+          return false;
         for (int ix = (int)(((const typedsize_tyBM *)tr1)->size) - 1; ix >= 0;
              ix--)
           {
             if (tr1->nodt_sons[ix] == tr2->nodt_sons[ix])
               continue;
             if (!valequal_BM (tr1->nodt_sons[ix], tr2->nodt_sons[ix]))
-              return true;
+              return false;
           }
       }
-      return false;
+      return true;
     case tyObject_BM:
     default:
-      return true;
+      return false;
     }
-}                               /* end valdifferentcontent_BM */
+}                               /* end valsamecontent_BM */

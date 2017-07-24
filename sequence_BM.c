@@ -37,8 +37,8 @@ maketuple_BM (objectval_tyBM ** arr, unsigned rawsiz)
         tup->seq_objs[cnt++] = (objectval_tyBM *) curob;
       };
   hash_tyBM h = h1 ^ h2;
-  if (!h)
-    h = (h1 & 0xffffff) + (h2 & 0xffffff) + 3 * (siz & 0xffff) + 35;
+  if (!h)                       /* so h1 == h2 */
+    h = (h1 & 0xffffff) + (h2 % 138571) + 3 * (siz & 0xffff) + 35;
   assert (h > 0);
   ((typedsize_tyBM *) tup)->size = siz;
   ((typedhead_tyBM *) tup)->hash = h;
@@ -149,7 +149,7 @@ makeset_BM (const objectval_tyBM ** arr, unsigned rawsiz)
     }
   h = h1 ^ (h2 * 31 - siz);
   if (!h)
-    h = (h1 & 0xffffff) + 3 * (h2 & 0x3fffff) + 11 * (siz & 0xffff) + 59;
+    h = (h1 & 0xffffff) + 3 * (h2 % 138599) + 11 * (siz & 0xffff) + 59;
   assert (h > 0);
   ((typedhead_tyBM *) set)->hash = h;
   return set;
@@ -239,12 +239,10 @@ datavect_grow_BM (struct datavectval_stBM *dvec, unsigned gap)
   unsigned long siz = prime_above_BM (oldlen + gap);
   if (siz > MAXSIZE_BM)
     FATAL_BM ("too big datavect %ld", siz);
-  struct datavectval_stBM *newdvec = allocinternalty_BM (tydata_vectval_BM,
-                                                         sizeof (struct
-                                                                 datavectval_stBM)
-                                                         +
-                                                         siz *
-                                                         sizeof (void *));
+  struct datavectval_stBM *newdvec =    //
+    allocinternalty_BM (tydata_vectval_BM,
+                        sizeof (struct datavectval_stBM)
+                        + siz * sizeof (void *));
   ((typedhead_tyBM *) newdvec)->rlen = siz;
   ((typedsize_tyBM *) newdvec)->size = oldcnt + gap;
   memcpy (newdvec->vec_data, dvec->vec_data, oldcnt * sizeof (void *));
