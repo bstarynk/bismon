@@ -13,6 +13,8 @@ static inline value_tyBM taggedint_BM (intptr_t i);
 
 static inline int valtype_BM (const value_tyBM v);
 static inline hash_tyBM valhash_BM (const value_tyBM v);
+static inline bool valequal_BM (const value_tyBM v1, const value_tyBM v2);
+extern bool valdifferentcontent_BM (const value_tyBM v1, const value_tyBM v2);
 
 static inline bool validserial63_BM (serial63_tyBM s);
 extern serial63_tyBM randomserial63_BM (void);

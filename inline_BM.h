@@ -96,6 +96,20 @@ valhash_BM (const value_tyBM v)
     }
 }                               /* end valhash_BM */
 
+bool
+valequal_BM (const value_tyBM v1, const value_tyBM v2)
+{
+  if (v1 == v2)
+    return true;
+  int ty1 = valtype_BM (v1);
+  if (ty1 != valtype_BM (v2))
+    return false;
+  if (valhash_BM (v1) != valhash_BM (v2))
+    return false;
+  if (ty1 == tyObject_BM)
+    return false;
+  return !valdifferentcontent_BM (v1, v2);
+}                               /* end valequal_BM */
 
 bool
 validserial63_BM (serial63_tyBM s)
@@ -320,7 +334,7 @@ listlast_BM (const struct listtop_stBM * lis)
 unsigned
 listlength_BM (const struct listtop_stBM *lis)
 {
-  if (!islist_BM (lis))
+  if (!islist_BM ((value_tyBM) lis))
     return 0;
   return ((typedhead_tyBM *) lis)->rlen;
 }
@@ -402,7 +416,7 @@ treenthson_BM (const value_tyBM tr, int rk)
   unsigned w = treewidth_BM (tr);
   if (rk < 0)
     rk += (int) w;
-  if (rk >= 0 && rk < w)
+  if (rk >= 0 && rk < (int) w)
     return ((const tree_tyBM *) tr)->nodt_sons[rk];
   return NULL;
 }                               /* end treenthson_BM */
