@@ -160,6 +160,9 @@ static inline value_tyBM nodenthson_BM (const value_tyBM nod, int rk);
 extern void nodegcmark_BM (struct garbcoll_stBM *gc, node_tyBM * nod,
                            int depth);
 
+const node_tyBM *makenode_BM (const objectval_tyBM * connob, unsigned nbval,
+                              const value_tyBM * sonvalarr);
+
 extern const closure_tyBM *makeclosure_BM (const objectval_tyBM * conn,
                                            unsigned nbclos,
                                            const value_tyBM * closvalarr);

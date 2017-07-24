@@ -229,7 +229,41 @@ list_to_node_BM (const struct listtop_stBM *lis,
     return NULL;
   if (valtype_BM ((const value_tyBM) connobj) != tyObject_BM)
     return NULL;
-#warning list_to_node_BM unimplemented
+  unsigned cnt = 0;
+  unsigned nblinks = 0;
+  for (struct listlink_stBM * link = lis->list_first;
+       link != NULL; link = link->link_next)
+    {
+      for (unsigned ix = 0; ix < LINKSIZE_BM; ix++)
+        {
+          const value_tyBM val = link->link_mems[ix];
+          if (valtype_BM (val))
+            cnt++;
+        }
+      if (nblinks++ > MAXSIZE_BM)
+        FATAL_BM ("too many %u links, cnt=%u", nblinks, cnt);
+    }
+  if (cnt > MAXSIZE_BM)
+    FATAL_BM ("too huge list %u", cnt);
+  value_tyBM *valarr = calloc (prime_above_BM (cnt + 1), sizeof (void *));
+  if (!valarr)
+    FATAL_BM ("calloc failed for %u (%m)", prime_above_BM (cnt + 1));
+  unsigned vacnt = 0;
+  for (struct listlink_stBM * link = lis->list_first;
+       link != NULL; link = link->link_next)
+    {
+      for (unsigned ix = 0; ix < LINKSIZE_BM; ix++)
+        {
+          const value_tyBM val = link->link_mems[ix];
+          if (valtype_BM (val))
+            valarr[vacnt++] = val;
+        }
+    }
+  assert (vacnt == cnt);
+  const node_tyBM *nod = makenode_BM (connobj, cnt, valarr);
+  memset (valarr, 0, cnt * sizeof (void *));
+  free (valarr);
+  return nod;
 }                               /* end list_to_node_BM */
 
 const tupleval_tyBM *
@@ -246,6 +280,7 @@ list_to_tuple_BM (const struct listtop_stBM *lis)
   if (!arr)
     FATAL_BM ("out of memory for %u pointers (%m)", siz);
   unsigned cnt = 0;
+  unsigned nblinks = 0;
   for (struct listlink_stBM * link = lis->list_first;
        link != NULL; link = link->link_next)
     {
@@ -258,6 +293,8 @@ list_to_tuple_BM (const struct listtop_stBM *lis)
               arr[cnt++] = (objectval_tyBM *) val;
             }
         }
+      if (nblinks++ > MAXSIZE_BM)
+        FATAL_BM ("too many %u links, cnt=%u", nblinks, cnt);
     }
   if (cnt > MAXSIZE_BM)
     FATAL_BM ("too huge list %u", cnt);
