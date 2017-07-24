@@ -170,11 +170,12 @@ struct listtop_stBM
 
 struct nodetree_stBM
 {                               // for tyNode_BM && tyClosure_BM
-  typedsize_tyBM pA;
+  typedsize_tyBM pA;            // size is the number of sons
   objectval_tyBM *nodt_conn;
   value_tyBM nodt_sons[];
 };
 
+typedef struct nodetree_stBM tree_tyBM; /* for tyClosure_BM or tyNode_BM */
 typedef struct nodetree_stBM node_tyBM; /* for tyNode_BM */
 typedef struct nodetree_stBM closure_tyBM;      /* for tyClosure_BM */
 

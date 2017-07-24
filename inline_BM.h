@@ -286,4 +286,113 @@ listlength_BM (const struct listtop_stBM *lis)
   return ((typedhead_tyBM *) lis)->rlen;
 }
 
+
+bool
+istree_BM (const value_tyBM v)
+{
+  int ty = valtype_BM (v);
+  return (ty == tyClosure_BM || ty == tyNode_BM);
+}                               /* end istree_BM */
+
+bool
+isclosure_BM (const value_tyBM v)
+{
+  return valtype_BM (v) == tyClosure_BM;
+}                               /* end isclosure_BM */
+
+bool
+isnode_BM (const value_tyBM v)
+{
+  return valtype_BM (v) == tyNode_BM;
+}                               /* end isnode_BM */
+
+objectval_tyBM *
+treeconn_BM (const value_tyBM v)
+{
+  if (!istree_BM (v))
+    return NULL;
+  return ((const tree_tyBM *) v)->nodt_conn;
+}                               /* end treeconn_BM */
+
+objectval_tyBM *
+closureconn_BM (const value_tyBM v)
+{
+  if (!isclosure_BM (v))
+    return NULL;
+  return ((const closure_tyBM *) v)->nodt_conn;
+}                               /* end closureconn_BM */
+
+objectval_tyBM *
+nodeconn_BM (const value_tyBM v)
+{
+  if (!isnode_BM (v))
+    return NULL;
+  return ((const node_tyBM *) v)->nodt_conn;
+}                               /* end nodeconn_BM */
+
+
+unsigned
+treewidth_BM (const value_tyBM v)
+{
+  if (!istree_BM (v))
+    return 0;
+  return ((const typedsize_tyBM *) v)->size;
+}                               /* end treewidth_BM */
+
+unsigned
+closurewidth_BM (const value_tyBM v)
+{
+  if (!isclosure_BM (v))
+    return 0;
+  return ((const typedsize_tyBM *) v)->size;
+}                               /* end closurewidth_BM */
+
+unsigned
+nodewidth_BM (const value_tyBM v)
+{
+  if (!isnode_BM (v))
+    return 0;
+  return ((const typedsize_tyBM *) v)->size;
+}
+
+const value_tyBM
+treenthson_BM (const value_tyBM tr, int rk)
+{
+  if (!istree_BM (tr))
+    return NULL;
+  unsigned w = treewidth_BM (tr);
+  if (rk < 0)
+    rk += (int) w;
+  if (rk >= 0 && rk < w)
+    return ((const tree_tyBM *) tr)->nodt_sons[rk];
+  return NULL;
+}                               /* end treenthson_BM */
+
+const value_tyBM
+closurenthson_BM (const value_tyBM clo, int rk)
+{
+  if (!isclosure_BM (clo))
+    return NULL;
+  unsigned w = closurewidth_BM (clo);
+  if (rk < 0)
+    rk += (int) w;
+  if (rk >= 0 && rk < w)
+    return ((const closure_tyBM *) clo)->nodt_sons[rk];
+  return NULL;
+}                               /* end closurenthson_BM */
+
+const value_tyBM
+nodenthson_BM (const value_tyBM nod, int rk)
+{
+  if (!isnode_BM (nod))
+    return NULL;
+  unsigned w = nodewidth_BM (nod);
+  if (rk < 0)
+    rk += (int) w;
+  if (rk >= 0 && rk < w)
+    return ((const node_tyBM *) nod)->nodt_sons[rk];
+  return NULL;
+}                               /* end nodenthson_BM */
+
+
 #endif /*INLINE_BM_INCLUDED */

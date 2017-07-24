@@ -129,7 +129,22 @@ extern const node_tyBM *list_to_node_BM (const struct listtop_stBM *lis,
 extern const tupleval_tyBM *list_to_tuple_BM (const struct listtop_stBM *lis);
 
 
+static inline bool istree_BM (const value_tyBM v);
+static inline bool isclosure_BM (const value_tyBM v);
+static inline bool isnode_BM (const value_tyBM v);
 
+static inline objectval_tyBM *treeconn_BM (const value_tyBM);
+static inline objectval_tyBM *closureconn_BM (const value_tyBM);
+static inline objectval_tyBM *nodeconn_BM (const value_tyBM);
+
+static inline unsigned treewidth_BM (const value_tyBM);
+static inline unsigned closurewidth_BM (const value_tyBM);
+static inline unsigned nodewidth_BM (const value_tyBM);
+
+static inline const value_tyBM treenthson_BM (const value_tyBM tr, int rk);
+static inline const value_tyBM closurenthson_BM (const value_tyBM clo,
+                                                 int rk);
+static inline const value_tyBM nodenthson_BM (const value_tyBM nod, int rk);
 
 extern void load_initial_BM (const char *);
 #endif /*FUNDECL_BM_INCLUDED */
