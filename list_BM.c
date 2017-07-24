@@ -139,7 +139,44 @@ listpopfirst_BM (struct listtop_stBM *lis)
 {
   if (!islist_BM ((const value_tyBM) lis))
     return;
-#warning listpopfirst_BM unimplemented
+  struct listlink_stBM *firstl = lis->list_first;
+  if (!firstl)
+    return;
+  assert (((typedhead_tyBM *) lis)->rlen > 0);
+  unsigned cntl = 0;
+  value_tyBM lvals[LINKSIZE_BM + 1] = { };
+  for (unsigned ix = 0; ix < LINKSIZE_BM; ix++)
+    {
+      const value_tyBM v = firstl->link_mems[ix];
+      if (v)
+        {
+          if (cntl > 0)
+            lvals[cntl - 1] = v;
+          cntl++;
+        }
+    };
+  if (cntl > 1)
+    {
+      memcpy (firstl->link_mems, lvals, LINKSIZE_BM * sizeof (void *));
+      ((typedhead_tyBM *) lis)->rlen--;
+      return;
+    }
+  else if (lis->list_last == firstl)
+    {
+      memset (firstl, 0, sizeof (struct listlink_stBM));
+      free (firstl);
+      lis->list_first = lis->list_last = NULL;
+      ((typedhead_tyBM *) lis)->rlen = 0;
+      return;
+    }
+  else
+    {
+      lis->list_first = firstl->link_next;
+      memset (firstl, 0, sizeof (struct listlink_stBM));
+      free (firstl);
+      ((typedhead_tyBM *) lis)->rlen--;
+      return;
+    }
 }                               /* end listpopfirst_BM */
 
 void
@@ -147,7 +184,41 @@ listpoplast_BM (struct listtop_stBM *lis)
 {
   if (!islist_BM ((const value_tyBM) lis))
     return;
-#warning listpoplast_BM unimplemented
+  struct listlink_stBM *lastl = lis->list_last;
+  if (!lastl)
+    return;
+  assert (((typedhead_tyBM *) lis)->rlen > 0);
+  unsigned cntl = 0;
+  value_tyBM lvals[LINKSIZE_BM] = { };
+  for (unsigned ix = 0; ix < LINKSIZE_BM; ix++)
+    {
+      const value_tyBM v = lastl->link_mems[ix];
+      if (v)
+        lvals[cntl++] = v;
+    };
+  if (cntl > 1)
+    {
+      lvals[cntl] = NULL;
+      memcpy (lastl->link_mems, lvals, LINKSIZE_BM * sizeof (void *));
+      ((typedhead_tyBM *) lis)->rlen--;
+      return;
+    }
+  else if (lis->list_first == lastl)
+    {
+      memset (lastl, 0, sizeof (struct listlink_stBM));
+      free (lastl);
+      lis->list_first = lis->list_last = NULL;
+      ((typedhead_tyBM *) lis)->rlen = 0;
+      return;
+    }
+  else
+    {
+      lis->list_last = lastl->link_prev;
+      memset (lastl, 0, sizeof (struct listlink_stBM));
+      free (lastl);
+      ((typedhead_tyBM *) lis)->rlen--;
+      return;
+    }
 }                               /* end listpoplast_BM */
 
 const node_tyBM *
@@ -161,11 +232,48 @@ list_to_node_BM (const struct listtop_stBM *lis,
 #warning list_to_node_BM unimplemented
 }                               /* end list_to_node_BM */
 
+const tupleval_tyBM *
+list_to_tuple_BM (const struct listtop_stBM *lis)
+{
+  const tupleval_tyBM *tup = NULL;
+  if (!islist_BM ((const value_tyBM) lis))
+    return NULL;
+  unsigned len = ((typedhead_tyBM *) lis)->rlen;
+  unsigned siz = prime_above_BM (len + 1);
+  objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+  objectval_tyBM **arr =
+    (len < TINYSIZE_BM) ? tinyarr : calloc (siz, sizeof (void *));
+  if (!arr)
+    FATAL_BM ("out of memory for %u pointers (%m)", siz);
+  unsigned cnt = 0;
+  for (struct listlink_stBM * link = lis->list_first;
+       link != NULL; link = link->link_next)
+    {
+      for (unsigned ix = 0; ix < LINKSIZE_BM; ix++)
+        {
+          const value_tyBM val = link->link_mems[ix];
+          if (valtype_BM (val) == tyObject_BM)
+            {
+              assert (cnt < len);
+              arr[cnt++] = (objectval_tyBM *) val;
+            }
+        }
+    }
+  if (cnt > MAXSIZE_BM)
+    FATAL_BM ("too huge list %u", cnt);
+  tup = tuplemake_BM (arr, cnt);
+  if (arr != tinyarr)
+    free (arr);
+  return tup;
+}                               /* end list_to_tuple_BM */
+
+
 void
 list_destroy_BM (struct listtop_stBM *lis)
 {
   if (!islist_BM ((const value_tyBM) lis))
     return;
   listclear_BM (lis);
+  memset (lis, 0, sizeof (*lis));
   free (lis);
 }                               /* end list_destroy_BM */

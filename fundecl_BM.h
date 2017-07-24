@@ -122,8 +122,11 @@ extern void listprepend_BM (struct listtop_stBM *lis, value_tyBM val);
 extern void listpopfirst_BM (struct listtop_stBM *lis);
 extern void listpoplast_BM (struct listtop_stBM *lis);
 extern void list_destroy_BM (struct listtop_stBM *lis);
+// make a node from all components of the list
 extern const node_tyBM *list_to_node_BM (const struct listtop_stBM *lis,
                                          const objectval_tyBM * conn);
+// make a tuple from the objects in the list
+extern const tupleval_tyBM *list_to_tuple_BM (const struct listtop_stBM *lis);
 
 
 
