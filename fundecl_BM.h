@@ -119,8 +119,8 @@ static inline unsigned listlength_BM (const struct listtop_stBM *);
 extern void listclear_BM (struct listtop_stBM *lis);
 extern void listappend_BM (struct listtop_stBM *lis, value_tyBM val);
 extern void listprepend_BM (struct listtop_stBM *lis, value_tyBM val);
-extern void listpopfirst (struct listtop_stBM *lis);
-extern void listpoplast (struct listtop_stBM *lis);
+extern void listpopfirst_BM (struct listtop_stBM *lis);
+extern void listpoplast_BM (struct listtop_stBM *lis);
 extern void list_destroy_BM (struct listtop_stBM *lis);
 extern const node_tyBM *list_to_node_BM (const struct listtop_stBM *lis,
                                          const objectval_tyBM * conn);

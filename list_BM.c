@@ -135,18 +135,20 @@ listprepend_BM (struct listtop_stBM *lis, value_tyBM val)
 }                               /* end listprepend_BM */
 
 void
-listpopfirst (struct listtop_stBM *lis)
+listpopfirst_BM (struct listtop_stBM *lis)
 {
   if (!islist_BM ((const value_tyBM) lis))
     return;
-}                               /* end listpopfirst */
+#warning listpopfirst_BM unimplemented
+}                               /* end listpopfirst_BM */
 
 void
-listpoplast (struct listtop_stBM *lis)
+listpoplast_BM (struct listtop_stBM *lis)
 {
   if (!islist_BM ((const value_tyBM) lis))
     return;
-}                               /* end listpoplast */
+#warning listpoplast_BM unimplemented
+}                               /* end listpoplast_BM */
 
 const node_tyBM *
 list_to_node_BM (const struct listtop_stBM *lis,
@@ -155,7 +157,8 @@ list_to_node_BM (const struct listtop_stBM *lis,
   if (!islist_BM ((const value_tyBM) lis))
     return NULL;
   if (valtype_BM ((const value_tyBM) connobj) != tyObject_BM)
-    return lis;
+    return NULL;
+#warning list_to_node_BM unimplemented
 }                               /* end list_to_node_BM */
 
 void
