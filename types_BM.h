@@ -33,6 +33,12 @@ enum gctyenum_BM
   tyUnspecified_BM = 7,         /* the single unspecified value */
   ty_SpareA_BM = 8,
   ty_SpareB_BM = 9,
+  ty_SpareC_BM = 10,
+  ty_SpareD_BM = 11,
+  ty_SpareE_BM = 12,
+  ty_SpareF_BM = 13,
+  ty_SpareG_BM = 14,
+  ty_SpareH_BM = 15,
   ty_LAST_TYENUM_BM
 };
 
@@ -44,6 +50,35 @@ enum gcdataenum_BM
   tydata_assocpairs_BM,
   tydata_hashsetobj_BM,
   tydata_listtop_BM,
+  //
+  tydata__SpareA_BM,
+  tydata__SpareB_BM,
+  tydata__SpareC_BM,
+  tydata__SpareD_BM,
+  tydata__SpareE_BM,
+  tydata__SpareF_BM,
+  tydata__SpareG_BM,
+  tydata__SpareH_BM,
+  tydata__SpareI_BM,
+  tydata__SpareJ_BM,
+  tydata__SpareK_BM,
+  tydata__SpareL_BM,
+  tydata__SpareM_BM,
+  tydata__SpareN_BM,
+  tydata__SpareO_BM,
+  tydata__SpareP_BM,
+  tydata__SpareQ_BM,
+  tydata__SpareR_BM,
+  tydata__SpareS_BM,
+  tydata__SpareT_BM,
+  tydata__SpareU_BM,
+  tydata__SpareV_BM,
+  tydata__SpareW_BM,
+  tydata__SpareX_BM,
+  tydata__SpareY_BM,
+  tydata__SpareZ_BM,
+  //
+  tydata_StackFrame_BM = 0xffff
 };
 
 struct typedsize_stBM
@@ -179,4 +214,15 @@ typedef struct nodetree_stBM tree_tyBM; /* for tyClosure_BM or tyNode_BM */
 typedef struct nodetree_stBM node_tyBM; /* for tyNode_BM */
 typedef struct nodetree_stBM closure_tyBM;      /* for tyClosure_BM */
 
+
+
+struct garbcoll_stBM
+{
+  uint32_t gc_magic;
+  uint32_t gc_spareunsigned;
+  // the list of objects to be scanned
+  struct listtop_stBM *gc_scanlist;
+  // the hashset of objects added into previous list
+  struct hashsetobj_stBM *gc_hset;
+};
 #endif /*TYPES_BM_INCLUDED */

@@ -47,6 +47,22 @@ makeclosure_BM (const objectval_tyBM * connob, unsigned nbval,
 }                               /* end makeclosure_BM */
 
 
+void
+closuregcmark_BM (struct garbcoll_stBM *gc, closure_tyBM * clos, int depth)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (valtype_BM ((const value_tyBM) clos) == tyClosure_BM);
+  uint8_t oldmark = ((typedhead_tyBM *) clos)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) clos)->hgc = MARKGC_BM;
+  gcobjmark_BM (gc, clos->nodt_conn);
+  unsigned size = ((typedsize_tyBM *) clos)->size;
+  for (unsigned ix = 0; ix < size; ix++)
+    gcmark_BM (gc, clos->nodt_sons[ix], depth + 1);
+}                               /* end nodegcmark_BM */
+
+
 
 
 const node_tyBM *
@@ -94,4 +110,19 @@ makenode_BM (const objectval_tyBM * connob, unsigned nbval,
   return node;
 }                               /* end makenode_BM */
 
-#warning incomplete node_BM.c
+
+
+void
+nodegcmark_BM (struct garbcoll_stBM *gc, node_tyBM * nod, int depth)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (valtype_BM ((const value_tyBM) nod) == tyNode_BM);
+  uint8_t oldmark = ((typedhead_tyBM *) nod)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) nod)->hgc = MARKGC_BM;
+  gcobjmark_BM (gc, nod->nodt_conn);
+  unsigned size = ((typedsize_tyBM *) nod)->size;
+  for (unsigned ix = 0; ix < size; ix++)
+    gcmark_BM (gc, nod->nodt_sons[ix], depth + 1);
+}                               /* end nodegcmark_BM */

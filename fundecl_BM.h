@@ -13,6 +13,7 @@ static inline value_tyBM taggedint_BM (intptr_t i);
 
 static inline int valtype_BM (const value_tyBM v);
 static inline hash_tyBM valhash_BM (const value_tyBM v);
+static inline uint8_t valgcmark_BM (const value_tyBM v);
 static inline bool valequal_BM (const value_tyBM v1, const value_tyBM v2);
 extern bool valsamecontent_BM (const value_tyBM v1, const value_tyBM v2);
 
@@ -44,6 +45,7 @@ extern const tupleval_tyBM *maketuple_BM (objectval_tyBM ** arr,
                                           unsigned rawsiz);
 extern unsigned tuplesize_BM (const tupleval_tyBM * tup);
 extern objectval_tyBM *tuplecompnth_BM (const tupleval_tyBM * tup, int rk);
+extern void tuplegcmark_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup);
 
 extern const setval_tyBM *makeset_BM (const objectval_tyBM ** arr,
                                       unsigned rawsiz);
@@ -51,7 +53,7 @@ extern bool setcontains_BM (const objectval_tyBM * obelem,
                             const setval_tyBM * setv);
 extern unsigned setcardinal_BM (const setval_tyBM * setv);
 extern objectval_tyBM *setelemnth_BM (const setval_tyBM * set, int rk);
-
+extern void setgcmark (struct garbcoll_stBM *gc, setval_tyBM * set);
 
 
 static inline bool isobject_BM (const value_tyBM v);
@@ -148,10 +150,19 @@ static inline value_tyBM treenthson_BM (const value_tyBM tr, int rk);
 static inline value_tyBM closurenthson_BM (const value_tyBM clo, int rk);
 static inline value_tyBM nodenthson_BM (const value_tyBM nod, int rk);
 
+extern void nodegcmark_BM (struct garbcoll_stBM *gc, node_tyBM * nod,
+                           int depth);
 
 extern const closure_tyBM *makeclosure_BM (const objectval_tyBM * conn,
                                            unsigned nbclos,
                                            const value_tyBM * closvalarr);
+extern void closuregcmark_BM (struct garbcoll_stBM *gc, closure_tyBM * clos,
+                              int depth);
 
 extern void load_initial_BM (const char *);
+
+// internal routines
+void gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth);
+void gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj);
+
 #endif /*FUNDECL_BM_INCLUDED */

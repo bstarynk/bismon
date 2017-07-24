@@ -51,3 +51,63 @@ allocinternalty_BM (unsigned type, size_t sz)
   newizon->htyp = type;
   return newizon;
 }                               /* end allocinternalty_BM  */
+
+
+
+void
+gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  if (!val)
+    return;
+  if (depth >= MAXDEPTHGC_BM)
+    FATAL_BM ("too deep %u gcmark", depth);
+  int ty = valtype_BM (val);
+  if (!ty || ty == tyInt_BM)
+    return;
+  uint8_t oldmark = ((typedhead_tyBM *) val)->hgc;
+  if (oldmark)
+    return;
+  switch (ty)
+    {
+    case tyString_BM:
+      ((typedhead_tyBM *) val)->hgc = MARKGC_BM;
+      return;
+    case tyObject_BM:
+      gcobjmark_BM (gc, val);
+      return;
+    case tySet_BM:
+      setgcmark_BM (gc, (setval_tyBM *) val);
+      return;
+    case tyTuple_BM:
+      tuplegcmark_BM (gc, (tupleval_tyBM *) val);
+      return;
+    case tyNode_BM:
+      nodegcmark_BM (gc, (node_tyBM *) val, depth);
+      return;
+    case tyClosure_BM:
+      closuregcmark_BM (gc, (node_tyBM *) val, depth);
+      return;
+#warning should also gcmark secondary data types like list, hashset, ...
+    default:
+      FATAL_BM ("gcmark ty#%d unexpected for val@%p depth=%d",
+                ty, val, depth);
+    }
+}                               /* end gcmark_BM */
+
+
+void
+gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  if (valtype_BM ((const value_tyBM) obj) != tyObject_BM)
+    FATAL_BM ("gcobjmark bad obj@%p", obj);
+  uint8_t oldmark = ((typedhead_tyBM *) obj)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) obj)->hgc = MARKGC_BM;
+  assert (!hashsetobj_contains_BM (gc->gc_hset, obj));
+  gc->gc_hset = hashsetobj_add_BM (gc->gc_hset, obj);
+  assert (islist_BM (gc->gc_scanlist));
+  listappend_BM (gc->gc_scanlist, obj);
+}                               /* end gcobjmark_BM */

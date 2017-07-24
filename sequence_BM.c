@@ -70,6 +70,20 @@ tuplecompnth_BM (const tupleval_tyBM * tup, int rk)
   return (objectval_tyBM *) tup->seq_objs[rk];
 }                               /* end tuplecompnth_BM */
 
+void
+tuplegcmark_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (valtype_BM ((const value_tyBM) tup) == tyTuple_BM);
+  uint8_t oldmark = ((typedhead_tyBM *) tup)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) tup)->hgc = MARKGC_BM;
+  unsigned siz = ((typedsize_tyBM *) tup)->size;
+  for (unsigned ix = 0; ix < siz; ix++)
+    gcobjmark_BM (gc, (objectval_tyBM *) tup->seq_objs[ix]);
+}                               /* end tuplegcmark_BM */
+
 ////////////////////////////////////////////////////////////////
 ///// set support
 
@@ -217,6 +231,25 @@ setelemnth_BM (const setval_tyBM * set, int rk)
     return NULL;
   return (objectval_tyBM *) set->seq_objs[rk];
 }                               /* end setelemnth_BM */
+
+
+
+void
+setgcmark_BM (struct garbcoll_stBM *gc, setval_tyBM * set)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (valtype_BM ((const value_tyBM) set) == tySet_BM);
+  uint8_t oldmark = ((typedhead_tyBM *) set)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) set)->hgc = MARKGC_BM;
+  unsigned siz = ((typedsize_tyBM *) set)->size;
+  for (unsigned ix = 0; ix < siz; ix++)
+    gcobjmark_BM (gc, (objectval_tyBM *) set->seq_objs[ix]);
+}                               /* end setgcmark_BM */
+
+
+////////////////////////////////////////////////////////////////
 
 struct datavectval_stBM *
 datavect_grow_BM (struct datavectval_stBM *dvec, unsigned gap)

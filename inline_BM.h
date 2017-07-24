@@ -65,6 +65,24 @@ valtype_BM (const value_tyBM v)
   return tyNone_BM;
 }                               /* end valtype_BM */
 
+uint8_t
+valgcmark_BM (const value_tyBM v)
+{
+  if (!v)
+    return 0;
+  int ty = valtype_BM (v);
+  if (ty == tyInt_BM)
+    return 0xff;
+  else if (!ty)
+    return 0;
+  else
+    {
+      typedhead_tyBM *ht = (typedhead_tyBM *) v;
+      assert (ht->htyp != 0);
+      return ht->hgc;
+    }
+}                               /* end valgcmark_BM */
+
 hash_tyBM
 valhash_BM (const value_tyBM v)
 {
