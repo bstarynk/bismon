@@ -65,6 +65,38 @@ valtype_BM (const value_tyBM v)
   return tyNone_BM;
 }                               /* end valtype_BM */
 
+hash_tyBM
+valhash_BM (const value_tyBM v)
+{
+  if (!v)
+    return 0;
+  int ty = valtype_BM (v);
+  switch (ty)
+    {
+    case tyInt_BM:
+      {
+        uintptr_t i = getint_BM (v);
+        hash_tyBM hi = (i & 0x3fffffff) ^ (i % 132594613);
+        if (hi == 0)
+          hi = ((i % 594571) & 0xfffffff) + 17;
+        assert (hi != 0);
+        return hi;
+      }
+    case tyString_BM:
+    case tySet_BM:
+    case tyTuple_BM:
+    case tyNode_BM:
+    case tyClosure_BM:
+    case tyObject_BM:
+      return ((typedhead_tyBM *) v)->hash;
+    case tyUnspecified_BM:
+      return 8594623;
+    default:
+      return 0;
+    }
+}                               /* end valhash_BM */
+
+
 bool
 validserial63_BM (serial63_tyBM s)
 {
@@ -362,7 +394,7 @@ nodewidth_BM (const value_tyBM v)
   return ((const typedsize_tyBM *) v)->size;
 }
 
-const value_tyBM
+value_tyBM
 treenthson_BM (const value_tyBM tr, int rk)
 {
   if (!istree_BM (tr))
@@ -375,7 +407,7 @@ treenthson_BM (const value_tyBM tr, int rk)
   return NULL;
 }                               /* end treenthson_BM */
 
-const value_tyBM
+value_tyBM
 closurenthson_BM (const value_tyBM clo, int rk)
 {
   if (!isclosure_BM (clo))
@@ -383,12 +415,12 @@ closurenthson_BM (const value_tyBM clo, int rk)
   unsigned w = closurewidth_BM (clo);
   if (rk < 0)
     rk += (int) w;
-  if (rk >= 0 && rk < w)
+  if (rk >= 0 && rk < (int) w)
     return ((const closure_tyBM *) clo)->nodt_sons[rk];
   return NULL;
 }                               /* end closurenthson_BM */
 
-const value_tyBM
+value_tyBM
 nodenthson_BM (const value_tyBM nod, int rk)
 {
   if (!isnode_BM (nod))
@@ -396,7 +428,7 @@ nodenthson_BM (const value_tyBM nod, int rk)
   unsigned w = nodewidth_BM (nod);
   if (rk < 0)
     rk += (int) w;
-  if (rk >= 0 && rk < w)
+  if (rk >= 0 && rk < (int) w)
     return ((const node_tyBM *) nod)->nodt_sons[rk];
   return NULL;
 }                               /* end nodenthson_BM */

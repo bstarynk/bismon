@@ -12,6 +12,7 @@ static inline intptr_t getint_BM (value_tyBM v);
 static inline value_tyBM taggedint_BM (intptr_t i);
 
 static inline int valtype_BM (const value_tyBM v);
+static inline hash_tyBM valhash_BM (const value_tyBM v);
 
 static inline bool validserial63_BM (serial63_tyBM s);
 extern serial63_tyBM randomserial63_BM (void);
@@ -141,10 +142,9 @@ static inline unsigned treewidth_BM (const value_tyBM);
 static inline unsigned closurewidth_BM (const value_tyBM);
 static inline unsigned nodewidth_BM (const value_tyBM);
 
-static inline const value_tyBM treenthson_BM (const value_tyBM tr, int rk);
-static inline const value_tyBM closurenthson_BM (const value_tyBM clo,
-                                                 int rk);
-static inline const value_tyBM nodenthson_BM (const value_tyBM nod, int rk);
+static inline value_tyBM treenthson_BM (const value_tyBM tr, int rk);
+static inline value_tyBM closurenthson_BM (const value_tyBM clo, int rk);
+static inline value_tyBM nodenthson_BM (const value_tyBM nod, int rk);
 
 
 extern const closure_tyBM *makeclosure_BM (const objectval_tyBM * conn,
