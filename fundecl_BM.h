@@ -53,7 +53,7 @@ extern bool setcontains_BM (const objectval_tyBM * obelem,
                             const setval_tyBM * setv);
 extern unsigned setcardinal_BM (const setval_tyBM * setv);
 extern objectval_tyBM *setelemnth_BM (const setval_tyBM * set, int rk);
-extern void setgcmark (struct garbcoll_stBM *gc, setval_tyBM * set);
+extern void setgcmark_BM (struct garbcoll_stBM *gc, setval_tyBM * set);
 
 
 static inline bool isobject_BM (const value_tyBM v);
@@ -75,6 +75,9 @@ extern int64_t prime_above_BM (int64_t n);
 extern int64_t prime_below_BM (int64_t n);
 
 static inline bool isassoc_BM (value_tyBM);
+void assocgcmark_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc,
+                     int depth);
+
 static inline unsigned assoc_nbkeys_BM (const anyassoc_tyBM * assoc);
 
 extern void assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap);

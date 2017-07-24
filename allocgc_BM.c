@@ -88,6 +88,10 @@ gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
     case tyClosure_BM:
       closuregcmark_BM (gc, (node_tyBM *) val, depth);
       return;
+    case tydata_assocpairs_BM:
+    case tydata_assocbucket_BM:
+      assocgcmark_BM (gc, (anyassoc_tyBM *) val, depth);
+      return;
 #warning should also gcmark secondary data types like list, hashset, ...
     default:
       FATAL_BM ("gcmark ty#%d unexpected for val@%p depth=%d",

@@ -516,3 +516,61 @@ assoc_removeattr_BM (anyassoc_tyBM * assoc, const objectval_tyBM * obattr)
     }
   return assoc;                 // key not found
 }                               /* end assoc_removeattr_BM */
+
+void
+assocgcmark_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc, int depth)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (isassoc_BM (assoc));
+  uint8_t oldmark = ((typedhead_tyBM *) assoc)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) assoc)->hgc = MARKGC_BM;
+  if (valtype_BM ((const value_tyBM) assoc) == tydata_assocbucket_BM)
+    {
+      unsigned nbuckets = ((typedhead_tyBM *) assoc)->rlen;
+      for (unsigned buckix = 0; buckix < nbuckets; buckix++)
+        {
+          struct assocpairs_stBM *curbuckpair =
+            ((struct assocbucket_stBM *) assoc)->abuck_pairs[buckix];
+          if (curbuckpair)
+            {
+              assert (valtype_BM (curbuckpair) == tydata_assocpairs_BM);
+              uint8_t oldbuckmark = ((typedhead_tyBM *) curbuckpair)->hgc;
+              if (oldbuckmark)
+                continue;
+              ((typedhead_tyBM *) curbuckpair)->hgc = MARKGC_BM;
+              unsigned bucklen = ((typedhead_tyBM *) curbuckpair)->rlen;
+              for (unsigned pix = 0; pix < bucklen; pix++)
+                {
+                  const objectval_tyBM *curkeyob =
+                    curbuckpair->apairs_ent[pix].asso_keyob;
+                  value_tyBM curval = curbuckpair->apairs_ent[pix].asso_val;
+                  if (curkeyob && curval)
+                    {
+                      gcobjmark_BM (gc, curkeyob);
+                      gcmark_BM (gc, curval, depth + 1);
+                    }
+                }
+            }
+        }
+    }
+  else if (valtype_BM ((const value_tyBM) assoc) == tydata_assocpairs_BM)
+    {
+      const struct assocpairs_stBM *curpairs = assoc;
+      unsigned bucklen = ((typedhead_tyBM *) curpairs)->rlen;
+      for (unsigned pix = 0; pix < bucklen; pix++)
+        {
+          const objectval_tyBM *curkeyob =
+            curpairs->apairs_ent[pix].asso_keyob;
+          value_tyBM curval = curpairs->apairs_ent[pix].asso_val;
+          if (curkeyob && curval)
+            {
+              gcobjmark_BM (gc, curkeyob);
+              gcmark_BM (gc, curval, depth + 1);
+            }
+        }
+    }
+  else
+    FATAL_BM ("unexpected assoc @%p", assoc);
+}                               /* end assocgcmark_BM */
