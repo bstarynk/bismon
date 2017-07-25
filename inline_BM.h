@@ -473,5 +473,21 @@ isparser_BM (const value_tyBM v)
   return ty == tydata_parser_BM;
 }                               /* end isparser_BM */
 
+unsigned
+parserlineno_BM (const struct parser_stBM *pars)
+{
+  if (isparser_BM (pars))
+    return pars->pars_lineno;
+  return 0;
+}
+
+unsigned
+parsercolpos_BM (const struct parser_stBM *pars)
+{
+  if (isparser_BM (pars))
+    return pars->pars_colpos;
+  return 0;
+}
+
 
 #endif /*INLINE_BM_INCLUDED */

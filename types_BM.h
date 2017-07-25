@@ -287,7 +287,7 @@ struct parser_stBM              /* for tydata_parser_BM */
   ssize_t pars_linelen;         /* result of getline */
   unsigned pars_lineno;         /* line number of pars_linebuf */
   unsigned pars_colindex;       /* byte index in pars_linebuf */
-  unsigned pars_colpos;         /* UTF-8 position */
+  unsigned pars_colpos;         /* UTF-8 position in current line */
   unsigned pars_memolsize;      /* allocated size of pars_memolines  */
   unsigned pars_memolcount;     /* used count of pars_memolines  */
   struct memolineoffset_stBM *pars_memolines;   // calloc-ed

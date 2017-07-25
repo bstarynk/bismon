@@ -181,6 +181,10 @@ static inline bool isparser_BM (const value_tyBM v);
 extern void parsergcmark_BM (struct garbcoll_stBM *gc,
                              struct parser_stBM *pars);
 extern bool parsernextline_BM (struct parser_stBM *pars);       // return false on EOL
+static inline unsigned parserlineno_BM (const struct parser_stBM *pars);
+static inline unsigned parsercolpos_BM (const struct parser_stBM *pars);
+extern void parserseek_BM (struct parser_stBM *pars, unsigned line,
+                           unsigned col);
 
 
 // internal routines

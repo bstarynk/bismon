@@ -107,3 +107,65 @@ parsernextline_BM (struct parser_stBM *pars)
     }
   return false;
 }                               /* end parsernextline_BM */
+
+void
+parserseek_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
+{
+  if (!isparser_BM (pars))
+    return;
+  if (lineno != pars->pars_lineno)
+    {
+      unsigned memolcnt = pars->pars_memolcount;
+      unsigned lo = 0, hi = memolcnt;
+      struct memolineoffset_stBM *memolines = pars->pars_memolines;
+      while (lo + 8 < hi)
+        {
+          unsigned md = (lo + hi) / 2;
+          if (memolines[md].memli_lineno < lineno)
+            lo = md;
+          else
+            hi = md;
+        }
+      long startoff = 0;
+      int startlineno = 0;
+      int ix = 0;
+      for (ix = (int) (hi - 1); ix >= (int) lo; ix--)
+        {
+          if (memolines[ix].memli_lineno <= lineno)
+            {
+              startoff = memolines[ix].memli_off;
+              startlineno = memolines[ix].memli_lineno;
+              break;
+            }
+        }
+      if (fseek (pars->pars_file, SEEK_SET, startoff) < 0)
+        FATAL_BM ("fseek startoff=%ld failure", startoff);
+      pars->pars_lineno = startlineno;
+      do
+        {
+          pars->pars_linelen =
+            getline (&pars->pars_linebuf, &pars->pars_linesiz,
+                     pars->pars_file);
+          if (pars->pars_linelen < 0)
+            FATAL_BM ("getline failed line#%d", pars->pars_lineno);
+          if (pars->pars_lineno == lineno)
+            break;
+          pars->pars_lineno++;
+        }
+      while (lineno < pars->pars_lineno);
+    }
+  else
+    {                           //lineno == pars->pars_lineno
+      pars->pars_colindex = 0;
+      pars->pars_colpos = 0;
+    }
+  if (!g_utf8_validate (pars->pars_linebuf, pars->pars_linelen, NULL))
+    FATAL_BM ("invalid UTF8 line#%d", pars->pars_lineno);
+  while (pars->pars_colpos < colpos)
+    {
+      if (pars->pars_colindex >= pars->pars_linelen)
+        break;
+      const char *pc = pars->pars_linebuf + pars->pars_colindex;
+#warning parserseek_BM incomplete
+    }
+}                               /* end of parserseek_BM */
