@@ -271,6 +271,8 @@ struct garbcoll_stBM
 {
   uint32_t gc_magic;
   uint32_t gc_spareunsigned;
+  /* both data structures below can be GC allocated, because they
+     would never be scanned by the GC. */
   // the list of objects to be scanned
   struct listtop_stBM *gc_scanlist;
   // the hashset of objects added into previous list

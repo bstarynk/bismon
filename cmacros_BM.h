@@ -7,6 +7,7 @@
 #define GCMAGIC_BM 24501383     /*0x175dc87 */
 
 #define LOADERMAGIC_BM 281610361        /*0x10c90879 */
+#define MAXLOADEDFILES_BM 64
 
 #define MINSERIAL_BM (62*62)    /*3884 */
 #define MAXSERIAL_BM ((uint64_t)10 * 62 * (62* 62*62) * (62*62*62) * (62*62*62))        /*8392993658683402240 */
@@ -19,9 +20,9 @@
 #define MAXSIZE_BM ((1<<30)-1)
 #define TINYSIZE_BM 15
 
-#define FATAL_AT_BIS_BM(Fil,Lin,Fmt,...) do {		\
-    fprintf(stderr, "BM FATAL:%s:%d: <%s> " Fmt "\n",	\
-	    Fil, Lin, __func__, ##__VA_ARGS__);		\
+#define FATAL_AT_BIS_BM(Fil,Lin,Fmt,...) do {                   \
+    fprintf(stderr, "BM FATAL:%s:%d: <%s>\n " Fmt "\n\n",       \
+            Fil, Lin, __func__, ##__VA_ARGS__);                 \
     abort_BM(); } while(0)
 
 #define FATAL_AT_BM(Fil,Lin,Fmt,...) FATAL_AT_BIS_BM(Fil,Lin,Fmt,##__VA_ARGS__)

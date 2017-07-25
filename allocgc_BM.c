@@ -151,7 +151,8 @@ gcframemark_BM (struct garbcoll_stBM *gc, struct stackframe_stBM *stkfram,
         }
       else if (((typedhead_tyBM *) stkfram)->htyp == tydata_SpecialFrame_BM)
         {
-          struct specialframe_stBM *specfram = stkfram;
+          struct specialframe_stBM *specfram
+            = (struct specialframe_stBM *) stkfram;
           if (specfram->specfram_descr)
             gcobjmark_BM (gc, specfram->specfram_descr);
           if (specfram->specfram_markerout)
