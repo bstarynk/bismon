@@ -170,6 +170,8 @@ extern void closuregcmark_BM (struct garbcoll_stBM *gc, closure_tyBM * clos,
                               int depth);
 
 extern void load_initial_BM (const char *);
+extern void loadergcmark_BM (struct garbcoll_stBM *gc,
+                             struct loader_stBM *ld);
 
 // internal routines
 void gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth);

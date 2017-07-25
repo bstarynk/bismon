@@ -13,6 +13,15 @@ ld_cmp_BM (gconstpointer a, gconstpointer b,
 }                               /* end of ld_cmp_BM */
 
 
+void
+loadergcmark_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (valtype_BM ((const value_tyBM) ld) == tydata_loader_BM);
+  assert (ld->ld_magic == LOADERMAGIC_BM);
+  gcmark_BM (gc, ld->ld_hset, 0);
+}                               /* end loadergcmark_BM */
+
 
 void
 load_initial_BM (const char *ldirpath)

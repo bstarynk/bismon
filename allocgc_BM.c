@@ -98,6 +98,9 @@ gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
     case tydata_listtop_BM:
       listgcmark_BM (gc, (struct listtop_stBM *) val, depth);
       return;
+    case tydata_loader_BM:
+      loadergcmark_BM (gc, (struct loader_stBM *) val);
+      return;
     default:
       FATAL_BM ("gcmark ty#%d unexpected for val@%p depth=%d",
                 ty, val, depth);

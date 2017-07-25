@@ -50,6 +50,7 @@ enum gcdataenum_BM
   tydata_assocpairs_BM,
   tydata_hashsetobj_BM,
   tydata_listtop_BM,
+  tydata_loader_BM,
   //
   tydata__SpareA_BM,
   tydata__SpareB_BM,
@@ -139,9 +140,10 @@ enum space_enBM
   UserGsp_BM = 9,
 };
 
-struct datavectval_BM;          /*forward */
-struct assocbucket_BM;          /*forward */
-struct assocpairs_BM;           /*forward */
+struct datavectval_stBM;        /*forward */
+struct assocbucket_stBM;        /*forward */
+struct assocpairs_stBM;         /*forward */
+struct loader_stBM;             /* forward */
 
 typedef void anyassoc_tyBM;
 
@@ -151,7 +153,7 @@ struct object_stBM              /*tyObject_BM */
   rawid_tyBM ob_id;
   uint8_t ob_space;
   double ob_mtime;
-  struct datavectval_BM *ob_compvec;
+  struct datavectval_stBM *ob_compvec;
   anyassoc_tyBM *ob_attrassoc;
   // other fields are missing
 };
@@ -239,6 +241,16 @@ struct specialframe_stBM        // for tydata_SpecialFrame_BM
   void *specfram_cdata[];
 };
 
+struct loader_stBM
+{                               // for tydata_loader_BM
+  typedhead_tyBM pa;            // rlen is unused
+  unsigned ld_magic;            /* always LOADERMAGIC_BM */
+  unsigned ld_maxnum;           /* highest number of store*.bismon files */
+  struct hashsetobj_stBM *ld_hset;
+  GTree *ld_tree;               // tree mapping ints to file paths
+  char *ld_todopath;            // mallocated path of store_todo.bismon
+  char *ld_dir;                 /* mallocated directory path */
+};                              /* end loader_stBM */
 
 struct garbcoll_stBM
 {

@@ -6,6 +6,7 @@
 #define MARKGC_BM 1
 #define GCMAGIC_BM 24501383     /*0x175dc87 */
 
+#define LOADERMAGIC_BM 281610361        /*0x10c90879 */
 
 #define MINSERIAL_BM (62*62)    /*3884 */
 #define MAXSERIAL_BM ((uint64_t)10 * 62 * (62* 62*62) * (62*62*62) * (62*62*62))        /*8392993658683402240 */
