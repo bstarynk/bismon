@@ -11,17 +11,21 @@ makeparser_of_file_BM (FILE * f)
   pars->pars_file = f;
   pars->pars_filemem = NULL;
   pars->pars_filesize = 0;
+  pars->pars_path = "";
   unsigned inilinsiz = 256;
   char *linebuf = calloc (1, inilinsiz);
   if (!linebuf)
     FATAL_BM ("linebuf calloc failed %d bytes (%m)", inilinsiz);
   pars->pars_linebuf = linebuf;
   pars->pars_linesiz = inilinsiz;
+  pars->pars_linebuf[0] = (char) 0;
   pars->pars_linelen = getline (&pars->pars_linebuf, &pars->pars_linesiz, f);
   if (pars->pars_linelen < 0)
     pars->pars_lineno = 0;
   else
     pars->pars_lineno = 1;
+  if (!g_utf8_validate (pars->pars_linebuf, pars->pars_linelen, NULL))
+    FATAL_BM ("invalid UTF8 line %s:%d", pars->pars_path, pars->pars_lineno);
   pars->pars_colindex = 0;
   pars->pars_colpos = 0;
   unsigned inimemosiz = 32;
@@ -103,6 +107,9 @@ parsernextline_BM (struct parser_stBM *pars)
           pars->pars_memolcount = curmemlcount + 1;
         }
       pars->pars_lineno++;
+      if (!g_utf8_validate (pars->pars_linebuf, pars->pars_linelen, NULL))
+        FATAL_BM ("invalid UTF8 line %s:%d", pars->pars_path,
+                  pars->pars_lineno);
       return true;
     }
   return false;
@@ -121,7 +128,7 @@ parserseek_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
       while (lo + 8 < hi)
         {
           unsigned md = (lo + hi) / 2;
-          if (memolines[md].memli_lineno < lineno)
+          if (memolines[md].memli_lineno < (int) lineno)
             lo = md;
           else
             hi = md;
@@ -131,7 +138,7 @@ parserseek_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
       int ix = 0;
       for (ix = (int) (hi - 1); ix >= (int) lo; ix--)
         {
-          if (memolines[ix].memli_lineno <= lineno)
+          if (memolines[ix].memli_lineno <= (int) lineno)
             {
               startoff = memolines[ix].memli_off;
               startlineno = memolines[ix].memli_lineno;
@@ -160,12 +167,17 @@ parserseek_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
       pars->pars_colpos = 0;
     }
   if (!g_utf8_validate (pars->pars_linebuf, pars->pars_linelen, NULL))
-    FATAL_BM ("invalid UTF8 line#%d", pars->pars_lineno);
+    FATAL_BM ("invalid UTF8 line %s:%d", pars->pars_path, pars->pars_lineno);
+  const char *curlin = pars->pars_linebuf;
   while (pars->pars_colpos < colpos)
     {
       if (pars->pars_colindex >= pars->pars_linelen)
         break;
-      const char *pc = pars->pars_linebuf + pars->pars_colindex;
-#warning parserseek_BM incomplete
+      const char *pc = curlin + pars->pars_colindex;
+      if (!*pc)
+        break;
+      const char *nextpc = g_utf8_next_char (pc);
+      pars->pars_colindex = nextpc - curlin;
+      pars->pars_colpos++;
     }
 }                               /* end of parserseek_BM */
