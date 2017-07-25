@@ -219,13 +219,28 @@ typedef struct nodetree_stBM closure_tyBM;      /* for tyClosure_BM */
 
 struct stackframe_stBM
 {                               // for tydata_StackFrame_BM, sitting on the callstack
-  typedsize_tyBM pA;            // size is the number of values
-  struct stackframe_stBM *stkfram_next;
+  typedhead_tyBM stkfram_pA;    // rlen is the number of values
+  struct stackframe_stBM *stkfram_prev;
   objectval_tyBM *stkfram_descr;
   int stkfram_state;
   int stkfram_xtra;
   value_tyBM stkfram_locals[];
 };
+
+#define LOCALFRAME_BM(Prev,Descr,...) struct                    \
+  { struct stackframe_stBM __frame; __VA_ARGS__; } _ =          \
+    { .__frame = {.stkfram_pA=                                  \
+                  (typedhead_tyBM)                              \
+                  {.htyp= tydata_StackFrame_BM,                 \
+                   .hgc=0,                                      \
+                   .rlen=(sizeof(_)                             \
+                          - offsetof(struct stackframe_stBM,    \
+                                     stkfram_locals))           \
+                   /sizeof(value_tyBM)},                        \
+                  .stkfram_prev=(Prev),                         \
+                  .stkfram_descr=(Descr),                       \
+                  .stkfram_state=0,                             \
+                  .stkfram_xtra=0 } }
 
 struct specialframe_stBM;
 struct garbcoll_stBM;
@@ -233,8 +248,8 @@ typedef void specialframe_marker_sigBM (struct garbcoll_stBM *,
                                         struct specialframe_stBM *);
 struct specialframe_stBM        // for tydata_SpecialFrame_BM
 {
-  typedsize_tyBM pA;            // size is unused
-  struct stackframe_stBM *specfram_next;
+  typedhead_tyBM pA;            // rlen is unused
+  struct stackframe_stBM *specfram_prev;
   objectval_tyBM *specfram_descr;
   specialframe_marker_sigBM *specfram_markerout;
   intptr_t specfram_intp;

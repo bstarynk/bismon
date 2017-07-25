@@ -133,7 +133,7 @@ gcframemark_BM (struct garbcoll_stBM *gc, struct stackframe_stBM *stkfram,
     FATAL_BM ("too deep %u gcframemark", depth);
   unsigned framcnt = 0;
   // it is on purpose that we don't test the oldmark or set it
-  for (; stkfram; stkfram = stkfram->stkfram_next)
+  for (; stkfram; stkfram = stkfram->stkfram_prev)
     {
       // this really should never happen
       if (framcnt++ > MAXSIZE_BM / 4)
@@ -142,7 +142,7 @@ gcframemark_BM (struct garbcoll_stBM *gc, struct stackframe_stBM *stkfram,
         {
           if (stkfram->stkfram_descr)
             gcobjmark_BM (gc, stkfram->stkfram_descr);
-          unsigned framsize = ((typedsize_tyBM *) stkfram)->size;
+          unsigned framsize = ((typedhead_tyBM *) stkfram)->rlen;
           if (framsize > MAXSIZE_BM / 2)
             FATAL_BM ("too big framesize %u, curfram=%p, framcnt#%d",
                       framsize, stkfram, framcnt);

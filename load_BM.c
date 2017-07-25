@@ -101,7 +101,7 @@ load_initial_BM (const char *ldirpath)
   ld->ld_maxnum = maxnum;
   ld->ld_hset =
     hashsetobj_grow_BM (NULL, 2 * BM_NB_PREDEFINED + maxnum * 100);
-  ld->ld_storepatharr = calloc (maxnum + 1, sizeof (void *));
+  ld->ld_storepatharr = calloc (maxnum + 2, sizeof (void *));
   if (!ld->ld_storepatharr)
     FATAL_BM ("cannot calloc for %d store files (%m)", maxnum);
   for (int ix = 1; ix <= maxnum; ix++)
@@ -115,11 +115,99 @@ load_initial_BM (const char *ldirpath)
   if (!ld->ld_dir)
     FATAL_BM ("cannot strdup dir %s (%m)", ldirpath);
   g_tree_unref (trent), trent = NULL;
-  // should create a loader, and probably have a  frame for it.
-#warning load_initial_BM incomplete
+  {
+    LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
+                   struct loader_stBM *curld);
+    _.curld = ld;
+    doload_BM ((struct stackframe_stBM *) &_, ld);
+  }
+  free (ld->ld_dir), ld->ld_dir = NULL;
+  free (ld->ld_todopath), ld->ld_todopath = todopath = NULL;
+  for (int ix = 1; ix <= maxnum; ix++)
+    free (ld->ld_storepatharr[ix]), ld->ld_storepatharr[ix] = NULL;
+  ld->ld_hset = NULL;
+  memset (ld, 0, sizeof (*ld)), ld = NULL;
 }                               /* end load_initial_BM */
 
-void
-doload_BM (struct stackframe_stBM *fr, struct loader_stBM *ld)
+
+
+
+static void
+load_first_pass_BM (struct loader_stBM *ld, int ix)
 {
+  assert (ld && ld->ld_magic == LOADERMAGIC_BM);
+  assert (ix >= 0 && ix <= (int) ld->ld_maxnum);
+  char *curldpath = (ix > 0) ? (ld->ld_storepatharr[ix]) : ld->ld_todopath;
+  assert (curldpath != NULL);
+  size_t linsiz = 256;
+  char *linbuf = malloc (linsiz);
+  if (!linbuf)
+    FATAL_BM ("malloc failed linsiz=%zd (%m)", linsiz);
+  memset (linbuf, 0, linsiz);
+  FILE *fil = fopen (curldpath, "r");
+  if (!fil)
+    FATAL_BM ("fopen %s failed (%m)", curldpath);
+  int lincnt = 0;
+  int nbobjdef = 0;
+  bool gotstartline = false;
+  do
+    {
+      ssize_t linlen = getline (&linbuf, &linsiz, fil);
+      if (linlen < 0)
+        {
+          if (!feof (fil))
+            FATAL_BM ("getline %s:%d failed (%m)", curldpath, lincnt);
+          break;
+        }
+      linbuf[linlen] = (char) 0;
+      lincnt++;
+      if (!strncmp (linbuf, "!!STARTBISMON", strlen ("!!STARTBISMON")))
+        {
+          if (gotstartline)
+            FATAL_BM ("multiple !!STARTBISMON lines near %s:%d", curldpath,
+                      lincnt);
+          gotstartline = true;
+        }
+      /* object definition lines are !*<id> e.g. !*_7D8xcWnEiys_8oqOVSkCxkA */
+      else if (linbuf[0] == '!' && gotstartline && linbuf[1] == '*'
+               && linbuf[2] == '_' && isdigit (linbuf[3]))
+        {
+          const char *endid = NULL;
+          rawid_tyBM id = parse_rawid_BM (linbuf + 2, &endid);
+          if (hashid_BM (id) && endid >= linbuf + 2 * SERIALDIGITS_BM
+              && (*endid == (char) 0 || isspace (*endid)))
+            {
+              objectval_tyBM *newobj = makeobjofid_BM (id);
+              if (hashsetobj_contains_BM (ld->ld_hset, newobj))
+                {
+                  char idbuf32[32] = "";
+                  idtocbuf32_BM (id, idbuf32);
+                  FATAL_BM ("duplicate id %s near %s:%d", idbuf32, curldpath,
+                            lincnt);
+                };
+              ld->ld_hset = hashsetobj_add_BM (ld->ld_hset, newobj);
+              nbobjdef++;
+            }
+        }
+    }
+  while (!feof (fil));
+  if (!gotstartline)
+    FATAL_BM ("load file %s without any !!STARTBISMON line", curldpath);
+  if (nbobjdef == 0 && ix > 0)
+    FATAL_BM ("no object definition in %s\n", curldpath);
+  free (linbuf), linbuf = 0;
+  fclose (fil);
+}                               /* end load_first_pass_BM */
+
+
+void
+doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
+{
+  assert (ld && ld->ld_magic == LOADERMAGIC_BM);
+  assert (_parentframe != NULL);
+  for (int ix = 1; ix <= (int) ld->ld_maxnum; ix++)
+    if (ld->ld_storepatharr[ix])
+      load_first_pass_BM (ld, ix);
+  if (ld->ld_todopath)
+    load_first_pass_BM (ld, 0);
 }                               /* end doload_BM */
