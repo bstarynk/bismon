@@ -37,14 +37,14 @@ indent: .indent.pro
 	  $(INDENT) $(INDENTFLAGS) $$h ; \
 	  $(INDENT) $(INDENTFLAGS) $$h ; \
 	  if cmp -s $$h $$h% ; then echo unchanged $$h ; mv $$h% $$h ; \
-          else echo indented $$h ; fi \
+          else echo '*indented' $$h ; fi \
 	done
 	@for c in $(BM_COLDSOURCES); do \
 	  cp -a $$c $$c% ; \
 	  $(INDENT) $(INDENTFLAGS) $$c ; \
 	  $(INDENT) $(INDENTFLAGS) $$c ; \
 	  if cmp -s $$c $$c% ; then echo unchanged $$c ; mv $$c% $$c ; \
-	  else echo indented $$c ; fi ; \
+	  else echo '*indented' $$c ; fi ; \
 	done
 
 ## we could use git rev-parse HEAD for the lastgitcommit, but it does

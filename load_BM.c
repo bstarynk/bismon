@@ -22,6 +22,7 @@ loadergcmark_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
   gcmark_BM (gc, ld->ld_hset, 0);
 }                               /* end loadergcmark_BM */
 
+static void doload_BM (struct stackframe_stBM *fr, struct loader_stBM *ld);
 
 void
 load_initial_BM (const char *ldirpath)
@@ -87,8 +88,38 @@ load_initial_BM (const char *ldirpath)
     FATAL_BM
       ("no file matching store[0-9]+.bismon or store[0-9]+_*.bismon in loaded directory %s",
        ldirpath);
+  if (maxnum > 1024)
+    FATAL_BM ("too many store files %d to load", maxnum);
   printf ("got %d store entries in loaded directory %s\n",
           (int) g_tree_nnodes (trent), ldirpath);
-  // should create a loader, and probably have a special frame for it.
+  struct loader_stBM *ld =      //
+    allocgcty_BM (tydata_loader_BM, sizeof (struct loader_stBM));
+  // ((typedhead_tyBM *) ld)->htyp = tydata_loader_BM;
+  // ((typedhead_tyBM *) ld)->hgc = 0;
+  ((typedhead_tyBM *) ld)->rlen = 0;
+  ld->ld_magic = LOADERMAGIC_BM;
+  ld->ld_maxnum = maxnum;
+  ld->ld_hset =
+    hashsetobj_grow_BM (NULL, 2 * BM_NB_PREDEFINED + maxnum * 100);
+  ld->ld_storepatharr = calloc (maxnum + 1, sizeof (void *));
+  if (!ld->ld_storepatharr)
+    FATAL_BM ("cannot calloc for %d store files (%m)", maxnum);
+  for (int ix = 1; ix <= maxnum; ix++)
+    {
+      char *pa = g_tree_lookup (trent, (void *) (intptr_t) ix);
+      if (pa)
+        ld->ld_storepatharr[ix] = pa;
+    }
+  ld->ld_todopath = todopath;
+  ld->ld_dir = strdup (ldirpath);
+  if (!ld->ld_dir)
+    FATAL_BM ("cannot strdup dir %s (%m)", ldirpath);
+  g_tree_unref (trent), trent = NULL;
+  // should create a loader, and probably have a  frame for it.
 #warning load_initial_BM incomplete
 }                               /* end load_initial_BM */
+
+void
+doload_BM (struct stackframe_stBM *fr, struct loader_stBM *ld)
+{
+}                               /* end doload_BM */
