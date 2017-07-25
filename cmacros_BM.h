@@ -20,6 +20,8 @@
 #define MAXSIZE_BM ((1<<30)-1)
 #define TINYSIZE_BM 15
 
+#define PARSERMEMOLINERATIO_BM 16
+
 #define FATAL_AT_BIS_BM(Fil,Lin,Fmt,...) do {                   \
     fprintf(stderr, "BM FATAL:%s:%d: <%s>\n " Fmt "\n\n",       \
             Fil, Lin, __func__, ##__VA_ARGS__);                 \

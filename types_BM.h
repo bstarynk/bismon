@@ -280,7 +280,7 @@ struct parser_stBM              /* for tydata_parser_BM */
   typedhead_tyBM pa;            // rlen is unused
   FILE *pars_file;
   value_tyBM pars_cvalue;       /* client value */
-  char *pars_filemem;           /* when using fmemopen */
+  const char *pars_filemem;     /* when using fmemopen */
   size_t pars_filesize;         /* when using fmemopen */
   char *pars_linebuf;           /* given by getline */
   size_t pars_linesiz;          /* for getline */
