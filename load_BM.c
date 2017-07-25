@@ -193,9 +193,11 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
 {
   assert (ld && ld->ld_magic == LOADERMAGIC_BM);
   assert (_parentframe != NULL);
+  /// run the first pass to create every object
   for (int ix = 1; ix <= (int) ld->ld_maxnum; ix++)
     if (ld->ld_storepatharr[ix])
       load_first_pass_BM (ld, ix);
   if (ld->ld_todopath)
     load_first_pass_BM (ld, 0);
+  /// run the second pass to fill objects, etc...
 }                               /* end doload_BM */

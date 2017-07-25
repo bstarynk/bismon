@@ -466,4 +466,12 @@ nodenthson_BM (const value_tyBM nod, int rk)
 }                               /* end nodenthson_BM */
 
 
+bool
+isparser_BM (const value_tyBM v)
+{
+  int ty = valtype_BM (v);
+  return ty == tydata_parser_BM;
+}                               /* end isparser_BM */
+
+
 #endif /*INLINE_BM_INCLUDED */

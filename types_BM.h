@@ -51,6 +51,7 @@ enum gcdataenum_BM
   tydata_hashsetobj_BM,
   tydata_listtop_BM,
   tydata_loader_BM,
+  tydata_parser_BM,
   //
   tydata__SpareA_BM,
   tydata__SpareB_BM,
@@ -265,7 +266,32 @@ struct loader_stBM              // malloc-ed then free-d at load time
   char **ld_storepatharr;       /* calloc-ed array of malloc-ed string paths */
   char *ld_todopath;            // malloc-ed path of store_todo.bismon
   char *ld_dir;                 /* malloc-ed directory path */
-};                              /* end loader_stBM */
+};                              /* end struct loader_stBM */
+
+struct memolineoffset_stBM
+{
+  long memli_off;               /* offset in file */
+  int memli_lineno;             /* current file number */
+  int memli_linebylen;          /* length of current file */
+};
+
+struct parser_stBM              /* for tydata_parser_BM */
+{
+  typedhead_tyBM pa;            // rlen is unused
+  FILE *pars_file;
+  value_tyBM pars_cvalue;       /* client value */
+  char *pars_filemem;           /* when using fmemopen */
+  size_t pars_filesize;         /* when using fmemopen */
+  char *pars_linebuf;           /* given by getline */
+  size_t pars_linesiz;          /* for getline */
+  ssize_t pars_linelen;         /* result of getline */
+  unsigned pars_lineno;         /* line number of pars_linebuf */
+  unsigned pars_colindex;       /* byte index in pars_linebuf */
+  unsigned pars_colpos;         /* UTF-8 position */
+  unsigned pars_memolsize;      /* allocated size of pars_memolines  */
+  unsigned pars_memolcount;     /* used count of pars_memolines  */
+  struct memolineoffset_stBM *pars_memolines;   // calloc-ed
+};                              /* end struct parser_stBM */
 
 struct garbcoll_stBM
 {

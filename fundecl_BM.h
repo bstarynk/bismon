@@ -173,6 +173,14 @@ extern void load_initial_BM (const char *);
 extern void loadergcmark_BM (struct garbcoll_stBM *gc,
                              struct loader_stBM *ld);
 
+//// parsing
+extern struct parser_stBM *makeparser_of_file_BM (FILE * f);
+extern struct parser_stBM *makeparser_memopen_BM (const char *filemem,
+                                                  long size);
+static inline bool isparser_BM (const value_tyBM v);
+extern void parsergcmark_BM (struct garbcoll_stBM *gc,
+                             struct parser_stBM *pars);
+
 // internal routines
 void gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth);
 void gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj);
