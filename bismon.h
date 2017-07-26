@@ -2,7 +2,10 @@
 #ifndef BISMON_INCLUDED
 #define BISMON_INCLUDED
 
-#define _GNU_SOURCE
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE 1
+#endif
+
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>

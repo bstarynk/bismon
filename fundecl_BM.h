@@ -19,7 +19,12 @@ extern bool valsamecontent_BM (const value_tyBM v1, const value_tyBM v2);
 
 static inline bool validserial63_BM (serial63_tyBM s);
 extern serial63_tyBM randomserial63_BM (void);
+#if __cplusplus
+extern int serial63tocbuf16_BM (serial63_tyBM s, char cbuf[]);
+#else
 extern int serial63tocbuf16_BM (serial63_tyBM s, char cbuf[static 16]);
+#endif
+
 extern serial63_tyBM parse_serial63_BM (const char *buf, const char **pend);
 static inline unsigned bucknumserial63_BM (serial63_tyBM s);
 static inline uint64_t buckoffserial63_BM (serial63_tyBM s);
@@ -29,7 +34,11 @@ static inline bool validid_BM (rawid_tyBM id);
 static inline hash_tyBM hashid_BM (rawid_tyBM id);
 static inline int cmpid_BM (rawid_tyBM id1, rawid_tyBM id2);
 static inline bool equalid_BM (rawid_tyBM id1, rawid_tyBM id2);
+#if __cplusplus
+extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[]);
+#else
 extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32]);
+#endif
 extern rawid_tyBM parse_rawid_BM (const char *buf, const char **pend);
 extern void *allocgcty_BM (unsigned type, size_t sz);
 extern void *allocinternalty_BM (unsigned type, size_t sz);
@@ -207,7 +216,7 @@ void gcframemark_BM (struct garbcoll_stBM *gc,
 void gctokenmark_BM (struct garbcoll_stBM *gc, struct parstoken_stBM *tok);
 
 // names
-void initialize_predefined_names_BM (void);
+extern void initialize_predefined_names_BM (void);
 extern bool validname_BM (const char *nam);
 extern const objectval_tyBM *findnamedobj_BM (const char *nam);
 extern const char *findobjectname_BM (const objectval_tyBM * obj);

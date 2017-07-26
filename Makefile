@@ -2,8 +2,10 @@
 CC=gcc
 CCACHE= ccache
 WARNFLAGS= -Wall -Wextra -Wmissing-prototypes -fdiagnostics-color=auto
+SKIPCXXWARNFLAGS= -Wmissing-prototypes
 OPTIMFLAGS= -O1 -g3
 CFLAGS= -std=gnu11 $(WARNFLAGS) $(PREPROFLAGS) $(OPTIMFLAGS)
+CXXFLAGS= -std=gnu++14 $(filter-out $(SKIPCXXWARNFLAGS), $(WARNFLAGS)) $(PREPROFLAGS) $(OPTIMFLAGS)
 INDENT= indent
 ASTYLE= astyle
 MD5SUM= md5sum
@@ -18,12 +20,13 @@ RM= rm -fv
 
 
 CSOURCES= $(sort  $(wildcard [a-zA-Z]*.c))
+CXXSOURCES= $(sort  $(wildcard [a-zA-Z]*.cc))
 BM_HEADERS= $(sort $(wildcard *_BM.h))
 BM_COLDSOURCES= $(sort $(wildcard *_BM.c))
 GENERATED_HEADERS= $(sort $(wildcard _[a-z0-9]*.h))
 GENERATED_CSOURCES= $(sort $(wildcard _[a-z0-9]*.c))
 
-OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES))
+OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst %.cc,%.o,$(CXXSOURCES))
 
 .PHONY: all clean indent count
 all: bismon
@@ -72,10 +75,13 @@ $(OBJECTS): bismon.h.gch
 %_BM.o: %_BM.c bismon.h.gch
 	$(CCACHE) $(COMPILE.c) $(CFLAGS) -c $< -o $@
 
+%_BM.o: %_BH.cc bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
+	$(CCACHE) $(COMPILE.cc) $(CXXFLAGS) -c $< -o $@
+
 bismon: $(OBJECTS)
 	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi
 	$(MAKE) __timestamp.c __timestamp.o
-	$(LINK.c)  $(LINKFLAGS) -rdynamic $(OBJECTS) $(LIBES) -o $@  __timestamp.o
+	$(LINK.cc)  $(LINKFLAGS) -rdynamic $(OBJECTS) $(LIBES) -o $@  __timestamp.o
 	$(RM) __timestamp.*
 
 count:
