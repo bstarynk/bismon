@@ -184,6 +184,13 @@ extern bool parsernextline_BM (struct parser_stBM *pars);       // return false 
 static inline unsigned parserlineno_BM (const struct parser_stBM *pars);
 static inline unsigned parsercolpos_BM (const struct parser_stBM *pars);
 static inline const char *parserrestline_BM (const struct parser_stBM *pars);
+static inline gunichar parserunichar_BM (const struct parser_stBM *pars);
+static inline bool parsereol_BM (const struct parser_stBM *pars);
+static inline bool parserendoffile_BM (const struct parser_stBM *pars);
+// advance nbc UTF8 characters on current line
+static inline bool parseradvanceutf8_BM (struct parser_stBM *pars,
+                                         unsigned nbc);
+
 extern void parserseek_BM (struct parser_stBM *pars, unsigned line,
                            unsigned col);
 void parsererrorprintf_BM (struct parser_stBM *, unsigned line, unsigned col,

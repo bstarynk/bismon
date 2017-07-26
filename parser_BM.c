@@ -235,6 +235,41 @@ parserskipspaces_BM (struct parser_stBM *pars)
             return;
           continue;
         }
+      else if (restlines[0] == '|')
+        {
+          if (parsops->parsop_decorate_comment_sign_rout)
+            parsops->parsop_decorate_comment_sign_rout  //
+              (pars, pars->pars_colpos, 1);
+          unsigned curlineno = parserlineno_BM (pars);
+          unsigned curcol = parsercolpos_BM (pars);
+          for (;;)
+            {
+              if (!parseradvanceutf8_BM (pars, 1) || parsereol_BM (pars)
+                  || parserendoffile_BM (pars))
+                {
+                  char begcomment[40] = { };
+                  gchar *endcomm = NULL;
+                  strncpy (begcomment, restlines, sizeof (begcomment) - 1);
+                  g_utf8_validate (begcomment, -1, &endcomm);
+                  *endcomm = 0;
+                  parsererrorprintf_BM (pars, curlineno, curcol,
+                                        "unterminated comment %s",
+                                        begcomment);
+                }
+              if (parserunichar_BM (pars) == (gunichar) '|')
+                {
+                  if (parsops->parsop_decorate_comment_sign_rout)
+                    parsops->parsop_decorate_comment_sign_rout  //
+                      (pars, pars->pars_colpos, 1);
+                  if (parsops->parsop_decorate_comment_inside_rout)
+                    parsops->parsop_decorate_comment_inside_rout        //
+                      (pars, curcol + 1, pars->pars_colpos - curcol);
+                  parseradvanceutf8_BM (pars, 1);
+                  break;
+                }
+            }
+        }
+      else
+        return;
     }
-#warning parserskipspaces_BM incomplete
-}
+}                               /* end parserskipspaces_BM */

@@ -479,7 +479,7 @@ parserlineno_BM (const struct parser_stBM *pars)
   if (isparser_BM (pars))
     return pars->pars_lineno;
   return 0;
-}
+}                               /* end parserlineno_BM */
 
 unsigned
 parsercolpos_BM (const struct parser_stBM *pars)
@@ -487,7 +487,7 @@ parsercolpos_BM (const struct parser_stBM *pars)
   if (isparser_BM (pars))
     return pars->pars_colpos;
   return 0;
-}
+}                               /* end parsercolpos_BM */
 
 const char *
 parserrestline_BM (const struct parser_stBM *pars)
@@ -496,5 +496,52 @@ parserrestline_BM (const struct parser_stBM *pars)
     return NULL;
   assert (pars->pars_colindex <= (unsigned) pars->pars_linelen);
   return pars->pars_linebuf + pars->pars_colindex;
-}
+}                               /* end parserrestline_BM */
+
+gunichar
+parserunichar_BM (const struct parser_stBM * pars)
+{
+  if (!isparser_BM (pars))
+    return 0;
+  assert (pars->pars_colindex <= (unsigned) pars->pars_linelen);
+  return g_utf8_get_char (pars->pars_linebuf + pars->pars_colindex);
+}                               /* end parserunichar_BM */
+
+bool
+parsereol_BM (const struct parser_stBM * pars)
+{
+  if (!isparser_BM (pars))
+    return false;
+  return pars->pars_colindex >= (unsigned) pars->pars_linelen;
+}                               /* end parsereol_BM */
+
+bool
+parserendoffile_BM (const struct parser_stBM *pars)
+{
+  if (!isparser_BM (pars))
+    return false;
+  return pars->pars_colindex >= (unsigned) pars->pars_linelen
+    && feof (pars->pars_file);
+}                               /* end parserendoffile_BM */
+
+bool
+parseradvanceutf8_BM (struct parser_stBM *pars, unsigned nbc)
+{
+  if (!isparser_BM (pars))
+    return false;
+  while (nbc > 0 && pars->pars_linelen >= 0
+         && pars->pars_colindex <= (unsigned) pars->pars_linelen)
+    {
+      const char *pc = pars->pars_linebuf + pars->pars_colindex;
+      if (!*pc)
+        return false;
+      pc = g_utf8_next_char (pc);
+      pars->pars_colindex = pc - pars->pars_linebuf;
+      pars->pars_colpos++;
+      nbc--;
+      if (nbc == 0)
+        return true;
+    }
+  return false;
+}                               /* end parseradvanceutf8_BM */
 #endif /*INLINE_BM_INCLUDED */
