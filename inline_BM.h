@@ -489,5 +489,12 @@ parsercolpos_BM (const struct parser_stBM *pars)
   return 0;
 }
 
-
+const char *
+parserrestline_BM (const struct parser_stBM *pars)
+{
+  if (!isparser_BM (pars))
+    return NULL;
+  assert (pars->pars_colindex <= (unsigned) pars->pars_linelen);
+  return pars->pars_linebuf + pars->pars_colindex;
+}
 #endif /*INLINE_BM_INCLUDED */

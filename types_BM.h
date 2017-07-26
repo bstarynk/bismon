@@ -275,12 +275,50 @@ struct memolineoffset_stBM
   int memli_linebylen;          /* length of current file */
 };
 
+struct parser_stBM;
+// decorate the comment signs
+typedef void parser_decorate_comment_sign_sigBM
+  (struct parser_stBM *pars, unsigned colpos, unsigned signlen);
+// decorate the comment inside
+typedef void parser_decorate_comment_inside_sigBM
+  (struct parser_stBM *pars, unsigned colpos, unsigned signlen);
+
+// decorate the string signs
+typedef void parser_decorate_string_sign_sigBM
+  (struct parser_stBM *pars, unsigned colpos, unsigned signlen);
+// decorate the string inside
+typedef void parser_decorate_string_inside_sigBM
+  (struct parser_stBM *pars, unsigned colpos, unsigned signlen);
+
+// signal parse error; the msg is a malloc-ed string which the routine
+// should free when it is doing a longjmp
+typedef void parser_error_sigBM
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos, char *msg)
+  __attribute__ ((noreturn));
+
+// not heap allocated, but constant and often in text segment
+struct parserops_stBM
+{
+  const unsigned parsop_magic;  /* always PARSOPMAGIC_BM */
+  const unsigned parsop_serial; /* some number, often unused */
+  // error processing
+  parser_error_sigBM *parsop_error_rout;
+  // decoration of comments
+  parser_decorate_comment_sign_sigBM *parsop_decorate_comment_sign_rout;
+  parser_decorate_comment_inside_sigBM *parsop_decorate_comment_inside_rout;
+  // decoration of strings
+  parser_decorate_comment_sign_sigBM *parsop_decorate_string_sign_rout;
+  parser_decorate_comment_inside_sigBM *parsop_decorate_string_inside_rout;
+};
+
 struct parser_stBM              /* for tydata_parser_BM */
 {
   typedhead_tyBM pa;            // rlen is unused
+  const struct parserops_stBM *pars_ops;
   FILE *pars_file;
   const char *pars_path;
   value_tyBM pars_cvalue;       /* client value */
+  void *pars_xtradata;          /* extra client data */
   const char *pars_filemem;     /* when using fmemopen */
   size_t pars_filesize;         /* when using fmemopen */
   char *pars_linebuf;           /* given by getline */

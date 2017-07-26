@@ -183,9 +183,13 @@ extern void parsergcmark_BM (struct garbcoll_stBM *gc,
 extern bool parsernextline_BM (struct parser_stBM *pars);       // return false on EOL
 static inline unsigned parserlineno_BM (const struct parser_stBM *pars);
 static inline unsigned parsercolpos_BM (const struct parser_stBM *pars);
+static inline const char *parserrestline_BM (const struct parser_stBM *pars);
 extern void parserseek_BM (struct parser_stBM *pars, unsigned line,
                            unsigned col);
-
+void parsererrorprintf_BM (struct parser_stBM *, unsigned line, unsigned col,
+                           const char *fmt, ...)
+  __attribute__ ((format (printf, 4, 5), noreturn));
+void parserskipspaces_BM (struct parser_stBM *pars);
 
 // internal routines
 void gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth);
