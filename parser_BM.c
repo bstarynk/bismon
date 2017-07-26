@@ -290,8 +290,8 @@ gctokenmark_BM (struct garbcoll_stBM *gc, struct parstoken_stBM *tok)
     case plex_DELIM:
     case plex_ID:
       break;
-    case plex_CIDENT:
-      gcmark_BM (gc, (void *) tok->tok_cident, 0);
+    case plex_CNAME:
+      gcmark_BM (gc, (void *) tok->tok_cname, 0);
       break;
     case plex_WORD:
       gcmark_BM (gc, (void *) tok->tok_word, 0);
@@ -418,10 +418,10 @@ parsertokenget_BM (struct parser_stBM *pars)
         endnam++;
       unsigned namlen = endnam - restlin;
       char tinynambuf[TINYSIZE_BM] = "";
-      char *nambuf =
-        (namlen <
-         TINYSIZE_BM) ? tinynambuf : malloc (prime_above_BM ((namlen) / 4 +
-                                                             2) * 4);
+      char *nambuf =            //
+        (namlen < TINYSIZE_BM)  //
+        ? tinynambuf            //
+        : malloc (prime_above_BM ((namlen) / 4 + 2) * 4);
       if (!namlen)
         FATAL_BM ("failed to malloc name for %d bytes", namlen);
       memcpy (nambuf, restlin, namlen);
@@ -440,10 +440,30 @@ parsertokenget_BM (struct parser_stBM *pars)
         findnamedobj_BM (nambuf);
       if (namedobj)
         {
-          // should decorate
           if (nambuf != tinynambuf)
             free (nambuf);
+          if (parsop && parsop->parsop_decorate_known_name_rout)
+            parsop->parsop_decorate_known_name_rout     //
+              (pars, pars->pars_colpos, namlen);
+          pars->pars_colindex += namlen;
+          pars->pars_colpos += namlen;
+          return (parstoken_tyBM)
+          {
+          .tok_kind = plex_NAMEDOBJ,.tok_namedobj = namedobj};
         }
-#warning incomplete parsing of names
+      else
+        {                       // new name
+          const stringval_tyBM *newnam = makestring_BM (nambuf);
+          if (nambuf != tinynambuf)
+            free (nambuf);
+          if (parsop && parsop->parsop_decorate_new_name_rout)
+            parsop->parsop_decorate_new_name_rout       //
+              (pars, pars->pars_colpos, namlen);
+          pars->pars_colindex += namlen;
+          pars->pars_colpos += namlen;
+          return (parstoken_tyBM)
+          {
+          .tok_kind = plex_CNAME,.tok_cname = newnam};
+        }
     }
 }                               /* end parsertokenget_BM */

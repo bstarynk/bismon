@@ -284,7 +284,7 @@ enum parslexkind_enBM
   plex_DELIM,
   plex_ID,
   plex_NAMEDOBJ,
-  plex_CIDENT,
+  plex_CNAME,
   plex_WORD,
   plex_STRING,
 };
@@ -309,7 +309,7 @@ struct parstoken_stBM
     rawid_tyBM tok_id;          // for plex_ID
     objectval_tyBM *tok_namedobj;       // for plex_NAMEDOBJ
     enum lexdelim_enBM tok_delim;       // for plex_DELIM
-    const stringval_tyBM *tok_cident;   // for plex_CIDENT
+    const stringval_tyBM *tok_cname;    // for plex_CNAME
     const stringval_tyBM *tok_word;     // for plex_WORD
     const stringval_tyBM *tok_string;   // for plex_STRING
   };
@@ -337,6 +337,10 @@ typedef void parser_decorate_number_sigBM
 
 // decorate ids
 typedef void parser_decorate_id_sigBM
+  (struct parser_stBM *pars, unsigned colpos, unsigned numlen);
+
+// decorate names, both known and unknown
+typedef void parser_decorate_name_sigBM
   (struct parser_stBM *pars, unsigned colpos, unsigned numlen);
 
 // decorate delimiters
@@ -369,6 +373,9 @@ struct parserops_stBM
   parser_decorate_delimiter_sigBM *parsop_decorate_delimiter_rout;
   // decoration of identifiers
   parser_decorate_id_sigBM *parsop_decorate_id_rout;
+  // decoration of both known and unknown names
+  parser_decorate_name_sigBM *parsop_decorate_known_name_rout;
+  parser_decorate_name_sigBM *parsop_decorate_new_name_rout;
 };
 
 struct parser_stBM              /* for tydata_parser_BM */
