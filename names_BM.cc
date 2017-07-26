@@ -7,16 +7,20 @@ extern "C" {
 #include <unordered_map>
 
 //// order with strcmp
-struct StrcmpLess_BM {
-  inline bool operator() (const char*s1, const char*s2) const {
+struct StrcmpLess_BM
+{
+  inline bool operator() (const char*s1, const char*s2) const
+  {
     assert (s1 != nullptr);
     assert (s2 != nullptr);
     return strcmp(s1,s2)<0;
   }
 };
 
-struct ObjectHash_BM {
-  inline size_t operator() (const objectval_tyBM*pob) const {
+struct ObjectHash_BM
+{
+  inline size_t operator() (const objectval_tyBM*pob) const
+  {
     return objecthash_BM(pob);
   };
 };
@@ -151,5 +155,5 @@ forgetnamestring_BM (const char *nam)
   objhashtable_BM.erase(itob);
   namemap_BM.erase(itn);
   free ((void*)dupnam);
-  return true;  
+  return true;
 } /* end forgetnamestring_BM */

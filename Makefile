@@ -20,13 +20,13 @@ RM= rm -fv
 
 
 CSOURCES= $(sort  $(wildcard [a-zA-Z]*.c))
-CXXSOURCES= $(sort  $(wildcard [a-zA-Z]*.cc))
+BM_CXXSOURCES= $(sort  $(wildcard [a-zA-Z]*_BM.cc))
 BM_HEADERS= $(sort $(wildcard *_BM.h))
 BM_COLDSOURCES= $(sort $(wildcard *_BM.c))
 GENERATED_HEADERS= $(sort $(wildcard _[a-z0-9]*.h))
 GENERATED_CSOURCES= $(sort $(wildcard _[a-z0-9]*.c))
 
-OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst %.cc,%.o,$(CXXSOURCES))
+OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst %.cc,%.o,$(BM_CXXSOURCES))
 
 .PHONY: all clean indent count
 all: bismon
@@ -35,6 +35,7 @@ clean:
 	$(RM) core*
 
 indent: .indent.pro
+	@printf "\n *** headers *** \n"
 	@for h in $(BM_HEADERS); do \
 	  cp -a $$h $$h% ; \
 	  $(INDENT) $(INDENTFLAGS) $$h ; \
@@ -42,6 +43,7 @@ indent: .indent.pro
 	  if cmp -s $$h $$h% ; then echo unchanged $$h ; mv $$h% $$h ; \
           else echo '*indented' $$h ; fi \
 	done
+	@printf "\n *** C sources *** \n"
 	@for c in $(BM_COLDSOURCES); do \
 	  cp -a $$c $$c% ; \
 	  $(INDENT) $(INDENTFLAGS) $$c ; \
@@ -49,6 +51,11 @@ indent: .indent.pro
 	  if cmp -s $$c $$c% ; then echo unchanged $$c ; mv $$c% $$c ; \
 	  else echo '*indented' $$c ; fi ; \
 	done
+	@printf "\n *** C++ sources *** \n"
+	@for x in $(BM_CXXSOURCES); do \
+	  $(ASTYLE) $(ASTYLEFLAGS) $$x ; \
+	done
+	@printf "\n"
 
 ## we could use git rev-parse HEAD for the lastgitcommit, but it does
 ## not give any log comment... Notice that tr command is interpreting
