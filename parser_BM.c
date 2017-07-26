@@ -309,13 +309,22 @@ gctokenmark_BM (struct garbcoll_stBM *gc, struct parstoken_stBM *tok)
 }                               /* end gctokenmark_BM */
 
 
-static const stringval_tyBM *
-parse_reststring_BM (struct parser_stBM *pars, FILE * memfil,
-                     const char *prefix)
+static void
+parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
 {
   assert (isparser_BM (pars));
   assert (memfil != NULL);
-}                               /* end parse_reststring_BM */
+#warning unimplemented parse_plain_cord_BM
+}                               /* end parse_plain_cord_BM */
+
+
+static void
+parse_raw_cord_BM (struct parser_stBM *pars, const char *run, FILE * memfil)
+{
+  assert (isparser_BM (pars));
+  assert (memfil != NULL);
+#warning unimplemented parse_raw_cord_BM
+}                               /* end parse_raw_cord_BM */
 
 
 parstoken_tyBM
@@ -380,7 +389,7 @@ parsertokenget_BM (struct parser_stBM *pars)
   // parse ids
   else if (restlin[0] == '_' && isdigit (restlin[1]))
     {
-      char *endid = NULL;
+      const char *endid = NULL;
       rawid_tyBM id = parse_rawid_BM (restlin, &endid);
       assert (endid == restlin + IDLEN_BM);
       if (id.id_hi != 0 && endid != NULL && endid > restlin)
@@ -418,7 +427,7 @@ parsertokenget_BM (struct parser_stBM *pars)
   // parse names, either as named objects or as strings
   else if (isalpha (restlin[0]))
     {
-      char *endnam = restlin;
+      const char *endnam = restlin;
       while (isalnum (*endnam) || *endnam == '_')
         endnam++;
       unsigned namlen = endnam - restlin;
@@ -454,7 +463,8 @@ parsertokenget_BM (struct parser_stBM *pars)
           pars->pars_colpos += namlen;
           return (parstoken_tyBM)
           {
-          .tok_kind = plex_NAMEDOBJ,.tok_namedobj = namedobj};
+          .tok_kind = plex_NAMEDOBJ,.tok_namedobj =
+              (objectval_tyBM *) namedobj};
         }
       else
         {                       // new name
@@ -473,7 +483,7 @@ parsertokenget_BM (struct parser_stBM *pars)
     }
 
   // special case for +NAN +INF -INF, in uppercases
-  else if ((restlin[0] == '+') || (restlin[0] == '-')
+  else if (((restlin[0] == '+') || (restlin[0] == '-'))
            && (!strncmp (restlin, "+NAN", 4)
                || !strncmp (restlin, "+INF", 4)
                || !strncmp (restlin, "-INF", 4)) && !isalnum (restlin[4]))
@@ -494,7 +504,17 @@ parsertokenget_BM (struct parser_stBM *pars)
     {
       // allocate a buffer, then use open_memstream, then call
       // parse_string_cord_BM ...
+      size_t siz = 256;
+      char *buf = malloc (siz);
+      if (!buf)
+        FATAL_BM ("malloc of %zu failure (%m)", siz);
+      memset (buf, 0, siz);
+      FILE *filmem = open_memstream (&buf, &siz);
+      if (!filmem)
+        FATAL_BM ("open_memstream failed (%m)");
+      parse_plain_cord_BM (pars, filmem);
 #warning missing parsing of strings starting with a plain cord
+      // should check the postfix for + or & and perhaps parse again cords
     }
 
   else if (restlin[0] == '.' && ((runlen = -1), isalnum (restlin[1]))
@@ -503,6 +523,16 @@ parsertokenget_BM (struct parser_stBM *pars)
     {
       // allocate a buffer, then use open_memstream, then call
       // parse_raw_cord_BM ...
+      size_t siz = 256;
+      char *buf = malloc (siz);
+      if (!buf)
+        FATAL_BM ("malloc of %zu failure (%m)", siz);
+      memset (buf, 0, siz);
+      FILE *filmem = open_memstream (&buf, &siz);
+      if (!filmem)
+        FATAL_BM ("open_memstream failed (%m)");
+      parse_raw_cord_BM (pars, runbuf + 1, filmem);
 #warning missing parsing of strings starting with a raw cord
+      // should check the postfix for + or & and perhaps parse again cords
     }
 }                               /* end parsertokenget_BM */
