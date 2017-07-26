@@ -204,3 +204,36 @@ parsererrorprintf_BM (struct parser_stBM *pars, unsigned line, unsigned col,
     };
   FATAL_BM ("parser error %s:%d:%d : %s", pars->pars_path, line, col, buf);
 }                               /* end parsererrorprintf_BM */
+
+void
+parserskipspaces_BM (struct parser_stBM *pars)
+{
+  if (!isparser_BM (pars))
+    return;
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
+  for (;;)
+    {
+      const char *restlines = parserrestline_BM (pars);
+      if (!restlines)
+        break;
+      if (isspace (restlines[0]))
+        {
+          pars->pars_colpos++, pars->pars_colindex++;
+          continue;
+        }
+      if (restlines[0] == '/' && restlines[1] == '/')
+        {
+          if (parsops->parsop_decorate_comment_sign_rout)
+            parsops->parsop_decorate_comment_sign_rout  //
+              (pars, pars->pars_colpos, 2);
+          if (parsops->parsop_decorate_comment_inside_rout)
+            parsops->parsop_decorate_comment_inside_rout        //
+              (pars, pars->pars_colpos, g_utf8_strlen (restlines + 2, -1));
+          if (!parsernextline_BM (pars))
+            return;
+          continue;
+        }
+    }
+#warning parserskipspaces_BM incomplete
+}
