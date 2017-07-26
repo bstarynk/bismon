@@ -275,6 +275,45 @@ struct memolineoffset_stBM
   int memli_linebylen;          /* length of current file */
 };
 
+
+enum parslexkind_enBM
+{
+  plex__NONE,
+  plex_LLONG,                   /// an integer number
+  plex_DOUBLE,                  /// a float number having a dot, or +NAN or +INF or -INF
+  plex_DELIM,
+  plex_ID,
+  plex_CIDENT,
+  plex_WORD,
+  plex_STRING,
+};
+
+enum lexdelim_enBM
+{
+  delim__NONE,
+#define HAS_DELIM_BM(Str,Delimname) delim_##Delimname,
+#include "_bm_delim.h"
+  delim__LAST
+};                              /* end lexdelim_enBM */
+
+// tokens are NOT garbage collected, but may contain a GC-ed value
+struct parstoken_stBM
+{
+  enum parslexkind_enBM tok_kind;
+  union
+  {
+    void *tok_ptrs[2];
+    long long tok_llong;        // for plex_LLONG
+    double tok_dbl;             // for plex_DOUBLE
+    rawid_tyBM tok_id;          // for plex_ID
+    enum lexdelim_enBM tok_delim;       // for plex_DELIM
+    const stringval_tyBM *tok_cident;   // for plex_CIDENT
+    const stringval_tyBM *tok_word;     // for plex_WORD
+    const stringval_tyBM *tok_string;   // for plex_STRING
+  };
+};                              /* end struct parstoken_stBM */
+
+
 struct parser_stBM;
 // decorate the comment signs
 typedef void parser_decorate_comment_sign_sigBM
@@ -294,7 +333,7 @@ typedef void parser_decorate_string_inside_sigBM
 // should free when it is doing a longjmp
 typedef void parser_error_sigBM
   (struct parser_stBM *pars, unsigned lineno, unsigned colpos, char *msg)
-  __attribute__ ((noreturn));
+  /*__attribute__ ((noreturn))*/ ;
 
 // not heap allocated, but constant and often in text segment
 struct parserops_stBM

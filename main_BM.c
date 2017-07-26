@@ -32,6 +32,22 @@ const GOptionEntry optab[] = {
   {}
 };
 
+static void
+check_delims_BM (void)
+{
+  int delimcnt = 0;
+  char *prevdelim = "";
+#define HAS_DELIM_BM(Str,Name) do {			\
+    delimcnt++;						\
+    if (strcmp(Str,prevdelim)<=0)			\
+      FATAL_BM("unsorted delimiter#%d '%s' and '%s'",	\
+	       delimcnt, Str, prevdelim);		\
+    prevdelim = Str;					\
+  } while(0);
+#include "_bm_delim.h"
+  if (delimcnt != BM_NB_DELIM)
+    FATAL_BM ("expected %d delimiters, got %d", BM_NB_DELIM, delimcnt);
+}                               /* end check_delims_BM */
 
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
@@ -47,6 +63,7 @@ main (int argc, char **argv)
                argv[0], dlerror ());
       exit (EXIT_FAILURE);
     }
+  check_delims_BM ();
   initialize_predefined_objects_BM ();
   /// should actually use gtk_init_with_args so define some
   /// GOptionEntry array
