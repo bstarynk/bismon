@@ -248,10 +248,10 @@ parserskipspaces_BM (struct parser_stBM *pars)
                   || parserendoffile_BM (pars))
                 {
                   char begcomment[40] = { };
-                  gchar *endcomm = NULL;
+                  const gchar *endcomm = NULL;
                   strncpy (begcomment, restlines, sizeof (begcomment) - 1);
                   g_utf8_validate (begcomment, -1, &endcomm);
-                  *endcomm = 0;
+                  *(char *) endcomm = 0;
                   parsererrorprintf_BM (pars, curlineno, curcol,
                                         "unterminated comment %s",
                                         begcomment);
@@ -273,3 +273,33 @@ parserskipspaces_BM (struct parser_stBM *pars)
         return;
     }
 }                               /* end parserskipspaces_BM */
+
+
+void
+gctokenmark_BM (struct garbcoll_stBM *gc, struct parstoken_stBM *tok)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (tok != NULL);
+  switch (tok->tok_kind)
+    {
+    case plex__NONE:
+      FATAL_BM ("empty token @%p", (void *) tok);
+    case plex_LLONG:
+    case plex_DOUBLE:
+    case plex_DELIM:
+    case plex_ID:
+      break;
+    case plex_CIDENT:
+      gcmark_BM (gc, (void *) tok->tok_cident, 0);
+      break;
+    case plex_WORD:
+      gcmark_BM (gc, (void *) tok->tok_word, 0);
+      break;
+    case plex_STRING:
+      gcmark_BM (gc, (void *) tok->tok_string, 0);
+      break;
+    case plex_NAMEDOBJ:
+      gcobjmark_BM (gc, (void *) tok->tok_namedobj);
+      break;
+    };
+}                               /* end gctokenmark_BM */

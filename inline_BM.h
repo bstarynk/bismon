@@ -476,7 +476,7 @@ isparser_BM (const value_tyBM v)
 unsigned
 parserlineno_BM (const struct parser_stBM *pars)
 {
-  if (isparser_BM (pars))
+  if (isparser_BM ((const value_tyBM) pars))
     return pars->pars_lineno;
   return 0;
 }                               /* end parserlineno_BM */

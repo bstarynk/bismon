@@ -204,5 +204,16 @@ void gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth);
 void gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj);
 void gcframemark_BM (struct garbcoll_stBM *gc,
                      struct stackframe_stBM *stkfram, int depth);
+void gctokenmark_BM (struct garbcoll_stBM *gc, struct parstoken_stBM *tok);
 
+// names
+void initialize_predefined_names_BM (void);
+extern bool validname_BM (const char *nam);
+extern const objectval_tyBM *findnamedobj_BM (const char *nam);
+extern const char *findobjectname_BM (const objectval_tyBM * obj);
+extern const char *findnameafter_BM (const char *prefix);
+extern bool registername_BM (const objectval_tyBM * obj, const char *nam);
+extern bool forgetnamedobject_BM (const objectval_tyBM * obj);
+extern bool forgetnamestring_BM (const char *nam);
+extern const setval_tyBM *setofnamedobjects_BM (void);
 #endif /*FUNDECL_BM_INCLUDED */

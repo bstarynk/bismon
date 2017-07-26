@@ -283,6 +283,7 @@ enum parslexkind_enBM
   plex_DOUBLE,                  /// a float number having a dot, or +NAN or +INF or -INF
   plex_DELIM,
   plex_ID,
+  plex_NAMEDOBJ,
   plex_CIDENT,
   plex_WORD,
   plex_STRING,
@@ -306,6 +307,7 @@ struct parstoken_stBM
     long long tok_llong;        // for plex_LLONG
     double tok_dbl;             // for plex_DOUBLE
     rawid_tyBM tok_id;          // for plex_ID
+    objectval_tyBM *tok_namedobj;       // for plex_NAMEDOBJ
     enum lexdelim_enBM tok_delim;       // for plex_DELIM
     const stringval_tyBM *tok_cident;   // for plex_CIDENT
     const stringval_tyBM *tok_word;     // for plex_WORD

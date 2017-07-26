@@ -65,6 +65,7 @@ main (int argc, char **argv)
     }
   check_delims_BM ();
   initialize_predefined_objects_BM ();
+  initialize_predefined_names_BM ();
   /// should actually use gtk_init_with_args so define some
   /// GOptionEntry array
   GError *err = NULL;
