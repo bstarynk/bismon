@@ -275,6 +275,7 @@ parserskipspaces_BM (struct parser_stBM *pars)
 }                               /* end parserskipspaces_BM */
 
 
+
 void
 gctokenmark_BM (struct garbcoll_stBM *gc, struct parstoken_stBM *tok)
 {
@@ -303,3 +304,62 @@ gctokenmark_BM (struct garbcoll_stBM *gc, struct parstoken_stBM *tok)
       break;
     };
 }                               /* end gctokenmark_BM */
+
+
+parstoken_tyBM
+parsertokenget_BM (struct parser_stBM *pars)
+{
+  if (!isparser_BM ((const value_tyBM) pars))
+    return (parstoken_tyBM)
+    {
+      .tok_kind = plex__NONE,.tok_ptrs =
+      {
+      NULL, NULL}
+    };
+  const struct parserops_stBM *parsop = pars->pars_ops;
+  assert (!parsop || parsop->parsop_magic == PARSOPMAGIC_BM);
+  parserskipspaces_BM (pars);
+  const char *restlin = parserrestline_BM (pars);
+  if (!restlin)
+    return (parstoken_tyBM)
+    {
+      .tok_kind = plex__NONE,.tok_ptrs =
+      {
+      NULL, NULL}
+    };
+  if (isdigit (restlin[0])
+      || ((restlin[0] == '+' || restlin[0] == '-') && isdigit (restlin[1])))
+    {
+      char *endint = NULL;
+      char *endflo = NULL;
+      long long ll = strtoll (restlin, &endint, 0);
+      if (strchr (restlin, '.'))
+        {
+          double x = strtod (restlin, &endflo);
+          if (endflo > endint)
+            {
+              unsigned coldbl = g_utf8_strlen (restlin, endflo - restlin);
+              if (parsop && parsop->parsop_decorate_number_rout)
+                parsop->parsop_decorate_number_rout (pars, pars->pars_colpos,
+                                                     coldbl);
+              pars->pars_colindex += endflo - restlin;
+              pars->pars_colpos += coldbl;
+              return (parstoken_tyBM)
+              {
+              .tok_kind = plex_DOUBLE,.tok_dbl = x};
+            }
+        }
+      if (endint > restlin)
+        {
+          unsigned colint = g_utf8_strlen (restlin, endint - restlin);
+          if (parsop && parsop->parsop_decorate_number_rout)
+            parsop->parsop_decorate_number_rout (pars, pars->pars_colpos,
+                                                 colint);
+          pars->pars_colindex += endint - restlin;
+          pars->pars_colpos += colint;
+          return (parstoken_tyBM)
+          {
+          .tok_kind = plex_LLONG,.tok_llong = ll};
+        }
+    }
+}                               /* end parsertokenget_BM */

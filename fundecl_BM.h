@@ -202,18 +202,20 @@ static inline bool parseradvanceutf8_BM (struct parser_stBM *pars,
 
 extern void parserseek_BM (struct parser_stBM *pars, unsigned line,
                            unsigned col);
-void parsererrorprintf_BM (struct parser_stBM *, unsigned line, unsigned col,
-                           const char *fmt, ...)
+extern void parsererrorprintf_BM (struct parser_stBM *, unsigned line,
+                                  unsigned col, const char *fmt, ...)
   __attribute__ ((format (printf, 4, 5), noreturn));
 // skip spaces and comments
-void parserskipspaces_BM (struct parser_stBM *pars);
+extern void parserskipspaces_BM (struct parser_stBM *pars);
+extern parstoken_tyBM parsertokenget_BM (struct parser_stBM *pars);
 
 // internal routines
-void gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth);
-void gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj);
-void gcframemark_BM (struct garbcoll_stBM *gc,
-                     struct stackframe_stBM *stkfram, int depth);
-void gctokenmark_BM (struct garbcoll_stBM *gc, struct parstoken_stBM *tok);
+extern void gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth);
+extern void gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj);
+extern void gcframemark_BM (struct garbcoll_stBM *gc,
+                            struct stackframe_stBM *stkfram, int depth);
+extern void gctokenmark_BM (struct garbcoll_stBM *gc,
+                            struct parstoken_stBM *tok);
 
 // names
 extern void initialize_predefined_names_BM (void);

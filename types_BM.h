@@ -314,7 +314,7 @@ struct parstoken_stBM
     const stringval_tyBM *tok_string;   // for plex_STRING
   };
 };                              /* end struct parstoken_stBM */
-
+typedef struct parstoken_stBM parstoken_tyBM;
 
 struct parser_stBM;
 // decorate the comment signs
@@ -330,6 +330,10 @@ typedef void parser_decorate_string_sign_sigBM
 // decorate the string inside
 typedef void parser_decorate_string_inside_sigBM
   (struct parser_stBM *pars, unsigned colpos, unsigned signlen);
+
+// decorate numbers
+typedef void parser_decorate_number_sigBM
+  (struct parser_stBM *pars, unsigned colpos, unsigned numlen);
 
 // signal parse error; the msg is a malloc-ed string which the routine
 // should free when it is doing a longjmp
@@ -347,6 +351,8 @@ struct parserops_stBM
   // decoration of comments
   parser_decorate_comment_sign_sigBM *parsop_decorate_comment_sign_rout;
   parser_decorate_comment_inside_sigBM *parsop_decorate_comment_inside_rout;
+  // decoration of numbers
+  parser_decorate_number_sigBM *parsop_decorate_number_rout;
   // decoration of strings
   parser_decorate_comment_sign_sigBM *parsop_decorate_string_sign_rout;
   parser_decorate_comment_inside_sigBM *parsop_decorate_string_inside_rout;
