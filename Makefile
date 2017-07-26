@@ -92,4 +92,4 @@ bismon: $(OBJECTS)
 	$(RM) __timestamp.*
 
 count:
-	wc -cl *.c *.h | sort -n
+	@wc -cl $(wildcard *.c *.h *.cc) | sort -n
