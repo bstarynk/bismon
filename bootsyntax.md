@@ -30,7 +30,24 @@
   denotes the nil id.
   
 * A floating-point number should have a decimal point, or otherwise be
-  the special `+INF`, `-INF`, `+NAN` not followed by a letter.
+  the special `+INF`, `-INF`, `+NAN` not followed by a
+  letter. However, `1e2` is not valid (no decimal point), you need to
+  type `1.e2` or `100.`; and `.2` is also invalid (don't start with a
+  digit), it should be `0.2`.
 
-
+* Strings are made of cords. Most of them have just one cord, like
+  `"abc"` or `"some\ttab"` where the `\t` is an escape for the tab. A
+  raw cord starts with a dot followed by at most 16 letter-or-digits
+  run followed by a double quote, and ending with a double quote
+  followed by the same run then again a dot and may contain unescaped
+  control characters. So `.XY"no\ttab"XY.` is a raw cord with run of
+  `XY` and denotes the same string as `"no\\ttab"` and does not
+  contain any tab (but has a backslash). A cord may be *immediately*
+  followed by `&` or by `+` (and then some optional spaces or
+  comments) and then by some other cord, thus making a literal string
+  of several cords. If a cord is followed by `&` the next cord is
+  immediately concatenated. If it is followed by `+` the next cord is
+  concatenated with a newline in between. So `"ab\ncd"` and `"ab"+
+  |some comment| "cd"` and `"ab"&"\ncd"` all represents the *same
+  string* of five characters, with a newline at its center.
 

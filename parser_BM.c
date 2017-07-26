@@ -1,6 +1,9 @@
 // file parser_BM.c
 #include "bismon.h"
 
+#define RUNLEN_BM 16
+#define RUNFMT_BM "%16[A-Za-z0-9]"
+
 struct parser_stBM *
 makeparser_of_file_BM (FILE * f)
 {
@@ -329,6 +332,8 @@ parsertokenget_BM (struct parser_stBM *pars)
   assert (!parsop || parsop->parsop_magic == PARSOPMAGIC_BM);
   parserskipspaces_BM (pars);
   const char *restlin = parserrestline_BM (pars);
+  char runbuf[RUNLEN_BM + 8] = "";
+  int runlen = -1;
   if (!restlin)
     return (parstoken_tyBM)
     {
@@ -465,5 +470,39 @@ parsertokenget_BM (struct parser_stBM *pars)
           {
           .tok_kind = plex_CNAME,.tok_cname = newnam};
         }
+    }
+
+  // special case for +NAN +INF -INF, in uppercases
+  else if ((restlin[0] == '+') || (restlin[0] == '-')
+           && (!strncmp (restlin, "+NAN", 4)
+               || !strncmp (restlin, "+INF", 4)
+               || !strncmp (restlin, "-INF", 4)) && !isalnum (restlin[4]))
+    {
+      char specbuf[8] = { };
+      memcpy (specbuf, restlin, 4);
+      double x = strtod (specbuf, NULL);
+      if (parsop && parsop->parsop_decorate_number_rout)
+        parsop->parsop_decorate_number_rout (pars, pars->pars_colpos, 4);
+      pars->pars_colindex += 4;
+      pars->pars_colpos += 4;
+      return (parstoken_tyBM)
+      {
+      .tok_kind = plex_DOUBLE,.tok_dbl = x};
+    }
+
+  else if (restlin[0] == '"')
+    {
+      // allocate a buffer, then use open_memstream, then call
+      // parse_string_cord_BM ...
+#warning missing parsing of strings starting with a plain cord
+    }
+
+  else if (restlin[0] == '.' && ((runlen = -1), isalnum (restlin[1]))
+           && sscanf (restlin, "." RUNFMT_BM "\"%n", runbuf, &runlen) > 0
+           && runlen > 0)
+    {
+      // allocate a buffer, then use open_memstream, then call
+      // parse_raw_cord_BM ...
+#warning missing parsing of strings starting with a raw cord
     }
 }                               /* end parsertokenget_BM */
