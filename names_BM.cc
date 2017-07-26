@@ -4,6 +4,7 @@ extern "C" {
 };
 
 #include <map>
+#include <vector>
 #include <unordered_map>
 
 //// order with strcmp
@@ -157,3 +158,68 @@ forgetnamestring_BM (const char *nam)
   free ((void*)dupnam);
   return true;
 } /* end forgetnamestring_BM */
+
+const setval_tyBM *
+setofnamedobjects_BM (void)
+{
+  std::vector<const objectval_tyBM *> vectobj;
+  vectobj.reserve(namemap_BM.size());
+  for (auto itn: namemap_BM)
+    {
+      const objectval_tyBM* ob = itn.second;
+      assert (isobject_BM((const value_tyBM)ob));
+      vectobj.push_back(ob);
+    };
+  return makeset_BM(vectobj.data(), vectobj.size());
+} // end setofnamedobjects_BM
+
+const char*
+findnameafter_BM(const char*prefix)
+{
+  if (!prefix || prefix[0]==(char)0)
+    {
+      if (namemap_BM.empty()) return nullptr;
+      auto firstn = namemap_BM.begin();
+      return firstn->first;
+    }
+  auto itn = namemap_BM.upper_bound(prefix);
+  if (itn != namemap_BM.end())
+    return itn->first;
+  return nullptr;
+} // end of findnameafter_BM
+
+const char*
+findnamesameorafter_BM(const char*prefix)
+{
+  if (!prefix || prefix[0]==(char)0)
+    {
+      if (namemap_BM.empty()) return nullptr;
+      auto firstn = namemap_BM.begin();
+      return firstn->first;
+    }
+  auto itn = namemap_BM.lower_bound(prefix);
+  if (itn != namemap_BM.end())
+    return itn->first;
+  return nullptr;
+} // end of findnamesameorafter_BM
+
+const char*
+findnamebefore_BM(const char*prefix)
+{
+  if (!prefix || prefix[0]==(char)0)
+    {
+      if (namemap_BM.empty())
+        return nullptr;
+      auto lastn = namemap_BM.end();
+      lastn--;
+      return lastn->first;
+    }
+  auto itn = namemap_BM.lower_bound(prefix);
+  if (itn != namemap_BM.begin())
+    itn--;
+  else
+    return nullptr;
+  if (itn != namemap_BM.end())
+    return itn->first;
+  return nullptr;
+} // end of findnamebefore_BM

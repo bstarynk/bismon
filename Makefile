@@ -82,7 +82,7 @@ $(OBJECTS): bismon.h.gch
 %_BM.o: %_BM.c bismon.h.gch
 	$(CCACHE) $(COMPILE.c) $(CFLAGS) -c $< -o $@
 
-%_BM.o: %_BH.cc bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
+%_BM.o: %_BM.cc bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
 	$(CCACHE) $(COMPILE.cc) $(CXXFLAGS) -c $< -o $@
 
 bismon: $(OBJECTS)
