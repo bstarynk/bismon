@@ -1,5 +1,6 @@
 ## the Makefile
 CC=gcc
+CXX= g++
 CCACHE= ccache
 WARNFLAGS= -Wall -Wextra -Wmissing-prototypes -fdiagnostics-color=auto
 SKIPCXXWARNFLAGS= -Wmissing-prototypes
