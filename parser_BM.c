@@ -306,6 +306,15 @@ gctokenmark_BM (struct garbcoll_stBM *gc, struct parstoken_stBM *tok)
 }                               /* end gctokenmark_BM */
 
 
+static const stringval_tyBM *
+parse_reststring_BM (struct parser_stBM *pars, FILE * memfil,
+                     const char *prefix)
+{
+  assert (isparser_BM (pars));
+  assert (memfil != NULL);
+}                               /* end parse_reststring_BM */
+
+
 parstoken_tyBM
 parsertokenget_BM (struct parser_stBM *pars)
 {
@@ -361,5 +370,80 @@ parsertokenget_BM (struct parser_stBM *pars)
           {
           .tok_kind = plex_LLONG,.tok_llong = ll};
         }
+    }
+
+  // parse ids
+  else if (restlin[0] == '_' && isdigit (restlin[1]))
+    {
+      char *endid = NULL;
+      rawid_tyBM id = parse_rawid_BM (restlin, &endid);
+      assert (endid == restlin + IDLEN_BM);
+      if (id.id_hi != 0 && endid != NULL && endid > restlin)
+        {
+          if (parsop && parsop->parsop_decorate_id_rout)
+            parsop->parsop_decorate_id_rout (pars, pars->pars_colpos,
+                                             IDLEN_BM);
+          pars->pars_colindex += IDLEN_BM;
+          pars->pars_colpos += IDLEN_BM;
+          return (parstoken_tyBM)
+          {
+          .tok_kind = plex_ID,.tok_id = id};
+        }
+      else
+        parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+                              "bad ident %s", restlin);
+    }
+
+  // parse nil id
+  else if (restlin[0] == '_' && restlin[1] == '_'
+           && !isalnum (restlin[2]) && restlin[2] != '_')
+    {
+      if (parsop && parsop->parsop_decorate_id_rout)
+        parsop->parsop_decorate_id_rout (pars, pars->pars_colpos, 2);
+      pars->pars_colindex += 2;
+      pars->pars_colpos += 2;
+      return (parstoken_tyBM)
+      {
+        .tok_kind = plex_ID,.tok_id =
+        {
+        0, 0}
+      };
+    }
+
+  // parse names, either as named objects or as strings
+  else if (isalpha (restlin[0]))
+    {
+      char *endnam = restlin;
+      while (isalnum (*endnam) || *endnam == '_')
+        endnam++;
+      unsigned namlen = endnam - restlin;
+      char tinynambuf[TINYSIZE_BM] = "";
+      char *nambuf =
+        (namlen <
+         TINYSIZE_BM) ? tinynambuf : malloc (prime_above_BM ((namlen) / 4 +
+                                                             2) * 4);
+      if (!namlen)
+        FATAL_BM ("failed to malloc name for %d bytes", namlen);
+      memcpy (nambuf, restlin, namlen);
+      memcpy (tinynambuf, restlin,
+              (namlen < TINYSIZE_BM) ? namlen : TINYSIZE_BM);
+      nambuf[namlen] = (char) 0;
+      if (!validname_BM (nambuf))
+        {
+          if (nambuf != tinynambuf)     // to avoid memory leaks
+            free (nambuf);
+          parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+                                "bad ident %s%s", tinynambuf,
+                                (namlen > TINYSIZE_BM) ? "..." : "");
+        }
+      const objectval_tyBM *namedobj =  //
+        findnamedobj_BM (nambuf);
+      if (namedobj)
+        {
+          // should decorate
+          if (nambuf != tinynambuf)
+            free (nambuf);
+        }
+#warning incomplete parsing of names
     }
 }                               /* end parsertokenget_BM */

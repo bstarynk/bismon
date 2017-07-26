@@ -335,11 +335,20 @@ typedef void parser_decorate_string_inside_sigBM
 typedef void parser_decorate_number_sigBM
   (struct parser_stBM *pars, unsigned colpos, unsigned numlen);
 
+// decorate ids
+typedef void parser_decorate_id_sigBM
+  (struct parser_stBM *pars, unsigned colpos, unsigned numlen);
+
+// decorate delimiters
+typedef void parser_decorate_delimiter_sigBM
+  (struct parser_stBM *pars, unsigned colpos, unsigned delimlen);
+
 // signal parse error; the msg is a malloc-ed string which the routine
 // should free when it is doing a longjmp
 typedef void parser_error_sigBM
   (struct parser_stBM *pars, unsigned lineno, unsigned colpos, char *msg)
   /*__attribute__ ((noreturn))*/ ;
+
 
 // not heap allocated, but constant and often in text segment
 struct parserops_stBM
@@ -356,6 +365,10 @@ struct parserops_stBM
   // decoration of strings
   parser_decorate_comment_sign_sigBM *parsop_decorate_string_sign_rout;
   parser_decorate_comment_inside_sigBM *parsop_decorate_string_inside_rout;
+  // decoration of delimiters
+  parser_decorate_delimiter_sigBM *parsop_decorate_delimiter_rout;
+  // decoration of identifiers
+  parser_decorate_id_sigBM *parsop_decorate_id_rout;
 };
 
 struct parser_stBM              /* for tydata_parser_BM */

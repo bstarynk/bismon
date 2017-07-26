@@ -2,6 +2,7 @@
 CC=gcc
 CXX= g++
 CCACHE= ccache
+MARKDOWN= markdown
 WARNFLAGS= -Wall -Wextra -Wmissing-prototypes -fdiagnostics-color=auto
 SKIPCXXWARNFLAGS= -Wmissing-prototypes
 OPTIMFLAGS= -O1 -g3
@@ -26,14 +27,16 @@ BM_HEADERS= $(sort $(wildcard *_BM.h))
 BM_COLDSOURCES= $(sort $(wildcard *_BM.c))
 GENERATED_HEADERS= $(sort $(wildcard _[a-z0-9]*.h))
 GENERATED_CSOURCES= $(sort $(wildcard _[a-z0-9]*.c))
+MARKDOWN_SOURCES= $(sort $(wildcard *.md))
 
 OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst %.cc,%.o,$(BM_CXXSOURCES))
 
-.PHONY: all clean indent count
-all: bismon
+.PHONY: all clean indent count doc
+all: bismon doc
 clean:
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
 	$(RM) core*
+	$(RM) $(patsubst %.md,%.html, $(MARKDOWN_SOURCES))
 
 indent: .indent.pro
 	@printf "\n *** headers *** \n"
@@ -91,6 +94,9 @@ bismon: $(OBJECTS)
 	$(MAKE) __timestamp.c __timestamp.o
 	$(LINK.cc)  $(LINKFLAGS) -rdynamic $(OBJECTS) $(LIBES) -o $@  __timestamp.o
 	$(RM) __timestamp.*
+
+doc: $(MARKDOWN_SOURCES)
+	@for f in $^ ; do  $(MARKDOWN) $$f > $$(basename $$f .md).html ; done
 
 count:
 	@wc -cl $(wildcard *.c *.h *.cc) | sort -n

@@ -12,3 +12,5 @@ bismon
 *.orig
 
 core*
+
+*.html
