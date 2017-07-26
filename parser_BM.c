@@ -229,7 +229,8 @@ parserskipspaces_BM (struct parser_stBM *pars)
               (pars, pars->pars_colpos, 2);
           if (parsops->parsop_decorate_comment_inside_rout)
             parsops->parsop_decorate_comment_inside_rout        //
-              (pars, pars->pars_colpos, g_utf8_strlen (restlines + 2, -1));
+              (pars, pars->pars_colpos + 2,
+               g_utf8_strlen (restlines + 2, -1));
           if (!parsernextline_BM (pars))
             return;
           continue;
