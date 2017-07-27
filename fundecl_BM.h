@@ -279,6 +279,10 @@ extern void gcframemark_BM (struct garbcoll_stBM *gc,
 extern void gctokenmark_BM (struct garbcoll_stBM *gc,
                             struct parstoken_stBM *tok);
 
+/// the full garbage collector
+extern void fullgarbagecollection_BM (struct stackframe_stBM *stkfram);
+
+
 // names
 extern void initialize_predefined_names_BM (void);
 extern bool validname_BM (const char *nam);

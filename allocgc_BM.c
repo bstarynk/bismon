@@ -166,3 +166,34 @@ gcframemark_BM (struct garbcoll_stBM *gc, struct stackframe_stBM *stkfram,
                   (((typedhead_tyBM *) stkfram)->htyp));
     };
 }                               /* end gcframemark_BM */
+
+
+
+void
+fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
+{
+  struct garbcoll_stBM GCdata = { };
+  memset (&GCdata, 0, sizeof (GCdata));
+  GCdata.gc_magic = GCMAGIC_BM;
+  assert (allocationvec_vBM != NULL);
+  unsigned alsiz = allocationvec_vBM->al_size;
+  unsigned alcnt = allocationvec_vBM->al_nb;
+  assert (alcnt <= alsiz);
+  assert (alcnt > 0);
+  for (unsigned ix = 0; ix < alcnt; ix++)
+    {
+      typedhead_tyBM *curp = allocationvec_vBM->al_ptr[ix];
+      if (!curp)
+        continue;
+      curp->hgc = CLEARMGC_BM;
+    }
+  GCdata.gc_scanlist = makelist_BM ();
+  GCdata.gc_hset =              //
+    hashsetobj_grow_BM (NULL, prime_above_BM (alcnt / 32 + 100));
+  gcmarkpredefinedobjects_BM (&GCdata);
+  gcframemark_BM (&GCdata, stkfram, 0);
+  // should gcmark all the globals
+  // should run the gc loop on the scanlist
+#warning incomplete fullgarbagecollection_BM
+  FATAL_BM ("incomplete fullgarbagecollection_BM");
+}                               /* end fullgarbagecollection_BM */
