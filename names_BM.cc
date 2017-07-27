@@ -76,6 +76,7 @@ add_predefined_name_BM (const char *name, objectval_tyBM * obj)
 void
 initialize_predefined_names_BM (void)
 {
+  objhashtable_BM.reserve(3*BM_NB_PREDEFINED+10);
 #define HAS_NAMED_PREDEF_BM(Nam,Id) \
   add_predefined_name_BM(#Nam,PREDEF_BM(Id));
 #include "_bm_predef.h"
@@ -107,6 +108,7 @@ findobjectname_BM (const objectval_tyBM * obj)
 bool
 registername_BM (const objectval_tyBM * obj, const char *nam)
 {
+  static long regcount;
   if (!isobject_BM ((const value_tyBM) obj))
     return false;
   if (!validname_BM (nam))
@@ -121,6 +123,9 @@ registername_BM (const objectval_tyBM * obj, const char *nam)
     FATAL_BM ("strdup %s failed (%m)", nam);
   namemap_BM.insert({dupname,const_cast<objectval_tyBM*>(obj)});
   objhashtable_BM.emplace(const_cast<objectval_tyBM*>(obj),dupname);
+  regcount++;
+  if (regcount % 128)
+    objhashtable_BM.rehash(0);
   return true;
 }                               /* end registername_BM */
 
