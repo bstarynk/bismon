@@ -309,7 +309,8 @@ gctokenmark_BM (struct garbcoll_stBM *gc, struct parstoken_stBM *tok)
 }                               /* end gctokenmark_BM */
 
 
-static void
+// return the number of Unicode chars in the plain cord
+static unsigned
 parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
 {
   assert (isparser_BM (pars));
@@ -455,10 +456,13 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
                           "bad plain cord ending %s", pc);
   pars->pars_colpos += nbc + 2;
   pars->pars_colindex += pc - restlin;
+  return nbc;
 }                               /* end parse_plain_cord_BM */
 
 
-static void
+
+// return the number of Unicode chars in the raw cord
+static unsigned
 parse_raw_cord_BM (struct parser_stBM *pars, const char *run, FILE * memfil)
 {
   assert (isparser_BM (pars));
@@ -471,13 +475,41 @@ parse_raw_cord_BM (struct parser_stBM *pars, const char *run, FILE * memfil)
   assert (restlin && restlin[0] == '/' && restlin[1] == '"'
           && !strncmp (restlin + 2, run, runlen)
           && restlin[runlen + 3] == '(');
+  const char *curstart = restlin + runlen + 4;
   snprintf (endrunbuf, sizeof (endrunbuf), ")%s\"/", run);
-#warning unimplemented parse_raw_cord_BM
+  for (;;)
+    {
+      char *ends = strstr (curstart, endrunbuf);
+      if (ends)
+        {
+          fwrite (curstart, ends - curstart, 1, memfil);
+          unsigned plen = g_utf8_strlen (curstart, ends - curstart);
+          nbc += plen;
+          pars->pars_colindex += (ends - curstart) + strlen (endrunbuf);
+          pars->pars_colpos += plen + strlen (endrunbuf);
+          break;
+        }
+      else
+        {
+          fputs (curstart, memfil);
+          unsigned plen = g_utf8_strlen (curstart, -1);
+          pars->pars_colindex += strlen (curstart);
+          pars->pars_colpos += plen;
+          if (!parsernextline_BM (pars))
+            parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+                                  "unterminated raw cord");
+          restlin = parserrestline_BM (pars);
+          curstart = restlin;
+          assert (restlin != NULL);
+          continue;
+        }
+    };
+  return nbc;
 }                               /* end parse_raw_cord_BM */
 
 
 parstoken_tyBM
-parsertokenget_BM (struct parser_stBM *pars)
+parsertokenget_BM (struct parser_stBM * pars)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return (parstoken_tyBM)
