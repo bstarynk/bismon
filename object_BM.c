@@ -490,6 +490,17 @@ register_predefined_object_BM (objectval_tyBM * pob)
   struct objbucket_stBM *curbuck = buckarr_BM[bucknum];
   assert (curbuck != NULL);
   addtobucket_BM (curbuck, pob);
+  char idbuf[32];
+  memset (idbuf, 0, sizeof (idbuf));
+  idtocbuf32_BM (pob->ob_id, idbuf);
+  assert (idbuf[0] == '_' && isdigit (idbuf[1]));
+  char nambuf[48];
+  memset (nambuf, 0, sizeof (nambuf));
+  snprintf (nambuf, sizeof (nambuf),    //
+            ROUTINEOBJPREFIX_BM "%s" ROUTINEOBJSUFFIX_BM, idbuf);
+  void *ad = dlsym (dlprog_BM, nambuf);
+  if (ad)
+    pob->ob_rout = (objrout_sigBM *) ad;
 }                               /* end register_predefined_object_BM */
 
 void

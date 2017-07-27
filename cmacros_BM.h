@@ -65,4 +65,11 @@
 			  ((sizeof(Qnam)-offsetof(tree_tyBM,nodt_sons)) \
 			   /sizeof(value_tyBM)) },			\
 		     .nodt_conn= (Conn) } }
+
+/// the routine inside object of id _60mLNh9vtVY_0pwkHRtJ44k would be
+/// named crout_60mLNh9vtVY_0pwkHRtJ44k_BM
+#define ROUTINEOBJNAME_BM(Id) crout##Id##_BM
+#define ROUTINEOBJPREFIX_BM "crout"
+#define ROUTINEOBJSUFFIX_BM "_BM"
+
 #endif /*CMACROS_BM_INCLUDED */
