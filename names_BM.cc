@@ -76,7 +76,7 @@ add_predefined_name_BM (const char *name, objectval_tyBM * obj)
 void
 initialize_predefined_names_BM (void)
 {
-  objhashtable_BM.reserve(3*BM_NB_PREDEFINED+10);
+  objhashtable_BM.reserve(3*BM_NB_PREDEFINED+100);
 #define HAS_NAMED_PREDEF_BM(Nam,Id) \
   add_predefined_name_BM(#Nam,PREDEF_BM(Id));
 #include "_bm_predef.h"
