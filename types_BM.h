@@ -140,6 +140,7 @@ enum space_enBM
   UserEsp_BM = 7,
   UserFsp_BM = 8,
   UserGsp_BM = 9,
+  LASTSPACE__BM
 };
 
 struct datavectval_stBM;        /*forward */

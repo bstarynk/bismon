@@ -13,6 +13,9 @@
 #define HAS_GLOBAL_BM(Nam) objectval_tyBM*globdata_##Nam##_BM;
 #include "_bm_global.h"
 
+
+static struct hashsetobj_stBM *hashset_predefined_objects_BM;
+
 // for qsort
 static int
 objptrqcmp_BM (const void *p1, const void *p2)
@@ -490,6 +493,8 @@ register_predefined_object_BM (objectval_tyBM * pob)
   struct objbucket_stBM *curbuck = buckarr_BM[bucknum];
   assert (curbuck != NULL);
   addtobucket_BM (curbuck, pob);
+  hashset_predefined_objects_BM =       //
+    hashsetobj_add_BM (hashset_predefined_objects_BM, pob);
   char idbuf[32];
   memset (idbuf, 0, sizeof (idbuf));
   idtocbuf32_BM (pob->ob_id, idbuf);
@@ -506,7 +511,47 @@ register_predefined_object_BM (objectval_tyBM * pob)
 void
 initialize_predefined_objects_BM (void)
 {
+  hashset_predefined_objects_BM =       //
+    hashsetobj_grow_BM (NULL, 2 * BM_NB_PREDEFINED + 50);
 #define HAS_PREDEF_BM(Id,Hi,Lo,Hash) \
   register_predefined_object_BM(PREDEF_BM(Id));
 #include "_bm_predef.h"
 }                               /* end initialize_predefined_objects_BM */
+
+const setval_tyBM *
+setpredefinedobjects_BM (void)
+{
+  return hashsetobj_to_set_BM (hashset_predefined_objects_BM);
+}                               /* end setpredefinedobjects_BM */
+
+
+void
+gcmarkpredefinedobjects_BM (struct garbcoll_stBM *gc)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  hashsetgcmark_BM (gc, hashset_predefined_objects_BM);
+}                               /* end gcmarkpredefinedobjects_BM */
+
+
+void
+objputspace_BM (objectval_tyBM * obj, unsigned spanum)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  assert (spanum < LASTSPACE__BM);
+  unsigned oldspanum = obj->ob_space;
+  if (oldspanum == spanum)
+    return;
+  if (oldspanum == PredefSp_BM)
+    {
+      assert (hashsetobj_contains_BM (hashset_predefined_objects_BM, obj));
+      hashset_predefined_objects_BM =   //
+        hashsetobj_remove_BM (hashset_predefined_objects_BM, obj);
+    };
+  if (spanum == PredefSp_BM)
+    {
+      hashset_predefined_objects_BM =
+        hashsetobj_add_BM (hashset_predefined_objects_BM, obj);
+    }
+  obj->ob_space = spanum;
+}                               /* end objputspace_BM  */

@@ -236,12 +236,19 @@ isobject_BM (const value_tyBM v)
 hash_tyBM
 objecthash_BM (const objectval_tyBM * pob)
 {
-  if (!pob || ((intptr_t) pob & 3))
-    return 0;
-  if (((typedhead_tyBM *) pob)->htyp != tyObject_BM)
+  if (isobject_BM ((const value_tyBM) pob))
     return 0;
   return ((typedhead_tyBM *) pob)->hash;
 }                               /* end objecthash_BM */
+
+unsigned
+objspacenum_BM (objectval_tyBM * obj)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return 0;
+  return obj->ob_space;
+}                               /* end objspacenum_BM */
+
 
 int
 objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)

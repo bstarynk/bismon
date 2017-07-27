@@ -79,6 +79,10 @@ static inline rawid_tyBM objid_BM (const objectval_tyBM * obj);
 static inline void objtouchmtime_BM (objectval_tyBM * obj, double mtime);
 static inline void objtouchnow_BM (objectval_tyBM * obj);
 extern void initialize_predefined_objects_BM (void);
+extern void objputspace_BM (objectval_tyBM * obj, unsigned spanum);
+static inline unsigned objspacenum_BM (objectval_tyBM * obj);
+extern const setval_tyBM *setpredefinedobjects_BM (void);
+extern void gcmarkpredefinedobjects_BM (struct garbcoll_stBM *gc);
 
 extern int64_t prime_above_BM (int64_t n);
 extern int64_t prime_below_BM (int64_t n);
