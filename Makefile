@@ -35,7 +35,7 @@ OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst 
 all: bismon doc
 clean:
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
-	$(RM) core*
+	$(RM) core* *.i *.ii
 	$(RM) $(patsubst %.md,%.html, $(MARKDOWN_SOURCES))
 
 indent: .indent.pro
@@ -79,15 +79,21 @@ __timestamp.c: Makefile
 
 
 bismon.h.gch: bismon.h $(GENERATED_HEADERS) $(BM_HEADERS)
-	$(COMPILE.c) $(CFLAGS) -c $< -o $@
+	$(COMPILE.c)   $< -o $@
 
 $(OBJECTS): bismon.h.gch
 
 %_BM.o: %_BM.c bismon.h.gch
-	$(CCACHE) $(COMPILE.c) $(CFLAGS) -c $< -o $@
+	$(CCACHE) $(COMPILE.c)  -c $< -o $@
+
+%_BM.i: %_BM.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
+	$(CC) $(CFLAGS) -C -E $< | sed s:^#://#: | $(INDENT) -gnu > $@
+
+%_BM.ii: %_BM.cc  $(GENERATED_HEADERS) $(BM_HEADERS)
+	$(CCXX) $(CXXFLAGS) -C -E $< | sed s:^#://#: > $@
 
 %_BM.o: %_BM.cc bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
-	$(CCACHE) $(COMPILE.cc) $(CXXFLAGS) -c $< -o $@
+	$(CCACHE) $(COMPILE.cc)  $< -o $@
 
 bismon: $(OBJECTS)
 	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi
