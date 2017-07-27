@@ -149,10 +149,10 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
         }
       linbuf[linlen] = (char) 0;
       lincnt++;
-      if (!strncmp (linbuf, "!!STARTBISMON", strlen ("!!STARTBISMON")))
+      if (!strncmp (linbuf, "//!!STARTBISMON", strlen ("//!!STARTBISMON")))
         {
           if (gotstartline)
-            FATAL_BM ("multiple !!STARTBISMON lines near %s:%d", curldpath,
+            FATAL_BM ("multiple //!!STARTBISMON lines near %s:%d", curldpath,
                       lincnt);
           gotstartline = true;
         }
@@ -187,6 +187,16 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
   fclose (fil);
 }                               /* end load_first_pass_BM */
 
+static void
+load_second_pass_BM (struct loader_stBM *ld, int ix)
+{
+  assert (ld && ld->ld_magic == LOADERMAGIC_BM);
+  assert (ix >= 0 && ix <= (int) ld->ld_maxnum);
+  char *curldpath = (ix > 0) ? (ld->ld_storepatharr[ix]) : ld->ld_todopath;
+  assert (curldpath != NULL);
+  fprintf (stderr, "load_second_pass_BM ix=%d path=%s unimplemented\n",
+           ix, curldpath);
+}                               /* end load_second_pass_BM */
 
 void
 doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
@@ -199,5 +209,10 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       load_first_pass_BM (ld, ix);
   if (ld->ld_todopath)
     load_first_pass_BM (ld, 0);
-  /// run the second pass to fill objects, etc...
+  /// run the second pass to fill objects
+  for (int ix = 1; ix <= (int) ld->ld_maxnum; ix++)
+    if (ld->ld_storepatharr[ix])
+      load_second_pass_BM (ld, ix);
+  if (ld->ld_todopath)
+    load_second_pass_BM (ld, 0);
 }                               /* end doload_BM */
