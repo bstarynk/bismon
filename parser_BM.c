@@ -314,7 +314,147 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
 {
   assert (isparser_BM (pars));
   assert (memfil != NULL);
-#warning unimplemented parse_plain_cord_BM
+  const char *restlin = parserrestline_BM (pars);
+  assert (restlin && *restlin == '"');
+  const char *pc = restlin + 1;
+  unsigned nbc = 0;
+  while (*pc)
+    {
+      if (*pc == '"')
+        break;
+      else if (*pc == '\n')
+        break;
+      else if (*pc == '\\')
+        {
+          char nc = pc[1];
+          int pos = -1;
+          int b = 0;
+          switch (nc)
+            {
+            case '\'':
+            case '\"':
+            case '\\':
+              fputc (nc, memfil);
+              nbc++;
+              pc += 2;
+              continue;
+            case 'a':
+              fputc ('\a', memfil);
+              break;
+            case 'b':
+              fputc ('\b', memfil);
+              break;
+            case 'f':
+              fputc ('\f', memfil);
+              break;
+            case 'n':
+              fputc ('\n', memfil);
+              break;
+            case 'r':
+              fputc ('\r', memfil);
+              break;
+            case 't':
+              fputc ('\t', memfil);
+              break;
+            case 'v':
+              fputc ('\v', memfil);
+              break;
+            case 'e':
+              fputc ('\033' /* ESCAPE */ , memfil);;
+              break;
+            case 'x':
+              if (sscanf (pc + 1, "%02x%n", &b, &pos) > 0 && pos == 2
+                  && b > 0 && b <= 127)
+                {
+                  fputc (b, memfil);
+                  pc += 3;
+                  nbc++;
+                  continue;
+                }
+              else
+                parsererrorprintf_BM (pars, pars->pars_lineno,
+                                      pars->pars_colpos, "bad hex escape %s",
+                                      pc);
+            case 'o':
+              if (sscanf (pc + 1, "%03o%n", &b, &pos) > 0 && pos == 3
+                  && b > 0 && b <= 127)
+                {
+                  fputc (b, memfil);
+                  pc += 3;
+                  nbc++;
+                  continue;
+                }
+              else
+                parsererrorprintf_BM (pars, pars->pars_lineno,
+                                      pars->pars_colpos,
+                                      "bad octal escape %s", pc);
+            case 'u':
+              if (sscanf (pc + 1, "%04x%n", &b, &pos) > 0 && pos == 4
+                  && b > 0)
+                {
+                  char ebuf[8];
+                  memset (ebuf, 0, sizeof (ebuf));
+                  g_unichar_to_utf8 ((gunichar) b, ebuf);
+                  fputs (ebuf, memfil);
+                  nbc++;
+                  pc += 5;
+                  continue;
+                }
+              else
+                parsererrorprintf_BM (pars, pars->pars_lineno,
+                                      pars->pars_colpos,
+                                      "bad unicode4 escape %s", pc);
+            case 'U':
+              if (sscanf (pc + 1, "%08x%n", &b, &pos) > 0 && pos == 8
+                  && b > 0)
+                {
+                  char ebuf[8];
+                  memset (ebuf, 0, sizeof (ebuf));
+                  g_unichar_to_utf8 ((gunichar) b, ebuf);
+                  fputs (ebuf, memfil);
+                  nbc++;
+                  pc += 9;
+                  continue;
+                }
+              else
+                parsererrorprintf_BM (pars, pars->pars_lineno,
+                                      pars->pars_colpos,
+                                      "bad unicode8 escape %s", pc);
+            case '\0':
+              parsererrorprintf_BM (pars, pars->pars_lineno,
+                                    pars->pars_colpos, "bad null escape %s",
+                                    pc);
+
+            default:
+              fputc (nc, memfil);
+              nbc++;
+              pc += 2;
+              continue;
+            }
+        }
+      else if (*pc >= ' ' && *pc < 127)
+        {                       // ASCII char
+          fputc (*pc, memfil);
+          nbc++;
+          pc++;
+          continue;
+        }
+      else
+        {                       // probably some multibyte UTF8 char
+          const char *npc = g_utf8_next_char (pc);
+          fwrite (pc, npc - pc, 1, memfil);
+          nbc++;
+          pc = npc;
+          continue;
+        }
+    };
+  if (*pc == '"')
+    pc++;
+  else
+    parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+                          "bad plain cord ending %s", pc);
+  pars->pars_colpos += nbc + 2;
+  pars->pars_colindex += pc - restlin;
 }                               /* end parse_plain_cord_BM */
 
 
@@ -517,8 +657,9 @@ parsertokenget_BM (struct parser_stBM *pars)
       // should check the postfix for + or & and perhaps parse again cords
     }
 
-  else if (restlin[0] == '.' && ((runlen = -1), isalnum (restlin[1]))
-           && sscanf (restlin, "." RUNFMT_BM "\"%n", runbuf, &runlen) > 0
+  else if (restlin[0] == '/' && restlin[1] == '"'
+           && ((runlen = -1), isalnum (restlin[1]))
+           && sscanf (restlin, "/\"" RUNFMT_BM "(%n", runbuf, &runlen) > 0
            && runlen > 0)
     {
       // allocate a buffer, then use open_memstream, then call
@@ -531,7 +672,7 @@ parsertokenget_BM (struct parser_stBM *pars)
       FILE *filmem = open_memstream (&buf, &siz);
       if (!filmem)
         FATAL_BM ("open_memstream failed (%m)");
-      parse_raw_cord_BM (pars, runbuf + 1, filmem);
+      parse_raw_cord_BM (pars, runbuf, filmem);
 #warning missing parsing of strings starting with a raw cord
       // should check the postfix for + or & and perhaps parse again cords
     }

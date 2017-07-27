@@ -8,14 +8,14 @@
 * Comments: either starting with `//` till eol, or starting and ending
   with `|`
 
-* A lot of lexical conventions are inspired by C (however `/*`
+* some lexical conventions are inspired by C (however `/*`
   comments `*/` are **not supported** !)
   
 * A name is nearly like a C identifier, but double underscores or
   initial or final underscores are forbidden. So `foo`, `foo_1`,
   `barFoo_x` are good names, but `__`, `_a`, `foo__2` are not. A name denotes some named object at time of parsing.
   
-* A C-identifier is a name in the above sense which does not yet name
+* A C-name is a name in the above sense which does not yet name
   some existing object.
 
 * An object-id or id starts with an underscore then digit, such as
@@ -37,10 +37,10 @@
 
 * Strings are made of cords. Most of them have just one cord, like
   `"abc"` or `"some\ttab"` where the `\t` is an escape for the tab. A
-  raw cord starts with a dot followed by at most 16 letter-or-digits
-  run followed by a double quote, and ending with a double quote
-  followed by the same run then again a dot and may contain unescaped
-  control characters. So `.XY"no\ttab"XY.` is a raw cord with run of
+  raw cord starts with a `/"` followed by at most 16 letter-or-digits
+  run followed by an open parenthesis, and ending with a closing parenthesis
+  followed by the same run then `"/`  and may contain unescaped
+  control characters. So `/"XY(no\ttab)XY"/` is a raw cord with run of
   `XY` and denotes the same string as `"no\\ttab"` and does not
   contain any tab (but has a backslash). A cord may be *immediately*
   followed by `&` or by `+` (and then some optional spaces or
