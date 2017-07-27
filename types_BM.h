@@ -358,7 +358,8 @@ typedef void parser_error_sigBM
 struct parserops_stBM
 {
   const unsigned parsop_magic;  /* always PARSOPMAGIC_BM */
-  const unsigned parsop_serial; /* some number, often unused */
+  const unsigned short parsop_serial;   /* some number, often unused */
+  const bool parsop_nobuild;    /* if set, don't build any value */
   // error processing
   parser_error_sigBM *parsop_error_rout;
   // decoration of comments
@@ -367,8 +368,8 @@ struct parserops_stBM
   // decoration of numbers
   parser_decorate_number_sigBM *parsop_decorate_number_rout;
   // decoration of strings
-  parser_decorate_comment_sign_sigBM *parsop_decorate_string_sign_rout;
-  parser_decorate_comment_inside_sigBM *parsop_decorate_string_inside_rout;
+  parser_decorate_string_sign_sigBM *parsop_decorate_string_sign_rout;
+  parser_decorate_string_inside_sigBM *parsop_decorate_string_inside_rout;
   // decoration of delimiters
   parser_decorate_delimiter_sigBM *parsop_decorate_delimiter_rout;
   // decoration of identifiers

@@ -315,9 +315,14 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
 {
   assert (isparser_BM (pars));
   assert (memfil != NULL);
+  const struct parserops_stBM *parsop = pars->pars_ops;
   const char *restlin = parserrestline_BM (pars);
   assert (restlin && *restlin == '"');
+  assert (!parsop || parsop->parsop_magic == PARSOPMAGIC_BM);
+  if (parsop && parsop->parsop_decorate_string_sign_rout)
+    parsop->parsop_decorate_string_sign_rout (pars, pars->pars_colpos, 1);
   const char *pc = restlin + 1;
+  const char *startplain = restlin + 1;
   unsigned nbc = 0;
   while (*pc)
     {
@@ -327,6 +332,15 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
         break;
       else if (*pc == '\\')
         {
+          if (parsop && parsop->parsop_decorate_string_inside_rout
+              && startplain < pc)
+            {
+              parsop->parsop_decorate_string_inside_rout        //
+                (pars,
+                 pars->pars_colpos + g_utf8_strlen (restlin, pc - restlin),
+                 g_utf8_strlen (startplain, pc - startplain));
+            }
+          const char *oldpc = pc;
           char nc = pc[1];
           int pos = -1;
           int b = 0;
@@ -335,33 +349,64 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
             case '\'':
             case '\"':
             case '\\':
+              b = nc;
               fputc (nc, memfil);
               nbc++;
               pc += 2;
+              startplain = pc;
               continue;
             case 'a':
-              fputc ('\a', memfil);
+              b = '\a';
+              fputc (b, memfil);
+              nbc++;
+              pc += 2;
+              startplain = pc;
               break;
             case 'b':
-              fputc ('\b', memfil);
+              b = '\b';
+              fputc (b, memfil);
+              nbc++;
+              pc += 2;
+              startplain = pc;
               break;
             case 'f':
-              fputc ('\f', memfil);
+              b = '\f';
+              fputc (b, memfil);
+              nbc++;
+              pc += 2;
+              startplain = pc;
               break;
             case 'n':
-              fputc ('\n', memfil);
+              b = '\n';
+              fputc (b, memfil);
+              nbc++;
+              pc += 2;
+              startplain = pc;
               break;
             case 'r':
-              fputc ('\r', memfil);
+              b = '\r';
+              fputc (b, memfil);
+              nbc++;
+              pc += 2;
+              startplain = pc;
               break;
             case 't':
-              fputc ('\t', memfil);
+              b = '\t';
+              fputc (b, memfil);
+              nbc++;
+              pc += 2;
+              startplain = pc;
               break;
             case 'v':
-              fputc ('\v', memfil);
+              b = '\v';
+              fputc (b, memfil);
+              nbc++;
+              pc += 2;
+              startplain = pc;
               break;
             case 'e':
-              fputc ('\033' /* ESCAPE */ , memfil);;
+              b = '\033' /*ESCAPE*/;
+              fputc (b, memfil);;
               break;
             case 'x':
               if (sscanf (pc + 1, "%02x%n", &b, &pos) > 0 && pos == 2
@@ -370,7 +415,8 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
                   fputc (b, memfil);
                   pc += 3;
                   nbc++;
-                  continue;
+                  startplain = pc;
+                  break;
                 }
               else
                 parsererrorprintf_BM (pars, pars->pars_lineno,
@@ -383,7 +429,8 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
                   fputc (b, memfil);
                   pc += 3;
                   nbc++;
-                  continue;
+                  startplain = pc;
+                  break;
                 }
               else
                 parsererrorprintf_BM (pars, pars->pars_lineno,
@@ -399,7 +446,8 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
                   fputs (ebuf, memfil);
                   nbc++;
                   pc += 5;
-                  continue;
+                  startplain = pc;
+                  break;
                 }
               else
                 parsererrorprintf_BM (pars, pars->pars_lineno,
@@ -415,7 +463,8 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
                   fputs (ebuf, memfil);
                   nbc++;
                   pc += 9;
-                  continue;
+                  startplain = pc;
+                  break;
                 }
               else
                 parsererrorprintf_BM (pars, pars->pars_lineno,
@@ -427,11 +476,18 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
                                     pc);
 
             default:
-              fputc (nc, memfil);
+              b = nc;
+              fputc (b, memfil);
               nbc++;
               pc += 2;
-              continue;
-            }
+              startplain = pc;
+              break;
+            }                   /* end switch nc */
+          if (b && parsop && parsop->parsop_decorate_string_sign_rout)
+            parsop->parsop_decorate_string_sign_rout    //
+              (pars,
+               pars->pars_colpos + g_utf8_strlen (restlin, oldpc - restlin),
+               g_utf8_strlen (oldpc, pc - oldpc));
         }
       else if (*pc >= ' ' && *pc < 127)
         {                       // ASCII char
@@ -450,11 +506,25 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
         }
     };
   if (*pc == '"')
-    pc++;
+    {
+      if (parsop && parsop->parsop_decorate_string_inside_rout
+          && startplain < pc)
+        {
+          parsop->parsop_decorate_string_inside_rout    //
+            (pars,
+             pars->pars_colpos + g_utf8_strlen (restlin, pc - restlin),
+             g_utf8_strlen (startplain, pc - startplain));
+        }
+      if (parsop && parsop->parsop_decorate_string_sign_rout)
+        parsop->parsop_decorate_string_sign_rout
+          (pars,
+           pars->pars_colpos + g_utf8_strlen (restlin, pc - restlin), 1);
+      pc++;
+    }
   else
     parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
                           "bad plain cord ending %s", pc);
-  pars->pars_colpos += nbc + 2;
+  pars->pars_colpos += g_utf8_strlen (restlin, pc - restlin);
   pars->pars_colindex += pc - restlin;
   return nbc;
 }                               /* end parse_plain_cord_BM */
@@ -507,11 +577,15 @@ parse_raw_cord_BM (struct parser_stBM *pars, const char *run, FILE * memfil)
   return nbc;
 }                               /* end parse_raw_cord_BM */
 
+
 static const stringval_tyBM *
 parse_cords_BM (struct parser_stBM *pars)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return NULL;
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
+  bool nobuild = parsops && parsops->parsop_nobuild;
   parserskipspaces_BM (pars);
   const char *restlin = parserrestline_BM (pars);
   if (!restlin)
@@ -542,7 +616,7 @@ parse_cords_BM (struct parser_stBM *pars)
                && ((runlen = -1), (memset (runbuf, 0, sizeof (runbuf))),
                    sscanf (restlin, "/\"" RUNFMT_BM "(%n", runbuf,
                            &runlen) > 0) && runlen > 0)
-        cumulchars += parse_raw_cord_BM (pars, runbuf, filmam);
+        cumulchars += parse_raw_cord_BM (pars, runbuf, filmem);
       else
         {
           fclose (filmem);
@@ -582,7 +656,7 @@ parse_cords_BM (struct parser_stBM *pars)
   while (againcord);
   fputc ((char) 0, filmem);
   fflush (filmem);
-  const stringval_tyBM *str = makestring_BM (cbuf);
+  const stringval_tyBM *str = nobuild ? NULL : (makestring_BM (cbuf));
   fclose (filmem);
   free (cbuf);
   return str;
@@ -601,6 +675,7 @@ parsertokenget_BM (struct parser_stBM * pars)
     };
   const struct parserops_stBM *parsop = pars->pars_ops;
   assert (!parsop || parsop->parsop_magic == PARSOPMAGIC_BM);
+  bool nobuild = parsop && parsop->parsop_nobuild;
   parserskipspaces_BM (pars);
   const char *restlin = parserrestline_BM (pars);
   if (!restlin)
@@ -728,7 +803,8 @@ parsertokenget_BM (struct parser_stBM * pars)
         }
       else
         {                       // new name
-          const stringval_tyBM *newnam = makestring_BM (nambuf);
+          const stringval_tyBM *newnam =        //
+            nobuild ? NULL : makestring_BM (nambuf);
           if (nambuf != tinynambuf)
             free (nambuf);
           if (parsop && parsop->parsop_decorate_new_name_rout)
@@ -782,9 +858,10 @@ parsertokenget_BM (struct parser_stBM * pars)
     if (restlin[0] == (Str)[0]			\
 	&& !strncmp(restlin, Str, strlen(Str))	\
 	&& strlen(delimstr) < strlen(Str)) {	\
-    curdelim = delim__##Nam;			\
+    curdelim = delim_##Nam;			\
     strcpy(delimstr, Str);			\
-  }  while(0);
+    }}  while(0);
+  //
 #include "_bm_delim.h"
   //
   if (curdelim == delim__NONE)
