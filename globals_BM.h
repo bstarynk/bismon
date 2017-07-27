@@ -26,4 +26,8 @@ extern struct allalloc_stBM *allocationvec_vBM /*¤ allocgc_BM.c */ ;
 extern const typedhead_tyBM unspecifieddata_BM;
 
 #define UNSPECIFIED_BM ((void*)(&unspecifieddata_BM))
+
+#define HAS_GLOBAL_BM(Nam) extern objectval_tyBM*globdata_##Nam##_BM;
+#include "_bm_global.h"
+
 #endif /*GLOBALS_BM_INCLUDED */

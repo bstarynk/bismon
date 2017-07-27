@@ -10,6 +10,9 @@
 
 #include "_bm_predef.h"
 
+#define HAS_GLOBAL_BM(Nam) objectval_tyBM*globdata_##Nam##_BM;
+#include "_bm_global.h"
+
 // for qsort
 static int
 objptrqcmp_BM (const void *p1, const void *p2)
