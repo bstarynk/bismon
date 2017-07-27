@@ -1,4 +1,4 @@
-// file names_BM.cc
+// file namesglobals_BM.cc
 extern "C" {
 #include "bismon.h"
 };
@@ -6,6 +6,7 @@ extern "C" {
 #include <map>
 #include <vector>
 #include <unordered_map>
+#include <string>
 
 //// order with strcmp
 struct StrcmpLess_BM
@@ -33,6 +34,8 @@ static std::map<const char*,objectval_tyBM*,StrcmpLess_BM> namemap_BM;
 // keys are objectval_tyBM*, values are strdup-ed strings
 static std::unordered_map<objectval_tyBM*,const char*,ObjectHash_BM> objhashtable_BM;
 
+
+
 bool
 validname_BM (const char *nam)
 {
@@ -58,6 +61,7 @@ validname_BM (const char *nam)
     }
   return true;
 }                               /* end validname_BM */
+
 
 static void
 add_predefined_name_BM (const char *name, objectval_tyBM * obj)
@@ -105,6 +109,7 @@ findobjectname_BM (const objectval_tyBM * obj)
   return nullptr;
 }                               /* end findobjectname_BM */
 
+
 bool
 registername_BM (const objectval_tyBM * obj, const char *nam)
 {
@@ -129,6 +134,7 @@ registername_BM (const objectval_tyBM * obj, const char *nam)
   return true;
 }                               /* end registername_BM */
 
+
 bool
 forgetnamedobject_BM (const objectval_tyBM * obj)
 {
@@ -145,6 +151,7 @@ forgetnamedobject_BM (const objectval_tyBM * obj)
   free ((void*)nam);
   return true;
 } /* end forgetnamedobject_BM */
+
 
 bool
 forgetnamestring_BM (const char *nam)
@@ -164,6 +171,7 @@ forgetnamestring_BM (const char *nam)
   return true;
 } /* end forgetnamestring_BM */
 
+
 const setval_tyBM *
 setofnamedobjects_BM (void)
 {
@@ -177,6 +185,7 @@ setofnamedobjects_BM (void)
     };
   return makeset_BM(vectobj.data(), vectobj.size());
 } // end setofnamedobjects_BM
+
 
 const char*
 findnameafter_BM(const char*prefix)
@@ -193,6 +202,7 @@ findnameafter_BM(const char*prefix)
   return nullptr;
 } // end of findnameafter_BM
 
+
 const char*
 findnamesameorafter_BM(const char*prefix)
 {
@@ -207,6 +217,7 @@ findnamesameorafter_BM(const char*prefix)
     return itn->first;
   return nullptr;
 } // end of findnamesameorafter_BM
+
 
 const char*
 findnamebefore_BM(const char*prefix)
@@ -228,3 +239,27 @@ findnamebefore_BM(const char*prefix)
     return itn->first;
   return nullptr;
 } // end of findnamebefore_BM
+
+
+
+////////////////////////////////////////////////////////////////
+
+static std::map<std::string, objectval_tyBM**> mapglobals_BM;
+
+void initialize_globals_BM(void)
+{
+#define HAS_GLOBAL_BM(Gnam) do {		\
+  assert (mapglobals_BM.find(#Gnam)		\
+	  == mapglobals_BM.end());		\
+  mapglobals_BM[#Gnam] = &GLOBAL_BM(Gnam);	\
+} while(0);
+#include "_bm_global.h"
+} // end of initialize_globals_BM
+
+void
+gcmarkglobals_BM(struct garbcoll_stBM*gc)
+{
+  for (auto it: mapglobals_BM)
+    if (it.second)
+      gcmark_BM(gc, it.second, 0);
+} // end gcmarkglobals_BM

@@ -104,6 +104,9 @@ gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
     case tydata_quasinode_BM:
       quasinodegcmark_BM (gc, (quasinode_tyBM *) val, depth);
       return;
+    case tydata_vectval_BM:
+      datavectgcmark_BM (gc, (struct datavectval_stBM *) val, depth);
+      return;
     default:
       FATAL_BM ("gcmark ty#%d unexpected for val@%p depth=%d",
                 ty, val, depth);
@@ -191,9 +194,17 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
   GCdata.gc_hset =              //
     hashsetobj_grow_BM (NULL, prime_above_BM (alcnt / 32 + 100));
   gcmarkpredefinedobjects_BM (&GCdata);
+  gcmarkglobals_BM (&GCdata);
   gcframemark_BM (&GCdata, stkfram, 0);
-  // should gcmark all the globals
-  // should run the gc loop on the scanlist
+  while (listlength_BM (GCdata.gc_scanlist) > 0)
+    {
+      value_tyBM firstv = listfirst_BM (GCdata.gc_scanlist);
+      listpopfirst_BM (GCdata.gc_scanlist);
+      assert (isobject_BM (firstv));
+      objectinteriorgcmark_BM (&GCdata, (objectval_tyBM *) firstv);
+    }
+  listclear_BM (GCdata.gc_scanlist);
+  list_destroy_BM (GCdata.gc_scanlist), GCdata.gc_scanlist = NULL;
 #warning incomplete fullgarbagecollection_BM
   FATAL_BM ("incomplete fullgarbagecollection_BM");
 }                               /* end fullgarbagecollection_BM */

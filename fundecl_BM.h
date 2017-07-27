@@ -84,6 +84,8 @@ static inline unsigned objspacenum_BM (objectval_tyBM * obj);
 extern const setval_tyBM *setpredefinedobjects_BM (void);
 extern void gcmarkpredefinedobjects_BM (struct garbcoll_stBM *gc);
 
+extern void objectinteriorgcmark_BM (struct garbcoll_stBM *gc,
+                                     objectval_tyBM * obj);
 extern int64_t prime_above_BM (int64_t n);
 extern int64_t prime_below_BM (int64_t n);
 
@@ -118,6 +120,9 @@ extern struct datavectval_stBM *datavect_append_BM (struct datavectval_stBM
 
 static inline value_tyBM datavectnth_BM (const struct datavectval_stBM *dvec,
                                          int rk);
+extern void datavectgcmark_BM (struct garbcoll_stBM *gc,
+                               const struct datavectval_stBM *dvec,
+                               int depth);
 
 extern struct hashsetobj_stBM *hashsetobj_grow_BM (struct hashsetobj_stBM
                                                    *hset, unsigned gap);
@@ -295,4 +300,16 @@ extern bool registername_BM (const objectval_tyBM * obj, const char *nam);
 extern bool forgetnamedobject_BM (const objectval_tyBM * obj);
 extern bool forgetnamestring_BM (const char *nam);
 extern const setval_tyBM *setofnamedobjects_BM (void);
+
+// globals
+extern void initialize_globals_BM (void);
+extern objectval_tyBM **findglobalnamed_BM (const char *nam);
+extern bool forgetglobalnamed_BM (const char *nam);
+// make a node with the global names
+extern const node_tyBM *nodeglobalnames_BM (const objectval_tyBM * conn);
+// make a set with the global objects
+extern const setval_tyBM *nodeglobalset_BM (void);
+
+extern void gcmarkglobals_BM (struct garbcoll_stBM *gc);
+
 #endif /*FUNDECL_BM_INCLUDED */

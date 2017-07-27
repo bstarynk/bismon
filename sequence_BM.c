@@ -305,12 +305,10 @@ datavect_reserve_BM (struct datavectval_stBM *dvec, unsigned gap)
   unsigned long siz = prime_above_BM (oldlen + gap);
   if (siz > MAXSIZE_BM)
     FATAL_BM ("too big datavect %ld", siz);
-  struct datavectval_stBM *newdvec = allocinternalty_BM (tydata_vectval_BM,
-                                                         sizeof (struct
-                                                                 datavectval_stBM)
-                                                         +
-                                                         siz *
-                                                         sizeof (void *));
+  struct datavectval_stBM *newdvec =    //
+    allocinternalty_BM (tydata_vectval_BM,
+                        sizeof (struct datavectval_stBM)
+                        + siz * sizeof (void *));
   ((typedhead_tyBM *) newdvec)->rlen = siz;
   ((typedsize_tyBM *) newdvec)->size = oldcnt;
   memcpy (newdvec->vec_data, dvec->vec_data, oldcnt * sizeof (void *));
@@ -355,3 +353,20 @@ datavect_append_BM (struct datavectval_stBM *dvec, value_tyBM val)
   free (dvec);
   return newdvec;
 }                               /* end datavect_append_BM */
+
+void
+datavectgcmark_BM (struct garbcoll_stBM *gc,
+                   const struct datavectval_stBM *dvec, int depth)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (valtype_BM (dvec) == tydata_vectval_BM);
+  uint8_t oldmark = ((typedhead_tyBM *) dvec)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) dvec)->hgc = MARKGC_BM;
+  unsigned dlen = ((typedhead_tyBM *) dvec)->rlen;
+  unsigned dcnt = ((typedsize_tyBM *) dvec)->size;
+  assert (dcnt <= dlen);
+  for (unsigned ix = 0; ix < dcnt; ix++)
+    gcmark_BM (gc, dvec->vec_data[ix], depth + 1);
+}                               /* end datavectgcmark_BM  */

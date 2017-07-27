@@ -1,6 +1,7 @@
 // file object_BM.c
 #include "bismon.h"
 
+/// the predefined have static memory
 #define HAS_PREDEF_BM(Id,Hi,Lo,Hash) objectval_tyBM predefdata##Id##_BM = { \
  .pA = (typedhead_tyBM){.htyp= tyObject_BM, .hgc=0, .hash= Hash}, \
  .ob_id = (rawid_tyBM){.id_hi= Hi, .id_lo= Lo}, \
@@ -10,7 +11,11 @@
 
 #include "_bm_predef.h"
 
-#define HAS_GLOBAL_BM(Nam) objectval_tyBM*globdata_##Nam##_BM;
+
+
+/// declare the globals
+#define HAS_GLOBAL_BM(Gnam) objectval_tyBM* GLOBAL_BM(Gnam);
+
 #include "_bm_global.h"
 
 
@@ -202,6 +207,18 @@ makeobj_BM (void)
       return makeobjofid_BM (id);
     }
 }                               /* end of makeobj_BM */
+
+void
+objectinteriorgcmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (isobject_BM (obj));
+  assert (((typedhead_tyBM *) obj)->hgc == MARKGC_BM);
+  if (obj->ob_compvec)
+    datavectgcmark_BM (gc, obj->ob_compvec, 0);
+  if (obj->ob_attrassoc)
+    assocgcmark_BM (gc, obj->ob_attrassoc, 0);
+}                               /* end objectinteriorgcmark_BM */
 
 ////////////////////////////////////////////////////////////////
 

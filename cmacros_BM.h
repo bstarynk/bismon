@@ -73,4 +73,6 @@
 #define ROUTINEOBJPREFIX_BM "crout"
 #define ROUTINEOBJSUFFIX_BM "_BM"
 
+#define GLOBAL_BM(Gnam) globdata_##Gnam##_BM
+
 #endif /*CMACROS_BM_INCLUDED */

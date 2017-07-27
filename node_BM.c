@@ -201,6 +201,7 @@ apply3_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
   return (*rout) (clos, stkf, arg1, arg2, arg3, NULL);
 }                               /* end apply3_BM */
 
+
 value_tyBM
 apply4_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
            const value_tyBM arg1, const value_tyBM arg2,
@@ -215,12 +216,13 @@ apply4_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
     return NULL;
   LOCALQNODESIZED_FM (qno, NULL, 1);
   qno.qsons[0] = arg4;
-  return (*rout) (clos, stkf, arg1, arg2, arg3, &qno);
+  return (*rout) (clos, stkf, arg1, arg2, arg3,
+                  (const quasinode_tyBM *) &qno);
 }                               /* end apply4_BM */
 
 
 value_tyBM
-apply5_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
+apply5_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4,
            const value_tyBM arg5)
@@ -235,12 +237,13 @@ apply5_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
   LOCALQNODESIZED_FM (qno, NULL, 2);
   qno.qsons[0] = arg4;
   qno.qsons[1] = arg5;
-  return (*rout) (clos, stkf, arg1, arg2, arg3, &qno);
+  return (*rout) (clos, stkf, arg1, arg2, arg3,
+                  (const quasinode_tyBM *) &qno);
 }                               /* end apply5_BM */
 
 
 value_tyBM
-apply6_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
+apply6_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4,
            const value_tyBM arg5, const value_tyBM arg6)
@@ -256,12 +259,13 @@ apply6_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
   qno.qsons[0] = arg4;
   qno.qsons[1] = arg5;
   qno.qsons[2] = arg6;
-  return (*rout) (clos, stkf, arg1, arg2, arg3, &qno);
+  return (*rout) (clos, stkf, arg1, arg2, arg3,
+                  (const quasinode_tyBM *) &qno);
 }                               /* end apply6_BM */
 
 
 value_tyBM
-apply7_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
+apply7_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4,
            const value_tyBM arg5, const value_tyBM arg6,
@@ -279,12 +283,13 @@ apply7_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
   qno.qsons[1] = arg5;
   qno.qsons[2] = arg6;
   qno.qsons[3] = arg7;
-  return (*rout) (clos, stkf, arg1, arg2, arg3, &qno);
+  return (*rout) (clos, stkf, arg1, arg2, arg3,
+                  (const quasinode_tyBM *) &qno);
 }                               /* end apply7_BM */
 
 
 value_tyBM
-apply8_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
+apply8_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4,
            const value_tyBM arg5, const value_tyBM arg6,
@@ -303,12 +308,13 @@ apply8_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
   qno.qsons[2] = arg6;
   qno.qsons[3] = arg7;
   qno.qsons[4] = arg8;
-  return (*rout) (clos, stkf, arg1, arg2, arg3, &qno);
+  return (*rout) (clos, stkf, arg1, arg2, arg3,
+                  (const quasinode_tyBM *) &qno);
 }                               /* end apply8_BM */
 
 
 value_tyBM
-apply9_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
+apply9_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4,
            const value_tyBM arg5, const value_tyBM arg6,
@@ -329,5 +335,6 @@ apply9_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
   qno.qsons[3] = arg7;
   qno.qsons[4] = arg8;
   qno.qsons[5] = arg9;
-  return (*rout) (clos, stkf, arg1, arg2, arg3, &qno);
+  return (*rout) (clos, stkf, arg1, arg2, arg3,
+                  (const quasinode_tyBM *) &qno);
 }                               /* end apply9_BM */
