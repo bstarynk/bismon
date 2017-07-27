@@ -507,6 +507,87 @@ parse_raw_cord_BM (struct parser_stBM *pars, const char *run, FILE * memfil)
   return nbc;
 }                               /* end parse_raw_cord_BM */
 
+static const stringval_tyBM *
+parse_cords_BM (struct parser_stBM *pars)
+{
+  if (!isparser_BM ((const value_tyBM) pars))
+    return NULL;
+  parserskipspaces_BM (pars);
+  const char *restlin = parserrestline_BM (pars);
+  if (!restlin)
+    return NULL;
+  if (restlin[0] != '"' || (restlin[0] != '/' && restlin[1] != '"'))
+    return NULL;
+  char runbuf[RUNLEN_BM + 8] = "";
+  int runlen = -1;
+  size_t bufsiz = 256;
+  char *cbuf = malloc (bufsiz);
+  if (!cbuf)
+    FATAL_BM ("malloc for cord of %ld failed (%m)", (long) bufsiz);
+  memset (cbuf, 0, bufsiz);
+  FILE *filmem = open_memstream (&cbuf, &bufsiz);
+  if (!filmem)
+    FATAL_BM ("open_memstream failed (%m)");
+  bool againcord = false;
+  unsigned long cumulchars = 0;
+  do
+    {
+      againcord = false;
+      restlin = parserrestline_BM (pars);
+      if (!restlin)
+        break;
+      if (restlin[0] == '"')
+        cumulchars += parse_plain_cord_BM (pars, filmem);
+      else if (restlin[0] == '/' && restlin[1] == '"'
+               && ((runlen = -1), (memset (runbuf, 0, sizeof (runbuf))),
+                   sscanf (restlin, "/\"" RUNFMT_BM "(%n", runbuf,
+                           &runlen) > 0) && runlen > 0)
+        cumulchars += parse_raw_cord_BM (pars, runbuf, filmam);
+      else
+        {
+          fclose (filmem);
+          free (cbuf);
+          parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+                                "bad cord %s", restlin);
+        }
+
+      restlin = parserrestline_BM (pars);
+      if (!restlin)
+        break;
+      if (restlin[0] == '&')
+        {
+          pars->pars_colpos++;
+          pars->pars_colindex++;
+          againcord = true;
+        }
+      else if (restlin[0] == '+')
+        {
+          pars->pars_colpos++;
+          pars->pars_colindex++;
+          fputc ('\n', filmem);
+          cumulchars++;
+          againcord = true;
+        }
+      else
+        break;
+      parserskipspaces_BM (pars);
+      if (cumulchars >= MAXSIZE_BM)
+        {
+          fclose (filmem);
+          free (cbuf);
+          parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+                                "too long string (%lu)", cumulchars);
+        }
+    }
+  while (againcord);
+  fputc ((char) 0, filmem);
+  fflush (filmem);
+  const stringval_tyBM *str = makestring_BM (cbuf);
+  fclose (filmem);
+  free (cbuf);
+  return str;
+}                               /* end parse_cords_BM */
+
 
 parstoken_tyBM
 parsertokenget_BM (struct parser_stBM * pars)
@@ -522,8 +603,6 @@ parsertokenget_BM (struct parser_stBM * pars)
   assert (!parsop || parsop->parsop_magic == PARSOPMAGIC_BM);
   parserskipspaces_BM (pars);
   const char *restlin = parserrestline_BM (pars);
-  char runbuf[RUNLEN_BM + 8] = "";
-  int runlen = -1;
   if (!restlin)
     return (parstoken_tyBM)
     {
@@ -683,38 +762,17 @@ parsertokenget_BM (struct parser_stBM * pars)
 
   else if (restlin[0] == '"')
     {
-      // allocate a buffer, then use open_memstream, then call
-      // parse_string_cord_BM ...
-      size_t siz = 256;
-      char *buf = malloc (siz);
-      if (!buf)
-        FATAL_BM ("malloc of %zu failure (%m)", siz);
-      memset (buf, 0, siz);
-      FILE *filmem = open_memstream (&buf, &siz);
-      if (!filmem)
-        FATAL_BM ("open_memstream failed (%m)");
-      parse_plain_cord_BM (pars, filmem);
-#warning missing parsing of strings starting with a plain cord
-      // should check the postfix for + or & and perhaps parse again cords
+      const stringval_tyBM *str = parse_cords_BM (pars);
+      return (parstoken_tyBM)
+      {
+      .tok_kind = plex_STRING,.tok_string = str};
     }
 
-  else if (restlin[0] == '/' && restlin[1] == '"'
-           && ((runlen = -1), isalnum (restlin[1]))
-           && sscanf (restlin, "/\"" RUNFMT_BM "(%n", runbuf, &runlen) > 0
-           && runlen > 0)
+  else if (restlin[0] == '/' && restlin[1] == '"')
     {
-      // allocate a buffer, then use open_memstream, then call
-      // parse_raw_cord_BM ...
-      size_t siz = 256;
-      char *buf = malloc (siz);
-      if (!buf)
-        FATAL_BM ("malloc of %zu failure (%m)", siz);
-      memset (buf, 0, siz);
-      FILE *filmem = open_memstream (&buf, &siz);
-      if (!filmem)
-        FATAL_BM ("open_memstream failed (%m)");
-      parse_raw_cord_BM (pars, runbuf, filmem);
-#warning missing parsing of strings starting with a raw cord
-      // should check the postfix for + or & and perhaps parse again cords
+      const stringval_tyBM *str = parse_cords_BM (pars);
+      return (parstoken_tyBM)
+      {
+      .tok_kind = plex_STRING,.tok_string = str};
     }
 }                               /* end parsertokenget_BM */
