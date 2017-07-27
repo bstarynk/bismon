@@ -222,7 +222,8 @@ apply4_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
 value_tyBM
 apply5_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
            const value_tyBM arg1, const value_tyBM arg2,
-           const value_tyBM arg3, const value_tyBM arg5)
+           const value_tyBM arg3, const value_tyBM arg4,
+           const value_tyBM arg5)
 {
   if (!isclosure_BM ((const value_tyBM) clos))
     return NULL;
@@ -241,8 +242,8 @@ apply5_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
 value_tyBM
 apply6_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
            const value_tyBM arg1, const value_tyBM arg2,
-           const value_tyBM arg3, const value_tyBM arg5,
-           const value_tyBM arg6)
+           const value_tyBM arg3, const value_tyBM arg4,
+           const value_tyBM arg5, const value_tyBM arg6)
 {
   if (!isclosure_BM ((const value_tyBM) clos))
     return NULL;
@@ -262,8 +263,9 @@ apply6_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
 value_tyBM
 apply7_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
            const value_tyBM arg1, const value_tyBM arg2,
-           const value_tyBM arg3, const value_tyBM arg5,
-           const value_tyBM arg6, const value_tyBM arg7)
+           const value_tyBM arg3, const value_tyBM arg4,
+           const value_tyBM arg5, const value_tyBM arg6,
+           const value_tyBM arg7)
 {
   if (!isclosure_BM ((const value_tyBM) clos))
     return NULL;
@@ -284,9 +286,9 @@ apply7_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
 value_tyBM
 apply8_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
            const value_tyBM arg1, const value_tyBM arg2,
-           const value_tyBM arg3, const value_tyBM arg5,
-           const value_tyBM arg6, const value_tyBM arg7,
-           const value_tyBM arg8)
+           const value_tyBM arg3, const value_tyBM arg4,
+           const value_tyBM arg5, const value_tyBM arg6,
+           const value_tyBM arg7, const value_tyBM arg8)
 {
   if (!isclosure_BM ((const value_tyBM) clos))
     return NULL;
@@ -308,9 +310,10 @@ apply8_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
 value_tyBM
 apply9_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
            const value_tyBM arg1, const value_tyBM arg2,
-           const value_tyBM arg3, const value_tyBM arg5,
-           const value_tyBM arg6, const value_tyBM arg7,
-           const value_tyBM arg8, const value_tyBM arg9)
+           const value_tyBM arg3, const value_tyBM arg4,
+           const value_tyBM arg5, const value_tyBM arg6,
+           const value_tyBM arg7, const value_tyBM arg8,
+           const value_tyBM arg9)
 {
   if (!isclosure_BM ((const value_tyBM) clos))
     return NULL;
