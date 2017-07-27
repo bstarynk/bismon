@@ -463,6 +463,15 @@ parse_raw_cord_BM (struct parser_stBM *pars, const char *run, FILE * memfil)
 {
   assert (isparser_BM (pars));
   assert (memfil != NULL);
+  char endrunbuf[RUNLEN_BM + 8] = "";
+  unsigned runlen = strlen (run);
+  assert (runlen <= RUNLEN_BM);
+  unsigned nbc = 0;
+  const char *restlin = parserrestline_BM (pars);
+  assert (restlin && restlin[0] == '/' && restlin[1] == '"'
+          && !strncmp (restlin + 2, run, runlen)
+          && restlin[runlen + 3] == '(');
+  snprintf (endrunbuf, sizeof (endrunbuf), ")%s\"/", run);
 #warning unimplemented parse_raw_cord_BM
 }                               /* end parse_raw_cord_BM */
 
