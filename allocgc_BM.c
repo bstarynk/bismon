@@ -86,7 +86,7 @@ gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
       nodegcmark_BM (gc, (node_tyBM *) val, depth);
       return;
     case tyClosure_BM:
-      closuregcmark_BM (gc, (node_tyBM *) val, depth);
+      closuregcmark_BM (gc, (closure_tyBM *) val, depth);
       return;
     case tydata_assocpairs_BM:
     case tydata_assocbucket_BM:
@@ -101,6 +101,8 @@ gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
     case tydata_loader_BM:
       loadergcmark_BM (gc, (struct loader_stBM *) val);
       return;
+    case tydata_quasinode_BM:
+      quasinodegcmark_BM (gc, (quasinode_tyBM *) val, depth);
     default:
       FATAL_BM ("gcmark ty#%d unexpected for val@%p depth=%d",
                 ty, val, depth);
