@@ -65,6 +65,7 @@ closuregcmark_BM (struct garbcoll_stBM *gc, closure_tyBM * clos, int depth)
 
 
 
+
 const node_tyBM *
 makenode_BM (const objectval_tyBM * connob, unsigned nbval,
              const value_tyBM * sonvalarr)
@@ -126,3 +127,16 @@ nodegcmark_BM (struct garbcoll_stBM *gc, node_tyBM * nod, int depth)
   for (unsigned ix = 0; ix < size; ix++)
     gcmark_BM (gc, nod->nodt_sons[ix], depth + 1);
 }                               /* end nodegcmark_BM */
+
+void
+quasinodegcmark_BM (struct garbcoll_stBM *gc, quasinode_tyBM * qnod,
+                    int depth)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (istree_BM (qnod));
+  /// on purpose, don't mark me
+  gcobjmark_BM (gc, qnod->nodt_conn);
+  unsigned size = ((typedsize_tyBM *) qnod)->size;
+  for (unsigned ix = 0; ix < size; ix++)
+    gcmark_BM (gc, qnod->nodt_sons[ix], depth + 1);
+}                               /* end quasinodegcmark_BM */

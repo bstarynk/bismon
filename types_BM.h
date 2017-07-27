@@ -52,6 +52,7 @@ enum gcdataenum_BM
   tydata_listtop_BM,
   tydata_loader_BM,
   tydata_parser_BM,
+  tydata_quasinode_BM,          // stack allocated!
   //
   tydata__SpareA_BM,
   tydata__SpareB_BM,
@@ -214,9 +215,10 @@ struct nodetree_stBM
   value_tyBM nodt_sons[];
 };
 
-typedef struct nodetree_stBM tree_tyBM; /* for tyClosure_BM or tyNode_BM */
+typedef struct nodetree_stBM tree_tyBM; /* for tyClosure_BM or tyNode_BM or tydata_quasinode_BM */
 typedef struct nodetree_stBM node_tyBM; /* for tyNode_BM */
 typedef struct nodetree_stBM closure_tyBM;      /* for tyClosure_BM */
+typedef struct nodetree_stBM quasinode_tyBM;    /* for tydata_quasinode_BM */
 
 struct stackframe_stBM
 {                               // for tydata_StackFrame_BM, sitting on the callstack
@@ -228,20 +230,7 @@ struct stackframe_stBM
   value_tyBM stkfram_locals[];
 };
 
-#define LOCALFRAME_BM(Prev,Descr,...) struct                    \
-  { struct stackframe_stBM __frame; __VA_ARGS__; } _ =          \
-    { .__frame = {.stkfram_pA=                                  \
-                  (typedhead_tyBM)                              \
-                  {.htyp= tydata_StackFrame_BM,                 \
-                   .hgc=0,                                      \
-                   .rlen=(sizeof(_)                             \
-                          - offsetof(struct stackframe_stBM,    \
-                                     stkfram_locals))           \
-                   /sizeof(value_tyBM)},                        \
-                  .stkfram_prev=(Prev),                         \
-                  .stkfram_descr=(Descr),                       \
-                  .stkfram_state=0,                             \
-                  .stkfram_xtra=0 } }
+// LOCALFRAME_BM is in cmacros_BM.h
 
 struct specialframe_stBM;
 struct garbcoll_stBM;

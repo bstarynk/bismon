@@ -33,4 +33,36 @@
 
 #define FATAL_BM(Fmt,...) FATAL_AT_BM(__FILE__,__LINE__,Fmt,##__VA_ARGS__)
 
+#define LOCALFRAME_BM(Prev,Descr,...) struct                    \
+  { struct stackframe_stBM __frame; __VA_ARGS__; } _ =          \
+    { .__frame = {.stkfram_pA=                                  \
+                  (typedhead_tyBM)                              \
+                  {.htyp= tydata_StackFrame_BM,                 \
+                   .hgc=0,                                      \
+                   .rlen=(sizeof(_)                             \
+                          - offsetof(struct stackframe_stBM,    \
+                                     stkfram_locals))           \
+                   /sizeof(value_tyBM)},                        \
+                  .stkfram_prev=(Prev),                         \
+                  .stkfram_descr=(Descr),                       \
+                  .stkfram_state=0,                             \
+                  .stkfram_xtra=0 } }
+
+#define LOCALQNODESIZED_FM(Qnam,Conn,Siz) struct {			\
+    struct nodetree_stBM __ntree; value_tyBM qsons[Siz]; } Qnam =	\
+      { .__ntree = { .pA = { .pA					\
+			     = { .htyp= tydata_quasinode_BM,		\
+				 .hgc=0, .hash=0 }, .size = (Siz) },	\
+		     .nodt_conn= (Conn) }, .qsons= {} }
+
+#define LOCALQNODEFIELDED_FM(Qnam,Conn,...) struct {			\
+  struct nodetree_stBM __ftree; __VA_ARGS__; } Qnam =			\
+      { .__ftree = { .pA						\
+		     = { .pA						\
+			 = { .htyp= tydata_quasinode_BM,		\
+			     .hgc=0, .hash=0 },				\
+			 .size =					\
+			  ((sizeof(Qnam)-offsetof(tree_tyBM,nodt_sons)) \
+			   /sizeof(value_tyBM)) },			\
+		     .nodt_conn= (Conn) } }
 #endif /*CMACROS_BM_INCLUDED */

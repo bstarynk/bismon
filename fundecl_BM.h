@@ -178,6 +178,9 @@ extern const closure_tyBM *makeclosure_BM (const objectval_tyBM * conn,
 extern void closuregcmark_BM (struct garbcoll_stBM *gc, closure_tyBM * clos,
                               int depth);
 
+extern void quasinodegcmark_BM (struct garbcoll_stBM *gc,
+                                quasinode_tyBM * quasi, int depth);
+
 extern void load_initial_BM (const char *);
 extern void loadergcmark_BM (struct garbcoll_stBM *gc,
                              struct loader_stBM *ld);

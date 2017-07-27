@@ -355,14 +355,14 @@ listlength_BM (const struct listtop_stBM *lis)
   if (!islist_BM ((value_tyBM) lis))
     return 0;
   return ((typedhead_tyBM *) lis)->rlen;
-}
+}                               /* end listlength_BM */
 
 
 bool
 istree_BM (const value_tyBM v)
 {
   int ty = valtype_BM (v);
-  return (ty == tyClosure_BM || ty == tyNode_BM);
+  return (ty == tyClosure_BM || ty == tyNode_BM || ty == tydata_quasinode_BM);
 }                               /* end istree_BM */
 
 bool
