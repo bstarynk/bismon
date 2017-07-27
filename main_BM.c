@@ -89,4 +89,22 @@ main (int argc, char **argv)
   if (!guiok)
     FATAL_BM ("gtk_init_with_args failed");
   load_initial_BM (load_dir_bm);
+  fflush (NULL);
 }                               /* end main */
+
+
+/**** works as expected, found by dlsym
+  ///// just for testing
+  extern objrout_sigBM ROUTINEOBJNAME_BM(_7ld89d4lLTB_3596gc6hLFI);
+
+  value_tyBM ROUTINEOBJNAME_BM(_7ld89d4lLTB_3596gc6hLFI)
+    (const closure_tyBM * clos,
+     struct stackframe_stBM *stkf,
+     const value_tyBM arg1,
+     const value_tyBM arg2,
+     const value_tyBM arg3,
+     const quasinode_tyBM * restargs) {
+    FATAL_BM("unexpected routine call clos=%p arg1=%p arg2=%p arg3=%p",
+             clos, arg1, arg2, arg3);
+  }  /// end ROUTINEOBJNAME_BM(_7ld89d4lLTB_3596gc6hLFI)
+*****/
