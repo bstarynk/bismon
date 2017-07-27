@@ -775,4 +775,24 @@ parsertokenget_BM (struct parser_stBM * pars)
       {
       .tok_kind = plex_STRING,.tok_string = str};
     }
+  char delimstr[16];
+  memset (delimstr, 0, sizeof (delimstr));
+  enum lexdelim_enBM curdelim = delim__NONE;
+#define HAS_DELIM_BM(Str,Nam) do {		\
+    if (restlin[0] == (Str)[0]			\
+	&& !strncmp(restlin, Str, strlen(Str))	\
+	&& strlen(delimstr) < strlen(Str)) {	\
+    curdelim = delim__##Nam;			\
+    strcpy(delimstr, Str);			\
+  }  while(0);
+#include "_bm_delim.h"
+  //
+  if (curdelim == delim__NONE)
+    parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+                          "unexpected token %s", restlin);
+  pars->pars_colindex += strlen (delimstr);
+  pars->pars_colpos += g_utf8_strlen (delimstr, -1);
+  return (parstoken_tyBM)
+  {
+  .tok_kind = plex_DELIM,.tok_delim = curdelim};
 }                               /* end parsertokenget_BM */
