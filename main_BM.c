@@ -68,6 +68,7 @@ main (int argc, char **argv)
     LOCALQNODESIZED_FM (qns, BMP_node, 4);
     assert (qns.__ntree.nodt_conn == BMP_node);
     assert (qns.qsons[2] == NULL);
+    assert (treewidth_BM (&qns) == 4);
   }
   // just to test the macro LOCALQNODEFIELDED_FM
   {
@@ -75,6 +76,7 @@ main (int argc, char **argv)
                           value_tyBM * v2, *v3;);
     assert (qnf.__ftree.nodt_conn == BMP_embed);
     assert (qnf.v2 == NULL);
+    assert (treewidth_BM (&qnf) == 3);
   }
   check_delims_BM ();
   initialize_predefined_objects_BM ();
