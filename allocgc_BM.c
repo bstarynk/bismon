@@ -103,6 +103,7 @@ gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
       return;
     case tydata_quasinode_BM:
       quasinodegcmark_BM (gc, (quasinode_tyBM *) val, depth);
+      return;
     default:
       FATAL_BM ("gcmark ty#%d unexpected for val@%p depth=%d",
                 ty, val, depth);
