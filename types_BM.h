@@ -149,16 +149,6 @@ struct loader_stBM;             /* forward */
 
 typedef void anyassoc_tyBM;
 
-struct object_stBM              /*tyObject_BM */
-{
-  typedhead_tyBM pA;
-  rawid_tyBM ob_id;
-  uint8_t ob_space;
-  double ob_mtime;
-  struct datavectval_stBM *ob_compvec;
-  anyassoc_tyBM *ob_attrassoc;
-  // other fields are missing
-};
 
 struct datavectval_stBM
 {                               /* tydata_vectval_BM */
@@ -219,6 +209,29 @@ typedef struct nodetree_stBM tree_tyBM; /* for tyClosure_BM or tyNode_BM or tyda
 typedef struct nodetree_stBM node_tyBM; /* for tyNode_BM */
 typedef struct nodetree_stBM closure_tyBM;      /* for tyClosure_BM */
 typedef struct nodetree_stBM quasinode_tyBM;    /* for tydata_quasinode_BM */
+
+
+struct stackframe_stBM;
+
+// the x86-64 ABI passes six arguments thru registers
+typedef value_tyBM objrout_sigBM (const closure_tyBM * clos,
+                                  struct stackframe_stBM *stkf,
+                                  const value_tyBM arg1,
+                                  const value_tyBM arg2,
+                                  const value_tyBM arg3,
+                                  const quasinode_tyBM * restargs);
+
+struct object_stBM              /*tyObject_BM */
+{
+  typedhead_tyBM pA;
+  rawid_tyBM ob_id;
+  uint8_t ob_space;
+  double ob_mtime;
+  struct datavectval_stBM *ob_compvec;
+  anyassoc_tyBM *ob_attrassoc;
+  objrout_sigBM *ob_rout;
+  // other fields are missing
+};
 
 struct stackframe_stBM
 {                               // for tydata_StackFrame_BM, sitting on the callstack
