@@ -277,12 +277,17 @@ gcframemark_BM (struct garbcoll_stBM *gc, struct stackframe_stBM *stkfram,
 void
 fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
 {
+  static unsigned long countgc;
   struct garbcoll_stBM GCdata = { };
   memset (&GCdata, 0, sizeof (GCdata));
   GCdata.gc_magic = GCMAGIC_BM;
+  GCdata.gc_startelapsedtime = elapsedtime_BM ();
+  GCdata.gc_startcputime = cputime_BM ();
   assert (allocationvec_vBM != NULL);
+  countgc++;
   unsigned long alsiz = allocationvec_vBM->al_size;
   unsigned long alcnt = allocationvec_vBM->al_nb;
+  unsigned long oldnbval = 0;
   assert (alcnt <= alsiz);
   assert (alcnt > 0);
   for (unsigned long ix = 0; ix < alcnt; ix++)
@@ -291,6 +296,7 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
       if (!curp)
         continue;
       curp->hgc = CLEARMGC_BM;
+      oldnbval++;
     }
   GCdata.gc_scanlist = makelist_BM ();
   GCdata.gc_hset =              //
@@ -298,12 +304,14 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
   gcmarkpredefinedobjects_BM (&GCdata);
   gcmarkglobals_BM (&GCdata);
   gcframemark_BM (&GCdata, stkfram, 0);
+  unsigned long nbobjscan = 0;
   while (listlength_BM (GCdata.gc_scanlist) > 0)
     {
       value_tyBM firstv = listfirst_BM (GCdata.gc_scanlist);
       listpopfirst_BM (GCdata.gc_scanlist);
       assert (isobject_BM (firstv));
       objectinteriorgcmark_BM (&GCdata, (objectval_tyBM *) firstv);
+      nbobjscan++;
     }
   unsigned long nbalive = 0;
   unsigned long nbdestroy = 0;
@@ -342,6 +350,19 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
     }
   newallvec->al_nb = newcntall;
   free (allocationvec_vBM), allocationvec_vBM = newallvec;
-  // should compute the cumulated size of kept memory
-#warning incomplete fullgarbagecollection_BM
+  double endelapsedtime = elapsedtime_BM ();
+  double endcputime = cputime_BM ();
+  fprintf (stderr,
+           "@@garbage collection #%ld : %.4f elapsed, %.4f cpu seconds\n",
+           countgc, endelapsedtime - GCdata.gc_startelapsedtime,
+           endcputime - GCdata.gc_startcputime);
+  fprintf (stderr,
+           "number of values: %ld -> %ld (-%ld)\n", oldnbval, newcntall,
+           newcntall - oldnbval);
+  fprintf (stderr, "number of scanned objects: %ld\n", nbobjscan);
+  fprintf (stderr,
+           "data memory: kept %ld, freed %ld kilobytes\n",
+           (GCdata.gc_keptbytes) / 1024, (GCdata.gc_freedbytes) / 1024);
+  fprintf (stderr, "-------\n\n");
+  fflush (stderr);
 }                               /* end fullgarbagecollection_BM */
