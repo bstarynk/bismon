@@ -229,10 +229,11 @@ struct object_stBM              /*tyObject_BM */
   rawid_tyBM ob_id;
   uint8_t ob_space;
   double ob_mtime;
+  objectval_tyBM *ob_class;
   struct datavectval_stBM *ob_compvec;
   anyassoc_tyBM *ob_attrassoc;
   objrout_sigBM *ob_rout;
-  // other fields are missing
+  // other fields are missing, notably some payload
 };
 
 struct stackframe_stBM

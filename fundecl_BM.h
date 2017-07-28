@@ -12,6 +12,7 @@ static inline intptr_t getint_BM (value_tyBM v);
 static inline value_tyBM taggedint_BM (intptr_t i);
 
 static inline int valtype_BM (const value_tyBM v);
+static inline objectval_tyBM* valclass_BM(const value_tyBM v);
 static inline hash_tyBM valhash_BM (const value_tyBM v);
 static inline uint8_t valgcmark_BM (const value_tyBM v);
 void valgcdestroy_BM (struct garbcoll_stBM *, value_tyBM v);
