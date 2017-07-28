@@ -14,7 +14,7 @@ static inline value_tyBM taggedint_BM (intptr_t i);
 static inline int valtype_BM (const value_tyBM v);
 static inline hash_tyBM valhash_BM (const value_tyBM v);
 static inline uint8_t valgcmark_BM (const value_tyBM v);
-void valgcdestroy_BM (struct garbcoll_stBM *, const value_tyBM v);
+void valgcdestroy_BM (struct garbcoll_stBM *, value_tyBM v);
 static inline bool valequal_BM (const value_tyBM v1, const value_tyBM v2);
 extern bool valsamecontent_BM (const value_tyBM v1, const value_tyBM v2);
 

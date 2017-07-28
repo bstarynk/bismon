@@ -230,11 +230,11 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
   memset (&GCdata, 0, sizeof (GCdata));
   GCdata.gc_magic = GCMAGIC_BM;
   assert (allocationvec_vBM != NULL);
-  unsigned alsiz = allocationvec_vBM->al_size;
-  unsigned alcnt = allocationvec_vBM->al_nb;
+  unsigned long alsiz = allocationvec_vBM->al_size;
+  unsigned long alcnt = allocationvec_vBM->al_nb;
   assert (alcnt <= alsiz);
   assert (alcnt > 0);
-  for (unsigned ix = 0; ix < alcnt; ix++)
+  for (unsigned long ix = 0; ix < alcnt; ix++)
     {
       typedhead_tyBM *curp = allocationvec_vBM->al_ptr[ix];
       if (!curp)
@@ -254,8 +254,40 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
       assert (isobject_BM (firstv));
       objectinteriorgcmark_BM (&GCdata, (objectval_tyBM *) firstv);
     }
-  listclear_BM (GCdata.gc_scanlist);
-  list_destroy_BM (GCdata.gc_scanlist), GCdata.gc_scanlist = NULL;
+  unsigned long nbalive = 0;
+  unsigned long nbdestroy = 0;
+  for (unsigned long ix = 0; ix < alcnt; ix++)
+    {
+      typedhead_tyBM *curp = allocationvec_vBM->al_ptr[ix];
+      if (!curp)
+        continue;
+      if (curp->hgc == CLEARMGC_BM)
+        {
+          valgcdestroy_BM (&GCdata, (value_tyBM) curp);
+          allocationvec_vBM->al_ptr[ix] = NULL;
+          nbdestroy++;
+        }
+      else
+        nbalive++;
+    };
+  unsigned long newsizall = prime_above_BM (4 * nbalive / 3 + 200);
+  struct allalloc_stBM *newallvec =     //
+    malloc (sizeof (struct allalloc_stBM) + newsizall * sizeof (void *));
+  if (!newallvec)
+    FATAL_BM ("failed to malloc allocationvec of %lu (%m)", newsizall);
+  memset (newallvec, 0,
+          sizeof (struct allalloc_stBM) + newsizall * sizeof (void *));
+  newallvec->al_size = newsizall;
+  unsigned long newcntall = 0;
+  for (unsigned long ix = 0; ix < alcnt; ix++)
+    {
+      typedhead_tyBM *curp = allocationvec_vBM->al_ptr[ix];
+      if (!curp)
+        continue;
+      newallvec->al_ptr[newcntall++] = curp;
+    }
+  newallvec->al_nb = newcntall;
+  free (allocationvec_vBM), allocationvec_vBM = newallvec;
+  // should compute the cumulated size of kept memory
 #warning incomplete fullgarbagecollection_BM
-  FATAL_BM ("incomplete fullgarbagecollection_BM");
 }                               /* end fullgarbagecollection_BM */
