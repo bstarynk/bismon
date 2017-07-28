@@ -14,6 +14,10 @@ extern const char bismon_makefile[];
 extern void *dlprog_BM;         // dlopen of entire program
 extern struct timespec startrealtimespec_BM;
 
+// the loader, which is non-null only while loading
+
+extern struct loader_stBM *firstloader_BM;
+
 extern struct allalloc_stBM *allocationvec_vBM /*¤ allocgc_BM.c */ ;
 
 #define HAS_PREDEF_BM(Id,Hi,Lo,Hash) \

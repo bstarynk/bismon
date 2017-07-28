@@ -1,6 +1,7 @@
 // file load_BM.c
 #include "bismon.h"
 
+struct loader_stBM *firstloader_BM;
 
 void
 loadergcmark_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
@@ -9,6 +10,7 @@ loadergcmark_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
   assert (valtype_BM ((const value_tyBM) ld) == tydata_loader_BM);
   assert (ld->ld_magic == LOADERMAGIC_BM);
   gcmark_BM (gc, ld->ld_hset, 0);
+  gcmark_BM (gc, ld->ld_todolist, 0);
 }                               /* end loadergcmark_BM */
 
 static void doload_BM (struct stackframe_stBM *fr, struct loader_stBM *ld);
@@ -90,6 +92,7 @@ load_initial_BM (const char *ldirpath)
   ld->ld_maxnum = maxnum;
   ld->ld_hset =
     hashsetobj_grow_BM (NULL, 2 * BM_NB_PREDEFINED + maxnum * 100);
+  ld->ld_todolist = makelist_BM ();
   ld->ld_storepatharr = calloc (maxnum + 2, sizeof (void *));
   if (!ld->ld_storepatharr)
     FATAL_BM ("cannot calloc for %d store files (%m)", maxnum);
@@ -106,12 +109,14 @@ load_initial_BM (const char *ldirpath)
   ld->ld_dir = strdup (ldirpath);
   if (!ld->ld_dir)
     FATAL_BM ("cannot strdup dir %s (%m)", ldirpath);
+  firstloader_BM = ld;
   {
     LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                    struct loader_stBM *curld);
     _.curld = ld;
     doload_BM ((struct stackframe_stBM *) &_, ld);
   }
+  firstloader_BM = NULL;
   free (ld->ld_dir), ld->ld_dir = NULL;
   for (int ix = 0; ix <= maxnum; ix++)
     free (ld->ld_storepatharr[ix]), ld->ld_storepatharr[ix] = NULL;
@@ -119,7 +124,17 @@ load_initial_BM (const char *ldirpath)
   memset (ld, 0, sizeof (*ld)), ld = NULL;
 }                               /* end load_initial_BM */
 
-
+void
+load_addtodo_BM (const closure_tyBM * clos)
+{
+  if (!firstloader_BM)
+    FATAL_BM ("load_addtodo_BM called after loading");
+  if (!isclosure_BM ((const value_tyBM) clos))
+    FATAL_BM ("load_addtodo_BM called with non-closure");
+  if (!islist_BM (firstloader_BM->ld_todolist))
+    FATAL_BM ("missing todolist in loader for load_addtodo_BM");
+  listappend_BM (firstloader_BM->ld_todolist, (value_tyBM) clos);
+}                               /* end load_addtodo_BM */
 
 
 static void
@@ -221,6 +236,8 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
 {
   assert (ld && ld->ld_magic == LOADERMAGIC_BM);
   assert (_parentframe != NULL);
+  LOCALFRAME_BM (_parentframe, NULL, value_tyBM firsttodo;
+    );
   /// run the first pass to create every object
   for (int ix = 1; ix <= (int) ld->ld_maxnum; ix++)
     if (ld->ld_storepatharr[ix])
@@ -233,4 +250,17 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       load_second_pass_BM (ld, ix);
   if (ld->ld_storepatharr[0])
     load_second_pass_BM (ld, 0);
+  /// run the todo list
+  long todocnt = 0;
+  while (islist_BM (ld->ld_todolist) && listlength_BM (ld->ld_todolist) > 0)
+    {
+      _.firsttodo = listfirst_BM (ld->ld_todolist);
+      assert (isclosure_BM (_.firsttodo));
+      listpopfirst_BM (ld->ld_todolist);
+      apply0_BM ((const closure_tyBM *) (_.firsttodo),
+                 (struct stackframe_stBM *) &_);
+      todocnt++;
+      if (todocnt % 128 == 0)
+        fullgarbagecollection_BM ((struct stackframe_stBM *) &_);
+    }
 }                               /* end doload_BM */

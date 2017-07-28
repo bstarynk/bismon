@@ -288,7 +288,9 @@ extern value_tyBM apply9_BM (const closure_tyBM * clos,
                              const value_tyBM arg9);
 
 ////////////////
-extern void load_initial_BM (const char *);
+extern void load_initial_BM (const char *dirname);
+extern void load_addtodo_BM (const closure_tyBM * clos);
+
 extern void loadergcmark_BM (struct garbcoll_stBM *gc,
                              struct loader_stBM *ld);
 
