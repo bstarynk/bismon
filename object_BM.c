@@ -209,6 +209,14 @@ objectgcdestroy_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
   gc->gc_freedbytes += sizeof (*obj);
 }                               /* end objectgcdestroy_BM */
 
+void
+objectgckeep_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) obj)->htyp == tyObject_BM);
+  gc->gc_keptbytes += sizeof (*obj);
+}                               /* end objectgckeep_BM */
+
 extern objectval_tyBM *
 makeobj_BM (void)
 {
@@ -523,6 +531,14 @@ hashsetgcdestroy_BM (struct garbcoll_stBM *gc, struct hashsetobj_stBM *hset)
   gc->gc_freedbytes += sizeof (*hset) + alsiz * sizeof (void *);
 }                               /* end hashsetgcdestroy_BM */
 
+void
+hashsetgckeep_BM (struct garbcoll_stBM *gc, struct hashsetobj_stBM *hset)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) hset)->htyp == tydata_hashsetobj_BM);
+  unsigned alsiz = ((typedhead_tyBM *) hset)->rlen;
+  gc->gc_keptbytes += sizeof (*hset) + alsiz * sizeof (void *);
+}                               /* end hashsetgckeep_BM */
 
 ////////////////////////////////////////////////////////////////
 static void

@@ -291,6 +291,14 @@ assocpairgcdestroy_BM (struct garbcoll_stBM *gc, struct assocpairs_stBM *assp)
   gc->gc_freedbytes += sizeof (*assp) + len * sizeof (struct assocentry_stBM);
 }                               /* end assocpairgcdestroy_BM */
 
+void
+assocpairgckeep_BM (struct garbcoll_stBM *gc, struct assocpairs_stBM *assp)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) assp)->htyp == tydata_assocpairs_BM);
+  unsigned len = ((typedhead_tyBM *) assp)->rlen;
+  gc->gc_keptbytes += sizeof (*assp) + len * sizeof (struct assocentry_stBM);
+}                               /* end assocpairgckeep_BM */
 
 void
 assocbucketgcdestroy_BM (struct garbcoll_stBM *gc,
@@ -303,6 +311,17 @@ assocbucketgcdestroy_BM (struct garbcoll_stBM *gc,
   free (abuck);
   gc->gc_freedbytes += sizeof (*abuck) + nbuckets * sizeof (void *);
 }                               /*end assocbucketgcdestroy_BM */
+
+
+void
+assocbucketgckeep_BM (struct garbcoll_stBM *gc,
+                      struct assocbucket_stBM *abuck)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) abuck)->htyp == tydata_assocbucket_BM);
+  unsigned nbuckets = ((typedhead_tyBM *) abuck)->rlen;
+  gc->gc_keptbytes += sizeof (*abuck) + nbuckets * sizeof (void *);
+}                               /* end assocbucketgckeep_BM */
 
 
 const setval_tyBM *

@@ -95,6 +95,16 @@ stringgcdestroy_BM (struct garbcoll_stBM *gc, stringval_tyBM * str)
 }                               /* end stringgcdestroy_BM */
 
 
+void
+stringgckeep_BM (struct garbcoll_stBM *gc, stringval_tyBM * str)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) str)->htyp == tyString_BM);
+  long sll = ((typedsize_tyBM *) str)->size;
+  gc->gc_keptbytes += sizeof (*str) + (sll | 0xf) + 1;
+}                               /* end stringgckeep_BM */
+
+
 const stringval_tyBM *
 sprintfstring_BM (const char *fmt, ...)
 {

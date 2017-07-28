@@ -164,6 +164,57 @@ valgcdestroy_BM (struct garbcoll_stBM *gc, value_tyBM val)
 }                               /* end valgcdestroy_BM */
 
 
+void
+valgckeep_BM (struct garbcoll_stBM *gc, value_tyBM val)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  if (!val)
+    return;
+  int ty = valtype_BM (val);
+  if (!ty || ty == tyInt_BM)
+    return;
+  assert (((typedhead_tyBM *) val)->hgc == MARKGC_BM);
+  switch (ty)
+    {
+    case tyString_BM:
+      stringgckeep_BM (gc, (stringval_tyBM *) val);
+      return;
+    case tyObject_BM:
+      objectgckeep_BM (gc, val);
+      return;
+    case tySet_BM:
+      setgckeep_BM (gc, (setval_tyBM *) val);
+      return;
+    case tyTuple_BM:
+      tuplegckeep_BM (gc, (tupleval_tyBM *) val);
+      return;
+    case tyNode_BM:
+      nodegckeep_BM (gc, (node_tyBM *) val);
+      return;
+    case tyClosure_BM:
+      closuregckeep_BM (gc, (closure_tyBM *) val);
+      return;
+    case tydata_assocpairs_BM:
+      assocpairgckeep_BM (gc, (struct assocpairs_stBM *) val);
+      return;
+    case tydata_assocbucket_BM:
+      assocbucketgckeep_BM (gc, (struct assocbucket_stBM *) val);
+      return;
+    case tydata_hashsetobj_BM:
+      hashsetgckeep_BM (gc, (struct hashsetobj_stBM *) val);
+      return;
+    case tydata_listtop_BM:
+      listgckeep_BM (gc, (struct listtop_stBM *) val);
+      return;
+    case tydata_vectval_BM:
+      datavectgckeep_BM (gc, (struct datavectval_stBM *) val);
+      return;
+    default:
+      FATAL_BM ("gckeep ty#%d unexpected for val@%p", ty, val);
+    }
+}                               /* end valgckeep_BM */
+
+
 
 void
 gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
@@ -268,7 +319,10 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
           nbdestroy++;
         }
       else
-        nbalive++;
+        {
+          valgckeep_BM (&GCdata, (value_tyBM) curp);
+          nbalive++;
+        }
     };
   unsigned long newsizall = prime_above_BM (4 * nbalive / 3 + 200);
   struct allalloc_stBM *newallvec =     //

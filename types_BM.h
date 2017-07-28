@@ -416,5 +416,7 @@ struct garbcoll_stBM
   struct hashsetobj_stBM *gc_hset;
   // the amount of freed memory in bytes
   size_t gc_freedbytes;
+  // the amount of kept memory in bytes
+  size_t gc_keptbytes;
 };
 #endif /*TYPES_BM_INCLUDED */

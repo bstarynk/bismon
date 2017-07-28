@@ -53,9 +53,19 @@ tuplegcdestroy_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup)
   memset (tup, 0, sizeof (*tup) + siz * sizeof (void *));
   free (tup);
   gc->gc_freedbytes +=          //
-    sizeof (*tup) + (siz >
-                     0) ? prime_above_BM (siz - 1) * sizeof (void *) : 0;
+    sizeof (*tup)               //
+    + (siz > 0) ? prime_above_BM (siz - 1) * sizeof (void *) : 0;
 }                               /* end tuplegcdestroy_BM */
+
+void
+tuplegckeep_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) tup)->htyp == tyTuple_BM);
+  unsigned siz = ((typedsize_tyBM *) tup)->size;
+  gc->gc_keptbytes += sizeof (*tup)     //
+    + (siz > 0) ? prime_above_BM (siz - 1) * sizeof (void *) : 0;
+}                               /* end tuplegckeep_BM */
 
 unsigned
 tuplesize_BM (const tupleval_tyBM * tup)
@@ -188,9 +198,20 @@ setgcdestroy_BM (struct garbcoll_stBM *gc, setval_tyBM * set)
   memset (set, 0, sizeof (*set) + siz * sizeof (void *));
   free (set);
   gc->gc_freedbytes +=          //
-    sizeof (*set) + (siz >
-                     0) ? prime_above_BM (siz - 1) * sizeof (void *) : 0;
+    sizeof (*set)               //
+    + (siz > 0) ? prime_above_BM (siz - 1) * sizeof (void *) : 0;
 }                               /* end setgcdestroy_BM */
+
+void
+setgckeep_BM (struct garbcoll_stBM *gc, setval_tyBM * set)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) set)->htyp == tySet_BM);
+  unsigned siz = ((typedsize_tyBM *) set)->size;
+  gc->gc_keptbytes +=           //
+    sizeof (*set)               //
+    + (siz > 0) ? prime_above_BM (siz - 1) * sizeof (void *) : 0;
+}                               /* end setgckeep_BM */
 
 extern bool
 setcontains_BM (const objectval_tyBM * obelem, const setval_tyBM * setv)
@@ -315,6 +336,16 @@ datavectgcdestroy_BM (struct garbcoll_stBM *gc, struct datavectval_stBM *dvec)
   free (dvec);
   gc->gc_freedbytes += sizeof (*dvec) + siz * sizeof (void *);
 }                               /* end datavectgcdestroy_BM */
+
+
+void
+datavectgckeep_BM (struct garbcoll_stBM *gc, struct datavectval_stBM *dvec)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) dvec)->htyp == tydata_vectval_BM);
+  unsigned siz = ((typedhead_tyBM *) dvec)->rlen;
+  gc->gc_keptbytes += sizeof (*dvec) + siz * sizeof (void *);
+}                               /* end datavectgckeep_BM */
 
 
 struct datavectval_stBM *

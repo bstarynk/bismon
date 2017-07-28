@@ -60,6 +60,18 @@ closuregcdestroy_BM (struct garbcoll_stBM *gc, closure_tyBM * clos)
 }                               /* end closuregcdestroy_BM */
 
 void
+closuregckeep_BM (struct garbcoll_stBM *gc, closure_tyBM * clos)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) clos)->htyp == tyClosure_BM);
+  unsigned siz = ((typedsize_tyBM *) clos)->size;
+  gc->gc_keptbytes +=           //
+    sizeof (*clos) + (siz > 0)
+    ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0;
+}                               /* end closuregckeep_BM */
+
+
+void
 closuregcmark_BM (struct garbcoll_stBM *gc, closure_tyBM * clos, int depth)
 {
   assert (gc && gc->gc_magic == GCMAGIC_BM);
@@ -135,6 +147,18 @@ nodegcdestroy_BM (struct garbcoll_stBM *gc, node_tyBM * nod)
     sizeof (*nod) + (siz > 0)
     ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0;
 }                               /* end nodegcdestroy_BM */
+
+
+void
+nodegckeep_BM (struct garbcoll_stBM *gc, node_tyBM * nod)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) nod)->htyp == tyNode_BM);
+  unsigned siz = ((typedsize_tyBM *) nod)->size;
+  gc->gc_keptbytes +=           //
+    sizeof (*nod) + (siz > 0)
+    ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0;
+}                               /* end nodegckeep_BM */
 
 
 
