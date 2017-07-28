@@ -194,6 +194,7 @@ struct listlink_stBM
 struct listtop_stBM
 {                               // for  tydata_listtop_BM
   typedhead_tyBM pa;            // rlen is number of values in the list
+  unsigned list_nblinks;        // number of struct listlink_stBM
   struct listlink_stBM *list_first;
   struct listlink_stBM *list_last;
 };
