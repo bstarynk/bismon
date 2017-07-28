@@ -113,6 +113,57 @@ gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
     }
 }                               /* end gcmark_BM */
 
+void
+valgcdestroy_BM (struct garbcoll_stBM *gc, value_tyBM val)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  if (!val)
+    return;
+  int ty = valtype_BM (val);
+  if (!ty || ty == tyInt_BM)
+    return;
+  assert (((typedhead_tyBM *) val)->hgc == CLEARMGC_BM);
+  switch (ty)
+    {
+    case tyString_BM:
+      stringgcdestroy_BM (gc, (stringval_tyBM *) val);
+      return;
+    case tyObject_BM:
+      objectgcdestroy_BM (gc, val);
+      return;
+    case tySet_BM:
+      setgcdestroy_BM (gc, (setval_tyBM *) val);
+      return;
+    case tyTuple_BM:
+      tuplegcdestroy_BM (gc, (tupleval_tyBM *) val);
+      return;
+    case tyNode_BM:
+      nodegcdestroy_BM (gc, (node_tyBM *) val);
+      return;
+    case tyClosure_BM:
+      closuregcdestroy_BM (gc, (closure_tyBM *) val);
+      return;
+    case tydata_assocpairs_BM:
+      assocpairgcdestroy_BM (gc, (struct assocpairs_stBM *) val);
+      return;
+    case tydata_assocbucket_BM:
+      assocbucketgcdestroy_BM (gc, (struct assocbucket_stBM *) val);
+      return;
+    case tydata_hashsetobj_BM:
+      hashsetgcdestroy_BM (gc, (struct hashsetobj_stBM *) val);
+      return;
+    case tydata_listtop_BM:
+      listgcdestroy_BM (gc, (struct listtop_stBM *) val);
+      return;
+    case tydata_vectval_BM:
+      datavectgcdestroy_BM (gc, (struct datavectval_stBM *) val);
+      return;
+    default:
+      FATAL_BM ("gcdestroy ty#%d unexpected for val@%p", ty, val);
+    }
+}                               /* end valgcdestroy_BM */
+
+
 
 void
 gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)

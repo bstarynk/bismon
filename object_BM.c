@@ -195,6 +195,20 @@ makeobjofid_BM (const rawid_tyBM id)
   return pob;
 }                               /* end of makeobjofid_BM */
 
+void
+objectgcdestroy_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) obj)->htyp == tyObject_BM);
+  // should remove the object name
+  // should finalize the object's payloads
+  // should remove the object from its bucket
+#warning objectgcdestroy_BM incomplete
+  FATAL_BM ("objectgcdestroy_BM incomplete obj@%p", obj);
+  free (obj);
+  gc->gc_freedbytes += sizeof (*obj);
+}                               /* end objectgcdestroy_BM */
+
 extern objectval_tyBM *
 makeobj_BM (void)
 {
@@ -497,6 +511,17 @@ hashsetgcmark_BM (struct garbcoll_stBM *gc, struct hashsetobj_stBM *hset)
     };
   assert (elcnt == ucnt);
 }                               /* end hashsetgcmark_BM */
+
+void
+hashsetgcdestroy_BM (struct garbcoll_stBM *gc, struct hashsetobj_stBM *hset)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) hset)->htyp == tydata_hashsetobj_BM);
+  unsigned alsiz = ((typedhead_tyBM *) hset)->rlen;
+  memset (hset, 0, sizeof (*hset) + alsiz * sizeof (void *));
+  free (hset);
+  gc->gc_freedbytes += sizeof (*hset) + alsiz * sizeof (void *);
+}                               /* end hashsetgcdestroy_BM */
 
 
 ////////////////////////////////////////////////////////////////

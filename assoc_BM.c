@@ -280,6 +280,29 @@ assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap)
   *passoc = newbuckets;
 }                               /* end assoc_reorganize_BM */
 
+void
+assocpairgcdestroy_BM (struct garbcoll_stBM *gc, struct assocpairs_stBM *assp)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) assp)->htyp == tydata_assocpairs_BM);
+  unsigned len = ((typedhead_tyBM *) assp)->rlen;
+  memset (assp, 0, sizeof (*assp) + len * sizeof (struct assocentry_stBM));
+  free (assp);
+  gc->gc_freedbytes += sizeof (*assp) + len * sizeof (struct assocentry_stBM);
+}                               /* end assocpairgcdestroy_BM */
+
+
+void
+assocbucketgcdestroy_BM (struct garbcoll_stBM *gc,
+                         struct assocbucket_stBM *abuck)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) abuck)->htyp == tydata_assocbucket_BM);
+  unsigned nbuckets = ((typedhead_tyBM *) abuck)->rlen;
+  memset (abuck, 0, sizeof (*abuck) + nbuckets * sizeof (void *));
+  free (abuck);
+  gc->gc_freedbytes += sizeof (*abuck) + nbuckets * sizeof (void *);
+}                               /*end assocbucketgcdestroy_BM */
 
 
 const setval_tyBM *

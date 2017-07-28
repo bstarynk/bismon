@@ -83,7 +83,19 @@ makestring_BM (const char *cstr)
   return strv;
 }                               /* end makestring_BM */
 
-extern const stringval_tyBM *
+void
+stringgcdestroy_BM (struct garbcoll_stBM *gc, stringval_tyBM * str)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) str)->htyp == tyString_BM);
+  long sll = ((typedsize_tyBM *) str)->size;
+  memset (str, 0, sizeof (*str) + sll);
+  free (str);
+  gc->gc_freedbytes += sizeof (*str) + (sll | 0xf) + 1;
+}                               /* end stringgcdestroy_BM */
+
+
+const stringval_tyBM *
 sprintfstring_BM (const char *fmt, ...)
 {
   va_list args;
@@ -102,6 +114,7 @@ sprintfstring_BM (const char *fmt, ...)
   free (buf);
   return res;
 }                               /* end sprintfstring_BM */
+
 
 int
 lenstring_BM (const stringval_tyBM * strv)

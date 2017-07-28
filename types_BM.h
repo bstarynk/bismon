@@ -413,5 +413,7 @@ struct garbcoll_stBM
   struct listtop_stBM *gc_scanlist;
   // the hashset of objects added into previous list
   struct hashsetobj_stBM *gc_hset;
+  // the amount of freed memory in bytes
+  size_t gc_freedbytes;
 };
 #endif /*TYPES_BM_INCLUDED */

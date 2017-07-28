@@ -13,6 +13,25 @@ makelist_BM (void)
   return lis;
 }                               /* end makelist_BM */
 
+void
+listgcdestroy_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) lis)->htyp == tydata_listtop_BM);
+  size_t frsiz = 0;
+  struct listlink_stBM *curl = lis->list_first;
+  while (curl != NULL)
+    {
+      struct listlink_stBM *nextl = curl->link_next;
+      memset (curl, 0, sizeof (*curl));
+      frsiz += sizeof (*curl);
+      free (curl);
+      curl = nextl;
+    }
+  memset (lis, 0, sizeof (*lis));
+  free (lis);
+  gc->gc_freedbytes += sizeof (*lis) + frsiz;
+}                               /* end listgcdestroy_BM */
 
 void
 listclear_BM (struct listtop_stBM *lis)
