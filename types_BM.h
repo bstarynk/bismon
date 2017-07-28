@@ -233,7 +233,7 @@ struct object_stBM              /*tyObject_BM */
   struct datavectval_stBM *ob_compvec;
   anyassoc_tyBM *ob_attrassoc;
   objrout_sigBM *ob_rout;
-  // other fields are missing, notably some payload
+  value_tyBM ob_data;
 };
 
 struct stackframe_stBM
@@ -268,8 +268,9 @@ struct loader_stBM              // malloc-ed then free-d at load time
   unsigned ld_magic;            /* always LOADERMAGIC_BM */
   unsigned ld_maxnum;           /* highest number of store*.bismon files */
   struct hashsetobj_stBM *ld_hset;      // hashset of objects by id
+  // in the store arrays below, index 0 is for the store_todo
   char **ld_storepatharr;       /* calloc-ed array of malloc-ed string paths */
-  char *ld_todopath;            // malloc-ed path of store_todo.bismon
+  long *ld_startoffarr;         /* calloc-ed array of offset of start */
   char *ld_dir;                 /* malloc-ed directory path */
 };                              /* end struct loader_stBM */
 

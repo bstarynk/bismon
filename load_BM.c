@@ -73,8 +73,8 @@ load_initial_BM (const char *ldirpath)
             }
           else
             FATAL_BM ("asprintf failure (%m)");
-          assert (todopath == NULL);
-          todopath = buf;
+          assert (patharr[0] == NULL);
+          patharr[0] = buf;
         }
     }
   closedir (ldir);
@@ -93,13 +93,16 @@ load_initial_BM (const char *ldirpath)
   ld->ld_storepatharr = calloc (maxnum + 2, sizeof (void *));
   if (!ld->ld_storepatharr)
     FATAL_BM ("cannot calloc for %d store files (%m)", maxnum);
+  ld->ld_startoffarr = calloc (maxnum + 2, sizeof (long));
+  if (!ld->ld_startoffarr)
+    FATAL_BM ("cannot call for %d start offsets (%m)", maxnum);
   for (int ix = 1; ix <= maxnum; ix++)
     {
       char *pa = patharr[ix];
       if (pa)
         ld->ld_storepatharr[ix] = pa;
     }
-  ld->ld_todopath = todopath;
+  ld->ld_storepatharr[0] = todopath;
   ld->ld_dir = strdup (ldirpath);
   if (!ld->ld_dir)
     FATAL_BM ("cannot strdup dir %s (%m)", ldirpath);
@@ -110,8 +113,7 @@ load_initial_BM (const char *ldirpath)
     doload_BM ((struct stackframe_stBM *) &_, ld);
   }
   free (ld->ld_dir), ld->ld_dir = NULL;
-  free (ld->ld_todopath), ld->ld_todopath = todopath = NULL;
-  for (int ix = 1; ix <= maxnum; ix++)
+  for (int ix = 0; ix <= maxnum; ix++)
     free (ld->ld_storepatharr[ix]), ld->ld_storepatharr[ix] = NULL;
   ld->ld_hset = NULL;
   memset (ld, 0, sizeof (*ld)), ld = NULL;
@@ -125,7 +127,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
 {
   assert (ld && ld->ld_magic == LOADERMAGIC_BM);
   assert (ix >= 0 && ix <= (int) ld->ld_maxnum);
-  char *curldpath = (ix > 0) ? (ld->ld_storepatharr[ix]) : ld->ld_todopath;
+  char *curldpath = ld->ld_storepatharr[ix];
   assert (curldpath != NULL);
   size_t linsiz = 256;
   char *linbuf = malloc (linsiz);
@@ -137,7 +139,8 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
     FATAL_BM ("fopen %s failed (%m)", curldpath);
   int lincnt = 0;
   int nbobjdef = 0;
-  bool gotstartline = false;
+  long afterstartlineoff = 0;
+  int startlineno = 0;
   do
     {
       ssize_t linlen = getline (&linbuf, &linsiz, fil);
@@ -151,13 +154,16 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
       lincnt++;
       if (!strncmp (linbuf, "//!!STARTBISMON", strlen ("//!!STARTBISMON")))
         {
-          if (gotstartline)
-            FATAL_BM ("multiple //!!STARTBISMON lines near %s:%d", curldpath,
-                      lincnt);
-          gotstartline = true;
+          if (afterstartlineoff > 0)
+            FATAL_BM
+              ("multiple //!!STARTBISMON lines near %s:%d, previous at line#%d",
+               curldpath, lincnt, startlineno);
+          afterstartlineoff = ftell (fil);
+          assert (afterstartlineoff > 0);
+          startlineno = lincnt;
         }
       /* object definition lines are !*<id> e.g. !*_7D8xcWnEiys_8oqOVSkCxkA */
-      else if (linbuf[0] == '!' && gotstartline && linbuf[1] == '*'
+      else if (linbuf[0] == '!' && startlineno > 0 && linbuf[1] == '*'
                && linbuf[2] == '_' && isdigit (linbuf[3]))
         {
           const char *endid = NULL;
@@ -179,23 +185,35 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
         }
     }
   while (!feof (fil));
-  if (!gotstartline)
+  if (!startlineno)
     FATAL_BM ("load file %s without any !!STARTBISMON line", curldpath);
+  ld->ld_startoffarr[ix] = afterstartlineoff;
   if (nbobjdef == 0 && ix > 0)
     FATAL_BM ("no object definition in %s\n", curldpath);
   free (linbuf), linbuf = 0;
   fclose (fil);
 }                               /* end load_first_pass_BM */
 
+
 static void
 load_second_pass_BM (struct loader_stBM *ld, int ix)
 {
   assert (ld && ld->ld_magic == LOADERMAGIC_BM);
   assert (ix >= 0 && ix <= (int) ld->ld_maxnum);
-  char *curldpath = (ix > 0) ? (ld->ld_storepatharr[ix]) : ld->ld_todopath;
+  char *curldpath = ld->ld_storepatharr[ix];
   assert (curldpath != NULL);
   fprintf (stderr, "load_second_pass_BM ix=%d path=%s unimplemented\n",
            ix, curldpath);
+  FILE *fil = fopen (curldpath, "r");
+  if (!fil)
+    FATAL_BM ("failed to fopen %s (%m)", curldpath);
+  if (fseek (fil, ld->ld_startoffarr[ix], SEEK_SET))
+    FATAL_BM ("failed to fseek %s to offset %ld (%m)", curldpath,
+              ld->ld_startoffarr[ix]);
+  struct parser_stBM *ldpars = makeparser_of_file_BM (fil);
+  assert (ldpars != NULL);
+  ldpars->pars_path = ld->ld_storepatharr[ix];
+#warning should parse for loading
 }                               /* end load_second_pass_BM */
 
 void
@@ -207,12 +225,12 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
   for (int ix = 1; ix <= (int) ld->ld_maxnum; ix++)
     if (ld->ld_storepatharr[ix])
       load_first_pass_BM (ld, ix);
-  if (ld->ld_todopath)
+  if (ld->ld_storepatharr[0])
     load_first_pass_BM (ld, 0);
   /// run the second pass to fill objects
   for (int ix = 1; ix <= (int) ld->ld_maxnum; ix++)
     if (ld->ld_storepatharr[ix])
       load_second_pass_BM (ld, ix);
-  if (ld->ld_todopath)
+  if (ld->ld_storepatharr[0])
     load_second_pass_BM (ld, 0);
 }                               /* end doload_BM */

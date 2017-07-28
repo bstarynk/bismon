@@ -242,6 +242,8 @@ objectinteriorgcmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
     datavectgcmark_BM (gc, obj->ob_compvec, 0);
   if (obj->ob_attrassoc)
     assocgcmark_BM (gc, obj->ob_attrassoc, 0);
+  if (obj->ob_data)
+    gcmark_BM (gc, obj->ob_data, 0);
 }                               /* end objectinteriorgcmark_BM */
 
 ////////////////////////////////////////////////////////////////
