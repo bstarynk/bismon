@@ -237,7 +237,7 @@ objectinteriorgcmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
   assert (isobject_BM (obj));
   assert (((typedhead_tyBM *) obj)->hgc == MARKGC_BM);
   if (obj->ob_class)
-    gcobjmark_BM(gc, obj->ob_class);
+    gcobjmark_BM (gc, obj->ob_class);
   if (obj->ob_compvec)
     datavectgcmark_BM (gc, obj->ob_compvec, 0);
   if (obj->ob_attrassoc)

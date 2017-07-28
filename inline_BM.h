@@ -65,37 +65,38 @@ valtype_BM (const value_tyBM v)
   return tyNone_BM;
 }                               /* end valtype_BM */
 
-objectval_tyBM*
-valclass_BM(const value_tyBM v)
+objectval_tyBM *
+valclass_BM (const value_tyBM v)
 {
   if (!v)
     return NULL;
-  if (istaggedint_BM(v))
+  if (istaggedint_BM (v))
     return BMP_int;
   if (((uintptr_t) v & 3) == 0)
     {
       typedhead_tyBM *ht = (typedhead_tyBM *) v;
       assert (ht->htyp != 0);
       int ty = ht->htyp;
-      switch (ty) {
-      case tyString_BM:
-	return BMP_string;
-      case tySet_BM:
-	return BMP_set;
-      case tyTuple_BM:
-	return BMP_tuple;
-      case tyNode_BM:
-	return BMP_node;
-      case tyClosure_BM:
-	return BMP_closure;
-      case tyObject_BM:
-	return ((objectval_tyBM*)v)->ob_class?:BMP_undefined;
-      case tyUnspecified_BM:
-	return BMP_unspecified;
-      }
+      switch (ty)
+        {
+        case tyString_BM:
+          return BMP_string;
+        case tySet_BM:
+          return BMP_set;
+        case tyTuple_BM:
+          return BMP_tuple;
+        case tyNode_BM:
+          return BMP_node;
+        case tyClosure_BM:
+          return BMP_closure;
+        case tyObject_BM:
+          return ((objectval_tyBM *) v)->ob_class ? : BMP_undefined;
+        case tyUnspecified_BM:
+          return BMP_unspecified;
+        }
     }
   return NULL;
-} /* end valclass_BM */
+}                               /* end valclass_BM */
 
 uint8_t
 valgcmark_BM (const value_tyBM v)
