@@ -51,3 +51,15 @@
   |some comment| "cd"` and `"ab"&"\ncd"` all represents the *same
   string* of five characters, with a newline at its center.
 
+
+
+## boot syntax
+
+Each load file is named `store[0-9]+.bismon` where the number is small
+and unique in the directory. It should have one single
+`//!!STARTBISMON` line (starting at first column) before which the
+lines are ignored.
+
+Each load file defines a collection of objects. Each object definition
+starts with a line beginning with `!*` then immediately the
+object-id. After that start-marker we can have other lines.
