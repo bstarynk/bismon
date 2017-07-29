@@ -193,6 +193,7 @@ makeobjofid_BM (const rawid_tyBM id)
     }
   pob = allocgcty_BM (tyObject_BM, sizeof (objectval_tyBM));
   pob->ob_id = id;
+  ((typedhead_tyBM *) pob)->hash = hashid_BM (id);
   addtobucket_BM (curbuck, pob);
   return pob;
 }                               /* end of makeobjofid_BM */
@@ -551,7 +552,9 @@ static void
 register_predefined_object_BM (objectval_tyBM * pob)
 {
   assert (valtype_BM ((const value_tyBM) pob) == tyObject_BM);
+  assert (pob->ob_id.id_hi > 0 && pob->ob_id.id_lo > 0);
   assert (findobjofid_BM (pob->ob_id) == NULL);
+  assert (((typedhead_tyBM *) pob)->hash == hashid_BM (pob->ob_id));
   unsigned bucknum = bucknumserial63_BM (pob->ob_id.id_hi);
   growobucket_BM (bucknum, 4);
   struct objbucket_stBM *curbuck = buckarr_BM[bucknum];
@@ -579,8 +582,11 @@ initialize_predefined_objects_BM (void)
 {
   hashset_predefined_objects_BM =       //
     hashsetobj_grow_BM (NULL, 2 * BM_NB_PREDEFINED + 50);
-#define HAS_PREDEF_BM(Id,Hi,Lo,Hash) \
-  register_predefined_object_BM(PREDEF_BM(Id));
+  //
+#define HAS_PREDEF_BM(Id,Hi,Lo,Hash)    {               \
+    assert(hashid_BM((rawid_tyBM){Hi,Lo})==Hash);     \
+    register_predefined_object_BM(PREDEF_BM(Id)); };
+  //
 #include "_bm_predef.h"
   //
   fflush (NULL);

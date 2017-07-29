@@ -273,6 +273,7 @@ objecthash_BM (const objectval_tyBM * pob)
     return 0;
   hash_tyBM h = ((typedhead_tyBM *) pob)->hash;
   assert (h > 0);
+  assert (h == hashid_BM (pob->ob_id));
   return h;
 }                               /* end objecthash_BM */
 
