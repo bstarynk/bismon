@@ -924,7 +924,13 @@ parsergetobject_BM (struct parser_stBM * pars,
       objectval_tyBM *obid = _.resobj   //
         = nobuild ? NULL : (findobjofid_BM (tok.tok_id));
       if (!obid && !nobuild)
-        goto failure;
+        {
+          char idbuf[32];
+          memset (idbuf, 0, sizeof (idbuf));
+          idtocbuf32_BM (tok.tok_id, idbuf);
+          parsererrorprintf_BM (pars, lineno, colpos,   //
+                                "unknown id %s", idbuf);
+        };
       *pgotobj = true;
       return obid;
     }
