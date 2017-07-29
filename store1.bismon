@@ -3,48 +3,31 @@
 
 !*_01h86SAfOfg_1q2oMegGRwW |=comment|
 
-!*_0vgCFjXblkx_4zCMhMAWjVK |=int|
+!*_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 
-!*_1jJjA6LcXiX_1V4ZcXlje09 |=name|
+%*_0vgCFjXblkx_4zCMhMAWjVK |=int|
 
-!*_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+%*_1JSykdLcLdl_8rWxtDBaPGN |=none|
 
-!*_1JSykdLcLdl_8rWxtDBaPGN |=none|
+%*_1jJjA6LcXiX_1V4ZcXlje09 |=name|
 
-!*_268RKjuQT02_2Kh0wgKnhLT |=start_generation|
+%*_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
 
-!*_2mYaTh9kH4I_7ENiXcymRmy |=set|
+%*_2mYaTh9kH4I_7ENiXcymRmy |=set|
 
-!*_2QeF5dreQwf_51c3fAJEYqJ |=emit|
+%*_33imugvOze0_0wdPqjmME0U |=embed|
 
-!*_33imugvOze0_0wdPqjmME0U |=embed|
+%*_4T8am97muLl_5969SR22Ecq |=string|
 
-!*_3bMUJDWlMMQ_2j2bm7EeIbv |=put|
+%*_55eJRRPyZDz_4uW8bzq75PI |=unspecified|
 
-!*_3SFtXTTy3kj_89fO24X2HFo |=size|
+%*_6TmLNh9vtVY_0pwkHRtJ44k |=tuple|
 
-!*_45cnnX4v29t_9gZkfMOZj2Z |=intsq|
+%*_7D8xcWnEiys_8oqOVSkCxkA |=node|
 
-!*_4cCZc3Izgsr_7LsCkWW7flp |=doublesq|
+%*_7T9OwSFlgov_0wVJaK1eZbn |=object|
 
-!*_4w339hT5dXd_1tUZFvU4fWx |=proxy|
+%*_93zjUzZVAaj_9ppXv7C34GR |=closure|  
 
-!*_4T8am97muLl_5969SR22Ecq |=string|
+// eof store1.bismon
 
-!*_5Wnb8RZdglo_9jkLPwTffMm |=the_system|
-
-!*_6ss8POQNnku_8e8woNsmvN9 |=outputter|
-
-!*_6TmLNh9vtVY_0pwkHRtJ44k |=tuple|
-
-!*_6ZpMq408eTN_8t3ZHpgCk3R |=starter|
-
-!*_7hbSpcNUdHi_4QezAVr6Bgj |=chunk|
-
-!*_7D8xcWnEiys_8oqOVSkCxkA |=node|
-
-!*_7QeFDN33m7B_3dQv2OqqbH6 |=get|
-
-!*_7T9OwSFlgov_0wVJaK1eZbn |=object|
-
-!*_8f7GaaT5WJK_01z8k1JztS6 |=dollar|
