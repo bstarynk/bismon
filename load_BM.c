@@ -96,9 +96,6 @@ load_initial_BM (const char *ldirpath)
   ld->ld_storepatharr = calloc (maxnum + 2, sizeof (void *));
   if (!ld->ld_storepatharr)
     FATAL_BM ("cannot calloc for %d store files (%m)", maxnum);
-  ld->ld_startoffarr = calloc (maxnum + 2, sizeof (long));
-  if (!ld->ld_startoffarr)
-    FATAL_BM ("cannot call for %d start offsets (%m)", maxnum);
   for (int ix = 1; ix <= maxnum; ix++)
     {
       char *pa = patharr[ix];
@@ -154,8 +151,6 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
     FATAL_BM ("fopen %s failed (%m)", curldpath);
   int lincnt = 0;
   int nbobjdef = 0;
-  long afterstartlineoff = 0;
-  int startlineno = 0;
   do
     {
       ssize_t linlen = getline (&linbuf, &linsiz, fil);
@@ -167,19 +162,9 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
         }
       linbuf[linlen] = (char) 0;
       lincnt++;
-      if (!strncmp (linbuf, "//!!STARTBISMON", strlen ("//!!STARTBISMON")))
-        {
-          if (afterstartlineoff > 0)
-            FATAL_BM
-              ("multiple //!!STARTBISMON lines near %s:%d, previous at line#%d",
-               curldpath, lincnt, startlineno);
-          afterstartlineoff = ftell (fil);
-          assert (afterstartlineoff > 0);
-          startlineno = lincnt;
-        }
       /* object definition lines are !*<id> e.g. !*_7D8xcWnEiys_8oqOVSkCxkA */
-      else if (linbuf[0] == '!' && startlineno > 0 && linbuf[1] == '*'
-               && linbuf[2] == '_' && isdigit (linbuf[3]))
+      if (linbuf[0] == '!' && linbuf[1] == '*'
+          && linbuf[2] == '_' && isdigit (linbuf[3]))
         {
           const char *endid = NULL;
           rawid_tyBM id = parse_rawid_BM (linbuf + 2, &endid);
@@ -200,9 +185,6 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
         }
     }
   while (!feof (fil));
-  if (!startlineno)
-    FATAL_BM ("load file %s without any !!STARTBISMON line", curldpath);
-  ld->ld_startoffarr[ix] = afterstartlineoff;
   if (nbobjdef == 0 && ix > 0)
     FATAL_BM ("no object definition in %s\n", curldpath);
   free (linbuf), linbuf = 0;
@@ -211,23 +193,53 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
 
 
 static void
-load_second_pass_BM (struct loader_stBM *ld, int ix)
+load_second_pass_BM (struct loader_stBM *ld, int ix,
+                     struct stackframe_stBM *parstkfrm)
 {
   assert (ld && ld->ld_magic == LOADERMAGIC_BM);
   assert (ix >= 0 && ix <= (int) ld->ld_maxnum);
   char *curldpath = ld->ld_storepatharr[ix];
   assert (curldpath != NULL);
-  fprintf (stderr, "load_second_pass_BM ix=%d path=%s unimplemented\n",
+  fprintf (stderr, "load_second_pass_BM ix=%d path=%s incomplete\n",
            ix, curldpath);
   FILE *fil = fopen (curldpath, "r");
   if (!fil)
     FATAL_BM ("failed to fopen %s (%m)", curldpath);
-  if (fseek (fil, ld->ld_startoffarr[ix], SEEK_SET))
-    FATAL_BM ("failed to fseek %s to offset %ld (%m)", curldpath,
-              ld->ld_startoffarr[ix]);
-  struct parser_stBM *ldpars = makeparser_of_file_BM (fil);
+  LOCALFRAME_BM (parstkfrm, NULL,       //
+                 struct parser_stBM *ldparser;
+                 objectval_tyBM * curldobj;
+    );
+  struct parser_stBM *ldpars = _.ldparser = makeparser_of_file_BM (fil);
   assert (ldpars != NULL);
   ldpars->pars_path = ld->ld_storepatharr[ix];
+  long nbdirectives = 0;
+  for (;;)
+    {
+      parserskipspaces_BM (ldpars);
+      unsigned lineno = parserlineno_BM (ldpars);
+      unsigned colpos = parsercolpos_BM (ldpars);
+      parstoken_tyBM tok = parsertokenget_BM (ldpars);
+      if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamstar)
+        {
+          bool gotldobj = false;
+          _.curldobj =          //
+            parsergetobject_BM  //
+            (ldpars,            //
+             (struct stackframe_stBM *) &_,     //
+             0, &gotldobj);
+          if (!gotldobj)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "expecting object after !*");
+        }
+      else if (tok.tok_kind == plex__NONE && parserendoffile_BM (ldpars))
+        break;
+      else
+        parsererrorprintf_BM (ldpars, lineno, colpos,
+                              "unexpected token for loader");
+      nbdirectives++;
+    };
+  fprintf (stderr, "load_second_pass_BM ix=%d path=%s nbdirectives=%ld\n",
+           ix, curldpath, nbdirectives);
 #warning should parse for loading
 }                               /* end load_second_pass_BM */
 
@@ -247,9 +259,9 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
   /// run the second pass to fill objects
   for (int ix = 1; ix <= (int) ld->ld_maxnum; ix++)
     if (ld->ld_storepatharr[ix])
-      load_second_pass_BM (ld, ix);
+      load_second_pass_BM (ld, ix, _parentframe);
   if (ld->ld_storepatharr[0])
-    load_second_pass_BM (ld, 0);
+    load_second_pass_BM (ld, 0, _parentframe);
   /// run the todo list
   long todocnt = 0;
   while (islist_BM (ld->ld_todolist) && listlength_BM (ld->ld_todolist) > 0)

@@ -413,10 +413,10 @@ struct parser_stBM              /* for tydata_parser_BM */
   const char *pars_filemem;     /* when using fmemopen */
   size_t pars_filesize;         /* when using fmemopen */
   char *pars_linebuf;           /* given by getline */
+  const char *pars_curbyte;     /* current byte in the line */
   size_t pars_linesiz;          /* for getline */
   ssize_t pars_linelen;         /* result of getline */
   unsigned pars_lineno;         /* line number of pars_linebuf */
-  unsigned pars_colindex;       /* byte index in pars_linebuf */
   unsigned pars_colpos;         /* UTF-8 position in current line */
   unsigned pars_memolsize;      /* allocated size of pars_memolines  */
   unsigned pars_memolcount;     /* used count of pars_memolines  */

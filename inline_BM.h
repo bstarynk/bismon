@@ -534,8 +534,11 @@ parserrestline_BM (const struct parser_stBM *pars)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return NULL;
-  assert (pars->pars_colindex <= (unsigned) pars->pars_linelen);
-  return pars->pars_linebuf + pars->pars_colindex;
+  if (!pars->pars_linebuf)
+    return NULL;
+  assert (pars->pars_curbyte >= pars->pars_linebuf
+          && pars->pars_curbyte <= pars->pars_linebuf + pars->pars_linesiz);
+  return pars->pars_curbyte;
 }                               /* end parserrestline_BM */
 
 gunichar
@@ -543,8 +546,12 @@ parserunichar_BM (const struct parser_stBM * pars)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return 0;
-  assert (pars->pars_colindex <= (unsigned) pars->pars_linelen);
-  return g_utf8_get_char (pars->pars_linebuf + pars->pars_colindex);
+  if (!pars->pars_linebuf)
+    return 0;
+  assert (pars->pars_curbyte >= pars->pars_linebuf
+          && pars->pars_curbyte <= pars->pars_linebuf + pars->pars_linesiz);
+
+  return g_utf8_get_char (pars->pars_curbyte);
 }                               /* end parserunichar_BM */
 
 bool
@@ -552,31 +559,38 @@ parsereol_BM (const struct parser_stBM * pars)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return false;
-  return pars->pars_colindex >= (unsigned) pars->pars_linelen;
+  if (!pars->pars_linebuf)
+    return true;
+  assert (pars->pars_curbyte >= pars->pars_linebuf
+          && pars->pars_curbyte <= pars->pars_linebuf + pars->pars_linesiz);
+
+  return pars->pars_curbyte >= pars->pars_linebuf + pars->pars_linesiz;
 }                               /* end parsereol_BM */
 
 bool
-parserendoffile_BM (const struct parser_stBM *pars)
+parserendoffile_BM (const struct parser_stBM * pars)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return false;
-  return pars->pars_colindex >= (unsigned) pars->pars_linelen
-    && feof (pars->pars_file);
+  return parsereol_BM (pars) && feof (pars->pars_file);
 }                               /* end parserendoffile_BM */
 
 bool
-parseradvanceutf8_BM (struct parser_stBM *pars, unsigned nbc)
+parseradvanceutf8_BM (struct parser_stBM * pars, unsigned nbc)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return false;
-  while (nbc > 0 && pars->pars_linelen >= 0
-         && pars->pars_colindex <= (unsigned) pars->pars_linelen)
+  if (!pars->pars_linebuf)
+    return false;
+  if (!pars->pars_curbyte)
+    return false;
+  while (nbc > 0 && !parsereol_BM (pars))
     {
-      const char *pc = pars->pars_linebuf + pars->pars_colindex;
+      const char *pc = pars->pars_curbyte;
       if (!*pc)
         return false;
       pc = g_utf8_next_char (pc);
-      pars->pars_colindex = pc - pars->pars_linebuf;
+      pars->pars_curbyte = pc;
       pars->pars_colpos++;
       nbc--;
       if (nbc == 0)

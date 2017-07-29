@@ -56,9 +56,8 @@
 ## boot syntax
 
 Each load file is named `store[0-9]+.bismon` where the number is small
-and unique in the directory. It should have one single
-`//!!STARTBISMON` line (starting at first column) before which the
-lines are ignored.
+and unique in the directory. Files are loaded by ascending positive
+numbers (e.g. `store1.bismon` first).
 
 Each load file defines a collection of objects. Each object definition
 starts with a line beginning with `!*` then immediately the

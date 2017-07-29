@@ -24,12 +24,15 @@ makeparser_of_file_BM (FILE * f)
   pars->pars_linebuf[0] = (char) 0;
   pars->pars_linelen = getline (&pars->pars_linebuf, &pars->pars_linesiz, f);
   if (pars->pars_linelen < 0)
-    pars->pars_lineno = 0;
+    {
+      pars->pars_lineno = 0;
+      pars->pars_curbyte = NULL;
+    }
   else
     pars->pars_lineno = 1;
   if (!g_utf8_validate (pars->pars_linebuf, pars->pars_linelen, NULL))
     FATAL_BM ("invalid UTF8 line %s:%d", pars->pars_path, pars->pars_lineno);
-  pars->pars_colindex = 0;
+  pars->pars_curbyte = pars->pars_linebuf;
   pars->pars_colpos = 0;
   unsigned inimemosiz = 32;
   pars->pars_memolines =
@@ -81,7 +84,7 @@ parsernextline_BM (struct parser_stBM *pars)
     getline (&pars->pars_linebuf, &pars->pars_linesiz, pars->pars_file);
   if (pars->pars_linelen > 0)
     {
-      pars->pars_colindex = 0;
+      pars->pars_curbyte = pars->pars_linebuf;
       pars->pars_colpos = 0;
       pars->pars_linebuf[pars->pars_linelen] = (char) 0;
       if ((pars->pars_lineno + 1) % PARSERMEMOLINERATIO_BM == 0)
@@ -166,21 +169,22 @@ parserseek_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
     }
   else
     {                           //lineno == pars->pars_lineno
-      pars->pars_colindex = 0;
+      pars->pars_curbyte = pars->pars_linebuf;
       pars->pars_colpos = 0;
     }
   if (!g_utf8_validate (pars->pars_linebuf, pars->pars_linelen, NULL))
     FATAL_BM ("invalid UTF8 line %s:%d", pars->pars_path, pars->pars_lineno);
-  const char *curlin = pars->pars_linebuf;
   while (pars->pars_colpos < colpos)
     {
-      if (pars->pars_colindex >= pars->pars_linelen)
+      if (!pars->pars_curbyte
+          || *pars->pars_curbyte == (char) 0
+          || pars->pars_curbyte >= pars->pars_linebuf + pars->pars_linelen)
         break;
-      const char *pc = curlin + pars->pars_colindex;
+      const char *pc = pars->pars_curbyte;
       if (!*pc)
         break;
       const char *nextpc = g_utf8_next_char (pc);
-      pars->pars_colindex = nextpc - curlin;
+      pars->pars_curbyte = nextpc;
       pars->pars_colpos++;
     }
 }                               /* end of parserseek_BM */
@@ -202,10 +206,10 @@ parsererrorprintf_BM (struct parser_stBM *pars, unsigned line, unsigned col,
   if (parsops)
     {
       assert (parsops->parsop_magic == PARSOPMAGIC_BM);
-      if (parsops->parsop_error_rout)
+      if (parsops && parsops->parsop_error_rout)
         parsops->parsop_error_rout (pars, line, col, buf);
     };
-  FATAL_BM ("parser error %s:%d:%d : %s", pars->pars_path, line, col, buf);
+  FATAL_BM ("%s:%d:%d: PARSER ERROR : %s", pars->pars_path, line, col, buf);
 }                               /* end parsererrorprintf_BM */
 
 void
@@ -222,15 +226,21 @@ parserskipspaces_BM (struct parser_stBM *pars)
         break;
       if (isspace (restlines[0]))
         {
-          pars->pars_colpos++, pars->pars_colindex++;
+          pars->pars_colpos++, pars->pars_curbyte++;
+          continue;
+        }
+      if (restlines[0] == (char) 0)
+        {
+          if (!parsernextline_BM (pars))
+            return;
           continue;
         }
       if (restlines[0] == '/' && restlines[1] == '/')
         {
-          if (parsops->parsop_decorate_comment_sign_rout)
+          if (parsops && parsops->parsop_decorate_comment_sign_rout)
             parsops->parsop_decorate_comment_sign_rout  //
               (pars, pars->pars_colpos, 2);
-          if (parsops->parsop_decorate_comment_inside_rout)
+          if (parsops && parsops->parsop_decorate_comment_inside_rout)
             parsops->parsop_decorate_comment_inside_rout        //
               (pars, pars->pars_colpos + 2,
                g_utf8_strlen (restlines + 2, -1));
@@ -240,7 +250,7 @@ parserskipspaces_BM (struct parser_stBM *pars)
         }
       else if (restlines[0] == '|')
         {
-          if (parsops->parsop_decorate_comment_sign_rout)
+          if (parsops && parsops->parsop_decorate_comment_sign_rout)
             parsops->parsop_decorate_comment_sign_rout  //
               (pars, pars->pars_colpos, 1);
           unsigned curlineno = parserlineno_BM (pars);
@@ -261,10 +271,10 @@ parserskipspaces_BM (struct parser_stBM *pars)
                 }
               if (parserunichar_BM (pars) == (gunichar) '|')
                 {
-                  if (parsops->parsop_decorate_comment_sign_rout)
+                  if (parsops && parsops->parsop_decorate_comment_sign_rout)
                     parsops->parsop_decorate_comment_sign_rout  //
                       (pars, pars->pars_colpos, 1);
-                  if (parsops->parsop_decorate_comment_inside_rout)
+                  if (parsops && parsops->parsop_decorate_comment_inside_rout)
                     parsops->parsop_decorate_comment_inside_rout        //
                       (pars, curcol + 1, pars->pars_colpos - curcol);
                   parseradvanceutf8_BM (pars, 1);
@@ -525,7 +535,7 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
     parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
                           "bad plain cord ending %s", pc);
   pars->pars_colpos += g_utf8_strlen (restlin, pc - restlin);
-  pars->pars_colindex += pc - restlin;
+  pars->pars_curbyte = pc;
   return nbc;
 }                               /* end parse_plain_cord_BM */
 
@@ -555,7 +565,7 @@ parse_raw_cord_BM (struct parser_stBM *pars, const char *run, FILE * memfil)
           fwrite (curstart, ends - curstart, 1, memfil);
           unsigned plen = g_utf8_strlen (curstart, ends - curstart);
           nbc += plen;
-          pars->pars_colindex += (ends - curstart) + strlen (endrunbuf);
+          pars->pars_curbyte += (ends - curstart) + strlen (endrunbuf);
           pars->pars_colpos += plen + strlen (endrunbuf);
           break;
         }
@@ -563,7 +573,7 @@ parse_raw_cord_BM (struct parser_stBM *pars, const char *run, FILE * memfil)
         {
           fputs (curstart, memfil);
           unsigned plen = g_utf8_strlen (curstart, -1);
-          pars->pars_colindex += strlen (curstart);
+          pars->pars_curbyte += strlen (curstart);
           pars->pars_colpos += plen;
           if (!parsernextline_BM (pars))
             parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
@@ -631,13 +641,13 @@ parse_cords_BM (struct parser_stBM *pars)
       if (restlin[0] == '&')
         {
           pars->pars_colpos++;
-          pars->pars_colindex++;
+          pars->pars_curbyte++;
           againcord = true;
         }
       else if (restlin[0] == '+')
         {
           pars->pars_colpos++;
-          pars->pars_colindex++;
+          pars->pars_curbyte++;
           fputc ('\n', filmem);
           cumulchars++;
           againcord = true;
@@ -700,7 +710,7 @@ parsertokenget_BM (struct parser_stBM * pars)
               if (parsop && parsop->parsop_decorate_number_rout)
                 parsop->parsop_decorate_number_rout (pars, pars->pars_colpos,
                                                      coldbl);
-              pars->pars_colindex += endflo - restlin;
+              pars->pars_curbyte = endflo;
               pars->pars_colpos += coldbl;
               return (parstoken_tyBM)
               {
@@ -713,7 +723,7 @@ parsertokenget_BM (struct parser_stBM * pars)
           if (parsop && parsop->parsop_decorate_number_rout)
             parsop->parsop_decorate_number_rout (pars, pars->pars_colpos,
                                                  colint);
-          pars->pars_colindex += endint - restlin;
+          pars->pars_curbyte = endint;
           pars->pars_colpos += colint;
           return (parstoken_tyBM)
           {
@@ -732,7 +742,7 @@ parsertokenget_BM (struct parser_stBM * pars)
           if (parsop && parsop->parsop_decorate_id_rout)
             parsop->parsop_decorate_id_rout (pars, pars->pars_colpos,
                                              IDLEN_BM);
-          pars->pars_colindex += IDLEN_BM;
+          pars->pars_curbyte += IDLEN_BM;
           pars->pars_colpos += IDLEN_BM;
           return (parstoken_tyBM)
           {
@@ -749,7 +759,7 @@ parsertokenget_BM (struct parser_stBM * pars)
     {
       if (parsop && parsop->parsop_decorate_id_rout)
         parsop->parsop_decorate_id_rout (pars, pars->pars_colpos, 2);
-      pars->pars_colindex += 2;
+      pars->pars_curbyte += 2;
       pars->pars_colpos += 2;
       return (parstoken_tyBM)
       {
@@ -794,7 +804,7 @@ parsertokenget_BM (struct parser_stBM * pars)
           if (parsop && parsop->parsop_decorate_known_name_rout)
             parsop->parsop_decorate_known_name_rout     //
               (pars, pars->pars_colpos, namlen);
-          pars->pars_colindex += namlen;
+          pars->pars_curbyte += namlen;
           pars->pars_colpos += namlen;
           return (parstoken_tyBM)
           {
@@ -810,7 +820,7 @@ parsertokenget_BM (struct parser_stBM * pars)
           if (parsop && parsop->parsop_decorate_new_name_rout)
             parsop->parsop_decorate_new_name_rout       //
               (pars, pars->pars_colpos, namlen);
-          pars->pars_colindex += namlen;
+          pars->pars_curbyte += namlen;
           pars->pars_colpos += namlen;
           return (parstoken_tyBM)
           {
@@ -830,7 +840,7 @@ parsertokenget_BM (struct parser_stBM * pars)
       double x = strtod (specbuf, NULL);
       if (parsop && parsop->parsop_decorate_number_rout)
         parsop->parsop_decorate_number_rout (pars, pars->pars_colpos, 4);
-      pars->pars_colindex += 4;
+      pars->pars_curbyte += 4;
       pars->pars_colpos += 4;
       return (parstoken_tyBM)
       {
@@ -868,7 +878,7 @@ parsertokenget_BM (struct parser_stBM * pars)
   if (curdelim == delim__NONE)
     parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
                           "unexpected token %s", restlin);
-  pars->pars_colindex += strlen (delimstr);
+  pars->pars_curbyte += strlen (delimstr);
   pars->pars_colpos += g_utf8_strlen (delimstr, -1);
   return (parstoken_tyBM)
   {
