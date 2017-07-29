@@ -62,7 +62,7 @@ findobjofid_BM (const rawid_tyBM id)
   if (!curbuck)
     return NULL;
   unsigned busiz = curbuck->bucksize;
-  assert (busiz % 2 != 0 && busiz % 3 != 0 && busiz % 5 != 0);
+  assert (busiz >= 4 && busiz % 2 != 0 && busiz % 3 != 0);
   assert (curbuck->buckcount < curbuck->bucksize);
   hash_tyBM h = hashid_BM (id);
   unsigned startix = h % busiz;
@@ -95,6 +95,7 @@ addtobucket_BM (struct objbucket_stBM *buck, objectval_tyBM * ob)
   assert (buck != NULL);
   assert (valtype_BM (ob) == tyObject_BM);
   hash_tyBM h = objecthash_BM (ob);
+  assert (h > 0);
   unsigned busiz = buck->bucksize;
   assert (busiz % 2 != 0 && busiz % 3 != 0 && busiz % 5 != 0);
   assert (buck->buckcount < buck->bucksize);
@@ -150,7 +151,7 @@ growobucket_BM (unsigned bucknum, unsigned gap)
   unsigned oldsiz = oldbuck ? oldbuck->bucksize : 0;
   unsigned oldcnt = oldbuck ? oldbuck->buckcount : 0;
   unsigned long newsiz =
-    prime_above_BM (4 * (oldcnt + gap) / 3 + gap / 64 + 20);
+    prime_above_BM (4 * (oldcnt + gap) / 3 + gap / 64 + 4);
   struct objbucket_stBM *newbuck =
     malloc (sizeof (struct objbucket_stBM) + newsiz * sizeof (void *));
   if (!newbuck)
@@ -167,6 +168,7 @@ growobucket_BM (unsigned bucknum, unsigned gap)
       addtobucket_BM (newbuck, oldob);
     }
   free (oldbuck);
+  assert (newbuck->buckcount == oldcnt);
   buckarr_BM[bucknum] = newbuck;
 }                               /* end growobucket_BM */
 

@@ -269,9 +269,11 @@ isobject_BM (const value_tyBM v)
 hash_tyBM
 objecthash_BM (const objectval_tyBM * pob)
 {
-  if (isobject_BM ((const value_tyBM) pob))
+  if (!isobject_BM ((const value_tyBM) pob))
     return 0;
-  return ((typedhead_tyBM *) pob)->hash;
+  hash_tyBM h = ((typedhead_tyBM *) pob)->hash;
+  assert (h > 0);
+  return h;
 }                               /* end objecthash_BM */
 
 unsigned
