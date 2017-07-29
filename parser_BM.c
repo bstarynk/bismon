@@ -820,6 +820,7 @@ parsertokenget_BM (struct parser_stBM * pars)
 
   // special case for +NAN +INF -INF, in uppercases
   else if (((restlin[0] == '+') || (restlin[0] == '-'))
+           && (restlin[1] == 'N' || restlin[1] == 'I')
            && (!strncmp (restlin, "+NAN", 4)
                || !strncmp (restlin, "+INF", 4)
                || !strncmp (restlin, "-INF", 4)) && !isalnum (restlin[4]))
@@ -873,3 +874,171 @@ parsertokenget_BM (struct parser_stBM * pars)
   {
   .tok_kind = plex_DELIM,.tok_delim = curdelim};
 }                               /* end parsertokenget_BM */
+
+
+objectval_tyBM *
+parsergetobject_BM (struct parser_stBM * pars,
+                    struct stackframe_stBM * prevstkf, int depth,
+                    bool * pgotobj)
+{
+  if (!isparser_BM ((const value_tyBM) pars))
+    FATAL_BM ("bad parser");
+  if (!pgotobj)
+    FATAL_BM ("missing pgotobj");
+  LOCALFRAME_BM (prevstkf, NULL, objectval_tyBM * resobj);
+  parserskipspaces_BM (pars);
+  unsigned lineno = parserlineno_BM (pars);
+  unsigned colpos = parsercolpos_BM (pars);
+  if (depth > MAXDEPTHPARSE_BM)
+    parsererrorprintf_BM (pars, lineno, colpos, //
+                          "too deep (%d) object", depth);
+  parstoken_tyBM tok = parsertokenget_BM (pars);
+  if (tok.tok_kind == plex__NONE)
+    goto failure;
+  else if (tok.tok_kind == plex_NAMEDOBJ)
+    {
+      assert (tok.tok_namedobj != NULL);
+      *pgotobj = true;
+      return tok.tok_namedobj;
+    }
+  else if (tok.tok_kind == plex_ID)
+    {
+      objectval_tyBM *obid = _.resobj = findobjofid_BM (tok.tok_id);
+      if (!obid)
+        goto failure;
+      *pgotobj = true;
+      return obid;
+    }
+  // perhaps should be able to compute an object
+failure:
+  parserseek_BM (pars, lineno, colpos);
+  *pgotobj = false;
+  return NULL;
+}                               /* end parsergetobject_BM */
+
+
+value_tyBM
+parsergetvalue_BM (struct parser_stBM * pars,
+                   struct stackframe_stBM * prevstkf, int depth,
+                   bool * pgotval)
+{
+  if (!isparser_BM ((const value_tyBM) pars))
+    FATAL_BM ("bad parser");
+  if (!pgotval)
+    FATAL_BM ("missing pgotval");
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
+  bool nobuild = parsops && parsops->parsop_nobuild;
+  LOCALFRAME_BM (prevstkf, NULL,        //
+                 value_tyBM resval;
+                 union
+                 {
+                 objectval_tyBM * elemobj; objectval_tyBM * compobj;
+                 }; struct datavectval_stBM *contdvec);
+  parserskipspaces_BM (pars);
+  unsigned lineno = parserlineno_BM (pars);
+  unsigned colpos = parsercolpos_BM (pars);
+  if (depth > MAXDEPTHPARSE_BM)
+    parsererrorprintf_BM (pars, lineno, colpos, //
+                          "too deep (%d) value", depth);
+  parstoken_tyBM tok = parsertokenget_BM (pars);
+  if (tok.tok_kind == plex__NONE)
+    goto failure;
+  //
+  // parse numbers
+  else if (tok.tok_kind == plex_LLONG)
+    {
+      *pgotval = true;
+      return taggedint_BM (tok.tok_llong);
+    }
+  //
+  // parse strings
+  else if (tok.tok_kind == plex_STRING)
+    {
+      *pgotval = true;
+      return nobuild ? NULL : (value_tyBM) tok.tok_string;
+    }
+  //
+  // parse tuples
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_leftbracket)
+    {
+      // a tuple : [ obj1 .... objn ]
+      bool gotcompobj = false;
+      _.contdvec = nobuild ? NULL : datavect_grow_BM (NULL, 7);
+      while ((gotcompobj = false),      //
+             (_.compobj =       //
+              parsergetobject_BM        //
+              (pars,            //
+               (struct stackframe_stBM *) &_,   //
+               depth + 1, &gotcompobj)),        //
+             gotcompobj)
+        {
+          if (!nobuild)
+            _.contdvec = datavect_append_BM (_.contdvec, _.compobj);
+        }
+      unsigned endlineno = parserlineno_BM (pars);
+      unsigned endcolpos = parsercolpos_BM (pars);
+      parstoken_tyBM endtok = parsertokenget_BM (pars);
+      if (endtok.tok_kind != plex_DELIM
+          || endtok.tok_delim != delim_rightbracket)
+        parsererrorprintf_BM (pars, lineno, colpos,     //
+                              "missing closing bracket for tuple");
+      if (parsops && parsops->parsop_decorate_nesting_rout)
+        parsops->parsop_decorate_nesting_rout
+          (pars, depth,
+           delim_leftbracket, lineno, colpos,
+           delim_rightbracket, endlineno, endcolpos);
+      if (!nobuild)
+        _.resval = (value_tyBM)
+          maketuple_BM ((objectval_tyBM **) (_.contdvec->vec_data),
+                        datavectlen_BM (_.contdvec));
+      else
+        _.resval = NULL;
+      *pgotval = true;
+      return _.resval;
+    }
+  //
+  // parse sets
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_leftbrace)
+    {
+      // a set : { obj1 .... objn }
+      bool gotelemobj = false;
+      _.contdvec = nobuild ? NULL : datavect_grow_BM (NULL, 7);
+      while ((gotelemobj = false),      //
+             (_.elemobj =       //
+              parsergetobject_BM        //
+              (pars,            //
+               (struct stackframe_stBM *) &_,   //
+               depth + 1, &gotelemobj)),        //
+             gotelemobj)
+        {
+          if (!nobuild)
+            _.contdvec = datavect_append_BM (_.contdvec, _.elemobj);
+        }
+      unsigned endlineno = parserlineno_BM (pars);
+      unsigned endcolpos = parsercolpos_BM (pars);
+      parstoken_tyBM endtok = parsertokenget_BM (pars);
+      if (endtok.tok_kind != plex_DELIM
+          || endtok.tok_delim != delim_rightbrace)
+        parsererrorprintf_BM (pars, lineno, colpos,     //
+                              "missing closing brace for set");
+      if (parsops && parsops->parsop_decorate_nesting_rout)
+        parsops->parsop_decorate_nesting_rout
+          (pars, depth,
+           delim_leftbrace, lineno, colpos,
+           delim_rightbrace, endlineno, endcolpos);
+      if (!nobuild)
+        _.resval = (value_tyBM)
+          makeset_BM ((const objectval_tyBM **) (_.contdvec->vec_data),
+                      datavectlen_BM (_.contdvec));
+      else
+        _.resval = NULL;
+      *pgotval = true;
+      return _.resval;
+    }
+  //////
+failure:
+  parserseek_BM (pars, lineno, colpos);
+  *pgotval = false;
+  return NULL;
+}                               /* end of parsergetvalue_BM */

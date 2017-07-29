@@ -354,6 +354,12 @@ typedef void parser_decorate_name_sigBM
 typedef void parser_decorate_delimiter_sigBM
   (struct parser_stBM *pars, unsigned colpos, unsigned delimlen);
 
+// decorate nesting
+typedef void parser_decorate_nesting_sigBM
+  (struct parser_stBM *pars, int depth, enum lexdelim_enBM opendelim,
+   unsigned openlinpos, unsigned opencolpos,
+   enum lexdelim_enBM closedelim, unsigned closelinpos, unsigned closecolpos);
+
 // signal parse error; the msg is a malloc-ed string which the routine
 // should free when it is doing a longjmp
 typedef void parser_error_sigBM
@@ -384,6 +390,8 @@ struct parserops_stBM
   // decoration of both known and unknown names
   parser_decorate_name_sigBM *parsop_decorate_known_name_rout;
   parser_decorate_name_sigBM *parsop_decorate_new_name_rout;
+  // decoration of nesting
+  parser_decorate_nesting_sigBM *parsop_decorate_nesting_rout;
 };
 
 struct parser_stBM              /* for tydata_parser_BM */

@@ -306,6 +306,14 @@ extern void parsergcdestroy_BM (struct garbcoll_stBM *gc,
 extern void parsergckeep_BM (struct garbcoll_stBM *gc,
                              struct parser_stBM *pars);
 extern bool parsernextline_BM (struct parser_stBM *pars);       // return false on EOL
+extern objectval_tyBM *parsergetobject_BM
+  (struct parser_stBM *pars,
+   struct stackframe_stBM *stkf, int depth, bool * pgotobj);
+///
+extern value_tyBM parsergetvalue_BM
+  (struct parser_stBM *pars,
+   struct stackframe_stBM *stkf, int depth, bool * pgotval);
+///
 static inline unsigned parserlineno_BM (const struct parser_stBM *pars);
 static inline unsigned parsercolpos_BM (const struct parser_stBM *pars);
 static inline const char *parserrestline_BM (const struct parser_stBM *pars);
