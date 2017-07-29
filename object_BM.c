@@ -578,6 +578,10 @@ initialize_predefined_objects_BM (void)
 #define HAS_PREDEF_BM(Id,Hi,Lo,Hash) \
   register_predefined_object_BM(PREDEF_BM(Id));
 #include "_bm_predef.h"
+  //
+  fflush (NULL);
+  assert (findobjofid_BM (parse_rawid_BM ("_01h86SAfOfg_1q2oMegGRwW", NULL))
+          == BMP_comment);
 }                               /* end initialize_predefined_objects_BM */
 
 const setval_tyBM *
