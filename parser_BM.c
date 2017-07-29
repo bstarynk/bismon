@@ -886,6 +886,9 @@ parsergetobject_BM (struct parser_stBM * pars,
   if (!pgotobj)
     FATAL_BM ("missing pgotobj");
   LOCALFRAME_BM (prevstkf, NULL, objectval_tyBM * resobj);
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
+  bool nobuild = parsops && parsops->parsop_nobuild;
   parserskipspaces_BM (pars);
   unsigned lineno = parserlineno_BM (pars);
   unsigned colpos = parsercolpos_BM (pars);
@@ -903,8 +906,14 @@ parsergetobject_BM (struct parser_stBM * pars,
     }
   else if (tok.tok_kind == plex_ID)
     {
-      objectval_tyBM *obid = _.resobj = findobjofid_BM (tok.tok_id);
-      if (!obid)
+      if (tok.tok_id.id_hi == 0 && tok.tok_id.id_lo == 0)
+        {
+          *pgotobj = true;
+          return NULL;
+        };
+      objectval_tyBM *obid = _.resobj   //
+        = nobuild ? NULL : (findobjofid_BM (tok.tok_id));
+      if (!obid && !nobuild)
         goto failure;
       *pgotobj = true;
       return obid;
@@ -1110,8 +1119,9 @@ parsergetvalue_BM (struct parser_stBM * pars,
          (struct stackframe_stBM *) &_, //
          depth + 1, &gotconnobj);
       if (!gotconnobj)
-        parsererrorprintf_BM (pars, lineno, colpos,     //
-                              "missing connective object of closure after %");
+        parsererrorprintf_BM    //
+          (pars, lineno, colpos,        //
+           "missing connective object of closure after %%");
       unsigned leftlineno = parserlineno_BM (pars);
       unsigned leftcolpos = parsercolpos_BM (pars);
       parstoken_tyBM lefttok = parsertokenget_BM (pars);
