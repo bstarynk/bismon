@@ -553,10 +553,12 @@ register_predefined_object_BM (objectval_tyBM * pob)
   assert (valtype_BM ((const value_tyBM) pob) == tyObject_BM);
   assert (findobjofid_BM (pob->ob_id) == NULL);
   unsigned bucknum = bucknumserial63_BM (pob->ob_id.id_hi);
-  growobucket_BM (bucknum, 6);
+  growobucket_BM (bucknum, 4);
   struct objbucket_stBM *curbuck = buckarr_BM[bucknum];
   assert (curbuck != NULL);
   addtobucket_BM (curbuck, pob);
+  assert (curbuck->buckcount > 0 && curbuck->buckcount <= curbuck->bucksize);
+  assert (findobjofid_BM (pob->ob_id) == pob);
   hashset_predefined_objects_BM =       //
     hashsetobj_add_BM (hashset_predefined_objects_BM, pob);
   char idbuf[32];
