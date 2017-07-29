@@ -118,6 +118,11 @@ parsernextline_BM (struct parser_stBM *pars)
                   pars->pars_lineno);
       return true;
     }
+  else if (pars->pars_linelen < 0)
+    {
+      pars->pars_curbyte = NULL;
+      pars->pars_colpos = 0;
+    }
   return false;
 }                               /* end parsernextline_BM */
 
@@ -686,8 +691,21 @@ parsertokenget_BM (struct parser_stBM * pars)
   const struct parserops_stBM *parsop = pars->pars_ops;
   assert (!parsop || parsop->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsop && parsop->parsop_nobuild;
+  const char *restlin = NULL;
+again:
   parserskipspaces_BM (pars);
-  const char *restlin = parserrestline_BM (pars);
+  restlin = parserrestline_BM (pars);
+  if (restlin && restlin[0] == (char) 0)
+    {
+      if (parserendoffile_BM (pars))
+        return (parstoken_tyBM)
+        {
+          .tok_kind = plex__NONE,.tok_ptrs =
+          {
+          NULL, NULL}
+        };
+      goto again;
+    }
   if (!restlin)
     return (parstoken_tyBM)
     {

@@ -539,6 +539,10 @@ parserrestline_BM (const struct parser_stBM *pars)
     return NULL;
   if (!pars->pars_linebuf)
     return NULL;
+  if (pars->pars_linelen < 0)
+    return NULL;
+  if (pars->pars_curbyte == NULL)
+    return NULL;
   assert (pars->pars_curbyte >= pars->pars_linebuf
           && pars->pars_curbyte <= pars->pars_linebuf + pars->pars_linesiz);
   return pars->pars_curbyte;
@@ -575,6 +579,8 @@ parserendoffile_BM (const struct parser_stBM * pars)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return false;
+  if (pars->pars_curbyte == NULL)
+    return true;
   return parsereol_BM (pars) && feof (pars->pars_file);
 }                               /* end parserendoffile_BM */
 
