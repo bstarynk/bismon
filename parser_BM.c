@@ -917,6 +917,8 @@ failure:
 }                               /* end parsergetobject_BM */
 
 
+
+////////////////
 value_tyBM
 parsergetvalue_BM (struct parser_stBM * pars,
                    struct stackframe_stBM * prevstkf, int depth,
@@ -929,12 +931,18 @@ parsergetvalue_BM (struct parser_stBM * pars,
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsops && parsops->parsop_nobuild;
-  LOCALFRAME_BM (prevstkf, NULL,        //
+  LOCALFRAME_BM //
+    (prevstkf, NULL,        //
                  value_tyBM resval;
+		 objectval_tyBM *connobj;
                  union
                  {
-                 objectval_tyBM * elemobj; objectval_tyBM * compobj;
-                 }; struct datavectval_stBM *contdvec);
+		   objectval_tyBM * elemobj;
+		   objectval_tyBM * compobj;
+		   value_tyBM sonval;
+                 };
+		 struct datavectval_stBM *contdvec
+		 );
   parserskipspaces_BM (pars);
   unsigned lineno = parserlineno_BM (pars);
   unsigned colpos = parsercolpos_BM (pars);
@@ -964,7 +972,7 @@ parsergetvalue_BM (struct parser_stBM * pars,
     {
       // a tuple : [ obj1 .... objn ]
       bool gotcompobj = false;
-      _.contdvec = nobuild ? NULL : datavect_grow_BM (NULL, 7);
+      _.contdvec = nobuild ? NULL : datavect_grow_BM (NULL, 5);
       while ((gotcompobj = false),      //
              (_.compobj =       //
               parsergetobject_BM        //
@@ -1003,7 +1011,7 @@ parsergetvalue_BM (struct parser_stBM * pars,
     {
       // a set : { obj1 .... objn }
       bool gotelemobj = false;
-      _.contdvec = nobuild ? NULL : datavect_grow_BM (NULL, 7);
+      _.contdvec = nobuild ? NULL : datavect_grow_BM (NULL, 5);
       while ((gotelemobj = false),      //
              (_.elemobj =       //
               parsergetobject_BM        //
@@ -1035,6 +1043,69 @@ parsergetvalue_BM (struct parser_stBM * pars,
         _.resval = NULL;
       *pgotval = true;
       return _.resval;
+    }
+  //
+  // parse nodes
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_star)
+    {
+      // a node: * connobj ( son1 ... sonn )
+      bool gotconnobj = false;
+      _.connobj =       //
+              parsergetobject_BM        //
+              (pars,            //
+               (struct stackframe_stBM *) &_,   //
+               depth + 1, &gotconnobj);
+      if (!gotconnobj)
+        parsererrorprintf_BM (pars, lineno, colpos,     //
+                              "missing connective object of node after *");
+      unsigned leftlineno = parserlineno_BM (pars);
+      unsigned leftcolpos = parsercolpos_BM (pars);
+      parstoken_tyBM lefttok = parsertokenget_BM (pars);
+      if (lefttok.tok_kind != plex_DELIM
+          || lefttok.tok_delim != delim_leftparen)
+        parsererrorprintf_BM (pars, lineno, colpos,     //
+                              "missing left parenthesis for node");
+      _.contdvec = nobuild ? NULL : datavect_grow_BM (NULL, 3);
+      bool gotson = false;
+      while ((gotson = false),      //
+             (_.sonval =       //
+              parsergetvalue_BM        //
+              (pars,            //
+               (struct stackframe_stBM *) &_,   //
+               depth + 1, &gotson)),        //
+             gotson)
+        {
+          if (!nobuild)
+            _.contdvec = datavect_append_BM (_.contdvec, _.sonval);
+        }
+      unsigned endlineno = parserlineno_BM (pars);
+      unsigned endcolpos = parsercolpos_BM (pars);
+      parstoken_tyBM endtok = parsertokenget_BM (pars);
+      if (endtok.tok_kind != plex_DELIM
+          || endtok.tok_delim != delim_rightparen)
+        parsererrorprintf_BM (pars, lineno, colpos,     //
+                              "missing closing parenthesis for node");
+      if (parsops && parsops->parsop_decorate_start_nesting_rout)
+        parsops->parsop_decorate_start_nesting_rout
+          (pars, depth,
+	   delim_star, lineno, colpos,
+           delim_leftbrace, leftlineno, leftcolpos,
+           delim_rightbrace, endlineno, endcolpos);
+      if (!nobuild)
+        _.resval = (value_tyBM)
+          makenode_BM(_.connobj,
+                      datavectlen_BM (_.contdvec),
+		      (const value_tyBM*) (_.contdvec->vec_data));
+      else
+        _.resval = NULL;
+      *pgotval = true;
+      return _.resval;
+		      
+    }
+  //
+  // parse closures
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_percent)
+    {
     }
   //////
 failure:

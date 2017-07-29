@@ -354,10 +354,17 @@ typedef void parser_decorate_name_sigBM
 typedef void parser_decorate_delimiter_sigBM
   (struct parser_stBM *pars, unsigned colpos, unsigned delimlen);
 
-// decorate nesting
+// decorate nesting (e.g. for sets & tuples) 
 typedef void parser_decorate_nesting_sigBM
-  (struct parser_stBM *pars, int depth, enum lexdelim_enBM opendelim,
-   unsigned openlinpos, unsigned opencolpos,
+  (struct parser_stBM *pars, int depth,
+   enum lexdelim_enBM opendelim, unsigned openlinpos, unsigned opencolpos,
+   enum lexdelim_enBM closedelim, unsigned closelinpos, unsigned closecolpos);
+
+// decorate start nesting (e.g. for nodes & closures)
+typedef void parser_decorate_start_nesting_sigBM
+  (struct parser_stBM *pars, int depth,
+   enum lexdelim_enBM startdelim, unsigned startlinpos, unsigned startcolpos,
+   enum lexdelim_enBM opendelim, unsigned openlinpos, unsigned opencolpos,
    enum lexdelim_enBM closedelim, unsigned closelinpos, unsigned closecolpos);
 
 // signal parse error; the msg is a malloc-ed string which the routine
@@ -390,8 +397,9 @@ struct parserops_stBM
   // decoration of both known and unknown names
   parser_decorate_name_sigBM *parsop_decorate_known_name_rout;
   parser_decorate_name_sigBM *parsop_decorate_new_name_rout;
-  // decoration of nesting
+  // decoration of nesting & start-nesting
   parser_decorate_nesting_sigBM *parsop_decorate_nesting_rout;
+  parser_decorate_start_nesting_sigBM *parsop_decorate_start_nesting_rout;
 };
 
 struct parser_stBM              /* for tydata_parser_BM */
