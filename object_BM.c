@@ -706,3 +706,40 @@ objputclassinfo_BM (objectval_tyBM * obj, objectval_tyBM * superclass)
   clinf->clinf_dictmeth = NULL;
   obj->ob_data = clinf;
 }                               /* end objputclassinfo_BM */
+
+
+void
+objclassinfoputmethod_BM (objectval_tyBM * obj, objectval_tyBM * obselector,
+                          const closure_tyBM * clos)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  if (!isobject_BM ((const value_tyBM) obselector))
+    return;
+  if (!isclosure_BM ((const value_tyBM) clos))
+    return;
+  if (!objhasclassinfo_BM (obj))
+    return;
+  struct classinfo_stBM *clinf =        //
+    (struct classinfo_stBM *) (obj->ob_data);
+  assert (valtype_BM ((const value_tyBM) clinf) == tydata_classinfo_BM);
+  clinf->clinf_dictmeth =       //
+    assoc_addattr_BM (clinf->clinf_dictmeth, obselector, clos);
+}                               /* end objclassinfoputmethod_BM */
+
+void
+objclassinforemovemethod_BM (objectval_tyBM * obj,
+                             objectval_tyBM * obselector)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  if (!isobject_BM ((const value_tyBM) obselector))
+    return;
+  if (!objhasclassinfo_BM (obj))
+    return;
+  struct classinfo_stBM *clinf =        //
+    (struct classinfo_stBM *) (obj->ob_data);
+  assert (valtype_BM ((const value_tyBM) clinf) == tydata_classinfo_BM);
+  clinf->clinf_dictmeth =       //
+    assoc_removeattr_BM (clinf->clinf_dictmeth, obselector);
+}                               /* end objclassinforemovemethod_BM */

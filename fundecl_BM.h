@@ -116,6 +116,14 @@ static inline const closure_tyBM *      //
 
  objgetclassinfomethod_BM (objectval_tyBM * obj, objectval_tyBM * obselector);
 
+extern void
+objclassinfoputmethod_BM (objectval_tyBM * obj, objectval_tyBM * obselector,
+                          const closure_tyBM * clos);
+
+extern void
+objclassinforemovemethod_BM (objectval_tyBM * obj,
+                             objectval_tyBM * obselector);
+
 static inline const setval_tyBM *       //
   objgetclassinfosetofselectors_BM (objectval_tyBM * obj);
 
