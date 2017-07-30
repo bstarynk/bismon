@@ -365,6 +365,45 @@ objgrowcomps_BM (objectval_tyBM * obj, unsigned gap)
   obj->ob_compvec = datavect_grow_BM (obj->ob_compvec, gap);
 }                               /* end objgrowcomps_BM */
 
+bool
+objhasclassinfo_BM (objectval_tyBM * obj)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return false;
+  return (obj->ob_data
+          && valtype_BM ((const value_tyBM) (obj->ob_data)) ==
+          tydata_classinfo_BM);
+}                               /* end objhasclassinfo_BM */
+
+objectval_tyBM *
+objgetclassinfosuperclass_BM (objectval_tyBM * obj)
+{
+  if (!objhasclassinfo_BM (obj))
+    return NULL;
+  struct classinfo_stBM *clinf =        //
+    (struct classinfo_stBM *) (obj->ob_data);
+  assert (valtype_BM ((const value_tyBM) clinf) == tydata_classinfo_BM);
+  objectval_tyBM *superob = clinf->clinf_superclass;
+  assert (!superob || isobject_BM ((const value_tyBM) superob));
+  return superob;
+}                               /* end objgetclassinfosuperclass_BM */
+
+const closure_tyBM *
+objgetclassinfomethod_BM (objectval_tyBM * obj, objectval_tyBM * obselector)
+{
+  if (!objhasclassinfo_BM (obj))
+    return NULL;
+  if (!isobject_BM ((const value_tyBM) obselector))
+    return NULL;
+  struct classinfo_stBM *clinf =        //
+    (struct classinfo_stBM *) (obj->ob_data);
+  assert (valtype_BM ((const value_tyBM) clinf) == tydata_classinfo_BM);
+  const closure_tyBM *clos = (const closure_tyBM *)     //
+    assoc_getattr_BM (clinf->clinf_dictmeth,
+                      obselector);
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  return clos;
+}                               /* end objgetclassinfomethod_BM */
 
 int
 objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)

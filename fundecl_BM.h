@@ -105,6 +105,16 @@ extern void objputattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr,
                            value_tyBM valattr);
 extern void objremoveattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr);
 
+static inline bool objhasclassinfo_BM (objectval_tyBM * obj);
+// put a fresh classinfo as an object's data
+extern void objputclassinfo_BM (objectval_tyBM * obj,
+                                objectval_tyBM * superclass);
+static inline objectval_tyBM *  //
+  objgetclassinfosuperclass_BM (objectval_tyBM * obj);
+
+static inline const closure_tyBM *      //
+ objgetclassinfomethod_BM (objectval_tyBM * obj, objectval_tyBM * obselector);
+
 static inline unsigned objnbcomps_BM (objectval_tyBM * obj);
 static inline value_tyBM objgetcomp_BM (objectval_tyBM * obj, int rk);
 static inline void objreservecomps_BM (objectval_tyBM * obj, unsigned gap);

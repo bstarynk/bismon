@@ -693,4 +693,16 @@ classinfogckeep_BM (struct garbcoll_stBM *gc, struct classinfo_stBM *clinf)
   gc->gc_keptbytes += sizeof (*clinf);
 }                               /* end classinfogckeep_BM */
 
-#warning missing routines to put a fresh classinfo in some object
+void
+objputclassinfo_BM (objectval_tyBM * obj, objectval_tyBM * superclass)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  if (superclass && !isobject_BM ((const value_tyBM) superclass))
+    return;
+  struct classinfo_stBM *clinf =        //
+    allocgcty_BM (tydata_classinfo_BM, sizeof (struct classinfo_stBM));
+  clinf->clinf_superclass = superclass;
+  clinf->clinf_dictmeth = NULL;
+  obj->ob_data = clinf;
+}                               /* end objputclassinfo_BM */
