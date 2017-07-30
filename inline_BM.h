@@ -305,7 +305,7 @@ objnbattrs_BM (objectval_tyBM * obj)
   if (!obj->ob_attrassoc)
     return 0;
   return assoc_nbkeys_BM (obj->ob_attrassoc);
-}                               /* enf objnbattrs_BM */
+}                               /* end objnbattrs_BM */
 
 const setval_tyBM *
 objsetattrs_BM (objectval_tyBM * obj)
@@ -315,7 +315,56 @@ objsetattrs_BM (objectval_tyBM * obj)
   if (!obj->ob_attrassoc)
     return NULL;
   return assoc_setattrs_BM (obj->ob_attrassoc);
-}                               /* en,d objsetattrs_BM */
+}                               /* end objsetattrs_BM */
+
+
+unsigned
+objnbcomps_BM (objectval_tyBM * obj)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return 0;
+  if (!obj->ob_compvec)
+    return 0;
+  return datavectlen_BM (obj->ob_compvec);
+}                               /* end objnbcomps_BM */
+
+value_tyBM
+objgetcomp_BM (objectval_tyBM * obj, int rk)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return NULL;
+  if (!obj->ob_compvec)
+    return NULL;
+  return datavectnth_BM (obj->ob_compvec, rk);
+}                               /* end objgetcomp_BM */
+
+
+void
+objreservecomps_BM (objectval_tyBM * obj, unsigned gap)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  obj->ob_compvec = datavect_reserve_BM (obj->ob_compvec, gap);
+}                               /* end objreservecomps_BM */
+
+
+void
+objappendcomp_BM (objectval_tyBM * obj, value_tyBM compval)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  obj->ob_compvec = datavect_append_BM (obj->ob_compvec, compval);
+}                               /* end objappendcomp_BM */
+
+
+void
+objgrowcomps_BM (objectval_tyBM * obj, unsigned gap)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  obj->ob_compvec = datavect_grow_BM (obj->ob_compvec, gap);
+}                               /* end objgrowcomps_BM */
+
 
 int
 objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)

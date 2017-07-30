@@ -105,6 +105,13 @@ extern void objputattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr,
                            value_tyBM valattr);
 extern void objremoveattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr);
 
+static inline unsigned objnbcomps_BM (objectval_tyBM * obj);
+static inline value_tyBM objgetcomp_BM (objectval_tyBM * obj, int rk);
+static inline void objreservecomps_BM (objectval_tyBM * obj, unsigned gap);
+static inline void objappendcomp_BM (objectval_tyBM * obj,
+                                     value_tyBM compval);
+static inline void objgrowcomps_BM (objectval_tyBM * obj, unsigned gap);
+
 extern const setval_tyBM *setpredefinedobjects_BM (void);
 extern void gcmarkpredefinedobjects_BM (struct garbcoll_stBM *gc);
 
