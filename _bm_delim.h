@@ -4,10 +4,11 @@
 #endif
 
 #undef BM_NB_DELIM
-#define BM_NB_DELIM 20
+#define BM_NB_DELIM 21
  
 /// these should be sorted in ascending UTF8 order
 // HAS_DELIM_BM(String,Delimname)
+HAS_DELIM_BM("!#",exclamhash)
 HAS_DELIM_BM("!$",exclamdollar)
 HAS_DELIM_BM("!%",exclampercent)
 HAS_DELIM_BM("!&",exclamand)

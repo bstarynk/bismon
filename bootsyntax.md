@@ -70,3 +70,5 @@ The possible boot directives inside an object definition include:
 * `!:` *attr-object* *attr-value* to add an attribute and its value
 
 * `!&` *comp-value* to append a component
+
+* `!#` *size* to reserve space for components

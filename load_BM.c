@@ -208,7 +208,11 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
   LOCALFRAME_BM (parstkfrm, NULL,       //
                  struct parser_stBM *ldparser;
                  objectval_tyBM * curldobj; objectval_tyBM * attrobj;
+                 union
+                 {
                  value_tyBM attrval;
+                 value_tyBM compval;
+                 };
     );
   struct parser_stBM *ldpars = _.ldparser = makeparser_of_file_BM (fil);
   assert (ldpars != NULL);
@@ -259,6 +263,38 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           objputattr_BM (_.curldobj, _.attrobj, _.attrval);
           _.attrobj = NULL;
           _.attrval = NULL;
+        }
+      //
+      // !# <size>   reserve space for components
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_exclamhash)
+        {
+          if (!_.curldobj)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "!# outside of object");
+          parstoken_tyBM tokid = parsertokenget_BM (ldpars);
+          if (tokid.tok_kind != plex_LLONG)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "expecting long after !#");
+          unsigned l = tokid.tok_llong;
+          objreservecomps_BM (_.curldobj, l);
+        }
+      //
+      // !& <comp-value>   append a component
+      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamand)
+        {
+          if (!_.curldobj)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "!& outside of object");
+          bool gotval = false;
+          _.compval =           //
+            parsergetvalue_BM (ldpars, (struct stackframe_stBM *) (&_),
+                               0, &gotval);
+          if (!gotval)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "expect component value after !&");
+          objappendcomp_BM (_.curldobj, _.compval);
+          _.compval = NULL;
         }
       //
       // !) <id>   terminates an object
