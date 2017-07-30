@@ -405,6 +405,20 @@ objgetclassinfomethod_BM (objectval_tyBM * obj, objectval_tyBM * obselector)
   return clos;
 }                               /* end objgetclassinfomethod_BM */
 
+const setval_tyBM *             //
+objgetclassinfosetofselectors_BM (objectval_tyBM * obj)
+{
+  if (!objhasclassinfo_BM (obj))
+    return NULL;
+  struct classinfo_stBM *clinf =        //
+    (struct classinfo_stBM *) (obj->ob_data);
+  assert (valtype_BM ((const value_tyBM) clinf) == tydata_classinfo_BM);
+  const setval_tyBM *set =      //
+    assoc_setattrs_BM (clinf->clinf_dictmeth);
+  assert (!set || valtype_BM ((const value_tyBM) set) == tySet_BM);
+  return set;
+}                               /* end objgetclassinfosetofselectors_BM */
+
 int
 objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)
 {

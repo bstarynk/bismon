@@ -113,7 +113,11 @@ static inline objectval_tyBM *  //
   objgetclassinfosuperclass_BM (objectval_tyBM * obj);
 
 static inline const closure_tyBM *      //
+
  objgetclassinfomethod_BM (objectval_tyBM * obj, objectval_tyBM * obselector);
+
+static inline const setval_tyBM *       //
+  objgetclassinfosetofselectors_BM (objectval_tyBM * obj);
 
 static inline unsigned objnbcomps_BM (objectval_tyBM * obj);
 static inline value_tyBM objgetcomp_BM (objectval_tyBM * obj, int rk);

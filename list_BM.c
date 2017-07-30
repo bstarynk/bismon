@@ -45,7 +45,6 @@ listgckeep_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis)
 {
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) lis)->htyp == tydata_listtop_BM);
-  size_t frsiz = 0;
   unsigned nblinks = lis->list_nblinks;
   gc->gc_keptbytes +=           //
     sizeof (*lis) + nblinks * sizeof (struct listlink_stBM);
