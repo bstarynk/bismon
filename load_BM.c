@@ -162,8 +162,8 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
         }
       linbuf[linlen] = (char) 0;
       lincnt++;
-      /* object definition lines are !*<id> e.g. !*_7D8xcWnEiys_8oqOVSkCxkA */
-      if (linbuf[0] == '!' && linbuf[1] == '*'
+      /* object definition lines are !(<id> e.g. !*_7D8xcWnEiys_8oqOVSkCxkA */
+      if (linbuf[0] == '!' && linbuf[1] == '('
           && linbuf[2] == '_' && isdigit (linbuf[3]))
         {
           const char *endid = NULL;
@@ -219,7 +219,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
       unsigned lineno = parserlineno_BM (ldpars);
       unsigned colpos = parsercolpos_BM (ldpars);
       parstoken_tyBM tok = parsertokenget_BM (ldpars);
-      if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamstar)
+      if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamleft)
         {
           bool gotldobj = false;
           _.curldobj =          //
@@ -229,13 +229,34 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
              0, &gotldobj);
           if (!gotldobj)
             parsererrorprintf_BM (ldpars, lineno, colpos,
-                                  "expecting object after !*");
+                                  "expecting object after !(");
+        }
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_exclamright)
+        {
+          if (!_.curldobj)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "!) outside of object");
+          parstoken_tyBM tokid = parsertokenget_BM (ldpars);
+          if (tokid.tok_kind != plex_ID)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "expecting id after !)");
+          if (tokid.tok_id.id_hi
+              && !equalid_BM (tokid.tok_id, objid_BM (_.curldobj)))
+            {
+              char idbuf[32];
+              idtocbuf32_BM (objid_BM (_.curldobj), idbuf);
+              parsererrorprintf_BM (ldpars, lineno, colpos,
+                                    "expecting id %s after !)", idbuf);
+
+            }
         }
       else if (tok.tok_kind == plex__NONE && parserendoffile_BM (ldpars))
         break;
       else
         parsererrorprintf_BM (ldpars, lineno, colpos,
-                              "unexpected token for loader");
+                              "unexpected token (kind %d) for loader",
+                              (int) tok.tok_kind);
       nbdirectives++;
     };
   fprintf (stderr, "load_second_pass_BM ix=%d path=%s nbdirectives=%ld\n",
