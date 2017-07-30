@@ -584,7 +584,9 @@ initialize_predefined_objects_BM (void)
     hashsetobj_grow_BM (NULL, 2 * BM_NB_PREDEFINED + 50);
   //
 #define HAS_PREDEF_BM(Id,Hi,Lo,Hash)    {               \
-    assert(hashid_BM((rawid_tyBM){Hi,Lo})==Hash);     \
+    assert(hashid_BM((rawid_tyBM){Hi,Lo})==Hash);	\
+    assert(equalid_BM(parse_rawid_BM(#Id,NULL),		\
+		      (rawid_tyBM){Hi,Lo}));		\
     register_predefined_object_BM(PREDEF_BM(Id)); };
   //
 #include "_bm_predef.h"
@@ -656,3 +658,39 @@ objremoveattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr)
     return;
   obj->ob_attrassoc = assoc_removeattr_BM (obj->ob_attrassoc, objattr);
 }                               /* end objremoveattr_BM */
+
+void
+classinfogcmark_BM (struct garbcoll_stBM *gc, struct classinfo_stBM *clinf,
+                    int depth)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (valtype_BM ((const value_tyBM) clinf) == tydata_classinfo_BM);
+  uint8_t oldmark = ((typedhead_tyBM *) clinf)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) clinf)->hgc = MARKGC_BM;
+  if (clinf->clinf_superclass)
+    gcobjmark_BM (gc, (objectval_tyBM *) clinf->clinf_superclass);
+  if (clinf->clinf_dictmeth)
+    assocgcmark_BM (gc, clinf->clinf_dictmeth, depth);
+}                               /* end classinfogcmark_BM */
+
+void
+classinfogcdestroy_BM (struct garbcoll_stBM *gc, struct classinfo_stBM *clinf)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (valtype_BM ((const value_tyBM) clinf) == tydata_classinfo_BM);
+  memset (clinf, 0, sizeof (*clinf));
+  free (clinf);
+  gc->gc_freedbytes += sizeof (*clinf);
+}                               /* end classinfogcdestroy_BM */
+
+void
+classinfogckeep_BM (struct garbcoll_stBM *gc, struct classinfo_stBM *clinf)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (valtype_BM ((const value_tyBM) clinf) == tydata_classinfo_BM);
+  gc->gc_keptbytes += sizeof (*clinf);
+}                               /* end classinfogckeep_BM */
+
+#warning missing routines to put a fresh classinfo in some object

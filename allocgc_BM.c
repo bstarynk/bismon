@@ -107,6 +107,9 @@ gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
     case tydata_vectval_BM:
       datavectgcmark_BM (gc, (struct datavectval_stBM *) val, depth);
       return;
+    case tydata_classinfo_BM:
+      classinfogcmark_BM (gc, (struct classinfo_stBM *) val, depth);
+      return;
     default:
       FATAL_BM ("gcmark ty#%d unexpected for val@%p depth=%d",
                 ty, val, depth);
@@ -158,6 +161,9 @@ valgcdestroy_BM (struct garbcoll_stBM *gc, value_tyBM val)
     case tydata_vectval_BM:
       datavectgcdestroy_BM (gc, (struct datavectval_stBM *) val);
       return;
+    case tydata_classinfo_BM:
+      classinfogcdestroy_BM (gc, (struct classinfo_stBM *) val);
+      return;
     default:
       FATAL_BM ("gcdestroy ty#%d unexpected for val@%p", ty, val);
     }
@@ -208,6 +214,9 @@ valgckeep_BM (struct garbcoll_stBM *gc, value_tyBM val)
       return;
     case tydata_vectval_BM:
       datavectgckeep_BM (gc, (struct datavectval_stBM *) val);
+      return;
+    case tydata_classinfo_BM:
+      classinfogckeep_BM (gc, (struct classinfo_stBM *) val);
       return;
     default:
       FATAL_BM ("gckeep ty#%d unexpected for val@%p", ty, val);

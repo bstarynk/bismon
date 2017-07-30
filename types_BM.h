@@ -52,6 +52,7 @@ enum gcdataenum_BM
   tydata_listtop_BM,
   tydata_loader_BM,
   tydata_parser_BM,
+  tydata_classinfo_BM,
   tydata_quasinode_BM,          // stack allocated!
   //
   tydata__SpareA_BM,
@@ -147,6 +148,7 @@ struct datavectval_stBM;        /*forward */
 struct assocbucket_stBM;        /*forward */
 struct assocpairs_stBM;         /*forward */
 struct loader_stBM;             /* forward */
+struct classinfo_stBM;          /* forward */
 
 typedef void anyassoc_tyBM;
 
@@ -181,6 +183,13 @@ struct hashsetobj_stBM
 {                               /* tydata_hashsetobj_BM */
   typedsize_tyBM pa;            // rlen is allocated size, size is used count
   objectval_tyBM *hashset_objs[];
+};
+
+struct classinfo_stBM
+{
+  typedhead_tyBM pA;            // rlen & hash are unused
+  objectval_tyBM *clinf_superclass;
+  anyassoc_tyBM *clinf_dictmeth;
 };
 
 #define LINKSIZE_BM 14

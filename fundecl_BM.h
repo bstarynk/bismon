@@ -250,6 +250,13 @@ extern void closuregckeep_BM (struct garbcoll_stBM *gc, closure_tyBM * clos);
 extern void quasinodegcmark_BM (struct garbcoll_stBM *gc,
                                 quasinode_tyBM * quasi, int depth);
 
+extern void classinfogcmark_BM (struct garbcoll_stBM *gc,
+                                struct classinfo_stBM *clinf, int depth);
+extern void classinfogcdestroy_BM (struct garbcoll_stBM *gc,
+                                   struct classinfo_stBM *clinf);
+extern void classinfogckeep_BM (struct garbcoll_stBM *gc,
+                                struct classinfo_stBM *clinf);
+
 extern value_tyBM apply0_BM (const closure_tyBM * clos,
                              struct stackframe_stBM *stkf);
 
