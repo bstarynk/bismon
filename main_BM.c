@@ -15,6 +15,7 @@ abort_BM (void)
 ////////////////////////////////////////////////////////////////
 char *load_dir_bm;
 char *dump_dir_bm;
+int count_emit_has_predef_bm;
 
 const GOptionEntry optab[] = {
   {.long_name = "load",.short_name = 'l',
@@ -29,6 +30,12 @@ const GOptionEntry optab[] = {
    .arg_data = &dump_dir_bm,
    .description = "dump directory DIR",
    .arg_description = "DIR"},
+  {.long_name = "emit-has-predef",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_INT,
+   .arg_data = &count_emit_has_predef_bm,
+   .description = "emit NB 'HAS_PREDEF_BM'",
+   .arg_description = "NB"},
   {}
 };
 
@@ -87,6 +94,21 @@ main (int argc, char **argv)
   GError *err = NULL;
   bool guiok = gtk_init_with_args (&argc, &argv, " - The bismon program",
                                    optab, NULL, &err);
+  if (count_emit_has_predef_bm > 0)
+    {
+      printf ("\n\n" "/// %d extra predefs\n", count_emit_has_predef_bm);
+      for (int ix = count_emit_has_predef_bm; ix >= 0; ix--)
+        {
+          rawid_tyBM id = randomid_BM ();
+          char idbuf[32];
+          memset (idbuf, 0, sizeof (idbuf));
+          idtocbuf32_BM (id, idbuf);
+          printf ("HAS_PREDEF_BM(%s,%lld,%lld,%u)\n",
+                  idbuf, (long long) id.id_hi, (long long) id.id_lo,
+                  hashid_BM (id));
+        }
+      printf ("\n\n");
+    }
   if (!guiok)
     FATAL_BM ("gtk_init_with_args failed");
   load_initial_BM (load_dir_bm);
