@@ -4,6 +4,10 @@
 
 extern void abort_BM (void) __attribute__ ((noreturn));
 
+extern int64_t prime_above_BM (int64_t n);
+extern int64_t prime_below_BM (int64_t n);
+
+
 static inline double clocktime_BM (clockid_t);
 static inline double cputime_BM (void);
 static inline double elapsedtime_BM (void);
@@ -94,6 +98,9 @@ static inline unsigned objspacenum_BM (objectval_tyBM * obj);
 
 static inline value_tyBM objgetattr_BM (objectval_tyBM * obj,
                                         objectval_tyBM * objattr);
+static inline unsigned objnbattrs_BM (objectval_tyBM * obj);
+static inline const setval_tyBM *objsetattrs_BM (objectval_tyBM * obj);
+
 extern void objputattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr,
                            value_tyBM valattr);
 extern void objremoveattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr);
@@ -107,10 +114,6 @@ extern void objectgcdestroy_BM (struct garbcoll_stBM *gc,
                                 objectval_tyBM * obj);
 extern void objectgckeep_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj);
 
-
-
-extern int64_t prime_above_BM (int64_t n);
-extern int64_t prime_below_BM (int64_t n);
 
 
 

@@ -297,6 +297,26 @@ objgetattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr)
   return assoc_getattr_BM (obj->ob_attrassoc, objattr);
 }                               /* end objgetattr_BM */
 
+unsigned
+objnbattrs_BM (objectval_tyBM * obj)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return 0;
+  if (!obj->ob_attrassoc)
+    return 0;
+  return assoc_nbkeys_BM (obj->ob_attrassoc);
+}                               /* enf objnbattrs_BM */
+
+const setval_tyBM *
+objsetattrs_BM (objectval_tyBM * obj)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return NULL;
+  if (!obj->ob_attrassoc)
+    return NULL;
+  return assoc_setattrs_BM (obj->ob_attrassoc);
+}                               /* en,d objsetattrs_BM */
+
 int
 objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)
 {
