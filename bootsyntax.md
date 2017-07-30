@@ -64,3 +64,9 @@ starts with a line beginning with `!(` then immediately the
 object-id. After that start-marker we can have other lines. They are
 ended by the end-marker, i.e. '!)' followed by the same object-id or
 the nil id.
+
+The possible boot directives inside an object definition include:
+
+* `!:` *attr-object* *attr-value* to add an attribute and its value
+
+* `!&` *comp-value* to append a component

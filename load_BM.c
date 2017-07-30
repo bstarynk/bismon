@@ -207,7 +207,8 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
     FATAL_BM ("failed to fopen %s (%m)", curldpath);
   LOCALFRAME_BM (parstkfrm, NULL,       //
                  struct parser_stBM *ldparser;
-                 objectval_tyBM * curldobj;
+                 objectval_tyBM * curldobj; objectval_tyBM * attrobj;
+                 value_tyBM attrval;
     );
   struct parser_stBM *ldpars = _.ldparser = makeparser_of_file_BM (fil);
   assert (ldpars != NULL);
@@ -219,6 +220,8 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
       unsigned lineno = parserlineno_BM (ldpars);
       unsigned colpos = parsercolpos_BM (ldpars);
       parstoken_tyBM tok = parsertokenget_BM (ldpars);
+      //
+      // !( <id>   starts a new object
       if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamleft)
         {
           bool gotldobj = false;
@@ -231,6 +234,34 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
             parsererrorprintf_BM (ldpars, lineno, colpos,
                                   "expecting object after !(");
         }
+      //
+      // !: <attrobj> <attrval>   adds an attribute and its value
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_exclamcolon)
+        {
+          if (!_.curldobj)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "!: outside of object");
+          bool gotattr = false;
+          _.attrobj =           //
+            parsergetobject_BM (ldpars, (struct stackframe_stBM *) (&_),
+                                0, &gotattr);
+          if (!gotattr)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "expect attribute object after !:");
+          bool gotval = false;
+          _.attrval =           //
+            parsergetvalue_BM (ldpars, (struct stackframe_stBM *) (&_),
+                               0, &gotval);
+          if (!gotval)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "expect value of attribute after !:");
+          objputattr_BM (_.curldobj, _.attrobj, _.attrval);
+          _.attrobj = NULL;
+          _.attrval = NULL;
+        }
+      //
+      // !) <id>   terminates an object
       else if (tok.tok_kind == plex_DELIM
                && tok.tok_delim == delim_exclamright)
         {
@@ -250,9 +281,14 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                                     "expecting id %s after !)", idbuf);
 
             }
+          _.curldobj = NULL;
         }
+      //
+      // eof
       else if (tok.tok_kind == plex__NONE && parserendoffile_BM (ldpars))
         break;
+      //
+      // otherwise, error
       else
         parsererrorprintf_BM (ldpars, lineno, colpos,
                               "unexpected token (kind %d) for loader",

@@ -631,3 +631,28 @@ objputspace_BM (objectval_tyBM * obj, unsigned spanum)
     }
   obj->ob_space = spanum;
 }                               /* end objputspace_BM  */
+
+void
+objputattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr,
+               const value_tyBM valattr)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  if (!isobject_BM ((const value_tyBM) objattr))
+    return;
+  if (!valattr)
+    obj->ob_attrassoc = assoc_removeattr_BM (obj->ob_attrassoc, objattr);
+  else
+    obj->ob_attrassoc =
+      assoc_addattr_BM (obj->ob_attrassoc, objattr, valattr);
+}                               /* end objputattr_BM */
+
+void
+objremoveattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  if (!isobject_BM ((const value_tyBM) objattr))
+    return;
+  obj->ob_attrassoc = assoc_removeattr_BM (obj->ob_attrassoc, objattr);
+}                               /* end objremoveattr_BM */

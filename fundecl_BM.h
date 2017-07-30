@@ -91,6 +91,13 @@ static inline void objtouchnow_BM (objectval_tyBM * obj);
 extern void initialize_predefined_objects_BM (void);
 extern void objputspace_BM (objectval_tyBM * obj, unsigned spanum);
 static inline unsigned objspacenum_BM (objectval_tyBM * obj);
+
+static inline value_tyBM objgetattr_BM (objectval_tyBM * obj,
+                                        objectval_tyBM * objattr);
+extern void objputattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr,
+                           value_tyBM valattr);
+extern void objremoveattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr);
+
 extern const setval_tyBM *setpredefinedobjects_BM (void);
 extern void gcmarkpredefinedobjects_BM (struct garbcoll_stBM *gc);
 

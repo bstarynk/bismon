@@ -5,7 +5,7 @@
 
 #undef BM_NB_DELIM
 #define BM_NB_DELIM 20
-
+ 
 /// these should be sorted in ascending UTF8 order
 // HAS_DELIM_BM(String,Delimname)
 HAS_DELIM_BM("!$",exclamdollar)

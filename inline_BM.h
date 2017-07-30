@@ -285,6 +285,17 @@ objspacenum_BM (objectval_tyBM * obj)
   return obj->ob_space;
 }                               /* end objspacenum_BM */
 
+value_tyBM
+objgetattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return NULL;
+  if (!isobject_BM ((const value_tyBM) objattr))
+    return NULL;
+  if (!obj->ob_attrassoc)
+    return NULL;
+  return assoc_getattr_BM (obj->ob_attrassoc, objattr);
+}                               /* end objgetattr_BM */
 
 int
 objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)
