@@ -72,3 +72,5 @@ The possible boot directives inside an object definition include:
 * `!&` *comp-value* to append a component
 
 * `!#` *size* to reserve space for components
+
+* `!~` *name* `(~` .... modification .... `~)` for some other modification

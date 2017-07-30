@@ -4,7 +4,7 @@
 #endif
 
 #undef BM_NB_DELIM
-#define BM_NB_DELIM 21
+#define BM_NB_DELIM 25
  
 /// these should be sorted in ascending UTF8 order
 // HAS_DELIM_BM(String,Delimname)
@@ -19,6 +19,7 @@ HAS_DELIM_BM("!:",exclamcolon)
 HAS_DELIM_BM("!~",exclamtilde)
 HAS_DELIM_BM("%",percent)
 HAS_DELIM_BM("(",leftparen)
+HAS_DELIM_BM("(~",leftparentilde)
 HAS_DELIM_BM(")",rightparen)
 HAS_DELIM_BM("*",star)
 HAS_DELIM_BM(",",comma)
@@ -28,6 +29,9 @@ HAS_DELIM_BM("[",leftbracket)
 HAS_DELIM_BM("]",rightbracket)
 HAS_DELIM_BM("{",leftbrace)
 HAS_DELIM_BM("}",rightbrace)
+HAS_DELIM_BM("~",tilde)
+HAS_DELIM_BM("~)",tilderightparen)
+HAS_DELIM_BM("~:",tildecolon)
 HAS_DELIM_BM("°",degree)
 
 #undef HAS_DELIM_BM

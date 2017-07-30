@@ -191,6 +191,41 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
   fclose (fil);
 }                               /* end load_first_pass_BM */
 
+static void
+load_modif_class_BM (struct loader_stBM *ld, int ix,
+                     struct stackframe_stBM *parstkfrm,
+                     struct parser_stBM *ldpars, objectval_tyBM * argcurldobj)
+{
+  assert (ld && ld->ld_magic == LOADERMAGIC_BM);
+  assert (ix >= 0 && ix <= (int) ld->ld_maxnum);
+  char *curldpath = ld->ld_storepatharr[ix];
+  assert (curldpath != NULL);
+  assert (ldpars != NULL);
+  assert (isobject_BM (argcurldobj));
+  LOCALFRAME_BM (parstkfrm, NULL,       //
+                 struct parser_stBM *ldparser; objectval_tyBM * curldobj;
+                 objectval_tyBM * superclassobj;
+    );
+  _.curldobj = argcurldobj;
+  unsigned lineno = parserlineno_BM (ldpars);
+  unsigned colpos = parsercolpos_BM (ldpars);
+  parstoken_tyBM tokopen = parsertokenget_BM (ldpars);
+  if (tokopen.tok_kind != plex_DELIM
+      || tokopen.tok_delim != delim_leftparentilde)
+    parsererrorprintf_BM (ldpars, lineno, colpos,
+                          "expecting (~ after !~class");
+  bool gotsuper = false;
+  _.superclassobj =             //
+    parsergetobject_BM          //
+    (ldpars,                    //
+     (struct stackframe_stBM *) &_,     //
+     0, &gotsuper);
+  if (!gotsuper)
+    parsererrorprintf_BM (ldpars, lineno, colpos,
+                          "expecting <superclass> after !~ class (~");
+#warning load_modif_class_BM incomplete
+}                               /* end load_modif_class_BM */
+
 
 static void
 load_second_pass_BM (struct loader_stBM *ld, int ix,
@@ -319,6 +354,22 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
             }
           _.curldobj = NULL;
         }
+      //
+      // !~ <name> .... start a modification
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_exclamtilde)
+        {
+          if (!_.curldobj)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "!~ outside of object");
+          parstoken_tyBM tokmodif = parsertokenget_BM (ldpars);
+          if (tokmodif.tok_kind == plex_NAMEDOBJ
+              && tok.tok_namedobj == BMP_class)
+            load_modif_class_BM (ld, ix,
+                                 (struct stackframe_stBM *) (&_),
+                                 ldpars, _.curldobj);
+        }
+
       //
       // eof
       else if (tok.tok_kind == plex__NONE && parserendoffile_BM (ldpars))
