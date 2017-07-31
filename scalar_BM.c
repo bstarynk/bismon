@@ -215,10 +215,10 @@ strbuffergcmark_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf,
 {
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) sbuf)->htyp == tydata_strbuffer_BM);
-  assert (sbuf->sbuf_data);
+  assert (sbuf->sbuf_dbuf);
   assert (sbuf->sbuf_size > 0);
-  assert (sbuf->sbuf_fil);
-  fflush (sbuf->sbuf_fil);
+  assert (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
+          && sbuf->sbuf_curp < sbuf->sbuf_dbuf + sbuf->sbuf_size);
 }                               /* end  strbuffergcmark_BM */
 
 
@@ -227,13 +227,12 @@ strbuffergcdestroy_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf)
 {
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) sbuf)->htyp == tydata_strbuffer_BM);
-  assert (sbuf->sbuf_data);
-  assert (sbuf->sbuf_size > 0);
-  assert (sbuf->sbuf_fil);
-  fclose (sbuf->sbuf_fil);
-  sbuf->sbuf_fil = NULL;
+  assert (sbuf->sbuf_dbuf);
   size_t siz = sbuf->sbuf_size;
-  free (sbuf->sbuf_data);
+  assert (siz > 0);
+  assert (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
+          && sbuf->sbuf_curp < sbuf->sbuf_dbuf + sbuf->sbuf_size);
+  free (sbuf->sbuf_dbuf);
   gc->gc_freedbytes += sizeof (*sbuf) + siz;
   memset (sbuf, 0, sizeof (*sbuf));
   free (sbuf);
@@ -244,10 +243,10 @@ strbuffergckeep_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf)
 {
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) sbuf)->htyp == tydata_strbuffer_BM);
-  assert (sbuf->sbuf_data);
+  assert (sbuf->sbuf_dbuf);
   assert (sbuf->sbuf_size > 0);
-  assert (sbuf->sbuf_fil);
-  fflush (sbuf->sbuf_fil);
+  assert (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
+          && sbuf->sbuf_curp < sbuf->sbuf_dbuf + sbuf->sbuf_size);
   size_t siz = sbuf->sbuf_size;
   gc->gc_keptbytes += sizeof (*sbuf) + siz;
 }                               /* end strbuffergckeep_BM */

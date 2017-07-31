@@ -165,9 +165,9 @@ struct datavectval_stBM
 struct strbuffer_stBM           /* for tydata_strbuffer_BM, in scalar.c */
 {
   typedhead_tyBM pA;            // rlen is maximal length
-  char *sbuf_data;              /* malloc-ed */
-  size_t sbuf_size;
-  FILE *sbuf_fil;               // result of open_memstream
+  char *sbuf_dbuf;              /* malloc-ed buffer */
+  size_t sbuf_size;             /* malloc-ed size */
+  char *sbuf_curp;              /* current position in the buffer */
 };
 
 struct assocbucket_stBM

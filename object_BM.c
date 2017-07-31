@@ -735,7 +735,7 @@ objclassinfoputmethod_BM (objectval_tyBM * obj, objectval_tyBM * obselector,
     (struct classinfo_stBM *) (obj->ob_data);
   assert (valtype_BM ((const value_tyBM) clinf) == tydata_classinfo_BM);
   clinf->clinf_dictmeth =       //
-    assoc_addattr_BM (clinf->clinf_dictmeth, obselector, clos);
+    assoc_addattr_BM (clinf->clinf_dictmeth, obselector, (value_tyBM) clos);
 }                               /* end objclassinfoputmethod_BM */
 
 void
