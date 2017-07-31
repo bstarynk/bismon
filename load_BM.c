@@ -344,11 +344,11 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           if (!_.curldobj)
             parsererrorprintf_BM (ldpars, lineno, colpos,
                                   "!# outside of object");
-          parstoken_tyBM tokid = parsertokenget_BM (ldpars);
-          if (tokid.tok_kind != plex_LLONG)
+          parstoken_tyBM tokspa = parsertokenget_BM (ldpars);
+          if (tokspa.tok_kind != plex_LLONG)
             parsererrorprintf_BM (ldpars, lineno, colpos,
                                   "expecting long after !#");
-          unsigned l = tokid.tok_llong;
+          unsigned l = tokspa.tok_llong;
           objreservecomps_BM (_.curldobj, l);
         }
       //
@@ -367,6 +367,20 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                                   "expect component value after !&");
           objappendcomp_BM (_.curldobj, _.compval);
           _.compval = NULL;
+        }
+      //
+      // !@ <mtime-dbl>  sets the mtime
+      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamat)
+        {
+          if (!_.curldobj)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "!@ outside of object");
+          parstoken_tyBM tokmtim = parsertokenget_BM (ldpars);
+          if (tokmtim.tok_kind != plex_DOUBLE)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "expecting double after !@");
+          double t = tokspa.tok_dbl;
+          objtouchmtime_BM (_.curldobj, t);
         }
       //
       // !) <id>   terminates an object

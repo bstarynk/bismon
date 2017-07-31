@@ -73,6 +73,10 @@ The possible boot directives inside an object definition include:
 
 * `!#` *size* to reserve space for components
 
+* `!@` *mtime*  to set the modification time
+
+* `!$` *classobj* to set the class
+
 * `!~` *name* `(~` .... modification .... `~)` for some other modification
 
 the `class`  modification is built-in:
