@@ -232,6 +232,13 @@ objid_BM (const objectval_tyBM * obj)
   return obj->ob_id;
 }                               /* end objid_BM */
 
+double
+objmtime_BM (const objectval_tyBM * obj)
+{
+  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+    return 0.0;
+  return obj->ob_mtime;
+}                               /* end objmtime_BM */
 
 void
 objtouchmtime_BM (objectval_tyBM * obj, double mtime)
