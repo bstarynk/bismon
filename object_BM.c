@@ -754,3 +754,191 @@ objclassinforemovemethod_BM (objectval_tyBM * obj,
   clinf->clinf_dictmeth =       //
     assoc_removeattr_BM (clinf->clinf_dictmeth, obselector);
 }                               /* end objclassinforemovemethod_BM */
+
+
+const closure_tyBM *
+objfindmethod_BM (objectval_tyBM * obj, objectval_tyBM * obselector)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return NULL;
+  if (!isobject_BM ((const value_tyBM) obselector))
+    return NULL;
+  objectval_tyBM *obclass = obj->ob_class;
+  int loopcnt = 0;
+  do
+    {
+      if (!obclass)
+        return NULL;
+      if (loopcnt > MAXDEPTHMETHOD_BM)
+        return NULL;
+      assert (isobject_BM (obclass));
+      const closure_tyBM *mclos =
+        objgetclassinfomethod_BM (obclass, obselector);
+      if (mclos)
+        {
+          assert (isclosure_BM (mclos));
+          return mclos;
+        };
+      obclass = objgetclassinfosuperclass_BM (obclass);
+    }
+  while (obclass);
+  return NULL;
+}                               /* end objfindmethod_BM */
+
+
+value_tyBM
+send0_BM (objectval_tyBM * obrecv, objectval_tyBM * obselector,
+          struct stackframe_stBM * stkf)
+{
+  if (!isobject_BM ((const value_tyBM) obrecv))
+    return NULL;
+  if (!isobject_BM ((const value_tyBM) obselector))
+    return NULL;
+  const closure_tyBM *mclos = objfindmethod_BM (obrecv, obselector);
+  if (!mclos)
+    return NULL;
+  assert (isclosure_BM (mclos));
+  return apply1_BM (mclos, stkf, obrecv);
+}                               /* end send0_BM */
+
+
+value_tyBM
+send1_BM (objectval_tyBM * obrecv, objectval_tyBM * obselector,
+          struct stackframe_stBM * stkf, const value_tyBM arg1)
+{
+  if (!isobject_BM ((const value_tyBM) obrecv))
+    return NULL;
+  if (!isobject_BM ((const value_tyBM) obselector))
+    return NULL;
+  const closure_tyBM *mclos = objfindmethod_BM (obrecv, obselector);
+  if (!mclos)
+    return NULL;
+  assert (isclosure_BM (mclos));
+  return apply2_BM (mclos, stkf, obrecv, arg1);
+}                               /* end send1_BM */
+
+
+value_tyBM
+send2_BM (objectval_tyBM * obrecv, objectval_tyBM * obselector,
+          struct stackframe_stBM * stkf, const value_tyBM arg1,
+          const value_tyBM arg2)
+{
+  if (!isobject_BM ((const value_tyBM) obrecv))
+    return NULL;
+  if (!isobject_BM ((const value_tyBM) obselector))
+    return NULL;
+  const closure_tyBM *mclos = objfindmethod_BM (obrecv, obselector);
+  if (!mclos)
+    return NULL;
+  assert (isclosure_BM (mclos));
+  return apply3_BM (mclos, stkf, obrecv, arg1, arg2);
+}                               /* end send2_BM */
+
+
+value_tyBM
+send3_BM (objectval_tyBM * obrecv, objectval_tyBM * obselector,
+          struct stackframe_stBM * stkf, const value_tyBM arg1,
+          const value_tyBM arg2, const value_tyBM arg3)
+{
+  if (!isobject_BM ((const value_tyBM) obrecv))
+    return NULL;
+  if (!isobject_BM ((const value_tyBM) obselector))
+    return NULL;
+  const closure_tyBM *mclos = objfindmethod_BM (obrecv, obselector);
+  if (!mclos)
+    return NULL;
+  assert (isclosure_BM (mclos));
+  return apply4_BM (mclos, stkf, obrecv, arg1, arg2, arg3);
+}                               /* end send3_BM */
+
+
+value_tyBM
+send4_BM (objectval_tyBM * obrecv, objectval_tyBM * obselector,
+          struct stackframe_stBM * stkf, const value_tyBM arg1,
+          const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4)
+{
+  if (!isobject_BM ((const value_tyBM) obrecv))
+    return NULL;
+  if (!isobject_BM ((const value_tyBM) obselector))
+    return NULL;
+  const closure_tyBM *mclos = objfindmethod_BM (obrecv, obselector);
+  if (!mclos)
+    return NULL;
+  assert (isclosure_BM (mclos));
+  return apply5_BM (mclos, stkf, obrecv, arg1, arg2, arg3, arg4);
+}                               /* end send4_BM */
+
+
+value_tyBM
+send5_BM (objectval_tyBM * obrecv, objectval_tyBM * obselector,
+          struct stackframe_stBM * stkf, const value_tyBM arg1,
+          const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
+          const value_tyBM arg5)
+{
+  if (!isobject_BM ((const value_tyBM) obrecv))
+    return NULL;
+  if (!isobject_BM ((const value_tyBM) obselector))
+    return NULL;
+  const closure_tyBM *mclos = objfindmethod_BM (obrecv, obselector);
+  if (!mclos)
+    return NULL;
+  assert (isclosure_BM (mclos));
+  return apply6_BM (mclos, stkf, obrecv, arg1, arg2, arg3, arg4, arg5);
+}                               /* end send5_BM */
+
+
+value_tyBM
+send6_BM (objectval_tyBM * obrecv, objectval_tyBM * obselector,
+          struct stackframe_stBM * stkf, const value_tyBM arg1,
+          const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
+          const value_tyBM arg5, const value_tyBM arg6)
+{
+  if (!isobject_BM ((const value_tyBM) obrecv))
+    return NULL;
+  if (!isobject_BM ((const value_tyBM) obselector))
+    return NULL;
+  const closure_tyBM *mclos = objfindmethod_BM (obrecv, obselector);
+  if (!mclos)
+    return NULL;
+  assert (isclosure_BM (mclos));
+  return apply7_BM (mclos, stkf, obrecv, arg1, arg2, arg3, arg4, arg5, arg6);
+}                               /* end send6_BM */
+
+
+value_tyBM
+send7_BM (objectval_tyBM * obrecv, objectval_tyBM * obselector,
+          struct stackframe_stBM * stkf, const value_tyBM arg1,
+          const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
+          const value_tyBM arg5, const value_tyBM arg6, const value_tyBM arg7)
+{
+  if (!isobject_BM ((const value_tyBM) obrecv))
+    return NULL;
+  if (!isobject_BM ((const value_tyBM) obselector))
+    return NULL;
+  const closure_tyBM *mclos = objfindmethod_BM (obrecv, obselector);
+  if (!mclos)
+    return NULL;
+  assert (isclosure_BM (mclos));
+  return apply8_BM (mclos, stkf, obrecv, arg1, arg2, arg3, arg4, arg5, arg6,
+                    arg7);
+}                               /* end send7_BM */
+
+
+value_tyBM
+send8_BM (objectval_tyBM * obrecv, objectval_tyBM * obselector,
+          struct stackframe_stBM * stkf, const value_tyBM arg1,
+          const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
+          const value_tyBM arg5, const value_tyBM arg6, const value_tyBM arg7,
+          const value_tyBM arg8)
+{
+  if (!isobject_BM ((const value_tyBM) obrecv))
+    return NULL;
+  if (!isobject_BM ((const value_tyBM) obselector))
+    return NULL;
+  const closure_tyBM *mclos = objfindmethod_BM (obrecv, obselector);
+  if (!mclos)
+    return NULL;
+  assert (isclosure_BM (mclos));
+  return apply9_BM (mclos, stkf, obrecv, arg1, arg2, arg3, arg4, arg5, arg6,
+                    arg7, arg8);
+}                               /* end send8_BM */

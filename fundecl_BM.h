@@ -131,6 +131,59 @@ objclassinforemovemethod_BM (objectval_tyBM * obj,
 static inline const setval_tyBM *       //
   objgetclassinfosetofselectors_BM (objectval_tyBM * obj);
 
+/// message sending
+extern const closure_tyBM *objfindmethod_BM (objectval_tyBM * obj,
+                                             objectval_tyBM * obselector);
+
+extern value_tyBM send0_BM (objectval_tyBM * obrecv,
+                            objectval_tyBM * obselector,
+                            struct stackframe_stBM *stkf);
+extern value_tyBM send1_BM (objectval_tyBM * obrecv,
+                            objectval_tyBM * obselector,
+                            struct stackframe_stBM *stkf,
+                            const value_tyBM arg1);
+extern value_tyBM send2_BM (objectval_tyBM * obrecv,
+                            objectval_tyBM * obselector,
+                            struct stackframe_stBM *stkf,
+                            const value_tyBM arg1, const value_tyBM arg2);
+extern value_tyBM send3_BM (objectval_tyBM * obrecv,
+                            objectval_tyBM * obselector,
+                            struct stackframe_stBM *stkf,
+                            const value_tyBM arg1, const value_tyBM arg2,
+                            const value_tyBM arg3);
+extern value_tyBM send4_BM (objectval_tyBM * obrecv,
+                            objectval_tyBM * obselector,
+                            struct stackframe_stBM *stkf,
+                            const value_tyBM arg1, const value_tyBM arg2,
+                            const value_tyBM arg3, const value_tyBM arg4);
+extern value_tyBM send5_BM (objectval_tyBM * obrecv,
+                            objectval_tyBM * obselector,
+                            struct stackframe_stBM *stkf,
+                            const value_tyBM arg1, const value_tyBM arg2,
+                            const value_tyBM arg3, const value_tyBM arg4,
+                            const value_tyBM arg5);
+extern value_tyBM send6_BM (objectval_tyBM * obrecv,
+                            objectval_tyBM * obselector,
+                            struct stackframe_stBM *stkf,
+                            const value_tyBM arg1, const value_tyBM arg2,
+                            const value_tyBM arg3, const value_tyBM arg4,
+                            const value_tyBM arg5, const value_tyBM arg6);
+extern value_tyBM send7_BM (objectval_tyBM * obrecv,
+                            objectval_tyBM * obselector,
+                            struct stackframe_stBM *stkf,
+                            const value_tyBM arg1, const value_tyBM arg2,
+                            const value_tyBM arg3, const value_tyBM arg4,
+                            const value_tyBM arg5, const value_tyBM arg6,
+                            const value_tyBM arg7);
+extern value_tyBM send8_BM (objectval_tyBM * obrecv,
+                            objectval_tyBM * obselector,
+                            struct stackframe_stBM *stkf,
+                            const value_tyBM arg1, const value_tyBM arg2,
+                            const value_tyBM arg3, const value_tyBM arg4,
+                            const value_tyBM arg5, const value_tyBM arg6,
+                            const value_tyBM arg7, const value_tyBM arg8);
+
+
 static inline unsigned objnbcomps_BM (objectval_tyBM * obj);
 static inline value_tyBM objgetcomp_BM (objectval_tyBM * obj, int rk);
 static inline void objreservecomps_BM (objectval_tyBM * obj, unsigned gap);

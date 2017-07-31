@@ -4,6 +4,7 @@
 
 #define MAXDEPTHGC_BM 256
 #define MAXDEPTHPARSE_BM 96
+#define MAXDEPTHMETHOD_BM 96
 #define MARKGC_BM 1
 #define CLEARMGC_BM 0
 #define GCMAGIC_BM 24501383     /*0x175dc87 */
