@@ -774,7 +774,7 @@ valfindmethod_BM (const value_tyBM recv, objectval_tyBM * obselector)
         objgetclassinfomethod_BM (obclass, obselector);
       if (mclos)
         {
-          assert (isclosure_BM (mclos));
+          assert (isclosure_BM ((const value_tyBM) mclos));
           return mclos;
         };
       obclass = objgetclassinfosuperclass_BM (obclass);
@@ -793,7 +793,7 @@ send0_BM (const value_tyBM recv, objectval_tyBM * obselector,
   const closure_tyBM *mclos = valfindmethod_BM (recv, obselector);
   if (!mclos)
     return NULL;
-  assert (isclosure_BM (mclos));
+  assert (isclosure_BM ((const value_tyBM) mclos));
   return apply1_BM (mclos, stkf, recv);
 }                               /* end send0_BM */
 
@@ -807,7 +807,7 @@ send1_BM (const value_tyBM recv, objectval_tyBM * obselector,
   const closure_tyBM *mclos = valfindmethod_BM (recv, obselector);
   if (!mclos)
     return NULL;
-  assert (isclosure_BM (mclos));
+  assert (isclosure_BM ((const value_tyBM) mclos));
   return apply2_BM (mclos, stkf, recv, arg1);
 }                               /* end send1_BM */
 
@@ -822,7 +822,7 @@ send2_BM (const value_tyBM recv, objectval_tyBM * obselector,
   const closure_tyBM *mclos = valfindmethod_BM (recv, obselector);
   if (!mclos)
     return NULL;
-  assert (isclosure_BM (mclos));
+  assert (isclosure_BM ((const value_tyBM) mclos));
   return apply3_BM (mclos, stkf, recv, arg1, arg2);
 }                               /* end send2_BM */
 
@@ -837,7 +837,7 @@ send3_BM (const value_tyBM recv, objectval_tyBM * obselector,
   const closure_tyBM *mclos = valfindmethod_BM (recv, obselector);
   if (!mclos)
     return NULL;
-  assert (isclosure_BM (mclos));
+  assert (isclosure_BM ((const value_tyBM) mclos));
   return apply4_BM (mclos, stkf, recv, arg1, arg2, arg3);
 }                               /* end send3_BM */
 
@@ -852,7 +852,7 @@ send4_BM (const value_tyBM recv, objectval_tyBM * obselector,
   const closure_tyBM *mclos = valfindmethod_BM (recv, obselector);
   if (!mclos)
     return NULL;
-  assert (isclosure_BM (mclos));
+  assert (isclosure_BM ((const value_tyBM) mclos));
   return apply5_BM (mclos, stkf, recv, arg1, arg2, arg3, arg4);
 }                               /* end send4_BM */
 
@@ -868,7 +868,7 @@ send5_BM (const value_tyBM recv, objectval_tyBM * obselector,
   const closure_tyBM *mclos = valfindmethod_BM (recv, obselector);
   if (!mclos)
     return NULL;
-  assert (isclosure_BM (mclos));
+  assert (isclosure_BM ((const value_tyBM) mclos));
   return apply6_BM (mclos, stkf, recv, arg1, arg2, arg3, arg4, arg5);
 }                               /* end send5_BM */
 
@@ -884,7 +884,7 @@ send6_BM (const value_tyBM recv, objectval_tyBM * obselector,
   const closure_tyBM *mclos = valfindmethod_BM (recv, obselector);
   if (!mclos)
     return NULL;
-  assert (isclosure_BM (mclos));
+  assert (isclosure_BM ((const value_tyBM) mclos));
   return apply7_BM (mclos, stkf, recv, arg1, arg2, arg3, arg4, arg5, arg6);
 }                               /* end send6_BM */
 
@@ -900,7 +900,7 @@ send7_BM (const value_tyBM recv, objectval_tyBM * obselector,
   const closure_tyBM *mclos = valfindmethod_BM (recv, obselector);
   if (!mclos)
     return NULL;
-  assert (isclosure_BM (mclos));
+  assert (isclosure_BM ((const value_tyBM) mclos));
   return apply8_BM (mclos, stkf, recv, arg1, arg2, arg3, arg4, arg5, arg6,
                     arg7);
 }                               /* end send7_BM */
@@ -918,7 +918,7 @@ send8_BM (const value_tyBM recv, objectval_tyBM * obselector,
   const closure_tyBM *mclos = valfindmethod_BM (recv, obselector);
   if (!mclos)
     return NULL;
-  assert (isclosure_BM (mclos));
+  assert (isclosure_BM ((const value_tyBM) mclos));
   return apply9_BM (mclos, stkf, recv, arg1, arg2, arg3, arg4, arg5, arg6,
                     arg7, arg8);
 }                               /* end send8_BM */
