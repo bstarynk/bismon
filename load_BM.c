@@ -508,13 +508,15 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                                 (struct stackframe_stBM *) (&_),
                                 ldpars, _.curldobj);
           //
-          else if (tokmodif.tok_kind == plex_NAMEDOBJ) {
-	    /// some other predefined name
-            parsererrorprintf_BM (ldpars, lineno, colpos,
-                                  "unexpected predefined modification %s",
-				  findobjectname_BM (tokmodif.tok_namedobj));
-	  }
-	  else
+          else if (tokmodif.tok_kind == plex_NAMEDOBJ)
+            {
+              /// some other predefined name
+              parsererrorprintf_BM (ldpars, lineno, colpos,
+                                    "unexpected predefined modification %s",
+                                    findobjectname_BM
+                                    (tokmodif.tok_namedobj));
+            }
+          else
             parsererrorprintf_BM (ldpars, lineno, colpos,
                                   "unexpected modification");
 

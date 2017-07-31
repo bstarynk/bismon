@@ -206,3 +206,48 @@ valsamecontent_BM (const value_tyBM v1, const value_tyBM v2)
       return false;
     }
 }                               /* end valsamecontent_BM */
+
+////////////////////////////////////////////////////////////////
+
+void
+strbuffergcmark_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf,
+                    int depth __attribute__ ((unused)))
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) sbuf)->htyp == tydata_strbuffer_BM);
+  assert (sbuf->sbuf_data);
+  assert (sbuf->sbuf_size > 0);
+  assert (sbuf->sbuf_fil);
+  fflush (sbuf->sbuf_fil);
+}                               /* end  strbuffergcmark_BM */
+
+
+void
+strbuffergcdestroy_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) sbuf)->htyp == tydata_strbuffer_BM);
+  assert (sbuf->sbuf_data);
+  assert (sbuf->sbuf_size > 0);
+  assert (sbuf->sbuf_fil);
+  fclose (sbuf->sbuf_fil);
+  sbuf->sbuf_fil = NULL;
+  size_t siz = sbuf->sbuf_size;
+  free (sbuf->sbuf_data);
+  gc->gc_freedbytes += sizeof (*sbuf) + siz;
+  memset (sbuf, 0, sizeof (*sbuf));
+  free (sbuf);
+}                               /* end strbuffergcdestroy_BM */
+
+void
+strbuffergckeep_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (((typedhead_tyBM *) sbuf)->htyp == tydata_strbuffer_BM);
+  assert (sbuf->sbuf_data);
+  assert (sbuf->sbuf_size > 0);
+  assert (sbuf->sbuf_fil);
+  fflush (sbuf->sbuf_fil);
+  size_t siz = sbuf->sbuf_size;
+  gc->gc_keptbytes += sizeof (*sbuf) + siz;
+}                               /* end strbuffergckeep_BM */

@@ -98,6 +98,9 @@ gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
     case tydata_listtop_BM:
       listgcmark_BM (gc, (struct listtop_stBM *) val, depth);
       return;
+    case tydata_strbuffer_BM:
+      strbuffergcmark_BM (gc, (struct strbuffer_stBM *) val, depth);
+      return;
     case tydata_loader_BM:
       loadergcmark_BM (gc, (struct loader_stBM *) val);
       return;
@@ -158,6 +161,9 @@ valgcdestroy_BM (struct garbcoll_stBM *gc, value_tyBM val)
     case tydata_listtop_BM:
       listgcdestroy_BM (gc, (struct listtop_stBM *) val);
       return;
+    case tydata_strbuffer_BM:
+      strbuffergcdestroy_BM (gc, (struct strbuffer_stBM *) val);
+      return;
     case tydata_vectval_BM:
       datavectgcdestroy_BM (gc, (struct datavectval_stBM *) val);
       return;
@@ -211,6 +217,9 @@ valgckeep_BM (struct garbcoll_stBM *gc, value_tyBM val)
       return;
     case tydata_listtop_BM:
       listgckeep_BM (gc, (struct listtop_stBM *) val);
+      return;
+    case tydata_strbuffer_BM:
+      strbuffergckeep_BM (gc, (struct strbuffer_stBM *) val);
       return;
     case tydata_vectval_BM:
       datavectgckeep_BM (gc, (struct datavectval_stBM *) val);

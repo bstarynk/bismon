@@ -53,6 +53,8 @@ enum gcdataenum_BM
   tydata_loader_BM,
   tydata_parser_BM,
   tydata_classinfo_BM,
+  tydata_strbuffer_BM,
+  ///
   tydata_quasinode_BM,          // stack allocated!
   //
   tydata__SpareA_BM,
@@ -149,6 +151,7 @@ struct assocbucket_stBM;        /*forward */
 struct assocpairs_stBM;         /*forward */
 struct loader_stBM;             /* forward */
 struct classinfo_stBM;          /* forward */
+struct strbuffer_stBM;          /* forward */
 
 typedef void anyassoc_tyBM;
 
@@ -157,6 +160,14 @@ struct datavectval_stBM
 {                               /* tydata_vectval_BM */
   typedsize_tyBM pA;            /// rlen is allocated size, siz is used length
   value_tyBM vec_data[];        // of rlen elements
+};
+
+struct strbuffer_stBM           /* for tydata_strbuffer_BM, in scalar.c */
+{
+  typedhead_tyBM pA;            // rlen is maximal length
+  char *sbuf_data;              /* malloc-ed */
+  size_t sbuf_size;
+  FILE *sbuf_fil;               // result of open_memstream
 };
 
 struct assocbucket_stBM
