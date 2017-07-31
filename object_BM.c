@@ -634,6 +634,17 @@ objputspacenum_BM (objectval_tyBM * obj, unsigned spanum)
   obj->ob_space = spanum;
 }                               /* end objputspacenum_BM  */
 
+
+void
+objputclass_BM (objectval_tyBM * obj, objectval_tyBM * objclass)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  if (objclass && !isobject_BM ((const value_tyBM) objclass))
+    return;
+  obj->ob_class = objclass;
+}                               /* end objputclass_BM */
+
 void
 objputattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr,
                const value_tyBM valattr)

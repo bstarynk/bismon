@@ -257,6 +257,15 @@ objtouchnow_BM (objectval_tyBM * obj)
   obj->ob_mtime = clocktime_BM (CLOCK_MONOTONIC);
 }                               /* end objtouchnow_BM */
 
+
+objectval_tyBM *
+objclass_BM (objectval_tyBM * obj)
+{
+  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+    return NULL;
+  return obj->ob_class;
+}                               /* end objclass_BM */
+
 bool
 equalid_BM (rawid_tyBM id1, rawid_tyBM id2)
 {

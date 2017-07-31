@@ -97,6 +97,8 @@ static inline void objtouchmtime_BM (objectval_tyBM * obj, double mtime);
 static inline void objtouchnow_BM (objectval_tyBM * obj);
 extern void objputspacenum_BM (objectval_tyBM * obj, unsigned spanum);
 static inline unsigned objspacenum_BM (objectval_tyBM * obj);
+static inline objectval_tyBM *objclass_BM (objectval_tyBM * obj);
+extern void objputclass_BM (objectval_tyBM * obj, objectval_tyBM * objclass);
 
 static inline value_tyBM objgetattr_BM (objectval_tyBM * obj,
                                         objectval_tyBM * objattr);
