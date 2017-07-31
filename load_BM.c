@@ -382,6 +382,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           double t = tokmtim.tok_dbl;
           objtouchmtime_BM (_.curldobj, t);
         }
+#warning should add accessing and changing the class of objects and set it with !$
       //
       // !) <id>   terminates an object
       else if (tok.tok_kind == plex_DELIM
