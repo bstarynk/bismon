@@ -612,7 +612,7 @@ gcmarkpredefinedobjects_BM (struct garbcoll_stBM *gc)
 
 
 void
-objputspace_BM (objectval_tyBM * obj, unsigned spanum)
+objputspacenum_BM (objectval_tyBM * obj, unsigned spanum)
 {
   if (!isobject_BM ((const value_tyBM) obj))
     return;
@@ -632,7 +632,7 @@ objputspace_BM (objectval_tyBM * obj, unsigned spanum)
         hashsetobj_add_BM (hashset_predefined_objects_BM, obj);
     }
   obj->ob_space = spanum;
-}                               /* end objputspace_BM  */
+}                               /* end objputspacenum_BM  */
 
 void
 objputattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr,

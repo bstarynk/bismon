@@ -79,6 +79,8 @@ extern void setgcdestroy_BM (struct garbcoll_stBM *gc, setval_tyBM * set);
 extern void setgckeep_BM (struct garbcoll_stBM *gc, setval_tyBM * set);
 
 
+extern void initialize_predefined_objects_BM (void);
+
 static inline bool isobject_BM (const value_tyBM v);
 static inline hash_tyBM objecthash_BM (const objectval_tyBM *);
 
@@ -93,8 +95,7 @@ static inline rawid_tyBM objid_BM (const objectval_tyBM * obj);
 static inline double objmtime_BM (const objectval_tyBM * obj);
 static inline void objtouchmtime_BM (objectval_tyBM * obj, double mtime);
 static inline void objtouchnow_BM (objectval_tyBM * obj);
-extern void initialize_predefined_objects_BM (void);
-extern void objputspace_BM (objectval_tyBM * obj, unsigned spanum);
+extern void objputspacenum_BM (objectval_tyBM * obj, unsigned spanum);
 static inline unsigned objspacenum_BM (objectval_tyBM * obj);
 
 static inline value_tyBM objgetattr_BM (objectval_tyBM * obj,
