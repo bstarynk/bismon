@@ -203,9 +203,11 @@ load_modif_class_BM (struct loader_stBM *ld, int ix,
   assert (ldpars != NULL);
   assert (isobject_BM (argcurldobj));
   LOCALFRAME_BM (parstkfrm, NULL,       //
-                 struct parser_stBM *ldparser; objectval_tyBM * curldobj;
-                 objectval_tyBM * superclassobj; objectval_tyBM * selectorobj;
-                 value_tyBM * methodv;
+                 struct parser_stBM *ldparser;  //
+                 objectval_tyBM * curldobj;     //
+                 objectval_tyBM * superclassobj;        //
+                 objectval_tyBM * selectorobj;  //
+                 value_tyBM * methodv;  //
     );
   _.curldobj = argcurldobj;
   unsigned lineno = parserlineno_BM (ldpars);
@@ -278,12 +280,12 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
   if (!fil)
     FATAL_BM ("failed to fopen %s (%m)", curldpath);
   LOCALFRAME_BM (parstkfrm, NULL,       //
-                 struct parser_stBM *ldparser;
-                 objectval_tyBM * curldobj; objectval_tyBM * attrobj;
+                 struct parser_stBM *ldparser; objectval_tyBM * curldobj;
+                 objectval_tyBM * attrobj;
                  union
                  {
-                 value_tyBM attrval;
-                 value_tyBM compval;
+                 value_tyBM attrval; value_tyBM compval;
+                 objectval_tyBM * classobj;
                  };
     );
   struct parser_stBM *ldpars = _.ldparser = makeparser_of_file_BM (fil);
@@ -382,7 +384,24 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           double t = tokmtim.tok_dbl;
           objtouchmtime_BM (_.curldobj, t);
         }
-#warning should add accessing and changing the class of objects and set it with !$
+      //
+      // !$ <class-obj>  sets the class
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_exclamdollar)
+        {
+          if (!_.curldobj)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "!$ outside of object");
+          bool gotclass = false;
+          _.classobj =          //
+            parsergetobject_BM (ldpars, (struct stackframe_stBM *) (&_),
+                                0, &gotclass);
+          if (!gotclass)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "expect [class] object after !$");
+          objputclass_BM (_.curldobj, _.classobj);
+          _.classobj = NULL;
+        }
       //
       // !) <id>   terminates an object
       else if (tok.tok_kind == plex_DELIM
