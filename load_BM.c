@@ -267,6 +267,67 @@ load_modif_class_BM (struct loader_stBM *ld, int ix,
 
 
 static void
+load_modif_name_BM (struct loader_stBM *ld, int ix,
+                    struct stackframe_stBM *parstkfrm,
+                    struct parser_stBM *ldpars, objectval_tyBM * argcurldobj)
+{
+  assert (ld && ld->ld_magic == LOADERMAGIC_BM);
+  assert (ix >= 0 && ix <= (int) ld->ld_maxnum);
+  char *curldpath = ld->ld_storepatharr[ix];
+  assert (curldpath != NULL);
+  assert (ldpars != NULL);
+  assert (isobject_BM (argcurldobj));
+  LOCALFRAME_BM (parstkfrm, NULL,       //
+                 struct parser_stBM *ldparser;  //
+                 objectval_tyBM * curldobj;     //
+                 objectval_tyBM * superclassobj;        //
+                 objectval_tyBM * selectorobj;  //
+                 value_tyBM methodv;    //
+                 value_tyBM namev;      //
+    );
+  _.curldobj = argcurldobj;
+  unsigned lineno = parserlineno_BM (ldpars);
+  unsigned colpos = parsercolpos_BM (ldpars);
+  parstoken_tyBM tokopen = parsertokenget_BM (ldpars);
+  if (tokopen.tok_kind != plex_DELIM
+      || tokopen.tok_delim != delim_leftparentilde)
+    parsererrorprintf_BM (ldpars, lineno, colpos,
+                          "expecting (~ after !~name");
+  parstoken_tyBM tokname = parsertokenget_BM (ldpars);
+  const char *namestr = NULL;
+  if (tokname.tok_kind == plex_NAMEDOBJ)
+    {
+      _.namev = (value_tyBM) tokname.tok_namedobj;
+      namestr = findobjectname_BM (tokname.tok_namedobj);
+    }
+  else if (tokname.tok_kind == plex_CNAME)
+    {
+      _.namev = (value_tyBM) tokname.tok_cname;
+      namestr = bytstring_BM (_.namev);
+    }
+  else
+    parsererrorprintf_BM (ldpars, lineno, colpos,
+                          "expecting cname or namedobj after !~name (~");
+  assert (namestr != NULL);
+  const char *oldname = findobjectname_BM (_.curldobj);
+  if (oldname && strcmp (oldname, namestr))
+    {
+      char idbuf[32];
+      memset (idbuf, 0, sizeof (idbuf));
+      idtocbuf32_BM (_.curldobj->ob_id, idbuf);
+      parsererrorprintf_BM (ldpars, lineno, colpos,
+                            "already named '%s' object %s cannot get new name '%s'",
+                            oldname, idbuf, namestr);
+    };
+  registername_BM (_.curldobj, namestr);
+  parstoken_tyBM tokclose = parsertokenget_BM (ldpars);
+  if (tokclose.tok_kind != plex_DELIM
+      || tokclose.tok_delim != delim_tilderightparen)
+    parsererrorprintf_BM (ldpars, lineno, colpos,
+                          "expecting ~) ending !~name");
+}                               /* end load_modif_name_BM */
+
+static void
 load_second_pass_BM (struct loader_stBM *ld, int ix,
                      struct stackframe_stBM *parstkfrm)
 {
@@ -434,11 +495,29 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
             parsererrorprintf_BM (ldpars, lineno, colpos,
                                   "!~ outside of object");
           parstoken_tyBM tokmodif = parsertokenget_BM (ldpars);
+          /// class modification
           if (tokmodif.tok_kind == plex_NAMEDOBJ
-              && tok.tok_namedobj == BMP_class)
+              && tokmodif.tok_namedobj == BMP_class)
             load_modif_class_BM (ld, ix,
                                  (struct stackframe_stBM *) (&_),
                                  ldpars, _.curldobj);
+          /// name modification
+          else if (tokmodif.tok_kind == plex_NAMEDOBJ
+                   && tokmodif.tok_namedobj == BMP_name)
+            load_modif_name_BM (ld, ix,
+                                (struct stackframe_stBM *) (&_),
+                                ldpars, _.curldobj);
+          //
+          else if (tokmodif.tok_kind == plex_NAMEDOBJ) {
+	    /// some other predefined name
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "unexpected predefined modification %s",
+				  findobjectname_BM (tokmodif.tok_namedobj));
+	  }
+	  else
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "unexpected modification");
+
         }
 
       //

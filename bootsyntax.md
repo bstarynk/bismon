@@ -79,6 +79,11 @@ The possible boot directives inside an object definition include:
 
 * `!~` *name* `(~` .... modification .... `~)` for some other modification
 
-the `class`  modification is built-in:
+The `class`  modification is built-in:
 
 *class-modification* = *superclass-obj* ( `~:` *selector-obj* *method-closure* ) *
+
+
+The `name` modification is built-in:
+
+*name-modification* = *namedobj-or-cname*
