@@ -74,3 +74,7 @@ The possible boot directives inside an object definition include:
 * `!#` *size* to reserve space for components
 
 * `!~` *name* `(~` .... modification .... `~)` for some other modification
+
+the `class`  modification is built-in:
+
+*class-modification* = *superclass-obj* ( `~:` *selector-obj* *method-closure* ) *

@@ -204,7 +204,8 @@ load_modif_class_BM (struct loader_stBM *ld, int ix,
   assert (isobject_BM (argcurldobj));
   LOCALFRAME_BM (parstkfrm, NULL,       //
                  struct parser_stBM *ldparser; objectval_tyBM * curldobj;
-                 objectval_tyBM * superclassobj;
+                 objectval_tyBM * superclassobj; objectval_tyBM * selectorobj;
+                 value_tyBM * methodv;
     );
   _.curldobj = argcurldobj;
   unsigned lineno = parserlineno_BM (ldpars);
@@ -223,7 +224,43 @@ load_modif_class_BM (struct loader_stBM *ld, int ix,
   if (!gotsuper)
     parsererrorprintf_BM (ldpars, lineno, colpos,
                           "expecting <superclass> after !~ class (~");
-#warning load_modif_class_BM incomplete
+  objputclassinfo_BM (_.curldobj, _.superclassobj);
+  parstoken_tyBM toknext = {.tok_kind = plex__NONE,.tok_ptrs = {NULL, NULL}
+  };
+  unsigned nextlineno = 0;
+  unsigned nextcolpos = 0;
+  for (;;)
+    {
+      nextlineno = parserlineno_BM (ldpars);
+      nextcolpos = parsercolpos_BM (ldpars);
+      toknext = parsertokenget_BM (ldpars);
+      if (toknext.tok_kind != plex_DELIM
+          || toknext.tok_delim != delim_tildecolon)
+        break;
+      bool gotselectorobj = false;
+      _.selectorobj =           //
+        parsergetobject_BM      //
+        (ldpars,                //
+         (struct stackframe_stBM *) &_, //
+         0, &gotselectorobj);
+      if (!gotselectorobj || !_.selectorobj)
+        parsererrorprintf_BM    //
+          (ldpars, nextlineno, nextcolpos,
+           "expecting <selector> after ~: in class modification");
+      bool gotmethodv = false;
+      _.methodv =               //
+        parsergetvalue_BM (ldpars, (struct stackframe_stBM *) (&_),
+                           0, &gotmethodv);
+      if (!gotmethodv || valtype_BM (_.methodv) != tyClosure_BM)
+        parsererrorprintf_BM (ldpars, nextlineno, nextcolpos,
+                              "expect method closure");
+      objclassinfoputmethod_BM (_.curldobj, _.selectorobj,
+                                (const closure_tyBM *) (_.methodv));
+    }
+  if (toknext.tok_kind != plex_DELIM
+      || toknext.tok_delim != delim_tilderightparen)
+    parsererrorprintf_BM (ldpars, nextlineno, nextcolpos,
+                          "expect ~) ending class modification");
 }                               /* end load_modif_class_BM */
 
 
