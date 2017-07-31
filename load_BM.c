@@ -379,7 +379,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           if (tokmtim.tok_kind != plex_DOUBLE)
             parsererrorprintf_BM (ldpars, lineno, colpos,
                                   "expecting double after !@");
-          double t = tokspa.tok_dbl;
+          double t = tokmtim.tok_dbl;
           objtouchmtime_BM (_.curldobj, t);
         }
       //
