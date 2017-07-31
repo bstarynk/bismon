@@ -435,6 +435,30 @@ objgetclassinfosetofselectors_BM (objectval_tyBM * obj)
   return set;
 }                               /* end objgetclassinfosetofselectors_BM */
 
+////////////////////////////////////////////////////////////////
+bool
+isstrbuffer_BM (const value_tyBM val)
+{
+  return val && valtype_BM (val) == tydata_strbuffer_BM;
+}                               /* end isstrbuffer_BM */
+
+const char *
+strbufferbytes_BM (struct strbuffer_stBM *sbuf)
+{
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
+    return NULL;
+  return sbuf->sbuf_dbuf;
+}                               /* end strbufferbytes_BM */
+
+int
+strbufferindentation_BM (struct strbuffer_stBM *sbuf)
+{
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
+    return 0;
+  return sbuf->sbuf_indent;
+}                               /* end strbufferindentation_BM */
+
+////////////////
 int
 objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)
 {
@@ -455,6 +479,9 @@ objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)
   return cmpid_BM (ob1->ob_id, ob2->ob_id);
 }                               /* end objectcmp_BM */
 
+
+
+////////////////////////////////////////////////////////////////
 bool
 isassoc_BM (const value_tyBM v)
 {

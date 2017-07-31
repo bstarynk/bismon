@@ -150,6 +150,26 @@ extern void objectgckeep_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj);
 
 
 ////////////////
+extern struct strbuffer_stBM *strbuffermake_BM (unsigned maxsize);
+static inline bool isstrbuffer_BM (const value_tyBM val);
+extern void strbufferreserve_BM (struct strbuffer_stBM *sbuf, unsigned gap);
+static inline const char *strbufferbytes_BM (struct strbuffer_stBM *sbuf);
+static inline int strbufferindentation_BM (struct strbuffer_stBM *sbuf);
+extern void strbufferclearindent_BM (struct strbuffer_stBM *sbuf);
+extern void strbuffermoreindent_BM (struct strbuffer_stBM *sbuf);
+extern void strbufferlessindent_BM (struct strbuffer_stBM *sbuf);
+extern void strbufferappendcstr_BM (struct strbuffer_stBM *sbuf,
+                                    const char *cstr);
+/// raw printf
+extern void strbufferrawprintf_BM (struct strbuffer_stBM *sbuf,
+                                   const char *fmt, ...)
+  __attribute__ ((format (printf, 2, 3)));
+/// cooked printf: the tabs become spaces or indented-newlines, the
+/// newlinesb become indented
+extern void strbufferprintf_BM (struct strbuffer_stBM *sbuf, const char *fmt,
+                                ...) __attribute__ ((format (printf, 2, 3)));
+/// indented newline
+extern void strbuffernewline_BM (struct strbuffer_stBM *sbuf);
 
 extern void strbuffergcmark_BM (struct garbcoll_stBM *gc,
                                 struct strbuffer_stBM *sbuf, int depth);

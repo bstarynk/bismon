@@ -250,3 +250,222 @@ strbuffergckeep_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf)
   size_t siz = sbuf->sbuf_size;
   gc->gc_keptbytes += sizeof (*sbuf) + siz;
 }                               /* end strbuffergckeep_BM */
+
+
+struct strbuffer_stBM *
+strbuffermake_BM (unsigned maxsize)
+{
+  if (maxsize > MAXSIZE_BM)
+    FATAL_BM ("too big maxsize %u", maxsize);
+  unsigned inisizew = (maxsize > 4096) ? 512 : 64;
+  char *dbuf = malloc (inisizew * sizeof (void *));
+  if (!dbuf)
+    FATAL_BM ("malloc %zu bytes failed (%m)", inisizew * sizeof (void *));
+  memset (dbuf, 0, inisizew * sizeof (void *));
+  struct strbuffer_stBM *sbuf =
+    allocgcty_BM (tydata_strbuffer_BM, sizeof (*sbuf));
+  ((typedhead_tyBM *) sbuf)->rlen = maxsize;
+  sbuf->sbuf_indent = 0;
+  sbuf->sbuf_dbuf = dbuf;
+  sbuf->sbuf_size = inisizew * sizeof (void *);
+  sbuf->sbuf_curp = dbuf;
+  sbuf->sbuf_lastnl = NULL;
+  return sbuf;
+}                               /* end strbuffermake_BM */
+
+void
+strbufferreserve_BM (struct strbuffer_stBM *sbuf, unsigned gap)
+{
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
+    return;
+  assert (sbuf->sbuf_dbuf);
+  assert (sbuf->sbuf_size > 0);
+  assert (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
+          && sbuf->sbuf_curp < sbuf->sbuf_dbuf + sbuf->sbuf_size);
+  size_t siz = sbuf->sbuf_size;
+  unsigned used = sbuf->sbuf_curp - sbuf->sbuf_dbuf;
+  if (siz > 2048 && used + gap < siz / 2)
+    {
+      size_t newsiz = prime_above_BM ((used + gap) / 4 + used / 64 + 5) * 4;
+      if (newsiz < siz)
+        {
+          char *newdbuf = malloc (newsiz);
+          char *oldbuf = sbuf->sbuf_dbuf;
+          if (!newdbuf)
+            FATAL_BM ("malloc %zu failed", newsiz);
+          memset (newdbuf, 0, newsiz);
+          memcpy (newdbuf, oldbuf, used);
+          if (sbuf->sbuf_lastnl)
+            sbuf->sbuf_lastnl =
+              newdbuf + (sbuf->sbuf_lastnl - sbuf->sbuf_dbuf);
+          sbuf->sbuf_dbuf = newdbuf;
+          sbuf->sbuf_curp = newdbuf + used;
+          sbuf->sbuf_size = newsiz;
+          free (oldbuf);
+          return;
+        }
+    }
+  else if (used + gap + 3 >= siz)
+    {
+      size_t newsiz =
+        prime_above_BM ((used + gap) / 4 + used / 64 + gap / 128 + 6) * 4;
+      if ((long) newsiz > 3 * (long) MAXSIZE_BM / 2)
+        FATAL_BM ("too big newsiz %zd", newsiz);
+      if (newsiz > siz)
+        {
+          char *newdbuf = malloc (newsiz);
+          char *oldbuf = sbuf->sbuf_dbuf;
+          if (!newdbuf)
+            FATAL_BM ("malloc %zu failed", newsiz);
+          memset (newdbuf, 0, newsiz);
+          memcpy (newdbuf, oldbuf, used);
+          if (sbuf->sbuf_lastnl)
+            sbuf->sbuf_lastnl =
+              newdbuf + (sbuf->sbuf_lastnl - sbuf->sbuf_dbuf);
+          sbuf->sbuf_dbuf = newdbuf;
+          sbuf->sbuf_curp = newdbuf + used;
+          sbuf->sbuf_size = newsiz;
+          free (oldbuf);
+          return;
+        }
+    }
+}                               /* end of strbufferreserve_BM */
+
+
+void
+strbufferclearindent_BM (struct strbuffer_stBM *sbuf)
+{
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
+    return;
+  sbuf->sbuf_indent = 0;
+}                               /* end  strbufferclearindent_BM */
+
+
+
+void
+strbuffermoreindent_BM (struct strbuffer_stBM *sbuf)
+{
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
+    return;
+  sbuf->sbuf_indent++;
+}                               /* end  strbuffermoreindent_BM */
+
+
+void
+strbufferlessindent_BM (struct strbuffer_stBM *sbuf)
+{
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
+    return;
+  sbuf->sbuf_indent--;
+}                               /* end  strbufferlessindent_BM */
+
+
+void
+strbufferappendcstr_BM (struct strbuffer_stBM *sbuf, const char *cstr)
+{
+  if (isstrbuffer_BM ((const value_tyBM) sbuf))
+    return;
+  if (!cstr || !cstr[0])
+    return;
+  size_t len = strlen (cstr);
+  assert (sbuf->sbuf_dbuf);
+  size_t siz = sbuf->sbuf_size;
+  unsigned maxsiz = ((typedhead_tyBM *) sbuf)->rlen;
+  assert (siz > 0);
+  assert (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
+          && sbuf->sbuf_curp < sbuf->sbuf_dbuf + sbuf->sbuf_size);
+  if (sbuf->sbuf_curp + len + 3 >= sbuf->sbuf_dbuf + sbuf->sbuf_size)
+    strbufferreserve_BM (sbuf, len + 2);
+  int nloffset = -1;
+  {
+    char *lastnlcstr = strrchr (cstr, '\n');
+    if (lastnlcstr)
+      nloffset = lastnlcstr - cstr;
+  }
+  memcpy (sbuf->sbuf_curp, cstr, len);
+  sbuf->sbuf_curp[len] = (char) 0;
+  if (nloffset >= 0)
+    sbuf->sbuf_lastnl = sbuf->sbuf_curp + nloffset;
+  sbuf->sbuf_curp += len;
+  if (maxsiz > 0 && sbuf->sbuf_curp - sbuf->sbuf_dbuf > maxsiz)
+    FATAL_BM ("strbufferappendcstr overflow %ud", maxsiz);
+}                               /* end strbufferappendcstr_BM  */
+
+
+void
+strbuffernewline_BM (struct strbuffer_stBM *sbuf)
+{
+  if (isstrbuffer_BM ((const value_tyBM) sbuf))
+    return;
+  const char *nlb16 = "                \n";     // 16 spaces then newline
+  int i = sbuf->sbuf_indent % 16;
+  if (i < 0)
+    i = 0;
+  strbufferappendcstr_BM (sbuf, nlb16 + (16 - i));
+}                               /* end of strbuffernewline_BM */
+
+void
+strbufferrawprintf_BM (struct strbuffer_stBM *sbuf, const char *fmt, ...)
+{
+  if (isstrbuffer_BM ((const value_tyBM) sbuf))
+    return;
+  if (!fmt || !fmt[0])
+    return;
+  va_list args;
+  char *tmpbuf = NULL;
+  int ln = 0;
+  va_start (args, fmt);
+  ln = vasprintf (&tmpbuf, fmt, args);
+  va_end (args);
+  if (ln < 0 || tmpbuf == NULL)
+    FATAL_BM ("strbufferrawprintf asprintf failure %m");
+  strbufferappendcstr_BM (sbuf, tmpbuf);
+  free (tmpbuf);
+}                               /* end strbufferrawprintf_BM  */
+
+
+void
+strbufferprintf_BM (struct strbuffer_stBM *sbuf, const char *fmt, ...)
+{
+  if (isstrbuffer_BM ((const value_tyBM) sbuf))
+    return;
+  if (!fmt || !fmt[0])
+    return;
+  va_list args;
+  char *tmpbuf = NULL;
+  int ln = 0;
+  va_start (args, fmt);
+  ln = vasprintf (&tmpbuf, fmt, args);
+  va_end (args);
+  if (ln < 0 || tmpbuf == NULL)
+    FATAL_BM ("strbufferrawprintf asprintf failure %m");
+  strbufferreserve_BM (sbuf, 9 * ln / 8 + ln / 64 + 2);
+  char *prev = tmpbuf;
+  for (char *pc = tmpbuf; *pc; pc++)
+    {
+      if (*pc == '\n')
+        {
+          *pc = (char) 0;
+          strbufferappendcstr_BM (sbuf, prev);
+          strbuffernewline_BM (sbuf);
+          prev = pc + 1;
+        }
+      else if (*pc == '\t')
+        {
+          *pc = (char) 0;
+          strbufferappendcstr_BM (sbuf, prev);
+          if (sbuf->sbuf_lastnl
+              && sbuf->sbuf_curp >
+              sbuf->sbuf_lastnl + 1 + (5 * STRBUFFERWANTEDWIDTH_BM) / 6)
+            strbuffernewline_BM (sbuf);
+          else
+            strbufferappendcstr_BM (sbuf, " ");
+          prev = pc + 1;
+        }
+      else if (pc[1] == (char) 0)
+        {
+          strbufferappendcstr_BM (sbuf, prev);
+        }
+    }
+  free (tmpbuf);
+}                               /* end strbufferprintf_BM */
