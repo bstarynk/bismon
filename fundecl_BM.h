@@ -20,7 +20,6 @@ static inline objectval_tyBM *valclass_BM (const value_tyBM v);
 extern const closure_tyBM *valfindmethod_BM (const value_tyBM recv,
                                              objectval_tyBM * obselector);
 static inline hash_tyBM valhash_BM (const value_tyBM v);
-static inline uint8_t valgcmark_BM (const value_tyBM v);
 void valgcdestroy_BM (struct garbcoll_stBM *, value_tyBM v);
 void valgckeep_BM (struct garbcoll_stBM *, value_tyBM v);
 static inline bool valequal_BM (const value_tyBM v1, const value_tyBM v2);
