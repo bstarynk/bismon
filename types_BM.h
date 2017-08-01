@@ -217,6 +217,7 @@ enum dumpstate_enBM
 struct dumper_stBM
 {
   typedhead_tyBM pA;            // rlen & hash are unused
+  enum dumpstate_enBM dump_state;
   const stringval_tyBM *dump_dir;
   struct hashsetobj_stBM *dump_hset;
   struct listlink_stBM *dump_scanlist;
