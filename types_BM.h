@@ -54,6 +54,7 @@ enum gcdataenum_BM
   tydata_parser_BM,
   tydata_classinfo_BM,
   tydata_strbuffer_BM,
+  tydata_dumper_BM,
   ///
   tydata_quasinode_BM,          // stack allocated!
   //
@@ -152,6 +153,7 @@ struct assocpairs_stBM;         /*forward */
 struct loader_stBM;             /* forward */
 struct classinfo_stBM;          /* forward */
 struct strbuffer_stBM;          /* forward */
+struct dumper_stBM;             /* forward */
 
 typedef void anyassoc_tyBM;
 
@@ -203,6 +205,22 @@ struct classinfo_stBM
   typedhead_tyBM pA;            // rlen & hash are unused
   objectval_tyBM *clinf_superclass;
   anyassoc_tyBM *clinf_dictmeth;
+};
+
+enum dumpstate_enBM
+{
+  dum__none,
+  dum_scan,
+  dum_emit
+};
+
+struct dumper_stBM
+{
+  typedhead_tyBM pA;            // rlen & hash are unused
+  const stringval_tyBM *dump_dir;
+  struct hashsetobj_stBM *dump_hset;
+  struct listlink_stBM *dump_scanlist;
+  struct listlink_stBM *dump_todolist;
 };
 
 #define LINKSIZE_BM 14

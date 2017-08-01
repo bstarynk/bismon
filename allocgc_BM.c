@@ -164,6 +164,9 @@ valgcdestroy_BM (struct garbcoll_stBM *gc, value_tyBM val)
     case tydata_strbuffer_BM:
       strbuffergcdestroy_BM (gc, (struct strbuffer_stBM *) val);
       return;
+    case tydata_loader_BM:
+      loadergcdestroy_BM (gc, (struct loader_stBM *) val);
+      return;
     case tydata_vectval_BM:
       datavectgcdestroy_BM (gc, (struct datavectval_stBM *) val);
       return;
@@ -223,6 +226,9 @@ valgckeep_BM (struct garbcoll_stBM *gc, value_tyBM val)
       return;
     case tydata_vectval_BM:
       datavectgckeep_BM (gc, (struct datavectval_stBM *) val);
+      return;
+    case tydata_loader_BM:
+      loadergckeep_BM (gc, (struct loader_stBM *) val);
       return;
     case tydata_classinfo_BM:
       classinfogckeep_BM (gc, (struct classinfo_stBM *) val);

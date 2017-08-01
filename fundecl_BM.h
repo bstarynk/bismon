@@ -426,6 +426,19 @@ extern void load_addtodo_BM (const closure_tyBM * clos);
 
 extern void loadergcmark_BM (struct garbcoll_stBM *gc,
                              struct loader_stBM *ld);
+extern void loadergcdestroy_BM (struct garbcoll_stBM *gc,
+                                struct loader_stBM *ld);
+extern void loadergckeep_BM (struct garbcoll_stBM *gc,
+                             struct loader_stBM *ld);
+
+////////////////
+extern void dump_BM (const char *dirname, struct stackframe_stBM *stkf);
+extern void dumpgcmark_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du);
+extern void dumpgcdestroy_BM (struct garbcoll_stBM *gc,
+                              struct dumper_stBM *du);
+extern void dumpgckeep_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du);
+extern bool dumpobjisdumpable_BM (struct dumper_stBM *du,
+                                  const objectval_tyBM * obj);
 
 //// parsing
 extern struct parser_stBM *makeparser_of_file_BM (FILE * f);

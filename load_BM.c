@@ -13,6 +13,29 @@ loadergcmark_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
   gcmark_BM (gc, ld->ld_todolist, 0);
 }                               /* end loadergcmark_BM */
 
+void
+loadergcdestroy_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
+{
+  // I guess that this should never be called, but I am not sure!
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (valtype_BM ((const value_tyBM) ld) == tydata_loader_BM);
+  assert (ld->ld_magic == LOADERMAGIC_BM);
+  fprintf (stderr, "loadergcdestroy_BM called ld @%p\n", (void *) ld);
+  memset (ld, 0, sizeof (ld));
+  free (ld);
+  gc->gc_freedbytes += sizeof (*ld);
+}                               /* end loadergcdestroy_BM */
+
+void
+loadergckeep_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (valtype_BM ((const value_tyBM) ld) == tydata_loader_BM);
+  assert (ld->ld_magic == LOADERMAGIC_BM);
+  fprintf (stderr, "loadergckeep_BM called ld @%p\n", (void *) ld);
+  gc->gc_keptbytes += sizeof (*ld);
+}                               /* end loadergckeep_BM */
+
 static void doload_BM (struct stackframe_stBM *fr, struct loader_stBM *ld);
 
 void
