@@ -142,8 +142,8 @@ dump_scan_object_content_BM (struct dumper_stBM *du,
   dumpscanobj_BM (_.curdu, _.curattrobj);
   // scan the attributes and their values
   _.curattrobj = NULL;
-  _.setattrs = objsetattrs_BM (_.curobj);
-  unsigned nbattrs = objnbattrs_BM (_.curobj);
+  _.setattrs = objsetattrs_BM ((objectval_tyBM *) _.curobj);
+  unsigned nbattrs = objnbattrs_BM ((objectval_tyBM *) _.curobj);
   assert (nbattrs == setcardinal_BM (_.setattrs));
   for (int ix = 0; ix < (int) nbattrs; ix++)
     {
@@ -151,22 +151,26 @@ dump_scan_object_content_BM (struct dumper_stBM *du,
       dumpscanobj_BM (_.curdu, _.curattrobj);
       if (!dumpobjisdumpable_BM (_.curdu, _.curattrobj))
         continue;
-      _.curval = objgetattr_BM (_.curobj, _.curattrobj);
+      _.curval =
+        objgetattr_BM ((objectval_tyBM *) _.curobj,
+                       (objectval_tyBM *) _.curattrobj);
       dumpscanvalue_BM (_.curdu, _.curval, 0);
       _.curattrobj = NULL;
       _.curval = NULL;
     };
   _.setattrs = NULL;
   // scan the components
-  unsigned nbcomps = objnbcomps_BM (_.curobj);
+  unsigned nbcomps = objnbcomps_BM ((objectval_tyBM *) _.curobj);
   for (int ix = 0; ix < (int) nbcomps; ix++)
     {
-      _.curval = objgetcomp_BM (_.curobj, ix);
+      _.curval = objgetcomp_BM ((objectval_tyBM *) _.curobj, ix);
       dumpscanvalue_BM (_.curdu, _.curval, 0);
 
       _.curval = NULL;
     }
-#warning should scan the data by sending
+  if (_.curobj->ob_data)
+    send1_BM ((value_tyBM) _.curobj, BMP_dump_scan,
+              (struct stackframe_stBM *) &_, du->dump_object);
 }                               /* end dump_scan_object_content_BM   */
 
 
@@ -183,8 +187,8 @@ dump_scan_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
   assert (valtype_BM ((const value_tyBM) du) == tydata_dumper_BM);
   _.predefset = setpredefinedobjects_BM ();
   _.globalset = setglobalobjects_BM ();
-  dumpscanvalue_BM (du, _.predefset, 0);
-  dumpscanvalue_BM (du, _.globalset, 0);
+  dumpscanvalue_BM (du, (value_tyBM) _.predefset, 0);
+  dumpscanvalue_BM (du, (value_tyBM) _.globalset, 0);
   while (listlength_BM (du->dump_scanlist) > 0)
     {
       _.curobj = listfirst_BM (du->dump_scanlist);
