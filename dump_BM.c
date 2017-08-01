@@ -122,11 +122,62 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
 }                               /* end dump_BM */
 
 static void
+dump_scan_object_content_BM (struct dumper_stBM *du,
+                             const objectval_tyBM * objarg,
+                             struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 struct dumper_stBM *curdu;     //
+                 const objectval_tyBM * curobj; //
+                 const setval_tyBM * setattrs;  //
+                 const objectval_tyBM * curattrobj;
+                 value_tyBM curval;
+    );
+  assert (valtype_BM ((const value_tyBM) du) == tydata_dumper_BM);
+  assert (valtype_BM ((const value_tyBM) objarg) == tyObject_BM);
+  _.curdu = du;
+  _.curobj = objarg;
+  // scan the class
+  _.curattrobj = objclass_BM (_.curobj);
+  dumpscanobj_BM (_.curdu, _.curattrobj);
+  // scan the attributes and their values
+  _.curattrobj = NULL;
+  _.setattrs = objsetattrs_BM (_.curobj);
+  unsigned nbattrs = objnbattrs_BM (_.curobj);
+  assert (nbattrs == setcardinal_BM (_.setattrs));
+  for (int ix = 0; ix < (int) nbattrs; ix++)
+    {
+      _.curattrobj = setelemnth_BM (_.setattrs, ix);
+      dumpscanobj_BM (_.curdu, _.curattrobj);
+      if (!dumpobjisdumpable_BM (_.curdu, _.curattrobj))
+        continue;
+      _.curval = objgetattr_BM (_.curobj, _.curattrobj);
+      dumpscanvalue_BM (_.curdu, _.curval, 0);
+      _.curattrobj = NULL;
+      _.curval = NULL;
+    };
+  _.setattrs = NULL;
+  // scan the components
+  unsigned nbcomps = objnbcomps_BM (_.curobj);
+  for (int ix = 0; ix < (int) nbcomps; ix++)
+    {
+      _.curval = objgetcomp_BM (_.curobj, ix);
+      dumpscanvalue_BM (_.curdu, _.curval, 0);
+
+      _.curval = NULL;
+    }
+#warning should scan the data by sending
+}                               /* end dump_scan_object_content_BM   */
+
+
+static void
 dump_scan_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 struct dumper_stBM *curdu;
-                 const setval_tyBM * predefset; const setval_tyBM * globalset;
+                 struct dumper_stBM *curdu;     //
+                 const setval_tyBM * predefset; //
+                 const setval_tyBM * globalset; //
+                 const objectval_tyBM * curobj;
     );
   _.curdu = du;
   assert (valtype_BM ((const value_tyBM) du) == tydata_dumper_BM);
@@ -134,4 +185,11 @@ dump_scan_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
   _.globalset = setglobalobjects_BM ();
   dumpscanvalue_BM (du, _.predefset, 0);
   dumpscanvalue_BM (du, _.globalset, 0);
+  while (listlength_BM (du->dump_scanlist) > 0)
+    {
+      _.curobj = listfirst_BM (du->dump_scanlist);
+      listpopfirst_BM (du->dump_scanlist);
+      dump_scan_object_content_BM (du, _.curobj,
+                                   (struct stackframe_stBM *) &_);
+    }
 }                               /* end dump_scan_pass_BM */
