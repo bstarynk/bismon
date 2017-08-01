@@ -91,12 +91,16 @@ dumpscanvalue_BM (struct dumper_stBM *du, const value_tyBM val, int depth)
     }
 }                               /* end dumpscanvalue_BM */
 
+static void
+dump_scan_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf);
+
+
 void
 dump_BM (const char *dirname, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct dumper_stBM *curdu; objectval_tyBM * duobj;
-                 stringval_tyBM * dudirv;
+                 const stringval_tyBM * dudirv;
     );
   if (!dirname || dirname[0] == (char) 0)
     dirname = ".";
@@ -111,5 +115,21 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   _.curdu->dump_todolist = makelist_BM ();
   _.duobj = makeobj_BM ();
   _.duobj->ob_data = _.curdu;
+  dump_scan_pass_BM (_.curdu, (struct stackframe_stBM *) &_);
 #warning dump_BM unimplemented
 }                               /* end dump_BM */
+
+static void
+dump_scan_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 struct dumper_stBM *curdu;
+                 const setval_tyBM * predefset; const setval_tyBM * globalset;
+    );
+  _.curdu = du;
+  assert (valtype_BM ((const value_tyBM) du) == tydata_dumper_BM);
+  _.predefset = setpredefinedobjects_BM ();
+  _.globalset = setglobalobjects_BM ();
+  dumpscanvalue_BM (du, _.predefset, 0);
+  dumpscanvalue_BM (du, _.globalset, 0);
+}                               /* end dump_scan_pass_BM */
