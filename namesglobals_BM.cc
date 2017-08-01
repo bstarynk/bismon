@@ -4,6 +4,7 @@ extern "C" {
 };
 
 #include <map>
+#include <set>
 #include <vector>
 #include <unordered_map>
 #include <string>
@@ -24,6 +25,14 @@ struct ObjectHash_BM
   inline size_t operator() (const objectval_tyBM*pob) const
   {
     return objecthash_BM(pob);
+  };
+};
+
+struct ObjectLess_BM
+{
+  inline bool operator() (const objectval_tyBM*pob1, const objectval_tyBM*pob2) const
+  {
+    return objectcmp_BM(pob1, pob2)<0;
   };
 };
 
@@ -263,3 +272,37 @@ gcmarkglobals_BM(struct garbcoll_stBM*gc)
     if (it.second)
       gcmark_BM(gc, it.second, 0);
 } // end gcmarkglobals_BM
+
+
+const node_tyBM *
+nodeglobalnames_BM (const objectval_tyBM * connob)
+{
+  if (!isobject_BM((const value_tyBM)connob))
+    return nullptr;
+  std::vector<value_tyBM> vecstr;
+  vecstr.reserve(mapglobals_BM.size());
+  for (auto it: mapglobals_BM)
+    {
+      const std::string& curname = it.first;
+      vecstr.push_back((value_tyBM)makestring_BM(curname.c_str()));
+    }
+  return makenode_BM (connob, vecstr.size(), vecstr.data());
+} // end nodeglobalnames_BM
+
+
+const setval_tyBM *
+setglobalobjects_BM(void)
+{
+  std::vector<objectval_tyBM*> vecobj;
+  std::set<objectval_tyBM*,ObjectLess_BM> setobj;
+  vecobj.reserve(mapglobals_BM.size());
+  for (auto it: mapglobals_BM)
+    {
+      objectval_tyBM* curob = *(it.second);
+      if (!curob || valtype_BM((const value_tyBM)curob) != tyObject_BM)
+        continue;
+      if (setobj.find (curob) != setobj.end()) continue;
+      vecobj.push_back(curob);
+    };
+  return makeset_BM((const objectval_tyBM**)(vecobj.data()), vecobj.size());
+} // end setglobalobjects_BM

@@ -507,14 +507,14 @@ extern bool forgetnamedobject_BM (const objectval_tyBM * obj);
 extern bool forgetnamestring_BM (const char *nam);
 extern const setval_tyBM *setofnamedobjects_BM (void);
 
-// globals
+// globals, see namesglobals_BM.cc
 extern void initialize_globals_BM (void);
 extern objectval_tyBM **findglobalnamed_BM (const char *nam);
 extern bool forgetglobalnamed_BM (const char *nam);
 // make a node with the global names
 extern const node_tyBM *nodeglobalnames_BM (const objectval_tyBM * conn);
 // make a set with the global objects
-extern const setval_tyBM *nodeglobalset_BM (void);
+extern const setval_tyBM *setglobalobjects_BM (void);
 
 extern void gcmarkglobals_BM (struct garbcoll_stBM *gc);
 
