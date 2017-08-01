@@ -6,6 +6,7 @@ dumpgcmark_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du)
 {
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) du)->htyp == tydata_dumper_BM);
+  gcmark_BM (gc, (value_tyBM) du->dump_object, 0);
   gcmark_BM (gc, (value_tyBM) du->dump_dir, 0);
   gcmark_BM (gc, (value_tyBM) du->dump_hset, 0);
   gcmark_BM (gc, (value_tyBM) du->dump_scanlist, 0);
@@ -115,6 +116,7 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   _.curdu->dump_todolist = makelist_BM ();
   _.duobj = makeobj_BM ();
   _.duobj->ob_data = _.curdu;
+  _.curdu->dump_object = _.duobj;
   dump_scan_pass_BM (_.curdu, (struct stackframe_stBM *) &_);
 #warning dump_BM unimplemented
 }                               /* end dump_BM */
