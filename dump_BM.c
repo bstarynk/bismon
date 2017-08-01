@@ -6,10 +6,10 @@ dumpgcmark_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du)
 {
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) du)->htyp == tydata_dumper_BM);
-  gcmark_BM (gc, du->dump_dir, 0);
-  gcmark_BM (gc, du->dump_hset, 0);
-  gcmark_BM (gc, du->dump_scanlist, 0);
-  gcmark_BM (gc, du->dump_todolist, 0);
+  gcmark_BM (gc, (value_tyBM) du->dump_dir, 0);
+  gcmark_BM (gc, (value_tyBM) du->dump_hset, 0);
+  gcmark_BM (gc, (value_tyBM) du->dump_scanlist, 0);
+  gcmark_BM (gc, (value_tyBM) du->dump_todolist, 0);
 }                               /* end dumpgcmark_BM */
 
 void
@@ -35,6 +35,61 @@ dumpobjisdumpable_BM (struct dumper_stBM *du, const objectval_tyBM * obj)
     return false;
   return hashsetobj_contains_BM (du->dump_hset, obj);
 }                               /* end dumpobjisdumpable_BM */
+
+void
+dumpscanobj_BM (struct dumper_stBM *du, const objectval_tyBM * obj)
+{
+  if (valtype_BM ((const value_tyBM) du) != tydata_dumper_BM)
+    return;
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  if (du->dump_state != dum_scan)
+    return;
+  if (objspacenum_BM (obj) == TransientSp_BM)
+    return;
+  if (hashsetobj_contains_BM (du->dump_hset, obj))
+    return;
+  du->dump_hset = hashsetobj_add_BM (du->dump_hset, obj);
+  listappend_BM (du->dump_scanlist, (value_tyBM) obj);
+}                               /* end dumpscanobj_BM */
+
+void
+dumpscanvalue_BM (struct dumper_stBM *du, const value_tyBM val, int depth)
+{
+  if (valtype_BM ((const value_tyBM) du) != tydata_dumper_BM)
+    return;
+  if (depth > MAXDEPTHGC_BM)
+    FATAL_BM ("too deep depth %d", depth);
+  int ty = valtype_BM ((const value_tyBM) val);
+  switch (ty)
+    {
+    case tySet_BM:
+    case tyTuple_BM:
+      {
+        unsigned siz = ((typedsize_tyBM *) val)->size;
+        for (int ix = (int)siz - 1; ix >= 0; ix--)
+          dumpscanobj_BM (du, ((seqobval_tyBM *) val)->seq_objs[ix]);
+      }
+      break;
+    case tyNode_BM:
+    case tyClosure_BM:
+      {
+        const tree_tyBM *tree = (const tree_tyBM *) val;
+        dumpscanobj_BM (du, tree->nodt_conn);
+        if (!dumpobjisdumpable_BM (du, tree->nodt_conn))
+          return;
+        unsigned siz = ((typedsize_tyBM *) val)->size;
+        for (int ix = (int)siz - 1; ix >= 0; ix--)
+          dumpscanvalue_BM (du, tree->nodt_sons[ix], depth + 1);
+      }
+      break;
+    case tyObject_BM:
+      dumpscanobj_BM (du, (const objectval_tyBM *) val);
+      break;
+    default:
+      return;
+    }
+}                               /* end dumpscanvalue_BM */
 
 void
 dump_BM (const char *dirname, struct stackframe_stBM *stkf)

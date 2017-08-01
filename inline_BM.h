@@ -241,7 +241,7 @@ objtouchnow_BM (objectval_tyBM * obj)
 
 
 objectval_tyBM *
-objclass_BM (objectval_tyBM * obj)
+objclass_BM (const objectval_tyBM * obj)
 {
   if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
     return NULL;
@@ -276,7 +276,7 @@ objecthash_BM (const objectval_tyBM * pob)
 }                               /* end objecthash_BM */
 
 unsigned
-objspacenum_BM (objectval_tyBM * obj)
+objspacenum_BM (const objectval_tyBM * obj)
 {
   if (!isobject_BM ((const value_tyBM) obj))
     return 0;

@@ -97,8 +97,8 @@ static inline double objmtime_BM (const objectval_tyBM * obj);
 static inline void objtouchmtime_BM (objectval_tyBM * obj, double mtime);
 static inline void objtouchnow_BM (objectval_tyBM * obj);
 extern void objputspacenum_BM (objectval_tyBM * obj, unsigned spanum);
-static inline unsigned objspacenum_BM (objectval_tyBM * obj);
-static inline objectval_tyBM *objclass_BM (objectval_tyBM * obj);
+static inline unsigned objspacenum_BM (const objectval_tyBM * obj);
+static inline objectval_tyBM *objclass_BM (const objectval_tyBM * obj);
 extern void objputclass_BM (objectval_tyBM * obj, objectval_tyBM * objclass);
 
 static inline value_tyBM objgetattr_BM (objectval_tyBM * obj,
@@ -438,6 +438,10 @@ extern void dumpgcdestroy_BM (struct garbcoll_stBM *gc,
 extern void dumpgckeep_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du);
 extern bool dumpobjisdumpable_BM (struct dumper_stBM *du,
                                   const objectval_tyBM * obj);
+extern void dumpscanobj_BM (struct dumper_stBM *du,
+                            const objectval_tyBM * obj);
+extern void dumpscanvalue_BM (struct dumper_stBM *du, const value_tyBM val,
+                              int depth);
 
 //// parsing
 extern struct parser_stBM *makeparser_of_file_BM (FILE * f);

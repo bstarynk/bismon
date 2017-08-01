@@ -220,8 +220,8 @@ struct dumper_stBM
   enum dumpstate_enBM dump_state;
   const stringval_tyBM *dump_dir;
   struct hashsetobj_stBM *dump_hset;
-  struct listlink_stBM *dump_scanlist;
-  struct listlink_stBM *dump_todolist;
+  struct listtop_stBM *dump_scanlist;
+  struct listtop_stBM *dump_todolist;
 };
 
 #define LINKSIZE_BM 14
