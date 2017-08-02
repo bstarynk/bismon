@@ -275,6 +275,31 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   assert (valtype_BM ((const value_tyBM) du) == tydata_dumper_BM);
   assert (valtype_BM ((const value_tyBM) hspa) == tydata_hashsetobj_BM);
   assert (spix >= PredefSp_BM && spix < LASTSPACE__BM);
-  FATAL_BM ("unimplemented dump_emit_space_BM spix#%d", spix);
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 struct dumper_stBM *curdu;     //
+                 struct hashsetobj_stBM *curhspa;
+                 const setval_tyBM * setobjs;
+                 const stringval_tyBM * pathv;
+                 const stringval_tyBM * backupv;
+                 const objectval_tyBM * curobj; //
+    );
+  FILE *spfil = NULL;
+  _.curdu = du;
+  _.curhspa = hspa;
+  _.setobjs = hashsetobj_to_set_BM (hspa);
+  _.pathv = sprintfstring_BM ("%s/store%u.bismon",
+                              bytstring_BM (du->dump_dir), spix);
+  _.backupv = sprintfstring_BM ("%s~", bytstring_BM (_.pathv));
+  (void) rename (bytstring_BM (_.pathv), bytstring_BM (_.backupv));
+  spfil = fopen (bytstring_BM (_.pathv), "w");
+  if (!spfil)
+    FATAL_BM ("dump_emit_space_BM cannot open %s (%m)",
+              bytstring_BM (_.pathv));
+  fprintf (spfil, "// generated file %s\n",
+           basename (bytstring_BM (_.pathv)));
+  fprintf (spfil, "// for %d objects\n", setcardinal_BM (_.setobjs));
+  fprintf (stderr, "dump_emit_space_BM spix=%d unimplemented\n", spix);
 #warning dump_emit_space_BM unimplemented
+  fprintf (spfil, "\n// end of file %s\n", basename (bytstring_BM (_.pathv)));
+  fclose (spfil);
 }                               /* end  dump_emit_space_BM */

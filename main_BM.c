@@ -15,6 +15,7 @@ abort_BM (void)
 ////////////////////////////////////////////////////////////////
 char *load_dir_bm;
 char *dump_dir_bm;
+char *dump_after_load_dir_bm;
 int count_emit_has_predef_bm;
 
 const GOptionEntry optab[] = {
@@ -28,6 +29,12 @@ const GOptionEntry optab[] = {
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &dump_dir_bm,
+   .description = "dump directory DIR",
+   .arg_description = "DIR"},
+  {.long_name = "dump-aftert-load",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &dump_after_load_dir_bm,
    .description = "dump directory DIR",
    .arg_description = "DIR"},
   {.long_name = "emit-has-predef",.short_name = (char) 0,
@@ -112,6 +119,8 @@ main (int argc, char **argv)
   if (!guiok)
     FATAL_BM ("gtk_init_with_args failed");
   load_initial_BM (load_dir_bm);
+  if (dump_after_load_dir_bm)
+    dump_BM (dump_after_load_dir_bm, NULL);
   fflush (NULL);
 }                               /* end main */
 
