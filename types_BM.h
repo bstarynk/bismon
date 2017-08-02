@@ -142,8 +142,6 @@ enum space_enBM
   UserCsp_BM = 5,
   UserDsp_BM = 6,
   UserEsp_BM = 7,
-  UserFsp_BM = 8,
-  UserGsp_BM = 9,
   LASTSPACE__BM
 };
 

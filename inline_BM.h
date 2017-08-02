@@ -508,6 +508,17 @@ datavectnth_BM (const struct datavectval_stBM * dvec, int rk)
   return NULL;
 }                               /* end datavectnth_BM */
 
+////////////////
+unsigned
+hashsetobj_cardinal_BM (struct hashsetobj_stBM *hset)
+{
+  if (valtype_BM ((const value_tyBM) hset) != tydata_hashsetobj_BM)
+    return 0;
+  return ((typedsize_tyBM *) hset)->size;
+}                               /* end hashsetobj_cardinal_BM */
+
+////////////////
+
 bool
 islist_BM (const value_tyBM v)
 {

@@ -251,7 +251,6 @@ objectinteriorgcmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
 
 ////////////////////////////////////////////////////////////////
 
-#define HASHSETEMPTYSLOT_BM ((void*)(-1))
 
 static bool
 hashsetobj_insert_BM (struct hashsetobj_stBM *hset,

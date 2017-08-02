@@ -46,6 +46,12 @@ dumpscanobj_BM (struct dumper_stBM *du, const objectval_tyBM * obj)
     return;
   if (du->dump_state != dum_scan)
     return;
+  if (objspacenum_BM (obj) >= LASTSPACE__BM)
+    {
+      char idbuf[32];
+      idtocbuf32_BM (objid_BM (obj), idbuf);
+      FATAL_BM ("invalid space for object@%p %s", obj, idbuf);
+    };
   if (objspacenum_BM (obj) == TransientSp_BM)
     return;
   if (hashsetobj_contains_BM (du->dump_hset, obj))
@@ -53,6 +59,7 @@ dumpscanobj_BM (struct dumper_stBM *du, const objectval_tyBM * obj)
   du->dump_hset = hashsetobj_add_BM (du->dump_hset, obj);
   listappend_BM (du->dump_scanlist, (value_tyBM) obj);
 }                               /* end dumpscanobj_BM */
+
 
 void
 dumpscanvalue_BM (struct dumper_stBM *du, const value_tyBM val, int depth)
@@ -94,6 +101,9 @@ dumpscanvalue_BM (struct dumper_stBM *du, const value_tyBM val, int depth)
 
 static void
 dump_scan_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf);
+
+static void
+dump_emit_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf);
 
 
 void
@@ -168,6 +178,7 @@ dump_scan_object_content_BM (struct dumper_stBM *du,
 
       _.curval = NULL;
     }
+  // perhaps we should send first, and use its result...
   if (_.curobj->ob_data)
     send1_BM ((value_tyBM) _.curobj, BMP_dump_scan,
               (struct stackframe_stBM *) &_, du->dump_object);
@@ -197,3 +208,73 @@ dump_scan_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
                                    (struct stackframe_stBM *) &_);
     }
 }                               /* end dump_scan_pass_BM */
+
+
+static void
+dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
+                    struct hashsetobj_stBM *hspa,
+                    struct stackframe_stBM *stkf);
+
+void
+dump_emit_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 struct dumper_stBM *curdu;     //
+                 const objectval_tyBM * curobj; //
+                 struct hashsetobj_stBM *hsetspace[LASTSPACE__BM];
+    );
+  _.curdu = du;
+  assert (valtype_BM ((const value_tyBM) du) == tydata_dumper_BM);
+  for (unsigned spix = PredefSp_BM; spix < LASTSPACE__BM; spix++)
+    _.hsetspace[spix] = hashsetobj_grow_BM (NULL, 80);
+  struct hashsetobj_stBM *dhset = du->dump_hset;
+  assert (valtype_BM ((const value_tyBM) dhset) == tydata_hashsetobj_BM);
+  {
+    unsigned alsiz = ((typedhead_tyBM *) dhset)->rlen;
+    unsigned ucnt = ((typedsize_tyBM *) dhset)->size;
+    for (unsigned ix = 0; ix < alsiz; ix++)
+      {
+        objectval_tyBM *curduob = dhset->hashset_objs[ix];
+        if (!curduob || curduob == HASHSETEMPTYSLOT_BM)
+          continue;
+        _.curobj = curduob;
+        int cursp = objspacenum_BM (curduob);
+        assert (cursp >= PredefSp_BM && cursp < LASTSPACE__BM);
+        _.hsetspace[cursp] = hashsetobj_add_BM (_.hsetspace[cursp], curduob);
+      }
+  }
+  for (unsigned spix = PredefSp_BM; spix < LASTSPACE__BM; spix++)
+    {
+      unsigned spcard = hashsetobj_cardinal_BM (_.hsetspace[spix]);
+      if (spcard == 0)
+        {
+          char *oldpathbuf = NULL;
+          char *backpathbuf = NULL;
+          asprintf (&oldpathbuf, "%s/store%u.bismon",
+                    bytstring_BM (du->dump_dir), spix);
+          asprintf (&backpathbuf, "%s/store%u.bismon~",
+                    bytstring_BM (du->dump_dir), spix);
+          if (oldpathbuf && backpathbuf)
+            (void) rename (oldpathbuf, backpathbuf);
+          free (oldpathbuf), free (backpathbuf);
+        }
+      else
+        {
+          dump_emit_space_BM (du, spix, _.hsetspace[spix],
+                              (struct stackframe_stBM *) &_);
+        }
+    }
+}                               /* end dump_emit_pass_BM */
+
+
+void
+dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
+                    struct hashsetobj_stBM *hspa,
+                    struct stackframe_stBM *stkf)
+{
+  assert (valtype_BM ((const value_tyBM) du) == tydata_dumper_BM);
+  assert (valtype_BM ((const value_tyBM) hspa) == tydata_hashsetobj_BM);
+  assert (spix >= PredefSp_BM && spix < LASTSPACE__BM);
+  FATAL_BM ("unimplemented dump_emit_space_BM spix#%d", spix);
+#warning dump_emit_space_BM unimplemented
+}                               /* end  dump_emit_space_BM */
