@@ -125,12 +125,19 @@ makeset_BM (const objectval_tyBM ** arr, unsigned rawsiz)
       {
         siz++;
       };
+  if (siz > MAXSIZE_BM)
+    FATAL_BM ("makeset too big size %u", siz);
   if (siz < TINYSIZE_BM)
     tmparr = tinyarr;
   else
     tmparr = calloc (siz + 1, sizeof (void *));
   if (!tmparr)
     FATAL_BM ("maketuple cannot allocate tmparr siz=%u", siz);
+  unsigned cnt = 0;
+  for (unsigned ix = 0; ix < rawsiz; ix++)
+    if (arr[ix])
+      tmparr[cnt++] = arr[ix];
+  assert (cnt == siz);
   sortobjarr_BM ((const objectval_tyBM **) tmparr, siz);
   int nbdup = 0;
   setval_tyBM *set = NULL;
@@ -143,12 +150,10 @@ makeset_BM (const objectval_tyBM ** arr, unsigned rawsiz)
       unsigned dupsiz = siz;
       siz = dupsiz - nbdup;
       set =                     //
-        allocgcty_BM (tySet_BM,
-                      sizeof (setval_tyBM) +
-                      (siz >
-                       0) ? (prime_above_BM (siz -
-                                             1) *
-                             sizeof (objectval_tyBM *)) : 0);
+        allocgcty_BM (tySet_BM, sizeof (setval_tyBM) +  //
+                      (siz > 0)
+                      ? ((prime_above_BM (siz - 1) *
+                          sizeof (objectval_tyBM *))) : 0);
       set->seq_objs[0] = tmparr[0];
       unsigned cnt = 1;
       for (unsigned dix = 1; dix < dupsiz; dix++)

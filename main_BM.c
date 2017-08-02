@@ -18,6 +18,20 @@ char *dump_dir_bm;
 char *dump_after_load_dir_bm;
 int count_emit_has_predef_bm;
 
+static bool
+run_command_bm (const gchar * optname
+                __attribute__ ((unused)), const gchar * val, gpointer data
+                __attribute__ ((unused)), GError ** perr)
+{
+  assert (val != NULL);
+  fprintf (stderr, "running command: %s\n", val);
+  int ok = system (val);
+  if (ok == 0)
+    return TRUE;
+  g_set_error (perr, 0, ok, "command %s failed with status %d", val, ok);
+  return FALSE;
+}                               /* end run_command_bm */
+
 const GOptionEntry optab[] = {
   {.long_name = "load",.short_name = 'l',
    .flags = G_OPTION_FLAG_NONE,
@@ -43,6 +57,12 @@ const GOptionEntry optab[] = {
    .arg_data = &count_emit_has_predef_bm,
    .description = "emit NB 'HAS_PREDEF_BM'",
    .arg_description = "NB"},
+  {.long_name = "run-command",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &run_command_bm,
+   .description = "run the command CMD",
+   .arg_description = "CMD"},
   {}
 };
 

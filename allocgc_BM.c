@@ -28,6 +28,7 @@ allocgcty_BM (unsigned type, size_t sz)
       allocationvec_vBM = new_allocvec;
     }
   assert (sz > sizeof (typedhead_tyBM));
+  assert (sz < MAXSIZE_BM * sizeof (double));
   typedhead_tyBM *newzon = malloc (sz);
   if (!newzon)
     FATAL_BM ("failed fresh GC allocation of new zone %zd bytes (%m)", sz);

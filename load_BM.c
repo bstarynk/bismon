@@ -21,7 +21,7 @@ loadergcdestroy_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
   assert (valtype_BM ((const value_tyBM) ld) == tydata_loader_BM);
   assert (ld->ld_magic == LOADERMAGIC_BM);
   fprintf (stderr, "loadergcdestroy_BM called ld @%p\n", (void *) ld);
-  memset (ld, 0, sizeof (ld));
+  memset (ld, 0, sizeof (*ld));
   free (ld);
   gc->gc_freedbytes += sizeof (*ld);
 }                               /* end loadergcdestroy_BM */
