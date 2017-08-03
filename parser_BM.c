@@ -640,7 +640,7 @@ parse_cords_BM (struct parser_stBM *pars)
   const char *restlin = parserrestline_BM (pars);
   if (!restlin)
     return NULL;
-  if (restlin[0] != '"' || (restlin[0] != '/' && restlin[1] != '"'))
+  if (restlin[0] != '"' && (restlin[0] != '/' && restlin[1] != '"'))
     return NULL;
   char runbuf[RUNLEN_BM + 8] = "";
   int runlen = -1;
