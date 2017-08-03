@@ -17,9 +17,10 @@ maketuple_BM (objectval_tyBM ** arr, unsigned rawsiz)
       siz++;
   tupleval_tyBM *tup =          //
     allocgcty_BM (tyTuple_BM,
-                  sizeof (tupleval_tyBM) + (siz > 0)    //
-                  ? (prime_above_BM (siz - 1) * sizeof (objectval_tyBM *))
-                  : 0);
+                  sizeof (tupleval_tyBM) + ((siz > 0)   //
+                                            ? (prime_above_BM (siz - 1) *
+                                               sizeof (objectval_tyBM *)) :
+                                            0));
   unsigned cnt = 0;
   hash_tyBM h1 = 0, h2 = siz;
   for (unsigned ix = 0; ix < rawsiz; ix++)
@@ -149,11 +150,12 @@ makeset_BM (const objectval_tyBM ** arr, unsigned rawsiz)
       assert (nbdup < (int) siz);
       unsigned dupsiz = siz;
       siz = dupsiz - nbdup;
+      assert (siz < MAXSIZE_BM);
       set =                     //
         allocgcty_BM (tySet_BM, sizeof (setval_tyBM) +  //
-                      (siz > 0)
-                      ? ((prime_above_BM (siz - 1) *
-                          sizeof (objectval_tyBM *))) : 0);
+                      ((siz > 0)
+                       ? ((prime_above_BM (siz - 1) *
+                           sizeof (objectval_tyBM *))) : 0));
       set->seq_objs[0] = tmparr[0];
       unsigned cnt = 1;
       for (unsigned dix = 1; dix < dupsiz; dix++)
@@ -163,13 +165,13 @@ makeset_BM (const objectval_tyBM ** arr, unsigned rawsiz)
         }
       assert (cnt == siz);
     }
-  else
+  else                          // nbdup == 0
     {
+      size_t alsiz = sizeof (setval_tyBM) +     //
+        ((siz > 0) ? (prime_above_BM (siz - 1) *
+                      sizeof (objectval_tyBM *)) : 0);
       set =                     //
-        allocgcty_BM (tySet_BM,
-                      sizeof (setval_tyBM) +
-                      (siz > 0) ? (prime_above_BM (siz - 1) *
-                                   sizeof (objectval_tyBM *)) : 0);
+        allocgcty_BM (tySet_BM, alsiz);
       memcpy (set->seq_objs, tmparr, siz * sizeof (objectval_tyBM *));
     };
   ((typedsize_tyBM *) set)->size = siz;

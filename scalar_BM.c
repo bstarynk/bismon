@@ -76,7 +76,7 @@ makestring_BM (const char *cstr)
   int l = sll;
   hash_tyBM h = stringhash_BM (cstr);
   stringval_tyBM *strv =
-    allocgcty_BM (tyString_BM, sizeof (stringval_tyBM) + (sll | 0xf) + 1);
+    allocgcty_BM (tyString_BM, (sizeof (stringval_tyBM) + (sll | 0xf) + 1));
   ((typedhead_tyBM *) strv)->hash = h;
   ((typedsize_tyBM *) strv)->size = l;
   memcpy (strv->strv_bytes, cstr, l);

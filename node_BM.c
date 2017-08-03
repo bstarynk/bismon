@@ -18,8 +18,8 @@ makeclosure_BM (const objectval_tyBM * connob, unsigned nbval,
   closure_tyBM *clos =          //
     allocgcty_BM (tyClosure_BM,
                   sizeof (closure_tyBM)
-                  + (cnt > 0)
-                  ? (prime_above_BM (cnt - 1) * sizeof (value_tyBM)) : 0);
+                  + ((cnt > 0)
+                     ? (prime_above_BM (cnt - 1) * sizeof (value_tyBM)) : 0));
   hash_tyBM h1 = objecthash_BM (connob);
   hash_tyBM h2 = cnt;
   ((typedsize_tyBM *) clos)->size = cnt;
@@ -107,8 +107,8 @@ makenode_BM (const objectval_tyBM * connob, unsigned nbval,
   closure_tyBM *node =          //
     allocgcty_BM (tyNode_BM,
                   sizeof (node_tyBM)
-                  + (cnt > 0)
-                  ? (prime_above_BM (cnt - 1) * sizeof (value_tyBM)) : 0);
+                  + ((cnt > 0)
+                     ? (prime_above_BM (cnt - 1) * sizeof (value_tyBM)) : 0));
   hash_tyBM h1 = objecthash_BM (connob);
   hash_tyBM h2 = cnt;
   ((typedsize_tyBM *) node)->size = cnt;
