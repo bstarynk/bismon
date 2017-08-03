@@ -61,6 +61,7 @@ extern void stringgcdestroy_BM (struct garbcoll_stBM *, stringval_tyBM *);
 
 extern void stringgckeep_BM (struct garbcoll_stBM *, stringval_tyBM *);
 
+static inline bool istuple_BM (const value_tyBM v);
 extern const tupleval_tyBM *maketuple_BM (objectval_tyBM ** arr,
                                           unsigned rawsiz);
 extern unsigned tuplesize_BM (const tupleval_tyBM * tup);
@@ -69,6 +70,8 @@ extern void tuplegcmark_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup);
 extern void tuplegcdestroy_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup);
 extern void tuplegckeep_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup);
 
+
+static inline bool isset_BM (const value_tyBM v);
 extern const setval_tyBM *makeset_BM (const objectval_tyBM ** arr,
                                       unsigned rawsiz);
 extern bool setcontains_BM (const objectval_tyBM * obelem,

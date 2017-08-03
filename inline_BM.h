@@ -513,6 +513,19 @@ datavectnth_BM (const struct datavectval_stBM * dvec, int rk)
 }                               /* end datavectnth_BM */
 
 ////////////////
+bool
+isset_BM (const value_tyBM v)
+{
+  return (valtype_BM (v) == tySet_BM);
+}                               /* end isset_BM */
+
+bool
+istuple_BM (const value_tyBM v)
+{
+  return (valtype_BM (v) == tyTuple_BM);
+}                               /* end istuple_BM */
+
+////////////////
 unsigned
 hashsetobj_cardinal_BM (struct hashsetobj_stBM *hset)
 {
