@@ -233,7 +233,6 @@ dump_emit_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
   assert (valtype_BM ((const value_tyBM) dhset) == tydata_hashsetobj_BM);
   {
     unsigned alsiz = ((typedhead_tyBM *) dhset)->rlen;
-    unsigned ucnt = ((typedsize_tyBM *) dhset)->size;
     for (unsigned ix = 0; ix < alsiz; ix++)
       {
         objectval_tyBM *curduob = dhset->hashset_objs[ix];
@@ -269,6 +268,10 @@ dump_emit_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
 }                               /* end dump_emit_pass_BM */
 
 
+static void
+dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
+                     FILE * spfil, struct stackframe_stBM *stkf);
+
 void
 dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
                     struct hashsetobj_stBM *hspa,
@@ -280,10 +283,13 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct dumper_stBM *curdu;     //
                  struct hashsetobj_stBM *curhspa;
+                 struct hashsetobj_stBM *modhset;
                  const setval_tyBM * setobjs;
                  const stringval_tyBM * pathv;
                  const stringval_tyBM * backupv;
                  const objectval_tyBM * curobj; //
+                 const objectval_tyBM * modobj; //
+                 const setval_tyBM * setmodules;
     );
   FILE *spfil = NULL;
   _.curdu = du;
@@ -299,9 +305,88 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
               bytstring_BM (_.pathv));
   fprintf (spfil, "// generated file %s\n",
            basename (bytstring_BM (_.pathv)));
-  fprintf (spfil, "// for %d objects\n", setcardinal_BM (_.setobjs));
-  fprintf (stderr, "dump_emit_space_BM spix=%d unimplemented\n", spix);
-#warning dump_emit_space_BM unimplemented
+  unsigned nbobj = setcardinal_BM (_.setobjs);
+  fprintf (spfil, "// for %u objects\n", nbobj);
+  _.modhset = hashsetobj_grow_BM (NULL, 2 + nbobj / 128);
+  // compute the set of modules
+  for (unsigned obix = 0; obix < nbobj; obix++)
+    {
+      _.curobj = setelemnth_BM (_.setobjs, obix);
+      assert (_.curobj != NULL);
+      if (_.curobj->ob_rout)
+        {
+          Dl_info di = { };
+          if (dladdr (_.curobj->ob_rout, &di) && di.dli_fname)
+            {
+              char modidbuf[32];
+              memset (modidbuf, 0, sizeof (modidbuf));
+              const char *bn = basename (di.dli_fname);
+              int pos = -1;
+              rawid_tyBM modid = { 0, 0 };
+              const char *endid = NULL;
+              if (sscanf
+                  (bn, MODULEPREFIX_BM "%30[A-Za-z0-9_].so%n", modidbuf,
+                   &pos) > 0 && pos > 0
+                  && (modid = parse_rawid_BM (modidbuf, &endid)).id_hi > 0)
+                {
+                  _.modobj = findobjofid_BM (modid);
+                  if (_.modobj)
+                    _.modhset = hashsetobj_add_BM (_.modhset, _.modobj);
+                }
+            }
+        }
+    }
+  _.setmodules = hashsetobj_to_set_BM (_.modhset);
+  unsigned nbmodules = setcardinal_BM (_.setmodules);
+  fprintf (spfil, "// with %d modules\n", nbmodules);
+  for (unsigned mix = 0; mix < nbmodules; mix++)
+    {
+      char curmodid[32] = "";
+      _.modobj = setelemnth_BM (_.setmodules, mix);
+      assert (_.modobj);
+      idtocbuf32_BM (objid_BM (_.modobj), curmodid);
+      fprintf (spfil, "!^%s\n", curmodid);
+    };
+  fputc ('\n', spfil);
+  for (unsigned obix = 0; obix < nbobj; obix++)
+    {
+      _.curobj = setelemnth_BM (_.setobjs, obix);
+      assert (_.curobj != NULL);
+      dump_emit_object_BM (du, _.curobj, spfil,
+                           (struct stackframe_stBM *) &_);
+    }
   fprintf (spfil, "\n// end of file %s\n", basename (bytstring_BM (_.pathv)));
   fclose (spfil);
 }                               /* end  dump_emit_space_BM */
+
+void
+dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
+                     FILE * spfil, struct stackframe_stBM *stkf)
+{
+
+  assert (valtype_BM ((const value_tyBM) du) == tydata_dumper_BM);
+  assert (valtype_BM ((const value_tyBM) curobj) == tyObject_BM);
+  assert (spfil != NULL);
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 struct dumper_stBM *curdu;     //
+                 const objectval_tyBM * curobj; //
+    );
+  _.curdu = du;
+  _.curobj = curobj;
+  char curobjid[32] = "";
+  idtocbuf32_BM (objid_BM (curobj), curobjid);
+  fputc ('\n', spfil);
+  fprintf (spfil, "!(%s", curobjid);
+  {
+    const char *obnam = findobjectname_BM (curobj);
+    if (obnam)
+      fprintf (spfil, " |=%s|\n" "!~ name (~ %s ~)\n", obnam, obnam);
+    else
+      fputc ('\n', spfil);
+  }
+  if (curobj->ob_mtime > 0)
+    fprintf (spfil, "!@ %.2f\n", curobj->ob_mtime);
+#warning incomplete dump_emit_object_BM (should dump class, attributes, components, data)
+  fprintf (spfil, "!)%s\n", curobjid);
+  fputc ('\n', spfil);
+}                               /* end dump_emit_object_BM */
