@@ -37,6 +37,16 @@ dumpobjisdumpable_BM (struct dumper_stBM *du, const objectval_tyBM * obj)
   return hashsetobj_contains_BM (du->dump_hset, obj);
 }                               /* end dumpobjisdumpable_BM */
 
+bool
+dumpvalisdumpable_BM (struct dumper_stBM * du, const value_tyBM val)
+{
+  if (valtype_BM ((const value_tyBM) du) != tydata_dumper_BM)
+    return false;
+  if (val && !isobject_BM (val))
+    return true;
+  return dumpobjisdumpable_BM (du, (const objectval_tyBM *) val);
+}                               /* end dumpvalisdumpable_BM */
+
 void
 dumpscanobj_BM (struct dumper_stBM *du, const objectval_tyBM * obj)
 {
@@ -354,6 +364,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
       assert (_.curobj != NULL);
       dump_emit_object_BM (du, _.curobj, spfil,
                            (struct stackframe_stBM *) &_);
+#warning should sometimes call the garbage collector here
     }
   fprintf (spfil, "\n// end of file %s\n", basename (bytstring_BM (_.pathv)));
   fclose (spfil);
@@ -370,6 +381,9 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct dumper_stBM *curdu;     //
                  const objectval_tyBM * curobj; //
+                 const objectval_tyBM * curattr;        //
+                 value_tyBM curval;     //
+                 const setval_tyBM * attrset;
     );
   _.curdu = du;
   _.curobj = curobj;
@@ -395,6 +409,17 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
         fprintf (spfil, "!$%s |=%s|\n", curclassid, clanam);
       else
         fprintf (spfil, "!$%s\n", curclassid);
+    }
+  _.attrset = objsetattrs_BM (curobj);
+  unsigned nbattrs = setcardinal_BM (_.attrset);
+  for (unsigned atix = 0; atix < nbattrs; atix++)
+    {
+      _.curattr = setelemnth_BM (_.attrset, atix);
+      if (!dumpobjisdumpable_BM (du, _.curattr))
+        continue;
+      _.curval = objgetattr_BM (curobj, _.curattr);
+      if (!dumpvalisdumpable_BM (du, _.curval))
+        continue;
     }
 #warning incomplete dump_emit_object_BM (should dump attributes, components, data)
   fprintf (spfil, "!)%s\n", curobjid);

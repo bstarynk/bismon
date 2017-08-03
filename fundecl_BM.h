@@ -439,6 +439,9 @@ extern void dumpgcdestroy_BM (struct garbcoll_stBM *gc,
 extern void dumpgckeep_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du);
 extern bool dumpobjisdumpable_BM (struct dumper_stBM *du,
                                   const objectval_tyBM * obj);
+extern bool dumpvalisdumpable_BM (struct dumper_stBM *du,
+                                  const value_tyBM val);
+
 extern void dumpscanobj_BM (struct dumper_stBM *du,
                             const objectval_tyBM * obj);
 extern void dumpscanvalue_BM (struct dumper_stBM *du, const value_tyBM val,
