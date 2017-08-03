@@ -236,7 +236,7 @@ objtouchnow_BM (objectval_tyBM * obj)
 {
   if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
     return;
-  obj->ob_mtime = clocktime_BM (CLOCK_MONOTONIC);
+  obj->ob_mtime = clocktime_BM (CLOCK_REALTIME);
 }                               /* end objtouchnow_BM */
 
 

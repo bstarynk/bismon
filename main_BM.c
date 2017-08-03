@@ -124,7 +124,8 @@ main (int argc, char **argv)
   if (count_emit_has_predef_bm > 0)
     {
       printf ("\n\n" "/// %d extra predefs\n", count_emit_has_predef_bm);
-      for (int ix = count_emit_has_predef_bm; ix >= 0; ix--)
+      printf ("// !@ %.2f\n", clocktime_BM (CLOCK_REALTIME));
+      for (int ix = count_emit_has_predef_bm; ix > 0; ix--)
         {
           rawid_tyBM id = randomid_BM ();
           char idbuf[32];
