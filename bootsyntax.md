@@ -64,7 +64,7 @@ collection of objects. A module requirement line starts with `!^`
 followed by the module's id.  Each object definition starts with a
 line beginning with `!(` then immediately the object-id. After that
 start-marker we can have other lines. They are ended by the
-end-marker, i.e. '!)' followed by the same object-id or the nil id.
+end-marker, i.e. `!)` followed by the same object-id or the nil id.
 
 The possible boot directives inside an object definition include:
 

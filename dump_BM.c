@@ -384,6 +384,8 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
                  const objectval_tyBM * curattr;        //
                  value_tyBM curval;     //
                  const setval_tyBM * attrset;
+                 struct strbuffer_stBM *sbuf;
+                 value_tyBM dumpres;    //
     );
   _.curdu = du;
   _.curobj = curobj;
@@ -411,6 +413,7 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
         fprintf (spfil, "!$%s\n", curclassid);
     }
   _.attrset = objsetattrs_BM (curobj);
+  _.sbuf = strbuffermake_BM (0);
   unsigned nbattrs = setcardinal_BM (_.attrset);
   for (unsigned atix = 0; atix < nbattrs; atix++)
     {
@@ -420,6 +423,15 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
       _.curval = objgetattr_BM (curobj, _.curattr);
       if (!dumpvalisdumpable_BM (du, _.curval))
         continue;
+      strbufferreset_BM (_.sbuf);
+      //_.dumpres = send3_BM();
+      char curattrid[32] = "";
+      idtocbuf32_BM (objid_BM (_.curattr), curattrid);
+      const char *attrnam = findobjectname_BM (_.curattr);
+      if (attrnam)
+        fprintf (spfil, "!: %s |=%s|\n", curattrid, attrnam);
+      else
+        fprintf (spfil, "!: %s\n", curattrid);
     }
 #warning incomplete dump_emit_object_BM (should dump attributes, components, data)
   fprintf (spfil, "!)%s\n", curobjid);
