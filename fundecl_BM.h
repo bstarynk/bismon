@@ -212,6 +212,7 @@ extern void strbuffermoreindent_BM (struct strbuffer_stBM *sbuf);
 extern void strbufferlessindent_BM (struct strbuffer_stBM *sbuf);
 extern void strbufferappendcstr_BM (struct strbuffer_stBM *sbuf,
                                     const char *cstr);
+extern void strbufferreset_BM (struct strbuffer_stBM *sbuf);
 /// raw printf
 extern void strbufferrawprintf_BM (struct strbuffer_stBM *sbuf,
                                    const char *fmt, ...)

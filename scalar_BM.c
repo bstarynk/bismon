@@ -333,6 +333,17 @@ strbufferreserve_BM (struct strbuffer_stBM *sbuf, unsigned gap)
 
 
 void
+strbufferreset_BM (struct strbuffer_stBM *sbuf)
+{
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
+    return;
+  memset (sbuf->sbuf_dbuf, 0, sbuf->sbuf_size);
+  sbuf->sbuf_curp = sbuf->sbuf_dbuf;
+  sbuf->sbuf_lastnl = NULL;
+  sbuf->sbuf_indent = 0;
+}                               /* end strbufferreset_BM */
+
+void
 strbufferclearindent_BM (struct strbuffer_stBM *sbuf)
 {
   if (!isstrbuffer_BM ((const value_tyBM) sbuf))
