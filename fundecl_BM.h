@@ -519,4 +519,10 @@ extern const setval_tyBM *setglobalobjects_BM (void);
 
 extern void gcmarkglobals_BM (struct garbcoll_stBM *gc);
 
+/// open a module, returns true if ok
+extern bool openmoduleforloader_BM (const rawid_tyBM modid,
+                                    struct loader_stBM *ld,
+                                    struct stackframe_stBM *stkf);
+static inline bool openmodule_BM (const rawid_tyBM modid,
+                                  struct stackframe_stBM *stkf);
 #endif /*FUNDECL_BM_INCLUDED */

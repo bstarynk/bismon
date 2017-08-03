@@ -9,7 +9,8 @@ loadergcmark_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (valtype_BM ((const value_tyBM) ld) == tydata_loader_BM);
   assert (ld->ld_magic == LOADERMAGIC_BM);
-  gcmark_BM (gc, ld->ld_hset, 0);
+  gcmark_BM (gc, ld->ld_objhset, 0);
+  gcmark_BM (gc, ld->ld_modhset, 0);
   gcmark_BM (gc, ld->ld_todolist, 0);
 }                               /* end loadergcmark_BM */
 
@@ -113,8 +114,9 @@ load_initial_BM (const char *ldirpath)
   ((typedhead_tyBM *) ld)->rlen = 0;
   ld->ld_magic = LOADERMAGIC_BM;
   ld->ld_maxnum = maxnum;
-  ld->ld_hset =
+  ld->ld_objhset =
     hashsetobj_grow_BM (NULL, 2 * BM_NB_PREDEFINED + maxnum * 100);
+  ld->ld_modhset = hashsetobj_grow_BM (NULL, 2 * TINYSIZE_BM);
   ld->ld_todolist = makelist_BM ();
   ld->ld_storepatharr = calloc (maxnum + 2, sizeof (void *));
   if (!ld->ld_storepatharr)
@@ -140,7 +142,8 @@ load_initial_BM (const char *ldirpath)
   free (ld->ld_dir), ld->ld_dir = NULL;
   for (int ix = 0; ix <= maxnum; ix++)
     free (ld->ld_storepatharr[ix]), ld->ld_storepatharr[ix] = NULL;
-  ld->ld_hset = NULL;
+  ld->ld_objhset = NULL;
+  ld->ld_modhset = NULL;
   memset (ld, 0, sizeof (*ld)), ld = NULL;
 }                               /* end load_initial_BM */
 
@@ -195,16 +198,36 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
               && (*endid == (char) 0 || isspace (*endid)))
             {
               objectval_tyBM *newobj = makeobjofid_BM (id);
-              if (hashsetobj_contains_BM (ld->ld_hset, newobj))
+              if (hashsetobj_contains_BM (ld->ld_objhset, newobj))
                 {
                   char idbuf32[32] = "";
                   idtocbuf32_BM (id, idbuf32);
                   FATAL_BM ("duplicate id %s near %s:%d", idbuf32, curldpath,
                             lincnt);
                 };
-              ld->ld_hset = hashsetobj_add_BM (ld->ld_hset, newobj);
+              ld->ld_objhset = hashsetobj_add_BM (ld->ld_objhset, newobj);
               nbobjdef++;
             }
+          else
+            FATAL_BM ("invalid object definition line %s in file %s:%d",
+                      linbuf, curldpath, lincnt);
+        }
+      //
+      /* module requirement lines are !^<mod-id> */
+      else if (linbuf[0] == '!' && linbuf[1] == '^'
+               && linbuf[2] == '_' && isdigit (linbuf[3]))
+        {
+          const char *endid = NULL;
+          rawid_tyBM modid = parse_rawid_BM (linbuf + 2, &endid);
+          if (hashid_BM (modid) && endid >= linbuf + 2 * SERIALDIGITS_BM
+              && (*endid == (char) 0 || isspace (*endid)))
+            {
+              if (!openmoduleforloader_BM (modid, ld, NULL))
+                FATAL_BM ("loader failed to open module for %s", linbuf);
+            }
+          else
+            FATAL_BM ("invalid module requirement line %s in file %s:%d",
+                      linbuf, curldpath, lincnt);
         }
     }
   while (!feof (fil));

@@ -1,4 +1,4 @@
-// file namesglobals_BM.cc
+// file misc_BM.cc
 extern "C" {
 #include "bismon.h"
 };
@@ -26,7 +26,7 @@ struct ObjectHash_BM
   {
     return objecthash_BM(pob);
   };
-};
+};				// end Objecthash_BM
 
 struct ObjectLess_BM
 {
@@ -34,7 +34,15 @@ struct ObjectLess_BM
   {
     return objectcmp_BM(pob1, pob2)<0;
   };
-};
+};				// end ObjectLess_BM
+
+struct IdLess_BM
+{
+  inline bool operator() (const rawid_tyBM&id1, const rawid_tyBM&id2)
+  {
+    return cmpid_BM (id1, id2) < 0;
+  };
+};				// end IdLess_BM
 
 // keys are strdup-ed strings, values are objectval_tyBM*
 static std::map<const char*,objectval_tyBM*,StrcmpLess_BM> namemap_BM;
@@ -43,8 +51,18 @@ static std::map<const char*,objectval_tyBM*,StrcmpLess_BM> namemap_BM;
 // keys are objectval_tyBM*, values are strdup-ed strings
 static std::unordered_map<objectval_tyBM*,const char*,ObjectHash_BM> objhashtable_BM;
 
+struct ModuleData_BM
+{
+  rawid_tyBM mod_id;
+  void* mod_dlh;		// the dlopen handle
+  objectval_tyBM* mod_obj;	// the module object
+};
+
+static std::map<rawid_tyBM,ModuleData_BM,IdLess_BM> modulemap_BM;
 
 
+
+////////////////
 bool
 validname_BM (const char *nam)
 {
@@ -306,3 +324,90 @@ setglobalobjects_BM(void)
     };
   return makeset_BM((const objectval_tyBM**)(vecobj.data()), vecobj.size());
 } // end setglobalobjects_BM
+
+bool
+openmoduleforloader_BM(const rawid_tyBM modid,struct loader_stBM*ld, struct  stackframe_stBM *stkf)
+{
+  if (modid.id_hi == 0) return false;
+  char modidbuf[32];
+  memset (modidbuf, 0, sizeof(modidbuf));
+  idtocbuf32_BM(modid, modidbuf);
+  std::string commonprefixstr = //
+    std::string{bismon_directory} + "/" + MODULEDIR_BM + "/" + MODULEPREFIX_BM + modidbuf;
+
+  std::string srcmodpath = //
+    commonprefixstr + ".c";
+  std::string binmodpath =  //
+    commonprefixstr + ".so";
+  struct stat srcmodstat = {};
+  struct stat binmodstat = {};
+  if (::stat(srcmodpath.c_str(), &srcmodstat))
+    {
+      fprintf(stderr, "missing module source %s (%m)\n", srcmodpath.c_str());
+      return false;
+    }
+  if (::stat(binmodpath.c_str(), &binmodstat))
+    {
+      fprintf(stderr, "missing module binary %s (%m)\n", binmodpath.c_str());
+      return false;
+    }
+  if (srcmodstat.st_mtime > binmodstat.st_mtime)
+    {
+      struct tm srctm = {};
+      struct tm bintm = {};
+      char srcti[64] = "", binti[64] = "";
+      strftime(srcti, sizeof(srcti), "%c %Z", localtime_r(&srcmodstat.st_mtime, &srctm));
+      strftime(binti, sizeof(binti), "%c %Z", localtime_r(&binmodstat.st_mtime, &bintm));
+      fprintf (stderr, "module source %s [%s] younger than binary %s [%s]\n",
+               srcmodpath.c_str(), srcti, binmodpath.c_str(), binti);
+      return false;
+    }
+  if (modulemap_BM.find(modid) != modulemap_BM.end())
+    {
+      // module already loaded
+      return true;
+    }
+  void*dlh = dlopen(binmodpath.c_str(), RTLD_NOW | RTLD_GLOBAL);
+  if (!dlh)
+    {
+      fprintf(stderr, "module dlopen failure %s\n", dlerror());
+      return false;
+    }
+  const char*modidad = (const char*)dlsym(dlh,"module_id_BM");
+  if (!modidad || strcmp(modidad,modidbuf))
+    {
+      fprintf(stderr, "bad module_id_BM in %s : %s\n",
+              binmodpath.c_str(), (modidad?"modid mismatch":dlerror()));
+      dlclose(dlh);
+      return false;
+    }
+  objectval_tyBM* objmod = ld?makeobjofid_BM(modid):findobjofid_BM(modid);
+  if (!objmod)
+    {
+      fprintf(stderr, "no object for module %s\n", modidbuf);
+      dlclose(dlh);
+      return false;
+    }
+  modulemap_BM.insert({modid,ModuleData_BM{.mod_id=modid, .mod_dlh=dlh, .mod_obj=objmod}});
+  if (ld)
+    {
+      assert (ld->ld_magic == LOADERMAGIC_BM);
+      ld->ld_modhset = hashsetobj_add_BM(ld->ld_modhset, objmod);
+      value_tyBM closargs[2] = {NULL,NULL};
+      closargs[0] = objmod;
+      const closure_tyBM*closloadm = makeclosure_BM (BMP_load_module,1,closargs);
+      load_addtodo_BM (closloadm);
+    }
+  else
+    {
+      value_tyBM v = send0_BM((const value_tyBM)objmod, BMP_load_module, stkf);
+      if (!v)
+        {
+          fprintf(stderr, "failed to send load_module for %s\n", modidbuf);
+          modulemap_BM.erase(modid);
+          dlclose(dlh);
+          return false;
+        }
+    }
+  return true;
+} // end of openmoduleforloader_BM

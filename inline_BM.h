@@ -778,4 +778,10 @@ parseradvanceutf8_BM (struct parser_stBM * pars, unsigned nbc)
 }                               /* end parseradvanceutf8_BM */
 
 
+bool
+openmodule_BM (const rawid_tyBM id, struct stackframe_stBM * stkf)
+{
+  return openmoduleforloader_BM (id, NULL, stkf);
+}                               /* end openmodule_BM */
+
 #endif /*INLINE_BM_INCLUDED */

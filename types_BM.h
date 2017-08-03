@@ -307,7 +307,8 @@ struct loader_stBM              // malloc-ed then free-d at load time
   typedhead_tyBM pa;            // rlen is unused
   unsigned ld_magic;            /* always LOADERMAGIC_BM */
   unsigned ld_maxnum;           /* highest number of store*.bismon files */
-  struct hashsetobj_stBM *ld_hset;      // hashset of objects by id
+  struct hashsetobj_stBM *ld_objhset;   // hashset of loaded objects
+  struct hashsetobj_stBM *ld_modhset;   // hashset of loaded module objects
   struct listtop_stBM *ld_todolist;
   // in the store arrays below, index 0 is for the store_todo
   char **ld_storepatharr;       /* calloc-ed array of malloc-ed string paths */

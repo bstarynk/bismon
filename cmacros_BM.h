@@ -24,6 +24,13 @@
 #define SERIALDIGITS_BM 11
 #define SERIALBASE_BM 62
 
+
+#define MODULEDIR_BM "modules"
+#define MODULEPREFIX_BM "modbm"
+
+/// each module should have DECLARE_MODULE_BM(BISMON_MODID); after inclusion of "bismon.h"
+#define DECLARE_MODULE_BM(Id) const char module_id_BM[] = #Id
+
 #define IDLEN_BM 24
 #define MAXSIZE_BM ((1<<30)-1)
 #define TINYSIZE_BM 15

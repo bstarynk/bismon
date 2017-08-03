@@ -1,0 +1,5 @@
+The modules/ directory contains the source code and shared object files of generated modules.
+
+Source code files are modules/modbm_<id>.c
+
+Shared object files are (position-independent code) modules/modbm_<id>.so

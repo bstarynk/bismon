@@ -28,14 +28,16 @@ BM_COLDSOURCES= $(sort $(wildcard *_BM.c))
 GENERATED_HEADERS= $(sort $(wildcard _[a-z0-9]*.h))
 GENERATED_CSOURCES= $(sort $(wildcard _[a-z0-9]*.c))
 MARKDOWN_SOURCES= $(sort $(wildcard *.md))
+MODULES_SOURCES= $(sort $(wildcard modules/modbm*.c))
 
 OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst %.cc,%.o,$(BM_CXXSOURCES))
 
-.PHONY: all clean indent count doc
+.PHONY: all clean indent count modules doc
 all: bismon doc
 clean:
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
 	$(RM) core* *.i *.ii
+	$(RM) modules/*.so modules/*.i
 	$(RM) $(patsubst %.md,%.html, $(MARKDOWN_SOURCES))
 
 indent: .indent.pro
@@ -49,6 +51,14 @@ indent: .indent.pro
 	done
 	@printf "\n *** C sources *** \n"
 	@for c in $(BM_COLDSOURCES); do \
+	  cp -a $$c $$c% ; \
+	  $(INDENT) $(INDENTFLAGS) $$c ; \
+	  $(INDENT) $(INDENTFLAGS) $$c ; \
+	  if cmp -s $$c $$c% ; then echo unchanged $$c ; mv $$c% $$c ; \
+	  else echo '*indented' $$c ; fi ; \
+	done
+	@printf "\n *** C modules sources *** \n"
+	@for c in $(MODULES_SOURCES); do \
 	  cp -a $$c $$c% ; \
 	  $(INDENT) $(INDENTFLAGS) $$c ; \
 	  $(INDENT) $(INDENTFLAGS) $$c ; \
@@ -94,6 +104,11 @@ $(OBJECTS): bismon.h.gch
 
 %_BM.o: %_BM.cc bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
 	$(CCACHE) $(COMPILE.cc)  $< -o $@
+
+modules/modbm_%.so: modules/modbm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
+	$(CCACHE) $(LINK.c) -fPIC -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<) -shared $< -o $@
+
+modules: $(patsubst %.c,%.so,$(MODULES_SOURCES))
 
 bismon: $(OBJECTS)
 	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi

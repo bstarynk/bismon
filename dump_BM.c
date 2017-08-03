@@ -129,6 +129,7 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   _.duobj->ob_data = _.curdu;
   _.curdu->dump_object = _.duobj;
   dump_scan_pass_BM (_.curdu, (struct stackframe_stBM *) &_);
+  dump_emit_pass_BM (_.curdu, (struct stackframe_stBM *) &_);
 #warning dump_BM unimplemented
 }                               /* end dump_BM */
 
