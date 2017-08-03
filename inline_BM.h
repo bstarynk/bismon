@@ -284,7 +284,7 @@ objspacenum_BM (const objectval_tyBM * obj)
 }                               /* end objspacenum_BM */
 
 value_tyBM
-objgetattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr)
+objgetattr_BM (const objectval_tyBM * obj, const objectval_tyBM * objattr)
 {
   if (!isobject_BM ((const value_tyBM) obj))
     return NULL;
@@ -296,7 +296,7 @@ objgetattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr)
 }                               /* end objgetattr_BM */
 
 unsigned
-objnbattrs_BM (objectval_tyBM * obj)
+objnbattrs_BM (const objectval_tyBM * obj)
 {
   if (!isobject_BM ((const value_tyBM) obj))
     return 0;
@@ -305,8 +305,22 @@ objnbattrs_BM (objectval_tyBM * obj)
   return assoc_nbkeys_BM (obj->ob_attrassoc);
 }                               /* end objnbattrs_BM */
 
+
+
+unsigned
+objnbcomps_BM (const objectval_tyBM * obj)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return 0;
+  if (!obj->ob_compvec)
+    return 0;
+  return datavectlen_BM (obj->ob_compvec);
+}                               /* end objnbcomps_BM */
+
+
+
 const setval_tyBM *
-objsetattrs_BM (objectval_tyBM * obj)
+objsetattrs_BM (const objectval_tyBM * obj)
 {
   if (!isobject_BM ((const value_tyBM) obj))
     return NULL;
@@ -316,18 +330,8 @@ objsetattrs_BM (objectval_tyBM * obj)
 }                               /* end objsetattrs_BM */
 
 
-unsigned
-objnbcomps_BM (objectval_tyBM * obj)
-{
-  if (!isobject_BM ((const value_tyBM) obj))
-    return 0;
-  if (!obj->ob_compvec)
-    return 0;
-  return datavectlen_BM (obj->ob_compvec);
-}                               /* end objnbcomps_BM */
-
 value_tyBM
-objgetcomp_BM (objectval_tyBM * obj, int rk)
+objgetcomp_BM (const objectval_tyBM * obj, int rk)
 {
   if (!isobject_BM ((const value_tyBM) obj))
     return NULL;

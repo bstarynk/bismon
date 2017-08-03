@@ -343,6 +343,17 @@ strbufferreset_BM (struct strbuffer_stBM *sbuf)
   sbuf->sbuf_indent = 0;
 }                               /* end strbufferreset_BM */
 
+unsigned
+strbufferlength_BM (struct strbuffer_stBM *sbuf)
+{
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
+    return 0;
+  assert (sbuf->sbuf_size < MAXSIZE_BM);
+  assert (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
+          && sbuf->sbuf_curp < sbuf->sbuf_dbuf + sbuf->sbuf_size);
+  return sbuf->sbuf_curp - sbuf->sbuf_dbuf;
+}                               /* end strbufferlength_BM */
+
 void
 strbufferclearindent_BM (struct strbuffer_stBM *sbuf)
 {

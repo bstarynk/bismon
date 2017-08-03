@@ -101,10 +101,10 @@ static inline unsigned objspacenum_BM (const objectval_tyBM * obj);
 static inline objectval_tyBM *objclass_BM (const objectval_tyBM * obj);
 extern void objputclass_BM (objectval_tyBM * obj, objectval_tyBM * objclass);
 
-static inline value_tyBM objgetattr_BM (objectval_tyBM * obj,
-                                        objectval_tyBM * objattr);
-static inline unsigned objnbattrs_BM (objectval_tyBM * obj);
-static inline const setval_tyBM *objsetattrs_BM (objectval_tyBM * obj);
+static inline value_tyBM objgetattr_BM (const objectval_tyBM * obj,
+                                        const objectval_tyBM * objattr);
+static inline unsigned objnbattrs_BM (const objectval_tyBM * obj);
+static inline const setval_tyBM *objsetattrs_BM (const objectval_tyBM * obj);
 
 extern void objputattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr,
                            value_tyBM valattr);
@@ -183,8 +183,8 @@ extern value_tyBM send8_BM (const value_tyBM recv,
                             const value_tyBM arg7, const value_tyBM arg8);
 
 
-static inline unsigned objnbcomps_BM (objectval_tyBM * obj);
-static inline value_tyBM objgetcomp_BM (objectval_tyBM * obj, int rk);
+static inline unsigned objnbcomps_BM (const objectval_tyBM * obj);
+static inline value_tyBM objgetcomp_BM (const objectval_tyBM * obj, int rk);
 static inline void objreservecomps_BM (objectval_tyBM * obj, unsigned gap);
 static inline void objappendcomp_BM (objectval_tyBM * obj,
                                      value_tyBM compval);
@@ -213,6 +213,7 @@ extern void strbufferlessindent_BM (struct strbuffer_stBM *sbuf);
 extern void strbufferappendcstr_BM (struct strbuffer_stBM *sbuf,
                                     const char *cstr);
 extern void strbufferreset_BM (struct strbuffer_stBM *sbuf);
+extern unsigned strbufferlength_BM (struct strbuffer_stBM *sbuf);
 /// raw printf
 extern void strbufferrawprintf_BM (struct strbuffer_stBM *sbuf,
                                    const char *fmt, ...)
