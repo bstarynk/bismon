@@ -4,6 +4,41 @@
 #define RUNLEN_BM 16
 #define RUNFMT_BM "%16[A-Za-z0-9]"
 
+static const char *const lexkindnamearr_BM[] = {
+  [plex__NONE] = "_NONE",
+  [plex_LLONG] = "LLONG",
+  [plex_DOUBLE] = "DOUBLE",
+  [plex_DELIM] = "DELIM",
+  [plex_ID] = "ID",
+  [plex_CNAME] = "CNAME",
+  [plex_WORD] = "WORD",
+  [plex_STRING] = "STRING",
+};
+
+const char *
+lexkindname_BM (enum parslexkind_enBM k)
+{
+  if ((unsigned) k <
+      (unsigned) (sizeof (lexkindnamearr_BM) / sizeof (lexkindnamearr_BM[0])))
+    return lexkindnamearr_BM[k];
+  return "?";
+}                               /* end of lexkindname_BM */
+
+static const char *const delimnamearr_BM[] = {
+#define HAS_DELIM_BM(Str,Delimname) [delim_##Delimname] = #Str,
+#include "_bm_delim.h"
+};
+
+const char *
+delimstr_BM (enum lexdelim_enBM d)
+{
+  if ((unsigned) d <
+      (unsigned) (sizeof (delimnamearr_BM) / sizeof (delimnamearr_BM[0])))
+    return delimnamearr_BM[d];
+  return "?";
+}                               /* end of delimstr_BM */
+
+
 struct parser_stBM *
 makeparser_of_file_BM (FILE * f)
 {

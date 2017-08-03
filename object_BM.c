@@ -567,11 +567,11 @@ register_predefined_object_BM (objectval_tyBM * pob)
   memset (idbuf, 0, sizeof (idbuf));
   idtocbuf32_BM (pob->ob_id, idbuf);
   assert (idbuf[0] == '_' && isdigit (idbuf[1]));
-  char nambuf[48];
-  memset (nambuf, 0, sizeof (nambuf));
-  snprintf (nambuf, sizeof (nambuf),    //
+  char symbuf[48];
+  memset (symbuf, 0, sizeof (symbuf));
+  snprintf (symbuf, sizeof (symbuf),    //
             ROUTINEOBJPREFIX_BM "%s" ROUTINEOBJSUFFIX_BM, idbuf);
-  void *ad = dlsym (dlprog_BM, nambuf);
+  void *ad = dlsym (dlprog_BM, symbuf);
   if (ad)
     pob->ob_rout = (objrout_sigBM *) ad;
 }                               /* end register_predefined_object_BM */

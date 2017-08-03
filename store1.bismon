@@ -15,6 +15,9 @@
 !(_0vgCFjXblkx_4zCMhMAWjVK |=int|
 !~ name (~ int ~)
 !@  1497636292.47
+!~ class (~ __ |no superclass|
+ ~: _1FEnnpEkGdI_5DAcVDL5XHG |=dump_value| % _3kMqlEugRVW_7DgwjR4CBbP ( )
+~)
 !)_0vgCFjXblkx_4zCMhMAWjVK |=int|
 
 
@@ -78,5 +81,16 @@
 !~ name (~ dump_scan ~)
 !@ 1501754200.00
 !)_2oNMm2aR91J_4QthSpZxplW
+
+!(_1FEnnpEkGdI_5DAcVDL5XHG |=dump_value|
+!~ name (~ dump_value ~)
+!@ 1501754200.00
+!)_1FEnnpEkGdI_5DAcVDL5XHG
+
+!(_0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|
+!~ name (~ dump_data ~)
+!@ 1501754200.00
+!)_0pSnxYMjpqQ_3opFGfXeh5o
+
 // eof store1.bismon
 

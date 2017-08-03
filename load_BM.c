@@ -177,6 +177,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
     FATAL_BM ("fopen %s failed (%m)", curldpath);
   int lincnt = 0;
   int nbobjdef = 0;
+  int nbrout = 0;
   do
     {
       ssize_t linlen = getline (&linbuf, &linsiz, fil);
@@ -198,12 +199,24 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
               && (*endid == (char) 0 || isspace (*endid)))
             {
               objectval_tyBM *newobj = makeobjofid_BM (id);
+              char idbuf32[32] = "";
+              idtocbuf32_BM (id, idbuf32);
               if (hashsetobj_contains_BM (ld->ld_objhset, newobj))
                 {
-                  char idbuf32[32] = "";
-                  idtocbuf32_BM (id, idbuf32);
                   FATAL_BM ("duplicate id %s near %s:%d", idbuf32, curldpath,
                             lincnt);
+                };
+              // if there is a routine for that object, bind it now
+              char symbuf[48];
+              memset (symbuf, 0, sizeof (symbuf));
+              snprintf (symbuf, sizeof (symbuf),        //
+                        ROUTINEOBJPREFIX_BM "%s" ROUTINEOBJSUFFIX_BM,
+                        idbuf32);
+              void *ad = dlsym (dlprog_BM, symbuf);
+              if (ad)
+                {
+                  newobj->ob_rout = ad;
+                  nbrout++;
                 };
               ld->ld_objhset = hashsetobj_add_BM (ld->ld_objhset, newobj);
               nbobjdef++;
@@ -235,6 +248,11 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
     FATAL_BM ("no object definition in %s\n", curldpath);
   free (linbuf), linbuf = 0;
   fclose (fil);
+  if (nbrout > 0)
+    {
+      fprintf (stderr, "load first pass #%d: %s found %d routines\n", ix,
+               curldpath, nbrout);
+    };
 }                               /* end load_first_pass_BM */
 
 static void
@@ -434,6 +452,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           if (!gotattr)
             parsererrorprintf_BM (ldpars, lineno, colpos,
                                   "expect attribute object after !:");
+          parserskipspaces_BM (ldpars);
           bool gotval = false;
           _.attrval =           //
             parsergetvalue_BM (ldpars, (struct stackframe_stBM *) (&_),
@@ -576,8 +595,9 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
       // otherwise, error
       else
         parsererrorprintf_BM (ldpars, lineno, colpos,
-                              "unexpected token (kind %d) for loader",
-                              (int) tok.tok_kind);
+                              "unexpected token (kind %d %s) for loader",
+                              (int) tok.tok_kind,
+                              lexkindname_BM (tok.tok_kind));
       nbdirectives++;
     };
   fprintf (stderr, "load_second_pass_BM ix=%d path=%s nbdirectives=%ld\n",

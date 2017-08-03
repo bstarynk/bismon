@@ -450,6 +450,9 @@ extern void dumpscanvalue_BM (struct dumper_stBM *du, const value_tyBM val,
                               int depth);
 
 //// parsing
+extern const char *lexkindname_BM (enum parslexkind_enBM k);
+extern const char *delimstr_BM (enum lexdelim_enBM d);
+
 extern struct parser_stBM *makeparser_of_file_BM (FILE * f);
 extern struct parser_stBM *makeparser_memopen_BM (const char *filemem,
                                                   long size);
