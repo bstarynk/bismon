@@ -386,7 +386,17 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
   }
   if (curobj->ob_mtime > 0)
     fprintf (spfil, "!@ %.2f\n", curobj->ob_mtime);
-#warning incomplete dump_emit_object_BM (should dump class, attributes, components, data)
+  if (curobj->ob_class && dumpobjisdumpable_BM (du, curobj->ob_class))
+    {
+      char curclassid[32] = "";
+      idtocbuf32_BM (objid_BM (curobj->ob_class), curclassid);
+      const char *clanam = findobjectname_BM (curobj->ob_class);
+      if (clanam)
+        fprintf (spfil, "!$%s |=%s|\n", curclassid, clanam);
+      else
+        fprintf (spfil, "!$%s\n", curclassid);
+    }
+#warning incomplete dump_emit_object_BM (should dump attributes, components, data)
   fprintf (spfil, "!)%s\n", curobjid);
   fputc ('\n', spfil);
 }                               /* end dump_emit_object_BM */
