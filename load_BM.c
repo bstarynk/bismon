@@ -594,10 +594,21 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
       //
       // otherwise, error
       else
-        parsererrorprintf_BM (ldpars, lineno, colpos,
-                              "unexpected token (kind %d %s) for loader",
-                              (int) tok.tok_kind,
-                              lexkindname_BM (tok.tok_kind));
+        {
+          const char *xtratok = "";
+          char xtraid[32] = "";
+          if (tok.tok_kind == plex_DELIM)
+            xtratok = delimstr_BM (tok.tok_delim);
+          else if (tok.tok_kind == plex_ID)
+            {
+              idtocbuf32_BM (tok.tok_id, xtraid);
+              xtratok = xtraid;
+            }
+          parsererrorprintf_BM (ldpars, lineno, colpos,
+                                "unexpected token (kind %d %s) %s for loader",
+                                (int) tok.tok_kind,
+                                lexkindname_BM (tok.tok_kind), xtratok);
+        }
       nbdirectives++;
     };
   fprintf (stderr, "load_second_pass_BM ix=%d path=%s nbdirectives=%ld\n",
