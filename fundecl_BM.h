@@ -51,11 +51,12 @@ extern rawid_tyBM parse_rawid_BM (const char *buf, const char **pend);
 extern void *allocgcty_BM (unsigned type, size_t sz);
 extern void *allocinternalty_BM (unsigned type, size_t sz);
 
+static inline bool isstring_BM (const value_tyBM v);
 extern hash_tyBM stringhash_BM (const char *str);
 extern const stringval_tyBM *makestring_BM (const char *str);
 extern const stringval_tyBM *sprintfstring_BM (const char *fmt, ...)
   __attribute__ ((format (printf, 1, 2)));
-extern int lenstring_BM (const stringval_tyBM *);
+extern int lenstring_BM (const stringval_tyBM *);       // length in bytes
 extern const char *bytstring_BM (const stringval_tyBM *);
 extern void stringgcdestroy_BM (struct garbcoll_stBM *, stringval_tyBM *);
 

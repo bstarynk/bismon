@@ -562,7 +562,7 @@ strbufferencodedutf8_BM (struct strbuffer_stBM *sbuf, const char *str,
           break;
         }
     }
-}                               /* end strbufferencodedutf8 */
+}                               /* end strbufferencodedutf8_BM */
 
 
 
@@ -628,4 +628,4 @@ strbufferencodedc_BM (struct strbuffer_stBM *sbuf, const char *str,
           break;
         }
     }
-}                               /* end strbufferencodedc */
+}                               /* end strbufferencodedc_BM */

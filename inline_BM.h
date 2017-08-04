@@ -525,6 +525,12 @@ istuple_BM (const value_tyBM v)
   return (valtype_BM (v) == tyTuple_BM);
 }                               /* end istuple_BM */
 
+bool
+isstring_BM (const value_tyBM v)
+{
+  return (valtype_BM (v) == tyString_BM);
+}                               /* end isstring_BM */
+
 ////////////////
 unsigned
 hashsetobj_cardinal_BM (struct hashsetobj_stBM *hset)

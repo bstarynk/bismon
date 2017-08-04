@@ -234,3 +234,82 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   strbufferprintf_BM (_.sbuf, ")");
   return _.sbuf;
 }                               /* end ROUTINE _6jvRZetUz36_978V6SKIWZC */
+
+////////////////////////////////////////////////////////////////
+//// for the method to dump_value a string
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7mvOlkB1tAJ_3psVFz4QEAn);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_7mvOlkB1tAJ_3psVFz4QEAn)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1,
+const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  assert (isstring_BM (arg1));  // the string to dump
+  assert (valtype_BM (arg2) == tydata_strbuffer_BM);
+  assert (valtype_BM (arg3) == tydata_dumper_BM);
+  assert (valtype_BM ((const value_tyBM) restargs) == tydata_quasinode_BM
+          && treewidth_BM ((const value_tyBM) restargs) == 1);
+  const value_tyBM arg4 = treenthson_BM ((const value_tyBM) restargs, 0);
+  assert (istaggedint_BM (arg4));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const stringval_tyBM * recv; struct strbuffer_stBM *sbuf;
+                 struct dumper_stBM *du; value_tyBM depthv; value_tyBM curson;
+                 const objectval_tyBM * connobj;
+    );
+  _.recv = (arg1);
+  _.sbuf = (struct strbuffer_stBM *) arg2;
+  _.du = (struct dumper_stBM *) arg3;
+  _.depthv = arg4;
+  unsigned depth = getint_BM (_.depthv);
+  unsigned bsiz = lenstring_BM (_.recv);
+  const char *bstr = bytstring_BM (_.recv);
+  unsigned ulen = g_utf8_strlen (bstr, bsiz);
+  strbufferprintf_BM (_.sbuf, "\t\"");
+  if (bsiz < STRBUFFERWANTEDWIDTH_BM)
+    {
+      strbufferencodedutf8_BM (_.sbuf, bstr, bsiz);
+    }
+  else
+    {
+      const char *bend = bstr + bsiz;
+      const char *nextp = NULL;
+      for (const char *ps = bstr; ps < bend && *ps; ps = nextp)
+        {
+          nextp = ps;
+          gunichar uc = 0;
+          for (int ix = STRBUFFERWANTEDWIDTH_BM / 2; ix > 0 && *nextp; ix--)
+            nextp = g_utf8_next_char (nextp);
+          for (int ix = STRBUFFERWANTEDWIDTH_BM / 2 - 4; ix > 0 && *nextp;
+               ix--)
+            {
+              uc = g_utf8_get_char (nextp);
+              if (g_unichar_isspace (uc))
+                break;
+              nextp = g_utf8_next_char (nextp);
+            }
+          strbufferencodedutf8_BM (_.sbuf, ps, nextp - ps);
+          if (*nextp)
+            {
+              if (uc == '\n')
+                {
+                  strbufferprintf_BM (_.sbuf, "\"+\t\"");
+                  nextp = g_utf8_next_char (nextp);
+                }
+              else
+                strbufferprintf_BM (_.sbuf, "\"&\t\"");
+            }
+          else
+            {
+              if (uc == '\n')
+                strbufferprintf_BM (_.sbuf, "\\n\"");
+              else
+                strbufferprintf_BM (_.sbuf, "\"");
+            }
+        }
+    }
+  strbufferprintf_BM (_.sbuf, "\"");
+  return _.sbuf;
+}                               /* end ROUTINE _7mvOlkB1tAJ_3psVFz4QEAn */

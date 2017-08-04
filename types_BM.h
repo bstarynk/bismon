@@ -112,7 +112,7 @@ struct allalloc_stBM
   void *al_ptr[];
 };
 
-struct stringval_stBM
+struct stringval_stBM           /* the size field is the length in bytes */
 {
   typedsize_tyBM pA;
   char strv_bytes[];
