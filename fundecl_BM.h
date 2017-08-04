@@ -222,12 +222,17 @@ extern void strbufferrawprintf_BM (struct strbuffer_stBM *sbuf,
                                    const char *fmt, ...)
   __attribute__ ((format (printf, 2, 3)));
 /// cooked printf: the tabs become spaces or indented-newlines, the
-/// newlinesb become indented
+/// newlines become indented
 extern void strbufferprintf_BM (struct strbuffer_stBM *sbuf, const char *fmt,
                                 ...) __attribute__ ((format (printf, 2, 3)));
 /// indented newline
 extern void strbuffernewline_BM (struct strbuffer_stBM *sbuf);
-
+/// output UTF8 encoded à la JSON
+extern void strbufferencodedutf8_BM (struct strbuffer_stBM *sbuf,
+                                     const char *str, ssize_t bytelen);
+/// output bytes encoded à la C
+extern void strbufferencodedc_BM (struct strbuffer_stBM *sbuf,
+                                  const char *str, ssize_t bytelen);
 extern void strbuffergcmark_BM (struct garbcoll_stBM *gc,
                                 struct strbuffer_stBM *sbuf, int depth);
 extern void strbuffergcdestroy_BM (struct garbcoll_stBM *gc,

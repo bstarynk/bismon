@@ -382,13 +382,9 @@ strbufferlessindent_BM (struct strbuffer_stBM *sbuf)
 }                               /* end  strbufferlessindent_BM */
 
 
-void
-strbufferappendcstr_BM (struct strbuffer_stBM *sbuf, const char *cstr)
+static void
+strbufferunsafeappendcstr_BM (struct strbuffer_stBM *sbuf, const char *cstr)
 {
-  if (isstrbuffer_BM ((const value_tyBM) sbuf))
-    return;
-  if (!cstr || !cstr[0])
-    return;
   size_t len = strlen (cstr);
   assert (sbuf->sbuf_dbuf);
   size_t siz = sbuf->sbuf_size;
@@ -411,25 +407,35 @@ strbufferappendcstr_BM (struct strbuffer_stBM *sbuf, const char *cstr)
   sbuf->sbuf_curp += len;
   if (maxsiz > 0 && sbuf->sbuf_curp - sbuf->sbuf_dbuf > maxsiz)
     FATAL_BM ("strbufferappendcstr overflow %ud", maxsiz);
-}                               /* end strbufferappendcstr_BM  */
+}                               /* end strbufferunsafeappendcstr_BM  */
 
+
+void
+strbufferappendcstr_BM (struct strbuffer_stBM *sbuf, const char *cstr)
+{
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
+    return;
+  if (!cstr || !cstr[0])
+    return;
+  strbufferunsafeappendcstr_BM (sbuf, cstr);
+}                               /* end strbufferappendcstr_BM */
 
 void
 strbuffernewline_BM (struct strbuffer_stBM *sbuf)
 {
-  if (isstrbuffer_BM ((const value_tyBM) sbuf))
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
     return;
   const char *nlb16 = "                \n";     // 16 spaces then newline
   int i = sbuf->sbuf_indent % 16;
   if (i < 0)
     i = 0;
-  strbufferappendcstr_BM (sbuf, nlb16 + (16 - i));
+  strbufferunsafeappendcstr_BM (sbuf, nlb16 + (16 - i));
 }                               /* end of strbuffernewline_BM */
 
 void
 strbufferrawprintf_BM (struct strbuffer_stBM *sbuf, const char *fmt, ...)
 {
-  if (isstrbuffer_BM ((const value_tyBM) sbuf))
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
     return;
   if (!fmt || !fmt[0])
     return;
@@ -441,7 +447,7 @@ strbufferrawprintf_BM (struct strbuffer_stBM *sbuf, const char *fmt, ...)
   va_end (args);
   if (ln < 0 || tmpbuf == NULL)
     FATAL_BM ("strbufferrawprintf asprintf failure %m");
-  strbufferappendcstr_BM (sbuf, tmpbuf);
+  strbufferunsafeappendcstr_BM (sbuf, tmpbuf);
   free (tmpbuf);
 }                               /* end strbufferrawprintf_BM  */
 
@@ -449,7 +455,7 @@ strbufferrawprintf_BM (struct strbuffer_stBM *sbuf, const char *fmt, ...)
 void
 strbufferprintf_BM (struct strbuffer_stBM *sbuf, const char *fmt, ...)
 {
-  if (isstrbuffer_BM ((const value_tyBM) sbuf))
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
     return;
   if (!fmt || !fmt[0])
     return;
@@ -481,13 +487,145 @@ strbufferprintf_BM (struct strbuffer_stBM *sbuf, const char *fmt, ...)
               sbuf->sbuf_lastnl + 1 + (5 * STRBUFFERWANTEDWIDTH_BM) / 6)
             strbuffernewline_BM (sbuf);
           else
-            strbufferappendcstr_BM (sbuf, " ");
+            strbufferunsafeappendcstr_BM (sbuf, " ");
           prev = pc + 1;
         }
       else if (pc[1] == (char) 0)
         {
-          strbufferappendcstr_BM (sbuf, prev);
+          strbufferunsafeappendcstr_BM (sbuf, prev);
         }
     }
   free (tmpbuf);
 }                               /* end strbufferprintf_BM */
+
+void
+strbufferencodedutf8_BM (struct strbuffer_stBM *sbuf, const char *str,
+                         ssize_t bytelen)
+{
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
+    return;
+  if (!str)
+    return;
+  if (bytelen < 0)
+    bytelen = strlen (str);
+  if (!g_utf8_validate (str, bytelen, NULL))
+    return;
+  strbufferreserve_BM (sbuf, 9 * bytelen / 8 + 10);
+  const char *ends = str + bytelen;
+  for (const char *pc = str; pc < ends; pc = g_utf8_next_char (pc))
+    {
+      gunichar uc = g_utf8_get_char (pc);
+      switch (uc)
+        {
+        case '\"':
+          strbufferunsafeappendcstr_BM (sbuf, "\\\"");
+          break;
+        case '\'':
+          strbufferunsafeappendcstr_BM (sbuf, "\\\'");
+          break;
+        case '\a':
+          strbufferunsafeappendcstr_BM (sbuf, "\\a");
+          break;
+        case '\b':
+          strbufferunsafeappendcstr_BM (sbuf, "\\b");
+          break;
+        case '\f':
+          strbufferunsafeappendcstr_BM (sbuf, "\\f");
+          break;
+        case '\n':
+          strbufferunsafeappendcstr_BM (sbuf, "\\n");
+          break;
+        case '\r':
+          strbufferunsafeappendcstr_BM (sbuf, "\\r");
+          break;
+        case '\t':
+          strbufferunsafeappendcstr_BM (sbuf, "\\t");
+          break;
+        case '\v':
+          strbufferunsafeappendcstr_BM (sbuf, "\\v");
+          break;
+        case '\033' /*ESCAPE*/:
+          strbufferunsafeappendcstr_BM (sbuf, "\\e");
+          break;
+        default:
+          {
+            char ubuf[16];
+            memset (ubuf, 0, sizeof (ubuf));
+            if (uc >= ' ' && uc < 127)
+              ubuf[0] = (char) uc;
+            else if (uc < 0xffff)
+              snprintf (ubuf, sizeof (ubuf), "\\u%04x", uc);
+            else
+              snprintf (ubuf, sizeof (ubuf), "\\U%08x", uc);
+            strbufferunsafeappendcstr_BM (sbuf, ubuf);
+          }
+          break;
+        }
+    }
+}                               /* end strbufferencodedutf8 */
+
+
+
+
+void
+strbufferencodedc_BM (struct strbuffer_stBM *sbuf, const char *str,
+                      ssize_t bytelen)
+{
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
+    return;
+  if (!str)
+    return;
+  if (bytelen < 0)
+    bytelen = strlen (str);
+  strbufferreserve_BM (sbuf, 9 * bytelen / 8 + 10);
+  const char *ends = str + bytelen;
+  for (const char *pc = str; pc < ends; pc++)
+    {
+      switch (*pc)
+        {
+        case '\"':
+          strbufferunsafeappendcstr_BM (sbuf, "\\\"");
+          break;
+        case '\'':
+          strbufferunsafeappendcstr_BM (sbuf, "\\\'");
+          break;
+        case '\a':
+          strbufferunsafeappendcstr_BM (sbuf, "\\a");
+          break;
+        case '\b':
+          strbufferunsafeappendcstr_BM (sbuf, "\\b");
+          break;
+        case '\f':
+          strbufferunsafeappendcstr_BM (sbuf, "\\f");
+          break;
+        case '\n':
+          strbufferunsafeappendcstr_BM (sbuf, "\\n");
+          break;
+        case '\r':
+          strbufferunsafeappendcstr_BM (sbuf, "\\r");
+          break;
+        case '\t':
+          strbufferunsafeappendcstr_BM (sbuf, "\\t");
+          break;
+        case '\v':
+          strbufferunsafeappendcstr_BM (sbuf, "\\v");
+          break;
+        case '\033' /*ESCAPE*/:
+          strbufferunsafeappendcstr_BM (sbuf, "\\e");
+          break;
+        default:
+          {
+            char ubuf[8] = "";
+            if (*pc < 127 && *pc >= ' ')
+              {
+                ubuf[0] = *pc;
+                ubuf[1] = (char) 0;
+              }
+            else
+              snprintf (ubuf, sizeof (ubuf), "\\x%02x", *pc);
+            strbufferunsafeappendcstr_BM (sbuf, ubuf);
+          };
+          break;
+        }
+    }
+}                               /* end strbufferencodedc */
