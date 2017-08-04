@@ -179,3 +179,58 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   strbufferprintf_BM (_.sbuf, ")");
   return _.sbuf;
 }                               /* end ROUTINE _5v30KC0IMxx_53ZzXprJTM6 */
+
+////////////////////////////////////////////////////////////////
+//// for the method to dump_value a closure
+extern objrout_sigBM ROUTINEOBJNAME_BM (_6jvRZetUz36_978V6SKIWZC);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_6jvRZetUz36_978V6SKIWZC)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1,
+const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  assert (isclosure_BM (arg1)); // the closure to dump
+  assert (valtype_BM (arg2) == tydata_strbuffer_BM);
+  assert (valtype_BM (arg3) == tydata_dumper_BM);
+  assert (valtype_BM ((const value_tyBM) restargs) == tydata_quasinode_BM
+          && treewidth_BM ((const value_tyBM) restargs) == 1);
+  const value_tyBM arg4 = treenthson_BM ((const value_tyBM) restargs, 0);
+  assert (istaggedint_BM (arg4));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const closure_tyBM * recv; struct strbuffer_stBM *sbuf;
+                 struct dumper_stBM *du; value_tyBM depthv; value_tyBM curson;
+                 const objectval_tyBM * connobj;
+    );
+  _.recv = (arg1);
+  _.sbuf = (struct strbuffer_stBM *) arg2;
+  _.du = (struct dumper_stBM *) arg3;
+  _.depthv = arg4;
+  unsigned depth = getint_BM (_.depthv);
+  _.connobj = closureconn_BM ((const value_tyBM) _.recv);
+  if (!dumpobjisdumpable_BM (_.du, _.connobj))
+    {
+      strbufferprintf_BM (_.sbuf, " __");
+      return _.sbuf;
+    }
+  char connidbuf[32];
+  idtocbuf32_BM (objid_BM (_.connobj), connidbuf);
+  strbufferprintf_BM (_.sbuf, "\t* %s (", connidbuf);
+  unsigned width = closurewidth_BM ((const value_tyBM) _.recv);
+  strbuffermoreindent_BM (_.sbuf);
+  for (unsigned six = 0; six < width; six++)
+    {
+      _.curson = closurenthson_BM ((const value_tyBM) _.recv, six);
+      if (!dumpvalisdumpable_BM (_.du, _.curson))
+        continue;
+      strbufferprintf_BM (_.sbuf, "\t");
+      send3_BM (_.curson, BMP_dump_value,
+                (struct stackframe_stBM *) &_,
+                _.sbuf, _.du, taggedint_BM (depth + 1));
+    }
+  strbufferlessindent_BM (_.sbuf);
+  strbufferprintf_BM (_.sbuf, ")");
+  return _.sbuf;
+}                               /* end ROUTINE _6jvRZetUz36_978V6SKIWZC */
