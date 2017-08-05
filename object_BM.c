@@ -777,6 +777,7 @@ valfindmethod_BM (const value_tyBM recv, objectval_tyBM * obselector)
           return mclos;
         };
       obclass = objgetclassinfosuperclass_BM (obclass);
+      loopcnt++;
     }
   while (obclass);
   return NULL;
