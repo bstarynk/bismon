@@ -94,7 +94,8 @@ bismon.h.gch: bismon.h $(GENERATED_HEADERS) $(BM_HEADERS)
 $(OBJECTS): bismon.h.gch
 
 %_BM.o: %_BM.c bismon.h.gch
-	$(CCACHE) $(COMPILE.c)  -c $< -o $@
+#	$(CCACHE) $(COMPILE.c)  -c $< -o $@
+	$(COMPILE.c) -c $< -o $@
 
 %_BM.i: %_BM.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
 	$(CC) $(CFLAGS) -C -E $< | sed s:^#://#: | $(INDENT) -gnu > $@
@@ -103,7 +104,8 @@ $(OBJECTS): bismon.h.gch
 	$(CCXX) $(CXXFLAGS) -C -E $< | sed s:^#://#: > $@
 
 %_BM.o: %_BM.cc bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
-	$(CCACHE) $(COMPILE.cc)  $< -o $@
+#	$(CCACHE) $(COMPILE.cc)  $< -o $@
+	$(COMPILE.cc)  $< -o $@
 
 modules/modbm_%.so: modules/modbm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
 	$(CCACHE) $(LINK.c) -fPIC -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<) -shared $< -o $@
