@@ -425,9 +425,13 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
         strbufferprintf_BM (_.sbuf, "\n~: %s |=%s|\t", selidbuf, selname);
       else
         strbufferprintf_BM (_.sbuf, "\n~: %s\t", selidbuf);
+      unsigned oldbuflen = strbufferlength_BM (_.sbuf);
       send3_BM (_.curmeth, BMP_dump_value,
                 (struct stackframe_stBM *) &_,
                 _.sbuf, _.du, taggedint_BM (1));
+      unsigned newbuflen = strbufferlength_BM (_.sbuf);
+      if (newbuflen == oldbuflen)
+        strbufferprintf_BM (_.sbuf, "\t |nometh| __");
     }
   strbufferlessindent_BM (_.sbuf);
   strbufferprintf_BM (_.sbuf, "\t~)");
