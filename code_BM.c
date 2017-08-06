@@ -496,16 +496,20 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
 {
   assert (!clos || isclosure_BM ((const value_tyBM) clos));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv; struct dumper_stBM *du;
-                 struct strbuffer_stBM *sbuf;
+                 const objectval_tyBM * recv;
+                 struct dumper_stBM *du; struct strbuffer_stBM *sbuf;
+                 value_tyBM closv;
     );
   assert (isobject_BM (arg1));
   _.recv = arg1;
   assert (valtype_BM (arg2) == tydata_dumper_BM);
   _.du = arg2;
-  assert (valtype_BM (_.recv->ob_data) == tydata_classinfo_BM);
   assert (valtype_BM (arg3) == tydata_strbuffer_BM);
   assert (restargs == NULL);
   _.sbuf = arg3;
+  _.closv = objgetattr_BM (_.recv, BMP_dump_data);
+  if (isclosure_BM (_.closv))
+    return apply3_BM (_.closv, (struct stackframe_stBM *) &_,
+                      (const value_tyBM) _.recv, _.du, _.sbuf);
   return (value_tyBM) _.recv;
 }                               /* end ROUTINE _6PmxiZR9WBe_13DwWExCALl */
