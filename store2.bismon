@@ -6,32 +6,13 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment| "method to dump_value an integer"
 !)_3kMqlEugRVW_7DgwjR4CBbP
 
+
+
 !(_3Tc3E4uo2p5_4EXWCPwCR5b
 !@  1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment| "method to dump_value a set"
 !)_3Tc3E4uo2p5_4EXWCPwCR5b
 
-!(_5D9kkPHSPxq_8suDXpjlzjE
-!@  1501766546.15
-!: _01h86SAfOfg_1q2oMegGRwW |=comment| "method to dump_value a tuple"
-!)_5D9kkPHSPxq_8suDXpjlzjE
-
-!(_5v30KC0IMxx_53ZzXprJTM6
-!@  1501766546.15
-!: _01h86SAfOfg_1q2oMegGRwW |=comment| "method to dump_value a node"
-!)_5v30KC0IMxx_53ZzXprJTM6
-
-
-!(_6jvRZetUz36_978V6SKIWZC
-!@  1501766546.15
-!: _01h86SAfOfg_1q2oMegGRwW |=comment| "method to dump_value a closure"
-!)_6jvRZetUz36_978V6SKIWZC
-
-
-!(_7mvOlkB1tAJ_3psVFz4QEAn
-!@  1501766546.15
-!: _01h86SAfOfg_1q2oMegGRwW |=comment| "method to dump_value a string"
-!)_7mvOlkB1tAJ_3psVFz4QEAn
 
 
 !(_4EBQMvthjcP_2OiZxZviSQc
@@ -40,10 +21,43 @@
 !)_4EBQMvthjcP_2OiZxZviSQc
 
 
+
+!(_5v30KC0IMxx_53ZzXprJTM6
+!@  1501766546.15
+!: _01h86SAfOfg_1q2oMegGRwW |=comment| "method to dump_value a node"
+!)_5v30KC0IMxx_53ZzXprJTM6
+
+
+
+!(_5D9kkPHSPxq_8suDXpjlzjE
+!@  1501766546.15
+!: _01h86SAfOfg_1q2oMegGRwW |=comment| "method to dump_value a tuple"
+!)_5D9kkPHSPxq_8suDXpjlzjE
+
+
+
+
 !(_67IapmpeTLU_8MQKtlK8iAD
 !@  1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment| "method to dump_data a class"
 !)_67IapmpeTLU_8MQKtlK8iAD
+
+
+
+!(_6jvRZetUz36_978V6SKIWZC
+!@  1501766546.15
+!: _01h86SAfOfg_1q2oMegGRwW |=comment| "method to dump_value a closure"
+!)_6jvRZetUz36_978V6SKIWZC
+
+
+
+!(_7mvOlkB1tAJ_3psVFz4QEAn
+!@  1501766546.15
+!: _01h86SAfOfg_1q2oMegGRwW |=comment| "method to dump_value a string"
+!)_7mvOlkB1tAJ_3psVFz4QEAn
+
+
+
 
 //// _2GkorMEc9Eo_9RNFaLAM1BT
 //// _8KP1nM1Tyd4_1agJc8ntwBb
