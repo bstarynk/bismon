@@ -481,3 +481,31 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
     };
   return _.sbuf;
 }                               /* end ROUTINE _7fCcteNe7aR_3IKHeHjmzff */
+
+
+
+//// for the method to dump_data a specially_dumpable
+extern objrout_sigBM ROUTINEOBJNAME_BM (_6PmxiZR9WBe_13DwWExCALl);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_6PmxiZR9WBe_13DwWExCALl)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1,
+const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv; struct dumper_stBM *du;
+                 struct strbuffer_stBM *sbuf;
+    );
+  assert (isobject_BM (arg1));
+  _.recv = arg1;
+  assert (valtype_BM (arg2) == tydata_dumper_BM);
+  _.du = arg2;
+  assert (valtype_BM (_.recv->ob_data) == tydata_classinfo_BM);
+  assert (valtype_BM (arg3) == tydata_strbuffer_BM);
+  assert (restargs == NULL);
+  _.sbuf = arg3;
+  return (value_tyBM) _.recv;
+}                               /* end ROUTINE _6PmxiZR9WBe_13DwWExCALl */
