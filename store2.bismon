@@ -1,5 +1,5 @@
 // generated file store2.bismon
-// for 10 objects
+// for 11 objects
 // with 0 modules
 
 
@@ -25,8 +25,8 @@
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for objects with dump_data attribute giving a closure"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~:  _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|  % _6PmxiZR9WBe_13DwWExCALl ()
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
+~: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|  % _6PmxiZR9WBe_13DwWExCALl ()
 ~)
 !)_4tiUQqbr6oh_5gZVoUWsppH
 
@@ -72,6 +72,14 @@
 
 
 
+!(_6PmxiZR9WBe_13DwWExCALl
+!@ 1502044570.17
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method to dump_data a specially_dumpable"
+!)_6PmxiZR9WBe_13DwWExCALl
+
+
+
 !(_7fCcteNe7aR_3IKHeHjmzff
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -85,15 +93,6 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a string"
 !)_7mvOlkB1tAJ_3psVFz4QEAn
-
-
-
-
-!(_6PmxiZR9WBe_13DwWExCALl
-!@ 1502044570.17
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "method to dump_data a specially_dumpable"
-!)_6PmxiZR9WBe_13DwWExCALl
 
 
 
