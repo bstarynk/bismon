@@ -193,7 +193,7 @@ dump_scan_object_content_BM (struct dumper_stBM *du,
   // perhaps we should send first, and use its result...
   if (_.curobj->ob_data)
     send1_BM ((value_tyBM) _.curobj, BMP_dump_scan,
-              (struct stackframe_stBM *) &_, du->dump_object);
+              (struct stackframe_stBM *) &_, du);
 }                               /* end dump_scan_object_content_BM   */
 
 

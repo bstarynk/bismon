@@ -114,16 +114,19 @@ extern void objputattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr,
                            value_tyBM valattr);
 extern void objremoveattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr);
 
-static inline bool objhasclassinfo_BM (objectval_tyBM * obj);
+static inline bool objhasclassinfo_BM (const objectval_tyBM * obj);
 // put a fresh classinfo as an object's data
 extern void objputclassinfo_BM (objectval_tyBM * obj,
                                 objectval_tyBM * superclass);
 static inline objectval_tyBM *  //
-  objgetclassinfosuperclass_BM (objectval_tyBM * obj);
+  objgetclassinfosuperclass_BM (const objectval_tyBM * obj);
 
-static inline const closure_tyBM *      //
-
- objgetclassinfomethod_BM (objectval_tyBM * obj, objectval_tyBM * obselector);
+static inline const closure_tyBM *objgetclassinfomethod_BM (const
+                                                            objectval_tyBM *
+                                                            obj,
+                                                            const
+                                                            objectval_tyBM *
+                                                            obselector);
 
 extern void
 objclassinfoputmethod_BM (objectval_tyBM * obj, objectval_tyBM * obselector,
@@ -134,7 +137,7 @@ objclassinforemovemethod_BM (objectval_tyBM * obj,
                              objectval_tyBM * obselector);
 
 static inline const setval_tyBM *       //
-  objgetclassinfosetofselectors_BM (objectval_tyBM * obj);
+  objgetclassinfosetofselectors_BM (const objectval_tyBM * obj);
 
 /// message sending
 

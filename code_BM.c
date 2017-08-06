@@ -264,9 +264,9 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   _.du = (struct dumper_stBM *) arg3;
   _.depthv = arg4;
   unsigned depth = getint_BM (_.depthv);
+  assert (depth < MAXDEPTHMETHOD_BM);
   unsigned bsiz = lenstring_BM (_.recv);
   const char *bstr = bytstring_BM (_.recv);
-  unsigned ulen = g_utf8_strlen (bstr, bsiz);
   strbufferprintf_BM (_.sbuf, "\t\"");
   if (bsiz < STRBUFFERWANTEDWIDTH_BM)
     {
@@ -313,3 +313,47 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   strbufferprintf_BM (_.sbuf, "\"");
   return _.sbuf;
 }                               /* end ROUTINE _7mvOlkB1tAJ_3psVFz4QEAn */
+
+
+
+
+//// for the method to dump_scan a class
+extern objrout_sigBM ROUTINEOBJNAME_BM (_4EBQMvthjcP_2OiZxZviSQc);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_4EBQMvthjcP_2OiZxZviSQc)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1,
+const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv;
+                 struct dumper_stBM *du; const objectval_tyBM * supercl;
+                 const setval_tyBM * selset; const objectval_tyBM * cursel;
+                 value_tyBM curmeth;
+    );
+  assert (isobject_BM (arg1));
+  _.recv = arg1;
+  assert (valtype_BM (arg2) == tydata_dumper_BM);
+  _.du = arg2;
+  assert (valtype_BM (_.recv->ob_data) == tydata_classinfo_BM);
+  assert (arg3 == NULL);
+  assert (restargs == NULL);
+  _.supercl = objgetclassinfosuperclass_BM ((const value_tyBM) _.recv);
+  _.selset = objgetclassinfosetofselectors_BM ((const value_tyBM) _.recv);
+  dumpscanobj_BM (_.du, _.supercl);
+  dumpscanvalue_BM (_.du, (const value_tyBM) _.selset, 0);
+  unsigned nbsel = setcardinal_BM (_.selset);
+  for (unsigned six = 0; six < nbsel; six++)
+    {
+      _.cursel = setelemnth_BM (_.selset, six);
+      if (!dumpobjisdumpable_BM (_.du, _.cursel))
+        continue;
+      _.curmeth = (value_tyBM) objgetclassinfomethod_BM (_.recv, _.cursel);
+      assert (isclosure_BM (_.curmeth));
+      dumpscanvalue_BM (_.du, _.curmeth, 0);
+    }
+  return (value_tyBM) _.recv;
+}                               /* end ROUTINE _4EBQMvthjcP_2OiZxZviSQc */

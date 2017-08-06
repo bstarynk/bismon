@@ -368,7 +368,7 @@ objgrowcomps_BM (objectval_tyBM * obj, unsigned gap)
 }                               /* end objgrowcomps_BM */
 
 bool
-objhasclassinfo_BM (objectval_tyBM * obj)
+objhasclassinfo_BM (const objectval_tyBM * obj)
 {
   if (!isobject_BM ((const value_tyBM) obj))
     return false;
@@ -378,7 +378,7 @@ objhasclassinfo_BM (objectval_tyBM * obj)
 }                               /* end objhasclassinfo_BM */
 
 objectval_tyBM *
-objgetclassinfosuperclass_BM (objectval_tyBM * obj)
+objgetclassinfosuperclass_BM (const objectval_tyBM * obj)
 {
   if (!objhasclassinfo_BM (obj))
     return NULL;
@@ -391,7 +391,8 @@ objgetclassinfosuperclass_BM (objectval_tyBM * obj)
 }                               /* end objgetclassinfosuperclass_BM */
 
 const closure_tyBM *
-objgetclassinfomethod_BM (objectval_tyBM * obj, objectval_tyBM * obselector)
+objgetclassinfomethod_BM (const objectval_tyBM * obj,
+                          const objectval_tyBM * obselector)
 {
   if (!objhasclassinfo_BM (obj))
     return NULL;
@@ -408,7 +409,7 @@ objgetclassinfomethod_BM (objectval_tyBM * obj, objectval_tyBM * obselector)
 }                               /* end objgetclassinfomethod_BM */
 
 const setval_tyBM *             //
-objgetclassinfosetofselectors_BM (objectval_tyBM * obj)
+objgetclassinfosetofselectors_BM (const objectval_tyBM * obj)
 {
   if (!objhasclassinfo_BM (obj))
     return NULL;
