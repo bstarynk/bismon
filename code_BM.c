@@ -373,8 +373,7 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
                  struct dumper_stBM *du;
-                 struct strbuffer_stBM *sbuf;
-                 const objectval_tyBM * supercl;
+                 struct strbuffer_stBM *sbuf; const objectval_tyBM * supercl;
                  const setval_tyBM * selset; const objectval_tyBM * cursel;
                  value_tyBM curmeth;
     );
@@ -384,6 +383,7 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   _.du = arg2;
   assert (valtype_BM (_.recv->ob_data) == tydata_classinfo_BM);
   assert (valtype_BM (arg3) == tydata_strbuffer_BM);
+  assert (restargs == NULL);
   _.sbuf = arg3;
   _.supercl = objgetclassinfosuperclass_BM ((const value_tyBM) _.recv);
   _.selset = objgetclassinfosetofselectors_BM ((const value_tyBM) _.recv);
@@ -395,7 +395,7 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
       char superidbuf[32];
       memset (superidbuf, 0, sizeof (superidbuf));
       idtocbuf32_BM (objid_BM (_.supercl), superidbuf);
-      char *supername = findobjectname_BM (_.supercl);
+      const char *supername = findobjectname_BM (_.supercl);
       if (supername)
         strbufferprintf_BM (_.sbuf, "|supercl %s:| %s", supername,
                             superidbuf);
@@ -418,7 +418,7 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
       char selidbuf[32];
       memset (selidbuf, 0, sizeof (selidbuf));
       idtocbuf32_BM (objid_BM (_.cursel), selidbuf);
-      char *selname = findobjectname_BM (_.cursel);
+      const char *selname = findobjectname_BM (_.cursel);
       if (selname)
         strbufferprintf_BM (_.sbuf, "\n~: %s |=%s|\t", selidbuf, selname);
       else
@@ -429,5 +429,5 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
     }
   strbufferlessindent_BM (_.sbuf);
   strbufferprintf_BM (_.sbuf, "~)");
-  return _.recv;
+  return (value_tyBM) _.recv;
 }                               /* end ROUTINE _67IapmpeTLU_8MQKtlK8iAD */
