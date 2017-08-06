@@ -1042,13 +1042,14 @@ parsergetvalue_BM (struct parser_stBM * pars,
       return nobuild ? NULL : (value_tyBM) tok.tok_string;
     }
   // parse objects given by id
-  else if (tok.tok_kind == plex_ID) {
+  else if (tok.tok_kind == plex_ID)
+    {
       if (tok.tok_id.id_hi == 0 && tok.tok_id.id_lo == 0)
         {
           *pgotval = true;
           return NULL;
         };
-      objectval_tyBM *obid = _.compobj   //
+      objectval_tyBM *obid = _.compobj  //
         = nobuild ? NULL : (findobjofid_BM (tok.tok_id));
       if (!obid && !nobuild)
         {
@@ -1060,15 +1061,18 @@ parsergetvalue_BM (struct parser_stBM * pars,
         };
       *pgotval = true;
       return obid;
-  }
+    }
   // parse objects given by name
-  else if (tok.tok_kind == plex_NAMEDOBJ) {
-    parserseek_BM(pars, lineno, colpos);
-    bool gotobj = false;
-    _.compobj = parsergetobject_BM(pars, (struct stackframe_stBM*)&_, depth+1, &gotobj);
-    *pgotval = gotobj;
-    return nobuild ? NULL : ((value_tyBM) _.compobj);
-  }
+  else if (tok.tok_kind == plex_NAMEDOBJ)
+    {
+      parserseek_BM (pars, lineno, colpos);
+      bool gotobj = false;
+      _.compobj =
+        parsergetobject_BM (pars, (struct stackframe_stBM *) &_, depth + 1,
+                            &gotobj);
+      *pgotval = gotobj;
+      return nobuild ? NULL : ((value_tyBM) _.compobj);
+    }
   //
   // parse tuples
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_leftbracket)
