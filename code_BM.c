@@ -212,19 +212,22 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   _.connobj = closureconn_BM ((const value_tyBM) _.recv);
   if (!dumpobjisdumpable_BM (_.du, _.connobj))
     {
-      strbufferprintf_BM (_.sbuf, " __");
+      strbufferprintf_BM (_.sbuf, " |transclos:| __");
       return _.sbuf;
     }
   char connidbuf[32];
   idtocbuf32_BM (objid_BM (_.connobj), connidbuf);
-  strbufferprintf_BM (_.sbuf, "\t* %s (", connidbuf);
+  strbufferprintf_BM (_.sbuf, "\t%% %s (", connidbuf);
   unsigned width = closurewidth_BM ((const value_tyBM) _.recv);
   strbuffermoreindent_BM (_.sbuf);
   for (unsigned six = 0; six < width; six++)
     {
       _.curson = closurenthson_BM ((const value_tyBM) _.recv, six);
       if (!dumpvalisdumpable_BM (_.du, _.curson))
-        continue;
+        {
+          strbufferprintf_BM (_.sbuf, "\t__");
+          continue;
+        }
       strbufferprintf_BM (_.sbuf, "\t");
       send3_BM (_.curson, BMP_dump_value,
                 (struct stackframe_stBM *) &_,
@@ -359,7 +362,7 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
 }                               /* end ROUTINE _4EBQMvthjcP_2OiZxZviSQc */
 
 
-//// for the method to dump_scan a class
+//// for the method to dump_data a class
 extern objrout_sigBM ROUTINEOBJNAME_BM (_67IapmpeTLU_8MQKtlK8iAD);
 
 value_tyBM
@@ -371,8 +374,7 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
 {
   assert (!clos || isclosure_BM ((const value_tyBM) clos));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv;
-                 struct dumper_stBM *du;
+                 const objectval_tyBM * recv; struct dumper_stBM *du;
                  struct strbuffer_stBM *sbuf; const objectval_tyBM * supercl;
                  const setval_tyBM * selset; const objectval_tyBM * cursel;
                  value_tyBM curmeth;
@@ -428,6 +430,6 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
                 _.sbuf, _.du, taggedint_BM (1));
     }
   strbufferlessindent_BM (_.sbuf);
-  strbufferprintf_BM (_.sbuf, "~)");
+  strbufferprintf_BM (_.sbuf, "\t~)");
   return (value_tyBM) _.recv;
 }                               /* end ROUTINE _67IapmpeTLU_8MQKtlK8iAD */
