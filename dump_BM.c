@@ -475,7 +475,7 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
   strbufferreset_BM (_.sbuf);
   /// dump the data
   _.dumpres = send2_BM ((const value_tyBM) _.curobj, BMP_dump_data,
-                        (struct stackframe_stBM *) &_, _.sbuf, du);
+                        (struct stackframe_stBM *) &_, du, _.sbuf);
   if (_.dumpres && strbufferlength_BM (_.sbuf) > 0)
     {
       fputs (strbufferbytes_BM (_.sbuf), spfil);

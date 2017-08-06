@@ -357,3 +357,77 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
     }
   return (value_tyBM) _.recv;
 }                               /* end ROUTINE _4EBQMvthjcP_2OiZxZviSQc */
+
+
+//// for the method to dump_scan a class
+extern objrout_sigBM ROUTINEOBJNAME_BM (_67IapmpeTLU_8MQKtlK8iAD);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_67IapmpeTLU_8MQKtlK8iAD)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1,
+const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv;
+                 struct dumper_stBM *du;
+                 struct strbuffer_stBM *sbuf;
+                 const objectval_tyBM * supercl;
+                 const setval_tyBM * selset; const objectval_tyBM * cursel;
+                 value_tyBM curmeth;
+    );
+  assert (isobject_BM (arg1));
+  _.recv = arg1;
+  assert (valtype_BM (arg2) == tydata_dumper_BM);
+  _.du = arg2;
+  assert (valtype_BM (_.recv->ob_data) == tydata_classinfo_BM);
+  assert (valtype_BM (arg3) == tydata_strbuffer_BM);
+  _.sbuf = arg3;
+  _.supercl = objgetclassinfosuperclass_BM ((const value_tyBM) _.recv);
+  _.selset = objgetclassinfosetofselectors_BM ((const value_tyBM) _.recv);
+  unsigned nbsel = setcardinal_BM (_.selset);
+  strbufferprintf_BM (_.sbuf, "!~ class (~\t");
+  strbuffermoreindent_BM (_.sbuf);
+  if (dumpobjisdumpable_BM (_.du, _.supercl))
+    {
+      char superidbuf[32];
+      memset (superidbuf, 0, sizeof (superidbuf));
+      idtocbuf32_BM (objid_BM (_.supercl), superidbuf);
+      char *supername = findobjectname_BM (_.supercl);
+      if (supername)
+        strbufferprintf_BM (_.sbuf, "|supercl %s:| %s", supername,
+                            superidbuf);
+      else
+        strbufferprintf_BM (_.sbuf, "|supercl=| %s", superidbuf);
+    }
+  else
+    {
+      strbufferprintf_BM (_.sbuf, "|nosuperclass| __");
+    }
+  for (unsigned six = 0; six < nbsel; six++)
+    {
+      _.cursel = setelemnth_BM (_.selset, six);
+      if (!dumpobjisdumpable_BM (_.du, _.cursel))
+        continue;
+      _.curmeth = (value_tyBM) objgetclassinfomethod_BM (_.recv, _.cursel);
+      assert (isclosure_BM (_.curmeth));
+      if (!dumpvalisdumpable_BM (_.du, _.curmeth))
+        continue;
+      char selidbuf[32];
+      memset (selidbuf, 0, sizeof (selidbuf));
+      idtocbuf32_BM (objid_BM (_.cursel), selidbuf);
+      char *selname = findobjectname_BM (_.cursel);
+      if (selname)
+        strbufferprintf_BM (_.sbuf, "\n~: %s |=%s|\t", selidbuf, selname);
+      else
+        strbufferprintf_BM (_.sbuf, "\n~: %s\t", selidbuf);
+      send3_BM (_.curmeth, BMP_dump_value,
+                (struct stackframe_stBM *) &_,
+                _.sbuf, _.du, taggedint_BM (1));
+    }
+  strbufferlessindent_BM (_.sbuf);
+  strbufferprintf_BM (_.sbuf, "~)");
+  return _.recv;
+}                               /* end ROUTINE _67IapmpeTLU_8MQKtlK8iAD */
