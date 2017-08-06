@@ -1,5 +1,5 @@
 // generated file store2.bismon
-// for 8 objects
+// for 10 objects
 // with 0 modules
 
 
@@ -16,6 +16,17 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a set"
 !)_3Tc3E4uo2p5_4EXWCPwCR5b
+
+
+
+!(_4tiUQqbr6oh_5gZVoUWsppH |=specially_dumpable|
+!~ name (~ specially_dumpable ~)
+!@ 1502035117.80
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for objects with dump_data attribute giving a closure"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
+!)_4tiUQqbr6oh_5gZVoUWsppH
 
 
 
@@ -41,14 +52,7 @@
  "method to dump_value a tuple"
 !)_5D9kkPHSPxq_8suDXpjlzjE
 
-!(_4tiUQqbr6oh_5gZVoUWsppH
-!@ 1502035117.80
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "class for objects with dump_data attribute giving a closure"
- !~ name (~ specially_dumpable ~)
-!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ _7T9OwSFlgov_0wVJaK1eZbn |=object| ~)
-!)_4tiUQqbr6oh_5gZVoUWsppH
+
 
 !(_67IapmpeTLU_8MQKtlK8iAD
 !@ 1501766546.15
