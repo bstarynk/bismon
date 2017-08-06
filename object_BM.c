@@ -240,14 +240,14 @@ objectdbg_BM (const objectval_tyBM * obj)
 {
   if (!obj)
     return "__";
-  if (!isobject_BM (obj))
+  if (!isobject_BM ((const value_tyBM)obj))
     return "*nonobject*";
   const char *n = findobjectname_BM (obj);
   if (n)
     return n;
   static char idbuf[32];
   memset (idbuf, 0, sizeof (idbuf));
-  idtocbuf32_BM (ob->ob_id, idbuf);
+  idtocbuf32_BM (obj->ob_id, idbuf);
   return idbuf;
 }                               /* end objectdbg_BM */
 
