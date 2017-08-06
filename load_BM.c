@@ -199,6 +199,8 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
               && (*endid == (char) 0 || isspace (*endid)))
             {
               objectval_tyBM *newobj = makeobjofid_BM (id);
+              if (!newobj->ob_space)
+                objputspacenum_BM (newobj, ix);
               char idbuf32[32] = "";
               idtocbuf32_BM (id, idbuf32);
               if (hashsetobj_contains_BM (ld->ld_objhset, newobj))
