@@ -240,7 +240,7 @@ objectdbg_BM (const objectval_tyBM * obj)
 {
   if (!obj)
     return "__";
-  if (!isobject_BM ((const value_tyBM)obj))
+  if (!isobject_BM ((const value_tyBM) obj))
     return "*nonobject*";
   const char *n = findobjectname_BM (obj);
   if (n)

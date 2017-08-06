@@ -437,3 +437,47 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   strbufferprintf_BM (_.sbuf, "\t~)");
   return (value_tyBM) _.recv;
 }                               /* end ROUTINE _67IapmpeTLU_8MQKtlK8iAD */
+
+
+////////////////////////////////////////////////////////////////
+//// for the method to dump_value an object or a class
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7fCcteNe7aR_3IKHeHjmzff);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_7fCcteNe7aR_3IKHeHjmzff)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1,
+const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  assert (isobject_BM (arg1));  // the object to dump
+  assert (valtype_BM (arg2) == tydata_strbuffer_BM);
+  assert (valtype_BM (arg3) == tydata_dumper_BM);
+  assert (valtype_BM ((const value_tyBM) restargs) == tydata_quasinode_BM
+          && treewidth_BM ((const value_tyBM) restargs) == 1);
+  const value_tyBM arg4 = treenthson_BM ((const value_tyBM) restargs, 0);
+  assert (istaggedint_BM (arg4));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv; struct strbuffer_stBM *sbuf;
+                 struct dumper_stBM *du; value_tyBM depthv;
+                 const objectval_tyBM * curobj;
+    );
+  _.recv = (arg1);
+  _.sbuf = (struct strbuffer_stBM *) arg2;
+  _.du = (struct dumper_stBM *) arg3;
+  _.depthv = arg4;
+  if (!dumpobjisdumpable_BM (_.du, _.recv))
+    strbufferprintf_BM (_.sbuf, " __");
+  else
+    {
+      char objidbuf[32];
+      idtocbuf32_BM (objid_BM (_.recv), objidbuf);
+      const char *n = findobjectname_BM (_.recv);
+      if (n)
+        strbufferprintf_BM (_.sbuf, "%s |=%s|\t", objidbuf, n);
+      else
+        strbufferprintf_BM (_.sbuf, "%s", objidbuf);
+    };
+  return _.sbuf;
+}                               /* end ROUTINE _7fCcteNe7aR_3IKHeHjmzff */
