@@ -41,7 +41,14 @@
  "method to dump_value a tuple"
 !)_5D9kkPHSPxq_8suDXpjlzjE
 
-
+!(_4tiUQqbr6oh_5gZVoUWsppH
+!@ 1502035117.80
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for objects with dump_data attribute giving a closure"
+ !~ name (~ specially_dumpable ~)
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!~ class (~ _7T9OwSFlgov_0wVJaK1eZbn |=object| ~)
+!)_4tiUQqbr6oh_5gZVoUWsppH
 
 !(_67IapmpeTLU_8MQKtlK8iAD
 !@ 1501766546.15
