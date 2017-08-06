@@ -47,6 +47,10 @@ extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[]);
 #else
 extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32]);
 #endif
+// to be called from debugger
+extern const char *iddbg_BM (rawid_tyBM id);    // non reentrant!
+extern const char *objectdbg_BM (const objectval_tyBM * obj);   // non reentrant!
+
 extern rawid_tyBM parse_rawid_BM (const char *buf, const char **pend);
 extern void *allocgcty_BM (unsigned type, size_t sz);
 extern void *allocinternalty_BM (unsigned type, size_t sz);
