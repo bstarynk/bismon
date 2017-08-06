@@ -11,7 +11,8 @@
 !~ name (~ class ~)
 !$ _0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ _0LK4TzFd6u1_0JFUsrQ4odG |=class|
-~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan| % _4EBQMvthjcP_2OiZxZviSQc ( )
+ ~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan| % _4EBQMvthjcP_2OiZxZviSQc ( )
+ ~: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data| % _67IapmpeTLU_8MQKtlK8iAD ( )
 ~)
 !)_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 
@@ -97,6 +98,8 @@
 !~ name (~ object ~)
 !$ _0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !@ 1497636292.47
+!~ class (~ __ |no superclass|
+~)
 !)_7T9OwSFlgov_0wVJaK1eZbn |=object|
 
 !(_93zjUzZVAaj_9ppXv7C34GR |=closure|
