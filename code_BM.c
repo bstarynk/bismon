@@ -513,3 +513,26 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
                       (const value_tyBM) _.recv, _.du, _.sbuf);
   return (value_tyBM) _.recv;
 }                               /* end ROUTINE _6PmxiZR9WBe_13DwWExCALl */
+
+
+
+//// for the closure to dump_data the predefined, inside dumper_of_predefined
+extern objrout_sigBM ROUTINEOBJNAME_BM (_075tZNHCAMa_7XNNBaNM4qv);
+
+
+
+value_tyBM
+ROUTINEOBJNAME_BM (_075tZNHCAMa_7XNNBaNM4qv)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1,
+const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv;
+                 struct dumper_stBM *du; struct strbuffer_stBM *sbuf;
+                 value_tyBM closv;
+    );
+  printf("_075tZNHCAMa_7XNNBaNM4qv should dump the predefined\n");
+} /* end ROUTINE _075tZNHCAMa_7XNNBaNM4qv */

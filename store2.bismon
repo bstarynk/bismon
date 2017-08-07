@@ -96,4 +96,21 @@
 
 
 
+!(_4dGXIiALafP_2bxdkvN34Qa |=dumper_of_predefined|
+!~ name (~ dumper_of_predefined ~)
+!@ 1502085467.42
+!$_4tiUQqbr6oh_5gZVoUWsppH |=specially_dumpable|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the dumper of predefined objects"
+!: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data| % _075tZNHCAMa_7XNNBaNM4qv ( "_bm_predef.h" )
+!)_4dGXIiALafP_2bxdkvN34Qa
+
+
+!(_075tZNHCAMa_7XNNBaNM4qv
+!@ 1502085467.42
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the routine to dump predefined"
+!)_075tZNHCAMa_7XNNBaNM4qv
+
+
 // end of file store2.bismon
