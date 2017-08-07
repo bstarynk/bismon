@@ -534,5 +534,7 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
                  struct dumper_stBM *du; struct strbuffer_stBM *sbuf;
                  value_tyBM closv;
     );
-  printf("_075tZNHCAMa_7XNNBaNM4qv should dump the predefined\n");
-} /* end ROUTINE _075tZNHCAMa_7XNNBaNM4qv */
+  _.closv = clos;
+#warning should use strbufferwritetofile_BM
+  printf ("_075tZNHCAMa_7XNNBaNM4qv should dump the predefined\n");
+}                               /* end ROUTINE _075tZNHCAMa_7XNNBaNM4qv */
