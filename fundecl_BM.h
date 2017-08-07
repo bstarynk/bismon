@@ -241,6 +241,11 @@ extern void strbufferencodedutf8_BM (struct strbuffer_stBM *sbuf,
 /// output bytes encoded à la C
 extern void strbufferencodedc_BM (struct strbuffer_stBM *sbuf,
                                   const char *str, ssize_t bytelen);
+
+/// write the content to a file, if different
+extern void strbufferwritetofile_BM (struct strbuffer_stBM *sbuf,
+                                     const char *filepath);
+
 extern void strbuffergcmark_BM (struct garbcoll_stBM *gc,
                                 struct strbuffer_stBM *sbuf, int depth);
 extern void strbuffergcdestroy_BM (struct garbcoll_stBM *gc,

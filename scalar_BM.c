@@ -629,3 +629,70 @@ strbufferencodedc_BM (struct strbuffer_stBM *sbuf, const char *str,
         }
     }
 }                               /* end strbufferencodedc_BM */
+
+
+
+void
+strbufferwritetofile_BM (struct strbuffer_stBM *sbuf, const char *filepath)
+{
+  if (!isstrbuffer_BM ((const value_tyBM) sbuf))
+    return;
+  if (!filepath || !filepath[0])
+    return;
+  assert (sbuf->sbuf_dbuf);
+  size_t siz = sbuf->sbuf_size;
+  unsigned maxsiz = ((typedhead_tyBM *) sbuf)->rlen;
+  assert (siz > 0 && siz <= maxsiz);
+  assert (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
+          && sbuf->sbuf_curp < sbuf->sbuf_dbuf + sbuf->sbuf_size);
+  FILE *oldfil = fopen (filepath, "r");
+  bool samefile = (oldfil != NULL);
+  if (oldfil)
+    {
+      struct stat oldstat = { };
+      fstat (fileno (oldfil), &oldstat);
+      if (oldstat.st_size != (unsigned) siz)
+        samefile = false;
+      unsigned ix = 0;
+      while (samefile)
+        {
+          int c = fgetc (oldfil);
+          if (c == EOF)
+            {
+              samefile = (ix == siz);
+              break;
+            };
+          samefile = (c == sbuf->sbuf_dbuf[ix]);
+          ix++;
+        };
+      fclose (oldfil);
+    }
+  if (samefile)
+    return;
+  if (strlen (filepath) < 3 * TINYSIZE_BM)
+    {
+      char backpath[3 * TINYSIZE_BM + 5];
+      memset (backpath, 0, sizeof (backpath));
+      snprintf (backpath, sizeof (backpath), "%s~", filepath);
+      if (rename (filepath, backpath))
+        FATAL_BM ("failed to rename %s as %s (%m)", filepath, backpath);
+    }
+  else
+    {
+      char *backpath = NULL;
+      asprintf (&backpath, "%s~", filepath);
+      if (!backpath)
+        FATAL_BM ("asprintf failure for backpath %s", filepath);
+      if (rename (filepath, backpath))
+        FATAL_BM ("failed to rename %s as %s (%m)", filepath, backpath);
+      free (backpath);
+    }
+  FILE *newfil = fopen (filepath, "w");
+  if (!newfil)
+    FATAL_BM ("fopen %s failed (%m)", filepath);
+  if (fwrite (sbuf->sbuf_dbuf, siz, 1, newfil) != 1)
+    FATAL_BM ("fwrite into %s %u bytes failed (%m)", filepath,
+              (unsigned) siz);
+  if (fclose (newfil))
+    FATAL_BM ("fclose %s failed (%m)", filepath);
+}                               /* end strbufferwritetofile_BM */
