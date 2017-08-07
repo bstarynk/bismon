@@ -571,7 +571,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
     FATAL_BM ("calloc failed for arrnamed (%u) - %m", nbpredef);
   strbufferreserve_BM (_.prsbuf, nbpredef * 512);
   strbufferprintf_BM (_.prsbuf,
-                      "#if !defined(HAS_PREDEF_BM) || !defined(HAS_NAMED_PREDEF_BM)\n"
+                      "#if !defined(HAS_PREDEF_BM) && !defined(HAS_NAMED_PREDEF_BM)\n"
                       "#error missing HAS_PREDEF_BM or HAS_NAMED_PREDEF_BM\n"
                       "#endif\n");
   strbufferprintf_BM (_.prsbuf,
@@ -598,7 +598,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
       const char *n = findobjectname_BM (_.curpredef);
       if (n)
         {
-          strbufferprintf_BM (_.prsbuf, " /*=%s/\n", n);
+          strbufferprintf_BM (_.prsbuf, " /*=%s*/\n", n);
           arrnamed[nbnamed++] = _.curpredef;
           if (widthnames < strlen (n))
             widthnames = strlen (n);
@@ -649,7 +649,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
       idtocbuf32_BM (curid, idbuf);
       strbufferprintf_BM (_.prsbuf, "HAS_NAMED_PREDEF_BM(%s,%s)\n", n, idbuf);
     };
-  strbufferprintf_BM (_.prsbuf, "#undef HAS_NAMED_PREDEF_BM\n"
+  strbufferprintf_BM (_.prsbuf, "\n#undef HAS_NAMED_PREDEF_BM\n"
                       "#endif/*HAS_NAMED_PREDEF_BM*/\n\n");
   strbufferprintf_BM (_.prsbuf, "// end of generated file %s\n", basepath);
   char *filpath = NULL;

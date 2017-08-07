@@ -675,8 +675,7 @@ strbufferwritetofile_BM (struct strbuffer_stBM *sbuf, const char *filepath)
       char backpath[3 * TINYSIZE_BM + 5];
       memset (backpath, 0, sizeof (backpath));
       snprintf (backpath, sizeof (backpath), "%s~", filepath);
-      if (rename (filepath, backpath))
-        FATAL_BM ("failed to rename %s as %s (%m)", filepath, backpath);
+      (void) rename (filepath, backpath);
     }
   else
     {
