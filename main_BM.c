@@ -97,16 +97,16 @@ main (int argc, char **argv)
                argv[0], dlerror ());
       exit (EXIT_FAILURE);
     }
-  /// just to test the macro LOCALQNODESIZED_FM
+  /// just to test the macro LOCALQNODESIZED_BM
   {
-    LOCALQNODESIZED_FM (qns, BMP_node, 4);
+    LOCALQNODESIZED_BM (qns, BMP_node, 4);
     assert (qns.__ntree.nodt_conn == BMP_node);
     assert (qns.qsons[2] == NULL);
     assert (treewidth_BM (&qns) == 4);
   }
-  // just to test the macro LOCALQNODEFIELDED_FM
+  // just to test the macro LOCALQNODEFIELDED_BM
   {
-    LOCALQNODEFIELDED_FM (qnf, BMP_embed, value_tyBM * v1;
+    LOCALQNODEFIELDED_BM (qnf, BMP_embed, value_tyBM * v1;
                           value_tyBM * v2, *v3;);
     assert (qnf.__ftree.nodt_conn == BMP_embed);
     assert (qnf.v2 == NULL);
@@ -144,20 +144,3 @@ main (int argc, char **argv)
     dump_BM (dump_after_load_dir_bm, NULL);
   fflush (NULL);
 }                               /* end main */
-
-
-/**** works as expected, found by dlsym
-  ///// just for testing
-  extern objrout_sigBM ROUTINEOBJNAME_BM(_7ld89d4lLTB_3596gc6hLFI);
-
-  value_tyBM ROUTINEOBJNAME_BM(_7ld89d4lLTB_3596gc6hLFI)
-    (const closure_tyBM * clos,
-     struct stackframe_stBM *stkf,
-     const value_tyBM arg1,
-     const value_tyBM arg2,
-     const value_tyBM arg3,
-     const quasinode_tyBM * restargs) {
-    FATAL_BM("unexpected routine call clos=%p arg1=%p arg2=%p arg3=%p",
-             clos, arg1, arg2, arg3);
-  }  /// end ROUTINEOBJNAME_BM(_7ld89d4lLTB_3596gc6hLFI)
-*****/

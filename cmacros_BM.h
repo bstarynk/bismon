@@ -61,14 +61,14 @@
                   .stkfram_state=0,                             \
                   .stkfram_xtra=0 } }
 
-#define LOCALQNODESIZED_FM(Qnam,Conn,Siz) struct {			\
+#define LOCALQNODESIZED_BM(Qnam,Conn,Siz) struct {			\
     struct nodetree_stBM __ntree; value_tyBM qsons[Siz]; } Qnam =	\
       { .__ntree = { .pA = { .pA					\
 			     = { .htyp= tydata_quasinode_BM,		\
 				 .hgc=0, .hash=0 }, .size = (Siz) },	\
 		     .nodt_conn= (Conn) }, .qsons= {} }
 
-#define LOCALQNODEFIELDED_FM(Qnam,Conn,...) struct {			\
+#define LOCALQNODEFIELDED_BM(Qnam,Conn,...) struct {			\
   struct nodetree_stBM __ftree; __VA_ARGS__; } Qnam =			\
       { .__ftree = { .pA						\
 		     = { .pA						\

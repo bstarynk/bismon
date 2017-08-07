@@ -263,7 +263,7 @@ apply4_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
   objrout_sigBM *rout = connob->ob_rout;
   if (!rout)
     return NULL;
-  LOCALQNODESIZED_FM (qno, NULL, 1);
+  LOCALQNODESIZED_BM (qno, NULL, 1);
   qno.qsons[0] = arg4;
   return (*rout) (clos, stkf, arg1, arg2, arg3,
                   (const quasinode_tyBM *) &qno);
@@ -283,7 +283,7 @@ apply5_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
   objrout_sigBM *rout = connob->ob_rout;
   if (!rout)
     return NULL;
-  LOCALQNODESIZED_FM (qno, NULL, 2);
+  LOCALQNODESIZED_BM (qno, NULL, 2);
   qno.qsons[0] = arg4;
   qno.qsons[1] = arg5;
   return (*rout) (clos, stkf, arg1, arg2, arg3,
@@ -304,7 +304,7 @@ apply6_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
   objrout_sigBM *rout = connob->ob_rout;
   if (!rout)
     return NULL;
-  LOCALQNODESIZED_FM (qno, NULL, 3);
+  LOCALQNODESIZED_BM (qno, NULL, 3);
   qno.qsons[0] = arg4;
   qno.qsons[1] = arg5;
   qno.qsons[2] = arg6;
@@ -327,7 +327,7 @@ apply7_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
   objrout_sigBM *rout = connob->ob_rout;
   if (!rout)
     return NULL;
-  LOCALQNODESIZED_FM (qno, NULL, 4);
+  LOCALQNODESIZED_BM (qno, NULL, 4);
   qno.qsons[0] = arg4;
   qno.qsons[1] = arg5;
   qno.qsons[2] = arg6;
@@ -351,7 +351,7 @@ apply8_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
   objrout_sigBM *rout = connob->ob_rout;
   if (!rout)
     return NULL;
-  LOCALQNODESIZED_FM (qno, NULL, 4);
+  LOCALQNODESIZED_BM (qno, NULL, 4);
   qno.qsons[0] = arg4;
   qno.qsons[1] = arg5;
   qno.qsons[2] = arg6;
@@ -377,7 +377,7 @@ apply9_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
   objrout_sigBM *rout = connob->ob_rout;
   if (!rout)
     return NULL;
-  LOCALQNODESIZED_FM (qno, NULL, 5);
+  LOCALQNODESIZED_BM (qno, NULL, 5);
   qno.qsons[0] = arg4;
   qno.qsons[1] = arg5;
   qno.qsons[2] = arg6;
