@@ -645,13 +645,14 @@ strbufferwritetofile_BM (struct strbuffer_stBM *sbuf, const char *filepath)
   assert (siz > 0 && siz <= maxsiz);
   assert (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
           && sbuf->sbuf_curp < sbuf->sbuf_dbuf + sbuf->sbuf_size);
+  unsigned len = sbuf->sbuf_curp - sbuf->sbuf_dbuf;
   FILE *oldfil = fopen (filepath, "r");
   bool samefile = (oldfil != NULL);
   if (oldfil)
     {
       struct stat oldstat = { };
       fstat (fileno (oldfil), &oldstat);
-      if (oldstat.st_size != (unsigned) siz)
+      if (oldstat.st_size != (unsigned) len)
         samefile = false;
       unsigned ix = 0;
       while (samefile)
@@ -659,7 +660,7 @@ strbufferwritetofile_BM (struct strbuffer_stBM *sbuf, const char *filepath)
           int c = fgetc (oldfil);
           if (c == EOF)
             {
-              samefile = (ix == siz);
+              samefile = (ix == len);
               break;
             };
           samefile = (c == sbuf->sbuf_dbuf[ix]);
@@ -690,9 +691,9 @@ strbufferwritetofile_BM (struct strbuffer_stBM *sbuf, const char *filepath)
   FILE *newfil = fopen (filepath, "w");
   if (!newfil)
     FATAL_BM ("fopen %s failed (%m)", filepath);
-  if (fwrite (sbuf->sbuf_dbuf, siz, 1, newfil) != 1)
+  if (fwrite (sbuf->sbuf_dbuf, len, 1, newfil) != 1)
     FATAL_BM ("fwrite into %s %u bytes failed (%m)", filepath,
-              (unsigned) siz);
+              (unsigned) len);
   if (fclose (newfil))
     FATAL_BM ("fclose %s failed (%m)", filepath);
 }                               /* end strbufferwritetofile_BM */
