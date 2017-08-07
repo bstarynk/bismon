@@ -531,10 +531,55 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   assert (!clos || isclosure_BM ((const value_tyBM) clos));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
-                 struct dumper_stBM *du; struct strbuffer_stBM *sbuf;
+                 struct dumper_stBM *du;
+                 struct strbuffer_stBM *sbuf;
+                 struct strbuffer_stBM *prsbuf;
+                 const stringval_tyBM * filnamv;
+                 const setval_tyBM * prset; const objectval_tyBM * curpredef;
                  value_tyBM closv;
     );
-  _.closv = clos;
-#warning should use strbufferwritetofile_BM
+  _.closv = (const value_tyBM) clos;
+  _.prsbuf = strbuffermake_BM (512 * 1024);
+  _.filnamv = closurenthson_BM (_.closv, 0);
+  assert (isstring_BM ((const value_tyBM) _.filnamv));
+  const char *filpath = bytstring_BM (_.filnamv);
+  strbufferprintf_BM (_.prsbuf,
+                      "// generated file for predefined %s\n", filpath);
+  _.prset = setpredefinedobjects_BM ();
+  unsigned nbpredef = setcardinal_BM (_.prset);
+  strbufferreserve_BM (_.prsbuf, nbpredef * 512);
+  strbufferprintf_BM (_.prsbuf,
+                      "#if !defined(HAS_PREDEF_BM) || !defined(HAS_NAMED_PREDEF_BM)\n"
+                      "#error missing HAS_PREDEF_BM or HAS_NAMED_PREDEF_BM\n"
+                      "#endif\n");
+  strbufferprintf_BM (_.prsbuf,
+                      "#undef BM_NB_PREDEFINED\n"
+                      "#define BM_NB_PREDEFINED %u\n\n", nbpredef);
+  strbufferprintf_BM (_.prsbuf,
+                      "#ifdef HAS_PREDEF_BM\n"
+                      "//HAS_PREDEF_BM(Id,Hi,Lo,Hash)\n");
+  for (unsigned pix = 0; pix < nbpredef; pix++)
+    {
+      _.curpredef = setelemnth_BM (_.prset, pix);
+      if (pix % 5 == 0)
+        strbufferprintf_BM (_.prsbuf, "\n");
+      char idbuf[32];
+      memset (idbuf, 0, sizeof (idbuf));
+      rawid_tyBM curid = objid_BM (_.curpredef);
+      idtocbuf32_BM (curid, idbuf);
+      strbufferprintf_BM (_.prsbuf, "HAS_PREDEF_BM(%s,%llu,%llu,%lu)",
+                          idbuf, (unsigned long long) curid.id_hi,
+                          (unsigned long long) curid.id_lo,
+                          (unsigned long) hashid_BM (curid));
+      const char *n = findobjectname_BM (_.curpredef);
+      if (n)
+        strbufferprintf_BM (_.prsbuf, "/*=%s/\n", n);
+      else
+        strbufferprintf_BM (_.prsbuf, "\n");
+    }
+  strbufferprintf_BM (_.prsbuf, "#undef HAS_PREDEF_BM\n"
+                      "#endif /*HAS_PREDEF_BM*/\n");
+  /// missing generation of BMP_<name>
+#warning should use strbufferwritetofile_BM and make a dict type
   printf ("_075tZNHCAMa_7XNNBaNM4qv should dump the predefined\n");
 }                               /* end ROUTINE _075tZNHCAMa_7XNNBaNM4qv */
