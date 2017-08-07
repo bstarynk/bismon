@@ -516,19 +516,36 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
 
 
 
+
+
+static int
+cmpnamedpredef_BM (const void *p1, const void *p2)
+{
+  const objectval_tyBM *ob1 = *(const objectval_tyBM **) p1;
+  const objectval_tyBM *ob2 = *(const objectval_tyBM **) p2;
+  assert (ob1 != NULL);
+  assert (ob2 != NULL);
+  const char *n1 = findobjectname_BM (ob1);
+  const char *n2 = findobjectname_BM (ob2);
+  assert (n1 != NULL);
+  assert (n2 != NULL);
+  return strcmp (n1, n2);
+}                               /* end cmpnamedpredef_BM */
+
 //// for the closure to dump_data the predefined, inside dumper_of_predefined
 extern objrout_sigBM ROUTINEOBJNAME_BM (_075tZNHCAMa_7XNNBaNM4qv);
-
-
 
 value_tyBM
 ROUTINEOBJNAME_BM (_075tZNHCAMa_7XNNBaNM4qv)
 (const closure_tyBM * clos,
 struct stackframe_stBM * stkf,
-const value_tyBM arg1,
-const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+const value_tyBM arg1 __attribute__ ((unused)),
+const value_tyBM arg2,
+const value_tyBM arg3 __attribute__ ((unused)),
+const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  assert (valtype_BM (arg2) == tydata_dumper_BM);
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
                  struct dumper_stBM *du;
@@ -538,15 +555,20 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
                  const setval_tyBM * prset; const objectval_tyBM * curpredef;
                  value_tyBM closv;
     );
+  _.du = arg2;
   _.closv = (const value_tyBM) clos;
   _.prsbuf = strbuffermake_BM (512 * 1024);
   _.filnamv = closurenthson_BM (_.closv, 0);
   assert (isstring_BM ((const value_tyBM) _.filnamv));
-  const char *filpath = bytstring_BM (_.filnamv);
+  const char *basepath = bytstring_BM (_.filnamv);
   strbufferprintf_BM (_.prsbuf,
-                      "// generated file for predefined %s\n", filpath);
+                      "// generated file for predefined %s\n", basepath);
   _.prset = setpredefinedobjects_BM ();
   unsigned nbpredef = setcardinal_BM (_.prset);
+  const objectval_tyBM **arrnamed =
+    calloc (nbpredef, sizeof (objectval_tyBM *));
+  if (!arrnamed)
+    FATAL_BM ("calloc failed for arrnamed (%u) - %m", nbpredef);
   strbufferreserve_BM (_.prsbuf, nbpredef * 512);
   strbufferprintf_BM (_.prsbuf,
                       "#if !defined(HAS_PREDEF_BM) || !defined(HAS_NAMED_PREDEF_BM)\n"
@@ -558,6 +580,8 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   strbufferprintf_BM (_.prsbuf,
                       "#ifdef HAS_PREDEF_BM\n"
                       "//HAS_PREDEF_BM(Id,Hi,Lo,Hash)\n");
+  unsigned nbnamed = 0;
+  unsigned widthnames = 0;
   for (unsigned pix = 0; pix < nbpredef; pix++)
     {
       _.curpredef = setelemnth_BM (_.prset, pix);
@@ -573,13 +597,68 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
                           (unsigned long) hashid_BM (curid));
       const char *n = findobjectname_BM (_.curpredef);
       if (n)
-        strbufferprintf_BM (_.prsbuf, "/*=%s/\n", n);
+        {
+          strbufferprintf_BM (_.prsbuf, " /*=%s/\n", n);
+          arrnamed[nbnamed++] = _.curpredef;
+          if (widthnames < strlen (n))
+            widthnames = strlen (n);
+        }
       else
         strbufferprintf_BM (_.prsbuf, "\n");
     }
+  widthnames = (widthnames | 3) + 1;
   strbufferprintf_BM (_.prsbuf, "#undef HAS_PREDEF_BM\n"
                       "#endif /*HAS_PREDEF_BM*/\n");
-  /// missing generation of BMP_<name>
-#warning should use strbufferwritetofile_BM and make a dict type
-  printf ("_075tZNHCAMa_7XNNBaNM4qv should dump the predefined\n");
+  strbufferprintf_BM (_.prsbuf, "#undef BM_NB_NAMED_PREDEFINED\n"
+                      "#define BM_NB_NAMED_PREDEFINED %u\n", nbnamed);
+  qsort (arrnamed, nbnamed, sizeof (objectval_tyBM *), cmpnamedpredef_BM);
+  for (unsigned nix = 0; nix < nbnamed; nix++)
+    {
+      _.curpredef = arrnamed[nix];
+      if (nix % 5 == 0)
+        strbufferprintf_BM (_.prsbuf, "\n");
+      const char *n = findobjectname_BM (_.curpredef);
+      assert (n != NULL);
+      char idbuf[32];
+      memset (idbuf, 0, sizeof (idbuf));
+      rawid_tyBM curid = objid_BM (_.curpredef);
+      idtocbuf32_BM (curid, idbuf);
+      strbufferprintf_BM (_.prsbuf, "#undef BMP_%s\n#undef BMPNID_%s\n", n,
+                          n);
+      strbufferprintf_BM (_.prsbuf, "#define BMP_%s", n);
+      for (int i = widthnames - strlen (n); i > 0; i--)
+        strbufferappendcstr_BM (_.prsbuf, " ");
+      strbufferprintf_BM (_.prsbuf, "PREDEF_BM(%s)\n", idbuf);
+      strbufferprintf_BM (_.prsbuf, "#define BMPNID_%s", n);
+      for (int i = widthnames - strlen (n); i > 0; i--)
+        strbufferappendcstr_BM (_.prsbuf, " ");
+      strbufferprintf_BM (_.prsbuf, "%s\n", idbuf);
+    }
+  strbufferprintf_BM (_.prsbuf, "\n\n#ifdef HAS_NAMED_PREDEF_BM\n"
+                      "//HAS_NAMED_PREDEF_BM(Nam,Id)\n");
+  for (unsigned nix = 0; nix < nbnamed; nix++)
+    {
+      _.curpredef = arrnamed[nix];
+      if (nix % 5 == 0)
+        strbufferprintf_BM (_.prsbuf, "\n");
+      const char *n = findobjectname_BM (_.curpredef);
+      assert (n != NULL);
+      char idbuf[32];
+      memset (idbuf, 0, sizeof (idbuf));
+      rawid_tyBM curid = objid_BM (_.curpredef);
+      idtocbuf32_BM (curid, idbuf);
+      strbufferprintf_BM (_.prsbuf, "HAS_NAMED_PREDEF_BM(%s,%s)\n", n, idbuf);
+    };
+  strbufferprintf_BM (_.prsbuf, "#undef HAS_NAMED_PREDEF_BM\n"
+                      "#endif/*HAS_NAMED_PREDEF_BM*/\n\n");
+  strbufferprintf_BM (_.prsbuf, "// end of generated file %s\n", basepath);
+  char *filpath = NULL;
+  asprintf (&filpath, "%s/%s", bytstring_BM (_.du->dump_dir), basepath);
+  if (!filpath)
+    FATAL_BM ("asprintf failed for %s", basepath);
+  strbufferwritetofile_BM (_.prsbuf, filpath);
+  strbufferreset_BM (_.prsbuf);
+  printf ("wrote predefined file %s\n", filpath);
+  free (filpath);
+  return _.closv;
 }                               /* end ROUTINE _075tZNHCAMa_7XNNBaNM4qv */
