@@ -4,6 +4,7 @@ extern "C" {
 };
 
 #include <map>
+#include <new>
 #include <set>
 #include <vector>
 #include <unordered_map>
@@ -18,7 +19,18 @@ struct StrcmpLess_BM
     assert (s2 != nullptr);
     return strcmp(s1,s2)<0;
   }
-};
+};				// end StrcmpLess_BM
+
+//// order with
+struct ValStringLess_BM
+{
+  inline bool operator() (const stringval_tyBM*vs1, const stringval_tyBM*vs2) const
+  {
+    assert (valtype_BM((const value_tyBM)vs1) == tyString_BM);
+    assert (valtype_BM((const value_tyBM)vs2) == tyString_BM);
+    return strcmp(vs1->strv_bytes,vs2->strv_bytes)<0;
+  }
+};				// end ValStringLess_BM
 
 struct ObjectHash_BM
 {
@@ -411,3 +423,94 @@ openmoduleforloader_BM(const rawid_tyBM modid,struct loader_stBM*ld, struct  sta
     }
   return true;
 } // end of openmoduleforloader_BM
+
+////////////////////////////////////////////////////////////////
+
+typedef std::map<const stringval_tyBM*,const value_tyBM,ValStringLess_BM> dictmap_claBM;
+
+struct dict_stBM*
+dictmake_BM(void)
+{
+  struct dict_stBM*dict = //
+    (struct dict_stBM*)allocgcty_BM(tydata_dict_BM, sizeof(struct dict_stBM));
+  static_assert (sizeof (dict->dict_data) >= sizeof(dictmap_claBM), "too small dictdata");
+  static_assert (alignof (dict->dict_data) >= alignof(dictmap_claBM), "too small dictdata");
+  new(dict->dict_data) dictmap_claBM();
+  return dict;
+} // end dictmake_BM
+
+
+void
+dictgcmark_BM(struct garbcoll_stBM *gc, struct dict_stBM*dict,
+              int depth)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (isdict_BM (dict));
+  uint8_t oldmark = ((typedhead_tyBM *) dict)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *)dict)->hgc = MARKGC_BM;
+  auto& dic = *(dictmap_claBM*)dict->dict_data;
+  for (auto it : dic)
+    {
+      gcmark_BM(gc, (const value_tyBM)it.first, depth+1);
+      gcmark_BM(gc, (const value_tyBM)it.second, depth+1);
+    }
+} // end dictgcmark_BM
+
+
+void dictgcdestroy_BM (struct garbcoll_stBM *gc, struct dict_stBM*dict)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (isdict_BM (dict));
+  auto& dic = *(dictmap_claBM*)dict->dict_data;
+  dic.clear();
+  dic.~dictmap_claBM();
+  gc->gc_freedbytes += sizeof(*dict);
+  memset(dict, 0, sizeof(*dict));
+  free (dict);
+} // end dictgcdestroy_BM
+
+
+void dictgckeep_BM (struct garbcoll_stBM *gc, struct dict_stBM*dict)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (isdict_BM (dict));
+  gc->gc_keptbytes += sizeof(*dict);
+} // end dictgckeep_BM
+
+
+value_tyBM
+dictget_BM(const struct dict_stBM* dict, const stringval_tyBM*str)
+{
+  if (!isdict_BM((const value_tyBM)dict))
+    return nullptr;
+  if (!isstring_BM((const value_tyBM)str))
+    return nullptr;
+  auto& dicm = *(dictmap_claBM*)dict->dict_data;
+  auto it = dicm.find(str);
+  if (it == dicm.end()) return nullptr;
+  return it->second;
+} // end dictget_BM
+
+void dictput_BM(struct dict_stBM* dict, const stringval_tyBM*str, const value_tyBM val)
+{
+  if (!isdict_BM((const value_tyBM)dict))
+    return;
+  if (!isstring_BM((const value_tyBM)str))
+    return;
+  auto& dicm = *(dictmap_claBM*)dict->dict_data;
+  if (val) dicm.insert({str,val});
+  else dicm.erase(str);
+} // end dictput_BM
+
+
+void dictremove_BM(struct dict_stBM* dict, const stringval_tyBM*str)
+{
+  if (!isdict_BM((const value_tyBM)dict))
+    return;
+  if (!isstring_BM((const value_tyBM)str))
+    return;
+  auto& dicm = *(dictmap_claBM*)dict->dict_data;
+  dicm.erase(str);
+} // end dictremove_BM

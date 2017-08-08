@@ -114,6 +114,9 @@ gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
     case tydata_classinfo_BM:
       classinfogcmark_BM (gc, (struct classinfo_stBM *) val, depth);
       return;
+    case tydata_dict_BM:
+      dictgcmark_BM (gc, (struct dict_stBM *) val, depth);
+      return;
     default:
       FATAL_BM ("gcmark ty#%d unexpected for val@%p depth=%d",
                 ty, val, depth);
@@ -174,6 +177,9 @@ valgcdestroy_BM (struct garbcoll_stBM *gc, value_tyBM val)
     case tydata_classinfo_BM:
       classinfogcdestroy_BM (gc, (struct classinfo_stBM *) val);
       return;
+    case tydata_dict_BM:
+      dictgcdestroy_BM (gc, (struct dict_stBM *) val);
+      return;
     default:
       FATAL_BM ("gcdestroy ty#%d unexpected for val@%p", ty, val);
     }
@@ -233,6 +239,9 @@ valgckeep_BM (struct garbcoll_stBM *gc, value_tyBM val)
       return;
     case tydata_classinfo_BM:
       classinfogckeep_BM (gc, (struct classinfo_stBM *) val);
+      return;
+    case tydata_dict_BM:
+      dictgckeep_BM (gc, (struct dict_stBM *) val);
       return;
     default:
       FATAL_BM ("gckeep ty#%d unexpected for val@%p", ty, val);

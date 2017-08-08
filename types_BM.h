@@ -55,6 +55,7 @@ enum gcdataenum_BM
   tydata_classinfo_BM,
   tydata_strbuffer_BM,
   tydata_dumper_BM,
+  tydata_dict_BM,
   ///
   tydata_quasinode_BM,          // stack allocated!
   //
@@ -152,6 +153,7 @@ struct loader_stBM;             /* forward */
 struct classinfo_stBM;          /* forward */
 struct strbuffer_stBM;          /* forward */
 struct dumper_stBM;             /* forward */
+struct dict_stBM;               /* forward */
 
 typedef void anyassoc_tyBM;
 
@@ -463,6 +465,12 @@ struct parser_stBM              /* for tydata_parser_BM */
   unsigned pars_memolcount;     /* used count of pars_memolines  */
   struct memolineoffset_stBM *pars_memolines;   // calloc-ed
 };                              /* end struct parser_stBM */
+
+struct dict_stBM
+{
+  typedhead_tyBM pa;
+  uintptr_t dict_data[8];       /* actually a std::map */
+};
 
 struct garbcoll_stBM
 {

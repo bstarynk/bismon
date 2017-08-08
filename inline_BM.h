@@ -801,6 +801,15 @@ parseradvanceutf8_BM (struct parser_stBM * pars, unsigned nbc)
   return false;
 }                               /* end parseradvanceutf8_BM */
 
+////
+
+////////////////////////////////////////////////////////////////
+bool
+isdict_BM (const value_tyBM v)
+{
+  int ty = valtype_BM (v);
+  return ty == tydata_dict_BM;
+}                               /* end isdict_BM */
 
 bool
 openmodule_BM (const rawid_tyBM id, struct stackframe_stBM * stkf)

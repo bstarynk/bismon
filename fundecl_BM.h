@@ -389,6 +389,22 @@ extern void classinfogcdestroy_BM (struct garbcoll_stBM *gc,
 extern void classinfogckeep_BM (struct garbcoll_stBM *gc,
                                 struct classinfo_stBM *clinf);
 
+////////////////
+extern struct dict_stBM *dictmake_BM (void);
+static inline bool isdict_BM (const value_tyBM v);
+extern void dictgcmark_BM (struct garbcoll_stBM *gc, struct dict_stBM *dict,
+                           int depth);
+extern void dictgcdestroy_BM (struct garbcoll_stBM *gc,
+                              struct dict_stBM *dict);
+extern void dictgckeep_BM (struct garbcoll_stBM *gc, struct dict_stBM *dict);
+extern value_tyBM dictget_BM (const struct dict_stBM *dict,
+                              const stringval_tyBM * str);
+extern void dictput_BM (struct dict_stBM *dict, const stringval_tyBM * str,
+                        const value_tyBM val);
+extern void dictremove_BM (struct dict_stBM *dict,
+                           const stringval_tyBM * str);
+
+////////////////
 extern value_tyBM apply0_BM (const closure_tyBM * clos,
                              struct stackframe_stBM *stkf);
 
