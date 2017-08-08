@@ -29,6 +29,23 @@ quit_BM (void)
   gtk_widget_destroy (quitdialog);
 }                               /* end quit_BM */
 
+void exit_BM (void);
+void
+exit_BM (void)
+{
+  extern char *dump_dir_bm;
+  dump_BM (dump_dir_bm, NULL);
+  gtk_main_quit ();
+}                               /* end exit_BM */
+
+void do_dump_BM (void);
+void
+do_dump_BM (void)
+{
+  extern char *dump_dir_bm;
+  dump_BM (dump_dir_bm, NULL);
+}                               /* end do_dump_BM */
+
 bool deletemainwin_BM (GtkWidget *, GdkEvent *, gpointer);
 bool
 deletemainwin_BM (GtkWidget * widget __attribute__ ((unused)),
@@ -76,6 +93,12 @@ initialize_gui_BM (const char *builderfile)
   g_signal_connect (appquit, "activate", quit_BM, NULL);
   g_signal_connect (mainwin_BM, "delete-event", (GCallback) deletemainwin_BM,
                     NULL);
+  GtkWidget *appexit =
+    GTK_WIDGET (gtk_builder_get_object (bld, "appexit_id"));
+  g_signal_connect (appexit, "activate", exit_BM, NULL);
+  GtkWidget *appdump =
+    GTK_WIDGET (gtk_builder_get_object (bld, "appdump_id"));
+  g_signal_connect (appdump, "activate", do_dump_BM, NULL);
   GtkWidget *appmenu =
     GTK_WIDGET (gtk_builder_get_object (bld, "menuapp_id"));
   assert (GTK_IS_WIDGET (appmenu));
