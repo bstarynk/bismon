@@ -450,8 +450,8 @@ dictgcmark_BM(struct garbcoll_stBM *gc, struct dict_stBM*dict,
   if (oldmark)
     return;
   ((typedhead_tyBM *)dict)->hgc = MARKGC_BM;
-  auto& dic = *(dictmap_claBM*)dict->dict_data;
-  for (auto it : dic)
+  auto& dicm = *(dictmap_claBM*)dict->dict_data;
+  for (auto it : dicm)
     {
       gcmark_BM(gc, (const value_tyBM)it.first, depth+1);
       gcmark_BM(gc, (const value_tyBM)it.second, depth+1);
@@ -463,10 +463,11 @@ void dictgcdestroy_BM (struct garbcoll_stBM *gc, struct dict_stBM*dict)
 {
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (isdict_BM (dict));
-  auto& dic = *(dictmap_claBM*)dict->dict_data;
-  dic.clear();
-  dic.~dictmap_claBM();
-  gc->gc_freedbytes += sizeof(*dict);
+  auto& dicm = *(dictmap_claBM*)dict->dict_data;
+  size_t siz = dicm.size();
+  dicm.clear();
+  dicm.~dictmap_claBM();
+  gc->gc_freedbytes += sizeof(*dict) + siz*2*sizeof(void*);
   memset(dict, 0, sizeof(*dict));
   free (dict);
 } // end dictgcdestroy_BM
@@ -476,7 +477,9 @@ void dictgckeep_BM (struct garbcoll_stBM *gc, struct dict_stBM*dict)
 {
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (isdict_BM (dict));
-  gc->gc_keptbytes += sizeof(*dict);
+  auto& dicm = *(dictmap_claBM*)dict->dict_data;
+  size_t siz = dicm.size();
+  gc->gc_keptbytes += sizeof(*dict) + siz*2*sizeof(void*);
 } // end dictgckeep_BM
 
 
