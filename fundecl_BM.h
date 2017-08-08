@@ -578,4 +578,7 @@ extern bool openmoduleforloader_BM (const rawid_tyBM modid,
                                     struct stackframe_stBM *stkf);
 static inline bool openmodule_BM (const rawid_tyBM modid,
                                   struct stackframe_stBM *stkf);
+
+///
+extern void initialize_gui_BM (const char *builderfile);
 #endif /*FUNDECL_BM_INCLUDED */

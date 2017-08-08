@@ -16,7 +16,9 @@ abort_BM (void)
 char *load_dir_bm;
 char *dump_dir_bm;
 char *dump_after_load_dir_bm;
+char *builder_file_bm = "bismon.ui";
 int count_emit_has_predef_bm;
+bool batch_bm;
 
 static bool
 run_command_bm (const gchar * optname
@@ -51,6 +53,12 @@ const GOptionEntry optab[] = {
    .arg_data = &dump_after_load_dir_bm,
    .description = "dump after load directory DIR",
    .arg_description = "DIR"},
+  {.long_name = "gui-builder",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &builder_file_bm,
+   .description = "with GTK builer file FILE",
+   .arg_description = "FILE"},
   {.long_name = "emit-has-predef",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_INT,
@@ -63,6 +71,12 @@ const GOptionEntry optab[] = {
    .arg_data = &run_command_bm,
    .description = "run the command CMD",
    .arg_description = "CMD"},
+  {.long_name = "batch",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &batch_bm,
+   .description = "run in batch mode without GUI",
+   .arg_description = NULL},
   {}
 };
 
@@ -142,5 +156,14 @@ main (int argc, char **argv)
   load_initial_BM (load_dir_bm);
   if (dump_after_load_dir_bm)
     dump_BM (dump_after_load_dir_bm, NULL);
+  if (batch_bm)
+    {
+      printf ("no GUI in batch mode\n");
+    }
+  else
+    {
+      initialize_gui_BM (builder_file_bm);
+      gtk_main ();
+    }
   fflush (NULL);
 }                               /* end main */
