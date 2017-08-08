@@ -2,69 +2,31 @@
 <!-- -*- xml -*- -->
 <interface>
   <requires lib="gtk+" version="3.22"/>
-  <object class='GtkWindow' id='mainwin_id'>
-    <child>
-      <object class='GtkBox' id='mainvbox_id'>
-	<property name='border-width'>7</property>
-	<child>
-	  <object class='GtkMenuBar' id='mainmenubar_id'>
-	    <property name='expand'>false</property>
-	    <!--
-	    <menu id='menu_id'>
-	      <submenu>
-		<attribute name='label'>App</attribute>
-	      </submenu>
-	      <submenu>
-		<attribute name='label'>Edit</attribute>
-	      </submenu>
-	      </menu>
-	      -->
-	    <child>
-	      <object class='GtkMenuItem' id='menuapp_id'>
-		<property name='label'>App</property>
-		<child type='submenu'>
-		  <object class='GtkMenu' id='appsubmenu_id'>
-		    <child>
-		      <object class='GtkMenuItem' id='appexit_id'>
-			<property name='label'>e_Xit</property>
-		      </object>
-		    </child>
-		    <child>
-		      <object class='GtkMenuItem' id='appquit_id'>
-			<property name='label'>_Quit</property>
-		      </object>
-		    </child>
-		    <child>
-		      <object class='GtkMenuItem' id='appdump_id'>
-			<property name='label'>_Dump</property>
-		      </object>
-		    </child>
-		  </object>
-		</child>
-	      </object>
-	    </child>
-	    <child>
-	      <object class='GtkMenuItem' id='menuedit_id'>
-		<property name='label'>Edit</property>
-		<child type='submenu'>
-		  <object class='GtkMenu' id='editsubmenu_id'>
-		    <child>
-		      <object class='GtkMenuItem' id='editcopy_id'>
-			<property name='label'>copy</property>
-		      </object>
-		    </child>
-		    <child>
-		      <object class='GtkMenuItem' id='editpaste_id'>
-			<property name='label'>paste</property>
-		      </object>
-		    </child>
-		  </object>
-		</child>
-	      </object>
-	    </child>
-	  </object>
-	  </child>
-      </object>
-    </child>
-  </object>
+  <menu id='appmenu_id'>
+    <section>
+      <item>
+	<attribute name='label'>_Quit</attribute>
+	<attribute name='action'>app.quit</attribute>
+      </item>      
+      <item>
+	<attribute name='label'>e_Xit</attribute>
+	<attribute name='action'>app.exit</attribute>
+      </item>
+      <item>
+	<attribute name='label'>_Dump</attribute>
+	<attribute name='action'>app.dump</attribute>
+      </item>
+    </section>
+  </menu> <menu id='editmenu_id'>
+    <section>
+      <item>
+	<attribute name='label'>_Copy</attribute>
+	<attribute name='action'>edit.copy</attribute>
+      </item>      
+      <item>
+	<attribute name='label'>_Paste</attribute>
+	<attribute name='action'>edit.paste</attribute>
+      </item>
+    </section>
+  </menu>
 </interface>
