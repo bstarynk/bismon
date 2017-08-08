@@ -403,7 +403,15 @@ extern void dictput_BM (struct dict_stBM *dict, const stringval_tyBM * str,
                         const value_tyBM val);
 extern void dictremove_BM (struct dict_stBM *dict,
                            const stringval_tyBM * str);
-
+extern const stringval_tyBM *dictkeyafter_BM (struct dict_stBM *dict,
+                                              const stringval_tyBM * str);
+extern const stringval_tyBM *dictkeysameorafter_BM (struct dict_stBM *dict,
+                                                    const stringval_tyBM *
+                                                    str);
+extern const stringval_tyBM *dictkeybefore_BM (struct dict_stBM *dict,
+                                               const stringval_tyBM * str);
+extern const node_tyBM *dictnodeofkeys_BM (struct dict_stBM *dict,
+                                           const objectval_tyBM * obj);
 ////////////////
 extern value_tyBM apply0_BM (const closure_tyBM * clos,
                              struct stackframe_stBM *stkf);

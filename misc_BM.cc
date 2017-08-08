@@ -500,6 +500,8 @@ void dictput_BM(struct dict_stBM* dict, const stringval_tyBM*str, const value_ty
   if (!isstring_BM((const value_tyBM)str))
     return;
   auto& dicm = *(dictmap_claBM*)dict->dict_data;
+  if (dicm.size() > MAXSIZE_BM)
+    FATAL_BM("too big dict %lu", (long) dicm.size());
   if (val) dicm.insert({str,val});
   else dicm.erase(str);
 } // end dictput_BM
@@ -514,3 +516,88 @@ void dictremove_BM(struct dict_stBM* dict, const stringval_tyBM*str)
   auto& dicm = *(dictmap_claBM*)dict->dict_data;
   dicm.erase(str);
 } // end dictremove_BM
+
+
+const stringval_tyBM*
+dictkeyafter_BM(struct dict_stBM* dict, const stringval_tyBM*str)
+{
+  if (!isdict_BM((const value_tyBM)dict))
+    return nullptr;
+  auto& dicm = *(dictmap_claBM*)dict->dict_data;
+  if (!isstring_BM((const value_tyBM)str)
+      || !bytstring_BM(str)[0])
+    {
+      if (dicm.empty()) return nullptr;
+      auto firstn = dicm.begin();
+      return firstn->first;
+    }
+  auto itn = dicm.upper_bound(str);
+  if (itn != dicm.end())
+    return itn->first;
+  return nullptr;
+} // end of dictkeyafter_BM
+
+
+extern const stringval_tyBM*
+dictkeysameorafter_BM(struct dict_stBM* dict, const stringval_tyBM*str)
+{
+  if (!isdict_BM((const value_tyBM)dict))
+    return nullptr;
+  auto& dicm = *(dictmap_claBM*)dict->dict_data;
+  if (!isstring_BM((const value_tyBM)str)
+      || !bytstring_BM(str)[0])
+    {
+      if (dicm.empty()) return nullptr;
+      auto firstn = dicm.begin();
+      return firstn->first;
+    }
+  auto itn = dicm.lower_bound(str);
+  if (itn != dicm.end())
+    return itn->first;
+  return nullptr;
+} // end of dictkeysameorafter_BM
+
+const stringval_tyBM*
+dictkeybefore_BM(struct dict_stBM* dict, const stringval_tyBM*str)
+{
+  if (!isdict_BM((const value_tyBM)dict))
+    return nullptr;
+  auto& dicm = *(dictmap_claBM*)dict->dict_data;
+  if (!isstring_BM((const value_tyBM)str)
+      || !bytstring_BM(str)[0])
+    {
+      if (dicm.empty())
+        return nullptr;
+      auto lastn = dicm.end();
+      lastn--;
+      return lastn->first;
+    }
+  auto itn = dicm.lower_bound(str);
+  if (itn != dicm.begin())
+    itn--;
+  else
+    return nullptr;
+  if (itn != dicm.end())
+    return itn->first;
+  return nullptr;
+} // end dictkeybefore_BM
+
+const node_tyBM*
+dictnodeofkeys_BM(struct dict_stBM* dict, const objectval_tyBM*obj)
+{
+  if (!isdict_BM((const value_tyBM)dict))
+    return nullptr;
+  if (!isobject_BM((const value_tyBM)obj))
+    return nullptr;
+  auto& dicm = *(dictmap_claBM*)dict->dict_data;
+  value_tyBM*arr = (value_tyBM*) calloc(dicm.size(), sizeof(value_tyBM));
+  if (!arr) FATAL_BM("calloc failure for %u keys", (unsigned) dicm.size());
+  int cnt = 0;
+  for (auto it : dicm)
+    {
+      arr[cnt++] = (value_tyBM)it.first;
+    }
+  const node_tyBM* nodv = makenode_BM(obj, cnt, arr);
+  free (arr);
+  return nodv;
+} // end dictnodeofkeys_BM
