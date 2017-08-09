@@ -149,6 +149,8 @@ initialize_gui_BM (const char *builderfile)
   commandbuf_BM = gtk_text_buffer_new (commandtagtable_BM);
   commandview_BM = gtk_text_view_new_with_buffer (commandbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (commandview_BM), true);
+  gtk_widget_set_tooltip_markup
+    (GTK_WIDGET (commandview_BM), "<big><b>command view</b></big>\n");
   gtk_text_buffer_insert_at_cursor (commandbuf_BM, "|command|\n", -1);
   GtkWidget *commandscrolw = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (commandscrolw), commandview_BM);

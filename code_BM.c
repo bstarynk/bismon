@@ -662,3 +662,68 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   free (filpath);
   return _.closv;
 }                               /* end ROUTINE _075tZNHCAMa_7XNNBaNM4qv */
+
+
+
+//// for the closure to dump_data the globals, inside dumper_of_globals
+extern objrout_sigBM ROUTINEOBJNAME_BM (_4ENXjApm7Qb_3bXo8F6Jg9z);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_4ENXjApm7Qb_3bXo8F6Jg9z)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1 __attribute__ ((unused)),
+const value_tyBM arg2,
+const value_tyBM arg3 __attribute__ ((unused)),
+const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  assert (valtype_BM (arg2) == tydata_dumper_BM);
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv;
+                 struct dumper_stBM *du;
+                 struct strbuffer_stBM *sbuf;
+                 struct strbuffer_stBM *prsbuf;
+                 const stringval_tyBM * filnamv;
+                 const node_tyBM * nodglobv;
+                 const stringval_tyBM * curglobname;
+                 value_tyBM closv;
+    );
+  _.du = arg2;
+  _.closv = (const value_tyBM) clos;
+  _.prsbuf = strbuffermake_BM (512 * 1024);
+  _.filnamv = closurenthson_BM (_.closv, 0);
+  _.nodglobv = nodeglobalnames_BM (BMP_node);
+  assert (isstring_BM ((const value_tyBM) _.filnamv));
+  const char *basepath = bytstring_BM (_.filnamv);
+  strbufferprintf_BM (_.prsbuf,
+                      "// generated file for globals %s\n", basepath);
+  strbufferprintf_BM (_.prsbuf,
+                      "#ifndef HAS_GLOBAL_BM\n"
+                      "#error missing HAS_GLOBAL_BM\n" "#endif\n\n");
+  unsigned nbglob = nodewidth_BM ((const value_tyBM) _.nodglobv);
+  strbufferprintf_BM (_.prsbuf,
+                      "#undef BM_NB_GLOBAL\n"
+                      "#define BM_NB_GLOBAL %d\n", nbglob);
+  for (unsigned gix = 0; gix < nbglob; gix++)
+    {
+      _.curglobname =           //
+        (const stringval_tyBM *) nodenthson_BM ((const value_tyBM) _.nodglobv,
+                                                gix);
+      assert (isstring_BM ((const value_tyBM) _.curglobname));
+      strbufferprintf_BM (_.prsbuf, "HAS_GLOBAL_BM(%s)\n",
+                          bytstring_BM (_.curglobname));
+    };
+  strbufferprintf_BM (_.prsbuf, "\n#undef HAS_GLOBAL_BM\n");
+  strbufferprintf_BM (_.prsbuf, "\n\n"
+                      "// end of generated file %s\n", basepath);
+  char *filpath = NULL;
+  asprintf (&filpath, "%s/%s", bytstring_BM (_.du->dump_dir), basepath);
+  if (!filpath)
+    FATAL_BM ("asprintf failed for %s", basepath);
+  strbufferwritetofile_BM (_.prsbuf, filpath);
+  strbufferreset_BM (_.prsbuf);
+  printf ("wrote globals file %s\n", filpath);
+  free (filpath);
+  return _.closv;
+}                               /* end ROUTINE _4ENXjApm7Qb_3bXo8F6Jg9z */
