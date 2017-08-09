@@ -368,12 +368,18 @@ extern void nodegcmark_BM (struct garbcoll_stBM *gc, node_tyBM * nod,
 extern void nodegcdestroy_BM (struct garbcoll_stBM *gc, node_tyBM * nod);
 extern void nodegckeep_BM (struct garbcoll_stBM *gc, node_tyBM * nod);
 
-const node_tyBM *makenode_BM (const objectval_tyBM * connob, unsigned nbval,
-                              const value_tyBM * sonvalarr);
+extern const node_tyBM *makenode_BM (const objectval_tyBM * connob,
+                                     unsigned nbval,
+                                     const value_tyBM * sonvalarr);
+extern const node_tyBM *makenodevar_BM (const objectval_tyBM * connob, ...)
+  __attribute__ ((sentinel));
 
 extern const closure_tyBM *makeclosure_BM (const objectval_tyBM * conn,
                                            unsigned nbclos,
                                            const value_tyBM * closvalarr);
+extern const closure_tyBM *makeclosurevar_BM (const objectval_tyBM * connob,
+                                              ...) __attribute__ ((sentinel));
+
 extern void closuregcmark_BM (struct garbcoll_stBM *gc, closure_tyBM * clos,
                               int depth);
 extern void closuregcdestroy_BM (struct garbcoll_stBM *gc,
@@ -517,6 +523,11 @@ extern objectval_tyBM *parsergetobject_BM
 extern value_tyBM parsergetvalue_BM
   (struct parser_stBM *pars,
    struct stackframe_stBM *stkf, int depth, bool * pgotval);
+
+extern value_tyBM parsergetchunk_BM
+  (struct parser_stBM *pars,
+   struct stackframe_stBM *stkf, int depth, bool * pgotchunk);
+
 ///
 static inline unsigned parserlineno_BM (const struct parser_stBM *pars);
 static inline unsigned parsercolpos_BM (const struct parser_stBM *pars);

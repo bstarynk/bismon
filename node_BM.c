@@ -46,6 +46,38 @@ makeclosure_BM (const objectval_tyBM * connob, unsigned nbval,
   return clos;
 }                               /* end makeclosure_BM */
 
+const closure_tyBM *
+makeclosurevar_BM (const objectval_tyBM * connob, ...)
+{
+  if (!isobject_BM ((const value_tyBM) connob))
+    return NULL;
+  va_list args;
+  unsigned nbsons = 0;
+  va_start (args, connob);
+  while (va_arg (args, value_tyBM) != NULL)
+    nbsons++;
+  va_end (args);
+  if (nbsons >= MAXSIZE_BM)
+    FATAL_BM ("too many sons %u", nbsons);
+  value_tyBM tinyarr[TINYSIZE_BM] = { };
+  value_tyBM *arr =
+    (nbsons < TINYSIZE_BM) ? tinyarr : calloc (nbsons, sizeof (value_tyBM));
+  if (!arr)
+    FATAL_BM ("calloc failure for %u - %m", nbsons);
+  unsigned cnt = 0;
+  value_tyBM curv = NULL;
+  while ((curv = va_arg (args, value_tyBM)) != NULL)
+    {
+      assert (cnt < nbsons);
+      arr[cnt++] = curv;
+    }
+  const closure_tyBM *clos = makeclosure_BM (connob, nbsons, arr);
+  if (arr != tinyarr)
+    free (arr);
+  return clos;
+}                               /* end makeclosurevar_BM */
+
+
 void
 closuregcdestroy_BM (struct garbcoll_stBM *gc, closure_tyBM * clos)
 {
@@ -134,6 +166,39 @@ makenode_BM (const objectval_tyBM * connob, unsigned nbval,
   ((typedhead_tyBM *) node)->hash = h;
   return node;
 }                               /* end makenode_BM */
+
+
+const node_tyBM *
+makenodevar_BM (const objectval_tyBM * connob, ...)
+{
+  if (!isobject_BM ((const value_tyBM) connob))
+    return NULL;
+  va_list args;
+  unsigned nbsons = 0;
+  va_start (args, connob);
+  while (va_arg (args, value_tyBM) != NULL)
+    nbsons++;
+  va_end (args);
+  if (nbsons >= MAXSIZE_BM)
+    FATAL_BM ("too many sons %u", nbsons);
+  value_tyBM tinyarr[TINYSIZE_BM] = { };
+  value_tyBM *arr =
+    (nbsons < TINYSIZE_BM) ? tinyarr : calloc (nbsons, sizeof (value_tyBM));
+  if (!arr)
+    FATAL_BM ("calloc failure for %u - %m", nbsons);
+  unsigned cnt = 0;
+  value_tyBM curv = NULL;
+  while ((curv = va_arg (args, value_tyBM)) != NULL)
+    {
+      assert (cnt < nbsons);
+      arr[cnt++] = curv;
+    }
+  const node_tyBM *clos = makenode_BM (connob, nbsons, arr);
+  if (arr != tinyarr)
+    free (arr);
+  return clos;
+}                               /* end makenodevar_BM */
+
 
 void
 nodegcdestroy_BM (struct garbcoll_stBM *gc, node_tyBM * nod)
