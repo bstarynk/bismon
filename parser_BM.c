@@ -1073,6 +1073,16 @@ parsergetvalue_BM (struct parser_stBM * pars,
       *pgotval = gotobj;
       return nobuild ? NULL : ((value_tyBM) _.compobj);
     }
+  // parse code chunks
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_hashleftbrace)
+    {
+      bool gotchunk = false;
+      _.compobj =
+        parsergetchunk_BM (pars, (struct stackframe_stBM *) &_, depth + 1,
+                           &gotchunk);
+      *pgotval = gotchunk;
+      return nobuild ? NULL : ((value_tyBM) _.compobj);
+    }
   //
   // parse tuples
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_leftbracket)
@@ -1272,3 +1282,91 @@ failure:
   *pgotval = false;
   return NULL;
 }                               /* end of parsergetvalue_BM */
+
+
+value_tyBM
+  parsergetchunk_BM
+  (struct parser_stBM * pars,
+   struct stackframe_stBM * prevstkf, int depth, bool * pgotchunk)
+{
+  if (!isparser_BM ((const value_tyBM) pars))
+    FATAL_BM ("bad parser");
+  if (!pgotchunk)
+    FATAL_BM ("missing pgotchunk");
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
+  unsigned startlineno = parserlineno_BM (pars);
+  unsigned startcolpos = parsercolpos_BM (pars);
+  bool nobuild = parsops && parsops->parsop_nobuild;
+  LOCALFRAME_BM                 //
+    (prevstkf, NULL,            //
+     value_tyBM resval;
+     struct datavectval_stBM *chunkvec; objectval_tyBM * obj;
+     value_tyBM compv;
+    );
+  _.chunkvec = nobuild ? NULL : datavect_grow_BM (NULL, 5);
+  const char *prev = parserrestline_BM (pars);
+  const char *end = NULL;
+  gunichar puc = 0;
+  if (prev)
+    puc = g_utf8_get_char (prev);
+  bool gotalnum = (prev && *prev < 127 && (isalnum (*prev) || *prev == '_'));
+  bool gotword = (prev && (puc == '_' || g_unichar_isalnum (puc)));
+  bool gotspace = (prev && g_unichar_isspace (puc));
+  bool gotpunct = (prev && g_unichar_ispunct (puc));
+  bool gotend = false;
+  do
+    {
+      unsigned curlineno = parserlineno_BM (pars);
+      unsigned curcolpos = parsercolpos_BM (pars);
+      if (parserendoffile_BM (pars))
+        parsererrorprintf_BM (pars, curlineno, curcolpos,       //
+                              "end of file in chunk");
+      char *curpc = (char *) parserrestline_BM (pars);
+      gunichar uc = g_utf8_get_char (curpc);
+      if (gotalnum && uc < 127 && (isalnum (uc) || uc == '_'))
+        {
+          parseradvanceutf8_BM (pars, 1);
+          continue;
+        }
+      if ((gotword || gotalnum) && (uc == '_' || g_unichar_isalnum (uc)))
+        {
+          parseradvanceutf8_BM (pars, 1);
+          gotword = true;
+          gotalnum = false;
+          continue;
+        }
+      if (gotspace && g_unichar_isspace (uc))
+        {
+          parseradvanceutf8_BM (pars, 1);
+          continue;
+        }
+      if (gotpunct && uc != '$' && g_unichar_ispunct (uc))
+        {
+          parseradvanceutf8_BM (pars, 1);
+          continue;
+        }
+      if (curpc && curpc[0] == '}' && curpc[1] == '#')
+        {
+          end = curpc;
+          gotend = true;
+          parseradvanceutf8_BM (pars, 2);
+        }
+      if (prev < curpc)
+        {
+          char oldc = *curpc;
+          *curpc = (char) 0;
+          rawid_tyBM id = { 0, 0 };
+          const char *endid = NULL;
+          if (gotalnum && prev && prev[0] == '_' && isdigit (prev[1])
+              && (id = parse_rawid_BM (prev, &endid)).id_hi
+              && endid == curpc && (_.obj = findobjofid_BM (id)) != NULL)
+            {
+              _.compv = (value_tyBM) makenodevar_BM (BMP_object, _.obj, NULL);
+              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
+              *curpc = oldc;
+            }
+        }
+    }
+  while (!gotend);
+}                               /* end parsergetchunk_BM */
