@@ -17,8 +17,19 @@ char *load_dir_bm;
 char *dump_dir_bm;
 char *dump_after_load_dir_bm;
 char *builder_file_bm = "bismon.ui";
+char *comment_bm;
 int count_emit_has_predef_bm;
+int nb_added_predef_bm;
+#define MAXADDEDPREDEF_BM 16
+struct
+{
+  const char *pr_comment;
+  const char *pr_name;
+} added_predef_bm[MAXADDEDPREDEF_BM];
+
 bool batch_bm;
+
+static void add_new_predefined_bm (void);
 
 static bool
 run_command_bm (const gchar * optname
@@ -34,43 +45,83 @@ run_command_bm (const gchar * optname
   return FALSE;
 }                               /* end run_command_bm */
 
+static bool
+add_predef_bm (const gchar * optname __attribute__ ((unused)),
+               const gchar * val,
+               gpointer data __attribute__ ((unused)),
+               GError ** perr __attribute__ ((unused)))
+{
+  assert (val != NULL);
+  if (nb_added_predef_bm >= MAXADDEDPREDEF_BM)
+    FATAL_BM ("too many added predefined %i", nb_added_predef_bm);
+  added_predef_bm[nb_added_predef_bm].pr_comment = comment_bm;
+  added_predef_bm[nb_added_predef_bm].pr_name = val;
+  nb_added_predef_bm++;
+  comment_bm = NULL;
+  return true;
+}                               /* end run_command_bm */
+
 const GOptionEntry optab[] = {
+  //
   {.long_name = "load",.short_name = 'l',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &load_dir_bm,
    .description = "load directory DIR (default is .)",
    .arg_description = "DIR"},
+  //
   {.long_name = "dump",.short_name = 'd',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &dump_dir_bm,
    .description = "dump directory DIR",
    .arg_description = "DIR"},
+  //
   {.long_name = "dump-after-load",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &dump_after_load_dir_bm,
    .description = "dump after load directory DIR",
    .arg_description = "DIR"},
+  //
   {.long_name = "gui-builder",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &builder_file_bm,
    .description = "with GTK builer file FILE",
    .arg_description = "FILE"},
+  //
   {.long_name = "emit-has-predef",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_INT,
    .arg_data = &count_emit_has_predef_bm,
    .description = "emit NB 'HAS_PREDEF_BM'",
    .arg_description = "NB"},
+  //
   {.long_name = "run-command",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
    .arg_data = &run_command_bm,
    .description = "run the command CMD",
    .arg_description = "CMD"},
+
+  //
+  {.long_name = "comment-predef",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &comment_bm,
+   .description = "set comment of next predefined to COMM",
+   .arg_description = "COMM"},
+
+  //
+  {.long_name = "add-predef",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &add_predef_bm,
+   .description = "add new predefined named PREDEFNAME",
+   .arg_description = "PREDEFNAME"},
+
+  //
   {.long_name = "batch",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
@@ -96,6 +147,36 @@ check_delims_BM (void)
   if (delimcnt != BM_NB_DELIM)
     FATAL_BM ("expected %d delimiters, got %d", BM_NB_DELIM, delimcnt);
 }                               /* end check_delims_BM */
+
+void
+add_new_predefined_bm (void)
+{
+  for (int pix = 0; pix < nb_added_predef_bm; pix++)
+    {
+      const char *predname = added_predef_bm[pix].pr_name;
+      const char *predcomm = added_predef_bm[pix].pr_comment;
+      if (!validname_BM (predname))
+        FATAL_BM ("predefined name '%s' invalid", predname);
+      const objectval_tyBM *predobj = findnamedobj_BM (predname);
+      if (!predobj)
+        {
+          predobj = makeobj_BM ();
+          registername_BM (predobj, predname);
+        };
+      objtouchnow_BM ((objectval_tyBM *) predobj);
+      if (predcomm)
+        objputattr_BM ((objectval_tyBM *) predobj, BMP_comment,
+                       (value_tyBM) makestring_BM (predcomm));
+      objputspacenum_BM ((objectval_tyBM *) predobj, PredefSp_BM);
+      char idpred[32];
+      memset (idpred, 0, sizeof (idpred));
+      idtocbuf32_BM (objid_BM (predobj), idpred);
+      if (predcomm)
+        printf ("made predefined %s (%s) - %s\n", predname, idpred, predcomm);
+      else
+        printf ("made predefined %s (%s)\n", predname, idpred);
+    }
+}                               /* end add_new_predefined_bm */
 
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
@@ -156,6 +237,8 @@ main (int argc, char **argv)
   if (!batch_bm)
     initialize_gui_BM (builder_file_bm);
   load_initial_BM (load_dir_bm);
+  if (nb_added_predef_bm > 0)
+    add_new_predefined_bm ();
   if (dump_after_load_dir_bm)
     dump_BM (dump_after_load_dir_bm, NULL);
   if (batch_bm)
