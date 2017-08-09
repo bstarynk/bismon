@@ -138,7 +138,7 @@ initialize_gui_BM (const char *builderfile)
   gtk_box_pack_start (GTK_BOX (mainvbox), paned1, /*expand= */ true,
                       /*fill= */ true, 2);
   browserbuf_BM = gtk_text_buffer_new (browsertagtable_BM);
-  gtk_text_buffer_insert_at_cursor (browserbuf_BM, "browser", -1);
+  gtk_text_buffer_insert_at_cursor (browserbuf_BM, "//browser\n", -1);
   browserview_BM = gtk_text_view_new_with_buffer (browserbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (browserview_BM), false);
   GtkWidget *browserscrolw = gtk_scrolled_window_new (NULL, NULL);
@@ -149,7 +149,7 @@ initialize_gui_BM (const char *builderfile)
   commandbuf_BM = gtk_text_buffer_new (commandtagtable_BM);
   commandview_BM = gtk_text_view_new_with_buffer (commandbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (commandview_BM), true);
-  gtk_text_buffer_insert_at_cursor (commandbuf_BM, "command", -1);
+  gtk_text_buffer_insert_at_cursor (commandbuf_BM, "|command|\n", -1);
   GtkWidget *commandscrolw = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (commandscrolw), commandview_BM);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (commandscrolw),
@@ -158,7 +158,7 @@ initialize_gui_BM (const char *builderfile)
   logbuf_BM = gtk_text_buffer_new (logtagtable_BM);
   logview_BM = gtk_text_view_new_with_buffer (logbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (logview_BM), false);
-  gtk_text_buffer_insert_at_cursor (logbuf_BM, "log", -1);
+  gtk_text_buffer_insert_at_cursor (logbuf_BM, "*log*\n", -1);
   GtkWidget *logscrolw = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (logscrolw), logview_BM);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (logscrolw),
