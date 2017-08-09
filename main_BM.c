@@ -153,6 +153,8 @@ main (int argc, char **argv)
     }
   if (!guiok)
     FATAL_BM ("gtk_init_with_args failed");
+  if (!batch_bm)
+    initialize_gui_BM (builder_file_bm);
   load_initial_BM (load_dir_bm);
   if (dump_after_load_dir_bm)
     dump_BM (dump_after_load_dir_bm, NULL);
@@ -162,7 +164,6 @@ main (int argc, char **argv)
     }
   else
     {
-      initialize_gui_BM (builder_file_bm);
       gtk_main ();
     }
   fflush (NULL);

@@ -2,7 +2,7 @@
 <!-- -*- xml -*- -->
 <interface>
   <requires lib="gtk+" version="3.22"/>
-
+  <!-- the application menu -->
   <object class='GtkMenuItem' id='menuapp_id'>
     <property name='label'>App</property>
     <child type='submenu'>
@@ -29,7 +29,8 @@
       </object>
     </child>
   </object>
-	     
+
+  <!-- the edit menu -->
   <object class='GtkMenuItem' id='menuedit_id'>
     <property name='label'>Edit</property>
     <child type='submenu'>
@@ -50,4 +51,43 @@
     </child>
   </object>
 
+
+    
+  <!-- the browser tag table -->
+    <object class='GtkTextTagTable' id='browsertagtable_id'>
+      <!-- page_title_brotag for the entire page -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">page_title_brotag</property>
+                <property name="font">Arial Bold</property>
+                <property name="scale">1.39</property>
+                <property name="paragraph-background">lemonchiffon1</property>
+                <property name="pixels-above-lines">3</property>
+                <property name="pixels-below-lines">6</property>
+                <property name="foreground">navyblue</property>
+                <property name="justification">GTK_JUSTIFY_CENTER</property>
+            </object>
+        </child>
+    </object>
+    
+  <!-- the command tag table -->
+    <object class='GtkTextTagTable' id='commandtagtable_id'>
+      <!-- errored_cmdtag for the errored text -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">errored_cmdtag</property>
+	      <property name='background'>light pink</property>
+            </object>
+        </child>
+    </object>
+    
+  <!-- the log tag table -->
+    <object class='GtkTextTagTable' id='logtagtable_id'>
+      <!-- error_logtag for the errored text -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">error_logtag</property>
+            </object>
+        </child>
+    </object>
 </interface>
