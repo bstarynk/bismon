@@ -52,10 +52,13 @@ add_predef_bm (const gchar * optname __attribute__ ((unused)),
                GError ** perr __attribute__ ((unused)))
 {
   assert (val != NULL);
+  if (!validname_BM (val))
+    FATAL_BM ("invalid predef name %s", val);
   if (nb_added_predef_bm >= MAXADDEDPREDEF_BM)
     FATAL_BM ("too many added predefined %i", nb_added_predef_bm);
-  added_predef_bm[nb_added_predef_bm].pr_comment = comment_bm;
-  added_predef_bm[nb_added_predef_bm].pr_name = val;
+  if (comment_bm)
+    added_predef_bm[nb_added_predef_bm].pr_comment = strdup (comment_bm);
+  added_predef_bm[nb_added_predef_bm].pr_name = strdup (val);
   nb_added_predef_bm++;
   comment_bm = NULL;
   return true;

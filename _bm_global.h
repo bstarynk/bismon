@@ -5,7 +5,7 @@
 
 #undef BM_NB_GLOBAL
 #define BM_NB_GLOBAL 2
-HAS_GLOBAL_BM(focusobj)
+HAS_GLOBAL_BM(gui_focus_obj)
 HAS_GLOBAL_BM(varglob)
 
 #undef HAS_GLOBAL_BM

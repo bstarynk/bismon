@@ -1,5 +1,5 @@
 // generated file store1.bismon
-// for 19 objects
+// for 21 objects
 // with 0 modules
 
 
@@ -98,6 +98,24 @@
 !~ name (~ load_module ~)
 !@ 1501754100.00
 !)_3j4mbvFJZzA_9ucKetDMbdh
+
+
+
+!(_3pQnBS9ZjkQ_0uGmqUUhAum |=chunk|
+!~ name (~ chunk ~)
+!@ 1502268240.73
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for chunks"
+!)_3pQnBS9ZjkQ_0uGmqUUhAum
+
+
+
+!(_3HGHcRxE9bn_1ufs1gFf4Yh |=code|
+!~ name (~ code ~)
+!@ 1502268240.73
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for code chunks"
+!)_3HGHcRxE9bn_1ufs1gFf4Yh
 
 
 
