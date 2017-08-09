@@ -1,5 +1,5 @@
 // generated file store1.bismon
-// for 21 objects
+// for 23 objects
 // with 0 modules
 
 
@@ -94,6 +94,15 @@
 
 
 
+!(_35gLacRFhq5_90zAPxiDIlh |=space|
+!~ name (~ space ~)
+!@ 1502296695.08
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for spaces"
+!)_35gLacRFhq5_90zAPxiDIlh
+
+
+
 !(_3j4mbvFJZzA_9ucKetDMbdh |=load_module|
 !~ name (~ load_module ~)
 !@ 1501754100.00
@@ -157,6 +166,15 @@
 ~: _1FEnnpEkGdI_5DAcVDL5XHG |=dump_value|  % _5D9kkPHSPxq_8suDXpjlzjE ()
 ~)
 !)_6TmLNh9vtVY_0pwkHRtJ44k
+
+
+
+!(_7zPvMEsQeeE_6zyBWbegVpo |=word|
+!~ name (~ word ~)
+!@ 1502296590.98
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for words"
+!)_7zPvMEsQeeE_6zyBWbegVpo
 
 
 

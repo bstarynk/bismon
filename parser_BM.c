@@ -1315,14 +1315,18 @@ value_tyBM
   bool gotspace = (prev && g_unichar_isspace (puc));
   bool gotpunct = (prev && g_unichar_ispunct (puc));
   bool gotend = false;
+  int loopcnt = 0;
   do
     {
       unsigned curlineno = parserlineno_BM (pars);
       unsigned curcolpos = parsercolpos_BM (pars);
+      char *curpc = (char *) parserrestline_BM (pars);
+      if (loopcnt++ > MAXSIZE_BM / 8)
+        parsererrorprintf_BM (pars, curlineno, curcolpos,
+                              "too many loops %d : %s", loopcnt, curpc);
       if (parserendoffile_BM (pars))
         parsererrorprintf_BM (pars, curlineno, curcolpos,       //
                               "end of file in chunk");
-      char *curpc = (char *) parserrestline_BM (pars);
       gunichar uc = g_utf8_get_char (curpc);
       if (gotalnum && uc < 127 && (isalnum (uc) || uc == '_'))
         {
@@ -1357,16 +1361,82 @@ value_tyBM
           char oldc = *curpc;
           *curpc = (char) 0;
           rawid_tyBM id = { 0, 0 };
-          const char *endid = NULL;
+          const char *endt = NULL;
+          long long l = 0;
+          char numbuf[32];
           if (gotalnum && prev && prev[0] == '_' && isdigit (prev[1])
-              && (id = parse_rawid_BM (prev, &endid)).id_hi
-              && endid == curpc && (_.obj = findobjofid_BM (id)) != NULL)
+              && (id = parse_rawid_BM (prev, &endt)).id_hi
+              && endt == curpc && (_.obj = findobjofid_BM (id)) != NULL)
             {
               _.compv = (value_tyBM) makenodevar_BM (BMP_object, _.obj, NULL);
               _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
               *curpc = oldc;
             }
+          else if (gotalnum && prev && isdigit (prev[0])
+                   && (memset (numbuf, 0, sizeof (numbuf)),
+                       (l =
+                        strtoll (prev, (char **) &endt, 10)), endt == curpc
+                       && snprintf (numbuf, sizeof (numbuf), "%lld", l) > 0
+                       && l < LLONG_MAX / 2 && !strcmp (prev, numbuf)))
+            {
+              _.compv = taggedint_BM (l);
+              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
+              *curpc = oldc;
+              prev = curpc;
+            }
+          else if (gotalnum && isalpha (prev[0]) && validname_BM (prev))
+            {
+              _.compv = (const value_tyBM) findnamedobj_BM (prev);
+              if (!_.compv)
+                _.compv = makestring_BM (prev);
+              _.compv = (value_tyBM) makenodevar_BM (BMP_name, _.compv, NULL);
+              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
+              *curpc = oldc;
+              prev = curpc;
+            }
+          else if (gotword)
+            {
+              _.compv = (const value_tyBM) makestring_BM (prev);
+              _.compv = (value_tyBM) makenodevar_BM (BMP_word, _.compv, NULL);
+              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
+              *curpc = oldc;
+              prev = curpc;
+            }
+          else if (gotspace)
+            {
+              _.compv = (const value_tyBM) makestring_BM (prev);
+              _.compv =
+                (value_tyBM) makenodevar_BM (BMP_space, _.compv, NULL);
+              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
+              *curpc = oldc;
+              prev = curpc;
+            }
+          else if (gotpunct)
+            {
+              _.compv = (const value_tyBM) makestring_BM (prev);
+              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
+              *curpc = oldc;
+              prev = curpc;
+            }
+          else
+            {
+              _.compv = (const value_tyBM) makestring_BM (prev);
+              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
+              *curpc = oldc;
+              prev = curpc;
+            }
+        }                       /* end if prev < curpc */
+      if (prev == curpc)
+        {
+          puc = g_utf8_get_char (prev);
+          gotalnum = (prev && *prev < 127
+                      && (isalnum (*prev) || *prev == '_'));
+          gotword = (prev && (puc == '_' || g_unichar_isalnum (puc)));
+          gotspace = (prev && g_unichar_isspace (puc));
+          gotpunct = (prev && g_unichar_ispunct (puc));
         }
+      // should handle $
+#warning parsergetchunk_BM incomplete
     }
   while (!gotend);
 }                               /* end parsergetchunk_BM */
