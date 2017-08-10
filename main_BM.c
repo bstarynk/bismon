@@ -28,6 +28,7 @@ struct
 } added_predef_bm[MAXADDEDPREDEF_BM];
 
 bool batch_bm;
+bool parsevalstdin_bm;
 
 static void add_new_predefined_bm (void);
 
@@ -130,6 +131,13 @@ const GOptionEntry optab[] = {
    .arg = G_OPTION_ARG_NONE,
    .arg_data = &batch_bm,
    .description = "run in batch mode without GUI",
+   .arg_description = NULL},
+  //
+  {.long_name = "parse-val-stdin",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &parsevalstdin_bm,
+   .description = "parse value from standard input",
    .arg_description = NULL},
   {}
 };
@@ -242,6 +250,23 @@ main (int argc, char **argv)
   load_initial_BM (load_dir_bm);
   if (nb_added_predef_bm > 0)
     add_new_predefined_bm ();
+  if (parsevalstdin_bm)
+    {
+      printf ("parsing value from stdin...\n");
+      fflush (NULL);
+      struct parser_stBM *parstdin = makeparser_of_file_BM (stdin);
+      parstdin->pars_path = "*stdin*";
+      parserskipspaces_BM (parstdin);
+      bool gotval = false;
+      value_tyBM val = parsergetvalue_BM (parstdin, NULL, 0, &gotval);
+      if (!gotval)
+        FATAL_BM ("parsing stdin failed");
+      if (val)
+        printf ("parsed non-nil value from stdin\n");
+      else
+        printf ("parsed nil from stdin\n");
+      fflush (NULL);
+    }
   if (dump_after_load_dir_bm)
     dump_BM (dump_after_load_dir_bm, NULL);
   if (batch_bm)
