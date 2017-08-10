@@ -1301,7 +1301,7 @@ value_tyBM
   LOCALFRAME_BM                 //
     (prevstkf, NULL,            //
      value_tyBM resval;
-     struct datavectval_stBM *chunkvec; objectval_tyBM * obj;
+     struct datavectval_stBM *chunkvec; const objectval_tyBM * obj;
      value_tyBM compv;
     );
   _.chunkvec = nobuild ? NULL : datavect_grow_BM (NULL, 5);
@@ -1373,7 +1373,8 @@ value_tyBM
               && (id = parse_rawid_BM (prev, &endt)).id_hi
               && endt == curpc && (_.obj = findobjofid_BM (id)) != NULL)
             {
-              _.chunkvec = datavect_append_BM (_.chunkvec, _.obj);
+              _.chunkvec =      //
+                datavect_append_BM (_.chunkvec, (const value_tyBM) _.obj);
               *curpc = oldc;
             }
           else if (gotalnum && prev && isdigit (prev[0])
@@ -1458,7 +1459,8 @@ value_tyBM
             {
               char *npc = curpc + 1;
               while (isalnum (*npc)
-                     || (npc == '_' && isalnum (npc[-1]) && isalnum (npc[1])))
+                     || (*npc == '_' && isalnum (npc[-1])
+                         && isalnum (npc[1])))
                 npc++;
               char oldnpc = (*npc);
               *npc = (char) 0;
@@ -1496,9 +1498,10 @@ value_tyBM
   while (!gotend);
   if (gotend)
     {
-      _.resval =
-        nobuild ? NULL : makenode_BM (BMP_chunk, datavectlen_BM (_.chunkvec),
-                                      datavectdata_BM (_.chunkvec));
+      _.resval = nobuild ? NULL //
+        : (const value_tyBM) makenode_BM (BMP_chunk,
+                                          datavectlen_BM (_.chunkvec),
+                                          datavectdata_BM (_.chunkvec));
       if (pgotchunk)
         *pgotchunk = true;
       return _.resval;
