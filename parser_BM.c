@@ -1327,6 +1327,11 @@ value_tyBM
       if (parserendoffile_BM (pars))
         parsererrorprintf_BM (pars, curlineno, curcolpos,       //
                               "end of file in chunk");
+      if (parsereol_BM (pars))
+        {
+          parsernextline_BM (pars);
+          continue;
+        }
       gunichar uc = g_utf8_get_char (curpc);
       if (gotalnum && uc < 127 && (isalnum (uc) || uc == '_'))
         {
@@ -1350,7 +1355,7 @@ value_tyBM
           parseradvanceutf8_BM (pars, 1);
           continue;
         }
-      if (curpc && curpc[0] == '}' && curpc[1] == '#')
+      if (curpc && uc == '}' && curpc[1] == '#')
         {
           end = curpc;
           gotend = true;
@@ -1368,8 +1373,7 @@ value_tyBM
               && (id = parse_rawid_BM (prev, &endt)).id_hi
               && endt == curpc && (_.obj = findobjofid_BM (id)) != NULL)
             {
-              _.compv = (value_tyBM) makenodevar_BM (BMP_object, _.obj, NULL);
-              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
+              _.chunkvec = datavect_append_BM (_.chunkvec, _.obj);
               *curpc = oldc;
             }
           else if (gotalnum && prev && isdigit (prev[0])
@@ -1388,8 +1392,7 @@ value_tyBM
             {
               _.compv = (const value_tyBM) findnamedobj_BM (prev);
               if (!_.compv)
-                _.compv = makestring_BM (prev);
-              _.compv = (value_tyBM) makenodevar_BM (BMP_name, _.compv, NULL);
+                _.compv = (const value_tyBM) makestring_BM (prev);
               _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
               *curpc = oldc;
               prev = curpc;
@@ -1397,7 +1400,6 @@ value_tyBM
           else if (gotword)
             {
               _.compv = (const value_tyBM) makestring_BM (prev);
-              _.compv = (value_tyBM) makenodevar_BM (BMP_word, _.compv, NULL);
               _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
               *curpc = oldc;
               prev = curpc;
@@ -1405,17 +1407,24 @@ value_tyBM
           else if (gotspace)
             {
               _.compv = (const value_tyBM) makestring_BM (prev);
-              _.compv =
-                (value_tyBM) makenodevar_BM (BMP_space, _.compv, NULL);
               _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
               *curpc = oldc;
               prev = curpc;
             }
           else if (gotpunct)
             {
+              bool got2doll = false;
+              if (oldc == '$' && curpc[1] == '$')
+                {
+                  curpc[0] = '$';
+                  curpc[1] = (char) 0;
+                  got2doll = true;
+                }
               _.compv = (const value_tyBM) makestring_BM (prev);
               _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
               *curpc = oldc;
+              if (got2doll)
+                curpc += 2;
               prev = curpc;
             }
           else
@@ -1426,6 +1435,10 @@ value_tyBM
               prev = curpc;
             }
         }                       /* end if prev < curpc */
+      if (uc == '$')
+        {
+        }
+
       if (prev == curpc)
         {
           puc = g_utf8_get_char (prev);
@@ -1435,8 +1448,6 @@ value_tyBM
           gotspace = (prev && g_unichar_isspace (puc));
           gotpunct = (prev && g_unichar_ispunct (puc));
         }
-      // should handle $
-#warning parsergetchunk_BM incomplete
     }
   while (!gotend);
 }                               /* end parsergetchunk_BM */
