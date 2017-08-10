@@ -1435,10 +1435,54 @@ value_tyBM
               prev = curpc;
             }
         }                       /* end if prev < curpc */
+
       if (uc == '$')
         {
+          if (curpc[1] == '$')
+            {
+              curpc[0] = '$';
+              curpc[1] = (char) 0;
+              _.compv = (const value_tyBM) makestring_BM (prev);
+              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
+              curpc += 2;
+              parseradvanceutf8_BM (pars, 2);
+              prev = curpc;
+            }
+          else if (curpc[1] == ',' || curpc[1] == '&')
+            {
+              curpc += 2;
+              parseradvanceutf8_BM (pars, 2);
+              prev = curpc;
+            }
+          else if (isalpha (curpc[1]))
+            {
+              char *npc = curpc + 1;
+              while (isalnum (*npc)
+                     || (npc == '_' && isalnum (npc[-1]) && isalnum (npc[1])))
+                npc++;
+              char oldnpc = (*npc);
+              *npc = (char) 0;
+              _.obj = findnamedobj_BM (curpc + 1);
+              if (!_.obj)
+                {
+                  char nambuf[3 * TINYSIZE_BM];
+                  memset (nambuf, 0, sizeof (nambuf));
+                  strncpy (nambuf, curpc, sizeof (nambuf));
+                  nambuf[sizeof (nambuf) - 1] = (char) 0;
+                  *npc = oldnpc;
+                  parsererrorprintf_BM (pars, curlineno, curcolpos,     //
+                                        "unknown dollar name %s", nambuf);
+                }
+              _.compv =
+                (const value_tyBM) makenodevar_BM (BMP_variable, _.obj, NULL);
+              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
+              parseradvanceutf8_BM (pars, npc - curpc);
+              prev = curpc = npc;
+            }
+          else
+            parsererrorprintf_BM (pars, curlineno, curcolpos,   //
+                                  "unexpected dollar in chunk %s", curpc);
         }
-
       if (prev == curpc)
         {
           puc = g_utf8_get_char (prev);

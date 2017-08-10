@@ -1,5 +1,5 @@
 // generated file store1.bismon
-// for 23 objects
+// for 24 objects
 // with 0 modules
 
 
@@ -155,6 +155,15 @@
 !~ name (~ unspecified ~)
 !@ 1501521100.00
 !)_55eJRRPyZDz_4uW8bzq75PI
+
+
+
+!(_5ucAZimYynS_4VA0XHvr1nW |=variable|
+!~ name (~ variable ~)
+!@ 1502361559.14
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for variables"
+!)_5ucAZimYynS_4VA0XHvr1nW
 
 
 
