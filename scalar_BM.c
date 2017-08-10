@@ -64,7 +64,7 @@ stringhash_BM (const char *cstr)
 }                               /* end stringhash_BM */
 
 hash_tyBM
-stringhashlen_BM (const char *cstr, int len)
+stringhashlen_BM (const char *cstr, long len)
 {
   if (!cstr)
     return 0;
@@ -72,7 +72,7 @@ stringhashlen_BM (const char *cstr, int len)
     len = strlen (cstr);
   assert (g_utf8_validate (cstr, len, NULL));
   if (len >= MAXSIZE_BM)
-    FATAL_BM ("too long string %d", len);
+    FATAL_BM ("too long string %ld", len);
   int l = len;
   const char *str = cstr;
   hash_tyBM h1 = l % 13, h2 = l, h = 0;
@@ -142,14 +142,14 @@ makestring_BM (const char *cstr)
 
 
 extern const stringval_tyBM *
-makestringlen_BM (const char *cstr, int len)
+makestringlen_BM (const char *cstr, long len)
 {
   if (!cstr)
     return NULL;
   if (len < 0)
     len = strlen (cstr);
   if (len > MAXSIZE_BM)
-    FATAL_BM ("makestringlen too long %d string", len);
+    FATAL_BM ("makestringlen too long %ld string", len);
   if (!g_utf8_validate (cstr, len, NULL))
     FATAL_BM ("makestringlen invalid string");
   hash_tyBM h = stringhashlen_BM (cstr, len);

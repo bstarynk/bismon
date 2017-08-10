@@ -58,9 +58,9 @@ extern void *allocinternalty_BM (unsigned type, size_t sz);
 
 static inline bool isstring_BM (const value_tyBM v);
 extern hash_tyBM stringhash_BM (const char *str);
-extern hash_tyBM stringhashlen_BM (const char *str, int len);
+extern hash_tyBM stringhashlen_BM (const char *str, long len);
 extern const stringval_tyBM *makestring_BM (const char *str);
-extern const stringval_tyBM *makestringlen_BM (const char *str, int len);
+extern const stringval_tyBM *makestringlen_BM (const char *str, long len);
 extern const stringval_tyBM *sprintfstring_BM (const char *fmt, ...)
   __attribute__ ((format (printf, 1, 2)));
 extern int lenstring_BM (const stringval_tyBM *);       // length in bytes
