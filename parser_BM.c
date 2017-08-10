@@ -1333,6 +1333,8 @@ value_tyBM
           continue;
         }
       gunichar uc = g_utf8_get_char (curpc);
+      if (!uc)
+        break;
       if (gotalnum && uc < 127 && (isalnum (uc) || uc == '_'))
         {
           parseradvanceutf8_BM (pars, 1);
@@ -1425,7 +1427,11 @@ value_tyBM
               _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
               *curpc = oldc;
               if (got2doll)
-                curpc += 2;
+                {
+                  parseradvanceutf8_BM (pars, 2);
+                  curpc += 2;
+                  continue;
+                }
               prev = curpc;
             }
           else
