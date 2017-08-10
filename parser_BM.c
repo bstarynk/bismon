@@ -1450,4 +1450,16 @@ value_tyBM
         }
     }
   while (!gotend);
+  if (gotend)
+    {
+      _.resval =
+        nobuild ? NULL : makenode_BM (BMP_chunk, datavectlen_BM (_.chunkvec),
+                                      datavectdata_BM (_.chunkvec));
+      if (pgotchunk)
+        *pgotchunk = true;
+      return _.resval;
+    }
+  if (pgotchunk)
+    *pgotchunk = false;
+  return NULL;
 }                               /* end parsergetchunk_BM */
