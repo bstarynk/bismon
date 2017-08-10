@@ -502,6 +502,14 @@ datavectlen_BM (const struct datavectval_stBM *dvec)
   return ((typedsize_tyBM *) dvec)->size;
 }                               /* end datavectlen_BM */
 
+const value_tyBM *
+datavectdata_BM (const struct datavectval_stBM *dvec)
+{
+  if (valtype_BM ((const value_tyBM) dvec) != tydata_vectval_BM)
+    return NULL;
+  return dvec->vec_data;
+}                               /* end datavectdata_BM */
+
 value_tyBM
 datavectnth_BM (const struct datavectval_stBM * dvec, int rk)
 {

@@ -284,6 +284,9 @@ extern anyassoc_tyBM *assoc_removeattr_BM (anyassoc_tyBM * assoc,
 
 static inline unsigned datavectlen_BM (const struct datavectval_stBM *dvec);
 
+static inline const value_tyBM *datavectdata_BM (const struct datavectval_stBM
+                                                 *dvec);
+
 extern struct datavectval_stBM *datavect_grow_BM (struct datavectval_stBM
                                                   *dvec, unsigned gap);
 
