@@ -604,3 +604,37 @@ dictnodeofkeys_BM(struct dict_stBM* dict, const objectval_tyBM*obj)
   free (arr);
   return nodv;
 } // end dictnodeofkeys_BM
+
+static std::map<int,parenoffset_stBM> cmd_openmap_BM;
+static std::map<int,parenoffset_stBM> cmd_closemap_BM;
+
+void
+cmd_clear_parens_BM(void)
+{
+  cmd_openmap_BM.clear();
+  cmd_closemap_BM.clear();
+} // end cmd_clear_parens_BM
+
+
+void
+cmd_add_parens_BM (struct parenoffset_stBM*par)
+{
+  assert (par != nullptr);
+  cmd_openmap_BM.insert({par->paroff_open,*par});
+  cmd_closemap_BM.insert({par->paroff_close,*par});
+} // end cmd_add_parens_BM
+
+bool
+cmd_parens_surrounds_BM(struct parenoffset_stBM*par, int off)
+{
+  if (!par)
+    return false;
+  /// when ( ^ ) or [ ^ ] or { ^ }
+  if (par->paroff_open <= off && off <= par->paroff_close)
+    return true;
+  /// when * conn ^ ( ... )
+  if (par->paroff_xtra >= 0 && par->paroff_xtra <= off
+      && off <= par->paroff_open && par->paroff_xtra < par->paroff_open)
+    return true;
+  return false;
+} // end cmd_parens_surrounds_BM

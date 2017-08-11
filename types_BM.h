@@ -226,7 +226,7 @@ struct dumper_stBM
 };
 
 #define LINKSIZE_BM 14
-struct listlink_stBM
+struct listlink_stBM            ///internal, not a value
 {
   struct listlink_stBM *link_next;
   struct listlink_stBM *link_prev;
@@ -241,6 +241,16 @@ struct listtop_stBM
   struct listlink_stBM *list_last;
 };
 
+struct parenoffset_stBM
+{                               /// internal, not a value
+  int paroff_open;              // relative offset before open parenthesis-like
+  int paroff_close;             // relative offset after close parenthesis-like
+  int paroff_xtra;              // relative offset of xtra sign, such as the *, or -1
+  uint8_t paroff_openlen;       // length in UTF-8 chars of opening sign
+  uint8_t paroff_closelen;      // length in UTF-8 chars of closing sign
+  uint8_t paroff_xtralen;       // length in UTF-8 chars of xtra sign
+  uint8_t paroff_depth;         // depth
+};
 
 struct nodetree_stBM
 {                               // for tyNode_BM && tyClosure_BM

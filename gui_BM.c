@@ -24,6 +24,11 @@ GtkTextTag *delim_cmdtag_BM;
 GtkTextTag *knowname_cmdtag_BM;
 GtkTextTag *newname_cmdtag_BM;
 GtkTextTag *id_cmdtag_BM;
+GtkTextTag *nesting_cmdtag_BM;
+#define CMD_MAXNEST_BM 64
+GtkTextTag *open_cmdtags_BM[CMD_MAXNEST_BM];
+GtkTextTag *close_cmdtags_BM[CMD_MAXNEST_BM];
+GtkTextTag *xtra_cmdtags_BM[CMD_MAXNEST_BM];
 
 const char *
 gobjectclassnamedbg_BM (GObject * ptr)
@@ -256,7 +261,7 @@ parsidcmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned idlen)
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit = it;
-  gtk_text_iter_forward_chars (&endit, namlen);
+  gtk_text_iter_forward_chars (&endit, idlen);
   gtk_text_buffer_apply_tag (commandbuf_BM, id_cmdtag_BM, &it, &endit);
 }                               /* end parsidcmd_BM */
 
@@ -270,7 +275,41 @@ parsnestingcmd_BM (struct parser_stBM *pars, int depth,
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
-#warning parsnestingcmd_BM unimplemented
+  const char *opendelstr = delimstr_BM (opendelim);
+  const char *closedelstr = delimstr_BM (closedelim);
+  GtkTextIter openit, endopenit;
+  GtkTextIter closeit, stacloseit;
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &openit, openlinpos);
+  gtk_text_iter_forward_chars (&openit, opencolpos);
+  endopenit = openit;
+  int openoff = gtk_text_iter_get_offset (&openit);
+  int openlen = g_utf8_strlen (opendelstr, -1);
+  gtk_text_iter_forward_chars (&endopenit, openlen);
+  gtk_text_buffer_apply_tag (commandbuf_BM, nesting_cmdtag_BM,
+                             &openit, &endopenit);
+  if (depth < CMD_MAXNEST_BM)
+    gtk_text_buffer_apply_tag (commandbuf_BM, open_cmdtags_BM[depth],
+                               &openit, &endopenit);
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &closeit, closelinpos);
+  gtk_text_iter_forward_chars (&closeit, closecolpos);
+  stacloseit = closeit;
+  int closelen = g_utf8_strlen (closedelstr, -1);
+  int closeoff = gtk_text_iter_get_offset (&closeit);
+  gtk_text_iter_backward_chars (&stacloseit, closelen);
+  gtk_text_buffer_apply_tag (commandbuf_BM, nesting_cmdtag_BM,
+                             &stacloseit, &closeit);
+  if (depth < CMD_MAXNEST_BM)
+    gtk_text_buffer_apply_tag (commandbuf_BM, close_cmdtags_BM[depth],
+                               &stacloseit, &closeit);
+  struct parenoffset_stBM po = {.paroff_open = openoff,
+    .paroff_close = closeoff,
+    .paroff_xtra = -1,
+    .paroff_openlen = openlen,
+    .paroff_closelen = closelen,
+    .paroff_xtralen = 0,
+    .paroff_depth = depth
+  };
+  cmd_add_parens_BM (&po);
 }                               /* end parsnestingcmd_BM */
 
 
@@ -335,6 +374,25 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (commandtagtable_BM, "id_cmdtag");
   if (!id_cmdtag_BM)
     FATAL_BM ("cannot find id_cmdtag");
+  nesting_cmdtag_BM =           //
+    gtk_text_tag_table_lookup (commandtagtable_BM, "nesting_cmdtag");
+  if (!nesting_cmdtag_BM)
+    FATAL_BM ("cannot find nesting_cmdtag");
+  for (int depth = 0; depth < CMD_MAXNEST_BM; depth++)
+    {
+      char opennamebuf[24];
+      snprintf (opennamebuf, sizeof (opennamebuf), "open%d_cmdtag", depth);
+      open_cmdtags_BM[depth] =  //
+        gtk_text_buffer_create_tag (commandbuf_BM, opennamebuf, NULL);
+      char closenamebuf[24];
+      snprintf (closenamebuf, sizeof (closenamebuf), "close%d_cmdtag", depth);
+      close_cmdtags_BM[depth] = //
+        gtk_text_buffer_create_tag (commandbuf_BM, closenamebuf, NULL);
+      char xtranamebuf[24];
+      snprintf (xtranamebuf, sizeof (xtranamebuf), "xtra%d_cmdtag", depth);
+      xtra_cmdtags_BM[depth] =  //
+        gtk_text_buffer_create_tag (commandbuf_BM, xtranamebuf, NULL);
+    };
   GtkWidget *mainvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);
   GtkWidget *mainmenubar = gtk_menu_bar_new ();
