@@ -118,6 +118,14 @@
 	      <property name='font'>Courier New, Bold</property>
             </object>
         </child>
+      <!-- id_cmdtag for ids -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">id_cmdtag</property>
+	      <property name='foreground'>saddlebrown</property>
+	      <property name='font'>Liberation Mono Bold</property>
+            </object>
+        </child>
     </object>
     
   <!-- the log tag table -->

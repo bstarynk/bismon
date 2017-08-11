@@ -23,6 +23,7 @@ GtkTextTag *commentsign_cmdtag_BM;
 GtkTextTag *delim_cmdtag_BM;
 GtkTextTag *knowname_cmdtag_BM;
 GtkTextTag *newname_cmdtag_BM;
+GtkTextTag *id_cmdtag_BM;
 
 const char *
 gobjectclassnamedbg_BM (GObject * ptr)
@@ -245,6 +246,22 @@ parsnewnamecmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned namlen)
 
 
 void
+parsidcmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned idlen)
+{
+  assert (isparser_BM (pars));
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  GtkTextIter it;
+  unsigned lineno = parserlineno_BM (pars);
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
+  gtk_text_iter_forward_chars (&it, colpos);
+  GtkTextIter endit = it;
+  gtk_text_iter_forward_chars (&endit, namlen);
+  gtk_text_buffer_apply_tag (commandbuf_BM, id_cmdtag_BM, &it, &endit);
+}                               /* end parsidcmd_BM */
+
+
+void
 parsnestingcmd_BM (struct parser_stBM *pars, int depth,
                    enum lexdelim_enBM opendelim, unsigned openlinpos,
                    unsigned opencolpos, enum lexdelim_enBM closedelim,
@@ -270,15 +287,6 @@ parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
 #warning parsstartnestingcmd_BM unimplemented
 }                               /* end parsstartnestingcmd_BM */
-
-void
-parsidcmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned idlen)
-{
-  assert (isparser_BM (pars));
-  const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
-#warning parsidcmd_BM unimplemented
-}                               /* end parsidcmd_BM */
 
 void
 parse_command_gui_BM (bool nobuild)
@@ -323,6 +331,10 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (commandtagtable_BM, "newname_cmdtag");
   if (!newname_cmdtag_BM)
     FATAL_BM ("cannot find newname_cmdtag");
+  id_cmdtag_BM =                //
+    gtk_text_tag_table_lookup (commandtagtable_BM, "id_cmdtag");
+  if (!id_cmdtag_BM)
+    FATAL_BM ("cannot find id_cmdtag");
   GtkWidget *mainvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);
   GtkWidget *mainmenubar = gtk_menu_bar_new ();
