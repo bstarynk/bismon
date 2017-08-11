@@ -1305,15 +1305,7 @@ value_tyBM
      value_tyBM compv;
     );
   _.chunkvec = nobuild ? NULL : datavect_grow_BM (NULL, 5);
-  const char *prev = parserrestline_BM (pars);
   const char *end = NULL;
-  gunichar puc = 0;
-  if (prev)
-    puc = g_utf8_get_char (prev);
-  bool gotalnum = (prev && *prev < 127 && (isalnum (*prev) || *prev == '_'));
-  bool gotword = (prev && (puc == '_' || g_unichar_isalnum (puc)));
-  bool gotspace = (prev && g_unichar_isspace (puc));
-  bool gotpunct = (prev && g_unichar_ispunct (puc));
   bool gotend = false;
   int loopcnt = 0;
   do
@@ -1323,10 +1315,12 @@ value_tyBM
       char *curpc = (char *) parserrestline_BM (pars);
       if (loopcnt++ > MAXSIZE_BM / 8)
         parsererrorprintf_BM (pars, curlineno, curcolpos,
-                              "too many loops %d : %s", loopcnt, curpc);
+                              "too many loops %d in chunk (started line %d, col %d) : %s",
+                              loopcnt, startlineno, startcolpos, curpc);
       if (parserendoffile_BM (pars))
         parsererrorprintf_BM (pars, curlineno, curcolpos,       //
-                              "end of file in chunk");
+                              "end of file in chunk (started line %d, col %d)",
+                              startlineno, startcolpos);
       if (parsereol_BM (pars))
         {
           parsernextline_BM (pars);
@@ -1335,170 +1329,232 @@ value_tyBM
       gunichar uc = g_utf8_get_char (curpc);
       if (!uc)
         break;
-      if (gotalnum && uc < 127 && (isalnum (uc) || uc == '_'))
+      /// process word-like characters, i.e. alnum & underscore
+      if (g_unichar_isalnum (uc) || uc == '_')
         {
-          parseradvanceutf8_BM (pars, 1);
+          char *npc = curpc;
+          gunichar nc = 0;
+          while (*npc && (nc = g_utf8_get_char (npc)) > 0
+                 && (g_unichar_isalnum (nc) || nc == '_'))
+            npc = g_utf8_next_char (npc);
+          bool allascii = uc < 127;
+          for (const char *p = curpc; p < npc && allascii; p++)
+            allascii = (*p) < 127 && (isalnum (*p) || *p == '_');
+          if (allascii)
+            {
+              char oldn = *npc;
+              *npc = 0;
+              rawid_tyBM id = { 0, 0 };
+              // check for ids
+              if (curpc[0] == '_' && isdigit (curpc[1])
+                  && npc <= curpc + IDLEN_BM
+                  && (id =
+                      parse_rawid_BM (curpc, (const char **) &end)).id_hi > 0
+                  && end <= npc)
+                {
+                  *npc = oldn;
+                  _.obj = findobjofid_BM (id);
+                  if (_.obj)
+                    {
+                      _.chunkvec =      //
+                        datavect_append_BM (_.chunkvec,
+                                            (const value_tyBM) _.obj);
+                      parseradvanceutf8_BM (pars,
+                                            g_utf8_strlen (curpc,
+                                                           npc - curpc));
+                      continue;
+                    }
+                }
+              // check for numbers in decimal
+              if (*curpc < 127 && isdigit (*curpc))
+                {
+                  char numbuf[32];
+                  memset (numbuf, 0, sizeof (numbuf));
+                  char *end = NULL;
+                  long long ll = strtoll (curpc, (char **) &end, 10);
+                  if (end == npc && ll < LLONG_MAX / 2 && ll < INTPTR_MAX / 2
+                      && snprintf (numbuf, sizeof (numbuf), "%lld", ll) > 0
+                      && !strncmp (numbuf, curpc, npc - curpc))
+                    {
+                      *npc = oldn;
+                      _.compv = taggedint_BM (ll);
+                      _.chunkvec =      //
+                        datavect_append_BM (_.chunkvec,
+                                            (const value_tyBM) _.compv);
+                      parseradvanceutf8_BM (pars,
+                                            g_utf8_strlen (curpc,
+                                                           npc - curpc));
+                      continue;
+                    }
+                  *npc = oldn;
+                }
+              // check for name of existing objects
+              if (isalpha (*curpc) && validname_BM (curpc))
+                {
+                  _.obj = findnamedobj_BM (curpc);
+                  *npc = oldn;
+                  if (_.obj)
+                    {
+                      _.chunkvec =      //
+                        datavect_append_BM (_.chunkvec,
+                                            (const value_tyBM) _.obj);
+                      parseradvanceutf8_BM (pars,
+                                            g_utf8_strlen (curpc,
+                                                           npc - curpc));
+                      continue;
+                    }
+                }
+              *npc = oldn;
+            }                   /* end if allascii */
+          // plain word, make a string of it
+          _.compv = (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
+          _.chunkvec =          //
+            datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+          parseradvanceutf8_BM (pars, g_utf8_strlen (curpc, npc - curpc));
           continue;
-        }
-      if ((gotword || gotalnum) && (uc == '_' || g_unichar_isalnum (uc)))
+        }                       /* end if word */
+      // process contiguous space characters
+      if (g_unichar_isspace (uc))
         {
-          parseradvanceutf8_BM (pars, 1);
-          gotword = true;
-          gotalnum = false;
+          char *npc = curpc;
+          gunichar nc = 0;
+          while (*npc && (nc = g_utf8_get_char (npc)) > 0
+                 && g_unichar_isspace (nc))
+            npc = g_utf8_next_char (npc);
+          _.compv = (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
+          _.chunkvec =          //
+            datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+          parseradvanceutf8_BM (pars, g_utf8_strlen (curpc, npc - curpc));
           continue;
-        }
-      if (gotspace && g_unichar_isspace (uc))
+        }                       /* end if spaces */
+      // handle end of chunk
+      if (curpc[0] == '}' && curpc[1] == '#')
         {
-          parseradvanceutf8_BM (pars, 1);
-          continue;
-        }
-      if (gotpunct && uc != '$' && g_unichar_ispunct (uc))
-        {
-          parseradvanceutf8_BM (pars, 1);
-          continue;
-        }
-      if (curpc && uc == '}' && curpc[1] == '#')
-        {
-          end = curpc;
-          gotend = true;
           parseradvanceutf8_BM (pars, 2);
+          gotend = true;
+          break;
         }
-      if (prev < curpc)
+      // process contiguous punctuation characters non $, perhaps
+      // ended by $$
+      if (uc != '$' && g_unichar_ispunct (uc))
         {
-          char oldc = *curpc;
-          *curpc = (char) 0;
-          rawid_tyBM id = { 0, 0 };
-          const char *endt = NULL;
-          long long l = 0;
-          char numbuf[32];
-          if (gotalnum && prev && prev[0] == '_' && isdigit (prev[1])
-              && (id = parse_rawid_BM (prev, &endt)).id_hi
-              && endt == curpc && (_.obj = findobjofid_BM (id)) != NULL)
-            {
-              _.chunkvec =      //
-                datavect_append_BM (_.chunkvec, (const value_tyBM) _.obj);
-              *curpc = oldc;
-            }
-          else if (gotalnum && prev && isdigit (prev[0])
-                   && (memset (numbuf, 0, sizeof (numbuf)),
-                       (l =
-                        strtoll (prev, (char **) &endt, 10)), endt == curpc
-                       && snprintf (numbuf, sizeof (numbuf), "%lld", l) > 0
-                       && l < LLONG_MAX / 2 && !strcmp (prev, numbuf)))
-            {
-              _.compv = taggedint_BM (l);
-              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
-              *curpc = oldc;
-              prev = curpc;
-            }
-          else if (gotalnum && isalpha (prev[0]) && validname_BM (prev))
-            {
-              _.compv = (const value_tyBM) findnamedobj_BM (prev);
-              if (!_.compv)
-                _.compv = (const value_tyBM) makestring_BM (prev);
-              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
-              *curpc = oldc;
-              prev = curpc;
-            }
-          else if (gotword)
-            {
-              _.compv = (const value_tyBM) makestring_BM (prev);
-              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
-              *curpc = oldc;
-              prev = curpc;
-            }
-          else if (gotspace)
-            {
-              _.compv = (const value_tyBM) makestring_BM (prev);
-              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
-              *curpc = oldc;
-              prev = curpc;
-            }
-          else if (gotpunct)
-            {
-              bool got2doll = false;
-              if (oldc == '$' && curpc[1] == '$')
-                {
-                  curpc[0] = '$';
-                  curpc[1] = (char) 0;
-                  got2doll = true;
-                }
-              _.compv = (const value_tyBM) makestring_BM (prev);
-              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
-              *curpc = oldc;
-              if (got2doll)
-                {
-                  parseradvanceutf8_BM (pars, 2);
-                  curpc += 2;
-                  continue;
-                }
-              prev = curpc;
-            }
-          else
-            {
-              _.compv = (const value_tyBM) makestring_BM (prev);
-              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
-              *curpc = oldc;
-              prev = curpc;
-            }
-        }                       /* end if prev < curpc */
-
+          char *npc = curpc;
+          gunichar nc = 0;
+          while (*npc && (nc = g_utf8_get_char (npc)) > 0
+                 && nc != '$' && g_unichar_ispunct (nc))
+            npc = g_utf8_next_char (npc);
+          bool twodollars = npc[0] == '$' && npc[1] == '$';
+          if (twodollars)
+            npc++;
+          _.compv = (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
+          _.chunkvec =          //
+            datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+          parseradvanceutf8_BM (pars,
+                                g_utf8_strlen (curpc,
+                                               npc - curpc) +
+                                (twodollars ? 1 : 0));
+          continue;
+        }
+      // process contiguous mark characters
+      if (g_unichar_ismark (uc))
+        {
+          char *npc = curpc;
+          gunichar nc = 0;
+          while (*npc && (nc = g_utf8_get_char (npc)) > 0
+                 && g_unichar_ismark (nc))
+            npc = g_utf8_next_char (npc);
+          _.compv = (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
+          _.chunkvec =          //
+            datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+          parseradvanceutf8_BM (pars, g_utf8_strlen (curpc, npc - curpc));
+          continue;
+        }
+      // special processing for $
       if (uc == '$')
         {
-          if (curpc[1] == '$')
+          const char *npc = curpc + 1;
+          gunichar nc = g_utf8_get_char (npc);
+          if (!nc)
+            parsererrorprintf_BM (pars, curlineno, curcolpos,   //
+                                  "end of file after dollar");
+          if (nc == '}')
+            parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                  "$} is forbidden");
+          npc = g_utf8_next_char (npc);
+          // $, and $& and $. are skipped
+          if (nc == ',' || nc == '&' || nc == '.')
             {
-              curpc[0] = '$';
-              curpc[1] = (char) 0;
-              _.compv = (const value_tyBM) makestring_BM (prev);
-              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
-              curpc += 2;
               parseradvanceutf8_BM (pars, 2);
-              prev = curpc;
+              continue;
             }
-          else if (curpc[1] == ',' || curpc[1] == '&')
+          // $( starts a nested value, which should be followed by a )
+          else if (nc == '(')
             {
-              curpc += 2;
               parseradvanceutf8_BM (pars, 2);
-              prev = curpc;
-            }
-          else if (isalpha (curpc[1]))
-            {
-              char *npc = curpc + 1;
-              while (isalnum (*npc)
-                     || (*npc == '_' && isalnum (npc[-1])
-                         && isalnum (npc[1])))
-                npc++;
-              char oldnpc = (*npc);
-              *npc = (char) 0;
-              _.obj = findnamedobj_BM (curpc + 1);
-              if (!_.obj)
-                {
-                  char nambuf[3 * TINYSIZE_BM];
-                  memset (nambuf, 0, sizeof (nambuf));
-                  strncpy (nambuf, curpc, sizeof (nambuf));
-                  nambuf[sizeof (nambuf) - 1] = (char) 0;
-                  *npc = oldnpc;
-                  parsererrorprintf_BM (pars, curlineno, curcolpos,     //
-                                        "unknown dollar name %s", nambuf);
-                }
+              bool gotval = false;
               _.compv =
-                (const value_tyBM) makenodevar_BM (BMP_variable, _.obj, NULL);
-              _.chunkvec = datavect_append_BM (_.chunkvec, _.compv);
-              parseradvanceutf8_BM (pars, npc - curpc);
-              prev = curpc = npc;
+                parsergetvalue_BM (pars, (struct stackframe_stBM *) &_,
+                                   depth + 1, &gotval);
+              if (!gotval)
+                parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                      "$( not followed by value");
+              parserskipspaces_BM (pars);
+              parstoken_tyBM tok = parsertokenget_BM (pars);
+              unsigned clolineno = parserlineno_BM (pars);
+              unsigned clocolpos = parsercolpos_BM (pars);
+              if (tok.tok_kind != plex_DELIM
+                  || tok.tok_delim != delim_rightparen)
+                parsererrorprintf_BM (pars, clolineno, clocolpos,
+                                      "closing paren expected after nested expression $(...) in chunk line %d, col %d",
+                                      curlineno, curcolpos);
+              _.chunkvec =      //
+                datavect_append_BM (_.chunkvec,
+                                    (const value_tyBM) makenode_BM (BMP_embed,
+                                                                    1,
+                                                                    &_.compv));
+            }                   /* end nested values $(...) */
+	  /// $name ...
+          else if (nc < 127 && isalpha (nc))
+            {
+              while (isalnum (*npc) || *npc == '_')
+                npc++;
+              char oldc = *npc;
+              *(char *) npc = 0;
+              _.obj = findnamedobj_BM (curpc + 1);
+              *(char *) npc = oldc;
+              if (!_.obj)
+                parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                      "invalid dollarvar %s in chunk", curpc);
+
+              _.chunkvec =      //
+                datavect_append_BM (_.chunkvec,
+                                    (const value_tyBM)
+                                    makenode_BM (BMP_variable, 1,
+                                                 (value_tyBM *) & _.obj));
+              parseradvanceutf8_BM (pars, g_utf8_strlen (curpc, npc - curpc));
+              continue;
+            }                   /* end $name */
+	  /// $$ taken as a single dollar in isolation
+          else if (nc == '$')
+            {
+              _.compv = (const value_tyBM) makestring_BM ("$");
+              _.chunkvec =      //
+                datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+              parseradvanceutf8_BM (pars, 2);
+              continue;
             }
           else
-            parsererrorprintf_BM (pars, curlineno, curcolpos,   //
-                                  "unexpected dollar in chunk %s", curpc);
-        }
-      if (prev == curpc)
-        {
-          puc = g_utf8_get_char (prev);
-          gotalnum = (prev && *prev < 127
-                      && (isalnum (*prev) || *prev == '_'));
-          gotword = (prev && (puc == '_' || g_unichar_isalnum (puc)));
-          gotspace = (prev && g_unichar_isspace (puc));
-          gotpunct = (prev && g_unichar_ispunct (puc));
+            parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                  "invalid dollar seqence %s", curpc);
+        }                       /* end dollar */
+      else
+        {                       // any other character, including control characters, is taken in isolation       
+          char *npc = g_utf8_next_char (curpc);
+          _.compv = (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
+          _.chunkvec =          //
+            datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+          parseradvanceutf8_BM (pars, 1);
+          continue;
         }
     }
   while (!gotend);
