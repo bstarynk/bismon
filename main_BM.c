@@ -28,7 +28,7 @@ struct
 } added_predef_bm[MAXADDEDPREDEF_BM];
 
 bool batch_bm;
-bool parsevalstdin_bm;
+char *parseval_bm;
 
 static void add_new_predefined_bm (void);
 
@@ -133,12 +133,12 @@ const GOptionEntry optab[] = {
    .description = "run in batch mode without GUI",
    .arg_description = NULL},
   //
-  {.long_name = "parse-val-stdin",.short_name = (char) 0,
+  {.long_name = "parse-val",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_NONE,
-   .arg_data = &parsevalstdin_bm,
-   .description = "parse value from standard input",
-   .arg_description = NULL},
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &parseval_bm,
+   .description = "parse value from FILE (use - for stdin)",
+   .arg_description = "FILE"},
   {}
 };
 
@@ -250,21 +250,27 @@ main (int argc, char **argv)
   load_initial_BM (load_dir_bm);
   if (nb_added_predef_bm > 0)
     add_new_predefined_bm ();
-  if (parsevalstdin_bm)
+  if (parseval_bm)
     {
-      printf ("parsing value from stdin...\n");
+      FILE *pfil =
+        strcmp (parseval_bm, "-") ? fopen (parseval_bm, "r") : stdin;
+      if (!pfil)
+        FATAL_BM ("failed to open %s for parsing value (%m)", parseval_bm);
+      printf ("parsing value from %s...\n", parseval_bm);
       fflush (NULL);
-      struct parser_stBM *parstdin = makeparser_of_file_BM (stdin);
-      parstdin->pars_path = "*stdin*";
-      parserskipspaces_BM (parstdin);
+      struct parser_stBM *parsin = makeparser_of_file_BM (pfil);
+      parsin->pars_path = parseval_bm;
+      parserskipspaces_BM (parsin);
       bool gotval = false;
-      value_tyBM val = parsergetvalue_BM (parstdin, NULL, 0, &gotval);
+      value_tyBM val = parsergetvalue_BM (parsin, NULL, 0, &gotval);
       if (!gotval)
-        FATAL_BM ("parsing stdin failed");
+        FATAL_BM ("parsing %s failed", parseval_bm);
       if (val)
-        printf ("parsed non-nil value from stdin\n");
+        printf ("parsed non-nil value from %s\n", parseval_bm);
       else
-        printf ("parsed nil from stdin\n");
+        printf ("parsed nil from %s\n", parseval_bm);
+      if (pfil != stdin)
+        fclose (pfil);
       fflush (NULL);
     }
   if (dump_after_load_dir_bm)
