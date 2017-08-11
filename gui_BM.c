@@ -301,7 +301,8 @@ parsnestingcmd_BM (struct parser_stBM *pars, int depth,
   if (depth < CMD_MAXNEST_BM)
     gtk_text_buffer_apply_tag (commandbuf_BM, close_cmdtags_BM[depth],
                                &stacloseit, &closeit);
-  struct parenoffset_stBM po = {.paroff_open = openoff,
+  struct parenoffset_stBM po = {        //
+    .paroff_open = openoff,
     .paroff_close = closeoff,
     .paroff_xtra = -1,
     .paroff_openlen = openlen,
@@ -315,8 +316,8 @@ parsnestingcmd_BM (struct parser_stBM *pars, int depth,
 
 void
 parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
-                        enum lexdelim_enBM startdelim, unsigned startlinpos,
-                        unsigned startcolpos, enum lexdelim_enBM opendelim,
+                        enum lexdelim_enBM xtradelim, unsigned xtralinpos,
+                        unsigned xtracolpos, enum lexdelim_enBM opendelim,
                         unsigned openlinpos, unsigned opencolpos,
                         enum lexdelim_enBM closedelim, unsigned closelinpos,
                         unsigned closecolpos)
@@ -324,12 +325,67 @@ parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
-#warning parsstartnestingcmd_BM unimplemented
+  const char *xtradelstr = delimstr_BM (xtradelim);
+  const char *opendelstr = delimstr_BM (opendelim);
+  const char *closedelstr = delimstr_BM (closedelim);
+  GtkTextIter xtrait, endxtrait;
+  GtkTextIter openit, endopenit;
+  GtkTextIter closeit, stacloseit;
+  //
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &xtrait, xtralinpos);
+  gtk_text_iter_forward_chars (&xtrait, xtracolpos);
+  endxtrait = xtrait;
+  int xtraoff = gtk_text_iter_get_offset (&xtrait);
+  int xtralen = g_utf8_strlen (xtradelstr, -1);
+  gtk_text_iter_forward_chars (&endxtrait, xtralen);
+  gtk_text_buffer_apply_tag (commandbuf_BM, nesting_cmdtag_BM,
+                             &xtrait, &endxtrait);
+  if (depth < CMD_MAXNEST_BM)
+    gtk_text_buffer_apply_tag (commandbuf_BM, xtra_cmdtags_BM[depth],
+                               &xtrait, &endxtrait);
+  //
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &openit, openlinpos);
+  gtk_text_iter_forward_chars (&openit, opencolpos);
+  endopenit = openit;
+  int openoff = gtk_text_iter_get_offset (&openit);
+  int openlen = g_utf8_strlen (opendelstr, -1);
+  gtk_text_iter_forward_chars (&endopenit, openlen);
+  gtk_text_buffer_apply_tag (commandbuf_BM, nesting_cmdtag_BM,
+                             &openit, &endopenit);
+  if (depth < CMD_MAXNEST_BM)
+    gtk_text_buffer_apply_tag (commandbuf_BM, open_cmdtags_BM[depth],
+                               &openit, &endopenit);
+  //
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &closeit, closelinpos);
+  gtk_text_iter_forward_chars (&closeit, closecolpos);
+  stacloseit = closeit;
+  int closelen = g_utf8_strlen (closedelstr, -1);
+  int closeoff = gtk_text_iter_get_offset (&closeit);
+  gtk_text_iter_backward_chars (&stacloseit, closelen);
+  gtk_text_buffer_apply_tag (commandbuf_BM, nesting_cmdtag_BM,
+                             &stacloseit, &closeit);
+  if (depth < CMD_MAXNEST_BM)
+    gtk_text_buffer_apply_tag (commandbuf_BM, close_cmdtags_BM[depth],
+                               &stacloseit, &closeit);
+  struct parenoffset_stBM po = {        //
+    .paroff_open = openoff,
+    .paroff_close = closeoff,
+    .paroff_xtra = xtraoff,
+    .paroff_openlen = openlen,
+    .paroff_closelen = closelen,
+    .paroff_xtralen = xtralen,
+    .paroff_depth = depth
+  };
+  cmd_add_parens_BM (&po);
+
 }                               /* end parsstartnestingcmd_BM */
+
+
 
 void
 parse_command_gui_BM (bool nobuild)
 {
+#warning parse_command_gui_BM unimplemented
 }                               /* end parse_command_gui_BM */
 
 void
