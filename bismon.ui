@@ -79,6 +79,21 @@
 	      <property name='background'>light pink</property>
             </object>
         </child>
+      <!-- commentinside_cmdtag for inside comment -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">commentinside_cmdtag</property>
+	      <property name='foreground'>blue</property>
+	      <property name='font'>DejaVu Sans Mono</property>
+            </object>
+        </child>
+      <!-- commentsign_cmdtag for comment sign -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">commentsign_cmdtag</property>
+	      <property name='foreground'>darkblue</property>
+            </object>
+        </child>
     </object>
     
   <!-- the log tag table -->
