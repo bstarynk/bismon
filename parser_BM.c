@@ -1356,9 +1356,10 @@ value_tyBM
                   _.obj = findobjofid_BM (id);
                   if (_.obj)
                     {
-                      _.chunkvec =      //
-                        datavect_append_BM (_.chunkvec,
-                                            (const value_tyBM) _.obj);
+                      if (!nobuild)
+                        _.chunkvec =    //
+                          datavect_append_BM (_.chunkvec,
+                                              (const value_tyBM) _.obj);
                       parseradvanceutf8_BM (pars,
                                             g_utf8_strlen (curpc,
                                                            npc - curpc));
@@ -1378,9 +1379,10 @@ value_tyBM
                     {
                       *npc = oldn;
                       _.compv = taggedint_BM (ll);
-                      _.chunkvec =      //
-                        datavect_append_BM (_.chunkvec,
-                                            (const value_tyBM) _.compv);
+                      if (!nobuild)
+                        _.chunkvec =    //
+                          datavect_append_BM (_.chunkvec,
+                                              (const value_tyBM) _.compv);
                       parseradvanceutf8_BM (pars,
                                             g_utf8_strlen (curpc,
                                                            npc - curpc));
@@ -1395,9 +1397,10 @@ value_tyBM
                   *npc = oldn;
                   if (_.obj)
                     {
-                      _.chunkvec =      //
-                        datavect_append_BM (_.chunkvec,
-                                            (const value_tyBM) _.obj);
+                      if (!nobuild)
+                        _.chunkvec =    //
+                          datavect_append_BM (_.chunkvec,
+                                              (const value_tyBM) _.obj);
                       parseradvanceutf8_BM (pars,
                                             g_utf8_strlen (curpc,
                                                            npc - curpc));
@@ -1407,9 +1410,13 @@ value_tyBM
               *npc = oldn;
             }                   /* end if allascii */
           // plain word, make a string of it
-          _.compv = (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
-          _.chunkvec =          //
-            datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+          if (!nobuild)
+            {
+              _.compv =
+                (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
+              _.chunkvec =      //
+                datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+            }
           parseradvanceutf8_BM (pars, g_utf8_strlen (curpc, npc - curpc));
           continue;
         }                       /* end if word */
@@ -1421,9 +1428,13 @@ value_tyBM
           while (*npc && (nc = g_utf8_get_char (npc)) > 0
                  && g_unichar_isspace (nc))
             npc = g_utf8_next_char (npc);
-          _.compv = (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
-          _.chunkvec =          //
-            datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+          if (!nobuild)
+            {
+              _.compv =
+                (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
+              _.chunkvec =      //
+                datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+            }
           parseradvanceutf8_BM (pars, g_utf8_strlen (curpc, npc - curpc));
           continue;
         }                       /* end if spaces */
@@ -1446,9 +1457,13 @@ value_tyBM
           bool twodollars = npc[0] == '$' && npc[1] == '$';
           if (twodollars)
             npc++;
-          _.compv = (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
-          _.chunkvec =          //
-            datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+          if (!nobuild)
+            {
+              _.compv =
+                (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
+              _.chunkvec =      //
+                datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+            }
           parseradvanceutf8_BM (pars,
                                 g_utf8_strlen (curpc,
                                                npc - curpc) +
@@ -1463,9 +1478,13 @@ value_tyBM
           while (*npc && (nc = g_utf8_get_char (npc)) > 0
                  && g_unichar_ismark (nc))
             npc = g_utf8_next_char (npc);
-          _.compv = (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
-          _.chunkvec =          //
-            datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+          if (!nobuild)
+            {
+              _.compv =
+                (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
+              _.chunkvec =      //
+                datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+            }
           parseradvanceutf8_BM (pars, g_utf8_strlen (curpc, npc - curpc));
           continue;
         }
@@ -1507,13 +1526,15 @@ value_tyBM
                 parsererrorprintf_BM (pars, clolineno, clocolpos,
                                       "closing paren expected after nested expression $(...) in chunk line %d, col %d",
                                       curlineno, curcolpos);
-              _.chunkvec =      //
-                datavect_append_BM (_.chunkvec,
-                                    (const value_tyBM) makenode_BM (BMP_embed,
-                                                                    1,
-                                                                    &_.compv));
+              if (!nobuild)
+                {
+                  _.chunkvec =  //
+                    datavect_append_BM (_.chunkvec,
+                                        (const value_tyBM)
+                                        makenode_BM (BMP_embed, 1, &_.compv));
+                }
             }                   /* end nested values $(...) */
-	  /// $name ...
+          /// $name ...
           else if (nc < 127 && isalpha (nc))
             {
               while (isalnum (*npc) || *npc == '_')
@@ -1525,21 +1546,27 @@ value_tyBM
               if (!_.obj)
                 parsererrorprintf_BM (pars, curlineno, curcolpos,
                                       "invalid dollarvar %s in chunk", curpc);
-
-              _.chunkvec =      //
-                datavect_append_BM (_.chunkvec,
-                                    (const value_tyBM)
-                                    makenode_BM (BMP_variable, 1,
-                                                 (value_tyBM *) & _.obj));
+              if (!nobuild)
+                {
+                  _.chunkvec =  //
+                    datavect_append_BM (_.chunkvec,
+                                        (const value_tyBM)
+                                        makenode_BM (BMP_variable, 1,
+                                                     (value_tyBM *) & _.obj));
+                }
               parseradvanceutf8_BM (pars, g_utf8_strlen (curpc, npc - curpc));
               continue;
             }                   /* end $name */
-	  /// $$ taken as a single dollar in isolation
+          /// $$ taken as a single dollar in isolation
           else if (nc == '$')
             {
-              _.compv = (const value_tyBM) makestring_BM ("$");
-              _.chunkvec =      //
-                datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+              if (!nobuild)
+                {
+                  _.compv = (const value_tyBM) makestring_BM ("$");
+                  _.chunkvec =  //
+                    datavect_append_BM (_.chunkvec,
+                                        (const value_tyBM) _.compv);
+                }
               parseradvanceutf8_BM (pars, 2);
               continue;
             }
@@ -1550,9 +1577,13 @@ value_tyBM
       else
         {                       // any other character, including control characters, is taken in isolation       
           char *npc = g_utf8_next_char (curpc);
-          _.compv = (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
-          _.chunkvec =          //
-            datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+          if (!nobuild)
+            {
+              _.compv =
+                (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
+              _.chunkvec =      //
+                datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+            }
           parseradvanceutf8_BM (pars, 1);
           continue;
         }
