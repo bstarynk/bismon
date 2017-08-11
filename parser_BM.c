@@ -1458,6 +1458,11 @@ value_tyBM
       // handle end of chunk
       if (curpc[0] == '}' && curpc[1] == '#')
         {
+          if (parsops && parsops->parsop_decorate_nesting_rout)
+            parsops->parsop_decorate_nesting_rout
+              (pars, depth,
+               delim_hashleftbrace, startlineno, startcolpos,
+               delim_rightbracehash, curlineno, curcolpos);
           parseradvanceutf8_BM (pars, 2);
           gotend = true;
           break;
@@ -1525,7 +1530,12 @@ value_tyBM
                 parsererrorprintf_BM (pars, clolineno, clocolpos,
                                       "closing paren expected after nested expression $(...) in chunk line %d, col %d",
                                       curlineno, curcolpos);
-              if (!nobuild)
+          if (parsops && parsops->parsop_decorate_nesting_rout)
+            parsops->parsop_decorate_nesting_rout
+              (pars, depth,
+               delim_dollarleft, curlineno, curcolpos,
+               delim_rightparen, clolineno, clocolpos);
+	  if (!nobuild)
                 {
                   _.chunkvec =  //
                     datavect_append_BM (_.chunkvec,
