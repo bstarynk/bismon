@@ -381,10 +381,33 @@ parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
 }                               /* end parsstartnestingcmd_BM */
 
 
+void
+parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
+{
+  if (!isparser_BM (pars))
+    return;
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
+  bool nobuild = parsops && parsops->parsop_nobuild;
+  int nbloop = 0;
+  for (;;)
+    {
+      parserskipspaces_BM (pars);
+      if (nbloop++ > MAXSIZE_BM / 32)
+        parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+                              "too many %d loops", nbloop);
+      if (parserendoffile_BM (pars))
+        break;
+      parstoken_tyBM tok = parsertokenget_BM (pars);
+#warning parsercommandbuf_BM incomplete
+    }
+}                               /* end parsercommandbuf_BM */
 
 void
 parse_command_gui_BM (bool nobuild)
 {
+  /// should create a parser from the content of the command textview
+  /// call longjmp for error catching, then call parsercommandbuf_BM
 #warning parse_command_gui_BM unimplemented
 }                               /* end parse_command_gui_BM */
 
