@@ -94,6 +94,30 @@
 	      <property name='foreground'>darkblue</property>
             </object>
         </child>
+      <!-- delim_cmdtag for delimiters -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">delim_cmdtag</property>
+	      <property name='foreground'>darkgreen</property>
+	      <property name='font'>Courier New, Bold</property>
+            </object>
+        </child>
+      <!-- knowname_cmdtag for known names -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">knowname_cmdtag</property>
+	      <property name='foreground'>mediumblue</property>
+	      <property name='font'>Courier New, Bold</property>
+            </object>
+        </child>
+      <!-- newname_cmdtag for new names -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">newname_cmdtag</property>
+	      <property name='foreground'>firebrick</property>
+	      <property name='font'>Courier New, Bold</property>
+            </object>
+        </child>
     </object>
     
   <!-- the log tag table -->

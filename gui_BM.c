@@ -20,6 +20,9 @@ GtkWidget *msglab_BM;
 GtkTextTag *errored_cmdtag_BM;
 GtkTextTag *commentinside_cmdtag_BM;
 GtkTextTag *commentsign_cmdtag_BM;
+GtkTextTag *delim_cmdtag_BM;
+GtkTextTag *knowname_cmdtag_BM;
+GtkTextTag *newname_cmdtag_BM;
 
 const char *
 gobjectclassnamedbg_BM (GObject * ptr)
@@ -191,7 +194,6 @@ parscommentsigncmd_BM (struct parser_stBM *pars,
   gtk_text_iter_forward_chars (&endit, signlen);
   gtk_text_buffer_apply_tag (commandbuf_BM, commentsign_cmdtag_BM,
                              &it, &endit);
-
 }                               /* end parscommentsigncmd_BM */
 
 void
@@ -200,7 +202,13 @@ parsdelimcmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned delimlen)
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
-#warning parsdelimcmd_BM unimplemented
+  unsigned lineno = parserlineno_BM (pars);
+  GtkTextIter it;
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
+  gtk_text_iter_forward_chars (&it, colpos);
+  GtkTextIter endit = it;
+  gtk_text_iter_forward_chars (&endit, delimlen);
+  gtk_text_buffer_apply_tag (commandbuf_BM, delim_cmdtag_BM, &it, &endit);
 }                               /* end parsdelimcmd_BM */
 
 void
@@ -210,7 +218,13 @@ parsknownamecmd_BM (struct parser_stBM *pars,
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
-#warning parsknownamecmd_BM unimplemented
+  GtkTextIter it;
+  unsigned lineno = parserlineno_BM (pars);
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
+  gtk_text_iter_forward_chars (&it, colpos);
+  GtkTextIter endit = it;
+  gtk_text_iter_forward_chars (&endit, namlen);
+  gtk_text_buffer_apply_tag (commandbuf_BM, knowname_cmdtag_BM, &it, &endit);
 }                               /* end parsknownamecmd_BM */
 
 
@@ -220,7 +234,13 @@ parsnewnamecmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned namlen)
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
-#warning parsnewnamecmd_BM unimplemented
+  GtkTextIter it;
+  unsigned lineno = parserlineno_BM (pars);
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
+  gtk_text_iter_forward_chars (&it, colpos);
+  GtkTextIter endit = it;
+  gtk_text_iter_forward_chars (&endit, namlen);
+  gtk_text_buffer_apply_tag (commandbuf_BM, newname_cmdtag_BM, &it, &endit);
 }                               /* end parsnewnamecmd_BM */
 
 
@@ -291,6 +311,18 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (commandtagtable_BM, "commentsign_cmdtag");
   if (!commentsign_cmdtag_BM)
     FATAL_BM ("cannot find commentsign_cmdtag");
+  delim_cmdtag_BM =             //
+    gtk_text_tag_table_lookup (commandtagtable_BM, "delim_cmdtag");
+  if (!delim_cmdtag_BM)
+    FATAL_BM ("cannot find delim_cmdtag");
+  knowname_cmdtag_BM =          //
+    gtk_text_tag_table_lookup (commandtagtable_BM, "knowname_cmdtag");
+  if (!knowname_cmdtag_BM)
+    FATAL_BM ("cannot find knowname_cmdtag");
+  newname_cmdtag_BM =           //
+    gtk_text_tag_table_lookup (commandtagtable_BM, "newname_cmdtag");
+  if (!newname_cmdtag_BM)
+    FATAL_BM ("cannot find newname_cmdtag");
   GtkWidget *mainvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);
   GtkWidget *mainmenubar = gtk_menu_bar_new ();
