@@ -1329,13 +1329,14 @@ value_tyBM
       gunichar uc = g_utf8_get_char (curpc);
       if (!uc)
         break;
-      /// process word-like characters, i.e. alnum & underscore
-      if (g_unichar_isalnum (uc) || uc == '_')
+      /// process word-like characters, i.e. alnum & underscore & marks
+      if (g_unichar_isalnum (uc) || uc == '_' || g_unichar_ismark (uc))
         {
           char *npc = curpc;
           gunichar nc = 0;
           while (*npc && (nc = g_utf8_get_char (npc)) > 0
-                 && (g_unichar_isalnum (nc) || nc == '_'))
+                 && (g_unichar_isalnum (nc) || g_unichar_ismark (nc)
+                     || nc == '_'))
             npc = g_utf8_next_char (npc);
           bool allascii = uc < 127;
           for (const char *p = curpc; p < npc && allascii; p++)
@@ -1383,6 +1384,11 @@ value_tyBM
                         _.chunkvec =    //
                           datavect_append_BM (_.chunkvec,
                                               (const value_tyBM) _.compv);
+                      if (parsops && parsops->parsop_decorate_number_rout)
+                        parsops->parsop_decorate_number_rout (pars, curcolpos,
+                                                              g_utf8_strlen
+                                                              (curpc,
+                                                               npc - curpc));
                       parseradvanceutf8_BM (pars,
                                             g_utf8_strlen (curpc,
                                                            npc - curpc));
@@ -1397,6 +1403,10 @@ value_tyBM
                   *npc = oldn;
                   if (_.obj)
                     {
+                      if (parsops && parsops->parsop_decorate_known_name_rout)
+                        parsops->parsop_decorate_known_name_rout
+                          (pars, curcolpos,
+                           g_utf8_strlen (curpc, npc - curpc));
                       if (!nobuild)
                         _.chunkvec =    //
                           datavect_append_BM (_.chunkvec,
@@ -1405,6 +1415,13 @@ value_tyBM
                                             g_utf8_strlen (curpc,
                                                            npc - curpc));
                       continue;
+                    }
+                  else
+                    {
+                      if (parsops && parsops->parsop_decorate_new_name_rout)
+                        parsops->parsop_decorate_new_name_rout
+                          (pars, curcolpos,
+                           g_utf8_strlen (curpc, npc - curpc));
                     }
                 }
               *npc = oldn;
@@ -1468,24 +1485,6 @@ value_tyBM
                                 g_utf8_strlen (curpc,
                                                npc - curpc) +
                                 (twodollars ? 1 : 0));
-          continue;
-        }
-      // process contiguous mark characters
-      if (g_unichar_ismark (uc))
-        {
-          char *npc = curpc;
-          gunichar nc = 0;
-          while (*npc && (nc = g_utf8_get_char (npc)) > 0
-                 && g_unichar_ismark (nc))
-            npc = g_utf8_next_char (npc);
-          if (!nobuild)
-            {
-              _.compv =
-                (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
-              _.chunkvec =      //
-                datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
-            }
-          parseradvanceutf8_BM (pars, g_utf8_strlen (curpc, npc - curpc));
           continue;
         }
       // special processing for $
