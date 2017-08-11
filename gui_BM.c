@@ -88,9 +88,150 @@ deletemainwin_BM (GtkWidget * widget __attribute__ ((unused)),
     }
 }                               /* end deletemainwin_BM */
 
+static jmp_buf jmperrorcmd_BM;
+
+static parser_error_sigBM parserrorcmd_BM;
+static parser_decorate_comment_sign_sigBM parscommentsigncmd_BM;
+static parser_decorate_comment_inside_sigBM parscommentinsidecmd_BM;
+static parser_decorate_delimiter_sigBM parsdelimcmd_BM;
+static parser_decorate_id_sigBM parsidcmd_BM;
+static parser_decorate_name_sigBM parsknownamecmd_BM;
+static parser_decorate_name_sigBM parsnewnamecmd_BM;
+static parser_decorate_nesting_sigBM parsnestingcmd_BM;
+static parser_decorate_start_nesting_sigBM parsstartnestingcmd_BM;
+const struct parserops_stBM parsop_command_build_BM = {
+  .parsop_magic = PARSOPMAGIC_BM,
+  .parsop_serial = 1,
+  .parsop_nobuild = false,
+  .parsop_error_rout = parserrorcmd_BM,
+  .parsop_decorate_comment_sign_rout = parscommentsigncmd_BM,
+  .parsop_decorate_comment_inside_rout = parscommentinsidecmd_BM,
+  .parsop_decorate_delimiter_rout = parsdelimcmd_BM,
+  .parsop_decorate_id_rout = parsidcmd_BM,
+  .parsop_decorate_known_name_rout = parsknownamecmd_BM,
+  .parsop_decorate_new_name_rout = parsnewnamecmd_BM,
+  .parsop_decorate_nesting_rout = parsnestingcmd_BM,
+  .parsop_decorate_start_nesting_rout = parsstartnestingcmd_BM,
+};
+
+const struct parserops_stBM parsop_command_nobuild_BM = {
+  .parsop_magic = PARSOPMAGIC_BM,
+  .parsop_serial = 2,
+  .parsop_nobuild = true,
+  .parsop_error_rout = parserrorcmd_BM,
+  .parsop_decorate_comment_sign_rout = parscommentsigncmd_BM,
+  .parsop_decorate_comment_inside_rout = parscommentinsidecmd_BM,
+  .parsop_decorate_delimiter_rout = parsdelimcmd_BM,
+  .parsop_decorate_id_rout = parsidcmd_BM,
+  .parsop_decorate_known_name_rout = parsknownamecmd_BM,
+  .parsop_decorate_new_name_rout = parsnewnamecmd_BM,
+  .parsop_decorate_nesting_rout = parsnestingcmd_BM,
+  .parsop_decorate_start_nesting_rout = parsstartnestingcmd_BM,
+};
 
 
 
+void parserrorcmd_BM
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos, char *msg)
+{
+  assert (isparser_BM (pars));
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  char *errmsg = g_markup_printf_escaped ("<b>command error L%dC%d:</b>\n"
+                                          "%s",
+                                          lineno, colpos, msg);
+  gtk_label_set_markup (GTK_LABEL (msglab_BM), errmsg);
+  free (msg);
+  g_free (errmsg);
+  longjmp (jmperrorcmd_BM, 1);
+}                               /* end parserrorcmd_BM */
+
+
+void parscommentinsidecmd_BM
+  (struct parser_stBM *pars, unsigned colpos, unsigned signlen)
+{
+  assert (isparser_BM (pars));
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+#warning parscommentinsidecmd_BM unimplemented
+}                               /* end parscommentinsidecmd_BM */
+
+
+void parscommentsigncmd_BM
+  (struct parser_stBM *pars, unsigned colpos, unsigned signlen)
+{
+  assert (isparser_BM (pars));
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+#warning parscommentsigncmd_BM unimplemented
+}                               /* end parscommentsigncmd_BM */
+
+void parsdelimcmd_BM
+  (struct parser_stBM *pars, unsigned colpos, unsigned delimlen)
+{
+  assert (isparser_BM (pars));
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+#warning parsdelimcmd_BM unimplemented
+}                               /* end parsdelimcmd_BM */
+
+void parsknownamecmd_BM
+  (struct parser_stBM *pars, unsigned colpos, unsigned namlen)
+{
+  assert (isparser_BM (pars));
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+#warning parsknownamecmd_BM unimplemented
+}                               /* end parsknownamecmd_BM */
+
+
+void parsnewnamecmd_BM
+  (struct parser_stBM *pars, unsigned colpos, unsigned namlen)
+{
+  assert (isparser_BM (pars));
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+#warning parsnewnamecmd_BM unimplemented
+}                               /* end parsnewnamecmd_BM */
+
+
+void parsnestingcmd_BM
+  (struct parser_stBM *pars, int depth,
+   enum lexdelim_enBM opendelim, unsigned openlinpos, unsigned opencolpos,
+   enum lexdelim_enBM closedelim, unsigned closelinpos, unsigned closecolpos)
+{
+  assert (isparser_BM (pars));
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+#warning parsnestingcmd_BM unimplemented
+}                               /* end parsnestingcmd_BM */
+
+
+void parsstartnestingcmd_BM
+  (struct parser_stBM *pars, int depth,
+   enum lexdelim_enBM startdelim, unsigned startlinpos, unsigned startcolpos,
+   enum lexdelim_enBM opendelim, unsigned openlinpos, unsigned opencolpos,
+   enum lexdelim_enBM closedelim, unsigned closelinpos, unsigned closecolpos)
+{
+  assert (isparser_BM (pars));
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+#warning parsstartnestingcmd_BM unimplemented
+}                               /* end parsstartnestingcmd_BM */
+
+void
+parsidcmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned idlen)
+{
+  assert (isparser_BM (pars));
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+#warning parsidcmd_BM unimplemented
+}                               /* end parsidcmd_BM */
+
+void
+parse_command_gui_BM (bool nobuild)
+{
+}                               /* end parse_command_gui_BM */
 
 void
 initialize_gui_BM (const char *builderfile)

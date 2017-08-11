@@ -387,7 +387,7 @@ typedef void parser_decorate_number_sigBM
 
 // decorate ids
 typedef void parser_decorate_id_sigBM
-  (struct parser_stBM *pars, unsigned colpos, unsigned numlen);
+  (struct parser_stBM *pars, unsigned colpos, unsigned idlen);
 
 // decorate names, both known and unknown
 typedef void parser_decorate_name_sigBM
