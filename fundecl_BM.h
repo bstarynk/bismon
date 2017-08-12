@@ -96,8 +96,15 @@ extern void initialize_predefined_objects_BM (void);
 static inline bool isobject_BM (const value_tyBM v);
 static inline hash_tyBM objecthash_BM (const objectval_tyBM *);
 
+/// compare by id
 static inline int objectcmp_BM (const objectval_tyBM * ob1,
                                 const objectval_tyBM * ob2);
+
+/// compare by name or id
+static inline int objectnamedcmp_BM (const objectval_tyBM * ob1,
+                                     const objectval_tyBM * ob2);
+
+
 extern void sortobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz);
 
 extern objectval_tyBM *findobjofid_BM (const rawid_tyBM id);

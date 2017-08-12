@@ -468,6 +468,29 @@ objectcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)
 
 
 
+int
+objectnamedcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)
+{
+  if (ob1 == ob2)
+    return 0;
+  if (!ob1)
+    return -1;
+  if (!ob2)
+    return +1;
+  assert (isobject_BM ((const value_tyBM) ob1));
+  assert (isobject_BM ((const value_tyBM) ob2));
+  const char *n1 = findobjectname_BM (ob1);
+  const char *n2 = findobjectname_BM (ob2);
+  if (n1 && n2)
+    return strcmp (n1, n2);
+  if (n1)
+    return -1;
+  if (n2)
+    return +1;
+  return objectcmp_BM (ob1, ob2);
+}                               /* end objectnamedcmp_BM */
+
+
 ////////////////////////////////////////////////////////////////
 bool
 isassoc_BM (const value_tyBM v)
