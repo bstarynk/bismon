@@ -156,47 +156,47 @@ static inline const setval_tyBM *       //
 /// message sending
 
 extern value_tyBM send0_BM (const value_tyBM recv,
-                            objectval_tyBM * obselector,
+                            const objectval_tyBM * obselector,
                             struct stackframe_stBM *stkf);
 extern value_tyBM send1_BM (const value_tyBM recv,
-                            objectval_tyBM * obselector,
+                            const objectval_tyBM * obselector,
                             struct stackframe_stBM *stkf,
                             const value_tyBM arg1);
 extern value_tyBM send2_BM (const value_tyBM recv,
-                            objectval_tyBM * obselector,
+                            const objectval_tyBM * obselector,
                             struct stackframe_stBM *stkf,
                             const value_tyBM arg1, const value_tyBM arg2);
 extern value_tyBM send3_BM (const value_tyBM recv,
-                            objectval_tyBM * obselector,
+                            const objectval_tyBM * obselector,
                             struct stackframe_stBM *stkf,
                             const value_tyBM arg1, const value_tyBM arg2,
                             const value_tyBM arg3);
 extern value_tyBM send4_BM (const value_tyBM recv,
-                            objectval_tyBM * obselector,
+                            const objectval_tyBM * obselector,
                             struct stackframe_stBM *stkf,
                             const value_tyBM arg1, const value_tyBM arg2,
                             const value_tyBM arg3, const value_tyBM arg4);
 extern value_tyBM send5_BM (const value_tyBM recv,
-                            objectval_tyBM * obselector,
+                            const objectval_tyBM * obselector,
                             struct stackframe_stBM *stkf,
                             const value_tyBM arg1, const value_tyBM arg2,
                             const value_tyBM arg3, const value_tyBM arg4,
                             const value_tyBM arg5);
 extern value_tyBM send6_BM (const value_tyBM recv,
-                            objectval_tyBM * obselector,
+                            const objectval_tyBM * obselector,
                             struct stackframe_stBM *stkf,
                             const value_tyBM arg1, const value_tyBM arg2,
                             const value_tyBM arg3, const value_tyBM arg4,
                             const value_tyBM arg5, const value_tyBM arg6);
 extern value_tyBM send7_BM (const value_tyBM recv,
-                            objectval_tyBM * obselector,
+                            const objectval_tyBM * obselector,
                             struct stackframe_stBM *stkf,
                             const value_tyBM arg1, const value_tyBM arg2,
                             const value_tyBM arg3, const value_tyBM arg4,
                             const value_tyBM arg5, const value_tyBM arg6,
                             const value_tyBM arg7);
 extern value_tyBM send8_BM (const value_tyBM recv,
-                            objectval_tyBM * obselector,
+                            const objectval_tyBM * obselector,
                             struct stackframe_stBM *stkf,
                             const value_tyBM arg1, const value_tyBM arg2,
                             const value_tyBM arg3, const value_tyBM arg4,
@@ -609,4 +609,8 @@ void cmd_add_parens_BM (struct parenoffset_stBM *par);
 bool cmd_parens_surrounds_BM (struct parenoffset_stBM *par, int off);
 ///
 extern void initialize_gui_BM (const char *builderfile);
+// browse the object objbrows, using the selector objsel
+extern void browse_object_gui_BM (const objectval_tyBM * objbrows,
+                                  const objectval_tyBM * objsel,
+                                  struct stackframe_stBM *stkf);
 #endif /*FUNDECL_BM_INCLUDED */

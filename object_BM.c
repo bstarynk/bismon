@@ -817,7 +817,7 @@ valfindmethod_BM (const value_tyBM recv, objectval_tyBM * obselector)
 
 
 value_tyBM
-send0_BM (const value_tyBM recv, objectval_tyBM * obselector,
+send0_BM (const value_tyBM recv, const objectval_tyBM * obselector,
           struct stackframe_stBM * stkf)
 {
   if (!isobject_BM ((const value_tyBM) obselector))
@@ -831,7 +831,7 @@ send0_BM (const value_tyBM recv, objectval_tyBM * obselector,
 
 
 value_tyBM
-send1_BM (const value_tyBM recv, objectval_tyBM * obselector,
+send1_BM (const value_tyBM recv, const objectval_tyBM * obselector,
           struct stackframe_stBM * stkf, const value_tyBM arg1)
 {
   if (!isobject_BM ((const value_tyBM) obselector))
@@ -845,7 +845,7 @@ send1_BM (const value_tyBM recv, objectval_tyBM * obselector,
 
 
 value_tyBM
-send2_BM (const value_tyBM recv, objectval_tyBM * obselector,
+send2_BM (const value_tyBM recv, const objectval_tyBM * obselector,
           struct stackframe_stBM * stkf, const value_tyBM arg1,
           const value_tyBM arg2)
 {
@@ -860,7 +860,7 @@ send2_BM (const value_tyBM recv, objectval_tyBM * obselector,
 
 
 value_tyBM
-send3_BM (const value_tyBM recv, objectval_tyBM * obselector,
+send3_BM (const value_tyBM recv, const objectval_tyBM * obselector,
           struct stackframe_stBM * stkf, const value_tyBM arg1,
           const value_tyBM arg2, const value_tyBM arg3)
 {
@@ -875,7 +875,7 @@ send3_BM (const value_tyBM recv, objectval_tyBM * obselector,
 
 
 value_tyBM
-send4_BM (const value_tyBM recv, objectval_tyBM * obselector,
+send4_BM (const value_tyBM recv, const objectval_tyBM * obselector,
           struct stackframe_stBM * stkf, const value_tyBM arg1,
           const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4)
 {
@@ -890,7 +890,7 @@ send4_BM (const value_tyBM recv, objectval_tyBM * obselector,
 
 
 value_tyBM
-send5_BM (const value_tyBM recv, objectval_tyBM * obselector,
+send5_BM (const value_tyBM recv, const objectval_tyBM * obselector,
           struct stackframe_stBM * stkf, const value_tyBM arg1,
           const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
           const value_tyBM arg5)
@@ -906,7 +906,7 @@ send5_BM (const value_tyBM recv, objectval_tyBM * obselector,
 
 
 value_tyBM
-send6_BM (const value_tyBM recv, objectval_tyBM * obselector,
+send6_BM (const value_tyBM recv, const objectval_tyBM * obselector,
           struct stackframe_stBM * stkf, const value_tyBM arg1,
           const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
           const value_tyBM arg5, const value_tyBM arg6)
@@ -922,7 +922,7 @@ send6_BM (const value_tyBM recv, objectval_tyBM * obselector,
 
 
 value_tyBM
-send7_BM (const value_tyBM recv, objectval_tyBM * obselector,
+send7_BM (const value_tyBM recv, const objectval_tyBM * obselector,
           struct stackframe_stBM * stkf, const value_tyBM arg1,
           const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
           const value_tyBM arg5, const value_tyBM arg6, const value_tyBM arg7)
@@ -939,7 +939,7 @@ send7_BM (const value_tyBM recv, objectval_tyBM * obselector,
 
 
 value_tyBM
-send8_BM (const value_tyBM recv, objectval_tyBM * obselector,
+send8_BM (const value_tyBM recv, const objectval_tyBM * obselector,
           struct stackframe_stBM * stkf, const value_tyBM arg1,
           const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
           const value_tyBM arg5, const value_tyBM arg6, const value_tyBM arg7,

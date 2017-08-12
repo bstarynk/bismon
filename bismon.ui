@@ -55,7 +55,7 @@
     
   <!-- the browser tag table -->
     <object class='GtkTextTagTable' id='browsertagtable_id'>
-      <!-- page_title_brotag for the entire page -->
+      <!-- pagetitle_brotag for the title of the entire page -->
         <child type="tag">
             <object class='GtkTextTag'>
                 <property name="name">pagetitle_brotag</property>
@@ -66,6 +66,30 @@
                 <property name="pixels-below-lines">6</property>
                 <property name="foreground">navyblue</property>
                 <property name="justification">GTK_JUSTIFY_CENTER</property>
+            </object>
+        </child>
+      <!-- objcommtitle_brotag for comment in title of an object -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">objcommtitle_brotag</property>
+                <property name="font">Andale Mono Regular</property>
+                <property name="foreground">darkolivegreen</property>
+            </object>
+        </child>
+      <!-- objnametitle_brotag for name in title of an object -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">objnametitle_brotag</property>
+                <property name="font">Archivo SemiBold</property>
+                <property name="foreground">cyan4</property>
+            </object>
+        </child>
+      <!-- objidtitle_brotag for the id in title of an object -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">objidtitle_brotag</property>
+                <property name="font">DejaVu Sans Mono Bold</property>
+                <property name="foreground">goldenrod4</property>
             </object>
         </child>
     </object>

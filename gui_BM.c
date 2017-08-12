@@ -11,6 +11,10 @@ GtkWidget *browserview_BM;
 GtkTextIter browserit_BM;
 GtkTextMark *browserendtitlem_BM;
 GtkTextTag *pagetitle_brotag_BM;
+GtkTextTag *objtitle_brotag_BM;
+GtkTextTag *objcommtitle_brotag_BM;
+GtkTextTag *objnametitle_brotag_BM;
+GtkTextTag *objidtitle_brotag_BM;
 
 /// the browsed objects
 unsigned browserobsize_BM;      /* allocated size */
@@ -62,6 +66,9 @@ GtkTextTag *open_cmdtags_BM[CMD_MAXNEST_BM];
 GtkTextTag *close_cmdtags_BM[CMD_MAXNEST_BM];
 GtkTextTag *xtra_cmdtags_BM[CMD_MAXNEST_BM];
 
+
+static void start_browse_object_BM (const objectval_tyBM * obj);
+
 const char *
 gobjectclassnamedbg_BM (GObject * ptr)
 {
@@ -74,11 +81,11 @@ gobjectclassnamedbg_BM (GObject * ptr)
 void
 start_browse_object_BM (const objectval_tyBM * obj)
 {
-  assert (isobject_BM (obj));
+  assert (isobject_BM ((const value_tyBM) obj));
   if (browserobulen_BM + 1 >= browserobsize_BM)
     {
       unsigned newsiz = prime_above_BM (4 * browserobulen_BM / 3 + 10);
-      struct browsedobj_BM *newarr =    //
+      struct browsedobj_stBM *newarr =  //
         calloc (newsiz, sizeof (struct browsedobj_stBM));
       if (!newarr)
         FATAL_BM ("calloc failure for %u browsed objects", newsiz);
@@ -93,6 +100,7 @@ start_browse_object_BM (const objectval_tyBM * obj)
     {
       md = (lo + hi) / 2;
       const objectval_tyBM *mdobj = browsedobj_BM[md].brow_obj;
+      assert (isobject_BM ((const value_tyBM) mdobj));
       if (mdobj == obj)
         break;
       int cmp = objectnamedcmp_BM (mdobj, obj);
@@ -101,8 +109,118 @@ start_browse_object_BM (const objectval_tyBM * obj)
       else
         hi = md;
     }
-#warning start_browse_object_BM incomplete
+  for (md = lo; md < hi; md++)
+    {
+      const objectval_tyBM *mdobj = browsedobj_BM[md].brow_obj;
+      assert (isobject_BM ((const value_tyBM) mdobj));
+      if (mdobj == obj)
+        {                       // replacing existing object
+          GtkTextIter startit, endit;
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                            &startit,
+                                            browsedobj_BM[md].brow_ostartm);
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                            &endit,
+                                            browsedobj_BM[md].brow_oendm);
+          gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
+          gtk_text_buffer_move_mark (browserbuf_BM,
+                                     browsedobj_BM[md].brow_ostartm,
+                                     &startit);
+          browserit_BM = startit;
+          browserobcurix_BM = md;
+          return;
+        }
+      else if (objectnamedcmp_BM (obj, mdobj) < 0)
+        {
+          GtkTextIter it;
+          if (md > 0)
+            gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                              &it,
+                                              browsedobj_BM[md -
+                                                            1].brow_oendm);
+          else
+            gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                              &it, browserendtitlem_BM);
+          for (int ix = browserobulen_BM + 1; ix > md; ix--)
+            browsedobj_BM[ix] = browsedobj_BM[ix - 1];
+          browserobulen_BM++;
+          browsedobj_BM[md].brow_obj = obj;
+          browsedobj_BM[md].brow_ostartm =      //
+            gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+          browsedobj_BM[md].brow_oendm =        //
+            gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+          browserobcurix_BM = md;
+          browserit_BM = it;
+          return;
+        }
+    };
+  assert (browserobulen_BM == 0);
+  GtkTextIter it;
+  gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &it, browserendtitlem_BM);
+  browserobulen_BM = 1;
+  browsedobj_BM[0].brow_obj = obj;
+  browsedobj_BM[0].brow_ostartm =       //
+    gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+  browsedobj_BM[0].brow_oendm = //
+    gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+  browserobcurix_BM = 0;
+  browserit_BM = it;
 }                               /* end start_browse_object_BM */
+
+void
+browse_object_gui_BM (const objectval_tyBM * objbrows,
+                      const objectval_tyBM * objsel,
+                      struct stackframe_stBM *stkf)
+{
+  if (!isobject_BM ((const value_tyBM) objbrows))
+    return;
+  if (!isobject_BM ((const value_tyBM) objsel))
+    return;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * objbrows;
+                 const objectval_tyBM * objsel;
+    );
+  _.objbrows = objbrows;
+  _.objsel = objsel;
+  start_browse_object_BM (objbrows);
+  const char *nambrows = findobjectname_BM (objbrows);
+  gtk_text_buffer_insert_with_tags
+    (browserbuf_BM, &browserit_BM,
+     "\342\201\202 " /* U+2042 ASTERISM ⁂ */ , -1,
+     objtitle_brotag_BM, NULL);
+  char idbuf[32];
+  memset (idbuf, 0, sizeof (idbuf));
+  idtocbuf32_BM (objid_BM (objbrows), idbuf);
+  if (nambrows)
+    {
+      gtk_text_buffer_insert_with_tags
+        (browserbuf_BM, &browserit_BM,
+         nambrows, -1, objtitle_brotag_BM, objnametitle_brotag_BM, NULL);
+      gtk_text_buffer_insert_with_tags
+        (browserbuf_BM, &browserit_BM,
+         " |=", -1, objtitle_brotag_BM, objcommtitle_brotag_BM, NULL);
+      gtk_text_buffer_insert_with_tags
+        (browserbuf_BM, &browserit_BM,
+         idbuf, -1,
+         objtitle_brotag_BM,
+         objcommtitle_brotag_BM, objidtitle_brotag_BM, NULL);
+      gtk_text_buffer_insert_with_tags
+        (browserbuf_BM, &browserit_BM,
+         "|", -1, objtitle_brotag_BM, objcommtitle_brotag_BM, NULL);
+    }
+  else
+    {                           /// anonymous browsed object
+      gtk_text_buffer_insert_with_tags
+        (browserbuf_BM, &browserit_BM,
+         idbuf, -1, objtitle_brotag_BM, objidtitle_brotag_BM, NULL);
+    };
+  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+  send0_BM ((const value_tyBM) objbrows, objsel,
+            (struct stackframe_stBM *) &_);
+  gtk_text_buffer_move_mark (browserbuf_BM,
+                             browsedobj_BM[browserobcurix_BM].brow_oendm,
+                             &browserit_BM);
+}                               /* end browse_object_gui_BM */
 
 
 
@@ -498,6 +616,22 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (browsertagtable_BM, "pagetitle_brotag");
   if (!pagetitle_brotag_BM)
     FATAL_BM ("cannot find pagetitle_brotag_BM");
+  objtitle_brotag_BM =          //
+    gtk_text_tag_table_lookup (browsertagtable_BM, "objtitle_brotag");
+  if (!objtitle_brotag_BM)
+    FATAL_BM ("cannot find objtitle_brotag_BM");
+  objcommtitle_brotag_BM =      //
+    gtk_text_tag_table_lookup (browsertagtable_BM, "objcommtitle_brotag");
+  if (!objcommtitle_brotag_BM)
+    FATAL_BM ("cannot find objcommtitle_brotag_BM");
+  objnametitle_brotag_BM =      //
+    gtk_text_tag_table_lookup (browsertagtable_BM, "objnametitle_brotag");
+  if (!objnametitle_brotag_BM)
+    FATAL_BM ("cannot find objnametitle_brotag_BM");
+  objidtitle_brotag_BM =        //
+    gtk_text_tag_table_lookup (browsertagtable_BM, "objidtitle_brotag");
+  if (!objidtitle_brotag_BM)
+    FATAL_BM ("cannot find objidtitle_brotag_BM");
   ////////////////
   errored_cmdtag_BM =           //
     gtk_text_tag_table_lookup (commandtagtable_BM, "errored_cmdtag");
