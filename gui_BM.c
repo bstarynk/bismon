@@ -3,10 +3,26 @@
 
 GtkWidget *mainwin_BM;
 
+
+//////////////// browser
 GtkTextTagTable *browsertagtable_BM;
 GtkTextBuffer *browserbuf_BM;
 GtkWidget *browserview_BM;
+GtkTextIter browserit_BM;
 
+/// the browsed objects
+unsigned browsersize_BM;        /* allocated size */
+unsigned browserulen_BM;        /* used length */
+int browsercurix_BM;            /* current index in browsedobj_BM */
+struct browsedobj_stBM
+{
+  const objectval_tyBM *brow_obj;
+  GtkTextMark *brow_startm;
+  GtkTextMark *brow_endm;
+};
+struct browsedobj_stBM *browsedobj_BM;
+
+//////////////// command
 GtkTextTagTable *commandtagtable_BM;
 GtkTextBuffer *commandbuf_BM;
 GtkWidget *commandview_BM;
@@ -25,6 +41,7 @@ GtkTextTag *knowname_cmdtag_BM;
 GtkTextTag *newname_cmdtag_BM;
 GtkTextTag *id_cmdtag_BM;
 GtkTextTag *nesting_cmdtag_BM;
+
 #define CMD_MAXNEST_BM 64
 GtkTextTag *open_cmdtags_BM[CMD_MAXNEST_BM];
 GtkTextTag *close_cmdtags_BM[CMD_MAXNEST_BM];
@@ -511,6 +528,11 @@ initialize_gui_BM (const char *builderfile)
   gtk_container_add (GTK_CONTAINER (browserscrolw), browserview_BM);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (browserscrolw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  browsersize_BM = 13;
+  browserulen_BM = 0;
+  browsedobj_BM = calloc (browsersize_BM, sizeof (struct browsedobj_stBM));
+  if (!browsedobj_BM)
+    FATAL_BM ("calloc failed for %u browsed objects (%m)", browsersize_BM);
   //
   commandbuf_BM = gtk_text_buffer_new (commandtagtable_BM);
   commandview_BM = gtk_text_view_new_with_buffer (commandbuf_BM);

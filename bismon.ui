@@ -115,7 +115,7 @@
             <object class='GtkTextTag'>
               <property name="name">newname_cmdtag</property>
 	      <property name='foreground'>firebrick</property>
-	      <property name='font'>Courier New, Bold</property>
+	      <property name='font'>Roboto Mono Bold</property>
             </object>
         </child>
       <!-- id_cmdtag for ids -->
@@ -123,7 +123,7 @@
             <object class='GtkTextTag'>
               <property name="name">id_cmdtag</property>
 	      <property name='foreground'>saddlebrown</property>
-	      <property name='font'>Liberation Mono Bold</property>
+	      <property name='font'>Space Mono Bold</property>
             </object>
         </child>
       <!-- nesting_cmdtag for open/close parenthesis -->
