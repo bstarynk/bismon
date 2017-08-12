@@ -58,7 +58,7 @@
       <!-- page_title_brotag for the entire page -->
         <child type="tag">
             <object class='GtkTextTag'>
-                <property name="name">page_title_brotag</property>
+                <property name="name">pagetitle_brotag</property>
                 <property name="font">Arial Bold</property>
                 <property name="scale">1.39</property>
                 <property name="paragraph-background">lemonchiffon1</property>

@@ -9,18 +9,33 @@ GtkTextTagTable *browsertagtable_BM;
 GtkTextBuffer *browserbuf_BM;
 GtkWidget *browserview_BM;
 GtkTextIter browserit_BM;
+GtkTextMark *browserendtitlem_BM;
+GtkTextTag *pagetitle_brotag_BM;
 
 /// the browsed objects
-unsigned browsersize_BM;        /* allocated size */
-unsigned browserulen_BM;        /* used length */
-int browsercurix_BM;            /* current index in browsedobj_BM */
+unsigned browserobsize_BM;      /* allocated size */
+unsigned browserobulen_BM;      /* used length */
+int browserobcurix_BM;          /* current index in browsedobj_BM */
 struct browsedobj_stBM
 {
   const objectval_tyBM *brow_obj;
-  GtkTextMark *brow_startm;
-  GtkTextMark *brow_endm;
+  GtkTextMark *brow_ostartm;
+  GtkTextMark *brow_oendm;
 };
 struct browsedobj_stBM *browsedobj_BM;
+
+/// the browsed named values
+unsigned browsernvsize_BM;      /* allocated size */
+unsigned browsernvulen_BM;      /* unsigned length */
+int browsernvcurix_BM;
+struct browsedval_stBM
+{
+  const stringval_tyBM *brow_name;
+  const value_tyBM brow_val;
+  GtkTextMark *brow_vstartm;
+  GtkTextMark *brow_vendm;
+};
+struct browsedval_stBM *browsedval_BM;
 
 //////////////// command
 GtkTextTagTable *commandtagtable_BM;
@@ -442,6 +457,12 @@ initialize_gui_BM (const char *builderfile)
     GTK_TEXT_TAG_TABLE (gtk_builder_get_object (bld, "commandtagtable_id"));
   logtagtable_BM =              //
     GTK_TEXT_TAG_TABLE (gtk_builder_get_object (bld, "logtagtable_id"));
+  ////////////////
+  pagetitle_brotag_BM =         //
+    gtk_text_tag_table_lookup (browsertagtable_BM, "pagetitle_brotag");
+  if (!pagetitle_brotag_BM)
+    FATAL_BM ("cannot find pagetitle_brotag_BM");
+  ////////////////
   errored_cmdtag_BM =           //
     gtk_text_tag_table_lookup (commandtagtable_BM, "errored_cmdtag");
   if (!errored_cmdtag_BM)
@@ -521,18 +542,33 @@ initialize_gui_BM (const char *builderfile)
   gtk_box_pack_start (GTK_BOX (mainvbox), paned1, /*expand= */ true,
                       /*fill= */ true, 2);
   browserbuf_BM = gtk_text_buffer_new (browsertagtable_BM);
-  gtk_text_buffer_insert_at_cursor (browserbuf_BM, "//browser\n", -1);
+  {
+    GtkTextIter brit;
+    gtk_text_buffer_get_start_iter (browserbuf_BM, &brit);
+    gtk_text_buffer_insert_with_tags (browserbuf_BM, &brit,
+                                      "BROWSER", -1,
+                                      pagetitle_brotag_BM, NULL);
+    gtk_text_buffer_insert (browserbuf_BM, &brit, "\n", 1);
+    browserendtitlem_BM =       //
+      gtk_text_buffer_create_mark (browserbuf_BM, "endtitle_bromk",
+                                   &brit, false);
+  }
   browserview_BM = gtk_text_view_new_with_buffer (browserbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (browserview_BM), false);
   GtkWidget *browserscrolw = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (browserscrolw), browserview_BM);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (browserscrolw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  browsersize_BM = 13;
-  browserulen_BM = 0;
-  browsedobj_BM = calloc (browsersize_BM, sizeof (struct browsedobj_stBM));
+  browserobsize_BM = 13;
+  browserobulen_BM = 0;
+  browsedobj_BM = calloc (browserobsize_BM, sizeof (struct browsedobj_stBM));
   if (!browsedobj_BM)
-    FATAL_BM ("calloc failed for %u browsed objects (%m)", browsersize_BM);
+    FATAL_BM ("calloc failed for %u browsed objects (%m)", browserobsize_BM);
+  browsernvsize_BM = 7;
+  browsernvulen_BM = 0;
+  browsedval_BM = calloc (browsernvsize_BM, sizeof (struct browsedval_stBM));
+  if (!browsedval_BM)
+    FATAL_BM ("calloc failed for %u browsed values (%m)", browsernvsize_BM);
   //
   commandbuf_BM = gtk_text_buffer_new (commandtagtable_BM);
   commandview_BM = gtk_text_view_new_with_buffer (commandbuf_BM);
