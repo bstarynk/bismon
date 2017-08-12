@@ -70,6 +70,42 @@ gobjectclassnamedbg_BM (GObject * ptr)
   return G_OBJECT_CLASS_NAME (G_OBJECT_GET_CLASS (ptr));
 }                               /* end gobjectclassnamedbg_BM */
 
+
+void
+start_browse_object_BM (const objectval_tyBM * obj)
+{
+  assert (isobject_BM (obj));
+  if (browserobulen_BM + 1 >= browserobsize_BM)
+    {
+      unsigned newsiz = prime_above_BM (4 * browserobulen_BM / 3 + 10);
+      struct browsedobj_BM *newarr =    //
+        calloc (newsiz, sizeof (struct browsedobj_stBM));
+      if (!newarr)
+        FATAL_BM ("calloc failure for %u browsed objects", newsiz);
+      memcpy (newarr, browsedobj_BM,
+              browserobulen_BM * sizeof (struct browsedobj_stBM));
+      free (browsedobj_BM);
+      browsedobj_BM = newarr;
+      browserobsize_BM = newsiz;
+    }
+  int lo = 0, hi = browserobulen_BM, md = 0;
+  while (lo + 8 < hi)
+    {
+      md = (lo + hi) / 2;
+      const objectval_tyBM *mdobj = browsedobj_BM[md].brow_obj;
+      if (mdobj == obj)
+        break;
+      int cmp = objectnamedcmp_BM (mdobj, obj);
+      if (cmp < 0)
+        lo = md;
+      else
+        hi = md;
+    }
+#warning start_browse_object_BM incomplete
+}                               /* end start_browse_object_BM */
+
+
+
 void quit_BM (void);
 void
 quit_BM (void)
