@@ -19,6 +19,7 @@ GtkTextTag *objid_brotag_BM;
 GtkTextTag *objname_brotag_BM;
 GtkTextTag *objrefcomm_brotag_BM;
 GtkTextTag *nest_brotag_BM;
+GtkTextTag *toodeep_brotag_BM;
 
 
 /// the browsed objects
@@ -664,6 +665,10 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (browsertagtable_BM, "nest_brotag");
   if (!nest_brotag_BM)
     FATAL_BM ("cannot find nest_brotag_BM");
+  toodeep_brotag_BM =           //
+    gtk_text_tag_table_lookup (browsertagtable_BM, "toodeep_brotag");
+  if (!toodeep_brotag_BM)
+    FATAL_BM ("cannot find toodeep_brotag_BM");
   ////////////////
   errored_cmdtag_BM =           //
     gtk_text_tag_table_lookup (commandtagtable_BM, "errored_cmdtag");
@@ -899,6 +904,7 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
 }                               /* end  ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe) */
 
 
+
 /// method to browse_value for tuple-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt);
 
@@ -926,9 +932,31 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nb)     //
   assert (curdepth <= maxdepth);
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "[", -1, nest_brotag_BM, NULL);
-#warning unimplemented  method to browse_value for tuple-s _0BAnB0xjs23_0WEOCOi5Nb
+  unsigned tupsiz = tuplesize_BM (_.tupbrows);
+  if (curdepth < maxdepth)
+    {
+      for (unsigned tix = 0; tix < tupsiz; tix++)
+        {
+          _.objbrows = tuplecompnth_BM (_.tupbrows, tix);
+          if (tix > 0)
+            browsespacefordepth_BM (curdepth + 1);
+          send2_BM (_.objbrows, BMP_browse_value,
+                    (struct stackframe_stBM *) &_,
+                    taggedint_BM (maxdepth), taggedint_BM (curdepth + 1));
+        }
+    }
+  else
+    {
+      char msgbuf[64];
+      memset (msgbuf, 0, sizeof (msgbuf));
+      snprintf (msgbuf, sizeof (msgbuf), "|\342\200\246"        /*U+2026 HORIZONTAL ELLIPSIS … */
+                " %d objects in tuple|", tupsiz);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,   //
+                                        msgbuf, -1, toodeep_brotag_BM, NULL);
+    }
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "]", -1, nest_brotag_BM, NULL);
+#warning method to browse_value for tuple-s _0BAnB0xjs23_0WEOCOi5Nb dont handle nested brackets
 }                               /* end ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nb)  */
 
 
@@ -954,12 +982,50 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
   assert (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const setval_tyBM * setbrows;
+                 const objectval_tyBM * objbrows;
     );
   _.setbrows = (const setval_tyBM *) arg1;
+  unsigned setcard = setcardinal_BM (_.setbrows);
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   assert (curdepth <= maxdepth);
-#warning unimplemented  method to browse_value for set-s _3rne4qbpnV9_0pywzeJp3Qr
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
+                                    "{", -1, nest_brotag_BM, NULL);
+  if (curdepth < maxdepth)
+    {
+      const objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+      const objectval_tyBM **arr =      //
+        (setcard < TINYSIZE_BM) ? tinyarr
+        : calloc (setcard + 1, sizeof (const objectval_tyBM *));
+      if (!arr)
+        FATAL_BM ("calloc failed for %d elements", setcard);
+      for (unsigned eix = 0; eix < setcard; eix++)
+        arr[eix] = setelemnth_BM (_.setbrows, eix);
+      sortnamedobjarr_BM (arr, setcard);
+      for (unsigned eix = 0; eix < setcard; eix++)
+        {
+          _.objbrows = arr[eix];
+          if (eix > 0)
+            browsespacefordepth_BM (curdepth + 1);
+          send2_BM (_.objbrows, BMP_browse_value,
+                    (struct stackframe_stBM *) &_,
+                    taggedint_BM (maxdepth), taggedint_BM (curdepth + 1));
+        }
+      if (arr != tinyarr)
+        free (arr);
+    }
+  else
+    {
+      char msgbuf[64];
+      memset (msgbuf, 0, sizeof (msgbuf));
+      snprintf (msgbuf, sizeof (msgbuf), "|\342\200\246"        /*U+2026 HORIZONTAL ELLIPSIS … */
+                " %d objects in set|", setcard);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,   //
+                                        msgbuf, -1, toodeep_brotag_BM, NULL);
+    }
+#warning method to browse_value for set-s _3rne4qbpnV9_0pywzeJp3Qr dont handle nested braces
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
+                                    "}", -1, nest_brotag_BM, NULL);
 }                               /* end ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)  */
 
 
@@ -985,9 +1051,10 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    //
   assert (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
     );
-  int maxdepth = getint_BM (arg2);
-  int curdepth = getint_BM (arg3);
-  assert (curdepth <= maxdepth);
+  intptr_t i = getint_BM (arg1);
+  char ibuf[32];
+  memset (ibuf, 0, sizeof (ibuf));
+  snprintf (ibuf, sizeof (ibuf), "%lld", (long long) i);
 #warning unimplemented  method to browse_value for int-s _0HBMCM5CeLn_7L5YEV2jO7Y
 }                               /* end ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)  */
 
@@ -1017,7 +1084,6 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   assert (curdepth <= maxdepth);
-#warning unimplemented  method to browse_value for string-s _63ZPkXUI2Uv_6Cp3qmh6Uud
 }                               /* end ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud) */
 
 

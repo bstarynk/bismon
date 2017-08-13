@@ -135,8 +135,17 @@
             <object class='GtkTextTag'>
                 <property name="name">nest_brotag</property>
                 <property name="font">Noto Sans Bold</property>
-                <property name="scale">0.9</property>
+                <property name="scale">0.95</property>
                 <property name="foreground">coral4</property>
+            </object>
+        </child>
+      <!-- toodeep_brotag for the comment when too deep -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">toodeep_brotag</property>
+                <property name="font">Oxygen Bold</property>
+                <property name="scale">0.99</property>
+                <property name="foreground">orangered3</property>
             </object>
         </child>
 	
