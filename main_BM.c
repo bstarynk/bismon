@@ -189,6 +189,12 @@ add_new_predefined_bm (void)
     }
 }                               /* end add_new_predefined_bm */
 
+static int
+idqcmp_BM (const void *p1, const void *p2)
+{
+  return cmpid_BM (*(rawid_tyBM *) p1, *(rawid_tyBM *) p2);
+}                               /* end idqcmp_BM */
+
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
 //// GTK appplications
@@ -229,11 +235,18 @@ main (int argc, char **argv)
                                    optab, NULL, &err);
   if (count_emit_has_predef_bm > 0)
     {
+      rawid_tyBM *idarr =
+        calloc (count_emit_has_predef_bm, sizeof (rawid_tyBM));
+      if (!idarr)
+        FATAL_BM ("failed to calloc idarr for %d", count_emit_has_predef_bm);
+      for (int ix = 0; ix < count_emit_has_predef_bm; ix++)
+        idarr[ix] = randomid_BM ();
+      qsort (idarr, count_emit_has_predef_bm, sizeof (rawid_tyBM), idqcmp_BM);
       printf ("\n\n" "/// %d extra predefs\n", count_emit_has_predef_bm);
       printf ("// !@ %.2f\n", clocktime_BM (CLOCK_REALTIME));
-      for (int ix = count_emit_has_predef_bm; ix > 0; ix--)
+      for (int ix = 0; ix < count_emit_has_predef_bm; ix++)
         {
-          rawid_tyBM id = randomid_BM ();
+          rawid_tyBM id = idarr[ix];
           char idbuf[32];
           memset (idbuf, 0, sizeof (idbuf));
           idtocbuf32_BM (id, idbuf);
@@ -241,7 +254,16 @@ main (int argc, char **argv)
                   idbuf, (long long) id.id_hi, (long long) id.id_lo,
                   hashid_BM (id));
         }
-      printf ("\n\n");
+      printf ("\n\n/***\n");
+      for (int ix = 0; ix < count_emit_has_predef_bm; ix++)
+        {
+          rawid_tyBM id = idarr[ix];
+          char idbuf[32];
+          memset (idbuf, 0, sizeof (idbuf));
+          idtocbuf32_BM (id, idbuf);
+          printf (" ROUTINEOBJNAME_BM (%s)\n", idbuf);
+        }
+      printf ("***/\n\n\n");
     }
   if (!guiok)
     FATAL_BM ("gtk_init_with_args failed");

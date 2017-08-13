@@ -128,7 +128,7 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
           gtk_text_buffer_move_mark (browserbuf_BM,
                                      browsedobj_BM[md].brow_ostartm,
                                      &startit);
-	  browsedobj_BM[md].brow_depth = depth;
+          browsedobj_BM[md].brow_depth = depth;
           browserit_BM = startit;
           browserobcurix_BM = md;
           return;
@@ -152,7 +152,7 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
             gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
           browsedobj_BM[md].brow_oendm =        //
             gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
-	  browsedobj_BM[md].brow_depth = depth;
+          browsedobj_BM[md].brow_depth = depth;
           browserobcurix_BM = md;
           browserit_BM = it;
           return;
@@ -176,8 +176,7 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
 void
 browse_object_gui_BM (const objectval_tyBM * objbrows,
                       const objectval_tyBM * objsel,
-		      int browsdepth,
-                      struct stackframe_stBM *stkf)
+                      int browsdepth, struct stackframe_stBM *stkf)
 {
   if (!isobject_BM ((const value_tyBM) objbrows))
     return;
@@ -227,8 +226,7 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
     };
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
   send1_BM ((const value_tyBM) objbrows, objsel,
-            (struct stackframe_stBM *) &_,
-	    taggedint_BM(browsdepth));
+            (struct stackframe_stBM *) &_, taggedint_BM (browsdepth));
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
   gtk_text_buffer_move_mark (browserbuf_BM,
                              browsedobj_BM[browserobcurix_BM].brow_oendm,
