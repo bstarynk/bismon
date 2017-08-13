@@ -924,7 +924,7 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nb)     //
+ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -955,7 +955,7 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nb)     //
           _.objbrows = tuplecompnth_BM (_.tupbrows, tix);
           if (tix > 0)
             browsespacefordepth_BM (curdepth + 1);
-          send2_BM (_.objbrows, BMP_browse_value,
+          send2_BM ((const value_tyBM) _.objbrows, BMP_browse_value,
                     (struct stackframe_stBM *) &_,
                     taggedint_BM (maxdepth), taggedint_BM (curdepth + 1));
         }
@@ -1079,6 +1079,7 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    //
 /// method to browse_value for string-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud);
 
+#define WANTEDLINEWIDTH_BM 64
 value_tyBM
 ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
@@ -1186,14 +1187,14 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
             {
               char ubuf[24];
               memset (ubuf, 0, sizeof (ubuf));
-              snprintf (ubuf, "\\u%04x", uc);
+              snprintf (ubuf, sizeof (ubuf), "\\u%04x", uc);
               ADDESCAPESTR_BM (ubuf);
             }
           else
             {
               char ubuf[24];
               memset (ubuf, 0, sizeof (ubuf));
-              snprintf (ubuf, "\\U%08x", uc);
+              snprintf (ubuf, sizeof (ubuf), "\\U%08x", uc);
               ADDESCAPESTR_BM (ubuf);
             }
           break;
@@ -1225,14 +1226,49 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
   assert (istaggedint_BM (arg2));
   assert (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * nodbrows;
+                 const node_tyBM * nodbrows; const objectval_tyBM * connob;
+                 value_tyBM curson;
     );
   _.nodbrows = arg1;
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   assert (curdepth <= maxdepth);
-#warning unimplemented  method to browse_value for node-s _7fJKfG4SN0U_1QTu5J832xg
-
+  unsigned nw = nodewidth_BM (_.nodbrows);
+  _.connob = nodeconn_BM (_.nodbrows);
+  assert (isobject_BM (_.connob));
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
+                                    "*", -1, nest_brotag_BM, NULL);
+  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, " ", 1);
+  send2_BM (_.connob, BMP_browse_value,
+            (struct stackframe_stBM *) &_,
+            taggedint_BM (maxdepth), taggedint_BM (curdepth + 1));
+  browsespacefordepth_BM (curdepth + 1);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
+                                    "(", -1, nest_brotag_BM, NULL);
+  if (curdepth < maxdepth)
+    {
+      for (unsigned six = 0; six < nw; six++)
+        {
+          _.curson = nodenthson_BM (_.nodbrows, six);
+          if (six > 0)
+            browsespacefordepth_BM (curdepth + 1);
+          send2_BM (_.curson, BMP_browse_value,
+                    (struct stackframe_stBM *) &_,
+                    taggedint_BM (maxdepth), taggedint_BM (curdepth + 1));
+        }
+    }
+  else
+    {
+      char msgbuf[64];
+      memset (msgbuf, 0, sizeof (msgbuf));
+      snprintf (msgbuf, sizeof (msgbuf), "|\342\200\246"        /*U+2026 HORIZONTAL ELLIPSIS … */
+                " %d sons in node|", nw);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,   //
+                                        msgbuf, -1, toodeep_brotag_BM, NULL);
+    }
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
+                                    ")", -1, nest_brotag_BM, NULL);
+#warning method to browse_value for node-s _7fJKfG4SN0U_1QTu5J832xg dont handle nested parens
 }                               /* end ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg) */
 
 
@@ -1257,11 +1293,48 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
   assert (istaggedint_BM (arg2));
   assert (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clobrows;
+                 const closure_tyBM * clobrows; const objectval_tyBM * connob;
+                 value_tyBM curson;
     );
   _.clobrows = arg1;
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   assert (curdepth <= maxdepth);
-#warning unimplemented  method to browse_value for closure-s _7CohjJ9tkfZ_4UMAIZCgwac
+
+  unsigned cw = closurewidth_BM (_.clobrows);
+  _.connob = closureconn_BM (_.clobrows);
+  assert (isobject_BM (_.connob));
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
+                                    "%", -1, nest_brotag_BM, NULL);
+  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, " ", 1);
+  send2_BM (_.connob, BMP_browse_value,
+            (struct stackframe_stBM *) &_,
+            taggedint_BM (maxdepth), taggedint_BM (curdepth + 1));
+  browsespacefordepth_BM (curdepth + 1);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
+                                    "(", -1, nest_brotag_BM, NULL);
+  if (curdepth < maxdepth)
+    {
+      for (unsigned cix = 0; cix < cw; cix++)
+        {
+          _.curson = closurenthson_BM (_.clobrows, cix);
+          if (cix > 0)
+            browsespacefordepth_BM (curdepth + 1);
+          send2_BM (_.curson, BMP_browse_value,
+                    (struct stackframe_stBM *) &_,
+                    taggedint_BM (maxdepth), taggedint_BM (curdepth + 1));
+        }
+    }
+  else
+    {
+      char msgbuf[64];
+      memset (msgbuf, 0, sizeof (msgbuf));
+      snprintf (msgbuf, sizeof (msgbuf), "|\342\200\246"        /*U+2026 HORIZONTAL ELLIPSIS … */
+                " %d sons in closure|", cw);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,   //
+                                        msgbuf, -1, toodeep_brotag_BM, NULL);
+    }
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
+                                    ")", -1, nest_brotag_BM, NULL);
+#warning method to browse_value for closure-s _7CohjJ9tkfZ_4UMAIZCgwac dont handle nested parens
 }                               /* end ROUTINEOBJNAME_BM ( _7CohjJ9tkfZ_4UMAIZCgwac) */
