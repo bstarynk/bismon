@@ -612,5 +612,6 @@ extern void initialize_gui_BM (const char *builderfile);
 // browse the object objbrows, using the selector objsel
 extern void browse_object_gui_BM (const objectval_tyBM * objbrows,
                                   const objectval_tyBM * objsel,
+				  int browsdepth,
                                   struct stackframe_stBM *stkf);
 #endif /*FUNDECL_BM_INCLUDED */
