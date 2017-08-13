@@ -130,6 +130,15 @@
                 <property name="foreground">deepskyblue3</property>
             </object>
         </child>
+      <!-- nest_brotag for the nesting punctuation -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">nest_brotag</property>
+                <property name="font">Noto Sans Bold</property>
+                <property name="scale">0.9</property>
+                <property name="foreground">coral4</property>
+            </object>
+        </child>
 	
     </object>
     
