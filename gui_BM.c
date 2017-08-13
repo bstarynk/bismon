@@ -877,7 +877,8 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
 
 /// method to browse_value for tuple-s
 extern objrout_sigBM
-ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)
+ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt);
+
   value_tyBM
 ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nb)     //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
@@ -908,8 +909,9 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nb)     //
 
 /// method to browse_value for set-s
 extern objrout_sigBM
-ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)
-  value_tyBM
+ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr);
+
+value_tyBM
 ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
  const value_tyBM arg1,         // the reciever
@@ -932,3 +934,120 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
   assert (curdepth <= maxdepth);
 #warning unimplemented  method to browse_value for set-s _3rne4qbpnV9_0pywzeJp3Qr
 }                               /* end ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)  */
+
+
+
+
+
+/// method to browse_value for int-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3,         // the current depth
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  if (!istaggedint_BM (arg1))
+    FATAL_BM("non-int for method to browse_value for int-s _0HBMCM5CeLn_7L5YEV2jO7Y");
+  assert (istaggedint_BM (arg2));
+  assert (istaggedint_BM (arg3));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+    );
+  int maxdepth = getint_BM (arg2);
+  int curdepth = getint_BM (arg3);
+  assert (curdepth <= maxdepth);
+#warning unimplemented  method to browse_value for int-s _0HBMCM5CeLn_7L5YEV2jO7Y
+} /* end ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)  */
+
+
+
+/// method to browse_value for string-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud);
+value_tyBM
+ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3,         // the current depth
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  if (!isstring_BM (arg1))
+    FATAL_BM("non-string for method to browse_value for string-s _63ZPkXUI2Uv_6Cp3qmh6Uud");
+  assert (istaggedint_BM (arg2));
+  assert (istaggedint_BM (arg3));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+		  const stringval_tyBM*strbrows;
+    );
+  _.strbrows = arg1;
+  int maxdepth = getint_BM (arg2);
+  int curdepth = getint_BM (arg3);
+  assert (curdepth <= maxdepth);
+#warning unimplemented  method to browse_value for string-s _63ZPkXUI2Uv_6Cp3qmh6Uud
+}/* end ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud) */
+
+
+
+/// method to browse_value for node-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg);
+value_tyBM
+ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3,         // the current depth
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  if (!isnode_BM (arg1))
+    FATAL_BM("non-node for method to browse_value for node-s _7fJKfG4SN0U_1QTu5J832xg");
+  assert (istaggedint_BM (arg2));
+  assert (istaggedint_BM (arg3));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+		  const node_tyBM*nodbrows;
+    );
+  _.nodbrows = arg1;
+  int maxdepth = getint_BM (arg2);
+  int curdepth = getint_BM (arg3);
+  assert (curdepth <= maxdepth);
+#warning unimplemented  method to browse_value for node-s _7fJKfG4SN0U_1QTu5J832xg
+  
+}/* end ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg) */
+
+
+
+
+
+/// method to browse_value for closure-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac);
+value_tyBM
+ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3,         // the current depth
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  if (!isclosure_BM (arg1))
+    FATAL_BM("non-closure for method to browse_value for closure-s _7CohjJ9tkfZ_4UMAIZCgwac");
+  assert (istaggedint_BM (arg2));
+  assert (istaggedint_BM (arg3));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+		  const closure_tyBM*clobrows;
+    );
+  _.clobrows = arg1;
+  int maxdepth = getint_BM (arg2);
+  int curdepth = getint_BM (arg3);
+  assert (curdepth <= maxdepth);
+#warning unimplemented  method to browse_value for closure-s _7CohjJ9tkfZ_4UMAIZCgwac
+}/* end ROUTINEOBJNAME_BM ( _7CohjJ9tkfZ_4UMAIZCgwac) */
+
+
+
+
+ 

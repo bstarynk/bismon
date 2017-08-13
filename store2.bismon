@@ -1,5 +1,5 @@
 // generated file store2.bismon
-// for 19 objects
+// for 23 objects
 // with 0 modules
 
 
@@ -24,6 +24,14 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value an object"
 !)_0BAnB0xjs23_0WEOCOi5Nbe
+
+
+
+!(_0HBMCM5CeLn_7L5YEV2jO7Y
+!@ 1502619190.01
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method to browse_value an int"
+!)_0HBMCM5CeLn_7L5YEV2jO7Y
 
 
 
@@ -128,6 +136,14 @@
 
 
 
+!(_63ZPkXUI2Uv_6Cp3qmh6Uud
+!@ 1502619190.02
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method to browse_value a string"
+!)_63ZPkXUI2Uv_6Cp3qmh6Uud
+
+
+
 !(_67IapmpeTLU_8MQKtlK8iAD
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -160,11 +176,27 @@
 
 
 
+!(_7fJKfG4SN0U_1QTu5J832xg
+!@ 1502619190.03
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method to browse_value a node"
+!)_7fJKfG4SN0U_1QTu5J832xg
+
+
+
 !(_7mvOlkB1tAJ_3psVFz4QEAn
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a string"
 !)_7mvOlkB1tAJ_3psVFz4QEAn
+
+
+
+!(_7CohjJ9tkfZ_4UMAIZCgwac
+!@ 1502619190.04
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method to browse_value a closure"
+!)_7CohjJ9tkfZ_4UMAIZCgwac
 
 
 
