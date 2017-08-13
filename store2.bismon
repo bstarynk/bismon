@@ -1,5 +1,5 @@
 // generated file store2.bismon
-// for 15 objects
+// for 16 objects
 // with 0 modules
 
 
@@ -8,6 +8,14 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the routine to dump predefined"
 !)_075tZNHCAMa_7XNNBaNM4qv
+
+
+
+!(_23ViGouPnAg_15P5mpG9x3d
+!@ 1502609812.04
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method to browse_in_object an object"
+!)_23ViGouPnAg_15P5mpG9x3d
 
 
 

@@ -785,3 +785,17 @@ initialize_gui_BM (const char *builderfile)
   gtk_window_set_default_size (GTK_WINDOW (mainwin_BM), 560, 430);
   gtk_widget_show_all (GTK_WIDGET (mainwin_BM));
 }                               /* end initialize_gui_BM */
+
+
+/// method to browse_in_object for object-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d);
+
+value_tyBM
+ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1,
+const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+} /* end  ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d) */

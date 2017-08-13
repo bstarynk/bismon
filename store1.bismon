@@ -1,5 +1,5 @@
 // generated file store1.bismon
-// for 24 objects
+// for 27 objects
 // with 0 modules
 
 
@@ -167,6 +167,15 @@
 
 
 
+!(_6rHCoR6adv5_9SKAahoKWPj |=browse_value|
+!~ name (~ browse_value ~)
+!@ 1502608883.26
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "to browse value"
+!)_6rHCoR6adv5_9SKAahoKWPj
+
+
+
 !(_6TmLNh9vtVY_0pwkHRtJ44k |=tuple|
 !~ name (~ tuple ~)
 !@ 1497636292.47
@@ -203,9 +212,19 @@
 !@ 1497636292.47
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |nosuperclass| __ 
-~: _1FEnnpEkGdI_5DAcVDL5XHG |=dump_value|  % _7fCcteNe7aR_3IKHeHjmzff ()
+~: _1FEnnpEkGdI_5DAcVDL5XHG |=dump_value|  % _7fCcteNe7aR_3IKHeHjmzff () 
+~: _8Y99VufgRZo_9SFMiDUruXS |=browse_in_object|  % _23ViGouPnAg_15P5mpG9x3d ()
 ~)
 !)_7T9OwSFlgov_0wVJaK1eZbn
+
+
+
+!(_8Y99VufgRZo_9SFMiDUruXS |=browse_in_object|
+!~ name (~ browse_in_object ~)
+!@ 1502608883.26
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "to browse object content"
+!)_8Y99VufgRZo_9SFMiDUruXS
 
 
 
@@ -217,6 +236,15 @@
 ~: _1FEnnpEkGdI_5DAcVDL5XHG |=dump_value|  % _6jvRZetUz36_978V6SKIWZC ()
 ~)
 !)_93zjUzZVAaj_9ppXv7C34GR
+
+
+
+!(_9uRC9w2Gte9_5mW0NanaS19 |=browse_data|
+!~ name (~ browse_data ~)
+!@ 1502608883.26
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "to browse extra data"
+!)_9uRC9w2Gte9_5mW0NanaS19
 
 
 
