@@ -144,9 +144,9 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   _.duobj->ob_data = _.curdu;
   _.curdu->dump_object = _.duobj;
   dump_scan_pass_BM (_.curdu, (struct stackframe_stBM *) &_);
-  dump_run_todo_BM (_.curdu,  (struct stackframe_stBM *) &_);
+  dump_run_todo_BM (_.curdu, (struct stackframe_stBM *) &_);
   dump_emit_pass_BM (_.curdu, (struct stackframe_stBM *) &_);
-  dump_run_todo_BM (_.curdu,  (struct stackframe_stBM *) &_);
+  dump_run_todo_BM (_.curdu, (struct stackframe_stBM *) &_);
 }                               /* end dump_BM */
 
 
@@ -155,18 +155,20 @@ dump_run_todo_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct dumper_stBM *curdu;
-		  const closure_tyBM*curclo;
-		  );
+                 const closure_tyBM * curclo;
+    );
   assert (valtype_BM ((const value_tyBM) du) == tydata_dumper_BM);
   _.curdu = du;
-  while (listlength_BM(du->dump_todolist)>0) {
-    _.curclo = listfirst_BM(du->dump_todolist);
-    listpopfirst_BM(du->dump_todolist);
-    if (isclosure_BM(_.curclo)) {
-      apply1_BM(_.curclo, (struct stackframe_stBM*)&_, du);
+  while (listlength_BM (du->dump_todolist) > 0)
+    {
+      _.curclo = listfirst_BM (du->dump_todolist);
+      listpopfirst_BM (du->dump_todolist);
+      if (isclosure_BM (_.curclo))
+        {
+          apply1_BM (_.curclo, (struct stackframe_stBM *) &_, du);
+        }
     }
-  }
-} /* end dump_run_todo_BM */
+}                               /* end dump_run_todo_BM */
 
 
 
