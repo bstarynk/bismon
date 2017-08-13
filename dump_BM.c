@@ -110,11 +110,16 @@ dumpscanvalue_BM (struct dumper_stBM *du, const value_tyBM val, int depth)
 }                               /* end dumpscanvalue_BM */
 
 static void
+dump_run_todo_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf);
+
+static void
 dump_scan_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf);
 
 static void
 dump_emit_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf);
 
+
+#warning dumper should call the garbage collector at appropriate places
 
 void
 dump_BM (const char *dirname, struct stackframe_stBM *stkf)
@@ -139,9 +144,31 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   _.duobj->ob_data = _.curdu;
   _.curdu->dump_object = _.duobj;
   dump_scan_pass_BM (_.curdu, (struct stackframe_stBM *) &_);
+  dump_run_todo_BM (_.curdu,  (struct stackframe_stBM *) &_);
   dump_emit_pass_BM (_.curdu, (struct stackframe_stBM *) &_);
-#warning dump_BM unimplemented
+  dump_run_todo_BM (_.curdu,  (struct stackframe_stBM *) &_);
 }                               /* end dump_BM */
+
+
+void
+dump_run_todo_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 struct dumper_stBM *curdu;
+		  const closure_tyBM*curclo;
+		  );
+  assert (valtype_BM ((const value_tyBM) du) == tydata_dumper_BM);
+  _.curdu = du;
+  while (listlength_BM(du->dump_todolist)>0) {
+    _.curclo = listfirst_BM(du->dump_todolist);
+    listpopfirst_BM(du->dump_todolist);
+    if (isclosure_BM(_.curclo)) {
+      apply1_BM(_.curclo, (struct stackframe_stBM*)&_, du);
+    }
+  }
+} /* end dump_run_todo_BM */
+
+
 
 static void
 dump_scan_object_content_BM (struct dumper_stBM *du,
