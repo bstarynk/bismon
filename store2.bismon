@@ -1,5 +1,5 @@
 // generated file store2.bismon
-// for 17 objects
+// for 19 objects
 // with 0 modules
 
 
@@ -8,6 +8,14 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the routine to dump predefined"
 !)_075tZNHCAMa_7XNNBaNM4qv
+
+
+
+!(_0B1PYH9bN34_3RZdP24AVyt
+!@ 1502615054.06
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method to browse_value a tuple"
+!)_0B1PYH9bN34_3RZdP24AVyt
 
 
 
@@ -32,6 +40,14 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value an integer"
 !)_3kMqlEugRVW_7DgwjR4CBbP
+
+
+
+!(_3rne4qbpnV9_0pywzeJp3Qr
+!@ 1502615054.06
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method to browse_value an set"
+!)_3rne4qbpnV9_0pywzeJp3Qr
 
 
 
