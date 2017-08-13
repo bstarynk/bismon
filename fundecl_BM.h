@@ -106,6 +106,7 @@ static inline int objectnamedcmp_BM (const objectval_tyBM * ob1,
 
 
 extern void sortobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz);
+extern void sortnamedobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz);
 
 extern objectval_tyBM *findobjofid_BM (const rawid_tyBM id);
 extern objectval_tyBM *makeobjofid_BM (const rawid_tyBM id);

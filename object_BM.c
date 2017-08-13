@@ -29,6 +29,13 @@ objptrqcmp_BM (const void *p1, const void *p2)
                        *(const objectval_tyBM **) p2);
 }                               /* end objptrqcmp_BM */
 
+static int
+objnamedptrqcmp_BM (const void *p1, const void *p2)
+{
+  return objectnamedcmp_BM (*(const objectval_tyBM **) p1,
+                            *(const objectval_tyBM **) p2);
+}                               /* end objptrqcmp_BM */
+
 void
 sortobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz)
 {
@@ -37,6 +44,17 @@ sortobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz)
   if (arrsiz > 1)
     qsort (obarr, arrsiz, sizeof (const objectval_tyBM *), objptrqcmp_BM);
 }                               /* end sortobjarr_BM */
+
+
+void
+sortnamedobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz)
+{
+  if (obarr == NULL)
+    arrsiz = 0;
+  if (arrsiz > 1)
+    qsort (obarr, arrsiz, sizeof (const objectval_tyBM *),
+           objnamedptrqcmp_BM);
+}                               /* end sortnamedobjarr_BM */
 
 
 
