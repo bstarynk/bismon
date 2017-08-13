@@ -139,6 +139,15 @@
                 <property name="foreground">coral4</property>
             </object>
         </child>
+      <!-- num_brotag for numbers -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">num_brotag</property>
+                <property name="font">Courier New Bold</property>
+                <property name="scale">0.95</property>
+                <property name="foreground">palegreen4</property>
+            </object>
+        </child>
       <!-- toodeep_brotag for the comment when too deep -->
         <child type="tag">
             <object class='GtkTextTag'>

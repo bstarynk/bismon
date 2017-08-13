@@ -19,6 +19,7 @@ GtkTextTag *objid_brotag_BM;
 GtkTextTag *objname_brotag_BM;
 GtkTextTag *objrefcomm_brotag_BM;
 GtkTextTag *nest_brotag_BM;
+GtkTextTag *num_brotag_BM;
 GtkTextTag *toodeep_brotag_BM;
 
 
@@ -665,6 +666,10 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (browsertagtable_BM, "nest_brotag");
   if (!nest_brotag_BM)
     FATAL_BM ("cannot find nest_brotag_BM");
+  num_brotag_BM =              //
+    gtk_text_tag_table_lookup (browsertagtable_BM, "num_brotag");
+  if (!num_brotag_BM)
+    FATAL_BM ("cannot find num_brotag_BM");
   toodeep_brotag_BM =           //
     gtk_text_tag_table_lookup (browsertagtable_BM, "toodeep_brotag");
   if (!toodeep_brotag_BM)
@@ -1055,7 +1060,8 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    //
   char ibuf[32];
   memset (ibuf, 0, sizeof (ibuf));
   snprintf (ibuf, sizeof (ibuf), "%lld", (long long) i);
-#warning unimplemented  method to browse_value for int-s _0HBMCM5CeLn_7L5YEV2jO7Y
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,   //
+				    ibuf, -1, num_brotag_BM, NULL);
 }                               /* end ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)  */
 
 
