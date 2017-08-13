@@ -21,6 +21,8 @@ GtkTextTag *objrefcomm_brotag_BM;
 GtkTextTag *nest_brotag_BM;
 GtkTextTag *num_brotag_BM;
 GtkTextTag *toodeep_brotag_BM;
+GtkTextTag *str_brotag_BM;
+GtkTextTag *stresc_brotag_BM;
 
 
 /// the browsed objects
@@ -666,7 +668,7 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (browsertagtable_BM, "nest_brotag");
   if (!nest_brotag_BM)
     FATAL_BM ("cannot find nest_brotag_BM");
-  num_brotag_BM =              //
+  num_brotag_BM =               //
     gtk_text_tag_table_lookup (browsertagtable_BM, "num_brotag");
   if (!num_brotag_BM)
     FATAL_BM ("cannot find num_brotag_BM");
@@ -674,6 +676,14 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (browsertagtable_BM, "toodeep_brotag");
   if (!toodeep_brotag_BM)
     FATAL_BM ("cannot find toodeep_brotag_BM");
+  str_brotag_BM =               //
+    gtk_text_tag_table_lookup (browsertagtable_BM, "str_brotag");
+  if (!str_brotag_BM)
+    FATAL_BM ("cannot find str_brotag_BM");
+  stresc_brotag_BM =            //
+    gtk_text_tag_table_lookup (browsertagtable_BM, "stresc_brotag");
+  if (!stresc_brotag_BM)
+    FATAL_BM ("cannot find stresc_brotag_BM");
   ////////////////
   errored_cmdtag_BM =           //
     gtk_text_tag_table_lookup (commandtagtable_BM, "errored_cmdtag");
@@ -1060,8 +1070,8 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    //
   char ibuf[32];
   memset (ibuf, 0, sizeof (ibuf));
   snprintf (ibuf, sizeof (ibuf), "%lld", (long long) i);
-  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,   //
-				    ibuf, -1, num_brotag_BM, NULL);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
+                                    ibuf, -1, num_brotag_BM, NULL);
 }                               /* end ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)  */
 
 
@@ -1090,6 +1100,109 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   assert (curdepth <= maxdepth);
+  unsigned l = lenstring_BM (_.strbrows);
+  const char *str = bytstring_BM (_.strbrows);
+  if (l >= WANTEDLINEWIDTH_BM / 2)
+    browsespacefordepth_BM (curdepth);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
+                                    "\"", -1, stresc_brotag_BM, NULL);
+  int ccnt = 0;
+  int linecnt = 0;
+#define WANTEDLINEWIDTH_BM 64
+  for (const char *pc = str; *pc; pc = g_utf8_next_char (pc))
+    {
+      gunichar uc = g_utf8_get_char (pc);
+      ccnt++;
+      linecnt++;
+#define ADDESCAPESTR_BM(S)						\
+    gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,	\
+				      (S), -1, stresc_brotag_BM, NULL)
+      switch (uc)
+        {
+        case '\"':
+          ADDESCAPESTR_BM ("\\\"");
+          break;
+        case '\'':
+          ADDESCAPESTR_BM ("\\\'");
+          break;
+        case '\a':
+          ADDESCAPESTR_BM ("\\a");
+          break;
+        case '\b':
+          ADDESCAPESTR_BM ("\\b");
+          break;
+        case '\f':
+          ADDESCAPESTR_BM ("\\f");
+          break;
+        case '\n':
+          if (linecnt > 3 * WANTEDLINEWIDTH_BM / 4 && pc[1] && pc[2])
+            {
+              ADDESCAPESTR_BM ("\"+");
+              browsenewlinefordepth_BM (curdepth);
+              ADDESCAPESTR_BM ("\"");
+              linecnt = 0;
+            }
+          else
+            ADDESCAPESTR_BM ("\\n");
+          break;
+        case '\r':
+          ADDESCAPESTR_BM ("\\r");
+          break;
+        case '\t':
+          ADDESCAPESTR_BM ("\\t");
+          break;
+        case '\v':
+          ADDESCAPESTR_BM ("\\v");
+          break;
+        case '\033' /*ESCAPE*/:
+          ADDESCAPESTR_BM ("\\e");
+          break;
+        default:
+          if (linecnt > 3 * WANTEDLINEWIDTH_BM / 4 && pc[1] && pc[2]
+              && g_unichar_isspace (uc))
+            {
+              ADDESCAPESTR_BM ("\"&");
+              browsenewlinefordepth_BM (curdepth);
+              ADDESCAPESTR_BM ("\"");
+              linecnt = 0;
+            }
+          else if (linecnt > WANTEDLINEWIDTH_BM && pc[1])
+            {
+              ADDESCAPESTR_BM ("\"&");
+              browsenewlinefordepth_BM (curdepth);
+              ADDESCAPESTR_BM ("\"");
+              linecnt = 0;
+            }
+          if (g_unichar_isprint (uc))
+            {
+              char ubuf[8];
+              memset (ubuf, 0, sizeof (ubuf));
+              g_unichar_to_utf8 (uc, ubuf);
+              gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                                ubuf, -1, str_brotag_BM,
+                                                NULL);
+            }
+          else if (uc < 0xffff)
+            {
+              char ubuf[24];
+              memset (ubuf, 0, sizeof (ubuf));
+              snprintf (ubuf, "\\u%04x", uc);
+              ADDESCAPESTR_BM (ubuf);
+            }
+          else
+            {
+              char ubuf[24];
+              memset (ubuf, 0, sizeof (ubuf));
+              snprintf (ubuf, "\\U%08x", uc);
+              ADDESCAPESTR_BM (ubuf);
+            }
+          break;
+        }
+    }                           /* end for pc */
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
+                                    "\"", -1, stresc_brotag_BM, NULL);
+  if (ccnt >= WANTEDLINEWIDTH_BM / 2)
+    browsespacefordepth_BM (curdepth);
 }                               /* end ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud) */
 
 
