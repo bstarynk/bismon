@@ -793,9 +793,41 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d);
 value_tyBM
  ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)
 (const closure_tyBM * clos,
-struct stackframe_stBM * stkf,
-const value_tyBM arg1,
-const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+ struct stackframe_stBM * stkf,
+ const value_tyBM arg1,		// the reciever
+ const value_tyBM arg2,         // the depth
+ const value_tyBM arg3  __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  assert (isobject_BM(arg1));
+  assert (istaggedint_BM(arg2));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * objbrows;
+    );
+  _.objbrows = (const objectval_tyBM*)arg1;
+  int depth = getint_BM(arg2);
 } /* end  ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d) */
+
+
+/// method to browse_value for object-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)
+(const closure_tyBM * clos,
+ struct stackframe_stBM * stkf,
+ const value_tyBM arg1,		// the reciever
+ const value_tyBM arg2,         // the depth
+ const value_tyBM arg3  __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  assert (isobject_BM(arg1));
+  assert (istaggedint_BM(arg2));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * objbrows;
+    );
+  _.objbrows = (const objectval_tyBM*)arg1;
+  int depth = getint_BM(arg2);
+} /* end  ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe) */
