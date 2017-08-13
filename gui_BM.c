@@ -676,21 +676,6 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (commandtagtable_BM, "nesting_cmdtag");
   if (!nesting_cmdtag_BM)
     FATAL_BM ("cannot find nesting_cmdtag");
-  for (int depth = 0; depth < CMD_MAXNEST_BM; depth++)
-    {
-      char opennamebuf[24];
-      snprintf (opennamebuf, sizeof (opennamebuf), "open%d_cmdtag", depth);
-      open_cmdtags_BM[depth] =  //
-        gtk_text_buffer_create_tag (commandbuf_BM, opennamebuf, NULL);
-      char closenamebuf[24];
-      snprintf (closenamebuf, sizeof (closenamebuf), "close%d_cmdtag", depth);
-      close_cmdtags_BM[depth] = //
-        gtk_text_buffer_create_tag (commandbuf_BM, closenamebuf, NULL);
-      char xtranamebuf[24];
-      snprintf (xtranamebuf, sizeof (xtranamebuf), "xtra%d_cmdtag", depth);
-      xtra_cmdtags_BM[depth] =  //
-        gtk_text_buffer_create_tag (commandbuf_BM, xtranamebuf, NULL);
-    };
   GtkWidget *mainvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);
   GtkWidget *mainmenubar = gtk_menu_bar_new ();
@@ -752,6 +737,22 @@ initialize_gui_BM (const char *builderfile)
     FATAL_BM ("calloc failed for %u browsed values (%m)", browsernvsize_BM);
   //
   commandbuf_BM = gtk_text_buffer_new (commandtagtable_BM);
+  assert (GTK_IS_TEXT_BUFFER(commandbuf_BM));
+  for (int depth = 0; depth < CMD_MAXNEST_BM; depth++)
+    {
+      char opennamebuf[24];
+      snprintf (opennamebuf, sizeof (opennamebuf), "open%d_cmdtag", depth);
+      open_cmdtags_BM[depth] =  //
+        gtk_text_buffer_create_tag (commandbuf_BM, opennamebuf, NULL);
+      char closenamebuf[24];
+      snprintf (closenamebuf, sizeof (closenamebuf), "close%d_cmdtag", depth);
+      close_cmdtags_BM[depth] = //
+        gtk_text_buffer_create_tag (commandbuf_BM, closenamebuf, NULL);
+      char xtranamebuf[24];
+      snprintf (xtranamebuf, sizeof (xtranamebuf), "xtra%d_cmdtag", depth);
+      xtra_cmdtags_BM[depth] =  //
+        gtk_text_buffer_create_tag (commandbuf_BM, xtranamebuf, NULL);
+    };
   commandview_BM = gtk_text_view_new_with_buffer (commandbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (commandview_BM), true);
   gtk_widget_set_tooltip_markup
