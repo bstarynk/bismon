@@ -615,4 +615,8 @@ extern void browse_object_gui_BM (const objectval_tyBM * objbrows,
                                   const objectval_tyBM * objsel,
                                   int browsdepth,
                                   struct stackframe_stBM *stkf);
+extern void browse_value_BM (const value_tyBM val,
+                             struct stackframe_stBM *stkf,
+                             int maxdepth, int curdepth);
+
 #endif /*FUNDECL_BM_INCLUDED */

@@ -35,6 +35,9 @@ struct browsedobj_stBM
   GtkTextMark *brow_ostartm;
   GtkTextMark *brow_oendm;
   int brow_depth;
+  unsigned brow_parensize;      /* allocated size of brow_parenarr */
+  unsigned brow_parenulen;      /* used length of brow_parenarr */
+  struct parenoffset_stBM *brow_parenarr;
 };
 struct browsedobj_stBM *browsedobj_BM;
 
@@ -180,6 +183,60 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
   browserobcurix_BM = 0;
   browserit_BM = it;
 }                               /* end start_browse_object_BM */
+
+
+static void browse_object_add_parens_BM (int openoff, int closeoff,
+                                         int xtraoff, unsigned openlen,
+                                         unsigned closelen, unsigned xtralen,
+                                         int depth);
+
+static int browse_object_start_offset_BM (void);
+
+int
+browse_object_start_offset_BM (void)
+{
+  assert (browserobcurix_BM >= 0
+          && browserobcurix_BM < (int) browserobulen_BM);
+  GtkTextIter it;
+  gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                    &it,
+                                    browsedobj_BM
+                                    [browserobcurix_BM].brow_ostartm);
+  return gtk_text_iter_get_offset (&it);
+}                               /* end browse_object_start_offset_BM */
+
+void
+browse_object_add_parens_BM (int openoff, int closeoff, int xtraoff,
+                             unsigned openlen, unsigned closelen,
+                             unsigned xtralen, int depth)
+{
+  assert (browserobcurix_BM >= 0
+          && browserobcurix_BM < (int) browserobulen_BM);
+  struct browsedobj_stBM *curbrob = browsedobj_BM + browserobcurix_BM;
+  unsigned oldulen = curbrob->brow_parenulen;
+  if (oldulen + 1 >= curbrob->brow_parensize)
+    {
+      unsigned newsiz = prime_above_BM (5 * oldulen / 4 + 7);
+      struct parenoffset_stBM *newarr =
+        calloc (newsiz, sizeof (struct parenoffset_stBM));
+      if (!newarr)
+        FATAL_BM ("calloc failed for %u parens (%m)", newsiz);
+      if (oldulen > 0)
+        memcpy (newarr, curbrob->brow_parenarr,
+                oldulen * sizeof (struct parenoffset_stBM));
+      free (curbrob->brow_parenarr), curbrob->brow_parenarr = newarr;
+      curbrob->brow_parensize = newsiz;
+    }
+  struct parenoffset_stBM *curpar = curbrob->brow_parenarr + oldulen;
+  curpar->paroff_open = openoff;
+  curpar->paroff_close = closeoff;
+  curpar->paroff_xtra = xtraoff;
+  curpar->paroff_openlen = openlen;
+  curpar->paroff_closelen = closelen;
+  curpar->paroff_xtralen = xtralen;
+  curpar->paroff_depth = depth;
+  curbrob->brow_parenulen = oldulen + 1;
+}                               /* end browse_object_add_parens_BM */
 
 
 void
@@ -867,6 +924,8 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
     );
   _.objbrows = (const objectval_tyBM *) arg1;
   int depth = getint_BM (arg2);
+  // should show the mtime, the attrs, the comps, then send browse_data
+#warning method to browse_in_object for objects is incomplete
 }                               /* end  ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d) */
 
 
@@ -919,6 +978,23 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
 }                               /* end  ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe) */
 
 
+void
+browse_value_BM (const value_tyBM val, struct stackframe_stBM *stkf,
+                 int maxdepth, int curdepth)
+{
+  if (!val)
+    gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                      "__", 2, nest_brotag_BM, NULL);
+  else
+    {
+      LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL, value_tyBM val);
+      _.val = val;
+      send2_BM ((const value_tyBM) _.val, BMP_browse_value,
+                (struct stackframe_stBM *) &_,
+                taggedint_BM (maxdepth), taggedint_BM (curdepth));
+    }
+}                               /* end browse_value_BM */
+
 
 /// method to browse_value for tuple-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt);
@@ -944,7 +1020,9 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    //
   _.tupbrows = (const tupleval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
+  int oboff = browse_object_start_offset_BM ();
   assert (curdepth <= maxdepth);
+  int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "[", -1, nest_brotag_BM, NULL);
   unsigned tupsiz = tuplesize_BM (_.tupbrows);
@@ -955,9 +1033,9 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    //
           _.objbrows = tuplecompnth_BM (_.tupbrows, tix);
           if (tix > 0)
             browsespacefordepth_BM (curdepth + 1);
-          send2_BM ((const value_tyBM) _.objbrows, BMP_browse_value,
-                    (struct stackframe_stBM *) &_,
-                    taggedint_BM (maxdepth), taggedint_BM (curdepth + 1));
+          browse_value_BM ((const value_tyBM) _.objbrows,
+                           (struct stackframe_stBM *) &_,
+                           (maxdepth), (curdepth + 1));
         }
     }
   else
@@ -971,7 +1049,8 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    //
     }
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "]", -1, nest_brotag_BM, NULL);
-#warning method to browse_value for tuple-s _0BAnB0xjs23_0WEOCOi5Nb dont handle nested brackets
+  int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
+  browse_object_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth);
 }                               /* end ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nb)  */
 
 
@@ -1004,6 +1083,8 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   assert (curdepth <= maxdepth);
+  int oboff = browse_object_start_offset_BM ();
+  int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "{", -1, nest_brotag_BM, NULL);
   if (curdepth < maxdepth)
@@ -1022,9 +1103,9 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
           _.objbrows = arr[eix];
           if (eix > 0)
             browsespacefordepth_BM (curdepth + 1);
-          send2_BM (_.objbrows, BMP_browse_value,
-                    (struct stackframe_stBM *) &_,
-                    taggedint_BM (maxdepth), taggedint_BM (curdepth + 1));
+          browse_value_BM ((const value_tyBM) _.objbrows,
+                           (struct stackframe_stBM *) &_,
+                           (maxdepth), (curdepth + 1));
         }
       if (arr != tinyarr)
         free (arr);
@@ -1038,9 +1119,10 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
       gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,   //
                                         msgbuf, -1, toodeep_brotag_BM, NULL);
     }
-#warning method to browse_value for set-s _3rne4qbpnV9_0pywzeJp3Qr dont handle nested braces
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "}", -1, nest_brotag_BM, NULL);
+  int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
+  browse_object_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth);
 }                               /* end ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)  */
 
 
@@ -1105,6 +1187,8 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
   const char *str = bytstring_BM (_.strbrows);
   if (l >= WANTEDLINEWIDTH_BM / 2)
     browsespacefordepth_BM (curdepth);
+  int oboff = browse_object_start_offset_BM ();
+  int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "\"", -1, stresc_brotag_BM, NULL);
   int ccnt = 0;
@@ -1202,6 +1286,8 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
     }                           /* end for pc */
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "\"", -1, stresc_brotag_BM, NULL);
+  int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
+  browse_object_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth);
   if (ccnt >= WANTEDLINEWIDTH_BM / 2)
     browsespacefordepth_BM (curdepth);
 }                               /* end ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud) */
@@ -1233,16 +1319,18 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   assert (curdepth <= maxdepth);
-  unsigned nw = nodewidth_BM (_.nodbrows);
-  _.connob = nodeconn_BM (_.nodbrows);
-  assert (isobject_BM (_.connob));
+  unsigned nw = nodewidth_BM ((const value_tyBM) _.nodbrows);
+  _.connob = nodeconn_BM ((const value_tyBM) _.nodbrows);
+  assert (isobject_BM ((const value_tyBM) _.connob));
+  int oboff = browse_object_start_offset_BM ();
+  int xtraoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "*", -1, nest_brotag_BM, NULL);
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, " ", 1);
-  send2_BM (_.connob, BMP_browse_value,
-            (struct stackframe_stBM *) &_,
-            taggedint_BM (maxdepth), taggedint_BM (curdepth + 1));
+  browse_value_BM ((const value_tyBM) _.connob,
+                   (struct stackframe_stBM *) &_, (maxdepth), (curdepth + 1));
   browsespacefordepth_BM (curdepth + 1);
+  int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "(", -1, nest_brotag_BM, NULL);
   if (curdepth < maxdepth)
@@ -1252,9 +1340,9 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
           _.curson = nodenthson_BM (_.nodbrows, six);
           if (six > 0)
             browsespacefordepth_BM (curdepth + 1);
-          send2_BM (_.curson, BMP_browse_value,
-                    (struct stackframe_stBM *) &_,
-                    taggedint_BM (maxdepth), taggedint_BM (curdepth + 1));
+          browse_value_BM ((const value_tyBM) _.curson,
+                           (struct stackframe_stBM *) &_,
+                           (maxdepth), (curdepth + 1));
         }
     }
   else
@@ -1268,7 +1356,8 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
     }
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     ")", -1, nest_brotag_BM, NULL);
-#warning method to browse_value for node-s _7fJKfG4SN0U_1QTu5J832xg dont handle nested parens
+  int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
+  browse_object_add_parens_BM (openoff, closeoff, xtraoff, 1, 1, 1, curdepth);
 }                               /* end ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg) */
 
 
@@ -1304,13 +1393,15 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
   unsigned cw = closurewidth_BM (_.clobrows);
   _.connob = closureconn_BM (_.clobrows);
   assert (isobject_BM (_.connob));
+  int oboff = browse_object_start_offset_BM ();
+  int xtraoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "%", -1, nest_brotag_BM, NULL);
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, " ", 1);
-  send2_BM (_.connob, BMP_browse_value,
-            (struct stackframe_stBM *) &_,
-            taggedint_BM (maxdepth), taggedint_BM (curdepth + 1));
+  browse_value_BM ((const value_tyBM) _.connob,
+                   (struct stackframe_stBM *) &_, (maxdepth), (curdepth + 1));
   browsespacefordepth_BM (curdepth + 1);
+  int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "(", -1, nest_brotag_BM, NULL);
   if (curdepth < maxdepth)
@@ -1320,9 +1411,9 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
           _.curson = closurenthson_BM (_.clobrows, cix);
           if (cix > 0)
             browsespacefordepth_BM (curdepth + 1);
-          send2_BM (_.curson, BMP_browse_value,
-                    (struct stackframe_stBM *) &_,
-                    taggedint_BM (maxdepth), taggedint_BM (curdepth + 1));
+          browse_value_BM ((const value_tyBM) _.curson,
+                           (struct stackframe_stBM *) &_,
+                           (maxdepth), (curdepth + 1));
         }
     }
   else
@@ -1336,5 +1427,6 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
     }
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     ")", -1, nest_brotag_BM, NULL);
-#warning method to browse_value for closure-s _7CohjJ9tkfZ_4UMAIZCgwac dont handle nested parens
+  int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
+  browse_object_add_parens_BM (openoff, closeoff, xtraoff, 1, 1, 1, curdepth);
 }                               /* end ROUTINEOBJNAME_BM ( _7CohjJ9tkfZ_4UMAIZCgwac) */
