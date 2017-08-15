@@ -175,6 +175,15 @@
                 <property name="foreground">orangered3</property>
             </object>
         </child>
+      <!-- miscomm_brotag for miscelannous comments -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">miscomm_brotag</property>
+                <property name="font">Arial Regular</property>
+                <property name="scale">0.90</property>
+                <property name="foreground">cadetblue</property>
+            </object>
+        </child>
 	
     </object>
     

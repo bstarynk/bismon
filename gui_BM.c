@@ -23,7 +23,7 @@ GtkTextTag *num_brotag_BM;
 GtkTextTag *toodeep_brotag_BM;
 GtkTextTag *str_brotag_BM;
 GtkTextTag *stresc_brotag_BM;
-
+GtkTextTag *miscomm_brotag_BM;
 
 /// the browsed objects
 unsigned browserobsize_BM;      /* allocated size */
@@ -741,6 +741,10 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (browsertagtable_BM, "stresc_brotag");
   if (!stresc_brotag_BM)
     FATAL_BM ("cannot find stresc_brotag_BM");
+  miscomm_brotag_BM =           //
+    gtk_text_tag_table_lookup (browsertagtable_BM, "miscomm_brotag");
+  if (!miscomm_brotag_BM)
+    FATAL_BM ("cannot find miscomm_brotag_BM");
   ////////////////
   errored_cmdtag_BM =           //
     gtk_text_tag_table_lookup (commandtagtable_BM, "errored_cmdtag");
@@ -921,12 +925,119 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   assert (istaggedint_BM (arg2));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * objbrows;
+                 const setval_tyBM * setattrs; const objectval_tyBM * curattr;
+                 value_tyBM curval;
     );
   _.objbrows = (const objectval_tyBM *) arg1;
   int depth = getint_BM (arg2);
-  // should show the mtime, the attrs, the comps, then send browse_data
-#warning method to browse_in_object for objects is incomplete
+  ///
+  //// show mtime & space
+  char mbuf[64];
+  double mtime = _.objbrows->ob_mtime;
+  snprintf (mbuf, sizeof (mbuf), "!@ %.2f ", mtime);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                    mbuf, -1, NULL);
+  double now = clocktime_BM (CLOCK_REALTIME);
+  time_t mtimt = (time_t) mtime;
+  struct tm mtimtm = { };
+  localtime_r (&mtimt, &mtimtm);
+  char commbuf[96];
+  memset (commbuf, 0, sizeof (commbuf));
+  char spabuf[16];
+  switch (_.objbrows->ob_space)
+    {
+    case TransientSp_BM:
+      strcpy (spabuf, "transient");
+      break;
+    case PredefSp_BM:
+      strcpy (spabuf, "predefined");
+      break;
+    case GlobalSp_BM:
+      strcpy (spabuf, "global");
+      break;
+    default:
+      snprintf (spabuf, sizeof (spabuf), "user#%d", _.objbrows->ob_space);
+      break;
+    };
+  memset (spabuf, 0, sizeof (spabuf));
+  if (mtime < now && mtime + 1.0e6 > now)       // a million second is about 11 days
+    strftime (mbuf, sizeof (mbuf), "%a %d, %T %Z", &mtimtm);
+  else if (mtime < now && mtime + 25e6 > now)   // 25 million seconds is less than 10 months
+    strftime (mbuf, sizeof (mbuf), "%a %d %b, %T %Z", &mtimtm);
+  else
+    strftime (mbuf, sizeof (mbuf), "%c %Z", &mtimtm);
+  snprintf (commbuf, sizeof (commbuf), "|%s %s|", mbuf, spabuf);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                    commbuf, -1, miscomm_brotag_BM, NULL);
+  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+  if (_.objbrows->ob_class)
+    {
+      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "!$ ", -1);
+      browse_value_BM ((const value_tyBM) _.objbrows->ob_class,
+                       (struct stackframe_stBM *) &_, 2, 0);
+      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+    };
+  ///
+  //// show attributes
+  _.setattrs = objsetattrs_BM (_.objbrows);
+  unsigned nbattrs = setcardinal_BM (_.setattrs);
+  snprintf (commbuf, sizeof (commbuf), "|%d attributes:|", nbattrs);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                    commbuf, -1, miscomm_brotag_BM, NULL);
+  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+  const objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+  const objectval_tyBM **arr =
+    (nbattrs < TINYSIZE_BM) ? tinyarr : calloc (nbattrs,
+                                                sizeof (const objectval_tyBM
+                                                        *));
+  if (!arr)
+    FATAL_BM ("failed to calloc arr for %d attrs", nbattrs);
+  for (unsigned ix = 0; ix < nbattrs; ix++)
+    arr[ix] = setelemnth_BM (_.setattrs, ix);
+  sortnamedobjarr_BM (arr, nbattrs);
+  for (unsigned aix = 0; aix < nbattrs; aix++)
+    {
+      _.curattr = arr[aix];
+      _.curval = objgetattr_BM (_.objbrows, _.curattr);
+      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "!: ", -1);
+      browse_value_BM ((const value_tyBM) _.curattr,
+                       (struct stackframe_stBM *) &_, 2, 0);
+      browsespacefordepth_BM (1);
+      browse_value_BM ((const value_tyBM) _.curval,
+                       (struct stackframe_stBM *) &_, depth, 1);
+      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+    };
+  if (arr != tinyarr)
+    free (arr), arr = NULL;
+  ///
+  //// show the components
+  unsigned nbcomps = objnbcomps_BM (_.objbrows);
+  snprintf (commbuf, sizeof (commbuf), "|%d components:|", nbcomps);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                    commbuf, -1, miscomm_brotag_BM, NULL);
+  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+  for (unsigned cix = 0; cix < nbcomps; cix++)
+    {
+      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "!& ", -1);
+      snprintf (commbuf, sizeof (commbuf), "|#%d:|", cix);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                        commbuf, -1, miscomm_brotag_BM, NULL);
+      _.curval = objgetcomp_BM (_.objbrows, cix);
+      browsespacefordepth_BM (1);
+      browse_value_BM ((const value_tyBM) _.curval,
+                       (struct stackframe_stBM *) &_, depth, 1);
+      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+    }
+  if (_.objbrows->ob_data)
+    {
+      send1_BM ((const value_tyBM) _.objbrows, BMP_browse_data,
+                (struct stackframe_stBM *) &_, taggedint_BM (depth));
+      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+    }
 }                               /* end  ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d) */
+
+
+
 
 
 /// method to browse_value for object-s
