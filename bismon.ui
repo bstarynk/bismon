@@ -68,13 +68,26 @@
                 <property name="justification">GTK_JUSTIFY_CENTER</property>
             </object>
         </child>
-      <!-- objtitle_brotag for the title of the entire page -->
+      <!-- objtitle_brotag for the title of a non-focused object -->
         <child type="tag">
             <object class='GtkTextTag'>
                 <property name="name">objtitle_brotag</property>
                 <property name="font">Arial Bold</property>
                 <property name="scale">1.29</property>
                 <property name="paragraph-background">lightcyan1</property>
+                <property name="pixels-above-lines">2</property>
+                <property name="pixels-below-lines">3</property>
+                <property name="foreground">deepskyblue4</property>
+                <property name="justification">GTK_JUSTIFY_CENTER</property>
+            </object>
+        </child>
+      <!-- focustitle_brotag for the title of the focused object -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">focustitle_brotag</property>
+                <property name="font">Carlito Bold</property>
+                <property name="scale">1.29</property>
+                <property name="paragraph-background">lightsalmon</property>
                 <property name="pixels-above-lines">2</property>
                 <property name="pixels-below-lines">3</property>
                 <property name="foreground">deepskyblue4</property>

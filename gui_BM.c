@@ -12,6 +12,7 @@ GtkTextIter browserit_BM;
 GtkTextMark *browserendtitlem_BM;
 GtkTextTag *pagetitle_brotag_BM;
 GtkTextTag *objtitle_brotag_BM;
+GtkTextTag *focustitle_brotag_BM;
 GtkTextTag *objcommtitle_brotag_BM;
 GtkTextTag *objnametitle_brotag_BM;
 GtkTextTag *objidtitle_brotag_BM;
@@ -256,6 +257,7 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
                  const objectval_tyBM * objbrows;
                  const objectval_tyBM * objsel;
     );
+  bool isfocused = (GLOBAL_BM (gui_focus_obj) == objbrows);
   _.objbrows = objbrows;
   _.objsel = objsel;
   start_browse_object_BM (objbrows, browsdepth);
@@ -263,7 +265,7 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
   gtk_text_buffer_insert_with_tags
     (browserbuf_BM, &browserit_BM,
      "\342\201\202 " /* U+2042 ASTERISM ⁂ */ , -1,
-     objtitle_brotag_BM, NULL);
+     isfocused ? focustitle_brotag_BM : objtitle_brotag_BM, NULL);
   char idbuf[32];
   memset (idbuf, 0, sizeof (idbuf));
   idtocbuf32_BM (objid_BM (objbrows), idbuf);
@@ -271,24 +273,30 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
     {
       gtk_text_buffer_insert_with_tags
         (browserbuf_BM, &browserit_BM,
-         nambrows, -1, objtitle_brotag_BM, objnametitle_brotag_BM, NULL);
+         nambrows, -1,
+         isfocused ? focustitle_brotag_BM : objtitle_brotag_BM,
+         objnametitle_brotag_BM, NULL);
       gtk_text_buffer_insert_with_tags
         (browserbuf_BM, &browserit_BM,
          " |=", -1, objtitle_brotag_BM, objcommtitle_brotag_BM, NULL);
       gtk_text_buffer_insert_with_tags
         (browserbuf_BM, &browserit_BM,
          idbuf, -1,
-         objtitle_brotag_BM,
+         isfocused ? focustitle_brotag_BM : objtitle_brotag_BM,
          objcommtitle_brotag_BM, objidtitle_brotag_BM, NULL);
       gtk_text_buffer_insert_with_tags
         (browserbuf_BM, &browserit_BM,
-         "|", -1, objtitle_brotag_BM, objcommtitle_brotag_BM, NULL);
+         "|", -1,
+         isfocused ? focustitle_brotag_BM : objtitle_brotag_BM,
+         objcommtitle_brotag_BM, NULL);
     }
   else
     {                           /// anonymous browsed object
       gtk_text_buffer_insert_with_tags
         (browserbuf_BM, &browserit_BM,
-         idbuf, -1, objtitle_brotag_BM, objidtitle_brotag_BM, NULL);
+         idbuf, -1,
+         isfocused ? focustitle_brotag_BM : objtitle_brotag_BM,
+         objidtitle_brotag_BM, NULL);
     };
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
   send1_BM ((const value_tyBM) objbrows, objsel,
@@ -714,6 +722,10 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (browsertagtable_BM, "objtitle_brotag");
   if (!objtitle_brotag_BM)
     FATAL_BM ("cannot find objtitle_brotag_BM");
+  focustitle_brotag_BM =        //
+    gtk_text_tag_table_lookup (browsertagtable_BM, "focustitle_brotag");
+  if (!focustitle_brotag_BM)
+    FATAL_BM ("cannot find focustitle_brotag_BM");
   objcommtitle_brotag_BM =      //
     gtk_text_tag_table_lookup (browsertagtable_BM, "objcommtitle_brotag");
   if (!objcommtitle_brotag_BM)
