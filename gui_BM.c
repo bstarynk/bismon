@@ -651,6 +651,7 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
     return;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct parser_stBM * pars;
+                 value_tyBM comp;
     );
   _.pars = pars;
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -666,6 +667,18 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
       if (parserendoffile_BM (pars))
         break;
       parstoken_tyBM tok = parsertokenget_BM (pars);
+      unsigned lineno = pars->pars_lineno;
+      unsigned colpos = pars->pars_colpos;
+      if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamand)
+        {
+          bool gotval = false;
+          _.comp = parsergetvalue_BM (pars,     //
+                                      (struct stackframe_stBM *) &_,    //
+                                      0, &gotval);
+          if (!gotval)
+            parsererrorprintf_BM (pars, lineno, colpos,
+                                  "missing value after !&");
+        }
 #warning parsercommandbuf_BM incomplete
     }
 }                               /* end parsercommandbuf_BM */
