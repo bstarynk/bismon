@@ -163,7 +163,7 @@ dump_run_todo_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
     {
       _.curclo = listfirst_BM (du->dump_todolist);
       listpopfirst_BM (du->dump_todolist);
-      if (isclosure_BM (_.curclo))
+      if (isclosure_BM ((const value_tyBM) _.curclo))
         {
           apply1_BM (_.curclo, (struct stackframe_stBM *) &_, du);
         }

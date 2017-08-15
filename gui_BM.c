@@ -649,6 +649,10 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 {
   if (!isparser_BM (pars))
     return;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 struct parser_stBM * pars;
+    );
+  _.pars = pars;
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsops && parsops->parsop_nobuild;
@@ -936,7 +940,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   double mtime = _.objbrows->ob_mtime;
   snprintf (mbuf, sizeof (mbuf), "!@ %.2f ", mtime);
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
-                                    mbuf, -1, NULL);
+                                    mbuf, -1, NULL, NULL);
   double now = clocktime_BM (CLOCK_REALTIME);
   time_t mtimt = (time_t) mtime;
   struct tm mtimtm = { };
@@ -986,10 +990,8 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
                                     commbuf, -1, miscomm_brotag_BM, NULL);
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
   const objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
-  const objectval_tyBM **arr =
-    (nbattrs < TINYSIZE_BM) ? tinyarr : calloc (nbattrs,
-                                                sizeof (const objectval_tyBM
-                                                        *));
+  const objectval_tyBM **arr = (nbattrs < TINYSIZE_BM) ? tinyarr        //
+    : calloc (prime_above_BM (nbattrs), sizeof (const objectval_tyBM *));
   if (!arr)
     FATAL_BM ("failed to calloc arr for %d attrs", nbattrs);
   for (unsigned ix = 0; ix < nbattrs; ix++)
@@ -1034,6 +1036,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
                 (struct stackframe_stBM *) &_, taggedint_BM (depth));
       gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
     }
+  return (const value_tyBM) _.objbrows;
 }                               /* end  ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d) */
 
 
@@ -1086,7 +1089,85 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
       gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,   //
                                         idbuf, -1, objid_brotag_BM, NULL);
     }
+  return (const value_tyBM) _.objbrows;
 }                               /* end  ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe) */
+
+
+/// method to browse_data for class-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * objbrows;
+                 const setval_tyBM * setsel;    //
+                 const objectval_tyBM * cursel;
+                 const objectval_tyBM * supercla;
+                 value_tyBM curval;
+    );
+  _.objbrows = (const objectval_tyBM *) arg1;
+  int depth = getint_BM (arg2);
+  assert (isobject_BM ((const value_tyBM) _.objbrows));
+  assert (objhasclassinfo_BM (_.objbrows));
+  _.setsel = objgetclassinfosetofselectors_BM (_.objbrows);
+  _.supercla = objgetclassinfosuperclass_BM (_.objbrows);
+  unsigned nbmeth = setcardinal_BM (_.setsel);
+  const objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+  const objectval_tyBM **arr = (nbmeth < TINYSIZE_BM) ? tinyarr //
+    : calloc (prime_above_BM (nbmeth), sizeof (const objectval_tyBM *));
+  if (!arr)
+    FATAL_BM ("failed to calloc arr for %d methods", nbmeth);
+  for (unsigned ix = 0; ix < nbmeth; ix++)
+    arr[ix] = setelemnth_BM (_.setsel, ix);
+  sortnamedobjarr_BM (arr, nbmeth);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                    "!~ class (~ ", -1, NULL, NULL);
+  if (_.supercla)
+    {
+      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                        "|superclass=|", -1,
+                                        miscomm_brotag_BM, NULL);
+      browse_value_BM ((const value_tyBM) _.supercla,
+                       (struct stackframe_stBM *) &_, 2, 0);
+    }
+  else
+    {
+      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                        "|nosuperclass|", -1,
+                                        miscomm_brotag_BM, NULL);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                        " __\n", -1, NULL, NULL);
+    }
+  for (unsigned ix = 0; ix < nbmeth; ix++)
+    {
+      _.cursel = arr[ix];
+      _.curval = (value_tyBM) objgetclassinfomethod_BM (_.objbrows, _.cursel);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                        "~: ", -1, NULL, NULL);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                        "|selector:|", -1,
+                                        miscomm_brotag_BM, NULL);
+      browse_value_BM ((const value_tyBM) _.cursel,
+                       (struct stackframe_stBM *) &_, 2, 1);
+      browsespacefordepth_BM (1);
+      browse_value_BM ((const value_tyBM) _.curval,
+                       (struct stackframe_stBM *) &_, depth, 1);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                        "\n", -1, NULL, NULL);
+    }
+  if (arr != tinyarr)
+    free (arr), arr = NULL;
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                    "~)\n", -1, NULL, NULL);
+  return (const value_tyBM) _.objbrows;
+}                               /* end ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA) */
 
 
 void
@@ -1162,6 +1243,7 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    //
                                     "]", -1, nest_brotag_BM, NULL);
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   browse_object_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth);
+  return (const value_tyBM) _.objbrows;
 }                               /* end ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nb)  */
 
 
@@ -1234,6 +1316,7 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
                                     "}", -1, nest_brotag_BM, NULL);
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   browse_object_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth);
+  return (const value_tyBM) _.objbrows;
 }                               /* end ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)  */
 
 
@@ -1265,6 +1348,7 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    //
   snprintf (ibuf, sizeof (ibuf), "%lld", (long long) i);
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     ibuf, -1, num_brotag_BM, NULL);
+  return (const value_tyBM) arg1;
 }                               /* end ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)  */
 
 
@@ -1401,6 +1485,7 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
   browse_object_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth);
   if (ccnt >= WANTEDLINEWIDTH_BM / 2)
     browsespacefordepth_BM (curdepth);
+  return (const value_tyBM) arg1;
 }                               /* end ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud) */
 
 
@@ -1448,7 +1533,7 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
     {
       for (unsigned six = 0; six < nw; six++)
         {
-          _.curson = nodenthson_BM (_.nodbrows, six);
+          _.curson = nodenthson_BM ((const value_tyBM) _.nodbrows, six);
           if (six > 0)
             browsespacefordepth_BM (curdepth + 1);
           browse_value_BM ((const value_tyBM) _.curson,
@@ -1469,6 +1554,7 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
                                     ")", -1, nest_brotag_BM, NULL);
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   browse_object_add_parens_BM (openoff, closeoff, xtraoff, 1, 1, 1, curdepth);
+  return (const value_tyBM) arg1;
 }                               /* end ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg) */
 
 
@@ -1501,9 +1587,9 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
   int curdepth = getint_BM (arg3);
   assert (curdepth <= maxdepth);
 
-  unsigned cw = closurewidth_BM (_.clobrows);
-  _.connob = closureconn_BM (_.clobrows);
-  assert (isobject_BM (_.connob));
+  unsigned cw = closurewidth_BM ((const value_tyBM) _.clobrows);
+  _.connob = closureconn_BM ((const value_tyBM) _.clobrows);
+  assert (isobject_BM ((const value_tyBM) _.connob));
   int oboff = browse_object_start_offset_BM ();
   int xtraoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
@@ -1519,7 +1605,7 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
     {
       for (unsigned cix = 0; cix < cw; cix++)
         {
-          _.curson = closurenthson_BM (_.clobrows, cix);
+          _.curson = closurenthson_BM ((const value_tyBM) _.clobrows, cix);
           if (cix > 0)
             browsespacefordepth_BM (curdepth + 1);
           browse_value_BM ((const value_tyBM) _.curson,
@@ -1540,4 +1626,5 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
                                     ")", -1, nest_brotag_BM, NULL);
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   browse_object_add_parens_BM (openoff, closeoff, xtraoff, 1, 1, 1, curdepth);
+  return (const value_tyBM) arg1;
 }                               /* end ROUTINEOBJNAME_BM ( _7CohjJ9tkfZ_4UMAIZCgwac) */

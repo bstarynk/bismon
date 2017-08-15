@@ -806,7 +806,7 @@ objclassinforemovemethod_BM (objectval_tyBM * obj,
 
 
 const closure_tyBM *
-valfindmethod_BM (const value_tyBM recv, objectval_tyBM * obselector)
+valfindmethod_BM (const value_tyBM recv, const objectval_tyBM * obselector)
 {
   if (!isobject_BM ((const value_tyBM) obselector))
     return NULL;
