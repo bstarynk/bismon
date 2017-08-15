@@ -434,7 +434,7 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
         strbufferprintf_BM (_.sbuf, "\t |nometh| __");
     }
   strbufferlessindent_BM (_.sbuf);
-  strbufferprintf_BM (_.sbuf, "\t~)");
+  strbufferappendcstr_BM (_.sbuf, "\n~)\n");
   return (value_tyBM) _.recv;
 }                               /* end ROUTINE _67IapmpeTLU_8MQKtlK8iAD */
 

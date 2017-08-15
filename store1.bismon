@@ -1,5 +1,5 @@
 // generated file store1.bismon
-// for 27 objects
+// for 28 objects
 // with 0 modules
 
 
@@ -190,6 +190,15 @@
 ~: _6rHCoR6adv5_9SKAahoKWPj |=browse_value|  % _0B1PYH9bN34_3RZdP24AVyt ()
 ~)
 !)_6TmLNh9vtVY_0pwkHRtJ44k
+
+
+
+!(_7kMNgL8eJ09_6aEpofzWJDP |=postpone_load_modification|
+!~ name (~ postpone_load_modification ~)
+!@ 1502787905.69
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "to postpone loading modification"
+!)_7kMNgL8eJ09_6aEpofzWJDP
 
 
 

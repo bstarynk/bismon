@@ -425,7 +425,7 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
   {
     const char *obnam = findobjectname_BM (curobj);
     if (obnam)
-      fprintf (spfil, " |=%s|\n" "!~ name (~ %s ~)\n", obnam, obnam);
+      fprintf (spfil, " |=%s|\n" "!~ name (~ %s\n~)\n", obnam, obnam);
     else
       fputc ('\n', spfil);
   }

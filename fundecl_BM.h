@@ -528,7 +528,7 @@ extern void parsergcdestroy_BM (struct garbcoll_stBM *gc,
                                 struct parser_stBM *pars);
 extern void parsergckeep_BM (struct garbcoll_stBM *gc,
                              struct parser_stBM *pars);
-extern bool parsernextline_BM (struct parser_stBM *pars);       // return false on EOL
+extern bool parsernextline_BM (struct parser_stBM *pars);       // return false on EOF
 extern objectval_tyBM *parsergetobject_BM
   (struct parser_stBM *pars,
    struct stackframe_stBM *stkf, int depth, bool * pgotobj);

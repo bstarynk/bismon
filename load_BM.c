@@ -127,6 +127,9 @@ load_initial_BM (const char *ldirpath)
       if (pa)
         ld->ld_storepatharr[ix] = pa;
     }
+  ld->ld_parsarr = calloc (maxnum + 2, sizeof (void *));
+  if (!ld->ld_parsarr)
+    FATAL_BM ("cannot calloc for %d parsers (%m)", maxnum);
   ld->ld_storepatharr[0] = todopath;
   ld->ld_dir = strdup (ldirpath);
   if (!ld->ld_dir)
@@ -393,6 +396,49 @@ load_modif_name_BM (struct loader_stBM *ld, int ix,
                           "expecting ~) ending !~name");
 }                               /* end load_modif_name_BM */
 
+
+static void
+load_postpone_modif_BM (struct loader_stBM *ld, int ix,
+                        struct stackframe_stBM *parstkfrm,
+                        struct parser_stBM *ldpars,
+                        objectval_tyBM * argcurldobj, const value_tyBM data)
+{
+
+  LOCALFRAME_BM (parstkfrm, NULL,       //
+                 struct parser_stBM *ldparser;  //
+                 objectval_tyBM * curldobj;     //
+                 value_tyBM datav;      //
+                 closure_tyBM * clos;
+    );
+  assert (ld && ld->ld_magic == LOADERMAGIC_BM);
+  assert (ix >= 0 && ix <= (int) ld->ld_maxnum);
+  assert (data != NULL);
+  unsigned lineno = parserlineno_BM (ldpars);
+  unsigned colpos = parsercolpos_BM (ldpars);
+  _.ldparser = ld;
+  _.curldobj = argcurldobj;
+  _.clos = makeclosurevar_BM (BMP_postpone_load_modification,   //_7kMNgL8eJ09_6aEpofzWJDP
+                              taggedint_BM (ix),
+                              taggedint_BM (lineno),
+                              taggedint_BM (colpos), argcurldobj, data, NULL);
+  load_addtodo_BM (_.clos);
+  for (;;)
+    {
+      parsernextline_BM (ldpars);
+      lineno = parserlineno_BM (ldpars);
+      colpos = parsercolpos_BM (ldpars);
+      if (parserendoffile_BM (ldpars))
+        parsererrorprintf_BM (ldpars, lineno, colpos,
+                              "end of file reached in modification");
+      if (ldpars->pars_linebuf[0] == '!' && ldpars->pars_linebuf[1] == ')')
+        parsererrorprintf_BM (ldpars, lineno, colpos,
+                              "end of object reached in modification");
+      if (ldpars->pars_linebuf[0] == '~' && ldpars->pars_linebuf[1] == ')')
+        break;
+    }
+}                               /* end load_postpone_modif_BM */
+
+
 static void
 load_second_pass_BM (struct loader_stBM *ld, int ix,
                      struct stackframe_stBM *parstkfrm)
@@ -417,6 +463,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
     );
   struct parser_stBM *ldpars = _.ldparser = makeparser_of_file_BM (fil);
   assert (ldpars != NULL);
+  ld->ld_parsarr[ix] = ldpars;
   ldpars->pars_path = ld->ld_storepatharr[ix];
   long nbdirectives = 0;
   for (;;)
@@ -577,11 +624,16 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           //
           else if (tokmodif.tok_kind == plex_NAMEDOBJ)
             {
-              /// some other predefined name
-              parsererrorprintf_BM (ldpars, lineno, colpos,
-                                    "unexpected predefined modification %s",
-                                    findobjectname_BM
-                                    (tokmodif.tok_namedobj));
+              load_postpone_modif_BM (ld, ix,
+                                      (struct stackframe_stBM *) (&_),
+                                      ldpars, _.curldobj,
+                                      tokmodif.tok_namedobj);
+            }
+          else if (tokmodif.tok_kind == plex_CNAME)
+            {
+              load_postpone_modif_BM (ld, ix,
+                                      (struct stackframe_stBM *) (&_),
+                                      ldpars, _.curldobj, tokmodif.tok_cname);
             }
           else
             parsererrorprintf_BM (ldpars, lineno, colpos,
@@ -650,4 +702,85 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       if (todocnt % 128 == 0)
         fullgarbagecollection_BM ((struct stackframe_stBM *) &_);
     }
+  // close all files
+  for (int ix = 0; ix <= (int) ld->ld_maxnum; ix++)
+    {
+      struct parser_stBM *curpars = ld->ld_parsarr[ix];
+      if (!curpars)
+        continue;
+      if (curpars->pars_file)
+        fclose (curpars->pars_file), curpars->pars_file = NULL;
+      if (curpars->pars_linebuf)
+        free (curpars->pars_linebuf), curpars->pars_linebuf = NULL;
+      curpars->pars_curbyte = NULL;
+      if (curpars->pars_memolines)
+        free (curpars->pars_memolines), curpars->pars_memolines = NULL;
+      curpars->pars_linesiz = curpars->pars_linelen = 0;
+      curpars->pars_memolcount = curpars->pars_memolsize = 0;
+      ld->ld_parsarr[ix] = NULL;
+    }
 }                               /* end doload_BM */
+
+
+//// for the closure postpone_load_modification 
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7kMNgL8eJ09_6aEpofzWJDP);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_7kMNgL8eJ09_6aEpofzWJDP)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1 __attribute__ ((unused)),
+const value_tyBM arg2 __attribute__ ((unused)),
+const value_tyBM arg3 __attribute__ ((unused)),
+const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (isclosure_BM (clos));
+  LOCALFRAME_BM (stkf, BMP_postpone_load_modification,  //
+                 objectval_tyBM * curldobj;
+                 value_tyBM data;
+    );
+  assert (closurewidth_BM (clos) >= 5);
+  assert (firstloader_BM != NULL);
+  // clos0 is ix
+  assert (istaggedint_BM (closurenthson_BM (clos, 0)));
+  unsigned ix = getint_BM (closurenthson_BM (clos, 0));
+  assert (ix >= 0 && ix < firstloader_BM->ld_maxnum);
+  // clos1 is lineno
+  assert (istaggedint_BM (closurenthson_BM (clos, 1)));
+  unsigned lineno = getint_BM (closurenthson_BM (clos, 1));
+  // clos2 is colpos
+  assert (istaggedint_BM (closurenthson_BM (clos, 2)));
+  unsigned colpos = getint_BM (closurenthson_BM (clos, 2));
+  // clos3 is curldobj
+  assert (isobject_BM (closurenthson_BM (clos, 3)));
+  _.curldobj = closurenthson_BM (clos, 3);
+  // clos4 is data (cname or named object)
+  _.data = closurenthson_BM (clos, 4);
+  struct parser_stBM *ldpars = firstloader_BM->ld_parsarr[ix];
+  assert (isparser_BM (ldpars));
+  if (isobject_BM (_.data))
+    {
+      char idbuf[32];
+      memset (idbuf, 0, sizeof (idbuf));
+      idtocbuf32_BM (objid_BM (_.data), idbuf);
+      char *n = findobjectname_BM (_.data);
+      if (n)
+        parsererrorprintf_BM (ldpars, lineno, colpos,
+                              "unimplemented named load modification %s (%s)",
+                              n, idbuf);
+      else
+        parsererrorprintf_BM (ldpars, lineno, colpos,
+                              "unimplemented anon load modification %s",
+                              idbuf);
+    }
+  else if (isstring_BM (_.data))
+    {
+      parsererrorprintf_BM (ldpars, lineno, colpos,
+                            "unimplemented string load modification %s",
+                            bytstring_BM (_.data));
+    }
+  else
+    parsererrorprintf_BM (ldpars, lineno, colpos,
+                          "unimplemented load modification");
+#warning postpone_load_modification unimplemented
+}                               // end ROUTINEOBJNAME_BM (_7kMNgL8eJ09_6aEpofzWJDP)  postpone_load_modification 

@@ -324,7 +324,8 @@ struct loader_stBM              // malloc-ed then free-d at load time
   struct listtop_stBM *ld_todolist;
   // in the store arrays below, index 0 is for the store_todo
   char **ld_storepatharr;       /* calloc-ed array of malloc-ed string paths */
-  long *ld_startoffarr;         /* calloc-ed array of offset of start */
+  struct parser_stBM **ld_parsarr;      /* calloc-ed array of parsers */
+  value_tyBM ld_data;           /* common data */
   char *ld_dir;                 /* malloc-ed directory path */
 };                              /* end struct loader_stBM */
 
