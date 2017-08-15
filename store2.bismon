@@ -68,7 +68,8 @@
 
 
 !(_4dGXIiALafP_2bxdkvN34Qa |=dumper_of_predefined|
-!~ name (~ dumper_of_predefined ~)
+!~ name (~ dumper_of_predefined
+~)
 !@ 1502085467.42
 !$_4tiUQqbr6oh_5gZVoUWsppH |=specially_dumpable|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -80,7 +81,8 @@
 
 
 !(_4tiUQqbr6oh_5gZVoUWsppH |=specially_dumpable|
-!~ name (~ specially_dumpable ~)
+!~ name (~ specially_dumpable
+~)
 !@ 1502035117.80
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -88,6 +90,7 @@
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
 ~: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|  % _6PmxiZR9WBe_13DwWExCALl ()
 ~)
+
 !)_4tiUQqbr6oh_5gZVoUWsppH
 
 
@@ -125,7 +128,8 @@
 
 
 !(_5XDRkXDAUAk_9AuvN0J1d53 |=dumper_of_globals|
-!~ name (~ dumper_of_globals ~)
+!~ name (~ dumper_of_globals
+~)
 !@ 1502265883.40
 !$_4tiUQqbr6oh_5gZVoUWsppH |=specially_dumpable|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
