@@ -915,6 +915,27 @@ again:
       {
       .tok_kind = plex_STRING,.tok_string = str};
     }
+  // special case for $<var> the dollar should be immediately followed
+  // by a letter
+  else if (restlin[0] == '$' && isalpha (restlin[1]))
+    {
+
+      pars->pars_curbyte += 1;
+      pars->pars_colpos += 1;
+      return (parstoken_tyBM)
+      {
+      .tok_kind = plex_DELIM,.tok_delim = delim_dollar};
+    }
+  // special case for $:<var> the colon should be immediately followed
+  // by a letter
+  else if (restlin[0] == '$' && restlin[1] == ':' && isalpha (restlin[2]))
+    {
+      pars->pars_curbyte += 2;
+      pars->pars_colpos += 2;
+      return (parstoken_tyBM)
+      {
+      .tok_kind = plex_DELIM,.tok_delim = delim_dollarcolon};
+    }
   char delimstr[16];
   memset (delimstr, 0, sizeof (delimstr));
   enum lexdelim_enBM curdelim = delim__NONE;
@@ -931,6 +952,15 @@ again:
   if (curdelim == delim__NONE)
     parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
                           "unexpected token %s", restlin);
+  else if (curdelim == delim_dollar)
+    parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+                          "dollar not immediately followed by letter %s",
+                          restlin);
+  else if (curdelim == delim_dollarcolon)
+    parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+                          "dollar-colon not immediately followed by letter %s",
+                          restlin);
+
   pars->pars_curbyte += strlen (delimstr);
   pars->pars_colpos += g_utf8_strlen (delimstr, -1);
   return (parstoken_tyBM)
