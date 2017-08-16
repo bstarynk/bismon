@@ -978,7 +978,7 @@ parsergetobject_BM (struct parser_stBM * pars,
     FATAL_BM ("bad parser");
   if (!pgotobj)
     FATAL_BM ("missing pgotobj");
-  LOCALFRAME_BM (prevstkf, NULL, objectval_tyBM * resobj);
+  LOCALFRAME_BM (prevstkf, NULL, const objectval_tyBM * resobj);
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsops && parsops->parsop_nobuild;
@@ -1004,8 +1004,9 @@ parsergetobject_BM (struct parser_stBM * pars,
           *pgotobj = true;
           return NULL;
         };
-      objectval_tyBM *obid = _.resobj   //
-        = nobuild ? NULL : (findobjofid_BM (tok.tok_id));
+      const objectval_tyBM *obid = _.resobj     //
+        = nobuild ? NULL : (const objectval_tyBM
+                            *) (findobjofid_BM (tok.tok_id));
       if (!obid && !nobuild)
         {
           char idbuf[32];
@@ -1015,7 +1016,40 @@ parsergetobject_BM (struct parser_stBM * pars,
                                 "unknown id %s", idbuf);
         };
       *pgotobj = true;
-      return obid;
+      return (objectval_tyBM *) obid;
+    }
+  // parse $:<var> object
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_dollarcolon)
+    {
+      if (!parsops || !parsops->parsop_expand_dollarobj_rout)
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "no expansion for $:<var> object");
+      const char *reslin = parserrestline_BM (pars);
+      unsigned varlineno = parserlineno_BM (pars);
+      unsigned varcolpos = parsercolpos_BM (pars);
+      parstoken_tyBM vartok = parsertokenget_BM (pars);
+      if (vartok.tok_kind == plex_NAMEDOBJ)
+        {
+          assert (varlineno == lineno);
+          _.resobj =            //
+            parsops->parsop_expand_dollarobj_rout
+            (pars, varcolpos, (const value_tyBM) vartok.tok_namedobj);
+        }
+      else if (vartok.tok_kind == plex_CNAME)
+        {
+          _.resobj =            //
+            parsops->parsop_expand_dollarobj_rout
+            (pars, varcolpos, (const value_tyBM) vartok.tok_cname);
+        }
+      else                      // could happen if $: is followed by word
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "bad $:<var> expansion for %s", reslin);
+      if (!nobuild && !isobject_BM ((const value_tyBM) _.resobj))
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "did not found $:<var> expansion for %s",
+                              reslin);
+      *pgotobj = true;
+      return (objectval_tyBM *) _.resobj;
     }
   // perhaps should be able to compute an object
 failure:
@@ -1303,6 +1337,78 @@ parsergetvalue_BM (struct parser_stBM * pars,
                           (const value_tyBM *) (_.contdvec->vec_data));
       else
         _.resval = NULL;
+      *pgotval = true;
+      return _.resval;
+    }
+  //
+  // parse $<var> value
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_dollar)
+    {
+      if (!parsops || !parsops->parsop_expand_dollarval_rout)
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "no expansion for $<var> object");
+      const char *reslin = parserrestline_BM (pars);
+      unsigned varlineno = parserlineno_BM (pars);
+      unsigned varcolpos = parsercolpos_BM (pars);
+      parstoken_tyBM vartok = parsertokenget_BM (pars);
+      if (vartok.tok_kind == plex_NAMEDOBJ)
+        {
+          assert (varlineno == lineno);
+          _.resval = (value_tyBM)
+            parsops->parsop_expand_dollarval_rout (pars, varcolpos,
+                                                   (const value_tyBM)
+                                                   vartok.tok_namedobj);
+        }
+      else if (vartok.tok_kind == plex_CNAME)
+        {
+          _.resval = (value_tyBM)
+            parsops->parsop_expand_dollarval_rout (pars, varcolpos,
+                                                   (const value_tyBM)
+                                                   vartok.tok_cname);
+        }
+      else                      // could happen if $ is followed by word
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "bad $<var> expansion for %s", reslin);
+      if (!nobuild && !isobject_BM ((const value_tyBM) _.resval))
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "did not found $<var> expansion for %s",
+                              reslin);
+      *pgotval = true;
+      return _.resval;
+
+    }
+  // parse $:<var> object
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_dollarcolon)
+    {
+      if (!parsops || !parsops->parsop_expand_dollarobj_rout)
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "no expansion for $:<var> object");
+      const char *reslin = parserrestline_BM (pars);
+      unsigned varlineno = parserlineno_BM (pars);
+      unsigned varcolpos = parsercolpos_BM (pars);
+      parstoken_tyBM vartok = parsertokenget_BM (pars);
+      if (vartok.tok_kind == plex_NAMEDOBJ)
+        {
+          assert (varlineno == lineno);
+          _.resval = (value_tyBM)
+            parsops->parsop_expand_dollarobj_rout (pars, varcolpos,
+                                                   (const value_tyBM)
+                                                   vartok.tok_namedobj);
+        }
+      else if (vartok.tok_kind == plex_CNAME)
+        {
+          _.resval = (value_tyBM)
+            parsops->parsop_expand_dollarobj_rout (pars, varcolpos,
+                                                   (const value_tyBM)
+                                                   vartok.tok_cname);
+        }
+      else                      // could happen if $: is followed by word
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "bad $:<var> expansion for %s", reslin);
+      if (!nobuild && !isobject_BM ((const value_tyBM) _.resval))
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "did not found $:<var> expansion for %s",
+                              reslin);
       *pgotval = true;
       return _.resval;
     }
