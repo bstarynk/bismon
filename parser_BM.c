@@ -1533,7 +1533,7 @@ value_tyBM
               if (parsops && parsops->parsop_decorate_nesting_rout)
                 parsops->parsop_decorate_nesting_rout
                   (pars, depth,
-                   delim_dollarleft, curlineno, curcolpos,
+                   delim_dollarleftparen, curlineno, curcolpos,
                    delim_rightparen, clolineno, clocolpos);
               if (!nobuild)
                 {

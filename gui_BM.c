@@ -27,7 +27,7 @@ GtkTextTag *stresc_brotag_BM;
 GtkTextTag *miscomm_brotag_BM;
 
 /// the browsed objects
-unsigned browserobsize_BM;      /* allocated size */
+unsigned browserobsize_BM;      /* allocated size of browsedobj_BM */
 unsigned browserobulen_BM;      /* used length */
 int browserobcurix_BM;          /* current index in browsedobj_BM */
 struct browsedobj_stBM
@@ -375,6 +375,8 @@ deletemainwin_BM (GtkWidget * widget __attribute__ ((unused)),
 static jmp_buf jmperrorcmd_BM;
 
 static parser_error_sigBM parserrorcmd_BM;
+static parser_expand_dollarval_sigBM parsdollarvalcmd_BM;
+static parser_expand_dollarobj_sigBM parsdollarobjcmd_BM;
 static parser_decorate_comment_sign_sigBM parscommentsigncmd_BM;
 static parser_decorate_comment_inside_sigBM parscommentinsidecmd_BM;
 static parser_decorate_delimiter_sigBM parsdelimcmd_BM;
@@ -388,6 +390,8 @@ const struct parserops_stBM parsop_command_build_BM = {
   .parsop_serial = 1,
   .parsop_nobuild = false,
   .parsop_error_rout = parserrorcmd_BM,
+  .parsop_expand_dollarobj_rout = parsdollarobjcmd_BM,
+  .parsop_expand_dollarval_rout = parsdollarvalcmd_BM,
   .parsop_decorate_comment_sign_rout = parscommentsigncmd_BM,
   .parsop_decorate_comment_inside_rout = parscommentinsidecmd_BM,
   .parsop_decorate_delimiter_rout = parsdelimcmd_BM,
@@ -403,6 +407,8 @@ const struct parserops_stBM parsop_command_nobuild_BM = {
   .parsop_serial = 2,
   .parsop_nobuild = true,
   .parsop_error_rout = parserrorcmd_BM,
+  .parsop_expand_dollarobj_rout = parsdollarobjcmd_BM,
+  .parsop_expand_dollarval_rout = parsdollarvalcmd_BM,
   .parsop_decorate_comment_sign_rout = parscommentsigncmd_BM,
   .parsop_decorate_comment_inside_rout = parscommentinsidecmd_BM,
   .parsop_decorate_delimiter_rout = parsdelimcmd_BM,
@@ -437,6 +443,19 @@ parserrorcmd_BM (struct parser_stBM *pars,
   longjmp (jmperrorcmd_BM, 1);
 }                               /* end parserrorcmd_BM */
 
+value_tyBM
+parsdollarvalcmd_BM (struct parser_stBM *pars, unsigned colpos,
+                     const value_tyBM varname)
+{
+  FATAL_BM ("unimplemented parsdollarvalcmd_BM");
+}                               /* end parsdollarvalcmd_BM */
+
+const objectval_tyBM *
+parsdollarobjcmd_BM (struct parser_stBM *pars, unsigned colpos,
+                     const value_tyBM varname)
+{
+  FATAL_BM ("unimplemented parsdollarobjcmd_BM");
+}                               /* end parsdollarobjcmd_BM */
 
 void
 parscommentinsidecmd_BM (struct parser_stBM *pars,
@@ -679,6 +698,9 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
       unsigned colpos = pars->pars_colpos;
       if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamand)
         {
+          if (!nobuild && GLOBAL_BM (gui_focus_obj) == NULL)
+            parsererrorprintf_BM (pars, lineno, colpos,
+                                  "missing focus for !&");
           bool gotval = false;
           _.comp = parsergetvalue_BM (pars,     //
                                       (struct stackframe_stBM *) &_,    //
@@ -686,6 +708,9 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
           if (!gotval)
             parsererrorprintf_BM (pars, lineno, colpos,
                                   "missing value after !&");
+          if (!nobuild)
+            {
+            }
         }
 #warning parsercommandbuf_BM incomplete
     }

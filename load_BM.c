@@ -405,17 +405,19 @@ load_postpone_modif_BM (struct loader_stBM *ld, int ix,
 {
 
   LOCALFRAME_BM (parstkfrm, NULL,       //
+                 struct loader_stBM *ld;
                  struct parser_stBM *ldparser;  //
                  objectval_tyBM * curldobj;     //
                  value_tyBM datav;      //
-                 closure_tyBM * clos;
+                 const closure_tyBM * clos;
     );
   assert (ld && ld->ld_magic == LOADERMAGIC_BM);
   assert (ix >= 0 && ix <= (int) ld->ld_maxnum);
   assert (data != NULL);
   unsigned lineno = parserlineno_BM (ldpars);
   unsigned colpos = parsercolpos_BM (ldpars);
-  _.ldparser = ld;
+  _.ld = ld;
+  _.ldparser = ld->ld_parsarr[ix];
   _.curldobj = argcurldobj;
   _.clos = makeclosurevar_BM (BMP_postpone_load_modification,   //_7kMNgL8eJ09_6aEpofzWJDP
                               taggedint_BM (ix),
@@ -633,7 +635,8 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
             {
               load_postpone_modif_BM (ld, ix,
                                       (struct stackframe_stBM *) (&_),
-                                      ldpars, _.curldobj, tokmodif.tok_cname);
+                                      ldpars, _.curldobj,
+                                      (const value_tyBM) tokmodif.tok_cname);
             }
           else
             parsererrorprintf_BM (ldpars, lineno, colpos,
@@ -734,28 +737,28 @@ const value_tyBM arg2 __attribute__ ((unused)),
 const value_tyBM arg3 __attribute__ ((unused)),
 const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
-  assert (isclosure_BM (clos));
+  assert (isclosure_BM ((const value_tyBM) clos));
   LOCALFRAME_BM (stkf, BMP_postpone_load_modification,  //
                  objectval_tyBM * curldobj;
                  value_tyBM data;
     );
-  assert (closurewidth_BM (clos) >= 5);
+  assert (closurewidth_BM ((value_tyBM) clos) >= 5);
   assert (firstloader_BM != NULL);
   // clos0 is ix
-  assert (istaggedint_BM (closurenthson_BM (clos, 0)));
-  unsigned ix = getint_BM (closurenthson_BM (clos, 0));
-  assert (ix >= 0 && ix < firstloader_BM->ld_maxnum);
+  assert (istaggedint_BM (closurenthson_BM ((const value_tyBM) clos, 0)));
+  unsigned ix = getint_BM (closurenthson_BM ((const value_tyBM) clos, 0));
+  assert (ix < firstloader_BM->ld_maxnum);
   // clos1 is lineno
-  assert (istaggedint_BM (closurenthson_BM (clos, 1)));
-  unsigned lineno = getint_BM (closurenthson_BM (clos, 1));
+  assert (istaggedint_BM (closurenthson_BM ((const value_tyBM) clos, 1)));
+  unsigned lineno = getint_BM (closurenthson_BM ((const value_tyBM) clos, 1));
   // clos2 is colpos
-  assert (istaggedint_BM (closurenthson_BM (clos, 2)));
-  unsigned colpos = getint_BM (closurenthson_BM (clos, 2));
+  assert (istaggedint_BM (closurenthson_BM ((const value_tyBM) clos, 2)));
+  unsigned colpos = getint_BM (closurenthson_BM ((const value_tyBM) clos, 2));
   // clos3 is curldobj
-  assert (isobject_BM (closurenthson_BM (clos, 3)));
-  _.curldobj = closurenthson_BM (clos, 3);
+  assert (isobject_BM (closurenthson_BM ((const value_tyBM) clos, 3)));
+  _.curldobj = closurenthson_BM ((const value_tyBM) clos, 3);
   // clos4 is data (cname or named object)
-  _.data = closurenthson_BM (clos, 4);
+  _.data = closurenthson_BM ((const value_tyBM) clos, 4);
   struct parser_stBM *ldpars = firstloader_BM->ld_parsarr[ix];
   assert (isparser_BM (ldpars));
   if (isobject_BM (_.data))
@@ -763,7 +766,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
       char idbuf[32];
       memset (idbuf, 0, sizeof (idbuf));
       idtocbuf32_BM (objid_BM (_.data), idbuf);
-      char *n = findobjectname_BM (_.data);
+      const char *n = findobjectname_BM ((const objectval_tyBM *) _.data);
       if (n)
         parsererrorprintf_BM (ldpars, lineno, colpos,
                               "unimplemented named load modification %s (%s)",

@@ -378,6 +378,12 @@ struct parstoken_stBM
 typedef struct parstoken_stBM parstoken_tyBM;
 
 struct parser_stBM;
+// expand the $<var>, varname is the tok_cname or tok_namedobj
+typedef value_tyBM parser_expand_dollarval_sigBM
+  (struct parser_stBM *pars, unsigned colpos, const value_tyBM varname);
+// expand the $:<var>, varname is the tok_cname or tok_namedobj
+typedef const objectval_tyBM *parser_expand_dollarobj_sigBM
+  (struct parser_stBM *pars, unsigned colpos, const value_tyBM varname);
 // decorate the comment signs
 typedef void parser_decorate_comment_sign_sigBM
   (struct parser_stBM *pars, unsigned colpos, unsigned signlen);
@@ -436,6 +442,10 @@ struct parserops_stBM
   const bool parsop_nobuild;    /* if set, don't build any value */
   // error processing
   parser_error_sigBM *parsop_error_rout;
+  // expansion of $<var> for values
+  parser_expand_dollarval_sigBM *parsop_expand_dollarval_rout;
+  // expansion of $:<var> for object
+  parser_expand_dollarobj_sigBM *parsop_expand_dollarobj_rout;
   // decoration of comments
   parser_decorate_comment_sign_sigBM *parsop_decorate_comment_sign_rout;
   parser_decorate_comment_inside_sigBM *parsop_decorate_comment_inside_rout;
