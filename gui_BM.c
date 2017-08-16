@@ -377,6 +377,8 @@ static jmp_buf jmperrorcmd_BM;
 static parser_error_sigBM parserrorcmd_BM;
 static parser_expand_dollarval_sigBM parsdollarvalcmd_BM;
 static parser_expand_dollarobj_sigBM parsdollarobjcmd_BM;
+static parser_expand_valexp_sigBM parsvalexpcmd_BM;
+static parser_expand_objexp_sigBM parsobjexpcmd_BM;
 static parser_decorate_comment_sign_sigBM parscommentsigncmd_BM;
 static parser_decorate_comment_inside_sigBM parscommentinsidecmd_BM;
 static parser_decorate_delimiter_sigBM parsdelimcmd_BM;
@@ -392,6 +394,8 @@ const struct parserops_stBM parsop_command_build_BM = {
   .parsop_error_rout = parserrorcmd_BM,
   .parsop_expand_dollarobj_rout = parsdollarobjcmd_BM,
   .parsop_expand_dollarval_rout = parsdollarvalcmd_BM,
+  .parsop_expand_valexp_rout = parsvalexpcmd_BM,
+  .parsop_expand_objexp_rout = parsobjexpcmd_BM,
   .parsop_decorate_comment_sign_rout = parscommentsigncmd_BM,
   .parsop_decorate_comment_inside_rout = parscommentinsidecmd_BM,
   .parsop_decorate_delimiter_rout = parsdelimcmd_BM,
@@ -409,6 +413,8 @@ const struct parserops_stBM parsop_command_nobuild_BM = {
   .parsop_error_rout = parserrorcmd_BM,
   .parsop_expand_dollarobj_rout = parsdollarobjcmd_BM,
   .parsop_expand_dollarval_rout = parsdollarvalcmd_BM,
+  .parsop_expand_valexp_rout = parsvalexpcmd_BM,
+  .parsop_expand_objexp_rout = parsobjexpcmd_BM,
   .parsop_decorate_comment_sign_rout = parscommentsigncmd_BM,
   .parsop_decorate_comment_inside_rout = parscommentinsidecmd_BM,
   .parsop_decorate_delimiter_rout = parsdelimcmd_BM,
@@ -447,6 +453,7 @@ value_tyBM
 parsdollarvalcmd_BM (struct parser_stBM *pars, unsigned colpos,
                      const value_tyBM varname)
 {
+#warning parsdollarvalcmd_BM unimplemente
   FATAL_BM ("unimplemented parsdollarvalcmd_BM");
 }                               /* end parsdollarvalcmd_BM */
 
@@ -454,8 +461,26 @@ const objectval_tyBM *
 parsdollarobjcmd_BM (struct parser_stBM *pars, unsigned colpos,
                      const value_tyBM varname)
 {
+#warning parsdollarobjcmd_BM unimplemented
   FATAL_BM ("unimplemented parsdollarobjcmd_BM");
 }                               /* end parsdollarobjcmd_BM */
+
+
+value_tyBM
+parsvalexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
+{
+#warning parsvalexpcmd_BM unimplemented
+  FATAL_BM ("unimplemented parsvalexpcmd_BM");
+}                               /* end parsvalexpcmd_BM */
+
+
+const objectval_tyBM *
+parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
+{
+#warning parsobjexpcmd_BM unimplemented
+  FATAL_BM ("unimplemented parsobjexpcmd_BM");
+}                               /* end parsobjexpcmd_BM */
+
 
 void
 parscommentinsidecmd_BM (struct parser_stBM *pars,

@@ -1051,7 +1051,27 @@ parsergetobject_BM (struct parser_stBM * pars,
       *pgotobj = true;
       return (objectval_tyBM *) _.resobj;
     }
-  // perhaps should be able to compute an object
+  // parse and expand $[ ... ]
+  else if (tok.tok_kind == plex_DELIM
+           && tok.tok_delim == delim_dollarleftbracket)
+    {
+      const char *reslin = parserrestline_BM (pars);
+      if (!parsops || !parsops->parsop_expand_objexp_rout)
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "no $[...] expansion for %s", reslin);
+      char resbuf[40];
+      memset (resbuf, 0, sizeof (resbuf));
+      strncpy (resbuf, reslin, sizeof (resbuf) - 1);
+      const char *end = NULL;
+      g_utf8_validate (resbuf, -1, &end);
+      *(char *) end = (char) 0;
+      _.resobj = parsops->parsop_expand_objexp_rout (pars, lineno, colpos);
+      if (!nobuild && !isobject_BM ((const value_tyBM) _.resobj))
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "failed $[...] expansion of %s", resbuf);
+      *pgotobj = true;
+      return (objectval_tyBM *) _.resobj;
+    }
 failure:
   parserseek_BM (pars, lineno, colpos);
   *pgotobj = false;
@@ -1411,6 +1431,51 @@ parsergetvalue_BM (struct parser_stBM * pars,
                               reslin);
       *pgotval = true;
       return _.resval;
+    }
+
+  // parse and expand $[ ... ]
+  else if (tok.tok_kind == plex_DELIM
+           && tok.tok_delim == delim_dollarleftbracket)
+    {
+      const char *reslin = parserrestline_BM (pars);
+      if (!parsops || !parsops->parsop_expand_objexp_rout)
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "no $[...] expansion for %s", reslin);
+      char resbuf[40];
+      memset (resbuf, 0, sizeof (resbuf));
+      strncpy (resbuf, reslin, sizeof (resbuf) - 1);
+      const char *end = NULL;
+      g_utf8_validate (resbuf, -1, &end);
+      *(char *) end = (char) 0;
+      _.resval =
+        (const value_tyBM) parsops->parsop_expand_objexp_rout (pars, lineno,
+                                                               colpos);
+      if (!nobuild && !isobject_BM ((const value_tyBM) _.resval))
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "failed $[...] expansion of %s", resbuf);
+      *pgotval = true;
+      return (objectval_tyBM *) _.resval;
+    }
+  // parse and expand $( ... )
+  else if (tok.tok_kind == plex_DELIM
+           && tok.tok_delim == delim_dollarleftparen)
+    {
+      const char *reslin = parserrestline_BM (pars);
+      if (!parsops || !parsops->parsop_expand_valexp_rout)
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "no $(...) expansion for %s", reslin);
+      char resbuf[40];
+      memset (resbuf, 0, sizeof (resbuf));
+      strncpy (resbuf, reslin, sizeof (resbuf) - 1);
+      const char *end = NULL;
+      g_utf8_validate (resbuf, -1, &end);
+      *(char *) end = (char) 0;
+      _.resval = parsops->parsop_expand_valexp_rout (pars, lineno, colpos);
+      if (!nobuild && !isobject_BM ((const value_tyBM) _.resval))
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "failed $(...) expansion of %s", resbuf);
+      *pgotval = true;
+      return (objectval_tyBM *) _.resval;
     }
   //////
 failure:

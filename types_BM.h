@@ -384,6 +384,12 @@ typedef value_tyBM parser_expand_dollarval_sigBM
 // expand the $:<var>, varname is the tok_cname or tok_namedobj
 typedef const objectval_tyBM *parser_expand_dollarobj_sigBM
   (struct parser_stBM *pars, unsigned colpos, const value_tyBM varname);
+// parse then expand $( .... ) value expression
+typedef value_tyBM parser_expand_valexp_sigBM
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos);
+// parse then expand $[ .... ] object expression
+typedef const objectval_tyBM *parser_expand_objexp_sigBM
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos);
 // decorate the comment signs
 typedef void parser_decorate_comment_sign_sigBM
   (struct parser_stBM *pars, unsigned colpos, unsigned signlen);
@@ -446,6 +452,10 @@ struct parserops_stBM
   parser_expand_dollarval_sigBM *parsop_expand_dollarval_rout;
   // expansion of $:<var> for object
   parser_expand_dollarobj_sigBM *parsop_expand_dollarobj_rout;
+  // parse then expand $(...) value expression
+  parser_expand_valexp_sigBM *parsop_expand_valexp_rout;
+  // parse then expand $[...] object expression
+  parser_expand_objexp_sigBM *parsop_expand_objexp_rout;
   // decoration of comments
   parser_decorate_comment_sign_sigBM *parsop_decorate_comment_sign_rout;
   parser_decorate_comment_inside_sigBM *parsop_decorate_comment_inside_rout;
