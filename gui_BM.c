@@ -459,13 +459,27 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
 }                               /* end browse_object_gui_BM */
 
 
-
 void
 browse_named_value_gui_BM (const stringval_tyBM * namev,
-                           const value_tyBM val,
+                           const value_tyBM * val,
+                           const objectval_tyBM * objsel,
                            int browsdepth, struct stackframe_stBM *stkf)
 {
-  assert (isstring_BM (namev));
+  if (!isstring_BM ((const value_tyBM) namev))
+    return;
+  if (!isobject_BM ((const value_tyBM) objsel))
+    return;
+  if (browsdepth < 2)
+    browsdepth = 2;
+  else if (browsdepth > BROWSE_MAXDEPTH_BM)
+    browsdepth = BROWSE_MAXDEPTH_BM;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const stringval_tyBM * namev; value_tyBM val;
+                 const objectval_tyBM * objsel;
+    );
+  _.namev = namev;
+  _.val = val;
+  _.objsel = objsel;
 #warning incomplete browse_named_value_gui_BM
 }                               /* end browse_named_value_gui_BM */
 
