@@ -460,6 +460,15 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
 
 
 
+void
+browse_named_value_gui_BM (const stringval_tyBM * namev,
+                           const value_tyBM val,
+                           int browsdepth, struct stackframe_stBM *stkf)
+{
+  assert (isstring_BM (namev));
+#warning incomplete browse_named_value_gui_BM
+}                               /* end browse_named_value_gui_BM */
+
 void quit_BM (void);
 void
 quit_BM (void)
