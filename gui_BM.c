@@ -332,6 +332,7 @@ browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
               && browsednvcurix_BM < (int) browsednvulen_BM));
   if (browserobcurix_BM >= 0)
     {
+      assert (browsednvcurix_BM < 0);
       struct browsedobj_stBM *curbrob = browsedobj_BM + browserobcurix_BM;
       unsigned oldulen = curbrob->brow_parenulen;
       if (oldulen + 1 >= curbrob->brow_parensize)
@@ -359,6 +360,7 @@ browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
     }
   else if (browsednvcurix_BM >= 0)
     {
+      assert (browserobcurix_BM < 0);
       struct browsedval_stBM *curbrval = browsedval_BM + browsednvcurix_BM;
       unsigned oldulen = curbrval->brow_parenulen;
       if (oldulen + 1 >= curbrval->brow_parenulen)
