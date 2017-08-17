@@ -12,6 +12,7 @@ GtkTextIter browserit_BM;
 GtkTextMark *browserendtitlem_BM;
 GtkTextTag *pagetitle_brotag_BM;
 GtkTextTag *objtitle_brotag_BM;
+GtkTextTag *valtitle_brotag_BM;
 GtkTextTag *focustitle_brotag_BM;
 GtkTextTag *objcommtitle_brotag_BM;
 GtkTextTag *objnametitle_brotag_BM;
@@ -92,10 +93,10 @@ static void start_browse_named_value_BM (const stringval_tyBM * namev,
                                          const value_tyBM val, int depth);
 
 
-static void browse_object_add_parens_BM (int openoff, int closeoff,
-                                         int xtraoff, unsigned openlen,
-                                         unsigned closelen, unsigned xtralen,
-                                         int depth);
+static void browse_add_parens_BM (int openoff, int closeoff,
+                                  int xtraoff, unsigned openlen,
+                                  unsigned closelen, unsigned xtralen,
+                                  int depth);
 
 static int browse_object_start_offset_BM (void);
 
@@ -114,6 +115,7 @@ void
 start_browse_object_BM (const objectval_tyBM * obj, int depth)
 {
   assert (isobject_BM ((const value_tyBM) obj));
+  browsednvcurix_BM = -1;
   if (browserobulen_BM + 1 >= browserobsize_BM)
     {
       unsigned newsiz = prime_above_BM (4 * browserobulen_BM / 3 + 10);
@@ -204,6 +206,7 @@ void
 start_browse_named_value_BM (const stringval_tyBM * namev,
                              const value_tyBM val, int depth)
 {
+  browserobcurix_BM = -1;
   assert (isstring_BM ((const value_tyBM) namev));
   assert (val != NULL);
   assert (depth >= 0);
@@ -317,38 +320,73 @@ browse_object_start_offset_BM (void)
   return gtk_text_iter_get_offset (&it);
 }                               /* end browse_object_start_offset_BM */
 
+
 void
-browse_object_add_parens_BM (int openoff, int closeoff, int xtraoff,
-                             unsigned openlen, unsigned closelen,
-                             unsigned xtralen, int depth)
+browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
+                      unsigned openlen, unsigned closelen,
+                      unsigned xtralen, int depth)
 {
-  assert (browserobcurix_BM >= 0
-          && browserobcurix_BM < (int) browserobulen_BM);
-  struct browsedobj_stBM *curbrob = browsedobj_BM + browserobcurix_BM;
-  unsigned oldulen = curbrob->brow_parenulen;
-  if (oldulen + 1 >= curbrob->brow_parensize)
+  assert ((browserobcurix_BM >= 0
+           && browserobcurix_BM < (int) browserobulen_BM)
+          || (browsednvcurix_BM >= 0
+              && browsednvcurix_BM < (int) browsednvulen_BM));
+  if (browserobcurix_BM >= 0)
     {
-      unsigned newsiz = prime_above_BM (5 * oldulen / 4 + 7);
-      struct parenoffset_stBM *newarr =
-        calloc (newsiz, sizeof (struct parenoffset_stBM));
-      if (!newarr)
-        FATAL_BM ("calloc failed for %u parens (%m)", newsiz);
-      if (oldulen > 0)
-        memcpy (newarr, curbrob->brow_parenarr,
-                oldulen * sizeof (struct parenoffset_stBM));
-      free (curbrob->brow_parenarr), curbrob->brow_parenarr = newarr;
-      curbrob->brow_parensize = newsiz;
+      struct browsedobj_stBM *curbrob = browsedobj_BM + browserobcurix_BM;
+      unsigned oldulen = curbrob->brow_parenulen;
+      if (oldulen + 1 >= curbrob->brow_parensize)
+        {
+          unsigned newsiz = prime_above_BM (5 * oldulen / 4 + 7);
+          struct parenoffset_stBM *newarr =
+            calloc (newsiz, sizeof (struct parenoffset_stBM));
+          if (!newarr)
+            FATAL_BM ("calloc failed for %u parens (%m)", newsiz);
+          if (oldulen > 0)
+            memcpy (newarr, curbrob->brow_parenarr,
+                    oldulen * sizeof (struct parenoffset_stBM));
+          free (curbrob->brow_parenarr), curbrob->brow_parenarr = newarr;
+          curbrob->brow_parensize = newsiz;
+        }
+      struct parenoffset_stBM *curpar = curbrob->brow_parenarr + oldulen;
+      curpar->paroff_open = openoff;
+      curpar->paroff_close = closeoff;
+      curpar->paroff_xtra = xtraoff;
+      curpar->paroff_openlen = openlen;
+      curpar->paroff_closelen = closelen;
+      curpar->paroff_xtralen = xtralen;
+      curpar->paroff_depth = depth;
+      curbrob->brow_parenulen = oldulen + 1;
     }
-  struct parenoffset_stBM *curpar = curbrob->brow_parenarr + oldulen;
-  curpar->paroff_open = openoff;
-  curpar->paroff_close = closeoff;
-  curpar->paroff_xtra = xtraoff;
-  curpar->paroff_openlen = openlen;
-  curpar->paroff_closelen = closelen;
-  curpar->paroff_xtralen = xtralen;
-  curpar->paroff_depth = depth;
-  curbrob->brow_parenulen = oldulen + 1;
-}                               /* end browse_object_add_parens_BM */
+  else if (browsednvcurix_BM >= 0)
+    {
+      struct browsedval_stBM *curbrval = browsedval_BM + browsednvcurix_BM;
+      unsigned oldulen = curbrval->brow_parenulen;
+      if (oldulen + 1 >= curbrval->brow_parenulen)
+        {
+          unsigned newsiz = prime_above_BM (5 * oldulen / 4 + 7);
+          struct parenoffset_stBM *newarr =
+            calloc (newsiz, sizeof (struct parenoffset_stBM));
+          if (!newarr)
+            FATAL_BM ("calloc failed for %u parens (%m)", newsiz);
+          if (oldulen > 0)
+            memcpy (newarr, curbrval->brow_parenarr,
+                    oldulen * sizeof (struct parenoffset_stBM));
+          free (curbrval->brow_parenarr), curbrval->brow_parenarr = newarr;
+          curbrval->brow_parensize = newsiz;
+        }
+      struct parenoffset_stBM *curpar = curbrval->brow_parenarr + oldulen;
+      curpar->paroff_open = openoff;
+      curpar->paroff_close = closeoff;
+      curpar->paroff_xtra = xtraoff;
+      curpar->paroff_openlen = openlen;
+      curpar->paroff_closelen = closelen;
+      curpar->paroff_xtralen = xtralen;
+      curpar->paroff_depth = depth;
+      curbrval->brow_parenulen = oldulen + 1;
+    }
+  else
+    FATAL_BM ("no browsed object or named value");
+}                               /* end browse_add_parens_BM */
 
 
 void
@@ -883,6 +921,10 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (browsertagtable_BM, "objtitle_brotag");
   if (!objtitle_brotag_BM)
     FATAL_BM ("cannot find objtitle_brotag_BM");
+  valtitle_brotag_BM =          //
+    gtk_text_tag_table_lookup (browsertagtable_BM, "valtitle_brotag");
+  if (!valtitle_brotag_BM)
+    FATAL_BM ("cannot find valtitle_brotag_BM");
   focustitle_brotag_BM =        //
     gtk_text_tag_table_lookup (browsertagtable_BM, "focustitle_brotag");
   if (!focustitle_brotag_BM)
@@ -1428,7 +1470,7 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    //
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "]", -1, nest_brotag_BM, NULL);
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
-  browse_object_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth);
+  browse_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth);
   return (const value_tyBM) _.objbrows;
 }                               /* end ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nb)  */
 
@@ -1501,7 +1543,7 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "}", -1, nest_brotag_BM, NULL);
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
-  browse_object_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth);
+  browse_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth);
   return (const value_tyBM) _.objbrows;
 }                               /* end ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)  */
 
@@ -1668,7 +1710,7 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "\"", -1, stresc_brotag_BM, NULL);
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
-  browse_object_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth);
+  browse_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth);
   if (ccnt >= WANTEDLINEWIDTH_BM / 2)
     browsespacefordepth_BM (curdepth);
   return (const value_tyBM) arg1;
@@ -1739,7 +1781,7 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     ")", -1, nest_brotag_BM, NULL);
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
-  browse_object_add_parens_BM (openoff, closeoff, xtraoff, 1, 1, 1, curdepth);
+  browse_add_parens_BM (openoff, closeoff, xtraoff, 1, 1, 1, curdepth);
   return (const value_tyBM) arg1;
 }                               /* end ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg) */
 
@@ -1811,6 +1853,6 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     ")", -1, nest_brotag_BM, NULL);
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
-  browse_object_add_parens_BM (openoff, closeoff, xtraoff, 1, 1, 1, curdepth);
+  browse_add_parens_BM (openoff, closeoff, xtraoff, 1, 1, 1, curdepth);
   return (const value_tyBM) arg1;
 }                               /* end ROUTINEOBJNAME_BM ( _7CohjJ9tkfZ_4UMAIZCgwac) */
