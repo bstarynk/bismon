@@ -43,15 +43,19 @@ struct browsedobj_stBM
 struct browsedobj_stBM *browsedobj_BM;
 
 /// the browsed named values
-unsigned browsernvsize_BM;      /* allocated size */
-unsigned browsernvulen_BM;      /* unsigned length */
-int browsernvcurix_BM;
+unsigned browsednvsize_BM;      /* allocated size */
+unsigned browsednvulen_BM;      /* unsigned length */
+int browsednvcurix_BM;
 struct browsedval_stBM
 {
   const stringval_tyBM *brow_name;
-  const value_tyBM brow_val;
+  value_tyBM brow_val;
   GtkTextMark *brow_vstartm;
   GtkTextMark *brow_vendm;
+  int brow_depth;
+  unsigned brow_parensize;      /* allocated size of brow_parenarr */
+  unsigned brow_parenulen;      /* used length of brow_parenarr */
+  struct parenoffset_stBM *brow_parenarr;
 };
 struct browsedval_stBM *browsedval_BM;
 
@@ -83,6 +87,19 @@ GtkTextTag *xtra_cmdtags_BM[CMD_MAXNEST_BM];
 #define BROWSE_MAXDEPTH_BM 48
 
 static void start_browse_object_BM (const objectval_tyBM * obj, int depth);
+
+static void start_browse_named_value_BM (const stringval_tyBM * namev,
+                                         const value_tyBM val, int depth);
+
+
+static void browse_object_add_parens_BM (int openoff, int closeoff,
+                                         int xtraoff, unsigned openlen,
+                                         unsigned closelen, unsigned xtralen,
+                                         int depth);
+
+static int browse_object_start_offset_BM (void);
+
+
 
 const char *
 gobjectclassnamedbg_BM (GObject * ptr)
@@ -116,10 +133,8 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
       md = (lo + hi) / 2;
       const objectval_tyBM *mdobj = browsedobj_BM[md].brow_obj;
       assert (isobject_BM ((const value_tyBM) mdobj));
-      if (mdobj == obj)
-        break;
       int cmp = objectnamedcmp_BM (mdobj, obj);
-      if (cmp < 0)
+      if (cmp <= 0)
         lo = md;
       else
         hi = md;
@@ -150,10 +165,8 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
         {
           GtkTextIter it;
           if (md > 0)
-            gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                              &it,
-                                              browsedobj_BM[md -
-                                                            1].brow_oendm);
+            gtk_text_buffer_get_iter_at_mark    //
+              (browserbuf_BM, &it, browsedobj_BM[md - 1].brow_oendm);
           else
             gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                               &it, browserendtitlem_BM);
@@ -172,7 +185,7 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
         }
     };
   assert (browserobulen_BM == 0);
-  GtkTextIter it;
+  GtkTextIter it = { };
   gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &it, browserendtitlem_BM);
   browserobulen_BM = 1;
   browsedobj_BM[0].brow_obj = obj;
@@ -186,12 +199,110 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
 }                               /* end start_browse_object_BM */
 
 
-static void browse_object_add_parens_BM (int openoff, int closeoff,
-                                         int xtraoff, unsigned openlen,
-                                         unsigned closelen, unsigned xtralen,
-                                         int depth);
 
-static int browse_object_start_offset_BM (void);
+void
+start_browse_named_value_BM (const stringval_tyBM * namev,
+                             const value_tyBM val, int depth)
+{
+  assert (isstring_BM ((const value_tyBM) namev));
+  assert (val != NULL);
+  assert (depth >= 0);
+  if (browsednvulen_BM + 1 >= browsednvsize_BM)
+    {
+      unsigned newsiz = prime_above_BM (4 * browsednvulen_BM / 3 + 5);
+      struct browsedval_stBM *newarr =
+        calloc (newsiz, sizeof (struct browsedval_stBM));
+      if (!newarr)
+        FATAL_BM ("cannot allocated for %d browsed named values", newsiz);
+      if (browsednvulen_BM > 0)
+        memcpy (newarr, browsedval_BM,
+                browsednvulen_BM * sizeof (struct browsedval_stBM));
+      free (browsedval_BM), browsedval_BM = newarr;
+      browsednvsize_BM = newsiz;
+    }
+  unsigned lo = 0, hi = browsednvulen_BM, md = 0;
+  const char *namstr = bytstring_BM (namev);
+  while (lo + 8 < hi)
+    {
+      md = (lo + hi) / 2;
+      assert (isstring_BM ((const value_tyBM) browsedval_BM[md].brow_name));
+      int cmp = strcmp (namstr, bytstring_BM (browsedval_BM[md].brow_name));
+      if (cmp <= 0)
+        lo = md;
+      else
+        hi = md;
+    }
+  for (md = lo; md < hi; md++)
+    {
+      struct browsedval_stBM *mdval = browsedval_BM + md;
+      assert (isstring_BM ((const value_tyBM) mdval->brow_name));
+      int cmp = strcmp (namstr, bytstring_BM (mdval->brow_name));
+      if (cmp == 0)
+        {                       /* replace existing named value */
+          GtkTextIter startit = { };
+          GtkTextIter endit = { };
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                            &startit, mdval->brow_vstartm);
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                            &endit, mdval->brow_vendm);
+          gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
+          gtk_text_buffer_move_mark (browserbuf_BM, mdval->brow_vstartm,
+                                     &startit);
+          mdval->brow_depth = depth;
+          browserit_BM = startit;
+          browsednvcurix_BM = md;
+          return;
+        }
+      else if (cmp < 0)
+        {                       /* insert a new named value */
+          GtkTextIter it = { };
+          if (md > 0)
+            gtk_text_buffer_get_iter_at_mark    //
+              (browserbuf_BM, &it, mdval[-1].brow_vendm);
+          else if (browserobulen_BM > 0)
+            gtk_text_buffer_get_iter_at_mark    //
+              (browserbuf_BM, &it,
+               browsedobj_BM[browserobulen_BM - 1].brow_oendm);
+          else
+            gtk_text_buffer_get_iter_at_mark    //
+              (browserbuf_BM, &it, browserendtitlem_BM);
+          for (unsigned ix = browsednvulen_BM; ix > md; ix--)
+            browsedval_BM[ix] = browsedval_BM[ix - 1];
+          memset (mdval, 0, sizeof (*mdval));
+          mdval->brow_name = namev;
+          mdval->brow_val = val;
+          mdval->brow_depth = depth;
+          mdval->brow_vstartm = //
+            gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+          mdval->brow_vendm =   //
+            gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+          browserit_BM = it;
+          browsednvcurix_BM = md;
+          return;
+        };
+    };
+  assert (browsednvulen_BM == 0);
+  GtkTextIter it = { };
+  if (browserobulen_BM > 0)
+    gtk_text_buffer_get_iter_at_mark    //
+      (browserbuf_BM, &it, browsedobj_BM[browserobulen_BM - 1].brow_oendm);
+  else
+    gtk_text_buffer_get_iter_at_mark    //
+      (browserbuf_BM, &it, browserendtitlem_BM);
+  browsedval_BM[0].brow_name = namev;
+  browsedval_BM[0].brow_val = val;
+  browsedval_BM[0].brow_depth = depth;
+  browsedval_BM[0].brow_vstartm =       //
+    gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+  browsedval_BM[0].brow_vendm = //
+    gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+  browserit_BM = it;
+  browsednvcurix_BM = 0;
+  browsednvulen_BM = 1;
+  return;
+}                               /* end start_browse_named_value_BM */
+
+
 
 int
 browse_object_start_offset_BM (void)
@@ -453,7 +564,7 @@ value_tyBM
 parsdollarvalcmd_BM (struct parser_stBM *pars, unsigned colpos,
                      const value_tyBM varname)
 {
-#warning parsdollarvalcmd_BM unimplemente
+#warning parsdollarvalcmd_BM unimplemented
   FATAL_BM ("unimplemented parsdollarvalcmd_BM");
 }                               /* end parsdollarvalcmd_BM */
 
@@ -911,11 +1022,11 @@ initialize_gui_BM (const char *builderfile)
   browsedobj_BM = calloc (browserobsize_BM, sizeof (struct browsedobj_stBM));
   if (!browsedobj_BM)
     FATAL_BM ("calloc failed for %u browsed objects (%m)", browserobsize_BM);
-  browsernvsize_BM = 7;
-  browsernvulen_BM = 0;
-  browsedval_BM = calloc (browsernvsize_BM, sizeof (struct browsedval_stBM));
+  browsednvsize_BM = 7;
+  browsednvulen_BM = 0;
+  browsedval_BM = calloc (browsednvsize_BM, sizeof (struct browsedval_stBM));
   if (!browsedval_BM)
-    FATAL_BM ("calloc failed for %u browsed values (%m)", browsernvsize_BM);
+    FATAL_BM ("calloc failed for %u browsed values (%m)", browsednvsize_BM);
   //
   commandbuf_BM = gtk_text_buffer_new (commandtagtable_BM);
   assert (GTK_IS_TEXT_BUFFER (commandbuf_BM));
