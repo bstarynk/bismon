@@ -850,7 +850,7 @@ parsdollarobjcmd_BM (struct parser_stBM *pars, unsigned colpos,
   return (const objectval_tyBM *) val;
 }                               /* end parsdollarobjcmd_BM */
 
-
+// parse inside $(....)
 value_tyBM
 parsvalexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
 {
@@ -859,6 +859,7 @@ parsvalexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
 }                               /* end parsvalexpcmd_BM */
 
 
+// parse inside $[...]
 const objectval_tyBM *
 parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
 {
