@@ -627,6 +627,7 @@ extern void browse_named_value_gui_BM (const stringval_tyBM * namev,
                                        struct stackframe_stBM *stkf);
 extern void hide_named_value_gui_BM (const stringval_tyBM * namev,
                                      struct stackframe_stBM *stkf);
+extern value_tyBM find_named_value_gui_BM (const char *name);
 
 // internal, inside browsing methods
 extern void browse_value_BM (const value_tyBM val,

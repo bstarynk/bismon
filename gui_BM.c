@@ -78,6 +78,7 @@ GtkTextTag *delim_cmdtag_BM;
 GtkTextTag *knowname_cmdtag_BM;
 GtkTextTag *newname_cmdtag_BM;
 GtkTextTag *id_cmdtag_BM;
+GtkTextTag *dollar_cmdtag_BM;
 GtkTextTag *nesting_cmdtag_BM;
 
 #define CMD_MAXNEST_BM 64
@@ -372,6 +373,34 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
   browsednvulen_BM = 1;
   return;
 }                               /* end start_browse_named_value_BM */
+
+
+value_tyBM
+find_named_value_gui_BM (const char *namstr)
+{
+  if (!namstr || !validname_BM (namstr))
+    return NULL;
+  unsigned lo = 0, hi = browsednvulen_BM, md = 0;
+  while (lo + 8 < hi)
+    {
+      md = (lo + hi) / 2;
+      assert (isstring_BM ((const value_tyBM) browsedval_BM[md].brow_name));
+      int cmp = strcmp (namstr, bytstring_BM (browsedval_BM[md].brow_name));
+      if (cmp <= 0)
+        lo = md;
+      else
+        hi = md;
+    }
+  for (md = lo; md < hi; md++)
+    {
+      struct browsedval_stBM *mdval = browsedval_BM + md;
+      assert (isstring_BM ((const value_tyBM) mdval->brow_name));
+      int cmp = strcmp (namstr, bytstring_BM (mdval->brow_name));
+      if (cmp == 0)
+        return mdval->brow_val;
+    };
+  return NULL;
+}                               /* end find_named_value_gui_BM */
 
 void
 hide_named_value_gui_BM (const stringval_tyBM * namev,
@@ -764,20 +793,61 @@ parserrorcmd_BM (struct parser_stBM *pars,
   longjmp (jmperrorcmd_BM, 1);
 }                               /* end parserrorcmd_BM */
 
+
+
+// for $<var>
 value_tyBM
 parsdollarvalcmd_BM (struct parser_stBM *pars, unsigned colpos,
                      const value_tyBM varname)
 {
-#warning parsdollarvalcmd_BM unimplemented
-  FATAL_BM ("unimplemented parsdollarvalcmd_BM");
+  const char *varstr = NULL;
+  if (isstring_BM (varname))
+    varstr = bytstring_BM (varname);
+  else if (isobject_BM (varname))
+    varstr = findobjectname_BM (varname);
+  if (!varstr)
+    parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "invalid $<var>");
+  const value_tyBM val = find_named_value_gui_BM (varstr);
+  if (!val)
+    parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "not found $%s",
+                          varstr);
+  GtkTextIter it, endit;
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, pars->pars_lineno);
+  gtk_text_iter_forward_chars (&it, colpos);
+  endit = it;
+  gtk_text_iter_forward_chars (&endit, 1 + strlen (varstr));
+  gtk_text_buffer_apply_tag (commandbuf_BM, dollar_cmdtag_BM, &it, &endit);
+  return val;
 }                               /* end parsdollarvalcmd_BM */
 
+
+// for $:<var>
 const objectval_tyBM *
 parsdollarobjcmd_BM (struct parser_stBM *pars, unsigned colpos,
                      const value_tyBM varname)
 {
-#warning parsdollarobjcmd_BM unimplemented
-  FATAL_BM ("unimplemented parsdollarobjcmd_BM");
+
+  const char *varstr = NULL;
+  if (isstring_BM (varname))
+    varstr = bytstring_BM (varname);
+  else if (isobject_BM (varname))
+    varstr = findobjectname_BM (varname);
+  if (!varstr)
+    parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "invalid $:<var>");
+  const value_tyBM val = find_named_value_gui_BM (varstr);
+  if (!val)
+    parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "not found $:%s",
+                          varstr);
+  if (!isobject_BM (val))
+    parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "non-object $:%s",
+                          varstr);
+  GtkTextIter it, endit;
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, pars->pars_lineno);
+  gtk_text_iter_forward_chars (&it, colpos);
+  endit = it;
+  gtk_text_iter_forward_chars (&endit, 2 + strlen (varstr));
+  gtk_text_buffer_apply_tag (commandbuf_BM, dollar_cmdtag_BM, &it, &endit);
+  return (const objectval_tyBM *) val;
 }                               /* end parsdollarobjcmd_BM */
 
 
@@ -1172,6 +1242,10 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (commandtagtable_BM, "id_cmdtag");
   if (!id_cmdtag_BM)
     FATAL_BM ("cannot find id_cmdtag");
+  dollar_cmdtag_BM =            //
+    gtk_text_tag_table_lookup (commandtagtable_BM, "dollar_cmdtag");
+  if (!dollar_cmdtag_BM)
+    FATAL_BM ("cannot find dollar_cmdtag");
   nesting_cmdtag_BM =           //
     gtk_text_tag_table_lookup (commandtagtable_BM, "nesting_cmdtag");
   if (!nesting_cmdtag_BM)

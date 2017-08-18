@@ -262,6 +262,15 @@
 	      <property name='font'>Roboto Mono Bold</property>
             </object>
         </child>
+	<!-- dollar_cmdtag for $<var> & $:<var> -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">dollar_cmdtag</property>
+	      <property name='foreground'>saddlebrown</property>
+	      <property name='font'>Courier New Bold</property>
+            </object>
+        </child>
+	
       <!-- id_cmdtag for ids -->
         <child type="tag">
             <object class='GtkTextTag'>
