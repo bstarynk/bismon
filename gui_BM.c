@@ -869,8 +869,9 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
     return;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct parser_stBM * pars;
-                 value_tyBM comp; objectval_tyBM * obj;
-                 objectval_tyBM * obattr;
+                 value_tyBM comp;
+                 objectval_tyBM * obj; objectval_tyBM * obattr;
+                 objectval_tyBM * obclass;
     );
   _.pars = pars;
   _.obj = obj;
@@ -884,6 +885,7 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
   bool nobuild = parsops && parsops->parsop_nobuild;
   unsigned lineno = pars->pars_lineno;
   unsigned colpos = pars->pars_colpos;
+  // !& <comp>
   if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamand)
     {
       if (!nobuild && !isobject_BM (obj))
@@ -897,6 +899,7 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
       if (!nobuild)
         objappendcomp_BM (_.obj, _.comp);
     }
+  // !: <attr> <val>
   else if (ptok->tok_kind == plex_DELIM
            && ptok->tok_delim == delim_exclamcolon)
     {
@@ -917,6 +920,21 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
         parsererrorprintf_BM (pars, lineno, colpos, "missing value after !:");
       if (!nobuild)
         objputattr_BM (_.obj, _.obattr, _.comp);
+    }
+  // !$ <class>
+  else if (ptok->tok_kind == plex_DELIM
+           && ptok->tok_delim == delim_exclamdollar)
+    {
+      if (!nobuild && !isobject_BM (obj))
+        parsererrorprintf_BM (pars, lineno, colpos, "missing target for !$");
+      bool gotclass = false;
+      _.obclass = parsergetobject_BM (pars,     //
+                                      (struct stackframe_stBM *) &_,    //
+                                      0, &gotclass);
+      if (!gotclass)
+        parsererrorprintf_BM (pars, lineno, colpos, "missing class after !$");
+      if (!nobuild)
+        objputclass_BM (_.obj, _.obclass);
     }
 }                               /* end parseobjectcomplcmd_BM */
 
