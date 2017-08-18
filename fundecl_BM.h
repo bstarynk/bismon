@@ -616,13 +616,19 @@ extern void browse_object_gui_BM (const objectval_tyBM * objbrows,
                                   const objectval_tyBM * objsel,
                                   int browsdepth,
                                   struct stackframe_stBM *stkf);
+extern void hide_object_gui_BM (const objectval_tyBM * objbrows,
+                                struct stackframe_stBM *stkf);
+
 // browse the named value
 extern void browse_named_value_gui_BM (const stringval_tyBM * namev,
                                        const value_tyBM val,
                                        const objectval_tyBM * objsel,
                                        int browsdepth,
                                        struct stackframe_stBM *stkf);
+extern void hide_named_value_gui_BM (const stringval_tyBM * namev,
+                                     struct stackframe_stBM *stkf);
 
+// internal, inside browsing methods
 extern void browse_value_BM (const value_tyBM val,
                              struct stackframe_stBM *stkf,
                              int maxdepth, int curdepth);
