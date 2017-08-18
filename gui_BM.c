@@ -207,9 +207,17 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
                              const value_tyBM val, int depth)
 {
   browserobcurix_BM = -1;
-  assert (isstring_BM ((const value_tyBM) namev));
-  assert (val != NULL);
-  assert (depth >= 0);
+  if (!isstring_BM ((const value_tyBM) namev))
+    FATAL_BM ("no name to start_browse_named_value_BM");
+  if (!validname_BM (bytstring_BM ((const value_tyBM) namev)))
+    FATAL_BM ("invalid name '%s' to start_browse_named_value_BM",
+              bytstring_BM ((const value_tyBM) namev));
+  if (!val)
+    FATAL_BM ("name '%s' for nil value to start_browse_named_value_BM",
+              bytstring_BM ((const value_tyBM) namev));
+  if (depth < 0)
+    FATAL_BM ("name '%s' with bad depth %d to start_browse_named_value_BM",
+              bytstring_BM ((const value_tyBM) namev), depth);
   if (browsednvulen_BM + 1 >= browsednvsize_BM)
     {
       unsigned newsiz = prime_above_BM (4 * browsednvulen_BM / 3 + 5);
@@ -461,13 +469,15 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
 
 void
 browse_named_value_gui_BM (const stringval_tyBM * namev,
-                           const value_tyBM * val,
+                           const value_tyBM val,
                            const objectval_tyBM * objsel,
                            int browsdepth, struct stackframe_stBM *stkf)
 {
   if (!isstring_BM ((const value_tyBM) namev))
     return;
   if (!isobject_BM ((const value_tyBM) objsel))
+    return;
+  if (!val)
     return;
   if (browsdepth < 2)
     browsdepth = 2;
@@ -478,10 +488,26 @@ browse_named_value_gui_BM (const stringval_tyBM * namev,
                  const objectval_tyBM * objsel;
     );
   _.namev = namev;
-  _.val = val;
+  _.val = (value_tyBM) val;
   _.objsel = objsel;
-#warning incomplete browse_named_value_gui_BM
+  browsednvcurix_BM = -1;
+  start_browse_named_value_BM (namev, val, browsdepth);
+  assert (browsednvcurix_BM >= 0);
+  gtk_text_buffer_insert_with_tags
+    (browserbuf_BM, &browserit_BM, "$", -1, valtitle_brotag_BM, NULL);
+  gtk_text_buffer_insert_with_tags
+    (browserbuf_BM, &browserit_BM, bytstring_BM (namev), -1,
+     valtitle_brotag_BM, NULL);
+  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+  send1_BM ((const value_tyBM) _.val, objsel,
+            (struct stackframe_stBM *) &_, taggedint_BM (browsdepth));
+  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+  gtk_text_buffer_move_mark (browserbuf_BM,
+                             browsedval_BM[browsednvcurix_BM].brow_vendm,
+                             &browserit_BM);
 }                               /* end browse_named_value_gui_BM */
+
+
 
 void quit_BM (void);
 void
