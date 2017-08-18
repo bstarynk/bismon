@@ -211,6 +211,7 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * objbrows;
     );
+  _.objbrows = objbrows;
   int lo = 0, hi = browserobulen_BM, md = 0;
   while (lo + 8 < hi)
     {
@@ -247,13 +248,13 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
                     sizeof (struct parenoffset_stBM));
           free (browsedobj_BM[md].brow_parenarr);
           memset (&browsedobj_BM[md], 0, sizeof (browsedobj_BM[md]));
-          for (int ix = md; ix < (int) browsednvulen_BM; ix++)
+          for (int ix = md; ix < (int) browserobulen_BM; ix++)
             browsedobj_BM[ix] = browsedobj_BM[ix + 1];
-          memset (&browsedobj_BM[browsednvulen_BM], 0,
-                  (browsednvsize_BM -
-                   browsednvulen_BM) * sizeof (struct browsedobj_stBM));
-          browsednvulen_BM--;
-          browsednvcurix_BM = -1;
+          memset (&browsedobj_BM[browserobulen_BM], 0,
+                  (browserobsize_BM -
+                   browserobulen_BM) * sizeof (struct browsedobj_stBM));
+          browserobulen_BM--;
+          browserobcurix_BM = -1;
           gtk_text_buffer_get_end_iter (browserbuf_BM, &browserit_BM);
           return;
         }
@@ -372,6 +373,62 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
   return;
 }                               /* end start_browse_named_value_BM */
 
+void
+hide_named_value_gui_BM (const stringval_tyBM * namev,
+                         struct stackframe_stBM *stkf)
+{
+  if (!isstring_BM ((const value_tyBM) namev))
+    return;
+  if (!validname_BM (bytstring_BM ((const value_tyBM) namev)))
+    return;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const stringval_tyBM * namev);
+  _.namev = namev;
+  unsigned lo = 0, hi = browsednvulen_BM, md = 0;
+  const char *namstr = bytstring_BM (namev);
+  while (lo + 8 < hi)
+    {
+      md = (lo + hi) / 2;
+      assert (isstring_BM ((const value_tyBM) browsedval_BM[md].brow_name));
+      int cmp = strcmp (namstr, bytstring_BM (browsedval_BM[md].brow_name));
+      if (cmp <= 0)
+        lo = md;
+      else
+        hi = md;
+    }
+  for (md = lo; md < hi; md++)
+    {
+      struct browsedval_stBM *mdval = browsedval_BM + md;
+      assert (isstring_BM ((const value_tyBM) mdval->brow_name));
+      int cmp = strcmp (namstr, bytstring_BM (mdval->brow_name));
+      if (cmp == 0)
+        {
+          GtkTextIter startit = { };
+          GtkTextIter endit = { };
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                            &startit, mdval->brow_vstartm);
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                            &endit, mdval->brow_vendm);
+          gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
+          gtk_text_buffer_delete_mark (browserbuf_BM, mdval->brow_vstartm);
+          gtk_text_buffer_delete_mark (browserbuf_BM, mdval->brow_vendm);
+          if (mdval->brow_parenulen > 0)
+            memset (mdval->brow_parenarr, 0,
+                    mdval->brow_parenulen * sizeof (struct parenoffset_stBM));
+          free (mdval->brow_parenarr);
+          for (int ix = md; ix < (int) browsednvulen_BM; ix++)
+            browsedval_BM[ix] = browsedval_BM[ix + 1];
+          memset (browsedval_BM + browsednvulen_BM,
+                  0,
+                  (browsednvsize_BM -
+                   browsednvulen_BM) * sizeof (struct browsedval_stBM));
+          browsednvulen_BM--;
+          browsednvcurix_BM = -1;
+          gtk_text_buffer_get_end_iter (browserbuf_BM, &browserit_BM);
+          return;
+        }
+    }
+}                               /* end hide_named_value_gui_BM */
 
 
 int
