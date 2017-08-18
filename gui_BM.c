@@ -855,6 +855,72 @@ parsdollarobjcmd_BM (struct parser_stBM *pars, unsigned colpos,
   return (const objectval_tyBM *) val;
 }                               /* end parsdollarobjcmd_BM */
 
+static void
+parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
+                        struct stackframe_stBM *stkf,
+                        struct parstoken_stBM *ptok);
+
+void
+parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
+                        struct stackframe_stBM *stkf,
+                        struct parstoken_stBM *ptok)
+{
+  if (!isparser_BM (pars))
+    return;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 struct parser_stBM * pars;
+                 value_tyBM comp; objectval_tyBM * obj;
+                 objectval_tyBM * obattr;
+    );
+  _.pars = pars;
+  _.obj = obj;
+  struct parstoken_stBM tok = { };
+  if (!ptok)
+    {
+      tok = parsertokenget_BM (pars);
+      ptok = &tok;
+    };
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  bool nobuild = parsops && parsops->parsop_nobuild;
+  unsigned lineno = pars->pars_lineno;
+  unsigned colpos = pars->pars_colpos;
+  if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamand)
+    {
+      if (!nobuild && !isobject_BM (obj))
+        parsererrorprintf_BM (pars, lineno, colpos, "missing target for !&");
+      bool gotval = false;
+      _.comp = parsergetvalue_BM (pars, //
+                                  (struct stackframe_stBM *) &_,        //
+                                  0, &gotval);
+      if (!gotval)
+        parsererrorprintf_BM (pars, lineno, colpos, "missing value after !&");
+      if (!nobuild)
+        objappendcomp_BM (_.obj, _.comp);
+    }
+  else if (ptok->tok_kind == plex_DELIM
+           && ptok->tok_delim == delim_exclamcolon)
+    {
+      if (!nobuild && !isobject_BM (obj))
+        parsererrorprintf_BM (pars, lineno, colpos, "missing target for !:");
+      bool gotattr = false;
+      _.obattr = parsergetobject_BM (pars,      //
+                                     (struct stackframe_stBM *) &_,     //
+                                     0, &gotattr);
+      if (!gotattr)
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "missing attribute after !:");
+      bool gotval = false;
+      _.comp = parsergetvalue_BM (pars, //
+                                  (struct stackframe_stBM *) &_,        //
+                                  0, &gotval);
+      if (!gotval)
+        parsererrorprintf_BM (pars, lineno, colpos, "missing value after !:");
+      if (!nobuild)
+        objputattr_BM (_.obj, _.obattr, _.comp);
+    }
+}                               /* end parseobjectcomplcmd_BM */
+
+
 // parse inside $(....)
 value_tyBM
 parsvalexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
@@ -871,6 +937,33 @@ parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
 #warning parsobjexpcmd_BM unimplemented
   FATAL_BM ("unimplemented parsobjexpcmd_BM");
 }                               /* end parsobjexpcmd_BM */
+
+void
+parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
+{
+  if (!isparser_BM (pars))
+    return;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 struct parser_stBM * pars;
+                 value_tyBM comp;
+    );
+  _.pars = pars;
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
+  bool nobuild = parsops && parsops->parsop_nobuild;
+  int nbloop = 0;
+  for (;;)
+    {
+      parserskipspaces_BM (pars);
+      if (nbloop++ > MAXSIZE_BM / 32)
+        parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+                              "too many %d loops", nbloop);
+      if (parserendoffile_BM (pars))
+        break;
+      parstoken_tyBM tok = parsertokenget_BM (pars);
+#warning parsercommandbuf_BM incomplete
+    }
+}                               /* end parsercommandbuf_BM */
 
 
 void
@@ -1086,51 +1179,6 @@ parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
 
 }                               /* end parsstartnestingcmd_BM */
 
-
-void
-parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
-{
-  if (!isparser_BM (pars))
-    return;
-  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 struct parser_stBM * pars;
-                 value_tyBM comp;
-    );
-  _.pars = pars;
-  const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
-  bool nobuild = parsops && parsops->parsop_nobuild;
-  int nbloop = 0;
-  for (;;)
-    {
-      parserskipspaces_BM (pars);
-      if (nbloop++ > MAXSIZE_BM / 32)
-        parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
-                              "too many %d loops", nbloop);
-      if (parserendoffile_BM (pars))
-        break;
-      parstoken_tyBM tok = parsertokenget_BM (pars);
-      unsigned lineno = pars->pars_lineno;
-      unsigned colpos = pars->pars_colpos;
-      if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamand)
-        {
-          if (!nobuild && GLOBAL_BM (gui_focus_obj) == NULL)
-            parsererrorprintf_BM (pars, lineno, colpos,
-                                  "missing focus for !&");
-          bool gotval = false;
-          _.comp = parsergetvalue_BM (pars,     //
-                                      (struct stackframe_stBM *) &_,    //
-                                      0, &gotval);
-          if (!gotval)
-            parsererrorprintf_BM (pars, lineno, colpos,
-                                  "missing value after !&");
-          if (!nobuild)
-            {
-            }
-        }
-#warning parsercommandbuf_BM incomplete
-    }
-}                               /* end parsercommandbuf_BM */
 
 void
 parse_command_gui_BM (bool nobuild)
