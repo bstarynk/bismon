@@ -801,6 +801,9 @@ parsdollarvalcmd_BM (struct parser_stBM *pars, unsigned colpos,
                      const value_tyBM varname)
 {
   const char *varstr = NULL;
+  assert (isparser_BM (pars));
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  bool nobuild = parsops && parsops->parsop_nobuild;
   if (isstring_BM (varname))
     varstr = bytstring_BM (varname);
   else if (isobject_BM (varname))
@@ -808,7 +811,7 @@ parsdollarvalcmd_BM (struct parser_stBM *pars, unsigned colpos,
   if (!varstr)
     parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "invalid $<var>");
   const value_tyBM val = find_named_value_gui_BM (varstr);
-  if (!val)
+  if (!val && !nobuild)
     parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "not found $%s",
                           varstr);
   GtkTextIter it, endit;
@@ -827,6 +830,8 @@ parsdollarobjcmd_BM (struct parser_stBM *pars, unsigned colpos,
                      const value_tyBM varname)
 {
 
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  bool nobuild = parsops && parsops->parsop_nobuild;
   const char *varstr = NULL;
   if (isstring_BM (varname))
     varstr = bytstring_BM (varname);
@@ -835,10 +840,10 @@ parsdollarobjcmd_BM (struct parser_stBM *pars, unsigned colpos,
   if (!varstr)
     parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "invalid $:<var>");
   const value_tyBM val = find_named_value_gui_BM (varstr);
-  if (!val)
+  if (!val && !nobuild)
     parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "not found $:%s",
                           varstr);
-  if (!isobject_BM (val))
+  if (!isobject_BM (val) && !nobuild)
     parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "non-object $:%s",
                           varstr);
   GtkTextIter it, endit;
