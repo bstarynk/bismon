@@ -860,8 +860,10 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
                         struct stackframe_stBM *stkf,
                         struct parstoken_stBM *ptok);
 
+#define MAXMSGARGS_BM 8
+
 void
-parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
+parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
                         struct stackframe_stBM *stkf,
                         struct parstoken_stBM *ptok)
 {
@@ -870,11 +872,12 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct parser_stBM * pars;
                  value_tyBM comp;
-                 objectval_tyBM * obj; objectval_tyBM * obattr;
-                 objectval_tyBM * obclass;
+                 objectval_tyBM * targobj; objectval_tyBM * obattr;
+                 objectval_tyBM * obclass; objectval_tyBM * obsel;
+                 value_tyBM args[MAXMSGARGS_BM];
     );
   _.pars = pars;
-  _.obj = obj;
+  _.targobj = targobj;
   struct parstoken_stBM tok = { };
   if (!ptok)
     {
@@ -885,10 +888,11 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
   bool nobuild = parsops && parsops->parsop_nobuild;
   unsigned lineno = pars->pars_lineno;
   unsigned colpos = pars->pars_colpos;
-  // !& <comp>
+  //
+  // !& <comp>   # append a component to target object
   if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamand)
     {
-      if (!nobuild && !isobject_BM (obj))
+      if (!nobuild && !isobject_BM (targobj))
         parsererrorprintf_BM (pars, lineno, colpos, "missing target for !&");
       bool gotval = false;
       _.comp = parsergetvalue_BM (pars, //
@@ -897,13 +901,14 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
       if (!gotval)
         parsererrorprintf_BM (pars, lineno, colpos, "missing value after !&");
       if (!nobuild)
-        objappendcomp_BM (_.obj, _.comp);
+        objappendcomp_BM (_.targobj, _.comp);
     }
-  // !: <attr> <val>
+  //
+  // !: <attr> <val> # put an attribute in target object
   else if (ptok->tok_kind == plex_DELIM
            && ptok->tok_delim == delim_exclamcolon)
     {
-      if (!nobuild && !isobject_BM (obj))
+      if (!nobuild && !isobject_BM (targobj))
         parsererrorprintf_BM (pars, lineno, colpos, "missing target for !:");
       bool gotattr = false;
       _.obattr = parsergetobject_BM (pars,      //
@@ -919,13 +924,14 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
       if (!gotval)
         parsererrorprintf_BM (pars, lineno, colpos, "missing value after !:");
       if (!nobuild)
-        objputattr_BM (_.obj, _.obattr, _.comp);
+        objputattr_BM (_.targobj, _.obattr, _.comp);
     }
-  // !$ <class>
+  //
+  // !$ <class>           # set the class of target object
   else if (ptok->tok_kind == plex_DELIM
            && ptok->tok_delim == delim_exclamdollar)
     {
-      if (!nobuild && !isobject_BM (obj))
+      if (!nobuild && !isobject_BM (targobj))
         parsererrorprintf_BM (pars, lineno, colpos, "missing target for !$");
       bool gotclass = false;
       _.obclass = parsergetobject_BM (pars,     //
@@ -934,9 +940,118 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
       if (!gotclass)
         parsererrorprintf_BM (pars, lineno, colpos, "missing class after !$");
       if (!nobuild)
-        objputclass_BM (_.obj, _.obclass);
+        objputclass_BM (_.targobj, _.obclass);
     }
+  //
+  // !> <obselector> ( ... ) # to send a side-effecting message
+  else if (ptok->tok_kind == plex_DELIM
+           && ptok->tok_delim == delim_exclamgreater)
+    {
+      unsigned arglineno = pars->pars_lineno;
+      unsigned argcolpos = pars->pars_colpos;
+      if (!nobuild && !isobject_BM (targobj))
+        parsererrorprintf_BM (pars, lineno, colpos, "missing target for !>");
+      bool gotsel = false;
+      _.obsel = parsergetobject_BM (pars,       //
+                                    (struct stackframe_stBM *) &_,      //
+                                    0, &gotsel);
+      if (!gotsel)
+        parsererrorprintf_BM (pars, arglineno, argcolpos,
+                              "missing selector after !>");
+      tok = parsertokenget_BM (pars);
+      if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_leftparen)
+        parsererrorprintf_BM (pars, arglineno, argcolpos,
+                              "missing left paren after selector for !>");
+      int nbarg = 0;
+      while (nbarg < MAXMSGARGS_BM)
+        {
+          bool gotarg = false;
+          _.args[nbarg] = parsergetvalue_BM (pars,      //
+                                             (struct stackframe_stBM *) &_,     //
+                                             0, &gotarg);
+          if (!gotarg)
+            break;
+          nbarg++;
+        }
+      tok = parsertokenget_BM (pars);
+      if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
+        parsererrorprintf_BM (pars, arglineno, argcolpos,
+                              "missing right paren after selector for !>");
+      if (!nobuild)
+        {
+          bool failsend = false;
+          switch (nbarg)
+            {
+            case 0:
+              _.comp =
+                send0_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_);
+              break;
+            case 1:
+              _.comp =
+                send1_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                          _.args[0]);
+              break;
+            case 2:
+              _.comp =
+                send2_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                          _.args[0], _.args[1]);
+              break;
+            case 3:
+              _.comp =
+                send3_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                          _.args[0], _.args[1], _.args[2]);
+              break;
+            case 4:
+              _.comp =
+                send4_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                          _.args[0], _.args[1], _.args[2], _.args[3]);
+              break;
+            case 5:
+              _.comp =
+                send5_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                          _.args[0], _.args[1], _.args[2], _.args[3],
+                          _.args[4]);
+              break;
+            case 6:
+              _.comp =
+                send6_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                          _.args[0], _.args[1], _.args[2], _.args[3],
+                          _.args[4], _.args[5]);
+              break;
+            case 7:
+              _.comp =
+                send7_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                          _.args[0], _.args[1], _.args[2], _.args[3],
+                          _.args[4], _.args[5], _.args[6]);
+              break;
+            case 8:
+              _.comp =
+                send8_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                          _.args[0], _.args[1], _.args[2], _.args[3],
+                          _.args[4], _.args[5], _.args[6], _.args[7]);
+              break;
+            default:
+              _.comp = NULL;
+              failsend = true;
+              break;
+            }
+          if ((_.comp == NULL) || failsend)
+            {
+              char targidbuf[32];
+              const char *targname = findobjectname_BM (_.targobj);
+              idtocbuf32_BM (objid_BM (_.targobj), targidbuf);
+              char selidbuf[32];
+              const char *selname = findobjectname_BM (_.obsel);
+              idtocbuf32_BM (objid_BM (_.obsel), selidbuf);
+              parsererrorprintf_BM (pars, arglineno, argcolpos,
+                                    "failed to send %s to target %s",
+                                    selname ? : selidbuf,
+                                    targname ? : targidbuf);
+            }
+        }
+    }                           // end !> 
 }                               /* end parseobjectcomplcmd_BM */
+
 
 
 // parse inside $(....)
