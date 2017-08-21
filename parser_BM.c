@@ -1033,13 +1033,15 @@ parsergetobject_BM (struct parser_stBM * pars,
           assert (varlineno == lineno);
           _.resobj =            //
             parsops->parsop_expand_dollarobj_rout
-            (pars, varcolpos, (const value_tyBM) vartok.tok_namedobj);
+            (pars, varcolpos, (const value_tyBM) vartok.tok_namedobj,
+             (struct stackframe_stBM *) &_);
         }
       else if (vartok.tok_kind == plex_CNAME)
         {
           _.resobj =            //
             parsops->parsop_expand_dollarobj_rout
-            (pars, varcolpos, (const value_tyBM) vartok.tok_cname);
+            (pars, varcolpos, (const value_tyBM) vartok.tok_cname,
+             (struct stackframe_stBM *) &_);
         }
       else                      // could happen if $: is followed by word
         parsererrorprintf_BM (pars, lineno, colpos,
@@ -1065,7 +1067,8 @@ parsergetobject_BM (struct parser_stBM * pars,
       const char *end = NULL;
       g_utf8_validate (resbuf, -1, &end);
       *(char *) end = (char) 0;
-      _.resobj = parsops->parsop_expand_objexp_rout (pars, lineno, colpos);
+      _.resobj = parsops->parsop_expand_objexp_rout
+        (pars, lineno, colpos, (struct stackframe_stBM *) &_);
       if (!nobuild && !isobject_BM ((const value_tyBM) _.resobj))
         parsererrorprintf_BM (pars, lineno, colpos,
                               "failed $[...] expansion of %s", resbuf);
@@ -1377,14 +1380,18 @@ parsergetvalue_BM (struct parser_stBM * pars,
           _.resval = (value_tyBM)
             parsops->parsop_expand_dollarval_rout (pars, varcolpos,
                                                    (const value_tyBM)
-                                                   vartok.tok_namedobj);
+                                                   vartok.tok_namedobj,
+                                                   (struct stackframe_stBM *)
+                                                   &_);
         }
       else if (vartok.tok_kind == plex_CNAME)
         {
           _.resval = (value_tyBM)
             parsops->parsop_expand_dollarval_rout (pars, varcolpos,
                                                    (const value_tyBM)
-                                                   vartok.tok_cname);
+                                                   vartok.tok_cname,
+                                                   (struct stackframe_stBM *)
+                                                   &_);
         }
       else                      // could happen if $ is followed by word
         parsererrorprintf_BM (pars, lineno, colpos,
@@ -1413,14 +1420,18 @@ parsergetvalue_BM (struct parser_stBM * pars,
           _.resval = (value_tyBM)
             parsops->parsop_expand_dollarobj_rout (pars, varcolpos,
                                                    (const value_tyBM)
-                                                   vartok.tok_namedobj);
+                                                   vartok.tok_namedobj,
+                                                   (struct stackframe_stBM *)
+                                                   &_);
         }
       else if (vartok.tok_kind == plex_CNAME)
         {
           _.resval = (value_tyBM)
             parsops->parsop_expand_dollarobj_rout (pars, varcolpos,
                                                    (const value_tyBM)
-                                                   vartok.tok_cname);
+                                                   vartok.tok_cname,
+                                                   (struct stackframe_stBM *)
+                                                   &_);
         }
       else                      // could happen if $: is followed by word
         parsererrorprintf_BM (pars, lineno, colpos,
@@ -1448,8 +1459,8 @@ parsergetvalue_BM (struct parser_stBM * pars,
       g_utf8_validate (resbuf, -1, &end);
       *(char *) end = (char) 0;
       _.resval =
-        (const value_tyBM) parsops->parsop_expand_objexp_rout (pars, lineno,
-                                                               colpos);
+        (const value_tyBM) parsops->parsop_expand_objexp_rout
+        (pars, lineno, colpos, (struct stackframe_stBM *) &_);
       if (!nobuild && !isobject_BM ((const value_tyBM) _.resval))
         parsererrorprintf_BM (pars, lineno, colpos,
                               "failed $[...] expansion of %s", resbuf);
@@ -1470,7 +1481,9 @@ parsergetvalue_BM (struct parser_stBM * pars,
       const char *end = NULL;
       g_utf8_validate (resbuf, -1, &end);
       *(char *) end = (char) 0;
-      _.resval = parsops->parsop_expand_valexp_rout (pars, lineno, colpos);
+      _.resval =
+        parsops->parsop_expand_valexp_rout (pars, lineno, colpos,
+                                            (struct stackframe_stBM *) &_);
       if (!nobuild && !isobject_BM ((const value_tyBM) _.resval))
         parsererrorprintf_BM (pars, lineno, colpos,
                               "failed $(...) expansion of %s", resbuf);

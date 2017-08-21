@@ -380,16 +380,20 @@ typedef struct parstoken_stBM parstoken_tyBM;
 struct parser_stBM;
 // expand the $<var>, varname is the tok_cname or tok_namedobj
 typedef value_tyBM parser_expand_dollarval_sigBM
-  (struct parser_stBM *pars, unsigned colpos, const value_tyBM varname);
+  (struct parser_stBM *pars, unsigned colpos, const value_tyBM varname,
+   struct stackframe_stBM *stkf);
 // expand the $:<var>, varname is the tok_cname or tok_namedobj
 typedef const objectval_tyBM *parser_expand_dollarobj_sigBM
-  (struct parser_stBM *pars, unsigned colpos, const value_tyBM varname);
+  (struct parser_stBM *pars, unsigned colpos, const value_tyBM varname,
+   struct stackframe_stBM *stkf);
 // parse then expand $( .... ) value expression
 typedef value_tyBM parser_expand_valexp_sigBM
-  (struct parser_stBM *pars, unsigned lineno, unsigned colpos);
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+   struct stackframe_stBM *stkf);
 // parse then expand $[ .... ] object expression
 typedef const objectval_tyBM *parser_expand_objexp_sigBM
-  (struct parser_stBM *pars, unsigned lineno, unsigned colpos);
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+   struct stackframe_stBM *stkf);
 // decorate the comment signs
 typedef void parser_decorate_comment_sign_sigBM
   (struct parser_stBM *pars, unsigned colpos, unsigned signlen);

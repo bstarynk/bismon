@@ -798,7 +798,7 @@ parserrorcmd_BM (struct parser_stBM *pars,
 // for $<var>
 value_tyBM
 parsdollarvalcmd_BM (struct parser_stBM *pars, unsigned colpos,
-                     const value_tyBM varname)
+                     const value_tyBM varname, struct stackframe_stBM *stkf)
 {
   const char *varstr = NULL;
   assert (isparser_BM (pars));
@@ -827,7 +827,7 @@ parsdollarvalcmd_BM (struct parser_stBM *pars, unsigned colpos,
 // for $:<var>
 const objectval_tyBM *
 parsdollarobjcmd_BM (struct parser_stBM *pars, unsigned colpos,
-                     const value_tyBM varname)
+                     const value_tyBM varname, struct stackframe_stBM *stkf)
 {
 
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -1113,8 +1113,12 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
 
 // parse inside $(....)
 value_tyBM
-parsvalexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
+parsvalexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+                  struct stackframe_stBM *stkf)
 {
+  assert (isparser_BM (pars));
+  unsigned valineno = parserlineno_BM (pars);
+  unsigned vacolpos = parsercolpos_BM (pars);
 #warning parsvalexpcmd_BM unimplemented
   FATAL_BM ("unimplemented parsvalexpcmd_BM");
 }                               /* end parsvalexpcmd_BM */
@@ -1122,7 +1126,8 @@ parsvalexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
 
 // parse inside $[...]
 const objectval_tyBM *
-parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
+parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+                  struct stackframe_stBM *stkf)
 {
   assert (isparser_BM (pars));
   unsigned oblineno = parserlineno_BM (pars);
