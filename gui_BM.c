@@ -611,6 +611,8 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
                              &browserit_BM);
 }                               /* end browse_object_gui_BM */
 
+
+
 void
 browse_named_value_gui_BM (const stringval_tyBM * namev,
                            const value_tyBM val,
@@ -801,6 +803,9 @@ parsdollarvalcmd_BM (struct parser_stBM *pars, unsigned colpos,
                      const value_tyBM varname, struct stackframe_stBM *stkf)
 {
   const char *varstr = NULL;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 value_tyBM val;
+    );
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
@@ -810,8 +815,8 @@ parsdollarvalcmd_BM (struct parser_stBM *pars, unsigned colpos,
     varstr = findobjectname_BM (varname);
   if (!varstr)
     parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "invalid $<var>");
-  const value_tyBM val = find_named_value_gui_BM (varstr);
-  if (!val && !nobuild)
+  _.val = find_named_value_gui_BM (varstr);
+  if (!_.val && !nobuild)
     parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "not found $%s",
                           varstr);
   GtkTextIter it, endit;
@@ -820,7 +825,7 @@ parsdollarvalcmd_BM (struct parser_stBM *pars, unsigned colpos,
   endit = it;
   gtk_text_iter_forward_chars (&endit, 1 + strlen (varstr));
   gtk_text_buffer_apply_tag (commandbuf_BM, dollar_cmdtag_BM, &it, &endit);
-  return val;
+  return _.val;
 }                               /* end parsdollarvalcmd_BM */
 
 
@@ -830,6 +835,9 @@ parsdollarobjcmd_BM (struct parser_stBM *pars, unsigned colpos,
                      const value_tyBM varname, struct stackframe_stBM *stkf)
 {
 
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 value_tyBM val;
+    );
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
   const char *varstr = NULL;
@@ -839,11 +847,11 @@ parsdollarobjcmd_BM (struct parser_stBM *pars, unsigned colpos,
     varstr = findobjectname_BM (varname);
   if (!varstr)
     parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "invalid $:<var>");
-  const value_tyBM val = find_named_value_gui_BM (varstr);
-  if (!val && !nobuild)
+  _.val = find_named_value_gui_BM (varstr);
+  if (!_.val && !nobuild)
     parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "not found $:%s",
                           varstr);
-  if (!isobject_BM (val) && !nobuild)
+  if (!isobject_BM (_.val) && !nobuild)
     parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "non-object $:%s",
                           varstr);
   GtkTextIter it, endit;
@@ -852,23 +860,23 @@ parsdollarobjcmd_BM (struct parser_stBM *pars, unsigned colpos,
   endit = it;
   gtk_text_iter_forward_chars (&endit, 2 + strlen (varstr));
   gtk_text_buffer_apply_tag (commandbuf_BM, dollar_cmdtag_BM, &it, &endit);
-  return (const objectval_tyBM *) val;
+  return (const objectval_tyBM *) _.val;
 }                               /* end parsdollarobjcmd_BM */
 
-static void
+static bool
 parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
                         struct stackframe_stBM *stkf,
                         struct parstoken_stBM *ptok);
 
 #define MAXMSGARGS_BM 8
 
-void
+bool
 parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
                         struct stackframe_stBM *stkf,
                         struct parstoken_stBM *ptok)
 {
   if (!isparser_BM (pars))
-    return;
+    return false;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct parser_stBM * pars; value_tyBM comp;
                  objectval_tyBM * targobj; objectval_tyBM * obattr;
@@ -1107,14 +1115,17 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
       else
         parsererrorprintf_BM (pars, lineno, colpos, "bad space for !^");
     }
+  else
+    return false;
+  return true;
 }                               /* end parseobjectcomplcmd_BM */
 
 
 
 // parse inside $(....)
 value_tyBM
-parsvalexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
-                  struct stackframe_stBM *stkf)
+parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
+                  struct stackframe_stBM * stkf)
 {
   assert (isparser_BM (pars));
   unsigned valineno = parserlineno_BM (pars);
@@ -1129,26 +1140,115 @@ const objectval_tyBM *
 parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
                   struct stackframe_stBM *stkf)
 {
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  bool nobuild = parsops && parsops->parsop_nobuild;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * obj; const stringval_tyBM * namev;
+                 value_tyBM val;
+    );
   assert (isparser_BM (pars));
   unsigned oblineno = parserlineno_BM (pars);
   unsigned obcolpos = parsercolpos_BM (pars);
+  bool gotobj = false;
   struct parstoken_stBM tok = parsertokenget_BM (pars);
   // * <name> to create a new (userE) named object
   if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_star)
     {
+      tok = parsertokenget_BM (pars);
+      if (tok.tok_kind != plex_CNAME)
+        parsererrorprintf_BM (pars, oblineno, obcolpos,
+                              "expecting fresh name after * in $[...]");
+      _.namev = tok.tok_cname;
+      gotobj = true;
+      if (!nobuild)
+        {
+          _.obj = makeobj_BM ();
+          objtouchnow_BM (_.obj);
+          objputspacenum_BM (_.obj, UserEsp_BM);
+          registername_BM (_.obj, bytstring_BM (_.namev));
+        }
     }
   // : to create a new transient anonymous object
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_colon)
     {
+      gotobj = true;
+      if (!nobuild)
+        {
+          _.obj = makeobj_BM ();
+          objtouchnow_BM (_.obj);
+          objputspacenum_BM (_.obj, TransientSp_BM);
+        }
     }
   // % to create a new (userE) anonymous object
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_percent)
     {
+      gotobj = true;
+      if (!nobuild)
+        {
+          _.obj = makeobj_BM ();
+          objtouchnow_BM (_.obj);
+          objputspacenum_BM (_.obj, UserEsp_BM);
+        }
     }
-  /// FIXME: what about garbage collection during parsing?
-#warning parsobjexpcmd_BM unimplemented
-  FATAL_BM ("unimplemented parsobjexpcmd_BM");
+  //
+  // $:<var>
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_dollarcolon)
+    {
+      parserseek_BM (pars, oblineno, obcolpos);
+      _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,
+                                  0, &gotobj);
+      if (!gotobj)
+        parsererrorprintf_BM (pars, oblineno, obcolpos,
+                              "expecting $:<var> in $[...]");
+    }
+  //
+  // ( <expr> ) to cast a value into an object
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_leftparen)
+    {
+      bool gotval = false;
+      _.val = parsergetvalue_BM (pars, (struct stackframe_stBM *) &_,
+                                 0, &gotval);
+      if (!gotval)
+        parsererrorprintf_BM (pars, oblineno, obcolpos,
+                              "expecting value after $[ (");
+      tok = parsertokenget_BM (pars);
+      if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
+
+        parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+                              "expecting right paren after $[ ( started at L%d:C%d",
+                              oblineno, obcolpos);
+      if (!nobuild && !isobject_BM (_.val))
+        parsererrorprintf_BM (pars, oblineno, obcolpos,
+                              "non-object value after $[ (...");
+    }
+  //
+  // <id> or <name> to refer to an existing object
+  else if (tok.tok_kind == plex_ID || tok.tok_kind == plex_NAMEDOBJ)
+    {
+      parserseek_BM (pars, oblineno, obcolpos);
+      _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,
+                                  0, &gotobj);
+    }
+  if (!gotobj)
+    parsererrorprintf_BM (pars, oblineno, obcolpos,
+                          "expecting object at start of $[...]");
+  while ((tok = parsertokenget_BM (pars)), tok.tok_kind != plex__NONE)
+    {
+      if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_rightbracket)
+        return;
+      bool gotcomp = parseobjectcomplcmd_BM (pars, _.obj,
+                                             (struct stackframe_stBM *) &_,
+                                             &tok);
+      if (!gotcomp)
+        parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+                              "bad object complement (for $[...] started L%d:C%d",
+                              oblineno, obcolpos);
+    };
+  parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+                        "invalid object expression for $[...] started L%d:C%d",
+                        oblineno, obcolpos);
 }                               /* end parsobjexpcmd_BM */
+
 
 void
 parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
