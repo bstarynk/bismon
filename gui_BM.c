@@ -868,7 +868,7 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
                         struct stackframe_stBM *stkf,
                         struct parstoken_stBM *ptok);
 
-#define MAXMSGARGS_BM 8
+#define MAXARGS_BM 9
 
 bool
 parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
@@ -881,7 +881,7 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
                  struct parser_stBM * pars; value_tyBM comp;
                  objectval_tyBM * targobj; objectval_tyBM * obattr;
                  objectval_tyBM * obclass; objectval_tyBM * obsel;
-                 value_tyBM args[MAXMSGARGS_BM];
+                 value_tyBM args[MAXARGS_BM];
     );
   _.pars = pars;
   _.targobj = targobj;
@@ -970,7 +970,7 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
         parsererrorprintf_BM (pars, arglineno, argcolpos,
                               "missing left paren after selector for !>");
       int nbarg = 0;
-      while (nbarg < MAXMSGARGS_BM)
+      while (nbarg < MAXARGS_BM)
         {
           bool gotarg = false;
           _.args[nbarg] = parsergetvalue_BM (pars,      //
@@ -1131,11 +1131,11 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 struct parser_stBM *pars;
-                 value_tyBM resval;
+                 struct parser_stBM *pars; value_tyBM resval;
                  value_tyBM srcval;
-                 objectval_tyBM * obj; objectval_tyBM * obsel;
-                 value_tyBM args[MAXMSGARGS_BM];
+                 objectval_tyBM * obj;
+                 objectval_tyBM * obsel; closure_tyBM * clos;
+                 value_tyBM args[MAXARGS_BM];
     );
   _.pars = pars;
   unsigned srclineno = parserlineno_BM (pars);
@@ -1177,7 +1177,7 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
             parsererrorprintf_BM (pars, arglineno, argcolpos,
                                   "missing left paren after selector for !>");
           int nbarg = 0;
-          while (nbarg < MAXMSGARGS_BM)
+          while (nbarg < MAXARGS_BM)
             {
               bool gotarg = false;
               _.args[nbarg] = parsergetvalue_BM (pars,  //
@@ -1268,6 +1268,111 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
               _.srcval = _.resval;
             }
         }                       // end !> 
+      //
+      //( ...) # to apply a functon
+      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_leftparen)
+        {
+          unsigned arglineno = pars->pars_lineno;
+          unsigned argcolpos = pars->pars_colpos;
+          if (!nobuild && !isclosure_BM (_.srcval))
+            parsererrorprintf_BM (pars, lineno, colpos,
+                                  "source value is not a closure for application");
+          _.clos = (closure_tyBM *) _.srcval;
+          int nbarg = 0;
+          while (nbarg < MAXARGS_BM)
+            {
+              bool gotarg = false;
+              _.args[nbarg] = parsergetvalue_BM (pars,  //
+                                                 (struct stackframe_stBM *) &_, //
+                                                 0, &gotarg);
+              if (!gotarg)
+                break;
+              nbarg++;
+            }
+          tok = parsertokenget_BM (pars);
+          if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
+            parsererrorprintf_BM (pars, arglineno, argcolpos,
+                                  "missing right paren after application");
+          if (!nobuild)
+            {
+              bool failapply = false;
+              switch (nbarg)
+                {
+                case 0:
+                  _.resval = apply0_BM (_.clos,
+                                        (struct stackframe_stBM *) &_);
+                  break;
+                case 1:
+                  _.resval = apply1_BM (_.clos,
+                                        (struct stackframe_stBM *) &_,
+                                        _.args[0]);
+                  break;
+                case 2:
+                  _.resval = apply2_BM (_.clos,
+                                        (struct stackframe_stBM *) &_,
+                                        _.args[0], _.args[1]);
+                  break;
+                case 3:
+                  _.resval = apply3_BM (_.clos,
+                                        (struct stackframe_stBM *) &_,
+                                        _.args[0], _.args[1], _.args[2]);
+                  break;
+                case 4:
+                  _.resval = apply4_BM (_.clos,
+                                        (struct stackframe_stBM *) &_,
+                                        _.args[0], _.args[1], _.args[2],
+                                        _.args[3]);
+                  break;
+                case 5:
+                  _.resval = apply5_BM (_.clos,
+                                        (struct stackframe_stBM *) &_,
+                                        _.args[0], _.args[1], _.args[2],
+                                        _.args[3], _.args[4]);
+                  break;
+                case 6:
+                  _.resval = apply6_BM (_.clos,
+                                        (struct stackframe_stBM *) &_,
+                                        _.args[0], _.args[1], _.args[2],
+                                        _.args[3], _.args[4], _.args[5]);
+                  break;
+                case 7:
+                  _.resval = apply7_BM (_.clos,
+                                        (struct stackframe_stBM *) &_,
+                                        _.args[0], _.args[1], _.args[2],
+                                        _.args[3], _.args[4], _.args[5],
+                                        _.args[6]);
+                  break;
+                case 8:
+                  _.resval = apply8_BM (_.clos,
+                                        (struct stackframe_stBM *) &_,
+                                        _.args[0], _.args[1], _.args[2],
+                                        _.args[3], _.args[4], _.args[5],
+                                        _.args[6], _.args[7]);
+                  break;
+                case 9:
+                  _.resval = apply9_BM (_.clos,
+                                        (struct stackframe_stBM *) &_,
+                                        _.args[0], _.args[1], _.args[2],
+                                        _.args[3], _.args[4], _.args[5],
+                                        _.args[6], _.args[7], _.args[8]);
+                  break;
+                default:
+                  _.resval = NULL;
+                  failapply = true;
+                  break;
+                }
+              if ((_.resval == NULL) || failapply)
+                {
+                  char selidbuf[32];
+                  const char *selname = findobjectname_BM (_.obsel);
+                  idtocbuf32_BM (objid_BM (_.obsel), selidbuf);
+                  parsererrorprintf_BM (pars, arglineno, argcolpos,
+                                        "failed to send %s",
+                                        selname ? : selidbuf);
+                }
+              _.srcval = _.resval;
+            }
+        }                       // end application ( ... )
       // otherwise error
       else
         parsererrorprintf_BM (pars, parserlineno_BM (pars),
@@ -1277,6 +1382,8 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
 #warning parsvalexpcmd_BM unimplemented
   FATAL_BM ("unimplemented parsvalexpcmd_BM");
 }                               /* end parsvalexpcmd_BM */
+
+
 
 
 // parse inside $[...]
@@ -1379,7 +1486,7 @@ parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
   while ((tok = parsertokenget_BM (pars)), tok.tok_kind != plex__NONE)
     {
       if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_rightbracket)
-        return;
+        return _.obj;
       bool gotcomp = parseobjectcomplcmd_BM (pars, _.obj,
                                              (struct stackframe_stBM *) &_,
                                              &tok);
