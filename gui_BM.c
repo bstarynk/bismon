@@ -1066,6 +1066,47 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
       if (!nobuild)
         objremoveattr_BM (_.targobj, _.obattr);
     }
+  //
+  // !^ <space> # to move to given space
+  else if (ptok->tok_kind == plex_DELIM
+           && ptok->tok_delim == delim_exclamcaret)
+    {
+      if (!nobuild && !isobject_BM (targobj))
+        parsererrorprintf_BM (pars, lineno, colpos, "missing target for !^");
+      tok = parsertokenget_BM (pars);
+      if (tok.tok_kind == plex_LLONG && tok.tok_llong >= 0
+          && tok.tok_llong < LASTSPACE__BM)
+        {
+          if (!nobuild)
+            objputspacenum_BM (_.targobj, tok.tok_llong);
+        }
+      // !^ *   to make global
+      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_star)
+        {
+          if (!nobuild)
+            objputspacenum_BM (_.targobj, GlobalSp_BM);
+        }
+      // !^ :   to make userA
+      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_colon)
+        {
+          if (!nobuild)
+            objputspacenum_BM (_.targobj, UserASp_BM);
+        }
+      // !^ ;   to make userA
+      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_semicolon)
+        {
+          if (!nobuild)
+            objputspacenum_BM (_.targobj, UserBSp_BM);
+        }
+      // !^ %   to make transient
+      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_percent)
+        {
+          if (!nobuild)
+            objputspacenum_BM (_.targobj, TransientSp_BM);
+        }
+      else
+        parsererrorprintf_BM (pars, lineno, colpos, "bad space for !^");
+    }
 }                               /* end parseobjectcomplcmd_BM */
 
 
@@ -1083,6 +1124,23 @@ parsvalexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
 const objectval_tyBM *
 parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
 {
+  assert (isparser_BM (pars));
+  unsigned oblineno = parserlineno_BM (pars);
+  unsigned obcolpos = parsercolpos_BM (pars);
+  struct parstoken_stBM tok = parsertokenget_BM (pars);
+  // * <name> to create a new (userE) named object
+  if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_star)
+    {
+    }
+  // : to create a new transient anonymous object
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_colon)
+    {
+    }
+  // % to create a new (userE) anonymous object
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_percent)
+    {
+    }
+  /// FIXME: what about garbage collection during parsing?
 #warning parsobjexpcmd_BM unimplemented
   FATAL_BM ("unimplemented parsobjexpcmd_BM");
 }                               /* end parsobjexpcmd_BM */
