@@ -1128,8 +1128,152 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
                   struct stackframe_stBM * stkf)
 {
   assert (isparser_BM (pars));
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  bool nobuild = parsops && parsops->parsop_nobuild;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 struct parser_stBM *pars;
+                 value_tyBM resval;
+                 value_tyBM srcval;
+                 objectval_tyBM * obj; objectval_tyBM * obsel;
+                 value_tyBM args[MAXMSGARGS_BM];
+    );
+  _.pars = pars;
+  unsigned srclineno = parserlineno_BM (pars);
+  unsigned srccolpos = parsercolpos_BM (pars);
+  bool gotsrcval = false;
+  _.srcval = parsergetvalue_BM (pars, (struct stackframe_stBM *) &_,
+                                0, &gotsrcval);
+  if (!gotsrcval)
+    parsererrorprintf_BM (pars, srclineno, srccolpos,
+                          "expecting source value in $(...)");
   unsigned valineno = parserlineno_BM (pars);
   unsigned vacolpos = parsercolpos_BM (pars);
+  struct parstoken_stBM tok = parsertokenget_BM (pars);
+  for (;;)
+    {
+      if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_rightparen)
+        {
+          return _.srcval;
+        }
+      //
+      // !> <obselector> ( ...) # to send a message for its result
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_exclamgreater)
+        {
+          unsigned arglineno = pars->pars_lineno;
+          unsigned argcolpos = pars->pars_colpos;
+          if (!nobuild && !_.srcval)
+            parsererrorprintf_BM (pars, lineno, colpos,
+                                  "missing target for !>");
+          bool gotsel = false;
+          _.obsel = parsergetobject_BM (pars,   //
+                                        (struct stackframe_stBM *) &_,  //
+                                        0, &gotsel);
+          if (!gotsel)
+            parsererrorprintf_BM (pars, arglineno, argcolpos,
+                                  "missing selector after !>");
+          tok = parsertokenget_BM (pars);
+          if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_leftparen)
+            parsererrorprintf_BM (pars, arglineno, argcolpos,
+                                  "missing left paren after selector for !>");
+          int nbarg = 0;
+          while (nbarg < MAXMSGARGS_BM)
+            {
+              bool gotarg = false;
+              _.args[nbarg] = parsergetvalue_BM (pars,  //
+                                                 (struct stackframe_stBM *) &_, //
+                                                 0, &gotarg);
+              if (!gotarg)
+                break;
+              nbarg++;
+            }
+          tok = parsertokenget_BM (pars);
+          if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
+            parsererrorprintf_BM (pars, arglineno, argcolpos,
+                                  "missing right paren after selector for !>");
+          if (!nobuild)
+            {
+              bool failsend = false;
+              switch (nbarg)
+                {
+                case 0:
+                  _.resval =
+                    send0_BM (_.srcval, _.obsel,
+                              (struct stackframe_stBM *) &_);
+                  break;
+                case 1:
+                  _.resval =
+                    send1_BM (_.srcval, _.obsel,
+                              (struct stackframe_stBM *) &_, _.args[0]);
+                  break;
+                case 2:
+                  _.resval =
+                    send2_BM (_.srcval, _.obsel,
+                              (struct stackframe_stBM *) &_, _.args[0],
+                              _.args[1]);
+                  break;
+                case 3:
+                  _.resval =
+                    send3_BM (_.srcval, _.obsel,
+                              (struct stackframe_stBM *) &_, _.args[0],
+                              _.args[1], _.args[2]);
+                  break;
+                case 4:
+                  _.resval =
+                    send4_BM (_.srcval, _.obsel,
+                              (struct stackframe_stBM *) &_, _.args[0],
+                              _.args[1], _.args[2], _.args[3]);
+                  break;
+                case 5:
+                  _.resval =
+                    send5_BM (_.srcval, _.obsel,
+                              (struct stackframe_stBM *) &_, _.args[0],
+                              _.args[1], _.args[2], _.args[3], _.args[4]);
+                  break;
+                case 6:
+                  _.resval =
+                    send6_BM (_.srcval, _.obsel,
+                              (struct stackframe_stBM *) &_, _.args[0],
+                              _.args[1], _.args[2], _.args[3], _.args[4],
+                              _.args[5]);
+                  break;
+                case 7:
+                  _.resval =
+                    send7_BM (_.srcval, _.obsel,
+                              (struct stackframe_stBM *) &_, _.args[0],
+                              _.args[1], _.args[2], _.args[3], _.args[4],
+                              _.args[5], _.args[6]);
+                  break;
+                case 8:
+                  _.resval =
+                    send8_BM (_.srcval, _.obsel,
+                              (struct stackframe_stBM *) &_, _.args[0],
+                              _.args[1], _.args[2], _.args[3], _.args[4],
+                              _.args[5], _.args[6], _.args[7]);
+                  break;
+                default:
+                  _.resval = NULL;
+                  failsend = true;
+                  break;
+                }
+              if ((_.resval == NULL) || failsend)
+                {
+                  char selidbuf[32];
+                  const char *selname = findobjectname_BM (_.obsel);
+                  idtocbuf32_BM (objid_BM (_.obsel), selidbuf);
+                  parsererrorprintf_BM (pars, arglineno, argcolpos,
+                                        "failed to send %s",
+                                        selname ? : selidbuf);
+                }
+              _.srcval = _.resval;
+            }
+        }                       // end !> 
+      // otherwise error
+      else
+        parsererrorprintf_BM (pars, parserlineno_BM (pars),
+                              parsercolpos_BM (pars),
+                              "unexpected token in $(...)");
+    }
 #warning parsvalexpcmd_BM unimplemented
   FATAL_BM ("unimplemented parsvalexpcmd_BM");
 }                               /* end parsvalexpcmd_BM */
