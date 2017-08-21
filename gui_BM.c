@@ -870,8 +870,7 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
   if (!isparser_BM (pars))
     return;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 struct parser_stBM * pars;
-                 value_tyBM comp;
+                 struct parser_stBM * pars; value_tyBM comp;
                  objectval_tyBM * targobj; objectval_tyBM * obattr;
                  objectval_tyBM * obclass; objectval_tyBM * obsel;
                  value_tyBM args[MAXMSGARGS_BM];
@@ -1050,6 +1049,23 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
             }
         }
     }                           // end !> 
+  //
+  // !- <attr>  # remove an attribute in target object
+  else if (ptok->tok_kind == plex_DELIM
+           && ptok->tok_delim == delim_exclamminus)
+    {
+      if (!nobuild && !isobject_BM (targobj))
+        parsererrorprintf_BM (pars, lineno, colpos, "missing target for !-");
+      bool gotattr = false;
+      _.obattr = parsergetobject_BM (pars,      //
+                                     (struct stackframe_stBM *) &_,     //
+                                     0, &gotattr);
+      if (!gotattr)
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "missing attribute after !-");
+      if (!nobuild)
+        objremoveattr_BM (_.targobj, _.obattr);
+    }
 }                               /* end parseobjectcomplcmd_BM */
 
 
