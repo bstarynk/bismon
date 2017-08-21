@@ -1373,6 +1373,7 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
               _.srcval = _.resval;
             }
         }                       // end application ( ... )
+#warning parsvalexpcmd_BM should get field using !. and get comp using !@
       // otherwise error
       else
         parsererrorprintf_BM (pars, parserlineno_BM (pars),
