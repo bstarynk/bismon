@@ -976,9 +976,10 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
       while (nbarg < MAXARGS_BM)
         {
           bool gotarg = false;
-          _.args[nbarg] = parsergetvalue_BM (pars,      //
-                                             (struct stackframe_stBM *) &_,     //
-                                             depth + 1, &gotarg);
+          _.args[nbarg] =       //
+            parsergetvalue_BM (pars,    //
+                               (struct stackframe_stBM *) &_,   //
+                               depth + 1, &gotarg);
           if (!gotarg)
             break;
           nbarg++;
@@ -1140,9 +1141,10 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
   bool nobuild = parsops && parsops->parsop_nobuild;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct parser_stBM *pars;
-                 value_tyBM resval; value_tyBM srcval; objectval_tyBM * obj;
-                 objectval_tyBM * obsel;
-                 objectval_tyBM * obattr;
+                 value_tyBM resval;
+                 value_tyBM srcval;
+                 objectval_tyBM * obj;
+                 objectval_tyBM * obsel; objectval_tyBM * obattr;
                  closure_tyBM * clos; value_tyBM otherval;
                  value_tyBM args[MAXARGS_BM];
     );
@@ -1589,7 +1591,26 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                               "too many %d loops", nbloop);
       if (parserendoffile_BM (pars))
         break;
+      unsigned curlineno = parserlineno_BM (pars);
+      unsigned curcolpos = parsercolpos_BM (pars);
       parstoken_tyBM tok = parsertokenget_BM (pars);
+      if (tok.tok_kind == plex_DELIM
+          && (tok.tok_delim == delim_exclamand
+              || tok.tok_delim == delim_exclamcolon
+              || tok.tok_delim == delim_exclamdollar
+              || tok.tok_delim == delim_exclamgreater
+              || tok.tok_delim == delim_exclamminus
+              || tok.tok_delim == delim_exclamcaret))
+        {
+          if (!nobuild && !isobject_BM (GLOBAL_BM (gui_focus_obj)))
+            parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                  "no focus object to complement");
+          if (!parseobjectcomplcmd_BM
+              (pars, (objectval_tyBM *) GLOBAL_BM (gui_focus_obj), 0,
+               (struct stackframe_stBM *) &_, &tok))
+            parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                  "invalid focus complement");
+        }
 #warning parsercommandbuf_BM incomplete
     }
 }                               /* end parsercommandbuf_BM */
