@@ -1141,7 +1141,9 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct parser_stBM *pars;
                  value_tyBM resval; value_tyBM srcval; objectval_tyBM * obj;
-                 objectval_tyBM * obsel; closure_tyBM * clos;
+                 objectval_tyBM * obsel;
+                 objectval_tyBM * obattr;
+                 closure_tyBM * clos; value_tyBM otherval;
                  value_tyBM args[MAXARGS_BM];
     );
   _.pars = pars;
@@ -1153,8 +1155,6 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
   if (!gotsrcval)
     parsererrorprintf_BM (pars, srclineno, srccolpos,
                           "expecting source value in $(...)");
-  unsigned valineno = parserlineno_BM (pars);
-  unsigned vacolpos = parsercolpos_BM (pars);
   struct parstoken_stBM tok = { };
   for (;;)
     {
@@ -1385,15 +1385,61 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
               _.srcval = _.resval;
             }
         }                       // end application ( ... )
-#warning parsvalexpcmd_BM should get field using !. and get comp using !@
+      //
+      // !. <obattr> # to get a an attribute
+      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamdot)
+        {
+          bool gotattr = false;
+          parserskipspaces_BM (pars);
+          unsigned atlineno = parserlineno_BM (pars);
+          unsigned atcolpos = parsercolpos_BM (pars);
+          if (!nobuild && !isobject_BM (_.srcval))
+            parsererrorprintf_BM (pars, atlineno, atcolpos,
+                                  "non object before !.");
+          _.obattr =
+            parsergetobject_BM (pars, (struct stackframe_stBM *) &_,
+                                depth + 1, &gotattr);
+          if (!gotattr)
+            parsererrorprintf_BM (pars, atlineno, atcolpos,
+                                  "expecting object attribute after !.");
+          if (!nobuild)
+            _.resval = objgetattr_BM ((objectval_tyBM *) _.srcval, _.obattr);
+        }                       /* end !. */
+      //
+      // !@ <index> # to get a component
+      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamat)
+        {
+          bool gotindex = false;
+          parserskipspaces_BM (pars);
+          unsigned ixlineno = parserlineno_BM (pars);
+          unsigned ixcolpos = parsercolpos_BM (pars);
+          if (!nobuild && !isobject_BM (_.srcval))
+            parsererrorprintf_BM (pars, ixlineno, ixcolpos,
+                                  "non object before !@");
+          _.otherval =
+            parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, depth + 1,
+                               &gotindex);
+          if (!gotindex)
+            parsererrorprintf_BM (pars, ixlineno, ixcolpos,
+                                  "expecting index value after !@");
+          if (!nobuild)
+            {
+              if (!istaggedint_BM (_.otherval))
+                parsererrorprintf_BM (pars, ixlineno, ixcolpos,
+                                      "expecting integer index after !@");
+              _.resval =
+                objgetcomp_BM ((objectval_tyBM *) _.srcval,
+                               getint_BM (_.otherval));
+            }
+        }                       /* end !@ */
+      //
       // otherwise error
       else
         parsererrorprintf_BM (pars, parserlineno_BM (pars),
                               parsercolpos_BM (pars),
                               "unexpected token in $(...)");
-    }
-#warning parsvalexpcmd_BM unimplemented
-  FATAL_BM ("unimplemented parsvalexpcmd_BM");
+    }                           /* end for (;;) */
+  return NULL;
 }                               /* end parsvalexpcmd_BM */
 
 
