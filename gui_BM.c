@@ -1610,6 +1610,8 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                (struct stackframe_stBM *) &_, &tok))
             parsererrorprintf_BM (pars, curlineno, curcolpos,
                                   "invalid focus complement");
+	  // should call browse_object_gui_BM on the updated
+	  // gui_focus_obj, but with what browsdepth?
         }
 #warning parsercommandbuf_BM incomplete
     }
