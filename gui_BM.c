@@ -865,14 +865,14 @@ parsdollarobjcmd_BM (struct parser_stBM *pars, unsigned colpos,
 
 static bool
 parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
-                        struct stackframe_stBM *stkf,
+                        int depth, struct stackframe_stBM *stkf,
                         struct parstoken_stBM *ptok);
 
 #define MAXARGS_BM 9
 
 bool
 parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
-                        struct stackframe_stBM *stkf,
+                        int depth, struct stackframe_stBM *stkf,
                         struct parstoken_stBM *ptok)
 {
   if (!isparser_BM (pars))
@@ -965,6 +965,9 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
       if (!gotsel)
         parsererrorprintf_BM (pars, arglineno, argcolpos,
                               "missing selector after !>");
+      parserskipspaces_BM (pars);
+      unsigned leftlineno = pars->pars_lineno;
+      unsigned leftcolpos = pars->pars_colpos;
       tok = parsertokenget_BM (pars);
       if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_leftparen)
         parsererrorprintf_BM (pars, arglineno, argcolpos,
@@ -975,7 +978,7 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
           bool gotarg = false;
           _.args[nbarg] = parsergetvalue_BM (pars,      //
                                              (struct stackframe_stBM *) &_,     //
-                                             0, &gotarg);
+                                             depth + 1, &gotarg);
           if (!gotarg)
             break;
           nbarg++;
@@ -984,6 +987,11 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
       if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
         parsererrorprintf_BM (pars, arglineno, argcolpos,
                               "missing right paren after selector for !>");
+      unsigned rightlineno = pars->pars_lineno;
+      unsigned rightcolpos = pars->pars_colpos;
+      parsnestingcmd_BM (pars, depth + 1, delim_leftparen, leftlineno,
+                         leftcolpos, delim_rightparen, rightlineno,
+                         rightcolpos);
       if (!nobuild)
         {
           bool failsend = false;
@@ -1125,15 +1133,14 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
 // parse inside $(....)
 value_tyBM
 parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
-                  struct stackframe_stBM * stkf)
+                  int depth, struct stackframe_stBM * stkf)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 struct parser_stBM *pars; value_tyBM resval;
-                 value_tyBM srcval;
-                 objectval_tyBM * obj;
+                 struct parser_stBM *pars;
+                 value_tyBM resval; value_tyBM srcval; objectval_tyBM * obj;
                  objectval_tyBM * obsel; closure_tyBM * clos;
                  value_tyBM args[MAXARGS_BM];
     );
@@ -1148,11 +1155,16 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
                           "expecting source value in $(...)");
   unsigned valineno = parserlineno_BM (pars);
   unsigned vacolpos = parsercolpos_BM (pars);
-  struct parstoken_stBM tok = parsertokenget_BM (pars);
+  struct parstoken_stBM tok = { };
   for (;;)
     {
+      parserskipspaces_BM (pars);
+      tok = parsertokenget_BM (pars);
       if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_rightparen)
         {
+          parsnestingcmd_BM (pars, depth, delim_dollarleftparen, lineno,
+                             colpos, delim_rightparen, parserlineno_BM (pars),
+                             parsercolpos_BM (pars));
           return _.srcval;
         }
       //
@@ -1390,7 +1402,7 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
 // parse inside $[...]
 const objectval_tyBM *
 parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
-                  struct stackframe_stBM *stkf)
+                  int depth, struct stackframe_stBM *stkf)
 {
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
@@ -1399,6 +1411,7 @@ parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
                  value_tyBM val;
     );
   assert (isparser_BM (pars));
+  parserskipspaces_BM (pars);
   unsigned oblineno = parserlineno_BM (pars);
   unsigned obcolpos = parsercolpos_BM (pars);
   bool gotobj = false;
@@ -1487,8 +1500,13 @@ parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
   while ((tok = parsertokenget_BM (pars)), tok.tok_kind != plex__NONE)
     {
       if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_rightbracket)
-        return _.obj;
-      bool gotcomp = parseobjectcomplcmd_BM (pars, _.obj,
+        {
+          parsnestingcmd_BM (pars, depth, delim_dollarleftbracket, lineno,
+                             colpos, delim_rightbracket,
+                             parserlineno_BM (pars), parsercolpos_BM (pars));
+          return _.obj;
+        }
+      bool gotcomp = parseobjectcomplcmd_BM (pars, _.obj, depth,
                                              (struct stackframe_stBM *) &_,
                                              &tok);
       if (!gotcomp)
@@ -1500,6 +1518,7 @@ parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
                         "invalid object expression for $[...] started L%d:C%d",
                         oblineno, obcolpos);
 }                               /* end parsobjexpcmd_BM */
+
 
 
 void

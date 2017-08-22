@@ -388,11 +388,11 @@ typedef const objectval_tyBM *parser_expand_dollarobj_sigBM
    struct stackframe_stBM *stkf);
 // parse then expand $( .... ) value expression
 typedef value_tyBM parser_expand_valexp_sigBM
-  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos, int depth,
    struct stackframe_stBM *stkf);
 // parse then expand $[ .... ] object expression
 typedef const objectval_tyBM *parser_expand_objexp_sigBM
-  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos, int depth,
    struct stackframe_stBM *stkf);
 // decorate the comment signs
 typedef void parser_decorate_comment_sign_sigBM

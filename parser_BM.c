@@ -1068,7 +1068,7 @@ parsergetobject_BM (struct parser_stBM * pars,
       g_utf8_validate (resbuf, -1, &end);
       *(char *) end = (char) 0;
       _.resobj = parsops->parsop_expand_objexp_rout
-        (pars, lineno, colpos, (struct stackframe_stBM *) &_);
+        (pars, lineno, colpos, depth, (struct stackframe_stBM *) &_);
       if (!nobuild && !isobject_BM ((const value_tyBM) _.resobj))
         parsererrorprintf_BM (pars, lineno, colpos,
                               "failed $[...] expansion of %s", resbuf);
@@ -1460,7 +1460,7 @@ parsergetvalue_BM (struct parser_stBM * pars,
       *(char *) end = (char) 0;
       _.resval =
         (const value_tyBM) parsops->parsop_expand_objexp_rout
-        (pars, lineno, colpos, (struct stackframe_stBM *) &_);
+        (pars, lineno, colpos, depth, (struct stackframe_stBM *) &_);
       if (!nobuild && !isobject_BM ((const value_tyBM) _.resval))
         parsererrorprintf_BM (pars, lineno, colpos,
                               "failed $[...] expansion of %s", resbuf);
@@ -1482,7 +1482,7 @@ parsergetvalue_BM (struct parser_stBM * pars,
       g_utf8_validate (resbuf, -1, &end);
       *(char *) end = (char) 0;
       _.resval =
-        parsops->parsop_expand_valexp_rout (pars, lineno, colpos,
+        parsops->parsop_expand_valexp_rout (pars, lineno, colpos, depth,
                                             (struct stackframe_stBM *) &_);
       if (!nobuild && !isobject_BM ((const value_tyBM) _.resval))
         parsererrorprintf_BM (pars, lineno, colpos,
