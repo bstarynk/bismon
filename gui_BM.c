@@ -88,6 +88,64 @@ GtkTextTag *xtra_cmdtags_BM[CMD_MAXNEST_BM];
 
 #define BROWSE_MAXDEPTH_BM 48
 
+
+static jmp_buf jmperrorcmd_BM;
+
+static parser_error_sigBM parserrorcmd_BM;
+static parser_expand_dollarval_sigBM parsdollarvalcmd_BM;
+static parser_expand_dollarobj_sigBM parsdollarobjcmd_BM;
+static parser_expand_valexp_sigBM parsvalexpcmd_BM;
+static parser_expand_objexp_sigBM parsobjexpcmd_BM;
+static parser_decorate_comment_sign_sigBM parscommentsigncmd_BM;
+static parser_decorate_comment_inside_sigBM parscommentinsidecmd_BM;
+static parser_decorate_delimiter_sigBM parsdelimcmd_BM;
+static parser_decorate_id_sigBM parsidcmd_BM;
+static parser_decorate_name_sigBM parsknownamecmd_BM;
+static parser_decorate_name_sigBM parsnewnamecmd_BM;
+static parser_decorate_nesting_sigBM parsnestingcmd_BM;
+static parser_decorate_start_nesting_sigBM parsstartnestingcmd_BM;
+const struct parserops_stBM parsop_command_build_BM = {
+  .parsop_magic = PARSOPMAGIC_BM,
+  .parsop_serial = 1,
+  .parsop_nobuild = false,
+  .parsop_error_rout = parserrorcmd_BM,
+  .parsop_expand_dollarobj_rout = parsdollarobjcmd_BM,
+  .parsop_expand_dollarval_rout = parsdollarvalcmd_BM,
+  .parsop_expand_valexp_rout = parsvalexpcmd_BM,
+  .parsop_expand_objexp_rout = parsobjexpcmd_BM,
+  .parsop_decorate_comment_sign_rout = parscommentsigncmd_BM,
+  .parsop_decorate_comment_inside_rout = parscommentinsidecmd_BM,
+  .parsop_decorate_delimiter_rout = parsdelimcmd_BM,
+  .parsop_decorate_id_rout = parsidcmd_BM,
+  .parsop_decorate_known_name_rout = parsknownamecmd_BM,
+  .parsop_decorate_new_name_rout = parsnewnamecmd_BM,
+  .parsop_decorate_nesting_rout = parsnestingcmd_BM,
+  .parsop_decorate_start_nesting_rout = parsstartnestingcmd_BM,
+};
+
+const struct parserops_stBM parsop_command_nobuild_BM = {
+  .parsop_magic = PARSOPMAGIC_BM,
+  .parsop_serial = 2,
+  .parsop_nobuild = true,
+  .parsop_error_rout = parserrorcmd_BM,
+  .parsop_expand_dollarobj_rout = parsdollarobjcmd_BM,
+  .parsop_expand_dollarval_rout = parsdollarvalcmd_BM,
+  .parsop_expand_valexp_rout = parsvalexpcmd_BM,
+  .parsop_expand_objexp_rout = parsobjexpcmd_BM,
+  .parsop_decorate_comment_sign_rout = parscommentsigncmd_BM,
+  .parsop_decorate_comment_inside_rout = parscommentinsidecmd_BM,
+  .parsop_decorate_delimiter_rout = parsdelimcmd_BM,
+  .parsop_decorate_id_rout = parsidcmd_BM,
+  .parsop_decorate_known_name_rout = parsknownamecmd_BM,
+  .parsop_decorate_new_name_rout = parsnewnamecmd_BM,
+  .parsop_decorate_nesting_rout = parsnestingcmd_BM,
+  .parsop_decorate_start_nesting_rout = parsstartnestingcmd_BM,
+};
+
+
+
+
+
 static void start_browse_object_BM (const objectval_tyBM * obj, int depth);
 
 static void start_browse_named_value_BM (const stringval_tyBM * namev,
@@ -101,7 +159,10 @@ static void browse_add_parens_BM (int openoff, int closeoff,
 
 static int browse_object_start_offset_BM (void);
 
-
+static struct browsedobj_stBM *find_browsed_object_BM
+  (const objectval_tyBM * obj);
+static struct browsedval_stBM *find_browsed_named_value_BM
+  (const char *valname);
 
 const char *
 gobjectclassnamedbg_BM (GObject * ptr)
@@ -201,6 +262,33 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
   browserit_BM = it;
 }                               /* end start_browse_object_BM */
 
+
+struct browsedobj_stBM *
+find_browsed_object_BM (const objectval_tyBM * obj)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return NULL;
+  int lo = 0, hi = browserobulen_BM, md = 0;
+  while (lo + 8 < hi)
+    {
+      md = (lo + hi) / 2;
+      const objectval_tyBM *mdobj = browsedobj_BM[md].brow_obj;
+      assert (isobject_BM ((const value_tyBM) mdobj));
+      int cmp = objectnamedcmp_BM (mdobj, obj);
+      if (cmp <= 0)
+        lo = md;
+      else
+        hi = md;
+    }
+  for (md = lo; md < hi; md++)
+    {
+      const objectval_tyBM *mdobj = browsedobj_BM[md].brow_obj;
+      assert (isobject_BM ((const value_tyBM) mdobj));
+      if (mdobj == obj)
+        return browsedobj_BM + md;
+    }
+  return NULL;
+}                               /* end find_browsed_object_BM */
 
 
 void
@@ -373,6 +461,33 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
   browsednvulen_BM = 1;
   return;
 }                               /* end start_browse_named_value_BM */
+
+
+struct browsedval_stBM *
+find_browsed_named_value_BM (const char *namestr)
+{
+  if (!namestr || !validname_BM (namestr))
+    return NULL;
+  unsigned lo = 0, hi = browsednvulen_BM, md = 0;
+  while (lo + 8 < hi)
+    {
+      md = (lo + hi) / 2;
+      assert (isstring_BM ((const value_tyBM) browsedval_BM[md].brow_name));
+      int cmp = strcmp (namestr, bytstring_BM (browsedval_BM[md].brow_name));
+      if (cmp <= 0)
+        lo = md;
+      else
+        hi = md;
+    }
+  for (md = lo; md < hi; md++)
+    {
+      struct browsedval_stBM *mdval = browsedval_BM + md;
+      assert (isstring_BM ((const value_tyBM) mdval->brow_name));
+      if (!strcmp (namestr, bytstring_BM (mdval->brow_name)))
+        return mdval;
+    };
+  return NULL;
+}                               /* end find_browsed_named_value_BM */
 
 
 value_tyBM
@@ -717,60 +832,6 @@ deletemainwin_BM (GtkWidget * widget __attribute__ ((unused)),
       return true;
     }
 }                               /* end deletemainwin_BM */
-
-static jmp_buf jmperrorcmd_BM;
-
-static parser_error_sigBM parserrorcmd_BM;
-static parser_expand_dollarval_sigBM parsdollarvalcmd_BM;
-static parser_expand_dollarobj_sigBM parsdollarobjcmd_BM;
-static parser_expand_valexp_sigBM parsvalexpcmd_BM;
-static parser_expand_objexp_sigBM parsobjexpcmd_BM;
-static parser_decorate_comment_sign_sigBM parscommentsigncmd_BM;
-static parser_decorate_comment_inside_sigBM parscommentinsidecmd_BM;
-static parser_decorate_delimiter_sigBM parsdelimcmd_BM;
-static parser_decorate_id_sigBM parsidcmd_BM;
-static parser_decorate_name_sigBM parsknownamecmd_BM;
-static parser_decorate_name_sigBM parsnewnamecmd_BM;
-static parser_decorate_nesting_sigBM parsnestingcmd_BM;
-static parser_decorate_start_nesting_sigBM parsstartnestingcmd_BM;
-const struct parserops_stBM parsop_command_build_BM = {
-  .parsop_magic = PARSOPMAGIC_BM,
-  .parsop_serial = 1,
-  .parsop_nobuild = false,
-  .parsop_error_rout = parserrorcmd_BM,
-  .parsop_expand_dollarobj_rout = parsdollarobjcmd_BM,
-  .parsop_expand_dollarval_rout = parsdollarvalcmd_BM,
-  .parsop_expand_valexp_rout = parsvalexpcmd_BM,
-  .parsop_expand_objexp_rout = parsobjexpcmd_BM,
-  .parsop_decorate_comment_sign_rout = parscommentsigncmd_BM,
-  .parsop_decorate_comment_inside_rout = parscommentinsidecmd_BM,
-  .parsop_decorate_delimiter_rout = parsdelimcmd_BM,
-  .parsop_decorate_id_rout = parsidcmd_BM,
-  .parsop_decorate_known_name_rout = parsknownamecmd_BM,
-  .parsop_decorate_new_name_rout = parsnewnamecmd_BM,
-  .parsop_decorate_nesting_rout = parsnestingcmd_BM,
-  .parsop_decorate_start_nesting_rout = parsstartnestingcmd_BM,
-};
-
-const struct parserops_stBM parsop_command_nobuild_BM = {
-  .parsop_magic = PARSOPMAGIC_BM,
-  .parsop_serial = 2,
-  .parsop_nobuild = true,
-  .parsop_error_rout = parserrorcmd_BM,
-  .parsop_expand_dollarobj_rout = parsdollarobjcmd_BM,
-  .parsop_expand_dollarval_rout = parsdollarvalcmd_BM,
-  .parsop_expand_valexp_rout = parsvalexpcmd_BM,
-  .parsop_expand_objexp_rout = parsobjexpcmd_BM,
-  .parsop_decorate_comment_sign_rout = parscommentsigncmd_BM,
-  .parsop_decorate_comment_inside_rout = parscommentinsidecmd_BM,
-  .parsop_decorate_delimiter_rout = parsdelimcmd_BM,
-  .parsop_decorate_id_rout = parsidcmd_BM,
-  .parsop_decorate_known_name_rout = parsknownamecmd_BM,
-  .parsop_decorate_new_name_rout = parsnewnamecmd_BM,
-  .parsop_decorate_nesting_rout = parsnestingcmd_BM,
-  .parsop_decorate_start_nesting_rout = parsstartnestingcmd_BM,
-};
-
 
 
 void
@@ -1141,9 +1202,7 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
   bool nobuild = parsops && parsops->parsop_nobuild;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct parser_stBM *pars;
-                 value_tyBM resval;
-                 value_tyBM srcval;
-                 objectval_tyBM * obj;
+                 value_tyBM resval; value_tyBM srcval; objectval_tyBM * obj;
                  objectval_tyBM * obsel; objectval_tyBM * obattr;
                  closure_tyBM * clos; value_tyBM otherval;
                  value_tyBM args[MAXARGS_BM];
@@ -1610,8 +1669,10 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                (struct stackframe_stBM *) &_, &tok))
             parsererrorprintf_BM (pars, curlineno, curcolpos,
                                   "invalid focus complement");
-	  // should call browse_object_gui_BM on the updated
-	  // gui_focus_obj, but with what browsdepth?
+          struct browsedobj_stBM *brfocusob =
+            find_browsed_object_BM (GLOBAL_BM (gui_focus_obj));
+          // should call browse_object_gui_BM on the updated
+          // gui_focus_obj, but with what browsdepth?
         }
 #warning parsercommandbuf_BM incomplete
     }
