@@ -5,6 +5,8 @@ GtkWidget *mainwin_BM;
 
 
 //////////////// browser
+int browserdepth_BM = 3;
+
 GtkTextTagTable *browsertagtable_BM;
 GtkTextBuffer *browserbuf_BM;
 GtkWidget *browserview_BM;
@@ -965,7 +967,7 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
       bool gotval = false;
       _.comp = parsergetvalue_BM (pars, //
                                   (struct stackframe_stBM *) &_,        //
-                                  0, &gotval);
+                                  depth + 1, &gotval);
       if (!gotval)
         parsererrorprintf_BM (pars, lineno, colpos, "missing value after !&");
       if (!nobuild)
@@ -981,14 +983,14 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
       bool gotattr = false;
       _.obattr = parsergetobject_BM (pars,      //
                                      (struct stackframe_stBM *) &_,     //
-                                     0, &gotattr);
+                                     depth + 1, &gotattr);
       if (!gotattr)
         parsererrorprintf_BM (pars, lineno, colpos,
                               "missing attribute after !:");
       bool gotval = false;
       _.comp = parsergetvalue_BM (pars, //
                                   (struct stackframe_stBM *) &_,        //
-                                  0, &gotval);
+                                  depth + 1, &gotval);
       if (!gotval)
         parsererrorprintf_BM (pars, lineno, colpos, "missing value after !:");
       if (!nobuild)
@@ -1004,7 +1006,7 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
       bool gotclass = false;
       _.obclass = parsergetobject_BM (pars,     //
                                       (struct stackframe_stBM *) &_,    //
-                                      0, &gotclass);
+                                      depth + 1, &gotclass);
       if (!gotclass)
         parsererrorprintf_BM (pars, lineno, colpos, "missing class after !$");
       if (!nobuild)
@@ -1022,7 +1024,7 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
       bool gotsel = false;
       _.obsel = parsergetobject_BM (pars,       //
                                     (struct stackframe_stBM *) &_,      //
-                                    0, &gotsel);
+                                    depth + 1, &gotsel);
       if (!gotsel)
         parsererrorprintf_BM (pars, arglineno, argcolpos,
                               "missing selector after !>");
@@ -1635,7 +1637,8 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
     return;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct parser_stBM * pars;
-                 value_tyBM comp;
+                 value_tyBM comp; objectval_tyBM * obj;
+                 const stringval_tyBM * name;
     );
   _.pars = pars;
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -1653,6 +1656,7 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
       unsigned curlineno = parserlineno_BM (pars);
       unsigned curcolpos = parsercolpos_BM (pars);
       parstoken_tyBM tok = parsertokenget_BM (pars);
+      // object complement applies to focus
       if (tok.tok_kind == plex_DELIM
           && (tok.tok_delim == delim_exclamand
               || tok.tok_delim == delim_exclamcolon
@@ -1669,11 +1673,142 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                (struct stackframe_stBM *) &_, &tok))
             parsererrorprintf_BM (pars, curlineno, curcolpos,
                                   "invalid focus complement");
-          struct browsedobj_stBM *brfocusob =
-            find_browsed_object_BM (GLOBAL_BM (gui_focus_obj));
-          // should call browse_object_gui_BM on the updated
-          // gui_focus_obj, but with what browsdepth?
+          if (!nobuild)
+            {
+              struct browsedobj_stBM *brfocusob =
+                find_browsed_object_BM (GLOBAL_BM (gui_focus_obj));
+              assert (brfocusob != NULL);
+              browse_object_gui_BM (GLOBAL_BM (gui_focus_obj),
+                                    BMP_browse_in_object,
+                                    brfocusob->brow_depth,
+                                    (struct stackframe_stBM *) &_);
+              /// should output on log window a message
+            }
         }
+      //
+      // ?* <object> # to focus and display an object
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_questionstar)
+        {
+          bool gotobject = false;
+          _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
+                                      0, &gotobject);
+          if (!gotobject)
+            parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                  "no new focus object after ?*");
+          if (!nobuild)
+            {
+              if (GLOBAL_BM (gui_focus_obj))
+                hide_object_gui_BM (GLOBAL_BM (gui_focus_obj),
+                                    (struct stackframe_stBM *) &_);
+              GLOBAL_BM (gui_focus_obj) = _.obj;
+              browse_object_gui_BM (GLOBAL_BM (gui_focus_obj),
+                                    BMP_browse_in_object,
+                                    browserdepth_BM,
+                                    (struct stackframe_stBM *) &_);
+              /// should output on log window a message
+            }
+        }
+      //
+      // ?- <object> # to hide an object
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_questionstar)
+        {
+          bool gotobject = false;
+          _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
+                                      0, &gotobject);
+          if (!gotobject)
+            parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                  "no object to hide after ?-");
+          if (!nobuild)
+            {
+              if (_.obj == GLOBAL_BM (gui_focus_obj))
+                GLOBAL_BM (gui_focus_obj) = NULL;
+              hide_object_gui_BM (_.obj, (struct stackframe_stBM *) &_);
+              /// should output on log window a message
+            }
+        }
+      //
+      // ?$ <name> <value> # to display and bind a named value
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_questiondollar)
+        {
+          tok = parsertokenget_BM (pars);
+          if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
+            parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                  "no name to bind and show after ?$");
+          if (!nobuild)
+            {
+              if (tok.tok_kind == plex_NAMEDOBJ)
+                _.name = makestring_BM (findobjectname_BM (tok.tok_namedobj));
+              else
+                _.name = tok.tok_cname;
+              assert (isstring_BM ((const value_tyBM) _.name));
+            };
+          bool gotval = false;
+          _.comp =
+            parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, 0,
+                               &gotval);
+          if (!gotval)
+            parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                  "no value to bind and show after ?$");
+          if (!nobuild)
+            {
+              if (_.comp)
+                browse_named_value_gui_BM (_.name, _.comp, BMP_browse_value,
+                                           browserdepth_BM,
+                                           (struct stackframe_stBM *) &_);
+              else
+                hide_named_value_gui_BM (_.name,
+                                         (struct stackframe_stBM *) &_);
+              /// should output on log window a message
+            }
+        }
+      // ?$- <name>  # to hide and unbind a named value
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_questiondollar)
+        {
+          tok = parsertokenget_BM (pars);
+          if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
+            parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                  "no name to hideafter ?$-");
+          if (!nobuild)
+            {
+              if (tok.tok_kind == plex_NAMEDOBJ)
+                _.name = makestring_BM (findobjectname_BM (tok.tok_namedobj));
+              else
+                _.name = tok.tok_cname;
+              assert (isstring_BM ((const value_tyBM) _.name));
+              hide_named_value_gui_BM (_.name, (struct stackframe_stBM *) &_);
+              /// should output on log window a message
+            };
+        }
+      //
+      // ?# <depth> # to change the browse depth
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_questionhash)
+        {
+          tok = parsertokenget_BM (pars);
+          if (tok.tok_kind != plex_LLONG)
+            parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                  "?# should be followed by browse depth number");
+          int newdepth = browserdepth_BM;
+          if (tok.tok_llong < 2)
+            newdepth = 2;
+          else if (tok.tok_llong > BROWSE_MAXDEPTH_BM)
+            newdepth = BROWSE_MAXDEPTH_BM;
+          else
+            newdepth = (int) tok.tok_llong;
+          if (!nobuild)
+            {
+              browserdepth_BM = newdepth;
+              // should log a message
+            }
+        }
+      //
+      else
+        parsererrorprintf_BM (pars, curlineno, curcolpos,
+                              "unexpected command");
 #warning parsercommandbuf_BM incomplete
     }
 }                               /* end parsercommandbuf_BM */
