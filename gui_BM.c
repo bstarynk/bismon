@@ -184,6 +184,23 @@ static struct browsedobj_stBM *find_browsed_object_BM
 static struct browsedval_stBM *find_browsed_named_value_BM
   (const char *valname);
 
+static void runcommand_BM (bool erase);
+static void run_then_erase_command_BM (void);
+static void run_then_keep_command_BM (void);
+
+void
+run_then_erase_command_BM (void)
+{
+  runcommand_BM (true);
+}                               /* end run_then_erase_command_BM */
+
+void
+run_then_keep_command_BM (void)
+{
+  runcommand_BM (false);
+}                               /* end run_then_keep_command_BM */
+
+
 const char *
 gobjectclassnamedbg_BM (GObject * ptr)
 {
@@ -2426,19 +2443,19 @@ handlekeypresscmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
       GdkModifierType modmask = gtk_accelerator_get_default_mod_mask ();
       bool withctrl = (evk->state & modmask) == GDK_CONTROL_MASK;
       bool withshift = (evk->state & modmask) == GDK_SHIFT_MASK;
-#warning handlekeypresscmd_BM unimplemented
-      printf ("handlekeypresscmd_BM got RETURN %s ctrl, %s shift\n",
-              withctrl ? "with" : "no", withshift ? "with" : "no");
-      fflush (stdout);
       if (!withctrl && !withshift)
         {
-          printf ("handlekeypresscmd_BM propagate plain RETURN\n");
           return false;
         }
+      if (withctrl)
+        run_then_erase_command_BM ();
+      else if (withshift)
+        run_then_keep_command_BM ();
       return true;
     }
   else if (evk->keyval == GDK_KEY_Tab)
     {
+#warning tab should autocomplete in handlekeypresscmd_BM
       printf ("handlekeypresscmd_BM ignore TAB\n");
       fflush (stdout);
       return true;
@@ -2446,13 +2463,62 @@ handlekeypresscmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
   return false;                 // propagate the event
 }                               /* end handlekeypresscmd_BM */
 
-void
-parse_command_gui_BM (bool nobuild)
+struct runcommandspecialframe_stBM
 {
-  /// should create a parser from the content of the command textview
-  /// call longjmp for error catching, then call parsercommandbuf_BM
-#warning parse_command_gui_BM unimplemented
-}                               /* end parse_command_gui_BM */
+  struct specialframe_stBM parentspecfram;
+  struct parser_stBM *cmdpars;
+};
+
+static void
+runcommandspecialframemarker_BM (struct garbcoll_stBM *gc,
+                                 struct specialframe_stBM *spf)
+{
+  struct runcommandspecialframe_stBM *stkf =
+    (struct runcommandspecialframe_stBM *) spf;
+  gcmark_BM (gc, (value_tyBM) stkf->cmdpars, 0);
+  for (int ix = 0; ix < (int) browserobulen_BM; ix++)
+    gcmark_BM (gc, (value_tyBM) browsedobj_BM[ix].brow_obj, 0);
+  for (int ix = 0; ix < (int) browsednvulen_BM; ix++)
+    {
+      gcmark_BM (gc, browsedval_BM[ix].brow_val, 0);
+      gcmark_BM (gc, (value_tyBM) browsedval_BM[ix].brow_name, 0);
+    };
+}                               /* end runcommandspecialframemarker_BM */
+
+void
+runcommand_BM (bool erase)
+{
+  GtkTextIter startit = { };
+  GtkTextIter endit = { };
+  gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
+  char *cmdstr =
+    gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit, false);
+  struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
+  cmdpars->pars_ops = &parsop_command_build_BM;
+  struct runcommandspecialframe_stBM _;
+  memset (&_, 0, sizeof (_));
+  ((typedhead_tyBM *) & _)->htyp = tydata_SpecialFrame_BM;
+  ((struct specialframe_stBM *) &_)->specfram_markerout =
+    runcommandspecialframemarker_BM;
+  _.cmdpars = cmdpars;
+  delaymserrorcmd_BM = 0;
+  assert (delayiderrorcmd_BM == 0);
+  delayiderrorcmd_BM = 0;
+  int errpars = setjmp (jmperrorcmd_BM);
+  if (!errpars)
+    {
+      // should parse the command buffer
+    }
+  else
+    {
+      // got parsing error
+    }
+#warning runcommand_BM incomplete
+  printf ("runcommand_BM incomplete\n");
+  free (cmdstr);
+  if (erase)
+    gtk_text_buffer_set_text (commandbuf_BM, "", 0);
+}                               /* end runcommand_BM */
 
 void
 initialize_gui_BM (const char *builderfile)
