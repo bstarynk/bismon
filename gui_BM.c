@@ -1989,7 +1989,7 @@ parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
 
 
 void
-parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
+parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 {
   if (!isparser_BM (pars))
     return;
@@ -2214,7 +2214,7 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
         parsererrorprintf_BM (pars, curlineno, curcolpos,
                               "unexpected command");
     }
-}                               /* end parsercommandbuf_BM */
+}                               /* end parsecommandbuf_BM */
 
 
 void
@@ -2508,6 +2508,7 @@ runcommand_BM (bool erase)
   if (!errpars)
     {
       // should parse the command buffer
+      parsecommandbuf_BM (cmdpars, (struct stackframe_stBM *) &_);
     }
   else
     {
