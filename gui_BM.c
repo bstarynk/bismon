@@ -94,8 +94,14 @@ GtkTextTag *xtra_cmdtags_BM[CMD_MAXNEST_BM];
 
 #define BROWSE_MAXDEPTH_BM 48
 
-
+// on cmd parse error, we setjmp to ....
 static jmp_buf jmperrorcmd_BM;
+// if the delay is positive, we postpone the message label display
+static int delaymserrorcmd_BM;
+// the id of the timeout
+static guint delayiderrorcmd_BM;
+// the timeout function, whose data is a markup string to be g_free-d
+static gboolean timeoutfunerrorcmd_BM (gpointer);
 
 static parser_error_sigBM parserrorcmd_BM;
 static parser_expand_dollarval_sigBM parsdollarvalcmd_BM;
@@ -950,6 +956,17 @@ log_printf_message_BM (const char *fmt, ...)
     free (buf);
 }                               /* end log_printf_message_BM */
 
+static gboolean
+timeoutfunerrorcmd_BM (gpointer data)
+{
+  char *errmsg = (char *) data;
+  assert (errmsg && errmsg[0] && errmsg[1]);
+  gtk_label_set_markup (GTK_LABEL (msglab_BM), errmsg);
+  errmsg[0] = '?';
+  errmsg[1] = (char) 0;
+  g_free (errmsg);
+  return false;
+}                               /* end timeoutfunerrorcmd_BM */
 
 void
 parserrorcmd_BM (struct parser_stBM *pars,
@@ -958,18 +975,47 @@ parserrorcmd_BM (struct parser_stBM *pars,
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
-  char *errmsg = g_markup_printf_escaped ("<b>command error L%dC%d:</b>\n"
-                                          "%s",
-                                          lineno, colpos, msg);
-  gtk_label_set_markup (GTK_LABEL (msglab_BM), errmsg);
+  bool nobuild = parsops && parsops->parsop_nobuild;
   GtkTextIter it;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit;
   gtk_text_buffer_get_end_iter (commandbuf_BM, &endit);
   gtk_text_buffer_apply_tag (commandbuf_BM, errored_cmdtag_BM, &it, &endit);
+  if (delaymserrorcmd_BM <= 0)
+    {
+      char *errmsg = g_markup_printf_escaped ("<b>command error L%dC%d:</b>\n"
+                                              "%s",
+                                              lineno, colpos, msg);
+      gtk_label_set_markup (GTK_LABEL (msglab_BM), errmsg);
+      g_free (errmsg);
+      if (!nobuild)
+        {
+          log_begin_message_BM ();
+          log_puts_message_BM (msg);
+          char errbuf[64];
+          snprintf (errbuf, sizeof (errbuf), "command error L%dC%d:", lineno,
+                    colpos);
+          GtkTextIter it = { };
+          gtk_text_buffer_get_end_iter (logbuf_BM, &it);
+          gtk_text_buffer_insert_with_tags
+            (logbuf_BM, &it, errbuf, -1, error_logtag_BM, NULL);
+          log_puts_message_BM (msg);
+          log_end_message_BM ();
+        }
+    }
+  else
+    {
+      assert (delayiderrorcmd_BM == 0);
+      char *delayerrmsg =
+        g_markup_printf_escaped ("<b>command <i>error</i> L%dC%d:</b>\n" "%s",
+                                 lineno, colpos, msg);
+      delayiderrorcmd_BM =
+        g_timeout_add_full (G_PRIORITY_DEFAULT, delaymserrorcmd_BM,
+                            timeoutfunerrorcmd_BM, delayerrmsg,
+                            (GDestroyNotify) g_free);
+    }
   free (msg);
-  g_free (errmsg);
   longjmp (jmperrorcmd_BM, 1);
 }                               /* end parserrorcmd_BM */
 
@@ -1809,6 +1855,10 @@ parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
           objtouchnow_BM (_.obj);
           objputspacenum_BM (_.obj, UserEsp_BM);
           registername_BM (_.obj, bytstring_BM (_.namev));
+          log_begin_message_BM ();
+          log_puts_message_BM ("created userE named object ");
+          log_object_message_BM (_.obj);
+          log_end_message_BM ();
         }
     }
   // : to create a new transient anonymous object
@@ -1820,6 +1870,10 @@ parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
           _.obj = makeobj_BM ();
           objtouchnow_BM (_.obj);
           objputspacenum_BM (_.obj, TransientSp_BM);
+          log_begin_message_BM ();
+          log_puts_message_BM ("created transient anonymous object ");
+          log_object_message_BM (_.obj);
+          log_end_message_BM ();
         }
     }
   // % to create a new (userE) anonymous object
@@ -1831,6 +1885,10 @@ parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
           _.obj = makeobj_BM ();
           objtouchnow_BM (_.obj);
           objputspacenum_BM (_.obj, UserEsp_BM);
+          log_begin_message_BM ();
+          log_puts_message_BM ("created userE anonymous object ");
+          log_object_message_BM (_.obj);
+          log_end_message_BM ();
         }
     }
   //
@@ -1891,6 +1949,15 @@ parsobjexpcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
         parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
                               "bad object complement (for $[...] started L%d:C%d",
                               oblineno, obcolpos);
+      if (!nobuild)
+        {
+          log_begin_message_BM ();
+          log_puts_message_BM ("updated object ");
+          log_object_message_BM (_.obj);
+          log_puts_message_BM (".");
+          log_end_message_BM ();
+        }
+      return _.obj;
     };
   parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
                         "invalid object expression for $[...] started L%d:C%d",
@@ -1905,11 +1972,10 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
   if (!isparser_BM (pars))
     return;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 struct parser_stBM * pars;
-                 value_tyBM comp; objectval_tyBM * obj;
+                 struct parser_stBM * pars; value_tyBM comp;
+                 objectval_tyBM * obj; objectval_tyBM * oldfocusobj;
                  const stringval_tyBM * name;
     );
-#warning parsercommandbuf_BM should output to log window
   _.pars = pars;
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
@@ -1952,7 +2018,11 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                                     BMP_browse_in_object,
                                     brfocusob->brow_depth,
                                     (struct stackframe_stBM *) &_);
-              /// should output on log window a message
+              log_begin_message_BM ();
+              log_puts_message_BM ("[re-]browsing object ");
+              log_object_message_BM (GLOBAL_BM (gui_focus_obj));
+              log_puts_message_BM (".");
+              log_end_message_BM ();
             }
         }
       //
@@ -1968,15 +2038,31 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                                   "no new focus object after ?*");
           if (!nobuild)
             {
-              if (GLOBAL_BM (gui_focus_obj))
-                hide_object_gui_BM (GLOBAL_BM (gui_focus_obj),
-                                    (struct stackframe_stBM *) &_);
+              _.oldfocusobj = GLOBAL_BM (gui_focus_obj);
+              struct browsedobj_stBM *broldfocusob =
+                find_browsed_object_BM (_.oldfocusobj);
               GLOBAL_BM (gui_focus_obj) = _.obj;
+              if (broldfocusob && _.oldfocusobj != _.obj)
+                {
+                  browse_object_gui_BM (_.oldfocusobj,
+                                        BMP_browse_in_object,
+                                        broldfocusob->brow_depth,
+                                        (struct stackframe_stBM *) &_);
+                  log_begin_message_BM ();
+                  log_puts_message_BM ("defocusing object ");
+                  log_object_message_BM (_.oldfocusobj);
+                  log_puts_message_BM (".");
+                  log_end_message_BM ();
+                }
               browse_object_gui_BM (GLOBAL_BM (gui_focus_obj),
                                     BMP_browse_in_object,
                                     browserdepth_BM,
                                     (struct stackframe_stBM *) &_);
-              /// should output on log window a message
+              log_begin_message_BM ();
+              log_puts_message_BM ("focusing object ");
+              log_object_message_BM (GLOBAL_BM (gui_focus_obj));
+              log_puts_message_BM (".");
+              log_end_message_BM ();
             }
         }
       //
@@ -1995,7 +2081,11 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
               if (_.obj == GLOBAL_BM (gui_focus_obj))
                 GLOBAL_BM (gui_focus_obj) = NULL;
               hide_object_gui_BM (_.obj, (struct stackframe_stBM *) &_);
-              /// should output on log window a message
+              log_begin_message_BM ();
+              log_puts_message_BM ("hiding object ");
+              log_object_message_BM (_.obj);
+              log_puts_message_BM (".");
+              log_end_message_BM ();
             }
         }
       //
@@ -2025,13 +2115,24 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
           if (!nobuild)
             {
               if (_.comp)
-                browse_named_value_gui_BM (_.name, _.comp, BMP_browse_value,
-                                           browserdepth_BM,
-                                           (struct stackframe_stBM *) &_);
+                {
+                  log_begin_message_BM ();
+                  log_printf_message_BM ("binding & showing named value $%s.",
+                                         bytstring_BM (_.name));
+                  log_end_message_BM ();
+                  browse_named_value_gui_BM (_.name, _.comp, BMP_browse_value,
+                                             browserdepth_BM,
+                                             (struct stackframe_stBM *) &_);
+                }
               else
-                hide_named_value_gui_BM (_.name,
-                                         (struct stackframe_stBM *) &_);
-              /// should output on log window a message
+                {
+                  log_begin_message_BM ();
+                  log_printf_message_BM ("hiding named value $%s.",
+                                         bytstring_BM (_.name));
+                  log_end_message_BM ();
+                  hide_named_value_gui_BM (_.name,
+                                           (struct stackframe_stBM *) &_);
+                }
             }
         }
       // ?$- <name>  # to hide and unbind a named value
@@ -2041,7 +2142,7 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
           tok = parsertokenget_BM (pars);
           if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
             parsererrorprintf_BM (pars, curlineno, curcolpos,
-                                  "no name to hideafter ?$-");
+                                  "no name to hide after ?$-");
           if (!nobuild)
             {
               if (tok.tok_kind == plex_NAMEDOBJ)
@@ -2049,7 +2150,15 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
               else
                 _.name = tok.tok_cname;
               assert (isstring_BM ((const value_tyBM) _.name));
+              if (!find_browsed_named_value_BM (bytstring_BM (_.name)))
+                parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                      "name %s is not of a shown value",
+                                      bytstring_BM (_.name));
               hide_named_value_gui_BM (_.name, (struct stackframe_stBM *) &_);
+              log_begin_message_BM ();
+              log_printf_message_BM ("hiding named value $%s.",
+                                     bytstring_BM (_.name));
+              log_end_message_BM ();
               /// should output on log window a message
             };
         }
@@ -2071,8 +2180,11 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
             newdepth = (int) tok.tok_llong;
           if (!nobuild)
             {
+              log_begin_message_BM ();
+              log_printf_message_BM ("changing browse depth to %d.",
+                                     newdepth);
+              log_end_message_BM ();
               browserdepth_BM = newdepth;
-              // should log a message
             }
         }
       //
@@ -2293,7 +2405,6 @@ parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
     .paroff_depth = depth
   };
   cmd_add_parens_BM (&po);
-
 }                               /* end parsstartnestingcmd_BM */
 
 
