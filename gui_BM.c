@@ -1561,7 +1561,11 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
                                         "failed to send %s",
                                         selname ? : selidbuf);
                 }
-              _.srcval = _.resval;
+              log_begin_message_BM ();
+              log_puts_message_BM ("sent message ");
+              log_object_message_BM (_.obsel);
+              log_printf_message_BM (" with %d arguments to value.", nbarg);
+              log_end_message_BM ();
             }
         }                       // end !> 
       //
@@ -1660,12 +1664,15 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
               if ((_.resval == NULL) || failapply)
                 {
                   char selidbuf[32];
-                  const char *selname = findobjectname_BM (_.obsel);
                   idtocbuf32_BM (objid_BM (_.obsel), selidbuf);
                   parsererrorprintf_BM (pars, arglineno, argcolpos,
-                                        "failed to send %s",
-                                        selname ? : selidbuf);
+                                        "failed to apply with %d arguments",
+                                        nbarg);
                 }
+              log_begin_message_BM ();
+              log_printf_message_BM ("applied with %d arguments to value.",
+                                     nbarg);
+              log_end_message_BM ();
               _.srcval = _.resval;
             }
         }                       // end application ( ... )
@@ -1687,7 +1694,17 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
             parsererrorprintf_BM (pars, atlineno, atcolpos,
                                   "expecting object attribute after !.");
           if (!nobuild)
-            _.resval = objgetattr_BM ((objectval_tyBM *) _.srcval, _.obattr);
+            {
+              _.resval =
+                objgetattr_BM ((objectval_tyBM *) _.srcval, _.obattr);
+              log_begin_message_BM ();
+              log_puts_message_BM ("got attribute ");
+              log_object_message_BM (_.obsel);
+              log_puts_message_BM (" from value object ");
+              log_object_message_BM ((objectval_tyBM *) _.srcval);
+              log_puts_message_BM (".");
+              log_end_message_BM ();
+            }
         }                       /* end !. */
       //
       // !@ <index> # to get a component
@@ -1714,6 +1731,12 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
               _.resval =
                 objgetcomp_BM ((objectval_tyBM *) _.srcval,
                                getint_BM (_.otherval));
+              log_begin_message_BM ();
+              log_printf_message_BM ("got component #%ld from object value ",
+                                     (long) getint_BM (_.otherval));
+              log_object_message_BM ((objectval_tyBM *) _.srcval);
+              log_puts_message_BM (".");
+              log_end_message_BM ();
             }
         }                       /* end !@ */
       //
@@ -1735,7 +1758,10 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
               browse_named_value_gui_BM (_.name, _.srcval, BMP_browse_value,
                                          browserdepth_BM,
                                          (struct stackframe_stBM *) &_);
-              //// should output on log window a message
+              log_begin_message_BM ();
+              log_printf_message_BM ("bound and show name $%s to value.",
+                                     bytstring_BM (_.name));
+              log_end_message_BM ();
             };
         }
       //
