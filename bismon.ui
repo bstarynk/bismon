@@ -290,10 +290,36 @@
     
   <!-- the log tag table -->
     <object class='GtkTextTagTable' id='logtagtable_id'>
-      <!-- error_logtag for the errored text -->
+      <!-- error_logtag for the error message in log -->
         <child type="tag">
             <object class='GtkTextTag'>
                 <property name="name">error_logtag</property>
+		<property name='foreground'>red3</property>
+            </object>
+        </child>
+      <!-- time_logtag for the time info in log -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">time_logtag</property>
+		<property name='foreground'>cadetblue</property>
+                <property name="font">Courier New</property>
+                <property name="scale">0.90</property>
+            </object>
+        </child>
+      <!-- id_logtag for object ids in log -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">id_logtag</property>
+		<property name='foreground'>chocolate4</property>
+                <property name="font">FreeMono Bold</property>
+            </object>
+        </child>
+      <!-- name_logtag for object names in log -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">name_logtag</property>
+		<property name='foreground'>darkgreen</property>
+                <property name="font">Liberation Mono Bold</property>
             </object>
         </child>
     </object>

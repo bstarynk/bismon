@@ -70,6 +70,10 @@ GtkWidget *commandview_BM;
 GtkTextTagTable *logtagtable_BM;
 GtkTextBuffer *logbuf_BM;
 GtkWidget *logview_BM;
+GtkTextTag *error_logtag_BM;
+GtkTextTag *time_logtag_BM;
+GtkTextTag *id_logtag_BM;
+GtkTextTag *name_logtag_BM;
 
 GtkWidget *msglab_BM;
 
@@ -942,8 +946,8 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
   if (!isparser_BM (pars))
     return false;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 struct parser_stBM * pars; value_tyBM comp;
-                 objectval_tyBM * targobj;
+                 struct parser_stBM * pars;
+                 value_tyBM comp; objectval_tyBM * targobj;
                  objectval_tyBM * obattr; objectval_tyBM * obclass;
                  objectval_tyBM * obsel; const stringval_tyBM * name;
                  value_tyBM args[MAXARGS_BM];
@@ -1229,8 +1233,8 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct parser_stBM *pars;
                  value_tyBM resval; value_tyBM srcval; objectval_tyBM * obj;
-                 objectval_tyBM * obsel; objectval_tyBM * obattr;
-                 closure_tyBM * clos;
+                 objectval_tyBM * obsel;
+                 objectval_tyBM * obattr; closure_tyBM * clos;
                  value_tyBM otherval; const stringval_tyBM * name;
                  value_tyBM args[MAXARGS_BM];
     );
@@ -2199,6 +2203,24 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (commandtagtable_BM, "nesting_cmdtag");
   if (!nesting_cmdtag_BM)
     FATAL_BM ("cannot find nesting_cmdtag");
+  ////////////////
+  error_logtag_BM =             //
+    gtk_text_tag_table_lookup (logtagtable_BM, "error_logtag");
+  if (!error_logtag_BM)
+    FATAL_BM ("cannot find error_logtag");
+  time_logtag_BM =              //
+    gtk_text_tag_table_lookup (logtagtable_BM, "time_logtag");
+  if (!time_logtag_BM)
+    FATAL_BM ("cannot find time_logtag");
+  id_logtag_BM =                //
+    gtk_text_tag_table_lookup (logtagtable_BM, "id_logtag");
+  if (!id_logtag_BM)
+    FATAL_BM ("cannot find id_logtag");
+  name_logtag_BM =              //
+    gtk_text_tag_table_lookup (logtagtable_BM, "name_logtag");
+  if (!name_logtag_BM)
+    FATAL_BM ("cannot find name_logtag");
+  ////////////////
   GtkWidget *mainvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);
   GtkWidget *mainmenubar = gtk_menu_bar_new ();
