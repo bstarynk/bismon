@@ -150,6 +150,8 @@ const struct parserops_stBM parsop_command_nobuild_BM = {
 
 static void log_begin_message_BM (void);
 static void log_object_message_BM (const objectval_tyBM * obj);
+static void log_printf_message_BM (const char *fmt, ...)
+  __attribute__ ((format (printf, 1, 2)));
 static void log_end_message_BM (void);
 
 
@@ -917,6 +919,31 @@ log_object_message_BM (const objectval_tyBM * obj)
 
 
 void
+log_printf_message_BM (const char *fmt, ...)
+{
+  char smallbuf[64];
+  memset (smallbuf, 0, sizeof (smallbuf));
+  GtkTextIter it = { };
+  gtk_text_buffer_get_end_iter (logbuf_BM, &it);
+  va_list args;
+  char *buf = smallbuf;
+  va_start (args, fmt);
+  int ln = vsnprintf (smallbuf, sizeof (smallbuf), fmt, args);
+  va_end (args);
+  if (ln >= (int) sizeof (smallbuf) - 1)
+    {
+      buf = calloc (prime_above_BM (ln) + 3, 1);
+      if (!buf)
+        FATAL_BM ("failed to calloc for %d bytes (%m)", ln);
+      ln = vsnprintf (buf, ln + 1, fmt, args);
+    }
+  gtk_text_buffer_insert (logbuf_BM, &it, buf, ln);
+  if (buf != smallbuf)
+    free (buf);
+}                               /* end log_printf_message_BM */
+
+
+void
 parserrorcmd_BM (struct parser_stBM *pars,
                  unsigned lineno, unsigned colpos, char *msg)
 {
@@ -1055,6 +1082,8 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
         {
           objappendcomp_BM (_.targobj, _.comp);
           log_begin_message_BM ();
+          log_printf_message_BM ("appended to ");
+          log_object_message_BM (_.targobj);
           log_end_message_BM ();
         }
     }
