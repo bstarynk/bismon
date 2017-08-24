@@ -938,12 +938,14 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
                         int depth, struct stackframe_stBM *stkf,
                         struct parstoken_stBM *ptok)
 {
+#warning parseobjectcomplcmd_BM should output log message
   if (!isparser_BM (pars))
     return false;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct parser_stBM * pars; value_tyBM comp;
-                 objectval_tyBM * targobj; objectval_tyBM * obattr;
-                 objectval_tyBM * obclass; objectval_tyBM * obsel;
+                 objectval_tyBM * targobj;
+                 objectval_tyBM * obattr; objectval_tyBM * obclass;
+                 objectval_tyBM * obsel; const stringval_tyBM * name;
                  value_tyBM args[MAXARGS_BM];
     );
   _.pars = pars;
@@ -1147,6 +1149,28 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
         objremoveattr_BM (_.targobj, _.obattr);
     }
   //
+  // $% <name> # to show and bind to name
+  else if (ptok->tok_kind == plex_DELIM
+           && ptok->tok_delim == delim_dollarpercent)
+    {
+      tok = parsertokenget_BM (pars);
+      if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "no name to bind and show after $%%");
+      if (!nobuild)
+        {
+          if (tok.tok_kind == plex_NAMEDOBJ)
+            _.name = makestring_BM (findobjectname_BM (tok.tok_namedobj));
+          else
+            _.name = tok.tok_cname;
+          assert (isstring_BM ((const value_tyBM) _.name));
+          browse_named_value_gui_BM (_.name, _.targobj, BMP_browse_value,
+                                     browserdepth_BM,
+                                     (struct stackframe_stBM *) &_);
+          //// should output on log window a message
+        };
+    }
+  //
   // !^ <space> # to move to given space
   else if (ptok->tok_kind == plex_DELIM
            && ptok->tok_delim == delim_exclamcaret)
@@ -1206,7 +1230,8 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
                  struct parser_stBM *pars;
                  value_tyBM resval; value_tyBM srcval; objectval_tyBM * obj;
                  objectval_tyBM * obsel; objectval_tyBM * obattr;
-                 closure_tyBM * clos; value_tyBM otherval;
+                 closure_tyBM * clos;
+                 value_tyBM otherval; const stringval_tyBM * name;
                  value_tyBM args[MAXARGS_BM];
     );
   _.pars = pars;
@@ -1344,7 +1369,7 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
             }
         }                       // end !> 
       //
-      //( ...) # to apply a functon
+      //  ( ...) # to apply a functon
       else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_leftparen)
         {
           unsigned arglineno = pars->pars_lineno;
@@ -1496,6 +1521,28 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
             }
         }                       /* end !@ */
       //
+      // $% <name> # to show and bind to name
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_dollarpercent)
+        {
+          tok = parsertokenget_BM (pars);
+          if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
+            parsererrorprintf_BM (pars, lineno, colpos,
+                                  "no name to bind and show after $%%");
+          if (!nobuild)
+            {
+              if (tok.tok_kind == plex_NAMEDOBJ)
+                _.name = makestring_BM (findobjectname_BM (tok.tok_namedobj));
+              else
+                _.name = tok.tok_cname;
+              assert (isstring_BM ((const value_tyBM) _.name));
+              browse_named_value_gui_BM (_.name, _.srcval, BMP_browse_value,
+                                         browserdepth_BM,
+                                         (struct stackframe_stBM *) &_);
+              //// should output on log window a message
+            };
+        }
+      //
       // otherwise error
       else
         parsererrorprintf_BM (pars, parserlineno_BM (pars),
@@ -1640,6 +1687,7 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                  value_tyBM comp; objectval_tyBM * obj;
                  const stringval_tyBM * name;
     );
+#warning parsercommandbuf_BM should output to log window
   _.pars = pars;
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
@@ -1809,7 +1857,6 @@ parsercommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
       else
         parsererrorprintf_BM (pars, curlineno, curcolpos,
                               "unexpected command");
-#warning parsercommandbuf_BM incomplete
     }
 }                               /* end parsercommandbuf_BM */
 
