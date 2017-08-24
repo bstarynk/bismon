@@ -148,7 +148,9 @@ const struct parserops_stBM parsop_command_nobuild_BM = {
   .parsop_decorate_start_nesting_rout = parsstartnestingcmd_BM,
 };
 
-
+static void log_begin_message_BM (void);
+static void log_object_message_BM (const objectval_tyBM * obj);
+static void log_end_message_BM (void);
 
 
 
@@ -841,6 +843,80 @@ deletemainwin_BM (GtkWidget * widget __attribute__ ((unused)),
 
 
 void
+log_begin_message_BM (void)
+{
+  static long logcnt;
+  logcnt++;
+  double now = clocktime_BM (CLOCK_REALTIME);
+  time_t nowt = (time_t) floor (now);
+  double nowfrac = now - (double) nowt;
+  struct tm nowtm = { };
+  localtime_r (&nowt, &nowtm);
+  char nowtibuf[32];
+  memset (nowtibuf, 0, sizeof (nowtibuf));
+  strftime (nowtibuf, sizeof (nowtibuf), "%T", &nowtm);
+  char nowfracbuf[8];
+  memset (nowfracbuf, 0, sizeof (nowfracbuf));
+  snprintf (nowfracbuf, sizeof (nowfracbuf), "%.02f", nowfrac);
+  char nowcntbuf[16];
+  memset (nowcntbuf, 0, sizeof (nowcntbuf));
+  snprintf (nowcntbuf, sizeof (nowcntbuf), " #%ld", logcnt);
+  char logmbuf[64];
+  memset (logmbuf, 0, sizeof (logmbuf));
+  snprintf (logmbuf, sizeof (logmbuf), "%s%s%s", nowtibuf, nowfracbuf,
+            nowcntbuf);
+  GtkTextIter it = { };
+  gtk_text_buffer_get_end_iter (logbuf_BM, &it);
+  gtk_text_buffer_insert (logbuf_BM, &it, "\n", 1);
+  gtk_text_buffer_insert_with_tags
+    (logbuf_BM, &it, logmbuf, -1, time_logtag_BM, NULL);
+  gtk_text_buffer_insert (logbuf_BM, &it, "\n", 1);
+}                               /* end log_begin_message_BM */
+
+
+void
+log_end_message_BM (void)
+{
+  GtkTextIter it = { };
+  gtk_text_buffer_get_end_iter (logbuf_BM, &it);
+  gtk_text_buffer_insert (logbuf_BM, &it, "\n", 1);
+}                               /* end log_end_message_BM */
+
+
+void
+log_object_message_BM (const objectval_tyBM * obj)
+{
+  GtkTextIter it = { };
+  gtk_text_buffer_get_end_iter (logbuf_BM, &it);
+  if (!obj)
+    {
+      gtk_text_buffer_insert (logbuf_BM, &it, "__", 2);
+      return;
+    };
+  if (valtype_BM ((const value_tyBM) obj) != tyObject_BM)
+    FATAL_BM ("invalid argument @%p to log_object_message_BM", obj);
+  const char *objname = findobjectname_BM (obj);
+  char idbuf[32];
+  memset (idbuf, 0, sizeof (idbuf));
+  idtocbuf32_BM (objid_BM (obj), idbuf);
+  if (objname)
+    {
+      gtk_text_buffer_insert_with_tags
+        (logbuf_BM, &it, objname, -1, name_logtag_BM, NULL);
+      gtk_text_buffer_insert (logbuf_BM, &it, " |=", -1);
+      gtk_text_buffer_insert_with_tags
+        (logbuf_BM, &it, idbuf, -1, id_logtag_BM, NULL);
+      gtk_text_buffer_insert (logbuf_BM, &it, "|", -1);
+    }
+  else
+    {
+      gtk_text_buffer_insert_with_tags
+        (logbuf_BM, &it, idbuf, -1, id_logtag_BM, NULL);
+    }
+}                               /* end log_object_message_BM */
+
+
+void
 parserrorcmd_BM (struct parser_stBM *pars,
                  unsigned lineno, unsigned colpos, char *msg)
 {
@@ -942,7 +1018,6 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
                         int depth, struct stackframe_stBM *stkf,
                         struct parstoken_stBM *ptok)
 {
-#warning parseobjectcomplcmd_BM should output log message
   if (!isparser_BM (pars))
     return false;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -977,7 +1052,11 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
       if (!gotval)
         parsererrorprintf_BM (pars, lineno, colpos, "missing value after !&");
       if (!nobuild)
-        objappendcomp_BM (_.targobj, _.comp);
+        {
+          objappendcomp_BM (_.targobj, _.comp);
+          log_begin_message_BM ();
+          log_end_message_BM ();
+        }
     }
   //
   // !: <attr> <val> # put an attribute in target object
@@ -1231,9 +1310,9 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno, unsigned colpos,
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 struct parser_stBM *pars;
-                 value_tyBM resval; value_tyBM srcval; objectval_tyBM * obj;
-                 objectval_tyBM * obsel;
+                 struct parser_stBM *pars; value_tyBM resval;
+                 value_tyBM srcval;
+                 objectval_tyBM * obj; objectval_tyBM * obsel;
                  objectval_tyBM * obattr; closure_tyBM * clos;
                  value_tyBM otherval; const stringval_tyBM * name;
                  value_tyBM args[MAXARGS_BM];

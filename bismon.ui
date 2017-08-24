@@ -303,7 +303,7 @@
                 <property name="name">time_logtag</property>
 		<property name='foreground'>cadetblue</property>
                 <property name="font">Courier New</property>
-                <property name="scale">0.90</property>
+                <property name="scale">0.85</property>
             </object>
         </child>
       <!-- id_logtag for object ids in log -->
