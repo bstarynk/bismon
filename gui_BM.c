@@ -2426,12 +2426,15 @@ handlekeypresscmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
       GdkModifierType modmask = gtk_accelerator_get_default_mod_mask ();
       bool withctrl = (evk->state & modmask) == GDK_CONTROL_MASK;
       bool withshift = (evk->state & modmask) == GDK_SHIFT_MASK;
-      if (!withctrl || !withshift)
-        return false;
 #warning handlekeypresscmd_BM unimplemented
-      printf ("handlekeypresscmd_BM ignore RETURN %s ctrl, %s shift\n",
+      printf ("handlekeypresscmd_BM got RETURN %s ctrl, %s shift\n",
               withctrl ? "with" : "no", withshift ? "with" : "no");
       fflush (stdout);
+      if (!withctrl && !withshift)
+        {
+          printf ("handlekeypresscmd_BM propagate plain RETURN\n");
+          return false;
+        }
       return true;
     }
   else if (evk->keyval == GDK_KEY_Tab)
@@ -2440,8 +2443,7 @@ handlekeypresscmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
       fflush (stdout);
       return true;
     }
-  else
-    return false;               // propagate the event
+  return false;                 // propagate the event
 }                               /* end handlekeypresscmd_BM */
 
 void
@@ -2666,8 +2668,8 @@ initialize_gui_BM (const char *builderfile)
   commandview_BM = gtk_text_view_new_with_buffer (commandbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (commandview_BM), true);
   {
-    GdkWindow *dwin = gtk_widget_get_parent_window (commandview_BM);
-    assert (dwin != NULL);
+    // GdkWindow *dwin = gtk_widget_get_parent_window (commandview_BM);
+    // assert (dwin != NULL);
     // perhaps call gdk_window_set_events
     g_signal_connect (commandview_BM, "key-press-event",
                       G_CALLBACK (handlekeypresscmd_BM), NULL);
