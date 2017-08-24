@@ -103,8 +103,8 @@ static guint delayiderrorcmd_BM;
 // the timeout function, whose data is a markup string to be g_free-d
 static gboolean timeoutfunerrorcmd_BM (gpointer);
 
-// the function to handle key releases of cmd, for Return & Tab
-static gboolean handlekeyreleasecmd_BM (GtkWidget *, GdkEventKey *, gpointer);
+// the function to handle keypresses of cmd, for Return & Tab
+static gboolean handlekeypresscmd_BM (GtkWidget *, GdkEventKey *, gpointer);
 
 static parser_error_sigBM parserrorcmd_BM;
 static parser_expand_dollarval_sigBM parsdollarvalcmd_BM;
@@ -2413,9 +2413,9 @@ parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
 }                               /* end parsstartnestingcmd_BM */
 
 
-// for "key-release-event" signal to commanddview_BM
+// for "key-press-event" signal to commandview_BM
 gboolean
-handlekeyreleasecmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
+handlekeypresscmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
 {
   assert (GTK_IS_TEXT_VIEW (widg));
   assert (evk != NULL);
@@ -2428,19 +2428,21 @@ handlekeyreleasecmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
       bool withshift = (evk->state & modmask) == GDK_SHIFT_MASK;
       if (!withctrl || !withshift)
         return false;
-#warning handlekeyreleasecmd_BM unimplemented
-      printf ("handlekeyreleasecmd_BM ignore RETURN %s ctrl, %s shift\n",
+#warning handlekeypresscmd_BM unimplemented
+      printf ("handlekeypresscmd_BM ignore RETURN %s ctrl, %s shift\n",
               withctrl ? "with" : "no", withshift ? "with" : "no");
+      fflush (stdout);
       return true;
     }
   else if (evk->keyval == GDK_KEY_Tab)
     {
-      printf ("handlekeyreleasecmd_BM ignore TAB\n");
+      printf ("handlekeypresscmd_BM ignore TAB\n");
+      fflush (stdout);
       return true;
     }
   else
     return false;               // propagate the event
-}                               /* end handlekeyreleasecmd_BM */
+}                               /* end handlekeypresscmd_BM */
 
 void
 parse_command_gui_BM (bool nobuild)
@@ -2663,8 +2665,13 @@ initialize_gui_BM (const char *builderfile)
     };
   commandview_BM = gtk_text_view_new_with_buffer (commandbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (commandview_BM), true);
-  g_signal_connect (commandview_BM, "key-release-event",
-                    handlekeyreleasecmd_BM, NULL);
+  {
+    GdkWindow *dwin = gtk_widget_get_parent_window (commandview_BM);
+    assert (dwin != NULL);
+    // perhaps call gdk_window_set_events
+    g_signal_connect (commandview_BM, "key-press-event",
+                      G_CALLBACK (handlekeypresscmd_BM), NULL);
+  }
   gtk_widget_set_tooltip_markup (GTK_WIDGET (commandview_BM),
                                  "<big><b>command view</b></big>\n");
   gtk_text_buffer_insert_at_cursor (commandbuf_BM, "|command|\n", -1);
