@@ -150,6 +150,7 @@ const struct parserops_stBM parsop_command_nobuild_BM = {
 
 static void log_begin_message_BM (void);
 static void log_object_message_BM (const objectval_tyBM * obj);
+static void log_puts_message_BM (const char *msg);
 static void log_printf_message_BM (const char *fmt, ...)
   __attribute__ ((format (printf, 1, 2)));
 static void log_end_message_BM (void);
@@ -917,14 +918,21 @@ log_object_message_BM (const objectval_tyBM * obj)
     }
 }                               /* end log_object_message_BM */
 
+void
+log_puts_message_BM (const char *msg)
+{
+  if (!msg || !msg[0])
+    return;
+  GtkTextIter it = { };
+  gtk_text_buffer_get_end_iter (logbuf_BM, &it);
+  gtk_text_buffer_insert (logbuf_BM, &it, msg, -1);
+}
 
 void
 log_printf_message_BM (const char *fmt, ...)
 {
   char smallbuf[64];
   memset (smallbuf, 0, sizeof (smallbuf));
-  GtkTextIter it = { };
-  gtk_text_buffer_get_end_iter (logbuf_BM, &it);
   va_list args;
   char *buf = smallbuf;
   va_start (args, fmt);
@@ -937,7 +945,7 @@ log_printf_message_BM (const char *fmt, ...)
         FATAL_BM ("failed to calloc for %d bytes (%m)", ln);
       ln = vsnprintf (buf, ln + 1, fmt, args);
     }
-  gtk_text_buffer_insert (logbuf_BM, &it, buf, ln);
+  log_puts_message_BM (buf);
   if (buf != smallbuf)
     free (buf);
 }                               /* end log_printf_message_BM */
@@ -1082,8 +1090,9 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
         {
           objappendcomp_BM (_.targobj, _.comp);
           log_begin_message_BM ();
-          log_printf_message_BM ("appended to ");
+          log_puts_message_BM ("appended to ");
           log_object_message_BM (_.targobj);
+          log_puts_message_BM (".");
           log_end_message_BM ();
         }
     }
@@ -1108,7 +1117,16 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
       if (!gotval)
         parsererrorprintf_BM (pars, lineno, colpos, "missing value after !:");
       if (!nobuild)
-        objputattr_BM (_.targobj, _.obattr, _.comp);
+        {
+          objputattr_BM (_.targobj, _.obattr, _.comp);
+          log_begin_message_BM ();
+          log_puts_message_BM ("put attribute ");
+          log_object_message_BM (_.obattr);
+          log_puts_message_BM (" in object ");
+          log_object_message_BM (_.targobj);
+          log_puts_message_BM (".");
+          log_end_message_BM ();
+        }
     }
   //
   // !$ <class>           # set the class of target object
@@ -1124,7 +1142,16 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
       if (!gotclass)
         parsererrorprintf_BM (pars, lineno, colpos, "missing class after !$");
       if (!nobuild)
-        objputclass_BM (_.targobj, _.obclass);
+        {
+          objputclass_BM (_.targobj, _.obclass);
+          log_begin_message_BM ();
+          log_puts_message_BM ("put class ");
+          log_object_message_BM (_.obclass);
+          log_puts_message_BM (" in object ");
+          log_object_message_BM (_.targobj);
+          log_puts_message_BM (".");
+          log_end_message_BM ();
+        }
     }
   //
   // !> <obselector> ( ... ) # to send a side-effecting message
@@ -1241,6 +1268,13 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
                                     selname ? : selidbuf,
                                     targname ? : targidbuf);
             }
+          log_begin_message_BM ();
+          log_puts_message_BM ("sent message ");
+          log_object_message_BM (_.obsel);
+          log_printf_message_BM (" with %d arguments to object ", nbarg);
+          log_object_message_BM (_.targobj);
+          log_puts_message_BM (".");
+          log_end_message_BM ();
         }
     }                           // end !> 
   //
@@ -1258,7 +1292,16 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
         parsererrorprintf_BM (pars, lineno, colpos,
                               "missing attribute after !-");
       if (!nobuild)
-        objremoveattr_BM (_.targobj, _.obattr);
+        {
+          objremoveattr_BM (_.targobj, _.obattr);
+          log_begin_message_BM ();
+          log_puts_message_BM ("remove attribute ");
+          log_object_message_BM (_.obattr);
+          log_puts_message_BM (" in object ");
+          log_object_message_BM (_.targobj);
+          log_puts_message_BM (".");
+          log_end_message_BM ();
+        }
     }
   //
   // $% <name> # to show and bind to name
@@ -1279,7 +1322,12 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
           browse_named_value_gui_BM (_.name, _.targobj, BMP_browse_value,
                                      browserdepth_BM,
                                      (struct stackframe_stBM *) &_);
-          //// should output on log window a message
+          log_begin_message_BM ();
+          log_printf_message_BM ("bound name $%s to object ",
+                                 bytstring_BM (_.name));
+          log_object_message_BM (_.targobj);
+          log_puts_message_BM (".");
+          log_end_message_BM ();
         };
     }
   //
@@ -1294,31 +1342,67 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * targobj,
           && tok.tok_llong < LASTSPACE__BM)
         {
           if (!nobuild)
-            objputspacenum_BM (_.targobj, tok.tok_llong);
+            {
+              objputspacenum_BM (_.targobj, tok.tok_llong);
+              log_begin_message_BM ();
+              log_printf_message_BM ("put in space#%d object ",
+                                     (int) tok.tok_llong);
+              log_object_message_BM (_.targobj);
+              log_puts_message_BM (".");
+              log_end_message_BM ();
+            }
         }
       // !^ *   to make global
       else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_star)
         {
           if (!nobuild)
-            objputspacenum_BM (_.targobj, GlobalSp_BM);
+            {
+              objputspacenum_BM (_.targobj, GlobalSp_BM);
+              log_begin_message_BM ();
+              log_puts_message_BM ("put in global space the object ");
+              log_object_message_BM (_.targobj);
+              log_puts_message_BM (".");
+              log_end_message_BM ();
+            }
         }
       // !^ :   to make userA
       else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_colon)
         {
           if (!nobuild)
-            objputspacenum_BM (_.targobj, UserASp_BM);
+            {
+              objputspacenum_BM (_.targobj, UserASp_BM);
+              log_begin_message_BM ();
+              log_puts_message_BM ("put in userA space the object ");
+              log_object_message_BM (_.targobj);
+              log_puts_message_BM (".");
+              log_end_message_BM ();
+            }
         }
-      // !^ ;   to make userA
+      // !^ ;   to make userB
       else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_semicolon)
         {
           if (!nobuild)
-            objputspacenum_BM (_.targobj, UserBSp_BM);
+            {
+              objputspacenum_BM (_.targobj, UserBSp_BM);
+              log_begin_message_BM ();
+              log_puts_message_BM ("put in userB space the object ");
+              log_object_message_BM (_.targobj);
+              log_puts_message_BM (".");
+              log_end_message_BM ();
+            }
         }
       // !^ %   to make transient
       else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_percent)
         {
           if (!nobuild)
-            objputspacenum_BM (_.targobj, TransientSp_BM);
+            {
+              objputspacenum_BM (_.targobj, TransientSp_BM);
+              log_begin_message_BM ();
+              log_puts_message_BM ("put in transient space the object ");
+              log_object_message_BM (_.targobj);
+              log_puts_message_BM (".");
+              log_end_message_BM ();
+            }
         }
       else
         parsererrorprintf_BM (pars, lineno, colpos, "bad space for !^");
