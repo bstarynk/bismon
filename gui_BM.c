@@ -866,13 +866,13 @@ log_begin_message_BM (void)
   strftime (nowtibuf, sizeof (nowtibuf), "%T", &nowtm);
   char nowfracbuf[8];
   memset (nowfracbuf, 0, sizeof (nowfracbuf));
-  snprintf (nowfracbuf, sizeof (nowfracbuf), "%.02f", nowfrac);
+  snprintf (nowfracbuf, sizeof (nowfracbuf), "%.2f", nowfrac);
   char nowcntbuf[16];
   memset (nowcntbuf, 0, sizeof (nowcntbuf));
   snprintf (nowcntbuf, sizeof (nowcntbuf), " #%ld", logcnt);
   char logmbuf[64];
   memset (logmbuf, 0, sizeof (logmbuf));
-  snprintf (logmbuf, sizeof (logmbuf), "%s%s%s", nowtibuf, nowfracbuf,
+  snprintf (logmbuf, sizeof (logmbuf), "%s%s%s", nowtibuf, nowfracbuf + 1,
             nowcntbuf);
   GtkTextIter it = { };
   gtk_text_buffer_get_end_iter (logbuf_BM, &it);
@@ -946,10 +946,12 @@ log_printf_message_BM (const char *fmt, ...)
   va_end (args);
   if (ln >= (int) sizeof (smallbuf) - 1)
     {
-      buf = calloc (prime_above_BM (ln) + 3, 1);
+      buf = calloc ((prime_above_BM (ln + 2) | 7) + 1, 1);
       if (!buf)
         FATAL_BM ("failed to calloc for %d bytes (%m)", ln);
+      va_start (args, fmt);
       ln = vsnprintf (buf, ln + 1, fmt, args);
+      va_end (args);
     }
   log_puts_message_BM (buf);
   if (buf != smallbuf)
@@ -2640,11 +2642,18 @@ initialize_gui_BM (const char *builderfile)
   logbuf_BM = gtk_text_buffer_new (logtagtable_BM);
   logview_BM = gtk_text_view_new_with_buffer (logbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (logview_BM), false);
-  gtk_text_buffer_insert_at_cursor (logbuf_BM, "*log*\n", -1);
   GtkWidget *logscrolw = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (logscrolw), logview_BM);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (logscrolw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  {
+    log_begin_message_BM ();
+    log_printf_message_BM
+      ("log of bismon (build %s,\n commit %s,\n checksum %s) pid %d",
+       bismon_timestamp, bismon_lastgitcommit, bismon_checksum,
+       (int) getpid ());
+    log_end_message_BM ();
+  }
   //
   gtk_paned_add1 (GTK_PANED (paned1), browserscrolw);
   GtkWidget *paned2 = gtk_paned_new (GTK_ORIENTATION_VERTICAL);

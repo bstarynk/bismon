@@ -91,7 +91,7 @@
                 <property name="paragraph-background">lightcyan1</property>
                 <property name="pixels-above-lines">2</property>
                 <property name="pixels-below-lines">3</property>
-                <property name="foreground">darkslategrey4</property>
+                <property name="foreground">darkslategray4</property>
                 <property name="justification">GTK_JUSTIFY_CENTER</property>
             </object>
         </child>
@@ -301,9 +301,10 @@
         <child type="tag">
             <object class='GtkTextTag'>
                 <property name="name">time_logtag</property>
-		<property name='foreground'>cadetblue</property>
-                <property name="font">Courier New</property>
-                <property name="scale">0.85</property>
+		<property name='foreground'>cadetblue4</property>
+		<property name='paragraph-background'>honeydew2</property>
+                <property name="font">Courier New Bold</property>
+                <property name="scale">0.92</property>
             </object>
         </child>
       <!-- id_logtag for object ids in log -->
