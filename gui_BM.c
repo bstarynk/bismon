@@ -106,6 +106,9 @@ static gboolean timeoutfunerrorcmd_BM (gpointer);
 // the function to handle keypresses of cmd, for Return & Tab
 static gboolean handlekeypresscmd_BM (GtkWidget *, GdkEventKey *, gpointer);
 
+// the function to handle "end-user-action" on commandbuf_BM
+static void enduseractioncmd_BM (GtkTextBuffer *, gpointer);
+
 static parser_error_sigBM parserrorcmd_BM;
 static parser_expand_dollarval_sigBM parsdollarvalcmd_BM;
 static parser_expand_dollarobj_sigBM parsdollarobjcmd_BM;
@@ -2475,26 +2478,29 @@ handlekeypresscmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
       GdkModifierType modmask = gtk_accelerator_get_default_mod_mask ();
       bool withctrl = (evk->state & modmask) == GDK_CONTROL_MASK;
       bool withshift = (evk->state & modmask) == GDK_SHIFT_MASK;
-      if (!withctrl && !withshift)
-        {
-          return false;
-        }
       if (withctrl)
         run_then_erase_command_BM ();
       else if (withshift)
         run_then_keep_command_BM ();
+      else                      // plain RETURN key, propagate it
+        return false;
       return true;
     }
   else if (evk->keyval == GDK_KEY_Tab)
     {
 #warning tab should autocomplete in handlekeypresscmd_BM
-      printf ("handlekeypresscmd_BM ignore TAB\n");
+      printf ("handlekeypresscmd_BM ignore TAB but should autocomplete\n");
       fflush (stdout);
+      log_begin_message_BM ();
+      log_puts_message_BM ("handlekeypresscmd_BM TAB should autocomplete...");
+      log_end_message_BM ();
       return true;
     }
   return false;                 // propagate the event
 }                               /* end handlekeypresscmd_BM */
 
+
+/// called by run_then_keep_command_BM & run_then_erase_command_BM
 void
 runcommand_BM (bool erase)
 {
@@ -2521,13 +2527,56 @@ runcommand_BM (bool erase)
   else
     {
       // got parsing error
+      printf ("@@runcommand_BM got parsing error (errpars=%d)\n", errpars);
     }
 #warning runcommand_BM incomplete
-  printf ("runcommand_BM incomplete\n");
+  printf ("@@runcommand_BM incomplete\n");
   free (cmdstr);
   if (erase)
     gtk_text_buffer_set_text (commandbuf_BM, "", 0);
 }                               /* end runcommand_BM */
+
+
+void
+enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
+{
+  assert (txbuf == commandbuf_BM);
+  assert (data == NULL);
+  GtkTextIter startit = { };
+  GtkTextIter endit = { };
+  gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
+  char *cmdstr =
+    gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit, false);
+  struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
+  cmdpars->pars_ops = &parsop_command_nobuild_BM;
+  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
+                 struct parser_stBM *cmdpars;
+    );
+  _.cmdpars = cmdpars;
+  if (delayiderrorcmd_BM)
+    {
+      g_source_remove (delayiderrorcmd_BM);
+      delayiderrorcmd_BM = 0;
+    }
+  delaymserrorcmd_BM = 600;
+  int errpars = setjmp (jmperrorcmd_BM);
+  if (!errpars)
+    {
+      // should parse the command buffer
+      parsecommandbuf_BM (cmdpars, (struct stackframe_stBM *) &_);
+    }
+  else
+    {
+      // got an error while parsing
+    }
+  if (delayiderrorcmd_BM)
+    {
+      g_source_remove (delayiderrorcmd_BM);
+      delayiderrorcmd_BM = 0;
+    }
+  free (cmdstr);
+}                               /* end enduseractioncmd_BM */
+
 
 void
 initialize_gui_BM (const char *builderfile)
@@ -2749,6 +2798,8 @@ initialize_gui_BM (const char *builderfile)
     g_signal_connect (commandview_BM, "key-press-event",
                       G_CALLBACK (handlekeypresscmd_BM), NULL);
   }
+  g_signal_connect (commandbuf_BM, "end-user-action",
+                    G_CALLBACK (enduseractioncmd_BM), NULL);
   gtk_widget_set_tooltip_markup (GTK_WIDGET (commandview_BM),
                                  "<big><b>command view</b></big>\n");
   gtk_text_buffer_insert_at_cursor (commandbuf_BM, "|command|\n", -1);
