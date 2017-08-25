@@ -2531,11 +2531,16 @@ runcommand_BM (bool erase)
   int errpars = setjmp (jmperrorcmd_BM);
   if (!errpars)
     {
-      // should parse the command buffer
+      // should parse the command buffer, this could longjmp to jmperrorcmd_BM
       parsecommandbuf_BM (cmdpars, (struct stackframe_stBM *) &_);
       log_begin_message_BM ();
       log_printf_message_BM ("run %s command of %d lines successfully:\n",
                              erase ? "erased" : "kept", endlin);
+      char *errmsg =
+        g_markup_printf_escaped
+        ("<b>run <i>%s</i> command of %d lines successfully.</b>",
+         erase ? "erased" : "kept", endlin);
+      gtk_label_set_markup (GTK_LABEL (msglab_BM), errmsg);
       GtkTextIter eol1it = startit;
       gtk_text_iter_forward_line (&eol1it);
       char *line1str =
@@ -2613,6 +2618,7 @@ enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
     }
   free (cmdstr);
 }                               /* end enduseractioncmd_BM */
+
 
 void
 populatepopupcmd_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
