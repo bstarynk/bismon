@@ -91,7 +91,7 @@ extern void setgcmark_BM (struct garbcoll_stBM *gc, setval_tyBM * set);
 extern void setgcdestroy_BM (struct garbcoll_stBM *gc, setval_tyBM * set);
 extern void setgckeep_BM (struct garbcoll_stBM *gc, setval_tyBM * set);
 
-
+extern void initialize_garbage_collector_BM (void);
 extern void initialize_predefined_objects_BM (void);
 
 static inline bool isobject_BM (const value_tyBM v);

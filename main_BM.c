@@ -209,6 +209,7 @@ main (int argc, char **argv)
                argv[0], dlerror ());
       exit (EXIT_FAILURE);
     }
+  initialize_garbage_collector_BM ();
   /// just to test the macro LOCALQNODESIZED_BM
   {
     LOCALQNODESIZED_BM (qns, BMP_node, 4);

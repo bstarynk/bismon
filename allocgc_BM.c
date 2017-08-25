@@ -4,12 +4,29 @@
 
 struct allalloc_stBM *allocationvec_vBM;
 
+static pthread_t mainthreadid_BM;
+
+void
+initialize_garbage_collector_BM (void)
+{
+  mainthreadid_BM = pthread_self ();
+  unsigned alsiz = 1022;
+  allocationvec_vBM =
+    malloc (sizeof (struct allalloc_stBM) + alsiz * sizeof (void *));
+  if (!allocationvec_vBM)
+    FATAL_BM ("failed to malloc initial allocationvec_vBM of %u (%m)", alsiz);
+  memset (allocationvec_vBM, 0,
+          sizeof (struct allalloc_stBM) + alsiz * sizeof (void *));
+  allocationvec_vBM->al_size = alsiz;
+}                               /* end initialize_garbage_collector_BM */
+
 void *
 allocgcty_BM (unsigned type, size_t sz)
 {
-  unsigned long alloc_size =
-    allocationvec_vBM ? allocationvec_vBM->al_size : 0;
-  unsigned long alloc_nb = allocationvec_vBM ? allocationvec_vBM->al_nb : 0;
+  assert (pthread_self () == mainthreadid_BM);
+  assert (allocationvec_vBM != NULL);
+  unsigned long alloc_size = allocationvec_vBM->al_size;
+  unsigned long alloc_nb = allocationvec_vBM->al_nb;
   if (alloc_nb + 2 >= alloc_size)
     {
       unsigned long new_alloc_size = ((4 * alloc_size / 3 + 600) | 511) - 2;
@@ -311,6 +328,7 @@ gcframemark_BM (struct garbcoll_stBM *gc, struct stackframe_stBM *stkfram,
 void
 fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
 {
+  assert (pthread_self () == mainthreadid_BM);
   static unsigned long countgc;
   struct garbcoll_stBM GCdata = { };
   memset (&GCdata, 0, sizeof (GCdata));
