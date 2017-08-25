@@ -416,18 +416,31 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
   free (allocationvec_vBM), allocationvec_vBM = newallvec;
   double endelapsedtime = elapsedtime_BM ();
   double endcputime = cputime_BM ();
-  fprintf (stderr,
+  char *buf = NULL;
+  size_t siz = 0;
+  FILE *fil = gui_is_running_BM ? open_memstream (&buf, &siz) : stderr;
+  if (!fil)
+    FATAL_BM ("bad fil in fullgarbagecollection_BM (%m)");
+  fprintf (fil,
            "@@garbage collection #%ld : %.4f elapsed, %.4f cpu seconds\n",
            countgc, endelapsedtime - GCdata.gc_startelapsedtime,
            endcputime - GCdata.gc_startcputime);
-  fprintf (stderr,
+  fprintf (fil,
            "number of values: %ld -> %ld (-%ld)\n", oldnbval, newcntall,
            newcntall - oldnbval);
-  fprintf (stderr, "number of scanned objects: %ld\n", nbobjscan);
-  fprintf (stderr,
+  fprintf (fil, "number of scanned objects: %ld\n", nbobjscan);
+  fprintf (fil,
            "data memory: kept %ld, freed %ld kilobytes\n",
            (GCdata.gc_keptbytes) / 1024, (GCdata.gc_freedbytes) / 1024);
-  fprintf (stderr, "-------\n\n");
-  fflush (stderr);
+  fprintf (fil, "-------\n\n");
+  fflush (fil);
   last_gctime_BM = clocktime_BM (CLOCK_REALTIME);
+  if (fil != stderr)
+    {
+      assert (gui_is_running_BM);
+      assert (buf != NULL);
+      gui_gc_message_BM (buf);
+      fclose (fil);
+      free (buf);
+    };
 }                               /* end fullgarbagecollection_BM */

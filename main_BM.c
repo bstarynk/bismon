@@ -3,6 +3,7 @@
 
 struct timespec startrealtimespec_BM;
 void *dlprog_BM;
+bool gui_is_running_BM;
 
 void
 abort_BM (void)
@@ -304,7 +305,9 @@ main (int argc, char **argv)
     }
   else
     {
+      gui_is_running_BM = true;
       gtk_main ();
+      gui_is_running_BM = false;
     }
   fflush (NULL);
 }                               /* end main */

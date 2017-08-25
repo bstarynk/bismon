@@ -889,6 +889,13 @@ deletemainwin_BM (GtkWidget * widget __attribute__ ((unused)),
     }
 }                               /* end deletemainwin_BM */
 
+void
+gui_gc_message_BM (const char *msg)
+{
+  log_begin_message_BM ();
+  log_puts_message_BM (msg);
+  log_end_message_BM ();
+}                               /* end gui_gc_message_BM */
 
 void
 log_begin_message_BM (void)
