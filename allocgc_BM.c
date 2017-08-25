@@ -355,6 +355,7 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
     hashsetobj_grow_BM (NULL, prime_above_BM (alcnt / 32 + 100));
   gcmarkpredefinedobjects_BM (&GCdata);
   gcmarkglobals_BM (&GCdata);
+  gcmarkgui_BM (&GCdata);
   gcframemark_BM (&GCdata, stkfram, 0);
   unsigned long nbobjscan = 0;
   while (listlength_BM (GCdata.gc_scanlist) > 0)

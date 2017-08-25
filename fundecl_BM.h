@@ -634,4 +634,6 @@ extern void browse_value_BM (const value_tyBM val,
                              struct stackframe_stBM *stkf,
                              int maxdepth, int curdepth);
 
+extern void gcmarkgui_BM (struct garbcoll_stBM *gc);
+
 #endif /*FUNDECL_BM_INCLUDED */
