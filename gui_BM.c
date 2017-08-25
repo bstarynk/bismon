@@ -108,8 +108,11 @@ static gboolean handlekeypresscmd_BM (GtkWidget *, GdkEventKey *, gpointer);
 
 // the function to handle "end-user-action" on commandbuf_BM
 static void enduseractioncmd_BM (GtkTextBuffer *, gpointer);
+// the function to handle "populate-popup" on commandview_BM
+static void populatepopupcmd_BM (GtkTextView *, GtkWidget *, gpointer);
 
-static void parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf);
+static void parsecommandbuf_BM (struct parser_stBM *pars,
+                                struct stackframe_stBM *stkf);
 
 static parser_error_sigBM parserrorcmd_BM;
 static parser_expand_dollarval_sigBM parsdollarvalcmd_BM;
@@ -1030,6 +1033,8 @@ parserrorcmd_BM (struct parser_stBM *pars,
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsops && parsops->parsop_nobuild;
   GtkTextIter it;
+  printf ("@parserrorcmd_BM lineno=%u colpos=%u msg=%s\n", lineno, colpos,
+          msg);
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit;
@@ -2579,6 +2584,31 @@ enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
   free (cmdstr);
 }                               /* end enduseractioncmd_BM */
 
+void
+populatepopupcmd_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
+{
+  assert (txview == GTK_TEXT_VIEW (commandview_BM));
+  assert (GTK_IS_MENU (popup));
+  assert (data == NULL);
+  char cursinfobuf[32];
+  memset (cursinfobuf, 0, sizeof (cursinfobuf));
+  GtkTextIter cursit = { };
+  gtk_text_buffer_get_iter_at_mark (commandbuf_BM, &cursit,
+                                    gtk_text_buffer_get_insert
+                                    (commandbuf_BM));
+  snprintf (cursinfobuf, sizeof (cursinfobuf), "* L%dC%d/%d",
+            gtk_text_iter_get_line (&cursit),
+            gtk_text_iter_get_line_offset (&cursit),
+            gtk_text_iter_get_offset (&cursit));
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup),
+                         gtk_separator_menu_item_new ());
+  GtkWidget *cursinfomenit = gtk_menu_item_new_with_label (cursinfobuf);
+  gtk_widget_set_sensitive (cursinfomenit, false);
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup), cursinfomenit);
+  gtk_widget_show_all (popup);
+}                               /* end populatepopupcmd_BM */
+
+
 
 void
 initialize_gui_BM (const char *builderfile)
@@ -2793,15 +2823,12 @@ initialize_gui_BM (const char *builderfile)
     };
   commandview_BM = gtk_text_view_new_with_buffer (commandbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (commandview_BM), true);
-  {
-    // GdkWindow *dwin = gtk_widget_get_parent_window (commandview_BM);
-    // assert (dwin != NULL);
-    // perhaps call gdk_window_set_events
-    g_signal_connect (commandview_BM, "key-press-event",
-                      G_CALLBACK (handlekeypresscmd_BM), NULL);
-  }
+  g_signal_connect (commandview_BM, "key-press-event",
+                    G_CALLBACK (handlekeypresscmd_BM), NULL);
   g_signal_connect (commandbuf_BM, "end-user-action",
                     G_CALLBACK (enduseractioncmd_BM), NULL);
+  g_signal_connect (commandview_BM, "populate-popup",
+                    G_CALLBACK (populatepopupcmd_BM), NULL);
   gtk_widget_set_tooltip_markup (GTK_WIDGET (commandview_BM),
                                  "<big><b>command view</b></big>\n");
   gtk_text_buffer_insert_at_cursor (commandbuf_BM, "|command|\n", -1);
