@@ -105,6 +105,8 @@ static gboolean timeoutfunerrorcmd_BM (gpointer);
 
 // the function to handle keypresses of cmd, for Return & Tab
 static gboolean handlekeypresscmd_BM (GtkWidget *, GdkEventKey *, gpointer);
+// the function to handle tabautocomplete in command
+static void tabautocompletecmd_BM (void);
 
 // the function to handle "end-user-action" on commandbuf_BM
 static void enduseractioncmd_BM (GtkTextBuffer *, gpointer);
@@ -2496,16 +2498,46 @@ handlekeypresscmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
     }
   else if (evk->keyval == GDK_KEY_Tab)
     {
-#warning tab should autocomplete in handlekeypresscmd_BM
-      printf ("handlekeypresscmd_BM ignore TAB but should autocomplete\n");
-      fflush (stdout);
-      log_begin_message_BM ();
-      log_puts_message_BM ("handlekeypresscmd_BM TAB should autocomplete...");
-      log_end_message_BM ();
+      tabautocompletecmd_BM ();
       return true;
     }
   return false;                 // propagate the event
 }                               /* end handlekeypresscmd_BM */
+
+
+
+void
+tabautocompletecmd_BM (void)
+{
+  GtkTextIter cursit = { };
+  GtkTextIter beglinit = { };
+  GtkTextIter endlinit = { };
+  gtk_text_buffer_get_iter_at_mark      //
+    (commandbuf_BM, &cursit, gtk_text_buffer_get_insert (commandbuf_BM));
+  unsigned col = gtk_text_iter_get_line_offset (&cursit);
+  beglinit = cursit;
+  gtk_text_iter_backward_line (&beglinit);
+  endlinit = cursit;
+  gtk_text_iter_forward_line (&endlinit);
+  const char *curlin =
+    gtk_text_buffer_get_text (commandbuf_BM, &beglinit, &endlinit, false);
+  assert (col <= g_utf8_strlen (curlin, -1));
+  const char *curstr = g_utf8_offset_to_pointer (curlin, col);
+  const char *begname = curstr;
+  const char *endname = curstr;
+  while (begname > curlin && (isalnum (begname[-1]) || begname[-1] == '_'))
+    begname--;
+  while (*endname && (isalnum (endname[0]) || endname[0] == '_'))
+    endname++;
+  printf ("@@tabautocompletecmd_BM col%d curlin@%p=%s\n"
+          "curstr@%p=%s\n" "name@%p='%*s'\n", col, curlin, curlin, curstr,
+          curstr, begname, (int) (endname - begname - 2), begname);
+  /// should test that the UTF8 char before begname is not an UTF8 letter
+#warning tabautocompletecmd_BM incomplete
+  free ((char *) curlin);
+}                               /* end tabautocompletecmd_BM */
+
+
 
 
 /// called by run_then_keep_command_BM & run_then_erase_command_BM
@@ -2629,11 +2661,10 @@ populatepopupcmd_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
   char cursinfobuf[32];
   memset (cursinfobuf, 0, sizeof (cursinfobuf));
   GtkTextIter cursit = { };
-  gtk_text_buffer_get_iter_at_mark (commandbuf_BM, &cursit,
-                                    gtk_text_buffer_get_insert
-                                    (commandbuf_BM));
+  gtk_text_buffer_get_iter_at_mark      //
+    (commandbuf_BM, &cursit, gtk_text_buffer_get_insert (commandbuf_BM));
   snprintf (cursinfobuf, sizeof (cursinfobuf), "* L%dC%d/%d",
-            gtk_text_iter_get_line (&cursit),
+            gtk_text_iter_get_line (&cursit) + 1,
             gtk_text_iter_get_line_offset (&cursit),
             gtk_text_iter_get_offset (&cursit));
   gtk_menu_shell_append (GTK_MENU_SHELL (popup),
