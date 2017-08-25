@@ -1032,12 +1032,12 @@ parserrorcmd_BM (struct parser_stBM *pars,
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsops && parsops->parsop_nobuild;
-  GtkTextIter it;
+  GtkTextIter it = { };
   printf ("@parserrorcmd_BM lineno=%u colpos=%u msg=%s\n", lineno, colpos,
           msg);
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
   gtk_text_iter_forward_chars (&it, colpos);
-  GtkTextIter endit;
+  GtkTextIter endit = { };
   gtk_text_buffer_get_end_iter (commandbuf_BM, &endit);
   gtk_text_buffer_apply_tag (commandbuf_BM, errored_cmdtag_BM, &it, &endit);
   if (delaymserrorcmd_BM <= 0)
@@ -2121,7 +2121,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                                     browserdepth_BM,
                                     (struct stackframe_stBM *) &_);
               log_begin_message_BM ();
-              log_puts_message_BM ("focusing object ");
+              log_puts_message_BM ("showing and focusing object ");
               log_object_message_BM (GLOBAL_BM (gui_focus_obj));
               log_puts_message_BM (".");
               log_end_message_BM ();
@@ -2514,6 +2514,7 @@ runcommand_BM (bool erase)
   GtkTextIter startit = { };
   GtkTextIter endit = { };
   gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
+  int endlin = gtk_text_iter_get_line (&endit);
   char *cmdstr =
     gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit, false);
   struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
@@ -2530,6 +2531,34 @@ runcommand_BM (bool erase)
     {
       // should parse the command buffer
       parsecommandbuf_BM (cmdpars, (struct stackframe_stBM *) &_);
+      log_begin_message_BM ();
+      log_printf_message_BM ("run %s command of %d lines successfully:\n",
+                             erase ? "erased" : "kept", endlin);
+      GtkTextIter eol1it = startit;
+      gtk_text_iter_forward_line (&eol1it);
+      char *line1str =
+        gtk_text_buffer_get_text (commandbuf_BM, &startit, &eol1it, false);
+      log_puts_message_BM (line1str);
+      log_puts_message_BM ("\n");
+      free (line1str), line1str = NULL;
+      if (endlin > 1)
+        {
+          GtkTextIter lastlit = endit;
+          gtk_text_iter_backward_line (&lastlit);
+          char *lastlinstr =
+            gtk_text_buffer_get_text (commandbuf_BM, &lastlit, &endit, false);
+          if (endlin > 2)
+            {
+              GtkTextIter it = { };
+              gtk_text_buffer_get_end_iter (logbuf_BM, &it);
+              gtk_text_buffer_insert_with_tags (logbuf_BM, &it, "\342\200\246", // U+2026 HORIZONTAL ELLIPSIS …
+                                                -1, error_logtag_BM, NULL);
+              gtk_text_buffer_insert (logbuf_BM, &it, "\n", 1);
+            }
+          log_puts_message_BM (lastlinstr);
+          log_puts_message_BM ("\n");
+        };
+      log_end_message_BM ();
     }
   else
     {
@@ -2831,7 +2860,6 @@ initialize_gui_BM (const char *builderfile)
                     G_CALLBACK (populatepopupcmd_BM), NULL);
   gtk_widget_set_tooltip_markup (GTK_WIDGET (commandview_BM),
                                  "<big><b>command view</b></big>\n");
-  gtk_text_buffer_insert_at_cursor (commandbuf_BM, "|command|\n", -1);
   GtkWidget *commandscrolw = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (commandscrolw), commandview_BM);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (commandscrolw),

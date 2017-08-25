@@ -153,7 +153,7 @@
             <object class='GtkTextTag'>
                 <property name="name">objrefcomm_brotag</property>
                 <property name="font">FreeMono</property>
-                <property name="scale">0.9</property>
+                <property name="scale">0.93</property>
                 <property name="foreground">deepskyblue3</property>
             </object>
         </child>
@@ -220,7 +220,8 @@
         <child type="tag">
             <object class='GtkTextTag'>
               <property name="name">errored_cmdtag</property>
-	      <property name='background'>lightpink</property>
+	      <property name="background">lightpink</property>
+                <property name="font">Courier New</property>
             </object>
         </child>
       <!-- commentinside_cmdtag for inside comment -->
@@ -294,7 +295,8 @@
         <child type="tag">
             <object class='GtkTextTag'>
                 <property name="name">error_logtag</property>
-		<property name='foreground'>red3</property>
+		<property name="foreground">red3</property>
+		<property name="font">DejaVu Sans Mono Bold</property>
             </object>
         </child>
       <!-- time_logtag for the time info in log -->
