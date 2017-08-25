@@ -1054,12 +1054,14 @@ parserrorcmd_BM (struct parser_stBM *pars,
           char errbuf[64];
           snprintf (errbuf, sizeof (errbuf), "command error L%dC%d:",
                     lineno, colpos);
-          GtkTextIter it = { };
-          gtk_text_buffer_get_end_iter (logbuf_BM, &it);
+          GtkTextIter logit = { };
+          gtk_text_buffer_get_end_iter (logbuf_BM, &logit);
           gtk_text_buffer_insert_with_tags
-            (logbuf_BM, &it, errbuf, -1, error_logtag_BM, NULL);
+            (logbuf_BM, &logit, errbuf, -1, error_logtag_BM, NULL);
           log_puts_message_BM (msg);
           log_end_message_BM ();
+          gtk_text_view_scroll_to_iter (GTK_TEXT_VIEW (commandview_BM),
+                                        &it, 0.1, false, 0.5, 0.2);
         }
     }
   else
@@ -2560,13 +2562,11 @@ runcommand_BM (bool erase)
         };
       log_end_message_BM ();
     }
-  else
+  else                          /* error */
     {
-      // got parsing error
-      printf ("@@runcommand_BM got parsing error (errpars=%d)\n", errpars);
+      free (cmdstr);
+      return;
     }
-#warning runcommand_BM incomplete
-  printf ("@@runcommand_BM incomplete\n");
   free (cmdstr);
   if (erase)
     gtk_text_buffer_set_text (commandbuf_BM, "", 0);
