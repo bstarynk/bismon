@@ -1050,7 +1050,6 @@ parserrorcmd_BM (struct parser_stBM *pars,
       if (!nobuild)
         {
           log_begin_message_BM ();
-          log_puts_message_BM (msg);
           char errbuf[64];
           snprintf (errbuf, sizeof (errbuf), "command error L%dC%d:",
                     lineno, colpos);
@@ -2516,6 +2515,7 @@ runcommand_BM (bool erase)
   GtkTextIter startit = { };
   GtkTextIter endit = { };
   gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
+  gtk_text_buffer_remove_all_tags (commandbuf_BM, &startit, &endit);
   int endlin = gtk_text_iter_get_line (&endit);
   char *cmdstr =
     gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit, false);
@@ -2581,6 +2581,7 @@ enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
   GtkTextIter startit = { };
   GtkTextIter endit = { };
   gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
+  gtk_text_buffer_remove_all_tags (commandbuf_BM, &startit, &endit);
   char *cmdstr =
     gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit, false);
   struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
