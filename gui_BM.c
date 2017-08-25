@@ -2505,10 +2505,17 @@ handlekeypresscmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
 }                               /* end handlekeypresscmd_BM */
 
 
+static gboolean
+timeoutrestoreopacitycmd_BM (gpointer data)
+{
+  gtk_widget_set_opacity (commandview_BM, 1.0);
+  return false;
+}                               /* end timeoutrestoreopacitycmd_BM  */
 
 void
 tabautocompletecmd_BM (void)
 {
+  bool failcompl = false;
   GtkTextIter cursit = { };
   GtkTextIter beglinit = { };
   GtkTextIter endlinit = { };
@@ -2554,16 +2561,24 @@ tabautocompletecmd_BM (void)
           "smallwordbuf='%s'\n", begname, (int) (endname - begname),
           begname, smallwordbuf);
   printf ("...gotextralnums=%s\n", gotextralnums ? "true" : "false");
-  if (startname == endname || gotextralnums)
-    {
-      // fail completion by beeping
-      GdkWindow *dwin = gtk_widget_get_parent_window (commandview_BM);
-      if (dwin)
-        gdk_window_beep (dwin);
-      return;
-    }
+  if (begname == endname || gotextralnums)
+    goto failure;
 #warning tabautocompletecmd_BM incomplete
   free ((char *) curlin);
+  return;
+failure:
+  printf ("tabautocompletecmd_BM failing\n");
+  // fail completion by beeping and blinking the commandview_BM
+  {
+    GdkWindow *dwin = gtk_widget_get_parent_window (commandview_BM);
+    if (dwin)
+      gdk_window_beep (dwin);
+    gtk_widget_set_opacity (commandview_BM, 0.5);
+    // delay the restore of 1.0 opacity
+    g_timeout_add (125 /*milliseconds */ , timeoutrestoreopacitycmd_BM, NULL);
+  }
+  free ((char *) curlin);
+  return;
 }                               /* end tabautocompletecmd_BM */
 
 
