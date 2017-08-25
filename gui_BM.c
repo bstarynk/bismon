@@ -2529,9 +2529,16 @@ tabautocompletecmd_BM (void)
     begname--;
   while (*endname && (isalnum (endname[0]) || endname[0] == '_'))
     endname++;
+  char smallwordbuf[48];
+  memset (smallwordbuf, 0, sizeof (smallwordbuf));
+  if (endname > begname
+      && (int) (endname - begname) < (int) sizeof (smallwordbuf))
+    strncpy (smallwordbuf, begname, endname - begname);
   printf ("@@tabautocompletecmd_BM col%d curlin@%p=%s\n"
-          "curstr@%p=%s\n" "name@%p='%*s'\n", col, curlin, curlin, curstr,
-          curstr, begname, (int) (endname - begname - 2), begname);
+          "curstr@%p=%s\n", col, curlin, curlin, curstr, curstr);
+  printf ("...name@%p='%.*s'\n"
+          "smallwordbuf='%s'\n", begname, (int) (endname - begname),
+          begname, smallwordbuf);
   /// should test that the UTF8 char before begname is not an UTF8 letter
 #warning tabautocompletecmd_BM incomplete
   free ((char *) curlin);
