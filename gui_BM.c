@@ -2534,12 +2534,34 @@ tabautocompletecmd_BM (void)
   if (endname > begname
       && (int) (endname - begname) < (int) sizeof (smallwordbuf))
     strncpy (smallwordbuf, begname, endname - begname);
+  bool gotextralnums = false;
+  if (begname > curlin)
+    {
+      char *pc = g_utf8_prev_char (begname);
+      gunichar puc = g_utf8_get_char (pc);
+      if (g_unichar_isalnum (puc))
+        gotextralnums = true;
+    };
+  if (endname && *endname)
+    {
+      gunichar puc = g_utf8_get_char (endname);
+      if (g_unichar_isalnum (puc))
+        gotextralnums = true;
+    }
   printf ("@@tabautocompletecmd_BM col%d curlin@%p=%s\n"
           "curstr@%p=%s\n", col, curlin, curlin, curstr, curstr);
   printf ("...name@%p='%.*s'\n"
           "smallwordbuf='%s'\n", begname, (int) (endname - begname),
           begname, smallwordbuf);
-  /// should test that the UTF8 char before begname is not an UTF8 letter
+  printf ("...gotextralnums=%s\n", gotextralnums ? "true" : "false");
+  if (startname == endname || gotextralnums)
+    {
+      // fail completion by beeping
+      GdkWindow *dwin = gtk_widget_get_parent_window (commandview_BM);
+      if (dwin)
+        gdk_window_beep (dwin);
+      return;
+    }
 #warning tabautocompletecmd_BM incomplete
   free ((char *) curlin);
 }                               /* end tabautocompletecmd_BM */
