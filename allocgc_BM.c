@@ -57,7 +57,7 @@ allocgcty_BM (unsigned type, size_t sz)
 }                               /* end allocgcty_BM */
 
 
-
+#warning allocinternalty_BM is probably used too often
 void *
 allocinternalty_BM (unsigned type, size_t sz)
 {
