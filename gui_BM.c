@@ -109,6 +109,8 @@ static gboolean handlekeypresscmd_BM (GtkWidget *, GdkEventKey *, gpointer);
 // the function to handle "end-user-action" on commandbuf_BM
 static void enduseractioncmd_BM (GtkTextBuffer *, gpointer);
 
+static void parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf);
+
 static parser_error_sigBM parserrorcmd_BM;
 static parser_expand_dollarval_sigBM parsdollarvalcmd_BM;
 static parser_expand_dollarobj_sigBM parsdollarobjcmd_BM;
@@ -198,14 +200,14 @@ gcmarkgui_BM (struct garbcoll_stBM *gc)
   if (browsedobj_BM)
     {
       for (unsigned ix = 0; ix < browserobulen_BM; ix++)
-        gcmark_BM (gc, 0, (value_tyBM) browsedobj_BM[ix].brow_obj);
+        gcmark_BM (gc, (value_tyBM) browsedobj_BM[ix].brow_obj, 0);
     };
   if (browsedval_BM)
     {
       for (unsigned ix = 0; ix < browsednvulen_BM; ix++)
         {
-          gcmark_BM (gc, 0, browsedval_BM[ix].brow_val);
-          gcmark_BM (gc, 0, (value_tyBM) browsedval_BM[ix].brow_name);
+          gcmark_BM (gc, browsedval_BM[ix].brow_val, 0);
+          gcmark_BM (gc, (value_tyBM) browsedval_BM[ix].brow_name, 0);
         }
     }
 }                               /* end gcmarkgui_BM */
