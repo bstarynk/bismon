@@ -848,4 +848,12 @@ openmodule_BM (const rawid_tyBM id, struct stackframe_stBM * stkf)
   return openmoduleforloader_BM (id, NULL, stkf);
 }                               /* end openmodule_BM */
 
+////////////////////////////////////////////////////////////////
+void
+garbage_collect_if_wanted_BM (struct stackframe_stBM *stkf)
+{
+  if (want_garbage_collection_BM)
+    fullgarbagecollection_BM (stkf);
+}                               /* end garbage_collect_if_wanted_BM */
+
 #endif /*INLINE_BM_INCLUDED */

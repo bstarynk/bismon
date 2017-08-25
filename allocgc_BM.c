@@ -3,6 +3,8 @@
 #include "bismon.h"
 
 struct allalloc_stBM *allocationvec_vBM;
+bool want_garbage_collection_BM;
+double last_gctime_BM;
 
 static pthread_t mainthreadid_BM;
 
@@ -10,6 +12,7 @@ void
 initialize_garbage_collector_BM (void)
 {
   mainthreadid_BM = pthread_self ();
+  last_gctime_BM = clocktime_BM (CLOCK_REALTIME);
   unsigned alsiz = 1022;
   allocationvec_vBM =
     malloc (sizeof (struct allalloc_stBM) + alsiz * sizeof (void *));
@@ -19,6 +22,7 @@ initialize_garbage_collector_BM (void)
           sizeof (struct allalloc_stBM) + alsiz * sizeof (void *));
   allocationvec_vBM->al_size = alsiz;
 }                               /* end initialize_garbage_collector_BM */
+
 
 void *
 allocgcty_BM (unsigned type, size_t sz)
@@ -43,6 +47,12 @@ allocgcty_BM (unsigned type, size_t sz)
       memset (new_allocvec->al_ptr, 0, new_alloc_size * sizeof (void *));
       free (allocationvec_vBM);
       allocationvec_vBM = new_allocvec;
+      want_garbage_collection_BM = true;
+    }
+  else if (alloc_nb % 16 == 0)
+    {
+      if (clocktime_BM (CLOCK_REALTIME) > last_gctime_BM + GCWANTEDPERIOD_BM)
+        want_garbage_collection_BM = true;
     }
   assert (sz > sizeof (typedhead_tyBM));
   assert (sz < MAXSIZE_BM * sizeof (double));
@@ -57,7 +67,8 @@ allocgcty_BM (unsigned type, size_t sz)
 }                               /* end allocgcty_BM */
 
 
-#warning allocinternalty_BM is probably used too often
+
+// to be used only on second-class data, not first-class values
 void *
 allocinternalty_BM (unsigned type, size_t sz)
 {
@@ -418,4 +429,5 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
            (GCdata.gc_keptbytes) / 1024, (GCdata.gc_freedbytes) / 1024);
   fprintf (stderr, "-------\n\n");
   fflush (stderr);
+  last_gctime_BM = clocktime_BM (CLOCK_REALTIME);
 }                               /* end fullgarbagecollection_BM */

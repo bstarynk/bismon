@@ -572,7 +572,8 @@ extern void gctokenmark_BM (struct garbcoll_stBM *gc,
 
 /// the full garbage collector
 extern void fullgarbagecollection_BM (struct stackframe_stBM *stkfram);
-
+static inline void garbage_collect_if_wanted_BM (struct stackframe_stBM
+                                                 *stkfram);
 
 // names
 extern void initialize_predefined_names_BM (void);

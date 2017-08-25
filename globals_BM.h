@@ -10,6 +10,7 @@ extern const char bismon_checksum[];
 extern const char bismon_directory[];
 extern const char bismon_makefile[];
 
+extern bool want_garbage_collection_BM;
 
 extern void *dlprog_BM;         // dlopen of entire program
 extern struct timespec startrealtimespec_BM;
