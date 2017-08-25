@@ -340,6 +340,7 @@ void
 fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
 {
   assert (pthread_self () == mainthreadid_BM);
+  want_garbage_collection_BM = false;
   static unsigned long countgc;
   struct garbcoll_stBM GCdata = { };
   memset (&GCdata, 0, sizeof (GCdata));
