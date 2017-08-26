@@ -336,19 +336,19 @@ gcframemark_BM (struct garbcoll_stBM *gc, struct stackframe_stBM *stkfram,
 
 
 
+static unsigned long countgc_BM;
 void
 fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
 {
   assert (pthread_self () == mainthreadid_BM);
   want_garbage_collection_BM = false;
-  static unsigned long countgc;
   struct garbcoll_stBM GCdata = { };
   memset (&GCdata, 0, sizeof (GCdata));
   GCdata.gc_magic = GCMAGIC_BM;
   GCdata.gc_startelapsedtime = elapsedtime_BM ();
   GCdata.gc_startcputime = cputime_BM ();
   assert (allocationvec_vBM != NULL);
-  countgc++;
+  countgc_BM++;
   unsigned long alsiz = allocationvec_vBM->al_size;
   unsigned long alcnt = allocationvec_vBM->al_nb;
   unsigned long oldnbval = 0;
@@ -424,7 +424,7 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
     FATAL_BM ("bad fil in fullgarbagecollection_BM (%m)");
   fprintf (fil,
            "@@garbage collection #%ld : %.4f elapsed, %.4f cpu seconds\n",
-           countgc, endelapsedtime - GCdata.gc_startelapsedtime,
+           countgc_BM, endelapsedtime - GCdata.gc_startelapsedtime,
            endcputime - GCdata.gc_startcputime);
   fprintf (fil,
            "number of values: %ld -> %ld (-%ld)\n", oldnbval, newcntall,
