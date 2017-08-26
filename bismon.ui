@@ -26,6 +26,12 @@
 	    <property name='use-underline'>true</property>
           </object>
         </child>
+        <child>
+          <object class='GtkMenuItem' id='appgarbcoll_id'>
+            <property name='label'>_Garbage-Collect</property>
+	    <property name='use-underline'>true</property>
+          </object>
+        </child>
       </object>
     </child>
   </object>

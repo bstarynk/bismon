@@ -885,8 +885,22 @@ void
 do_dump_BM (void)
 {
   extern char *dump_dir_bm;
+  log_begin_message_BM ();
+  log_printf_message_BM ("dumping into %s", dump_dir_bm);
   dump_BM (dump_dir_bm, NULL);
+  log_puts_message_BM (".");
+  log_end_message_BM ();
 }                               /* end do_dump_BM */
+
+static void do_garbcoll_BM (void);
+void
+do_garbcoll_BM (void)
+{
+  log_begin_message_BM ();
+  log_puts_message_BM ("forced garbage collection");
+  log_end_message_BM ();
+  fullgarbagecollection_BM (NULL);
+}                               /* end do_garbcoll_BM */
 
 bool deletemainwin_BM (GtkWidget *, GdkEvent *, gpointer);
 bool
@@ -3006,6 +3020,9 @@ initialize_gui_BM (const char *builderfile)
   GtkWidget *appdump =
     GTK_WIDGET (gtk_builder_get_object (bld, "appdump_id"));
   g_signal_connect (appdump, "activate", do_dump_BM, NULL);
+  GtkWidget *appgarbcoll =
+    GTK_WIDGET (gtk_builder_get_object (bld, "appgarbcoll_id"));
+  g_signal_connect (appgarbcoll, "activate", do_garbcoll_BM, NULL);
   GtkWidget *appmenu =
     GTK_WIDGET (gtk_builder_get_object (bld, "menuapp_id"));
   assert (GTK_IS_WIDGET (appmenu));
