@@ -2610,7 +2610,13 @@ tabautocompletecmd_BM (void)
     }
   else
     goto failure;
-  // special case when complsetv is a singleton
+  unsigned nbcompl = setcardinal_BM (complsetv);
+  if (nbcompl == 0)
+    goto failure;
+  else if (nbcompl == 1)
+    {
+      // special case when complsetv is a singleton
+    }
 #warning tabautocompletecmd_BM incomplete
   free ((char *) curlin);
   return;
