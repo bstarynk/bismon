@@ -198,6 +198,7 @@ static struct browsedval_stBM *find_browsed_named_value_BM
 
 static void runcommand_BM (bool erase);
 static void run_then_erase_command_BM (void);
+static void clear_command_BM (void);
 static void run_then_keep_command_BM (void);
 
 void
@@ -231,6 +232,17 @@ run_then_keep_command_BM (void)
   runcommand_BM (false);
 }                               /* end run_then_keep_command_BM */
 
+void
+clear_command_BM (void)
+{
+  GtkTextIter startit = { };
+  GtkTextIter endit = { };
+  gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
+  gtk_text_buffer_delete (commandbuf_BM, &startit, &endit);
+  log_begin_message_BM ();
+  log_puts_message_BM ("cleared commands");
+  log_end_message_BM ();
+}                               /* end clear_command_BM */
 
 const char *
 gobjectclassnamedbg_BM (GObject * ptr)
@@ -2508,7 +2520,7 @@ handlekeypresscmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
 
 
 static gboolean
-timeoutrestoreopacitycmd_BM (gpointer data)
+timeoutrestoreopacitycmd_BM (gpointer data __attribute__ ((unused)))
 {
   gtk_widget_set_opacity (commandview_BM, 1.0);
   return false;
@@ -2517,7 +2529,6 @@ timeoutrestoreopacitycmd_BM (gpointer data)
 void
 tabautocompletecmd_BM (void)
 {
-  bool failcompl = false;
   GtkTextIter cursit = { };
   GtkTextIter beglinit = { };
   GtkTextIter endlinit = { };
@@ -2715,9 +2726,35 @@ populatepopupcmd_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
             gtk_text_iter_get_offset (&cursit));
   gtk_menu_shell_append (GTK_MENU_SHELL (popup),
                          gtk_separator_menu_item_new ());
-  GtkWidget *cursinfomenit = gtk_menu_item_new_with_label (cursinfobuf);
-  gtk_widget_set_sensitive (cursinfomenit, false);
-  gtk_menu_shell_append (GTK_MENU_SHELL (popup), cursinfomenit);
+  {
+    GtkWidget *cursinfomenit =  //
+      gtk_menu_item_new_with_label (cursinfobuf);
+    gtk_widget_set_sensitive (cursinfomenit, false);
+    gtk_menu_shell_append (GTK_MENU_SHELL (popup), cursinfomenit);
+  }
+  gtk_menu_shell_prepend (GTK_MENU_SHELL (popup),
+                          gtk_separator_menu_item_new ());
+  {
+    GtkWidget *clearmenit =     //
+      gtk_menu_item_new_with_label ("clear command");
+    gtk_menu_shell_prepend (GTK_MENU_SHELL (popup), clearmenit);
+    g_signal_connect (clearmenit, "activate",
+                      G_CALLBACK (clear_command_BM), NULL);
+  }
+  {
+    GtkWidget *runerasemenit =  //
+      gtk_menu_item_new_with_label ("run & erase");
+    gtk_menu_shell_prepend (GTK_MENU_SHELL (popup), runerasemenit);
+    g_signal_connect (runerasemenit, "activate",
+                      G_CALLBACK (run_then_erase_command_BM), NULL);
+  }
+  {
+    GtkWidget *runkeepmenit =   //
+      gtk_menu_item_new_with_label ("run & keep");
+    gtk_menu_shell_prepend (GTK_MENU_SHELL (popup), runkeepmenit);
+    g_signal_connect (runkeepmenit, "activate",
+                      G_CALLBACK (run_then_keep_command_BM), NULL);
+  }
   gtk_widget_show_all (popup);
 }                               /* end populatepopupcmd_BM */
 
@@ -2734,7 +2771,8 @@ populatepopuplog_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
                          gtk_separator_menu_item_new ());
   GtkWidget *clearlogmenit = gtk_menu_item_new_with_label ("clear log");
   gtk_menu_shell_append (GTK_MENU_SHELL (popup), clearlogmenit);
-  g_signal_connect (clearlogmenit, "activate", clearlog_BM, NULL);
+  g_signal_connect (clearlogmenit, "activate", G_CALLBACK (clearlog_BM),
+                    NULL);
   gtk_widget_show_all (popup);
 }                               /* end populatepopuplog_BM */
 
