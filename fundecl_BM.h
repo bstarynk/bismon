@@ -590,6 +590,7 @@ extern bool registername_BM (const objectval_tyBM * obj, const char *nam);
 extern bool forgetnamedobject_BM (const objectval_tyBM * obj);
 extern bool forgetnamestring_BM (const char *nam);
 extern const setval_tyBM *setofnamedobjects_BM (void);
+extern const setval_tyBM *setofprefixednamedobjects_BM (const char *prefix);
 
 // globals, see misc_BM.cc
 extern void initialize_globals_BM (void);

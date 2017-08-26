@@ -226,6 +226,25 @@ setofnamedobjects_BM (void)
 } // end setofnamedobjects_BM
 
 
+const setval_tyBM *
+setofprefixednamedobjects_BM (const char*prefix)
+{
+  if (!prefix || !prefix[0]) return setofnamedobjects_BM();
+  int prefixlen = strlen(prefix);
+  std::vector<const objectval_tyBM *> vectobj;
+  vectobj.reserve(2*TINYSIZE_BM);
+  for (auto itn = namemap_BM.lower_bound(prefix);
+       itn != namemap_BM.end(); itn++)
+    {
+      int cmp = strncmp(itn->first, prefix, prefixlen);
+      if (cmp) break;
+      const objectval_tyBM* ob = itn->second;
+      assert (isobject_BM((const value_tyBM)ob));
+      vectobj.push_back(ob);
+    }
+  return makeset_BM(vectobj.data(), vectobj.size());
+} // end setofprefixednamedobjects_BM
+
 const char*
 findnameafter_BM(const char*prefix)
 {
