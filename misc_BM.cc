@@ -318,8 +318,8 @@ void
 gcmarkglobals_BM(struct garbcoll_stBM*gc)
 {
   for (auto it: mapglobals_BM)
-    if (it.second)
-      gcmark_BM(gc, it.second, 0);
+    if (it.second && *it.second)
+      gcmark_BM(gc, *it.second, 0);
 } // end gcmarkglobals_BM
 
 
