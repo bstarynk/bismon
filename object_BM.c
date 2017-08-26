@@ -281,11 +281,102 @@ objectgcdestroy_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
 {
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) obj)->htyp == tyObject_BM);
-  // should remove the object name
-  // should finalize the object's payloads
+  // remove the object name
+  forgetnamedobject_BM (obj);
+  obj->ob_space = TransientSp_BM;
+  obj->ob_class = NULL;
+  if (obj->ob_compvec)
+    {
+      datavectgcdestroy_BM (gc, obj->ob_compvec);
+      obj->ob_compvec = NULL;
+    }
+  if (obj->ob_attrassoc)
+    {
+      unsigned tyassoc = valtype_BM (obj->ob_attrassoc);
+      if (tyassoc == tydata_assocpairs_BM)
+        assocpairgcdestroy_BM (gc,
+                               (struct assocpairs_stBM *) obj->ob_attrassoc);
+      else if (tyassoc == tydata_assocbucket_BM)
+        assocbucketgcdestroy_BM (gc,
+                                 (struct assocbucket_stBM *)
+                                 obj->ob_attrassoc);
+      else
+        FATAL_BM ("corrupted attrassoc@%p", obj->ob_attrassoc);
+      obj->ob_attrassoc = NULL;
+    }
+  if (obj->ob_rout)
+    {
+      obj->ob_rout = NULL;
+    }
+  if (obj->ob_data)
+    {
+      unsigned tydata = valtype_BM (obj->ob_data);
+      void *val = obj->ob_data;
+      switch (tydata)
+        {
+        case tydata_assocpairs_BM:
+          assocpairgcdestroy_BM (gc, (struct assocpairs_stBM *) val);
+          break;
+        case tydata_assocbucket_BM:
+          assocbucketgcdestroy_BM (gc, (struct assocbucket_stBM *) val);
+          break;
+        case tydata_hashsetobj_BM:
+          hashsetgcdestroy_BM (gc, (struct hashsetobj_stBM *) val);
+          break;
+        case tydata_listtop_BM:
+          listgcdestroy_BM (gc, (struct listtop_stBM *) val);
+          break;
+        case tydata_strbuffer_BM:
+          strbuffergcdestroy_BM (gc, (struct strbuffer_stBM *) val);
+          break;
+        case tydata_loader_BM:
+          loadergcdestroy_BM (gc, (struct loader_stBM *) val);
+          break;
+        case tydata_vectval_BM:
+          datavectgcdestroy_BM (gc, (struct datavectval_stBM *) val);
+          break;
+        case tydata_classinfo_BM:
+          classinfogcdestroy_BM (gc, (struct classinfo_stBM *) val);
+          break;
+        case tydata_dict_BM:
+          dictgcdestroy_BM (gc, (struct dict_stBM *) val);
+          break;
+        };
+      obj->ob_data = NULL;
+    }
   // should remove the object from its bucket
-#warning objectgcdestroy_BM incomplete
-  FATAL_BM ("objectgcdestroy_BM incomplete obj@%p", obj);
+  const rawid_tyBM id = obj->ob_id;
+  assert (validid_BM (id));
+  unsigned bucknum = bucknumserial63_BM (id.id_hi);
+  struct objbucket_stBM *curbuck = buckarr_BM[bucknum];
+  assert (curbuck != NULL);
+  unsigned busiz = curbuck->bucksize;
+  unsigned bucnt = curbuck->buckcount;
+  assert (bucnt < busiz);
+  hash_tyBM h = objecthash_BM (obj);
+  assert (h > 0);
+  unsigned startix = h % busiz;
+  int pos = -1;
+  for (unsigned ix = startix; ix < busiz && pos < 0; ix++)
+    {
+      objectval_tyBM *curob = curbuck->buckobjs[ix];
+      if (!curob)
+        break;
+      if (curob == obj)
+        pos = (int) ix;
+    };
+  for (unsigned ix = 0; ix < startix && pos < 0; ix++)
+    {
+      objectval_tyBM *curob = curbuck->buckobjs[ix];
+      if (!curob)
+        break;
+      if (curob == obj)
+        pos = (int) ix;
+    };
+  assert (pos >= 0);
+  curbuck->buckobjs[pos] = EMPTYSLOTOB_BM;
+  curbuck->buckcount--;
+  memset (obj, 0, sizeof (*obj));
   free (obj);
   gc->gc_freedbytes += sizeof (*obj);
 }                               /* end objectgcdestroy_BM */
