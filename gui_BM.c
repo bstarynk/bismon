@@ -2578,14 +2578,39 @@ tabautocompletecmd_BM (void)
     goto failure;
   if (isdigit (begname[0]))
     goto failure;
+  const setval_tyBM *complsetv = NULL;
+  bool gotid = false;
   if (endname >= begname + 3 && begname[0] == '_' && isdigit (begname[1])
       && isalnum (begname[2]) && endname < begname + 31)
     {
       char widbuf[32];
       memset (widbuf, 0, sizeof (widbuf));
       memcpy (widbuf, begname, endname - begname);
-      /// should use setobjectsofidprefixed_BM
+      gotid = true;
+      complsetv = setobjectsofidprefixed_BM (widbuf);
     }
+  else if (endname > begname && isalpha (begname[0]))
+    {
+      char tinyprefix[40];
+      memset (tinyprefix, 0, sizeof (tinyprefix));
+      gotid = false;
+      char *prefix = tinyprefix;
+      if (endname < begname + sizeof (tinyprefix) - 1)
+        strncpy (tinyprefix, begname, endname - begname);
+      else
+        {
+          prefix = calloc (prime_above_BM (endname - begname + 2), 1);
+          if (!prefix)
+            FATAL_BM ("failed to calloc prefix");
+          strncpy (prefix, begname, endname - begname);
+        }
+      complsetv = setofprefixednamedobjects_BM (prefix);
+      if (prefix != tinyprefix)
+        free (prefix);
+    }
+  else
+    goto failure;
+  // special case when complsetv is a singleton
 #warning tabautocompletecmd_BM incomplete
   free ((char *) curlin);
   return;
