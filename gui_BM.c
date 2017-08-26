@@ -2620,7 +2620,30 @@ tabautocompletecmd_BM (void)
   else if (nbcompl == 1)
     {
       // special case when complsetv is a singleton
+      char cidbuf[32];
+      memset (cidbuf, 0, sizeof (cidbuf));
+      const char *complword = NULL;
+      const objectval_tyBM *obcomp = setelemnth_BM (complsetv, 0);
+      assert (isobject_BM ((const value_tyBM) obcomp));
+      if (gotid)
+        {
+          idtocbuf32_BM (objid_BM (obcomp), cidbuf);
+          complword = cidbuf;
+        }
+      else
+        complword = findobjectname_BM (obcomp);
+      printf ("@@tabautocompletecmd_BM single complword='%s'\n", complword);
+      assert (complword && complword[0]);
+      GtkTextIter begwit = cursit;
+      GtkTextIter endwit = cursit;
+      gtk_text_iter_forward_chars (&endwit, endname - curstr);
+      gtk_text_iter_backward_chars (&begwit, curstr - begname);
+      gtk_text_buffer_delete (commandbuf_BM, &begwit, &endwit);
+      gtk_text_buffer_insert (commandbuf_BM, &begwit, complword, -1);
+      gtk_text_buffer_place_cursor (commandbuf_BM, &begwit);
     }
+  else
+    printf ("@@tabautocompletecmd_BM nbcompl=%u\n", nbcompl);
 #warning tabautocompletecmd_BM incomplete
   free ((char *) curlin);
   return;
