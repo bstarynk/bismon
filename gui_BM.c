@@ -112,6 +112,8 @@ static void tabautocompletecmd_BM (void);
 static void enduseractioncmd_BM (GtkTextBuffer *, gpointer);
 // the function to handle "populate-popup" on commandview_BM
 static void populatepopupcmd_BM (GtkTextView *, GtkWidget *, gpointer);
+// the function to handle "populate-popup" on logview_BM
+static void populatepopuplog_BM (GtkTextView *, GtkWidget *, gpointer);
 
 static void parsecommandbuf_BM (struct parser_stBM *pars,
                                 struct stackframe_stBM *stkf);
@@ -2720,6 +2722,33 @@ populatepopupcmd_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
 }                               /* end populatepopupcmd_BM */
 
 
+static void clearlog_BM (void);
+
+void
+populatepopuplog_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
+{
+  assert (txview == GTK_TEXT_VIEW (logview_BM));
+  assert (GTK_IS_MENU (popup));
+  assert (data == NULL);
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup),
+                         gtk_separator_menu_item_new ());
+  GtkWidget *clearlogmenit = gtk_menu_item_new_with_label ("clear log");
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup), clearlogmenit);
+  g_signal_connect (clearlogmenit, "activate", clearlog_BM, NULL);
+  gtk_widget_show_all (popup);
+}                               /* end populatepopuplog_BM */
+
+void
+clearlog_BM (void)
+{
+  GtkTextIter startit = { };
+  GtkTextIter endit = { };
+  gtk_text_buffer_get_bounds (logbuf_BM, &startit, &endit);
+  gtk_text_buffer_delete (logbuf_BM, &startit, &endit);
+  log_begin_message_BM ();
+  log_puts_message_BM ("log cleared");
+  log_end_message_BM ();
+}                               /* end clearlog_BM */
 
 void
 initialize_gui_BM (const char *builderfile)
@@ -2949,6 +2978,8 @@ initialize_gui_BM (const char *builderfile)
   //
   logbuf_BM = gtk_text_buffer_new (logtagtable_BM);
   logview_BM = gtk_text_view_new_with_buffer (logbuf_BM);
+  g_signal_connect (logview_BM, "populate-popup",
+                    G_CALLBACK (populatepopuplog_BM), NULL);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (logview_BM), false);
   GtkWidget *logscrolw = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (logscrolw), logview_BM);
