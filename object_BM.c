@@ -67,8 +67,68 @@ struct objbucket_stBM
 
 static struct objbucket_stBM *buckarr_BM[MAXBUCKETS_BM];
 
-
 #define EMPTYSLOTOB_BM ((objectval_tyBM*)(-1))
+
+const setval_tyBM *
+setobjectsofidprefixed_BM (const char *prefix)
+{
+  const setval_tyBM *setv = NULL;
+  if (!prefix || prefix[0] != '_' || !isdigit (prefix[1])
+      || !isalnum (prefix[2]))
+    return NULL;
+  int prefixlen = strlen (prefix);
+  if (prefixlen > 32)
+    return NULL;
+  const char *b62digits = B62DIGITS_BM;
+  char *p = strchr (b62digits, prefix[2]);
+  if (!p)
+    return NULL;
+  int bucknum = (prefix[1] - '0') * 62 + (p - b62digits);
+  assert (bucknum >= 0 && bucknum < MAXBUCKETS_BM);
+  struct objbucket_stBM *curbuck = buckarr_BM[bucknum];
+  if (!curbuck)
+    return NULL;
+  const objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+  const objectval_tyBM **arr = tinyarr;
+  unsigned siz = TINYSIZE_BM;
+  unsigned cnt = 0;
+  unsigned busiz = curbuck->bucksize;
+  for (unsigned ix = 0; ix < busiz; ix++)
+    {
+      objectval_tyBM *curob = curbuck->buckobjs[ix];
+      if (!curob || curob == EMPTYSLOTOB_BM)
+        continue;
+      char curidbuf[32];
+      memset (curidbuf, 0, sizeof (curidbuf));
+      idtocbuf32_BM (curob->ob_id, curidbuf);
+      assert (curidbuf[0] == '_'
+              && curidbuf[1] == prefix[1] && curidbuf[2] == prefix[2]);
+      if (!strncmp (curidbuf, prefix, prefixlen))
+        {
+          if (cnt >= siz)
+            {
+              unsigned newsiz =
+                prime_above_BM (4 * cnt / 3 + TINYSIZE_BM + 2);
+              const objectval_tyBM **newarr =
+                calloc (newsiz, sizeof (void *));
+              if (!newarr)
+                FATAL_BM ("calloc failure for %u", newsiz);
+              memcpy (newarr, arr, cnt * sizeof (void *));
+              if (arr != tinyarr)
+                free (arr);
+              arr = newarr;
+              siz = newsiz;
+            };
+          arr[cnt++] = curob;
+        }
+    }
+  setv = makeset_BM (arr, cnt);
+  if (arr != tinyarr)
+    free (arr), arr = NULL;
+  return setv;
+}                               /* end setobjectsofidprefixed_BM */
+
+
 
 extern objectval_tyBM *
 findobjofid_BM (const rawid_tyBM id)

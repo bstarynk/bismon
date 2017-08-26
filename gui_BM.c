@@ -2576,6 +2576,16 @@ tabautocompletecmd_BM (void)
   printf ("...gotextralnums=%s\n", gotextralnums ? "true" : "false");
   if (begname == endname || gotextralnums)
     goto failure;
+  if (isdigit (begname[0]))
+    goto failure;
+  if (endname >= begname + 3 && begname[0] == '_' && isdigit (begname[1])
+      && isalnum (begname[2]) && endname < begname + 31)
+    {
+      char widbuf[32];
+      memset (widbuf, 0, sizeof (widbuf));
+      memcpy (widbuf, begname, endname - begname);
+      /// should use setobjectsofidprefixed_BM
+    }
 #warning tabautocompletecmd_BM incomplete
   free ((char *) curlin);
   return;

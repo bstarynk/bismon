@@ -111,6 +111,9 @@ extern void sortnamedobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz);
 
 extern objectval_tyBM *findobjofid_BM (const rawid_tyBM id);
 extern objectval_tyBM *makeobjofid_BM (const rawid_tyBM id);
+// find the set of objects of an id prefixed by some prefix of at
+// least three characters starting with _ then a digit
+extern const setval_tyBM *setobjectsofidprefixed_BM (const char *prefix);
 extern objectval_tyBM *makeobj_BM (void);
 static inline rawid_tyBM objid_BM (const objectval_tyBM * obj);
 static inline double objmtime_BM (const objectval_tyBM * obj);
