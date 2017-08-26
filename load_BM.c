@@ -144,10 +144,19 @@ load_initial_BM (const char *ldirpath)
   firstloader_BM = NULL;
   free (ld->ld_dir), ld->ld_dir = NULL;
   for (int ix = 0; ix <= maxnum; ix++)
-    free (ld->ld_storepatharr[ix]), ld->ld_storepatharr[ix] = NULL;
+    {
+      free (ld->ld_storepatharr[ix]), ld->ld_storepatharr[ix] = NULL;
+      ld->ld_parsarr[ix] = NULL;
+    }
+  free (ld->ld_storepatharr), ld->ld_storepatharr = NULL;
+  free (ld->ld_parsarr), ld->ld_parsarr = NULL;
   ld->ld_objhset = NULL;
   ld->ld_modhset = NULL;
-  memset (ld, 0, sizeof (*ld)), ld = NULL;
+  free (ld->ld_dir), ld->ld_dir = NULL;
+  ld->ld_data = NULL;
+  ld->ld_magic = 0;
+  ld->ld_maxnum = 0;
+  // keep the header of ld
 }                               /* end load_initial_BM */
 
 void
