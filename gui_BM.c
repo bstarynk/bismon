@@ -103,6 +103,9 @@ static guint delayiderrorcmd_BM;
 // the timeout function, whose data is a markup string to be g_free-d
 static gboolean timeoutfunerrorcmd_BM (gpointer);
 
+// the periodic GC function
+static gboolean guiperiodicgarbagecollection_BM (gpointer);
+
 // the function to handle keypresses of cmd, for Return & Tab
 static gboolean handlekeypresscmd_BM (GtkWidget *, GdkEventKey *, gpointer);
 // the function to handle tabautocomplete in command
@@ -2573,7 +2576,8 @@ tabautocompletecmd_BM (void)
   printf ("...name@%p='%.*s'\n"
           "smallwordbuf='%s'\n", begname, (int) (endname - begname),
           begname, smallwordbuf);
-  printf ("...gotextralnums=%s\n", gotextralnums ? "true" : "false");
+  printf ("...gotextralnums=%s mainlev=%d\n",
+          gotextralnums ? "true" : "false", gtk_main_level ());
   if (begname == endname || gotextralnums)
     goto failure;
   if (isdigit (begname[0]))
@@ -3083,10 +3087,22 @@ initialize_gui_BM (const char *builderfile)
   gtk_box_pack_start (GTK_BOX (mainvbox), msglab_BM, /*expand= */ false,
                       /*fill= */ false, 3);
   gtk_window_set_title (GTK_WINDOW (mainwin_BM), "bismon");
-  gtk_window_set_default_size (GTK_WINDOW (mainwin_BM), 560, 430);
+  gtk_window_set_default_size (GTK_WINDOW (mainwin_BM), 580, 470);
+  // perhaps run the GC twice a second
+  g_timeout_add (500, guiperiodicgarbagecollection_BM, NULL);
   gtk_widget_show_all (GTK_WIDGET (mainwin_BM));
 }                               /* end initialize_gui_BM */
 
+gboolean
+guiperiodicgarbagecollection_BM (gpointer data __attribute__ ((unused)))
+{
+  assert (data == NULL);
+  if (want_garbage_collection_BM && gtk_main_level () <= 1)
+    {
+      fullgarbagecollection_BM (NULL);
+    }
+  return TRUE;                  // repeat again later
+}                               /* end guiperiodicgarbagecollection_BM */
 
 static void
 browsenewlinefordepth_BM (int depth)
