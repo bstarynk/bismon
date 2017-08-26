@@ -6,7 +6,7 @@ struct allalloc_stBM *allocationvec_vBM;
 bool want_garbage_collection_BM;
 double last_gctime_BM;
 
-static pthread_t mainthreadid_BM;
+pthread_t mainthreadid_BM;
 
 void
 initialize_garbage_collector_BM (void)

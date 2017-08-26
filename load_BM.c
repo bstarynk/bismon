@@ -17,7 +17,6 @@ loadergcmark_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
 void
 loadergcdestroy_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
 {
-  // I guess that this should never be called, but I am not sure!
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (valtype_BM ((const value_tyBM) ld) == tydata_loader_BM);
   assert (ld->ld_magic == LOADERMAGIC_BM);
@@ -154,7 +153,6 @@ load_initial_BM (const char *ldirpath)
   ld->ld_modhset = NULL;
   free (ld->ld_dir), ld->ld_dir = NULL;
   ld->ld_data = NULL;
-  ld->ld_magic = 0;
   ld->ld_maxnum = 0;
   // keep the header of ld
 }                               /* end load_initial_BM */

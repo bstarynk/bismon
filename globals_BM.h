@@ -12,6 +12,7 @@ extern const char bismon_makefile[];
 
 extern bool want_garbage_collection_BM;
 extern bool gui_is_running_BM;
+extern pthread_t mainthreadid_BM;
 
 extern void *dlprog_BM;         // dlopen of entire program
 extern struct timespec startrealtimespec_BM;

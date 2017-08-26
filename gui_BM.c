@@ -896,6 +896,7 @@ static void do_garbcoll_BM (void);
 void
 do_garbcoll_BM (void)
 {
+  assert (mainthreadid_BM == pthread_self ());
   log_begin_message_BM ();
   log_puts_message_BM ("forced garbage collection");
   log_end_message_BM ();
