@@ -36,7 +36,7 @@ OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst 
 all: bismon doc
 clean:
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
-	$(RM) core* *.i *.ii
+	$(RM) core* *.i *.ii *prof.out
 	$(RM) modules/*.so modules/*.i
 	$(RM) $(patsubst %.md,%.html, $(MARKDOWN_SOURCES))
 
@@ -115,7 +115,7 @@ modules: $(patsubst %.c,%.so,$(MODULES_SOURCES))
 bismon: $(OBJECTS)
 	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi
 	$(MAKE) __timestamp.c __timestamp.o
-	$(LINK.cc)  $(LINKFLAGS) -rdynamic $(OBJECTS) $(LIBES) -o $@  __timestamp.o
+	$(LINK.cc)  $(LINKFLAGS) -rdynamic $(OPTIMFLAGS) $(OBJECTS) $(LIBES) -o $@  __timestamp.o
 	$(RM) __timestamp.*
 
 doc: $(MARKDOWN_SOURCES)
