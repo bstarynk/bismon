@@ -49,7 +49,7 @@ allocgcty_BM (unsigned type, size_t sz)
       allocationvec_vBM = new_allocvec;
       want_garbage_collection_BM = true;
     }
-  else if (alloc_nb % 16 == 0)
+  else if (alloc_nb % 32 == 0)
     {
       if (clocktime_BM (CLOCK_REALTIME) > last_gctime_BM + GCWANTEDPERIOD_BM)
         want_garbage_collection_BM = true;
@@ -425,6 +425,7 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
       if (!curp)
         continue;
       newallvec->al_ptr[newcntall++] = curp;
+      allocationvec_vBM->al_ptr[ix] = NULL;
     }
   newallvec->al_nb = newcntall;
   free (allocationvec_vBM), allocationvec_vBM = newallvec;
