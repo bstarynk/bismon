@@ -711,6 +711,7 @@ hashsetgcmark_BM (struct garbcoll_stBM *gc, struct hashsetobj_stBM *hset)
   if (oldmark)
     return;
   ((typedhead_tyBM *) hset)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
   unsigned alsiz = ((typedhead_tyBM *) hset)->rlen;
   unsigned ucnt = ((typedsize_tyBM *) hset)->size;
   unsigned elcnt = 0;
@@ -744,6 +745,7 @@ hashsetgckeep_BM (struct garbcoll_stBM *gc, struct hashsetobj_stBM *hset)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) hset)->htyp == tydata_hashsetobj_BM);
   unsigned alsiz = ((typedhead_tyBM *) hset)->rlen;
+  assert (alsiz < MAXSIZE_BM);
   gc->gc_keptbytes += sizeof (*hset) + alsiz * sizeof (void *);
 }                               /* end hashsetgckeep_BM */
 
@@ -880,6 +882,7 @@ classinfogcmark_BM (struct garbcoll_stBM *gc, struct classinfo_stBM *clinf,
   if (oldmark)
     return;
   ((typedhead_tyBM *) clinf)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
   if (clinf->clinf_superclass)
     gcobjmark_BM (gc, (objectval_tyBM *) clinf->clinf_superclass);
   if (clinf->clinf_dictmeth)

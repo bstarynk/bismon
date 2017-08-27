@@ -46,6 +46,7 @@ listgckeep_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) lis)->htyp == tydata_listtop_BM);
   unsigned nblinks = lis->list_nblinks;
+  assert (nblinks < MAXSIZE_BM);
   gc->gc_keptbytes +=           //
     sizeof (*lis) + nblinks * sizeof (struct listlink_stBM);
 }                               /* end listgckeep_BM */
@@ -371,6 +372,7 @@ listgcmark_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis, int depth)
   if (oldmark)
     return;
   ((typedhead_tyBM *) lis)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
   unsigned cnt = 0;
   unsigned nblinks = 0;
   for (struct listlink_stBM * link = lis->list_first;

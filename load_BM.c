@@ -33,7 +33,7 @@ loadergckeep_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
   assert (valtype_BM ((const value_tyBM) ld) == tydata_loader_BM);
   assert (ld->ld_magic == LOADERMAGIC_BM);
   fprintf (stderr, "loadergckeep_BM called ld @%p\n", (void *) ld);
-  gc->gc_keptbytes += sizeof (*ld);
+  gc->gc_keptbytes += sizeof (struct loader_stBM);
 }                               /* end loadergckeep_BM */
 
 static void doload_BM (struct stackframe_stBM *fr, struct loader_stBM *ld);

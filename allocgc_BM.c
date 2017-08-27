@@ -101,6 +101,7 @@ gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
     {
     case tyString_BM:
       ((typedhead_tyBM *) val)->hgc = MARKGC_BM;
+      gc->gc_nbmarks++;
       return;
     case tyObject_BM:
       gcobjmark_BM (gc, val);
@@ -288,6 +289,7 @@ gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
   if (oldmark)
     return;
   ((typedhead_tyBM *) obj)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
   assert (!hashsetobj_contains_BM (gc->gc_hset, obj));
   gc->gc_hset = hashsetobj_add_BM (gc->gc_hset, obj);
   assert (islist_BM (gc->gc_scanlist));
@@ -427,8 +429,8 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
            countgc_BM, endelapsedtime - GCdata.gc_startelapsedtime,
            endcputime - GCdata.gc_startcputime);
   fprintf (fil,
-           "number of values: %ld -> %ld (-%ld)\n", oldnbval, newcntall,
-           newcntall - oldnbval);
+           "number of values: %ld -> %ld (-%ld); %ld marks\n", oldnbval,
+           newcntall, oldnbval - newcntall, GCdata.gc_nbmarks);
   fprintf (fil, "number of scanned objects: %ld\n", nbobjscan);
   fprintf (fil,
            "data memory: kept %ld, freed %ld kilobytes\n",

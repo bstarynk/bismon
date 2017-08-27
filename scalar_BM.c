@@ -180,6 +180,7 @@ stringgckeep_BM (struct garbcoll_stBM *gc, stringval_tyBM * str)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) str)->htyp == tyString_BM);
   long sll = ((typedsize_tyBM *) str)->size;
+  assert (sll < MAXSIZE_BM);
   gc->gc_keptbytes += sizeof (*str) + (sll | 0xf) + 1;
 }                               /* end stringgckeep_BM */
 
@@ -323,10 +324,10 @@ strbuffergckeep_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) sbuf)->htyp == tydata_strbuffer_BM);
   assert (sbuf->sbuf_dbuf);
-  assert (sbuf->sbuf_size > 0);
-  assert (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
-          && sbuf->sbuf_curp < sbuf->sbuf_dbuf + sbuf->sbuf_size);
   size_t siz = sbuf->sbuf_size;
+  assert (siz > 0 && siz < MAXSIZE_BM);
+  assert (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
+          && sbuf->sbuf_curp < sbuf->sbuf_dbuf + siz);
   gc->gc_keptbytes += sizeof (*sbuf) + siz;
 }                               /* end strbuffergckeep_BM */
 

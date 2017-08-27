@@ -84,6 +84,7 @@ closuregcdestroy_BM (struct garbcoll_stBM *gc, closure_tyBM * clos)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) clos)->htyp == tyClosure_BM);
   unsigned siz = ((typedsize_tyBM *) clos)->size;
+  assert (siz < MAXSIZE_BM);
   memset (clos, 0, sizeof (*clos) + siz * sizeof (void *));
   free (clos);
   gc->gc_freedbytes +=          //
@@ -97,6 +98,7 @@ closuregckeep_BM (struct garbcoll_stBM *gc, closure_tyBM * clos)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) clos)->htyp == tyClosure_BM);
   unsigned siz = ((typedsize_tyBM *) clos)->size;
+  assert (siz < MAXSIZE_BM);
   gc->gc_keptbytes +=           //
     sizeof (*clos) + (siz > 0)
     ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0;
@@ -112,6 +114,7 @@ closuregcmark_BM (struct garbcoll_stBM *gc, closure_tyBM * clos, int depth)
   if (oldmark)
     return;
   ((typedhead_tyBM *) clos)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
   gcobjmark_BM (gc, clos->nodt_conn);
   unsigned size = ((typedsize_tyBM *) clos)->size;
   for (unsigned ix = 0; ix < size; ix++)
@@ -206,6 +209,7 @@ nodegcdestroy_BM (struct garbcoll_stBM *gc, node_tyBM * nod)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) nod)->htyp == tyNode_BM);
   unsigned siz = ((typedsize_tyBM *) nod)->size;
+  assert (siz < MAXSIZE_BM);
   memset (nod, 0, sizeof (*nod) + siz * sizeof (void *));
   free (nod);
   gc->gc_freedbytes +=          //
@@ -220,6 +224,7 @@ nodegckeep_BM (struct garbcoll_stBM *gc, node_tyBM * nod)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) nod)->htyp == tyNode_BM);
   unsigned siz = ((typedsize_tyBM *) nod)->size;
+  assert (siz < MAXSIZE_BM);
   gc->gc_keptbytes +=           //
     sizeof (*nod) + (siz > 0)
     ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0;
@@ -236,6 +241,7 @@ nodegcmark_BM (struct garbcoll_stBM *gc, node_tyBM * nod, int depth)
   if (oldmark)
     return;
   ((typedhead_tyBM *) nod)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
   gcobjmark_BM (gc, nod->nodt_conn);
   unsigned size = ((typedsize_tyBM *) nod)->size;
   for (unsigned ix = 0; ix < size; ix++)

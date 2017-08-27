@@ -297,6 +297,7 @@ assocpairgckeep_BM (struct garbcoll_stBM *gc, struct assocpairs_stBM *assp)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) assp)->htyp == tydata_assocpairs_BM);
   unsigned len = ((typedhead_tyBM *) assp)->rlen;
+  assert (len < MAXSIZE_BM);
   gc->gc_keptbytes += sizeof (*assp) + len * sizeof (struct assocentry_stBM);
 }                               /* end assocpairgckeep_BM */
 
@@ -320,6 +321,7 @@ assocbucketgckeep_BM (struct garbcoll_stBM *gc,
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) abuck)->htyp == tydata_assocbucket_BM);
   unsigned nbuckets = ((typedhead_tyBM *) abuck)->rlen;
+  assert (nbuckets < MAXSIZE_BM);
   gc->gc_keptbytes += sizeof (*abuck) + nbuckets * sizeof (void *);
 }                               /* end assocbucketgckeep_BM */
 
@@ -568,6 +570,7 @@ assocgcmark_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc, int depth)
   if (oldmark)
     return;
   ((typedhead_tyBM *) assoc)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
   if (valtype_BM ((const value_tyBM) assoc) == tydata_assocbucket_BM)
     {
       unsigned nbuckets = ((typedhead_tyBM *) assoc)->rlen;
@@ -581,7 +584,10 @@ assocgcmark_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc, int depth)
               uint8_t oldbuckmark = ((typedhead_tyBM *) curbuckpair)->hgc;
               if (oldbuckmark)
                 continue;
+              if (((typedhead_tyBM *) curbuckpair)->hgc == MARKGC_BM)
+                continue;
               ((typedhead_tyBM *) curbuckpair)->hgc = MARKGC_BM;
+              gc->gc_nbmarks++;
               unsigned bucklen = ((typedhead_tyBM *) curbuckpair)->rlen;
               for (unsigned pix = 0; pix < bucklen; pix++)
                 {

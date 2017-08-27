@@ -521,6 +521,8 @@ struct garbcoll_stBM
   size_t gc_freedbytes;
   // the amount of kept memory in bytes
   size_t gc_keptbytes;
+  // the number of marked values
+  long gc_nbmarks;
   // start elapsed and cpu time
   double gc_startelapsedtime;
   double gc_startcputime;

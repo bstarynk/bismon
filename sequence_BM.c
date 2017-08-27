@@ -51,6 +51,7 @@ tuplegcdestroy_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) tup)->htyp == tyTuple_BM);
   unsigned siz = ((typedsize_tyBM *) tup)->size;
+  assert (siz < MAXSIZE_BM);
   memset (tup, 0, sizeof (*tup) + siz * sizeof (void *));
   free (tup);
   gc->gc_freedbytes +=          //
@@ -64,6 +65,7 @@ tuplegckeep_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) tup)->htyp == tyTuple_BM);
   unsigned siz = ((typedsize_tyBM *) tup)->size;
+  assert (siz < MAXSIZE_BM);
   gc->gc_keptbytes += sizeof (*tup)     //
     + (siz > 0) ? prime_above_BM (siz - 1) * sizeof (void *) : 0;
 }                               /* end tuplegckeep_BM */
@@ -102,6 +104,7 @@ tuplegcmark_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup)
   if (oldmark)
     return;
   ((typedhead_tyBM *) tup)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
   unsigned siz = ((typedsize_tyBM *) tup)->size;
   for (unsigned ix = 0; ix < siz; ix++)
     gcobjmark_BM (gc, (objectval_tyBM *) tup->seq_objs[ix]);
@@ -202,6 +205,7 @@ setgcdestroy_BM (struct garbcoll_stBM *gc, setval_tyBM * set)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) set)->htyp == tySet_BM);
   unsigned siz = ((typedsize_tyBM *) set)->size;
+  assert (siz < MAXSIZE_BM);
   memset (set, 0, sizeof (*set) + siz * sizeof (void *));
   free (set);
   gc->gc_freedbytes +=          //
@@ -215,6 +219,7 @@ setgckeep_BM (struct garbcoll_stBM *gc, setval_tyBM * set)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) set)->htyp == tySet_BM);
   unsigned siz = ((typedsize_tyBM *) set)->size;
+  assert (siz < MAXSIZE_BM);
   gc->gc_keptbytes +=           //
     sizeof (*set)               //
     + (siz > 0) ? prime_above_BM (siz - 1) * sizeof (void *) : 0;
@@ -293,6 +298,7 @@ setgcmark_BM (struct garbcoll_stBM *gc, setval_tyBM * set)
   if (oldmark)
     return;
   ((typedhead_tyBM *) set)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
   unsigned siz = ((typedsize_tyBM *) set)->size;
   for (unsigned ix = 0; ix < siz; ix++)
     gcobjmark_BM (gc, (objectval_tyBM *) set->seq_objs[ix]);
@@ -339,6 +345,7 @@ datavectgcdestroy_BM (struct garbcoll_stBM *gc, struct datavectval_stBM *dvec)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) dvec)->htyp == tydata_vectval_BM);
   unsigned siz = ((typedhead_tyBM *) dvec)->rlen;
+  assert (siz < MAXSIZE_BM);
   memset (dvec, 0, sizeof (*dvec) + siz * sizeof (void *));
   free (dvec);
   gc->gc_freedbytes += sizeof (*dvec) + siz * sizeof (void *);
@@ -351,6 +358,7 @@ datavectgckeep_BM (struct garbcoll_stBM *gc, struct datavectval_stBM *dvec)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) dvec)->htyp == tydata_vectval_BM);
   unsigned siz = ((typedhead_tyBM *) dvec)->rlen;
+  assert (siz < MAXSIZE_BM);
   gc->gc_keptbytes += sizeof (*dvec) + siz * sizeof (void *);
 }                               /* end datavectgckeep_BM */
 
@@ -434,6 +442,7 @@ datavectgcmark_BM (struct garbcoll_stBM *gc,
   if (oldmark)
     return;
   ((typedhead_tyBM *) dvec)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
   unsigned dlen = ((typedhead_tyBM *) dvec)->rlen;
   unsigned dcnt = ((typedsize_tyBM *) dvec)->size;
   assert (dcnt <= dlen);

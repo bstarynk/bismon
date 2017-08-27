@@ -105,6 +105,7 @@ parsergcmark_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars)
   if (oldmark)
     return;
   ((typedhead_tyBM *) pars)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
   if (pars->pars_cvalue)
     gcmark_BM (gc, pars->pars_cvalue, 0);
 }                               /* end parsergcmark_BM */
