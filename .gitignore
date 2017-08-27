@@ -14,3 +14,5 @@ bismon
 core*
 
 *.html
+
+gmon.out

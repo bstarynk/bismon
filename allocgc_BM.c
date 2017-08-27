@@ -432,9 +432,74 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
            "number of values: %ld -> %ld (-%ld); %ld marks\n", oldnbval,
            newcntall, oldnbval - newcntall, GCdata.gc_nbmarks);
   fprintf (fil, "number of scanned objects: %ld\n", nbobjscan);
-  fprintf (fil,
-           "data memory: kept %ld, freed %ld kilobytes\n",
-           (GCdata.gc_keptbytes) / 1024, (GCdata.gc_freedbytes) / 1024);
+  {
+    char keptbuf[40], freedbuf[40];
+    memset (keptbuf, 0, sizeof (keptbuf));
+    memset (freedbuf, 0, sizeof (freedbuf));
+    long keptb = GCdata.gc_keptbytes;
+    if (keptb < 128L * 1024)
+      snprintf (keptbuf, sizeof (keptbuf), "%ld bytes", keptb);
+    else if (keptb < 256L << 20)
+      snprintf (keptbuf, sizeof (keptbuf), "%ld kilobytes", keptb >> 10);
+    else
+      snprintf (keptbuf, sizeof (keptbuf), "%ld megabytes", keptb >> 20);
+    long freedb = GCdata.gc_freedbytes;
+    if (freedb < 128L * 1024)
+      snprintf (freedbuf, sizeof (freedbuf), "%ld bytes", freedb);
+    else if (freedb < 256L << 20)
+      snprintf (freedbuf, sizeof (freedbuf), "%ld kilobytes", freedb >> 10);
+    else
+      snprintf (freedbuf, sizeof (freedbuf), "%ld megabytes", freedb >> 20);
+    fprintf (fil, "data memory: kept %s, freed %s\n", keptbuf, freedbuf);
+  }
+  {
+    FILE *f = fopen ("/proc/self/statm", "r");
+    if (f)
+      {
+        long psiz = 0, rss = 0, shared = 0, code = 0;
+        long lib = 0, data = 0, dt = 0;
+        long pagsiz = sysconf (_SC_PAGESIZE);
+        if (fscanf (f, "%ld %ld %ld %ld %ld %ld %ld",
+                    &psiz, &rss, &shared, &code, &lib, &data, &dt) >= 7)
+          {
+            long psizbytes = psiz * pagsiz;
+            long rssbytes = rss * pagsiz;
+            long databytes = data * pagsiz;
+            char psizbuf[40], rssbuf[40], databuf[40];
+            memset (psizbuf, 0, sizeof (psizbuf));
+            memset (rssbuf, 0, sizeof (rssbuf));
+            memset (databuf, 0, sizeof (databuf));
+            if (psizbytes < 128L * 1024)
+              snprintf (psizbuf, sizeof (psizbuf), "%ld bytes", psizbytes);
+            else if (psizbytes < 256L << 20)
+              snprintf (psizbuf, sizeof (psizbuf), "%ld kilobytes",
+                        psizbytes >> 10);
+            else
+              snprintf (psizbuf, sizeof (psizbuf), "%ld megabytes",
+                        psizbytes >> 20);
+            if (rssbytes < 128L * 1024)
+              snprintf (rssbuf, sizeof (rssbuf), "%ld bytes", rssbytes);
+            else if (rssbytes < 256L << 20)
+              snprintf (rssbuf, sizeof (rssbuf), "%ld kilobytes",
+                        rssbytes >> 10);
+            else
+              snprintf (rssbuf, sizeof (rssbuf), "%ld megabytes",
+                        rssbytes >> 20);
+
+            if (databytes < 128L * 1024)
+              snprintf (databuf, sizeof (databuf), "%ld bytes", databytes);
+            else if (databytes < 256L << 20)
+              snprintf (databuf, sizeof (databuf), "%ld kilobytes",
+                        databytes >> 10);
+            else
+              snprintf (databuf, sizeof (databuf), "%ld megabytes",
+                        databytes >> 20);
+            fprintf (fil, "process [%d] vmem %s, rss %s, data %s\n",
+                     (int) getpid (), psizbuf, rssbuf, databuf);
+          }
+        fclose (f);
+      }
+  }
   fprintf (fil, "-------\n\n");
   fflush (fil);
   last_gctime_BM = clocktime_BM (CLOCK_REALTIME);
