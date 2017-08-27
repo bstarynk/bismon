@@ -8,7 +8,7 @@
 #define MARKGC_BM 1
 #define CLEARMGC_BM 0
 #define GCMAGIC_BM 24501383     /*0x175dc87 */
-#define GCWANTEDPERIOD_BM 2.5   /* seconds */
+#define GCWANTEDPERIOD_BM 3.5   /* seconds */
 
 #define HASHSETEMPTYSLOT_BM ((void*)(-1))
 
