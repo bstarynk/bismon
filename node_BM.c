@@ -15,11 +15,12 @@ makeclosure_BM (const objectval_tyBM * connob, unsigned nbval,
   for (unsigned ix = 0; ix < nbval; ix++)
     if (valtype_BM (closvalarr[ix]))
       cnt++;
+  unsigned long closiz =
+    sizeof (closure_tyBM)
+    + ((cnt > 0) ? (prime_above_BM (cnt - 1) * sizeof (value_tyBM)) : 0);
+  assert (closiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
   closure_tyBM *clos =          //
-    allocgcty_BM (tyClosure_BM,
-                  sizeof (closure_tyBM)
-                  + ((cnt > 0)
-                     ? (prime_above_BM (cnt - 1) * sizeof (value_tyBM)) : 0));
+    allocgcty_BM (tyClosure_BM, closiz);
   hash_tyBM h1 = objecthash_BM (connob);
   hash_tyBM h2 = cnt;
   ((typedsize_tyBM *) clos)->size = cnt;
@@ -87,9 +88,11 @@ closuregcdestroy_BM (struct garbcoll_stBM *gc, closure_tyBM * clos)
   assert (siz < MAXSIZE_BM);
   memset (clos, 0, sizeof (*clos) + siz * sizeof (void *));
   free (clos);
-  gc->gc_freedbytes +=          //
-    sizeof (*clos) + (siz > 0)
-    ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0;
+  unsigned long closiz =
+    sizeof (*clos)
+    + ((siz > 0) ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0);
+  assert (closiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  gc->gc_freedbytes += closiz;
 }                               /* end closuregcdestroy_BM */
 
 void
@@ -99,9 +102,11 @@ closuregckeep_BM (struct garbcoll_stBM *gc, closure_tyBM * clos)
   assert (((typedhead_tyBM *) clos)->htyp == tyClosure_BM);
   unsigned siz = ((typedsize_tyBM *) clos)->size;
   assert (siz < MAXSIZE_BM);
-  gc->gc_keptbytes +=           //
-    sizeof (*clos) + (siz > 0)
-    ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0;
+  unsigned long closiz =
+    sizeof (*clos)
+    + ((siz > 0) ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0);
+  assert (closiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  gc->gc_keptbytes += closiz;
 }                               /* end closuregckeep_BM */
 
 
@@ -139,11 +144,12 @@ makenode_BM (const objectval_tyBM * connob, unsigned nbval,
   for (unsigned ix = 0; ix < nbval; ix++)
     if (valtype_BM (sonvalarr[ix]))
       cnt++;
+  unsigned long nodsiz =
+    sizeof (node_tyBM)
+    + ((cnt > 0) ? (prime_above_BM (cnt - 1) * sizeof (value_tyBM)) : 0);
+  assert (nodsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
   closure_tyBM *node =          //
-    allocgcty_BM (tyNode_BM,
-                  sizeof (node_tyBM)
-                  + ((cnt > 0)
-                     ? (prime_above_BM (cnt - 1) * sizeof (value_tyBM)) : 0));
+    allocgcty_BM (tyNode_BM, nodsiz);
   hash_tyBM h1 = objecthash_BM (connob);
   hash_tyBM h2 = cnt;
   ((typedsize_tyBM *) node)->size = cnt;
@@ -212,9 +218,11 @@ nodegcdestroy_BM (struct garbcoll_stBM *gc, node_tyBM * nod)
   assert (siz < MAXSIZE_BM);
   memset (nod, 0, sizeof (*nod) + siz * sizeof (void *));
   free (nod);
-  gc->gc_freedbytes +=          //
-    sizeof (*nod) + (siz > 0)
-    ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0;
+  unsigned long nodsiz =
+    sizeof (*nod) + ((siz > 0)
+                     ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0);
+  assert (nodsiz < (4 * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  gc->gc_freedbytes += nodsiz;
 }                               /* end nodegcdestroy_BM */
 
 
@@ -225,9 +233,11 @@ nodegckeep_BM (struct garbcoll_stBM *gc, node_tyBM * nod)
   assert (((typedhead_tyBM *) nod)->htyp == tyNode_BM);
   unsigned siz = ((typedsize_tyBM *) nod)->size;
   assert (siz < MAXSIZE_BM);
-  gc->gc_keptbytes +=           //
-    sizeof (*nod) + (siz > 0)
-    ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0;
+  unsigned long nodsiz =
+    sizeof (*nod) + ((siz > 0)
+                     ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0);
+  assert (nodsiz < (4 * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  gc->gc_keptbytes += nodsiz;
 }                               /* end nodegckeep_BM */
 
 

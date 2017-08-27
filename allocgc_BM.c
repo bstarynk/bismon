@@ -382,6 +382,7 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
     }
   unsigned long nbalive = 0;
   unsigned long nbdestroy = 0;
+  unsigned long threshkept = 128L << 10;
   for (unsigned long ix = 0; ix < alcnt; ix++)
     {
       typedhead_tyBM *curp = allocationvec_vBM->al_ptr[ix];
@@ -395,7 +396,17 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
         }
       else
         {
+          unsigned long oldkept = GCdata.gc_keptbytes;
           valgckeep_BM (&GCdata, (value_tyBM) curp);
+          if (GCdata.gc_keptbytes > threshkept
+              || GCdata.gc_keptbytes > oldkept + 16L * 1024)
+            {
+              printf ("@@big %ld kept (= %ld + old %ld) curp@%p #%ld\n",
+                      GCdata.gc_keptbytes,
+                      GCdata.gc_keptbytes - oldkept, oldkept, (void *) curp,
+                      nbalive);
+              threshkept = ((3 * threshkept / 2) | 0x3ffL) + 1;
+            }
           nbalive++;
         }
     };
@@ -429,8 +440,9 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
            countgc_BM, endelapsedtime - GCdata.gc_startelapsedtime,
            endcputime - GCdata.gc_startcputime);
   fprintf (fil,
-           "number of values: %ld -> %ld (-%ld); %ld marks\n", oldnbval,
-           newcntall, oldnbval - newcntall, GCdata.gc_nbmarks);
+           "number of values: %ld -> %ld (-%ld), %ld slots; %ld marks\n",
+           oldnbval, newcntall, oldnbval - newcntall, alcnt,
+           GCdata.gc_nbmarks);
   fprintf (fil, "number of scanned objects: %ld\n", nbobjscan);
   {
     char keptbuf[40], freedbuf[40];

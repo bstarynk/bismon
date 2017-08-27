@@ -153,8 +153,9 @@ makestringlen_BM (const char *cstr, long len)
   if (!g_utf8_validate (cstr, len, NULL))
     FATAL_BM ("makestringlen invalid string");
   hash_tyBM h = stringhashlen_BM (cstr, len);
-  stringval_tyBM *strv =
-    allocgcty_BM (tyString_BM, (sizeof (stringval_tyBM) + (len | 0xf) + 1));
+  unsigned long strsiz = sizeof (stringval_tyBM) + (len | 0xf) + 1;
+  assert (strsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  stringval_tyBM *strv = allocgcty_BM (tyString_BM, strsiz);
   ((typedhead_tyBM *) strv)->hash = h;
   ((typedsize_tyBM *) strv)->size = len;
   memcpy (strv->strv_bytes, cstr, len);
@@ -168,9 +169,12 @@ stringgcdestroy_BM (struct garbcoll_stBM *gc, stringval_tyBM * str)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) str)->htyp == tyString_BM);
   long sll = ((typedsize_tyBM *) str)->size;
+  assert (sll < MAXSIZE_BM);
+  unsigned long strsiz = sizeof (stringval_tyBM) + (sll | 0xf) + 1;
+  assert (strsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
   memset (str, 0, sizeof (*str) + sll);
   free (str);
-  gc->gc_freedbytes += sizeof (*str) + (sll | 0xf) + 1;
+  gc->gc_freedbytes += strsiz;
 }                               /* end stringgcdestroy_BM */
 
 
@@ -181,7 +185,9 @@ stringgckeep_BM (struct garbcoll_stBM *gc, stringval_tyBM * str)
   assert (((typedhead_tyBM *) str)->htyp == tyString_BM);
   long sll = ((typedsize_tyBM *) str)->size;
   assert (sll < MAXSIZE_BM);
-  gc->gc_keptbytes += sizeof (*str) + (sll | 0xf) + 1;
+  unsigned long strsiz = sizeof (stringval_tyBM) + (sll | 0xf) + 1;
+  assert (strsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  gc->gc_keptbytes += strsiz;
 }                               /* end stringgckeep_BM */
 
 
@@ -309,11 +315,13 @@ strbuffergcdestroy_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf)
   assert (((typedhead_tyBM *) sbuf)->htyp == tydata_strbuffer_BM);
   assert (sbuf->sbuf_dbuf);
   size_t siz = sbuf->sbuf_size;
-  assert (siz > 0);
+  assert (siz > 0 && siz < MAXSIZE_BM);
+  unsigned long sbusiz = sizeof (*sbuf) + siz;
+  assert (sbusiz < ((4L * MAXSIZE_BM) / 3 + 5L) * sizeof (void *));
   assert (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
           && sbuf->sbuf_curp < sbuf->sbuf_dbuf + sbuf->sbuf_size);
   free (sbuf->sbuf_dbuf);
-  gc->gc_freedbytes += sizeof (*sbuf) + siz;
+  gc->gc_freedbytes += sbusiz;
   memset (sbuf, 0, sizeof (*sbuf));
   free (sbuf);
 }                               /* end strbuffergcdestroy_BM */
@@ -326,9 +334,12 @@ strbuffergckeep_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf)
   assert (sbuf->sbuf_dbuf);
   size_t siz = sbuf->sbuf_size;
   assert (siz > 0 && siz < MAXSIZE_BM);
+  assert (siz > 0 && siz < MAXSIZE_BM);
+  unsigned long sbusiz = sizeof (*sbuf) + siz;
+  assert (sbusiz < ((4L * MAXSIZE_BM) / 3 + 5L) * sizeof (void *));
   assert (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
           && sbuf->sbuf_curp < sbuf->sbuf_dbuf + siz);
-  gc->gc_keptbytes += sizeof (*sbuf) + siz;
+  gc->gc_keptbytes += sbusiz;
 }                               /* end strbuffergckeep_BM */
 
 
