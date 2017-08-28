@@ -886,7 +886,10 @@ do_dump_BM (void)
 {
   extern char *dump_dir_bm;
   log_begin_message_BM ();
-  log_printf_message_BM ("dumping into %s", dump_dir_bm);
+  if (dump_dir_bm)
+    log_printf_message_BM ("dumping into %s", dump_dir_bm);
+  else
+    log_puts_message_BM ("dumping");
   dump_BM (dump_dir_bm, NULL);
   log_puts_message_BM (".");
   log_end_message_BM ();

@@ -38,15 +38,12 @@ allocgcty_BM (unsigned type, size_t sz)
         malloc (sizeof (struct allalloc_stBM) +
                 new_alloc_size * sizeof (void *));
       if (!new_allocvec)
-        {
-          FATAL_BM ("failed reallocation of allocvec %ld (%m)",
-                    new_alloc_size);
-        }
+        FATAL_BM ("failed reallocation of allocvec %ld (%m)", new_alloc_size);
+      memset (new_allocvec, 0, sizeof (struct allalloc_stBM) +
+              new_alloc_size * sizeof (void *));
       new_allocvec->al_size = new_alloc_size;
       new_allocvec->al_nb = alloc_nb;
-      memset (new_allocvec->al_ptr, 0, new_alloc_size * sizeof (void *));
-      free (allocationvec_vBM);
-      allocationvec_vBM = new_allocvec;
+      free (allocationvec_vBM), allocationvec_vBM = new_allocvec;
       want_garbage_collection_BM = true;
     }
   else if (alloc_nb % 32 == 0)
@@ -390,8 +387,8 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
         continue;
       if (curp->hgc == CLEARMGC_BM)
         {
-          valgcdestroy_BM (&GCdata, (value_tyBM) curp);
           allocationvec_vBM->al_ptr[ix] = NULL;
+          valgcdestroy_BM (&GCdata, (value_tyBM) curp);
           nbdestroy++;
         }
       else
