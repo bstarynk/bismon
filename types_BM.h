@@ -482,7 +482,6 @@ struct parser_stBM              /* for tydata_parser_BM */
   FILE *pars_file;
   const char *pars_path;
   value_tyBM pars_cvalue;       /* client value */
-  void *pars_xtradata;          /* extra client data */
   const char *pars_filemem;     /* when using fmemopen */
   size_t pars_filesize;         /* when using fmemopen */
   char *pars_linebuf;           /* given by getline */

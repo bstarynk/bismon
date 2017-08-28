@@ -192,6 +192,12 @@ valgcdestroy_BM (struct garbcoll_stBM *gc, value_tyBM val)
     case tydata_dict_BM:
       dictgcdestroy_BM (gc, (struct dict_stBM *) val);
       return;
+    case tydata_parser_BM:
+      parsergcdestroy_BM (gc, (struct parser_stBM *) val);
+      return;
+    case tydata_dumper_BM:
+      dumpgcdestroy_BM (gc, (struct dumper_stBM *) val);
+      return;
     default:
       FATAL_BM ("gcdestroy ty#%d unexpected for val@%p", ty, val);
     }
@@ -254,6 +260,12 @@ valgckeep_BM (struct garbcoll_stBM *gc, value_tyBM val)
       return;
     case tydata_dict_BM:
       dictgckeep_BM (gc, (struct dict_stBM *) val);
+      return;
+    case tydata_parser_BM:
+      parsergckeep_BM (gc, (struct parser_stBM *) val);
+      return;
+    case tydata_dumper_BM:
+      dumpgckeep_BM (gc, (struct dumper_stBM *) val);
       return;
     default:
       FATAL_BM ("gckeep ty#%d unexpected for val@%p", ty, val);

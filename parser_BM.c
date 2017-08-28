@@ -110,6 +110,54 @@ parsergcmark_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars)
     gcmark_BM (gc, pars->pars_cvalue, 0);
 }                               /* end parsergcmark_BM */
 
+void
+parsergcdestroy_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars)
+{
+  unsigned long parsiz = sizeof (*pars);
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  if (pars->pars_filemem)
+    {
+      free (pars->pars_filemem), pars->pars_filemem = NULL;
+      parsiz += pars->pars_filesize;
+      pars->pars_filesize = 0;
+    }
+  if (pars->pars_linebuf)
+    {
+      parsiz += pars->pars_linesiz;
+      free (pars->pars_linebuf), pars->pars_linebuf = NULL;
+    }
+  if (pars->pars_file)
+    {
+      parsiz += sizeof (FILE);
+      fclose (pars->pars_file), pars->pars_file = NULL;
+    }
+  if (pars->pars_memolines)
+    {
+      parsiz += pars->pars_memolsize * sizeof (struct memolineoffset_stBM);
+      free (pars->pars_memolines), pars->pars_memolines = NULL;
+    }
+  memset (pars, 0, sizeof (*pars));
+  free (pars);
+  gc->gc_freedbytes += parsiz;
+}                               /* end parsergcdestroy_BM */
+
+
+void
+parsergckeep_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars)
+{
+  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  unsigned long parsiz = sizeof (*pars);
+  if (pars->pars_filemem)
+    parsiz += pars->pars_filesize;
+  if (pars->pars_linebuf)
+    parsiz += pars->pars_linesiz;
+  if (pars->pars_file)
+    parsiz += sizeof (FILE);
+  assert (parsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  gc->gc_keptbytes += parsiz;
+}                               /* end parsergckeep_BM */
+
+
 bool
 parsernextline_BM (struct parser_stBM *pars)
 {
