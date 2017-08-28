@@ -55,7 +55,7 @@ extern const char *gobjectclassnamedbg_BM (GObject * ptr);
 
 extern rawid_tyBM parse_rawid_BM (const char *buf, const char **pend);
 extern void *allocgcty_BM (unsigned type, size_t sz);
-extern void *allocinternalty_BM (unsigned type, size_t sz);
+
 
 static inline bool isstring_BM (const value_tyBM v);
 extern hash_tyBM stringhash_BM (const char *str);

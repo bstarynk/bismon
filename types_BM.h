@@ -6,20 +6,7 @@
 typedef void *value_tyBM;
 
 typedef uint32_t hash_tyBM;
-struct typedhead_stBM
-{
-  unsigned htyp:24;
-  unsigned hgc:8;
-  union
-  {
-    hash_tyBM hash;
-    uint32_t rlen;
-  };
-};
-typedef struct typedhead_stBM typedhead_tyBM;
-typedef struct typedhead_stBM typedintern_tyBM;
-
-// types of garbage collected first-class values
+// types of garbage collected values
 enum gctyenum_BM
 {
   tyInt_BM = -1,                /* actually a tagged int */
@@ -39,13 +26,7 @@ enum gctyenum_BM
   ty_SpareF_BM = 13,
   ty_SpareG_BM = 14,
   ty_SpareH_BM = 15,
-  ty_LAST_TYENUM_BM
-};
-
-// types of garbage collected data (non-first class)
-enum gcdataenum_BM
-{
-  tydata_vectval_BM = ty_LAST_TYENUM_BM,
+  tydata_vectval_BM,
   tydata_assocbucket_BM,
   tydata_assocpairs_BM,
   tydata_hashsetobj_BM,
@@ -89,6 +70,20 @@ enum gcdataenum_BM
   tydata_SpecialFrame_BM = 0xfffe,
   tydata_StackFrame_BM = 0xffff
 };
+struct typedhead_stBM
+{
+  enum gctyenum_BM htyp:24;
+  unsigned hgc:8;
+  union
+  {
+    hash_tyBM hash;
+    uint32_t rlen;
+  };
+};
+typedef struct typedhead_stBM typedhead_tyBM;
+typedef struct typedhead_stBM typedintern_tyBM;
+
+
 
 struct typedsize_stBM
 {

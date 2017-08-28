@@ -12,9 +12,9 @@ assocpair_put_BM (struct assocpairs_stBM *apairs,
     {
       unsigned newsiz = TINYSIZE_BM / 3;
       newpairs =
-        allocinternalty_BM (tydata_assocpairs_BM,
-                            sizeof (struct assocpairs_stBM) +
-                            newsiz * sizeof (struct assocentry_stBM));
+        allocgcty_BM (tydata_assocpairs_BM,
+                      sizeof (struct assocpairs_stBM) +
+                      newsiz * sizeof (struct assocentry_stBM));
       ((typedhead_tyBM *) newpairs)->rlen = newsiz;
       ((typedsize_tyBM *) newpairs)->size = 1;
       memset (newpairs->apairs_ent, 0,
@@ -44,9 +44,9 @@ assocpair_put_BM (struct assocpairs_stBM *apairs,
       if (newlen >= MAXSIZE_BM)
         FATAL_BM ("too big assocpairs %lu for oldlen %u", newlen, oldlen);
       newpairs =
-        allocinternalty_BM (tydata_assocpairs_BM,
-                            sizeof (struct assocpairs_stBM) +
-                            newlen * sizeof (struct assocentry_stBM));
+        allocgcty_BM (tydata_assocpairs_BM,
+                      sizeof (struct assocpairs_stBM) +
+                      newlen * sizeof (struct assocentry_stBM));
       ((typedhead_tyBM *) newpairs)->rlen = newlen;
       unsigned cnt = 0;
       for (unsigned ix = 0; ix < oldlen; ix++)
@@ -122,10 +122,9 @@ assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap)
       else
         newpairsiz = TINYSIZE_BM;
       struct assocpairs_stBM *newpairs = newpairsiz ?
-        allocinternalty_BM (tydata_assocpairs_BM,
-                            sizeof (struct assocpairs_stBM) +
-                            newpairsiz * sizeof (struct assocentry_stBM))
-        : NULL;
+        allocgcty_BM (tydata_assocpairs_BM,
+                      sizeof (struct assocpairs_stBM) +
+                      newpairsiz * sizeof (struct assocentry_stBM)) : NULL;
       if (newpairs)
         {
           ((typedhead_tyBM *) newpairs)->rlen = newpairsiz;
@@ -205,10 +204,12 @@ assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap)
     FATAL_BM ("new assoc wish %lu too big", newish);
   unsigned newnbuckets =
     prime_above_BM (newish / (TINYSIZE_BM - 3) + gap / 128 + 4);
-  struct assocbucket_stBM *newbuckets =
-    allocinternalty_BM (tydata_assocbucket_BM,
-                        sizeof (struct assocbucket_stBM) +
-                        newnbuckets * sizeof (void *));
+  struct assocbucket_stBM *newbuckets = allocgcty_BM (tydata_assocbucket_BM,
+                                                      sizeof (struct
+                                                              assocbucket_stBM)
+                                                      +
+                                                      newnbuckets *
+                                                      sizeof (void *));
   ((typedhead_tyBM *) newbuckets)->rlen = newnbuckets;
   if (oldassocisbucket)
     {

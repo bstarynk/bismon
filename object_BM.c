@@ -285,65 +285,10 @@ objectgcdestroy_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
   forgetnamedobject_BM (obj);
   obj->ob_space = TransientSp_BM;
   obj->ob_class = NULL;
-  if (obj->ob_compvec)
-    {
-      datavectgcdestroy_BM (gc, obj->ob_compvec);
-      obj->ob_compvec = NULL;
-    }
-  if (obj->ob_attrassoc)
-    {
-      unsigned tyassoc = valtype_BM (obj->ob_attrassoc);
-      if (tyassoc == tydata_assocpairs_BM)
-        assocpairgcdestroy_BM (gc,
-                               (struct assocpairs_stBM *) obj->ob_attrassoc);
-      else if (tyassoc == tydata_assocbucket_BM)
-        assocbucketgcdestroy_BM (gc,
-                                 (struct assocbucket_stBM *)
-                                 obj->ob_attrassoc);
-      else
-        FATAL_BM ("corrupted attrassoc@%p", obj->ob_attrassoc);
-      obj->ob_attrassoc = NULL;
-    }
-  if (obj->ob_rout)
-    {
-      obj->ob_rout = NULL;
-    }
-  if (obj->ob_data)
-    {
-      unsigned tydata = valtype_BM (obj->ob_data);
-      void *val = obj->ob_data;
-      switch (tydata)
-        {
-        case tydata_assocpairs_BM:
-          assocpairgcdestroy_BM (gc, (struct assocpairs_stBM *) val);
-          break;
-        case tydata_assocbucket_BM:
-          assocbucketgcdestroy_BM (gc, (struct assocbucket_stBM *) val);
-          break;
-        case tydata_hashsetobj_BM:
-          hashsetgcdestroy_BM (gc, (struct hashsetobj_stBM *) val);
-          break;
-        case tydata_listtop_BM:
-          listgcdestroy_BM (gc, (struct listtop_stBM *) val);
-          break;
-        case tydata_strbuffer_BM:
-          strbuffergcdestroy_BM (gc, (struct strbuffer_stBM *) val);
-          break;
-        case tydata_loader_BM:
-          loadergcdestroy_BM (gc, (struct loader_stBM *) val);
-          break;
-        case tydata_vectval_BM:
-          datavectgcdestroy_BM (gc, (struct datavectval_stBM *) val);
-          break;
-        case tydata_classinfo_BM:
-          classinfogcdestroy_BM (gc, (struct classinfo_stBM *) val);
-          break;
-        case tydata_dict_BM:
-          dictgcdestroy_BM (gc, (struct dict_stBM *) val);
-          break;
-        };
-      obj->ob_data = NULL;
-    }
+  obj->ob_compvec = NULL;
+  obj->ob_attrassoc = NULL;
+  obj->ob_rout = NULL;
+  obj->ob_data = NULL;
   // should remove the object from its bucket
   const rawid_tyBM id = obj->ob_id;
   assert (validid_BM (id));
@@ -522,9 +467,9 @@ hashsetobj_grow_BM (struct hashsetobj_stBM *hset, unsigned gap)
     {
       unsigned newsiz = prime_above_BM (4 * gap / 3 + 10);
       hset =                    //
-        allocinternalty_BM (tydata_hashsetobj_BM,
-                            sizeof (struct hashsetobj_stBM)
-                            + newsiz * sizeof (void *));
+        allocgcty_BM (tydata_hashsetobj_BM,
+                      sizeof (struct hashsetobj_stBM)
+                      + newsiz * sizeof (void *));
       ((typedhead_tyBM *) hset)->rlen = newsiz;
       ((typedsize_tyBM *) hset)->size = 0;
       return hset;
@@ -537,9 +482,8 @@ hashsetobj_grow_BM (struct hashsetobj_stBM *hset, unsigned gap)
   if (alsiz >= newsiz)
     return hset;
   struct hashsetobj_stBM *newhset =     //
-    allocinternalty_BM (tydata_hashsetobj_BM,
-                        sizeof (struct hashsetobj_stBM)
-                        + newsiz * sizeof (void *));
+    allocgcty_BM (tydata_hashsetobj_BM,
+                  sizeof (struct hashsetobj_stBM) + newsiz * sizeof (void *));
   ((typedhead_tyBM *) newhset)->rlen = newsiz;
   ((typedsize_tyBM *) newhset)->size = 0;
   for (unsigned oix = 0; oix < alsiz; oix++)

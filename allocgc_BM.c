@@ -65,20 +65,6 @@ allocgcty_BM (unsigned type, size_t sz)
 
 
 
-// to be used only on second-class data, not first-class values
-void *
-allocinternalty_BM (unsigned type, size_t sz)
-{
-  assert (sz > sizeof (typedintern_tyBM));
-  typedintern_tyBM *newizon = malloc (sz);
-  if (!newizon)
-    FATAL_BM ("failed internal allocation of %zd bytes (%m)", sz);
-  memset (newizon, 0, sz);
-  newizon->htyp = type;
-  return newizon;
-}                               /* end allocinternalty_BM  */
-
-
 
 void
 gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
@@ -379,7 +365,6 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
     }
   unsigned long nbalive = 0;
   unsigned long nbdestroy = 0;
-  unsigned long threshkept = 128L << 10;
   for (unsigned long ix = 0; ix < alcnt; ix++)
     {
       typedhead_tyBM *curp = allocationvec_vBM->al_ptr[ix];
@@ -393,17 +378,8 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
         }
       else
         {
-          unsigned long oldkept = GCdata.gc_keptbytes;
+          assert (curp->hgc == MARKGC_BM);
           valgckeep_BM (&GCdata, (value_tyBM) curp);
-          if (GCdata.gc_keptbytes > threshkept
-              || GCdata.gc_keptbytes > oldkept + 16L * 1024)
-            {
-              printf ("@@big %ld kept (= %ld + old %ld) curp@%p #%ld\n",
-                      GCdata.gc_keptbytes,
-                      GCdata.gc_keptbytes - oldkept, oldkept, (void *) curp,
-                      nbalive);
-              threshkept = ((3 * threshkept / 2) | 0x3ffL) + 1;
-            }
           nbalive++;
         }
     };

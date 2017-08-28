@@ -5,8 +5,8 @@ struct listtop_stBM *
 makelist_BM (void)
 {
   struct listtop_stBM *lis =    //
-    allocinternalty_BM (tydata_listtop_BM,
-                        sizeof (struct listtop_stBM));
+    allocgcty_BM (tydata_listtop_BM,
+                  sizeof (struct listtop_stBM));
   ((typedhead_tyBM *) lis)->rlen = 0;
   lis->list_nblinks = 0;
   lis->list_first = NULL;

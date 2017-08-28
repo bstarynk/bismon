@@ -216,12 +216,12 @@ nodegcdestroy_BM (struct garbcoll_stBM *gc, node_tyBM * nod)
   assert (((typedhead_tyBM *) nod)->htyp == tyNode_BM);
   unsigned siz = ((typedsize_tyBM *) nod)->size;
   assert (siz < MAXSIZE_BM);
-  memset (nod, 0, sizeof (*nod) + siz * sizeof (void *));
-  free (nod);
   unsigned long nodsiz =
     sizeof (*nod) + ((siz > 0)
                      ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0);
   assert (nodsiz < (4 * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  memset (nod, 0, sizeof (*nod) + siz * sizeof (void *));
+  free (nod);
   gc->gc_freedbytes += nodsiz;
 }                               /* end nodegcdestroy_BM */
 
