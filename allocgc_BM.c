@@ -46,11 +46,6 @@ allocgcty_BM (unsigned type, size_t sz)
       free (allocationvec_vBM), allocationvec_vBM = new_allocvec;
       want_garbage_collection_BM = true;
     }
-  else if (alloc_nb % 32 == 0)
-    {
-      if (clocktime_BM (CLOCK_REALTIME) > last_gctime_BM + GCWANTEDPERIOD_BM)
-        want_garbage_collection_BM = true;
-    }
   assert (sz > sizeof (typedhead_tyBM));
   assert (sz < MAXSIZE_BM * sizeof (double));
   typedhead_tyBM *newzon = malloc (sz);
