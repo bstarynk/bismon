@@ -62,6 +62,13 @@ struct browsedval_stBM
 };
 struct browsedval_stBM *browsedval_BM;
 
+
+
+/// the completion set - should be a GC root
+const setval_tyBM *complsetcmd_BM;
+/// begin and end offset for completion replacement
+int compbegoffcmd_BM, compendoffcmd_BM;
+
 //////////////// command
 GtkTextTagTable *commandtagtable_BM;
 GtkTextBuffer *commandbuf_BM;
@@ -221,6 +228,8 @@ gcmarkgui_BM (struct garbcoll_stBM *gc)
           gcmark_BM (gc, (value_tyBM) browsedval_BM[ix].brow_name, 0);
         }
     }
+  if (complsetcmd_BM)
+    gcmark_BM (gc, (value_tyBM) complsetcmd_BM, 0);
 }                               /* end gcmarkgui_BM */
 
 void
@@ -2560,6 +2569,9 @@ timeoutrestoreopacitycmd_BM (gpointer data __attribute__ ((unused)))
   return false;
 }                               /* end timeoutrestoreopacitycmd_BM  */
 
+static void replacecompletionbyidcmd_BM (GtkMenuItem * mit, gpointer data);
+static void replacecompletionbynamecmd_BM (GtkMenuItem * mit, gpointer data);
+
 void
 tabautocompletecmd_BM (void)
 {
@@ -2674,7 +2686,70 @@ tabautocompletecmd_BM (void)
       gtk_text_buffer_place_cursor (commandbuf_BM, &begwit);
     }
   else
-    printf ("@@tabautocompletecmd_BM nbcompl=%u\n", nbcompl);
+    {
+      printf ("@@tabautocompletecmd_BM nbcompl=%u\n", nbcompl);
+      assert (nbcompl > 1);
+      complsetcmd_BM = complsetv;
+      GtkWidget *complmenu = gtk_menu_new ();
+      GtkTextIter begwit = cursit;
+      GtkTextIter endwit = cursit;
+      gtk_text_iter_forward_chars (&endwit, endname - curstr);
+      gtk_text_iter_backward_chars (&begwit, curstr - begname);
+      compbegoffcmd_BM = gtk_text_iter_get_offset (&begwit);
+      compendoffcmd_BM = gtk_text_iter_get_offset (&endwit);
+      if (gotid)
+        {                       /* complete by id */
+          for (unsigned ix = 0; ix < nbcompl; ix++)
+            {
+              char cidbuf[32];
+              memset (cidbuf, 0, sizeof (cidbuf));
+              const objectval_tyBM *obcomp = setelemnth_BM (complsetv, ix);
+              assert (isobject_BM ((const value_tyBM) obcomp));
+              idtocbuf32_BM (objid_BM (obcomp), cidbuf);
+              GtkWidget *mit = gtk_menu_item_new_with_label (cidbuf);
+              gtk_menu_shell_append (GTK_MENU_SHELL (complmenu), mit);
+              g_signal_connect (mit, "activate",
+                                G_CALLBACK (replacecompletionbyidcmd_BM),
+                                (gpointer) (intptr_t) ix);
+            }
+        }
+      else
+        {                       /* complete by name */
+          const objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+          const objectval_tyBM **arr =
+            (nbcompl <
+             TINYSIZE_BM) ? tinyarr : calloc (prime_above_BM (nbcompl),
+                                              sizeof (void *));
+          if (!arr)
+            FATAL_BM ("failed to calloc arr for %d completions (%m)",
+                      nbcompl);
+          for (unsigned ix = 0; ix < nbcompl; ix++)
+            arr[ix] = setelemnth_BM (complsetv, ix);
+          sortnamedobjarr_BM (arr, nbcompl);
+          for (unsigned obix = 0; obix < nbcompl; obix++)
+            {
+              const objectval_tyBM *curob = arr[obix];
+              assert (isobject_BM ((const value_tyBM) curob));
+              int elix = setelemindex_BM (complsetv, curob);
+              assert (elix >= 0);
+              const char *obname = findobjectname_BM (curob);
+              assert (obname != NULL);
+              GtkWidget *mit = gtk_menu_item_new_with_label (obname);
+              gtk_menu_shell_append (GTK_MENU_SHELL (complmenu), mit);
+              g_signal_connect (mit, "activate",
+                                G_CALLBACK (replacecompletionbynamecmd_BM),
+                                (gpointer) (intptr_t) elix);
+            }
+        }
+      gtk_widget_show_all (complmenu);
+      printf ("@@tabautocompletecmd_BM popping up complmenu@%p %.4f\n",
+              complmenu, elapsedtime_BM ());
+#warning tabautocompletecmd_BM should perhaps use a GtkPopover
+      gtk_menu_popup_at_pointer (GTK_MENU (complmenu), NULL);
+      printf ("@@tabautocompletecmd_BM done pop up complmenu@%p %.4f\n",
+              complmenu, elapsedtime_BM ());
+      // should modally show the menu
+    }
 #warning tabautocompletecmd_BM incomplete
   free ((char *) curlin);
   return;
@@ -2693,6 +2768,22 @@ failure:
   return;
 }                               /* end tabautocompletecmd_BM */
 
+
+void
+replacecompletionbyidcmd_BM (GtkMenuItem * mit
+                             __attribute__ ((unused)), gpointer data)
+{
+  unsigned ix = (unsigned) (intptr_t) data;
+  assert (ix < setcardinal_BM (complsetcmd_BM));
+}                               /* end replacecompletionbyidcmd_BM */
+
+void
+replacecompletionbynamecmd_BM (GtkMenuItem * mit
+                               __attribute__ ((unused)), gpointer data)
+{
+  unsigned ix = (unsigned) (intptr_t) data;
+  assert (ix < setcardinal_BM (complsetcmd_BM));
+}                               /* end replacecompletionbynamecmd_BM */
 
 
 
