@@ -324,6 +324,7 @@ objectgcdestroy_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
   memset (obj, 0, sizeof (*obj));
   free (obj);
   gc->gc_freedbytes += sizeof (*obj);
+  gc->gc_nbdestroyedobjects++;
 }                               /* end objectgcdestroy_BM */
 
 void
@@ -332,6 +333,7 @@ objectgckeep_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   assert (((typedhead_tyBM *) obj)->htyp == tyObject_BM);
   gc->gc_keptbytes += sizeof (*obj);
+  gc->gc_nbkeptobjects++;
 }                               /* end objectgckeep_BM */
 
 const char *
