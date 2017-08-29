@@ -301,7 +301,7 @@ main (int argc, char **argv)
     {
       struct dumpinfo_stBM di = dump_BM (dump_after_load_dir_bm, NULL);
       printf ("dump after load into %s\n", dump_after_load_dir_bm);
-      printf ("scanned %ld, emitted %ld object\n",
+      printf ("scanned %ld, emitted %ld objects\n",
               di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount);
       printf ("did %ld todos, wrote %ld files\n",
               di.dumpinfo_todocount, di.dumpinfo_wrotefilecount);
