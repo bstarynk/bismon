@@ -2790,10 +2790,20 @@ replacecompletionbyidcmd_BM (GtkMenuItem * mit
   assert (ix < setcardinal_BM (complsetcmd_BM));
   printf ("@@replacecompletionbyidcmd_BM ix=%u begoff=%d endoff=%d\n",
           ix, compbegoffcmd_BM, compendoffcmd_BM);
-  const objectval_tyBM*ob = setelemnth_BM(complsetcmd_BM, ix);
-  assert (isobject_BM((const value_tyBM)ob));
-  // should replace between begoff & endoff of commandbuf_BM by the id of ob
-  // and set the cursor
+  const objectval_tyBM *ob = setelemnth_BM (complsetcmd_BM, ix);
+  assert (isobject_BM ((const value_tyBM) ob));
+  char idbuf[32];
+  memset (idbuf, 0, sizeof (idbuf));
+  idtocbuf32_BM (objid_BM (ob), idbuf);
+  GtkTextIter begwit = { };
+  GtkTextIter endwit = { };
+  gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &begwit,
+                                      compbegoffcmd_BM);
+  gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &endwit,
+                                      compendoffcmd_BM);
+  gtk_text_buffer_delete (commandbuf_BM, &begwit, &endwit);
+  gtk_text_buffer_insert (commandbuf_BM, &begwit, idbuf, -1);
+  gtk_text_buffer_place_cursor (commandbuf_BM, &begwit);
   gtk_main_quit ();
 }                               /* end replacecompletionbyidcmd_BM */
 
@@ -2806,10 +2816,19 @@ replacecompletionbynamecmd_BM (GtkMenuItem * mit
   assert (ix < setcardinal_BM (complsetcmd_BM));
   printf ("@@replacecompletionbynamecmd_BM ix=%u begoff=%d endoff=%d\n", ix,
           compbegoffcmd_BM, compendoffcmd_BM);
-  const objectval_tyBM*ob = setelemnth_BM(complsetcmd_BM, ix);
-  assert (isobject_BM((const value_tyBM)ob));
-  // should replace between begoff & endoff of commandbuf_BM by the name of ob
-  // and set the cursor
+  const objectval_tyBM *ob = setelemnth_BM (complsetcmd_BM, ix);
+  assert (isobject_BM ((const value_tyBM) ob));
+  const char *obname = findobjectname_BM (ob);
+  assert (obname != NULL);
+  GtkTextIter begwit = { };
+  GtkTextIter endwit = { };
+  gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &begwit,
+                                      compbegoffcmd_BM);
+  gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &endwit,
+                                      compendoffcmd_BM);
+  gtk_text_buffer_delete (commandbuf_BM, &begwit, &endwit);
+  gtk_text_buffer_insert (commandbuf_BM, &begwit, obname, -1);
+  gtk_text_buffer_place_cursor (commandbuf_BM, &begwit);
   gtk_main_quit ();
 }                               /* end replacecompletionbynamecmd_BM */
 
