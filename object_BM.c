@@ -755,6 +755,15 @@ void
 gcmarkpredefinedobjects_BM (struct garbcoll_stBM *gc)
 {
   assert (gc && gc->gc_magic == GCMAGIC_BM);
+  assert (valtype_BM (hashset_predefined_objects_BM) == tydata_hashsetobj_BM);
+  // clear the mark of statically allocated predefined
+#define HAS_PREDEF_BM(Id,Hi,Lo,Hash) {					\
+    assert (valtype_BM(&predefdata##Id##_BM) == tyObject_BM);		\
+    if (predefdata##Id##_BM.ob_space == PredefSp_BM)			\
+      ((typedhead_tyBM*)&predefdata##Id##_BM)->hgc = CLEARMGC_BM;	\
+  }
+#include "_bm_predef.h"
+  //
   hashsetgcmark_BM (gc, hashset_predefined_objects_BM);
 }                               /* end gcmarkpredefinedobjects_BM */
 
