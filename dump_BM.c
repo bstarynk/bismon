@@ -119,9 +119,8 @@ static void
 dump_emit_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf);
 
 
-#warning dumper should call the garbage collector at appropriate places
 
-void
+struct dumpinfo_stBM
 dump_BM (const char *dirname, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -140,13 +139,28 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   _.curdu->dump_hset = hashsetobj_grow_BM (NULL, 256);
   _.curdu->dump_scanlist = makelist_BM ();
   _.curdu->dump_todolist = makelist_BM ();
+  _.curdu->dump_startelapsedtime = elapsedtime_BM ();
+  _.curdu->dump_startcputime = cputime_BM ();
   _.duobj = makeobj_BM ();
   _.duobj->ob_data = _.curdu;
   _.curdu->dump_object = _.duobj;
   dump_scan_pass_BM (_.curdu, (struct stackframe_stBM *) &_);
   dump_run_todo_BM (_.curdu, (struct stackframe_stBM *) &_);
+  garbage_collect_if_wanted_BM ((struct stackframe_stBM *) &_);
   dump_emit_pass_BM (_.curdu, (struct stackframe_stBM *) &_);
+  garbage_collect_if_wanted_BM ((struct stackframe_stBM *) &_);
   dump_run_todo_BM (_.curdu, (struct stackframe_stBM *) &_);
+  garbage_collect_if_wanted_BM ((struct stackframe_stBM *) &_);
+  struct dumpinfo_stBM di;
+  memset (&di, 0, sizeof (di));
+  di.dumpinfo_scanedobjectcount = _.curdu->dump_scanedobjectcount;
+  di.dumpinfo_emittedobjectcount = _.curdu->dump_emittedobjectcount;
+  di.dumpinfo_todocount = _.curdu->dump_todocount;
+  di.dumpinfo_wrotefilecount = _.curdu->dump_wrotefilecount;
+  di.dumpinfo_elapsedtime =
+    elapsedtime_BM () - _.curdu->dump_startelapsedtime;
+  di.dumpinfo_cputime = cputime_BM () - _.curdu->dump_startcputime;
+  return di;
 }                               /* end dump_BM */
 
 
@@ -166,6 +180,7 @@ dump_run_todo_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
       if (isclosure_BM ((const value_tyBM) _.curclo))
         {
           apply1_BM (_.curclo, (struct stackframe_stBM *) &_, du);
+          du->dump_todocount++;
         }
     }
 }                               /* end dump_run_todo_BM */
@@ -223,6 +238,7 @@ dump_scan_object_content_BM (struct dumper_stBM *du,
   if (_.curobj->ob_data)
     send1_BM ((value_tyBM) _.curobj, BMP_dump_scan,
               (struct stackframe_stBM *) &_, du);
+  du->dump_scanedobjectcount++;
 }                               /* end dump_scan_object_content_BM   */
 
 
@@ -247,6 +263,9 @@ dump_scan_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
       listpopfirst_BM (du->dump_scanlist);
       dump_scan_object_content_BM (du, _.curobj,
                                    (struct stackframe_stBM *) &_);
+      if (du->dump_scanedobjectcount > 0
+          && du->dump_scanedobjectcount % 32 == 0)
+        garbage_collect_if_wanted_BM ((struct stackframe_stBM *) &_);
     }
 }                               /* end dump_scan_pass_BM */
 
@@ -393,10 +412,12 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
       assert (_.curobj != NULL);
       dump_emit_object_BM (du, _.curobj, spfil,
                            (struct stackframe_stBM *) &_);
-#warning should sometimes call the garbage collector here
+      if (obix % 64 == 0 && obix > 0)
+        garbage_collect_if_wanted_BM ((struct stackframe_stBM *) &_);
     }
   fprintf (spfil, "\n// end of file %s\n", basename (bytstring_BM (_.pathv)));
   fclose (spfil);
+  du->dump_wrotefilecount++;
 }                               /* end  dump_emit_space_BM */
 
 void
@@ -513,4 +534,5 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
   fprintf (spfil, "!)%s\n", curobjid);
   fputc ('\n', spfil);
   fputc ('\n', spfil);
+  du->dump_emittedobjectcount++;
 }                               /* end dump_emit_object_BM */

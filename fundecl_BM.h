@@ -503,7 +503,8 @@ extern void loadergckeep_BM (struct garbcoll_stBM *gc,
                              struct loader_stBM *ld);
 
 ////////////////
-extern void dump_BM (const char *dirname, struct stackframe_stBM *stkf);
+extern struct dumpinfo_stBM dump_BM (const char *dirname,
+                                     struct stackframe_stBM *stkf);
 extern void dumpgcmark_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du);
 extern void dumpgcdestroy_BM (struct garbcoll_stBM *gc,
                               struct dumper_stBM *du);

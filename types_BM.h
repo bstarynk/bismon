@@ -220,6 +220,23 @@ struct dumper_stBM
   struct hashsetobj_stBM *dump_hset;
   struct listtop_stBM *dump_scanlist;
   struct listtop_stBM *dump_todolist;
+  long dump_scanedobjectcount;
+  long dump_emittedobjectcount;
+  long dump_todocount;
+  long dump_wrotefilecount;
+  double dump_startelapsedtime;
+  double dump_startcputime;
+};
+
+// the result of dump_BM
+struct dumpinfo_stBM
+{
+  long dumpinfo_scanedobjectcount;
+  long dumpinfo_emittedobjectcount;
+  long dumpinfo_todocount;
+  long dumpinfo_wrotefilecount;
+  double dumpinfo_elapsedtime;
+  double dumpinfo_cputime;
 };
 
 #define LINKSIZE_BM 14

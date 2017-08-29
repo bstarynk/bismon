@@ -298,7 +298,16 @@ main (int argc, char **argv)
       fflush (NULL);
     }
   if (dump_after_load_dir_bm)
-    dump_BM (dump_after_load_dir_bm, NULL);
+    {
+      struct dumpinfo_stBM di = dump_BM (dump_after_load_dir_bm, NULL);
+      printf ("dump after load into %s\n", dump_after_load_dir_bm);
+      printf ("scanned %ld, emitted %ld object\n",
+              di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount);
+      printf ("did %ld todos, wrote %ld files\n",
+              di.dumpinfo_todocount, di.dumpinfo_wrotefilecount);
+      printf ("in %.3f elapsed, %.4f cpu seconds.\n",
+              di.dumpinfo_elapsedtime, di.dumpinfo_cputime);
+    }
   if (batch_bm)
     {
       printf ("no GUI in batch mode\n");

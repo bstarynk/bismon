@@ -392,7 +392,7 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
           nbalive++;
         }
     };
-  unsigned long newsizall = prime_above_BM (4 * nbalive / 3 + 200);
+  unsigned long newsizall = prime_above_BM (4L * nbalive / 3 + 200);
   struct allalloc_stBM *newallvec =     //
     malloc (sizeof (struct allalloc_stBM) + newsizall * sizeof (void *));
   if (!newallvec)

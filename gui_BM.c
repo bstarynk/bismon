@@ -890,8 +890,15 @@ do_dump_BM (void)
     log_printf_message_BM ("dumping into %s", dump_dir_bm);
   else
     log_puts_message_BM ("dumping");
-  dump_BM (dump_dir_bm, NULL);
   log_puts_message_BM (".");
+  struct dumpinfo_stBM di = dump_BM (dump_dir_bm, NULL);
+  log_printf_message_BM ("dump: scanned %ld, emitted %ld object\n",
+                         di.dumpinfo_scanedobjectcount,
+                         di.dumpinfo_emittedobjectcount);
+  log_printf_message_BM ("did %ld todos, wrote %ld files\n",
+                         di.dumpinfo_todocount, di.dumpinfo_wrotefilecount);
+  log_printf_message_BM ("in %.3f elapsed, %.4f cpu seconds.\n",
+                         di.dumpinfo_elapsedtime, di.dumpinfo_cputime);
   log_end_message_BM ();
 }                               /* end do_dump_BM */
 

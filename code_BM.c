@@ -560,6 +560,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   _.prsbuf = strbuffermake_BM (512 * 1024);
   _.filnamv = closurenthson_BM (_.closv, 0);
   assert (isstring_BM ((const value_tyBM) _.filnamv));
+  assert (valtype_BM (_.du) == tydata_dumper_BM);
   const char *basepath = bytstring_BM (_.filnamv);
   strbufferprintf_BM (_.prsbuf,
                       "// generated file for predefined %s\n", basepath);
@@ -659,6 +660,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   strbufferwritetofile_BM (_.prsbuf, filpath);
   strbufferreset_BM (_.prsbuf);
   printf ("wrote predefined file %s\n", filpath);
+  ((struct dumper_stBM *) _.du)->dump_wrotefilecount++;
   free (filpath);
   return _.closv;
 }                               /* end ROUTINE _075tZNHCAMa_7XNNBaNM4qv */
@@ -695,6 +697,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   _.filnamv = closurenthson_BM (_.closv, 0);
   _.nodglobv = nodeglobalnames_BM (BMP_node);
   assert (isstring_BM ((const value_tyBM) _.filnamv));
+  assert (valtype_BM (_.du) == tydata_dumper_BM);
   const char *basepath = bytstring_BM (_.filnamv);
   strbufferprintf_BM (_.prsbuf,
                       "// generated file for globals %s\n", basepath);
@@ -724,6 +727,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   strbufferwritetofile_BM (_.prsbuf, filpath);
   strbufferreset_BM (_.prsbuf);
   printf ("wrote globals file %s\n", filpath);
+  ((struct dumper_stBM *) _.du)->dump_wrotefilecount++;
   free (filpath);
   return _.closv;
 }                               /* end ROUTINE _4ENXjApm7Qb_3bXo8F6Jg9z */
