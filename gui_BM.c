@@ -2571,6 +2571,7 @@ timeoutrestoreopacitycmd_BM (gpointer data __attribute__ ((unused)))
 
 static void replacecompletionbyidcmd_BM (GtkMenuItem * mit, gpointer data);
 static void replacecompletionbynamecmd_BM (GtkMenuItem * mit, gpointer data);
+static void stopcompletionmenucmd_BM (GtkMenuItem * mit, gpointer data);
 
 void
 tabautocompletecmd_BM (void)
@@ -2742,13 +2743,24 @@ tabautocompletecmd_BM (void)
             }
         }
       gtk_widget_show_all (complmenu);
+      /* not needed
+         g_signal_connect (complmenu, "cancel",
+         G_CALLBACK (stopcompletionmenucmd_BM), "*Cancelled*");
+       */
+      g_signal_connect (complmenu, "deactivate",
+                        G_CALLBACK (stopcompletionmenucmd_BM),
+                        "*Deactivated*");
       printf ("@@tabautocompletecmd_BM popping up complmenu@%p %.4f\n",
               complmenu, elapsedtime_BM ());
 #warning tabautocompletecmd_BM should perhaps use a GtkPopover
       gtk_menu_popup_at_pointer (GTK_MENU (complmenu), NULL);
+      gtk_main ();
+      gtk_widget_destroy (complmenu);
+      complsetcmd_BM = NULL;
+      compbegoffcmd_BM = -1;
+      compendoffcmd_BM = -1;
       printf ("@@tabautocompletecmd_BM done pop up complmenu@%p %.4f\n",
               complmenu, elapsedtime_BM ());
-      // should modally show the menu
     }
 #warning tabautocompletecmd_BM incomplete
   free ((char *) curlin);
@@ -2774,7 +2786,15 @@ replacecompletionbyidcmd_BM (GtkMenuItem * mit
                              __attribute__ ((unused)), gpointer data)
 {
   unsigned ix = (unsigned) (intptr_t) data;
+  assert (isset_BM ((const value_tyBM) complsetcmd_BM));
   assert (ix < setcardinal_BM (complsetcmd_BM));
+  printf ("@@replacecompletionbyidcmd_BM ix=%u begoff=%d endoff=%d\n",
+          ix, compbegoffcmd_BM, compendoffcmd_BM);
+  const objectval_tyBM*ob = setelemnth_BM(complsetcmd_BM, ix);
+  assert (isobject_BM((const value_tyBM)ob));
+  // should replace between begoff & endoff of commandbuf_BM by the id of ob
+  // and set the cursor
+  gtk_main_quit ();
 }                               /* end replacecompletionbyidcmd_BM */
 
 void
@@ -2782,8 +2802,26 @@ replacecompletionbynamecmd_BM (GtkMenuItem * mit
                                __attribute__ ((unused)), gpointer data)
 {
   unsigned ix = (unsigned) (intptr_t) data;
+  assert (isset_BM ((const value_tyBM) complsetcmd_BM));
   assert (ix < setcardinal_BM (complsetcmd_BM));
+  printf ("@@replacecompletionbynamecmd_BM ix=%u begoff=%d endoff=%d\n", ix,
+          compbegoffcmd_BM, compendoffcmd_BM);
+  const objectval_tyBM*ob = setelemnth_BM(complsetcmd_BM, ix);
+  assert (isobject_BM((const value_tyBM)ob));
+  // should replace between begoff & endoff of commandbuf_BM by the name of ob
+  // and set the cursor
+  gtk_main_quit ();
 }                               /* end replacecompletionbynamecmd_BM */
+
+void
+stopcompletionmenucmd_BM (GtkMenuItem * mit __attribute__ ((unused)),
+                          gpointer data __attribute__ ((unused)))
+{
+  printf ("@@stopcompletionmenucmd_BM %s\n",
+          data ? (const char *) data : "!!");
+  assert (isset_BM ((const value_tyBM) complsetcmd_BM));
+  gtk_main_quit ();
+}                               /* end stopcompletionmenucmd_BM */
 
 
 
