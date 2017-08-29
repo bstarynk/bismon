@@ -112,6 +112,9 @@ gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
     case tydata_loader_BM:
       loadergcmark_BM (gc, (struct loader_stBM *) val);
       return;
+    case tydata_dumper_BM:
+      dumpgcmark_BM (gc, (struct dumper_stBM *) val);
+      return;
     case tydata_quasinode_BM:
       quasinodegcmark_BM (gc, (quasinode_tyBM *) val, depth);
       return;
@@ -427,8 +430,9 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
            "number of values: %ld -> %ld (-%ld), %ld slots; %ld marks\n",
            oldnbval, newcntall, oldnbval - newcntall, alcnt,
            GCdata.gc_nbmarks);
-  fprintf (fil, "%ld scanned, %ld kept, %ld destroyed objects\n", nbobjscan,
-           GCdata.gc_nbkeptobjects, GCdata.gc_nbdestroyedobjects);
+  fprintf (fil, "%ld scanned, %ld kept, %ld static, %ld destroyed objects\n",
+           nbobjscan, GCdata.gc_nbkeptobjects, (long) BM_NB_PREDEFINED,
+           GCdata.gc_nbdestroyedobjects);
   {
     char keptbuf[40], freedbuf[40];
     memset (keptbuf, 0, sizeof (keptbuf));
