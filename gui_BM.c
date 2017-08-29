@@ -885,14 +885,20 @@ void
 do_dump_BM (void)
 {
   extern char *dump_dir_bm;
+  assert (dump_dir_bm != NULL);
   log_begin_message_BM ();
-  if (dump_dir_bm)
-    log_printf_message_BM ("dumping into %s", dump_dir_bm);
-  else
-    log_puts_message_BM ("dumping");
-  log_puts_message_BM (".");
+  log_printf_message_BM ("dumping into %s directory", dump_dir_bm);
+  {
+    char *rd = realpath (dump_dir_bm, NULL);
+    if (rd)
+      {
+        log_printf_message_BM (" (%s)", rd);
+        free (rd);
+      }
+  }
+  log_puts_message_BM (".\n");
   struct dumpinfo_stBM di = dump_BM (dump_dir_bm, NULL);
-  log_printf_message_BM ("dump: scanned %ld, emitted %ld object\n",
+  log_printf_message_BM ("dump: scanned %ld, emitted %ld objects\n",
                          di.dumpinfo_scanedobjectcount,
                          di.dumpinfo_emittedobjectcount);
   log_printf_message_BM ("did %ld todos, wrote %ld files\n",

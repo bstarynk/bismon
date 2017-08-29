@@ -271,6 +271,10 @@ main (int argc, char **argv)
     FATAL_BM ("gtk_init_with_args failed");
   if (!batch_bm)
     initialize_gui_BM (builder_file_bm);
+  if (!load_dir_bm)
+    load_dir_bm = ".";
+  if (!dump_dir_bm)
+    dump_dir_bm = load_dir_bm;
   load_initial_BM (load_dir_bm);
   if (nb_added_predef_bm > 0)
     add_new_predefined_bm ();
@@ -300,7 +304,14 @@ main (int argc, char **argv)
   if (dump_after_load_dir_bm)
     {
       struct dumpinfo_stBM di = dump_BM (dump_after_load_dir_bm, NULL);
-      printf ("dump after load into %s\n", dump_after_load_dir_bm);
+      printf ("dump after load into %s directory", dump_after_load_dir_bm);
+      char *rd = realpath (dump_after_load_dir_bm, NULL);
+      if (rd)
+        {
+          printf (" (%s)", rd);
+          free (rd);
+        };
+      putchar ('\n');
       printf ("scanned %ld, emitted %ld objects\n",
               di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount);
       printf ("did %ld todos, wrote %ld files\n",
