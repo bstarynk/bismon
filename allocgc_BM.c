@@ -356,6 +356,7 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
       typedhead_tyBM *curp = allocationvec_vBM->al_ptr[ix];
       if (!curp)
         continue;
+      assert (curp->htyp >= type_FIRST_BM && curp->htyp <= tydata_LAST_BM);
       curp->hgc = CLEARMGC_BM;
       oldnbval++;
     }
@@ -382,6 +383,7 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
       typedhead_tyBM *curp = allocationvec_vBM->al_ptr[ix];
       if (!curp)
         continue;
+      assert (curp->htyp >= type_FIRST_BM && curp->htyp <= tydata_LAST_BM);
       if (curp->hgc == CLEARMGC_BM)
         {
           allocationvec_vBM->al_ptr[ix] = NULL;
@@ -409,6 +411,7 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
       typedhead_tyBM *curp = allocationvec_vBM->al_ptr[ix];
       if (!curp)
         continue;
+      assert (curp->htyp >= type_FIRST_BM && curp->htyp <= tydata_LAST_BM);
       newallvec->al_ptr[newcntall++] = curp;
       allocationvec_vBM->al_ptr[ix] = NULL;
     }
@@ -429,7 +432,8 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
            "number of values: %ld -> %ld (-%ld), %ld slots; %ld marks\n",
            oldnbval, newcntall, oldnbval - newcntall, alcnt,
            GCdata.gc_nbmarks);
-  fprintf (fil, "number of scanned objects: %ld\n", nbobjscan);
+  fprintf (fil, "%ld scanned, %ld kept, %ld destroyed objects\n", nbobjscan,
+           GCdata.gc_nbkeptobjects, GCdata.gc_nbdestroyedobjects);
   {
     char keptbuf[40], freedbuf[40];
     memset (keptbuf, 0, sizeof (keptbuf));
@@ -505,6 +509,7 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
     {
       assert (gui_is_running_BM);
       assert (buf != NULL);
+      fputs (buf, stderr);
       gui_gc_message_BM (buf);
       fclose (fil);
       free (buf);
