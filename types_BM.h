@@ -11,6 +11,7 @@ enum gctyenum_BM
 {
   tyInt_BM = -1,                /* actually a tagged int */
   tyNone_BM = 0,                /* e.g. for nil */
+#define type_FIRST_BM tyString_BM
   tyString_BM = 1,              /* boxed strings */
   tySet_BM = 2,                 /* boxed set of objects */
   tyTuple_BM = 3,               /* boxed tuple of objects */
@@ -37,9 +38,7 @@ enum gctyenum_BM
   tydata_strbuffer_BM,
   tydata_dumper_BM,
   tydata_dict_BM,
-  ///
-  tydata_quasinode_BM,          // stack allocated!
-  //
+#define tydata_LAST_BM tydata_dict_BM
   tydata__SpareA_BM,
   tydata__SpareB_BM,
   tydata__SpareC_BM,
@@ -66,6 +65,9 @@ enum gctyenum_BM
   tydata__SpareX_BM,
   tydata__SpareY_BM,
   tydata__SpareZ_BM,
+  ///
+  tydata_quasinode_BM,          // stack allocated!
+  //
   //
   tydata_SpecialFrame_BM = 0xfffe,
   tydata_StackFrame_BM = 0xffff
@@ -517,6 +519,10 @@ struct garbcoll_stBM
   size_t gc_keptbytes;
   // the number of marked values
   long gc_nbmarks;
+  // the number of kept objects
+  long gc_nbkeptobjects;
+  // the number of destroyed objects
+  long gc_nbdestroyedobjects;
   // start elapsed and cpu time
   double gc_startelapsedtime;
   double gc_startcputime;
