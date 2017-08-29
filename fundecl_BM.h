@@ -83,8 +83,12 @@ extern void tuplegckeep_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup);
 static inline bool isset_BM (const value_tyBM v);
 extern const setval_tyBM *makeset_BM (const objectval_tyBM ** arr,
                                       unsigned rawsiz);
-extern bool setcontains_BM (const objectval_tyBM * obelem,
-                            const setval_tyBM * setv);
+static inline bool setcontains_BM (const setval_tyBM * setv,
+                                   const objectval_tyBM * obelem);
+/* return the index in setv of element obelem or else -1 */
+extern int setelemindex_BM (const setval_tyBM * setv,
+                            const objectval_tyBM * obelem);
+
 extern unsigned setcardinal_BM (const setval_tyBM * setv);
 extern objectval_tyBM *setelemnth_BM (const setval_tyBM * set, int rk);
 extern void setgcmark_BM (struct garbcoll_stBM *gc, setval_tyBM * set);

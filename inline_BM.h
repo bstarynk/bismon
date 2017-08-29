@@ -552,6 +552,16 @@ isset_BM (const value_tyBM v)
 }                               /* end isset_BM */
 
 bool
+setcontains_BM (const setval_tyBM * setv, const objectval_tyBM * obelem)
+{
+  if (!isset_BM ((const value_tyBM) setv))
+    return false;
+  if (!isobject_BM ((const value_tyBM) obelem))
+    return false;
+  return setelemindex_BM (setv, obelem) >= 0;
+}                               /* end setcontains_BM */
+
+bool
 istuple_BM (const value_tyBM v)
 {
   return (valtype_BM (v) == tyTuple_BM);

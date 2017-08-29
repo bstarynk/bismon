@@ -243,15 +243,11 @@ setgckeep_BM (struct garbcoll_stBM *gc, setval_tyBM * set)
   gc->gc_keptbytes += setsiz;
 }                               /* end setgckeep_BM */
 
-extern bool
-setcontains_BM (const objectval_tyBM * obelem, const setval_tyBM * setv)
+int
+setelemindex_BM (const setval_tyBM * setv, const objectval_tyBM * obelem)
 {
-  if (!obelem || ((intptr_t) obelem & 3) || !setv || ((intptr_t) setv & 3))
-    return false;
-  if (((typedhead_tyBM *) obelem)->htyp != tyObject_BM)
-    return false;
-  if (((typedhead_tyBM *) setv)->htyp != tySet_BM)
-    return false;
+  if (!isset_BM (setv) || !isobject_BM (obelem))
+    return -1;
   unsigned card = ((typedsize_tyBM *) setv)->size;
   unsigned lo = 0, hi = card, md = 0;
   while (lo + 15 < hi)
@@ -275,10 +271,10 @@ setcontains_BM (const objectval_tyBM * obelem, const setval_tyBM * setv)
       const objectval_tyBM *mdob = setv->seq_objs[md];
       assert (mdob != NULL && ((typedhead_tyBM *) mdob)->htyp == tyObject_BM);
       if (obelem == mdob)
-        return true;
+        return md;
     }
-  return false;
-}                               /* end setcontains_BM */
+  return -1;
+}                               /* end setelemindex_BM */
 
 unsigned
 setcardinal_BM (const setval_tyBM * setv)
