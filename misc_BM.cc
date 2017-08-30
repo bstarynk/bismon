@@ -657,3 +657,10 @@ cmd_parens_surrounds_BM(struct parenoffset_stBM*par, int off)
     return true;
   return false;
 } // end cmd_parens_surrounds_BM
+
+struct parenoffset_stBM*
+cmd_find_enclosing_parens_BM(int off)
+{
+#warning cmd_find_enclosing_parens_BM unimplemented
+  FATAL_BM("cmd_find_enclosing_parens_BM off=%d unimplemented", off);
+} // end cmd_find_enclosing_parens_BM

@@ -3256,6 +3256,7 @@ marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   unsigned lin = gtk_text_iter_get_line (txit) + 1;
   unsigned off = gtk_text_iter_get_offset (txit);
   printf ("@@marksetcmd_BM insert C%uL%u/%u\n", col, lin, off);
+  // use cmd_find_enclosing_parens_BM
 }                               /* end marksetcmd_BM */
 
 void
@@ -3269,6 +3270,9 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   unsigned lin = gtk_text_iter_get_line (txit) + 1;
   unsigned off = gtk_text_iter_get_offset (txit);
   printf ("@@marksetbrows_BM insert C%uL%u/%u\n", col, lin, off);
+  // do a dichotomical search on browsedobj_BM and browsedval_BM
+  // to find the browsed object or value containing the cursor
+  // then do some dichotomy on the parenoffset_st
 }                               /* end marksetbrows_BM */
 
 gboolean
