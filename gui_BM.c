@@ -82,7 +82,7 @@ GtkTextTag *time_logtag_BM;
 GtkTextTag *id_logtag_BM;
 GtkTextTag *name_logtag_BM;
 
-GtkWidget *msglab_BM;
+
 
 GtkTextTag *errored_cmdtag_BM;
 GtkTextTag *commentinside_cmdtag_BM;
@@ -103,12 +103,6 @@ GtkTextTag *xtra_cmdtags_BM[CMD_MAXNEST_BM];
 
 // on cmd parse error, we setjmp to ....
 static jmp_buf jmperrorcmd_BM;
-// if the delay is positive, we postpone the message label display
-static int delaymserrorcmd_BM;
-// the id of the timeout
-static guint delayiderrorcmd_BM;
-// the timeout function, whose data is a markup string to be g_free-d
-static gboolean timeoutfunerrorcmd_BM (gpointer);
 
 // the periodic GC function
 static gboolean guiperiodicgarbagecollection_BM (gpointer);
@@ -1071,18 +1065,6 @@ log_printf_message_BM (const char *fmt, ...)
     free (buf);
 }                               /* end log_printf_message_BM */
 
-static gboolean
-timeoutfunerrorcmd_BM (gpointer data)
-{
-  char *errmsg = (char *) data;
-  assert (errmsg && errmsg[0] && errmsg[1]);
-  gtk_label_set_markup (GTK_LABEL (msglab_BM), errmsg);
-  errmsg[0] = '?';
-  errmsg[1] = (char) 0;
-  g_free (errmsg);
-  return false;
-}                               /* end timeoutfunerrorcmd_BM */
-
 void
 parserrorcmd_BM (struct parser_stBM *pars,
                  unsigned lineno, unsigned colpos, char *msg)
@@ -1099,39 +1081,20 @@ parserrorcmd_BM (struct parser_stBM *pars,
   GtkTextIter endit = { };
   gtk_text_buffer_get_end_iter (commandbuf_BM, &endit);
   gtk_text_buffer_apply_tag (commandbuf_BM, errored_cmdtag_BM, &it, &endit);
-  if (delaymserrorcmd_BM <= 0)
+  if (!nobuild)
     {
-      char *errmsg =
-        g_markup_printf_escaped ("<b>command error L%dC%d:</b>\n" "%s",
-                                 lineno, colpos, msg);
-      gtk_label_set_markup (GTK_LABEL (msglab_BM), errmsg);
-      g_free (errmsg);
-      if (!nobuild)
-        {
-          log_begin_message_BM ();
-          char errbuf[64];
-          snprintf (errbuf, sizeof (errbuf), "command error L%dC%d:",
-                    lineno, colpos);
-          GtkTextIter logit = { };
-          gtk_text_buffer_get_end_iter (logbuf_BM, &logit);
-          gtk_text_buffer_insert_with_tags
-            (logbuf_BM, &logit, errbuf, -1, error_logtag_BM, NULL);
-          log_puts_message_BM (msg);
-          log_end_message_BM ();
-          gtk_text_view_scroll_to_iter (GTK_TEXT_VIEW (commandview_BM),
-                                        &it, 0.1, false, 0.5, 0.2);
-        }
-    }
-  else
-    {
-      assert (delayiderrorcmd_BM == 0);
-      char *delayerrmsg =
-        g_markup_printf_escaped ("<b>command <i>error</i> L%dC%d:</b>\n" "%s",
-                                 lineno, colpos, msg);
-      delayiderrorcmd_BM =
-        g_timeout_add_full (G_PRIORITY_DEFAULT, delaymserrorcmd_BM,
-                            timeoutfunerrorcmd_BM, delayerrmsg,
-                            (GDestroyNotify) g_free);
+      log_begin_message_BM ();
+      char errbuf[64];
+      snprintf (errbuf, sizeof (errbuf), "command error L%dC%d:",
+                lineno, colpos);
+      GtkTextIter logit = { };
+      gtk_text_buffer_get_end_iter (logbuf_BM, &logit);
+      gtk_text_buffer_insert_with_tags
+        (logbuf_BM, &logit, errbuf, -1, error_logtag_BM, NULL);
+      log_puts_message_BM (msg);
+      log_end_message_BM ();
+      gtk_text_view_scroll_to_iter (GTK_TEXT_VIEW (commandview_BM),
+                                    &it, 0.1, false, 0.5, 0.2);
     }
   free (msg);
   longjmp (jmperrorcmd_BM, 1);
@@ -2861,9 +2824,6 @@ runcommand_BM (bool erase)
                  struct parser_stBM *cmdpars;
     );
   _.cmdpars = cmdpars;
-  delaymserrorcmd_BM = 0;
-  assert (delayiderrorcmd_BM == 0);
-  delayiderrorcmd_BM = 0;
   int errpars = setjmp (jmperrorcmd_BM);
   if (!errpars)
     {
@@ -2872,11 +2832,6 @@ runcommand_BM (bool erase)
       log_begin_message_BM ();
       log_printf_message_BM ("run %s command of %d lines successfully:\n",
                              erase ? "erased" : "kept", endlin);
-      char *errmsg =
-        g_markup_printf_escaped
-        ("<b>run <i>%s</i> command of %d lines successfully.</b>",
-         erase ? "erased" : "kept", endlin);
-      gtk_label_set_markup (GTK_LABEL (msglab_BM), errmsg);
       GtkTextIter eol1it = startit;
       gtk_text_iter_forward_line (&eol1it);
       char *line1str =
@@ -2931,12 +2886,6 @@ enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
                  struct parser_stBM *cmdpars;
     );
   _.cmdpars = cmdpars;
-  if (delayiderrorcmd_BM)
-    {
-      g_source_remove (delayiderrorcmd_BM);
-      delayiderrorcmd_BM = 0;
-    }
-  delaymserrorcmd_BM = 600;
   int errpars = setjmp (jmperrorcmd_BM);
   if (!errpars)
     {
@@ -2946,11 +2895,6 @@ enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
   else
     {
       // got an error while parsing
-    }
-  if (delayiderrorcmd_BM)
-    {
-      g_source_remove (delayiderrorcmd_BM);
-      delayiderrorcmd_BM = 0;
     }
   free (cmdstr);
 }                               /* end enduseractioncmd_BM */
@@ -3288,9 +3232,6 @@ initialize_gui_BM (const char *builderfile)
   gtk_paned_add2 (GTK_PANED (paned1), paned2);
   gtk_paned_add1 (GTK_PANED (paned2), commandscrolw);
   gtk_paned_add2 (GTK_PANED (paned2), logscrolw);
-  msglab_BM = gtk_label_new ("-");
-  gtk_box_pack_start (GTK_BOX (mainvbox), msglab_BM, /*expand= */ false,
-                      /*fill= */ false, 3);
   gtk_window_set_title (GTK_WINDOW (mainwin_BM), "bismon");
   gtk_window_set_default_size (GTK_WINDOW (mainwin_BM), 580, 470);
   // perhaps run the GC twice a second
