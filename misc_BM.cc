@@ -661,6 +661,19 @@ cmd_parens_surrounds_BM(struct parenoffset_stBM*par, int off)
 struct parenoffset_stBM*
 cmd_find_enclosing_parens_BM(int off)
 {
-#warning cmd_find_enclosing_parens_BM unimplemented
-  FATAL_BM("cmd_find_enclosing_parens_BM off=%d unimplemented", off);
+  // we probably might code something faster, but is it worth the hassle?
+  if (cmd_closemap_BM.empty())
+    return nullptr;
+  auto it = cmd_closemap_BM.upper_bound (off);
+  if (it == cmd_closemap_BM.end())
+    return nullptr;
+  do
+    {
+      struct parenoffset_stBM*po = &it->second;
+      if (cmd_parens_surrounds_BM(po, off))
+        return po;
+      it--;
+    }
+  while (it != cmd_closemap_BM.begin());
+  return nullptr;
 } // end cmd_find_enclosing_parens_BM
