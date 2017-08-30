@@ -204,6 +204,10 @@ static void runcommand_BM (bool erase);
 static void run_then_erase_command_BM (void);
 static void clear_command_BM (void);
 static void run_then_keep_command_BM (void);
+static void marksetcmd_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
+                           gpointer);
+static void marksetbrows_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
+                             gpointer);
 
 void
 gcmarkgui_BM (struct garbcoll_stBM *gc)
@@ -2715,7 +2719,6 @@ tabautocompletecmd_BM (void)
                         "*Deactivated*");
       printf ("@@tabautocompletecmd_BM popping up complmenu@%p %.4f\n",
               complmenu, elapsedtime_BM ());
-#warning tabautocompletecmd_BM should perhaps use a GtkPopover
       gtk_menu_popup_at_pointer (GTK_MENU (complmenu), NULL);
       gtk_main ();
       gtk_widget_destroy (complmenu);
@@ -2725,7 +2728,6 @@ tabautocompletecmd_BM (void)
       printf ("@@tabautocompletecmd_BM done pop up complmenu@%p %.4f\n",
               complmenu, elapsedtime_BM ());
     }
-#warning tabautocompletecmd_BM incomplete
   free ((char *) curlin);
   return;
 failure:
@@ -3161,6 +3163,8 @@ initialize_gui_BM (const char *builderfile)
   }
   browserview_BM = gtk_text_view_new_with_buffer (browserbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (browserview_BM), false);
+  g_signal_connect (browserbuf_BM, "mark-set",
+                    G_CALLBACK (marksetbrows_BM), NULL);
   GtkWidget *browserscrolw = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (browserscrolw), browserview_BM);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (browserscrolw),
@@ -3201,6 +3205,8 @@ initialize_gui_BM (const char *builderfile)
                     G_CALLBACK (enduseractioncmd_BM), NULL);
   g_signal_connect (commandview_BM, "populate-popup",
                     G_CALLBACK (populatepopupcmd_BM), NULL);
+  g_signal_connect (commandview_BM, "mark-set",
+                    G_CALLBACK (marksetcmd_BM), NULL);
   gtk_widget_set_tooltip_markup (GTK_WIDGET (commandview_BM),
                                  "<big><b>command view</b></big>\n");
   GtkWidget *commandscrolw = gtk_scrolled_window_new (NULL, NULL);
@@ -3238,6 +3244,32 @@ initialize_gui_BM (const char *builderfile)
   g_timeout_add (500, guiperiodicgarbagecollection_BM, NULL);
   gtk_widget_show_all (GTK_WIDGET (mainwin_BM));
 }                               /* end initialize_gui_BM */
+
+void
+marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
+               GtkTextMark * txmark, gpointer data __attribute__ ((unused)))
+{
+  assert (txbuf == commandbuf_BM);
+  if (txmark != gtk_text_buffer_get_insert (txbuf))
+    return;
+  unsigned col = gtk_text_iter_get_line_offset (txit);
+  unsigned lin = gtk_text_iter_get_line (txit) + 1;
+  unsigned off = gtk_text_iter_get_offset (txit);
+  printf ("@@marksetcmd_BM insert C%uL%u/%u\n", col, lin, off);
+}                               /* end marksetcmd_BM */
+
+void
+marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
+                 GtkTextMark * txmark, gpointer data __attribute__ ((unused)))
+{
+  assert (txbuf == browserbuf_BM);
+  if (txmark != gtk_text_buffer_get_insert (txbuf))
+    return;
+  unsigned col = gtk_text_iter_get_line_offset (txit);
+  unsigned lin = gtk_text_iter_get_line (txit) + 1;
+  unsigned off = gtk_text_iter_get_offset (txit);
+  printf ("@@marksetbrows_BM insert C%uL%u/%u\n", col, lin, off);
+}                               /* end marksetbrows_BM */
 
 gboolean
 guiperiodicgarbagecollection_BM (gpointer data __attribute__ ((unused)))
