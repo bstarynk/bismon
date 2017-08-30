@@ -3256,7 +3256,11 @@ marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   unsigned lin = gtk_text_iter_get_line (txit) + 1;
   unsigned off = gtk_text_iter_get_offset (txit);
   printf ("@@marksetcmd_BM insert C%uL%u/%u\n", col, lin, off);
-  // use cmd_find_enclosing_parens_BM
+  struct parenoffset_stBM *po = cmd_find_enclosing_parens_BM (off);
+  if (!po)
+    return;
+  // blink according to po
+#warning marksetcmd_BM incomplete
 }                               /* end marksetcmd_BM */
 
 void
@@ -3270,9 +3274,58 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   unsigned lin = gtk_text_iter_get_line (txit) + 1;
   unsigned off = gtk_text_iter_get_offset (txit);
   printf ("@@marksetbrows_BM insert C%uL%u/%u\n", col, lin, off);
-  // do a dichotomical search on browsedobj_BM and browsedval_BM
-  // to find the browsed object or value containing the cursor
-  // then do some dichotomy on the parenoffset_st
+  struct parenoffset_stBM *po = NULL;
+  // do a dichotomical search on browsedobj_BM
+  {
+    unsigned oblo = 0, obhi = browserobulen_BM, obmd = 0;
+    int obix = -1;
+    while (oblo + 8 < obhi && obix < 0)
+      {
+        obmd = (oblo + obhi) / 2;
+        struct browsedobj_stBM *mdbrob = browsedobj_BM + obmd;
+        assert (mdbrob->brow_ostartm != NULL && mdbrob->brow_oendm != NULL);
+        GtkTextIter ostartit = { }, oendit =
+        {
+        };
+        gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                          mdbrob->brow_ostartm, &ostartit);
+        int startcmp = gtk_text_iter_compare (txit, &ostartit);
+        if (startcmp < 0)
+          {
+            obhi = obmd;
+            continue;
+          }
+        gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                          mdbrob->brow_oendm, &oendit);
+        int endcmp = gtk_text_iter_compare (txit, &oendit);
+        if (endcmp > 0)
+          {
+            oblo = obmd;
+            continue;
+          }
+        if (gtk_text_iter_in_range (txit, &ostartit, &oendit))
+          {
+            obix = obmd;
+            break;
+          }
+      }
+    for (obmd = oblo; obmd < obhi && obix < 0; obmd++)
+      {
+        struct browsedobj_stBM *mdbrob = browsedobj_BM + obmd;
+        assert (mdbrob->brow_ostartm != NULL && mdbrob->brow_oendm != NULL);
+        GtkTextIter ostartit = { }, oendit =
+        {
+        };
+        gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                          mdbrob->brow_ostartm, &ostartit);
+        gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                          mdbrob->brow_oendm, &oendit);
+        if (gtk_text_iter_in_range (txit, &ostartit, &oendit))
+          obix = obmd;
+      }
+#warning marksetbrows_BM incomplete
+  }
+  // do a dichotomical search on browsedval_BM
 }                               /* end marksetbrows_BM */
 
 gboolean
