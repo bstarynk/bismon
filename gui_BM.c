@@ -3295,7 +3295,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
             continue;
           }
         gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-					  &oendit, mdbrob->brow_oendm);
+                                          &oendit, mdbrob->brow_oendm);
         int endcmp = gtk_text_iter_compare (txit, &oendit);
         if (endcmp > 0)
           {
@@ -3326,29 +3326,111 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
         GtkTextIter ostartit = { };
         GtkTextIter oendit = { };
         struct browsedobj_stBM *brob = browsedobj_BM + obix;
-	unsigned curnbparen = brob->brow_parenulen;
-	if (curnbparen == 0)
-	  return;
+        unsigned curnbparen = brob->brow_parenulen;
+        if (curnbparen == 0)
+          return;
         gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &ostartit,
                                           brob->brow_ostartm);
         gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &oendit,
                                           brob->brow_oendm);
-	guint ostartoff = gtk_text_iter_get_offset (&ostartit);
-	int delta = off - ostartoff;
-	assert (delta >= 0);
-	for (unsigned pix = 0; pix<curnbparen; pix++) {
-	  struct parenoffset_stBM *curpo = brob->brow_parenarr+pix;
-	  if (parens_surrounds_BM(curpo, delta))
-	    {
-	      blinkpo = curpo;
-	      break;
-	    }
-	}
+        guint ostartoff = gtk_text_iter_get_offset (&ostartit);
+        int delta = off - ostartoff;
+        assert (delta >= 0);
+        for (unsigned pix = 0; pix < curnbparen; pix++)
+          {
+            struct parenoffset_stBM *curpo = brob->brow_parenarr + pix;
+            if (parens_surrounds_BM (curpo, delta))
+              {
+                if (!blinkpo ||
+                    blinkpo->paroff_close - blinkpo->paroff_open
+                    > curpo->paroff_close - curpo->paroff_open)
+                  {
+                    blinkpo = curpo;
+                    break;
+                  }
+              }
+          }
       }
   }
   // do a dichotomical search on browsedval_BM
-  if (!blinkpo && browsednvulen_BM>0) {
-  }
+  if (!blinkpo && browsednvulen_BM > 0)
+    {
+      unsigned bvlo = 0, bvhi = browsednvulen_BM, bvmd = 0;
+      int bvix = -1;
+      while (bvlo + 8 < bvhi && bvix < 0)
+        {
+          bvmd = (bvlo + bvhi) / 2;
+          struct browsedval_stBM *mdbrva = browsedval_BM + bvmd;
+          assert (mdbrva->brow_vstartm && mdbrva->brow_vendm);
+          GtkTextIter vstartit = { };
+          GtkTextIter vendit = { };
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                            &vstartit, mdbrva->brow_vstartm);
+          int startcmp = gtk_text_iter_compare (txit, &vstartit);
+          if (startcmp < 0)
+            {
+              bvhi = bvmd;
+              continue;
+            }
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                            &vendit, mdbrva->brow_vendm);
+          int endcmp = gtk_text_iter_compare (txit, &vendit);
+          if (endcmp > 0)
+            {
+              bvlo = bvmd;
+              continue;
+            }
+          if (gtk_text_iter_in_range (txit, &vstartit, &vendit))
+            {
+              bvix = bvmd;
+              break;
+            }
+        }
+      for (bvmd = bvlo; bvmd < bvhi && bvix < 0; bvmd++)
+        {
+          struct browsedval_stBM *mdbrva = browsedval_BM + bvmd;
+          assert (mdbrva->brow_vstartm && mdbrva->brow_vendm);
+          GtkTextIter vstartit = { };
+          GtkTextIter vendit = { };
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                            &vstartit, mdbrva->brow_vstartm);
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                            &vendit, mdbrva->brow_vendm);
+          if (gtk_text_iter_in_range (txit, &vstartit, &vendit))
+            bvix = bvmd;
+        }
+      if (bvix >= 0)
+        {
+          struct browsedval_stBM *brva = browsedval_BM + bvix;
+          GtkTextIter vstartit = { };
+          GtkTextIter vendit = { };
+          unsigned curnbparen = brva->brow_parenulen;
+          if (curnbparen == 0)
+            return;
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                            &vstartit, brva->brow_vstartm);
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
+                                            &vendit, brva->brow_vendm);
+          guint vstartoff = gtk_text_iter_get_offset (&vstartit);
+          int delta = off - vstartoff;
+          assert (delta >= 0);
+          for (unsigned pix = 0; pix < curnbparen; pix++)
+            {
+              struct parenoffset_stBM *curpo = brva->brow_parenarr + pix;
+              if (parens_surrounds_BM (curpo, delta))
+                {
+                  if (!blinkpo ||
+                      blinkpo->paroff_close - blinkpo->paroff_open
+                      > curpo->paroff_close - curpo->paroff_open)
+                    {
+                      blinkpo = curpo;
+                      break;
+                    }
+                }
+            }
+        }
+    }
+  /// should blink at blinkpo
 #warning marksetbrows_BM incomplete
 }                               /* end marksetbrows_BM */
 
