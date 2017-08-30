@@ -180,7 +180,8 @@ static void log_printf_message_BM (const char *fmt, ...)
   __attribute__ ((format (printf, 1, 2)));
 static void log_end_message_BM (void);
 
-
+// return an static string for a textiter
+static char *textiterstrdbg_BM (GtkTextIter *);
 
 static void start_browse_object_BM (const objectval_tyBM * obj, int depth);
 
@@ -208,6 +209,22 @@ static void marksetcmd_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
                            gpointer);
 static void marksetbrows_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
                              gpointer);
+
+static char *
+textiterstrdbg_BM (GtkTextIter * it)
+{
+  char *buf = NULL;
+  static char itinfobuf[32];
+  memset (itinfobuf, 0, sizeof (itinfobuf));
+  if (it)
+    snprintf (itinfobuf, sizeof (itinfobuf), "L%dC%d/%d",
+              gtk_text_iter_get_line (it) + 1,
+              gtk_text_iter_get_line_offset (it),
+              gtk_text_iter_get_offset (it));
+  else
+    strcpy (itinfobuf, "*niltextiter*");
+  return itinfobuf;
+}                               /* end textiterstrdbg_BM */
 
 void
 gcmarkgui_BM (struct garbcoll_stBM *gc)
@@ -267,6 +284,7 @@ void
 start_browse_object_BM (const objectval_tyBM * obj, int depth)
 {
   assert (isobject_BM ((const value_tyBM) obj));
+  printf ("@start_browse_object_BM obj@%p=%s\n", obj, objectdbg_BM (obj));
   browsednvcurix_BM = -1;
   if (browserobulen_BM + 1 >= browserobsize_BM)
     {
@@ -306,6 +324,11 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &endit,
                                             browsedobj_BM[md].brow_oendm);
+          gtk_text_iter_forward_char (&endit);
+          printf ("@start_browse_object_BM/%d replace md=%d startit:%s\n",
+                  __LINE__, md, textiterstrdbg_BM (&startit));
+          printf ("@start_browse_object_BM/%d replace md=%d endit:%s\n",
+                  __LINE__, md, textiterstrdbg_BM (&endit));
           gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
           gtk_text_buffer_move_mark (browserbuf_BM,
                                      browsedobj_BM[md].brow_ostartm,
@@ -326,6 +349,8 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
                                               &it, browserendtitlem_BM);
           for (int ix = browserobulen_BM + 1; ix > md; ix--)
             browsedobj_BM[ix] = browsedobj_BM[ix - 1];
+          printf ("@start_browse_object_BM/%d insert md=%d it:%s\n", __LINE__,
+                  md, textiterstrdbg_BM (&it));
           browserobulen_BM++;
           browsedobj_BM[md].brow_obj = obj;
           browsedobj_BM[md].brow_ostartm =      //
@@ -342,6 +367,8 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
   GtkTextIter it = { };
   gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &it, browserendtitlem_BM);
   browserobulen_BM = 1;
+  printf ("@start_browse_object_BM/%d insert empty it:%s\n", __LINE__,
+          textiterstrdbg_BM (&it));
   browsedobj_BM[0].brow_obj = obj;
   browsedobj_BM[0].brow_ostartm =       //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
@@ -416,6 +443,7 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &endit,
                                             browsedobj_BM[md].brow_oendm);
+          gtk_text_iter_forward_char (&endit);
           gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
           gtk_text_buffer_delete_mark (browserbuf_BM,
                                        browsedobj_BM[md].brow_ostartm);
@@ -495,6 +523,7 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
                                             &startit, mdval->brow_vstartm);
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &endit, mdval->brow_vendm);
+          gtk_text_iter_forward_char (&endit);
           gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
           gtk_text_buffer_move_mark (browserbuf_BM, mdval->brow_vstartm,
                                      &startit);
@@ -643,6 +672,7 @@ hide_named_value_gui_BM (const stringval_tyBM * namev,
                                             &startit, mdval->brow_vstartm);
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &endit, mdval->brow_vendm);
+          gtk_text_iter_forward_char (&endit);
           gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
           gtk_text_buffer_delete_mark (browserbuf_BM, mdval->brow_vstartm);
           gtk_text_buffer_delete_mark (browserbuf_BM, mdval->brow_vendm);
@@ -767,14 +797,19 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
                  const objectval_tyBM * objsel;
     );
   bool isfocused = (GLOBAL_BM (gui_focus_obj) == objbrows);
+  printf ("@browse_object_gui_BM/%d objbrows@%p:%s %s\n", __LINE__,
+          objbrows, objectdbg_BM (objbrows),
+          isfocused ? "focused" : "unfocused");
   _.objbrows = objbrows;
   _.objsel = objsel;
   start_browse_object_BM (objbrows, browsdepth);
   const char *nambrows = findobjectname_BM (objbrows);
-  gtk_text_buffer_insert_with_tags
-    (browserbuf_BM, &browserit_BM,
-     "\342\201\202 " /* U+2042 ASTERISM ⁂ */ , -1,
-     isfocused ? focustitle_brotag_BM : objtitle_brotag_BM, NULL);
+  printf ("@browse_object_gui_BM/%d browsit %s\n", __LINE__,
+          textiterstrdbg_BM (&browserit_BM));
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM, "\342\201\202 "       /* U+2042 ASTERISM ⁂ */
+                                    , -1,
+                                    isfocused ? focustitle_brotag_BM :
+                                    objtitle_brotag_BM, NULL);
   char idbuf[32];
   memset (idbuf, 0, sizeof (idbuf));
   idtocbuf32_BM (objid_BM (objbrows), idbuf);
@@ -811,6 +846,8 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
   send1_BM ((const value_tyBM) objbrows, objsel,
             (struct stackframe_stBM *) &_, taggedint_BM (browsdepth));
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+  printf ("@browse_object_gui_BM/%d final browsit %s\n", __LINE__,
+          textiterstrdbg_BM (&browserit_BM));
   gtk_text_buffer_move_mark (browserbuf_BM,
                              browsedobj_BM[browserobcurix_BM].brow_oendm,
                              &browserit_BM);
