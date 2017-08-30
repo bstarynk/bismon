@@ -3256,8 +3256,8 @@ marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   unsigned lin = gtk_text_iter_get_line (txit) + 1;
   unsigned off = gtk_text_iter_get_offset (txit);
   printf ("@@marksetcmd_BM insert C%uL%u/%u\n", col, lin, off);
-  struct parenoffset_stBM *po = cmd_find_enclosing_parens_BM (off);
-  if (!po)
+  struct parenoffset_stBM *blinkpo = cmd_find_enclosing_parens_BM (off);
+  if (!blinkpo)
     return;
   // blink according to po
 #warning marksetcmd_BM incomplete
@@ -3274,7 +3274,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   unsigned lin = gtk_text_iter_get_line (txit) + 1;
   unsigned off = gtk_text_iter_get_offset (txit);
   printf ("@@marksetbrows_BM insert C%uL%u/%u\n", col, lin, off);
-  struct parenoffset_stBM *po = NULL;
+  struct parenoffset_stBM *blinkpo = NULL;
   // do a dichotomical search on browsedobj_BM
   {
     unsigned oblo = 0, obhi = browserobulen_BM, obmd = 0;
@@ -3284,11 +3284,10 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
         obmd = (oblo + obhi) / 2;
         struct browsedobj_stBM *mdbrob = browsedobj_BM + obmd;
         assert (mdbrob->brow_ostartm != NULL && mdbrob->brow_oendm != NULL);
-        GtkTextIter ostartit = { }, oendit =
-        {
-        };
+        GtkTextIter ostartit = { };
+        GtkTextIter oendit = { };
         gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                          mdbrob->brow_ostartm, &ostartit);
+                                          &ostartit, mdbrob->brow_ostartm);
         int startcmp = gtk_text_iter_compare (txit, &ostartit);
         if (startcmp < 0)
           {
@@ -3296,7 +3295,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
             continue;
           }
         gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                          mdbrob->brow_oendm, &oendit);
+					  &oendit, mdbrob->brow_oendm);
         int endcmp = gtk_text_iter_compare (txit, &oendit);
         if (endcmp > 0)
           {
@@ -3311,21 +3310,46 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
       }
     for (obmd = oblo; obmd < obhi && obix < 0; obmd++)
       {
+        GtkTextIter ostartit = { };
+        GtkTextIter oendit = { };
         struct browsedobj_stBM *mdbrob = browsedobj_BM + obmd;
         assert (mdbrob->brow_ostartm != NULL && mdbrob->brow_oendm != NULL);
-        GtkTextIter ostartit = { }, oendit =
-        {
-        };
-        gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                          mdbrob->brow_ostartm, &ostartit);
-        gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                          mdbrob->brow_oendm, &oendit);
+        gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &ostartit,
+                                          mdbrob->brow_ostartm);
+        gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &oendit,
+                                          mdbrob->brow_oendm);
         if (gtk_text_iter_in_range (txit, &ostartit, &oendit))
           obix = obmd;
       }
-#warning marksetbrows_BM incomplete
+    if (obix >= 0)
+      {
+        GtkTextIter ostartit = { };
+        GtkTextIter oendit = { };
+        struct browsedobj_stBM *brob = browsedobj_BM + obix;
+	unsigned curnbparen = brob->brow_parenulen;
+	if (curnbparen == 0)
+	  return;
+        gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &ostartit,
+                                          brob->brow_ostartm);
+        gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &oendit,
+                                          brob->brow_oendm);
+	guint ostartoff = gtk_text_iter_get_offset (&ostartit);
+	int delta = off - ostartoff;
+	assert (delta >= 0);
+	for (unsigned pix = 0; pix<curnbparen; pix++) {
+	  struct parenoffset_stBM *curpo = brob->brow_parenarr+pix;
+	  if (parens_surrounds_BM(curpo, delta))
+	    {
+	      blinkpo = curpo;
+	      break;
+	    }
+	}
+      }
   }
   // do a dichotomical search on browsedval_BM
+  if (!blinkpo && browsednvulen_BM>0) {
+  }
+#warning marksetbrows_BM incomplete
 }                               /* end marksetbrows_BM */
 
 gboolean
