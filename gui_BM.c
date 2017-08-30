@@ -4,6 +4,10 @@
 GtkWidget *mainwin_BM;
 
 
+// for readability, gravity argument to gtk_text_buffer_create_mark
+#define RIGHT_GRAVITY_BM FALSE
+#define LEFT_GRAVITY_BM TRUE
+
 //////////////// browser
 int browserdepth_BM = 3;
 
@@ -213,7 +217,6 @@ static void marksetbrows_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
 static char *
 textiterstrdbg_BM (GtkTextIter * it)
 {
-  char *buf = NULL;
   static char itinfobuf[32];
   memset (itinfobuf, 0, sizeof (itinfobuf));
   if (it)
@@ -324,23 +327,26 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &endit,
                                             browsedobj_BM[md].brow_oendm);
-          gtk_text_iter_forward_char (&endit);
           printf ("@start_browse_object_BM/%d replace md=%d startit:%s\n",
                   __LINE__, md, textiterstrdbg_BM (&startit));
           printf ("@start_browse_object_BM/%d replace md=%d endit:%s\n",
                   __LINE__, md, textiterstrdbg_BM (&endit));
           gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
+          gtk_text_buffer_insert (browserbuf_BM, &endit, "\n", -1);
+          startit = endit;
+          gtk_text_iter_backward_char (&startit);
           gtk_text_buffer_move_mark (browserbuf_BM,
                                      browsedobj_BM[md].brow_ostartm,
                                      &startit);
           browsedobj_BM[md].brow_depth = depth;
-          browserit_BM = startit;
+          browserit_BM = endit;
           browserobcurix_BM = md;
           return;
         }
       else if (objectnamedcmp_BM (obj, mdobj) < 0)
         {
-          GtkTextIter it;
+          GtkTextIter it = { };
+          GtkTextIter startit = { };
           if (md > 0)
             gtk_text_buffer_get_iter_at_mark    //
               (browserbuf_BM, &it, browsedobj_BM[md - 1].brow_oendm);
@@ -353,10 +359,17 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
                   md, textiterstrdbg_BM (&it));
           browserobulen_BM++;
           browsedobj_BM[md].brow_obj = obj;
+          gtk_text_buffer_insert (browserbuf_BM, &it, "\n", -1);
+          startit = it;
+          gtk_text_iter_backward_char (&startit);
+          printf ("@start_browse_object_BM/%d insert md=%d startit:%s\n",
+                  __LINE__, md, textiterstrdbg_BM (&startit));
           browsedobj_BM[md].brow_ostartm =      //
-            gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+            gtk_text_buffer_create_mark (browserbuf_BM, NULL, &startit,
+                                         RIGHT_GRAVITY_BM);
           browsedobj_BM[md].brow_oendm =        //
-            gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+            gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it,
+                                         RIGHT_GRAVITY_BM);
           browsedobj_BM[md].brow_depth = depth;
           browserobcurix_BM = md;
           browserit_BM = it;
@@ -365,19 +378,29 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
     };
   assert (browserobulen_BM == 0);
   GtkTextIter it = { };
+  GtkTextIter startit = { };
   gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &it, browserendtitlem_BM);
   browserobulen_BM = 1;
   printf ("@start_browse_object_BM/%d insert empty it:%s\n", __LINE__,
           textiterstrdbg_BM (&it));
   browsedobj_BM[0].brow_obj = obj;
+  gtk_text_buffer_insert (browserbuf_BM, &it, "\n", -1);
+  startit = it;
+  gtk_text_iter_backward_char (&startit);
+  printf ("@start_browse_object_BM/%d insert initial startit:%s\n", __LINE__,
+          textiterstrdbg_BM (&startit));
   browsedobj_BM[0].brow_ostartm =       //
-    gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+  gtk_text_buffer_create_mark (browserbuf_BM, NULL, &startit,
+                               RIGHT_GRAVITY_BM);
+  printf ("@start_browse_object_BM/%d insert initial it:%s\n", __LINE__,
+	  textiterstrdbg_BM (&it));
   browsedobj_BM[0].brow_oendm = //
-    gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+    gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, RIGHT_GRAVITY_BM);
   browsedobj_BM[0].brow_depth = depth;
   browserobcurix_BM = 0;
   browserit_BM = it;
 }                               /* end start_browse_object_BM */
+
 
 
 struct browsedobj_stBM *
@@ -552,9 +575,11 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
           mdval->brow_val = val;
           mdval->brow_depth = depth;
           mdval->brow_vstartm = //
-            gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+            gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it,
+                                         RIGHT_GRAVITY_BM);
           mdval->brow_vendm =   //
-            gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+            gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it,
+                                         RIGHT_GRAVITY_BM);
           browserit_BM = it;
           browsednvcurix_BM = md;
           return;
@@ -572,9 +597,9 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
   browsedval_BM[0].brow_val = val;
   browsedval_BM[0].brow_depth = depth;
   browsedval_BM[0].brow_vstartm =       //
-    gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+    gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, RIGHT_GRAVITY_BM);
   browsedval_BM[0].brow_vendm = //
-    gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, FALSE);
+    gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, RIGHT_GRAVITY_BM);
   browserit_BM = it;
   browsednvcurix_BM = 0;
   browsednvulen_BM = 1;
@@ -3196,7 +3221,7 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_buffer_insert (browserbuf_BM, &brit, "\n", 1);
     browserendtitlem_BM =       //
       gtk_text_buffer_create_mark (browserbuf_BM, "endtitle_bromk",
-                                   &brit, false);
+                                   &brit, RIGHT_GRAVITY_BM);
   }
   browserview_BM = gtk_text_view_new_with_buffer (browserbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (browserview_BM), false);
