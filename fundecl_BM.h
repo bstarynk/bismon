@@ -618,7 +618,7 @@ static inline bool openmodule_BM (const rawid_tyBM modid,
 /// support for GUI, in misc_BM.cc
 void cmd_clear_parens_BM (void);        /* clear all parenthesis in cmd */
 void cmd_add_parens_BM (struct parenoffset_stBM *par);
-bool cmd_parens_surrounds_BM (struct parenoffset_stBM *par, int off);
+bool parens_surrounds_BM (struct parenoffset_stBM *par, int off);
 struct parenoffset_stBM *cmd_find_enclosing_parens_BM (int off);
 ///
 extern void initialize_gui_BM (const char *builderfile);

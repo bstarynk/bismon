@@ -644,7 +644,7 @@ cmd_add_parens_BM (struct parenoffset_stBM*par)
 } // end cmd_add_parens_BM
 
 bool
-cmd_parens_surrounds_BM(struct parenoffset_stBM*par, int off)
+parens_surrounds_BM(struct parenoffset_stBM*par, int off)
 {
   if (!par)
     return false;
@@ -670,7 +670,7 @@ cmd_find_enclosing_parens_BM(int off)
   do
     {
       struct parenoffset_stBM*po = &it->second;
-      if (cmd_parens_surrounds_BM(po, off))
+      if (parens_surrounds_BM(po, off))
         return po;
       it--;
     }
