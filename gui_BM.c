@@ -3267,15 +3267,18 @@ initialize_gui_BM (const char *builderfile)
                       /*fill= */ true, 2);
   browserbuf_BM = gtk_text_buffer_new (browsertagtable_BM);
   {
-    GtkTextIter brit;
+    GtkTextIter brit = { };
+    GtkTextIter endtit = { };
     gtk_text_buffer_get_start_iter (browserbuf_BM, &brit);
     gtk_text_buffer_insert_with_tags (browserbuf_BM, &brit,
-                                      "BROWSER", -1,
+                                      "** BROWSER **", -1,
                                       pagetitle_brotag_BM, NULL);
-    gtk_text_buffer_insert (browserbuf_BM, &brit, "\n", 1);
+    gtk_text_buffer_insert (browserbuf_BM, &brit, "\n\n", 2);
+    endtit = brit;
+    gtk_text_iter_backward_char (&endtit);
     browserendtitlem_BM =       //
       gtk_text_buffer_create_mark (browserbuf_BM, "endtitle_bromk",
-                                   &brit, RIGHT_GRAVITY_BM);
+                                   &endtit, RIGHT_GRAVITY_BM);
   }
   browserview_BM = gtk_text_view_new_with_buffer (browserbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (browserview_BM), false);
