@@ -838,9 +838,9 @@ again:
     {
       const char *endid = NULL;
       rawid_tyBM id = parse_rawid_BM (restlin, &endid);
-      assert (endid == restlin + IDLEN_BM);
       if (id.id_hi != 0 && endid != NULL && endid > restlin)
         {
+          assert (endid == restlin + IDLEN_BM);
           if (parsop && parsop->parsop_decorate_id_rout)
             parsop->parsop_decorate_id_rout (pars, pars->pars_colpos,
                                              IDLEN_BM);
