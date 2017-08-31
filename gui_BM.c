@@ -288,7 +288,7 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
 {
   assert (isobject_BM ((const value_tyBM) obj));
   printf ("@start_browse_object_BM/%d obj@%p=%s\n", __LINE__,
-	  obj, objectdbg_BM (obj));
+          obj, objectdbg_BM (obj));
   browsednvcurix_BM = -1;
   if (browserobulen_BM + 1 >= browserobsize_BM)
     {
@@ -304,7 +304,11 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
       browserobsize_BM = newsiz;
     }
   int lo = 0, hi = browserobulen_BM, md = 0;
-  printf ("@start_browse_object_BM/%d starting hi=%d\n", __LINE__, hi);
+  printf ("@start_browse_object_BM/%d starting hi=ulen=%d obj %s\n", __LINE__,
+          hi, objectdbg_BM (obj));
+  for (md = lo; md < hi; md++)
+    printf ("@start_browse_object_BM/%d [%d]= %s\n", __LINE__,
+            md, objectdbg_BM (browsedobj_BM[md].brow_obj));
   while (lo + 8 < hi)
     {
       md = (lo + hi) / 2;
@@ -316,12 +320,14 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
       else
         hi = md;
     }
+  printf ("@start_browse_object_BM/%d lo=%d hi=%d ulen=%d\n", __LINE__,
+          lo, hi, browserobulen_BM);
   for (md = lo; md < hi; md++)
     {
       const objectval_tyBM *mdobj = browsedobj_BM[md].brow_obj;
       assert (isobject_BM ((const value_tyBM) mdobj));
       printf ("@start_browse_object_BM/%d md=%d mdobj@%p=%s\n", __LINE__,
-	      md, mdobj, objectdbg_BM(mdobj));
+              md, mdobj, objectdbg_BM (mdobj));
       if (mdobj == obj)
         {                       // replacing existing object
           GtkTextIter startit, endit;
@@ -347,18 +353,19 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
           browserobcurix_BM = md;
           return;
         }
-      else if (objectnamedcmp_BM (obj, mdobj) > 0)
+      else if (objectnamedcmp_BM (obj, mdobj) < 0)
         {
           GtkTextIter it = { };
           GtkTextIter startit = { };
+          for (int ix = browserobulen_BM + 1; ix > md; ix--)
+            browsedobj_BM[ix] = browsedobj_BM[ix - 1];
+          memset (browsedobj_BM + md, 0, sizeof (struct browsedobj_stBM));
           if (md > 0)
             gtk_text_buffer_get_iter_at_mark    //
               (browserbuf_BM, &it, browsedobj_BM[md - 1].brow_oendm);
           else
             gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                               &it, browserendtitlem_BM);
-          for (int ix = browserobulen_BM + 1; ix > md; ix--)
-            browsedobj_BM[ix] = browsedobj_BM[ix - 1];
           printf ("@start_browse_object_BM/%d insert md=%d it:%s\n", __LINE__,
                   md, textiterstrdbg_BM (&it));
           browserobulen_BM++;
@@ -380,33 +387,45 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
           return;
         }
       else
-	printf("@@start_browse_object_BM/%d md=%d hi=%d next\n", __LINE__,
-	       md, hi);
+        printf ("@@start_browse_object_BM/%d md=%d hi=%d next\n", __LINE__,
+                md, hi);
     };
-#warning start_browse_object_BM fails for ?* the_system ?* comment ?* int
-  assert (browserobulen_BM == 0);
+  printf ("@@start_browse_object_BM/%d md=%d ulen=%d last %s\n", __LINE__,
+          md, browserobulen_BM,
+          (browserobulen_BM > 0)
+          ? objectdbg_BM (browsedobj_BM[browserobulen_BM - 1].brow_obj)
+          : "*none*");
+  assert (browserobulen_BM == 0
+          || objectnamedcmp_BM (browsedobj_BM[browserobulen_BM - 1].brow_obj,
+                                obj) < 0);
   GtkTextIter it = { };
   GtkTextIter startit = { };
-  gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &it, browserendtitlem_BM);
-  browserobulen_BM = 1;
-  printf ("@start_browse_object_BM/%d insert empty it:%s\n", __LINE__,
-          textiterstrdbg_BM (&it));
-  browsedobj_BM[0].brow_obj = obj;
+  if (browserobulen_BM == 0)
+    gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &it,
+                                      browserendtitlem_BM);
+  else
+    gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &it,
+                                      browsedobj_BM[browserobulen_BM -
+                                                    1].brow_oendm);
+  printf ("@start_browse_object_BM/%d insert last it:%s ulen %d\n", __LINE__,
+          textiterstrdbg_BM (&it), browserobulen_BM);
+  browsedobj_BM[browserobulen_BM].brow_obj = obj;
   gtk_text_buffer_insert (browserbuf_BM, &it, "\n", -1);
   startit = it;
   gtk_text_iter_backward_char (&startit);
-  printf ("@start_browse_object_BM/%d insert initial startit:%s\n", __LINE__,
+  printf ("@start_browse_object_BM/%d insert last startit:%s\n", __LINE__,
           textiterstrdbg_BM (&startit));
-  browsedobj_BM[0].brow_ostartm =       //
+  browsedobj_BM[browserobulen_BM].brow_ostartm =        //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &startit,
                                  RIGHT_GRAVITY_BM);
-  printf ("@start_browse_object_BM/%d insert initial it:%s\n", __LINE__,
+  printf ("@start_browse_object_BM/%d insert last it:%s\n", __LINE__,
           textiterstrdbg_BM (&it));
-  browsedobj_BM[0].brow_oendm = //
+  browsedobj_BM[browserobulen_BM].brow_oendm =  //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, RIGHT_GRAVITY_BM);
-  browsedobj_BM[0].brow_depth = depth;
+  browsedobj_BM[browserobulen_BM].brow_depth = depth;
   browserobcurix_BM = 0;
   browserit_BM = it;
+  browserobulen_BM++;
 }                               /* end start_browse_object_BM */
 
 
@@ -2201,6 +2220,18 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
               struct browsedobj_stBM *broldfocusob =
                 find_browsed_object_BM (_.oldfocusobj);
               GLOBAL_BM (gui_focus_obj) = _.obj;
+              if (_.obj)
+                {
+                  browse_object_gui_BM (GLOBAL_BM (gui_focus_obj),
+                                        BMP_browse_in_object,
+                                        browserdepth_BM,
+                                        (struct stackframe_stBM *) &_);
+                  log_begin_message_BM ();
+                  log_puts_message_BM ("showing and focusing object ");
+                  log_object_message_BM (GLOBAL_BM (gui_focus_obj));
+                  log_puts_message_BM (".");
+                  log_end_message_BM ();
+                }
               if (broldfocusob && _.oldfocusobj != _.obj)
                 {
                   browse_object_gui_BM (_.oldfocusobj,
@@ -2213,13 +2244,28 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                   log_puts_message_BM (".");
                   log_end_message_BM ();
                 }
-              browse_object_gui_BM (GLOBAL_BM (gui_focus_obj),
+            }
+        }
+      //
+      // ?. <object> # to display an object without focusing on it
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_questiondot)
+        {
+          bool gotobject = false;
+          _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
+                                      0, &gotobject);
+          if (!gotobject || (!nobuild && !_.obj))
+            parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                  "no displayed object after ?.");
+          if (!nobuild)
+            {
+              browse_object_gui_BM (_.obj,
                                     BMP_browse_in_object,
                                     browserdepth_BM,
                                     (struct stackframe_stBM *) &_);
               log_begin_message_BM ();
-              log_puts_message_BM ("showing and focusing object ");
-              log_object_message_BM (GLOBAL_BM (gui_focus_obj));
+              log_puts_message_BM ("displaying object ");
+              log_object_message_BM (_.obj);
               log_puts_message_BM (".");
               log_end_message_BM ();
             }
@@ -3309,7 +3355,7 @@ initialize_gui_BM (const char *builderfile)
   gtk_paned_add1 (GTK_PANED (paned2), commandscrolw);
   gtk_paned_add2 (GTK_PANED (paned2), logscrolw);
   gtk_window_set_title (GTK_WINDOW (mainwin_BM), "bismon");
-  gtk_window_set_default_size (GTK_WINDOW (mainwin_BM), 580, 470);
+  gtk_window_set_default_size (GTK_WINDOW (mainwin_BM), 580, 670);
   // perhaps run the GC twice a second
   g_timeout_add (500, guiperiodicgarbagecollection_BM, NULL);
   gtk_widget_show_all (GTK_WIDGET (mainwin_BM));
