@@ -173,6 +173,13 @@
                 <property name="foreground">coral4</property>
             </object>
         </child>
+      <!-- blink_brotag for the blinking -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">blink_brotag</property>
+                <property name="background">yellow</property>
+            </object>
+        </child>
       <!-- num_brotag for numbers -->
         <child type="tag">
             <object class='GtkTextTag'>

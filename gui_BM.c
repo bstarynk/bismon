@@ -27,11 +27,13 @@ GtkTextTag *objid_brotag_BM;
 GtkTextTag *objname_brotag_BM;
 GtkTextTag *objrefcomm_brotag_BM;
 GtkTextTag *nest_brotag_BM;
+GtkTextTag *blink_brotag_BM;
 GtkTextTag *num_brotag_BM;
 GtkTextTag *toodeep_brotag_BM;
 GtkTextTag *str_brotag_BM;
 GtkTextTag *stresc_brotag_BM;
 GtkTextTag *miscomm_brotag_BM;
+
 
 /// the browsed objects
 unsigned browserobsize_BM;      /* allocated size of browsedobj_BM */
@@ -65,7 +67,21 @@ struct browsedval_stBM
   struct parenoffset_stBM *brow_parenarr;
 };
 struct browsedval_stBM *browsedval_BM;
+guint browserblinkid_BM;
+struct parenoffset_stBM browserblinkparens_BM;  /// offsets are absolute
 
+#define BLINKDELAYMILLISEC_BM 450
+#define UNBLINKDELAYMILLISEC_BM 250
+/// stop completely the blinking
+static void browserblinkstop_BM (void);
+
+// unblink temporarily
+static int browserblinkoff_BM (gpointer);
+// blink temporarily
+static int browserblinkon_BM (gpointer);
+
+// start the blinking
+static void browserblinkstart_BM (void);
 
 
 /// the completion set - should be a GC root
@@ -277,6 +293,9 @@ clear_command_BM (void)
   log_end_message_BM ();
 }                               /* end clear_command_BM */
 
+
+
+
 const char *
 gobjectclassnamedbg_BM (GObject * ptr)
 {
@@ -285,6 +304,90 @@ gobjectclassnamedbg_BM (GObject * ptr)
   return G_OBJECT_CLASS_NAME (G_OBJECT_GET_CLASS (ptr));
 }                               /* end gobjectclassnamedbg_BM */
 
+
+
+////////////////////////////////////////////////////////////////
+
+
+void
+browserblinkstop_BM (void)
+{
+  if (browserblinkid_BM > 0)
+    g_source_remove (browserblinkid_BM), browserblinkid_BM = 0;
+  browserblinkoff_BM (NULL);
+  memset (&browserblinkparens_BM, 0, sizeof (browserblinkparens_BM));
+}                               /* end browserblinkstop_BM */
+
+int
+browserblinkoff_BM (gpointer data __attribute__ ((unused)))
+{
+  GtkTextIter startit;
+  GtkTextIter endit;
+  gtk_text_buffer_get_bounds (browserbuf_BM, &startit, &endit);
+  gtk_text_buffer_remove_tag (browserbuf_BM, blink_brotag_BM, &startit,
+                              &endit);
+  return G_SOURCE_REMOVE;
+}                               /* end browserblinkoff_BM */
+
+int
+browserblinkon_BM (gpointer data __attribute__ ((unused)))
+{
+  if (browserblinkparens_BM.paroff_open > 0
+      && browserblinkparens_BM.paroff_openlen > 0)
+    {
+      GtkTextIter openstartit, openendit;
+      gtk_text_buffer_get_iter_at_offset (browserbuf_BM, &openstartit,
+                                          browserblinkparens_BM.paroff_open);
+      openendit = openstartit;
+      gtk_text_iter_forward_chars (&openendit,
+                                   browserblinkparens_BM.paroff_openlen);
+      gtk_text_buffer_apply_tag (browserbuf_BM, blink_brotag_BM, &openstartit,
+                                 &openendit);
+    }
+  if (browserblinkparens_BM.paroff_close > 0
+      && browserblinkparens_BM.paroff_closelen > 0)
+    {
+      GtkTextIter closestartit, closeendit;
+      gtk_text_buffer_get_iter_at_offset (browserbuf_BM, &closestartit,
+                                          browserblinkparens_BM.paroff_close);
+      closeendit = closestartit;
+      gtk_text_iter_forward_chars (&closeendit,
+                                   browserblinkparens_BM.paroff_closelen);
+      gtk_text_buffer_apply_tag (browserbuf_BM, blink_brotag_BM,
+                                 &closestartit, &closeendit);
+    }
+  if (browserblinkparens_BM.paroff_xtra > 0
+      && browserblinkparens_BM.paroff_xtralen > 0)
+    {
+      GtkTextIter xtrastartit, xtraendit;
+      gtk_text_buffer_get_iter_at_offset (browserbuf_BM, &xtrastartit,
+                                          browserblinkparens_BM.paroff_xtra);
+      xtraendit = xtrastartit;
+      gtk_text_iter_forward_chars (&xtraendit,
+                                   browserblinkparens_BM.paroff_xtralen);
+      gtk_text_buffer_apply_tag (browserbuf_BM, blink_brotag_BM, &xtrastartit,
+                                 &xtraendit);
+    }
+  if (browserblinkid_BM > 0)
+    {
+      (void) g_timeout_add (UNBLINKDELAYMILLISEC_BM, browserblinkoff_BM,
+                            NULL);
+      return G_SOURCE_CONTINUE;
+    }
+  return G_SOURCE_REMOVE;
+}                               /* end browserblinkon_BM */
+
+
+void
+browserblinkstart_BM (void)
+{
+  if (browserblinkid_BM > 0)
+    g_source_remove (browserblinkid_BM), browserblinkid_BM = 0;
+  browserblinkoff_BM (NULL);
+  browserblinkid_BM =
+    g_timeout_add (BLINKDELAYMILLISEC_BM, browserblinkon_BM, NULL);
+  browserblinkon_BM (NULL);
+}                               /* end browserblinkstart_BM */
 
 void
 start_browse_object_BM (const objectval_tyBM * obj, int depth)
@@ -3175,6 +3278,10 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (browsertagtable_BM, "nest_brotag");
   if (!nest_brotag_BM)
     FATAL_BM ("cannot find nest_brotag_BM");
+  blink_brotag_BM =             //
+    gtk_text_tag_table_lookup (browsertagtable_BM, "blink_brotag");
+  if (!blink_brotag_BM)
+    FATAL_BM ("cannot find blink_brotag_BM");
   num_brotag_BM =               //
     gtk_text_tag_table_lookup (browsertagtable_BM, "num_brotag");
   if (!num_brotag_BM)
