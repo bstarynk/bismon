@@ -395,6 +395,7 @@ browserblinkstart_BM (void)
 void
 start_browse_object_BM (const objectval_tyBM * obj, int depth)
 {
+  browserblinkstop_BM ();
   assert (isobject_BM ((const value_tyBM) obj));
   browsednvcurix_BM = -1;
   if (browserobulen_BM + 1 >= browserobsize_BM)
@@ -606,6 +607,7 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
                              const value_tyBM val, int depth)
 {
   browserobcurix_BM = -1;
+  browserblinkstop_BM ();
   if (!isstring_BM ((const value_tyBM) namev))
     FATAL_BM ("no name to start_browse_named_value_BM");
   if (!validname_BM (bytstring_BM ((const value_tyBM) namev)))
@@ -3579,6 +3581,16 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
                   }
               }
           }
+        if (blinkpo)
+          {
+            browserblinkparens_BM = *blinkpo;
+            if (blinkpo->paroff_open >= 0 && blinkpo->paroff_openlen > 0)
+              browserblinkparens_BM.paroff_open += ostartoff;
+            if (blinkpo->paroff_close >= 0 && blinkpo->paroff_closelen > 0)
+              browserblinkparens_BM.paroff_close += ostartoff;
+            if (blinkpo->paroff_xtra >= 0 && blinkpo->paroff_xtralen > 0)
+              browserblinkparens_BM.paroff_xtra += ostartoff;
+          }
       }
   }
   // do a dichotomical search on browsedval_BM
@@ -3657,10 +3669,21 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
                     }
                 }
             }
+          if (blinkpo)
+            {
+              browserblinkparens_BM = *blinkpo;
+              if (blinkpo->paroff_open >= 0 && blinkpo->paroff_openlen > 0)
+                browserblinkparens_BM.paroff_open += vstartoff;
+              if (blinkpo->paroff_close >= 0 && blinkpo->paroff_closelen > 0)
+                browserblinkparens_BM.paroff_close += vstartoff;
+              if (blinkpo->paroff_xtra >= 0 && blinkpo->paroff_xtralen > 0)
+                browserblinkparens_BM.paroff_xtra += vstartoff;
+            }
         }
     }
-  /// should blink at blinkpo
-#warning marksetbrows_BM incomplete
+  browserblinkstop_BM ();
+  if (blinkpo)
+    browserblinkstart_BM ();
 }                               /* end marksetbrows_BM */
 
 gboolean
