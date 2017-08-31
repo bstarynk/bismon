@@ -143,8 +143,8 @@
         <child type="tag">
             <object class='GtkTextTag'>
                 <property name="name">objid_brotag</property>
-                <property name="font">DejaVu Sans Mono Bold</property>
-                <property name="foreground">chocolate4</property>
+                <property name="font">Rokkit SemiBold</property>
+                <property name="foreground">tan4</property>
             </object>
         </child>
       <!-- objname_brotag for the name of an object -->
