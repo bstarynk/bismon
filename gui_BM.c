@@ -3351,7 +3351,7 @@ initialize_gui_BM (const char *builderfile)
                     G_CALLBACK (enduseractioncmd_BM), NULL);
   g_signal_connect (commandview_BM, "populate-popup",
                     G_CALLBACK (populatepopupcmd_BM), NULL);
-  g_signal_connect (commandview_BM, "mark-set",
+  g_signal_connect (commandbuf_BM, "mark-set",
                     G_CALLBACK (marksetcmd_BM), NULL);
   gtk_widget_set_tooltip_markup (GTK_WIDGET (commandview_BM),
                                  "<big><b>command view</b></big>\n");
