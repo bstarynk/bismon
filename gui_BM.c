@@ -15,7 +15,7 @@ GtkTextTagTable *browsertagtable_BM;
 GtkTextBuffer *browserbuf_BM;
 GtkWidget *browserview_BM;
 GtkTextIter browserit_BM;
-GtkTextMark *browserendtitlem_BM;
+int browserendtitleoffset_BM;
 GtkTextTag *pagetitle_brotag_BM;
 GtkTextTag *objtitle_brotag_BM;
 GtkTextTag *valtitle_brotag_BM;
@@ -359,22 +359,35 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
           GtkTextIter startit = { };
           for (int ix = browserobulen_BM + 1; ix > md; ix--)
             browsedobj_BM[ix] = browsedobj_BM[ix - 1];
+          printf ("@start_browse_object_BM/%d inserting before md=%d\n",
+                  __LINE__, md);
           memset (browsedobj_BM + md, 0, sizeof (struct browsedobj_stBM));
           if (md > 0)
-            gtk_text_buffer_get_iter_at_mark    //
-              (browserbuf_BM, &it, browsedobj_BM[md - 1].brow_oendm);
+            {
+              gtk_text_buffer_get_iter_at_mark  //
+                (browserbuf_BM, &it, browsedobj_BM[md - 1].brow_oendm);
+              printf
+                ("@start_browse_object_BM/%d insert md=%d it:%s after %s\n",
+                 __LINE__, md, textiterstrdbg_BM (&it),
+                 objectdbg_BM (browsedobj_BM[md - 1].brow_obj));
+            }
           else
-            gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                              &it, browserendtitlem_BM);
-          printf ("@start_browse_object_BM/%d insert md=%d it:%s\n", __LINE__,
-                  md, textiterstrdbg_BM (&it));
+            {
+              gtk_text_buffer_get_iter_at_offset (browserbuf_BM,
+                                                  &it,
+                                                  browserendtitleoffset_BM);
+              printf
+                ("@start_browse_object_BM/%d insert md=%d it:%s endtitle\n",
+                 __LINE__, md, textiterstrdbg_BM (&it));
+            }
           browserobulen_BM++;
           browsedobj_BM[md].brow_obj = obj;
           gtk_text_buffer_insert (browserbuf_BM, &it, "\n", -1);
           startit = it;
           gtk_text_iter_backward_char (&startit);
-          printf ("@start_browse_object_BM/%d insert md=%d startit:%s\n",
-                  __LINE__, md, textiterstrdbg_BM (&startit));
+          printf
+            ("@start_browse_object_BM/%d insert md=%d startit:%s\n",
+             __LINE__, md, textiterstrdbg_BM (&startit));
           browsedobj_BM[md].brow_ostartm =      //
             gtk_text_buffer_create_mark (browserbuf_BM, NULL, &startit,
                                          RIGHT_GRAVITY_BM);
@@ -387,28 +400,37 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
           return;
         }
       else
-        printf ("@@start_browse_object_BM/%d md=%d hi=%d next\n", __LINE__,
-                md, hi);
+        printf ("@@start_browse_object_BM/%d md=%d hi=%d next\n",
+                __LINE__, md, hi);
     };
-  printf ("@@start_browse_object_BM/%d md=%d ulen=%d last %s\n", __LINE__,
-          md, browserobulen_BM,
-          (browserobulen_BM > 0)
-          ? objectdbg_BM (browsedobj_BM[browserobulen_BM - 1].brow_obj)
-          : "*none*");
+  printf
+    ("@@start_browse_object_BM/%d md=%d ulen=%d last %s\n",
+     __LINE__, md, browserobulen_BM,
+     (browserobulen_BM >
+      0) ? objectdbg_BM (browsedobj_BM[browserobulen_BM -
+                                       1].brow_obj) : "*none*");
   assert (browserobulen_BM == 0
-          || objectnamedcmp_BM (browsedobj_BM[browserobulen_BM - 1].brow_obj,
-                                obj) < 0);
+          ||
+          objectnamedcmp_BM (browsedobj_BM
+                             [browserobulen_BM - 1].brow_obj, obj) < 0);
   GtkTextIter it = { };
   GtkTextIter startit = { };
   if (browserobulen_BM == 0)
-    gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &it,
-                                      browserendtitlem_BM);
+    {
+      gtk_text_buffer_get_iter_at_offset
+        (browserbuf_BM, &it, browserendtitleoffset_BM);
+      printf ("@start_browse_object_BM/%d insert aftertitle it:%s", __LINE__,
+              textiterstrdbg_BM (&it));
+    }
   else
-    gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &it,
-                                      browsedobj_BM[browserobulen_BM -
-                                                    1].brow_oendm);
-  printf ("@start_browse_object_BM/%d insert last it:%s ulen %d\n", __LINE__,
-          textiterstrdbg_BM (&it), browserobulen_BM);
+    {
+      gtk_text_buffer_get_iter_at_mark
+        (browserbuf_BM, &it, browsedobj_BM[browserobulen_BM - 1].brow_oendm);
+      printf
+        ("@start_browse_object_BM/%d insert last it:%s ulen %d afterend %s\n",
+         __LINE__, textiterstrdbg_BM (&it), browserobulen_BM,
+         objectdbg_BM (browsedobj_BM[browserobulen_BM - 1].brow_obj));
+    }
   browsedobj_BM[browserobulen_BM].brow_obj = obj;
   gtk_text_buffer_insert (browserbuf_BM, &it, "\n", -1);
   startit = it;
@@ -465,8 +487,7 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
   if (!isobject_BM ((const value_tyBM) objbrows))
     return;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * objbrows;
-    );
+                 const objectval_tyBM * objbrows;);
   _.objbrows = objbrows;
   int lo = 0, hi = browserobulen_BM, md = 0;
   while (lo + 8 < hi)
@@ -490,8 +511,7 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &startit,
                                             browsedobj_BM[md].brow_ostartm);
-          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                            &endit,
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &endit,
                                             browsedobj_BM[md].brow_oendm);
           gtk_text_iter_forward_char (&endit);
           gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
@@ -530,11 +550,13 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
     FATAL_BM ("invalid name '%s' to start_browse_named_value_BM",
               bytstring_BM ((const value_tyBM) namev));
   if (!val)
-    FATAL_BM ("name '%s' for nil value to start_browse_named_value_BM",
-              bytstring_BM ((const value_tyBM) namev));
+    FATAL_BM
+      ("name '%s' for nil value to start_browse_named_value_BM",
+       bytstring_BM ((const value_tyBM) namev));
   if (depth < 0)
-    FATAL_BM ("name '%s' with bad depth %d to start_browse_named_value_BM",
-              bytstring_BM ((const value_tyBM) namev), depth);
+    FATAL_BM
+      ("name '%s' with bad depth %d to start_browse_named_value_BM",
+       bytstring_BM ((const value_tyBM) namev), depth);
   if (browsednvulen_BM + 1 >= browsednvsize_BM)
     {
       unsigned newsiz = prime_above_BM (4 * browsednvulen_BM / 3 + 5);
@@ -567,16 +589,18 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
       int cmp = strcmp (namstr, bytstring_BM (mdval->brow_name));
       if (cmp == 0)
         {                       /* replace existing named value */
-          GtkTextIter startit = { };
-          GtkTextIter endit = { };
+          GtkTextIter startit = {
+          };
+          GtkTextIter endit = {
+          };
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &startit, mdval->brow_vstartm);
-          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                            &endit, mdval->brow_vendm);
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &endit,
+                                            mdval->brow_vendm);
           gtk_text_iter_forward_char (&endit);
           gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
-          gtk_text_buffer_move_mark (browserbuf_BM, mdval->brow_vstartm,
-                                     &startit);
+          gtk_text_buffer_move_mark (browserbuf_BM,
+                                     mdval->brow_vstartm, &startit);
           mdval->brow_depth = depth;
           browserit_BM = startit;
           browsednvcurix_BM = md;
@@ -586,15 +610,21 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
         {                       /* insert a new named value */
           GtkTextIter it = { };
           if (md > 0)
-            gtk_text_buffer_get_iter_at_mark    //
-              (browserbuf_BM, &it, mdval[-1].brow_vendm);
+            {
+              gtk_text_buffer_get_iter_at_mark  //
+                (browserbuf_BM, &it, mdval[-1].brow_vendm);
+            }
           else if (browserobulen_BM > 0)
-            gtk_text_buffer_get_iter_at_mark    //
-              (browserbuf_BM, &it,
-               browsedobj_BM[browserobulen_BM - 1].brow_oendm);
+            {
+              gtk_text_buffer_get_iter_at_mark  //
+                (browserbuf_BM, &it,
+                 browsedobj_BM[browserobulen_BM - 1].brow_oendm);
+            }
           else
-            gtk_text_buffer_get_iter_at_mark    //
-              (browserbuf_BM, &it, browserendtitlem_BM);
+            {
+              gtk_text_buffer_get_iter_at_offset        //
+                (browserbuf_BM, &it, browserendtitleoffset_BM);
+            }
           for (unsigned ix = browsednvulen_BM; ix > md; ix--)
             browsedval_BM[ix] = browsedval_BM[ix - 1];
           memset (mdval, 0, sizeof (*mdval));
@@ -613,13 +643,14 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
         };
     };
   assert (browsednvulen_BM == 0);
-  GtkTextIter it = { };
+  GtkTextIter it = {
+  };
   if (browserobulen_BM > 0)
     gtk_text_buffer_get_iter_at_mark    //
       (browserbuf_BM, &it, browsedobj_BM[browserobulen_BM - 1].brow_oendm);
   else
-    gtk_text_buffer_get_iter_at_mark    //
-      (browserbuf_BM, &it, browserendtitlem_BM);
+    gtk_text_buffer_get_iter_at_offset  //
+      (browserbuf_BM, &it, browserendtitleoffset_BM);
   browsedval_BM[0].brow_name = namev;
   browsedval_BM[0].brow_val = val;
   browsedval_BM[0].brow_depth = depth;
@@ -718,24 +749,26 @@ hide_named_value_gui_BM (const stringval_tyBM * namev,
       int cmp = strcmp (namstr, bytstring_BM (mdval->brow_name));
       if (cmp == 0)
         {
-          GtkTextIter startit = { };
-          GtkTextIter endit = { };
+          GtkTextIter startit = {
+          };
+          GtkTextIter endit = {
+          };
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &startit, mdval->brow_vstartm);
-          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                            &endit, mdval->brow_vendm);
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &endit,
+                                            mdval->brow_vendm);
           gtk_text_iter_forward_char (&endit);
           gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
           gtk_text_buffer_delete_mark (browserbuf_BM, mdval->brow_vstartm);
           gtk_text_buffer_delete_mark (browserbuf_BM, mdval->brow_vendm);
           if (mdval->brow_parenulen > 0)
-            memset (mdval->brow_parenarr, 0,
+            memset (mdval->brow_parenarr,
+                    0,
                     mdval->brow_parenulen * sizeof (struct parenoffset_stBM));
           free (mdval->brow_parenarr);
           for (int ix = md; ix < (int) browsednvulen_BM; ix++)
             browsedval_BM[ix] = browsedval_BM[ix + 1];
-          memset (browsedval_BM + browsednvulen_BM,
-                  0,
+          memset (browsedval_BM + browsednvulen_BM, 0,
                   (browsednvsize_BM -
                    browsednvulen_BM) * sizeof (struct browsedval_stBM));
           browsednvulen_BM--;
@@ -753,8 +786,7 @@ browse_object_start_offset_BM (void)
   assert (browserobcurix_BM >= 0
           && browserobcurix_BM < (int) browserobulen_BM);
   GtkTextIter it;
-  gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                    &it,
+  gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &it,
                                     browsedobj_BM
                                     [browserobcurix_BM].brow_ostartm);
   return gtk_text_iter_get_offset (&it);
@@ -846,12 +878,10 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
     browsdepth = BROWSE_MAXDEPTH_BM;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * objbrows;
-                 const objectval_tyBM * objsel;
-    );
+                 const objectval_tyBM * objsel;);
   bool isfocused = (GLOBAL_BM (gui_focus_obj) == objbrows);
-  printf ("@browse_object_gui_BM/%d objbrows@%p:%s %s\n", __LINE__,
-          objbrows, objectdbg_BM (objbrows),
-          isfocused ? "focused" : "unfocused");
+  printf ("@browse_object_gui_BM/%d objbrows@%p:%s %s\n", __LINE__, objbrows,
+          objectdbg_BM (objbrows), isfocused ? "focused" : "unfocused");
   _.objbrows = objbrows;
   _.objsel = objsel;
   start_browse_object_BM (objbrows, browsdepth);
@@ -859,9 +889,12 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
   printf ("@browse_object_gui_BM/%d browsit %s\n", __LINE__,
           textiterstrdbg_BM (&browserit_BM));
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM, "\342\201\202 "       /* U+2042 ASTERISM ⁂ */
-                                    , -1,
-                                    isfocused ? focustitle_brotag_BM :
-                                    objtitle_brotag_BM, NULL);
+                                    ,
+                                    -1,
+                                    isfocused
+                                    ?
+                                    focustitle_brotag_BM
+                                    : objtitle_brotag_BM, NULL);
   char idbuf[32];
   memset (idbuf, 0, sizeof (idbuf));
   idtocbuf32_BM (objid_BM (objbrows), idbuf);
@@ -875,24 +908,28 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
       gtk_text_buffer_insert_with_tags
         (browserbuf_BM, &browserit_BM,
          " |=", -1, objtitle_brotag_BM, objcommtitle_brotag_BM, NULL);
-      gtk_text_buffer_insert_with_tags
-        (browserbuf_BM, &browserit_BM,
-         idbuf, -1,
-         isfocused ? focustitle_brotag_BM : objtitle_brotag_BM,
-         objcommtitle_brotag_BM, objidtitle_brotag_BM, NULL);
-      gtk_text_buffer_insert_with_tags
-        (browserbuf_BM, &browserit_BM,
-         "|", -1,
-         isfocused ? focustitle_brotag_BM : objtitle_brotag_BM,
-         objcommtitle_brotag_BM, NULL);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                        &browserit_BM, idbuf, -1,
+                                        isfocused ?
+                                        focustitle_brotag_BM :
+                                        objtitle_brotag_BM,
+                                        objcommtitle_brotag_BM,
+                                        objidtitle_brotag_BM, NULL);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                        &browserit_BM, "|", -1,
+                                        isfocused ?
+                                        focustitle_brotag_BM :
+                                        objtitle_brotag_BM,
+                                        objcommtitle_brotag_BM, NULL);
     }
   else
     {                           /// anonymous browsed object
-      gtk_text_buffer_insert_with_tags
-        (browserbuf_BM, &browserit_BM,
-         idbuf, -1,
-         isfocused ? focustitle_brotag_BM : objtitle_brotag_BM,
-         objidtitle_brotag_BM, NULL);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                        &browserit_BM, idbuf, -1,
+                                        isfocused ?
+                                        focustitle_brotag_BM :
+                                        objtitle_brotag_BM,
+                                        objidtitle_brotag_BM, NULL);
     };
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
   send1_BM ((const value_tyBM) objbrows, objsel,
@@ -924,23 +961,22 @@ browse_named_value_gui_BM (const stringval_tyBM * namev,
   else if (browsdepth > BROWSE_MAXDEPTH_BM)
     browsdepth = BROWSE_MAXDEPTH_BM;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const stringval_tyBM * namev; value_tyBM val;
-                 const objectval_tyBM * objsel;
-    );
+                 const stringval_tyBM * namev;
+                 value_tyBM val; const objectval_tyBM * objsel;);
   _.namev = namev;
   _.val = (value_tyBM) val;
   _.objsel = objsel;
   browsednvcurix_BM = -1;
   start_browse_named_value_BM (namev, val, browsdepth);
   assert (browsednvcurix_BM >= 0);
-  gtk_text_buffer_insert_with_tags
-    (browserbuf_BM, &browserit_BM, "$", -1, valtitle_brotag_BM, NULL);
-  gtk_text_buffer_insert_with_tags
-    (browserbuf_BM, &browserit_BM, bytstring_BM (namev), -1,
-     valtitle_brotag_BM, NULL);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM, "$", -1,
+                                    valtitle_brotag_BM, NULL);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                    bytstring_BM (namev), -1,
+                                    valtitle_brotag_BM, NULL);
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
-  send1_BM ((const value_tyBM) _.val, objsel,
-            (struct stackframe_stBM *) &_, taggedint_BM (browsdepth));
+  send1_BM ((const value_tyBM) _.val, objsel, (struct stackframe_stBM *) &_,
+            taggedint_BM (browsdepth));
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
   gtk_text_buffer_move_mark (browserbuf_BM,
                              browsedval_BM[browsednvcurix_BM].brow_vendm,
@@ -957,10 +993,8 @@ quit_BM (void)
   GtkWidget *quitdialog =       //
     gtk_message_dialog_new_with_markup  //
     (GTK_WINDOW (mainwin_BM),
-     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-     GTK_MESSAGE_QUESTION,
-     GTK_BUTTONS_OK_CANCEL,
-     "Quit without dumping?");
+     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_QUESTION,
+     GTK_BUTTONS_OK_CANCEL, "Quit without dumping?");
   int resp = gtk_dialog_run (GTK_DIALOG (quitdialog));
   if (resp == GTK_RESPONSE_OK)
     gtk_main_quit ();
@@ -1017,9 +1051,10 @@ do_garbcoll_BM (void)
 
 bool deletemainwin_BM (GtkWidget *, GdkEvent *, gpointer);
 bool
-deletemainwin_BM (GtkWidget * widget __attribute__ ((unused)),
-                  GdkEvent * ev __attribute__ ((unused)),
-                  gpointer data __attribute__ ((unused)))
+deletemainwin_BM (GtkWidget * widget
+                  __attribute__ ((unused)), GdkEvent * ev
+                  __attribute__ ((unused)), gpointer data
+                  __attribute__ ((unused)))
 {
   // printf ("deletemainwin_BM\n");
   GtkWidget *quitdialog =       //
@@ -1059,7 +1094,8 @@ log_begin_message_BM (void)
   double now = clocktime_BM (CLOCK_REALTIME);
   time_t nowt = (time_t) floor (now);
   double nowfrac = now - (double) nowt;
-  struct tm nowtm = { };
+  struct tm nowtm = {
+  };
   localtime_r (&nowt, &nowtm);
   char nowtibuf[32];
   memset (nowtibuf, 0, sizeof (nowtibuf));
@@ -1072,13 +1108,14 @@ log_begin_message_BM (void)
   snprintf (nowcntbuf, sizeof (nowcntbuf), " #%ld", logcnt);
   char logmbuf[64];
   memset (logmbuf, 0, sizeof (logmbuf));
-  snprintf (logmbuf, sizeof (logmbuf), "%s%s%s", nowtibuf, nowfracbuf + 1,
-            nowcntbuf);
-  GtkTextIter it = { };
+  snprintf (logmbuf, sizeof (logmbuf), "%s%s%s", nowtibuf,
+            nowfracbuf + 1, nowcntbuf);
+  GtkTextIter it = {
+  };
   gtk_text_buffer_get_end_iter (logbuf_BM, &it);
   gtk_text_buffer_insert (logbuf_BM, &it, "\n", 1);
-  gtk_text_buffer_insert_with_tags
-    (logbuf_BM, &it, logmbuf, -1, time_logtag_BM, NULL);
+  gtk_text_buffer_insert_with_tags (logbuf_BM, &it, logmbuf, -1,
+                                    time_logtag_BM, NULL);
   gtk_text_buffer_insert (logbuf_BM, &it, "\n", 1);
 }                               /* end log_begin_message_BM */
 
@@ -1086,7 +1123,8 @@ log_begin_message_BM (void)
 void
 log_end_message_BM (void)
 {
-  GtkTextIter it = { };
+  GtkTextIter it = {
+  };
   gtk_text_buffer_get_end_iter (logbuf_BM, &it);
   gtk_text_buffer_insert (logbuf_BM, &it, "\n", 1);
 }                               /* end log_end_message_BM */
@@ -1095,7 +1133,8 @@ log_end_message_BM (void)
 void
 log_object_message_BM (const objectval_tyBM * obj)
 {
-  GtkTextIter it = { };
+  GtkTextIter it = {
+  };
   gtk_text_buffer_get_end_iter (logbuf_BM, &it);
   if (!obj)
     {
@@ -1129,7 +1168,8 @@ log_puts_message_BM (const char *msg)
 {
   if (!msg || !msg[0])
     return;
-  GtkTextIter it = { };
+  GtkTextIter it = {
+  };
   gtk_text_buffer_get_end_iter (logbuf_BM, &it);
   gtk_text_buffer_insert (logbuf_BM, &it, msg, -1);
 }
@@ -1166,12 +1206,14 @@ parserrorcmd_BM (struct parser_stBM *pars,
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsops && parsops->parsop_nobuild;
-  GtkTextIter it = { };
-  printf ("@parserrorcmd_BM lineno=%u colpos=%u msg=%s\n", lineno, colpos,
-          msg);
+  GtkTextIter it = {
+  };
+  printf ("@parserrorcmd_BM lineno=%u colpos=%u msg=%s\n",
+          lineno, colpos, msg);
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
   gtk_text_iter_forward_chars (&it, colpos);
-  GtkTextIter endit = { };
+  GtkTextIter endit = {
+  };
   gtk_text_buffer_get_end_iter (commandbuf_BM, &endit);
   gtk_text_buffer_apply_tag (commandbuf_BM, errored_cmdtag_BM, &it, &endit);
   if (!nobuild)
@@ -1180,7 +1222,8 @@ parserrorcmd_BM (struct parser_stBM *pars,
       char errbuf[64];
       snprintf (errbuf, sizeof (errbuf), "command error L%dC%d:",
                 lineno, colpos);
-      GtkTextIter logit = { };
+      GtkTextIter logit = {
+      };
       gtk_text_buffer_get_end_iter (logbuf_BM, &logit);
       gtk_text_buffer_insert_with_tags
         (logbuf_BM, &logit, errbuf, -1, error_logtag_BM, NULL);
@@ -1197,13 +1240,13 @@ parserrorcmd_BM (struct parser_stBM *pars,
 
 // for $<var>
 value_tyBM
-parsdollarvalcmd_BM (struct parser_stBM *pars, unsigned colpos,
+parsdollarvalcmd_BM (struct parser_stBM *pars,
+                     unsigned colpos,
                      const value_tyBM varname, struct stackframe_stBM *stkf)
 {
   const char *varstr = NULL;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM val;
-    );
+                 value_tyBM val;);
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
@@ -1235,8 +1278,7 @@ parsdollarobjcmd_BM (struct parser_stBM *pars,
 {
 
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM val;
-    );
+                 value_tyBM val;);
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
   const char *varstr = NULL;
@@ -1251,8 +1293,8 @@ parsdollarobjcmd_BM (struct parser_stBM *pars,
     parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "not found $:%s",
                           varstr);
   if (!isobject_BM (_.val) && !nobuild)
-    parsererrorprintf_BM (pars, pars->pars_lineno, colpos,
-                          "non-object $:%s", varstr);
+    parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "non-object $:%s",
+                          varstr);
   GtkTextIter it, endit;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, pars->pars_lineno);
   gtk_text_iter_forward_chars (&it, colpos);
@@ -1263,12 +1305,11 @@ parsdollarobjcmd_BM (struct parser_stBM *pars,
 }                               /* end parsdollarobjcmd_BM */
 
 static bool
-parseobjectcomplcmd_BM (struct parser_stBM *pars, objectval_tyBM * obj,
-                        int depth, struct stackframe_stBM *stkf,
+parseobjectcomplcmd_BM (struct parser_stBM *pars,
+                        objectval_tyBM * obj, int depth,
+                        struct stackframe_stBM *stkf,
                         struct parstoken_stBM *ptok);
-
 #define MAXARGS_BM 9
-
 bool
 parseobjectcomplcmd_BM (struct parser_stBM *pars,
                         objectval_tyBM * targobj, int depth,
@@ -1282,11 +1323,11 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
                  value_tyBM comp; objectval_tyBM * targobj;
                  objectval_tyBM * obattr; objectval_tyBM * obclass;
                  objectval_tyBM * obsel; const stringval_tyBM * name;
-                 value_tyBM args[MAXARGS_BM];
-    );
+                 value_tyBM args[MAXARGS_BM];);
   _.pars = pars;
   _.targobj = targobj;
-  struct parstoken_stBM tok = { };
+  struct parstoken_stBM tok = {
+  };
   if (!ptok)
     {
       tok = parsertokenget_BM (pars);
@@ -1320,8 +1361,8 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
     }
   //
   // !: <attr> <val> # put an attribute in target object
-  else if (ptok->tok_kind == plex_DELIM
-           && ptok->tok_delim == delim_exclamcolon)
+  else
+    if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamcolon)
     {
       if (!nobuild && !isobject_BM (targobj))
         parsererrorprintf_BM (pars, lineno, colpos, "missing target for !:");
@@ -1352,8 +1393,8 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
     }
   //
   // !$ <class>           # set the class of target object
-  else if (ptok->tok_kind == plex_DELIM
-           && ptok->tok_delim == delim_exclamdollar)
+  else
+    if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamdollar)
     {
       if (!nobuild && !isobject_BM (targobj))
         parsererrorprintf_BM (pars, lineno, colpos, "missing target for !$");
@@ -1377,8 +1418,9 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
     }
   //
   // !> <obselector> ( ... ) # to send a side-effecting message
-  else if (ptok->tok_kind == plex_DELIM
-           && ptok->tok_delim == delim_exclamgreater)
+  else
+    if (ptok->tok_kind == plex_DELIM
+        && ptok->tok_delim == delim_exclamgreater)
     {
       unsigned arglineno = pars->pars_lineno;
       unsigned argcolpos = pars->pars_colpos;
@@ -1389,14 +1431,15 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
                                     (struct stackframe_stBM *) &_,      //
                                     depth + 1, &gotsel);
       if (!gotsel)
-        parsererrorprintf_BM (pars, arglineno, argcolpos,
-                              "missing selector after !>");
+        parsererrorprintf_BM (pars, arglineno,
+                              argcolpos, "missing selector after !>");
       parserskipspaces_BM (pars);
       unsigned leftlineno = pars->pars_lineno;
       unsigned leftcolpos = pars->pars_colpos;
       tok = parsertokenget_BM (pars);
       if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_leftparen)
-        parsererrorprintf_BM (pars, arglineno, argcolpos,
+        parsererrorprintf_BM (pars, arglineno,
+                              argcolpos,
                               "missing left paren after selector for !>");
       int nbarg = 0;
       while (nbarg < MAXARGS_BM)
@@ -1412,13 +1455,14 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
         }
       tok = parsertokenget_BM (pars);
       if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
-        parsererrorprintf_BM (pars, arglineno, argcolpos,
+        parsererrorprintf_BM (pars, arglineno,
+                              argcolpos,
                               "missing right paren after selector for !>");
       unsigned rightlineno = pars->pars_lineno;
       unsigned rightcolpos = pars->pars_colpos;
-      parsnestingcmd_BM (pars, depth + 1, delim_leftparen, leftlineno,
-                         leftcolpos, delim_rightparen, rightlineno,
-                         rightcolpos);
+      parsnestingcmd_BM (pars, depth + 1, delim_leftparen,
+                         leftlineno, leftcolpos, delim_rightparen,
+                         rightlineno, rightcolpos);
       if (!nobuild)
         {
           bool failsend = false;
@@ -1501,8 +1545,8 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
     }                           // end !> 
   //
   // !- <attr>  # remove an attribute in target object
-  else if (ptok->tok_kind == plex_DELIM
-           && ptok->tok_delim == delim_exclamminus)
+  else
+    if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamminus)
     {
       if (!nobuild && !isobject_BM (targobj))
         parsererrorprintf_BM (pars, lineno, colpos, "missing target for !-");
@@ -1527,8 +1571,9 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
     }
   //
   // $% <name> # to show and bind to name
-  else if (ptok->tok_kind == plex_DELIM
-           && ptok->tok_delim == delim_dollarpercent)
+  else
+    if (ptok->tok_kind == plex_DELIM
+        && ptok->tok_delim == delim_dollarpercent)
     {
       tok = parsertokenget_BM (pars);
       if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
@@ -1541,8 +1586,8 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
           else
             _.name = tok.tok_cname;
           assert (isstring_BM ((const value_tyBM) _.name));
-          browse_named_value_gui_BM (_.name, _.targobj, BMP_browse_value,
-                                     browserdepth_BM,
+          browse_named_value_gui_BM (_.name, _.targobj,
+                                     BMP_browse_value, browserdepth_BM,
                                      (struct stackframe_stBM *) &_);
           log_begin_message_BM ();
           log_printf_message_BM ("bound name $%s to object ",
@@ -1554,8 +1599,8 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
     }
   //
   // !^ <space> # to move to given space
-  else if (ptok->tok_kind == plex_DELIM
-           && ptok->tok_delim == delim_exclamcaret)
+  else
+    if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamcaret)
     {
       if (!nobuild && !isobject_BM (targobj))
         parsererrorprintf_BM (pars, lineno, colpos, "missing target for !^");
@@ -1650,33 +1695,34 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno,
                  objectval_tyBM * obj; objectval_tyBM * obsel;
                  objectval_tyBM * obattr; closure_tyBM * clos;
                  value_tyBM otherval; const stringval_tyBM * name;
-                 value_tyBM args[MAXARGS_BM];
-    );
+                 value_tyBM args[MAXARGS_BM];);
   _.pars = pars;
   unsigned srclineno = parserlineno_BM (pars);
   unsigned srccolpos = parsercolpos_BM (pars);
   bool gotsrcval = false;
-  _.srcval = parsergetvalue_BM (pars, (struct stackframe_stBM *) &_,
-                                0, &gotsrcval);
+  _.srcval =
+    parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, 0, &gotsrcval);
   if (!gotsrcval)
-    parsererrorprintf_BM (pars, srclineno, srccolpos,
-                          "expecting source value in $(...)");
-  struct parstoken_stBM tok = { };
+    parsererrorprintf_BM (pars, srclineno,
+                          srccolpos, "expecting source value in $(...)");
+  struct parstoken_stBM tok = {
+  };
   for (;;)
     {
       parserskipspaces_BM (pars);
       tok = parsertokenget_BM (pars);
       if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_rightparen)
         {
-          parsnestingcmd_BM (pars, depth, delim_dollarleftparen, lineno,
-                             colpos, delim_rightparen,
+          parsnestingcmd_BM (pars, depth, delim_dollarleftparen,
+                             lineno, colpos, delim_rightparen,
                              parserlineno_BM (pars), parsercolpos_BM (pars));
           return _.srcval;
         }
       //
       // !> <obselector> ( ...) # to send a message for its result
-      else if (tok.tok_kind == plex_DELIM
-               && tok.tok_delim == delim_exclamgreater)
+      else
+        if (tok.tok_kind == plex_DELIM
+            && tok.tok_delim == delim_exclamgreater)
         {
           unsigned arglineno = pars->pars_lineno;
           unsigned argcolpos = pars->pars_colpos;
@@ -1688,11 +1734,12 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno,
                                         (struct stackframe_stBM *) &_,  //
                                         0, &gotsel);
           if (!gotsel)
-            parsererrorprintf_BM (pars, arglineno, argcolpos,
-                                  "missing selector after !>");
+            parsererrorprintf_BM (pars, arglineno,
+                                  argcolpos, "missing selector after !>");
           tok = parsertokenget_BM (pars);
           if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_leftparen)
-            parsererrorprintf_BM (pars, arglineno, argcolpos,
+            parsererrorprintf_BM (pars, arglineno,
+                                  argcolpos,
                                   "missing left paren after selector for !>");
           int nbarg = 0;
           while (nbarg < MAXARGS_BM)
@@ -1707,7 +1754,8 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno,
             }
           tok = parsertokenget_BM (pars);
           if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
-            parsererrorprintf_BM (pars, arglineno, argcolpos,
+            parsererrorprintf_BM (pars, arglineno,
+                                  argcolpos,
                                   "missing right paren after selector for !>");
           if (!nobuild)
             {
@@ -1813,7 +1861,8 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno,
             }
           tok = parsertokenget_BM (pars);
           if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
-            parsererrorprintf_BM (pars, arglineno, argcolpos,
+            parsererrorprintf_BM (pars, arglineno,
+                                  argcolpos,
                                   "missing right paren after application");
           if (!nobuild)
             {
@@ -1821,62 +1870,59 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno,
               switch (nbarg)
                 {
                 case 0:
-                  _.resval = apply0_BM (_.clos,
-                                        (struct stackframe_stBM *) &_);
+                  _.resval =
+                    apply0_BM (_.clos, (struct stackframe_stBM *) &_);
                   break;
                 case 1:
-                  _.resval = apply1_BM (_.clos,
-                                        (struct stackframe_stBM *) &_,
-                                        _.args[0]);
+                  _.resval =
+                    apply1_BM (_.clos, (struct stackframe_stBM *) &_,
+                               _.args[0]);
                   break;
                 case 2:
-                  _.resval = apply2_BM (_.clos,
-                                        (struct stackframe_stBM *) &_,
-                                        _.args[0], _.args[1]);
+                  _.resval =
+                    apply2_BM (_.clos, (struct stackframe_stBM *) &_,
+                               _.args[0], _.args[1]);
                   break;
                 case 3:
-                  _.resval = apply3_BM (_.clos,
-                                        (struct stackframe_stBM *) &_,
-                                        _.args[0], _.args[1], _.args[2]);
+                  _.resval =
+                    apply3_BM (_.clos, (struct stackframe_stBM *) &_,
+                               _.args[0], _.args[1], _.args[2]);
                   break;
                 case 4:
-                  _.resval = apply4_BM (_.clos,
-                                        (struct stackframe_stBM *) &_,
-                                        _.args[0], _.args[1], _.args[2],
-                                        _.args[3]);
+                  _.resval =
+                    apply4_BM (_.clos, (struct stackframe_stBM *) &_,
+                               _.args[0], _.args[1], _.args[2], _.args[3]);
                   break;
                 case 5:
-                  _.resval = apply5_BM (_.clos,
-                                        (struct stackframe_stBM *) &_,
-                                        _.args[0], _.args[1], _.args[2],
-                                        _.args[3], _.args[4]);
+                  _.resval =
+                    apply5_BM (_.clos, (struct stackframe_stBM *) &_,
+                               _.args[0], _.args[1], _.args[2], _.args[3],
+                               _.args[4]);
                   break;
                 case 6:
-                  _.resval = apply6_BM (_.clos,
-                                        (struct stackframe_stBM *) &_,
-                                        _.args[0], _.args[1], _.args[2],
-                                        _.args[3], _.args[4], _.args[5]);
+                  _.resval =
+                    apply6_BM (_.clos, (struct stackframe_stBM *) &_,
+                               _.args[0], _.args[1], _.args[2], _.args[3],
+                               _.args[4], _.args[5]);
                   break;
                 case 7:
-                  _.resval = apply7_BM (_.clos,
-                                        (struct stackframe_stBM *) &_,
-                                        _.args[0], _.args[1], _.args[2],
-                                        _.args[3], _.args[4], _.args[5],
-                                        _.args[6]);
+                  _.resval =
+                    apply7_BM (_.clos, (struct stackframe_stBM *) &_,
+                               _.args[0], _.args[1], _.args[2], _.args[3],
+                               _.args[4], _.args[5], _.args[6]);
                   break;
                 case 8:
-                  _.resval = apply8_BM (_.clos,
-                                        (struct stackframe_stBM *) &_,
-                                        _.args[0], _.args[1], _.args[2],
-                                        _.args[3], _.args[4], _.args[5],
-                                        _.args[6], _.args[7]);
+                  _.resval =
+                    apply8_BM (_.clos, (struct stackframe_stBM *) &_,
+                               _.args[0], _.args[1], _.args[2], _.args[3],
+                               _.args[4], _.args[5], _.args[6], _.args[7]);
                   break;
                 case 9:
-                  _.resval = apply9_BM (_.clos,
-                                        (struct stackframe_stBM *) &_,
-                                        _.args[0], _.args[1], _.args[2],
-                                        _.args[3], _.args[4], _.args[5],
-                                        _.args[6], _.args[7], _.args[8]);
+                  _.resval =
+                    apply9_BM (_.clos, (struct stackframe_stBM *) &_,
+                               _.args[0], _.args[1], _.args[2], _.args[3],
+                               _.args[4], _.args[5], _.args[6], _.args[7],
+                               _.args[8]);
                   break;
                 default:
                   _.resval = NULL;
@@ -1964,8 +2010,9 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno,
         }                       /* end !@ */
       //
       // $% <name> # to show and bind to name
-      else if (tok.tok_kind == plex_DELIM
-               && tok.tok_delim == delim_dollarpercent)
+      else
+        if (tok.tok_kind == plex_DELIM
+            && tok.tok_delim == delim_dollarpercent)
         {
           tok = parsertokenget_BM (pars);
           if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
@@ -1978,8 +2025,8 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno,
               else
                 _.name = tok.tok_cname;
               assert (isstring_BM ((const value_tyBM) _.name));
-              browse_named_value_gui_BM (_.name, _.srcval, BMP_browse_value,
-                                         browserdepth_BM,
+              browse_named_value_gui_BM (_.name, _.srcval,
+                                         BMP_browse_value, browserdepth_BM,
                                          (struct stackframe_stBM *) &_);
               log_begin_message_BM ();
               log_printf_message_BM ("bound and show name $%s to value.",
@@ -2010,8 +2057,7 @@ parsobjexpcmd_BM (struct parser_stBM *pars,
   bool nobuild = parsops && parsops->parsop_nobuild;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * obj; const stringval_tyBM * namev;
-                 value_tyBM val;
-    );
+                 value_tyBM val;);
   assert (isparser_BM (pars));
   parserskipspaces_BM (pars);
   unsigned oblineno = parserlineno_BM (pars);
@@ -2074,8 +2120,8 @@ parsobjexpcmd_BM (struct parser_stBM *pars,
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_dollarcolon)
     {
       parserseek_BM (pars, oblineno, obcolpos);
-      _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,
-                                  0, &gotobj);
+      _.obj =
+        parsergetobject_BM (pars, (struct stackframe_stBM *) &_, 0, &gotobj);
       if (!gotobj)
         parsererrorprintf_BM (pars, oblineno, obcolpos,
                               "expecting $:<var> in $[...]");
@@ -2085,28 +2131,30 @@ parsobjexpcmd_BM (struct parser_stBM *pars,
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_leftparen)
     {
       bool gotval = false;
-      _.val = parsergetvalue_BM (pars, (struct stackframe_stBM *) &_,
-                                 0, &gotval);
+      _.val =
+        parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, 0, &gotval);
       if (!gotval)
         parsererrorprintf_BM (pars, oblineno, obcolpos,
                               "expecting value after $[ (");
       tok = parsertokenget_BM (pars);
       if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
-
-        parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+        parsererrorprintf_BM (pars,
+                              pars->pars_lineno,
+                              pars->pars_colpos,
                               "expecting right paren after $[ ( started at L%d:C%d",
                               oblineno, obcolpos);
       if (!nobuild && !isobject_BM (_.val))
-        parsererrorprintf_BM (pars, oblineno, obcolpos,
-                              "non-object value after $[ (...");
+        parsererrorprintf_BM (pars,
+                              oblineno,
+                              obcolpos, "non-object value after $[ (...");
     }
   //
   // <id> or <name> to refer to an existing object
   else if (tok.tok_kind == plex_ID || tok.tok_kind == plex_NAMEDOBJ)
     {
       parserseek_BM (pars, oblineno, obcolpos);
-      _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,
-                                  0, &gotobj);
+      _.obj =
+        parsergetobject_BM (pars, (struct stackframe_stBM *) &_, 0, &gotobj);
     }
   if (!gotobj)
     parsererrorprintf_BM (pars, oblineno, obcolpos,
@@ -2115,8 +2163,8 @@ parsobjexpcmd_BM (struct parser_stBM *pars,
     {
       if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_rightbracket)
         {
-          parsnestingcmd_BM (pars, depth, delim_dollarleftbracket, lineno,
-                             colpos, delim_rightbracket,
+          parsnestingcmd_BM (pars, depth, delim_dollarleftbracket,
+                             lineno, colpos, delim_rightbracket,
                              parserlineno_BM (pars), parsercolpos_BM (pars));
           return _.obj;
         }
@@ -2124,7 +2172,8 @@ parsobjexpcmd_BM (struct parser_stBM *pars,
                                              (struct stackframe_stBM *) &_,
                                              &tok);
       if (!gotcomp)
-        parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+        parsererrorprintf_BM (pars, pars->pars_lineno,
+                              pars->pars_colpos,
                               "bad object complement (for $[...] started L%d:C%d",
                               oblineno, obcolpos);
       if (!nobuild)
@@ -2150,10 +2199,9 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
   if (!isparser_BM (pars))
     return;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 struct parser_stBM * pars;
-                 value_tyBM comp; objectval_tyBM * obj;
-                 objectval_tyBM * oldfocusobj; const stringval_tyBM * name;
-    );
+                 struct parser_stBM * pars; value_tyBM comp;
+                 objectval_tyBM * obj; objectval_tyBM * oldfocusobj;
+                 const stringval_tyBM * name;);
   _.pars = pars;
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
@@ -2163,8 +2211,8 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
     {
       parserskipspaces_BM (pars);
       if (nbloop++ > MAXSIZE_BM / 32)
-        parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
-                              "too many %d loops", nbloop);
+        parsererrorprintf_BM (pars, pars->pars_lineno,
+                              pars->pars_colpos, "too many %d loops", nbloop);
       if (parserendoffile_BM (pars))
         break;
       unsigned curlineno = parserlineno_BM (pars);
@@ -2205,15 +2253,15 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
         }
       //
       // ?* <object> # to focus and display an object
-      else if (tok.tok_kind == plex_DELIM
-               && tok.tok_delim == delim_questionstar)
+      else
+        if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_questionstar)
         {
           bool gotobject = false;
           _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
                                       0, &gotobject);
           if (!gotobject)
-            parsererrorprintf_BM (pars, curlineno, curcolpos,
-                                  "no new focus object after ?*");
+            parsererrorprintf_BM (pars, curlineno,
+                                  curcolpos, "no new focus object after ?*");
           if (!nobuild)
             {
               _.oldfocusobj = GLOBAL_BM (gui_focus_obj);
@@ -2248,15 +2296,15 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
         }
       //
       // ?. <object> # to display an object without focusing on it
-      else if (tok.tok_kind == plex_DELIM
-               && tok.tok_delim == delim_questiondot)
+      else
+        if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_questiondot)
         {
           bool gotobject = false;
           _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
                                       0, &gotobject);
           if (!gotobject || (!nobuild && !_.obj))
-            parsererrorprintf_BM (pars, curlineno, curcolpos,
-                                  "no displayed object after ?.");
+            parsererrorprintf_BM (pars, curlineno,
+                                  curcolpos, "no displayed object after ?.");
           if (!nobuild)
             {
               browse_object_gui_BM (_.obj,
@@ -2272,15 +2320,15 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
         }
       //
       // ?- <object> # to hide an object
-      else if (tok.tok_kind == plex_DELIM
-               && tok.tok_delim == delim_questionstar)
+      else
+        if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_questionstar)
         {
           bool gotobject = false;
           _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
                                       0, &gotobject);
           if (!gotobject)
-            parsererrorprintf_BM (pars, curlineno, curcolpos,
-                                  "no object to hide after ?-");
+            parsererrorprintf_BM (pars, curlineno,
+                                  curcolpos, "no object to hide after ?-");
           if (!nobuild)
             {
               if (_.obj == GLOBAL_BM (gui_focus_obj))
@@ -2295,12 +2343,14 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
         }
       //
       // ?$ <name> <value> # to display and bind a named value
-      else if (tok.tok_kind == plex_DELIM
-               && tok.tok_delim == delim_questiondollar)
+      else
+        if (tok.tok_kind == plex_DELIM
+            && tok.tok_delim == delim_questiondollar)
         {
           tok = parsertokenget_BM (pars);
           if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
-            parsererrorprintf_BM (pars, curlineno, curcolpos,
+            parsererrorprintf_BM (pars, curlineno,
+                                  curcolpos,
                                   "no name to bind and show after ?$");
           if (!nobuild)
             {
@@ -2343,13 +2393,14 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
             }
         }
       // ?$- <name>  # to hide and unbind a named value
-      else if (tok.tok_kind == plex_DELIM
-               && tok.tok_delim == delim_questiondollar)
+      else
+        if (tok.tok_kind == plex_DELIM
+            && tok.tok_delim == delim_questiondollar)
         {
           tok = parsertokenget_BM (pars);
           if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
-            parsererrorprintf_BM (pars, curlineno, curcolpos,
-                                  "no name to hide after ?$-");
+            parsererrorprintf_BM (pars, curlineno,
+                                  curcolpos, "no name to hide after ?$-");
           if (!nobuild)
             {
               if (tok.tok_kind == plex_NAMEDOBJ)
@@ -2371,8 +2422,8 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
         }
       //
       // ?# <depth> # to change the browse depth
-      else if (tok.tok_kind == plex_DELIM
-               && tok.tok_delim == delim_questionhash)
+      else
+        if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_questionhash)
         {
           tok = parsertokenget_BM (pars);
           if (tok.tok_kind != plex_LLONG)
@@ -2415,8 +2466,8 @@ parscommentinsidecmd_BM (struct parser_stBM *pars,
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit = it;
   gtk_text_iter_forward_chars (&endit, signlen);
-  gtk_text_buffer_apply_tag (commandbuf_BM, commentinside_cmdtag_BM,
-                             &it, &endit);
+  gtk_text_buffer_apply_tag (commandbuf_BM, commentinside_cmdtag_BM, &it,
+                             &endit);
 }                               /* end parscommentinsidecmd_BM */
 
 
@@ -2433,8 +2484,8 @@ parscommentsigncmd_BM (struct parser_stBM *pars,
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit = it;
   gtk_text_iter_forward_chars (&endit, signlen);
-  gtk_text_buffer_apply_tag (commandbuf_BM, commentsign_cmdtag_BM,
-                             &it, &endit);
+  gtk_text_buffer_apply_tag (commandbuf_BM, commentsign_cmdtag_BM, &it,
+                             &endit);
 }                               /* end parscommentsigncmd_BM */
 
 void
@@ -2503,8 +2554,9 @@ parsidcmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned idlen)
 
 void
 parsnestingcmd_BM (struct parser_stBM *pars, int depth,
-                   enum lexdelim_enBM opendelim, unsigned openlinpos,
-                   unsigned opencolpos, enum lexdelim_enBM closedelim,
+                   enum lexdelim_enBM opendelim,
+                   unsigned openlinpos, unsigned opencolpos,
+                   enum lexdelim_enBM closedelim,
                    unsigned closelinpos, unsigned closecolpos)
 {
   assert (isparser_BM (pars));
@@ -2523,8 +2575,8 @@ parsnestingcmd_BM (struct parser_stBM *pars, int depth,
   gtk_text_buffer_apply_tag (commandbuf_BM, nesting_cmdtag_BM,
                              &openit, &endopenit);
   if (depth < CMD_MAXNEST_BM)
-    gtk_text_buffer_apply_tag (commandbuf_BM, open_cmdtags_BM[depth],
-                               &openit, &endopenit);
+    gtk_text_buffer_apply_tag (commandbuf_BM,
+                               open_cmdtags_BM[depth], &openit, &endopenit);
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &closeit, closelinpos);
   gtk_text_iter_forward_chars (&closeit, closecolpos);
   stacloseit = closeit;
@@ -2534,16 +2586,13 @@ parsnestingcmd_BM (struct parser_stBM *pars, int depth,
   gtk_text_buffer_apply_tag (commandbuf_BM, nesting_cmdtag_BM,
                              &stacloseit, &closeit);
   if (depth < CMD_MAXNEST_BM)
-    gtk_text_buffer_apply_tag (commandbuf_BM, close_cmdtags_BM[depth],
-                               &stacloseit, &closeit);
+    gtk_text_buffer_apply_tag (commandbuf_BM,
+                               close_cmdtags_BM
+                               [depth], &stacloseit, &closeit);
   struct parenoffset_stBM po = {        //
-    .paroff_open = openoff,
-    .paroff_close = closeoff,
-    .paroff_xtra = -1,
-    .paroff_openlen = openlen,
-    .paroff_closelen = closelen,
-    .paroff_xtralen = 0,
-    .paroff_depth = depth
+    .paroff_open = openoff,.paroff_close = closeoff,.paroff_xtra =
+      -1,.paroff_openlen = openlen,.paroff_closelen =
+      closelen,.paroff_xtralen = 0,.paroff_depth = depth
   };
   cmd_add_parens_BM (&po);
 }                               /* end parsnestingcmd_BM */
@@ -2551,9 +2600,12 @@ parsnestingcmd_BM (struct parser_stBM *pars, int depth,
 
 void
 parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
-                        enum lexdelim_enBM xtradelim, unsigned xtralinpos,
-                        unsigned xtracolpos, enum lexdelim_enBM opendelim,
-                        unsigned openlinpos, unsigned opencolpos,
+                        enum lexdelim_enBM xtradelim,
+                        unsigned xtralinpos,
+                        unsigned xtracolpos,
+                        enum lexdelim_enBM opendelim,
+                        unsigned openlinpos,
+                        unsigned opencolpos,
                         enum lexdelim_enBM closedelim,
                         unsigned closelinpos, unsigned closecolpos)
 {
@@ -2576,8 +2628,8 @@ parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
   gtk_text_buffer_apply_tag (commandbuf_BM, nesting_cmdtag_BM,
                              &xtrait, &endxtrait);
   if (depth < CMD_MAXNEST_BM)
-    gtk_text_buffer_apply_tag (commandbuf_BM, xtra_cmdtags_BM[depth],
-                               &xtrait, &endxtrait);
+    gtk_text_buffer_apply_tag (commandbuf_BM,
+                               xtra_cmdtags_BM[depth], &xtrait, &endxtrait);
   //
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &openit, openlinpos);
   gtk_text_iter_forward_chars (&openit, opencolpos);
@@ -2588,8 +2640,8 @@ parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
   gtk_text_buffer_apply_tag (commandbuf_BM, nesting_cmdtag_BM,
                              &openit, &endopenit);
   if (depth < CMD_MAXNEST_BM)
-    gtk_text_buffer_apply_tag (commandbuf_BM, open_cmdtags_BM[depth],
-                               &openit, &endopenit);
+    gtk_text_buffer_apply_tag (commandbuf_BM,
+                               open_cmdtags_BM[depth], &openit, &endopenit);
   //
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &closeit, closelinpos);
   gtk_text_iter_forward_chars (&closeit, closecolpos);
@@ -2600,16 +2652,13 @@ parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
   gtk_text_buffer_apply_tag (commandbuf_BM, nesting_cmdtag_BM,
                              &stacloseit, &closeit);
   if (depth < CMD_MAXNEST_BM)
-    gtk_text_buffer_apply_tag (commandbuf_BM, close_cmdtags_BM[depth],
-                               &stacloseit, &closeit);
+    gtk_text_buffer_apply_tag (commandbuf_BM,
+                               close_cmdtags_BM
+                               [depth], &stacloseit, &closeit);
   struct parenoffset_stBM po = {        //
-    .paroff_open = openoff,
-    .paroff_close = closeoff,
-    .paroff_xtra = xtraoff,
-    .paroff_openlen = openlen,
-    .paroff_closelen = closelen,
-    .paroff_xtralen = xtralen,
-    .paroff_depth = depth
+    .paroff_open = openoff,.paroff_close = closeoff,.paroff_xtra =
+      xtraoff,.paroff_openlen = openlen,.paroff_closelen =
+      closelen,.paroff_xtralen = xtralen,.paroff_depth = depth
   };
   cmd_add_parens_BM (&po);
 }                               /* end parsstartnestingcmd_BM */
@@ -2655,13 +2704,15 @@ timeoutrestoreopacitycmd_BM (gpointer data __attribute__ ((unused)))
 static void replacecompletionbyidcmd_BM (GtkMenuItem * mit, gpointer data);
 static void replacecompletionbynamecmd_BM (GtkMenuItem * mit, gpointer data);
 static void stopcompletionmenucmd_BM (GtkMenuItem * mit, gpointer data);
-
 void
 tabautocompletecmd_BM (void)
 {
-  GtkTextIter cursit = { };
-  GtkTextIter beglinit = { };
-  GtkTextIter endlinit = { };
+  GtkTextIter cursit = {
+  };
+  GtkTextIter beglinit = {
+  };
+  GtkTextIter endlinit = {
+  };
   gtk_text_buffer_get_iter_at_mark      //
     (commandbuf_BM, &cursit, gtk_text_buffer_get_insert (commandbuf_BM));
   unsigned col = gtk_text_iter_get_line_offset (&cursit);
@@ -2669,8 +2720,8 @@ tabautocompletecmd_BM (void)
   gtk_text_iter_backward_line (&beglinit);
   endlinit = cursit;
   gtk_text_iter_forward_line (&endlinit);
-  const char *curlin =
-    gtk_text_buffer_get_text (commandbuf_BM, &beglinit, &endlinit, false);
+  const char *curlin = gtk_text_buffer_get_text (commandbuf_BM, &beglinit,
+                                                 &endlinit, false);
   assert (col <= g_utf8_strlen (curlin, -1));
   const char *curstr = g_utf8_offset_to_pointer (curlin, col);
   const char *begname = curstr;
@@ -2700,9 +2751,8 @@ tabautocompletecmd_BM (void)
     }
   printf ("@@tabautocompletecmd_BM col%d curlin@%p=%s\n"
           "curstr@%p=%s\n", col, curlin, curlin, curstr, curstr);
-  printf ("...name@%p='%.*s'\n"
-          "smallwordbuf='%s'\n", begname, (int) (endname - begname),
-          begname, smallwordbuf);
+  printf ("...name@%p='%.*s'\n" "smallwordbuf='%s'\n", begname,
+          (int) (endname - begname), begname, smallwordbuf);
   printf ("...gotextralnums=%s mainlev=%d\n",
           gotextralnums ? "true" : "false", gtk_main_level ());
   if (begname == endname || gotextralnums)
@@ -2711,8 +2761,9 @@ tabautocompletecmd_BM (void)
     goto failure;
   const setval_tyBM *complsetv = NULL;
   bool gotid = false;
-  if (endname >= begname + 3 && begname[0] == '_' && isdigit (begname[1])
-      && isalnum (begname[2]) && endname < begname + 31)
+  if (endname >= begname + 3 && begname[0] == '_'
+      && isdigit (begname[1]) && isalnum (begname[2])
+      && endname < begname + 31)
     {
       char widbuf[32];
       memset (widbuf, 0, sizeof (widbuf));
@@ -2799,7 +2850,8 @@ tabautocompletecmd_BM (void)
         }
       else
         {                       /* complete by name */
-          const objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+          const objectval_tyBM *tinyarr[TINYSIZE_BM] = {
+          };
           const objectval_tyBM **arr =
             (nbcompl <
              TINYSIZE_BM) ? tinyarr : calloc (prime_above_BM (nbcompl),
@@ -2833,16 +2885,18 @@ tabautocompletecmd_BM (void)
       g_signal_connect (complmenu, "deactivate",
                         G_CALLBACK (stopcompletionmenucmd_BM),
                         "*Deactivated*");
-      printf ("@@tabautocompletecmd_BM popping up complmenu@%p %.4f\n",
-              complmenu, elapsedtime_BM ());
+      printf
+        ("@@tabautocompletecmd_BM popping up complmenu@%p %.4f\n",
+         complmenu, elapsedtime_BM ());
       gtk_menu_popup_at_pointer (GTK_MENU (complmenu), NULL);
       gtk_main ();
       gtk_widget_destroy (complmenu);
       complsetcmd_BM = NULL;
       compbegoffcmd_BM = -1;
       compendoffcmd_BM = -1;
-      printf ("@@tabautocompletecmd_BM done pop up complmenu@%p %.4f\n",
-              complmenu, elapsedtime_BM ());
+      printf
+        ("@@tabautocompletecmd_BM done pop up complmenu@%p %.4f\n",
+         complmenu, elapsedtime_BM ());
     }
   free ((char *) curlin);
   return;
@@ -2855,7 +2909,8 @@ failure:
       gdk_window_beep (dwin);
     gtk_widget_set_opacity (commandview_BM, 0.5);
     // delay the restore of 1.0 opacity
-    g_timeout_add (125 /*milliseconds */ , timeoutrestoreopacitycmd_BM, NULL);
+    g_timeout_add (125 /*milliseconds */ ,
+                   timeoutrestoreopacitycmd_BM, NULL);
   }
   free ((char *) curlin);
   return;
@@ -2869,15 +2924,18 @@ replacecompletionbyidcmd_BM (GtkMenuItem * mit
   unsigned ix = (unsigned) (intptr_t) data;
   assert (isset_BM ((const value_tyBM) complsetcmd_BM));
   assert (ix < setcardinal_BM (complsetcmd_BM));
-  printf ("@@replacecompletionbyidcmd_BM ix=%u begoff=%d endoff=%d\n",
-          ix, compbegoffcmd_BM, compendoffcmd_BM);
+  printf
+    ("@@replacecompletionbyidcmd_BM ix=%u begoff=%d endoff=%d\n",
+     ix, compbegoffcmd_BM, compendoffcmd_BM);
   const objectval_tyBM *ob = setelemnth_BM (complsetcmd_BM, ix);
   assert (isobject_BM ((const value_tyBM) ob));
   char idbuf[32];
   memset (idbuf, 0, sizeof (idbuf));
   idtocbuf32_BM (objid_BM (ob), idbuf);
-  GtkTextIter begwit = { };
-  GtkTextIter endwit = { };
+  GtkTextIter begwit = {
+  };
+  GtkTextIter endwit = {
+  };
   gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &begwit,
                                       compbegoffcmd_BM);
   gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &endwit,
@@ -2895,14 +2953,17 @@ replacecompletionbynamecmd_BM (GtkMenuItem * mit
   unsigned ix = (unsigned) (intptr_t) data;
   assert (isset_BM ((const value_tyBM) complsetcmd_BM));
   assert (ix < setcardinal_BM (complsetcmd_BM));
-  printf ("@@replacecompletionbynamecmd_BM ix=%u begoff=%d endoff=%d\n", ix,
-          compbegoffcmd_BM, compendoffcmd_BM);
+  printf
+    ("@@replacecompletionbynamecmd_BM ix=%u begoff=%d endoff=%d\n",
+     ix, compbegoffcmd_BM, compendoffcmd_BM);
   const objectval_tyBM *ob = setelemnth_BM (complsetcmd_BM, ix);
   assert (isobject_BM ((const value_tyBM) ob));
   const char *obname = findobjectname_BM (ob);
   assert (obname != NULL);
-  GtkTextIter begwit = { };
-  GtkTextIter endwit = { };
+  GtkTextIter begwit = {
+  };
+  GtkTextIter endwit = {
+  };
   gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &begwit,
                                       compbegoffcmd_BM);
   gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &endwit,
@@ -2914,7 +2975,8 @@ replacecompletionbynamecmd_BM (GtkMenuItem * mit
 }                               /* end replacecompletionbynamecmd_BM */
 
 void
-stopcompletionmenucmd_BM (GtkMenuItem * mit __attribute__ ((unused)),
+stopcompletionmenucmd_BM (GtkMenuItem * mit
+                          __attribute__ ((unused)),
                           gpointer data __attribute__ ((unused)))
 {
   printf ("@@stopcompletionmenucmd_BM %s\n",
@@ -2929,18 +2991,19 @@ stopcompletionmenucmd_BM (GtkMenuItem * mit __attribute__ ((unused)),
 void
 runcommand_BM (bool erase)
 {
-  GtkTextIter startit = { };
-  GtkTextIter endit = { };
+  GtkTextIter startit = {
+  };
+  GtkTextIter endit = {
+  };
   gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
   gtk_text_buffer_remove_all_tags (commandbuf_BM, &startit, &endit);
   int endlin = gtk_text_iter_get_line (&endit);
-  char *cmdstr =
-    gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit, false);
+  char *cmdstr = gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit,
+                                           false);
   struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
   cmdpars->pars_ops = &parsop_command_build_BM;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 struct parser_stBM *cmdpars;
-    );
+                 struct parser_stBM *cmdpars;);
   _.cmdpars = cmdpars;
   int errpars = setjmp (jmperrorcmd_BM);
   if (!errpars)
@@ -2948,12 +3011,14 @@ runcommand_BM (bool erase)
       // should parse the command buffer, this could longjmp to jmperrorcmd_BM
       parsecommandbuf_BM (cmdpars, (struct stackframe_stBM *) &_);
       log_begin_message_BM ();
-      log_printf_message_BM ("run %s command of %d lines successfully:\n",
-                             erase ? "erased" : "kept", endlin);
+      log_printf_message_BM
+        ("run %s command of %d lines successfully:\n",
+         erase ? "erased" : "kept", endlin);
       GtkTextIter eol1it = startit;
       gtk_text_iter_forward_line (&eol1it);
       char *line1str =
-        gtk_text_buffer_get_text (commandbuf_BM, &startit, &eol1it, false);
+        gtk_text_buffer_get_text (commandbuf_BM, &startit, &eol1it,
+                                  false);
       log_puts_message_BM (line1str);
       log_puts_message_BM ("\n");
       free (line1str), line1str = NULL;
@@ -2962,10 +3027,12 @@ runcommand_BM (bool erase)
           GtkTextIter lastlit = endit;
           gtk_text_iter_backward_line (&lastlit);
           char *lastlinstr =
-            gtk_text_buffer_get_text (commandbuf_BM, &lastlit, &endit, false);
+            gtk_text_buffer_get_text (commandbuf_BM, &lastlit, &endit,
+                                      false);
           if (endlin > 2)
             {
-              GtkTextIter it = { };
+              GtkTextIter it = {
+              };
               gtk_text_buffer_get_end_iter (logbuf_BM, &it);
               gtk_text_buffer_insert_with_tags (logbuf_BM, &it, "\342\200\246", // U+2026 HORIZONTAL ELLIPSIS …
                                                 -1, error_logtag_BM, NULL);
@@ -2992,17 +3059,18 @@ enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
 {
   assert (txbuf == commandbuf_BM);
   assert (data == NULL);
-  GtkTextIter startit = { };
-  GtkTextIter endit = { };
+  GtkTextIter startit = {
+  };
+  GtkTextIter endit = {
+  };
   gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
   gtk_text_buffer_remove_all_tags (commandbuf_BM, &startit, &endit);
-  char *cmdstr =
-    gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit, false);
+  char *cmdstr = gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit,
+                                           false);
   struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
   cmdpars->pars_ops = &parsop_command_nobuild_BM;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 struct parser_stBM *cmdpars;
-    );
+                 struct parser_stBM *cmdpars;);
   _.cmdpars = cmdpars;
   int errpars = setjmp (jmperrorcmd_BM);
   if (!errpars)
@@ -3026,7 +3094,8 @@ populatepopupcmd_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
   assert (data == NULL);
   char cursinfobuf[32];
   memset (cursinfobuf, 0, sizeof (cursinfobuf));
-  GtkTextIter cursit = { };
+  GtkTextIter cursit = {
+  };
   gtk_text_buffer_get_iter_at_mark      //
     (commandbuf_BM, &cursit, gtk_text_buffer_get_insert (commandbuf_BM));
   snprintf (cursinfobuf, sizeof (cursinfobuf), "* L%dC%d/%d",
@@ -3069,7 +3138,6 @@ populatepopupcmd_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
 
 
 static void clearlog_BM (void);
-
 void
 populatepopuplog_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
 {
@@ -3088,8 +3156,10 @@ populatepopuplog_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
 void
 clearlog_BM (void)
 {
-  GtkTextIter startit = { };
-  GtkTextIter endit = { };
+  GtkTextIter startit = {
+  };
+  GtkTextIter endit = {
+  };
   gtk_text_buffer_get_bounds (logbuf_BM, &startit, &endit);
   gtk_text_buffer_delete (logbuf_BM, &startit, &endit);
   log_begin_message_BM ();
@@ -3234,13 +3304,14 @@ initialize_gui_BM (const char *builderfile)
   GtkWidget *mainvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);
   GtkWidget *mainmenubar = gtk_menu_bar_new ();
-  gtk_box_pack_start (GTK_BOX (mainvbox), mainmenubar, /*expand= */ false,
+  gtk_box_pack_start (GTK_BOX (mainvbox), mainmenubar,
+                      /*expand= */ false,
                       /*fill= */ false, 2);
   GtkWidget *appquit =
     GTK_WIDGET (gtk_builder_get_object (bld, "appquit_id"));
   g_signal_connect (appquit, "activate", quit_BM, NULL);
-  g_signal_connect (mainwin_BM, "delete-event",
-                    (GCallback) deletemainwin_BM, NULL);
+  g_signal_connect (mainwin_BM, "delete-event", (GCallback) deletemainwin_BM,
+                    NULL);
   GtkWidget *appexit =
     GTK_WIDGET (gtk_builder_get_object (bld, "appexit_id"));
   g_signal_connect (appexit, "activate", exit_BM, NULL);
@@ -3259,26 +3330,30 @@ initialize_gui_BM (const char *builderfile)
   assert (GTK_IS_WIDGET (editmenu));
   gtk_menu_shell_append (GTK_MENU_SHELL (mainmenubar), editmenu);
   GtkWidget *sep1 = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
-  gtk_box_pack_start (GTK_BOX (mainvbox), sep1, /*expand= */ false,
-                      /*fill= */ false, 2);
+  gtk_box_pack_start (GTK_BOX (mainvbox), sep1, /*expand= */
+                      false,
+                      /*fill= */
+                      false, 2);
   GtkWidget *paned1 = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
   gtk_paned_set_wide_handle (GTK_PANED (paned1), true);
-  gtk_box_pack_start (GTK_BOX (mainvbox), paned1, /*expand= */ true,
-                      /*fill= */ true, 2);
+  gtk_box_pack_start (GTK_BOX (mainvbox), paned1,       /*expand= */
+                      true,
+                      /*fill= */
+                      true, 2);
   browserbuf_BM = gtk_text_buffer_new (browsertagtable_BM);
   {
-    GtkTextIter brit = { };
-    GtkTextIter endtit = { };
+    GtkTextIter brit = {
+    };
+    GtkTextIter endtit = {
+    };
     gtk_text_buffer_get_start_iter (browserbuf_BM, &brit);
-    gtk_text_buffer_insert_with_tags (browserbuf_BM, &brit,
-                                      "** BROWSER **", -1,
-                                      pagetitle_brotag_BM, NULL);
+    gtk_text_buffer_insert_with_tags (browserbuf_BM, &brit, "** BROWSER **",
+                                      -1, pagetitle_brotag_BM, NULL);
     gtk_text_buffer_insert (browserbuf_BM, &brit, "\n\n", 2);
     endtit = brit;
     gtk_text_iter_backward_char (&endtit);
-    browserendtitlem_BM =       //
-      gtk_text_buffer_create_mark (browserbuf_BM, "endtitle_bromk",
-                                   &endtit, RIGHT_GRAVITY_BM);
+    browserendtitleoffset_BM =  //
+      gtk_text_iter_get_offset (&endtit);
   }
   browserview_BM = gtk_text_view_new_with_buffer (browserbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (browserview_BM), false);
@@ -3286,7 +3361,8 @@ initialize_gui_BM (const char *builderfile)
                     G_CALLBACK (marksetbrows_BM), NULL);
   GtkWidget *browserscrolw = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (browserscrolw), browserview_BM);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (browserscrolw),
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
+                                  (browserscrolw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   browserobsize_BM = 13;
   browserobulen_BM = 0;
@@ -3330,7 +3406,8 @@ initialize_gui_BM (const char *builderfile)
                                  "<big><b>command view</b></big>\n");
   GtkWidget *commandscrolw = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (commandscrolw), commandview_BM);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (commandscrolw),
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
+                                  (commandscrolw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   //
   logbuf_BM = gtk_text_buffer_new (logtagtable_BM);
@@ -3340,7 +3417,8 @@ initialize_gui_BM (const char *builderfile)
   gtk_text_view_set_editable (GTK_TEXT_VIEW (logview_BM), false);
   GtkWidget *logscrolw = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (logscrolw), logview_BM);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (logscrolw),
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
+                                  (logscrolw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   {
     log_begin_message_BM ();
@@ -3403,8 +3481,10 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
         obmd = (oblo + obhi) / 2;
         struct browsedobj_stBM *mdbrob = browsedobj_BM + obmd;
         assert (mdbrob->brow_ostartm != NULL && mdbrob->brow_oendm != NULL);
-        GtkTextIter ostartit = { };
-        GtkTextIter oendit = { };
+        GtkTextIter ostartit = {
+        };
+        GtkTextIter oendit = {
+        };
         gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                           &ostartit, mdbrob->brow_ostartm);
         int startcmp = gtk_text_iter_compare (txit, &ostartit);
@@ -3429,8 +3509,10 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
       }
     for (obmd = oblo; obmd < obhi && obix < 0; obmd++)
       {
-        GtkTextIter ostartit = { };
-        GtkTextIter oendit = { };
+        GtkTextIter ostartit = {
+        };
+        GtkTextIter oendit = {
+        };
         struct browsedobj_stBM *mdbrob = browsedobj_BM + obmd;
         assert (mdbrob->brow_ostartm != NULL && mdbrob->brow_oendm != NULL);
         gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &ostartit,
@@ -3442,8 +3524,10 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
       }
     if (obix >= 0)
       {
-        GtkTextIter ostartit = { };
-        GtkTextIter oendit = { };
+        GtkTextIter ostartit = {
+        };
+        GtkTextIter oendit = {
+        };
         struct browsedobj_stBM *brob = browsedobj_BM + obix;
         unsigned curnbparen = brob->brow_parenulen;
         if (curnbparen == 0)
@@ -3481,8 +3565,10 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
           bvmd = (bvlo + bvhi) / 2;
           struct browsedval_stBM *mdbrva = browsedval_BM + bvmd;
           assert (mdbrva->brow_vstartm && mdbrva->brow_vendm);
-          GtkTextIter vstartit = { };
-          GtkTextIter vendit = { };
+          GtkTextIter vstartit = {
+          };
+          GtkTextIter vendit = {
+          };
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &vstartit, mdbrva->brow_vstartm);
           int startcmp = gtk_text_iter_compare (txit, &vstartit);
@@ -3509,27 +3595,31 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
         {
           struct browsedval_stBM *mdbrva = browsedval_BM + bvmd;
           assert (mdbrva->brow_vstartm && mdbrva->brow_vendm);
-          GtkTextIter vstartit = { };
-          GtkTextIter vendit = { };
+          GtkTextIter vstartit = {
+          };
+          GtkTextIter vendit = {
+          };
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &vstartit, mdbrva->brow_vstartm);
-          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                            &vendit, mdbrva->brow_vendm);
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &vendit,
+                                            mdbrva->brow_vendm);
           if (gtk_text_iter_in_range (txit, &vstartit, &vendit))
             bvix = bvmd;
         }
       if (bvix >= 0)
         {
           struct browsedval_stBM *brva = browsedval_BM + bvix;
-          GtkTextIter vstartit = { };
-          GtkTextIter vendit = { };
+          GtkTextIter vstartit = {
+          };
+          GtkTextIter vendit = {
+          };
           unsigned curnbparen = brva->brow_parenulen;
           if (curnbparen == 0)
             return;
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &vstartit, brva->brow_vstartm);
-          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                            &vendit, brva->brow_vendm);
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &vendit,
+                                            brva->brow_vendm);
           guint vstartoff = gtk_text_iter_get_offset (&vstartit);
           int delta = off - vstartoff;
           assert (delta >= 0);
@@ -3585,7 +3675,6 @@ browsespacefordepth_BM (int depth)
 
 /// method to browse_in_object for object-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d);
-
 value_tyBM
 ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
@@ -3601,8 +3690,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * objbrows;
                  const setval_tyBM * setattrs; const objectval_tyBM * curattr;
-                 value_tyBM curval;
-    );
+                 value_tyBM curval;);
   _.objbrows = (const objectval_tyBM *) arg1;
   int depth = getint_BM (arg2);
   ///
@@ -3610,11 +3698,12 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   char mbuf[64];
   double mtime = _.objbrows->ob_mtime;
   snprintf (mbuf, sizeof (mbuf), "!@ %.2f ", mtime);
-  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
-                                    mbuf, -1, NULL, NULL);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                    &browserit_BM, mbuf, -1, NULL, NULL);
   double now = clocktime_BM (CLOCK_REALTIME);
   time_t mtimt = (time_t) mtime;
-  struct tm mtimtm = { };
+  struct tm mtimtm = {
+  };
   localtime_r (&mtimt, &mtimtm);
   char commbuf[96];
   memset (commbuf, 0, sizeof (commbuf));
@@ -3642,8 +3731,9 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   else
     strftime (mbuf, sizeof (mbuf), "%c %Z", &mtimtm);
   snprintf (commbuf, sizeof (commbuf), "|%s %s|", mbuf, spabuf);
-  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
-                                    commbuf, -1, miscomm_brotag_BM, NULL);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                    &browserit_BM, commbuf, -1,
+                                    miscomm_brotag_BM, NULL);
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
   if (_.objbrows->ob_class)
     {
@@ -3657,12 +3747,15 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   _.setattrs = objsetattrs_BM (_.objbrows);
   unsigned nbattrs = setcardinal_BM (_.setattrs);
   snprintf (commbuf, sizeof (commbuf), "|%d attributes:|", nbattrs);
-  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
-                                    commbuf, -1, miscomm_brotag_BM, NULL);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                    &browserit_BM, commbuf, -1,
+                                    miscomm_brotag_BM, NULL);
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
-  const objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+  const objectval_tyBM *tinyarr[TINYSIZE_BM] = {
+  };
   const objectval_tyBM **arr = (nbattrs < TINYSIZE_BM) ? tinyarr        //
-    : calloc (prime_above_BM (nbattrs), sizeof (const objectval_tyBM *));
+    : calloc (prime_above_BM (nbattrs),
+              sizeof (const objectval_tyBM *));
   if (!arr)
     FATAL_BM ("failed to calloc arr for %d attrs", nbattrs);
   for (unsigned ix = 0; ix < nbattrs; ix++)
@@ -3686,15 +3779,17 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   //// show the components
   unsigned nbcomps = objnbcomps_BM (_.objbrows);
   snprintf (commbuf, sizeof (commbuf), "|%d components:|", nbcomps);
-  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
-                                    commbuf, -1, miscomm_brotag_BM, NULL);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                    &browserit_BM, commbuf, -1,
+                                    miscomm_brotag_BM, NULL);
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
   for (unsigned cix = 0; cix < nbcomps; cix++)
     {
       gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "!& ", -1);
       snprintf (commbuf, sizeof (commbuf), "|#%d:|", cix);
-      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
-                                        commbuf, -1, miscomm_brotag_BM, NULL);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                        &browserit_BM, commbuf, -1,
+                                        miscomm_brotag_BM, NULL);
       _.curval = objgetcomp_BM (_.objbrows, cix);
       browsespacefordepth_BM (1);
       browse_value_BM ((const value_tyBM) _.curval,
@@ -3716,7 +3811,6 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
 
 /// method to browse_value for object-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe);
-
 value_tyBM
 ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
@@ -3732,8 +3826,7 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
   assert (istaggedint_BM (arg2));
   assert (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * objbrows;
-    );
+                 const objectval_tyBM * objbrows;);
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
@@ -3750,10 +3843,11 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
                                         " |=", -1, objrefcomm_brotag_BM,
                                         NULL);
       gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,   //
-                                        idbuf, -1, objrefcomm_brotag_BM,
-                                        NULL);
-      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM, "|",
+                                        idbuf,
                                         -1, objrefcomm_brotag_BM, NULL);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                        &browserit_BM, "|", -1,
+                                        objrefcomm_brotag_BM, NULL);
     }
   else
     {                           // anonymous
@@ -3766,7 +3860,6 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
 
 /// method to browse_data for class-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA);
-
 value_tyBM
 ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
@@ -3777,12 +3870,10 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    //
 {
   assert (!clos || isclosure_BM ((const value_tyBM) clos));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * objbrows;
-                 const setval_tyBM * setsel;    //
+                 const objectval_tyBM * objbrows; const setval_tyBM * setsel;   //
                  const objectval_tyBM * cursel;
                  const objectval_tyBM * supercla;
-                 value_tyBM curval;
-    );
+                 value_tyBM curval;);
   _.objbrows = (const objectval_tyBM *) arg1;
   int depth = getint_BM (arg2);
   assert (isobject_BM ((const value_tyBM) _.objbrows));
@@ -3790,19 +3881,23 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    //
   _.setsel = objgetclassinfosetofselectors_BM (_.objbrows);
   _.supercla = objgetclassinfosuperclass_BM (_.objbrows);
   unsigned nbmeth = setcardinal_BM (_.setsel);
-  const objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+  const objectval_tyBM *tinyarr[TINYSIZE_BM] = {
+  };
   const objectval_tyBM **arr = (nbmeth < TINYSIZE_BM) ? tinyarr //
-    : calloc (prime_above_BM (nbmeth), sizeof (const objectval_tyBM *));
+    : calloc (prime_above_BM (nbmeth),
+              sizeof (const objectval_tyBM *));
   if (!arr)
     FATAL_BM ("failed to calloc arr for %d methods", nbmeth);
   for (unsigned ix = 0; ix < nbmeth; ix++)
     arr[ix] = setelemnth_BM (_.setsel, ix);
   sortnamedobjarr_BM (arr, nbmeth);
-  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+  gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                    &browserit_BM,
                                     "!~ class (~ ", -1, NULL, NULL);
   if (_.supercla)
     {
-      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                        &browserit_BM,
                                         "|superclass=|", -1,
                                         miscomm_brotag_BM, NULL);
       browse_value_BM ((const value_tyBM) _.supercla,
@@ -3810,19 +3905,22 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    //
     }
   else
     {
-      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                        &browserit_BM,
                                         "|nosuperclass|", -1,
                                         miscomm_brotag_BM, NULL);
-      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
-                                        " __\n", -1, NULL, NULL);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                        &browserit_BM, " __\n", -1,
+                                        NULL, NULL);
     }
   for (unsigned ix = 0; ix < nbmeth; ix++)
     {
       _.cursel = arr[ix];
       _.curval = (value_tyBM) objgetclassinfomethod_BM (_.objbrows, _.cursel);
-      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM, "~: ",
-                                        -1, NULL, NULL);
-      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                        &browserit_BM, "~: ", -1, NULL, NULL);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                        &browserit_BM,
                                         "|selector:|", -1,
                                         miscomm_brotag_BM, NULL);
       browse_value_BM ((const value_tyBM) _.cursel,
@@ -3830,27 +3928,29 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    //
       browsespacefordepth_BM (1);
       browse_value_BM ((const value_tyBM) _.curval,
                        (struct stackframe_stBM *) &_, depth, 1);
-      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
-                                        "\n", -1, NULL, NULL);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                        &browserit_BM, "\n", -1, NULL, NULL);
     }
   if (arr != tinyarr)
     free (arr), arr = NULL;
-  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
-                                    "~)\n", -1, NULL, NULL);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM, "~)\n", -1,
+                                    NULL, NULL);
   return (const value_tyBM) _.objbrows;
 }                               /* end ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA) */
 
 
 void
-browse_value_BM (const value_tyBM val, struct stackframe_stBM *stkf,
-                 int maxdepth, int curdepth)
+browse_value_BM (const value_tyBM val,
+                 struct stackframe_stBM *stkf, int maxdepth, int curdepth)
 {
   if (!val)
-    gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
-                                      "__", 2, nest_brotag_BM, NULL);
+    gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                      &browserit_BM, "__", 2,
+                                      nest_brotag_BM, NULL);
   else
     {
-      LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL, value_tyBM val);
+      LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                     value_tyBM val);
       _.val = val;
       send2_BM ((const value_tyBM) _.val, BMP_browse_value,
                 (struct stackframe_stBM *) &_,
@@ -3861,7 +3961,6 @@ browse_value_BM (const value_tyBM val, struct stackframe_stBM *stkf,
 
 /// method to browse_value for tuple-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt);
-
 value_tyBM
 ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
@@ -3878,8 +3977,7 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    //
   assert (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const tupleval_tyBM * tupbrows;
-                 const objectval_tyBM * objbrows;
-    );
+                 const objectval_tyBM * objbrows;);
   _.tupbrows = (const tupleval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
@@ -3923,7 +4021,6 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    //
 
 /// method to browse_value for set-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr);
-
 value_tyBM
 ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
@@ -3940,8 +4037,7 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
   assert (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const setval_tyBM * setbrows;
-                 const objectval_tyBM * objbrows;
-    );
+                 const objectval_tyBM * objbrows;);
   _.setbrows = (const setval_tyBM *) arg1;
   unsigned setcard = setcardinal_BM (_.setbrows);
   int maxdepth = getint_BM (arg2);
@@ -3953,7 +4049,8 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
                                     "{", -1, nest_brotag_BM, NULL);
   if (curdepth < maxdepth)
     {
-      const objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+      const objectval_tyBM *tinyarr[TINYSIZE_BM] = {
+      };
       const objectval_tyBM **arr =      //
         (setcard < TINYSIZE_BM) ? tinyarr
         : calloc (setcard + 1, sizeof (const objectval_tyBM *));
@@ -3996,7 +4093,6 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
 
 /// method to browse_value for int-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y);
-
 value_tyBM
 ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
@@ -4026,7 +4122,6 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    //
 
 /// method to browse_value for string-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud);
-
 #define WANTEDLINEWIDTH_BM 64
 value_tyBM
 ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
@@ -4043,8 +4138,7 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
   assert (istaggedint_BM (arg2));
   assert (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const stringval_tyBM * strbrows;
-    );
+                 const stringval_tyBM * strbrows;);
   _.strbrows = arg1;
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
@@ -4163,7 +4257,6 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
 
 /// method to browse_value for node-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg);
-
 value_tyBM
 ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
@@ -4179,9 +4272,8 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
   assert (istaggedint_BM (arg2));
   assert (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * nodbrows; const objectval_tyBM * connob;
-                 value_tyBM curson;
-    );
+                 const node_tyBM * nodbrows;
+                 const objectval_tyBM * connob; value_tyBM curson;);
   _.nodbrows = arg1;
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
@@ -4194,8 +4286,8 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "*", -1, nest_brotag_BM, NULL);
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, " ", 1);
-  browse_value_BM ((const value_tyBM) _.connob,
-                   (struct stackframe_stBM *) &_, (maxdepth), (curdepth + 1));
+  browse_value_BM ((const value_tyBM) _.connob, (struct stackframe_stBM *) &_,
+                   (maxdepth), (curdepth + 1));
   browsespacefordepth_BM (curdepth + 1);
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
@@ -4208,8 +4300,8 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
           if (six > 0)
             browsespacefordepth_BM (curdepth + 1);
           browse_value_BM ((const value_tyBM) _.curson,
-                           (struct stackframe_stBM *) &_,
-                           (maxdepth), (curdepth + 1));
+                           (struct stackframe_stBM *) &_, (maxdepth),
+                           (curdepth + 1));
         }
     }
   else
@@ -4234,7 +4326,6 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
 
 /// method to browse_value for closure-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac);
-
 value_tyBM
 ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
@@ -4250,14 +4341,12 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
   assert (istaggedint_BM (arg2));
   assert (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clobrows; const objectval_tyBM * connob;
-                 value_tyBM curson;
-    );
+                 const closure_tyBM * clobrows;
+                 const objectval_tyBM * connob; value_tyBM curson;);
   _.clobrows = arg1;
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   assert (curdepth <= maxdepth);
-
   unsigned cw = closurewidth_BM ((const value_tyBM) _.clobrows);
   _.connob = closureconn_BM ((const value_tyBM) _.clobrows);
   assert (isobject_BM ((const value_tyBM) _.connob));
@@ -4266,8 +4355,8 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "%", -1, nest_brotag_BM, NULL);
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, " ", 1);
-  browse_value_BM ((const value_tyBM) _.connob,
-                   (struct stackframe_stBM *) &_, (maxdepth), (curdepth + 1));
+  browse_value_BM ((const value_tyBM) _.connob, (struct stackframe_stBM *) &_,
+                   (maxdepth), (curdepth + 1));
   browsespacefordepth_BM (curdepth + 1);
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
@@ -4280,8 +4369,8 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
           if (cix > 0)
             browsespacefordepth_BM (curdepth + 1);
           browse_value_BM ((const value_tyBM) _.curson,
-                           (struct stackframe_stBM *) &_,
-                           (maxdepth), (curdepth + 1));
+                           (struct stackframe_stBM *) &_, (maxdepth),
+                           (curdepth + 1));
         }
     }
   else
