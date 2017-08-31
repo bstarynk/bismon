@@ -287,7 +287,8 @@ void
 start_browse_object_BM (const objectval_tyBM * obj, int depth)
 {
   assert (isobject_BM ((const value_tyBM) obj));
-  printf ("@start_browse_object_BM obj@%p=%s\n", obj, objectdbg_BM (obj));
+  printf ("@start_browse_object_BM/%d obj@%p=%s\n", __LINE__,
+	  obj, objectdbg_BM (obj));
   browsednvcurix_BM = -1;
   if (browserobulen_BM + 1 >= browserobsize_BM)
     {
@@ -303,6 +304,7 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
       browserobsize_BM = newsiz;
     }
   int lo = 0, hi = browserobulen_BM, md = 0;
+  printf ("@start_browse_object_BM/%d starting hi=%d\n", __LINE__, hi);
   while (lo + 8 < hi)
     {
       md = (lo + hi) / 2;
@@ -318,6 +320,8 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
     {
       const objectval_tyBM *mdobj = browsedobj_BM[md].brow_obj;
       assert (isobject_BM ((const value_tyBM) mdobj));
+      printf ("@start_browse_object_BM/%d md=%d mdobj@%p=%s\n", __LINE__,
+	      md, mdobj, objectdbg_BM(mdobj));
       if (mdobj == obj)
         {                       // replacing existing object
           GtkTextIter startit, endit;
@@ -343,7 +347,7 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
           browserobcurix_BM = md;
           return;
         }
-      else if (objectnamedcmp_BM (obj, mdobj) < 0)
+      else if (objectnamedcmp_BM (obj, mdobj) > 0)
         {
           GtkTextIter it = { };
           GtkTextIter startit = { };
@@ -375,7 +379,11 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
           browserit_BM = it;
           return;
         }
+      else
+	printf("@@start_browse_object_BM/%d md=%d hi=%d next\n", __LINE__,
+	       md, hi);
     };
+#warning start_browse_object_BM fails for ?* the_system ?* comment ?* int
   assert (browserobulen_BM == 0);
   GtkTextIter it = { };
   GtkTextIter startit = { };
@@ -390,10 +398,10 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
   printf ("@start_browse_object_BM/%d insert initial startit:%s\n", __LINE__,
           textiterstrdbg_BM (&startit));
   browsedobj_BM[0].brow_ostartm =       //
-  gtk_text_buffer_create_mark (browserbuf_BM, NULL, &startit,
-                               RIGHT_GRAVITY_BM);
+    gtk_text_buffer_create_mark (browserbuf_BM, NULL, &startit,
+                                 RIGHT_GRAVITY_BM);
   printf ("@start_browse_object_BM/%d insert initial it:%s\n", __LINE__,
-	  textiterstrdbg_BM (&it));
+          textiterstrdbg_BM (&it));
   browsedobj_BM[0].brow_oendm = //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, RIGHT_GRAVITY_BM);
   browsedobj_BM[0].brow_depth = depth;
