@@ -7,7 +7,7 @@ GtkWidget *mainwin_BM;
 // for readability, gravity argument to gtk_text_buffer_create_mark
 #define RIGHT_GRAVITY_BM FALSE
 #define LEFT_GRAVITY_BM TRUE
-
+#define EMPTY_TEXT_ITER_BM (GtkTextIter){}
 //////////////// browser
 int browserdepth_BM = 3;
 
@@ -284,8 +284,8 @@ run_then_keep_command_BM (void)
 void
 clear_command_BM (void)
 {
-  GtkTextIter startit = { };
-  GtkTextIter endit = { };
+  GtkTextIter startit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
   gtk_text_buffer_delete (commandbuf_BM, &startit, &endit);
   log_begin_message_BM ();
@@ -321,8 +321,8 @@ browserblinkstop_BM (void)
 int
 browserblinkoff_BM (gpointer data __attribute__ ((unused)))
 {
-  GtkTextIter startit;
-  GtkTextIter endit;
+  GtkTextIter startit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_bounds (browserbuf_BM, &startit, &endit);
   gtk_text_buffer_remove_tag (browserbuf_BM, blink_brotag_BM, &startit,
                               &endit);
@@ -335,7 +335,8 @@ browserblinkon_BM (gpointer data __attribute__ ((unused)))
   if (browserblinkparens_BM.paroff_open > 0
       && browserblinkparens_BM.paroff_openlen > 0)
     {
-      GtkTextIter openstartit, openendit;
+      GtkTextIter openstartit = EMPTY_TEXT_ITER_BM, openendit =
+        EMPTY_TEXT_ITER_BM;
       gtk_text_buffer_get_iter_at_offset (browserbuf_BM, &openstartit,
                                           browserblinkparens_BM.paroff_open);
       openendit = openstartit;
@@ -347,7 +348,8 @@ browserblinkon_BM (gpointer data __attribute__ ((unused)))
   if (browserblinkparens_BM.paroff_close > 0
       && browserblinkparens_BM.paroff_closelen > 0)
     {
-      GtkTextIter closestartit, closeendit;
+      GtkTextIter closestartit = EMPTY_TEXT_ITER_BM, closeendit =
+        EMPTY_TEXT_ITER_BM;
       gtk_text_buffer_get_iter_at_offset (browserbuf_BM, &closestartit,
                                           browserblinkparens_BM.paroff_close);
       closeendit = closestartit;
@@ -359,7 +361,8 @@ browserblinkon_BM (gpointer data __attribute__ ((unused)))
   if (browserblinkparens_BM.paroff_xtra > 0
       && browserblinkparens_BM.paroff_xtralen > 0)
     {
-      GtkTextIter xtrastartit, xtraendit;
+      GtkTextIter xtrastartit = EMPTY_TEXT_ITER_BM, xtraendit =
+        EMPTY_TEXT_ITER_BM;
       gtk_text_buffer_get_iter_at_offset (browserbuf_BM, &xtrastartit,
                                           browserblinkparens_BM.paroff_xtra);
       xtraendit = xtrastartit;
@@ -425,12 +428,11 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
       assert (isobject_BM ((const value_tyBM) mdobj));
       if (mdobj == obj)
         {                       // replacing existing object
-          GtkTextIter startit, endit;
-          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                            &startit,
+          GtkTextIter startit = EMPTY_TEXT_ITER_BM, endit =
+            EMPTY_TEXT_ITER_BM;
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &startit,
                                             browsedobj_BM[md].brow_ostartm);
-          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                            &endit,
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &endit,
                                             browsedobj_BM[md].brow_oendm);
           gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
           gtk_text_buffer_insert (browserbuf_BM, &endit, "\n", -1);
@@ -446,8 +448,8 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
         }
       else if (objectnamedcmp_BM (obj, mdobj) < 0)
         {
-          GtkTextIter it = { };
-          GtkTextIter startit = { };
+          GtkTextIter it = EMPTY_TEXT_ITER_BM;
+          GtkTextIter startit = EMPTY_TEXT_ITER_BM;
           for (int ix = browserobulen_BM + 1; ix > md; ix--)
             browsedobj_BM[ix] = browsedobj_BM[ix - 1];
           memset (browsedobj_BM + md, 0, sizeof (struct browsedobj_stBM));
@@ -483,8 +485,8 @@ start_browse_object_BM (const objectval_tyBM * obj, int depth)
           ||
           objectnamedcmp_BM (browsedobj_BM
                              [browserobulen_BM - 1].brow_obj, obj) < 0);
-  GtkTextIter it = { };
-  GtkTextIter startit = { };
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
+  GtkTextIter startit = EMPTY_TEXT_ITER_BM;
   if (browserobulen_BM == 0)
     {
       gtk_text_buffer_get_iter_at_offset
@@ -567,9 +569,9 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
       assert (isobject_BM ((const value_tyBM) mdobj));
       if (mdobj == objbrows)
         {
-          GtkTextIter startit, endit;
-          gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                            &startit,
+          GtkTextIter startit = EMPTY_TEXT_ITER_BM, endit =
+            EMPTY_TEXT_ITER_BM;
+          gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &startit,
                                             browsedobj_BM[md].brow_ostartm);
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &endit,
                                             browsedobj_BM[md].brow_oendm);
@@ -649,10 +651,8 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
       int cmp = strcmp (namstr, bytstring_BM (mdval->brow_name));
       if (cmp == 0)
         {                       /* replace existing named value */
-          GtkTextIter startit = {
-          };
-          GtkTextIter endit = {
-          };
+          GtkTextIter startit = EMPTY_TEXT_ITER_BM;
+          GtkTextIter endit = EMPTY_TEXT_ITER_BM;
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &startit, mdval->brow_vstartm);
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &endit,
@@ -668,7 +668,7 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
         }
       else if (cmp < 0)
         {                       /* insert a new named value */
-          GtkTextIter it = { };
+          GtkTextIter it = EMPTY_TEXT_ITER_BM;
           if (md > 0)
             {
               gtk_text_buffer_get_iter_at_mark  //
@@ -703,8 +703,7 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
         };
     };
   assert (browsednvulen_BM == 0);
-  GtkTextIter it = {
-  };
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
   if (browserobulen_BM > 0)
     gtk_text_buffer_get_iter_at_mark    //
       (browserbuf_BM, &it, browsedobj_BM[browserobulen_BM - 1].brow_oendm);
@@ -809,10 +808,8 @@ hide_named_value_gui_BM (const stringval_tyBM * namev,
       int cmp = strcmp (namstr, bytstring_BM (mdval->brow_name));
       if (cmp == 0)
         {
-          GtkTextIter startit = {
-          };
-          GtkTextIter endit = {
-          };
+          GtkTextIter startit = EMPTY_TEXT_ITER_BM;
+          GtkTextIter endit = EMPTY_TEXT_ITER_BM;
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &startit, mdval->brow_vstartm);
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &endit,
@@ -845,7 +842,7 @@ browse_object_start_offset_BM (void)
 {
   assert (browserobcurix_BM >= 0
           && browserobcurix_BM < (int) browserobulen_BM);
-  GtkTextIter it;
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &it,
                                     browsedobj_BM
                                     [browserobcurix_BM].brow_ostartm);
@@ -1160,8 +1157,7 @@ log_begin_message_BM (void)
   memset (logmbuf, 0, sizeof (logmbuf));
   snprintf (logmbuf, sizeof (logmbuf), "%s%s%s", nowtibuf,
             nowfracbuf + 1, nowcntbuf);
-  GtkTextIter it = {
-  };
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_end_iter (logbuf_BM, &it);
   gtk_text_buffer_insert (logbuf_BM, &it, "\n", 1);
   gtk_text_buffer_insert_with_tags (logbuf_BM, &it, logmbuf, -1,
@@ -1173,8 +1169,7 @@ log_begin_message_BM (void)
 void
 log_end_message_BM (void)
 {
-  GtkTextIter it = {
-  };
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_end_iter (logbuf_BM, &it);
   gtk_text_buffer_insert (logbuf_BM, &it, "\n", 1);
 }                               /* end log_end_message_BM */
@@ -1183,8 +1178,7 @@ log_end_message_BM (void)
 void
 log_object_message_BM (const objectval_tyBM * obj)
 {
-  GtkTextIter it = {
-  };
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_end_iter (logbuf_BM, &it);
   if (!obj)
     {
@@ -1218,8 +1212,7 @@ log_puts_message_BM (const char *msg)
 {
   if (!msg || !msg[0])
     return;
-  GtkTextIter it = {
-  };
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_end_iter (logbuf_BM, &it);
   gtk_text_buffer_insert (logbuf_BM, &it, msg, -1);
 }
@@ -1256,11 +1249,10 @@ parserrorcmd_BM (struct parser_stBM *pars,
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsops && parsops->parsop_nobuild;
-  GtkTextIter it = { };
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
   gtk_text_iter_forward_chars (&it, colpos);
-  GtkTextIter endit = {
-  };
+  GtkTextIter endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_end_iter (commandbuf_BM, &endit);
   gtk_text_buffer_apply_tag (commandbuf_BM, errored_cmdtag_BM, &it, &endit);
   if (!nobuild)
@@ -1269,8 +1261,7 @@ parserrorcmd_BM (struct parser_stBM *pars,
       char errbuf[64];
       snprintf (errbuf, sizeof (errbuf), "command error L%dC%d:",
                 lineno, colpos);
-      GtkTextIter logit = {
-      };
+      GtkTextIter logit = EMPTY_TEXT_ITER_BM;
       gtk_text_buffer_get_end_iter (logbuf_BM, &logit);
       gtk_text_buffer_insert_with_tags
         (logbuf_BM, &logit, errbuf, -1, error_logtag_BM, NULL);
@@ -1307,7 +1298,7 @@ parsdollarvalcmd_BM (struct parser_stBM *pars,
   if (!_.val && !nobuild)
     parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "not found $%s",
                           varstr);
-  GtkTextIter it, endit;
+  GtkTextIter it = EMPTY_TEXT_ITER_BM, endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, pars->pars_lineno);
   gtk_text_iter_forward_chars (&it, colpos);
   endit = it;
@@ -1342,7 +1333,7 @@ parsdollarobjcmd_BM (struct parser_stBM *pars,
   if (!isobject_BM (_.val) && !nobuild)
     parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "non-object $:%s",
                           varstr);
-  GtkTextIter it, endit;
+  GtkTextIter it = EMPTY_TEXT_ITER_BM, endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, pars->pars_lineno);
   gtk_text_iter_forward_chars (&it, colpos);
   endit = it;
@@ -2508,7 +2499,7 @@ parscommentinsidecmd_BM (struct parser_stBM *pars,
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   unsigned lineno = parserlineno_BM (pars);
-  GtkTextIter it;
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit = it;
@@ -2526,7 +2517,7 @@ parscommentsigncmd_BM (struct parser_stBM *pars,
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   unsigned lineno = parserlineno_BM (pars);
-  GtkTextIter it;
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit = it;
@@ -2542,7 +2533,7 @@ parsdelimcmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned delimlen)
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   unsigned lineno = parserlineno_BM (pars);
-  GtkTextIter it;
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit = it;
@@ -2557,7 +2548,7 @@ parsknownamecmd_BM (struct parser_stBM *pars,
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
-  GtkTextIter it;
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
   unsigned lineno = parserlineno_BM (pars);
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
   gtk_text_iter_forward_chars (&it, colpos);
@@ -2573,7 +2564,7 @@ parsnewnamecmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned namlen)
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
-  GtkTextIter it;
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
   unsigned lineno = parserlineno_BM (pars);
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
   gtk_text_iter_forward_chars (&it, colpos);
@@ -2589,7 +2580,7 @@ parsidcmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned idlen)
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
-  GtkTextIter it;
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
   unsigned lineno = parserlineno_BM (pars);
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
   gtk_text_iter_forward_chars (&it, colpos);
@@ -2611,8 +2602,8 @@ parsnestingcmd_BM (struct parser_stBM *pars, int depth,
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   const char *opendelstr = delimstr_BM (opendelim);
   const char *closedelstr = delimstr_BM (closedelim);
-  GtkTextIter openit, endopenit;
-  GtkTextIter closeit, stacloseit;
+  GtkTextIter openit = EMPTY_TEXT_ITER_BM, endopenit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter closeit = EMPTY_TEXT_ITER_BM, stacloseit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &openit, openlinpos);
   gtk_text_iter_forward_chars (&openit, opencolpos);
   endopenit = openit;
@@ -2662,9 +2653,9 @@ parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
   const char *xtradelstr = delimstr_BM (xtradelim);
   const char *opendelstr = delimstr_BM (opendelim);
   const char *closedelstr = delimstr_BM (closedelim);
-  GtkTextIter xtrait, endxtrait;
-  GtkTextIter openit, endopenit;
-  GtkTextIter closeit, stacloseit;
+  GtkTextIter xtrait = EMPTY_TEXT_ITER_BM, endxtrait = EMPTY_TEXT_ITER_BM;
+  GtkTextIter openit = EMPTY_TEXT_ITER_BM, endopenit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter closeit = EMPTY_TEXT_ITER_BM, stacloseit = EMPTY_TEXT_ITER_BM;
   //
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &xtrait, xtralinpos);
   gtk_text_iter_forward_chars (&xtrait, xtracolpos);
@@ -2754,12 +2745,9 @@ static void stopcompletionmenucmd_BM (GtkMenuItem * mit, gpointer data);
 void
 tabautocompletecmd_BM (void)
 {
-  GtkTextIter cursit = {
-  };
-  GtkTextIter beglinit = {
-  };
-  GtkTextIter endlinit = {
-  };
+  GtkTextIter cursit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter beglinit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter endlinit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_mark      //
     (commandbuf_BM, &cursit, gtk_text_buffer_get_insert (commandbuf_BM));
   unsigned col = gtk_text_iter_get_line_offset (&cursit);
@@ -2961,10 +2949,8 @@ replacecompletionbyidcmd_BM (GtkMenuItem * mit
   char idbuf[32];
   memset (idbuf, 0, sizeof (idbuf));
   idtocbuf32_BM (objid_BM (ob), idbuf);
-  GtkTextIter begwit = {
-  };
-  GtkTextIter endwit = {
-  };
+  GtkTextIter begwit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter endwit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &begwit,
                                       compbegoffcmd_BM);
   gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &endwit,
@@ -2986,10 +2972,8 @@ replacecompletionbynamecmd_BM (GtkMenuItem * mit
   assert (isobject_BM ((const value_tyBM) ob));
   const char *obname = findobjectname_BM (ob);
   assert (obname != NULL);
-  GtkTextIter begwit = {
-  };
-  GtkTextIter endwit = {
-  };
+  GtkTextIter begwit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter endwit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &begwit,
                                       compbegoffcmd_BM);
   gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &endwit,
@@ -3015,10 +2999,8 @@ stopcompletionmenucmd_BM (GtkMenuItem * mit
 void
 runcommand_BM (bool erase)
 {
-  GtkTextIter startit = {
-  };
-  GtkTextIter endit = {
-  };
+  GtkTextIter startit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
   gtk_text_buffer_remove_all_tags (commandbuf_BM, &startit, &endit);
   int endlin = gtk_text_iter_get_line (&endit);
@@ -3055,10 +3037,10 @@ runcommand_BM (bool erase)
                                       false);
           if (endlin > 2)
             {
-              GtkTextIter it = {
-              };
+              GtkTextIter it = EMPTY_TEXT_ITER_BM;
               gtk_text_buffer_get_end_iter (logbuf_BM, &it);
-              gtk_text_buffer_insert_with_tags (logbuf_BM, &it, "\342\200\246", // U+2026 HORIZONTAL ELLIPSIS …
+              gtk_text_buffer_insert_with_tags (logbuf_BM, &it, //
+                                                "\342\200\246", // U+2026 HORIZONTAL ELLIPSIS …
                                                 -1, error_logtag_BM, NULL);
               gtk_text_buffer_insert (logbuf_BM, &it, "\n", 1);
             }
@@ -3083,10 +3065,8 @@ enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
 {
   assert (txbuf == commandbuf_BM);
   assert (data == NULL);
-  GtkTextIter startit = {
-  };
-  GtkTextIter endit = {
-  };
+  GtkTextIter startit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
   gtk_text_buffer_remove_all_tags (commandbuf_BM, &startit, &endit);
   char *cmdstr = gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit,
@@ -3118,8 +3098,7 @@ populatepopupbrow_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
   assert (data == NULL);
   char cursinfobuf[32];
   memset (cursinfobuf, 0, sizeof (cursinfobuf));
-  GtkTextIter cursit = {
-  };
+  GtkTextIter cursit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_mark      //
     (browserbuf_BM, &cursit, gtk_text_buffer_get_insert (browserbuf_BM));
   snprintf (cursinfobuf, sizeof (cursinfobuf), "* L%dC%d/%d",
@@ -3146,8 +3125,7 @@ populatepopupcmd_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
   assert (data == NULL);
   char cursinfobuf[32];
   memset (cursinfobuf, 0, sizeof (cursinfobuf));
-  GtkTextIter cursit = {
-  };
+  GtkTextIter cursit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_mark      //
     (commandbuf_BM, &cursit, gtk_text_buffer_get_insert (commandbuf_BM));
   snprintf (cursinfobuf, sizeof (cursinfobuf), "* L%dC%d/%d",
@@ -3208,10 +3186,8 @@ populatepopuplog_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
 void
 clearlog_BM (void)
 {
-  GtkTextIter startit = {
-  };
-  GtkTextIter endit = {
-  };
+  GtkTextIter startit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_bounds (logbuf_BM, &startit, &endit);
   gtk_text_buffer_delete (logbuf_BM, &startit, &endit);
   log_begin_message_BM ();
@@ -3398,10 +3374,8 @@ initialize_gui_BM (const char *builderfile)
                       true, 2);
   browserbuf_BM = gtk_text_buffer_new (browsertagtable_BM);
   {
-    GtkTextIter brit = {
-    };
-    GtkTextIter endtit = {
-    };
+    GtkTextIter brit = EMPTY_TEXT_ITER_BM;
+    GtkTextIter endtit = EMPTY_TEXT_ITER_BM;
     gtk_text_buffer_get_start_iter (browserbuf_BM, &brit);
     gtk_text_buffer_insert_with_tags (browserbuf_BM, &brit, "** BROWSER **",
                                       -1, pagetitle_brotag_BM, NULL);
@@ -3539,10 +3513,8 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
         obmd = (oblo + obhi) / 2;
         struct browsedobj_stBM *mdbrob = browsedobj_BM + obmd;
         assert (mdbrob->brow_ostartm != NULL && mdbrob->brow_oendm != NULL);
-        GtkTextIter ostartit = {
-        };
-        GtkTextIter oendit = {
-        };
+        GtkTextIter ostartit = EMPTY_TEXT_ITER_BM;
+        GtkTextIter oendit = EMPTY_TEXT_ITER_BM;
         gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                           &ostartit, mdbrob->brow_ostartm);
         int startcmp = gtk_text_iter_compare (txit, &ostartit);
@@ -3567,10 +3539,8 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
       }
     for (obmd = oblo; obmd < obhi && obix < 0; obmd++)
       {
-        GtkTextIter ostartit = {
-        };
-        GtkTextIter oendit = {
-        };
+        GtkTextIter ostartit = EMPTY_TEXT_ITER_BM;
+        GtkTextIter oendit = EMPTY_TEXT_ITER_BM;
         struct browsedobj_stBM *mdbrob = browsedobj_BM + obmd;
         assert (mdbrob->brow_ostartm != NULL && mdbrob->brow_oendm != NULL);
         gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &ostartit,
@@ -3582,10 +3552,8 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
       }
     if (obix >= 0)
       {
-        GtkTextIter ostartit = {
-        };
-        GtkTextIter oendit = {
-        };
+        GtkTextIter ostartit = EMPTY_TEXT_ITER_BM;
+        GtkTextIter oendit = EMPTY_TEXT_ITER_BM;
         struct browsedobj_stBM *brob = browsedobj_BM + obix;
         unsigned curnbparen = brob->brow_parenulen;
         if (curnbparen == 0)
@@ -3623,10 +3591,8 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
           bvmd = (bvlo + bvhi) / 2;
           struct browsedval_stBM *mdbrva = browsedval_BM + bvmd;
           assert (mdbrva->brow_vstartm && mdbrva->brow_vendm);
-          GtkTextIter vstartit = {
-          };
-          GtkTextIter vendit = {
-          };
+          GtkTextIter vstartit = EMPTY_TEXT_ITER_BM;
+          GtkTextIter vendit = EMPTY_TEXT_ITER_BM;
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &vstartit, mdbrva->brow_vstartm);
           int startcmp = gtk_text_iter_compare (txit, &vstartit);
@@ -3653,10 +3619,8 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
         {
           struct browsedval_stBM *mdbrva = browsedval_BM + bvmd;
           assert (mdbrva->brow_vstartm && mdbrva->brow_vendm);
-          GtkTextIter vstartit = {
-          };
-          GtkTextIter vendit = {
-          };
+          GtkTextIter vstartit = EMPTY_TEXT_ITER_BM;
+          GtkTextIter vendit = EMPTY_TEXT_ITER_BM;
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
                                             &vstartit, mdbrva->brow_vstartm);
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &vendit,
@@ -3667,10 +3631,8 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
       if (bvix >= 0)
         {
           struct browsedval_stBM *brva = browsedval_BM + bvix;
-          GtkTextIter vstartit = {
-          };
-          GtkTextIter vendit = {
-          };
+          GtkTextIter vstartit = EMPTY_TEXT_ITER_BM;
+          GtkTextIter vendit = EMPTY_TEXT_ITER_BM;
           unsigned curnbparen = brva->brow_parenulen;
           if (curnbparen == 0)
             return;
