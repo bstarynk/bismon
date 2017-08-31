@@ -3873,6 +3873,8 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
+  printf("@@browse_value°object/%d objrows %s maxdepth %d curdepth %d\n", __LINE__,
+	 objectdbg_BM(_.objbrows), maxdepth, curdepth);
   assert (curdepth <= maxdepth);
   const char *objnam = findobjectname_BM (_.objbrows);
   char idbuf[32];
@@ -3917,6 +3919,9 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    //
                  const objectval_tyBM * cursel;
                  const objectval_tyBM * supercla;
                  value_tyBM curval;);
+  if (!isobject_BM (arg1))
+    FATAL_BM
+      ("non-object for method to browse_data for class-s _09DxyieS5Wz_7pkad4F88FA");
   _.objbrows = (const objectval_tyBM *) arg1;
   int depth = getint_BM (arg2);
   assert (isobject_BM ((const value_tyBM) _.objbrows));
