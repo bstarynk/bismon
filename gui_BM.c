@@ -3193,10 +3193,10 @@ enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
     }
   free (cmdstr);
   // for parenthesis blinking
-  GtkTextMark *insmk = gtk_text_buffer_insert (commandbuf_BM);
+  GtkTextMark *insmk = gtk_text_buffer_get_insert (commandbuf_BM);
   GtkTextIter insit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_mark (commandbuf_BM, &insit, insmk);
-  marksetcmd_BM (commandbuf_BM, commandbuf_BM, insit, insmk, NULL);
+  marksetcmd_BM (commandbuf_BM, &insit, insmk, NULL);
 }                               /* end enduseractioncmd_BM */
 
 
@@ -3997,6 +3997,7 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
                  const objectval_tyBM * objbrows;);
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
+  assert (maxdepth > 0);
   int curdepth = getint_BM (arg3);
   //  assert (curdepth <= maxdepth);
   const char *objnam = findobjectname_BM (_.objbrows);
