@@ -233,7 +233,8 @@ static void browse_add_parens_BM (int openoff, int closeoff,
                                   unsigned closelen, unsigned xtralen,
                                   int depth);
 
-static int browse_object_start_offset_BM (void);
+// starting offset of currently shown object or named value
+static int browse_show_start_offset_BM (void);
 
 static struct browsedobj_stBM *find_browsed_object_BM
   (const objectval_tyBM * obj);
@@ -855,16 +856,41 @@ hide_named_value_gui_BM (const stringval_tyBM * namev,
 
 
 int
-browse_object_start_offset_BM (void)
+browse_show_start_offset_BM (void)
 {
-  assert (browserobcurix_BM >= 0
-          && browserobcurix_BM < (int) browserobulen_BM);
+  // exactly one of browserobcurix_BM or browsednvcurix_BM is active so >=0
+  assert (browserobcurix_BM >= 0 || browsednvcurix_BM >= 0);
+  assert (browserobcurix_BM < 0 || browsednvcurix_BM < 0);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
-  gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &it,
-                                    browsedobj_BM
-                                    [browserobcurix_BM].brow_ostartm);
+  if (browserobcurix_BM >= 0)
+    {
+      assert (browserobcurix_BM < (int) browserobulen_BM);
+      assert (browserobulen_BM <= browserobsize_BM);
+      assert (browsednvcurix_BM < 0);
+      assert (browsedobj_BM[browserobcurix_BM].brow_obj != NULL);
+      assert (browsedobj_BM[browserobcurix_BM].brow_ostartm != NULL);
+      assert (browsedobj_BM[browserobcurix_BM].brow_oendm != NULL);
+      gtk_text_buffer_get_iter_at_mark
+        (browserbuf_BM, &it, browsedobj_BM[browserobcurix_BM].brow_ostartm);
+    }
+  else if (browsednvcurix_BM >= 0)
+    {
+      assert (browsednvcurix_BM < (int) browsednvulen_BM);
+      assert (browsednvulen_BM <= browsednvsize_BM);
+      assert (browserobcurix_BM < 0);
+      assert (browsedval_BM[browsednvcurix_BM].brow_name != NULL);
+      assert (browsedval_BM[browsednvcurix_BM].brow_val != NULL);
+      assert (browsedval_BM[browsednvcurix_BM].brow_vstartm != NULL);
+      assert (browsedval_BM[browsednvcurix_BM].brow_vendm != NULL);
+      gtk_text_buffer_get_iter_at_mark
+        (browserbuf_BM, &it, browsedval_BM[browsednvcurix_BM].brow_vstartm);
+    }
+  else
+    FATAL_BM
+      ("browse_show_start_offset_BM corruption browserobcurix_BM=%d browsednvcurix_BM=%d",
+       browserobcurix_BM, browsednvcurix_BM);
   return gtk_text_iter_get_offset (&it);
-}                               /* end browse_object_start_offset_BM */
+}                               /* end browse_show_start_offset_BM */
 
 
 void
@@ -1038,9 +1064,15 @@ browse_named_value_gui_BM (const stringval_tyBM * namev,
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
                                     bytstring_BM (namev), -1,
                                     valtitle_brotag_BM, NULL);
+  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                    "  \342\234\247"
+                                    /* U+2727 WHITE FOUR POINTED STAR ✧ */ ,
+                                    -1, objtitle_brotag_BM,
+                                    // objcommtitle_brotag_BM,
+                                    NULL);
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
-  send1_BM ((const value_tyBM) _.val, objsel, (struct stackframe_stBM *) &_,
-            taggedint_BM (browsdepth));
+  send2_BM ((const value_tyBM) _.val, objsel, (struct stackframe_stBM *) &_,
+            taggedint_BM (browsdepth), taggedint_BM (0));
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
   gtk_text_buffer_move_mark (browserbuf_BM,
                              browsedval_BM[browsednvcurix_BM].brow_vendm,
@@ -3120,6 +3152,7 @@ runcommand_BM (bool erase)
   int endlin = gtk_text_iter_get_line (&endit);
   char *cmdstr = gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit,
                                            false);
+  printf ("@runcommand_BM/%d ******cmdstr:\n%s\n", __LINE__, cmdstr);
   struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
   cmdpars->pars_ops = &parsop_command_build_BM;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
@@ -4178,7 +4211,7 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    //
   _.tupbrows = (const tupleval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
-  int oboff = browse_object_start_offset_BM ();
+  int oboff = browse_show_start_offset_BM ();
   assert (curdepth <= maxdepth);
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
@@ -4240,7 +4273,7 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   assert (curdepth <= maxdepth);
-  int oboff = browse_object_start_offset_BM ();
+  int oboff = browse_show_start_offset_BM ();
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "{", -1, nest_brotag_BM, NULL);
@@ -4344,7 +4377,7 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
   const char *str = bytstring_BM (_.strbrows);
   if (l >= WANTEDLINEWIDTH_BM / 2)
     browsespacefordepth_BM (curdepth);
-  int oboff = browse_object_start_offset_BM ();
+  int oboff = browse_show_start_offset_BM ();
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "\"", -1, stresc_brotag_BM, NULL);
@@ -4478,7 +4511,7 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
   unsigned nw = nodewidth_BM ((const value_tyBM) _.nodbrows);
   _.connob = nodeconn_BM ((const value_tyBM) _.nodbrows);
   assert (isobject_BM ((const value_tyBM) _.connob));
-  int oboff = browse_object_start_offset_BM ();
+  int oboff = browse_show_start_offset_BM ();
   int xtraoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "*", -1, nest_brotag_BM, NULL);
@@ -4547,7 +4580,7 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
   unsigned cw = closurewidth_BM ((const value_tyBM) _.clobrows);
   _.connob = closureconn_BM ((const value_tyBM) _.clobrows);
   assert (isobject_BM ((const value_tyBM) _.connob));
-  int oboff = browse_object_start_offset_BM ();
+  int oboff = browse_show_start_offset_BM ();
   int xtraoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                     "%", -1, nest_brotag_BM, NULL);
