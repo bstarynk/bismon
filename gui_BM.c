@@ -2637,7 +2637,7 @@ parsnestingcmd_BM (struct parser_stBM *pars, int depth,
   if (depth < CMD_MAXNEST_BM)
     gtk_text_buffer_apply_tag (commandbuf_BM,
                                open_cmdtags_BM[depth], &openit, &endopenit);
-  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &closeit, closelinpos-1);
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &closeit, closelinpos - 1);
   gtk_text_iter_forward_chars (&closeit, closecolpos);
   stacloseit = closeit;
   int closelen = g_utf8_strlen (closedelstr, -1);

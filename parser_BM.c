@@ -25,7 +25,7 @@ lexkindname_BM (enum parslexkind_enBM k)
 }                               /* end of lexkindname_BM */
 
 static const char *const delimnamearr_BM[] = {
-#define HAS_DELIM_BM(Str,Delimname) [delim_##Delimname] = #Str,
+#define HAS_DELIM_BM(Str,Delimname) [delim_##Delimname] = Str,
 #include "_bm_delim.h"
 };
 
