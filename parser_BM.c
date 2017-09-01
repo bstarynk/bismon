@@ -35,7 +35,7 @@ delimstr_BM (enum lexdelim_enBM d)
   if ((unsigned) d <
       (unsigned) (sizeof (delimnamearr_BM) / sizeof (delimnamearr_BM[0])))
     return delimnamearr_BM[d];
-  return "?";
+  return "?*bad-delim*?";
 }                               /* end of delimstr_BM */
 
 
