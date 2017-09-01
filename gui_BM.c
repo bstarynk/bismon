@@ -3551,6 +3551,7 @@ initialize_gui_BM (const char *builderfile)
     };
   commandview_BM = gtk_text_view_new_with_buffer (commandbuf_BM);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (commandview_BM), true);
+  gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (commandview_BM), FALSE);
   g_signal_connect (commandview_BM, "key-press-event",
                     G_CALLBACK (handlekeypresscmd_BM), NULL);
   g_signal_connect (commandbuf_BM, "end-user-action",
