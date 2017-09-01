@@ -3882,8 +3882,6 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
-  printf ("@@browse_value°object/%d objrows %s maxdepth %d curdepth %d\n",
-          __LINE__, objectdbg_BM (_.objbrows), maxdepth, curdepth);
   //  assert (curdepth <= maxdepth);
   const char *objnam = findobjectname_BM (_.objbrows);
   char idbuf[32];
@@ -3893,7 +3891,7 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
     {
       gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,   //
                                         objnam, -1, objname_brotag_BM, NULL);
-      if (curdepth <= 2)
+      if (curdepth < 2)
         {
           gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
                                             " |=", -1, objrefcomm_brotag_BM,
