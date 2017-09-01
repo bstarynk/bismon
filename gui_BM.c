@@ -3875,7 +3875,7 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
   int curdepth = getint_BM (arg3);
   printf("@@browse_value°object/%d objrows %s maxdepth %d curdepth %d\n", __LINE__,
 	 objectdbg_BM(_.objbrows), maxdepth, curdepth);
-  assert (curdepth <= maxdepth);
+  //  assert (curdepth <= maxdepth);
   const char *objnam = findobjectname_BM (_.objbrows);
   char idbuf[32];
   memset (idbuf, 0, sizeof (idbuf));
