@@ -70,8 +70,8 @@ struct browsedval_stBM *browsedval_BM;
 guint browserblinkid_BM;
 struct parenoffset_stBM browserblinkparens_BM;  /// offsets are absolute
 
-#define BLINKDELAYMILLISEC_BM 650
-#define UNBLINKDELAYMILLISEC_BM 350
+#define BLINKDELAYMILLISEC_BM 750
+#define UNBLINKDELAYMILLISEC_BM 400
 /// stop completely the blinking
 static void browserblinkstop_BM (void);
 
@@ -347,13 +347,13 @@ browserblinkon_BM (gpointer data __attribute__ ((unused)))
   if (browserblinkparens_BM.paroff_close > 0
       && browserblinkparens_BM.paroff_closelen > 0)
     {
-      GtkTextIter closestartit = EMPTY_TEXT_ITER_BM, closeendit =
-        EMPTY_TEXT_ITER_BM;
-      gtk_text_buffer_get_iter_at_offset (browserbuf_BM, &closestartit,
+      GtkTextIter closestartit = EMPTY_TEXT_ITER_BM;
+      GtkTextIter closeendit = EMPTY_TEXT_ITER_BM;
+      gtk_text_buffer_get_iter_at_offset (browserbuf_BM, &closeendit,
                                           browserblinkparens_BM.paroff_close);
-      closeendit = closestartit;
-      gtk_text_iter_forward_chars (&closeendit,
-                                   browserblinkparens_BM.paroff_closelen);
+      closestartit = closeendit;
+      gtk_text_iter_backward_chars (&closestartit,
+                                    browserblinkparens_BM.paroff_closelen);
       gtk_text_buffer_apply_tag (browserbuf_BM, blink_brotag_BM,
                                  &closestartit, &closeendit);
     }
@@ -3485,7 +3485,7 @@ marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   unsigned col = gtk_text_iter_get_line_offset (txit);
   unsigned lin = gtk_text_iter_get_line (txit) + 1;
   unsigned off = gtk_text_iter_get_offset (txit);
-  printf ("@@marksetcmd_BM insert C%uL%u/%u\n", col, lin, off);
+  printf ("@@marksetcmd_BM/%d insert C%uL%u/%u\n", __LINE__, col, lin, off);
   struct parenoffset_stBM *blinkpo = cmd_find_enclosing_parens_BM (off);
   if (!blinkpo)
     return;
@@ -3506,7 +3506,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   unsigned col = gtk_text_iter_get_line_offset (txit);
   unsigned lin = gtk_text_iter_get_line (txit) + 1;
   unsigned off = gtk_text_iter_get_offset (txit);
-  printf ("@@marksetbrows_BM insert C%uL%u/%u\n", col, lin, off);
+  printf ("@@marksetbrows_BM/%d insert C%uL%u/%u\n", __LINE__, col, lin, off);
   struct parenoffset_stBM *blinkpo = NULL;
   // do a dichotomical search on browsedobj_BM
   {
