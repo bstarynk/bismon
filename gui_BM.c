@@ -3192,6 +3192,11 @@ enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
       // got an error while parsing
     }
   free (cmdstr);
+  // for parenthesis blinking
+  GtkTextMark *insmk = gtk_text_buffer_insert (commandbuf_BM);
+  GtkTextIter insit = EMPTY_TEXT_ITER_BM;
+  gtk_text_buffer_get_iter_at_mark (commandbuf_BM, &insit, insmk);
+  marksetcmd_BM (commandbuf_BM, commandbuf_BM, insit, insmk, NULL);
 }                               /* end enduseractioncmd_BM */
 
 
@@ -3477,6 +3482,7 @@ initialize_gui_BM (const char *builderfile)
                       false, 2);
   GtkWidget *paned1 = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
   gtk_paned_set_wide_handle (GTK_PANED (paned1), true);
+  gtk_paned_set_position (GTK_PANED (paned1), 330);
   gtk_box_pack_start (GTK_BOX (mainvbox), paned1,       /*expand= */
                       true,
                       /*fill= */
@@ -3573,11 +3579,12 @@ initialize_gui_BM (const char *builderfile)
   gtk_paned_add1 (GTK_PANED (paned1), browserscrolw);
   GtkWidget *paned2 = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
   gtk_paned_set_wide_handle (GTK_PANED (paned2), true);
+  gtk_paned_set_position (GTK_PANED (paned2), 200);
   gtk_paned_add2 (GTK_PANED (paned1), paned2);
   gtk_paned_add1 (GTK_PANED (paned2), commandscrolw);
   gtk_paned_add2 (GTK_PANED (paned2), logscrolw);
   gtk_window_set_title (GTK_WINDOW (mainwin_BM), "bismon");
-  gtk_window_set_default_size (GTK_WINDOW (mainwin_BM), 580, 670);
+  gtk_window_set_default_size (GTK_WINDOW (mainwin_BM), 650, 720);
   // perhaps run the GC twice a second
   g_timeout_add (500, guiperiodicgarbagecollection_BM, NULL);
   gtk_widget_show_all (GTK_WIDGET (mainwin_BM));
