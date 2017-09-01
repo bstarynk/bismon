@@ -1237,6 +1237,7 @@ parsergetvalue_BM (struct parser_stBM * pars,
           if (!nobuild)
             _.contdvec = datavect_append_BM (_.contdvec, _.compobj);
         }
+      parserskipspaces_BM (pars);
       unsigned endlineno = parserlineno_BM (pars);
       unsigned endcolpos = parsercolpos_BM (pars);
       parstoken_tyBM endtok = parsertokenget_BM (pars);
@@ -1276,6 +1277,7 @@ parsergetvalue_BM (struct parser_stBM * pars,
           if (!nobuild)
             _.contdvec = datavect_append_BM (_.contdvec, _.elemobj);
         }
+      parserskipspaces_BM (pars);
       unsigned endlineno = parserlineno_BM (pars);
       unsigned endcolpos = parsercolpos_BM (pars);
       parstoken_tyBM endtok = parsertokenget_BM (pars);
@@ -1311,6 +1313,7 @@ parsergetvalue_BM (struct parser_stBM * pars,
       if (!gotconnobj)
         parsererrorprintf_BM (pars, lineno, colpos,     //
                               "missing connective object of node after *");
+      parserskipspaces_BM (pars);
       unsigned leftlineno = parserlineno_BM (pars);
       unsigned leftcolpos = parsercolpos_BM (pars);
       parstoken_tyBM lefttok = parsertokenget_BM (pars);
@@ -1331,6 +1334,7 @@ parsergetvalue_BM (struct parser_stBM * pars,
           if (!nobuild)
             _.contdvec = datavect_append_BM (_.contdvec, _.sonval);
         }
+      parserskipspaces_BM (pars);
       unsigned endlineno = parserlineno_BM (pars);
       unsigned endcolpos = parsercolpos_BM (pars);
       parstoken_tyBM endtok = parsertokenget_BM (pars);
@@ -1342,8 +1346,8 @@ parsergetvalue_BM (struct parser_stBM * pars,
         parsops->parsop_decorate_start_nesting_rout
           (pars, depth,
            delim_star, lineno, colpos,
-           delim_leftbrace, leftlineno, leftcolpos,
-           delim_rightbrace, endlineno, endcolpos);
+           delim_leftparen, leftlineno, leftcolpos,
+           delim_rightparen, endlineno, endcolpos);
       if (!nobuild)
         _.resval = (value_tyBM)
           makenode_BM (_.connobj,
@@ -1369,6 +1373,7 @@ parsergetvalue_BM (struct parser_stBM * pars,
         parsererrorprintf_BM    //
           (pars, lineno, colpos,        //
            "missing connective object of closure after %%");
+      parserskipspaces_BM (pars);
       unsigned leftlineno = parserlineno_BM (pars);
       unsigned leftcolpos = parsercolpos_BM (pars);
       parstoken_tyBM lefttok = parsertokenget_BM (pars);
@@ -1389,6 +1394,7 @@ parsergetvalue_BM (struct parser_stBM * pars,
           if (!nobuild)
             _.contdvec = datavect_append_BM (_.contdvec, _.sonval);
         }
+      parserskipspaces_BM (pars);
       unsigned endlineno = parserlineno_BM (pars);
       unsigned endcolpos = parsercolpos_BM (pars);
       parstoken_tyBM endtok = parsertokenget_BM (pars);
@@ -1399,9 +1405,9 @@ parsergetvalue_BM (struct parser_stBM * pars,
       if (parsops && parsops->parsop_decorate_start_nesting_rout)
         parsops->parsop_decorate_start_nesting_rout
           (pars, depth,
-           delim_star, lineno, colpos,
-           delim_leftbrace, leftlineno, leftcolpos,
-           delim_rightbrace, endlineno, endcolpos);
+           delim_percent, lineno, colpos,
+           delim_leftparen, leftlineno, leftcolpos,
+           delim_rightparen, endlineno, endcolpos);
       if (!nobuild)
         _.resval = (value_tyBM)
           makeclosure_BM (_.connobj,
