@@ -9,7 +9,7 @@ GtkWidget *mainwin_BM;
 #define LEFT_GRAVITY_BM TRUE
 #define EMPTY_TEXT_ITER_BM (GtkTextIter){}
 //////////////// browser
-int browserdepth_BM = 3;
+int browserdepth_BM = 7;
 
 GtkTextTagTable *browsertagtable_BM;
 GtkTextBuffer *browserbuf_BM;
@@ -3873,8 +3873,8 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
-  printf("@@browse_value°object/%d objrows %s maxdepth %d curdepth %d\n", __LINE__,
-	 objectdbg_BM(_.objbrows), maxdepth, curdepth);
+  printf ("@@browse_value°object/%d objrows %s maxdepth %d curdepth %d\n",
+          __LINE__, objectdbg_BM (_.objbrows), maxdepth, curdepth);
   //  assert (curdepth <= maxdepth);
   const char *objnam = findobjectname_BM (_.objbrows);
   char idbuf[32];
