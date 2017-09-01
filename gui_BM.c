@@ -3106,6 +3106,7 @@ runcommand_BM (bool erase)
 {
   GtkTextIter startit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;
+  cmd_clear_parens_BM ();
   gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
   gtk_text_buffer_remove_all_tags (commandbuf_BM, &startit, &endit);
   int endlin = gtk_text_iter_get_line (&endit);
@@ -3174,6 +3175,7 @@ enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
   gtk_text_buffer_remove_all_tags (commandbuf_BM, &startit, &endit);
+  cmd_clear_parens_BM ();
   char *cmdstr = gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit,
                                            false);
   struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
