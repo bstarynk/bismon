@@ -70,8 +70,8 @@ struct browsedval_stBM *browsedval_BM;
 guint browserblinkid_BM;
 struct parenoffset_stBM browserblinkparens_BM;  /// offsets are absolute
 
-#define BLINKDELAYMILLISEC_BM 450
-#define UNBLINKDELAYMILLISEC_BM 250
+#define BLINKDELAYMILLISEC_BM 650
+#define UNBLINKDELAYMILLISEC_BM 350
 /// stop completely the blinking
 static void browserblinkstop_BM (void);
 
@@ -315,7 +315,6 @@ browserblinkstop_BM (void)
   if (browserblinkid_BM > 0)
     g_source_remove (browserblinkid_BM), browserblinkid_BM = 0;
   browserblinkoff_BM (NULL);
-  memset (&browserblinkparens_BM, 0, sizeof (browserblinkparens_BM));
 }                               /* end browserblinkstop_BM */
 
 int
@@ -3494,6 +3493,9 @@ marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
 #warning marksetcmd_BM incomplete
 }                               /* end marksetcmd_BM */
 
+
+
+
 void
 marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
                  GtkTextMark * txmark, gpointer data __attribute__ ((unused)))
@@ -3575,10 +3577,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
                 if (!blinkpo ||
                     blinkpo->paroff_close - blinkpo->paroff_open
                     > curpo->paroff_close - curpo->paroff_open)
-                  {
-                    blinkpo = curpo;
-                    break;
-                  }
+                  blinkpo = curpo;
               }
           }
         if (blinkpo)
@@ -3663,10 +3662,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
                   if (!blinkpo ||
                       blinkpo->paroff_close - blinkpo->paroff_open
                       > curpo->paroff_close - curpo->paroff_open)
-                    {
-                      blinkpo = curpo;
-                      break;
-                    }
+                    blinkpo = curpo;
                 }
             }
           if (blinkpo)
@@ -3683,8 +3679,21 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
     }
   browserblinkstop_BM ();
   if (blinkpo)
-    browserblinkstart_BM ();
+    {
+      printf
+        ("@@marksetbrows_BM/%d blinking open=%dL%d close=%dL%d xtra=%dL%d\n",
+         __LINE__, browserblinkparens_BM.paroff_open,
+         browserblinkparens_BM.paroff_openlen,
+         browserblinkparens_BM.paroff_close,
+         browserblinkparens_BM.paroff_closelen,
+         browserblinkparens_BM.paroff_xtra,
+         browserblinkparens_BM.paroff_xtralen);
+      browserblinkstart_BM ();
+    }
+  else
+    printf ("@@marksetbrows_BM/%d NOTblinking\n", __LINE__);
 }                               /* end marksetbrows_BM */
+
 
 gboolean
 guiperiodicgarbagecollection_BM (gpointer data __attribute__ ((unused)))
@@ -3884,15 +3893,18 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
     {
       gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,   //
                                         objnam, -1, objname_brotag_BM, NULL);
-      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,   //
-                                        " |=", -1, objrefcomm_brotag_BM,
-                                        NULL);
-      gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,   //
-                                        idbuf,
-                                        -1, objrefcomm_brotag_BM, NULL);
-      gtk_text_buffer_insert_with_tags (browserbuf_BM,
-                                        &browserit_BM, "|", -1,
-                                        objrefcomm_brotag_BM, NULL);
+      if (curdepth <= 2)
+        {
+          gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
+                                            " |=", -1, objrefcomm_brotag_BM,
+                                            NULL);
+          gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,       //
+                                            idbuf,
+                                            -1, objrefcomm_brotag_BM, NULL);
+          gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                            &browserit_BM, "|", -1,
+                                            objrefcomm_brotag_BM, NULL);
+        }
     }
   else
     {                           // anonymous
