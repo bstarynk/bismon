@@ -301,6 +301,13 @@
 	      <property name='background'>light yellow</property>
             </object>
         </child>
+	<!-- blink_cmdtag for blinking -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">blink_cmdtag</property>
+	      <property name='background'>orangered</property>
+            </object>
+        </child>
     </object>
     
   <!-- the log tag table -->

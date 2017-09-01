@@ -34,6 +34,8 @@ GtkTextTag *str_brotag_BM;
 GtkTextTag *stresc_brotag_BM;
 GtkTextTag *miscomm_brotag_BM;
 
+#define BLINKDELAYMILLISEC_BM 750
+#define UNBLINKDELAYMILLISEC_BM 400
 
 /// the browsed objects
 unsigned browserobsize_BM;      /* allocated size of browsedobj_BM */
@@ -70,8 +72,6 @@ struct browsedval_stBM *browsedval_BM;
 guint browserblinkid_BM;
 struct parenoffset_stBM browserblinkparens_BM;  /// offsets are absolute
 
-#define BLINKDELAYMILLISEC_BM 750
-#define UNBLINKDELAYMILLISEC_BM 400
 /// stop completely the blinking
 static void browserblinkstop_BM (void);
 
@@ -113,6 +113,7 @@ GtkTextTag *newname_cmdtag_BM;
 GtkTextTag *id_cmdtag_BM;
 GtkTextTag *dollar_cmdtag_BM;
 GtkTextTag *nesting_cmdtag_BM;
+GtkTextTag *blink_cmdtag_BM;
 
 #define CMD_MAXNEST_BM 64
 GtkTextTag *open_cmdtags_BM[CMD_MAXNEST_BM];
@@ -144,6 +145,21 @@ static void populatepopuplog_BM (GtkTextView *, GtkWidget *, gpointer);
 
 static void parsecommandbuf_BM (struct parser_stBM *pars,
                                 struct stackframe_stBM *stkf);
+
+guint commandblinkid_BM;
+struct parenoffset_stBM commandblinkparens_BM;  /// offsets are absolute
+
+/// stop completely the blinking
+static void commandblinkstop_BM (void);
+
+// unblink temporarily
+static int commandblinkoff_BM (gpointer);
+// blink temporarily
+static int commandblinkon_BM (gpointer);
+
+// start the blinking
+static void commandblinkstart_BM (void);
+
 
 static parser_error_sigBM parserrorcmd_BM;
 static parser_expand_dollarval_sigBM parsdollarvalcmd_BM;
@@ -2703,6 +2719,94 @@ parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
 }                               /* end parsstartnestingcmd_BM */
 
 
+////////////////////////////////////////////////////////////////
+
+
+void
+commandblinkstop_BM (void)
+{
+  if (commandblinkid_BM > 0)
+    g_source_remove (commandblinkid_BM), commandblinkid_BM = 0;
+  commandblinkoff_BM (NULL);
+}                               /* end commandblinkstop_BM */
+
+int
+commandblinkoff_BM (gpointer data __attribute__ ((unused)))
+{
+  GtkTextIter startit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter endit = EMPTY_TEXT_ITER_BM;
+  gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
+  gtk_text_buffer_remove_tag (commandbuf_BM, blink_cmdtag_BM, &startit,
+                              &endit);
+  return G_SOURCE_REMOVE;
+}                               /* end commandblinkoff_BM */
+
+int
+commandblinkon_BM (gpointer data __attribute__ ((unused)))
+{
+  if (commandblinkparens_BM.paroff_open > 0
+      && commandblinkparens_BM.paroff_openlen > 0)
+    {
+      GtkTextIter openstartit = EMPTY_TEXT_ITER_BM, openendit =
+        EMPTY_TEXT_ITER_BM;
+      gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &openstartit,
+                                          commandblinkparens_BM.paroff_open);
+      openendit = openstartit;
+      gtk_text_iter_forward_chars (&openendit,
+                                   commandblinkparens_BM.paroff_openlen);
+      gtk_text_buffer_apply_tag (commandbuf_BM, blink_cmdtag_BM, &openstartit,
+                                 &openendit);
+    }
+  if (commandblinkparens_BM.paroff_close > 0
+      && commandblinkparens_BM.paroff_closelen > 0)
+    {
+      GtkTextIter closestartit = EMPTY_TEXT_ITER_BM;
+      GtkTextIter closeendit = EMPTY_TEXT_ITER_BM;
+      gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &closeendit,
+                                          commandblinkparens_BM.paroff_close);
+      closestartit = closeendit;
+      gtk_text_iter_backward_chars (&closestartit,
+                                    commandblinkparens_BM.paroff_closelen);
+      gtk_text_buffer_apply_tag (commandbuf_BM, blink_cmdtag_BM,
+                                 &closestartit, &closeendit);
+    }
+  if (commandblinkparens_BM.paroff_xtra > 0
+      && commandblinkparens_BM.paroff_xtralen > 0)
+    {
+      GtkTextIter xtrastartit = EMPTY_TEXT_ITER_BM, xtraendit =
+        EMPTY_TEXT_ITER_BM;
+      gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &xtrastartit,
+                                          commandblinkparens_BM.paroff_xtra);
+      xtraendit = xtrastartit;
+      gtk_text_iter_forward_chars (&xtraendit,
+                                   commandblinkparens_BM.paroff_xtralen);
+      gtk_text_buffer_apply_tag (commandbuf_BM, blink_cmdtag_BM, &xtrastartit,
+                                 &xtraendit);
+    }
+  if (commandblinkid_BM > 0)
+    {
+      (void) g_timeout_add (UNBLINKDELAYMILLISEC_BM, commandblinkoff_BM,
+                            NULL);
+      return G_SOURCE_CONTINUE;
+    }
+  return G_SOURCE_REMOVE;
+}                               /* end commandblinkon_BM */
+
+
+void
+commandblinkstart_BM (void)
+{
+  if (commandblinkid_BM > 0)
+    g_source_remove (commandblinkid_BM), commandblinkid_BM = 0;
+  commandblinkoff_BM (NULL);
+  commandblinkid_BM =
+    g_timeout_add (BLINKDELAYMILLISEC_BM, commandblinkon_BM, NULL);
+  commandblinkon_BM (NULL);
+}                               /* end commandblinkstart_BM */
+
+
+////////////////
+
 // for "key-press-event" signal to commandview_BM
 gboolean
 handlekeypresscmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
@@ -3316,6 +3420,10 @@ initialize_gui_BM (const char *builderfile)
     gtk_text_tag_table_lookup (commandtagtable_BM, "nesting_cmdtag");
   if (!nesting_cmdtag_BM)
     FATAL_BM ("cannot find nesting_cmdtag");
+  blink_cmdtag_BM =             //
+    gtk_text_tag_table_lookup (commandtagtable_BM, "blink_cmdtag");
+  if (!blink_cmdtag_BM)
+    FATAL_BM ("cannot find blink_cmdtag");
   ////////////////
   error_logtag_BM =             //
     gtk_text_tag_table_lookup (logtagtable_BM, "error_logtag");
@@ -3487,10 +3595,11 @@ marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   unsigned off = gtk_text_iter_get_offset (txit);
   printf ("@@marksetcmd_BM/%d insert C%uL%u/%u\n", __LINE__, col, lin, off);
   struct parenoffset_stBM *blinkpo = cmd_find_enclosing_parens_BM (off);
+  commandblinkstop_BM ();
   if (!blinkpo)
     return;
-  // blink according to po
-#warning marksetcmd_BM incomplete
+  commandblinkparens_BM = *blinkpo;
+  commandblinkstart_BM ();
 }                               /* end marksetcmd_BM */
 
 
