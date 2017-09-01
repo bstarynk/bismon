@@ -3604,8 +3604,19 @@ marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   struct parenoffset_stBM *blinkpo = cmd_find_enclosing_parens_BM (off);
   commandblinkstop_BM ();
   if (!blinkpo)
-    return;
+    {
+      printf ("@@marksetcmd_BM/%d NOblink\n", __LINE__);
+      memset (&commandblinkparens_BM, 0, sizeof (commandblinkparens_BM));
+      return;
+    }
   commandblinkparens_BM = *blinkpo;
+  printf ("@@marksetcmd_BM/%d blink open%dL%d close%dL%d xtra%dL%d\n",
+          __LINE__, commandblinkparens_BM.paroff_open,
+          commandblinkparens_BM.paroff_openlen,
+          commandblinkparens_BM.paroff_close,
+          commandblinkparens_BM.paroff_closelen,
+          commandblinkparens_BM.paroff_xtra,
+          commandblinkparens_BM.paroff_xtralen);
   commandblinkstart_BM ();
 }                               /* end marksetcmd_BM */
 
