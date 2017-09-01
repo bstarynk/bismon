@@ -169,7 +169,7 @@
             <object class='GtkTextTag'>
                 <property name="name">nest_brotag</property>
                 <property name="font">Noto Sans Bold</property>
-                <property name="scale">0.95</property>
+                <property name="scale">1.01</property>
                 <property name="foreground">coral4</property>
             </object>
         </child>
