@@ -1328,6 +1328,7 @@ parserrorcmd_BM (struct parser_stBM *pars,
 // for $<var>
 value_tyBM
 parsdollarvalcmd_BM (struct parser_stBM *pars,
+                     unsigned lineno,
                      unsigned colpos,
                      const value_tyBM varname, struct stackframe_stBM *stkf)
 {
@@ -1342,13 +1343,12 @@ parsdollarvalcmd_BM (struct parser_stBM *pars,
   else if (isobject_BM (varname))
     varstr = findobjectname_BM (varname);
   if (!varstr)
-    parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "invalid $<var>");
+    parsererrorprintf_BM (pars, lineno, colpos, "invalid $<var>");
   _.val = find_named_value_gui_BM (varstr);
   if (!_.val && !nobuild)
-    parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "not found $%s",
-                          varstr);
+    parsererrorprintf_BM (pars, lineno, colpos, "not found $%s", varstr);
   GtkTextIter it = EMPTY_TEXT_ITER_BM, endit = EMPTY_TEXT_ITER_BM;
-  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, pars->pars_lineno);
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
   endit = it;
   gtk_text_iter_forward_chars (&endit, 1 + strlen (varstr));
@@ -1360,7 +1360,7 @@ parsdollarvalcmd_BM (struct parser_stBM *pars,
 // for $:<var>
 const objectval_tyBM *
 parsdollarobjcmd_BM (struct parser_stBM *pars,
-                     unsigned colpos,
+                     unsigned lineno, unsigned colpos,
                      const value_tyBM varname, struct stackframe_stBM *stkf)
 {
 
@@ -1374,16 +1374,14 @@ parsdollarobjcmd_BM (struct parser_stBM *pars,
   else if (isobject_BM (varname))
     varstr = findobjectname_BM (varname);
   if (!varstr)
-    parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "invalid $:<var>");
+    parsererrorprintf_BM (pars, lineno, colpos, "invalid $:<var>");
   _.val = find_named_value_gui_BM (varstr);
   if (!_.val && !nobuild)
-    parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "not found $:%s",
-                          varstr);
+    parsererrorprintf_BM (pars, lineno, colpos, "not found $:%s", varstr);
   if (!isobject_BM (_.val) && !nobuild)
-    parsererrorprintf_BM (pars, pars->pars_lineno, colpos, "non-object $:%s",
-                          varstr);
+    parsererrorprintf_BM (pars, lineno, colpos, "non-object $:%s", varstr);
   GtkTextIter it = EMPTY_TEXT_ITER_BM, endit = EMPTY_TEXT_ITER_BM;
-  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, pars->pars_lineno);
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
   endit = it;
   gtk_text_iter_forward_chars (&endit, 2 + strlen (varstr));
@@ -2542,14 +2540,13 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 
 void
 parscommentinsidecmd_BM (struct parser_stBM *pars,
-                         unsigned colpos, unsigned signlen)
+                         unsigned lineno, unsigned colpos, unsigned signlen)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
-  unsigned lineno = parserlineno_BM (pars);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
-  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit = it;
   gtk_text_iter_forward_chars (&endit, signlen);
@@ -2560,14 +2557,13 @@ parscommentinsidecmd_BM (struct parser_stBM *pars,
 
 void
 parscommentsigncmd_BM (struct parser_stBM *pars,
-                       unsigned colpos, unsigned signlen)
+                       unsigned lineno, unsigned colpos, unsigned signlen)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
-  unsigned lineno = parserlineno_BM (pars);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
-  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit = it;
   gtk_text_iter_forward_chars (&endit, signlen);
@@ -2576,14 +2572,14 @@ parscommentsigncmd_BM (struct parser_stBM *pars,
 }                               /* end parscommentsigncmd_BM */
 
 void
-parsdelimcmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned delimlen)
+parsdelimcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+                 unsigned delimlen)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
-  unsigned lineno = parserlineno_BM (pars);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
-  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit = it;
   gtk_text_iter_forward_chars (&endit, delimlen);
@@ -2591,15 +2587,14 @@ parsdelimcmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned delimlen)
 }                               /* end parsdelimcmd_BM */
 
 void
-parsknownamecmd_BM (struct parser_stBM *pars,
+parsknownamecmd_BM (struct parser_stBM *pars, unsigned lineno,
                     unsigned colpos, unsigned namlen)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
-  unsigned lineno = parserlineno_BM (pars);
-  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit = it;
   gtk_text_iter_forward_chars (&endit, namlen);
@@ -2608,14 +2603,14 @@ parsknownamecmd_BM (struct parser_stBM *pars,
 
 
 void
-parsnewnamecmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned namlen)
+parsnewnamecmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+                   unsigned namlen)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
-  unsigned lineno = parserlineno_BM (pars);
-  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit = it;
   gtk_text_iter_forward_chars (&endit, namlen);
@@ -2624,14 +2619,14 @@ parsnewnamecmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned namlen)
 
 
 void
-parsidcmd_BM (struct parser_stBM *pars, unsigned colpos, unsigned idlen)
+parsidcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+              unsigned idlen)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
-  unsigned lineno = parserlineno_BM (pars);
-  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit = it;
   gtk_text_iter_forward_chars (&endit, idlen);

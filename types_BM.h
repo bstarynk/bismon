@@ -395,12 +395,12 @@ typedef struct parstoken_stBM parstoken_tyBM;
 struct parser_stBM;
 // expand the $<var>, varname is the tok_cname or tok_namedobj
 typedef value_tyBM parser_expand_dollarval_sigBM
-  (struct parser_stBM *pars, unsigned colpos, const value_tyBM varname,
-   struct stackframe_stBM *stkf);
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+   const value_tyBM varname, struct stackframe_stBM *stkf);
 // expand the $:<var>, varname is the tok_cname or tok_namedobj
 typedef const objectval_tyBM *parser_expand_dollarobj_sigBM
-  (struct parser_stBM *pars, unsigned colpos, const value_tyBM varname,
-   struct stackframe_stBM *stkf);
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+   const value_tyBM varname, struct stackframe_stBM *stkf);
 // parse then expand $( .... ) value expression
 typedef value_tyBM parser_expand_valexp_sigBM
   (struct parser_stBM *pars, unsigned lineno, unsigned colpos, int depth,
@@ -411,33 +411,41 @@ typedef const objectval_tyBM *parser_expand_objexp_sigBM
    struct stackframe_stBM *stkf);
 // decorate the comment signs
 typedef void parser_decorate_comment_sign_sigBM
-  (struct parser_stBM *pars, unsigned colpos, unsigned signlen);
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+   unsigned signlen);
 // decorate the comment inside
 typedef void parser_decorate_comment_inside_sigBM
-  (struct parser_stBM *pars, unsigned colpos, unsigned signlen);
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+   unsigned signlen);
 
 // decorate the string signs
 typedef void parser_decorate_string_sign_sigBM
-  (struct parser_stBM *pars, unsigned colpos, unsigned signlen);
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+   unsigned signlen);
 // decorate the string inside
 typedef void parser_decorate_string_inside_sigBM
-  (struct parser_stBM *pars, unsigned colpos, unsigned signlen);
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+   unsigned signlen);
 
 // decorate numbers
 typedef void parser_decorate_number_sigBM
-  (struct parser_stBM *pars, unsigned colpos, unsigned numlen);
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+   unsigned numlen);
 
 // decorate ids
 typedef void parser_decorate_id_sigBM
-  (struct parser_stBM *pars, unsigned colpos, unsigned idlen);
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+   unsigned idlen);
 
 // decorate names, both known and unknown
 typedef void parser_decorate_name_sigBM
-  (struct parser_stBM *pars, unsigned colpos, unsigned namlen);
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+   unsigned namlen);
 
 // decorate delimiters
 typedef void parser_decorate_delimiter_sigBM
-  (struct parser_stBM *pars, unsigned colpos, unsigned delimlen);
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+   unsigned delimlen);
 
 // decorate nesting (e.g. for sets & tuples) 
 typedef void parser_decorate_nesting_sigBM

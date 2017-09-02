@@ -246,7 +246,8 @@ setgckeep_BM (struct garbcoll_stBM *gc, setval_tyBM * set)
 int
 setelemindex_BM (const setval_tyBM * setv, const objectval_tyBM * obelem)
 {
-  if (!isset_BM (setv) || !isobject_BM (obelem))
+  if (!isset_BM ((const value_tyBM) setv)
+      || !isobject_BM ((const value_tyBM) obelem))
     return -1;
   unsigned card = ((typedsize_tyBM *) setv)->size;
   unsigned lo = 0, hi = card, md = 0;
@@ -279,9 +280,7 @@ setelemindex_BM (const setval_tyBM * setv, const objectval_tyBM * obelem)
 unsigned
 setcardinal_BM (const setval_tyBM * setv)
 {
-  if (!setv || ((intptr_t) setv & 3))
-    return 0;
-  if (((typedhead_tyBM *) setv)->htyp != tySet_BM)
+  if (!isset_BM ((const value_tyBM) setv))
     return 0;
   return ((typedsize_tyBM *) setv)->size;
 }                               /* end setcardinal_BM */

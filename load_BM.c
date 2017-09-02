@@ -676,7 +676,6 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
     };
   fprintf (stderr, "load_second_pass_BM ix=%d path=%s nbdirectives=%ld\n",
            ix, curldpath, nbdirectives);
-#warning should parse for loading
 }                               /* end load_second_pass_BM */
 
 void
