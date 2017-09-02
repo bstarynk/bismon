@@ -303,8 +303,7 @@ load_modif_class_BM (struct loader_stBM *ld, int ix,
     parsererrorprintf_BM (ldpars, lineno, colpos,
                           "expecting <superclass> after !~ class (~");
   objputclassinfo_BM (_.curldobj, _.superclassobj);
-  parstoken_tyBM toknext = {.tok_kind = plex__NONE,.tok_ptrs = {NULL, NULL}
-  };
+  parstoken_tyBM toknext = EMPTY_TOKEN_BM;
   unsigned nextlineno = 0;
   unsigned nextcolpos = 0;
   for (;;)

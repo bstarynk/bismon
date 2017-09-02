@@ -24,6 +24,8 @@
 #define SERIALDIGITS_BM 11
 #define SERIALBASE_BM 62
 
+#define EMPTY_TOKEN_BM (struct parstoken_stBM) { \
+    .tok_kind= plex__NONE, .tok_line= -1, .tok_col= -1, .tok_ptr= NULL }
 
 #define MODULEDIR_BM "modules"
 #define MODULEPREFIX_BM "modbm"

@@ -2683,9 +2683,9 @@ parsnestingcmd_BM (struct parser_stBM *pars, int depth,
                                close_cmdtags_BM[depth],
                                &stacloseit, &closeit);
   struct parenoffset_stBM po = {        //
-    .paroff_open = openoff, .paroff_close = closeoff + closelen,
-    .paroff_xtra =-1,
-    .paroff_openlen = openlen, .paroff_closelen =  closelen,
+    .paroff_open = openoff,.paroff_close = closeoff + closelen,
+    .paroff_xtra = -1,
+    .paroff_openlen = openlen,.paroff_closelen = closelen,
     .paroff_xtralen = 0,.paroff_depth = depth
   };
   cmd_add_parens_BM (&po);

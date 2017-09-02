@@ -376,9 +376,10 @@ enum lexdelim_enBM
 struct parstoken_stBM
 {
   enum parslexkind_enBM tok_kind;
+  int tok_line, tok_col;
   union
   {
-    void *tok_ptrs[2];
+    void *tok_ptr;
     long long tok_llong;        // for plex_LLONG
     double tok_dbl;             // for plex_DOUBLE
     rawid_tyBM tok_id;          // for plex_ID

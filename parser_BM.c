@@ -4,6 +4,7 @@
 #define RUNLEN_BM 16
 #define RUNFMT_BM "%16[A-Za-z0-9]"
 
+
 static const char *const lexkindnamearr_BM[] = {
   [plex__NONE] = "_NONE",
   [plex_LLONG] = "LLONG",
@@ -766,12 +767,7 @@ parstoken_tyBM
 parsertokenget_BM (struct parser_stBM * pars)
 {
   if (!isparser_BM ((const value_tyBM) pars))
-    return (parstoken_tyBM)
-    {
-      .tok_kind = plex__NONE,.tok_ptrs =
-      {
-      NULL, NULL}
-    };
+    return EMPTY_TOKEN_BM;
   const struct parserops_stBM *parsop = pars->pars_ops;
   assert (!parsop || parsop->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsop && parsop->parsop_nobuild;
@@ -782,21 +778,13 @@ again:
   if (restlin && restlin[0] == (char) 0)
     {
       if (parserendoffile_BM (pars))
-        return (parstoken_tyBM)
-        {
-          .tok_kind = plex__NONE,.tok_ptrs =
-          {
-          NULL, NULL}
-        };
+        return EMPTY_TOKEN_BM;
       goto again;
     }
   if (!restlin)
-    return (parstoken_tyBM)
-    {
-      .tok_kind = plex__NONE,.tok_ptrs =
-      {
-      NULL, NULL}
-    };
+    return EMPTY_TOKEN_BM;
+  int curlin = parserlineno_BM (pars);
+  int curcol = parsercolpos_BM (pars);
   if (isdigit (restlin[0])
       || ((restlin[0] == '+' || restlin[0] == '-') && isdigit (restlin[1])))
     {
@@ -816,7 +804,8 @@ again:
               pars->pars_colpos += coldbl;
               return (parstoken_tyBM)
               {
-              .tok_kind = plex_DOUBLE,.tok_dbl = x};
+              .tok_kind = plex_DOUBLE,.tok_line = curlin,.tok_col =
+                  curcol,.tok_dbl = x};
             }
         }
       if (endint > restlin)
@@ -829,7 +818,8 @@ again:
           pars->pars_colpos += colint;
           return (parstoken_tyBM)
           {
-          .tok_kind = plex_LLONG,.tok_llong = ll};
+          .tok_kind = plex_LLONG,.tok_line = curlin,.tok_col =
+              curcol,.tok_llong = ll};
         }
     }
 
@@ -848,7 +838,8 @@ again:
           pars->pars_colpos += IDLEN_BM;
           return (parstoken_tyBM)
           {
-          .tok_kind = plex_ID,.tok_id = id};
+          .tok_kind = plex_ID,.tok_line = curlin,.tok_col = curcol,.tok_id =
+              id};
         }
       else
         parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
@@ -865,7 +856,7 @@ again:
       pars->pars_colpos += 2;
       return (parstoken_tyBM)
       {
-        .tok_kind = plex_ID,.tok_id =
+        .tok_kind = plex_ID,.tok_line = curlin,.tok_col = curcol,.tok_id =
         {
         0, 0}
       };
@@ -910,8 +901,8 @@ again:
           pars->pars_colpos += namlen;
           return (parstoken_tyBM)
           {
-          .tok_kind = plex_NAMEDOBJ,.tok_namedobj =
-              (objectval_tyBM *) namedobj};
+          .tok_kind = plex_NAMEDOBJ,.tok_line = curlin,.tok_col =
+              curcol,.tok_namedobj = (objectval_tyBM *) namedobj};
         }
       else
         {                       // new name
@@ -926,7 +917,8 @@ again:
           pars->pars_colpos += namlen;
           return (parstoken_tyBM)
           {
-          .tok_kind = plex_CNAME,.tok_cname = newnam};
+          .tok_kind = plex_CNAME,.tok_line = curlin,.tok_col =
+              curcol,.tok_cname = newnam};
         }
     }
 
@@ -946,7 +938,8 @@ again:
       pars->pars_colpos += 4;
       return (parstoken_tyBM)
       {
-      .tok_kind = plex_DOUBLE,.tok_dbl = x};
+      .tok_kind = plex_DOUBLE,.tok_line = curlin,.tok_col =
+          curcol,.tok_dbl = x};
     }
 
   else if (restlin[0] == '"')
@@ -954,7 +947,8 @@ again:
       const stringval_tyBM *str = parse_cords_BM (pars);
       return (parstoken_tyBM)
       {
-      .tok_kind = plex_STRING,.tok_string = str};
+      .tok_kind = plex_STRING,.tok_line = curlin,.tok_col =
+          curcol,.tok_string = str};
     }
 
   else if (restlin[0] == '/' && restlin[1] == '"')
@@ -962,7 +956,8 @@ again:
       const stringval_tyBM *str = parse_cords_BM (pars);
       return (parstoken_tyBM)
       {
-      .tok_kind = plex_STRING,.tok_string = str};
+      .tok_kind = plex_STRING,.tok_line = curlin,.tok_col =
+          curcol,.tok_string = str};
     }
   // special case for $<var> the dollar should be immediately followed
   // by a letter
@@ -973,7 +968,8 @@ again:
       pars->pars_colpos += 1;
       return (parstoken_tyBM)
       {
-      .tok_kind = plex_DELIM,.tok_delim = delim_dollar};
+      .tok_kind = plex_DELIM,.tok_line = curlin,.tok_col =
+          curcol,.tok_delim = delim_dollar};
     }
   // special case for $:<var> the colon should be immediately followed
   // by a letter
@@ -983,7 +979,8 @@ again:
       pars->pars_colpos += 2;
       return (parstoken_tyBM)
       {
-      .tok_kind = plex_DELIM,.tok_delim = delim_dollarcolon};
+      .tok_kind = plex_DELIM,.tok_line = curlin,.tok_col =
+          curcol,.tok_delim = delim_dollarcolon};
     }
   char delimstr[16];
   memset (delimstr, 0, sizeof (delimstr));
@@ -1014,7 +1011,8 @@ again:
   pars->pars_colpos += g_utf8_strlen (delimstr, -1);
   return (parstoken_tyBM)
   {
-  .tok_kind = plex_DELIM,.tok_delim = curdelim};
+  .tok_kind = plex_DELIM,.tok_line = curlin,.tok_col = curcol,.tok_delim =
+      curdelim};
 }                               /* end parsertokenget_BM */
 
 
