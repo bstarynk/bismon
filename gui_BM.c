@@ -2683,9 +2683,10 @@ parsnestingcmd_BM (struct parser_stBM *pars, int depth,
                                close_cmdtags_BM[depth],
                                &stacloseit, &closeit);
   struct parenoffset_stBM po = {        //
-    .paroff_open = openoff,.paroff_close = closeoff + closelen,.paroff_xtra =
-      -1,.paroff_openlen = openlen,.paroff_closelen =
-      closelen,.paroff_xtralen = 0,.paroff_depth = depth
+    .paroff_open = openoff, .paroff_close = closeoff + closelen,
+    .paroff_xtra =-1,
+    .paroff_openlen = openlen, .paroff_closelen =  closelen,
+    .paroff_xtralen = 0,.paroff_depth = depth
   };
   cmd_add_parens_BM (&po);
   printf ("@@parsnestingcmd_BM/%d open%dL%d close%dL%d\n", __LINE__,
@@ -3652,23 +3653,22 @@ marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   unsigned col = gtk_text_iter_get_line_offset (txit);
   unsigned lin = gtk_text_iter_get_line (txit) + 1;
   unsigned off = gtk_text_iter_get_offset (txit);
-  printf ("@@marksetcmd_BM/%d insert C%uL%u/%u\n", __LINE__, col, lin, off);
   struct parenoffset_stBM *blinkpo = cmd_find_enclosing_parens_BM (off);
   commandblinkstop_BM ();
   if (!blinkpo)
     {
-      printf ("@@marksetcmd_BM/%d NOblink\n", __LINE__);
+      printf ("@@marksetcmd_BM/%d  C%uL%u/%u NOblink\n", __LINE__, col, lin,
+              off);
       memset (&commandblinkparens_BM, 0, sizeof (commandblinkparens_BM));
       return;
     }
   commandblinkparens_BM = *blinkpo;
-  printf ("@@marksetcmd_BM/%d blink open%dL%d close%dL%d xtra%dL%d\n",
-          __LINE__, commandblinkparens_BM.paroff_open,
-          commandblinkparens_BM.paroff_openlen,
-          commandblinkparens_BM.paroff_close,
-          commandblinkparens_BM.paroff_closelen,
-          commandblinkparens_BM.paroff_xtra,
-          commandblinkparens_BM.paroff_xtralen);
+  printf
+    ("@@marksetcmd_BM/%d blink C%uL%u/%u open%dL%d close%dL%d xtra%dL%d\n",
+     __LINE__, col, lin, off, commandblinkparens_BM.paroff_open,
+     commandblinkparens_BM.paroff_openlen, commandblinkparens_BM.paroff_close,
+     commandblinkparens_BM.paroff_closelen, commandblinkparens_BM.paroff_xtra,
+     commandblinkparens_BM.paroff_xtralen);
   commandblinkstart_BM ();
 }                               /* end marksetcmd_BM */
 
