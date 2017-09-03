@@ -621,7 +621,7 @@ void cmd_add_parens_BM (struct parenoffset_stBM *par);
 bool parens_surrounds_BM (struct parenoffset_stBM *par, int off);
 struct parenoffset_stBM *cmd_find_enclosing_parens_BM (int off);
 ///
-extern void initialize_gui_BM (const char *builderfile);
+extern void initialize_gui_BM (const char *builderfile, const char *cssfile);
 // browse the object objbrows, using the selector objsel
 extern void browse_object_gui_BM (const objectval_tyBM * objbrows,
                                   const objectval_tyBM * objsel,

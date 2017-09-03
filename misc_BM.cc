@@ -652,7 +652,7 @@ parens_surrounds_BM(struct parenoffset_stBM*par, int off)
   if (par->paroff_open <= off && off <= par->paroff_close)
     return true;
   /// when * conn ^ ( ... )
-  if (par->paroff_xtra >= 0 && par->paroff_xtra <= off
+  if (par->paroff_xtralen > 0 && par->paroff_xtra >= 0 && par->paroff_xtra <= off
       && off <= par->paroff_open && par->paroff_xtra < par->paroff_open)
     return true;
   return false;
@@ -664,7 +664,7 @@ cmd_find_enclosing_parens_BM(int off)
   // we probably might code something faster, but is it worth the hassle?
   if (cmd_closemap_BM.empty())
     return nullptr;
-  auto it = cmd_closemap_BM.upper_bound (off);
+  auto it = cmd_closemap_BM.lower_bound (off);
   if (it == cmd_closemap_BM.end())
     return nullptr;
   do

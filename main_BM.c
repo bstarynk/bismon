@@ -18,6 +18,7 @@ char *load_dir_bm;
 char *dump_dir_bm;
 char *dump_after_load_dir_bm;
 char *builder_file_bm = "bismon.ui";
+char *css_file_bm = "bismon.css";
 char *comment_bm;
 int count_emit_has_predef_bm;
 int nb_added_predef_bm;
@@ -93,7 +94,14 @@ const GOptionEntry optab[] = {
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &builder_file_bm,
-   .description = "with GTK builer file FILE",
+   .description = "with GTK builder file FILE (default: bismon.ui)",
+   .arg_description = "FILE"},
+  //
+  {.long_name = "gui-style",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &css_file_bm,
+   .description = "with GTK style CSS file FILE (default: bismon.css)",
    .arg_description = "FILE"},
   //
   {.long_name = "emit-has-predef",.short_name = (char) 0,
@@ -270,7 +278,7 @@ main (int argc, char **argv)
   if (!guiok)
     FATAL_BM ("gtk_init_with_args failed");
   if (!batch_bm)
-    initialize_gui_BM (builder_file_bm);
+    initialize_gui_BM (builder_file_bm, css_file_bm);
   if (!load_dir_bm)
     load_dir_bm = ".";
   if (!dump_dir_bm)

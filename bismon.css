@@ -1,0 +1,10 @@
+/* file bismon.css */
+#commandview {
+    background-color: seashell;
+    font-size: 18px;
+    font-family: Inconsolata;
+}
+
+#logview {
+    background-color: azure;
+}

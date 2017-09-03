@@ -3352,14 +3352,43 @@ clearlog_BM (void)
   log_end_message_BM ();
 }                               /* end clearlog_BM */
 
+static void cssparsingerror_BM (GtkCssProvider *, GtkCssSection *, GError *,
+                                gpointer) __attribute__ ((noreturn));
+
 void
-initialize_gui_BM (const char *builderfile)
+cssparsingerror_BM (GtkCssProvider * prov __attribute__ ((unused)),
+                    GtkCssSection * section, GError * err,
+                    gpointer data __attribute__ ((unused)))
+{
+  GFile *sfil = gtk_css_section_get_file (section);
+  FATAL_BM ("CSS parsing error: %s [L%dC%d-L%dC%d] (%s#%d) %s",
+            sfil ? g_file_get_path (sfil) : "*none*",
+            gtk_css_section_get_start_line (section) + 1,
+            gtk_css_section_get_start_position (section),
+            gtk_css_section_get_end_line (section) + 1,
+            gtk_css_section_get_end_position (section),
+            g_quark_to_string (err->domain), err->code, err->message);
+}                               /* end cssparsingerror_BM */
+
+////////////////////////////////////////////////////////////////
+void
+initialize_gui_BM (const char *builderfile, const char *cssfile)
 {
   if (!builderfile)
     builderfile = "bismon.ui";
+  if (!cssfile)
+    cssfile = "bismon.css";
   GtkBuilder *bld = gtk_builder_new_from_file (builderfile);
+  GtkCssProvider *cssprovider = gtk_css_provider_get_default ();
+  g_signal_connect (cssprovider, "parsing-error",
+                    G_CALLBACK (cssparsingerror_BM), NULL);
+  gtk_css_provider_load_from_path (cssprovider, cssfile, NULL);
   //gtk_builder_add_callback_symbols (bld, "quitaction_BM", quit_BM, NULL);
   mainwin_BM = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_style_context_add_provider_for_screen
+    (gtk_window_get_screen (GTK_WINDOW (mainwin_BM)),
+     GTK_STYLE_PROVIDER (cssprovider),
+     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
   browsertagtable_BM =          //
     GTK_TEXT_TAG_TABLE (gtk_builder_get_object (bld, "browsertagtable_id"));
   commandtagtable_BM =          //
@@ -3548,6 +3577,7 @@ initialize_gui_BM (const char *builderfile)
       gtk_text_iter_get_offset (&endtit);
   }
   browserview_BM = gtk_text_view_new_with_buffer (browserbuf_BM);
+  gtk_widget_set_name (browserview_BM, "browserview");
   gtk_text_view_set_editable (GTK_TEXT_VIEW (browserview_BM), false);
   g_signal_connect (browserbuf_BM, "mark-set",
                     G_CALLBACK (marksetbrows_BM), NULL);
@@ -3587,6 +3617,7 @@ initialize_gui_BM (const char *builderfile)
         gtk_text_buffer_create_tag (commandbuf_BM, xtranamebuf, NULL);
     };
   commandview_BM = gtk_text_view_new_with_buffer (commandbuf_BM);
+  gtk_widget_set_name (commandview_BM, "commandview");
   gtk_text_view_set_editable (GTK_TEXT_VIEW (commandview_BM), true);
   gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (commandview_BM), FALSE);
   g_signal_connect (commandview_BM, "key-press-event",
@@ -3607,6 +3638,7 @@ initialize_gui_BM (const char *builderfile)
   //
   logbuf_BM = gtk_text_buffer_new (logtagtable_BM);
   logview_BM = gtk_text_view_new_with_buffer (logbuf_BM);
+  gtk_widget_set_name (logview_BM, "logview");
   g_signal_connect (logview_BM, "populate-popup",
                     G_CALLBACK (populatepopuplog_BM), NULL);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (logview_BM), false);
@@ -3637,6 +3669,9 @@ initialize_gui_BM (const char *builderfile)
   g_timeout_add (500, guiperiodicgarbagecollection_BM, NULL);
   gtk_widget_show_all (GTK_WIDGET (mainwin_BM));
 }                               /* end initialize_gui_BM */
+
+
+
 
 void
 marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
