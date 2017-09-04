@@ -730,7 +730,10 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
         };
     };
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
-  if (browserobulen_BM > 0)
+  if (browsednvulen_BM > 0)
+    gtk_text_buffer_get_iter_at_mark    //
+      (browserbuf_BM, &it, browsedval_BM[browsednvulen_BM - 1].brow_vendm);
+  else if (browserobulen_BM > 0)
     gtk_text_buffer_get_iter_at_mark    //
       (browserbuf_BM, &it, browsedobj_BM[browserobulen_BM - 1].brow_oendm);
   else
