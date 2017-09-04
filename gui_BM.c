@@ -2642,10 +2642,6 @@ parsnestingcmd_BM (struct parser_stBM *pars, int depth,
                    unsigned closelinpos, unsigned closecolpos)
 {
   assert (isparser_BM (pars));
-  printf
-    ("@@parsnestingcmd_BM/%d open '%s' L%dC%d close '%s' L%dC%d depth/%d\n",
-     __LINE__, delimstr_BM (opendelim), openlinpos, opencolpos,
-     delimstr_BM (closedelim), closelinpos, closecolpos, depth);
   assert (openlinpos > 0 && closelinpos > 0 && openlinpos <= closelinpos);
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
@@ -2684,8 +2680,6 @@ parsnestingcmd_BM (struct parser_stBM *pars, int depth,
     .paroff_xtralen = 0,.paroff_depth = depth
   };
   cmd_add_parens_BM (&po);
-  printf ("@@parsnestingcmd_BM/%d open%dL%d close%dL%d\n", __LINE__,
-          openoff, openlen, closeoff + closelen, closelen);
   return;
 }                               /* end parsnestingcmd_BM */
 
@@ -3687,18 +3681,10 @@ marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   commandblinkstop_BM ();
   if (!blinkpo)
     {
-      printf ("@@marksetcmd_BM/%d  C%uL%u/%u NOblink\n", __LINE__, col, lin,
-              off);
       memset (&commandblinkparens_BM, 0, sizeof (commandblinkparens_BM));
       return;
     }
   commandblinkparens_BM = *blinkpo;
-  printf
-    ("@@marksetcmd_BM/%d blink C%uL%u/%u open%dL%d close%dL%d xtra%dL%d\n",
-     __LINE__, col, lin, off, commandblinkparens_BM.paroff_open,
-     commandblinkparens_BM.paroff_openlen, commandblinkparens_BM.paroff_close,
-     commandblinkparens_BM.paroff_closelen, commandblinkparens_BM.paroff_xtra,
-     commandblinkparens_BM.paroff_xtralen);
   commandblinkstart_BM ();
 }                               /* end marksetcmd_BM */
 
