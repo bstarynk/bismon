@@ -739,16 +739,16 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
   gtk_text_buffer_insert (browserbuf_BM, &it, "\n", -1);
   GtkTextIter startit = it;
   gtk_text_iter_backward_char (&startit);
-  browsedval_BM[browserobulen_BM].brow_name = namev;
-  browsedval_BM[browserobulen_BM].brow_val = val;
-  browsedval_BM[browserobulen_BM].brow_depth = depth;
-  browsedval_BM[browserobulen_BM].brow_vstartm =        //
+  browsedval_BM[browsednvulen_BM].brow_name = namev;
+  browsedval_BM[browsednvulen_BM].brow_val = val;
+  browsedval_BM[browsednvulen_BM].brow_depth = depth;
+  browsedval_BM[browsednvulen_BM].brow_vstartm =        //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &startit,
                                  RIGHT_GRAVITY_BM);
-  browsedval_BM[browserobulen_BM].brow_vendm =  //
+  browsedval_BM[browsednvulen_BM].brow_vendm =  //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, RIGHT_GRAVITY_BM);
   browserit_BM = it;
-  browsednvcurix_BM = browserobulen_BM;
+  browsednvcurix_BM = browsednvulen_BM;
   browsednvulen_BM++;
   return;
 }                               /* end start_browse_named_value_BM */
