@@ -618,6 +618,7 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
 }                               /* end hide_object_gui_BM */
 
 
+
 void
 start_browse_named_value_BM (const stringval_tyBM * namev,
                              const value_tyBM val, int depth)
@@ -652,6 +653,11 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
     }
   unsigned lo = 0, hi = browsednvulen_BM, md = 0;
   const char *namstr = bytstring_BM (namev);
+  printf ("@start_browse_named_value/%d namstr %s ulen %d\n", __LINE__,
+          namstr, browsednvulen_BM);
+  for (unsigned ix = 0; ix < browsednvulen_BM; ix++)
+    printf ("@start_browse_named_value/%d [%d] %s\n", __LINE__,
+            ix, bytstring_BM (browsedval_BM[ix].brow_name));
   while (lo + 8 < hi)
     {
       md = (lo + hi) / 2;
@@ -720,7 +726,6 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
           return;
         };
     };
-  assert (browsednvulen_BM == 0);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
   if (browserobulen_BM > 0)
     gtk_text_buffer_get_iter_at_mark    //
@@ -728,16 +733,16 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
   else
     gtk_text_buffer_get_iter_at_offset  //
       (browserbuf_BM, &it, browserendtitleoffset_BM);
-  browsedval_BM[0].brow_name = namev;
-  browsedval_BM[0].brow_val = val;
-  browsedval_BM[0].brow_depth = depth;
-  browsedval_BM[0].brow_vstartm =       //
+  browsedval_BM[browserobulen_BM].brow_name = namev;
+  browsedval_BM[browserobulen_BM].brow_val = val;
+  browsedval_BM[browserobulen_BM].brow_depth = depth;
+  browsedval_BM[browserobulen_BM].brow_vstartm =        //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, RIGHT_GRAVITY_BM);
-  browsedval_BM[0].brow_vendm = //
+  browsedval_BM[browserobulen_BM].brow_vendm =  //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, RIGHT_GRAVITY_BM);
   browserit_BM = it;
-  browsednvcurix_BM = 0;
-  browsednvulen_BM = 1;
+  browsednvcurix_BM = browserobulen_BM;
+  browsednvulen_BM++;
   return;
 }                               /* end start_browse_named_value_BM */
 
@@ -3674,8 +3679,6 @@ marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   assert (txbuf == commandbuf_BM);
   if (txmark != gtk_text_buffer_get_insert (txbuf))
     return;
-  unsigned col = gtk_text_iter_get_line_offset (txit);
-  unsigned lin = gtk_text_iter_get_line (txit) + 1;
   unsigned off = gtk_text_iter_get_offset (txit);
   struct parenoffset_stBM *blinkpo = cmd_find_enclosing_parens_BM (off);
   commandblinkstop_BM ();
