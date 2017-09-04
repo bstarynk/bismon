@@ -715,8 +715,11 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
           mdval->brow_name = namev;
           mdval->brow_val = val;
           mdval->brow_depth = depth;
+          gtk_text_buffer_insert (browserbuf_BM, &it, "\n", -1);
+          GtkTextIter startit = it;
+          gtk_text_iter_backward_char (&startit);
           mdval->brow_vstartm = //
-            gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it,
+            gtk_text_buffer_create_mark (browserbuf_BM, NULL, &startit,
                                          RIGHT_GRAVITY_BM);
           mdval->brow_vendm =   //
             gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it,
@@ -733,11 +736,15 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
   else
     gtk_text_buffer_get_iter_at_offset  //
       (browserbuf_BM, &it, browserendtitleoffset_BM);
+  gtk_text_buffer_insert (browserbuf_BM, &it, "\n", -1);
+  GtkTextIter startit = it;
+  gtk_text_iter_backward_char (&startit);
   browsedval_BM[browserobulen_BM].brow_name = namev;
   browsedval_BM[browserobulen_BM].brow_val = val;
   browsedval_BM[browserobulen_BM].brow_depth = depth;
   browsedval_BM[browserobulen_BM].brow_vstartm =        //
-    gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, RIGHT_GRAVITY_BM);
+    gtk_text_buffer_create_mark (browserbuf_BM, NULL, &startit,
+                                 RIGHT_GRAVITY_BM);
   browsedval_BM[browserobulen_BM].brow_vendm =  //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, RIGHT_GRAVITY_BM);
   browserit_BM = it;
