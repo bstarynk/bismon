@@ -4165,12 +4165,15 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    //
     {
       _.cursel = arr[ix];
       _.curval = (value_tyBM) objgetclassinfomethod_BM (_.objbrows, _.cursel);
+      browsenewlinefordepth_BM (1);
       gtk_text_buffer_insert_with_tags (browserbuf_BM,
                                         &browserit_BM, "~: ", -1, NULL, NULL);
       gtk_text_buffer_insert_with_tags (browserbuf_BM,
                                         &browserit_BM,
                                         "|selector:|", -1,
                                         miscomm_brotag_BM, NULL);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                        &browserit_BM, " ", -1, NULL, NULL);
       browse_value_BM ((const value_tyBM) _.cursel,
                        (struct stackframe_stBM *) &_, 2, 1);
       browsespacefordepth_BM (1);
