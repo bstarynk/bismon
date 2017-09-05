@@ -1771,6 +1771,19 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
               log_end_message_BM ();
             }
         }
+      // !^ !$   to make predefined
+      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamdollar)
+        {
+          if (!nobuild)
+            {
+              objputspacenum_BM (_.targobj, PredefSp_BM);
+              log_begin_message_BM ();
+              log_puts_message_BM ("put in predefined space the object ");
+              log_object_message_BM (_.targobj);
+              log_puts_message_BM (".");
+              log_end_message_BM ();
+            }
+        }
       else
         parsererrorprintf_BM (pars, lineno, colpos, "bad space for !^");
     }

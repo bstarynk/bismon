@@ -1,5 +1,5 @@
 // generated file store1.bismon
-// for 28 objects
+// for 29 objects
 // with 0 modules
 
 
@@ -150,6 +150,16 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for code chunks"
 !)_3HGHcRxE9bn_1ufs1gFf4Yh
+
+
+
+!(_3MZiKuLf93a_3YTtdOHeUH8 |=emit_module|
+!~ name (~ emit_module
+~)
+!@ 1504610951.44
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector to emit a module"
+!)_3MZiKuLf93a_3YTtdOHeUH8
 
 
 
