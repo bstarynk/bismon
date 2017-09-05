@@ -383,11 +383,12 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   _.recv = arg1;
   assert (valtype_BM (arg2) == tydata_dumper_BM);
   _.du = arg2;
-  assert (valtype_BM (_.recv->ob_data) == tydata_classinfo_BM);
   assert (valtype_BM (arg3) == tydata_strbuffer_BM);
   assert (restargs == NULL);
   _.sbuf = arg3;
   _.supercl = objgetclassinfosuperclass_BM ((const value_tyBM) _.recv);
+  if (!_.supercl)
+    _.supercl = BMP_object;
   _.selset = objgetclassinfosetofselectors_BM ((const value_tyBM) _.recv);
   unsigned nbsel = setcardinal_BM (_.selset);
   strbufferprintf_BM (_.sbuf, "!~ class (~\t");
