@@ -764,5 +764,35 @@ ROUTINEOBJNAME_BM (_9imDBaAxOpp_2HI9AuWrEKD)    //
     objclassinfoputmethod_BM (_.recv, _.obsel, _.methclo);
   else
     objclassinforemovemethod_BM (_.recv, _.obsel);
+  objtouchnow_BM (_.recv);
   return _.recv;
 }                               /* end  ROUTINE _9imDBaAxOpp_2HI9AuWrEKD */
+
+//// for the method closure to init_class in object
+extern objrout_sigBM ROUTINEOBJNAME_BM (_2qppG2LJu79_9ljkbLS0eFQ);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_2qppG2LJu79_9ljkbLS0eFQ)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // recieving class
+ const value_tyBM arg2,         // new superclass
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * recv; objectval_tyBM * obsuperclass;
+    );
+  if (!isobject_BM (arg1))
+    return NULL;
+  _.recv = (objectval_tyBM *) arg1;
+  if (!isobject_BM (arg2))
+    return NULL;
+  _.obsuperclass = (objectval_tyBM *) arg2;
+  if (objclass_BM (_.obsuperclass) != BMP_class)
+    return NULL;
+  objputclass_BM (_.recv, BMP_class);
+  objputclassinfo_BM (_.recv, _.obsuperclass);
+  objtouchnow_BM (_.recv);
+  return _.recv;
+}                               /* end ROUTINE(_2qppG2LJu79_9ljkbLS0eFQ  */

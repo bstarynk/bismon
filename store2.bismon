@@ -1,5 +1,5 @@
 // generated file store2.bismon
-// for 29 objects
+// for 30 objects
 // with 0 modules
 
 
@@ -214,6 +214,14 @@
 
 
 
+!(_75gnoii3mMp_41wgHkvJVyN |=init_class|
+!~ name (~ init_class
+~)
+!@ 1504634820.73
+!)_75gnoii3mMp_41wgHkvJVyN
+
+
+
 !(_7fCcteNe7aR_3IKHeHjmzff
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -264,6 +272,10 @@
  "method to put_method in class"
 !)_9imDBaAxOpp_2HI9AuWrEKD
 
-
+!(_2qppG2LJu79_9ljkbLS0eFQ
+!@ 1504635278.05
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method to init_class in object (class)"
+!)_2qppG2LJu79_9ljkbLS0eFQ
 
 // end of file store2.bismon
