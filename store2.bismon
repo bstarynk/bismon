@@ -47,6 +47,10 @@
 !~ name (~ plain_temporary_module
 ~)
 !@ 1504607269.30
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!~ class (~ |supercl plain_module:| _8g1WBJBhDT9_1QK8IcuWYx2
+~)
+
 !)_1oEp0eAAyFN_4lsobepyr1T
 
 
@@ -66,7 +70,7 @@
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for plain dumpable modules"
-!~ class (~ |supercl specially_dumpable:| _4tiUQqbr6oh_5gZVoUWsppH
+!~ class (~ |supercl plain_module:| _8g1WBJBhDT9_1QK8IcuWYx2
 ~)
 
 !)_2HjhGk7Engb_58InnCq3TZ1
@@ -238,6 +242,10 @@
 !~ name (~ plain_module
 ~)
 !@ 1504607278.77
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+
 !)_8g1WBJBhDT9_1QK8IcuWYx2
 
 
