@@ -2711,12 +2711,6 @@ parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
                         unsigned closelinpos, unsigned closecolpos)
 {
   assert (isparser_BM (pars));
-  printf
-    ("@@parsstartnestingcmd_BM/%d xtra '%s'L%dC%d open '%s'L%dC%d close '%s'L%dC%d depth/%d\n",
-     __LINE__,
-     delimstr_BM (xtradelim), xtralinpos, xtracolpos,
-     delimstr_BM (opendelim), openlinpos, opencolpos,
-     delimstr_BM (closedelim), closelinpos, closecolpos, depth);
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   const char *xtradelstr = delimstr_BM (xtradelim);
@@ -3711,10 +3705,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   assert (txbuf == browserbuf_BM);
   if (txmark != gtk_text_buffer_get_insert (txbuf))
     return;
-  unsigned col = gtk_text_iter_get_line_offset (txit);
-  unsigned lin = gtk_text_iter_get_line (txit) + 1;
   unsigned off = gtk_text_iter_get_offset (txit);
-  printf ("@@marksetbrows_BM/%d insert C%uL%u/%u\n", __LINE__, col, lin, off);
   struct parenoffset_stBM *blinkpo = NULL;
   // do a dichotomical search on browsedobj_BM
   {
@@ -3888,18 +3879,8 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
   browserblinkstop_BM ();
   if (blinkpo)
     {
-      printf
-        ("@@marksetbrows_BM/%d blinking open=%dL%d close=%dL%d xtra=%dL%d\n",
-         __LINE__, browserblinkparens_BM.paroff_open,
-         browserblinkparens_BM.paroff_openlen,
-         browserblinkparens_BM.paroff_close,
-         browserblinkparens_BM.paroff_closelen,
-         browserblinkparens_BM.paroff_xtra,
-         browserblinkparens_BM.paroff_xtralen);
       browserblinkstart_BM ();
     }
-  else
-    printf ("@@marksetbrows_BM/%d NOTblinking\n", __LINE__);
 }                               /* end marksetbrows_BM */
 
 
