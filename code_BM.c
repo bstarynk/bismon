@@ -732,3 +732,25 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   free (filpath);
   return _.closv;
 }                               /* end ROUTINE _4ENXjApm7Qb_3bXo8F6Jg9z */
+
+//// for the method closure to put_method in class
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9imDBaAxOpp_2HI9AuWrEKD);
+
+value_tyBM ROUTINEOBJNAME_BM (_9imDBaAxOpp_2HI9AuWrEKD) (const closure_tyBM * clos, struct stackframe_stBM * stkf, const value_tyBM arg1,       // recieving class
+                                                         const value_tyBM arg2, // new selector
+                                                         const value_tyBM arg3, // new closure
+                                                         const quasinode_tyBM
+                                                         * restargs
+                                                         __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  if (!isobject_BM (arg1))
+    return NULL;
+  if (!isobject_BM (arg2))
+    return NULL;
+  if (!isclosure_BM (arg3))
+    return NULL;
+  FATAL_BM
+    ("method for put_method°class _9imDBaAxOpp_2HI9AuWrEKD unimplemented");
+#warning method for put_method°class _9imDBaAxOpp_2HI9AuWrEKD unimplemented
+}                               /* end  ROUTINE _9imDBaAxOpp_2HI9AuWrEKD */

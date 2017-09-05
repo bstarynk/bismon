@@ -1,5 +1,5 @@
 // generated file store2.bismon
-// for 27 objects
+// for 29 objects
 // with 0 modules
 
 
@@ -40,6 +40,14 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value an int"
 !)_0HBMCM5CeLn_7L5YEV2jO7Y
+
+
+
+!(_16OZeTBZLbW_6SCJt3rgxci |=put_method|
+!~ name (~ put_method
+~)
+!@ 1504619340.97
+!)_16OZeTBZLbW_6SCJt3rgxci
 
 
 
@@ -247,6 +255,14 @@
 ~)
 
 !)_8g1WBJBhDT9_1QK8IcuWYx2
+
+
+
+!(_9imDBaAxOpp_2HI9AuWrEKD
+!@ 1504620033.03
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method to put_method in class"
+!)_9imDBaAxOpp_2HI9AuWrEKD
 
 
 
