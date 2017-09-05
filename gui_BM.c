@@ -1772,7 +1772,8 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
             }
         }
       // !^ !$   to make predefined
-      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamdollar)
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_exclamdollar)
         {
           if (!nobuild)
             {
@@ -3948,114 +3949,140 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   _.objbrows = (const objectval_tyBM *) arg1;
   int depth = getint_BM (arg2);
   ///
+  //// show hi&lo id and hash
+  {
+    char idcomm[80];
+    memset (idcomm, 0, sizeof (idcomm));
+    snprintf (idcomm, sizeof (idcomm), "|id:%lld,%lld; h:%d|",
+              (long long) _.objbrows->ob_id.id_hi,
+              (long long) _.objbrows->ob_id.id_lo,
+              objecthash_BM (_.objbrows));
+    gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM, idcomm,
+                                      -1, miscomm_brotag_BM, NULL);
+    gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+  }
+  ///
   //// show mtime & space
-  char mbuf[64];
-  double mtime = _.objbrows->ob_mtime;
-  snprintf (mbuf, sizeof (mbuf), "!@ %.2f ", mtime);
-  gtk_text_buffer_insert_with_tags (browserbuf_BM,
-                                    &browserit_BM, mbuf, -1, NULL, NULL);
-  double now = clocktime_BM (CLOCK_REALTIME);
-  time_t mtimt = (time_t) mtime;
-  struct tm mtimtm = {
-  };
-  localtime_r (&mtimt, &mtimtm);
-  char commbuf[96];
-  memset (commbuf, 0, sizeof (commbuf));
-  char spabuf[16];
-  memset (spabuf, 0, sizeof (spabuf));
-  switch (_.objbrows->ob_space)
-    {
-    case TransientSp_BM:
-      strcpy (spabuf, "transient");
-      break;
-    case PredefSp_BM:
-      strcpy (spabuf, "predefined");
-      break;
-    case GlobalSp_BM:
-      strcpy (spabuf, "global");
-      break;
-    default:
-      snprintf (spabuf, sizeof (spabuf), "user#%d", _.objbrows->ob_space);
-      break;
+  {
+    char mbuf[64];
+    double mtime = _.objbrows->ob_mtime;
+    snprintf (mbuf, sizeof (mbuf), "!@ %.2f ", mtime);
+    gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                      &browserit_BM, mbuf, -1, NULL, NULL);
+    double now = clocktime_BM (CLOCK_REALTIME);
+    time_t mtimt = (time_t) mtime;
+    struct tm mtimtm = {
     };
-  if (mtime < now && mtime + 1.0e6 > now)       // a million second is about 11 days
-    strftime (mbuf, sizeof (mbuf), "%a %d, %T %Z", &mtimtm);
-  else if (mtime < now && mtime + 25e6 > now)   // 25 million seconds is less than 10 months
-    strftime (mbuf, sizeof (mbuf), "%a %d %b, %T %Z", &mtimtm);
-  else
-    strftime (mbuf, sizeof (mbuf), "%c %Z", &mtimtm);
-  snprintf (commbuf, sizeof (commbuf), "|mtim:%s space:%s|", mbuf, spabuf);
-  gtk_text_buffer_insert_with_tags (browserbuf_BM,
-                                    &browserit_BM, commbuf, -1,
-                                    miscomm_brotag_BM, NULL);
-  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
-  if (_.objbrows->ob_class)
-    {
-      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "!$ ", -1);
-      browse_value_BM ((const value_tyBM) _.objbrows->ob_class,
-                       (struct stackframe_stBM *) &_, 2, 0);
-      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
-    };
+    localtime_r (&mtimt, &mtimtm);
+    char commbuf[96];
+    memset (commbuf, 0, sizeof (commbuf));
+    char spabuf[16];
+    memset (spabuf, 0, sizeof (spabuf));
+    switch (_.objbrows->ob_space)
+      {
+      case TransientSp_BM:
+        strcpy (spabuf, "transient");
+        break;
+      case PredefSp_BM:
+        strcpy (spabuf, "predefined");
+        break;
+      case GlobalSp_BM:
+        strcpy (spabuf, "global");
+        break;
+      default:
+        snprintf (spabuf, sizeof (spabuf), "user#%d", _.objbrows->ob_space);
+        break;
+      };
+    if (mtime < now && mtime + 1.0e6 > now)     // a million second is about 11 days
+      strftime (mbuf, sizeof (mbuf), "%a %d, %T %Z", &mtimtm);
+    else if (mtime < now && mtime + 25e6 > now) // 25 million seconds is less than 10 months
+      strftime (mbuf, sizeof (mbuf), "%a %d %b, %T %Z", &mtimtm);
+    else
+      strftime (mbuf, sizeof (mbuf), "%c %Z", &mtimtm);
+    snprintf (commbuf, sizeof (commbuf), "|mtim:%s space:%s|", mbuf, spabuf);
+    gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                      &browserit_BM, commbuf, -1,
+                                      miscomm_brotag_BM, NULL);
+    gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+    if (_.objbrows->ob_class)
+      {
+        gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "!$ ", -1);
+        browse_value_BM ((const value_tyBM) _.objbrows->ob_class,
+                         (struct stackframe_stBM *) &_, 2, 0);
+        gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+      };
+  }
   ///
   //// show attributes
-  _.setattrs = objsetattrs_BM (_.objbrows);
-  unsigned nbattrs = setcardinal_BM (_.setattrs);
-  snprintf (commbuf, sizeof (commbuf), "|%d attributes:|", nbattrs);
-  gtk_text_buffer_insert_with_tags (browserbuf_BM,
-                                    &browserit_BM, commbuf, -1,
-                                    miscomm_brotag_BM, NULL);
-  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
-  const objectval_tyBM *tinyarr[TINYSIZE_BM] = {
-  };
-  const objectval_tyBM **arr = (nbattrs < TINYSIZE_BM) ? tinyarr        //
-    : calloc (prime_above_BM (nbattrs),
-              sizeof (const objectval_tyBM *));
-  if (!arr)
-    FATAL_BM ("failed to calloc arr for %d attrs", nbattrs);
-  for (unsigned ix = 0; ix < nbattrs; ix++)
-    arr[ix] = setelemnth_BM (_.setattrs, ix);
-  sortnamedobjarr_BM (arr, nbattrs);
-  for (unsigned aix = 0; aix < nbattrs; aix++)
-    {
-      _.curattr = arr[aix];
-      _.curval = objgetattr_BM (_.objbrows, _.curattr);
-      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "!: ", -1);
-      browse_value_BM ((const value_tyBM) _.curattr,
-                       (struct stackframe_stBM *) &_, 2, 0);
-      browsespacefordepth_BM (1);
-      browse_value_BM ((const value_tyBM) _.curval,
-                       (struct stackframe_stBM *) &_, depth, 1);
-      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+  {
+    char commbuf[64];
+    memset (commbuf, 0, sizeof (commbuf));
+    _.setattrs = objsetattrs_BM (_.objbrows);
+    unsigned nbattrs = setcardinal_BM (_.setattrs);
+    snprintf (commbuf, sizeof (commbuf), "|%d attributes:|", nbattrs);
+    gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                      &browserit_BM, commbuf, -1,
+                                      miscomm_brotag_BM, NULL);
+    gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+    const objectval_tyBM *tinyarr[TINYSIZE_BM] = {
     };
-  if (arr != tinyarr)
-    free (arr), arr = NULL;
+    const objectval_tyBM **arr = (nbattrs < TINYSIZE_BM) ? tinyarr      //
+      : calloc (prime_above_BM (nbattrs),
+                sizeof (const objectval_tyBM *));
+    if (!arr)
+      FATAL_BM ("failed to calloc arr for %d attrs", nbattrs);
+    for (unsigned ix = 0; ix < nbattrs; ix++)
+      arr[ix] = setelemnth_BM (_.setattrs, ix);
+    sortnamedobjarr_BM (arr, nbattrs);
+    for (unsigned aix = 0; aix < nbattrs; aix++)
+      {
+        _.curattr = arr[aix];
+        _.curval = objgetattr_BM (_.objbrows, _.curattr);
+        gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "!: ", -1);
+        browse_value_BM ((const value_tyBM) _.curattr,
+                         (struct stackframe_stBM *) &_, 2, 0);
+        browsespacefordepth_BM (1);
+        browse_value_BM ((const value_tyBM) _.curval,
+                         (struct stackframe_stBM *) &_, depth, 1);
+        gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+      };
+    if (arr != tinyarr)
+      free (arr), arr = NULL;
+  }
   ///
   //// show the components
-  unsigned nbcomps = objnbcomps_BM (_.objbrows);
-  snprintf (commbuf, sizeof (commbuf), "|%d components:|", nbcomps);
-  gtk_text_buffer_insert_with_tags (browserbuf_BM,
-                                    &browserit_BM, commbuf, -1,
-                                    miscomm_brotag_BM, NULL);
-  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
-  for (unsigned cix = 0; cix < nbcomps; cix++)
-    {
-      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "!& ", -1);
-      snprintf (commbuf, sizeof (commbuf), "|#%d:|", cix);
-      gtk_text_buffer_insert_with_tags (browserbuf_BM,
-                                        &browserit_BM, commbuf, -1,
-                                        miscomm_brotag_BM, NULL);
-      _.curval = objgetcomp_BM (_.objbrows, cix);
-      browsespacefordepth_BM (1);
-      browse_value_BM ((const value_tyBM) _.curval,
-                       (struct stackframe_stBM *) &_, depth, 1);
-      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
-    }
+  {
+    char commbuf[64];
+    memset (commbuf, 0, sizeof (commbuf));
+    unsigned nbcomps = objnbcomps_BM (_.objbrows);
+    snprintf (commbuf, sizeof (commbuf), "|%d components:|", nbcomps);
+    gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                      &browserit_BM, commbuf, -1,
+                                      miscomm_brotag_BM, NULL);
+    gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+    for (unsigned cix = 0; cix < nbcomps; cix++)
+      {
+        gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "!& ", -1);
+        snprintf (commbuf, sizeof (commbuf), "|#%d:|", cix);
+        gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                          &browserit_BM, commbuf, -1,
+                                          miscomm_brotag_BM, NULL);
+        _.curval = objgetcomp_BM (_.objbrows, cix);
+        browsespacefordepth_BM (1);
+        browse_value_BM ((const value_tyBM) _.curval,
+                         (struct stackframe_stBM *) &_, depth, 1);
+        gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+      }
+  }
+  ///
+  // extra data
   if (_.objbrows->ob_data)
     {
       send1_BM ((const value_tyBM) _.objbrows, BMP_browse_data,
                 (struct stackframe_stBM *) &_, taggedint_BM (depth));
       gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
     }
+  /// return itself
   return (const value_tyBM) _.objbrows;
 }                               /* end  ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d) */
 
