@@ -3949,6 +3949,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   char commbuf[96];
   memset (commbuf, 0, sizeof (commbuf));
   char spabuf[16];
+  memset (spabuf, 0, sizeof (spabuf));
   switch (_.objbrows->ob_space)
     {
     case TransientSp_BM:
@@ -3964,14 +3965,13 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
       snprintf (spabuf, sizeof (spabuf), "user#%d", _.objbrows->ob_space);
       break;
     };
-  memset (spabuf, 0, sizeof (spabuf));
   if (mtime < now && mtime + 1.0e6 > now)       // a million second is about 11 days
     strftime (mbuf, sizeof (mbuf), "%a %d, %T %Z", &mtimtm);
   else if (mtime < now && mtime + 25e6 > now)   // 25 million seconds is less than 10 months
     strftime (mbuf, sizeof (mbuf), "%a %d %b, %T %Z", &mtimtm);
   else
     strftime (mbuf, sizeof (mbuf), "%c %Z", &mtimtm);
-  snprintf (commbuf, sizeof (commbuf), "|%s %s|", mbuf, spabuf);
+  snprintf (commbuf, sizeof (commbuf), "|mtim:%s space:%s|", mbuf, spabuf);
   gtk_text_buffer_insert_with_tags (browserbuf_BM,
                                     &browserit_BM, commbuf, -1,
                                     miscomm_brotag_BM, NULL);

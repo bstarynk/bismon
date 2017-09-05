@@ -1,5 +1,5 @@
 // generated file store2.bismon
-// for 24 objects
+// for 25 objects
 // with 0 modules
 
 
@@ -48,6 +48,20 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_in_object an object"
 !)_23ViGouPnAg_15P5mpG9x3d
+
+
+
+!(_2HjhGk7Engb_58InnCq3TZ1 |=plain_dumpable_module|
+!~ name (~ plain_dumpable_module
+~)
+!@ 1504597126.43
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for plain dumpable modules"
+!~ class (~ |supercl specially_dumpable:| _4tiUQqbr6oh_5gZVoUWsppH
+~)
+
+!)_2HjhGk7Engb_58InnCq3TZ1
 
 
 
