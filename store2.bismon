@@ -1,5 +1,5 @@
 // generated file store2.bismon
-// for 25 objects
+// for 27 objects
 // with 0 modules
 
 
@@ -40,6 +40,14 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value an int"
 !)_0HBMCM5CeLn_7L5YEV2jO7Y
+
+
+
+!(_1oEp0eAAyFN_4lsobepyr1T |=plain_temporary_module|
+!~ name (~ plain_temporary_module
+~)
+!@ 1504607269.30
+!)_1oEp0eAAyFN_4lsobepyr1T
 
 
 
@@ -223,6 +231,14 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value a closure"
 !)_7CohjJ9tkfZ_4UMAIZCgwac
+
+
+
+!(_8g1WBJBhDT9_1QK8IcuWYx2 |=plain_module|
+!~ name (~ plain_module
+~)
+!@ 1504607278.77
+!)_8g1WBJBhDT9_1QK8IcuWYx2
 
 
 
