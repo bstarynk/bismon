@@ -56,6 +56,8 @@
 ~)
 !@ 1504607269.30
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for non-dumpable temporary modules"
 !~ class (~ |supercl plain_module:| _8g1WBJBhDT9_1QK8IcuWYx2
 ~)
 
