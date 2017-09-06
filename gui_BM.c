@@ -2218,6 +2218,21 @@ parsobjexpcmd_BM (struct parser_stBM *pars,
           log_end_message_BM ();
         }
     }
+  // ~ to create a new global anonymous object
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_tilde)
+    {
+      gotobj = true;
+      if (!nobuild)
+        {
+          _.obj = makeobj_BM ();
+          objtouchnow_BM (_.obj);
+          objputspacenum_BM (_.obj, GlobalSp_BM);
+          log_begin_message_BM ();
+          log_puts_message_BM ("created global anonymous object ");
+          log_object_message_BM (_.obj);
+          log_end_message_BM ();
+        }
+    }
   // % to create a new (userE) anonymous object
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_percent)
     {
