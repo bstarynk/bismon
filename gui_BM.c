@@ -1457,6 +1457,7 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
           log_object_message_BM (_.targobj);
           log_puts_message_BM (".");
           log_end_message_BM ();
+          objtouchnow_BM (_.targobj);
         }
     }
   //
@@ -1489,6 +1490,7 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
           log_object_message_BM (_.targobj);
           log_puts_message_BM (".");
           log_end_message_BM ();
+          objtouchnow_BM (_.targobj);
         }
     }
   //
@@ -1514,6 +1516,7 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
           log_object_message_BM (_.targobj);
           log_puts_message_BM (".");
           log_end_message_BM ();
+          objtouchnow_BM (_.targobj);
         }
     }
   //
@@ -1667,6 +1670,7 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
           log_object_message_BM (_.targobj);
           log_puts_message_BM (".");
           log_end_message_BM ();
+          objtouchnow_BM (_.targobj);
         }
     }
   //
