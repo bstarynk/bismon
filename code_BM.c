@@ -811,11 +811,42 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
  const value_tyBM arg3 __attribute__ ((unused)),
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
+  enum closureix_en
+  {
+    closix_simple_module_generation,
+    closix_prepare_module,
+    closix__LAST
+  };
   assert (isclosure_BM ((const value_tyBM) clos));
+  assert (closurewidth_BM ((const value_tyBM) clos) >= closix__LAST);
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * simple_module_generation;
+                 objectval_tyBM * prepare_module;
+                 value_tyBM result;
     );
   if (!isobject_BM (arg1))
     return NULL;
   _.recv = (objectval_tyBM *) arg1;
+  _.modgenob = makeobj_BM ();
+  _.simple_module_generation =
+    objectcast_BM (closurenthson_BM
+                   ((void *) clos, closix_simple_module_generation));
+  assert (_.simple_module_generation != NULL);
+  assert (objecthash_BM (_.simple_module_generation)    //
+          == 512189275          /* simple_module_generation |=_2HlKptD03wA_7JJCG7lN5nS| */
+    );
+  _.prepare_module =
+    objectcast_BM (closurenthson_BM ((void *) clos, closix_prepare_module));
+  assert (_.prepare_module != NULL);
+  assert (objecthash_BM (_.prepare_module)      //
+          == 159908881 /* prepare_module |=_17mrxkMdNtH_2CduQ2WDIy5| */ );
+  objputclass_BM (_.modgenob, _.prepare_module);
+  _.modgenob->ob_data = strbuffermake_BM (1024 * 1024);
+  objtouchnow_BM (_.modgenob);
+  _.result = send1_BM (_.recv, _.prepare_module,
+                       (struct stackframe_stBM *) &_, _.modgenob);
+  if (!_.result)
+    return NULL;
 }                               /* end  ROUTINE _1gME6zn82Kf_8hzWibLFRfz */

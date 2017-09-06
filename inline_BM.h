@@ -277,8 +277,11 @@ isobject_BM (const value_tyBM v)
   return valtype_BM (v) == tyObject_BM;
 }                               /* end isobject_BM */
 
-objectval_tyBM*objectcast_BM (const value_tyBM v)
-{ return isobject_BM(v)?(objectval_tyBM*)v:NULL; } /* end objectcast_BM */
+objectval_tyBM *
+objectcast_BM (const value_tyBM v)
+{
+  return isobject_BM (v) ? (objectval_tyBM *) v : NULL;
+}                               /* end objectcast_BM */
 
 hash_tyBM
 objecthash_BM (const objectval_tyBM * pob)

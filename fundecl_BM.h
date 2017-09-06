@@ -102,7 +102,7 @@ extern void initialize_garbage_collector_BM (void);
 extern void initialize_predefined_objects_BM (void);
 
 static inline bool isobject_BM (const value_tyBM v);
-static inline objectval_tyBM*objectcast_BM (const value_tyBM v);
+static inline objectval_tyBM *objectcast_BM (const value_tyBM v);
 static inline hash_tyBM objecthash_BM (const objectval_tyBM *);
 
 /// compare by id
@@ -374,9 +374,9 @@ extern const tupleval_tyBM *list_to_tuple_BM (const struct listtop_stBM *lis);
 
 static inline bool istree_BM (const value_tyBM v);
 static inline bool isclosure_BM (const value_tyBM v);
-static inline const closure_tyBM* closurecast_BM(const value_tyBM);
+static inline const closure_tyBM *closurecast_BM (const value_tyBM);
 static inline bool isnode_BM (const value_tyBM v);
-static inline const node_tyBM* nodecast_BM(const value_tyBM);
+static inline const node_tyBM *nodecast_BM (const value_tyBM);
 
 static inline objectval_tyBM *treeconn_BM (const value_tyBM);
 static inline objectval_tyBM *closureconn_BM (const value_tyBM);
