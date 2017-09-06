@@ -795,4 +795,27 @@ ROUTINEOBJNAME_BM (_2qppG2LJu79_9ljkbLS0eFQ)    //
   objputclassinfo_BM (_.recv, _.obsuperclass);
   objtouchnow_BM (_.recv);
   return _.recv;
-}                               /* end ROUTINE(_2qppG2LJu79_9ljkbLS0eFQ  */
+}                               /* end ROUTINE _2qppG2LJu79_9ljkbLS0eFQ  */
+
+
+
+/// for the routine to emit_module in plain_module-s
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // recieving module
+ const value_tyBM arg2 __attribute__ ((unused)),
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * recv;
+    );
+  if (!isobject_BM (arg1))
+    return NULL;
+  _.recv = (objectval_tyBM *) arg1;
+}                               /* end  ROUTINE _1gME6zn82Kf_8hzWibLFRfz */

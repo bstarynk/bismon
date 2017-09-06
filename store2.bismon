@@ -1,5 +1,5 @@
 // generated file store2.bismon
-// for 31 objects
+// for 32 objects
 // with 0 modules
 
 
@@ -48,6 +48,14 @@
 ~)
 !@ 1504619340.97
 !)_16OZeTBZLbW_6SCJt3rgxci
+
+
+
+!(_1gME6zn82Kf_8hzWibLFRfz
+!@ 1504684917.28
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "routine to emit_module on plain_module"
+!)_1gME6zn82Kf_8hzWibLFRfz
 
 
 
@@ -267,9 +275,10 @@
 !(_8g1WBJBhDT9_1QK8IcuWYx2 |=plain_module|
 !~ name (~ plain_module
 ~)
-!@ 1504607278.77
+!@ 1504685008.29
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
+~: _3MZiKuLf93a_3YTtdOHeUH8 |=emit_module|  % _1gME6zn82Kf_8hzWibLFRfz ()
 ~)
 
 !)_8g1WBJBhDT9_1QK8IcuWYx2
