@@ -58,6 +58,7 @@ extern void *allocgcty_BM (unsigned type, size_t sz);
 
 
 static inline bool isstring_BM (const value_tyBM v);
+static inline const stringval_tyBM *stringcast_BM (const value_tyBM);
 extern hash_tyBM stringhash_BM (const char *str);
 extern hash_tyBM stringhashlen_BM (const char *str, long len);
 extern const stringval_tyBM *makestring_BM (const char *str);
@@ -71,6 +72,7 @@ extern void stringgcdestroy_BM (struct garbcoll_stBM *, stringval_tyBM *);
 extern void stringgckeep_BM (struct garbcoll_stBM *, stringval_tyBM *);
 
 static inline bool istuple_BM (const value_tyBM v);
+static inline const tupleval_tyBM *tuplecast_BM (const value_tyBM);
 extern const tupleval_tyBM *maketuple_BM (objectval_tyBM ** arr,
                                           unsigned rawsiz);
 extern unsigned tuplesize_BM (const tupleval_tyBM * tup);
@@ -81,6 +83,7 @@ extern void tuplegckeep_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup);
 
 
 static inline bool isset_BM (const value_tyBM v);
+static inline const setval_tyBM *setcast_BM (const value_tyBM v);
 extern const setval_tyBM *makeset_BM (const objectval_tyBM ** arr,
                                       unsigned rawsiz);
 static inline bool setcontains_BM (const setval_tyBM * setv,
@@ -99,6 +102,7 @@ extern void initialize_garbage_collector_BM (void);
 extern void initialize_predefined_objects_BM (void);
 
 static inline bool isobject_BM (const value_tyBM v);
+static inline objectval_tyBM*objectcast_BM (const value_tyBM v);
 static inline hash_tyBM objecthash_BM (const objectval_tyBM *);
 
 /// compare by id
@@ -370,7 +374,9 @@ extern const tupleval_tyBM *list_to_tuple_BM (const struct listtop_stBM *lis);
 
 static inline bool istree_BM (const value_tyBM v);
 static inline bool isclosure_BM (const value_tyBM v);
+static inline const closure_tyBM* closurecast_BM(const value_tyBM);
 static inline bool isnode_BM (const value_tyBM v);
+static inline const node_tyBM* nodecast_BM(const value_tyBM);
 
 static inline objectval_tyBM *treeconn_BM (const value_tyBM);
 static inline objectval_tyBM *closureconn_BM (const value_tyBM);

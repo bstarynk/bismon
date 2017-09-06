@@ -130,6 +130,19 @@ valhash_BM (const value_tyBM v)
 }                               /* end valhash_BM */
 
 bool
+istuple_BM (const value_tyBM v)
+{
+  return (valtype_BM (v) == tyTuple_BM);
+}                               /* end istuple_BM */
+
+const tupleval_tyBM *
+tuplecast_BM (const value_tyBM v)
+{
+  return istuple_BM (v) ? (const tupleval_tyBM *) v : NULL;
+}                               /* end tuplecast_BM */
+
+
+bool
 valequal_BM (const value_tyBM v1, const value_tyBM v2)
 {
   if (v1 == v2)
@@ -263,6 +276,9 @@ isobject_BM (const value_tyBM v)
 {
   return valtype_BM (v) == tyObject_BM;
 }                               /* end isobject_BM */
+
+objectval_tyBM*objectcast_BM (const value_tyBM v)
+{ return isobject_BM(v)?(objectval_tyBM*)v:NULL; } /* end objectcast_BM */
 
 hash_tyBM
 objecthash_BM (const objectval_tyBM * pob)
@@ -429,6 +445,7 @@ isstrbuffer_BM (const value_tyBM val)
   return val && valtype_BM (val) == tydata_strbuffer_BM;
 }                               /* end isstrbuffer_BM */
 
+
 const char *
 strbufferbytes_BM (struct strbuffer_stBM *sbuf)
 {
@@ -551,6 +568,12 @@ isset_BM (const value_tyBM v)
   return (valtype_BM (v) == tySet_BM);
 }                               /* end isset_BM */
 
+const setval_tyBM *
+setcast_BM (const value_tyBM v)
+{
+  return isset_BM (v) ? (const setval_tyBM *) v : NULL;
+}                               /* end setcast_BM */
+
 bool
 setcontains_BM (const setval_tyBM * setv, const objectval_tyBM * obelem)
 {
@@ -561,17 +584,18 @@ setcontains_BM (const setval_tyBM * setv, const objectval_tyBM * obelem)
   return setelemindex_BM (setv, obelem) >= 0;
 }                               /* end setcontains_BM */
 
-bool
-istuple_BM (const value_tyBM v)
-{
-  return (valtype_BM (v) == tyTuple_BM);
-}                               /* end istuple_BM */
 
 bool
 isstring_BM (const value_tyBM v)
 {
   return (valtype_BM (v) == tyString_BM);
 }                               /* end isstring_BM */
+
+const stringval_tyBM *
+stringcast_BM (const value_tyBM v)
+{
+  return isstring_BM (v) ? (const stringval_tyBM *) v : NULL;
+}                               /* end stringcast_BM */
 
 ////////////////
 unsigned
@@ -648,11 +672,24 @@ isclosure_BM (const value_tyBM v)
   return valtype_BM (v) == tyClosure_BM;
 }                               /* end isclosure_BM */
 
+const closure_tyBM *
+closurecast_BM (const value_tyBM v)
+{
+  return isclosure_BM (v) ? (const closure_tyBM *) v : NULL;
+}                               /* end closurecast_BM */
+
 bool
 isnode_BM (const value_tyBM v)
 {
   return valtype_BM (v) == tyNode_BM;
 }                               /* end isnode_BM */
+
+const node_tyBM *
+nodecast_BM (const value_tyBM v)
+{
+  return isnode_BM (v) ? (const node_tyBM *) v : NULL;
+}                               /* end nodecast_BM */
+
 
 objectval_tyBM *
 treeconn_BM (const value_tyBM v)
