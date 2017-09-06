@@ -1,5 +1,5 @@
 // generated file store2.bismon
-// for 32 objects
+// for 34 objects
 // with 0 modules
 
 
@@ -48,6 +48,14 @@
 ~)
 !@ 1504619340.97
 !)_16OZeTBZLbW_6SCJt3rgxci
+
+
+
+!(_17mrxkMdNtH_2CduQ2WDIy5 |=prepare_module|
+!~ name (~ prepare_module
+~)
+!@ 1504713565.68
+!)_17mrxkMdNtH_2CduQ2WDIy5
 
 
 
@@ -100,6 +108,14 @@
 ~)
 
 !)_2HjhGk7Engb_58InnCq3TZ1
+
+
+
+!(_2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|
+!~ name (~ simple_module_generation
+~)
+!@ 1504713565.68
+!)_2HlKptD03wA_7JJCG7lN5nS
 
 
 
@@ -275,10 +291,12 @@
 !(_8g1WBJBhDT9_1QK8IcuWYx2 |=plain_module|
 !~ name (~ plain_module
 ~)
-!@ 1504685008.29
+!@ 1504713565.68
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
-~: _3MZiKuLf93a_3YTtdOHeUH8 |=emit_module|  % _1gME6zn82Kf_8hzWibLFRfz ()
+~: _3MZiKuLf93a_3YTtdOHeUH8 |=emit_module|  % _1gME6zn82Kf_8hzWibLFRfz (  
+_2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |=prepare_module|  
+)
 ~)
 
 !)_8g1WBJBhDT9_1QK8IcuWYx2
