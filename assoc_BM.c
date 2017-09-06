@@ -69,16 +69,23 @@ assocpair_put_BM (struct assocpairs_stBM *apairs,
     }
   else
     {
-      // should find some empty slot
+      // should find some empty slot - or the existing one
       assert (oldcnt < oldlen);
       for (unsigned ix = 0; ix < oldlen; ix++)
         {
-          if (!apairs->apairs_ent[ix].asso_keyob
-              && !apairs->apairs_ent[ix].asso_val)
+          struct assocentry_stBM *curent = apairs->apairs_ent + ix;
+          if (!curent->asso_keyob)
             {
-              apairs->apairs_ent[ix].asso_keyob = keyob;
-              apairs->apairs_ent[ix].asso_val = val;
+              assert (!curent->asso_val);
+              curent->asso_keyob = keyob;
+              curent->asso_val = val;
               ((typedsize_tyBM *) apairs)->size = oldcnt + 1;
+              return apairs;
+            }
+          else if (curent->asso_keyob == keyob)
+            {
+              assert (curent->asso_val != NULL);
+              curent->asso_val = val;
               return apairs;
             }
         };
