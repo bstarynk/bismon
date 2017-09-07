@@ -238,6 +238,14 @@
                 <property name="font">Courier New</property>
             </object>
         </child>
+      <!-- skipped_cmdtag for the skipped text -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">skipped_cmdtag</property>
+	      <property name="background">azure</property>
+              <property name="font">Courier New Italic</property>
+            </object>
+        </child>
       <!-- commentinside_cmdtag for inside comment -->
         <child type="tag">
             <object class='GtkTextTag'>

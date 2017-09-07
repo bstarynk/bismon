@@ -2,7 +2,7 @@
 #include "bismon.h"
 
 GtkWidget *mainwin_BM;
-
+GtkWidget *errormessagedialog_BM;
 
 // for readability, gravity argument to gtk_text_buffer_create_mark
 #define RIGHT_GRAVITY_BM FALSE
@@ -105,6 +105,7 @@ GtkTextTag *name_logtag_BM;
 
 
 GtkTextTag *errored_cmdtag_BM;
+GtkTextTag *skipped_cmdtag_BM;
 GtkTextTag *commentinside_cmdtag_BM;
 GtkTextTag *commentsign_cmdtag_BM;
 GtkTextTag *delim_cmdtag_BM;
@@ -1314,7 +1315,7 @@ parserrorcmd_BM (struct parser_stBM *pars,
   assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsops && parsops->parsop_nobuild;
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
-  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno);
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_end_iter (commandbuf_BM, &endit);
@@ -1333,6 +1334,14 @@ parserrorcmd_BM (struct parser_stBM *pars,
       log_end_message_BM ();
       gtk_text_view_scroll_to_iter (GTK_TEXT_VIEW (commandview_BM),
                                     &it, 0.1, false, 0.5, 0.2);
+      errormessagedialog_BM = gtk_message_dialog_new_with_markup        //
+        (GTK_WINDOW (mainwin_BM),
+         GTK_DIALOG_DESTROY_WITH_PARENT,
+         GTK_MESSAGE_ERROR,
+         GTK_BUTTONS_CLOSE,
+         "command error L%dC%d:\n<b>%s</b>", lineno, colpos, msg);
+      gtk_widget_show_all (errormessagedialog_BM);
+      /// errormessagedialog_BM is run in runcommand_BM 
     }
   free (msg);
   longjmp (jmperrorcmd_BM, 1);
@@ -2333,8 +2342,10 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
     return;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct parser_stBM * pars; value_tyBM comp;
-                 objectval_tyBM * obj; objectval_tyBM * oldfocusobj;
-                 const stringval_tyBM * name;);
+                 objectval_tyBM * obj;
+                 objectval_tyBM * oldfocusobj; const stringval_tyBM * name;
+                 const stringval_tyBM * result;
+    );
   _.pars = pars;
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
@@ -2351,6 +2362,21 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
       unsigned curlineno = parserlineno_BM (pars);
       unsigned curcolpos = parsercolpos_BM (pars);
       parstoken_tyBM tok = parsertokenget_BM (pars);
+      //// double semicolon stops the parsing and skip the rest
+      if (tok.tok_kind == plex_DELIM
+          && tok.tok_delim == delim_doublesemicolon)
+        {
+          unsigned toklin = tok.tok_line;
+          unsigned tokcol = tok.tok_col;
+          GtkTextIter skipit = EMPTY_TEXT_ITER_BM;
+          GtkTextIter endit = EMPTY_TEXT_ITER_BM;
+          gtk_text_buffer_get_iter_at_line (commandbuf_BM, &skipit, toklin);
+          gtk_text_iter_forward_chars (&skipit, tokcol);
+          gtk_text_buffer_get_end_iter (commandbuf_BM, &endit);
+          gtk_text_buffer_apply_tag (commandbuf_BM, skipped_cmdtag_BM,
+                                     &skipit, &endit);
+          break;
+        }
       // object complement applies to focus
       if (tok.tok_kind == plex_DELIM
           && (tok.tok_delim == delim_exclamand
@@ -2410,7 +2436,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                   log_begin_message_BM ();
                   log_puts_message_BM ("showing and focusing object ");
                   log_object_message_BM (GLOBAL_BM (gui_focus_obj));
-                  log_puts_message_BM (".");
+                  log_printf_message_BM (" at depth %d.", browserdepth_BM);
                   log_end_message_BM ();
                 }
               if (broldfocusob && _.oldfocusobj != _.obj)
@@ -2447,7 +2473,34 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
               log_begin_message_BM ();
               log_puts_message_BM ("displaying object ");
               log_object_message_BM (_.obj);
-              log_puts_message_BM (".");
+              log_printf_message_BM (" at depth %d.", browserdepth_BM);
+              log_end_message_BM ();
+            }
+        }
+      //
+      // <id>, <name>, $[...], $:<obj> is displaying an object without focus
+      else if (tok.tok_kind == plex_ID || tok.tok_kind == plex_NAMEDOBJ
+               || (tok.tok_kind == plex_DELIM
+                   && (tok.tok_delim == delim_dollarcolon
+                       || tok.tok_delim == delim_dollarleftbracket)))
+        {
+          bool gotobject = false;
+          parserseek_BM (pars, tok.tok_line, tok.tok_col);
+          _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
+                                      0, &gotobject);
+          if (!gotobject || (!nobuild && !_.obj))
+            parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                  "expecting object to display");
+          if (!nobuild)
+            {
+              browse_object_gui_BM (_.obj,
+                                    BMP_browse_in_object,
+                                    browserdepth_BM,
+                                    (struct stackframe_stBM *) &_);
+              log_begin_message_BM ();
+              log_puts_message_BM ("displaying object ");
+              log_object_message_BM (_.obj);
+              log_printf_message_BM (" at depth %d.", browserdepth_BM);
               log_end_message_BM ();
             }
         }
@@ -2506,8 +2559,8 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                 {
                   log_begin_message_BM ();
                   log_printf_message_BM
-                    ("binding & showing named value $%s.",
-                     bytstring_BM (_.name));
+                    ("binding & showing named value $%s at depth %d.",
+                     bytstring_BM (_.name), browserdepth_BM);
                   log_end_message_BM ();
                   browse_named_value_gui_BM (_.name, _.comp,
                                              BMP_browse_value,
@@ -2550,7 +2603,6 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
               log_printf_message_BM ("hiding named value $%s.",
                                      bytstring_BM (_.name));
               log_end_message_BM ();
-              /// should output on log window a message
             };
         }
       //
@@ -2576,6 +2628,40 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                                      newdepth);
               log_end_message_BM ();
               browserdepth_BM = newdepth;
+            }
+        }
+      //
+      // $( .... ) is displaying the named value $result
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_dollarleftparen)
+        {
+          bool gotval = false;
+          if (!_.result)
+            _.result = makestring_BM ("result");
+          parserseek_BM (pars, tok.tok_line, tok.tok_col);
+          _.comp =
+            parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, 0,
+                               &gotval);
+          if (!gotval)
+            parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                  "no value to display as $result after $(");
+          if (!nobuild)
+            {
+              if (_.comp)
+                {
+                  log_begin_message_BM ();
+                  log_printf_message_BM
+                    ("binding & showing $result at depth %d.",
+                     browserdepth_BM);
+                  log_end_message_BM ();
+                  browse_named_value_gui_BM (_.result, _.comp,
+                                             BMP_browse_value,
+                                             browserdepth_BM,
+                                             (struct stackframe_stBM *) &_);
+                }
+              else
+                parsererrorprintf_BM (pars, curlineno, curcolpos,
+                                      "no result to display after $(");
             }
         }
       //
@@ -3187,6 +3273,11 @@ runcommand_BM (bool erase)
   GtkTextIter startit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;
   cmd_clear_parens_BM ();
+  if (errormessagedialog_BM)
+    {
+      gtk_widget_destroy (errormessagedialog_BM), errormessagedialog_BM =
+        NULL;
+    };
   gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
   gtk_text_buffer_remove_all_tags (commandbuf_BM, &startit, &endit);
   int endlin = gtk_text_iter_get_line (&endit);
@@ -3238,6 +3329,13 @@ runcommand_BM (bool erase)
     }
   else                          /* error */
     {
+      // the errormessagedialog_BM was created in parserrorcmd_BM
+      if (errormessagedialog_BM)
+        {
+          gtk_dialog_run (GTK_DIALOG (errormessagedialog_BM));
+          gtk_widget_destroy (errormessagedialog_BM), errormessagedialog_BM =
+            NULL;
+        }
       free (cmdstr);
       return;
     }
@@ -3505,6 +3603,10 @@ initialize_gui_BM (const char *builderfile, const char *cssfile)
     gtk_text_tag_table_lookup (commandtagtable_BM, "errored_cmdtag");
   if (!errored_cmdtag_BM)
     FATAL_BM ("cannot find errored_cmdtag");
+  skipped_cmdtag_BM =           //
+    gtk_text_tag_table_lookup (commandtagtable_BM, "skipped_cmdtag");
+  if (!skipped_cmdtag_BM)
+    FATAL_BM ("cannot find skipped_cmdtag");
   commentinside_cmdtag_BM =     //
     gtk_text_tag_table_lookup (commandtagtable_BM, "commentinside_cmdtag");
   if (!commentinside_cmdtag_BM)

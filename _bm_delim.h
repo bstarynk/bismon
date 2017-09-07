@@ -4,7 +4,7 @@
 #endif
 
 #undef BM_NB_DELIM
-#define BM_NB_DELIM 43
+#define BM_NB_DELIM 44
  
 /// these should be sorted in ascending UTF8 order
 // HAS_DELIM_BM(String,Delimname)
@@ -36,6 +36,7 @@ HAS_DELIM_BM("*",star)
 HAS_DELIM_BM(",",comma)
 HAS_DELIM_BM(":",colon)
 HAS_DELIM_BM(";",semicolon)
+HAS_DELIM_BM(";;",doublesemicolon)
 HAS_DELIM_BM("?#",questionhash)
 HAS_DELIM_BM("?$",questiondollar)
 HAS_DELIM_BM("?$-",questiondollarminus)
