@@ -61,8 +61,8 @@ struct browsedval_stBM
 {
   const stringval_tyBM *brow_name;
   value_tyBM brow_val;
-  GtkTextMark *brow_vstartm;
-  GtkTextMark *brow_vendm;
+  GtkTextMark *brow_vstartmk;
+  GtkTextMark *brow_vendmk;
   int brow_depth;
   unsigned brow_parensize;      /* allocated size of brow_parenarr */
   unsigned brow_parenulen;      /* used length of brow_parenarr */
@@ -220,8 +220,6 @@ static void log_printf_message_BM (const char *fmt, ...)
   __attribute__ ((format (printf, 1, 2)));
 static void log_end_message_BM (void);
 
-// return an static string for a textiter, for debugging only
-char *textiterstrdbg_BM (GtkTextIter *);
 
 static void start_browse_object_BM (const objectval_tyBM * obj, int depth);
 
@@ -251,7 +249,7 @@ static void marksetcmd_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
 static void marksetbrows_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
                              gpointer);
 
-char *
+const char *
 textiterstrdbg_BM (GtkTextIter * it)
 {
   static char itinfobuf[32];
@@ -654,10 +652,10 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
     }
   unsigned lo = 0, hi = browsednvulen_BM, md = 0;
   const char *namstr = bytstring_BM (namev);
-  printf ("@start_browse_named_value/%d namstr %s ulen %d\n", __LINE__,
+  printf ("@start_browse_named_value/%d namstr '%s' ulen %d\n", __LINE__,
           namstr, browsednvulen_BM);
   for (unsigned ix = 0; ix < browsednvulen_BM; ix++)
-    printf ("@start_browse_named_value/%d [%d] %s\n", __LINE__,
+    printf ("@start_browse_named_value/%d [%d] '%s'\n", __LINE__,
             ix, bytstring_BM (browsedval_BM[ix].brow_name));
   while (lo + 8 < hi)
     {
@@ -679,13 +677,18 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
           GtkTextIter startit = EMPTY_TEXT_ITER_BM;
           GtkTextIter endit = EMPTY_TEXT_ITER_BM;
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                            &startit, mdval->brow_vstartm);
+                                            &startit, mdval->brow_vstartmk);
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &endit,
-                                            mdval->brow_vendm);
-          gtk_text_iter_forward_char (&endit);
+                                            mdval->brow_vendmk);
+          printf ("@start_browse_named_value/%d replac. md#%d startit %s\n",
+                  __LINE__, md, textiterstrdbg_BM (&startit));
+          printf ("@start_browse_named_value/%d replac. endit %s\n", __LINE__,
+                  textiterstrdbg_BM (&endit));
           gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
           gtk_text_buffer_move_mark (browserbuf_BM,
-                                     mdval->brow_vstartm, &startit);
+                                     mdval->brow_vstartmk, &startit);
+          printf ("@start_browse_named_value/%d new startit %s\n", __LINE__,
+                  textiterstrdbg_BM (&startit));
           mdval->brow_depth = depth;
           browserit_BM = startit;
           browsednvcurix_BM = md;
@@ -693,22 +696,30 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
         }
       else if (cmp < 0)
         {                       /* insert a new named value */
+          printf ("@start_browse_named_value/%d insert md#%d\n", __LINE__,
+                  md);
           GtkTextIter it = EMPTY_TEXT_ITER_BM;
           if (md > 0)
             {
               gtk_text_buffer_get_iter_at_mark  //
-                (browserbuf_BM, &it, mdval[-1].brow_vendm);
+                (browserbuf_BM, &it, mdval[-1].brow_vendmk);;
+              printf ("@start_browse_named_value/%d it %s\n", __LINE__,
+                      textiterstrdbg_BM (&it));
             }
           else if (browserobulen_BM > 0)
             {
               gtk_text_buffer_get_iter_at_mark  //
                 (browserbuf_BM, &it,
                  browsedobj_BM[browserobulen_BM - 1].brow_oendm);
+              printf ("@start_browse_named_value/%d it %s\n", __LINE__,
+                      textiterstrdbg_BM (&it));
             }
           else
             {
               gtk_text_buffer_get_iter_at_offset        //
                 (browserbuf_BM, &it, browserendtitleoffset_BM);
+              printf ("@start_browse_named_value/%d it %s\n", __LINE__,
+                      textiterstrdbg_BM (&it));
             }
           for (unsigned ix = browsednvulen_BM; ix > md; ix--)
             browsedval_BM[ix] = browsedval_BM[ix - 1];
@@ -719,10 +730,12 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
           gtk_text_buffer_insert (browserbuf_BM, &it, "\n", -1);
           GtkTextIter startit = it;
           gtk_text_iter_backward_char (&startit);
-          mdval->brow_vstartm = //
+          printf ("@start_browse_named_value/%d startit %s\n", __LINE__,
+                  textiterstrdbg_BM (&startit));
+          mdval->brow_vstartmk =        //
             gtk_text_buffer_create_mark (browserbuf_BM, NULL, &startit,
                                          RIGHT_GRAVITY_BM);
-          mdval->brow_vendm =   //
+          mdval->brow_vendmk =  //
             gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it,
                                          RIGHT_GRAVITY_BM);
           browserit_BM = it;
@@ -733,7 +746,7 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
   if (browsednvulen_BM > 0)
     gtk_text_buffer_get_iter_at_mark    //
-      (browserbuf_BM, &it, browsedval_BM[browsednvulen_BM - 1].brow_vendm);
+      (browserbuf_BM, &it, browsedval_BM[browsednvulen_BM - 1].brow_vendmk);
   else if (browserobulen_BM > 0)
     gtk_text_buffer_get_iter_at_mark    //
       (browserbuf_BM, &it, browsedobj_BM[browserobulen_BM - 1].brow_oendm);
@@ -746,12 +759,16 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
   browsedval_BM[browsednvulen_BM].brow_name = namev;
   browsedval_BM[browsednvulen_BM].brow_val = val;
   browsedval_BM[browsednvulen_BM].brow_depth = depth;
-  browsedval_BM[browsednvulen_BM].brow_vstartm =        //
+  browsedval_BM[browsednvulen_BM].brow_vstartmk =       //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &startit,
                                  RIGHT_GRAVITY_BM);
-  browsedval_BM[browsednvulen_BM].brow_vendm =  //
+  printf ("@start_browse_named_value/%d startit %s\n", __LINE__,
+          textiterstrdbg_BM (&startit));
+  browsedval_BM[browsednvulen_BM].brow_vendmk = //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, RIGHT_GRAVITY_BM);
   browserit_BM = it;
+  printf ("@start_browse_named_value/%d it %s\n", __LINE__,
+          textiterstrdbg_BM (&startit));
   browsednvcurix_BM = browsednvulen_BM;
   browsednvulen_BM++;
   return;
@@ -845,13 +862,13 @@ hide_named_value_gui_BM (const stringval_tyBM * namev,
           GtkTextIter startit = EMPTY_TEXT_ITER_BM;
           GtkTextIter endit = EMPTY_TEXT_ITER_BM;
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                            &startit, mdval->brow_vstartm);
+                                            &startit, mdval->brow_vstartmk);
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &endit,
-                                            mdval->brow_vendm);
+                                            mdval->brow_vendmk);
           gtk_text_iter_forward_char (&endit);
           gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
-          gtk_text_buffer_delete_mark (browserbuf_BM, mdval->brow_vstartm);
-          gtk_text_buffer_delete_mark (browserbuf_BM, mdval->brow_vendm);
+          gtk_text_buffer_delete_mark (browserbuf_BM, mdval->brow_vstartmk);
+          gtk_text_buffer_delete_mark (browserbuf_BM, mdval->brow_vendmk);
           if (mdval->brow_parenulen > 0)
             memset (mdval->brow_parenarr,
                     0,
@@ -896,10 +913,10 @@ browse_show_start_offset_BM (void)
       assert (browserobcurix_BM < 0);
       assert (browsedval_BM[browsednvcurix_BM].brow_name != NULL);
       assert (browsedval_BM[browsednvcurix_BM].brow_val != NULL);
-      assert (browsedval_BM[browsednvcurix_BM].brow_vstartm != NULL);
-      assert (browsedval_BM[browsednvcurix_BM].brow_vendm != NULL);
+      assert (browsedval_BM[browsednvcurix_BM].brow_vstartmk != NULL);
+      assert (browsedval_BM[browsednvcurix_BM].brow_vendmk != NULL);
       gtk_text_buffer_get_iter_at_mark
-        (browserbuf_BM, &it, browsedval_BM[browsednvcurix_BM].brow_vstartm);
+        (browserbuf_BM, &it, browsedval_BM[browsednvcurix_BM].brow_vstartmk);
     }
   else
     FATAL_BM
@@ -1091,7 +1108,7 @@ browse_named_value_gui_BM (const stringval_tyBM * namev,
             taggedint_BM (browsdepth), taggedint_BM (0));
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
   gtk_text_buffer_move_mark (browserbuf_BM,
-                             browsedval_BM[browsednvcurix_BM].brow_vendm,
+                             browsedval_BM[browsednvcurix_BM].brow_vendmk,
                              &browserit_BM);
 }                               /* end browse_named_value_gui_BM */
 
@@ -3936,11 +3953,11 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
         {
           bvmd = (bvlo + bvhi) / 2;
           struct browsedval_stBM *mdbrva = browsedval_BM + bvmd;
-          assert (mdbrva->brow_vstartm && mdbrva->brow_vendm);
+          assert (mdbrva->brow_vstartmk && mdbrva->brow_vendmk);
           GtkTextIter vstartit = EMPTY_TEXT_ITER_BM;
           GtkTextIter vendit = EMPTY_TEXT_ITER_BM;
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                            &vstartit, mdbrva->brow_vstartm);
+                                            &vstartit, mdbrva->brow_vstartmk);
           int startcmp = gtk_text_iter_compare (txit, &vstartit);
           if (startcmp < 0)
             {
@@ -3948,7 +3965,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
               continue;
             }
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                            &vendit, mdbrva->brow_vendm);
+                                            &vendit, mdbrva->brow_vendmk);
           int endcmp = gtk_text_iter_compare (txit, &vendit);
           if (endcmp > 0)
             {
@@ -3964,13 +3981,13 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
       for (bvmd = bvlo; bvmd < bvhi && bvix < 0; bvmd++)
         {
           struct browsedval_stBM *mdbrva = browsedval_BM + bvmd;
-          assert (mdbrva->brow_vstartm && mdbrva->brow_vendm);
+          assert (mdbrva->brow_vstartmk && mdbrva->brow_vendmk);
           GtkTextIter vstartit = EMPTY_TEXT_ITER_BM;
           GtkTextIter vendit = EMPTY_TEXT_ITER_BM;
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                            &vstartit, mdbrva->brow_vstartm);
+                                            &vstartit, mdbrva->brow_vstartmk);
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &vendit,
-                                            mdbrva->brow_vendm);
+                                            mdbrva->brow_vendmk);
           if (gtk_text_iter_in_range (txit, &vstartit, &vendit))
             bvix = bvmd;
         }
@@ -3983,9 +4000,9 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
           if (curnbparen == 0)
             return;
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
-                                            &vstartit, brva->brow_vstartm);
+                                            &vstartit, brva->brow_vstartmk);
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &vendit,
-                                            brva->brow_vendm);
+                                            brva->brow_vendmk);
           guint vstartoff = gtk_text_iter_get_offset (&vstartit);
           int delta = off - vstartoff;
           assert (delta >= 0);
