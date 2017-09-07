@@ -815,6 +815,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
   {
     closix_simple_module_generation,
     closix_prepare_module,
+    closix_plain_module,
     closix__LAST
   };
   assert (isclosure_BM ((const value_tyBM) clos));
@@ -824,6 +825,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
                  objectval_tyBM * modgenob;
                  objectval_tyBM * simple_module_generation;
                  objectval_tyBM * prepare_module;
+                 objectval_tyBM * plain_module;
                  value_tyBM result;
     );
   if (!isobject_BM (arg1))
@@ -842,7 +844,13 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
   assert (_.prepare_module != NULL);
   assert (objecthash_BM (_.prepare_module)      //
           == 159908881 /* prepare_module |=_17mrxkMdNtH_2CduQ2WDIy5| */ );
-  objputclass_BM (_.modgenob, _.prepare_module);
+  _.plain_module =
+    objectcast_BM (closurenthson_BM ((void *) clos, closix_plain_module));
+  assert (_.plain_module != NULL);
+  assert (objecthash_BM (_.plain_module)        //
+          == 1032996964 /* plain_module |=_8g1WBJBhDT9_1QK8IcuWYx2| */ );
+  objputclass_BM (_.modgenob, _.simple_module_generation);
+  objputattr_BM (_.modgenob, _.plain_module, _.recv);
   _.modgenob->ob_data = strbuffermake_BM (1024 * 1024);
   objtouchnow_BM (_.modgenob);
   _.result = send1_BM (_.recv, _.prepare_module,
