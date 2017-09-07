@@ -1543,7 +1543,7 @@ parsergetvalue_BM (struct parser_stBM * pars,
       _.resval =
         parsops->parsop_expand_valexp_rout (pars, lineno, colpos, depth,
                                             (struct stackframe_stBM *) &_);
-      if (!nobuild && !isobject_BM ((const value_tyBM) _.resval))
+      if (!nobuild && ((const value_tyBM) _.resval) == NULL)
         parsererrorprintf_BM (pars, lineno, colpos,
                               "failed $(...) expansion of %s", resbuf);
       *pgotval = true;
