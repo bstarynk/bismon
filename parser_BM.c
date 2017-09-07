@@ -1310,6 +1310,46 @@ parsergetvalue_BM (struct parser_stBM * pars,
       return _.resval;
     }
   //
+  // parse named object sets
+  // ~: * # set of all named objects
+  // ~: foo # set of named objects starting with foo
+  // ~: "foo*bar*" # set of named objects fnmatching "foo*bar*"
+  // ~: "~?aa*" # set of named objects case-insensitively fnmatching "?aa*"
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_tildecolon)
+    {
+      parserskipspaces_BM (pars);
+      parstoken_tyBM patok = parsertokenget_BM (pars);
+      if (patok.tok_kind == plex_NAMEDOBJ)
+        {
+          if (!nobuild)
+            _.resval = (value_tyBM)
+              setofprefixednamedobjects_BM (findobjectname_BM
+                                            (patok.tok_namedobj));
+        }
+      else if (patok.tok_kind == plex_CNAME)
+        {
+          if (!nobuild)
+            _.resval = (value_tyBM)
+              setofprefixednamedobjects_BM (bytstring_BM (patok.tok_cname));
+        }
+      else if (patok.tok_kind == plex_STRING)
+        {
+          if (!nobuild)
+            _.resval = (value_tyBM)
+              setofmatchednamedobjects_BM (bytstring_BM (patok.tok_string));
+        }
+      else if (patok.tok_kind == plex_DELIM && patok.tok_delim == delim_star)
+        {
+          if (!nobuild)
+            _.resval = (value_tyBM) setofnamedobjects_BM ();
+        }
+      else
+        parsererrorprintf_BM (pars, lineno, colpos,     //
+                              "~: not followed by name or string or * for matching set of named");
+      *pgotval = true;
+      return _.resval;
+    }
+  //
   // parse nodes
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_star)
     {

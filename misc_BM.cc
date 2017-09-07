@@ -3,6 +3,7 @@ extern "C" {
 #include "bismon.h"
 };
 
+#include <fnmatch.h>
 #include <map>
 #include <new>
 #include <set>
@@ -244,6 +245,26 @@ setofprefixednamedobjects_BM (const char*prefix)
     }
   return makeset_BM(vectobj.data(), vectobj.size());
 } // end setofprefixednamedobjects_BM
+
+
+const setval_tyBM*
+setofmatchednamedobjects_BM(const char*fnmatcher)
+{
+  if (!fnmatcher || !fnmatcher[0]) return setofnamedobjects_BM();
+  std::vector<const objectval_tyBM *> vectobj;
+  vectobj.reserve(namemap_BM.size()/16+10);
+  bool allcases = (fnmatcher[0] == '~');
+  for (auto itn : namemap_BM)
+    {
+      const objectval_tyBM* ob = itn.second;
+      assert (isobject_BM((const value_tyBM)ob));
+      if (!fnmatch(allcases?(fnmatcher+1):fnmatcher, itn.first,
+                   allcases ? (FNM_EXTMATCH | FNM_CASEFOLD)
+                   : FNM_EXTMATCH))
+        vectobj.push_back(ob);
+    }
+  return makeset_BM(vectobj.data(), vectobj.size());
+} // end setofmatchednamedobjects_BM
 
 const char*
 findnameafter_BM(const char*prefix)

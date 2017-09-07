@@ -602,7 +602,7 @@ extern bool forgetnamedobject_BM (const objectval_tyBM * obj);
 extern bool forgetnamestring_BM (const char *nam);
 extern const setval_tyBM *setofnamedobjects_BM (void);
 extern const setval_tyBM *setofprefixednamedobjects_BM (const char *prefix);
-
+extern const setval_tyBM *setofmatchednamedobjects_BM (const char *fnmatcher);
 // globals, see misc_BM.cc
 extern void initialize_globals_BM (void);
 extern objectval_tyBM **findglobalnamed_BM (const char *nam);
