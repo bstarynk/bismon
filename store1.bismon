@@ -1,5 +1,5 @@
 // generated file store1.bismon
-// for 29 objects
+// for 30 objects
 // with 0 modules
 
 
@@ -242,6 +242,16 @@
 ~)
 
 !)_6TmLNh9vtVY_0pwkHRtJ44k
+
+
+
+!(_7bD9VtDkGSn_7lxHeYuuFLR |=result|
+!~ name (~ result
+~)
+!@ 1504786642.76
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "result of something"
+!)_7bD9VtDkGSn_7lxHeYuuFLR
 
 
 
