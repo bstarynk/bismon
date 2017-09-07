@@ -1339,8 +1339,9 @@ parserrorcmd_BM (struct parser_stBM *pars,
          GTK_DIALOG_DESTROY_WITH_PARENT,
          GTK_MESSAGE_ERROR,
          GTK_BUTTONS_CLOSE,
-         "command error L%dC%d:\n<b>%s</b>", lineno, colpos, msg);
+         "<b>command error</b> L%dC%d:\n" "%s", lineno, colpos, msg);
       gtk_widget_show_all (errormessagedialog_BM);
+      fflush (NULL);
       /// errormessagedialog_BM is run in runcommand_BM 
     }
   free (msg);
@@ -2341,8 +2342,8 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
   if (!isparser_BM (pars))
     return;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 struct parser_stBM * pars; value_tyBM comp;
-                 objectval_tyBM * obj;
+                 struct parser_stBM * pars;
+                 value_tyBM comp; objectval_tyBM * obj;
                  objectval_tyBM * oldfocusobj; const stringval_tyBM * name;
                  const stringval_tyBM * result;
     );
