@@ -356,7 +356,7 @@ rungui_BM (void)
       if (!access (gui_log_name_bm, R_OK))
         {
           char *backupath = NULL;
-          asprintf (&backupath, "%s~\n", gui_log_name_bm);
+          asprintf (&backupath, "%s~", gui_log_name_bm);
           if (!backupath)
             FATAL_BM ("asprintf fail for backupath %s (%m)", gui_log_name_bm);
           (void) rename (gui_log_name_bm, backupath);
