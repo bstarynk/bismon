@@ -3,6 +3,7 @@
 
 GtkWidget *mainwin_BM;
 GtkWidget *errormessagedialog_BM;
+FILE *gui_command_log_file_BM;
 
 // for readability, gravity argument to gtk_text_buffer_create_mark
 #define RIGHT_GRAVITY_BM FALSE
@@ -72,6 +73,8 @@ struct browsedval_stBM *browsedval_BM;
 guint browserblinkid_BM;
 struct parenoffset_stBM browserblinkparens_BM;  /// offsets are absolute
 
+
+int commandnumber_BM;
 /// stop completely the blinking
 static void browserblinkstop_BM (void);
 
@@ -652,13 +655,6 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
     }
   unsigned lo = 0, hi = browsednvulen_BM, md = 0;
   const char *namstr = bytstring_BM (namev);
-  /// for debugging
-  printf ("@start_browse_named_value/%d namstr '%s' ulen %d\n", __LINE__,
-          namstr, browsednvulen_BM);
-  for (unsigned ix = 0; ix < browsednvulen_BM; ix++)
-    printf ("@start_browse_named_value/%d [%d] '%s'\n", __LINE__,
-            ix, bytstring_BM (browsedval_BM[ix].brow_name));
-  ///
   while (lo + 8 < hi)
     {
       md = (lo + hi) / 2;
@@ -682,10 +678,6 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
                                             &startit, mdval->brow_vstartmk);
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &endit,
                                             mdval->brow_vendmk);
-          printf ("@start_browse_named_value/%d replac. md#%d startit %s\n",
-                  __LINE__, md, textiterstrdbg_BM (&startit));
-          printf ("@start_browse_named_value/%d replac. endit %s\n", __LINE__,
-                  textiterstrdbg_BM (&endit));
           gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
           browserit_BM = endit;
           gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
@@ -693,38 +685,28 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
           gtk_text_iter_backward_char (&startit);
           gtk_text_buffer_move_mark (browserbuf_BM,
                                      mdval->brow_vstartmk, &startit);
-          printf ("@start_browse_named_value/%d new startit %s\n", __LINE__,
-                  textiterstrdbg_BM (&startit));
           mdval->brow_depth = depth;
           browsednvcurix_BM = md;
           return;
         }
       else if (cmp < 0)
         {                       /* insert a new named value */
-          printf ("@start_browse_named_value/%d insert md#%d\n", __LINE__,
-                  md);
           GtkTextIter it = EMPTY_TEXT_ITER_BM;
           if (md > 0)
             {
               gtk_text_buffer_get_iter_at_mark  //
                 (browserbuf_BM, &it, mdval[-1].brow_vendmk);;
-              printf ("@start_browse_named_value/%d it %s\n", __LINE__,
-                      textiterstrdbg_BM (&it));
             }
           else if (browserobulen_BM > 0)
             {
               gtk_text_buffer_get_iter_at_mark  //
                 (browserbuf_BM, &it,
                  browsedobj_BM[browserobulen_BM - 1].brow_oendm);
-              printf ("@start_browse_named_value/%d it %s\n", __LINE__,
-                      textiterstrdbg_BM (&it));
             }
           else
             {
               gtk_text_buffer_get_iter_at_offset        //
                 (browserbuf_BM, &it, browserendtitleoffset_BM);
-              printf ("@start_browse_named_value/%d it %s\n", __LINE__,
-                      textiterstrdbg_BM (&it));
             }
           for (unsigned ix = browsednvulen_BM; ix > md; ix--)
             browsedval_BM[ix] = browsedval_BM[ix - 1];
@@ -735,8 +717,6 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
           gtk_text_buffer_insert (browserbuf_BM, &it, "\n", -1);
           GtkTextIter startit = it;
           gtk_text_iter_backward_char (&startit);
-          printf ("@start_browse_named_value/%d startit %s\n", __LINE__,
-                  textiterstrdbg_BM (&startit));
           mdval->brow_vstartmk =        //
             gtk_text_buffer_create_mark (browserbuf_BM, NULL, &startit,
                                          RIGHT_GRAVITY_BM);
@@ -767,13 +747,9 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
   browsedval_BM[browsednvulen_BM].brow_vstartmk =       //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &startit,
                                  RIGHT_GRAVITY_BM);
-  printf ("@start_browse_named_value/%d startit %s\n", __LINE__,
-          textiterstrdbg_BM (&startit));
   browsedval_BM[browsednvulen_BM].brow_vendmk = //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, RIGHT_GRAVITY_BM);
   browserit_BM = it;
-  printf ("@start_browse_named_value/%d it %s\n", __LINE__,
-          textiterstrdbg_BM (&startit));
   browsednvcurix_BM = browsednvulen_BM;
   browsednvulen_BM++;
   return;
@@ -3306,8 +3282,26 @@ runcommand_BM (bool erase)
   int endlin = gtk_text_iter_get_line (&endit);
   char *cmdstr = gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit,
                                            false);
-  printf ("@runcommand_BM/%d ******cmdstr:\n%s\n", __LINE__, cmdstr);
+  bool gotffortab = false;
+  for (char *pc = cmdstr; *pc; pc++)
+    {
+      if (*pc == '\t')
+        {
+          gotffortab = true;
+          *pc = ' ';
+        }
+      else if (*pc == '\f')
+        {
+          gotffortab = true;
+          *pc = '\n';
+        };
+    };
+  if (gotffortab)
+    {
+      gtk_text_buffer_set_text (commandbuf_BM, cmdstr, -1);
+    }
   struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
+  int cmdlen = strlen (cmdstr);
   cmdpars->pars_ops = &parsop_command_build_BM;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  struct parser_stBM *cmdpars;);
@@ -3317,10 +3311,26 @@ runcommand_BM (bool erase)
     {
       // should parse the command buffer, this could longjmp to jmperrorcmd_BM
       parsecommandbuf_BM (cmdpars, (struct stackframe_stBM *) &_);
+      commandnumber_BM++;
+      if (gui_command_log_file_BM)
+        {
+          serial63_tyBM sercmd = randomserial63_BM ();
+          char serbuf[16];
+          memset (serbuf, 0, sizeof (serbuf));
+          serial63tocbuf16_BM (sercmd, serbuf);
+          fprintf (gui_command_log_file_BM, "///++%s command #%d,l%d:\n",
+                   serbuf, commandnumber_BM, cmdlen);
+          fputs (cmdstr, gui_command_log_file_BM);
+          if (cmdlen > 0 && cmdstr[cmdlen - 1] != '\n')
+            putc ('\n', gui_command_log_file_BM);
+          fprintf (gui_command_log_file_BM, "///--%s end command #%d\n\f\n",
+                   serbuf, commandnumber_BM);
+          fflush (gui_command_log_file_BM);
+        }
       log_begin_message_BM ();
       log_printf_message_BM
-        ("run %s command of %d lines successfully:\n",
-         erase ? "erased" : "kept", endlin);
+        ("run %s command #%d of %d lines successfully:\n",
+         erase ? "erased" : "kept", commandnumber_BM, endlin);
       GtkTextIter eol1it = startit;
       gtk_text_iter_forward_line (&eol1it);
       char *line1str =

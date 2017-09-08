@@ -4,7 +4,7 @@
 struct timespec startrealtimespec_BM;
 void *dlprog_BM;
 bool gui_is_running_BM;
-
+const char myhostname_BM[80];
 void
 abort_BM (void)
 {
@@ -19,6 +19,8 @@ char *dump_dir_bm;
 char *dump_after_load_dir_bm;
 char *builder_file_bm = "bismon.ui";
 char *css_file_bm = "bismon.css";
+char *gui_log_name_bm = "-";    /* default is stdout */
+
 char *comment_bm;
 int count_emit_has_predef_bm;
 int nb_added_predef_bm;
@@ -102,6 +104,14 @@ const GOptionEntry optab[] = {
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &css_file_bm,
    .description = "with GTK style CSS file FILE (default: bismon.css)",
+   .arg_description = "FILE"},
+  //
+  //
+  {.long_name = "gui-log",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &gui_log_name_bm,
+   .description = "GUI log file name (none if empty, - is stdout, default)",
    .arg_description = "FILE"},
   //
   {.long_name = "emit-has-predef",.short_name = (char) 0,
@@ -204,6 +214,8 @@ idqcmp_BM (const void *p1, const void *p2)
   return cmpid_BM (*(rawid_tyBM *) p1, *(rawid_tyBM *) p2);
 }                               /* end idqcmp_BM */
 
+
+static void rungui_BM (void);
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
 //// GTK appplications
@@ -218,22 +230,10 @@ main (int argc, char **argv)
                argv[0], dlerror ());
       exit (EXIT_FAILURE);
     }
+  memset ((char *) myhostname_BM, 0, sizeof (myhostname_BM));
+  if (gethostname ((char *) myhostname_BM, sizeof (myhostname_BM) - 1))
+    FATAL_BM ("gethostname failure %m");
   initialize_garbage_collector_BM ();
-  /// just to test the macro LOCALQNODESIZED_BM
-  {
-    LOCALQNODESIZED_BM (qns, BMP_node, 4);
-    assert (qns.__ntree.nodt_conn == BMP_node);
-    assert (qns.qsons[2] == NULL);
-    assert (treewidth_BM (&qns) == 4);
-  }
-  // just to test the macro LOCALQNODEFIELDED_BM
-  {
-    LOCALQNODEFIELDED_BM (qnf, BMP_embed, value_tyBM * v1;
-                          value_tyBM * v2, *v3;);
-    assert (qnf.__ftree.nodt_conn == BMP_embed);
-    assert (qnf.v2 == NULL);
-    assert (treewidth_BM (&qnf) == 3);
-  }
   check_delims_BM ();
   initialize_globals_BM ();
   initialize_predefined_objects_BM ();
@@ -332,10 +332,89 @@ main (int argc, char **argv)
       printf ("no GUI in batch mode\n");
     }
   else
-    {
-      gui_is_running_BM = true;
-      gtk_main ();
-      gui_is_running_BM = false;
-    }
+    rungui_BM ();
   fflush (NULL);
 }                               /* end main */
+
+void
+rungui_BM (void)
+{
+  gui_is_running_BM = true;
+  if (!gui_log_name_bm || !gui_log_name_bm[0])
+    {
+      gui_command_log_file_BM = NULL;
+      printf ("no GUI log\n");
+    }
+  else if (!strcmp (gui_log_name_bm, "-"))
+    {
+      gui_command_log_file_BM = stdout;
+      printf ("GUI log to stdout\n");
+    }
+  else
+    {
+      if (!access (gui_log_name_bm, R_OK))
+        {
+          char *backupath = NULL;
+          asprintf (&backupath, "%s~\n", gui_log_name_bm);
+          if (!backupath)
+            FATAL_BM ("asprintf fail for backupath %s (%m)", gui_log_name_bm);
+          (void) rename (gui_log_name_bm, backupath);
+          free (backupath);
+        };
+      gui_command_log_file_BM = fopen (gui_log_name_bm, "w");
+      if (!gui_command_log_file_BM)
+        FATAL_BM ("fopen GUI log %s failure (%m)", gui_log_name_bm);
+      fprintf (stderr, "GUI log to %s\n", gui_log_name_bm);
+      fprintf (gui_command_log_file_BM,
+               "// GUI command log file %s\n", basename (gui_log_name_bm));
+    }
+  if (gui_command_log_file_BM)
+    {
+      {
+        time_t nowtim = time (NULL);
+        struct tm nowtm = { };
+        localtime_r (&nowtim, &nowtm);
+        char nowbuf[64];
+        memset (nowbuf, 0, sizeof (nowbuf));
+        strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
+        fprintf (gui_command_log_file_BM,
+                 "// bismon GUI log at %s on %s pid %d\n",
+                 nowbuf, myhostname_BM, (int) getpid ());
+      }
+      fprintf (gui_command_log_file_BM,
+               "// bismon checksum %s lastgitcommit %s\n", bismon_checksum,
+               bismon_lastgitcommit);
+      fprintf (gui_command_log_file_BM,
+               "// bismon timestamp %s directory %s\n", bismon_timestamp,
+               bismon_directory);
+      {
+        char curdirpath[128];
+        memset (curdirpath, 0, sizeof (curdirpath));
+        if (getcwd (curdirpath, sizeof (curdirpath) - 1))
+          fprintf (gui_command_log_file_BM,
+                   "// bismon current directory %s\n", curdirpath);
+        else
+          FATAL_BM ("getcwd failure %m");
+      }
+      fflush (gui_command_log_file_BM);
+    }
+  gtk_main ();
+  gui_is_running_BM = false;
+  if (gui_command_log_file_BM)
+    {
+      time_t nowtim = time (NULL);
+      struct tm nowtm = { };
+      localtime_r (&nowtim, &nowtm);
+      char nowbuf[64];
+      memset (nowbuf, 0, sizeof (nowbuf));
+      strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
+      fprintf (gui_command_log_file_BM,
+               "\n\f/// end of bismon GUI command log file %s at %s\n",
+               gui_log_name_bm, nowbuf);
+      if (gui_command_log_file_BM != stdout
+          && gui_command_log_file_BM != stderr)
+        fclose (gui_command_log_file_BM);
+      gui_command_log_file_BM = NULL;
+      fflush (NULL);
+    }
+}                               /* end rungui_BM */

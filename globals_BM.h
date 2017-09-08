@@ -10,8 +10,11 @@ extern const char bismon_checksum[];
 extern const char bismon_directory[];
 extern const char bismon_makefile[];
 
+extern const char myhostname_BM[];
 extern bool want_garbage_collection_BM;
 extern bool gui_is_running_BM;
+extern FILE *gui_command_log_file_BM;
+
 extern GtkTextIter browserit_BM;
 
 extern pthread_t mainthreadid_BM;
