@@ -15,4 +15,6 @@ core*
 
 *.html
 
+_*.log
+
 gmon.out

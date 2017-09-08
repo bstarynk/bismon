@@ -1116,8 +1116,16 @@ void
 exit_BM (void)
 {
   extern char *dump_dir_bm;
-  dump_BM (dump_dir_bm, NULL);
+  struct dumpinfo_stBM di = dump_BM (dump_dir_bm, NULL);
   gtk_main_quit ();
+  if (command_log_file_BM)
+    {
+      fprintf (command_log_file_BM,
+               "\n//// at exit dumped %ld objects, %ld files to %s\n\n",
+               di.dumpinfo_emittedobjectcount, di.dumpinfo_wrotefilecount,
+               dump_dir_bm);
+      fflush (command_log_file_BM);
+    }
 }                               /* end exit_BM */
 
 void do_dump_BM (void);
@@ -1146,6 +1154,14 @@ do_dump_BM (void)
   log_printf_message_BM ("in %.3f elapsed, %.4f cpu seconds.\n",
                          di.dumpinfo_elapsedtime, di.dumpinfo_cputime);
   log_end_message_BM ();
+  if (command_log_file_BM)
+    {
+      fprintf (command_log_file_BM,
+               "\n//// dumped %ld objects, %ld files to %s\n\n",
+               di.dumpinfo_emittedobjectcount, di.dumpinfo_wrotefilecount,
+               dump_dir_bm);
+      fflush (command_log_file_BM);
+    }
 }                               /* end do_dump_BM */
 
 static void do_garbcoll_BM (void);

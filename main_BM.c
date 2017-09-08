@@ -19,7 +19,7 @@ char *dump_dir_bm;
 char *dump_after_load_dir_bm;
 char *builder_file_bm = "bismon.ui";
 char *css_file_bm = "bismon.css";
-char *gui_log_name_bm = "-";    /* default is stdout */
+char *gui_log_name_bm = "_bismon.log";  /* default log file */
 
 char *comment_bm;
 int count_emit_has_predef_bm;
@@ -111,7 +111,8 @@ const GOptionEntry optab[] = {
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &gui_log_name_bm,
-   .description = "GUI log file name (none if empty, - is stdout, default)",
+   .description =
+   "GUI log file name (none if empty, - is stdout, default is _bismon.log)",
    .arg_description = "FILE"},
   //
   {.long_name = "emit-has-predef",.short_name = (char) 0,
