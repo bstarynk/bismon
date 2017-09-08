@@ -1107,7 +1107,20 @@ quit_BM (void)
      GTK_BUTTONS_OK_CANCEL, "Quit without dumping?");
   int resp = gtk_dialog_run (GTK_DIALOG (quitdialog));
   if (resp == GTK_RESPONSE_OK)
-    gtk_main_quit ();
+    {
+      gtk_main_quit ();
+      if (gui_command_log_file_BM)
+        {
+          time_t nowtim = time (NULL);
+          struct tm nowtm = { };
+          localtime_r (&nowtim, &nowtm);
+          char nowbuf[64];
+          memset (nowbuf, 0, sizeof (nowbuf));
+          strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
+          fprintf (gui_command_log_file_BM, "\n//// quit at %s\n\n", nowbuf);
+          fflush (gui_command_log_file_BM);
+        }
+    }
   gtk_widget_destroy (quitdialog);
 }                               /* end quit_BM */
 
@@ -1118,13 +1131,19 @@ exit_BM (void)
   extern char *dump_dir_bm;
   struct dumpinfo_stBM di = dump_BM (dump_dir_bm, NULL);
   gtk_main_quit ();
-  if (command_log_file_BM)
+  if (gui_command_log_file_BM)
     {
-      fprintf (command_log_file_BM,
-               "\n//// at exit dumped %ld objects, %ld files to %s\n\n",
+      time_t nowtim = time (NULL);
+      struct tm nowtm = { };
+      localtime_r (&nowtim, &nowtm);
+      char nowbuf[64];
+      memset (nowbuf, 0, sizeof (nowbuf));
+      strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
+      fprintf (gui_command_log_file_BM,
+               "\n//// at exit dumped %ld objects, %ld files to %s at %s\n\n",
                di.dumpinfo_emittedobjectcount, di.dumpinfo_wrotefilecount,
-               dump_dir_bm);
-      fflush (command_log_file_BM);
+               dump_dir_bm, nowbuf);
+      fflush (gui_command_log_file_BM);
     }
 }                               /* end exit_BM */
 
@@ -1154,13 +1173,19 @@ do_dump_BM (void)
   log_printf_message_BM ("in %.3f elapsed, %.4f cpu seconds.\n",
                          di.dumpinfo_elapsedtime, di.dumpinfo_cputime);
   log_end_message_BM ();
-  if (command_log_file_BM)
+  if (gui_command_log_file_BM)
     {
-      fprintf (command_log_file_BM,
-               "\n//// dumped %ld objects, %ld files to %s\n\n",
+      time_t nowtim = time (NULL);
+      struct tm nowtm = { };
+      localtime_r (&nowtim, &nowtm);
+      char nowbuf[64];
+      memset (nowbuf, 0, sizeof (nowbuf));
+      strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
+      fprintf (gui_command_log_file_BM,
+               "\n//// dumped %ld objects, %ld files to %s at %s\n\n",
                di.dumpinfo_emittedobjectcount, di.dumpinfo_wrotefilecount,
-               dump_dir_bm);
-      fflush (command_log_file_BM);
+               dump_dir_bm, nowbuf);
+      fflush (gui_command_log_file_BM);
     }
 }                               /* end do_dump_BM */
 
@@ -4168,7 +4193,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
     else if (mtime < now && mtime + 25e6 > now) // 25 million seconds is less than 10 months
       strftime (mbuf, sizeof (mbuf), "%a %d %b, %T %Z", &mtimtm);
     else
-      strftime (mbuf, sizeof (mbuf), "%c %Z", &mtimtm);
+      strftime (mbuf, sizeof (mbuf), "%c", &mtimtm);
     snprintf (commbuf, sizeof (commbuf), "|mtim:%s space:%s|", mbuf, spabuf);
     gtk_text_buffer_insert_with_tags (browserbuf_BM,
                                       &browserit_BM, commbuf, -1,

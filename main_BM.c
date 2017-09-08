@@ -377,7 +377,7 @@ rungui_BM (void)
         localtime_r (&nowtim, &nowtm);
         char nowbuf[64];
         memset (nowbuf, 0, sizeof (nowbuf));
-        strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
+        strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
         fprintf (gui_command_log_file_BM,
                  "// bismon GUI log at %s on %s pid %d\n",
                  nowbuf, myhostname_BM, (int) getpid ());
@@ -408,7 +408,7 @@ rungui_BM (void)
       localtime_r (&nowtim, &nowtm);
       char nowbuf[64];
       memset (nowbuf, 0, sizeof (nowbuf));
-      strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
+      strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
       fprintf (gui_command_log_file_BM,
                "\n\f/// end of bismon GUI command log file %s at %s\n",
                gui_log_name_bm, nowbuf);
