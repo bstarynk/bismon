@@ -1,5 +1,5 @@
 // generated file store2.bismon
-// for 37 objects
+// for 39 objects
 // with 0 modules
 
 
@@ -160,6 +160,14 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a set"
 !)_3Tc3E4uo2p5_4EXWCPwCR5b
+
+
+
+!(_43dxTPqTsQQ_3M5JFtY76r1 |=expect|
+!~ name (~ expect
+~)
+!@ 1504875287.86
+!)_43dxTPqTsQQ_3M5JFtY76r1
 
 
 
@@ -338,9 +346,11 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 !(_8zNBXSMY2Ts_1VI5dmY4umA
-!@ 1504869617.80
+!@ 1504875450.94
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to prepare_module a basiclo module"
+!: _43dxTPqTsQQ_3M5JFtY76r1 |=expect|
+ [ _2HlKptD03wA_7JJCG7lN5nS _9stpgEfdDDE_7LUgqylTeFI ]
 !)_8zNBXSMY2Ts_1VI5dmY4umA
 
 
@@ -350,6 +360,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to put_method in class"
 !)_9imDBaAxOpp_2HI9AuWrEKD
+
+
+
+!(_9stpgEfdDDE_7LUgqylTeFI |=functions_set|
+!~ name (~ functions_set
+~)
+!@ 1504875362.46
+!)_9stpgEfdDDE_7LUgqylTeFI
 
 
 

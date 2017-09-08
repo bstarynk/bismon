@@ -1,0 +1,2 @@
+# file .gitattributes
+*.bismon diff=bismon
