@@ -1,6 +1,14 @@
 // generated file store2.bismon
-// for 34 objects
+// for 36 objects
 // with 0 modules
+
+
+!(_0277f6mOd9j_0tVZSXnTzUK |=basiclo_temporary_module|
+!~ name (~ basiclo_temporary_module
+~)
+!@ 1504861742.79
+!)_0277f6mOd9j_0tVZSXnTzUK
+
 
 
 !(_075tZNHCAMa_7XNNBaNM4qv
@@ -188,6 +196,16 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "function to dump globals"
 !)_4ENXjApm7Qb_3bXo8F6Jg9z
+
+
+
+!(_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
+!~ name (~ basiclo_dumpable_module
+~)
+!@ 1504861676.32
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dumpable module with only basic closures"
+!)_5bP4nozCTp0_1DPPTK398m1
 
 
 
