@@ -617,7 +617,7 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
 }                               /* end hide_object_gui_BM */
 
 
-
+////////////////
 void
 start_browse_named_value_BM (const stringval_tyBM * namev,
                              const value_tyBM val, int depth)
@@ -652,11 +652,13 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
     }
   unsigned lo = 0, hi = browsednvulen_BM, md = 0;
   const char *namstr = bytstring_BM (namev);
+  /// for debugging
   printf ("@start_browse_named_value/%d namstr '%s' ulen %d\n", __LINE__,
           namstr, browsednvulen_BM);
   for (unsigned ix = 0; ix < browsednvulen_BM; ix++)
     printf ("@start_browse_named_value/%d [%d] '%s'\n", __LINE__,
             ix, bytstring_BM (browsedval_BM[ix].brow_name));
+  ///
   while (lo + 8 < hi)
     {
       md = (lo + hi) / 2;
@@ -685,12 +687,15 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
           printf ("@start_browse_named_value/%d replac. endit %s\n", __LINE__,
                   textiterstrdbg_BM (&endit));
           gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
+          browserit_BM = endit;
+          gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+          startit = browserit_BM;
+          gtk_text_iter_backward_char (&startit);
           gtk_text_buffer_move_mark (browserbuf_BM,
                                      mdval->brow_vstartmk, &startit);
           printf ("@start_browse_named_value/%d new startit %s\n", __LINE__,
                   textiterstrdbg_BM (&startit));
           mdval->brow_depth = depth;
-          browserit_BM = startit;
           browsednvcurix_BM = md;
           return;
         }
