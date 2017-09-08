@@ -6,7 +6,13 @@
 !(_0277f6mOd9j_0tVZSXnTzUK |=basiclo_temporary_module|
 !~ name (~ basiclo_temporary_module
 ~)
-!@ 1504861742.79
+!@ 1504862208.05
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of temporary modules containing only functions for closures"
+!~ class (~ |supercl plain_temporary_module:| _1oEp0eAAyFN_4lsobepyr1T
+~)
+
 !)_0277f6mOd9j_0tVZSXnTzUK
 
 
@@ -202,9 +208,13 @@
 !(_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !~ name (~ basiclo_dumpable_module
 ~)
-!@ 1504861676.32
+!@ 1504862111.17
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "dumpable module with only basic closures"
+!~ class (~ |supercl plain_dumpable_module:| _2HjhGk7Engb_58InnCq3TZ1
+~)
+
 !)_5bP4nozCTp0_1DPPTK398m1
 
 
