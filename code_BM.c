@@ -865,7 +865,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
 // for the method to prepare_module in basiclo_temporary_module &
 // basiclo_dumpable_module
 
-extern objrout_sigBM ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA);value_tyBM
+extern objrout_sigBM ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA);
+value_tyBM
 ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
  const value_tyBM arg1,         // recieving module
@@ -883,9 +884,11 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
   assert (closurewidth_BM ((const value_tyBM) clos) >= closix__LAST);
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv;
-                 objectval_tyBM * modgen;
+                 objectval_tyBM * modgen;       //
                  objectval_tyBM * simple_module_generation;
-                 objectval_tyBM * functions_set;
+                 objectval_tyBM * functions_set;        //
+                 struct hashsetobj_stBM *hset;
+                 value_tyBM curcomp;    //
     );
   if (!isobject_BM (arg1))
     return NULL;
@@ -900,10 +903,21 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
   assert (objecthash_BM (_.simple_module_generation)    //
           == 512189275          /* simple_module_generation |=_2HlKptD03wA_7JJCG7lN5nS| */
     );
-  _.functions_set = 
-    objectcast_BM (closurenthson_BM
-                   ((void *) clos, closix_functions_set));
+  _.functions_set =
+    objectcast_BM (closurenthson_BM ((void *) clos, closix_functions_set));
   assert (_.functions_set != NULL);
-  assert (objecthash_BM (_.functions_set) //
-	  == 975107136 /* functions_set |=_9HaadWoYpw1_9o1QUAhOUPl| */);
+  assert (objecthash_BM (_.functions_set)       //
+          == 975107136 /* functions_set |=_9HaadWoYpw1_9o1QUAhOUPl| */ );
+  _.hset = hashsetobj_grow_BM (NULL, objnbcomps_BM (_.recv) + 1);
+  for (unsigned ix = 0; ix < objnbcomps_BM (_.recv); ix++)
+    {
+#warning incomplete prepare_module for basiclo*module-s
+      _.curcomp = objgetcomp_BM (_.recv, ix);
+      if (isobject_BM (_.curcomp))
+        {
+        }
+      else if (isclosure_BM (_.curcomp))
+        {
+        }
+    }
 }                               /* end ROUTINE _8zNBXSMY2Ts_1VI5dmY4umA */
