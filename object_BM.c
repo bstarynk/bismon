@@ -913,6 +913,27 @@ objclassinforemovemethod_BM (objectval_tyBM * obj,
     assoc_removeattr_BM (clinf->clinf_dictmeth, obselector);
 }                               /* end objclassinforemovemethod_BM */
 
+bool
+objclassinfoissubclass_BM (objectval_tyBM * obj, objectval_tyBM * obclass)
+{
+  int count = 0;
+  if (!isobject_BM ((const value_tyBM) obclass))
+    return false;
+  while (count < MAXDEPTHMETHOD_BM)
+    {
+      if (obj == obclass)
+        return true;
+      if (!isobject_BM ((const value_tyBM) obj))
+        return false;
+      if (!objhasclassinfo_BM (obj))
+        return false;
+      struct classinfo_stBM *clinf =    //
+        (struct classinfo_stBM *) (obj->ob_data);
+      obj = clinf->clinf_superclass;
+      count++;
+    }
+  return false;
+}                               /* end objclassinfoissubclass_BM */
 
 const closure_tyBM *
 valfindmethod_BM (const value_tyBM recv, const objectval_tyBM * obselector)
