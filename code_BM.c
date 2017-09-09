@@ -878,6 +878,7 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
   {
     closix_simple_module_generation,
     closix_functions_set,
+    closix_basiclo_function,
     closix__LAST
   };
   assert (isclosure_BM ((const value_tyBM) clos));
@@ -887,8 +888,12 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
                  objectval_tyBM * modgen;       //
                  objectval_tyBM * simple_module_generation;
                  objectval_tyBM * functions_set;        //
+                 objectval_tyBM * basiclo_function;
                  struct hashsetobj_stBM *hset;
                  value_tyBM curcomp;    //
+                 seqobval_tyBM * curseq;        //
+                 value_tyBM partres;    //
+                 setval_tyBM * setfun;
     );
   if (!isobject_BM (arg1))
     return NULL;
@@ -903,21 +908,72 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
   assert (objecthash_BM (_.simple_module_generation)    //
           == 512189275          /* simple_module_generation |=_2HlKptD03wA_7JJCG7lN5nS| */
     );
+  if (!objectisinstance_BM (_.modgen, _.simple_module_generation))
+    return NULL;
   _.functions_set =
     objectcast_BM (closurenthson_BM ((void *) clos, closix_functions_set));
   assert (_.functions_set != NULL);
   assert (objecthash_BM (_.functions_set)       //
           == 975107136 /* functions_set |=_9HaadWoYpw1_9o1QUAhOUPl| */ );
+  _.basiclo_function =
+    objectcast_BM (closurenthson_BM ((void *) clos, closix_basiclo_function));
+  assert (_.basiclo_function != NULL);
+  assert (objecthash_BM (_.basiclo_function)    //
+          == 382575019 /* basiclo_function |=_2Ir1i8qnrA4_3jSkierlc5z| */ );
   _.hset = hashsetobj_grow_BM (NULL, objnbcomps_BM (_.recv) + 1);
   for (unsigned ix = 0; ix < objnbcomps_BM (_.recv); ix++)
     {
-#warning incomplete prepare_module for basiclo*module-s
       _.curcomp = objgetcomp_BM (_.recv, ix);
       if (isobject_BM (_.curcomp))
         {
+          if (objectisinstance_BM (_.curcomp, _.basiclo_function))
+            hashsetobj_add_BM (_.hset, _.curcomp);
+          else
+            return NULL;
+        }
+      else if (issequence_BM (_.curcomp))
+        {
+          _.curseq = (seqobval_tyBM *) _.curcomp;
+          unsigned sqlen = sequencesize_BM (_.curseq);
+          for (unsigned j = 0; j < sqlen; j++)
+            {
+              _.curcomp = sequencenthcomp_BM (_.curseq, j);
+              if (objectisinstance_BM (_.curcomp, _.basiclo_function))
+                hashsetobj_add_BM (_.hset, _.curcomp);
+              else
+                return NULL;
+            }
         }
       else if (isclosure_BM (_.curcomp))
         {
+          _.partres = apply2_BM ((closure_tyBM *) _.curcomp,
+                                 (struct stackframe_stBM *) &_,
+                                 _.recv, _.modgen);
+          if (isobject_BM (_.partres)
+              && objectisinstance_BM (_.partres, _.basiclo_function))
+            hashsetobj_add_BM (_.hset, _.partres);
+          else if (issequence_BM (_.partres))
+            {
+              _.curseq = (seqobval_tyBM *) _.partres;
+              unsigned sqlen = sequencesize_BM (_.curseq);
+              for (unsigned j = 0; j < sqlen; j++)
+                {
+                  _.curcomp = sequencenthcomp_BM (_.curseq, j);
+                  if (objectisinstance_BM (_.curcomp, _.basiclo_function))
+                    hashsetobj_add_BM (_.hset, _.curcomp);
+                  else
+                    return NULL;
+                }
+            }
+          else
+            return NULL;
         }
+      else
+        return NULL;
     }
+  if (hashsetobj_cardinal_BM (_.hset) == 0)
+    return NULL;
+  _.setfun = hashsetobj_to_set_BM (_.hset);
+  objputattr_BM (_.modgen, _.functions_set, _.setfun);
+  return _.setfun;
 }                               /* end ROUTINE _8zNBXSMY2Ts_1VI5dmY4umA */

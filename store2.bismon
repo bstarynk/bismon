@@ -1,5 +1,5 @@
 // generated file store2.bismon
-// for 39 objects
+// for 40 objects
 // with 0 modules
 
 
@@ -136,6 +136,20 @@
 ~)
 
 !)_2HlKptD03wA_7JJCG7lN5nS
+
+
+
+!(_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!~ name (~ basiclo_function
+~)
+!@ 1504965675.29
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of basic closure functions, e.g. in basiclo_*_module"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+
+!)_2Ir1i8qnrA4_3jSkierlc5z
 
 
 
@@ -346,11 +360,11 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 !(_8zNBXSMY2Ts_1VI5dmY4umA
-!@ 1504875450.94
+!@ 1504940748.58
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to prepare_module a basiclo module"
 !: _43dxTPqTsQQ_3M5JFtY76r1 |=expect|
- [ _2HlKptD03wA_7JJCG7lN5nS _9stpgEfdDDE_7LUgqylTeFI ]
+ [ _2HlKptD03wA_7JJCG7lN5nS _9stpgEfdDDE_7LUgqylTeFI _2Ir1i8qnrA4_3jSkierlc5z ]
 !)_8zNBXSMY2Ts_1VI5dmY4umA
 
 
