@@ -597,6 +597,20 @@ setcontains_BM (const setval_tyBM * setv, const objectval_tyBM * obelem)
   return setelemindex_BM (setv, obelem) >= 0;
 }                               /* end setcontains_BM */
 
+////////////////
+bool
+issequence_BM (const value_tyBM v)
+{
+  int ty = valtype_BM (v);
+  return (ty == tySet_BM || ty == tyTuple_BM);
+}                               /* end issequence_BM */
+
+
+const seqobval_tyBM *
+sequencecast_BM (const value_tyBM v)
+{
+  return issequence_BM (v) ? (const seqobval_tyBM *) v : NULL;
+}                               /* end sequencecast_BM */
 
 bool
 isstring_BM (const value_tyBM v)

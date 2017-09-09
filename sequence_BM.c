@@ -300,7 +300,26 @@ setelemnth_BM (const setval_tyBM * set, int rk)
   return (objectval_tyBM *) set->seq_objs[rk];
 }                               /* end setelemnth_BM */
 
+unsigned
+sequencesize_BM (const seqobval_tyBM * sq)
+{
+  if (!issequence_BM ((const value_tyBM) sq))
+    return 0;
+  return ((typedsize_tyBM *) sq)->size;
+}                               /* end sequencesize_BM */
 
+objectval_tyBM *
+sequencenthcomp_BM (const seqobval_tyBM * sq, int rk)
+{
+  if (!issequence_BM ((const value_tyBM) sq))
+    return NULL;
+  unsigned siz = ((typedsize_tyBM *) sq)->size;
+  if (rk < 0)
+    rk += siz;
+  if (rk >= 0 && rk < siz)
+    return (objectval_tyBM *) sq->seq_objs[rk];
+  return NULL;
+}                               /* end sequencenthcomp_BM */
 
 void
 setgcmark_BM (struct garbcoll_stBM *gc, setval_tyBM * set)

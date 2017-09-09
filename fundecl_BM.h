@@ -84,6 +84,10 @@ extern void tuplegcdestroy_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup);
 extern void tuplegckeep_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup);
 
 
+static inline bool issequence_BM (const value_tyBM v);
+static inline const seqobval_tyBM *sequencecast_BM (const value_tyBM v);
+extern unsigned sequencesize_BM (const seqobval_tyBM * sq);
+extern objectval_tyBM *sequencenthcomp_BM (const seqobval_tyBM * sq, int rk);
 static inline bool isset_BM (const value_tyBM v);
 static inline const setval_tyBM *setcast_BM (const value_tyBM v);
 extern const setval_tyBM *makeset_BM (const objectval_tyBM ** arr,
