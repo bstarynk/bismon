@@ -1,5 +1,5 @@
 // generated file store1.bmon
-// for 30 objects
+// for 31 objects
 // with 0 modules
 
 
@@ -318,6 +318,16 @@
 ~)
 !@ 1501521100.00
 !)_55eJRRPyZDz_4uW8bzq75PI
+
+
+
+!(_7bbeIqUSje9_4jVgC7ZJmvx |=value|
+!~ name (~ value
+~)
+!@ 1505212150.45
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for value payload etc etc etc..."
+!)_7bbeIqUSje9_4jVgC7ZJmvx
 
 
 
