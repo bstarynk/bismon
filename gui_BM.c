@@ -4882,3 +4882,41 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
   browse_add_parens_BM (openoff, closeoff, xtraoff, 1, 1, 1, curdepth);
   return (const value_tyBM) arg1;
 }                               /* end ROUTINEOBJNAME_BM ( _7CohjJ9tkfZ_4UMAIZCgwac) */
+
+
+
+/// method to browse_data for basiclo_function-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA);
+value_tyBM
+ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * objbrows;
+                 value_tyBM curval;);
+  if (!isobject_BM (arg1))
+    FATAL_BM
+      ("non-object for method to browse_data for basiclo_function-s _9zpvXnTuDeB_2B7ZiBtN8fA");
+  _.objbrows = (const objectval_tyBM *) arg1;
+  int depth = getint_BM (arg2);
+  assert (isobject_BM ((const value_tyBM) _.objbrows));
+  _.curval = _.objbrows->ob_data;
+  int tyval = valtype_BM (_.curval);
+  if (tyval == tyInt_BM
+      || (tyval >= type_FIRST_BM && tyval <= type_LASTREAL_BM))
+    {
+      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+                                        &browserit_BM, "|valdata:| ", -1,
+                                        miscomm_brotag_BM, NULL);
+      browse_value_BM ((const value_tyBM) _.curval,
+                       (struct stackframe_stBM *) &_, depth, 0);
+      gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+    };
+  return (const value_tyBM) _.objbrows;
+}                               /* end ROUTINE _9zpvXnTuDeB_2B7ZiBtN8fA */
