@@ -1,5 +1,5 @@
 // generated file store1.bmon
-// for 31 objects
+// for 32 objects
 // with 0 modules
 
 
@@ -93,6 +93,16 @@
 ~)
 !@ 1500472572.36
 !)_01h86SAfOfg_1q2oMegGRwW
+
+
+
+!(_5DDSY1YgVZr_6dOU4tiBldk |=const|
+!~ name (~ const
+~)
+!@ 1505238683.85
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for constants etc..."
+!)_5DDSY1YgVZr_6dOU4tiBldk
 
 
 

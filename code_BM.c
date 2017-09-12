@@ -887,13 +887,13 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
 {
   enum constix_en
   {
+    constix_simple_module_generation,
+    constix_prepare_module,
+    constix_plain_module,
     constix__LAST
   };
   enum closureix_en
   {
-    closix_simple_module_generation,
-    closix_prepare_module,
-    closix_plain_module,
     closix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -903,31 +903,42 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
                  objectval_tyBM * modgenob;
                  objectval_tyBM * simple_module_generation;
                  objectval_tyBM * prepare_module;
-                 objectval_tyBM * plain_module;
-                 value_tyBM result;
+                 objectval_tyBM * plain_module; value_tyBM result;
+                 const node_tyBM * constnodv;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
   _.clos = clos;
+  // assert (closurewidth_BM ((const value_tyBM) clos) >= closix__LAST);
   _.closconn = closureconn_BM ((const value_tyBM) clos);
-  assert (closurewidth_BM ((const value_tyBM) clos) >= closix__LAST);
+  assert (isobject_BM (_.closconn));
+  _.constnodv = _.closconn->ob_data;
+  /** constnodv is 
+     * const (simple_module_generation
+              prepare_module  plain_module)
+  **/
+  assert (isnode_BM ((const value_tyBM) _.constnodv)
+          && valhash_BM ((const value_tyBM) _.constnodv) == 368268174);
+  assert (nodewidth_BM ((const value_tyBM) _.constnodv) >= constix__LAST);
   if (!isobject_BM (arg1))
     return NULL;
   _.recv = (objectval_tyBM *) arg1;
   _.modgenob = makeobj_BM ();
   _.simple_module_generation =
-    objectcast_BM (closurenthson_BM
-                   ((void *) clos, closix_simple_module_generation));
+    objectcast_BM (nodenthson_BM
+                   ((void *) _.constnodv, constix_simple_module_generation));
   assert (_.simple_module_generation != NULL);
   assert (objecthash_BM (_.simple_module_generation)    //
           == 512189275          /* simple_module_generation |=_2HlKptD03wA_7JJCG7lN5nS| */
     );
   _.prepare_module =
-    objectcast_BM (closurenthson_BM ((void *) clos, closix_prepare_module));
+    objectcast_BM (nodenthson_BM
+                   ((void *) _.constnodv, constix_prepare_module));
   assert (_.prepare_module != NULL);
   assert (objecthash_BM (_.prepare_module)      //
           == 159908881 /* prepare_module |=_17mrxkMdNtH_2CduQ2WDIy5| */ );
   _.plain_module =
-    objectcast_BM (closurenthson_BM ((void *) clos, closix_plain_module));
+    objectcast_BM (nodenthson_BM
+                   ((void *) _.constnodv, constix_plain_module));
   assert (_.plain_module != NULL);
   assert (objecthash_BM (_.plain_module)        //
           == 1032996964 /* plain_module |=_8g1WBJBhDT9_1QK8IcuWYx2| */ );
@@ -1075,7 +1086,7 @@ ROUTINEOBJNAME_BM (_60NdV04Lel2_5FSZVWKbSL7)    //
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv;
-                 closure_tyBM * clos;   //
+                 const closure_tyBM * clos;     //
                  value_tyBM nval;
     );
   _.clos = clos;
