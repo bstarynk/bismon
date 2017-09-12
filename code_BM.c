@@ -898,6 +898,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv;
+                 const closure_tyBM * clos;
+                 objectval_tyBM * closconn;
                  objectval_tyBM * modgenob;
                  objectval_tyBM * simple_module_generation;
                  objectval_tyBM * prepare_module;
@@ -905,6 +907,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
                  value_tyBM result;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
+  _.clos = clos;
+  _.closconn = closureconn_BM ((const value_tyBM) clos);
   assert (closurewidth_BM ((const value_tyBM) clos) >= closix__LAST);
   if (!isobject_BM (arg1))
     return NULL;
@@ -1056,3 +1060,30 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
   objputattr_BM (_.modgen, _.functions_set, _.setfun);
   return _.setfun;
 }                               /* end ROUTINE _8zNBXSMY2Ts_1VI5dmY4umA */
+
+
+// for the method to put_data_value in basiclo_function
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_60NdV04Lel2_5FSZVWKbSL7);
+value_tyBM
+ROUTINEOBJNAME_BM (_60NdV04Lel2_5FSZVWKbSL7)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // recieving function
+ const value_tyBM arg2,         // new value
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * recv;
+                 closure_tyBM * clos;   //
+                 value_tyBM nval;
+    );
+  _.clos = clos;
+  _.recv = arg1;
+  _.nval = arg2;
+  assert (isobject_BM (_.recv));
+  assert (!objectisinstance_BM (_.recv, BMP_class));
+  _.recv->ob_data = _.nval;
+  objtouchnow_BM (_.recv);
+  return _.recv;
+}                               /* end ROUTINEOBJNAME_BM _60NdV04Lel2_5FSZVWKbSL7 */

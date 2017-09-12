@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 42 objects
+// for 44 objects
 // with 0 modules
 
 
@@ -20,13 +20,14 @@
 !(_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !~ name (~ basiclo_function
 ~)
-!@ 1505222897.70
+!@ 1505235338.38
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of basic closure functions, e.g. in basiclo_*_module"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
 ~: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|  % _7D36kHemyWQ_0YfwWnUhR9Y () 
-~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan|  % _9UhDZeDdg2r_55lUqYDPUiF ()
+~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan|  % _9UhDZeDdg2r_55lUqYDPUiF () 
+~: _7wDfX8mn5WT_2g0FYc80dLx |=put_data_value|  % _60NdV04Lel2_5FSZVWKbSL7 ()
 ~)
 
 !)_2Ir1i8qnrA4_3jSkierlc5z
@@ -147,6 +148,16 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 ~)
 !@ 1504713565.68
 !)_17mrxkMdNtH_2CduQ2WDIy5
+
+
+
+!(_7wDfX8mn5WT_2g0FYc80dLx |=put_data_value|
+!~ name (~ put_data_value
+~)
+!@ 1505235154.22
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector to put the data value"
+!)_7wDfX8mn5WT_2g0FYc80dLx
 
 
 
@@ -302,6 +313,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a tuple"
 !)_5D9kkPHSPxq_8suDXpjlzjE
+
+
+
+!(_60NdV04Lel2_5FSZVWKbSL7
+!@ 1505235410.13
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "routine to put_data_value in basiclo_function"
+!)_60NdV04Lel2_5FSZVWKbSL7
 
 
 
