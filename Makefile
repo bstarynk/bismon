@@ -36,7 +36,7 @@ OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst 
 all: bismon doc
 clean:
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
-	$(RM) core* *.i *.ii *prof.out gmon,out
+	$(RM) core* *.i *.ii *prof.out gmon.out
 	$(RM) modules/*.so modules/*.i
 	$(RM) $(patsubst %.md,%.html, $(MARKDOWN_SOURCES))
 
