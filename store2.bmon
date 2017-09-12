@@ -3,6 +3,34 @@
 // with 0 modules
 
 
+!(_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
+!~ name (~ basiclo_dumpable_module
+~)
+!@ 1504862111.17
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dumpable module with only basic closures"
+!~ class (~ |supercl plain_dumpable_module:| _2HjhGk7Engb_58InnCq3TZ1
+~)
+
+!)_5bP4nozCTp0_1DPPTK398m1
+
+
+
+!(_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!~ name (~ basiclo_function
+~)
+!@ 1504965675.29
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of basic closure functions, e.g. in basiclo_*_module"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+
+!)_2Ir1i8qnrA4_3jSkierlc5z
+
+
+
 !(_0277f6mOd9j_0tVZSXnTzUK |=basiclo_temporary_module|
 !~ name (~ basiclo_temporary_module
 ~)
@@ -16,6 +44,142 @@
 ~)
 
 !)_0277f6mOd9j_0tVZSXnTzUK
+
+
+
+!(_5XDRkXDAUAk_9AuvN0J1d53 |=dumper_of_globals|
+!~ name (~ dumper_of_globals
+~)
+!@ 1502265883.40
+!$_4tiUQqbr6oh_5gZVoUWsppH |=specially_dumpable|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the dumper of globals"
+!: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|
+ % _4ENXjApm7Qb_3bXo8F6Jg9z (  "_bm_global.h")
+!)_5XDRkXDAUAk_9AuvN0J1d53
+
+
+
+!(_4dGXIiALafP_2bxdkvN34Qa |=dumper_of_predefined|
+!~ name (~ dumper_of_predefined
+~)
+!@ 1502085467.42
+!$_4tiUQqbr6oh_5gZVoUWsppH |=specially_dumpable|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the dumper of predefined objects"
+!: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|
+ % _075tZNHCAMa_7XNNBaNM4qv (  "_bm_predef.h")
+!)_4dGXIiALafP_2bxdkvN34Qa
+
+
+
+!(_43dxTPqTsQQ_3M5JFtY76r1 |=expect|
+!~ name (~ expect
+~)
+!@ 1504875287.86
+!)_43dxTPqTsQQ_3M5JFtY76r1
+
+
+
+!(_9stpgEfdDDE_7LUgqylTeFI |=functions_set|
+!~ name (~ functions_set
+~)
+!@ 1504875362.46
+!)_9stpgEfdDDE_7LUgqylTeFI
+
+
+
+!(_75gnoii3mMp_41wgHkvJVyN |=init_class|
+!~ name (~ init_class
+~)
+!@ 1504634820.73
+!)_75gnoii3mMp_41wgHkvJVyN
+
+
+
+!(_2HjhGk7Engb_58InnCq3TZ1 |=plain_dumpable_module|
+!~ name (~ plain_dumpable_module
+~)
+!@ 1504597126.43
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for plain dumpable modules"
+!~ class (~ |supercl plain_module:| _8g1WBJBhDT9_1QK8IcuWYx2
+~)
+
+!)_2HjhGk7Engb_58InnCq3TZ1
+
+
+
+!(_8g1WBJBhDT9_1QK8IcuWYx2 |=plain_module|
+!~ name (~ plain_module
+~)
+!@ 1504768603.88
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
+~: _3MZiKuLf93a_3YTtdOHeUH8 |=emit_module|  % _1gME6zn82Kf_8hzWibLFRfz (  
+_2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |=prepare_module|  
+ _8g1WBJBhDT9_1QK8IcuWYx2 |=plain_module| )
+~)
+
+!)_8g1WBJBhDT9_1QK8IcuWYx2
+
+
+
+!(_1oEp0eAAyFN_4lsobepyr1T |=plain_temporary_module|
+!~ name (~ plain_temporary_module
+~)
+!@ 1504607269.30
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for non-dumpable temporary modules"
+!~ class (~ |supercl plain_module:| _8g1WBJBhDT9_1QK8IcuWYx2
+~)
+
+!)_1oEp0eAAyFN_4lsobepyr1T
+
+
+
+!(_17mrxkMdNtH_2CduQ2WDIy5 |=prepare_module|
+!~ name (~ prepare_module
+~)
+!@ 1504713565.68
+!)_17mrxkMdNtH_2CduQ2WDIy5
+
+
+
+!(_16OZeTBZLbW_6SCJt3rgxci |=put_method|
+!~ name (~ put_method
+~)
+!@ 1504619340.97
+!)_16OZeTBZLbW_6SCJt3rgxci
+
+
+
+!(_2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|
+!~ name (~ simple_module_generation
+~)
+!@ 1504714379.14
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+
+!)_2HlKptD03wA_7JJCG7lN5nS
+
+
+
+!(_4tiUQqbr6oh_5gZVoUWsppH |=specially_dumpable|
+!~ name (~ specially_dumpable
+~)
+!@ 1502035117.80
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for objects with dump_data attribute giving a closure"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
+~: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|  % _6PmxiZR9WBe_13DwWExCALl ()
+~)
+
+!)_4tiUQqbr6oh_5gZVoUWsppH
 
 
 
@@ -59,41 +223,11 @@
 
 
 
-!(_16OZeTBZLbW_6SCJt3rgxci |=put_method|
-!~ name (~ put_method
-~)
-!@ 1504619340.97
-!)_16OZeTBZLbW_6SCJt3rgxci
-
-
-
-!(_17mrxkMdNtH_2CduQ2WDIy5 |=prepare_module|
-!~ name (~ prepare_module
-~)
-!@ 1504713565.68
-!)_17mrxkMdNtH_2CduQ2WDIy5
-
-
-
 !(_1gME6zn82Kf_8hzWibLFRfz
 !@ 1504684917.28
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to emit_module on plain_module"
 !)_1gME6zn82Kf_8hzWibLFRfz
-
-
-
-!(_1oEp0eAAyFN_4lsobepyr1T |=plain_temporary_module|
-!~ name (~ plain_temporary_module
-~)
-!@ 1504607269.30
-!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "class for non-dumpable temporary modules"
-!~ class (~ |supercl plain_module:| _8g1WBJBhDT9_1QK8IcuWYx2
-~)
-
-!)_1oEp0eAAyFN_4lsobepyr1T
 
 
 
@@ -110,46 +244,6 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to init_class in object (class)"
 !)_2qppG2LJu79_9ljkbLS0eFQ
-
-
-
-!(_2HjhGk7Engb_58InnCq3TZ1 |=plain_dumpable_module|
-!~ name (~ plain_dumpable_module
-~)
-!@ 1504597126.43
-!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "class for plain dumpable modules"
-!~ class (~ |supercl plain_module:| _8g1WBJBhDT9_1QK8IcuWYx2
-~)
-
-!)_2HjhGk7Engb_58InnCq3TZ1
-
-
-
-!(_2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|
-!~ name (~ simple_module_generation
-~)
-!@ 1504714379.14
-!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
-
-!)_2HlKptD03wA_7JJCG7lN5nS
-
-
-
-!(_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
-!~ name (~ basiclo_function
-~)
-!@ 1504965675.29
-!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "class of basic closure functions, e.g. in basiclo_*_module"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
-
-!)_2Ir1i8qnrA4_3jSkierlc5z
 
 
 
@@ -177,42 +271,6 @@
 
 
 
-!(_43dxTPqTsQQ_3M5JFtY76r1 |=expect|
-!~ name (~ expect
-~)
-!@ 1504875287.86
-!)_43dxTPqTsQQ_3M5JFtY76r1
-
-
-
-!(_4dGXIiALafP_2bxdkvN34Qa |=dumper_of_predefined|
-!~ name (~ dumper_of_predefined
-~)
-!@ 1502085467.42
-!$_4tiUQqbr6oh_5gZVoUWsppH |=specially_dumpable|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "the dumper of predefined objects"
-!: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|
- % _075tZNHCAMa_7XNNBaNM4qv (  "_bm_predef.h")
-!)_4dGXIiALafP_2bxdkvN34Qa
-
-
-
-!(_4tiUQqbr6oh_5gZVoUWsppH |=specially_dumpable|
-!~ name (~ specially_dumpable
-~)
-!@ 1502035117.80
-!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "class for objects with dump_data attribute giving a closure"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
-~: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|  % _6PmxiZR9WBe_13DwWExCALl ()
-~)
-
-!)_4tiUQqbr6oh_5gZVoUWsppH
-
-
-
 !(_4EBQMvthjcP_2OiZxZviSQc
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -229,20 +287,6 @@
 
 
 
-!(_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
-!~ name (~ basiclo_dumpable_module
-~)
-!@ 1504862111.17
-!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "dumpable module with only basic closures"
-!~ class (~ |supercl plain_dumpable_module:| _2HjhGk7Engb_58InnCq3TZ1
-~)
-
-!)_5bP4nozCTp0_1DPPTK398m1
-
-
-
 !(_5v30KC0IMxx_53ZzXprJTM6
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -256,19 +300,6 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a tuple"
 !)_5D9kkPHSPxq_8suDXpjlzjE
-
-
-
-!(_5XDRkXDAUAk_9AuvN0J1d53 |=dumper_of_globals|
-!~ name (~ dumper_of_globals
-~)
-!@ 1502265883.40
-!$_4tiUQqbr6oh_5gZVoUWsppH |=specially_dumpable|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "the dumper of globals"
-!: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|
- % _4ENXjApm7Qb_3bXo8F6Jg9z (  "_bm_global.h")
-!)_5XDRkXDAUAk_9AuvN0J1d53
 
 
 
@@ -304,14 +335,6 @@
 
 
 
-!(_75gnoii3mMp_41wgHkvJVyN |=init_class|
-!~ name (~ init_class
-~)
-!@ 1504634820.73
-!)_75gnoii3mMp_41wgHkvJVyN
-
-
-
 !(_7fCcteNe7aR_3IKHeHjmzff
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -344,21 +367,6 @@
 
 
 
-!(_8g1WBJBhDT9_1QK8IcuWYx2 |=plain_module|
-!~ name (~ plain_module
-~)
-!@ 1504768603.88
-!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
-~: _3MZiKuLf93a_3YTtdOHeUH8 |=emit_module|  % _1gME6zn82Kf_8hzWibLFRfz (  
-_2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |=prepare_module|  
- _8g1WBJBhDT9_1QK8IcuWYx2 |=plain_module| )
-~)
-
-!)_8g1WBJBhDT9_1QK8IcuWYx2
-
-
-
 !(_8zNBXSMY2Ts_1VI5dmY4umA
 !@ 1504940748.58
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -374,14 +382,6 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to put_method in class"
 !)_9imDBaAxOpp_2HI9AuWrEKD
-
-
-
-!(_9stpgEfdDDE_7LUgqylTeFI |=functions_set|
-!~ name (~ functions_set
-~)
-!@ 1504875362.46
-!)_9stpgEfdDDE_7LUgqylTeFI
 
 
 

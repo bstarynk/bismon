@@ -1,2 +1,3 @@
 # file .gitattributes
-*.bismon diff=bismon
+## see https://stackoverflow.com/a/46115809/841108
+*.bmon diff=bmon

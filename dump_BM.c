@@ -406,15 +406,27 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
       fprintf (spfil, "!^%s\n", curmodid);
     };
   fputc ('\n', spfil);
+  const objectval_tyBM **objarr
+    = calloc (prime_above_BM (nbobj), sizeof (void *));
+  if (!objarr)
+    FATAL_BM ("calloc failure for %d objects spix#%u", nbobj, spix);
   for (unsigned obix = 0; obix < nbobj; obix++)
     {
       _.curobj = setelemnth_BM (_.setobjs, obix);
+      assert (isobject_BM ((const value_tyBM) _.curobj));
+      objarr[obix] = _.curobj;
+    };
+  sortnamedobjarr_BM (objarr, nbobj);
+  for (unsigned obix = 0; obix < nbobj; obix++)
+    {
+      _.curobj = objarr[obix];
       assert (_.curobj != NULL);
       dump_emit_object_BM (du, _.curobj, spfil,
                            (struct stackframe_stBM *) &_);
       if (obix % 64 == 0 && obix > 0)
         garbage_collect_if_wanted_BM ((struct stackframe_stBM *) &_);
     }
+  free (objarr);
   fprintf (spfil, "\n// end of file %s\n", basename (bytstring_BM (_.pathv)));
   fclose (spfil);
   du->dump_wrotefilecount++;

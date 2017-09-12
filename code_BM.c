@@ -811,6 +811,10 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
  const value_tyBM arg3 __attribute__ ((unused)),
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
+  enum constix_en
+  {
+    constix__LAST
+  };
   enum closureix_en
   {
     closix_simple_module_generation,
@@ -818,8 +822,6 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
     closix_plain_module,
     closix__LAST
   };
-  assert (isclosure_BM ((const value_tyBM) clos));
-  assert (closurewidth_BM ((const value_tyBM) clos) >= closix__LAST);
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv;
                  objectval_tyBM * modgenob;
@@ -828,6 +830,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
                  objectval_tyBM * plain_module;
                  value_tyBM result;
     );
+  assert (isclosure_BM ((const value_tyBM) clos));
+  assert (closurewidth_BM ((const value_tyBM) clos) >= closix__LAST);
   if (!isobject_BM (arg1))
     return NULL;
   _.recv = (objectval_tyBM *) arg1;
