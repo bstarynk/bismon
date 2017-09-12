@@ -19,6 +19,7 @@ enum gctyenum_BM
   tyClosure_BM = 5,             /* boxed closure */
   tyObject_BM = 6,              /* boxed object */
   tyUnspecified_BM = 7,         /* the single unspecified value */
+#define type_LASTREAL_BM tyUnspecified_BM
   ty_SpareA_BM = 8,
   ty_SpareB_BM = 9,
   ty_SpareC_BM = 10,

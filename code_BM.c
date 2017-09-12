@@ -516,7 +516,79 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
 }                               /* end ROUTINE _6PmxiZR9WBe_13DwWExCALl */
 
 
+//// for the method to dump_data a basiclo_function or any object with a value data
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7D36kHemyWQ_0YfwWnUhR9Y);
 
+value_tyBM
+ROUTINEOBJNAME_BM (_7D36kHemyWQ_0YfwWnUhR9Y)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1,
+const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv;
+                 struct dumper_stBM *du; struct strbuffer_stBM *sbuf;
+                 value_tyBM obval;
+    );
+  assert (isobject_BM (arg1));
+  _.recv = arg1;
+  assert (valtype_BM (arg2) == tydata_dumper_BM);
+  _.du = arg2;
+  assert (valtype_BM (arg3) == tydata_strbuffer_BM);
+  assert (restargs == NULL);
+  _.sbuf = arg3;
+  _.obval = _.recv->ob_data;
+  int tyval = valtype_BM (_.obval);
+  if (tyval >= type_FIRST_BM && tyval <= type_LASTREAL_BM)
+    {
+      strbufferprintf_BM (_.sbuf, "\n" "!~value (~ ");
+      unsigned oldbuflen = strbufferlength_BM (_.sbuf);
+      send3_BM (_.obval, BMP_dump_value,
+                (struct stackframe_stBM *) &_,
+                _.sbuf, _.du, taggedint_BM (1));
+      unsigned newbuflen = strbufferlength_BM (_.sbuf);
+      if (newbuflen == oldbuflen)
+        strbufferprintf_BM (_.sbuf, "\t |novalue| __");
+      strbufferprintf_BM (_.sbuf, " ~)\n");
+      return (value_tyBM) _.recv;
+    }
+  return NULL;
+}                               /* end ROUTINE _7D36kHemyWQ_0YfwWnUhR9Y */
+
+
+//// for the method to dump_scan a basiclo_function or any object with a genuine value as data
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9UhDZeDdg2r_55lUqYDPUiF);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_9UhDZeDdg2r_55lUqYDPUiF)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1,
+const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+{
+
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv; struct dumper_stBM *du;
+                 value_tyBM obval;
+    );
+  assert (isobject_BM (arg1));
+  _.recv = arg1;
+  assert (valtype_BM (arg2) == tydata_dumper_BM);
+  _.du = arg2;
+  assert (arg3 == NULL);
+  assert (restargs == NULL);
+  _.obval = _.recv->ob_data;
+  int tyval = valtype_BM (_.obval);
+  if (tyval >= type_FIRST_BM && tyval <= type_LASTREAL_BM)
+    {
+      dumpscanvalue_BM (_.du, (const value_tyBM) _.obval, 0);
+      return (value_tyBM) _.recv;
+    }
+  return NULL;
+}                               /* end ROUTINE _9UhDZeDdg2r_55lUqYDPUiF */
 
 
 static int
@@ -733,6 +805,8 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   return _.closv;
 }                               /* end ROUTINE _4ENXjApm7Qb_3bXo8F6Jg9z */
 
+
+
 //// for the method closure to put_method in class
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9imDBaAxOpp_2HI9AuWrEKD);
 
@@ -861,6 +935,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
                        (struct stackframe_stBM *) &_, _.modgenob);
   if (!_.result)
     return NULL;
+#warning emit_module of plain_module incomplete
 }                               /* end  ROUTINE _1gME6zn82Kf_8hzWibLFRfz */
 
 
@@ -977,7 +1052,7 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
     }
   if (hashsetobj_cardinal_BM (_.hset) == 0)
     return NULL;
-  _.setfun = hashsetobj_to_set_BM (_.hset);
+  _.setfun = (setval_tyBM *) hashsetobj_to_set_BM (_.hset);
   objputattr_BM (_.modgen, _.functions_set, _.setfun);
   return _.setfun;
 }                               /* end ROUTINE _8zNBXSMY2Ts_1VI5dmY4umA */

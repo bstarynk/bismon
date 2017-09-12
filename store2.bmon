@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 40 objects
+// for 42 objects
 // with 0 modules
 
 
@@ -20,11 +20,13 @@
 !(_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !~ name (~ basiclo_function
 ~)
-!@ 1504965675.29
+!@ 1505222897.70
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of basic closure functions, e.g. in basiclo_*_module"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
+~: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|  % _7D36kHemyWQ_0YfwWnUhR9Y () 
+~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan|  % _9UhDZeDdg2r_55lUqYDPUiF ()
 ~)
 
 !)_2Ir1i8qnrA4_3jSkierlc5z
@@ -367,6 +369,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 
+!(_7D36kHemyWQ_0YfwWnUhR9Y
+!@ 1505220804.92
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "routine to dump_data the basiclo_function"
+!)_7D36kHemyWQ_0YfwWnUhR9Y
+
+
+
 !(_8zNBXSMY2Ts_1VI5dmY4umA
 !@ 1504940748.58
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -382,6 +392,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to put_method in class"
 !)_9imDBaAxOpp_2HI9AuWrEKD
+
+
+
+!(_9UhDZeDdg2r_55lUqYDPUiF
+!@ 1505222808.76
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method to dump_scan a basiclo_function"
+!)_9UhDZeDdg2r_55lUqYDPUiF
 
 
 
