@@ -57,7 +57,7 @@ load_initial_BM (const char *ldirpath)
         continue;
       int num = 0;
       int pos = 0;
-      if ((sscanf (de->d_name, "store%d.bismon%n", &num, &pos) > 0
+      if ((sscanf (de->d_name, "store%d.bmon%n", &num, &pos) > 0
            && pos > 0) && num > 0 && de->d_name[pos] == 0)
         {
           if (num >= MAXLOADEDFILES_BM)
@@ -72,7 +72,7 @@ load_initial_BM (const char *ldirpath)
                 FATAL_BM ("failed to stat %s : %m", buf);
               if ((fst.st_mode & S_IFMT) != S_IFREG)
                 FATAL_BM ("%s is not a plain file", buf);
-              // detect store12.bismon and store+12.bismon or store0012.bismon
+              // detect store12.bmon and store+12.bmon or store0012.bmon
               if (patharr[num])
                 FATAL_BM ("duplicate file %s for #%d in %s", buf, num,
                           ldirpath);
@@ -84,7 +84,7 @@ load_initial_BM (const char *ldirpath)
             FATAL_BM ("asprintf failure (%m)");
           patharr[num] = buf;
         }
-      else if (!strcmp (de->d_name, "store_todo.bismon"))
+      else if (!strcmp (de->d_name, "store_todo.bmon"))
         {
           char *buf = NULL;
           if (asprintf (&buf, "%s/%s", ldirpath, de->d_name) > 0

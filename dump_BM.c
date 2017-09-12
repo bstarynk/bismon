@@ -309,9 +309,9 @@ dump_emit_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
         {
           char *oldpathbuf = NULL;
           char *backpathbuf = NULL;
-          asprintf (&oldpathbuf, "%s/store%u.bismon",
+          asprintf (&oldpathbuf, "%s/store%u.bmon",
                     bytstring_BM (du->dump_dir), spix);
-          asprintf (&backpathbuf, "%s/store%u.bismon~",
+          asprintf (&backpathbuf, "%s/store%u.bmon~",
                     bytstring_BM (du->dump_dir), spix);
           if (oldpathbuf && backpathbuf)
             (void) rename (oldpathbuf, backpathbuf);
@@ -353,7 +353,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   _.curdu = du;
   _.curhspa = hspa;
   _.setobjs = hashsetobj_to_set_BM (hspa);
-  _.pathv = sprintfstring_BM ("%s/store%u.bismon",
+  _.pathv = sprintfstring_BM ("%s/store%u.bmon",
                               bytstring_BM (du->dump_dir), spix);
   _.backupv = sprintfstring_BM ("%s~", bytstring_BM (_.pathv));
   (void) rename (bytstring_BM (_.pathv), bytstring_BM (_.backupv));
