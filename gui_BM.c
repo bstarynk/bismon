@@ -1084,6 +1084,14 @@ browse_named_value_gui_BM (const stringval_tyBM * namev,
                                     -1, objtitle_brotag_BM,
                                     // objcommtitle_brotag_BM,
                                     NULL);
+  {
+    char hcombuf[32];
+    memset (hcombuf, 0, sizeof (hcombuf));
+    snprintf (hcombuf, sizeof (hcombuf), " |h:%u|", valhash_BM (val));
+    gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                      hcombuf, -1,
+                                      objcommtitle_brotag_BM, NULL);
+  }
   gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
   send2_BM ((const value_tyBM) _.val, objsel, (struct stackframe_stBM *) &_,
             taggedint_BM (browsdepth), taggedint_BM (0));
