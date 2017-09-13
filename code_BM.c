@@ -968,17 +968,23 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
  const value_tyBM arg3 __attribute__ ((unused)),
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
+  enum constix_en
+  {
+    constix_simple_module_generation,
+    constix_functions_set,
+    constix_basiclo_function,
+    constix__LAST
+  };
   enum closureix_en
   {
-    closix_simple_module_generation,
-    closix_functions_set,
-    closix_basiclo_function,
     closix__LAST
   };
   assert (isclosure_BM ((const value_tyBM) clos));
-  assert (closurewidth_BM ((const value_tyBM) clos) >= closix__LAST);
+  //assert (closurewidth_BM ((const value_tyBM) clos) >= closix__LAST);
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv;
+                 objectval_tyBM * closconn;
+                 const node_tyBM * constnodv;
                  objectval_tyBM * modgen;       //
                  objectval_tyBM * simple_module_generation;
                  objectval_tyBM * functions_set;        //
@@ -989,6 +995,14 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
                  value_tyBM partres;    //
                  setval_tyBM * setfun;
     );
+  _.closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (isobject_BM (_.closconn));
+  _.constnodv = _.closconn->ob_data;
+  /** _.constnodv should be
+      * const (simple_module_generation functions_set  basiclo_function)
+   **/
+  assert (isnode_BM (_.constnodv)
+          && valhash_BM ((const value_tyBM) _.constnodv) == 3051311583);
   if (!isobject_BM (arg1))
     return NULL;
   _.recv = (objectval_tyBM *) arg1;
@@ -996,8 +1010,8 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
     return NULL;
   _.modgen = (objectval_tyBM *) arg2;
   _.simple_module_generation =
-    objectcast_BM (closurenthson_BM
-                   ((void *) clos, closix_simple_module_generation));
+    objectcast_BM (nodenthson_BM
+                   ((void *) _.constnodv, constix_simple_module_generation));
   assert (_.simple_module_generation != NULL);
   assert (objecthash_BM (_.simple_module_generation)    //
           == 512189275          /* simple_module_generation |=_2HlKptD03wA_7JJCG7lN5nS| */
@@ -1005,12 +1019,14 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
   if (!objectisinstance_BM (_.modgen, _.simple_module_generation))
     return NULL;
   _.functions_set =
-    objectcast_BM (closurenthson_BM ((void *) clos, closix_functions_set));
+    objectcast_BM (nodenthson_BM
+                   ((void *) _.constnodv, constix_functions_set));
   assert (_.functions_set != NULL);
   assert (objecthash_BM (_.functions_set)       //
           == 975107136 /* functions_set |=_9HaadWoYpw1_9o1QUAhOUPl| */ );
   _.basiclo_function =
-    objectcast_BM (closurenthson_BM ((void *) clos, closix_basiclo_function));
+    objectcast_BM (nodenthson_BM
+                   ((void *) _.constnodv, constix_basiclo_function));
   assert (_.basiclo_function != NULL);
   assert (objecthash_BM (_.basiclo_function)    //
           == 382575019 /* basiclo_function |=_2Ir1i8qnrA4_3jSkierlc5z| */ );

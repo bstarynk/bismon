@@ -404,11 +404,17 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 !(_8zNBXSMY2Ts_1VI5dmY4umA
-!@ 1504940748.58
+!@ 1505301543.84
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "routine to prepare_module a basiclo module"
+ "routine to prepare_module a basiclo*module"
 !: _43dxTPqTsQQ_3M5JFtY76r1 |=expect|
  [ _2HlKptD03wA_7JJCG7lN5nS _9stpgEfdDDE_7LUgqylTeFI _2Ir1i8qnrA4_3jSkierlc5z ]
+
+!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation| 
+ _9stpgEfdDDE_7LUgqylTeFI |=functions_set|  _2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function| 
+) ~)
+
 !)_8zNBXSMY2Ts_1VI5dmY4umA
 
 
