@@ -4910,9 +4910,13 @@ ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    //
   if (tyval == tyInt_BM
       || (tyval >= type_FIRST_BM && tyval <= type_LASTREAL_BM))
     {
+      char vcommbuf[40];
+      memset (vcommbuf, 0, sizeof (vcommbuf));
+      snprintf (vcommbuf, sizeof (vcommbuf), "|valdata h=%u:| ",
+                valhash_BM (_.curval));
       gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
       gtk_text_buffer_insert_with_tags (browserbuf_BM,
-                                        &browserit_BM, "|valdata:| ", -1,
+                                        &browserit_BM, vcommbuf, -1,
                                         miscomm_brotag_BM, NULL);
       browse_value_BM ((const value_tyBM) _.curval,
                        (struct stackframe_stBM *) &_, depth, 0);
