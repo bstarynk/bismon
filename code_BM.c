@@ -890,6 +890,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
     constix_simple_module_generation,
     constix_prepare_module,
     constix_plain_module,
+    constix_generate_module,
     constix__LAST
   };
   enum closureix_en
@@ -903,7 +904,9 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
                  objectval_tyBM * modgenob;
                  objectval_tyBM * simple_module_generation;
                  objectval_tyBM * prepare_module;
-                 objectval_tyBM * plain_module; value_tyBM result;
+                 objectval_tyBM * plain_module;
+                 objectval_tyBM * generate_module;
+                 value_tyBM resprep; value_tyBM resgen;
                  const node_tyBM * constnodv;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
@@ -914,10 +917,10 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
   _.constnodv = _.closconn->ob_data;
   /** constnodv is 
      * const (simple_module_generation
-              prepare_module  plain_module)
+              prepare_module  plain_module generate_module)
   **/
   assert (isnode_BM ((const value_tyBM) _.constnodv)
-          && valhash_BM ((const value_tyBM) _.constnodv) == 368268174);
+          && valhash_BM ((const value_tyBM) _.constnodv) == 3356172998);
   assert (nodewidth_BM ((const value_tyBM) _.constnodv) >= constix__LAST);
   if (!isobject_BM (arg1))
     return NULL;
@@ -942,13 +945,23 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
   assert (_.plain_module != NULL);
   assert (objecthash_BM (_.plain_module)        //
           == 1032996964 /* plain_module |=_8g1WBJBhDT9_1QK8IcuWYx2| */ );
+  _.generate_module =
+    objectcast_BM (nodenthson_BM
+                   ((void *) _.constnodv, constix_generate_module));
+  assert (_.generate_module != NULL);
+  assert (objecthash_BM (_.generate_module)     //
+          == 731255930 /* generate_module |=_9mq0jsuz4XQ_4doHfd987Q6| */ );
   objputclass_BM (_.modgenob, _.simple_module_generation);
   objputattr_BM (_.modgenob, _.plain_module, _.recv);
   _.modgenob->ob_data = strbuffermake_BM (1024 * 1024);
   objtouchnow_BM (_.modgenob);
-  _.result = send1_BM (_.recv, _.prepare_module,
-                       (struct stackframe_stBM *) &_, _.modgenob);
-  if (!_.result)
+  _.resprep = send1_BM (_.recv, _.prepare_module,
+                        (struct stackframe_stBM *) &_, _.modgenob);
+  if (!_.resprep)
+    return NULL;
+  _.resgen = send2_BM (_.recv, _.generate_module,
+                       (struct stackframe_stBM *) &_, _.modgenob, _.resprep);
+  if (!_.resgen)
     return NULL;
 #warning emit_module of plain_module incomplete
 }                               /* end  ROUTINE _1gME6zn82Kf_8hzWibLFRfz */

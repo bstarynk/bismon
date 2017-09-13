@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 45 objects
+// for 46 objects
 // with 0 modules
 
 
@@ -90,6 +90,16 @@
 ~)
 !@ 1504875362.46
 !)_9stpgEfdDDE_7LUgqylTeFI
+
+
+
+!(_9mq0jsuz4XQ_4doHfd987Q6 |=generate_module|
+!~ name (~ generate_module
+~)
+!@ 1505321790.17
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector to generate a module, after preparation"
+!)_9mq0jsuz4XQ_4doHfd987Q6
 
 
 
@@ -238,14 +248,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 !(_1gME6zn82Kf_8hzWibLFRfz
-!@ 1505238797.26
+!@ 1505321908.82
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to emit_module on plain_module"
 
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation| 
  _17mrxkMdNtH_2CduQ2WDIy5 |=prepare_module|  _8g1WBJBhDT9_1QK8IcuWYx2 |=plain_module| 
-) ~)
+ _9mq0jsuz4XQ_4doHfd987Q6 |=generate_module| ) ~)
 
 !)_1gME6zn82Kf_8hzWibLFRfz
 
