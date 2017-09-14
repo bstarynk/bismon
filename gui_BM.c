@@ -2240,22 +2240,27 @@ parsobjexpcmd_BM (struct parser_stBM *pars,
   bool gotobj = false;
   struct parstoken_stBM tok = parsertokenget_BM (pars);
   // * <name> to create a new (userE) named object
-  if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_star)
+  // !* <name> to create a new (global) named object
+  if (tok.tok_kind == plex_DELIM
+      && (tok.tok_delim == delim_exclamstar || tok.tok_delim == delim_star))
     {
+      bool isglobal = (tok.tok_delim == delim_exclamstar);
       tok = parsertokenget_BM (pars);
       if (tok.tok_kind != plex_CNAME)
         parsererrorprintf_BM (pars, oblineno, obcolpos,
-                              "expecting fresh name after * in $[...]");
+                              "expecting fresh name after * or !* in $[...]");
       _.namev = tok.tok_cname;
       gotobj = true;
       if (!nobuild)
         {
           _.obj = makeobj_BM ();
           objtouchnow_BM (_.obj);
-          objputspacenum_BM (_.obj, UserEsp_BM);
+          objputspacenum_BM (_.obj, isglobal ? GlobalSp_BM : UserEsp_BM);
           registername_BM (_.obj, bytstring_BM (_.namev));
           log_begin_message_BM ();
-          log_puts_message_BM ("created userE named object ");
+          log_puts_message_BM (isglobal
+                               ? "created global named object "
+                               : "created userE named object ");
           log_object_message_BM (_.obj);
           log_end_message_BM ();
         }
