@@ -20,7 +20,7 @@
   some existing object.
 
 * An object-id or id starts with an underscore then digit, such as
-  `_1jJjA6LcXiX_1V4ZcXlje09` or `2QeF5dreQwf_51c3fAJEYqJ`. All object
+  `_1jJjA6LcXiX_1V4ZcXlje09` or `_2QeF5dreQwf_51c3fAJEYqJ`. All object
   ids have underscores in the same relative place and have the same
   length (24 signs).
   
@@ -51,17 +51,6 @@
   concatenated with a newline in between. So `"ab\ncd"` and `"ab"+
   |some comment| "cd"` and `"ab"&"\ncd"` all represents the *same
   string* of five characters, with a newline at its center.
-
-* Sets (of objects) are between braces `{` elements ... `}`.  A set
-can also be a name matching set, e.g. `~: *` for the set of all named
-objects, `~: foo` for the set of named objects starting or prefixed
-with with `foo`, `~: "a*b*"` for the set of named objects
-*fnmatch*-ing (à la shell globbing) the `a*b*` glob pattern (so
-starting with `a` and later containing `b`); if the string starts with
-`~` the matching is case-insensitive, so `~: "~ab*"` is the set of
-names starting with upper or lower case `ab`.
-
-* Tuples (of objects) are between brackets `[` components ... `]`
 
 ## boot syntax
 
@@ -111,6 +100,26 @@ The `value` modification is built-in:
 *value-modification* = *value*
 
 
+Values can be :
+
+* Scalars, i.e. objects (by name or by id), integers, strings, nil
+
+* Sets (of objects) are between braces `{` elements ... `}`.  A set
+can also be a name matching set, e.g. `~: *` for the set of all named
+objects, `~: foo` for the set of named objects starting or prefixed
+with with `foo`, `~: "a*b*"` for the set of named objects
+*fnmatch*-ing (à la shell globbing) the `a*b*` glob pattern (so
+starting with `a` and later containing `b`); if the string starts with
+`~` the matching is case-insensitive, so `~: "~ab*"` is the set of
+names starting with upper or lower case `ab`.
+
+* Tuples (of objects) are between brackets `[` components ... `]`
+
+* Nodes start with a `*` then the object connective then a parenthesis
+  with sons
+  
+* Closures start with a `%` then the object connective then a parenthesis
+  with sons
 
 ## GUI command syntax
 
@@ -135,7 +144,7 @@ Two semicolons `;;` stop the command parsing.
 
 `?#` *depth* changes the default browsed depth (at start `?# 7`)
 
-`$(` *value* `)` displays the given *value* and bidn it to `$result`
+`$(` *value* `)` displays the given *value* and bind it to `$result`
 
 An object complement (i.e. `!*`, `!-`, `!&`, `!@`, `!$`, `!~`, `!>`
 ...) apply to the focused object.

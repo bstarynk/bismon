@@ -1155,6 +1155,7 @@ parsergetvalue_BM (struct parser_stBM * pars,
   LOCALFRAME_BM                 //
     (prevstkf, NULL,            //
      value_tyBM resval;
+     value_tyBM macroval;
      objectval_tyBM * connobj;
      union
      {
@@ -1466,6 +1467,74 @@ parsergetvalue_BM (struct parser_stBM * pars,
           makeclosure_BM (_.connobj,
                           datavectlen_BM (_.contdvec),
                           (const value_tyBM *) (_.contdvec->vec_data));
+      else
+        _.resval = NULL;
+      *pgotval = true;
+      return _.resval;
+    }
+  //
+  // parse read-macro expansion: ^ object ( arguments ... )
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_caret)
+    {
+      if (!parsops || !parsops->parsop_expand_readmacro_rout)
+        parsererrorprintf_BM (pars, lineno, colpos, "no readmacro expansion");
+
+      int nodlin = tok.tok_line;
+      int nodcol = tok.tok_col;
+      bool gotconnobj = false;
+      _.connobj =               //
+        parsergetobject_BM      //
+        (pars,                  //
+         (struct stackframe_stBM *) &_, //
+         depth + 1, &gotconnobj);
+      if (!gotconnobj)
+        parsererrorprintf_BM (pars, lineno, colpos,     //
+                              "missing connective object of readmacro after *");
+      parstoken_tyBM lefttok = parsertokenget_BM (pars);
+      if (lefttok.tok_kind != plex_DELIM
+          || lefttok.tok_delim != delim_leftparen)
+        parsererrorprintf_BM (pars, lineno, colpos,     //
+                              "missing left parenthesis for readmacro");
+      int leftlin = lefttok.tok_line;
+      int leftcol = lefttok.tok_col;
+      _.contdvec = nobuild ? NULL : datavect_grow_BM (NULL, 3);
+      bool gotson = false;
+      while ((gotson = false),  //
+             (_.sonval =        //
+              parsergetvalue_BM //
+              (pars,            //
+               (struct stackframe_stBM *) &_,   //
+               depth + 1, &gotson)),    //
+             gotson)
+        {
+          if (!nobuild)
+            _.contdvec = datavect_append_BM (_.contdvec, _.sonval);
+        }
+      parserskipspaces_BM (pars);
+      parstoken_tyBM endtok = parsertokenget_BM (pars);
+      if (endtok.tok_kind != plex_DELIM
+          || endtok.tok_delim != delim_rightparen)
+        parsererrorprintf_BM (pars, lineno, colpos,     //
+                              "missing right parenthesis for readmacro");
+      int endlin = endtok.tok_line;
+      int endcol = endtok.tok_col;
+      if (parsops && parsops->parsop_decorate_start_nesting_rout)
+        parsops->parsop_decorate_start_nesting_rout
+          (pars, depth,
+           delim_caret, nodlin, nodcol,
+           delim_leftparen, leftlin, leftcol,
+           delim_rightparen, endlin, endcol);
+      if (!nobuild)
+        {
+          _.macroval = (value_tyBM)
+            makenode_BM (_.connobj,
+                         datavectlen_BM (_.contdvec),
+                         (const value_tyBM *) (_.contdvec->vec_data));
+          _.resval =            //
+            parsops->parsop_expand_readmacro_rout
+            (pars, nodlin, nodcol, depth, _.macroval,
+             (struct stackframe_stBM *) &_);
+        }
       else
         _.resval = NULL;
       *pgotval = true;

@@ -170,6 +170,7 @@ static parser_expand_dollarval_sigBM parsdollarvalcmd_BM;
 static parser_expand_dollarobj_sigBM parsdollarobjcmd_BM;
 static parser_expand_valexp_sigBM parsvalexpcmd_BM;
 static parser_expand_objexp_sigBM parsobjexpcmd_BM;
+static parser_expand_readmacro_sigBM parsreadmacroexpcmd_BM;
 static parser_decorate_comment_sign_sigBM parscommentsigncmd_BM;
 static parser_decorate_comment_inside_sigBM parscommentinsidecmd_BM;
 static parser_decorate_delimiter_sigBM parsdelimcmd_BM;
@@ -187,6 +188,7 @@ const struct parserops_stBM parsop_command_build_BM = {
   .parsop_expand_dollarval_rout = parsdollarvalcmd_BM,
   .parsop_expand_valexp_rout = parsvalexpcmd_BM,
   .parsop_expand_objexp_rout = parsobjexpcmd_BM,
+  .parsop_expand_readmacro_rout = parsreadmacroexpcmd_BM,
   .parsop_decorate_comment_sign_rout = parscommentsigncmd_BM,
   .parsop_decorate_comment_inside_rout = parscommentinsidecmd_BM,
   .parsop_decorate_delimiter_rout = parsdelimcmd_BM,
@@ -206,6 +208,7 @@ const struct parserops_stBM parsop_command_nobuild_BM = {
   .parsop_expand_dollarval_rout = parsdollarvalcmd_BM,
   .parsop_expand_valexp_rout = parsvalexpcmd_BM,
   .parsop_expand_objexp_rout = parsobjexpcmd_BM,
+  .parsop_expand_readmacro_rout = parsreadmacroexpcmd_BM,
   .parsop_decorate_comment_sign_rout = parscommentsigncmd_BM,
   .parsop_decorate_comment_inside_rout = parscommentinsidecmd_BM,
   .parsop_decorate_delimiter_rout = parsdelimcmd_BM,
@@ -2219,6 +2222,24 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno,
   return NULL;
 }                               /* end parsvalexpcmd_BM */
 
+
+// expand readmacro-s
+value_tyBM parsreadmacroexpcmd_BM
+  (struct parser_stBM * pars, unsigned lineno, unsigned colpos, int depth,
+   const node_tyBM * nod, struct stackframe_stBM * stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 struct parser_stBM *pars;
+                 value_tyBM resval; const node_tyBM * nod;
+                 const objectval_tyBM * conn;
+    );
+  _.pars = pars;
+  _.nod = nod;
+#warning parsreadmacroexpcmd_BM unimplemented
+  parsererrorprintf_BM (pars, lineno, colpos,
+                        "parsreadmacroexpcmd_BM unimplemented");
+  return NULL;
+}                               /* end parsreadmacroexpcmd_BM */
 
 
 

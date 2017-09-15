@@ -1014,7 +1014,7 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
   /** _.constnodv should be
       * const (simple_module_generation functions_set  basiclo_function)
    **/
-  assert (isnode_BM (_.constnodv)
+  assert (isnode_BM ((const value_tyBM) _.constnodv)
           && valhash_BM ((const value_tyBM) _.constnodv) == 3051311583);
   if (!isobject_BM (arg1))
     return NULL;
