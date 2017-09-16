@@ -2230,15 +2230,38 @@ value_tyBM parsreadmacroexpcmd_BM
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  struct parser_stBM *pars;
-                 value_tyBM resval; const node_tyBM * nod;
+                 value_tyBM resval; const node_tyBM * nod; value_tyBM crm;
                  const objectval_tyBM * conn;
     );
   _.pars = pars;
   _.nod = nod;
-#warning parsreadmacroexpcmd_BM unimplemented
-  parsererrorprintf_BM (pars, lineno, colpos,
-                        "parsreadmacroexpcmd_BM unimplemented");
-  return NULL;
+  if (depth > MAXDEPTHPARSE_BM)
+    parsererrorprintf_BM (pars, lineno, colpos,
+                          "too deep %d readmacro", depth);
+  assert (isnode_BM ((const value_tyBM) nod));
+  _.conn = nodeconn_BM ((const value_tyBM) _.nod);
+  assert (isobject_BM ((const value_tyBM) _.conn));
+  _.crm = objgetattr_BM (_.conn, BMP_command_readmacro);
+  if (!isclosure_BM ((const value_tyBM) _.crm))
+    {
+      char crmidbuf[32];
+      memset (crmidbuf, 0, sizeof (crmidbuf));
+      idtocbuf32_BM (objid_BM (_.crm), crmidbuf);
+      const char *crmname = findobjectname_BM (_.crm);
+      if (crmname)
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "readmacro ^ %s (=%s) has bad `command_readmacro` attribute",
+                              crmname, crmidbuf);
+      else
+        parsererrorprintf_BM (pars, lineno, colpos,
+                              "readmacro ^ %s has bad `command_readmacro` attribute",
+                              crmidbuf);
+    }
+  _.resval =                    //
+    apply3_BM (_.crm, (struct stackframe_stBM *) &_,
+               (value_tyBM) _.nod,
+               taggedint_BM (lineno), taggedint_BM (colpos));
+  return _.resval;
 }                               /* end parsreadmacroexpcmd_BM */
 
 

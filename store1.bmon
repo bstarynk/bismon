@@ -1,5 +1,5 @@
 // generated file store1.bmon
-// for 32 objects
+// for 33 objects
 // with 0 modules
 
 
@@ -85,6 +85,16 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for code chunks"
 !)_3HGHcRxE9bn_1ufs1gFf4Yh
+
+
+
+!(_3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+!~ name (~ command_readmacro
+~)
+!@ 1505550618.58
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for command readmacros"
+!)_3EKD6vcwegI_3LMuXHuazib
 
 
 
