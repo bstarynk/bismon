@@ -2250,8 +2250,8 @@ value_tyBM parsreadmacroexpcmd_BM
       const char *crmname = findobjectname_BM (_.crm);
       if (crmname)
         parsererrorprintf_BM (pars, lineno, colpos,
-                              "readmacro ^ %s (=%s) has bad `command_readmacro` attribute",
-                              crmname, crmidbuf);
+                              "readmacro ^ %s |=%s| has bad `command_readmacro` attribute",
+                              crmidbuf, crmname);
       else
         parsererrorprintf_BM (pars, lineno, colpos,
                               "readmacro ^ %s has bad `command_readmacro` attribute",
