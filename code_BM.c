@@ -1127,3 +1127,24 @@ ROUTINEOBJNAME_BM (_60NdV04Lel2_5FSZVWKbSL7)    //
   objtouchnow_BM (_.recv);
   return _.recv;
 }                               /* end ROUTINEOBJNAME_BM _60NdV04Lel2_5FSZVWKbSL7 */
+
+
+
+// for the const function (returning first closed value)
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_5DDSY1YgVZr_6dOU4tiBldk);
+value_tyBM
+ROUTINEOBJNAME_BM (_5DDSY1YgVZr_6dOU4tiBldk)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1 __attribute__ ((unused)),
+ const value_tyBM arg2 __attribute__ ((unused)),
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const closure_tyBM * clos;
+    );
+  _.clos = clos;
+  assert (isclosure_BM ((const value_tyBM) clos));
+  return closurenthson_BM ((const value_tyBM) clos, 0);
+}                               /* end ROUTINE _5DDSY1YgVZr_6dOU4tiBldk const */
