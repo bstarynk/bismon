@@ -316,7 +316,7 @@ sequencenthcomp_BM (const seqobval_tyBM * sq, int rk)
   unsigned siz = ((typedsize_tyBM *) sq)->size;
   if (rk < 0)
     rk += siz;
-  if (rk >= 0 && rk < siz)
+  if (rk >= 0 && rk < (int) siz)
     return (objectval_tyBM *) sq->seq_objs[rk];
   return NULL;
 }                               /* end sequencenthcomp_BM */
