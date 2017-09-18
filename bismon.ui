@@ -354,5 +354,24 @@
                 <property name="font">Liberation Mono Bold</property>
             </object>
         </child>
+      <!-- command_logtag for command in log -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">command_logtag</property>
+		<property name='foreground'>darkblue</property>
+		<property name='scale'>0.9</property>
+                <property name="font">Liberation Mono Bold</property>
+            </object>
+        </child>
+      <!-- comment_logtag for command in log -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">comment_logtag</property>
+		<property name='foreground'>darkgreen</property>
+		<property name='background'>ivory</property>
+		<property name='scale'>0.9</property>
+                <property name="font">Courier New Italics</property>
+            </object>
+        </child>
     </object>
 </interface>

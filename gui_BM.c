@@ -104,6 +104,8 @@ GtkTextTag *error_logtag_BM;
 GtkTextTag *time_logtag_BM;
 GtkTextTag *id_logtag_BM;
 GtkTextTag *name_logtag_BM;
+GtkTextTag *comment_logtag_BM;
+GtkTextTag *command_logtag_BM;
 
 
 
@@ -3377,7 +3379,6 @@ runcommand_BM (bool erase)
     };
   gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
   gtk_text_buffer_remove_all_tags (commandbuf_BM, &startit, &endit);
-  int endlin = gtk_text_iter_get_line (&endit);
   char *cmdstr = gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit,
                                            false);
   bool gotffortab = false;
@@ -3410,12 +3411,12 @@ runcommand_BM (bool erase)
       // should parse the command buffer, this could longjmp to jmperrorcmd_BM
       parsecommandbuf_BM (cmdpars, (struct stackframe_stBM *) &_);
       commandnumber_BM++;
+      serial63_tyBM sercmd = randomserial63_BM ();
+      char serbuf[16];
+      memset (serbuf, 0, sizeof (serbuf));
+      serial63tocbuf16_BM (sercmd, serbuf);
       if (gui_command_log_file_BM)
         {
-          serial63_tyBM sercmd = randomserial63_BM ();
-          char serbuf[16];
-          memset (serbuf, 0, sizeof (serbuf));
-          serial63tocbuf16_BM (sercmd, serbuf);
           fprintf (gui_command_log_file_BM, "///++%s command #%d,l%d:\n",
                    serbuf, commandnumber_BM, cmdlen);
           fputs (cmdstr, gui_command_log_file_BM);
@@ -3427,35 +3428,26 @@ runcommand_BM (bool erase)
         }
       log_begin_message_BM ();
       log_printf_message_BM
-        ("run %s command #%d of %d lines successfully:\n",
-         erase ? "erased" : "kept", commandnumber_BM, endlin);
-      GtkTextIter eol1it = startit;
-      gtk_text_iter_forward_line (&eol1it);
-      char *line1str =
-        gtk_text_buffer_get_text (commandbuf_BM, &startit, &eol1it,
-                                  false);
-      log_puts_message_BM (line1str);
-      log_puts_message_BM ("\n");
-      free (line1str), line1str = NULL;
-      if (endlin > 1)
-        {
-          GtkTextIter lastlit = endit;
-          gtk_text_iter_backward_line (&lastlit);
-          char *lastlinstr =
-            gtk_text_buffer_get_text (commandbuf_BM, &lastlit, &endit,
-                                      false);
-          if (endlin > 2)
-            {
-              GtkTextIter it = EMPTY_TEXT_ITER_BM;
-              gtk_text_buffer_get_end_iter (logbuf_BM, &it);
-              gtk_text_buffer_insert_with_tags (logbuf_BM, &it, //
-                                                "\342\200\246", // U+2026 HORIZONTAL ELLIPSIS …
-                                                -1, error_logtag_BM, NULL);
-              gtk_text_buffer_insert (logbuf_BM, &it, "\n", 1);
-            }
-          log_puts_message_BM (lastlinstr);
-          log_puts_message_BM ("\n");
-        };
+        ("run %s command #%d successfully:\n",
+         erase ? "erased" : "kept", commandnumber_BM);
+      char commbuf[80];
+      memset (commbuf, 0, sizeof (commbuf));
+      snprintf (commbuf, sizeof (commbuf), "///++%s command #%d,l%d:",
+                serbuf, commandnumber_BM, cmdlen);
+      GtkTextIter it = EMPTY_TEXT_ITER_BM;
+      gtk_text_buffer_get_end_iter (logbuf_BM, &it);
+      gtk_text_buffer_insert_with_tags
+        (logbuf_BM, &it, commbuf, -1, comment_logtag_BM, NULL);
+      gtk_text_buffer_insert (logbuf_BM, &it, "\n", -1);
+      gtk_text_buffer_insert_with_tags
+        (logbuf_BM, &it, cmdstr, -1, command_logtag_BM, NULL);
+      if (cmdlen > 0 && cmdstr[cmdlen - 1] != '\n')
+        gtk_text_buffer_insert (logbuf_BM, &it, "\n", -1);
+      snprintf (commbuf, sizeof (commbuf), "///--%s end command #%d",
+                serbuf, commandnumber_BM);
+      gtk_text_buffer_insert_with_tags
+        (logbuf_BM, &it, commbuf, -1, comment_logtag_BM, NULL);
+      gtk_text_buffer_insert (logbuf_BM, &it, "\n", -1);
       log_end_message_BM ();
     }
   else                          /* error */
@@ -3791,6 +3783,14 @@ initialize_gui_BM (const char *builderfile, const char *cssfile)
     gtk_text_tag_table_lookup (logtagtable_BM, "name_logtag");
   if (!name_logtag_BM)
     FATAL_BM ("cannot find name_logtag");
+  comment_logtag_BM =           //
+    gtk_text_tag_table_lookup (logtagtable_BM, "comment_logtag");
+  if (!comment_logtag_BM)
+    FATAL_BM ("cannot find comment_logtag");
+  command_logtag_BM =           //
+    gtk_text_tag_table_lookup (logtagtable_BM, "command_logtag");
+  if (!command_logtag_BM)
+    FATAL_BM ("cannot find command_logtag");
   ////////////////
   GtkWidget *mainvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);
@@ -4203,14 +4203,35 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   ///
   //// show hi&lo id and hash
   {
-    char idcomm[80];
-    memset (idcomm, 0, sizeof (idcomm));
-    snprintf (idcomm, sizeof (idcomm), "|id:%lld,%lld; h:%d|",
-              (long long) _.objbrows->ob_id.id_hi,
-              (long long) _.objbrows->ob_id.id_lo,
-              objecthash_BM (_.objbrows));
-    gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM, idcomm,
-                                      -1, miscomm_brotag_BM, NULL);
+    Dl_info di = { };
+    if (_.objbrows->ob_rout
+        && dladdr (_.objbrows->ob_rout, &di) && di.dli_fname && di.dli_sname)
+      {
+        char *commbuf = NULL;
+        asprintf (&commbuf,
+                  "|id:%lld,%lld; h:%d\n ... µ%s/%s @%p|",
+                  (long long) _.objbrows->ob_id.id_hi,
+                  (long long) _.objbrows->ob_id.id_lo,
+                  objecthash_BM (_.objbrows),
+                  di.dli_fname, di.dli_sname, (void *) _.objbrows->ob_rout);
+        if (commbuf)
+          gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                            commbuf, -1, miscomm_brotag_BM,
+                                            NULL);
+        free (commbuf);
+      }
+    else
+      {
+        char idcomm[128];
+        memset (idcomm, 0, sizeof (idcomm));
+        snprintf (idcomm, sizeof (idcomm), "|id:%lld,%lld; h:%d|",
+                  (long long) _.objbrows->ob_id.id_hi,
+                  (long long) _.objbrows->ob_id.id_lo,
+                  objecthash_BM (_.objbrows));
+        gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+                                          idcomm, -1, miscomm_brotag_BM,
+                                          NULL);
+      }
     gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
   }
   ///
