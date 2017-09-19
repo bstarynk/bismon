@@ -89,4 +89,20 @@
 
 #define GLOBAL_BM(Gnam) globdata_##Gnam##_BM
 
+// we could use DBGPRINTF_BM and later replace it by NONPRINTF_BM
+#define DBGPRINTFATBIS_BM(Fil,Lin,Fmt,...) do { \
+    printf("%s:%d: " Fmt "\n",			\
+	   basename((Fil)), (Lin),		\
+	 ##__VA_ARGS__);			\
+} while(0)
+
+#define DBGPRINTFAT_BM(Fil,Lin,Fmt,...) \
+  DBGPRINTFATBIS_BM(Fil,Lin,Fmt,##__VA_ARGS__)
+
+#define DBGPRINTF_BM(Fmt,...) \
+  DBGPRINTFAT_BM(__FILE__,__LINE__,Fmt,##__VA_ARGS__)
+
+#define NONPRINTF_BM(Fmt,...) do { if (false) \
+      DBGPRINTF_BM(Fmt,##__VA_ARGS__); } while(0)
+
 #endif /*CMACROS_BM_INCLUDED */

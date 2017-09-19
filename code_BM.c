@@ -925,6 +925,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
   if (!isobject_BM (arg1))
     return NULL;
   _.recv = (objectval_tyBM *) arg1;
+  DBGPRINTF_BM ("@@emit_module %s", objectdbg_BM (_.recv));
   _.modgenob = makeobj_BM ();
   _.simple_module_generation =
     objectcast_BM (nodenthson_BM
