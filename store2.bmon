@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 51 objects
+// for 55 objects
 // with 0 modules
 
 
@@ -143,6 +143,26 @@
 
 
 
+!(_9oXtCgAbkqv_4y1xhhF5Nhz |=first_test_module|
+!~ name (~ first_test_module
+~)
+!@ 1505798534.72
+!$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
+!# 2
+!& _0kRkxnvVHxY_59CcWWLwLGz |=first_test_routine| 
+!&  % _5DDSY1YgVZr_6dOU4tiBldk (  { _2ZCtswobVlU_3xPTbaxXBBg _5x6fXpWuMEN_59KysNAhPCt })
+!)_9oXtCgAbkqv_4y1xhhF5Nhz
+
+
+
+!(_0kRkxnvVHxY_59CcWWLwLGz |=first_test_routine|
+!~ name (~ first_test_routine
+~)
+!@ 1505798435.74
+!)_0kRkxnvVHxY_59CcWWLwLGz
+
+
+
 !(_9stpgEfdDDE_7LUgqylTeFI |=functions_set|
 !~ name (~ functions_set
 ~)
@@ -238,6 +258,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 
+!(_5x6fXpWuMEN_59KysNAhPCt |=second_test_routine|
+!~ name (~ second_test_routine
+~)
+!@ 1505798534.72
+!)_5x6fXpWuMEN_59KysNAhPCt
+
+
+
 !(_4rz1Bi4weGz_8Y03gU81cRL |=see|
 !~ name (~ see
 ~)
@@ -272,6 +300,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 ~)
 
 !)_4tiUQqbr6oh_5gZVoUWsppH
+
+
+
+!(_2ZCtswobVlU_3xPTbaxXBBg |=third_test_routine|
+!~ name (~ third_test_routine
+~)
+!@ 1505798534.72
+!)_2ZCtswobVlU_3xPTbaxXBBg
 
 
 
