@@ -925,7 +925,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
   if (!isobject_BM (arg1))
     return NULL;
   _.recv = (objectval_tyBM *) arg1;
-  DBGPRINTF_BM ("@@emit_module %s", objectdbg_BM (_.recv));
+  DBGPRINTF_BM ("@@emit_module recv=%s", objectdbg_BM (_.recv));
   _.modgenob = makeobj_BM ();
   _.simple_module_generation =
     objectcast_BM (nodenthson_BM
@@ -1149,3 +1149,44 @@ ROUTINEOBJNAME_BM (_5DDSY1YgVZr_6dOU4tiBldk)    //
   assert (isclosure_BM ((const value_tyBM) clos));
   return closurenthson_BM ((const value_tyBM) clos, 0);
 }                               /* end ROUTINE _5DDSY1YgVZr_6dOU4tiBldk const */
+
+
+// for the routine to dump_data a plain_dumpable_module
+extern objrout_sigBM ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // recieving module
+ const value_tyBM arg2,         // dumper
+ const value_tyBM arg3,         // dump strbuf
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const closure_tyBM * clos;
+                 objectval_tyBM * obmod;
+                 struct dumper_stBM *dumper; struct strbuffer_stBM *sbuf;
+                 value_tyBM res;
+    );
+  _.clos = clos;
+  assert (isobject_BM (arg1));
+  _.obmod = arg1;
+  assert (valtype_BM (arg2) == tydata_dumper_BM);
+  _.dumper = arg2;
+  assert (valtype_BM (arg3) == tydata_strbuffer_BM);
+  _.sbuf = arg3;
+  DBGPRINTF_BM ("dump_data°plain_dumpable_module obmod=%s",
+                objectdbg_BM (_.obmod));
+  _.res = send0_BM (_.obmod, BMP_emit_module, (struct stackframe_stBM *) &_);
+  if (_.res)
+    {
+      char idbuf[32];
+      memset (idbuf, 0, sizeof (idbuf));
+      idtocbuf32_BM (objid_BM (_.obmod), idbuf);
+      strbufferprintf_BM (_.sbuf, "\t// emitted module %s\n", idbuf);
+      DBGPRINTF_BM ("dump_data°plain_dumpable_module emitted obmod=%s",
+                    objectdbg_BM (_.obmod));
+    }
+  return _.res;
+
+}                               /* end ROUTINE _5DyG7xVcxRI_1Ckpbj7b3QK */
