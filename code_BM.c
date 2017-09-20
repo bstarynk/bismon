@@ -925,7 +925,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
   if (!isobject_BM (arg1))
     return NULL;
   _.recv = (objectval_tyBM *) arg1;
-  DBGPRINTF_BM ("@@emit_module recv=%s", objectdbg_BM (_.recv));
+  DBGPRINTF_BM ("@@plain_module°emit_module recv=%s", objectdbg_BM (_.recv));
   _.modgenob = makeobj_BM ();
   _.simple_module_generation =
     objectcast_BM (nodenthson_BM
@@ -959,11 +959,19 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
   _.resprep = send1_BM (_.recv, _.prepare_module,
                         (struct stackframe_stBM *) &_, _.modgenob);
   if (!_.resprep)
-    return NULL;
+    {
+      DBGPRINTF_BM ("@@emit_module recv=%s prepare_module failed",
+                    objectdbg_BM (_.recv));
+      return NULL;
+    }
   _.resgen = send2_BM (_.recv, _.generate_module,
                        (struct stackframe_stBM *) &_, _.modgenob, _.resprep);
   if (!_.resgen)
-    return NULL;
+    {
+      DBGPRINTF_BM ("@@emit_module recv=%s generate_module failed",
+                    objectdbg_BM (_.recv));
+      return NULL;
+    }
 #warning emit_module of plain_module incomplete
 }                               /* end  ROUTINE _1gME6zn82Kf_8hzWibLFRfz */
 
@@ -1009,6 +1017,16 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
                  value_tyBM partres;    //
                  setval_tyBM * setfun;
     );
+  if (!isobject_BM (arg1))
+    return NULL;
+  _.recv = (objectval_tyBM *) arg1;
+  DBGPRINTF_BM ("prepare_module°basiclo*module _8zNBXSMY2Ts_1VI5dmY4umA"
+                "  recv=%s", objectdbg_BM (_.recv));
+  if (!isobject_BM (arg2))
+    return NULL;
+  _.modgen = (objectval_tyBM *) arg2;
+  DBGPRINTF_BM ("prepare_module°basiclo*module modgen=%s",
+                objectdbg_BM (_.modgen));
   _.closconn = closureconn_BM ((const value_tyBM) clos);
   assert (isobject_BM (_.closconn));
   _.constnodv = _.closconn->ob_data;
@@ -1017,12 +1035,6 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
    **/
   assert (isnode_BM ((const value_tyBM) _.constnodv)
           && valhash_BM ((const value_tyBM) _.constnodv) == 3051311583);
-  if (!isobject_BM (arg1))
-    return NULL;
-  _.recv = (objectval_tyBM *) arg1;
-  if (!isobject_BM (arg2))
-    return NULL;
-  _.modgen = (objectval_tyBM *) arg2;
   _.simple_module_generation =
     objectcast_BM (nodenthson_BM
                    ((void *) _.constnodv, constix_simple_module_generation));
@@ -1163,8 +1175,7 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos;
-                 objectval_tyBM * obmod;
+                 const closure_tyBM * clos; objectval_tyBM * obmod;
                  struct dumper_stBM *dumper; struct strbuffer_stBM *sbuf;
                  value_tyBM res;
     );
