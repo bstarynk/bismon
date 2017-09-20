@@ -1049,7 +1049,7 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
                    ((void *) _.constnodv, constix_functions_set));
   assert (_.functions_set != NULL);
   assert (objecthash_BM (_.functions_set)       //
-          == 975107136 /* functions_set |=_9HaadWoYpw1_9o1QUAhOUPl| */ );
+          == 721902257 /* functions_set |=_9stpgEfdDDE_7LUgqylTeFI| */ );
   _.basiclo_function =
     objectcast_BM (nodenthson_BM
                    ((void *) _.constnodv, constix_basiclo_function));
