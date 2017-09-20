@@ -964,14 +964,23 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
                     objectdbg_BM (_.recv));
       return NULL;
     }
-  _.resgen = send2_BM (_.recv, _.generate_module,
-                       (struct stackframe_stBM *) &_, _.modgenob, _.resprep);
+  else
+    DBGPRINTF_BM
+      ("@@emit_module recv=%s prepare_module done before generate_module",
+       objectdbg_BM (_.recv));
+  _.resgen =
+    send2_BM (_.recv, _.generate_module, (struct stackframe_stBM *) &_,
+              _.modgenob, _.resprep);
   if (!_.resgen)
     {
       DBGPRINTF_BM ("@@emit_module recv=%s generate_module failed",
                     objectdbg_BM (_.recv));
       return NULL;
     }
+  else
+    DBGPRINTF_BM ("@@emit_module recv=%s generate_module done",
+                  objectdbg_BM (_.recv));
+  return _.recv;
 #warning emit_module of plain_module incomplete
 }                               /* end  ROUTINE _1gME6zn82Kf_8hzWibLFRfz */
 
@@ -1141,6 +1150,33 @@ ROUTINEOBJNAME_BM (_60NdV04Lel2_5FSZVWKbSL7)    //
   return _.recv;
 }                               /* end ROUTINEOBJNAME_BM _60NdV04Lel2_5FSZVWKbSL7 */
 
+
+// for the method to generate_module in basiclo_temporary_module &
+// basiclo_dumpable_module
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I);
+value_tyBM
+ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // recieving module
+ const value_tyBM arg2,         // module generator
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * recv;
+                 const closure_tyBM * clos; objectval_tyBM * closconn;
+                 const node_tyBM * constnodv;
+    );
+  _.recv = arg1;
+  _.clos = clos;
+  assert (isobject_BM (_.recv));
+  DBGPRINTF_BM
+    ("generate_module°basiclo*module _50d65bJypCN_6IJeVtssx9I recv=%s",
+     objectdbg_BM (_.recv));
+  return NULL;
+}                               /* end ROUTINE _50d65bJypCN_6IJeVtssx9I */
 
 
 // for the const function (returning first closed value)
