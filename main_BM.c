@@ -276,7 +276,7 @@ main (int argc, char **argv)
         }
       printf ("***/\n\n\n");
     }
-  if (!guiok)
+  if (!guiok && !batch_bm)
     FATAL_BM ("gtk_init_with_args failed");
   if (!batch_bm)
     initialize_gui_BM (builder_file_bm, css_file_bm);
