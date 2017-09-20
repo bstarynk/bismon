@@ -1160,12 +1160,13 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
  const value_tyBM arg1,         // recieving module
  const value_tyBM arg2,         // module generator
- const value_tyBM arg3 __attribute__ ((unused)),
+ const value_tyBM arg3,         // preparation
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
 
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv;
+                 objectval_tyBM * modgen; value_tyBM * prepval;
                  const closure_tyBM * clos; objectval_tyBM * closconn;
                  const node_tyBM * constnodv;
     );
@@ -1175,6 +1176,22 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
   DBGPRINTF_BM
     ("generate_module°basiclo*module _50d65bJypCN_6IJeVtssx9I recv=%s",
      objectdbg_BM (_.recv));
+  _.modgen = arg2;
+  _.prepval = arg3;
+  if (!isobject_BM (_.modgen))
+    {
+      DBGPRINTF_BM ("generate_module°basiclo*module bad modgen");
+      return NULL;
+    };
+  DBGPRINTF_BM
+    ("generate_module°basiclo*module modgen=%s", objectdbg_BM (_.modgen));
+  if (!isset_BM (_.prepval))
+    {
+      DBGPRINTF_BM ("generate_module°basiclo*module bad prepval");
+      return NULL;
+    }
+  unsigned nbrout = setcardinal_BM (_.prepval);
+  DBGPRINTF_BM ("generate_module°basiclo*module nbrout=%u", nbrout);
   return NULL;
 }                               /* end ROUTINE _50d65bJypCN_6IJeVtssx9I */
 
