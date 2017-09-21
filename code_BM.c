@@ -1170,7 +1170,8 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
   };
 
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv; objectval_tyBM * curout;
+                 objectval_tyBM * recv;
+                 objectval_tyBM * curout; objectval_tyBM * prepare_routine;
                  objectval_tyBM * modgen; value_tyBM * prepval;
                  const closure_tyBM * clos; objectval_tyBM * closconn;
                  const node_tyBM * constnodv;
@@ -1187,6 +1188,10 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
   /** _.constnodv should be 
        * const (prepare_routine)
    **/
+  assert (valhash_BM (_.constnodv) == 70226118);
+  _.prepare_routine = objectcast_BM (nodenthson_BM (_.constnodv, 0));
+  assert (objecthash_BM (_.prepare_routine) == 201958426
+          /*prepare_routine |=_6qi1DW0Ygkl_4Aqdxq4n5IV| */ );
   _.modgen = arg2;
   _.prepval = arg3;
   if (!isobject_BM (_.modgen))
@@ -1201,16 +1206,20 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
       DBGPRINTF_BM ("@@generate_module°basiclo*module bad prepval");
       return NULL;
     }
-  unsigned nbrout = setcardinal_BM (_.prepval);
+  unsigned nbrout = setcardinal_BM ((const setval_tyBM *) _.prepval);
   DBGPRINTF_BM ("@@generate_module°basiclo*module nbrout=%u", nbrout);
   for (unsigned ix = 0; ix < nbrout; ix++)
     {
-      _.curout = setelemnth_BM (_.prepval, ix);
+      _.curout = setelemnth_BM ((const setval_tyBM *) _.prepval, ix);
       DBGPRINTF_BM ("@@generate_module°basiclo*module ix#%d curout %s",
                     ix, objectdbg_BM (_.curout));
+      send2_BM (_.curout, _.prepare_routine,
+                (struct stackframe_stBM *) &_, _.modgen, _.prepval);
     }
   return NULL;
 }                               /* end ROUTINE _50d65bJypCN_6IJeVtssx9I */
+
+
 
 
 // for the const function (returning first closed value)
