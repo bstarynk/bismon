@@ -1165,13 +1165,12 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
 {
   enum constix_en
   {
-   constix_prepare_routine,
+    constix_prepare_routine,
     constix__LAST
   };
 
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv;
-		  objectval_tyBM * curout;
+                 objectval_tyBM * recv; objectval_tyBM * curout;
                  objectval_tyBM * modgen; value_tyBM * prepval;
                  const closure_tyBM * clos; objectval_tyBM * closconn;
                  const node_tyBM * constnodv;
@@ -1204,11 +1203,12 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
     }
   unsigned nbrout = setcardinal_BM (_.prepval);
   DBGPRINTF_BM ("@@generate_module°basiclo*module nbrout=%u", nbrout);
-  for (unsigned ix=0; ix<nbrout; ix++) {
-    _.curout = setelemnth_BM(_.prepval, ix);
-    DBGPRINTF_BM ("@@generate_module°basiclo*module ix#%d curout %s",
-		  ix, objectdbg_BM(_.curout));
-  }
+  for (unsigned ix = 0; ix < nbrout; ix++)
+    {
+      _.curout = setelemnth_BM (_.prepval, ix);
+      DBGPRINTF_BM ("@@generate_module°basiclo*module ix#%d curout %s",
+                    ix, objectdbg_BM (_.curout));
+    }
   return NULL;
 }                               /* end ROUTINE _50d65bJypCN_6IJeVtssx9I */
 
