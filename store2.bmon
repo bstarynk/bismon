@@ -1,6 +1,14 @@
 // generated file store2.bmon
-// for 58 objects
+// for 69 objects
 // with 0 modules
+
+
+!(_0aWpxE7aiWs_71KTgYdlifE |=assign|
+!~ name (~ assign
+~)
+!@ 1506081112.65
+!)_0aWpxE7aiWs_71KTgYdlifE
+
 
 
 !(_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
@@ -50,12 +58,12 @@
 !(_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !~ name (~ basiclo_function
 ~)
-!@ 1505662349.99
+!@ 1506081450.07
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of basic closure functions, e.g. in basiclo_*_module"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
- { _0lQvVoZ3RLA_1PuOJnJxuHi _4bYUiDmxrKK_6nPPlEl8y8x _4lKK08v9A0t_0GGsir35UxP _9pCSj6h5qCP_1OZyKlhcrSY }
+ { _0aWpxE7aiWs_71KTgYdlifE _0lQvVoZ3RLA_1PuOJnJxuHi _0v2RuabJSIV_7SLFx4XAdpr _2DH0ucElTgh_62vxjxLcfev _2U8Sj78DMbl_5eerKpaJsNq _3pQnBS9ZjkQ_0uGmqUUhAum _3OYXwdPt9uq_98Ba6PM6vPV _41gbFesxqzD_3l56OLiNdl2 _4bYUiDmxrKK_6nPPlEl8y8x _4lKK08v9A0t_0GGsir35UxP _4X7JvAJvCfT_0gWFtshEQad _7GNnckYYtcH_7wtOnPP4eKU _7LKvYvypCA4_2QefpJPlomi _7XzttLA7sll_94JQHl1Owbw _9pCSj6h5qCP_1OZyKlhcrSY }
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
 ~: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|  % _7D36kHemyWQ_0YfwWnUhR9Y () 
 ~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan|  % _9UhDZeDdg2r_55lUqYDPUiF () 
@@ -113,6 +121,40 @@
 
 
 
+!(_2U8Sj78DMbl_5eerKpaJsNq |=block|
+!~ name (~ block
+~)
+!@ 1506081112.65
+!)_2U8Sj78DMbl_5eerKpaJsNq
+
+
+
+!(_7XzttLA7sll_94JQHl1Owbw |=call|
+!~ name (~ call
+~)
+!@ 1506081112.65
+!)_7XzttLA7sll_94JQHl1Owbw
+
+
+
+!(_5MiY0SneC5A_7c2Ar72nm9O |=complete_module|
+!~ name (~ complete_module
+~)
+!@ 1506063223.90
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector to complete a module"
+!)_5MiY0SneC5A_7c2Ar72nm9O
+
+
+
+!(_0v2RuabJSIV_7SLFx4XAdpr |=cond|
+!~ name (~ cond
+~)
+!@ 1506081112.65
+!)_0v2RuabJSIV_7SLFx4XAdpr
+
+
+
 !(_5XDRkXDAUAk_9AuvN0J1d53 |=dumper_of_globals|
 !~ name (~ dumper_of_globals
 ~)
@@ -136,6 +178,14 @@
 !: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|
  % _075tZNHCAMa_7XNNBaNM4qv (  "_bm_predef.h")
 !)_4dGXIiALafP_2bxdkvN34Qa
+
+
+
+!(_41gbFesxqzD_3l56OLiNdl2 |=exit|
+!~ name (~ exit
+~)
+!@ 1506081450.07
+!)_41gbFesxqzD_3l56OLiNdl2
 
 
 
@@ -191,6 +241,30 @@
 ~)
 !@ 1504634820.73
 !)_75gnoii3mMp_41wgHkvJVyN
+
+
+
+!(_3OYXwdPt9uq_98Ba6PM6vPV |=intswitch|
+!~ name (~ intswitch
+~)
+!@ 1506081112.65
+!)_3OYXwdPt9uq_98Ba6PM6vPV
+
+
+
+!(_4X7JvAJvCfT_0gWFtshEQad |=loop|
+!~ name (~ loop
+~)
+!@ 1506081307.33
+!)_4X7JvAJvCfT_0gWFtshEQad
+
+
+
+!(_7LKvYvypCA4_2QefpJPlomi |=objswitch|
+!~ name (~ objswitch
+~)
+!@ 1506081112.65
+!)_7LKvYvypCA4_2QefpJPlomi
 
 
 
@@ -274,6 +348,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 
+!(_2DH0ucElTgh_62vxjxLcfev |=return|
+!~ name (~ return
+~)
+!@ 1506081112.65
+!)_2DH0ucElTgh_62vxjxLcfev
+
+
+
 !(_5x6fXpWuMEN_59KysNAhPCt |=second_test_routine|
 !~ name (~ second_test_routine
 ~)
@@ -326,6 +408,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !@ 1505800253.23
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !)_2ZCtswobVlU_3xPTbaxXBBg
+
+
+
+!(_7GNnckYYtcH_7wtOnPP4eKU |=while|
+!~ name (~ while
+~)
+!@ 1506081112.65
+!)_7GNnckYYtcH_7wtOnPP4eKU
 
 
 
@@ -557,7 +647,7 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 !(_8zNBXSMY2Ts_1VI5dmY4umA
-!@ 1505301543.84
+!@ 1506063178.34
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to prepare_module a basiclo*module"
@@ -566,7 +656,7 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation| 
  _9stpgEfdDDE_7LUgqylTeFI |=functions_set|  _2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function| 
-) ~)
+ _5MiY0SneC5A_7c2Ar72nm9O |=complete_module| ) ~)
 
 !)_8zNBXSMY2Ts_1VI5dmY4umA
 

@@ -1004,6 +1004,7 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
     constix_simple_module_generation,
     constix_functions_set,
     constix_basiclo_function,
+    constix_complete_module,
     constix__LAST
   };
   enum closureix_en
@@ -1020,6 +1021,7 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
                  objectval_tyBM * simple_module_generation;
                  objectval_tyBM * functions_set;        //
                  objectval_tyBM * basiclo_function;
+		  objectval_tyBM * complete_module;
                  struct hashsetobj_stBM *hset;
                  value_tyBM curcomp;    //
                  seqobval_tyBM * curseq;        //
@@ -1040,10 +1042,12 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
   assert (isobject_BM (_.closconn));
   _.constnodv = _.closconn->ob_data;
   /** _.constnodv should be
-      * const (simple_module_generation functions_set  basiclo_function)
+      * const (simple_module_generation functions_set 
+               basiclo_function complete_module)
    **/
   assert (isnode_BM ((const value_tyBM) _.constnodv)
-          && valhash_BM ((const value_tyBM) _.constnodv) == 3051311583);
+          && valhash_BM ((const value_tyBM) _.constnodv) == 4245083367
+	  );
   _.simple_module_generation =
     objectcast_BM (nodenthson_BM
                    ((void *) _.constnodv, constix_simple_module_generation));
@@ -1120,8 +1124,15 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
     return NULL;
   _.setfun = (setval_tyBM *) hashsetobj_to_set_BM (_.hset);
   objputattr_BM (_.modgen, _.functions_set, _.setfun);
+  _.partres = send1_BM(_.recv, _.complete_module,
+		       (struct stackframe_stBM*) &_, _.modgen);
+  if (isset_BM(_.partres))
+    _.setfun = _.partres;
   return _.setfun;
-}                               /* end ROUTINE _8zNBXSMY2Ts_1VI5dmY4umA */
+}                               /* end ROUTINE _8zNBXSMY2Ts_1VI5dmY4umA prepare_module°basiclo*module */
+
+
+
 
 
 // for the method to put_data_value in basiclo_function
@@ -1280,3 +1291,4 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
   return _.res;
 
 }                               /* end ROUTINE _5DyG7xVcxRI_1Ckpbj7b3QK */
+
