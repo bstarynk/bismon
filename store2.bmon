@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 74 objects
+// for 76 objects
 // with 0 modules
 
 
@@ -192,7 +192,11 @@
 !(_41gbFesxqzD_3l56OLiNdl2 |=exit|
 !~ name (~ exit
 ~)
-!@ 1506081450.07
+!@ 1506085968.82
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "^exit(loop-or-block-obj)"
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _63Q0R4r8xa7_7XOAxxP5pi2 ()
 !)_41gbFesxqzD_3l56OLiNdl2
 
 
@@ -434,7 +438,11 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !(_7GNnckYYtcH_7wtOnPP4eKU |=while|
 !~ name (~ while
 ~)
-!@ 1506081112.65
+!@ 1506086264.79
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "^ while (cond ....instr....)"
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _1ufPZmTnWhp_7FX9NANZCAW ()
 !)_7GNnckYYtcH_7wtOnPP4eKU
 
 
@@ -496,6 +504,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
  _9mq0jsuz4XQ_4doHfd987Q6 |=generate_module| ) ~)
 
 !)_1gME6zn82Kf_8hzWibLFRfz
+
+
+
+!(_1ufPZmTnWhp_7FX9NANZCAW
+!@ 1506086292.17
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "routine for while:readmacro"
+!)_1ufPZmTnWhp_7FX9NANZCAW
 
 
 
@@ -605,6 +621,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to put_data_value in basiclo_function"
 !)_60NdV04Lel2_5FSZVWKbSL7
+
+
+
+!(_63Q0R4r8xa7_7XOAxxP5pi2
+!@ 1506086023.61
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "routine for exit:readmacro"
+!)_63Q0R4r8xa7_7XOAxxP5pi2
 
 
 
