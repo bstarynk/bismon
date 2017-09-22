@@ -1292,6 +1292,11 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
 }                               /* end ROUTINE _5DyG7xVcxRI_1Ckpbj7b3QK */
 
 
+
+
+
+/******************* command readmacros ***************/
+
 // for the routine command_readmacro for block
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9);
 
@@ -1301,11 +1306,12 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
  const value_tyBM arg1,         // node
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const quasinode_tyBM * restargs)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos; const node_tyBM * rnodv;
-                 objectval_tyBM * resobj;
+                 const closure_tyBM * clos;
+                 const node_tyBM * rnodv; objectval_tyBM * resobj;
+                 struct parser_stBM *pars;
     );
   _.clos = clos;
   _.rnodv = arg1;
@@ -1313,6 +1319,7 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
     return NULL;
   int lineno = getint_BM (arg2);
   int colpos = getint_BM (arg3);
+  _.pars = parsercast_BM (treenthson_BM (restargs, 0));
   unsigned nodwidth = nodewidth_BM (_.rnodv);
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:block _0kUyX0U19K2_5mcH4RCaBl9"
@@ -1332,11 +1339,12 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
  const value_tyBM arg1,         // node
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const quasinode_tyBM * restargs)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos; const node_tyBM * rnodv;
-                 objectval_tyBM * resobj;
+                 const closure_tyBM * clos;
+                 const node_tyBM * rnodv; objectval_tyBM * resobj;
+                 struct parser_stBM *pars;
     );
   _.clos = clos;
   _.rnodv = arg1;
@@ -1344,6 +1352,7 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
     return NULL;
   int lineno = getint_BM (arg2);
   int colpos = getint_BM (arg3);
+  _.pars = parsercast_BM (treenthson_BM (restargs, 0));
   unsigned nodwidth = nodewidth_BM (_.rnodv);
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:assign _1Geqz0vsOKB_2Dpdb1LDu23"
@@ -1366,8 +1375,9 @@ ROUTINEOBJNAME_BM (_8qXCOMy3rrb_8QjUxaRbndX)    //
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos; const node_tyBM * rnodv;
-                 objectval_tyBM * resobj;
+                 const closure_tyBM * clos;
+                 const node_tyBM * rnodv; objectval_tyBM * resobj;
+                 struct parser_stBM *pars;
     );
   _.clos = clos;
   _.rnodv = arg1;
@@ -1376,6 +1386,7 @@ ROUTINEOBJNAME_BM (_8qXCOMy3rrb_8QjUxaRbndX)    //
   int lineno = getint_BM (arg2);
   int colpos = getint_BM (arg3);
   unsigned nodwidth = nodewidth_BM (_.rnodv);
+  _.pars = parsercast_BM (treenthson_BM (restargs, 0));
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:cond _8qXCOMy3rrb_8QjUxaRbndX"
                 " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
@@ -1394,11 +1405,12 @@ ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    //
  const value_tyBM arg1,         // node
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const quasinode_tyBM * restargs)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos; const node_tyBM * rnodv;
-                 objectval_tyBM * resobj;
+                 const closure_tyBM * clos;
+                 const node_tyBM * rnodv; objectval_tyBM * resobj;
+                 struct parser_stBM *pars;
     );
   _.clos = clos;
   _.rnodv = arg1;
@@ -1407,6 +1419,7 @@ ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    //
   int lineno = getint_BM (arg2);
   int colpos = getint_BM (arg3);
   unsigned nodwidth = nodewidth_BM (_.rnodv);
+  _.pars = parsercast_BM (treenthson_BM (restargs, 0));
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:intswitch  _7ko2VZaPpqD_1eEmEcp0VV3"
                 " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
