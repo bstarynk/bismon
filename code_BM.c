@@ -1021,7 +1021,7 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
                  objectval_tyBM * simple_module_generation;
                  objectval_tyBM * functions_set;        //
                  objectval_tyBM * basiclo_function;
-		  objectval_tyBM * complete_module;
+                 objectval_tyBM * complete_module;
                  struct hashsetobj_stBM *hset;
                  value_tyBM curcomp;    //
                  seqobval_tyBM * curseq;        //
@@ -1046,8 +1046,7 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
                basiclo_function complete_module)
    **/
   assert (isnode_BM ((const value_tyBM) _.constnodv)
-          && valhash_BM ((const value_tyBM) _.constnodv) == 4245083367
-	  );
+          && valhash_BM ((const value_tyBM) _.constnodv) == 4245083367);
   _.simple_module_generation =
     objectcast_BM (nodenthson_BM
                    ((void *) _.constnodv, constix_simple_module_generation));
@@ -1124,9 +1123,9 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
     return NULL;
   _.setfun = (setval_tyBM *) hashsetobj_to_set_BM (_.hset);
   objputattr_BM (_.modgen, _.functions_set, _.setfun);
-  _.partres = send1_BM(_.recv, _.complete_module,
-		       (struct stackframe_stBM*) &_, _.modgen);
-  if (isset_BM(_.partres))
+  _.partres = send1_BM (_.recv, _.complete_module,
+                        (struct stackframe_stBM *) &_, _.modgen);
+  if (isset_BM (_.partres))
     _.setfun = _.partres;
   return _.setfun;
 }                               /* end ROUTINE _8zNBXSMY2Ts_1VI5dmY4umA prepare_module°basiclo*module */
@@ -1292,3 +1291,100 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
 
 }                               /* end ROUTINE _5DyG7xVcxRI_1Ckpbj7b3QK */
 
+
+// for the routine command_readmacro for block
+extern objrout_sigBM ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // node
+ const value_tyBM arg2,         // lineno
+ const value_tyBM arg3,         // colpos
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const closure_tyBM * clos;
+		  const node_tyBM*rnodv;
+		  objectval_tyBM*resobj;
+
+		  );
+  _.clos = clos;
+  _.rnodv= arg1;
+  if (!isnode_BM(arg1)) return NULL;
+  int lineno = getint_BM(arg2);
+  int colpos = getint_BM(arg3);
+  unsigned nodwidth = nodewidth_BM(_.rnodv);
+  _.resobj = NULL;
+  DBGPRINTF_BM("start readmacro:block _0kUyX0U19K2_5mcH4RCaBl9"
+	       " lineno=%d colpos=%d nodwidth=%u",
+	       lineno, colpos, nodwidth);
+#warning  _0kUyX0U19K2_5mcH4RCaBl9 block:readmacro incomplete
+  return _.resobj;
+} /* end ROUTINE _0kUyX0U19K2_5mcH4RCaBl9 block:readmacro */
+
+////////////////
+
+// for the routine command_readmacro for assign
+extern objrout_sigBM ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // node
+ const value_tyBM arg2,         // lineno
+ const value_tyBM arg3,         // colpos
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const closure_tyBM * clos;
+		  const node_tyBM*rnodv;
+		  objectval_tyBM*resobj;
+
+		  );
+  _.clos = clos;
+  _.rnodv= arg1;
+  if (!isnode_BM(arg1)) return NULL;
+  int lineno = getint_BM(arg2);
+  int colpos = getint_BM(arg3);
+  unsigned nodwidth = nodewidth_BM(_.rnodv);
+  _.resobj = NULL;
+  DBGPRINTF_BM("start readmacro:assign _1Geqz0vsOKB_2Dpdb1LDu23"
+	       " lineno=%d colpos=%d nodwidth=%u",
+	       lineno, colpos, nodwidth);
+#warning  _1Geqz0vsOKB_2Dpdb1LDu23 assign:readmacro incomplete
+  return _.resobj;
+} /* end ROUTINE _1Geqz0vsOKB_2Dpdb1LDu23 assign:readmacro */
+
+////////////////
+
+// for the routine command_readmacro for cond
+extern objrout_sigBM ROUTINEOBJNAME_BM (_8qXCOMy3rrb_8QjUxaRbndX);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_8qXCOMy3rrb_8QjUxaRbndX)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // node
+ const value_tyBM arg2,         // lineno
+ const value_tyBM arg3,         // colpos
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const closure_tyBM * clos;
+		  const node_tyBM*rnodv;
+		  objectval_tyBM*resobj;
+
+		  );
+  _.clos = clos;
+  _.rnodv= arg1;
+  if (!isnode_BM(arg1)) return NULL;
+  int lineno = getint_BM(arg2);
+  int colpos = getint_BM(arg3);
+  unsigned nodwidth = nodewidth_BM(_.rnodv);
+  _.resobj = NULL;
+  DBGPRINTF_BM("start readmacro:cond _8qXCOMy3rrb_8QjUxaRbndX"
+	       " lineno=%d colpos=%d nodwidth=%u",
+	       lineno, colpos, nodwidth);
+#warning  _8qXCOMy3rrb_8QjUxaRbndX cond:readmacro incomplete
+  return _.resobj;
+} /* end ROUTINE _8qXCOMy3rrb_8QjUxaRbndX cond:readmacro */

@@ -1,12 +1,16 @@
 // generated file store2.bmon
-// for 69 objects
+// for 71 objects
 // with 0 modules
 
 
 !(_0aWpxE7aiWs_71KTgYdlifE |=assign|
 !~ name (~ assign
 ~)
-!@ 1506081112.65
+!@ 1506083187.61
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "^ assign (left right) # for assignments"
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _1Geqz0vsOKB_2Dpdb1LDu23 ()
 !)_0aWpxE7aiWs_71KTgYdlifE
 
 
@@ -124,7 +128,11 @@
 !(_2U8Sj78DMbl_5eerKpaJsNq |=block|
 !~ name (~ block
 ~)
-!@ 1506081112.65
+!@ 1506082217.87
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "^ block ( instrs-or-blocks ....) # for blocks"
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _0kUyX0U19K2_5mcH4RCaBl9 ()
 !)_2U8Sj78DMbl_5eerKpaJsNq
 
 
@@ -435,6 +443,12 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 
+!(_0kUyX0U19K2_5mcH4RCaBl9
+!@ 1506082217.87
+!)_0kUyX0U19K2_5mcH4RCaBl9
+
+
+
 !(_0B1PYH9bN34_3RZdP24AVyt
 !@ 1502615054.06
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -470,6 +484,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
  _9mq0jsuz4XQ_4doHfd987Q6 |=generate_module| ) ~)
 
 !)_1gME6zn82Kf_8hzWibLFRfz
+
+
+
+!(_1Geqz0vsOKB_2Dpdb1LDu23
+!@ 1506083364.48
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "command_readmacro for assign"
+!)_1Geqz0vsOKB_2Dpdb1LDu23
 
 
 

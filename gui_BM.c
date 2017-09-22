@@ -4209,7 +4209,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
       {
         char *commbuf = NULL;
         asprintf (&commbuf,
-                  "|id:%lld,%lld; h:%d\n ... µ%s/%s @%p|",
+                  "|id:%lld,%lld; h:%d\n ... µ%s;%s @%p|",
                   (long long) _.objbrows->ob_id.id_hi,
                   (long long) _.objbrows->ob_id.id_lo,
                   objecthash_BM (_.objbrows),
