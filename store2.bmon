@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 71 objects
+// for 74 objects
 // with 0 modules
 
 
@@ -255,7 +255,11 @@
 !(_3OYXwdPt9uq_98Ba6PM6vPV |=intswitch|
 !~ name (~ intswitch
 ~)
-!@ 1506081112.65
+!@ 1506084859.08
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "^intswitch(switcherexpr cases...)"
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _7ko2VZaPpqD_1eEmEcp0VV3 ()
 !)_3OYXwdPt9uq_98Ba6PM6vPV
 
 
@@ -263,7 +267,11 @@
 !(_4X7JvAJvCfT_0gWFtshEQad |=loop|
 !~ name (~ loop
 ~)
-!@ 1506081307.33
+!@ 1506085112.36
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "^loop(loopobj instr....)"
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _6SUnsQrN1BV_1WnLPm4QoOq ()
 !)_4X7JvAJvCfT_0gWFtshEQad
 
 
@@ -271,7 +279,11 @@
 !(_7LKvYvypCA4_2QefpJPlomi |=objswitch|
 !~ name (~ objswitch
 ~)
-!@ 1506081112.65
+!@ 1506085461.81
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "^objswitch(objswitcher case....)"
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _8uFPIAUyvE6_36pUIgGwmbf ()
 !)_7LKvYvypCA4_2QefpJPlomi
 
 
@@ -628,6 +640,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 
+!(_6SUnsQrN1BV_1WnLPm4QoOq
+!@ 1506085253.00
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "routine for loop:readmacro"
+!)_6SUnsQrN1BV_1WnLPm4QoOq
+
+
+
 !(_7fCcteNe7aR_3IKHeHjmzff
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -641,6 +661,12 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value a node"
 !)_7fJKfG4SN0U_1QTu5J832xg
+
+
+
+!(_7ko2VZaPpqD_1eEmEcp0VV3
+!@ 1506084859.08
+!)_7ko2VZaPpqD_1eEmEcp0VV3
 
 
 
@@ -665,6 +691,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to dump_data the basiclo_function"
 !)_7D36kHemyWQ_0YfwWnUhR9Y
+
+
+
+!(_8uFPIAUyvE6_36pUIgGwmbf
+!@ 1506085505.49
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "readmacro:objswitch"
+!)_8uFPIAUyvE6_36pUIgGwmbf
 
 
 
