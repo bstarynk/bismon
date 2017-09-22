@@ -2260,9 +2260,9 @@ value_tyBM parsreadmacroexpcmd_BM
                               crmidbuf);
     }
   _.resval =                    //
-    apply3_BM (_.crm, (struct stackframe_stBM *) &_,
+    apply4_BM (_.crm, (struct stackframe_stBM *) &_,
                (value_tyBM) _.nod,
-               taggedint_BM (lineno), taggedint_BM (colpos));
+               taggedint_BM (lineno), taggedint_BM (colpos), pars);
   return _.resval;
 }                               /* end parsreadmacroexpcmd_BM */
 
