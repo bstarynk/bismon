@@ -814,6 +814,12 @@ isparser_BM (const value_tyBM v)
   return ty == tydata_parser_BM;
 }                               /* end isparser_BM */
 
+const struct parser_stBM *
+parsercast_BM (const value_tyBM v)
+{
+  return isparser_BM (v) ? ((const struct parser_stBM *) v) : NULL;
+};
+
 unsigned
 parserlineno_BM (const struct parser_stBM *pars)
 {

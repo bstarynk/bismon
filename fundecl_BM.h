@@ -548,6 +548,7 @@ extern struct parser_stBM *makeparser_of_file_BM (FILE * f);
 extern struct parser_stBM *makeparser_memopen_BM (const char *filemem,
                                                   long size);
 static inline bool isparser_BM (const value_tyBM v);
+static inline const struct parser_stBM *parsercast_BM (const value_tyBM v);
 extern void parsergcmark_BM (struct garbcoll_stBM *gc,
                              struct parser_stBM *pars);
 extern void parsergcdestroy_BM (struct garbcoll_stBM *gc,
