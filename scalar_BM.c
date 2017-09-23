@@ -496,6 +496,7 @@ strbufferunsafeappendcstr_BM (struct strbuffer_stBM *sbuf, const char *cstr)
   if (nloffset >= 0)
     sbuf->sbuf_lastnl = sbuf->sbuf_curp + nloffset;
   sbuf->sbuf_curp += len;
+  *sbuf->sbuf_curp = (char) 0;
   if (maxsiz > 0 && sbuf->sbuf_curp - sbuf->sbuf_dbuf > maxsiz)
     FATAL_BM ("strbufferappendcstr overflow %ud", maxsiz);
 }                               /* end strbufferunsafeappendcstr_BM  */

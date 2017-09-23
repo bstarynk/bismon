@@ -66,6 +66,7 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   strbufferprintf_BM (_.sbuf, "\t{");
   strbuffermoreindent_BM (_.sbuf);
   unsigned card = setcardinal_BM (_.recv);
+  unsigned cnt = 0;
   for (unsigned ix = 0; ix < card; ix++)
     {
       _.curobj = setelemnth_BM (_.recv, ix);
@@ -73,7 +74,10 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
         continue;
       char curidbuf[32];
       idtocbuf32_BM (objid_BM (_.curobj), curidbuf);
+      if (cnt > 0 && cnt % 4 == 0)
+        strbuffernewline_BM (_.sbuf);
       strbufferprintf_BM (_.sbuf, "\t%s", curidbuf);
+      cnt++;
     };
   strbufferlessindent_BM (_.sbuf);
   strbufferprintf_BM (_.sbuf, " }");
@@ -111,6 +115,7 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   strbufferprintf_BM (_.sbuf, "\t[");
   strbuffermoreindent_BM (_.sbuf);
   unsigned tsiz = tuplesize_BM (_.recv);
+  unsigned cnt = 0;
   for (unsigned ix = 0; ix < tsiz; ix++)
     {
       _.curobj = tuplecompnth_BM (_.recv, ix);
@@ -118,7 +123,10 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
         continue;
       char curidbuf[32];
       idtocbuf32_BM (objid_BM (_.curobj), curidbuf);
+      if (cnt > 0 && cnt % 4 == 0)
+        strbuffernewline_BM (_.sbuf);
       strbufferprintf_BM (_.sbuf, "\t%s", curidbuf);
+      cnt++;
     };
   strbufferlessindent_BM (_.sbuf);
   strbufferprintf_BM (_.sbuf, " ]");
@@ -165,15 +173,19 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   strbufferprintf_BM (_.sbuf, "\t* %s (", connidbuf);
   unsigned width = nodewidth_BM ((const value_tyBM) _.recv);
   strbuffermoreindent_BM (_.sbuf);
+  unsigned cnt = 0;
   for (unsigned six = 0; six < width; six++)
     {
       _.curson = nodenthson_BM ((const value_tyBM) _.recv, six);
       if (!dumpvalisdumpable_BM (_.du, _.curson))
         continue;
+      if (cnt > 0 && cnt % 5 == 0)
+        strbuffernewline_BM (_.sbuf);
       strbufferprintf_BM (_.sbuf, "\t");
       send3_BM (_.curson, BMP_dump_value,
                 (struct stackframe_stBM *) &_,
                 _.sbuf, _.du, taggedint_BM (depth + 1));
+      cnt++;
     }
   strbufferlessindent_BM (_.sbuf);
   strbufferprintf_BM (_.sbuf, ")");
@@ -220,6 +232,7 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   strbufferprintf_BM (_.sbuf, "\t%% %s (", connidbuf);
   unsigned width = closurewidth_BM ((const value_tyBM) _.recv);
   strbuffermoreindent_BM (_.sbuf);
+  unsigned cnt = 0;
   for (unsigned six = 0; six < width; six++)
     {
       _.curson = closurenthson_BM ((const value_tyBM) _.recv, six);
@@ -228,10 +241,13 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
           strbufferprintf_BM (_.sbuf, "\t__");
           continue;
         }
+      if (cnt > 0 && cnt % 5 == 0)
+        strbuffernewline_BM (_.sbuf);
       strbufferprintf_BM (_.sbuf, "\t");
       send3_BM (_.curson, BMP_dump_value,
                 (struct stackframe_stBM *) &_,
                 _.sbuf, _.du, taggedint_BM (depth + 1));
+      cnt++;
     }
   strbufferlessindent_BM (_.sbuf);
   strbufferprintf_BM (_.sbuf, ")");
@@ -1316,7 +1332,8 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 const node_tyBM * rnodv; const node_tyBM * constnodv;
+                 const node_tyBM * rnodv;
+                 const node_tyBM * constnodv;
                  objectval_tyBM * resobj;
                  objectval_tyBM * resclass;
                  objectval_tyBM * closconn;
@@ -1415,10 +1432,8 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 const node_tyBM * rnodv;
-		  const node_tyBM * constnodv;
-		  objectval_tyBM * resobj;
-		  objectval_tyBM*closconn;
+                 const node_tyBM * rnodv; const node_tyBM * constnodv;
+                 objectval_tyBM * resobj; objectval_tyBM * closconn;
                  const struct parser_stBM *pars;
     );
   _.clos = clos;
@@ -1428,7 +1443,7 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
   int lineno = getint_BM (arg2);
   int colpos = getint_BM (arg3);
   _.pars = parsercast_BM (treenthson_BM ((const value_tyBM) restargs, 0));
-  
+
   _.clos = clos;
   _.closconn = closureconn_BM ((const value_tyBM) clos);
   assert (isobject_BM (_.closconn));
@@ -1442,7 +1457,7 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
   **/
   assert (isnode_BM ((const value_tyBM) _.constnodv)
           //&& valhash_BM ((const value_tyBM) _.constnodv) == 852993055
-	  );
+    );
   assert (nodewidth_BM ((const value_tyBM) _.constnodv) >= constix__LAST);
   unsigned nodwidth = nodewidth_BM ((const value_tyBM) _.rnodv);
   _.resobj = NULL;

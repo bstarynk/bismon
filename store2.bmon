@@ -99,7 +99,18 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of basic closure functions, e.g. in basiclo_*_module"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
- { _0aWpxE7aiWs_71KTgYdlifE _0eCRnBKQ0eQ_1atum3gUgEz _0lQvVoZ3RLA_1PuOJnJxuHi _0v2RuabJSIV_7SLFx4XAdpr _0Yis1n6EoBu_8nfbe8a8yKI _12QTszi1FF0_5S77twbSETI _2DH0ucElTgh_62vxjxLcfev _2EjH1ebLzli_4rmA1ZPtIBL _2U8Sj78DMbl_5eerKpaJsNq _3pQnBS9ZjkQ_0uGmqUUhAum _3votvybaW1d_35YcL4p51kp _3HIw09Tmj0d_3CrcFHrGJab _3OYXwdPt9uq_98Ba6PM6vPV _41gbFesxqzD_3l56OLiNdl2 _4bYUiDmxrKK_6nPPlEl8y8x _4lKK08v9A0t_0GGsir35UxP _4Af5NOOf7Qe_7KQdGPoNdJ0 _4RFtYFUdfau_7Vm5jZ4Wm8e _4SHgzjNdlGo_1CxI9hBNDrC _4X7JvAJvCfT_0gWFtshEQad _6dfdSwPGgR8_2EaBHYhuZ5G _7GNnckYYtcH_7wtOnPP4eKU _7LKvYvypCA4_2QefpJPlomi _7XzttLA7sll_94JQHl1Owbw _9pCSj6h5qCP_1OZyKlhcrSY _9KIeH9wMRCV_12Gy2xILgpG }
+ { _0aWpxE7aiWs_71KTgYdlifE _0eCRnBKQ0eQ_1atum3gUgEz _0lQvVoZ3RLA_1PuOJnJxuHi _0v2RuabJSIV_7SLFx4XAdpr 
+ _0Yis1n6EoBu_8nfbe8a8yKI _12QTszi1FF0_5S77twbSETI _2DH0ucElTgh_62vxjxLcfev 
+_2EjH1ebLzli_4rmA1ZPtIBL 
+ _2U8Sj78DMbl_5eerKpaJsNq _3pQnBS9ZjkQ_0uGmqUUhAum _3votvybaW1d_35YcL4p51kp 
+_3HIw09Tmj0d_3CrcFHrGJab 
+ _3OYXwdPt9uq_98Ba6PM6vPV _41gbFesxqzD_3l56OLiNdl2 _4bYUiDmxrKK_6nPPlEl8y8x 
+_4lKK08v9A0t_0GGsir35UxP 
+ _4Af5NOOf7Qe_7KQdGPoNdJ0 _4RFtYFUdfau_7Vm5jZ4Wm8e _4SHgzjNdlGo_1CxI9hBNDrC 
+_4X7JvAJvCfT_0gWFtshEQad 
+ _6dfdSwPGgR8_2EaBHYhuZ5G _7GNnckYYtcH_7wtOnPP4eKU _7LKvYvypCA4_2QefpJPlomi 
+_7XzttLA7sll_94JQHl1Owbw 
+ _9pCSj6h5qCP_1OZyKlhcrSY _9KIeH9wMRCV_12Gy2xILgpG }
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
 ~: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|  % _7D36kHemyWQ_0YfwWnUhR9Y () 
 ~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan|  % _9UhDZeDdg2r_55lUqYDPUiF () 
