@@ -146,6 +146,7 @@ static inline const setval_tyBM *objsetattrs_BM (const objectval_tyBM * obj);
 extern void objputattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr,
                            value_tyBM valattr);
 extern void objremoveattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr);
+extern void objresetattrs_BM (objectval_tyBM * obj, unsigned nbattrhint);
 
 static inline bool objhasclassinfo_BM (const objectval_tyBM * obj);
 // put a fresh classinfo as an object's data
@@ -231,6 +232,7 @@ extern value_tyBM send8_BM (const value_tyBM recv,
 static inline unsigned objnbcomps_BM (const objectval_tyBM * obj);
 static inline value_tyBM objgetcomp_BM (const objectval_tyBM * obj, int rk);
 static inline void objreservecomps_BM (objectval_tyBM * obj, unsigned gap);
+static inline void objresetcomps_BM (objectval_tyBM * obj, unsigned len);
 static inline void objappendcomp_BM (objectval_tyBM * obj,
                                      value_tyBM compval);
 static inline void objgrowcomps_BM (objectval_tyBM * obj, unsigned gap);

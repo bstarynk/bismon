@@ -818,6 +818,17 @@ objputattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr,
 }                               /* end objputattr_BM */
 
 void
+objresetattrs_BM (objectval_tyBM * obj, unsigned nbattrhint)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  if (nbattrhint < 3)
+    nbattrhint = 3;
+  obj->ob_attrassoc = NULL;
+  assoc_reorganize_BM (&obj->ob_attrassoc, nbattrhint);
+}                               /* end objresetattrs_BM */
+
+void
 objremoveattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr)
 {
   if (!isobject_BM ((const value_tyBM) obj))

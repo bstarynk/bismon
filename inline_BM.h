@@ -366,7 +366,17 @@ objreservecomps_BM (objectval_tyBM * obj, unsigned gap)
   if (!isobject_BM ((const value_tyBM) obj))
     return;
   obj->ob_compvec = datavect_reserve_BM (obj->ob_compvec, gap);
-}                               /* end objreservecomps_BM */
+}
+
+void
+objresetcomps_BM (objectval_tyBM * obj, unsigned len)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  obj->ob_compvec = datavect_reserve_BM (NULL, len);
+}                               /* end objresetcomps_BM */
+
+                        /* end objreservecomps_BM */
 
 
 void

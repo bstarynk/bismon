@@ -1198,8 +1198,9 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
   /** _.constnodv should be 
        * const (prepare_routine)
    **/
-  assert (valhash_BM (_.constnodv) == 70226118);
-  _.prepare_routine = objectcast_BM (nodenthson_BM (_.constnodv, 0));
+  assert (valhash_BM ((const value_tyBM) _.constnodv) == 70226118);
+  _.prepare_routine =
+    objectcast_BM (nodenthson_BM ((const value_tyBM) _.constnodv, 0));
   assert (objecthash_BM (_.prepare_routine) == 201958426
           /*prepare_routine |=_6qi1DW0Ygkl_4Aqdxq4n5IV| */ );
   _.modgen = arg2;
@@ -1308,22 +1309,63 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
  const value_tyBM arg3,         // colpos
  const quasinode_tyBM * restargs)
 {
+  enum constix_en
+  {
+    constix_code_block,
+    constix__LAST
+  };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 const node_tyBM * rnodv; objectval_tyBM * resobj;
-                 struct parser_stBM *pars;
+                 const node_tyBM * rnodv;
+                 objectval_tyBM * resobj;
+                 objectval_tyBM * resclass;
+                 const struct parser_stBM *pars; value_tyBM curson;
+                 value_tyBM inv;
     );
   _.clos = clos;
-  _.rnodv = arg1;
   if (!isnode_BM (arg1))
     return NULL;
+  _.rnodv = arg1;
   int lineno = getint_BM (arg2);
   int colpos = getint_BM (arg3);
-  _.pars = parsercast_BM (treenthson_BM (restargs, 0));
-  unsigned nodwidth = nodewidth_BM (_.rnodv);
+  unsigned startix = 0;
+  _.pars = parsercast_BM (treenthson_BM ((value_tyBM) restargs, 0));
+  unsigned nodwidth = nodewidth_BM ((value_tyBM) _.rnodv);
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:block _0kUyX0U19K2_5mcH4RCaBl9"
                 " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
+  if (nodwidth > 0 && (_.curson = nodenthson_BM (_.rnodv, 0)) != NULL
+      && isnode_BM (_.curson) && nodeconn_BM (_.curson) == BMP_in)
+    {
+      _.inv = nodenthson_BM (_.curson, 0);
+      if (!isobject_BM (_.inv))
+        {
+          if (_.pars)
+            parsererrorprintf_BM (_.pars, lineno, colpos,
+                                  "non-object `in` for block readmacro");
+          return NULL;
+        }
+      _.resobj = _.inv;
+      startix = 1;
+    }
+  else
+    {
+      startix = 0;
+      _.resobj = makeobj_BM ();
+      objputspacenum_BM (_.resobj, GlobalSp_BM);
+    };
+  objresetcomps_BM (_.resobj, nodwidth - startix);
+  objresetattrs_BM (_.resobj, 5);
+  objputattr_BM (_.resobj, BMP_origin, _.rnodv);
+  for (unsigned ix = startix; ix < nodwidth; ix++)
+    {
+      _.curson = nodenthson_BM (_.rnodv, 0);
+      objappendcomp_BM (_.resobj, _.curson);
+    }
+  if (!_.resclass)
+    {
+    };
+  objtouchnow_BM (_.resobj);
 #warning  _0kUyX0U19K2_5mcH4RCaBl9 block:readmacro incomplete
   return _.resobj;
 }                               /* end ROUTINE _0kUyX0U19K2_5mcH4RCaBl9 block:readmacro */
