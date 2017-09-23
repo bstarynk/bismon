@@ -1408,9 +1408,17 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
  const value_tyBM arg3,         // colpos
  const quasinode_tyBM * restargs)
 {
+  enum constix_en
+  {
+    constix_basiclo_assign,
+    constix__LAST
+  };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 const node_tyBM * rnodv; objectval_tyBM * resobj;
+                 const node_tyBM * rnodv;
+		  const node_tyBM * constnodv;
+		  objectval_tyBM * resobj;
+		  objectval_tyBM*closconn;
                  const struct parser_stBM *pars;
     );
   _.clos = clos;
@@ -1420,6 +1428,22 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
   int lineno = getint_BM (arg2);
   int colpos = getint_BM (arg3);
   _.pars = parsercast_BM (treenthson_BM ((const value_tyBM) restargs, 0));
+  
+  _.clos = clos;
+  _.closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (isobject_BM (_.closconn));
+  _.constnodv = _.closconn->ob_data;
+  if (!isnode_BM (arg1))
+    return NULL;
+  _.rnodv = arg1;
+  _.constnodv = _.closconn->ob_data;
+  /** constnodv is 
+     * const (basiclo_assign)
+  **/
+  assert (isnode_BM ((const value_tyBM) _.constnodv)
+          //&& valhash_BM ((const value_tyBM) _.constnodv) == 852993055
+	  );
+  assert (nodewidth_BM ((const value_tyBM) _.constnodv) >= constix__LAST);
   unsigned nodwidth = nodewidth_BM ((const value_tyBM) _.rnodv);
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:assign _1Geqz0vsOKB_2Dpdb1LDu23"
