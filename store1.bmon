@@ -1,5 +1,5 @@
 // generated file store1.bmon
-// for 33 objects
+// for 34 objects
 // with 0 modules
 
 
@@ -155,6 +155,16 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to emit a module"
 !)_3MZiKuLf93a_3YTtdOHeUH8
+
+
+
+!(_0eMGYofuNVh_8ZP2mXdhtHO |=in|
+!~ name (~ in
+~)
+!@ 1506146007.91
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "to give some container where the object is in"
+!)_0eMGYofuNVh_8ZP2mXdhtHO
 
 
 
