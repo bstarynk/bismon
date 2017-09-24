@@ -1355,14 +1355,14 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
   assert (isnode_BM ((const value_tyBM) _.constnodv)
           && valhash_BM ((const value_tyBM) _.constnodv) == 852993055);
   assert (nodewidth_BM ((const value_tyBM) _.constnodv) >= constix__LAST);
-  int lineno = getint_BM (arg2);
-  int colpos = getint_BM (arg3);
-  unsigned startix = 0;
-  _.pars = parsercast_BM (treenthson_BM ((value_tyBM) restargs, 0));
   _.basiclo_block =
     objectcast_BM (nodenthson_BM
                    ((void *) _.constnodv, constix_basiclo_block));
   assert (_.basiclo_block != NULL);
+  int lineno = getint_BM (arg2);
+  int colpos = getint_BM (arg3);
+  unsigned startix = 0;
+  _.pars = parsercast_BM (treenthson_BM ((value_tyBM) restargs, 0));
   unsigned nodwidth = nodewidth_BM ((value_tyBM) _.rnodv);
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:block _0kUyX0U19K2_5mcH4RCaBl9"
@@ -1432,9 +1432,14 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 const node_tyBM * rnodv; const node_tyBM * constnodv;
-                 objectval_tyBM * resobj; objectval_tyBM * closconn;
-                 const struct parser_stBM *pars;
+                 const node_tyBM * rnodv;
+                 const node_tyBM * constnodv;
+                 objectval_tyBM * resobj;
+                 objectval_tyBM * closconn;
+                 objectval_tyBM * basiclo_assign;
+                 const struct parser_stBM *pars; value_tyBM inv;
+                 value_tyBM destv;
+                 value_tyBM srcv;
     );
   _.clos = clos;
   _.rnodv = arg1;
@@ -1456,14 +1461,62 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
      * const (basiclo_assign)
   **/
   assert (isnode_BM ((const value_tyBM) _.constnodv)
-          //&& valhash_BM ((const value_tyBM) _.constnodv) == 852993055
-    );
+          && valhash_BM ((const value_tyBM) _.constnodv) == 849423390);
   assert (nodewidth_BM ((const value_tyBM) _.constnodv) >= constix__LAST);
+  _.basiclo_assign =
+    objectcast_BM (nodenthson_BM
+                   ((void *) _.constnodv, constix_basiclo_assign));
+  assert (_.basiclo_assign != NULL);
   unsigned nodwidth = nodewidth_BM ((const value_tyBM) _.rnodv);
+  unsigned startix = 0;
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:assign _1Geqz0vsOKB_2Dpdb1LDu23"
                 " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
-#warning  _1Geqz0vsOKB_2Dpdb1LDu23 assign:readmacro incomplete
+  if (nodwidth > 0
+      && (_.curson = nodenthson_BM ((const value_tyBM) _.rnodv, 0)) != NULL
+      && isnode_BM (_.curson) && nodeconn_BM (_.curson) == BMP_in)
+    {
+      _.inv = nodenthson_BM (_.curson, 0);
+      if (!isobject_BM (_.inv))
+        {
+          if (_.pars)
+            parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
+                                  colpos,
+                                  "non-object `in` for assign readmacro");
+          return NULL;
+        }
+      _.resobj = _.inv;
+      startix = 1;
+    }
+  else
+    {
+      startix = 0;
+      _.resobj = makeobj_BM ();
+      objputspacenum_BM (_.resobj, GlobalSp_BM);
+    };
+  if (nodwidth != startix + 2)
+    {
+      if (_.pars)
+        parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
+                              colpos, "assign readmacro wants two arguments");
+      return NULL;
+    }
+  _.dstv = nodenthson_BM ((const value_tyBM) _.rnodv, startix);
+  _.srcv = nodenthson_BM ((const value_tyBM) _.rnodv, startix + 1);
+  if (!isobject_BM (_.dstv))
+    {
+      if (_.pars)
+        parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
+                              colpos, "assign readmacro wants object as src");
+      return NULL;
+    }
+  objresetcomps_BM (_.resobj, 2);
+  objresetattrs_BM (_.resobj, 5);
+  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  objappendcomp_BM (_.resobj, _.dstv);
+  objappendcomp_BM (_.resobj, _.srcv);
+  objputclass_BM (_.resobj, _.basiclo_assign);
+  objtouchnow_BM (_.resobj);
   return _.resobj;
 }                               /* end ROUTINE _1Geqz0vsOKB_2Dpdb1LDu23 assign:readmacro */
 

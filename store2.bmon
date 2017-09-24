@@ -634,9 +634,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 !(_1Geqz0vsOKB_2Dpdb1LDu23
-!@ 1506083364.48
+!@ 1506247120.88
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "command_readmacro for assign"
+
+!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign| 
+) ~)
+
 !)_1Geqz0vsOKB_2Dpdb1LDu23
 
 
