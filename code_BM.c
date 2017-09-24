@@ -1437,9 +1437,10 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
                  objectval_tyBM * resobj;
                  objectval_tyBM * closconn;
                  objectval_tyBM * basiclo_assign;
-                 const struct parser_stBM *pars; value_tyBM inv;
-                 value_tyBM destv;
+                 const struct parser_stBM *pars;
+                 value_tyBM inv; value_tyBM destv;
                  value_tyBM srcv;
+                 value_tyBM curson;
     );
   _.clos = clos;
   _.rnodv = arg1;
@@ -1501,9 +1502,9 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
                               colpos, "assign readmacro wants two arguments");
       return NULL;
     }
-  _.dstv = nodenthson_BM ((const value_tyBM) _.rnodv, startix);
+  _.destv = nodenthson_BM ((const value_tyBM) _.rnodv, startix);
   _.srcv = nodenthson_BM ((const value_tyBM) _.rnodv, startix + 1);
-  if (!isobject_BM (_.dstv))
+  if (!isobject_BM (_.destv))
     {
       if (_.pars)
         parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
@@ -1513,7 +1514,7 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
   objresetcomps_BM (_.resobj, 2);
   objresetattrs_BM (_.resobj, 5);
   objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
-  objappendcomp_BM (_.resobj, _.dstv);
+  objappendcomp_BM (_.resobj, _.destv);
   objappendcomp_BM (_.resobj, _.srcv);
   objputclass_BM (_.resobj, _.basiclo_assign);
   objtouchnow_BM (_.resobj);
