@@ -1404,7 +1404,7 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
   objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   for (unsigned ix = startix; ix < nodwidth; ix++)
     {
-      _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, 0);
+      _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
       objappendcomp_BM (_.resobj, _.curson);
     }
   objputclass_BM (_.resobj, _.resclass);
