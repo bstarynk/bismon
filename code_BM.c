@@ -1675,8 +1675,7 @@ ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    //
      * const (basiclo_intswitch)
   **/
   assert (isnode_BM ((const value_tyBM) _.constnodv)
-          //&& valhash_BM ((const value_tyBM) _.constnodv) == XXX
-    );
+          && valhash_BM ((const value_tyBM) _.constnodv) == 760996907);
   assert (nodewidth_BM ((const value_tyBM) _.constnodv) >= constix__LAST);
   _.basiclo_intswitch =
     objectcast_BM (nodenthson_BM
@@ -1778,8 +1777,7 @@ ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf)    //
      * const (basiclo_objswitch)
   **/
   assert (isnode_BM ((const value_tyBM) _.constnodv)
-          //&& valhash_BM ((const value_tyBM) _.constnodv) == XXX
-    );
+          && valhash_BM ((const value_tyBM) _.constnodv) == 3352429248);
   assert (nodewidth_BM ((const value_tyBM) _.constnodv) >= constix__LAST);
   _.basiclo_objswitch =
     objectcast_BM (nodenthson_BM
