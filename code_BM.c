@@ -1848,6 +1848,12 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
  const value_tyBM arg3,         // colpos
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
+  enum constix_en
+  {
+    constix_basiclo_loop,
+    constix_label,
+    constix__LAST
+  };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos; const node_tyBM * rnodv;
                  objectval_tyBM * resobj;
@@ -1858,6 +1864,21 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
     return NULL;
   int lineno = getint_BM (arg2);
   int colpos = getint_BM (arg3);
+  const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (closconn != NULL);
+  const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
+  /*** constnod is
+   * const (basiclo_loop label)
+   ***/
+  assert (isnode_BM ((const value_tyBM) constnod)
+          && nodewidth_BM ((const value_tyBM) constnod) >= constix__LAST
+          && valhash_BM ((const value_tyBM) constnod) == 1553076617);
+  const objectval_tyBM *k_basiclo_loop =
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_basiclo_loop));
+  const objectval_tyBM *k_label =
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_label));
   unsigned nodwidth = nodewidth_BM ((const value_tyBM) _.rnodv);
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:loop  _6SUnsQrN1BV_1WnLPm4QoOq"
@@ -1865,6 +1886,9 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
 #warning   _6SUnsQrN1BV_1WnLPm4QoOq loop:readmacro incomplete
   return _.resobj;
 }                               /* end ROUTINE  _6SUnsQrN1BV_1WnLPm4QoOq loop:readmacro */
+
+
+
 
 /////
 

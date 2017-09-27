@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 91 objects
+// for 92 objects
 // with 0 modules
 
 
@@ -364,6 +364,16 @@ _7XzttLA7sll_94JQHl1Owbw
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
  % _7ko2VZaPpqD_1eEmEcp0VV3 ()
 !)_3OYXwdPt9uq_98Ba6PM6vPV
+
+
+
+!(_3XBrePAliOo_37VlAqBsb5C |=label|
+!~ name (~ label
+~)
+!@ 1506505838.91
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "give label, e.g. in loop-s"
+!)_3XBrePAliOo_37VlAqBsb5C
 
 
 
@@ -813,9 +823,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 !(_6SUnsQrN1BV_1WnLPm4QoOq
-!@ 1506085253.00
+!@ 1506505755.89
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine for loop:readmacro"
+
+!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _2EjH1ebLzli_4rmA1ZPtIBL |=basiclo_loop| 
+ _3XBrePAliOo_37VlAqBsb5C |=label| ) ~)
+
 !)_6SUnsQrN1BV_1WnLPm4QoOq
 
 
