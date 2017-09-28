@@ -1413,6 +1413,19 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
       _.resobj = makeobj_BM ();
       objputspacenum_BM (_.resobj, GlobalSp_BM);
     };
+  for (unsigned ix = startix; ix < nodwidth; ix++)
+    {
+      _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
+      if (!isobject_BM (_.curson))
+        {
+          if (_.pars)
+            parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
+                                  colpos,
+                                  "non-object #%d comp for block readmacro",
+                                  ix);
+          return NULL;
+        }
+    }
   objresetcomps_BM (_.resobj, nodwidth - startix);
   objresetattrs_BM (_.resobj, 5);
   objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
@@ -1873,8 +1886,7 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 const node_tyBM * rnodv;
-                 value_tyBM curson;
+                 const node_tyBM * rnodv; value_tyBM curson;
                  objectval_tyBM * resobj; objectval_tyBM * resclass;
                  objectval_tyBM * curlab; objectval_tyBM * inv;
                  struct parser_stBM *pars;
@@ -1935,14 +1947,45 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
           if (_.pars)
             parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
                                   colpos,
-                                  "non-object `label` for block readmacro");
+                                  "non-object `label` for loop readmacro");
           return NULL;
         }
       _.curlab = _.inv;
       startix++;
     };
 
-#warning   _6SUnsQrN1BV_1WnLPm4QoOq loop:readmacro incomplete
+  if (!_.resclass)
+    _.resclass = k_basiclo_loop;
+  if (!_.resobj)
+    {
+      _.resobj = makeobj_BM ();
+      objputspacenum_BM (_.resobj, GlobalSp_BM);
+    };
+  for (unsigned ix = startix; ix < nodwidth; ix++)
+    {
+      _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
+      if (!isobject_BM (_.curson))
+        {
+          if (_.pars)
+            parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
+                                  colpos,
+                                  "non-object #%d comp for loop readmacro",
+                                  ix);
+          return NULL;
+        }
+    }
+  objresetcomps_BM (_.resobj, nodwidth - startix);
+  objresetattrs_BM (_.resobj, 5);
+  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  if (_.curlab)
+    objputattr_BM (_.resobj, k_label, (const value_tyBM) _.curlab);
+  for (unsigned ix = startix; ix < nodwidth; ix++)
+    {
+      _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
+      objappendcomp_BM (_.resobj, _.curson);
+    }
+  objputclass_BM (_.resobj, _.resclass);
+  objtouchnow_BM (_.resobj);
   return _.resobj;
 }                               /* end ROUTINE  _6SUnsQrN1BV_1WnLPm4QoOq loop:readmacro */
 
