@@ -925,7 +925,8 @@ objclassinforemovemethod_BM (objectval_tyBM * obj,
 }                               /* end objclassinforemovemethod_BM */
 
 bool
-objclassinfoissubclass_BM (objectval_tyBM * obj, objectval_tyBM * obclass)
+objclassinfoissubclass_BM (const objectval_tyBM * obj,
+                           const objectval_tyBM * obclass)
 {
   int count = 0;
   if (!isobject_BM ((const value_tyBM) obclass))

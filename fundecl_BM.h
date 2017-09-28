@@ -172,11 +172,13 @@ static inline const setval_tyBM *       //
 
 // is obj a subclass of obclass?
 extern bool
-objclassinfoissubclass_BM (objectval_tyBM * obj, objectval_tyBM * obclass);
+objclassinfoissubclass_BM (const objectval_tyBM * obj,
+                           const objectval_tyBM * obclass);
 
 // is obj an instance of obclass?
 static inline bool
-objectisinstance_BM (objectval_tyBM * obj, objectval_tyBM * obclass);
+objectisinstance_BM (const objectval_tyBM * obj,
+                     const objectval_tyBM * obclass);
 
 /// message sending
 

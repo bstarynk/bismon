@@ -420,11 +420,12 @@ objgetclassinfosuperclass_BM (const objectval_tyBM * obj)
 }                               /* end objgetclassinfosuperclass_BM */
 
 bool
-objectisinstance_BM (objectval_tyBM * obj, objectval_tyBM * obclass)
+objectisinstance_BM (const objectval_tyBM * obj,
+                     const objectval_tyBM * obclass)
 {
   if (!objhasclassinfo_BM (obclass))
     return false;
-  if (!isobject_BM (obj))
+  if (!isobject_BM ((const value_tyBM) obj))
     return false;
   return objclassinfoissubclass_BM (obj->ob_class, obclass);
 }                               /* end objectisinstance_BM */
