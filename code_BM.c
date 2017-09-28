@@ -2013,8 +2013,7 @@ ROUTINEOBJNAME_BM (_63Q0R4r8xa7_7XOAxxP5pi2)    //
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
                  const node_tyBM * rnodv;
-                 objectval_tyBM * resobj;
-                 objectval_tyBM * resclass;
+                 objectval_tyBM * resobj; objectval_tyBM * resclass;
                  value_tyBM exitv; value_tyBM curson; value_tyBM inv;
                  const struct parser_stBM *pars;
     );
@@ -2099,9 +2098,16 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
  const value_tyBM arg3,         // colpos
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
+  enum
+  {
+    constix_basiclo_while, constix_while,
+    constix__LAST
+  };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos; const node_tyBM * rnodv;
-                 objectval_tyBM * resobj;
+                 const closure_tyBM * clos;
+                 const node_tyBM * rnodv;
+                 objectval_tyBM * resobj; value_tyBM curson;
+                 const struct parser_stBM *pars;
     );
   _.clos = clos;
   _.rnodv = arg1;
@@ -2111,6 +2117,22 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
   int colpos = getint_BM (arg3);
   unsigned nodwidth = nodewidth_BM ((const value_tyBM) _.rnodv);
   _.resobj = NULL;
+  _.pars = parsercast_BM (treenthson_BM ((const value_tyBM) restargs, 0));
+  const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (closconn != NULL);
+  const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
+  /*** constnod is
+   * const (basiclo_while while)
+   ***/
+  assert (isnode_BM ((const value_tyBM) constnod)
+          && nodewidth_BM ((const value_tyBM) constnod) >= constix__LAST
+          && valhash_BM ((const value_tyBM) constnod) == 4235580019);
+  const objectval_tyBM *k_basiclo_while =
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_basiclo_while));
+  const objectval_tyBM *k_while =
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_while));
   DBGPRINTF_BM ("start readmacro:while  _1ufPZmTnWhp_7FX9NANZCAW"
                 " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
 #warning   _1ufPZmTnWhp_7FX9NANZCAW while:readmacro incomplete
