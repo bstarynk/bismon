@@ -1333,8 +1333,7 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 const node_tyBM * rnodv;
-                 objectval_tyBM * resobj;
+                 const node_tyBM * rnodv; objectval_tyBM * resobj;
                  objectval_tyBM * resclass; objectval_tyBM * curlab;
                  const struct parser_stBM *pars; value_tyBM curson;
                  value_tyBM inv;
@@ -1384,15 +1383,10 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
           return NULL;
         }
       _.resobj = _.inv;
-      if (!objectisinstance_BM (_.resobj, k_basiclo_block))
+      if (objectisinstance_BM (_.resobj, k_basiclo_block))
         {
-          if (_.pars)
-            parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
-                                  colpos,
-                                  "bad `in`, not a basiclo_block, for block readmacro");
-          return NULL;
-        }
-      _.resclass = objclass_BM (_.resobj);
+          _.resclass = objclass_BM (_.resobj);
+        };
       startix++;
     }
   if (nodwidth > startix
@@ -1413,9 +1407,7 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
       startix++;
     };
   if (!_.resclass)
-    {
-      _.resclass = k_basiclo_block;
-    };
+    _.resclass = k_basiclo_block;
   if (!_.resobj)
     {
       _.resobj = makeobj_BM ();
@@ -1880,8 +1872,12 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
     constix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos; const node_tyBM * rnodv;
-                 objectval_tyBM * resobj;
+                 const closure_tyBM * clos;
+                 const node_tyBM * rnodv;
+                 value_tyBM curson;
+                 objectval_tyBM * resobj; objectval_tyBM * resclass;
+                 objectval_tyBM * curlab; objectval_tyBM * inv;
+                 struct parser_stBM *pars;
     );
   _.clos = clos;
   _.rnodv = arg1;
@@ -1905,9 +1901,47 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
     objectcast_BM (nodenthson_BM
                    ((const value_tyBM) constnod, constix_label));
   unsigned nodwidth = nodewidth_BM ((const value_tyBM) _.rnodv);
-  _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:loop  _6SUnsQrN1BV_1WnLPm4QoOq"
                 " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
+  _.resobj = NULL;
+  unsigned startix = 0;
+  if (nodwidth > 0
+      && (_.curson =
+          nodenthson_BM ((const value_tyBM) _.rnodv, startix)) != NULL
+      && isnode_BM (_.curson) && nodeconn_BM (_.curson) == BMP_in)
+    {
+      _.inv = nodenthson_BM (_.curson, 0);
+      if (!isobject_BM (_.inv))
+        {
+          if (_.pars)
+            parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
+                                  colpos,
+                                  "non-object `in` for loop readmacro");
+          return NULL;
+        }
+      _.resobj = _.inv;
+      if (objectisinstance_BM (_.resobj, k_basiclo_loop))
+        _.resclass = objclass_BM (_.resobj);
+      startix++;
+    }
+  if (nodwidth > startix
+      && (_.curson =
+          nodenthson_BM ((const value_tyBM) _.rnodv, startix)) != NULL
+      && isnode_BM (_.curson) && nodeconn_BM (_.curson) == k_label)
+    {
+      _.inv = nodenthson_BM (_.curson, 0);
+      if (!isobject_BM (_.curlab))
+        {
+          if (_.pars)
+            parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
+                                  colpos,
+                                  "non-object `label` for block readmacro");
+          return NULL;
+        }
+      _.curlab = _.inv;
+      startix++;
+    };
+
 #warning   _6SUnsQrN1BV_1WnLPm4QoOq loop:readmacro incomplete
   return _.resobj;
 }                               /* end ROUTINE  _6SUnsQrN1BV_1WnLPm4QoOq loop:readmacro */
