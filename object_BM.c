@@ -803,7 +803,7 @@ objputclass_BM (objectval_tyBM * obj, objectval_tyBM * objclass)
 }                               /* end objputclass_BM */
 
 void
-objputattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr,
+objputattr_BM (objectval_tyBM * obj, const objectval_tyBM * objattr,
                const value_tyBM valattr)
 {
   if (!isobject_BM ((const value_tyBM) obj))
@@ -829,7 +829,7 @@ objresetattrs_BM (objectval_tyBM * obj, unsigned nbattrhint)
 }                               /* end objresetattrs_BM */
 
 void
-objremoveattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr)
+objremoveattr_BM (objectval_tyBM * obj, const objectval_tyBM * objattr)
 {
   if (!isobject_BM ((const value_tyBM) obj))
     return;

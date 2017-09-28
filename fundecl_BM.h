@@ -143,9 +143,11 @@ static inline value_tyBM objgetattr_BM (const objectval_tyBM * obj,
 static inline unsigned objnbattrs_BM (const objectval_tyBM * obj);
 static inline const setval_tyBM *objsetattrs_BM (const objectval_tyBM * obj);
 
-extern void objputattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr,
-                           value_tyBM valattr);
-extern void objremoveattr_BM (objectval_tyBM * obj, objectval_tyBM * objattr);
+extern void objputattr_BM (objectval_tyBM * obj,
+                           const objectval_tyBM * objattr,
+                           const value_tyBM valattr);
+extern void objremoveattr_BM (objectval_tyBM * obj,
+                              const objectval_tyBM * objattr);
 extern void objresetattrs_BM (objectval_tyBM * obj, unsigned nbattrhint);
 
 static inline bool objhasclassinfo_BM (const objectval_tyBM * obj);
