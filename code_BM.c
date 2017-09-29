@@ -2105,8 +2105,7 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
                  const closure_tyBM * clos;
                  const node_tyBM * rnodv;
                  objectval_tyBM * resobj;
-                 objectval_tyBM * resclass;
-                 objectval_tyBM * inv;
+                 objectval_tyBM * resclass; objectval_tyBM * inv;
                  objectval_tyBM * curlab; value_tyBM curson;
                  const struct parser_stBM *pars;
     );
@@ -2210,38 +2209,6 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
   objtouchnow_BM (_.resobj);
   return _.resobj;
 }                               /* end ROUTINE  _1ufPZmTnWhp_7FX9NANZCAW while:readmacro */
-
-
-/////
-
-// for the routine command_readmacro for call
-extern objrout_sigBM ROUTINEOBJNAME_BM (_8MQd1cX5LTJ_3fGU7NHwqJW);
-
-value_tyBM
-ROUTINEOBJNAME_BM (_8MQd1cX5LTJ_3fGU7NHwqJW)    //
-(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
- const value_tyBM arg1,         // node
- const value_tyBM arg2,         // lineno
- const value_tyBM arg3,         // colpos
- const quasinode_tyBM * restargs __attribute__ ((unused)))
-{
-  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos; const node_tyBM * rnodv;
-                 objectval_tyBM * resobj;
-    );
-  _.clos = clos;
-  _.rnodv = arg1;
-  if (!isnode_BM (arg1))
-    return NULL;
-  int lineno = getint_BM (arg2);
-  int colpos = getint_BM (arg3);
-  unsigned nodwidth = nodewidth_BM ((const value_tyBM) _.rnodv);
-  _.resobj = NULL;
-  DBGPRINTF_BM ("start readmacro:call  _8MQd1cX5LTJ_3fGU7NHwqJW"
-                " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
-#warning _8MQd1cX5LTJ_3fGU7NHwqJW call:readmacro incomplete
-  return _.resobj;
-}                               /* end ROUTINE   _8MQd1cX5LTJ_3fGU7NHwqJW call:readmacro */
 
 
 /////
