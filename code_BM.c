@@ -2105,7 +2105,8 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
                  const closure_tyBM * clos;
                  const node_tyBM * rnodv; objectval_tyBM * resobj;
                  objectval_tyBM * resclass; objectval_tyBM * inv;
-                 objectval_tyBM * curlab; value_tyBM curson;
+                 objectval_tyBM * curlab;
+                 value_tyBM curson; value_tyBM whilexpv;
                  const struct parser_stBM *pars;
     );
   _.clos = clos;
@@ -2181,7 +2182,22 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
       _.resobj = makeobj_BM ();
       objputspacenum_BM (_.resobj, GlobalSp_BM);
     };
-  for (unsigned ix = startix; ix < nodwidth; ix++)
+  if (startix + 1 < nodwidth)
+    {
+      if (_.pars)
+        parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
+                              colpos,
+                              "too short %d while readmacro", nodwidth);
+      return NULL;
+    }
+  _.whilexpv = nodenthson_BM ((const value_tyBM) _.rnodv, startix);
+  if (!_.whilexpv)
+    {
+      if (_.pars)
+        parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
+                              colpos, "nil cond in while readmacro");
+    }
+  for (unsigned ix = startix + 1; ix < nodwidth; ix++)
     {
       _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
       if (!isobject_BM (_.curson))
@@ -2199,7 +2215,8 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
   objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   if (_.curlab)
     objputattr_BM (_.resobj, k_label, (const value_tyBM) _.curlab);
-  for (unsigned ix = startix; ix < nodwidth; ix++)
+  objputattr_BM (_.resobj, k_while, (const value_tyBM) _.whilexpv);
+  for (unsigned ix = startix + 1; ix < nodwidth; ix++)
     {
       _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
       objappendcomp_BM (_.resobj, _.curson);
@@ -2330,8 +2347,7 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
     constix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos;
-                 const node_tyBM * rnodv;
+                 const closure_tyBM * clos; const node_tyBM * rnodv;
                  objectval_tyBM * resobj; objectval_tyBM * resclass;
                  objectval_tyBM * inv; value_tyBM curson; value_tyBM runexpv;
                  const struct parser_stBM *pars;
