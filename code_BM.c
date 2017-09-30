@@ -2224,6 +2224,11 @@ ROUTINEOBJNAME_BM (_5788HpgOtVV_4zwZIr0jgmq)    //
  const value_tyBM arg3,         // colpos
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
+  enum
+  {
+   constix_basiclo_return, constix_return,
+    constix__LAST
+  };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos; const node_tyBM * rnodv;
                  objectval_tyBM * resobj;
@@ -2238,6 +2243,23 @@ ROUTINEOBJNAME_BM (_5788HpgOtVV_4zwZIr0jgmq)    //
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:return  _5788HpgOtVV_4zwZIr0jgmq"
                 " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
+  
+  const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (closconn != NULL);
+  const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
+  /*** constnod is
+   * const (basiclo_return return)
+   ***/
+  assert (isnode_BM ((const value_tyBM) constnod)
+          && nodewidth_BM ((const value_tyBM) constnod) >= constix__LAST
+          && valhash_BM ((const value_tyBM) constnod) ==452647067);
+  const objectval_tyBM *k_basiclo_return =
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_basiclo_return));
+  const objectval_tyBM *k_return =
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_return));
+  
 #warning _5788HpgOtVV_4zwZIr0jgmq return:readmacro incomplete
   return _.resobj;
 }                               /* end ROUTINE   _5788HpgOtVV_4zwZIr0jgmq return:readmacro */
@@ -2258,6 +2280,11 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
  const value_tyBM arg3,         // colpos
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
+  enum
+  {
+   constix_basiclo_run, constix_run,
+    constix__LAST
+  };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos; const node_tyBM * rnodv;
                  objectval_tyBM * resobj;
@@ -2272,6 +2299,22 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:run  _7sg0DjYTA8n_66vhff9SgXH"
                 " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
+
+  const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (closconn != NULL);
+  const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
+  /*** constnod is
+   * const (basiclo_run run)
+   ***/
+  assert (isnode_BM ((const value_tyBM) constnod)
+          && nodewidth_BM ((const value_tyBM) constnod) >= constix__LAST
+          && valhash_BM ((const value_tyBM) constnod) ==2311989027);
+  const objectval_tyBM *k_basiclo_run =
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_basiclo_run));
+  const objectval_tyBM *k_run =
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_run));
 #warning _7sg0DjYTA8n_66vhff9SgXH run:readmacro incomplete
   return _.resobj;
 }                               /* end ROUTINE   _7sg0DjYTA8n_66vhff9SgXH run:readmacro */
