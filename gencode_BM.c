@@ -19,6 +19,7 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
     constix_block,
     constix_locals,
     constix_constants,
+    constix_simple_routine_preparation,
     constix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -32,12 +33,11 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   assert (closconn != NULL);
   const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
   /*** constnod is
-      * const (arguments block locals constants)
+      * const (arguments block locals constants simple_routine_preparation)
    ***/
-  WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnod)
-                 && nodewidth_BM ((const value_tyBM) constnod) ==
-                 constix__LAST
-                 && valhash_BM ((const value_tyBM) constnod) == 4099148514);
+  WEAKASSERT_BM (isnode_BM ((value_tyBM) constnod)
+                 && nodewidth_BM ((value_tyBM) constnod) == constix__LAST
+                 && valhash_BM ((value_tyBM) constnod) == 3720857157);
   const objectval_tyBM *k_arguments =   //
     objectcast_BM (nodenthson_BM
                    ((const value_tyBM) constnod, constix_arguments));
@@ -50,6 +50,9 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   const objectval_tyBM *k_constants =   //
     objectcast_BM (nodenthson_BM
                    ((const value_tyBM) constnod, constix_constants));
+  const objectval_tyBM *k_simple_routine_preparation =  //
+    objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
+                                  constix_simple_routine_preparation));
   _.recv = /*function object */ (arg1);
   _.modgenob = /*module generation object */ objectcast_BM (arg2);
   _.prepvalset = /* set of routines */ setcast_BM (arg3);
