@@ -23,8 +23,8 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 objectval_tyBM * recv; objectval_tyBM * modgen;
-                 value_tyBM prepval;
+                 value_tyBM recv; value_tyBM modgenob;
+                 value_tyBM prepvalset;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
   _.clos = clos;
@@ -49,14 +49,15 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   const objectval_tyBM *k_constants =   //
     objectcast_BM (nodenthson_BM
                    ((const value_tyBM) constnod, constix_constants));
-  _.recv = objectcast_BM (arg1);
-  _.modgen = objectcast_BM (arg2);
-  _.prepval = arg3;
+  _.recv = /*function object */ (arg1);
+  _.modgenob = /*module generation object */ objectcast_BM (arg2);
+  _.prepvalset = /* set of routines */ setcast_BM (arg3);
   DBGPRINTF_BM
-    ("start prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP recv=%s\n",
+    ("start prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP recv=%s",
      objectdbg_BM (_.recv));
   DBGPRINTF_BM
-    ("prepare_routine:basiclo_function modgen=%s\n", objectdbg_BM (_.modgen));
+    ("prepare_routine:basiclo_function modgenob=%s\n",
+     objectdbg_BM (_.modgenob));
 #warning incomplete  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP
   return NULL;
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */
