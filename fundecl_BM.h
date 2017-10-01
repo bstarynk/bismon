@@ -51,6 +51,13 @@ extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32]);
 // to be called from debugger
 extern const char *iddbg_BM (rawid_tyBM id);    // non reentrant!
 extern const char *objectdbg_BM (const objectval_tyBM * obj);   // non reentrant!
+
+extern const char *iddbg1_BM (rawid_tyBM id);   // non reentrant!
+extern const char *objectdbg1_BM (const objectval_tyBM * obj);  // non reentrant!
+
+extern const char *iddbg2_BM (rawid_tyBM id);   // non reentrant!
+extern const char *objectdbg2_BM (const objectval_tyBM * obj);  // non reentrant!
+
 extern const char *gobjectclassnamedbg_BM (GObject * ptr);
 // return an static string for a textiter, for debugging only
 extern const char *textiterstrdbg_BM (GtkTextIter *);
