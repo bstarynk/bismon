@@ -5,24 +5,34 @@ struct timespec startrealtimespec_BM;
 void *dlprog_BM;
 bool gui_is_running_BM;
 const char myhostname_BM[80];
+
+extern void weakfailure_BM (void);
+
+// consider putting a gdb breakpoint here 
 void
-abort_BM (void)
+weakfailure_BM (void)
 {
   fflush (NULL);
-  abort ();
-}                               /* end abort_BM */
-
+}                               /* end weakfailure_BM */
 
 void
 weakassertfailureat_BM (const char *condmsg, const char *fil, int lin)
 {
   fprintf (stderr, "weakassertfailureat_BM (%s:%d) %s\n", fil, lin, condmsg);
+  fflush (stderr);
   void *backbuf[50];
   memset (backbuf, 0, sizeof (backbuf));
   int nb = backtrace (backbuf, sizeof (backbuf) / sizeof (void *));
   backtrace_symbols_fd (backbuf, nb, STDERR_FILENO);
-  fflush (NULL);
-}
+  weakfailure_BM ();
+}                               /* end weakassertfailureat_BM */
+
+void
+abort_BM (void)
+{
+  weakfailure_BM ();
+  abort ();
+}                               /* end abort_BM */
 
 
 ////////////////////////////////////////////////////////////////
