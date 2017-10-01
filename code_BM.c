@@ -1197,8 +1197,9 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
 
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv;
-                 objectval_tyBM * curout; objectval_tyBM * prepare_routine;
-                 objectval_tyBM * modgen; value_tyBM * prepval;
+                 objectval_tyBM * curout;
+                 objectval_tyBM * prepare_routine; objectval_tyBM * modgen;
+                 value_tyBM prepval; value_tyBM preproutval;
                  const closure_tyBM * clos; objectval_tyBM * closconn;
                  const node_tyBM * constnodv;
     );
@@ -1244,11 +1245,20 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
                     "... curout %s is a %s\n",
                     ix, objectdbg_BM (_.curout),
                     objectdbg1_BM (objclass_BM (_.curout)));
-      send2_BM (_.curout, _.prepare_routine,
-                (struct stackframe_stBM *) &_, _.modgen, _.prepval);
+      _.preproutval = send2_BM (_.curout, _.prepare_routine,
+                                (struct stackframe_stBM *) &_, _.modgen,
+                                _.prepval);
+      if (!_.preproutval)
+        {
+          DBGPRINTF_BM
+            ("@@generate_module°basiclo*module prepare_routine of %s failed",
+             objectdbg_BM (_.curout));
+          return NULL;
+        }
     }
   return NULL;
 }                               /* end ROUTINE _50d65bJypCN_6IJeVtssx9I */
+
 
 
 
@@ -2106,8 +2116,7 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
     constix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos;
-                 const node_tyBM * rnodv;
+                 const closure_tyBM * clos; const node_tyBM * rnodv;
                  objectval_tyBM * resobj; objectval_tyBM * resclass;
                  objectval_tyBM * inv; objectval_tyBM * curlab;
                  value_tyBM curson; value_tyBM whilexpv;
