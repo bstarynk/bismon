@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 90 objects
+// for 91 objects
 // with 0 modules
 
 
@@ -451,6 +451,14 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 
+!(_9qn0Hp8HaF5_7yeAJiNYtp5 |=prepared_routines|
+!~ name (~ prepared_routines
+~)
+!@ 1506846680.17
+!)_9qn0Hp8HaF5_7yeAJiNYtp5
+
+
+
 !(_7wDfX8mn5WT_2g0FYc80dLx |=put_data_value|
 !~ name (~ put_data_value
 ~)
@@ -724,13 +732,13 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 !(_50d65bJypCN_6IJeVtssx9I
-!@ 1505978650.20
+!@ 1506846789.86
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to generate_module for basiclo*module-s"
 
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _6qi1DW0Ygkl_4Aqdxq4n5IV |=prepare_routine| 
-) ~)
+ _9qn0Hp8HaF5_7yeAJiNYtp5 |=prepared_routines| ) ~)
 
 !)_50d65bJypCN_6IJeVtssx9I
 
