@@ -1201,7 +1201,8 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv;
                  objectval_tyBM * curout; objectval_tyBM * modgen;
-                 value_tyBM prepval; value_tyBM preproutval;
+                 value_tyBM prepval;
+                 value_tyBM preproutval;
                  const closure_tyBM * clos;
                  objectval_tyBM * closconn;
                  const node_tyBM * constnodv;

@@ -137,6 +137,7 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   _.curdu->dump_state = dum_scan;
   _.curdu->dump_dir = _.dudirv;
   _.curdu->dump_hset = hashsetobj_grow_BM (NULL, 256);
+  _.curdu->dump_randomid = randomid_BM ();
   _.curdu->dump_scanlist = makelist_BM ();
   _.curdu->dump_todolist = makelist_BM ();
   _.curdu->dump_startelapsedtime = elapsedtime_BM ();
@@ -345,6 +346,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
                  const setval_tyBM * setobjs;
                  const stringval_tyBM * pathv;
                  const stringval_tyBM * backupv;
+                 const stringval_tyBM * tempathv;
                  const objectval_tyBM * curobj; //
                  const objectval_tyBM * modobj; //
                  const setval_tyBM * setmodules;
@@ -353,11 +355,15 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   _.curdu = du;
   _.curhspa = hspa;
   _.setobjs = hashsetobj_to_set_BM (hspa);
+  char randidbuf[32];
+  memset (randidbuf, 0, sizeof (randidbuf));
+  idtocbuf32_BM (du->dump_randomid, randidbuf);
   _.pathv = sprintfstring_BM ("%s/store%u.bmon",
                               bytstring_BM (du->dump_dir), spix);
+  _.tempathv =
+    sprintfstring_BM ("%s+%s%%", bytstring_BM (_.pathv), randidbuf);
   _.backupv = sprintfstring_BM ("%s~", bytstring_BM (_.pathv));
-  (void) rename (bytstring_BM (_.pathv), bytstring_BM (_.backupv));
-  spfil = fopen (bytstring_BM (_.pathv), "w");
+  spfil = fopen (bytstring_BM (_.tempathv), "w");
   if (!spfil)
     FATAL_BM ("dump_emit_space_BM cannot open %s (%m)",
               bytstring_BM (_.pathv));
@@ -429,6 +435,10 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   free (objarr);
   fprintf (spfil, "\n// end of file %s\n", basename (bytstring_BM (_.pathv)));
   fclose (spfil);
+  (void) rename (bytstring_BM (_.pathv), bytstring_BM (_.backupv));
+  if (rename (bytstring_BM (_.tempathv), bytstring_BM (_.pathv)))
+    FATAL_BM ("rename failure %s -> %s for dump of spix#%u",
+              bytstring_BM (_.tempathv), bytstring_BM (_.pathv), spix);
   du->dump_wrotefilecount++;
 }                               /* end  dump_emit_space_BM */
 

@@ -221,6 +221,7 @@ struct dumper_stBM
   struct hashsetobj_stBM *dump_hset;
   struct listtop_stBM *dump_scanlist;
   struct listtop_stBM *dump_todolist;
+  rawid_tyBM dump_randomid;
   long dump_scanedobjectcount;
   long dump_emittedobjectcount;
   long dump_todocount;
