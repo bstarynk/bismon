@@ -57,15 +57,18 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   const objectval_tyBM *k_body =        //
     objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
                                   constix_body));
+  // retrieve arguments
   _.recv = /*function object */ (arg1);
   _.modgenob = /*module generation object */ objectcast_BM (arg2);
   _.prepvalset = /* set of routines */ setcast_BM (arg3);
+  ///
   DBGPRINTF_BM
     ("start prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP recv=%s",
      objectdbg_BM (_.recv));
   DBGPRINTF_BM
     ("prepare_routine:basiclo_function modgenob=%s is a %s\n",
      objectdbg_BM (_.modgenob), objectdbg1_BM (objclass_BM (_.modgenob)));
+  ////
 #warning incomplete  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP
   return NULL;
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */
