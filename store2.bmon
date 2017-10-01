@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 99 objects
+// for 100 objects
 // with 0 modules
 
 
@@ -237,6 +237,16 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 
 
 
+!(_7DQyvJFMOrC_9IfC3CtYknn |=body|
+!~ name (~ body
+~)
+!@ 1506873585.07
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the body of some function, etc..."
+!)_7DQyvJFMOrC_9IfC3CtYknn
+
+
+
 !(_5MiY0SneC5A_7c2Ar72nm9O |=complete_module|
 !~ name (~ complete_module
 ~)
@@ -405,7 +415,9 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !(_0Bl5ro9usp6_1Hll14QwC8f |=modgenob|
 !~ name (~ modgenob
 ~)
-!@ 1506855755.99
+!@ 1506873963.30
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn |=object| 
 !)_0Bl5ro9usp6_1Hll14QwC8f
 
 
@@ -495,7 +507,9 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !(_4jQFQ7bwCsI_3TM3IY3tFyW |=prepvalset|
 !~ name (~ prepvalset
 ~)
-!@ 1506855755.99
+!@ 1506873982.74
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_2mYaTh9kH4I_7ENiXcymRmy |=set| 
 !)_4jQFQ7bwCsI_3TM3IY3tFyW
 
 
@@ -521,7 +535,11 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !(_0DRkw9jbus3_4zHggHVajYB |=recv|
 !~ name (~ recv
 ~)
-!@ 1506855755.99
+!@ 1506873909.74
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the reciever argument"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7bbeIqUSje9_4jVgC7ZJmvx |=value| 
 !)_0DRkw9jbus3_4zHggHVajYB
 
 
@@ -819,7 +837,7 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 
 
 !(_5mnsT1wsdWs_2Qnqsf3wqaP
-!@ 1506861504.67
+!@ 1506873657.91
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method for prepare_routine:basiclo_function"
@@ -829,7 +847,8 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _0jFqaPPHgYH_5JpjOPxQ67p |=arguments| 
  _2U8Sj78DMbl_5eerKpaJsNq |=block|  _24sSVIADeHm_0Sx34wQfG7W |=locals| 
  _5l2zSKsFaVm_9zs6qDOP87i |=constants|  _80060zKi6Un_3isCStegT8A |=simple_routine_preparation| 
-) ~)
+ 
+ _7DQyvJFMOrC_9IfC3CtYknn |=body| ) ~)
 
 !)_5mnsT1wsdWs_2Qnqsf3wqaP
 
