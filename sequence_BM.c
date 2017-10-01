@@ -471,6 +471,21 @@ datavect_append_BM (struct datavectval_stBM *dvec, value_tyBM val)
   return newdvec;
 }                               /* end datavect_append_BM */
 
+
+const node_tyBM *
+datavect_to_node_BM (struct datavectval_stBM *dvec,
+                     const objectval_tyBM * obconn)
+{
+  if (valtype_BM ((const value_tyBM) dvec) != tydata_vectval_BM)
+    return NULL;
+  if (!isobject_BM ((const value_tyBM) obconn))
+    return NULL;
+  unsigned cnt = ((typedsize_tyBM *) dvec)->size;
+  const value_tyBM *valarr = dvec->vec_data;
+  return makenode_BM (obconn, cnt, valarr);
+}                               /* end datavect_to_node_BM */
+
+
 void
 datavectgcmark_BM (struct garbcoll_stBM *gc,
                    const struct datavectval_stBM *dvec, int depth)
