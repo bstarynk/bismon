@@ -1206,8 +1206,9 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
   _.clos = clos;
   assert (isobject_BM (_.recv));
   DBGPRINTF_BM
-    ("@@generate_module°basiclo*module _50d65bJypCN_6IJeVtssx9I recv=%s",
-     objectdbg_BM (_.recv));
+    ("@@generate_module°basiclo*module _50d65bJypCN_6IJeVtssx9I recv=%s\n"
+     "... is a %s\n",
+     objectdbg_BM (_.recv), objectdbg1_BM (objclass_BM (_.recv)));
   _.closconn = closureconn_BM ((const value_tyBM) clos);
   assert (isobject_BM (_.closconn));
   _.constnodv = _.closconn->ob_data;
@@ -1226,8 +1227,9 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
       DBGPRINTF_BM ("@@generate_module°basiclo*module bad modgen");
       return NULL;
     };
-  DBGPRINTF_BM
-    ("@@generate_module°basiclo*module modgen=%s", objectdbg_BM (_.modgen));
+  DBGPRINTF_BM ("@@generate_module°basiclo*module modgen=%s is a %s\n",
+                objectdbg_BM (_.modgen),
+                objectdbg1_BM (objclass_BM (_.modgen)));
   if (!isset_BM (_.prepval))
     {
       DBGPRINTF_BM ("@@generate_module°basiclo*module bad prepval");
@@ -1238,8 +1240,10 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
   for (unsigned ix = 0; ix < nbrout; ix++)
     {
       _.curout = setelemnth_BM ((const setval_tyBM *) _.prepval, ix);
-      DBGPRINTF_BM ("@@generate_module°basiclo*module ix#%d curout %s",
-                    ix, objectdbg_BM (_.curout));
+      DBGPRINTF_BM ("@@generate_module°basiclo*module ix#%d\n"
+                    "... curout %s is a %s\n",
+                    ix, objectdbg_BM (_.curout),
+                    objectdbg1_BM (objclass_BM (_.curout)));
       send2_BM (_.curout, _.prepare_routine,
                 (struct stackframe_stBM *) &_, _.modgen, _.prepval);
     }
@@ -2103,9 +2107,9 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 const node_tyBM * rnodv; objectval_tyBM * resobj;
-                 objectval_tyBM * resclass; objectval_tyBM * inv;
-                 objectval_tyBM * curlab;
+                 const node_tyBM * rnodv;
+                 objectval_tyBM * resobj; objectval_tyBM * resclass;
+                 objectval_tyBM * inv; objectval_tyBM * curlab;
                  value_tyBM curson; value_tyBM whilexpv;
                  const struct parser_stBM *pars;
     );
