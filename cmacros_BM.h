@@ -107,10 +107,13 @@
 
 // weak assert dont abort
 #ifndef NDEBUG
+extern void weakassertfailureat_BM (const char *condmsg, const char *fil,
+                                    int lin);
 #define WEAKASSERT_BM(Cond) do { if(!(Cond)) \
-      { DBGPRINTF_BM("WEAKASSERT failure %s", #Cond); return 0; }} while(0)
+      { weakassertfailureat_BM(#Cond,__FILE__,__LINE__); return 0; }} \
+  while(0)
 #else
 #define WEAKASSERT_BM(Cond) do if(false && !(Cond)) \
-      { DBGPRINTF_BM("WEAKASSERT failure %s", #Cond); return 0; }} while(0)
+      {  return 0; }} while(0)
 #endif /*NDEBUG*/
 #endif /*CMACROS_BM_INCLUDED */

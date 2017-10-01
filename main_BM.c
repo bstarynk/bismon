@@ -13,6 +13,18 @@ abort_BM (void)
 }                               /* end abort_BM */
 
 
+void
+weakassertfailureat_BM (const char *condmsg, const char *fil, int lin)
+{
+  fprintf (stderr, "weakassertfailureat_BM (%s:%d) %s\n", fil, lin, condmsg);
+  void *backbuf[50];
+  memset (backbuf, 0, sizeof (backbuf));
+  int nb = backtrace (backbuf, sizeof (backbuf) / sizeof (void *));
+  backtrace_symbols_fd (backbuf, nb, STDERR_FILENO);
+  fflush (NULL);
+}
+
+
 ////////////////////////////////////////////////////////////////
 char *load_dir_bm;
 char *dump_dir_bm;
