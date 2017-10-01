@@ -1,6 +1,14 @@
 // generated file store2.bmon
-// for 91 objects
+// for 95 objects
 // with 0 modules
+
+
+!(_0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+!~ name (~ arguments
+~)
+!@ 1506853444.98
+!)_0jFqaPPHgYH_5JpjOPxQ67p
+
 
 
 !(_0aWpxE7aiWs_71KTgYdlifE |=assign|
@@ -94,7 +102,7 @@
 !(_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !~ name (~ basiclo_function
 ~)
-!@ 1506169023.51
+!@ 1506852231.03
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of basic closure functions, e.g. in basiclo_*_module"
@@ -114,6 +122,7 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
 ~: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|  % _7D36kHemyWQ_0YfwWnUhR9Y () 
 ~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan|  % _9UhDZeDdg2r_55lUqYDPUiF () 
+~: _6qi1DW0Ygkl_4Aqdxq4n5IV |=prepare_routine|  % _5mnsT1wsdWs_2Qnqsf3wqaP () 
 ~: _7wDfX8mn5WT_2g0FYc80dLx |=put_data_value|  % _60NdV04Lel2_5FSZVWKbSL7 () 
 ~: _9uRC9w2Gte9_5mW0NanaS19 |=browse_data|  % _9zpvXnTuDeB_2B7ZiBtN8fA ()
 ~)
@@ -250,6 +259,14 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 
 
 
+!(_5l2zSKsFaVm_9zs6qDOP87i |=constants|
+!~ name (~ constants
+~)
+!@ 1506853467.27
+!)_5l2zSKsFaVm_9zs6qDOP87i
+
+
+
 !(_5XDRkXDAUAk_9AuvN0J1d53 |=dumper_of_globals|
 !~ name (~ dumper_of_globals
 ~)
@@ -362,6 +379,14 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "give label, e.g. in loop-s"
 !)_3XBrePAliOo_37VlAqBsb5C
+
+
+
+!(_24sSVIADeHm_0Sx34wQfG7W |=locals|
+!~ name (~ locals
+~)
+!@ 1506853455.83
+!)_24sSVIADeHm_0Sx34wQfG7W
 
 
 
@@ -754,6 +779,20 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
  _2DH0ucElTgh_62vxjxLcfev |=return| ) ~)
 
 !)_5788HpgOtVV_4zwZIr0jgmq
+
+
+
+!(_5mnsT1wsdWs_2Qnqsf3wqaP
+!@ 1506853524.72
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method for prepare_routine:basiclo_function"
+
+!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _0jFqaPPHgYH_5JpjOPxQ67p |=arguments| 
+ _2U8Sj78DMbl_5eerKpaJsNq |=block|  _24sSVIADeHm_0Sx34wQfG7W |=locals| 
+ _5l2zSKsFaVm_9zs6qDOP87i |=constants| ) ~)
+
+!)_5mnsT1wsdWs_2Qnqsf3wqaP
 
 
 
