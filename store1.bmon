@@ -1,5 +1,5 @@
 // generated file store1.bmon
-// for 35 objects
+// for 36 objects
 // with 0 modules
 
 
@@ -30,6 +30,16 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to browse value"
 !)_6rHCoR6adv5_9SKAahoKWPj
+
+
+
+!(_83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+!~ name (~ c_type
+~)
+!@ 1506872481.73
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "to give the C type"
+!)_83kM1HtO8K3_6k0F2KYQT3W
 
 
 
