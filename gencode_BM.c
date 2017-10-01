@@ -34,9 +34,10 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   /*** constnod is
       * const (arguments block locals constants)
    ***/
-  assert (isnode_BM ((const value_tyBM) constnod)
-          && nodewidth_BM ((const value_tyBM) constnod) == constix__LAST
-          && valhash_BM ((const value_tyBM) constnod) == 4099148514);
+  WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnod)
+                 && nodewidth_BM ((const value_tyBM) constnod) ==
+                 constix__LAST
+                 && valhash_BM ((const value_tyBM) constnod) == 4099148514);
   const objectval_tyBM *k_arguments =   //
     objectcast_BM (nodenthson_BM
                    ((const value_tyBM) constnod, constix_arguments));
@@ -56,8 +57,8 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
     ("start prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP recv=%s",
      objectdbg_BM (_.recv));
   DBGPRINTF_BM
-    ("prepare_routine:basiclo_function modgenob=%s\n",
-     objectdbg_BM (_.modgenob));
+    ("prepare_routine:basiclo_function modgenob=%s is a %s\n",
+     objectdbg_BM (_.modgenob), objectdbg1_BM (objclass_BM (_.modgenob)));
 #warning incomplete  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP
   return NULL;
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */

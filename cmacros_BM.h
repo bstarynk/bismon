@@ -105,4 +105,12 @@
 #define NONPRINTF_BM(Fmt,...) do { if (false) \
       DBGPRINTF_BM(Fmt,##__VA_ARGS__); } while(0)
 
+// weak assert dont abort
+#ifndef NDEBUG
+#define WEAKASSERT_BM(Cond) do { if(!(Cond)) \
+      { DBGPRINTF_BM("WEAKASSERT failure %s", #Cond); return 0; }} while(0)
+#else
+#define WEAKASSERT_BM(Cond) do if(false && !(Cond)) \
+      { DBGPRINTF_BM("WEAKASSERT failure %s", #Cond); return 0; }} while(0)
+#endif /*NDEBUG*/
 #endif /*CMACROS_BM_INCLUDED */
