@@ -359,6 +359,15 @@ objgetcomp_BM (const objectval_tyBM * obj, int rk)
   return datavectnth_BM (obj->ob_compvec, rk);
 }                               /* end objgetcomp_BM */
 
+void
+objputcomp_BM (objectval_tyBM * obj, int rk, const value_tyBM valcomp)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  if (!obj->ob_compvec)
+    return;
+  datavectputnth_BM (obj->ob_compvec, rk, valcomp);
+}                               /* end objputcomp_BM */
 
 void
 objreservecomps_BM (objectval_tyBM * obj, unsigned gap)
@@ -585,6 +594,16 @@ datavectnth_BM (const struct datavectval_stBM * dvec, int rk)
   return NULL;
 }                               /* end datavectnth_BM */
 
+void
+datavectputnth_BM (struct datavectval_stBM *dvec,
+                   int rk, const value_tyBM valcomp)
+{
+  unsigned sz = datavectlen_BM (dvec);
+  if (rk < 0)
+    rk += (int) sz;
+  if (rk >= 0 && rk < (int) sz)
+    dvec->vec_data[rk] = valcomp;
+}                               /* end datavectputnth_BM */
 
 struct datavectval_stBM *
 datavect_insertone_BM (struct datavectval_stBM *dvec, int rk, value_tyBM val)

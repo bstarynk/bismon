@@ -242,6 +242,8 @@ extern value_tyBM send8_BM (const value_tyBM recv,
 
 static inline unsigned objnbcomps_BM (const objectval_tyBM * obj);
 static inline value_tyBM objgetcomp_BM (const objectval_tyBM * obj, int rk);
+static inline void objputcomp_BM (objectval_tyBM * obj, int rk,
+                                  const value_tyBM compval);
 static inline void objreservecomps_BM (objectval_tyBM * obj, unsigned gap);
 static inline void objresetcomps_BM (objectval_tyBM * obj, unsigned len);
 static inline void objappendcomp_BM (objectval_tyBM * obj,
@@ -359,6 +361,8 @@ extern const node_tyBM *datavect_to_node_BM (struct datavectval_stBM *dvec,
                                              const objectval_tyBM * obconn);
 static inline value_tyBM datavectnth_BM (const struct datavectval_stBM *dvec,
                                          int rk);
+static inline void datavectputnth_BM (struct datavectval_stBM *dvec,
+                                      int rk, const value_tyBM valcomp);
 extern void datavectgcmark_BM (struct garbcoll_stBM *gc,
                                const struct datavectval_stBM *dvec,
                                int depth);
