@@ -585,6 +585,13 @@ datavectnth_BM (const struct datavectval_stBM * dvec, int rk)
   return NULL;
 }                               /* end datavectnth_BM */
 
+
+struct datavectval_stBM *
+datavect_insertone_BM (struct datavectval_stBM *dvec, int rk, value_tyBM val)
+{
+  return datavect_insert_BM (dvec, rk, &val, 1);
+}                               /* end datavect_insertone_BM  */
+
 ////////////////
 bool
 isset_BM (const value_tyBM v)
