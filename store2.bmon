@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 100 objects
+// for 101 objects
 // with 0 modules
 
 
@@ -770,6 +770,17 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 
+!(_36MhHxakHKT_1ZzV5Xoj5LX
+!@ 1506925848.45
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of prepare_routine:basiclo_function"
+!# 1
+!& __
+!)_36MhHxakHKT_1ZzV5Xoj5LX
+
+
+
 !(_3kMqlEugRVW_7DgwjR4CBbP
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -837,12 +848,14 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 !(_5mnsT1wsdWs_2Qnqsf3wqaP
-!@ 1506873657.91
+!@ 1506925475.21
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method for prepare_routine:basiclo_function"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _0DRkw9jbus3_4zHggHVajYB _0Bl5ro9usp6_1Hll14QwC8f _4jQFQ7bwCsI_3TM3IY3tFyW ]
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_36MhHxakHKT_1ZzV5Xoj5LX
 
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _0jFqaPPHgYH_5JpjOPxQ67p |=arguments| 
  _2U8Sj78DMbl_5eerKpaJsNq |=block|  _24sSVIADeHm_0Sx34wQfG7W |=locals| 
