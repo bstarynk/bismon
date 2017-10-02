@@ -1498,13 +1498,8 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
     constix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos;
-                 const node_tyBM * rnodv;
-                 const node_tyBM * constnodv;
-                 objectval_tyBM * resobj;
-                 objectval_tyBM * closconn;
-                 objectval_tyBM * basiclo_assign;
-                 const struct parser_stBM *pars;
+                 const closure_tyBM * clos; const node_tyBM * rnodv;
+                 objectval_tyBM * resobj; const struct parser_stBM *pars;
                  value_tyBM inv; value_tyBM destv;
                  value_tyBM srcv;
                  value_tyBM curson;
@@ -1519,23 +1514,23 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
   _.pars = parsercast_BM (treenthson_BM ((const value_tyBM) restargs, 0));
 
   _.clos = clos;
-  _.closconn = closureconn_BM ((const value_tyBM) clos);
-  assert (isobject_BM (_.closconn));
-  _.constnodv = _.closconn->ob_data;
+  const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (isobject_BM ((const value_tyBM) closconn));
+  const value_tyBM constnodv = closconn->ob_data;
   if (!isnode_BM (arg1))
     return NULL;
   _.rnodv = arg1;
-  _.constnodv = _.closconn->ob_data;
   /** constnodv is 
      * const (basiclo_assign)
   **/
-  assert (isnode_BM ((const value_tyBM) _.constnodv)
-          && valhash_BM ((const value_tyBM) _.constnodv) == 849423390);
-  assert (nodewidth_BM ((const value_tyBM) _.constnodv) >= constix__LAST);
-  _.basiclo_assign =
+  WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnodv)
+                 && valhash_BM ((const value_tyBM) constnodv) == 849423390
+                 && nodewidth_BM ((const value_tyBM) constnodv) >=
+                 constix__LAST);
+  const objectval_tyBM *k_basiclo_assign =
     objectcast_BM (nodenthson_BM
-                   ((void *) _.constnodv, constix_basiclo_assign));
-  assert (_.basiclo_assign != NULL);
+                   ((void *) constnodv, constix_basiclo_assign));
+  assert (k_basiclo_assign != NULL);
   unsigned startix = 0;
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:assign _1Geqz0vsOKB_2Dpdb1LDu23"
@@ -1583,7 +1578,7 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
   objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   objappendcomp_BM (_.resobj, _.destv);
   objappendcomp_BM (_.resobj, _.srcv);
-  objputclass_BM (_.resobj, _.basiclo_assign);
+  objputclass_BM (_.resobj, k_basiclo_assign);
   objtouchnow_BM (_.resobj);
   return _.resobj;
 }                               /* end ROUTINE _1Geqz0vsOKB_2Dpdb1LDu23 assign:readmacro */

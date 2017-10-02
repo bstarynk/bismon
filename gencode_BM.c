@@ -69,6 +69,7 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
     ("prepare_routine:basiclo_function modgenob=%s is a %s\n",
      objectdbg_BM (_.modgenob), objectdbg1_BM (objclass_BM (_.modgenob)));
   ////
+  /// body: _36MhHxakHKT_1ZzV5Xoj5LX
 #warning incomplete  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP
   return NULL;
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */
