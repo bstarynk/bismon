@@ -1274,7 +1274,8 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
         }
       _.vectprepr = datavect_append_BM (_.vectprepr, _.preproutval);
     }
-  _.prepmod = datavect_to_node_BM (_.vectprepr, k_prepared_routines);
+  _.prepmod =
+    (const value_tyBM) datavect_to_node_BM (_.vectprepr, k_prepared_routines);
   objputattr_BM (_.modgen, k_prepared_routines, _.prepmod);
   objtouchnow_BM (_.modgen);
   // we should now emit each routine...
@@ -1578,7 +1579,7 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
   objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   objappendcomp_BM (_.resobj, _.destv);
   objappendcomp_BM (_.resobj, _.srcv);
-  objputclass_BM (_.resobj, k_basiclo_assign);
+  objputclass_BM (_.resobj, (objectval_tyBM *) k_basiclo_assign);
   objtouchnow_BM (_.resobj);
   DBGPRINTF_BM ("end readmacro:assign resobj %s", objectdbg_BM (_.resobj));
   return _.resobj;
