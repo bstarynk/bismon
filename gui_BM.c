@@ -1524,31 +1524,57 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
     }
   //
   // !: <attr> <val> # put an attribute in target object
+  // !: <index> <val> # put a component at given index in target object
   else
     if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamcolon)
     {
       if (!nobuild && !isobject_BM (targobj))
         parsererrorprintf_BM (pars, lineno, colpos, "missing target for !:");
+      parserskipspaces_BM (pars);
+      lineno = pars->pars_lineno;
+      colpos = pars->pars_colpos;
       bool gotattr = false;
+      bool gotindex = false;
+      int index = -1;
       _.obattr = parsergetobject_BM (pars,      //
                                      (struct stackframe_stBM *) &_,     //
                                      depth + 1, &gotattr);
       if (!gotattr)
+        {
+          parserseek_BM (pars, lineno, colpos);
+          struct parstoken_stBM tok = parsertokenget_BM (pars);
+          if (tok.tok_kind == plex_LLONG)
+            {
+              gotindex = true;
+              index = (int) tok.tok_llong;
+            }
+        }
+      if (!gotattr && !gotindex)
         parsererrorprintf_BM (pars, lineno, colpos,
-                              "missing attribute after !:");
+                              "missing attribute or index after !:");
       bool gotval = false;
       _.comp = parsergetvalue_BM (pars, //
                                   (struct stackframe_stBM *) &_,        //
                                   depth + 1, &gotval);
       if (!gotval)
         parsererrorprintf_BM (pars, lineno, colpos, "missing value after !:");
-      if (!nobuild)
+      if (!nobuild && gotattr)
         {
           objputattr_BM (_.targobj, _.obattr, _.comp);
           log_begin_message_BM ();
           log_puts_message_BM ("put attribute ");
           log_object_message_BM (_.obattr);
           log_puts_message_BM (" in object ");
+          log_object_message_BM (_.targobj);
+          log_puts_message_BM (".");
+          log_end_message_BM ();
+          objtouchnow_BM (_.targobj);
+        }
+      else if (!nobuild && gotindex)
+        {
+          objputcomp_BM (_.targobj, index, _.comp);
+          log_begin_message_BM ();
+          log_printf_message_BM ("put comp#%d in object ", index);
           log_object_message_BM (_.targobj);
           log_puts_message_BM (".");
           log_end_message_BM ();
