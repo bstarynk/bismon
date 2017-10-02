@@ -1580,6 +1580,7 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
   objappendcomp_BM (_.resobj, _.srcv);
   objputclass_BM (_.resobj, k_basiclo_assign);
   objtouchnow_BM (_.resobj);
+  DBGPRINTF_BM ("end readmacro:assign resobj %s", objectdbg_BM (_.resobj));
   return _.resobj;
 }                               /* end ROUTINE _1Geqz0vsOKB_2Dpdb1LDu23 assign:readmacro */
 
@@ -1688,6 +1689,7 @@ ROUTINEOBJNAME_BM (_0XbMOJqLLPZ_1t2wg2TwPRA)    //
     }
   objputclass_BM (_.resobj, _.basiclo_cond);
   objtouchnow_BM (_.resobj);
+  DBGPRINTF_BM ("end readmacro:cond resobj %s", objectdbg_BM (_.resobj));
   return _.resobj;
 }                               /* end ROUTINE _0XbMOJqLLPZ_1t2wg2TwPRA cond:readmacro */
 
@@ -1791,6 +1793,7 @@ ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    //
     }
   objputclass_BM (_.resobj, _.basiclo_intswitch);
   objtouchnow_BM (_.resobj);
+  DBGPRINTF_BM ("end readmacro:intswitch resobj %s", objectdbg_BM (_.resobj));
   return _.resobj;
 }                               /* end ROUTINE  _7ko2VZaPpqD_1eEmEcp0VV3 intswitch:readmacro */
 
@@ -1893,6 +1896,7 @@ ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf)    //
     }
   objputclass_BM (_.resobj, _.basiclo_objswitch);
   objtouchnow_BM (_.resobj);
+  DBGPRINTF_BM ("end readmacro:objswitch resobj %s", objectdbg_BM (_.resobj));
   return _.resobj;
 }                               /* end ROUTINE  _8uFPIAUyvE6_36pUIgGwmbf objswitch:readmacro */
 
@@ -2017,6 +2021,7 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
     }
   objputclass_BM (_.resobj, _.resclass);
   objtouchnow_BM (_.resobj);
+  DBGPRINTF_BM ("end readmacro:loop resobj %s", objectdbg_BM (_.resobj));
   return _.resobj;
 }                               /* end ROUTINE  _6SUnsQrN1BV_1WnLPm4QoOq loop:readmacro */
 
@@ -2111,6 +2116,7 @@ ROUTINEOBJNAME_BM (_63Q0R4r8xa7_7XOAxxP5pi2)    //
     _.resclass = (objectval_tyBM *) k_basiclo_exit;
   objputclass_BM (_.resobj, _.resclass);
   objtouchnow_BM (_.resobj);
+  DBGPRINTF_BM ("end readmacro:exit resobj %s", objectdbg_BM (_.resobj));
   return _.resobj;
 }                               /* end ROUTINE  _63Q0R4r8xa7_7XOAxxP5pi2 exit:readmacro */
 
@@ -2254,6 +2260,7 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
     }
   objputclass_BM (_.resobj, _.resclass);
   objtouchnow_BM (_.resobj);
+  DBGPRINTF_BM ("end readmacro:while resobj %s", objectdbg_BM (_.resobj));
   return _.resobj;
 }                               /* end ROUTINE  _1ufPZmTnWhp_7FX9NANZCAW while:readmacro */
 
@@ -2353,6 +2360,7 @@ ROUTINEOBJNAME_BM (_5788HpgOtVV_4zwZIr0jgmq)    //
     objputattr_BM (_.resobj, k_return, (const value_tyBM) _.resexpv);
   objputclass_BM (_.resobj, _.resclass);
   objtouchnow_BM (_.resobj);
+  DBGPRINTF_BM ("end readmacro:return resobj %s", objectdbg_BM (_.resobj));
   return _.resobj;
 }                               /* end ROUTINE   _5788HpgOtVV_4zwZIr0jgmq return:readmacro */
 
@@ -2452,5 +2460,6 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
     objputattr_BM (_.resobj, k_run, (const value_tyBM) _.runexpv);
   objputclass_BM (_.resobj, _.resclass);
   objtouchnow_BM (_.resobj);
+  DBGPRINTF_BM ("end readmacro:run resobj %s", objectdbg_BM (_.resobj));
   return _.resobj;
 }                               /* end ROUTINE   _7sg0DjYTA8n_66vhff9SgXH run:readmacro */
