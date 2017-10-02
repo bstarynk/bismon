@@ -342,6 +342,15 @@ extern struct datavectval_stBM *datavect_reserve_BM (struct datavectval_stBM
 extern struct datavectval_stBM *datavect_append_BM (struct datavectval_stBM
                                                     *dvec, value_tyBM val);
 
+extern struct datavectval_stBM *datavect_insert_BM (struct datavectval_stBM
+                                                    *dvec,
+                                                    int rk,
+                                                    value_tyBM * valarr,
+                                                    unsigned len);
+extern struct datavectval_stBM *datavect_remove_BM (struct datavectval_stBM
+                                                    *dvec,
+                                                    int rk, unsigned len);
+
 extern const node_tyBM *datavect_to_node_BM (struct datavectval_stBM *dvec,
                                              const objectval_tyBM * obconn);
 static inline value_tyBM datavectnth_BM (const struct datavectval_stBM *dvec,
