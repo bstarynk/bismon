@@ -186,7 +186,13 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !(_3votvybaW1d_35YcL4p51kp |=basiclo_objswitch|
 !~ name (~ basiclo_objswitch
 ~)
-!@ 1506169023.51
+!@ 1507016202.65
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of objswitch statements"
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+~)
+
 !)_3votvybaW1d_35YcL4p51kp
 
 
@@ -194,7 +200,13 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !(_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
 !~ name (~ basiclo_return
 ~)
-!@ 1506169023.51
+!@ 1507016248.90
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of return statement"
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+~)
+
 !)_6dfdSwPGgR8_2EaBHYhuZ5G
 
 
@@ -202,7 +214,13 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !(_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 !~ name (~ basiclo_run
 ~)
-!@ 1506169023.51
+!@ 1507016383.35
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of run statement"
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+~)
+
 !)_4SHgzjNdlGo_1CxI9hBNDrC
 
 
