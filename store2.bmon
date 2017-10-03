@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 102 objects
+// for 112 objects
 // with 0 modules
 
 
@@ -274,10 +274,15 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !(_5SuHVsFWhDn_02X6Mh32emC |=bismon_function|
 !~ name (~ bismon_function
 ~)
-!@ 1507026825.30
+!@ 1507030591.77
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for functions already in bismon.h"
+!: _4rz1Bi4weGz_8Y03gU81cRL |=see|
+ { _1UKQqVj61xF_4VRIryDMmHP _20ZAQeICBGo_2yMovZAYFvM _2IKKQdVVAcB_6oxg5Tng8uK _3aavnAvDLd2_9JbORKE3B1k 
+ _4KF9OJNVSba_96RJF3rETrY _4SVbRxoB26K_51WExVpd75t _4VQLeU6mUyu_149lbQ2VWn6 
+_6bQLwLF3pc5_5gSAmlh5Nsx 
+ _77KCDNTnjZk_6GqQlTMeyee _7nef89IRr1g_9XXq6jm1Pgs }
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
 ~)
 
@@ -472,6 +477,14 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 
 
 
+!(_4KF9OJNVSba_96RJF3rETrY |=makeobj_BM|
+!~ name (~ makeobj_BM
+~)
+!@ 1507030591.77
+!)_4KF9OJNVSba_96RJF3rETrY
+
+
+
 !(_0Bl5ro9usp6_1Hll14QwC8f |=modgenob|
 !~ name (~ modgenob
 ~)
@@ -479,6 +492,70 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7T9OwSFlgov_0wVJaK1eZbn |=object| 
 !)_0Bl5ro9usp6_1Hll14QwC8f
+
+
+
+!(_77KCDNTnjZk_6GqQlTMeyee |=objappendcomp_BM|
+!~ name (~ objappendcomp_BM
+~)
+!@ 1507030591.77
+!)_77KCDNTnjZk_6GqQlTMeyee
+
+
+
+!(_1UKQqVj61xF_4VRIryDMmHP |=objclass_BM|
+!~ name (~ objclass_BM
+~)
+!@ 1507030591.77
+!)_1UKQqVj61xF_4VRIryDMmHP
+
+
+
+!(_3aavnAvDLd2_9JbORKE3B1k |=objgetattr_BM|
+!~ name (~ objgetattr_BM
+~)
+!@ 1507030591.77
+!)_3aavnAvDLd2_9JbORKE3B1k
+
+
+
+!(_4VQLeU6mUyu_149lbQ2VWn6 |=objgetcomp_BM|
+!~ name (~ objgetcomp_BM
+~)
+!@ 1507030591.77
+!)_4VQLeU6mUyu_149lbQ2VWn6
+
+
+
+!(_2IKKQdVVAcB_6oxg5Tng8uK |=objnbattrs_BM|
+!~ name (~ objnbattrs_BM
+~)
+!@ 1507030591.77
+!)_2IKKQdVVAcB_6oxg5Tng8uK
+
+
+
+!(_4SVbRxoB26K_51WExVpd75t |=objputattr_BM|
+!~ name (~ objputattr_BM
+~)
+!@ 1507030591.77
+!)_4SVbRxoB26K_51WExVpd75t
+
+
+
+!(_20ZAQeICBGo_2yMovZAYFvM |=objputclass_BM|
+!~ name (~ objputclass_BM
+~)
+!@ 1507030591.77
+!)_20ZAQeICBGo_2yMovZAYFvM
+
+
+
+!(_7nef89IRr1g_9XXq6jm1Pgs |=objputcomp_BM|
+!~ name (~ objputcomp_BM
+~)
+!@ 1507030591.77
+!)_7nef89IRr1g_9XXq6jm1Pgs
 
 
 
@@ -491,6 +568,14 @@ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
  % _8uFPIAUyvE6_36pUIgGwmbf ()
 !)_7LKvYvypCA4_2QefpJPlomi
+
+
+
+!(_6bQLwLF3pc5_5gSAmlh5Nsx |=objtouchnow_BM|
+!~ name (~ objtouchnow_BM
+~)
+!@ 1507030591.77
+!)_6bQLwLF3pc5_5gSAmlh5Nsx
 
 
 
