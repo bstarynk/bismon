@@ -21,6 +21,7 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
     constix_constants,
     constix_simple_routine_preparation,
     constix_body,
+    constix_bindings,
     constix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -28,7 +29,7 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
                  value_tyBM recv;
                  objectval_tyBM * modgenob;
                  objectval_tyBM * routprepob; value_tyBM prepvalset;
-                 anyassoc_tyBM * assocrout;
+                 anyassoc_tyBM * assocbind;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
   _.clos = clos;
@@ -40,7 +41,7 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
    ***/
   WEAKASSERT_BM (isnode_BM ((value_tyBM) constnod)
                  && nodewidth_BM ((value_tyBM) constnod) == constix__LAST
-                 && valhash_BM ((value_tyBM) constnod) == 1409862297);
+                 && valhash_BM ((value_tyBM) constnod) == 286038615);
   const objectval_tyBM *k_arguments =   //
     objectcast_BM (nodenthson_BM
                    ((const value_tyBM) constnod, constix_arguments));
@@ -59,6 +60,9 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   const objectval_tyBM *k_body =        //
     objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
                                   constix_body));
+  const objectval_tyBM *k_bindings =        //
+    objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
+                                  constix_bindings));
   // retrieve arguments
   _.recv = /*function object */ (arg1);
   _.modgenob = /*module generation object */ objectcast_BM (arg2);
@@ -73,6 +77,10 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   /// body: _36MhHxakHKT_1ZzV5Xoj5LX  
   /// assign _3jiDSyFdbdk_2PQpjqDkEUJ:
   _.routprepob = makeobj_BM ();
+  /// assign _0cBpCT3lEHS_338HjZpF4UE
+  _.assocbind = make_assoc_BM(10);
+  /// run _2hJWe55ydpv_5kaGdOUymFI
+  objputattr_BM(_.routprepob, k_bindings, _.assocbind);
 #warning incomplete  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP
   return NULL;
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */

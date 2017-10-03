@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 117 objects
+// for 121 objects
 // with 0 modules
 
 
@@ -30,6 +30,14 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "ctype for pointers to anyassoc_tyBM"
 !)_3JH05KgIzty_1K7IDyF43V2
+
+
+
+!(_3MHr03F06Xe_5FdCV6pp41N |=assocbind|
+!~ name (~ assocbind
+~)
+!@ 1507042685.83
+!)_3MHr03F06Xe_5FdCV6pp41N
 
 
 
@@ -278,6 +286,14 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 ~)
 
 !)_4Af5NOOf7Qe_7KQdGPoNdJ0
+
+
+
+!(_1zpi50AYid5_0j6it2DwVqm |=bindings|
+!~ name (~ bindings
+~)
+!@ 1507042418.81
+!)_1zpi50AYid5_0j6it2DwVqm
 
 
 
@@ -846,6 +862,18 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 
+!(_0cBpCT3lEHS_338HjZpF4UE
+!@ 1507042685.83
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _0aWpxE7aiWs_71KTgYdlifE ( _3MHr03F06Xe_5FdCV6pp41N |=assocbind|   * _9MVKIIUC3fl_5Yz7jotlCtv (  10))
+!# 2
+!& _3MHr03F06Xe_5FdCV6pp41N |=assocbind| 
+!&  * _9MVKIIUC3fl_5Yz7jotlCtv (  10)
+!)_0cBpCT3lEHS_338HjZpF4UE
+
+
+
 !(_0kUyX0U19K2_5mcH4RCaBl9
 !@ 1506581781.73
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
@@ -945,6 +973,17 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 
+!(_2hJWe55ydpv_5kaGdOUymFI
+!@ 1507043325.56
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _4RFtYFUdfau_7Vm5jZ4Wm8e (  * _4SVbRxoB26K_51WExVpd75t ( _4HkGfOQ5cRm_8BmwBXNzncR |=routprepob|   * _5DDSY1YgVZr_6dOU4tiBldk ( _1zpi50AYid5_0j6it2DwVqm |=bindings| ) _3MHr03F06Xe_5FdCV6pp41N |=assocbind| ))
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _4SVbRxoB26K_51WExVpd75t ( _4HkGfOQ5cRm_8BmwBXNzncR |=routprepob|   * _5DDSY1YgVZr_6dOU4tiBldk ( _1zpi50AYid5_0j6it2DwVqm |=bindings| ) _3MHr03F06Xe_5FdCV6pp41N |=assocbind| )
+!)_2hJWe55ydpv_5kaGdOUymFI
+
+
+
 !(_2qppG2LJu79_9ljkbLS0eFQ
 !@ 1504635278.05
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -954,12 +993,14 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 !(_36MhHxakHKT_1ZzV5Xoj5LX
-!@ 1507031002.27
+!@ 1507043325.56
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of prepare_routine:basiclo_function"
-!# 1
+!# 3
 !& _3jiDSyFdbdk_2PQpjqDkEUJ
+!& _0cBpCT3lEHS_338HjZpF4UE
+!& _2hJWe55ydpv_5kaGdOUymFI
 !)_36MhHxakHKT_1ZzV5Xoj5LX
 
 
@@ -1043,7 +1084,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 !(_5mnsT1wsdWs_2Qnqsf3wqaP
-!@ 1506925475.21
+!@ 1507042418.82
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method for prepare_routine:basiclo_function"
@@ -1056,7 +1097,8 @@ _36MhHxakHKT_1ZzV5Xoj5LX
  _2U8Sj78DMbl_5eerKpaJsNq |=block|  _24sSVIADeHm_0Sx34wQfG7W |=locals| 
  _5l2zSKsFaVm_9zs6qDOP87i |=constants|  _80060zKi6Un_3isCStegT8A |=simple_routine_preparation| 
  
- _7DQyvJFMOrC_9IfC3CtYknn |=body| ) ~)
+ _7DQyvJFMOrC_9IfC3CtYknn |=body|  _1zpi50AYid5_0j6it2DwVqm |=bindings| 
+) ~)
 
 !)_5mnsT1wsdWs_2Qnqsf3wqaP
 
