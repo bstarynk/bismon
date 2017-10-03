@@ -566,6 +566,13 @@ assoc_nbkeys_BM (const anyassoc_tyBM * assoc)
   return 0;
 }                               /* end assoc_nbkeys_BM */
 
+anyassoc_tyBM *
+make_assoc_BM (unsigned len)
+{
+  anyassoc_tyBM *res = NULL;
+  assoc_reorganize_BM (&res, len);
+  return res;
+}                               /* end make_assoc_BM */
 
 unsigned
 datavectlen_BM (const struct datavectval_stBM *dvec)

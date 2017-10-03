@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 112 objects
+// for 117 objects
 // with 0 modules
 
 
@@ -20,6 +20,16 @@
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
  % _1Geqz0vsOKB_2Dpdb1LDu23 ()
 !)_0aWpxE7aiWs_71KTgYdlifE
+
+
+
+!(_3JH05KgIzty_1K7IDyF43V2 |=assoc|
+!~ name (~ assoc
+~)
+!@ 1507032095.47
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "ctype for pointers to anyassoc_tyBM"
+!)_3JH05KgIzty_1K7IDyF43V2
 
 
 
@@ -477,6 +487,23 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 
 
 
+!(_9MVKIIUC3fl_5Yz7jotlCtv |=make_assoc_BM|
+!~ name (~ make_assoc_BM
+~)
+!@ 1507032276.14
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _98LwKjUO4P2_5CU6mAoKUxQ ]
+!: _4rz1Bi4weGz_8Y03gU81cRL |=see|
+ { _1UKQqVj61xF_4VRIryDMmHP _20ZAQeICBGo_2yMovZAYFvM _2IKKQdVVAcB_6oxg5Tng8uK _3aavnAvDLd2_9JbORKE3B1k 
+ _4KF9OJNVSba_96RJF3rETrY _4SVbRxoB26K_51WExVpd75t _4VQLeU6mUyu_149lbQ2VWn6 
+_6bQLwLF3pc5_5gSAmlh5Nsx 
+ _77KCDNTnjZk_6GqQlTMeyee _7nef89IRr1g_9XXq6jm1Pgs _9MVKIIUC3fl_5Yz7jotlCtv }
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3JH05KgIzty_1K7IDyF43V2 |=assoc| 
+!)_9MVKIIUC3fl_5Yz7jotlCtv
+
+
+
 !(_4KF9OJNVSba_96RJF3rETrY |=makeobj_BM|
 !~ name (~ makeobj_BM
 ~)
@@ -701,6 +728,14 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 
+!(_4HkGfOQ5cRm_8BmwBXNzncR |=routprepob|
+!~ name (~ routprepob
+~)
+!@ 1507031002.27
+!)_4HkGfOQ5cRm_8BmwBXNzncR
+
+
+
 !(_4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
 !~ name (~ run
 ~)
@@ -777,6 +812,14 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 !@ 1505800253.23
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !)_2ZCtswobVlU_3xPTbaxXBBg
+
+
+
+!(_98LwKjUO4P2_5CU6mAoKUxQ |=ulen|
+!~ name (~ ulen
+~)
+!@ 1507032173.70
+!)_98LwKjUO4P2_5CU6mAoKUxQ
 
 
 
@@ -916,13 +959,25 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 !(_36MhHxakHKT_1ZzV5Xoj5LX
-!@ 1506925848.45
+!@ 1507031002.27
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of prepare_routine:basiclo_function"
 !# 1
-!& __
+!& _3jiDSyFdbdk_2PQpjqDkEUJ
 !)_36MhHxakHKT_1ZzV5Xoj5LX
+
+
+
+!(_3jiDSyFdbdk_2PQpjqDkEUJ
+!@ 1507031002.27
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _0aWpxE7aiWs_71KTgYdlifE ( _4HkGfOQ5cRm_8BmwBXNzncR |=routprepob|   * _4KF9OJNVSba_96RJF3rETrY ())
+!# 2
+!& _4HkGfOQ5cRm_8BmwBXNzncR |=routprepob| 
+!&  * _4KF9OJNVSba_96RJF3rETrY ()
+!)_3jiDSyFdbdk_2PQpjqDkEUJ
 
 
 

@@ -319,7 +319,7 @@ extern void assocbucketgckeep_BM (struct garbcoll_stBM *gc,
 static inline unsigned assoc_nbkeys_BM (const anyassoc_tyBM * assoc);
 
 extern void assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap);
-
+static inline anyassoc_tyBM *make_assoc_BM (unsigned ulen);
 extern const setval_tyBM *assoc_setattrs_BM (const anyassoc_tyBM * assoc);
 extern value_tyBM assoc_getattr_BM (const anyassoc_tyBM * assoc,
                                     const objectval_tyBM * obattr);

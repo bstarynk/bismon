@@ -25,8 +25,10 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 value_tyBM recv; value_tyBM modgenob;
-                 value_tyBM prepvalset;
+                 value_tyBM recv;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob; value_tyBM prepvalset;
+                 anyassoc_tyBM * assocrout;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
   _.clos = clos;
@@ -61,7 +63,6 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   _.recv = /*function object */ (arg1);
   _.modgenob = /*module generation object */ objectcast_BM (arg2);
   _.prepvalset = /* set of routines */ setcast_BM (arg3);
-  ///
   DBGPRINTF_BM
     ("start prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP recv=%s",
      objectdbg_BM (_.recv));
@@ -69,7 +70,9 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
     ("prepare_routine:basiclo_function modgenob=%s is a %s\n",
      objectdbg_BM (_.modgenob), objectdbg1_BM (objclass_BM (_.modgenob)));
   ////
-  /// body: _36MhHxakHKT_1ZzV5Xoj5LX
+  /// body: _36MhHxakHKT_1ZzV5Xoj5LX  
+  /// assign _3jiDSyFdbdk_2PQpjqDkEUJ:
+  _.routprepob = makeobj_BM ();
 #warning incomplete  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP
   return NULL;
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */
