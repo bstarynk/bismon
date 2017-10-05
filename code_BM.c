@@ -2410,9 +2410,10 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
   /*** constnod is
    * const (basiclo_run run)
    ***/
-  assert (isnode_BM ((const value_tyBM) constnod)
-          && nodewidth_BM ((const value_tyBM) constnod) >= constix__LAST
-          && valhash_BM ((const value_tyBM) constnod) == 2311989027);
+  WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnod)
+                 && nodewidth_BM ((const value_tyBM) constnod) >=
+                 constix__LAST
+                 && valhash_BM ((const value_tyBM) constnod) == 2311989027);
   const objectval_tyBM *k_basiclo_run =
     objectcast_BM (nodenthson_BM
                    ((const value_tyBM) constnod, constix_basiclo_run));
@@ -2464,3 +2465,73 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
   DBGPRINTF_BM ("end readmacro:run resobj %s", objectdbg_BM (_.resobj));
   return _.resobj;
 }                               /* end ROUTINE   _7sg0DjYTA8n_66vhff9SgXH run:readmacro */
+
+
+
+///
+// readmacro routine for citeration-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // node
+ const value_tyBM arg2,         // lineno
+ const value_tyBM arg3,         // colpos
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  enum
+  {
+    constix_basiclo_citeration,
+    constix_basiclo_citerator,
+    constix__LAST
+  };
+  enum
+  {
+    closix_curciter,
+    closix__LAST
+  };
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const closure_tyBM * clos; const node_tyBM * rnodv;
+                 objectval_tyBM * resobj; objectval_tyBM * resclass;
+                 objectval_tyBM * inv; value_tyBM curson; value_tyBM runexpv;
+                 const struct parser_stBM *pars;
+    );
+  _.clos = clos;
+  _.rnodv = arg1;
+  if (!isnode_BM (arg1))
+    return NULL;
+  int lineno = getint_BM (arg2);
+  int colpos = getint_BM (arg3);
+  unsigned nodwidth = nodewidth_BM ((const value_tyBM) _.rnodv);
+  _.resobj = NULL;
+  _.pars = parsercast_BM (treenthson_BM ((const value_tyBM) restargs, 0));
+  DBGPRINTF_BM ("start readmacro citeration _42gEKfF4qca_6gGwxSFC1FO"
+                " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
+
+  const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (closconn != NULL);
+  WEAKASSERT_BM (closurewidth_BM ((const value_tyBM) clos) >= closix__LAST);
+  objectval_tyBM *clos_curciter =       //
+    objectcast_BM (closurenthson_BM ((const value_tyBM) clos,
+                                     closix_curciter));
+  WEAKASSERT_BM (isobject_BM (clos_curciter));
+  const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
+  /*** constnod is
+   * const (basiclo_citeration basiclo_citerator)
+   ***/
+  WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnod)
+                 && nodewidth_BM ((const value_tyBM) constnod) >=
+                 constix__LAST
+                 && valhash_BM ((const value_tyBM) constnod) == 2989126015);
+  const objectval_tyBM *k_basiclo_citeration =
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_basiclo_citeration));
+  const objectval_tyBM *k_basiclo_citerator =
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_basiclo_citerator));
+
+  DBGPRINTF_BM ("end readmacro citeration resobj %s",
+                objectdbg_BM (_.resobj));
+  return _.resobj;
+}                               /* end routine readmacro citeration _42gEKfF4qca_6gGwxSFC1FO */
