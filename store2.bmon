@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 122 objects
+// for 124 objects
 // with 0 modules
 
 
@@ -81,13 +81,29 @@
 
 
 
+!(_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_citeration|
+!~ name (~ basiclo_citeration
+~)
+!@ 1507195660.79
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of citerations"
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+~)
+
+!)_4GJJnvyrLyW_5mhopCYvh8h
+
+
+
 !(_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_citerator|
 !~ name (~ basiclo_citerator
 ~)
-!@ 1507194619.62
+!@ 1507195237.35
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for citerator things"
+!: _4rz1Bi4weGz_8Y03gU81cRL |=see|
+ { _42gEKfF4qca_6gGwxSFC1FO }
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
 ~)
 
@@ -1052,6 +1068,19 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a set"
 !)_3Tc3E4uo2p5_4EXWCPwCR5b
+
+
+
+!(_42gEKfF4qca_6gGwxSFC1FO
+!@ 1507195492.15
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "readmacro routine for citeration-s, the closed value is a basiclo_citerator"
+
+!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _4GJJnvyrLyW_5mhopCYvh8h |=basiclo_citeration| 
+) ~)
+
+!)_42gEKfF4qca_6gGwxSFC1FO
 
 
 
