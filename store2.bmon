@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 121 objects
+// for 122 objects
 // with 0 modules
 
 
@@ -78,6 +78,20 @@
 ~)
 
 !)_9KIeH9wMRCV_12Gy2xILgpG
+
+
+
+!(_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_citerator|
+!~ name (~ basiclo_citerator
+~)
+!@ 1507194619.62
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for citerator things"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+
+!)_9pJUJ57N6RL_2nsXFzR6S3E
 
 
 
