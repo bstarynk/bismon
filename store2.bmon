@@ -81,33 +81,33 @@
 
 
 
-!(_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_citeration|
-!~ name (~ basiclo_citeration
-~)
-!@ 1507195660.79
-!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "class of citerations"
-!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
-~)
-
-!)_4GJJnvyrLyW_5mhopCYvh8h
-
-
-
-!(_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_citerator|
-!~ name (~ basiclo_citerator
+!(_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!~ name (~ basiclo_cexpander
 ~)
 !@ 1507195237.35
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "class for citerator things"
+ "class for cexpander things"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _42gEKfF4qca_6gGwxSFC1FO }
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
 ~)
 
 !)_9pJUJ57N6RL_2nsXFzR6S3E
+
+
+
+!(_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!~ name (~ basiclo_cexpansion
+~)
+!@ 1507195660.79
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of cexpansions"
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+~)
+
+!)_4GJJnvyrLyW_5mhopCYvh8h
 
 
 
@@ -1075,10 +1075,10 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 !@ 1507196913.55
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "readmacro routine for citeration-s, the closed value is a basiclo_citerator"
+ "readmacro routine for cexpansion-s, the closed value is a basiclo_cexpander"
 
-!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _4GJJnvyrLyW_5mhopCYvh8h |=basiclo_citeration| 
- _9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_citerator| ) ~)
+!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion| 
+ _9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander| ) ~)
 
 !)_42gEKfF4qca_6gGwxSFC1FO
 

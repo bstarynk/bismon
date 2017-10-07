@@ -2469,7 +2469,7 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
 
 
 ///
-// readmacro routine for citeration-s
+// readmacro routine for cexpansion-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO);
 
 value_tyBM
@@ -2482,13 +2482,13 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
 {
   enum
   {
-    constix_basiclo_citeration,
-    constix_basiclo_citerator,
+    constix_basiclo_cexpansion,
+    constix_basiclo_cexpander,
     constix__LAST
   };
   enum
   {
-    closix_curciter,
+    closix_curcexp,
     closix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -2506,32 +2506,34 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
   unsigned nodwidth = nodewidth_BM ((const value_tyBM) _.rnodv);
   _.resobj = NULL;
   _.pars = parsercast_BM (treenthson_BM ((const value_tyBM) restargs, 0));
-  DBGPRINTF_BM ("start readmacro citeration _42gEKfF4qca_6gGwxSFC1FO"
+  DBGPRINTF_BM ("start readmacro cexpansion _42gEKfF4qca_6gGwxSFC1FO"
                 " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
 
   const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
   assert (closconn != NULL);
   WEAKASSERT_BM (closurewidth_BM ((const value_tyBM) clos) >= closix__LAST);
-  objectval_tyBM *clos_curciter =       //
+  objectval_tyBM *clos_curcexp =       //
     objectcast_BM (closurenthson_BM ((const value_tyBM) clos,
-                                     closix_curciter));
-  WEAKASSERT_BM (isobject_BM (clos_curciter));
+                                     closix_curcexp));
   const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
   /*** constnod is
-   * const (basiclo_citeration basiclo_citerator)
+   * const (basiclo_cexpansion basiclo_cexpander)
    ***/
   WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnod)
                  && nodewidth_BM ((const value_tyBM) constnod) >=
                  constix__LAST
                  && valhash_BM ((const value_tyBM) constnod) == 2989126015);
-  const objectval_tyBM *k_basiclo_citeration =
+  const objectval_tyBM *k_basiclo_cexpansion =
     objectcast_BM (nodenthson_BM
-                   ((const value_tyBM) constnod, constix_basiclo_citeration));
-  const objectval_tyBM *k_basiclo_citerator =
+                   ((const value_tyBM) constnod, constix_basiclo_cexpansion));
+  const objectval_tyBM *k_basiclo_cexpander =
     objectcast_BM (nodenthson_BM
-                   ((const value_tyBM) constnod, constix_basiclo_citerator));
+                   ((const value_tyBM) constnod, constix_basiclo_cexpander));
 
-  DBGPRINTF_BM ("end readmacro citeration resobj %s",
+  if (!isobject_BM(clos_curcexp)
+      || !objectisinstance_BM(clos_curcexp, k_basiclo_cexpander)) {
+  };
+  DBGPRINTF_BM ("end readmacro cexpansion resobj %s",
                 objectdbg_BM (_.resobj));
   return _.resobj;
 }                               /* end routine readmacro citeration _42gEKfF4qca_6gGwxSFC1FO */
