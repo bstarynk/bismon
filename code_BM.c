@@ -2512,7 +2512,7 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
   const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
   assert (closconn != NULL);
   WEAKASSERT_BM (closurewidth_BM ((const value_tyBM) clos) >= closix__LAST);
-  objectval_tyBM *clos_curcexp =       //
+  objectval_tyBM *clos_curcexp =        //
     objectcast_BM (closurenthson_BM ((const value_tyBM) clos,
                                      closix_curcexp));
   const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
@@ -2529,10 +2529,17 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
   const objectval_tyBM *k_basiclo_cexpander =
     objectcast_BM (nodenthson_BM
                    ((const value_tyBM) constnod, constix_basiclo_cexpander));
-
-  if (!isobject_BM(clos_curcexp)
-      || !objectisinstance_BM(clos_curcexp, k_basiclo_cexpander)) {
-  };
+  if (!isobject_BM (clos_curcexp)
+      || !objectisinstance_BM (clos_curcexp, k_basiclo_cexpander))
+    {
+      if (_.pars)
+        parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
+                              colpos,
+                              "bad cexpander for cexpansion readmacro");
+      return NULL;
+    };
+  DBGPRINTF_BM ("readmacro cexpansion curexp %s",
+                objectdbg_BM (clos_curcexp));
   DBGPRINTF_BM ("end readmacro cexpansion resobj %s",
                 objectdbg_BM (_.resobj));
   return _.resobj;
