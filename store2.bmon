@@ -1,6 +1,14 @@
 // generated file store2.bmon
-// for 124 objects
+// for 128 objects
 // with 0 modules
+
+
+!(_18zqwDaGqbb_0ZGuMPMD30d |=args|
+!~ name (~ args
+~)
+!@ 1507545307.30
+!)_18zqwDaGqbb_0ZGuMPMD30d
+
 
 
 !(_0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
@@ -1023,14 +1031,17 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 !(_36MhHxakHKT_1ZzV5Xoj5LX
-!@ 1507043325.56
+!@ 1507545418.76
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of prepare_routine:basiclo_function"
-!# 3
+!# 6
 !& _3jiDSyFdbdk_2PQpjqDkEUJ
 !& _0cBpCT3lEHS_338HjZpF4UE
 !& _2hJWe55ydpv_5kaGdOUymFI
+!& _81OqmVDnoU8_042MljK0DSU
+!& _3w09vsmHdSI_9cjSQyYUsMD
+!& _9YS82HkgghD_71BLsDAKRfg
 !)_36MhHxakHKT_1ZzV5Xoj5LX
 
 
@@ -1060,6 +1071,18 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value an set"
 !)_3rne4qbpnV9_0pywzeJp3Qr
+
+
+
+!(_3w09vsmHdSI_9cjSQyYUsMD
+!@ 1507545404.39
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _0aWpxE7aiWs_71KTgYdlifE ( _18zqwDaGqbb_0ZGuMPMD30d |=args|   * _3aavnAvDLd2_9JbORKE3B1k ( _0DRkw9jbus3_4zHggHVajYB |=recv|   * _5DDSY1YgVZr_6dOU4tiBldk ( _0jFqaPPHgYH_5JpjOPxQ67p |=arguments| )))
+!# 2
+!& _18zqwDaGqbb_0ZGuMPMD30d |=args| 
+!&  * _3aavnAvDLd2_9JbORKE3B1k ( _0DRkw9jbus3_4zHggHVajYB |=recv|   * _5DDSY1YgVZr_6dOU4tiBldk ( _0jFqaPPHgYH_5JpjOPxQ67p |=arguments| ))
+!)_3w09vsmHdSI_9cjSQyYUsMD
 
 
 
@@ -1303,6 +1326,18 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 
+!(_81OqmVDnoU8_042MljK0DSU
+!@ 1507545388.02
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _0aWpxE7aiWs_71KTgYdlifE ( _18zqwDaGqbb_0ZGuMPMD30d |=args|   * _3aavnAvDLd2_9JbORKE3B1k ( _0DRkw9jbus3_4zHggHVajYB |=recv|   * _5DDSY1YgVZr_6dOU4tiBldk ( _0jFqaPPHgYH_5JpjOPxQ67p |=arguments| )))
+!# 2
+!& _18zqwDaGqbb_0ZGuMPMD30d |=args| 
+!&  * _3aavnAvDLd2_9JbORKE3B1k ( _0DRkw9jbus3_4zHggHVajYB |=recv|   * _5DDSY1YgVZr_6dOU4tiBldk ( _0jFqaPPHgYH_5JpjOPxQ67p |=arguments| ))
+!)_81OqmVDnoU8_042MljK0DSU
+
+
+
 !(_8uFPIAUyvE6_36pUIgGwmbf
 !@ 1506357177.83
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
@@ -1353,6 +1388,18 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_scan a basiclo_function"
 !)_9UhDZeDdg2r_55lUqYDPUiF
+
+
+
+!(_9YS82HkgghD_71BLsDAKRfg
+!@ 1507545418.76
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _0aWpxE7aiWs_71KTgYdlifE ( _18zqwDaGqbb_0ZGuMPMD30d |=args|   * _3aavnAvDLd2_9JbORKE3B1k ( _0DRkw9jbus3_4zHggHVajYB |=recv|   * _5DDSY1YgVZr_6dOU4tiBldk ( _0jFqaPPHgYH_5JpjOPxQ67p |=arguments| )))
+!# 2
+!& _18zqwDaGqbb_0ZGuMPMD30d |=args| 
+!&  * _3aavnAvDLd2_9JbORKE3B1k ( _0DRkw9jbus3_4zHggHVajYB |=recv|   * _5DDSY1YgVZr_6dOU4tiBldk ( _0jFqaPPHgYH_5JpjOPxQ67p |=arguments| ))
+!)_9YS82HkgghD_71BLsDAKRfg
 
 
 

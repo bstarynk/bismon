@@ -26,7 +26,7 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 value_tyBM recv; objectval_tyBM * modgenob;
+                 value_tyBM recv; objectval_tyBM * modgenob; value_tyBM args;
                  objectval_tyBM * routprepob; value_tyBM prepvalset;
                  anyassoc_tyBM * assocbind;
     );
@@ -80,6 +80,8 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   _.assocbind = make_assoc_BM (10);
   /// run _2hJWe55ydpv_5kaGdOUymFI:
   objputattr_BM (_.routprepob, k_bindings, _.assocbind);
+  /// assign _9YS82HkgghD_71BLsDAKRfg
+  _.args = objgetattr_BM (_.recv, k_arguments);
 #warning incomplete  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP
   return NULL;
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */
