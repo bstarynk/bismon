@@ -2484,6 +2484,9 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
   {
     constix_basiclo_cexpansion,
     constix_basiclo_cexpander,
+    constix_results,
+    constix_arguments,
+    constix_body,
     constix__LAST
   };
   enum
@@ -2494,7 +2497,9 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos; const node_tyBM * rnodv;
                  objectval_tyBM * resobj; objectval_tyBM * resclass;
-                 objectval_tyBM * inv; value_tyBM curson; value_tyBM runexpv;
+                 objectval_tyBM * inv;
+                 value_tyBM curson;
+                 value_tyBM runexpv; value_tyBM argsv; value_tyBM resultsv;
                  const struct parser_stBM *pars;
     );
   _.clos = clos;
@@ -2517,18 +2522,31 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
                                      closix_curcexp));
   const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
   /*** constnod is
-   * const (basiclo_cexpansion basiclo_cexpander)
+   * const (basiclo_cexpansion basiclo_cexpander results arguments body)
    ***/
   WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnod)
                  && nodewidth_BM ((const value_tyBM) constnod) >=
                  constix__LAST
-                 && valhash_BM ((const value_tyBM) constnod) == 2989126015);
+                 && valhash_BM ((const value_tyBM) constnod) == 1284771844);
   const objectval_tyBM *k_basiclo_cexpansion =
     objectcast_BM (nodenthson_BM
                    ((const value_tyBM) constnod, constix_basiclo_cexpansion));
+  WEAKASSERT_BM (k_basiclo_cexpansion != NULL);
   const objectval_tyBM *k_basiclo_cexpander =
     objectcast_BM (nodenthson_BM
                    ((const value_tyBM) constnod, constix_basiclo_cexpander));
+  WEAKASSERT_BM (k_basiclo_cexpander != NULL);
+  const objectval_tyBM *k_results =
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_results));
+  WEAKASSERT_BM (k_results != NULL);
+  const objectval_tyBM *k_arguments =
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_arguments));
+  WEAKASSERT_BM (k_arguments != NULL);
+  const objectval_tyBM *k_body =
+    objectcast_BM (nodenthson_BM ((const value_tyBM) constnod, constix_body));
+  WEAKASSERT_BM (k_body != NULL);
   if (!isobject_BM (clos_curcexp)
       || !objectisinstance_BM (clos_curcexp, k_basiclo_cexpander))
     {
@@ -2538,8 +2556,16 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
                               "bad cexpander for cexpansion readmacro");
       return NULL;
     };
-  DBGPRINTF_BM ("readmacro cexpansion curexp %s",
-                objectdbg_BM (clos_curcexp));
+  _.resultsv = objgetattr_BM (_.recv, k_results);
+  _.argsv = objgetattr_BM (_.recv, k_arguments);
+  int nbresults =               //
+    istuple_BM (_.resultsv) ? tuplesize_BM (_.resultsv) :
+    isobject_BM (_.resultsv) ? 1 : 0;
+  int nbargs =                  //
+    istuple_BM (_.argsv) ? tuplesize_BM (_.argsv) :
+    isobject_BM (_.argsv) ? 1 : 0;
+  DBGPRINTF_BM ("readmacro cexpansion curexp %s nbresults#%d nbargs#%d",
+                objectdbg_BM (clos_curcexp), nbresults, nbargs);
   DBGPRINTF_BM ("end readmacro cexpansion resobj %s",
                 objectdbg_BM (_.resobj));
   return _.resobj;

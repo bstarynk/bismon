@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 128 objects
+// for 129 objects
 // with 0 modules
 
 
@@ -765,6 +765,14 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 
+!(_5ve5gbSjN0r_1n61nNRPtnN |=results|
+!~ name (~ results
+~)
+!@ 1507549421.72
+!)_5ve5gbSjN0r_1n61nNRPtnN
+
+
+
 !(_2DH0ucElTgh_62vxjxLcfev |=return|
 !~ name (~ return
 ~)
@@ -1095,13 +1103,15 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 !(_42gEKfF4qca_6gGwxSFC1FO
-!@ 1507196913.55
+!@ 1507549421.72
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "readmacro routine for cexpansion-s, the closed value is a basiclo_cexpander"
 
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion| 
- _9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander| ) ~)
+ _9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|  _5ve5gbSjN0r_1n61nNRPtnN |=results| 
+ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|  _7DQyvJFMOrC_9IfC3CtYknn |=body| 
+) ~)
 
 !)_42gEKfF4qca_6gGwxSFC1FO
 
