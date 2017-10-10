@@ -2496,11 +2496,13 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
     closix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos; const node_tyBM * rnodv;
-                 objectval_tyBM * resobj;
+                 const closure_tyBM * clos;
+                 const node_tyBM * rnodv; objectval_tyBM * resobj;
                  objectval_tyBM * resclass; objectval_tyBM * inv;
                  value_tyBM curson;
-                 value_tyBM runexpv; value_tyBM argsv; value_tyBM resultsv;
+                 value_tyBM runexpv;
+                 value_tyBM argsv;
+                 value_tyBM resultsv; value_tyBM tupresultsv;
                  const struct parser_stBM *pars;
     );
   _.clos = clos;
@@ -2596,10 +2598,43 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
     {
       if (_.pars)
         parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
-                              colpos, "too short %u %s cexpansion readmacro",
+                              colpos,
+                              "too short %s cexpansion (%u) readmacro",
                               objectdbg_BM (clos_curcexp), nodwidth);
       return NULL;
     }
+  if (!_.resclass)
+    _.resclass = (objectval_tyBM *) k_basiclo_cexpansion;
+  if (nbresults > 0)
+    {
+      for (int ix = 0; ix < nbresults; ix++)
+        {
+          _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, startix + ix);
+          if (!isobject_BM (_.curson))
+            {
+              if (_.pars)
+                parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
+                                      colpos,
+                                      "non-object result#%d for cexpansion %s readmacro",
+                                      ix, objectdbg_BM (clos_curcexp));
+              return NULL;
+            }
+        }
+    }
+  if (!_.resobj)
+    {
+      _.resobj = makeobj_BM ();
+      objputspacenum_BM (_.resobj, GlobalSp_BM);
+    };
+  objresetcomps_BM (_.resobj, 1 + nodwidth - nbresults + nbargs);
+  objresetattrs_BM (_.resobj, 5);
+  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  if (nbresults > 0)
+    {
+      // _.tupresultsv = maketuple_BM ();
+    }
+  objputclass_BM (_.resobj, _.resclass);
+  objtouchnow_BM (_.resobj);
 #warning cexpansion readmacro incomplete
   // should create the resobj and fill it
   DBGPRINTF_BM ("end readmacro cexpansion resobj %s",
