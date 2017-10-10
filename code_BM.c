@@ -2496,13 +2496,12 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
     closix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos;
-                 const node_tyBM * rnodv; objectval_tyBM * resobj;
+                 const closure_tyBM * clos; const node_tyBM * rnodv;
+                 objectval_tyBM * resobj;
                  objectval_tyBM * resclass; objectval_tyBM * inv;
                  value_tyBM curson;
-                 value_tyBM runexpv;
-                 value_tyBM argsv;
-                 value_tyBM resultsv; value_tyBM tupresultsv;
+                 value_tyBM runexpv; value_tyBM argsv; value_tyBM resultsv;
+                 value_tyBM tupresultsv; value_tyBM nodargsv;
                  const struct parser_stBM *pars;
     );
   _.clos = clos;
@@ -2631,12 +2630,48 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
   objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   if (nbresults > 0)
     {
-      // _.tupresultsv = maketuple_BM ();
+      objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+      objectval_tyBM **arr =
+        (nbresults < TINYSIZE_BM) ? tinyarr
+        : calloc (nbresults, sizeof (objectval_tyBM *));
+      if (!arr)
+        FATAL_BM ("failed to allocate array of %d results", nbresults);
+
+      for (int ix = 0; ix < nbresults; ix++)
+        {
+          _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, startix + ix);
+          arr[ix] = objectcast_BM (_.curson);
+        };
+      _.tupresultsv = maketuple_BM (nbresults, arr);
+      if (arr != tinyarr)
+        free (arr), arr = NULL;
+      objputattr_BM (_.resobj, k_results, _.tupresultsv);
     }
+  else
+    objremoveattr_BM (_.resobj, k_results);
+  if (nbargs > 0)
+    {
+      value_tyBM tinyarrv[TINYSIZE_BM] = { };
+      value_tyBM *arrv =
+        (nbargs < TINYSIZE_BM) ? tinyarrv
+        : calloc (nbargs, sizeof (value_tyBM));
+      if (!arrv)
+        FATAL_BM ("failed to allocate array of %d arguments", nbargs);
+      for (int ix = 0; ix < nbargs; ix++)
+        {
+          _.curson =
+            nodenthson_BM ((const value_tyBM) _.rnodv,
+                           startix + nbresults + ix);
+          arrv[ix] = _.curson;
+        };
+      _.nodargsv = makenode_BM (k_arguments, nbargs, arrv);
+      objputattr_BM (_.resobj, k_arguments, _.nodargsv);
+    }
+  else
+    objremoveattr_BM (_.resobj, k_arguments);
   objputclass_BM (_.resobj, _.resclass);
   objtouchnow_BM (_.resobj);
-#warning cexpansion readmacro incomplete
-  // should create the resobj and fill it
+#warning should append the body in cexpansion readmacro
   DBGPRINTF_BM ("end readmacro cexpansion resobj %s",
                 objectdbg_BM (_.resobj));
   return _.resobj;
