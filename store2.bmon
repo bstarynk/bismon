@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 130 objects
+// for 133 objects
 // with 0 modules
 
 
@@ -42,6 +42,14 @@
 ~)
 
 !)_3JH05KgIzty_1K7IDyF43V2
+
+
+
+!(_6ZQ05nCv3Ys_8LA6B5LkZgm |=assoc_object|
+!~ name (~ assoc_object
+~)
+!@ 1507896468.08
+!)_6ZQ05nCv3Ys_8LA6B5LkZgm
 
 
 
@@ -503,6 +511,20 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 
 
 
+!(_8c9otZ4pwR6_55k81qyyYV2 |=hset_object|
+!~ name (~ hset_object
+~)
+!@ 1507896524.40
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for objects with hashed set data"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+
+!)_8c9otZ4pwR6_55k81qyyYV2
+
+
+
 !(_75gnoii3mMp_41wgHkvJVyN |=init_class|
 !~ name (~ init_class
 ~)
@@ -889,6 +911,14 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 ~)
 !@ 1507032173.70
 !)_98LwKjUO4P2_5CU6mAoKUxQ
+
+
+
+!(_0Ie11LN3K5q_0mcL2jRBwgk |=vector_object|
+!~ name (~ vector_object
+~)
+!@ 1507896488.94
+!)_0Ie11LN3K5q_0mcL2jRBwgk
 
 
 
