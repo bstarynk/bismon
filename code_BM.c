@@ -2496,8 +2496,8 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
     closix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos; const node_tyBM * rnodv;
-                 objectval_tyBM * resobj;
+                 const closure_tyBM * clos;
+                 const node_tyBM * rnodv; objectval_tyBM * resobj;
                  objectval_tyBM * resclass; objectval_tyBM * inv;
                  value_tyBM curson;
                  value_tyBM runexpv; value_tyBM argsv; value_tyBM resultsv;
@@ -2620,6 +2620,19 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
             }
         }
     }
+  for (int ix = startix + nbresults + nbargs; ix < (int) nodwidth; ix++)
+    {
+      _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
+      if (!isobject_BM (_.curson))
+        {
+          if (_.pars)
+            parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
+                                  colpos,
+                                  "non-object body component#%d for cexpansion %s readmacro",
+                                  ix, objectdbg_BM (clos_curcexp));
+          return NULL;
+        }
+    }
   if (!_.resobj)
     {
       _.resobj = makeobj_BM ();
@@ -2642,7 +2655,7 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
           _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, startix + ix);
           arr[ix] = objectcast_BM (_.curson);
         };
-      _.tupresultsv = maketuple_BM (nbresults, arr);
+      _.tupresultsv = (value_tyBM) maketuple_BM (arr, nbresults);
       if (arr != tinyarr)
         free (arr), arr = NULL;
       objputattr_BM (_.resobj, k_results, _.tupresultsv);
@@ -2664,14 +2677,21 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
                            startix + nbresults + ix);
           arrv[ix] = _.curson;
         };
-      _.nodargsv = makenode_BM (k_arguments, nbargs, arrv);
+      _.nodargsv = (value_tyBM) makenode_BM (k_arguments, nbargs, arrv);
+      if (arrv != tinyarrv)
+        free (arrv);
       objputattr_BM (_.resobj, k_arguments, _.nodargsv);
     }
   else
     objremoveattr_BM (_.resobj, k_arguments);
+  for (int ix = startix + nbresults + nbargs; ix < (int) nodwidth; ix++)
+    {
+      _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
+      assert (isobject_BM (_.curson));
+      objappendcomp_BM (_.resobj, _.curson);
+    }
   objputclass_BM (_.resobj, _.resclass);
   objtouchnow_BM (_.resobj);
-#warning should append the body in cexpansion readmacro
   DBGPRINTF_BM ("end readmacro cexpansion resobj %s",
                 objectdbg_BM (_.resobj));
   return _.resobj;
