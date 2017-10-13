@@ -607,6 +607,138 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
 }                               /* end ROUTINE _9UhDZeDdg2r_55lUqYDPUiF */
 
 
+/// for todo_send closures 
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9mdRnBqdqf5_9UvgSFA7wIY);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_9mdRnBqdqf5_9UvgSFA7wIY)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1 __attribute__ ((unused)),
+const value_tyBM arg2 __attribute__ ((unused)),
+const value_tyBM arg3 __attribute__ ((unused)),
+const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  enum
+  { closix_ldobj,
+    closix_obsel,
+    closix__REST
+  };
+  assert (isclosure_BM ((const value_tyBM) clos)
+          && closurewidth_BM ((const value_tyBM) clos) >= closix__REST);
+  unsigned wclos = closurewidth_BM ((const value_tyBM) clos);
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * ldobj;
+                 objectval_tyBM * obsel;
+    );
+  _.ldobj =
+    objectcast_BM (closurenthson_BM ((const value_tyBM) clos, closix_ldobj));
+  _.obsel =
+    objectcast_BM (closurenthson_BM ((const value_tyBM) clos, closix_obsel));
+  const value_tyBM *args = clos->nodt_sons + closix__REST;
+  unsigned nbargs = wclos - closix__REST;
+  switch (nbargs)
+    {
+    case 0:
+      return send0_BM (_.ldobj, _.obsel, (struct stackframe_stBM *) &_);
+    case 1:
+      return send1_BM (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
+                       args[0]);
+    case 2:
+      return send2_BM (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
+                       args[0], args[1]);
+    case 3:
+      return send3_BM (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
+                       args[0], args[1], args[2]);
+    case 4:
+      return send4_BM (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
+                       args[0], args[1], args[2], args[3]);
+    case 5:
+      return send5_BM (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
+                       args[0], args[1], args[2], args[3], args[4]);
+    case 6:
+      return send6_BM (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
+                       args[0], args[1], args[2], args[3], args[4], args[5]);
+    case 7:
+      return send7_BM (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
+                       args[0], args[1], args[2], args[3], args[4], args[5],
+                       args[6]);
+    case 8:
+      return send8_BM (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
+                       args[0], args[1], args[2], args[3], args[4], args[5],
+                       args[6], args[7]);
+    default:;
+    }
+  FATAL_BM ("too many %u arguments in todo_send", nbargs);
+}                               /* end ROUTINE todo_send _9mdRnBqdqf5_9UvgSFA7wIY */
+
+
+/// for todo_apply closures 
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_3W8d51P1dJh_3b1BrOW6pua);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_3W8d51P1dJh_3b1BrOW6pua)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1 __attribute__ ((unused)),
+const value_tyBM arg2 __attribute__ ((unused)),
+const value_tyBM arg3 __attribute__ ((unused)),
+const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  enum
+  {
+    closix_closure,
+    closix_ldobj,
+    closix__REST
+  };
+  assert (isclosure_BM ((const value_tyBM) clos)
+          && closurewidth_BM ((const value_tyBM) clos) >= closix__REST);
+  unsigned wclos = closurewidth_BM ((const value_tyBM) clos);
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const closure_tyBM * closv;
+                 objectval_tyBM * ldobj;
+    );
+  _.closv =
+    closurecast_BM (closurenthson_BM
+                    ((const value_tyBM) clos, closix_closure));
+  _.ldobj =
+    objectcast_BM (closurenthson_BM ((const value_tyBM) clos, closix_ldobj));
+  const value_tyBM *args = clos->nodt_sons + closix__REST;
+  unsigned nbargs = wclos - closix__REST;
+  switch (nbargs)
+    {
+    case 0:
+      return apply1_BM (_.closv, (struct stackframe_stBM *) &_, _.ldobj);
+    case 1:
+      return apply2_BM (_.closv, (struct stackframe_stBM *) &_, _.ldobj,
+                        args[0]);
+    case 2:
+      return apply3_BM (_.closv, (struct stackframe_stBM *) &_, _.ldobj,
+                        args[0], args[1]);
+    case 3:
+      return apply4_BM (_.closv, (struct stackframe_stBM *) &_, _.ldobj,
+                        args[0], args[1], args[2]);
+    case 4:
+      return apply5_BM (_.closv, (struct stackframe_stBM *) &_, _.ldobj,
+                        args[0], args[1], args[2], args[3]);
+    case 5:
+      return apply6_BM (_.closv, (struct stackframe_stBM *) &_, _.ldobj,
+                        args[0], args[1], args[2], args[3], args[4]);
+    case 6:
+      return apply7_BM (_.closv, (struct stackframe_stBM *) &_, _.ldobj,
+                        args[0], args[1], args[2], args[3], args[4], args[5]);
+    case 7:
+      return apply8_BM (_.closv, (struct stackframe_stBM *) &_, _.ldobj,
+                        args[0], args[1], args[2], args[3], args[4], args[5],
+                        args[6]);
+    default:;
+    }
+  FATAL_BM ("too many %u arguments in todo_apply", nbargs);
+}                               /* end ROUTINE todo_apply _3W8d51P1dJh_3b1BrOW6pua */
+
+
 static int
 cmpnamedpredef_BM (const void *p1, const void *p2)
 {

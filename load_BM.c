@@ -443,6 +443,101 @@ load_modif_value_BM (struct loader_stBM *ld, int ix,
 }                               /* end load_modif_value_BM */
 
 
+#define TODO_MAXARGS_BM 5
+static void
+load_modif_todo_BM (struct loader_stBM *ld, int ix,
+                    struct stackframe_stBM *parstkfrm,
+                    struct parser_stBM *ldpars, objectval_tyBM * argcurldobj)
+{
+  assert (ld && ld->ld_magic == LOADERMAGIC_BM);
+  assert (ix >= 0 && ix <= (int) ld->ld_maxnum);
+  char *curldpath = ld->ld_storepatharr[ix];
+  assert (curldpath != NULL);
+  assert (ldpars != NULL);
+  assert (isobject_BM (argcurldobj));
+  LOCALFRAME_BM (parstkfrm, NULL,       //
+                 struct parser_stBM *ldparser;  //
+                 objectval_tyBM * curldobj;     //
+                 value_tyBM valv; value_tyBM todov;
+                 const closure_tyBM * closv; objectval_tyBM * obselv;
+                 value_tyBM args[TODO_MAXARGS_BM];
+    );
+  _.ldparser = ldpars;
+  _.curldobj = argcurldobj;
+  unsigned lineno = parserlineno_BM (ldpars);
+  unsigned colpos = parsercolpos_BM (ldpars);
+  parstoken_tyBM tokopen = parsertokenget_BM (ldpars);
+  if (tokopen.tok_kind != plex_DELIM
+      || tokopen.tok_delim != delim_leftparentilde)
+    parsererrorprintf_BM (ldpars, lineno, colpos,
+                          "expecting (~ after !~todo");
+  bool gotval = false;
+  _.valv =                      //
+    parsergetvalue_BM (ldpars, (struct stackframe_stBM *) (&_), 0, &gotval);
+  if (!gotval)
+    parsererrorprintf_BM (ldpars, tokopen.tok_line, tokopen.tok_col,
+                          "expect value after !~todo (~");
+  bool gotclosure = false;
+  bool gotselector = false;
+  if (isclosure_BM (_.valv))
+    {
+      gotclosure = true;
+      _.closv = (const closure_tyBM *) _.valv;
+    }
+  else if (isobject_BM (_.valv))
+    {
+      gotselector = true;
+      _.obselv = (objectval_tyBM *) _.valv;
+    }
+  else
+    parsererrorprintf_BM (ldpars, tokopen.tok_line, tokopen.tok_col,
+                          "expect closure or selector after !~todo (~");
+  int nbargs = 0;
+  memset (_.args, 0, sizeof (_.args));
+  while (nbargs < TODO_MAXARGS_BM)
+    {
+      bool gotval = false;
+      _.valv =                  //
+        parsergetvalue_BM (ldpars, (struct stackframe_stBM *) (&_), 0,
+                           &gotval);
+      if (!gotval)
+        break;
+      _.args[nbargs++] = _.valv;
+    };
+  parstoken_tyBM tokclose = parsertokenget_BM (ldpars);
+  if (tokclose.tok_kind != plex_DELIM
+      || tokclose.tok_delim != delim_tilderightparen)
+    parsererrorprintf_BM (ldpars, parserlineno_BM (ldpars),
+                          parsercolpos_BM (ldpars),
+                          "expect )~ after !~todo (~ <closure|selector> <%d-arguments> ",
+                          nbargs);
+  if (gotselector)
+    {
+      value_tyBM cloargs[3 + TODO_MAXARGS_BM];
+      memset (cloargs, 0, sizeof (cloargs));
+      cloargs[0] = argcurldobj;
+      cloargs[1] = _.obselv;
+      for (int ix = 0; ix < nbargs; ix++)
+        cloargs[ix + 2] = _.args[ix];
+      _.todov = makeclosure_BM (BMP_todo_send, nbargs + 2, cloargs);
+    }
+  else if (gotclosure)
+    {
+      value_tyBM cloargs[3 + TODO_MAXARGS_BM];
+      memset (cloargs, 0, sizeof (cloargs));
+      cloargs[0] = _.closv;
+      cloargs[1] = argcurldobj;
+      for (int ix = 0; ix < nbargs; ix++)
+        cloargs[ix + 2] = _.args[ix];
+      _.todov = makeclosure_BM (BMP_todo_apply, nbargs + 2, cloargs);
+    }
+  else
+    FATAL_BM ("!~todo unexpected corruption");
+  load_addtodo_BM (_.todov);
+}                               /* end load_modif_todo_BM */
+
+
+
 static void
 load_postpone_modif_BM (struct loader_stBM *ld, int ix,
                         struct stackframe_stBM *parstkfrm,
@@ -676,6 +771,15 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
             load_modif_value_BM (ld, ix,
                                  (struct stackframe_stBM *) (&_),
                                  ldpars, _.curldobj);
+
+
+          /// todo modification
+          else if (tokmodif.tok_kind == plex_NAMEDOBJ
+                   && tokmodif.tok_namedobj == BMP_todo)
+            load_modif_todo_BM (ld, ix,
+                                (struct stackframe_stBM *) (&_),
+                                ldpars, _.curldobj);
+
           //
           // otherwise postponed modification
           else if (tokmodif.tok_kind == plex_NAMEDOBJ)
@@ -725,6 +829,8 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
   fprintf (stderr, "load_second_pass_BM ix=%d path=%s nbdirectives=%ld\n",
            ix, curldpath, nbdirectives);
 }                               /* end load_second_pass_BM */
+
+
 
 void
 doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
