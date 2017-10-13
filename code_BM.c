@@ -456,6 +456,103 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
 }                               /* end ROUTINE _67IapmpeTLU_8MQKtlK8iAD */
 
 
+
+//// for the method to dump_scan an instance of hset_object
+extern objrout_sigBM ROUTINEOBJNAME_BM (_4DvEF1tVGFD_6VVLpFn6FPW);
+
+value_tyBM ROUTINEOBJNAME_BM (_4DvEF1tVGFD_6VVLpFn6FPW)
+  (const closure_tyBM * clos,
+   struct stackframe_stBM * stkf,
+   const value_tyBM arg1,
+   const value_tyBM arg2, const value_tyBM arg3,
+   const quasinode_tyBM * restargs)
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv;
+                 struct dumper_stBM *du; const setval_tyBM * setv;
+    );
+  WEAKASSERT_BM (isobject_BM (arg1));
+  _.recv = arg1;
+  WEAKASSERT_BM (valtype_BM (arg2) == tydata_dumper_BM);
+  _.du = arg2;
+  WEAKASSERT_BM (valtype_BM (_.recv->ob_data) == tydata_hashsetobj_BM);
+  assert (arg3 == NULL);
+  assert (restargs == NULL);
+  _.setv = hashsetobj_to_set_BM (_.recv->ob_data);
+  dumpscanvalue_BM (_.du, (value_tyBM) _.setv, 0);
+  return (value_tyBM) _.recv;
+}                               /* end dump_scan hset_object ROUTINE _4DvEF1tVGFD_6VVLpFn6FPW */
+
+//// for the method to dump_data an instance of hset_object
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7GMLV81ntO3_4NHTv7fCL0A);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_7GMLV81ntO3_4NHTv7fCL0A)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1,
+const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+{
+  enum constix_en
+  {
+    constix_dump_value,
+    constix_add,
+    constix__LAST
+  };
+  objectval_tyBM *k_dump_value = NULL;
+  objectval_tyBM *k_add = NULL;
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv;
+                 const closure_tyBM * clos; struct dumper_stBM *du;
+                 struct strbuffer_stBM *sbuf; const setval_tyBM * setv;
+                 value_tyBM dumpres;
+    );
+  objectval_tyBM *closconn = NULL;
+  const node_tyBM *constnodv = NULL;
+  _.clos = clos;
+  closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (isobject_BM (closconn));
+  constnodv = closconn->ob_data;
+  WEAKASSERT_BM (isobject_BM (arg1));
+  _.recv = arg1;
+  WEAKASSERT_BM (valtype_BM (arg2) == tydata_dumper_BM);
+  _.du = arg2;
+  WEAKASSERT_BM (valtype_BM (arg3) == tydata_strbuffer_BM);
+  WEAKASSERT_BM (restargs == NULL);
+  _.sbuf = arg3;
+  WEAKASSERT_BM (valtype_BM (_.recv->ob_data) == tydata_hashsetobj_BM);
+  assert (arg3 == NULL);
+  assert (restargs == NULL);
+  /** constnodv is 
+     * const (dump_value add)
+  **/
+  WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnodv)
+                 && valhash_BM ((const value_tyBM) constnodv) == 2963010263
+                 && nodewidth_BM ((const value_tyBM) constnodv) >=
+                 constix__LAST);
+  k_dump_value =
+    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_dump_value));
+  WEAKASSERT_BM (k_dump_value == BMP_dump_value);
+  k_add = objectcast_BM (nodenthson_BM ((void *) constnodv, constix_add));
+  _.setv = hashsetobj_to_set_BM (_.recv->ob_data);
+  strbufferprintf_BM (_.sbuf, "!~ todo (~\t");
+  strbuffermoreindent_BM (_.sbuf);
+  _.dumpres = send3_BM (k_add, BMP_dump_value,
+                        (struct stackframe_stBM *) &_,
+                        _.sbuf, _.du, taggedint_BM (0));
+  strbufferprintf_BM (_.sbuf, "\t");
+  _.dumpres = send3_BM ((value_tyBM) _.setv, BMP_dump_value,
+                        (struct stackframe_stBM *) &_,
+                        _.sbuf, _.du, taggedint_BM (0));
+  strbufferlessindent_BM (_.sbuf);
+  strbufferappendcstr_BM (_.sbuf, "\n~)\n");
+  return (value_tyBM) _.recv;
+}                               /* end dump_data hset_object ROUTINE _7GMLV81ntO3_4NHTv7fCL0A  */
+
+
 ////////////////////////////////////////////////////////////////
 //// for the method to dump_value an object or a class
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7fCcteNe7aR_3IKHeHjmzff);
