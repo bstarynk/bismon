@@ -477,12 +477,12 @@ load_modif_todo_BM (struct loader_stBM *ld, int ix,
   if (!gotval)
     parsererrorprintf_BM (ldpars, tokopen.tok_line, tokopen.tok_col,
                           "expect value after !~todo (~");
-  bool gotclosure = false;
+  bool gottree = false;
   bool gotselector = false;
-  if (isclosure_BM (_.valv))
+  if (istree_BM (_.valv))
     {
-      gotclosure = true;
-      _.closv = (const closure_tyBM *) _.valv;
+      gottree = true;
+      _.closv = (const tree_tyBM *) _.valv;
     }
   else if (isobject_BM (_.valv))
     {
@@ -491,7 +491,7 @@ load_modif_todo_BM (struct loader_stBM *ld, int ix,
     }
   else
     parsererrorprintf_BM (ldpars, tokopen.tok_line, tokopen.tok_col,
-                          "expect closure or selector after !~todo (~");
+                          "expect tree or selector after !~todo (~");
   int nbargs = 0;
   memset (_.args, 0, sizeof (_.args));
   while (nbargs < TODO_MAXARGS_BM)
@@ -509,7 +509,7 @@ load_modif_todo_BM (struct loader_stBM *ld, int ix,
       || tokclose.tok_delim != delim_tilderightparen)
     parsererrorprintf_BM (ldpars, parserlineno_BM (ldpars),
                           parsercolpos_BM (ldpars),
-                          "expect )~ after !~todo (~ <closure|selector> <%d-arguments> ",
+                          "expect )~ after !~todo (~ <tree|selector> <%d-arguments> ",
                           nbargs);
   if (gotselector)
     {
@@ -521,7 +521,7 @@ load_modif_todo_BM (struct loader_stBM *ld, int ix,
         cloargs[ix + 2] = _.args[ix];
       _.todov = makeclosure_BM (BMP_todo_send, nbargs + 2, cloargs);
     }
-  else if (gotclosure)
+  else if (gottree)
     {
       value_tyBM cloargs[3 + TODO_MAXARGS_BM];
       memset (cloargs, 0, sizeof (cloargs));
