@@ -672,6 +672,8 @@ ROUTINEOBJNAME_BM (_5hedSPIXD0o_5ef69rR2kzb)    // remove°hset_object
           _.curob = sequencenthcomp_BM (_.removedv, ix);
           hset = hashsetobj_remove_BM (hset, _.curob);
         };
+      if (nbrem > TINYSIZE_BM)
+        hset = hashsetobj_grow_BM (hset, 1);    /* could reorganize the hset */
       _.recv->ob_data = hset;
       return _.recv;
     }
