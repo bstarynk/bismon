@@ -540,7 +540,7 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
                                       pars->pars_colpos,
                                       "bad octal escape %s", pc);
             case 'u':
-              if (sscanf (pc + 1, "%04x%n", &b, &pos) > 0 && pos == 4
+              if (sscanf (pc + 2, "%04x%n", &b, &pos) > 0 && pos == 4
                   && b > 0)
                 {
                   char ebuf[8];
@@ -548,7 +548,7 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
                   g_unichar_to_utf8 ((gunichar) b, ebuf);
                   fputs (ebuf, memfil);
                   nbc++;
-                  pc += 5;
+                  pc += 6;
                   startplain = pc;
                   break;
                 }
@@ -557,7 +557,7 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
                                       pars->pars_colpos,
                                       "bad unicode4 escape %s", pc);
             case 'U':
-              if (sscanf (pc + 1, "%08x%n", &b, &pos) > 0 && pos == 8
+              if (sscanf (pc + 2, "%08x%n", &b, &pos) > 0 && pos == 8
                   && b > 0)
                 {
                   char ebuf[8];

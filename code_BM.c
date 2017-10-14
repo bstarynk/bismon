@@ -554,18 +554,22 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
 
 
 
-//// for the method to put in_ an hset_object
+//// for the method to put°hset_object
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_91iTl2vqF09_72WJj4swbNi);
 
-value_tyBM ROUTINEOBJNAME_BM (_91iTl2vqF09_72WJj4swbNi) (const closure_tyBM * clos, struct stackframe_stBM * stkf, const value_tyBM arg1,       /* reciever */
-                                                         const value_tyBM arg2
-                                                         /*putseq */ ,
-                                                         const value_tyBM arg3
-                                                         __attribute__ ((unused)), const quasinode_tyBM * restargs __attribute__ ((unused)))
+value_tyBM
+ROUTINEOBJNAME_BM (_91iTl2vqF09_72WJj4swbNi)    // put°hset_object
+(const closure_tyBM * clos, struct stackframe_stBM * stkf, const value_tyBM arg1,       /* reciever */
+ const value_tyBM arg2
+ /*putseq */ ,
+ const value_tyBM arg3
+ __attribute__ ((unused)), const quasinode_tyBM * restargs
+ __attribute__ ((unused)))
 {;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv; const seqobval_tyBM * putseqv;
+                 objectval_tyBM * recv;
+                 const seqobval_tyBM * putseqv; objectval_tyBM * curob;
                  const closure_tyBM * clos;
     );
   _.clos = clos;
@@ -575,7 +579,13 @@ value_tyBM ROUTINEOBJNAME_BM (_91iTl2vqF09_72WJj4swbNi) (const closure_tyBM * cl
   if (!issequence_BM (arg2))
     return NULL;
   _.putseqv = arg2;
-  unsigned lnseq = 0;
+  unsigned lnseq = sequencesize_BM (_.putseqv);
+  _.recv->ob_data = hashsetobj_grow_BM (NULL, 9 * lnseq / 8 + 2);
+  for (unsigned ix = 0; ix < lnseq; ix++)
+    {
+      _.curob = sequencenthcomp_BM (_.putseqv, ix);
+      _.recv->ob_data = hashsetobj_add_BM (_.recv->ob_data, _.curob);
+    };
   return _.recv;
 }                               /* end ROUTINE _91iTl2vqF09_72WJj4swbNi put)hset_object */
 
@@ -599,7 +609,7 @@ value_tyBM ROUTINEOBJNAME_BM (_88cUYsDqSFO_0DKwKLSOmpm) (const closure_tyBM * cl
   if (valtype_BM (_.recv->ob_data) != tydata_hashsetobj_BM)
     return NULL;
   _.setv = hashsetobj_to_set_BM (_.recv->ob_data);
-  return _.setv;
+  return (value_tyBM)_.setv;
 }                               /* end ROUTINE _88cUYsDqSFO_0DKwKLSOmpm set of hset_object */
 
 
