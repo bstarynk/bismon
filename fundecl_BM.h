@@ -373,6 +373,7 @@ extern void datavectgckeep_BM (struct garbcoll_stBM *gc,
 
 extern struct hashsetobj_stBM *hashsetobj_grow_BM (struct hashsetobj_stBM
                                                    *hset, unsigned gap);
+static inline struct hashsetobj_stBM *hashsetobjcast_BM (const value_tyBM v);
 void hashsetgcmark_BM (struct garbcoll_stBM *gc,
                        struct hashsetobj_stBM *hset);
 void hashsetgcdestroy_BM (struct garbcoll_stBM *gc,

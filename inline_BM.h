@@ -669,6 +669,14 @@ stringcast_BM (const value_tyBM v)
 }                               /* end stringcast_BM */
 
 ////////////////
+struct hashsetobj_stBM *
+hashsetobjcast_BM (const value_tyBM v)
+{
+  if (valtype_BM ((const value_tyBM) v) != tydata_hashsetobj_BM)
+    return NULL;
+  return (struct hashsetobj_stBM *) v;
+}                               /* end hashsetobjcast_BM */
+
 unsigned
 hashsetobj_cardinal_BM (struct hashsetobj_stBM *hset)
 {
