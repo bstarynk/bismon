@@ -549,6 +549,14 @@ isassoc_BM (const value_tyBM v)
   return ty == tydata_assocbucket_BM || ty == tydata_assocpairs_BM;
 }                               /* end isassoc_BM */
 
+anyassoc_tyBM *
+assoccast_BM (value_tyBM v)
+{
+  if (isassoc_BM (v))
+    return (anyassoc_tyBM *) v;
+  return NULL;
+}                               /* end assoccast_BM */
+
 unsigned
 assoc_nbkeys_BM (const anyassoc_tyBM * assoc)
 {

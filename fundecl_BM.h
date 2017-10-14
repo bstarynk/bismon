@@ -304,7 +304,8 @@ extern void strbuffergckeep_BM (struct garbcoll_stBM *gc,
 ////////////////
 
 
-static inline bool isassoc_BM (value_tyBM);
+static inline bool isassoc_BM (value_tyBM v);
+static inline anyassoc_tyBM *assoccast_BM (value_tyBM v);
 extern void assocgcmark_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc,
                             int depth);
 extern void assocpairgcdestroy_BM (struct garbcoll_stBM *gc,
