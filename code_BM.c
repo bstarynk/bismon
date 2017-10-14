@@ -552,6 +552,33 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
   return (value_tyBM) _.recv;
 }                               /* end dump_data hset_object ROUTINE _7GMLV81ntO3_4NHTv7fCL0A  */
 
+//// for the method to give the set of an hset_object
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_88cUYsDqSFO_0DKwKLSOmpm);
+
+value_tyBM
+ROUTINEOBJNAME_BM(_88cUYsDqSFO_0DKwKLSOmpm)
+  
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1,		/* reciever */
+ const value_tyBM arg2 __attribute__((unused)),
+ const value_tyBM arg3 __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
+{;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv;
+                 const closure_tyBM * clos;
+		  const setval_tyBM * setv;
+    );
+  _.clos = clos;
+  _.recv = arg1;
+  if (!isobject_BM(arg1)) return NULL;
+  if (valtype_BM (_.recv->ob_data) != tydata_hashsetobj_BM) return NULL;
+  _.setv = hashsetobj_to_set_BM(_.recv->ob_data);
+  return _.setv;
+} /* end ROUTINE _88cUYsDqSFO_0DKwKLSOmpm set of hset_object */
+
 
 ////////////////////////////////////////////////////////////////
 //// for the method to dump_value an object or a class

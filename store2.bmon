@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 136 objects
+// for 137 objects
 // with 0 modules
 
 
@@ -522,12 +522,13 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !(_8c9otZ4pwR6_55k81qyyYV2 |=hset_object|
 !~ name (~ hset_object
 ~)
-!@ 1507909925.45
+!@ 1507970354.87
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for objects with hashed set data"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
 ~: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|  % _7GMLV81ntO3_4NHTv7fCL0A () 
+~: _2mYaTh9kH4I_7ENiXcymRmy |=set|  % _88cUYsDqSFO_0DKwKLSOmpm () 
 ~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan|  % _4DvEF1tVGFD_6VVLpFn6FPW ()
 ~)
 
@@ -1419,6 +1420,14 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !& _18zqwDaGqbb_0ZGuMPMD30d |=args| 
 !&  * _3aavnAvDLd2_9JbORKE3B1k ( _0DRkw9jbus3_4zHggHVajYB |=recv|   * _5DDSY1YgVZr_6dOU4tiBldk ( _0jFqaPPHgYH_5JpjOPxQ67p |=arguments| ))
 !)_81OqmVDnoU8_042MljK0DSU
+
+
+
+!(_88cUYsDqSFO_0DKwKLSOmpm
+!@ 1507970354.87
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method to give the set in a hset_object"
+!)_88cUYsDqSFO_0DKwKLSOmpm
 
 
 
