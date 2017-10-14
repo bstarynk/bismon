@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 137 objects
+// for 142 objects
 // with 0 modules
 
 
@@ -522,14 +522,17 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !(_8c9otZ4pwR6_55k81qyyYV2 |=hset_object|
 !~ name (~ hset_object
 ~)
-!@ 1507970354.87
+!@ 1507975307.97
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for objects with hashed set data"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
 ~: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|  % _7GMLV81ntO3_4NHTv7fCL0A () 
+~: _1dzZlwqKdLH_8HjkBsL9Mar |=add|  % _2juH5YMCcog_8pQGCuE5mod () 
 ~: _2mYaTh9kH4I_7ENiXcymRmy |=set|  % _88cUYsDqSFO_0DKwKLSOmpm () 
-~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan|  % _4DvEF1tVGFD_6VVLpFn6FPW ()
+~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan|  % _4DvEF1tVGFD_6VVLpFn6FPW () 
+~: _3OWP1zOtxz2_9uAVt50SUZO |=remove|  % _5hedSPIXD0o_5ef69rR2kzb () 
+~: _9pvzBeIKHXF_8YDPCrQ6OEK |=put|  % _91iTl2vqF09_72WJj4swbNi ()
 ~)
 
 !)_8c9otZ4pwR6_55k81qyyYV2
@@ -780,6 +783,14 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 
 
 
+!(_9pvzBeIKHXF_8YDPCrQ6OEK |=put|
+!~ name (~ put
+~)
+!@ 1507975261.64
+!)_9pvzBeIKHXF_8YDPCrQ6OEK
+
+
+
 !(_7wDfX8mn5WT_2g0FYc80dLx |=put_data_value|
 !~ name (~ put_data_value
 ~)
@@ -807,6 +818,14 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7bbeIqUSje9_4jVgC7ZJmvx |=value| 
 !)_0DRkw9jbus3_4zHggHVajYB
+
+
+
+!(_3OWP1zOtxz2_9uAVt50SUZO |=remove|
+!~ name (~ remove
+~)
+!@ 1507975307.97
+!)_3OWP1zOtxz2_9uAVt50SUZO
 
 
 
@@ -1083,6 +1102,12 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 
+!(_2juH5YMCcog_8pQGCuE5mod
+!@ 1507975230.30
+!)_2juH5YMCcog_8pQGCuE5mod
+
+
+
 !(_2qppG2LJu79_9ljkbLS0eFQ
 !@ 1504635278.05
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1218,6 +1243,12 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
  _2DH0ucElTgh_62vxjxLcfev |=return| ) ~)
 
 !)_5788HpgOtVV_4zwZIr0jgmq
+
+
+
+!(_5hedSPIXD0o_5ef69rR2kzb
+!@ 1507975307.97
+!)_5hedSPIXD0o_5ef69rR2kzb
 
 
 
@@ -1399,13 +1430,13 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_7GMLV81ntO3_4NHTv7fCL0A
-!@ 1507911599.43
+!@ 1507975519.00
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to dump_data an instance of hset_object"
 
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _1FEnnpEkGdI_5DAcVDL5XHG |=dump_value| 
- _1dzZlwqKdLH_8HjkBsL9Mar |=add| ) ~)
+ _9pvzBeIKHXF_8YDPCrQ6OEK |=put| ) ~)
 
 !)_7GMLV81ntO3_4NHTv7fCL0A
 
@@ -1457,6 +1488,12 @@ _36MhHxakHKT_1ZzV5Xoj5LX
  _5MiY0SneC5A_7c2Ar72nm9O |=complete_module| ) ~)
 
 !)_8zNBXSMY2Ts_1VI5dmY4umA
+
+
+
+!(_91iTl2vqF09_72WJj4swbNi
+!@ 1507975261.64
+!)_91iTl2vqF09_72WJj4swbNi
 
 
 
