@@ -336,15 +336,16 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
 
 
 
-//// for the method to dump_scan a class
+//// for the method to dump_scan°class
 extern objrout_sigBM ROUTINEOBJNAME_BM (_4EBQMvthjcP_2OiZxZviSQc);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_4EBQMvthjcP_2OiZxZviSQc)
+ROUTINEOBJNAME_BM (_4EBQMvthjcP_2OiZxZviSQc)    // dump_scan°class 
 (const closure_tyBM * clos,
-struct stackframe_stBM * stkf,
-const value_tyBM arg1,
-const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+ struct stackframe_stBM * stkf,
+ const value_tyBM arg1,
+ const value_tyBM arg2, const value_tyBM arg3,
+ const quasinode_tyBM * restargs)
 {
   assert (!clos || isclosure_BM ((const value_tyBM) clos));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -375,18 +376,19 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
       dumpscanvalue_BM (_.du, _.curmeth, 0);
     }
   return (value_tyBM) _.recv;
-}                               /* end ROUTINE _4EBQMvthjcP_2OiZxZviSQc */
+}                               /* end ROUTINE _4EBQMvthjcP_2OiZxZviSQc dump_scan°class */
 
 
 //// for the method to dump_data a class
 extern objrout_sigBM ROUTINEOBJNAME_BM (_67IapmpeTLU_8MQKtlK8iAD);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_67IapmpeTLU_8MQKtlK8iAD)
+ROUTINEOBJNAME_BM (_67IapmpeTLU_8MQKtlK8iAD)    // dump_data°class
 (const closure_tyBM * clos,
-struct stackframe_stBM * stkf,
-const value_tyBM arg1,
-const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+ struct stackframe_stBM * stkf,
+ const value_tyBM arg1,
+ const value_tyBM arg2, const value_tyBM arg3,
+ const quasinode_tyBM * restargs)
 {
   assert (!clos || isclosure_BM ((const value_tyBM) clos));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -457,15 +459,16 @@ const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
 
 
 
-//// for the method to dump_scan an instance of hset_object
+//// for the method to dump_scan°hset_object
 extern objrout_sigBM ROUTINEOBJNAME_BM (_4DvEF1tVGFD_6VVLpFn6FPW);
 
-value_tyBM ROUTINEOBJNAME_BM (_4DvEF1tVGFD_6VVLpFn6FPW)
-  (const closure_tyBM * clos,
-   struct stackframe_stBM * stkf,
-   const value_tyBM arg1,
-   const value_tyBM arg2, const value_tyBM arg3,
-   const quasinode_tyBM * restargs)
+value_tyBM
+ROUTINEOBJNAME_BM (_4DvEF1tVGFD_6VVLpFn6FPW)    //  dump_scan°hset_object
+(const closure_tyBM * clos,
+ struct stackframe_stBM * stkf,
+ const value_tyBM arg1,
+ const value_tyBM arg2, const value_tyBM arg3,
+ const quasinode_tyBM * restargs)
 {
   assert (!clos || isclosure_BM ((const value_tyBM) clos));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -703,6 +706,55 @@ value_tyBM ROUTINEOBJNAME_BM (_88cUYsDqSFO_0DKwKLSOmpm) (const closure_tyBM * cl
   _.setv = hashsetobj_to_set_BM (_.recv->ob_data);
   return (value_tyBM) _.setv;
 }                               /* end ROUTINE _88cUYsDqSFO_0DKwKLSOmpm set of hset_object */
+
+
+/****************************************************************/
+
+//// for the method to dump_scan°assoc_object
+extern objrout_sigBM ROUTINEOBJNAME_BM (_8MU0cEcpEYN_5SVe0jrv36o);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_8MU0cEcpEYN_5SVe0jrv36o)    //  dump_scan°assoc_object
+(const closure_tyBM * clos,
+ struct stackframe_stBM * stkf,
+ const value_tyBM arg1,
+ const value_tyBM arg2, const value_tyBM arg3,
+ const quasinode_tyBM * restargs)
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv;
+                 const objectval_tyBM * curattrob; value_tyBM curval;
+                 struct dumper_stBM *du; const setval_tyBM * setv;
+    );
+  WEAKASSERT_BM (isobject_BM (arg1));
+  _.recv = arg1;
+  WEAKASSERT_BM (valtype_BM (arg2) == tydata_dumper_BM);
+  _.du = arg2;
+  if (!_.recv->ob_data)
+    return (value_tyBM) _.recv;
+  WEAKASSERT_BM (isassoc_BM (_.recv->ob_data));
+  anyassoc_tyBM *assoc = assoccast_BM (_.recv->ob_data);
+  if (!assoc)
+    return NULL;
+  assert (arg3 == NULL);
+  assert (restargs == NULL);
+  _.setv = assoc_setattrs_BM (assoc);
+  dumpscanvalue_BM (_.du, (const value_tyBM) _.setv, 0);
+  unsigned nbattr = setcardinal_BM (_.setv);
+  for (unsigned ix = 0; ix < nbattr; ix++)
+    {
+      _.curattrob = setelemnth_BM (_.setv, ix);
+      if (!dumpobjisdumpable_BM (_.du, _.curattrob))
+        continue;
+      _.curval = assoc_getattr_BM (assoc, _.curattrob);
+      dumpscanvalue_BM (_.du, _.curval, 0);
+    }
+  return (value_tyBM) _.recv;
+}                               /* end dump_scan°assoc_object ROUTINE _8MU0cEcpEYN_5SVe0jrv36o */
+
+
+
 
 
 ////////////////////////////////////////////////////////////////
