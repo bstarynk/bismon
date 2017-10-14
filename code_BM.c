@@ -632,6 +632,54 @@ ROUTINEOBJNAME_BM (_2juH5YMCcog_8pQGCuE5mod)    // add°hset_object
   return NULL;
 }                               /* end ROUTINE _2juH5YMCcog_8pQGCuE5mod add°hset_object */
 
+// for the method remove°hset_object
+extern objrout_sigBM ROUTINEOBJNAME_BM (_5hedSPIXD0o_5ef69rR2kzb);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_5hedSPIXD0o_5ef69rR2kzb)    // remove°hset_object
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         /* reciever */
+ const value_tyBM arg2 /*removedv */ ,
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * recv; value_tyBM removedv;
+                 const seqobval_tyBM * putseqv; objectval_tyBM * curob;
+                 const closure_tyBM * clos;
+    );
+  struct hashsetobj_stBM *hset = NULL;
+  _.clos = clos;
+  if (!isobject_BM (arg1))
+    return NULL;
+  _.recv = arg1;
+  if (!_.recv->ob_data)
+    return _.recv;
+  hset = hashsetobjcast_BM (_.recv->ob_data);
+  if (!hset)
+    return NULL;
+  _.removedv = arg2;
+  if (isobject_BM (_.removedv))
+    {
+      _.recv->ob_data = hset = hashsetobj_remove_BM (hset, _.removedv);
+      return _.recv;
+    }
+  else if (issequence_BM (_.removedv))
+    {
+      unsigned nbrem = sequencesize_BM (_.removedv);
+      for (unsigned ix = 0; ix < nbrem; ix++)
+        {
+          _.curob = sequencenthcomp_BM (_.removedv, ix);
+          hset = hashsetobj_remove_BM (hset, _.curob);
+        };
+      _.recv->ob_data = hset;
+      return _.recv;
+    }
+  else
+    return NULL;
+}                               /* end ROUTINE _5hedSPIXD0o_5ef69rR2kzb  remove°hset_object */
+
+
 
 //// for the method to give the set°hset_object
 extern objrout_sigBM ROUTINEOBJNAME_BM (_88cUYsDqSFO_0DKwKLSOmpm);
