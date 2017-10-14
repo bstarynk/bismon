@@ -379,7 +379,7 @@ ROUTINEOBJNAME_BM (_4EBQMvthjcP_2OiZxZviSQc)    // dump_scan°class
 }                               /* end ROUTINE _4EBQMvthjcP_2OiZxZviSQc dump_scan°class */
 
 
-//// for the method to dump_data a class
+//// for the method to dump_data°class
 extern objrout_sigBM ROUTINEOBJNAME_BM (_67IapmpeTLU_8MQKtlK8iAD);
 
 value_tyBM
@@ -487,16 +487,17 @@ ROUTINEOBJNAME_BM (_4DvEF1tVGFD_6VVLpFn6FPW)    //  dump_scan°hset_object
   return (value_tyBM) _.recv;
 }                               /* end dump_scan hset_object ROUTINE _4DvEF1tVGFD_6VVLpFn6FPW */
 
-//// for the method to dump_data an instance of hset_object
+//// for the method to dump_data°hset_object
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7GMLV81ntO3_4NHTv7fCL0A);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_7GMLV81ntO3_4NHTv7fCL0A)
+ROUTINEOBJNAME_BM (_7GMLV81ntO3_4NHTv7fCL0A)    // dump_data°hset_object
 (const closure_tyBM * clos,
-struct stackframe_stBM * stkf,
-const value_tyBM arg1,
-const value_tyBM arg2, const value_tyBM arg3, const quasinode_tyBM * restargs)
+ struct stackframe_stBM * stkf,
+ const value_tyBM arg1,
+ const value_tyBM arg2, const value_tyBM arg3,
+ const quasinode_tyBM * restargs)
 {
   enum constix_en
   {
@@ -754,6 +755,62 @@ ROUTINEOBJNAME_BM (_8MU0cEcpEYN_5SVe0jrv36o)    //  dump_scan°assoc_object
 }                               /* end dump_scan°assoc_object ROUTINE _8MU0cEcpEYN_5SVe0jrv36o */
 
 
+
+//// for the method to dump_data°assoc_object
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9EytjXNb76D_1ZP3iSk9cuu);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_9EytjXNb76D_1ZP3iSk9cuu)    // dump_data°assoc_object
+(const closure_tyBM * clos,
+ struct stackframe_stBM * stkf,
+ const value_tyBM arg1,
+ const value_tyBM arg2, const value_tyBM arg3,
+ const quasinode_tyBM * restargs)
+{
+  enum constix_en
+  {
+    constix_dump_value,
+    constix_put,
+    constix__LAST
+  };
+  objectval_tyBM *k_dump_value = NULL;
+  objectval_tyBM *k_put = NULL;
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv;
+                 const closure_tyBM * clos; struct dumper_stBM *du;
+                 struct strbuffer_stBM *sbuf; const setval_tyBM * setv;
+                 value_tyBM dumpres;
+    );
+  objectval_tyBM *closconn = NULL;
+  const node_tyBM *constnodv = NULL;
+  _.clos = clos;
+  closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (isobject_BM (closconn));
+  constnodv = closconn->ob_data;
+  WEAKASSERT_BM (isobject_BM (arg1));
+  _.recv = arg1;
+  WEAKASSERT_BM (valtype_BM (arg2) == tydata_dumper_BM);
+  _.du = arg2;
+  WEAKASSERT_BM (valtype_BM (arg3) == tydata_strbuffer_BM);
+  WEAKASSERT_BM (restargs == NULL);
+  _.sbuf = arg3;
+  assert (arg3 == NULL);
+  assert (restargs == NULL);
+  /** constnodv is 
+     * const (dump_value put)
+  **/
+  WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnodv)
+                 && valhash_BM ((const value_tyBM) constnodv) == 3410673963
+                 && nodewidth_BM ((const value_tyBM) constnodv) >=
+                 constix__LAST);
+  k_dump_value =
+    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_dump_value));
+  k_put = objectcast_BM (nodenthson_BM ((void *) constnodv, constix_put));
+  return _.recv;
+#warning  _9EytjXNb76D_1ZP3iSk9cuu dump_data°assoc_object incomplete
+}                               /* end ROUTINE _9EytjXNb76D_1ZP3iSk9cuu dump_data°assoc_object */
 
 
 

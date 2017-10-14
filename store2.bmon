@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 143 objects
+// for 144 objects
 // with 0 modules
 
 
@@ -56,11 +56,12 @@
 !(_6ZQ05nCv3Ys_8LA6B5LkZgm |=assoc_object|
 !~ name (~ assoc_object
 ~)
-!@ 1507996857.00
+!@ 1507998207.03
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for objects with assoc data"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
+~: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|  % _9EytjXNb76D_1ZP3iSk9cuu () 
 ~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan|  % _8MU0cEcpEYN_5SVe0jrv36o ()
 ~)
 
@@ -1532,6 +1533,19 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_data a basiclo_function"
 !)_9zpvXnTuDeB_2B7ZiBtN8fA
+
+
+
+!(_9EytjXNb76D_1ZP3iSk9cuu
+!@ 1507998778.37
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "routine for dump_data\u00b0assoc_object"
+
+!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _1FEnnpEkGdI_5DAcVDL5XHG |=dump_value| 
+ _9pvzBeIKHXF_8YDPCrQ6OEK |=put| ) ~)
+
+!)_9EytjXNb76D_1ZP3iSk9cuu
 
 
 
