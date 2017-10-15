@@ -471,69 +471,81 @@ load_modif_todo_BM (struct loader_stBM *ld, int ix,
       || tokopen.tok_delim != delim_leftparentilde)
     parsererrorprintf_BM (ldpars, lineno, colpos,
                           "expecting (~ after !~todo");
-  bool gotval = false;
-  _.valv =                      //
-    parsergetvalue_BM (ldpars, (struct stackframe_stBM *) (&_), 0, &gotval);
-  if (!gotval)
-    parsererrorprintf_BM (ldpars, tokopen.tok_line, tokopen.tok_col,
-                          "expect value after !~todo (~");
-  bool gottree = false;
-  bool gotselector = false;
-  if (istree_BM (_.valv))
+  bool again;
+  do
     {
-      gottree = true;
-      _.closv = (const tree_tyBM *) _.valv;
-    }
-  else if (isobject_BM (_.valv))
-    {
-      gotselector = true;
-      _.obselv = (objectval_tyBM *) _.valv;
-    }
-  else
-    parsererrorprintf_BM (ldpars, tokopen.tok_line, tokopen.tok_col,
-                          "expect tree or selector after !~todo (~");
-  int nbargs = 0;
-  memset (_.args, 0, sizeof (_.args));
-  while (nbargs < TODO_MAXARGS_BM)
-    {
+      again = false;
       bool gotval = false;
       _.valv =                  //
         parsergetvalue_BM (ldpars, (struct stackframe_stBM *) (&_), 0,
                            &gotval);
       if (!gotval)
-        break;
-      _.args[nbargs++] = _.valv;
-    };
-  parstoken_tyBM tokclose = parsertokenget_BM (ldpars);
-  if (tokclose.tok_kind != plex_DELIM
-      || tokclose.tok_delim != delim_tilderightparen)
-    parsererrorprintf_BM (ldpars, parserlineno_BM (ldpars),
-                          parsercolpos_BM (ldpars),
-                          "expect )~ after !~todo (~ <tree|selector> <%d-arguments> ",
-                          nbargs);
-  if (gotselector)
-    {
-      value_tyBM cloargs[3 + TODO_MAXARGS_BM];
-      memset (cloargs, 0, sizeof (cloargs));
-      cloargs[0] = argcurldobj;
-      cloargs[1] = _.obselv;
-      for (int ix = 0; ix < nbargs; ix++)
-        cloargs[ix + 2] = _.args[ix];
-      _.todov = makeclosure_BM (BMP_todo_send, nbargs + 2, cloargs);
+        parsererrorprintf_BM (ldpars, tokopen.tok_line, tokopen.tok_col,
+                              "expect value after !~todo (~");
+      bool gottree = false;
+      bool gotselector = false;
+      if (istree_BM (_.valv))
+        {
+          gottree = true;
+          _.closv = (const tree_tyBM *) _.valv;
+        }
+      else if (isobject_BM (_.valv))
+        {
+          gotselector = true;
+          _.obselv = (objectval_tyBM *) _.valv;
+        }
+      else
+        parsererrorprintf_BM (ldpars, tokopen.tok_line, tokopen.tok_col,
+                              "expect tree or selector after !~todo (~");
+      int nbargs = 0;
+      memset (_.args, 0, sizeof (_.args));
+      while (nbargs < TODO_MAXARGS_BM)
+        {
+          bool gotval = false;
+          _.valv =              //
+            parsergetvalue_BM (ldpars, (struct stackframe_stBM *) (&_), 0,
+                               &gotval);
+          if (!gotval)
+            break;
+          _.args[nbargs++] = _.valv;
+        };
+      parstoken_tyBM tokclose = parsertokenget_BM (ldpars);
+      if (tokclose.tok_kind == plex_DELIM
+          && tokclose.tok_delim == delim_exclamand)
+        again = true;
+      else if (tokclose.tok_kind != plex_DELIM
+               || tokclose.tok_delim != delim_tilderightparen)
+        parsererrorprintf_BM (ldpars, parserlineno_BM (ldpars),
+                              parsercolpos_BM (ldpars),
+                              "expect )~ after !~todo (~ <tree|selector> <%d-arguments> ",
+                              nbargs);
+      if (gotselector)
+        {
+          value_tyBM cloargs[3 + TODO_MAXARGS_BM];
+          memset (cloargs, 0, sizeof (cloargs));
+          cloargs[0] = argcurldobj;
+          cloargs[1] = _.obselv;
+          for (int ix = 0; ix < nbargs; ix++)
+            cloargs[ix + 2] = _.args[ix];
+          _.todov =
+            (value_tyBM) makeclosure_BM (BMP_todo_send, nbargs + 2, cloargs);
+        }
+      else if (gottree)
+        {
+          value_tyBM cloargs[3 + TODO_MAXARGS_BM];
+          memset (cloargs, 0, sizeof (cloargs));
+          cloargs[0] = (value_tyBM) _.closv;
+          cloargs[1] = argcurldobj;
+          for (int ix = 0; ix < nbargs; ix++)
+            cloargs[ix + 2] = _.args[ix];
+          _.todov =
+            (value_tyBM) makeclosure_BM (BMP_todo_apply, nbargs + 2, cloargs);
+        }
+      else
+        FATAL_BM ("!~todo unexpected corruption");
+      load_addtodo_BM (_.todov);
     }
-  else if (gottree)
-    {
-      value_tyBM cloargs[3 + TODO_MAXARGS_BM];
-      memset (cloargs, 0, sizeof (cloargs));
-      cloargs[0] = _.closv;
-      cloargs[1] = argcurldobj;
-      for (int ix = 0; ix < nbargs; ix++)
-        cloargs[ix + 2] = _.args[ix];
-      _.todov = makeclosure_BM (BMP_todo_apply, nbargs + 2, cloargs);
-    }
-  else
-    FATAL_BM ("!~todo unexpected corruption");
-  load_addtodo_BM (_.todov);
+  while (again);
 }                               /* end load_modif_todo_BM */
 
 
