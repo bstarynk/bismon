@@ -781,9 +781,9 @@ ROUTINEOBJNAME_BM (_9EytjXNb76D_1ZP3iSk9cuu)    // dump_data°assoc_object
   assert (!clos || isclosure_BM ((const value_tyBM) clos));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
-                 const closure_tyBM * clos; struct dumper_stBM *du;
-                 struct strbuffer_stBM *sbuf;
-                 const setval_tyBM * setv;
+                 const closure_tyBM * clos;
+                 struct dumper_stBM *du;
+                 struct strbuffer_stBM *sbuf; const setval_tyBM * setv;
                  objectval_tyBM * curattrob; value_tyBM curval;
                  value_tyBM dumpres;
     );
