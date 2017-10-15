@@ -487,6 +487,8 @@ ROUTINEOBJNAME_BM (_4DvEF1tVGFD_6VVLpFn6FPW)    //  dump_scan°hset_object
   return (value_tyBM) _.recv;
 }                               /* end dump_scan hset_object ROUTINE _4DvEF1tVGFD_6VVLpFn6FPW */
 
+
+
 //// for the method to dump_data°hset_object
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7GMLV81ntO3_4NHTv7fCL0A);
@@ -755,9 +757,9 @@ ROUTINEOBJNAME_BM (_8MU0cEcpEYN_5SVe0jrv36o)    //  dump_scan°assoc_object
 }                               /* end dump_scan°assoc_object ROUTINE _8MU0cEcpEYN_5SVe0jrv36o */
 
 
+////////////////
 
 //// for the method to dump_data°assoc_object
-
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9EytjXNb76D_1ZP3iSk9cuu);
 
 value_tyBM
@@ -780,7 +782,9 @@ ROUTINEOBJNAME_BM (_9EytjXNb76D_1ZP3iSk9cuu)    // dump_data°assoc_object
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
                  const closure_tyBM * clos; struct dumper_stBM *du;
-                 struct strbuffer_stBM *sbuf; const setval_tyBM * setv;
+                 struct strbuffer_stBM *sbuf;
+                 const setval_tyBM * setv;
+                 objectval_tyBM * curattrob; value_tyBM curval;
                  value_tyBM dumpres;
     );
   objectval_tyBM *closconn = NULL;
@@ -807,8 +811,44 @@ ROUTINEOBJNAME_BM (_9EytjXNb76D_1ZP3iSk9cuu)    // dump_data°assoc_object
                  constix__LAST);
   k_dump_value =
     objectcast_BM (nodenthson_BM ((void *) constnodv, constix_dump_value));
+  WEAKASSERT_BM (k_dump_value == BMP_dump_value);
   k_put = objectcast_BM (nodenthson_BM ((void *) constnodv, constix_put));
-  return _.recv;
+  WEAKASSERT_BM (isobject_BM ((value_tyBM) _.recv));
+  WEAKASSERT_BM (isassoc_BM (_.recv->ob_data));
+  anyassoc_tyBM *assoc = assoccast_BM (_.recv->ob_data);
+  if (!assoc)
+    return NULL;
+  _.setv = assoc_setattrs_BM (assoc);
+  unsigned nbattr = setcardinal_BM (_.setv);
+  int cnt = 0;
+  strbufferprintf_BM (_.sbuf, "!~ todo (~\t");
+  strbuffermoreindent_BM (_.sbuf);
+  for (unsigned ix = 0; ix < nbattr; ix++)
+    {
+      _.curattrob = setelemnth_BM (_.setv, ix);
+      if (!dumpobjisdumpable_BM (_.du, _.curattrob))
+        continue;
+      _.curval = assoc_getattr_BM (assoc, _.curattrob);
+      if (cnt > 0)
+        strbufferprintf_BM (_.sbuf, "\n!& ");
+      else
+        strbufferprintf_BM (_.sbuf, " ");
+      _.dumpres = send3_BM (k_put, BMP_dump_value,
+                            (struct stackframe_stBM *) &_,
+                            _.sbuf, _.du, taggedint_BM (0));
+      strbufferprintf_BM (_.sbuf, "\t");
+      _.dumpres = send3_BM (_.curattrob, BMP_dump_value,
+                            (struct stackframe_stBM *) &_,
+                            _.sbuf, _.du, taggedint_BM (0));
+      strbufferprintf_BM (_.sbuf, "\t");
+      _.dumpres = send3_BM (_.curval, BMP_dump_value,
+                            (struct stackframe_stBM *) &_,
+                            _.sbuf, _.du, taggedint_BM (0));
+      cnt++;
+    };
+  strbufferlessindent_BM (_.sbuf);
+  strbufferappendcstr_BM (_.sbuf, "\n~)\n");
+  return (value_tyBM) _.recv;
 #warning  _9EytjXNb76D_1ZP3iSk9cuu dump_data°assoc_object incomplete
 }                               /* end ROUTINE _9EytjXNb76D_1ZP3iSk9cuu dump_data°assoc_object */
 
