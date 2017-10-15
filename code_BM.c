@@ -849,7 +849,6 @@ ROUTINEOBJNAME_BM (_9EytjXNb76D_1ZP3iSk9cuu)    // dump_data°assoc_object
   strbufferlessindent_BM (_.sbuf);
   strbufferappendcstr_BM (_.sbuf, "\n~)\n");
   return (value_tyBM) _.recv;
-#warning  _9EytjXNb76D_1ZP3iSk9cuu dump_data°assoc_object incomplete
 }                               /* end ROUTINE _9EytjXNb76D_1ZP3iSk9cuu dump_data°assoc_object */
 
 
