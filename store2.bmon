@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 151 objects
+// for 154 objects
 // with 0 modules
 
 
@@ -438,6 +438,30 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 
 
 
+!(_12cTZAaLTTx_4Bq4ez6eGJM |=curcomp|
+!~ name (~ curcomp
+~)
+!@ 1508156592.48
+!)_12cTZAaLTTx_4Bq4ez6eGJM
+
+
+
+!(_8FvWRFyBCPy_4gA5UjVGRlc |=curindex|
+!~ name (~ curindex
+~)
+!@ 1508156669.41
+!)_8FvWRFyBCPy_4gA5UjVGRlc
+
+
+
+!(_5gWmR723ioX_8A2DiFQ2dlj |=curtuple|
+!~ name (~ curtuple
+~)
+!@ 1508156616.73
+!)_5gWmR723ioX_8A2DiFQ2dlj
+
+
+
 !(_5XDRkXDAUAk_9AuvN0J1d53 |=dumper_of_globals|
 !~ name (~ dumper_of_globals
 ~)
@@ -516,9 +540,14 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !(_0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 !~ name (~ foreach_in_tuple
 ~)
-!@ 1508148877.22
+!@ 1508156669.41
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "iterate on each component, index in tuple"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5gWmR723ioX_8A2DiFQ2dlj ]
+!: _5ve5gbSjN0r_1n61nNRPtnN |=results|
+ [ _12cTZAaLTTx_4Bq4ez6eGJM _8FvWRFyBCPy_4gA5UjVGRlc ]
 !)_0EfjiBTrXEo_3ppwTZ0M7xf
 
 
