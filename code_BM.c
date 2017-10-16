@@ -781,8 +781,7 @@ ROUTINEOBJNAME_BM (_9EytjXNb76D_1ZP3iSk9cuu)    // dump_data°assoc_object
   assert (!clos || isclosure_BM ((const value_tyBM) clos));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
-                 const closure_tyBM * clos;
-                 struct dumper_stBM *du;
+                 const closure_tyBM * clos; struct dumper_stBM *du;
                  struct strbuffer_stBM *sbuf; const setval_tyBM * setv;
                  objectval_tyBM * curattrob; value_tyBM curval;
                  value_tyBM dumpres;
@@ -851,6 +850,89 @@ ROUTINEOBJNAME_BM (_9EytjXNb76D_1ZP3iSk9cuu)    // dump_data°assoc_object
   return (value_tyBM) _.recv;
 }                               /* end ROUTINE _9EytjXNb76D_1ZP3iSk9cuu dump_data°assoc_object */
 
+
+//// for the method set°assoc_object
+extern objrout_sigBM ROUTINEOBJNAME_BM (_4zaM2Itdsuq_9qNJK0HbcQI);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_4zaM2Itdsuq_9qNJK0HbcQI)    //  set°assoc_object
+(const closure_tyBM * clos, struct stackframe_stBM * stkf, const value_tyBM arg1,       /*recv */
+ const value_tyBM arg2 __attribute__ ((unused)),
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv; const closure_tyBM * clos;
+                 const setval_tyBM * setv;
+    );
+  WEAKASSERT_BM (isobject_BM (arg1));
+  _.recv = arg1;
+  anyassoc_tyBM *assoc = assoccast_BM (_.recv->ob_data);
+  if (!assoc)
+    return NULL;
+  _.setv = assoc_setattrs_BM (assoc);
+  return (value_tyBM) _.setv;
+}                               /* end ROUTINE _4zaM2Itdsuq_9qNJK0HbcQ   set°assoc_object */
+
+
+
+//// for the method get°assoc_object
+extern objrout_sigBM ROUTINEOBJNAME_BM (_4icYJnKsN0o_4xm5UbQOMTe);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_4icYJnKsN0o_4xm5UbQOMTe)    //  get°assoc_object
+(const closure_tyBM * clos, struct stackframe_stBM * stkf, const value_tyBM arg1,       /* recv */
+ const value_tyBM arg2,         /* obattr */
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv; const objectval_tyBM * obattr;
+                 const closure_tyBM * clos;
+    );
+  WEAKASSERT_BM (isobject_BM (arg1));
+  _.recv = arg1;
+  anyassoc_tyBM *assoc = assoccast_BM (_.recv->ob_data);
+  if (!assoc)
+    return NULL;
+  if (!isobject_BM (arg2))
+    return NULL;
+  _.obattr = objectcast_BM (arg2);
+  return assoc_getattr_BM (assoc, _.obattr);
+}                               /* end ROUTINE _4icYJnKsN0o_4xm5UbQOMTe get°assoc_object */
+
+
+
+//// for the method put°assoc_object
+extern objrout_sigBM ROUTINEOBJNAME_BM (_6eD9Y1qYcnj_8uVDhxjBpG8);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_6eD9Y1qYcnj_8uVDhxjBpG8)    //  put°assoc_object
+(const closure_tyBM * clos, struct stackframe_stBM * stkf, const value_tyBM arg1,       /* recv */
+ const value_tyBM arg2,         /* obattr */
+ const value_tyBM arg3,         /* val */
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * recv;
+                 const objectval_tyBM * obattr; const closure_tyBM * clos;
+                 value_tyBM valattr;
+    );
+  WEAKASSERT_BM (isobject_BM (arg1));
+  _.recv = arg1;
+  if (!isobject_BM ((value_tyBM) _.recv))
+    return NULL;
+  anyassoc_tyBM *assoc = assoccast_BM (_.recv->ob_data);
+  if (!isobject_BM (arg2))
+    return NULL;
+  _.obattr = objectcast_BM (arg2);
+  _.valattr = arg3;
+  _.recv->ob_data = assoc = assoc_addattr_BM (assoc, _.obattr, _.valattr);
+  return _.recv;
+}                               /* end ROUTINE _6eD9Y1qYcnj_8uVDhxjBpG8   put°assoc_object */
 
 
 ////////////////////////////////////////////////////////////////

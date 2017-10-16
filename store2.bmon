@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 144 objects
+// for 148 objects
 // with 0 modules
 
 
@@ -56,13 +56,16 @@
 !(_6ZQ05nCv3Ys_8LA6B5LkZgm |=assoc_object|
 !~ name (~ assoc_object
 ~)
-!@ 1507998207.03
+!@ 1508128268.20
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for objects with assoc data"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
 ~: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|  % _9EytjXNb76D_1ZP3iSk9cuu () 
-~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan|  % _8MU0cEcpEYN_5SVe0jrv36o ()
+~: _2mYaTh9kH4I_7ENiXcymRmy |=set|  % _4zaM2Itdsuq_9qNJK0HbcQI () 
+~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan|  % _8MU0cEcpEYN_5SVe0jrv36o () 
+~: _2LPrNfUHb6Y_1qOPmENNXqB |=get|  % _4icYJnKsN0o_4xm5UbQOMTe () 
+~: _9pvzBeIKHXF_8YDPCrQ6OEK |=put|  % _6eD9Y1qYcnj_8uVDhxjBpG8 ()
 ~)
 
 !)_6ZQ05nCv3Ys_8LA6B5LkZgm
@@ -524,6 +527,14 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to generate a module, after preparation"
 !)_9mq0jsuz4XQ_4doHfd987Q6
+
+
+
+!(_2LPrNfUHb6Y_1qOPmENNXqB |=get|
+!~ name (~ get
+~)
+!@ 1508128268.20
+!)_2LPrNfUHb6Y_1qOPmENNXqB
 
 
 
@@ -1207,6 +1218,24 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 
+!(_4icYJnKsN0o_4xm5UbQOMTe
+!@ 1508128314.71
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method to get\u00b0assoc_object"
+!)_4icYJnKsN0o_4xm5UbQOMTe
+
+
+
+!(_4zaM2Itdsuq_9qNJK0HbcQI
+!@ 1508127405.32
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "routine for set\u00b0assoc_object"
+!)_4zaM2Itdsuq_9qNJK0HbcQI
+
+
+
 !(_4DvEF1tVGFD_6VVLpFn6FPW
 !@ 1507911440.43
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1345,6 +1374,15 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_data a class"
 !)_67IapmpeTLU_8MQKtlK8iAD
+
+
+
+!(_6eD9Y1qYcnj_8uVDhxjBpG8
+!@ 1508127951.96
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method put\u00b0assoc_object"
+!)_6eD9Y1qYcnj_8uVDhxjBpG8
 
 
 
