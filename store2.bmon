@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 150 objects
+// for 151 objects
 // with 0 modules
 
 
@@ -510,6 +510,16 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !@ 1505800093.74
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !)_0kRkxnvVHxY_59CcWWLwLGz
+
+
+
+!(_0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
+!~ name (~ foreach_in_tuple
+~)
+!@ 1508148877.22
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "iterate on each component, index in tuple"
+!)_0EfjiBTrXEo_3ppwTZ0M7xf
 
 
 
