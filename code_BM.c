@@ -935,6 +935,50 @@ ROUTINEOBJNAME_BM (_6eD9Y1qYcnj_8uVDhxjBpG8)    //  put°assoc_object
 }                               /* end ROUTINE _6eD9Y1qYcnj_8uVDhxjBpG8   put°assoc_object */
 
 
+
+//// for the method remove°assoc_object
+extern objrout_sigBM ROUTINEOBJNAME_BM (_0ekJdzLOqAI_8mejMqkwuKQ);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_0ekJdzLOqAI_8mejMqkwuKQ)    //  remove°assoc_object
+(const closure_tyBM * clos, struct stackframe_stBM * stkf, const value_tyBM arg1,       /* recv */
+ const value_tyBM arg2,         /* attrs */
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * recv; objectval_tyBM * obattr;
+                 value_tyBM attr; const closure_tyBM * clos;
+    );
+  WEAKASSERT_BM (isobject_BM (arg1));
+  _.recv = arg1;
+  if (!isobject_BM ((value_tyBM) _.recv))
+    return NULL;
+  anyassoc_tyBM *assoc = assoccast_BM (_.recv->ob_data);
+  if (!isobject_BM (arg2))
+    return NULL;
+  _.attr = (arg2);
+  if (isobject_BM (_.attr))
+    {
+      _.recv->ob_data = assoc = assoc_removeattr_BM (assoc, _.attr);
+      return _.recv;
+    }
+  else if (issequence_BM (_.attr))
+    {
+      unsigned ln = sequencesize_BM (_.attr);
+      for (unsigned ix = 0; ix < ln; ix++)
+        {
+          _.obattr = sequencenthcomp_BM (_.attr, ix);
+          assoc = assoc_removeattr_BM (assoc, _.obattr);
+        }
+      _.recv->ob_data = assoc;
+      return _.recv;
+    }
+  return NULL;
+}                               /* end ROUTINE _0ekJdzLOqAI_8mejMqkwuKQ remove°assoc_object */
+
+
 ////////////////////////////////////////////////////////////////
 //// for the method to dump_value an object or a class
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7fCcteNe7aR_3IKHeHjmzff);

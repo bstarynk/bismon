@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 148 objects
+// for 149 objects
 // with 0 modules
 
 
@@ -56,7 +56,7 @@
 !(_6ZQ05nCv3Ys_8LA6B5LkZgm |=assoc_object|
 !~ name (~ assoc_object
 ~)
-!@ 1508128268.20
+!@ 1508140559.15
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for objects with assoc data"
@@ -65,6 +65,7 @@
 ~: _2mYaTh9kH4I_7ENiXcymRmy |=set|  % _4zaM2Itdsuq_9qNJK0HbcQI () 
 ~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan|  % _8MU0cEcpEYN_5SVe0jrv36o () 
 ~: _2LPrNfUHb6Y_1qOPmENNXqB |=get|  % _4icYJnKsN0o_4xm5UbQOMTe () 
+~: _3OWP1zOtxz2_9uAVt50SUZO |=remove|  % _0ekJdzLOqAI_8mejMqkwuKQ () 
 ~: _9pvzBeIKHXF_8YDPCrQ6OEK |=put|  % _6eD9Y1qYcnj_8uVDhxjBpG8 ()
 ~)
 
@@ -1008,6 +1009,15 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 !& _3MHr03F06Xe_5FdCV6pp41N |=assocbind| 
 !&  * _9MVKIIUC3fl_5Yz7jotlCtv (  10)
 !)_0cBpCT3lEHS_338HjZpF4UE
+
+
+
+!(_0ekJdzLOqAI_8mejMqkwuKQ
+!@ 1508140596.53
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "routine for remove\u00b0assoc_object"
+!)_0ekJdzLOqAI_8mejMqkwuKQ
 
 
 
