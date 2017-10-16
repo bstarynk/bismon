@@ -485,7 +485,7 @@ ROUTINEOBJNAME_BM (_4DvEF1tVGFD_6VVLpFn6FPW)    //  dump_scan°hset_object
   _.setv = hashsetobj_to_set_BM (_.recv->ob_data);
   dumpscanvalue_BM (_.du, (value_tyBM) _.setv, 0);
   return (value_tyBM) _.recv;
-}                               /* end dump_scan hset_object ROUTINE _4DvEF1tVGFD_6VVLpFn6FPW */
+}                               /* end dump_scan°set_object ROUTINE _4DvEF1tVGFD_6VVLpFn6FPW */
 
 
 
@@ -557,6 +557,69 @@ ROUTINEOBJNAME_BM (_7GMLV81ntO3_4NHTv7fCL0A)    // dump_data°hset_object
   strbufferappendcstr_BM (_.sbuf, "\n~)\n");
   return (value_tyBM) _.recv;
 }                               /* end dump_data hset_object ROUTINE _7GMLV81ntO3_4NHTv7fCL0A  */
+
+
+
+//// for the method to get°hset_object
+extern objrout_sigBM ROUTINEOBJNAME_BM (_26FUvWKvkYr_5hyqhhV8NEh);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_26FUvWKvkYr_5hyqhhV8NEh)    // get°hset_object
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         /* reciever */
+ const value_tyBM arg2 /*elem */ ,
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * recv;
+                 value_tyBM elem;
+                 objectval_tyBM * curob; const closure_tyBM * clos;
+                 const setval_tyBM * setv;
+    );
+  struct hashsetobj_stBM *hset = NULL;
+  _.clos = clos;
+  if (!isobject_BM (arg1))
+    return NULL;
+  _.recv = arg1;
+  _.elem = arg2;
+  hset = hashsetobjcast_BM (_.recv->ob_data);
+  if (!hset)
+    return NULL;
+  if (isobject_BM (_.elem))
+    {
+      if (hashsetobj_contains_BM (hset, _.elem))
+        return _.elem;
+      return NULL;
+    }
+  else if (issequence_BM (_.elem))
+    {
+      unsigned lnseq = sequencesize_BM (_.elem);
+      const objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+      const objectval_tyBM **arr =
+        (lnseq < TINYSIZE_BM) ? tinyarr
+        : calloc (lnseq, sizeof (objectval_tyBM *));
+      if (!arr)
+        FATAL_BM ("calloc %u failure in get°hset_object", lnseq);
+      unsigned cnt = 0;
+      for (unsigned ix = 0; ix < lnseq; ix++)
+        {
+          _.curob = sequencenthcomp_BM (_.elem, ix);
+          if (hashsetobj_contains_BM (hset, _.curob))
+            arr[cnt++] = _.curob;
+        };
+      _.setv = makeset_BM (arr, cnt);
+      if (arr != tinyarr)
+        free (arr);
+      return (value_tyBM) _.setv;
+    }
+  else if (!_.elem)
+    {
+      _.setv = hashsetobj_to_set_BM (hset);
+      return (value_tyBM) _.setv;
+    }
+  return NULL;
+}                               /* end ROUTINE _26FUvWKvkYr_5hyqhhV8NEh get°hset_object */
 
 
 
