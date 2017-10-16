@@ -572,8 +572,7 @@ ROUTINEOBJNAME_BM (_26FUvWKvkYr_5hyqhhV8NEh)    // get°hset_object
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv;
-                 value_tyBM elem;
+                 objectval_tyBM * recv; value_tyBM elem;
                  objectval_tyBM * curob; const closure_tyBM * clos;
                  const setval_tyBM * setv;
     );

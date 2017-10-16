@@ -527,7 +527,7 @@ hashsetobj_insert_BM (struct hashsetobj_stBM *hset,
 struct hashsetobj_stBM *
 hashsetobj_grow_BM (struct hashsetobj_stBM *hset, unsigned gap)
 {
-  if (valtype_BM ((const value_tyBM) hset) != tydata_hashsetobj_BM)
+  if (!hset || valtype_BM ((const value_tyBM) hset) != tydata_hashsetobj_BM)
     {
       unsigned newsiz = prime_above_BM (4 * gap / 3 + 10);
       hset =                    //

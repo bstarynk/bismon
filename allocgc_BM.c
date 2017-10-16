@@ -354,6 +354,12 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
       typedhead_tyBM *curp = allocationvec_vBM->al_ptr[ix];
       if (!curp)
         continue;
+      if (curp->htyp < type_FIRST_BM || curp->htyp > tydata_LAST_BM)
+        {
+          fflush (NULL);
+          FATAL_BM ("corrupted allocated#%ld @%p (htyp %d)", ix, curp,
+                    (int) (curp->htyp));
+        };
       assert (curp->htyp >= type_FIRST_BM && curp->htyp <= tydata_LAST_BM);
       curp->hgc = CLEARMGC_BM;
       oldnbval++;
