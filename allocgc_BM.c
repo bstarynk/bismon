@@ -35,12 +35,10 @@ allocgcty_BM (unsigned type, size_t sz)
     {
       unsigned long new_alloc_size = ((4 * alloc_size / 3 + 600) | 511) - 2;
       struct allalloc_stBM *new_allocvec =
-        malloc (sizeof (struct allalloc_stBM) +
+        calloc (1, sizeof (struct allalloc_stBM) +
                 new_alloc_size * sizeof (void *));
       if (!new_allocvec)
         FATAL_BM ("failed reallocation of allocvec %ld (%m)", new_alloc_size);
-      memset (new_allocvec, 0, sizeof (struct allalloc_stBM) +
-              new_alloc_size * sizeof (void *));
       new_allocvec->al_size = new_alloc_size;
       new_allocvec->al_nb = alloc_nb;
       memcpy (new_allocvec->al_ptr, allocationvec_vBM->al_ptr,
