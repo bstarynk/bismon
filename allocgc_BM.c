@@ -43,6 +43,8 @@ allocgcty_BM (unsigned type, size_t sz)
               new_alloc_size * sizeof (void *));
       new_allocvec->al_size = new_alloc_size;
       new_allocvec->al_nb = alloc_nb;
+      memcpy (new_allocvec->al_ptr, allocationvec_vBM->al_ptr,
+              alloc_nb * sizeof (void *));
       free (allocationvec_vBM), allocationvec_vBM = new_allocvec;
       want_garbage_collection_BM = true;
     }
