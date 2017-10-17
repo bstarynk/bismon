@@ -1695,6 +1695,8 @@ value_tyBM
       unsigned curlineno = parserlineno_BM (pars);
       unsigned curcolpos = parsercolpos_BM (pars);
       char *curpc = (char *) parserrestline_BM (pars);
+      DBGPRINTF_BM ("parsergetchunk_BM L%dC%d loop#%d curpc:%s",
+                    curlineno, curcolpos, loopcnt, curpc);
       if (loopcnt++ > MAXSIZE_BM / 8)
         parsererrorprintf_BM (pars, curlineno, curcolpos,
                               "too many loops %d in chunk (started line %d, col %d) : %s",
