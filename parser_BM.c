@@ -1695,7 +1695,7 @@ value_tyBM
       unsigned curlineno = parserlineno_BM (pars);
       unsigned curcolpos = parsercolpos_BM (pars);
       char *curpc = (char *) parserrestline_BM (pars);
-      DBGPRINTF_BM ("parsergetchunk_BM L%dC%d loop#%d curpc:%s",
+      NONPRINTF_BM ("parsergetchunk_BM L%dC%d loop#%d curpc:%s",
                     curlineno, curcolpos, loopcnt, curpc);
       if (loopcnt++ > MAXSIZE_BM / 8)
         parsererrorprintf_BM (pars, curlineno, curcolpos,
@@ -1850,7 +1850,6 @@ value_tyBM
           gotend = true;
           break;
         }
-#warning a chunk ended by some comment end is not well parsed
       // process contiguous punctuation characters non $, perhaps
       // ended by $$
       if (uc != '$' && g_unichar_ispunct (uc))
@@ -1859,7 +1858,11 @@ value_tyBM
           gunichar nc = 0;
           while (*npc && (nc = g_utf8_get_char (npc)) > 0
                  && nc != '$' && g_unichar_ispunct (nc))
-            npc = g_utf8_next_char (npc);
+            {
+              if (npc[0] == '}' && npc[1] == '#')
+                break;
+              npc = g_utf8_next_char (npc);
+            };
           bool twodollars = npc[0] == '$' && npc[1] == '$';
           if (twodollars)
             npc++;
