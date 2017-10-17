@@ -1848,6 +1848,7 @@ value_tyBM
           gotend = true;
           break;
         }
+#warning a chunk ended by some comment end is not well parsed
       // process contiguous punctuation characters non $, perhaps
       // ended by $$
       if (uc != '$' && g_unichar_ispunct (uc))
