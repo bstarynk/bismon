@@ -3246,7 +3246,7 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
   WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnod)
                  && nodewidth_BM ((const value_tyBM) constnod) >=
                  constix__LAST
-                 && valhash_BM ((const value_tyBM) constnod) == 1284771844);
+                 && valhash_BM ((const value_tyBM) constnod) == 2502446012);
   const objectval_tyBM *k_basiclo_cexpansion =
     objectcast_BM (nodenthson_BM
                    ((const value_tyBM) constnod, constix_basiclo_cexpansion));

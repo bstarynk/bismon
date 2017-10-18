@@ -416,6 +416,24 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 
 
 
+!(_42gEKfF4qca_6gGwxSFC1FO |=cexpansion_readmacro|
+!~ name (~ cexpansion_readmacro
+~)
+!@ 1507556148.95
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "readmacro routine for cexpansion-s, the closed value is a basiclo_cexpander"
+
+!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion| 
+ _9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|  _5ve5gbSjN0r_1n61nNRPtnN |=results| 
+ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|  _7DQyvJFMOrC_9IfC3CtYknn |=body| 
+ 
+ _9OzBvYbDWm8_3XA4wkArOmo |=expander| ) ~)
+
+!)_42gEKfF4qca_6gGwxSFC1FO
+
+
+
 !(_5MiY0SneC5A_7c2Ar72nm9O |=complete_module|
 !~ name (~ complete_module
 ~)
@@ -1330,22 +1348,6 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 
-!(_42gEKfF4qca_6gGwxSFC1FO
-!@ 1507556148.95
-!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "readmacro routine for cexpansion-s, the closed value is a basiclo_cexpander"
-
-!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion| 
- _9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|  _5ve5gbSjN0r_1n61nNRPtnN |=results| 
- _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|  _7DQyvJFMOrC_9IfC3CtYknn |=body| 
- 
- _9OzBvYbDWm8_3XA4wkArOmo |=expander| ) ~)
-
-!)_42gEKfF4qca_6gGwxSFC1FO
-
-
-
 !(_4icYJnKsN0o_4xm5UbQOMTe
 !@ 1508128314.71
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
@@ -1424,7 +1426,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 !(_5mnsT1wsdWs_2Qnqsf3wqaP
-!@ 1508226117.21
+!@ 1508326465.33
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method for prepare_routine:basiclo_function"
@@ -1434,6 +1436,8 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
  { _7yoiT31GmV4_2iTjHx3P2hb _7DQyvJFMOrC_9IfC3CtYknn _7WjaQkqwdaZ_6PRtbDrJHnf }
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
 _36MhHxakHKT_1ZzV5Xoj5LX
+!# 1
+!& __
 
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _0jFqaPPHgYH_5JpjOPxQ67p |=arguments| 
  _2U8Sj78DMbl_5eerKpaJsNq |=block|  _24sSVIADeHm_0Sx34wQfG7W |=locals| 
