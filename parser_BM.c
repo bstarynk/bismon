@@ -1695,8 +1695,8 @@ value_tyBM
       unsigned curlineno = parserlineno_BM (pars);
       unsigned curcolpos = parsercolpos_BM (pars);
       char *curpc = (char *) parserrestline_BM (pars);
-      NONPRINTF_BM ("parsergetchunk_BM L%dC%d loop#%d curpc:%s",
-                    curlineno, curcolpos, loopcnt, curpc);
+      DBGPRINTF_BM ("parsergetchunk_BM L%dC%d loop#%d curpc(l%zd):%s",
+                    curlineno, curcolpos, loopcnt, strlen (curpc), curpc);
       if (loopcnt++ > MAXSIZE_BM / 8)
         parsererrorprintf_BM (pars, curlineno, curcolpos,
                               "too many loops %d in chunk (started line %d, col %d) : %s",
@@ -1705,7 +1705,7 @@ value_tyBM
         parsererrorprintf_BM (pars, curlineno, curcolpos,       //
                               "end of file in chunk (started line %d, col %d)",
                               startlineno, startcolpos);
-      if (parsereol_BM (pars))
+      if (parsereol_BM (pars) || !curpc || *curpc == (char) 0)
         {
           parsernextline_BM (pars);
           continue;
@@ -1981,10 +1981,13 @@ value_tyBM
                 datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
             }
           parseradvanceutf8_BM (pars, 1);
+
           continue;
         }
     }
   while (!gotend);
+  DBGPRINTF_BM ("parsergetchunk_BM gotend %s veclen %u",
+                gotend ? "true" : "false", datavectlen_BM (_.chunkvec));
   if (gotend)
     {
       _.resval = nobuild ? NULL //
@@ -1999,3 +2002,5 @@ value_tyBM
     *pgotchunk = false;
   return NULL;
 }                               /* end parsergetchunk_BM */
+
+// eof parser_BM.c
