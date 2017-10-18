@@ -3124,6 +3124,16 @@ handlekeypresscmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
       tabautocompletecmd_BM ();
       return true;
     }
+  else if (evk->keyval >= GDK_KEY_F1 && evk->keyval <= GDK_KEY_F10)
+    {
+      GdkModifierType modmask = gtk_accelerator_get_default_mod_mask ();
+      bool withctrl = (evk->state & modmask) == GDK_CONTROL_MASK;
+      bool withshift = (evk->state & modmask) == GDK_SHIFT_MASK;
+      DBGPRINTF_BM ("handlekeypresscmd_BM keyval %#x KEY_F%d %s%s",
+                    evk->keyval, evk->keyval - (GDK_KEY_F1 - 1),
+                    withctrl ? " ctrl" : "", withshift ? " shift" : "");
+      return false;
+    }
   return false;                 // propagate the event
 }                               /* end handlekeypresscmd_BM */
 
