@@ -3,7 +3,7 @@ CC=gcc
 CXX= g++
 CCACHE= ccache
 MARKDOWN= markdown
-WARNFLAGS= -Wall -Wextra -Wmissing-prototypes -fdiagnostics-color=auto
+WARNFLAGS= -Wall -Wextra -Wmissing-prototypes -Wstack-usage=1000 -fdiagnostics-color=auto
 SKIPCXXWARNFLAGS= -Wmissing-prototypes
 OPTIMFLAGS= -O1 -g3
 CFLAGS= -std=gnu11 $(WARNFLAGS) $(PREPROFLAGS) $(OPTIMFLAGS)
