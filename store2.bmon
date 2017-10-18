@@ -556,12 +556,14 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !(_0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 !~ name (~ foreach_in_tuple
 ~)
-!@ 1508316974.03
+!@ 1508325401.93
 !$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "iterate on each component, index in tuple"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _5gWmR723ioX_8A2DiFQ2dlj ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple| )
 !: _5ve5gbSjN0r_1n61nNRPtnN |=results|
  [ _0e8fQitctw8_8arwqiGsOsl _12cTZAaLTTx_4Bq4ez6eGJM _8FvWRFyBCPy_4gA5UjVGRlc ]
 !: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
