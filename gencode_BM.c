@@ -65,7 +65,7 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   // retrieve arguments
   _.recv = /*function object */ (arg1);
   _.modgenob = /*module generation object */ objectcast_BM (arg2);
-  _.prepvalset = /* set of routines */ setcast_BM (arg3);
+  _.prepvalset = /* set of routines */ (value_tyBM) setcast_BM (arg3);
   DBGPRINTF_BM
     ("start prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP recv=%s",
      objectdbg_BM (_.recv));
