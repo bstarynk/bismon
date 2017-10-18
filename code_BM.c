@@ -3313,7 +3313,7 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
   DBGPRINTF_BM
     ("%s cexpansion  startix=%d nbresults=%d nbargs=%d nodwidth=%d",
      objectdbg_BM (clos_curcexp), startix, nbresults, nbargs, nodwidth);
-  if (startix + nbresults + nbargs <= nodwidth)
+  if (startix + nbresults + nbargs < nodwidth)
     {
       if (_.pars)
         parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
