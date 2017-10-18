@@ -125,4 +125,4 @@ count:
 	@wc -cl $(wildcard *.c *.h *.cc) | sort -n
 
 redump: bismon
-	./bismon --dump-after-load . --batch
+	time ./bismon --dump-after-load . --batch
