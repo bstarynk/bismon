@@ -335,6 +335,10 @@ struct loader_stBM              // malloc-ed then free-d at load time
   typedhead_tyBM pa;            // rlen is unused
   unsigned ld_magic;            /* always LOADERMAGIC_BM */
   unsigned ld_maxnum;           /* highest number of store*.bmon files */
+  double ld_startelapsedtime;
+  double ld_startcputime;
+  unsigned long ld_nbobjects;
+  unsigned ld_nbmodules, ld_nbroutines;
   struct hashsetobj_stBM *ld_objhset;   // hashset of loaded objects
   struct hashsetobj_stBM *ld_modhset;   // hashset of loaded module objects
   struct listtop_stBM *ld_todolist;

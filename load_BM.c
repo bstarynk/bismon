@@ -113,6 +113,8 @@ load_initial_BM (const char *ldirpath)
   ((typedhead_tyBM *) ld)->rlen = 0;
   ld->ld_magic = LOADERMAGIC_BM;
   ld->ld_maxnum = maxnum;
+  ld->ld_startelapsedtime = elapsedtime_BM ();
+  ld->ld_startcputime = cputime_BM ();
   ld->ld_objhset =
     hashsetobj_grow_BM (NULL, 2 * BM_NB_PREDEFINED + maxnum * 100);
   ld->ld_modhset = hashsetobj_grow_BM (NULL, 2 * TINYSIZE_BM);
@@ -124,7 +126,10 @@ load_initial_BM (const char *ldirpath)
     {
       char *pa = patharr[ix];
       if (pa)
-        ld->ld_storepatharr[ix] = pa;
+        {
+          ld->ld_storepatharr[ix] = pa;
+          nbfiles++;
+        };
     }
   ld->ld_parsarr = calloc (maxnum + 2, sizeof (void *));
   if (!ld->ld_parsarr)
@@ -139,6 +144,20 @@ load_initial_BM (const char *ldirpath)
                    struct loader_stBM *curld);
     _.curld = ld;
     doload_BM ((struct stackframe_stBM *) &_, ld);
+  }
+  {
+    double deltaelapsed = elapsedtime_BM () - ld->ld_startelapsedtime;
+    double deltacpu = cputime_BM () - ld->ld_startcputime;
+    char *realp = realpath (ld->ld_dir, NULL);
+    printf ("\n** loaded %d files from %s (%s) with %ld objects,\n"
+            "... %d modules, %d routines in %.4f cpu %.3f real seconds\n"
+            "... (%.1f cpu, %.1f real µs/obj)\n",
+            nbfiles, ld->ld_dir, realp, ld->ld_nbobjects,
+            ld->ld_nbmodules, ld->ld_nbroutines,
+            deltacpu, deltaelapsed,
+            (deltacpu * 1.0e6) / ld->ld_nbobjects,
+            (deltaelapsed * 1.0e6) / ld->ld_nbobjects);
+    free (realp), realp = NULL;
   }
   firstloader_BM = NULL;
   free (ld->ld_dir), ld->ld_dir = NULL;
@@ -260,6 +279,8 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
     FATAL_BM ("no object definition in %s\n", curldpath);
   free (linbuf), linbuf = 0;
   fclose (fil);
+  ld->ld_nbobjects += nbobjdef;
+  ld->ld_nbroutines += nbrout;
   if (nbrout > 0)
     {
       fprintf (stderr, "load first pass #%d: %s found %d routines\n", ix,

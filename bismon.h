@@ -24,7 +24,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <pthread.h>
-
+#include <execinfo.h>
 
 
 #include <gtk/gtk.h>

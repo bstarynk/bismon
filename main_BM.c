@@ -343,12 +343,15 @@ main (int argc, char **argv)
           free (rd);
         };
       putchar ('\n');
-      printf ("scanned %ld, emitted %ld objects\n",
+      printf ("dump: scanned %ld, emitted %ld objects\n",
               di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount);
-      printf ("did %ld todos, wrote %ld files\n",
+      printf ("... did %ld todos, wrote %ld files\n",
               di.dumpinfo_todocount, di.dumpinfo_wrotefilecount);
-      printf ("in %.3f elapsed, %.4f cpu seconds.\n",
-              di.dumpinfo_elapsedtime, di.dumpinfo_cputime);
+      printf
+        ("... in %.3f elapsed, %.4f cpu seconds\n (%.1f elapsed, %.1f cpu µs/obj)\n",
+         di.dumpinfo_elapsedtime, di.dumpinfo_cputime,
+         di.dumpinfo_elapsedtime * 1.0e6 / di.dumpinfo_emittedobjectcount,
+         di.dumpinfo_cputime * 1.0e6 / di.dumpinfo_emittedobjectcount);
     }
   if (batch_bm)
     {

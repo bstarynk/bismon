@@ -461,6 +461,7 @@ openmoduleforloader_BM(const rawid_tyBM modid,struct loader_stBM*ld, struct  sta
           return false;
         }
     }
+  ld->ld_nbmodules++;
   return true;
 } // end of openmoduleforloader_BM
 

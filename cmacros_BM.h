@@ -42,6 +42,12 @@
 #define FATAL_AT_BIS_BM(Fil,Lin,Fmt,...) do {                   \
     fprintf(stderr, "BM FATAL:%s:%d: <%s>\n " Fmt "\n\n",       \
             Fil, Lin, __func__, ##__VA_ARGS__);                 \
+    void* backarr[2*TINYSIZE_BM];				\
+    memset (backarr, 0, sizeof(backarr));			\
+    int backdepth =						\
+      backtrace(backarr, sizeof(backarr)/sizeof(void*));	\
+    backtrace_symbols_fd(backarr, backdepth,			\
+			 STDERR_FILENO);			\
     abort_BM(); } while(0)
 
 #define FATAL_AT_BM(Fil,Lin,Fmt,...) FATAL_AT_BIS_BM(Fil,Lin,Fmt,##__VA_ARGS__)
