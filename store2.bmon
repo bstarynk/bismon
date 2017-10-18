@@ -556,7 +556,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !(_0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 !~ name (~ foreach_in_tuple
 ~)
-!@ 1508316577.49
+!@ 1508316974.03
 !$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "iterate on each component, index in tuple"
@@ -564,6 +564,49 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
  [ _5gWmR723ioX_8A2DiFQ2dlj ]
 !: _5ve5gbSjN0r_1n61nNRPtnN |=results|
  [ _0e8fQitctw8_8arwqiGsOsl _12cTZAaLTTx_4Bq4ez6eGJM _8FvWRFyBCPy_4gA5UjVGRlc ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  " "  "/*"  " " _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|   " " 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _7WjaQkqwdaZ_6PRtbDrJHnf |=id| )  " " 
+ "start"  " "  "*/" 
+  "\n"  * _5ucAZimYynS_4VA0XHvr1nW ( _0e8fQitctw8_8arwqiGsOsl |=curcontainer|  
+)  " "  "="  " " 
+  "tuplecast_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5gWmR723ioX_8A2DiFQ2dlj |=curtuple|  
+)  ");"  "\n" 
+  "unsigned"  " "  "size_"  * _5ucAZimYynS_4VA0XHvr1nW ( _7WjaQkqwdaZ_6PRtbDrJHnf |=id|  
+)  " " 
+  "="  " "  "tuplesize_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0e8fQitctw8_8arwqiGsOsl |=curcontainer|  
+) 
+  ");"  "\n"  "for"  " "  "(" 
+  "unsigned"  " "  "ix_"  * _5ucAZimYynS_4VA0XHvr1nW ( _7WjaQkqwdaZ_6PRtbDrJHnf |=id|  
+)  " " 
+  "="  " "  0  ";"  " " 
+  "ix_"  * _5ucAZimYynS_4VA0XHvr1nW ( _7WjaQkqwdaZ_6PRtbDrJHnf |=id|  
+)  " "  "<"  " " 
+  "size_"  * _5ucAZimYynS_4VA0XHvr1nW ( _7WjaQkqwdaZ_6PRtbDrJHnf |=id|  
+)  ";"  " "  "ix_" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _7WjaQkqwdaZ_6PRtbDrJHnf |=id| )  "++)" 
+ " "  "{"  "\n" 
+  "  "  * _5ucAZimYynS_4VA0XHvr1nW ( _12cTZAaLTTx_4Bq4ez6eGJM |=curcomp|  
+)  " "  "="  " " 
+  "tuplecompnth_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0e8fQitctw8_8arwqiGsOsl |=curcontainer|  
+)  ","  " " 
+  "ix_"  * _5ucAZimYynS_4VA0XHvr1nW ( _7WjaQkqwdaZ_6PRtbDrJHnf |=id|  
+)  ");"  "\n"  "  " 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _8FvWRFyBCPy_4gA5UjVGRlc |=curindex|  
+)  " "  "="  " "  "ix_" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _7WjaQkqwdaZ_6PRtbDrJHnf |=id| )  ";" 
+ "\n"  "  "  * _5ucAZimYynS_4VA0XHvr1nW ( _7DQyvJFMOrC_9IfC3CtYknn |=body|  
+) 
+  ";"  "\n"  "};"  " "  "//" 
+  " "  "end"  " "  "for"  " " 
+  "ix_"  * _5ucAZimYynS_4VA0XHvr1nW ( _7WjaQkqwdaZ_6PRtbDrJHnf |=id|  
+)  "\n"  * _5ucAZimYynS_4VA0XHvr1nW ( _12cTZAaLTTx_4Bq4ez6eGJM |=curcomp|  
+)  " " 
+  "="  " "  "NULL"  ";"  "\n" 
+  "/*"  " "  "end"  " " _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple| 
+ 
+  " "  * _5ucAZimYynS_4VA0XHvr1nW ( _7WjaQkqwdaZ_6PRtbDrJHnf |=id| ) 
+ " "  "*/"  "\n")
 !)_0EfjiBTrXEo_3ppwTZ0M7xf
 
 
