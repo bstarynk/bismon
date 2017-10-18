@@ -3310,13 +3310,17 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
         _.resclass = objclass_BM (_.resobj);
       startix++;
     }
+  DBGPRINTF_BM
+    ("%s cexpansion  startix=%d nbresults=%d nbargs=%d nodwidth=%d",
+     objectdbg_BM (clos_curcexp), startix, nbresults, nbargs, nodwidth);
   if (startix + nbresults + nbargs <= nodwidth)
     {
       if (_.pars)
         parsererrorprintf_BM ((struct parser_stBM *) _.pars, lineno,
                               colpos,
-                              "too short %s cexpansion (%u) readmacro",
-                              objectdbg_BM (clos_curcexp), nodwidth);
+                              "too short %s cexpansion (%u) readmacro (%d results, %d arguments)",
+                              objectdbg_BM (clos_curcexp), nodwidth,
+                              nbresults, nbargs);
       return NULL;
     }
   if (!_.resclass)

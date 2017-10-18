@@ -82,7 +82,7 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   objputattr_BM (_.routprepob, k_bindings, _.assocbind);
   /// assign _9YS82HkgghD_71BLsDAKRfg
   _.args = objgetattr_BM (_.recv, k_arguments);
-  /// foreach_in_tuple(args curarg curargix  ...)
+  /// foreach_in_tuple(args curarg curargix args ...)
 #warning incomplete  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP
   return NULL;
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */
