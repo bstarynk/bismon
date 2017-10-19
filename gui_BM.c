@@ -4168,8 +4168,9 @@ guiperiodicgarbagecollection_BM (gpointer data __attribute__ ((unused)))
 void
 browsenewlinefordepth_BM (int depth)
 {
-  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", 1);
-  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "                ",
+  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
+  gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", 1);
+  gtk_text_buffer_insert (brobuf, &browserit_BM, "                ",
                           (depth & 0xf));
 }                               /* end browsenewlinefordepth_BM */
 
@@ -4180,7 +4181,10 @@ browsespacefordepth_BM (int depth)
   if (gtk_text_iter_get_line_offset (&browserit_BM) > 64)
     browsenewlinefordepth_BM (depth);
   else
-    gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, " ", 1);
+    {
+      GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
+      gtk_text_buffer_insert (brobuf, &browserit_BM, " ", 1);
+    };
 }                               /* end browsespacefordepth_BM */
 
 
