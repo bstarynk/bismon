@@ -3632,24 +3632,10 @@ cssparsingerror_BM (GtkCssProvider * prov __attribute__ ((unused)),
 }                               /* end cssparsingerror_BM */
 
 ////////////////////////////////////////////////////////////////
+
 void
-initialize_gui_BM (const char *builderfile, const char *cssfile)
+initialize_gui_tags_BM (GtkBuilder * bld, GtkCssProvider * cssprovider)
 {
-  if (!builderfile)
-    builderfile = "bismon.ui";
-  if (!cssfile)
-    cssfile = "bismon.css";
-  GtkBuilder *bld = gtk_builder_new_from_file (builderfile);
-  GtkCssProvider *cssprovider = gtk_css_provider_get_default ();
-  g_signal_connect (cssprovider, "parsing-error",
-                    G_CALLBACK (cssparsingerror_BM), NULL);
-  gtk_css_provider_load_from_path (cssprovider, cssfile, NULL);
-  //gtk_builder_add_callback_symbols (bld, "quitaction_BM", quit_BM, NULL);
-  mainwin_BM = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_style_context_add_provider_for_screen
-    (gtk_window_get_screen (GTK_WINDOW (mainwin_BM)),
-     GTK_STYLE_PROVIDER (cssprovider),
-     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
   browsertagtable_BM =          //
     GTK_TEXT_TAG_TABLE (gtk_builder_get_object (bld, "browsertagtable_id"));
   commandtagtable_BM =          //
@@ -3795,6 +3781,29 @@ initialize_gui_BM (const char *builderfile, const char *cssfile)
     gtk_text_tag_table_lookup (logtagtable_BM, "command_logtag");
   if (!command_logtag_BM)
     FATAL_BM ("cannot find command_logtag");
+}                               /* end initialize_gui_tags_BM */
+
+
+
+void
+initialize_gui_BM (const char *builderfile, const char *cssfile)
+{
+  if (!builderfile)
+    builderfile = "bismon.ui";
+  if (!cssfile)
+    cssfile = "bismon.css";
+  GtkBuilder *bld = gtk_builder_new_from_file (builderfile);
+  GtkCssProvider *cssprovider = gtk_css_provider_get_default ();
+  g_signal_connect (cssprovider, "parsing-error",
+                    G_CALLBACK (cssparsingerror_BM), NULL);
+  gtk_css_provider_load_from_path (cssprovider, cssfile, NULL);
+  initialize_gui_tags_BM (bld, cssprovider);
+  //gtk_builder_add_callback_symbols (bld, "quitaction_BM", quit_BM, NULL);
+  mainwin_BM = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_style_context_add_provider_for_screen
+    (gtk_window_get_screen (GTK_WINDOW (mainwin_BM)),
+     GTK_STYLE_PROVIDER (cssprovider),
+     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
   ////////////////
   GtkWidget *mainvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);

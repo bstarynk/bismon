@@ -676,6 +676,9 @@ struct parenoffset_stBM *cmd_find_enclosing_parens_BM (int off);
 extern void initialize_gui_BM (const char *builderfile, const char *cssfile);
 extern void initialize_newgui_BM (const char *builderfile,
                                   const char *cssfile);
+extern void initialize_gui_tags_BM (GtkBuilder * bld,
+                                    GtkCssProvider * cssprovider);
+
 // browse the object objbrows, using the selector objsel
 extern void browse_object_gui_BM (const objectval_tyBM * objbrows,
                                   const objectval_tyBM * objsel,
