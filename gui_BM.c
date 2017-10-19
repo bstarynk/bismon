@@ -3613,8 +3613,6 @@ clearlog_BM (void)
   log_end_message_BM ();
 }                               /* end clearlog_BM */
 
-static void cssparsingerror_BM (GtkCssProvider *, GtkCssSection *, GError *,
-                                gpointer) __attribute__ ((noreturn));
 
 void
 cssparsingerror_BM (GtkCssProvider * prov __attribute__ ((unused)),
@@ -3634,7 +3632,7 @@ cssparsingerror_BM (GtkCssProvider * prov __attribute__ ((unused)),
 ////////////////////////////////////////////////////////////////
 
 void
-initialize_gui_tags_BM (GtkBuilder * bld, GtkCssProvider * cssprovider)
+initialize_gui_tags_BM (GtkBuilder * bld)
 {
   browsertagtable_BM =          //
     GTK_TEXT_TAG_TABLE (gtk_builder_get_object (bld, "browsertagtable_id"));
@@ -3797,7 +3795,7 @@ initialize_gui_BM (const char *builderfile, const char *cssfile)
   g_signal_connect (cssprovider, "parsing-error",
                     G_CALLBACK (cssparsingerror_BM), NULL);
   gtk_css_provider_load_from_path (cssprovider, cssfile, NULL);
-  initialize_gui_tags_BM (bld, cssprovider);
+  initialize_gui_tags_BM (bld);
   //gtk_builder_add_callback_symbols (bld, "quitaction_BM", quit_BM, NULL);
   mainwin_BM = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_style_context_add_provider_for_screen
