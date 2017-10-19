@@ -969,9 +969,10 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
   _.objbrows = objbrows;
   _.objsel = objsel;
   start_browse_object_BM (objbrows, browsdepth);
+  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   const char *nambrows = findobjectname_BM (objbrows);
   gtk_text_buffer_insert_with_tags      //
-    (browserbuf_BM, &browserit_BM, "\342\201\202 " /* U+2042 ASTERISM ⁂ */ ,
+    (brobuf, &browserit_BM, "\342\201\202 " /* U+2042 ASTERISM ⁂ */ ,
      -1, isfocused ? focustitle_brotag_BM : objtitle_brotag_BM, NULL);
   char idbuf[32];
   memset (idbuf, 0, sizeof (idbuf));
@@ -979,21 +980,21 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
   if (nambrows)
     {
       gtk_text_buffer_insert_with_tags
-        (browserbuf_BM, &browserit_BM,
+        (brobuf, &browserit_BM,
          nambrows, -1,
          isfocused ? focustitle_brotag_BM : objtitle_brotag_BM,
          objnametitle_brotag_BM, NULL);
       gtk_text_buffer_insert_with_tags
-        (browserbuf_BM, &browserit_BM,
+        (brobuf, &browserit_BM,
          " |=", -1, objtitle_brotag_BM, objcommtitle_brotag_BM, NULL);
-      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+      gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, idbuf, -1,
                                         isfocused ?
                                         focustitle_brotag_BM :
                                         objtitle_brotag_BM,
                                         objcommtitle_brotag_BM,
                                         objidtitle_brotag_BM, NULL);
-      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+      gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, "|", -1,
                                         isfocused ?
                                         focustitle_brotag_BM :
@@ -1002,18 +1003,18 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
     }
   else
     {                           /// anonymous browsed object
-      gtk_text_buffer_insert_with_tags (browserbuf_BM,
+      gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, idbuf, -1,
                                         isfocused ?
                                         focustitle_brotag_BM :
                                         objtitle_brotag_BM,
                                         objidtitle_brotag_BM, NULL);
     };
-  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+  gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   send1_BM ((const value_tyBM) objbrows, objsel,
             (struct stackframe_stBM *) &_, taggedint_BM (browsdepth));
-  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
-  gtk_text_buffer_move_mark (browserbuf_BM,
+  gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+  gtk_text_buffer_move_mark (brobuf,
                              browsedobj_BM[browserobcurix_BM].brow_oendm,
                              &browserit_BM);
 }                               /* end browse_object_gui_BM */
@@ -1044,14 +1045,14 @@ browse_named_value_gui_BM (const stringval_tyBM * namev,
   _.objsel = objsel;
   browsednvcurix_BM = -1;
   start_browse_named_value_BM (namev, val, browsdepth);
+  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   assert (browsednvcurix_BM >= 0);
-  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM, "$", -1,
+  gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "$", -1,
                                     valtitle_brotag_BM, NULL);
-  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+  gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,
                                     bytstring_BM (namev), -1,
                                     valtitle_brotag_BM, NULL);
-  gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
-                                    "  \342\234\247"
+  gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "  \342\234\247"
                                     /* U+2727 WHITE FOUR POINTED STAR ✧ */ ,
                                     -1, objtitle_brotag_BM,
                                     // objcommtitle_brotag_BM,
@@ -1060,15 +1061,15 @@ browse_named_value_gui_BM (const stringval_tyBM * namev,
     char hcombuf[32];
     memset (hcombuf, 0, sizeof (hcombuf));
     snprintf (hcombuf, sizeof (hcombuf), " |h:%u|", valhash_BM (val));
-    gtk_text_buffer_insert_with_tags (browserbuf_BM, &browserit_BM,
+    gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,
                                       hcombuf, -1,
                                       objcommtitle_brotag_BM, NULL);
   }
-  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
+  gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   send2_BM ((const value_tyBM) _.val, objsel, (struct stackframe_stBM *) &_,
             taggedint_BM (browsdepth), taggedint_BM (0));
-  gtk_text_buffer_insert (browserbuf_BM, &browserit_BM, "\n", -1);
-  gtk_text_buffer_move_mark (browserbuf_BM,
+  gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+  gtk_text_buffer_move_mark (brobuf,
                              browsedval_BM[browsednvcurix_BM].brow_vendmk,
                              &browserit_BM);
 }                               /* end browse_named_value_gui_BM */
@@ -4187,8 +4188,9 @@ void
 browse_value_BM (const value_tyBM val,
                  struct stackframe_stBM *stkf, int maxdepth, int curdepth)
 {
+  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   if (!val)
-    gtk_text_buffer_insert_with_tags (browserbuf_BM,
+    gtk_text_buffer_insert_with_tags (brobuf,
                                       &browserit_BM, "__", 2,
                                       nest_brotag_BM, NULL);
   else
