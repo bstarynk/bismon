@@ -122,4 +122,14 @@ extern void weakassertfailureat_BM (const char *condmsg, const char *fil,
 #define WEAKASSERT_BM(Cond) do if(false && !(Cond)) \
       {  return 0; }} while(0)
 #endif /*NDEBUG*/
+// for readability, gravity argument to gtk_text_buffer_create_mark
+#define RIGHT_GRAVITY_BM FALSE
+#define LEFT_GRAVITY_BM TRUE
+// initial empty text iter
+#define EMPTY_TEXT_ITER_BM (GtkTextIter){}
+// for readability in gtk_box_pack_start etc...
+#define BOXEXPAND_BM TRUE
+#define BOXNOEXPAND_BM FALSE
+#define BOXFILL_BM TRUE
+#define BOXNOFILL_BM FALSE
 #endif /*CMACROS_BM_INCLUDED */

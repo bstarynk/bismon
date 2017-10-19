@@ -5,10 +5,6 @@ GtkWidget *mainwin_BM;
 GtkWidget *errormessagedialog_BM;
 FILE *gui_command_log_file_BM;
 
-// for readability, gravity argument to gtk_text_buffer_create_mark
-#define RIGHT_GRAVITY_BM FALSE
-#define LEFT_GRAVITY_BM TRUE
-#define EMPTY_TEXT_ITER_BM (GtkTextIter){}
 //////////////// browser
 int browserdepth_BM = 7;
 
@@ -3807,8 +3803,7 @@ initialize_gui_BM (const char *builderfile, const char *cssfile)
   gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);
   GtkWidget *mainmenubar = gtk_menu_bar_new ();
   gtk_box_pack_start (GTK_BOX (mainvbox), mainmenubar,
-                      /*expand= */ false,
-                      /*fill= */ false, 2);
+                      BOXNOEXPAND_BM, BOXNOFILL_BM, 2);
   GtkWidget *appquit =
     GTK_WIDGET (gtk_builder_get_object (bld, "appquit_id"));
   g_signal_connect (appquit, "activate", quit_BM, NULL);
@@ -3832,17 +3827,13 @@ initialize_gui_BM (const char *builderfile, const char *cssfile)
   assert (GTK_IS_WIDGET (editmenu));
   gtk_menu_shell_append (GTK_MENU_SHELL (mainmenubar), editmenu);
   GtkWidget *sep1 = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
-  gtk_box_pack_start (GTK_BOX (mainvbox), sep1, /*expand= */
-                      false,
-                      /*fill= */
-                      false, 2);
+  gtk_box_pack_start (GTK_BOX (mainvbox), sep1,
+                      BOXNOEXPAND_BM, BOXNOFILL_BM, 2);
   GtkWidget *paned1 = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
   gtk_paned_set_wide_handle (GTK_PANED (paned1), true);
   gtk_paned_set_position (GTK_PANED (paned1), 330);
-  gtk_box_pack_start (GTK_BOX (mainvbox), paned1,       /*expand= */
-                      true,
-                      /*fill= */
-                      true, 2);
+  gtk_box_pack_start (GTK_BOX (mainvbox), paned1,
+                      BOXEXPAND_BM, BOXFILL_BM, 2);
   browserbuf_BM = gtk_text_buffer_new (browsertagtable_BM);
   {
     GtkTextIter brit = EMPTY_TEXT_ITER_BM;
