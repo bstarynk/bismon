@@ -54,6 +54,7 @@ struct
 } added_predef_bm[MAXADDEDPREDEF_BM];
 
 bool batch_bm;
+bool newgui_bm;
 char *parseval_bm;
 
 static void add_new_predefined_bm (void);
@@ -175,6 +176,13 @@ const GOptionEntry optab[] = {
    .description = "run in batch mode without GUI",
    .arg_description = NULL},
   //
+  {.long_name = "new-gui",.short_name = (char) 'N',
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &newgui_bm,
+   .description = "run the new GUI",
+   .arg_description = NULL},
+  //
   {.long_name = "parse-val",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
@@ -238,7 +246,7 @@ idqcmp_BM (const void *p1, const void *p2)
 }                               /* end idqcmp_BM */
 
 
-static void rungui_BM (void);
+static void rungui_BM (bool newgui);
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
 //// GTK appplications
@@ -301,7 +309,12 @@ main (int argc, char **argv)
   if (!guiok && !batch_bm)
     FATAL_BM ("gtk_init_with_args failed");
   if (!batch_bm)
-    initialize_gui_BM (builder_file_bm, css_file_bm);
+    {
+      if (newgui_bm)
+        initialize_newgui_BM (builder_file_bm, css_file_bm);
+      else
+        initialize_gui_BM (builder_file_bm, css_file_bm);
+    }
   if (!load_dir_bm)
     load_dir_bm = ".";
   if (!dump_dir_bm)
@@ -357,24 +370,27 @@ main (int argc, char **argv)
     {
       printf ("no GUI in batch mode\n");
     }
+  else if (newgui_bm)
+    rungui_BM (true);
   else
-    rungui_BM ();
+    rungui_BM (false);
+
   fflush (NULL);
 }                               /* end main */
 
 void
-rungui_BM (void)
+rungui_BM (bool newgui)
 {
   gui_is_running_BM = true;
   if (!gui_log_name_bm || !gui_log_name_bm[0])
     {
       gui_command_log_file_BM = NULL;
-      printf ("no GUI log\n");
+      printf ("no %s GUI log\n", newgui ? "new" : "old");
     }
   else if (!strcmp (gui_log_name_bm, "-"))
     {
       gui_command_log_file_BM = stdout;
-      printf ("GUI log to stdout\n");
+      printf ("%s GUI log to stdout\n", newgui ? "new" : "old");
     }
   else
     {
@@ -390,9 +406,10 @@ rungui_BM (void)
       gui_command_log_file_BM = fopen (gui_log_name_bm, "w");
       if (!gui_command_log_file_BM)
         FATAL_BM ("fopen GUI log %s failure (%m)", gui_log_name_bm);
-      fprintf (stderr, "GUI log to %s\n", gui_log_name_bm);
-      fprintf (gui_command_log_file_BM,
-               "// GUI command log file %s\n", basename (gui_log_name_bm));
+      fprintf (stderr, "%s GUI log to %s\n", newgui ? "new" : "old",
+               gui_log_name_bm);
+      fprintf (gui_command_log_file_BM, "// %s GUI command log file %s\n",
+               newgui ? "new" : "old", basename (gui_log_name_bm));
     }
   if (gui_command_log_file_BM)
     {
