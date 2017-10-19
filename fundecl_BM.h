@@ -697,6 +697,32 @@ extern void browse_value_BM (const value_tyBM val,
                              struct stackframe_stBM *stkf,
                              int maxdepth, int curdepth);
 
+
+////////////////////////////////////////////////////////////////
+
+/******** GUI functions ***********/
+extern void browsespacefordepth_BM (int depth);
+extern void browsenewlinefordepth_BM (int depth);
+
 extern void gcmarkgui_BM (struct garbcoll_stBM *gc);
 extern void gui_gc_message_BM (const char *msg);
+extern void
+browse_value_BM (const value_tyBM val,
+                 struct stackframe_stBM *stkf, int maxdepth, int curdepth);
+
+extern int browse_show_start_offset_BM (void);
+
+extern struct browsedobj_stBM *find_browsed_object_BM
+  (const objectval_tyBM * obj);
+
+extern struct browsedval_stBM *find_browsed_named_value_BM
+  (const char *valname);
+
+extern void browse_add_parens_BM (int openoff, int closeoff,
+                                  int xtraoff, unsigned openlen,
+                                  unsigned closelen, unsigned xtralen,
+                                  int depth);
+
+extern const char *textiterstrdbg_BM (GtkTextIter * it);
+
 #endif /*FUNDECL_BM_INCLUDED */
