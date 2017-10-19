@@ -1072,11 +1072,10 @@ browse_named_value_gui_BM (const stringval_tyBM * namev,
 
 
 
-void quit_BM (void);
 void
-quit_BM (void)
+quitgui_BM (void)
 {
-  //  printf ("quit_BM\n");
+  //  printf ("quitgui_BM\n");
   GtkWidget *quitdialog =       //
     gtk_message_dialog_new_with_markup  //
     (GTK_WINDOW (mainwin_BM),
@@ -1099,11 +1098,10 @@ quit_BM (void)
         }
     }
   gtk_widget_destroy (quitdialog);
-}                               /* end quit_BM */
+}                               /* end quitgui_BM */
 
-void exit_BM (void);
 void
-exit_BM (void)
+exitgui_BM (void)
 {
   extern char *dump_dir_bm;
   struct dumpinfo_stBM di = dump_BM (dump_dir_bm, NULL);
@@ -1122,11 +1120,11 @@ exit_BM (void)
                dump_dir_bm, nowbuf);
       fflush (gui_command_log_file_BM);
     }
-}                               /* end exit_BM */
+}                               /* end exitgui_BM */
 
-void do_dump_BM (void);
+
 void
-do_dump_BM (void)
+dumpgui_BM (void)
 {
   extern char *dump_dir_bm;
   assert (dump_dir_bm != NULL);
@@ -1164,20 +1162,18 @@ do_dump_BM (void)
                dump_dir_bm, nowbuf);
       fflush (gui_command_log_file_BM);
     }
-}                               /* end do_dump_BM */
+}                               /* end dumpgui_BM */
 
-static void do_garbcoll_BM (void);
 void
-do_garbcoll_BM (void)
+garbcollgui_BM (void)
 {
   assert (mainthreadid_BM == pthread_self ());
   log_begin_message_BM ();
   log_puts_message_BM ("forced garbage collection");
   log_end_message_BM ();
   fullgarbagecollection_BM (NULL);
-}                               /* end do_garbcoll_BM */
+}                               /* end garbcollgui_BM */
 
-bool deletemainwin_BM (GtkWidget *, GdkEvent *, gpointer);
 bool
 deletemainwin_BM (GtkWidget * widget
                   __attribute__ ((unused)), GdkEvent * ev
@@ -3792,7 +3788,7 @@ initialize_gui_BM (const char *builderfile, const char *cssfile)
                     G_CALLBACK (cssparsingerror_BM), NULL);
   gtk_css_provider_load_from_path (cssprovider, cssfile, NULL);
   initialize_gui_tags_BM (bld);
-  //gtk_builder_add_callback_symbols (bld, "quitaction_BM", quit_BM, NULL);
+  //gtk_builder_add_callback_symbols (bld, "quitaction_BM", quitgui_BM, NULL);
   mainwin_BM = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_style_context_add_provider_for_screen
     (gtk_window_get_screen (GTK_WINDOW (mainwin_BM)),
@@ -3806,18 +3802,18 @@ initialize_gui_BM (const char *builderfile, const char *cssfile)
                       BOXNOEXPAND_BM, BOXNOFILL_BM, 2);
   GtkWidget *appquit =
     GTK_WIDGET (gtk_builder_get_object (bld, "appquit_id"));
-  g_signal_connect (appquit, "activate", quit_BM, NULL);
+  g_signal_connect (appquit, "activate", quitgui_BM, NULL);
   g_signal_connect (mainwin_BM, "delete-event", (GCallback) deletemainwin_BM,
                     NULL);
   GtkWidget *appexit =
     GTK_WIDGET (gtk_builder_get_object (bld, "appexit_id"));
-  g_signal_connect (appexit, "activate", exit_BM, NULL);
+  g_signal_connect (appexit, "activate", exitgui_BM, NULL);
   GtkWidget *appdump =
     GTK_WIDGET (gtk_builder_get_object (bld, "appdump_id"));
-  g_signal_connect (appdump, "activate", do_dump_BM, NULL);
+  g_signal_connect (appdump, "activate", dumpgui_BM, NULL);
   GtkWidget *appgarbcoll =
     GTK_WIDGET (gtk_builder_get_object (bld, "appgarbcoll_id"));
-  g_signal_connect (appgarbcoll, "activate", do_garbcoll_BM, NULL);
+  g_signal_connect (appgarbcoll, "activate", garbcollgui_BM, NULL);
   GtkWidget *appmenu =
     GTK_WIDGET (gtk_builder_get_object (bld, "menuapp_id"));
   assert (GTK_IS_WIDGET (appmenu));

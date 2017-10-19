@@ -732,4 +732,10 @@ extern const char *textiterstrdbg_BM (GtkTextIter * it);
 extern void cssparsingerror_BM (GtkCssProvider *, GtkCssSection *, GError *,
                                 gpointer) __attribute__ ((noreturn));
 
+extern void quitgui_BM (void);
+extern void exitgui_BM (void);
+extern void dumpgui_BM (void);
+extern void garbcollgui_BM (void);
+extern bool deletemainwin_BM (GtkWidget *, GdkEvent *, gpointer);
+
 #endif /*FUNDECL_BM_INCLUDED */
