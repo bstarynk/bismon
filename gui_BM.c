@@ -42,33 +42,12 @@ GtkTextTag *miscomm_brotag_BM;
 unsigned browserobsize_BM;      /* allocated size of browsedobj_BM */
 unsigned browserobulen_BM;      /* used length */
 int browserobcurix_BM;          /* current index in browsedobj_BM */
-struct browsedobj_stBM
-{
-  const objectval_tyBM *brow_obj;
-  GtkTextMark *brow_ostartm;
-  GtkTextMark *brow_oendm;
-  int brow_depth;
-  unsigned brow_parensize;      /* allocated size of brow_parenarr */
-  unsigned brow_parenulen;      /* used length of brow_parenarr */
-  struct parenoffset_stBM *brow_parenarr;
-};
 struct browsedobj_stBM *browsedobj_BM;
 
 /// the browsed named values
 unsigned browsednvsize_BM;      /* allocated size */
 unsigned browsednvulen_BM;      /* unsigned length */
 int browsednvcurix_BM;
-struct browsedval_stBM
-{
-  const stringval_tyBM *brow_name;
-  value_tyBM brow_val;
-  GtkTextMark *brow_vstartmk;
-  GtkTextMark *brow_vendmk;
-  int brow_depth;
-  unsigned brow_parensize;      /* allocated size of brow_parenarr */
-  unsigned brow_parenulen;      /* used length of brow_parenarr */
-  struct parenoffset_stBM *brow_parenarr;
-};
 struct browsedval_stBM *browsedval_BM;
 guint browserblinkid_BM;
 struct parenoffset_stBM browserblinkparens_BM;  /// offsets are absolute
@@ -129,7 +108,7 @@ GtkTextTag *xtra_cmdtags_BM[CMD_MAXNEST_BM];
 #define BROWSE_MAXDEPTH_BM 48
 
 // on cmd parse error, we setjmp to ....
-static jmp_buf jmperrorcmd_BM;
+jmp_buf jmperrorcmd_BM;
 
 // the periodic GC function
 static gboolean guiperiodicgarbagecollection_BM (gpointer);
