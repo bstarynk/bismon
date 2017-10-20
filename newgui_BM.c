@@ -1,5 +1,6 @@
 /* file newgui_BM.c */
 #include "bismon.h"
+
 void
 initialize_newgui_BM (const char *builderfile, const char *cssfile)
 {
@@ -19,7 +20,19 @@ initialize_newgui_BM (const char *builderfile, const char *cssfile)
     (gtk_window_get_screen (GTK_WINDOW (mainwin_BM)),
      GTK_STYLE_PROVIDER (cssprovider),
      GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  ////////////////
+  GtkWidget *mainvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
+  gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);
+  ///////////////
+  initialize_gui_menu_BM (mainvbox, bld);
+  ///
 #warning initialize_newgui_BM unimplemented
-  FATAL_BM ("initialize_newgui_BM builder %s css %s unimplemented",
-            builderfile, cssfile);
+  fprintf (stderr, "initialize_newgui_BM builder %s css %s unimplemented",
+           builderfile, cssfile);
+  ///
+  gtk_window_set_title (GTK_WINDOW (mainwin_BM), "new-bismon");
+  gtk_window_set_default_size (GTK_WINDOW (mainwin_BM), 650, 720);
+  // perhaps run the GC twice a second
+  g_timeout_add (500, guiperiodicgarbagecollection_BM, NULL);
+  gtk_widget_show_all (GTK_WIDGET (mainwin_BM));
 }                               /* end initialize_newgui_BM */

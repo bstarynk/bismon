@@ -677,6 +677,10 @@ extern void initialize_gui_BM (const char *builderfile, const char *cssfile);
 extern void initialize_newgui_BM (const char *builderfile,
                                   const char *cssfile);
 extern void initialize_gui_tags_BM (GtkBuilder * bld);
+extern void initialize_gui_menu_BM (GtkWidget * mainvbox, GtkBuilder * bld);
+
+// the periodic GC function
+extern gboolean guiperiodicgarbagecollection_BM (gpointer);
 
 // browse the object objbrows, using the selector objsel
 extern void browse_object_gui_BM (const objectval_tyBM * objbrows,

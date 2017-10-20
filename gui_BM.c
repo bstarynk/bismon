@@ -106,9 +106,6 @@ GtkTextTag *xtra_cmdtags_BM[CMD_MAXNEST_BM];
 // on cmd parse error, we setjmp to ....
 jmp_buf jmperrorcmd_BM;
 
-// the periodic GC function
-static gboolean guiperiodicgarbagecollection_BM (gpointer);
-
 // the function to handle keypresses of cmd, for Return & Tab
 static gboolean handlekeypresscmd_BM (GtkWidget *, GdkEventKey *, gpointer);
 // the function to handle tabautocomplete in command
@@ -3773,30 +3770,9 @@ initialize_gui_tags_BM (GtkBuilder * bld)
     FATAL_BM ("cannot find command_logtag");
 }                               /* end initialize_gui_tags_BM */
 
-
-
 void
-initialize_gui_BM (const char *builderfile, const char *cssfile)
+initialize_gui_menu_BM (GtkWidget * mainvbox, GtkBuilder * bld)
 {
-  if (!builderfile)
-    builderfile = "bismon.ui";
-  if (!cssfile)
-    cssfile = "bismon.css";
-  GtkBuilder *bld = gtk_builder_new_from_file (builderfile);
-  GtkCssProvider *cssprovider = gtk_css_provider_get_default ();
-  g_signal_connect (cssprovider, "parsing-error",
-                    G_CALLBACK (cssparsingerror_BM), NULL);
-  gtk_css_provider_load_from_path (cssprovider, cssfile, NULL);
-  initialize_gui_tags_BM (bld);
-  //gtk_builder_add_callback_symbols (bld, "quitaction_BM", quitgui_BM, NULL);
-  mainwin_BM = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_style_context_add_provider_for_screen
-    (gtk_window_get_screen (GTK_WINDOW (mainwin_BM)),
-     GTK_STYLE_PROVIDER (cssprovider),
-     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-  ////////////////
-  GtkWidget *mainvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
-  gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);
   GtkWidget *mainmenubar = gtk_menu_bar_new ();
   gtk_box_pack_start (GTK_BOX (mainvbox), mainmenubar,
                       BOXNOEXPAND_BM, BOXNOFILL_BM, 2);
@@ -3825,6 +3801,33 @@ initialize_gui_BM (const char *builderfile, const char *cssfile)
   GtkWidget *sep1 = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_box_pack_start (GTK_BOX (mainvbox), sep1,
                       BOXNOEXPAND_BM, BOXNOFILL_BM, 2);
+}                               /* end initialize_gui_menu_BM */
+
+void
+initialize_gui_BM (const char *builderfile, const char *cssfile)
+{
+  if (!builderfile)
+    builderfile = "bismon.ui";
+  if (!cssfile)
+    cssfile = "bismon.css";
+  GtkBuilder *bld = gtk_builder_new_from_file (builderfile);
+  GtkCssProvider *cssprovider = gtk_css_provider_get_default ();
+  g_signal_connect (cssprovider, "parsing-error",
+                    G_CALLBACK (cssparsingerror_BM), NULL);
+  gtk_css_provider_load_from_path (cssprovider, cssfile, NULL);
+  initialize_gui_tags_BM (bld);
+  //gtk_builder_add_callback_symbols (bld, "quitaction_BM", quitgui_BM, NULL);
+  mainwin_BM = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_style_context_add_provider_for_screen
+    (gtk_window_get_screen (GTK_WINDOW (mainwin_BM)),
+     GTK_STYLE_PROVIDER (cssprovider),
+     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  ////////////////
+  GtkWidget *mainvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
+  gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);
+  ///////////////
+  initialize_gui_menu_BM (mainvbox, bld);
+  ///////////////
   GtkWidget *paned1 = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
   gtk_paned_set_wide_handle (GTK_PANED (paned1), true);
   gtk_paned_set_position (GTK_PANED (paned1), 330);
