@@ -281,11 +281,6 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
   fclose (fil);
   ld->ld_nbobjects += nbobjdef;
   ld->ld_nbroutines += nbrout;
-  if (nbrout > 0)
-    {
-      fprintf (stderr, "load first pass #%d: %s found %d routines\n", ix,
-               curldpath, nbrout);
-    };
 }                               /* end load_first_pass_BM */
 
 static void
@@ -623,8 +618,6 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
   assert (ix >= 0 && ix <= (int) ld->ld_maxnum);
   char *curldpath = ld->ld_storepatharr[ix];
   assert (curldpath != NULL);
-  fprintf (stderr, "load_second_pass_BM ix=%d path=%s incomplete\n",
-           ix, curldpath);
   FILE *fil = fopen (curldpath, "r");
   if (!fil)
     FATAL_BM ("failed to fopen %s (%m)", curldpath);
@@ -859,8 +852,6 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
         }
       nbdirectives++;
     };
-  fprintf (stderr, "load_second_pass_BM ix=%d path=%s nbdirectives=%ld\n",
-           ix, curldpath, nbdirectives);
 }                               /* end load_second_pass_BM */
 
 

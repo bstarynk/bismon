@@ -31,7 +31,7 @@ initialize_newgui_BM (const char *builderfile, const char *cssfile)
   gtk_box_pack_start (GTK_BOX (mainvbox), paned, BOXEXPAND_BM, BOXFILL_BM, 2);
   ///
 #warning initialize_newgui_BM unimplemented
-  fprintf (stderr, "initialize_newgui_BM builder %s css %s unimplemented",
+  fprintf (stderr, "initialize_newgui_BM builder %s css %s unimplemented\n",
            builderfile, cssfile);
   ///
   gtk_window_set_title (GTK_WINDOW (mainwin_BM), "new-bismon");
