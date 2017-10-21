@@ -2546,6 +2546,9 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
           if (!gotobject || (!nobuild && !_.obj))
             parsererrorprintf_BM (pars, curlineno,
                                   curcolpos, "no displayed object after ?.");
+          if (!browserbuf_BM)
+            parsererrorprintf_BM (pars, curlineno,
+                                  curcolpos, "no browser buffer");
           if (!nobuild)
             {
               browse_object_gui_BM (_.obj,
@@ -2566,6 +2569,9 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                    && (tok.tok_delim == delim_dollarcolon
                        || tok.tok_delim == delim_dollarleftbracket)))
         {
+          if (!browserbuf_BM)
+            parsererrorprintf_BM (pars, curlineno,
+                                  curcolpos, "no browser buffer");
           bool gotobject = false;
           parserseek_BM (pars, tok.tok_line, tok.tok_col);
           _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
@@ -2591,6 +2597,9 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
       else
         if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_questionstar)
         {
+          if (!browserbuf_BM)
+            parsererrorprintf_BM (pars, curlineno,
+                                  curcolpos, "no browser buffer");
           bool gotobject = false;
           _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
                                       0, &gotobject);
