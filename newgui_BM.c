@@ -25,6 +25,10 @@ initialize_newgui_BM (const char *builderfile, const char *cssfile)
   gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);
   ///////////////
   initialize_gui_menu_BM (mainvbox, bld);
+  GtkWidget *paned = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
+  gtk_paned_set_wide_handle (GTK_PANED (paned), true);
+  gtk_paned_set_position (GTK_PANED (paned), 250);
+  gtk_box_pack_start (GTK_BOX (mainvbox), paned, BOXEXPAND_BM, BOXFILL_BM, 2);
   ///
 #warning initialize_newgui_BM unimplemented
   fprintf (stderr, "initialize_newgui_BM builder %s css %s unimplemented",
