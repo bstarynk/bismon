@@ -3122,13 +3122,37 @@ tabautocompletecmd_BM (void)
   GtkTextIter endlinit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_mark      //
     (commandbuf_BM, &cursit, gtk_text_buffer_get_insert (commandbuf_BM));
+  DBGPRINTF_BM ("tabautocompletecmd_BM cursit=%s",
+                textiterstrdbg_BM (&cursit));
   unsigned col = gtk_text_iter_get_line_offset (&cursit);
-  beglinit = cursit;
-  gtk_text_iter_backward_line (&beglinit);
-  endlinit = cursit;
-  gtk_text_iter_forward_line (&endlinit);
+  int lin = gtk_text_iter_get_line (&cursit) + 1;
+  {
+    beglinit = cursit;
+    GtkTextIter previt = cursit;
+    while (gtk_text_iter_get_line (&previt) + 1 == lin
+           && !gtk_text_iter_is_start (&previt))
+      {
+        beglinit = previt;
+        gtk_text_iter_backward_char (&previt);
+      }
+  }
+  DBGPRINTF_BM ("tabautocompletecmd_BM beglinit=%s",
+                textiterstrdbg_BM (&beglinit));
+  {
+    endlinit = cursit;
+    GtkTextIter nextit = cursit;
+    while (gtk_text_iter_get_line (&nextit) + 1 == lin
+           && !gtk_text_iter_is_end (&nextit))
+      {
+        endlinit = nextit;
+        gtk_text_iter_forward_char (&nextit);
+      }
+  }
+  DBGPRINTF_BM ("tabautocompletecmd_BM endlinit=%s",
+                textiterstrdbg_BM (&endlinit));
   const char *curlin = gtk_text_buffer_get_text (commandbuf_BM, &beglinit,
                                                  &endlinit, false);
+  DBGPRINTF_BM ("tabautocompletecmd_BM curlin='%s' L%dC%d", curlin, lin, col);
   assert (col <= g_utf8_strlen (curlin, -1));
   const char *curstr = g_utf8_offset_to_pointer (curlin, col);
   const char *begname = curstr;
@@ -4223,3 +4247,6 @@ browse_value_BM (const value_tyBM val,
                 taggedint_BM (maxdepth), taggedint_BM (curdepth));
     }
 }                               /* end browse_value_BM */
+
+
+// eof gui_BM.c
