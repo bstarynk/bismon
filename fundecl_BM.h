@@ -678,6 +678,8 @@ extern void initialize_newgui_BM (const char *builderfile,
                                   const char *cssfile);
 extern void initialize_gui_tags_BM (GtkBuilder * bld);
 extern void initialize_gui_menu_BM (GtkWidget * mainvbox, GtkBuilder * bld);
+extern void initialize_command_log_views_BM (GtkWidget ** ptrcommandscrolw,
+                                             GtkWidget ** ptrlogscrolw);
 
 // the periodic GC function
 extern gboolean guiperiodicgarbagecollection_BM (gpointer);

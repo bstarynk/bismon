@@ -29,6 +29,12 @@ initialize_newgui_BM (const char *builderfile, const char *cssfile)
   gtk_paned_set_wide_handle (GTK_PANED (paned), true);
   gtk_paned_set_position (GTK_PANED (paned), 250);
   gtk_box_pack_start (GTK_BOX (mainvbox), paned, BOXEXPAND_BM, BOXFILL_BM, 2);
+  //
+  GtkWidget *commandscrolw = NULL;
+  GtkWidget *logscrolw = NULL;
+  initialize_command_log_views_BM (&commandscrolw, &logscrolw);
+  gtk_paned_add1 (GTK_PANED (paned), commandscrolw);
+  gtk_paned_add2 (GTK_PANED (paned), logscrolw);
   ///
 #warning initialize_newgui_BM unimplemented
   fprintf (stderr, "initialize_newgui_BM builder %s css %s unimplemented\n",

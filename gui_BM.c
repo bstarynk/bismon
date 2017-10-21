@@ -3803,6 +3803,69 @@ initialize_gui_menu_BM (GtkWidget * mainvbox, GtkBuilder * bld)
                       BOXNOEXPAND_BM, BOXNOFILL_BM, 2);
 }                               /* end initialize_gui_menu_BM */
 
+
+void
+initialize_command_log_views_BM (GtkWidget ** ptrcommandscrolw,
+                                 GtkWidget ** ptrlogscrolw)
+{
+  commandbuf_BM = gtk_text_buffer_new (commandtagtable_BM);
+  assert (GTK_IS_TEXT_BUFFER (commandbuf_BM));
+  for (int depth = 0; depth < CMD_MAXNEST_BM; depth++)
+    {
+      char opennamebuf[24];
+      snprintf (opennamebuf, sizeof (opennamebuf), "open%d_cmdtag", depth);
+      open_cmdtags_BM[depth] =  //
+        gtk_text_buffer_create_tag (commandbuf_BM, opennamebuf, NULL);
+      char closenamebuf[24];
+      snprintf (closenamebuf, sizeof (closenamebuf), "close%d_cmdtag", depth);
+      close_cmdtags_BM[depth] = //
+        gtk_text_buffer_create_tag (commandbuf_BM, closenamebuf, NULL);
+      char xtranamebuf[24];
+      snprintf (xtranamebuf, sizeof (xtranamebuf), "xtra%d_cmdtag", depth);
+      xtra_cmdtags_BM[depth] =  //
+        gtk_text_buffer_create_tag (commandbuf_BM, xtranamebuf, NULL);
+    };
+  commandview_BM = gtk_text_view_new_with_buffer (commandbuf_BM);
+  gtk_widget_set_name (commandview_BM, "commandview");
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (commandview_BM), true);
+  gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (commandview_BM), FALSE);
+  g_signal_connect (commandview_BM, "key-press-event",
+                    G_CALLBACK (handlekeypresscmd_BM), NULL);
+  g_signal_connect (commandbuf_BM, "end-user-action",
+                    G_CALLBACK (enduseractioncmd_BM), NULL);
+  g_signal_connect (commandview_BM, "populate-popup",
+                    G_CALLBACK (populatepopupcmd_BM), NULL);
+  g_signal_connect (commandbuf_BM, "mark-set",
+                    G_CALLBACK (marksetcmd_BM), NULL);
+  GtkWidget *commandscrolw = gtk_scrolled_window_new (NULL, NULL);
+  gtk_container_add (GTK_CONTAINER (commandscrolw), commandview_BM);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
+                                  (commandscrolw),
+                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  //
+  logbuf_BM = gtk_text_buffer_new (logtagtable_BM);
+  logview_BM = gtk_text_view_new_with_buffer (logbuf_BM);
+  gtk_widget_set_name (logview_BM, "logview");
+  g_signal_connect (logview_BM, "populate-popup",
+                    G_CALLBACK (populatepopuplog_BM), NULL);
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (logview_BM), false);
+  GtkWidget *logscrolw = gtk_scrolled_window_new (NULL, NULL);
+  gtk_container_add (GTK_CONTAINER (logscrolw), logview_BM);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
+                                  (logscrolw),
+                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  {
+    log_begin_message_BM ();
+    log_printf_message_BM
+      ("log of bismon (build %s,\n commit %s,\n checksum %s) pid %d",
+       bismon_timestamp, bismon_lastgitcommit, bismon_checksum,
+       (int) getpid ());
+    log_end_message_BM ();
+  }
+  *ptrcommandscrolw = commandscrolw;
+  *ptrlogscrolw = logscrolw;
+}                               /* end initialize_command_log_views_BM */
+
 void
 initialize_gui_BM (const char *builderfile, const char *cssfile)
 {
@@ -3869,62 +3932,9 @@ initialize_gui_BM (const char *builderfile, const char *cssfile)
   if (!browsedval_BM)
     FATAL_BM ("calloc failed for %u browsed values (%m)", browsednvsize_BM);
   //
-  commandbuf_BM = gtk_text_buffer_new (commandtagtable_BM);
-  assert (GTK_IS_TEXT_BUFFER (commandbuf_BM));
-  for (int depth = 0; depth < CMD_MAXNEST_BM; depth++)
-    {
-      char opennamebuf[24];
-      snprintf (opennamebuf, sizeof (opennamebuf), "open%d_cmdtag", depth);
-      open_cmdtags_BM[depth] =  //
-        gtk_text_buffer_create_tag (commandbuf_BM, opennamebuf, NULL);
-      char closenamebuf[24];
-      snprintf (closenamebuf, sizeof (closenamebuf), "close%d_cmdtag", depth);
-      close_cmdtags_BM[depth] = //
-        gtk_text_buffer_create_tag (commandbuf_BM, closenamebuf, NULL);
-      char xtranamebuf[24];
-      snprintf (xtranamebuf, sizeof (xtranamebuf), "xtra%d_cmdtag", depth);
-      xtra_cmdtags_BM[depth] =  //
-        gtk_text_buffer_create_tag (commandbuf_BM, xtranamebuf, NULL);
-    };
-  commandview_BM = gtk_text_view_new_with_buffer (commandbuf_BM);
-  gtk_widget_set_name (commandview_BM, "commandview");
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (commandview_BM), true);
-  gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (commandview_BM), FALSE);
-  g_signal_connect (commandview_BM, "key-press-event",
-                    G_CALLBACK (handlekeypresscmd_BM), NULL);
-  g_signal_connect (commandbuf_BM, "end-user-action",
-                    G_CALLBACK (enduseractioncmd_BM), NULL);
-  g_signal_connect (commandview_BM, "populate-popup",
-                    G_CALLBACK (populatepopupcmd_BM), NULL);
-  g_signal_connect (commandbuf_BM, "mark-set",
-                    G_CALLBACK (marksetcmd_BM), NULL);
-  gtk_widget_set_tooltip_markup (GTK_WIDGET (commandview_BM),
-                                 "<big><b>command view</b></big>\n");
-  GtkWidget *commandscrolw = gtk_scrolled_window_new (NULL, NULL);
-  gtk_container_add (GTK_CONTAINER (commandscrolw), commandview_BM);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
-                                  (commandscrolw),
-                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  //
-  logbuf_BM = gtk_text_buffer_new (logtagtable_BM);
-  logview_BM = gtk_text_view_new_with_buffer (logbuf_BM);
-  gtk_widget_set_name (logview_BM, "logview");
-  g_signal_connect (logview_BM, "populate-popup",
-                    G_CALLBACK (populatepopuplog_BM), NULL);
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (logview_BM), false);
-  GtkWidget *logscrolw = gtk_scrolled_window_new (NULL, NULL);
-  gtk_container_add (GTK_CONTAINER (logscrolw), logview_BM);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
-                                  (logscrolw),
-                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  {
-    log_begin_message_BM ();
-    log_printf_message_BM
-      ("log of bismon (build %s,\n commit %s,\n checksum %s) pid %d",
-       bismon_timestamp, bismon_lastgitcommit, bismon_checksum,
-       (int) getpid ());
-    log_end_message_BM ();
-  }
+  GtkWidget *commandscrolw = NULL;
+  GtkWidget *logscrolw = NULL;
+  initialize_command_log_views_BM (&commandscrolw, &logscrolw);
   //
   gtk_paned_add1 (GTK_PANED (paned1), browserscrolw);
   GtkWidget *paned2 = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
