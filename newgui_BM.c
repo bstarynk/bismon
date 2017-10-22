@@ -46,3 +46,11 @@ initialize_newgui_BM (const char *builderfile, const char *cssfile)
   g_timeout_add (500, guiperiodicgarbagecollection_BM, NULL);
   gtk_widget_show_all (GTK_WIDGET (mainwin_BM));
 }                               /* end initialize_newgui_BM */
+
+GtkTextBuffer *
+newgui_get_browsebuf_BM (void)
+{
+  fprintf (stderr, "newgui_get_browsebuf_BM unimplemented\n");
+#warning newgui_get_browsebuf_BM unimplemented
+  return NULL;
+}                               /* end newgui_get_browsebuf_BM */

@@ -232,6 +232,7 @@ textiterstrdbg_BM (GtkTextIter * it)
   return itinfobuf;
 }                               /* end textiterstrdbg_BM */
 
+
 void
 gcmarkgui_BM (struct garbcoll_stBM *gc)
 {
@@ -252,6 +253,8 @@ gcmarkgui_BM (struct garbcoll_stBM *gc)
   if (complsetcmd_BM)
     gcmark_BM (gc, (value_tyBM) complsetcmd_BM, 0);
 }                               /* end gcmarkgui_BM */
+
+
 
 void
 run_then_erase_command_BM (void)
@@ -306,6 +309,13 @@ browserblinkoff_BM (gpointer data __attribute__ ((unused)))
 {
   GtkTextIter startit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;
+  if (!browserbuf_BM)
+    {
+      if (newgui_BM)
+        browserbuf_BM = newgui_get_browsebuf_BM ();
+      if (!browserbuf_BM)
+        return G_SOURCE_REMOVE;
+    };
   gtk_text_buffer_get_bounds (browserbuf_BM, &startit, &endit);
   gtk_text_buffer_remove_tag (browserbuf_BM, blink_brotag_BM, &startit,
                               &endit);
@@ -318,8 +328,15 @@ browserblinkon_BM (gpointer data __attribute__ ((unused)))
   if (browserblinkparens_BM.paroff_open > 0
       && browserblinkparens_BM.paroff_openlen > 0)
     {
-      GtkTextIter openstartit = EMPTY_TEXT_ITER_BM, openendit =
-        EMPTY_TEXT_ITER_BM;
+      GtkTextIter openstartit = EMPTY_TEXT_ITER_BM;
+      GtkTextIter openendit = EMPTY_TEXT_ITER_BM;
+      if (!browserbuf_BM)
+        {
+          if (newgui_BM)
+            browserbuf_BM = newgui_get_browsebuf_BM ();
+          if (!browserbuf_BM)
+            return G_SOURCE_REMOVE;
+        };
       gtk_text_buffer_get_iter_at_offset (browserbuf_BM, &openstartit,
                                           browserblinkparens_BM.paroff_open);
       openendit = openstartit;
@@ -378,6 +395,13 @@ browserblinkstart_BM (void)
 void
 start_browse_object_BM (const objectval_tyBM * obj, int depth)
 {
+  if (!browserbuf_BM)
+    {
+      if (newgui_BM)
+        browserbuf_BM = newgui_get_browsebuf_BM ();
+      if (!browserbuf_BM)
+        return;
+    };
   browserblinkstop_BM ();
   assert (isobject_BM ((const value_tyBM) obj));
   browsednvcurix_BM = -1;
@@ -503,6 +527,13 @@ find_browsed_object_BM (const objectval_tyBM * obj)
 {
   if (!isobject_BM ((const value_tyBM) obj))
     return NULL;
+  if (!browserbuf_BM)
+    {
+      if (newgui_BM)
+        browserbuf_BM = newgui_get_browsebuf_BM ();
+      if (!browserbuf_BM)
+        return NULL;
+    };
   int lo = 0, hi = browserobulen_BM, md = 0;
   while (lo + 8 < hi)
     {
@@ -532,6 +563,13 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
 {
   if (!isobject_BM ((const value_tyBM) objbrows))
     return;
+  if (!browserbuf_BM)
+    {
+      if (newgui_BM)
+        browserbuf_BM = newgui_get_browsebuf_BM ();
+      if (!browserbuf_BM)
+        return;
+    };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * objbrows;);
   _.objbrows = objbrows;
@@ -590,6 +628,13 @@ void
 start_browse_named_value_BM (const stringval_tyBM * namev,
                              const value_tyBM val, int depth)
 {
+  if (!browserbuf_BM)
+    {
+      if (newgui_BM)
+        browserbuf_BM = newgui_get_browsebuf_BM ();
+      if (!browserbuf_BM)
+        return G_SOURCE_REMOVE;
+    };
   browserobcurix_BM = -1;
   browserblinkstop_BM ();
   if (!isstring_BM ((const value_tyBM) namev))
@@ -837,6 +882,13 @@ hide_named_value_gui_BM (const stringval_tyBM * namev,
 int
 browse_show_start_offset_BM (void)
 {
+  if (!browserbuf_BM)
+    {
+      if (newgui_BM)
+        browserbuf_BM = newgui_get_browsebuf_BM ();
+      if (!browserbuf_BM)
+        return -1;
+    };
   // exactly one of browserobcurix_BM or browsednvcurix_BM is active so >=0
   assert (browserobcurix_BM >= 0 || browsednvcurix_BM >= 0);
   assert (browserobcurix_BM < 0 || browsednvcurix_BM < 0);
@@ -2468,6 +2520,14 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
               || tok.tok_delim == delim_exclamminus
               || tok.tok_delim == delim_exclamcaret))
         {
+
+          if (!browserbuf_BM)
+            {
+              if (newgui_BM)
+                browserbuf_BM = newgui_get_browsebuf_BM ();
+              if (!browserbuf_BM)
+                return;
+            };
           if (!nobuild && !isobject_BM (GLOBAL_BM (gui_focus_obj)))
             parsererrorprintf_BM (pars, curlineno, curcolpos,
                                   "no focus object to complement");
@@ -2497,6 +2557,14 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
       else
         if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_questionstar)
         {
+
+          if (!browserbuf_BM)
+            {
+              if (newgui_BM)
+                browserbuf_BM = newgui_get_browsebuf_BM ();
+              if (!browserbuf_BM)
+                return;
+            };
           bool gotobject = false;
           _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
                                       0, &gotobject);
@@ -2540,6 +2608,13 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
       else
         if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_questiondot)
         {
+          if (!browserbuf_BM)
+            {
+              if (newgui_BM)
+                browserbuf_BM = newgui_get_browsebuf_BM ();
+              if (!browserbuf_BM)
+                return;
+            };
           bool gotobject = false;
           _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
                                       0, &gotobject);
@@ -2569,6 +2644,12 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                    && (tok.tok_delim == delim_dollarcolon
                        || tok.tok_delim == delim_dollarleftbracket)))
         {
+
+          if (!browserbuf_BM)
+            {
+              if (newgui_BM)
+                browserbuf_BM = newgui_get_browsebuf_BM ();
+            };
           if (!browserbuf_BM)
             parsererrorprintf_BM (pars, curlineno,
                                   curcolpos, "no browser buffer");
@@ -2597,6 +2678,11 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
       else
         if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_questionstar)
         {
+          if (!browserbuf_BM)
+            {
+              if (newgui_BM)
+                browserbuf_BM = newgui_get_browsebuf_BM ();
+            };
           if (!browserbuf_BM)
             parsererrorprintf_BM (pars, curlineno,
                                   curcolpos, "no browser buffer");
@@ -3539,6 +3625,13 @@ populatepopupbrow_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
   char cursinfobuf[32];
   memset (cursinfobuf, 0, sizeof (cursinfobuf));
   GtkTextIter cursit = EMPTY_TEXT_ITER_BM;
+  if (!browserbuf_BM)
+    {
+      if (newgui_BM)
+        browserbuf_BM = newgui_get_browsebuf_BM ();
+      if (!browserbuf_BM)
+        return;
+    };
   gtk_text_buffer_get_iter_at_mark      //
     (browserbuf_BM, &cursit, gtk_text_buffer_get_insert (browserbuf_BM));
   snprintf (cursinfobuf, sizeof (cursinfobuf), "* L%dC%d/%d",

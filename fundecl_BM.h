@@ -743,5 +743,5 @@ extern void exitgui_BM (void);
 extern void dumpgui_BM (void);
 extern void garbcollgui_BM (void);
 extern bool deletemainwin_BM (GtkWidget *, GdkEvent *, gpointer);
-
+extern GtkTextBuffer *newgui_get_browsebuf_BM (void);
 #endif /*FUNDECL_BM_INCLUDED */
