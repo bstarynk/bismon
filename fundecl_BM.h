@@ -678,8 +678,10 @@ extern void initialize_newgui_BM (const char *builderfile,
                                   const char *cssfile);
 extern void initialize_gui_tags_BM (GtkBuilder * bld);
 extern void initialize_gui_menu_BM (GtkWidget * mainvbox, GtkBuilder * bld);
-extern void initialize_command_log_views_BM (GtkWidget ** ptrcommandscrolw,
-                                             GtkWidget ** ptrlogscrolw);
+extern GtkWidget *initialize_oldgui_command_scrollview_BM (void);
+extern GtkWidget *initialize_newgui_command_scrollview_BM (void);
+extern GtkWidget *initialize_log_scrollview_BM (void);
+
 
 // the periodic GC function
 extern gboolean guiperiodicgarbagecollection_BM (gpointer);
@@ -701,13 +703,15 @@ extern void browse_named_value_gui_BM (const stringval_tyBM * namev,
 extern void hide_named_value_gui_BM (const stringval_tyBM * namev,
                                      struct stackframe_stBM *stkf);
 extern value_tyBM find_named_value_gui_BM (const char *name);
-
+extern void clear_command_BM (void);
 // internal, inside browsing methods
 extern void browse_value_BM (const value_tyBM val,
                              struct stackframe_stBM *stkf,
                              int maxdepth, int curdepth);
 
 
+// the function to handle tabautocomplete in command
+void tabautocomplete_gui_cmd_BM (void);
 ////////////////////////////////////////////////////////////////
 
 /******** GUI functions ***********/

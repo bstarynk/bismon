@@ -108,8 +108,6 @@ jmp_buf jmperrorcmd_BM;
 
 // the function to handle keypresses of cmd, for Return & Tab
 static gboolean handlekeypresscmd_BM (GtkWidget *, GdkEventKey *, gpointer);
-// the function to handle tabautocomplete in command
-static void tabautocompletecmd_BM (void);
 
 // the function to handle "end-user-action" on commandbuf_BM
 static void enduseractioncmd_BM (GtkTextBuffer *, gpointer);
@@ -210,7 +208,6 @@ static void start_browse_named_value_BM (const stringval_tyBM * namev,
 
 static void runcommand_BM (bool erase);
 static void run_then_erase_command_BM (void);
-static void clear_command_BM (void);
 static void run_then_keep_command_BM (void);
 static void marksetcmd_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
                            gpointer);
@@ -633,7 +630,7 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
       if (newgui_BM)
         browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
-        return G_SOURCE_REMOVE;
+        return;
     };
   browserobcurix_BM = -1;
   browserblinkstop_BM ();
@@ -3173,7 +3170,7 @@ handlekeypresscmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
     }
   else if (evk->keyval == GDK_KEY_Tab)
     {
-      tabautocompletecmd_BM ();
+      tabautocomplete_gui_cmd_BM ();
       return true;
     }
   else if (evk->keyval >= GDK_KEY_F1 && evk->keyval <= GDK_KEY_F10)
@@ -3201,7 +3198,7 @@ static void replacecompletionbyidcmd_BM (GtkMenuItem * mit, gpointer data);
 static void replacecompletionbynamecmd_BM (GtkMenuItem * mit, gpointer data);
 static void stopcompletionmenucmd_BM (GtkMenuItem * mit, gpointer data);
 void
-tabautocompletecmd_BM (void)
+tabautocomplete_gui_cmd_BM (void)
 {
   GtkTextIter cursit = EMPTY_TEXT_ITER_BM;
   GtkTextIter beglinit = EMPTY_TEXT_ITER_BM;
@@ -3930,9 +3927,8 @@ initialize_gui_menu_BM (GtkWidget * mainvbox, GtkBuilder * bld)
 }                               /* end initialize_gui_menu_BM */
 
 
-void
-initialize_command_log_views_BM (GtkWidget ** ptrcommandscrolw,
-                                 GtkWidget ** ptrlogscrolw)
+GtkWidget *
+initialize_oldgui_command_scrollview_BM (void)
 {
   commandbuf_BM = gtk_text_buffer_new (commandtagtable_BM);
   assert (GTK_IS_TEXT_BUFFER (commandbuf_BM));
@@ -3968,7 +3964,14 @@ initialize_command_log_views_BM (GtkWidget ** ptrcommandscrolw,
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
                                   (commandscrolw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  //
+  return commandscrolw;
+}                               /* end initialize_oldgui_command_scollview_BM */
+
+
+
+GtkWidget *
+initialize_log_scrollview_BM (void)
+{
   logbuf_BM = gtk_text_buffer_new (logtagtable_BM);
   logview_BM = gtk_text_view_new_with_buffer (logbuf_BM);
   gtk_widget_set_name (logview_BM, "logview");
@@ -3988,9 +3991,8 @@ initialize_command_log_views_BM (GtkWidget ** ptrcommandscrolw,
        (int) getpid ());
     log_end_message_BM ();
   }
-  *ptrcommandscrolw = commandscrolw;
-  *ptrlogscrolw = logscrolw;
-}                               /* end initialize_command_log_views_BM */
+  return logscrolw;
+}                               /* end initialize_log_scrollview_BM */
 
 void
 initialize_gui_BM (const char *builderfile, const char *cssfile)
@@ -4058,9 +4060,8 @@ initialize_gui_BM (const char *builderfile, const char *cssfile)
   if (!browsedval_BM)
     FATAL_BM ("calloc failed for %u browsed values (%m)", browsednvsize_BM);
   //
-  GtkWidget *commandscrolw = NULL;
-  GtkWidget *logscrolw = NULL;
-  initialize_command_log_views_BM (&commandscrolw, &logscrolw);
+  GtkWidget *commandscrolw = initialize_oldgui_command_scrollview_BM ();
+  GtkWidget *logscrolw = initialize_log_scrollview_BM ();
   //
   gtk_paned_add1 (GTK_PANED (paned1), browserscrolw);
   GtkWidget *paned2 = gtk_paned_new (GTK_ORIENTATION_VERTICAL);

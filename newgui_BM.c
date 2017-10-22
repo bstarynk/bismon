@@ -1,6 +1,171 @@
 /* file newgui_BM.c */
 #include "bismon.h"
 
+// the function to handle keypresses of cmd, for Return & Tab
+static gboolean handlekeypress_newgui_cmd_BM (GtkWidget *, GdkEventKey *,
+                                              gpointer);
+
+// the function to handle "end-user-action" on commandbuf_BM
+static void enduseraction_newgui_cmd_BM (GtkTextBuffer *, gpointer);
+// the function to handle "populate-popup" on commandview_BM
+static void populatepopup_newgui_cmd_BM (GtkTextView *, GtkWidget *,
+                                         gpointer);
+
+static void runcommand_newgui_BM (bool erase);
+static void run_then_erase_newgui_command_BM (void);
+static void run_then_keep_newgui_command_BM (void);
+
+static void markset_newgui_cmd_BM (GtkTextBuffer *, GtkTextIter *,
+                                   GtkTextMark *, gpointer);
+GtkWidget *
+initialize_newgui_command_scrollview_BM (void)
+{
+  commandbuf_BM = gtk_text_buffer_new (commandtagtable_BM);
+  assert (GTK_IS_TEXT_BUFFER (commandbuf_BM));
+  for (int depth = 0; depth < CMD_MAXNEST_BM; depth++)
+    {
+      char opennamebuf[24];
+      snprintf (opennamebuf, sizeof (opennamebuf), "open%d_cmdtag", depth);
+      open_cmdtags_BM[depth] =  //
+        gtk_text_buffer_create_tag (commandbuf_BM, opennamebuf, NULL);
+      char closenamebuf[24];
+      snprintf (closenamebuf, sizeof (closenamebuf), "close%d_cmdtag", depth);
+      close_cmdtags_BM[depth] = //
+        gtk_text_buffer_create_tag (commandbuf_BM, closenamebuf, NULL);
+      char xtranamebuf[24];
+      snprintf (xtranamebuf, sizeof (xtranamebuf), "xtra%d_cmdtag", depth);
+      xtra_cmdtags_BM[depth] =  //
+        gtk_text_buffer_create_tag (commandbuf_BM, xtranamebuf, NULL);
+    };
+  commandview_BM = gtk_text_view_new_with_buffer (commandbuf_BM);
+  gtk_widget_set_name (commandview_BM, "commandview");
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (commandview_BM), true);
+  gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (commandview_BM), FALSE);
+  g_signal_connect (commandview_BM, "key-press-event",
+                    G_CALLBACK (handlekeypress_newgui_cmd_BM), NULL);
+  g_signal_connect (commandbuf_BM, "end-user-action",
+                    G_CALLBACK (enduseraction_newgui_cmd_BM), NULL);
+  g_signal_connect (commandview_BM, "populate-popup",
+                    G_CALLBACK (populatepopup_newgui_cmd_BM), NULL);
+  g_signal_connect (commandbuf_BM, "mark-set",
+                    G_CALLBACK (markset_newgui_cmd_BM), NULL);
+  GtkWidget *commandscrolw = gtk_scrolled_window_new (NULL, NULL);
+  gtk_container_add (GTK_CONTAINER (commandscrolw), commandview_BM);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (commandscrolw),
+                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  return commandscrolw;
+}                               /* end initialize_newgui_command_scrollview_BM */
+
+
+// for "key-press-event" signal to commandview_BM
+gboolean
+handlekeypress_newgui_cmd_BM (GtkWidget * widg, GdkEventKey * evk,
+                              gpointer data)
+{
+  assert (GTK_IS_TEXT_VIEW (widg));
+  assert (evk != NULL);
+  assert (data == NULL);
+  // see <gdk/gdkkeysyms.h> for names of keysyms
+  if (evk->keyval == GDK_KEY_Return)
+    {
+      GdkModifierType modmask = gtk_accelerator_get_default_mod_mask ();
+      bool withctrl = (evk->state & modmask) == GDK_CONTROL_MASK;
+      bool withshift = (evk->state & modmask) == GDK_SHIFT_MASK;
+      if (withctrl)
+        {
+          //run_then_erase_command_BM ();
+        }
+      else if (withshift)
+        {
+          //run_then_keep_command_BM ();
+        }
+      else                      // plain RETURN key, propagate it
+        return false;
+      return true;
+    }
+  else if (evk->keyval == GDK_KEY_Tab)
+    {
+      tabautocomplete_gui_cmd_BM ();
+      return true;
+    }
+  else if (evk->keyval >= GDK_KEY_F1 && evk->keyval <= GDK_KEY_F10)
+    {
+      GdkModifierType modmask = gtk_accelerator_get_default_mod_mask ();
+      bool withctrl = (evk->state & modmask) == GDK_CONTROL_MASK;
+      bool withshift = (evk->state & modmask) == GDK_SHIFT_MASK;
+      DBGPRINTF_BM ("handlekeypress_newgui_cmd_BM keyval %#x KEY_F%d %s%s",
+                    evk->keyval, evk->keyval - (GDK_KEY_F1 - 1),
+                    withctrl ? " ctrl" : "", withshift ? " shift" : "");
+      return false;
+    }
+  return false;                 // propagate the event
+}                               /* end handlekeypresscmd_BM */
+
+
+void
+populatepopup_newgui_cmd_BM (GtkTextView * txview, GtkWidget * popup,
+                             gpointer data)
+{
+  assert (txview == GTK_TEXT_VIEW (commandview_BM));
+  assert (GTK_IS_MENU (popup));
+  assert (data == NULL);
+  char cursinfobuf[32];
+  memset (cursinfobuf, 0, sizeof (cursinfobuf));
+  GtkTextIter cursit = EMPTY_TEXT_ITER_BM;
+  gtk_text_buffer_get_iter_at_mark      //
+    (commandbuf_BM, &cursit, gtk_text_buffer_get_insert (commandbuf_BM));
+  snprintf (cursinfobuf, sizeof (cursinfobuf), "* L%dC%d/%d",
+            gtk_text_iter_get_line (&cursit) + 1,
+            gtk_text_iter_get_line_offset (&cursit),
+            gtk_text_iter_get_offset (&cursit));
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup),
+                         gtk_separator_menu_item_new ());
+  {
+    GtkWidget *cursinfomenit =  //
+      gtk_menu_item_new_with_label (cursinfobuf);
+    gtk_widget_set_sensitive (cursinfomenit, false);
+    gtk_menu_shell_append (GTK_MENU_SHELL (popup), cursinfomenit);
+  }
+  gtk_menu_shell_prepend (GTK_MENU_SHELL (popup),
+                          gtk_separator_menu_item_new ());
+  {
+    GtkWidget *clearmenit =     //
+      gtk_menu_item_new_with_label ("clear command");
+    gtk_menu_shell_prepend (GTK_MENU_SHELL (popup), clearmenit);
+    g_signal_connect (clearmenit, "activate",
+                      G_CALLBACK (clear_command_BM), NULL);
+  }
+  {
+    GtkWidget *runerasemenit =  //
+      gtk_menu_item_new_with_label ("run & erase");
+    gtk_menu_shell_prepend (GTK_MENU_SHELL (popup), runerasemenit);
+    g_signal_connect (runerasemenit, "activate",
+                      G_CALLBACK (run_then_erase_newgui_command_BM), NULL);
+  }
+  {
+    GtkWidget *runkeepmenit =   //
+      gtk_menu_item_new_with_label ("run & keep");
+    gtk_menu_shell_prepend (GTK_MENU_SHELL (popup), runkeepmenit);
+    g_signal_connect (runkeepmenit, "activate",
+                      G_CALLBACK (run_then_keep_newgui_command_BM), NULL);
+  }
+  gtk_widget_show_all (popup);
+}                               /* end populatepopup_newgui_cmd_BM */
+
+
+
+void
+run_then_erase_newgui_command_BM (void)
+{
+  runcommand_newgui_BM (true);
+}                               /* end run_then_erase_newgui_command_BM */
+
+void
+run_then_keep_newgui_command_BM (void)
+{
+  runcommand_newgui_BM (false);
+}                               /* end run_then_keep_newgui_command_BM */
+
 void
 initialize_newgui_BM (const char *builderfile, const char *cssfile)
 {
@@ -30,9 +195,8 @@ initialize_newgui_BM (const char *builderfile, const char *cssfile)
   gtk_paned_set_position (GTK_PANED (paned), 250);
   gtk_box_pack_start (GTK_BOX (mainvbox), paned, BOXEXPAND_BM, BOXFILL_BM, 2);
   //
-  GtkWidget *commandscrolw = NULL;
-  GtkWidget *logscrolw = NULL;
-  initialize_command_log_views_BM (&commandscrolw, &logscrolw);
+  GtkWidget *commandscrolw = initialize_newgui_command_scrollview_BM ();
+  GtkWidget *logscrolw = initialize_log_scrollview_BM ();
   gtk_paned_add1 (GTK_PANED (paned), commandscrolw);
   gtk_paned_add2 (GTK_PANED (paned), logscrolw);
   ///
@@ -54,3 +218,53 @@ newgui_get_browsebuf_BM (void)
 #warning newgui_get_browsebuf_BM unimplemented
   return NULL;
 }                               /* end newgui_get_browsebuf_BM */
+
+
+void
+runcommand_newgui_BM (bool erase)
+{
+  FATAL_BM ("runcommand_newgui_BM unimplemented erase=%s",
+            erase ? "yes" : "no");
+}                               /* end runcommand_newgui_BM */
+
+void
+markset_newgui_cmd_BM (GtkTextBuffer * tbuf, GtkTextIter * titer,
+                       GtkTextMark * tmark, gpointer cdata)
+{
+}                               /* end markset_newgui_cmd_BM */
+
+void
+enduseraction_newgui_cmd_BM (GtkTextBuffer * txbuf, gpointer data)
+{
+  assert (txbuf == commandbuf_BM);
+  assert (data == NULL);
+  GtkTextIter startit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter endit = EMPTY_TEXT_ITER_BM;
+  gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
+  gtk_text_buffer_remove_all_tags (commandbuf_BM, &startit, &endit);
+  cmd_clear_parens_BM ();
+  char *cmdstr = gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit,
+                                           false);
+  struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
+  cmdpars->pars_ops = &parsop_command_nobuild_BM;
+  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
+                 struct parser_stBM *cmdpars;);
+  _.cmdpars = cmdpars;
+  int errpars = setjmp (jmperrorcmd_BM);
+  if (!errpars)
+    {
+      // should parse the command buffer
+      ///parsecommandbuf_BM (cmdpars, (struct stackframe_stBM *) &_);
+#warning should parse the command buffer
+    }
+  else
+    {
+      // got an error while parsing
+    }
+  free (cmdstr);
+  // for parenthesis blinking
+  GtkTextMark *insmk = gtk_text_buffer_get_insert (commandbuf_BM);
+  GtkTextIter insit = EMPTY_TEXT_ITER_BM;
+  gtk_text_buffer_get_iter_at_mark (commandbuf_BM, &insit, insmk);
+  markset_newgui_cmd_BM (commandbuf_BM, &insit, insmk, NULL);
+}                               /* end enduseraction_newgui_cmd_BM */
