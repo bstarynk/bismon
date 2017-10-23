@@ -3204,6 +3204,7 @@ tabautocomplete_gui_cmd_BM (void)
   GtkTextIter cursit = EMPTY_TEXT_ITER_BM;
   GtkTextIter beglinit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endlinit = EMPTY_TEXT_ITER_BM;
+  complcommonprefix_BM = NULL;
   gtk_text_buffer_get_iter_at_mark      //
     (commandbuf_BM, &cursit, gtk_text_buffer_get_insert (commandbuf_BM));
   DBGPRINTF_BM ("tabautocompletecmd_BM cursit=%s",
@@ -3276,6 +3277,7 @@ tabautocomplete_gui_cmd_BM (void)
       memset (widbuf, 0, sizeof (widbuf));
       memcpy (widbuf, begname, endname - begname);
       gotid = true;
+      DBGPRINTF_BM ("tabautocompletecmd_BM widbuf=%s", widbuf);
       complsetv = setobjectsofidprefixed_BM (widbuf);
     }
   else if (endname > begname && isalpha (begname[0]))
@@ -3293,6 +3295,7 @@ tabautocomplete_gui_cmd_BM (void)
             FATAL_BM ("failed to calloc prefix");
           strncpy (prefix, begname, endname - begname);
         }
+      DBGPRINTF_BM ("tabautocompletecmd_BM prefix=%s", prefix);
       complsetv = setofprefixednamedobjects_BM (prefix);
       if (prefix != tinyprefix)
         free (prefix);
@@ -3300,6 +3303,7 @@ tabautocomplete_gui_cmd_BM (void)
   else
     goto failure;
   unsigned nbcompl = setcardinal_BM (complsetv);
+  DBGPRINTF_BM ("tabautocompletecmd_BM nbcompl=%d", nbcompl);
   if (nbcompl == 0)
     goto failure;
   else if (nbcompl == 1)
