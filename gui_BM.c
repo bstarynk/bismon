@@ -66,6 +66,7 @@ static void browserblinkstart_BM (void);
 const setval_tyBM *complsetcmd_BM;
 /// begin and end offset for completion replacement
 int compbegoffcmd_BM, compendoffcmd_BM;
+char *complcommonprefix_BM;
 
 //////////////// command
 GtkTextTagTable *commandtagtable_BM;
@@ -3351,6 +3352,30 @@ tabautocomplete_gui_cmd_BM (void)
                                 G_CALLBACK (replacecompletionbyidcmd_BM),
                                 (gpointer) (intptr_t) ix);
             }
+          {
+            const objectval_tyBM *firstobcomp = setelemnth_BM (complsetv, 0);
+            const objectval_tyBM *lastobcomp =
+              setelemnth_BM (complsetv, nbcompl - 1);
+            char firstcidbuf[32], lastcidbuf[32], commoncidbuf[32];
+            memset (firstcidbuf, 0, sizeof (firstcidbuf));
+            memset (lastcidbuf, 0, sizeof (lastcidbuf));
+            memset (commoncidbuf, 0, sizeof (commoncidbuf));
+            assert (isobject_BM ((const value_tyBM) firstobcomp));
+            idtocbuf32_BM (objid_BM (firstobcomp), firstcidbuf);
+            assert (isobject_BM ((const value_tyBM) lastobcomp));
+            idtocbuf32_BM (objid_BM (lastobcomp), lastcidbuf);
+            for (int i = 0; i < (int) sizeof (commoncidbuf); i++)
+              if (firstcidbuf[i] != lastcidbuf[i])
+                break;
+              else
+                commoncidbuf[i] = firstcidbuf[i];
+            if (strlen (commoncidbuf) > 3)
+              {
+                complcommonprefix_BM = strdup (commoncidbuf);
+                DBGPRINTF_BM ("complcommonprefix_BM=%s byid",
+                              complcommonprefix_BM);
+              }
+          }
         }
       else
         {                       /* complete by name */
@@ -3380,12 +3405,28 @@ tabautocomplete_gui_cmd_BM (void)
                                 G_CALLBACK (replacecompletionbynamecmd_BM),
                                 (gpointer) (intptr_t) elix);
             }
+          const objectval_tyBM *firstnamedob = arr[0];
+          const objectval_tyBM *lastnamedob = arr[nbcompl - 1];
+          const char *firstobname = findobjectname_BM (firstnamedob);
+          const char *lastobname = findobjectname_BM (lastnamedob);
+          DBGPRINTF_BM ("firstobname=%s lastobname=%s nbcompl=%d",
+                        firstobname, lastobname, nbcompl);
+          int comlen = 0;
+          for (int ix = 0; firstobname[ix] && lastobname[ix]; ix++)
+            if (firstobname[ix] != lastobname[ix])
+              break;
+            else
+              comlen = ix;
+          if (comlen > 3)
+            {
+              complcommonprefix_BM = strndup (firstobname, comlen);
+              DBGPRINTF_BM ("complcommonprefix_BM=%s byname",
+                            complcommonprefix_BM);
+            };
         }
       gtk_widget_show_all (complmenu);
-      /* not needed
-         g_signal_connect (complmenu, "cancel",
-         G_CALLBACK (stopcompletionmenucmd_BM), "*Cancelled*");
-       */
+      g_signal_connect (complmenu, "cancel",
+                        G_CALLBACK (stopcompletionmenucmd_BM), "*Cancelled*");
       g_signal_connect (complmenu, "deactivate",
                         G_CALLBACK (stopcompletionmenucmd_BM),
                         "*Deactivated*");
@@ -3395,6 +3436,7 @@ tabautocomplete_gui_cmd_BM (void)
       complsetcmd_BM = NULL;
       compbegoffcmd_BM = -1;
       compendoffcmd_BM = -1;
+      free (complcommonprefix_BM), complcommonprefix_BM = NULL;
     }
   free ((char *) curlin);
   return;
@@ -3428,6 +3470,7 @@ replacecompletionbyidcmd_BM (GtkMenuItem * mit
   idtocbuf32_BM (objid_BM (ob), idbuf);
   GtkTextIter begwit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endwit = EMPTY_TEXT_ITER_BM;
+  DBGPRINTF_BM ("replacecompletionbyidcmd_BM ix#%d idbuf=%s", ix, idbuf);
   gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &begwit,
                                       compbegoffcmd_BM);
   gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &endwit,
@@ -3449,6 +3492,7 @@ replacecompletionbynamecmd_BM (GtkMenuItem * mit
   assert (isobject_BM ((const value_tyBM) ob));
   const char *obname = findobjectname_BM (ob);
   assert (obname != NULL);
+  DBGPRINTF_BM ("replacecompletionbynamecmd_BM ix#%d obname=%s", ix, obname);
   GtkTextIter begwit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endwit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &begwit,
@@ -3467,6 +3511,22 @@ stopcompletionmenucmd_BM (GtkMenuItem * mit
                           gpointer data __attribute__ ((unused)))
 {
   assert (isset_BM ((const value_tyBM) complsetcmd_BM));
+  if (complcommonprefix_BM)
+    {
+      DBGPRINTF_BM
+        ("stopcompletionmenucmd_BM complcommonprefix_BM=%s compbegoffcmd_BM=%d compendoffcmd_BM=%d",
+         complcommonprefix_BM, compbegoffcmd_BM, compendoffcmd_BM);
+      GtkTextIter begwit = EMPTY_TEXT_ITER_BM;
+      GtkTextIter endwit = EMPTY_TEXT_ITER_BM;
+      gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &begwit,
+                                          compbegoffcmd_BM);
+      gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &endwit,
+                                          compendoffcmd_BM);
+      gtk_text_buffer_delete (commandbuf_BM, &begwit, &endwit);
+      gtk_text_buffer_insert (commandbuf_BM, &begwit, complcommonprefix_BM,
+                              -1);
+      gtk_text_buffer_place_cursor (commandbuf_BM, &begwit);
+    }
   gtk_main_quit ();
 }                               /* end stopcompletionmenucmd_BM */
 
@@ -3563,8 +3623,8 @@ runcommand_BM (bool erase)
       if (errormessagedialog_BM)
         {
           gtk_dialog_run (GTK_DIALOG (errormessagedialog_BM));
-          gtk_widget_destroy (errormessagedialog_BM), errormessagedialog_BM =
-            NULL;
+          gtk_widget_destroy (errormessagedialog_BM),
+            errormessagedialog_BM = NULL;
         }
       free (cmdstr);
       return;
@@ -3906,8 +3966,8 @@ initialize_gui_menu_BM (GtkWidget * mainvbox, GtkBuilder * bld)
   GtkWidget *appquit =
     GTK_WIDGET (gtk_builder_get_object (bld, "appquit_id"));
   g_signal_connect (appquit, "activate", quitgui_BM, NULL);
-  g_signal_connect (mainwin_BM, "delete-event", (GCallback) deletemainwin_BM,
-                    NULL);
+  g_signal_connect (mainwin_BM, "delete-event",
+                    (GCallback) deletemainwin_BM, NULL);
   GtkWidget *appexit =
     GTK_WIDGET (gtk_builder_get_object (bld, "appexit_id"));
   g_signal_connect (appexit, "activate", exitgui_BM, NULL);
