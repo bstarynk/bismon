@@ -73,11 +73,11 @@ handlekeypress_newgui_cmd_BM (GtkWidget * widg, GdkEventKey * evk,
       bool withshift = (evk->state & modmask) == GDK_SHIFT_MASK;
       if (withctrl)
         {
-          //run_then_erase_command_BM ();
+          run_then_erase_newgui_command_BM ();
         }
       else if (withshift)
         {
-          //run_then_keep_command_BM ();
+          run_then_keep_newgui_command_BM ();
         }
       else                      // plain RETURN key, propagate it
         return false;
