@@ -191,12 +191,6 @@ const struct parserops_stBM parsop_command_nobuild_BM = {
   .parsop_decorate_start_nesting_rout = parsstartnestingcmd_BM,
 };
 
-static void log_begin_message_BM (void);
-static void log_object_message_BM (const objectval_tyBM * obj);
-static void log_puts_message_BM (const char *msg);
-static void log_printf_message_BM (const char *fmt, ...)
-  __attribute__ ((format (printf, 1, 2)));
-static void log_end_message_BM (void);
 
 
 static void start_browse_object_BM (const objectval_tyBM * obj, int depth);

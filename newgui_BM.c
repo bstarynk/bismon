@@ -17,6 +17,11 @@ static void run_then_keep_newgui_command_BM (void);
 
 static void markset_newgui_cmd_BM (GtkTextBuffer *, GtkTextIter *,
                                    GtkTextMark *, gpointer);
+
+static void parsecommandbuf_newgui_BM (struct parser_stBM *pars,
+                                       struct stackframe_stBM *stkf);
+
+
 GtkWidget *
 initialize_newgui_command_scrollview_BM (void)
 {
@@ -223,8 +228,103 @@ newgui_get_browsebuf_BM (void)
 void
 runcommand_newgui_BM (bool erase)
 {
-  FATAL_BM ("runcommand_newgui_BM unimplemented erase=%s",
-            erase ? "yes" : "no");
+  DBGPRINTF_BM ("runcommand_newgui_BM start erase=%s", erase ? "yes" : "no");
+  GtkTextIter startit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter endit = EMPTY_TEXT_ITER_BM;
+  cmd_clear_parens_BM ();
+  if (errormessagedialog_BM)
+    {
+      gtk_widget_destroy (errormessagedialog_BM), errormessagedialog_BM =
+        NULL;
+    };
+  gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
+  gtk_text_buffer_remove_all_tags (commandbuf_BM, &startit, &endit);
+  char *cmdstr = gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit,
+                                           false);
+  bool gotffortab = false;
+  for (char *pc = cmdstr; *pc; pc++)
+    {
+      if (*pc == '\t')
+        {
+          gotffortab = true;
+          *pc = ' ';
+        }
+      else if (*pc == '\f')
+        {
+          gotffortab = true;
+          *pc = '\n';
+        };
+    };
+  if (gotffortab)
+    {
+      gtk_text_buffer_set_text (commandbuf_BM, cmdstr, -1);
+    }
+  struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
+  int cmdlen = strlen (cmdstr);
+  cmdpars->pars_ops = &parsop_command_build_BM;
+  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
+                 struct parser_stBM *cmdpars;);
+  _.cmdpars = cmdpars;
+  int errpars = setjmp (jmperrorcmd_BM);
+  if (!errpars)
+    {
+      // should parse the command buffer, this could longjmp to jmperrorcmd_BM
+      parsecommandbuf_newgui_BM (cmdpars, (struct stackframe_stBM *) &_);
+      commandnumber_BM++;
+      serial63_tyBM sercmd = randomserial63_BM ();
+      char serbuf[16];
+      memset (serbuf, 0, sizeof (serbuf));
+      serial63tocbuf16_BM (sercmd, serbuf);
+      if (gui_command_log_file_BM)
+        {
+          fprintf (gui_command_log_file_BM, "///++%s command #%d,l%d:\n",
+                   serbuf, commandnumber_BM, cmdlen);
+          fputs (cmdstr, gui_command_log_file_BM);
+          if (cmdlen > 0 && cmdstr[cmdlen - 1] != '\n')
+            putc ('\n', gui_command_log_file_BM);
+          fprintf (gui_command_log_file_BM, "///--%s end command #%d\n\f\n",
+                   serbuf, commandnumber_BM);
+          fflush (gui_command_log_file_BM);
+        }
+      log_begin_message_BM ();
+      log_printf_message_BM
+        ("run %s command #%d successfully:\n",
+         erase ? "erased" : "kept", commandnumber_BM);
+      char commbuf[80];
+      memset (commbuf, 0, sizeof (commbuf));
+      snprintf (commbuf, sizeof (commbuf), "///++%s command #%d,l%d:",
+                serbuf, commandnumber_BM, cmdlen);
+      GtkTextIter it = EMPTY_TEXT_ITER_BM;
+      gtk_text_buffer_get_end_iter (logbuf_BM, &it);
+      gtk_text_buffer_insert_with_tags
+        (logbuf_BM, &it, commbuf, -1, comment_logtag_BM, NULL);
+      gtk_text_buffer_insert (logbuf_BM, &it, "\n", -1);
+      gtk_text_buffer_insert_with_tags
+        (logbuf_BM, &it, cmdstr, -1, command_logtag_BM, NULL);
+      if (cmdlen > 0 && cmdstr[cmdlen - 1] != '\n')
+        gtk_text_buffer_insert (logbuf_BM, &it, "\n", -1);
+      snprintf (commbuf, sizeof (commbuf), "///--%s end command #%d",
+                serbuf, commandnumber_BM);
+      gtk_text_buffer_insert_with_tags
+        (logbuf_BM, &it, commbuf, -1, comment_logtag_BM, NULL);
+      gtk_text_buffer_insert (logbuf_BM, &it, "\n", -1);
+      log_end_message_BM ();
+    }
+  else                          /* error */
+    {
+      // the errormessagedialog_BM was created in parserrorcmd_BM
+      if (errormessagedialog_BM)
+        {
+          gtk_dialog_run (GTK_DIALOG (errormessagedialog_BM));
+          gtk_widget_destroy (errormessagedialog_BM), errormessagedialog_BM =
+            NULL;
+        }
+      free (cmdstr);
+      return;
+    }
+  free (cmdstr);
+  if (erase)
+    gtk_text_buffer_set_text (commandbuf_BM, "", 0);
 }                               /* end runcommand_newgui_BM */
 
 void
@@ -254,8 +354,7 @@ enduseraction_newgui_cmd_BM (GtkTextBuffer * txbuf, gpointer data)
   if (!errpars)
     {
       // should parse the command buffer
-      ///parsecommandbuf_BM (cmdpars, (struct stackframe_stBM *) &_);
-#warning should parse the command buffer
+      parsecommandbuf_newgui_BM (cmdpars, (struct stackframe_stBM *) &_);
     }
   else
     {
@@ -268,3 +367,37 @@ enduseraction_newgui_cmd_BM (GtkTextBuffer * txbuf, gpointer data)
   gtk_text_buffer_get_iter_at_mark (commandbuf_BM, &insit, insmk);
   markset_newgui_cmd_BM (commandbuf_BM, &insit, insmk, NULL);
 }                               /* end enduseraction_newgui_cmd_BM */
+
+void
+parsecommandbuf_newgui_BM (struct parser_stBM *pars,
+                           struct stackframe_stBM *stkf)
+{
+  if (!isparser_BM (pars))
+    return;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 struct parser_stBM * pars;
+                 value_tyBM comp; objectval_tyBM * obj;
+                 objectval_tyBM * oldfocusobj; const stringval_tyBM * name;
+                 const stringval_tyBM * result;
+    );
+  _.pars = pars;
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
+  bool nobuild = parsops && parsops->parsop_nobuild;
+  int nbloop = 0;
+  for (;;)
+    {
+      parserskipspaces_BM (pars);
+      if (nbloop++ > MAXSIZE_BM / 32)
+        parsererrorprintf_BM (pars, pars->pars_lineno,
+                              pars->pars_colpos, "too many %d loops", nbloop);
+      if (parserendoffile_BM (pars))
+        break;
+      unsigned curlineno = parserlineno_BM (pars);
+      unsigned curcolpos = parsercolpos_BM (pars);
+      parstoken_tyBM tok = parsertokenget_BM (pars);
+      DBGPRINTF_BM ("parsecommandbuf_newgui_BM nbloop#%d tok~%s L%dC%d",
+                    nbloop, lexkindname_BM (tok.tok_kind),
+                    curlineno, curcolpos);
+    }
+}                               /* end parsecommandbuf_newgui_BM */
