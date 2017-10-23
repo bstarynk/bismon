@@ -3201,6 +3201,7 @@ static void stopcompletionmenucmd_BM (GtkMenuItem * mit, gpointer data);
 void
 tabautocomplete_gui_cmd_BM (void)
 {
+#warning tabautocomplete_gui_cmd_BM may have wrong behavior
   GtkTextIter cursit = EMPTY_TEXT_ITER_BM;
   GtkTextIter beglinit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endlinit = EMPTY_TEXT_ITER_BM;
@@ -3228,7 +3229,7 @@ tabautocomplete_gui_cmd_BM (void)
            && !gtk_text_iter_ends_line (&endlinit)
            && !gtk_text_iter_is_end (&endlinit))
       {
-        gtk_text_iter_backward_char (&endlinit);
+        gtk_text_iter_forward_char (&endlinit);
       }
   }
   DBGPRINTF_BM ("tabautocompletecmd_BM endlinit=%s",
@@ -3303,7 +3304,9 @@ tabautocomplete_gui_cmd_BM (void)
   else
     goto failure;
   unsigned nbcompl = setcardinal_BM (complsetv);
-  DBGPRINTF_BM ("tabautocompletecmd_BM nbcompl=%d", nbcompl);
+  DBGPRINTF_BM
+    ("tabautocompletecmd_BM nbcompl=%d endname@%p curstr@%p begname@%p: '%s'",
+     nbcompl, endname, curstr, begname, begname);
   if (nbcompl == 0)
     goto failure;
   else if (nbcompl == 1)
