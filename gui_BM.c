@@ -3217,24 +3217,22 @@ tabautocomplete_gui_cmd_BM (void)
   int lin = gtk_text_iter_get_line (&cursit) + 1;
   {
     beglinit = cursit;
-    GtkTextIter previt = cursit;
-    while (gtk_text_iter_get_line (&previt) + 1 == lin
-           && !gtk_text_iter_is_start (&previt))
+    while (gtk_text_iter_get_line (&beglinit) + 1 == lin
+           && !gtk_text_iter_starts_line (&beglinit)
+           && !gtk_text_iter_is_start (&beglinit))
       {
-        beglinit = previt;
-        gtk_text_iter_backward_char (&previt);
+        gtk_text_iter_backward_char (&beglinit);
       }
   }
   DBGPRINTF_BM ("tabautocompletecmd_BM beglinit=%s",
                 textiterstrdbg_BM (&beglinit));
   {
     endlinit = cursit;
-    GtkTextIter nextit = cursit;
-    while (gtk_text_iter_get_line (&nextit) + 1 == lin
-           && !gtk_text_iter_is_end (&nextit))
+    while (gtk_text_iter_get_line (&endlinit) + 1 == lin
+           && !gtk_text_iter_ends_line (&endlinit)
+           && !gtk_text_iter_is_end (&endlinit))
       {
-        endlinit = nextit;
-        gtk_text_iter_forward_char (&nextit);
+        gtk_text_iter_backward_char (&endlinit);
       }
   }
   DBGPRINTF_BM ("tabautocompletecmd_BM endlinit=%s",
