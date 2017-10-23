@@ -205,6 +205,7 @@ static void start_browse_named_value_BM (const stringval_tyBM * namev,
                                          const value_tyBM val, int depth);
 
 
+static void refresh_browse_BM (void);
 
 static void runcommand_BM (bool erase);
 static void run_then_erase_command_BM (void);
@@ -1117,6 +1118,11 @@ browse_named_value_gui_BM (const stringval_tyBM * namev,
 }                               /* end browse_named_value_gui_BM */
 
 
+void
+refresh_browse_BM (void)
+{
+  DBGPRINTF_BM ("refresh_browse_BM");
+}                               /* end refresh_browse_BM */
 
 void
 quitgui_BM (void)
@@ -3642,6 +3648,12 @@ populatepopupbrow_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
       gtk_menu_item_new_with_label (cursinfobuf);
     gtk_widget_set_sensitive (cursinfomenit, false);
     gtk_menu_shell_append (GTK_MENU_SHELL (popup), cursinfomenit);
+  }
+  {
+    GtkWidget *refreshmenuit = gtk_menu_item_new_with_label ("refresh");
+    gtk_menu_shell_append (GTK_MENU_SHELL (popup), refreshmenuit);
+    g_signal_connect (refreshmenuit, "activate",
+                      G_CALLBACK (refresh_browse_BM), NULL);
   }
   gtk_widget_show_all (popup);
 }                               /* end populatepopupbrow_BM */
