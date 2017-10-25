@@ -1113,10 +1113,62 @@ browse_named_value_gui_BM (const stringval_tyBM * namev,
 }                               /* end browse_named_value_gui_BM */
 
 
+#warning refresh_browse_BM probably needs a calling stackframe
 void
 refresh_browse_BM (void)
 {
   DBGPRINTF_BM ("refresh_browse_BM");
+  browserblinkstop_BM ();
+  /// reinitialize the browsed objects
+  for (unsigned boix = 0; boix < browserobulen_BM; boix++)
+    {
+      struct browsedobj_stBM *curbrob = browsedobj_BM + boix;
+      gtk_text_buffer_delete_mark (browserbuf_BM, curbrob->brow_ostartm),
+        curbrob->brow_ostartm = NULL;
+      gtk_text_buffer_delete_mark (browserbuf_BM, curbrob->brow_oendm),
+        curbrob->brow_oendm = NULL;
+      memset (curbrob->brow_parenarr, 0,
+              curbrob->brow_parensize * sizeof (struct parenoffset_stBM));
+      curbrob->brow_parenulen = 0;
+    }
+  /// reinitialize the browsed named values
+  for (unsigned bvix = 0; bvix < browsednvulen_BM; bvix++)
+    {
+      struct browsedval_stBM *curbval = browsedval_BM + bvix;
+      gtk_text_buffer_delete_mark (browserbuf_BM, curbval->brow_vstartmk),
+        curbval->brow_vstartmk = NULL;
+      gtk_text_buffer_delete_mark (browserbuf_BM, curbval->brow_vendmk),
+        curbval->brow_vendmk = NULL;
+      memset (curbval->brow_parenarr, 0,
+              curbval->brow_parensize * sizeof (struct parenoffset_stBM));
+      curbval->brow_parenulen = 0;
+    }
+  gtk_text_buffer_set_text (browserbuf_BM, "", 0);
+  {
+    GtkTextIter brit = EMPTY_TEXT_ITER_BM;
+    GtkTextIter endtit = EMPTY_TEXT_ITER_BM;
+    gtk_text_buffer_get_start_iter (browserbuf_BM, &brit);
+    gtk_text_buffer_insert_with_tags (browserbuf_BM, &brit, "** BROWSER **",
+                                      -1, pagetitle_brotag_BM, NULL);
+    gtk_text_buffer_insert (browserbuf_BM, &brit, "\n\n", 2);
+    endtit = brit;
+    browserit_BM = brit;
+    gtk_text_iter_backward_char (&endtit);
+    browserendtitleoffset_BM =  //
+      gtk_text_iter_get_offset (&endtit);
+  }
+  /// redisplay objects
+  for (unsigned boix = 0; boix < browserobulen_BM; boix++)
+    {
+      struct browsedobj_stBM *curbrob = browsedobj_BM + boix;
+    }
+  /// then redisplay named values
+  for (unsigned bvix = 0; bvix < browsednvulen_BM; bvix++)
+    {
+      struct browsedval_stBM *curbval = browsedval_BM + bvix;
+    };
+#warning refresh_browse_BM very incomplete
+  fprintf (stderr, "refresh_browse_BM incomplete\n");
 }                               /* end refresh_browse_BM */
 
 void
