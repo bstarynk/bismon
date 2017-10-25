@@ -76,6 +76,7 @@ extern int browserobcurix_BM;   /* current index in browsedobj_BM */
 struct browsedobj_stBM
 {
   const objectval_tyBM *brow_obj;
+  const objectval_tyBM *brow_objsel;
   GtkTextMark *brow_ostartm;
   GtkTextMark *brow_oendm;
   int brow_depth;

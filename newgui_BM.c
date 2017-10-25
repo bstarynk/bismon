@@ -383,7 +383,6 @@ parsecommandbuf_newgui_BM (struct parser_stBM *pars,
   _.pars = pars;
   const struct parserops_stBM *parsops = pars->pars_ops;
   assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
-  bool nobuild = parsops && parsops->parsop_nobuild;
   int nbloop = 0;
   for (;;)
     {
