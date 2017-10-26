@@ -79,10 +79,10 @@ struct browsedobj_stBM
   const objectval_tyBM *brow_objsel;
   GtkTextMark *brow_ostartm;
   GtkTextMark *brow_oendm;
-  int brow_depth;
-  unsigned brow_parensize;      /* allocated size of brow_parenarr */
-  unsigned brow_parenulen;      /* used length of brow_parenarr */
-  struct parenoffset_stBM *brow_parenarr;
+  int brow_odepth;
+  unsigned brow_oparensize;     /* allocated size of brow_parenarr */
+  unsigned brow_oparenulen;     /* used length of brow_parenarr */
+  struct parenoffset_stBM *brow_oparenarr;
 };
 extern struct browsedobj_stBM *browsedobj_BM;
 
@@ -96,10 +96,10 @@ struct browsedval_stBM
   value_tyBM brow_val;
   GtkTextMark *brow_vstartmk;
   GtkTextMark *brow_vendmk;
-  int brow_depth;
-  unsigned brow_parensize;      /* allocated size of brow_parenarr */
-  unsigned brow_parenulen;      /* used length of brow_parenarr */
-  struct parenoffset_stBM *brow_parenarr;
+  int brow_vdepth;
+  unsigned brow_vparensize;     /* allocated size of brow_parenarr */
+  unsigned brow_vparenulen;     /* used length of brow_parenarr */
+  struct parenoffset_stBM *brow_vparenarr;
 };
 extern struct browsedval_stBM *browsedval_BM;
 extern guint browserblinkid_BM;

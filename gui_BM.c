@@ -234,7 +234,10 @@ gcmarkgui_BM (struct garbcoll_stBM *gc)
   if (browsedobj_BM)
     {
       for (unsigned ix = 0; ix < browserobulen_BM; ix++)
-        gcmark_BM (gc, (value_tyBM) browsedobj_BM[ix].brow_obj, 0);
+        {
+          gcmark_BM (gc, (value_tyBM) browsedobj_BM[ix].brow_obj, 0);
+          gcmark_BM (gc, (value_tyBM) browsedobj_BM[ix].brow_objsel, 0);
+        }
     };
   if (browsedval_BM)
     {
@@ -445,7 +448,8 @@ start_browse_object_BM (const objectval_tyBM * obj,
           gtk_text_buffer_move_mark (browserbuf_BM,
                                      browsedobj_BM[md].brow_ostartm,
                                      &startit);
-          browsedobj_BM[md].brow_depth = depth;
+          browsedobj_BM[md].brow_odepth = depth;
+          browsedobj_BM[md].brow_objsel = objsel;
           browserit_BM = endit;
           browserobcurix_BM = md;
           return;
@@ -479,7 +483,8 @@ start_browse_object_BM (const objectval_tyBM * obj,
           browsedobj_BM[md].brow_oendm =        //
             gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it,
                                          RIGHT_GRAVITY_BM);
-          browsedobj_BM[md].brow_depth = depth;
+          browsedobj_BM[md].brow_odepth = depth;
+          browsedobj_BM[md].brow_objsel = objsel;
           browserobcurix_BM = md;
           browserit_BM = it;
           return;
@@ -510,7 +515,8 @@ start_browse_object_BM (const objectval_tyBM * obj,
                                  RIGHT_GRAVITY_BM);
   browsedobj_BM[browserobulen_BM].brow_oendm =  //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it, RIGHT_GRAVITY_BM);
-  browsedobj_BM[browserobulen_BM].brow_depth = depth;
+  browsedobj_BM[browserobulen_BM].brow_odepth = depth;
+  browsedobj_BM[browserobulen_BM].brow_objsel = objsel;
   browserobcurix_BM = 0;
   browserit_BM = it;
   browserobulen_BM++;
@@ -599,11 +605,11 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
                                        browsedobj_BM[md].brow_ostartm);
           gtk_text_buffer_delete_mark (browserbuf_BM,
                                        browsedobj_BM[md].brow_oendm);
-          if (browsedobj_BM[md].brow_parenulen > 0)
-            memset (browsedobj_BM[md].brow_parenarr, 0,
-                    browsedobj_BM[md].brow_parenulen *
+          if (browsedobj_BM[md].brow_oparenulen > 0)
+            memset (browsedobj_BM[md].brow_oparenarr, 0,
+                    browsedobj_BM[md].brow_oparenulen *
                     sizeof (struct parenoffset_stBM));
-          free (browsedobj_BM[md].brow_parenarr);
+          free (browsedobj_BM[md].brow_oparenarr);
           memset (&browsedobj_BM[md], 0, sizeof (browsedobj_BM[md]));
           for (int ix = md; ix < (int) browserobulen_BM; ix++)
             browsedobj_BM[ix] = browsedobj_BM[ix + 1];
@@ -691,7 +697,7 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
           gtk_text_iter_backward_char (&startit);
           gtk_text_buffer_move_mark (browserbuf_BM,
                                      mdval->brow_vstartmk, &startit);
-          mdval->brow_depth = depth;
+          mdval->brow_vdepth = depth;
           browsednvcurix_BM = md;
           return;
         }
@@ -719,7 +725,7 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
           memset (mdval, 0, sizeof (*mdval));
           mdval->brow_name = namev;
           mdval->brow_val = val;
-          mdval->brow_depth = depth;
+          mdval->brow_vdepth = depth;
           gtk_text_buffer_insert (browserbuf_BM, &it, "\n", -1);
           GtkTextIter startit = it;
           gtk_text_iter_backward_char (&startit);
@@ -749,7 +755,7 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
   gtk_text_iter_backward_char (&startit);
   browsedval_BM[browsednvulen_BM].brow_name = namev;
   browsedval_BM[browsednvulen_BM].brow_val = val;
-  browsedval_BM[browsednvulen_BM].brow_depth = depth;
+  browsedval_BM[browsednvulen_BM].brow_vdepth = depth;
   browsedval_BM[browsednvulen_BM].brow_vstartmk =       //
     gtk_text_buffer_create_mark (browserbuf_BM, NULL, &startit,
                                  RIGHT_GRAVITY_BM);
@@ -856,11 +862,12 @@ hide_named_value_gui_BM (const stringval_tyBM * namev,
           gtk_text_buffer_delete (browserbuf_BM, &startit, &endit);
           gtk_text_buffer_delete_mark (browserbuf_BM, mdval->brow_vstartmk);
           gtk_text_buffer_delete_mark (browserbuf_BM, mdval->brow_vendmk);
-          if (mdval->brow_parenulen > 0)
-            memset (mdval->brow_parenarr,
+          if (mdval->brow_vparenulen > 0)
+            memset (mdval->brow_vparenarr,
                     0,
-                    mdval->brow_parenulen * sizeof (struct parenoffset_stBM));
-          free (mdval->brow_parenarr);
+                    mdval->brow_vparenulen *
+                    sizeof (struct parenoffset_stBM));
+          free (mdval->brow_vparenarr);
           for (int ix = md; ix < (int) browsednvulen_BM; ix++)
             browsedval_BM[ix] = browsedval_BM[ix + 1];
           memset (browsedval_BM + browsednvulen_BM, 0,
@@ -933,8 +940,8 @@ browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
     {
       assert (browsednvcurix_BM < 0);
       struct browsedobj_stBM *curbrob = browsedobj_BM + browserobcurix_BM;
-      unsigned oldulen = curbrob->brow_parenulen;
-      if (oldulen + 1 >= curbrob->brow_parensize)
+      unsigned oldulen = curbrob->brow_oparenulen;
+      if (oldulen + 1 >= curbrob->brow_oparensize)
         {
           unsigned newsiz = prime_above_BM (5 * oldulen / 4 + 7);
           struct parenoffset_stBM *newarr =
@@ -942,12 +949,12 @@ browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
           if (!newarr)
             FATAL_BM ("calloc failed for %u parens (%m)", newsiz);
           if (oldulen > 0)
-            memcpy (newarr, curbrob->brow_parenarr,
+            memcpy (newarr, curbrob->brow_oparenarr,
                     oldulen * sizeof (struct parenoffset_stBM));
-          free (curbrob->brow_parenarr), curbrob->brow_parenarr = newarr;
-          curbrob->brow_parensize = newsiz;
+          free (curbrob->brow_oparenarr), curbrob->brow_oparenarr = newarr;
+          curbrob->brow_oparensize = newsiz;
         }
-      struct parenoffset_stBM *curpar = curbrob->brow_parenarr + oldulen;
+      struct parenoffset_stBM *curpar = curbrob->brow_oparenarr + oldulen;
       curpar->paroff_open = openoff;
       curpar->paroff_close = closeoff;
       curpar->paroff_xtra = xtraoff;
@@ -955,14 +962,14 @@ browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
       curpar->paroff_closelen = closelen;
       curpar->paroff_xtralen = xtralen;
       curpar->paroff_depth = depth;
-      curbrob->brow_parenulen = oldulen + 1;
+      curbrob->brow_oparenulen = oldulen + 1;
     }
   else if (browsednvcurix_BM >= 0)
     {
       assert (browserobcurix_BM < 0);
       struct browsedval_stBM *curbrval = browsedval_BM + browsednvcurix_BM;
-      unsigned oldulen = curbrval->brow_parenulen;
-      if (oldulen + 1 >= curbrval->brow_parenulen)
+      unsigned oldulen = curbrval->brow_vparenulen;
+      if (oldulen + 1 >= curbrval->brow_vparenulen)
         {
           unsigned newsiz = prime_above_BM (5 * oldulen / 4 + 7);
           struct parenoffset_stBM *newarr =
@@ -970,12 +977,12 @@ browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
           if (!newarr)
             FATAL_BM ("calloc failed for %u parens (%m)", newsiz);
           if (oldulen > 0)
-            memcpy (newarr, curbrval->brow_parenarr,
+            memcpy (newarr, curbrval->brow_vparenarr,
                     oldulen * sizeof (struct parenoffset_stBM));
-          free (curbrval->brow_parenarr), curbrval->brow_parenarr = newarr;
-          curbrval->brow_parensize = newsiz;
+          free (curbrval->brow_vparenarr), curbrval->brow_vparenarr = newarr;
+          curbrval->brow_vparensize = newsiz;
         }
-      struct parenoffset_stBM *curpar = curbrval->brow_parenarr + oldulen;
+      struct parenoffset_stBM *curpar = curbrval->brow_vparenarr + oldulen;
       curpar->paroff_open = openoff;
       curpar->paroff_close = closeoff;
       curpar->paroff_xtra = xtraoff;
@@ -983,7 +990,7 @@ browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
       curpar->paroff_closelen = closelen;
       curpar->paroff_xtralen = xtralen;
       curpar->paroff_depth = depth;
-      curbrval->brow_parenulen = oldulen + 1;
+      curbrval->brow_vparenulen = oldulen + 1;
     }
   else
     FATAL_BM ("no browsed object or named value");
@@ -1164,9 +1171,9 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
         curbrob->brow_ostartm = NULL;
       gtk_text_buffer_delete_mark (browserbuf_BM, curbrob->brow_oendm),
         curbrob->brow_oendm = NULL;
-      memset (curbrob->brow_parenarr, 0,
-              curbrob->brow_parensize * sizeof (struct parenoffset_stBM));
-      curbrob->brow_parenulen = 0;
+      memset (curbrob->brow_oparenarr, 0,
+              curbrob->brow_oparensize * sizeof (struct parenoffset_stBM));
+      curbrob->brow_oparenulen = 0;
     }
   /// reinitialize the browsed named values
   for (unsigned bvix = 0; bvix < browsednvulen_BM; bvix++)
@@ -1176,9 +1183,9 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
         curbval->brow_vstartmk = NULL;
       gtk_text_buffer_delete_mark (browserbuf_BM, curbval->brow_vendmk),
         curbval->brow_vendmk = NULL;
-      memset (curbval->brow_parenarr, 0,
-              curbval->brow_parensize * sizeof (struct parenoffset_stBM));
-      curbval->brow_parenulen = 0;
+      memset (curbval->brow_vparenarr, 0,
+              curbval->brow_vparensize * sizeof (struct parenoffset_stBM));
+      curbval->brow_vparenulen = 0;
     }
   gtk_text_buffer_set_text (browserbuf_BM, "", 0);
   {
@@ -1200,7 +1207,7 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
       struct browsedobj_stBM *curbrob = browsedobj_BM + boix;
       _.objbrows = curbrob->brow_obj;
       _.objsel = curbrob->brow_objsel;
-      int curdepth = curbrob->brow_depth;
+      int curdepth = curbrob->brow_odepth;
       assert (isobject_BM ((value_tyBM) _.objbrows));
       assert (isobject_BM ((value_tyBM) _.objsel));
       browserobcurix_BM = boix;
@@ -1241,7 +1248,7 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
                                      RIGHT_GRAVITY_BM);
       browserit_BM = it;
       browse_value_gui_content_BM (_.valname, _.valbrows, BMP_browse_value,
-                                   curbval->brow_depth,
+                                   curbval->brow_vdepth,
                                    (struct stackframe_stBM *) &_);
       browsednvcurix_BM = -1;
       _.valbrows = NULL;
@@ -2675,7 +2682,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
               assert (brfocusob != NULL);
               browse_object_gui_BM (GLOBAL_BM (gui_focus_obj),
                                     BMP_browse_in_object,
-                                    brfocusob->brow_depth,
+                                    brfocusob->brow_odepth,
                                     (struct stackframe_stBM *) &_);
               log_begin_message_BM ();
               log_puts_message_BM ("[re-]browsing object ");
@@ -2725,7 +2732,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                 {
                   browse_object_gui_BM (_.oldfocusobj,
                                         BMP_browse_in_object,
-                                        broldfocusob->brow_depth,
+                                        broldfocusob->brow_odepth,
                                         (struct stackframe_stBM *) &_);
                   log_begin_message_BM ();
                   log_puts_message_BM ("defocusing object ");
@@ -4367,7 +4374,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
         GtkTextIter ostartit = EMPTY_TEXT_ITER_BM;
         GtkTextIter oendit = EMPTY_TEXT_ITER_BM;
         struct browsedobj_stBM *brob = browsedobj_BM + obix;
-        unsigned curnbparen = brob->brow_parenulen;
+        unsigned curnbparen = brob->brow_oparenulen;
         if (curnbparen == 0)
           return;
         gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &ostartit,
@@ -4379,7 +4386,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
         assert (delta >= 0);
         for (unsigned pix = 0; pix < curnbparen; pix++)
           {
-            struct parenoffset_stBM *curpo = brob->brow_parenarr + pix;
+            struct parenoffset_stBM *curpo = brob->brow_oparenarr + pix;
             if (parens_surrounds_BM (curpo, delta))
               {
                 if (!blinkpo ||
@@ -4452,7 +4459,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
           struct browsedval_stBM *brva = browsedval_BM + bvix;
           GtkTextIter vstartit = EMPTY_TEXT_ITER_BM;
           GtkTextIter vendit = EMPTY_TEXT_ITER_BM;
-          unsigned curnbparen = brva->brow_parenulen;
+          unsigned curnbparen = brva->brow_vparenulen;
           if (curnbparen == 0)
             return;
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
@@ -4464,7 +4471,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
           assert (delta >= 0);
           for (unsigned pix = 0; pix < curnbparen; pix++)
             {
-              struct parenoffset_stBM *curpo = brva->brow_parenarr + pix;
+              struct parenoffset_stBM *curpo = brva->brow_vparenarr + pix;
               if (parens_surrounds_BM (curpo, delta))
                 {
                   if (!blinkpo ||
