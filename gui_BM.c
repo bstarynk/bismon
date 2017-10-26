@@ -1204,6 +1204,10 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
   /// redisplay objects
   for (unsigned boix = 0; boix < browserobulen_BM; boix++)
     {
+      gtk_text_buffer_get_end_iter (browserbuf_BM, &browserit_BM);
+      DBGPRINTF_BM ("refreshing boix#%d browserit:%s",
+                    boix, textiterstrdbg_BM (&browserit_BM));
+      GtkTextIter it = browserit_BM;
       struct browsedobj_stBM *curbrob = browsedobj_BM + boix;
       _.objbrows = curbrob->brow_obj;
       _.objsel = curbrob->brow_objsel;
@@ -1211,7 +1215,6 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
       assert (isobject_BM ((value_tyBM) _.objbrows));
       assert (isobject_BM ((value_tyBM) _.objsel));
       browserobcurix_BM = boix;
-      GtkTextIter it = browserit_BM;
       GtkTextIter startit = it;
       gtk_text_buffer_insert (browserbuf_BM, &it, "\n", -1);
       startit = it;
@@ -1231,11 +1234,14 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
   /// then redisplay named values
   for (unsigned bvix = 0; bvix < browsednvulen_BM; bvix++)
     {
+      gtk_text_buffer_get_end_iter (browserbuf_BM, &browserit_BM);
+      DBGPRINTF_BM ("refreshing bvix#%d browserit:%s",
+                    bvix, textiterstrdbg_BM (&browserit_BM));
+      GtkTextIter it = browserit_BM;
       struct browsedval_stBM *curbval = browsedval_BM + bvix;
       _.valbrows = curbval->brow_val;
       _.valname = curbval->brow_name;
       browsednvcurix_BM = bvix;
-      GtkTextIter it = browserit_BM;
       GtkTextIter startit = it;
       gtk_text_buffer_insert (browserbuf_BM, &it, "\n", -1);
       startit = it;
@@ -1256,7 +1262,7 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
   DBGPRINTF_BM ("end refresh_browse_BM %d objects, %d named values, %s",
                 browserobulen_BM, browsednvulen_BM,
                 textiterstrdbg_BM (&browserit_BM));
-  browserit_BM = EMPTY_TEXT_ITER_BM;
+  gtk_text_buffer_get_end_iter (browserbuf_BM, &browserit_BM);
 #warning check that refresh_browse_BM is good
 }                               /* end refresh_browse_BM */
 
