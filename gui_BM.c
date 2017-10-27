@@ -1201,6 +1201,8 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
     browserendtitleoffset_BM =  //
       gtk_text_iter_get_offset (&endtit);
   }
+  DBGPRINTF_BM ("refreshing initial browserit:%s",
+                textiterstrdbg_BM (&browserit_BM));
   /// redisplay objects
   for (unsigned boix = 0; boix < browserobulen_BM; boix++)
     {
@@ -1225,12 +1227,17 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
       curbrob->brow_oendm =     //
         gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it,
                                      RIGHT_GRAVITY_BM);
+      gtk_text_buffer_get_end_iter (browserbuf_BM, &browserit_BM);
       browse_object_gui_content_BM (_.objbrows, _.objsel, curdepth,
                                     (struct stackframe_stBM *) &_);
+      DBGPRINTF_BM ("refreshed boix#%d browserit:%s",
+                    boix, textiterstrdbg_BM (&browserit_BM));
       browserobcurix_BM = -1;
       _.objbrows = NULL;
       _.objsel = NULL;
     }
+  DBGPRINTF_BM ("refreshing before values browserit:%s",
+                textiterstrdbg_BM (&browserit_BM));
   /// then redisplay named values
   for (unsigned bvix = 0; bvix < browsednvulen_BM; bvix++)
     {
@@ -1252,10 +1259,12 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
       curbval->brow_vendmk =    //
         gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it,
                                      RIGHT_GRAVITY_BM);
-      browserit_BM = it;
+      gtk_text_buffer_get_end_iter (browserbuf_BM, &browserit_BM);
       browse_value_gui_content_BM (_.valname, _.valbrows, BMP_browse_value,
                                    curbval->brow_vdepth,
                                    (struct stackframe_stBM *) &_);
+      DBGPRINTF_BM ("refreshed bvix#%d browserit:%s",
+                    bvix, textiterstrdbg_BM (&browserit_BM));
       browsednvcurix_BM = -1;
       _.valbrows = NULL;
     };
