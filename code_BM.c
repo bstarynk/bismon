@@ -3363,6 +3363,9 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
   objresetattrs_BM (_.resobj, 5);
   objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   objputattr_BM (_.resobj, k_expander, clos_curcexp);
+  DBGPRINTF_BM ("%s cexpansion; k_expander= %s; resobj= %s",
+                objectdbg_BM (clos_curcexp),
+                objectdbg1_BM (k_expander), objectdbg2_BM (_.resobj));
   if (nbresults > 0)
     {
       objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
