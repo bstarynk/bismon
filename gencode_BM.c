@@ -26,7 +26,9 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 value_tyBM recv; objectval_tyBM * modgenob; value_tyBM args;
+                 value_tyBM recv;
+                 objectval_tyBM * modgenob;
+                 value_tyBM args; value_tyBM curarg;
                  objectval_tyBM * routprepob; value_tyBM prepvalset;
                  anyassoc_tyBM * assocbind;
     );
@@ -39,8 +41,8 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
       * const (arguments block locals constants simple_routine_preparation)
    ***/
   WEAKASSERT_BM (isnode_BM ((value_tyBM) constnod)
-                 && nodewidth_BM ((value_tyBM) constnod) == constix__LAST
-                 && valhash_BM ((value_tyBM) constnod) == 286038615);
+                 && valhash_BM ((value_tyBM) constnod) == 286038615
+                 && nodewidth_BM ((value_tyBM) constnod) == constix__LAST);
   const objectval_tyBM *k_arguments =   //
     objectcast_BM (nodenthson_BM
                    ((const value_tyBM) constnod, constix_arguments));
@@ -83,6 +85,11 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   /// assign _9YS82HkgghD_71BLsDAKRfg
   _.args = objgetattr_BM (_.recv, k_arguments);
   /// foreach_in_tuple(args curarg curargix args ...) _0UqUZ7mQGG5_69QlCmcSwTi
+  unsigned nbargs = tuplesize_BM (_.args);
+  for (unsigned curargix = 0; curargix < nbargs; curargix++)
+    {
+      _.curarg = tuplecompnth_BM (_.args, curargix);
+    }
 #warning incomplete  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP
   return NULL;
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */
