@@ -240,20 +240,6 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
                   FATAL_BM ("duplicate id %s near %s:%d", idbuf32, curldpath,
                             lincnt);
                 };
-              // if there is a routine for that object, bind it now
-              char symbuf[48];
-              memset (symbuf, 0, sizeof (symbuf));
-              snprintf (symbuf, sizeof (symbuf),        //
-                        ROUTINEOBJPREFIX_BM "%s" ROUTINEOBJSUFFIX_BM,
-                        idbuf32);
-              void *ad = dlsym (dlprog_BM, symbuf);
-              if (ad)
-                {
-                  newobj->ob_rout = ad;
-                  newobj->ob_sig = BMP_function_sig;
-                  nbrout++;
-                };
-              //
               ld->ld_objhset = hashsetobj_add_BM (ld->ld_objhset, newobj);
               nbobjdef++;
             }
