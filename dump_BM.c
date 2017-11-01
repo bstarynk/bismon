@@ -206,7 +206,12 @@ dump_scan_object_content_BM (struct dumper_stBM *du,
   _.curobj = objarg;
   // scan the class
   _.curattrobj = objclass_BM (_.curobj);
-  dumpscanobj_BM (_.curdu, _.curattrobj);
+  if (_.curattrobj)
+    dumpscanobj_BM (_.curdu, _.curattrobj);
+  // scan the signature
+  _.curattrobj = objsignature_BM (_.curobj);
+  if (_.curattrobj && objarg->ob_routaddr)
+    dumpscanobj_BM (_.curdu, _.curattrobj);
   // scan the attributes and their values
   _.curattrobj = NULL;
   _.setattrs = objsetattrs_BM ((objectval_tyBM *) _.curobj);
@@ -472,6 +477,23 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
     else
       fputc ('\n', spfil);
   }
+  if (curobj->ob_sig && curobj->ob_routaddr
+      && dumpobjisdumpable_BM (du, curobj->ob_sig))
+    {
+      _.curattr = curobj->ob_sig;
+      if (_.curattr == BMP_function_sig)
+        fprintf (spfil, "!^*\n");
+      else
+        {
+          char cursigid[32] = "";
+          idtocbuf32_BM (objid_BM (curobj->ob_sig), cursigid);
+          const char *signam = findobjectname_BM (curobj->ob_sig);
+          if (signam)
+            fprintf (spfil, "!^ %s |=%s|\n", cursigid, signam);
+          else
+            fprintf (spfil, "!^ %s\n", cursigid);
+        }
+    }
   if (curobj->ob_mtime > 0)
     fprintf (spfil, "!@ %.2f\n", curobj->ob_mtime);
   if (curobj->ob_class && dumpobjisdumpable_BM (du, curobj->ob_class))

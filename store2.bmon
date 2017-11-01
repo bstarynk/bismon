@@ -419,6 +419,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !(_42gEKfF4qca_6gGwxSFC1FO |=cexpansion_readmacro|
 !~ name (~ cexpansion_readmacro
 ~)
+!^*
 !@ 1507556148.95
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1128,6 +1129,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 !(_075tZNHCAMa_7XNNBaNM4qv
+!^*
 !@ 1502085467.42
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the routine to dump predefined"
@@ -1136,6 +1138,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 !(_09DxyieS5Wz_7pkad4F88FA
+!^*
 !@ 1502791841.01
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the method to browse_data a class"
@@ -1156,6 +1159,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 !(_0ekJdzLOqAI_8mejMqkwuKQ
+!^*
 !@ 1508140596.53
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1165,6 +1169,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 !(_0kUyX0U19K2_5mcH4RCaBl9
+!^*
 !@ 1506581781.73
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1178,6 +1183,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 !(_0B1PYH9bN34_3RZdP24AVyt
+!^*
 !@ 1502615054.06
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value a tuple"
@@ -1186,6 +1192,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 !(_0BAnB0xjs23_0WEOCOi5Nbe
+!^*
 !@ 1502610658.05
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value an object"
@@ -1194,6 +1201,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx |=value|
 
 
 !(_0HBMCM5CeLn_7L5YEV2jO7Y
+!^*
 !@ 1502619190.01
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value an int"
@@ -1217,6 +1225,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_0XbMOJqLLPZ_1t2wg2TwPRA
+!^*
 !@ 1506355088.16
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1230,6 +1239,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_1gME6zn82Kf_8hzWibLFRfz
+!^*
 !@ 1505321908.82
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1244,6 +1254,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_1ufPZmTnWhp_7FX9NANZCAW
+!^*
 !@ 1506664310.86
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1258,6 +1269,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_1Geqz0vsOKB_2Dpdb1LDu23
+!^*
 !@ 1506247120.88
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1271,6 +1283,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_23ViGouPnAg_15P5mpG9x3d
+!^*
 !@ 1502609812.04
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_in_object an object"
@@ -1279,6 +1292,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_26FUvWKvkYr_5hyqhhV8NEh
+!^*
 !@ 1508144005.43
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1299,6 +1313,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_2juH5YMCcog_8pQGCuE5mod
+!^*
 !@ 1507987837.34
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1308,6 +1323,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_2qppG2LJu79_9ljkbLS0eFQ
+!^*
 !@ 1504635278.05
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to init_class in object (class)"
@@ -1345,6 +1361,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_3kMqlEugRVW_7DgwjR4CBbP
+!^*
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value an integer"
@@ -1353,6 +1370,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_3rne4qbpnV9_0pywzeJp3Qr
+!^*
 !@ 1502615054.06
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value an set"
@@ -1373,6 +1391,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_3Tc3E4uo2p5_4EXWCPwCR5b
+!^*
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a set"
@@ -1381,6 +1400,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_4icYJnKsN0o_4xm5UbQOMTe
+!^*
 !@ 1508128314.71
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1390,6 +1410,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_4zaM2Itdsuq_9qNJK0HbcQI
+!^*
 !@ 1508127405.32
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1399,6 +1420,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_4DvEF1tVGFD_6VVLpFn6FPW
+!^*
 !@ 1507911440.43
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to dump_scan an instance of hset_object"
@@ -1407,6 +1429,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_4EBQMvthjcP_2OiZxZviSQc
+!^*
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_scan a class"
@@ -1415,6 +1438,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_4ENXjApm7Qb_3bXo8F6Jg9z
+!^*
 !@ 1502265883.40
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "function to dump globals"
@@ -1423,6 +1447,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_50d65bJypCN_6IJeVtssx9I
+!^*
 !@ 1506846789.86
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1436,6 +1461,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_5788HpgOtVV_4zwZIr0jgmq
+!^*
 !@ 1506760625.05
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1449,6 +1475,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_5hedSPIXD0o_5ef69rR2kzb
+!^*
 !@ 1507989218.78
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1458,6 +1485,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 
 !(_5mnsT1wsdWs_2Qnqsf3wqaP
+!^*
 !@ 1508326465.33
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1483,6 +1511,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_5v30KC0IMxx_53ZzXprJTM6
+!^*
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a node"
@@ -1491,6 +1520,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_5D9kkPHSPxq_8suDXpjlzjE
+!^*
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a tuple"
@@ -1499,6 +1529,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_5DyG7xVcxRI_1Ckpbj7b3QK
+!^*
 !@ 1505841093.18
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to dump_data a plain_dumpable_module"
@@ -1507,6 +1538,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_60NdV04Lel2_5FSZVWKbSL7
+!^*
 !@ 1505235410.13
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to put_data_value in basiclo_function"
@@ -1515,6 +1547,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_63Q0R4r8xa7_7XOAxxP5pi2
+!^*
 !@ 1506606535.99
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1528,6 +1561,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_63ZPkXUI2Uv_6Cp3qmh6Uud
+!^*
 !@ 1502619190.02
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value a string"
@@ -1536,6 +1570,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_67IapmpeTLU_8MQKtlK8iAD
+!^*
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_data a class"
@@ -1544,6 +1579,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_6eD9Y1qYcnj_8uVDhxjBpG8
+!^*
 !@ 1508127951.96
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1553,6 +1589,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_6jvRZetUz36_978V6SKIWZC
+!^*
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a closure"
@@ -1561,6 +1598,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_6PmxiZR9WBe_13DwWExCALl
+!^*
 !@ 1502044570.17
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_data a specially_dumpable"
@@ -1569,6 +1607,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_6SUnsQrN1BV_1WnLPm4QoOq
+!^*
 !@ 1506505755.89
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1582,6 +1621,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_7fCcteNe7aR_3IKHeHjmzff
+!^*
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value an object or a class"
@@ -1590,6 +1630,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_7fJKfG4SN0U_1QTu5J832xg
+!^*
 !@ 1502619190.03
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value a node"
@@ -1598,6 +1639,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_7ko2VZaPpqD_1eEmEcp0VV3
+!^*
 !@ 1506355058.61
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1611,6 +1653,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_7mvOlkB1tAJ_3psVFz4QEAn
+!^*
 !@ 1501766546.15
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a string"
@@ -1619,6 +1662,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_7sg0DjYTA8n_66vhff9SgXH
+!^*
 !@ 1506761038.41
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1632,6 +1676,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_7CohjJ9tkfZ_4UMAIZCgwac
+!^*
 !@ 1502619190.04
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value a closure"
@@ -1640,6 +1685,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_7D36kHemyWQ_0YfwWnUhR9Y
+!^*
 !@ 1505220804.92
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to dump_data the basiclo_function"
@@ -1648,6 +1694,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_7GMLV81ntO3_4NHTv7fCL0A
+!^*
 !@ 1507975519.00
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1673,6 +1720,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_88cUYsDqSFO_0DKwKLSOmpm
+!^*
 !@ 1507970354.87
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to give the set in a hset_object"
@@ -1681,6 +1729,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_8uFPIAUyvE6_36pUIgGwmbf
+!^*
 !@ 1506357177.83
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1694,6 +1743,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_8zNBXSMY2Ts_1VI5dmY4umA
+!^*
 !@ 1506063178.34
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1710,12 +1760,14 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_8MU0cEcpEYN_5SVe0jrv36o
+!^*
 !@ 1507996857.00
 !)_8MU0cEcpEYN_5SVe0jrv36o
 
 
 
 !(_91iTl2vqF09_72WJj4swbNi
+!^*
 !@ 1507978756.26
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1725,6 +1777,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_9imDBaAxOpp_2HI9AuWrEKD
+!^*
 !@ 1504620033.03
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to put_method in class"
@@ -1733,6 +1786,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_9zpvXnTuDeB_2B7ZiBtN8fA
+!^*
 !@ 1505237252.27
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_data a basiclo_function"
@@ -1741,6 +1795,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_9EytjXNb76D_1ZP3iSk9cuu
+!^*
 !@ 1507998778.37
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -1754,6 +1809,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 
 
 !(_9UhDZeDdg2r_55lUqYDPUiF
+!^*
 !@ 1505222808.76
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_scan a basiclo_function"

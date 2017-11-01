@@ -1,5 +1,5 @@
 // generated file store1.bmon
-// for 39 objects
+// for 40 objects
 // with 0 modules
 
 
@@ -119,6 +119,7 @@
 !(_5DDSY1YgVZr_6dOU4tiBldk |=const|
 !~ name (~ const
 ~)
+!^*
 !@ 1505238683.85
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for constants etc..."
@@ -165,6 +166,16 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to emit a module"
 !)_3MZiKuLf93a_3YTtdOHeUH8
+
+
+
+!(_7rduHPDI4aV_3JkXcYrH2m6 |=function_sig|
+!~ name (~ function_sig
+~)
+!@ 1509529055.66
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "signature of common functions"
+!)_7rduHPDI4aV_3JkXcYrH2m6
 
 
 
@@ -259,6 +270,7 @@
 !(_7kMNgL8eJ09_6aEpofzWJDP |=postpone_load_modification|
 !~ name (~ postpone_load_modification
 ~)
+!^*
 !@ 1502787905.69
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to postpone loading modification"
@@ -357,6 +369,7 @@
 !(_3W8d51P1dJh_3b1BrOW6pua |=todo_apply|
 !~ name (~ todo_apply
 ~)
+!^*
 !@ 1507884810.72
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "closure for applying-todo-s"
@@ -367,6 +380,7 @@
 !(_9mdRnBqdqf5_9UvgSFA7wIY |=todo_send|
 !~ name (~ todo_send
 ~)
+!^*
 !@ 1507884810.72
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "closure for sending-todo-s"

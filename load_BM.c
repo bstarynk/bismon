@@ -250,8 +250,10 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
               if (ad)
                 {
                   newobj->ob_rout = ad;
+                  newobj->ob_sig = BMP_function_sig;
                   nbrout++;
                 };
+              //
               ld->ld_objhset = hashsetobj_add_BM (ld->ld_objhset, newobj);
               nbobjdef++;
             }
@@ -285,6 +287,33 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
             FATAL_BM ("invalid end-of-object line %s in file %s:%d",
                       linbuf, curldpath, lincnt);
           curloadedobj = NULL;
+        }
+      //
+      /* function_sig signature !^* */
+      else if (linbuf[0] == '!' && linbuf[1] == '^' && linbuf[2] == '*')
+        {
+          char idbuf32[32] = "";
+          if (!curloadedobj)
+            FATAL_BM
+              ("invalid function-sig line %s in file %s:%d, no current object",
+               linbuf, curldpath, lincnt);
+          idtocbuf32_BM (curloadedobj->ob_id, idbuf32);
+          // if there is a routine for that object, bind it now
+          char symbuf[48];
+          memset (symbuf, 0, sizeof (symbuf));
+          snprintf (symbuf, sizeof (symbuf),    //
+                    ROUTINEOBJPREFIX_BM "%s" ROUTINEOBJSUFFIX_BM, idbuf32);
+          void *ad = dlsym (dlprog_BM, symbuf);
+          if (ad)
+            {
+              curloadedobj->ob_rout = ad;
+              curloadedobj->ob_sig = BMP_function_sig;
+              nbrout++;
+            }
+          else
+            FATAL_BM
+              ("bad function-sig line %s in file %s:%d, dlsym %s failed %s",
+               linbuf, curldpath, lincnt, symbuf, dlerror ());
         }
       //
       /* module requirement lines are !^<mod-id> */
@@ -798,6 +827,43 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
 
             }
           _.curldobj = NULL;
+        }
+      //
+      // !^ start a function signature
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_exclamcaret)
+        {
+          if (!_.curldobj)
+            parsererrorprintf_BM (ldpars, lineno, colpos,
+                                  "!^ outside of object");
+          parstoken_tyBM toksig = parsertokenget_BM (ldpars);
+          if (toksig.tok_kind == plex_DELIM && toksig.tok_delim == delim_star)
+            {
+              DBGPRINTF_BM ("!^ followed by * ix#%d line %d for %s",
+                            ix, toksig.tok_line, objectdbg_BM (_.curldobj));
+              if (!objroutaddr_BM (_.curldobj, BMP_function_sig))
+                parsererrorprintf_BM (ldpars, lineno, colpos,
+                                      "object %s without function_sig has !^*",
+                                      objectdbg_BM (_.curldobj));
+            }
+          else if (toksig.tok_kind == plex_ID)
+            {
+              char idbuf32[32] = "";
+              idtocbuf32_BM (_.curldobj->ob_id, idbuf32);
+              const char *obnam = findobjectname_BM (_.curldobj);
+              parsererrorprintf_BM (ldpars, lineno, colpos,
+                                    "object %s with  !^ <id> unimplemented",
+                                    obnam ? obnam : idbuf32);
+            }
+          else
+            {
+              char idbuf32[32] = "";
+              idtocbuf32_BM (_.curldobj->ob_id, idbuf32);
+              const char *obnam = findobjectname_BM (_.curldobj);
+              parsererrorprintf_BM (ldpars, lineno, colpos,
+                                    "object %s with bad !^",
+                                    obnam ? obnam : idbuf32);
+            }
         }
       //
       // !~ <name> .... start a modification
