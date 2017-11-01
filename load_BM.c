@@ -834,15 +834,22 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           else if (toksig.tok_kind == plex_ID)
             {
               _.attrobj = findobjofid_BM (toksig.tok_id);
+              char curidbuf32[32] = "";
+              idtocbuf32_BM (_.curldobj->ob_id, curidbuf32);
+              char sigidbuf32[32] = "";
+              idtocbuf32_BM (toksig.tok_id, sigidbuf32);
+              /// temporary code:
+              const char *obnam = findobjectname_BM (_.curldobj);
               if (!_.attrobj)
                 {
-                  char curidbuf32[32] = "";
-                  idtocbuf32_BM (_.curldobj->ob_id, curidbuf32);
-                  const char *obnam = findobjectname_BM (_.curldobj);
                   parsererrorprintf_BM (ldpars, lineno, colpos,
                                         "object %s with  !| with bad signature",
                                         obnam ? obnam : curidbuf32);
                 };
+              /// we probably should get a prefix from the signature, etc...
+              FATAL_BM ("general signature %s with !| for %s unimplemented",
+                        sigidbuf32, obnam ? obnam : curidbuf32);
+#warning general signature with !| unimplemented
             }
           else
             {
