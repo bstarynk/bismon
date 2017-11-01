@@ -138,6 +138,9 @@ extern const setval_tyBM *setobjectsofidprefixed_BM (const char *prefix);
 extern objectval_tyBM *makeobj_BM (void);
 static inline rawid_tyBM objid_BM (const objectval_tyBM * obj);
 static inline double objmtime_BM (const objectval_tyBM * obj);
+static inline objectval_tyBM *objsignature_BM (const objectval_tyBM * obj);
+static inline void *objroutaddr_BM (const objectval_tyBM * obj,
+                                    const objectval_tyBM * objsig);
 static inline void objtouchmtime_BM (objectval_tyBM * obj, double mtime);
 static inline void objtouchnow_BM (objectval_tyBM * obj);
 extern void objputspacenum_BM (objectval_tyBM * obj, unsigned spanum);

@@ -38,6 +38,7 @@ loadergckeep_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
 
 static void doload_BM (struct stackframe_stBM *fr, struct loader_stBM *ld);
 
+
 void
 load_initial_BM (const char *ldirpath)
 {

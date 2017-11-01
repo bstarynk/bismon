@@ -25,8 +25,7 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
     constix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos;
-                 value_tyBM recv;
+                 const closure_tyBM * clos; value_tyBM recv;
                  objectval_tyBM * modgenob;
                  value_tyBM args; value_tyBM curarg;
                  objectval_tyBM * routprepob; value_tyBM prepvalset;

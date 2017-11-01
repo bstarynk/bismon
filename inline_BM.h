@@ -254,6 +254,24 @@ objtouchnow_BM (objectval_tyBM * obj)
 
 
 objectval_tyBM *
+objsignature_BM (const objectval_tyBM * obj)
+{
+  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+    return NULL;
+  return obj->ob_sig;
+}                               /* end objsignature_BM */
+
+void *
+objroutaddr_BM (const objectval_tyBM * obj, const objectval_tyBM * objsig)
+{
+  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+    return NULL;
+  if (obj->ob_sig != objsig)
+    return NULL;
+  return obj->ob_routaddr;
+}                               /* end objroutaddr_BM */
+
+objectval_tyBM *
 objclass_BM (const objectval_tyBM * obj)
 {
   if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))

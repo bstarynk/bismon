@@ -300,7 +300,12 @@ struct object_stBM              /*tyObject_BM */
   objectval_tyBM *ob_class;
   struct datavectval_stBM *ob_compvec;
   anyassoc_tyBM *ob_attrassoc;
-  objrout_sigBM *ob_rout;
+  union
+  {
+    objrout_sigBM *ob_rout;
+    void *ob_routaddr;
+  };
+  objectval_tyBM *ob_sig;
   value_tyBM ob_data;
 };
 
