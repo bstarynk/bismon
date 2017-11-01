@@ -207,6 +207,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
   int lincnt = 0;
   int nbobjdef = 0;
   int nbrout = 0;
+  objectval_tyBM *curloadedobj = NULL;
   do
     {
       ssize_t linlen = getline (&linbuf, &linsiz, fil);
@@ -228,6 +229,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
               && (*endid == (char) 0 || isspace (*endid)))
             {
               objectval_tyBM *newobj = makeobjofid_BM (id);
+              curloadedobj = newobj;
               if (!newobj->ob_space)
                 objputspacenum_BM (newobj, ix);
               char idbuf32[32] = "";
@@ -255,6 +257,33 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
           else
             FATAL_BM ("invalid object definition line %s in file %s:%d",
                       linbuf, curldpath, lincnt);
+        }
+      //
+      /* end of object: !)<id> */
+      else if (linbuf[0] == '!' && linbuf[1] == ')' && linbuf[2] == '_'
+               && isdigit (linbuf[3]))
+        {
+          const char *endid = NULL;
+          rawid_tyBM id = parse_rawid_BM (linbuf + 2, &endid);
+          if (hashid_BM (id) && endid >= linbuf + 2 * SERIALDIGITS_BM
+              && (*endid == (char) 0 || isspace (*endid)))
+            {
+              if (!curloadedobj)
+                FATAL_BM ("unexpected end-of-object line %s in file %s:%d",
+                          linbuf, curldpath, lincnt);
+              if (!equalid_BM (id, curloadedobj->ob_id))
+                {
+                  char curldidbuf32[32] = "";
+                  idtocbuf32_BM (curloadedobj->ob_id, curldidbuf32);
+                  FATAL_BM
+                    ("mismatched end-of-object line %s in file %s:%d, expecting %s",
+                     linbuf, curldpath, lincnt, curldidbuf32);
+                }
+            }
+          else
+            FATAL_BM ("invalid end-of-object line %s in file %s:%d",
+                      linbuf, curldpath, lincnt);
+          curloadedobj = NULL;
         }
       //
       /* module requirement lines are !^<mod-id> */
