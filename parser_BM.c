@@ -302,6 +302,9 @@ parsererrorprintf_BM (struct parser_stBM *pars, unsigned line, unsigned col,
   FATAL_BM ("%s:%d:%d: PARSER ERROR : %s", pars->pars_path, line, col, buf);
 }                               /* end parsererrorprintf_BM */
 
+
+
+
 void
 parserskipspaces_BM (struct parser_stBM *pars)
 {

@@ -275,8 +275,8 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
           curloadedobj = NULL;
         }
       //
-      /* function_sig signature !^* */
-      else if (linbuf[0] == '!' && linbuf[1] == '^' && linbuf[2] == '*')
+      /* function_sig signature !|* */
+      else if (linbuf[0] == '!' && linbuf[1] == '|' && linbuf[2] == '*')
         {
           char idbuf32[32] = "";
           if (!curloadedobj)
@@ -288,7 +288,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
           char symbuf[48];
           memset (symbuf, 0, sizeof (symbuf));
           snprintf (symbuf, sizeof (symbuf),    //
-                    ROUTINEOBJPREFIX_BM "%s" ROUTINEOBJSUFFIX_BM, idbuf32);
+                    ROUTINEOBJPREFIX_BM "%s" ROUTINESUFFIX_BM, idbuf32);
           void *ad = dlsym (dlprog_BM, symbuf);
           if (ad)
             {
@@ -815,31 +815,34 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           _.curldobj = NULL;
         }
       //
-      // !^ start a function signature
-      else if (tok.tok_kind == plex_DELIM
-               && tok.tok_delim == delim_exclamcaret)
+      // !| start a function signature
+      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclambar)
         {
           if (!_.curldobj)
             parsererrorprintf_BM (ldpars, lineno, colpos,
-                                  "!^ outside of object");
+                                  "!| outside of object");
           parstoken_tyBM toksig = parsertokenget_BM (ldpars);
           if (toksig.tok_kind == plex_DELIM && toksig.tok_delim == delim_star)
             {
-              DBGPRINTF_BM ("!^ followed by * ix#%d line %d for %s",
+              NONPRINTF_BM ("!| followed by * ix#%d line %d for %s",
                             ix, toksig.tok_line, objectdbg_BM (_.curldobj));
               if (!objroutaddr_BM (_.curldobj, BMP_function_sig))
                 parsererrorprintf_BM (ldpars, lineno, colpos,
-                                      "object %s without function_sig has !^*",
+                                      "object %s without function_sig has !|*",
                                       objectdbg_BM (_.curldobj));
             }
           else if (toksig.tok_kind == plex_ID)
             {
-              char idbuf32[32] = "";
-              idtocbuf32_BM (_.curldobj->ob_id, idbuf32);
-              const char *obnam = findobjectname_BM (_.curldobj);
-              parsererrorprintf_BM (ldpars, lineno, colpos,
-                                    "object %s with  !^ <id> unimplemented",
-                                    obnam ? obnam : idbuf32);
+              _.attrobj = findobjofid_BM (toksig.tok_id);
+              if (!_.attrobj)
+                {
+                  char curidbuf32[32] = "";
+                  idtocbuf32_BM (_.curldobj->ob_id, curidbuf32);
+                  const char *obnam = findobjectname_BM (_.curldobj);
+                  parsererrorprintf_BM (ldpars, lineno, colpos,
+                                        "object %s with  !| with bad signature",
+                                        obnam ? obnam : curidbuf32);
+                };
             }
           else
             {
@@ -847,7 +850,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
               idtocbuf32_BM (_.curldobj->ob_id, idbuf32);
               const char *obnam = findobjectname_BM (_.curldobj);
               parsererrorprintf_BM (ldpars, lineno, colpos,
-                                    "object %s with bad !^",
+                                    "object %s with bad !| for signature",
                                     obnam ? obnam : idbuf32);
             }
         }

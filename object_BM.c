@@ -781,10 +781,13 @@ register_predefined_object_BM (objectval_tyBM * pob)
   char symbuf[48];
   memset (symbuf, 0, sizeof (symbuf));
   snprintf (symbuf, sizeof (symbuf),    //
-            ROUTINEOBJPREFIX_BM "%s" ROUTINEOBJSUFFIX_BM, idbuf);
+            ROUTINEOBJPREFIX_BM "%s" ROUTINESUFFIX_BM, idbuf);
   void *ad = dlsym (dlprog_BM, symbuf);
   if (ad)
-    pob->ob_rout = (objrout_sigBM *) ad;
+    {
+      pob->ob_sig = BMP_function_sig;
+      pob->ob_rout = (objrout_sigBM *) ad;
+    }
 }                               /* end register_predefined_object_BM */
 
 void

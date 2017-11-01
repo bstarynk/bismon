@@ -119,7 +119,7 @@
 !(_5DDSY1YgVZr_6dOU4tiBldk |=const|
 !~ name (~ const
 ~)
-!^*
+!|*
 !@ 1505238683.85
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for constants etc..."
@@ -270,7 +270,7 @@
 !(_7kMNgL8eJ09_6aEpofzWJDP |=postpone_load_modification|
 !~ name (~ postpone_load_modification
 ~)
-!^*
+!|*
 !@ 1502787905.69
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to postpone loading modification"
@@ -369,7 +369,7 @@
 !(_3W8d51P1dJh_3b1BrOW6pua |=todo_apply|
 !~ name (~ todo_apply
 ~)
-!^*
+!|*
 !@ 1507884810.72
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "closure for applying-todo-s"
@@ -380,7 +380,7 @@
 !(_9mdRnBqdqf5_9UvgSFA7wIY |=todo_send|
 !~ name (~ todo_send
 ~)
-!^*
+!|*
 !@ 1507884810.72
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "closure for sending-todo-s"
