@@ -1,5 +1,5 @@
 // generated file store1.bmon
-// for 40 objects
+// for 41 objects
 // with 0 modules
 
 
@@ -285,6 +285,16 @@
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "result of something"
 !)_7bD9VtDkGSn_7lxHeYuuFLR
+
+
+
+!(_8emBk0Le2Vy_8MxJWC61DPw |=routine_builder|
+!~ name (~ routine_builder
+~)
+!@ 1509570925.62
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for building routines at load, a prefix string or a closure"
+!)_8emBk0Le2Vy_8MxJWC61DPw
 
 
 

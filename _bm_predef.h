@@ -3,7 +3,7 @@
 #error missing HAS_PREDEF_BM or HAS_NAMED_PREDEF_BM
 #endif
 #undef BM_NB_PREDEFINED
-#define BM_NB_PREDEFINED 40
+#define BM_NB_PREDEFINED 41
 
 #ifdef HAS_PREDEF_BM
 //HAS_PREDEF_BM(Id,Hi,Lo,Hash)
@@ -51,14 +51,16 @@ HAS_PREDEF_BM(_7D8xcWnEiys_8oqOVSkCxkA,6404905605597335568,7045141214921877264,6
 HAS_PREDEF_BM(_7T9OwSFlgov_0wVJaK1eZbn,6621778330493060695,445791238318866325,767927051) /*=object*/
 
 HAS_PREDEF_BM(_83kM1HtO8K3_6k0F2KYQT3W,6759542122832719463,5306682468975933232,800155787) /*=c_type*/
+HAS_PREDEF_BM(_8emBk0Le2Vy_8MxJWC61DPw,6908849057360256248,7371542106624714158,538678372) /*=routine_builder*/
 HAS_PREDEF_BM(_8Y99VufgRZo_9SFMiDUruXS,7528620140527333922,8293819007110822208,647160742) /*=browse_in_object*/
 HAS_PREDEF_BM(_93zjUzZVAaj_9ppXv7C34GR,7602017580619764023,7897789502155506201,448115930) /*=closure*/
 HAS_PREDEF_BM(_9mdRnBqdqf5_9UvgSFA7wIY,7854536604469309927,8318599133820561868,972562377) /*=todo_send*/
+
 HAS_PREDEF_BM(_9uRC9w2Gte9_5mW0NanaS19,7971513276712049649,4506979252198741823,112529150) /*=browse_data*/
 #undef HAS_PREDEF_BM
 #endif /*HAS_PREDEF_BM*/
 #undef BM_NB_NAMED_PREDEFINED
-#define BM_NB_NAMED_PREDEFINED 40
+#define BM_NB_NAMED_PREDEFINED 41
 
 #undef BMP_browse_data
 #undef BMPNID_browse_data
@@ -173,6 +175,10 @@ HAS_PREDEF_BM(_9uRC9w2Gte9_5mW0NanaS19,7971513276712049649,4506979252198741823,1
 #undef BMPNID_result
 #define BMP_result                      PREDEF_BM(_7bD9VtDkGSn_7lxHeYuuFLR)
 #define BMPNID_result                      _7bD9VtDkGSn_7lxHeYuuFLR
+#undef BMP_routine_builder
+#undef BMPNID_routine_builder
+#define BMP_routine_builder             PREDEF_BM(_8emBk0Le2Vy_8MxJWC61DPw)
+#define BMPNID_routine_builder             _8emBk0Le2Vy_8MxJWC61DPw
 #undef BMP_set
 #undef BMPNID_set
 #define BMP_set                         PREDEF_BM(_2mYaTh9kH4I_7ENiXcymRmy)
@@ -181,11 +187,11 @@ HAS_PREDEF_BM(_9uRC9w2Gte9_5mW0NanaS19,7971513276712049649,4506979252198741823,1
 #undef BMPNID_space
 #define BMP_space                       PREDEF_BM(_35gLacRFhq5_90zAPxiDIlh)
 #define BMPNID_space                       _35gLacRFhq5_90zAPxiDIlh
+
 #undef BMP_string
 #undef BMPNID_string
 #define BMP_string                      PREDEF_BM(_4T8am97muLl_5969SR22Ecq)
 #define BMPNID_string                      _4T8am97muLl_5969SR22Ecq
-
 #undef BMP_the_system
 #undef BMPNID_the_system
 #define BMP_the_system                  PREDEF_BM(_4ggW2XwfXdp_1XRSvOvZqTC)
@@ -202,11 +208,11 @@ HAS_PREDEF_BM(_9uRC9w2Gte9_5mW0NanaS19,7971513276712049649,4506979252198741823,1
 #undef BMPNID_todo_send
 #define BMP_todo_send                   PREDEF_BM(_9mdRnBqdqf5_9UvgSFA7wIY)
 #define BMPNID_todo_send                   _9mdRnBqdqf5_9UvgSFA7wIY
+
 #undef BMP_tuple
 #undef BMPNID_tuple
 #define BMP_tuple                       PREDEF_BM(_6TmLNh9vtVY_0pwkHRtJ44k)
 #define BMPNID_tuple                       _6TmLNh9vtVY_0pwkHRtJ44k
-
 #undef BMP_undefined
 #undef BMPNID_undefined
 #define BMP_undefined                   PREDEF_BM(_1z3DQ3EVAGs_3KlGdHJpWbX)
@@ -223,6 +229,7 @@ HAS_PREDEF_BM(_9uRC9w2Gte9_5mW0NanaS19,7971513276712049649,4506979252198741823,1
 #undef BMPNID_variable
 #define BMP_variable                    PREDEF_BM(_5ucAZimYynS_4VA0XHvr1nW)
 #define BMPNID_variable                    _5ucAZimYynS_4VA0XHvr1nW
+
 #undef BMP_word
 #undef BMPNID_word
 #define BMP_word                        PREDEF_BM(_7zPvMEsQeeE_6zyBWbegVpo)
@@ -264,20 +271,22 @@ HAS_NAMED_PREDEF_BM(origin,_1xhcI0ZnQ6f_5xOLATXqawx)
 
 HAS_NAMED_PREDEF_BM(postpone_load_modification,_7kMNgL8eJ09_6aEpofzWJDP)
 HAS_NAMED_PREDEF_BM(result,_7bD9VtDkGSn_7lxHeYuuFLR)
+HAS_NAMED_PREDEF_BM(routine_builder,_8emBk0Le2Vy_8MxJWC61DPw)
 HAS_NAMED_PREDEF_BM(set,_2mYaTh9kH4I_7ENiXcymRmy)
 HAS_NAMED_PREDEF_BM(space,_35gLacRFhq5_90zAPxiDIlh)
-HAS_NAMED_PREDEF_BM(string,_4T8am97muLl_5969SR22Ecq)
 
+HAS_NAMED_PREDEF_BM(string,_4T8am97muLl_5969SR22Ecq)
 HAS_NAMED_PREDEF_BM(the_system,_4ggW2XwfXdp_1XRSvOvZqTC)
 HAS_NAMED_PREDEF_BM(todo,_7ljWW4bj70g_9PL9dZkgBxZ)
 HAS_NAMED_PREDEF_BM(todo_apply,_3W8d51P1dJh_3b1BrOW6pua)
 HAS_NAMED_PREDEF_BM(todo_send,_9mdRnBqdqf5_9UvgSFA7wIY)
-HAS_NAMED_PREDEF_BM(tuple,_6TmLNh9vtVY_0pwkHRtJ44k)
 
+HAS_NAMED_PREDEF_BM(tuple,_6TmLNh9vtVY_0pwkHRtJ44k)
 HAS_NAMED_PREDEF_BM(undefined,_1z3DQ3EVAGs_3KlGdHJpWbX)
 HAS_NAMED_PREDEF_BM(unspecified,_55eJRRPyZDz_4uW8bzq75PI)
 HAS_NAMED_PREDEF_BM(value,_7bbeIqUSje9_4jVgC7ZJmvx)
 HAS_NAMED_PREDEF_BM(variable,_5ucAZimYynS_4VA0XHvr1nW)
+
 HAS_NAMED_PREDEF_BM(word,_7zPvMEsQeeE_6zyBWbegVpo)
 
 #undef HAS_NAMED_PREDEF_BM

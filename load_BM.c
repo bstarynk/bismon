@@ -667,8 +667,9 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
   if (!fil)
     FATAL_BM ("failed to fopen %s (%m)", curldpath);
   LOCALFRAME_BM (parstkfrm, NULL,       //
-                 struct parser_stBM *ldparser; objectval_tyBM * curldobj;
-                 objectval_tyBM * attrobj;
+                 struct parser_stBM *ldparser;
+                 objectval_tyBM * curldobj; objectval_tyBM * attrobj;
+                 value_tyBM routbuilder;
                  union
                  {
                  value_tyBM attrval; value_tyBM compval;
@@ -846,10 +847,46 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                                         "object %s with  !| with bad signature",
                                         obnam ? obnam : curidbuf32);
                 };
-              /// we probably should get a prefix from the signature, etc...
-              FATAL_BM ("general signature %s with !| for %s unimplemented",
-                        sigidbuf32, obnam ? obnam : curidbuf32);
-#warning general signature with !| unimplemented
+              _.routbuilder = objgetattr_BM (_.attrobj, BMP_routine_builder);
+              if (isstring_BM (_.routbuilder))
+                {
+                  char bufname[80];
+                  memset (bufname, 0, sizeof (bufname));
+                  char *buf = bufname;
+                  if (snprintf
+                      (bufname, sizeof (bufname), "%s%s" ROUTINESUFFIX_BM,
+                       bytstring_BM (_.routbuilder),
+                       curidbuf32) >= (int) sizeof (bufname))
+                    {
+                      buf = NULL;
+                      asprintf (&buf, "%s%s" ROUTINESUFFIX_BM,
+                                bytstring_BM (_.routbuilder), curidbuf32);
+                      if (!buf)
+                        FATAL_BM ("asprintf failure for %s+%s - %m",
+                                  bytstring_BM (_.routbuilder), curidbuf32);
+                    };
+                  void *ad = dlsym (dlprog_BM, buf);
+                  if (ad)
+                    {
+                      _.curldobj->ob_rout = ad;
+                      _.curldobj->ob_sig = _.attrobj;
+                      ld->ld_nbroutines++;
+                    }
+                  else
+                    FATAL_BM
+                      ("bad function-sig in file %s:%d, dlsym %s failed %s",
+                       curldpath, lineno, buf, dlerror ());
+                  if (buf != bufname)
+                    free (buf), buf = NULL;
+                }
+              //else if (isclosure_BM(_.routbuilder)) {
+#warning general signature with !| unimplemented and routine builder
+              //}
+              else
+                /// we probably should get a prefix from the signature, etc...
+                FATAL_BM
+                  ("general signature %s with !| for %s unexpected builder",
+                   sigidbuf32, obnam ? obnam : curidbuf32);
             }
           else
             {
