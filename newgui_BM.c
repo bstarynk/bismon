@@ -216,6 +216,7 @@ initialize_newgui_BM (const char *builderfile, const char *cssfile)
   gtk_widget_show_all (GTK_WIDGET (mainwin_BM));
 }                               /* end initialize_newgui_BM */
 
+
 GtkTextBuffer *
 newgui_get_browsebuf_BM (void)
 {

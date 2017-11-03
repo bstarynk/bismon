@@ -138,58 +138,44 @@ static int commandblinkon_BM (gpointer);
 static void commandblinkstart_BM (void);
 
 
-static parser_error_sigBM parserrorcmd_BM;
-static parser_expand_dollarval_sigBM parsdollarvalcmd_BM;
-static parser_expand_dollarobj_sigBM parsdollarobjcmd_BM;
-static parser_expand_valexp_sigBM parsvalexpcmd_BM;
-static parser_expand_objexp_sigBM parsobjexpcmd_BM;
-static parser_expand_readmacro_sigBM parsreadmacroexpcmd_BM;
-static parser_decorate_comment_sign_sigBM parscommentsigncmd_BM;
-static parser_decorate_comment_inside_sigBM parscommentinsidecmd_BM;
-static parser_decorate_delimiter_sigBM parsdelimcmd_BM;
-static parser_decorate_id_sigBM parsidcmd_BM;
-static parser_decorate_name_sigBM parsknownamecmd_BM;
-static parser_decorate_name_sigBM parsnewnamecmd_BM;
-static parser_decorate_nesting_sigBM parsnestingcmd_BM;
-static parser_decorate_start_nesting_sigBM parsstartnestingcmd_BM;
 const struct parserops_stBM parsop_command_build_BM = {
   .parsop_magic = PARSOPMAGIC_BM,
   .parsop_serial = 1,
   .parsop_nobuild = false,
-  .parsop_error_rout = parserrorcmd_BM,
-  .parsop_expand_dollarobj_rout = parsdollarobjcmd_BM,
-  .parsop_expand_dollarval_rout = parsdollarvalcmd_BM,
-  .parsop_expand_valexp_rout = parsvalexpcmd_BM,
-  .parsop_expand_objexp_rout = parsobjexpcmd_BM,
-  .parsop_expand_readmacro_rout = parsreadmacroexpcmd_BM,
-  .parsop_decorate_comment_sign_rout = parscommentsigncmd_BM,
-  .parsop_decorate_comment_inside_rout = parscommentinsidecmd_BM,
-  .parsop_decorate_delimiter_rout = parsdelimcmd_BM,
-  .parsop_decorate_id_rout = parsidcmd_BM,
-  .parsop_decorate_known_name_rout = parsknownamecmd_BM,
-  .parsop_decorate_new_name_rout = parsnewnamecmd_BM,
-  .parsop_decorate_nesting_rout = parsnestingcmd_BM,
-  .parsop_decorate_start_nesting_rout = parsstartnestingcmd_BM,
+  .parsop_error_rout = parserror_guicmd_BM,
+  .parsop_expand_dollarobj_rout = parsdollarobj_guicmd_BM,
+  .parsop_expand_dollarval_rout = parsdollarval_guicmd_BM,
+  .parsop_expand_valexp_rout = parsvalexp_guicmd_BM,
+  .parsop_expand_objexp_rout = parsobjexp_guicmd_BM,
+  .parsop_expand_readmacro_rout = parsreadmacroexp_guicmd_BM,
+  .parsop_decorate_comment_sign_rout = parscommentsign_guicmd_BM,
+  .parsop_decorate_comment_inside_rout = parscommentinside_guicmd_BM,
+  .parsop_decorate_delimiter_rout = parsdelim_guicmd_BM,
+  .parsop_decorate_id_rout = parsid_guicmd_BM,
+  .parsop_decorate_known_name_rout = parsknowname_guicmd_BM,
+  .parsop_decorate_new_name_rout = parsnewname_guicmd_BM,
+  .parsop_decorate_nesting_rout = parsnesting_guicmd_BM,
+  .parsop_decorate_start_nesting_rout = parsstartnesting_guicmd_BM,
 };
 
 const struct parserops_stBM parsop_command_nobuild_BM = {
   .parsop_magic = PARSOPMAGIC_BM,
   .parsop_serial = 2,
   .parsop_nobuild = true,
-  .parsop_error_rout = parserrorcmd_BM,
-  .parsop_expand_dollarobj_rout = parsdollarobjcmd_BM,
-  .parsop_expand_dollarval_rout = parsdollarvalcmd_BM,
-  .parsop_expand_valexp_rout = parsvalexpcmd_BM,
-  .parsop_expand_objexp_rout = parsobjexpcmd_BM,
-  .parsop_expand_readmacro_rout = parsreadmacroexpcmd_BM,
-  .parsop_decorate_comment_sign_rout = parscommentsigncmd_BM,
-  .parsop_decorate_comment_inside_rout = parscommentinsidecmd_BM,
-  .parsop_decorate_delimiter_rout = parsdelimcmd_BM,
-  .parsop_decorate_id_rout = parsidcmd_BM,
-  .parsop_decorate_known_name_rout = parsknownamecmd_BM,
-  .parsop_decorate_new_name_rout = parsnewnamecmd_BM,
-  .parsop_decorate_nesting_rout = parsnestingcmd_BM,
-  .parsop_decorate_start_nesting_rout = parsstartnestingcmd_BM,
+  .parsop_error_rout = parserror_guicmd_BM,
+  .parsop_expand_dollarobj_rout = parsdollarobj_guicmd_BM,
+  .parsop_expand_dollarval_rout = parsdollarval_guicmd_BM,
+  .parsop_expand_valexp_rout = parsvalexp_guicmd_BM,
+  .parsop_expand_objexp_rout = parsobjexp_guicmd_BM,
+  .parsop_expand_readmacro_rout = parsreadmacroexp_guicmd_BM,
+  .parsop_decorate_comment_sign_rout = parscommentsign_guicmd_BM,
+  .parsop_decorate_comment_inside_rout = parscommentinside_guicmd_BM,
+  .parsop_decorate_delimiter_rout = parsdelim_guicmd_BM,
+  .parsop_decorate_id_rout = parsid_guicmd_BM,
+  .parsop_decorate_known_name_rout = parsknowname_guicmd_BM,
+  .parsop_decorate_new_name_rout = parsnewname_guicmd_BM,
+  .parsop_decorate_nesting_rout = parsnesting_guicmd_BM,
+  .parsop_decorate_start_nesting_rout = parsstartnesting_guicmd_BM,
 };
 
 
@@ -1522,8 +1508,8 @@ log_printf_message_BM (const char *fmt, ...)
 }                               /* end log_printf_message_BM */
 
 void
-parserrorcmd_BM (struct parser_stBM *pars,
-                 unsigned lineno, unsigned colpos, char *msg)
+parserror_guicmd_BM (struct parser_stBM *pars,
+                     unsigned lineno, unsigned colpos, char *msg)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -1561,16 +1547,17 @@ parserrorcmd_BM (struct parser_stBM *pars,
     }
   free (msg);
   longjmp (jmperrorcmd_BM, 1);
-}                               /* end parserrorcmd_BM */
+}                               /* end parserror_guicmd_BM */
 
 
 
 // for $<var>
 value_tyBM
-parsdollarvalcmd_BM (struct parser_stBM *pars,
-                     unsigned lineno,
-                     unsigned colpos,
-                     const value_tyBM varname, struct stackframe_stBM *stkf)
+parsdollarval_guicmd_BM (struct parser_stBM *pars,
+                         unsigned lineno,
+                         unsigned colpos,
+                         const value_tyBM varname,
+                         struct stackframe_stBM *stkf)
 {
   const char *varstr = NULL;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -1594,14 +1581,15 @@ parsdollarvalcmd_BM (struct parser_stBM *pars,
   gtk_text_iter_forward_chars (&endit, 1 + strlen (varstr));
   gtk_text_buffer_apply_tag (commandbuf_BM, dollar_cmdtag_BM, &it, &endit);
   return _.val;
-}                               /* end parsdollarvalcmd_BM */
+}                               /* end parsdollarval_guicmd_BM */
 
 
 // for $:<var>
 const objectval_tyBM *
-parsdollarobjcmd_BM (struct parser_stBM *pars,
-                     unsigned lineno, unsigned colpos,
-                     const value_tyBM varname, struct stackframe_stBM *stkf)
+parsdollarobj_guicmd_BM (struct parser_stBM *pars,
+                         unsigned lineno, unsigned colpos,
+                         const value_tyBM varname,
+                         struct stackframe_stBM *stkf)
 {
 
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -1627,19 +1615,19 @@ parsdollarobjcmd_BM (struct parser_stBM *pars,
   gtk_text_iter_forward_chars (&endit, 2 + strlen (varstr));
   gtk_text_buffer_apply_tag (commandbuf_BM, dollar_cmdtag_BM, &it, &endit);
   return (const objectval_tyBM *) _.val;
-}                               /* end parsdollarobjcmd_BM */
+}                               /* end parsdollarobj_guicmd_BM */
 
 static bool
-parseobjectcomplcmd_BM (struct parser_stBM *pars,
-                        objectval_tyBM * obj, int depth,
-                        struct stackframe_stBM *stkf,
-                        struct parstoken_stBM *ptok);
+parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
+                            objectval_tyBM * obj, int depth,
+                            struct stackframe_stBM *stkf,
+                            struct parstoken_stBM *ptok);
 #define MAXARGS_BM 9
 bool
-parseobjectcomplcmd_BM (struct parser_stBM *pars,
-                        objectval_tyBM * targobj, int depth,
-                        struct stackframe_stBM *stkf,
-                        struct parstoken_stBM *ptok)
+parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
+                            objectval_tyBM * targobj, int depth,
+                            struct stackframe_stBM *stkf,
+                            struct parstoken_stBM *ptok)
 {
   if (!isparser_BM (pars))
     return false;
@@ -1814,9 +1802,9 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
                               "missing right paren after selector for !>");
       unsigned rightlineno = pars->pars_lineno;
       unsigned rightcolpos = pars->pars_colpos;
-      parsnestingcmd_BM (pars, depth + 1, delim_leftparen,
-                         leftlineno, leftcolpos, delim_rightparen,
-                         rightlineno, rightcolpos);
+      parsnesting_guicmd_BM (pars, depth + 1, delim_leftparen,
+                             leftlineno, leftcolpos, delim_rightparen,
+                             rightlineno, rightcolpos);
       if (!nobuild)
         {
           bool failsend = false;
@@ -2046,14 +2034,15 @@ parseobjectcomplcmd_BM (struct parser_stBM *pars,
   else
     return false;
   return true;
-}                               /* end parseobjectcomplcmd_BM */
+}                               /* end parseobjectcompl_guicmd_BM */
 
 
 
 // parse inside $(....)
 value_tyBM
-parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno,
-                  unsigned colpos, int depth, struct stackframe_stBM * stkf)
+parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
+                      unsigned colpos, int depth,
+                      struct stackframe_stBM * stkf)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -2082,9 +2071,10 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno,
       tok = parsertokenget_BM (pars);
       if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_rightparen)
         {
-          parsnestingcmd_BM (pars, depth, delim_dollarleftparen,
-                             lineno, colpos, delim_rightparen,
-                             parserlineno_BM (pars), parsercolpos_BM (pars));
+          parsnesting_guicmd_BM (pars, depth, delim_dollarleftparen,
+                                 lineno, colpos, delim_rightparen,
+                                 parserlineno_BM (pars),
+                                 parsercolpos_BM (pars));
           return _.srcval;
         }
       //
@@ -2411,11 +2401,11 @@ parsvalexpcmd_BM (struct parser_stBM * pars, unsigned lineno,
                               "unexpected token in $(...)");
     }                           /* end for (;;) */
   return NULL;
-}                               /* end parsvalexpcmd_BM */
+}                               /* end parsvalexp_guicmd_BM */
 
 
 // expand readmacro-s
-value_tyBM parsreadmacroexpcmd_BM
+value_tyBM parsreadmacroexp_guicmd_BM
   (struct parser_stBM * pars, unsigned lineno, unsigned colpos, int depth,
    const node_tyBM * nod, struct stackframe_stBM * stkf)
 {
@@ -2453,15 +2443,15 @@ value_tyBM parsreadmacroexpcmd_BM
                (value_tyBM) _.nod,
                taggedint_BM (lineno), taggedint_BM (colpos), pars);
   return _.resval;
-}                               /* end parsreadmacroexpcmd_BM */
+}                               /* end parsreadmacroexp_guicmd_BM */
 
 
 
 // parse inside $[...]
 const objectval_tyBM *
-parsobjexpcmd_BM (struct parser_stBM *pars,
-                  unsigned lineno, unsigned colpos,
-                  int depth, struct stackframe_stBM *stkf)
+parsobjexp_guicmd_BM (struct parser_stBM *pars,
+                      unsigned lineno, unsigned colpos,
+                      int depth, struct stackframe_stBM *stkf)
 {
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
@@ -2593,14 +2583,16 @@ parsobjexpcmd_BM (struct parser_stBM *pars,
     {
       if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_rightbracket)
         {
-          parsnestingcmd_BM (pars, depth, delim_dollarleftbracket,
-                             lineno, colpos, delim_rightbracket,
-                             parserlineno_BM (pars), parsercolpos_BM (pars));
+          parsnesting_guicmd_BM (pars, depth, delim_dollarleftbracket,
+                                 lineno, colpos, delim_rightbracket,
+                                 parserlineno_BM (pars),
+                                 parsercolpos_BM (pars));
           return _.obj;
         }
-      bool gotcomp = parseobjectcomplcmd_BM (pars, _.obj, depth,
-                                             (struct stackframe_stBM *) &_,
-                                             &tok);
+      bool gotcomp = parseobjectcompl_guicmd_BM (pars, _.obj, depth,
+                                                 (struct stackframe_stBM *)
+                                                 &_,
+                                                 &tok);
       if (!gotcomp)
         parsererrorprintf_BM (pars, pars->pars_lineno,
                               pars->pars_colpos,
@@ -2619,7 +2611,7 @@ parsobjexpcmd_BM (struct parser_stBM *pars,
   parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
                         "invalid object expression for $[...] started L%d:C%d",
                         oblineno, obcolpos);
-}                               /* end parsobjexpcmd_BM */
+}                               /* end parsobjexp_guicmd_BM */
 
 
 
@@ -2685,7 +2677,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
           if (!nobuild && !isobject_BM (GLOBAL_BM (gui_focus_obj)))
             parsererrorprintf_BM (pars, curlineno, curcolpos,
                                   "no focus object to complement");
-          if (!parseobjectcomplcmd_BM
+          if (!parseobjectcompl_guicmd_BM
               (pars, (objectval_tyBM *) GLOBAL_BM (gui_focus_obj), 0,
                (struct stackframe_stBM *) &_, &tok))
             parsererrorprintf_BM (pars, curlineno, curcolpos,
@@ -3004,8 +2996,9 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 
 
 void
-parscommentinsidecmd_BM (struct parser_stBM *pars,
-                         unsigned lineno, unsigned colpos, unsigned signlen)
+parscommentinside_guicmd_BM (struct parser_stBM *pars,
+                             unsigned lineno, unsigned colpos,
+                             unsigned signlen)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -3017,12 +3010,12 @@ parscommentinsidecmd_BM (struct parser_stBM *pars,
   gtk_text_iter_forward_chars (&endit, signlen);
   gtk_text_buffer_apply_tag (commandbuf_BM, commentinside_cmdtag_BM, &it,
                              &endit);
-}                               /* end parscommentinsidecmd_BM */
+}                               /* end parscommentinside_guicmd_BM */
 
 
 void
-parscommentsigncmd_BM (struct parser_stBM *pars,
-                       unsigned lineno, unsigned colpos, unsigned signlen)
+parscommentsign_guicmd_BM (struct parser_stBM *pars,
+                           unsigned lineno, unsigned colpos, unsigned signlen)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -3034,11 +3027,11 @@ parscommentsigncmd_BM (struct parser_stBM *pars,
   gtk_text_iter_forward_chars (&endit, signlen);
   gtk_text_buffer_apply_tag (commandbuf_BM, commentsign_cmdtag_BM, &it,
                              &endit);
-}                               /* end parscommentsigncmd_BM */
+}                               /* end parscommentsign_guicmd_BM */
 
 void
-parsdelimcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
-                 unsigned delimlen)
+parsdelim_guicmd_BM (struct parser_stBM *pars, unsigned lineno,
+                     unsigned colpos, unsigned delimlen)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -3049,11 +3042,11 @@ parsdelimcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
   GtkTextIter endit = it;
   gtk_text_iter_forward_chars (&endit, delimlen);
   gtk_text_buffer_apply_tag (commandbuf_BM, delim_cmdtag_BM, &it, &endit);
-}                               /* end parsdelimcmd_BM */
+}                               /* end parsdelim_guicmd_BM */
 
 void
-parsknownamecmd_BM (struct parser_stBM *pars, unsigned lineno,
-                    unsigned colpos, unsigned namlen)
+parsknowname_guicmd_BM (struct parser_stBM *pars, unsigned lineno,
+                        unsigned colpos, unsigned namlen)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -3064,12 +3057,12 @@ parsknownamecmd_BM (struct parser_stBM *pars, unsigned lineno,
   GtkTextIter endit = it;
   gtk_text_iter_forward_chars (&endit, namlen);
   gtk_text_buffer_apply_tag (commandbuf_BM, knowname_cmdtag_BM, &it, &endit);
-}                               /* end parsknownamecmd_BM */
+}                               /* end parsknowname_guicmd_BM */
 
 
 void
-parsnewnamecmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
-                   unsigned namlen)
+parsnewname_guicmd_BM (struct parser_stBM *pars, unsigned lineno,
+                       unsigned colpos, unsigned namlen)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -3080,12 +3073,12 @@ parsnewnamecmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
   GtkTextIter endit = it;
   gtk_text_iter_forward_chars (&endit, namlen);
   gtk_text_buffer_apply_tag (commandbuf_BM, newname_cmdtag_BM, &it, &endit);
-}                               /* end parsnewnamecmd_BM */
+}                               /* end parsnewname_guicmd_BM */
 
 
 void
-parsidcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
-              unsigned idlen)
+parsid_guicmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+                  unsigned idlen)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -3096,15 +3089,15 @@ parsidcmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
   GtkTextIter endit = it;
   gtk_text_iter_forward_chars (&endit, idlen);
   gtk_text_buffer_apply_tag (commandbuf_BM, id_cmdtag_BM, &it, &endit);
-}                               /* end parsidcmd_BM */
+}                               /* end parsid_guicmd_BM */
 
 
 void
-parsnestingcmd_BM (struct parser_stBM *pars, int depth,
-                   enum lexdelim_enBM opendelim,
-                   unsigned openlinpos, unsigned opencolpos,
-                   enum lexdelim_enBM closedelim,
-                   unsigned closelinpos, unsigned closecolpos)
+parsnesting_guicmd_BM (struct parser_stBM *pars, int depth,
+                       enum lexdelim_enBM opendelim,
+                       unsigned openlinpos, unsigned opencolpos,
+                       enum lexdelim_enBM closedelim,
+                       unsigned closelinpos, unsigned closecolpos)
 {
   assert (isparser_BM (pars));
   assert (openlinpos > 0 && closelinpos > 0 && openlinpos <= closelinpos);
@@ -3146,19 +3139,19 @@ parsnestingcmd_BM (struct parser_stBM *pars, int depth,
   };
   cmd_add_parens_BM (&po);
   return;
-}                               /* end parsnestingcmd_BM */
+}                               /* end parsnesting_guicmd_BM */
 
 
 void
-parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
-                        enum lexdelim_enBM xtradelim,
-                        unsigned xtralinpos,
-                        unsigned xtracolpos,
-                        enum lexdelim_enBM opendelim,
-                        unsigned openlinpos,
-                        unsigned opencolpos,
-                        enum lexdelim_enBM closedelim,
-                        unsigned closelinpos, unsigned closecolpos)
+parsstartnesting_guicmd_BM (struct parser_stBM *pars, int depth,
+                            enum lexdelim_enBM xtradelim,
+                            unsigned xtralinpos,
+                            unsigned xtracolpos,
+                            enum lexdelim_enBM opendelim,
+                            unsigned openlinpos,
+                            unsigned opencolpos,
+                            enum lexdelim_enBM closedelim,
+                            unsigned closelinpos, unsigned closecolpos)
 {
   assert (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -3213,7 +3206,7 @@ parsstartnestingcmd_BM (struct parser_stBM *pars, int depth,
       closelen,.paroff_xtralen = xtralen,.paroff_depth = depth
   };
   cmd_add_parens_BM (&po);
-}                               /* end parsstartnestingcmd_BM */
+}                               /* end parsstartnesting_guicmd_BM */
 
 
 ////////////////////////////////////////////////////////////////
@@ -3782,7 +3775,7 @@ runcommand_BM (bool erase)
     }
   else                          /* error */
     {
-      // the errormessagedialog_BM was created in parserrorcmd_BM
+      // the errormessagedialog_BM was created in parserror_guicmd_BM
       if (errormessagedialog_BM)
         {
           gtk_dialog_run (GTK_DIALOG (errormessagedialog_BM));

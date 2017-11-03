@@ -760,4 +760,19 @@ extern void log_printf_message_BM (const char *fmt, ...)
   __attribute__ ((format (printf, 1, 2)));
 extern void log_end_message_BM (void);
 
+extern parser_error_sigBM parserror_guicmd_BM;
+extern parser_expand_dollarval_sigBM parsdollarval_guicmd_BM;
+extern parser_expand_dollarobj_sigBM parsdollarobj_guicmd_BM;
+extern parser_expand_valexp_sigBM parsvalexp_guicmd_BM;
+extern parser_expand_objexp_sigBM parsobjexp_guicmd_BM;
+extern parser_expand_readmacro_sigBM parsreadmacroexp_guicmd_BM;
+extern parser_decorate_comment_sign_sigBM parscommentsign_guicmd_BM;
+extern parser_decorate_comment_inside_sigBM parscommentinside_guicmd_BM;
+extern parser_decorate_delimiter_sigBM parsdelim_guicmd_BM;
+extern parser_decorate_id_sigBM parsid_guicmd_BM;
+extern parser_decorate_name_sigBM parsknowname_guicmd_BM;
+extern parser_decorate_name_sigBM parsnewname_guicmd_BM;
+extern parser_decorate_nesting_sigBM parsnesting_guicmd_BM;
+extern parser_decorate_start_nesting_sigBM parsstartnesting_guicmd_BM;
+
 #endif /*FUNDECL_BM_INCLUDED */
