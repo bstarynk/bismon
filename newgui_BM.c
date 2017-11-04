@@ -21,6 +21,47 @@ static void markset_newgui_cmd_BM (GtkTextBuffer *, GtkTextIter *,
 static void parsecommandbuf_newgui_BM (struct parser_stBM *pars,
                                        struct stackframe_stBM *stkf);
 
+const struct parserops_stBM parsop_command_build_newgui_BM = {
+  .parsop_magic = PARSOPMAGIC_BM,
+  .parsop_serial = 3,
+  .parsop_nobuild = false,
+  .parsop_error_rout = parserror_guicmd_BM,
+  .parsop_expand_dollarobj_rout = parsdollarobj_guicmd_BM,
+  .parsop_expand_dollarval_rout = parsdollarval_guicmd_BM,
+  .parsop_expand_valexp_rout = parsvalexp_guicmd_BM,
+  .parsop_expand_objexp_rout = parsobjexp_guicmd_BM,
+  .parsop_expand_readmacro_rout = parsreadmacroexp_guicmd_BM,
+  .parsop_decorate_comment_sign_rout = parscommentsign_guicmd_BM,
+  .parsop_decorate_comment_inside_rout = parscommentinside_guicmd_BM,
+  .parsop_decorate_delimiter_rout = parsdelim_guicmd_BM,
+  .parsop_decorate_id_rout = parsid_guicmd_BM,
+  .parsop_decorate_known_name_rout = parsknowname_guicmd_BM,
+  .parsop_decorate_new_name_rout = parsnewname_guicmd_BM,
+  .parsop_decorate_nesting_rout = parsnesting_guicmd_BM,
+  .parsop_decorate_start_nesting_rout = parsstartnesting_guicmd_BM,
+};
+
+const struct parserops_stBM parsop_command_nobuild_newgui_BM = {
+  .parsop_magic = PARSOPMAGIC_BM,
+  .parsop_serial = 4,
+  .parsop_nobuild = true,
+  .parsop_error_rout = parserror_guicmd_BM,
+  .parsop_expand_dollarobj_rout = parsdollarobj_guicmd_BM,
+  .parsop_expand_dollarval_rout = parsdollarval_guicmd_BM,
+  .parsop_expand_valexp_rout = parsvalexp_guicmd_BM,
+  .parsop_expand_objexp_rout = parsobjexp_guicmd_BM,
+  .parsop_expand_readmacro_rout = parsreadmacroexp_guicmd_BM,
+  .parsop_decorate_comment_sign_rout = parscommentsign_guicmd_BM,
+  .parsop_decorate_comment_inside_rout = parscommentinside_guicmd_BM,
+  .parsop_decorate_delimiter_rout = parsdelim_guicmd_BM,
+  .parsop_decorate_id_rout = parsid_guicmd_BM,
+  .parsop_decorate_known_name_rout = parsknowname_guicmd_BM,
+  .parsop_decorate_new_name_rout = parsnewname_guicmd_BM,
+  .parsop_decorate_nesting_rout = parsnesting_guicmd_BM,
+  .parsop_decorate_start_nesting_rout = parsstartnesting_guicmd_BM,
+};
+
+
 
 GtkWidget *
 initialize_newgui_command_scrollview_BM (void)
@@ -262,7 +303,7 @@ runcommand_newgui_BM (bool erase)
     }
   struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
   int cmdlen = strlen (cmdstr);
-  cmdpars->pars_ops = &parsop_command_build_BM;
+  cmdpars->pars_ops = &parsop_command_build_newgui_BM;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  struct parser_stBM *cmdpars;);
   _.cmdpars = cmdpars;
@@ -347,7 +388,7 @@ enduseraction_newgui_cmd_BM (GtkTextBuffer * txbuf, gpointer data)
   char *cmdstr = gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit,
                                            false);
   struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
-  cmdpars->pars_ops = &parsop_command_nobuild_BM;
+  cmdpars->pars_ops = &parsop_command_nobuild_newgui_BM;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  struct parser_stBM *cmdpars;);
   _.cmdpars = cmdpars;

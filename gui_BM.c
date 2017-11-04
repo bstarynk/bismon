@@ -2304,7 +2304,7 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
             }
         }                       // end application ( ... )
       //
-      // !. <obattr> # to get a an attribute
+      // !. <obattr> # to get an attribute
       else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamdot)
         {
           bool gotattr = false;
