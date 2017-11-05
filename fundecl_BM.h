@@ -792,11 +792,19 @@ extern parser_expand_valexp_sigBM parsvalexp_guicmd_BM;
 // handle <id> or <name> to  refer to an existing object
 extern parser_expand_objexp_sigBM parsobjexp_guicmd_BM;
 
-
+// expand readmacros nodes with ^ macroname ( args )
+// apply the `command_readmacro` closure from the connective macroname
 extern parser_expand_readmacro_sigBM parsreadmacroexp_guicmd_BM;
+
+// decorate e.g. // or | with commentsign_cmdtag
 extern parser_decorate_comment_sign_sigBM parscommentsign_guicmd_BM;
+
+// decorate with commentinside_cmdtag
 extern parser_decorate_comment_inside_sigBM parscommentinside_guicmd_BM;
+
+// decorate with delim_cmdtag
 extern parser_decorate_delimiter_sigBM parsdelim_guicmd_BM;
+
 extern parser_decorate_id_sigBM parsid_guicmd_BM;
 extern parser_decorate_name_sigBM parsknowname_guicmd_BM;
 extern parser_decorate_name_sigBM parsnewname_guicmd_BM;
