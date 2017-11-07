@@ -805,10 +805,19 @@ extern parser_decorate_comment_inside_sigBM parscommentinside_guicmd_BM;
 // decorate with delim_cmdtag
 extern parser_decorate_delimiter_sigBM parsdelim_guicmd_BM;
 
+// decorate with id_cmdtag
 extern parser_decorate_id_sigBM parsid_guicmd_BM;
+
+// decorate with knowname_cmdtag
 extern parser_decorate_name_sigBM parsknowname_guicmd_BM;
+
+// decorate with newname_cmdtag
 extern parser_decorate_name_sigBM parsnewname_guicmd_BM;
+
+// decorate open/close with nesting_cmdtag & open/close tags
 extern parser_decorate_nesting_sigBM parsnesting_guicmd_BM;
+
+// decorate start/open/close with nesting_cmdtag & start/open/close tags
 extern parser_decorate_start_nesting_sigBM parsstartnesting_guicmd_BM;
 
 #endif /*FUNDECL_BM_INCLUDED */
