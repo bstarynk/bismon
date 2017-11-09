@@ -1564,6 +1564,15 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
     constix_c_signature,
     constix__LAST
   };
+  objectval_tyBM *k_c_opaque = NULL;
+  objectval_tyBM *k_c_typedef = NULL;
+  objectval_tyBM *k_c_pointer = NULL;
+  objectval_tyBM *k_c_enum = NULL;
+  objectval_tyBM *k_c_struct = NULL;
+  objectval_tyBM *k_c_union = NULL;
+  objectval_tyBM *k_c_array = NULL;
+  objectval_tyBM *k_c_flexible = NULL;
+  objectval_tyBM *k_c_signature = NULL;
   assert (isclosure_BM ((const value_tyBM) clos));
   objectval_tyBM *closconn = NULL;
   const node_tyBM *constnodv = NULL;
@@ -1577,14 +1586,39 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
     );
   _.du = arg2;
   _.closv = (const value_tyBM) clos;
+  closconn = closureconn_BM ((const value_tyBM) clos);
+  WEAKASSERT_BM (isobject_BM (closconn));
+  constnodv = closconn->ob_data;
+  WEAKASSERT_BM (isstring_BM ((const value_tyBM) _.filnamv));
+  WEAKASSERT_BM (valtype_BM (_.du) == tydata_dumper_BM);
+  /** constnodv is
+      * const (c_opaque c_typedef c_pointer c_enum c_struct c_union c_flexible c_signature)
+   **/
+  WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnodv)
+                 && valhash_BM ((const value_tyBM) constnodv) == 3799192292
+                 && nodewidth_BM ((const value_tyBM) constnodv) >=
+                 constix__LAST);
+  k_c_opaque =
+    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_opaque));
+  k_c_typedef =
+    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_typedef));
+  k_c_pointer =
+    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_pointer));
+  k_c_enum =
+    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_enum));
+  k_c_struct =
+    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_struct));
+  k_c_union =
+    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_union));
+  k_c_array =
+    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_array));
+  k_c_flexible =
+    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_flexible));
+  k_c_signature =
+    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_signature));
+  const char *basepath = bytstring_BM (_.filnamv);
   _.prsbuf = strbuffermake_BM (512 * 1024);
   _.filnamv = closurenthson_BM (_.closv, 0);
-  closconn = closureconn_BM ((const value_tyBM) clos);
-  assert (isobject_BM (closconn));
-  constnodv = closconn->ob_data;
-  assert (isstring_BM ((const value_tyBM) _.filnamv));
-  assert (valtype_BM (_.du) == tydata_dumper_BM);
-  const char *basepath = bytstring_BM (_.filnamv);
   strbufferprintf_BM (_.prsbuf, "// generated file for types %s\n", basepath);
   char *filpath = NULL;
   asprintf (&filpath, "%s/%s", bytstring_BM (_.du->dump_dir), basepath);
