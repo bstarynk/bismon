@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 160 objects
+// for 161 objects
 // with 0 modules
 
 
@@ -536,6 +536,16 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|
  % _075tZNHCAMa_7XNNBaNM4qv (  "_bm_predef.h")
 !)_4dGXIiALafP_2bxdkvN34Qa
+
+
+
+!(_5tN77quJsoa_1fVwBCjb95G |=dumper_of_types|
+!~ name (~ dumper_of_types
+~)
+!@ 1510236004.76
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the dumper of types declarations"
+!)_5tN77quJsoa_1fVwBCjb95G
 
 
 

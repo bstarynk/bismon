@@ -88,6 +88,8 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   for (unsigned curargix = 0; curargix < nbargs; curargix++)
     {
       _.curarg = tuplecompnth_BM (_.args, curargix);
+      if (assoc_getattr_BM(_.assocbind, _.curarg)) {
+      }
     }
 #warning incomplete  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP
   return NULL;
