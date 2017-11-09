@@ -1551,8 +1551,22 @@ const value_tyBM arg2,
 const value_tyBM arg3 __attribute__ ((unused)),
 const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
-  assert (!clos || isclosure_BM ((const value_tyBM) clos));
-  assert (valtype_BM (arg2) == tydata_dumper_BM);
+  enum constix_en
+  {
+    constix_c_opaque,           /* emit typedef to void* */
+    constix_c_typedef,
+    constix_c_pointer,
+    constix_c_enum,
+    constix_c_struct,
+    constix_c_union,
+    constix_c_array,
+    constix_c_flexible,
+    constix_c_signature,
+    constix__LAST
+  };
+  assert (isclosure_BM ((const value_tyBM) clos));
+  objectval_tyBM *closconn = NULL;
+  const node_tyBM *constnodv = NULL;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
                  value_tyBM closv;
@@ -1565,6 +1579,9 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   _.closv = (const value_tyBM) clos;
   _.prsbuf = strbuffermake_BM (512 * 1024);
   _.filnamv = closurenthson_BM (_.closv, 0);
+  closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (isobject_BM (closconn));
+  constnodv = closconn->ob_data;
   assert (isstring_BM ((const value_tyBM) _.filnamv));
   assert (valtype_BM (_.du) == tydata_dumper_BM);
   const char *basepath = bytstring_BM (_.filnamv);

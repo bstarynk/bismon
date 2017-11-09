@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 162 objects
+// for 170 objects
 // with 0 modules
 
 
@@ -405,6 +405,70 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "gives the body of some function, etc..."
 !)_7DQyvJFMOrC_9IfC3CtYknn
+
+
+
+!(_7jHHqKoSEZf_6G1dslcAaT8 |=c_enum|
+!~ name (~ c_enum
+~)
+!@ 1510239192.86
+!)_7jHHqKoSEZf_6G1dslcAaT8
+
+
+
+!(_1PaVnMGuJiO_7IbWq9VjxDx |=c_flexible|
+!~ name (~ c_flexible
+~)
+!@ 1510239192.86
+!)_1PaVnMGuJiO_7IbWq9VjxDx
+
+
+
+!(_3moTOunats2_7hztnGRXdCE |=c_opaque|
+!~ name (~ c_opaque
+~)
+!@ 1510239192.86
+!)_3moTOunats2_7hztnGRXdCE
+
+
+
+!(_0yKZoc8SIEB_05bjVvmf0Tf |=c_pointer|
+!~ name (~ c_pointer
+~)
+!@ 1510239192.86
+!)_0yKZoc8SIEB_05bjVvmf0Tf
+
+
+
+!(_3gL816tKTsb_8tAZCbJdEu6 |=c_signature|
+!~ name (~ c_signature
+~)
+!@ 1510239192.86
+!)_3gL816tKTsb_8tAZCbJdEu6
+
+
+
+!(_2kLuNTaOiuP_5pFUOB8MCGG |=c_struct|
+!~ name (~ c_struct
+~)
+!@ 1510239192.86
+!)_2kLuNTaOiuP_5pFUOB8MCGG
+
+
+
+!(_60t4pPMSvnF_13DjOQdqjHT |=c_typedef|
+!~ name (~ c_typedef
+~)
+!@ 1510239192.86
+!)_60t4pPMSvnF_13DjOQdqjHT
+
+
+
+!(_1FEwcwp87Of_5cwdVo3VQF3 |=c_union|
+!~ name (~ c_union
+~)
+!@ 1510239192.86
+!)_1FEwcwp87Of_5cwdVo3VQF3
 
 
 
@@ -1405,9 +1469,18 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 !(_3yJPC4SxGtF_6ilaF37wdxG
 !|*
-!@ 1510236450.35
+!@ 1510239192.86
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the routine to dump types"
+
+!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _3moTOunats2_7hztnGRXdCE |=c_opaque| 
+ _60t4pPMSvnF_13DjOQdqjHT |=c_typedef|  _0yKZoc8SIEB_05bjVvmf0Tf |=c_pointer| 
+ _7jHHqKoSEZf_6G1dslcAaT8 |=c_enum|  _2kLuNTaOiuP_5pFUOB8MCGG |=c_struct| 
+ 
+ _1FEwcwp87Of_5cwdVo3VQF3 |=c_union|  _1PaVnMGuJiO_7IbWq9VjxDx |=c_flexible| 
+ _3gL816tKTsb_8tAZCbJdEu6 |=c_signature| ) ~)
+
 !)_3yJPC4SxGtF_6ilaF37wdxG
 
 
