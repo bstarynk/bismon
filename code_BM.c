@@ -1469,7 +1469,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   ((struct dumper_stBM *) _.du)->dump_wrotefilecount++;
   free (filpath);
   return _.closv;
-}                               /* end ROUTINE _075tZNHCAMa_7XNNBaNM4qv */
+}                               /* end ROUTINE _075tZNHCAMa_7XNNBaNM4qv dumping predefined */
 
 
 
@@ -1536,10 +1536,56 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   ((struct dumper_stBM *) _.du)->dump_wrotefilecount++;
   free (filpath);
   return _.closv;
-}                               /* end ROUTINE _4ENXjApm7Qb_3bXo8F6Jg9z */
+}                               /* end ROUTINE _4ENXjApm7Qb_3bXo8F6Jg9z dumping globals */
+
+
+//// for the closure to dump_data the types, inside dumper_of_types
+extern objrout_sigBM ROUTINEOBJNAME_BM (_3yJPC4SxGtF_6ilaF37wdxG);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_3yJPC4SxGtF_6ilaF37wdxG)
+(const closure_tyBM * clos,
+struct stackframe_stBM * stkf,
+const value_tyBM arg1 __attribute__ ((unused)),
+const value_tyBM arg2,
+const value_tyBM arg3 __attribute__ ((unused)),
+const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  assert (valtype_BM (arg2) == tydata_dumper_BM);
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * recv;
+                 value_tyBM closv;
+                 struct dumper_stBM *du;
+                 struct strbuffer_stBM *sbuf;
+                 struct strbuffer_stBM *prsbuf;
+                 const stringval_tyBM * filnamv;
+    );
+  _.du = arg2;
+  _.closv = (const value_tyBM) clos;
+  _.prsbuf = strbuffermake_BM (512 * 1024);
+  _.filnamv = closurenthson_BM (_.closv, 0);
+  assert (isstring_BM ((const value_tyBM) _.filnamv));
+  assert (valtype_BM (_.du) == tydata_dumper_BM);
+  const char *basepath = bytstring_BM (_.filnamv);
+  strbufferprintf_BM (_.prsbuf, "// generated file for types %s\n", basepath);
+  char *filpath = NULL;
+  asprintf (&filpath, "%s/%s", bytstring_BM (_.du->dump_dir), basepath);
+  if (!filpath)
+    FATAL_BM ("asprintf failed for %s", basepath);
+  strbufferwritetofile_BM (_.prsbuf, filpath);
+  strbufferreset_BM (_.prsbuf);
+  printf ("wrote types file %s\n", filpath);
+  ((struct dumper_stBM *) _.du)->dump_wrotefilecount++;
+  free (filpath);
+  return _.closv;
+}                               /* end of routine _3yJPC4SxGtF_6ilaF37wdxG dumping of ctypes */
 
 
 
+
+
+////////////////
 //// for the method closure to put_method in class
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9imDBaAxOpp_2HI9AuWrEKD);
 

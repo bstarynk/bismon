@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 161 objects
+// for 162 objects
 // with 0 modules
 
 
@@ -542,9 +542,12 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !(_5tN77quJsoa_1fVwBCjb95G |=dumper_of_types|
 !~ name (~ dumper_of_types
 ~)
-!@ 1510236004.76
+!@ 1510237217.82
+!$_4tiUQqbr6oh_5gZVoUWsppH |=specially_dumpable|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the dumper of types declarations"
+!: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|
+ % _3yJPC4SxGtF_6ilaF37wdxG (  "_bm_types.h")
 !)_5tN77quJsoa_1fVwBCjb95G
 
 
@@ -1397,6 +1400,15 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 !& _18zqwDaGqbb_0ZGuMPMD30d |=args| 
 !&  * _3aavnAvDLd2_9JbORKE3B1k ( _0DRkw9jbus3_4zHggHVajYB |=recv|   * _5DDSY1YgVZr_6dOU4tiBldk ( _0jFqaPPHgYH_5JpjOPxQ67p |=arguments| ))
 !)_3w09vsmHdSI_9cjSQyYUsMD
+
+
+
+!(_3yJPC4SxGtF_6ilaF37wdxG
+!|*
+!@ 1510236450.35
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the routine to dump types"
+!)_3yJPC4SxGtF_6ilaF37wdxG
 
 
 
