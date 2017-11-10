@@ -1562,6 +1562,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
     constix_c_array,
     constix_c_flexible,
     constix_c_signature,
+    constix_c_type,
     constix__LAST
   };
   objectval_tyBM *k_c_opaque = NULL;
@@ -1573,6 +1574,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   objectval_tyBM *k_c_array = NULL;
   objectval_tyBM *k_c_flexible = NULL;
   objectval_tyBM *k_c_signature = NULL;
+  objectval_tyBM *k_c_type = NULL;
   assert (isclosure_BM ((const value_tyBM) clos));
   objectval_tyBM *closconn = NULL;
   const node_tyBM *constnodv = NULL;
@@ -1592,10 +1594,10 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   WEAKASSERT_BM (isstring_BM ((const value_tyBM) _.filnamv));
   WEAKASSERT_BM (valtype_BM (_.du) == tydata_dumper_BM);
   /** constnodv is
-      * const (c_opaque c_typedef c_pointer c_enum c_struct c_union c_flexible c_signature)
+      * const (c_opaque c_typedef c_pointer c_enum c_struct c_union c_flexible c_signature c_type)
    **/
   WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnodv)
-                 && valhash_BM ((const value_tyBM) constnodv) == 3799192292
+                 && valhash_BM ((const value_tyBM) constnodv) == 351959056
                  && nodewidth_BM ((const value_tyBM) constnodv) >=
                  constix__LAST);
   k_c_opaque =
@@ -1616,6 +1618,8 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
     objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_flexible));
   k_c_signature =
     objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_signature));
+  k_c_type =
+    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_type));
   const char *basepath = bytstring_BM (_.filnamv);
   _.prsbuf = strbuffermake_BM (512 * 1024);
   _.filnamv = closurenthson_BM (_.closv, 0);
