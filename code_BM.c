@@ -1553,16 +1553,8 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   enum constix_en
   {
-    constix_c_opaque,           /* emit typedef to void* */
-    constix_c_typedef,
-    constix_c_pointer,
-    constix_c_enum,
-    constix_c_struct,
-    constix_c_union,
-    constix_c_array,
-    constix_c_flexible,
-    constix_c_signature,
     constix_c_type,
+    constix_emit_c_type,
     constix__LAST
   };
   enum closix_en
@@ -1571,16 +1563,8 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
     closix_tuptypes,
     closix__LAST
   };
-  objectval_tyBM *k_c_opaque = NULL;
-  objectval_tyBM *k_c_typedef = NULL;
-  objectval_tyBM *k_c_pointer = NULL;
-  objectval_tyBM *k_c_enum = NULL;
-  objectval_tyBM *k_c_struct = NULL;
-  objectval_tyBM *k_c_union = NULL;
-  objectval_tyBM *k_c_array = NULL;
-  objectval_tyBM *k_c_flexible = NULL;
-  objectval_tyBM *k_c_signature = NULL;
   objectval_tyBM *k_c_type = NULL;
+  objectval_tyBM *k_emit_c_type = NULL;
   assert (isclosure_BM ((const value_tyBM) clos));
   objectval_tyBM *closconn = NULL;
   const node_tyBM *constnodv = NULL;
@@ -1591,7 +1575,8 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
                  struct strbuffer_stBM *sbuf;
                  struct strbuffer_stBM *prsbuf;
                  const stringval_tyBM * filnamv;
-                 const tupleval_tyBM * tuptypes;
+                 const tupleval_tyBM * tuptypes; objectval_tyBM * curtype;
+                 value_tyBM emittedv;
     );
   _.du = arg2;
   _.closv = (const value_tyBM) clos;
@@ -1602,33 +1587,16 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   WEAKASSERT_BM (isstring_BM ((const value_tyBM) _.filnamv));
   WEAKASSERT_BM (valtype_BM (_.du) == tydata_dumper_BM);
   /** constnodv is
-      * const (c_opaque c_typedef c_pointer c_enum c_struct c_union c_array 
-               c_flexible c_signature c_type)
+      * const (c_type)
    **/
   WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnodv)
-                 && valhash_BM ((const value_tyBM) constnodv) == 3848183571
-                 && nodewidth_BM ((const value_tyBM) constnodv) >=
+                 && valhash_BM ((const value_tyBM) constnodv) == 4153141653
+                 && nodewidth_BM ((const value_tyBM) constnodv) ==
                  constix__LAST);
-  k_c_opaque =
-    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_opaque));
-  k_c_typedef =
-    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_typedef));
-  k_c_pointer =
-    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_pointer));
-  k_c_enum =
-    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_enum));
-  k_c_struct =
-    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_struct));
-  k_c_union =
-    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_union));
-  k_c_array =
-    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_array));
-  k_c_flexible =
-    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_flexible));
-  k_c_signature =
-    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_signature));
   k_c_type =
     objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_type));
+  k_emit_c_type =
+    objectcast_BM (nodenthson_BM ((void *) constnodv, constix_emit_c_type));
   _.filnamv = closurenthson_BM (_.closv, closix_filename);
   WEAKASSERT_BM (isstring_BM ((const value_tyBM) _.filnamv));
   _.tuptypes =
@@ -1640,6 +1608,70 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   _.prsbuf = strbuffermake_BM (512 * 1024);
   strbufferprintf_BM (_.prsbuf, "// generated file for %u types %s\n",
                       nbtypes, basepath);
+  unsigned nbgoodtypes = 0;
+  for (unsigned ix = 0; ix < nbtypes; ix++)
+    {
+      _.curtype = tuplecompnth_BM (_.tuptypes, ix);
+      if (objectisinstance_BM (_.curtype, k_c_type))
+        nbgoodtypes++;
+      else
+        {
+          DBGPRINTF_BM ("type #%d %s is not a c_type", ix,
+                        objectdbg_BM (_.curtype));
+          char idtyp[32];
+          memset (idtyp, 0, sizeof (idtyp));
+          idtocbuf32_BM (objid_BM (_.curtype), idtyp);
+          const char *tynam = findobjectname_BM (_.curtype);
+          if (tynam)
+            strbufferprintf_BM (_.prsbuf, "#error bad type #%d %s : %s\n", ix,
+                                idtyp, tynam);
+          else
+            strbufferprintf_BM (_.prsbuf, "#error bad type #%d %s\n", ix,
+                                idtyp);
+        }
+    }
+  if (nbgoodtypes != nbtypes)
+    {
+      fprintf (stderr, "only %u good types out of %u for %s\n",
+               nbgoodtypes, nbtypes, basepath);
+      return NULL;
+    }
+  for (unsigned ix = 0; ix < nbtypes; ix++)
+    {
+      _.curtype = tuplecompnth_BM (_.tuptypes, ix);
+      WEAKASSERT_BM (objectisinstance_BM (_.curtype, k_c_type));
+      DBGPRINTF_BM ("good type #%d %s is a c_type", ix,
+                    objectdbg_BM (_.curtype));
+      char idtyp[32];
+      memset (idtyp, 0, sizeof (idtyp));
+      idtocbuf32_BM (objid_BM (_.curtype), idtyp);
+      const char *tynam = findobjectname_BM (_.curtype);
+      if (tynam)
+        strbufferprintf_BM (_.prsbuf, "\n\n"
+                            "// type #%d %s - %s\n", ix, idtyp, tynam);
+      else
+        strbufferprintf_BM (_.prsbuf, "\n\n" "// type #%d %s *\n", ix, idtyp);
+      /// emit the type
+      _.emittedv = send2_BM (_.curtype, k_emit_c_type,
+                             (struct stackframe_stBM *) &_,
+                             _.prsbuf, taggedint_BM (ix));
+      if (!_.emittedv)
+        {
+          DBGPRINTF_BM ("failed to emit_c_type type #%d %s", ix,
+                        objectdbg_BM (_.curtype));
+          strbufferprintf_BM (_.prsbuf,
+                              "\n" "#error emit_c_type failed for %s\n",
+                              idtyp);
+          return NULL;
+        };
+      if (tynam)
+        strbufferprintf_BM (_.prsbuf, "\n"
+                            "// end type #%d %s - %s\n\n", ix, idtyp, tynam);
+      else
+        strbufferprintf_BM (_.prsbuf, "\n"
+                            "// end type #%d %s *\n\n", ix, idtyp);
+      _.emittedv = NULL;
+    };
   char *filpath = NULL;
   asprintf (&filpath, "%s/%s", bytstring_BM (_.du->dump_dir), basepath);
   if (!filpath)

@@ -454,18 +454,6 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 
 
 
-!(_3moTOunats2_7hztnGRXdCE |=c_opaque|
-!~ name (~ c_opaque
-~)
-!@ 1510304624.63
-!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W
-~)
-
-!)_3moTOunats2_7hztnGRXdCE
-
-
-
 !(_0yKZoc8SIEB_05bjVvmf0Tf |=c_pointer|
 !~ name (~ c_pointer
 ~)
@@ -672,6 +660,14 @@ _2mRvIPRgAOn_7i3eKQzyvhk
 _2mYaTh9kH4I_7ENiXcymRmy  
  _6QdXYI1ivTg_8NnpdDMRQK5 ])
 !)_5tN77quJsoa_1fVwBCjb95G
+
+
+
+!(_0b4VyB0nxvZ_1RgKWePfQOx |=emit_c_type|
+!~ name (~ emit_c_type
+~)
+!@ 1510323206.58
+!)_0b4VyB0nxvZ_1RgKWePfQOx
 
 
 
@@ -1592,18 +1588,13 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 
 !(_3yJPC4SxGtF_6ilaF37wdxG
 !|*
-!@ 1510307224.97
+!@ 1510323206.58
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the routine to dump types"
 
-!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _3moTOunats2_7hztnGRXdCE |=c_opaque| 
- _60t4pPMSvnF_13DjOQdqjHT |=c_typedef|  _0yKZoc8SIEB_05bjVvmf0Tf |=c_pointer| 
- _7jHHqKoSEZf_6G1dslcAaT8 |=c_enum|  _2kLuNTaOiuP_5pFUOB8MCGG |=c_struct| 
- 
- _1FEwcwp87Of_5cwdVo3VQF3 |=c_union|  _2TYRxW1WRWb_1PuK1p9YKKq |=c_array| 
- _1PaVnMGuJiO_7IbWq9VjxDx |=c_flexible|  _3gL816tKTsb_8tAZCbJdEu6 |=c_signature| 
- _83kM1HtO8K3_6k0F2KYQT3W |=c_type| ) ~)
+!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _83kM1HtO8K3_6k0F2KYQT3W |=c_type| 
+ _0b4VyB0nxvZ_1RgKWePfQOx |=emit_c_type| ) ~)
 
 !)_3yJPC4SxGtF_6ilaF37wdxG
 
