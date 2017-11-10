@@ -1565,6 +1565,12 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
     constix_c_type,
     constix__LAST
   };
+  enum closix_en
+  {
+    closix_filename,
+    closix_tuptypes,
+    closix__LAST
+  };
   objectval_tyBM *k_c_opaque = NULL;
   objectval_tyBM *k_c_typedef = NULL;
   objectval_tyBM *k_c_pointer = NULL;
@@ -1585,9 +1591,11 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
                  struct strbuffer_stBM *sbuf;
                  struct strbuffer_stBM *prsbuf;
                  const stringval_tyBM * filnamv;
+                 const tupleval_tyBM * tuptypes;
     );
   _.du = arg2;
   _.closv = (const value_tyBM) clos;
+  WEAKASSERT_BM (closurewidth_BM ((const value_tyBM) clos) >= closix__LAST);
   closconn = closureconn_BM ((const value_tyBM) clos);
   WEAKASSERT_BM (isobject_BM (closconn));
   constnodv = closconn->ob_data;
@@ -1621,10 +1629,17 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
     objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_signature));
   k_c_type =
     objectcast_BM (nodenthson_BM ((void *) constnodv, constix_c_type));
+  _.filnamv = closurenthson_BM (_.closv, closix_filename);
+  WEAKASSERT_BM (isstring_BM ((const value_tyBM) _.filnamv));
+  _.tuptypes =
+    tuplecast_BM (closurenthson_BM
+                  ((const value_tyBM) clos, closix_tuptypes));
+  WEAKASSERT_BM (_.tuptypes);
+  unsigned nbtypes = tuplesize_BM (_.tuptypes);
   const char *basepath = bytstring_BM (_.filnamv);
   _.prsbuf = strbuffermake_BM (512 * 1024);
-  _.filnamv = closurenthson_BM (_.closv, 0);
-  strbufferprintf_BM (_.prsbuf, "// generated file for types %s\n", basepath);
+  strbufferprintf_BM (_.prsbuf, "// generated file for %u types %s\n",
+                      nbtypes, basepath);
   char *filpath = NULL;
   asprintf (&filpath, "%s/%s", bytstring_BM (_.du->dump_dir), basepath);
   if (!filpath)
