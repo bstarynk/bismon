@@ -1584,10 +1584,9 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   closconn = closureconn_BM ((const value_tyBM) clos);
   WEAKASSERT_BM (isobject_BM (closconn));
   constnodv = closconn->ob_data;
-  WEAKASSERT_BM (isstring_BM ((const value_tyBM) _.filnamv));
   WEAKASSERT_BM (valtype_BM (_.du) == tydata_dumper_BM);
   /** constnodv is
-      * const (c_type)
+      * const (c_type emit_c_type)
    **/
   WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnodv)
                  && valhash_BM ((const value_tyBM) constnodv) == 4153141653
