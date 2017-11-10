@@ -1594,10 +1594,11 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   WEAKASSERT_BM (isstring_BM ((const value_tyBM) _.filnamv));
   WEAKASSERT_BM (valtype_BM (_.du) == tydata_dumper_BM);
   /** constnodv is
-      * const (c_opaque c_typedef c_pointer c_enum c_struct c_union c_flexible c_signature c_type)
+      * const (c_opaque c_typedef c_pointer c_enum c_struct c_union c_array 
+               c_flexible c_signature c_type)
    **/
   WEAKASSERT_BM (isnode_BM ((const value_tyBM) constnodv)
-                 && valhash_BM ((const value_tyBM) constnodv) == 351959056
+                 && valhash_BM ((const value_tyBM) constnodv) == 3848183571
                  && nodewidth_BM ((const value_tyBM) constnodv) >=
                  constix__LAST);
   k_c_opaque =
