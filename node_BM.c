@@ -279,7 +279,8 @@ apply0_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf)
     return NULL;
   const objectval_tyBM *connob = clos->nodt_conn;
   assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout = connob->ob_rout;
+  objrout_sigBM *rout =
+    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
   return (*rout) (clos, stkf, NULL, NULL, NULL, NULL);
@@ -294,7 +295,8 @@ apply1_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
     return NULL;
   const objectval_tyBM *connob = clos->nodt_conn;
   assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout = connob->ob_rout;
+  objrout_sigBM *rout =
+    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
   return (*rout) (clos, stkf, arg1, NULL, NULL, NULL);
@@ -309,7 +311,8 @@ apply2_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
     return NULL;
   const objectval_tyBM *connob = clos->nodt_conn;
   assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout = connob->ob_rout;
+  objrout_sigBM *rout =
+    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
   return (*rout) (clos, stkf, arg1, arg2, NULL, NULL);
@@ -325,7 +328,8 @@ apply3_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
     return NULL;
   const objectval_tyBM *connob = clos->nodt_conn;
   assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout = connob->ob_rout;
+  objrout_sigBM *rout =
+    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
   return (*rout) (clos, stkf, arg1, arg2, arg3, NULL);
@@ -341,7 +345,8 @@ apply4_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
     return NULL;
   const objectval_tyBM *connob = clos->nodt_conn;
   assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout = connob->ob_rout;
+  objrout_sigBM *rout =
+    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
   LOCALQNODESIZED_BM (qno, NULL, 1);
@@ -361,7 +366,8 @@ apply5_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
     return NULL;
   const objectval_tyBM *connob = clos->nodt_conn;
   assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout = connob->ob_rout;
+  objrout_sigBM *rout =
+    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
   LOCALQNODESIZED_BM (qno, NULL, 2);
@@ -382,7 +388,8 @@ apply6_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
     return NULL;
   const objectval_tyBM *connob = clos->nodt_conn;
   assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout = connob->ob_rout;
+  objrout_sigBM *rout =
+    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
   LOCALQNODESIZED_BM (qno, NULL, 3);
@@ -405,7 +412,8 @@ apply7_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
     return NULL;
   const objectval_tyBM *connob = clos->nodt_conn;
   assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout = connob->ob_rout;
+  objrout_sigBM *rout =
+    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
   LOCALQNODESIZED_BM (qno, NULL, 4);
@@ -429,7 +437,8 @@ apply8_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
     return NULL;
   const objectval_tyBM *connob = clos->nodt_conn;
   assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout = connob->ob_rout;
+  objrout_sigBM *rout =
+    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
   LOCALQNODESIZED_BM (qno, NULL, 4);
@@ -455,7 +464,8 @@ apply9_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
     return NULL;
   const objectval_tyBM *connob = clos->nodt_conn;
   assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout = connob->ob_rout;
+  objrout_sigBM *rout =
+    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
   LOCALQNODESIZED_BM (qno, NULL, 5);
