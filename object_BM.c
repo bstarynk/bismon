@@ -271,6 +271,7 @@ makeobjofid_BM (const rawid_tyBM id)
     }
   pob = allocgcty_BM (tyObject_BM, sizeof (objectval_tyBM));
   pob->ob_id = id;
+  pob->ob_class = BMP_object;
   ((typedhead_tyBM *) pob)->hash = hashid_BM (id);
   addtobucket_BM (curbuck, pob);
   return pob;
@@ -430,7 +431,7 @@ objectdbg2_BM (const objectval_tyBM * obj)
 }                               /* end objectdbg2_BM */
 
 
-extern objectval_tyBM *
+objectval_tyBM *
 makeobj_BM (void)
 {
   for (;;)
@@ -451,6 +452,8 @@ objectinteriorgcmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
   assert (((typedhead_tyBM *) obj)->hgc == MARKGC_BM);
   if (obj->ob_class)
     gcobjmark_BM (gc, obj->ob_class);
+  if (obj->ob_routaddr && obj->ob_sig)
+    gcobjmark_BM (gc, obj->ob_sig);
   if (obj->ob_compvec)
     datavectgcmark_BM (gc, obj->ob_compvec, 0);
   if (obj->ob_attrassoc)
