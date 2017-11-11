@@ -7,6 +7,7 @@
 !~ name (~ add
 ~)
 !@ 1507911599.43
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_1dzZlwqKdLH_8HjkBsL9Mar
 
 
@@ -15,6 +16,7 @@
 !~ name (~ allalloc
 ~)
 !@ 1510313544.37
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_59EnnaqMmF7_6LFRkrj3Top
 
 
@@ -23,6 +25,7 @@
 !~ name (~ args
 ~)
 !@ 1507545307.30
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_18zqwDaGqbb_0ZGuMPMD30d
 
 
@@ -31,6 +34,7 @@
 !~ name (~ arguments
 ~)
 !@ 1506853444.98
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_0jFqaPPHgYH_5JpjOPxQ67p
 
 
@@ -39,6 +43,7 @@
 !~ name (~ assign
 ~)
 !@ 1506083187.61
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "^ assign (left right) # for assignments"
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
@@ -85,6 +90,7 @@
 !~ name (~ assocbind
 ~)
 !@ 1507042685.83
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_3MHr03F06Xe_5FdCV6pp41N
 
 
@@ -253,6 +259,7 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !~ name (~ basiclo_intswitch
 ~)
 !@ 1506169023.51
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_12QTszi1FF0_5S77twbSETI
 
 
@@ -261,6 +268,7 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !~ name (~ basiclo_loop
 ~)
 !@ 1506168667.26
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_2EjH1ebLzli_4rmA1ZPtIBL
 
 
@@ -371,6 +379,7 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !~ name (~ bindings
 ~)
 !@ 1507042418.81
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_1zpi50AYid5_0j6it2DwVqm
 
 
@@ -398,6 +407,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !~ name (~ block
 ~)
 !@ 1506082217.87
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "^ block ( instrs-or-blocks ....) # for blocks"
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
@@ -410,6 +420,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !~ name (~ body
 ~)
 !@ 1506873585.07
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "gives the body of some function, etc..."
 !)_7DQyvJFMOrC_9IfC3CtYknn
@@ -470,6 +481,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !~ name (~ c_plain_type
 ~)
 !@ 1510325491.74
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_7UCpku3dQdd_1UImiq2c9UF
 
 
@@ -538,6 +550,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !~ name (~ cexpansion
 ~)
 !@ 1508226117.21
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_7yoiT31GmV4_2iTjHx3P2hb
 
 
@@ -565,6 +578,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !~ name (~ complete_module
 ~)
 !@ 1506063223.90
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to complete a module"
 !)_5MiY0SneC5A_7c2Ar72nm9O
@@ -575,6 +589,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !~ name (~ cond
 ~)
 !@ 1506323602.21
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "^cond(when-cases...)"
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
@@ -587,6 +602,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !~ name (~ constants
 ~)
 !@ 1506853467.27
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_5l2zSKsFaVm_9zs6qDOP87i
 
 
@@ -595,6 +611,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !~ name (~ curarg
 ~)
 !@ 1509353890.11
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_0ueaX8PSDWk_5EnNJs0V07X
 
 
@@ -603,6 +620,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !~ name (~ curargix
 ~)
 !@ 1509353890.11
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_2WN2m94SkuF_1ZvkPWAyuMy
 
 
@@ -611,6 +629,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !~ name (~ curcomp
 ~)
 !@ 1508156592.48
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_12cTZAaLTTx_4Bq4ez6eGJM
 
 
@@ -619,6 +638,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !~ name (~ curcontainer
 ~)
 !@ 1508316577.49
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_0e8fQitctw8_8arwqiGsOsl
 
 
@@ -627,6 +647,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !~ name (~ curindex
 ~)
 !@ 1508156669.41
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_8FvWRFyBCPy_4gA5UjVGRlc
 
 
@@ -635,6 +656,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !~ name (~ curtuple
 ~)
 !@ 1508156616.73
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_5gWmR723ioX_8A2DiFQ2dlj
 
 
@@ -687,6 +709,7 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !~ name (~ emit_c_type
 ~)
 !@ 1510323206.58
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_0b4VyB0nxvZ_1RgKWePfQOx
 
 
@@ -695,6 +718,7 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !~ name (~ exit
 ~)
 !@ 1506085968.82
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "^exit(loop-or-block-obj)"
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
@@ -707,6 +731,7 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !~ name (~ expander
 ~)
 !@ 1507556148.95
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_9OzBvYbDWm8_3XA4wkArOmo
 
 
@@ -715,6 +740,7 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !~ name (~ expect
 ~)
 !@ 1504875287.86
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_43dxTPqTsQQ_3M5JFtY76r1
 
 
@@ -804,6 +830,7 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !~ name (~ functions_set
 ~)
 !@ 1504875362.46
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_9stpgEfdDDE_7LUgqylTeFI
 
 
@@ -811,7 +838,8 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !(_9Hh1Ovg8SBy_5GpqPq7wC5v |=gctyenum|
 !~ name (~ gctyenum
 ~)
-!@ 1510313544.36
+!@ 1510387545.03
+!$_7jHHqKoSEZf_6G1dslcAaT8 |=c_enum|
 !)_9Hh1Ovg8SBy_5GpqPq7wC5v
 
 
@@ -820,6 +848,7 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !~ name (~ generate_module
 ~)
 !@ 1505321790.17
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to generate a module, after preparation"
 !)_9mq0jsuz4XQ_4doHfd987Q6
@@ -830,6 +859,7 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !~ name (~ get
 ~)
 !@ 1508128268.20
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_2LPrNfUHb6Y_1qOPmENNXqB
 
 
@@ -859,6 +889,7 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !~ name (~ id
 ~)
 !@ 1508225843.52
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_7WjaQkqwdaZ_6PRtbDrJHnf
 
 
@@ -867,6 +898,7 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !~ name (~ init_class
 ~)
 !@ 1504634820.73
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_75gnoii3mMp_41wgHkvJVyN
 
 
@@ -875,6 +907,7 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !~ name (~ intswitch
 ~)
 !@ 1506084859.08
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "^intswitch(switcherexpr cases...)"
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
@@ -887,6 +920,7 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !~ name (~ label
 ~)
 !@ 1506505838.91
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "give label, e.g. in loop-s"
 !)_3XBrePAliOo_37VlAqBsb5C
@@ -897,6 +931,7 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !~ name (~ locals
 ~)
 !@ 1506853455.83
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_24sSVIADeHm_0Sx34wQfG7W
 
 
@@ -905,6 +940,7 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !~ name (~ loop
 ~)
 !@ 1506085112.36
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "^loop(loopobj instr....)"
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
@@ -917,6 +953,7 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !~ name (~ make_assoc_BM
 ~)
 !@ 1507032276.14
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _98LwKjUO4P2_5CU6mAoKUxQ ]
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
@@ -929,6 +966,7 @@ _3JH05KgIzty_1K7IDyF43V2 |=assoc|
 !~ name (~ makeobj_BM
 ~)
 !@ 1507030591.77
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_4KF9OJNVSba_96RJF3rETrY
 
 
@@ -937,6 +975,7 @@ _3JH05KgIzty_1K7IDyF43V2 |=assoc|
 !~ name (~ modgenob
 ~)
 !@ 1506873963.30
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7T9OwSFlgov_0wVJaK1eZbn |=object| 
 !)_0Bl5ro9usp6_1Hll14QwC8f
@@ -947,6 +986,7 @@ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 !~ name (~ objappendcomp_BM
 ~)
 !@ 1507030591.77
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_77KCDNTnjZk_6GqQlTMeyee
 
 
@@ -955,6 +995,7 @@ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 !~ name (~ objclass_BM
 ~)
 !@ 1507030591.77
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_1UKQqVj61xF_4VRIryDMmHP
 
 
@@ -963,6 +1004,7 @@ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 !~ name (~ objgetattr_BM
 ~)
 !@ 1507030591.77
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_3aavnAvDLd2_9JbORKE3B1k
 
 
@@ -971,6 +1013,7 @@ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 !~ name (~ objgetcomp_BM
 ~)
 !@ 1507030591.77
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_4VQLeU6mUyu_149lbQ2VWn6
 
 
@@ -979,6 +1022,7 @@ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 !~ name (~ objnbattrs_BM
 ~)
 !@ 1507030591.77
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_2IKKQdVVAcB_6oxg5Tng8uK
 
 
@@ -987,6 +1031,7 @@ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 !~ name (~ objputattr_BM
 ~)
 !@ 1507030591.77
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_4SVbRxoB26K_51WExVpd75t
 
 
@@ -995,6 +1040,7 @@ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 !~ name (~ objputclass_BM
 ~)
 !@ 1507030591.77
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_20ZAQeICBGo_2yMovZAYFvM
 
 
@@ -1003,6 +1049,7 @@ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 !~ name (~ objputcomp_BM
 ~)
 !@ 1507030591.77
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_7nef89IRr1g_9XXq6jm1Pgs
 
 
@@ -1011,6 +1058,7 @@ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 !~ name (~ objswitch
 ~)
 !@ 1506085461.81
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "^objswitch(objswitcher case....)"
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
@@ -1023,6 +1071,7 @@ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 !~ name (~ objtouchnow_BM
 ~)
 !@ 1507030591.77
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_6bQLwLF3pc5_5gSAmlh5Nsx
 
 
@@ -1075,6 +1124,7 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !~ name (~ prepare_module
 ~)
 !@ 1504713565.68
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_17mrxkMdNtH_2CduQ2WDIy5
 
 
@@ -1083,6 +1133,7 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !~ name (~ prepare_routine
 ~)
 !@ 1505978687.31
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to prepare a routine"
 !)_6qi1DW0Ygkl_4Aqdxq4n5IV
@@ -1093,6 +1144,7 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !~ name (~ prepared_routines
 ~)
 !@ 1506846680.17
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_9qn0Hp8HaF5_7yeAJiNYtp5
 
 
@@ -1101,6 +1153,7 @@ _2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|  _17mrxkMdNtH_2CduQ2WDIy5 |
 !~ name (~ prepvalset
 ~)
 !@ 1506873982.74
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _2mYaTh9kH4I_7ENiXcymRmy |=set| 
 !)_4jQFQ7bwCsI_3TM3IY3tFyW
@@ -1111,6 +1164,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ put
 ~)
 !@ 1507975261.64
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_9pvzBeIKHXF_8YDPCrQ6OEK
 
 
@@ -1119,6 +1173,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ put_data_value
 ~)
 !@ 1505235154.22
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to put the data value"
 !)_7wDfX8mn5WT_2g0FYc80dLx
@@ -1129,6 +1184,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ put_method
 ~)
 !@ 1504619340.97
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_16OZeTBZLbW_6SCJt3rgxci
 
 
@@ -1137,6 +1193,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ rawid
 ~)
 !@ 1510313544.37
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_0ap8ZTtBsU9_6E2IyCg45Gu
 
 
@@ -1145,6 +1202,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ recv
 ~)
 !@ 1506873909.74
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the reciever argument"
 !)_0DRkw9jbus3_4zHggHVajYB
@@ -1155,6 +1213,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ remove
 ~)
 !@ 1507975307.97
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_3OWP1zOtxz2_9uAVt50SUZO
 
 
@@ -1163,6 +1222,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ results
 ~)
 !@ 1507549421.72
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_5ve5gbSjN0r_1n61nNRPtnN
 
 
@@ -1171,6 +1231,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ return
 ~)
 !@ 1506086927.80
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "^return(expr)"
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
@@ -1183,6 +1244,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ routprepob
 ~)
 !@ 1507031002.27
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_4HkGfOQ5cRm_8BmwBXNzncR
 
 
@@ -1191,6 +1253,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ run
 ~)
 !@ 1506087217.75
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "^run (expr)"
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
@@ -1212,6 +1275,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ see
 ~)
 !@ 1505667219.28
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "attribute to relate to some other stuff, e.g. a set of related objects"
 !)_4rz1Bi4weGz_8Y03gU81cRL
@@ -1222,6 +1286,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ seqobval
 ~)
 !@ 1510313544.37
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_4mNIezUtVkz_1qg63n8juIs
 
 
@@ -1230,6 +1295,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ serial63
 ~)
 !@ 1510313544.37
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_535ulGVFUfw_4yWLeDp4Pxd
 
 
@@ -1262,6 +1328,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ spacenum
 ~)
 !@ 1510313544.37
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_6QdXYI1ivTg_8NnpdDMRQK5
 
 
@@ -1285,6 +1352,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ stringval
 ~)
 !@ 1510313544.37
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_2mRvIPRgAOn_7i3eKQzyvhk
 
 
@@ -1302,6 +1370,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ typedhead
 ~)
 !@ 1510313544.36
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_2KnapuxOyVt_79DU64sgMcF
 
 
@@ -1310,6 +1379,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ typedsize
 ~)
 !@ 1510313544.36
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_93m7hQouFiF_4cFcYfZ1b7i
 
 
@@ -1318,6 +1388,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ ulen
 ~)
 !@ 1507032173.70
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_98LwKjUO4P2_5CU6mAoKUxQ
 
 
@@ -1326,6 +1397,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ vector_object
 ~)
 !@ 1507896488.94
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_0Ie11LN3K5q_0mcL2jRBwgk
 
 
@@ -1334,6 +1406,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ while
 ~)
 !@ 1506086264.79
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "^ while (cond ....instr....)"
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
@@ -1345,6 +1418,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !(_075tZNHCAMa_7XNNBaNM4qv
 !|*
 !@ 1502085467.42
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the routine to dump predefined"
 !)_075tZNHCAMa_7XNNBaNM4qv
@@ -1354,6 +1428,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !(_09DxyieS5Wz_7pkad4F88FA
 !|*
 !@ 1502791841.01
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the method to browse_data a class"
 !)_09DxyieS5Wz_7pkad4F88FA
@@ -1399,6 +1474,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !(_0B1PYH9bN34_3RZdP24AVyt
 !|*
 !@ 1502615054.06
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value a tuple"
 !)_0B1PYH9bN34_3RZdP24AVyt
@@ -1408,6 +1484,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !(_0BAnB0xjs23_0WEOCOi5Nbe
 !|*
 !@ 1502610658.05
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value an object"
 !)_0BAnB0xjs23_0WEOCOi5Nbe
@@ -1417,6 +1494,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !(_0HBMCM5CeLn_7L5YEV2jO7Y
 !|*
 !@ 1502619190.01
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value an int"
 !)_0HBMCM5CeLn_7L5YEV2jO7Y
@@ -1499,6 +1577,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 !(_23ViGouPnAg_15P5mpG9x3d
 !|*
 !@ 1502609812.04
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_in_object an object"
 !)_23ViGouPnAg_15P5mpG9x3d
@@ -1539,6 +1618,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 !(_2qppG2LJu79_9ljkbLS0eFQ
 !|*
 !@ 1504635278.05
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to init_class in object (class)"
 !)_2qppG2LJu79_9ljkbLS0eFQ
@@ -1577,6 +1657,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 !(_3kMqlEugRVW_7DgwjR4CBbP
 !|*
 !@ 1501766546.15
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value an integer"
 !)_3kMqlEugRVW_7DgwjR4CBbP
@@ -1586,6 +1667,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 !(_3rne4qbpnV9_0pywzeJp3Qr
 !|*
 !@ 1502615054.06
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value an set"
 !)_3rne4qbpnV9_0pywzeJp3Qr
@@ -1621,6 +1703,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 !(_3Tc3E4uo2p5_4EXWCPwCR5b
 !|*
 !@ 1501766546.15
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a set"
 !)_3Tc3E4uo2p5_4EXWCPwCR5b
@@ -1650,6 +1733,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 !(_4DvEF1tVGFD_6VVLpFn6FPW
 !|*
 !@ 1507911440.43
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to dump_scan an instance of hset_object"
 !)_4DvEF1tVGFD_6VVLpFn6FPW
@@ -1659,6 +1743,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 !(_4EBQMvthjcP_2OiZxZviSQc
 !|*
 !@ 1501766546.15
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_scan a class"
 !)_4EBQMvthjcP_2OiZxZviSQc
@@ -1668,6 +1753,7 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 !(_4ENXjApm7Qb_3bXo8F6Jg9z
 !|*
 !@ 1502265883.40
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "function to dump globals"
 !)_4ENXjApm7Qb_3bXo8F6Jg9z
@@ -1741,6 +1827,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_5v30KC0IMxx_53ZzXprJTM6
 !|*
 !@ 1501766546.15
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a node"
 !)_5v30KC0IMxx_53ZzXprJTM6
@@ -1750,6 +1837,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_5D9kkPHSPxq_8suDXpjlzjE
 !|*
 !@ 1501766546.15
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a tuple"
 !)_5D9kkPHSPxq_8suDXpjlzjE
@@ -1759,6 +1847,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_5DyG7xVcxRI_1Ckpbj7b3QK
 !|*
 !@ 1505841093.18
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to dump_data a plain_dumpable_module"
 !)_5DyG7xVcxRI_1Ckpbj7b3QK
@@ -1768,6 +1857,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_60NdV04Lel2_5FSZVWKbSL7
 !|*
 !@ 1505235410.13
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to put_data_value in basiclo_function"
 !)_60NdV04Lel2_5FSZVWKbSL7
@@ -1791,6 +1881,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_63ZPkXUI2Uv_6Cp3qmh6Uud
 !|*
 !@ 1502619190.02
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value a string"
 !)_63ZPkXUI2Uv_6Cp3qmh6Uud
@@ -1800,6 +1891,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_67IapmpeTLU_8MQKtlK8iAD
 !|*
 !@ 1501766546.15
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_data a class"
 !)_67IapmpeTLU_8MQKtlK8iAD
@@ -1819,6 +1911,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_6jvRZetUz36_978V6SKIWZC
 !|*
 !@ 1501766546.15
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a closure"
 !)_6jvRZetUz36_978V6SKIWZC
@@ -1828,6 +1921,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_6PmxiZR9WBe_13DwWExCALl
 !|*
 !@ 1502044570.17
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_data a specially_dumpable"
 !)_6PmxiZR9WBe_13DwWExCALl
@@ -1851,6 +1945,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_7fCcteNe7aR_3IKHeHjmzff
 !|*
 !@ 1501766546.15
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value an object or a class"
 !)_7fCcteNe7aR_3IKHeHjmzff
@@ -1860,6 +1955,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_7fJKfG4SN0U_1QTu5J832xg
 !|*
 !@ 1502619190.03
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value a node"
 !)_7fJKfG4SN0U_1QTu5J832xg
@@ -1883,6 +1979,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_7mvOlkB1tAJ_3psVFz4QEAn
 !|*
 !@ 1501766546.15
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a string"
 !)_7mvOlkB1tAJ_3psVFz4QEAn
@@ -1906,6 +2003,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_7CohjJ9tkfZ_4UMAIZCgwac
 !|*
 !@ 1502619190.04
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value a closure"
 !)_7CohjJ9tkfZ_4UMAIZCgwac
@@ -1915,6 +2013,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_7D36kHemyWQ_0YfwWnUhR9Y
 !|*
 !@ 1505220804.92
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to dump_data the basiclo_function"
 !)_7D36kHemyWQ_0YfwWnUhR9Y
@@ -1950,6 +2049,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_88cUYsDqSFO_0DKwKLSOmpm
 !|*
 !@ 1507970354.87
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to give the set in a hset_object"
 !)_88cUYsDqSFO_0DKwKLSOmpm
@@ -1990,6 +2090,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_8MU0cEcpEYN_5SVe0jrv36o
 !|*
 !@ 1507996857.00
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_8MU0cEcpEYN_5SVe0jrv36o
 
 
@@ -2007,6 +2108,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_9imDBaAxOpp_2HI9AuWrEKD
 !|*
 !@ 1504620033.03
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to put_method in class"
 !)_9imDBaAxOpp_2HI9AuWrEKD
@@ -2016,6 +2118,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_9zpvXnTuDeB_2B7ZiBtN8fA
 !|*
 !@ 1505237252.27
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_data a basiclo_function"
 !)_9zpvXnTuDeB_2B7ZiBtN8fA
@@ -2039,6 +2142,7 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !(_9UhDZeDdg2r_55lUqYDPUiF
 !|*
 !@ 1505222808.76
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_scan a basiclo_function"
 !)_9UhDZeDdg2r_55lUqYDPUiF
