@@ -517,6 +517,6 @@ fullgarbagecollection_BM (struct stackframe_stBM *stkfram)
       fputs (buf, stderr);
       gui_gc_message_BM (buf);
       fclose (fil);
-      free (buf);
+      free (buf), buf = NULL;
     };
 }                               /* end fullgarbagecollection_BM */

@@ -74,7 +74,7 @@ makeclosurevar_BM (const objectval_tyBM * connob, ...)
     }
   const closure_tyBM *clos = makeclosure_BM (connob, nbsons, arr);
   if (arr != tinyarr)
-    free (arr);
+    free (arr), arr = NULL;
   return clos;
 }                               /* end makeclosurevar_BM */
 
@@ -87,7 +87,7 @@ closuregcdestroy_BM (struct garbcoll_stBM *gc, closure_tyBM * clos)
   unsigned siz = ((typedsize_tyBM *) clos)->size;
   assert (siz < MAXSIZE_BM);
   memset (clos, 0, sizeof (*clos) + siz * sizeof (void *));
-  free (clos);
+  free (clos), clos = NULL;
   unsigned long closiz =
     sizeof (*clos)
     + ((siz > 0) ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0);
@@ -204,7 +204,7 @@ makenodevar_BM (const objectval_tyBM * connob, ...)
     }
   const node_tyBM *clos = makenode_BM (connob, nbsons, arr);
   if (arr != tinyarr)
-    free (arr);
+    free (arr), arr = NULL;
   return clos;
 }                               /* end makenodevar_BM */
 

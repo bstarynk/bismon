@@ -356,7 +356,7 @@ datavect_grow_BM (struct datavectval_stBM *dvec, unsigned gap)
   unsigned oldcnt = ((typedsize_tyBM *) dvec)->size;
   if (oldcnt + gap <= oldlen)
     return dvec;
-  unsigned long siz = prime_above_BM (oldlen + gap);
+  unsigned long siz = prime_above_BM (oldlen + gap + (oldcnt + gap) / 32 + 2);
   if (siz > MAXSIZE_BM)
     FATAL_BM ("too big datavect %ld", siz);
   unsigned long vecsiz =
@@ -367,7 +367,6 @@ datavect_grow_BM (struct datavectval_stBM *dvec, unsigned gap)
   ((typedhead_tyBM *) newdvec)->rlen = siz;
   ((typedsize_tyBM *) newdvec)->size = oldcnt + gap;
   memcpy (newdvec->vec_data, dvec->vec_data, oldcnt * sizeof (void *));
-  free (dvec);
   return newdvec;
 }                               /* end of datavect_grow_BM */
 
@@ -418,7 +417,7 @@ datavect_reserve_BM (struct datavectval_stBM *dvec, unsigned gap)
   unsigned oldcnt = ((typedsize_tyBM *) dvec)->size;
   if (oldcnt + gap <= oldlen)
     return dvec;
-  unsigned long siz = prime_above_BM (oldlen + gap);
+  unsigned long siz = prime_above_BM (oldlen + gap + (oldcnt + gap) / 32 + 2);
   if (siz > MAXSIZE_BM)
     FATAL_BM ("too big datavect %ld", siz);
   unsigned long vecsiz = sizeof (*dvec) + siz * sizeof (void *);
@@ -428,7 +427,6 @@ datavect_reserve_BM (struct datavectval_stBM *dvec, unsigned gap)
   ((typedhead_tyBM *) newdvec)->rlen = siz;
   ((typedsize_tyBM *) newdvec)->size = oldcnt;
   memcpy (newdvec->vec_data, dvec->vec_data, oldcnt * sizeof (void *));
-  free (dvec);
   return newdvec;
 }                               /* end of datavect_reserve_BM */
 
@@ -459,7 +457,7 @@ datavect_append_BM (struct datavectval_stBM *dvec, value_tyBM val)
     }
   if (oldlen + 1 >= MAXSIZE_BM)
     FATAL_BM ("datavect_append too big %u", oldlen);
-  unsigned newsiz = prime_above_BM (oldlen + oldcnt / 16 + 3);
+  unsigned newsiz = prime_above_BM (oldcnt + oldcnt / 5 + 4);
   struct datavectval_stBM *newdvec =    //
     allocgcty_BM (tydata_vectval_BM,
                   sizeof (struct datavectval_stBM)
@@ -468,7 +466,6 @@ datavect_append_BM (struct datavectval_stBM *dvec, value_tyBM val)
   ((typedsize_tyBM *) newdvec)->size = oldcnt + 1;
   memcpy (newdvec->vec_data, dvec->vec_data, oldcnt * sizeof (void *));
   newdvec->vec_data[oldcnt] = val;
-  free (dvec);
   return newdvec;
 }                               /* end datavect_append_BM */
 

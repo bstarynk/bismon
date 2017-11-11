@@ -115,7 +115,7 @@ setobjectsofidprefixed_BM (const char *prefix)
                 FATAL_BM ("calloc failure for %u", newsiz);
               memcpy (newarr, arr, cnt * sizeof (void *));
               if (arr != tinyarr)
-                free (arr);
+                free (arr), arr = NULL;
               arr = newarr;
               siz = newsiz;
             };
@@ -245,7 +245,7 @@ growobucket_BM (unsigned bucknum, unsigned gap)
         continue;
       addtobucket_BM (newbuck, oldob);
     }
-  free (oldbuck);
+  free (oldbuck), oldbuck = NULL;
   assert (newbuck->buckcount == oldcnt);
   buckarr_BM[bucknum] = newbuck;
 }                               /* end growobucket_BM */
@@ -323,7 +323,7 @@ objectgcdestroy_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
   curbuck->buckobjs[pos] = EMPTYSLOTOB_BM;
   curbuck->buckcount--;
   memset (obj, 0, sizeof (*obj));
-  free (obj);
+  free (obj), obj = NULL;
   gc->gc_freedbytes += sizeof (*obj);
   gc->gc_nbdestroyedobjects++;
 }                               /* end objectgcdestroy_BM */
@@ -545,7 +545,7 @@ hashsetobj_grow_BM (struct hashsetobj_stBM *hset, unsigned gap)
   unsigned ucnt = ((typedsize_tyBM *) hset)->size;
   if (4 * (ucnt + gap) + 5 < 3 * alsiz)
     return hset;
-  unsigned newsiz = prime_above_BM ((4 * (ucnt + gap)) / 3 + 10);
+  unsigned newsiz = prime_above_BM ((4 * (ucnt + gap)) / 3 + gap / 32 + 11);
   if (alsiz >= newsiz)
     return hset;
   struct hashsetobj_stBM *newhset =     //
@@ -561,7 +561,6 @@ hashsetobj_grow_BM (struct hashsetobj_stBM *hset, unsigned gap)
       if (!hashsetobj_insert_BM (newhset, oldobj))
         FATAL_BM ("corrupted hashset");
     }
-  free (hset);
   return newhset;
 }                               /* end hashsetobj_grow_BM */
 
@@ -641,7 +640,7 @@ hashsetobj_remove_BM (struct hashsetobj_stBM *hset,
   if (alsiz > TINYSIZE_BM && 3 * ucnt < alsiz)
     {
       struct hashsetobj_stBM *newhset =
-        hashsetobj_grow_BM (NULL, (3 * ucnt / 2) + ucnt / 32 + 3);
+        hashsetobj_grow_BM (NULL, (3 * ucnt / 2) + ucnt / 32 + 5);
       for (unsigned ix = 0; ix < alsiz; ix++)
         {
           objectval_tyBM *curobj = hset->hashset_objs[ix];
@@ -652,7 +651,6 @@ hashsetobj_remove_BM (struct hashsetobj_stBM *hset,
                 FATAL_BM ("corrupted hashset");
             }
         }
-      free (hset);
       return newhset;
     }
   hash_tyBM hob = objecthash_BM (obj);
@@ -693,7 +691,10 @@ hashsetobj_to_set_BM (struct hashsetobj_stBM *hset)
   unsigned ucnt = ((typedsize_tyBM *) hset)->size;
   if (ucnt == 0)
     return makeset_BM (NULL, 0);
-  const objectval_tyBM **arr = calloc (ucnt, sizeof (objectval_tyBM *));
+  const objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+  const objectval_tyBM **arr =
+    (ucnt <
+     TINYSIZE_BM) ? tinyarr : (calloc (ucnt, sizeof (objectval_tyBM *)));
   if (!arr)
     FATAL_BM ("calloc %u objptrs failed %m", ucnt);
   unsigned elcnt = 0;
@@ -708,7 +709,8 @@ hashsetobj_to_set_BM (struct hashsetobj_stBM *hset)
     };
   assert (elcnt == ucnt);
   const setval_tyBM *set = makeset_BM (arr, elcnt);
-  free (arr);
+  if (arr != tinyarr)
+    free (arr), arr = NULL;
   return set;
 }                               /* end hashsetobj_to_set_BM */
 

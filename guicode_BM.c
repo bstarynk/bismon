@@ -41,7 +41,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
           gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,
                                             commbuf, -1, miscomm_brotag_BM,
                                             NULL);
-        free (commbuf);
+        free (commbuf), commbuf = NULL;
       }
     else
       {
@@ -440,7 +440,7 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
                            (maxdepth), (curdepth + 1));
         }
       if (arr != tinyarr)
-        free (arr);
+        free (arr), arr = NULL;
     }
   else
     {

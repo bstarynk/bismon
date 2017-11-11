@@ -321,7 +321,8 @@ dump_emit_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
                     bytstring_BM (du->dump_dir), spix);
           if (oldpathbuf && backpathbuf)
             (void) rename (oldpathbuf, backpathbuf);
-          free (oldpathbuf), free (backpathbuf);
+          free (oldpathbuf), oldpathbuf =
+            NULL, free (backpathbuf), backpathbuf = NULL;
         }
       else
         {
@@ -437,7 +438,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
       if (obix % 64 == 0 && obix > 0)
         garbage_collect_if_wanted_BM ((struct stackframe_stBM *) &_);
     }
-  free (objarr);
+  free (objarr), objarr = NULL;
   fprintf (spfil, "\n// end of file %s\n", basename (bytstring_BM (_.pathv)));
   fclose (spfil);
   (void) rename (bytstring_BM (_.pathv), bytstring_BM (_.backupv));

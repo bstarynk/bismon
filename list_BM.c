@@ -277,6 +277,7 @@ listpoplast_BM (struct listtop_stBM *lis)
     }
 }                               /* end listpoplast_BM */
 
+
 const node_tyBM *
 list_to_node_BM (const struct listtop_stBM *lis,
                  const objectval_tyBM * connobj)
@@ -320,7 +321,7 @@ list_to_node_BM (const struct listtop_stBM *lis,
   assert (vacnt == cnt);
   const node_tyBM *nod = makenode_BM (connobj, cnt, valarr);
   memset (valarr, 0, cnt * sizeof (void *));
-  free (valarr);
+  free (valarr), valarr = NULL;
   return nod;
 }                               /* end list_to_node_BM */
 
@@ -359,7 +360,7 @@ list_to_tuple_BM (const struct listtop_stBM *lis)
     FATAL_BM ("too huge list %u", cnt);
   tup = maketuple_BM (arr, cnt);
   if (arr != tinyarr)
-    free (arr);
+    free (arr), arr = NULL;
   return tup;
 }                               /* end list_to_tuple_BM */
 
@@ -390,13 +391,3 @@ listgcmark_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis, int depth)
     }
   assert (nblinks == lis->list_nblinks);
 }                               /* end listgcmark_BM  */
-
-void
-list_destroy_BM (struct listtop_stBM *lis)
-{
-  if (!islist_BM ((const value_tyBM) lis))
-    return;
-  listclear_BM (lis);
-  memset (lis, 0, sizeof (*lis));
-  free (lis);
-}                               /* end list_destroy_BM */

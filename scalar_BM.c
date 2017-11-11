@@ -207,7 +207,7 @@ sprintfstring_BM (const char *fmt, ...)
   if (ln < 0 || buf == NULL)
     FATAL_BM ("sprintfstring failure %m");
   const stringval_tyBM *res = makestring_BM (buf);
-  free (buf);
+  free (buf), buf = NULL;
   return res;
 }                               /* end sprintfstring_BM */
 
@@ -326,6 +326,7 @@ strbuffergcdestroy_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf)
   free (sbuf);
 }                               /* end strbuffergcdestroy_BM */
 
+
 void
 strbuffergckeep_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf)
 {
@@ -392,7 +393,7 @@ strbufferreserve_BM (struct strbuffer_stBM *sbuf, unsigned gap)
           sbuf->sbuf_dbuf = newdbuf;
           sbuf->sbuf_curp = newdbuf + used;
           sbuf->sbuf_size = newsiz;
-          free (oldbuf);
+          free (oldbuf), oldbuf = NULL;
           return;
         }
     }
@@ -416,7 +417,7 @@ strbufferreserve_BM (struct strbuffer_stBM *sbuf, unsigned gap)
           sbuf->sbuf_dbuf = newdbuf;
           sbuf->sbuf_curp = newdbuf + used;
           sbuf->sbuf_size = newsiz;
-          free (oldbuf);
+          free (oldbuf), oldbuf = NULL;
           return;
         }
     }
@@ -540,7 +541,7 @@ strbufferrawprintf_BM (struct strbuffer_stBM *sbuf, const char *fmt, ...)
   if (ln < 0 || tmpbuf == NULL)
     FATAL_BM ("strbufferrawprintf asprintf failure %m");
   strbufferunsafeappendcstr_BM (sbuf, tmpbuf);
-  free (tmpbuf);
+  free (tmpbuf), tmpbuf = NULL;
 }                               /* end strbufferrawprintf_BM  */
 
 
@@ -587,7 +588,7 @@ strbufferprintf_BM (struct strbuffer_stBM *sbuf, const char *fmt, ...)
           strbufferunsafeappendcstr_BM (sbuf, prev);
         }
     }
-  free (tmpbuf);
+  free (tmpbuf), tmpbuf = NULL;
 }                               /* end strbufferprintf_BM */
 
 void
@@ -777,7 +778,7 @@ strbufferwritetofile_BM (struct strbuffer_stBM *sbuf, const char *filepath)
         FATAL_BM ("asprintf failure for backpath %s", filepath);
       if (rename (filepath, backpath))
         FATAL_BM ("failed to rename %s as %s (%m)", filepath, backpath);
-      free (backpath);
+      free (backpath), backpath = NULL;
     }
   FILE *newfil = fopen (filepath, "w");
   if (!newfil)

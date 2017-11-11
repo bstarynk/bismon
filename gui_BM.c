@@ -1324,7 +1324,7 @@ dumpgui_BM (void)
     if (rd)
       {
         log_printf_message_BM (" (%s)", rd);
-        free (rd);
+        free (rd), rd = NULL;
       }
   }
   log_puts_message_BM (".\n");

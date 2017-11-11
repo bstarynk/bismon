@@ -1467,7 +1467,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   strbufferreset_BM (_.prsbuf);
   printf ("wrote predefined file %s\n", filpath);
   ((struct dumper_stBM *) _.du)->dump_wrotefilecount++;
-  free (filpath);
+  free (filpath), filpath = NULL;
   return _.closv;
 }                               /* end ROUTINE _075tZNHCAMa_7XNNBaNM4qv dumping predefined */
 
@@ -1534,7 +1534,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   strbufferreset_BM (_.prsbuf);
   printf ("wrote globals file %s\n", filpath);
   ((struct dumper_stBM *) _.du)->dump_wrotefilecount++;
-  free (filpath);
+  free (filpath), filpath = NULL;
   return _.closv;
 }                               /* end ROUTINE _4ENXjApm7Qb_3bXo8F6Jg9z dumping globals */
 
@@ -1683,7 +1683,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   strbufferreset_BM (_.prsbuf);
   printf ("wrote types file %s\n", filpath);
   ((struct dumper_stBM *) _.du)->dump_wrotefilecount++;
-  free (filpath);
+  free (filpath), filpath = NULL;
   return _.closv;
 }                               /* end of routine _3yJPC4SxGtF_6ilaF37wdxG dumping of ctypes */
 
@@ -3556,7 +3556,7 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
         };
       _.nodargsv = (value_tyBM) makenode_BM (k_arguments, nbargs, arrv);
       if (arrv != tinyarrv)
-        free (arrv);
+        free (arrv), arrv = NULL;
       objputattr_BM (_.resobj, k_arguments, _.nodargsv);
     }
   else

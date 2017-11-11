@@ -361,10 +361,10 @@ runcommand_newgui_BM (bool erase)
           gtk_widget_destroy (errormessagedialog_BM), errormessagedialog_BM =
             NULL;
         }
-      free (cmdstr);
+      free (cmdstr), cmdstr = NULL;
       return;
     }
-  free (cmdstr);
+  free (cmdstr), cmdstr = NULL;
   if (erase)
     gtk_text_buffer_set_text (commandbuf_BM, "", 0);
 }                               /* end runcommand_newgui_BM */
@@ -402,7 +402,7 @@ enduseraction_newgui_cmd_BM (GtkTextBuffer * txbuf, gpointer data)
     {
       // got an error while parsing
     }
-  free (cmdstr);
+  free (cmdstr), cmdstr = NULL;
   // for parenthesis blinking
   GtkTextMark *insmk = gtk_text_buffer_get_insert (commandbuf_BM);
   GtkTextIter insit = EMPTY_TEXT_ITER_BM;

@@ -61,8 +61,6 @@ assocpair_put_BM (struct assocpairs_stBM *apairs,
       assert (cnt == oldcnt);
       newpairs->apairs_ent[cnt].asso_keyob = keyob;
       newpairs->apairs_ent[cnt].asso_val = val;
-      if (apairs)
-        free (apairs);
       cnt++;
       ((typedsize_tyBM *) newpairs)->size = cnt;
       return newpairs;
@@ -169,12 +167,10 @@ assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap)
                     }
                   assert (newpaircnt == oldcnt);
                   ((typedsize_tyBM *) newpairs)->size = newpaircnt;
-                  free (curbuckpair);
                   ((struct assocbucket_stBM *) oldassoc)->abuck_pairs[buckix]
                     = NULL;
                 }
             }
-          free (oldassoc);
           *passoc = newpairs;
         }
       else if (oldassocispairs)
@@ -200,7 +196,6 @@ assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap)
                 }
             }
           assert (newpaircnt == oldcnt);
-          free (oldpairs);
           *passoc = newpairs;
         }
       else
@@ -248,12 +243,10 @@ assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap)
                       addedcnt++;
                     }
                 }
-              free (curbuckpair);
               ((struct assocbucket_stBM *) oldassoc)->abuck_pairs[buckix] =
                 NULL;
             }
         }
-      free (oldassoc);
       assert (addedcnt == oldcnt);
       ((typedsize_tyBM *) newbuckets)->size = addedcnt;
     }
@@ -282,7 +275,6 @@ assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap)
             }
         }
       assert (addedcnt == oldcnt);
-      free (oldpairs);
       ((typedsize_tyBM *) newbuckets)->size = addedcnt;
     }
   *passoc = newbuckets;

@@ -406,7 +406,6 @@ extern void listappend_BM (struct listtop_stBM *lis, value_tyBM val);
 extern void listprepend_BM (struct listtop_stBM *lis, value_tyBM val);
 extern void listpopfirst_BM (struct listtop_stBM *lis);
 extern void listpoplast_BM (struct listtop_stBM *lis);
-extern void list_destroy_BM (struct listtop_stBM *lis);
 extern void listgcmark_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis,
                            int depth);
 extern void listgcdestroy_BM (struct garbcoll_stBM *gc,

@@ -729,7 +729,7 @@ parse_cords_BM (struct parser_stBM *pars)
       else
         {
           fclose (filmem);
-          free (cbuf);
+          free (cbuf), cbuf = NULL;
           parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
                                 "bad cord %s", restlin);
         }
@@ -767,7 +767,7 @@ parse_cords_BM (struct parser_stBM *pars)
   fflush (filmem);
   const stringval_tyBM *str = nobuild ? NULL : (makestring_BM (cbuf));
   fclose (filmem);
-  free (cbuf);
+  free (cbuf), cbuf = NULL;
   return str;
 }                               /* end parse_cords_BM */
 
@@ -893,7 +893,7 @@ again:
       if (!validname_BM (nambuf))
         {
           if (nambuf != tinynambuf)     // to avoid memory leaks
-            free (nambuf);
+            free (nambuf), nambuf = NULL;
           parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
                                 "bad ident %s%s", tinynambuf,
                                 (namlen > TINYSIZE_BM) ? "..." : "");
@@ -903,7 +903,7 @@ again:
       if (namedobj)
         {
           if (nambuf != tinynambuf)
-            free (nambuf);
+            free (nambuf), nambuf = NULL;
           if (parsop && parsop->parsop_decorate_known_name_rout)
             parsop->parsop_decorate_known_name_rout     //
               (pars, curlin, pars->pars_colpos, namlen);
@@ -919,7 +919,7 @@ again:
           const stringval_tyBM *newnam =        //
             nobuild ? NULL : makestring_BM (nambuf);
           if (nambuf != tinynambuf)
-            free (nambuf);
+            free (nambuf), nambuf = NULL;
           if (parsop && parsop->parsop_decorate_new_name_rout)
             parsop->parsop_decorate_new_name_rout       //
               (pars, curlin, pars->pars_colpos, namlen);

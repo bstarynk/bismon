@@ -353,7 +353,7 @@ main (int argc, char **argv)
       if (rd)
         {
           printf (" (%s)", rd);
-          free (rd);
+          free (rd), rd = NULL;
         };
       putchar ('\n');
       printf ("dump: scanned %ld, emitted %ld objects\n",
@@ -398,7 +398,7 @@ rungui_BM (bool newgui)
           if (!backupath)
             FATAL_BM ("asprintf fail for backupath %s (%m)", gui_log_name_bm);
           (void) rename (gui_log_name_bm, backupath);
-          free (backupath);
+          free (backupath), backupath = NULL;
         };
       gui_command_log_file_BM = fopen (gui_log_name_bm, "w");
       if (!gui_command_log_file_BM)
