@@ -1612,7 +1612,11 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
     {
       _.curtype = tuplecompnth_BM (_.tuptypes, ix);
       if (objectisinstance_BM (_.curtype, k_c_type))
-        nbgoodtypes++;
+        {
+          DBGPRINTF_BM ("type #%d %s is a good c_type", ix,
+                        objectdbg_BM (_.curtype));
+          nbgoodtypes++;
+        }
       else
         {
           DBGPRINTF_BM ("type #%d %s is not a c_type", ix,
