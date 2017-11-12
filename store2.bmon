@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 182 objects
+// for 184 objects
 // with 0 modules
 
 
@@ -681,7 +681,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !(_5tN77quJsoa_1fVwBCjb95G |=dumper_of_types|
 !~ name (~ dumper_of_types
 ~)
-!@ 1510508767.50
+!@ 1510509681.94
 !$_4tiUQqbr6oh_5gZVoUWsppH |=specially_dumpable|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the dumper of types declarations"
@@ -689,7 +689,7 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
  % _3yJPC4SxGtF_6ilaF37wdxG (  "_bm_types.h"  [ _7bbeIqUSje9_4jVgC7ZJmvx _9Hh1Ovg8SBy_5GpqPq7wC5v _2KnapuxOyVt_79DU64sgMcF _93m7hQouFiF_4cFcYfZ1b7i  
  _535ulGVFUfw_4yWLeDp4Pxd _0ap8ZTtBsU9_6E2IyCg45Gu _2mRvIPRgAOn_7i3eKQzyvhk  
 _4hIFpPfuaR1_39hcoYwRAm0  
- _4mNIezUtVkz_1qg63n8juIs _6TmLNh9vtVY_0pwkHRtJ44k _2mYaTh9kH4I_7ENiXcymRmy  
+ _4mNIezUtVkz_1qg63n8juIs _4ysNY0rIzNK_7JgIhrjYpxD _3tjeTRoVZ9K_6jDMjF4cRyP  
 _6QdXYI1ivTg_8NnpdDMRQK5 ])
 !)_5tN77quJsoa_1fVwBCjb95G
 
@@ -1307,6 +1307,15 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 
 
 
+!(_3tjeTRoVZ9K_6jDMjF4cRyP |=setty|
+!~ name (~ setty
+~)
+!@ 1510509681.94
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_3tjeTRoVZ9K_6jDMjF4cRyP
+
+
+
 !(_2HlKptD03wA_7JJCG7lN5nS |=simple_module_generation|
 !~ name (~ simple_module_generation
 ~)
@@ -1372,6 +1381,15 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !@ 1505800253.23
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !)_2ZCtswobVlU_3xPTbaxXBBg
+
+
+
+!(_4ysNY0rIzNK_7JgIhrjYpxD |=tuplety|
+!~ name (~ tuplety
+~)
+!@ 1510509681.94
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_4ysNY0rIzNK_7JgIhrjYpxD
 
 
 
