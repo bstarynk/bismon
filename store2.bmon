@@ -1310,8 +1310,10 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !(_3tjeTRoVZ9K_6jDMjF4cRyP |=setty|
 !~ name (~ setty
 ~)
-!@ 1510509681.94
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1510510702.88
+!$_2kLuNTaOiuP_5pFUOB8MCGG |=c_struct|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "c-type for set GC-values"
 !)_3tjeTRoVZ9K_6jDMjF4cRyP
 
 
@@ -1343,8 +1345,10 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !(_6QdXYI1ivTg_8NnpdDMRQK5 |=spacenum|
 !~ name (~ spacenum
 ~)
-!@ 1510313544.37
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1510510820.48
+!$_7jHHqKoSEZf_6G1dslcAaT8 |=c_enum|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "c enum for space"
 !)_6QdXYI1ivTg_8NnpdDMRQK5
 
 
