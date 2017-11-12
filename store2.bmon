@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 184 objects
+// for 185 objects
 // with 0 modules
 
 
@@ -459,9 +459,10 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !(_9NAQwgAp8DQ_13qIsXE8j7H |=c_opaque|
 !~ name (~ c_opaque
 ~)
-!@ 1510325990.96
+!@ 1510512086.23
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W
+!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W 
+~: _0b4VyB0nxvZ_1RgKWePfQOx |=emit_c_type|  % _6gRlN8loM4E_4pSsNmiCeIa ()
 ~)
 
 !)_9NAQwgAp8DQ_13qIsXE8j7H
@@ -1942,6 +1943,16 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method put\u00b0assoc_object"
 !)_6eD9Y1qYcnj_8uVDhxjBpG8
+
+
+
+!(_6gRlN8loM4E_4pSsNmiCeIa
+!|*
+!@ 1510512131.85
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method for emit_c_type\u00b0c_opaque"
+!)_6gRlN8loM4E_4pSsNmiCeIa
 
 
 

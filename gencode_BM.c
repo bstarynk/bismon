@@ -95,3 +95,20 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
 #warning incomplete  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP
   return NULL;
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */
+
+
+
+//// for the method emit_c_type:c_opaque
+extern objrout_sigBM ROUTINEOBJNAME_BM (_6gRlN8loM4E_4pSsNmiCeIa);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_6gRlN8loM4E_4pSsNmiCeIa)    // emit_c_type:c_opaque
+(const closure_tyBM * clos,
+ struct stackframe_stBM * stkf,
+ const value_tyBM arg1,
+ const value_tyBM arg2, const value_tyBM arg3,
+ const quasinode_tyBM * restargs)
+{
+#warning incomplete emit_c_type:c_opaque _6gRlN8loM4E_4pSsNmiCeIa
+  return NULL;
+}                               /* end emit_c_type:c_opaque _6gRlN8loM4E_4pSsNmiCeIa */
