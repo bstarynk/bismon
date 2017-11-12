@@ -111,6 +111,7 @@ parsergcmark_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars)
     gcmark_BM (gc, pars->pars_cvalue, 0);
 }                               /* end parsergcmark_BM */
 
+
 void
 parsergcdestroy_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars)
 {
@@ -118,7 +119,7 @@ parsergcdestroy_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars)
   assert (gc && gc->gc_magic == GCMAGIC_BM);
   if (pars->pars_filemem)
     {
-      free ((void *) pars->pars_filemem), pars->pars_filemem = NULL;
+      pars->pars_filemem = NULL;
       parsiz += pars->pars_filesize;
       pars->pars_filesize = 0;
     }
