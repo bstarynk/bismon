@@ -109,6 +109,16 @@ ROUTINEOBJNAME_BM (_6gRlN8loM4E_4pSsNmiCeIa)    // emit_c_type:c_opaque
  const value_tyBM arg2, const value_tyBM arg3,
  const quasinode_tyBM * restargs)
 {
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const closure_tyBM * clos; value_tyBM recv;
+    );
+  assert (isclosure_BM ((const value_tyBM) clos));
+  _.clos = clos;
+  // retrieve arguments
+  _.recv = /*function object */ (arg1);
 #warning incomplete emit_c_type:c_opaque _6gRlN8loM4E_4pSsNmiCeIa
+  DBGPRINTF_BM
+    ("start  emit_c_type:c_opaque _6gRlN8loM4E_4pSsNmiCeIa recv=%s",
+     objectdbg_BM (_.recv));
   return NULL;
 }                               /* end emit_c_type:c_opaque _6gRlN8loM4E_4pSsNmiCeIa */
