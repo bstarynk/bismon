@@ -1387,8 +1387,10 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !(_4ysNY0rIzNK_7JgIhrjYpxD |=tuplety|
 !~ name (~ tuplety
 ~)
-!@ 1510509681.94
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1510510452.07
+!$_2kLuNTaOiuP_5pFUOB8MCGG |=c_struct|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "c-type for tuple GC-values"
 !)_4ysNY0rIzNK_7JgIhrjYpxD
 
 
