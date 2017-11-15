@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 185 objects
+// for 189 objects
 // with 0 modules
 
 
@@ -435,9 +435,10 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !(_7jHHqKoSEZf_6G1dslcAaT8 |=c_enum|
 !~ name (~ c_enum
 ~)
-!@ 1510305915.34
+!@ 1510764776.20
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W
+!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W 
+~: _0b4VyB0nxvZ_1RgKWePfQOx |=emit_c_type|  % _979hCujWp2g_9tjRbM8Ht1l ()
 ~)
 
 !)_7jHHqKoSEZf_6G1dslcAaT8
@@ -705,6 +706,17 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 
 
 
+!(_7BROpIWQHzA_8b1C6i49Pkz |=enumeration|
+!~ name (~ enumeration
+~)
+!@ 1510765952.97
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in c_enum gives the computed tuple of enumerators"
+!)_7BROpIWQHzA_8b1C6i49Pkz
+
+
+
 !(_41gbFesxqzD_3l56OLiNdl2 |=exit|
 !~ name (~ exit
 ~)
@@ -733,6 +745,17 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 !@ 1504875287.86
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_43dxTPqTsQQ_3M5JFtY76r1
+
+
+
+!(_2bqFfs5OYL2_0HRi4lcgFcu |=extending|
+!~ name (~ extending
+~)
+!@ 1510766049.52
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in c_enum or c_union or c_struct gives the super-stuff"
+!)_2bqFfs5OYL2_0HRi4lcgFcu
 
 
 
@@ -1075,6 +1098,17 @@ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 !@ 1507030591.77
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_6bQLwLF3pc5_5gSAmlh5Nsx
+
+
+
+!(_4ot0ZxxA31Y_8GVFlcbckIH |=own_enumeration|
+!~ name (~ own_enumeration
+~)
+!@ 1510766089.57
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in c_enum-s give the own enumerators"
+!)_4ot0ZxxA31Y_8GVFlcbckIH
 
 
 
@@ -2150,6 +2184,21 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine for put\u00b0hset_object"
 !)_91iTl2vqF09_72WJj4swbNi
+
+
+
+!(_979hCujWp2g_9tjRbM8Ht1l
+!|*
+!@ 1510765952.97
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "routine for emit_c_type\u00b0hc_enum"
+
+!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _2bqFfs5OYL2_0HRi4lcgFcu |=extending| 
+ _4ot0ZxxA31Y_8GVFlcbckIH |=own_enumeration|  _7BROpIWQHzA_8b1C6i49Pkz |=enumeration| 
+) ~)
+
+!)_979hCujWp2g_9tjRbM8Ht1l
 
 
 

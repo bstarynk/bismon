@@ -139,3 +139,69 @@ ROUTINEOBJNAME_BM (_6gRlN8loM4E_4pSsNmiCeIa)    // emit_c_type:c_opaque
     }
   return _.recv;
 }                               /* end emit_c_type:c_opaque _6gRlN8loM4E_4pSsNmiCeIa */
+
+
+
+
+//// for the method emit_c_type:c_enum
+extern objrout_sigBM ROUTINEOBJNAME_BM (_979hCujWp2g_9tjRbM8Ht1l);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_979hCujWp2g_9tjRbM8Ht1l)    // emit_c_type:c_enum
+(const closure_tyBM * clos,
+ struct stackframe_stBM * stkf,
+ const value_tyBM arg1,
+ const value_tyBM arg2, const value_tyBM arg3,
+ const quasinode_tyBM * restargs)
+{
+  enum
+  {
+    constix_extending,
+    constix_own_enumeration,
+    constix_enumeration,
+    constix__LAST
+  };
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const closure_tyBM * clos;
+                 value_tyBM recv;
+                 struct strbuffer_stBM *prsbuf;
+                 const objectval_tyBM * extendingob;
+                 const tupleval_tyBM * ownenumtup;
+    );
+  assert (isclosure_BM ((const value_tyBM) clos));
+  _.clos = clos;
+  // retrieve arguments
+  _.recv = /*ctype */ (arg1);
+  WEAKASSERT_BM (isobject_BM (_.recv));
+  _.prsbuf = strbuffercast_BM (arg2);
+  WEAKASSERT_BM (_.prsbuf != NULL);
+  DBGPRINTF_BM
+    ("start  emit_c_type:c_enum _979hCujWp2g_9tjRbM8Ht1l recv=%s",
+     objectdbg_BM (_.recv));
+  const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (closconn != NULL);
+  const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
+  /*** constnod is
+      * const (extending own_enumeration enumeration)
+   ***/
+  WEAKASSERT_BM (isnode_BM ((value_tyBM) constnod)
+                 && valhash_BM ((value_tyBM) constnod) == 1519557249
+                 && nodewidth_BM ((value_tyBM) constnod) == constix__LAST);
+  const objectval_tyBM *k_extending =   //
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_extending));
+  const objectval_tyBM *k_own_enumeration =     //
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_own_enumeration));
+  const objectval_tyBM *k_enumeration = //
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_enumeration));
+  //
+  const char *nam = findobjectname_BM (_.recv);
+  char idbuf[32] = { };
+  idtocbuf32_BM (objid_BM (_.recv), idbuf);
+  _.extendingob = objectcast_BM (objgetattr_BM (_.recv, k_extending));
+  _.ownenumtup = tuplecast_BM (objgetattr_BM (_.recv, k_own_enumeration));
+#warning emit_c_type:c_enum _979hCujWp2g_9tjRbM8Ht1l unimplemented
+  return NULL;
+}                               /* end emit_c_type:c_enum _979hCujWp2g_9tjRbM8Ht1l  */
