@@ -267,6 +267,7 @@ extern void objectgckeep_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj);
 ////////////////
 extern struct strbuffer_stBM *strbuffermake_BM (unsigned maxsize);
 static inline bool isstrbuffer_BM (const value_tyBM val);
+static inline struct strbuffer_stBM *strbuffercast_BM (value_tyBM val);
 extern void strbufferreserve_BM (struct strbuffer_stBM *sbuf, unsigned gap);
 static inline const char *strbufferbytes_BM (struct strbuffer_stBM *sbuf);
 static inline int strbufferindentation_BM (struct strbuffer_stBM *sbuf);

@@ -497,6 +497,14 @@ isstrbuffer_BM (const value_tyBM val)
 }                               /* end isstrbuffer_BM */
 
 
+struct strbuffer_stBM *
+strbuffercast_BM (value_tyBM val)
+{
+  if (isstrbuffer_BM (val))
+    return (struct strbuffer_stBM *) val;
+  return NULL;
+}                               /* end strbuffercast_BM */
+
 const char *
 strbufferbytes_BM (struct strbuffer_stBM *sbuf)
 {
