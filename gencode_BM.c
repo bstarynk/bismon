@@ -120,7 +120,6 @@ ROUTINEOBJNAME_BM (_6gRlN8loM4E_4pSsNmiCeIa)    // emit_c_type:c_opaque
   WEAKASSERT_BM (isobject_BM (_.recv));
   _.prsbuf = strbuffercast_BM (arg2);
   WEAKASSERT_BM (_.prsbuf != NULL);
-#warning incomplete emit_c_type:c_opaque _6gRlN8loM4E_4pSsNmiCeIa
   DBGPRINTF_BM
     ("start  emit_c_type:c_opaque _6gRlN8loM4E_4pSsNmiCeIa recv=%s",
      objectdbg_BM (_.recv));

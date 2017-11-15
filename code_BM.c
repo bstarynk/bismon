@@ -1660,8 +1660,9 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
                              _.prsbuf, taggedint_BM (ix));
       if (!_.emittedv)
         {
-          DBGPRINTF_BM ("failed to emit_c_type type #%d %s", ix,
-                        objectdbg_BM (_.curtype));
+          DBGPRINTF_BM ("failed to emit_c_type type #%d %s / of class %s", ix,
+                        objectdbg_BM (_.curtype),
+                        objectdbg1_BM (objclass_BM (_.curtype)));
           strbufferprintf_BM (_.prsbuf,
                               "\n" "#error emit_c_type failed for %s\n",
                               idtyp);
