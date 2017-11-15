@@ -111,14 +111,32 @@ ROUTINEOBJNAME_BM (_6gRlN8loM4E_4pSsNmiCeIa)    // emit_c_type:c_opaque
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos; value_tyBM recv;
+                 struct strbuffer_stBM *prsbuf;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
   _.clos = clos;
   // retrieve arguments
-  _.recv = /*function object */ (arg1);
+  _.recv = /*ctype */ (arg1);
+  WEAKASSERT_BM (isobject_BM (_.recv));
+  _.prsbuf = strbuffercast_BM (arg2);
+  WEAKASSERT_BM (_.prsbuf != NULL);
 #warning incomplete emit_c_type:c_opaque _6gRlN8loM4E_4pSsNmiCeIa
   DBGPRINTF_BM
     ("start  emit_c_type:c_opaque _6gRlN8loM4E_4pSsNmiCeIa recv=%s",
      objectdbg_BM (_.recv));
-  return NULL;
+  const char *nam = findobjectname_BM (_.recv);
+  char idbuf[32] = { };
+  idtocbuf32_BM (objid_BM (_.recv), idbuf);
+  if (nam)
+    {
+      strbufferprintf_BM (_.prsbuf, "\n// opaque named type\n");
+      strbufferprintf_BM (_.prsbuf, "typedef void* %s_TyBM;\n", nam);
+      strbufferprintf_BM (_.prsbuf, "#define %s_TyBM %s_TyBM\n", idbuf, nam);
+    }
+  else
+    {
+      strbufferprintf_BM (_.prsbuf, "\n// opaque anonymous type\n");
+      strbufferprintf_BM (_.prsbuf, "typedef void* %s_TyBM;\n", idbuf);
+    }
+  return _.recv;
 }                               /* end emit_c_type:c_opaque _6gRlN8loM4E_4pSsNmiCeIa */
