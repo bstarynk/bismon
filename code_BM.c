@@ -2073,7 +2073,8 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
   objputattr_BM (_.modgen, k_functions_set, _.setfun);
   DBGPRINTF_BM
     ("@@prepare_module°basiclo*module before complete_module recv=%s (of %s) modgen=%s",
-     objectdbg_BM (_.recv), objectdbg1_BM(objclass_BM(_.recv)), objectdbg2_BM (_.modgen));
+     objectdbg_BM (_.recv), objectdbg1_BM (objclass_BM (_.recv)),
+     objectdbg2_BM (_.modgen));
   _.partres =
     send1_BM (_.recv, k_complete_module, (struct stackframe_stBM *) &_,
               _.modgen);

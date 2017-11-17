@@ -254,9 +254,16 @@ ROUTINEOBJNAME_BM (_10XOFm9ui6R_06F8qZQynnA)    //
  const value_tyBM arg3,         // preparation
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
+  enum
+  {
+    constix_functions_set,
+    constix_plain_module,
+    constix__LAST
+  };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 value_tyBM recv;
+                 value_tyBM recv; value_tyBM modgen; value_tyBM funset;
+                 objectval_tyBM * plainmod;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
   _.clos = clos;
@@ -265,8 +272,30 @@ ROUTINEOBJNAME_BM (_10XOFm9ui6R_06F8qZQynnA)    //
   // retrieve arguments
   _.recv = (arg1);
   WEAKASSERT_BM (isobject_BM (_.recv));
-  DBGPRINTF_BM("complete_module°basiclo*module unimplemented recv=%s",
-	       objectdbg_BM(_.recv));
+  _.modgen = (arg2);
+  WEAKASSERT_BM (isobject_BM (_.modgen));
+  const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
+  /*** constnod is
+      * const (functions_set plain_module)
+   ***/
+  WEAKASSERT_BM (isnode_BM ((value_tyBM) constnod)
+                 && valhash_BM ((value_tyBM) constnod) == 2163271555
+                 && nodewidth_BM ((value_tyBM) constnod) == constix__LAST);
+  const objectval_tyBM *k_functions_set =       //
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_functions_set));
+  const objectval_tyBM *k_plain_module =        //
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_plain_module));
+  DBGPRINTF_BM
+    ("complete_module°basiclo*module start recv=%s modgen=%s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.modgen));
+  _.funset = setcast_BM (objgetattr_BM (_.modgen, k_functions_set));
+  unsigned nbfuns = setcardinal_BM (_.funset);
+  _.plainmod = objectcast_BM (objgetattr_BM (_.modgen, k_plain_module));
+  DBGPRINTF_BM
+    ("complete_module°basiclo*module nbfuns=%u plainmod=%s",
+     nbfuns, objectdbg_BM (_.plainmod));
 #warning complete_module°basiclo*module unimplemented
   return NULL;
 }                               /* end complete_module°basiclo*module _10XOFm9ui6R_06F8qZQynnA  */
