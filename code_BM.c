@@ -2096,7 +2096,7 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
 
 
 
-// for the method to put_data_value in basiclo_function
+// for the method to put_data_value°basiclo_function
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_60NdV04Lel2_5FSZVWKbSL7);
 value_tyBM

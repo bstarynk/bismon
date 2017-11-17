@@ -241,3 +241,32 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
 #warning prepare_routine°basiclo_minifunction unimplemented
   return NULL;
 }                               /* end prepare_routine°basiclo_minifunction  _07qYMXftJRR_9dde2ASz4e9  */
+
+// for the method to complete_module in basiclo_temporary_module &
+// basiclo_dumpable_module
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_10XOFm9ui6R_06F8qZQynnA);
+value_tyBM
+ROUTINEOBJNAME_BM (_10XOFm9ui6R_06F8qZQynnA)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // recieving module
+ const value_tyBM arg2,         // module generator
+ const value_tyBM arg3,         // preparation
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const closure_tyBM * clos;
+                 value_tyBM recv;
+    );
+  assert (isclosure_BM ((const value_tyBM) clos));
+  _.clos = clos;
+  const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (closconn != NULL);
+  // retrieve arguments
+  _.recv = (arg1);
+  WEAKASSERT_BM (isobject_BM (_.recv));
+  DBGPRINTF_BM("complete_module°basiclo*module unimplemented recv=%s",
+	       objectdbg_BM(_.recv));
+#warning complete_module°basiclo*module unimplemented
+  return NULL;
+}                               /* end complete_module°basiclo*module _10XOFm9ui6R_06F8qZQynnA  */

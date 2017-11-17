@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 191 objects
+// for 192 objects
 // with 0 modules
 
 
@@ -173,12 +173,13 @@
 !(_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !~ name (~ basiclo_dumpable_module
 ~)
-!@ 1505919136.16
+!@ 1510945100.88
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "dumpable module with only basic closures"
 !~ class (~ |supercl plain_dumpable_module:| _2HjhGk7Engb_58InnCq3TZ1 
 ~: _17mrxkMdNtH_2CduQ2WDIy5 |=prepare_module|  % _8zNBXSMY2Ts_1VI5dmY4umA () 
+~: _5MiY0SneC5A_7c2Ar72nm9O |=complete_module|  % _10XOFm9ui6R_06F8qZQynnA () 
 ~: _9mq0jsuz4XQ_4doHfd987Q6 |=generate_module|  % _50d65bJypCN_6IJeVtssx9I ()
 ~)
 
@@ -350,7 +351,7 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !(_0277f6mOd9j_0tVZSXnTzUK |=basiclo_temporary_module|
 !~ name (~ basiclo_temporary_module
 ~)
-!@ 1505919194.97
+!@ 1510945150.55
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of temporary modules containing only functions for closures"
@@ -358,6 +359,7 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !&  [ _2HlKptD03wA_7JJCG7lN5nS _8zNBXSMY2Ts_1VI5dmY4umA ]
 !~ class (~ |supercl plain_temporary_module:| _1oEp0eAAyFN_4lsobepyr1T 
 ~: _17mrxkMdNtH_2CduQ2WDIy5 |=prepare_module|  % _8zNBXSMY2Ts_1VI5dmY4umA () 
+~: _5MiY0SneC5A_7c2Ar72nm9O |=complete_module|  % _10XOFm9ui6R_06F8qZQynnA () 
 ~: _9mq0jsuz4XQ_4doHfd987Q6 |=generate_module|  % _50d65bJypCN_6IJeVtssx9I ()
 ~)
 
@@ -1628,6 +1630,16 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 ) ~)
 
 !)_0XbMOJqLLPZ_1t2wg2TwPRA
+
+
+
+!(_10XOFm9ui6R_06F8qZQynnA
+!|*
+!@ 1510945199.27
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method for complete_module\u00b0basiclo*module"
+!)_10XOFm9ui6R_06F8qZQynnA
 
 
 
