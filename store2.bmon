@@ -1318,8 +1318,10 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !(_9O2lgu1TweO_0mVlpTwrBG1 |=second_test_minifunc|
 !~ name (~ second_test_minifunc
 ~)
-!@ 1510906769.68
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1510935710.74
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "second minifunc in test module"
 !)_9O2lgu1TweO_0mVlpTwrBG1
 
 
