@@ -205,3 +205,38 @@ ROUTINEOBJNAME_BM (_979hCujWp2g_9tjRbM8Ht1l)    // emit_c_type:c_enum
 #warning emit_c_type:c_enum _979hCujWp2g_9tjRbM8Ht1l unimplemented
   return NULL;
 }                               /* end emit_c_type:c_enum _979hCujWp2g_9tjRbM8Ht1l  */
+
+
+////////////////
+
+//// for the method prepare_routine°basiclo_minifunction
+extern objrout_sigBM ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_minifunction
+(const closure_tyBM * clos,
+ struct stackframe_stBM * stkf,
+ const value_tyBM arg1,
+ const value_tyBM arg2, const value_tyBM arg3,
+ const quasinode_tyBM * restargs)
+{
+  enum
+  {
+    constix__LAST
+  };
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const closure_tyBM * clos;
+                 value_tyBM recv;
+                 struct strbuffer_stBM *prsbuf;
+                 const objectval_tyBM * extendingob;
+                 const tupleval_tyBM * ownenumtup;
+    );
+  assert (isclosure_BM ((const value_tyBM) clos));
+  _.clos = clos;
+  // retrieve arguments
+  _.recv = /*ctype */ (arg1);
+  WEAKASSERT_BM (isobject_BM (_.recv));
+
+#warning prepare_routine°basiclo_minifunction unimplemented
+  return NULL;
+}                               /* end prepare_routine°basiclo_minifunction  _07qYMXftJRR_9dde2ASz4e9  */
