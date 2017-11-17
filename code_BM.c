@@ -1904,10 +1904,6 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
                  objectval_tyBM * closconn;
                  const node_tyBM * constnodv;
                  objectval_tyBM * modgen;       //
-                 objectval_tyBM * simple_module_generation;
-                 objectval_tyBM * functions_set;        //
-                 objectval_tyBM * basiclo_function;
-                 objectval_tyBM * complete_module;
                  struct hashsetobj_stBM *hset;
                  value_tyBM curcomp;    //
                  seqobval_tyBM * curseq;        //
@@ -1933,89 +1929,167 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
       * const (simple_module_generation functions_set 
                basiclo_function complete_module)
    **/
-  assert (isnode_BM ((const value_tyBM) _.constnodv)
-          && valhash_BM ((const value_tyBM) _.constnodv) == 4245083367);
-  _.simple_module_generation =
+  WEAKASSERT_BM (isnode_BM ((const value_tyBM) _.constnodv)
+                 && valhash_BM ((const value_tyBM) _.constnodv) ==
+                 4245083367);
+  objectval_tyBM *k_simple_module_generation =
     objectcast_BM (nodenthson_BM
                    ((void *) _.constnodv, constix_simple_module_generation));
-  assert (_.simple_module_generation != NULL);
-  assert (objecthash_BM (_.simple_module_generation)    //
+  assert (k_simple_module_generation != NULL);
+  assert (objecthash_BM (k_simple_module_generation)    //
           == 512189275          /* simple_module_generation |=_2HlKptD03wA_7JJCG7lN5nS| */
     );
-  if (!objectisinstance_BM (_.modgen, _.simple_module_generation))
+  if (!objectisinstance_BM (_.modgen, k_simple_module_generation))
     return NULL;
-  _.functions_set =
+  objectval_tyBM *k_functions_set =
     objectcast_BM (nodenthson_BM
                    ((void *) _.constnodv, constix_functions_set));
-  assert (_.functions_set != NULL);
-  assert (objecthash_BM (_.functions_set)       //
+  assert (objecthash_BM (k_functions_set)       //
           == 721902257 /* functions_set |=_9stpgEfdDDE_7LUgqylTeFI| */ );
-  _.basiclo_function =
+  objectval_tyBM *k_basiclo_function =
     objectcast_BM (nodenthson_BM
                    ((void *) _.constnodv, constix_basiclo_function));
-  assert (_.basiclo_function != NULL);
-  assert (objecthash_BM (_.basiclo_function)    //
+  assert (objecthash_BM (k_basiclo_function)    //
           == 382575019 /* basiclo_function |=_2Ir1i8qnrA4_3jSkierlc5z| */ );
+  objectval_tyBM *k_complete_module =
+    objectcast_BM (nodenthson_BM
+                   ((void *) _.constnodv, constix_complete_module));
+  assert (objecthash_BM (k_complete_module)     //
+          == 503673592 /* complete_module |=_5MiY0SneC5A_7c2Ar72nm9O| */ );
+  ////
   _.hset = hashsetobj_grow_BM (NULL, objnbcomps_BM (_.recv) + 1);
   for (unsigned ix = 0; ix < objnbcomps_BM (_.recv); ix++)
     {
+      DBGPRINTF_BM ("@@prepare_module°basiclo*module ix=%u", ix);
       _.curcomp = objgetcomp_BM (_.recv, ix);
       if (isobject_BM (_.curcomp))
         {
-          if (objectisinstance_BM (_.curcomp, _.basiclo_function))
-            hashsetobj_add_BM (_.hset, _.curcomp);
+          DBGPRINTF_BM ("@@prepare_module°basiclo*module object at ix=%u",
+                        ix);
+          if (objectisinstance_BM (_.curcomp, k_basiclo_function))
+            {
+              hashsetobj_add_BM (_.hset, _.curcomp);
+              DBGPRINTF_BM
+                ("@@prepare_module°basiclo*module adding curcomp %s",
+                 objectdbg_BM ((objectval_tyBM *) _.curcomp));
+            }
           else
-            return NULL;
+            {
+              DBGPRINTF_BM
+                ("@@prepare_module°basiclo*module bad object curcomp %s",
+                 objectdbg_BM ((objectval_tyBM *) _.curcomp));
+              return NULL;
+            }
         }
       else if (issequence_BM (_.curcomp))
         {
           _.curseq = (seqobval_tyBM *) _.curcomp;
           unsigned sqlen = sequencesize_BM (_.curseq);
+          DBGPRINTF_BM ("@@prepare_module°basiclo*module seqlen %u at ix=%u",
+                        sqlen, ix);
           for (unsigned j = 0; j < sqlen; j++)
             {
               _.curcomp = sequencenthcomp_BM (_.curseq, j);
-              if (objectisinstance_BM (_.curcomp, _.basiclo_function))
-                hashsetobj_add_BM (_.hset, _.curcomp);
+              if (objectisinstance_BM (_.curcomp, k_basiclo_function))
+                {
+                  DBGPRINTF_BM
+                    ("@@prepare_module°basiclo*module adding curcomp %s",
+                     objectdbg_BM ((objectval_tyBM *) _.curcomp));
+                  hashsetobj_add_BM (_.hset, _.curcomp);
+                }
               else
-                return NULL;
+                {
+                  DBGPRINTF_BM
+                    ("@@prepare_module°basiclo*module bad seq curcomp %s",
+                     objectdbg_BM ((objectval_tyBM *) _.curcomp));
+                  return NULL;
+                }
             }
+          DBGPRINTF_BM
+            ("@@prepare_module°basiclo*module done seqlen %u at ix=%u",
+             sqlen, ix);
         }
       else if (isclosure_BM (_.curcomp))
         {
-          _.partres = apply2_BM ((closure_tyBM *) _.curcomp,
-                                 (struct stackframe_stBM *) &_,
-                                 _.recv, _.modgen);
+          DBGPRINTF_BM ("@@prepare_module°basiclo*module closure at ix=%u",
+                        ix);
+          _.partres =
+            apply2_BM ((closure_tyBM *) _.curcomp,
+                       (struct stackframe_stBM *) &_, _.recv, _.modgen);
           if (isobject_BM (_.partres)
-              && objectisinstance_BM (_.partres, _.basiclo_function))
-            hashsetobj_add_BM (_.hset, _.partres);
+              && objectisinstance_BM (_.partres, k_basiclo_function))
+            {
+              DBGPRINTF_BM
+                ("@@prepare_module°basiclo*module adding partres %s",
+                 objectdbg_BM ((objectval_tyBM *) _.partres));
+              hashsetobj_add_BM (_.hset, _.partres);
+            }
           else if (issequence_BM (_.partres))
             {
               _.curseq = (seqobval_tyBM *) _.partres;
               unsigned sqlen = sequencesize_BM (_.curseq);
+              DBGPRINTF_BM
+                ("@@prepare_module°basiclo*module ix=%u partres sqlen=%u",
+                 ix, sqlen);
               for (unsigned j = 0; j < sqlen; j++)
                 {
                   _.curcomp = sequencenthcomp_BM (_.curseq, j);
-                  if (objectisinstance_BM (_.curcomp, _.basiclo_function))
-                    hashsetobj_add_BM (_.hset, _.curcomp);
+                  if (objectisinstance_BM (_.curcomp, k_basiclo_function))
+                    {
+                      DBGPRINTF_BM
+                        ("@@prepare_module°basiclo*module adding curcomp %s",
+                         objectdbg_BM ((objectval_tyBM *) _.curcomp));
+                      hashsetobj_add_BM (_.hset, _.curcomp);
+                    }
                   else
-                    return NULL;
+                    {
+                      DBGPRINTF_BM
+                        ("@@prepare_module°basiclo*module ix=%u j=%u bad curcomp %s",
+                         ix, j, objectdbg_BM ((objectval_tyBM *) _.curcomp));
+
+                      return NULL;
+                    }
                 }
             }
           else
-            return NULL;
+            {
+              DBGPRINTF_BM
+                ("@@prepare_module°basiclo*module ix=%u bad partres", ix);
+              return NULL;
+            }
         }
       else
-        return NULL;
+        {
+          DBGPRINTF_BM ("@@prepare_module°basiclo*module ix=%u bad curcomp",
+                        ix);
+          return NULL;
+        }
     }
+  DBGPRINTF_BM ("@@prepare_module°basiclo*module hsetcard %u",
+                hashsetobj_cardinal_BM (_.hset));
   if (hashsetobj_cardinal_BM (_.hset) == 0)
     return NULL;
   _.setfun = (setval_tyBM *) hashsetobj_to_set_BM (_.hset);
-  objputattr_BM (_.modgen, _.functions_set, _.setfun);
-  _.partres = send1_BM (_.recv, _.complete_module,
-                        (struct stackframe_stBM *) &_, _.modgen);
+  objputattr_BM (_.modgen, k_functions_set, _.setfun);
+  DBGPRINTF_BM
+    ("@@prepare_module°basiclo*module before complete_module recv=%s modgen=%s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.modgen));
+  _.partres =
+    send1_BM (_.recv, k_complete_module, (struct stackframe_stBM *) &_,
+              _.modgen);
   if (isset_BM (_.partres))
-    _.setfun = _.partres;
-  return _.setfun;
+    {
+      _.setfun = _.partres;
+      DBGPRINTF_BM
+        ("@@prepare_module°basiclo*module done complete_module recv=%s modgen=%s setfuncard=%u",
+         objectdbg_BM (_.recv), objectdbg1_BM (_.modgen),
+         setcardinal_BM (_.setfun));
+      return _.setfun;
+    }
+  DBGPRINTF_BM
+    ("@@prepare_module°basiclo*module failed complete_module recv=%s modgen=%s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.modgen));
+  return NULL;
 }                               /* end ROUTINE _8zNBXSMY2Ts_1VI5dmY4umA prepare_module°basiclo*module */
 
 

@@ -176,7 +176,7 @@ ROUTINEOBJNAME_BM (_979hCujWp2g_9tjRbM8Ht1l)    // emit_c_type:c_enum
   _.prsbuf = strbuffercast_BM (arg2);
   WEAKASSERT_BM (_.prsbuf != NULL);
   DBGPRINTF_BM
-    ("start  emit_c_type:c_enum _979hCujWp2g_9tjRbM8Ht1l recv=%s",
+    ("start emit_c_type:c_enum _979hCujWp2g_9tjRbM8Ht1l recv=%s",
      objectdbg_BM (_.recv));
   const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
   assert (closconn != NULL);
@@ -227,16 +227,17 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
                  value_tyBM recv;
-                 struct strbuffer_stBM *prsbuf;
-                 const objectval_tyBM * extendingob;
-                 const tupleval_tyBM * ownenumtup;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
   _.clos = clos;
+  const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (closconn != NULL);
   // retrieve arguments
-  _.recv = /*ctype */ (arg1);
+  _.recv = (arg1);
   WEAKASSERT_BM (isobject_BM (_.recv));
-
+  DBGPRINTF_BM
+    ("start prepare_routine°basiclo_minifunction _07qYMXftJRR_9dde2ASz4e9 recv=%s",
+     objectdbg_BM (_.recv));
 #warning prepare_routine°basiclo_minifunction unimplemented
   return NULL;
 }                               /* end prepare_routine°basiclo_minifunction  _07qYMXftJRR_9dde2ASz4e9  */
