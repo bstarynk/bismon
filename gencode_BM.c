@@ -252,10 +252,11 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   assert (closconn != NULL);
   const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
   /*** constnod is
-      * const (arguments result constants closed locals numbers body)
+      * const (arguments result constants closed locals numbers 
+               body simple_routine_preparation)
    ***/
   WEAKASSERT_BM (isnode_BM ((value_tyBM) constnod)
-                 && valhash_BM ((value_tyBM) constnod) == 279385068
+                 && valhash_BM ((value_tyBM) constnod) == 2487156868
                  && nodewidth_BM ((value_tyBM) constnod) == constix__LAST);
   const objectval_tyBM *k_arguments =   //
     objectcast_BM (nodenthson_BM
