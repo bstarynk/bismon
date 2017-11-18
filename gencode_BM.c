@@ -242,6 +242,8 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   return NULL;
 }                               /* end prepare_routine°basiclo_minifunction  _07qYMXftJRR_9dde2ASz4e9  */
 
+
+
 // for the method to complete_module in basiclo_temporary_module &
 // basiclo_dumpable_module
 
@@ -258,12 +260,14 @@ ROUTINEOBJNAME_BM (_10XOFm9ui6R_06F8qZQynnA)    //
   {
     constix_functions_set,
     constix_plain_module,
+    constix_basiclo_minifunction,
     constix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos;
-                 value_tyBM recv; value_tyBM modgen; value_tyBM funset;
-                 objectval_tyBM * plainmod;
+                 const closure_tyBM * clos; value_tyBM recv;
+                 value_tyBM modgen;
+                 value_tyBM funset; objectval_tyBM * plainmod;
+                 objectval_tyBM * curfun;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
   _.clos = clos;
@@ -276,10 +280,10 @@ ROUTINEOBJNAME_BM (_10XOFm9ui6R_06F8qZQynnA)    //
   WEAKASSERT_BM (isobject_BM (_.modgen));
   const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
   /*** constnod is
-      * const (functions_set plain_module)
+      * const (functions_set plain_module basiclo_minifunction)
    ***/
   WEAKASSERT_BM (isnode_BM ((value_tyBM) constnod)
-                 && valhash_BM ((value_tyBM) constnod) == 2163271555
+                 && valhash_BM ((value_tyBM) constnod) == 2107755858
                  && nodewidth_BM ((value_tyBM) constnod) == constix__LAST);
   const objectval_tyBM *k_functions_set =       //
     objectcast_BM (nodenthson_BM
@@ -287,15 +291,35 @@ ROUTINEOBJNAME_BM (_10XOFm9ui6R_06F8qZQynnA)    //
   const objectval_tyBM *k_plain_module =        //
     objectcast_BM (nodenthson_BM
                    ((const value_tyBM) constnod, constix_plain_module));
-  DBGPRINTF_BM
-    ("complete_module°basiclo*module start recv=%s modgen=%s",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.modgen));
+  const objectval_tyBM *k_basiclo_minifunction =        //
+    objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
+                                  constix_basiclo_minifunction));
+  DBGPRINTF_BM ("complete_module°basiclo*module start recv=%s modgen=%s",
+                objectdbg_BM (_.recv), objectdbg1_BM (_.modgen));
   _.funset = setcast_BM (objgetattr_BM (_.modgen, k_functions_set));
   unsigned nbfuns = setcardinal_BM (_.funset);
   _.plainmod = objectcast_BM (objgetattr_BM (_.modgen, k_plain_module));
   DBGPRINTF_BM
     ("complete_module°basiclo*module nbfuns=%u plainmod=%s",
      nbfuns, objectdbg_BM (_.plainmod));
+  unsigned nbtinyfuns = 0;
+  for (unsigned ix = 0; ix < nbfuns; ix++)
+    {
+      _.curfun = setelemnth_BM (_.funset, ix);
+      if (objectisinstance_BM (_.curfun, k_basiclo_minifunction))
+        {
+          nbtinyfuns++;
+        }
+    }
+  if (nbtinyfuns == nbfuns)
+    {
+      DBGPRINTF_BM ("complete_module°basiclo*module gives all %u tinyfuncs",
+                    nbtinyfuns);
+      return _.funset;
+    }
+  DBGPRINTF_BM
+    ("complete_module°basiclo*module nbtinyfuns=%u < nbfuns=%u incomplete",
+     nbtinyfuns, nbfuns);
 #warning complete_module°basiclo*module unimplemented
   return NULL;
 }                               /* end complete_module°basiclo*module _10XOFm9ui6R_06F8qZQynnA  */
