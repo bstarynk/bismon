@@ -222,28 +222,97 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
 {
   enum
   {
+    constix_arguments,
+    constix_constants,
+    constix_result,
+    constix_closed,
+    constix_locals,
+    constix_numbers,
+    constix_body,
+    constix_simple_routine_preparation,
     constix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
                  objectval_tyBM * modgen; setval_tyBM * prepvalset;
+                 objectval_tyBM * curprepob;
+                 objectval_tyBM * routprep;
                  value_tyBM recv;
+                 anyassoc_tyBM * routassoc;
+                 const tupleval_tyBM * tupargs;
+                 const tupleval_tyBM * tupclosed;
+                 objectval_tyBM * obresult;
+                 const setval_tyBM * setlocals;
+                 const setval_tyBM * setnumbers;
+                 const setval_tyBM * setconsts;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
   _.clos = clos;
   const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
   assert (closconn != NULL);
+  const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
+  /*** constnod is
+      * const (arguments result constants closed locals numbers body)
+   ***/
+  WEAKASSERT_BM (isnode_BM ((value_tyBM) constnod)
+                 && valhash_BM ((value_tyBM) constnod) == 279385068
+                 && nodewidth_BM ((value_tyBM) constnod) == constix__LAST);
+  const objectval_tyBM *k_arguments =   //
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_arguments));
+  const objectval_tyBM *k_constants =   //
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_constants));
+  const objectval_tyBM *k_result =      //
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_result));
+  const objectval_tyBM *k_closed =      //
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_closed));
+  const objectval_tyBM *k_locals =      //
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_locals));
+  const objectval_tyBM *k_numbers =     //
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_numbers));
+  const objectval_tyBM *k_body =        //
+    objectcast_BM (nodenthson_BM ((const value_tyBM) constnod, constix_body));
+  const objectval_tyBM *k_simple_routine_preparation =  //
+    objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
+                                  constix_simple_routine_preparation));
   // retrieve arguments
   _.recv = (arg1);
   WEAKASSERT_BM (isobject_BM (_.recv));
   _.modgen = objectcast_BM (arg2);
-  _.prepvalset = setcast_BM (arg3);
+  _.prepvalset = setcast_BM (arg3);     /// unneeded, set of all routines
   WEAKASSERT_BM (_.modgen != NULL);
   WEAKASSERT_BM (_.prepvalset != NULL);
   unsigned nbprep = setcardinal_BM (_.prepvalset);
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction _07qYMXftJRR_9dde2ASz4e9 recv=%s modgen=%s nbprep=%u",
      objectdbg_BM (_.recv), objectdbg1_BM (_.modgen), nbprep);
+  _.tupargs = tuplecast_BM (objgetattr_BM (_.recv, k_arguments));
+  _.tupclosed = tuplecast_BM (objgetattr_BM (_.recv, k_closed));
+  _.obresult = objectcast_BM (objgetattr_BM (_.recv, k_result));
+  _.setlocals = setcast_BM (objgetattr_BM (_.recv, k_locals));
+  _.setnumbers = setcast_BM (objgetattr_BM (_.recv, k_numbers));
+  _.setconsts = setcast_BM (objgetattr_BM (_.recv, k_constants));
+  _.routprep = makeobj_BM ();
+  objputclass_BM (_.routprep, k_simple_routine_preparation);
+  unsigned nbargs = tuplesize_BM (_.tupargs);
+  unsigned nbclosed = tuplesize_BM (_.tupclosed);
+  unsigned nblocals = setcardinal_BM (_.setlocals);
+  unsigned nbnumbers = setcardinal_BM (_.setnumbers);
+  unsigned nbconsts = setcardinal_BM (_.setconsts);
+  DBGPRINTF_BM
+    ("start prepare_routine°basiclo_minifunction recv %s nbargs=%u nbclosed=%u nblocals=%u nbnumbers=%u nbconsts=%u",
+     objectdbg_BM (_.recv), nbargs, nbclosed, nblocals, nbnumbers, nbconsts);
+  _.routassoc =
+    make_assoc_BM (2 + nbargs + nbclosed + nblocals + nbnumbers + nbconsts);
+  _.routprep->ob_data = _.routassoc;
+  DBGPRINTF_BM
+    ("start prepare_routine°basiclo_minifunction recv %s routprep %s incomplete & failing",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep));
 #warning prepare_routine°basiclo_minifunction unimplemented
   return NULL;
 }                               /* end prepare_routine°basiclo_minifunction  _07qYMXftJRR_9dde2ASz4e9  */
