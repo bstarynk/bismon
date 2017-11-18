@@ -2223,6 +2223,9 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
     (const value_tyBM) datavect_to_node_BM (_.vectprepr, k_prepared_routines);
   objputattr_BM (_.modgen, k_prepared_routines, _.prepmod);
   objtouchnow_BM (_.modgen);
+  DBGPRINTF_BM
+    ("@@generate_module°basiclo*module incomplete modgen=%s",
+     objectdbg_BM (_.modgen));
   // we should now emit each routine...
 #warning generate_module°basiclo*module incomplete
   return NULL;

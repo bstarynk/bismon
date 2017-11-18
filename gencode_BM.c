@@ -226,6 +226,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
+                 objectval_tyBM * modgen; setval_tyBM * prepvalset;
                  value_tyBM recv;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
@@ -235,9 +236,14 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   // retrieve arguments
   _.recv = (arg1);
   WEAKASSERT_BM (isobject_BM (_.recv));
+  _.modgen = objectcast_BM (arg2);
+  _.prepvalset = setcast_BM (arg3);
+  WEAKASSERT_BM (_.modgen != NULL);
+  WEAKASSERT_BM (_.prepvalset != NULL);
+  unsigned nbprep = setcardinal_BM (_.prepvalset);
   DBGPRINTF_BM
-    ("start prepare_routine°basiclo_minifunction _07qYMXftJRR_9dde2ASz4e9 recv=%s",
-     objectdbg_BM (_.recv));
+    ("start prepare_routine°basiclo_minifunction _07qYMXftJRR_9dde2ASz4e9 recv=%s modgen=%s nbprep=%u",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.modgen), nbprep);
 #warning prepare_routine°basiclo_minifunction unimplemented
   return NULL;
 }                               /* end prepare_routine°basiclo_minifunction  _07qYMXftJRR_9dde2ASz4e9  */
@@ -313,8 +319,9 @@ ROUTINEOBJNAME_BM (_10XOFm9ui6R_06F8qZQynnA)    //
     }
   if (nbtinyfuns == nbfuns)
     {
-      DBGPRINTF_BM ("complete_module°basiclo*module gives all %u tinyfuncs",
-                    nbtinyfuns);
+      DBGPRINTF_BM
+        ("complete_module°basiclo*module gives all %u tinyfuncs recv=%s modgen=%s",
+         nbtinyfuns, objectdbg_BM (_.recv), objectdbg1_BM (_.modgen));
       return _.funset;
     }
   DBGPRINTF_BM
