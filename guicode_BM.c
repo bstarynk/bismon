@@ -821,8 +821,10 @@ ROUTINEOBJNAME_BM (_5KWAjUEGiiq_2B6rbvkCcgc)    //
 {
   assert (!clos || isclosure_BM ((const value_tyBM) clos));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * objbrows;
-                 value_tyBM curval;);
+                 const objectval_tyBM * objbrows; value_tyBM curval;
+                 const objectval_tyBM * curkeyob; value_tyBM curkeyval;
+                 const setval_tyBM * setk;
+    );
   if (!isobject_BM (arg1))
     FATAL_BM
       ("non-object for method to browse_data for any object _5KWAjUEGiiq_2B6rbvkCcgc");
@@ -870,11 +872,38 @@ ROUTINEOBJNAME_BM (_5KWAjUEGiiq_2B6rbvkCcgc)    //
       case tydata_assocpairs_BM:
         {
           const anyassoc_tyBM *assoc = assoccast_BM (_.curval);
-          snprintf (vcommbuf, sizeof (vcommbuf), "|xassoc l:%u| ",
-                    assoc_nbkeys_BM (assoc));
+          unsigned nbkeys = assoc_nbkeys_BM (assoc);
+          snprintf (vcommbuf, sizeof (vcommbuf), "|xassoc l:%u| ", nbkeys);
           gtk_text_buffer_insert_with_tags (brobuf,
                                             &browserit_BM, vcommbuf, -1,
                                             miscomm_brotag_BM, NULL);
+          _.setk = assoc_setattrs_BM (assoc);
+          assert (nbkeys == setcardinal_BM (_.setk));
+          const objectval_tyBM *tinyarr[TINYSIZE_BM] = {
+          };
+          const objectval_tyBM **arr = (nbkeys < TINYSIZE_BM) ? tinyarr //
+            : calloc (prime_above_BM (nbkeys),
+                      sizeof (const objectval_tyBM *));
+          if (!arr)
+            FATAL_BM ("failed to calloc arr for %d keys", nbkeys);
+          for (unsigned ix = 0; ix < nbkeys; ix++)
+            arr[ix] = setelemnth_BM (_.setk, ix);
+          sortnamedobjarr_BM (arr, nbkeys);
+          for (unsigned kix = 0; kix < nbkeys; kix++)
+            {
+              _.curkeyob = arr[kix];
+              _.curkeyval = assoc_getattr_BM (assoc, _.curkeyob);
+              gtk_text_buffer_insert (brobuf, &browserit_BM, "\342\234\252 ",   // U+272A CIRCLED WHITE STAR ✪
+                                      -1);
+              browse_value_BM ((const value_tyBM) _.curkeyob,
+                               (struct stackframe_stBM *) &_, 2, 0);
+              browsespacefordepth_BM (1);
+              browse_value_BM ((const value_tyBM) _.curkeyval,
+                               (struct stackframe_stBM *) &_, depth, 1);
+              gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+            }
+          if (arr != tinyarr)
+            free (arr), arr = NULL;
         }
         break;
       case tydata_hashsetobj_BM:
@@ -885,6 +914,9 @@ ROUTINEOBJNAME_BM (_5KWAjUEGiiq_2B6rbvkCcgc)    //
           gtk_text_buffer_insert_with_tags (brobuf,
                                             &browserit_BM, vcommbuf, -1,
                                             miscomm_brotag_BM, NULL);
+          _.setk = hashsetobj_to_set_BM (hset);
+          browse_value_BM ((const value_tyBM) _.setk,
+                           (struct stackframe_stBM *) &_, depth, 1);
         }
         break;
       case tydata_listtop_BM:
