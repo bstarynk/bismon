@@ -67,11 +67,13 @@ makeclosurevar_BM (const objectval_tyBM * connob, ...)
     FATAL_BM ("calloc failure for %u - %m", nbsons);
   unsigned cnt = 0;
   value_tyBM curv = NULL;
+  va_start (args, connob);
   while ((curv = va_arg (args, value_tyBM)) != NULL)
     {
       assert (cnt < nbsons);
       arr[cnt++] = curv;
     }
+  va_end (args);
   const closure_tyBM *clos = makeclosure_BM (connob, nbsons, arr);
   if (arr != tinyarr)
     free (arr), arr = NULL;
@@ -197,11 +199,13 @@ makenodevar_BM (const objectval_tyBM * connob, ...)
     FATAL_BM ("calloc failure for %u - %m", nbsons);
   unsigned cnt = 0;
   value_tyBM curv = NULL;
+  va_start (args, connob);
   while ((curv = va_arg (args, value_tyBM)) != NULL)
     {
       assert (cnt < nbsons);
       arr[cnt++] = curv;
     }
+  va_end (args);
   const node_tyBM *clos = makenode_BM (connob, nbsons, arr);
   if (arr != tinyarr)
     free (arr), arr = NULL;
