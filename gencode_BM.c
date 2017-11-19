@@ -246,6 +246,8 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                  const setval_tyBM * setlocals;
                  const setval_tyBM * setnumbers;
                  const setval_tyBM * setconsts;
+                 objectval_tyBM * curvar; value_tyBM curol;
+                 value_tyBM oldrol;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
   _.clos = clos;
@@ -311,6 +313,96 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
      objectdbg_BM (_.recv), nbargs, nbclosed, nblocals, nbnumbers, nbconsts);
   _.routassoc =
     make_assoc_BM (2 + nbargs + nbclosed + nblocals + nbnumbers + nbconsts);
+  /// bind the arguments
+  for (unsigned argix = 0; argix < nbargs; argix++)
+    {
+      _.curvar = tuplecompnth_BM (_.tupargs, argix);
+      DBGPRINTF_BM
+        ("start prepare_routine°basiclo_minifunction argix=%u argum curvar=%s",
+         argix, objectdbg_BM (_.curvar));
+      _.oldrol = assoc_getattr_BM (_.routassoc, _.curvar);
+      if (_.oldrol)
+        {
+          fprintf (stderr, "argument#%u %s is not fresh in minifunction %s\n",
+                   argix, objectdbg_BM (_.curvar), objectdbg1_BM (_.recv));
+          return NULL;
+        }
+      _.curol = makenodevar_BM (k_arguments, taggedint_BM (argix), NULL);
+      _.routassoc = assoc_addattr_BM (_.routassoc, _.curvar, _.curol);
+      _.curol = NULL;
+    }
+  /// bind the closed
+  for (unsigned cloix = 0; cloix < nbclosed; cloix++)
+    {
+      _.curvar = tuplecompnth_BM (_.tupclosed, cloix);
+      DBGPRINTF_BM
+        ("start prepare_routine°basiclo_minifunction cloix=%u closed curvar=%s",
+         cloix, objectdbg_BM (_.curvar));
+      _.oldrol = assoc_getattr_BM (_.routassoc, _.curvar);
+      if (_.oldrol)
+        {
+          fprintf (stderr, "closed#%u %s is not fresh in minifunction %s\n",
+                   cloix, objectdbg_BM (_.curvar), objectdbg1_BM (_.recv));
+          return NULL;
+        }
+      _.curol = makenodevar_BM (k_closed, taggedint_BM (cloix), NULL);
+      _.routassoc = assoc_addattr_BM (_.routassoc, _.curvar, _.curol);
+      _.curol = NULL;
+    }
+  /// bind the locals
+  for (unsigned locix = 0; locix < nblocals; locix++)
+    {
+      _.curvar = setelemnth_BM (_.setlocals, locix);
+      DBGPRINTF_BM
+        ("start prepare_routine°basiclo_minifunction locix=%u local curvar=%s",
+         locix, objectdbg_BM (_.curvar));
+      _.oldrol = assoc_getattr_BM (_.routassoc, _.curvar);
+      if (_.oldrol)
+        {
+          fprintf (stderr, "local#%u %s is not fresh in minifunction %s\n",
+                   locix, objectdbg_BM (_.curvar), objectdbg1_BM (_.recv));
+          return NULL;
+        }
+      _.curol = makenodevar_BM (k_locals, taggedint_BM (locix), NULL);
+      _.routassoc = assoc_addattr_BM (_.routassoc, _.curvar, _.curol);
+      _.curol = NULL;
+    }
+  // bind the numbers
+  for (unsigned numix = 0; numix < nbnumbers; numix++)
+    {
+      _.curvar = setelemnth_BM (_.setnumbers, numix);
+      DBGPRINTF_BM
+        ("start prepare_routine°basiclo_minifunction numix=%u number curvar=%s",
+         numix, objectdbg_BM (_.curvar));
+      _.oldrol = assoc_getattr_BM (_.routassoc, _.curvar);
+      if (_.oldrol)
+        {
+          fprintf (stderr, "number#%u %s is not fresh in minifunction %s\n",
+                   numix, objectdbg_BM (_.curvar), objectdbg1_BM (_.recv));
+          return NULL;
+        }
+      _.curol = makenodevar_BM (k_numbers, taggedint_BM (numix), NULL);
+      _.routassoc = assoc_addattr_BM (_.routassoc, _.curvar, _.curol);
+      _.curol = NULL;
+    }
+  // bind the constants
+  for (unsigned constix = 0; constix < nbconsts; constix++)
+    {
+      _.curvar = setelemnth_BM (_.setconsts, constix);
+      DBGPRINTF_BM
+        ("start prepare_routine°basiclo_minifunction constix=%u constant curvar=%s",
+         constix, objectdbg_BM (_.curvar));
+      _.oldrol = assoc_getattr_BM (_.routassoc, _.curvar);
+      if (_.oldrol)
+        {
+          fprintf (stderr, "constant#%u %s is not fresh in minifunction %s\n",
+                   constix, objectdbg_BM (_.curvar), objectdbg1_BM (_.recv));
+          return NULL;
+        }
+      _.curol = makenodevar_BM (k_constants, taggedint_BM (constix), NULL);
+      _.routassoc = assoc_addattr_BM (_.routassoc, _.curvar, _.curol);
+      _.curol = NULL;
+    }
   _.routprep->ob_data = _.routassoc;
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction recv %s routprep %s incomplete & failing",
