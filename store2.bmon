@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 195 objects
+// for 197 objects
 // with 0 modules
 
 
@@ -783,24 +783,13 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 
 
 
-!(_43Y25VLmh6s_3JRpERevcR4 |=first_test_minifunc|
-!~ name (~ first_test_minifunc
-~)
-!@ 1510906576.69
-!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "first minifunc in first_test_module"
-!)_43Y25VLmh6s_3JRpERevcR4
-
-
-
 !(_9oXtCgAbkqv_4y1xhhF5Nhz |=first_test_module|
 !~ name (~ first_test_module
 ~)
 !@ 1510906769.68
 !$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !# 2
-!& _43Y25VLmh6s_3JRpERevcR4 |=first_test_minifunc| 
+!& _43Y25VLmh6s_3JRpERevcR4 |=successor_test_minifunc| 
 !&  % _5DDSY1YgVZr_6dOU4tiBldk (  { _6SSe2uyt8Cn_4QNhKM5hsDA _9O2lgu1TweO_0mVlpTwrBG1 })
 !)_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1452,6 +1441,21 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 
 
 
+!(_43Y25VLmh6s_3JRpERevcR4 |=successor_test_minifunc|
+!~ name (~ successor_test_minifunc
+~)
+!@ 1511091590.84
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "first minifunc in first_test_module - successor of number"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _3vRFuniDv1K_4bQ7DeekM2I ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ |=v_r| 
+!)_43Y25VLmh6s_3JRpERevcR4
+
+
+
 !(_6SSe2uyt8Cn_4QNhKM5hsDA |=third_test_minifunc|
 !~ name (~ third_test_minifunc
 ~)
@@ -1502,6 +1506,24 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !@ 1507032173.70
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_98LwKjUO4P2_5CU6mAoKUxQ
+
+
+
+!(_3vRFuniDv1K_4bQ7DeekM2I |=v_i|
+!~ name (~ v_i
+~)
+!@ 1511091565.10
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_3vRFuniDv1K_4bQ7DeekM2I
+
+
+
+!(_3qw9bnATIhq_8loBraLeXzQ |=v_r|
+!~ name (~ v_r
+~)
+!@ 1511091590.84
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_3qw9bnATIhq_8loBraLeXzQ
 
 
 
