@@ -537,6 +537,17 @@ dictget_BM(const struct dict_stBM* dict, const stringval_tyBM*str)
   return it->second;
 } // end dictget_BM
 
+
+unsigned
+dictsize_BM(const struct dict_stBM* dict)
+{
+  if (!isdict_BM((const value_tyBM)dict))
+    return 0;
+  auto& dicm = *(dictmap_claBM*)dict->dict_data;
+  return dicm.size();
+} // end dictsize_BM
+
+
 void dictput_BM(struct dict_stBM* dict, const stringval_tyBM*str, const value_tyBM val)
 {
   if (!isdict_BM((const value_tyBM)dict))

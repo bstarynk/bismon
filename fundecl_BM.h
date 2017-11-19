@@ -474,6 +474,7 @@ extern void classinfogckeep_BM (struct garbcoll_stBM *gc,
 ////////////////
 extern struct dict_stBM *dictmake_BM (void);
 static inline bool isdict_BM (const value_tyBM v);
+extern unsigned dictsize_BM (const struct dict_stBM *dict);
 extern void dictgcmark_BM (struct garbcoll_stBM *gc, struct dict_stBM *dict,
                            int depth);
 extern void dictgcdestroy_BM (struct garbcoll_stBM *gc,
