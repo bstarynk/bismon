@@ -234,7 +234,8 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 objectval_tyBM * modgen; setval_tyBM * prepvalset;
+                 objectval_tyBM * modgen;
+                 setval_tyBM * prepvalset;
                  objectval_tyBM * curprepob;
                  objectval_tyBM * routprep;
                  value_tyBM recv;

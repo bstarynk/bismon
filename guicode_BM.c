@@ -806,3 +806,154 @@ ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    //
     };
   return (const value_tyBM) _.objbrows;
 }                               /* end ROUTINE _9zpvXnTuDeB_2B7ZiBtN8fA */
+
+
+
+/// method to browse_data for any object with extended value ob_data
+extern objrout_sigBM ROUTINEOBJNAME_BM (_5KWAjUEGiiq_2B6rbvkCcgc);
+value_tyBM
+ROUTINEOBJNAME_BM (_5KWAjUEGiiq_2B6rbvkCcgc)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * objbrows;
+                 value_tyBM curval;);
+  if (!isobject_BM (arg1))
+    FATAL_BM
+      ("non-object for method to browse_data for any object _5KWAjUEGiiq_2B6rbvkCcgc");
+  _.objbrows = (const objectval_tyBM *) arg1;
+  int depth = getint_BM (arg2);
+  assert (isobject_BM ((const value_tyBM) _.objbrows));
+  _.curval = _.objbrows->ob_data;
+  int tyval = valtype_BM (_.curval);
+  char vcommbuf[64];
+  memset (vcommbuf, 0, sizeof (vcommbuf));
+  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
+  gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+  if (tyval == tyInt_BM
+      || (tyval >= type_FIRST_BM && tyval <= type_LASTREAL_BM))
+    {
+      snprintf (vcommbuf, sizeof (vcommbuf), "|xvaldata h=%u:| ",
+                valhash_BM (_.curval));
+      gtk_text_buffer_insert_with_tags (brobuf,
+                                        &browserit_BM, vcommbuf, -1,
+                                        miscomm_brotag_BM, NULL);
+      browse_value_BM ((const value_tyBM) _.curval,
+                       (struct stackframe_stBM *) &_, depth, 0);
+    }
+  else
+    switch (tyval)
+      {
+      case tyNone_BM:
+        {
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, "|xnone|", -1,
+                                            miscomm_brotag_BM, NULL);
+        }
+        break;
+      case tydata_vectval_BM:
+        {
+          const struct datavectval_stBM *dvec = _.curval;
+          snprintf (vcommbuf, sizeof (vcommbuf), "|xvector l:%u| ",
+                    datavectlen_BM (dvec));
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, vcommbuf, -1,
+                                            miscomm_brotag_BM, NULL);
+        }
+        break;
+      case tydata_assocbucket_BM:
+      case tydata_assocpairs_BM:
+        {
+          const anyassoc_tyBM *assoc = assoccast_BM (_.curval);
+          snprintf (vcommbuf, sizeof (vcommbuf), "|xassoc l:%u| ",
+                    assoc_nbkeys_BM (assoc));
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, vcommbuf, -1,
+                                            miscomm_brotag_BM, NULL);
+        }
+        break;
+      case tydata_hashsetobj_BM:
+        {
+          const struct hashsetobj_stBM *hset = hashsetobjcast_BM (_.curval);
+          snprintf (vcommbuf, sizeof (vcommbuf), "|xhset card:%u| ",
+                    hashsetobj_cardinal_BM (hset));
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, vcommbuf, -1,
+                                            miscomm_brotag_BM, NULL);
+        }
+        break;
+      case tydata_listtop_BM:
+        {
+          const struct listtop_stBM *lis = _.curval;
+          snprintf (vcommbuf, sizeof (vcommbuf), "|xlist l:%u| ",
+                    listlength_BM (lis));
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, vcommbuf, -1,
+                                            miscomm_brotag_BM, NULL);
+        }
+        break;
+      case tydata_loader_BM:
+        {
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, "|xloader|", -1,
+                                            miscomm_brotag_BM, NULL);
+        }
+        break;
+      case tydata_parser_BM:
+        {
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, "|xparser|", -1,
+                                            miscomm_brotag_BM, NULL);
+        }
+        break;
+      case tydata_classinfo_BM:
+        {
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, "|xclassinfo|", -1,
+                                            miscomm_brotag_BM, NULL);
+        }
+        break;
+      case tydata_strbuffer_BM:
+        {
+          const struct strbuffer_stBM *sbuf = _.curval;
+          snprintf (vcommbuf, sizeof (vcommbuf), "|xsbuf l:%u| ",
+                    strbufferlength_BM (sbuf));
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, vcommbuf, -1,
+                                            miscomm_brotag_BM, NULL);
+        }
+        break;
+      case tydata_dumper_BM:
+        {
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, "|xdumper|", -1,
+                                            miscomm_brotag_BM, NULL);
+        }
+        break;
+      case tydata_dict_BM:
+        {
+          const struct dict_stBM *dic = _.curval;
+          snprintf (vcommbuf, sizeof (vcommbuf), "|xdict s.%u| ",
+                    dictsize_BM (dic));
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, vcommbuf, -1,
+                                            miscomm_brotag_BM, NULL);
+        }
+        break;
+      default:
+        {
+          snprintf (vcommbuf, sizeof (vcommbuf), "|xtyp?#%d| ", (int) tyval);
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, vcommbuf, -1,
+                                            miscomm_brotag_BM, NULL);
+        }
+        break;
+      };
+  gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+  return (const value_tyBM) _.objbrows;
+}                               /* end  browse_data for any object with extended value_5KWAjUEGiiq_2B6rbvkCcgc  */
