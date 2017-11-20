@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 197 objects
+// for 198 objects
 // with 0 modules
 
 
@@ -923,6 +923,15 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 
 
 
+!(_2W7Ckt2WxEM_4NVYgEWE73B |=ii|
+!~ name (~ ii
+~)
+!@ 1511178454.48
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_2W7Ckt2WxEM_4NVYgEWE73B
+
+
+
 !(_75gnoii3mMp_41wgHkvJVyN |=init_class|
 !~ name (~ init_class
 ~)
@@ -1444,12 +1453,14 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !(_43Y25VLmh6s_3JRpERevcR4 |=successor_test_minifunc|
 !~ name (~ successor_test_minifunc
 ~)
-!@ 1511091590.84
+!@ 1511178454.48
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "first minifunc in first_test_module - successor of number"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _3vRFuniDv1K_4bQ7DeekM2I ]
+!: _32eKNcTZ9HN_80t0nk47Mha |=numbers|
+ { _2W7Ckt2WxEM_4NVYgEWE73B }
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3qw9bnATIhq_8loBraLeXzQ |=v_r| 
 !)_43Y25VLmh6s_3JRpERevcR4
