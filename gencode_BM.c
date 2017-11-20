@@ -248,6 +248,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                  const setval_tyBM * setconsts;
                  objectval_tyBM * curvar; value_tyBM curol;
                  value_tyBM oldrol;
+                 value_tyBM bodyv;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
   _.clos = clos;
@@ -301,6 +302,12 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   _.setlocals = setcast_BM (objgetattr_BM (_.recv, k_locals));
   _.setnumbers = setcast_BM (objgetattr_BM (_.recv, k_numbers));
   _.setconsts = setcast_BM (objgetattr_BM (_.recv, k_constants));
+  _.bodyv = objgetattr_BM (_.recv, k_body);
+  if (!isobject_BM (_.bodyv) && !istuple_BM (_.bodyv))
+    {
+      fprintf (stderr, "bad body minifunction %s\n", objectdbg1_BM (_.recv));
+      return NULL;
+    }
   _.routprep = makeobj_BM ();
   objputclass_BM (_.routprep, k_simple_routine_preparation);
   unsigned nbargs = tuplesize_BM (_.tupargs);
@@ -405,10 +412,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     }
   _.routprep->ob_data = _.routassoc;
   DBGPRINTF_BM
-    ("start prepare_routine°basiclo_minifunction recv %s routprep %s incomplete & failing",
+    ("start prepare_routine°basiclo_minifunction done recv %s routprep %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep));
-#warning prepare_routine°basiclo_minifunction unimplemented
-  return NULL;
+  return _.routprep;
 }                               /* end prepare_routine°basiclo_minifunction  _07qYMXftJRR_9dde2ASz4e9  */
 
 
