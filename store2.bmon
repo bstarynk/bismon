@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 198 objects
+// for 199 objects
 // with 0 modules
 
 
@@ -419,6 +419,15 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
  % _0kUyX0U19K2_5mcH4RCaBl9 ()
 !)_2U8Sj78DMbl_5eerKpaJsNq
+
+
+
+!(_2lCuMosXupr_5GAoqVgJ8PZ |=blocks|
+!~ name (~ blocks
+~)
+!@ 1511264901.40
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_2lCuMosXupr_5GAoqVgJ8PZ
 
 
 
@@ -1572,7 +1581,7 @@ _3qw9bnATIhq_8loBraLeXzQ |=v_r|
 
 !(_07qYMXftJRR_9dde2ASz4e9
 !|*
-!@ 1511027598.43
+!@ 1511264984.26
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method prepare_routine\u00b0basiclo_minifunction "
@@ -1582,7 +1591,8 @@ _3qw9bnATIhq_8loBraLeXzQ |=v_r|
  _2TwOyPJxIz8_1rIeqaN7oRz |=closed|  _24sSVIADeHm_0Sx34wQfG7W |=locals| 
  
  _32eKNcTZ9HN_80t0nk47Mha |=numbers|  _7DQyvJFMOrC_9IfC3CtYknn |=body| 
- _80060zKi6Un_3isCStegT8A |=simple_routine_preparation| ) ~)
+ _80060zKi6Un_3isCStegT8A |=simple_routine_preparation|  _8c9otZ4pwR6_55k81qyyYV2 |=hset_object| 
+ _2lCuMosXupr_5GAoqVgJ8PZ |=blocks| ) ~)
 
 !)_07qYMXftJRR_9dde2ASz4e9
 

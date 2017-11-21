@@ -230,6 +230,8 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     constix_numbers,
     constix_body,
     constix_simple_routine_preparation,
+    constix_hset_object,
+    constix_blocks,
     constix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -238,6 +240,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                  setval_tyBM * prepvalset;
                  objectval_tyBM * curprepob;
                  objectval_tyBM * routprep;
+                 objectval_tyBM * obhsetblock;
                  value_tyBM recv;
                  anyassoc_tyBM * routassoc;
                  const tupleval_tyBM * tupargs;
@@ -257,10 +260,11 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
   /*** constnod is
       * const (arguments result constants closed locals numbers 
-               body simple_routine_preparation)
+               body simple_routine_preparation
+	       hset_object blocks)
    ***/
   WEAKASSERT_BM (isnode_BM ((value_tyBM) constnod)
-                 && valhash_BM ((value_tyBM) constnod) == 2487156868
+                 && valhash_BM ((value_tyBM) constnod) == 3703347861
                  && nodewidth_BM ((value_tyBM) constnod) == constix__LAST);
   const objectval_tyBM *k_arguments =   //
     objectcast_BM (nodenthson_BM
@@ -285,6 +289,12 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   const objectval_tyBM *k_simple_routine_preparation =  //
     objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
                                   constix_simple_routine_preparation));
+  const objectval_tyBM *k_hset_object = //
+    objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
+                                  constix_hset_object));
+  const objectval_tyBM *k_blocks =      //
+    objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
+                                  constix_blocks));
   // retrieve arguments
   _.recv = (arg1);
   WEAKASSERT_BM (isobject_BM (_.recv));
@@ -303,7 +313,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   _.setnumbers = setcast_BM (objgetattr_BM (_.recv, k_numbers));
   _.setconsts = setcast_BM (objgetattr_BM (_.recv, k_constants));
   _.bodyv = objgetattr_BM (_.recv, k_body);
-  if (!isobject_BM (_.bodyv) && !istuple_BM (_.bodyv))
+  if (!isobject_BM (_.bodyv))
     {
       fprintf (stderr, "bad body minifunction %s\n", objectdbg1_BM (_.recv));
       return NULL;
@@ -411,11 +421,16 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       _.curol = NULL;
     }
   _.routprep->ob_data = _.routassoc;
+  _.obhsetblock = makeobj_BM ();
+  _.obhsetblock->ob_data = hashsetobj_grow_BM (NULL, 15);
+  objputclass_BM (_.obhsetblock, k_hset_object);
+  objputattr_BM (_.routprep, k_blocks, _.obhsetblock);
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction done recv %s routprep %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep));
   return _.routprep;
 }                               /* end prepare_routine°basiclo_minifunction  _07qYMXftJRR_9dde2ASz4e9  */
+
 
 
 
