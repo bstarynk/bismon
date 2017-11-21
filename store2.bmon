@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 202 objects
+// for 203 objects
 // with 0 modules
 
 
@@ -915,7 +915,7 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 !(_8c9otZ4pwR6_55k81qyyYV2 |=hset_object|
 !~ name (~ hset_object
 ~)
-!@ 1508143958.39
+!@ 1511289121.67
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for objects with hashed set data"
@@ -926,7 +926,8 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 ~: _2oNMm2aR91J_4QthSpZxplW |=dump_scan|  % _4DvEF1tVGFD_6VVLpFn6FPW () 
 ~: _2LPrNfUHb6Y_1qOPmENNXqB |=get|  % _26FUvWKvkYr_5hyqhhV8NEh () 
 ~: _3OWP1zOtxz2_9uAVt50SUZO |=remove|  % _5hedSPIXD0o_5ef69rR2kzb () 
-~: _9pvzBeIKHXF_8YDPCrQ6OEK |=put|  % _91iTl2vqF09_72WJj4swbNi ()
+~: _9pvzBeIKHXF_8YDPCrQ6OEK |=put|  % _91iTl2vqF09_72WJj4swbNi () 
+~: _9uRC9w2Gte9_5mW0NanaS19 |=browse_data|  % _4IshjBIv6ol_5korHKUIjeK ()
 ~)
 
 !)_8c9otZ4pwR6_55k81qyyYV2
@@ -1969,6 +1970,16 @@ _0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "function to dump globals"
 !)_4ENXjApm7Qb_3bXo8F6Jg9z
+
+
+
+!(_4IshjBIv6ol_5korHKUIjeK
+!|*
+!@ 1511289165.12
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method browse_data\u00b0hset_object"
+!)_4IshjBIv6ol_5korHKUIjeK
 
 
 

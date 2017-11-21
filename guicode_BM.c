@@ -809,6 +809,52 @@ ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    //
 
 
 
+/// method to browse_data°hset_object
+extern objrout_sigBM ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK);
+value_tyBM
+ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  assert (!clos || isclosure_BM ((const value_tyBM) clos));
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * objbrows; value_tyBM curval;
+                 const objectval_tyBM * curkeyob; value_tyBM curkeyval;
+                 const setval_tyBM * setk;
+    );
+  if (!isobject_BM (arg1))
+    FATAL_BM ("non-object for method to browse_data for hset_object");
+  _.objbrows = (const objectval_tyBM *) arg1;
+  int depth = getint_BM (arg2);
+  assert (isobject_BM ((const value_tyBM) _.objbrows));
+  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
+  _.curval = _.objbrows->ob_data;
+  if (!_.curval)
+    {
+      gtk_text_buffer_insert_with_tags (brobuf,
+                                        &browserit_BM, "|no hset|", -1,
+                                        miscomm_brotag_BM, NULL);
+      gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+      return (const value_tyBM) _.objbrows;
+    }
+  int tyval = valtype_BM (_.curval);
+  WEAKASSERT_BM (tyval == tydata_hashsetobj_BM);
+  _.setk = hashsetobj_to_set_BM (_.curval);
+  gtk_text_buffer_insert_with_tags (brobuf,
+                                    &browserit_BM, "|hset:|", -1,
+                                    miscomm_brotag_BM, NULL);
+  gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+  browse_value_BM ((const value_tyBM) _.setk,
+                   (struct stackframe_stBM *) &_, depth, 0);
+  gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+  return (const value_tyBM) _.objbrows;
+}                               /* end browse_data°hset_object _4IshjBIv6ol_5korHKUIjeK */
+
+
+
 /// method to browse_data for any object with extended value ob_data
 extern objrout_sigBM ROUTINEOBJNAME_BM (_5KWAjUEGiiq_2B6rbvkCcgc);
 value_tyBM
@@ -910,11 +956,11 @@ ROUTINEOBJNAME_BM (_5KWAjUEGiiq_2B6rbvkCcgc)    //
         {
           const struct hashsetobj_stBM *hset = hashsetobjcast_BM (_.curval);
           snprintf (vcommbuf, sizeof (vcommbuf), "|xhset card:%u| ",
-                    hashsetobj_cardinal_BM (hset));
+                    hashsetobj_cardinal_BM ((const value_tyBM)hset));
           gtk_text_buffer_insert_with_tags (brobuf,
                                             &browserit_BM, vcommbuf, -1,
                                             miscomm_brotag_BM, NULL);
-          _.setk = hashsetobj_to_set_BM (hset);
+          _.setk = hashsetobj_to_set_BM ((const value_tyBM)hset);
           browse_value_BM ((const value_tyBM) _.setk,
                            (struct stackframe_stBM *) &_, depth, 1);
         }
