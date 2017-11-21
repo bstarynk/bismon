@@ -554,9 +554,9 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu);
 value_tyBM
 ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
 (const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
- const value_tyBM arg1,         // recieving module
- const value_tyBM arg2,         // module generator
- const value_tyBM arg3,         // preparation
+ const value_tyBM arg1,         // recieving block
+ const value_tyBM arg2,         // routine preparation
+ const value_tyBM arg3,         // depth
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   enum
@@ -576,11 +576,11 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
   WEAKASSERT_BM (isobject_BM (_.recv));
   _.routprep = objectcast_BM (arg2);
   WEAKASSERT_BM (isobject_BM (_.routprep));
-  WEAKASSERT_BM (istaggedint_BM (arg2));
-  int depth = getint_BM (arg2);
+  WEAKASSERT_BM (istaggedint_BM (arg3));
+  int depth = getint_BM (arg3);
   DBGPRINTF_BM
     ("collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu start recv=%s routprep=%s depth=%d incomplete",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep));
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep), depth);
 #warning collect_blocks°basiclo_block  unimplemented
   return NULL;
 }                               /* end collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu */
