@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 201 objects
+// for 202 objects
 // with 0 modules
 
 
@@ -101,11 +101,12 @@
 !(_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !~ name (~ basiclo_block
 ~)
-!@ 1505666984.40
+!@ 1511275290.85
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "superclass for blocks in basiclo_function-s"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
+~: _99lWaExo3Bc_4J3HkjJOIJy |=collect_blocks|  % _0gkYrIdnOg2_0wLEAh1QuYu ()
 ~)
 
 !)_4bYUiDmxrKK_6nPPlEl8y8x
@@ -1640,6 +1641,16 @@ _7XasLoEUKwe_9upxyFeheD5
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine for remove\u00b0assoc_object"
 !)_0ekJdzLOqAI_8mejMqkwuKQ
+
+
+
+!(_0gkYrIdnOg2_0wLEAh1QuYu
+!|*
+!@ 1511275347.71
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "routine for collect_blocks\u00b0basiclo_block"
+!)_0gkYrIdnOg2_0wLEAh1QuYu
 
 
 

@@ -440,6 +440,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   objputattr_BM (_.routprep, k_blocks, _.obhsetblock);
   objputattr_BM (_.routprep, k_prepare_routine, _.recv);
   objputattr_BM (_.routprep, k_in, _.modgen);
+  objputattr_BM (_.obhsetblock, k_in, _.routprep);
+  objtouchnow_BM (_.obhsetblock);
+  objtouchnow_BM (_.routprep);
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction before collect_blocks recv %s routprep %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep));
@@ -543,3 +546,41 @@ ROUTINEOBJNAME_BM (_10XOFm9ui6R_06F8qZQynnA)    //
 #warning complete_module°basiclo*module unimplemented
   return NULL;
 }                               /* end complete_module°basiclo*module _10XOFm9ui6R_06F8qZQynnA  */
+
+
+// for the method to collect_blocks in basiclo_block-s 
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu);
+value_tyBM
+ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
+(const closure_tyBM * clos, struct stackframe_stBM * stkf,      //
+ const value_tyBM arg1,         // recieving module
+ const value_tyBM arg2,         // module generator
+ const value_tyBM arg3,         // preparation
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  enum
+  {
+    constix__LAST
+  };
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const closure_tyBM * clos; objectval_tyBM * recv;
+                 objectval_tyBM * routprep;
+    );
+  assert (isclosure_BM ((const value_tyBM) clos));
+  _.clos = clos;
+  const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
+  assert (closconn != NULL);
+  // retrieve arguments
+  _.recv = objectcast_BM (arg1);
+  WEAKASSERT_BM (isobject_BM (_.recv));
+  _.routprep = objectcast_BM (arg2);
+  WEAKASSERT_BM (isobject_BM (_.routprep));
+  WEAKASSERT_BM (istaggedint_BM (arg2));
+  int depth = getint_BM (arg2);
+  DBGPRINTF_BM
+    ("collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu start recv=%s routprep=%s depth=%d incomplete",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep));
+#warning collect_blocks°basiclo_block  unimplemented
+  return NULL;
+}                               /* end collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu */
