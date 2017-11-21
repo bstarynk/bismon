@@ -436,7 +436,7 @@ strbufferreset_BM (struct strbuffer_stBM *sbuf)
 }                               /* end strbufferreset_BM */
 
 unsigned
-strbufferlength_BM (struct strbuffer_stBM *sbuf)
+strbufferlength_BM (const struct strbuffer_stBM *sbuf)
 {
   if (!isstrbuffer_BM ((const value_tyBM) sbuf))
     return 0;
