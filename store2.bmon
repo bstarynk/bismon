@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 199 objects
+// for 201 objects
 // with 0 modules
 
 
@@ -597,6 +597,15 @@ _6bQLwLF3pc5_5gSAmlh5Nsx
 !@ 1511025879.56
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_2TwOyPJxIz8_1rIeqaN7oRz
+
+
+
+!(_99lWaExo3Bc_4J3HkjJOIJy |=collect_blocks|
+!~ name (~ collect_blocks
+~)
+!@ 1511266590.00
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_99lWaExo3Bc_4J3HkjJOIJy
 
 
 
@@ -1462,7 +1471,7 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !(_43Y25VLmh6s_3JRpERevcR4 |=successor_test_minifunc|
 !~ name (~ successor_test_minifunc
 ~)
-!@ 1511178454.48
+!@ 1511265759.89
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "first minifunc in first_test_module - successor of number"
@@ -1472,6 +1481,8 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
  { _2W7Ckt2WxEM_4NVYgEWE73B }
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3qw9bnATIhq_8loBraLeXzQ |=v_r| 
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_7XasLoEUKwe_9upxyFeheD5
 !)_43Y25VLmh6s_3JRpERevcR4
 
 
@@ -1581,7 +1592,7 @@ _3qw9bnATIhq_8loBraLeXzQ |=v_r|
 
 !(_07qYMXftJRR_9dde2ASz4e9
 !|*
-!@ 1511264984.26
+!@ 1511266655.86
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method prepare_routine\u00b0basiclo_minifunction "
@@ -1592,7 +1603,9 @@ _3qw9bnATIhq_8loBraLeXzQ |=v_r|
  
  _32eKNcTZ9HN_80t0nk47Mha |=numbers|  _7DQyvJFMOrC_9IfC3CtYknn |=body| 
  _80060zKi6Un_3isCStegT8A |=simple_routine_preparation|  _8c9otZ4pwR6_55k81qyyYV2 |=hset_object| 
- _2lCuMosXupr_5GAoqVgJ8PZ |=blocks| ) ~)
+ _2lCuMosXupr_5GAoqVgJ8PZ |=blocks|  
+ _6qi1DW0Ygkl_4Aqdxq4n5IV |=prepare_routine|  _0eMGYofuNVh_8ZP2mXdhtHO |=in| 
+ _99lWaExo3Bc_4J3HkjJOIJy |=collect_blocks| ) ~)
 
 !)_07qYMXftJRR_9dde2ASz4e9
 
@@ -2241,6 +2254,15 @@ _36MhHxakHKT_1ZzV5Xoj5LX
  _9pvzBeIKHXF_8YDPCrQ6OEK |=put| ) ~)
 
 !)_7GMLV81ntO3_4NHTv7fCL0A
+
+
+
+!(_7XasLoEUKwe_9upxyFeheD5
+!@ 1511265759.89
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _2U8Sj78DMbl_5eerKpaJsNq ()
+!)_7XasLoEUKwe_9upxyFeheD5
 
 
 

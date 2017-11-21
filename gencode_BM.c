@@ -232,6 +232,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     constix_simple_routine_preparation,
     constix_hset_object,
     constix_blocks,
+    constix_prepare_routine,
+    constix_in,
+    constix_collect_blocks,
     constix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -249,9 +252,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                  const setval_tyBM * setlocals;
                  const setval_tyBM * setnumbers;
                  const setval_tyBM * setconsts;
-                 objectval_tyBM * curvar; value_tyBM curol;
-                 value_tyBM oldrol;
+                 objectval_tyBM * curvar; value_tyBM curol; value_tyBM oldrol;
                  value_tyBM bodyv;
+                 value_tyBM collbl;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
   _.clos = clos;
@@ -261,10 +264,11 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   /*** constnod is
       * const (arguments result constants closed locals numbers 
                body simple_routine_preparation
-	       hset_object blocks)
+	       hset_object blocks prepare_routine in
+	       collect_blocks)
    ***/
   WEAKASSERT_BM (isnode_BM ((value_tyBM) constnod)
-                 && valhash_BM ((value_tyBM) constnod) == 3703347861
+                 && valhash_BM ((value_tyBM) constnod) == 3438389410
                  && nodewidth_BM ((value_tyBM) constnod) == constix__LAST);
   const objectval_tyBM *k_arguments =   //
     objectcast_BM (nodenthson_BM
@@ -295,6 +299,15 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   const objectval_tyBM *k_blocks =      //
     objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
                                   constix_blocks));
+  const objectval_tyBM *k_prepare_routine =     //
+    objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
+                                  constix_prepare_routine));
+  const objectval_tyBM *k_in =  //
+    objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
+                                  constix_in));
+  const objectval_tyBM *k_collect_blocks =      //
+    objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
+                                  constix_collect_blocks));
   // retrieve arguments
   _.recv = (arg1);
   WEAKASSERT_BM (isobject_BM (_.recv));
@@ -425,8 +438,24 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   _.obhsetblock->ob_data = hashsetobj_grow_BM (NULL, 15);
   objputclass_BM (_.obhsetblock, k_hset_object);
   objputattr_BM (_.routprep, k_blocks, _.obhsetblock);
+  objputattr_BM (_.routprep, k_prepare_routine, _.recv);
+  objputattr_BM (_.routprep, k_in, _.modgen);
   DBGPRINTF_BM
-    ("start prepare_routine°basiclo_minifunction done recv %s routprep %s",
+    ("start prepare_routine°basiclo_minifunction before collect_blocks recv %s routprep %s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep));
+  _.collbl = send2_BM (_.bodyv, k_collect_blocks,
+                       (struct stackframe_stBM *) &_,
+                       _.routprep, taggedint_BM (0));
+  if (!_.collbl)
+    {
+      fprintf (stderr,
+               "collect_blocks failed for block %s in minifunction %s with routprep %s\n",
+               objectdbg_BM (_.bodyv), objectdbg1_BM (_.recv),
+               objectdbg2_BM (_.routprep));
+      return NULL;
+    }
+  DBGPRINTF_BM
+    ("start prepare_routine°basiclo_minifunction after collect_blocks recv %s routprep %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep));
   return _.routprep;
 }                               /* end prepare_routine°basiclo_minifunction  _07qYMXftJRR_9dde2ASz4e9  */
