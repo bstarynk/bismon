@@ -956,11 +956,11 @@ ROUTINEOBJNAME_BM (_5KWAjUEGiiq_2B6rbvkCcgc)    //
         {
           const struct hashsetobj_stBM *hset = hashsetobjcast_BM (_.curval);
           snprintf (vcommbuf, sizeof (vcommbuf), "|xhset card:%u| ",
-                    hashsetobj_cardinal_BM ((const value_tyBM)hset));
+                    hashsetobj_cardinal_BM ((const value_tyBM) hset));
           gtk_text_buffer_insert_with_tags (brobuf,
                                             &browserit_BM, vcommbuf, -1,
                                             miscomm_brotag_BM, NULL);
-          _.setk = hashsetobj_to_set_BM ((const value_tyBM)hset);
+          _.setk = hashsetobj_to_set_BM ((const value_tyBM) hset);
           browse_value_BM ((const value_tyBM) _.setk,
                            (struct stackframe_stBM *) &_, depth, 1);
         }

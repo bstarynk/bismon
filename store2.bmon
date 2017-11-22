@@ -101,12 +101,13 @@
 !(_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !~ name (~ basiclo_block
 ~)
-!@ 1511275290.85
+!@ 1511359418.02
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "superclass for blocks in basiclo_function-s"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
-~: _99lWaExo3Bc_4J3HkjJOIJy |=collect_blocks|  % _0gkYrIdnOg2_0wLEAh1QuYu ()
+~: _99lWaExo3Bc_4J3HkjJOIJy |=collect_blocks|  % _0gkYrIdnOg2_0wLEAh1QuYu (  
+ 0  0)
 ~)
 
 !)_4bYUiDmxrKK_6nPPlEl8y8x

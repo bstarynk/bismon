@@ -561,6 +561,12 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
 {
   enum
   {
+    closix_nbvars,
+    closix_nbargs,
+    closix__LAST
+  };
+  enum
+  {
     constix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -578,9 +584,25 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
   WEAKASSERT_BM (isobject_BM (_.routprep));
   WEAKASSERT_BM (istaggedint_BM (arg3));
   int depth = getint_BM (arg3);
+  int nbvars = 0, nbargs = 0;
+  // retrieve closed integers
+  WEAKASSERT_BM (closurewidth_BM ((const value_tyBM) clos) >= closix__LAST);
+  {
+    value_tyBM nbvarsv =
+      closurenthson_BM ((const value_tyBM) clos, closix_nbvars);
+    WEAKASSERT_BM (istaggedint_BM (nbvarsv));
+    nbvars = getint_BM (nbvarsv);
+  }
+  {
+    value_tyBM nbargsv =
+      closurenthson_BM ((const value_tyBM) clos, closix_nbvars);
+    WEAKASSERT_BM (istaggedint_BM (nbargsv));
+    nbargs = getint_BM (nbargsv);
+  }
   DBGPRINTF_BM
-    ("collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu start recv=%s routprep=%s depth=%d incomplete",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep), depth);
+    ("collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu start recv=%s routprep=%s depth=%d nbvar=%d nbargs=%d incomplete",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep), depth, (int) nbargs,
+     (int) nbvars);
 #warning collect_blocks°basiclo_block  unimplemented
   return NULL;
 }                               /* end collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu */
