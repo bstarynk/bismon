@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 203 objects
+// for 207 objects
 // with 0 modules
 
 
@@ -1030,6 +1030,42 @@ _3JH05KgIzty_1K7IDyF43V2 |=assoc|
 
 
 
+!(_2gthNYOWogO_4sVTU1JbmUH |=miniscan_block|
+!~ name (~ miniscan_block
+~)
+!@ 1511369768.62
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_2gthNYOWogO_4sVTU1JbmUH
+
+
+
+!(_7k3xb0vred0_9ZRHcZmhw77 |=miniscan_expr|
+!~ name (~ miniscan_expr
+~)
+!@ 1511369768.62
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_7k3xb0vred0_9ZRHcZmhw77
+
+
+
+!(_6dWYLuQdObx_8JESNWm7qWd |=miniscan_instr|
+!~ name (~ miniscan_instr
+~)
+!@ 1511369768.62
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_6dWYLuQdObx_8JESNWm7qWd
+
+
+
+!(_6jh60mO0Cgd_84B0HiNphqA |=miniscan_var|
+!~ name (~ miniscan_var
+~)
+!@ 1511369768.62
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_6jh60mO0Cgd_84B0HiNphqA
+
+
+
 !(_0Bl5ro9usp6_1Hll14QwC8f |=modgenob|
 !~ name (~ modgenob
 ~)
@@ -1648,10 +1684,15 @@ _7XasLoEUKwe_9upxyFeheD5
 
 !(_0gkYrIdnOg2_0wLEAh1QuYu
 !|*
-!@ 1511275347.71
+!@ 1511369768.62
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine for collect_blocks\u00b0basiclo_block"
+
+!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _6jh60mO0Cgd_84B0HiNphqA |=miniscan_var| 
+ _7k3xb0vred0_9ZRHcZmhw77 |=miniscan_expr|  _2gthNYOWogO_4sVTU1JbmUH |=miniscan_block| 
+ _6dWYLuQdObx_8JESNWm7qWd |=miniscan_instr| ) ~)
+
 !)_0gkYrIdnOg2_0wLEAh1QuYu
 
 

@@ -567,16 +567,41 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
   };
   enum
   {
+    constix_miniscan_var,
+    constix_miniscan_expr,
+    constix_miniscan_block,
+    constix_miniscan_instr,
     constix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos; objectval_tyBM * recv;
-                 objectval_tyBM * routprep;
+                 const closure_tyBM * clos;
+                 objectval_tyBM * recv; objectval_tyBM * routprep;
+                 objectval_tyBM * curob;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
   _.clos = clos;
   const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) clos);
   assert (closconn != NULL);
+  const node_tyBM *constnod = nodecast_BM (closconn->ob_data);
+  /*** constnod is
+   * const (miniscan_var miniscan_expr miniscan_block
+   miniscan_instr)
+  ***/
+  WEAKASSERT_BM (isnode_BM ((value_tyBM) constnod)
+                 && valhash_BM ((value_tyBM) constnod) == 377875252
+                 && nodewidth_BM ((value_tyBM) constnod) == constix__LAST);
+  const objectval_tyBM *k_miniscan_var =        //
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_miniscan_var));
+  const objectval_tyBM *k_miniscan_expr =       //
+    objectcast_BM (nodenthson_BM
+                   ((const value_tyBM) constnod, constix_miniscan_expr));
+  const objectval_tyBM *k_miniscan_block =      //
+    objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
+                                  constix_miniscan_block));
+  const objectval_tyBM *k_miniscan_instr =      //
+    objectcast_BM (nodenthson_BM ((const value_tyBM) constnod,
+                                  constix_miniscan_instr));
   // retrieve arguments
   _.recv = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (_.recv));
@@ -603,6 +628,13 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
     ("collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu start recv=%s routprep=%s depth=%d nbvar=%d nbargs=%d incomplete",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep), depth, (int) nbargs,
      (int) nbvars);
+  for (int varix = 0; varix < nbvars; varix++)
+    {
+      _.curob = objectcast_BM (objgetcomp_BM (_.recv, varix));
+      DBGPRINTF_BM
+        ("collect_blocks°basiclo_block varix#%d curob %s", varix,
+         objectdbg_BM (_.curob));
+    }
 #warning collect_blocks°basiclo_block  unimplemented
   return NULL;
 }                               /* end collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu */
