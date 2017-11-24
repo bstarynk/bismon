@@ -665,6 +665,17 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
           return NULL;
         }
       /// should send k_miniscan_var
+      _.resv = send3_BM (_.curob,
+                         k_miniscan_var,
+                         (struct stackframe_stBM *) &_,
+                         _.routprep, taggedint_BM (depth), _.recv);
+      if (!_.resv)
+        {
+          fprintf (stderr,
+                   "collect_blocks°basiclo_block miniscan_variable of variable %s for varix#%d failed",
+                   objectdbg_BM (_.curob), varix);
+          return NULL;
+        }
     }
   for (int argix = 0; argix < nbargs; argix++)
     {
