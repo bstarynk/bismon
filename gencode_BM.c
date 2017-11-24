@@ -634,7 +634,7 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
     nbargs = getint_BM (nbargsv);
   }
   DBGPRINTF_BM
-    ("collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu start recv=%s routprep=%s depth=%d nbvar=%d nbargs=%d incomplete",
+    ("collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu start recv=%s routprep=%s depth=%d nbvar=%d nbargs=%d",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep), depth, (int) nbargs,
      (int) nbvars);
   _.routassoc = assoccast_BM (_.routprep->ob_data);
@@ -682,7 +682,73 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
       _.curexp = (objgetcomp_BM (_.recv, argix + nbvars));
       DBGPRINTF_BM ("collect_blocks°basiclo_block argix#%d", argix);
       /// should send k_miniscan_expr
+      _.resv = send3_BM (_.curexp,
+                         k_miniscan_expr,
+                         (struct stackframe_stBM *) &_,
+                         _.routprep, taggedint_BM (depth), _.recv);
+      if (!_.resv)
+        {
+          fprintf (stderr,
+                   "collect_blocks°basiclo_block miniscan_expr for expix#%d failed",
+                   objectdbg_BM (_.curob), argix);
+          return NULL;
+        }
     }
-#warning collect_blocks°basiclo_block unimplemented
-  return NULL;
+  int off = nbvars + nbargs;
+  int nbblocks = objnbcomps_BM (_.recv) - off;
+  for (int blockix = 0; blockix < nbblocks; blockix++)
+    {
+      _.curob = objectcast_BM (objgetcomp_BM (_.recv, blockix + off));
+      DBGPRINTF_BM
+        ("collect_blocks°basiclo_block blockix#%d curob %s", blockix,
+         objectdbg_BM (_.curob));
+      if (!_.curob)
+        {
+          fprintf (stderr,
+                   "collect_blocks°basiclo_block bad block for blockix#%d",
+                   blockix);
+          return NULL;
+        }
+      if (objectisinstance_BM (_.curob, k_basiclo_block))
+        {
+          /// should send k_miniscan_block
+          _.resv = send3_BM (_.curob,
+                             k_miniscan_block,
+                             (struct stackframe_stBM *) &_,
+                             _.routprep, taggedint_BM (depth), _.recv);
+          if (!_.resv)
+            {
+              fprintf (stderr,
+                       "collect_blocks°basiclo_block miniscan_block for %s blockix#%d failed",
+                       objectdbg_BM (_.curob), blockix);
+              return NULL;
+            }
+        }
+      else if (objectisinstance_BM (_.curob, k_basiclo_statement))
+        {
+          /// should send k_miniscan_block
+          _.resv = send3_BM (_.curob,
+                             k_miniscan_stmt,
+                             (struct stackframe_stBM *) &_,
+                             _.routprep, taggedint_BM (depth), _.recv);
+          if (!_.resv)
+            {
+              fprintf (stderr,
+                       "collect_blocks°basiclo_block miniscan_stmt for %s blockix#%d failed",
+                       objectdbg_BM (_.curob), blockix);
+              return NULL;
+            }
+        }
+      else
+        {
+          fprintf (stderr,
+                   "collect_blocks°basiclo_block invalid block %s for blockix#%d",
+                   objectdbg_BM (_.curob), blockix);
+          return NULL;
+        }
+    }
+  DBGPRINTF_BM
+    ("collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu done recv=%s routprep=%s depth %d",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep), depth);
+  return _.routprep;
 }                               /* end collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu */
