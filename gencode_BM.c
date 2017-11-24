@@ -577,9 +577,9 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * clos;
-                 objectval_tyBM * recv;
-                 objectval_tyBM * routprep; objectval_tyBM * curob;
-                 value_tyBM curexp;
+                 objectval_tyBM * recv; objectval_tyBM * routprep;
+                 objectval_tyBM * curob; value_tyBM curexp; value_tyBM resv;
+                 anyassoc_tyBM * routassoc;
     );
   assert (isclosure_BM ((const value_tyBM) clos));
   _.clos = clos;
@@ -629,21 +629,42 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
   }
   {
     value_tyBM nbargsv =
-      closurenthson_BM ((const value_tyBM) clos, closix_nbvars);
+      closurenthson_BM ((const value_tyBM) clos, closix_nbargs);
     WEAKASSERT_BM (istaggedint_BM (nbargsv));
     nbargs = getint_BM (nbargsv);
-    /// should send k_miniscan_var
   }
   DBGPRINTF_BM
     ("collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu start recv=%s routprep=%s depth=%d nbvar=%d nbargs=%d incomplete",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep), depth, (int) nbargs,
      (int) nbvars);
+  _.routassoc = assoccast_BM (_.routprep->ob_data);
+  if (!_.routassoc)
+    {
+      fprintf (stderr, "collect_blocks°basiclo_block bad routprep %s\n",
+               objectdbg_BM (_.routprep));
+      return NULL;
+    }
   for (int varix = 0; varix < nbvars; varix++)
     {
       _.curob = objectcast_BM (objgetcomp_BM (_.recv, varix));
       DBGPRINTF_BM
         ("collect_blocks°basiclo_block varix#%d curob %s", varix,
          objectdbg_BM (_.curob));
+      if (!_.curob)
+        {
+          fprintf (stderr,
+                   "collect_blocks°basiclo_block bad variable for varix#%d",
+                   varix);
+          return NULL;
+        }
+      if (!assoc_getattr_BM (_.routassoc, _.curob))
+        {
+          fprintf (stderr,
+                   "collect_blocks°basiclo_block unknown variable %s for varix#%d",
+                   objectdbg_BM (_.curob), varix);
+          return NULL;
+        }
+      /// should send k_miniscan_var
     }
   for (int argix = 0; argix < nbargs; argix++)
     {
