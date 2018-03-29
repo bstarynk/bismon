@@ -625,8 +625,7 @@ miniscan_var_BM (objectval_tyBM * varob,
   int failin = -1;
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_var,
-                 objectval_tyBM * varob;
-                 objectval_tyBM * routprepob;
+                 objectval_tyBM * varob; objectval_tyBM * routprepob;
                  objectval_tyBM * fromob; value_tyBM vrolv;
                  value_tyBM errorv;
     );
@@ -670,7 +669,9 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
                  value_tyBM expv;
-                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
+                 objectval_tyBM * routprepob;
+                 objectval_tyBM * fromob;
+                 objectval_tyBM * expob; objectval_tyBM * connob;
                  value_tyBM errorv;
     );
   _.expv = expv;
@@ -680,15 +681,47 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
     FAILHERE ();
   if (!_.fromob)
     FAILHERE ();
-  DBGPRINTF_BM ("miniscan_expr start expv=%s routprepob=%s depth#%d fromob=%s", debug_outstr_value_BM (_.expv, (struct stackframe_stBM *) &_, 0),       //
+  DBGPRINTF_BM ("miniscan_expr start expv=%s routprepob=%s depth#%d fromob=%s", //
+                debug_outstr_value_BM (_.expv, (struct stackframe_stBM *) &_, 0),       //
                 objectdbg1_BM (_.routprepob), depth,
                 objectdbg2_BM (_.fromob));
+  int ke = valtype_BM (_.expv);
+  switch (ke)
+    {
+    case tyInt_BM:
+    case tyNone_BM:
+    case tyString_BM:
+      break;
+    case tySet_BM:
+      FAILHERE ();
+    case tyTuple_BM:
+      FAILHERE ();
+    case tyClosure_BM:
+      FAILHERE ();
+    case tyUnspecified_BM:
+      FAILHERE ();
+    case tyObject_BM:
+      {
+        _.expob = objectcast_BM (_.expv);
+        DBGPRINTF_BM ("miniscan_expr expob=%s", objectdbg_BM (_.expob));
+        break;
+      }
+    case tyNode_BM:
+      {
+        _.connob = nodeconn_BM (_.expv);
+        DBGPRINTF_BM ("miniscan_expr connob=%s", objectdbg_BM (_.expob));
+        break;
+      }
+    default:
+      FAILHERE ();
+    }
 #warning incomplete miniscan_expr_BM
-  DBGPRINTF_BM ("miniscan_expr end expv=%s",
+  DBGPRINTF_BM ("miniscan_expr end expv=%s",    //
                 debug_outstr_value_BM (_.expv,
                                        (struct stackframe_stBM *) &_, 0));
   LOCALJUSTRETURN_BM ();
 failure:
+  DBGPRINTF_BM ("miniscan_expr failin %d", failin);
   _.errorv =
     makenodevar_BM (k_miniscan_expr, _.expv, _.routprepob,
                     taggedint_BM (depth), _.fromob, NULL);
