@@ -685,8 +685,9 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
               if (objectisinstance_BM (_.seqcompob, k_basiclo_block))
                 {
                   DBGPRINTF_BM
-                    ("miniscan_stmt°basiclo_cond seqcompob %s is block",
-                     objectdbg_BM (_.seqcompob));
+                    ("miniscan_stmt°basiclo_cond seqcompob %s is block of %s",
+                     objectdbg_BM (_.seqcompob),
+                     objectdbg1_BM (objclass_BM (_.seqcompob)));
                   _.resv =
                     send3_BM (_.seqcompob, k_miniscan_block,
                               (struct stackframe_stBM *) &_, _.routprepob,
@@ -703,10 +704,11 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
               else if (objectisinstance_BM (_.seqcompob, k_basiclo_statement))
                 {
                   DBGPRINTF_BM
-                    ("miniscan_stmt°basiclo_cond seqcompob %s is statement",
-                     objectdbg_BM (_.seqcompob));
+                    ("miniscan_stmt°basiclo_cond seqcompob %s is statement of %s",
+                     objectdbg_BM (_.seqcompob),
+                     objectdbg1_BM (objclass_BM (_.seqcompob)));
                   _.resv =
-                    send3_BM (_.seqcompob, k_miniscan_block,
+                    send3_BM (_.seqcompob, k_miniscan_stmt,
                               (struct stackframe_stBM *) &_, _.routprepob,
                               taggedint_BM (depth + 1), _.compob);
                   DBGPRINTF_BM
