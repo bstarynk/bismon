@@ -1812,6 +1812,8 @@ ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    //
                  value_tyBM resultv;
     );
   _.modulob = objectcast_BM (arg1);
+  DBGPRINTF_BM ("emit_module command start modulob=%s",
+                objectdbg_BM (_.modulob));
   if (!_.modulob)
     {
       if (pthread_self () == mainthreadid_BM)
@@ -1834,6 +1836,9 @@ ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    //
   _.resultv =
     send0_BM (_.modulob, BMP_emit_module, (struct stackframe_stBM *) &_);
   objunlock_BM (_.modulob);
+  DBGPRINTF_BM ("emit_module command end modulob=%s result %s", objectdbg_BM (_.modulob),       //
+                debug_outstr_value_BM (_.resultv,
+                                       (struct stackframe_stBM *) &_, 0));
   if (_.resultv != NULL)
     {
       if (pthread_self () == mainthreadid_BM)
