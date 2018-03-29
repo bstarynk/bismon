@@ -759,8 +759,7 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7LNRlilrowp_0GG6ZLUFovu,
                  objectval_tyBM * recv;
-                 objectval_tyBM * routprepob;
-                 objectval_tyBM * fromblockob;
+                 objectval_tyBM * routprepob; objectval_tyBM * fromblockob;
                  objectval_tyBM * destob; value_tyBM srcexpv;
                  value_tyBM resv;
     );
@@ -781,8 +780,9 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //
   _.destob = objectcast_BM (objgetcomp_BM (_.recv, 0));
   _.srcexpv = objgetcomp_BM (_.recv, 1);
   DBGPRINTF_BM
-    ("miniscan_stmt°basiclo_assign recv=%s destob=%s", objectdbg_BM (_.recv),
-     objectdbg1_BM (_.destob));
+    ("miniscan_stmt°basiclo_assign recv=%s destob=%s of %s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.destob),
+     objectdbg2_BM (objclass_BM (_.destob)));
   WEAKASSERT_BM (isobject_BM (_.destob));
   _.resv =
     send3_BM (_.destob, k_miniscan_var,
