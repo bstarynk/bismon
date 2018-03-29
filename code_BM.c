@@ -2340,8 +2340,9 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
   _.dumpob = arg2;
   WEAKASSERT_BM (objhasstrbufferpayl_BM ((objectval_tyBM *) arg3));
   _.bufob = objectcast_BM (arg3);
-  DBGPRINTF_BM ("@@dump_data°plain_dumpable_module obmod=%s",
-                objectdbg_BM (_.obmod));
+  DBGPRINTF_BM
+    ("@@dump_data°plain_dumpable_module obmod=%s\n****++++++++++++++++\n",
+     objectdbg_BM (_.obmod));
   _.res = send0_BM (_.obmod, BMP_emit_module, (struct stackframe_stBM *) &_);
   if (_.res)
     {
@@ -2349,8 +2350,9 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
       memset (idbuf, 0, sizeof (idbuf));
       idtocbuf32_BM (objid_BM (_.obmod), idbuf);
       objstrbufferprintfpayl_BM (_.bufob, "\t// emitted module %s\n", idbuf);
-      DBGPRINTF_BM ("@@dump_data°plain_dumpable_module emitted obmod=%s",
-                    objectdbg_BM (_.obmod));
+      DBGPRINTF_BM
+        ("@@dump_data°plain_dumpable_module emitted obmod=%s\n****----------------\n",
+         objectdbg_BM (_.obmod));
     }
   LOCALRETURN_BM (_.res);
 
@@ -3958,7 +3960,7 @@ ROUTINEOBJNAME_BM (_6UxkFEHhNQS_0f65oUlZ7b5)    // dump_data°hashsetval_object
   for (unsigned ix = 0; ix < nbcont; ix++)
     {
       _.curval = nodenthson_BM (_.contv, ix);
-      if (!obdumpvalisfullydumpable_BM (du, _.curval))
+      if (!obdumpvalisfullydumpable_BM (_.dumpob, _.curval))
         continue;
       objstrbufferprintfpayl_BM (_.bufob, "\n!& ");
       _.dumpres = send3_BM (k_add, BMP_dump_value,
