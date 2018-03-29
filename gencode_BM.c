@@ -431,8 +431,16 @@ ROUTINEOBJNAME_BM (_10XOFm9ui6R_06F8qZQynnA)    //
 }                               /* end complete_module°basiclo*module _10XOFm9ui6R_06F8qZQynnA  */
 
 
-// for the method to collect_blocks in basiclo_block-s 
 
+extern void miniscan_var_BM (objectval_tyBM * varob,
+                             objectval_tyBM * routprepob, int depth,
+                             objectval_tyBM * fromob,
+                             struct stackframe_stBM *stkf);
+extern void miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
+                              int depth, objectval_tyBM * fromob,
+                              struct stackframe_stBM *stkf);
+
+// for the method to collect_blocks in basiclo_block-s 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu);
 value_tyBM
 ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
@@ -458,8 +466,6 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
   LOCALGETFUNV_BM (_.closv);
   if (!isclosure_BM (_.closv) || closurewidth_BM (_.closv) != closix__LAST)
     LOCALRETURN_BM (NULL);
-  const objectval_tyBM *k_miniscan_var = BMK_6jh60mO0Cgd_84B0HiNphqA;
-  const objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
   const objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
   const objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   const objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
@@ -518,18 +524,8 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
                    objectdbg_BM (_.curob), varix);
           LOCALRETURN_BM (NULL);
         }
-      /// should send k_miniscan_var
-      _.resv = send3_BM (_.curob,
-                         k_miniscan_var,
-                         (struct stackframe_stBM *) &_,
-                         _.routprep, taggedint_BM (depth), _.recv);
-      if (!_.resv)
-        {
-          fprintf (stderr,
-                   "collect_blocks°basiclo_block miniscan_variable of variable %s for varix#%d failed\n",
-                   objectdbg_BM (_.curob), varix);
-          LOCALRETURN_BM (NULL);
-        }
+      miniscan_var_BM (_.curob, _.routprep, depth, _.recv,
+                       (struct stackframe_stBM *) &_);
     }
   for (int argix = 0; argix < nbargs; argix++)
     {
@@ -538,18 +534,8 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
                     argix,
                     debug_outstr_value_BM (_.curexp,
                                            (struct stackframe_stBM *) &_, 0));
-      /// should send k_miniscan_expr
-      _.resv = send3_BM (_.curexp,
-                         k_miniscan_expr,
-                         (struct stackframe_stBM *) &_,
-                         _.routprep, taggedint_BM (depth), _.recv);
-      if (!_.resv)
-        {
-          fprintf (stderr,
-                   "collect_blocks°basiclo_block miniscan_expr for expix#%d failed\n",
-                   argix);
-          LOCALRETURN_BM (NULL);
-        }
+      miniscan_expr_BM (_.curexp, _.routprep, depth, _.recv,
+                        (struct stackframe_stBM *) &_);
     }
   int off = nbvars + nbargs;
   int nbblocks = objnbcomps_BM (_.recv) - off;
@@ -621,6 +607,86 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
 
 
 
+
+////////////////////////////////////////////////////////////////
+void
+miniscan_var_BM (objectval_tyBM * varob,
+                 objectval_tyBM * routprepob, int depth,
+                 objectval_tyBM * fromob, struct stackframe_stBM *stkf)
+{
+  const objectval_tyBM *k_miniscan_var = BMK_6jh60mO0Cgd_84B0HiNphqA;
+  int failin = -1;
+#define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_var,
+                 objectval_tyBM * varob;
+                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
+                 value_tyBM errorv;
+    );
+  _.varob = objectcast_BM (varob);
+  _.routprepob = objectcast_BM (routprepob);
+  _.fromob = objectcast_BM (fromob);
+  if (!_.varob)
+    FAILHERE ();
+  if (!_.routprepob)
+    FAILHERE ();
+  if (!_.fromob)
+    FAILHERE ();
+  DBGPRINTF_BM
+    ("miniscan_var start varob=%s routprepob=%s depth#%d fromob=%s",
+     objectdbg_BM (_.varob), objectdbg1_BM (_.routprepob), depth,
+     objectdbg2_BM (_.fromob));
+#warning incomplete miniscan_var_BM
+  DBGPRINTF_BM ("miniscan_var end varob=%s", objectdbg_BM (_.varob));
+  LOCALJUSTRETURN_BM ();
+failure:
+  _.errorv =
+    makenodevar_BM (k_miniscan_var, varob, routprepob, taggedint_BM (depth),
+                    fromob, NULL);
+  FAILURE_BM (failin, _.errorv, (struct stackframe_stBM *) &_);
+#undef FAILHERE
+}                               /* end miniscan_var_BM */
+
+
+void
+miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
+                  int depth, objectval_tyBM * fromob,
+                  struct stackframe_stBM *stkf)
+{
+  const objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
+  int failin = -1;
+#define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
+                 value_tyBM expv;
+                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
+                 value_tyBM errorv;
+    );
+  _.expv = expv;
+  _.routprepob = objectcast_BM (routprepob);
+  _.fromob = objectcast_BM (fromob);
+  if (!_.routprepob)
+    FAILHERE ();
+  if (!_.fromob)
+    FAILHERE ();
+  DBGPRINTF_BM ("miniscan_expr start expv=%s routprepob=%s depth#%d fromob=%s", debug_outstr_value_BM (_.expv, (struct stackframe_stBM *) &_, 0),       //
+                objectdbg1_BM (_.routprepob), depth,
+                objectdbg2_BM (_.fromob));
+#warning incomplete miniscan_expr_BM
+  DBGPRINTF_BM ("miniscan_expr end expv=%s",
+                debug_outstr_value_BM (_.expv,
+                                       (struct stackframe_stBM *) &_, 0));
+  LOCALJUSTRETURN_BM ();
+failure:
+  _.errorv =
+    makenodevar_BM (k_miniscan_expr, _.expv, _.routprepob,
+                    taggedint_BM (depth), _.fromob, NULL);
+  FAILURE_BM (failin, _.errorv, (struct stackframe_stBM *) &_);
+#undef FAILHERE
+}                               /* end miniscan_expr_BM */
+
+
+
+
+////////////////////////////////////////////////////////////////
 // for the method miniscan_stmt°basiclo_cond 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq);
 value_tyBM
@@ -640,7 +706,7 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
     );
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
   objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
-  objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
+  // objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
   const objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
   const objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
@@ -668,10 +734,8 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
       if (objectisinstance_BM (_.compob, k_basiclo_when))
         {
           _.testexpv = objgetattr_BM (_.compob, k_test);
-          _.resv = send3_BM (_.testexpv,
-                             k_miniscan_expr,
-                             (struct stackframe_stBM *) &_,
-                             _.routprepob, taggedint_BM (depth + 1), _.recv);
+          miniscan_expr_BM (_.testexpv, _.routprepob, depth + 1, _.recv,
+                            (struct stackframe_stBM *) &_);
           unsigned nbsubcomp = objnbcomps_BM (_.compob);
           for (unsigned cix = 0; cix < nbsubcomp && !badson; cix++)
             {
@@ -763,8 +827,6 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //
                  objectval_tyBM * destob; value_tyBM srcexpv;
                  value_tyBM resv;
     );
-  objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
-  objectval_tyBM *k_miniscan_var = BMK_6jh60mO0Cgd_84B0HiNphqA;
   int depth = 0;
   bool ok = false;
   _.recv = objectcast_BM (arg1);
@@ -784,33 +846,19 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //
      objectdbg_BM (_.recv), objectdbg1_BM (_.destob),
      objectdbg2_BM (objclass_BM (_.destob)));
   WEAKASSERT_BM (isobject_BM (_.destob));
-  _.resv =
-    send3_BM (_.destob, k_miniscan_var,
-              (struct stackframe_stBM *) &_, _.routprepob,
-              taggedint_BM (depth + 1), _.recv);
+  miniscan_var_BM (_.destob, _.routprepob, depth + 1, _.recv,
+                   (struct stackframe_stBM *) &_);
   DBGPRINTF_BM
-    ("miniscan_stmt°basiclo_assign after miniscan_var->%s resv=%s",
-     objectdbg_BM (_.destob),
-     debug_outstr_value_BM (_.resv, (struct stackframe_stBM *) &_, 0));
-  WEAKASSERT_BM (_.resv != NULL);
-  ok = _.resv != NULL;
-  if (ok)
-    {
-      DBGPRINTF_BM
-        ("miniscan_stmt°basiclo_assign recv=%s srcexpv=%s",
-         objectdbg_BM (_.recv), debug_outstr_value_BM (_.srcexpv,
-                                                       (struct stackframe_stBM
-                                                        *) &_, 0));
-      _.resv =
-        send3_BM (_.srcexpv, k_miniscan_expr, (struct stackframe_stBM *) &_,
-                  _.routprepob, taggedint_BM (depth + 1), _.recv);
-      DBGPRINTF_BM
-        ("miniscan_stmt°basiclo_assign after miniscan_expr->%s resv=%s",
-         debug_outstr_value_BM (_.srcexpv, (struct stackframe_stBM *) &_, 0),
-         debug_outstr_value_BM (_.resv, (struct stackframe_stBM *) &_, 0));
-      WEAKASSERT_BM (_.resv != NULL);
-      ok = _.resv != NULL;
-    }
+    ("miniscan_stmt°basiclo_assign after miniscan_var->%s",
+     objectdbg_BM (_.destob));
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_assign recv=%s srcexpv=%s", objectdbg_BM (_.recv),      //
+                debug_outstr_value_BM (_.srcexpv,
+                                       (struct stackframe_stBM *) &_, 0));
+  miniscan_expr_BM (_.srcexpv, _.routprepob, depth + 1, _.recv,
+                    (struct stackframe_stBM *) &_);
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_assign after miniscan_expr->%s",
+                debug_outstr_value_BM (_.srcexpv,
+                                       (struct stackframe_stBM *) &_, 0));
   objunlock_BM (_.recv);
   DBGPRINTF_BM
     ("miniscan_stmt°basiclo_assign end recv=%s ok=%s",
