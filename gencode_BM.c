@@ -723,6 +723,8 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
                       debug_outstr_value_BM (_.resv,
                                              (struct stackframe_stBM *) &_,
                                              0));
+        if (!_.resv)
+          FAILHERE ();
         break;
       }
     default:
