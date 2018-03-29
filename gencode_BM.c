@@ -633,14 +633,18 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv;
-                 objectval_tyBM * routprepob; objectval_tyBM * fromblockob;
-                 objectval_tyBM * compob; value_tyBM testexpv;
+                 objectval_tyBM * recv; objectval_tyBM * routprepob;
+                 objectval_tyBM * fromblockob; objectval_tyBM * compob;
+                 objectval_tyBM * seqcompob; value_tyBM testexpv;
                  value_tyBM resv;
     );
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
   objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
   objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
+  const objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
+  const objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
+  objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
+  objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   int depth = 0;
   bool badson = false;
   _.recv = objectcast_BM (arg1);
@@ -671,12 +675,60 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
           unsigned nbsubcomp = objnbcomps_BM (_.compob);
           for (unsigned cix = 0; cix < nbsubcomp && !badson; cix++)
             {
+              _.seqcompob = objectcast_BM (objgetcomp_BM (_.compob, cix));
+              WEAKASSERT_BM (isobject_BM (_.seqcompob));
+              DBGPRINTF_BM
+                ("miniscan_stmt°basiclo_cond recv=%s ix=%u compob=%s cix=%u seqcomp=%s",
+                 objectdbg_BM (_.recv), ix, objectdbg1_BM (_.compob), cix,
+                 objectdbg2_BM (_.seqcompob));
+              objlock_BM (_.seqcompob);
+              if (objectisinstance_BM (_.seqcompob, k_basiclo_block))
+                {
+                  DBGPRINTF_BM
+                    ("miniscan_stmt°basiclo_cond seqcompob %s is block",
+                     objectdbg_BM (_.seqcompob));
+                  _.resv =
+                    send3_BM (_.seqcompob, k_miniscan_block,
+                              (struct stackframe_stBM *) &_, _.routprepob,
+                              taggedint_BM (depth + 1), _.compob);
+                  DBGPRINTF_BM
+                    ("miniscan_stmt°basiclo_cond seqcompob after miniscan_block->%s resv=%s",
+                     objectdbg_BM (_.seqcompob),
+                     debug_outstr_value_BM (_.resv,
+                                            (struct stackframe_stBM *) &_,
+                                            0));
+                  if (!_.resv)
+                    badson = true;
+                }
+              else if (objectisinstance_BM (_.seqcompob, k_basiclo_statement))
+                {
+                  DBGPRINTF_BM
+                    ("miniscan_stmt°basiclo_cond seqcompob %s is statement",
+                     objectdbg_BM (_.seqcompob));
+                  _.resv =
+                    send3_BM (_.seqcompob, k_miniscan_block,
+                              (struct stackframe_stBM *) &_, _.routprepob,
+                              taggedint_BM (depth + 1), _.compob);
+                  DBGPRINTF_BM
+                    ("miniscan_stmt°basiclo_cond seqcompob after miniscan_stmt->%s resv=%s",
+                     objectdbg_BM (_.seqcompob),
+                     debug_outstr_value_BM (_.resv,
+                                            (struct stackframe_stBM *) &_,
+                                            0));
+                  if (!_.resv)
+                    badson = true;
+                }
+              objunlock_BM (_.seqcompob);
+
             }
-#warning miniscan_stmt°basiclo_cond incomplete, should handle components of compob
         }
       else
-        badson = false;
+        badson = true;
       objunlock_BM (_.compob);
+      DBGPRINTF_BM
+        ("miniscan_stmt°basiclo_cond recv=%s ix=%u done compob=%s badson %s",
+         objectdbg_BM (_.recv), ix, objectdbg1_BM (_.compob),
+         badson ? "true" : "false");
     }
   objunlock_BM (_.recv);
   DBGPRINTF_BM
