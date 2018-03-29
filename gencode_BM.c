@@ -669,8 +669,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
                  value_tyBM expv;
-                 objectval_tyBM * routprepob;
-                 objectval_tyBM * fromob;
+                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
                  objectval_tyBM * expob; objectval_tyBM * connob;
                  value_tyBM errorv;
     );
@@ -709,7 +708,9 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
     case tyNode_BM:
       {
         _.connob = nodeconn_BM (_.expv);
-        DBGPRINTF_BM ("miniscan_expr connob=%s", objectdbg_BM (_.expob));
+        unsigned arity = nodewidth_BM (_.expv);
+        DBGPRINTF_BM ("miniscan_expr connob=%s arity %d",
+                      objectdbg_BM (_.connob), arity);
         break;
       }
     default:
