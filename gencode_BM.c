@@ -664,11 +664,12 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
                   int depth, objectval_tyBM * fromob,
                   struct stackframe_stBM *stkf)
 {
-  const objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
+  objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
+  objectval_tyBM *k_miniscan_node_conn = BMK_5EGLdtUAQxA_1nebCsDKqOF;
   int failin = -1;
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
-                 value_tyBM expv;
+                 value_tyBM expv; value_tyBM resv;
                  objectval_tyBM * routprepob; objectval_tyBM * fromob;
                  objectval_tyBM * expob; objectval_tyBM * connob;
                  value_tyBM errorv;
@@ -709,8 +710,19 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
       {
         _.connob = nodeconn_BM (_.expv);
         unsigned arity = nodewidth_BM (_.expv);
-        DBGPRINTF_BM ("miniscan_expr connob=%s arity %d",
-                      objectdbg_BM (_.connob), arity);
+        DBGPRINTF_BM
+          ("miniscan_expr miniscan_node_conn->%s arity %d routprepob %s fromob %s before",
+           objectdbg_BM (_.connob), arity, objectdbg1_BM (_.routprepob),
+           objectdbg2_BM (_.fromob));
+        _.resv = send4_BM (_.connob, k_miniscan_node_conn,      //
+                           (struct stackframe_stBM *) &_,       //
+                           _.routprepob,
+                           taggedint_BM (depth), _.expv, _.fromob);
+        DBGPRINTF_BM ("miniscan_expr miniscan_node_conn->%s done resv=%s",      //
+                      objectdbg_BM (_.connob),  //
+                      debug_outstr_value_BM (_.resv,
+                                             (struct stackframe_stBM *) &_,
+                                             0));
         break;
       }
     default:

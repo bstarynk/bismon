@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 283 objects
+// for 284 objects
 // with 0 modules
 
 
@@ -1277,6 +1277,17 @@ _3JH05KgIzty_1K7IDyF43V2 |=assoc|
 !@ 1511369768.62
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_7k3xb0vred0_9ZRHcZmhw77
+
+
+
+!(_5EGLdtUAQxA_1nebCsDKqOF |=miniscan_node_conn|
+!~ name (~ miniscan_node_conn
+~)
+!@ 1522362451.18
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector to scan a node\'s connective"
+!)_5EGLdtUAQxA_1nebCsDKqOF
 
 
 
