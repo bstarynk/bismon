@@ -1793,3 +1793,67 @@ ROUTINEOBJNAME_BM (_5oSaKNehPiO_3GSlpH5boCW)    //
   free (realstr), realstr = NULL;
   LOCALRETURN_BM (_.argv);
 }                               /* end dump command_handler _5oSaKNehPiO_3GSlpH5boCW */
+
+// emit_module command_handler  _2bzzB0nZuUO_2xfj3rDb3DN
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    //
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // modulob
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_2bzzB0nZuUO_2xfj3rDb3DN,
+                 objectval_tyBM * modulob;
+                 value_tyBM resultv;
+    );
+  _.modulob = objectcast_BM (arg1);
+  if (!_.modulob)
+    {
+      if (pthread_self () == mainthreadid_BM)
+        {
+          log_begin_message_BM ();
+          log_puts_message_BM
+            ("missing argument to ,emit_module (module object expected).");
+          log_end_message_BM ();
+        };
+      LOCALRETURN_BM (NULL);
+    }
+  if (pthread_self () == mainthreadid_BM)
+    {
+      log_begin_message_BM ();
+      log_puts_message_BM ("should emit module ");
+      log_object_message_BM (_.modulob);
+      log_end_message_BM ();
+    };
+  objlock_BM (_.modulob);
+  _.resultv =
+    send0_BM (_.modulob, BMP_emit_module, (struct stackframe_stBM *) &_);
+  objunlock_BM (_.modulob);
+  if (_.resultv != NULL)
+    {
+      if (pthread_self () == mainthreadid_BM)
+        {
+          log_begin_message_BM ();
+          log_puts_message_BM ("did emit module ");
+          log_object_message_BM (_.modulob);
+          log_end_message_BM ();
+          LOCALRETURN_BM (_.resultv);
+        };
+    }
+  else
+    {
+      if (pthread_self () == mainthreadid_BM)
+        {
+          log_begin_message_BM ();
+          log_puts_message_BM ("failed to emit module ");
+          log_object_message_BM (_.modulob);
+          log_end_message_BM ();
+        };
+    }
+  LOCALRETURN_BM (NULL);
+}                               /* end emit_module command_handler _2bzzB0nZuUO_2xfj3rDb3DN */

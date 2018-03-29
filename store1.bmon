@@ -232,9 +232,13 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_3MZiKuLf93a_3YTtdOHeUH8 |=emit_module|
 !~ name (~ emit_module
 ~)
-!@ 1504610951.44
+!@ 1522343718.09
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to emit a module"
+!: _0xbmmxnN8E8_0ZuEqJmqMNH |=command_handler|
+ % _2bzzB0nZuUO_2xfj3rDb3DN ()
+!: _0NnNXZqWvmz_1ucZGX0YPu1 |=command_arity|
+ 1
 !)_3MZiKuLf93a_3YTtdOHeUH8
 
 
