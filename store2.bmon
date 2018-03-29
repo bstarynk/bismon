@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 282 objects
+// for 283 objects
 // with 0 modules
 
 
@@ -97,7 +97,8 @@
 ~)
 !@ 1506972489.27
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
+~: _6DdZwyaWLyK_7tS2BmECOJ0 |=miniscan_stmt|  % _7LNRlilrowp_0GG6ZLUFovu ()
 ~)
 
 !)_3HIw09Tmj0d_3CrcFHrGJab
@@ -3038,6 +3039,16 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method reserve\u00b0hashsetval_object"
 !)_7IlDChYeWQk_1l1rM2cq5uj
+
+
+
+!(_7LNRlilrowp_0GG6ZLUFovu
+!|*
+!@ 1522327076.41
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniscan_stmt\u00b0basiclo_assign"
+!)_7LNRlilrowp_0GG6ZLUFovu
 
 
 

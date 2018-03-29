@@ -739,3 +739,41 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
   else
     LOCALRETURN_BM (_.recv);
 }                               /* end routine miniscan_stmt°basiclo_cond _0zzJJsAL6Qm_2uw3eoWQHEq */
+
+
+
+
+// miniscan_stmt°basiclo_assign _7LNRlilrowp_0GG6ZLUFovu
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // recieving assign
+ const value_tyBM arg2,         // routine preparation
+ const value_tyBM arg3,         // depth
+ const value_tyBM arg4,         // containingblock
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_7LNRlilrowp_0GG6ZLUFovu,
+                 objectval_tyBM * recv; objectval_tyBM * routprepob;
+                 objectval_tyBM * fromblockob;
+    );
+  objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
+  int depth = 0;
+  bool badson = false;
+  _.recv = objectcast_BM (arg1);
+  _.routprepob = objectcast_BM (arg2);
+  depth = getint_BM (arg3);
+  _.fromblockob = objectcast_BM (arg4);
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_assign start recv=%s routprepob=%s depth#%d fromblockob=%s start",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob), depth,
+     objectdbg2_BM (_.fromblockob));
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_assign unimplemented end recv=%s",
+     objectdbg_BM (_.recv));
+#warning unimplemented _7LNRlilrowp_0GG6ZLUFovu routine
+  WEAKASSERT_BM (false && "unimplemented _7LNRlilrowp_0GG6ZLUFovu routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end miniscan_stmt°basiclo_assign _7LNRlilrowp_0GG6ZLUFovu */
