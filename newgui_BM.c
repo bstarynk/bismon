@@ -1483,7 +1483,7 @@ const objectval_tyBM *parsobjexp_newguicmd_BM
             codestartoff = gtk_text_iter_get_offset (&it);
           }
           log_puts_message_BM ("\n");
-          log_puts_message_BM ("// possible code for ");
+          log_puts_message_BM ("// ..possible code for ");
           log_object_message_BM (_.obj);
           log_printf_message_BM ("\n\n"
                                  "extern objrout_sigBM ROUTINEOBJNAME_BM (");
@@ -1500,7 +1500,7 @@ const objectval_tyBM *parsobjexp_newguicmd_BM
                                  " const quasinode_tyBM* restargs_  __attribute__((unused)))\n"
                                  "{\n"
                                  "  LOCALFRAME_BM (stkf, /*descr:*/ BMK%s,\n"
-                                 "   value_tyBM resultv;\n" "  );\n",
+                                 "                 value_tyBM resultv;\n" "  );\n",
                                  objidbuf);
           log_printf_message_BM ("#warning unimplemented ");
           log_object_message_BM (_.obj);

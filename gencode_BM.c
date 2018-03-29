@@ -775,5 +775,5 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //
      objectdbg_BM (_.recv));
 #warning unimplemented _7LNRlilrowp_0GG6ZLUFovu routine
   WEAKASSERT_BM (false && "unimplemented _7LNRlilrowp_0GG6ZLUFovu routine");
-  LOCALRETURN_BM (_.resultv);
+  LOCALRETURN_BM (NULL);
 }                               /* end miniscan_stmt°basiclo_assign _7LNRlilrowp_0GG6ZLUFovu */

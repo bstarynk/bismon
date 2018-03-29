@@ -1933,7 +1933,7 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
                 codestartoff = gtk_text_iter_get_offset (&it);
               }
               log_puts_message_BM ("\n");
-              log_puts_message_BM ("// possible code for ");
+              log_puts_message_BM ("// Possible code for ");
               log_object_message_BM (_.targobj);
               log_printf_message_BM ("\n\n"
                                      "extern objrout_sigBM ROUTINEOBJNAME_BM (");
