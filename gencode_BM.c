@@ -758,12 +758,16 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7LNRlilrowp_0GG6ZLUFovu,
-                 objectval_tyBM * recv; objectval_tyBM * routprepob;
+                 objectval_tyBM * recv;
+                 objectval_tyBM * routprepob;
                  objectval_tyBM * fromblockob;
+                 objectval_tyBM * destob; value_tyBM srcexpv;
+                 value_tyBM resv;
     );
   objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
+  objectval_tyBM *k_miniscan_var = BMK_6jh60mO0Cgd_84B0HiNphqA;
   int depth = 0;
-  bool badson = false;
+  bool ok = false;
   _.recv = objectcast_BM (arg1);
   _.routprepob = objectcast_BM (arg2);
   depth = getint_BM (arg3);
@@ -772,10 +776,47 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //
     ("miniscan_stmt°basiclo_assign start recv=%s routprepob=%s depth#%d fromblockob=%s start",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob), depth,
      objectdbg2_BM (_.fromblockob));
+  objlock_BM (_.recv);
+  WEAKASSERT_BM (objnbcomps_BM (_.recv) == 2);
+  _.destob = objectcast_BM (objgetcomp_BM (_.recv, 0));
+  _.srcexpv = objgetcomp_BM (_.recv, 1);
   DBGPRINTF_BM
-    ("miniscan_stmt°basiclo_assign unimplemented end recv=%s",
-     objectdbg_BM (_.recv));
-#warning unimplemented _7LNRlilrowp_0GG6ZLUFovu routine
-  WEAKASSERT_BM (false && "unimplemented _7LNRlilrowp_0GG6ZLUFovu routine");
-  LOCALRETURN_BM (NULL);
+    ("miniscan_stmt°basiclo_assign recv=%s destob=%s", objectdbg_BM (_.recv),
+     objectdbg1_BM (_.destob));
+  WEAKASSERT_BM (isobject_BM (_.destob));
+  _.resv =
+    send3_BM (_.destob, k_miniscan_var,
+              (struct stackframe_stBM *) &_, _.routprepob,
+              taggedint_BM (depth + 1), _.recv);
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_assign after miniscan_var->%s resv=%s",
+     objectdbg_BM (_.destob),
+     debug_outstr_value_BM (_.resv, (struct stackframe_stBM *) &_, 0));
+  WEAKASSERT_BM (_.resv != NULL);
+  ok = _.resv != NULL;
+  if (ok)
+    {
+      DBGPRINTF_BM
+        ("miniscan_stmt°basiclo_assign recv=%s srcexpv=%s",
+         objectdbg_BM (_.recv), debug_outstr_value_BM (_.srcexpv,
+                                                       (struct stackframe_stBM
+                                                        *) &_, 0));
+      _.resv =
+        send3_BM (_.srcexpv, k_miniscan_expr, (struct stackframe_stBM *) &_,
+                  _.routprepob, taggedint_BM (depth + 1), _.recv);
+      DBGPRINTF_BM
+        ("miniscan_stmt°basiclo_assign after miniscan_expr->%s resv=%s",
+         debug_outstr_value_BM (_.srcexpv, (struct stackframe_stBM *) &_, 0),
+         debug_outstr_value_BM (_.resv, (struct stackframe_stBM *) &_, 0));
+      WEAKASSERT_BM (_.resv != NULL);
+      ok = _.resv != NULL;
+    }
+  objunlock_BM (_.recv);
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_assign end recv=%s ok=%s",
+     objectdbg_BM (_.recv), ok ? "true" : "false");
+  if (ok)
+    LOCALRETURN_BM (_.recv);
+  else
+    LOCALRETURN_BM (NULL);
 }                               /* end miniscan_stmt°basiclo_assign _7LNRlilrowp_0GG6ZLUFovu */
