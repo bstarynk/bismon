@@ -43,7 +43,7 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
     BMK_80060zKi6Un_3isCStegT8A;
   const objectval_tyBM *k_body = BMK_7DQyvJFMOrC_9IfC3CtYknn;
   const objectval_tyBM *k_bindings = BMK_1zpi50AYid5_0j6it2DwVqm;
-  const objectval_tyBM *k_binding = BMK_6zu0x6tqX60_8QhJjiAOwul;
+  objectval_tyBM *k_binding = BMK_6zu0x6tqX60_8QhJjiAOwul;
   // retrieve arguments
   _.recv = /*function object */ (arg1);
   _.modgenob = /*module generation object */ objectcast_BM (arg2);
@@ -63,10 +63,10 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   objputclass_BM (_.bindob, k_binding);
   objtouchnow_BM (_.bindob);
   /// run _2hJWe55ydpv_5kaGdOUymFI:
-#warning the putattr of bindings is wrong, since an assoc
   objputattr_BM (_.routprepob, k_bindings, _.bindob);
+  //  objputattr_BM (_.routprepob, k_bindings, _.bindob);
   DBGPRINTF_BM
-    ("prepare_routine:basiclo_function recv %s routprepob %s bindob %s",
+    ("prepare_routine:basiclo_function recv %s new routprepob %s new bindob %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
      objectdbg2_BM (_.bindob));
   /// assign _9YS82HkgghD_71BLsDAKRfg
@@ -177,18 +177,18 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9);
 
 value_tyBM
 ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_minifunction
-(struct stackframe_stBM * stkf,
- const value_tyBM arg1,
- const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
- const quasinode_tyBM * restargs)
+(struct stackframe_stBM * stkf, const value_tyBM arg1,  // reciever
+ const value_tyBM arg2,         // modgen
+ const value_tyBM arg3,         // prepvalset
+ const value_tyBM arg4, const quasinode_tyBM * restargs)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * modgen;
-                 setval_tyBM * prepvalset; objectval_tyBM * curprepob;
-                 objectval_tyBM * routprep; objectval_tyBM * obhsetblock;
+                 setval_tyBM * prepvalset;
+                 objectval_tyBM * curprepob;
+                 objectval_tyBM * routprep;
+                 objectval_tyBM * obhsetblock;
                  value_tyBM recv;
-#warning routassoc is not a value, but an extendedval
-                 anyassoc_tyBM * routassoc;
                  const tupleval_tyBM * tupargs;
                  const tupleval_tyBM * tupclosed;
                  objectval_tyBM * obresult;
@@ -213,8 +213,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   const objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
   const objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   const objectval_tyBM *k_collect_blocks = BMK_99lWaExo3Bc_4J3HkjJOIJy;
+  const objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
   // retrieve arguments
-  _.recv = (arg1);
+  _.recv = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (_.recv));
   _.modgen = objectcast_BM (arg2);
   _.prepvalset = setcast_BM (arg3);     /// unneeded, set of all routines
@@ -222,7 +223,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   WEAKASSERT_BM (_.prepvalset != NULL);
   unsigned nbprep = setcardinal_BM (_.prepvalset);
   DBGPRINTF_BM
-    ("start prepare_routine°basiclo_minifunction _07qYMXftJRR_9dde2ASz4e9 recv=%s modgen=%s nbprep=%u",
+    ("start prepare_routine°basiclo_minifunction recv=%s modgen=%s nbprep=%u",
      objectdbg_BM (_.recv), objectdbg1_BM (_.modgen), nbprep);
   _.tupargs = tuplecast_BM (objgetattr_BM (_.recv, k_arguments));
   _.tupclosed = tuplecast_BM (objgetattr_BM (_.recv, k_closed));
@@ -239,6 +240,11 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   _.routprep = makeobj_BM ();
   objputclass_BM (_.routprep,
                   (objectval_tyBM *) k_simple_routine_preparation);
+  objputattr_BM (_.routprep, k_in, _.recv);
+  objputattr_BM (_.routprep, k_modgenob, _.modgen);
+  DBGPRINTF_BM
+    ("start prepare_routine°basiclo_minifunction recv=%s routprep=%s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep));
   unsigned nbargs = tuplesize_BM (_.tupargs);
   unsigned nbclosed = tuplesize_BM (_.tupclosed);
   unsigned nblocals = setcardinal_BM (_.setlocals);
@@ -247,8 +253,10 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction recv %s nbargs=%u nbclosed=%u nblocals=%u nbnumbers=%u nbconsts=%u",
      objectdbg_BM (_.recv), nbargs, nbclosed, nblocals, nbnumbers, nbconsts);
-  _.routassoc =
-    make_assoc_BM (2 + nbargs + nbclosed + nblocals + nbnumbers + nbconsts);
+  objputassocpayl_BM (_.routprep,
+                      2 + nbargs + nbclosed + nblocals + nbnumbers +
+                      nbconsts);
+  objtouchnow_BM (_.routprep);
   /// bind the arguments
   for (unsigned argix = 0; argix < nbargs; argix++)
     {
@@ -256,7 +264,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       DBGPRINTF_BM
         ("start prepare_routine°basiclo_minifunction argix=%u argum curvar=%s",
          argix, objectdbg_BM (_.curvar));
-      _.oldrol = assoc_getattr_BM (_.routassoc, _.curvar);
+      _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
       if (_.oldrol)
         {
           fprintf (stderr, "argument#%u %s is not fresh in minifunction %s\n",
@@ -264,7 +272,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
           LOCALRETURN_BM (NULL);
         }
       _.curol = makenodevar_BM (k_arguments, taggedint_BM (argix), NULL);
-      _.routassoc = assoc_addattr_BM (_.routassoc, _.curvar, _.curol);
+      objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
       _.curol = NULL;
     }
   /// bind the closed
@@ -274,7 +282,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       DBGPRINTF_BM
         ("start prepare_routine°basiclo_minifunction cloix=%u closed curvar=%s",
          cloix, objectdbg_BM (_.curvar));
-      _.oldrol = assoc_getattr_BM (_.routassoc, _.curvar);
+      _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
       if (_.oldrol)
         {
           fprintf (stderr, "closed#%u %s is not fresh in minifunction %s\n",
@@ -282,7 +290,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
           LOCALRETURN_BM (NULL);
         }
       _.curol = makenodevar_BM (k_closed, taggedint_BM (cloix), NULL);
-      _.routassoc = assoc_addattr_BM (_.routassoc, _.curvar, _.curol);
+      objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
       _.curol = NULL;
     }
   /// bind the locals
@@ -292,7 +300,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       DBGPRINTF_BM
         ("start prepare_routine°basiclo_minifunction locix=%u local curvar=%s",
          locix, objectdbg_BM (_.curvar));
-      _.oldrol = assoc_getattr_BM (_.routassoc, _.curvar);
+      _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
       if (_.oldrol)
         {
           fprintf (stderr, "local#%u %s is not fresh in minifunction %s\n",
@@ -300,17 +308,17 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
           LOCALRETURN_BM (NULL);
         }
       _.curol = makenodevar_BM (k_locals, taggedint_BM (locix), NULL);
-      _.routassoc = assoc_addattr_BM (_.routassoc, _.curvar, _.curol);
+      objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
       _.curol = NULL;
     }
-  // bind the numbers
+  // bind the number vars
   for (unsigned numix = 0; numix < nbnumbers; numix++)
     {
       _.curvar = setelemnth_BM (_.setnumbers, numix);
       DBGPRINTF_BM
         ("start prepare_routine°basiclo_minifunction numix=%u number curvar=%s",
          numix, objectdbg_BM (_.curvar));
-      _.oldrol = assoc_getattr_BM (_.routassoc, _.curvar);
+      _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
       if (_.oldrol)
         {
           fprintf (stderr, "number#%u %s is not fresh in minifunction %s\n",
@@ -318,7 +326,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
           LOCALRETURN_BM (NULL);
         }
       _.curol = makenodevar_BM (k_numbers, taggedint_BM (numix), NULL);
-      _.routassoc = assoc_addattr_BM (_.routassoc, _.curvar, _.curol);
+      objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
       _.curol = NULL;
     }
   // bind the constants
@@ -328,7 +336,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       DBGPRINTF_BM
         ("start prepare_routine°basiclo_minifunction cstix=%u constant curvar=%s",
          cstix, objectdbg_BM (_.curvar));
-      _.oldrol = assoc_getattr_BM (_.routassoc, _.curvar);
+      _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
       if (_.oldrol)
         {
           fprintf (stderr, "constant#%u %s is not fresh in minifunction %s\n",
@@ -336,10 +344,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
           LOCALRETURN_BM (NULL);
         }
       _.curol = makenodevar_BM (k_constants, taggedint_BM (cstix), NULL);
-      _.routassoc = assoc_addattr_BM (_.routassoc, _.curvar, _.curol);
+      objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
       _.curol = NULL;
     }
-  objputpayload_BM (_.routprep, _.routassoc);
   _.obhsetblock = makeobj_BM ();
   objputpayload_BM (_.obhsetblock, hashsetobj_grow_BM (NULL, 15));
   objputclass_BM (_.obhsetblock, (objectval_tyBM *) k_hset_object);
