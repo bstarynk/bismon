@@ -626,7 +626,8 @@ miniscan_var_BM (objectval_tyBM * varob,
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_var,
                  objectval_tyBM * varob;
-                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
+                 objectval_tyBM * routprepob;
+                 objectval_tyBM * fromob; value_tyBM vrolv;
                  value_tyBM errorv;
     );
   _.varob = objectcast_BM (varob);
@@ -642,6 +643,11 @@ miniscan_var_BM (objectval_tyBM * varob,
     ("miniscan_var start varob=%s routprepob=%s depth#%d fromob=%s",
      objectdbg_BM (_.varob), objectdbg1_BM (_.routprepob), depth,
      objectdbg2_BM (_.fromob));
+  WEAKASSERT_BM (objhasassocpayl_BM (_.routprepob));
+  _.vrolv = objassocgetattrpayl_BM (_.routprepob, _.varob);
+  DBGPRINTF_BM ("miniscan_var vrol=%s", //
+                debug_outstr_value_BM (_.vrolv,
+                                       (struct stackframe_stBM *) &_, 0));
 #warning incomplete miniscan_var_BM
   DBGPRINTF_BM ("miniscan_var end varob=%s", objectdbg_BM (_.varob));
   LOCALJUSTRETURN_BM ();
