@@ -145,11 +145,11 @@
   ASSERT_BM (prevfram_##Lin				\
 	  && ((typedhead_tyBM *)prevfram_##Lin)->htyp	\
 	  == typayl_StackFrame_BM);			\
-  prevfram_##Lin->stkfram_callclos = NULL;		\
+  prevfram_##Lin->stkfram_callfun = NULL;		\
   return;						\
  } while(0)
 #define LOCALJUSTRETURN_ATLIN_BM(Lin) LOCALJUSTRETURN_ATLIN_BIS_BM(Lin)
-#define LOCALJUSTRETURN_BM() LOCALRETURN_ATLIN_BM(__LINE__)
+#define LOCALJUSTRETURN_BM() LOCALJUSTRETURN_ATLIN_BM(__LINE__)
 
 
 #define LOCALQNODESIZED_BM(Qnam,Conn,Siz) struct {			\
