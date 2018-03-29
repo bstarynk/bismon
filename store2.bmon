@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 283 objects
+// for 282 objects
 // with 0 modules
 
 
@@ -1777,10 +1777,9 @@ _2mYaTh9kH4I_7ENiXcymRmy |=set|
 !(_80060zKi6Un_3isCStegT8A |=simple_routine_preparation|
 !~ name (~ simple_routine_preparation
 ~)
-!@ 1511079230.87
+!@ 1522338680.04
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
-~: _9uRC9w2Gte9_5mW0NanaS19 |=browse_data|  % _5KWAjUEGiiq_2B6rbvkCcgc ()
+!~ class (~ |supercl assoc_object:| _6ZQ05nCv3Ys_8LA6B5LkZgm
 ~)
 
 !)_80060zKi6Un_3isCStegT8A
@@ -2738,18 +2737,6 @@ _36MhHxakHKT_1ZzV5Xoj5LX
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "dump_scan\u00b0hashmapval_object method"
 !)_5DQ2V9upFQv_3I4NiDiwsdf
-
-
-
-!(_5KWAjUEGiiq_2B6rbvkCcgc
-!|*
-!@ 1511079355.60
-!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "method for browse_data of objects with some general value ob_data"
-!: _4rz1Bi4weGz_8Y03gU81cRL |=see|
- { _80060zKi6Un_3isCStegT8A }
-!)_5KWAjUEGiiq_2B6rbvkCcgc
 
 
 
