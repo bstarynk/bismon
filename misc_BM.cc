@@ -1,23 +1,49 @@
 // file misc_BM.cc
-extern "C" {
-#include "bismon.h"
-};
+
+/***
+    BISMON
+    Copyright © 2018 Basile Starynkevitch (working at CEA, LIST, France)
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+***/
 
 #include <fnmatch.h>
 #include <map>
 #include <new>
 #include <set>
 #include <vector>
+#include <deque>
+#include <mutex>
+#include <condition_variable>
 #include <unordered_map>
 #include <string>
+#include <atomic>
+#include <thread>
+#include <ratio>
+#include <chrono>
+extern "C" {
+#include <gtk/gtk.h>
+#include <glib.h>
+#include "bismon.h"
+};
 
 //// order with strcmp
 struct StrcmpLess_BM
 {
   inline bool operator() (const char*s1, const char*s2) const
   {
-    assert (s1 != nullptr);
-    assert (s2 != nullptr);
+    ASSERT_BM (s1 != nullptr);
+    ASSERT_BM (s2 != nullptr);
     return strcmp(s1,s2)<0;
   }
 };				// end StrcmpLess_BM
@@ -25,10 +51,10 @@ struct StrcmpLess_BM
 //// order with
 struct ValStringLess_BM
 {
-  inline bool operator() (const stringval_tyBM*vs1, const stringval_tyBM*vs2) const
+  inline bool operator() ( stringval_tyBM*vs1,  stringval_tyBM*vs2) const
   {
-    assert (valtype_BM((const value_tyBM)vs1) == tyString_BM);
-    assert (valtype_BM((const value_tyBM)vs2) == tyString_BM);
+    ASSERT_BM (valtype_BM((const value_tyBM)vs1) == tyString_BM);
+    ASSERT_BM (valtype_BM((const value_tyBM)vs2) == tyString_BM);
     return strcmp(vs1->strv_bytes,vs2->strv_bytes)<0;
   }
 };				// end ValStringLess_BM
@@ -57,12 +83,35 @@ struct IdLess_BM
   };
 };				// end IdLess_BM
 
+
+struct threadinfo_stBM;
+
 // keys are strdup-ed strings, values are objectval_tyBM*
 static std::map<const char*,objectval_tyBM*,StrcmpLess_BM> namemap_BM;
 
 
 // keys are objectval_tyBM*, values are strdup-ed strings
 static std::unordered_map<objectval_tyBM*,const char*,ObjectHash_BM> objhashtable_BM;
+
+struct failurelockset_stBM
+{
+  friend void register_failock_BM (struct failurelockset_stBM *,
+                                   objectval_tyBM *);
+  friend void unregister_failock_BM (struct failurelockset_stBM *,
+                                     objectval_tyBM *);
+  std::multiset<objectval_tyBM*,ObjectLess_BM> flhobjset;
+  failurelockset_stBM () {};
+  ~failurelockset_stBM ()
+  {
+    for (objectval_tyBM* ob : flhobjset)
+      {
+        ASSERT_BM (valtype_BM(ob) == tyObject_BM);
+        pthread_mutex_unlock(&ob->ob_mutex);
+      }
+  }
+  friend void initialize_failurelockset_BM(struct failurelockset_stBM *, size_t);
+  friend void destroy_failurelockset_BM(struct failurelockset_stBM *);
+};
 
 struct ModuleData_BM
 {
@@ -106,13 +155,13 @@ validname_BM (const char *nam)
 static void
 add_predefined_name_BM (const char *name, objectval_tyBM * obj)
 {
-  assert (validname_BM (name));
-  assert (isobject_BM (obj));
+  ASSERT_BM (validname_BM (name));
+  ASSERT_BM (isobject_BM (obj));
   char *dupname = strdup (name);
   if (!dupname)
     FATAL_BM ("strdup %s failed (%m)", name);
-  assert (namemap_BM.find(name) == namemap_BM.end());
-  assert (objhashtable_BM.find(obj) == objhashtable_BM.end());
+  ASSERT_BM (namemap_BM.find(name) == namemap_BM.end());
+  ASSERT_BM (objhashtable_BM.find(obj) == objhashtable_BM.end());
   namemap_BM.insert({dupname,obj});
   objhashtable_BM.insert({obj,dupname});
 }                               /* end add_predefined_name_BM */
@@ -185,7 +234,7 @@ forgetnamedobject_BM (const objectval_tyBM * obj)
     return false;
   const char* nam = itob->second;
   auto itn = namemap_BM.find(nam);
-  assert (itn != namemap_BM.end() && itn->second == obj);
+  ASSERT_BM (itn != namemap_BM.end() && itn->second == obj);
   objhashtable_BM.erase(itob);
   namemap_BM.erase(itn);
   free ((void*)nam);
@@ -201,9 +250,9 @@ forgetnamestring_BM (const char *nam)
   if (itn == namemap_BM.end())
     return false;
   objectval_tyBM* ob = itn->second;
-  assert (isobject_BM(ob));
+  ASSERT_BM (isobject_BM(ob));
   auto itob = objhashtable_BM.find(ob);
-  assert (itob != objhashtable_BM.end());
+  ASSERT_BM (itob != objhashtable_BM.end());
   const char*dupnam = itob->second;
   objhashtable_BM.erase(itob);
   namemap_BM.erase(itn);
@@ -220,7 +269,7 @@ setofnamedobjects_BM (void)
   for (auto itn: namemap_BM)
     {
       const objectval_tyBM* ob = itn.second;
-      assert (isobject_BM((const value_tyBM)ob));
+      ASSERT_BM (isobject_BM((const value_tyBM)ob));
       vectobj.push_back(ob);
     };
   return makeset_BM(vectobj.data(), vectobj.size());
@@ -240,7 +289,7 @@ setofprefixednamedobjects_BM (const char*prefix)
       int cmp = strncmp(itn->first, prefix, prefixlen);
       if (cmp) break;
       const objectval_tyBM* ob = itn->second;
-      assert (isobject_BM((const value_tyBM)ob));
+      ASSERT_BM (isobject_BM((const value_tyBM)ob));
       vectobj.push_back(ob);
     }
   return makeset_BM(vectobj.data(), vectobj.size());
@@ -257,7 +306,7 @@ setofmatchednamedobjects_BM(const char*fnmatcher)
   for (auto itn : namemap_BM)
     {
       const objectval_tyBM* ob = itn.second;
-      assert (isobject_BM((const value_tyBM)ob));
+      ASSERT_BM (isobject_BM((const value_tyBM)ob));
       if (!fnmatch(allcases?(fnmatcher+1):fnmatcher, itn.first,
                    allcases ? (FNM_EXTMATCH | FNM_CASEFOLD)
                    : FNM_EXTMATCH))
@@ -328,7 +377,7 @@ static std::map<std::string, objectval_tyBM**> mapglobals_BM;
 void initialize_globals_BM(void)
 {
 #define HAS_GLOBAL_BM(Gnam) do {		\
-  assert (mapglobals_BM.find(#Gnam)		\
+  ASSERT_BM (mapglobals_BM.find(#Gnam)		\
 	  == mapglobals_BM.end());		\
   mapglobals_BM[#Gnam] = &GLOBAL_BM(Gnam);	\
 } while(0);
@@ -338,9 +387,10 @@ void initialize_globals_BM(void)
 void
 gcmarkglobals_BM(struct garbcoll_stBM*gc)
 {
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   for (auto it: mapglobals_BM)
     if (it.second && *it.second)
-      gcmark_BM(gc, *it.second, 0);
+      gcobjmark_BM(gc, *it.second);
 } // end gcmarkglobals_BM
 
 
@@ -443,7 +493,7 @@ openmoduleforloader_BM(const rawid_tyBM modid,struct loader_stBM*ld, struct  sta
   modulemap_BM.insert({modid,ModuleData_BM{.mod_id=modid, .mod_dlh=dlh, .mod_obj=objmod}});
   if (ld)
     {
-      assert (ld->ld_magic == LOADERMAGIC_BM);
+      ASSERT_BM (ld->ld_magic == LOADERMAGIC_BM);
       ld->ld_modhset = hashsetobj_add_BM(ld->ld_modhset, objmod);
       value_tyBM closargs[2] = {NULL,NULL};
       closargs[0] = objmod;
@@ -467,13 +517,13 @@ openmoduleforloader_BM(const rawid_tyBM modid,struct loader_stBM*ld, struct  sta
 
 ////////////////////////////////////////////////////////////////
 
-typedef std::map<const stringval_tyBM*,const value_tyBM,ValStringLess_BM> dictmap_claBM;
+typedef std::map<stringval_tyBM*,value_tyBM,ValStringLess_BM> dictmap_claBM;
 
 struct dict_stBM*
 dictmake_BM(void)
 {
   struct dict_stBM*dict = //
-    (struct dict_stBM*)allocgcty_BM(tydata_dict_BM, sizeof(struct dict_stBM));
+    (struct dict_stBM*)allocgcty_BM(typayl_dict_BM, sizeof(struct dict_stBM));
   static_assert (sizeof (dict->dict_data) >= sizeof(dictmap_claBM), "too small dictdata");
   static_assert (alignof (dict->dict_data) >= alignof(dictmap_claBM), "too small dictdata");
   new(dict->dict_data) dictmap_claBM();
@@ -485,25 +535,25 @@ void
 dictgcmark_BM(struct garbcoll_stBM *gc, struct dict_stBM*dict,
               int depth)
 {
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
-  assert (isdict_BM (dict));
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (isdict_BM (dict));
   uint8_t oldmark = ((typedhead_tyBM *) dict)->hgc;
   if (oldmark)
     return;
   ((typedhead_tyBM *)dict)->hgc = MARKGC_BM;
   auto& dicm = *(dictmap_claBM*)dict->dict_data;
-  for (auto it : dicm)
+  for (auto& it : dicm)
     {
-      gcmark_BM(gc, (const value_tyBM)it.first, depth+1);
-      gcmark_BM(gc, (const value_tyBM)it.second, depth+1);
+      VALUEGCPROC_BM(gc, *(void**) &it.first, depth+1);
+      VALUEGCPROC_BM(gc, *(void**) &it.second, depth+1);
     }
 } // end dictgcmark_BM
 
 
 void dictgcdestroy_BM (struct garbcoll_stBM *gc, struct dict_stBM*dict)
 {
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
-  assert (isdict_BM (dict));
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (isdict_BM (dict));
   auto& dicm = *(dictmap_claBM*)dict->dict_data;
   size_t siz = dicm.size();
   dicm.clear();
@@ -516,8 +566,8 @@ void dictgcdestroy_BM (struct garbcoll_stBM *gc, struct dict_stBM*dict)
 
 void dictgckeep_BM (struct garbcoll_stBM *gc, struct dict_stBM*dict)
 {
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
-  assert (isdict_BM (dict));
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (isdict_BM (dict));
   auto& dicm = *(dictmap_claBM*)dict->dict_data;
   size_t siz = dicm.size();
   gc->gc_keptbytes += sizeof(*dict) + siz*2*sizeof(void*);
@@ -532,7 +582,7 @@ dictget_BM(const struct dict_stBM* dict, const stringval_tyBM*str)
   if (!isstring_BM((const value_tyBM)str))
     return nullptr;
   auto& dicm = *(dictmap_claBM*)dict->dict_data;
-  auto it = dicm.find(str);
+  auto it = dicm.find(const_cast<stringval_tyBM*>(str));
   if (it == dicm.end()) return nullptr;
   return it->second;
 } // end dictget_BM
@@ -557,8 +607,8 @@ void dictput_BM(struct dict_stBM* dict, const stringval_tyBM*str, const value_ty
   auto& dicm = *(dictmap_claBM*)dict->dict_data;
   if (dicm.size() > MAXSIZE_BM)
     FATAL_BM("too big dict %lu", (long) dicm.size());
-  if (val) dicm.insert({str,val});
-  else dicm.erase(str);
+  if (val) dicm.insert({const_cast<stringval_tyBM*>(str),(void*)val});
+  else dicm.erase(const_cast<stringval_tyBM*>(str));
 } // end dictput_BM
 
 
@@ -569,7 +619,7 @@ void dictremove_BM(struct dict_stBM* dict, const stringval_tyBM*str)
   if (!isstring_BM((const value_tyBM)str))
     return;
   auto& dicm = *(dictmap_claBM*)dict->dict_data;
-  dicm.erase(str);
+  dicm.erase(const_cast<stringval_tyBM*>(str));
 } // end dictremove_BM
 
 
@@ -586,7 +636,7 @@ dictkeyafter_BM(struct dict_stBM* dict, const stringval_tyBM*str)
       auto firstn = dicm.begin();
       return firstn->first;
     }
-  auto itn = dicm.upper_bound(str);
+  auto itn = dicm.upper_bound(const_cast<stringval_tyBM*>(str));
   if (itn != dicm.end())
     return itn->first;
   return nullptr;
@@ -606,7 +656,7 @@ dictkeysameorafter_BM(struct dict_stBM* dict, const stringval_tyBM*str)
       auto firstn = dicm.begin();
       return firstn->first;
     }
-  auto itn = dicm.lower_bound(str);
+  auto itn = dicm.lower_bound(const_cast<stringval_tyBM*>(str));
   if (itn != dicm.end())
     return itn->first;
   return nullptr;
@@ -627,7 +677,7 @@ dictkeybefore_BM(struct dict_stBM* dict, const stringval_tyBM*str)
       lastn--;
       return lastn->first;
     }
-  auto itn = dicm.lower_bound(str);
+  auto itn = dicm.lower_bound(const_cast<stringval_tyBM*>(str));
   if (itn != dicm.begin())
     itn--;
   else
@@ -657,6 +707,10 @@ dictnodeofkeys_BM(struct dict_stBM* dict, const objectval_tyBM*obj)
   return nodv;
 } // end dictnodeofkeys_BM
 
+
+////////////////////////////////////////////////////////////////
+/****** support for command window and paren blinking ******/
+
 static std::map<int,parenoffset_stBM> cmd_openmap_BM;
 static std::map<int,parenoffset_stBM> cmd_closemap_BM;
 
@@ -671,7 +725,7 @@ cmd_clear_parens_BM(void)
 void
 cmd_add_parens_BM (struct parenoffset_stBM*par)
 {
-  assert (par != nullptr);
+  ASSERT_BM (par != nullptr);
   cmd_openmap_BM.insert({par->paroff_open,*par});
   cmd_closemap_BM.insert({par->paroff_close,*par});
 } // end cmd_add_parens_BM
@@ -710,3 +764,249 @@ cmd_find_enclosing_parens_BM(int off)
   while (it != cmd_closemap_BM.begin());
   return nullptr;
 } // end cmd_find_enclosing_parens_BM
+
+
+////////////////////////////////////////////////////////////////
+
+struct deferdoappl_stBM
+{
+  union
+  {
+    value_tyBM defer_fun;
+    objectval_tyBM* defer_obsel;
+  };
+  value_tyBM defer_recv;
+  value_tyBM defer_arg1;
+  value_tyBM defer_arg2;
+  value_tyBM defer_arg3;
+};
+static std::deque<deferdoappl_stBM> deferdeque_BM;
+static std::mutex deferqmtx_BM;
+
+void
+gcmarkdefergtk_BM(struct garbcoll_stBM*gc)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  std::lock_guard<std::mutex> _g(deferqmtx_BM);
+  for (auto itd : deferdeque_BM)
+    {
+      if (itd.defer_recv)
+        {
+          VALUEGCPROC_BM (gc, itd.defer_fun, 0);
+          gcobjmark_BM(gc, itd.defer_obsel);
+        }
+      else
+        VALUEGCPROC_BM (gc, itd.defer_fun, 0);
+      if (itd.defer_arg1)
+        VALUEGCPROC_BM (gc, itd.defer_arg1, 0);
+      if (itd.defer_arg2)
+        VALUEGCPROC_BM (gc, itd.defer_arg2, 0);
+      if (itd.defer_arg3)
+        VALUEGCPROC_BM (gc, itd.defer_arg3, 0);
+    }
+} // end gcmarkdefergtk_BM
+
+extern "C" void
+do_internal_deferred_send3_gtk_BM(value_tyBM recv, objectval_tyBM*obsel, value_tyBM arg1, value_tyBM arg2, value_tyBM arg3);
+
+extern "C" void
+do_internal_deferred_apply3_gtk_BM(value_tyBM fun, value_tyBM arg1, value_tyBM arg2, value_tyBM arg3);
+
+extern "C" bool did_deferredgtk_BM (void);
+
+bool
+did_deferredgtk_BM (void)
+{
+  value_tyBM dfunv = nullptr;
+  objectval_tyBM* dobsel = nullptr;
+  value_tyBM darg1v = nullptr;
+  value_tyBM darg2v = nullptr;
+  value_tyBM darg3v = nullptr;
+  value_tyBM drecv = nullptr;
+  NONPRINTF_BM("did_deferredgtk_BM start tid#%ld elapsed %.3f s",
+               (long)gettid_BM(), elapsedtime_BM());
+  {
+    std::lock_guard<std::mutex> _g(deferqmtx_BM);
+    if (deferdeque_BM.empty())
+      {
+        NONPRINTF_BM("did_deferredgtk_BM empty tid#%ld",
+                     (long)gettid_BM());
+        return false;
+      }
+    auto f = deferdeque_BM.front();
+    if (f.defer_recv)
+      {
+        drecv = f.defer_recv;
+        dobsel = f.defer_obsel;
+      }
+    else
+      {
+        dfunv = f.defer_fun;
+        drecv = nullptr;
+      };
+    darg1v = f.defer_arg1;
+    darg2v = f.defer_arg2;
+    darg3v = f.defer_arg3;
+    deferdeque_BM.pop_front();
+  }
+  NONPRINTF_BM("did_deferredgtk_BM tid#%ld before dointernal",
+               (long)gettid_BM());
+  if (drecv)
+    do_internal_deferred_send3_gtk_BM(drecv, dobsel, darg1v, darg2v, darg3v);
+  else
+    do_internal_deferred_apply3_gtk_BM(dfunv, darg1v, darg2v, darg3v);
+  NONPRINTF_BM("did_deferredgtk_BM tid#%ld end",
+               (long)gettid_BM());
+  return true;
+} // end did_deferredgtk_BM
+
+
+
+
+extern "C" int defer_gtk_writepipefd_BM;
+void
+gtk_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_tyBM arg3,
+                     struct stackframe_stBM*stkf)
+{
+  struct thisframe
+  {
+    STACKFRAMEFIELDS_BM;
+    value_tyBM funv;
+    value_tyBM arg1;
+    value_tyBM arg2;
+    value_tyBM arg3;
+  } _;
+  memset ((void*)&_, 0, sizeof(_));
+  _.stkfram_pA.htyp = typayl_StackFrame_BM;
+  _.stkfram_pA.rlen = 4;
+  _.stkfram_prev = stkf;
+  //
+  _.funv = funv;
+  _.arg1 = arg1;
+  _.arg2 = arg2;
+  _.arg3 = arg3;
+  if (!isclosure_BM(funv) && !isobject_BM(funv))
+    {
+      NONPRINTF_BM("gtk_defer_apply bad funv %s",
+                   debug_outstr_value_BM (_.funv, //
+                                          (struct stackframe_stBM *) &_, 0));
+      return;
+    }
+  NONPRINTF_BM("gtk_defer_apply start tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
+               (long)gettid_BM(),
+               debug_outstr_value_BM (_.funv, //
+                                      (struct stackframe_stBM *) &_, 0), //
+               debug_outstr_value_BM (_.arg1, //
+                                      (struct stackframe_stBM *) &_, 0), //
+               debug_outstr_value_BM (_.arg2, //
+                                      (struct stackframe_stBM *) &_, 0), //
+               debug_outstr_value_BM (_.arg3, //
+                                      (struct stackframe_stBM *) &_, 0) //
+              );
+  if (defer_gtk_writepipefd_BM<0)
+    FATAL_BM("gtk_defer_apply3_BM without writepipe");
+  char ch = "0123456789abcdefghijklmnopqrstuvwxyz" [valhash_BM (_.funv) % 36];
+  {
+    std::lock_guard<std::mutex> _g(deferqmtx_BM);
+    struct deferdoappl_stBM dap = {};
+    dap.defer_fun = _.funv;
+    dap.defer_recv = nullptr;
+    dap.defer_arg1 = arg1;
+    dap.defer_arg2 = arg2;
+    dap.defer_arg3 = arg3;
+    deferdeque_BM.emplace_back(dap);
+  }
+  NONPRINTF_BM("gtk_defer_apply ch '%c' elapsed %.3f s", ch, elapsedtime_BM());
+  int nbtry = 0;
+  int wrcnt = 0;
+  for(;;)   // most of the time, this loop runs once
+    {
+      wrcnt = write(defer_gtk_writepipefd_BM, &ch, 1);
+      if (wrcnt>0)
+        {
+          NONPRINTF_BM("gtk_defer_apply done funv %s arg1 %s arg2 %s arg3 %s",
+                       debug_outstr_value_BM (_.funv, //
+                                              (struct stackframe_stBM *) &_, 0), //
+                       debug_outstr_value_BM (_.arg1, //
+                                              (struct stackframe_stBM *) &_, 0), //
+                       debug_outstr_value_BM (_.arg2, //
+                                              (struct stackframe_stBM *) &_, 0), //
+                       debug_outstr_value_BM (_.arg3, //
+                                              (struct stackframe_stBM *) &_, 0) //
+                      );
+          return;
+        }
+      else
+        NONPRINTF_BM("gtk_defer_apply ch '%c' wrcnt %d %m", ch, wrcnt);
+      usleep(1000);
+      nbtry++;
+      if (nbtry > 256)
+        FATAL_BM("gtk_defer_apply3_BM failed to write to pipe");
+    }
+} // end gtk_defer_apply3_BM
+
+
+void
+gtk_defer_send3_BM(value_tyBM recv, objectval_tyBM*obsel,  value_tyBM arg1, value_tyBM arg2, value_tyBM arg3)
+{
+  if (!recv) return;
+  if (!isobject_BM(obsel)) return;
+  if (defer_gtk_writepipefd_BM<0)
+    FATAL_BM("gtk_defer_send3_BM without writepipe");
+  char ch = "0123456789abcdefghijklmnopqrstuvwxyz" [valhash_BM (obsel) % 36];
+  {
+    std::lock_guard<std::mutex> _g(deferqmtx_BM);
+    struct deferdoappl_stBM dap = {};
+    dap.defer_obsel = obsel;
+    dap.defer_recv = recv;
+    dap.defer_arg1 = arg1;
+    dap.defer_arg2 = arg2;
+    dap.defer_arg3 = arg3;
+    deferdeque_BM.emplace_back(dap);
+  }
+  int nbtry = 0;
+  int wrcnt = 0;
+  for(;;)   // most of the time, this loop runs once
+    {
+      wrcnt = write(defer_gtk_writepipefd_BM, &ch, 1);
+      if (wrcnt>0)
+        return;
+      usleep(1000);
+      nbtry++;
+      if (nbtry > 256)
+        FATAL_BM("gtk_defer_send3_BM failed to write to pipe");
+    }
+} // end of gtk_defer_send3_BM
+
+
+
+////////////////
+
+void initialize_failurelockset_BM(struct failurelockset_stBM *fs, size_t sz)
+{
+  if (sz < sizeof(*fs))
+    FATAL_BM("initialize_failurelockset_BM too small size %zd want %zd",
+             sz, sizeof(*fs));
+  new ((void*)fs) failurelockset_stBM;
+} // end initialize_failurelockset_BM
+
+void destroy_failurelockset_BM(struct failurelockset_stBM *fs)
+{
+  fs->~failurelockset_stBM();
+} // end destroy_failurelockset_BM
+
+void
+register_failock_BM(struct failurelockset_stBM*flh, objectval_tyBM*ob)
+{
+  ASSERT_BM (flh != nullptr);
+  ASSERT_BM (isobject_BM(ob));
+  flh->flhobjset.insert(ob);
+} // end register_failock_BM
+
+void
+unregister_failock_BM(struct failurelockset_stBM*flh, objectval_tyBM* ob)
+{
+  ASSERT_BM (flh != nullptr);
+  ASSERT_BM (isobject_BM(ob));
+  flh->flhobjset.erase(ob);
+} // end unregister_failock_BM

@@ -1,15 +1,52 @@
 // file cmacros_BM.h
+
+/***
+    BISMON 
+    Copyright © 2018 Basile Starynkevitch (working at CEA, LIST, France)
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+***/
 #ifndef CMACROS_BM_INCLUDED
 #define CMACROS_BM_INCLUDED
+
 
 #define MAXDEPTHGC_BM 256
 #define MAXDEPTHPARSE_BM 96
 #define MAXDEPTHMETHOD_BM 96
+
+#define MAXAPPLYARGS_BM 128
+
 #define MARKGC_BM 1
 #define CLEARMGC_BM 0
 #define GCMAGIC_BM 24501383     /*0x175dc87 */
 
-#define HASHSETEMPTYSLOT_BM ((void*)(-1))
+#define MILLION_BM (1000*1000)
+#define BILLION_BM (1000*MILLION_BM)
+// see https://stackoverflow.com/a/11376759/841108
+// integer log in base 2, for a positive X
+#define ILOG2_BM(X) ((unsigned) (8*sizeof (unsigned long long) \
+				 - __builtin_clzll((X)) - 1))
+#define FAILUREHANDLEMAGIC_BM    853401645      /*Ox32dde02d */
+
+#define VALUEGCPROC_BM(Gc,Val,Depth)		\
+  do { if ((Val)!=NULL)				\
+      Val = (typeof(Val))(valuegcproc_BM ((Gc),	\
+					  (void*)(Val),(Depth))); } while(0)
+
+#define EXTENDEDGCPROC_BM(Gc,Xval,Depth) \
+  do { Xval = extendedgcproc_BM((Gc),(Xval),(Depth)); } while(0)
+
+#define HASHEMPTYSLOT_BM ((void*)(-1))
 
 #define STRBUFFERWANTEDWIDTH_BM 80
 #define LOADERMAGIC_BM 281610361        /*0x10c90879 */
@@ -54,11 +91,19 @@
 
 #define FATAL_BM(Fmt,...) FATAL_AT_BM(__FILE__,__LINE__,Fmt,##__VA_ARGS__)
 
+#ifndef NDEBUG
+#define ASSERT_BM(Cond) do { if (!(Cond)) FATAL_AT_BM (__FILE__,__LINE__,\
+	     "ASSERT failure: %s (in %s)", \
+	     #Cond, __PRETTY_FUNCTION__); } while(0)
+#else
+#define ASSERT_BM(Cond) do { if (false && !(Cond)) abort(); } while(0)
+#endif /* ASSERT_BM */
+
 #define LOCALFRAME_BM(Prev,Descr,...) struct                    \
   { struct stackframe_stBM __frame; __VA_ARGS__; } _ =          \
     { .__frame = {.stkfram_pA=                                  \
                   (typedhead_tyBM)                              \
-                  {.htyp= tydata_StackFrame_BM,                 \
+                  {.htyp= typayl_StackFrame_BM,                 \
                    .hgc=0,                                      \
                    .rlen=(sizeof(_)                             \
                           - offsetof(struct stackframe_stBM,    \
@@ -69,22 +114,60 @@
                   .stkfram_state=0,                             \
                   .stkfram_xtra=0 } }
 
+#define LOCALGETFUNV_ATLIN_BIS_BM(Lin,Funv) do {			\
+  struct stackframe_stBM*prevfram_##Lin					\
+    = _.__frame.stkfram_prev;						\
+  ASSERT_BM (prevfram_##Lin						\
+	  && ((typedhead_tyBM *)prevfram_##Lin)->htyp			\
+	  == typayl_StackFrame_BM);					\
+  ASSERT_BM (isclosure_BM ((value_tyBM)prevfram_##Lin->stkfram_callfun)	\
+	  || isobject_BM ((value_tyBM)prevfram_##Lin->stkfram_callfun)); \
+  Funv = (void*)prevfram_##Lin->stkfram_callfun;			\
+ } while(0)
+#define LOCALGETFUNV_ATLIN_BM(Lin,Clos) LOCALGETFUNV_ATLIN_BIS_BM(Lin,Clos)
+#define LOCALGETFUNV_BM(Clos) LOCALGETFUNV_ATLIN_BM(__LINE__,Clos)
+
+#define LOCALRETURN_ATLIN_BIS_BM(Lin,Res) do {		\
+  struct stackframe_stBM*prevfram_##Lin			\
+    = _.__frame.stkfram_prev;				\
+  ASSERT_BM (prevfram_##Lin				\
+	  && ((typedhead_tyBM *)prevfram_##Lin)->htyp	\
+	  == typayl_StackFrame_BM);			\
+  prevfram_##Lin->stkfram_callfun = NULL;		\
+  return (value_tyBM)(Res);				\
+ } while(0)
+#define LOCALRETURN_ATLIN_BM(Lin,Res) LOCALRETURN_ATLIN_BIS_BM(Lin,Res)
+#define LOCALRETURN_BM(Res) LOCALRETURN_ATLIN_BM(__LINE__,(Res))
+
+#define LOCALJUSTRETURN_ATLIN_BIS_BM(Lin) do {		\
+  struct stackframe_stBM*prevfram_##Lin			\
+    = _.__frame.stkfram_prev;				\
+  ASSERT_BM (prevfram_##Lin				\
+	  && ((typedhead_tyBM *)prevfram_##Lin)->htyp	\
+	  == typayl_StackFrame_BM);			\
+  prevfram_##Lin->stkfram_callclos = NULL;		\
+  return;						\
+ } while(0)
+#define LOCALJUSTRETURN_ATLIN_BM(Lin) LOCALJUSTRETURN_ATLIN_BIS_BM(Lin)
+#define LOCALJUSTRETURN_BM() LOCALRETURN_ATLIN_BM(__LINE__)
+
+
 #define LOCALQNODESIZED_BM(Qnam,Conn,Siz) struct {			\
     struct nodetree_stBM __ntree; value_tyBM qsons[Siz]; } Qnam =	\
-      { .__ntree = { .pA = { .pA					\
-			     = { .htyp= tydata_quasinode_BM,		\
-				 .hgc=0, .hash=0 }, .size = (Siz) },	\
+      { .__ntree = { .pA = { .pS =					\
+			     {.pA = { .htyp= typayl_quasinode_BM,	\
+				      .hgc=0, .hash=0 }, .size = (Siz) } }, \
 		     .nodt_conn= (Conn) }, .qsons= {} }
 
 #define LOCALQNODEFIELDED_BM(Qnam,Conn,...) struct {			\
   struct nodetree_stBM __ftree; __VA_ARGS__; } Qnam =			\
       { .__ftree = { .pA						\
-		     = { .pA						\
-			 = { .htyp= tydata_quasinode_BM,		\
+		     = { .pS = 						\
+			 {.pa = { .htyp= typayl_quasinode_BM,		\
 			     .hgc=0, .hash=0 },				\
 			 .size =					\
 			  ((sizeof(Qnam)-offsetof(tree_tyBM,nodt_sons)) \
-			   /sizeof(value_tyBM)) },			\
+			   /sizeof(value_tyBM)) } },			\
 		     .nodt_conn= (Conn) } }
 
 /// the routine inside object of id _60mLNh9vtVY_0pwkHRtJ44k would be
@@ -111,6 +194,38 @@
 #define NONPRINTF_BM(Fmt,...) do { if (false) \
       DBGPRINTF_BM(Fmt,##__VA_ARGS__); } while(0)
 
+#define FAILURE_AT_BIS_BM(Fcod,Fil,Lin,Reason,Stack) \
+  do {failure_at_BM((Fcod),(Fil),(Lin),(Reason),(Stack));} while(0)
+
+#define FAILURE_AT_BM(Fcod,Fil,Lin,Reason,Stack) \
+       FAILURE_AT_BIS_BM(Fcod,Fil,Lin,Reason,Stack)
+#define FAILURE_BM(FailCod,Reason,Stack) FAILURE_AT_BM((FailCod),__FILE__,__LINE__,(Reason),(Stack))
+
+
+#define LOCAL_FAILURE_HANDLE_ATBIS_BM(Fil,Lin,FcodVar,ReasonVar)	\
+  struct failurehandler_stBM fh_##Lin					\
+   = {									\
+     .pA = {.htyp = typayl_FailureHandler_BM},				\
+     .failh_magic = FAILUREHANDLEMAGIC_BM,				\
+     .failh_lockset = NULL,						\
+     .failh_reason = NULL,						\
+     .failh_jmpbuf = {}};						\
+  curfailurehandle_BM = &fh_##Lin;					\
+  volatile int failcod_##Lin =  setjmp(fh_##Lin.failh_jmpbuf);		\
+  FcodVar = failcod_##Lin;						\
+  if (failcod_##Lin) {							\
+    ReasonVar = fh_##Lin.failh_reason;					\
+  };									\
+  (void)0
+
+#define LOCAL_FAILURE_HANDLE_AT_BM(Fil,Lin,FcodVar,ReasonVar) \
+  LOCAL_FAILURE_HANDLE_ATBIS_BM(Fil,Lin,FcodVar,ReasonVar)
+
+/// code using LOCAL_FAILURE_HANDLE_BM should probably backup and
+/// restore the curfailurehandle_BM
+#define LOCAL_FAILURE_HANDLE_BM(FcodVar,ReasonVar) \
+  LOCAL_FAILURE_HANDLE_AT_BM(__FILE__,__LINE__,FcodVar,ReasonVar)
+
 // weak assert dont abort
 #ifndef NDEBUG
 extern void weakassertfailureat_BM (const char *condmsg, const char *fil,
@@ -118,9 +233,20 @@ extern void weakassertfailureat_BM (const char *condmsg, const char *fil,
 #define WEAKASSERT_BM(Cond) do { if(!(Cond)) \
       { weakassertfailureat_BM(#Cond,__FILE__,__LINE__); return 0; }} \
   while(0)
+#define WEAKASSERTRET_BM(Cond) do { if(!(Cond)) \
+      { weakassertfailureat_BM(#Cond,__FILE__,__LINE__); return; }} \
+  while(0)
+#define WEAKASSERTWARN_BM(Cond) do { if(!(Cond)) \
+      { weakassertfailureat_BM(#Cond,__FILE__,__LINE__); }} \
+  while(0)
 #else
 #define WEAKASSERT_BM(Cond) do if(false && !(Cond)) \
       {  return 0; }} while(0)
+#define WEAKASSERTRET_BM(Cond) do if(false && !(Cond)) \
+      {  return; }} while(0)
+#define WEAKASSERTWARN_BM(Cond) do { if(false && !(Cond)) \
+      { weakassertfailureat_BM(#Cond,__FILE__,__LINE__); } \
+  while(0)
 #endif /*NDEBUG*/
 // for readability, gravity argument to gtk_text_buffer_create_mark
 #define RIGHT_GRAVITY_BM FALSE
@@ -132,4 +258,7 @@ extern void weakassertfailureat_BM (const char *condmsg, const char *fil,
 #define BOXNOEXPAND_BM FALSE
 #define BOXFILL_BM TRUE
 #define BOXNOFILL_BM FALSE
+// agenda support
+#define MAXNBWORKJOBS_BM 16
+#define MINNBWORKJOBS_BM 2
 #endif /*CMACROS_BM_INCLUDED */

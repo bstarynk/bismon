@@ -1,5 +1,23 @@
 // file gui_BM.c
+
+/***
+    BISMON 
+    Copyright © 2018 Basile Starynkevitch (working at CEA, LIST, France)
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+***/
 #include "bismon.h"
+#include "gui_BM.const.h"
 
 GtkWidget *mainwin_BM;
 GtkWidget *errormessagedialog_BM;
@@ -30,6 +48,7 @@ GtkTextTag *toodeep_brotag_BM;
 GtkTextTag *str_brotag_BM;
 GtkTextTag *stresc_brotag_BM;
 GtkTextTag *miscomm_brotag_BM;
+GtkTextTag *epilogue_brotag_BM;
 
 #define BLINKDELAYMILLISEC_BM 750
 #define UNBLINKDELAYMILLISEC_BM 400
@@ -48,7 +67,43 @@ struct browsedval_stBM *browsedval_BM;
 guint browserblinkid_BM;
 struct parenoffset_stBM browserblinkparens_BM;  /// offsets are absolute
 
+// for $<var>, use find_named_value_gui_BM, show in  dollar_cmdtag.
+static parser_expand_dollarval_sigBM parsdollarval_guicmd_BM;
 
+// for $:<var>, use find_named_value_gui_BM, check that value is an
+// object, show it in dollar_cmdtag
+static parser_expand_dollarobj_sigBM parsdollarobj_guicmd_BM;
+
+// parse €<name> or $*<name>
+static parser_expand_newname_sigBM parsmakenewname_guicmd_BM;
+
+// parse inside $(...),
+// handle !> <obselector> (...) # to send a message for its result
+// handle ( .... ) # to apply a function
+// handle !. <obattr> # to get an attribute
+// handle !@ <index> # to get a component
+// handle $% <name>  # to show and bind to name
+static parser_expand_valexp_sigBM parsvalexp_guicmd_BM;
+
+
+// parse inside $[...],
+// handle * <name> to create a new (userE) named object
+// handle  !* <name> to create a new (global) named object
+// handle : to create a new transient anonymous object
+// handle ~ to create a new global anonymous object
+// handle % to create a new (userE) anonymous object
+// handle $:<var> to get the object registered as <var>
+// handle ( <expr> ) to cast a value into an object
+// handle <id> or <name> to  refer to an existing object
+static parser_expand_objexp_sigBM parsobjexp_guicmd_BM;
+
+// expand readmacros nodes with ^ macroname ( args )
+// apply the `command_readmacro` closure from the connective macroname
+static parser_expand_readmacro_sigBM parsreadmacroexp_guicmd_BM;
+
+// error at parsing: color in error_cmdtag, show the error dialog,
+// jongjmp to jmperrorcmd_BM
+static parser_error_sigBM parserror_guicmd_BM;
 int commandnumber_BM;
 /// stop completely the blinking
 static void browserblinkstop_BM (void);
@@ -63,10 +118,25 @@ static void browserblinkstart_BM (void);
 
 
 /// the completion set - should be a GC root
-const setval_tyBM *complsetcmd_BM;
+const seqobval_tyBM *complseqcmd_BM;
 /// begin and end offset for completion replacement
 int compbegoffcmd_BM, compendoffcmd_BM;
 char *complcommonprefix_BM;
+bool complbyid_BM;
+
+// browse the named value
+static void browse_named_value_gui_BM (const stringval_tyBM * namev,
+                                       const value_tyBM val,
+                                       const objectval_tyBM * objsel,
+                                       int browsdepth,
+                                       struct stackframe_stBM *stkf);
+// hide the named value
+static void hide_named_value_gui_BM (const stringval_tyBM * namev,
+                                     struct stackframe_stBM *stkf);
+
+// find the named value
+static value_tyBM find_named_value_gui_BM (const char *name);
+
 
 //////////////// command
 GtkTextTagTable *commandtagtable_BM;
@@ -81,6 +151,7 @@ GtkTextTag *time_logtag_BM;
 GtkTextTag *id_logtag_BM;
 GtkTextTag *name_logtag_BM;
 GtkTextTag *comment_logtag_BM;
+GtkTextTag *code_logtag_BM;
 GtkTextTag *command_logtag_BM;
 
 
@@ -93,6 +164,9 @@ GtkTextTag *delim_cmdtag_BM;
 GtkTextTag *knowname_cmdtag_BM;
 GtkTextTag *newname_cmdtag_BM;
 GtkTextTag *id_cmdtag_BM;
+GtkTextTag *number_cmdtag_BM;
+GtkTextTag *stringsign_cmdtag_BM;
+GtkTextTag *stringinside_cmdtag_BM;
 GtkTextTag *dollar_cmdtag_BM;
 GtkTextTag *nesting_cmdtag_BM;
 GtkTextTag *blink_cmdtag_BM;
@@ -145,6 +219,7 @@ const struct parserops_stBM parsop_command_build_BM = {
   .parsop_error_rout = parserror_guicmd_BM,
   .parsop_expand_dollarobj_rout = parsdollarobj_guicmd_BM,
   .parsop_expand_dollarval_rout = parsdollarval_guicmd_BM,
+  .parsop_expand_newname_rout = parsmakenewname_guicmd_BM,
   .parsop_expand_valexp_rout = parsvalexp_guicmd_BM,
   .parsop_expand_objexp_rout = parsobjexp_guicmd_BM,
   .parsop_expand_readmacro_rout = parsreadmacroexp_guicmd_BM,
@@ -154,6 +229,9 @@ const struct parserops_stBM parsop_command_build_BM = {
   .parsop_decorate_id_rout = parsid_guicmd_BM,
   .parsop_decorate_known_name_rout = parsknowname_guicmd_BM,
   .parsop_decorate_new_name_rout = parsnewname_guicmd_BM,
+  .parsop_decorate_number_rout = parsnumber_guicmd_BM,
+  .parsop_decorate_string_sign_rout = parsstringsign_guicmd_BM,
+  .parsop_decorate_string_inside_rout = parsstringinside_guicmd_BM,
   .parsop_decorate_nesting_rout = parsnesting_guicmd_BM,
   .parsop_decorate_start_nesting_rout = parsstartnesting_guicmd_BM,
 };
@@ -165,6 +243,7 @@ const struct parserops_stBM parsop_command_nobuild_BM = {
   .parsop_error_rout = parserror_guicmd_BM,
   .parsop_expand_dollarobj_rout = parsdollarobj_guicmd_BM,
   .parsop_expand_dollarval_rout = parsdollarval_guicmd_BM,
+  .parsop_expand_newname_rout = parsmakenewname_guicmd_BM,
   .parsop_expand_valexp_rout = parsvalexp_guicmd_BM,
   .parsop_expand_objexp_rout = parsobjexp_guicmd_BM,
   .parsop_expand_readmacro_rout = parsreadmacroexp_guicmd_BM,
@@ -174,6 +253,9 @@ const struct parserops_stBM parsop_command_nobuild_BM = {
   .parsop_decorate_id_rout = parsid_guicmd_BM,
   .parsop_decorate_known_name_rout = parsknowname_guicmd_BM,
   .parsop_decorate_new_name_rout = parsnewname_guicmd_BM,
+  .parsop_decorate_number_rout = parsnumber_guicmd_BM,
+  .parsop_decorate_string_sign_rout = parsstringsign_guicmd_BM,
+  .parsop_decorate_string_inside_rout = parsstringinside_guicmd_BM,
   .parsop_decorate_nesting_rout = parsnesting_guicmd_BM,
   .parsop_decorate_start_nesting_rout = parsstartnesting_guicmd_BM,
 };
@@ -214,28 +296,28 @@ textiterstrdbg_BM (GtkTextIter * it)
 
 
 void
-gcmarkgui_BM (struct garbcoll_stBM *gc)
+gcmarkoldgui_BM (struct garbcoll_stBM *gc)
 {
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   if (browsedobj_BM)
     {
       for (unsigned ix = 0; ix < browserobulen_BM; ix++)
         {
-          gcmark_BM (gc, (value_tyBM) browsedobj_BM[ix].brow_obj, 0);
-          gcmark_BM (gc, (value_tyBM) browsedobj_BM[ix].brow_objsel, 0);
+          gcobjmark_BM (gc, browsedobj_BM[ix].brow_obj);
+          gcobjmark_BM (gc, browsedobj_BM[ix].brow_objsel);
         }
     };
   if (browsedval_BM)
     {
       for (unsigned ix = 0; ix < browsednvulen_BM; ix++)
         {
-          gcmark_BM (gc, browsedval_BM[ix].brow_val, 0);
-          gcmark_BM (gc, (value_tyBM) browsedval_BM[ix].brow_name, 0);
+          VALUEGCPROC_BM (gc, browsedval_BM[ix].brow_val, 0);
+          VALUEGCPROC_BM (gc, browsedval_BM[ix].brow_name, 0);
         }
     }
-  if (complsetcmd_BM)
-    gcmark_BM (gc, (value_tyBM) complsetcmd_BM, 0);
-}                               /* end gcmarkgui_BM */
+  if (complseqcmd_BM)
+    VALUEGCPROC_BM (gc, complseqcmd_BM, 0);
+}                               /* end gcmarkoldgui_BM */
 
 
 
@@ -294,7 +376,7 @@ browserblinkoff_BM (gpointer data __attribute__ ((unused)))
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;
   if (!browserbuf_BM)
     {
-      if (newgui_BM)
+      if (!oldgui_BM)
         browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
         return G_SOURCE_REMOVE;
@@ -315,7 +397,7 @@ browserblinkon_BM (gpointer data __attribute__ ((unused)))
       GtkTextIter openendit = EMPTY_TEXT_ITER_BM;
       if (!browserbuf_BM)
         {
-          if (newgui_BM)
+          if (!oldgui_BM)
             browserbuf_BM = newgui_get_browsebuf_BM ();
           if (!browserbuf_BM)
             return G_SOURCE_REMOVE;
@@ -381,14 +463,14 @@ start_browse_object_BM (const objectval_tyBM * obj,
 {
   if (!browserbuf_BM)
     {
-      if (newgui_BM)
+      if (!oldgui_BM)
         browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
         return;
     };
   browserblinkstop_BM ();
-  assert (isobject_BM ((const value_tyBM) obj));
-  assert (isobject_BM ((const value_tyBM) objsel));
+  ASSERT_BM (isobject_BM ((const value_tyBM) obj));
+  ASSERT_BM (isobject_BM ((const value_tyBM) objsel));
   browsednvcurix_BM = -1;
   if (browserobulen_BM + 1 >= browserobsize_BM)
     {
@@ -408,7 +490,7 @@ start_browse_object_BM (const objectval_tyBM * obj,
     {
       md = (lo + hi) / 2;
       const objectval_tyBM *mdobj = browsedobj_BM[md].brow_obj;
-      assert (isobject_BM ((const value_tyBM) mdobj));
+      ASSERT_BM (isobject_BM ((const value_tyBM) mdobj));
       int cmp = objectnamedcmp_BM (mdobj, obj);
       if (cmp <= 0)
         lo = md;
@@ -418,11 +500,11 @@ start_browse_object_BM (const objectval_tyBM * obj,
   for (md = lo; md < hi; md++)
     {
       const objectval_tyBM *mdobj = browsedobj_BM[md].brow_obj;
-      assert (isobject_BM ((const value_tyBM) mdobj));
+      ASSERT_BM (isobject_BM ((const value_tyBM) mdobj));
       if (mdobj == obj)
         {                       // replacing existing object
-          GtkTextIter startit = EMPTY_TEXT_ITER_BM, endit =
-            EMPTY_TEXT_ITER_BM;
+          GtkTextIter startit = EMPTY_TEXT_ITER_BM;
+          GtkTextIter endit = EMPTY_TEXT_ITER_BM;
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &startit,
                                             browsedobj_BM[md].brow_ostartm);
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &endit,
@@ -476,10 +558,10 @@ start_browse_object_BM (const objectval_tyBM * obj,
           return;
         };
     };
-  assert (browserobulen_BM == 0
-          ||
-          objectnamedcmp_BM (browsedobj_BM
-                             [browserobulen_BM - 1].brow_obj, obj) < 0);
+  ASSERT_BM (browserobulen_BM == 0
+             ||
+             objectnamedcmp_BM (browsedobj_BM
+                                [browserobulen_BM - 1].brow_obj, obj) < 0);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
   GtkTextIter startit = EMPTY_TEXT_ITER_BM;
   if (browserobulen_BM == 0)
@@ -517,7 +599,7 @@ find_browsed_object_BM (const objectval_tyBM * obj)
     return NULL;
   if (!browserbuf_BM)
     {
-      if (newgui_BM)
+      if (!oldgui_BM)
         browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
         return NULL;
@@ -527,7 +609,7 @@ find_browsed_object_BM (const objectval_tyBM * obj)
     {
       md = (lo + hi) / 2;
       const objectval_tyBM *mdobj = browsedobj_BM[md].brow_obj;
-      assert (isobject_BM ((const value_tyBM) mdobj));
+      ASSERT_BM (isobject_BM ((const value_tyBM) mdobj));
       int cmp = objectnamedcmp_BM (mdobj, obj);
       if (cmp <= 0)
         lo = md;
@@ -537,7 +619,7 @@ find_browsed_object_BM (const objectval_tyBM * obj)
   for (md = lo; md < hi; md++)
     {
       const objectval_tyBM *mdobj = browsedobj_BM[md].brow_obj;
-      assert (isobject_BM ((const value_tyBM) mdobj));
+      ASSERT_BM (isobject_BM ((const value_tyBM) mdobj));
       if (mdobj == obj)
         return browsedobj_BM + md;
     }
@@ -553,7 +635,7 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
     return;
   if (!browserbuf_BM)
     {
-      if (newgui_BM)
+      if (!oldgui_BM)
         browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
         return;
@@ -566,7 +648,7 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
     {
       md = (lo + hi) / 2;
       const objectval_tyBM *mdobj = browsedobj_BM[md].brow_obj;
-      assert (isobject_BM ((const value_tyBM) mdobj));
+      ASSERT_BM (isobject_BM ((const value_tyBM) mdobj));
       int cmp = objectnamedcmp_BM (mdobj, objbrows);
       if (cmp <= 0)
         lo = md;
@@ -576,7 +658,7 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
   for (md = lo; md < hi; md++)
     {
       const objectval_tyBM *mdobj = browsedobj_BM[md].brow_obj;
-      assert (isobject_BM ((const value_tyBM) mdobj));
+      ASSERT_BM (isobject_BM ((const value_tyBM) mdobj));
       if (mdobj == objbrows)
         {
           GtkTextIter startit = EMPTY_TEXT_ITER_BM, endit =
@@ -618,7 +700,7 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
 {
   if (!browserbuf_BM)
     {
-      if (newgui_BM)
+      if (!oldgui_BM)
         browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
         return;
@@ -656,7 +738,8 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
   while (lo + 8 < hi)
     {
       md = (lo + hi) / 2;
-      assert (isstring_BM ((const value_tyBM) browsedval_BM[md].brow_name));
+      ASSERT_BM (isstring_BM
+                 ((const value_tyBM) browsedval_BM[md].brow_name));
       int cmp = strcmp (namstr, bytstring_BM (browsedval_BM[md].brow_name));
       if (cmp <= 0)
         lo = md;
@@ -666,7 +749,7 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
   for (md = lo; md < hi; md++)
     {
       struct browsedval_stBM *mdval = browsedval_BM + md;
-      assert (isstring_BM ((const value_tyBM) mdval->brow_name));
+      ASSERT_BM (isstring_BM ((const value_tyBM) mdval->brow_name));
       int cmp = strcmp (namstr, bytstring_BM (mdval->brow_name));
       if (cmp == 0)
         {                       /* replace existing named value */
@@ -763,7 +846,8 @@ find_browsed_named_value_BM (const char *namestr)
   while (lo + 8 < hi)
     {
       md = (lo + hi) / 2;
-      assert (isstring_BM ((const value_tyBM) browsedval_BM[md].brow_name));
+      ASSERT_BM (isstring_BM
+                 ((const value_tyBM) browsedval_BM[md].brow_name));
       int cmp = strcmp (namestr, bytstring_BM (browsedval_BM[md].brow_name));
       if (cmp <= 0)
         lo = md;
@@ -773,7 +857,7 @@ find_browsed_named_value_BM (const char *namestr)
   for (md = lo; md < hi; md++)
     {
       struct browsedval_stBM *mdval = browsedval_BM + md;
-      assert (isstring_BM ((const value_tyBM) mdval->brow_name));
+      ASSERT_BM (isstring_BM ((const value_tyBM) mdval->brow_name));
       if (!strcmp (namestr, bytstring_BM (mdval->brow_name)))
         return mdval;
     };
@@ -790,7 +874,8 @@ find_named_value_gui_BM (const char *namstr)
   while (lo + 8 < hi)
     {
       md = (lo + hi) / 2;
-      assert (isstring_BM ((const value_tyBM) browsedval_BM[md].brow_name));
+      ASSERT_BM (isstring_BM
+                 ((const value_tyBM) browsedval_BM[md].brow_name));
       int cmp = strcmp (namstr, bytstring_BM (browsedval_BM[md].brow_name));
       if (cmp <= 0)
         lo = md;
@@ -800,7 +885,7 @@ find_named_value_gui_BM (const char *namstr)
   for (md = lo; md < hi; md++)
     {
       struct browsedval_stBM *mdval = browsedval_BM + md;
-      assert (isstring_BM ((const value_tyBM) mdval->brow_name));
+      ASSERT_BM (isstring_BM ((const value_tyBM) mdval->brow_name));
       int cmp = strcmp (namstr, bytstring_BM (mdval->brow_name));
       if (cmp == 0)
         return mdval->brow_val;
@@ -824,7 +909,8 @@ hide_named_value_gui_BM (const stringval_tyBM * namev,
   while (lo + 8 < hi)
     {
       md = (lo + hi) / 2;
-      assert (isstring_BM ((const value_tyBM) browsedval_BM[md].brow_name));
+      ASSERT_BM (isstring_BM
+                 ((const value_tyBM) browsedval_BM[md].brow_name));
       int cmp = strcmp (namstr, bytstring_BM (browsedval_BM[md].brow_name));
       if (cmp <= 0)
         lo = md;
@@ -834,7 +920,7 @@ hide_named_value_gui_BM (const stringval_tyBM * namev,
   for (md = lo; md < hi; md++)
     {
       struct browsedval_stBM *mdval = browsedval_BM + md;
-      assert (isstring_BM ((const value_tyBM) mdval->brow_name));
+      ASSERT_BM (isstring_BM ((const value_tyBM) mdval->brow_name));
       int cmp = strcmp (namstr, bytstring_BM (mdval->brow_name));
       if (cmp == 0)
         {
@@ -873,35 +959,41 @@ browse_show_start_offset_BM (void)
 {
   if (!browserbuf_BM)
     {
-      if (newgui_BM)
+      if (!oldgui_BM)
         browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
         return -1;
     };
-  // exactly one of browserobcurix_BM or browsednvcurix_BM is active so >=0
-  assert (browserobcurix_BM >= 0 || browsednvcurix_BM >= 0);
-  assert (browserobcurix_BM < 0 || browsednvcurix_BM < 0);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
+  if (!oldgui_BM)
+    {
+      ASSERT_BM (browserbuf_BM != NULL);
+      gtk_text_buffer_get_start_iter (browserbuf_BM, &it);
+      return gtk_text_iter_get_offset (&it);
+    }
+  // exactly one of browserobcurix_BM or browsednvcurix_BM is active so >=0
+  ASSERT_BM (browserobcurix_BM >= 0 || browsednvcurix_BM >= 0);
+  ASSERT_BM (browserobcurix_BM < 0 || browsednvcurix_BM < 0);
   if (browserobcurix_BM >= 0)
     {
-      assert (browserobcurix_BM < (int) browserobulen_BM);
-      assert (browserobulen_BM <= browserobsize_BM);
-      assert (browsednvcurix_BM < 0);
-      assert (browsedobj_BM[browserobcurix_BM].brow_obj != NULL);
-      assert (browsedobj_BM[browserobcurix_BM].brow_ostartm != NULL);
-      assert (browsedobj_BM[browserobcurix_BM].brow_oendm != NULL);
+      ASSERT_BM (browserobcurix_BM < (int) browserobulen_BM);
+      ASSERT_BM (browserobulen_BM <= browserobsize_BM);
+      ASSERT_BM (browsednvcurix_BM < 0);
+      ASSERT_BM (browsedobj_BM[browserobcurix_BM].brow_obj != NULL);
+      ASSERT_BM (browsedobj_BM[browserobcurix_BM].brow_ostartm != NULL);
+      ASSERT_BM (browsedobj_BM[browserobcurix_BM].brow_oendm != NULL);
       gtk_text_buffer_get_iter_at_mark
         (browserbuf_BM, &it, browsedobj_BM[browserobcurix_BM].brow_ostartm);
     }
   else if (browsednvcurix_BM >= 0)
     {
-      assert (browsednvcurix_BM < (int) browsednvulen_BM);
-      assert (browsednvulen_BM <= browsednvsize_BM);
-      assert (browserobcurix_BM < 0);
-      assert (browsedval_BM[browsednvcurix_BM].brow_name != NULL);
-      assert (browsedval_BM[browsednvcurix_BM].brow_val != NULL);
-      assert (browsedval_BM[browsednvcurix_BM].brow_vstartmk != NULL);
-      assert (browsedval_BM[browsednvcurix_BM].brow_vendmk != NULL);
+      ASSERT_BM (browsednvcurix_BM < (int) browsednvulen_BM);
+      ASSERT_BM (browsednvulen_BM <= browsednvsize_BM);
+      ASSERT_BM (browserobcurix_BM < 0);
+      ASSERT_BM (browsedval_BM[browsednvcurix_BM].brow_name != NULL);
+      ASSERT_BM (browsedval_BM[browsednvcurix_BM].brow_val != NULL);
+      ASSERT_BM (browsedval_BM[browsednvcurix_BM].brow_vstartmk != NULL);
+      // we don't care about browsedval_BM[browsednvcurix_BM].brow_vendmk; it could be NULL
       gtk_text_buffer_get_iter_at_mark
         (browserbuf_BM, &it, browsedval_BM[browsednvcurix_BM].brow_vstartmk);
     }
@@ -916,15 +1008,19 @@ browse_show_start_offset_BM (void)
 void
 browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
                       unsigned openlen, unsigned closelen,
-                      unsigned xtralen, int depth)
+                      unsigned xtralen, int depth,
+                      struct stackframe_stBM *stkf)
 {
-  assert ((browserobcurix_BM >= 0
-           && browserobcurix_BM < (int) browserobulen_BM)
-          || (browsednvcurix_BM >= 0
-              && browsednvcurix_BM < (int) browsednvulen_BM));
+  NONPRINTF_BM ("browse_add_parens openoff=%d closeoff=%d xtraoff=%d\n"
+                ".. openlen=%u closelen=%u xtralen=%u depth=%d",
+                openoff, closeoff, xtraoff,
+                openlen, closelen, xtralen, depth);
+  ASSERT_BM ((browserobcurix_BM >= 0 && browserobcurix_BM < (int) browserobulen_BM)     //
+             || (browsednvcurix_BM >= 0 && browsednvcurix_BM < (int) browsednvulen_BM)  //
+             || !oldgui_BM);
   if (browserobcurix_BM >= 0)
     {
-      assert (browsednvcurix_BM < 0);
+      ASSERT_BM (browsednvcurix_BM < 0);
       struct browsedobj_stBM *curbrob = browsedobj_BM + browserobcurix_BM;
       unsigned oldulen = curbrob->brow_oparenulen;
       if (oldulen + 1 >= curbrob->brow_oparensize)
@@ -952,7 +1048,7 @@ browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
     }
   else if (browsednvcurix_BM >= 0)
     {
-      assert (browserobcurix_BM < 0);
+      ASSERT_BM (browserobcurix_BM < 0);
       struct browsedval_stBM *curbrval = browsedval_BM + browsednvcurix_BM;
       unsigned oldulen = curbrval->brow_vparenulen;
       if (oldulen + 1 >= curbrval->brow_vparenulen)
@@ -978,9 +1074,17 @@ browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
       curpar->paroff_depth = depth;
       curbrval->brow_vparenulen = oldulen + 1;
     }
+  else if (!oldgui_BM)
+    {
+      newgui_browse_add_parens_BM (openoff, closeoff, xtraoff,
+                                   openlen, closelen, xtralen, depth, stkf);
+    }
   else
     FATAL_BM ("no browsed object or named value");
 }                               /* end browse_add_parens_BM */
+
+
+
 
 static void
 browse_object_gui_content_BM (const objectval_tyBM * objbrows,
@@ -1080,7 +1184,7 @@ browse_value_gui_content_BM (const stringval_tyBM * namev,
   _.val = (value_tyBM) val;
   _.objsel = objsel;
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
-  assert (browsednvcurix_BM >= 0);
+  ASSERT_BM (browsednvcurix_BM >= 0);
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "$", -1,
                                     valtitle_brotag_BM, NULL);
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,
@@ -1200,8 +1304,8 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
       _.objbrows = curbrob->brow_obj;
       _.objsel = curbrob->brow_objsel;
       int curdepth = curbrob->brow_odepth;
-      assert (isobject_BM ((value_tyBM) _.objbrows));
-      assert (isobject_BM ((value_tyBM) _.objsel));
+      ASSERT_BM (isobject_BM ((value_tyBM) _.objbrows));
+      ASSERT_BM (isobject_BM ((value_tyBM) _.objsel));
       browserobcurix_BM = boix;
       GtkTextIter startit = it;
       gtk_text_buffer_insert (browserbuf_BM, &it, "\n", -1);
@@ -1265,12 +1369,15 @@ void
 quitgui_BM (void)
 {
   //  printf ("quitgui_BM\n");
+  DBGPRINTF_BM ("quitgui start tid#%ld", (long) gettid_BM ());
   GtkWidget *quitdialog =       //
     gtk_message_dialog_new_with_markup  //
     (GTK_WINDOW (mainwin_BM),
      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_QUESTION,
      GTK_BUTTONS_OK_CANCEL, "Quit without dumping?");
   int resp = gtk_dialog_run (GTK_DIALOG (quitdialog));
+  DBGPRINTF_BM ("quitgui  tid#%ld resp=%d %s", (long) gettid_BM (),
+                resp, (resp == GTK_RESPONSE_OK) ? "ok" : "...");
   if (resp == GTK_RESPONSE_OK)
     {
       gtk_main_quit ();
@@ -1287,11 +1394,14 @@ quitgui_BM (void)
         }
     }
   gtk_widget_destroy (quitdialog);
+  DBGPRINTF_BM ("quitgui end tid#%ld", (long) gettid_BM ());
 }                               /* end quitgui_BM */
 
 void
 exitgui_BM (void)
 {
+  DBGPRINTF_BM ("exitgui start tid#%ld elapsed %.3f s",
+                (long) gettid_BM (), elapsedtime_BM ());
   extern char *dump_dir_bm;
   struct dumpinfo_stBM di = dump_BM (dump_dir_bm, NULL);
   gtk_main_quit ();
@@ -1309,14 +1419,17 @@ exitgui_BM (void)
                dump_dir_bm, nowbuf);
       fflush (gui_command_log_file_BM);
     }
+  DBGPRINTF_BM ("exitgui end tid#%ld elapsed %.3f s",
+                (long) gettid_BM (), elapsedtime_BM ());
 }                               /* end exitgui_BM */
 
 
 void
 dumpgui_BM (void)
 {
+  DBGPRINTF_BM ("dumpgui start tid#%ld", (long) gettid_BM ());
   extern char *dump_dir_bm;
-  assert (dump_dir_bm != NULL);
+  ASSERT_BM (dump_dir_bm != NULL);
   log_begin_message_BM ();
   log_printf_message_BM ("dumping into %s directory", dump_dir_bm);
   {
@@ -1351,25 +1464,29 @@ dumpgui_BM (void)
                dump_dir_bm, nowbuf);
       fflush (gui_command_log_file_BM);
     }
+  DBGPRINTF_BM ("dumpgui end tid#%ld", (long) gettid_BM ());
 }                               /* end dumpgui_BM */
 
 void
 garbcollgui_BM (void)
 {
-  assert (mainthreadid_BM == pthread_self ());
+  DBGPRINTF_BM ("garbcollgui start tid#%ld", (long) gettid_BM ());
+  ASSERT_BM (mainthreadid_BM == pthread_self ());
   log_begin_message_BM ();
+  atomic_store (&want_garbage_collection_BM, true);
   log_puts_message_BM ("forced garbage collection");
   log_end_message_BM ();
-  fullgarbagecollection_BM (NULL);
+  full_garbage_collection_BM (NULL);
+  DBGPRINTF_BM ("garbcollgui end tid#%ld", (long) gettid_BM ());
 }                               /* end garbcollgui_BM */
 
 bool
-deletemainwin_BM (GtkWidget * widget
-                  __attribute__ ((unused)), GdkEvent * ev
-                  __attribute__ ((unused)), gpointer data
-                  __attribute__ ((unused)))
+deletemainwin_BM (GtkWidget * widget __attribute__ ((unused)),  //
+                  GdkEvent * ev __attribute__ ((unused)),       //
+                  gpointer data __attribute__ ((unused)))
 {
   // printf ("deletemainwin_BM\n");
+  DBGPRINTF_BM ("deletemainwin_BM tid#%ld", (long) gettid_BM ());
   GtkWidget *quitdialog =       //
     gtk_message_dialog_new_with_markup  //
     (GTK_WINDOW (mainwin_BM),
@@ -1481,7 +1598,7 @@ log_puts_message_BM (const char *msg)
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_end_iter (logbuf_BM, &it);
   gtk_text_buffer_insert (logbuf_BM, &it, msg, -1);
-}
+}                               /* end log_puts_message_BM */
 
 void
 log_printf_message_BM (const char *fmt, ...)
@@ -1499,7 +1616,7 @@ log_printf_message_BM (const char *fmt, ...)
       if (!buf)
         FATAL_BM ("failed to calloc for %d bytes (%m)", ln);
       va_start (args, fmt);
-      ln = vsnprintf (buf, ln + 1, fmt, args);
+      vsnprintf (buf, ln + 1, fmt, args);
       va_end (args);
     }
   log_puts_message_BM (buf);
@@ -1508,12 +1625,12 @@ log_printf_message_BM (const char *fmt, ...)
 }                               /* end log_printf_message_BM */
 
 void
-parserror_guicmd_BM (struct parser_stBM *pars,
+parserror_guicmd_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf,
                      unsigned lineno, unsigned colpos, char *msg)
 {
-  assert (isparser_BM (pars));
+  ASSERT_BM (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsops && parsops->parsop_nobuild;
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
@@ -1546,6 +1663,7 @@ parserror_guicmd_BM (struct parser_stBM *pars,
       /// errormessagedialog_BM is run in runcommand_BM 
     }
   free (msg);
+#warning should use failure in parserror_guicmd_BM
   longjmp (jmperrorcmd_BM, 1);
 }                               /* end parserror_guicmd_BM */
 
@@ -1562,18 +1680,22 @@ parsdollarval_guicmd_BM (struct parser_stBM *pars,
   const char *varstr = NULL;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  value_tyBM val;);
-  assert (isparser_BM (pars));
+  ASSERT_BM (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
   if (isstring_BM (varname))
     varstr = bytstring_BM (varname);
   else if (isobject_BM (varname))
     varstr = findobjectname_BM (varname);
+  else if (varname == NULL)
+    varstr = BMK_7bD9VtDkGSn_7lxHeYuuFLR;       // result
   if (!varstr)
-    parsererrorprintf_BM (pars, lineno, colpos, "invalid $<var>");
+    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,
+                          "invalid $<var>");
   _.val = find_named_value_gui_BM (varstr);
   if (!_.val && !nobuild)
-    parsererrorprintf_BM (pars, lineno, colpos, "not found $%s", varstr);
+    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,
+                          "not found $%s", varstr);
   GtkTextIter it = EMPTY_TEXT_ITER_BM, endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
@@ -1601,13 +1723,18 @@ parsdollarobj_guicmd_BM (struct parser_stBM *pars,
     varstr = bytstring_BM (varname);
   else if (isobject_BM (varname))
     varstr = findobjectname_BM (varname);
+  else if (varname == NULL)
+    varstr = BMK_7bD9VtDkGSn_7lxHeYuuFLR;       /* result */
   if (!varstr)
-    parsererrorprintf_BM (pars, lineno, colpos, "invalid $:<var>");
+    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,
+                          "invalid $:<var>");
   _.val = find_named_value_gui_BM (varstr);
   if (!_.val && !nobuild)
-    parsererrorprintf_BM (pars, lineno, colpos, "not found $:%s", varstr);
+    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,
+                          "not found $:%s", varstr);
   if (!isobject_BM (_.val) && !nobuild)
-    parsererrorprintf_BM (pars, lineno, colpos, "non-object $:%s", varstr);
+    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,
+                          "non-object $:%s", varstr);
   GtkTextIter it = EMPTY_TEXT_ITER_BM, endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
@@ -1616,6 +1743,38 @@ parsdollarobj_guicmd_BM (struct parser_stBM *pars,
   gtk_text_buffer_apply_tag (commandbuf_BM, dollar_cmdtag_BM, &it, &endit);
   return (const objectval_tyBM *) _.val;
 }                               /* end parsdollarobj_guicmd_BM */
+
+
+// for €<newname> or $*<newname>
+const objectval_tyBM *parsmakenewname_guicmd_BM
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+   const value_tyBM varname, struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * namedobj;
+                 const stringval_tyBM * strnam; objectval_tyBM * parsob;
+    );
+  if (!isparser_BM (pars))
+    return NULL;
+  _.parsob = checkedparserowner_BM (pars);
+  ASSERT_BM (isstring_BM (varname));
+  _.strnam = varname;
+  if (!validname_BM (bytstring_BM (varname)))
+    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,
+                          "invalid new name %s", bytstring_BM (varname));
+  _.namedobj = findnamedobj_BM (bytstring_BM (varname));
+  if (_.namedobj)
+    return _.namedobj;
+  _.namedobj = makeobj_BM ();
+  objtouchnow_BM (_.namedobj);
+  objputspacenum_BM (_.namedobj, GlobalSp_BM);
+  registername_BM (_.namedobj, bytstring_BM (_.strnam));
+  log_begin_message_BM ();
+  log_puts_message_BM ("created global new named object ");
+  log_object_message_BM (_.namedobj);
+  log_end_message_BM ();
+  return _.namedobj;
+}                               /* end parsmakenewname_guicmd_BM */
 
 static bool
 parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
@@ -1632,18 +1791,18 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
   if (!isparser_BM (pars))
     return false;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 struct parser_stBM * pars;
-                 value_tyBM comp; objectval_tyBM * targobj;
-                 objectval_tyBM * obattr; objectval_tyBM * obclass;
-                 objectval_tyBM * obsel; const stringval_tyBM * name;
+                 value_tyBM comp;
+                 objectval_tyBM * targobj; objectval_tyBM * obattr;
+                 objectval_tyBM * obclass; objectval_tyBM * obsel;
+                 const stringval_tyBM * name; objectval_tyBM * parsob;
                  value_tyBM args[MAXARGS_BM];);
-  _.pars = pars;
+  _.parsob = checkedparserowner_BM (pars);
   _.targobj = targobj;
   struct parstoken_stBM tok = {
   };
   if (!ptok)
     {
-      tok = parsertokenget_BM (pars);
+      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       ptok = &tok;
     };
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -1655,13 +1814,15 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
   if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamand)
     {
       if (!nobuild && !isobject_BM (targobj))
-        parsererrorprintf_BM (pars, lineno, colpos, "missing target for !&");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "missing target for !&");
       bool gotval = false;
       _.comp = parsergetvalue_BM (pars, //
                                   (struct stackframe_stBM *) &_,        //
                                   depth + 1, &gotval);
       if (!gotval)
-        parsererrorprintf_BM (pars, lineno, colpos, "missing value after !&");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "missing value after !&");
       if (!nobuild)
         {
           objappendcomp_BM (_.targobj, _.comp);
@@ -1680,8 +1841,9 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
     if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamcolon)
     {
       if (!nobuild && !isobject_BM (targobj))
-        parsererrorprintf_BM (pars, lineno, colpos, "missing target for !:");
-      parserskipspaces_BM (pars);
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "missing target for !:");
+      parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
       lineno = pars->pars_lineno;
       colpos = pars->pars_colpos;
       bool gotattr = false;
@@ -1693,7 +1855,8 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
       if (!gotattr)
         {
           parserseek_BM (pars, lineno, colpos);
-          struct parstoken_stBM tok = parsertokenget_BM (pars);
+          struct parstoken_stBM tok =
+            parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
           if (tok.tok_kind == plex_LLONG)
             {
               gotindex = true;
@@ -1701,14 +1864,15 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
             }
         }
       if (!gotattr && !gotindex)
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "missing attribute or index after !:");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "missing attribute or index after !:");
       bool gotval = false;
       _.comp = parsergetvalue_BM (pars, //
                                   (struct stackframe_stBM *) &_,        //
                                   depth + 1, &gotval);
       if (!gotval)
-        parsererrorprintf_BM (pars, lineno, colpos, "missing value after !:");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "missing value after !:");
       if (!nobuild && gotattr)
         {
           objputattr_BM (_.targobj, _.obattr, _.comp);
@@ -1738,15 +1902,18 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
     if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamdollar)
     {
       if (!nobuild && !isobject_BM (targobj))
-        parsererrorprintf_BM (pars, lineno, colpos, "missing target for !$");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "missing target for !$");
       bool gotclass = false;
       _.obclass = parsergetobject_BM (pars,     //
                                       (struct stackframe_stBM *) &_,    //
                                       depth + 1, &gotclass);
       if (!gotclass)
-        parsererrorprintf_BM (pars, lineno, colpos, "missing class after !$");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "missing class after !$");
       if (!nobuild)
         {
+          objectval_tyBM *k_basiclo_function = BMK_2Ir1i8qnrA4_3jSkierlc5z;
           objputclass_BM (_.targobj, _.obclass);
           log_begin_message_BM ();
           log_puts_message_BM ("put class ");
@@ -1755,6 +1922,66 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
           log_object_message_BM (_.targobj);
           log_puts_message_BM (".");
           log_end_message_BM ();
+          if (_.obclass == k_basiclo_function)
+            {
+              log_begin_message_BM ();
+              log_puts_message_BM ("\n");
+              gint codestartoff = 0;
+              {
+                GtkTextIter it = EMPTY_TEXT_ITER_BM;
+                gtk_text_buffer_get_end_iter (logbuf_BM, &it);
+                codestartoff = gtk_text_iter_get_offset (&it);
+              }
+              log_puts_message_BM ("\n");
+              log_puts_message_BM ("// possible code for ");
+              log_object_message_BM (_.targobj);
+              log_printf_message_BM ("\n\n"
+                                     "extern objrout_sigBM ROUTINEOBJNAME_BM (");
+              log_object_message_BM (_.targobj);
+              log_printf_message_BM (");\n\n"
+                                     "value_tyBM\n" "ROUTINEOBJNAME_BM (");
+              log_object_message_BM (_.targobj);
+              log_printf_message_BM (")\n"
+                                     "(struct stackframe_stBM* stkf, //\n"
+                                     " const value_tyBM arg1, //\n"
+                                     " const value_tyBM arg2, //\n"
+                                     " const value_tyBM arg3, //\n"
+                                     " const value_tyBM arg4, //\n"
+                                     " const quasinode_tyBM* restargs __attribute__((unused)))\n"
+                                     "{\n" "  LOCALFRAME_BM (stkf, /*descr ");
+              log_object_message_BM (_.targobj);
+              log_printf_message_BM ("::*/ NULL,\n"
+                                     "   value_tyBM resultv;\n" "  );\n");
+              log_printf_message_BM ("#warning unimplemented ");
+              log_object_message_BM (_.targobj);
+              log_printf_message_BM (" routine\n");
+              log_printf_message_BM
+                ("  WEAKASSERT_BM(false && \"unimplemented ");
+              log_object_message_BM (_.targobj);
+              log_printf_message_BM (" routine\");\n");
+              log_printf_message_BM ("  LOCALRETURN_BM(_.resultv);\n");
+              log_printf_message_BM ("} /* end routine ");
+              log_object_message_BM (_.targobj);
+              log_printf_message_BM ("*/\n\n");
+              {
+                GtkTextIter begit = EMPTY_TEXT_ITER_BM;
+                GtkTextIter endit = EMPTY_TEXT_ITER_BM;
+                gtk_text_buffer_get_iter_at_offset (logbuf_BM, &begit,
+                                                    codestartoff);
+                gtk_text_buffer_get_end_iter (logbuf_BM, &endit);
+                gtk_text_buffer_apply_tag (logbuf_BM, code_logtag_BM, &begit,
+                                           &endit);
+              }
+              log_puts_message_BM ("\n");
+              if (!_.targobj->ob_rout && !_.targobj->ob_sig)
+                {
+                  _.targobj->ob_sig = BMP_function_sig;
+                  _.targobj->ob_rout = objrout_placeholder_BM;
+                  log_printf_message_BM ("** added placeholder for ");
+                  log_object_message_BM (_.targobj);
+                }
+              log_end_message_BM ();
+            }
           objtouchnow_BM (_.targobj);
         }
     }
@@ -1767,20 +1994,21 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
       unsigned arglineno = pars->pars_lineno;
       unsigned argcolpos = pars->pars_colpos;
       if (!nobuild && !isobject_BM (targobj))
-        parsererrorprintf_BM (pars, lineno, colpos, "missing target for !>");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "missing target for !>");
       bool gotsel = false;
       _.obsel = parsergetobject_BM (pars,       //
                                     (struct stackframe_stBM *) &_,      //
                                     depth + 1, &gotsel);
       if (!gotsel)
-        parsererrorprintf_BM (pars, arglineno,
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, arglineno,
                               argcolpos, "missing selector after !>");
-      parserskipspaces_BM (pars);
+      parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
       unsigned leftlineno = pars->pars_lineno;
       unsigned leftcolpos = pars->pars_colpos;
-      tok = parsertokenget_BM (pars);
+      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_leftparen)
-        parsererrorprintf_BM (pars, arglineno,
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, arglineno,
                               argcolpos,
                               "missing left paren after selector for !>");
       int nbarg = 0;
@@ -1795,9 +2023,9 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
             break;
           nbarg++;
         }
-      tok = parsertokenget_BM (pars);
+      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
-        parsererrorprintf_BM (pars, arglineno,
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, arglineno,
                               argcolpos,
                               "missing right paren after selector for !>");
       unsigned rightlineno = pars->pars_lineno;
@@ -1871,7 +2099,8 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
               char selidbuf[32];
               const char *selname = findobjectname_BM (_.obsel);
               idtocbuf32_BM (objid_BM (_.obsel), selidbuf);
-              parsererrorprintf_BM (pars, arglineno, argcolpos,
+              parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                    arglineno, argcolpos,
                                     "failed to send %s to target %s",
                                     selname ? : selidbuf,
                                     targname ? : targidbuf);
@@ -1891,14 +2120,15 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
     if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamminus)
     {
       if (!nobuild && !isobject_BM (targobj))
-        parsererrorprintf_BM (pars, lineno, colpos, "missing target for !-");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "missing target for !-");
       bool gotattr = false;
       _.obattr = parsergetobject_BM (pars,      //
                                      (struct stackframe_stBM *) &_,     //
                                      0, &gotattr);
       if (!gotattr)
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "missing attribute after !-");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "missing attribute after !-");
       if (!nobuild)
         {
           objremoveattr_BM (_.targobj, _.obattr);
@@ -1918,17 +2148,17 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
     if (ptok->tok_kind == plex_DELIM
         && ptok->tok_delim == delim_dollarpercent)
     {
-      tok = parsertokenget_BM (pars);
+      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "no name to bind and show after $%%");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "no name to bind and show after $%%");
       if (!nobuild)
         {
           if (tok.tok_kind == plex_NAMEDOBJ)
             _.name = makestring_BM (findobjectname_BM (tok.tok_namedobj));
           else
             _.name = tok.tok_cname;
-          assert (isstring_BM ((const value_tyBM) _.name));
+          ASSERT_BM (isstring_BM ((const value_tyBM) _.name));
           browse_named_value_gui_BM (_.name, _.targobj,
                                      BMP_browse_value, browserdepth_BM,
                                      (struct stackframe_stBM *) &_);
@@ -1946,8 +2176,9 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
     if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamcaret)
     {
       if (!nobuild && !isobject_BM (targobj))
-        parsererrorprintf_BM (pars, lineno, colpos, "missing target for !^");
-      tok = parsertokenget_BM (pars);
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "missing target for !^");
+      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (tok.tok_kind == plex_LLONG && tok.tok_llong >= 0
           && tok.tok_llong < LASTSPACE__BM)
         {
@@ -2029,7 +2260,8 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
             }
         }
       else
-        parsererrorprintf_BM (pars, lineno, colpos, "bad space for !^");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "bad space for !^");
     }
   else
     return false;
@@ -2044,31 +2276,30 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
                       unsigned colpos, int depth,
                       struct stackframe_stBM * stkf)
 {
-  assert (isparser_BM (pars));
+  ASSERT_BM (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 struct parser_stBM *pars; value_tyBM resval;
-                 value_tyBM srcval;
-                 objectval_tyBM * obj; objectval_tyBM * obsel;
+                 value_tyBM resval; value_tyBM srcval; objectval_tyBM * obj;
+                 objectval_tyBM * obsel; objectval_tyBM * parsob;
                  objectval_tyBM * obattr; closure_tyBM * clos;
                  value_tyBM otherval; const stringval_tyBM * name;
                  value_tyBM args[MAXARGS_BM];);
-  _.pars = pars;
+  _.parsob = checkedparserowner_BM (pars);
   unsigned srclineno = parserlineno_BM (pars);
   unsigned srccolpos = parsercolpos_BM (pars);
   bool gotsrcval = false;
   _.srcval =
     parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, 0, &gotsrcval);
   if (!gotsrcval)
-    parsererrorprintf_BM (pars, srclineno,
+    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, srclineno,
                           srccolpos, "expecting source value in $(...)");
   struct parstoken_stBM tok = {
   };
   for (;;)
     {
-      parserskipspaces_BM (pars);
-      tok = parsertokenget_BM (pars);
+      parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_rightparen)
         {
           parsnesting_guicmd_BM (pars, depth, delim_dollarleftparen,
@@ -2086,35 +2317,35 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
           unsigned arglineno = pars->pars_lineno;
           unsigned argcolpos = pars->pars_colpos;
           if (!nobuild && !_.srcval)
-            parsererrorprintf_BM (pars, lineno, colpos,
-                                  "missing target for !>");
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                                  colpos, "missing target for !>");
           bool gotsel = false;
           _.obsel = parsergetobject_BM (pars,   //
                                         (struct stackframe_stBM *) &_,  //
                                         0, &gotsel);
           if (!gotsel)
-            parsererrorprintf_BM (pars, arglineno,
-                                  argcolpos, "missing selector after !>");
-          tok = parsertokenget_BM (pars);
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  arglineno, argcolpos,
+                                  "missing selector after !>");
+          tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
           if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_leftparen)
-            parsererrorprintf_BM (pars, arglineno,
-                                  argcolpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  arglineno, argcolpos,
                                   "missing left paren after selector for !>");
           int nbarg = 0;
           while (nbarg < MAXARGS_BM)
             {
               bool gotarg = false;
-              _.args[nbarg] = parsergetvalue_BM (pars,  //
-                                                 (struct stackframe_stBM *) &_, //
+              _.args[nbarg] = parsergetvalue_BM (pars, (struct stackframe_stBM *) &_,   //
                                                  0, &gotarg);
               if (!gotarg)
                 break;
               nbarg++;
             }
-          tok = parsertokenget_BM (pars);
+          tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
           if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
-            parsererrorprintf_BM (pars, arglineno,
-                                  argcolpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  arglineno, argcolpos,
                                   "missing right paren after selector for !>");
           if (!nobuild)
             {
@@ -2186,7 +2417,8 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
                   char selidbuf[32];
                   const char *selname = findobjectname_BM (_.obsel);
                   idtocbuf32_BM (objid_BM (_.obsel), selidbuf);
-                  parsererrorprintf_BM (pars, arglineno, argcolpos,
+                  parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                        arglineno, argcolpos,
                                         "failed to send %s",
                                         selname ? : selidbuf);
                 }
@@ -2204,24 +2436,24 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
           unsigned arglineno = pars->pars_lineno;
           unsigned argcolpos = pars->pars_colpos;
           if (!nobuild && !isclosure_BM (_.srcval))
-            parsererrorprintf_BM (pars, lineno, colpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                                  colpos,
                                   "source value is not a closure for application");
           _.clos = (closure_tyBM *) _.srcval;
           int nbarg = 0;
           while (nbarg < MAXARGS_BM)
             {
               bool gotarg = false;
-              _.args[nbarg] = parsergetvalue_BM (pars,  //
-                                                 (struct stackframe_stBM *) &_, //
+              _.args[nbarg] = parsergetvalue_BM (pars, (struct stackframe_stBM *) &_,   //
                                                  0, &gotarg);
               if (!gotarg)
                 break;
               nbarg++;
             }
-          tok = parsertokenget_BM (pars);
+          tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
           if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
-            parsererrorprintf_BM (pars, arglineno,
-                                  argcolpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  arglineno, argcolpos,
                                   "missing right paren after application");
           if (!nobuild)
             {
@@ -2292,7 +2524,8 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
                 {
                   char selidbuf[32];
                   idtocbuf32_BM (objid_BM (_.obsel), selidbuf);
-                  parsererrorprintf_BM (pars, arglineno, argcolpos,
+                  parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                        arglineno, argcolpos,
                                         "failed to apply with %d arguments",
                                         nbarg);
                 }
@@ -2308,17 +2541,18 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
       else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamdot)
         {
           bool gotattr = false;
-          parserskipspaces_BM (pars);
+          parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
           unsigned atlineno = parserlineno_BM (pars);
           unsigned atcolpos = parsercolpos_BM (pars);
           if (!nobuild && !isobject_BM (_.srcval))
-            parsererrorprintf_BM (pars, atlineno, atcolpos,
-                                  "non object before !.");
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  atlineno, atcolpos, "non object before !.");
           _.obattr =
             parsergetobject_BM (pars, (struct stackframe_stBM *) &_,
                                 depth + 1, &gotattr);
           if (!gotattr)
-            parsererrorprintf_BM (pars, atlineno, atcolpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  atlineno, atcolpos,
                                   "expecting object attribute after !.");
           if (!nobuild)
             {
@@ -2338,22 +2572,24 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
       else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamat)
         {
           bool gotindex = false;
-          parserskipspaces_BM (pars);
+          parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
           unsigned ixlineno = parserlineno_BM (pars);
           unsigned ixcolpos = parsercolpos_BM (pars);
           if (!nobuild && !isobject_BM (_.srcval))
-            parsererrorprintf_BM (pars, ixlineno, ixcolpos,
-                                  "non object before !@");
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  ixlineno, ixcolpos, "non object before !@");
           _.otherval =
-            parsergetvalue_BM (pars, (struct stackframe_stBM *) &_,
-                               depth + 1, &gotindex);
+            parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, depth + 1,
+                               &gotindex);
           if (!gotindex)
-            parsererrorprintf_BM (pars, ixlineno, ixcolpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  ixlineno, ixcolpos,
                                   "expecting index value after !@");
           if (!nobuild)
             {
               if (!istaggedint_BM (_.otherval))
-                parsererrorprintf_BM (pars, ixlineno, ixcolpos,
+                parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                      ixlineno, ixcolpos,
                                       "expecting integer index after !@");
               _.resval =
                 objgetcomp_BM ((objectval_tyBM *) _.srcval,
@@ -2373,9 +2609,10 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
         if (tok.tok_kind == plex_DELIM
             && tok.tok_delim == delim_dollarpercent)
         {
-          tok = parsertokenget_BM (pars);
+          tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
           if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
-            parsererrorprintf_BM (pars, lineno, colpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                                  colpos,
                                   "no name to bind and show after $%%");
           if (!nobuild)
             {
@@ -2383,7 +2620,7 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
                 _.name = makestring_BM (findobjectname_BM (tok.tok_namedobj));
               else
                 _.name = tok.tok_cname;
-              assert (isstring_BM ((const value_tyBM) _.name));
+              ASSERT_BM (isstring_BM ((const value_tyBM) _.name));
               browse_named_value_gui_BM (_.name, _.srcval,
                                          BMP_browse_value, browserdepth_BM,
                                          (struct stackframe_stBM *) &_);
@@ -2396,8 +2633,8 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
       //
       // otherwise error
       else
-        parsererrorprintf_BM (pars, parserlineno_BM (pars),
-                              parsercolpos_BM (pars),
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                              parserlineno_BM (pars), parsercolpos_BM (pars),
                               "unexpected token in $(...)");
     }                           /* end for (;;) */
   return NULL;
@@ -2410,18 +2647,19 @@ value_tyBM parsreadmacroexp_guicmd_BM
    const node_tyBM * nod, struct stackframe_stBM * stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 struct parser_stBM *pars;
-                 value_tyBM resval; const node_tyBM * nod; value_tyBM crm;
-                 const objectval_tyBM * conn;
+                 value_tyBM resval;
+                 const node_tyBM * nod;
+                 value_tyBM crm; const objectval_tyBM * conn;
+                 objectval_tyBM * parsob;
     );
-  _.pars = pars;
+  _.parsob = checkedparserowner_BM (pars);
   _.nod = nod;
   if (depth > MAXDEPTHPARSE_BM)
-    parsererrorprintf_BM (pars, lineno, colpos,
+    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,
                           "too deep %d readmacro", depth);
-  assert (isnode_BM ((const value_tyBM) nod));
+  ASSERT_BM (isnode_BM ((const value_tyBM) nod));
   _.conn = nodeconn_BM ((const value_tyBM) _.nod);
-  assert (isobject_BM ((const value_tyBM) _.conn));
+  ASSERT_BM (isobject_BM ((const value_tyBM) _.conn));
   _.crm = objgetattr_BM (_.conn, BMP_command_readmacro);
   if (!isclosure_BM ((const value_tyBM) _.crm))
     {
@@ -2430,18 +2668,20 @@ value_tyBM parsreadmacroexp_guicmd_BM
       idtocbuf32_BM (objid_BM (_.crm), crmidbuf);
       const char *crmname = findobjectname_BM (_.crm);
       if (crmname)
-        parsererrorprintf_BM (pars, lineno, colpos,
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos,
                               "readmacro ^ %s |=%s| has bad `command_readmacro` attribute",
                               crmidbuf, crmname);
       else
-        parsererrorprintf_BM (pars, lineno, colpos,
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos,
                               "readmacro ^ %s has bad `command_readmacro` attribute",
                               crmidbuf);
     }
   _.resval =                    //
     apply4_BM (_.crm, (struct stackframe_stBM *) &_,
                (value_tyBM) _.nod,
-               taggedint_BM (lineno), taggedint_BM (colpos), pars);
+               taggedint_BM (lineno), taggedint_BM (colpos), _.parsob);
   return _.resval;
 }                               /* end parsreadmacroexp_guicmd_BM */
 
@@ -2456,38 +2696,63 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * obj; const stringval_tyBM * namev;
+                 objectval_tyBM * obj;
+                 const stringval_tyBM * namev; objectval_tyBM * oldnamedob;
                  value_tyBM val;);
-  assert (isparser_BM (pars));
-  parserskipspaces_BM (pars);
+  ASSERT_BM (isparser_BM (pars));
+  parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
   unsigned oblineno = parserlineno_BM (pars);
   unsigned obcolpos = parsercolpos_BM (pars);
   bool gotobj = false;
-  struct parstoken_stBM tok = parsertokenget_BM (pars);
+  struct parstoken_stBM tok =
+    parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
   // * <name> to create a new (userE) named object
   // !* <name> to create a new (global) named object
   if (tok.tok_kind == plex_DELIM
       && (tok.tok_delim == delim_exclamstar || tok.tok_delim == delim_star))
     {
       bool isglobal = (tok.tok_delim == delim_exclamstar);
-      tok = parsertokenget_BM (pars);
-      if (tok.tok_kind != plex_CNAME)
-        parsererrorprintf_BM (pars, oblineno, obcolpos,
-                              "expecting fresh name after * or !* in $[...]");
-      _.namev = tok.tok_cname;
+      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+      if (tok.tok_kind == plex_CNAME)
+        {
+          _.namev = tok.tok_cname;
+        }
+      else if (tok.tok_kind == plex_NAMEDOBJ)
+        {
+          _.oldnamedob = tok.tok_namedobj;
+        }
+      else
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, oblineno,
+                              obcolpos,
+                              "expecting name after * or !* in $[...]");
       gotobj = true;
       if (!nobuild)
         {
-          _.obj = makeobj_BM ();
-          objtouchnow_BM (_.obj);
-          objputspacenum_BM (_.obj, isglobal ? GlobalSp_BM : UserEsp_BM);
-          registername_BM (_.obj, bytstring_BM (_.namev));
-          log_begin_message_BM ();
-          log_puts_message_BM (isglobal
-                               ? "created global named object "
-                               : "created userE named object ");
-          log_object_message_BM (_.obj);
-          log_end_message_BM ();
+          if (_.namev)
+            {
+              _.obj = makeobj_BM ();
+              objtouchnow_BM (_.obj);
+              objputspacenum_BM (_.obj, isglobal ? GlobalSp_BM : UserEsp_BM);
+              registername_BM (_.obj, bytstring_BM (_.namev));
+              log_begin_message_BM ();
+              log_puts_message_BM (isglobal
+                                   ? "created global named object "
+                                   : "created userE named object ");
+              log_object_message_BM (_.obj);
+              log_end_message_BM ();
+            }
+          else if (_.oldnamedob)
+            {
+              _.obj = _.oldnamedob;
+              log_begin_message_BM ();
+              log_puts_message_BM ("reusing named object ");
+              log_object_message_BM (_.obj);
+              log_end_message_BM ();
+            }
+          else
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  oblineno, obcolpos,
+                                  "expecting some name after * or !* in $[...]");
         }
     }
   // : to create a new transient anonymous object
@@ -2543,8 +2808,8 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
       _.obj =
         parsergetobject_BM (pars, (struct stackframe_stBM *) &_, 0, &gotobj);
       if (!gotobj)
-        parsererrorprintf_BM (pars, oblineno, obcolpos,
-                              "expecting $:<var> in $[...]");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, oblineno,
+                              obcolpos, "expecting $:<var> in $[...]");
     }
   //
   // ( <expr> ) to cast a value into an object
@@ -2554,17 +2819,17 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
       _.val =
         parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, 0, &gotval);
       if (!gotval)
-        parsererrorprintf_BM (pars, oblineno, obcolpos,
-                              "expecting value after $[ (");
-      tok = parsertokenget_BM (pars);
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, oblineno,
+                              obcolpos, "expecting value after $[ (");
+      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
-        parsererrorprintf_BM (pars,
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
                               pars->pars_lineno,
                               pars->pars_colpos,
                               "expecting right paren after $[ ( started at L%d:C%d",
                               oblineno, obcolpos);
       if (!nobuild && !isobject_BM (_.val))
-        parsererrorprintf_BM (pars,
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
                               oblineno,
                               obcolpos, "non-object value after $[ (...");
     }
@@ -2577,9 +2842,11 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
         parsergetobject_BM (pars, (struct stackframe_stBM *) &_, 0, &gotobj);
     }
   if (!gotobj)
-    parsererrorprintf_BM (pars, oblineno, obcolpos,
-                          "expecting object at start of $[...]");
-  while ((tok = parsertokenget_BM (pars)), tok.tok_kind != plex__NONE)
+    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, oblineno,
+                          obcolpos, "expecting object at start of $[...]");
+  while ((tok =
+          parsertokenget_BM (pars, (struct stackframe_stBM *) &_)),
+         tok.tok_kind != plex__NONE)
     {
       if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_rightbracket)
         {
@@ -2594,8 +2861,8 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
                                                  &_,
                                                  &tok);
       if (!gotcomp)
-        parsererrorprintf_BM (pars, pars->pars_lineno,
-                              pars->pars_colpos,
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                              pars->pars_lineno, pars->pars_colpos,
                               "bad object complement (for $[...] started L%d:C%d",
                               oblineno, obcolpos);
       if (!nobuild)
@@ -2608,40 +2875,43 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
         }
       return _.obj;
     };
-  parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+  parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                        pars->pars_lineno, pars->pars_colpos,
                         "invalid object expression for $[...] started L%d:C%d",
                         oblineno, obcolpos);
 }                               /* end parsobjexp_guicmd_BM */
 
 
-
+////////////////
 void
 parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 {
   if (!isparser_BM (pars))
     return;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 struct parser_stBM * pars;
-                 value_tyBM comp; objectval_tyBM * obj;
+                 value_tyBM comp;
+                 objectval_tyBM * obj; objectval_tyBM * parsob;
                  objectval_tyBM * oldfocusobj; const stringval_tyBM * name;
                  const stringval_tyBM * result;
     );
-  _.pars = pars;
+  _.parsob = checkedparserowner_BM (pars);
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsops && parsops->parsop_nobuild;
   int nbloop = 0;
   for (;;)
     {
-      parserskipspaces_BM (pars);
+      parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
       if (nbloop++ > MAXSIZE_BM / 32)
-        parsererrorprintf_BM (pars, pars->pars_lineno,
-                              pars->pars_colpos, "too many %d loops", nbloop);
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                              pars->pars_lineno, pars->pars_colpos,
+                              "too many %d loops", nbloop);
       if (parserendoffile_BM (pars))
         break;
       unsigned curlineno = parserlineno_BM (pars);
       unsigned curcolpos = parsercolpos_BM (pars);
-      parstoken_tyBM tok = parsertokenget_BM (pars);
+      parstoken_tyBM tok =
+        parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       //// double semicolon stops the parsing and skip the rest
       if (tok.tok_kind == plex_DELIM
           && tok.tok_delim == delim_doublesemicolon)
@@ -2669,24 +2939,26 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 
           if (!browserbuf_BM)
             {
-              if (newgui_BM)
+              if (!oldgui_BM)
                 browserbuf_BM = newgui_get_browsebuf_BM ();
               if (!browserbuf_BM)
                 return;
             };
           if (!nobuild && !isobject_BM (GLOBAL_BM (gui_focus_obj)))
-            parsererrorprintf_BM (pars, curlineno, curcolpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos,
                                   "no focus object to complement");
           if (!parseobjectcompl_guicmd_BM
               (pars, (objectval_tyBM *) GLOBAL_BM (gui_focus_obj), 0,
                (struct stackframe_stBM *) &_, &tok))
-            parsererrorprintf_BM (pars, curlineno, curcolpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos,
                                   "invalid focus complement");
           if (!nobuild)
             {
               struct browsedobj_stBM *brfocusob =
                 find_browsed_object_BM (GLOBAL_BM (gui_focus_obj));
-              assert (brfocusob != NULL);
+              ASSERT_BM (brfocusob != NULL);
               browse_object_gui_BM (GLOBAL_BM (gui_focus_obj),
                                     BMP_browse_in_object,
                                     brfocusob->brow_odepth,
@@ -2706,7 +2978,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 
           if (!browserbuf_BM)
             {
-              if (newgui_BM)
+              if (!oldgui_BM)
                 browserbuf_BM = newgui_get_browsebuf_BM ();
               if (!browserbuf_BM)
                 return;
@@ -2715,8 +2987,9 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
           _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
                                       0, &gotobject);
           if (!gotobject)
-            parsererrorprintf_BM (pars, curlineno,
-                                  curcolpos, "no new focus object after ?*");
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos,
+                                  "no new focus object after ?*");
           if (!nobuild)
             {
               _.oldfocusobj = GLOBAL_BM (gui_focus_obj);
@@ -2756,7 +3029,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
         {
           if (!browserbuf_BM)
             {
-              if (newgui_BM)
+              if (!oldgui_BM)
                 browserbuf_BM = newgui_get_browsebuf_BM ();
               if (!browserbuf_BM)
                 return;
@@ -2765,11 +3038,12 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
           _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
                                       0, &gotobject);
           if (!gotobject || (!nobuild && !_.obj))
-            parsererrorprintf_BM (pars, curlineno,
-                                  curcolpos, "no displayed object after ?.");
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos,
+                                  "no displayed object after ?.");
           if (!browserbuf_BM)
-            parsererrorprintf_BM (pars, curlineno,
-                                  curcolpos, "no browser buffer");
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos, "no browser buffer");
           if (!nobuild)
             {
               browse_object_gui_BM (_.obj,
@@ -2793,18 +3067,19 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 
           if (!browserbuf_BM)
             {
-              if (newgui_BM)
+              if (!oldgui_BM)
                 browserbuf_BM = newgui_get_browsebuf_BM ();
             };
           if (!browserbuf_BM)
-            parsererrorprintf_BM (pars, curlineno,
-                                  curcolpos, "no browser buffer");
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos, "no browser buffer");
           bool gotobject = false;
           parserseek_BM (pars, tok.tok_line, tok.tok_col);
           _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
                                       0, &gotobject);
           if (!gotobject || (!nobuild && !_.obj))
-            parsererrorprintf_BM (pars, curlineno, curcolpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos,
                                   "expecting object to display");
           if (!nobuild)
             {
@@ -2826,18 +3101,19 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
         {
           if (!browserbuf_BM)
             {
-              if (newgui_BM)
+              if (!oldgui_BM)
                 browserbuf_BM = newgui_get_browsebuf_BM ();
             };
           if (!browserbuf_BM)
-            parsererrorprintf_BM (pars, curlineno,
-                                  curcolpos, "no browser buffer");
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos, "no browser buffer");
           bool gotobject = false;
           _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
                                       0, &gotobject);
           if (!gotobject)
-            parsererrorprintf_BM (pars, curlineno,
-                                  curcolpos, "no object to hide after ?-");
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos,
+                                  "no object to hide after ?-");
           if (!nobuild)
             {
               if (_.obj == GLOBAL_BM (gui_focus_obj))
@@ -2856,10 +3132,10 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
         if (tok.tok_kind == plex_DELIM
             && tok.tok_delim == delim_questiondollar)
         {
-          tok = parsertokenget_BM (pars);
+          tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
           if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
-            parsererrorprintf_BM (pars, curlineno,
-                                  curcolpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos,
                                   "no name to bind and show after ?$");
           if (!nobuild)
             {
@@ -2867,14 +3143,15 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                 _.name = makestring_BM (findobjectname_BM (tok.tok_namedobj));
               else
                 _.name = tok.tok_cname;
-              assert (isstring_BM ((const value_tyBM) _.name));
+              ASSERT_BM (isstring_BM ((const value_tyBM) _.name));
             };
           bool gotval = false;
           _.comp =
             parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, 0,
                                &gotval);
           if (!gotval)
-            parsererrorprintf_BM (pars, curlineno, curcolpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos,
                                   "no value to bind and show after ?$");
           if (!nobuild)
             {
@@ -2906,19 +3183,21 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
         if (tok.tok_kind == plex_DELIM
             && tok.tok_delim == delim_questiondollar)
         {
-          tok = parsertokenget_BM (pars);
+          tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
           if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
-            parsererrorprintf_BM (pars, curlineno,
-                                  curcolpos, "no name to hide after ?$-");
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos,
+                                  "no name to hide after ?$-");
           if (!nobuild)
             {
               if (tok.tok_kind == plex_NAMEDOBJ)
                 _.name = makestring_BM (findobjectname_BM (tok.tok_namedobj));
               else
                 _.name = tok.tok_cname;
-              assert (isstring_BM ((const value_tyBM) _.name));
+              ASSERT_BM (isstring_BM ((const value_tyBM) _.name));
               if (!find_browsed_named_value_BM (bytstring_BM (_.name)))
-                parsererrorprintf_BM (pars, curlineno, curcolpos,
+                parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                      curlineno, curcolpos,
                                       "name %s is not of a shown value",
                                       bytstring_BM (_.name));
               hide_named_value_gui_BM (_.name, (struct stackframe_stBM *) &_);
@@ -2933,9 +3212,10 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
       else
         if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_questionhash)
         {
-          tok = parsertokenget_BM (pars);
+          tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
           if (tok.tok_kind != plex_LLONG)
-            parsererrorprintf_BM (pars, curlineno, curcolpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos,
                                   "?# should be followed by browse depth number");
           int newdepth = browserdepth_BM;
           if (tok.tok_llong < 2)
@@ -2953,10 +3233,19 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
               browserdepth_BM = newdepth;
             }
         }
-      //
-      // $( .... ) is displaying the named value $result
+      // various value-starting delimiters
       else if (tok.tok_kind == plex_DELIM
-               && tok.tok_delim == delim_dollarleftparen)
+               && (tok.tok_delim == delim_hashleftbrace
+                   || tok.tok_delim == delim_leftbracket
+                   || tok.tok_delim == delim_leftbrace
+                   || tok.tok_delim == delim_tildecolon
+                   || tok.tok_delim == delim_star
+                   || tok.tok_delim == delim_percent
+                   || tok.tok_delim == delim_caret
+                   || tok.tok_delim == delim_dollar
+                   || tok.tok_delim == delim_dollarcolon
+                   || tok.tok_delim == delim_dollarleftbracket
+                   || tok.tok_delim == delim_dollarleftparen))
         {
           bool gotval = false;
           if (!_.result)
@@ -2966,7 +3255,8 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
             parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, 0,
                                &gotval);
           if (!gotval)
-            parsererrorprintf_BM (pars, curlineno, curcolpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos,
                                   "no value to display as $result after $(");
           if (!nobuild)
             {
@@ -2983,14 +3273,15 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                                              (struct stackframe_stBM *) &_);
                 }
               else
-                parsererrorprintf_BM (pars, curlineno, curcolpos,
+                parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                      curlineno, curcolpos,
                                       "no result to display after $(");
             }
         }
       //
       else
-        parsererrorprintf_BM (pars, curlineno, curcolpos,
-                              "unexpected command");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, curlineno,
+                              curcolpos, "unexpected command");
     }
 }                               /* end parsecommandbuf_BM */
 
@@ -3000,9 +3291,9 @@ parscommentinside_guicmd_BM (struct parser_stBM *pars,
                              unsigned lineno, unsigned colpos,
                              unsigned signlen)
 {
-  assert (isparser_BM (pars));
+  ASSERT_BM (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
@@ -3017,9 +3308,9 @@ void
 parscommentsign_guicmd_BM (struct parser_stBM *pars,
                            unsigned lineno, unsigned colpos, unsigned signlen)
 {
-  assert (isparser_BM (pars));
+  ASSERT_BM (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
@@ -3033,9 +3324,9 @@ void
 parsdelim_guicmd_BM (struct parser_stBM *pars, unsigned lineno,
                      unsigned colpos, unsigned delimlen)
 {
-  assert (isparser_BM (pars));
+  ASSERT_BM (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
@@ -3048,14 +3339,21 @@ void
 parsknowname_guicmd_BM (struct parser_stBM *pars, unsigned lineno,
                         unsigned colpos, unsigned namlen)
 {
-  assert (isparser_BM (pars));
+  char *buf = NULL;
+  ASSERT_BM (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
   GtkTextIter endit = it;
   gtk_text_iter_forward_chars (&endit, namlen);
+  if (pars->pars_debug)
+    DBGPRINTF_BM ("parsknownname L%uC%u w%u: '%s'", lineno, colpos, namlen,
+                  (buf =
+                   gtk_text_buffer_get_text (commandbuf_BM, &it, &endit,
+                                             false)));
+  free (buf);
   gtk_text_buffer_apply_tag (commandbuf_BM, knowname_cmdtag_BM, &it, &endit);
 }                               /* end parsknowname_guicmd_BM */
 
@@ -3064,9 +3362,9 @@ void
 parsnewname_guicmd_BM (struct parser_stBM *pars, unsigned lineno,
                        unsigned colpos, unsigned namlen)
 {
-  assert (isparser_BM (pars));
+  ASSERT_BM (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
@@ -3075,14 +3373,88 @@ parsnewname_guicmd_BM (struct parser_stBM *pars, unsigned lineno,
   gtk_text_buffer_apply_tag (commandbuf_BM, newname_cmdtag_BM, &it, &endit);
 }                               /* end parsnewname_guicmd_BM */
 
+// decorate numbers
+void
+parsnumber_guicmd_BM (struct parser_stBM *pars, unsigned lineno,
+                      unsigned colpos, unsigned numlen)
+{
+  ASSERT_BM (isparser_BM (pars));
+  char *buf = NULL;
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  ASSERT_BM (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
+  gtk_text_iter_forward_chars (&it, colpos);
+  GtkTextIter endit = it;
+  gtk_text_iter_forward_chars (&endit, numlen);
+  if (pars->pars_debug)
+    DBGPRINTF_BM ("parsnumbergui L%uC%u w%u: '%s'", lineno, colpos, numlen,
+                  (buf =
+                   gtk_text_buffer_get_text (commandbuf_BM, &it, &endit,
+                                             false)));
+  free (buf);
+  gtk_text_buffer_apply_tag (commandbuf_BM, number_cmdtag_BM, &it, &endit);
+}                               /* end parsnumber_guicmd_BM  */
+
+
+// decorate string signs, notably outside quotes
+void
+parsstringsign_guicmd_BM (struct parser_stBM *pars, unsigned lineno,
+                          unsigned colpos, unsigned signlen)
+{
+  ASSERT_BM (isparser_BM (pars));
+  char *buf = NULL;
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  ASSERT_BM (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
+  gtk_text_iter_forward_chars (&it, colpos);
+  GtkTextIter endit = it;
+  gtk_text_iter_forward_chars (&endit, signlen);
+  if (pars->pars_debug)
+    DBGPRINTF_BM ("parsstringsign L%uC%u w%u: '%s'", lineno, colpos, signlen,
+                  (buf =
+                   gtk_text_buffer_get_text (commandbuf_BM, &it, &endit,
+                                             false)));
+  free (buf);
+  gtk_text_buffer_apply_tag (commandbuf_BM, stringsign_cmdtag_BM, &it,
+                             &endit);
+}                               /* end parsstringsign_guicmd_BM */
+
+
+// decorate string inside characters
+void
+  parsstringinside_guicmd_BM
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
+   unsigned signlen)
+{
+  ASSERT_BM (isparser_BM (pars));
+  char *buf = NULL;
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  ASSERT_BM (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  GtkTextIter it = EMPTY_TEXT_ITER_BM;
+  gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
+  gtk_text_iter_forward_chars (&it, colpos);
+  GtkTextIter endit = it;
+  gtk_text_iter_forward_chars (&endit, signlen);
+  if (pars->pars_debug)
+    DBGPRINTF_BM ("parsstringinside L%uC%u w%u: '%s'", lineno, colpos,
+                  signlen, (buf =
+                            gtk_text_buffer_get_text (commandbuf_BM, &it,
+                                                      &endit, false)));
+  free (buf);
+  gtk_text_buffer_apply_tag (commandbuf_BM, stringinside_cmdtag_BM, &it,
+                             &endit);
+}                               /* end parsstringinside_guicmd_BM */
+
 
 void
 parsid_guicmd_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos,
                   unsigned idlen)
 {
-  assert (isparser_BM (pars));
+  ASSERT_BM (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
@@ -3099,10 +3471,10 @@ parsnesting_guicmd_BM (struct parser_stBM *pars, int depth,
                        enum lexdelim_enBM closedelim,
                        unsigned closelinpos, unsigned closecolpos)
 {
-  assert (isparser_BM (pars));
-  assert (openlinpos > 0 && closelinpos > 0 && openlinpos <= closelinpos);
+  ASSERT_BM (isparser_BM (pars));
+  ASSERT_BM (openlinpos > 0 && closelinpos > 0 && openlinpos <= closelinpos);
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   const char *opendelstr = delimstr_BM (opendelim);
   const char *closedelstr = delimstr_BM (closedelim);
   GtkTextIter openit = EMPTY_TEXT_ITER_BM, endopenit = EMPTY_TEXT_ITER_BM;
@@ -3153,9 +3525,9 @@ parsstartnesting_guicmd_BM (struct parser_stBM *pars, int depth,
                             enum lexdelim_enBM closedelim,
                             unsigned closelinpos, unsigned closecolpos)
 {
-  assert (isparser_BM (pars));
+  ASSERT_BM (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
   const char *xtradelstr = delimstr_BM (xtradelim);
   const char *opendelstr = delimstr_BM (opendelim);
   const char *closedelstr = delimstr_BM (closedelim);
@@ -3301,9 +3673,9 @@ commandblinkstart_BM (void)
 gboolean
 handlekeypresscmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
 {
-  assert (GTK_IS_TEXT_VIEW (widg));
-  assert (evk != NULL);
-  assert (data == NULL);
+  ASSERT_BM (GTK_IS_TEXT_VIEW (widg));
+  ASSERT_BM (evk != NULL);
+  ASSERT_BM (data == NULL);
   // see <gdk/gdkkeysyms.h> for names of keysyms
   if (evk->keyval == GDK_KEY_Return)
     {
@@ -3346,7 +3718,14 @@ timeoutrestoreopacitycmd_BM (gpointer data __attribute__ ((unused)))
 
 static void replacecompletionbyidcmd_BM (GtkMenuItem * mit, gpointer data);
 static void replacecompletionbynamecmd_BM (GtkMenuItem * mit, gpointer data);
+static void replacecompletionbyprefixcmd_BM (void);
 static void stopcompletionmenucmd_BM (GtkMenuItem * mit, gpointer data);
+static gboolean keyrelcompletionmenucmd_cbBM (GtkWidget * w, GdkEventKey * ev,
+                                              gpointer data);
+
+
+
+#define MAXFUNCTIONKEY_BM 12
 void
 tabautocomplete_gui_cmd_BM (void)
 {
@@ -3386,7 +3765,7 @@ tabautocomplete_gui_cmd_BM (void)
   const char *curlin = gtk_text_buffer_get_text (commandbuf_BM, &beglinit,
                                                  &endlinit, false);
   DBGPRINTF_BM ("tabautocompletecmd_BM curlin='%s' L%dC%d", curlin, lin, col);
-  assert (col <= g_utf8_strlen (curlin, -1));
+  ASSERT_BM (col <= g_utf8_strlen (curlin, -1));
   const char *curstr = g_utf8_offset_to_pointer (curlin, col);
   const char *begname = curstr;
   const char *endname = curstr;
@@ -3418,7 +3797,7 @@ tabautocomplete_gui_cmd_BM (void)
   if (isdigit (begname[0]))
     goto failure;
   const setval_tyBM *complsetv = NULL;
-  bool gotid = false;
+  complbyid_BM = false;
   if (endname >= begname + 3 && begname[0] == '_'
       && isdigit (begname[1]) && isalnum (begname[2])
       && endname < begname + 31)
@@ -3426,7 +3805,7 @@ tabautocomplete_gui_cmd_BM (void)
       char widbuf[32];
       memset (widbuf, 0, sizeof (widbuf));
       memcpy (widbuf, begname, endname - begname);
-      gotid = true;
+      complbyid_BM = true;
       DBGPRINTF_BM ("tabautocompletecmd_BM widbuf=%s", widbuf);
       complsetv = setobjectsofidprefixed_BM (widbuf);
     }
@@ -3434,7 +3813,7 @@ tabautocomplete_gui_cmd_BM (void)
     {
       char tinyprefix[40];
       memset (tinyprefix, 0, sizeof (tinyprefix));
-      gotid = false;
+      complbyid_BM = false;
       char *prefix = tinyprefix;
       if (endname < begname + sizeof (tinyprefix) - 1)
         strncpy (tinyprefix, begname, endname - begname);
@@ -3454,8 +3833,23 @@ tabautocomplete_gui_cmd_BM (void)
     goto failure;
   unsigned nbcompl = setcardinal_BM (complsetv);
   DBGPRINTF_BM
-    ("tabautocompletecmd_BM nbcompl=%d endname@%p curstr@%p begname@%p: '%s'",
-     nbcompl, endname, curstr, begname, begname);
+    ("tabautocompletecmd nbcompl=%d endname@%p curstr@%p begname@%p: '%s' complbyid %s",
+     nbcompl, endname, curstr, begname, begname,
+     complbyid_BM ? "true" : "false");
+  for (int cix = 0; cix < (int) nbcompl; cix++)
+    {
+      const objectval_tyBM *curobcomp = setelemnth_BM (complsetv, cix);
+      if (complbyid_BM)
+        {
+          char cidbuf[32];
+          memset (cidbuf, 0, sizeof (cidbuf));
+          idtocbuf32_BM (objid_BM (curobcomp), cidbuf);
+          DBGPRINTF_BM ("tabautocompletecmd cix#%d obid %s", cix, cidbuf);
+        }
+      else
+        DBGPRINTF_BM ("tabautocompletecmd cix#%d obj %s",
+                      cix, objectdbg_BM (curobcomp));
+    }
   if (nbcompl == 0)
     goto failure;
   else if (nbcompl == 1)
@@ -3465,15 +3859,15 @@ tabautocomplete_gui_cmd_BM (void)
       memset (cidbuf, 0, sizeof (cidbuf));
       const char *complword = NULL;
       const objectval_tyBM *obcomp = setelemnth_BM (complsetv, 0);
-      assert (isobject_BM ((const value_tyBM) obcomp));
-      if (gotid)
+      ASSERT_BM (isobject_BM ((const value_tyBM) obcomp));
+      if (complbyid_BM)
         {
           idtocbuf32_BM (objid_BM (obcomp), cidbuf);
           complword = cidbuf;
         }
       else
         complword = findobjectname_BM (obcomp);
-      assert (complword && complword[0]);
+      ASSERT_BM (complword && complword[0]);
       GtkTextIter begwit = cursit;
       GtkTextIter endwit = cursit;
       gtk_text_iter_forward_chars (&endwit, endname - curstr);
@@ -3484,8 +3878,8 @@ tabautocomplete_gui_cmd_BM (void)
     }
   else
     {
-      assert (nbcompl > 1);
-      complsetcmd_BM = complsetv;
+      ASSERT_BM (nbcompl > 1);
+      complseqcmd_BM = complsetv;
       GtkWidget *complmenu = gtk_menu_new ();
       GtkTextIter begwit = cursit;
       GtkTextIter endwit = cursit;
@@ -3493,16 +3887,35 @@ tabautocomplete_gui_cmd_BM (void)
       gtk_text_iter_backward_chars (&begwit, curstr - begname);
       compbegoffcmd_BM = gtk_text_iter_get_offset (&begwit);
       compendoffcmd_BM = gtk_text_iter_get_offset (&endwit);
-      if (gotid)
+      unsigned gotwidth = endname - begname;
+      if (complbyid_BM)
         {                       /* complete by id */
           for (unsigned ix = 0; ix < nbcompl; ix++)
             {
               char cidbuf[32];
               memset (cidbuf, 0, sizeof (cidbuf));
+              char cidprefix[32];
+              memset (cidprefix, 0, sizeof (cidprefix));
               const objectval_tyBM *obcomp = setelemnth_BM (complsetv, ix);
-              assert (isobject_BM ((const value_tyBM) obcomp));
+              ASSERT_BM (isobject_BM ((const value_tyBM) obcomp));
               idtocbuf32_BM (objid_BM (obcomp), cidbuf);
-              GtkWidget *mit = gtk_menu_item_new_with_label (cidbuf);
+              unsigned idwidth =
+                gotwidth < strlen (cidbuf) ? gotwidth : strlen (cidbuf);
+              strncpy (cidprefix, cidbuf, idwidth);
+              GtkWidget *mit = gtk_menu_item_new_with_label ("?");
+              GtkWidget *mlab = gtk_bin_get_child (GTK_BIN (mit));
+              char *markup = NULL;
+              if (ix < MAXFUNCTIONKEY_BM)
+                markup =
+                  g_markup_printf_escaped
+                  ("<tt><b>%s</b>%s</tt> <small><i>(F%d)</i></small>",
+                   cidprefix, cidbuf + idwidth, ix + 1);
+              else
+                markup = g_markup_printf_escaped ("<tt><b>%s</b>%s</tt>",
+                                                  cidprefix,
+                                                  cidbuf + idwidth);
+              gtk_label_set_markup (GTK_LABEL (mlab), markup);
+              g_free (markup), markup = NULL;
               gtk_menu_shell_append (GTK_MENU_SHELL (complmenu), mit);
               g_signal_connect (mit, "activate",
                                 G_CALLBACK (replacecompletionbyidcmd_BM),
@@ -3516,9 +3929,9 @@ tabautocomplete_gui_cmd_BM (void)
             memset (firstcidbuf, 0, sizeof (firstcidbuf));
             memset (lastcidbuf, 0, sizeof (lastcidbuf));
             memset (commoncidbuf, 0, sizeof (commoncidbuf));
-            assert (isobject_BM ((const value_tyBM) firstobcomp));
+            ASSERT_BM (isobject_BM ((const value_tyBM) firstobcomp));
             idtocbuf32_BM (objid_BM (firstobcomp), firstcidbuf);
-            assert (isobject_BM ((const value_tyBM) lastobcomp));
+            ASSERT_BM (isobject_BM ((const value_tyBM) lastobcomp));
             idtocbuf32_BM (objid_BM (lastobcomp), lastcidbuf);
             for (int i = 0; i < (int) sizeof (commoncidbuf); i++)
               if (firstcidbuf[i] != lastcidbuf[i])
@@ -3528,13 +3941,15 @@ tabautocomplete_gui_cmd_BM (void)
             if (strlen (commoncidbuf) > 3)
               {
                 complcommonprefix_BM = strdup (commoncidbuf);
-                DBGPRINTF_BM ("complcommonprefix_BM=%s byid",
-                              complcommonprefix_BM);
+                DBGPRINTF_BM
+                  ("tabautocompletecmd complcommonprefix_BM=%s byid",
+                   complcommonprefix_BM);
               }
           }
         }
       else
         {                       /* complete by name */
+          unsigned gotwidth = endname - begname;
           const objectval_tyBM *tinyarr[TINYSIZE_BM] = {
           };
           const objectval_tyBM **arr =
@@ -3547,56 +3962,94 @@ tabautocomplete_gui_cmd_BM (void)
           for (unsigned ix = 0; ix < nbcompl; ix++)
             arr[ix] = setelemnth_BM (complsetv, ix);
           sortnamedobjarr_BM (arr, nbcompl);
+          complseqcmd_BM = maketuple_BM (arr, nbcompl);
           for (unsigned obix = 0; obix < nbcompl; obix++)
             {
               const objectval_tyBM *curob = arr[obix];
-              assert (isobject_BM ((const value_tyBM) curob));
-              int elix = setelemindex_BM (complsetv, curob);
-              assert (elix >= 0);
+              ASSERT_BM (isobject_BM ((const value_tyBM) curob));
               const char *obname = findobjectname_BM (curob);
-              assert (obname != NULL);
-              GtkWidget *mit = gtk_menu_item_new_with_label (obname);
+              ASSERT_BM (obname != NULL);
+              unsigned obnamelen = strlen (obname);
+              ASSERT_BM (obnamelen > 0);
+              char *obprefix = calloc (1 + ((obnamelen + 1) | 7), 1);
+              if (!obprefix)
+                FATAL_BM ("failed to calloc obprefix (obnamelen=%u)",
+                          obnamelen);
+              unsigned prefwidth = gotwidth;
+              if (prefwidth > obnamelen)
+                prefwidth = obnamelen;
+              strncpy (obprefix, obname, prefwidth);
+              GtkWidget *mit = gtk_menu_item_new_with_label ("!");
+              GtkWidget *mlab = gtk_bin_get_child (GTK_BIN (mit));
+              char *markup = NULL;
+              if (obix < MAXFUNCTIONKEY_BM)
+                markup =
+                  g_markup_printf_escaped
+                  ("<b>%s</b>%s <small><i>(F%d)</i></small>", obprefix,
+                   obname + prefwidth, obix + 1);
+              else
+                markup = g_markup_printf_escaped ("<b>%s</b>%s",
+                                                  obprefix,
+                                                  obname + prefwidth);
+              gtk_label_set_markup (GTK_LABEL (mlab), markup);
+              g_free (markup), markup = NULL;
               gtk_menu_shell_append (GTK_MENU_SHELL (complmenu), mit);
               g_signal_connect (mit, "activate",
                                 G_CALLBACK (replacecompletionbynamecmd_BM),
-                                (gpointer) (intptr_t) elix);
+                                (gpointer) (intptr_t) obix);
             }
           const objectval_tyBM *firstnamedob = arr[0];
           const objectval_tyBM *lastnamedob = arr[nbcompl - 1];
           const char *firstobname = findobjectname_BM (firstnamedob);
           const char *lastobname = findobjectname_BM (lastnamedob);
-          DBGPRINTF_BM ("firstobname=%s lastobname=%s nbcompl=%d",
-                        firstobname, lastobname, nbcompl);
+          DBGPRINTF_BM
+            ("tabautocompletecmd firstobname=%s lastobname=%s nbcompl=%d",
+             firstobname, lastobname, nbcompl);
           int comlen = 0;
           for (int ix = 0; firstobname[ix] && lastobname[ix]; ix++)
             if (firstobname[ix] != lastobname[ix])
-              break;
-            else
-              comlen = ix;
+              {
+                comlen = ix;
+                break;
+              };
           if (comlen > 3)
             {
               complcommonprefix_BM = strndup (firstobname, comlen);
-              DBGPRINTF_BM ("complcommonprefix_BM=%s byname",
-                            complcommonprefix_BM);
+              DBGPRINTF_BM
+                ("tabautocompletecmd complcommonprefix_BM=%s byname",
+                 complcommonprefix_BM);
             };
+          if (arr != tinyarr)
+            free (arr), arr = NULL;
         }
+      gulong cancelhdlid = g_signal_connect (complmenu, "cancel",
+                                             G_CALLBACK
+                                             (stopcompletionmenucmd_BM),
+                                             "*Cancelled*");
+      gulong deacthdlid = g_signal_connect (complmenu, "deactivate",
+                                            G_CALLBACK
+                                            (stopcompletionmenucmd_BM),
+                                            "*Deactivated*");
+      g_signal_connect (complmenu, "key-release-event",
+                        G_CALLBACK (keyrelcompletionmenucmd_cbBM), NULL);
       gtk_widget_show_all (complmenu);
-      g_signal_connect (complmenu, "cancel",
-                        G_CALLBACK (stopcompletionmenucmd_BM), "*Cancelled*");
-      g_signal_connect (complmenu, "deactivate",
-                        G_CALLBACK (stopcompletionmenucmd_BM),
-                        "*Deactivated*");
       gtk_menu_popup_at_pointer (GTK_MENU (complmenu), NULL);
+      DBGPRINTF_BM ("tabautocompletecmd before gtk_main");
       gtk_main ();
+      DBGPRINTF_BM ("tabautocompletecmd after gtk_main");
+      g_signal_handler_disconnect (complmenu, cancelhdlid);
+      g_signal_handler_disconnect (complmenu, deacthdlid);
       gtk_widget_destroy (complmenu);
-      complsetcmd_BM = NULL;
+      complseqcmd_BM = NULL;
       compbegoffcmd_BM = -1;
       compendoffcmd_BM = -1;
       free (complcommonprefix_BM), complcommonprefix_BM = NULL;
     }
   free ((char *) curlin);
+  DBGPRINTF_BM ("tabautocompletecmd end");
   return;
 failure:
+  DBGPRINTF_BM ("tabautocompletecmd failure");
   // fail completion by beeping and blinking the commandview_BM
   {
     GdkWindow *dwin = gtk_widget_get_parent_window (commandview_BM);
@@ -3617,10 +4070,10 @@ replacecompletionbyidcmd_BM (GtkMenuItem * mit
                              __attribute__ ((unused)), gpointer data)
 {
   unsigned ix = (unsigned) (intptr_t) data;
-  assert (isset_BM ((const value_tyBM) complsetcmd_BM));
-  assert (ix < setcardinal_BM (complsetcmd_BM));
-  const objectval_tyBM *ob = setelemnth_BM (complsetcmd_BM, ix);
-  assert (isobject_BM ((const value_tyBM) ob));
+  ASSERT_BM (issequence_BM ((const value_tyBM) complseqcmd_BM));
+  ASSERT_BM (ix < sequencesize_BM (complseqcmd_BM));
+  const objectval_tyBM *ob = sequencenthcomp_BM (complseqcmd_BM, ix);
+  ASSERT_BM (isobject_BM ((const value_tyBM) ob));
   char idbuf[32];
   memset (idbuf, 0, sizeof (idbuf));
   idtocbuf32_BM (objid_BM (ob), idbuf);
@@ -3642,12 +4095,12 @@ replacecompletionbynamecmd_BM (GtkMenuItem * mit
                                __attribute__ ((unused)), gpointer data)
 {
   unsigned ix = (unsigned) (intptr_t) data;
-  assert (isset_BM ((const value_tyBM) complsetcmd_BM));
-  assert (ix < setcardinal_BM (complsetcmd_BM));
-  const objectval_tyBM *ob = setelemnth_BM (complsetcmd_BM, ix);
-  assert (isobject_BM ((const value_tyBM) ob));
+  ASSERT_BM (issequence_BM ((const value_tyBM) complseqcmd_BM));
+  ASSERT_BM (ix < sequencesize_BM (complseqcmd_BM));
+  const objectval_tyBM *ob = sequencenthcomp_BM (complseqcmd_BM, ix);
+  ASSERT_BM (isobject_BM ((const value_tyBM) ob));
   const char *obname = findobjectname_BM (ob);
-  assert (obname != NULL);
+  ASSERT_BM (obname != NULL);
   DBGPRINTF_BM ("replacecompletionbynamecmd_BM ix#%d obname=%s", ix, obname);
   GtkTextIter begwit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endwit = EMPTY_TEXT_ITER_BM;
@@ -3662,11 +4115,29 @@ replacecompletionbynamecmd_BM (GtkMenuItem * mit
 }                               /* end replacecompletionbynamecmd_BM */
 
 void
+replacecompletionbyprefixcmd_BM (void)
+{
+  DBGPRINTF_BM ("replacecompletionbyprefixcmd_BM complcommonprefix=%s",
+                complcommonprefix_BM);
+  GtkTextIter begwit = EMPTY_TEXT_ITER_BM;
+  GtkTextIter endwit = EMPTY_TEXT_ITER_BM;
+  gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &begwit,
+                                      compbegoffcmd_BM);
+  gtk_text_buffer_get_iter_at_offset (commandbuf_BM, &endwit,
+                                      compendoffcmd_BM);
+  gtk_text_buffer_delete (commandbuf_BM, &begwit, &endwit);
+  gtk_text_buffer_insert (commandbuf_BM, &begwit, complcommonprefix_BM, -1);
+  gtk_text_buffer_place_cursor (commandbuf_BM, &begwit);
+  gtk_main_quit ();
+}                               /* end replacecompletionbyprefixcmd_BM */
+
+
+void
 stopcompletionmenucmd_BM (GtkMenuItem * mit
                           __attribute__ ((unused)),
                           gpointer data __attribute__ ((unused)))
 {
-  assert (isset_BM ((const value_tyBM) complsetcmd_BM));
+  ASSERT_BM (issequence_BM ((const value_tyBM) complseqcmd_BM));
   if (complcommonprefix_BM)
     {
       DBGPRINTF_BM
@@ -3683,10 +4154,67 @@ stopcompletionmenucmd_BM (GtkMenuItem * mit
                               -1);
       gtk_text_buffer_place_cursor (commandbuf_BM, &begwit);
     }
+  else
+    DBGPRINTF_BM ("stopcompletionmenucmd without complcommonprefix_BM");
   gtk_main_quit ();
 }                               /* end stopcompletionmenucmd_BM */
 
+gboolean
+keyrelcompletionmenucmd_cbBM (GtkWidget * w, GdkEventKey * evk, gpointer data)
+{
+  ASSERT_BM (GTK_IS_MENU (w));
+  ASSERT_BM (evk != NULL);
+  ASSERT_BM (data == 0);
+  GdkModifierType modmask = gtk_accelerator_get_default_mod_mask ();
+  bool withctrl = (evk->state & modmask) == GDK_CONTROL_MASK;
+  bool withshift = (evk->state & modmask) == GDK_SHIFT_MASK;
+  char keybuf[32];
+  memset (keybuf, 0, sizeof (keybuf));
+  if (evk->keyval >= GDK_KEY_0 && evk->keyval <= GDK_KEY_9)
+    snprintf (keybuf, sizeof (keybuf), "KEY_%d", evk->keyval - GDK_KEY_0);
+  else if (evk->keyval >= GDK_KEY_KP_0 && evk->keyval <= GDK_KEY_KP_9)
+    snprintf (keybuf, sizeof (keybuf), "KEY_KP_%d",
+              evk->keyval - GDK_KEY_KP_0);
+  else if (evk->keyval >= GDK_KEY_F1 && evk->keyval <= GDK_KEY_F35)
+    snprintf (keybuf, sizeof (keybuf), "KEY_F%d",
+              1 + (evk->keyval - GDK_KEY_F1));
+  else if (evk->keyval >= GDK_KEY_A && evk->keyval <= GDK_KEY_Z)
+    snprintf (keybuf, sizeof (keybuf), "KEY_%c (up)",
+              'A' + (evk->keyval - GDK_KEY_A));
+  else if (evk->keyval >= GDK_KEY_a && evk->keyval <= GDK_KEY_z)
+    snprintf (keybuf, sizeof (keybuf), "KEY_%c (lo)",
+              'a' + (evk->keyval - GDK_KEY_a));
+  else if (evk->keyval == GDK_KEY_Tab)
+    strcpy (keybuf, "KEY_Tab");
+  else if (evk->keyval == GDK_KEY_Multi_key)
+    strcpy (keybuf, "KEY_Multi_key");
+  else if (evk->keyval == GDK_KEY_space)
+    strcpy (keybuf, "KEY_space");
+  else
+    snprintf (keybuf, sizeof (keybuf), "key %d", evk->keyval);
+  DBGPRINTF_BM ("keyrelcompletionmenucmd keyval %#x %s ctrl %s shift %s",
+                evk->keyval, keybuf, withctrl ? "yes" : "no",
+                withshift ? "yes" : "no");
+  if (evk->keyval >= GDK_KEY_F1 && evk->keyval <= GDK_KEY_F12)
+    {
+      int keyix = evk->keyval - GDK_KEY_F1;
+      if (complbyid_BM)
+        replacecompletionbyidcmd_BM (NULL, keyix);
+      else
+        replacecompletionbynamecmd_BM (NULL, keyix);
+      return TRUE;              // don't propagate the event
+    }
+  else if (evk->keyval == GDK_KEY_space)
+    {
+      replacecompletionbyprefixcmd_BM ();
+      return TRUE;              // don't propagate the event
+    }
+  return FALSE;                 /* propagate the event */
+}                               /* end keyrelcompletionmenucmd_cbBM */
 
+
+
+////////////////
 
 /// called by run_then_keep_command_BM & run_then_erase_command_BM
 void
@@ -3694,6 +4222,8 @@ runcommand_BM (bool erase)
 {
   GtkTextIter startit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;
+  DBGPRINTF_BM ("runcommand %s start elapsed %.3f s",
+                erase ? "erase" : "keep", elapsedtime_BM ());
   cmd_clear_parens_BM ();
   if (errormessagedialog_BM)
     {
@@ -3722,18 +4252,27 @@ runcommand_BM (bool erase)
     {
       gtk_text_buffer_set_text (commandbuf_BM, cmdstr, -1);
     }
-  struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
-  int cmdlen = strlen (cmdstr);
-  cmdpars->pars_ops = &parsop_command_build_BM;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 struct parser_stBM *cmdpars;);
-  _.cmdpars = cmdpars;
+                 objectval_tyBM * parsownob;
+    );
+  _.parsownob = makeobj_BM ();
+  struct parser_stBM *cmdpars =
+    makeparser_memopen_BM (cmdstr, -1, _.parsownob);
+  cmdpars->pars_debug = true;
+  int cmdlen = strlen (cmdstr);
+  DBGPRINTF_BM
+    ("runcommand %s start elapsed %.3f s, cmdlen %d cmdstr@%p:\n%s\n***\n",
+     erase ? "erase" : "keep", elapsedtime_BM (), cmdlen, cmdstr, cmdstr);
+  cmdpars->pars_ops = &parsop_command_build_BM;
   int errpars = setjmp (jmperrorcmd_BM);
   if (!errpars)
     {
       // should parse the command buffer, this could longjmp to jmperrorcmd_BM
       parsecommandbuf_BM (cmdpars, (struct stackframe_stBM *) &_);
       commandnumber_BM++;
+      DBGPRINTF_BM ("runcommand %s *** parsed command#%d elapsed %.3f s\n",
+                    erase ? "erase" : "keep", commandnumber_BM,
+                    elapsedtime_BM ());
       serial63_tyBM sercmd = randomserial63_BM ();
       char serbuf[16];
       memset (serbuf, 0, sizeof (serbuf));
@@ -3775,6 +4314,7 @@ runcommand_BM (bool erase)
     }
   else                          /* error */
     {
+      DBGPRINTF_BM ("runcommand errored elapsed %.3f s", elapsedtime_BM ());
       // the errormessagedialog_BM was created in parserror_guicmd_BM
       if (errormessagedialog_BM)
         {
@@ -3788,14 +4328,16 @@ runcommand_BM (bool erase)
   free (cmdstr);
   if (erase)
     gtk_text_buffer_set_text (commandbuf_BM, "", 0);
+  DBGPRINTF_BM ("runcommand %s end elapsed %.3f s", erase ? "erase" : "keep",
+                elapsedtime_BM ());
 }                               /* end runcommand_BM */
 
 
 void
 enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
 {
-  assert (txbuf == commandbuf_BM);
-  assert (data == NULL);
+  ASSERT_BM (txbuf == commandbuf_BM);
+  ASSERT_BM (data == NULL);
   GtkTextIter startit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
@@ -3803,11 +4345,12 @@ enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
   cmd_clear_parens_BM ();
   char *cmdstr = gtk_text_buffer_get_text (commandbuf_BM, &startit, &endit,
                                            false);
-  struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1);
-  cmdpars->pars_ops = &parsop_command_nobuild_BM;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 struct parser_stBM *cmdpars;);
-  _.cmdpars = cmdpars;
+                 objectval_tyBM * parsownob);
+  _.parsownob = makeobj_BM ();
+  struct parser_stBM *cmdpars =
+    makeparser_memopen_BM (cmdstr, -1, _.parsownob);
+  cmdpars->pars_ops = &parsop_command_nobuild_BM;
   int errpars = setjmp (jmperrorcmd_BM);
   if (!errpars)
     {
@@ -3830,15 +4373,15 @@ enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
 void
 populatepopupbrow_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
 {
-  assert (txview == GTK_TEXT_VIEW (browserview_BM));
-  assert (GTK_IS_MENU (popup));
-  assert (data == NULL);
+  ASSERT_BM (txview == GTK_TEXT_VIEW (browserview_BM));
+  ASSERT_BM (GTK_IS_MENU (popup));
+  ASSERT_BM (data == NULL);
   char cursinfobuf[32];
   memset (cursinfobuf, 0, sizeof (cursinfobuf));
   GtkTextIter cursit = EMPTY_TEXT_ITER_BM;
   if (!browserbuf_BM)
     {
-      if (newgui_BM)
+      if (!oldgui_BM)
         browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
         return;
@@ -3870,9 +4413,9 @@ populatepopupbrow_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
 void
 populatepopupcmd_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
 {
-  assert (txview == GTK_TEXT_VIEW (commandview_BM));
-  assert (GTK_IS_MENU (popup));
-  assert (data == NULL);
+  ASSERT_BM (txview == GTK_TEXT_VIEW (commandview_BM));
+  ASSERT_BM (GTK_IS_MENU (popup));
+  ASSERT_BM (data == NULL);
   char cursinfobuf[32];
   memset (cursinfobuf, 0, sizeof (cursinfobuf));
   GtkTextIter cursit = EMPTY_TEXT_ITER_BM;
@@ -3921,9 +4464,9 @@ static void clearlog_BM (void);
 void
 populatepopuplog_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
 {
-  assert (txview == GTK_TEXT_VIEW (logview_BM));
-  assert (GTK_IS_MENU (popup));
-  assert (data == NULL);
+  ASSERT_BM (txview == GTK_TEXT_VIEW (logview_BM));
+  ASSERT_BM (GTK_IS_MENU (popup));
+  ASSERT_BM (data == NULL);
   gtk_menu_shell_append (GTK_MENU_SHELL (popup),
                          gtk_separator_menu_item_new ());
   GtkWidget *clearlogmenit = gtk_menu_item_new_with_label ("clear log");
@@ -4041,6 +4584,10 @@ initialize_gui_tags_BM (GtkBuilder * bld)
     gtk_text_tag_table_lookup (browsertagtable_BM, "miscomm_brotag");
   if (!miscomm_brotag_BM)
     FATAL_BM ("cannot find miscomm_brotag_BM");
+  epilogue_brotag_BM =          //
+    gtk_text_tag_table_lookup (browsertagtable_BM, "epilogue_brotag");
+  if (!epilogue_brotag_BM)
+    FATAL_BM ("cannot find epilogue_brotag_BM");
   ////////////////
   errored_cmdtag_BM =           //
     gtk_text_tag_table_lookup (commandtagtable_BM, "errored_cmdtag");
@@ -4070,10 +4617,27 @@ initialize_gui_tags_BM (GtkBuilder * bld)
     gtk_text_tag_table_lookup (commandtagtable_BM, "newname_cmdtag");
   if (!newname_cmdtag_BM)
     FATAL_BM ("cannot find newname_cmdtag");
+  //
   id_cmdtag_BM =                //
     gtk_text_tag_table_lookup (commandtagtable_BM, "id_cmdtag");
   if (!id_cmdtag_BM)
     FATAL_BM ("cannot find id_cmdtag");
+  //
+  number_cmdtag_BM =            //
+    gtk_text_tag_table_lookup (commandtagtable_BM, "number_cmdtag");
+  if (!number_cmdtag_BM)
+    FATAL_BM ("cannot find number_cmdtag");
+  //
+  stringsign_cmdtag_BM =        //
+    gtk_text_tag_table_lookup (commandtagtable_BM, "stringsign_cmdtag");
+  if (!stringsign_cmdtag_BM)
+    FATAL_BM ("cannot find stringsign_cmdtag");
+  //
+  stringinside_cmdtag_BM =      //
+    gtk_text_tag_table_lookup (commandtagtable_BM, "stringinside_cmdtag");
+  if (!stringinside_cmdtag_BM)
+    FATAL_BM ("cannot find stringinside_cmdtag");
+  //
   dollar_cmdtag_BM =            //
     gtk_text_tag_table_lookup (commandtagtable_BM, "dollar_cmdtag");
   if (!dollar_cmdtag_BM)
@@ -4087,6 +4651,10 @@ initialize_gui_tags_BM (GtkBuilder * bld)
   if (!blink_cmdtag_BM)
     FATAL_BM ("cannot find blink_cmdtag");
   ////////////////
+  code_logtag_BM =              //
+    gtk_text_tag_table_lookup (logtagtable_BM, "code_logtag");
+  if (!code_logtag_BM)
+    FATAL_BM ("cannot find code_logtag");
   error_logtag_BM =             //
     gtk_text_tag_table_lookup (logtagtable_BM, "error_logtag");
   if (!error_logtag_BM)
@@ -4113,8 +4681,8 @@ initialize_gui_tags_BM (GtkBuilder * bld)
     FATAL_BM ("cannot find command_logtag");
 }                               /* end initialize_gui_tags_BM */
 
-void
-initialize_gui_menu_BM (GtkWidget * mainvbox, GtkBuilder * bld)
+GtkWidget *
+initialize_gui_menubar_BM (GtkWidget * mainvbox, GtkBuilder * bld)
 {
   GtkWidget *mainmenubar = gtk_menu_bar_new ();
   gtk_box_pack_start (GTK_BOX (mainvbox), mainmenubar,
@@ -4135,23 +4703,24 @@ initialize_gui_menu_BM (GtkWidget * mainvbox, GtkBuilder * bld)
   g_signal_connect (appgarbcoll, "activate", garbcollgui_BM, NULL);
   GtkWidget *appmenu =
     GTK_WIDGET (gtk_builder_get_object (bld, "menuapp_id"));
-  assert (GTK_IS_WIDGET (appmenu));
+  ASSERT_BM (GTK_IS_WIDGET (appmenu));
   gtk_menu_shell_append (GTK_MENU_SHELL (mainmenubar), appmenu);
   GtkWidget *editmenu =
     GTK_WIDGET (gtk_builder_get_object (bld, "menuedit_id"));
-  assert (GTK_IS_WIDGET (editmenu));
+  ASSERT_BM (GTK_IS_WIDGET (editmenu));
   gtk_menu_shell_append (GTK_MENU_SHELL (mainmenubar), editmenu);
   GtkWidget *sep1 = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_box_pack_start (GTK_BOX (mainvbox), sep1,
                       BOXNOEXPAND_BM, BOXNOFILL_BM, 2);
-}                               /* end initialize_gui_menu_BM */
+  return mainmenubar;
+}                               /* end initialize_gui_menubar_BM */
 
 
 GtkWidget *
 initialize_oldgui_command_scrollview_BM (void)
 {
   commandbuf_BM = gtk_text_buffer_new (commandtagtable_BM);
-  assert (GTK_IS_TEXT_BUFFER (commandbuf_BM));
+  ASSERT_BM (GTK_IS_TEXT_BUFFER (commandbuf_BM));
   for (int depth = 0; depth < CMD_MAXNEST_BM; depth++)
     {
       char opennamebuf[24];
@@ -4237,7 +4806,7 @@ initialize_gui_BM (const char *builderfile, const char *cssfile)
   GtkWidget *mainvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);
   ///////////////
-  initialize_gui_menu_BM (mainvbox, bld);
+  (void) initialize_gui_menubar_BM (mainvbox, bld);
   ///////////////
   GtkWidget *paned1 = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
   gtk_paned_set_wide_handle (GTK_PANED (paned1), true);
@@ -4304,7 +4873,7 @@ void
 marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
                GtkTextMark * txmark, gpointer data __attribute__ ((unused)))
 {
-  assert (txbuf == commandbuf_BM);
+  ASSERT_BM (txbuf == commandbuf_BM);
   if (txmark != gtk_text_buffer_get_insert (txbuf))
     return;
   unsigned off = gtk_text_iter_get_offset (txit);
@@ -4326,7 +4895,7 @@ void
 marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
                  GtkTextMark * txmark, gpointer data __attribute__ ((unused)))
 {
-  assert (txbuf == browserbuf_BM);
+  ASSERT_BM (txbuf == browserbuf_BM);
   if (txmark != gtk_text_buffer_get_insert (txbuf))
     return;
   unsigned off = gtk_text_iter_get_offset (txit);
@@ -4339,7 +4908,8 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
       {
         obmd = (oblo + obhi) / 2;
         struct browsedobj_stBM *mdbrob = browsedobj_BM + obmd;
-        assert (mdbrob->brow_ostartm != NULL && mdbrob->brow_oendm != NULL);
+        ASSERT_BM (mdbrob->brow_ostartm != NULL
+                   && mdbrob->brow_oendm != NULL);
         GtkTextIter ostartit = EMPTY_TEXT_ITER_BM;
         GtkTextIter oendit = EMPTY_TEXT_ITER_BM;
         gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
@@ -4369,7 +4939,8 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
         GtkTextIter ostartit = EMPTY_TEXT_ITER_BM;
         GtkTextIter oendit = EMPTY_TEXT_ITER_BM;
         struct browsedobj_stBM *mdbrob = browsedobj_BM + obmd;
-        assert (mdbrob->brow_ostartm != NULL && mdbrob->brow_oendm != NULL);
+        ASSERT_BM (mdbrob->brow_ostartm != NULL
+                   && mdbrob->brow_oendm != NULL);
         gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &ostartit,
                                           mdbrob->brow_ostartm);
         gtk_text_buffer_get_iter_at_mark (browserbuf_BM, &oendit,
@@ -4391,7 +4962,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
                                           brob->brow_oendm);
         guint ostartoff = gtk_text_iter_get_offset (&ostartit);
         int delta = off - ostartoff;
-        assert (delta >= 0);
+        ASSERT_BM (delta >= 0);
         for (unsigned pix = 0; pix < curnbparen; pix++)
           {
             struct parenoffset_stBM *curpo = brob->brow_oparenarr + pix;
@@ -4424,7 +4995,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
         {
           bvmd = (bvlo + bvhi) / 2;
           struct browsedval_stBM *mdbrva = browsedval_BM + bvmd;
-          assert (mdbrva->brow_vstartmk && mdbrva->brow_vendmk);
+          ASSERT_BM (mdbrva->brow_vstartmk && mdbrva->brow_vendmk);
           GtkTextIter vstartit = EMPTY_TEXT_ITER_BM;
           GtkTextIter vendit = EMPTY_TEXT_ITER_BM;
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
@@ -4452,7 +5023,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
       for (bvmd = bvlo; bvmd < bvhi && bvix < 0; bvmd++)
         {
           struct browsedval_stBM *mdbrva = browsedval_BM + bvmd;
-          assert (mdbrva->brow_vstartmk && mdbrva->brow_vendmk);
+          ASSERT_BM (mdbrva->brow_vstartmk && mdbrva->brow_vendmk);
           GtkTextIter vstartit = EMPTY_TEXT_ITER_BM;
           GtkTextIter vendit = EMPTY_TEXT_ITER_BM;
           gtk_text_buffer_get_iter_at_mark (browserbuf_BM,
@@ -4476,7 +5047,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
                                             brva->brow_vendmk);
           guint vstartoff = gtk_text_iter_get_offset (&vstartit);
           int delta = off - vstartoff;
-          assert (delta >= 0);
+          ASSERT_BM (delta >= 0);
           for (unsigned pix = 0; pix < curnbparen; pix++)
             {
               struct parenoffset_stBM *curpo = brva->brow_vparenarr + pix;
@@ -4508,13 +5079,15 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
 }                               /* end marksetbrows_BM */
 
 
+extern bool did_deferredgtk_BM (void);
 gboolean
 guiperiodicgarbagecollection_BM (gpointer data __attribute__ ((unused)))
 {
-  assert (data == NULL);
-  if (want_garbage_collection_BM && gtk_main_level () <= 1)
+  ASSERT_BM (data == NULL);
+  did_deferredgtk_BM ();
+  if (atomic_load (&want_garbage_collection_BM) && gtk_main_level () <= 1)
     {
-      fullgarbagecollection_BM (NULL);
+      full_garbage_collection_BM (NULL);
     }
   return TRUE;                  // repeat again later
 }                               /* end guiperiodicgarbagecollection_BM */

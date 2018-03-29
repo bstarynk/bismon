@@ -1,10 +1,41 @@
 // file main_BM.c
+
+/***
+    BISMON 
+    Copyright © 2018 Basile Starynkevitch (working at CEA, LIST, France)
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+----
+    Contact me (Basile Starynkevitch) by email
+    basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
+***/
 #include "bismon.h"
+#include <gtk/gtk.h>
+#include <glib.h>
+#include <glib/giochannel.h>
 
 struct timespec startrealtimespec_BM;
 void *dlprog_BM;
 bool gui_is_running_BM;
+static int nbworkjobs_BM;
 const char myhostname_BM[80];
+thread_local struct threadinfo_stBM *curthreadinfo_BM;
+thread_local volatile struct failurehandler_stBM *curfailurehandle_BM;
+
+GIOChannel *defer_gtk_readpipechan_BM;
+int defer_gtk_readpipefd_BM = -1;
+int defer_gtk_writepipefd_BM = -1;
 
 extern void weakfailure_BM (void);
 
@@ -26,6 +57,20 @@ weakassertfailureat_BM (const char *condmsg, const char *fil, int lin)
   backtrace_symbols_fd (backbuf, nb, STDERR_FILENO);
   weakfailure_BM ();
 }                               /* end weakassertfailureat_BM */
+
+value_tyBM
+objrout_placeholder_BM (struct stackframe_stBM *stkf __attribute__ ((unused)),  //
+                        const value_tyBM arg1 __attribute__ ((unused)), //
+                        const value_tyBM arg2 __attribute__ ((unused)), //
+                        const value_tyBM arg3 __attribute__ ((unused)), //
+                        const value_tyBM arg4 __attribute__ ((unused)), //
+                        const quasinode_tyBM * restargs
+                        __attribute__ ((unused)))
+{
+  weakassertfailureat_BM ("objrout_placeholder_BM", __FILE__, __LINE__);
+  return NULL;
+}                               /* end objrout_placeholder_BM */
+
 
 void
 abort_BM (void)
@@ -54,8 +99,38 @@ struct
 } added_predef_bm[MAXADDEDPREDEF_BM];
 
 bool batch_bm;
-bool newgui_BM;
-char *parseval_bm;
+bool oldgui_BM;
+bool give_version_bm;
+
+
+void
+failure_at_BM (int failcode, const char *fil, int lineno,
+               const value_tyBM reasonv, struct stackframe_stBM *stkf)
+{
+  if (curfailurehandle_BM)
+    {
+      if (curfailurehandle_BM->failh_magic != FAILUREHANDLEMAGIC_BM)
+        FATAL_AT_BM (fil, lineno,
+                     "corrupted curfailurehandle_BM@%p for failcode %d",
+                     curfailurehandle_BM, failcode);
+      curfailurehandle_BM->failh_reason = reasonv;
+      longjmp (((struct failurehandler_stBM *)
+                curfailurehandle_BM)->failh_jmpbuf, failcode);
+    }
+  else
+    {
+      FATAL_AT_BM (fil, lineno,
+                   "unhandled failure code#%d reason %s",
+                   failcode, debug_outstr_value_BM (reasonv, stkf, 0));
+    }
+}                               /* end failure_at_BM */
+
+void
+failure_BM (int failcode, const value_tyBM reasonv,
+            struct stackframe_stBM *stkf)
+{
+  failure_at_BM (failcode, "??", 0, reasonv, stkf);
+}                               /* end failure_BM */
 
 static void add_new_predefined_bm (void);
 
@@ -64,7 +139,7 @@ run_command_bm (const gchar * optname
                 __attribute__ ((unused)), const gchar * val, gpointer data
                 __attribute__ ((unused)), GError ** perr)
 {
-  assert (val != NULL);
+  ASSERT_BM (val != NULL);
   fprintf (stderr, "running command: %s\n", val);
   int ok = system (val);
   if (ok == 0)
@@ -79,7 +154,7 @@ add_predef_bm (const gchar * optname __attribute__ ((unused)),
                gpointer data __attribute__ ((unused)),
                GError ** perr __attribute__ ((unused)))
 {
-  assert (val != NULL);
+  ASSERT_BM (val != NULL);
   if (!validname_BM (val))
     FATAL_BM ("invalid predef name %s", val);
   if (nb_added_predef_bm >= MAXADDEDPREDEF_BM)
@@ -90,7 +165,8 @@ add_predef_bm (const gchar * optname __attribute__ ((unused)),
   nb_added_predef_bm++;
   comment_bm = NULL;
   return true;
-}                               /* end run_command_bm */
+}                               /* end add_predef_bm */
+
 
 const GOptionEntry optab[] = {
   //
@@ -145,6 +221,13 @@ const GOptionEntry optab[] = {
    .description = "emit NB 'HAS_PREDEF_BM'",
    .arg_description = "NB"},
   //
+  {.long_name = "job",.short_name = (char) 'j',
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_INT,
+   .arg_data = &nbworkjobs_BM,
+   .description = "number of worker threads NBJOBS (>=2, <16)",
+   .arg_description = "NBJOBS"},
+  //
   {.long_name = "run-command",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
@@ -176,19 +259,21 @@ const GOptionEntry optab[] = {
    .description = "run in batch mode without GUI",
    .arg_description = NULL},
   //
-  {.long_name = "new-gui",.short_name = (char) 'N',
+  {.long_name = "old-gui",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
-   .arg_data = &newgui_BM,
-   .description = "run the new GUI",
+   .arg_data = &oldgui_BM,
+   .description = "run the old GUI",
    .arg_description = NULL},
   //
-  {.long_name = "parse-val",.short_name = (char) 0,
+  //
+  {.long_name = "version",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_FILENAME,
-   .arg_data = &parseval_bm,
-   .description = "parse value from FILE (use - for stdin)",
-   .arg_description = "FILE"},
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &give_version_bm,
+   .description = "gives version information",
+   .arg_description = NULL},
+  //
   {}
 };
 
@@ -223,6 +308,13 @@ add_new_predefined_bm (void)
         {
           predobj = makeobj_BM ();
           registername_BM (predobj, predname);
+        }
+      else
+        {
+          char idpred[32];
+          memset (idpred, 0, sizeof (idpred));
+          idtocbuf32_BM (objid_BM (predobj), idpred);
+          printf ("existing %s becomes predefined %s\n", idpred, predname);
         };
       objtouchnow_BM ((objectval_tyBM *) predobj);
       if (predcomm)
@@ -246,7 +338,11 @@ idqcmp_BM (const void *p1, const void *p2)
 }                               /* end idqcmp_BM */
 
 
-static void rungui_BM (bool newgui);
+static void rungui_BM (bool newgui, int nbjobs);
+
+static void give_prog_version_BM (const char *progname);
+
+
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
 //// GTK appplications
@@ -255,6 +351,7 @@ main (int argc, char **argv)
 {
   clock_gettime (CLOCK_MONOTONIC, &startrealtimespec_BM);
   dlprog_BM = dlopen (NULL, RTLD_NOW | RTLD_GLOBAL);
+  char *progname = argv[0];
   if (!dlprog_BM)
     {
       fprintf (stderr, "%s: dlopen for whole program fails %s\n",
@@ -269,11 +366,20 @@ main (int argc, char **argv)
   initialize_globals_BM ();
   initialize_predefined_objects_BM ();
   initialize_predefined_names_BM ();
+  initialize_agenda_BM ();
   /// should actually use gtk_init_with_args so define some
   /// GOptionEntry array
   GError *err = NULL;
   bool guiok = gtk_init_with_args (&argc, &argv, " - The bismon program",
                                    optab, NULL, &err);
+  if (give_version_bm)
+    give_prog_version_BM (progname);
+  if (nbworkjobs_BM < MINNBWORKJOBS_BM)
+    nbworkjobs_BM = MINNBWORKJOBS_BM;
+  else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
+    nbworkjobs_BM = MAXNBWORKJOBS_BM;
+  DBGPRINTF_BM ("main begin tid#%ld pid %d",
+                (long) gettid_BM (), (int) getpid ());
   if (count_emit_has_predef_bm > 0)
     {
       rawid_tyBM *idarr =
@@ -310,7 +416,7 @@ main (int argc, char **argv)
     FATAL_BM ("gtk_init_with_args failed");
   if (!batch_bm)
     {
-      if (newgui_BM)
+      if (!oldgui_BM)
         initialize_newgui_BM (builder_file_bm, css_file_bm);
       else
         initialize_gui_BM (builder_file_bm, css_file_bm);
@@ -322,29 +428,6 @@ main (int argc, char **argv)
   load_initial_BM (load_dir_bm);
   if (nb_added_predef_bm > 0)
     add_new_predefined_bm ();
-  if (parseval_bm)
-    {
-      FILE *pfil =
-        strcmp (parseval_bm, "-") ? fopen (parseval_bm, "r") : stdin;
-      if (!pfil)
-        FATAL_BM ("failed to open %s for parsing value (%m)", parseval_bm);
-      printf ("parsing value from %s...\n", parseval_bm);
-      fflush (NULL);
-      struct parser_stBM *parsin = makeparser_of_file_BM (pfil);
-      parsin->pars_path = parseval_bm;
-      parserskipspaces_BM (parsin);
-      bool gotval = false;
-      value_tyBM val = parsergetvalue_BM (parsin, NULL, 0, &gotval);
-      if (!gotval)
-        FATAL_BM ("parsing %s failed", parseval_bm);
-      if (val)
-        printf ("parsed non-nil value from %s\n", parseval_bm);
-      else
-        printf ("parsed nil from %s\n", parseval_bm);
-      if (pfil != stdin)
-        fclose (pfil);
-      fflush (NULL);
-    }
   if (dump_after_load_dir_bm)
     {
       struct dumpinfo_stBM di = dump_BM (dump_after_load_dir_bm, NULL);
@@ -368,17 +451,188 @@ main (int argc, char **argv)
     }
   if (batch_bm)
     {
+      nbworkjobs_BM = 0;
       printf ("no GUI in batch mode\n");
     }
   else
-    rungui_BM (newgui_BM);
+    rungui_BM (!oldgui_BM, nbworkjobs_BM);
   fflush (NULL);
 }                               /* end main */
 
-void
-rungui_BM (bool newgui)
+extern bool did_deferredgtk_BM (void);
+
+static gboolean
+deferpipereadhandler_BM (GIOChannel * source,
+                         GIOCondition condition __attribute__ ((unused)),
+                         gpointer data __attribute__ ((unused)))
 {
+  NONPRINTF_BM ("deferpipereadhandler_BM start tid#%ld", (long) gettid_BM ());
+  if (!source)
+    return false;
+  gchar buf[8] = "";
+  for (;;)
+    {
+      memset (buf, 0, sizeof (buf));
+      gsize nbrd = 0;
+      // reading more than one byte each time can block the program
+      GIOStatus st = g_io_channel_read_chars (source, buf, 1,
+                                              &nbrd, NULL);
+      NONPRINTF_BM ("deferpipereadhandler_BM nbrd=%d buf '%s' st#%d tid#%ld",
+                    (int) nbrd, buf, (int) st, (long) gettid_BM ());
+      if (st == G_IO_STATUS_EOF)
+        return FALSE;
+      if (!did_deferredgtk_BM ())
+        return TRUE;
+      if (st == G_IO_STATUS_NORMAL && nbrd > 0)
+        return TRUE;
+    }
+  return TRUE;                  // to keep watching
+}                               /* end deferpipereadhandler_BM */
+
+
+extern void do_internal_deferred_apply3_gtk_BM (value_tyBM funv,
+                                                value_tyBM arg1,
+                                                value_tyBM arg2,
+                                                value_tyBM arg3);
+extern void do_internal_deferred_send3_gtk_BM (value_tyBM recv,
+                                               objectval_tyBM * obsel,
+                                               value_tyBM arg1,
+                                               value_tyBM arg2,
+                                               value_tyBM arg3);
+
+// called from did_deferredgtk_BM
+void
+do_internal_deferred_apply3_gtk_BM (value_tyBM fun,
+                                    value_tyBM arg1, value_tyBM arg2,
+                                    value_tyBM arg3)
+{
+  LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
+                 value_tyBM funv; value_tyBM arg1v, arg2v, arg3v;
+                 value_tyBM failres;
+    );
+  _.funv = fun;
+  _.arg1v = arg1;
+  _.arg2v = arg2;
+  _.arg3v = arg3;
+  int failcod = 0;
+  LOCAL_FAILURE_HANDLE_BM (failcod, _.failres);
+  if (failcod)
+    {
+      fprintf (stderr, "deffered_apply3_gtk failure, failcod#%d\n", failcod);
+      curfailurehandle_BM = NULL;
+      return;
+    }
+  NONPRINTF_BM ("internaldeferapply funv %s arg1 %s arg2 %s arg3 %s",   //
+                debug_outstr_value_BM (_.funv,  //
+                                       (struct stackframe_stBM *) &_, 0),       //
+                debug_outstr_value_BM (_.arg1v, //
+                                       (struct stackframe_stBM *) &_, 0),       //
+                debug_outstr_value_BM (_.arg2v, //
+                                       (struct stackframe_stBM *) &_, 0),       //
+                debug_outstr_value_BM (_.arg3v, //
+                                       (struct stackframe_stBM *) &_, 0));
+  (void) apply3_BM (_.funv, (struct stackframe_stBM *) &_, _.arg1v, _.arg2v,
+                    _.arg3v);
+  NONPRINTF_BM ("internaldeferapply applied funv %s",   //
+                debug_outstr_value_BM (_.funv,  //
+                                       (struct stackframe_stBM *) &_, 0));
+  curfailurehandle_BM = NULL;
+}                               /* end do_internal_defer_apply3_BM */
+
+
+// called from did_deferredgtk_BM
+void
+do_internal_deferred_send3_gtk_BM (value_tyBM recv, objectval_tyBM * obsel,
+                                   value_tyBM arg1, value_tyBM arg2,
+                                   value_tyBM arg3)
+{
+  LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
+                 objectval_tyBM * obsel;
+                 value_tyBM recva, arg1v, arg2v, arg3v;
+                 value_tyBM failres;
+    );
+  _.recva = recv;
+  _.obsel = obsel;
+  _.arg1v = arg1;
+  _.arg2v = arg2;
+  _.arg3v = arg3;
+  int failcod = 0;
+  LOCAL_FAILURE_HANDLE_BM (failcod, _.failres);
+  if (failcod)
+    {
+      fprintf (stderr, "deffered_send3_gtk failure, failcod#%d\n", failcod);
+      curfailurehandle_BM = NULL;
+      return;
+    }
+  DBGPRINTF_BM ("internaldefersend recv %s obsel %s arg1 %s arg2 %s arg3 %s",   //
+                debug_outstr_value_BM (_.recva, //
+                                       (struct stackframe_stBM *) &_, 0),       //
+                objectdbg_BM (_.obsel), //
+                debug_outstr_value_BM (_.arg1v, //
+                                       (struct stackframe_stBM *) &_, 0),       //
+                debug_outstr_value_BM (_.arg2v, //
+                                       (struct stackframe_stBM *) &_, 0),       //
+                debug_outstr_value_BM (_.arg3v, //
+                                       (struct stackframe_stBM *) &_, 0));
+  (void) send3_BM (recv, obsel, (struct stackframe_stBM *) &_, arg1, arg2,
+                   arg3);
+  DBGPRINTF_BM ("internaldefersend did send recv %s obsel %s",  //
+                debug_outstr_value_BM (_.recva, //
+                                       (struct stackframe_stBM *) &_, 0),       //
+                objectdbg_BM (_.obsel));
+  curfailurehandle_BM = NULL;
+}                               /* end do_internal_defer_send3_BM */
+
+
+static void startguilog_BM (bool newgui);
+static void endguilog_BM (void);
+
+
+////////////////////////////////////////////////////////////////
+void
+rungui_BM (bool newgui, int nbjobs)
+{
+  NONPRINTF_BM ("rungui %s nbjobs %d start tid#%ld", newgui ? "new" : "old",
+                nbjobs, (long) gettid_BM ());
+  int deferpipes[2] = { -1, -1 };
+  if (pipe (deferpipes) < 0)
+    FATAL_BM ("failed to pipe GTK deferpipe");
+  defer_gtk_readpipefd_BM = deferpipes[0];
+  defer_gtk_writepipefd_BM = deferpipes[1];
+  NONPRINTF_BM ("rungui defer_gtk_readpipefd=%d defer_gtk_writepipefd_BM=%d",
+                defer_gtk_readpipefd_BM, defer_gtk_writepipefd_BM);
+  defer_gtk_readpipechan_BM = g_io_channel_unix_new (defer_gtk_readpipefd_BM);
+  g_io_add_watch (defer_gtk_readpipechan_BM, G_IO_IN, deferpipereadhandler_BM,
+                  NULL);
   gui_is_running_BM = true;
+  startguilog_BM (newgui);
+  start_agenda_work_threads_BM (nbjobs);
+  NONPRINTF_BM ("rungui %s nbjobs %d before gtkmain", newgui ? "new" : "old",
+                nbjobs);
+  gtk_main ();
+  NONPRINTF_BM
+    ("rungui %s nbjobs %d after gtkmain before stopagendawork tid#%ld elapsed %.3f s",
+     newgui ? "new" : "old", nbjobs, (long) gettid_BM (), elapsedtime_BM ());
+  stop_agenda_work_threads_BM ();
+  NONPRINTF_BM ("rungui %s nbjobs %d after stopagendawork elapsed %.3f s",
+                newgui ? "new" : "old", nbjobs, elapsedtime_BM ());
+  g_io_channel_shutdown (defer_gtk_readpipechan_BM, false, NULL);
+  g_io_channel_unref (defer_gtk_readpipechan_BM), defer_gtk_readpipechan_BM =
+    NULL;
+  close (defer_gtk_readpipefd_BM), defer_gtk_readpipefd_BM = -1;
+  close (defer_gtk_writepipefd_BM), defer_gtk_writepipefd_BM = -1;
+  gui_is_running_BM = false;
+  if (gui_command_log_file_BM)
+    endguilog_BM ();
+  NONPRINTF_BM ("rungui %s nbjobs %d ending tid#%ld elapsed %.3f s",
+                newgui ? "new" : "old", nbjobs, (long) gettid_BM (),
+                elapsedtime_BM ());
+}                               /* end rungui_BM */
+
+
+void
+startguilog_BM (bool newgui)
+{
   if (!gui_log_name_bm || !gui_log_name_bm[0])
     {
       gui_command_log_file_BM = NULL;
@@ -438,23 +692,38 @@ rungui_BM (bool newgui)
       }
       fflush (gui_command_log_file_BM);
     }
-  gtk_main ();
-  gui_is_running_BM = false;
-  if (gui_command_log_file_BM)
-    {
-      time_t nowtim = time (NULL);
-      struct tm nowtm = { };
-      localtime_r (&nowtim, &nowtm);
-      char nowbuf[64];
-      memset (nowbuf, 0, sizeof (nowbuf));
-      strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
-      fprintf (gui_command_log_file_BM,
-               "\n\f/// end of bismon GUI command log file %s at %s\n",
-               gui_log_name_bm, nowbuf);
-      if (gui_command_log_file_BM != stdout
-          && gui_command_log_file_BM != stderr)
-        fclose (gui_command_log_file_BM);
-      gui_command_log_file_BM = NULL;
-      fflush (NULL);
-    }
-}                               /* end rungui_BM */
+}                               /* end startguilog_BM */
+
+void
+endguilog_BM (void)
+{
+  time_t nowtim = time (NULL);
+  struct tm nowtm = { };
+  localtime_r (&nowtim, &nowtm);
+  char nowbuf[64];
+  memset (nowbuf, 0, sizeof (nowbuf));
+  strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
+  fprintf (gui_command_log_file_BM,
+           "\n\f/// end of bismon GUI command log file %s at %s\n",
+           gui_log_name_bm, nowbuf);
+  if (gui_command_log_file_BM != stdout && gui_command_log_file_BM != stderr)
+    fclose (gui_command_log_file_BM);
+  gui_command_log_file_BM = NULL;
+  fflush (NULL);
+}                               /* end endguilog_BM */
+
+
+void
+give_prog_version_BM (const char *progname)
+{
+  printf ("%s: version information\n", progname);
+  printf ("\t timestamp: %s\n", bismon_timestamp);
+  printf ("\t last git commit: %s\n", bismon_lastgitcommit);
+  printf ("\t last git tag: %s\n", bismon_lastgittag);
+  printf ("\t source checksum: %s\n", bismon_checksum);
+  printf ("\t source dir: %s\n", bismon_directory);
+  printf ("\t makefile: %s\n", bismon_makefile);
+  printf ("########\n");
+  printf ("run\n" "\t   %s --help\n" "to get help.\n", progname);
+  exit (EXIT_SUCCESS);
+}                               /* end give_prog_version_BM */

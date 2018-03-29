@@ -1,8 +1,26 @@
 // file fundecl_BM.h
+
+/***
+    BISMON 
+    Copyright © 2018 Basile Starynkevitch (working at CEA, LIST, France)
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+***/
 #ifndef FUNDECL_BM_INCLUDED
 #define FUNDECL_BM_INCLUDED
 
 extern void abort_BM (void) __attribute__ ((noreturn));
+static inline pid_t gettid_BM (void);
 
 extern int64_t prime_above_BM (int64_t n);
 extern int64_t prime_below_BM (int64_t n);
@@ -11,11 +29,17 @@ extern int64_t prime_below_BM (int64_t n);
 static inline double clocktime_BM (clockid_t);
 static inline double cputime_BM (void);
 static inline double elapsedtime_BM (void);
+static inline void get_realtimespec_delayedms_BM (struct timespec *pts,
+                                                  unsigned millisec);
+extern double taskletcputime_BM (void);
+extern double taskletelapsedtime_BM (void);
 static inline bool istaggedint_BM (value_tyBM v);
 static inline intptr_t getint_BM (value_tyBM v);
 static inline value_tyBM taggedint_BM (intptr_t i);
 
 static inline int valtype_BM (const value_tyBM v);
+extern const char *typestring_BM (int ty);
+static inline bool isgenuineval_BM (const value_tyBM v);
 static inline objectval_tyBM *valclass_BM (const value_tyBM v);
 extern const closure_tyBM *valfindmethod_BM (const value_tyBM recv,
                                              const objectval_tyBM *
@@ -24,8 +48,11 @@ static inline hash_tyBM valhash_BM (const value_tyBM v);
 void valgcdestroy_BM (struct garbcoll_stBM *, value_tyBM v);
 void valgckeep_BM (struct garbcoll_stBM *, value_tyBM v);
 static inline bool valequal_BM (const value_tyBM v1, const value_tyBM v2);
-extern bool valsamecontent_BM (const value_tyBM v1, const value_tyBM v2);
-
+extern bool valsamecontent_BM (const value_tyBM v1, const value_tyBM v2,
+                               int depth);
+static inline int valcmp_BM (const value_tyBM v1, const value_tyBM v2);
+extern int valqcmp_BM (const void *, const void *);     // for qsort
+static inline void valarrqsort_BM (value_tyBM * arr, unsigned siz);
 static inline bool validserial63_BM (serial63_tyBM s);
 extern serial63_tyBM randomserial63_BM (void);
 #if __cplusplus
@@ -76,6 +103,8 @@ extern const stringval_tyBM *sprintfstring_BM (const char *fmt, ...)
   __attribute__ ((format (printf, 1, 2)));
 extern int lenstring_BM (const stringval_tyBM *);       // length in bytes
 extern const char *bytstring_BM (const stringval_tyBM *);
+extern void *stringgcproc_BM (struct garbcoll_stBM *gc, stringval_tyBM * str)
+  __attribute__ ((warn_unused_result));
 extern void stringgcdestroy_BM (struct garbcoll_stBM *, stringval_tyBM *);
 
 extern void stringgckeep_BM (struct garbcoll_stBM *, stringval_tyBM *);
@@ -86,7 +115,8 @@ extern const tupleval_tyBM *maketuple_BM (objectval_tyBM ** arr,
                                           unsigned rawsiz);
 extern unsigned tuplesize_BM (const tupleval_tyBM * tup);
 extern objectval_tyBM *tuplecompnth_BM (const tupleval_tyBM * tup, int rk);
-extern void tuplegcmark_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup);
+extern void *tuplegcproc_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup)
+  __attribute__ ((warn_unused_result));
 extern void tuplegcdestroy_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup);
 extern void tuplegckeep_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup);
 
@@ -101,15 +131,67 @@ extern const setval_tyBM *makeset_BM (const objectval_tyBM ** arr,
                                       unsigned rawsiz);
 static inline bool setcontains_BM (const setval_tyBM * setv,
                                    const objectval_tyBM * obelem);
+extern const tupleval_tyBM *settonamedsortedtuple_BM (const setval_tyBM *
+                                                      setv);
 /* return the index in setv of element obelem or else -1 */
 extern int setelemindex_BM (const setval_tyBM * setv,
                             const objectval_tyBM * obelem);
 
 extern unsigned setcardinal_BM (const setval_tyBM * setv);
 extern objectval_tyBM *setelemnth_BM (const setval_tyBM * set, int rk);
-extern void setgcmark_BM (struct garbcoll_stBM *gc, setval_tyBM * set);
+extern void *setgcproc_BM (struct garbcoll_stBM *gc, setval_tyBM * set)
+  __attribute__ ((warn_unused_result));
 extern void setgcdestroy_BM (struct garbcoll_stBM *gc, setval_tyBM * set);
 extern void setgckeep_BM (struct garbcoll_stBM *gc, setval_tyBM * set);
+
+
+
+static inline bool istree_BM (const value_tyBM v);
+static inline bool isclosure_BM (const value_tyBM v);
+static inline const closure_tyBM *closurecast_BM (const value_tyBM);
+static inline bool isnode_BM (const value_tyBM v);
+static inline const node_tyBM *nodecast_BM (const value_tyBM);
+
+static inline objectval_tyBM *treeconn_BM (const value_tyBM);
+static inline objectval_tyBM *closureconn_BM (const value_tyBM);
+static inline objectval_tyBM *nodeconn_BM (const value_tyBM);
+
+static inline unsigned treewidth_BM (const value_tyBM);
+static inline unsigned closurewidth_BM (const value_tyBM);
+static inline unsigned nodewidth_BM (const value_tyBM);
+
+static inline value_tyBM treenthson_BM (const value_tyBM tr, int rk);
+static inline value_tyBM closurenthson_BM (const value_tyBM clo, int rk);
+static inline value_tyBM nodenthson_BM (const value_tyBM nod, int rk);
+
+extern void *nodegcproc_BM (struct garbcoll_stBM *gc, node_tyBM * nod,
+                            int depth) __attribute__ ((warn_unused_result));
+extern void nodegcdestroy_BM (struct garbcoll_stBM *gc, node_tyBM * nod);
+extern void nodegckeep_BM (struct garbcoll_stBM *gc, node_tyBM * nod);
+
+extern const node_tyBM *makenode_BM (const objectval_tyBM * connob,
+                                     unsigned nbval,
+                                     const value_tyBM * sonvalarr);
+extern const node_tyBM *makenodevar_BM (const objectval_tyBM * connob, ...)
+  __attribute__ ((sentinel));
+
+extern const closure_tyBM *makeclosure_BM (const objectval_tyBM * conn,
+                                           unsigned nbclos,
+                                           const value_tyBM * closvalarr);
+extern const closure_tyBM *makeclosurevar_BM (const objectval_tyBM * connob,
+                                              ...) __attribute__ ((sentinel));
+
+extern void *closuregcproc_BM (struct garbcoll_stBM *gc, closure_tyBM * clos,
+                               int depth)
+  __attribute__ ((warn_unused_result));
+extern void closuregcdestroy_BM (struct garbcoll_stBM *gc,
+                                 closure_tyBM * clos);
+extern void closuregckeep_BM (struct garbcoll_stBM *gc, closure_tyBM * clos);
+
+extern void *quasinodegcproc_BM (struct garbcoll_stBM *gc,
+                                 quasinode_tyBM * quasi, int depth)
+  __attribute__ ((warn_unused_result));
+////////////////
 
 extern void initialize_garbage_collector_BM (void);
 extern void initialize_predefined_objects_BM (void);
@@ -127,8 +209,8 @@ static inline int objectnamedcmp_BM (const objectval_tyBM * ob1,
                                      const objectval_tyBM * ob2);
 
 
-extern void sortobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz);
-extern void sortnamedobjarr_BM (const objectval_tyBM ** obarr, size_t arrsiz);
+extern void sortobjarr_BM (objectval_tyBM ** obarr, size_t arrsiz);
+extern void sortnamedobjarr_BM (objectval_tyBM ** obarr, size_t arrsiz);
 
 extern objectval_tyBM *findobjofid_BM (const rawid_tyBM id);
 extern objectval_tyBM *makeobjofid_BM (const rawid_tyBM id);
@@ -141,13 +223,18 @@ static inline double objmtime_BM (const objectval_tyBM * obj);
 static inline objectval_tyBM *objsignature_BM (const objectval_tyBM * obj);
 static inline void *objroutaddr_BM (const objectval_tyBM * obj,
                                     const objectval_tyBM * objsig);
+
+extern objrout_sigBM objrout_placeholder_BM;
 static inline void objtouchmtime_BM (objectval_tyBM * obj, double mtime);
 static inline void objtouchnow_BM (objectval_tyBM * obj);
 extern void objputspacenum_BM (objectval_tyBM * obj, unsigned spanum);
 static inline unsigned objspacenum_BM (const objectval_tyBM * obj);
 static inline objectval_tyBM *objclass_BM (const objectval_tyBM * obj);
 extern void objputclass_BM (objectval_tyBM * obj, objectval_tyBM * objclass);
-
+// return true on success
+static inline bool objlock_BM (objectval_tyBM * obj);
+static inline bool objunlock_BM (objectval_tyBM * obj);
+static inline bool objtrylock_BM (objectval_tyBM * obj);
 static inline value_tyBM objgetattr_BM (const objectval_tyBM * obj,
                                         const objectval_tyBM * objattr);
 static inline unsigned objnbattrs_BM (const objectval_tyBM * obj);
@@ -192,6 +279,23 @@ static inline bool
 objectisinstance_BM (const objectval_tyBM * obj,
                      const objectval_tyBM * obclass);
 
+
+/// raise a failure; see also macro FAILURE_BM
+extern void failure_BM (int failcode, const value_tyBM reasonv,
+                        struct stackframe_stBM *stkf)
+  __attribute__ ((noreturn));
+extern void failure_at_BM (int failcode, const char *fil, int lineno,
+                           const value_tyBM reasonv,
+                           struct stackframe_stBM *stkf)
+  __attribute__ ((noreturn));
+
+extern void register_failock_BM (struct failurelockset_stBM *,
+                                 objectval_tyBM *);
+extern void unregister_failock_BM (struct failurelockset_stBM *,
+                                   objectval_tyBM *);
+extern void initialize_failurelockset_BM (struct failurelockset_stBM *,
+                                          size_t);
+extern void destroy_failurelockset_BM (struct failurelockset_stBM *);
 /// message sending
 
 extern value_tyBM send0_BM (const value_tyBM recv,
@@ -241,9 +345,11 @@ extern value_tyBM send8_BM (const value_tyBM recv,
                             const value_tyBM arg3, const value_tyBM arg4,
                             const value_tyBM arg5, const value_tyBM arg6,
                             const value_tyBM arg7, const value_tyBM arg8);
-
+static inline value_tyBM sendvar_BM (const value_tyBM recv, const objectval_tyBM * obselector, struct stackframe_stBM *stkf, unsigned nbargs,   // no more than MAXAPPLYARGS_BM-1
+                                     const value_tyBM * argarr);
 
 static inline unsigned objnbcomps_BM (const objectval_tyBM * obj);
+static inline value_tyBM *objcompdata_BM (const objectval_tyBM * obj);
 static inline value_tyBM objgetcomp_BM (const objectval_tyBM * obj, int rk);
 static inline void objputcomp_BM (objectval_tyBM * obj, int rk,
                                   const value_tyBM compval);
@@ -251,8 +357,19 @@ static inline void objreservecomps_BM (objectval_tyBM * obj, unsigned gap);
 static inline void objresetcomps_BM (objectval_tyBM * obj, unsigned len);
 static inline void objappendcomp_BM (objectval_tyBM * obj,
                                      value_tyBM compval);
+static inline value_tyBM objlastcomp_BM (const objectval_tyBM * obj);
+static inline void objpoplastcomp_BM (objectval_tyBM * obj);
 static inline void objgrowcomps_BM (objectval_tyBM * obj, unsigned gap);
 
+///
+extern void deleteobjectpayload_BM (objectval_tyBM * obj,
+                                    extendedval_tyBM payl);
+static inline void objclearpayload_BM (objectval_tyBM * obj);
+static inline void objputpayload_BM (objectval_tyBM * obj,
+                                     extendedval_tyBM payl);
+static inline extendedval_tyBM objpayload_BM (const objectval_tyBM * obj);
+
+///
 extern const setval_tyBM *setpredefinedobjects_BM (void);
 extern void gcmarkpredefinedobjects_BM (struct garbcoll_stBM *gc);
 
@@ -265,39 +382,44 @@ extern void objectgckeep_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj);
 
 
 ////////////////
-extern struct strbuffer_stBM *strbuffermake_BM (unsigned maxsize);
-static inline bool isstrbuffer_BM (const value_tyBM val);
-static inline struct strbuffer_stBM *strbuffercast_BM (value_tyBM val);
-extern void strbufferreserve_BM (struct strbuffer_stBM *sbuf, unsigned gap);
-static inline const char *strbufferbytes_BM (struct strbuffer_stBM *sbuf);
-static inline int strbufferindentation_BM (struct strbuffer_stBM *sbuf);
-extern void strbufferclearindent_BM (struct strbuffer_stBM *sbuf);
-extern void strbuffermoreindent_BM (struct strbuffer_stBM *sbuf);
-extern void strbufferlessindent_BM (struct strbuffer_stBM *sbuf);
-extern void strbufferappendcstr_BM (struct strbuffer_stBM *sbuf,
-                                    const char *cstr);
-extern void strbufferreset_BM (struct strbuffer_stBM *sbuf);
-extern unsigned strbufferlength_BM (const struct strbuffer_stBM *sbuf);
+/// notice the naming convention objXXXXXpayl_BM for functions dealing
+/// with particular payloads in objects.
+extern bool objputstrbufferpayl_BM (objectval_tyBM * obj, unsigned maxsize);
+static inline bool objhasstrbufferpayl_BM (const objectval_tyBM * obj);
+static inline struct strbuffer_stBM *objgetstrbufferpayl_BM (objectval_tyBM
+                                                             * obj);
+extern void objstrbufferreservepayl_BM (objectval_tyBM * obj, unsigned gap);
+extern const char *objstrbufferbytespayl_BM (objectval_tyBM * obj);
+extern int objstrbufferindentationpayl_BM (objectval_tyBM * obj);
+extern void objstrbufferclearindentpayl_BM (objectval_tyBM * obj);
+extern void objstrbuffermoreindentpayl_BM (objectval_tyBM * obj);
+extern void objstrbufferlessindentpayl_BM (objectval_tyBM * obj);
+extern void objstrbufferappendcstrpayl_BM (objectval_tyBM * obj,
+                                           const char *cstr);
+extern void objstrbufferresetpayl_BM (objectval_tyBM * obj);
+extern unsigned objstrbufferlengthpayl_BM (const objectval_tyBM * obj);
 /// raw printf
-extern void strbufferrawprintf_BM (struct strbuffer_stBM *sbuf,
-                                   const char *fmt, ...)
+extern void objstrbufferrawprintfpayl_BM (objectval_tyBM * obj,
+                                          const char *fmt, ...)
   __attribute__ ((format (printf, 2, 3)));
 /// cooked printf: the tabs become spaces or indented-newlines, the
 /// newlines become indented
-extern void strbufferprintf_BM (struct strbuffer_stBM *sbuf, const char *fmt,
-                                ...) __attribute__ ((format (printf, 2, 3)));
+extern void objstrbufferprintfpayl_BM (objectval_tyBM * obj, const char *fmt,
+                                       ...)
+  __attribute__ ((format (printf, 2, 3)));
 /// indented newline
-extern void strbuffernewline_BM (struct strbuffer_stBM *sbuf);
+extern void objstrbuffernewlinepayl_BM (objectval_tyBM * obj);
 /// output UTF8 encoded à la JSON
-extern void strbufferencodedutf8_BM (struct strbuffer_stBM *sbuf,
-                                     const char *str, ssize_t bytelen);
+extern void objstrbufferencodedutf8payl_BM (objectval_tyBM * obj,
+                                            const char *str, ssize_t bytelen);
 /// output bytes encoded à la C
-extern void strbufferencodedc_BM (struct strbuffer_stBM *sbuf,
-                                  const char *str, ssize_t bytelen);
+extern void objstrbufferencodedcpayl_BM (objectval_tyBM * obj,
+                                         const char *str, ssize_t bytelen);
 
 /// write the content to a file, if different
-extern void strbufferwritetofile_BM (struct strbuffer_stBM *sbuf,
-                                     const char *filepath);
+extern void objstrbufferwritetofilepayl_BM (objectval_tyBM * obj,
+                                            const char *filepath);
+///////
 
 extern void strbuffergcmark_BM (struct garbcoll_stBM *gc,
                                 struct strbuffer_stBM *sbuf, int depth);
@@ -310,8 +432,8 @@ extern void strbuffergckeep_BM (struct garbcoll_stBM *gc,
 
 static inline bool isassoc_BM (value_tyBM v);
 static inline anyassoc_tyBM *assoccast_BM (value_tyBM v);
-extern void assocgcmark_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc,
-                            int depth);
+extern void *assocgcproc_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc,
+                             int depth) __attribute__ ((warn_unused_result));
 extern void assocpairgcdestroy_BM (struct garbcoll_stBM *gc,
                                    struct assocpairs_stBM *assocpair);
 extern void assocbucketgcdestroy_BM (struct garbcoll_stBM *gc,
@@ -334,6 +456,76 @@ extern anyassoc_tyBM *assoc_addattr_BM (anyassoc_tyBM * assoc,
 extern anyassoc_tyBM *assoc_removeattr_BM (anyassoc_tyBM * assoc,
                                            const objectval_tyBM * obattr);
 
+//// assoc payload support
+
+extern bool objputassocpayl_BM (objectval_tyBM * obj, unsigned maxsize);
+static inline bool objhasassocpayl_BM (const objectval_tyBM * obj);
+static inline unsigned objassocnbkeyspayl_BM (const objectval_tyBM * obj);
+static inline anyassoc_tyBM *objgetassocpayl_BM (objectval_tyBM * obj);
+static inline const setval_tyBM *objassocsetattrspayl_BM (objectval_tyBM *
+                                                          obj);
+static inline value_tyBM objassocgetattrpayl_BM (objectval_tyBM * obj,
+                                                 const objectval_tyBM *
+                                                 obattr);
+static inline void objassocaddattrpayl_BM (objectval_tyBM * obj,
+                                           const objectval_tyBM * obattr,
+                                           value_tyBM val);
+static inline void objassocremoveattrpayl_BM (objectval_tyBM * obj,
+                                              const objectval_tyBM * obattr);
+static inline void objassocreorganizepayl_BM (objectval_tyBM * obj,
+                                              unsigned gap);
+
+
+//////////////// hashed and mutable set of objects
+extern struct hashsetobj_stBM *hashsetobj_grow_BM (struct hashsetobj_stBM
+                                                   *hset, unsigned gap);
+static inline struct hashsetobj_stBM *hashsetobjcast_BM (const value_tyBM v);
+extern void hashsetgcmark_BM (struct garbcoll_stBM *gc,
+                              struct hashsetobj_stBM *hset);
+void hashsetgcdestroy_BM (struct garbcoll_stBM *gc,
+                          struct hashsetobj_stBM *hset);
+void hashsetgckeep_BM (struct garbcoll_stBM *gc,
+                       struct hashsetobj_stBM *hset);
+extern bool hashsetobj_contains_BM (struct hashsetobj_stBM *hset,
+                                    const objectval_tyBM * obj);
+extern struct hashsetobj_stBM *hashsetobj_add_BM (struct hashsetobj_stBM
+                                                  *hset,
+                                                  const objectval_tyBM * obj);
+extern struct hashsetobj_stBM *hashsetobj_remove_BM (struct hashsetobj_stBM
+                                                     *hset,
+                                                     const objectval_tyBM *
+                                                     obj);
+// pick some random element, and keep it in the hashset
+extern objectval_tyBM *hashsetobj_pick_random_BM (struct hashsetobj_stBM
+                                                  *hset);
+// take some random element, and remove it from the hashset - without reorganizing it
+extern objectval_tyBM *hashsetobj_take_random_BM (struct hashsetobj_stBM
+                                                  *hset);
+extern const setval_tyBM *hashsetobj_to_set_BM (struct hashsetobj_stBM *hset);
+static inline unsigned hashsetobj_cardinal_BM (struct hashsetobj_stBM *hset);
+
+//// obj hashset payload support
+
+extern void objputhashsetpayl_BM (objectval_tyBM * obj, unsigned inisiz);
+static inline struct hashsetobj_stBM *objgethashsetpayl_BM (objectval_tyBM *
+                                                            obj);
+static inline bool objhashashsetpayl_BM (objectval_tyBM * obj);
+static inline bool objhashsetcontainspayl_BM (objectval_tyBM * obj,
+                                              const objectval_tyBM * obelem);
+static inline void objhashsetaddpayl_BM (objectval_tyBM * obj,
+                                         objectval_tyBM * obelem);
+static inline void objhashsetremovepayl_BM (objectval_tyBM * obj,
+                                            objectval_tyBM * obelem);
+static inline void objhashsetgrowpayl_BM (objectval_tyBM * obj, unsigned gap);
+static inline unsigned objhashsetcardinalpayl_BM (objectval_tyBM * obj);
+static inline const setval_tyBM *objhashsettosetpayl_BM (objectval_tyBM *
+                                                         obj);
+static inline objectval_tyBM *objhashsetpickrandompayl_BM (objectval_tyBM *
+                                                           obj);
+static inline objectval_tyBM *objhashsettakerandompayl_BM (objectval_tyBM *
+                                                           obj);
+
+//////////////// mutable data vector of values
 
 static inline unsigned datavectlen_BM (const struct datavectval_stBM *dvec);
 
@@ -349,9 +541,10 @@ extern struct datavectval_stBM *datavect_reserve_BM (struct datavectval_stBM
 extern struct datavectval_stBM *datavect_append_BM (struct datavectval_stBM
                                                     *dvec, value_tyBM val);
 
+extern struct datavectval_stBM *datavect_pop_BM (struct datavectval_stBM
+                                                 *dvec);
 extern struct datavectval_stBM *datavect_insert_BM (struct datavectval_stBM
-                                                    *dvec,
-                                                    int rk,
+                                                    *dvec, int rk,
                                                     value_tyBM * valarr,
                                                     unsigned len);
 static inline struct datavectval_stBM *datavect_insertone_BM (struct
@@ -366,36 +559,49 @@ extern const node_tyBM *datavect_to_node_BM (struct datavectval_stBM *dvec,
                                              const objectval_tyBM * obconn);
 static inline value_tyBM datavectnth_BM (const struct datavectval_stBM *dvec,
                                          int rk);
-static inline void datavectputnth_BM (struct datavectval_stBM *dvec,
-                                      int rk, const value_tyBM valcomp);
-extern void datavectgcmark_BM (struct garbcoll_stBM *gc,
-                               const struct datavectval_stBM *dvec,
-                               int depth);
+static inline value_tyBM datavectlast_BM (const struct datavectval_stBM
+                                          *dvec);
+static inline void datavectputnth_BM (struct datavectval_stBM *dvec, int rk,
+                                      const value_tyBM valcomp);
+extern void *datavectgcproc_BM (struct garbcoll_stBM *gc,
+                                struct datavectval_stBM *dvec, int depth)
+  __attribute__ ((warn_unused_result));
 extern void datavectgcdestroy_BM (struct garbcoll_stBM *gc,
                                   struct datavectval_stBM *dvec);
 extern void datavectgckeep_BM (struct garbcoll_stBM *gc,
                                struct datavectval_stBM *dvec);
 
-extern struct hashsetobj_stBM *hashsetobj_grow_BM (struct hashsetobj_stBM
-                                                   *hset, unsigned gap);
-static inline struct hashsetobj_stBM *hashsetobjcast_BM (const value_tyBM v);
-void hashsetgcmark_BM (struct garbcoll_stBM *gc,
-                       struct hashsetobj_stBM *hset);
-void hashsetgcdestroy_BM (struct garbcoll_stBM *gc,
-                          struct hashsetobj_stBM *hset);
-void hashsetgckeep_BM (struct garbcoll_stBM *gc,
-                       struct hashsetobj_stBM *hset);
-extern bool hashsetobj_contains_BM (struct hashsetobj_stBM *hset,
-                                    const objectval_tyBM * obj);
-extern struct hashsetobj_stBM *hashsetobj_add_BM (struct hashsetobj_stBM
-                                                  *hset,
-                                                  const objectval_tyBM * obj);
-extern struct hashsetobj_stBM *hashsetobj_remove_BM (struct hashsetobj_stBM
-                                                     *hset,
-                                                     const objectval_tyBM *
-                                                     obj);
-extern const setval_tyBM *hashsetobj_to_set_BM (struct hashsetobj_stBM *hset);
-static inline unsigned hashsetobj_cardinal_BM (struct hashsetobj_stBM *hset);
+
+//////////////// obj datavect payload
+extern void objputdatavectpayl_BM (objectval_tyBM * obj, unsigned inisiz);
+static inline struct datavectval_stBM *objgetdatavectpayl_BM    //
+  (objectval_tyBM * obj);
+static inline bool objhasdatavectpayl_BM (objectval_tyBM * obj);
+static inline unsigned objdatavectlengthpayl_BM (objectval_tyBM * obj);
+static inline const value_tyBM *objdatavectdatapayl_BM (objectval_tyBM * obj);
+static inline void objdatavectgrowpayl_BM (objectval_tyBM * obj,
+                                           unsigned gap);
+static inline void objdatavectreservepayl_BM (objectval_tyBM * obj,
+                                              unsigned gap);
+static inline void objdatavectappendpayl_BM (objectval_tyBM * obj,
+                                             value_tyBM val);
+static inline void objdatavectinsertpayl_BM (objectval_tyBM * obj,
+                                             int rk,
+                                             value_tyBM * valarr,
+                                             unsigned len);
+static inline void objdatavectinsertonepayl_BM (objectval_tyBM * obj,
+                                                int rk, value_tyBM val);
+
+static inline void objdatavectremovepayl_BM (objectval_tyBM * obj, int rk,
+                                             unsigned len);
+static inline const node_tyBM *objdatavecttonodepayl_BM //
+  (objectval_tyBM * obj, const objectval_tyBM * obconn);
+static inline value_tyBM objdatavectnthpayl_BM (objectval_tyBM * obj, int rk);
+static inline void objdatavectputnthpayl_BM (objectval_tyBM * obj,
+                                             int rk,
+                                             const value_tyBM valcomp);
+////////////////////////////////
+
 
 extern struct listtop_stBM *makelist_BM (void);
 static inline bool islist_BM (const value_tyBM);
@@ -407,8 +613,8 @@ extern void listappend_BM (struct listtop_stBM *lis, value_tyBM val);
 extern void listprepend_BM (struct listtop_stBM *lis, value_tyBM val);
 extern void listpopfirst_BM (struct listtop_stBM *lis);
 extern void listpoplast_BM (struct listtop_stBM *lis);
-extern void listgcmark_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis,
-                           int depth);
+extern void listgcmark_BM (struct garbcoll_stBM *gc,
+                           struct listtop_stBM *lis, int depth);
 extern void listgcdestroy_BM (struct garbcoll_stBM *gc,
                               struct listtop_stBM *lis);
 extern void listgckeep_BM (struct garbcoll_stBM *gc,
@@ -419,50 +625,28 @@ extern const node_tyBM *list_to_node_BM (const struct listtop_stBM *lis,
 // make a tuple from the objects in the list
 extern const tupleval_tyBM *list_to_tuple_BM (const struct listtop_stBM *lis);
 
+//////////////// obj list payload
 
-static inline bool istree_BM (const value_tyBM v);
-static inline bool isclosure_BM (const value_tyBM v);
-static inline const closure_tyBM *closurecast_BM (const value_tyBM);
-static inline bool isnode_BM (const value_tyBM v);
-static inline const node_tyBM *nodecast_BM (const value_tyBM);
+extern void objputlistpayl_BM (objectval_tyBM * obj);
+static inline struct listtop_stBM *objgetlistpayl_BM (objectval_tyBM * obj);
+static inline bool objhaslistpayl_BM (objectval_tyBM * obj);
+static inline value_tyBM objlistfirstpayl_BM (objectval_tyBM * obj);
+static inline value_tyBM objlistlastpayl_BM (objectval_tyBM * obj);
+static inline unsigned objlistlengthpayl_BM (objectval_tyBM * obj);
+static inline void objlistclearpayl_BM (objectval_tyBM * obj);
+static inline void objlistappendpayl_BM (objectval_tyBM * obj,
+                                         value_tyBM val);
+static inline void objlistprependpayl_BM (objectval_tyBM * obj,
+                                          value_tyBM val);
+static inline void objlistpopfirstpayl_BM (objectval_tyBM * obj);
+static inline void objlistpoplastpayl_BM (objectval_tyBM * obj);
+static inline const node_tyBM *objlisttonodepayl_BM (objectval_tyBM * obj,
+                                                     const objectval_tyBM *
+                                                     obconn);
+static inline const tupleval_tyBM *objlisttotuplepayl_BM (objectval_tyBM *
+                                                          obj);
+////////////////////////////////
 
-static inline objectval_tyBM *treeconn_BM (const value_tyBM);
-static inline objectval_tyBM *closureconn_BM (const value_tyBM);
-static inline objectval_tyBM *nodeconn_BM (const value_tyBM);
-
-static inline unsigned treewidth_BM (const value_tyBM);
-static inline unsigned closurewidth_BM (const value_tyBM);
-static inline unsigned nodewidth_BM (const value_tyBM);
-
-static inline value_tyBM treenthson_BM (const value_tyBM tr, int rk);
-static inline value_tyBM closurenthson_BM (const value_tyBM clo, int rk);
-static inline value_tyBM nodenthson_BM (const value_tyBM nod, int rk);
-
-extern void nodegcmark_BM (struct garbcoll_stBM *gc, node_tyBM * nod,
-                           int depth);
-extern void nodegcdestroy_BM (struct garbcoll_stBM *gc, node_tyBM * nod);
-extern void nodegckeep_BM (struct garbcoll_stBM *gc, node_tyBM * nod);
-
-extern const node_tyBM *makenode_BM (const objectval_tyBM * connob,
-                                     unsigned nbval,
-                                     const value_tyBM * sonvalarr);
-extern const node_tyBM *makenodevar_BM (const objectval_tyBM * connob, ...)
-  __attribute__ ((sentinel));
-
-extern const closure_tyBM *makeclosure_BM (const objectval_tyBM * conn,
-                                           unsigned nbclos,
-                                           const value_tyBM * closvalarr);
-extern const closure_tyBM *makeclosurevar_BM (const objectval_tyBM * connob,
-                                              ...) __attribute__ ((sentinel));
-
-extern void closuregcmark_BM (struct garbcoll_stBM *gc, closure_tyBM * clos,
-                              int depth);
-extern void closuregcdestroy_BM (struct garbcoll_stBM *gc,
-                                 closure_tyBM * clos);
-extern void closuregckeep_BM (struct garbcoll_stBM *gc, closure_tyBM * clos);
-
-extern void quasinodegcmark_BM (struct garbcoll_stBM *gc,
-                                quasinode_tyBM * quasi, int depth);
 
 extern void classinfogcmark_BM (struct garbcoll_stBM *gc,
                                 struct classinfo_stBM *clinf, int depth);
@@ -471,7 +655,7 @@ extern void classinfogcdestroy_BM (struct garbcoll_stBM *gc,
 extern void classinfogckeep_BM (struct garbcoll_stBM *gc,
                                 struct classinfo_stBM *clinf);
 
-////////////////
+////////////////////////////////
 extern struct dict_stBM *dictmake_BM (void);
 static inline bool isdict_BM (const value_tyBM v);
 extern unsigned dictsize_BM (const struct dict_stBM *dict);
@@ -495,60 +679,225 @@ extern const stringval_tyBM *dictkeybefore_BM (struct dict_stBM *dict,
                                                const stringval_tyBM * str);
 extern const node_tyBM *dictnodeofkeys_BM (struct dict_stBM *dict,
                                            const objectval_tyBM * obj);
+
+//////////////// obj dict payload
+extern void objputdictpayl_BM (objectval_tyBM * obj);
+static inline struct dict_stBM *objgetdictpayl_BM (objectval_tyBM * obj);
+static inline bool objhasdictpayl_BM (objectval_tyBM * obj);
+static inline unsigned objdictsizepayl_BM (objectval_tyBM * obj);
+static inline value_tyBM objdictgetpayl_BM (objectval_tyBM * obj,
+                                            const stringval_tyBM * str);
+static inline void objdictputpayl_BM (objectval_tyBM * obj,
+                                      const stringval_tyBM * str,
+                                      const value_tyBM val);
+static inline void objdictremovepayl_BM (objectval_tyBM * obj,
+                                         const stringval_tyBM * str);
+static inline const stringval_tyBM *objdictkeyafterpayl_BM
+  (objectval_tyBM * obj, const stringval_tyBM * str);
+static inline const stringval_tyBM
+  * objdictkeysameorafterpayl_BM (objectval_tyBM * obj,
+                                  const stringval_tyBM * str);
+
+static inline const stringval_tyBM *objdictkeybeforepayl_BM
+  (objectval_tyBM * obj, const stringval_tyBM * str);
+
+static inline const node_tyBM *objdictnodeofkeyspayl_BM
+  (objectval_tyBM * obj, const objectval_tyBM * obconn);
+////////////////////////////////
+static inline bool ishashsetval_BM (const value_tyBM v);
+static inline bool ishashsetvbucket_BM (const value_tyBM v);
+extern void hashsetvalgcmark_BM (struct garbcoll_stBM *gc,
+                                 struct hashsetval_stBM *hsv, int depth);
+extern void hashsetvbucketgcmark_BM (struct garbcoll_stBM *gc,
+                                     struct hashsetvbucket_stBM *hvb,
+                                     int depth);
+extern void hashsetvalgcdestroy_BM (struct garbcoll_stBM *gc,
+                                    struct hashsetval_stBM *hsv);
+extern void hashsetvbucketgcdestroy_BM (struct garbcoll_stBM *gc,
+                                        struct hashsetvbucket_stBM *hvb);
+extern void hashsetvalgckeep_BM (struct garbcoll_stBM *gc,
+                                 struct hashsetval_stBM *hsv);
+extern void hashsetvbucketgckeep_BM (struct garbcoll_stBM *gc,
+                                     struct hashsetvbucket_stBM *hvb);
+extern bool hashsetvalcontains_BM (struct hashsetval_stBM *hsv,
+                                   value_tyBM val);
+extern struct hashsetval_stBM *hashsetvalreorganize_BM
+  (struct hashsetval_stBM *hsv, unsigned gap);
+extern struct hashsetval_stBM *hashsetvalput_BM (struct hashsetval_stBM *hsv,
+                                                 value_tyBM val);
+extern struct hashsetval_stBM *hashsetvalremove_BM (struct hashsetval_stBM
+                                                    *hsv, value_tyBM val);
+
+/** to iterate in an hashsetval using
+  for (value_tyBM v = hashsetvalfirst_BM(hsv); v!=NULL;
+       v = hashsetvalnext_BM(hsv, v))
+ which makes only sense with an unchanged hashsetval
+ (so no insertion or deletion or reorganization inside the loop body)
+ **/
+extern value_tyBM hashsetvalfirst_BM (struct hashsetval_stBM *hsv);
+extern value_tyBM hashsetvalnext_BM (struct hashsetval_stBM *hsv,
+                                     value_tyBM prev);
+/* make a wide node from all the (sorted) values inside an hashsetval */
+extern value_tyBM hashsetvalmakenode_BM (struct hashsetval_stBM *hsv,
+                                         objectval_tyBM * connob);
+
+//////////////// obj hashsetval payload
+
+static inline void objputhashsetvalpayl_BM (objectval_tyBM * obj,
+                                            unsigned gap);
+static inline struct hashsetval_stBM *objgethashsetvalpayl_BM (objectval_tyBM
+                                                               * obj);
+static inline bool objhashashsetvalpayl_BM (objectval_tyBM * obj);
+static inline bool objhashsetvalcontainspayl_BM (objectval_tyBM * obj,
+                                                 value_tyBM val);
+static inline void objhashsetvalreorganizepayl_BM (objectval_tyBM * obj,
+                                                   unsigned gap);
+static inline void objhashsetvalputpayl_BM (objectval_tyBM * obj,
+                                            value_tyBM val);
+static inline void objhashsetvalremovepayl_BM (objectval_tyBM * obj,
+                                               value_tyBM val);
+
+/** to iterate in an hashsetval obj payload using
+  for (value_tyBM v = objhashsetvalfirstpayl_BM(obhs); v!=NULL;
+       v = objhashsetvalnextpayl_BM(obhs, v))
+ which makes only sense with an unchanged hashsetval
+ (so no insertion or deletion or reorganization inside the loop body)
+ **/
+static inline value_tyBM objhashsetvalfirstpayl_BM (objectval_tyBM * obj);
+static inline value_tyBM objhashsetvalnextpayl_BM (objectval_tyBM * obj,
+                                                   value_tyBM prev);
+static inline value_tyBM objhashsetvalmakenodepayl_BM (objectval_tyBM * obj,
+                                                       objectval_tyBM *
+                                                       connob);
+////////////////////////////////
+//// hash maps associating values to values
+static inline bool ishashmapval_BM (const value_tyBM v);
+static inline bool ishashmapbucket_BM (const value_tyBM v);
+extern void hashmapvalgcmark_BM (struct garbcoll_stBM *gc,
+                                 struct hashmapval_stBM *hsv, int depth);
+extern void hashmapbucketgcmark_BM (struct garbcoll_stBM *gc,
+                                    struct hashmapbucket_stBM *hvb,
+                                    int depth);
+extern void hashmapvalgcdestroy_BM (struct garbcoll_stBM *gc,
+                                    struct hashmapval_stBM *hsv);
+extern void hashmapbucketgcdestroy_BM (struct garbcoll_stBM *gc,
+                                       struct hashmapbucket_stBM *hvb);
+extern void hashmapvalgckeep_BM (struct garbcoll_stBM *gc,
+                                 struct hashmapval_stBM *hsv);
+extern void hashmapbucketgckeep_BM (struct garbcoll_stBM *gc,
+                                    struct hashmapbucket_stBM *hvb);
+
+extern value_tyBM
+hashmapvalget_BM (struct hashmapval_stBM *hmv, value_tyBM keyv);
+
+extern struct hashmapval_stBM *hashmapvalreorganize_BM
+  (struct hashmapval_stBM *hmv, unsigned gap);
+
+extern struct hashmapval_stBM *hashmapvalput_BM
+  (struct hashmapval_stBM *hmv, value_tyBM keyv, value_tyBM valv);
+
+extern struct hashmapval_stBM *hashmapvalremove_BM
+  (struct hashmapval_stBM *hmv, value_tyBM keyv);
+
+/** to iterate in an hashmapval using
+  for (value_tyBM kv = hashmapvalfirstkey_BM(hmv); kv!=NULL;
+       kv = hashmapvalnextkey_BM(hsv, kv))
+ which makes only sense with an unchanged hashmapval
+ (so no insertion or deletion or reorganization inside the loop body)
+ **/
+extern value_tyBM hashmapvalfirstkey_BM (struct hashmapval_stBM *hmv);
+extern value_tyBM hashmapvalnextkey_BM (struct hashmapval_stBM *hmv,
+                                        value_tyBM prevk);
+
+extern value_tyBM
+  hashmapvalmakenodeofkeys_BM
+  (struct hashmapval_stBM *hmv, objectval_tyBM * connob);
+
+//////////////// obj hashmapval payload 
+
+extern void objputhashmapvalpayl_BM (objectval_tyBM * obj, unsigned gap);
+static inline struct hashmapval_stBM *objgethashmapvalpayl_BM
+  (objectval_tyBM * obj);
+static inline bool objhashashmapvalpayl_BM (objectval_tyBM * obj);
+static inline value_tyBM objhashmapvalgetpayl_BM (objectval_tyBM * obj,
+                                                  value_tyBM keyv);
+static inline void objhashmapvalreorganizepayl_BM (objectval_tyBM * obj,
+                                                   unsigned gap);
+static inline void objhashmapvalputpayl_BM (objectval_tyBM * obj,
+                                            value_tyBM keyv, value_tyBM valv);
+static inline void objhashmapvalremovepayl_BM (objectval_tyBM * obj,
+                                               value_tyBM keyv);
+static inline value_tyBM objhashmapvalfirstkeypayl_BM (objectval_tyBM * obj);
+static inline value_tyBM objhashmapvalnextkeypayl_BM (objectval_tyBM * obj,
+                                                      value_tyBM prevk);
+static inline value_tyBM objhashmapvalmakenodeofkeyspayl_BM
+  (objectval_tyBM * obj, objectval_tyBM * connob);
+////////////////////////////////////////////////////////////////
 ////////////////
-extern value_tyBM apply0_BM (const closure_tyBM * clos,
+/** apply a closure, or directly an object; so applying OBJ is same as
+    applying closure % OBJ () without closed values */
+
+extern value_tyBM apply0_BM (const value_tyBM funv,
                              struct stackframe_stBM *stkf);
 
-extern value_tyBM apply1_BM (const closure_tyBM * clos,
+extern value_tyBM apply1_BM (const value_tyBM funv,
                              struct stackframe_stBM *stkf,
                              const value_tyBM arg1);
 
-extern value_tyBM apply2_BM (const closure_tyBM * clos,
+extern value_tyBM apply2_BM (const value_tyBM funv,
                              struct stackframe_stBM *stkf,
                              const value_tyBM arg1, const value_tyBM arg2);
 
-extern value_tyBM apply3_BM (const closure_tyBM * clos,
+extern value_tyBM apply3_BM (const value_tyBM funv,
                              struct stackframe_stBM *stkf,
                              const value_tyBM arg1, const value_tyBM arg2,
                              const value_tyBM arg3);
 
-extern value_tyBM apply4_BM (const closure_tyBM * clos,
+extern value_tyBM apply4_BM (const value_tyBM funv,
                              struct stackframe_stBM *stkf,
                              const value_tyBM arg1, const value_tyBM arg2,
                              const value_tyBM arg3, const value_tyBM arg4);
 
-extern value_tyBM apply5_BM (const closure_tyBM * clos,
+extern value_tyBM apply5_BM (const value_tyBM funv,
                              struct stackframe_stBM *stkf,
                              const value_tyBM arg1, const value_tyBM arg2,
                              const value_tyBM arg3, const value_tyBM arg4,
                              const value_tyBM arg5);
 
-extern value_tyBM apply6_BM (const closure_tyBM * clos,
+extern value_tyBM apply6_BM (const value_tyBM funv,
                              struct stackframe_stBM *stkf,
                              const value_tyBM arg1, const value_tyBM arg2,
                              const value_tyBM arg3, const value_tyBM arg4,
                              const value_tyBM arg5, const value_tyBM arg6);
 
-extern value_tyBM apply7_BM (const closure_tyBM * clos,
+extern value_tyBM apply7_BM (const value_tyBM funv,
                              struct stackframe_stBM *stkf,
                              const value_tyBM arg1, const value_tyBM arg2,
                              const value_tyBM arg3, const value_tyBM arg4,
                              const value_tyBM arg5, const value_tyBM arg6,
                              const value_tyBM arg7);
 
-extern value_tyBM apply8_BM (const closure_tyBM * clos,
+extern value_tyBM apply8_BM (const value_tyBM funv,
                              struct stackframe_stBM *stkf,
                              const value_tyBM arg1, const value_tyBM arg2,
                              const value_tyBM arg3, const value_tyBM arg4,
                              const value_tyBM arg5, const value_tyBM arg6,
                              const value_tyBM arg7, const value_tyBM arg8);
-extern value_tyBM apply9_BM (const closure_tyBM * clos,
+extern value_tyBM apply9_BM (const value_tyBM funv,
                              struct stackframe_stBM *stkf,
                              const value_tyBM arg1, const value_tyBM arg2,
                              const value_tyBM arg3, const value_tyBM arg4,
                              const value_tyBM arg5, const value_tyBM arg6,
                              const value_tyBM arg7, const value_tyBM arg8,
                              const value_tyBM arg9);
+
+extern value_tyBM applyvar_BM (const value_tyBM funv, struct stackframe_stBM *stkf, unsigned nbargs,    // no more than MAXAPPLYARGS_BM
+                               const value_tyBM * argarr);
+
+// send dump_value, making a buffer object, giving its byte contents
+extern const char *debug_outstr_value_BM (const value_tyBM val,
+                                          struct stackframe_stBM *stkf,
+                                          int curdepth);
 
 ////////////////
 extern void load_initial_BM (const char *dirname);
@@ -568,25 +917,38 @@ extern void dumpgcmark_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du);
 extern void dumpgcdestroy_BM (struct garbcoll_stBM *gc,
                               struct dumper_stBM *du);
 extern void dumpgckeep_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du);
-extern bool dumpobjisdumpable_BM (struct dumper_stBM *du,
-                                  const objectval_tyBM * obj);
-extern bool dumpvalisdumpable_BM (struct dumper_stBM *du,
-                                  const value_tyBM val);
 
-extern void dumpscanobj_BM (struct dumper_stBM *du,
-                            const objectval_tyBM * obj);
-extern void dumpscanvalue_BM (struct dumper_stBM *du, const value_tyBM val,
-                              int depth);
+static inline struct dumper_stBM *obdumpgetdumper_BM (objectval_tyBM *
+                                                      dumpob);
+extern bool obdumpobjisdumpable_BM (objectval_tyBM * dumpob,
+                                    const objectval_tyBM * obj);
+extern bool obdumpvalisdumpable_BM (objectval_tyBM * dumpob,
+                                    const value_tyBM val);
+
+// true if the value (and every son or component) is dumpable
+extern bool obdumpvalisfullydumpable_BM (objectval_tyBM * dumpob,
+                                         const value_tyBM val);
+
+extern void obdumpscanobj_BM (objectval_tyBM * dumpob,
+                              const objectval_tyBM * obj);
+extern void obdumpscanvalue_BM (objectval_tyBM * dumpob, const value_tyBM val,
+                                int depth);
 
 //// parsing
 extern const char *lexkindname_BM (enum parslexkind_enBM k);
 extern const char *delimstr_BM (enum lexdelim_enBM d);
 
-extern struct parser_stBM *makeparser_of_file_BM (FILE * f);
+extern struct parser_stBM *makeparser_of_file_BM (FILE * f,
+                                                  objectval_tyBM * owner);
 extern struct parser_stBM *makeparser_memopen_BM (const char *filemem,
-                                                  long size);
-static inline bool isparser_BM (const value_tyBM v);
-static inline const struct parser_stBM *parsercast_BM (const value_tyBM v);
+                                                  long size,
+                                                  objectval_tyBM * owner);
+static inline bool isparser_BM (const extendedval_tyBM v);
+static inline objectval_tyBM *parserowner_BM (const extendedval_tyBM v);
+static inline struct parser_stBM *objparserpayload_BM (objectval_tyBM * obj);
+static inline objectval_tyBM *checkedparserowner_BM (const extendedval_tyBM
+                                                     v);
+static inline struct parser_stBM *parsercast_BM (const value_tyBM v);
 extern void parsergcmark_BM (struct garbcoll_stBM *gc,
                              struct parser_stBM *pars);
 extern void parsergcdestroy_BM (struct garbcoll_stBM *gc,
@@ -594,10 +956,18 @@ extern void parsergcdestroy_BM (struct garbcoll_stBM *gc,
 extern void parsergckeep_BM (struct garbcoll_stBM *gc,
                              struct parser_stBM *pars);
 extern bool parsernextline_BM (struct parser_stBM *pars);       // return false on EOF
+/// test if a token can start an object
+extern bool parsertokenstartobject_BM (struct parser_stBM *pars,
+                                       parstoken_tyBM tok);
+// get the parsed object
 extern objectval_tyBM *parsergetobject_BM
   (struct parser_stBM *pars,
    struct stackframe_stBM *stkf, int depth, bool * pgotobj);
-///
+
+/// test if a token can start a value
+extern bool parsertokenstartvalue_BM (struct parser_stBM *pars,
+                                      parstoken_tyBM tok);
+/// get the parsed value
 extern value_tyBM parsergetvalue_BM
   (struct parser_stBM *pars,
    struct stackframe_stBM *stkf, int depth, bool * pgotval);
@@ -619,15 +989,26 @@ static inline bool parseradvanceutf8_BM (struct parser_stBM *pars,
 
 extern void parserseek_BM (struct parser_stBM *pars, unsigned line,
                            unsigned col);
-extern void parsererrorprintf_BM (struct parser_stBM *, unsigned line,
+extern void parsererrorprintf_BM (struct parser_stBM *pars,
+                                  struct stackframe_stBM *stkf, unsigned line,
                                   unsigned col, const char *fmt, ...)
-  __attribute__ ((format (printf, 4, 5), noreturn));
+  __attribute__ ((format (printf, 5, 6), noreturn));
 // skip spaces and comments
-extern void parserskipspaces_BM (struct parser_stBM *pars);
-extern parstoken_tyBM parsertokenget_BM (struct parser_stBM *pars);
+extern void parserskipspaces_BM (struct parser_stBM *pars,
+                                 struct stackframe_stBM *stkf);
+extern parstoken_tyBM parsertokenget_BM (struct parser_stBM *pars,
+                                         struct stackframe_stBM *stkf);
 
-// internal routines
-extern void gcmark_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth);
+// internal GC related routines
+
+// used by VALUEGCPROC_BM macro
+extern void *valuegcproc_BM (struct garbcoll_stBM *gc, value_tyBM val,
+                             int depth) __attribute__ ((warn_unused_result));
+// used by EXTENDEDGCPROC_BM macro
+extern void *extendedgcproc_BM (struct garbcoll_stBM *gc,
+                                extendedval_tyBM xval, int depth)
+  __attribute__ ((warn_unused_result));
+
 extern void gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj);
 extern void gcframemark_BM (struct garbcoll_stBM *gc,
                             struct stackframe_stBM *stkfram, int depth);
@@ -635,7 +1016,7 @@ extern void gctokenmark_BM (struct garbcoll_stBM *gc,
                             struct parstoken_stBM *tok);
 
 /// the full garbage collector
-extern void fullgarbagecollection_BM (struct stackframe_stBM *stkfram);
+extern void full_garbage_collection_BM (struct stackframe_stBM *stkfram);
 static inline void garbage_collect_if_wanted_BM (struct stackframe_stBM
                                                  *stkfram);
 
@@ -663,6 +1044,8 @@ extern const node_tyBM *nodeglobalnames_BM (const objectval_tyBM * conn);
 extern const setval_tyBM *setglobalobjects_BM (void);
 
 extern void gcmarkglobals_BM (struct garbcoll_stBM *gc);
+extern void gcmarkdefergtk_BM (struct garbcoll_stBM *gc);
+extern void gcmarkconstants_BM (struct garbcoll_stBM *gc);
 
 /// open a module, returns true if ok
 extern bool openmoduleforloader_BM (const rawid_tyBM modid,
@@ -681,7 +1064,8 @@ extern void initialize_gui_BM (const char *builderfile, const char *cssfile);
 extern void initialize_newgui_BM (const char *builderfile,
                                   const char *cssfile);
 extern void initialize_gui_tags_BM (GtkBuilder * bld);
-extern void initialize_gui_menu_BM (GtkWidget * mainvbox, GtkBuilder * bld);
+extern GtkWidget *initialize_gui_menubar_BM (GtkWidget * mainvbox,
+                                             GtkBuilder * bld);
 extern GtkWidget *initialize_oldgui_command_scrollview_BM (void);
 extern GtkWidget *initialize_newgui_command_scrollview_BM (void);
 extern GtkWidget *initialize_log_scrollview_BM (void);
@@ -690,6 +1074,9 @@ extern GtkWidget *initialize_log_scrollview_BM (void);
 // the periodic GC function
 extern gboolean guiperiodicgarbagecollection_BM (gpointer);
 
+////////////////////////////////////////////////////////////////
+
+/******** GUI functions ***********/
 // browse the object objbrows, using the selector objsel
 extern void browse_object_gui_BM (const objectval_tyBM * objbrows,
                                   const objectval_tyBM * objsel,
@@ -698,15 +1085,18 @@ extern void browse_object_gui_BM (const objectval_tyBM * objbrows,
 extern void hide_object_gui_BM (const objectval_tyBM * objbrows,
                                 struct stackframe_stBM *stkf);
 
-// browse the named value
-extern void browse_named_value_gui_BM (const stringval_tyBM * namev,
-                                       const value_tyBM val,
-                                       const objectval_tyBM * objsel,
-                                       int browsdepth,
-                                       struct stackframe_stBM *stkf);
-extern void hide_named_value_gui_BM (const stringval_tyBM * namev,
-                                     struct stackframe_stBM *stkf);
-extern value_tyBM find_named_value_gui_BM (const char *name);
+
+// defer an application, running in the (GTK) main thread
+void
+gtk_defer_apply3_BM (value_tyBM closv, value_tyBM arg1, value_tyBM arg2,
+                     value_tyBM arg3, struct stackframe_stBM *stkf);
+
+// defer a message send, running in the (GTK) main thread
+void
+gtk_defer_send3_BM (value_tyBM recv, objectval_tyBM * obsel, value_tyBM arg1,
+                    value_tyBM arg2, value_tyBM arg3,
+                    struct stackframe_stBM *stkf);
+
 extern void clear_command_BM (void);
 // internal, inside browsing methods
 extern void browse_value_BM (const value_tyBM val,
@@ -714,15 +1104,13 @@ extern void browse_value_BM (const value_tyBM val,
                              int maxdepth, int curdepth);
 
 
-// the function to handle tabautocomplete in command
-void tabautocomplete_gui_cmd_BM (void);
-////////////////////////////////////////////////////////////////
-
-/******** GUI functions ***********/
 extern void browsespacefordepth_BM (int depth);
 extern void browsenewlinefordepth_BM (int depth);
 
-extern void gcmarkgui_BM (struct garbcoll_stBM *gc);
+// the function to handle tabautocomplete in command
+void tabautocomplete_gui_cmd_BM (void);
+extern void gcmarkoldgui_BM (struct garbcoll_stBM *gc);
+extern void gcmarknewgui_BM (struct garbcoll_stBM *gc);
 extern void gui_gc_message_BM (const char *msg);
 extern void
 browse_value_BM (const value_tyBM val,
@@ -739,7 +1127,12 @@ extern struct browsedval_stBM *find_browsed_named_value_BM
 extern void browse_add_parens_BM (int openoff, int closeoff,
                                   int xtraoff, unsigned openlen,
                                   unsigned closelen, unsigned xtralen,
-                                  int depth);
+                                  int depth, struct stackframe_stBM *stkf);
+extern void newgui_browse_add_parens_BM (int openoff, int closeoff,
+                                         int xtraoff, unsigned openlen,
+                                         unsigned closelen, unsigned xtralen,
+                                         int depth,
+                                         struct stackframe_stBM *stkf);
 
 extern const char *textiterstrdbg_BM (GtkTextIter * it);
 
@@ -761,41 +1154,10 @@ extern void log_printf_message_BM (const char *fmt, ...)
   __attribute__ ((format (printf, 1, 2)));
 extern void log_end_message_BM (void);
 
-// error at parsing: color in error_cmdtag, show the error dialog,
-// jongjmp to jmperrorcmd_BM
-extern parser_error_sigBM parserror_guicmd_BM;
 
 
-// for $<var>, use find_named_value_gui_BM, show in  dollar_cmdtag.
-extern parser_expand_dollarval_sigBM parsdollarval_guicmd_BM;
-
-// for $:<var>, use find_named_value_gui_BM, check that value is an
-// object, show it in dollar_cmdtag
-extern parser_expand_dollarobj_sigBM parsdollarobj_guicmd_BM;
-
-// parse inside $(...),
-// handle !> <obselector> (...) # to send a message for its result
-// handle ( .... ) # to apply a function
-// handle !. <obattr> # to get an attribute
-// handle !@ <index> # to get a component
-// handle $% <name>  # toi show and bind to name
-extern parser_expand_valexp_sigBM parsvalexp_guicmd_BM;
 
 
-// parse inside $[...],
-// handle * <name> to create a new (userE) named object
-// handle  !* <name> to create a new (global) named object
-// handle : to create a new transient anonymous object
-// handle ~ to create a new global anonymous object
-// handle % to create a new (userE) anonymous object
-// handle $:<var> to get the object registered as <var>
-// handle ( <expr> ) to cast a value into an object
-// handle <id> or <name> to  refer to an existing object
-extern parser_expand_objexp_sigBM parsobjexp_guicmd_BM;
-
-// expand readmacros nodes with ^ macroname ( args )
-// apply the `command_readmacro` closure from the connective macroname
-extern parser_expand_readmacro_sigBM parsreadmacroexp_guicmd_BM;
 
 // decorate e.g. // or | with commentsign_cmdtag
 extern parser_decorate_comment_sign_sigBM parscommentsign_guicmd_BM;
@@ -821,4 +1183,35 @@ extern parser_decorate_nesting_sigBM parsnesting_guicmd_BM;
 // decorate start/open/close with nesting_cmdtag & start/open/close tags
 extern parser_decorate_start_nesting_sigBM parsstartnesting_guicmd_BM;
 
+// decorate numbers
+extern parser_decorate_number_sigBM parsnumber_guicmd_BM;
+
+// decorate strings
+extern parser_decorate_string_sign_sigBM parsstringsign_guicmd_BM;
+extern parser_decorate_string_inside_sigBM parsstringinside_guicmd_BM;
+////////////////////////////////////////////////////////////////
+
+/******** agenda functions ***********/
+extern void initialize_agenda_BM (void);
+extern int agenda_nb_work_jobs_BM (void);
+extern void gcmarkagenda_BM (struct garbcoll_stBM *gc);
+extern void start_agenda_work_threads_BM (int nbjobs);
+extern void stop_agenda_work_threads_BM (void);
+// inside the GC, wait for all work thread to idle for garbage collection
+extern void agenda_suspend_for_gc_BM (void);
+extern void agenda_continue_after_gc_BM (void);
+extern void agenda_add_very_high_priority_tasklet_BM (objectval_tyBM *);
+extern void agenda_add_high_priority_tasklet_BM (objectval_tyBM *);
+extern void agenda_add_normal_priority_tasklet_BM (objectval_tyBM *);
+extern void agenda_add_low_priority_tasklet_BM (objectval_tyBM *);
+extern void agenda_add_very_low_priority_tasklet_BM (objectval_tyBM *);
+extern bool agenda_remove_tasklet_BM (objectval_tyBM *);
+extern bool agenda_has_tasklet_BM (objectval_tyBM *);
+// return total number of tasklets
+extern long agenda_get_counts_BM (long *pveryhigh, long *phigh, long *pnormal,
+                                  long *plow, long *pverylow);
+extern long agenda_get_sets_BM (value_tyBM * pveryhighset,
+                                value_tyBM * phighset, value_tyBM * pnormset,
+                                value_tyBM * plowset,
+                                value_tyBM * pverylowset);
 #endif /*FUNDECL_BM_INCLUDED */

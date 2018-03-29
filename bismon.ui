@@ -17,7 +17,6 @@
           <object class='GtkMenuItem' id='appquit_id'>
             <property name='label'>_Quit</property>
 	    <property name='use-underline'>true</property>	    
-	    <!-- <signal name='activate' handler='quitaction_BM'/> -->
           </object>
         </child>
         <child>
@@ -50,6 +49,22 @@
         <child>
           <object class='GtkMenuItem' id='editpaste_id'>
             <property name='label'>_paste</property>
+	    <property name='use-underline'>true</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+
+  <!-- the object menu -->
+  <object class='GtkMenuItem' id='menuobject_id'>
+    <property name='label'>Object</property>
+    <child type='submenu'>
+      <object class='GtkMenu' id='objectsubmenu_id'>
+        <child>
+          <object class='GtkMenuItem' id='objectnewobwin_id'>
+            <property name='label'>new obj.win.</property>
 	    <property name='use-underline'>true</property>
           </object>
         </child>
@@ -222,7 +237,18 @@
                 <property name="name">miscomm_brotag</property>
                 <property name="font">Arial Regular</property>
                 <property name="scale">0.90</property>
-                <property name="foreground">cadetblue</property>
+                <property name="foreground">cadetblue4</property>
+                <property name="background">ivory</property>
+            </object>
+        </child>
+      <!-- epilogue_brotag for epilogue -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">epilogue_brotag</property>
+                <property name="font">Arial Regular</property>
+                <property name="scale">0.85</property>
+                <property name="foreground">DeepSkyBlue3</property>
+                <property name="background">LavenderBlush2</property>
             </object>
         </child>
 	
@@ -302,6 +328,32 @@
 	      <property name='font'>Space Mono Bold</property>
             </object>
         </child>
+      <!-- number_cmdtag for numbers -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">number_cmdtag</property>
+	      <property name='foreground'>CadetBlue</property>
+	      <property name='font'>Space Mono Bold</property>
+            </object>
+        </child>
+      <!-- stringsign_cmdtag for string signs, e.g. external quotes -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">stringsign_cmdtag</property>
+	      <property name='foreground'>DarkOrchid</property>
+	      <property name='background'>MistyRose</property>
+	      <property name='font'>Space Mono Bold</property>
+            </object>
+        </child>
+      <!-- stringinside_cmdtag for string internal chjaracters -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">stringinside_cmdtag</property>
+	      <property name='foreground'>DeepSkyBlue4</property>
+	      <property name='background'>DarkSeaGreen1</property>
+	      <property name='font'>Space Mono Oblique</property>
+            </object>
+        </child>
       <!-- nesting_cmdtag for open/close parenthesis -->
         <child type="tag">
             <object class='GtkTextTag'>
@@ -371,6 +423,16 @@
 		<property name='background'>ivory</property>
 		<property name='scale'>0.9</property>
                 <property name="font">Courier New Italics</property>
+            </object>
+        </child>
+      <!-- code_logtag for command in log -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">code_logtag</property>
+		<property name='foreground'>saddlebrown</property>
+		<property name='background'>ivory2</property>
+		<property name='scale'>0.94</property>
+                <property name="font">DejaVu Sans Mono Book</property>
             </object>
         </child>
     </object>

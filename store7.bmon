@@ -1,5 +1,5 @@
 // generated file store7.bmon
-// for 5 objects
+// for 6 objects
 // with 0 modules
 
 
@@ -39,12 +39,30 @@
 
 
 
-!(_3os8enRYR02_3MjW65wicEq |=e|
-!~ name (~ e
+!(_4oJ0GwzxGLe_7cHWwHYA0Di |=test_agenda|
+!~ name (~ test_agenda
 ~)
-!@ 1504242178.59
+!@ 1521229706.33
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
-!)_3os8enRYR02_3MjW65wicEq
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "command to test agenda"
+!: _0xbmmxnN8E8_0ZuEqJmqMNH |=command_handler|
+ % _1eQ1a8KHixZ_1XDNH5iTQ0I ()
+!: _4rz1Bi4weGz_8Y03gU81cRL |=see|
+ { _7rRjqfXs3QI_4Nwk2Lfm569 _7XDuHagbhi8_3V9zhBpbrrV }
+!# 1
+!& _8zRh2medTlP_0ImnPyO8NKH |=rank| 
+!)_4oJ0GwzxGLe_7cHWwHYA0Di
+
+
+
+!(_1eQ1a8KHixZ_1XDNH5iTQ0I
+!|*
+!@ 1521179450.50
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test_agenda command_handler routine"
+!)_1eQ1a8KHixZ_1XDNH5iTQ0I
 
 
 

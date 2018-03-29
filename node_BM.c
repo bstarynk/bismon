@@ -1,4 +1,21 @@
 // file node_BM.c
+
+/***
+    BISMON 
+    Copyright © 2018 Basile Starynkevitch (working at CEA, LIST, France)
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+***/
 #include "bismon.h"
 
 const closure_tyBM *
@@ -15,10 +32,11 @@ makeclosure_BM (const objectval_tyBM * connob, unsigned nbval,
   for (unsigned ix = 0; ix < nbval; ix++)
     if (valtype_BM (closvalarr[ix]))
       cnt++;
+  ASSERT_BM (cnt < MAXSIZE_BM);
   unsigned long closiz =
     sizeof (closure_tyBM)
     + ((cnt > 0) ? (prime_above_BM (cnt - 1) * sizeof (value_tyBM)) : 0);
-  assert (closiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  ASSERT_BM (closiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
   closure_tyBM *clos =          //
     allocgcty_BM (tyClosure_BM, closiz);
   hash_tyBM h1 = objecthash_BM (connob);
@@ -42,7 +60,7 @@ makeclosure_BM (const objectval_tyBM * connob, unsigned nbval,
   hash_tyBM h = h1 ^ h2;
   if (!h)
     h = (11 * (h1 & 0xfffff) + (h2 % 38611)) + (newcnt & 0xf) + 13;
-  assert (h > 0);
+  ASSERT_BM (h > 0);
   ((typedhead_tyBM *) clos)->hash = h;
   return clos;
 }                               /* end makeclosure_BM */
@@ -70,7 +88,7 @@ makeclosurevar_BM (const objectval_tyBM * connob, ...)
   va_start (args, connob);
   while ((curv = va_arg (args, value_tyBM)) != NULL)
     {
-      assert (cnt < nbsons);
+      ASSERT_BM (cnt < nbsons);
       arr[cnt++] = curv;
     }
   va_end (args);
@@ -84,49 +102,51 @@ makeclosurevar_BM (const objectval_tyBM * connob, ...)
 void
 closuregcdestroy_BM (struct garbcoll_stBM *gc, closure_tyBM * clos)
 {
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
-  assert (((typedhead_tyBM *) clos)->htyp == tyClosure_BM);
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (((typedhead_tyBM *) clos)->htyp == tyClosure_BM);
   unsigned siz = ((typedsize_tyBM *) clos)->size;
-  assert (siz < MAXSIZE_BM);
+  ASSERT_BM (siz < MAXSIZE_BM);
   memset (clos, 0, sizeof (*clos) + siz * sizeof (void *));
   free (clos), clos = NULL;
   unsigned long closiz =
     sizeof (*clos)
     + ((siz > 0) ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0);
-  assert (closiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  ASSERT_BM (closiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
   gc->gc_freedbytes += closiz;
 }                               /* end closuregcdestroy_BM */
 
 void
 closuregckeep_BM (struct garbcoll_stBM *gc, closure_tyBM * clos)
 {
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
-  assert (((typedhead_tyBM *) clos)->htyp == tyClosure_BM);
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (((typedhead_tyBM *) clos)->htyp == tyClosure_BM);
   unsigned siz = ((typedsize_tyBM *) clos)->size;
-  assert (siz < MAXSIZE_BM);
+  ASSERT_BM (siz < MAXSIZE_BM);
   unsigned long closiz =
     sizeof (*clos)
     + ((siz > 0) ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0);
-  assert (closiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  ASSERT_BM (closiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
   gc->gc_keptbytes += closiz;
 }                               /* end closuregckeep_BM */
 
 
-void
-closuregcmark_BM (struct garbcoll_stBM *gc, closure_tyBM * clos, int depth)
+void *
+closuregcproc_BM (struct garbcoll_stBM *gc, closure_tyBM * clos, int depth)
 {
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
-  assert (valtype_BM ((const value_tyBM) clos) == tyClosure_BM);
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (valtype_BM ((const value_tyBM) clos) == tyClosure_BM);
+#warning closuregcproc_BM should forward when needed
   uint8_t oldmark = ((typedhead_tyBM *) clos)->hgc;
   if (oldmark)
-    return;
+    return clos;
   ((typedhead_tyBM *) clos)->hgc = MARKGC_BM;
   gc->gc_nbmarks++;
   gcobjmark_BM (gc, clos->nodt_conn);
   unsigned size = ((typedsize_tyBM *) clos)->size;
   for (unsigned ix = 0; ix < size; ix++)
-    gcmark_BM (gc, clos->nodt_sons[ix], depth + 1);
-}                               /* end nodegcmark_BM */
+    VALUEGCPROC_BM (gc, clos->nodt_sons[ix], depth + 1);
+  return clos;
+}                               /* end nodegcproc_BM */
 
 
 
@@ -146,10 +166,11 @@ makenode_BM (const objectval_tyBM * connob, unsigned nbval,
   for (unsigned ix = 0; ix < nbval; ix++)
     if (valtype_BM (sonvalarr[ix]))
       cnt++;
+  ASSERT_BM (cnt < MAXSIZE_BM);
   unsigned long nodsiz =
     sizeof (node_tyBM)
     + ((cnt > 0) ? (prime_above_BM (cnt - 1) * sizeof (value_tyBM)) : 0);
-  assert (nodsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  ASSERT_BM (nodsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
   closure_tyBM *node =          //
     allocgcty_BM (tyNode_BM, nodsiz);
   hash_tyBM h1 = objecthash_BM (connob);
@@ -173,7 +194,7 @@ makenode_BM (const objectval_tyBM * connob, unsigned nbval,
   hash_tyBM h = h1 ^ h2;
   if (!h)                       /* so h1 == h2 */
     h = (17 * (h1 & 0x1fffff) + 3 * (h2 % 21503)) + (newcnt & 0xf) + 120;
-  assert (h > 0);
+  ASSERT_BM (h > 0);
   ((typedhead_tyBM *) node)->hash = h;
   return node;
 }                               /* end makenode_BM */
@@ -202,7 +223,7 @@ makenodevar_BM (const objectval_tyBM * connob, ...)
   va_start (args, connob);
   while ((curv = va_arg (args, value_tyBM)) != NULL)
     {
-      assert (cnt < nbsons);
+      ASSERT_BM (cnt < nbsons);
       arr[cnt++] = curv;
     }
   va_end (args);
@@ -216,14 +237,14 @@ makenodevar_BM (const objectval_tyBM * connob, ...)
 void
 nodegcdestroy_BM (struct garbcoll_stBM *gc, node_tyBM * nod)
 {
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
-  assert (((typedhead_tyBM *) nod)->htyp == tyNode_BM);
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (((typedhead_tyBM *) nod)->htyp == tyNode_BM);
   unsigned siz = ((typedsize_tyBM *) nod)->size;
-  assert (siz < MAXSIZE_BM);
+  ASSERT_BM (siz < MAXSIZE_BM);
   unsigned long nodsiz =
     sizeof (*nod) + ((siz > 0)
                      ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0);
-  assert (nodsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  ASSERT_BM (nodsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
   memset (nod, 0, sizeof (*nod) + siz * sizeof (void *));
   free (nod);
   gc->gc_freedbytes += nodsiz;
@@ -233,252 +254,364 @@ nodegcdestroy_BM (struct garbcoll_stBM *gc, node_tyBM * nod)
 void
 nodegckeep_BM (struct garbcoll_stBM *gc, node_tyBM * nod)
 {
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
-  assert (((typedhead_tyBM *) nod)->htyp == tyNode_BM);
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (((typedhead_tyBM *) nod)->htyp == tyNode_BM);
   unsigned siz = ((typedsize_tyBM *) nod)->size;
-  assert (siz < MAXSIZE_BM);
+  ASSERT_BM (siz < MAXSIZE_BM);
   unsigned long nodsiz =
     sizeof (*nod) + ((siz > 0)
                      ? (prime_above_BM (siz - 1) * sizeof (value_tyBM)) : 0);
-  assert (nodsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  ASSERT_BM (nodsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
   gc->gc_keptbytes += nodsiz;
 }                               /* end nodegckeep_BM */
 
 
 
-void
-nodegcmark_BM (struct garbcoll_stBM *gc, node_tyBM * nod, int depth)
+void *
+nodegcproc_BM (struct garbcoll_stBM *gc, node_tyBM * nod, int depth)
 {
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
-  assert (valtype_BM ((const value_tyBM) nod) == tyNode_BM);
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (valtype_BM ((const value_tyBM) nod) == tyNode_BM);
+#warning nodegcproc_BM should forward when needed
   uint8_t oldmark = ((typedhead_tyBM *) nod)->hgc;
   if (oldmark)
-    return;
+    return nod;
   ((typedhead_tyBM *) nod)->hgc = MARKGC_BM;
   gc->gc_nbmarks++;
   gcobjmark_BM (gc, nod->nodt_conn);
   unsigned size = ((typedsize_tyBM *) nod)->size;
   for (unsigned ix = 0; ix < size; ix++)
-    gcmark_BM (gc, nod->nodt_sons[ix], depth + 1);
+    VALUEGCPROC_BM (gc, nod->nodt_sons[ix], depth + 1);
+  return nod;
 }                               /* end nodegcmark_BM */
 
-void
-quasinodegcmark_BM (struct garbcoll_stBM *gc, quasinode_tyBM * qnod,
+void *
+quasinodegcproc_BM (struct garbcoll_stBM *gc, quasinode_tyBM * qnod,
                     int depth)
 {
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
-  assert (istree_BM (qnod));
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (istree_BM (qnod));
   /// on purpose, don't mark me
   gcobjmark_BM (gc, qnod->nodt_conn);
   unsigned size = ((typedsize_tyBM *) qnod)->size;
   for (unsigned ix = 0; ix < size; ix++)
-    gcmark_BM (gc, qnod->nodt_sons[ix], depth + 1);
-}                               /* end quasinodegcmark_BM */
+    VALUEGCPROC_BM (gc, qnod->nodt_sons[ix], depth + 1);
+  return qnod;
+}                               /* end quasinodegcproc_BM */
 
 
 value_tyBM
-apply0_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf)
+apply0_BM (const value_tyBM funv, struct stackframe_stBM * stkf)
 {
-  if (!isclosure_BM ((const value_tyBM) clos))
+  ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
+  objrout_sigBM *rout = NULL;
+  if (isclosure_BM (funv))
+    {
+      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
+      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+    }
+  else if (isobject_BM (funv))
+    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+  else
     return NULL;
-  const objectval_tyBM *connob = clos->nodt_conn;
-  assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout =
-    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
-  return (*rout) (clos, stkf, NULL, NULL, NULL, NULL);
+  stkf->stkfram_callfun = funv;
+  return (*rout) (stkf, NULL, NULL, NULL, NULL, NULL);
 }                               /* end apply0_BM */
 
 
 value_tyBM
-apply1_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
+apply1_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
            const value_tyBM arg1)
 {
-  if (!isclosure_BM ((const value_tyBM) clos))
+  ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
+  objrout_sigBM *rout = NULL;
+  if (isclosure_BM (funv))
+    {
+      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
+      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+    }
+  else if (isobject_BM (funv))
+    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+  else
     return NULL;
-  const objectval_tyBM *connob = clos->nodt_conn;
-  assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout =
-    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
-  return (*rout) (clos, stkf, arg1, NULL, NULL, NULL);
+  stkf->stkfram_callfun = funv;
+  return (*rout) (stkf, arg1, NULL, NULL, NULL, NULL);
 }                               /* end apply1_BM */
 
 
 value_tyBM
-apply2_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
+apply2_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
            const value_tyBM arg1, const value_tyBM arg2)
 {
-  if (!isclosure_BM ((const value_tyBM) clos))
+  ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
+  objrout_sigBM *rout = NULL;
+  if (isclosure_BM (funv))
+    {
+      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
+      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+    }
+  else if (isobject_BM (funv))
+    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+  else
     return NULL;
-  const objectval_tyBM *connob = clos->nodt_conn;
-  assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout =
-    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
-  return (*rout) (clos, stkf, arg1, arg2, NULL, NULL);
+  stkf->stkfram_callfun = funv;
+  return (*rout) (stkf, arg1, arg2, NULL, NULL, NULL);
 }                               /* end apply2_BM */
 
 
 value_tyBM
-apply3_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
+apply3_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3)
 {
-  if (!isclosure_BM ((const value_tyBM) clos))
+  ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
+  objrout_sigBM *rout = NULL;
+  if (isclosure_BM (funv))
+    {
+      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
+      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+    }
+  else if (isobject_BM (funv))
+    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+  else
     return NULL;
-  const objectval_tyBM *connob = clos->nodt_conn;
-  assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout =
-    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
-  return (*rout) (clos, stkf, arg1, arg2, arg3, NULL);
+  stkf->stkfram_callfun = funv;
+  return (*rout) (stkf, arg1, arg2, arg3, NULL, NULL);
 }                               /* end apply3_BM */
 
 
 value_tyBM
-apply4_BM (const closure_tyBM * clos, struct stackframe_stBM * stkf,
+apply4_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4)
 {
-  if (!isclosure_BM ((const value_tyBM) clos))
+  ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
+  objrout_sigBM *rout = NULL;
+  if (isclosure_BM (funv))
+    {
+      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
+      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+    }
+  else if (isobject_BM (funv))
+    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+  else
     return NULL;
-  const objectval_tyBM *connob = clos->nodt_conn;
-  assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout =
-    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
-  LOCALQNODESIZED_BM (qno, NULL, 1);
-  qno.qsons[0] = arg4;
-  return (*rout) (clos, stkf, arg1, arg2, arg3,
-                  (const quasinode_tyBM *) &qno);
+  stkf->stkfram_callfun = funv;
+  return (*rout) (stkf, arg1, arg2, arg3, arg4, NULL);
 }                               /* end apply4_BM */
 
 
 value_tyBM
-apply5_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
+apply5_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4,
            const value_tyBM arg5)
 {
-  if (!isclosure_BM ((const value_tyBM) clos))
+  ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
+  objrout_sigBM *rout = NULL;
+  if (isclosure_BM (funv))
+    {
+      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
+      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+    }
+  else if (isobject_BM (funv))
+    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+  else
     return NULL;
-  const objectval_tyBM *connob = clos->nodt_conn;
-  assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout =
-    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
-  LOCALQNODESIZED_BM (qno, NULL, 2);
-  qno.qsons[0] = arg4;
-  qno.qsons[1] = arg5;
-  return (*rout) (clos, stkf, arg1, arg2, arg3,
+  LOCALQNODESIZED_BM (qno, NULL, 1);
+  qno.qsons[0] = arg5;
+  stkf->stkfram_callfun = funv;
+  return (*rout) (stkf, arg1, arg2, arg3, arg4,
                   (const quasinode_tyBM *) &qno);
 }                               /* end apply5_BM */
 
 
 value_tyBM
-apply6_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
+apply6_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4,
            const value_tyBM arg5, const value_tyBM arg6)
 {
-  if (!isclosure_BM ((const value_tyBM) clos))
+  ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
+  objrout_sigBM *rout = NULL;
+  if (isclosure_BM (funv))
+    {
+      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
+      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+    }
+  else if (isobject_BM (funv))
+    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+  else
     return NULL;
-  const objectval_tyBM *connob = clos->nodt_conn;
-  assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout =
-    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
-  LOCALQNODESIZED_BM (qno, NULL, 3);
-  qno.qsons[0] = arg4;
-  qno.qsons[1] = arg5;
-  qno.qsons[2] = arg6;
-  return (*rout) (clos, stkf, arg1, arg2, arg3,
+  LOCALQNODESIZED_BM (qno, NULL, 2);
+  qno.qsons[0] = arg5;
+  qno.qsons[1] = arg6;
+  stkf->stkfram_callfun = funv;
+  return (*rout) (stkf, arg1, arg2, arg3, arg4,
                   (const quasinode_tyBM *) &qno);
 }                               /* end apply6_BM */
 
 
 value_tyBM
-apply7_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
+apply7_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4,
            const value_tyBM arg5, const value_tyBM arg6,
            const value_tyBM arg7)
 {
-  if (!isclosure_BM ((const value_tyBM) clos))
+  ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
+  objrout_sigBM *rout = NULL;
+  if (isclosure_BM (funv))
+    {
+      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
+      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+    }
+  else if (isobject_BM (funv))
+    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+  else
     return NULL;
-  const objectval_tyBM *connob = clos->nodt_conn;
-  assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout =
-    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
-  LOCALQNODESIZED_BM (qno, NULL, 4);
-  qno.qsons[0] = arg4;
-  qno.qsons[1] = arg5;
-  qno.qsons[2] = arg6;
-  qno.qsons[3] = arg7;
-  return (*rout) (clos, stkf, arg1, arg2, arg3,
+  LOCALQNODESIZED_BM (qno, NULL, 3);
+  qno.qsons[0] = arg5;
+  qno.qsons[1] = arg6;
+  qno.qsons[2] = arg7;
+  stkf->stkfram_callfun = funv;
+  return (*rout) (stkf, arg1, arg2, arg3, arg4,
                   (const quasinode_tyBM *) &qno);
 }                               /* end apply7_BM */
 
 
 value_tyBM
-apply8_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
+apply8_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4,
            const value_tyBM arg5, const value_tyBM arg6,
            const value_tyBM arg7, const value_tyBM arg8)
 {
-  if (!isclosure_BM ((const value_tyBM) clos))
+  ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
+  objrout_sigBM *rout = NULL;
+  if (isclosure_BM (funv))
+    {
+      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
+      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+    }
+  else if (isobject_BM (funv))
+    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+  else
     return NULL;
-  const objectval_tyBM *connob = clos->nodt_conn;
-  assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout =
-    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
   LOCALQNODESIZED_BM (qno, NULL, 4);
-  qno.qsons[0] = arg4;
-  qno.qsons[1] = arg5;
-  qno.qsons[2] = arg6;
-  qno.qsons[3] = arg7;
-  qno.qsons[4] = arg8;
-  return (*rout) (clos, stkf, arg1, arg2, arg3,
+  qno.qsons[0] = arg5;
+  qno.qsons[1] = arg6;
+  qno.qsons[2] = arg7;
+  qno.qsons[3] = arg8;
+  stkf->stkfram_callfun = funv;
+  return (*rout) (stkf, arg1, arg2, arg3, arg4,
                   (const quasinode_tyBM *) &qno);
 }                               /* end apply8_BM */
 
 
 value_tyBM
-apply9_BM (const closure_tyBM * clos, struct stackframe_stBM *stkf,
+apply9_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4,
            const value_tyBM arg5, const value_tyBM arg6,
            const value_tyBM arg7, const value_tyBM arg8,
            const value_tyBM arg9)
 {
-  if (!isclosure_BM ((const value_tyBM) clos))
+  ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
+  objrout_sigBM *rout = NULL;
+  if (isclosure_BM (funv))
+    {
+      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
+      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+    }
+  else if (isobject_BM (funv))
+    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+  else
     return NULL;
-  const objectval_tyBM *connob = clos->nodt_conn;
-  assert (isobject_BM ((const value_tyBM) connob));
-  objrout_sigBM *rout =
-    (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
   if (!rout)
     return NULL;
   LOCALQNODESIZED_BM (qno, NULL, 5);
-  qno.qsons[0] = arg4;
-  qno.qsons[1] = arg5;
-  qno.qsons[2] = arg6;
-  qno.qsons[3] = arg7;
-  qno.qsons[4] = arg8;
-  qno.qsons[5] = arg9;
-  return (*rout) (clos, stkf, arg1, arg2, arg3,
+  qno.qsons[0] = arg5;
+  qno.qsons[1] = arg6;
+  qno.qsons[2] = arg7;
+  qno.qsons[3] = arg8;
+  qno.qsons[4] = arg9;
+  stkf->stkfram_callfun = funv;
+  return (*rout) (stkf, arg1, arg2, arg3, arg4,
                   (const quasinode_tyBM *) &qno);
 }                               /* end apply9_BM */
+
+
+value_tyBM
+applyvar_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
+             unsigned nbargs, const value_tyBM * argarr)
+{
+  if (nbargs > MAXAPPLYARGS_BM)
+    return NULL;
+  if (nbargs > 0 && !argarr)
+    return NULL;
+  ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
+  objrout_sigBM *rout = NULL;
+  if (isclosure_BM (funv))
+    {
+      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
+      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+    }
+  else if (isobject_BM (funv))
+    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+  else
+    return NULL;
+  if (!rout)
+    return NULL;
+  stkf->stkfram_callfun = funv;
+  switch (nbargs)
+    {
+    case 0:
+      return (*rout) (stkf, NULL, NULL, NULL, NULL, NULL);
+    case 1:
+      return (*rout) (stkf, argarr[0], NULL, NULL, NULL, NULL);
+    case 2:
+      return (*rout) (stkf, argarr[0], argarr[1], NULL, NULL, NULL);
+    case 3:
+      return (*rout) (stkf, argarr[0], argarr[1], argarr[2], NULL, NULL);
+    case 4:
+      return (*rout) (stkf, argarr[0], argarr[1], argarr[2], argarr[3], NULL);
+    default:
+      {
+        LOCALQNODESIZED_BM (qno, NULL, MAXAPPLYARGS_BM - 3);
+        memcpy (qno.qsons, argarr + 4, nbargs - 4);
+        return (*rout) (stkf, argarr[0], argarr[1], argarr[2], argarr[3],
+                        (const quasinode_tyBM *) &qno);
+      }
+    }
+  return NULL;
+}                               /* end applyvar_BM */

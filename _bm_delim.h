@@ -4,10 +4,11 @@
 #endif
 
 #undef BM_NB_DELIM
-#define BM_NB_DELIM 46
+#define BM_NB_DELIM 51
  
 /// these should be sorted in ascending UTF8 order
 // HAS_DELIM_BM(String,Delimname)
+HAS_DELIM_BM("!",exclam)
 HAS_DELIM_BM("!#",exclamhash)
 HAS_DELIM_BM("!$",exclamdollar)
 HAS_DELIM_BM("!%",exclampercent)
@@ -27,6 +28,7 @@ HAS_DELIM_BM("#{",hashleftbrace)
 HAS_DELIM_BM("$",dollar)
 HAS_DELIM_BM("$%",dollarpercent)
 HAS_DELIM_BM("$(",dollarleftparen)
+HAS_DELIM_BM("$*",dollarstar)
 HAS_DELIM_BM("$:",dollarcolon)
 HAS_DELIM_BM("$[",dollarleftbracket)
 HAS_DELIM_BM("%",percent)
@@ -38,6 +40,8 @@ HAS_DELIM_BM(",",comma)
 HAS_DELIM_BM(":",colon)
 HAS_DELIM_BM(";",semicolon)
 HAS_DELIM_BM(";;",doublesemicolon)
+HAS_DELIM_BM("=",equal)
+HAS_DELIM_BM("?",question)
 HAS_DELIM_BM("?#",questionhash)
 HAS_DELIM_BM("?$",questiondollar)
 HAS_DELIM_BM("?$-",questiondollarminus)
@@ -54,6 +58,7 @@ HAS_DELIM_BM("~",tilde)
 HAS_DELIM_BM("~)",tilderightparen)
 HAS_DELIM_BM("~:",tildecolon)
 HAS_DELIM_BM("°",degree)
+HAS_DELIM_BM("€",euro)
 
 #undef HAS_DELIM_BM
 

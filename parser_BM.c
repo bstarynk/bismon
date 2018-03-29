@@ -1,4 +1,21 @@
 // file parser_BM.c
+
+/***
+    BISMON 
+    Copyright © 2018 Basile Starynkevitch (working at CEA, LIST, France)
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+***/
 #include "bismon.h"
 
 #define RUNLEN_BM 16
@@ -41,16 +58,20 @@ delimstr_BM (enum lexdelim_enBM d)
 
 
 struct parser_stBM *
-makeparser_of_file_BM (FILE * f)
+makeparser_of_file_BM (FILE * f, objectval_tyBM * ownob)
 {
   if (!f)
     return NULL;
+  if (!isobject_BM (ownob))
+    return NULL;
   struct parser_stBM *pars =    //
-    allocgcty_BM (tydata_parser_BM, sizeof (struct parser_stBM));
+    allocgcty_BM (typayl_parser_BM, sizeof (struct parser_stBM));
   pars->pars_file = f;
+  pars->pars_debug = false;
   pars->pars_filemem = NULL;
   pars->pars_filesize = 0;
   pars->pars_path = "";
+  pars->pars_ownob = ownob;
   unsigned inilinsiz = 256;
   char *linebuf = calloc (1, inilinsiz);
   if (!linebuf)
@@ -77,20 +98,27 @@ makeparser_of_file_BM (FILE * f)
     FATAL_BM ("memolines calloc failed for size %d (%m)", inimemosiz);
   pars->pars_memolsize = inimemosiz;
   pars->pars_memolcount = 0;
+  {
+    objlock_BM (ownob);
+    objputpayload_BM (ownob, pars);
+    objunlock_BM (ownob);
+  }
   return pars;
-}                               /* end makeparser_BM */
+}                               /* end makeparser_of_file_BM */
 
 struct parser_stBM *
-makeparser_memopen_BM (const char *filemem, long size)
+makeparser_memopen_BM (const char *filemem, long size, objectval_tyBM * ownob)
 {
   if (!filemem)
+    return NULL;
+  if (!isobject_BM (ownob))
     return NULL;
   if (size < 0)
     size = strlen (filemem);
   FILE *fil = fmemopen ((void *) filemem, size, "r");
   if (!fil)
     FATAL_BM ("fmemopen failed (%m)");
-  struct parser_stBM *pars = makeparser_of_file_BM (fil);
+  struct parser_stBM *pars = makeparser_of_file_BM (fil, ownob);
   pars->pars_filemem = filemem;
   pars->pars_filesize = size;
   return pars;
@@ -100,15 +128,16 @@ makeparser_memopen_BM (const char *filemem, long size)
 void
 parsergcmark_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars)
 {
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
-  assert (isparser_BM (pars));
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (isparser_BM (pars));
   uint8_t oldmark = ((typedhead_tyBM *) pars)->hgc;
   if (oldmark)
     return;
   ((typedhead_tyBM *) pars)->hgc = MARKGC_BM;
   gc->gc_nbmarks++;
-  if (pars->pars_cvalue)
-    gcmark_BM (gc, pars->pars_cvalue, 0);
+  VALUEGCPROC_BM (gc, pars->pars_cvalue, 0);
+  if (pars->pars_ownob)
+    gcobjmark_BM (gc, pars->pars_ownob);
 }                               /* end parsergcmark_BM */
 
 
@@ -116,7 +145,7 @@ void
 parsergcdestroy_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars)
 {
   unsigned long parsiz = sizeof (*pars);
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   if (pars->pars_filemem)
     {
       pars->pars_filemem = NULL;
@@ -147,7 +176,7 @@ parsergcdestroy_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars)
 void
 parsergckeep_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars)
 {
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   unsigned long parsiz = sizeof (*pars);
   if (pars->pars_filemem)
     parsiz += pars->pars_filesize;
@@ -155,7 +184,7 @@ parsergckeep_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars)
     parsiz += pars->pars_linesiz;
   if (pars->pars_file)
     parsiz += sizeof (FILE);
-  assert (parsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
+  ASSERT_BM (parsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
   gc->gc_keptbytes += parsiz;
 }                               /* end parsergckeep_BM */
 
@@ -281,8 +310,8 @@ parserseek_BM (struct parser_stBM *pars, unsigned lineno, unsigned colpos)
 }                               /* end of parserseek_BM */
 
 void
-parsererrorprintf_BM (struct parser_stBM *pars, unsigned line, unsigned col,
-                      const char *fmt, ...)
+parsererrorprintf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf,
+                      unsigned line, unsigned col, const char *fmt, ...)
 {
   if (!isparser_BM (pars))
     FATAL_BM ("non parser argument to parsererrorprintf_BM");
@@ -296,9 +325,9 @@ parsererrorprintf_BM (struct parser_stBM *pars, unsigned line, unsigned col,
   const struct parserops_stBM *parsops = pars->pars_ops;
   if (parsops)
     {
-      assert (parsops->parsop_magic == PARSOPMAGIC_BM);
+      ASSERT_BM (parsops->parsop_magic == PARSOPMAGIC_BM);
       if (parsops && parsops->parsop_error_rout)
-        parsops->parsop_error_rout (pars, line, col, buf);
+        parsops->parsop_error_rout (pars, stkf, line, col, buf);
     };
   FATAL_BM ("%s:%d:%d: PARSER ERROR : %s", pars->pars_path, line, col, buf);
 }                               /* end parsererrorprintf_BM */
@@ -307,12 +336,12 @@ parsererrorprintf_BM (struct parser_stBM *pars, unsigned line, unsigned col,
 
 
 void
-parserskipspaces_BM (struct parser_stBM *pars)
+parserskipspaces_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 {
   if (!isparser_BM (pars))
     return;
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
   for (;;)
     {
       const char *restlines = parserrestline_BM (pars);
@@ -359,7 +388,7 @@ parserskipspaces_BM (struct parser_stBM *pars)
                   strncpy (begcomment, restlines, sizeof (begcomment) - 1);
                   g_utf8_validate (begcomment, -1, &endcomm);
                   *(char *) endcomm = 0;
-                  parsererrorprintf_BM (pars, curlineno, curcol,
+                  parsererrorprintf_BM (pars, stkf, curlineno, curcol,
                                         "unterminated comment %s",
                                         begcomment);
                 }
@@ -387,8 +416,8 @@ parserskipspaces_BM (struct parser_stBM *pars)
 void
 gctokenmark_BM (struct garbcoll_stBM *gc, struct parstoken_stBM *tok)
 {
-  assert (gc && gc->gc_magic == GCMAGIC_BM);
-  assert (tok != NULL);
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (tok != NULL);
   switch (tok->tok_kind)
     {
     case plex__NONE:
@@ -399,16 +428,16 @@ gctokenmark_BM (struct garbcoll_stBM *gc, struct parstoken_stBM *tok)
     case plex_ID:
       break;
     case plex_CNAME:
-      gcmark_BM (gc, (void *) tok->tok_cname, 0);
+      VALUEGCPROC_BM (gc, tok->tok_cname, 0);
       break;
     case plex_WORD:
-      gcmark_BM (gc, (void *) tok->tok_word, 0);
+      VALUEGCPROC_BM (gc, tok->tok_word, 0);
       break;
     case plex_STRING:
-      gcmark_BM (gc, (void *) tok->tok_string, 0);
+      VALUEGCPROC_BM (gc, tok->tok_string, 0);
       break;
     case plex_NAMEDOBJ:
-      gcobjmark_BM (gc, (void *) tok->tok_namedobj);
+      gcobjmark_BM (gc, tok->tok_namedobj);
       break;
     };
 }                               /* end gctokenmark_BM */
@@ -416,14 +445,19 @@ gctokenmark_BM (struct garbcoll_stBM *gc, struct parstoken_stBM *tok)
 
 // return the number of Unicode chars in the plain cord
 static unsigned
-parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
+parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil,
+                     struct stackframe_stBM *stkf)
 {
-  assert (isparser_BM (pars));
-  assert (memfil != NULL);
+  ASSERT_BM (isparser_BM (pars));
+  ASSERT_BM (memfil != NULL);
   const struct parserops_stBM *parsop = pars->pars_ops;
   const char *restlin = parserrestline_BM (pars);
-  assert (restlin && *restlin == '"');
-  assert (!parsop || parsop->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (restlin && *restlin == '"');
+  if (pars->pars_debug)
+    DBGPRINTF_BM ("parseplaincord start L%dC%d restlin@%p:%s",
+                  pars->pars_lineno, pars->pars_colpos, restlin, restlin);
+  // pars->pars_colpos is the column of restlin
+  ASSERT_BM (!parsop || parsop->parsop_magic == PARSOPMAGIC_BM);
   if (parsop && parsop->parsop_decorate_string_sign_rout)
     parsop->parsop_decorate_string_sign_rout (pars, pars->pars_lineno,
                                               pars->pars_colpos, 1);
@@ -432,20 +466,31 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
   unsigned nbc = 0;
   while (*pc)
     {
+      if (pars->pars_debug)
+        DBGPRINTF_BM ("parseplaincord pc@%p+%d:%s", pc,
+                      (int) (pc - startplain), pc);
       if (*pc == '"')
         break;
       else if (*pc == '\n')
         break;
       else if (*pc == '\\')
         {
+          // decorate as inside from startplain to pc-1
           if (parsop && parsop->parsop_decorate_string_inside_rout
-              && startplain < pc)
+              && startplain < pc - 1)
             {
+              int bytwid = pc - startplain;
+              int colwid = g_utf8_strlen (startplain, bytwid);
+              int startcol = pars->pars_colpos + g_utf8_strlen (restlin,
+                                                                startplain -
+                                                                restlin);
+              if (pars->pars_debug)
+                DBGPRINTF_BM
+                  ("parseplaincord beforebackslash stringinside L%dC%d w%d b%d, startplain@%p:%*s\n",
+                   pars->pars_lineno, startcol, colwid, bytwid, startplain,
+                   bytwid, startplain);
               parsop->parsop_decorate_string_inside_rout        //
-                (pars,
-                 pars->pars_lineno,
-                 pars->pars_colpos + g_utf8_strlen (restlin, pc - restlin),
-                 g_utf8_strlen (startplain, pc - startplain));
+                (pars, pars->pars_lineno, startcol, colwid);
             }
           const char *oldpc = pc;
           char nc = pc[1];
@@ -461,7 +506,7 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
               nbc++;
               pc += 2;
               startplain = pc;
-              continue;
+              break;
             case 'a':
               b = '\a';
               fputc (b, memfil);
@@ -513,7 +558,10 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
               break;
             case 'e':
               b = '\033' /*ESCAPE*/;
-              fputc (b, memfil);;
+              fputc (b, memfil);
+              nbc++;
+              pc += 2;
+              startplain = pc;
               break;
             case 'x':
               if (sscanf (pc + 1, "%02x%n", &b, &pos) > 0 && pos == 2
@@ -526,7 +574,7 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
                   break;
                 }
               else
-                parsererrorprintf_BM (pars, pars->pars_lineno,
+                parsererrorprintf_BM (pars, stkf, pars->pars_lineno,
                                       pars->pars_colpos, "bad hex escape %s",
                                       pc);
             case 'o':
@@ -540,7 +588,7 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
                   break;
                 }
               else
-                parsererrorprintf_BM (pars, pars->pars_lineno,
+                parsererrorprintf_BM (pars, stkf, pars->pars_lineno,
                                       pars->pars_colpos,
                                       "bad octal escape %s", pc);
             case 'u':
@@ -557,7 +605,7 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
                   break;
                 }
               else
-                parsererrorprintf_BM (pars, pars->pars_lineno,
+                parsererrorprintf_BM (pars, stkf, pars->pars_lineno,
                                       pars->pars_colpos,
                                       "bad unicode4 escape %s", pc);
             case 'U':
@@ -574,11 +622,11 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
                   break;
                 }
               else
-                parsererrorprintf_BM (pars, pars->pars_lineno,
+                parsererrorprintf_BM (pars, stkf, pars->pars_lineno,
                                       pars->pars_colpos,
                                       "bad unicode8 escape %s", pc);
             case '\0':
-              parsererrorprintf_BM (pars, pars->pars_lineno,
+              parsererrorprintf_BM (pars, stkf, pars->pars_lineno,
                                     pars->pars_colpos, "bad null escape %s",
                                     pc);
 
@@ -590,6 +638,16 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
               startplain = pc;
               break;
             }                   /* end switch nc */
+          if (pars->pars_debug)
+            DBGPRINTF_BM
+              ("parseplaincord backslash stringsign pc@%p:%s\n"
+               ".. startplain@%p:%s\n"
+               ".. L%dC%d w%d\n",
+               pc, pc, startplain, startplain,
+               pars->pars_lineno,
+               (int) (pars->pars_colpos +
+                      g_utf8_strlen (restlin, oldpc - restlin)),
+               (int) g_utf8_strlen (oldpc, pc - oldpc));
           if (b && parsop && parsop->parsop_decorate_string_sign_rout)
             parsop->parsop_decorate_string_sign_rout    //
               (pars,
@@ -602,7 +660,6 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
           fputc (*pc, memfil);
           nbc++;
           pc++;
-          continue;
         }
       else
         {                       // probably some multibyte UTF8 char
@@ -610,32 +667,53 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
           fwrite (pc, npc - pc, 1, memfil);
           nbc++;
           pc = npc;
-          continue;
         }
     };
-  if (*pc == '"')
+  if (pars->pars_debug)
+    DBGPRINTF_BM ("parseplaincord endloop pc@%p:%s\n...startplain@%p:%s\n",
+                  pc, pc, startplain, startplain);
+  if (*pc == '"')               /// ending quote
     {
+      int endbyt = pc - restlin;
+      int endcol = pars->pars_colpos + g_utf8_strlen (restlin, endbyt);
+      int startbyt = startplain - restlin;
+      int startcol = pars->pars_colpos + g_utf8_strlen (restlin, startbyt);
+      if (pars->pars_debug)
+        DBGPRINTF_BM
+          ("parseplaincord endquot stringinside endquot L%dC%d startcol%d\n"
+           "..pc@%p:%s\n"
+           "..startplain@%p:%s\n",
+           pars->pars_lineno, endcol, startcol, pc, pc,
+           startplain, startplain);
+      // decorate as stringinside from startplain to pc
       if (parsop && parsop->parsop_decorate_string_inside_rout
           && startplain < pc)
         {
+          int plainbyt = pc - startplain;
+          int plainwid = g_utf8_strlen (startplain, plainbyt);
+          if (pars->pars_debug)
+            DBGPRINTF_BM
+              ("parseplaincord endquot inside L%dC%d w%d b%d",
+               pars->pars_lineno, startcol, plainwid, plainbyt);
           parsop->parsop_decorate_string_inside_rout    //
-            (pars,
-             pars->pars_lineno,
-             pars->pars_colpos + g_utf8_strlen (restlin, pc - restlin),
-             g_utf8_strlen (startplain, pc - startplain));
+            (pars, pars->pars_lineno, startcol, plainwid);
         }
+      if (pars->pars_debug)
+        DBGPRINTF_BM ("parseplaincord stringsign endquot L%dC%d w:one",
+                      pars->pars_lineno, endcol);
       if (parsop && parsop->parsop_decorate_string_sign_rout)
         parsop->parsop_decorate_string_sign_rout
-          (pars,
-           pars->pars_lineno,
-           pars->pars_colpos + g_utf8_strlen (restlin, pc - restlin), 1);
+          (pars, pars->pars_lineno, endcol, 1);
       pc++;
     }
   else
-    parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+    parsererrorprintf_BM (pars, stkf, pars->pars_lineno, pars->pars_colpos,
                           "bad plain cord ending %s", pc);
   pars->pars_colpos += g_utf8_strlen (restlin, pc - restlin);
   pars->pars_curbyte = pc;
+  if (pars->pars_debug)
+    DBGPRINTF_BM ("parsepaincord final L%dC%d\n", pars->pars_lineno,
+                  pars->pars_colpos);
   return nbc;
 }                               /* end parse_plain_cord_BM */
 
@@ -643,18 +721,19 @@ parse_plain_cord_BM (struct parser_stBM *pars, FILE * memfil)
 
 // return the number of Unicode chars in the raw cord
 static unsigned
-parse_raw_cord_BM (struct parser_stBM *pars, const char *run, FILE * memfil)
+parse_raw_cord_BM (struct parser_stBM *pars, const char *run, FILE * memfil,
+                   struct stackframe_stBM *stkf)
 {
-  assert (isparser_BM (pars));
-  assert (memfil != NULL);
+  ASSERT_BM (isparser_BM (pars));
+  ASSERT_BM (memfil != NULL);
   char endrunbuf[RUNLEN_BM + 8] = "";
   unsigned runlen = strlen (run);
-  assert (runlen <= RUNLEN_BM);
+  ASSERT_BM (runlen <= RUNLEN_BM);
   unsigned nbc = 0;
   const char *restlin = parserrestline_BM (pars);
-  assert (restlin && restlin[0] == '/' && restlin[1] == '"'
-          && !strncmp (restlin + 2, run, runlen)
-          && restlin[runlen + 3] == '(');
+  ASSERT_BM (restlin && restlin[0] == '/' && restlin[1] == '"'
+             && !strncmp (restlin + 2, run, runlen)
+             && restlin[runlen + 3] == '(');
   const char *curstart = restlin + runlen + 4;
   snprintf (endrunbuf, sizeof (endrunbuf), ")%s\"/", run);
   for (;;)
@@ -676,11 +755,11 @@ parse_raw_cord_BM (struct parser_stBM *pars, const char *run, FILE * memfil)
           pars->pars_curbyte += strlen (curstart);
           pars->pars_colpos += plen;
           if (!parsernextline_BM (pars))
-            parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
-                                  "unterminated raw cord");
+            parsererrorprintf_BM (pars, stkf, pars->pars_lineno,
+                                  pars->pars_colpos, "unterminated raw cord");
           restlin = parserrestline_BM (pars);
           curstart = restlin;
-          assert (restlin != NULL);
+          ASSERT_BM (restlin != NULL);
           continue;
         }
     };
@@ -689,14 +768,14 @@ parse_raw_cord_BM (struct parser_stBM *pars, const char *run, FILE * memfil)
 
 
 static const stringval_tyBM *
-parse_cords_BM (struct parser_stBM *pars)
+parse_cords_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return NULL;
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsops && parsops->parsop_nobuild;
-  parserskipspaces_BM (pars);
+  parserskipspaces_BM (pars, stkf);
   const char *restlin = parserrestline_BM (pars);
   if (!restlin)
     return NULL;
@@ -721,18 +800,18 @@ parse_cords_BM (struct parser_stBM *pars)
       if (!restlin)
         break;
       if (restlin[0] == '"')
-        cumulchars += parse_plain_cord_BM (pars, filmem);
+        cumulchars += parse_plain_cord_BM (pars, filmem, stkf);
       else if (restlin[0] == '/' && restlin[1] == '"'
                && ((runlen = -1), (memset (runbuf, 0, sizeof (runbuf))),
                    sscanf (restlin, "/\"" RUNFMT_BM "(%n", runbuf,
                            &runlen) > 0) && runlen > 0)
-        cumulchars += parse_raw_cord_BM (pars, runbuf, filmem);
+        cumulchars += parse_raw_cord_BM (pars, runbuf, filmem, stkf);
       else
         {
           fclose (filmem);
           free (cbuf), cbuf = NULL;
-          parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
-                                "bad cord %s", restlin);
+          parsererrorprintf_BM (pars, stkf, pars->pars_lineno,
+                                pars->pars_colpos, "bad cord %s", restlin);
         }
 
       restlin = parserrestline_BM (pars);
@@ -754,13 +833,14 @@ parse_cords_BM (struct parser_stBM *pars)
         }
       else
         break;
-      parserskipspaces_BM (pars);
+      parserskipspaces_BM (pars, stkf);
       if (cumulchars >= MAXSIZE_BM)
         {
           fclose (filmem);
           free (cbuf);
-          parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
-                                "too long string (%lu)", cumulchars);
+          parsererrorprintf_BM (pars, stkf, pars->pars_lineno,
+                                pars->pars_colpos, "too long string (%lu)",
+                                cumulchars);
         }
     }
   while (againcord);
@@ -773,17 +853,19 @@ parse_cords_BM (struct parser_stBM *pars)
 }                               /* end parse_cords_BM */
 
 
+#define EUROBYTELEN_BM 3        /* strlen("€") */
 parstoken_tyBM
-parsertokenget_BM (struct parser_stBM * pars)
+parsertokenget_BM (struct parser_stBM * pars, struct stackframe_stBM * stkf)
 {
+  ASSERT_BM (strlen ("€") == EUROBYTELEN_BM);
   if (!isparser_BM ((const value_tyBM) pars))
     return EMPTY_TOKEN_BM;
   const struct parserops_stBM *parsop = pars->pars_ops;
-  assert (!parsop || parsop->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (!parsop || parsop->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsop && parsop->parsop_nobuild;
   const char *restlin = NULL;
 again:
-  parserskipspaces_BM (pars);
+  parserskipspaces_BM (pars, stkf);
   restlin = parserrestline_BM (pars);
   if (restlin && restlin[0] == (char) 0)
     {
@@ -840,7 +922,7 @@ again:
       rawid_tyBM id = parse_rawid_BM (restlin, &endid);
       if (id.id_hi != 0 && endid != NULL && endid > restlin)
         {
-          assert (endid == restlin + IDLEN_BM);
+          ASSERT_BM (endid == restlin + IDLEN_BM);
           if (parsop && parsop->parsop_decorate_id_rout)
             parsop->parsop_decorate_id_rout     //
               (pars, pars->pars_lineno, pars->pars_colpos, IDLEN_BM);
@@ -852,8 +934,8 @@ again:
               id};
         }
       else
-        parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
-                              "bad ident %s", restlin);
+        parsererrorprintf_BM (pars, stkf, pars->pars_lineno,
+                              pars->pars_colpos, "bad ident %s", restlin);
     }
 
   // parse nil id
@@ -895,8 +977,9 @@ again:
         {
           if (nambuf != tinynambuf)     // to avoid memory leaks
             free (nambuf), nambuf = NULL;
-          parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
-                                "bad ident %s%s", tinynambuf,
+          parsererrorprintf_BM (pars, stkf, pars->pars_lineno,
+                                pars->pars_colpos, "bad ident %s%s",
+                                tinynambuf,
                                 (namlen > TINYSIZE_BM) ? "..." : "");
         }
       const objectval_tyBM *namedobj =  //
@@ -956,7 +1039,7 @@ again:
 
   else if (restlin[0] == '"')
     {
-      const stringval_tyBM *str = parse_cords_BM (pars);
+      const stringval_tyBM *str = parse_cords_BM (pars, stkf);
       return (parstoken_tyBM)
       {
       .tok_kind = plex_STRING,.tok_line = curlin,.tok_col =
@@ -965,7 +1048,7 @@ again:
 
   else if (restlin[0] == '/' && restlin[1] == '"')
     {
-      const stringval_tyBM *str = parse_cords_BM (pars);
+      const stringval_tyBM *str = parse_cords_BM (pars, stkf);
       return (parstoken_tyBM)
       {
       .tok_kind = plex_STRING,.tok_line = curlin,.tok_col =
@@ -994,6 +1077,28 @@ again:
       .tok_kind = plex_DELIM,.tok_line = curlin,.tok_col =
           curcol,.tok_delim = delim_dollarcolon};
     }
+  // special case for  $*<name>, the letter should follow immediately
+  else if (restlin[0] == '$' && restlin[1] == '*' && isalpha (restlin[2]))
+    {
+      pars->pars_curbyte += 2;
+      pars->pars_colpos += 2;
+      return (parstoken_tyBM)
+      {
+      .tok_kind = plex_DELIM,.tok_line = curlin,.tok_col =
+          curcol,.tok_delim = delim_dollarstar};
+    }
+  // special case for  €<name>, the letter should follow immediately
+  else if (!strncmp (restlin, "€", EUROBYTELEN_BM)
+           && isalpha (restlin[EUROBYTELEN_BM]))
+    {
+      pars->pars_curbyte += EUROBYTELEN_BM;
+      pars->pars_colpos += EUROBYTELEN_BM;
+      return (parstoken_tyBM)
+      {
+      .tok_kind = plex_DELIM,.tok_line = curlin,.tok_col =
+          curcol,.tok_delim = delim_euro};
+    }
+#warning should handle dollar colon followed by non-letter
   char delimstr[16];
   memset (delimstr, 0, sizeof (delimstr));
   enum lexdelim_enBM curdelim = delim__NONE;
@@ -1008,15 +1113,23 @@ again:
 #include "_bm_delim.h"
   //
   if (curdelim == delim__NONE)
-    parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+    parsererrorprintf_BM (pars, stkf, pars->pars_lineno, pars->pars_colpos,
                           "unexpected token %s", restlin);
   else if (curdelim == delim_dollar)
-    parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+    parsererrorprintf_BM (pars, stkf, pars->pars_lineno, pars->pars_colpos,
                           "dollar not immediately followed by letter %s",
                           restlin);
   else if (curdelim == delim_dollarcolon)
-    parsererrorprintf_BM (pars, pars->pars_lineno, pars->pars_colpos,
+    parsererrorprintf_BM (pars, stkf, pars->pars_lineno, pars->pars_colpos,
                           "dollar-colon not immediately followed by letter %s",
+                          restlin);
+  else if (curdelim == delim_dollarstar)
+    parsererrorprintf_BM (pars, stkf, pars->pars_lineno, pars->pars_colpos,
+                          "dollar-star not immediately followed by letter %s",
+                          restlin);
+  else if (curdelim == delim_euro)
+    parsererrorprintf_BM (pars, stkf, pars->pars_lineno, pars->pars_colpos,
+                          "euro not immediately followed by letter %s",
                           restlin);
 
   pars->pars_curbyte += strlen (delimstr);
@@ -1026,6 +1139,32 @@ again:
   .tok_kind = plex_DELIM,.tok_line = curlin,.tok_col = curcol,.tok_delim =
       curdelim};
 }                               /* end parsertokenget_BM */
+
+
+bool
+parsertokenstartobject_BM (struct parser_stBM * pars, parstoken_tyBM tok)
+{
+  if (!isparser_BM ((const value_tyBM) pars))
+    return false;
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  if (tok.tok_kind == plex__NONE)
+    return false;
+  if (tok.tok_kind == plex_NAMEDOBJ
+      || tok.tok_kind == plex_ID
+      || (tok.tok_kind == plex_DELIM
+          && tok.tok_delim == delim_dollarstar
+          && parsops && parsops->parsop_expand_newname_rout)
+      || (tok.tok_kind == plex_DELIM
+          && tok.tok_delim == delim_euro
+          && parsops && parsops->parsop_expand_newname_rout)
+      || (tok.tok_kind == plex_DELIM
+          && tok.tok_delim == delim_dollarleftbracket
+          && parsops && parsops->parsop_expand_objexp_rout)
+      || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_dollarcolon
+          && parsops && parsops->parsop_expand_dollarobj_rout))
+    return true;
+  return false;
+}                               /* end parsertokenstartobject_BM */
 
 
 objectval_tyBM *
@@ -1039,20 +1178,21 @@ parsergetobject_BM (struct parser_stBM * pars,
     FATAL_BM ("missing pgotobj");
   LOCALFRAME_BM (prevstkf, NULL, const objectval_tyBM * resobj);
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsops && parsops->parsop_nobuild;
-  parserskipspaces_BM (pars);
+  parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
   unsigned lineno = parserlineno_BM (pars);
   unsigned colpos = parsercolpos_BM (pars);
   if (depth > MAXDEPTHPARSE_BM)
-    parsererrorprintf_BM (pars, lineno, colpos, //
+    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,  //
                           "too deep (%d) object", depth);
-  parstoken_tyBM tok = parsertokenget_BM (pars);
+  parstoken_tyBM tok =
+    parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
   if (tok.tok_kind == plex__NONE)
     goto failure;
   else if (tok.tok_kind == plex_NAMEDOBJ)
     {
-      assert (tok.tok_namedobj != NULL);
+      ASSERT_BM (tok.tok_namedobj != NULL);
       *pgotobj = true;
       return tok.tok_namedobj;
     }
@@ -1071,7 +1211,7 @@ parsergetobject_BM (struct parser_stBM * pars,
           char idbuf[32];
           memset (idbuf, 0, sizeof (idbuf));
           idtocbuf32_BM (tok.tok_id, idbuf);
-          parsererrorprintf_BM (pars, lineno, colpos,   //
+          parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,    //
                                 "unknown id %s", idbuf);
         };
       *pgotobj = true;
@@ -1081,15 +1221,16 @@ parsergetobject_BM (struct parser_stBM * pars,
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_dollarcolon)
     {
       if (!parsops || !parsops->parsop_expand_dollarobj_rout)
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "no expansion for $:<var> object");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "no expansion for $:<var> object");
       const char *reslin = parserrestline_BM (pars);
       unsigned varlineno = parserlineno_BM (pars);
       unsigned varcolpos = parsercolpos_BM (pars);
-      parstoken_tyBM vartok = parsertokenget_BM (pars);
+      parstoken_tyBM vartok =
+        parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (vartok.tok_kind == plex_NAMEDOBJ)
         {
-          assert (varlineno == lineno);
+          ASSERT_BM (varlineno == lineno);
           _.resobj =            //
             parsops->parsop_expand_dollarobj_rout
             (pars, varlineno, tok.tok_col,
@@ -1104,10 +1245,11 @@ parsergetobject_BM (struct parser_stBM * pars,
              (struct stackframe_stBM *) &_);
         }
       else                      // could happen if $: is followed by word
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "bad $:<var> expansion for %s", reslin);
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "bad $:<var> expansion for %s", reslin);
       if (!nobuild && !isobject_BM ((const value_tyBM) _.resobj))
-        parsererrorprintf_BM (pars, lineno, colpos,
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos,
                               "did not found $:<var> expansion for %s",
                               reslin);
       *pgotobj = true;
@@ -1119,8 +1261,8 @@ parsergetobject_BM (struct parser_stBM * pars,
     {
       const char *reslin = parserrestline_BM (pars);
       if (!parsops || !parsops->parsop_expand_objexp_rout)
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "no $[...] expansion for %s", reslin);
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "no $[...] expansion for %s", reslin);
       char resbuf[40];
       memset (resbuf, 0, sizeof (resbuf));
       strncpy (resbuf, reslin, sizeof (resbuf) - 1);
@@ -1130,10 +1272,44 @@ parsergetobject_BM (struct parser_stBM * pars,
       _.resobj = parsops->parsop_expand_objexp_rout
         (pars, lineno, colpos, depth, (struct stackframe_stBM *) &_);
       if (!nobuild && !isobject_BM ((const value_tyBM) _.resobj))
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "failed $[...] expansion of %s", resbuf);
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "failed $[...] expansion of %s",
+                              resbuf);
       *pgotobj = true;
       return (objectval_tyBM *) _.resobj;
+    }
+  // parse $*<name> or €<name> to possibly create a named object
+  else if (tok.tok_kind == plex_DELIM
+           && (tok.tok_delim == delim_dollarstar
+               || tok.tok_delim == delim_euro)
+           && parsops && parsops->parsop_expand_newname_rout)
+    {
+      parstoken_tyBM vartok =
+        parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+      if (vartok.tok_kind == plex_NAMEDOBJ)
+        {
+          _.resobj = vartok.tok_namedobj;
+          *pgotobj = true;
+          return (objectval_tyBM *) _.resobj;
+        }
+      else if (vartok.tok_kind == plex_CNAME)
+        {
+          if (!nobuild)
+            {
+              _.resobj = parsops->parsop_expand_newname_rout    //
+                (pars, lineno, colpos,
+                 vartok.tok_cname, (struct stackframe_stBM *) &_);
+            }
+          else
+            _.resobj = NULL;
+          *pgotobj = true;
+          return (objectval_tyBM *) _.resobj;
+        }
+      else
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "expect name after %s",
+                              (tok.tok_delim ==
+                               delim_dollarstar) ? "$*" : "€");
     }
 failure:
   parserseek_BM (pars, lineno, colpos);
@@ -1144,9 +1320,46 @@ failure:
 
 
 ////////////////
+bool
+parsertokenstartvalue_BM (struct parser_stBM * pars, parstoken_tyBM tok)
+{
+  if (!isparser_BM ((const value_tyBM) pars))
+    return false;
+  if (tok.tok_kind == plex__NONE)
+    return false;
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  if (parsertokenstartobject_BM (pars, tok))
+    return true;
+  if (tok.tok_kind == plex_LLONG || tok.tok_kind == plex_STRING ///
+      || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_hashleftbrace)   // code chunks 
+      || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_leftbracket)     // tuples
+      || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_leftbrace)       // sets
+      || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_tildecolon)      // named object sets
+      || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_star)    // nodes
+      || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_percent) // closures
+      || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_caret && parsops && parsops->parsop_expand_readmacro_rout)       // read-macro expansion
+      || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_dollar && parsops && parsops->parsop_expand_dollarval_rout)      // $var value
+      || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_dollarleftparen && parsops && parsops->parsop_expand_valexp_rout)        // $( ... )
+      || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclam && parsops && parsops->parsop_accept_unary_rout)  // ! ...
+      || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_question && parsops && parsops->parsop_accept_unary_rout)        // ? ...
+      || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_equal && parsops && parsops->parsop_accept_unary_rout)   // = ...
+      || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_colon)   // : object son
+    )
+    return true;
+  return false;
+}                               /* end parsertokenstartvalue_BM */
+
+
+static value_tyBM parsergetunary_BM (struct parser_stBM *pars,
+                                     struct stackframe_stBM *prevstkf,
+                                     unsigned lineno, unsigned colpos,
+                                     int depth,
+                                     objectval_tyBM * unaryconn,
+                                     bool * pgotval);
+
 value_tyBM
-parsergetvalue_BM (struct parser_stBM * pars,
-                   struct stackframe_stBM * prevstkf, int depth,
+parsergetvalue_BM (struct parser_stBM *pars,
+                   struct stackframe_stBM *prevstkf, int depth,
                    bool * pgotval)
 {
   if (!isparser_BM ((const value_tyBM) pars))
@@ -1154,25 +1367,27 @@ parsergetvalue_BM (struct parser_stBM * pars,
   if (!pgotval)
     FATAL_BM ("missing pgotval");
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
   bool nobuild = parsops && parsops->parsop_nobuild;
+#define TINYARGSNUM_BM 8
   LOCALFRAME_BM                 //
     (prevstkf, NULL,            //
-     value_tyBM resval;
-     value_tyBM macroval;
-     objectval_tyBM * connobj;
+     value_tyBM resval; value_tyBM macroval; objectval_tyBM * connobj;
+     objectval_tyBM * parsob;
      union
      {
      objectval_tyBM * elemobj; objectval_tyBM * compobj; value_tyBM sonval;
-     };
-     struct datavectval_stBM *contdvec);
-  parserskipspaces_BM (pars);
+     }; objectval_tyBM * vecobj;
+     value_tyBM tinyargsarr[TINYARGSNUM_BM]);
+  _.parsob = checkedparserowner_BM (pars);
+  parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
   unsigned lineno = parserlineno_BM (pars);
   unsigned colpos = parsercolpos_BM (pars);
   if (depth > MAXDEPTHPARSE_BM)
-    parsererrorprintf_BM (pars, lineno, colpos, //
+    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,  //
                           "too deep (%d) value", depth);
-  parstoken_tyBM tok = parsertokenget_BM (pars);
+  parstoken_tyBM tok =
+    parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
   if (tok.tok_kind == plex__NONE)
     goto failure;
   //
@@ -1204,7 +1419,7 @@ parsergetvalue_BM (struct parser_stBM * pars,
           char idbuf[32];
           memset (idbuf, 0, sizeof (idbuf));
           idtocbuf32_BM (tok.tok_id, idbuf);
-          parsererrorprintf_BM (pars, lineno, colpos,   //
+          parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,    //
                                 "unknown id %s", idbuf);
         };
       *pgotval = true;
@@ -1239,23 +1454,41 @@ parsergetvalue_BM (struct parser_stBM * pars,
       int tupcol = tok.tok_col;
       // a tuple : [ obj1 .... objn ]
       bool gotcompobj = false;
-      _.contdvec = nobuild ? NULL : datavect_grow_BM (NULL, 5);
+      int nbcomp = 0;
+      memset (_.tinyargsarr, 0, sizeof (_.tinyargsarr));
       while ((gotcompobj = false),      //
              (_.compobj =       //
-              parsergetobject_BM        //
-              (pars,            //
-               (struct stackframe_stBM *) &_,   //
-               depth + 1, &gotcompobj)),        //
+              parsergetobject_BM (pars, (struct stackframe_stBM *) &_,  //
+                                  depth + 1, &gotcompobj)),     //
              gotcompobj)
         {
           if (!nobuild)
-            _.contdvec = datavect_append_BM (_.contdvec, _.compobj);
+            {
+              if (nbcomp < TINYARGSNUM_BM)
+                _.tinyargsarr[nbcomp++] = (value_tyBM) _.compobj;
+              else
+                {
+                  if (!_.vecobj)
+                    {
+                      _.vecobj = makeobj_BM ();
+                      objreservecomps_BM (_.vecobj, 2 * TINYARGSNUM_BM);
+                      for (int ix = 0; ix < TINYARGSNUM_BM; ix++)
+                        objappendcomp_BM (_.vecobj, _.tinyargsarr[ix]);
+                    };
+                  {
+                    objlock_BM (_.vecobj);
+                    objappendcomp_BM (_.vecobj, _.compobj);
+                    objunlock_BM (_.vecobj);
+                  }
+                }
+            }
         }
-      parserskipspaces_BM (pars);
-      parstoken_tyBM endtok = parsertokenget_BM (pars);
+      parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+      parstoken_tyBM endtok =
+        parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (endtok.tok_kind != plex_DELIM
           || endtok.tok_delim != delim_rightbracket)
-        parsererrorprintf_BM (pars, lineno, colpos,     //
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,      //
                               "missing closing bracket for tuple");
       int endlin = endtok.tok_line;
       int endcol = endtok.tok_col;
@@ -1265,9 +1498,22 @@ parsergetvalue_BM (struct parser_stBM * pars,
            delim_leftbracket, tuplin, tupcol,
            delim_rightbracket, endlin, endcol);
       if (!nobuild)
-        _.resval = (value_tyBM)
-          maketuple_BM ((objectval_tyBM **) (_.contdvec->vec_data),
-                        datavectlen_BM (_.contdvec));
+        {
+          if (_.vecobj)
+            objlock_BM (_.vecobj);
+          _.resval =
+            (nbcomp < TINYARGSNUM_BM)
+            ? ((value_tyBM)
+               maketuple_BM ((objectval_tyBM **) (_.tinyargsarr),
+                             nbcomp)) : ((value_tyBM)
+                                         maketuple_BM ((objectval_tyBM
+                                                        **) (objcompdata_BM
+                                                             (_.vecobj)),
+                                                       objnbcomps_BM
+                                                       (_.vecobj)));
+          if (_.vecobj)
+            objunlock_BM (_.vecobj);
+        }
       else
         _.resval = NULL;
       *pgotval = true;
@@ -1281,23 +1527,40 @@ parsergetvalue_BM (struct parser_stBM * pars,
       int setlin = tok.tok_line;
       int setcol = tok.tok_col;
       bool gotelemobj = false;
-      _.contdvec = nobuild ? NULL : datavect_grow_BM (NULL, 5);
+      int nbcomp = 0;
       while ((gotelemobj = false),      //
              (_.elemobj =       //
-              parsergetobject_BM        //
-              (pars,            //
-               (struct stackframe_stBM *) &_,   //
-               depth + 1, &gotelemobj)),        //
+              parsergetobject_BM (pars, (struct stackframe_stBM *) &_,  //
+                                  depth + 1, &gotelemobj)),     //
              gotelemobj)
         {
           if (!nobuild)
-            _.contdvec = datavect_append_BM (_.contdvec, _.elemobj);
+            {
+              if (nbcomp < TINYARGSNUM_BM)
+                _.tinyargsarr[nbcomp++] = (value_tyBM) _.compobj;
+              else
+                {
+                  if (!_.vecobj)
+                    {
+                      _.vecobj = makeobj_BM ();
+                      objreservecomps_BM (_.vecobj, 2 * TINYARGSNUM_BM);
+                      for (int ix = 0; ix < TINYARGSNUM_BM; ix++)
+                        objappendcomp_BM (_.vecobj, _.tinyargsarr[ix]);
+                    };
+                  {
+                    objlock_BM (_.vecobj);
+                    objappendcomp_BM (_.vecobj, _.compobj);
+                    objunlock_BM (_.vecobj);
+                  }
+                }
+            }
         }
-      parserskipspaces_BM (pars);
-      parstoken_tyBM endtok = parsertokenget_BM (pars);
+      parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+      parstoken_tyBM endtok =
+        parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (endtok.tok_kind != plex_DELIM
           || endtok.tok_delim != delim_rightbrace)
-        parsererrorprintf_BM (pars, lineno, colpos,     //
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,      //
                               "missing closing brace for set");
       int endlin = endtok.tok_line;
       int endcol = endtok.tok_col;
@@ -1306,9 +1569,23 @@ parsergetvalue_BM (struct parser_stBM * pars,
           (pars, depth,
            delim_leftbrace, setlin, setcol, delim_rightbrace, endlin, endcol);
       if (!nobuild)
-        _.resval = (value_tyBM)
-          makeset_BM ((const objectval_tyBM **) (_.contdvec->vec_data),
-                      datavectlen_BM (_.contdvec));
+        {
+          if (_.vecobj)
+            objlock_BM (_.vecobj);
+          _.resval =
+            (nbcomp < TINYARGSNUM_BM)
+            ? ((value_tyBM)
+               makeset_BM ((const objectval_tyBM **) (_.tinyargsarr),
+                           nbcomp)) : ((value_tyBM) makeset_BM ((const
+                                                                 objectval_tyBM
+                                                                 **)
+                                                                (objcompdata_BM
+                                                                 (_.vecobj)),
+                                                                objnbcomps_BM
+                                                                (_.vecobj)));
+          if (_.vecobj)
+            objunlock_BM (_.vecobj);
+        }
       else
         _.resval = NULL;
       *pgotval = true;
@@ -1322,8 +1599,9 @@ parsergetvalue_BM (struct parser_stBM * pars,
   // ~: "~?aa*" # set of named objects case-insensitively fnmatching "?aa*"
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_tildecolon)
     {
-      parserskipspaces_BM (pars);
-      parstoken_tyBM patok = parsertokenget_BM (pars);
+      parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+      parstoken_tyBM patok =
+        parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (patok.tok_kind == plex_NAMEDOBJ)
         {
           if (!nobuild)
@@ -1349,7 +1627,7 @@ parsergetvalue_BM (struct parser_stBM * pars,
             _.resval = (value_tyBM) setofnamedobjects_BM ();
         }
       else
-        parsererrorprintf_BM (pars, lineno, colpos,     //
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,      //
                               "~: not followed by name or string or * for matching set of named");
       *pgotval = true;
       return _.resval;
@@ -1363,56 +1641,123 @@ parsergetvalue_BM (struct parser_stBM * pars,
       int nodcol = tok.tok_col;
       bool gotconnobj = false;
       _.connobj =               //
-        parsergetobject_BM      //
-        (pars,                  //
-         (struct stackframe_stBM *) &_, //
-         depth + 1, &gotconnobj);
+        parsergetobject_BM (pars, (struct stackframe_stBM *) &_,        //
+                            depth + 1, &gotconnobj);
       if (!gotconnobj)
-        parsererrorprintf_BM (pars, lineno, colpos,     //
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,      //
                               "missing connective object of node after *");
-      parstoken_tyBM lefttok = parsertokenget_BM (pars);
-      if (lefttok.tok_kind != plex_DELIM
-          || lefttok.tok_delim != delim_leftparen)
-        parsererrorprintf_BM (pars, lineno, colpos,     //
-                              "missing left parenthesis for node");
+      char connid[32];
+      memset (connid, 0, sizeof (connid));
+      idtocbuf32_BM (objid_BM (_.connobj), connid);
+      parstoken_tyBM lefttok =
+        parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       int leftlin = lefttok.tok_line;
       int leftcol = lefttok.tok_col;
-      _.contdvec = nobuild ? NULL : datavect_grow_BM (NULL, 3);
-      bool gotson = false;
-      while ((gotson = false),  //
-             (_.sonval =        //
-              parsergetvalue_BM //
-              (pars,            //
-               (struct stackframe_stBM *) &_,   //
-               depth + 1, &gotson)),    //
-             gotson)
+      if (lefttok.tok_kind == plex_DELIM
+          || lefttok.tok_delim == delim_leftparen)
         {
+          int nbcomp = 0;
+          bool gotson = false;
+          while ((gotson = false),      //
+                 (_.sonval =    //
+                  parsergetvalue_BM (pars, (struct stackframe_stBM *) &_,       //
+                                     depth + 1, &gotson)),      //
+                 gotson)
+            {
+              if (!nobuild)
+                {
+                  if (nbcomp < TINYARGSNUM_BM)
+                    _.tinyargsarr[nbcomp++] = (value_tyBM) _.compobj;
+                  else
+                    {
+                      if (!_.vecobj)
+                        {
+                          _.vecobj = makeobj_BM ();
+                          objreservecomps_BM (_.vecobj, 2 * TINYARGSNUM_BM);
+                          for (int ix = 0; ix < TINYARGSNUM_BM; ix++)
+                            objappendcomp_BM (_.vecobj, _.tinyargsarr[ix]);
+                        };
+                      {
+                        objlock_BM (_.vecobj);
+                        objappendcomp_BM (_.vecobj, _.compobj);
+                        objunlock_BM (_.vecobj);
+                      }
+                    }
+                }
+            }
+          parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+          parstoken_tyBM endtok =
+            parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+          if (endtok.tok_kind != plex_DELIM
+              || endtok.tok_delim != delim_rightparen)
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,  //
+                                  "missing right parenthesis for node");
+          int endlin = endtok.tok_line;
+          int endcol = endtok.tok_col;
+          if (parsops && parsops->parsop_decorate_start_nesting_rout)
+            parsops->parsop_decorate_start_nesting_rout
+              (pars, depth,
+               delim_star, nodlin, nodcol,
+               delim_leftparen, leftlin, leftcol,
+               delim_rightparen, endlin, endcol);
           if (!nobuild)
-            _.contdvec = datavect_append_BM (_.contdvec, _.sonval);
+            {
+              if (_.vecobj)
+                objlock_BM (_.vecobj);
+              _.resval = (value_tyBM)
+                ((nbcomp < TINYARGSNUM_BM)
+                 ? makenode_BM (_.connobj, nbcomp, (_.tinyargsarr))
+                 : makenode_BM (_.connobj, objnbcomps_BM (_.vecobj),
+                                (objcompdata_BM (_.vecobj))));
+              if (_.vecobj)
+                objunlock_BM (_.vecobj);
+            }
+          else
+            _.resval = NULL;
+          *pgotval = true;
+          return _.resval;
         }
-      parserskipspaces_BM (pars);
-      parstoken_tyBM endtok = parsertokenget_BM (pars);
-      if (endtok.tok_kind != plex_DELIM
-          || endtok.tok_delim != delim_rightparen)
-        parsererrorprintf_BM (pars, lineno, colpos,     //
-                              "missing right parenthesis for node");
-      int endlin = endtok.tok_line;
-      int endcol = endtok.tok_col;
-      if (parsops && parsops->parsop_decorate_start_nesting_rout)
-        parsops->parsop_decorate_start_nesting_rout
-          (pars, depth,
-           delim_star, nodlin, nodcol,
-           delim_leftparen, leftlin, leftcol,
-           delim_rightparen, endlin, endcol);
-      if (!nobuild)
-        _.resval = (value_tyBM)
-          makenode_BM (_.connobj,
-                       datavectlen_BM (_.contdvec),
-                       (const value_tyBM *) (_.contdvec->vec_data));
+      else if (parsertokenstartvalue_BM (pars, lefttok)
+               && parsops && parsops->parsop_accept_unary_rout)
+        {
+          bool okunary =
+            parsops->parsop_accept_unary_rout (pars, lineno, colpos,
+                                               depth + 1,
+                                               _.connobj,
+                                               (struct stackframe_stBM *) &_);
+          if (!okunary)
+            {
+              char *coname = findobjectname_BM (_.connobj);
+              parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,        //
+                                    "rejected unary node %s",
+                                    coname ? : connid);
+            }
+          parserseek_BM (pars, leftlin, leftcol);
+          bool gotson = false;
+          _.sonval =            //
+            parsergetvalue_BM (pars, (struct stackframe_stBM *) &_,     //
+                               depth + 1, &gotson);
+          if (!gotson)
+            {
+              char *coname = findobjectname_BM (_.connobj);
+              parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,        //
+                                    "missing son for unary node %s",
+                                    coname ? : connid);
+            }
+          if (!nobuild)
+            _.resval = (value_tyBM) makenode_BM (_.connobj, 1, &_.sonval);
+          else
+            _.resval = NULL;
+          *pgotval = true;
+          return _.resval;
+        }
       else
-        _.resval = NULL;
-      *pgotval = true;
-      return _.resval;
+        {
+          char *coname = findobjectname_BM (_.connobj);
+          parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,    //
+                                "missing arguments for node %s",
+                                coname ? : connid);
+        }
     }
   //
   // parse closures
@@ -1423,40 +1768,56 @@ parsergetvalue_BM (struct parser_stBM * pars,
       int clocol = tok.tok_col;
       bool gotconnobj = false;
       _.connobj =               //
-        parsergetobject_BM      //
-        (pars,                  //
-         (struct stackframe_stBM *) &_, //
-         depth + 1, &gotconnobj);
+        parsergetobject_BM (pars, (struct stackframe_stBM *) &_,        //
+                            depth + 1, &gotconnobj);
       if (!gotconnobj)
-        parsererrorprintf_BM    //
-          (pars, lineno, colpos,        //
-           "missing connective object of closure after %%");
-      parserskipspaces_BM (pars);
-      parstoken_tyBM lefttok = parsertokenget_BM (pars);
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,      //
+                              "missing connective object of closure after %%");
+      parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+      parstoken_tyBM lefttok =
+        parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (lefttok.tok_kind != plex_DELIM
           || lefttok.tok_delim != delim_leftparen)
-        parsererrorprintf_BM (pars, lineno, colpos,     //
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,      //
                               "missing left parenthesis for closure");
       int leftlin = lefttok.tok_line;
       int leftcol = lefttok.tok_col;
-      _.contdvec = nobuild ? NULL : datavect_grow_BM (NULL, 3);
       bool gotson = false;
+      int nbcomp = 0;
+      memset (_.tinyargsarr, 0, sizeof (_.tinyargsarr));
       while ((gotson = false),  //
              (_.sonval =        //
-              parsergetvalue_BM //
-              (pars,            //
-               (struct stackframe_stBM *) &_,   //
-               depth + 1, &gotson)),    //
+              parsergetvalue_BM (pars, (struct stackframe_stBM *) &_,   //
+                                 depth + 1, &gotson)),  //
              gotson)
         {
           if (!nobuild)
-            _.contdvec = datavect_append_BM (_.contdvec, _.sonval);
+            {
+              if (nbcomp < TINYARGSNUM_BM)
+                _.tinyargsarr[nbcomp++] = (value_tyBM) _.sonval;
+              else
+                {
+                  if (!_.vecobj)
+                    {
+                      _.vecobj = makeobj_BM ();
+                      objreservecomps_BM (_.vecobj, 2 * TINYARGSNUM_BM);
+                      for (int ix = 0; ix < TINYARGSNUM_BM; ix++)
+                        objappendcomp_BM (_.vecobj, _.tinyargsarr[ix]);
+                    };
+                  {
+                    objlock_BM (_.vecobj);
+                    objappendcomp_BM (_.vecobj, _.sonval);
+                    objunlock_BM (_.vecobj);
+                  }
+                }
+            }
         }
-      parserskipspaces_BM (pars);
-      parstoken_tyBM endtok = parsertokenget_BM (pars);
+      parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+      parstoken_tyBM endtok =
+        parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (endtok.tok_kind != plex_DELIM
           || endtok.tok_delim != delim_rightparen)
-        parsererrorprintf_BM (pars, lineno, colpos,     //
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,      //
                               "missing right parenthesis for closure");
       int endlin = endtok.tok_line;
       int endcol = endtok.tok_col;
@@ -1467,12 +1828,45 @@ parsergetvalue_BM (struct parser_stBM * pars,
            delim_leftparen, leftlin, leftcol,
            delim_rightparen, endlin, endcol);
       if (!nobuild)
-        _.resval = (value_tyBM)
-          makeclosure_BM (_.connobj,
-                          datavectlen_BM (_.contdvec),
-                          (const value_tyBM *) (_.contdvec->vec_data));
+        {
+          if (_.vecobj)
+            objlock_BM (_.vecobj);
+          _.resval = (value_tyBM)
+            (nbcomp < TINYARGSNUM_BM)
+            ? makeclosure_BM (_.connobj, nbcomp, (_.tinyargsarr))
+            : makeclosure_BM (_.connobj, objnbcomps_BM (_.vecobj),
+                              (objcompdata_BM (_.vecobj)));
+          if (_.vecobj)
+            objunlock_BM (_.vecobj);
+        }
       else
         _.resval = NULL;
+      *pgotval = true;
+      return _.resval;
+    }
+  //
+  // parse unary nodes:  : object son
+  else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_colon)
+    {
+      int nodlin = tok.tok_line;
+      int nodcol = tok.tok_col;
+      bool gotconnobj = false;
+      _.connobj =               //
+        parsergetobject_BM (pars, (struct stackframe_stBM *) &_,        //
+                            depth + 1, &gotconnobj);
+      if (!gotconnobj)
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,      //
+                              "missing connective object of node after :");
+      bool gotson = false;
+      _.sonval =                //
+        parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, //
+                           depth + 1, &gotson);
+      if (!gotson)
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,      //
+                              "missing unary son of node after : %s",
+                              objectdbg_BM (_.connobj));
+      if (!nobuild)
+        _.resval = (value_tyBM) makenode_BM (_.connobj, 1, &_.sonval);
       *pgotval = true;
       return _.resval;
     }
@@ -1481,28 +1875,29 @@ parsergetvalue_BM (struct parser_stBM * pars,
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_caret)
     {
       if (!parsops || !parsops->parsop_expand_readmacro_rout)
-        parsererrorprintf_BM (pars, lineno, colpos, "no readmacro expansion");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "no readmacro expansion");
 
       int nodlin = tok.tok_line;
       int nodcol = tok.tok_col;
       bool gotconnobj = false;
       _.connobj =               //
-        parsergetobject_BM      //
-        (pars,                  //
-         (struct stackframe_stBM *) &_, //
-         depth + 1, &gotconnobj);
+        parsergetobject_BM (pars, (struct stackframe_stBM *) &_,        //
+                            depth + 1, &gotconnobj);
       if (!gotconnobj)
-        parsererrorprintf_BM (pars, lineno, colpos,     //
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,      //
                               "missing connective object of readmacro after *");
-      parstoken_tyBM lefttok = parsertokenget_BM (pars);
+      parstoken_tyBM lefttok =
+        parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (lefttok.tok_kind != plex_DELIM
           || lefttok.tok_delim != delim_leftparen)
-        parsererrorprintf_BM (pars, lineno, colpos,     //
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,      //
                               "missing left parenthesis for readmacro");
       int leftlin = lefttok.tok_line;
       int leftcol = lefttok.tok_col;
-      _.contdvec = nobuild ? NULL : datavect_grow_BM (NULL, 3);
       bool gotson = false;
+      int nbsons = 0;
+      memset (_.tinyargsarr, 0, sizeof (_.tinyargsarr));
       while ((gotson = false),  //
              (_.sonval =        //
               parsergetvalue_BM //
@@ -1512,13 +1907,32 @@ parsergetvalue_BM (struct parser_stBM * pars,
              gotson)
         {
           if (!nobuild)
-            _.contdvec = datavect_append_BM (_.contdvec, _.sonval);
+            {
+              if (nbsons < TINYARGSNUM_BM)
+                _.tinyargsarr[nbsons++] = (value_tyBM) _.sonval;
+              else
+                {
+                  if (!_.vecobj)
+                    {
+                      _.vecobj = makeobj_BM ();
+                      objreservecomps_BM (_.vecobj, 2 * TINYARGSNUM_BM);
+                      for (int ix = 0; ix < TINYARGSNUM_BM; ix++)
+                        objappendcomp_BM (_.vecobj, _.tinyargsarr[ix]);
+                    };
+                  {
+                    objlock_BM (_.vecobj);
+                    objappendcomp_BM (_.vecobj, _.sonval);
+                    objunlock_BM (_.vecobj);
+                  }
+                }
+            }
         }
-      parserskipspaces_BM (pars);
-      parstoken_tyBM endtok = parsertokenget_BM (pars);
+      parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+      parstoken_tyBM endtok =
+        parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (endtok.tok_kind != plex_DELIM
           || endtok.tok_delim != delim_rightparen)
-        parsererrorprintf_BM (pars, lineno, colpos,     //
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,      //
                               "missing right parenthesis for readmacro");
       int endlin = endtok.tok_line;
       int endcol = endtok.tok_col;
@@ -1531,9 +1945,10 @@ parsergetvalue_BM (struct parser_stBM * pars,
       if (!nobuild)
         {
           _.macroval = (value_tyBM)
-            makenode_BM (_.connobj,
-                         datavectlen_BM (_.contdvec),
-                         (const value_tyBM *) (_.contdvec->vec_data));
+            (nbsons < TINYARGSNUM_BM)
+            ? makenode_BM (_.connobj, nbsons, (_.tinyargsarr))
+            : makenode_BM (_.connobj, objnbcomps_BM (_.vecobj),
+                           (objcompdata_BM (_.vecobj)));
           _.resval =            //
             parsops->parsop_expand_readmacro_rout
             (pars, nodlin, nodcol, depth, _.macroval,
@@ -1549,13 +1964,14 @@ parsergetvalue_BM (struct parser_stBM * pars,
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_dollar)
     {
       if (!parsops || !parsops->parsop_expand_dollarval_rout)
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "no expansion for $<var> object");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "no expansion for $<var> object");
       const char *reslin = parserrestline_BM (pars);
-      parstoken_tyBM vartok = parsertokenget_BM (pars);
+      parstoken_tyBM vartok =
+        parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (vartok.tok_kind == plex_NAMEDOBJ)
         {
-          assert (tok.tok_line == vartok.tok_line);
+          ASSERT_BM (tok.tok_line == vartok.tok_line);
           _.resval = (value_tyBM) parsops->parsop_expand_dollarval_rout //
             (pars, tok.tok_line, tok.tok_col,
              (const value_tyBM)
@@ -1563,18 +1979,18 @@ parsergetvalue_BM (struct parser_stBM * pars,
         }
       else if (vartok.tok_kind == plex_CNAME)
         {
-          assert (tok.tok_line == vartok.tok_line);
+          ASSERT_BM (tok.tok_line == vartok.tok_line);
           _.resval = (value_tyBM) parsops->parsop_expand_dollarval_rout //
             (pars, tok.tok_line, vartok.tok_col,
              (const value_tyBM)
              vartok.tok_cname, (struct stackframe_stBM *) &_);
         }
       else                      // could happen if $ is followed by word
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "bad $<var> expansion for %s", reslin);
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "bad $<var> expansion for %s", reslin);
       if (!nobuild && !isobject_BM ((const value_tyBM) _.resval))
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "did not found $<var> expansion for %s",
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "did not found $<var> expansion for %s",
                               reslin);
       *pgotval = true;
       return _.resval;
@@ -1584,15 +2000,16 @@ parsergetvalue_BM (struct parser_stBM * pars,
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_dollarcolon)
     {
       if (!parsops || !parsops->parsop_expand_dollarobj_rout)
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "no expansion for $:<var> object");
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "no expansion for $:<var> object");
       const char *reslin = parserrestline_BM (pars);
       unsigned varlineno = parserlineno_BM (pars);
       //unsigned varcolpos = parsercolpos_BM (pars);
-      parstoken_tyBM vartok = parsertokenget_BM (pars);
+      parstoken_tyBM vartok =
+        parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
       if (vartok.tok_kind == plex_NAMEDOBJ)
         {
-          assert (varlineno == lineno);
+          ASSERT_BM (varlineno == lineno);
           _.resval = (value_tyBM) parsops->parsop_expand_dollarobj_rout //
             (pars, tok.tok_line, tok.tok_col,
              (const value_tyBM)
@@ -1606,10 +2023,11 @@ parsergetvalue_BM (struct parser_stBM * pars,
              vartok.tok_cname, (struct stackframe_stBM *) &_);
         }
       else                      // could happen if $: is followed by word
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "bad $:<var> expansion for %s", reslin);
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "bad $:<var> expansion for %s", reslin);
       if (!nobuild && !isobject_BM ((const value_tyBM) _.resval))
-        parsererrorprintf_BM (pars, lineno, colpos,
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos,
                               "did not found $:<var> expansion for %s",
                               reslin);
       *pgotval = true;
@@ -1622,8 +2040,8 @@ parsergetvalue_BM (struct parser_stBM * pars,
     {
       const char *reslin = parserrestline_BM (pars);
       if (!parsops || !parsops->parsop_expand_objexp_rout)
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "no $[...] expansion for %s", reslin);
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "no $[...] expansion for %s", reslin);
       char resbuf[40];
       memset (resbuf, 0, sizeof (resbuf));
       strncpy (resbuf, reslin, sizeof (resbuf) - 1);
@@ -1634,8 +2052,9 @@ parsergetvalue_BM (struct parser_stBM * pars,
         (const value_tyBM) parsops->parsop_expand_objexp_rout
         (pars, lineno, colpos, depth, (struct stackframe_stBM *) &_);
       if (!nobuild && !isobject_BM ((const value_tyBM) _.resval))
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "failed $[...] expansion of %s", resbuf);
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "failed $[...] expansion of %s",
+                              resbuf);
       *pgotval = true;
       return (objectval_tyBM *) _.resval;
     }
@@ -1645,8 +2064,8 @@ parsergetvalue_BM (struct parser_stBM * pars,
     {
       const char *reslin = parserrestline_BM (pars);
       if (!parsops || !parsops->parsop_expand_valexp_rout)
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "no $(...) expansion for %s", reslin);
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "no $(...) expansion for %s", reslin);
       char resbuf[40];
       memset (resbuf, 0, sizeof (resbuf));
       strncpy (resbuf, reslin, sizeof (resbuf) - 1);
@@ -1657,9 +2076,46 @@ parsergetvalue_BM (struct parser_stBM * pars,
         parsops->parsop_expand_valexp_rout (pars, lineno, colpos, depth,
                                             (struct stackframe_stBM *) &_);
       if (!nobuild && ((const value_tyBM) _.resval) == NULL)
-        parsererrorprintf_BM (pars, lineno, colpos,
-                              "failed $(...) expansion of %s", resbuf);
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "failed $(...) expansion of %s",
+                              resbuf);
       *pgotval = true;
+      return (objectval_tyBM *) _.resval;
+    }
+  /// parse  ! <val>
+  else if (tok.tok_kind == plex_DELIM
+           && tok.tok_delim == delim_exclam
+           && parsops && parsops->parsop_accept_unary_rout)
+    {
+      bool gotunary = false;
+      _.resval =
+        parsergetunary_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                           colpos, depth + 1, BMP_exclam, &gotunary);
+      *pgotval = gotunary;
+      return (objectval_tyBM *) _.resval;
+    }
+  /// parse  ? <val>
+  else if (tok.tok_kind == plex_DELIM
+           && tok.tok_delim == delim_question
+           && parsops && parsops->parsop_accept_unary_rout)
+    {
+      bool gotunary = false;
+      _.resval =
+        parsergetunary_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                           colpos, depth + 1, BMP_question, &gotunary);
+      *pgotval = gotunary;
+      return (objectval_tyBM *) _.resval;
+    }
+  /// parse  = <val>
+  else if (tok.tok_kind == plex_DELIM
+           && tok.tok_delim == delim_equal
+           && parsops && parsops->parsop_accept_unary_rout)
+    {
+      bool gotunary = false;
+      _.resval =
+        parsergetunary_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                           colpos, depth + 1, BMP_equal, &gotunary);
+      *pgotval = gotunary;
       return (objectval_tyBM *) _.resval;
     }
   //////
@@ -1670,17 +2126,64 @@ failure:
 }                               /* end of parsergetvalue_BM */
 
 
+
 value_tyBM
-  parsergetchunk_BM
-  (struct parser_stBM * pars,
-   struct stackframe_stBM * prevstkf, int depth, bool * pgotchunk)
+parsergetunary_BM (struct parser_stBM * pars,
+                   struct stackframe_stBM * prevstkf,
+                   unsigned lineno, unsigned colpos,
+                   int depth, objectval_tyBM * unaryconn, bool * pgotval)
+{
+  LOCALFRAME_BM                 //
+    (prevstkf, NULL,            //
+     value_tyBM resval;
+     value_tyBM arg; objectval_tyBM * uconnobj; objectval_tyBM * parsob;
+    );
+  _.parsob = checkedparserowner_BM (pars);
+  const struct parserops_stBM *parsops = pars->pars_ops;
+  ASSERT_BM (parsops && parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (parsops->parsop_accept_unary_rout);
+  ASSERT_BM (isobject_BM (unaryconn));
+  ASSERT_BM (pgotval != NULL);
+  _.uconnobj = unaryconn;
+  if (parsops->parsop_accept_unary_rout
+      (pars, lineno, colpos, depth, unaryconn, (struct stackframe_stBM *) &_))
+    {
+      bool gotarg = false;
+      DBGPRINTF_BM ("parsergetunary_BM uconnobj %s before parsing arg",
+                    objectdbg_BM (_.uconnobj));
+      _.arg =
+        parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, depth + 1,
+                           &gotarg);
+      if (!gotarg)
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                              colpos, "missing argument for unary %s",
+                              objectdbg_BM (unaryconn));
+      DBGPRINTF_BM ("parsergetunary_BM uconnobj %s",
+                    objectdbg_BM (_.uconnobj));
+      _.resval = makenode_BM (_.uconnobj, 1, &_.arg);
+      *pgotval = true;
+      LOCALRETURN_BM (_.resval);
+    }
+  else
+    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+                          colpos, "failed parsergetunary_BM %s",
+                          objectdbg_BM (unaryconn));
+  *pgotval = false;
+  LOCALRETURN_BM (NULL);
+}                               /* end parsergetunary_BM */
+
+
+value_tyBM
+parsergetchunk_BM (struct parser_stBM *pars,
+                   struct stackframe_stBM *prevstkf, int depth,
+                   bool * pgotchunk)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     FATAL_BM ("bad parser");
   if (!pgotchunk)
     FATAL_BM ("missing pgotchunk");
   const struct parserops_stBM *parsops = pars->pars_ops;
-  assert (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
+  ASSERT_BM (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
   unsigned startlineno = parserlineno_BM (pars);
   unsigned startcolpos = parsercolpos_BM (pars);
   bool nobuild = parsops && parsops->parsop_nobuild;
@@ -1699,15 +2202,17 @@ value_tyBM
       unsigned curlineno = parserlineno_BM (pars);
       unsigned curcolpos = parsercolpos_BM (pars);
       char *curpc = (char *) parserrestline_BM (pars);
-      DBGPRINTF_BM ("parsergetchunk_BM L%dC%d loop#%d curpc(l%d):%s",
-                    curlineno, curcolpos, loopcnt,
-                    curpc ? ((int) strlen (curpc)) : -1, curpc);
+      if (pars->pars_debug)
+        DBGPRINTF_BM ("parsergetchunk_BM L%dC%d loop#%d curpc(l%d):%s",
+                      curlineno, curcolpos, loopcnt,
+                      curpc ? ((int) strlen (curpc)) : -1, curpc);
       if (loopcnt++ > MAXSIZE_BM / 8)
-        parsererrorprintf_BM (pars, curlineno, curcolpos,
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, curlineno,
+                              curcolpos,
                               "too many loops %d in chunk (started line %d, col %d) : %s",
                               loopcnt, startlineno, startcolpos, curpc);
       if (parserendoffile_BM (pars))
-        parsererrorprintf_BM (pars, curlineno, curcolpos,       //
+        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, curlineno, curcolpos,        //
                               "end of file in chunk (started line %d, col %d)",
                               startlineno, startcolpos);
       if (parsereol_BM (pars) || !curpc || *curpc == (char) 0)
@@ -1890,11 +2395,11 @@ value_tyBM
           const char *npc = curpc + 1;
           gunichar nc = g_utf8_get_char (npc);
           if (!nc)
-            parsererrorprintf_BM (pars, curlineno, curcolpos,   //
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, curlineno, curcolpos,    //
                                   "end of file after dollar");
           if (nc == '}')
-            parsererrorprintf_BM (pars, curlineno, curcolpos,
-                                  "$} is forbidden");
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos, "$} is forbidden");
           npc = g_utf8_next_char (npc);
           // $, and $& and $. are skipped
           if (nc == ',' || nc == '&' || nc == '.')
@@ -1911,15 +2416,18 @@ value_tyBM
                 parsergetvalue_BM (pars, (struct stackframe_stBM *) &_,
                                    depth + 1, &gotval);
               if (!gotval)
-                parsererrorprintf_BM (pars, curlineno, curcolpos,
+                parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                      curlineno, curcolpos,
                                       "$( not followed by value");
-              parserskipspaces_BM (pars);
-              parstoken_tyBM tok = parsertokenget_BM (pars);
+              parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+              parstoken_tyBM tok =
+                parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
               unsigned clolineno = parserlineno_BM (pars);
               unsigned clocolpos = parsercolpos_BM (pars);
               if (tok.tok_kind != plex_DELIM
                   || tok.tok_delim != delim_rightparen)
-                parsererrorprintf_BM (pars, clolineno, clocolpos,
+                parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                      clolineno, clocolpos,
                                       "closing paren expected after nested expression $(...) in chunk line %d, col %d",
                                       curlineno, curcolpos);
               if (parsops && parsops->parsop_decorate_nesting_rout)
@@ -1945,7 +2453,8 @@ value_tyBM
               _.obj = findnamedobj_BM (curpc + 1);
               *(char *) npc = oldc;
               if (!_.obj)
-                parsererrorprintf_BM (pars, curlineno, curcolpos,
+                parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                      curlineno, curcolpos,
                                       "invalid dollarvar %s in chunk", curpc);
               if (!nobuild)
                 {
@@ -1972,7 +2481,8 @@ value_tyBM
               continue;
             }
           else
-            parsererrorprintf_BM (pars, curlineno, curcolpos,
+            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                                  curlineno, curcolpos,
                                   "invalid dollar seqence %s", curpc);
         }                       /* end dollar */
       else
@@ -1991,8 +2501,9 @@ value_tyBM
         }
     }
   while (!gotend);
-  DBGPRINTF_BM ("parsergetchunk_BM gotend %s veclen %u",
-                gotend ? "true" : "false", datavectlen_BM (_.chunkvec));
+  if (pars->pars_debug)
+    DBGPRINTF_BM ("parsergetchunk_BM gotend %s veclen %u",
+                  gotend ? "true" : "false", datavectlen_BM (_.chunkvec));
   if (gotend)
     {
       _.resval = nobuild ? NULL //
