@@ -196,12 +196,12 @@
 #define FAILURE_BM(FailCod,Reason,Stack) FAILURE_AT_BM((FailCod),__FILE__,__LINE__,(Reason),(Stack))
 
 
-#define LOCAL_FAILURE_HANDLE_ATBIS_BM(Fil,Lin,FcodVar,ReasonVar)	\
+#define LOCAL_FAILURE_HANDLE_ATBIS_BM(Fil,Lin,Lockset,Flabel,FcodVar,ReasonVar) \
   struct failurehandler_stBM fh_##Lin					\
    = {									\
      .pA = {.htyp = typayl_FailureHandler_BM},				\
      .failh_magic = FAILUREHANDLEMAGIC_BM,				\
-     .failh_lockset = NULL,						\
+     .failh_lockset = Lockset,						\
      .failh_reason = NULL,						\
      .failh_jmpbuf = {}};						\
   curfailurehandle_BM = &fh_##Lin;					\
@@ -209,16 +209,17 @@
   FcodVar = failcod_##Lin;						\
   if (failcod_##Lin) {							\
     ReasonVar = fh_##Lin.failh_reason;					\
+    goto Flabel;							\
   };									\
   (void)0
 
-#define LOCAL_FAILURE_HANDLE_AT_BM(Fil,Lin,FcodVar,ReasonVar) \
-  LOCAL_FAILURE_HANDLE_ATBIS_BM(Fil,Lin,FcodVar,ReasonVar)
+#define LOCAL_FAILURE_HANDLE_AT_BM(Fil,Lin,Lockset,Flabel,FcodVar,ReasonVar) \
+  LOCAL_FAILURE_HANDLE_ATBIS_BM(Fil,Lin,Lockset,Flabel,FcodVar,ReasonVar)
 
 /// code using LOCAL_FAILURE_HANDLE_BM should probably backup and
 /// restore the curfailurehandle_BM
-#define LOCAL_FAILURE_HANDLE_BM(FcodVar,ReasonVar) \
-  LOCAL_FAILURE_HANDLE_AT_BM(__FILE__,__LINE__,FcodVar,ReasonVar)
+#define LOCAL_FAILURE_HANDLE_BM(Lockset,Flabel,FcodVar,ReasonVar) \
+  LOCAL_FAILURE_HANDLE_AT_BM(__FILE__,__LINE__,Lockset,Flabel,FcodVar,ReasonVar)
 
 // weak assert dont abort
 #ifndef NDEBUG

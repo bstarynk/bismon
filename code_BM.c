@@ -2361,24 +2361,38 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
   struct failurehandler_stBM *prevfailureh = curfailurehandle_BM;
   int failcod = 0;
   _.failreason = NULL;
-  LOCAL_FAILURE_HANDLE_BM (failcod, _.failreason);
-  if (failcod == 0)
-    _.res =
-      send0_BM (_.obmod, BMP_emit_module, (struct stackframe_stBM *) &_);
-  curfailurehandle_BM = prevfailureh;
-  DBGPRINTF_BM ("@@dump_data°plain_dumpable_module obmod %s failcod %d failreason %s res %s", objectdbg_BM (_.obmod), failcod, debug_outstr_value_BM (_.failreason, (struct stackframe_stBM *) &_, 1), //
+  struct failurelockset_stBM flockset = { };
+  initialize_failurelockset_BM (&flockset, sizeof (flockset));
+  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failuremodule, failcod,
+                           _.failreason);
+  _.res = send0_BM (_.obmod, BMP_emit_module, (struct stackframe_stBM *) &_);
+  DBGPRINTF_BM ("@@dump_data°plain_dumpable_module emit_module succeess obmod %s res %s",      //
+                objectdbg_BM (_.obmod), //
                 debug_outstr_value_BM (_.res,
                                        (struct stackframe_stBM *) &_, 1));
-  if (failcod > 0 && _.failreason)
-    {
+  /// this won't be reached on failure; 
+  destroy_failurelockset_BM (&flockset);
+  curfailurehandle_BM = prevfailureh;
+  DBGPRINTF_BM ("@@dump_data°plain_dumpable_module obmod %s failcod %d failreason %s res %s",  //
+                objectdbg_BM (_.obmod), failcod,        //
+                debug_outstr_value_BM (_.failreason, (struct stackframe_stBM *) &_, 1), //
+                debug_outstr_value_BM (_.res,
+                                       (struct stackframe_stBM *) &_, 1));
+  if (failcod > 0)
+    // this is only reached by the label, with an internal goto in LOCAL_FAILURE_HANDLE_BM macro
+  lab_failuremodule:{
       char idbuf[32];
       memset (idbuf, 0, sizeof (idbuf));
       idtocbuf32_BM (objid_BM (_.obmod), idbuf);
       objstrbufferprintfpayl_BM (_.bufob, "\n#error fail to emit module %s\n",
                                  idbuf);
-      DBGPRINTF_BM ("@@dump_data°plain_dumpable_module failed obmod=%s failcod=%d failreason %s\n****!!!!!!\n", objectdbg_BM (_.obmod), failcod,       //
+      destroy_failurelockset_BM (&flockset);
+      curfailurehandle_BM = prevfailureh;
+      DBGPRINTF_BM ("@@dump_data°plain_dumpable_module failed obmod=%s failcod=%d failreason %s\n****!!!!!!\n",        //
+                    objectdbg_BM (_.obmod), failcod,    //
                     debug_outstr_value_BM (_.failreason,
                                            (struct stackframe_stBM *) &_, 1));
+      LOCALRETURN_BM (NULL);
     }
   else if (_.res)
     {

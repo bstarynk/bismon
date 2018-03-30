@@ -576,11 +576,17 @@ do_internal_deferred_apply3_gtk_BM (value_tyBM fun,
   _.arg2v = arg2;
   _.arg3v = arg3;
   int failcod = 0;
-  LOCAL_FAILURE_HANDLE_BM (failcod, _.failres);
+  _.failres = NULL;
+  struct failurelockset_stBM flockset = { };
+  initialize_failurelockset_BM (&flockset, sizeof (flockset));
+  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureapply, failcod, _.failres);
   if (failcod)
+  lab_failureapply:
     {
-      fprintf (stderr, "deffered_apply3_gtk failure, failcod#%d\n", failcod);
+      destroy_failurelockset_BM (&flockset);
       curfailurehandle_BM = NULL;
+      fprintf (stderr, "deffered_apply3_gtk failure, failcod#%d failreason: %s\n", failcod, debug_outstr_value_BM (_.failres,   //
+                                                                                                                   (struct stackframe_stBM *) &_, 0));
       return;
     }
   NONPRINTF_BM ("internaldeferapply funv %s arg1 %s arg2 %s arg3 %s",   //
@@ -597,6 +603,7 @@ do_internal_deferred_apply3_gtk_BM (value_tyBM fun,
   NONPRINTF_BM ("internaldeferapply applied funv %s",   //
                 debug_outstr_value_BM (_.funv,  //
                                        (struct stackframe_stBM *) &_, 0));
+  destroy_failurelockset_BM (&flockset);
   curfailurehandle_BM = NULL;
 }                               /* end do_internal_defer_apply3_BM */
 
@@ -618,11 +625,17 @@ do_internal_deferred_send3_gtk_BM (value_tyBM recv, objectval_tyBM * obsel,
   _.arg2v = arg2;
   _.arg3v = arg3;
   int failcod = 0;
-  LOCAL_FAILURE_HANDLE_BM (failcod, _.failres);
+  _.failres = NULL;
+  struct failurelockset_stBM flockset = { };
+  initialize_failurelockset_BM (&flockset, sizeof (flockset));
+  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failuresend, failcod, _.failres);
   if (failcod)
+  lab_failuresend:
     {
-      fprintf (stderr, "deffered_send3_gtk failure, failcod#%d\n", failcod);
+      destroy_failurelockset_BM (&flockset);
       curfailurehandle_BM = NULL;
+      fprintf (stderr, "deffered_send3_gtk failure, failcod#%d failreason: %s\n", failcod, debug_outstr_value_BM (_.failres,    //
+                                                                                                                  (struct stackframe_stBM *) &_, 0));
       return;
     }
   DBGPRINTF_BM ("internaldefersend recv %s obsel %s arg1 %s arg2 %s arg3 %s",   //
@@ -641,6 +654,7 @@ do_internal_deferred_send3_gtk_BM (value_tyBM recv, objectval_tyBM * obsel,
                 debug_outstr_value_BM (_.recva, //
                                        (struct stackframe_stBM *) &_, 0),       //
                 objectdbg_BM (_.obsel));
+  destroy_failurelockset_BM (&flockset);
   curfailurehandle_BM = NULL;
 }                               /* end do_internal_defer_send3_BM */
 

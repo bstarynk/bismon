@@ -3169,12 +3169,17 @@ fill_objectviewbuffer_BM (struct
   struct failurehandler_stBM *prevfailureh = curfailurehandle_BM;
   int failcod = 0;
   _.failreason = NULL;
-  LOCAL_FAILURE_HANDLE_BM (failcod, _.failreason);
+  struct failurelockset_stBM flockset = { };
+  initialize_failurelockset_BM (&flockset, sizeof (flockset));
+  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureview, failcod, _.failreason);
   curfailurehandle_BM = prevfailureh;
   curobjview_newgui_BM = obv;
   if (failcod)
+  lab_failureview:
     {                           // error case....
       DBGPRINTF_BM ("fill_objectviewbuffer_BM failed failcod=%d", failcod);
+      destroy_failurelockset_BM (&flockset);
+      curfailurehandle_BM = NULL;
       // should show some error thing....
       gtk_text_buffer_get_end_iter (tbuf, &browserit_BM);
       gtk_text_buffer_insert (tbuf, &browserit_BM, "\n", -1);
@@ -3199,10 +3204,9 @@ fill_objectviewbuffer_BM (struct
           faildepth = 2;
         else if (faildepth > BROWSE_MAXDEPTH_NEWGUI_BM)
           faildepth = BROWSE_MAXDEPTH_NEWGUI_BM;
-        char *failvalstr = debug_outstr_value_BM (_.failreason,
-                                                  (struct
-                                                   stackframe_stBM *)
-                                                  &_, faildepth);
+        char *failvalstr =      //
+          debug_outstr_value_BM (_.failreason,
+                                 (struct stackframe_stBM *) &_, faildepth);
         char *nextnl = NULL;
         for (const char *curpc = failvalstr;
              curpc != NULL
@@ -3233,7 +3237,7 @@ fill_objectviewbuffer_BM (struct
         gtk_text_buffer_insert (tbuf, &browserit_BM, "\n", -1);
       }
       curobjview_newgui_BM = NULL;
-    }
+    }                           /* end failure */
   else
     {                           // first run
       int depth = browserdepth_BM;
@@ -3243,6 +3247,8 @@ fill_objectviewbuffer_BM (struct
       send1_BM ((const value_tyBM) _.object,
                 _.shobsel,
                 (struct stackframe_stBM *) &_, taggedint_BM (depth));
+      destroy_failurelockset_BM (&flockset);
+      curfailurehandle_BM = NULL;
       browserdepth_BM = depth;
       gtk_text_buffer_get_end_iter (tbuf, &browserit_BM);
       gtk_text_buffer_insert (tbuf, &browserit_BM, "\n", -1);

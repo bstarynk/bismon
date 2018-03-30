@@ -409,6 +409,14 @@ struct specialframe_stBM        // for typayl_SpecialFrame_BM
 };
 
 struct failurelockset_stBM;     // an opaque type
+
+#ifndef __cplusplus
+struct failurelockset_stBM
+{
+  long __flockset_dummy[16];
+};
+#endif /*__cplusplus */
+
 struct failurehandler_stBM      // for typayl_FailureHandler_BM,
                                   // should be on stack
 {
