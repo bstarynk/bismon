@@ -192,9 +192,10 @@ ROUTINEOBJNAME_BM (_5v30KC0IMxx_53ZzXprJTM6)    //
   char connidbuf[32];
   idtocbuf32_BM (objid_BM (_.connobj), connidbuf);
   const char *n = findobjectname_BM (_.connobj);
-  if (n && depth < 5)
+  if (n && depth < 5 && !_.dumpob)
     objstrbufferprintfpayl_BM (_.bufob, "\t* %s |=%s| (", connidbuf, n);
-  objstrbufferprintfpayl_BM (_.bufob, "\t* %s (", connidbuf);
+  else
+    objstrbufferprintfpayl_BM (_.bufob, "\t* %s (", connidbuf);
   unsigned width = nodewidth_BM ((const value_tyBM) _.recv);
   objstrbuffermoreindentpayl_BM (_.bufob);
   unsigned cnt = 0;
@@ -464,7 +465,7 @@ ROUTINEOBJNAME_BM (_67IapmpeTLU_8MQKtlK8iAD)    // dump_data°class
       memset (selidbuf, 0, sizeof (selidbuf));
       idtocbuf32_BM (objid_BM (_.cursel), selidbuf);
       const char *selname = findobjectname_BM (_.cursel);
-      if (selname)
+      if (selname && !_.dumpob)
         objstrbufferprintfpayl_BM (_.bufob, "\n~: %s |=%s|\t", selidbuf,
                                    selname);
       else
@@ -1227,7 +1228,7 @@ ROUTINEOBJNAME_BM (_7fCcteNe7aR_3IKHeHjmzff)    // dump_value°object
       char objidbuf[32];
       idtocbuf32_BM (objid_BM (_.recv), objidbuf);
       const char *n = findobjectname_BM (_.recv);
-      if (n)
+      if (n && !_.dumpob)
         objstrbufferprintfpayl_BM (_.bufob, "%s |=%s|\t", objidbuf, n);
       else
         objstrbufferprintfpayl_BM (_.bufob, "%s", objidbuf);
