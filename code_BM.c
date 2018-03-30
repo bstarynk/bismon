@@ -24,11 +24,11 @@
 extern objrout_sigBM ROUTINEOBJNAME_BM (_3kMqlEugRVW_7DgwjR4CBbP);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_3kMqlEugRVW_7DgwjR4CBbP)
-(struct stackframe_stBM * stkf,
-const value_tyBM arg1,
-const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
-const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ROUTINEOBJNAME_BM (_3kMqlEugRVW_7DgwjR4CBbP)    //
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,
+ const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   ASSERT_BM (istaggedint_BM (arg1));    // the integer to dump
   // arg2 is the bufob
@@ -58,11 +58,13 @@ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 extern objrout_sigBM ROUTINEOBJNAME_BM (_3Tc3E4uo2p5_4EXWCPwCR5b);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_3Tc3E4uo2p5_4EXWCPwCR5b)
-(struct stackframe_stBM * stkf,
-const value_tyBM arg1,
-const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
-const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ROUTINEOBJNAME_BM (_3Tc3E4uo2p5_4EXWCPwCR5b)    //
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // set
+ const value_tyBM arg2,         // bufob
+ const value_tyBM arg3,         // dumpob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   ASSERT_BM (isset_BM (arg1));  // the set to dump
   // arg2 is the bufob
@@ -106,11 +108,13 @@ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 extern objrout_sigBM ROUTINEOBJNAME_BM (_5D9kkPHSPxq_8suDXpjlzjE);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_5D9kkPHSPxq_8suDXpjlzjE)
-(struct stackframe_stBM * stkf,
-const value_tyBM arg1,
-const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
-const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ROUTINEOBJNAME_BM (_5D9kkPHSPxq_8suDXpjlzjE)    // dump_value tuple
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // tup
+ const value_tyBM arg2,         // bufob
+ const value_tyBM arg3,         // dumpob
+ const value_tyBM arg4,         // depthv
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   ASSERT_BM (istuple_BM (arg1));        // the tuple to dump
   // arg2 is the bufob
@@ -154,11 +158,13 @@ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 extern objrout_sigBM ROUTINEOBJNAME_BM (_5v30KC0IMxx_53ZzXprJTM6);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_5v30KC0IMxx_53ZzXprJTM6)
-(struct stackframe_stBM * stkf,
-const value_tyBM arg1,
-const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
-const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ROUTINEOBJNAME_BM (_5v30KC0IMxx_53ZzXprJTM6)    //
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // nod
+ const value_tyBM arg2,         // bufob
+ const value_tyBM arg3,         // dumpob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   ASSERT_BM (isnode_BM (arg1)); // the node to dump
   // arg2 is the bufob
@@ -212,11 +218,12 @@ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 extern objrout_sigBM ROUTINEOBJNAME_BM (_6jvRZetUz36_978V6SKIWZC);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_6jvRZetUz36_978V6SKIWZC)
-(struct stackframe_stBM * stkf,
-const value_tyBM arg1,
-const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
-const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ROUTINEOBJNAME_BM (_6jvRZetUz36_978V6SKIWZC)    //
+(struct stackframe_stBM * stkf, const value_tyBM arg1,  // clos
+ const value_tyBM arg2,         // bufob
+ const value_tyBM arg3,         // dumpob
+ const value_tyBM arg4,         // depthv
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   ASSERT_BM (isclosure_BM (arg1));      // the closure to dump
   // arg2 is the bufob
@@ -272,11 +279,12 @@ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7mvOlkB1tAJ_3psVFz4QEAn);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_7mvOlkB1tAJ_3psVFz4QEAn)
-(struct stackframe_stBM * stkf,
-const value_tyBM arg1,
-const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
-const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ROUTINEOBJNAME_BM (_7mvOlkB1tAJ_3psVFz4QEAn)    //
+(struct stackframe_stBM * stkf, const value_tyBM arg1,  // strv
+ const value_tyBM arg2,         // bufob
+ const value_tyBM arg3,         // dumpb
+ const value_tyBM arg4,         // depthv
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   ASSERT_BM (isstring_BM (arg1));       // the string to dump
   // arg2 is the bufob
