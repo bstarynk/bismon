@@ -193,6 +193,7 @@ extern void *quasinodegcproc_BM (struct garbcoll_stBM *gc,
   __attribute__ ((warn_unused_result));
 ////////////////
 
+// initialize the GC and mainthreadid_BM
 extern void initialize_garbage_collector_BM (void);
 extern void initialize_predefined_objects_BM (void);
 
@@ -279,6 +280,9 @@ static inline bool
 objectisinstance_BM (const objectval_tyBM * obj,
                      const objectval_tyBM * obclass);
 
+
+// only used by FATAL_BM macro
+extern void fatal_stop_at_BM (const char *, int) __attribute__ ((noreturn));
 
 /// raise a failure; see also macro FAILURE_BM
 extern void failure_BM (int failcode, const value_tyBM reasonv,

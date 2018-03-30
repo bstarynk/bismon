@@ -74,6 +74,10 @@ run_agendaworker_BM (void *ad)
 {
   intptr_t tix = (intptr_t) ad;
   ASSERT_BM (tix > 0 && tix <= MAXNBWORKJOBS_BM && tix <= ti_nbworkers_BM);
+  char thnambuf[16];
+  memset (thnambuf, 0, sizeof (thnambuf));
+  snprintf (thnambuf, sizeof (thnambuf), "bmwth#%d", (int) tix);
+  pthread_setname_np (pthread_self (), thnambuf);
   curthreadinfo_BM = ti_array_BM + tix;
   ASSERT_BM (curthreadinfo_BM->ti_magic == TI_MAGICNUM_BM);
   ASSERT_BM (curthreadinfo_BM->ti_rank == (short) tix);

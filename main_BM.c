@@ -52,8 +52,11 @@ weakfailure_BM (void)
 void
 weakassertfailureat_BM (const char *condmsg, const char *fil, int lin)
 {
-  fprintf (stderr, "**** weakassertfailureat_BM (%s:%d) %s (tid#%d)\n", fil,
-           lin, condmsg, (int) gettid_BM ());
+  char thnambuf[16];
+  memset (thnambuf, 0, sizeof (thnambuf));
+  pthread_getname_np (pthread_self (), thnambuf, sizeof (thnambuf));
+  fprintf (stderr, "**** weakassertfailureat_BM (%s:%d) %s (tid#%d/%s)\n",
+           fil, lin, condmsg, (int) gettid_BM (), thnambuf);
   fflush (stderr);
   void *backbuf[50];
   memset (backbuf, 0, sizeof (backbuf));
@@ -128,8 +131,12 @@ failure_at_BM (int failcode, const char *fil, int lineno,
       curfailurehandle_BM->failh_reason = reasonv;
       if (!curfailurehandle_BM->failh_silent)
         {
-          fprintf (stderr, "\n\n*** failure code#%d %s:%d (tid#%d) ***\n",
-                   failcode, fil ? fil : "???", lineno, (int) gettid_BM ());
+          char thnambuf[16];
+          memset (thnambuf, 0, sizeof (thnambuf));
+          pthread_getname_np (pthread_self (), thnambuf, sizeof (thnambuf));
+          fprintf (stderr, "\n\n*** failure code#%d %s:%d (tid#%d/%s) ***\n",
+                   failcode, fil ? fil : "???", lineno, (int) gettid_BM (),
+                   thnambuf);
           if (backtracestate_BM)
             {
               backtrace_print (backtracestate_BM, 1, stderr);
@@ -154,6 +161,31 @@ failure_BM (int failcode, const value_tyBM reasonv,
 {
   failure_at_BM (failcode, "??", 0, reasonv, stkf);
 }                               /* end failure_BM */
+
+void
+fatal_stop_at_BM (const char *fil, int lineno)
+{
+  char thnambuf[16];
+  memset (thnambuf, 0, sizeof (thnambuf));
+  pthread_getname_np (pthread_self (), thnambuf, sizeof (thnambuf));
+  fprintf (stderr, "** FATAL STOP %s:%d (tid#%d/%s)\n",
+           fil ? fil : "???", lineno, (int) gettid_BM (), thnambuf);
+  fflush (stderr);
+  void *backarr[2 * TINYSIZE_BM];
+  memset (backarr, 0, sizeof (backarr));
+  int backdepth = backtrace (backarr, sizeof (backarr) / sizeof (void *));
+  backtrace_symbols_fd (backarr, backdepth, STDERR_FILENO);
+  if (backtracestate_BM)
+    {
+      fprintf (stderr, "\n\n\n** full fatal backtrace **\n");
+      fflush (stderr);
+      backtrace_print (backtracestate_BM, 1, stderr);
+      fprintf (stderr, "\n----- end full fatal backtrace ------\n\n");
+    }
+  fflush (stderr);
+  abort_BM ();
+}                               /* end fatal_stop_at_BM */
+
 
 static void add_new_predefined_bm (void);
 
@@ -384,11 +416,12 @@ main (int argc, char **argv)
   memset ((char *) myhostname_BM, 0, sizeof (myhostname_BM));
   if (gethostname ((char *) myhostname_BM, sizeof (myhostname_BM) - 1))
     FATAL_BM ("gethostname failure %m");
-  backtracestate_BM = backtrace_create_state ( /*filename: */ NULL,
-                                              /*threaded: */ true,
-                                              /*errorcb: */
-                                              backtracerrorcb_BM,
-                                              /*data: */ NULL);
+  backtracestate_BM             //
+    = backtrace_create_state ( /*filename: */ NULL,
+                              /*threaded: */ true,
+                              /*errorcb: */
+                              backtracerrorcb_BM,
+                              /*data: */ NULL);
   initialize_garbage_collector_BM ();
   check_delims_BM ();
   initialize_globals_BM ();
