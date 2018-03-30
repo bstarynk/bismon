@@ -163,6 +163,10 @@ count:
 	@wc -cl $(wildcard *.c *.h *.cc) | sort -n
 
 redump: bismon
+	@for f in $(GENERATED_HEADERS) $(GENERATED_CSOURCES) $(MODULES_SOURCES) *.bmon ; \
+           do cp -vab $$f $$f%~ ; done
+	time ./bismon --dump-after-load . --batch
+	printf "\n\n\n **** second redump run ***\n"
 	time ./bismon --dump-after-load . --batch
 outdump: bismon
 	time ./bismon  --run-command 'rm -rvf /tmp/bd'  --dump-after-load /tmp/bd --batch
