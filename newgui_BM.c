@@ -2787,14 +2787,12 @@ labstr_object_in_obwin_newgui_BM (struct
         }
       else
         {
+          idtocbuf32_BM (objid_BM (shobsel), shobjselidbuf);
           labstr = g_markup_printf_escaped ("<big><b>%s</b></big>\n"
                                             //U+2B6C RIGHTWARDS TRIANGLE-HEADED DASHED ARROW ⭬
                                             "\342\255\254 "
                                             "<i><tt>%s</tt></i>",
-                                            objectstr,
-                                            idtocbuf32_BM (objid_BM
-                                                           (shobsel),
-                                                           shobjselidbuf));
+                                            objectstr, shobjselidbuf);
         }
     }
   else

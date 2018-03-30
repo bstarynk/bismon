@@ -374,7 +374,8 @@ objlock_BM (objectval_tyBM * obj)
   if (curfailurehandle_BM)
     {
       ASSERT_BM (curfailurehandle_BM->failh_magic == FAILUREHANDLEMAGIC_BM);
-      register_failock_BM (curfailurehandle_BM->failh_lockset, obj);
+      if (curfailurehandle_BM->failh_lockset)
+        register_failock_BM (curfailurehandle_BM->failh_lockset, obj);
     }
   return true;
 }                               /* end objlock_BM */
@@ -390,7 +391,8 @@ objunlock_BM (objectval_tyBM * obj)
   if (curfailurehandle_BM)
     {
       ASSERT_BM (curfailurehandle_BM->failh_magic == FAILUREHANDLEMAGIC_BM);
-      unregister_failock_BM (curfailurehandle_BM->failh_lockset, obj);
+      if (curfailurehandle_BM->failh_lockset)
+        unregister_failock_BM (curfailurehandle_BM->failh_lockset, obj);
     }
   return true;
 }                               /* end objunlock_BM */

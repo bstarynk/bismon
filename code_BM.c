@@ -191,6 +191,9 @@ ROUTINEOBJNAME_BM (_5v30KC0IMxx_53ZzXprJTM6)    //
     }
   char connidbuf[32];
   idtocbuf32_BM (objid_BM (_.connobj), connidbuf);
+  const char *n = findobjectname_BM (_.connobj);
+  if (n && depth < 5)
+    objstrbufferprintfpayl_BM (_.bufob, "\t* %s |=%s| (", connidbuf, n);
   objstrbufferprintfpayl_BM (_.bufob, "\t* %s (", connidbuf);
   unsigned width = nodewidth_BM ((const value_tyBM) _.recv);
   objstrbuffermoreindentpayl_BM (_.bufob);
@@ -1191,15 +1194,17 @@ ROUTINEOBJNAME_BM (_0ekJdzLOqAI_8mejMqkwuKQ)    //  remove°assoc_object
 
 
 ////////////////////////////////////////////////////////////////
-//// for the method to dump_value an object or a class
+//// for the method to dump_value°object
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7fCcteNe7aR_3IKHeHjmzff);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_7fCcteNe7aR_3IKHeHjmzff)
-(struct stackframe_stBM * stkf,
-const value_tyBM arg1,
-const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
-const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ROUTINEOBJNAME_BM (_7fCcteNe7aR_3IKHeHjmzff)    // dump_value°object
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // obj
+ const value_tyBM arg2,         // bufob
+ const value_tyBM arg3,         // dumpob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   ASSERT_BM (isobject_BM (arg1));       // the object to dump
   // arg2 is the bufob
@@ -2339,8 +2344,9 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL, objectval_tyBM * obmod;
-                 objectval_tyBM * dumpob; objectval_tyBM * bufob;
-                 value_tyBM res;
+                 objectval_tyBM * dumpob;
+                 objectval_tyBM * bufob; value_tyBM res;
+                 value_tyBM failreason;
     );
   ASSERT_BM (isobject_BM (arg1));
   _.obmod = arg1;
@@ -2351,8 +2357,29 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
   DBGPRINTF_BM
     ("@@dump_data°plain_dumpable_module obmod=%s\n****++++++++++++++++\n",
      objectdbg_BM (_.obmod));
-  _.res = send0_BM (_.obmod, BMP_emit_module, (struct stackframe_stBM *) &_);
-  if (_.res)
+  struct failurehandler_stBM *prevfailureh = curfailurehandle_BM;
+  int failcod = 0;
+  _.failreason = NULL;
+  LOCAL_FAILURE_HANDLE_BM (failcod, _.failreason);
+  if (failcod == 0)
+    _.res =
+      send0_BM (_.obmod, BMP_emit_module, (struct stackframe_stBM *) &_);
+  curfailurehandle_BM = prevfailureh;
+  DBGPRINTF_BM ("@@dump_data°plain_dumpable_module obmod %s failcod %d failreason %s res %s", objectdbg_BM (_.obmod), failcod, debug_outstr_value_BM (_.failreason, (struct stackframe_stBM *) &_, 1), //
+                debug_outstr_value_BM (_.res,
+                                       (struct stackframe_stBM *) &_, 1));
+  if (failcod > 0 && _.failreason)
+    {
+      char idbuf[32];
+      memset (idbuf, 0, sizeof (idbuf));
+      idtocbuf32_BM (objid_BM (_.obmod), idbuf);
+      objstrbufferprintfpayl_BM (_.bufob, "\n#error fail to emit module %s\n",
+                                 idbuf);
+      DBGPRINTF_BM ("@@dump_data°plain_dumpable_module failed obmod=%s failcod=%d failreason %s\n****!!!!!!\n", objectdbg_BM (_.obmod), failcod,       //
+                    debug_outstr_value_BM (_.failreason,
+                                           (struct stackframe_stBM *) &_, 1));
+    }
+  else if (_.res)
     {
       char idbuf[32];
       memset (idbuf, 0, sizeof (idbuf));
@@ -2364,7 +2391,7 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
     }
   LOCALRETURN_BM (_.res);
 
-}                               /* end ROUTINE _5DyG7xVcxRI_1Ckpbj7b3QK */
+}                               /* end dump_data°plain_dumpable_module ROUTINE _5DyG7xVcxRI_1Ckpbj7b3QK */
 
 
 
