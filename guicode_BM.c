@@ -1808,8 +1808,8 @@ ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2bzzB0nZuUO_2xfj3rDb3DN,
-                 objectval_tyBM * modulob;
-                 value_tyBM resultv;
+                 objectval_tyBM * modulob; value_tyBM resultv;
+                 value_tyBM failres;
     );
   _.modulob = objectcast_BM (arg1);
   DBGPRINTF_BM ("emit_module command start modulob=%s",
@@ -1832,10 +1832,39 @@ ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    //
       log_object_message_BM (_.modulob);
       log_end_message_BM ();
     };
+  /////
+  _.failres = NULL;
+  int failcod = 0;
+  struct failurelockset_stBM flockset = { };
+  struct failurehandler_stBM *prevfailurehandle = curfailurehandle_BM;
+  initialize_failurelockset_BM (&flockset, sizeof (flockset));
+  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureemit, failcod, _.failres);
+  if (failcod > 0)
+  lab_failureemit:{
+      destroy_failurelockset_BM (&flockset);
+      curfailurehandle_BM = prevfailurehandle;
+      if (pthread_self () == mainthreadid_BM)
+        {
+          log_begin_message_BM ();
+          log_puts_message_BM ("failed to emit module ");
+          log_object_message_BM (_.modulob);
+          log_printf_message_BM (" with failcode#%d\n.. failres %s\n",
+                                 failcod,
+                                 debug_outstr_value_BM (_.failres,
+                                                        (struct
+                                                         stackframe_stBM *)
+                                                        &_, 0));
+          log_end_message_BM ();
+          LOCALRETURN_BM (NULL);
+        };
+    };
   objlock_BM (_.modulob);
   _.resultv =
     send0_BM (_.modulob, BMP_emit_module, (struct stackframe_stBM *) &_);
   objunlock_BM (_.modulob);
+  destroy_failurelockset_BM (&flockset);
+  curfailurehandle_BM = prevfailurehandle;
+
   DBGPRINTF_BM ("emit_module command end modulob=%s result %s", objectdbg_BM (_.modulob),       //
                 debug_outstr_value_BM (_.resultv,
                                        (struct stackframe_stBM *) &_, 0));
@@ -1855,7 +1884,7 @@ ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    //
       if (pthread_self () == mainthreadid_BM)
         {
           log_begin_message_BM ();
-          log_puts_message_BM ("failed to emit module ");
+          log_puts_message_BM ("bad emit module ");
           log_object_message_BM (_.modulob);
           log_end_message_BM ();
         };
