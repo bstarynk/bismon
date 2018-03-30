@@ -52,7 +52,8 @@ weakfailure_BM (void)
 void
 weakassertfailureat_BM (const char *condmsg, const char *fil, int lin)
 {
-  fprintf (stderr, "weakassertfailureat_BM (%s:%d) %s\n", fil, lin, condmsg);
+  fprintf (stderr, "**** weakassertfailureat_BM (%s:%d) %s (tid#%d)\n", fil,
+           lin, condmsg, (int) gettid_BM ());
   fflush (stderr);
   void *backbuf[50];
   memset (backbuf, 0, sizeof (backbuf));
@@ -127,8 +128,8 @@ failure_at_BM (int failcode, const char *fil, int lineno,
       curfailurehandle_BM->failh_reason = reasonv;
       if (!curfailurehandle_BM->failh_silent)
         {
-          fprintf (stderr, "\n\n*** failure code#%d %s:%d ***\n", failcode,
-                   fil ? fil : "???", lineno);
+          fprintf (stderr, "\n\n*** failure code#%d %s:%d (tid#%d) ***\n",
+                   failcode, fil ? fil : "???", lineno, (int) gettid_BM ());
           if (backtracestate_BM)
             {
               backtrace_print (backtracestate_BM, 1, stderr);
