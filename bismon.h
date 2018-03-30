@@ -60,6 +60,7 @@ using std::atomic_store;
 #include <unistd.h>
 #include <pthread.h>
 #include <execinfo.h>
+#include <backtrace.h>
 
 
 #include <gtk/gtk.h>

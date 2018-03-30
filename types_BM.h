@@ -414,6 +414,7 @@ struct failurehandler_stBM      // for typayl_FailureHandler_BM,
 {
   typedhead_tyBM pA;            // rlen is unused
   unsigned failh_magic;         // always FAILUREHANDLEMAGIC_BM
+  bool failh_silent;
   struct failurelockset_stBM *failh_lockset;
   value_tyBM failh_reason;
   jmp_buf failh_jmpbuf;

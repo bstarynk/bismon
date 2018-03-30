@@ -33,6 +33,9 @@ const char myhostname_BM[80];
 thread_local struct threadinfo_stBM *curthreadinfo_BM;
 thread_local volatile struct failurehandler_stBM *curfailurehandle_BM;
 
+static volatile struct backstrace_state *backtracestate_BM;
+static void backtracerrorcb_BM (void *data, const char *msg, int errnum);
+
 GIOChannel *defer_gtk_readpipechan_BM;
 int defer_gtk_readpipefd_BM = -1;
 int defer_gtk_writepipefd_BM = -1;
@@ -55,6 +58,14 @@ weakassertfailureat_BM (const char *condmsg, const char *fil, int lin)
   memset (backbuf, 0, sizeof (backbuf));
   int nb = backtrace (backbuf, sizeof (backbuf) / sizeof (void *));
   backtrace_symbols_fd (backbuf, nb, STDERR_FILENO);
+  if (backtracestate_BM)
+    {
+      fprintf (stderr, "\n\n\n** full backtrace **\n");
+      fflush (stderr);
+      backtrace_print (backtracestate_BM, 1, stderr);
+      fprintf (stderr, "\n----- end full backtrace ------\n\n");
+      fflush (stderr);
+    }
   weakfailure_BM ();
 }                               /* end weakassertfailureat_BM */
 
@@ -114,6 +125,17 @@ failure_at_BM (int failcode, const char *fil, int lineno,
                      "corrupted curfailurehandle_BM@%p for failcode %d",
                      curfailurehandle_BM, failcode);
       curfailurehandle_BM->failh_reason = reasonv;
+      if (!curfailurehandle_BM->failh_silent)
+        {
+          fprintf (stderr, "\n\n*** failure code#%d %s:%d ***\n", failcode,
+                   fil ? fil : "???", lineno);
+          if (backtracestate_BM)
+            {
+              backtrace_print (backtracestate_BM, 1, stderr);
+              fprintf (stderr, "\n----- end failure backtrace ------\n\n");
+            }
+          fflush (stderr);
+        }
       longjmp (((struct failurehandler_stBM *)
                 curfailurehandle_BM)->failh_jmpbuf, failcode);
     }
@@ -361,6 +383,11 @@ main (int argc, char **argv)
   memset ((char *) myhostname_BM, 0, sizeof (myhostname_BM));
   if (gethostname ((char *) myhostname_BM, sizeof (myhostname_BM) - 1))
     FATAL_BM ("gethostname failure %m");
+  backtracestate_BM = backtrace_create_state ( /*filename: */ NULL,
+                                              /*threaded: */ true,
+                                              /*errorcb: */
+                                              backtracerrorcb_BM,
+                                              /*data: */ NULL);
   initialize_garbage_collector_BM ();
   check_delims_BM ();
   initialize_globals_BM ();
@@ -727,3 +754,11 @@ give_prog_version_BM (const char *progname)
   printf ("run\n" "\t   %s --help\n" "to get help.\n", progname);
   exit (EXIT_SUCCESS);
 }                               /* end give_prog_version_BM */
+
+void
+backtracerrorcb_BM (void *data __attribute__ ((unused)),
+                    const char *msg, int errnum)
+{
+  backtracestate_BM = NULL;
+  FATAL_BM ("backtrace error: %s #%d", msg, errnum);
+}                               /* end backtracerrorcb_BM */

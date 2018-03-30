@@ -1,6 +1,8 @@
 ## the Makefile
-CC=gcc
-CXX= g++
+GCC= gcc
+GXX= g++
+CC= $(GCC)
+CXX= $(GXX)
 CCACHE= ccache
 MARKDOWN= markdown
 WARNFLAGS= -Wall -Wextra -Wmissing-prototypes -Wstack-usage=1500 -fdiagnostics-color=auto
@@ -20,7 +22,7 @@ PACKAGES= gtk+-3.0
 PKGCONFIG= pkg-config
 PREPROFLAGS= -I. -I/usr/local/include $(shell $(PKGCONFIG) --cflags $(PACKAGES)) -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED
 
-LIBES= -L/usr/local/lib $(shell $(PKGCONFIG) --libs $(PACKAGES)) -ldl -lm
+LIBES= -L/usr/local/lib -lbacktrace $(shell $(PKGCONFIG) --libs $(PACKAGES)) -ldl -lm
 RM= rm -fv
 
 
