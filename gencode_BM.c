@@ -929,3 +929,36 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //
   else
     LOCALRETURN_BM (NULL);
 }                               /* end miniscan_stmt°basiclo_assign _7LNRlilrowp_0GG6ZLUFovu */
+
+// miniscan_node_conn°basiclo_primitive  _1vuSUudDrEr_9UjFr4Pcy8r
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    //
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // connob
+ const value_tyBM arg2,         // routprepob
+ const value_tyBM arg3,         // depthv
+ const value_tyBM arg4,         // expv
+ const quasinode_tyBM * restargs /*fromob */ )
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_1vuSUudDrEr_9UjFr4Pcy8r,
+                 objectval_tyBM * connob; objectval_tyBM * routprepob;
+                 value_tyBM expv; objectval_tyBM * fromob;
+                 value_tyBM resultv;
+    );
+  _.connob = objectcast_BM (arg1);
+  _.routprepob = objectcast_BM (arg2);
+  int depth = getint_BM (arg3);
+  _.expv = arg4;
+  _.fromob = objectcast_BM (treenthson_BM (restargs, 0));
+  DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive start connob %s" "\n... routprepob %s depth %d expv %s fromob %s",       //
+                objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob), depth,   //
+                debug_outstr_value_BM (_.expv, (struct stackframe_stBM *) &_, 0),       //
+                objectdbg2_BM (_.fromob));
+#warning unimplemented _1vuSUudDrEr_9UjFr4Pcy8r routine
+  WEAKASSERT_BM (false
+                 && "unimplemented miniscan_node_conn°basiclo_primitive");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end miniscan_node_conn°basiclo_primitive  _1vuSUudDrEr_9UjFr4Pcy8r */

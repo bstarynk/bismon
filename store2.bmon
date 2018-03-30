@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 284 objects
+// for 286 objects
 // with 0 modules
 
 
@@ -314,6 +314,21 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 ~)
 
 !)_3votvybaW1d_35YcL4p51kp
+
+
+
+!(_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!~ name (~ basiclo_primitive
+~)
+!@ 1522418301.29
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of simple primitives"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
+~: _5EGLdtUAQxA_1nebCsDKqOF  % _1vuSUudDrEr_9UjFr4Pcy8r ()
+~)
+
+!)_2SZvlA4wcJd_72ldva0oSGH
 
 
 
@@ -2286,6 +2301,16 @@ _8g1WBJBhDT9_1QK8IcuWYx2 _9mq0jsuz4XQ_4doHfd987Q6) ~)
 _3XBrePAliOo_37VlAqBsb5C) ~)
 
 !)_1ufPZmTnWhp_7FX9NANZCAW
+
+
+
+!(_1vuSUudDrEr_9UjFr4Pcy8r
+!|*
+!@ 1522418362.80
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniscan_node_conn\u00b0basiclo_primitive"
+!)_1vuSUudDrEr_9UjFr4Pcy8r
 
 
 
