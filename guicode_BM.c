@@ -44,9 +44,8 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   memset (objbroid, 0, sizeof (objbroid));
   idtocbuf32_BM (objid_BM (_.objbrows), objbroid);
   const char *objbroname = findobjectname_BM (_.objbrows);
-  gtk_text_buffer_insert_with_tags //
-    (brobuf, &browserit_BM,
-     "|\342\227\274 ",		/* U+25FC BLACK MEDIUM SQUARE ◼ */
+  gtk_text_buffer_insert_with_tags      //
+    (brobuf, &browserit_BM, "|\342\227\274 ",   /* U+25FC BLACK MEDIUM SQUARE ◼ */
      -1, miscomm_brotag_BM, NULL);
   if (objbroname)
     {
@@ -1788,8 +1787,7 @@ ROUTINEOBJNAME_BM (_5oSaKNehPiO_3GSlpH5boCW)    //
       fprintf (gui_command_log_file_BM,
                "\n//// dumped %ld objects, %ld files to %s i.e. %s at %s\n\n",
                di.dumpinfo_emittedobjectcount, di.dumpinfo_wrotefilecount,
-	       dumpstr, 
-               realstr ? realstr : dumpstr, nowbuf);
+               dumpstr, realstr ? realstr : dumpstr, nowbuf);
       fflush (gui_command_log_file_BM);
     }
   free (dumpstr), dumpstr = NULL;

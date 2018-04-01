@@ -438,14 +438,16 @@ ROUTINEOBJNAME_BM (_10XOFm9ui6R_06F8qZQynnA)    //
 }                               /* end complete_module°basiclo*module _10XOFm9ui6R_06F8qZQynnA  */
 
 
-
-extern void miniscan_var_BM (objectval_tyBM * varob,
-                             objectval_tyBM * routprepob, int depth,
-                             objectval_tyBM * fromob,
-                             struct stackframe_stBM *stkf);
-extern void miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
-                              int depth, objectval_tyBM * fromob,
-                              struct stackframe_stBM *stkf);
+// return the ctype of a variable
+extern objectval_tyBM *miniscan_var_BM (objectval_tyBM * varob,
+                                        objectval_tyBM * routprepob,
+                                        int depth, objectval_tyBM * fromob,
+                                        struct stackframe_stBM *stkf);
+// return the ctype of an expression
+extern objectval_tyBM *miniscan_expr_BM (value_tyBM expv,
+                                         objectval_tyBM * routprepob,
+                                         int depth, objectval_tyBM * fromob,
+                                         struct stackframe_stBM *stkf);
 
 // for the method to collect_blocks in basiclo_block-s 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu);
@@ -468,7 +470,7 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
                  const closure_tyBM * closv;
                  objectval_tyBM * recv; objectval_tyBM * routprep;
                  objectval_tyBM * curob; value_tyBM curexp; value_tyBM resv;
-                 anyassoc_tyBM * routassoc;
+                 objectval_tyBM * typob;
     );
   LOCALGETFUNV_BM (_.closv);
   if (!isclosure_BM (_.closv) || closurewidth_BM (_.closv) != closix__LAST)
@@ -504,8 +506,7 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
     ("collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu start recv=%s routprep=%s depth=%d nbvar=%d nbargs=%d",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep), depth, (int) nbargs,
      (int) nbvars);
-  _.routassoc = assoccast_BM (objpayload_BM (_.routprep));
-  if (!_.routassoc)
+  if (!objhasassocpayl_BM (_.routprep))
     {
       fprintf (stderr, "collect_blocks°basiclo_block bad routprep %s\n",
                objectdbg_BM (_.routprep));
@@ -524,7 +525,7 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
                    varix);
           LOCALRETURN_BM (NULL);
         }
-      if (!assoc_getattr_BM (_.routassoc, _.curob))
+      if (!objassocgetattrpayl_BM (_.routprep, _.curob))
         {
           fprintf (stderr,
                    "collect_blocks°basiclo_block unknown variable %s for varix#%d\n",
@@ -616,7 +617,7 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
 
 
 ////////////////////////////////////////////////////////////////
-void
+objectval_tyBM *
 miniscan_var_BM (objectval_tyBM * varob,
                  objectval_tyBM * routprepob, int depth,
                  objectval_tyBM * fromob, struct stackframe_stBM *stkf)
@@ -659,7 +660,7 @@ failure:
 }                               /* end miniscan_var_BM */
 
 
-void
+objectval_tyBM *
 miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
                   int depth, objectval_tyBM * fromob,
                   struct stackframe_stBM *stkf)
@@ -953,7 +954,8 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    //
   int depth = getint_BM (arg3);
   _.expv = arg4;
   _.fromob = objectcast_BM (treenthson_BM (restargs, 0));
-  DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive start connob %s" "\n... routprepob %s depth %d expv %s fromob %s",       //
+  DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive start connob %s" //
+                "\n... routprepob %s depth %d expv %s fromob %s",       //
                 objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob), depth,   //
                 debug_outstr_value_BM (_.expv, (struct stackframe_stBM *) &_, 0),       //
                 objectdbg2_BM (_.fromob));

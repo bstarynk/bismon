@@ -1457,7 +1457,7 @@ dumpgui_BM (void)
       localtime_r (&nowtim, &nowtm);
       char nowbuf[64];
       memset (nowbuf, 0, sizeof (nowbuf));
-      char *rd = realpath(dump_dir_bm, NULL);
+      char *rd = realpath (dump_dir_bm, NULL);
       strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
       fprintf (gui_command_log_file_BM,
                "\n////! dumped %ld objects, %ld files to %s i.e. %s at %s\n\n",

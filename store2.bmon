@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 287 objects
+// for 288 objects
 // with 0 modules
 
 
@@ -1180,10 +1180,16 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 !(_9yI4D5OmheP_5gUmKXEzW9e |=is_intv|
 !~ name (~ is_intv
 ~)
-!@ 1522567496.31
+!@ 1522591828.45
 !$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _5I927xFqkZ6_2TYJxqv9cOA ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  " "  "/*" _9yI4D5OmheP_5gUmKXEzW9e  "*/"  " " 
+  "istaggedint_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5I927xFqkZ6_2TYJxqv9cOA) 
+ ")"  "\n")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
 !)_9yI4D5OmheP_5gUmKXEzW9e
 
 
@@ -1693,6 +1699,17 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !@ 1520878917.67
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_2pwKyMVQyvI_3PH8nIPXjW0
+
+
+
+!(_8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+!~ name (~ result_type
+~)
+!@ 1522590436.36
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "to give result type, e.g. in primitives"
+!)_8oZ9fPJGhmS_24c2sSYsdr2
 
 
 
