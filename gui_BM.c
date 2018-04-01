@@ -1457,11 +1457,13 @@ dumpgui_BM (void)
       localtime_r (&nowtim, &nowtm);
       char nowbuf[64];
       memset (nowbuf, 0, sizeof (nowbuf));
+      char *rd = realpath(dump_dir_bm, NULL);
       strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
       fprintf (gui_command_log_file_BM,
-               "\n//// dumped %ld objects, %ld files to %s at %s\n\n",
+               "\n////! dumped %ld objects, %ld files to %s i.e. %s at %s\n\n",
                di.dumpinfo_emittedobjectcount, di.dumpinfo_wrotefilecount,
-               dump_dir_bm, nowbuf);
+               dump_dir_bm, rd, nowbuf);
+      free (rd);
       fflush (gui_command_log_file_BM);
     }
   DBGPRINTF_BM ("dumpgui end tid#%ld", (long) gettid_BM ());

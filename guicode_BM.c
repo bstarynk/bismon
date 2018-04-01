@@ -1786,8 +1786,9 @@ ROUTINEOBJNAME_BM (_5oSaKNehPiO_3GSlpH5boCW)    //
       memset (nowbuf, 0, sizeof (nowbuf));
       strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
       fprintf (gui_command_log_file_BM,
-               "\n//// dumped %ld objects, %ld files to %s at %s\n\n",
+               "\n//// dumped %ld objects, %ld files to %s i.e. %s at %s\n\n",
                di.dumpinfo_emittedobjectcount, di.dumpinfo_wrotefilecount,
+	       dumpstr, 
                realstr ? realstr : dumpstr, nowbuf);
       fflush (gui_command_log_file_BM);
     }

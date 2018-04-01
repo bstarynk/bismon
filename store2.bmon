@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 286 objects
+// for 287 objects
 // with 0 modules
 
 
@@ -1180,8 +1180,10 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 !(_9yI4D5OmheP_5gUmKXEzW9e |=is_intv|
 !~ name (~ is_intv
 ~)
-!@ 1513362380.72
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1522567496.31
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5I927xFqkZ6_2TYJxqv9cOA ]
 !)_9yI4D5OmheP_5gUmKXEzW9e
 
 
@@ -1356,6 +1358,19 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for command to hide a named value"
 !)_5mgZTJ64WH9_4r2XC8eZmW7
+
+
+
+!(_5I927xFqkZ6_2TYJxqv9cOA |=nn|
+!~ name (~ nn
+~)
+!@ 1522567527.02
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "formal integer argument"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_5I927xFqkZ6_2TYJxqv9cOA
 
 
 
