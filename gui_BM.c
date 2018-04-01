@@ -4740,6 +4740,8 @@ initialize_oldgui_command_scrollview_BM (void)
   gtk_widget_set_name (commandview_BM, "commandview");
   gtk_text_view_set_editable (GTK_TEXT_VIEW (commandview_BM), true);
   gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (commandview_BM), FALSE);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (commandview_BM),
+                               GTK_WRAP_WORD_CHAR);
   g_signal_connect (commandview_BM, "key-press-event",
                     G_CALLBACK (handlekeypresscmd_BM), NULL);
   g_signal_connect (commandbuf_BM, "end-user-action",
@@ -4767,10 +4769,11 @@ initialize_log_scrollview_BM (void)
   g_signal_connect (logview_BM, "populate-popup",
                     G_CALLBACK (populatepopuplog_BM), NULL);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (logview_BM), false);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (logview_BM),
+                               GTK_WRAP_WORD_CHAR);
   GtkWidget *logscrolw = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (logscrolw), logview_BM);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
-                                  (logscrolw),
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (logscrolw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   {
     log_begin_message_BM ();

@@ -2115,6 +2115,8 @@ fill_nvx_thing_newgui_BM (struct
                       BOXNOFILL_BM, 1);
   nt->nvxt_textview = gtk_text_view_new_with_buffer (nvx->nvx_tbuffer);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (nt->nvxt_textview), false);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (nt->nvxt_textview),
+                               GTK_WRAP_WORD_CHAR);
   gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (nt->nvxt_textview), true);
   gtk_box_pack_start (GTK_BOX (nt->nvxt_vbox), nt->nvxt_textview,
                       BOXEXPAND_BM, BOXFILL_BM, 1);
