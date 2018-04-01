@@ -44,8 +44,10 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   memset (objbroid, 0, sizeof (objbroid));
   idtocbuf32_BM (objid_BM (_.objbrows), objbroid);
   const char *objbroname = findobjectname_BM (_.objbrows);
-  gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,
-                                    "|", -1, miscomm_brotag_BM, NULL);
+  gtk_text_buffer_insert_with_tags //
+    (brobuf, &browserit_BM,
+     "|\342\227\274 ",		/* U+25FC BLACK MEDIUM SQUARE ◼ */
+     -1, miscomm_brotag_BM, NULL);
   if (objbroname)
     {
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,
