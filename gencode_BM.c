@@ -932,11 +932,10 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //
 }                               /* end miniscan_stmt°basiclo_assign _7LNRlilrowp_0GG6ZLUFovu */
 
 // miniscan_node_conn°basiclo_primitive  _1vuSUudDrEr_9UjFr4Pcy8r
-
 extern objrout_sigBM ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    //
+ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_primitive
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // connob
  const value_tyBM arg2,         // routprepob
@@ -945,10 +944,19 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    //
  const quasinode_tyBM * restargs /*fromob */ )
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_1vuSUudDrEr_9UjFr4Pcy8r,
-                 objectval_tyBM * connob; objectval_tyBM * routprepob;
-                 value_tyBM expv; objectval_tyBM * fromob;
-                 value_tyBM resultv;
+                 objectval_tyBM * connob;
+                 objectval_tyBM * routprepob;
+                 value_tyBM expv;
+                 objectval_tyBM * fromob;
+                 value_tyBM connargsv; objectval_tyBM * connrestypob;
+                 value_tyBM resultv; value_tyBM errorv;
+                 value_tyBM extraerrorv;
     );
+  int failin = -1;
+#define FAILHERE(Xtra) do { failin = __LINE__ ; _.extraerrorv = (Xtra); goto failure; } while(0)
+  objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
+  objectval_tyBM *k_result_type = BMK_8oZ9fPJGhmS_24c2sSYsdr2;
+  objectval_tyBM *k_miniscan_node_conn = BMK_5EGLdtUAQxA_1nebCsDKqOF;
   _.connob = objectcast_BM (arg1);
   _.routprepob = objectcast_BM (arg2);
   int depth = getint_BM (arg3);
@@ -959,8 +967,35 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    //
                 objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob), depth,   //
                 debug_outstr_value_BM (_.expv, (struct stackframe_stBM *) &_, 0),       //
                 objectdbg2_BM (_.fromob));
+  if (!_.routprepob)
+    FAILHERE (NULL);
+  if (!_.fromob)
+    FAILHERE (NULL);
+  {
+    objlock_BM (_.connob);
+    _.connargsv = objgetattr_BM (_.connob, k_arguments);
+    _.connrestypob = objectcast_BM (objgetattr_BM (_.connob, k_result_type));
+    objunlock_BM (_.connob);
+  }
+  DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive  connob %s"      //
+                "\n... connargs %s connrestyp %s",      //
+                objectdbg_BM (_.connob),        //
+                debug_outstr_value_BM (_.connargsv, (struct stackframe_stBM *) &_, 0),  //
+                objectdbg1_BM (_.connrestypob));        //
+  if (!istuple_BM (_.connargsv))
+    FAILHERE (k_arguments);
+  if (!isobject_BM (_.connrestypob))
+    FAILHERE (k_result_type);
+
 #warning unimplemented _1vuSUudDrEr_9UjFr4Pcy8r routine
   WEAKASSERT_BM (false
                  && "unimplemented miniscan_node_conn°basiclo_primitive");
   LOCALRETURN_BM (_.resultv);
+failure:
+  DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive failin %d", failin);
+  _.errorv =
+    makenodevar_BM (k_miniscan_node_conn, _.expv, _.routprepob,
+                    taggedint_BM (depth), _.fromob, _.extraerrorv, NULL);
+  FAILURE_BM (failin, _.errorv, (struct stackframe_stBM *) &_);
+#undef FAILHERE
 }                               /* end miniscan_node_conn°basiclo_primitive  _1vuSUudDrEr_9UjFr4Pcy8r */
