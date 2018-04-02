@@ -76,6 +76,9 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   for (unsigned curargix = 0; curargix < nbargs; curargix++)
     {
       _.curarg = tuplecompnth_BM (_.args, curargix);
+      DBGPRINTF_BM
+        ("prepare_routine:basiclo_function recv %s curargix#%d curarg %s",
+         objectdbg_BM (_.recv), curargix, objectdbg1_BM (_.curarg));
       //if (assoc_getattr_BM (_.assocbind, _.curarg))
       {
       }
@@ -944,12 +947,12 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
  const quasinode_tyBM * restargs /*fromob */ )
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_1vuSUudDrEr_9UjFr4Pcy8r,
-                 objectval_tyBM * connob;
-                 objectval_tyBM * routprepob;
-                 value_tyBM expv;
-                 objectval_tyBM * fromob;
+                 objectval_tyBM * connob; objectval_tyBM * routprepob;
+                 value_tyBM expv; objectval_tyBM * fromob;
                  value_tyBM connargsv; objectval_tyBM * connrestypob;
-                 value_tyBM resultv; value_tyBM errorv;
+                 value_tyBM resultv;
+                 value_tyBM errorv;
+                 value_tyBM cursonv; objectval_tyBM * curargob;
                  value_tyBM extraerrorv;
     );
   int failin = -1;
@@ -957,6 +960,7 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   objectval_tyBM *k_result_type = BMK_8oZ9fPJGhmS_24c2sSYsdr2;
   objectval_tyBM *k_miniscan_node_conn = BMK_5EGLdtUAQxA_1nebCsDKqOF;
+  objectval_tyBM *k_arity = BMK_6fPPUXnZhy5_8Lh5DOOe0Nu;
   _.connob = objectcast_BM (arg1);
   _.routprepob = objectcast_BM (arg2);
   int depth = getint_BM (arg3);
@@ -984,9 +988,21 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
                 objectdbg1_BM (_.connrestypob));        //
   if (!istuple_BM (_.connargsv))
     FAILHERE (k_arguments);
+  unsigned nbconnargs = tuplesize_BM (_.connargsv);
+  unsigned nbexpargs = nodewidth_BM (_.expv);
+  if (nbconnargs != nbexpargs)
+    FAILHERE (k_arity);
   if (!isobject_BM (_.connrestypob))
     FAILHERE (k_result_type);
-
+  for (unsigned ix = 0; ix < nbconnargs; ix++)
+    {
+      _.cursonv = nodenthson_BM (_.expv, ix);
+      _.curargob = tuplecompnth_BM (_.connargsv, ix);
+      DBGPRINTF_BM
+        ("miniscan_node_conn°basiclo_primitive ix#%d cursonv=%s curargob=%s",
+         ix, debug_outstr_value_BM (_.cursonv, (struct stackframe_stBM *) &_,
+                                    0), objectdbg_BM (_.curargob));
+    }
 #warning unimplemented _1vuSUudDrEr_9UjFr4Pcy8r routine
   WEAKASSERT_BM (false
                  && "unimplemented miniscan_node_conn°basiclo_primitive");

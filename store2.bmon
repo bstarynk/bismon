@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 288 objects
+// for 289 objects
 // with 0 modules
 
 
@@ -51,6 +51,17 @@
 !@ 1506853444.98
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_0jFqaPPHgYH_5JpjOPxQ67p
+
+
+
+!(_6fPPUXnZhy5_8Lh5DOOe0Nu |=arity|
+!~ name (~ arity
+~)
+!@ 1522653959.13
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "arity related"
+!)_6fPPUXnZhy5_8Lh5DOOe0Nu
 
 
 
