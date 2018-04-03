@@ -670,12 +670,14 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
 {
   objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
   objectval_tyBM *k_miniscan_node_conn = BMK_5EGLdtUAQxA_1nebCsDKqOF;
+  objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   int failin = -1;
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
                  value_tyBM expv; value_tyBM resv;
                  objectval_tyBM * routprepob; objectval_tyBM * fromob;
                  objectval_tyBM * expob; objectval_tyBM * connob;
+                 value_tyBM avalv; objectval_tyBM * avalconnob;
                  value_tyBM errorv;
     );
   _.expv = expv;
@@ -707,7 +709,19 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
     case tyObject_BM:
       {
         _.expob = objectcast_BM (_.expv);
-        DBGPRINTF_BM ("miniscan_expr expob=%s", objectdbg_BM (_.expob));
+        _.avalv = objassocgetattrpayl_BM (_.routprepob, _.expob);
+        DBGPRINTF_BM ("miniscan_expr expob=%s avalv=%s",
+                      objectdbg_BM (_.expob),
+                      debug_outstr_value_BM (_.avalv,
+                                             (struct stackframe_stBM *) &_,
+                                             0));
+        _.avalconnob = nodeconn_BM (_.avalv);
+        if (_.avalconnob == k_arguments)
+          {
+            DBGPRINTF_BM ("miniscan_expr expob=%s is argument, so value",
+                          objectdbg_BM (_.expob));
+            LOCALRETURN_BM (BMP_value);
+          }
         break;
       }
     case tyNode_BM:
@@ -947,12 +961,11 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
  const quasinode_tyBM * restargs /*fromob */ )
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_1vuSUudDrEr_9UjFr4Pcy8r,
-                 objectval_tyBM * connob; objectval_tyBM * routprepob;
-                 value_tyBM expv; objectval_tyBM * fromob;
-                 value_tyBM connargsv;
-                 objectval_tyBM * connrestypob; value_tyBM resultv;
-                 value_tyBM errorv;
-                 value_tyBM cursonv;
+                 objectval_tyBM * connob;
+                 objectval_tyBM * routprepob; value_tyBM expv;
+                 objectval_tyBM * fromob;
+                 value_tyBM connargsv; objectval_tyBM * connrestypob;
+                 value_tyBM resultv; value_tyBM errorv; value_tyBM cursonv;
                  objectval_tyBM * curargob; objectval_tyBM * curtypob;
                  value_tyBM extraerrorv;
     );
