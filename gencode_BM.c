@@ -961,12 +961,13 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
  const quasinode_tyBM * restargs /*fromob */ )
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_1vuSUudDrEr_9UjFr4Pcy8r,
-                 objectval_tyBM * connob;
-                 objectval_tyBM * routprepob; value_tyBM expv;
-                 objectval_tyBM * fromob;
+                 objectval_tyBM * connob; objectval_tyBM * routprepob;
+                 value_tyBM expv; objectval_tyBM * fromob;
                  value_tyBM connargsv; objectval_tyBM * connrestypob;
-                 value_tyBM resultv; value_tyBM errorv; value_tyBM cursonv;
-                 objectval_tyBM * curargob; objectval_tyBM * curtypob;
+                 value_tyBM resultv;
+                 value_tyBM errorv;
+                 value_tyBM cursonv; objectval_tyBM * curargob;
+                 objectval_tyBM * curtypob; objectval_tyBM * curargctypob;
                  value_tyBM extraerrorv;
     );
   int failin = -1;
@@ -975,6 +976,7 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
   objectval_tyBM *k_result_type = BMK_8oZ9fPJGhmS_24c2sSYsdr2;
   objectval_tyBM *k_miniscan_node_conn = BMK_5EGLdtUAQxA_1nebCsDKqOF;
   objectval_tyBM *k_arity = BMK_6fPPUXnZhy5_8Lh5DOOe0Nu;
+  objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
   _.connob = objectcast_BM (arg1);
   _.routprepob = objectcast_BM (arg2);
   int depth = getint_BM (arg3);
@@ -1012,19 +1014,28 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
     {
       _.cursonv = nodenthson_BM (_.expv, ix);
       _.curargob = tuplecompnth_BM (_.connargsv, ix);
+      _.curargctypob = NULL;
+      _.curtypob = NULL;
+      objlock_BM (_.curargob);
+      _.curargctypob = objgetattr_BM (_.curargctypob, k_c_type);
+      objunlock_BM (_.curargob);
       DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive ix#%d cursonv=%s curargob=%s", ix,   //
                     debug_outstr_value_BM (_.cursonv, (struct stackframe_stBM *) &_, 0),        //
                     objectdbg_BM (_.curargob));
       _.curtypob =
         miniscan_expr_BM (_.cursonv, _.routprepob, depth + 1, _.fromob,
                           (struct stackframe_stBM *) &_);
-      DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive ix#%d curtypob %s",
-                    ix, objectdbg_BM (_.curtypob));
+      DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive ix#%d "      //
+                    "curtypob %s curargob=%s curargctypob",     //
+                    ix, objectdbg_BM (_.curtypob), objectdbg1_BM (_.curargob),  //
+                    objectdbg2_BM (_.curargctypob));
+      if (_.curargctypob != _.curtypob)
+        FAILHERE (makenodevar_BM (k_arguments, taggedint_BM (ix), NULL));
     }
-#warning unimplemented _1vuSUudDrEr_9UjFr4Pcy8r routine
-  WEAKASSERT_BM (false
-                 && "unimplemented miniscan_node_conn°basiclo_primitive");
-  LOCALRETURN_BM (_.resultv);
+  DBGPRINTF_BM
+    ("miniscan_node_conn°basiclo_primitive done expv=%s result connrestypob=%s",
+     debug_outstr_value_BM (_.expv, (struct stackframe_stBM *) &_, 0),
+     objectdbg_BM (_.connrestypob));
 failure:
   DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive failin %d", failin);
   _.errorv =
