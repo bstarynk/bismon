@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 289 objects
+// for 290 objects
 // with 0 modules
 
 
@@ -1296,6 +1296,17 @@ _3JH05KgIzty_1K7IDyF43V2
 !@ 1511369768.62
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_2gthNYOWogO_4sVTU1JbmUH
+
+
+
+!(_82pYC6bEP7E_3cfHx6ELZFi |=miniscan_compatyp|
+!~ name (~ miniscan_compatyp
+~)
+!@ 1522913130.42
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test compatibility of types"
+!)_82pYC6bEP7E_3cfHx6ELZFi
 
 
 
