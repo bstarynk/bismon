@@ -664,6 +664,11 @@ miniscan_var_BM (objectval_tyBM * varob,
 {
   const objectval_tyBM *k_miniscan_var = BMK_6jh60mO0Cgd_84B0HiNphqA;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
+  objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
+  objectval_tyBM *k_numbers = BMK_32eKNcTZ9HN_80t0nk47Mha;
+  objectval_tyBM *k_locals = BMK_24sSVIADeHm_0Sx34wQfG7W;
+  objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
+  objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
   int failin = -1;
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_var,
@@ -693,15 +698,21 @@ miniscan_var_BM (objectval_tyBM * varob,
   if (isnode_BM (_.vrolv))
     {
       _.rolconnob = nodeconn_BM (_.vrolv);
-      if (_.rolconnob == k_arguments)
+      if (_.rolconnob == k_arguments || _.rolconnob == k_locals
+          || _.rolconnob == k_constants)
         {
+          LOCALRETURN_BM (k_value);
+        }
+      else if (_.rolconnob == k_numbers)
+        {
+          LOCALRETURN_BM (k_int);
         }
       else
         FAILHERE ();
     }
 #warning incomplete miniscan_var_BM
   DBGPRINTF_BM ("miniscan_var end varob=%s", objectdbg_BM (_.varob));
-  LOCALJUSTRETURN_BM ();
+  LOCALRETURN_BM (NULL);
 failure:
   _.errorv =
     makenodevar_BM (k_miniscan_var, varob, routprepob, taggedint_BM (depth),
@@ -1017,13 +1028,13 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
  const quasinode_tyBM * restargs /*fromob */ )
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_1vuSUudDrEr_9UjFr4Pcy8r,
-                 objectval_tyBM * connob; objectval_tyBM * routprepob;
-                 value_tyBM expv;
+                 objectval_tyBM * connob;
+                 objectval_tyBM * routprepob; value_tyBM expv;
                  objectval_tyBM * fromob; value_tyBM connargsv;
-                 objectval_tyBM * restypob; value_tyBM resultv;
+                 objectval_tyBM * restypob;
+                 value_tyBM resultv;
                  value_tyBM errorv;
-                 value_tyBM cursonv;
-                 objectval_tyBM * curargob;
+                 value_tyBM cursonv; objectval_tyBM * curargob;
                  objectval_tyBM * curtypob; objectval_tyBM * curargctypob;
                  objectval_tyBM * connrestypob; objectval_tyBM * curcomptypob;
                  value_tyBM extraerrorv;
