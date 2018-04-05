@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 290 objects
+// for 291 objects
 // with 0 modules
 
 
@@ -350,7 +350,8 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of return statement"
-!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _7vlMCZ0yvva_6tx0lFlqBG8 ()
 ~)
 
 !)_6dfdSwPGgR8_2EaBHYhuZ5G
@@ -3052,6 +3053,16 @@ _4lKK08v9A0t_0GGsir35UxP _4bYUiDmxrKK_6nPPlEl8y8x) ~)
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _4SHgzjNdlGo_1CxI9hBNDrC _4RFtYFUdfau_7Vm5jZ4Wm8e) ~)
 
 !)_7sg0DjYTA8n_66vhff9SgXH
+
+
+
+!(_7vlMCZ0yvva_6tx0lFlqBG8
+!|*
+!@ 1522939134.49
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniscan_stmt\u00b0basiclo_return"
+!)_7vlMCZ0yvva_6tx0lFlqBG8
 
 
 
