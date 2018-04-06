@@ -1134,12 +1134,15 @@ ROUTINEOBJNAME_BM (_7vlMCZ0yvva_6tx0lFlqBG8)    // miniscan_stmt°basiclo_return
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7vlMCZ0yvva_6tx0lFlqBG8,
                  objectval_tyBM * recv;
-                 objectval_tyBM * routprepob;
-                 objectval_tyBM * fromblockob;
-                 value_tyBM retexpv; objectval_tyBM * retypob;
-                 value_tyBM resultv;
+                 objectval_tyBM * routprepob; objectval_tyBM * fromblockob;
+                 value_tyBM retexpv;
+                 objectval_tyBM * retypob; value_tyBM resultv;
+                 value_tyBM errorv;
     );
+  int failin = -1;
+#define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   objectval_tyBM *k_return = BMK_2DH0ucElTgh_62vxjxLcfev;
+  objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
   int depth = 0;
   _.recv = objectcast_BM (arg1);
   _.routprepob = objectcast_BM (arg2);
@@ -1161,9 +1164,15 @@ ROUTINEOBJNAME_BM (_7vlMCZ0yvva_6tx0lFlqBG8)    // miniscan_stmt°basiclo_return
   DBGPRINTF_BM
     ("miniscan_stmt°basiclo_return recv=%s retypob=%s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.retypob));
-#warning unimplemented miniscan_stmt°basiclo_return  _7vlMCZ0yvva_6tx0lFlqBG8 routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented miniscan_stmt°basiclo_return  _7vlMCZ0yvva_6tx0lFlqBG8 routine");
-  LOCALRETURN_BM (_.resultv);
+  // perhaps we could handle other cases, e.g. for something else than
+  // basiclo_function-s.
+  if (_.retypob != k_value)
+    FAILHERE ();
+  LOCALRETURN_BM (_.retypob);
+failure:
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_return failin %d", failin);
+  _.errorv =
+    makenodevar_BM (k_return, _.retexpv, _.routprepob,
+                    taggedint_BM (depth), _.recv, NULL, NULL);
+  FAILURE_BM (failin, _.errorv, (struct stackframe_stBM *) &_);
 }                               /* end  miniscan_stmt°basiclo_return  _7vlMCZ0yvva_6tx0lFlqBG8 */
