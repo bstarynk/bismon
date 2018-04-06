@@ -468,6 +468,7 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
  const value_tyBM arg4 __attribute__ ((unused)),
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
+  int failin = -1;
   enum
   {
     closix_nbvars,
@@ -476,13 +477,17 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * closv;
-                 objectval_tyBM * recv; objectval_tyBM * routprep;
-                 objectval_tyBM * curob; value_tyBM curexp; value_tyBM resv;
-                 objectval_tyBM * typob;
+                 objectval_tyBM * recv;
+                 objectval_tyBM * routprep;
+                 objectval_tyBM * curob; value_tyBM curexp;
+                 value_tyBM resv;
+                 objectval_tyBM * typob; objectval_tyBM * blockhsetob;
+                 value_tyBM errorv;
     );
   LOCALGETFUNV_BM (_.closv);
   if (!isclosure_BM (_.closv) || closurewidth_BM (_.closv) != closix__LAST)
     LOCALRETURN_BM (NULL);
+  const objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
   const objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
   const objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   const objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
@@ -510,22 +515,31 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
     WEAKASSERT_BM (istaggedint_BM (nbargsv));
     nbargs = getint_BM (nbargsv);
   }
+  _.blockhsetob = objectcast_BM (objgetattr_BM (_.routprep, k_blocks));
   DBGPRINTF_BM
-    ("collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu start recv=%s routprep=%s depth=%d nbvar=%d nbargs=%d",
+    ("collect_blocks°basiclo_block start recv=%s routprep=%s depth=%d nbvar=%d nbargs=%d blockhsetob=%s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep), depth, (int) nbargs,
-     (int) nbvars);
+     (int) nbvars, objectdbg2_BM (_.blockhsetob));
+  WEAKASSERT_BM (objhasassocpayl_BM (_.routprep));
+  {
+    objlock_BM (_.blockhsetob);
+    WEAKASSERT_BM (objhashashsetpayl_BM (_.blockhsetob));
+    objhashsetaddpayl_BM (_.blockhsetob, _.recv);
+    objunlock_BM (_.blockhsetob);
+  }
   if (!objhasassocpayl_BM (_.routprep))
     {
       fprintf (stderr, "collect_blocks°basiclo_block bad routprep %s\n",
                objectdbg_BM (_.routprep));
       LOCALRETURN_BM (NULL);
     }
+
   for (int varix = 0; varix < nbvars; varix++)
     {
       _.curob = objectcast_BM (objgetcomp_BM (_.recv, varix));
       DBGPRINTF_BM
-        ("collect_blocks°basiclo_block varix#%d curob %s", varix,
-         objectdbg_BM (_.curob));
+        ("collect_blocks°basiclo_block recv %s varix#%d curob %s",
+         objectdbg_BM (_.recv), varix, objectdbg1_BM (_.curob));
       if (!_.curob)
         {
           fprintf (stderr,
@@ -942,8 +956,8 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
     }
   objunlock_BM (_.recv);
   DBGPRINTF_BM
-    ("miniscan_stmt°basiclo_cond unimplemented end recv=%s",
-     objectdbg_BM (_.recv));
+    ("miniscan_stmt°basiclo_cond ending recv=%s badson %s",
+     objectdbg_BM (_.recv), badson ? "true" : "false");
   if (badson)
     LOCALRETURN_BM (NULL);
   else
@@ -1133,9 +1147,8 @@ ROUTINEOBJNAME_BM (_7vlMCZ0yvva_6tx0lFlqBG8)    // miniscan_stmt°basiclo_return
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7vlMCZ0yvva_6tx0lFlqBG8,
-                 objectval_tyBM * recv;
-                 objectval_tyBM * routprepob; objectval_tyBM * fromblockob;
-                 value_tyBM retexpv;
+                 objectval_tyBM * recv; objectval_tyBM * routprepob;
+                 objectval_tyBM * fromblockob; value_tyBM retexpv;
                  objectval_tyBM * retypob; value_tyBM resultv;
                  value_tyBM errorv;
     );
