@@ -374,8 +374,10 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       LOCALRETURN_BM (NULL);
     }
   DBGPRINTF_BM
-    ("start prepare_routine°basiclo_minifunction after collect_blocks recv %s routprep %s",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep));
+    ("start prepare_routine°basiclo_minifunction after collect_blocks recv %s routprep %s collbl=%s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
+     debug_outstr_value_BM (_.collbl, (struct stackframe_stBM *) &_, 0));
+  WEAKASSERT_BM (false && "prepare_routine°basiclo_minifunction incomplete");
   LOCALRETURN_BM (_.routprep);
 }                               /* end prepare_routine°basiclo_minifunction  _07qYMXftJRR_9dde2ASz4e9  */
 
@@ -477,8 +479,7 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const closure_tyBM * closv;
-                 objectval_tyBM * recv;
-                 objectval_tyBM * routprep;
+                 objectval_tyBM * recv; objectval_tyBM * routprep;
                  objectval_tyBM * curob; value_tyBM curexp;
                  value_tyBM resv;
                  objectval_tyBM * typob; objectval_tyBM * blockhsetob;
