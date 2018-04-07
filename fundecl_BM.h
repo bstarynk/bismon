@@ -25,6 +25,8 @@ static inline pid_t gettid_BM (void);
 extern int64_t prime_above_BM (int64_t n);
 extern int64_t prime_below_BM (int64_t n);
 
+extern void
+backtrace_print_BM (struct backtrace_state *state, int skip, FILE * f);
 
 static inline double clocktime_BM (clockid_t);
 static inline double cputime_BM (void);

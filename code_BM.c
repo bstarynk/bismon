@@ -1996,7 +1996,6 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
   _.resgen =
     send2_BM (_.recv, k_generate_module, (struct stackframe_stBM *) &_,
               _.modgenob, _.resprep);
-  WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
   if (!_.resgen)
     {
       DBGPRINTF_BM
@@ -2007,8 +2006,10 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
       LOCALRETURN_BM (NULL);
     }
   else
-    DBGPRINTF_BM ("@@emit_module recv=%s generate_module done",
-                  objectdbg_BM (_.recv));
+    DBGPRINTF_BM ("@@emit_module recv=%s generate_module done resgen=%s",
+                  objectdbg_BM (_.recv),
+                  debug_outstr_value_BM (_.resgen,
+                                         (struct stackframe_stBM *) &_, 0));
   LOCALRETURN_BM (_.recv);
 #warning emit_module of plain_module incomplete
 }                               /* end  ROUTINE _1gME6zn82Kf_8hzWibLFRfz */

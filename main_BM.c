@@ -66,7 +66,7 @@ weakassertfailureat_BM (const char *condmsg, const char *fil, int lin)
     {
       fprintf (stderr, "\n\n\n** full backtrace **\n");
       fflush (stderr);
-      backtrace_print (backtracestate_BM, 1, stderr);
+      backtrace_print_BM (backtracestate_BM, 1, stderr);
       fprintf (stderr, "\n----- end full backtrace ------\n\n");
       fflush (stderr);
     }
@@ -139,7 +139,7 @@ failure_at_BM (int failcode, const char *fil, int lineno,
                    thnambuf);
           if (backtracestate_BM)
             {
-              backtrace_print (backtracestate_BM, 1, stderr);
+              backtrace_print_BM (backtracestate_BM, 1, stderr);
               fprintf (stderr, "\n----- end failure backtrace ------\n\n");
             }
           fflush (stderr);
@@ -179,7 +179,7 @@ fatal_stop_at_BM (const char *fil, int lineno)
     {
       fprintf (stderr, "\n\n\n** full fatal backtrace **\n");
       fflush (stderr);
-      backtrace_print (backtracestate_BM, 1, stderr);
+      backtrace_print_BM (backtracestate_BM, 1, stderr);
       fprintf (stderr, "\n----- end full fatal backtrace ------\n\n");
     }
   fflush (stderr);
@@ -810,3 +810,82 @@ backtracerrorcb_BM (void *data __attribute__ ((unused)),
   backtracestate_BM = NULL;
   FATAL_BM ("backtrace error: %s #%d", msg, errnum);
 }                               /* end backtracerrorcb_BM */
+
+
+////////////////////////////////////////////////////////////////
+
+/// nearly copied from Ian Taylor's libbacktrace/print.c
+struct print_data_BM
+{
+  struct backtrace_state *state;
+  FILE *f;
+};
+/* Print one level of a backtrace.  */
+
+static int
+printbt_callback_BM (void *data, uintptr_t pc, const char *filename,
+                     int lineno, const char *function)
+{
+  struct print_data_BM *pdata = (struct print_data_BM *) data;
+
+  const char *funame = function;
+  char nambuf[80];
+  memset (nambuf, 0, sizeof (nambuf));
+  if (!funame)
+    {
+      Dl_info di;
+      memset (&di, 0, sizeof (di));
+      if (dladdr (pc, &di))
+        {
+          if (di.dli_sname)
+            {
+              fprintf (pdata->f, "0x%lx @%s+%#lx\n",
+                       (unsigned long) pc, di.dli_sname,
+                       (char *) pc - (char *) di.dli_saddr);
+            }
+          else if (di.dli_fname)
+            {
+              fprintf (pdata->f, "0x%lx @@%s+%#lx\n",
+                       (unsigned long) pc, basename (di.dli_fname),
+                       (char *) pc - (char *) di.dli_fbase);
+            }
+          else
+            fprintf (pdata->f, "0x%lx ?-?\n", (unsigned long) pc);
+        }
+      else
+        fprintf (pdata->f, "0x%lx ???\n", (unsigned long) pc);
+    }
+  else
+    fprintf (pdata->f, "0x%lx %s\n", (unsigned long) pc, funame);
+  if (filename)
+    fprintf (pdata->f, "\t%s:%d\n", basename (filename), lineno);
+  return 0;
+}                               /* end printbt_callback_BM */
+
+/* Print errors to stderr.  */
+
+static void
+errorbt_callback_BM (void *data, const char *msg, int errnum)
+{
+  struct print_data_BM *pdata = (struct print_data_BM *) data;
+
+  //if (pdata->state->filename != NULL)
+  //  fprintf (stderr, "%s: ", pdata->state->filename);
+  fprintf (stderr, "libbacktrace: %s", msg);
+  if (errnum > 0)
+    fprintf (stderr, ": %s", strerror (errnum));
+  fputc ('\n', stderr);
+}
+
+/* Print a backtrace.  */
+
+void
+backtrace_print_BM (struct backtrace_state *state, int skip, FILE * f)
+{
+  struct print_data_BM data;
+
+  data.state = state;
+  data.f = f;
+  backtrace_full (state, skip + 1, printbt_callback_BM, errorbt_callback_BM,
+                  (void *) &data);
+}                               /* end backtrace_print_BM */
