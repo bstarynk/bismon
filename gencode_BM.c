@@ -24,7 +24,10 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP);
 
 value_tyBM
 ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_function
-(struct stackframe_stBM * stkf, const value_tyBM arg1, const value_tyBM arg2, const value_tyBM arg3,    //
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // recv
+ const value_tyBM arg2,         // modgen
+ const value_tyBM arg3,         // prepval
  const value_tyBM arg4_ __attribute__ ((unused)),
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
@@ -49,8 +52,9 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   _.modgenob = /*module generation object */ objectcast_BM (arg2);
   _.prepvalset = /* set of routines */ (value_tyBM) setcast_BM (arg3);
   DBGPRINTF_BM
-    ("start prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP recv=%s",
-     objectdbg_BM (_.recv));
+    ("start prepare_routine:basiclo_function recv=%s modgen=%s prepval=%s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.modgenob),
+     debug_outstr_value_BM (_.prepvalset, (struct stackframe_stBM *) &_, 0));
   DBGPRINTF_BM
     ("prepare_routine:basiclo_function modgenob=%s is a %s\n",
      objectdbg_BM (_.modgenob), objectdbg1_BM (objclass_BM (_.modgenob)));
@@ -86,6 +90,7 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   DBGPRINTF_BM
     ("prepare_routine:basiclo_function end recv %s", objectdbg_BM (_.recv));
 #warning incomplete  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP
+  WEAKASSERT_BM (false && "prepare_routine:basiclo_function incomplete");
   LOCALRETURN_BM (NULL);
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */
 
