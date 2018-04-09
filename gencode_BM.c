@@ -1210,8 +1210,8 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9M3BqmOS7mA_96DTa52k7Xq,
-                 objectval_tyBM * routprepob; objectval_tyBM * modgenob;
-                 objectval_tyBM * routob;
+                 objectval_tyBM * routprepob;
+                 objectval_tyBM * modgenob; objectval_tyBM * routob;
                  objectval_tyBM * hsetblockob; value_tyBM blocksetv;
                  value_tyBM resultv;
     );
@@ -1283,10 +1283,16 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
                  objectval_tyBM * routprepob;
                  objectval_tyBM * modgenob; objectval_tyBM * routob;
-                 objectval_tyBM * hsetblockob; value_tyBM blocksetv;
+                 objectval_tyBM * hsetblockob;
+                 value_tyBM blocksetv;
+                 value_tyBM argtupv; objectval_tyBM * bodyob;
+                 objectval_tyBM * resultob;
     );
   objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
   objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
+  objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
+  objectval_tyBM *k_body = BMK_7DQyvJFMOrC_9IfC3CtYknn;
+  objectval_tyBM *k_result = BMK_7bD9VtDkGSn_7lxHeYuuFLR;
   WEAKASSERT_BM (isobject_BM (arg1));
   _.routprepob = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (arg2));
@@ -1296,6 +1302,8 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   DBGPRINTF_BM
     ("emit_definition°simple_routine_preparation start routprepob=%s modgenob=%s rank#%d",
      objectdbg_BM (_.routprepob), objectdbg1_BM (_.modgenob), rank);
+  objlock_BM (_.modgenob);
+  WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
   {
     objlock_BM (_.routprepob);
     _.routob =
@@ -1305,6 +1313,53 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   DBGPRINTF_BM
     ("emit_definition°simple_routine_preparation routprepob=%s routob=%s",
      objectdbg_BM (_.routprepob), objectdbg1_BM (_.routob));
+  WEAKASSERT_BM (isobject_BM (_.routob));
+  {
+    objlock_BM (_.routob);
+    _.argtupv = objgetattr_BM (_.routob, k_arguments);
+    _.bodyob = objectcast_BM (objgetattr_BM (_.routob, k_body));
+    _.resultob = objectcast_BM (objgetattr_BM (_.routob, k_result));
+    objunlock_BM (_.routob);
+  }
+  DBGPRINTF_BM
+    ("emit_definition°simple_routine_preparation routprepob=%s argtupv=%s bodyob=%s resultob=%s",
+     objectdbg_BM (_.routprepob),
+     debug_outstr_value_BM (_.argtupv, (struct stackframe_stBM *) &_, 0),
+     objectdbg1_BM (_.bodyob), objectdbg2_BM (_.resultob));
+  int nbargs = tuplesize_BM (_.argtupv);
+  {
+    char routidbuf[32];
+    memset (routidbuf, 0, sizeof (routidbuf));
+    idtocbuf32_BM (objid_BM (_.routob), routidbuf);
+    objstrbufferprintfpayl_BM (_.modgenob, "\n"
+                               "value_tyBM crout%s_BM\n"
+                               " (struct stackframe_stBM* stkf,\n",
+                               routidbuf);
+    objstrbufferprintfpayl_BM ("  // %d arguments\n", nbargs);
+    for (int aix = 0; aix < 4; aix++)
+      {
+        if (aix < nbargs)
+          objstrbufferprintfpayl_BM (_.modgenob,
+                                     "  const value_tyBM arg%d,  // %s\n",
+                                     aix,
+                                     objectdbg_BM (tuplecompnth_BM
+                                                   (_.argtupv, aix)));
+        else
+          objstrbufferprintfpayl_BM (_.modgenob,
+                                     "  const value_tyBM arg%d_ __attribute__((unused)),\n",
+                                     aix);
+      };
+    if (nbargs > 4)
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "  const quasinode_tyBM * restargs /* %d extrargs */)\n",
+                                 nbargs - 4);
+    else
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "  const quasinode_tyBM * restargs_ __attribute__((unused)))\n");
+  }
+  objstrbufferprintfpayl_BM (_.modgenob, "{ // start of %s\n",
+                             objectdbg_BM (_.routob));
+  objunlock_BM (_.modgenob);
 #warning unimplemented emit_definition°simple_routine_preparation routine
   WEAKASSERT_BM (false
                  &&
