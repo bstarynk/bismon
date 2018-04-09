@@ -1194,3 +1194,70 @@ failure:
                     taggedint_BM (depth), _.recv, NULL, NULL);
   FAILURE_BM (failin, _.errorv, (struct stackframe_stBM *) &_);
 }                               /* end  miniscan_stmt°basiclo_return  _7vlMCZ0yvva_6tx0lFlqBG8 */
+
+
+
+// emit_declaration°simple_routine_preparation _9M3BqmOS7mA_96DTa52k7Xq
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_routine_preparation 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // recv
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // index
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_9M3BqmOS7mA_96DTa52k7Xq,
+                 objectval_tyBM * routprepob; objectval_tyBM * modgenob;
+                 value_tyBM resultv;
+    );
+  WEAKASSERT_BM (isobject_BM (arg1));
+  _.routprepob = objectcast_BM (arg1);
+  WEAKASSERT_BM (isobject_BM (arg2));
+  _.modgenob = objectcast_BM (arg2);
+  WEAKASSERT_BM (istaggedint_BM (arg3));
+  int rank = getint_BM (arg3);
+  WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
+  DBGPRINTF_BM
+    ("emit_declaration°simple_routine_preparation start routprepob=%s modgenob=%s rank#%d",
+     objectdbg_BM (_.routprepob), objectdbg1_BM (_.modgenob), rank);
+#warning unimplemented _9M3BqmOS7mA_96DTa52k7Xq routine
+  WEAKASSERT_BM (false && "unimplemented _9M3BqmOS7mA_96DTa52k7Xq routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end emit_declaration°simple_routine_preparation _9M3BqmOS7mA_96DTa52k7Xq */
+
+
+
+///////
+// emit_definition°simple_routine_preparation _2Lk2DjTDzQh_3aTEVKDE2Ip
+extern objrout_sigBM ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routine_preparation 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // recv
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // index
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
+                 objectval_tyBM * routprepob; objectval_tyBM * modgenob;
+                 value_tyBM resultv;
+    );
+  WEAKASSERT_BM (isobject_BM (arg1));
+  _.routprepob = objectcast_BM (arg1);
+  WEAKASSERT_BM (isobject_BM (arg2));
+  _.modgenob = objectcast_BM (arg2);
+  WEAKASSERT_BM (istaggedint_BM (arg3));
+  int rank = getint_BM (arg3);
+  WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
+  DBGPRINTF_BM
+    ("emit_definition°simple_routine_preparation start routprepob=%s modgenob=%s rank#%d",
+     objectdbg_BM (_.routprepob), objectdbg1_BM (_.modgenob), rank);
+#warning unimplemented _2Lk2DjTDzQh_3aTEVKDE2Ip routine
+  WEAKASSERT_BM (false && "unimplemented _2Lk2DjTDzQh_3aTEVKDE2Ip routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end emit_definition°simple_routine_preparation  _2Lk2DjTDzQh_3aTEVKDE2Ip */
