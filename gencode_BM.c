@@ -1244,9 +1244,12 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
-                 objectval_tyBM * routprepob; objectval_tyBM * modgenob;
-                 value_tyBM resultv;
+                 objectval_tyBM * routprepob;
+                 objectval_tyBM * modgenob; objectval_tyBM * routob;
+                 objectval_tyBM * hsetblockob; value_tyBM blocksetv;
     );
+  objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
+  objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
   WEAKASSERT_BM (isobject_BM (arg1));
   _.routprepob = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (arg2));
@@ -1257,7 +1260,41 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   DBGPRINTF_BM
     ("emit_definition°simple_routine_preparation start routprepob=%s modgenob=%s rank#%d",
      objectdbg_BM (_.routprepob), objectdbg1_BM (_.modgenob), rank);
-#warning unimplemented _2Lk2DjTDzQh_3aTEVKDE2Ip routine
-  WEAKASSERT_BM (false && "unimplemented _2Lk2DjTDzQh_3aTEVKDE2Ip routine");
-  LOCALRETURN_BM (_.resultv);
+  {
+    objlock_BM (_.routprepob);
+    _.routob =
+      objectcast_BM (objgetattr_BM (_.routprepob, k_prepare_routine));
+    _.hsetblockob = objectcast_BM (objgetattr_BM (_.routprepob, k_blocks));
+    DBGPRINTF_BM
+      ("emit_definition°simple_routine_preparation routprepob=%s routob=%s hsetblockob=%s",
+       objectdbg_BM (_.routprepob), objectdbg1_BM (_.routob),
+       objectdbg2_BM (_.hsetblockob));
+    {
+      objlock_BM (_.hsetblockob);
+      WEAKASSERT_BM (isobject_BM (_.hsetblockob));
+      _.blocksetv = objhashsettosetpayl_BM (_.hsetblockob);
+      objunlock_BM (_.hsetblockob);
+      DBGPRINTF_BM
+        ("emit_definition°simple_routine_preparation routprepob=%s blocksetv=%s",
+         objectdbg_BM (_.routprepob),
+         debug_outstr_value_BM (_.blocksetv, (struct stackframe_stBM *) &_,
+                                0));
+      if (_.blocksetv)
+        objputattr_BM (_.routprepob, k_blocks, _.blocksetv);
+    }
+    objunlock_BM (_.routprepob);
+  }
+  WEAKASSERT_BM (isobject_BM (_.routob));
+  {
+    char routidbuf[32];
+    memset (routidbuf, 0, sizeof (routidbuf));
+    idtocbuf32_BM (objid_BM (_.routob), routidbuf);
+    objlock_BM (_.modgenob);
+    WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
+    objstrbufferprintfpayl_BM (_.modgenob, "\n"
+                               "extern objrout_sigBM crout%s_BM;\n",
+                               routidbuf);
+    objunlock_BM (_.modgenob);
+  }
+  LOCALRETURN_BM (_.routprepob);
 }                               /* end emit_definition°simple_routine_preparation  _2Lk2DjTDzQh_3aTEVKDE2Ip */
