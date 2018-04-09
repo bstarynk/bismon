@@ -2241,13 +2241,15 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv; objectval_tyBM * curout;
-                 objectval_tyBM * modgen; value_tyBM prepval;
-                 value_tyBM preproutval; struct datavectval_stBM *vectprepr;
+                 objectval_tyBM * modgen;
+                 value_tyBM prepval;
+                 value_tyBM preproutval; objectval_tyBM * vectprepob;
                  value_tyBM prepmod;
     );
   _.recv = arg1;
   objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
   objectval_tyBM *k_prepared_routines = BMK_9qn0Hp8HaF5_7yeAJiNYtp5;
+  objectval_tyBM *k_vector_object = BMK_0Ie11LN3K5q_0mcL2jRBwgk;
   ASSERT_BM (isobject_BM (_.recv));
   DBGPRINTF_BM
     ("@@generate_module°basiclo*module  recv=%s\n"
@@ -2269,8 +2271,13 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
       LOCALRETURN_BM (NULL);
     }
   unsigned nbrout = setcardinal_BM ((const setval_tyBM *) _.prepval);
-  DBGPRINTF_BM ("@@generate_module°basiclo*module nbrout=%u", nbrout);
-  _.vectprepr = datavect_grow_BM (NULL, nbrout);
+  _.vectprepob = makeobj_BM ();
+  objputclass_BM (_.vectprepob, k_vector_object);
+  objputdatavectpayl_BM (_.vectprepob, nbrout + 1);
+  objputattr_BM (_.modgen, k_prepared_routines, _.vectprepob);
+  objtouchnow_BM (_.modgen);
+  DBGPRINTF_BM ("@@generate_module°basiclo*module nbrout=%u vectprepob=%s",
+                nbrout, objectdbg_BM (_.vectprepob));
   for (unsigned ix = 0; ix < nbrout; ix++)
     {
       _.curout = setelemnth_BM ((const setval_tyBM *) _.prepval, ix);
@@ -2281,6 +2288,11 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
       _.preproutval = send2_BM (_.curout, k_prepare_routine,
                                 (struct stackframe_stBM *) &_, _.modgen,
                                 _.prepval);
+      DBGPRINTF_BM
+        ("@@generate_module°basiclo*module prepare_routine of %s ix#%d preproutval=%s",
+         objectdbg_BM (_.curout), ix,
+         debug_outstr_value_BM (_.preproutval, (struct stackframe_stBM *) &_,
+                                0));
       if (!_.preproutval)
         {
           DBGPRINTF_BM
@@ -2288,16 +2300,20 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
              objectdbg_BM (_.curout));
           LOCALRETURN_BM (NULL);
         }
-      _.vectprepr = datavect_append_BM (_.vectprepr, _.preproutval);
+      objdatavectappendpayl_BM (_.vectprepob, _.preproutval);
     }
   _.prepmod =
-    (const value_tyBM) datavect_to_node_BM (_.vectprepr, k_prepared_routines);
+    (const value_tyBM) objdatavecttonodepayl_BM (_.vectprepob,
+                                                 k_prepared_routines);
   objputattr_BM (_.modgen, k_prepared_routines, _.prepmod);
   objtouchnow_BM (_.modgen);
   DBGPRINTF_BM
-    ("@@generate_module°basiclo*module incomplete modgen=%s",
-     objectdbg_BM (_.modgen));
+    ("@@generate_module°basiclo*module incomplete modgen=%s prepmod=%s",
+     objectdbg_BM (_.modgen),
+     debug_outstr_value_BM (_.prepmod, (struct stackframe_stBM *) &_, 0));
   // we should now emit each routine...
+  WEAKASSERT_BM (false
+                 && "generate_module°basiclo*module should emit routines");
 #warning generate_module°basiclo*module incomplete
   LOCALRETURN_BM (NULL);
 }                               /* end ROUTINE _50d65bJypCN_6IJeVtssx9I */

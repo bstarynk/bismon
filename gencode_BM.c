@@ -382,7 +382,6 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     ("start prepare_routine°basiclo_minifunction after collect_blocks recv %s routprep %s collbl=%s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
      debug_outstr_value_BM (_.collbl, (struct stackframe_stBM *) &_, 0));
-  WEAKASSERT_BM (false && "prepare_routine°basiclo_minifunction incomplete");
   LOCALRETURN_BM (_.routprep);
 }                               /* end prepare_routine°basiclo_minifunction  _07qYMXftJRR_9dde2ASz4e9  */
 
