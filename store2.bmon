@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 297 objects
+// for 299 objects
 // with 0 modules
 
 
@@ -1447,6 +1447,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_5uPst3m4mdx_05Xl1AoTnZL |=number_set|
+!~ name (~ number_set
+~)
+!@ 1523337661.19
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the set of numbers"
+!)_5uPst3m4mdx_05Xl1AoTnZL
+
+
+
 !(_32eKNcTZ9HN_80t0nk47Mha |=numbers|
 !~ name (~ numbers
 ~)
@@ -2150,6 +2161,17 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_5MLPTLuT4ey_0YKIUpvXybX
+
+
+
+!(_6Fl0Z0OTtV9_8QTsq3uDu4q |=value_set|
+!~ name (~ value_set
+~)
+!@ 1523337642.82
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the set of values"
+!)_6Fl0Z0OTtV9_8QTsq3uDu4q
 
 
 

@@ -1212,11 +1212,21 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9M3BqmOS7mA_96DTa52k7Xq,
                  objectval_tyBM * routprepob;
                  objectval_tyBM * modgenob; objectval_tyBM * routob;
-                 objectval_tyBM * hsetblockob; value_tyBM blocksetv;
-                 value_tyBM resultv;
+                 objectval_tyBM * hsetblockob;
+                 value_tyBM blocksetv;
+                 objectval_tyBM * hsetvalob;
+                 objectval_tyBM * hsetnumob;
+                 objectval_tyBM * keyob;
+                 objectval_tyBM * bindconnob;
+                 value_tyBM resultv; value_tyBM keysetv;
+                 value_tyBM keybindv;
     );
   objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
   objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
+  objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
+  objectval_tyBM *k_value_set = BMK_6Fl0Z0OTtV9_8QTsq3uDu4q;
+  objectval_tyBM *k_number_set = BMK_5uPst3m4mdx_05Xl1AoTnZL;
+  objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   WEAKASSERT_BM (isobject_BM (arg1));
   _.routprepob = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (arg2));
@@ -1248,6 +1258,38 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
       if (_.blocksetv)
         objputattr_BM (_.routprepob, k_blocks, _.blocksetv);
     }
+    {
+      _.hsetvalob = makeobj_BM ();
+      objputclass_BM (_.hsetvalob, k_hset_object);
+      objputattr_BM (_.routprepob, k_value_set, _.hsetvalob);
+      objputattr_BM (_.hsetvalob, k_in, _.routprepob);
+      _.hsetnumob = makeobj_BM ();
+      objputclass_BM (_.hsetnumob, k_hset_object);
+      objputattr_BM (_.routprepob, k_number_set, _.hsetnumob);
+      objputattr_BM (_.hsetnumob, k_in, _.routprepob);
+      _.keysetv = objassocsetattrspayl_BM (_.routprepob);
+      DBGPRINTF_BM
+        ("emit_declaration°simple_routine_preparation routprepob=%s hsetvalob=%s hsetnumob=%s keyset=%s",
+         objectdbg_BM (_.routprepob), objectdbg1_BM (_.hsetvalob),
+         objectdbg2_BM (_.hsetnumob), debug_outstr_value_BM (_.keysetv,
+                                                             (struct
+                                                              stackframe_stBM
+                                                              *) &_, 0));
+      unsigned nbkeys = setcardinal_BM (_.keysetv);
+      for (unsigned kix = 0; kix < nbkeys; kix++)
+        {
+          _.bindconnob = NULL;
+          _.keyob = setelemnth_BM (_.keysetv, kix);
+          _.keybindv = objassocgetattrpayl_BM (_.routprepob, _.keyob);
+          DBGPRINTF_BM
+            ("emit_declaration°simple_routine_preparation routprepob=%s kix#%d keyob=%s keybind=%s",
+             objectdbg_BM (_.routprepob), kix, objectdbg1_BM (_.keyob),
+             debug_outstr_value_BM (_.keybindv, (struct stackframe_stBM *) &_,
+                                    0));
+          WEAKASSERT_BM (isnode_BM (_.keybindv));
+          _.bindconnob = nodeconn_BM (_.keybindv);
+        }
+    }
     objunlock_BM (_.routprepob);
   }
   WEAKASSERT_BM (isobject_BM (_.routob));
@@ -1256,10 +1298,16 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
     memset (routidbuf, 0, sizeof (routidbuf));
     idtocbuf32_BM (objid_BM (_.routob), routidbuf);
     objlock_BM (_.modgenob);
+    char *routname = findobjectname_BM (_.routob);
     WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
-    objstrbufferprintfpayl_BM (_.modgenob, "\n"
-                               "extern objrout_sigBM crout%s_BM;\n",
-                               routidbuf);
+    if (routname)
+      objstrbufferprintfpayl_BM (_.modgenob, "\n"
+                                 "extern objrout_sigBM crout%s_BM; // %s\n",
+                                 routidbuf, routname);
+    else
+      objstrbufferprintfpayl_BM (_.modgenob, "\n"
+                                 "extern objrout_sigBM crout%s_BM;\n",
+                                 routidbuf);
     objunlock_BM (_.modgenob);
   }
   LOCALRETURN_BM (_.routprepob);
@@ -1282,9 +1330,9 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
                  objectval_tyBM * routprepob;
-                 objectval_tyBM * modgenob; objectval_tyBM * routob;
-                 objectval_tyBM * hsetblockob;
-                 value_tyBM blocksetv;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routob;
+                 objectval_tyBM * hsetblockob; value_tyBM blocksetv;
                  value_tyBM argtupv; objectval_tyBM * bodyob;
                  objectval_tyBM * resultob;
     );
@@ -1328,13 +1376,20 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
      objectdbg1_BM (_.bodyob), objectdbg2_BM (_.resultob));
   int nbargs = tuplesize_BM (_.argtupv);
   {
+    char *routname = findobjectname_BM (_.routob);
     char routidbuf[32];
     memset (routidbuf, 0, sizeof (routidbuf));
     idtocbuf32_BM (objid_BM (_.routob), routidbuf);
-    objstrbufferprintfpayl_BM (_.modgenob, "\n"
-                               "value_tyBM crout%s_BM\n"
-                               " (struct stackframe_stBM* stkf,\n",
-                               routidbuf);
+    if (routname)
+      objstrbufferprintfpayl_BM (_.modgenob, "\n"
+                                 "value_tyBM crout%s_BM\n"
+                                 " (struct stackframe_stBM* stkf, //+ %s\n",
+                                 routidbuf, routname);
+    else
+      objstrbufferprintfpayl_BM (_.modgenob, "\n"
+                                 "value_tyBM crout%s_BM\n"
+                                 " (struct stackframe_stBM* stkf,\n",
+                                 routidbuf);
     objstrbufferprintfpayl_BM ("  // %d arguments\n", nbargs);
     for (int aix = 0; aix < 4; aix++)
       {
