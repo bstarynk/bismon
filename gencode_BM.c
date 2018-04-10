@@ -1226,10 +1226,8 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9M3BqmOS7mA_96DTa52k7Xq,
                  objectval_tyBM * routprepob;
-                 objectval_tyBM * modgenob;
-                 objectval_tyBM * routob;
-                 objectval_tyBM * hsetblockob;
-                 value_tyBM blocksetv;
+                 objectval_tyBM * modgenob; objectval_tyBM * routob;
+                 objectval_tyBM * hsetblockob; value_tyBM blocksetv;
                  objectval_tyBM * hsetvalob; objectval_tyBM * hsetnumob;
                  objectval_tyBM * keyob; objectval_tyBM * bindconnob;
                  value_tyBM resultv; value_tyBM keysetv;
@@ -1377,15 +1375,27 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
                  objectval_tyBM * routprepob;
                  objectval_tyBM * modgenob; objectval_tyBM * routob;
-                 objectval_tyBM * hsetblockob; value_tyBM blocksetv;
+                 objectval_tyBM * hsetblockob;
+                 value_tyBM blocksetv;
                  value_tyBM argtupv; objectval_tyBM * bodyob;
                  objectval_tyBM * resultob;
+                 value_tyBM setnumv;
+                 value_tyBM setvalv; objectval_tyBM * varob;
+                 objectval_tyBM * typob;
     );
+  char routidbuf[32];
+  memset (routidbuf, 0, sizeof (routidbuf));
   objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
   objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   objectval_tyBM *k_body = BMK_7DQyvJFMOrC_9IfC3CtYknn;
   objectval_tyBM *k_result = BMK_7bD9VtDkGSn_7lxHeYuuFLR;
+  objectval_tyBM *k_value_set = BMK_6Fl0Z0OTtV9_8QTsq3uDu4q;
+  objectval_tyBM *k_number_set = BMK_5uPst3m4mdx_05Xl1AoTnZL;
+  objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
+  objectval_tyBM *k_object = BMK_7T9OwSFlgov_0wVJaK1eZbn;
+  objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
+  objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
   WEAKASSERT_BM (isobject_BM (arg1));
   _.routprepob = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (arg2));
@@ -1401,11 +1411,15 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
     objlock_BM (_.routprepob);
     _.routob =
       objectcast_BM (objgetattr_BM (_.routprepob, k_prepare_routine));
+    _.setnumv = setcast_BM (objgetattr_BM (_.routprepob, k_number_set));
+    _.setvalv = setcast_BM (objgetattr_BM (_.routprepob, k_value_set));
     objunlock_BM (_.routprepob);
+    idtocbuf32_BM (objid_BM (_.routob), routidbuf);
   }
-  DBGPRINTF_BM
-    ("emit_definition°simple_routine_preparation routprepob=%s routob=%s",
-     objectdbg_BM (_.routprepob), objectdbg1_BM (_.routob));
+  DBGPRINTF_BM ("emit_definition°simple_routine_preparation routprepob=%s routob=%s\n" ".. setnum=%s setval=%s", objectdbg_BM (_.routprepob), objectdbg1_BM (_.routob),        //
+                debug_outstr_value_BM (_.setnumv, (struct stackframe_stBM *) &_, 0),    //
+                debug_outstr_value_BM (_.setvalv,
+                                       (struct stackframe_stBM *) &_, 0));
   WEAKASSERT_BM (isobject_BM (_.routob));
   {
     objlock_BM (_.routob);
@@ -1459,6 +1473,116 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   }
   objstrbufferprintfpayl_BM (_.modgenob, "{ // start of %s\n",
                              objectdbg_BM (_.routob));
+  objstrbufferprintfpayl_BM (_.modgenob, "  struct frame%s_BMst {\n",
+                             routidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "    typedhead_tyBM stkfram_head;\n");
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "    struct stackframe_stBM *stkfram_prev;\n");
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "    objectval_tyBM *stkfram_descr;\n");
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "    struct stackframe_stBM *stkfram_descr;\n");
+  objstrbufferprintfpayl_BM (_.modgenob, "    value_tyBM stkfram_callfun;\n");
+  objstrbufferprintfpayl_BM (_.modgenob, "    int stkfram_state;\n");
+  objstrbufferprintfpayl_BM (_.modgenob, "    int stkfram_extra;\n");
+  unsigned nbval = setcardinal_BM (_.setvalv);
+  objstrbufferprintfpayl_BM (_.modgenob, "    /// %d local values:\n", nbval);
+  for (unsigned vix = 0; vix < nbval; vix++)
+    {
+      _.varob = setelemnth_BM (_.setvalv, vix);
+      _.typob = NULL;
+      DBGPRINTF_BM
+        ("emit_definition°simple_routine_preparation routprepob=%s vix#%d value varob=%s",
+         objectdbg_BM (_.routprepob), vix, objectdbg1_BM (_.varob));
+      char varidbuf[32];
+      memset (varidbuf, 0, sizeof (varidbuf));
+      idtocbuf32_BM (objid_BM (_.varob), varidbuf);
+      objlock_BM (_.varob);
+      _.typob = objectcast_BM (objgetattr_BM (_.varob, k_c_type));
+      objunlock_BM (_.varob);
+      if (_.typob == k_value)
+        objstrbufferprintfpayl_BM (_.modgenob, "    value_tyBM v%s; // %s\n",
+                                   varidbuf, objectdbg_BM (_.varob));
+      else if (_.typob == k_object)
+        objstrbufferprintfpayl_BM (_.modgenob,
+                                   "    objectval_tyBM* o%s; // %s\n",
+                                   varidbuf, objectdbg_BM (_.varob));
+      else
+        WEAKASSERT_BM (false && "unexpected type of variable");
+    }
+  unsigned nbnum = setcardinal_BM (_.setnumv);
+  objstrbufferprintfpayl_BM (_.modgenob, "    /// %d local numbers:\n",
+                             nbnum);
+  for (unsigned vix = 0; vix < nbnum; vix++)
+    {
+      _.varob = setelemnth_BM (_.setnumv, vix);
+      _.typob = NULL;
+      DBGPRINTF_BM
+        ("emit_definition°simple_routine_preparation routprepob=%s vix#%d number varob=%s",
+         objectdbg_BM (_.routprepob), vix, objectdbg1_BM (_.varob));
+      char varidbuf[32];
+      memset (varidbuf, 0, sizeof (varidbuf));
+      idtocbuf32_BM (objid_BM (_.varob), varidbuf);
+      objstrbufferprintfpayl_BM (_.modgenob, "    intptr_t n%s; // %s\n",
+                                 varidbuf, objectdbg_BM (_.varob));
+    }
+  objstrbufferprintfpayl_BM (_.modgenob, "   } _;\n");
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "   memset (&_, 0, sizeof(struct frame%s_BMst));\n",
+                             routidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "   _.stkfram_head.htyp = typayl_StackFrame_BM;\n");
+  objstrbufferprintfpayl_BM (_.modgenob, "   _.stkfram_head.hgc = 0;\n");
+  objstrbufferprintfpayl_BM (_.modgenob, "   _.stkfram_head.rlen = %d;\n",
+                             nbval);
+  objstrbufferprintfpayl_BM (_.modgenob, "   // fetch %d arguments:\n",
+                             nbargs);
+  if (nbargs > 4)
+    objstrbufferprintfpayl_BM (_.modgenob,
+                               "   unsigned nbrestargs = treewidth_BM(restargs);\n");
+  for (unsigned aix = 0; aix < nbargs; aix++)
+    {
+      _.varob = tuplecompnth_BM (_.argtupv, aix);
+      _.typob = NULL;
+      DBGPRINTF_BM
+        ("emit_definition°simple_routine_preparation routprepob=%s aix#%d arg varob=%s",
+         objectdbg_BM (_.routprepob), aix, objectdbg1_BM (_.varob));
+      objlock_BM (_.varob);
+      _.typob = objectcast_BM (objgetattr_BM (_.varob, k_c_type));
+      objunlock_BM (_.varob);
+      DBGPRINTF_BM
+        ("emit_definition°simple_routine_preparation routprepob=%s  arg varob=%s typob=%s",
+         objectdbg_BM (_.routprepob), objectdbg1_BM (_.varob),
+         objectdbg1_BM (_.typob));
+      WEAKASSERT_BM (_.typob = k_value || _.typob == k_object);
+      char varidbuf[32];
+      memset (varidbuf, 0, sizeof (varidbuf));
+      idtocbuf32_BM (objid_BM (_.varob), varidbuf);
+      if (aix < 4)
+        {
+          if (_.typob == k_value)
+            objstrbufferprintfpayl_BM (_.modgenob, "   _.v%s = arg%d;\n",
+                                       varidbuf, aix);
+          else if (_.typob == k_object)
+            objstrbufferprintfpayl_BM (_.modgenob,
+                                       "   _.o%s = objectcast(arg%d);\n",
+                                       varidbuf, aix);
+        }
+      else
+        {
+          objstrbufferprintfpayl_BM (_.modgenob,
+                                     "    if (nbrestargs >= %d)\n", aix - 4);
+          if (_.typob == k_value)
+            objstrbufferprintfpayl_BM (_.modgenob,
+                                       "    _.v%s = restargs->nodt_sons[%d];\n",
+                                       varidbuf, aix - 4);
+          else if (_.typob == k_object)
+            objstrbufferprintfpayl_BM (_.modgenob,
+                                       "    _.o%s = objectcast(restargs->nodt_sons[%d]);\n",
+                                       varidbuf, aix - 4);
+        }
+    }
   objunlock_BM (_.modgenob);
 #warning unimplemented emit_definition°simple_routine_preparation routine
   WEAKASSERT_BM (false
