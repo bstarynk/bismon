@@ -1535,6 +1535,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objstrbufferprintfpayl_BM (_.modgenob, "   _.stkfram_head.hgc = 0;\n");
   objstrbufferprintfpayl_BM (_.modgenob, "   _.stkfram_head.rlen = %d;\n",
                              nbval);
+  objstrbufferprintfpayl_BM (_.modgenob, "   _.stkfram_prev = stkf;\n");
   objstrbufferprintfpayl_BM (_.modgenob, "   // fetch %d arguments:\n",
                              nbargs);
   if (nbargs > 4)
