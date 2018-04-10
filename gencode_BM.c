@@ -194,6 +194,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                  objectval_tyBM * modgen;
                  setval_tyBM * prepvalset;
                  objectval_tyBM * curprepob;
+                 objectval_tyBM * curtypob;
                  objectval_tyBM * routprep;
                  objectval_tyBM * obhsetblock;
                  value_tyBM recv;
@@ -207,6 +208,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                  value_tyBM bodyv;
                  value_tyBM collbl;
     );
+  objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
   const objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   const objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   const objectval_tyBM *k_result = BMK_7bD9VtDkGSn_7lxHeYuuFLR;
@@ -269,6 +271,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   for (unsigned argix = 0; argix < nbargs; argix++)
     {
       _.curvar = tuplecompnth_BM (_.tupargs, argix);
+      _.curtypob = NULL;
       DBGPRINTF_BM
         ("start prepare_routine°basiclo_minifunction argix=%u argum curvar=%s",
          argix, objectdbg_BM (_.curvar));
@@ -279,6 +282,18 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                    argix, objectdbg_BM (_.curvar), objectdbg1_BM (_.recv));
           LOCALRETURN_BM (NULL);
         }
+      objlock_BM (_.curvar);
+      _.curtypob = objectcast_BM (objgetattr_BM (_.curvar, k_c_type));
+      objunlock_BM (_.curvar);
+      if (_.curtypob != BMP_value)
+        {
+          fprintf (stderr,
+                   "argument#%u %s is not value but %s in minifunction %s\n",
+                   argix, objectdbg_BM (_.curvar), objectdbg1_BM (_.curtypob),
+                   objectdbg2_BM (_.recv));
+          LOCALRETURN_BM (NULL);
+        }
+
       _.curol = makenodevar_BM (k_arguments, taggedint_BM (argix), NULL);
       objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
       _.curol = NULL;
@@ -1211,14 +1226,15 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9M3BqmOS7mA_96DTa52k7Xq,
                  objectval_tyBM * routprepob;
-                 objectval_tyBM * modgenob; objectval_tyBM * routob;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routob;
                  objectval_tyBM * hsetblockob;
                  value_tyBM blocksetv;
                  objectval_tyBM * hsetvalob;
                  objectval_tyBM * hsetnumob;
-                 objectval_tyBM * keyob;
-                 objectval_tyBM * bindconnob;
+                 objectval_tyBM * keyob; objectval_tyBM * bindconnob;
                  value_tyBM resultv; value_tyBM keysetv;
+                 value_tyBM setv;
                  value_tyBM keybindv;
     );
   objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
@@ -1227,6 +1243,12 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
   objectval_tyBM *k_value_set = BMK_6Fl0Z0OTtV9_8QTsq3uDu4q;
   objectval_tyBM *k_number_set = BMK_5uPst3m4mdx_05Xl1AoTnZL;
   objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
+  objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
+  objectval_tyBM *k_locals = BMK_24sSVIADeHm_0Sx34wQfG7W;
+  objectval_tyBM *k_numbers = BMK_32eKNcTZ9HN_80t0nk47Mha;
+  objectval_tyBM *k_result = BMK_7bD9VtDkGSn_7lxHeYuuFLR;
+  objectval_tyBM *k_closed = BMK_2TwOyPJxIz8_1rIeqaN7oRz;
+  objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
   WEAKASSERT_BM (isobject_BM (arg1));
   _.routprepob = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (arg2));
@@ -1268,13 +1290,9 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
       objputattr_BM (_.routprepob, k_number_set, _.hsetnumob);
       objputattr_BM (_.hsetnumob, k_in, _.routprepob);
       _.keysetv = objassocsetattrspayl_BM (_.routprepob);
-      DBGPRINTF_BM
-        ("emit_declaration°simple_routine_preparation routprepob=%s hsetvalob=%s hsetnumob=%s keyset=%s",
-         objectdbg_BM (_.routprepob), objectdbg1_BM (_.hsetvalob),
-         objectdbg2_BM (_.hsetnumob), debug_outstr_value_BM (_.keysetv,
-                                                             (struct
-                                                              stackframe_stBM
-                                                              *) &_, 0));
+      DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s hsetvalob=%s hsetnumob=%s keyset=%s", objectdbg_BM (_.routprepob), objectdbg1_BM (_.hsetvalob), objectdbg2_BM (_.hsetnumob),    //
+                    debug_outstr_value_BM (_.keysetv,
+                                           (struct stackframe_stBM *) &_, 0));
       unsigned nbkeys = setcardinal_BM (_.keysetv);
       for (unsigned kix = 0; kix < nbkeys; kix++)
         {
@@ -1288,7 +1306,34 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
                                     0));
           WEAKASSERT_BM (isnode_BM (_.keybindv));
           _.bindconnob = nodeconn_BM (_.keybindv);
+          if (_.bindconnob == k_arguments)
+            {
+              objhashsetaddpayl_BM (_.hsetvalob, _.keyob);
+            }
+          else if (_.bindconnob == k_locals)
+            {
+              objhashsetaddpayl_BM (_.hsetvalob, _.keyob);
+            }
+          else if (_.bindconnob == k_closed)
+            {
+              objhashsetaddpayl_BM (_.hsetvalob, _.keyob);
+            }
+          else if (_.bindconnob == k_numbers)
+            {
+              objhashsetaddpayl_BM (_.hsetnumob, _.keyob);
+            }
         }
+      _.setv = objhashsettosetpayl_BM (_.hsetvalob);
+      objputattr_BM (_.routprepob, k_value_set, _.setv);
+      DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s value_set %s", objectdbg_BM (_.routprepob),     //
+                    debug_outstr_value_BM (_.setv,
+                                           (struct stackframe_stBM *) &_, 0));
+      _.setv = objhashsettosetpayl_BM (_.hsetvalob);
+      objputattr_BM (_.routprepob, k_number_set, _.setv);
+      DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s number_set %s", objectdbg_BM (_.routprepob),    //
+                    debug_outstr_value_BM (_.setv,
+                                           (struct stackframe_stBM *) &_, 0));
+      _.setv = NULL;
     }
     objunlock_BM (_.routprepob);
   }
@@ -1330,8 +1375,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
                  objectval_tyBM * routprepob;
-                 objectval_tyBM * modgenob;
-                 objectval_tyBM * routob;
+                 objectval_tyBM * modgenob; objectval_tyBM * routob;
                  objectval_tyBM * hsetblockob; value_tyBM blocksetv;
                  value_tyBM argtupv; objectval_tyBM * bodyob;
                  objectval_tyBM * resultob;
