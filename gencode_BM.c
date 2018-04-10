@@ -1230,8 +1230,7 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
                  objectval_tyBM * routob;
                  objectval_tyBM * hsetblockob;
                  value_tyBM blocksetv;
-                 objectval_tyBM * hsetvalob;
-                 objectval_tyBM * hsetnumob;
+                 objectval_tyBM * hsetvalob; objectval_tyBM * hsetnumob;
                  objectval_tyBM * keyob; objectval_tyBM * bindconnob;
                  value_tyBM resultv; value_tyBM keysetv;
                  value_tyBM setv;
@@ -1285,10 +1284,12 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
       objputclass_BM (_.hsetvalob, k_hset_object);
       objputattr_BM (_.routprepob, k_value_set, _.hsetvalob);
       objputattr_BM (_.hsetvalob, k_in, _.routprepob);
+      objputhashsetpayl_BM (_.hsetvalob, 5);
       _.hsetnumob = makeobj_BM ();
       objputclass_BM (_.hsetnumob, k_hset_object);
       objputattr_BM (_.routprepob, k_number_set, _.hsetnumob);
       objputattr_BM (_.hsetnumob, k_in, _.routprepob);
+      objputhashsetpayl_BM (_.hsetnumob, 11);
       _.keysetv = objassocsetattrspayl_BM (_.routprepob);
       DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s hsetvalob=%s hsetnumob=%s keyset=%s", objectdbg_BM (_.routprepob), objectdbg1_BM (_.hsetvalob), objectdbg2_BM (_.hsetnumob),    //
                     debug_outstr_value_BM (_.keysetv,
@@ -1328,7 +1329,7 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
       DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s value_set %s", objectdbg_BM (_.routprepob),     //
                     debug_outstr_value_BM (_.setv,
                                            (struct stackframe_stBM *) &_, 0));
-      _.setv = objhashsettosetpayl_BM (_.hsetvalob);
+      _.setv = objhashsettosetpayl_BM (_.hsetnumob);
       objputattr_BM (_.routprepob, k_number_set, _.setv);
       DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s number_set %s", objectdbg_BM (_.routprepob),    //
                     debug_outstr_value_BM (_.setv,
