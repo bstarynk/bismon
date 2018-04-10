@@ -1378,8 +1378,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                  objectval_tyBM * hsetblockob;
                  value_tyBM blocksetv;
                  value_tyBM argtupv; objectval_tyBM * bodyob;
-                 objectval_tyBM * resultob;
-                 value_tyBM setnumv;
+                 objectval_tyBM * resultob; value_tyBM setnumv;
                  value_tyBM setvalv; objectval_tyBM * varob;
                  objectval_tyBM * typob;
     );
@@ -1551,14 +1550,14 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
       objlock_BM (_.varob);
       _.typob = objectcast_BM (objgetattr_BM (_.varob, k_c_type));
       objunlock_BM (_.varob);
-      DBGPRINTF_BM
-        ("emit_definition°simple_routine_preparation routprepob=%s  arg varob=%s typob=%s",
-         objectdbg_BM (_.routprepob), objectdbg1_BM (_.varob),
-         objectdbg1_BM (_.typob));
-      WEAKASSERT_BM (_.typob = k_value || _.typob == k_object);
       char varidbuf[32];
       memset (varidbuf, 0, sizeof (varidbuf));
       idtocbuf32_BM (objid_BM (_.varob), varidbuf);
+      DBGPRINTF_BM
+        ("emit_definition°simple_routine_preparation routprepob=%s arg varob=%s |%s typob=%s aix#%d",
+         objectdbg_BM (_.routprepob), objectdbg1_BM (_.varob), varidbuf,
+         objectdbg1_BM (_.typob), aix);
+      WEAKASSERT_BM (_.typob == k_value || _.typob == k_object);
       if (aix < 4)
         {
           if (_.typob == k_value)
@@ -1568,6 +1567,10 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
             objstrbufferprintfpayl_BM (_.modgenob,
                                        "   _.o%s = objectcast(arg%d);\n",
                                        varidbuf, aix);
+          else
+            objstrbufferprintfpayl_BM (_.modgenob,
+                                       "#error fail fetch #%d %s of type %s\n",
+                                       aix, varidbuf, objectdbg_BM (_.typob));
         }
       else
         {
@@ -1581,8 +1584,14 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
             objstrbufferprintfpayl_BM (_.modgenob,
                                        "    _.o%s = objectcast(restargs->nodt_sons[%d]);\n",
                                        varidbuf, aix - 4);
+          else
+            objstrbufferprintfpayl_BM (_.modgenob,
+                                       "#error fail fetch xtra #%d %s of type %s\n",
+                                       aix, varidbuf, objectdbg_BM (_.typob));
         }
     }
+  objstrbufferprintfpayl_BM (_.modgenob, "   // fetched %d arguments.\n",
+                             nbargs);
   objunlock_BM (_.modgenob);
 #warning unimplemented emit_definition°simple_routine_preparation routine
   WEAKASSERT_BM (false
