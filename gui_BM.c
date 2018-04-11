@@ -1526,7 +1526,7 @@ log_begin_message_BM (void)
   struct tm nowtm = {
   };
   localtime_r (&nowt, &nowtm);
-  char nowtibuf[32];
+  char nowtibuf[40];
   memset (nowtibuf, 0, sizeof (nowtibuf));
   strftime (nowtibuf, sizeof (nowtibuf), "%T", &nowtm);
   char nowfracbuf[8];
@@ -1535,7 +1535,7 @@ log_begin_message_BM (void)
   char nowcntbuf[16];
   memset (nowcntbuf, 0, sizeof (nowcntbuf));
   snprintf (nowcntbuf, sizeof (nowcntbuf), " #%ld", logcnt);
-  char logmbuf[64];
+  char logmbuf[80];
   memset (logmbuf, 0, sizeof (logmbuf));
   snprintf (logmbuf, sizeof (logmbuf), "%s%s%s", nowtibuf,
             nowfracbuf + 1, nowcntbuf);
