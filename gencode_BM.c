@@ -1378,10 +1378,8 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
                  objectval_tyBM * routprepob;
                  objectval_tyBM * modgenob;
-                 objectval_tyBM * routob;
-                 objectval_tyBM * hsetblockob;
-                 value_tyBM blocksetv;
-                 value_tyBM argtupv;
+                 objectval_tyBM * routob; objectval_tyBM * hsetblockob;
+                 value_tyBM blocksetv; value_tyBM argtupv;
                  objectval_tyBM * bodyob; objectval_tyBM * resultob;
                  value_tyBM setnumv; value_tyBM setvalv;
                  objectval_tyBM * varob;
@@ -1577,8 +1575,9 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
       _.varob = tuplecompnth_BM (_.argtupv, aix);
       _.typob = NULL;
       DBGPRINTF_BM
-        ("emit_definition°simple_routine_preparation routprepob=%s aix#%d arg varob=%s",
-         objectdbg_BM (_.routprepob), aix, objectdbg1_BM (_.varob));
+        ("emit_definition°simple_routine_preparation routprepob=%s aix#%d arg varob=%s bodyob=%s",
+         objectdbg_BM (_.routprepob), aix, objectdbg1_BM (_.varob),
+         objectdbg2_BM (_.bodyob));
       objlock_BM (_.varob);
       _.typob = objectcast_BM (objgetattr_BM (_.varob, k_c_type));
       objunlock_BM (_.varob);
@@ -1588,7 +1587,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
       DBGPRINTF_BM
         ("emit_definition°simple_routine_preparation routprepob=%s arg varob=%s |%s typob=%s aix#%d",
          objectdbg_BM (_.routprepob), objectdbg1_BM (_.varob), varidbuf,
-         objectdbg1_BM (_.typob), aix);
+         objectdbg2_BM (_.typob), aix);
       WEAKASSERT_BM (_.typob == k_value || _.typob == k_object);
       if (aix < 4)
         {
@@ -1627,7 +1626,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objstrbufferprintfpayl_BM (_.modgenob, "   // routine body:\n");
   DBGPRINTF_BM
     ("emit_definition°simple_routine_preparation routprepob=%s before emit_block bodyob=%s",
-     objectdbg_BM (_.routprepob), objectdbg_BM (_.bodyob));
+     objectdbg_BM (_.routprepob), objectdbg1_BM (_.bodyob));
   _.emitv = send3_BM (_.bodyob, k_emit_block, CURFRAME_BM, _.modgenob, _.routprepob, taggedint_BM (0)   /*depth of block */
     );
   if (!_.emitv)
