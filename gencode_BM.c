@@ -19,6 +19,9 @@
 #include "bismon.h"
 #include "gencode_BM.const.h"
 
+
+
+
 //// for the method prepare_routine:basiclo_function
 extern objrout_sigBM ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP);
 
@@ -35,8 +38,10 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
                  value_tyBM recv;
                  objectval_tyBM * modgenob;
                  value_tyBM args; value_tyBM curarg;
-                 objectval_tyBM * routprepob; value_tyBM prepvalset;
-                 objectval_tyBM * bindob;
+                 objectval_tyBM * routprepob;
+                 value_tyBM prepvalset;
+                 objectval_tyBM * bindob; value_tyBM errorv;
+                 value_tyBM causev;
     );
   const objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   const objectval_tyBM *k_block = BMK_2U8Sj78DMbl_5eerKpaJsNq;
@@ -47,6 +52,9 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   //const objectval_tyBM *k_body = BMK_7DQyvJFMOrC_9IfC3CtYknn;
   const objectval_tyBM *k_bindings = BMK_1zpi50AYid5_0j6it2DwVqm;
   objectval_tyBM *k_binding = BMK_6zu0x6tqX60_8QhJjiAOwul;
+  objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
   // retrieve arguments
   _.recv = /*function object */ (arg1);
   _.modgenob = /*module generation object */ objectcast_BM (arg2);
@@ -92,6 +100,13 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
 #warning incomplete  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP
   WEAKASSERT_BM (false && "prepare_routine:basiclo_function incomplete");
   LOCALRETURN_BM (NULL);
+failure:
+  DBGPRINTF_BM ("prepare_routine:basiclo_function failin %d cause %s", failin,
+                debug_outstr_value_BM (_.causev,
+                                       (struct stackframe_stBM *) &_, 0));
+  _.errorv = makenodevar_BM (k_prepare_routine, NULL);
+  FAILURE_BM (failin, _.errorv, (struct stackframe_stBM *) &_);
+#undef FAILHERE
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */
 
 
@@ -1214,7 +1229,6 @@ failure:
 
 // emit_declaration°simple_routine_preparation _9M3BqmOS7mA_96DTa52k7Xq
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq);
-
 value_tyBM
 ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_routine_preparation 
 (struct stackframe_stBM * stkf, //
@@ -1230,10 +1244,14 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
                  objectval_tyBM * hsetblockob; value_tyBM blocksetv;
                  objectval_tyBM * hsetvalob; objectval_tyBM * hsetnumob;
                  objectval_tyBM * keyob; objectval_tyBM * bindconnob;
-                 value_tyBM resultv; value_tyBM keysetv;
-                 value_tyBM setv;
-                 value_tyBM keybindv;
+                 value_tyBM resultv;
+                 value_tyBM keysetv;
+                 value_tyBM setv; value_tyBM keybindv; value_tyBM errorv;
+                 value_tyBM errcausev;
     );
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; errcausev = (Cause); goto failure; } while(0)
+
   objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
   objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
   objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
@@ -1246,6 +1264,7 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
   objectval_tyBM *k_result = BMK_7bD9VtDkGSn_7lxHeYuuFLR;
   objectval_tyBM *k_closed = BMK_2TwOyPJxIz8_1rIeqaN7oRz;
   objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
+  objectval_tyBM *k_emit_declaration = BMK_3NGaoN3yhbn_8yUwbtZfvp9;
   WEAKASSERT_BM (isobject_BM (arg1));
   _.routprepob = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (arg2));
@@ -1324,12 +1343,14 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
         }
       _.setv = objhashsettosetpayl_BM (_.hsetvalob);
       objputattr_BM (_.routprepob, k_value_set, _.setv);
-      DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s value_set %s", objectdbg_BM (_.routprepob),     //
+      DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s value_set %s",  //
+                    objectdbg_BM (_.routprepob),        //
                     debug_outstr_value_BM (_.setv,
                                            (struct stackframe_stBM *) &_, 0));
       _.setv = objhashsettosetpayl_BM (_.hsetnumob);
       objputattr_BM (_.routprepob, k_number_set, _.setv);
-      DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s number_set %s", objectdbg_BM (_.routprepob),    //
+      DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s number_set %s", //
+                    objectdbg_BM (_.routprepob),        //
                     debug_outstr_value_BM (_.setv,
                                            (struct stackframe_stBM *) &_, 0));
       _.setv = NULL;
@@ -1355,6 +1376,12 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
     objunlock_BM (_.modgenob);
   }
   LOCALRETURN_BM (_.routprepob);
+failure:
+  _.errorv =
+    makenodevar_BM (k_emit_declaration, _.routprepob, _.modgenob,
+                    taggedint_BM (rank), _.errcausev, NULL);
+  FAILURE_BM (failin, _.errorv, (struct stackframe_stBM *) &_);
+#undef FAILHERE
 }                               /* end emit_declaration°simple_routine_preparation _9M3BqmOS7mA_96DTa52k7Xq */
 
 
@@ -1374,9 +1401,9 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
                  objectval_tyBM * routprepob;
-                 objectval_tyBM * modgenob; objectval_tyBM * routob;
-                 objectval_tyBM * hsetblockob;
-                 value_tyBM blocksetv;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routob;
+                 objectval_tyBM * hsetblockob; value_tyBM blocksetv;
                  value_tyBM argtupv; objectval_tyBM * bodyob;
                  objectval_tyBM * resultob; value_tyBM setnumv;
                  value_tyBM setvalv; objectval_tyBM * varob;
@@ -1432,6 +1459,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
      objectdbg_BM (_.routprepob),
      debug_outstr_value_BM (_.argtupv, (struct stackframe_stBM *) &_, 0),
      objectdbg1_BM (_.bodyob), objectdbg2_BM (_.resultob));
+  WEAKASSERT_BM (isobject_BM (_.resultob));
   int nbargs = tuplesize_BM (_.argtupv);
   {
     char *routname = findobjectname_BM (_.routob);
