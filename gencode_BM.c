@@ -1624,9 +1624,11 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                              nbargs);
   objstrbufferprintfpayl_BM (_.modgenob, "   // routine body:\n");
   DBGPRINTF_BM
-    ("emit_definition°simple_routine_preparation routprepob=%s before emit_block bodyob=%s",
-     objectdbg_BM (_.routprepob), objectdbg1_BM (_.bodyob));
-  _.emitv = send3_BM (_.bodyob, k_emit_block, CURFRAME_BM, _.modgenob, _.routprepob, taggedint_BM (0)   /*depth of block */
+    ("emit_definition°simple_routine_preparation routprepob=%s before emit_block bodyob=%s of %s",
+     objectdbg_BM (_.routprepob), objectdbg1_BM (_.bodyob),
+     objectdbg2_BM (objclass_BM (_.bodyob)));
+  _.emitv = send3_BM (_.bodyob, k_emit_block, CURFRAME_BM,      //
+                      _.modgenob, _.routprepob, taggedint_BM (0)        /*depth of block */
     );
   if (!_.emitv)
     FAILHERE (k_body);
