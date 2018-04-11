@@ -87,6 +87,9 @@ extern const char *objectdbg1_BM (const objectval_tyBM * obj);  // non reentrant
 extern const char *iddbg2_BM (rawid_tyBM id);   // non reentrant!
 extern const char *objectdbg2_BM (const objectval_tyBM * obj);  // non reentrant!
 
+extern const char *objectdbg3_BM (const objectval_tyBM * obj);  // non reentrant!
+extern const char *objectdbg4_BM (const objectval_tyBM * obj);  // non reentrant!
+
 extern const char *gobjectclassnamedbg_BM (GObject * ptr);
 // return an static string for a textiter, for debugging only
 extern const char *textiterstrdbg_BM (GtkTextIter *);

@@ -481,6 +481,39 @@ objectdbg2_BM (const objectval_tyBM * obj)
   return idbuf;
 }                               /* end objectdbg2_BM */
 
+const char *
+objectdbg3_BM (const objectval_tyBM * obj)
+{
+  if (!obj)
+    return "__";
+  if (!isobject_BM ((const value_tyBM) obj))
+    return "*nonobject*";
+  const char *n = findobjectname_BM (obj);
+  if (n)
+    return n;
+  static thread_local char idbuf[32];
+  memset (idbuf, 0, sizeof (idbuf));
+  idtocbuf32_BM (obj->ob_id, idbuf);
+  return idbuf;
+}                               /* end objectdbg3_BM */
+
+
+const char *
+objectdbg4_BM (const objectval_tyBM * obj)
+{
+  if (!obj)
+    return "__";
+  if (!isobject_BM ((const value_tyBM) obj))
+    return "*nonobject*";
+  const char *n = findobjectname_BM (obj);
+  if (n)
+    return n;
+  static thread_local char idbuf[32];
+  memset (idbuf, 0, sizeof (idbuf));
+  idtocbuf32_BM (obj->ob_id, idbuf);
+  return idbuf;
+}                               /* end objectdbg4_BM */
+
 
 objectval_tyBM *
 makeobj_BM (void)
