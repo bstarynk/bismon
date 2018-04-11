@@ -375,6 +375,21 @@ handlekeypress_newgui_cmd_BM (GtkWidget *
         return false;
       return true;              // dont propagate the return when withctrl or withshift
     }
+  else if (evk->keyval == GDK_KEY_Delete)
+    {
+      GdkModifierType modmask = gtk_accelerator_get_default_mod_mask ();
+      bool withctrl = (evk->state & modmask) == GDK_CONTROL_MASK;
+      bool withshift = (evk->state & modmask) == GDK_SHIFT_MASK;
+      if (withctrl && !withshift)
+        {
+          DBGPRINTF_BM ("handlekeypress_newgui delete+ctrl erase command");
+          cmd_clear_parens_BM ();
+          gtk_text_buffer_set_text (commandbuf_BM, "", 0);
+          return true;
+        }
+      else                      // plain DELETE, propagate it
+        return false;
+    }
   else if (evk->keyval == GDK_KEY_Tab)
     {
       tabautocomplete_gui_cmd_BM ();

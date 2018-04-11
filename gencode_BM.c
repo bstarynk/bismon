@@ -1376,8 +1376,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
-                 objectval_tyBM * routprepob;
-                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob; objectval_tyBM * modgenob;
                  objectval_tyBM * routob; objectval_tyBM * hsetblockob;
                  value_tyBM blocksetv; value_tyBM argtupv;
                  objectval_tyBM * bodyob; objectval_tyBM * resultob;
