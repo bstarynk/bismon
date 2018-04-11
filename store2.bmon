@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 299 objects
+// for 303 objects
 // with 0 modules
 
 
@@ -866,6 +866,17 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 
 
 
+!(_6mk5eos8067_1odgCpnWMOj |=emit_block|
+!~ name (~ emit_block
+~)
+!@ 1523447125.07
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector to emit a block"
+!)_6mk5eos8067_1odgCpnWMOj
+
+
+
 !(_0b4VyB0nxvZ_1RgKWePfQOx |=emit_c_type|
 !~ name (~ emit_c_type
 ~)
@@ -894,6 +905,39 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to emit_definition"
 !)_1g8s9B96Irf_6Ix2Cyy8Hq0
+
+
+
+!(_9lXSe7DrOl6_7hghYt0LhTF |=emit_expression|
+!~ name (~ emit_expression
+~)
+!@ 1523447186.96
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector to emit an expression"
+!)_9lXSe7DrOl6_7hghYt0LhTF
+
+
+
+!(_6qzzDyr2eIo_3SapnOUpg6S |=emit_reference|
+!~ name (~ emit_reference
+~)
+!@ 1523447210.70
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector to emit a reference, e.g. a variable"
+!)_6qzzDyr2eIo_3SapnOUpg6S
+
+
+
+!(_1ERH9PxNhPb_2o869yOMuH0 |=emit_statement|
+!~ name (~ emit_statement
+~)
+!@ 1523447155.95
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector to emit a statement"
+!)_1ERH9PxNhPb_2o869yOMuH0
 
 
 

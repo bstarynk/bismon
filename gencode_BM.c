@@ -1295,9 +1295,14 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
             ("emit_declaration°simple_routine_preparation routprepob=%s kix#%d keyob=%s keybind=%s",
              objectdbg_BM (_.routprepob), kix, objectdbg1_BM (_.keyob),
              debug_outstr_value_BM (_.keybindv, CURFRAME_BM, 0));
-          WEAKASSERT_BM (isnode_BM (_.keybindv));
-          _.bindconnob = nodeconn_BM (_.keybindv);
-          if (_.bindconnob == k_arguments)
+          WEAKASSERT_BM (_.keybindv == k_result || isnode_BM (_.keybindv));
+
+          if (_.keybindv == k_result)
+            {
+              objhashsetaddpayl_BM (_.hsetvalob, _.keyob);
+            }
+          else if ((_.bindconnob = nodeconn_BM (_.keybindv))
+                   && _.bindconnob == k_arguments)
             {
               objhashsetaddpayl_BM (_.hsetvalob, _.keyob);
             }
@@ -1372,13 +1377,15 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
                  objectval_tyBM * routprepob;
-                 objectval_tyBM * modgenob; objectval_tyBM * routob;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routob;
                  objectval_tyBM * hsetblockob;
                  value_tyBM blocksetv;
-                 value_tyBM argtupv; objectval_tyBM * bodyob;
-                 objectval_tyBM * resultob; value_tyBM setnumv;
-                 value_tyBM setvalv; objectval_tyBM * varob;
-                 objectval_tyBM * typob; value_tyBM errorv;
+                 value_tyBM argtupv;
+                 objectval_tyBM * bodyob; objectval_tyBM * resultob;
+                 value_tyBM setnumv; value_tyBM setvalv;
+                 objectval_tyBM * varob;
+                 value_tyBM emitv; objectval_tyBM * typob; value_tyBM errorv;
                  value_tyBM causev;
     );
   int failin = -1;
@@ -1397,6 +1404,10 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objectval_tyBM *k_object = BMK_7T9OwSFlgov_0wVJaK1eZbn;
   objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
   objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
+  objectval_tyBM *k_emit_expression = BMK_9lXSe7DrOl6_7hghYt0LhTF;
+  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
+  objectval_tyBM *k_emit_reference = BMK_6qzzDyr2eIo_3SapnOUpg6S;
   WEAKASSERT_BM (isobject_BM (arg1));
   _.routprepob = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (arg2));
@@ -1429,6 +1440,11 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
     _.resultob = objectcast_BM (objgetattr_BM (_.routob, k_result));
     objunlock_BM (_.routob);
   }
+  DBGPRINTF_BM
+    ("emit_definition°simple_routine_preparation routob=%s argtup=%s bodyob=%s resultob=%s",
+     objectdbg_BM (_.routob), debug_outstr_value_BM (_.argtupv, CURFRAME_BM,
+                                                     0),
+     objectdbg1_BM (_.bodyob), objectdbg2_BM (_.resultob));
   {
     objlock_BM (_.resultob);
     _.typob = objectcast_BM (objgetattr_BM (_.resultob, k_c_type));
@@ -1522,6 +1538,9 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   unsigned nbnum = setcardinal_BM (_.setnumv);
   objstrbufferprintfpayl_BM (_.modgenob, "    /// %d local numbers:\n",
                              nbnum);
+  DBGPRINTF_BM
+    ("emit_definition°simple_routine_preparation routprepob=%s nbnum=%d bodyob=%s",
+     objectdbg_BM (_.routprepob), nbnum, objectdbg1_BM (_.bodyob));
   for (unsigned vix = 0; vix < nbnum; vix++)
     {
       _.varob = setelemnth_BM (_.setnumv, vix);
@@ -1547,6 +1566,9 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objstrbufferprintfpayl_BM (_.modgenob, "   _.stkfram_prev = stkf;\n");
   objstrbufferprintfpayl_BM (_.modgenob, "   // fetch %d arguments:\n",
                              nbargs);
+  DBGPRINTF_BM
+    ("emit_definition°simple_routine_preparation routprepob=%s nbargs=%d bodyob=%s",
+     objectdbg_BM (_.routprepob), nbargs, objectdbg1_BM (_.bodyob));
   if (nbargs > 4)
     objstrbufferprintfpayl_BM (_.modgenob,
                                "   unsigned nbrestargs = treewidth_BM(restargs);\n");
@@ -1602,7 +1624,20 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
     }
   objstrbufferprintfpayl_BM (_.modgenob, "   // fetched %d arguments.\n",
                              nbargs);
+  objstrbufferprintfpayl_BM (_.modgenob, "   // routine body:\n");
+  DBGPRINTF_BM
+    ("emit_definition°simple_routine_preparation routprepob=%s before emit_block bodyob=%s",
+     objectdbg_BM (_.routprepob), objectdbg_BM (_.bodyob));
+  _.emitv = send3_BM (_.bodyob, k_emit_block, CURFRAME_BM, _.modgenob, _.routprepob, taggedint_BM (0)   /*depth of block */
+    );
+  if (!_.emitv)
+    FAILHERE (k_body);
+  DBGPRINTF_BM
+    ("emit_definition°simple_routine_preparation routprepob=%s after emit_block bodyob=%s emitv=%s",
+     objectdbg_BM (_.routprepob), objectdbg_BM (_.bodyob),
+     debug_outstr_value_BM (_.emitv, CURFRAME_BM, 0));
   objunlock_BM (_.modgenob);
+
 #warning unimplemented emit_definition°simple_routine_preparation routine
   WEAKASSERT_BM (false
                  &&
