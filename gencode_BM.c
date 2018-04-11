@@ -37,8 +37,7 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  value_tyBM recv;
                  objectval_tyBM * modgenob;
-                 value_tyBM args;
-                 value_tyBM curarg;
+                 value_tyBM args; value_tyBM curarg;
                  objectval_tyBM * routprepob; value_tyBM prepvalset;
                  objectval_tyBM * bindob; value_tyBM errorv;
                  value_tyBM causev;
@@ -66,24 +65,16 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   DBGPRINTF_BM
     ("prepare_routine:basiclo_function modgenob=%s is a %s\n",
      objectdbg_BM (_.modgenob), objectdbg1_BM (objclass_BM (_.modgenob)));
-  ////
-  /// body: _36MhHxakHKT_1ZzV5Xoj5LX  
-  /// assign _3jiDSyFdbdk_2PQpjqDkEUJ:
   _.routprepob = makeobj_BM ();
-  /// assign _0cBpCT3lEHS_338HjZpF4UE:
   _.bindob = makeobj_BM ();
   objputclass_BM (_.bindob, k_binding);
   objtouchnow_BM (_.bindob);
-  /// run _2hJWe55ydpv_5kaGdOUymFI:
   objputattr_BM (_.routprepob, k_bindings, _.bindob);
-  //  objputattr_BM (_.routprepob, k_bindings, _.bindob);
   DBGPRINTF_BM
     ("prepare_routine:basiclo_function recv %s new routprepob %s new bindob %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
      objectdbg2_BM (_.bindob));
-  /// assign _9YS82HkgghD_71BLsDAKRfg
   _.args = objgetattr_BM (_.recv, k_arguments);
-  /// foreach_in_tuple(args curarg curargix args ...) _0UqUZ7mQGG5_69QlCmcSwTi
   unsigned nbargs = tuplesize_BM (_.args);
   for (unsigned curargix = 0; curargix < nbargs; curargix++)
     {
@@ -97,13 +88,15 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
     }
   DBGPRINTF_BM
     ("prepare_routine:basiclo_function end recv %s", objectdbg_BM (_.recv));
-#warning incomplete  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP
+#warning incomplete  prepare_routine:basiclo_function
   WEAKASSERT_BM (false && "prepare_routine:basiclo_function incomplete");
   LOCALRETURN_BM (NULL);
 failure:
   DBGPRINTF_BM ("prepare_routine:basiclo_function failin %d cause %s", failin,
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
-  _.errorv = makenodevar_BM (k_prepare_routine, NULL);
+  _.errorv =
+    makenodevar_BM (k_prepare_routine, _.recv, _.modgenob, _.prepvalset,
+                    _.causev, NULL);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */
@@ -1209,6 +1202,8 @@ failure:
 
 
 
+
+
 // emit_declaration°simple_routine_preparation _9M3BqmOS7mA_96DTa52k7Xq
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq);
 value_tyBM
@@ -1223,9 +1218,9 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9M3BqmOS7mA_96DTa52k7Xq,
                  objectval_tyBM * routprepob;
                  objectval_tyBM * modgenob; objectval_tyBM * routob;
-                 objectval_tyBM * hsetblockob; value_tyBM blocksetv;
-                 objectval_tyBM * hsetvalob; objectval_tyBM * hsetnumob;
-                 objectval_tyBM * keyob;
+                 objectval_tyBM * hsetblockob;
+                 value_tyBM blocksetv; objectval_tyBM * hsetvalob;
+                 objectval_tyBM * hsetnumob; objectval_tyBM * keyob;
                  objectval_tyBM * bindconnob; value_tyBM resultv;
                  value_tyBM keysetv;
                  value_tyBM setv; value_tyBM keybindv; value_tyBM errorv;
@@ -1382,11 +1377,16 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                  objectval_tyBM * hsetblockob; value_tyBM blocksetv;
                  value_tyBM argtupv; objectval_tyBM * bodyob;
                  objectval_tyBM * resultob; value_tyBM setnumv;
-                 value_tyBM setvalv; objectval_tyBM * varob;
-                 objectval_tyBM * typob;
+                 value_tyBM setvalv;
+                 objectval_tyBM * varob;
+                 objectval_tyBM * typob; value_tyBM errorv;
+                 value_tyBM causev;
     );
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
   char routidbuf[32];
   memset (routidbuf, 0, sizeof (routidbuf));
+  objectval_tyBM *k_emit_definition = BMK_1g8s9B96Irf_6Ix2Cyy8Hq0;
   objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
   objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
@@ -1601,4 +1601,14 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   WEAKASSERT_BM (false
                  &&
                  "unimplemented emit_definition°simple_routine_preparation routine");
+failure:
+  DBGPRINTF_BM
+    ("emit_definition°simple_routine_preparation failin %d routprep %s cause %s",
+     failin, objectdbg_BM (_.routprepob), debug_outstr_value_BM (_.causev,
+                                                                 CURFRAME_BM,
+                                                                 0));
+  _.errorv =
+    makenodevar_BM (k_emit_definition, _.routprepob, _.modgenob,
+                    taggedint_BM (rank), _.causev, NULL);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_definition°simple_routine_preparation  _2Lk2DjTDzQh_3aTEVKDE2Ip */
