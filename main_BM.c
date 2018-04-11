@@ -585,24 +585,24 @@ do_internal_deferred_apply3_gtk_BM (value_tyBM fun,
     {
       destroy_failurelockset_BM (&flockset);
       curfailurehandle_BM = NULL;
-      fprintf (stderr, "deffered_apply3_gtk failure, failcod#%d failreason: %s\n", failcod, debug_outstr_value_BM (_.failres,   //
-                                                                                                                   (struct stackframe_stBM *) &_, 0));
+      fprintf (stderr, "deffered_apply3_gtk failure, failcod#%d failreason: %s\n", failcod,     //
+               debug_outstr_value_BM (_.failres,        //
+                                      CURFRAME_BM, 0));
       return;
     }
   NONPRINTF_BM ("internaldeferapply funv %s arg1 %s arg2 %s arg3 %s",   //
                 debug_outstr_value_BM (_.funv,  //
-                                       (struct stackframe_stBM *) &_, 0),       //
+                                       CURFRAME_BM, 0), //
                 debug_outstr_value_BM (_.arg1v, //
-                                       (struct stackframe_stBM *) &_, 0),       //
+                                       CURFRAME_BM, 0), //
                 debug_outstr_value_BM (_.arg2v, //
-                                       (struct stackframe_stBM *) &_, 0),       //
+                                       CURFRAME_BM, 0), //
                 debug_outstr_value_BM (_.arg3v, //
-                                       (struct stackframe_stBM *) &_, 0));
-  (void) apply3_BM (_.funv, (struct stackframe_stBM *) &_, _.arg1v, _.arg2v,
-                    _.arg3v);
+                                       CURFRAME_BM, 0));
+  (void) apply3_BM (_.funv, CURFRAME_BM, _.arg1v, _.arg2v, _.arg3v);
   NONPRINTF_BM ("internaldeferapply applied funv %s",   //
                 debug_outstr_value_BM (_.funv,  //
-                                       (struct stackframe_stBM *) &_, 0));
+                                       CURFRAME_BM, 0));
   destroy_failurelockset_BM (&flockset);
   curfailurehandle_BM = NULL;
 }                               /* end do_internal_defer_apply3_BM */
@@ -635,24 +635,24 @@ do_internal_deferred_send3_gtk_BM (value_tyBM recv, objectval_tyBM * obsel,
       destroy_failurelockset_BM (&flockset);
       curfailurehandle_BM = NULL;
       fprintf (stderr, "deffered_send3_gtk failure, failcod#%d failreason: %s\n", failcod, debug_outstr_value_BM (_.failres,    //
-                                                                                                                  (struct stackframe_stBM *) &_, 0));
+                                                                                                                  CURFRAME_BM,
+                                                                                                                  0));
       return;
     }
   DBGPRINTF_BM ("internaldefersend recv %s obsel %s arg1 %s arg2 %s arg3 %s",   //
                 debug_outstr_value_BM (_.recva, //
-                                       (struct stackframe_stBM *) &_, 0),       //
+                                       CURFRAME_BM, 0), //
                 objectdbg_BM (_.obsel), //
                 debug_outstr_value_BM (_.arg1v, //
-                                       (struct stackframe_stBM *) &_, 0),       //
+                                       CURFRAME_BM, 0), //
                 debug_outstr_value_BM (_.arg2v, //
-                                       (struct stackframe_stBM *) &_, 0),       //
+                                       CURFRAME_BM, 0), //
                 debug_outstr_value_BM (_.arg3v, //
-                                       (struct stackframe_stBM *) &_, 0));
-  (void) send3_BM (recv, obsel, (struct stackframe_stBM *) &_, arg1, arg2,
-                   arg3);
+                                       CURFRAME_BM, 0));
+  (void) send3_BM (recv, obsel, CURFRAME_BM, arg1, arg2, arg3);
   DBGPRINTF_BM ("internaldefersend did send recv %s obsel %s",  //
                 debug_outstr_value_BM (_.recva, //
-                                       (struct stackframe_stBM *) &_, 0),       //
+                                       CURFRAME_BM, 0), //
                 objectdbg_BM (_.obsel));
   destroy_failurelockset_BM (&flockset);
   curfailurehandle_BM = NULL;

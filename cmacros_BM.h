@@ -196,6 +196,8 @@
 #define FAILURE_BM(FailCod,Reason,Stack) FAILURE_AT_BM((FailCod),__FILE__,__LINE__,(Reason),(Stack))
 
 
+#define CURFRAME_BM ((struct stackframe_stBM*)&_)
+
 #define LOCAL_FAILURE_HANDLE_ATBIS_BM(Fil,Lin,Lockset,Flabel,FcodVar,ReasonVar) \
   struct failurehandler_stBM fh_##Lin					\
    = {									\

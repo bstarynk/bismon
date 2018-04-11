@@ -208,8 +208,7 @@ ROUTINEOBJNAME_BM (_5v30KC0IMxx_53ZzXprJTM6)    //
         objstrbuffernewlinepayl_BM (_.bufob);
       objstrbufferprintfpayl_BM (_.bufob, "\t");
       send3_BM (_.curson, BMP_dump_value,
-                (struct stackframe_stBM *) &_,
-                _.bufob, _.dumpob, taggedint_BM (depth + 1));
+                CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (depth + 1));
       cnt++;
     }
   objstrbufferlessindentpayl_BM (_.bufob);
@@ -269,8 +268,7 @@ ROUTINEOBJNAME_BM (_6jvRZetUz36_978V6SKIWZC)    //
         objstrbuffernewlinepayl_BM (_.bufob);
       objstrbufferprintfpayl_BM (_.bufob, "\t");
       send3_BM (_.curson, BMP_dump_value,
-                (struct stackframe_stBM *) &_,
-                _.bufob, _.dumpob, taggedint_BM (depth + 1));
+                CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (depth + 1));
       cnt++;
     }
   objstrbufferlessindentpayl_BM (_.bufob);
@@ -472,8 +470,7 @@ ROUTINEOBJNAME_BM (_67IapmpeTLU_8MQKtlK8iAD)    // dump_data°class
         objstrbufferprintfpayl_BM (_.bufob, "\n~: %s\t", selidbuf);
       unsigned oldbuflen = objstrbufferlengthpayl_BM (_.bufob);
       send3_BM (_.curmeth, BMP_dump_value,
-                (struct stackframe_stBM *) &_,
-                _.bufob, _.dumpob, taggedint_BM (1));
+                CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (1));
       unsigned newbuflen = objstrbufferlengthpayl_BM (_.bufob);
       if (newbuflen == oldbuflen)
         objstrbufferprintfpayl_BM (_.bufob, "\t |nometh| __");
@@ -512,8 +509,7 @@ ROUTINEOBJNAME_BM (_4DvEF1tVGFD_6VVLpFn6FPW)    //  dump_scan°hset_object
   _.setv = objhashsettosetpayl_BM (_.recv);
   NONPRINTF_BM ("dump_scan°hset_object recv=%s setv=%s",
                 objectdbg_BM (_.recv),
-                debug_outstr_value_BM ((value_tyBM) _.setv,
-                                       (struct stackframe_stBM *) &_, 1));
+                debug_outstr_value_BM ((value_tyBM) _.setv, CURFRAME_BM, 1));
   obdumpscanvalue_BM (_.dumpob, (value_tyBM) _.setv, 0);
   LOCALRETURN_BM ((value_tyBM) _.recv);
 }                               /* end dump_scan°hset_object ROUTINE _4DvEF1tVGFD_6VVLpFn6FPW */
@@ -556,12 +552,10 @@ ROUTINEOBJNAME_BM (_7GMLV81ntO3_4NHTv7fCL0A)    // dump_data°hset_object
   objstrbufferprintfpayl_BM (_.bufob, "!~ todo (~\t");
   objstrbuffermoreindentpayl_BM (_.bufob);
   _.dumpres = send3_BM (k_put, BMP_dump_value,
-                        (struct stackframe_stBM *) &_,
-                        _.bufob, _.dumpob, taggedint_BM (0));
+                        CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
   objstrbufferprintfpayl_BM (_.bufob, "\t");
   _.dumpres = send3_BM ((value_tyBM) _.setv, BMP_dump_value,
-                        (struct stackframe_stBM *) &_,
-                        _.bufob, _.dumpob, taggedint_BM (0));
+                        CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
   objstrbufferlessindentpayl_BM (_.bufob);
   objstrbufferappendcstrpayl_BM (_.bufob, "\n~)\n");
   LOCALRETURN_BM (_.recv);
@@ -865,12 +859,10 @@ ROUTINEOBJNAME_BM (_0y90r6nyAYP_2MmfH2V00B1)    // dump_data°vector_object
   objstrbufferprintfpayl_BM (_.bufob, "!~ todo (~\t");
   objstrbuffermoreindentpayl_BM (_.bufob);
   _.dumpres = send3_BM (k_fill, BMP_dump_value,
-                        (struct stackframe_stBM *) &_,
-                        _.bufob, _.dumpob, taggedint_BM (0));
+                        CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
   objstrbufferprintfpayl_BM (_.bufob, "\t");
   _.dumpres = send3_BM ((value_tyBM) _.nodv, BMP_dump_value,
-                        (struct stackframe_stBM *) &_,
-                        _.bufob, _.dumpob, taggedint_BM (0));
+                        CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
   objstrbufferlessindentpayl_BM (_.bufob);
   objstrbufferappendcstrpayl_BM (_.bufob, "\n~)\n");
   LOCALRETURN_BM (_.recv);
@@ -1044,16 +1036,13 @@ ROUTINEOBJNAME_BM (_9EytjXNb76D_1ZP3iSk9cuu)    // dump_data°assoc_object
       else
         objstrbufferprintfpayl_BM (_.bufob, " ");
       _.dumpres = send3_BM (k_put, BMP_dump_value,
-                            (struct stackframe_stBM *) &_,
-                            _.bufob, _.dumpob, taggedint_BM (0));
+                            CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
       objstrbufferprintfpayl_BM (_.bufob, "\t");
       _.dumpres = send3_BM (_.curattrob, BMP_dump_value,
-                            (struct stackframe_stBM *) &_,
-                            _.bufob, _.dumpob, taggedint_BM (0));
+                            CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
       objstrbufferprintfpayl_BM (_.bufob, "\t");
       _.dumpres = send3_BM (_.curval, BMP_dump_value,
-                            (struct stackframe_stBM *) &_,
-                            _.bufob, _.dumpob, taggedint_BM (0));
+                            CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
       cnt++;
     };
   objstrbufferlessindentpayl_BM (_.bufob);
@@ -1266,7 +1255,7 @@ ROUTINEOBJNAME_BM (_6PmxiZR9WBe_13DwWExCALl)    //
   _.closv = objgetattr_BM (_.recv, BMP_dump_data);
   if (isclosure_BM (_.closv))
     {
-      _.resuv = apply3_BM (_.closv, (struct stackframe_stBM *) &_,
+      _.resuv = apply3_BM (_.closv, CURFRAME_BM,
                            (const value_tyBM) _.recv, _.dumpob, _.bufob);
       LOCALRETURN_BM (_.resuv);
     }
@@ -1304,8 +1293,7 @@ value_tyBM ROUTINEOBJNAME_BM (_7D36kHemyWQ_0YfwWnUhR9Y) (struct stackframe_stBM 
       objstrbufferprintfpayl_BM (_.bufob, "\n" "!~value (~ ");
       unsigned oldbuflen = objstrbufferlengthpayl_BM (_.bufob);
       send3_BM (_.obval, BMP_dump_value,
-                (struct stackframe_stBM *) &_,
-                _.bufob, _.dumpob, taggedint_BM (1));
+                CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (1));
       unsigned newbuflen = objstrbufferlengthpayl_BM (_.bufob);
       if (newbuflen == oldbuflen)
         objstrbufferprintfpayl_BM (_.bufob, "\t |novalue| __");
@@ -1387,40 +1375,36 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   switch (nbargs)
     {
     case 0:
-      LOCALRETURN_BM (send0_BM
-                      (_.ldobj, _.obsel, (struct stackframe_stBM *) &_));
+      LOCALRETURN_BM (send0_BM (_.ldobj, _.obsel, CURFRAME_BM));
     case 1:
-      LOCALRETURN_BM (send1_BM
-                      (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
-                       args[0]));
+      LOCALRETURN_BM (send1_BM (_.ldobj, _.obsel, CURFRAME_BM, args[0]));
     case 2:
       LOCALRETURN_BM (send2_BM
-                      (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
-                       args[0], args[1]));
+                      (_.ldobj, _.obsel, CURFRAME_BM, args[0], args[1]));
     case 3:
       LOCALRETURN_BM (send3_BM
-                      (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
+                      (_.ldobj, _.obsel, CURFRAME_BM,
                        args[0], args[1], args[2]));
     case 4:
       LOCALRETURN_BM (send4_BM
-                      (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
+                      (_.ldobj, _.obsel, CURFRAME_BM,
                        args[0], args[1], args[2], args[3]));
     case 5:
       LOCALRETURN_BM (send5_BM
-                      (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
+                      (_.ldobj, _.obsel, CURFRAME_BM,
                        args[0], args[1], args[2], args[3], args[4]));
     case 6:
       LOCALRETURN_BM (send6_BM
-                      (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
+                      (_.ldobj, _.obsel, CURFRAME_BM,
                        args[0], args[1], args[2], args[3], args[4], args[5]));
     case 7:
       LOCALRETURN_BM (send7_BM
-                      (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
+                      (_.ldobj, _.obsel, CURFRAME_BM,
                        args[0], args[1], args[2], args[3], args[4], args[5],
                        args[6]));
     case 8:
       LOCALRETURN_BM (send8_BM
-                      (_.ldobj, _.obsel, (struct stackframe_stBM *) &_,
+                      (_.ldobj, _.obsel, CURFRAME_BM,
                        args[0], args[1], args[2], args[3], args[4], args[5],
                        args[6], args[7]));
     default:;
@@ -1468,20 +1452,17 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   switch (nbargs)
     {
     case 0:
-      LOCALRETURN_BM (apply1_BM
-                      ((value_tyBM) _.closv, (struct stackframe_stBM *) &_,
-                       _.ldobj));
+      LOCALRETURN_BM (apply1_BM ((value_tyBM) _.closv, CURFRAME_BM, _.ldobj));
     case 1:
       LOCALRETURN_BM (apply2_BM
-                      ((value_tyBM) _.closv, (struct stackframe_stBM *) &_,
-                       _.ldobj, args[0]));
+                      ((value_tyBM) _.closv, CURFRAME_BM, _.ldobj, args[0]));
     case 2:
       LOCALRETURN_BM (apply3_BM
-                      ((value_tyBM) _.closv, (struct stackframe_stBM *) &_,
+                      ((value_tyBM) _.closv, CURFRAME_BM,
                        _.ldobj, args[0], args[1]));
     case 3:
       LOCALRETURN_BM (apply4_BM
-                      ((value_tyBM) _.closv, (struct stackframe_stBM *) &_,
+                      ((value_tyBM) _.closv, CURFRAME_BM,
                        _.ldobj, args[0], args[1], args[2]));
     default:
       if (nbargs < MAXAPPLYARGS_BM - 1)
@@ -1492,8 +1473,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
           memcpy (argarr + 1, args, nbargs * sizeof (void *));
           LOCALRETURN_BM (applyvar_BM
                           ((value_tyBM) _.closv,
-                           (struct stackframe_stBM *) &_, nbargs + 1,
-                           argarr));
+                           CURFRAME_BM, nbargs + 1, argarr));
         }
     }
   FATAL_BM ("too many %u arguments in todo_apply", nbargs);
@@ -1836,8 +1816,7 @@ ROUTINEOBJNAME_BM (_3yJPC4SxGtF_6ilaF37wdxG)    //
                                    ix, idtyp);
       /// emit the type
       _.emittedv = send2_BM (_.curtype, k_emit_c_type,
-                             (struct stackframe_stBM *) &_,
-                             _.prsbufob, taggedint_BM (ix));
+                             CURFRAME_BM, _.prsbufob, taggedint_BM (ix));
       if (!_.emittedv)
         {
           DBGPRINTF_BM ("failed to emit_c_type type #%d %s / of class %s", ix,
@@ -1972,13 +1951,11 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
   objtouchnow_BM (_.modgenob);
   DBGPRINTF_BM ("@@plain_module°emit_module recv=%s made modgenob=%s *sbuf*",
                 objectdbg_BM (_.recv), objectdbg1_BM (_.modgenob));
-  _.resprep =
-    send1_BM (_.recv, k_prepare_module, (struct stackframe_stBM *) &_,
-              _.modgenob);
+  _.resprep = send1_BM (_.recv, k_prepare_module, CURFRAME_BM, _.modgenob);
   DBGPRINTF_BM ("@@emit_module recv=%s modgenob=%s resprep=%s", //
                 objectdbg_BM (_.recv), objectdbg1_BM (_.modgenob),      //
                 debug_outstr_value_BM (_.resprep,       //
-                                       (struct stackframe_stBM *) &_, 0));
+                                       CURFRAME_BM, 0));
   if (!_.resprep)
     {
       DBGPRINTF_BM ("@@emit_module recv=%s prepare_module failed",
@@ -1989,13 +1966,12 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
     DBGPRINTF_BM ("@@emit_module recv=%s prepare_module done before generate_module modgenob=%s resprep=%s",    //
                   objectdbg_BM (_.recv), objectdbg1_BM (_.modgenob),    //
                   debug_outstr_value_BM (_.resprep,     //
-                                         (struct stackframe_stBM *) &_, 0));
+                                         CURFRAME_BM, 0));
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
   objstrbufferprintfpayl_BM (_.modgenob, "// generated module %s\n",
                              objectdbg_BM (_.recv));
   _.resgen =
-    send2_BM (_.recv, k_generate_module, (struct stackframe_stBM *) &_,
-              _.modgenob, _.resprep);
+    send2_BM (_.recv, k_generate_module, CURFRAME_BM, _.modgenob, _.resprep);
   if (!_.resgen)
     {
       DBGPRINTF_BM
@@ -2008,8 +1984,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
   else
     DBGPRINTF_BM ("@@emit_module recv=%s generate_module done resgen=%s",
                   objectdbg_BM (_.recv),
-                  debug_outstr_value_BM (_.resgen,
-                                         (struct stackframe_stBM *) &_, 0));
+                  debug_outstr_value_BM (_.resgen, CURFRAME_BM, 0));
   LOCALRETURN_BM (_.recv);
 #warning emit_module of plain_module incomplete
 }                               /* end  ROUTINE _1gME6zn82Kf_8hzWibLFRfz */
@@ -2115,7 +2090,7 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
                         ix);
           _.partres =
             apply2_BM ((closure_tyBM *) _.curcomp,
-                       (struct stackframe_stBM *) &_, _.recv, _.modgen);
+                       CURFRAME_BM, _.recv, _.modgen);
           if (isobject_BM (_.partres)
               && objectisinstance_BM (_.partres, k_basiclo_function))
             {
@@ -2175,12 +2150,10 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
     ("@@prepare_module°basiclo*module before complete_module recv=%s (of %s) modgen=%s",
      objectdbg_BM (_.recv), objectdbg1_BM (objclass_BM (_.recv)),
      objectdbg2_BM (_.modgen));
-  _.partres =
-    send1_BM (_.recv, k_complete_module, (struct stackframe_stBM *) &_,
-              _.modgen);
+  _.partres = send1_BM (_.recv, k_complete_module, CURFRAME_BM, _.modgen);
   DBGPRINTF_BM ("@@prepare_module°basiclo*module recv %s partres %s", objectdbg_BM (_.recv),   //
                 debug_outstr_value_BM (_.partres,       //
-                                       (struct stackframe_stBM *) &_, 0));
+                                       CURFRAME_BM, 0));
   if (isset_BM (_.partres))
     {
       _.setfun = _.partres;
@@ -2266,7 +2239,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
     };
   DBGPRINTF_BM ("@@generate_module°basiclo*module modgen=%s is a %s prepval=%s\n", objectdbg_BM (_.modgen), objectdbg1_BM (objclass_BM (_.modgen)),    //
                 debug_outstr_value_BM ((value_tyBM) _.prepval,
-                                       (struct stackframe_stBM *) &_, 1));
+                                       CURFRAME_BM, 1));
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgen));
   if (!isset_BM (_.prepval))
     {
@@ -2289,13 +2262,11 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
                     ix, objectdbg_BM (_.curout),
                     objectdbg1_BM (objclass_BM (_.curout)));
       _.preproutval = send2_BM (_.curout, k_prepare_routine,
-                                (struct stackframe_stBM *) &_, _.modgen,
-                                _.prepval);
+                                CURFRAME_BM, _.modgen, _.prepval);
       DBGPRINTF_BM
         ("@@generate_module°basiclo*module prepare_routine of %s ix#%d preproutval=%s",
          objectdbg_BM (_.curout), ix,
-         debug_outstr_value_BM (_.preproutval, (struct stackframe_stBM *) &_,
-                                0));
+         debug_outstr_value_BM (_.preproutval, CURFRAME_BM, 0));
       if (!_.preproutval)
         {
           DBGPRINTF_BM
@@ -2313,7 +2284,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
   DBGPRINTF_BM
     ("@@generate_module°basiclo*module incomplete modgen=%s prepmod=%s",
      objectdbg_BM (_.modgen),
-     debug_outstr_value_BM (_.prepmod, (struct stackframe_stBM *) &_, 0));
+     debug_outstr_value_BM (_.prepmod, CURFRAME_BM, 0));
   unsigned nbpreprout = nodewidth_BM (_.prepmod);
   //////
   // we should now declare the routines
@@ -2330,12 +2301,11 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
          routix, objectdbg_BM (_.curout));
       WEAKASSERT_BM (isobject_BM (_.curout));
       _.emitv = send2_BM (_.curout, k_emit_declaration,
-                          (struct stackframe_stBM *) &_, _.modgen,
-                          taggedint_BM (routix));
+                          CURFRAME_BM, _.modgen, taggedint_BM (routix));
       DBGPRINTF_BM
         ("@@generate_module°basiclo*module declared routix#%d curout %s emitv %s",
          routix, objectdbg_BM (_.curout),
-         debug_outstr_value_BM (_.emitv, (struct stackframe_stBM *) &_, 0));
+         debug_outstr_value_BM (_.emitv, CURFRAME_BM, 0));
       if (!_.emitv)
         {
           DBGPRINTF_BM
@@ -2359,12 +2329,11 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
          routix, objectdbg_BM (_.curout));
       WEAKASSERT_BM (isobject_BM (_.curout));
       _.emitv = send2_BM (_.curout, k_emit_definition,
-                          (struct stackframe_stBM *) &_, _.modgen,
-                          taggedint_BM (routix));
+                          CURFRAME_BM, _.modgen, taggedint_BM (routix));
       DBGPRINTF_BM
         ("@@generate_module°basiclo*module defined routix#%d curout %s emitv %s",
          routix, objectdbg_BM (_.curout),
-         debug_outstr_value_BM (_.emitv, (struct stackframe_stBM *) &_, 0));
+         debug_outstr_value_BM (_.emitv, CURFRAME_BM, 0));
       if (!_.emitv)
         {
           DBGPRINTF_BM
@@ -2445,19 +2414,17 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
   initialize_failurelockset_BM (&flockset, sizeof (flockset));
   LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failuremodule, failcod,
                            _.failreason);
-  _.res = send0_BM (_.obmod, BMP_emit_module, (struct stackframe_stBM *) &_);
+  _.res = send0_BM (_.obmod, BMP_emit_module, CURFRAME_BM);
   DBGPRINTF_BM ("@@dump_data°plain_dumpable_module emit_module succeess obmod %s res %s",      //
                 objectdbg_BM (_.obmod), //
-                debug_outstr_value_BM (_.res,
-                                       (struct stackframe_stBM *) &_, 1));
+                debug_outstr_value_BM (_.res, CURFRAME_BM, 1));
   /// this won't be reached on failure; 
   destroy_failurelockset_BM (&flockset);
   curfailurehandle_BM = prevfailureh;
   DBGPRINTF_BM ("@@dump_data°plain_dumpable_module obmod %s failcod %d failreason %s res %s",  //
                 objectdbg_BM (_.obmod), failcod,        //
-                debug_outstr_value_BM (_.failreason, (struct stackframe_stBM *) &_, 1), //
-                debug_outstr_value_BM (_.res,
-                                       (struct stackframe_stBM *) &_, 1));
+                debug_outstr_value_BM (_.failreason, CURFRAME_BM, 1),   //
+                debug_outstr_value_BM (_.res, CURFRAME_BM, 1));
   if (failcod > 0)
     // this is only reached by the label, with an internal goto in LOCAL_FAILURE_HANDLE_BM macro
   lab_failuremodule:{
@@ -2470,8 +2437,7 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
       curfailurehandle_BM = prevfailureh;
       DBGPRINTF_BM ("@@dump_data°plain_dumpable_module failed obmod=%s failcod=%d failreason %s\n****!!!!!!\n",        //
                     objectdbg_BM (_.obmod), failcod,    //
-                    debug_outstr_value_BM (_.failreason,
-                                           (struct stackframe_stBM *) &_, 1));
+                    debug_outstr_value_BM (_.failreason, CURFRAME_BM, 1));
       LOCALRETURN_BM (NULL);
     }
   else if (_.res)
@@ -2539,7 +2505,7 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object `in` for block readmacro");
           LOCALRETURN_BM (NULL);
@@ -2560,7 +2526,7 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
       if (!isobject_BM (_.curlab))
         {
           parsererrorprintf_BM (pars,
-                                (struct stackframe_stBM *) &_, lineno,
+                                CURFRAME_BM, lineno,
                                 colpos,
                                 "non-object `label` for block readmacro");
           LOCALRETURN_BM (NULL);
@@ -2582,7 +2548,7 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object #%d comp for block readmacro",
                                   ix);
@@ -2655,7 +2621,7 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object `in` for assign readmacro");
           LOCALRETURN_BM (NULL);
@@ -2673,7 +2639,7 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
     {
       if (pars)
         parsererrorprintf_BM (pars,
-                              (struct stackframe_stBM *) &_, lineno, colpos,
+                              CURFRAME_BM, lineno, colpos,
                               "assign readmacro wants two arguments");
       LOCALRETURN_BM (NULL);
     }
@@ -2683,7 +2649,7 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
     {
       if (pars)
         parsererrorprintf_BM (pars,
-                              (struct stackframe_stBM *) &_, lineno, colpos,
+                              CURFRAME_BM, lineno, colpos,
                               "assign readmacro wants object as src");
       LOCALRETURN_BM (NULL);
     }
@@ -2755,7 +2721,7 @@ ROUTINEOBJNAME_BM (_0XbMOJqLLPZ_1t2wg2TwPRA)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object `in` for cond readmacro");
           LOCALRETURN_BM (NULL);
@@ -2777,7 +2743,7 @@ ROUTINEOBJNAME_BM (_0XbMOJqLLPZ_1t2wg2TwPRA)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object arg#%d for cond readmacro", ix);
           LOCALRETURN_BM (NULL);
@@ -2793,7 +2759,7 @@ ROUTINEOBJNAME_BM (_0XbMOJqLLPZ_1t2wg2TwPRA)    //
             {
               if (pars)
                 parsererrorprintf_BM (pars,
-                                      (struct stackframe_stBM *) &_, lineno,
+                                      CURFRAME_BM, lineno,
                                       colpos,
                                       "non-consecutive when %s arg#%d for cond readmacro",
                                       objectdbg_BM ((objectval_tyBM *)
@@ -2871,7 +2837,7 @@ ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object `in` for intswitch readmacro");
           LOCALRETURN_BM (NULL);
@@ -2891,7 +2857,7 @@ ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    //
       if (!isobject_BM (_.curson))
         {
           parsererrorprintf_BM (pars,
-                                (struct stackframe_stBM *) &_, lineno,
+                                CURFRAME_BM, lineno,
                                 colpos,
                                 "non-object arg#%d for cond readmacro", ix);
           LOCALRETURN_BM (NULL);
@@ -2961,7 +2927,7 @@ ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object `in` for objswitch readmacro");
           LOCALRETURN_BM (NULL);
@@ -2982,7 +2948,7 @@ ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object arg#%d for cond readmacro", ix);
           LOCALRETURN_BM (NULL);
@@ -3051,7 +3017,7 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object `in` for loop readmacro");
           LOCALRETURN_BM (NULL);
@@ -3071,7 +3037,7 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object `label` for loop readmacro");
           LOCALRETURN_BM (NULL);
@@ -3093,7 +3059,7 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object #%d comp for loop readmacro",
                                   ix);
@@ -3166,7 +3132,7 @@ ROUTINEOBJNAME_BM (_63Q0R4r8xa7_7XOAxxP5pi2)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object `in` for exit readmacro");
           LOCALRETURN_BM (NULL);
@@ -3182,7 +3148,7 @@ ROUTINEOBJNAME_BM (_63Q0R4r8xa7_7XOAxxP5pi2)    //
     {
       if (pars)
         parsererrorprintf_BM (pars,
-                              (struct stackframe_stBM *) &_, lineno, colpos,
+                              CURFRAME_BM, lineno, colpos,
                               "non-object exit argument for exit readmacro");
       LOCALRETURN_BM (NULL);
     }
@@ -3249,7 +3215,7 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object `in` for while readmacro");
           LOCALRETURN_BM (NULL);
@@ -3269,7 +3235,7 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object `label` for while readmacro");
           LOCALRETURN_BM (NULL);
@@ -3288,7 +3254,7 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
     {
       if (pars)
         parsererrorprintf_BM (pars,
-                              (struct stackframe_stBM *) &_, lineno, colpos,
+                              CURFRAME_BM, lineno, colpos,
                               "too short %d while readmacro", nodwidth);
       LOCALRETURN_BM (NULL);
     }
@@ -3297,7 +3263,7 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
     {
       if (pars)
         parsererrorprintf_BM (pars,
-                              (struct stackframe_stBM *) &_, lineno, colpos,
+                              CURFRAME_BM, lineno, colpos,
                               "nil cond in while readmacro");
     }
   for (unsigned ix = startix + 1; ix < nodwidth; ix++)
@@ -3307,7 +3273,7 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object #%d comp for while readmacro",
                                   ix);
@@ -3381,7 +3347,7 @@ ROUTINEOBJNAME_BM (_5788HpgOtVV_4zwZIr0jgmq)    //
       if (!isobject_BM (_.inv))
         {
           parsererrorprintf_BM (pars,
-                                (struct stackframe_stBM *) &_, lineno,
+                                CURFRAME_BM, lineno,
                                 colpos,
                                 "non-object `in` for return readmacro");
           LOCALRETURN_BM (NULL);
@@ -3397,7 +3363,7 @@ ROUTINEOBJNAME_BM (_5788HpgOtVV_4zwZIr0jgmq)    //
   if (startix + 1 < nodwidth)
     {
       parsererrorprintf_BM (pars,
-                            (struct stackframe_stBM *) &_, lineno, colpos,
+                            CURFRAME_BM, lineno, colpos,
                             "too long %u return readmacro", nodwidth);
       LOCALRETURN_BM (NULL);
     }
@@ -3471,7 +3437,7 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
       if (!isobject_BM (_.inv))
         {
           parsererrorprintf_BM (pars,
-                                (struct stackframe_stBM *) &_, lineno,
+                                CURFRAME_BM, lineno,
                                 colpos, "non-object `in` for run readmacro");
           LOCALRETURN_BM (NULL);
         }
@@ -3483,7 +3449,7 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
   if (startix + 1 > nodwidth)
     {
       parsererrorprintf_BM (pars,
-                            (struct stackframe_stBM *) &_, lineno, colpos,
+                            CURFRAME_BM, lineno, colpos,
                             "too long %u run readmacro", nodwidth);
       LOCALRETURN_BM (NULL);
     }
@@ -3577,7 +3543,7 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
       || !objectisinstance_BM (clos_curcexp, k_basiclo_cexpander))
     {
       parsererrorprintf_BM (pars,
-                            (struct stackframe_stBM *) &_, lineno, colpos,
+                            CURFRAME_BM, lineno, colpos,
                             "bad cexpander for cexpansion readmacro");
       LOCALRETURN_BM (NULL);
     };
@@ -3601,7 +3567,7 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
       if (!isobject_BM (_.inv))
         {
           parsererrorprintf_BM (pars,
-                                (struct stackframe_stBM *) &_, lineno,
+                                CURFRAME_BM, lineno,
                                 colpos,
                                 "non-object `in` for cexpansion %s readmacro",
                                 objectdbg_BM (clos_curcexp));
@@ -3618,7 +3584,7 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
   if (startix + nbresults + nbargs < nodwidth)
     {
       parsererrorprintf_BM (pars,
-                            (struct stackframe_stBM *) &_, lineno, colpos,
+                            CURFRAME_BM, lineno, colpos,
                             "too short %s cexpansion (%u) readmacro (%d results, %d arguments)",
                             objectdbg_BM (clos_curcexp), nodwidth,
                             nbresults, nbargs);
@@ -3634,7 +3600,7 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
           if (!isobject_BM (_.curson))
             {
               parsererrorprintf_BM (pars,
-                                    (struct stackframe_stBM *) &_, lineno,
+                                    CURFRAME_BM, lineno,
                                     colpos,
                                     "non-object result#%d for cexpansion %s readmacro",
                                     ix, objectdbg_BM (clos_curcexp));
@@ -3648,7 +3614,7 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
       if (!isobject_BM (_.curson))
         {
           parsererrorprintf_BM (pars,
-                                (struct stackframe_stBM *) &_, lineno,
+                                CURFRAME_BM, lineno,
                                 colpos,
                                 "non-object body component#%d for cexpansion %s readmacro",
                                 ix, objectdbg_BM (clos_curcexp));
@@ -3783,7 +3749,7 @@ ROUTINEOBJNAME_BM (_6gwxdBT3Mhv_8Gtgu8feoy3)    //
       if (!isobject_BM (_.inv))
         {
           parsererrorprintf_BM (pars,
-                                (struct stackframe_stBM *) &_, lineno,
+                                CURFRAME_BM, lineno,
                                 colpos, "non-object `in` for when readmacro");
           LOCALRETURN_BM (NULL);
         }
@@ -3803,20 +3769,17 @@ ROUTINEOBJNAME_BM (_6gwxdBT3Mhv_8Gtgu8feoy3)    //
       DBGPRINTF_BM ("when readmacro cexpansion"
                     " lineno=%d colpos=%d ix=%d\n... curarg=%s \n",
                     lineno, colpos, ix,
-                    debug_outstr_value_BM (_.curarg,
-                                           (struct stackframe_stBM *) &_, 1));
+                    debug_outstr_value_BM (_.curarg, CURFRAME_BM, 1));
       if (!_.curobj
           || (!objectisinstance_BM (_.curobj, k_basiclo_statement)
               && !objectisinstance_BM (_.curobj, k_basiclo_block)))
         {
           parsererrorprintf_BM
             (pars,
-             (struct stackframe_stBM *) &_, lineno,
+             CURFRAME_BM, lineno,
              colpos,
              "bad arg #%d (%s) in when readmacro (not a basiclo_statement or basiclo_block)",
-             ix,
-             debug_outstr_value_BM (_.curarg,
-                                    (struct stackframe_stBM *) &_, 0));
+             ix, debug_outstr_value_BM (_.curarg, CURFRAME_BM, 0));
           LOCALRETURN_BM (NULL);
         };
       _.curarg = NULL;
@@ -3896,7 +3859,7 @@ ROUTINEOBJNAME_BM (_7iKya0Q5Jii_0mjPPia0yib)    //
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_, lineno,
+                                  CURFRAME_BM, lineno,
                                   colpos,
                                   "non-object `in` for assoc readmacro");
           LOCALRETURN_BM (NULL);
@@ -3978,7 +3941,7 @@ ROUTINEOBJNAME_BM (_2mWbSPeD8lw_8ea0EhwQUAa)    // readmacro:hset
         {
           if (pars)
             parsererrorprintf_BM (pars,
-                                  (struct stackframe_stBM *) &_,
+                                  CURFRAME_BM,
                                   lineno, colpos,
                                   "non-object `in` for hset readmacro");
           LOCALRETURN_BM (NULL);
@@ -4082,8 +4045,7 @@ ROUTINEOBJNAME_BM (_6UxkFEHhNQS_0f65oUlZ7b5)    // dump_data°hashsetval_object
   objstrbufferprintfpayl_BM (_.bufob, "!~ todo (~\t");
   objstrbuffermoreindentpayl_BM (_.bufob);
   _.dumpres = send3_BM (k_reserve, BMP_dump_value,
-                        (struct stackframe_stBM *) &_,
-                        _.bufob, _.dumpob, taggedint_BM (0));
+                        CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
   objstrbufferprintfpayl_BM (_.bufob, " %ld\n",
                              (unsigned long) prime_above_BM (4 +
                                                              6 * nbcont / 5));
@@ -4094,12 +4056,10 @@ ROUTINEOBJNAME_BM (_6UxkFEHhNQS_0f65oUlZ7b5)    // dump_data°hashsetval_object
         continue;
       objstrbufferprintfpayl_BM (_.bufob, "\n!& ");
       _.dumpres = send3_BM (k_add, BMP_dump_value,
-                            (struct stackframe_stBM *) &_,
-                            _.bufob, _.dumpob, taggedint_BM (0));
+                            CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
       objstrbufferprintfpayl_BM (_.bufob, "\t ");
       _.dumpres = send3_BM (_.curval, BMP_dump_value,
-                            (struct stackframe_stBM *) &_,
-                            _.bufob, _.dumpob, taggedint_BM (0));
+                            CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
     }
   objstrbufferlessindentpayl_BM (_.bufob);
   objstrbufferappendcstrpayl_BM (_.bufob, "\n~)\n");
@@ -4317,8 +4277,7 @@ ROUTINEOBJNAME_BM (_8AzRspWL4ws_3cdvWV4S1JH)    //
   objstrbufferprintfpayl_BM (_.bufob, "!~ todo (~\t");
   objstrbuffermoreindentpayl_BM (_.bufob);
   _.dumpres = send3_BM (k_reserve, BMP_dump_value,
-                        (struct stackframe_stBM *) &_,
-                        _.bufob, _.dumpob, taggedint_BM (0));
+                        CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
   objstrbufferprintfpayl_BM (_.bufob, " %ld\n",
                              (unsigned long) prime_above_BM (4 +
                                                              6 * siz / 5));
@@ -4332,16 +4291,13 @@ ROUTINEOBJNAME_BM (_8AzRspWL4ws_3cdvWV4S1JH)    //
         continue;
       objstrbufferprintfpayl_BM (_.bufob, "\n!& ");
       _.dumpres = send3_BM (k_put, BMP_dump_value,
-                            (struct stackframe_stBM *) &_,
-                            _.bufob, _.dumpob, taggedint_BM (0));
+                            CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
       objstrbufferprintfpayl_BM (_.bufob, "\t ");
       _.dumpres = send3_BM (_.keyv, BMP_dump_value,
-                            (struct stackframe_stBM *) &_,
-                            _.bufob, _.dumpob, taggedint_BM (0));
+                            CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
       objstrbufferprintfpayl_BM (_.bufob, "\t ");
       _.dumpres = send3_BM (_.valv, BMP_dump_value,
-                            (struct stackframe_stBM *) &_,
-                            _.bufob, _.dumpob, taggedint_BM (0));
+                            CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
     }
   objstrbufferlessindentpayl_BM (_.bufob);
   objstrbufferappendcstrpayl_BM (_.bufob, "\n~)\n");
@@ -4384,7 +4340,7 @@ ROUTINEOBJNAME_BM (_7XDuHagbhi8_3V9zhBpbrrV)    //
       NONPRINTF_BM ("todo!test_agenda defergtk %s rk#%d",       //
                     objectdbg_BM (_.taskob), rk);
       gtk_defer_apply3_BM (kk_defer_show, _.taskob, _.rankv, NULL,
-                           (struct stackframe_stBM *) &_);
+                           CURFRAME_BM);
       usleep (1000);
     }
   NONPRINTF_BM ("todo!test_agenda end taskob %s rk#%d",

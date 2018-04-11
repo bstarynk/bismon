@@ -889,19 +889,19 @@ gtk_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_ty
     {
       NONPRINTF_BM("gtk_defer_apply bad funv %s",
                    debug_outstr_value_BM (_.funv, //
-                                          (struct stackframe_stBM *) &_, 0));
+                                          CURFRAME_BM, 0));
       return;
     }
   NONPRINTF_BM("gtk_defer_apply start tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
                (long)gettid_BM(),
                debug_outstr_value_BM (_.funv, //
-                                      (struct stackframe_stBM *) &_, 0), //
+                                      CURFRAME_BM, 0), //
                debug_outstr_value_BM (_.arg1, //
-                                      (struct stackframe_stBM *) &_, 0), //
+                                      CURFRAME_BM, 0), //
                debug_outstr_value_BM (_.arg2, //
-                                      (struct stackframe_stBM *) &_, 0), //
+                                      CURFRAME_BM, 0), //
                debug_outstr_value_BM (_.arg3, //
-                                      (struct stackframe_stBM *) &_, 0) //
+                                      CURFRAME_BM, 0) //
               );
   if (defer_gtk_writepipefd_BM<0)
     FATAL_BM("gtk_defer_apply3_BM without writepipe");
@@ -926,13 +926,13 @@ gtk_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_ty
         {
           NONPRINTF_BM("gtk_defer_apply done funv %s arg1 %s arg2 %s arg3 %s",
                        debug_outstr_value_BM (_.funv, //
-                                              (struct stackframe_stBM *) &_, 0), //
+                                              CURFRAME_BM, 0), //
                        debug_outstr_value_BM (_.arg1, //
-                                              (struct stackframe_stBM *) &_, 0), //
+                                              CURFRAME_BM, 0), //
                        debug_outstr_value_BM (_.arg2, //
-                                              (struct stackframe_stBM *) &_, 0), //
+                                              CURFRAME_BM, 0), //
                        debug_outstr_value_BM (_.arg3, //
-                                              (struct stackframe_stBM *) &_, 0) //
+                                              CURFRAME_BM, 0) //
                       );
           return;
         }

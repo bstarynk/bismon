@@ -659,8 +659,7 @@ run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
   failcod = setjmp (fh.failh_jmpbuf);
   if (!failcod)
     {
-      (void) send0_BM (_.obtk, BMP_run_tasklet,
-                       (struct stackframe_stBM *) &_);
+      (void) send0_BM (_.obtk, BMP_run_tasklet, CURFRAME_BM);
     }
   else
     {
@@ -668,9 +667,8 @@ run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
       memset (curidbuf, 0, sizeof (curidbuf));
       idtocbuf32_BM (objid_BM (_.obtk), curidbuf);
       _.failres = fh.failh_reason;
-      char *failmsg =
-        debug_outstr_value_BM (_.failres, (struct stackframe_stBM *) &_,
-                               0);
+      char *failmsg = debug_outstr_value_BM (_.failres, CURFRAME_BM,
+                                             0);
       fprintf (stderr, "tasklet %s failed code#%d reason %s\n", curidbuf,
                failcod, failmsg);
     };

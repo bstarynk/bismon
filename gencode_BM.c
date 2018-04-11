@@ -37,9 +37,9 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  value_tyBM recv;
                  objectval_tyBM * modgenob;
-                 value_tyBM args; value_tyBM curarg;
-                 objectval_tyBM * routprepob;
-                 value_tyBM prepvalset;
+                 value_tyBM args;
+                 value_tyBM curarg;
+                 objectval_tyBM * routprepob; value_tyBM prepvalset;
                  objectval_tyBM * bindob; value_tyBM errorv;
                  value_tyBM causev;
     );
@@ -62,7 +62,7 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   DBGPRINTF_BM
     ("start prepare_routine:basiclo_function recv=%s modgen=%s prepval=%s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.modgenob),
-     debug_outstr_value_BM (_.prepvalset, (struct stackframe_stBM *) &_, 0));
+     debug_outstr_value_BM (_.prepvalset, CURFRAME_BM, 0));
   DBGPRINTF_BM
     ("prepare_routine:basiclo_function modgenob=%s is a %s\n",
      objectdbg_BM (_.modgenob), objectdbg1_BM (objclass_BM (_.modgenob)));
@@ -102,10 +102,9 @@ ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_funct
   LOCALRETURN_BM (NULL);
 failure:
   DBGPRINTF_BM ("prepare_routine:basiclo_function failin %d cause %s", failin,
-                debug_outstr_value_BM (_.causev,
-                                       (struct stackframe_stBM *) &_, 0));
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv = makenodevar_BM (k_prepare_routine, NULL);
-  FAILURE_BM (failin, _.errorv, (struct stackframe_stBM *) &_);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */
 
@@ -398,8 +397,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     ("start prepare_routine°basiclo_minifunction before collect_blocks recv %s routprep %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep));
   _.collbl = send2_BM (_.bodyv, k_collect_blocks,
-                       (struct stackframe_stBM *) &_,
-                       _.routprep, taggedint_BM (0));
+                       CURFRAME_BM, _.routprep, taggedint_BM (0));
   if (!_.collbl)
     {
       fprintf (stderr,
@@ -411,7 +409,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction after collect_blocks recv %s routprep %s collbl=%s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
-     debug_outstr_value_BM (_.collbl, (struct stackframe_stBM *) &_, 0));
+     debug_outstr_value_BM (_.collbl, CURFRAME_BM, 0));
   LOCALRETURN_BM (_.routprep);
 }                               /* end prepare_routine°basiclo_minifunction  _07qYMXftJRR_9dde2ASz4e9  */
 
@@ -589,18 +587,14 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
                    objectdbg_BM (_.curob), varix);
           LOCALRETURN_BM (NULL);
         }
-      miniscan_var_BM (_.curob, _.routprep, depth, _.recv,
-                       (struct stackframe_stBM *) &_);
+      miniscan_var_BM (_.curob, _.routprep, depth, _.recv, CURFRAME_BM);
     }
   for (int argix = 0; argix < nbargs; argix++)
     {
       _.curexp = (objgetcomp_BM (_.recv, argix + nbvars));
       DBGPRINTF_BM ("collect_blocks°basiclo_block argix#%d curexp %s",
-                    argix,
-                    debug_outstr_value_BM (_.curexp,
-                                           (struct stackframe_stBM *) &_, 0));
-      miniscan_expr_BM (_.curexp, _.routprep, depth, _.recv,
-                        (struct stackframe_stBM *) &_);
+                    argix, debug_outstr_value_BM (_.curexp, CURFRAME_BM, 0));
+      miniscan_expr_BM (_.curexp, _.routprep, depth, _.recv, CURFRAME_BM);
     }
   int off = nbvars + nbargs;
   int nbblocks = objnbcomps_BM (_.recv) - off;
@@ -625,8 +619,7 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
              objectdbg_BM (_.recv), objectdbg1_BM (_.curob));
           _.resv =
             send3_BM (_.curob, k_miniscan_block,
-                      (struct stackframe_stBM *) &_, _.routprep,
-                      taggedint_BM (depth), _.recv);
+                      CURFRAME_BM, _.routprep, taggedint_BM (depth), _.recv);
           if (!_.resv)
             {
               fprintf (stderr,
@@ -643,7 +636,7 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
           /// should send k_miniscan_stmt
           _.resv = send3_BM (_.curob,
                              k_miniscan_stmt,
-                             (struct stackframe_stBM *) &_,
+                             CURFRAME_BM,
                              _.routprep, taggedint_BM (depth), _.recv);
           if (!_.resv)
             {
@@ -740,8 +733,7 @@ miniscan_var_BM (objectval_tyBM * varob,
   WEAKASSERT_BM (objhasassocpayl_BM (_.routprepob));
   _.vrolv = objassocgetattrpayl_BM (_.routprepob, _.varob);
   DBGPRINTF_BM ("miniscan_var vrol=%s", //
-                debug_outstr_value_BM (_.vrolv,
-                                       (struct stackframe_stBM *) &_, 0));
+                debug_outstr_value_BM (_.vrolv, CURFRAME_BM, 0));
   if (isnode_BM (_.vrolv))
     {
       _.rolconnob = nodeconn_BM (_.vrolv);
@@ -764,7 +756,7 @@ failure:
   _.errorv =
     makenodevar_BM (k_miniscan_var, varob, routprepob, taggedint_BM (depth),
                     fromob, NULL);
-  FAILURE_BM (failin, _.errorv, (struct stackframe_stBM *) &_);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end miniscan_var_BM */
 
@@ -796,7 +788,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
   if (!_.fromob)
     FAILHERE ();
   DBGPRINTF_BM ("miniscan_expr start expv=%s routprepob=%s depth#%d fromob=%s", //
-                debug_outstr_value_BM (_.expv, (struct stackframe_stBM *) &_, 0),       //
+                debug_outstr_value_BM (_.expv, CURFRAME_BM, 0), //
                 objectdbg1_BM (_.routprepob), depth,
                 objectdbg2_BM (_.fromob));
   int ke = valtype_BM (_.expv);
@@ -822,14 +814,12 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
         _.avalv = objassocgetattrpayl_BM (_.routprepob, _.expob);
         DBGPRINTF_BM ("miniscan_expr expob=%s avalv=%s",
                       objectdbg_BM (_.expob),
-                      debug_outstr_value_BM (_.avalv,
-                                             (struct stackframe_stBM *) &_,
-                                             0));
+                      debug_outstr_value_BM (_.avalv, CURFRAME_BM, 0));
         if (_.avalv != NULL)
           {
             _.typob =
               miniscan_var_BM (_.expob, _.routprepob, depth, _.fromob,
-                               (struct stackframe_stBM *) &_);
+                               CURFRAME_BM);
             DBGPRINTF_BM ("miniscan_expr var expob=%s typob=%s",
                           objectdbg_BM (_.expob), objectdbg1_BM (_.typob));
             LOCALRETURN_BM (_.typob);
@@ -847,14 +837,12 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
            objectdbg_BM (_.connob), arity, objectdbg1_BM (_.routprepob),
            objectdbg2_BM (_.fromob));
         _.resv = send4_BM (_.connob, k_miniscan_node_conn,      //
-                           (struct stackframe_stBM *) &_,       //
+                           CURFRAME_BM, //
                            _.routprepob,
                            taggedint_BM (depth), _.expv, _.fromob);
         DBGPRINTF_BM ("miniscan_expr miniscan_node_conn->%s done resv=%s",      //
                       objectdbg_BM (_.connob),  //
-                      debug_outstr_value_BM (_.resv,
-                                             (struct stackframe_stBM *) &_,
-                                             0));
+                      debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
         if (!_.resv)
           FAILHERE ();
         LOCALRETURN_BM (_.resv);
@@ -864,15 +852,14 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
     }
 #warning incomplete miniscan_expr_BM
   DBGPRINTF_BM ("miniscan_expr end expv=%s",    //
-                debug_outstr_value_BM (_.expv,
-                                       (struct stackframe_stBM *) &_, 0));
+                debug_outstr_value_BM (_.expv, CURFRAME_BM, 0));
   LOCALJUSTRETURN_BM ();
 failure:
   DBGPRINTF_BM ("miniscan_expr failin %d", failin);
   _.errorv =
     makenodevar_BM (k_miniscan_expr, _.expv, _.routprepob,
                     taggedint_BM (depth), _.fromob, NULL);
-  FAILURE_BM (failin, _.errorv, (struct stackframe_stBM *) &_);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end miniscan_expr_BM */
 
@@ -928,7 +915,7 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
         {
           _.testexpv = objgetattr_BM (_.compob, k_test);
           miniscan_expr_BM (_.testexpv, _.routprepob, depth + 1, _.recv,
-                            (struct stackframe_stBM *) &_);
+                            CURFRAME_BM);
           unsigned nbsubcomp = objnbcomps_BM (_.compob);
           for (unsigned cix = 0; cix < nbsubcomp && !badson; cix++)
             {
@@ -947,14 +934,12 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
                      objectdbg1_BM (objclass_BM (_.seqcompob)));
                   _.resv =
                     send3_BM (_.seqcompob, k_miniscan_block,
-                              (struct stackframe_stBM *) &_, _.routprepob,
+                              CURFRAME_BM, _.routprepob,
                               taggedint_BM (depth + 1), _.compob);
                   DBGPRINTF_BM
                     ("miniscan_stmt°basiclo_cond seqcompob after miniscan_block->%s resv=%s",
                      objectdbg_BM (_.seqcompob),
-                     debug_outstr_value_BM (_.resv,
-                                            (struct stackframe_stBM *) &_,
-                                            0));
+                     debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
                   if (!_.resv)
                     badson = true;
                 }
@@ -966,14 +951,12 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
                      objectdbg1_BM (objclass_BM (_.seqcompob)));
                   _.resv =
                     send3_BM (_.seqcompob, k_miniscan_stmt,
-                              (struct stackframe_stBM *) &_, _.routprepob,
+                              CURFRAME_BM, _.routprepob,
                               taggedint_BM (depth + 1), _.compob);
                   DBGPRINTF_BM
                     ("miniscan_stmt°basiclo_cond seqcompob after miniscan_stmt->%s resv=%s",
                      objectdbg_BM (_.seqcompob),
-                     debug_outstr_value_BM (_.resv,
-                                            (struct stackframe_stBM *) &_,
-                                            0));
+                     debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
                   if (!_.resv)
                     badson = true;
                 }
@@ -1041,18 +1024,17 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //
      objectdbg2_BM (objclass_BM (_.destob)));
   WEAKASSERT_BM (isobject_BM (_.destob));
   _.vartypob = miniscan_var_BM (_.destob, _.routprepob, depth + 1, _.recv,
-                                (struct stackframe_stBM *) &_);
+                                CURFRAME_BM);
   DBGPRINTF_BM
     ("miniscan_stmt°basiclo_assign after miniscan_var->%s vartypob=%s",
      objectdbg_BM (_.destob), objectdbg1_BM (_.vartypob));
   DBGPRINTF_BM ("miniscan_stmt°basiclo_assign recv=%s srcexpv=%s", objectdbg_BM (_.recv),      //
-                debug_outstr_value_BM (_.srcexpv,
-                                       (struct stackframe_stBM *) &_, 0));
+                debug_outstr_value_BM (_.srcexpv, CURFRAME_BM, 0));
   _.srctypob = miniscan_expr_BM (_.srcexpv, _.routprepob, depth + 1, _.recv,
-                                 (struct stackframe_stBM *) &_);
+                                 CURFRAME_BM);
   DBGPRINTF_BM
     ("miniscan_stmt°basiclo_assign after miniscan_expr->%s srctypob=%s",
-     debug_outstr_value_BM (_.srcexpv, (struct stackframe_stBM *) &_, 0),
+     debug_outstr_value_BM (_.srcexpv, CURFRAME_BM, 0),
      objectdbg_BM (_.srctypob));
   objunlock_BM (_.recv);
   if (_.srctypob == _.vartypob && _.srctypob != NULL)
@@ -1104,7 +1086,7 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
   DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive start connob %s" //
                 "\n... routprepob %s depth %d expv %s fromob %s",       //
                 objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob), depth,   //
-                debug_outstr_value_BM (_.expv, (struct stackframe_stBM *) &_, 0),       //
+                debug_outstr_value_BM (_.expv, CURFRAME_BM, 0), //
                 objectdbg2_BM (_.fromob));
   if (!_.routprepob)
     FAILHERE (NULL);
@@ -1119,7 +1101,7 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
   DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive  connob %s"      //
                 "\n... connargs %s connrestyp %s",      //
                 objectdbg_BM (_.connob),        //
-                debug_outstr_value_BM (_.connargsv, (struct stackframe_stBM *) &_, 0),  //
+                debug_outstr_value_BM (_.connargsv, CURFRAME_BM, 0),    //
                 objectdbg1_BM (_.connrestypob));        //
   if (!istuple_BM (_.connargsv))
     FAILHERE (k_arguments);
@@ -1139,23 +1121,23 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
       _.curargctypob = objgetattr_BM (_.curargob, k_c_type);
       objunlock_BM (_.curargob);
       DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive ix#%d cursonv=%s curargob=%s", ix,   //
-                    debug_outstr_value_BM (_.cursonv, (struct stackframe_stBM *) &_, 0),        //
+                    debug_outstr_value_BM (_.cursonv, CURFRAME_BM, 0),  //
                     objectdbg_BM (_.curargob));
       _.curtypob =
         miniscan_expr_BM (_.cursonv, _.routprepob, depth + 1, _.fromob,
-                          (struct stackframe_stBM *) &_);
+                          CURFRAME_BM);
       DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive ix#%d "      //
                     "curtypob %s curargob=%s curargctypob=%s",  //
                     ix, objectdbg_BM (_.curtypob), objectdbg1_BM (_.curargob),  //
                     objectdbg2_BM (_.curargctypob));
       _.curcomptypob = miniscan_compatype_BM (_.curargctypob, _.curtypob,
-                                              (struct stackframe_stBM *) &_);
+                                              CURFRAME_BM);
       if (!_.curcomptypob)
         FAILHERE (makenodevar_BM (k_arguments, taggedint_BM (ix), NULL));
     }
   DBGPRINTF_BM
     ("miniscan_node_conn°basiclo_primitive done expv=%s result connrestypob=%s",
-     debug_outstr_value_BM (_.expv, (struct stackframe_stBM *) &_, 0),
+     debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
      objectdbg_BM (_.connrestypob));
   LOCALRETURN_BM (_.connrestypob);
 failure:
@@ -1163,7 +1145,7 @@ failure:
   _.errorv =
     makenodevar_BM (k_miniscan_node_conn, _.expv, _.routprepob,
                     taggedint_BM (depth), _.fromob, _.extraerrorv, NULL);
-  FAILURE_BM (failin, _.errorv, (struct stackframe_stBM *) &_);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end miniscan_node_conn°basiclo_primitive  _1vuSUudDrEr_9UjFr4Pcy8r */
 
@@ -1206,9 +1188,9 @@ ROUTINEOBJNAME_BM (_7vlMCZ0yvva_6tx0lFlqBG8)    // miniscan_stmt°basiclo_return
   DBGPRINTF_BM
     ("miniscan_stmt°basiclo_return recv=%s retexpv=%s",
      objectdbg_BM (_.recv),
-     debug_outstr_value_BM (_.retexpv, (struct stackframe_stBM *) &_, 0));
+     debug_outstr_value_BM (_.retexpv, CURFRAME_BM, 0));
   _.retypob = miniscan_expr_BM (_.retexpv, _.routprepob, depth, _.recv,
-                                (struct stackframe_stBM *) &_);
+                                CURFRAME_BM);
   DBGPRINTF_BM
     ("miniscan_stmt°basiclo_return recv=%s retypob=%s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.retypob));
@@ -1222,7 +1204,7 @@ failure:
   _.errorv =
     makenodevar_BM (k_return, _.retexpv, _.routprepob,
                     taggedint_BM (depth), _.recv, NULL, NULL);
-  FAILURE_BM (failin, _.errorv, (struct stackframe_stBM *) &_);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end  miniscan_stmt°basiclo_return  _7vlMCZ0yvva_6tx0lFlqBG8 */
 
 
@@ -1243,8 +1225,8 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
                  objectval_tyBM * modgenob; objectval_tyBM * routob;
                  objectval_tyBM * hsetblockob; value_tyBM blocksetv;
                  objectval_tyBM * hsetvalob; objectval_tyBM * hsetnumob;
-                 objectval_tyBM * keyob; objectval_tyBM * bindconnob;
-                 value_tyBM resultv;
+                 objectval_tyBM * keyob;
+                 objectval_tyBM * bindconnob; value_tyBM resultv;
                  value_tyBM keysetv;
                  value_tyBM setv; value_tyBM keybindv; value_tyBM errorv;
                  value_tyBM errcausev;
@@ -1291,8 +1273,7 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
       DBGPRINTF_BM
         ("emit_declaration°simple_routine_preparation routprepob=%s blocksetv=%s",
          objectdbg_BM (_.routprepob),
-         debug_outstr_value_BM (_.blocksetv, (struct stackframe_stBM *) &_,
-                                0));
+         debug_outstr_value_BM (_.blocksetv, CURFRAME_BM, 0));
       if (_.blocksetv)
         objputattr_BM (_.routprepob, k_blocks, _.blocksetv);
     }
@@ -1309,8 +1290,7 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
       objputhashsetpayl_BM (_.hsetnumob, 11);
       _.keysetv = objassocsetattrspayl_BM (_.routprepob);
       DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s hsetvalob=%s hsetnumob=%s keyset=%s", objectdbg_BM (_.routprepob), objectdbg1_BM (_.hsetvalob), objectdbg2_BM (_.hsetnumob),    //
-                    debug_outstr_value_BM (_.keysetv,
-                                           (struct stackframe_stBM *) &_, 0));
+                    debug_outstr_value_BM (_.keysetv, CURFRAME_BM, 0));
       unsigned nbkeys = setcardinal_BM (_.keysetv);
       for (unsigned kix = 0; kix < nbkeys; kix++)
         {
@@ -1320,8 +1300,7 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
           DBGPRINTF_BM
             ("emit_declaration°simple_routine_preparation routprepob=%s kix#%d keyob=%s keybind=%s",
              objectdbg_BM (_.routprepob), kix, objectdbg1_BM (_.keyob),
-             debug_outstr_value_BM (_.keybindv, (struct stackframe_stBM *) &_,
-                                    0));
+             debug_outstr_value_BM (_.keybindv, CURFRAME_BM, 0));
           WEAKASSERT_BM (isnode_BM (_.keybindv));
           _.bindconnob = nodeconn_BM (_.keybindv);
           if (_.bindconnob == k_arguments)
@@ -1345,14 +1324,12 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
       objputattr_BM (_.routprepob, k_value_set, _.setv);
       DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s value_set %s",  //
                     objectdbg_BM (_.routprepob),        //
-                    debug_outstr_value_BM (_.setv,
-                                           (struct stackframe_stBM *) &_, 0));
+                    debug_outstr_value_BM (_.setv, CURFRAME_BM, 0));
       _.setv = objhashsettosetpayl_BM (_.hsetnumob);
       objputattr_BM (_.routprepob, k_number_set, _.setv);
       DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s number_set %s", //
                     objectdbg_BM (_.routprepob),        //
-                    debug_outstr_value_BM (_.setv,
-                                           (struct stackframe_stBM *) &_, 0));
+                    debug_outstr_value_BM (_.setv, CURFRAME_BM, 0));
       _.setv = NULL;
     }
     objunlock_BM (_.routprepob);
@@ -1380,7 +1357,7 @@ failure:
   _.errorv =
     makenodevar_BM (k_emit_declaration, _.routprepob, _.modgenob,
                     taggedint_BM (rank), _.errcausev, NULL);
-  FAILURE_BM (failin, _.errorv, (struct stackframe_stBM *) &_);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end emit_declaration°simple_routine_preparation _9M3BqmOS7mA_96DTa52k7Xq */
 
@@ -1401,8 +1378,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
                  objectval_tyBM * routprepob;
-                 objectval_tyBM * modgenob;
-                 objectval_tyBM * routob;
+                 objectval_tyBM * modgenob; objectval_tyBM * routob;
                  objectval_tyBM * hsetblockob; value_tyBM blocksetv;
                  value_tyBM argtupv; objectval_tyBM * bodyob;
                  objectval_tyBM * resultob; value_tyBM setnumv;
@@ -1443,9 +1419,8 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
     idtocbuf32_BM (objid_BM (_.routob), routidbuf);
   }
   DBGPRINTF_BM ("emit_definition°simple_routine_preparation routprepob=%s routob=%s\n" ".. setnum=%s setval=%s", objectdbg_BM (_.routprepob), objectdbg1_BM (_.routob),        //
-                debug_outstr_value_BM (_.setnumv, (struct stackframe_stBM *) &_, 0),    //
-                debug_outstr_value_BM (_.setvalv,
-                                       (struct stackframe_stBM *) &_, 0));
+                debug_outstr_value_BM (_.setnumv, CURFRAME_BM, 0),      //
+                debug_outstr_value_BM (_.setvalv, CURFRAME_BM, 0));
   WEAKASSERT_BM (isobject_BM (_.routob));
   {
     objlock_BM (_.routob);
@@ -1457,7 +1432,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   DBGPRINTF_BM
     ("emit_definition°simple_routine_preparation routprepob=%s argtupv=%s bodyob=%s resultob=%s",
      objectdbg_BM (_.routprepob),
-     debug_outstr_value_BM (_.argtupv, (struct stackframe_stBM *) &_, 0),
+     debug_outstr_value_BM (_.argtupv, CURFRAME_BM, 0),
      objectdbg1_BM (_.bodyob), objectdbg2_BM (_.resultob));
   WEAKASSERT_BM (isobject_BM (_.resultob));
   int nbargs = tuplesize_BM (_.argtupv);

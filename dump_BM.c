@@ -237,13 +237,13 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   duptr->dump_object = _.duobj;
   objputpayload_BM (_.duobj, duptr);
   objputclass_BM (_.duobj, BMP_dumper_object);
-  dump_scan_pass_BM (duptr, (struct stackframe_stBM *) &_);
-  dump_run_todo_BM (duptr, (struct stackframe_stBM *) &_);
-  garbage_collect_if_wanted_BM ((struct stackframe_stBM *) &_);
-  dump_emit_pass_BM (duptr, (struct stackframe_stBM *) &_);
-  garbage_collect_if_wanted_BM ((struct stackframe_stBM *) &_);
-  dump_run_todo_BM (duptr, (struct stackframe_stBM *) &_);
-  garbage_collect_if_wanted_BM ((struct stackframe_stBM *) &_);
+  dump_scan_pass_BM (duptr, CURFRAME_BM);
+  dump_run_todo_BM (duptr, CURFRAME_BM);
+  garbage_collect_if_wanted_BM (CURFRAME_BM);
+  dump_emit_pass_BM (duptr, CURFRAME_BM);
+  garbage_collect_if_wanted_BM (CURFRAME_BM);
+  dump_run_todo_BM (duptr, CURFRAME_BM);
+  garbage_collect_if_wanted_BM (CURFRAME_BM);
   struct dumpinfo_stBM di;
   memset (&di, 0, sizeof (di));
   di.dumpinfo_scanedobjectcount = duptr->dump_scanedobjectcount;
@@ -271,8 +271,7 @@ dump_run_todo_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
       listpopfirst_BM (du->dump_todolist);
       if (isclosure_BM ((const value_tyBM) _.curclo))
         {
-          apply1_BM ((value_tyBM) _.curclo, (struct stackframe_stBM *) &_,
-                     du);
+          apply1_BM ((value_tyBM) _.curclo, CURFRAME_BM, du);
           du->dump_todocount++;
         }
     }
@@ -335,8 +334,7 @@ dump_scan_object_content_BM (struct dumper_stBM *du,
   // perhaps we should send first, and use its result...
   extendedval_tyBM payl = objpayload_BM (_.curobj);
   if (payl)
-    send1_BM ((value_tyBM) _.curobj, BMP_dump_scan,
-              (struct stackframe_stBM *) &_, _.obdump);
+    send1_BM ((value_tyBM) _.curobj, BMP_dump_scan, CURFRAME_BM, _.obdump);
   objunlock_BM (_.curobj);
   du->dump_scanedobjectcount++;
 }                               /* end dump_scan_object_content_BM   */
@@ -366,11 +364,10 @@ dump_scan_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
     {
       _.curobj = listfirst_BM (du->dump_scanlist);
       listpopfirst_BM (du->dump_scanlist);
-      dump_scan_object_content_BM (du, _.curobj,
-                                   (struct stackframe_stBM *) &_);
+      dump_scan_object_content_BM (du, _.curobj, CURFRAME_BM);
       if (du->dump_scanedobjectcount > 0
           && du->dump_scanedobjectcount % 32 == 0)
-        garbage_collect_if_wanted_BM ((struct stackframe_stBM *) &_);
+        garbage_collect_if_wanted_BM (CURFRAME_BM);
     }
 }                               /* end dump_scan_pass_BM */
 
@@ -428,8 +425,7 @@ dump_emit_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
         }
       else
         {
-          dump_emit_space_BM (du, spix, _.hsetspacob[spix],
-                              (struct stackframe_stBM *) &_);
+          dump_emit_space_BM (du, spix, _.hsetspacob[spix], CURFRAME_BM);
         }
     }
 }                               /* end dump_emit_pass_BM */
@@ -534,10 +530,9 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
     {
       _.curobj = objarr[obix];
       ASSERT_BM (_.curobj != NULL);
-      dump_emit_object_BM (du, _.curobj, spfil,
-                           (struct stackframe_stBM *) &_);
+      dump_emit_object_BM (du, _.curobj, spfil, CURFRAME_BM);
       if (obix % 64 == 0 && obix > 0)
-        garbage_collect_if_wanted_BM ((struct stackframe_stBM *) &_);
+        garbage_collect_if_wanted_BM (CURFRAME_BM);
     }
   free (objarr), objarr = NULL;
   fprintf (spfil, "\n// end of file %s\n", basename (bytstring_BM (_.pathv)));
@@ -625,8 +620,7 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
       objstrbufferresetpayl_BM (_.bufob);
       _.dumpres =
         send3_BM (_.curval, BMP_dump_value,
-                  (struct stackframe_stBM *) &_,
-                  _.bufob, _.dumpob, taggedint_BM (0));
+                  CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
       if (!_.dumpres || objstrbufferlengthpayl_BM (_.bufob) == 0)
         continue;
       char curattrid[32] = "";
@@ -653,8 +647,7 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
               objstrbufferresetpayl_BM (_.bufob);
               _.dumpres =
                 send3_BM (_.curval, BMP_dump_value,
-                          (struct stackframe_stBM *) &_,
-                          _.bufob, _.dumpob, taggedint_BM (0));
+                          CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
               if (!_.dumpres || objstrbufferlengthpayl_BM (_.bufob) == 0)
                 fputs ("!& __\n", spfil);
               else
@@ -673,7 +666,7 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
   objstrbufferresetpayl_BM (_.bufob);
   /// dump the data
   _.dumpres = send2_BM ((const value_tyBM) _.curobj, BMP_dump_data,
-                        (struct stackframe_stBM *) &_, _.dumpob, _.bufob);
+                        CURFRAME_BM, _.dumpob, _.bufob);
   if (_.dumpres && objstrbufferlengthpayl_BM (_.bufob) > 0)
     {
       fputs (objstrbufferbytespayl_BM (_.bufob), spfil);
@@ -702,8 +695,7 @@ debug_outstr_value_BM (const value_tyBM val, struct stackframe_stBM *stkf,
   _.bufob = makeobj_BM ();
   objputstrbufferpayl_BM (_.bufob, 256 * 1024);
   if (!send3_BM (_.valv, BMP_dump_value,
-                 (struct stackframe_stBM *) &_,
-                 _.bufob, NULL, taggedint_BM (curdepth)))
+                 CURFRAME_BM, _.bufob, NULL, taggedint_BM (curdepth)))
     return "??";
   return objstrbufferbytespayl_BM (_.bufob);
 }                               /* end debug_outstr_value_BM */

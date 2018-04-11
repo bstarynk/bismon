@@ -1140,7 +1140,7 @@ browse_object_gui_content_BM (const objectval_tyBM * objbrows,
     };
   gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   send1_BM ((const value_tyBM) objbrows, objsel,
-            (struct stackframe_stBM *) &_, taggedint_BM (browsdepth));
+            CURFRAME_BM, taggedint_BM (browsdepth));
   gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   gtk_text_buffer_move_mark (brobuf,
                              browsedobj_BM[browserobcurix_BM].brow_oendm,
@@ -1166,8 +1166,7 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
   _.objbrows = objbrows;
   _.objsel = objsel;
   start_browse_object_BM (objbrows, objsel, browsdepth);
-  browse_object_gui_content_BM (objbrows, objsel, browsdepth,
-                                (struct stackframe_stBM *) &_);
+  browse_object_gui_content_BM (objbrows, objsel, browsdepth, CURFRAME_BM);
 }                               /* end browse_object_gui_BM */
 
 
@@ -1204,7 +1203,7 @@ browse_value_gui_content_BM (const stringval_tyBM * namev,
                                       objcommtitle_brotag_BM, NULL);
   }
   gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
-  send2_BM ((const value_tyBM) _.val, objsel, (struct stackframe_stBM *) &_,
+  send2_BM ((const value_tyBM) _.val, objsel, CURFRAME_BM,
             taggedint_BM (browsdepth), taggedint_BM (0));
   gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   gtk_text_buffer_move_mark (brobuf,
@@ -1236,8 +1235,7 @@ browse_named_value_gui_BM (const stringval_tyBM * namev,
   _.objsel = objsel;
   browsednvcurix_BM = -1;
   start_browse_named_value_BM (namev, val, browsdepth);
-  browse_value_gui_content_BM (namev, val, objsel, browsdepth,
-                               (struct stackframe_stBM *) &_);
+  browse_value_gui_content_BM (namev, val, objsel, browsdepth, CURFRAME_BM);
 }                               /* end browse_named_value_gui_BM */
 
 
@@ -1319,7 +1317,7 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
                                      RIGHT_GRAVITY_BM);
       gtk_text_buffer_get_end_iter (browserbuf_BM, &browserit_BM);
       browse_object_gui_content_BM (_.objbrows, _.objsel, curdepth,
-                                    (struct stackframe_stBM *) &_);
+                                    CURFRAME_BM);
       DBGPRINTF_BM ("refreshed boix#%d browserit:%s",
                     boix, textiterstrdbg_BM (&browserit_BM));
       browserobcurix_BM = -1;
@@ -1351,8 +1349,7 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
                                      RIGHT_GRAVITY_BM);
       gtk_text_buffer_get_end_iter (browserbuf_BM, &browserit_BM);
       browse_value_gui_content_BM (_.valname, _.valbrows, BMP_browse_value,
-                                   curbval->brow_vdepth,
-                                   (struct stackframe_stBM *) &_);
+                                   curbval->brow_vdepth, CURFRAME_BM);
       DBGPRINTF_BM ("refreshed bvix#%d browserit:%s",
                     bvix, textiterstrdbg_BM (&browserit_BM));
       browsednvcurix_BM = -1;
@@ -1692,11 +1689,11 @@ parsdollarval_guicmd_BM (struct parser_stBM *pars,
   else if (varname == NULL)
     varstr = BMK_7bD9VtDkGSn_7lxHeYuuFLR;       // result
   if (!varstr)
-    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,
+    parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
                           "invalid $<var>");
   _.val = find_named_value_gui_BM (varstr);
   if (!_.val && !nobuild)
-    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,
+    parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
                           "not found $%s", varstr);
   GtkTextIter it = EMPTY_TEXT_ITER_BM, endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
@@ -1728,14 +1725,14 @@ parsdollarobj_guicmd_BM (struct parser_stBM *pars,
   else if (varname == NULL)
     varstr = BMK_7bD9VtDkGSn_7lxHeYuuFLR;       /* result */
   if (!varstr)
-    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,
+    parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
                           "invalid $:<var>");
   _.val = find_named_value_gui_BM (varstr);
   if (!_.val && !nobuild)
-    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,
+    parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
                           "not found $:%s", varstr);
   if (!isobject_BM (_.val) && !nobuild)
-    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,
+    parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
                           "non-object $:%s", varstr);
   GtkTextIter it = EMPTY_TEXT_ITER_BM, endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
@@ -1762,7 +1759,7 @@ const objectval_tyBM *parsmakenewname_guicmd_BM
   ASSERT_BM (isstring_BM (varname));
   _.strnam = varname;
   if (!validname_BM (bytstring_BM (varname)))
-    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,
+    parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
                           "invalid new name %s", bytstring_BM (varname));
   _.namedobj = findnamedobj_BM (bytstring_BM (varname));
   if (_.namedobj)
@@ -1804,7 +1801,7 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
   };
   if (!ptok)
     {
-      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+      tok = parsertokenget_BM (pars, CURFRAME_BM);
       ptok = &tok;
     };
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -1816,14 +1813,14 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
   if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamand)
     {
       if (!nobuild && !isobject_BM (targobj))
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos, "missing target for !&");
       bool gotval = false;
       _.comp = parsergetvalue_BM (pars, //
-                                  (struct stackframe_stBM *) &_,        //
+                                  CURFRAME_BM,  //
                                   depth + 1, &gotval);
       if (!gotval)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos, "missing value after !&");
       if (!nobuild)
         {
@@ -1843,22 +1840,21 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
     if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamcolon)
     {
       if (!nobuild && !isobject_BM (targobj))
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos, "missing target for !:");
-      parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+      parserskipspaces_BM (pars, CURFRAME_BM);
       lineno = pars->pars_lineno;
       colpos = pars->pars_colpos;
       bool gotattr = false;
       bool gotindex = false;
       int index = -1;
       _.obattr = parsergetobject_BM (pars,      //
-                                     (struct stackframe_stBM *) &_,     //
+                                     CURFRAME_BM,       //
                                      depth + 1, &gotattr);
       if (!gotattr)
         {
           parserseek_BM (pars, lineno, colpos);
-          struct parstoken_stBM tok =
-            parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+          struct parstoken_stBM tok = parsertokenget_BM (pars, CURFRAME_BM);
           if (tok.tok_kind == plex_LLONG)
             {
               gotindex = true;
@@ -1866,14 +1862,14 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
             }
         }
       if (!gotattr && !gotindex)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos, "missing attribute or index after !:");
       bool gotval = false;
       _.comp = parsergetvalue_BM (pars, //
-                                  (struct stackframe_stBM *) &_,        //
+                                  CURFRAME_BM,  //
                                   depth + 1, &gotval);
       if (!gotval)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos, "missing value after !:");
       if (!nobuild && gotattr)
         {
@@ -1904,14 +1900,14 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
     if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamdollar)
     {
       if (!nobuild && !isobject_BM (targobj))
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos, "missing target for !$");
       bool gotclass = false;
       _.obclass = parsergetobject_BM (pars,     //
-                                      (struct stackframe_stBM *) &_,    //
+                                      CURFRAME_BM,      //
                                       depth + 1, &gotclass);
       if (!gotclass)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos, "missing class after !$");
       if (!nobuild)
         {
@@ -1996,21 +1992,21 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
       unsigned arglineno = pars->pars_lineno;
       unsigned argcolpos = pars->pars_colpos;
       if (!nobuild && !isobject_BM (targobj))
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos, "missing target for !>");
       bool gotsel = false;
       _.obsel = parsergetobject_BM (pars,       //
-                                    (struct stackframe_stBM *) &_,      //
+                                    CURFRAME_BM,        //
                                     depth + 1, &gotsel);
       if (!gotsel)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, arglineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, arglineno,
                               argcolpos, "missing selector after !>");
-      parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+      parserskipspaces_BM (pars, CURFRAME_BM);
       unsigned leftlineno = pars->pars_lineno;
       unsigned leftcolpos = pars->pars_colpos;
-      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+      tok = parsertokenget_BM (pars, CURFRAME_BM);
       if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_leftparen)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, arglineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, arglineno,
                               argcolpos,
                               "missing left paren after selector for !>");
       int nbarg = 0;
@@ -2019,15 +2015,15 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
           bool gotarg = false;
           _.args[nbarg] =       //
             parsergetvalue_BM (pars,    //
-                               (struct stackframe_stBM *) &_,   //
+                               CURFRAME_BM,     //
                                depth + 1, &gotarg);
           if (!gotarg)
             break;
           nbarg++;
         }
-      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+      tok = parsertokenget_BM (pars, CURFRAME_BM);
       if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, arglineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, arglineno,
                               argcolpos,
                               "missing right paren after selector for !>");
       unsigned rightlineno = pars->pars_lineno;
@@ -2041,50 +2037,47 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
           switch (nbarg)
             {
             case 0:
-              _.comp =
-                send0_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_);
+              _.comp = send0_BM (_.targobj, _.obsel, CURFRAME_BM);
               break;
             case 1:
-              _.comp =
-                send1_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
-                          _.args[0]);
+              _.comp = send1_BM (_.targobj, _.obsel, CURFRAME_BM, _.args[0]);
               break;
             case 2:
               _.comp =
-                send2_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                send2_BM (_.targobj, _.obsel, CURFRAME_BM,
                           _.args[0], _.args[1]);
               break;
             case 3:
               _.comp =
-                send3_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                send3_BM (_.targobj, _.obsel, CURFRAME_BM,
                           _.args[0], _.args[1], _.args[2]);
               break;
             case 4:
               _.comp =
-                send4_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                send4_BM (_.targobj, _.obsel, CURFRAME_BM,
                           _.args[0], _.args[1], _.args[2], _.args[3]);
               break;
             case 5:
               _.comp =
-                send5_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                send5_BM (_.targobj, _.obsel, CURFRAME_BM,
                           _.args[0], _.args[1], _.args[2], _.args[3],
                           _.args[4]);
               break;
             case 6:
               _.comp =
-                send6_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                send6_BM (_.targobj, _.obsel, CURFRAME_BM,
                           _.args[0], _.args[1], _.args[2], _.args[3],
                           _.args[4], _.args[5]);
               break;
             case 7:
               _.comp =
-                send7_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                send7_BM (_.targobj, _.obsel, CURFRAME_BM,
                           _.args[0], _.args[1], _.args[2], _.args[3],
                           _.args[4], _.args[5], _.args[6]);
               break;
             case 8:
               _.comp =
-                send8_BM (_.targobj, _.obsel, (struct stackframe_stBM *) &_,
+                send8_BM (_.targobj, _.obsel, CURFRAME_BM,
                           _.args[0], _.args[1], _.args[2], _.args[3],
                           _.args[4], _.args[5], _.args[6], _.args[7]);
               break;
@@ -2101,7 +2094,7 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
               char selidbuf[32];
               const char *selname = findobjectname_BM (_.obsel);
               idtocbuf32_BM (objid_BM (_.obsel), selidbuf);
-              parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+              parsererrorprintf_BM (pars, CURFRAME_BM,
                                     arglineno, argcolpos,
                                     "failed to send %s to target %s",
                                     selname ? : selidbuf,
@@ -2122,14 +2115,14 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
     if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamminus)
     {
       if (!nobuild && !isobject_BM (targobj))
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos, "missing target for !-");
       bool gotattr = false;
       _.obattr = parsergetobject_BM (pars,      //
-                                     (struct stackframe_stBM *) &_,     //
+                                     CURFRAME_BM,       //
                                      0, &gotattr);
       if (!gotattr)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos, "missing attribute after !-");
       if (!nobuild)
         {
@@ -2150,9 +2143,9 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
     if (ptok->tok_kind == plex_DELIM
         && ptok->tok_delim == delim_dollarpercent)
     {
-      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+      tok = parsertokenget_BM (pars, CURFRAME_BM);
       if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos, "no name to bind and show after $%%");
       if (!nobuild)
         {
@@ -2163,7 +2156,7 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
           ASSERT_BM (isstring_BM ((const value_tyBM) _.name));
           browse_named_value_gui_BM (_.name, _.targobj,
                                      BMP_browse_value, browserdepth_BM,
-                                     (struct stackframe_stBM *) &_);
+                                     CURFRAME_BM);
           log_begin_message_BM ();
           log_printf_message_BM ("bound name $%s to object ",
                                  bytstring_BM (_.name));
@@ -2178,9 +2171,9 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
     if (ptok->tok_kind == plex_DELIM && ptok->tok_delim == delim_exclamcaret)
     {
       if (!nobuild && !isobject_BM (targobj))
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos, "missing target for !^");
-      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+      tok = parsertokenget_BM (pars, CURFRAME_BM);
       if (tok.tok_kind == plex_LLONG && tok.tok_llong >= 0
           && tok.tok_llong < LASTSPACE__BM)
         {
@@ -2262,7 +2255,7 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
             }
         }
       else
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos, "bad space for !^");
     }
   else
@@ -2291,17 +2284,16 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
   unsigned srclineno = parserlineno_BM (pars);
   unsigned srccolpos = parsercolpos_BM (pars);
   bool gotsrcval = false;
-  _.srcval =
-    parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, 0, &gotsrcval);
+  _.srcval = parsergetvalue_BM (pars, CURFRAME_BM, 0, &gotsrcval);
   if (!gotsrcval)
-    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, srclineno,
+    parsererrorprintf_BM (pars, CURFRAME_BM, srclineno,
                           srccolpos, "expecting source value in $(...)");
   struct parstoken_stBM tok = {
   };
   for (;;)
     {
-      parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
-      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+      parserskipspaces_BM (pars, CURFRAME_BM);
+      tok = parsertokenget_BM (pars, CURFRAME_BM);
       if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_rightparen)
         {
           parsnesting_guicmd_BM (pars, depth, delim_dollarleftparen,
@@ -2319,34 +2311,34 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
           unsigned arglineno = pars->pars_lineno;
           unsigned argcolpos = pars->pars_colpos;
           if (!nobuild && !_.srcval)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+            parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                                   colpos, "missing target for !>");
           bool gotsel = false;
           _.obsel = parsergetobject_BM (pars,   //
-                                        (struct stackframe_stBM *) &_,  //
+                                        CURFRAME_BM,    //
                                         0, &gotsel);
           if (!gotsel)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   arglineno, argcolpos,
                                   "missing selector after !>");
-          tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+          tok = parsertokenget_BM (pars, CURFRAME_BM);
           if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_leftparen)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   arglineno, argcolpos,
                                   "missing left paren after selector for !>");
           int nbarg = 0;
           while (nbarg < MAXARGS_BM)
             {
               bool gotarg = false;
-              _.args[nbarg] = parsergetvalue_BM (pars, (struct stackframe_stBM *) &_,   //
+              _.args[nbarg] = parsergetvalue_BM (pars, CURFRAME_BM,     //
                                                  0, &gotarg);
               if (!gotarg)
                 break;
               nbarg++;
             }
-          tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+          tok = parsertokenget_BM (pars, CURFRAME_BM);
           if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   arglineno, argcolpos,
                                   "missing right paren after selector for !>");
           if (!nobuild)
@@ -2355,57 +2347,52 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
               switch (nbarg)
                 {
                 case 0:
-                  _.resval =
-                    send0_BM (_.srcval, _.obsel,
-                              (struct stackframe_stBM *) &_);
+                  _.resval = send0_BM (_.srcval, _.obsel, CURFRAME_BM);
                   break;
                 case 1:
                   _.resval =
-                    send1_BM (_.srcval, _.obsel,
-                              (struct stackframe_stBM *) &_, _.args[0]);
+                    send1_BM (_.srcval, _.obsel, CURFRAME_BM, _.args[0]);
                   break;
                 case 2:
                   _.resval =
                     send2_BM (_.srcval, _.obsel,
-                              (struct stackframe_stBM *) &_, _.args[0],
-                              _.args[1]);
+                              CURFRAME_BM, _.args[0], _.args[1]);
                   break;
                 case 3:
                   _.resval =
                     send3_BM (_.srcval, _.obsel,
-                              (struct stackframe_stBM *) &_, _.args[0],
-                              _.args[1], _.args[2]);
+                              CURFRAME_BM, _.args[0], _.args[1], _.args[2]);
                   break;
                 case 4:
                   _.resval =
                     send4_BM (_.srcval, _.obsel,
-                              (struct stackframe_stBM *) &_, _.args[0],
+                              CURFRAME_BM, _.args[0],
                               _.args[1], _.args[2], _.args[3]);
                   break;
                 case 5:
                   _.resval =
                     send5_BM (_.srcval, _.obsel,
-                              (struct stackframe_stBM *) &_, _.args[0],
+                              CURFRAME_BM, _.args[0],
                               _.args[1], _.args[2], _.args[3], _.args[4]);
                   break;
                 case 6:
                   _.resval =
                     send6_BM (_.srcval, _.obsel,
-                              (struct stackframe_stBM *) &_, _.args[0],
+                              CURFRAME_BM, _.args[0],
                               _.args[1], _.args[2], _.args[3], _.args[4],
                               _.args[5]);
                   break;
                 case 7:
                   _.resval =
                     send7_BM (_.srcval, _.obsel,
-                              (struct stackframe_stBM *) &_, _.args[0],
+                              CURFRAME_BM, _.args[0],
                               _.args[1], _.args[2], _.args[3], _.args[4],
                               _.args[5], _.args[6]);
                   break;
                 case 8:
                   _.resval =
                     send8_BM (_.srcval, _.obsel,
-                              (struct stackframe_stBM *) &_, _.args[0],
+                              CURFRAME_BM, _.args[0],
                               _.args[1], _.args[2], _.args[3], _.args[4],
                               _.args[5], _.args[6], _.args[7]);
                   break;
@@ -2419,7 +2406,7 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
                   char selidbuf[32];
                   const char *selname = findobjectname_BM (_.obsel);
                   idtocbuf32_BM (objid_BM (_.obsel), selidbuf);
-                  parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                  parsererrorprintf_BM (pars, CURFRAME_BM,
                                         arglineno, argcolpos,
                                         "failed to send %s",
                                         selname ? : selidbuf);
@@ -2438,7 +2425,7 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
           unsigned arglineno = pars->pars_lineno;
           unsigned argcolpos = pars->pars_colpos;
           if (!nobuild && !isclosure_BM (_.srcval))
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+            parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                                   colpos,
                                   "source value is not a closure for application");
           _.clos = (closure_tyBM *) _.srcval;
@@ -2446,15 +2433,15 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
           while (nbarg < MAXARGS_BM)
             {
               bool gotarg = false;
-              _.args[nbarg] = parsergetvalue_BM (pars, (struct stackframe_stBM *) &_,   //
+              _.args[nbarg] = parsergetvalue_BM (pars, CURFRAME_BM,     //
                                                  0, &gotarg);
               if (!gotarg)
                 break;
               nbarg++;
             }
-          tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+          tok = parsertokenget_BM (pars, CURFRAME_BM);
           if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   arglineno, argcolpos,
                                   "missing right paren after application");
           if (!nobuild)
@@ -2463,56 +2450,52 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
               switch (nbarg)
                 {
                 case 0:
-                  _.resval =
-                    apply0_BM (_.clos, (struct stackframe_stBM *) &_);
+                  _.resval = apply0_BM (_.clos, CURFRAME_BM);
                   break;
                 case 1:
-                  _.resval =
-                    apply1_BM (_.clos, (struct stackframe_stBM *) &_,
-                               _.args[0]);
+                  _.resval = apply1_BM (_.clos, CURFRAME_BM, _.args[0]);
                   break;
                 case 2:
                   _.resval =
-                    apply2_BM (_.clos, (struct stackframe_stBM *) &_,
-                               _.args[0], _.args[1]);
+                    apply2_BM (_.clos, CURFRAME_BM, _.args[0], _.args[1]);
                   break;
                 case 3:
                   _.resval =
-                    apply3_BM (_.clos, (struct stackframe_stBM *) &_,
+                    apply3_BM (_.clos, CURFRAME_BM,
                                _.args[0], _.args[1], _.args[2]);
                   break;
                 case 4:
                   _.resval =
-                    apply4_BM (_.clos, (struct stackframe_stBM *) &_,
+                    apply4_BM (_.clos, CURFRAME_BM,
                                _.args[0], _.args[1], _.args[2], _.args[3]);
                   break;
                 case 5:
                   _.resval =
-                    apply5_BM (_.clos, (struct stackframe_stBM *) &_,
+                    apply5_BM (_.clos, CURFRAME_BM,
                                _.args[0], _.args[1], _.args[2], _.args[3],
                                _.args[4]);
                   break;
                 case 6:
                   _.resval =
-                    apply6_BM (_.clos, (struct stackframe_stBM *) &_,
+                    apply6_BM (_.clos, CURFRAME_BM,
                                _.args[0], _.args[1], _.args[2], _.args[3],
                                _.args[4], _.args[5]);
                   break;
                 case 7:
                   _.resval =
-                    apply7_BM (_.clos, (struct stackframe_stBM *) &_,
+                    apply7_BM (_.clos, CURFRAME_BM,
                                _.args[0], _.args[1], _.args[2], _.args[3],
                                _.args[4], _.args[5], _.args[6]);
                   break;
                 case 8:
                   _.resval =
-                    apply8_BM (_.clos, (struct stackframe_stBM *) &_,
+                    apply8_BM (_.clos, CURFRAME_BM,
                                _.args[0], _.args[1], _.args[2], _.args[3],
                                _.args[4], _.args[5], _.args[6], _.args[7]);
                   break;
                 case 9:
                   _.resval =
-                    apply9_BM (_.clos, (struct stackframe_stBM *) &_,
+                    apply9_BM (_.clos, CURFRAME_BM,
                                _.args[0], _.args[1], _.args[2], _.args[3],
                                _.args[4], _.args[5], _.args[6], _.args[7],
                                _.args[8]);
@@ -2526,7 +2509,7 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
                 {
                   char selidbuf[32];
                   idtocbuf32_BM (objid_BM (_.obsel), selidbuf);
-                  parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                  parsererrorprintf_BM (pars, CURFRAME_BM,
                                         arglineno, argcolpos,
                                         "failed to apply with %d arguments",
                                         nbarg);
@@ -2543,17 +2526,16 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
       else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamdot)
         {
           bool gotattr = false;
-          parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+          parserskipspaces_BM (pars, CURFRAME_BM);
           unsigned atlineno = parserlineno_BM (pars);
           unsigned atcolpos = parsercolpos_BM (pars);
           if (!nobuild && !isobject_BM (_.srcval))
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   atlineno, atcolpos, "non object before !.");
           _.obattr =
-            parsergetobject_BM (pars, (struct stackframe_stBM *) &_,
-                                depth + 1, &gotattr);
+            parsergetobject_BM (pars, CURFRAME_BM, depth + 1, &gotattr);
           if (!gotattr)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   atlineno, atcolpos,
                                   "expecting object attribute after !.");
           if (!nobuild)
@@ -2574,23 +2556,22 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
       else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamat)
         {
           bool gotindex = false;
-          parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+          parserskipspaces_BM (pars, CURFRAME_BM);
           unsigned ixlineno = parserlineno_BM (pars);
           unsigned ixcolpos = parsercolpos_BM (pars);
           if (!nobuild && !isobject_BM (_.srcval))
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   ixlineno, ixcolpos, "non object before !@");
           _.otherval =
-            parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, depth + 1,
-                               &gotindex);
+            parsergetvalue_BM (pars, CURFRAME_BM, depth + 1, &gotindex);
           if (!gotindex)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   ixlineno, ixcolpos,
                                   "expecting index value after !@");
           if (!nobuild)
             {
               if (!istaggedint_BM (_.otherval))
-                parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                parsererrorprintf_BM (pars, CURFRAME_BM,
                                       ixlineno, ixcolpos,
                                       "expecting integer index after !@");
               _.resval =
@@ -2611,9 +2592,9 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
         if (tok.tok_kind == plex_DELIM
             && tok.tok_delim == delim_dollarpercent)
         {
-          tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+          tok = parsertokenget_BM (pars, CURFRAME_BM);
           if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+            parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                                   colpos,
                                   "no name to bind and show after $%%");
           if (!nobuild)
@@ -2625,7 +2606,7 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
               ASSERT_BM (isstring_BM ((const value_tyBM) _.name));
               browse_named_value_gui_BM (_.name, _.srcval,
                                          BMP_browse_value, browserdepth_BM,
-                                         (struct stackframe_stBM *) &_);
+                                         CURFRAME_BM);
               log_begin_message_BM ();
               log_printf_message_BM ("bound and show name $%s to value.",
                                      bytstring_BM (_.name));
@@ -2635,7 +2616,7 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
       //
       // otherwise error
       else
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+        parsererrorprintf_BM (pars, CURFRAME_BM,
                               parserlineno_BM (pars), parsercolpos_BM (pars),
                               "unexpected token in $(...)");
     }                           /* end for (;;) */
@@ -2657,7 +2638,7 @@ value_tyBM parsreadmacroexp_guicmd_BM
   _.parsob = checkedparserowner_BM (pars);
   _.nod = nod;
   if (depth > MAXDEPTHPARSE_BM)
-    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno, colpos,
+    parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
                           "too deep %d readmacro", depth);
   ASSERT_BM (isnode_BM ((const value_tyBM) nod));
   _.conn = nodeconn_BM ((const value_tyBM) _.nod);
@@ -2670,18 +2651,18 @@ value_tyBM parsreadmacroexp_guicmd_BM
       idtocbuf32_BM (objid_BM (_.crm), crmidbuf);
       const char *crmname = findobjectname_BM (_.crm);
       if (crmname)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos,
                               "readmacro ^ %s |=%s| has bad `command_readmacro` attribute",
                               crmidbuf, crmname);
       else
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, lineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos,
                               "readmacro ^ %s has bad `command_readmacro` attribute",
                               crmidbuf);
     }
   _.resval =                    //
-    apply4_BM (_.crm, (struct stackframe_stBM *) &_,
+    apply4_BM (_.crm, CURFRAME_BM,
                (value_tyBM) _.nod,
                taggedint_BM (lineno), taggedint_BM (colpos), _.parsob);
   return _.resval;
@@ -2702,19 +2683,18 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
                  const stringval_tyBM * namev; objectval_tyBM * oldnamedob;
                  value_tyBM val;);
   ASSERT_BM (isparser_BM (pars));
-  parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+  parserskipspaces_BM (pars, CURFRAME_BM);
   unsigned oblineno = parserlineno_BM (pars);
   unsigned obcolpos = parsercolpos_BM (pars);
   bool gotobj = false;
-  struct parstoken_stBM tok =
-    parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+  struct parstoken_stBM tok = parsertokenget_BM (pars, CURFRAME_BM);
   // * <name> to create a new (userE) named object
   // !* <name> to create a new (global) named object
   if (tok.tok_kind == plex_DELIM
       && (tok.tok_delim == delim_exclamstar || tok.tok_delim == delim_star))
     {
       bool isglobal = (tok.tok_delim == delim_exclamstar);
-      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+      tok = parsertokenget_BM (pars, CURFRAME_BM);
       if (tok.tok_kind == plex_CNAME)
         {
           _.namev = tok.tok_cname;
@@ -2724,7 +2704,7 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
           _.oldnamedob = tok.tok_namedobj;
         }
       else
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, oblineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, oblineno,
                               obcolpos,
                               "expecting name after * or !* in $[...]");
       gotobj = true;
@@ -2752,7 +2732,7 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
               log_end_message_BM ();
             }
           else
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   oblineno, obcolpos,
                                   "expecting some name after * or !* in $[...]");
         }
@@ -2807,10 +2787,9 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_dollarcolon)
     {
       parserseek_BM (pars, oblineno, obcolpos);
-      _.obj =
-        parsergetobject_BM (pars, (struct stackframe_stBM *) &_, 0, &gotobj);
+      _.obj = parsergetobject_BM (pars, CURFRAME_BM, 0, &gotobj);
       if (!gotobj)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, oblineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, oblineno,
                               obcolpos, "expecting $:<var> in $[...]");
     }
   //
@@ -2818,20 +2797,19 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_leftparen)
     {
       bool gotval = false;
-      _.val =
-        parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, 0, &gotval);
+      _.val = parsergetvalue_BM (pars, CURFRAME_BM, 0, &gotval);
       if (!gotval)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, oblineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, oblineno,
                               obcolpos, "expecting value after $[ (");
-      tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+      tok = parsertokenget_BM (pars, CURFRAME_BM);
       if (tok.tok_kind != plex_DELIM || tok.tok_delim != delim_rightparen)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+        parsererrorprintf_BM (pars, CURFRAME_BM,
                               pars->pars_lineno,
                               pars->pars_colpos,
                               "expecting right paren after $[ ( started at L%d:C%d",
                               oblineno, obcolpos);
       if (!nobuild && !isobject_BM (_.val))
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+        parsererrorprintf_BM (pars, CURFRAME_BM,
                               oblineno,
                               obcolpos, "non-object value after $[ (...");
     }
@@ -2840,15 +2818,13 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
   else if (tok.tok_kind == plex_ID || tok.tok_kind == plex_NAMEDOBJ)
     {
       parserseek_BM (pars, oblineno, obcolpos);
-      _.obj =
-        parsergetobject_BM (pars, (struct stackframe_stBM *) &_, 0, &gotobj);
+      _.obj = parsergetobject_BM (pars, CURFRAME_BM, 0, &gotobj);
     }
   if (!gotobj)
-    parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, oblineno,
+    parsererrorprintf_BM (pars, CURFRAME_BM, oblineno,
                           obcolpos, "expecting object at start of $[...]");
   while ((tok =
-          parsertokenget_BM (pars, (struct stackframe_stBM *) &_)),
-         tok.tok_kind != plex__NONE)
+          parsertokenget_BM (pars, CURFRAME_BM)), tok.tok_kind != plex__NONE)
     {
       if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_rightbracket)
         {
@@ -2859,11 +2835,10 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
           return _.obj;
         }
       bool gotcomp = parseobjectcompl_guicmd_BM (pars, _.obj, depth,
-                                                 (struct stackframe_stBM *)
-                                                 &_,
+                                                 CURFRAME_BM,
                                                  &tok);
       if (!gotcomp)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+        parsererrorprintf_BM (pars, CURFRAME_BM,
                               pars->pars_lineno, pars->pars_colpos,
                               "bad object complement (for $[...] started L%d:C%d",
                               oblineno, obcolpos);
@@ -2877,7 +2852,7 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
         }
       return _.obj;
     };
-  parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+  parsererrorprintf_BM (pars, CURFRAME_BM,
                         pars->pars_lineno, pars->pars_colpos,
                         "invalid object expression for $[...] started L%d:C%d",
                         oblineno, obcolpos);
@@ -2903,17 +2878,16 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
   int nbloop = 0;
   for (;;)
     {
-      parserskipspaces_BM (pars, (struct stackframe_stBM *) &_);
+      parserskipspaces_BM (pars, CURFRAME_BM);
       if (nbloop++ > MAXSIZE_BM / 32)
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+        parsererrorprintf_BM (pars, CURFRAME_BM,
                               pars->pars_lineno, pars->pars_colpos,
                               "too many %d loops", nbloop);
       if (parserendoffile_BM (pars))
         break;
       unsigned curlineno = parserlineno_BM (pars);
       unsigned curcolpos = parsercolpos_BM (pars);
-      parstoken_tyBM tok =
-        parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+      parstoken_tyBM tok = parsertokenget_BM (pars, CURFRAME_BM);
       //// double semicolon stops the parsing and skip the rest
       if (tok.tok_kind == plex_DELIM
           && tok.tok_delim == delim_doublesemicolon)
@@ -2947,13 +2921,13 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                 return;
             };
           if (!nobuild && !isobject_BM (GLOBAL_BM (gui_focus_obj)))
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   curlineno, curcolpos,
                                   "no focus object to complement");
           if (!parseobjectcompl_guicmd_BM
               (pars, (objectval_tyBM *) GLOBAL_BM (gui_focus_obj), 0,
-               (struct stackframe_stBM *) &_, &tok))
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+               CURFRAME_BM, &tok))
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   curlineno, curcolpos,
                                   "invalid focus complement");
           if (!nobuild)
@@ -2963,8 +2937,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
               ASSERT_BM (brfocusob != NULL);
               browse_object_gui_BM (GLOBAL_BM (gui_focus_obj),
                                     BMP_browse_in_object,
-                                    brfocusob->brow_odepth,
-                                    (struct stackframe_stBM *) &_);
+                                    brfocusob->brow_odepth, CURFRAME_BM);
               log_begin_message_BM ();
               log_puts_message_BM ("[re-]browsing object ");
               log_object_message_BM (GLOBAL_BM (gui_focus_obj));
@@ -2986,10 +2959,10 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                 return;
             };
           bool gotobject = false;
-          _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
+          _.obj = parsergetobject_BM (pars, CURFRAME_BM,        //
                                       0, &gotobject);
           if (!gotobject)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   curlineno, curcolpos,
                                   "no new focus object after ?*");
           if (!nobuild)
@@ -3002,8 +2975,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                 {
                   browse_object_gui_BM (GLOBAL_BM (gui_focus_obj),
                                         BMP_browse_in_object,
-                                        browserdepth_BM,
-                                        (struct stackframe_stBM *) &_);
+                                        browserdepth_BM, CURFRAME_BM);
                   log_begin_message_BM ();
                   log_puts_message_BM ("showing and focusing object ");
                   log_object_message_BM (GLOBAL_BM (gui_focus_obj));
@@ -3015,7 +2987,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                   browse_object_gui_BM (_.oldfocusobj,
                                         BMP_browse_in_object,
                                         broldfocusob->brow_odepth,
-                                        (struct stackframe_stBM *) &_);
+                                        CURFRAME_BM);
                   log_begin_message_BM ();
                   log_puts_message_BM ("defocusing object ");
                   log_object_message_BM (_.oldfocusobj);
@@ -3037,21 +3009,20 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                 return;
             };
           bool gotobject = false;
-          _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
+          _.obj = parsergetobject_BM (pars, CURFRAME_BM,        //
                                       0, &gotobject);
           if (!gotobject || (!nobuild && !_.obj))
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   curlineno, curcolpos,
                                   "no displayed object after ?.");
           if (!browserbuf_BM)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   curlineno, curcolpos, "no browser buffer");
           if (!nobuild)
             {
               browse_object_gui_BM (_.obj,
                                     BMP_browse_in_object,
-                                    browserdepth_BM,
-                                    (struct stackframe_stBM *) &_);
+                                    browserdepth_BM, CURFRAME_BM);
               log_begin_message_BM ();
               log_puts_message_BM ("displaying object ");
               log_object_message_BM (_.obj);
@@ -3073,22 +3044,21 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                 browserbuf_BM = newgui_get_browsebuf_BM ();
             };
           if (!browserbuf_BM)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   curlineno, curcolpos, "no browser buffer");
           bool gotobject = false;
           parserseek_BM (pars, tok.tok_line, tok.tok_col);
-          _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
+          _.obj = parsergetobject_BM (pars, CURFRAME_BM,        //
                                       0, &gotobject);
           if (!gotobject || (!nobuild && !_.obj))
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   curlineno, curcolpos,
                                   "expecting object to display");
           if (!nobuild)
             {
               browse_object_gui_BM (_.obj,
                                     BMP_browse_in_object,
-                                    browserdepth_BM,
-                                    (struct stackframe_stBM *) &_);
+                                    browserdepth_BM, CURFRAME_BM);
               log_begin_message_BM ();
               log_puts_message_BM ("displaying object ");
               log_object_message_BM (_.obj);
@@ -3107,20 +3077,20 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                 browserbuf_BM = newgui_get_browsebuf_BM ();
             };
           if (!browserbuf_BM)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   curlineno, curcolpos, "no browser buffer");
           bool gotobject = false;
-          _.obj = parsergetobject_BM (pars, (struct stackframe_stBM *) &_,      //
+          _.obj = parsergetobject_BM (pars, CURFRAME_BM,        //
                                       0, &gotobject);
           if (!gotobject)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   curlineno, curcolpos,
                                   "no object to hide after ?-");
           if (!nobuild)
             {
               if (_.obj == GLOBAL_BM (gui_focus_obj))
                 GLOBAL_BM (gui_focus_obj) = NULL;
-              hide_object_gui_BM (_.obj, (struct stackframe_stBM *) &_);
+              hide_object_gui_BM (_.obj, CURFRAME_BM);
               log_begin_message_BM ();
               log_puts_message_BM ("hiding object ");
               log_object_message_BM (_.obj);
@@ -3134,9 +3104,9 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
         if (tok.tok_kind == plex_DELIM
             && tok.tok_delim == delim_questiondollar)
         {
-          tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+          tok = parsertokenget_BM (pars, CURFRAME_BM);
           if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   curlineno, curcolpos,
                                   "no name to bind and show after ?$");
           if (!nobuild)
@@ -3148,11 +3118,9 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
               ASSERT_BM (isstring_BM ((const value_tyBM) _.name));
             };
           bool gotval = false;
-          _.comp =
-            parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, 0,
-                               &gotval);
+          _.comp = parsergetvalue_BM (pars, CURFRAME_BM, 0, &gotval);
           if (!gotval)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   curlineno, curcolpos,
                                   "no value to bind and show after ?$");
           if (!nobuild)
@@ -3166,8 +3134,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                   log_end_message_BM ();
                   browse_named_value_gui_BM (_.name, _.comp,
                                              BMP_browse_value,
-                                             browserdepth_BM,
-                                             (struct stackframe_stBM *) &_);
+                                             browserdepth_BM, CURFRAME_BM);
                 }
               else
                 {
@@ -3175,8 +3142,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                   log_printf_message_BM ("hiding named value $%s.",
                                          bytstring_BM (_.name));
                   log_end_message_BM ();
-                  hide_named_value_gui_BM (_.name,
-                                           (struct stackframe_stBM *) &_);
+                  hide_named_value_gui_BM (_.name, CURFRAME_BM);
                 }
             }
         }
@@ -3185,9 +3151,9 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
         if (tok.tok_kind == plex_DELIM
             && tok.tok_delim == delim_questiondollar)
         {
-          tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+          tok = parsertokenget_BM (pars, CURFRAME_BM);
           if (tok.tok_kind != plex_NAMEDOBJ && tok.tok_kind != plex_CNAME)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   curlineno, curcolpos,
                                   "no name to hide after ?$-");
           if (!nobuild)
@@ -3198,11 +3164,11 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                 _.name = tok.tok_cname;
               ASSERT_BM (isstring_BM ((const value_tyBM) _.name));
               if (!find_browsed_named_value_BM (bytstring_BM (_.name)))
-                parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                parsererrorprintf_BM (pars, CURFRAME_BM,
                                       curlineno, curcolpos,
                                       "name %s is not of a shown value",
                                       bytstring_BM (_.name));
-              hide_named_value_gui_BM (_.name, (struct stackframe_stBM *) &_);
+              hide_named_value_gui_BM (_.name, CURFRAME_BM);
               log_begin_message_BM ();
               log_printf_message_BM ("hiding named value $%s.",
                                      bytstring_BM (_.name));
@@ -3214,9 +3180,9 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
       else
         if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_questionhash)
         {
-          tok = parsertokenget_BM (pars, (struct stackframe_stBM *) &_);
+          tok = parsertokenget_BM (pars, CURFRAME_BM);
           if (tok.tok_kind != plex_LLONG)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   curlineno, curcolpos,
                                   "?# should be followed by browse depth number");
           int newdepth = browserdepth_BM;
@@ -3253,11 +3219,9 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
           if (!_.result)
             _.result = makestring_BM ("result");
           parserseek_BM (pars, tok.tok_line, tok.tok_col);
-          _.comp =
-            parsergetvalue_BM (pars, (struct stackframe_stBM *) &_, 0,
-                               &gotval);
+          _.comp = parsergetvalue_BM (pars, CURFRAME_BM, 0, &gotval);
           if (!gotval)
-            parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+            parsererrorprintf_BM (pars, CURFRAME_BM,
                                   curlineno, curcolpos,
                                   "no value to display as $result after $(");
           if (!nobuild)
@@ -3271,18 +3235,17 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                   log_end_message_BM ();
                   browse_named_value_gui_BM (_.result, _.comp,
                                              BMP_browse_value,
-                                             browserdepth_BM,
-                                             (struct stackframe_stBM *) &_);
+                                             browserdepth_BM, CURFRAME_BM);
                 }
               else
-                parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_,
+                parsererrorprintf_BM (pars, CURFRAME_BM,
                                       curlineno, curcolpos,
                                       "no result to display after $(");
             }
         }
       //
       else
-        parsererrorprintf_BM (pars, (struct stackframe_stBM *) &_, curlineno,
+        parsererrorprintf_BM (pars, CURFRAME_BM, curlineno,
                               curcolpos, "unexpected command");
     }
 }                               /* end parsecommandbuf_BM */
@@ -4270,7 +4233,7 @@ runcommand_BM (bool erase)
   if (!errpars)
     {
       // should parse the command buffer, this could longjmp to jmperrorcmd_BM
-      parsecommandbuf_BM (cmdpars, (struct stackframe_stBM *) &_);
+      parsecommandbuf_BM (cmdpars, CURFRAME_BM);
       commandnumber_BM++;
       DBGPRINTF_BM ("runcommand %s *** parsed command#%d elapsed %.3f s\n",
                     erase ? "erase" : "keep", commandnumber_BM,
@@ -4357,7 +4320,7 @@ enduseractioncmd_BM (GtkTextBuffer * txbuf, gpointer data)
   if (!errpars)
     {
       // should parse the command buffer
-      parsecommandbuf_BM (cmdpars, (struct stackframe_stBM *) &_);
+      parsecommandbuf_BM (cmdpars, CURFRAME_BM);
     }
   else
     {
@@ -5135,7 +5098,7 @@ browse_value_BM (const value_tyBM val,
                      value_tyBM val);
       _.val = val;
       send2_BM ((const value_tyBM) _.val, BMP_browse_value,
-                (struct stackframe_stBM *) &_,
+                CURFRAME_BM,
                 taggedint_BM (maxdepth), taggedint_BM (curdepth));
     }
 }                               /* end browse_value_BM */

@@ -115,7 +115,7 @@ ROUTINEOBJNAME_BM (_5W4PPQFYdj2_3HYUlMsu3oZ)    //
   if (isobject_BM (_.prevexpertiseob)
       && _.prevexpertiseob != _.thisexpertiseob)
     {
-      apply1_BM (_.exprocv, (struct stackframe_stBM *) &_, _.prevexpertiseob);
+      apply1_BM (_.exprocv, CURFRAME_BM, _.prevexpertiseob);
     }
   LOCALRETURN_BM (_.argv);
 }                               /* end expertise command_handler _5W4PPQFYdj2_3HYUlMsu3oZ */
@@ -145,12 +145,12 @@ ROUTINEOBJNAME_BM (_1etImV3nBtp_5rnHSE87XRj)    //
   NONPRINTF_BM ("run_tasklet°tiny_tasklet recv %s", objectdbg_BM (_.recv));
   objlock_BM (_.recv);
   _.todov = objgetattr_BM (_.recv, k_todo);
-  _.resv = apply1_BM (_.todov, (struct stackframe_stBM *) &_, _.recv);
+  _.resv = apply1_BM (_.todov, CURFRAME_BM, _.recv);
   objunlock_BM (_.recv);
   NONPRINTF_BM ("run_tasklet°tiny_tasklet recv %s applied todo %s",    //
                 objectdbg_BM (_.recv),  //
                 debug_outstr_value_BM (_.todov, //
-                                       (struct stackframe_stBM *) &_, 0));
+                                       CURFRAME_BM, 0));
   LOCALRETURN_BM (_.resv);
 }                               /* end run_tasklet°tiny_tasklet  _1etImV3nBtp_5rnHSE87XRj */
 
@@ -193,8 +193,7 @@ ROUTINEOBJNAME_BM (_8gAuOE933W3_5s7IF0hgpkz)    //
         objlock_BM (_.framob);
         _.frclassob = objclass_BM (_.framob);
         if (_.frclassob == k_mini_frame)
-          stoprun = run_mini_frame_BM (_.framob, _.taskob,
-                                       (struct stackframe_stBM *) &_);
+          stoprun = run_mini_frame_BM (_.framob, _.taskob, CURFRAME_BM);
         objunlock_BM (_.framob);
         if (stoprun)
           break;
@@ -249,7 +248,7 @@ run_mini_frame_BM (objectval_tyBM * framob, objectval_tyBM * taskob,
       _.curvalv = NULL;
       _.curvalv =
         evaluate_in_mini_frame_BM (_.curcompv, _.framob, _.taskob, &es,
-                                   (struct stackframe_stBM *) &_);
+                                   CURFRAME_BM);
       objputattr_BM (_.framob, k_rank, taggedint_BM (rk + 1));
       WEAKASSERT_BM (es >= mes_withresult && es <= mes_taskletchange);
       if (es == mes_framechange || mes_withresult)
@@ -300,7 +299,7 @@ evaluate_in_mini_frame_BM (value_tyBM expv, objectval_tyBM * framob,
       if (!_.varob)
         {
           _.errorv = makenodevar_BM (k_syntax_error, _.expv, NULL);
-          FAILURE_BM (__LINE__, _.errorv, (struct stackframe_stBM *) &_);
+          FAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
         }
       // find _.varob's binding in some frame
       int framedepth = 0;
@@ -313,7 +312,7 @@ evaluate_in_mini_frame_BM (value_tyBM expv, objectval_tyBM * framob,
             {
               _.errorv = makenodevar_BM (k_mini_frame, _.framob,
                                          taggedint_BM (framedepth), NULL);
-              FAILURE_BM (__LINE__, _.errorv, (struct stackframe_stBM *) &_);
+              FAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
             }
           _.valv = objassocgetattrpayl_BM (_.framob, _.varob);
           if (_.valv)
@@ -326,7 +325,7 @@ evaluate_in_mini_frame_BM (value_tyBM expv, objectval_tyBM * framob,
       {
         _.errorv =
           makenodevar_BM (k_unbound_variable_error, _.varob, _.framob, NULL);
-        FAILURE_BM (__LINE__, _.errorv, (struct stackframe_stBM *) &_);
+        FAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
       }
     }                           /* end ?var */
   // !thing gives the thing (like quote in lisp)
