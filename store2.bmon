@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 304 objects
+// for 305 objects
 // with 0 modules
 
 
@@ -3388,6 +3388,16 @@ _2Ir1i8qnrA4_3jSkierlc5z _5MiY0SneC5A_7c2Ar72nm9O) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "put\u00b0hashmapval_object method"
 !)_8EqnYwr2sed_1Njis9lW96i
+
+
+
+!(_8L6mTIICJRt_4RccFDlgACX
+!|*
+!@ 1523523638.79
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "browse_data\u00b0sbuf_object"
+!)_8L6mTIICJRt_4RccFDlgACX
 
 
 

@@ -1668,8 +1668,7 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_8UGpvfrcKbM_99IeP3BuxA5,
-                 objectval_tyBM * blockob;
-                 objectval_tyBM * modgenob;
+                 objectval_tyBM * blockob; objectval_tyBM * modgenob;
                  objectval_tyBM * routprepob; objectval_tyBM * instrob;
                  value_tyBM resultv; value_tyBM emitv;
                  value_tyBM causev;

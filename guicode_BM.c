@@ -1296,7 +1296,6 @@ ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    //
 
 
 //browse_data°assoc_object _0f1S28bCE26_3X6Vpz9lG4A
-
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A);
 
 value_tyBM
@@ -1363,8 +1362,9 @@ ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //
 }                               /* end browse_data°assoc_object  _0f1S28bCE26_3X6Vpz9lG4A */
 
 
-// browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE
 
+/////
+// browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE
 extern objrout_sigBM ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE);
 
 value_tyBM
@@ -1437,6 +1437,78 @@ ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE)    //
 }                               /* end browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE */
 
 
+
+//////
+// browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // browse_data°sbuf_object 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3_ __attribute__ ((unused)),       //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_8L6mTIICJRt_4RccFDlgACX,
+                 value_tyBM resultv;
+                 const objectval_tyBM * objbrows;
+    );
+  WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
+  if (!isobject_BM (arg1))
+    FATAL_BM
+      ("non-object for method to browse_data for sbuf_object-s _8L6mTIICJRt_4RccFDlgACX");
+  _.objbrows = (const objectval_tyBM *) arg1;
+  int maxdepth = getint_BM (arg2);
+  WEAKASSERT_BM (objhasstrbufferpayl_BM (_.objbrows));
+  const char *strsb = objstrbufferbytespayl_BM (_.objbrows);
+  int bylen = objstrbufferlengthpayl_BM (_.objbrows);
+  int unilen = g_utf8_strlen (strsb, bylen);
+  int nblines = 0;
+  for (char *pc = strsb, *eol = NULL; pc != NULL && *pc != 0;
+       pc = eol ? eol + 1 : NULL)
+    {
+      eol = strchr (pc, '\n');
+      nblines++;
+    }
+  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
+  {
+    char bufmsg[48];
+    memset (bufmsg, 0, sizeof (bufmsg));
+    snprintf (bufmsg, sizeof (bufmsg),
+              "|sbuf %d unicodes, %d bytes, %d lines:|", unilen, bylen,
+              nblines);
+    gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, bufmsg, -1,
+                                      miscomm_brotag_BM, NULL);
+    gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+    gtk_text_buffer_insert_with_tags (brobuf,
+                                      &browserit_BM, strsb, bylen,
+                                      str_brotag_BM, NULL);
+    if (bylen > 0 && strsb[bylen - 1] == '\n')
+      {
+        memset (bufmsg, 0, sizeof (bufmsg));
+        snprintf (bufmsg, sizeof (bufmsg), "|:endsbuf %d|", unilen);
+        gtk_text_buffer_insert_with_tags (brobuf,
+                                          &browserit_BM, bufmsg, -1,
+                                          miscomm_brotag_BM, NULL);
+      }
+    else
+      {
+        gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+        snprintf (bufmsg, sizeof (bufmsg), "|!endsbuf %d|", unilen);
+        gtk_text_buffer_insert_with_tags (brobuf,
+                                          &browserit_BM, bufmsg, -1,
+                                          miscomm_brotag_BM, NULL);
+      }
+  }
+  LOCALRETURN_BM (_.objbrows);
+}                               /* end browse_data°sbuf_object  _8L6mTIICJRt_4RccFDlgACX */
+
+
+
+/////
 // browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe);
 
