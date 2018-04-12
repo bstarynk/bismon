@@ -1362,6 +1362,15 @@ failure:
 
 
 
+extern void emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
+                                objectval_tyBM * modgenob,
+                                objectval_tyBM * routprepob, int depth);
+
+extern void emit_reference_BM (struct stackframe_stBM *stkf,
+                               objectval_tyBM * refob,
+                               objectval_tyBM * modgenob,
+                               objectval_tyBM * routprepob, int depth);
+
 ///////
 // emit_definition°simple_routine_preparation _2Lk2DjTDzQh_3aTEVKDE2Ip
 extern objrout_sigBM ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip);
@@ -1946,3 +1955,81 @@ failure:
     makenode4_BM (k_emit_when, _.whenob, _.routprepob, _.modgenob, _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_when°basiclo_when _9Wk97VJLuH1_0FwsSpfatDg */
+
+
+
+
+extern void
+emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
+                    objectval_tyBM * modgenob, objectval_tyBM * routprepob,
+                    int depth)
+{
+  objectval_tyBM *k_emit_expression = BMK_9lXSe7DrOl6_7hghYt0LhTF;
+  LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
+                 value_tyBM expv;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob; value_tyBM errorv;
+                 value_tyBM causev;
+    );
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
+  _.expv = expv;
+  _.modgenob = objectcast_BM (modgenob);
+  _.routprepob = objectcast_BM (routprepob);
+  WEAKASSERT_BM (_.modgenob);
+  WEAKASSERT_BM (_.routprepob);
+  DBGPRINTF_BM ("emit_expression_BM start expv %s modgen %s routprep %s",
+                debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
+                objectdbg_BM (_.modgenob), objectdbg1_BM (_.routprepob));
+  switch (valtype_BM (_.expv))
+    {
+    }
+  WEAKASSERT_BM (false && "unimplemented emit_expression_BM");
+#warning unimplemented emit_expression_BM
+  LOCALJUSTRETURN_BM ();
+failure:
+  DBGPRINTF_BM ("emit_expression_BM failin %d expv %s routprep %s cause %s", failin, debug_outstr_value_BM (_.expv, CURFRAME_BM, 0), objectdbg2_BM (_.routprepob),      //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    makenode4_BM (k_emit_expression, expv, _.routprepob, _.modgenob,
+                  _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end emit_expression_BM */
+
+
+
+void
+emit_reference_BM (struct stackframe_stBM *stkf, objectval_tyBM * refob,
+                   objectval_tyBM * modgenob, objectval_tyBM * routprepob,
+                   int depth)
+{
+  objectval_tyBM *k_emit_reference = BMK_6qzzDyr2eIo_3SapnOUpg6S;
+  LOCALFRAME_BM (stkf, /*descr: */ k_emit_reference,
+                 objectval_tyBM * refob;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob; value_tyBM errorv;
+                 value_tyBM causev;
+    );
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
+  _.refob = objectcast_BM (refob);
+  _.modgenob = objectcast_BM (modgenob);
+  _.routprepob = objectcast_BM (routprepob);
+  WEAKASSERT_BM (_.refob);
+  WEAKASSERT_BM (_.modgenob);
+  WEAKASSERT_BM (_.routprepob);
+  DBGPRINTF_BM
+    ("emit_reference_BM start refob %s modgen %s routprep %s depth %d",
+     objectdbg_BM (_.refob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth);
+  WEAKASSERT_BM (false && "unimplemented emit_reference_BM");
+#warning unimplemented emit_reference_BM
+  LOCALJUSTRETURN_BM ();
+failure:
+  DBGPRINTF_BM ("emit_reference_BM failin %d ref %s routprep %s cause %s", failin, objectdbg_BM (_.refob), objectdbg1_BM (_.routprepob),        //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    makenode4_BM (k_emit_reference, refob, _.routprepob, _.modgenob,
+                  _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end emit_reference_BM */
