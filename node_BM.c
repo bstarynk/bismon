@@ -98,6 +98,32 @@ makeclosurevar_BM (const objectval_tyBM * connob, ...)
   return clos;
 }                               /* end makeclosurevar_BM */
 
+const closure_tyBM *
+makesizedclosure_BM (unsigned siz, const objectval_tyBM * connob, ...)
+{
+  if (!isobject_BM ((const value_tyBM) connob))
+    return NULL;
+  if (siz > MAXSIZE_BM)
+    FATAL_BM ("too large closure size %u", siz);
+  value_tyBM tinyarr[TINYSIZE_BM] = { };
+  value_tyBM *arr =
+    (siz < TINYSIZE_BM) ? tinyarr : calloc (siz, sizeof (value_tyBM));
+  if (!arr)
+    FATAL_BM ("calloc failure for %u - %m", siz);
+  if (siz > 0)
+    {
+      va_list args;
+      va_start (args, connob);
+      for (unsigned ix = 0; ix < siz; ix++)
+        arr[ix] = va_arg (args, value_tyBM);
+      va_end (args);
+    }
+  const closure_tyBM *clo = makeclosure_BM (connob, siz, arr);
+  if (arr != tinyarr)
+    free (arr), arr = NULL;
+  return clo;
+}                               /* end makesizedclosure_BM */
+
 
 void
 closuregcdestroy_BM (struct garbcoll_stBM *gc, closure_tyBM * clos)
@@ -199,6 +225,31 @@ makenode_BM (const objectval_tyBM * connob, unsigned nbval,
   return node;
 }                               /* end makenode_BM */
 
+const node_tyBM *
+makesizednode_BM (unsigned siz, const objectval_tyBM * connob, ...)
+{
+  if (!isobject_BM ((const value_tyBM) connob))
+    return NULL;
+  if (siz > MAXSIZE_BM)
+    FATAL_BM ("too large node size %u", siz);
+  value_tyBM tinyarr[TINYSIZE_BM] = { };
+  value_tyBM *arr =
+    (siz < TINYSIZE_BM) ? tinyarr : calloc (siz, sizeof (value_tyBM));
+  if (!arr)
+    FATAL_BM ("calloc failure for %u - %m", siz);
+  if (siz > 0)
+    {
+      va_list args;
+      va_start (args, connob);
+      for (unsigned ix = 0; ix < siz; ix++)
+        arr[ix] = va_arg (args, value_tyBM);
+      va_end (args);
+    }
+  const node_tyBM *nod = makenode_BM (connob, siz, arr);
+  if (arr != tinyarr)
+    free (arr), arr = NULL;
+  return nod;
+}                               /* end makesizednode_BM */
 
 const node_tyBM *
 makenodevar_BM (const objectval_tyBM * connob, ...)
@@ -227,10 +278,10 @@ makenodevar_BM (const objectval_tyBM * connob, ...)
       arr[cnt++] = curv;
     }
   va_end (args);
-  const node_tyBM *clos = makenode_BM (connob, nbsons, arr);
+  const node_tyBM *nod = makenode_BM (connob, nbsons, arr);
   if (arr != tinyarr)
     free (arr), arr = NULL;
-  return clos;
+  return nod;
 }                               /* end makenodevar_BM */
 
 

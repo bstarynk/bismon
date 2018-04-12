@@ -1432,6 +1432,79 @@ closurecast_BM (const value_tyBM v)
   return isclosure_BM (v) ? (const closure_tyBM *) v : NULL;
 }                               /* end closurecast_BM */
 
+const closure_tyBM *
+makeclosure0_BM (const objectval_tyBM * connob)
+{
+  return makeclosure_BM (connob, 0, NULL);
+}                               /* end makeclosure0_BM  */
+
+const closure_tyBM *
+makeclosure1_BM (const objectval_tyBM * connob, value_tyBM v0)
+{
+  value_tyBM arr[1] = { v0 };
+  return makeclosure_BM (connob, 1, arr);
+}                               /* end makeclosure1_BM  */
+
+
+const closure_tyBM *
+makeclosure2_BM (const objectval_tyBM * connob, value_tyBM v0, value_tyBM v1)
+{
+  value_tyBM arr[2] = { v0, v1 };
+  return makeclosure_BM (connob, 2, arr);
+}                               /* end makeclosure2_BM  */
+
+const closure_tyBM *
+makeclosure3_BM (const objectval_tyBM * connob, value_tyBM v0, value_tyBM v1,
+                 value_tyBM v2)
+{
+  value_tyBM arr[3] = { v0, v1, v2 };
+  return makeclosure_BM (connob, 3, arr);
+}                               /* end makeclosure3_BM  */
+
+const closure_tyBM *
+makeclosure4_BM (const objectval_tyBM * connob, value_tyBM v0, value_tyBM v1,
+                 value_tyBM v2, value_tyBM v3)
+{
+  value_tyBM arr[4] = { v0, v1, v2, v3 };
+  return makeclosure_BM (connob, 4, arr);
+}                               /* end makeclosure4_BM  */
+
+const closure_tyBM *
+makeclosure5_BM (const objectval_tyBM * connob, value_tyBM v0, value_tyBM v1,
+                 value_tyBM v2, value_tyBM v3, value_tyBM v4)
+{
+  value_tyBM arr[5] = { v0, v1, v2, v3, v4 };
+  return makeclosure_BM (connob, 5, arr);
+}                               /* end makeclosure5_BM  */
+
+const closure_tyBM *
+makeclosure6_BM (const objectval_tyBM * connob, value_tyBM v0, value_tyBM v1,
+                 value_tyBM v2, value_tyBM v3, value_tyBM v4, value_tyBM v5)
+{
+  value_tyBM arr[6] = { v0, v1, v2, v3, v4, v5 };
+  return makeclosure_BM (connob, 6, arr);
+}                               /* end makeclosure6_BM  */
+
+const closure_tyBM *
+makeclosure7_BM (const objectval_tyBM * connob, value_tyBM v0, value_tyBM v1,
+                 value_tyBM v2, value_tyBM v3, value_tyBM v4, value_tyBM v5,
+                 value_tyBM v6)
+{
+  value_tyBM arr[7] = { v0, v1, v2, v3, v4, v5, v6 };
+  return makeclosure_BM (connob, 7, arr);
+}                               /* end makeclosure7_BM  */
+
+
+const closure_tyBM *
+makeclosure8_BM (const objectval_tyBM * connob, value_tyBM v0, value_tyBM v1,
+                 value_tyBM v2, value_tyBM v3, value_tyBM v4, value_tyBM v5,
+                 value_tyBM v6, value_tyBM v7)
+{
+  value_tyBM arr[8] = { v0, v1, v2, v3, v4, v5, v6, v7 };
+  return makeclosure_BM (connob, 8, arr);
+}                               /* end makeclosure8_BM  */
+
+////////////////
 bool
 isnode_BM (const value_tyBM v)
 {
@@ -1444,6 +1517,80 @@ nodecast_BM (const value_tyBM v)
   return isnode_BM (v) ? (const node_tyBM *) v : NULL;
 }                               /* end nodecast_BM */
 
+
+const node_tyBM *
+makenode0_BM (const objectval_tyBM * connob)
+{
+  return makenode_BM (connob, 0, NULL);
+}                               /* end makenode0_BM  */
+
+const node_tyBM *
+makenode1_BM (const objectval_tyBM * connob, value_tyBM v0)
+{
+  value_tyBM arr[1] = { v0 };
+  return makenode_BM (connob, 1, arr);
+}                               /* end makenode1_BM  */
+
+
+const node_tyBM *
+makenode2_BM (const objectval_tyBM * connob, value_tyBM v0, value_tyBM v1)
+{
+  value_tyBM arr[2] = { v0, v1 };
+  return makenode_BM (connob, 2, arr);
+}                               /* end makenode2_BM  */
+
+const node_tyBM *
+makenode3_BM (const objectval_tyBM * connob, value_tyBM v0, value_tyBM v1,
+              value_tyBM v2)
+{
+  value_tyBM arr[3] = { v0, v1, v2 };
+  return makenode_BM (connob, 3, arr);
+}                               /* end makenode3_BM  */
+
+const node_tyBM *
+makenode4_BM (const objectval_tyBM * connob, value_tyBM v0, value_tyBM v1,
+              value_tyBM v2, value_tyBM v3)
+{
+  value_tyBM arr[4] = { v0, v1, v2, v3 };
+  return makenode_BM (connob, 4, arr);
+}                               /* end makenode4_BM  */
+
+const node_tyBM *
+makenode5_BM (const objectval_tyBM * connob, value_tyBM v0, value_tyBM v1,
+              value_tyBM v2, value_tyBM v3, value_tyBM v4)
+{
+  value_tyBM arr[5] = { v0, v1, v2, v3, v4 };
+  return makenode_BM (connob, 5, arr);
+}                               /* end makenode5_BM  */
+
+const node_tyBM *
+makenode6_BM (const objectval_tyBM * connob, value_tyBM v0, value_tyBM v1,
+              value_tyBM v2, value_tyBM v3, value_tyBM v4, value_tyBM v5)
+{
+  value_tyBM arr[6] = { v0, v1, v2, v3, v4, v5 };
+  return makenode_BM (connob, 6, arr);
+}                               /* end makenode6_BM  */
+
+const node_tyBM *
+makenode7_BM (const objectval_tyBM * connob, value_tyBM v0, value_tyBM v1,
+              value_tyBM v2, value_tyBM v3, value_tyBM v4, value_tyBM v5,
+              value_tyBM v6)
+{
+  value_tyBM arr[7] = { v0, v1, v2, v3, v4, v5, v6 };
+  return makenode_BM (connob, 7, arr);
+}                               /* end makenode7_BM  */
+
+
+const node_tyBM *
+makenode8_BM (const objectval_tyBM * connob, value_tyBM v0, value_tyBM v1,
+              value_tyBM v2, value_tyBM v3, value_tyBM v4, value_tyBM v5,
+              value_tyBM v6, value_tyBM v7)
+{
+  value_tyBM arr[8] = { v0, v1, v2, v3, v4, v5, v6, v7 };
+  return makenode_BM (connob, 8, arr);
+}                               /* end makenode8_BM  */
+
+////////////////
 
 objectval_tyBM *
 treeconn_BM (const value_tyBM v)

@@ -177,12 +177,99 @@ extern void nodegckeep_BM (struct garbcoll_stBM *gc, node_tyBM * nod);
 extern const node_tyBM *makenode_BM (const objectval_tyBM * connob,
                                      unsigned nbval,
                                      const value_tyBM * sonvalarr);
+
+static inline const node_tyBM *makenode0_BM (const objectval_tyBM * connob);
+static inline const node_tyBM *makenode1_BM (const objectval_tyBM * connob,
+                                             value_tyBM v0);
+static inline const node_tyBM *makenode2_BM (const objectval_tyBM * connob,
+                                             value_tyBM v0, value_tyBM v1);
+static inline const node_tyBM *makenode3_BM (const objectval_tyBM * connob,
+                                             value_tyBM v0, value_tyBM v1,
+                                             value_tyBM v2);
+static inline const node_tyBM *makenode4_BM (const objectval_tyBM * connob,
+                                             value_tyBM v0, value_tyBM v1,
+                                             value_tyBM v2, value_tyBM v3);
+static inline const node_tyBM *makenode5_BM (const objectval_tyBM * connob,
+                                             value_tyBM v0, value_tyBM v1,
+                                             value_tyBM v2, value_tyBM v3,
+                                             value_tyBM v4);
+static inline const node_tyBM *makenode6_BM (const objectval_tyBM * connob,
+                                             value_tyBM v0, value_tyBM v1,
+                                             value_tyBM v2, value_tyBM v3,
+                                             value_tyBM v4, value_tyBM v5);
+static inline const node_tyBM *makenode7_BM (const objectval_tyBM * connob,
+                                             value_tyBM v0, value_tyBM v1,
+                                             value_tyBM v2, value_tyBM v3,
+                                             value_tyBM v4, value_tyBM v5,
+                                             value_tyBM v6);
+static inline const node_tyBM *makenode8_BM (const objectval_tyBM * connob,
+                                             value_tyBM v0, value_tyBM v1,
+                                             value_tyBM v2, value_tyBM v3,
+                                             value_tyBM v4, value_tyBM v5,
+                                             value_tyBM v6, value_tyBM v7);
+
+extern const node_tyBM *makesizednode_BM (unsigned siz,
+                                          const objectval_tyBM * connob, ...);
+
 extern const node_tyBM *makenodevar_BM (const objectval_tyBM * connob, ...)
   __attribute__ ((sentinel));
 
+////////
 extern const closure_tyBM *makeclosure_BM (const objectval_tyBM * conn,
                                            unsigned nbclos,
                                            const value_tyBM * closvalarr);
+
+static inline const closure_tyBM *makeclosure0_BM (const objectval_tyBM *
+                                                   connob);
+static inline const closure_tyBM *makeclosure1_BM (const objectval_tyBM *
+                                                   connob, value_tyBM v0);
+static inline const closure_tyBM *makeclosure2_BM (const objectval_tyBM *
+                                                   connob, value_tyBM v0,
+                                                   value_tyBM v1);
+static inline const closure_tyBM *makeclosure3_BM (const objectval_tyBM *
+                                                   connob, value_tyBM v0,
+                                                   value_tyBM v1,
+                                                   value_tyBM v2);
+static inline const closure_tyBM *makeclosure4_BM (const objectval_tyBM *
+                                                   connob, value_tyBM v0,
+                                                   value_tyBM v1,
+                                                   value_tyBM v2,
+                                                   value_tyBM v3);
+static inline const closure_tyBM *makeclosure5_BM (const objectval_tyBM *
+                                                   connob, value_tyBM v0,
+                                                   value_tyBM v1,
+                                                   value_tyBM v2,
+                                                   value_tyBM v3,
+                                                   value_tyBM v4);
+static inline const closure_tyBM *makeclosure6_BM (const objectval_tyBM *
+                                                   connob, value_tyBM v0,
+                                                   value_tyBM v1,
+                                                   value_tyBM v2,
+                                                   value_tyBM v3,
+                                                   value_tyBM v4,
+                                                   value_tyBM v5);
+static inline const closure_tyBM *makeclosure7_BM (const objectval_tyBM *
+                                                   connob, value_tyBM v0,
+                                                   value_tyBM v1,
+                                                   value_tyBM v2,
+                                                   value_tyBM v3,
+                                                   value_tyBM v4,
+                                                   value_tyBM v5,
+                                                   value_tyBM v6);
+static inline const closure_tyBM *makeclosure8_BM (const objectval_tyBM *
+                                                   connob, value_tyBM v0,
+                                                   value_tyBM v1,
+                                                   value_tyBM v2,
+                                                   value_tyBM v3,
+                                                   value_tyBM v4,
+                                                   value_tyBM v5,
+                                                   value_tyBM v6,
+                                                   value_tyBM v7);
+
+extern const closure_tyBM *makesizedclosure_BM (unsigned siz,
+                                                const objectval_tyBM * connob,
+                                                ...);
+
 extern const closure_tyBM *makeclosurevar_BM (const objectval_tyBM * connob,
                                               ...) __attribute__ ((sentinel));
 
