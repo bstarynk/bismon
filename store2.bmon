@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 303 objects
+// for 304 objects
 // with 0 modules
 
 
@@ -132,6 +132,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "superclass for blocks in basiclo_function-s"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
+~: _6mk5eos8067_1odgCpnWMOj  % _8UGpvfrcKbM_99IeP3BuxA5 () 
 ~: _99lWaExo3Bc_4J3HkjJOIJy  % _0gkYrIdnOg2_0wLEAh1QuYu (  0  0)
 ~)
 
@@ -3405,6 +3406,16 @@ _2Ir1i8qnrA4_3jSkierlc5z _5MiY0SneC5A_7c2Ar72nm9O) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method dump_scan\u00b0hashsetval_object"
 !)_8RsUtTTwcw0_9DjQfQrNouU
+
+
+
+!(_8UGpvfrcKbM_99IeP3BuxA5
+!|*
+!@ 1523509738.89
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit_block\u00b0basiclo_block"
+!)_8UGpvfrcKbM_99IeP3BuxA5
 
 
 

@@ -1653,3 +1653,39 @@ failure:
                     taggedint_BM (rank), _.causev, NULL);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_definition°simple_routine_preparation  _2Lk2DjTDzQh_3aTEVKDE2Ip */
+
+//emit_block°basiclo_block  _8UGpvfrcKbM_99IeP3BuxA5
+extern objrout_sigBM ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // blockob reciever
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // routprepob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_8UGpvfrcKbM_99IeP3BuxA5,
+                 objectval_tyBM * blockob;
+                 objectval_tyBM * modgenob; objectval_tyBM * routprepob;
+                 value_tyBM resultv;
+    );
+  _.blockob = objectcast_BM (arg1);
+  _.modgenob = objectcast_BM (arg2);
+  _.routprepob = objectcast_BM (arg3);
+  int depth = getint_BM (arg4);
+  DBGPRINTF_BM
+    ("emit_block°basiclo_block start blockob=%s modgenob=%s routprepob=%s depth#%d",
+     objectdbg_BM (_.blockob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth);
+  WEAKASSERT_BM (isobject_BM (_.blockob));
+  WEAKASSERT_BM (isobject_BM (_.modgenob));
+  WEAKASSERT_BM (isobject_BM (_.routprepob));
+  WEAKASSERT_BM (istaggedint_BM (arg4));
+#warning unimplemented emit_block°basiclo_block _8UGpvfrcKbM_99IeP3BuxA5 routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented emit_block°basiclo_block _8UGpvfrcKbM_99IeP3BuxA5 routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end emit_block°basiclo_block _8UGpvfrcKbM_99IeP3BuxA5 */
