@@ -1643,17 +1643,18 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                  &&
                  "unimplemented emit_definition°simple_routine_preparation routine");
 failure:
-  DBGPRINTF_BM
-    ("emit_definition°simple_routine_preparation failin %d routprep %s cause %s",
-     failin, objectdbg_BM (_.routprepob), debug_outstr_value_BM (_.causev,
-                                                                 CURFRAME_BM,
-                                                                 0));
+  DBGPRINTF_BM ("emit_definition°simple_routine_preparation failin %d routprep %s cause %s",   //
+                failin, objectdbg_BM (_.routprepob),    //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     makenodevar_BM (k_emit_definition, _.routprepob, _.modgenob,
                     taggedint_BM (rank), _.causev, NULL);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_definition°simple_routine_preparation  _2Lk2DjTDzQh_3aTEVKDE2Ip */
 
+
+
+/////
 //emit_block°basiclo_block  _8UGpvfrcKbM_99IeP3BuxA5
 extern objrout_sigBM ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5);
 
@@ -1668,13 +1669,20 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_8UGpvfrcKbM_99IeP3BuxA5,
                  objectval_tyBM * blockob;
-                 objectval_tyBM * modgenob; objectval_tyBM * routprepob;
-                 value_tyBM resultv;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob; objectval_tyBM * instrob;
+                 value_tyBM resultv; value_tyBM emitv;
+                 value_tyBM causev;
+                 value_tyBM errorv;
     );
+  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
   _.blockob = objectcast_BM (arg1);
   _.modgenob = objectcast_BM (arg2);
   _.routprepob = objectcast_BM (arg3);
   int depth = getint_BM (arg4);
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
   DBGPRINTF_BM
     ("emit_block°basiclo_block start blockob=%s modgenob=%s routprepob=%s depth#%d",
      objectdbg_BM (_.blockob), objectdbg1_BM (_.modgenob),
@@ -1683,9 +1691,49 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
   WEAKASSERT_BM (isobject_BM (_.modgenob));
   WEAKASSERT_BM (isobject_BM (_.routprepob));
   WEAKASSERT_BM (istaggedint_BM (arg4));
-#warning unimplemented emit_block°basiclo_block _8UGpvfrcKbM_99IeP3BuxA5 routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented emit_block°basiclo_block _8UGpvfrcKbM_99IeP3BuxA5 routine");
-  LOCALRETURN_BM (_.resultv);
+  WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
+  char blockidbuf[32];
+  memset (blockidbuf, 0, sizeof (blockidbuf));
+  idtocbuf32_BM (objid_BM (_.blockob), blockidbuf);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "\n"
+                             "startblock_%s: __attribute__((unused))\n"
+                             "{ /* +block %s */", blockidbuf);
+  int indepth = depth + 1;
+  unsigned blocklen = objnbcomps_BM (_.blockob);
+  for (unsigned insix = 0; insix < blocklen; insix++)
+    {
+      _.instrob = objectcast_BM (objgetcomp_BM (_.blockob, insix));
+      DBGPRINTF_BM
+        ("emit_block°basiclo_block blockob %s insix#%d instrob %s",
+         objectdbg_BM (_.blockob), insix, objectdbg_BM (_.instrob));
+      WEAKASSERT_BM (isobject_BM (_.instrob));
+      objstrbuffersetindentpayl_BM (_.modgenob, indepth);
+      objstrbuffernewlinepayl_BM (_.modgenob);
+      _.emitv = send3_BM (_.instrob, k_emit_statement, CURFRAME_BM,     //
+                          _.modgenob, _.routprepob, taggedint_BM (indepth));
+      objstrbuffernewlinepayl_BM (_.modgenob);
+      if (!_.emitv)
+        FAILHERE (makenodevar_BM (k_emit_statement, _.instrob, NULL));
+    }
+  objstrbuffersetindentpayl_BM (_.modgenob, indepth);
+  objstrbufferprintfpayl_BM (_.modgenob, "/* !endingblock %s */\n"
+                             "goto endblock_%s;\n"
+                             "endblock_%s: ;\n",
+                             blockidbuf, blockidbuf, blockidbuf);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbufferprintfpayl_BM (_.modgenob, "} /*-block %s */\n", blockidbuf);
+  DBGPRINTF_BM
+    ("emit_block°basiclo_block end blockob=%s modgenob=%s routprepob=%s depth#%d",
+     objectdbg_BM (_.blockob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth);
+  LOCALRETURN_BM (_.blockob);
+failure:
+  DBGPRINTF_BM ("emit_block°basiclo_block failin %d routprep %s cause %s", failin, objectdbg_BM (_.routprepob),        //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    makenodevar_BM (k_emit_block, _.blockob, _.routprepob, _.modgenob,
+                    _.causev, NULL);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_block°basiclo_block _8UGpvfrcKbM_99IeP3BuxA5 */
