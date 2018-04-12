@@ -645,8 +645,22 @@ objstrbuffermoreindentpayl_BM (objectval_tyBM * obj)
   if (!sbuf)
     return;
   sbuf->sbuf_indent++;
+  if (sbuf->sbuf_indent > MAXINDENT_BM)
+    sbuf->sbuf_indent = MAXINDENT_BM;
 }                               /* end  objstrbuffermoreindentpayl_BM */
 
+extern void
+objstrbuffersetindentpayl_BM (objectval_tyBM * obj, int indent)
+{
+  struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (obj);
+  if (!sbuf)
+    return;
+  if (indent < 0)
+    indent = 0;
+  else if (indent > MAXINDENT_BM)
+    indent = MAXINDENT_BM;
+  sbuf->sbuf_indent = indent;
+}                               /* end objstrbuffersetindentpayl_BM  */
 
 void
 objstrbufferlessindentpayl_BM (objectval_tyBM * obj)
@@ -655,6 +669,8 @@ objstrbufferlessindentpayl_BM (objectval_tyBM * obj)
   if (!sbuf)
     return;
   sbuf->sbuf_indent--;
+  if (sbuf->sbuf_indent < 0)
+    sbuf->sbuf_indent = 0;
 }                               /* end  objstrbufferlessindent_BM */
 
 

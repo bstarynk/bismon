@@ -402,6 +402,7 @@ extern const char *objstrbufferbytespayl_BM (objectval_tyBM * obj);
 extern int objstrbufferindentationpayl_BM (objectval_tyBM * obj);
 extern void objstrbufferclearindentpayl_BM (objectval_tyBM * obj);
 extern void objstrbuffermoreindentpayl_BM (objectval_tyBM * obj);
+extern void objstrbuffersetindentpayl_BM (objectval_tyBM * obj, int indent);
 extern void objstrbufferlessindentpayl_BM (objectval_tyBM * obj);
 extern void objstrbufferappendcstrpayl_BM (objectval_tyBM * obj,
                                            const char *cstr);
