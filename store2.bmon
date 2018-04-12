@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 306 objects
+// for 307 objects
 // with 0 modules
 
 
@@ -940,6 +940,17 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to emit a statement"
 !)_1ERH9PxNhPb_2o869yOMuH0
+
+
+
+!(_8BRpelfZZnA_85HsuPjg0G7 |=emit_when|
+!~ name (~ emit_when
+~)
+!@ 1523536058.30
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector emit_when"
+!)_8BRpelfZZnA_85HsuPjg0G7
 
 
 
