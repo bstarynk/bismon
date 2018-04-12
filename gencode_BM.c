@@ -1705,8 +1705,9 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
     {
       _.instrob = objectcast_BM (objgetcomp_BM (_.blockob, insix));
       DBGPRINTF_BM
-        ("emit_block°basiclo_block blockob %s insix#%d instrob %s",
-         objectdbg_BM (_.blockob), insix, objectdbg_BM (_.instrob));
+        ("emit_block°basiclo_block blockob %s insix#%d instrob %s of %s",
+         objectdbg_BM (_.blockob), insix, objectdbg2_BM (_.instrob),
+         objectdbg3_BM (objclass_BM (_.instrob)));
       WEAKASSERT_BM (isobject_BM (_.instrob));
       objstrbuffersetindentpayl_BM (_.modgenob, indepth);
       objstrbuffernewlinepayl_BM (_.modgenob);
@@ -1736,3 +1737,39 @@ failure:
                     _.causev, NULL);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_block°basiclo_block _8UGpvfrcKbM_99IeP3BuxA5 */
+
+
+
+// emit_statment°basiclo_cond _2gpamAdSc26_6d1JjCmKHyw
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_2gpamAdSc26_6d1JjCmKHyw);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_2gpamAdSc26_6d1JjCmKHyw) //emit_statment°basiclo_cond 
+(struct stackframe_stBM* stkf, //
+ const value_tyBM arg1, // stmtob
+ const value_tyBM arg2, // modgenob
+ const value_tyBM arg3, // routprepob
+ const value_tyBM arg4, // depth
+ const quasinode_tyBM* restargs_  __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr:*/ BMK_2gpamAdSc26_6d1JjCmKHyw,
+		 objectval_tyBM* stmtob;
+		 objectval_tyBM* modgenob;
+		 objectval_tyBM* routprepob;
+                 value_tyBM resultv;
+  );
+  _.stmtob = objectcast_BM(arg1);
+  _.modgenob = objectcast_BM(arg2);
+  _.routprepob = objectcast_BM(arg3);
+  WEAKASSERT_BM(istaggedint_BM(arg4));
+  int depth = getint_BM(arg4);
+  WEAKASSERT_BM(isobject_BM(_.stmtob));
+  WEAKASSERT_BM(isobject_BM(_.modgenob));
+  WEAKASSERT_BM(isobject_BM(_.routprepob));
+  DBGPRINTF_BM("emit_statment°basiclo_cond start stmtob=%s modgenob=%s routprepob=%s depth#%d",
+	       objectdbg_BM(_.stmtob), objectdbg_BM(_.modgenob), objectdbg_BM(_.routprepob), depth);
+#warning unimplemented _2gpamAdSc26_6d1JjCmKHyw routine
+  WEAKASSERT_BM(false && "unimplemented _2gpamAdSc26_6d1JjCmKHyw routine");
+  LOCALRETURN_BM(_.resultv);
+} /* end emit_statment°basiclo_cond _2gpamAdSc26_6d1JjCmKHyw*/
