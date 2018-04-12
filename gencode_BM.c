@@ -1759,20 +1759,27 @@ ROUTINEOBJNAME_BM (_2gpamAdSc26_6d1JjCmKHyw)    //emit_statment°basiclo_cond
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2gpamAdSc26_6d1JjCmKHyw,
                  objectval_tyBM * stmtob;
-                 objectval_tyBM * modgenob; objectval_tyBM * routprepob;
-                 objectval_tyBM * compob; value_tyBM tmpv; value_tyBM resultv;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob; objectval_tyBM * compob;
+                 value_tyBM tmpv; value_tyBM resultv; value_tyBM emitv;
                  value_tyBM causev;
                  value_tyBM errorv;
     );
   objectval_tyBM *k_emit_when = BMK_8BRpelfZZnA_85HsuPjg0G7;
+  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
+  objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
   objectval_tyBM *k_nb_conds = BMK_8dLpuaNoSGN_2tdmkpINCsu;
+  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   _.stmtob = objectcast_BM (arg1);
   _.modgenob = objectcast_BM (arg2);
   _.routprepob = objectcast_BM (arg3);
   WEAKASSERT_BM (istaggedint_BM (arg4));
+  char condidbuf[32];
+  memset (condidbuf, 0, sizeof (condidbuf));
+  idtocbuf32_BM (objid_BM (_.stmtob), condidbuf);
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
   int depth = getint_BM (arg4);
@@ -1784,35 +1791,98 @@ ROUTINEOBJNAME_BM (_2gpamAdSc26_6d1JjCmKHyw)    //emit_statment°basiclo_cond
      objectdbg_BM (_.stmtob), objectdbg2_BM (_.modgenob),
      objectdbg3_BM (_.routprepob), depth);
   int nbconds = -1;
+  int stmtsiz = objnbcomps_BM (_.stmtob);
   {
     _.tmpv = objgetattr_BM (_.stmtob, k_nb_conds);
     WEAKASSERT_BM (istaggedint_BM (_.tmpv));
     nbconds = getint_BM (_.tmpv);
     _.tmpv = NULL;
   }
+  DBGPRINTF_BM
+    ("emit_statment°basiclo_cond stmtob=%s nbconds=%d stmtsiz=%d",
+     objectdbg_BM (_.stmtob), nbconds, stmtsiz);
   for (int ix = 0; ix < nbconds; ix++)
     {
       _.compob = objectcast_BM (objgetcomp_BM (_.stmtob, ix));
       DBGPRINTF_BM
-        ("emit_statment°basiclo_cond stmtob=%s ix#%d compob=%s",
+        ("emit_statment°basiclo_cond stmtob=%s ix#%d when compob=%s",
          objectdbg_BM (_.stmtob), ix, objectdbg2_BM (_.modgenob));
       WEAKASSERT_BM (isobject_BM (_.compob));
       if (objectisinstance_BM (_.compob, k_basiclo_when))
         {
-        }
-      else if (objectisinstance_BM (_.compob, k_basiclo_block))
-        {
-        }
-      else if (objectisinstance_BM (_.compob, k_basiclo_statement))
-        {
+          if (ix > 0)
+            objstrbufferprintfpayl_BM (_.modgenob, "else if ");
+          else
+            objstrbufferprintfpayl_BM (_.modgenob, "if /*cond %s*/ ",
+                                       condidbuf);
+          _.emitv = send3_BM (_.compob, k_emit_when, CURFRAME_BM,       //
+                              _.modgenob, _.routprepob, taggedint_BM (depth));
+          DBGPRINTF_BM
+            ("emit_statment°basiclo_cond stmtob=%s compob=%s emit_when -> %s",
+             objectdbg_BM (_.stmtob), objectdbg2_BM (_.compob),
+             debug_outstr_value_BM (_.emitv, CURFRAME_BM, 0));
+          if (!_.emitv)
+            FAILHERE (makenode2_BM
+                      (k_emit_when, taggedint_BM (ix), _.compob));
         }
       else
-        /*
-           FAILHERE()
-         */
-        ;
+        FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (ix), _.compob));
     }
-#warning unimplemented _2gpamAdSc26_6d1JjCmKHyw routine
-  WEAKASSERT_BM (false && "unimplemented _2gpamAdSc26_6d1JjCmKHyw routine");
-  LOCALRETURN_BM (_.resultv);
+  if (nbconds < stmtsiz)
+    {
+      int indepth = depth + 1;
+      objstrbuffersetindentpayl_BM (_.modgenob, indepth);
+      objstrbufferprintfpayl_BM (_.modgenob, "else { /*cond else %s*/\n",
+                                 condidbuf);
+      for (int ix = nbconds; ix < stmtsiz; ix++)
+        {
+          _.compob = objectcast_BM (objgetcomp_BM (_.stmtob, ix));
+          DBGPRINTF_BM
+            ("emit_statment°basiclo_cond stmtob=%s ix#%d else compob=%s",
+             objectdbg_BM (_.stmtob), ix, objectdbg2_BM (_.modgenob));
+          WEAKASSERT_BM (isobject_BM (_.compob));
+          if (objectisinstance_BM (_.compob, k_basiclo_block))
+            {
+              _.emitv = send3_BM (_.compob, k_emit_block, CURFRAME_BM,  //
+                                  _.modgenob, _.routprepob,
+                                  taggedint_BM (depth));
+              DBGPRINTF_BM
+                ("emit_statment°basiclo_cond stmtob=%s compob=%s emit_block -> %s",
+                 objectdbg_BM (_.stmtob), objectdbg2_BM (_.compob),
+                 debug_outstr_value_BM (_.emitv, CURFRAME_BM, 0));
+              if (!_.emitv)
+                FAILHERE (makenode2_BM
+                          (k_emit_block, taggedint_BM (ix), _.compob));
+            }
+          else if (objectisinstance_BM (_.compob, k_basiclo_statement))
+            {
+              _.emitv = send3_BM (_.compob, k_emit_statement, CURFRAME_BM,      //
+                                  _.modgenob, _.routprepob,
+                                  taggedint_BM (depth));
+              DBGPRINTF_BM
+                ("emit_statment°basiclo_cond stmtob=%s compob=%s emit_statment -> %s",
+                 objectdbg_BM (_.stmtob), objectdbg2_BM (_.compob),
+                 debug_outstr_value_BM (_.emitv, CURFRAME_BM, 0));
+              if (!_.emitv)
+                FAILHERE (makenode2_BM
+                          (k_emit_statement, taggedint_BM (ix), _.compob));
+            }
+          else
+            FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (ix), _.compob));
+        }
+      objstrbuffersetindentpayl_BM (_.modgenob, indepth);
+      objstrbufferprintfpayl_BM (_.modgenob, "} /*cond else %s*/\n",
+                                 condidbuf);
+    }
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbufferprintfpayl_BM (_.modgenob, "/*endcond %s*/\n", condidbuf);
+  LOCALRETURN_BM (_.stmtob);
+#undef FAILHERE
+failure:
+  DBGPRINTF_BM ("emit_statment°basiclo_cond failin %d routprep %s cause %s", failin, objectdbg_BM (_.routprepob),      //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    makenode4_BM (k_emit_statement, _.stmtob, _.routprepob, _.modgenob,
+                  _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_statment°basiclo_cond _2gpamAdSc26_6d1JjCmKHyw */
