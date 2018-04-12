@@ -95,8 +95,8 @@ failure:
   DBGPRINTF_BM ("prepare_routine:basiclo_function failin %d cause %s", failin,
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
-    makenodevar_BM (k_prepare_routine, _.recv, _.modgenob, _.prepvalset,
-                    _.causev, NULL);
+    makenode4_BM (k_prepare_routine, _.recv, _.modgenob, _.prepvalset,
+                  _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */
@@ -284,7 +284,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       _.typob = objectcast_BM (objgetattr_BM (_.obresult, k_c_type));
       objunlock_BM (_.obresult);
       if (_.typob != BMP_value && _.typob != BMP_object)
-        FAILHERE (makenodevar_BM (k_result, _.obresult, NULL));
+        FAILHERE (makenode1_BM (k_result, _.obresult));
       objassocaddattrpayl_BM (_.routprep, _.obresult, k_result);
     }
   /// bind the arguments
@@ -297,14 +297,14 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
          argix, objectdbg_BM (_.curvar));
       _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
       if (_.oldrol)
-        FAILHERE (makenodevar_BM (k_arguments, _.curvar, _.oldrol, NULL));
+        FAILHERE (makenode2_BM (k_arguments, _.curvar, _.oldrol));
       objlock_BM (_.curvar);
       _.curtypob = objectcast_BM (objgetattr_BM (_.curvar, k_c_type));
       objunlock_BM (_.curvar);
       if (_.curtypob != BMP_value)
-        FAILHERE (makenodevar_BM (k_arguments, _.curvar, _.oldrol, NULL));
+        FAILHERE (makenode2_BM (k_arguments, _.curvar, _.oldrol));
 
-      _.curol = makenodevar_BM (k_arguments, taggedint_BM (argix), NULL);
+      _.curol = makenode1_BM (k_arguments, taggedint_BM (argix));
       objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
       _.curol = NULL;
     }
@@ -317,8 +317,8 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
          cloix, objectdbg_BM (_.curvar));
       _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
       if (_.oldrol)
-        FAILHERE (makenodevar_BM (k_closed, _.curvar, _.oldrol, NULL));
-      _.curol = makenodevar_BM (k_closed, taggedint_BM (cloix), NULL);
+        FAILHERE (makenode2_BM (k_closed, _.curvar, _.oldrol));
+      _.curol = makenode1_BM (k_closed, taggedint_BM (cloix));
       objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
       _.curol = NULL;
     }
@@ -332,9 +332,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
       if (_.oldrol)
         {
-          FAILHERE (makenodevar_BM (k_locals, _.curvar, _.oldrol, NULL));
+          FAILHERE (makenode2_BM (k_locals, _.curvar, _.oldrol));
         }
-      _.curol = makenodevar_BM (k_locals, taggedint_BM (locix), NULL);
+      _.curol = makenode1_BM (k_locals, taggedint_BM (locix));
       objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
       _.curol = NULL;
     }
@@ -348,9 +348,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
       if (_.oldrol)
         {
-          FAILHERE (makenodevar_BM (k_numbers, _.curvar, _.oldrol, NULL));
+          FAILHERE (makenode2_BM (k_numbers, _.curvar, _.oldrol));
         }
-      _.curol = makenodevar_BM (k_numbers, taggedint_BM (numix), NULL);
+      _.curol = makenode1_BM (k_numbers, taggedint_BM (numix));
       objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
       _.curol = NULL;
     }
@@ -364,9 +364,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
       if (_.oldrol)
         {
-          FAILHERE (makenodevar_BM (k_constants, _.curvar, _.oldrol, NULL));
+          FAILHERE (makenode2_BM (k_constants, _.curvar, _.oldrol));
         }
-      _.curol = makenodevar_BM (k_constants, taggedint_BM (cstix), NULL);
+      _.curol = makenode1_BM (k_constants, taggedint_BM (cstix));
       objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
       _.curol = NULL;
     }
@@ -395,8 +395,8 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   LOCALRETURN_BM (_.routprep);
 failure:
   _.errorv =
-    makenodevar_BM (k_prepare_routine, _.recv, _.modgen, _.prepvalset,
-                    _.causev, NULL);
+    makenode4_BM (k_prepare_routine, _.recv, _.modgen, _.prepvalset,
+                  _.causev);
   DBGPRINTF_BM
     ("failure prepare_routine°basiclo_minifunction  failin %d errorv %s",
      failin, debug_outstr_value_BM (_.errorv, CURFRAME_BM, 0));
@@ -745,8 +745,8 @@ miniscan_var_BM (objectval_tyBM * varob,
   LOCALRETURN_BM (NULL);
 failure:
   _.errorv =
-    makenodevar_BM (k_miniscan_var, varob, routprepob, taggedint_BM (depth),
-                    fromob, NULL);
+    makenode4_BM (k_miniscan_var, varob, routprepob, taggedint_BM (depth),
+                  fromob);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end miniscan_var_BM */
@@ -848,8 +848,8 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
 failure:
   DBGPRINTF_BM ("miniscan_expr failin %d", failin);
   _.errorv =
-    makenodevar_BM (k_miniscan_expr, _.expv, _.routprepob,
-                    taggedint_BM (depth), _.fromob, NULL);
+    makenode4_BM (k_miniscan_expr, _.expv, _.routprepob,
+                  taggedint_BM (depth), _.fromob);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end miniscan_expr_BM */
@@ -1126,7 +1126,7 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
       _.curcomptypob = miniscan_compatype_BM (_.curargctypob, _.curtypob,
                                               CURFRAME_BM);
       if (!_.curcomptypob)
-        FAILHERE (makenodevar_BM (k_arguments, taggedint_BM (ix), NULL));
+        FAILHERE (makenode1_BM (k_arguments, taggedint_BM (ix)));
     }
   DBGPRINTF_BM
     ("miniscan_node_conn°basiclo_primitive done expv=%s result connrestypob=%s",
@@ -1136,8 +1136,8 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
 failure:
   DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive failin %d", failin);
   _.errorv =
-    makenodevar_BM (k_miniscan_node_conn, _.expv, _.routprepob,
-                    taggedint_BM (depth), _.fromob, _.extraerrorv, NULL);
+    makenode5_BM (k_miniscan_node_conn, _.expv, _.routprepob,
+                  taggedint_BM (depth), _.fromob, _.extraerrorv);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end miniscan_node_conn°basiclo_primitive  _1vuSUudDrEr_9UjFr4Pcy8r */
@@ -1195,8 +1195,8 @@ ROUTINEOBJNAME_BM (_7vlMCZ0yvva_6tx0lFlqBG8)    // miniscan_stmt°basiclo_return
 failure:
   DBGPRINTF_BM ("miniscan_stmt°basiclo_return failin %d", failin);
   _.errorv =
-    makenodevar_BM (k_return, _.retexpv, _.routprepob,
-                    taggedint_BM (depth), _.recv, NULL, NULL);
+    makenode4_BM (k_return, _.retexpv, _.routprepob,
+                  taggedint_BM (depth), _.recv);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end  miniscan_stmt°basiclo_return  _7vlMCZ0yvva_6tx0lFlqBG8 */
 
@@ -1354,8 +1354,8 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
   LOCALRETURN_BM (_.routprepob);
 failure:
   _.errorv =
-    makenodevar_BM (k_emit_declaration, _.routprepob, _.modgenob,
-                    taggedint_BM (rank), _.errcausev, NULL);
+    makenode4_BM (k_emit_declaration, _.routprepob, _.modgenob,
+                  taggedint_BM (rank), _.errcausev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end emit_declaration°simple_routine_preparation _9M3BqmOS7mA_96DTa52k7Xq */
@@ -1647,8 +1647,8 @@ failure:
                 failin, objectdbg_BM (_.routprepob),    //
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
-    makenodevar_BM (k_emit_definition, _.routprepob, _.modgenob,
-                    taggedint_BM (rank), _.causev, NULL);
+    makenode4_BM (k_emit_definition, _.routprepob, _.modgenob,
+                  taggedint_BM (rank), _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_definition°simple_routine_preparation  _2Lk2DjTDzQh_3aTEVKDE2Ip */
 
@@ -1719,7 +1719,7 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
         objunlock_BM (_.stmtob);
       }
       if (!_.emitv)
-        FAILHERE (makenodevar_BM (k_emit_statement, _.stmtob, NULL));
+        FAILHERE (makenode1_BM (k_emit_statement, _.stmtob));
     }
   objstrbuffersetindentpayl_BM (_.modgenob, indepth);
   objstrbufferprintfpayl_BM (_.modgenob, "/* !endingblock %s */\n"
@@ -1737,8 +1737,8 @@ failure:
   DBGPRINTF_BM ("emit_block°basiclo_block failin %d routprep %s cause %s", failin, objectdbg_BM (_.routprepob),        //
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
-    makenodevar_BM (k_emit_block, _.blockob, _.routprepob, _.modgenob,
-                    _.causev, NULL);
+    makenode4_BM (k_emit_block, _.blockob, _.routprepob, _.modgenob,
+                  _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_block°basiclo_block _8UGpvfrcKbM_99IeP3BuxA5 */
 
