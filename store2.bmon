@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 308 objects
+// for 309 objects
 // with 0 modules
 
 
@@ -1402,6 +1402,17 @@ _3JH05KgIzty_1K7IDyF43V2
 ~)
 
 !)_3CDY5oT7poq_6DZU5iVg2Ft
+
+
+
+!(_7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
+!~ name (~ miniemit_node_conn
+~)
+!@ 1523618606.28
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector to emit expression using their connective"
+!)_7L782rSgJBB_9vjsBdqAoz7
 
 
 

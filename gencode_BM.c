@@ -1927,6 +1927,7 @@ ROUTINEOBJNAME_BM (_9Wk97VJLuH1_0FwsSpfatDg)    // emit_when°basiclo_when
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
+  objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
   _.whenob = objectcast_BM (arg1);
   _.modgenob = objectcast_BM (arg2);
   _.routprepob = objectcast_BM (arg3);
@@ -1940,10 +1941,21 @@ ROUTINEOBJNAME_BM (_9Wk97VJLuH1_0FwsSpfatDg)    // emit_when°basiclo_when
   WEAKASSERT_BM (isobject_BM (_.whenob));
   WEAKASSERT_BM (isobject_BM (_.modgenob));
   WEAKASSERT_BM (isobject_BM (_.routprepob));
+  _.testexpv = objgetattr_BM (_.whenob, k_test);
   DBGPRINTF_BM
-    ("emit_when°basiclo_when start whenob=%s whenid=%s modgenob=%s routprepob=%s",
+    ("emit_when°basiclo_when start whenob=%s whenid=%s modgenob=%s routprepob=%s testexp=%s",
      objectdbg_BM (_.whenob), whenidbuf, objectdbg2_BM (_.modgenob),
-     objectdbg3_BM (_.routprepob));
+     objectdbg3_BM (_.routprepob),
+     debug_outstr_value_BM (_.testexpv, CURFRAME_BM, 0));
+  // whenob is locked by caller emit_statment°basiclo_cond
+  objstrbufferprintfpayl_BM (_.modgenob, "/*when %s:*/ (",
+                             objectdbg_BM (_.whenob));
+  emit_expression_BM (CURFRAME_BM, _.testexpv, _.modgenob, _.routprepob,
+                      _.whenob, depth);
+  objstrbufferappendcstrpayl_BM (_.modgenob, ") {");
+  int indepth = depth + 1;
+  objstrbuffersetindentpayl_BM (_.modgenob, indepth);
+  objstrbuffernewlinepayl_BM (_.modgenob);
 #warning unimplemented emit_when°basiclo_when _9Wk97VJLuH1_0FwsSpfatDg routine
   WEAKASSERT_BM (false
                  &&
@@ -1970,11 +1982,11 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
   objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
   objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
   objectval_tyBM *k_string = BMK_4T8am97muLl_5969SR22Ecq;
+  objectval_tyBM *k_miniemit_node_conn = BMK_7L782rSgJBB_9vjsBdqAoz7;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
                  value_tyBM expv;
                  value_tyBM avalv;
-                 objectval_tyBM * expob;
-                 objectval_tyBM * modgenob;
+                 objectval_tyBM * expob; objectval_tyBM * modgenob;
                  objectval_tyBM * routprepob; objectval_tyBM * fromob;
                  objectval_tyBM * connob; value_tyBM errorv;
                  value_tyBM causev;
@@ -2025,7 +2037,7 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
                       debug_outstr_value_BM (_.avalv, CURFRAME_BM, 0));
         if (_.avalv != NULL)
           {
-	    WEAKASSERT_BM(false && "unimplemented emit_expr object");
+            WEAKASSERT_BM (false && "unimplemented emit_expr object");
           }
         else
           FAILHERE (BMP_object);
@@ -2039,14 +2051,14 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
           ("emit_expression connob %s arity %d routprepob %s fromob %s before",
            objectdbg_BM (_.connob), arity, objectdbg1_BM (_.routprepob),
            objectdbg2_BM (_.fromob));
-	    WEAKASSERT_BM(false && "unimplemented emit_expr node");
+        WEAKASSERT_BM (false && "unimplemented emit_expr node");
         /*
            _.resv = send4_BM (_.connob, k_miniscan_node_conn,      //
            CURFRAME_BM, //
            _.routprepob,
            taggedint_BM (depth), _.expv, _.fromob);
          */
-        DBGPRINTF_BM ("emit_expression miniscan_node_conn->%s done resv=%s",      //
+        DBGPRINTF_BM ("emit_expression miniscan_node_conn->%s done resv=%s",    //
                       objectdbg_BM (_.connob),  //
                       debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
         if (!_.resv)
