@@ -2051,13 +2051,12 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
           ("emit_expression connob %s arity %d routprepob %s fromob %s before",
            objectdbg_BM (_.connob), arity, objectdbg1_BM (_.routprepob),
            objectdbg2_BM (_.fromob));
-        WEAKASSERT_BM (false && "unimplemented emit_expr node");
-        /*
-           _.resv = send4_BM (_.connob, k_miniscan_node_conn,      //
-           CURFRAME_BM, //
-           _.routprepob,
-           taggedint_BM (depth), _.expv, _.fromob);
-         */
+           _.resv = send5_BM (_.connob, k_miniemit_node_conn,      //
+			      CURFRAME_BM, //
+			      _.expv,
+			      _.modgenob,
+			      _.routprepob,
+			      taggedint_BM (depth), _.fromob);
         DBGPRINTF_BM ("emit_expression miniscan_node_conn->%s done resv=%s",    //
                       objectdbg_BM (_.connob),  //
                       debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
@@ -2118,3 +2117,51 @@ failure:
                   _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_var_BM */
+
+
+
+//  miniemit_node_conn°basiclo_primitive _3LlfFkO2AoN_785PB5e36Mb
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_3LlfFkO2AoN_785PB5e36Mb);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_3LlfFkO2AoN_785PB5e36Mb) // miniemit_node_conn°basiclo_primitive
+(struct stackframe_stBM* stkf, //
+ const value_tyBM arg1, // connob
+ const value_tyBM arg2, // expv
+ const value_tyBM arg3, // modgenob
+ const value_tyBM arg4, // routprepob
+ const quasinode_tyBM* restargs) // depth, fromob
+{
+  LOCALFRAME_BM (stkf, /*descr:*/ BMK_3LlfFkO2AoN_785PB5e36Mb,
+                 value_tyBM resultv;
+		 objectval_tyBM* connob;
+		 value_tyBM expv;
+		 objectval_tyBM*modgenob;
+		 objectval_tyBM*routprepob;
+		 objectval_tyBM*fromob;
+  );
+  int depth= -1;
+  _.connob = objectcast_BM(arg1);
+  _.expv = arg2;
+  _.modgenob = objectcast_BM(arg3);
+  _.routprepob = objectcast_BM(arg4);
+  unsigned nbrestargs = treewidth_BM(restargs);
+  if (nbrestargs >= 2) {
+    if (istaggedint_BM(restargs->nodt_sons[0])) depth= getint_BM(restargs->nodt_sons[0]);
+    _.fromob = objectcast_BM(restargs->nodt_sons[1]);
+  }
+  WEAKASSERT_BM(_.modgenob);
+  WEAKASSERT_BM(_.routprepob);
+  DBGPRINTF_BM("miniemit_node_conn°basiclo_primitive start connob=%s expv=%s modgenob=%s\n"
+	       ".. routprepob=%s depth#%d fromob=%s",
+	       objectdbg_BM(_.connob),
+	       debug_outstr_value_BM(_.expv, CURFRAME_BM, 0),
+	       objectdbg1_BM(_.modgenob),
+	       objectdbg2_BM(_.routprepob),
+	       depth,
+	       objectdbg3_BM(_.fromob));
+#warning unimplemented _3LlfFkO2AoN_785PB5e36Mb routine
+  WEAKASSERT_BM(false && "unimplemented _3LlfFkO2AoN_785PB5e36Mb routine");
+  LOCALRETURN_BM(_.resultv);
+} /* end miniemit_node_conn°basiclo_primitive _3LlfFkO2AoN_785PB5e36Mb*/
