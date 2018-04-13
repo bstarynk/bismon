@@ -82,6 +82,7 @@ On Linux/x86-64 (e.g. Debian/Unstable or recent Ubuntu) only:
 ## prerequisites ##
 
 * recent [GCC](http://gcc.gnu.org/) (version 7 or 8), with C and C++ and JIT support and plugins enabled (check with `gcc -v`).
+Most of `bismon` is in C99 (including an increasing amount of generated code), but some few code is in C++14.
 
 * [GTK](http://gtk.org/) 3.22 or better
 
@@ -91,9 +92,24 @@ On Linux/x86-64 (e.g. Debian/Unstable or recent Ubuntu) only:
 
 * [markdown](https://www.markdownguide.org/) is required for some documentation, such as this `README.md`
 
+### relevant Debian/Ubuntu build-dependency packages ###
+
+On Debian/Unstable or Ubuntu, `apt-get install build-essential make gcc-7 g++-7 gcc-7-plugin-dev libgccjit-7-dev` for the building infrastructure. Replace 7 by 8 when using GCC 8.
+
+`apt-get install libgtk-3-dev` for GTK 3. This may pull a lot of dependencies.
+
+The `libbacktrace` is not independently packaged in Debian. I recommend building and installing
+it from its source code, or else (not recommended, :unamused: but doable) edit the `Makefile` to uses your system GCC compiler's one.
+
+`apt-get install markdown` for [markdown](https://www.markdownguide.org/).
+
 ## building ##
 
-Edit the `Makefile` if needed (perhaps the `PREPROFLAGS=` and `LIBES=` lines, e.g. to use your system's GCC `libbacktrace`).
+Edit the `Makefile` if needed; perhaps the `PREPROFLAGS=` and `LIBES=`
+lines, e.g. to use your system's GCC `libbacktrace`, by adding
+`$(shell gcc-7 -print-file-name=include)` into the `PREPROFLAGS=`
+line, and `$(shell gcc-7 -print-file-name=libbacktrace.a)` to the
+`LIBES=` line. Of course replace the 7 by 8 if appropriate.
 
 Run `make` or `make -j3`
 
