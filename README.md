@@ -100,6 +100,8 @@ generated code), but some few code is in C++14.
 
 * [markdown](https://www.markdownguide.org/) is required for some documentation, such as this `README.md`
 
+* GNU [indent](https://www.gnu.org/software/indent/) (2.2.x at last) and [astyle](https://sourceforge.net/projects/astyle/)  (3.1 at least) are useful for `make indent`
+
 ### relevant Debian/Ubuntu build-dependency packages ###
 
 On Debian/Unstable or Ubuntu, `apt-get install build-essential make gcc-7 g++-7 gcc-7-plugin-dev libgccjit-7-dev` for the building infrastructure. Replace 7 by 8 when using GCC 8.
@@ -109,7 +111,7 @@ On Debian/Unstable or Ubuntu, `apt-get install build-essential make gcc-7 g++-7 
 The `libbacktrace` is not independently packaged in Debian. I recommend building and installing
 it from its source code, or else (not recommended, :unamused: but doable) edit the `Makefile` to uses your system GCC compiler's one.
 
-`apt-get install markdown` for [markdown](https://www.markdownguide.org/).
+`apt-get install markdown indent astyle` 
 
 ## building ##
 

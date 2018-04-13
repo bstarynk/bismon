@@ -2046,22 +2046,23 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
     case tyNode_BM:
       {
         _.connob = nodeconn_BM (_.expv);
+        objlock_BM (_.connob);
         unsigned arity = nodewidth_BM (_.expv);
         DBGPRINTF_BM
           ("emit_expression connob %s arity %d routprepob %s fromob %s before",
            objectdbg_BM (_.connob), arity, objectdbg1_BM (_.routprepob),
            objectdbg2_BM (_.fromob));
-           _.resv = send5_BM (_.connob, k_miniemit_node_conn,      //
-			      CURFRAME_BM, //
-			      _.expv,
-			      _.modgenob,
-			      _.routprepob,
-			      taggedint_BM (depth), _.fromob);
+        _.resv = send5_BM (_.connob, k_miniemit_node_conn,      //
+                           CURFRAME_BM, //
+                           _.expv,
+                           _.modgenob,
+                           _.routprepob, taggedint_BM (depth), _.fromob);
         DBGPRINTF_BM ("emit_expression miniscan_node_conn->%s done resv=%s",    //
                       objectdbg_BM (_.connob),  //
                       debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
         if (!_.resv)
           FAILHERE (NULL);
+        objunlock_BM (_.connob);
         LOCALRETURN_BM (NULL);
       }
     default:
@@ -2120,48 +2121,64 @@ failure:
 
 
 
-//  miniemit_node_conn°basiclo_primitive _3LlfFkO2AoN_785PB5e36Mb
+//  miniemit_node_conn°basiclo_primitive _0BaXSIhDAHO_9x6t4zdbUhj
 
-extern objrout_sigBM ROUTINEOBJNAME_BM (_3LlfFkO2AoN_785PB5e36Mb);
+extern objrout_sigBM ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_3LlfFkO2AoN_785PB5e36Mb) // miniemit_node_conn°basiclo_primitive
-(struct stackframe_stBM* stkf, //
- const value_tyBM arg1, // connob
- const value_tyBM arg2, // expv
- const value_tyBM arg3, // modgenob
- const value_tyBM arg4, // routprepob
- const quasinode_tyBM* restargs) // depth, fromob
+ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_primitive
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // connob
+ const value_tyBM arg2,         // expv
+ const value_tyBM arg3,         // modgenob
+ const value_tyBM arg4,         // routprepob
+ const quasinode_tyBM * restargs)       // depth, fromob
 {
-  LOCALFRAME_BM (stkf, /*descr:*/ BMK_3LlfFkO2AoN_785PB5e36Mb,
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_0BaXSIhDAHO_9x6t4zdbUhj,
                  value_tyBM resultv;
-		 objectval_tyBM* connob;
-		 value_tyBM expv;
-		 objectval_tyBM*modgenob;
-		 objectval_tyBM*routprepob;
-		 objectval_tyBM*fromob;
-  );
-  int depth= -1;
-  _.connob = objectcast_BM(arg1);
+                 objectval_tyBM * connob;
+                 value_tyBM expv;
+                 value_tyBM connargsv;
+                 value_tyBM conncexpansionv;
+                 value_tyBM connchunkv;
+                 objectval_tyBM * modgenob; objectval_tyBM * routprepob;
+                 objectval_tyBM * fromob;
+    );
+  int depth = -1;
+  objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
+  objectval_tyBM *k_cexpansion = BMK_7yoiT31GmV4_2iTjHx3P2hb;
+  objectval_tyBM *k_chunk = BMK_3pQnBS9ZjkQ_0uGmqUUhAum;
+  _.connob = objectcast_BM (arg1);
   _.expv = arg2;
-  _.modgenob = objectcast_BM(arg3);
-  _.routprepob = objectcast_BM(arg4);
-  unsigned nbrestargs = treewidth_BM(restargs);
-  if (nbrestargs >= 2) {
-    if (istaggedint_BM(restargs->nodt_sons[0])) depth= getint_BM(restargs->nodt_sons[0]);
-    _.fromob = objectcast_BM(restargs->nodt_sons[1]);
-  }
-  WEAKASSERT_BM(_.modgenob);
-  WEAKASSERT_BM(_.routprepob);
-  DBGPRINTF_BM("miniemit_node_conn°basiclo_primitive start connob=%s expv=%s modgenob=%s\n"
-	       ".. routprepob=%s depth#%d fromob=%s",
-	       objectdbg_BM(_.connob),
-	       debug_outstr_value_BM(_.expv, CURFRAME_BM, 0),
-	       objectdbg1_BM(_.modgenob),
-	       objectdbg2_BM(_.routprepob),
-	       depth,
-	       objectdbg3_BM(_.fromob));
-#warning unimplemented _3LlfFkO2AoN_785PB5e36Mb routine
-  WEAKASSERT_BM(false && "unimplemented _3LlfFkO2AoN_785PB5e36Mb routine");
-  LOCALRETURN_BM(_.resultv);
-} /* end miniemit_node_conn°basiclo_primitive _3LlfFkO2AoN_785PB5e36Mb*/
+  _.modgenob = objectcast_BM (arg3);
+  _.routprepob = objectcast_BM (arg4);
+  unsigned nbrestargs = treewidth_BM (restargs);
+  if (nbrestargs >= 2)
+    {
+      if (istaggedint_BM (restargs->nodt_sons[0]))
+        depth = getint_BM (restargs->nodt_sons[0]);
+      _.fromob = objectcast_BM (restargs->nodt_sons[1]);
+    }
+  WEAKASSERT_BM (_.connob);
+  WEAKASSERT_BM (_.modgenob);
+  WEAKASSERT_BM (_.routprepob);
+  DBGPRINTF_BM
+    ("miniemit_node_conn°basiclo_primitive start connob=%s expv=%s modgenob=%s\n"
+     ".. routprepob=%s depth#%d fromob=%s", objectdbg_BM (_.connob),
+     debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
+     objectdbg1_BM (_.modgenob), objectdbg2_BM (_.routprepob), depth,
+     objectdbg3_BM (_.fromob));
+  _.connargsv = objgetattr_BM (_.connob, k_arguments);
+  _.conncexpansionv = objgetattr_BM (_.connob, k_cexpansion);
+  DBGPRINTF_BM
+    ("miniemit_node_conn°basiclo_primitive connob=%s connargs=%s conncexpansion=%s",
+     objectdbg_BM (_.connob), //
+     debug_outstr_value_BM (_.connargsv, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.conncexpansionv, CURFRAME_BM, 0));
+  WEAKASSERT_BM (istuple_BM (_.connargsv));
+  WEAKASSERT_BM (isnode_BM (_.conncexpansionv)
+                 && nodeconn_BM (_.conncexpansionv) == k_chunk);
+#warning unimplemented _0BaXSIhDAHO_9x6t4zdbUhj routine
+  WEAKASSERT_BM (false && "unimplemented _0BaXSIhDAHO_9x6t4zdbUhj routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end miniemit_node_conn°basiclo_primitive _0BaXSIhDAHO_9x6t4zdbUhj */

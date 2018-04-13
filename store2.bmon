@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 309 objects
+// for 310 objects
 // with 0 modules
 
 
@@ -346,7 +346,8 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of simple primitives"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
-~: _5EGLdtUAQxA_1nebCsDKqOF  % _1vuSUudDrEr_9UjFr4Pcy8r ()
+~: _5EGLdtUAQxA_1nebCsDKqOF  % _1vuSUudDrEr_9UjFr4Pcy8r () 
+~: _7L782rSgJBB_9vjsBdqAoz7  % _0BaXSIhDAHO_9x6t4zdbUhj ()
 ~)
 
 !)_2SZvlA4wcJd_72ldva0oSGH
@@ -2417,6 +2418,16 @@ _2gthNYOWogO_4sVTU1JbmUH _6DdZwyaWLyK_7tS2BmECOJ0 _4bYUiDmxrKK_6nPPlEl8y8x
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value a tuple"
 !)_0B1PYH9bN34_3RZdP24AVyt
+
+
+
+!(_0BaXSIhDAHO_9x6t4zdbUhj
+!|*
+!@ 1523649784.22
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniemit_node_conn\u00b0basiclo_primitive"
+!)_0BaXSIhDAHO_9x6t4zdbUhj
 
 
 
