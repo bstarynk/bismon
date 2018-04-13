@@ -1988,7 +1988,7 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
   _.fromob = objectcast_BM (fromob);
   WEAKASSERT_BM (_.modgenob);
   WEAKASSERT_BM (_.routprepob);
-  DBGPRINTF_BM ("emit_expression_BM start expv %s modgen %s routprep %s",
+  DBGPRINTF_BM ("emit_expression start expv %s modgen %s routprep %s",
                 debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
                 objectdbg_BM (_.modgenob), objectdbg1_BM (_.routprepob));
   int ke = valtype_BM (_.expv);
@@ -2025,6 +2025,7 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
                       debug_outstr_value_BM (_.avalv, CURFRAME_BM, 0));
         if (_.avalv != NULL)
           {
+	    WEAKASSERT_BM(false && "unimplemented emit_expr object");
           }
         else
           FAILHERE (BMP_object);
@@ -2035,16 +2036,17 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
         _.connob = nodeconn_BM (_.expv);
         unsigned arity = nodewidth_BM (_.expv);
         DBGPRINTF_BM
-          ("miniscan_expr miniscan_node_conn->%s arity %d routprepob %s fromob %s before",
+          ("emit_expression connob %s arity %d routprepob %s fromob %s before",
            objectdbg_BM (_.connob), arity, objectdbg1_BM (_.routprepob),
            objectdbg2_BM (_.fromob));
+	    WEAKASSERT_BM(false && "unimplemented emit_expr node");
         /*
            _.resv = send4_BM (_.connob, k_miniscan_node_conn,      //
            CURFRAME_BM, //
            _.routprepob,
            taggedint_BM (depth), _.expv, _.fromob);
          */
-        DBGPRINTF_BM ("miniscan_expr miniscan_node_conn->%s done resv=%s",      //
+        DBGPRINTF_BM ("emit_expression miniscan_node_conn->%s done resv=%s",      //
                       objectdbg_BM (_.connob),  //
                       debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
         if (!_.resv)
