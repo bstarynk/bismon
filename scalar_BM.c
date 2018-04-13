@@ -862,14 +862,14 @@ objstrbufferencodedutf8payl_BM (objectval_tyBM * obj, const char *str,
           break;
         }
     }
-}                               /* end objstrbufferencodedutf8_BM */
+}                               /* end objstrbufferencodedutf8payl_BM */
 
 
 
 
 void
-objstrbufferencodedc_BM (objectval_tyBM * obj, const char *str,
-                         ssize_t bytelen)
+objstrbufferencodedcpayl_BM (objectval_tyBM * obj, const char *str,
+                             ssize_t bytelen)
 {
   if (!str)
     return;
