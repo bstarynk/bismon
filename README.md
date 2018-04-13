@@ -81,8 +81,16 @@ On Linux/x86-64 (e.g. Debian/Unstable or recent Ubuntu) only:
 
 ## prerequisites ##
 
-* recent [GCC](http://gcc.gnu.org/) (version 7 or 8), with C and C++ and JIT support and plugins enabled (check with `gcc -v`).
-Most of `bismon` is in C99 (including an increasing amount of generated code), but some few code is in C++14.
+* recent [GCC](http://gcc.gnu.org/) (so [GCC
+7](https://gcc.gnu.org/gcc-7/) or GCC 8), with C and C++ and JIT
+support and plugins enabled (check with `gcc -v`; if your system `gcc`
+and `g++` lack support for plugins and
+[libgccjit](https://gcc.gnu.org/onlinedocs/jit/), you should build and
+[install](https://gcc.gnu.org/install/) a recent GCC release from its
+source code, and configure it to provide them.).
+
+Most of `bismon` is in C99 (including an increasing amount of
+generated code), but some few code is in C++14.
 
 * [GTK](http://gtk.org/) 3.22 or better
 
@@ -105,17 +113,23 @@ it from its source code, or else (not recommended, :unamused: but doable) edit t
 
 ## building ##
 
-Edit the `Makefile` if needed; perhaps the `PREPROFLAGS=` and `LIBES=`
-lines, e.g. to use your system's GCC `libbacktrace`, by adding
-`$(shell gcc-7 -print-file-name=include)` into the `PREPROFLAGS=`
-line, and `$(shell gcc-7 -print-file-name=libbacktrace.a)` to the
-`LIBES=` line. Of course replace the 7 by 8 if appropriate.
+Clone this `git` repository as usual, and build then use `bismon`
+inside the obtained source tree.
+
+Look into the `Makefile`, and edit it if needed; perhaps update the
+`PREPROFLAGS=` and `LIBES=` lines, e.g. to use your system's GCC
+`libbacktrace`, by adding `$(shell gcc-7 -print-file-name=include)`
+into the `PREPROFLAGS=` line, and `$(shell gcc-7
+-print-file-name=libbacktrace.a)` to the `LIBES=` line. Of course
+replace the 7 by 8 if appropriate. Maybe you need to explicitly set
+`GCC=` and `GXX=` to your specific GCC *C* and *C++* compilers.
 
 Run `make` or `make -j3`
 
 The persistency mechanism is tested by `make redump`
 
-The `./bismon` program accepts a `--help` and `--version`. It has a crude graphic user interface (perhaps to be replaced later by a Web one).
+The `./bismon` program accepts a `--help` and `--version`.
+It has a crude graphic user interface (perhaps to be replaced later by a Web one).
 
 ## using `bismon` ##
 
@@ -123,4 +137,9 @@ It is **not really usable yet** except by me (Basile) in april 2018 (no
 static source code analysis yet, no generation of GCC plugins yet). If
 you want to see something, run `./bismon` then type `the_system` in the command window
 labelled *new-bismon*, then both *Ctrl* and *Return* keys pressed
-together. Ask me (Basile Starynkevitch, [`basile@starynkevitch.net`](mailto:basile@starynkevitch.net) or [`basile.starynkevitch@cea.fr`](mailto:basile.starynkevitch@cea.fr)...) for details.
+together.
+
+Ask me (Basile Starynkevitch,
+[`basile@starynkevitch.net`](mailto:basile@starynkevitch.net) or
+[`basile.starynkevitch@cea.fr`](mailto:basile.starynkevitch@cea.fr)...)
+for details.
