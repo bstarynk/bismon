@@ -23,9 +23,9 @@ Currently (mid-2018) `bismon` still in **pre alpha**-stage, and it is *free soft
 language**](https://en.wikipedia.org/wiki/Domain-specific_language) to
 facilitate [static program source code
 analysis](https://en.wikipedia.org/wiki/Static_program_analysis) above
-[GCC](http://gcc.gnu.org/), so same motivations as [GCC
+[GCC](http://gcc.gnu.org/) and *generate* [GCC plugins](https://gcc.gnu.org/onlinedocs/gccint/Plugins.html) for it, so same motivations as [GCC
 MELT](http://starynkevitch.net/Basile/gcc-melt/) (and more broadly
-related to [Coccinnelle](http://coccinelle.lip6.fr),
+related -in motivations- to [Coccinnelle](http://coccinelle.lip6.fr),
 [Frama-C](http://frama-c.com), [Rascal](https://www.rascal-mpl.org/),
 [CrossMiner](https://www.crossminer.org/), [Clang
 analyser](http://clang-analyzer.llvm.org/), [Clasp](https://github.com/clasp-developers/clasp) etc...).
