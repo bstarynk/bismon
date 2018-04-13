@@ -844,7 +844,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
 #warning incomplete miniscan_expr_BM
   DBGPRINTF_BM ("miniscan_expr end expv=%s",    //
                 debug_outstr_value_BM (_.expv, CURFRAME_BM, 0));
-  LOCALJUSTRETURN_BM ();
+  LOCALRETURN_BM (NULL);
 failure:
   DBGPRINTF_BM ("miniscan_expr failin %d", failin);
   _.errorv =
@@ -1364,12 +1364,14 @@ failure:
 
 extern void emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
                                 objectval_tyBM * modgenob,
-                                objectval_tyBM * routprepob, int depth);
+                                objectval_tyBM * routprepob,
+                                objectval_tyBM * fromob, int depth);
 
-extern void emit_reference_BM (struct stackframe_stBM *stkf,
-                               objectval_tyBM * refob,
-                               objectval_tyBM * modgenob,
-                               objectval_tyBM * routprepob, int depth);
+extern void emit_var_BM (struct stackframe_stBM *stkf,
+                         objectval_tyBM * refob,
+                         objectval_tyBM * modgenob,
+                         objectval_tyBM * routprepob,
+                         objectval_tyBM * fromob, int depth);
 
 ///////
 // emit_definition°simple_routine_preparation _2Lk2DjTDzQh_3aTEVKDE2Ip
@@ -1962,27 +1964,95 @@ failure:
 extern void
 emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
                     objectval_tyBM * modgenob, objectval_tyBM * routprepob,
-                    int depth)
+                    objectval_tyBM * fromob, int depth)
 {
   objectval_tyBM *k_emit_expression = BMK_9lXSe7DrOl6_7hghYt0LhTF;
+  objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
+  objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
+  objectval_tyBM *k_string = BMK_4T8am97muLl_5969SR22Ecq;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
                  value_tyBM expv;
+                 value_tyBM avalv;
+                 objectval_tyBM * expob;
                  objectval_tyBM * modgenob;
-                 objectval_tyBM * routprepob; value_tyBM errorv;
+                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
+                 objectval_tyBM * connob; value_tyBM errorv;
                  value_tyBM causev;
+                 value_tyBM resv;
     );
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
   _.expv = expv;
   _.modgenob = objectcast_BM (modgenob);
   _.routprepob = objectcast_BM (routprepob);
+  _.fromob = objectcast_BM (fromob);
   WEAKASSERT_BM (_.modgenob);
   WEAKASSERT_BM (_.routprepob);
   DBGPRINTF_BM ("emit_expression_BM start expv %s modgen %s routprep %s",
                 debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
                 objectdbg_BM (_.modgenob), objectdbg1_BM (_.routprepob));
-  switch (valtype_BM (_.expv))
+  int ke = valtype_BM (_.expv);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  switch (ke)
     {
+    case tyNone_BM:
+      objstrbufferprintfpayl_BM (_.modgenob, " NULL");
+      LOCALJUSTRETURN_BM ();
+    case tyInt_BM:
+      objstrbufferprintfpayl_BM (_.modgenob, " %lld",
+                                 (long long) getint_BM (_.expv));
+      LOCALJUSTRETURN_BM ();
+    case tyString_BM:
+      objstrbufferappendcstrpayl_BM (_.modgenob, " \"");
+      objstrbufferencodedcpayl_BM (_.modgenob, bytstring_BM (_.expv), -1);
+      objstrbufferappendcstrpayl_BM (_.modgenob, "\"");
+      LOCALJUSTRETURN_BM ();
+    case tySet_BM:
+      FAILHERE (BMP_set);
+    case tyTuple_BM:
+      FAILHERE (BMP_tuple);
+    case tyClosure_BM:
+      FAILHERE (BMP_closure);
+    case tyUnspecified_BM:
+      FAILHERE (BMP_unspecified);
+#warning emit_expr very incomplete
+    case tyObject_BM:
+      {
+        _.expob = objectcast_BM (_.expv);
+        _.avalv = objassocgetattrpayl_BM (_.routprepob, _.expob);
+        DBGPRINTF_BM ("emit_expr expob=%s avalv=%s",
+                      objectdbg_BM (_.expob),
+                      debug_outstr_value_BM (_.avalv, CURFRAME_BM, 0));
+        if (_.avalv != NULL)
+          {
+          }
+        else
+          FAILHERE (BMP_object);
+        break;
+      }
+    case tyNode_BM:
+      {
+        _.connob = nodeconn_BM (_.expv);
+        unsigned arity = nodewidth_BM (_.expv);
+        DBGPRINTF_BM
+          ("miniscan_expr miniscan_node_conn->%s arity %d routprepob %s fromob %s before",
+           objectdbg_BM (_.connob), arity, objectdbg1_BM (_.routprepob),
+           objectdbg2_BM (_.fromob));
+        /*
+           _.resv = send4_BM (_.connob, k_miniscan_node_conn,      //
+           CURFRAME_BM, //
+           _.routprepob,
+           taggedint_BM (depth), _.expv, _.fromob);
+         */
+        DBGPRINTF_BM ("miniscan_expr miniscan_node_conn->%s done resv=%s",      //
+                      objectdbg_BM (_.connob),  //
+                      debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
+        if (!_.resv)
+          FAILHERE (NULL);
+        LOCALRETURN_BM (NULL);
+      }
+    default:
+      FAILHERE (NULL);
     }
   WEAKASSERT_BM (false && "unimplemented emit_expression_BM");
 #warning unimplemented emit_expression_BM
@@ -1999,15 +2069,15 @@ failure:
 
 
 void
-emit_reference_BM (struct stackframe_stBM *stkf, objectval_tyBM * refob,
-                   objectval_tyBM * modgenob, objectval_tyBM * routprepob,
-                   int depth)
+emit_var_BM (struct stackframe_stBM *stkf, objectval_tyBM * refob,
+             objectval_tyBM * modgenob, objectval_tyBM * routprepob,
+             objectval_tyBM * fromob, int depth)
 {
   objectval_tyBM *k_emit_reference = BMK_6qzzDyr2eIo_3SapnOUpg6S;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_reference,
                  objectval_tyBM * refob;
-                 objectval_tyBM * modgenob;
-                 objectval_tyBM * routprepob; value_tyBM errorv;
+                 objectval_tyBM * modgenob; objectval_tyBM * routprepob;
+                 objectval_tyBM * fromob; value_tyBM errorv;
                  value_tyBM causev;
     );
   int failin = -1;
@@ -2015,21 +2085,22 @@ emit_reference_BM (struct stackframe_stBM *stkf, objectval_tyBM * refob,
   _.refob = objectcast_BM (refob);
   _.modgenob = objectcast_BM (modgenob);
   _.routprepob = objectcast_BM (routprepob);
+  _.fromob = objectcast_BM (fromob);
   WEAKASSERT_BM (_.refob);
   WEAKASSERT_BM (_.modgenob);
   WEAKASSERT_BM (_.routprepob);
   DBGPRINTF_BM
-    ("emit_reference_BM start refob %s modgen %s routprep %s depth %d",
+    ("emit_var_BM start refob %s modgen %s routprep %s depth %d",
      objectdbg_BM (_.refob), objectdbg1_BM (_.modgenob),
      objectdbg2_BM (_.routprepob), depth);
-  WEAKASSERT_BM (false && "unimplemented emit_reference_BM");
-#warning unimplemented emit_reference_BM
+  WEAKASSERT_BM (false && "unimplemented emit_var_BM");
+#warning unimplemented emit_var_BM
   LOCALJUSTRETURN_BM ();
 failure:
-  DBGPRINTF_BM ("emit_reference_BM failin %d ref %s routprep %s cause %s", failin, objectdbg_BM (_.refob), objectdbg1_BM (_.routprepob),        //
+  DBGPRINTF_BM ("emit_var_BM failin %d ref %s routprep %s cause %s", failin, objectdbg_BM (_.refob), objectdbg1_BM (_.routprepob),      //
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     makenode4_BM (k_emit_reference, refob, _.routprepob, _.modgenob,
                   _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
-}                               /* end emit_reference_BM */
+}                               /* end emit_var_BM */
