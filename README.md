@@ -28,7 +28,7 @@ MELT](http://starynkevitch.net/Basile/gcc-melt/) (and more broadly
 related to [Coccinnelle](http://coccinelle.lip6.fr),
 [Frama-C](http://frama-c.com), [Rascal](https://www.rascal-mpl.org/),
 [CrossMiner](https://www.crossminer.org/), [Clang
-analyser](http://clang-analyzer.llvm.org/) etc...).
+analyser](http://clang-analyzer.llvm.org/), [Clasp](https://github.com/clasp-developers/clasp) etc...).
 
 
 Important features and goals of that domain-specific language and its implementation include:
