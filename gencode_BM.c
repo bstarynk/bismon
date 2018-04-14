@@ -2141,17 +2141,19 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
                  value_tyBM cursubexpv; //
                  value_tyBM connargsv;
                  value_tyBM conncexpansionv;
-                 value_tyBM connchunkv;
-                 value_tyBM chunksonv;
+                 value_tyBM connchunkv; value_tyBM chunksonv;
                  objectval_tyBM * modgenob; objectval_tyBM * routprepob;
-                 objectval_tyBM * fromob; objectval_tyBM * substob;
-                 objectval_tyBM * curargob;
+                 objectval_tyBM * fromob;
+                 objectval_tyBM * substob;
+                 objectval_tyBM * curargob; objectval_tyBM * chunkob;
+                 objectval_tyBM * emptybindhsetob;
     );
   int depth = -1;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   objectval_tyBM *k_cexpansion = BMK_7yoiT31GmV4_2iTjHx3P2hb;
   objectval_tyBM *k_chunk = BMK_3pQnBS9ZjkQ_0uGmqUUhAum;
   objectval_tyBM *k_assoc_object = BMK_6ZQ05nCv3Ys_8LA6B5LkZgm;
+  objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   _.connob = objectcast_BM (arg1);
   _.expv = arg2;
   _.modgenob = objectcast_BM (arg3);
@@ -2185,8 +2187,9 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
   _.substob = makeobj_BM ();
   objputclass_BM (_.substob, k_assoc_object);
   objputassocpayl_BM (_.substob, 3 * nbargs / 2 + 2);
-  DBGPRINTF_BM ("miniemit_node_conn°basiclo_primitive connob=%s substob=%s",
-                objectdbg_BM (_.connob), objectdbg1_BM (_.substob));
+  DBGPRINTF_BM
+    ("miniemit_node_conn°basiclo_primitive connob=%s substob=%s nbargs=%d nbcexp=%d",
+     objectdbg_BM (_.connob), objectdbg1_BM (_.substob), nbargs, nbcexp);
   for (unsigned aix = 0; aix < nbargs; aix++)
     {
       _.curargob = tuplecompnth_BM (_.connargsv, aix);
@@ -2195,9 +2198,24 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
         ("miniemit_node_conn°basiclo_primitive connob=%s aix#%d curargob=%s cursubexp=%s",
          objectdbg_BM (_.connob), aix, objectdbg1_BM (_.curargob),
          debug_outstr_value_BM (_.cursubexpv, CURFRAME_BM, 0));
-      objassocaddattrpayl_BM (_.substob, _.curargob, _.cursubexpv);
-    }
-  for (unsigned cix = 0; cix < nbargs; cix++)
+      if (_.cursubexpv)
+        objassocaddattrpayl_BM (_.substob, _.curargob, _.cursubexpv);
+      else
+        {
+          if (!_.emptybindhsetob)
+            {
+              _.emptybindhsetob = makeobj_BM ();
+              objputclass_BM (_.emptybindhsetob, k_hset_object);
+              objputhashsetpayl_BM (_.emptybindhsetob, 5 * nbargs / 4 + 1);
+            }
+          objhashsetaddpayl_BM (_.emptybindhsetob, _.curargob);
+        }
+    };
+  DBGPRINTF_BM
+    ("miniemit_node_conn°basiclo_primitive connob=%s substob=%s emptybindhsetob=%s nbcexp#%d",
+     objectdbg_BM (_.connob), objectdbg1_BM (_.substob),
+     objectdbg2_BM (_.emptybindhsetob), nbcexp);
+  for (unsigned cix = 0; cix < nbcexp; cix++)
     {
       _.chunksonv = nodenthson_BM (_.conncexpansionv, cix);
       if (isstring_BM (_.chunksonv))
@@ -2208,9 +2226,27 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
                                    (long long) getint_BM (_.chunksonv));
       else if (isobject_BM (_.chunksonv))
         {
-          WEAKASSERT_BM (false
-                         &&
-                         "unimplemented object in chunk_0BaXSIhDAHO_9x6t4zdbUhj routine");
+          _.chunkob = (objectval_tyBM *) (_.chunksonv);
+          DBGPRINTF_BM
+            ("miniemit_node_conn°basiclo_primitive connob=%s cix#%d chunkob=%s",
+             objectdbg_BM (_.connob), cix, objectdbg1_BM (_.chunkob));
+          _.cursubexpv = objassocgetattrpayl_BM (_.substob, _.chunkob);
+          if (_.cursubexpv)
+            {
+              emit_expression_BM (CURFRAME_BM, _.cursubexpv,
+                                  _.modgenob,
+                                  _.routprepob, _.fromob, depth + 1);
+            }
+          else if (objhashsetcontainspayl_BM (_.emptybindhsetob, _.chunkob))
+            {
+              objstrbufferprintfpayl_BM (_.modgenob, " NULL");
+            }
+          else
+            {
+              WEAKASSERT_BM (false
+                             &&
+                             "unimplemented object in chunk _0BaXSIhDAHO_9x6t4zdbUhj routine");
+            }
         }
     }
 #warning unimplemented _0BaXSIhDAHO_9x6t4zdbUhj routine
