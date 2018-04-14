@@ -405,6 +405,12 @@ int
 main (int argc, char **argv)
 {
   clock_gettime (CLOCK_MONOTONIC, &startrealtimespec_BM);
+  if (argc <= 0)
+    {                           // this should never happen in practice, but see
+      // https://stackoverflow.com/q/49817316/841108
+      fprintf (stderr, "[bismon] requires at least one argument\n");
+      exit (EXIT_FAILURE);
+    }
   dlprog_BM = dlopen (NULL, RTLD_NOW | RTLD_GLOBAL);
   char *progname = argv[0];
   if (!dlprog_BM)

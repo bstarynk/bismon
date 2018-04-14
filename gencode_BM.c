@@ -2139,8 +2139,7 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
                  objectval_tyBM * connob;
                  value_tyBM expv;
                  value_tyBM connargsv;
-                 value_tyBM conncexpansionv;
-                 value_tyBM connchunkv;
+                 value_tyBM conncexpansionv; value_tyBM connchunkv;
                  objectval_tyBM * modgenob; objectval_tyBM * routprepob;
                  objectval_tyBM * fromob;
     );
@@ -2170,11 +2169,9 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
      objectdbg3_BM (_.fromob));
   _.connargsv = objgetattr_BM (_.connob, k_arguments);
   _.conncexpansionv = objgetattr_BM (_.connob, k_cexpansion);
-  DBGPRINTF_BM
-    ("miniemit_node_conn°basiclo_primitive connob=%s connargs=%s conncexpansion=%s",
-     objectdbg_BM (_.connob), //
-     debug_outstr_value_BM (_.connargsv, CURFRAME_BM, 0),
-     debug_outstr_value_BM (_.conncexpansionv, CURFRAME_BM, 0));
+  DBGPRINTF_BM ("miniemit_node_conn°basiclo_primitive connob=%s connargs=%s conncexpansion=%s", objectdbg_BM (_.connob),       //
+                debug_outstr_value_BM (_.connargsv, CURFRAME_BM, 0),
+                debug_outstr_value_BM (_.conncexpansionv, CURFRAME_BM, 0));
   WEAKASSERT_BM (istuple_BM (_.connargsv));
   WEAKASSERT_BM (isnode_BM (_.conncexpansionv)
                  && nodeconn_BM (_.conncexpansionv) == k_chunk);
