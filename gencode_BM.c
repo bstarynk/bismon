@@ -2142,8 +2142,8 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
                  value_tyBM connargsv;
                  value_tyBM conncexpansionv;
                  value_tyBM connchunkv;
-                 objectval_tyBM * modgenob;
-                 objectval_tyBM * routprepob;
+                 value_tyBM chunksonv;
+                 objectval_tyBM * modgenob; objectval_tyBM * routprepob;
                  objectval_tyBM * fromob; objectval_tyBM * substob;
                  objectval_tyBM * curargob;
     );
@@ -2181,6 +2181,7 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
   WEAKASSERT_BM (isnode_BM (_.conncexpansionv)
                  && nodeconn_BM (_.conncexpansionv) == k_chunk);
   unsigned nbargs = tuplesize_BM (_.connargsv);
+  unsigned nbcexp = nodewidth_BM (_.conncexpansionv);
   _.substob = makeobj_BM ();
   objputclass_BM (_.substob, k_assoc_object);
   objputassocpayl_BM (_.substob, 3 * nbargs / 2 + 2);
@@ -2195,6 +2196,22 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
          objectdbg_BM (_.connob), aix, objectdbg1_BM (_.curargob),
          debug_outstr_value_BM (_.cursubexpv, CURFRAME_BM, 0));
       objassocaddattrpayl_BM (_.substob, _.curargob, _.cursubexpv);
+    }
+  for (unsigned cix = 0; cix < nbargs; cix++)
+    {
+      _.chunksonv = nodenthson_BM (_.conncexpansionv, cix);
+      if (isstring_BM (_.chunksonv))
+        objstrbufferappendcstrpayl_BM (_.modgenob,
+                                       bytstring_BM (_.chunksonv));
+      else if (istaggedint_BM (_.chunksonv))
+        objstrbufferprintfpayl_BM (_.modgenob, "%lld",
+                                   (long long) getint_BM (_.chunksonv));
+      else if (isobject_BM (_.chunksonv))
+        {
+          WEAKASSERT_BM (false
+                         &&
+                         "unimplemented object in chunk_0BaXSIhDAHO_9x6t4zdbUhj routine");
+        }
     }
 #warning unimplemented _0BaXSIhDAHO_9x6t4zdbUhj routine
   WEAKASSERT_BM (false && "unimplemented _0BaXSIhDAHO_9x6t4zdbUhj routine");
