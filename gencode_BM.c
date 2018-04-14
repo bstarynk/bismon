@@ -2137,16 +2137,21 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0BaXSIhDAHO_9x6t4zdbUhj,
                  value_tyBM resultv;
                  objectval_tyBM * connob;
-                 value_tyBM expv;
+                 value_tyBM expv;       //
+                 value_tyBM cursubexpv; //
                  value_tyBM connargsv;
-                 value_tyBM conncexpansionv; value_tyBM connchunkv;
-                 objectval_tyBM * modgenob; objectval_tyBM * routprepob;
-                 objectval_tyBM * fromob;
+                 value_tyBM conncexpansionv;
+                 value_tyBM connchunkv;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob;
+                 objectval_tyBM * fromob; objectval_tyBM * substob;
+                 objectval_tyBM * curargob;
     );
   int depth = -1;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   objectval_tyBM *k_cexpansion = BMK_7yoiT31GmV4_2iTjHx3P2hb;
   objectval_tyBM *k_chunk = BMK_3pQnBS9ZjkQ_0uGmqUUhAum;
+  objectval_tyBM *k_assoc_object = BMK_6ZQ05nCv3Ys_8LA6B5LkZgm;
   _.connob = objectcast_BM (arg1);
   _.expv = arg2;
   _.modgenob = objectcast_BM (arg3);
@@ -2175,6 +2180,22 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
   WEAKASSERT_BM (istuple_BM (_.connargsv));
   WEAKASSERT_BM (isnode_BM (_.conncexpansionv)
                  && nodeconn_BM (_.conncexpansionv) == k_chunk);
+  unsigned nbargs = tuplesize_BM (_.connargsv);
+  _.substob = makeobj_BM ();
+  objputclass_BM (_.substob, k_assoc_object);
+  objputassocpayl_BM (_.substob, 3 * nbargs / 2 + 2);
+  DBGPRINTF_BM ("miniemit_node_conn°basiclo_primitive connob=%s substob=%s",
+                objectdbg_BM (_.connob), objectdbg1_BM (_.substob));
+  for (unsigned aix = 0; aix < nbargs; aix++)
+    {
+      _.curargob = tuplecompnth_BM (_.connargsv, aix);
+      _.cursubexpv = nodenthson_BM (_.expv, aix);
+      DBGPRINTF_BM
+        ("miniemit_node_conn°basiclo_primitive connob=%s aix#%d curargob=%s cursubexp=%s",
+         objectdbg_BM (_.connob), aix, objectdbg1_BM (_.curargob),
+         debug_outstr_value_BM (_.cursubexpv, CURFRAME_BM, 0));
+      objassocaddattrpayl_BM (_.substob, _.curargob, _.cursubexpv);
+    }
 #warning unimplemented _0BaXSIhDAHO_9x6t4zdbUhj routine
   WEAKASSERT_BM (false && "unimplemented _0BaXSIhDAHO_9x6t4zdbUhj routine");
   LOCALRETURN_BM (_.resultv);
