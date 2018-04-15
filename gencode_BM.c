@@ -1948,6 +1948,8 @@ ROUTINEOBJNAME_BM (_9Wk97VJLuH1_0FwsSpfatDg)    // emit_when°basiclo_when
      objectdbg_BM (_.whenob), whenidbuf, objectdbg2_BM (_.modgenob),
      objectdbg3_BM (_.routprepob),
      debug_outstr_value_BM (_.testexpv, CURFRAME_BM, 0));
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbuffernewlinepayl_BM (_.modgenob);
   // whenob is locked by caller emit_statment°basiclo_cond
   objstrbufferprintfpayl_BM (_.modgenob, "/*when %s:*/ (",
                              objectdbg_BM (_.whenob));
@@ -2220,9 +2222,8 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
                  objectval_tyBM * connob;
                  value_tyBM expv;       //
                  value_tyBM cursubexpv; //
-                 value_tyBM connargsv;
-                 value_tyBM conncexpansionv; value_tyBM connchunkv;
-                 value_tyBM chunksonv;
+                 value_tyBM connargsv; value_tyBM conncexpansionv;
+                 value_tyBM connchunkv; value_tyBM chunksonv;
                  objectval_tyBM * modgenob; objectval_tyBM * routprepob;
                  objectval_tyBM * fromob; objectval_tyBM * substob;
                  objectval_tyBM * varob; objectval_tyBM * curargob;
@@ -2361,6 +2362,7 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
     ("miniemit_node_conn°basiclo_primitive connob=%s exp=%s ended",
      objectdbg_BM (_.connob), debug_outstr_value_BM (_.expv, CURFRAME_BM, 0));
   LOCALRETURN_BM (_.connob);
+#undef FAILHERE
 failure:
   DBGPRINTF_BM ("miniemit_node_conn°basiclo_primitive failin %d connob %s routprep %s cause %s",       //
                 failin, objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob),  //
@@ -2370,3 +2372,53 @@ failure:
                   _.expv, _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniemit_node_conn°basiclo_primitive _0BaXSIhDAHO_9x6t4zdbUhj */
+
+
+
+// emit_statement°basiclo_assign _22wwtRd69oP_3IH6VRfTzu6
+extern objrout_sigBM ROUTINEOBJNAME_BM (_22wwtRd69oP_3IH6VRfTzu6);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_22wwtRd69oP_3IH6VRfTzu6)    //
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // stmtob
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // routprepob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_22wwtRd69oP_3IH6VRfTzu6,
+                 objectval_tyBM * stmtob;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob; value_tyBM resultv;
+                 value_tyBM errorv;
+                 value_tyBM causev;
+    );
+  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  _.stmtob = objectcast_BM (arg1);
+  _.modgenob = objectcast_BM (arg2);
+  _.routprepob = objectcast_BM (arg3);
+  WEAKASSERT_BM (_.stmtob);
+  WEAKASSERT_BM (_.modgenob);
+  WEAKASSERT_BM (_.routprepob);
+  WEAKASSERT_BM (istaggedint_BM (arg4));
+  int depth = getint_BM (arg4);
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_assign start stmtob=%s modgenob=%s routprepob=%s depth#%d",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth);
+#warning unimplemented _22wwtRd69oP_3IH6VRfTzu6 routine
+  WEAKASSERT_BM (false && "unimplemented _22wwtRd69oP_3IH6VRfTzu6 routine");
+  LOCALRETURN_BM (_.resultv);
+#undef FAILHERE
+failure:
+  DBGPRINTF_BM ("emit_statement°basiclo_assign failin %d stmtob %s routprep %s cause %s",      //
+                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    makenode5_BM (k_emit_statement, _.stmtob, _.routprepob, _.modgenob,
+                  taggedint_BM (depth), _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end emit_statement°basiclo_assign  _22wwtRd69oP_3IH6VRfTzu6 */

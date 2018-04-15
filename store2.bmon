@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 310 objects
+// for 311 objects
 // with 0 modules
 
 
@@ -117,6 +117,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !@ 1506972489.27
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
+~: _1ERH9PxNhPb_2o869yOMuH0  % _22wwtRd69oP_3IH6VRfTzu6 () 
 ~: _6DdZwyaWLyK_7tS2BmECOJ0  % _7LNRlilrowp_0GG6ZLUFovu ()
 ~)
 
@@ -2607,6 +2608,16 @@ _3XBrePAliOo_37VlAqBsb5C) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "command handler for put"
 !)_1Xc5XJ7S5r7_3nYIzlf2XAw
+
+
+
+!(_22wwtRd69oP_3IH6VRfTzu6
+!|*
+!@ 1523814242.24
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit_statement\u00b0basiclo_assign"
+!)_22wwtRd69oP_3IH6VRfTzu6
 
 
 
