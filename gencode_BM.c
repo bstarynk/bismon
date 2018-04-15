@@ -2438,11 +2438,13 @@ failure:
 }                               /* end emit_statement°basiclo_assign  _22wwtRd69oP_3IH6VRfTzu6 */
 
 
+
+////
 // emit_statement°basiclo_return 
-extern objrout_sigBM ROUTINEOBJNAME_BM (_1COCwvgT7TN_1n8iUPGB2b0);
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_1COCwvgT7TN_1n8iUPGB2b0)    //emit_statement°basiclo_return 
+ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7)    //emit_statement°basiclo_return 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // stmtob
  const value_tyBM arg2,         // modgenob
@@ -2450,17 +2452,19 @@ ROUTINEOBJNAME_BM (_1COCwvgT7TN_1n8iUPGB2b0)    //emit_statement°basiclo_return
  const value_tyBM arg4,         // depth
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
-  LOCALFRAME_BM (stkf, /*descr: */ BMK_1COCwvgT7TN_1n8iUPGB2b0,
+  LOCALFRAME_BM (stkf, /*descr: */ NULL,
                  objectval_tyBM * stmtob;
                  objectval_tyBM * modgenob;
                  objectval_tyBM * routprepob;
-                 objectval_tyBM * retvarob;
+                 objectval_tyBM * retvarob; objectval_tyBM * routob;
                  value_tyBM srcexpv; value_tyBM resultv;
                  value_tyBM errorv;
                  value_tyBM causev;
     );
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_return = BMK_2DH0ucElTgh_62vxjxLcfev;
+  objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
+  const objectval_tyBM *k_result = BMK_7bD9VtDkGSn_7lxHeYuuFLR;
   _.stmtob = objectcast_BM (arg1);
   _.modgenob = objectcast_BM (arg2);
   _.routprepob = objectcast_BM (arg3);
@@ -2476,13 +2480,28 @@ ROUTINEOBJNAME_BM (_1COCwvgT7TN_1n8iUPGB2b0)    //emit_statement°basiclo_return
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
      objectdbg2_BM (_.routprepob), depth);
   _.srcexpv = objgetattr_BM (_.stmtob, k_return);
-  DBGPRINTF_BM
-    ("emit_statement°basiclo_return stmtob=%s srcexpv=%s",
-     objectdbg_BM (_.stmtob), debug_outstr_value_BM (_.srcexpv, CURFRAME_BM,
-                                                     0));
+  DBGPRINTF_BM ("emit_statement°basiclo_return stmtob=%s srcexpv=%s", objectdbg_BM (_.stmtob), //
+                debug_outstr_value_BM (_.srcexpv, CURFRAME_BM, 0));
   // compute the retvarob from routprepob...
+  _.routob = objgetattr_BM (_.routprepob, k_prepare_routine);
+  _.retvarob = objgetattr_BM (_.routob, k_result);
   /// we could need a *null() primitive...
-#warning unimplemented _1COCwvgT7TN_1n8iUPGB2b0 routine
-  WEAKASSERT_BM (false && "unimplemented _1COCwvgT7TN_1n8iUPGB2b0 routine");
+  DBGPRINTF_BM ("emit_statement°basiclo_return stmtob=%s routob=%s retvarob=%s", objectdbg_BM (_.stmtob),      //
+                objectdbg_BM (_.routob),        //
+                objectdbg_BM (_.retvarob));
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbufferprintfpayl_BM (_.modgenob, "/*return %s:*/ ",
+                             objectdbg_BM (_.stmtob));
+  emit_var_BM (CURFRAME_BM, _.retvarob, _.modgenob, _.routob, _.stmtob,
+               depth);
+  objstrbufferprintfpayl_BM (_.modgenob, " = // returned\n");
+  objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+  emit_expression_BM (CURFRAME_BM, _.srcexpv, _.modgenob, _.routob, _.stmtob,
+                      depth);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbufferprintfpayl_BM (_.modgenob, "; /// should return\n");
+  /// should we goto end of routgenob, or what?
+#warning incomplete emit_statement°basiclo_return   _7DErEWkQBmz_5hPwF6ARmJ7 routine
+  WEAKASSERT_BM (false && "incomplete emit_statement°basiclo_return  _7DErEWkQBmz_5hPwF6ARmJ7 routine");
   LOCALRETURN_BM (_.resultv);
-}                               /* end emit_statement°basiclo_return _1COCwvgT7TN_1n8iUPGB2b0 */
+}                               /* end emit_statement°basiclo_return _7DErEWkQBmz_5hPwF6ARmJ7 */

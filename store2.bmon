@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 311 objects
+// for 312 objects
 // with 0 modules
 
 
@@ -363,6 +363,7 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of return statement"
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
+~: _1ERH9PxNhPb_2o869yOMuH0  % _7DErEWkQBmz_5hPwF6ARmJ7 () 
 ~: _6DdZwyaWLyK_7tS2BmECOJ0  % _7vlMCZ0yvva_6tx0lFlqBG8 ()
 ~)
 
@@ -3296,6 +3297,16 @@ _4lKK08v9A0t_0GGsir35UxP _4bYUiDmxrKK_6nPPlEl8y8x) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to dump_data the basiclo_function"
 !)_7D36kHemyWQ_0YfwWnUhR9Y
+
+
+
+!(_7DErEWkQBmz_5hPwF6ARmJ7
+!|*
+!@ 1523825680.74
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit_statement\u00b0basiclo_return"
+!)_7DErEWkQBmz_5hPwF6ARmJ7
 
 
 
