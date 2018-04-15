@@ -2390,7 +2390,8 @@ ROUTINEOBJNAME_BM (_22wwtRd69oP_3IH6VRfTzu6)    //
   LOCALFRAME_BM (stkf, /*descr: */ BMK_22wwtRd69oP_3IH6VRfTzu6,
                  objectval_tyBM * stmtob;
                  objectval_tyBM * modgenob;
-                 objectval_tyBM * routprepob; value_tyBM resultv;
+                 objectval_tyBM * routprepob; objectval_tyBM * destob;
+                 value_tyBM srcexpv; value_tyBM resultv;
                  value_tyBM errorv;
                  value_tyBM causev;
     );
@@ -2409,9 +2410,22 @@ ROUTINEOBJNAME_BM (_22wwtRd69oP_3IH6VRfTzu6)    //
     ("emit_statement°basiclo_assign start stmtob=%s modgenob=%s routprepob=%s depth#%d",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
      objectdbg2_BM (_.routprepob), depth);
-#warning unimplemented _22wwtRd69oP_3IH6VRfTzu6 routine
-  WEAKASSERT_BM (false && "unimplemented _22wwtRd69oP_3IH6VRfTzu6 routine");
-  LOCALRETURN_BM (_.resultv);
+  WEAKASSERT_BM (objnbcomps_BM (_.stmtob) == 2);
+  _.destob = objectcast_BM (objgetcomp_BM (_.stmtob, 0));
+  _.srcexpv = objgetcomp_BM (_.stmtob, 1);
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_assign start stmtob=%s destob=%s srcexpv=%s",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.destob),
+     debug_outstr_value_BM (_.srcexpv, CURFRAME_BM, 0));
+  emit_var_BM (CURFRAME_BM, _.destob, _.modgenob, _.routprepob, _.stmtob, 0);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+  objstrbufferprintfpayl_BM (_.modgenob, " = //assign %s\n",
+                             objectdbg_BM (_.stmtob));
+  emit_expression_BM (CURFRAME_BM, _.srcexpv, _.modgenob, _.routprepob,
+                      _.stmtob, 0);
+  objstrbufferprintfpayl_BM (_.modgenob, ";\n");
+  LOCALRETURN_BM (_.stmtob);
 #undef FAILHERE
 failure:
   DBGPRINTF_BM ("emit_statement°basiclo_assign failin %d stmtob %s routprep %s cause %s",      //
