@@ -2139,14 +2139,15 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
                  objectval_tyBM * connob;
                  value_tyBM expv;       //
                  value_tyBM cursubexpv; //
-                 value_tyBM connargsv;
-                 value_tyBM conncexpansionv;
-                 value_tyBM connchunkv; value_tyBM chunksonv;
-                 objectval_tyBM * modgenob; objectval_tyBM * routprepob;
-                 objectval_tyBM * fromob;
-                 objectval_tyBM * substob;
-                 objectval_tyBM * curargob; objectval_tyBM * chunkob;
-                 objectval_tyBM * emptybindhsetob;
+                 value_tyBM connargsv; value_tyBM conncexpansionv;
+                 value_tyBM connchunkv;
+                 value_tyBM chunksonv;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
+                 objectval_tyBM * substob; objectval_tyBM * varob;
+                 objectval_tyBM * curargob;
+                 objectval_tyBM * chunkob; objectval_tyBM * emptybindhsetob;
+                 value_tyBM errorv; value_tyBM causev;
     );
   int depth = -1;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
@@ -2154,6 +2155,10 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
   objectval_tyBM *k_chunk = BMK_3pQnBS9ZjkQ_0uGmqUUhAum;
   objectval_tyBM *k_assoc_object = BMK_6ZQ05nCv3Ys_8LA6B5LkZgm;
   objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
+  objectval_tyBM *k_variable = BMK_5ucAZimYynS_4VA0XHvr1nW;
+  objectval_tyBM *k_emit_expression = BMK_9lXSe7DrOl6_7hghYt0LhTF;
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
   _.connob = objectcast_BM (arg1);
   _.expv = arg2;
   _.modgenob = objectcast_BM (arg3);
@@ -2230,26 +2235,58 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
           DBGPRINTF_BM
             ("miniemit_node_conn°basiclo_primitive connob=%s cix#%d chunkob=%s",
              objectdbg_BM (_.connob), cix, objectdbg1_BM (_.chunkob));
-          _.cursubexpv = objassocgetattrpayl_BM (_.substob, _.chunkob);
+          char *chunkname = findobjectname_BM (_.chunkob);
+          if (chunkname)
+            objstrbufferappendcstrpayl_BM (_.modgenob, chunkname);
+          else
+            {
+              char chunkidbuf[32];
+              memset (chunkidbuf, 0, sizeof (chunkidbuf));
+              idtocbuf32_BM (objid_BM (_.chunkob), chunkidbuf);
+              objstrbufferappendcstrpayl_BM (_.modgenob, chunkidbuf);
+            }
+        }
+      else if (isnode_BM (_.chunksonv)
+               && nodeconn_BM (_.chunksonv) == k_variable
+               && nodewidth_BM (_.chunksonv) == 1)
+        {
+          _.varob = objectcast_BM (nodenthson_BM (_.chunksonv, 0));
+          WEAKASSERT_BM (_.varob);
+          _.cursubexpv = objassocgetattrpayl_BM (_.substob, _.varob);
           if (_.cursubexpv)
             {
               emit_expression_BM (CURFRAME_BM, _.cursubexpv,
                                   _.modgenob,
                                   _.routprepob, _.fromob, depth + 1);
             }
-          else if (objhashsetcontainspayl_BM (_.emptybindhsetob, _.chunkob))
+          else if (objhashsetcontainspayl_BM (_.emptybindhsetob, _.varob))
             {
               objstrbufferprintfpayl_BM (_.modgenob, " NULL");
             }
           else
             {
+              DBGPRINTF_BM
+                ("miniemit_node_conn°basiclo_primitive connob=%s unbound varob=%s cix#%d",
+                 objectdbg_BM (_.connob), objectdbg1_BM (_.varob), cix);
               WEAKASSERT_BM (false
                              &&
-                             "unimplemented object in chunk _0BaXSIhDAHO_9x6t4zdbUhj routine");
+                             "unbound var in chunk _0BaXSIhDAHO_9x6t4zdbUhj routine");
             }
         }
+      else
+        FAILHERE (makenode2_BM (k_chunk, _.chunksonv, taggedint_BM (cix)));
+
     }
-#warning unimplemented _0BaXSIhDAHO_9x6t4zdbUhj routine
-  WEAKASSERT_BM (false && "unimplemented _0BaXSIhDAHO_9x6t4zdbUhj routine");
-  LOCALRETURN_BM (_.resultv);
+  DBGPRINTF_BM
+    ("miniemit_node_conn°basiclo_primitive connob=%s exp=%s ended",
+     objectdbg_BM (_.connob), debug_outstr_value_BM (_.expv, CURFRAME_BM, 0));
+  LOCALRETURN_BM (_.connob);
+failure:
+  DBGPRINTF_BM ("miniemit_node_conn°basiclo_primitive failin %d connob %s routprep %s cause %s",       //
+                failin, objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob),  //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    makenode5_BM (k_emit_expression, _.connob, _.routprepob, _.modgenob,
+                  _.expv, _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniemit_node_conn°basiclo_primitive _0BaXSIhDAHO_9x6t4zdbUhj */
