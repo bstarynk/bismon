@@ -1983,10 +1983,10 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
   objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
   objectval_tyBM *k_string = BMK_4T8am97muLl_5969SR22Ecq;
   objectval_tyBM *k_miniemit_node_conn = BMK_7L782rSgJBB_9vjsBdqAoz7;
+  objectval_tyBM *k_variable = BMK_5ucAZimYynS_4VA0XHvr1nW;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
-                 value_tyBM expv;
-                 value_tyBM avalv;
-                 objectval_tyBM * expob; objectval_tyBM * modgenob;
+                 value_tyBM expv; value_tyBM avalv; objectval_tyBM * expob;
+                 objectval_tyBM * modgenob; objectval_tyBM * typob;
                  objectval_tyBM * routprepob; objectval_tyBM * fromob;
                  objectval_tyBM * connob; value_tyBM errorv;
                  value_tyBM causev;
@@ -2032,12 +2032,36 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
       {
         _.expob = objectcast_BM (_.expv);
         _.avalv = objassocgetattrpayl_BM (_.routprepob, _.expob);
-        DBGPRINTF_BM ("emit_expr expob=%s avalv=%s",
+        char varidbuf[32];
+        memset (varidbuf, 0, sizeof (varidbuf));
+        idtocbuf32_BM (objid_BM (_.expob), varidbuf);
+        DBGPRINTF_BM ("emit_expr expob=%s avalv=%s routprepob=%s",
                       objectdbg_BM (_.expob),
-                      debug_outstr_value_BM (_.avalv, CURFRAME_BM, 0));
+                      debug_outstr_value_BM (_.avalv, CURFRAME_BM, 0),
+                      objectdbg2_BM (_.routprepob));
         if (_.avalv != NULL)
           {
-            WEAKASSERT_BM (false && "unimplemented emit_expr object");
+            _.typob =
+              miniscan_var_BM (_.expob, _.routprepob, depth, _.fromob,
+                               CURFRAME_BM);
+            DBGPRINTF_BM ("emit_expr expob=%s avalv=%s typob=%s",
+                          objectdbg_BM (_.expob),
+                          debug_outstr_value_BM (_.avalv, CURFRAME_BM, 0),
+                          objectdbg2_BM (_.typob));
+            if (_.typob == BMP_value)
+              {
+                objstrbufferprintfpayl_BM (_.modgenob, " v%s", varidbuf);
+              }
+            else if (_.typob == BMP_object)
+              {
+                objstrbufferprintfpayl_BM (_.modgenob, " v%s", varidbuf);
+              }
+            else if (_.typob == BMP_int)
+              {
+                objstrbufferprintfpayl_BM (_.modgenob, " n%s", varidbuf);
+              }
+            else
+              FAILHERE (makenode2_BM (k_variable, _.expob, _.typob));
           }
         else
           FAILHERE (BMP_object);
@@ -2139,13 +2163,12 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
                  objectval_tyBM * connob;
                  value_tyBM expv;       //
                  value_tyBM cursubexpv; //
-                 value_tyBM connargsv; value_tyBM conncexpansionv;
-                 value_tyBM connchunkv;
-                 value_tyBM chunksonv;
-                 objectval_tyBM * modgenob;
-                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
-                 objectval_tyBM * substob; objectval_tyBM * varob;
-                 objectval_tyBM * curargob;
+                 value_tyBM connargsv;
+                 value_tyBM conncexpansionv; value_tyBM connchunkv;
+                 value_tyBM chunksonv; objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob;
+                 objectval_tyBM * fromob; objectval_tyBM * substob;
+                 objectval_tyBM * varob; objectval_tyBM * curargob;
                  objectval_tyBM * chunkob; objectval_tyBM * emptybindhsetob;
                  value_tyBM errorv; value_tyBM causev;
     );
