@@ -2388,8 +2388,7 @@ ROUTINEOBJNAME_BM (_22wwtRd69oP_3IH6VRfTzu6)    //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_22wwtRd69oP_3IH6VRfTzu6,
-                 objectval_tyBM * stmtob;
-                 objectval_tyBM * modgenob;
+                 objectval_tyBM * stmtob; objectval_tyBM * modgenob;
                  objectval_tyBM * routprepob; objectval_tyBM * destob;
                  value_tyBM srcexpv; value_tyBM resultv;
                  value_tyBM errorv;
@@ -2424,6 +2423,7 @@ ROUTINEOBJNAME_BM (_22wwtRd69oP_3IH6VRfTzu6)    //
                              objectdbg_BM (_.stmtob));
   emit_expression_BM (CURFRAME_BM, _.srcexpv, _.modgenob, _.routprepob,
                       _.stmtob, 0);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
   objstrbufferprintfpayl_BM (_.modgenob, ";\n");
   LOCALRETURN_BM (_.stmtob);
 #undef FAILHERE
@@ -2436,3 +2436,53 @@ failure:
                   taggedint_BM (depth), _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_statement°basiclo_assign  _22wwtRd69oP_3IH6VRfTzu6 */
+
+
+// emit_statement°basiclo_return 
+extern objrout_sigBM ROUTINEOBJNAME_BM (_1COCwvgT7TN_1n8iUPGB2b0);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_1COCwvgT7TN_1n8iUPGB2b0)    //emit_statement°basiclo_return 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // stmtob
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // routprepob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_1COCwvgT7TN_1n8iUPGB2b0,
+                 objectval_tyBM * stmtob;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob;
+                 objectval_tyBM * retvarob;
+                 value_tyBM srcexpv; value_tyBM resultv;
+                 value_tyBM errorv;
+                 value_tyBM causev;
+    );
+  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM *k_return = BMK_2DH0ucElTgh_62vxjxLcfev;
+  _.stmtob = objectcast_BM (arg1);
+  _.modgenob = objectcast_BM (arg2);
+  _.routprepob = objectcast_BM (arg3);
+  WEAKASSERT_BM (_.stmtob);
+  WEAKASSERT_BM (_.modgenob);
+  WEAKASSERT_BM (_.routprepob);
+  WEAKASSERT_BM (istaggedint_BM (arg4));
+  int depth = getint_BM (arg4);
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_return start stmtob=%s modgenob=%s routprepob=%s depth#%d",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth);
+  _.srcexpv = objgetattr_BM (_.stmtob, k_return);
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_return stmtob=%s srcexpv=%s",
+     objectdbg_BM (_.stmtob), debug_outstr_value_BM (_.srcexpv, CURFRAME_BM,
+                                                     0));
+  // compute the retvarob from routprepob...
+  /// we could need a *null() primitive...
+#warning unimplemented _1COCwvgT7TN_1n8iUPGB2b0 routine
+  WEAKASSERT_BM (false && "unimplemented _1COCwvgT7TN_1n8iUPGB2b0 routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end emit_statement°basiclo_return _1COCwvgT7TN_1n8iUPGB2b0 */
