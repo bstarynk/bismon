@@ -2129,7 +2129,7 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
               }
             else if (_.typob == BMP_object)
               {
-                objstrbufferprintfpayl_BM (_.modgenob, " v%s", varidbuf);
+                objstrbufferprintfpayl_BM (_.modgenob, " o%s", varidbuf);
               }
             else if (_.typob == BMP_int)
               {
@@ -2192,10 +2192,15 @@ emit_var_BM (struct stackframe_stBM *stkf, objectval_tyBM * refob,
              objectval_tyBM * fromob, int depth)
 {
   objectval_tyBM *k_emit_reference = BMK_6qzzDyr2eIo_3SapnOUpg6S;
+  objectval_tyBM *k_variable = BMK_5ucAZimYynS_4VA0XHvr1nW;
+  objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
+  objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
+  objectval_tyBM *k_object = BMK_7T9OwSFlgov_0wVJaK1eZbn;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_reference,
-                 objectval_tyBM * refob;
-                 objectval_tyBM * modgenob; objectval_tyBM * routprepob;
-                 objectval_tyBM * fromob; value_tyBM errorv;
+                 objectval_tyBM * refob; objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
+                 value_tyBM avalv; objectval_tyBM * connob;
+                 objectval_tyBM * typob; value_tyBM errorv;
                  value_tyBM causev;
     );
   int failin = -1;
@@ -2211,8 +2216,37 @@ emit_var_BM (struct stackframe_stBM *stkf, objectval_tyBM * refob,
     ("emit_var_BM start refob %s modgen %s routprep %s depth %d",
      objectdbg_BM (_.refob), objectdbg1_BM (_.modgenob),
      objectdbg2_BM (_.routprepob), depth);
-  WEAKASSERT_BM (false && "unimplemented emit_var_BM");
-#warning unimplemented emit_var_BM
+  _.avalv = objassocgetattrpayl_BM (_.routprepob, _.refob);
+  DBGPRINTF_BM ("emit_var_BM refob %s avalv %s", objectdbg_BM (_.refob),        //
+                debug_outstr_value_BM (_.avalv, CURFRAME_BM, 0));
+  char varidbuf[32];
+  memset (varidbuf, 0, sizeof (varidbuf));
+  idtocbuf32_BM (objid_BM (_.refob), varidbuf);
+  if (_.avalv != NULL)
+    {
+      _.typob =
+        miniscan_var_BM (_.refob, _.routprepob, depth, _.fromob, CURFRAME_BM);
+      DBGPRINTF_BM ("emit_var refob=%s avalv=%s typob=%s",
+                    objectdbg_BM (_.refob),
+                    debug_outstr_value_BM (_.avalv, CURFRAME_BM, 0),
+                    objectdbg2_BM (_.typob));
+      if (_.typob == BMP_value)
+        {
+          objstrbufferprintfpayl_BM (_.modgenob, " v%s", varidbuf);
+        }
+      else if (_.typob == BMP_object)
+        {
+          objstrbufferprintfpayl_BM (_.modgenob, " o%s", varidbuf);
+        }
+      else if (_.typob == BMP_int)
+        {
+          objstrbufferprintfpayl_BM (_.modgenob, " n%s", varidbuf);
+        }
+      else
+        FAILHERE (makenode3_BM (k_variable, _.refob, _.avalv, _.typob));
+    }
+  else
+    FAILHERE (NULL);
   LOCALJUSTRETURN_BM ();
 failure:
   DBGPRINTF_BM ("emit_var_BM failin %d ref %s routprep %s cause %s", failin, objectdbg_BM (_.refob), objectdbg1_BM (_.routprepob),      //
@@ -2337,7 +2371,7 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
           DBGPRINTF_BM
             ("miniemit_node_conn°basiclo_primitive connob=%s cix#%d chunkob=%s",
              objectdbg_BM (_.connob), cix, objectdbg1_BM (_.chunkob));
-          char *chunkname = findobjectname_BM (_.chunkob);
+          const char *chunkname = findobjectname_BM (_.chunkob);
           if (chunkname)
             objstrbufferappendcstrpayl_BM (_.modgenob, chunkname);
           else
@@ -2517,8 +2551,8 @@ ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7)    //emit_statement°basiclo_return
                              objectdbg_BM (_.stmtob));
   if (_.srcexpv)
     {
-      emit_var_BM (CURFRAME_BM, _.retvarob, _.modgenob, _.routob, _.stmtob,
-                   depth);
+      emit_var_BM (CURFRAME_BM, _.retvarob, _.modgenob, _.routprepob,
+                   _.stmtob, depth);
       objstrbufferprintfpayl_BM (_.modgenob, " = // returned\n");
       objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
       emit_expression_BM (CURFRAME_BM, _.srcexpv, _.modgenob, _.routob,
