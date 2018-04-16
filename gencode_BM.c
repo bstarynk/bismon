@@ -694,12 +694,15 @@ miniscan_var_BM (objectval_tyBM * varob,
                  objectval_tyBM * fromob, struct stackframe_stBM *stkf)
 {
   const objectval_tyBM *k_miniscan_var = BMK_6jh60mO0Cgd_84B0HiNphqA;
+  const objectval_tyBM *k_result = BMK_7bD9VtDkGSn_7lxHeYuuFLR;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
   objectval_tyBM *k_numbers = BMK_32eKNcTZ9HN_80t0nk47Mha;
   objectval_tyBM *k_locals = BMK_24sSVIADeHm_0Sx34wQfG7W;
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
+  const objectval_tyBM *k_simple_routine_preparation =
+    BMK_80060zKi6Un_3isCStegT8A;
   int failin = -1;
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_var,
@@ -740,6 +743,15 @@ miniscan_var_BM (objectval_tyBM * varob,
       else
         FAILHERE ();
     }
+  else if (_.vrolv == k_result)
+    {
+      if (objectisinstance_BM (_.routprepob, k_simple_routine_preparation))
+        LOCALRETURN_BM (k_value);
+      else
+        FAILHERE ();
+    }
+  else
+    FAILHERE ();
 #warning incomplete miniscan_var_BM
   DBGPRINTF_BM ("miniscan_var end varob=%s", objectdbg_BM (_.varob));
   LOCALRETURN_BM (NULL);
@@ -2137,7 +2149,7 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
               }
             else
               FAILHERE (makenode2_BM (k_variable, _.expob, _.typob));
-            LOCALJUSTRETURN_BM ();
+            LOCALRETURN_BM (_.typob);
           }
         else
           FAILHERE (BMP_object);
