@@ -1571,6 +1571,10 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objstrbufferprintfpayl_BM (_.modgenob, "   _.stkfram_head.hgc = 0;\n");
   objstrbufferprintfpayl_BM (_.modgenob, "   _.stkfram_head.rlen = %d;\n",
                              nbval);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "   ASSERT_BM(!stkf\n"
+                             "             || stkf->htyp == typayl_StackFrame_BM\n"
+                             "             || stkf->htyp == typayl_SpecialFrame_BM)\n");
   objstrbufferprintfpayl_BM (_.modgenob, "   _.stkfram_prev = stkf;\n");
   objstrbufferprintfpayl_BM (_.modgenob, "   // fetch %d arguments:\n",
                              nbargs);
@@ -1609,9 +1613,14 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                                        "   _.o%s = objectcast(arg%d);\n",
                                        varidbuf, aix);
           else
-            objstrbufferprintfpayl_BM (_.modgenob,
-                                       "#error fail fetch #%d %s of type %s\n",
-                                       aix, varidbuf, objectdbg_BM (_.typob));
+            {
+              objstrbufferprintfpayl_BM (_.modgenob,
+                                         "#error fail fetch #%d %s of type %s\n",
+                                         aix, varidbuf,
+                                         objectdbg_BM (_.typob));
+              FAILHERE (makenode3_BM
+                        (k_arguments, _.varob, _.typob, taggedint_BM (aix)));
+            }
         }
       else
         {
@@ -1626,14 +1635,20 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                                        "    _.o%s = objectcast(restargs->nodt_sons[%d]);\n",
                                        varidbuf, aix - 4);
           else
-            objstrbufferprintfpayl_BM (_.modgenob,
-                                       "#error fail fetch xtra #%d %s of type %s\n",
-                                       aix, varidbuf, objectdbg_BM (_.typob));
+            {
+              objstrbufferprintfpayl_BM (_.modgenob,
+                                         "#error fail fetch xtra #%d %s of type %s\n",
+                                         aix, varidbuf,
+                                         objectdbg_BM (_.typob));
+              FAILHERE (makenode3_BM
+                        (k_arguments, _.varob, _.typob, taggedint_BM (aix)));
+            }
         }
     }
   objstrbufferprintfpayl_BM (_.modgenob, "   // fetched %d arguments.\n",
                              nbargs);
-  objstrbufferprintfpayl_BM (_.modgenob, "   // routine body:\n");
+  objstrbufferprintfpayl_BM (_.modgenob, "   // routine %s body:\n",
+                             routidbuf);
   DBGPRINTF_BM
     ("emit_definition°simple_routine_preparation routprepob=%s before emit_block bodyob=%s of %s",
      objectdbg_BM (_.routprepob), objectdbg1_BM (_.bodyob),
@@ -1647,12 +1662,18 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
     ("emit_definition°simple_routine_preparation routprepob=%s after emit_block bodyob=%s emitv=%s",
      objectdbg_BM (_.routprepob), objectdbg_BM (_.bodyob),
      debug_outstr_value_BM (_.emitv, CURFRAME_BM, 0));
+  objstrbuffersetindentpayl_BM (_.modgenob, 0);
+  objstrbuffernewlinepayl_BM (_.modgenob);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             " epilog%s: // routine %s epilogue:\n",
+                             routidbuf, routidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "   if (stkf) stkf->stkfram_callfun = NULL;\n");
+  objstrbufferprintfpayl_BM (_.modgenob, "   return ");
+  emit_var_BM (CURFRAME_BM, _.resultob, _.modgenob, _.routprepob, _.routob,
+               0);
+  objstrbufferprintfpayl_BM (_.modgenob, ";\n" "} // end %s\n\n", routidbuf);
   objunlock_BM (_.modgenob);
-
-#warning unimplemented emit_definition°simple_routine_preparation routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented emit_definition°simple_routine_preparation routine");
 failure:
   DBGPRINTF_BM ("emit_definition°simple_routine_preparation failin %d routprep %s cause %s",   //
                 failin, objectdbg_BM (_.routprepob),    //
@@ -2454,8 +2475,7 @@ ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7)    //emit_statement°basiclo_return
 {
   LOCALFRAME_BM (stkf, /*descr: */ NULL,
                  objectval_tyBM * stmtob;
-                 objectval_tyBM * modgenob;
-                 objectval_tyBM * routprepob;
+                 objectval_tyBM * modgenob; objectval_tyBM * routprepob;
                  objectval_tyBM * retvarob; objectval_tyBM * routob;
                  value_tyBM srcexpv; value_tyBM resultv;
                  value_tyBM errorv;
@@ -2485,6 +2505,9 @@ ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7)    //emit_statement°basiclo_return
   // compute the retvarob from routprepob...
   _.routob = objgetattr_BM (_.routprepob, k_prepare_routine);
   _.retvarob = objgetattr_BM (_.routob, k_result);
+  char routidbuf[32];
+  memset (routidbuf, 0, sizeof (routidbuf));
+  idtocbuf32_BM (objid_BM (_.routob), routidbuf);
   /// we could need a *null() primitive...
   DBGPRINTF_BM ("emit_statement°basiclo_return stmtob=%s routob=%s retvarob=%s", objectdbg_BM (_.stmtob),      //
                 objectdbg_BM (_.routob),        //
@@ -2492,16 +2515,17 @@ ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7)    //emit_statement°basiclo_return
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
   objstrbufferprintfpayl_BM (_.modgenob, "/*return %s:*/ ",
                              objectdbg_BM (_.stmtob));
-  emit_var_BM (CURFRAME_BM, _.retvarob, _.modgenob, _.routob, _.stmtob,
-               depth);
-  objstrbufferprintfpayl_BM (_.modgenob, " = // returned\n");
-  objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
-  emit_expression_BM (CURFRAME_BM, _.srcexpv, _.modgenob, _.routob, _.stmtob,
-                      depth);
-  objstrbuffersetindentpayl_BM (_.modgenob, depth);
-  objstrbufferprintfpayl_BM (_.modgenob, "; /// should return\n");
-  /// should we goto end of routgenob, or what?
-#warning incomplete emit_statement°basiclo_return   _7DErEWkQBmz_5hPwF6ARmJ7 routine
-  WEAKASSERT_BM (false && "incomplete emit_statement°basiclo_return  _7DErEWkQBmz_5hPwF6ARmJ7 routine");
-  LOCALRETURN_BM (_.resultv);
+  if (_.srcexpv)
+    {
+      emit_var_BM (CURFRAME_BM, _.retvarob, _.modgenob, _.routob, _.stmtob,
+                   depth);
+      objstrbufferprintfpayl_BM (_.modgenob, " = // returned\n");
+      objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+      emit_expression_BM (CURFRAME_BM, _.srcexpv, _.modgenob, _.routob,
+                          _.stmtob, depth);
+      objstrbuffersetindentpayl_BM (_.modgenob, depth);
+      objstrbufferprintfpayl_BM (_.modgenob, ";\n");
+    }
+  objstrbufferprintfpayl_BM (_.modgenob, " goto epilog%s;\n", routidbuf);
+  LOCALRETURN_BM (_.stmtob);
 }                               /* end emit_statement°basiclo_return _7DErEWkQBmz_5hPwF6ARmJ7 */
