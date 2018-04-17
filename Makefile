@@ -119,7 +119,7 @@ checksum:
 %.o: %.c
 
 %_BM.o: %_BM.c bismon.h $(GENERATED_HEADERS) $(BM_HEADERS) %_BM.const.h bismon.h.gch
-	echo objcirc is $^ left $<
+#	echo objcirc is $^ left $<
 	$(COMPILE.c) -DBMcomp -c $< -o $@
 
 %_BM.o: %_BM.cc bismon.h $(GENERATED_HEADERS) $(BM_HEADERS)
