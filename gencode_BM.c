@@ -1686,6 +1686,9 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                0);
   objstrbufferprintfpayl_BM (_.modgenob, ";\n" "} // end %s\n\n", routidbuf);
   objunlock_BM (_.modgenob);
+  DBGPRINTF_BM("emit_definition°simple_routine_preparation end routprepob=%s",
+	       objectdbg_BM(_.routprepob));
+  LOCALRETURN_BM(_.routprepob);
 failure:
   DBGPRINTF_BM ("emit_definition°simple_routine_preparation failin %d routprep %s cause %s",   //
                 failin, objectdbg_BM (_.routprepob),    //
@@ -2563,11 +2566,15 @@ ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7)    //emit_statement°basiclo_return
                              objectdbg_BM (_.stmtob));
   if (_.srcexpv)
     {
+      DBGPRINTF_BM ("emit_statement°basiclo_return stmtob=%s routprepob=%s retvarob=%s srcexp=%s",
+		    objectdbg_BM(_.stmtob), objectdbg1_BM(_.routprepob),
+		    objectdbg2_BM(_.retvarob),
+		    debug_outstr_value_BM(_.srcexpv, CURFRAME_BM, 0));
       emit_var_BM (CURFRAME_BM, _.retvarob, _.modgenob, _.routprepob,
                    _.stmtob, depth);
       objstrbufferprintfpayl_BM (_.modgenob, " = // returned\n");
       objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
-      emit_expression_BM (CURFRAME_BM, _.srcexpv, _.modgenob, _.routob,
+      emit_expression_BM (CURFRAME_BM, _.srcexpv, _.modgenob, _.routprepob,
                           _.stmtob, depth);
       objstrbuffersetindentpayl_BM (_.modgenob, depth);
       objstrbufferprintfpayl_BM (_.modgenob, ";\n");
