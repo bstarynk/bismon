@@ -2712,5 +2712,213 @@ failure:
   _.errorv = makenode3_BM (BMP_emit_module, _.modulob, _.modgenob, _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
-#warning emit_module of plain_module incomplete
 }                               /* end emit_module°plain_module _1gME6zn82Kf_8hzWibLFRfz */
+
+
+
+// for the method to prepare_module in basiclo_temporary_module &
+// basiclo_dumpable_module
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA);
+value_tyBM
+ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    // prepare_module°basiclo*module
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // recieving module
+ const value_tyBM arg2,         // module generator
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const value_tyBM arg4 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * modulob;
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * funhsetob;
+                 objectval_tyBM * consthsetob;
+                 value_tyBM curcomp;    //
+                 seqobval_tyBM * curseq;        //
+                 value_tyBM partres;    //
+                 setval_tyBM * setfun;
+                 value_tyBM errorv;
+                 value_tyBM causev;
+    );
+  objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
+  objectval_tyBM *k_functions_set = BMK_9stpgEfdDDE_7LUgqylTeFI;
+  objectval_tyBM *k_basiclo_function = BMK_2Ir1i8qnrA4_3jSkierlc5z;
+  objectval_tyBM *k_complete_module = BMK_5MiY0SneC5A_7c2Ar72nm9O;
+  objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
+  if (!isobject_BM (arg1))
+    LOCALRETURN_BM (NULL);
+  _.modulob = (objectval_tyBM *) arg1;
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
+  DBGPRINTF_BM ("@@prepare_module°basiclo*module _8zNBXSMY2Ts_1VI5dmY4umA"
+                "  modulob=%s\n" "... is a %s\n", objectdbg_BM (_.modulob),
+                objectdbg1_BM (objclass_BM (_.modulob)));
+  if (!isobject_BM (arg2))
+    LOCALRETURN_BM (NULL);
+  _.modgenob = (objectval_tyBM *) arg2;
+  DBGPRINTF_BM ("@@prepare_module°basiclo*module modgenob=%s\n"
+                ".... is a %s\n", objectdbg_BM (_.modgenob),
+                objectdbg1_BM (objclass_BM (_.modgenob)));
+  objectval_tyBM *k_simple_module_generation = BMK_2HlKptD03wA_7JJCG7lN5nS;
+  if (!objectisinstance_BM (_.modgenob, k_simple_module_generation))
+    FAILHERE (makenode1_BM (k_simple_module_generation, _.modgenob));
+  _.funhsetob = makeobj_BM ();
+  objputclass_BM (_.funhsetob, k_hset_object);
+  objputhashsetpayl_BM (_.funhsetob, objnbcomps_BM (_.modulob) + 1);
+  _.consthsetob = makeobj_BM ();
+  objputclass_BM (_.consthsetob, k_hset_object);
+  objputhashsetpayl_BM (_.consthsetob, 5 * objnbcomps_BM (_.modulob) + 10);
+  objputattr_BM (_.modgenob, k_functions_set, _.funhsetob);
+  objputattr_BM (_.modgenob, k_constants, _.consthsetob);
+  DBGPRINTF_BM
+    ("@@prepare_module°basiclo*module modgenob=%s funhsetob=%s consthsetob=%s",
+     objectdbg_BM (_.modgenob), objectdbg1_BM (_.funhsetob),
+     objectdbg2_BM (_.consthsetob));
+  for (unsigned ix = 0; ix < objnbcomps_BM (_.modulob); ix++)
+    {
+      DBGPRINTF_BM ("@@prepare_module°basiclo*module ix=%u", ix);
+      _.curcomp = objgetcomp_BM (_.modulob, ix);
+      if (isobject_BM (_.curcomp))
+        {
+          DBGPRINTF_BM ("@@prepare_module°basiclo*module object at ix=%u",
+                        ix);
+          if (objectisinstance_BM (_.curcomp, k_basiclo_function))
+            {
+              objhashsetaddpayl_BM (_.funhsetob, _.curcomp);
+              DBGPRINTF_BM
+                ("@@prepare_module°basiclo*module adding curcomp %s",
+                 objectdbg_BM ((objectval_tyBM *) _.curcomp));
+            }
+          else
+            {
+              DBGPRINTF_BM
+                ("@@prepare_module°basiclo*module bad object curcomp %s",
+                 objectdbg_BM ((objectval_tyBM *) _.curcomp));
+              FAILHERE (makenode2_BM
+                        (k_basiclo_function, _.curcomp, taggedint_BM (ix)));
+            }
+        }
+      else if (issequence_BM (_.curcomp))
+        {
+          _.curseq = (seqobval_tyBM *) _.curcomp;
+          unsigned sqlen = sequencesize_BM (_.curseq);
+          DBGPRINTF_BM ("@@prepare_module°basiclo*module seqlen %u at ix=%u",
+                        sqlen, ix);
+          for (unsigned j = 0; j < sqlen; j++)
+            {
+              _.curcomp = sequencenthcomp_BM (_.curseq, j);
+              if (objectisinstance_BM (_.curcomp, k_basiclo_function))
+                {
+                  DBGPRINTF_BM
+                    ("@@prepare_module°basiclo*module adding curcomp %s",
+                     objectdbg_BM ((objectval_tyBM *) _.curcomp));
+                  objhashsetaddpayl_BM (_.funhsetob, _.curcomp);
+                }
+              else
+                {
+                  DBGPRINTF_BM
+                    ("@@prepare_module°basiclo*module bad seq curcomp %s",
+                     objectdbg_BM ((objectval_tyBM *) _.curcomp));
+                  FAILHERE (makenode3_BM
+                            (k_basiclo_function, _.curcomp, taggedint_BM (ix),
+                             taggedint_BM (j)));
+                }
+            }
+          DBGPRINTF_BM
+            ("@@prepare_module°basiclo*module done seqlen %u at ix=%u",
+             sqlen, ix);
+        }
+      else if (isclosure_BM (_.curcomp))
+        {
+          DBGPRINTF_BM ("@@prepare_module°basiclo*module closure at ix=%u",
+                        ix);
+          _.partres =
+            apply2_BM ((closure_tyBM *) _.curcomp,
+                       CURFRAME_BM, _.modulob, _.modgenob);
+          if (isobject_BM (_.partres)
+              && objectisinstance_BM (_.partres, k_basiclo_function))
+            {
+              DBGPRINTF_BM
+                ("@@prepare_module°basiclo*module adding partres %s",
+                 objectdbg_BM ((objectval_tyBM *) _.partres));
+              objhashsetaddpayl_BM (_.funhsetob, _.partres);
+            }
+          else if (issequence_BM (_.partres))
+            {
+              _.curseq = (seqobval_tyBM *) _.partres;
+              unsigned sqlen = sequencesize_BM (_.curseq);
+              DBGPRINTF_BM
+                ("@@prepare_module°basiclo*module ix=%u partres sqlen=%u",
+                 ix, sqlen);
+              for (unsigned j = 0; j < sqlen; j++)
+                {
+                  _.curcomp = sequencenthcomp_BM (_.curseq, j);
+                  if (objectisinstance_BM (_.curcomp, k_basiclo_function))
+                    {
+                      DBGPRINTF_BM
+                        ("@@prepare_module°basiclo*module adding curcomp %s",
+                         objectdbg_BM ((objectval_tyBM *) _.curcomp));
+                      objhashsetaddpayl_BM (_.funhsetob, _.curcomp);
+                    }
+                  else
+                    {
+                      DBGPRINTF_BM
+                        ("@@prepare_module°basiclo*module ix=%u j=%u bad curcomp %s",
+                         ix, j, objectdbg_BM ((objectval_tyBM *) _.curcomp));
+                      FAILHERE (makenode3_BM
+                                (k_basiclo_function, _.curcomp, _.partres,
+                                 taggedint_BM (ix)));
+                    }
+                }
+            }
+          else
+            {
+              DBGPRINTF_BM
+                ("@@prepare_module°basiclo*module ix=%u bad partres", ix);
+              FAILHERE (makenode3_BM
+                        (k_basiclo_function, _.curcomp, _.partres,
+                         taggedint_BM (ix)));
+            }
+        }
+      else
+        {
+          DBGPRINTF_BM ("@@prepare_module°basiclo*module ix=%u bad curcomp",
+                        ix);
+          FAILHERE (makenode2_BM
+                    (k_basiclo_function, _.curcomp, taggedint_BM (ix)));
+        }
+    }
+  unsigned nbfun = objhashsetcardinalpayl_BM (_.funhsetob);
+  DBGPRINTF_BM ("@@prepare_module°basiclo*module hsetcard %u", nbfun);
+  _.setfun = (setval_tyBM *) objhashsettosetpayl_BM (_.funhsetob);
+  objputattr_BM (_.modgenob, k_functions_set, _.setfun);
+  DBGPRINTF_BM
+    ("@@prepare_module°basiclo*module before complete_module modulob=%s (of %s) modgenob=%s",
+     objectdbg_BM (_.modulob), objectdbg1_BM (objclass_BM (_.modulob)),
+     objectdbg2_BM (_.modgenob));
+  _.partres =
+    send1_BM (_.modulob, k_complete_module, CURFRAME_BM, _.modgenob);
+  DBGPRINTF_BM ("@@prepare_module°basiclo*module modulob %s partres %s", objectdbg_BM (_.modulob),     //
+                debug_outstr_value_BM (_.partres,       //
+                                       CURFRAME_BM, 0));
+  if (isset_BM (_.partres))
+    {
+      _.setfun = _.partres;
+      DBGPRINTF_BM
+        ("@@prepare_module°basiclo*module done complete_module modulob=%s modgenob=%s setfuncard=%u",
+         objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
+         setcardinal_BM (_.setfun));
+      LOCALRETURN_BM (_.setfun);
+    }
+  DBGPRINTF_BM
+    ("@@prepare_module°basiclo*module done complete_module modulob=%s modgenob=%s",
+     objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
+  LOCALRETURN_BM (_.modgenob);
+failure:
+  DBGPRINTF_BM ("prepare_module°basiclo*module  failin %d cause %s", failin,
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv = makenode3_BM (BMP_emit_module, _.modulob, _.modgenob, _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+#undef FAILHERE
+}                               /* end  prepare_module°basiclo*module _8zNBXSMY2Ts_1VI5dmY4umA */
