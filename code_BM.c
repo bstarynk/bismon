@@ -1920,84 +1920,13 @@ ROUTINEOBJNAME_BM (_2qppG2LJu79_9ljkbLS0eFQ)    //
 
 
 
-/// for the routine to emit_module in plain_module-s
-
-extern objrout_sigBM ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz);
-
-value_tyBM
-ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    //
-(struct stackframe_stBM * stkf, //
- const value_tyBM arg1,         // recieving module
- const value_tyBM arg2 __attribute__ ((unused)),
- const value_tyBM arg3 __attribute__ ((unused)),
- const value_tyBM arg4 __attribute__ ((unused)),
- const quasinode_tyBM * restargs __attribute__ ((unused)))
-{
-  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv; objectval_tyBM * modgenob;
-                 value_tyBM resprep; value_tyBM resgen;
-    );
-  objectval_tyBM *k_simple_module_generation = BMK_2HlKptD03wA_7JJCG7lN5nS;
-  objectval_tyBM *k_prepare_module = BMK_17mrxkMdNtH_2CduQ2WDIy5;
-  objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
-  objectval_tyBM *k_generate_module = BMK_9mq0jsuz4XQ_4doHfd987Q6;
-  if (!isobject_BM (arg1))
-    LOCALRETURN_BM (NULL);
-  _.recv = (objectval_tyBM *) arg1;
-  _.modgenob = makeobj_BM ();
-  objputclass_BM (_.modgenob, k_simple_module_generation);
-  objputattr_BM (_.modgenob, k_plain_module, _.recv);
-  objputstrbufferpayl_BM (_.modgenob, (1024 * 1024));
-  objtouchnow_BM (_.modgenob);
-  DBGPRINTF_BM ("@@plain_module°emit_module recv=%s made modgenob=%s *sbuf*",
-                objectdbg_BM (_.recv), objectdbg1_BM (_.modgenob));
-  _.resprep = send1_BM (_.recv, k_prepare_module, CURFRAME_BM, _.modgenob);
-  DBGPRINTF_BM ("@@emit_module recv=%s modgenob=%s resprep=%s", //
-                objectdbg_BM (_.recv), objectdbg1_BM (_.modgenob),      //
-                debug_outstr_value_BM (_.resprep,       //
-                                       CURFRAME_BM, 0));
-  if (!_.resprep)
-    {
-      DBGPRINTF_BM ("@@emit_module recv=%s prepare_module failed",
-                    objectdbg_BM (_.recv));
-      LOCALRETURN_BM (NULL);
-    }
-  else
-    DBGPRINTF_BM ("@@emit_module recv=%s prepare_module done before generate_module modgenob=%s resprep=%s",    //
-                  objectdbg_BM (_.recv), objectdbg1_BM (_.modgenob),    //
-                  debug_outstr_value_BM (_.resprep,     //
-                                         CURFRAME_BM, 0));
-  WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
-  objstrbufferprintfpayl_BM (_.modgenob, "// generated module %s\n",
-                             objectdbg_BM (_.recv));
-  _.resgen =
-    send2_BM (_.recv, k_generate_module, CURFRAME_BM, _.modgenob, _.resprep);
-  if (!_.resgen)
-    {
-      DBGPRINTF_BM
-        ("@@emit_module recv=%s generate_module failed modgenob=%s sbuf.l%u '''\n%s\n'''\n",
-         objectdbg_BM (_.recv), objectdbg1_BM (_.modgenob),
-         objstrbufferlengthpayl_BM (_.modgenob),
-         objstrbufferbytespayl_BM (_.modgenob));
-      LOCALRETURN_BM (NULL);
-    }
-  else
-    DBGPRINTF_BM ("@@emit_module recv=%s generate_module done resgen=%s",
-                  objectdbg_BM (_.recv),
-                  debug_outstr_value_BM (_.resgen, CURFRAME_BM, 0));
-  LOCALRETURN_BM (_.recv);
-#warning emit_module of plain_module incomplete
-}                               /* end  ROUTINE _1gME6zn82Kf_8hzWibLFRfz */
-
-
-
 
 // for the method to prepare_module in basiclo_temporary_module &
 // basiclo_dumpable_module
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA);
 value_tyBM
-ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
+ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    // prepare_module°basiclo*module
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // recieving module
  const value_tyBM arg2,         // module generator
@@ -2167,7 +2096,7 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    //
     ("@@prepare_module°basiclo*module failed complete_module recv=%s modgen=%s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.modgen));
   LOCALRETURN_BM (NULL);
-}                               /* end ROUTINE _8zNBXSMY2Ts_1VI5dmY4umA prepare_module°basiclo*module */
+}                               /* end  prepare_module°basiclo*module _8zNBXSMY2Ts_1VI5dmY4umA */
 
 
 
@@ -2445,7 +2374,9 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
       char idbuf[32];
       memset (idbuf, 0, sizeof (idbuf));
       idtocbuf32_BM (objid_BM (_.obmod), idbuf);
-      objstrbufferprintfpayl_BM (_.bufob, "\t// emitted module %s\n", idbuf);
+      objstrbufferprintfpayl_BM (_.bufob,
+                                 "\t// emitted module " MODULEPREFIX_BM
+                                 "%s.c\n", idbuf);
       DBGPRINTF_BM
         ("@@dump_data°plain_dumpable_module emitted obmod=%s\n****----------------\n",
          objectdbg_BM (_.obmod));

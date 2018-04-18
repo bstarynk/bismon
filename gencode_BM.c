@@ -1686,9 +1686,10 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                0);
   objstrbufferprintfpayl_BM (_.modgenob, ";\n" "} // end %s\n\n", routidbuf);
   objunlock_BM (_.modgenob);
-  DBGPRINTF_BM("emit_definition°simple_routine_preparation end routprepob=%s",
-	       objectdbg_BM(_.routprepob));
-  LOCALRETURN_BM(_.routprepob);
+  DBGPRINTF_BM
+    ("emit_definition°simple_routine_preparation end routprepob=%s",
+     objectdbg_BM (_.routprepob));
+  LOCALRETURN_BM (_.routprepob);
 failure:
   DBGPRINTF_BM ("emit_definition°simple_routine_preparation failin %d routprep %s cause %s",   //
                 failin, objectdbg_BM (_.routprepob),    //
@@ -2566,10 +2567,11 @@ ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7)    //emit_statement°basiclo_return
                              objectdbg_BM (_.stmtob));
   if (_.srcexpv)
     {
-      DBGPRINTF_BM ("emit_statement°basiclo_return stmtob=%s routprepob=%s retvarob=%s srcexp=%s",
-		    objectdbg_BM(_.stmtob), objectdbg1_BM(_.routprepob),
-		    objectdbg2_BM(_.retvarob),
-		    debug_outstr_value_BM(_.srcexpv, CURFRAME_BM, 0));
+      DBGPRINTF_BM
+        ("emit_statement°basiclo_return stmtob=%s routprepob=%s retvarob=%s srcexp=%s",
+         objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),
+         objectdbg2_BM (_.retvarob), debug_outstr_value_BM (_.srcexpv,
+                                                            CURFRAME_BM, 0));
       emit_var_BM (CURFRAME_BM, _.retvarob, _.modgenob, _.routprepob,
                    _.stmtob, depth);
       objstrbufferprintfpayl_BM (_.modgenob, " = // returned\n");
@@ -2582,3 +2584,133 @@ ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7)    //emit_statement°basiclo_return
   objstrbufferprintfpayl_BM (_.modgenob, " goto epilog%s;\n", routidbuf);
   LOCALRETURN_BM (_.stmtob);
 }                               /* end emit_statement°basiclo_return _7DErEWkQBmz_5hPwF6ARmJ7 */
+
+
+/// for the routine to emit_module in plain_module-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // recieving module
+ const value_tyBM arg2,         /* optional dumperob or prefix */
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const value_tyBM arg4 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * modulob; objectval_tyBM * modgenob;
+                 value_tyBM resprep; value_tyBM resgen; value_tyBM prefixv;
+                 objectval_tyBM * dumpob; value_tyBM errorv;
+                 value_tyBM causev;
+    );
+  char *srcdirstr = NULL;
+  char *srcpathstr = NULL;
+  objectval_tyBM *k_simple_module_generation = BMK_2HlKptD03wA_7JJCG7lN5nS;
+  objectval_tyBM *k_prepare_module = BMK_17mrxkMdNtH_2CduQ2WDIy5;
+  objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
+  objectval_tyBM *k_generate_module = BMK_9mq0jsuz4XQ_4doHfd987Q6;
+  if (!isobject_BM (arg1))
+    LOCALRETURN_BM (NULL);
+  _.modulob = (objectval_tyBM *) arg1;
+  _.prefixv = arg2;
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
+  if (isstring_BM (_.prefixv))
+    srcdirstr = strdup (bytstring_BM (_.prefixv));
+  else if (isobject_BM (_.prefixv))
+    {
+      struct dumper_stBM *du =
+        obdumpgetdumper_BM ((objectval_tyBM *) _.prefixv);
+      if (du)
+        {
+          _.dumpob = (objectval_tyBM *) _.prefixv;
+          asprintf (&srcdirstr, "%s/modules", du->dump_dir);
+        }
+      else
+        FAILHERE (makenode1_BM (BMP_object, _.prefixv));
+    }
+  else
+    srcdirstr = strdup ("modules");
+  if (!srcdirstr)
+    FATAL_BM ("strdup failed for srcdirstr");
+  _.modgenob = makeobj_BM ();
+
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof (modulidbuf));
+  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+  objputclass_BM (_.modgenob, k_simple_module_generation);
+  objputattr_BM (_.modgenob, k_plain_module, _.modulob);
+  objputstrbufferpayl_BM (_.modgenob, (1024 * 1024));
+  objtouchnow_BM (_.modgenob);
+  DBGPRINTF_BM
+    ("@@emit_module°plain_module modulob=%s [%s] made modgenob=%s *sbuf*",
+     objectdbg_BM (_.modulob), modulidbuf, objectdbg1_BM (_.modgenob));
+  _.resprep = send1_BM (_.modulob, k_prepare_module, CURFRAME_BM, _.modgenob);
+  DBGPRINTF_BM ("@@emit_module modulob=%s modgenob=%s resprep=%s",      //
+                objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),   //
+                debug_outstr_value_BM (_.resprep,       //
+                                       CURFRAME_BM, 0));
+  if (!_.resprep)
+    {
+      DBGPRINTF_BM ("@@emit_module modulob=%s prepare_module failed",
+                    objectdbg_BM (_.modulob));
+      LOCALRETURN_BM (NULL);
+    }
+  else
+    DBGPRINTF_BM ("@@emit_module modulob=%s prepare_module done before generate_module modgenob=%s resprep=%s", //
+                  objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob), //
+                  debug_outstr_value_BM (_.resprep,     //
+                                         CURFRAME_BM, 0));
+  WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "// generated module %s in file " MODULEPREFIX_BM
+                             "%s.c\n", objectdbg_BM (_.modulob), modulidbuf);
+  _.resgen =
+    send2_BM (_.modulob, k_generate_module, CURFRAME_BM, _.modgenob,
+              _.resprep);
+  if (!_.resgen)
+    {
+      DBGPRINTF_BM
+        ("@@emit_module modulob=%s generate_module failed modgenob=%s sbuf.l%u '''\n%s\n'''\n",
+         objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
+         objstrbufferlengthpayl_BM (_.modgenob),
+         objstrbufferbytespayl_BM (_.modgenob));
+      LOCALRETURN_BM (NULL);
+    }
+  else
+    DBGPRINTF_BM ("@@emit_module modulob=%s generate_module done resgen=%s",
+                  objectdbg_BM (_.modulob),
+                  debug_outstr_value_BM (_.resgen, CURFRAME_BM, 0));
+  objstrbufferprintfpayl_BM (_.modgenob, "\n\n"
+                             "// end of generated module %s in file "
+                             MODULEPREFIX_BM "%s.c\n",
+                             objectdbg_BM (_.modulob), modulidbuf);
+  if (g_mkdir_with_parents (srcdirstr, 0750))
+    {
+      fprintf (stderr, "cannot mkdir with parents %s (%m)\n", srcdirstr);
+      FAILHERE (makestring_BM (srcdirstr));
+    }
+  asprintf (&srcpathstr, "%s/" MODULEPREFIX_BM "%s.c", srcdirstr, modulidbuf);
+  if (!srcpathstr)
+    FATAL_BM ("failed to allocate srcpathstr dir %s modulidbuf %s", srcdirstr,
+              modulidbuf);
+  objstrbufferwritetofilepayl_BM (_.modgenob, srcpathstr);
+  /// 
+  if (srcpathstr)
+    free (srcpathstr), srcpathstr = NULL;
+  if (srcdirstr)
+    free (srcdirstr), srcdirstr = NULL;
+  LOCALRETURN_BM (_.modgenob);
+failure:
+  if (srcdirstr)
+    free (srcdirstr), srcdirstr = NULL;
+  if (srcpathstr)
+    free (srcpathstr), srcpathstr = NULL;
+  DBGPRINTF_BM ("emit_module°plain_module failin %d cause %s", failin,
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv = makenode3_BM (BMP_emit_module, _.modulob, _.modgenob, _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+#undef FAILHERE
+#warning emit_module of plain_module incomplete
+}                               /* end emit_module°plain_module _1gME6zn82Kf_8hzWibLFRfz */
