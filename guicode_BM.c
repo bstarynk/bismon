@@ -1918,6 +1918,9 @@ ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    //
           log_begin_message_BM ();
           log_puts_message_BM ("did emit module ");
           log_object_message_BM (_.modulob);
+          log_puts_message_BM (" into ");
+          log_object_message_BM (objectcast_BM (_.resultv));
+          log_puts_message_BM (" .");
           log_end_message_BM ();
           LOCALRETURN_BM (_.resultv);
         };

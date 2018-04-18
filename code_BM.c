@@ -1929,7 +1929,7 @@ ROUTINEOBJNAME_BM (_2qppG2LJu79_9ljkbLS0eFQ)    //
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_60NdV04Lel2_5FSZVWKbSL7);
 value_tyBM
-ROUTINEOBJNAME_BM (_60NdV04Lel2_5FSZVWKbSL7)    //
+ROUTINEOBJNAME_BM (_60NdV04Lel2_5FSZVWKbSL7)    // put_data_value°basiclo_function
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // recieving function
  const value_tyBM arg2,         // new value
@@ -1948,7 +1948,9 @@ ROUTINEOBJNAME_BM (_60NdV04Lel2_5FSZVWKbSL7)    //
   objputpayload_BM (_.recv, _.nval);
   objtouchnow_BM (_.recv);
   LOCALRETURN_BM (_.recv);
-}                               /* end ROUTINEOBJNAME_BM _60NdV04Lel2_5FSZVWKbSL7 */
+}                               /* end  put_data_value°basiclo_function _60NdV04Lel2_5FSZVWKbSL7 */
+
+
 
 
 // for the method to generate_module in basiclo_temporary_module &
@@ -1993,6 +1995,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
                 debug_outstr_value_BM ((value_tyBM) _.prepval,
                                        CURFRAME_BM, 1));
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgen));
+  objstrbufferprintfpayl_BM (_.modgen, "\n" "#include \"bismon.h\"\n\n");
   if (!isset_BM (_.prepval))
     {
       DBGPRINTF_BM ("@@generate_module°basiclo*module bad prepval");

@@ -193,18 +193,19 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9);
 value_tyBM
 ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_minifunction
 (struct stackframe_stBM * stkf, const value_tyBM arg1,  // reciever
- const value_tyBM arg2,         // modgen
+ const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // prepvalset
  const value_tyBM arg4, const quasinode_tyBM * restargs)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * modgen;
+                 objectval_tyBM * modgenob;
                  setval_tyBM * prepvalset;
                  objectval_tyBM * curprepob;
                  objectval_tyBM * curtypob;
                  objectval_tyBM * routprep;
                  objectval_tyBM * obhsetblock;
                  objectval_tyBM * typob;
+                 objectval_tyBM * obmodhsetconst;
                  value_tyBM recv;
                  const tupleval_tyBM * tupargs;
                  const tupleval_tyBM * tupclosed;
@@ -236,16 +237,18 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   // retrieve arguments
   _.recv = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (_.recv));
-  _.modgen = objectcast_BM (arg2);
+  _.modgenob = objectcast_BM (arg2);
   _.prepvalset = setcast_BM (arg3);     /// unneeded, set of all routines
-  WEAKASSERT_BM (_.modgen != NULL);
+  WEAKASSERT_BM (_.modgenob != NULL);
+  _.obmodhsetconst = objectcast_BM (objgetattr_BM (_.modgenob, k_constants));
   WEAKASSERT_BM (_.prepvalset != NULL);
   unsigned nbprep = setcardinal_BM (_.prepvalset);
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ;  _.causev = (Cause); goto failure; } while(0)
   DBGPRINTF_BM
-    ("start prepare_routine°basiclo_minifunction recv=%s modgen=%s nbprep=%u",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.modgen), nbprep);
+    ("start prepare_routine°basiclo_minifunction recv=%s modgenob=%s nbprep=%u obmodhsetconst=%s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.modgenob), nbprep,
+     objectdbg2_BM (_.obmodhsetconst));
   _.tupargs = tuplecast_BM (objgetattr_BM (_.recv, k_arguments));
   _.tupclosed = tuplecast_BM (objgetattr_BM (_.recv, k_closed));
   _.obresult = objectcast_BM (objgetattr_BM (_.recv, k_result));
@@ -264,7 +267,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   objputclass_BM (_.routprep,
                   (objectval_tyBM *) k_simple_routine_preparation);
   objputattr_BM (_.routprep, k_in, _.recv);
-  objputattr_BM (_.routprep, k_modgenob, _.modgen);
+  objputattr_BM (_.routprep, k_modgenob, _.modgenob);
   unsigned nbargs = tuplesize_BM (_.tupargs);
   unsigned nbclosed = tuplesize_BM (_.tupclosed);
   unsigned nblocals = setcardinal_BM (_.setlocals);
@@ -368,6 +371,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
         }
       _.curol = makenode1_BM (k_constants, taggedint_BM (cstix));
       objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
+      objhashsetaddpayl_BM (_.obmodhsetconst, _.curvar);
       _.curol = NULL;
     }
   _.obhsetblock = makeobj_BM ();
@@ -375,7 +379,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   objputclass_BM (_.obhsetblock, (objectval_tyBM *) k_hset_object);
   objputattr_BM (_.routprep, k_blocks, _.obhsetblock);
   objputattr_BM (_.routprep, k_prepare_routine, _.recv);
-  objputattr_BM (_.routprep, k_in, _.modgen);
+  objputattr_BM (_.routprep, k_in, _.modgenob);
   objputattr_BM (_.obhsetblock, k_in, _.routprep);
   objtouchnow_BM (_.obhsetblock);
   objtouchnow_BM (_.routprep);
@@ -395,7 +399,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   LOCALRETURN_BM (_.routprep);
 failure:
   _.errorv =
-    makenode4_BM (k_prepare_routine, _.recv, _.modgen, _.prepvalset,
+    makenode4_BM (k_prepare_routine, _.recv, _.modgenob, _.prepvalset,
                   _.causev);
   DBGPRINTF_BM
     ("failure prepare_routine°basiclo_minifunction  failin %d errorv %s",
