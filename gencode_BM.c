@@ -2720,6 +2720,7 @@ failure:
 
 
 
+
 // for the method to prepare_module in basiclo_temporary_module &
 // basiclo_dumpable_module
 
@@ -2742,7 +2743,7 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    // prepare_module°basiclo*modul
                  seqobval_tyBM * curseq;        //
                  value_tyBM partres;    //
                  setval_tyBM * setfun;
-                 value_tyBM errorv;
+                 setval_tyBM * setconst; value_tyBM errorv;
                  value_tyBM causev;
     );
   objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
@@ -2903,9 +2904,14 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    // prepare_module°basiclo*modul
      objectdbg2_BM (_.modgenob));
   _.partres =
     send1_BM (_.modulob, k_complete_module, CURFRAME_BM, _.modgenob);
-  DBGPRINTF_BM ("@@prepare_module°basiclo*module modulob %s partres %s", objectdbg_BM (_.modulob),     //
-                debug_outstr_value_BM (_.partres,       //
-                                       CURFRAME_BM, 0));
+  DBGPRINTF_BM ("@@prepare_module°basiclo*module modulob %s partres %s",       //
+                objectdbg_BM (_.modulob),       //
+                debug_outstr_value_BM (_.partres, CURFRAME_BM, 0));
+  _.setconst = objhashsettosetpayl_BM (_.consthsetob);
+  DBGPRINTF_BM ("@@prepare_module°basiclo*module modulob %s modgenob %s setconst %s",  //
+                objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),   //
+                debug_outstr_value_BM (_.setconst, CURFRAME_BM, 0));
+  objputattr_BM (_.modgenob, k_constants, _.setconst);
   if (isset_BM (_.partres))
     {
       _.setfun = _.partres;
