@@ -1,9 +1,15 @@
 // generated module first_test_module in file modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c
 
+#include "bismon.h"
+
+
 
 // declare 1 routines
 
 extern objrout_sigBM crout_43Y25VLmh6s_3JRpERevcR4_BM;  // successor_test_minifunc
+
+
+// declare 0 constants
 
 
 // define 1 routines

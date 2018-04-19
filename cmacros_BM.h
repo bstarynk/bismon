@@ -168,6 +168,8 @@
 /// named crout_60mLNh9vtVY_0pwkHRtJ44k_BM
 #define ROUTINEOBJNAME_BM(Id) crout##Id##_BM
 #define ROUTINEOBJPREFIX_BM "crout"
+#define CONSTOBARRPREFIX_BM "constob"
+#define CONSTIDARRPREFIX_BM "constid"
 #define ROUTINESUFFIX_BM "_BM"
 
 #define GLOBAL_BM(Gnam) globdata_##Gnam##_BM

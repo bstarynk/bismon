@@ -1982,10 +1982,14 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
   objectval_tyBM *k_emit_definition = BMK_1g8s9B96Irf_6Ix2Cyy8Hq0;
   const objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   ASSERT_BM (isobject_BM (_.modulob));
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof (modulidbuf));
+  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
   DBGPRINTF_BM
-    ("@@generate_module°basiclo*module  modulob=%s\n"
+    ("@@generate_module°basiclo*module modulob=%s /%s\n"
      "... is a %s\n",
-     objectdbg_BM (_.modulob), objectdbg1_BM (objclass_BM (_.modulob)));
+     objectdbg_BM (_.modulob), modulidbuf,
+     objectdbg1_BM (objclass_BM (_.modulob)));
   _.modgenob = objectcast_BM (arg2);
   _.prepval = arg3;
   if (!_.modgenob)
@@ -2081,9 +2085,15 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
 #warning emit declaration related to constants
   if (nbconst > 0)
     {
-
+      objstrbufferprintfpayl_BM (_.modgenob, "objectval_tyBM* "
+                                 CONSTOBARRPREFIX_BM
+                                 "%s" ROUTINESUFFIX_BM
+                                 "[%d+1];\n", modulidbuf, nbconst);
+      objstrbufferprintfpayl_BM (_.modgenob, "const char* const "
+                                 CONSTIDARRPREFIX_BM
+                                 "%s" ROUTINESUFFIX_BM
+                                 "[%d+1];\n", modulidbuf, nbconst);
     }
-
   //////
   // we should now define the routines
   objstrbufferprintfpayl_BM (_.modgenob, "\n\n// define %u routines\n",

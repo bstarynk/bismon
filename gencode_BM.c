@@ -735,10 +735,13 @@ miniscan_var_BM (objectval_tyBM * varob,
   if (isnode_BM (_.vrolv))
     {
       _.rolconnob = nodeconn_BM (_.vrolv);
-      if (_.rolconnob == k_arguments || _.rolconnob == k_locals
-          || _.rolconnob == k_constants)
+      if (_.rolconnob == k_arguments || _.rolconnob == k_locals)
         {
           LOCALRETURN_BM (k_value);
+        }
+      else if (_.rolconnob == k_constants)
+        {
+          LOCALRETURN_BM (BMP_object);
         }
       else if (_.rolconnob == k_numbers)
         {
