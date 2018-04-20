@@ -19,6 +19,8 @@
 
 #include "bismon.h"
 
+#warning something wrong, is_objectv partly lost
+
 void
 dumpgcmark_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du)
 {
