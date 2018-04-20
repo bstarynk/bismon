@@ -2272,7 +2272,8 @@ emit_var_BM (struct stackframe_stBM *stkf, objectval_tyBM * refob,
     FAILHERE (NULL);
   LOCALJUSTRETURN_BM ();
 failure:
-  DBGPRINTF_BM ("emit_var_BM failin %d ref %s routprep %s cause %s", failin, objectdbg_BM (_.refob), objectdbg1_BM (_.routprepob),      //
+  DBGPRINTF_BM ("emit_var_BM failin %d ref %s routprep %s cause %s",    //
+                failin, objectdbg_BM (_.refob), objectdbg1_BM (_.routprepob),   //
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     makenode4_BM (k_emit_reference, refob, _.routprepob, _.modgenob,
@@ -2340,7 +2341,8 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
      objectdbg3_BM (_.fromob));
   _.connargsv = objgetattr_BM (_.connob, k_arguments);
   _.conncexpansionv = objgetattr_BM (_.connob, k_cexpansion);
-  DBGPRINTF_BM ("miniemit_node_conn°basiclo_primitive connob=%s connargs=%s conncexpansion=%s", objectdbg_BM (_.connob),       //
+  DBGPRINTF_BM ("miniemit_node_conn°basiclo_primitive connob=%s connargs=%s conncexpansion=%s",        //
+                objectdbg_BM (_.connob),        //
                 debug_outstr_value_BM (_.connargsv, CURFRAME_BM, 0),
                 debug_outstr_value_BM (_.conncexpansionv, CURFRAME_BM, 0));
   WEAKASSERT_BM (istuple_BM (_.connargsv));
