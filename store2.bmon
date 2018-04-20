@@ -1912,10 +1912,14 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !(_9O2lgu1TweO_0mVlpTwrBG1 |=second_test_minifunc|
 !~ name (~ second_test_minifunc
 ~)
-!@ 1510935710.74
+!@ 1524221402.07
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "second minifunc in test module"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+ [ _3qw9bnATIhq_8loBraLeXzQ ]
 !)_9O2lgu1TweO_0mVlpTwrBG1
 
 
@@ -2041,10 +2045,10 @@ _2mYaTh9kH4I_7ENiXcymRmy
 !(_43Y25VLmh6s_3JRpERevcR4 |=successor_test_minifunc|
 !~ name (~ successor_test_minifunc
 ~)
-!@ 1511265759.89
+!@ 1524221243.85
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "first minifunc in first_test_module - successor of number"
+ "first minifunc in first_test_module;\n if"& " its argument is a number value, return its"& " successor as a taggedint value"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _3vRFuniDv1K_4bQ7DeekM2I ]
 !: _32eKNcTZ9HN_80t0nk47Mha |=numbers|
