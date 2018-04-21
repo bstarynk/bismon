@@ -113,6 +113,11 @@ struct
   const char *pr_name;
 } added_predef_bm[MAXADDEDPREDEF_BM];
 
+#define MAXPARSED_VALUES_AFTER_LOAD_BM 10
+char *parsed_values_after_loadarr_bm[MAXPARSED_VALUES_AFTER_LOAD_BM];
+int nb_parsed_values_after_load_bm;
+
+
 bool batch_bm;
 bool oldgui_BM;
 bool give_version_bm;
@@ -203,6 +208,20 @@ run_command_bm (const gchar * optname
   return FALSE;
 }                               /* end run_command_bm */
 
+static void
+get_parse_value_after_load_bm (const gchar * optname __attribute__ ((unused)),
+                               const gchar * val,
+                               gpointer data __attribute__ ((unused)),
+                               GError ** perr __attribute__ ((unused)))
+{
+  if (nb_parsed_values_after_load_bm >= MAXPARSED_VALUES_AFTER_LOAD_BM)
+    FATAL_BM ("too many %d parsed values after load with --parse-value",
+              nb_parsed_values_after_load_bm);
+  parsed_values_after_loadarr_bm[nb_parsed_values_after_load_bm++] = val;
+  return FALSE;
+}                               /* end get_parse_value_after_load_bm */
+
+
 static bool
 add_predef_bm (const gchar * optname __attribute__ ((unused)),
                const gchar * val,
@@ -289,6 +308,14 @@ const GOptionEntry optab[] = {
    .arg_data = &run_command_bm,
    .description = "run the command CMD",
    .arg_description = "CMD"},
+
+  //
+  {.long_name = "parse-value",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &get_parse_value_after_load_bm,
+   .description = "parse (after loading) the value EXPR",
+   .arg_description = "EXPR"},
 
   //
   {.long_name = "comment-predef",.short_name = (char) 0,
@@ -395,6 +422,8 @@ idqcmp_BM (const void *p1, const void *p2)
 
 static void rungui_BM (bool newgui, int nbjobs);
 
+static void parse_values_after_load_bm (void);
+
 static void give_prog_version_BM (const char *progname);
 
 
@@ -495,6 +524,8 @@ main (int argc, char **argv)
   load_initial_BM (load_dir_bm);
   if (nb_added_predef_bm > 0)
     add_new_predefined_bm ();
+  if (nb_parsed_values_after_load_bm > 0)
+    parse_values_after_load_BM ();
   if (dump_after_load_dir_bm)
     {
       struct dumpinfo_stBM di = dump_BM (dump_after_load_dir_bm, NULL);
@@ -525,6 +556,39 @@ main (int argc, char **argv)
     rungui_BM (!oldgui_BM, nbworkjobs_BM);
   fflush (NULL);
 }                               /* end main */
+
+
+
+void
+parse_values_after_load_BM (void)
+{
+  LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
+                 objectval_tyBM * parsob;
+                 value_tyBM parsedval;
+    );
+  _.parsob = makeobj_BM ();
+  fprintf (stderr, "parsing %d values after load %s using parsob %s\n",
+           nb_parsed_values_after_load_bm, load_dir_bm,
+           objectdbg_BM (_.parsob));
+  for (int ix = 0; ix < nb_parsed_values_after_load_bm; ix++)
+    {
+      const char *curvalstr = parsed_values_after_loadarr_bm[ix];
+      fprintf (stderr, "parsing value#%d:::\n%s\n///----\n", ix, curvalstr);
+      struct parser_stBM *pars =
+        makeparser_memopen_BM (curvalstr, strlen (curvalstr), _.parsob);
+      ASSERT_BM (pars != NULL);
+      bool gotval = false;
+      _.parsedval = parsergetvalue_BM (pars, CURFRAME_BM, 0, &gotval);
+      if (!gotval)
+        FATAL_BM ("failed to parse value#%d", ix);
+      fprintf (stderr, "parsed value#%d is:\n%s\n", ix,
+               debug_outstr_value_BM (_.parsedval, CURFRAME_BM, 0));
+      fflush (NULL);
+      objclearpayload_BM (_.parsob);
+    }
+  fprintf (stderr, "done parsing %d values after load\n",
+           nb_parsed_values_after_load_bm);
+}                               /* end parse_values_after_load_bm */
 
 extern bool did_deferredgtk_BM (void);
 
