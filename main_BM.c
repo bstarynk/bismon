@@ -217,7 +217,10 @@ get_parse_value_after_load_bm (const gchar * optname __attribute__ ((unused)),
   if (nb_parsed_values_after_load_bm >= MAXPARSED_VALUES_AFTER_LOAD_BM)
     FATAL_BM ("too many %d parsed values after load with --parse-value",
               nb_parsed_values_after_load_bm);
-  parsed_values_after_loadarr_bm[nb_parsed_values_after_load_bm++] = val;
+  DBGPRINTF_BM ("get_parse_value_after_load #%d.. valen=%d:\n%s",
+                nb_parsed_values_after_load_bm, (int) strlen (val), val);
+  parsed_values_after_loadarr_bm[nb_parsed_values_after_load_bm++] =
+    strdup (val);
   return FALSE;
 }                               /* end get_parse_value_after_load_bm */
 
@@ -585,6 +588,11 @@ parse_values_after_load_BM (void)
                debug_outstr_value_BM (_.parsedval, CURFRAME_BM, 0));
       fflush (NULL);
       objclearpayload_BM (_.parsob);
+    }
+  for (int ix = 0; ix < nb_parsed_values_after_load_bm; ix++)
+    {
+      free (parsed_values_after_loadarr_bm[ix]),
+        parsed_values_after_loadarr_bm[ix] = NULL;
     }
   fprintf (stderr, "done parsing %d values after load\n",
            nb_parsed_values_after_load_bm);
