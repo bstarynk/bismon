@@ -1753,7 +1753,7 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
   objstrbufferprintfpayl_BM (_.modgenob,
                              "\n"
                              "startblock_%s: __attribute__((unused))\n"
-                             "{ /* +block %s */", blockidbuf);
+                             "{ /* +block %s */", blockidbuf, blockidbuf);
   int indepth = depth + 1;
   unsigned blocklen = objnbcomps_BM (_.blockob);
   for (unsigned insix = 0; insix < blocklen; insix++)

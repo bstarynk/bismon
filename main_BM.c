@@ -217,7 +217,7 @@ get_parse_value_after_load_bm (const gchar * optname __attribute__ ((unused)),
   if (nb_parsed_values_after_load_bm >= MAXPARSED_VALUES_AFTER_LOAD_BM)
     FATAL_BM ("too many %d parsed values after load with --parse-value",
               nb_parsed_values_after_load_bm);
-  DBGPRINTF_BM ("get_parse_value_after_load #%d.. valen=%d:\n%s",
+  NONPRINTF_BM ("get_parse_value_after_load #%d.. valen=%d:\n%s",
                 nb_parsed_values_after_load_bm, (int) strlen (val), val);
   parsed_values_after_loadarr_bm[nb_parsed_values_after_load_bm++] =
     strdup (val);

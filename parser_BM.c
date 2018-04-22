@@ -1470,6 +1470,7 @@ parsergetvalue_BM (struct parser_stBM *pars,
                     objappendcomp_BM (_.vecobj, _.compobj);
                     objunlock_BM (_.vecobj);
                   }
+                  nbcomp++;
                 }
             }
         }
@@ -1490,16 +1491,11 @@ parsergetvalue_BM (struct parser_stBM *pars,
         {
           if (_.vecobj)
             objlock_BM (_.vecobj);
-          _.resval =
-            (nbcomp < TINYARGSNUM_BM)
-            ? ((value_tyBM)
-               maketuple_BM ((objectval_tyBM **) (_.tinyargsarr),
-                             nbcomp)) : ((value_tyBM)
-                                         maketuple_BM ((objectval_tyBM
-                                                        **) (objcompdata_BM
-                                                             (_.vecobj)),
-                                                       objnbcomps_BM
-                                                       (_.vecobj)));
+          _.resval = (nbcomp < TINYARGSNUM_BM)  //
+            ? ((value_tyBM) maketuple_BM ((objectval_tyBM **) (_.tinyargsarr), nbcomp)) //
+            : ((value_tyBM) maketuple_BM ((objectval_tyBM **) (objcompdata_BM
+                                                               (_.vecobj)),
+                                          objnbcomps_BM (_.vecobj)));
           if (_.vecobj)
             objunlock_BM (_.vecobj);
         }
@@ -1541,6 +1537,7 @@ parsergetvalue_BM (struct parser_stBM *pars,
                     objappendcomp_BM (_.vecobj, _.compobj);
                     objunlock_BM (_.vecobj);
                   }
+                  nbcomp++;
                 }
             }
         }
@@ -1560,17 +1557,11 @@ parsergetvalue_BM (struct parser_stBM *pars,
         {
           if (_.vecobj)
             objlock_BM (_.vecobj);
-          _.resval =
-            (nbcomp < TINYARGSNUM_BM)
-            ? ((value_tyBM)
-               makeset_BM ((const objectval_tyBM **) (_.tinyargsarr),
-                           nbcomp)) : ((value_tyBM) makeset_BM ((const
-                                                                 objectval_tyBM
-                                                                 **)
-                                                                (objcompdata_BM
-                                                                 (_.vecobj)),
-                                                                objnbcomps_BM
-                                                                (_.vecobj)));
+          _.resval = (nbcomp < TINYARGSNUM_BM) ? ((value_tyBM) makeset_BM ((const objectval_tyBM **) (_.tinyargsarr), nbcomp))  //
+            : ((value_tyBM) makeset_BM ((const objectval_tyBM **)
+                                        (objcompdata_BM
+                                         (_.vecobj)),
+                                        objnbcomps_BM (_.vecobj)));
           if (_.vecobj)
             objunlock_BM (_.vecobj);
         }
@@ -1644,6 +1635,7 @@ parsergetvalue_BM (struct parser_stBM *pars,
         {
           int nbcomp = 0;
           bool gotson = false;
+          _.vecobj = NULL;
           while ((gotson = false),      //
                  (_.sonval =    //
                   parsergetvalue_BM (pars, CURFRAME_BM, //
@@ -1668,6 +1660,7 @@ parsergetvalue_BM (struct parser_stBM *pars,
                         objappendcomp_BM (_.vecobj, _.compobj);
                         objunlock_BM (_.vecobj);
                       }
+                      nbcomp++;
                     }
                 }
             }
@@ -1689,11 +1682,13 @@ parsergetvalue_BM (struct parser_stBM *pars,
             {
               if (_.vecobj)
                 objlock_BM (_.vecobj);
-              _.resval = (value_tyBM)
-                ((nbcomp < TINYARGSNUM_BM)
-                 ? makenode_BM (_.connobj, nbcomp, (_.tinyargsarr))
-                 : makenode_BM (_.connobj, objnbcomps_BM (_.vecobj),
-                                (objcompdata_BM (_.vecobj))));
+              _.resval = (value_tyBM) ((nbcomp < TINYARGSNUM_BM)        //
+                                       ? makenode_BM (_.connobj, nbcomp, (_.tinyargsarr))       //
+                                       : makenode_BM (_.connobj,
+                                                      objnbcomps_BM
+                                                      (_.vecobj),
+                                                      (objcompdata_BM
+                                                       (_.vecobj))));
               if (_.vecobj)
                 objunlock_BM (_.vecobj);
             }
@@ -1792,6 +1787,7 @@ parsergetvalue_BM (struct parser_stBM *pars,
                     objlock_BM (_.vecobj);
                     objappendcomp_BM (_.vecobj, _.sonval);
                     objunlock_BM (_.vecobj);
+                    nbcomp++;
                   }
                 }
             }
@@ -1905,6 +1901,7 @@ parsergetvalue_BM (struct parser_stBM *pars,
                     objlock_BM (_.vecobj);
                     objappendcomp_BM (_.vecobj, _.sonval);
                     objunlock_BM (_.vecobj);
+                    nbsons++;
                   }
                 }
             }

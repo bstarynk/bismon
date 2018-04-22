@@ -54,7 +54,7 @@ crout_43Y25VLmh6s_3JRpERevcR4_BM (struct stackframe_stBM *stkf, //+ successor_te
   // routine _43Y25VLmh6s_3JRpERevcR4 body:
 
 startblock__7XasLoEUKwe_9upxyFeheD5:__attribute__ ((unused))
-  {                             /* +block _9upxyFeheD5 */
+  {                             /* +block _7XasLoEUKwe_9upxyFeheD5 */
     if                          /*cond _1UM3ERNWFgo_6pqkY9UiIDv */
       /*when _5mfKaUSS5M3_7TkY2bYFtdL: */
       ( /*is_intv */ istaggedint_BM (v_3vRFuniDv1K_4bQ7DeekM2I))
