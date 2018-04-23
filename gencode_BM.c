@@ -232,8 +232,8 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   const objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
   const objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
   const objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
-  const objectval_tyBM *k_collect_blocks = BMK_99lWaExo3Bc_4J3HkjJOIJy;
   const objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
+  const objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
   // retrieve arguments
   _.recv = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (_.recv));
@@ -384,17 +384,17 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   objtouchnow_BM (_.obhsetblock);
   objtouchnow_BM (_.routprep);
   DBGPRINTF_BM
-    ("prepare_routine°basiclo_minifunction before collect_blocks recv %s routprep %s bodyv %s",
+    ("prepare_routine°basiclo_minifunction before miniscan_block recv %s routprep %s bodyv %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
      objectdbg2_BM (_.bodyv));
-  _.collbl = send2_BM (_.bodyv, k_collect_blocks,
-                       CURFRAME_BM, _.routprep, taggedint_BM (0));
+  _.collbl = send3_BM (_.bodyv, k_miniscan_block,
+                       CURFRAME_BM, _.routprep, taggedint_BM (0), _.recv);
   if (!_.collbl)
     {
-      FAILHERE (makenode1_BM (k_collect_blocks, _.bodyv));
+      FAILHERE (makenode1_BM (k_miniscan_block, _.bodyv));
     }
   DBGPRINTF_BM
-    ("prepare_routine°basiclo_minifunction after collect_blocks recv %s routprep %s collbl=%s",
+    ("prepare_routine°basiclo_minifunction after miniscan_block recv %s routprep %s collbl=%s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
      debug_outstr_value_BM (_.collbl, CURFRAME_BM, 0));
   LOCALRETURN_BM (_.routprep);
@@ -486,215 +486,6 @@ extern objectval_tyBM *miniscan_expr_BM (value_tyBM expv,
 extern objectval_tyBM *miniscan_compatype_BM (objectval_tyBM * typ1ob,
                                               objectval_tyBM * typ2ob,
                                               struct stackframe_stBM *stkf);
-
-// for the method to collect_blocks in basiclo_block-s 
-extern objrout_sigBM ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu);
-value_tyBM
-ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
-(struct stackframe_stBM * stkf, //
- const value_tyBM arg1,         // recieving block
- const value_tyBM arg2,         // routine preparation
- const value_tyBM arg3,         // depth
- const value_tyBM arg4 __attribute__ ((unused)),
- const quasinode_tyBM * restargs __attribute__ ((unused)))
-{
-  int failin = -1;
-  enum
-  {
-    closix_nbvars,
-    closix_nbargs,
-    closix__LAST
-  };
-  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * closv;
-                 objectval_tyBM * recv; objectval_tyBM * routprep;
-                 objectval_tyBM * curob; value_tyBM curexp;
-                 value_tyBM resv;
-                 objectval_tyBM * typob; objectval_tyBM * blockhsetob;
-                 value_tyBM errorv;
-    );
-  LOCALGETFUNV_BM (_.closv);
-  if (!isclosure_BM (_.closv) || closurewidth_BM (_.closv) != closix__LAST)
-    LOCALRETURN_BM (NULL);
-  const objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
-  const objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
-  const objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
-  const objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
-  const objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
-  // retrieve arguments
-  _.recv = objectcast_BM (arg1);
-  WEAKASSERT_BM (isobject_BM (_.recv));
-  _.routprep = objectcast_BM (arg2);
-  WEAKASSERT_BM (isobject_BM (_.routprep));
-  WEAKASSERT_BM (istaggedint_BM (arg3));
-  int depth = getint_BM (arg3);
-  int nbvars = 0, nbargs = 0;
-  // retrieve closed integers
-  WEAKASSERT_BM (closurewidth_BM ((const value_tyBM) _.closv) >=
-                 closix__LAST);
-  {
-    value_tyBM nbvarsv =
-      closurenthson_BM ((const value_tyBM) _.closv, closix_nbvars);
-    WEAKASSERT_BM (istaggedint_BM (nbvarsv));
-    nbvars = getint_BM (nbvarsv);
-  }
-  {
-    value_tyBM nbargsv =
-      closurenthson_BM ((const value_tyBM) _.closv, closix_nbargs);
-    WEAKASSERT_BM (istaggedint_BM (nbargsv));
-    nbargs = getint_BM (nbargsv);
-  }
-  _.blockhsetob = objectcast_BM (objgetattr_BM (_.routprep, k_blocks));
-  DBGPRINTF_BM
-    ("collect_blocks°basiclo_block start recv=%s routprep=%s depth=%d nbvar=%d nbargs=%d blockhsetob=%s",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep), depth, (int) nbargs,
-     (int) nbvars, objectdbg2_BM (_.blockhsetob));
-  WEAKASSERT_BM (objhasassocpayl_BM (_.routprep));
-  {
-    objlock_BM (_.blockhsetob);
-    WEAKASSERT_BM (objhashashsetpayl_BM (_.blockhsetob));
-    objhashsetaddpayl_BM (_.blockhsetob, _.recv);
-    objunlock_BM (_.blockhsetob);
-  }
-  if (!objhasassocpayl_BM (_.routprep))
-    {
-      fprintf (stderr, "collect_blocks°basiclo_block bad routprep %s\n",
-               objectdbg_BM (_.routprep));
-      LOCALRETURN_BM (NULL);
-    }
-
-  for (int varix = 0; varix < nbvars; varix++)
-    {
-      _.curob = objectcast_BM (objgetcomp_BM (_.recv, varix));
-      DBGPRINTF_BM
-        ("collect_blocks°basiclo_block recv %s varix#%d curob %s",
-         objectdbg_BM (_.recv), varix, objectdbg1_BM (_.curob));
-      if (!_.curob)
-        {
-          fprintf (stderr,
-                   "collect_blocks°basiclo_block bad variable for varix#%d\n",
-                   varix);
-          LOCALRETURN_BM (NULL);
-        }
-      if (!objassocgetattrpayl_BM (_.routprep, _.curob))
-        {
-          fprintf (stderr,
-                   "collect_blocks°basiclo_block unknown variable %s for varix#%d\n",
-                   objectdbg_BM (_.curob), varix);
-          LOCALRETURN_BM (NULL);
-        }
-      miniscan_var_BM (_.curob, _.routprep, depth, _.recv, CURFRAME_BM);
-    }
-  for (int argix = 0; argix < nbargs; argix++)
-    {
-      _.curexp = (objgetcomp_BM (_.recv, argix + nbvars));
-      DBGPRINTF_BM ("collect_blocks°basiclo_block argix#%d curexp %s",
-                    argix, debug_outstr_value_BM (_.curexp, CURFRAME_BM, 0));
-      miniscan_expr_BM (_.curexp, _.routprep, depth, _.recv, CURFRAME_BM);
-    }
-  int off = nbvars + nbargs;
-  int nbblocks = objnbcomps_BM (_.recv) - off;
-  for (int blockix = 0; blockix < nbblocks; blockix++)
-    {
-      _.curob = objectcast_BM (objgetcomp_BM (_.recv, blockix + off));
-      DBGPRINTF_BM
-        ("collect_blocks°basiclo_block recv %s blockix#%d curob %s",
-         objectdbg_BM (_.recv), blockix, objectdbg1_BM (_.curob));
-      if (!_.curob)
-        {
-          fprintf (stderr,
-                   "collect_blocks°basiclo_block bad block for blockix#%d\n",
-                   blockix);
-          LOCALRETURN_BM (NULL);
-        }
-      if (objectisinstance_BM (_.curob, k_basiclo_block))
-        {
-          /// should send k_miniscan_block
-          DBGPRINTF_BM
-            ("collect_blocks°basiclo_block recv %s miniscan_block-> %s",
-             objectdbg_BM (_.recv), objectdbg1_BM (_.curob));
-          _.resv =
-            send3_BM (_.curob, k_miniscan_block,
-                      CURFRAME_BM, _.routprep, taggedint_BM (depth), _.recv);
-          if (!_.resv)
-            {
-              fprintf (stderr,
-                       "collect_blocks°basiclo_block miniscan_block for %s blockix#%d failed\n",
-                       objectdbg_BM (_.curob), blockix);
-              LOCALRETURN_BM (NULL);
-            }
-        }
-      else if (objectisinstance_BM (_.curob, k_basiclo_statement))
-        {
-          DBGPRINTF_BM
-            ("collect_blocks°basiclo_block recv %s miniscan_stmt-> %s",
-             objectdbg_BM (_.recv), objectdbg1_BM (_.curob));
-          /// should send k_miniscan_stmt
-          _.resv = send3_BM (_.curob,
-                             k_miniscan_stmt,
-                             CURFRAME_BM,
-                             _.routprep, taggedint_BM (depth), _.recv);
-          if (!_.resv)
-            {
-              fprintf (stderr,
-                       "collect_blocks°basiclo_block miniscan_stmt for %s blockix#%d failed\n",
-                       objectdbg_BM (_.curob), blockix);
-              LOCALRETURN_BM (NULL);
-            }
-        }
-      else
-        {
-          fprintf (stderr,
-                   "collect_blocks°basiclo_block invalid block %s for blockix#%d\n",
-                   objectdbg_BM (_.curob), blockix);
-          LOCALRETURN_BM (NULL);
-        }
-      DBGPRINTF_BM
-        ("collect_blocks°basiclo_block recv %s blockix#%d done curob %s",
-         objectdbg_BM (_.recv), blockix, objectdbg1_BM (_.curob));
-    }
-  DBGPRINTF_BM
-    ("collect_blocks°basiclo_block done recv=%s routprep=%s depth %d",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep), depth);
-  LOCALRETURN_BM (_.routprep);
-}                               /* end collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu */
-
-
-// collect_blocks°basiclo_cond _2JoYku9h291_9E73bNW3HNJ
-
-extern objrout_sigBM ROUTINEOBJNAME_BM (_2JoYku9h291_9E73bNW3HNJ);
-
-value_tyBM
-ROUTINEOBJNAME_BM (_2JoYku9h291_9E73bNW3HNJ)    //collect_blocks°basiclo_cond 
-(struct stackframe_stBM * stkf, //
- const value_tyBM arg1,         // recieving cond
- const value_tyBM arg2,         // routine preparation
- const value_tyBM arg3,         // depth
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
-{
-  LOCALFRAME_BM (stkf, /*descr: */ BMK_2JoYku9h291_9E73bNW3HNJ,
-                 objectval_tyBM * condob; objectval_tyBM * routprepob;
-                 value_tyBM resultv;
-    );
-  objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
-  objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
-  objectval_tyBM *k_nb_conds = BMK_8dLpuaNoSGN_2tdmkpINCsu;
-  _.condob = objectcast_BM (arg1);
-  _.routprepob = objectcast_BM (arg2);
-  WEAKASSERT_BM (_.condob);
-  WEAKASSERT_BM (_.routprepob);
-  WEAKASSERT_BM (istaggedint_BM (arg3));
-  int depth = getint_BM (arg3);
-  DBGPRINTF_BM
-    ("collect_blocks°basiclo_cond start condob %s routprepob %s depth %d",
-     objectdbg_BM (_.condob), objectdbg1_BM (_.routprepob), depth);
-  int nbconds = getint_BM (objgetattr_BM (_.condob, k_nb_conds));
-#warning unimplemented _2JoYku9h291_9E73bNW3HNJ routine
-  WEAKASSERT_BM (false
-                 && "unimplemented collect_blocks°basiclo_cond routine");
-  LOCALRETURN_BM (_.resultv);
-}                               /* end collect_blocks°basiclo_cond  _2JoYku9h291_9E73bNW3HNJ */
 
 
 
