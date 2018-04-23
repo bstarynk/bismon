@@ -187,6 +187,8 @@ ROUTINEOBJNAME_BM (_979hCujWp2g_9tjRbM8Ht1l)    // emit_c_type:c_enum
 
 ////////////////
 
+#warning miniscan_block methods should add the current block to the routine preparation block hashset
+
 //// for the method prepare_routine°basiclo_minifunction
 extern objrout_sigBM ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9);
 
@@ -214,7 +216,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                  const setval_tyBM * setnumbers;
                  const setval_tyBM * setconsts; objectval_tyBM * curvar;
                  value_tyBM curol;
-                 value_tyBM oldrol; value_tyBM bodyv; value_tyBM collbl;
+                 value_tyBM oldrol; value_tyBM bodyv; value_tyBM msblov;
                  value_tyBM causev;
                  value_tyBM errorv;
     );
@@ -387,16 +389,16 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     ("prepare_routine°basiclo_minifunction before miniscan_block recv %s routprep %s bodyv %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
      objectdbg2_BM (_.bodyv));
-  _.collbl = send3_BM (_.bodyv, k_miniscan_block,
+  _.msblov = send3_BM (_.bodyv, k_miniscan_block,
                        CURFRAME_BM, _.routprep, taggedint_BM (0), _.recv);
-  if (!_.collbl)
+  if (!_.msblov)
     {
       FAILHERE (makenode1_BM (k_miniscan_block, _.bodyv));
     }
   DBGPRINTF_BM
-    ("prepare_routine°basiclo_minifunction after miniscan_block recv %s routprep %s collbl=%s",
+    ("prepare_routine°basiclo_minifunction after miniscan_block recv %s routprep %s msblov=%s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
-     debug_outstr_value_BM (_.collbl, CURFRAME_BM, 0));
+     debug_outstr_value_BM (_.msblov, CURFRAME_BM, 0));
   LOCALRETURN_BM (_.routprep);
 failure:
   _.errorv =
