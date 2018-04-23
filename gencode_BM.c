@@ -677,6 +677,9 @@ ROUTINEOBJNAME_BM (_2JoYku9h291_9E73bNW3HNJ)    //collect_blocks°basiclo_cond
                  objectval_tyBM * condob; objectval_tyBM * routprepob;
                  value_tyBM resultv;
     );
+  objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
+  objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
+  objectval_tyBM *k_nb_conds = BMK_8dLpuaNoSGN_2tdmkpINCsu;
   _.condob = objectcast_BM (arg1);
   _.routprepob = objectcast_BM (arg2);
   WEAKASSERT_BM (_.condob);
@@ -686,6 +689,7 @@ ROUTINEOBJNAME_BM (_2JoYku9h291_9E73bNW3HNJ)    //collect_blocks°basiclo_cond
   DBGPRINTF_BM
     ("collect_blocks°basiclo_cond start condob %s routprepob %s depth %d",
      objectdbg_BM (_.condob), objectdbg1_BM (_.routprepob), depth);
+  int nbconds = getint_BM (objgetattr_BM (_.condob, k_nb_conds));
 #warning unimplemented _2JoYku9h291_9E73bNW3HNJ routine
   WEAKASSERT_BM (false
                  && "unimplemented collect_blocks°basiclo_cond routine");
