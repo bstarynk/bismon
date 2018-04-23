@@ -104,6 +104,7 @@ char *css_file_bm = "bismon.css";
 char *gui_log_name_bm = "_bismon.log";  /* default log file */
 
 char *comment_bm;
+char *module_to_emit_bm;
 int count_emit_has_predef_bm;
 int nb_added_predef_bm;
 #define MAXADDEDPREDEF_BM 16
@@ -344,6 +345,14 @@ const GOptionEntry optab[] = {
    .description = "run in batch mode without GUI",
    .arg_description = NULL},
   //
+  {.long_name = "emit-module",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &module_to_emit_bm,
+   .description = "emit module MODULEOBJ",
+   .arg_description = "MODULEOBJ"},
+  //
+  //
   {.long_name = "old-gui",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
@@ -428,6 +437,63 @@ static void rungui_BM (bool newgui, int nbjobs);
 static void parse_values_after_load_bm (void);
 
 static void give_prog_version_BM (const char *progname);
+
+static void do_emit_module_from_main_BM (void);
+
+void
+do_emit_module_from_main_BM (void)
+{
+  WEAKASSERT_BM (module_to_emit_bm != NULL);
+  LOCALFRAME_BM (NULL, /*descr: */ BMP_emit_module,
+                 objectval_tyBM * modulob;
+                 objectval_tyBM * parsob; value_tyBM resultv;
+                 value_tyBM failres;
+    );
+  _.failres = NULL;
+  int failcod = 0;
+  struct failurelockset_stBM flockset = { };
+  struct failurehandler_stBM *prevfailurehandle = curfailurehandle_BM;
+  initialize_failurelockset_BM (&flockset, sizeof (flockset));
+  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureemit, failcod, _.failres);
+  if (failcod > 0)
+  lab_failureemit:{
+      destroy_failurelockset_BM (&flockset);
+      curfailurehandle_BM = prevfailurehandle;
+      {
+        fprintf (stderr,
+                 "Failed to emit module from main %s, with failcode#%d, failres %s\n",
+                 objectdbg_BM (_.modulob), failcod,
+                 debug_outstr_value_BM (_.failres, CURFRAME_BM, 0));
+        LOCALJUSTRETURN_BM ();
+      };
+    };
+  fprintf (stderr, "begin emit module from main: %s\n", module_to_emit_bm);
+  _.parsob = makeobj_BM ();
+  bool gotobj = false;
+  struct parser_stBM *pars =
+    makeparser_memopen_BM (module_to_emit_bm, strlen (module_to_emit_bm),
+                           _.parsob);
+  _.modulob = parsergetobject_BM (pars, CURFRAME_BM, 0, &gotobj);
+  DBGPRINTF_BM ("do_emit_module_from_main_BM modulob=%s parsob=%s",
+                objectdbg_BM (_.modulob), objectdbg1_BM (_.parsob));
+  objlock_BM (_.modulob);
+  _.resultv = send0_BM (_.modulob, BMP_emit_module, CURFRAME_BM);
+  objunlock_BM (_.modulob);
+  objclearpayload_BM (_.parsob);
+  destroy_failurelockset_BM (&flockset);
+  curfailurehandle_BM = prevfailurehandle;
+  DBGPRINTF_BM ("do_emit_module_from_main_bm end modulob=%s result %s", //
+                objectdbg_BM (_.modulob),       //
+                debug_outstr_value_BM (_.resultv, CURFRAME_BM, 0));
+  if (_.resultv)
+    fprintf (stderr, "\nsuccessful emit module from main: %s\n",
+             module_to_emit_bm);
+  else
+    FATAL_BM ("failed emit module from main: %s", module_to_emit_bm);
+  fflush (NULL);
+  LOCALJUSTRETURN_BM ();
+}                               /* end do_emit_module_from_main_BM */
+
 
 
 //// see also https://github.com/dtrebbien/GNOME.supp and
@@ -529,6 +595,8 @@ main (int argc, char **argv)
     add_new_predefined_bm ();
   if (nb_parsed_values_after_load_bm > 0)
     parse_values_after_load_BM ();
+  if (module_to_emit_bm != NULL)
+    do_emit_module_from_main_BM ();
   if (dump_after_load_dir_bm)
     {
       struct dumpinfo_stBM di = dump_BM (dump_after_load_dir_bm, NULL);
