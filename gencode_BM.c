@@ -384,13 +384,14 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   objtouchnow_BM (_.obhsetblock);
   objtouchnow_BM (_.routprep);
   DBGPRINTF_BM
-    ("prepare_routine°basiclo_minifunction before collect_blocks recv %s routprep %s",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep));
+    ("prepare_routine°basiclo_minifunction before collect_blocks recv %s routprep %s bodyv %s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
+     objectdbg2_BM (_.bodyv));
   _.collbl = send2_BM (_.bodyv, k_collect_blocks,
                        CURFRAME_BM, _.routprep, taggedint_BM (0));
   if (!_.collbl)
     {
-      FAILHERE (k_collect_blocks);
+      FAILHERE (makenode1_BM (k_collect_blocks, _.bodyv));
     }
   DBGPRINTF_BM
     ("prepare_routine°basiclo_minifunction after collect_blocks recv %s routprep %s collbl=%s",
@@ -658,6 +659,38 @@ ROUTINEOBJNAME_BM (_0gkYrIdnOg2_0wLEAh1QuYu)    //
   LOCALRETURN_BM (_.routprep);
 }                               /* end collect_blocks°basiclo_block _0gkYrIdnOg2_0wLEAh1QuYu */
 
+
+// collect_blocks°basiclo_cond _2JoYku9h291_9E73bNW3HNJ
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_2JoYku9h291_9E73bNW3HNJ);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_2JoYku9h291_9E73bNW3HNJ)    //collect_blocks°basiclo_cond 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // recieving cond
+ const value_tyBM arg2,         // routine preparation
+ const value_tyBM arg3,         // depth
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_2JoYku9h291_9E73bNW3HNJ,
+                 objectval_tyBM * condob; objectval_tyBM * routprepob;
+                 value_tyBM resultv;
+    );
+  _.condob = objectcast_BM (arg1);
+  _.routprepob = objectcast_BM (arg2);
+  WEAKASSERT_BM (_.condob);
+  WEAKASSERT_BM (_.routprepob);
+  WEAKASSERT_BM (istaggedint_BM (arg3));
+  int depth = getint_BM (arg3);
+  DBGPRINTF_BM
+    ("collect_blocks°basiclo_cond start condob %s routprepob %s depth %d",
+     objectdbg_BM (_.condob), objectdbg1_BM (_.routprepob), depth);
+#warning unimplemented _2JoYku9h291_9E73bNW3HNJ routine
+  WEAKASSERT_BM (false
+                 && "unimplemented collect_blocks°basiclo_cond routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end collect_blocks°basiclo_cond  _2JoYku9h291_9E73bNW3HNJ */
 
 
 
