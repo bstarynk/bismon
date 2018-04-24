@@ -635,8 +635,8 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
   int failin = -1;
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
-                 value_tyBM expv; value_tyBM resv;
-                 objectval_tyBM * routprepob;
+                 value_tyBM expv;
+                 value_tyBM resv; objectval_tyBM * routprepob;
                  objectval_tyBM * fromob; objectval_tyBM * expob;
                  objectval_tyBM * connob; objectval_tyBM * exclamob;
                  value_tyBM avalv; objectval_tyBM * typob;
@@ -705,7 +705,8 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
             if (_.exclamob)
               {
                 DBGPRINTF_BM ("miniscan_expr exclamob=%s routprepob=%s",
-			      objectdbg_BM (_.exclamob), objectdbg1_BM (_.routprepob));
+                              objectdbg_BM (_.exclamob),
+                              objectdbg1_BM (_.routprepob));
                 WEAKASSERT_BM (false
                                && "unhandled exclamob in miniscan_node_conn");
 #warning unhandled exclamob in miniscan_node_conn
@@ -2881,8 +2882,9 @@ ROUTINEOBJNAME_BM (_2PbDEXpkK5W_7MSfDy2pWkH)    // miniscan_block°basiclo_block
       if (objectisinstance_BM (_.compob, k_basiclo_block))
         {
           DBGPRINTF_BM
-            ("miniscan_block°basiclo_block blockob %s ix#%d compob %s is block",
-             objectdbg_BM (_.blockob), ix, objectdbg1_BM (_.compob));
+            ("miniscan_block°basiclo_block blockob %s ix#%d compob %s is block of %s",
+             objectdbg_BM (_.blockob), ix, objectdbg1_BM (_.compob),
+             objectdbg2_BM (objclass_BM (_.compob)));
           _.subresv =
             send3_BM (_.compob, k_miniscan_block,
                       CURFRAME_BM, _.routprepob,
@@ -2900,8 +2902,9 @@ ROUTINEOBJNAME_BM (_2PbDEXpkK5W_7MSfDy2pWkH)    // miniscan_block°basiclo_block
       else if (objectisinstance_BM (_.compob, k_basiclo_statement))
         {
           DBGPRINTF_BM
-            ("miniscan_block°basiclo_block blockob %s ix#%d compob %s is statement",
-             objectdbg_BM (_.blockob), ix, objectdbg1_BM (_.compob));
+            ("miniscan_block°basiclo_block blockob %s ix#%d compob %s is statement of %s",
+             objectdbg_BM (_.blockob), ix, objectdbg1_BM (_.compob),
+             objectdbg2_BM (objclass_BM (_.compob)));
           _.subresv =
             send3_BM (_.compob, k_miniscan_stmt,
                       CURFRAME_BM, _.routprepob,
@@ -2918,8 +2921,9 @@ ROUTINEOBJNAME_BM (_2PbDEXpkK5W_7MSfDy2pWkH)    // miniscan_block°basiclo_block
       else
         {
           DBGPRINTF_BM
-            ("miniscan_block°basiclo_block blockob %s ix#%d compob %s bad",
-             objectdbg_BM (_.blockob), ix, objectdbg1_BM (_.compob));
+            ("miniscan_block°basiclo_block blockob %s ix#%d compob %s bad of %s",
+             objectdbg_BM (_.blockob), ix, objectdbg1_BM (_.compob),
+             objectdbg2_BM (objclass_BM (_.compob)));
           FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (ix), _.compob));
         }
       objunlock_BM (_.compob);
