@@ -187,7 +187,6 @@ ROUTINEOBJNAME_BM (_979hCujWp2g_9tjRbM8Ht1l)    // emit_c_type:c_enum
 
 ////////////////
 
-#warning miniscan_block methods should add the current block to the routine preparation block hashset
 
 //// for the method prepare_routine°basiclo_minifunction
 extern objrout_sigBM ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9);
@@ -1048,6 +1047,7 @@ ROUTINEOBJNAME_BM (_7vlMCZ0yvva_6tx0lFlqBG8)    // miniscan_stmt°basiclo_return
   if (_.retypob != k_value)
     FAILHERE ();
   LOCALRETURN_BM (_.retypob);
+#undef FAILHERE
 failure:
   DBGPRINTF_BM ("miniscan_stmt°basiclo_return failin %d", failin);
   _.errorv =
@@ -2792,12 +2792,20 @@ ROUTINEOBJNAME_BM (_2PbDEXpkK5W_7MSfDy2pWkH)    // miniscan_block°basiclo_block
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2PbDEXpkK5W_7MSfDy2pWkH,
-                 objectval_tyBM * blockob; objectval_tyBM * routprepob;
-                 objectval_tyBM * fromob; value_tyBM resultv;
+                 objectval_tyBM * blockob;
+                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
+                 objectval_tyBM * blockshsetob; objectval_tyBM * compob;
+                 value_tyBM subresv; value_tyBM resultv;
                  value_tyBM causev;
                  value_tyBM errorv;
     );
+  objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
+  objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   const objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
+  const objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
+  const objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
+  const objectval_tyBM *k_duplicate = BMK_2YrbiKQ6lxP_3KNUOnU6TF5;
+  const objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   _.blockob = objectcast_BM (arg1);
   _.routprepob = objectcast_BM (arg2);
   int depth = getint_BM (arg3);
@@ -2812,14 +2820,78 @@ ROUTINEOBJNAME_BM (_2PbDEXpkK5W_7MSfDy2pWkH)    // miniscan_block°basiclo_block
     ("miniscan_block°basiclo_block start blockob=%s routprepob=%s depth=%d fromob=%s",
      objectdbg_BM (_.blockob), objectdbg1_BM (_.routprepob), depth,
      objectdbg2_BM (_.fromob));
-#warning unimplemented _2PbDEXpkK5W_7MSfDy2pWkH routine
-  WEAKASSERT_BM (false && "unimplemented _2PbDEXpkK5W_7MSfDy2pWkH routine");
-  LOCALRETURN_BM (_.resultv);
-failure:
+  _.blockshsetob = objgetattr_BM (_.routprepob, k_blocks);
+  WEAKASSERT_BM (objhashashsetpayl_BM (_.blockshsetob));
+  bool duplicateblock = false;
+  {
+    objlock_BM (_.blockshsetob);
+    duplicateblock = objhashsetcontainspayl_BM (_.blockshsetob, _.blockob);
+    objhashsetaddpayl_BM (_.blockshsetob, _.blockob);
+    objunlock_BM (_.blockshsetob);
+  }
+  if (duplicateblock)
+    FAILHERE (k_duplicate);
+  int nbcomp = objnbcomps_BM (_.blockob);
+  for (int ix = 0; ix < nbcomp; ix++)
+    {
+      _.compob = objectcast_BM (objgetcomp_BM (_.blockob, ix));
+      if (!_.compob)
+        FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (ix), _.compob));
+      objlock_BM (_.compob);
+      if (objectisinstance_BM (_.compob, k_basiclo_block))
+        {
+          DBGPRINTF_BM
+            ("miniscan_block°basiclo_block blockob %s ix#%d compob %s is block",
+             objectdbg_BM (_.blockob), ix, objectdbg1_BM (_.compob));
+          _.subresv =
+            send3_BM (_.compob, k_miniscan_block,
+                      CURFRAME_BM, _.routprepob,
+                      taggedint_BM (depth + 1), _.blockob);
+          DBGPRINTF_BM
+            ("miniscan_block°basiclo_block blockob %s ix#%d compob %s miniscan_block gave %s",
+             objectdbg_BM (_.blockob), ix, objectdbg1_BM (_.compob),
+             debug_outstr_value_BM (_.subresv, CURFRAME_BM, 0));
+          if (!_.subresv)
+            FAILHERE (makenode3_BM
+                      (k_miniscan_block, _.compob, taggedint_BM (ix),
+                       _.blockob));
+
+        }
+      else if (objectisinstance_BM (_.compob, k_basiclo_statement))
+        {
+          DBGPRINTF_BM
+            ("miniscan_block°basiclo_block blockob %s ix#%d compob %s is statement",
+             objectdbg_BM (_.blockob), ix, objectdbg1_BM (_.compob));
+          _.subresv =
+            send3_BM (_.compob, k_miniscan_stmt,
+                      CURFRAME_BM, _.routprepob,
+                      taggedint_BM (depth + 1), _.blockob);
+          DBGPRINTF_BM
+            ("miniscan_block°basiclo_block blockob %s ix#%d compob %s miniscan_stmt gave %s",
+             objectdbg_BM (_.blockob), ix, objectdbg1_BM (_.compob),
+             debug_outstr_value_BM (_.subresv, CURFRAME_BM, 0));
+          if (!_.subresv)
+            FAILHERE (makenode3_BM
+                      (k_miniscan_stmt, _.compob, taggedint_BM (ix),
+                       _.blockob));
+        }
+      else
+        {
+          DBGPRINTF_BM
+            ("miniscan_block°basiclo_block blockob %s ix#%d compob %s bad",
+             objectdbg_BM (_.blockob), ix, objectdbg1_BM (_.compob));
+          FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (ix), _.compob));
+        }
+      objunlock_BM (_.compob);
+    }
   DBGPRINTF_BM
-    ("miniscan_block°basiclo_block  failin %d blockob %s cause %s", failin,
-     objectdbg_BM (_.blockob), debug_outstr_value_BM (_.causev, CURFRAME_BM,
-                                                      0));
+    ("miniscan_block°basiclo_block end blockob=%s routprepob=%s depth=%d fromob=%s",
+     objectdbg_BM (_.blockob), objectdbg1_BM (_.routprepob), depth,
+     objectdbg2_BM (_.fromob));
+  LOCALRETURN_BM (_.blockob);
+failure:
+  DBGPRINTF_BM ("miniscan_block°basiclo_block  failin %d blockob %s cause %s", failin, objectdbg_BM (_.blockob),       //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     makenode5_BM (k_miniscan_block, _.blockob, _.routprepob,
                   taggedint_BM (depth), _.fromob, _.causev);
