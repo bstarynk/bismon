@@ -656,16 +656,16 @@ runcommand_newgui_BM (bool erase)
   int cmdlen = strlen (cmdstr);
 #if !defined (NDEBUG) || !NO_COMMANDLOGFILE_BM
   {
-    char cmdlogpath[80];
+    char cmdlogpath[64];
     memset (cmdlogpath, 0, sizeof (cmdlogpath));
     snprintf (cmdlogpath, sizeof (cmdlogpath),
-              "/run/tmpfiles.d/bismon-p%d-lastcmd.txt", (int) getpid ());
+              "/tmp/bismon-p%d-lastcmd.txt", (int) getpid ());
     remove (cmdlogpath);
     FILE *fcmd = fopen (cmdlogpath, "w");
     if (fcmd)
       {
-        fputs (cmdlogpath, fcmd);
-        putc ('\n', cmdlogpath);
+        fputs (cmdstr, fcmd);
+        putc ('\n', fcmd);
         fclose (fcmd);
       }
     else
