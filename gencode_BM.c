@@ -555,6 +555,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   objectval_tyBM *k_simple_routine_preparation = BMK_80060zKi6Un_3isCStegT8A;
   objectval_tyBM *k_simple_module_generation = BMK_2HlKptD03wA_7JJCG7lN5nS;
+  const objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
   int failin = -1;
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
@@ -562,10 +563,8 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
                  value_tyBM expv;
                  value_tyBM resv;
                  objectval_tyBM * routprepob;
-                 objectval_tyBM * modgenob;
-                 objectval_tyBM * fromob;
-                 objectval_tyBM * expob;
-                 objectval_tyBM * connob;
+                 objectval_tyBM * modgenob; objectval_tyBM * fromob;
+                 objectval_tyBM * expob; objectval_tyBM * connob;
                  objectval_tyBM * exclamob; objectval_tyBM * consthsetobj;
                  value_tyBM avalv; objectval_tyBM * typob; value_tyBM errorv;
                  value_tyBM exclamsonv;
@@ -639,6 +638,15 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
               {
                 _.consthsetobj =
                   objectcast_BM (objgetattr_BM (_.modgenob, k_constants));
+                if (!_.consthsetobj)
+                  {
+                    _.consthsetobj = makeobj_BM ();
+                    objputhashsetpayl_BM (_.consthsetobj, 11);
+                    objputclass_BM (_.consthsetobj, k_hset_object);
+                    objtouchnow_BM (_.consthsetobj);
+                    objputattr_BM (_.modgenob, k_constants, _.consthsetobj);
+                    objtouchnow_BM (_.modgenob);
+                  }
                 DBGPRINTF_BM
                   ("miniscan_expr exclamob=%s routprepob=%s consthsetobj=%s",
                    objectdbg_BM (_.exclamob), objectdbg1_BM (_.routprepob),
