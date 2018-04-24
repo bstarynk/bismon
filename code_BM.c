@@ -2251,7 +2251,7 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
  const value_tyBM arg1,         // node
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
- const value_tyBM arg4 __attribute__ ((unused)),        //
+ const value_tyBM arg4,         // parsob
  const quasinode_tyBM * restargs)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -2269,10 +2269,13 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
   k_label = BMK_3XBrePAliOo_37VlAqBsb5C;
   int lineno = getint_BM (arg2);
   int colpos = getint_BM (arg3);
+  _.parsob = objectcast_BM (arg4);
+  WEAKASSERT_BM (istaggedint_BM (arg2));
+  WEAKASSERT_BM (istaggedint_BM (arg3));
+  WEAKASSERT_BM (_.parsob);
   unsigned startix = 0;
-  struct parser_stBM *pars =
-    parsercast_BM (treenthson_BM ((value_tyBM) restargs, 0));
-  _.parsob = checkedparserowner_BM (pars);
+  struct parser_stBM *pars = objparserpayload_BM (_.parsob);
+  WEAKASSERT_BM (pars != NULL);
   unsigned nodwidth = nodewidth_BM ((value_tyBM) _.rnodv);
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:block _0kUyX0U19K2_5mcH4RCaBl9"
