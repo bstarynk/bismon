@@ -182,19 +182,20 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     ("prepare_routine°basiclo_minifunction recv=%s routprep=%s tupargs=%s tupclosed=%s obresult=%s"
      "\n.. setlocals=%s setnumbers=%s setconsts=%s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
-     debug_outstr_value_BM(_.tupargs, CURFRAME_BM, 0),
-     debug_outstr_value_BM(_.tupclosed, CURFRAME_BM, 0),
-     objectdbg2_BM(_.obresult),
-     debug_outstr_value_BM(_.setlocals, CURFRAME_BM, 0),
-     debug_outstr_value_BM(_.setnumbers, CURFRAME_BM, 0),
-     debug_outstr_value_BM(_.setconsts, CURFRAME_BM, 0)
-     );
+     debug_outstr_value_BM (_.tupargs, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.tupclosed, CURFRAME_BM, 0),
+     objectdbg2_BM (_.obresult),
+     debug_outstr_value_BM (_.setlocals, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.setnumbers, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.setconsts, CURFRAME_BM, 0));
   _.bodyv = objgetattr_BM (_.recv, k_body);
   if (!isobject_BM (_.bodyv))
     {
       FAILHERE (makenode1_BM (k_body, _.bodyv));
     }
   _.bodyob = objectcast_BM (_.bodyv);
+  if (!isobject_BM (_.obresult))
+    FAILHERE (makenode1_BM (k_result, _.recv));
   WEAKASSERT_BM (_.bodyob);
   _.routprep = makeobj_BM ();
   objputclass_BM (_.routprep,
