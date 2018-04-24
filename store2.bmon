@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 328 objects
+// for 329 objects
 // with 0 modules
 
 
@@ -200,6 +200,20 @@ _0vgCFjXblkx_4zCMhMAWjVK
 ~)
 
 !)_0eCRnBKQ0eQ_1atum3gUgEz
+
+
+
+!(_3DQ7z3EuAiT_4faSRNsy2lr |=basiclo_connective|
+!~ name (~ basiclo_connective
+~)
+!@ 1524575607.26
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for simple connectives"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+
+!)_3DQ7z3EuAiT_4faSRNsy2lr
 
 
 

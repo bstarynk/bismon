@@ -630,14 +630,17 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
   objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
   objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
   objectval_tyBM *k_string = BMK_4T8am97muLl_5969SR22Ecq;
+  objectval_tyBM *k_basiclo_connective = BMK_3DQ7z3EuAiT_4faSRNsy2lr;
+  objectval_tyBM *k_exclam = BMK_0e54seiZEXF_1Myf620cHoB;
   int failin = -1;
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
                  value_tyBM expv; value_tyBM resv;
-                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
-                 objectval_tyBM * expob; objectval_tyBM * connob;
+                 objectval_tyBM * routprepob;
+                 objectval_tyBM * fromob; objectval_tyBM * expob;
+                 objectval_tyBM * connob; objectval_tyBM * exclamob;
                  value_tyBM avalv; objectval_tyBM * typob;
-                 value_tyBM errorv;
+                 value_tyBM errorv; value_tyBM exclamsonv;
     );
   _.expv = expv;
   _.routprepob = objectcast_BM (routprepob);
@@ -692,18 +695,42 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
         _.connob = nodeconn_BM (_.expv);
         unsigned arity = nodewidth_BM (_.expv);
         DBGPRINTF_BM
-          ("miniscan_expr miniscan_node_conn->%s arity %d routprepob %s fromob %s before",
-           objectdbg_BM (_.connob), arity, objectdbg1_BM (_.routprepob),
-           objectdbg2_BM (_.fromob));
-        _.resv = send4_BM (_.connob, k_miniscan_node_conn,      //
-                           CURFRAME_BM, //
-                           _.routprepob,
-                           taggedint_BM (depth), _.expv, _.fromob);
-        DBGPRINTF_BM ("miniscan_expr miniscan_node_conn->%s done resv=%s",      //
-                      objectdbg_BM (_.connob),  //
-                      debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
-        if (!_.resv)
-          FAILHERE ();
+          ("miniscan_expr node expv=%s connob=%s arity#%d",
+           debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
+           objectdbg_BM (_.connob), arity);
+        if (_.connob == k_exclam && arity == 1)
+          {
+            _.exclamsonv = nodenthson_BM (_.expv, 0);
+            _.exclamob = objectcast_BM (_.exclamsonv);
+            if (_.exclamob)
+              {
+                DBGPRINTF_BM ("miniscan_expr exclamob=%s routprepob=%s",
+			      objectdbg_BM (_.exclamob), objectdbg1_BM (_.routprepob));
+                WEAKASSERT_BM (false
+                               && "unhandled exclamob in miniscan_node_conn");
+#warning unhandled exclamob in miniscan_node_conn
+              }
+            else
+              FAILHERE ();
+          }
+        objlock_BM (_.connob);
+        if (objectisinstance_BM (_.connob, k_basiclo_connective))
+          {
+            DBGPRINTF_BM
+              ("miniscan_expr miniscan_node_conn->%s arity %d routprepob %s fromob %s before",
+               objectdbg_BM (_.connob), arity, objectdbg1_BM (_.routprepob),
+               objectdbg2_BM (_.fromob));
+            _.resv = send4_BM (_.connob, k_miniscan_node_conn,  //
+                               CURFRAME_BM,     //
+                               _.routprepob,
+                               taggedint_BM (depth), _.expv, _.fromob);
+            DBGPRINTF_BM ("miniscan_expr miniscan_node_conn->%s done resv=%s",  //
+                          objectdbg_BM (_.connob),      //
+                          debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
+            if (!_.resv)
+              FAILHERE ();
+          }
+        objunlock_BM (_.connob);
         LOCALRETURN_BM (_.resv);
       }
     default:
