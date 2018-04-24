@@ -654,6 +654,24 @@ runcommand_newgui_BM (bool erase)
   struct parser_stBM *cmdpars = makeparser_memopen_BM (cmdstr, -1,
                                                        _.cmdparsob);
   int cmdlen = strlen (cmdstr);
+#if !defined (NDEBUG) || !NO_COMMANDLOGFILE_BM
+  {
+    char cmdlogpath[80];
+    memset (cmdlogpath, 0, sizeof (cmdlogpath));
+    snprintf (cmdlogpath, sizeof (cmdlogpath),
+              "/run/tmpfiles.d/bismon-p%d-lastcmd.txt", (int) getpid ());
+    remove (cmdlogpath);
+    FILE *fcmd = fopen (cmdlogpath, "w");
+    if (fcmd)
+      {
+        fputs (cmdlogpath, fcmd);
+        putc ('\n', cmdlogpath);
+        fclose (fcmd);
+      }
+    else
+      FATAL_BM ("failed to fopen cmdlogpath %s - %m", cmdlogpath);
+  }
+#endif /*!defined (NDEBUG) || !NO_COMMANDLOGFILE_BM */
   DBGPRINTF_BM
     ("runcommand_newgui cmdparsob=%s cmdlen=%d, @@@cmdstr=\n%s\n\n",
      objectdbg_BM (_.cmdparsob), cmdlen, cmdstr);
