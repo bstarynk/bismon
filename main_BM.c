@@ -464,7 +464,7 @@ do_emit_module_from_main_BM (void)
                  "Failed to emit module from main %s, with failcode#%d, failres %s\n",
                  objectdbg_BM (_.modulob), failcod,
                  debug_outstr_value_BM (_.failres, CURFRAME_BM, 0));
-        LOCALJUSTRETURN_BM ();
+        return;
       };
     };
   fprintf (stderr, "begin emit module from main: %s\n", module_to_emit_bm);
@@ -491,7 +491,7 @@ do_emit_module_from_main_BM (void)
   else
     FATAL_BM ("failed emit module from main: %s", module_to_emit_bm);
   fflush (NULL);
-  LOCALJUSTRETURN_BM ();
+  return;
 }                               /* end do_emit_module_from_main_BM */
 
 

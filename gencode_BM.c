@@ -207,6 +207,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                  objectval_tyBM * routprep;
                  objectval_tyBM * obhsetblock;
                  objectval_tyBM * typob;
+                 objectval_tyBM * bodyob;
                  objectval_tyBM * obmodhsetconst;
                  value_tyBM recv;
                  const tupleval_tyBM * tupargs;
@@ -263,8 +264,10 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   _.bodyv = objgetattr_BM (_.recv, k_body);
   if (!isobject_BM (_.bodyv))
     {
-      FAILHERE (k_body);
+      FAILHERE (makenode1_BM (k_body, _.bodyv));
     }
+  _.bodyob = objectcast_BM (_.bodyv);
+  WEAKASSERT_BM (_.bodyob);
   _.routprep = makeobj_BM ();
   objputclass_BM (_.routprep,
                   (objectval_tyBM *) k_simple_routine_preparation);
@@ -386,18 +389,22 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   objtouchnow_BM (_.obhsetblock);
   objtouchnow_BM (_.routprep);
   DBGPRINTF_BM
-    ("prepare_routine°basiclo_minifunction before miniscan_block recv %s routprep %s bodyv %s",
+    ("prepare_routine°basiclo_minifunction before miniscan_block recv %s routprep %s bodyob %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
-     objectdbg2_BM (_.bodyv));
-  _.msblov = send3_BM (_.bodyv, k_miniscan_block,
+     objectdbg2_BM (_.bodyob));
+  _.msblov = send3_BM (_.bodyob, k_miniscan_block,
                        CURFRAME_BM, _.routprep, taggedint_BM (0), _.recv);
   if (!_.msblov)
     {
-      FAILHERE (makenode1_BM (k_miniscan_block, _.bodyv));
+      DBGPRINTF_BM
+        ("prepare_routine°basiclo_minifunction failed miniscan_block bodyob=%s of %s",
+         objectdbg_BM (_.bodyob), objectdbg1_BM (objclass_BM (_.bodyob)));
+      FAILHERE (makenode1_BM (k_miniscan_block, _.bodyob));
     }
   DBGPRINTF_BM
-    ("prepare_routine°basiclo_minifunction after miniscan_block recv %s routprep %s msblov=%s",
+    ("prepare_routine°basiclo_minifunction after miniscan_block recv %s routprep %s bodyob=%s msblov=%s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
+     objectdbg2_BM (_.bodyob),
      debug_outstr_value_BM (_.msblov, CURFRAME_BM, 0));
   LOCALRETURN_BM (_.routprep);
 failure:
@@ -2767,3 +2774,55 @@ failure:
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end  prepare_module°basiclo*module _8zNBXSMY2Ts_1VI5dmY4umA */
+
+
+
+
+// miniscan_block°basiclo_block _2PbDEXpkK5W_7MSfDy2pWkH
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_2PbDEXpkK5W_7MSfDy2pWkH);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_2PbDEXpkK5W_7MSfDy2pWkH)    // miniscan_block°basiclo_block 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // blockob
+ const value_tyBM arg2,         // routprepob
+ const value_tyBM arg3,         // depth
+ const value_tyBM arg4,         // fromob
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_2PbDEXpkK5W_7MSfDy2pWkH,
+                 objectval_tyBM * blockob; objectval_tyBM * routprepob;
+                 objectval_tyBM * fromob; value_tyBM resultv;
+                 value_tyBM causev;
+                 value_tyBM errorv;
+    );
+  const objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
+  _.blockob = objectcast_BM (arg1);
+  _.routprepob = objectcast_BM (arg2);
+  int depth = getint_BM (arg3);
+  _.fromob = objectcast_BM (arg4);
+  WEAKASSERT_BM (_.blockob);
+  WEAKASSERT_BM (_.routprepob);
+  WEAKASSERT_BM (istaggedint_BM (arg3));
+  WEAKASSERT_BM (_.fromob);
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
+  DBGPRINTF_BM
+    ("miniscan_block°basiclo_block start blockob=%s routprepob=%s depth=%d fromob=%s",
+     objectdbg_BM (_.blockob), objectdbg1_BM (_.routprepob), depth,
+     objectdbg2_BM (_.fromob));
+#warning unimplemented _2PbDEXpkK5W_7MSfDy2pWkH routine
+  WEAKASSERT_BM (false && "unimplemented _2PbDEXpkK5W_7MSfDy2pWkH routine");
+  LOCALRETURN_BM (_.resultv);
+failure:
+  DBGPRINTF_BM
+    ("miniscan_block°basiclo_block  failin %d blockob %s cause %s", failin,
+     objectdbg_BM (_.blockob), debug_outstr_value_BM (_.causev, CURFRAME_BM,
+                                                      0));
+  _.errorv =
+    makenode5_BM (k_miniscan_block, _.blockob, _.routprepob,
+                  taggedint_BM (depth), _.fromob, _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+#undef FAILHERE
+}                               /* end miniscan_block°basiclo_block _2PbDEXpkK5W_7MSfDy2pWkH */
