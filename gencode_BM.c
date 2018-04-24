@@ -22,86 +22,6 @@
 
 
 
-//// for the method prepare_routine:basiclo_function
-extern objrout_sigBM ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP);
-
-value_tyBM
-ROUTINEOBJNAME_BM (_5mnsT1wsdWs_2Qnqsf3wqaP)    // prepare_routine:basiclo_function
-(struct stackframe_stBM * stkf, //
- const value_tyBM arg1,         // recv
- const value_tyBM arg2,         // modgen
- const value_tyBM arg3,         // prepval
- const value_tyBM arg4_ __attribute__ ((unused)),
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
-{
-  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM recv;
-                 objectval_tyBM * modgenob;
-                 value_tyBM args; value_tyBM curarg;
-                 objectval_tyBM * routprepob; value_tyBM prepvalset;
-                 objectval_tyBM * bindob; value_tyBM errorv;
-                 value_tyBM causev;
-    );
-  const objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
-  const objectval_tyBM *k_block = BMK_2U8Sj78DMbl_5eerKpaJsNq;
-  const objectval_tyBM *k_locals = BMK_24sSVIADeHm_0Sx34wQfG7W;
-  const objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
-  const objectval_tyBM *k_simple_routine_preparation =
-    BMK_80060zKi6Un_3isCStegT8A;
-  //const objectval_tyBM *k_body = BMK_7DQyvJFMOrC_9IfC3CtYknn;
-  const objectval_tyBM *k_bindings = BMK_1zpi50AYid5_0j6it2DwVqm;
-  objectval_tyBM *k_binding = BMK_6zu0x6tqX60_8QhJjiAOwul;
-  objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
-  int failin = -1;
-#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
-  // retrieve arguments
-  _.recv = /*function object */ (arg1);
-  _.modgenob = /*module generation object */ objectcast_BM (arg2);
-  _.prepvalset = /* set of routines */ (value_tyBM) setcast_BM (arg3);
-  DBGPRINTF_BM
-    ("start prepare_routine:basiclo_function recv=%s modgen=%s prepval=%s",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.modgenob),
-     debug_outstr_value_BM (_.prepvalset, CURFRAME_BM, 0));
-  DBGPRINTF_BM
-    ("prepare_routine:basiclo_function modgenob=%s is a %s\n",
-     objectdbg_BM (_.modgenob), objectdbg1_BM (objclass_BM (_.modgenob)));
-  _.routprepob = makeobj_BM ();
-  _.bindob = makeobj_BM ();
-  objputclass_BM (_.bindob, k_binding);
-  objtouchnow_BM (_.bindob);
-  objputattr_BM (_.routprepob, k_bindings, _.bindob);
-  DBGPRINTF_BM
-    ("prepare_routine:basiclo_function recv %s new routprepob %s new bindob %s",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
-     objectdbg2_BM (_.bindob));
-  _.args = objgetattr_BM (_.recv, k_arguments);
-  unsigned nbargs = tuplesize_BM (_.args);
-  for (unsigned curargix = 0; curargix < nbargs; curargix++)
-    {
-      _.curarg = tuplecompnth_BM (_.args, curargix);
-      DBGPRINTF_BM
-        ("prepare_routine:basiclo_function recv %s curargix#%d curarg %s",
-         objectdbg_BM (_.recv), curargix, objectdbg1_BM (_.curarg));
-      //if (assoc_getattr_BM (_.assocbind, _.curarg))
-      {
-      }
-    }
-  DBGPRINTF_BM
-    ("prepare_routine:basiclo_function end recv %s", objectdbg_BM (_.recv));
-#warning incomplete  prepare_routine:basiclo_function
-  WEAKASSERT_BM (false && "prepare_routine:basiclo_function incomplete");
-  LOCALRETURN_BM (NULL);
-failure:
-  DBGPRINTF_BM ("prepare_routine:basiclo_function failin %d cause %s", failin,
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
-  _.errorv =
-    makenode4_BM (k_prepare_routine, _.recv, _.modgenob, _.prepvalset,
-                  _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
-#undef FAILHERE
-}                               /* end  prepare_routine:basiclo_function _5mnsT1wsdWs_2Qnqsf3wqaP */
-
-
 
 //// for the method emit_c_type:c_opaque
 extern objrout_sigBM ROUTINEOBJNAME_BM (_6gRlN8loM4E_4pSsNmiCeIa);
@@ -632,6 +552,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
   objectval_tyBM *k_string = BMK_4T8am97muLl_5969SR22Ecq;
   objectval_tyBM *k_basiclo_connective = BMK_3DQ7z3EuAiT_4faSRNsy2lr;
   objectval_tyBM *k_exclam = BMK_0e54seiZEXF_1Myf620cHoB;
+  objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   int failin = -1;
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
