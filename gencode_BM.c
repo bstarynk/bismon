@@ -236,6 +236,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   const objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   const objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
   const objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
+  objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
   // retrieve arguments
   _.recv = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (_.recv));
@@ -388,11 +389,23 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   objtouchnow_BM (_.obhsetblock);
   objtouchnow_BM (_.routprep);
   DBGPRINTF_BM
-    ("prepare_routine°basiclo_minifunction before miniscan_block recv %s routprep %s bodyob %s",
+    ("prepare_routine°basiclo_minifunction before miniscan_block recv %s routprep %s bodyob %s of %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
-     objectdbg2_BM (_.bodyob));
-  _.msblov = send3_BM (_.bodyob, k_miniscan_block,
-                       CURFRAME_BM, _.routprep, taggedint_BM (0), _.recv);
+     objectdbg2_BM (_.bodyob), objectdbg3_BM (objclass_BM (_.bodyob)));
+  {
+    objlock_BM (_.bodyob);
+    if (!objectisinstance_BM (_.bodyob, k_basiclo_block))
+      {
+        DBGPRINTF_BM
+          ("prepare_routine°basiclo_minifunction recv %s bad bodyob %s of %s",
+           objectdbg_BM (_.recv), objectdbg_BM (_.bodyob),
+           objectdbg3_BM (objclass_BM (_.bodyob)));
+        FAILHERE (makenode2_BM (k_body, _.bodyob, _.recv));
+      }
+    _.msblov = send3_BM (_.bodyob, k_miniscan_block,
+                         CURFRAME_BM, _.routprep, taggedint_BM (0), _.recv);
+    objunlock_BM (_.bodyob);
+  }
   if (!_.msblov)
     {
       DBGPRINTF_BM
