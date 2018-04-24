@@ -561,8 +561,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
                  value_tyBM expv;
-                 value_tyBM resv;
-                 objectval_tyBM * routprepob;
+                 value_tyBM resv; objectval_tyBM * routprepob;
                  objectval_tyBM * modgenob; objectval_tyBM * fromob;
                  objectval_tyBM * expob; objectval_tyBM * connob;
                  objectval_tyBM * exclamob; objectval_tyBM * consthsetobj;
@@ -716,8 +715,10 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv; objectval_tyBM * routprepob;
                  objectval_tyBM * fromblockob; objectval_tyBM * compob;
-                 objectval_tyBM * seqcompob; value_tyBM testexpv;
-                 value_tyBM resv;
+                 objectval_tyBM * seqcompob;
+                 value_tyBM testexpv; value_tyBM resv;
+                 value_tyBM errorv;
+                 value_tyBM causev;
     );
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
   objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
@@ -726,19 +727,27 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
   const objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
+  objectval_tyBM *k_nb_conds = BMK_8dLpuaNoSGN_2tdmkpINCsu;
+  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   int depth = 0;
-  bool badson = false;
   _.recv = objectcast_BM (arg1);
   _.routprepob = objectcast_BM (arg2);
   depth = getint_BM (arg3);
   _.fromblockob = objectcast_BM (arg4);
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev= (Cause); goto failure; } while(0)
   DBGPRINTF_BM
     ("miniscan_stmt°basiclo_cond start recv=%s routprepob=%s depth#%d fromblockob=%s start",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob), depth,
      objectdbg2_BM (_.fromblockob));
   objlock_BM (_.recv);
   unsigned nbsons = objnbcomps_BM (_.recv);
-  for (unsigned ix = 0; ix < nbsons && !badson; ix++)
+  int nbconds = getint_BM (objgetattr_BM (_.recv, k_nb_conds));
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_cond recv=%s nbconds=%d nbsons=%u",
+     objectdbg_BM (_.recv), nbconds, nbsons);
+  WEAKASSERT_BM (nbconds <= nbsons);
+  for (unsigned ix = 0; ix < nbconds; ix++)
     {
       _.compob = objectcast_BM (objgetcomp_BM (_.recv, ix));
       DBGPRINTF_BM
@@ -752,7 +761,7 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
           miniscan_expr_BM (_.testexpv, _.routprepob, depth + 1, _.recv,
                             CURFRAME_BM);
           unsigned nbsubcomp = objnbcomps_BM (_.compob);
-          for (unsigned cix = 0; cix < nbsubcomp && !badson; cix++)
+          for (unsigned cix = 0; cix < nbsubcomp; cix++)
             {
               _.seqcompob = objectcast_BM (objgetcomp_BM (_.compob, cix));
               WEAKASSERT_BM (isobject_BM (_.seqcompob));
@@ -776,7 +785,9 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
                      objectdbg_BM (_.seqcompob),
                      debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
                   if (!_.resv)
-                    badson = true;
+                    FAILHERE (makenode3_BM
+                              (k_miniscan_block, _.seqcompob,
+                               taggedint_BM (cix), taggedint_BM (ix)));
                 }
               else if (objectisinstance_BM (_.seqcompob, k_basiclo_statement))
                 {
@@ -793,28 +804,58 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
                      objectdbg_BM (_.seqcompob),
                      debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
                   if (!_.resv)
-                    badson = true;
+                    FAILHERE (makenode3_BM
+                              (k_miniscan_block, _.seqcompob,
+                               taggedint_BM (cix), taggedint_BM (ix)));
                 }
               objunlock_BM (_.seqcompob);
 
             }
         }
       else
-        badson = true;
+        FAILHERE (makenode2_BM (k_curcomp, _.compob, taggedint_BM (ix)));
       objunlock_BM (_.compob);
       DBGPRINTF_BM
-        ("miniscan_stmt°basiclo_cond recv=%s ix=%u done compob=%s badson %s",
-         objectdbg_BM (_.recv), ix, objectdbg1_BM (_.compob),
-         badson ? "true" : "false");
+        ("miniscan_stmt°basiclo_cond recv=%s ix=%u done compob=%s",
+         objectdbg_BM (_.recv), ix, objectdbg1_BM (_.compob));
+    }
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_cond recv=%s remaining %d from nbconds %d to nbsons %d",
+     objectdbg_BM (_.recv), nbsons - nbconds, nbconds, nbsons);
+  for (unsigned ix = nbconds; ix < nbsons; ix++)
+    {
+      _.compob = objectcast_BM (objgetcomp_BM (_.recv, ix));
+      DBGPRINTF_BM
+        ("miniscan_stmt°basiclo_cond recv=%s ix=%u compob=%s",
+         objectdbg_BM (_.recv), ix, objectdbg1_BM (_.compob));
+      WEAKASSERT_BM (isobject_BM (_.compob));
+      objlock_BM (_.compob);
+      if (objectisinstance_BM (_.compob, k_basiclo_statement))
+        {
+          WEAKASSERT_BM (false
+                         &&
+                         "unimplemented basiclo_statement after when in cond");
+        }
+      else if (objectisinstance_BM (_.compob, k_basiclo_block))
+        {
+          WEAKASSERT_BM (false
+                         && "unimplemented basiclo_block after when in cond");
+        }
+      else
+        FAILHERE (makenode2_BM (k_curcomp, _.compob, taggedint_BM (ix)));
+
     }
   objunlock_BM (_.recv);
-  DBGPRINTF_BM
-    ("miniscan_stmt°basiclo_cond ending recv=%s badson %s",
-     objectdbg_BM (_.recv), badson ? "true" : "false");
-  if (badson)
-    LOCALRETURN_BM (NULL);
-  else
-    LOCALRETURN_BM (_.recv);
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_cond ending recv=%s");
+  LOCALRETURN_BM (_.recv);
+failure:
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_cond  failin %d recv=%s", failin,
+                objectdbg_BM (_.recv));
+  _.errorv =
+    makenode4_BM (k_miniscan_stmt, _.recv, _.routprepob, taggedint_BM (depth),
+                  _.fromblockob);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+#undef FAILHERE
 }                               /* end routine miniscan_stmt°basiclo_cond _0zzJJsAL6Qm_2uw3eoWQHEq */
 
 
@@ -1033,7 +1074,7 @@ ROUTINEOBJNAME_BM (_7vlMCZ0yvva_6tx0lFlqBG8)    // miniscan_stmt°basiclo_return
      objectdbg_BM (_.recv), objectdbg1_BM (_.retypob));
   // perhaps we could handle other cases, e.g. for something else than
   // basiclo_function-s.
-  if (_.retypob != k_value)
+  if (_.retypob != k_value && _.retypob != BMP_object)
     FAILHERE ();
   LOCALRETURN_BM (_.retypob);
 #undef FAILHERE
