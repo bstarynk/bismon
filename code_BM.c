@@ -2004,7 +2004,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
                 debug_outstr_value_BM ((value_tyBM) _.constsetv, CURFRAME_BM,
                                        1));
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
-  WEAKASSERT_BM(!_.constsetv || isset_BM(_.constsetv));
+  WEAKASSERT_BM (!_.constsetv || isset_BM (_.constsetv));
   objstrbufferprintfpayl_BM (_.modgenob, "\n" "#include \"bismon.h\"\n\n");
   if (!isset_BM (_.prepval))
     {

@@ -179,8 +179,16 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   _.setnumbers = setcast_BM (objgetattr_BM (_.recv, k_numbers));
   _.setconsts = setcast_BM (objgetattr_BM (_.recv, k_constants));
   DBGPRINTF_BM
-    ("prepare_routine°basiclo_minifunction recv=%s routprep=%s",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep));
+    ("prepare_routine°basiclo_minifunction recv=%s routprep=%s tupargs=%s tupclosed=%s obresult=%s"
+     "\n.. setlocals=%s setnumbers=%s setconsts=%s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
+     debug_outstr_value_BM(_.tupargs, CURFRAME_BM, 0),
+     debug_outstr_value_BM(_.tupclosed, CURFRAME_BM, 0),
+     objectdbg2_BM(_.obresult),
+     debug_outstr_value_BM(_.setlocals, CURFRAME_BM, 0),
+     debug_outstr_value_BM(_.setnumbers, CURFRAME_BM, 0),
+     debug_outstr_value_BM(_.setconsts, CURFRAME_BM, 0)
+     );
   _.bodyv = objgetattr_BM (_.recv, k_body);
   if (!isobject_BM (_.bodyv))
     {
@@ -1356,9 +1364,10 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
     objunlock_BM (_.routob);
   }
   DBGPRINTF_BM
-    ("emit_definition°simple_routine_preparation routob=%s argtup=%s bodyob=%s resultob=%s",
-     objectdbg_BM (_.routob), debug_outstr_value_BM (_.argtupv, CURFRAME_BM,
-                                                     0),
+    ("emit_definition°simple_routine_preparation routob=%s rank#%d argtup=%s bodyob=%s resultob=%s",
+     objectdbg_BM (_.routob),
+     rank,
+     debug_outstr_value_BM (_.argtupv, CURFRAME_BM, 0),
      objectdbg1_BM (_.bodyob), objectdbg2_BM (_.resultob));
   {
     objlock_BM (_.resultob);
@@ -1366,8 +1375,8 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
     objunlock_BM (_.resultob);
   }
   DBGPRINTF_BM
-    ("emit_definition°simple_routine_preparation routprepob=%s argtupv=%s bodyob=%s resultob=%s of type %s",
-     objectdbg_BM (_.routprepob),
+    ("emit_definition°simple_routine_preparation routprepob=%s rank#%d argtupv=%s bodyob=%s resultob=%s of type %s",
+     objectdbg_BM (_.routprepob), rank,
      debug_outstr_value_BM (_.argtupv, CURFRAME_BM, 0),
      objectdbg1_BM (_.bodyob), objectdbg2_BM (_.resultob),
      objectdbg3_BM (_.typob));
@@ -1579,7 +1588,8 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objstrbufferprintfpayl_BM (_.modgenob, "   return ");
   emit_var_BM (CURFRAME_BM, _.resultob, _.modgenob, _.routprepob, _.routob,
                0);
-  objstrbufferprintfpayl_BM (_.modgenob, ";\n" "} // end %s\n\n", routidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob, ";\n" "} // end %s routine#%d\n\n\n",
+                             routidbuf, rank);
   objunlock_BM (_.modgenob);
   DBGPRINTF_BM
     ("emit_definition°simple_routine_preparation end routprepob=%s",
