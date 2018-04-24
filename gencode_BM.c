@@ -714,6 +714,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
             else
               FAILHERE ();
           }
+	{
         objlock_BM (_.connob);
         if (objectisinstance_BM (_.connob, k_basiclo_connective))
           {
@@ -730,9 +731,10 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
                           debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
             if (!_.resv)
               FAILHERE ();
+	    LOCALRETURN_BM (_.resv);
           }
         objunlock_BM (_.connob);
-        LOCALRETURN_BM (_.resv);
+	}
       }
     default:
       FAILHERE ();
