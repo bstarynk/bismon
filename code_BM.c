@@ -1997,13 +1997,14 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
       DBGPRINTF_BM ("@@generate_module°basiclo*module bad modgenob");
       LOCALRETURN_BM (NULL);
     };
-  _.constsetv = setcast_BM (objgetattr_BM (_.modgenob, k_constants));
+  _.constsetv = objgetattr_BM (_.modgenob, k_constants);
   DBGPRINTF_BM ("@@generate_module°basiclo*module modgenob=%s is a %s prepval=%s constsetv=%s\n",      //
                 objectdbg_BM (_.modgenob), objectdbg1_BM (objclass_BM (_.modgenob)),    //
                 debug_outstr_value_BM ((value_tyBM) _.prepval, CURFRAME_BM, 1), //
                 debug_outstr_value_BM ((value_tyBM) _.constsetv, CURFRAME_BM,
                                        1));
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
+  WEAKASSERT_BM(!_.constsetv || isset_BM(_.constsetv));
   objstrbufferprintfpayl_BM (_.modgenob, "\n" "#include \"bismon.h\"\n\n");
   if (!isset_BM (_.prepval))
     {
