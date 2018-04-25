@@ -37,7 +37,7 @@ initialize_garbage_collector_BM (void)
   atomic_init (&want_garbage_collection_BM, false);
   pthread_mutex_init (&allocationmutex_BM, NULL);
   last_gctime_BM = clocktime_BM (CLOCK_REALTIME);
-  unsigned alsiz = 2040;
+  unsigned alsiz = 8190;
   allocationvec_vBM =
     malloc (sizeof (struct allalloc_stBM) + alsiz * sizeof (void *));
   if (!allocationvec_vBM)
@@ -57,10 +57,13 @@ allocgcty_BM (unsigned type, size_t sz)
   unsigned long alloc_nb = allocationvec_vBM->al_nb;
   if (alloc_nb + 3 >= alloc_size)
     {
-      unsigned long new_alloc_size = ((4 * alloc_size / 3 + 600) | 511) - 2;
-      struct allalloc_stBM *new_allocvec =
-        calloc (1, sizeof (struct allalloc_stBM) +
-                new_alloc_size * sizeof (void *));
+      unsigned long new_alloc_size =
+        ((4 * alloc_size / 3 + alloc_size / 8 + 600) | 511) - 2;
+      struct allalloc_stBM *new_allocvec = calloc (1,
+                                                   sizeof (struct
+                                                           allalloc_stBM) +
+                                                   new_alloc_size *
+                                                   sizeof (void *));
       if (!new_allocvec)
         FATAL_BM ("failed reallocation of allocvec %ld (%m)", new_alloc_size);
       new_allocvec->al_size = new_alloc_size;
