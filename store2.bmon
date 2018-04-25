@@ -1868,14 +1868,14 @@ _17mrxkMdNtH_2CduQ2WDIy5 _8g1WBJBhDT9_1QK8IcuWYx2)
 !(_9O2lgu1TweO_0mVlpTwrBG1 |=second_test_minifunc|
 !~ name (~ second_test_minifunc
 ~)
-!@ 1524574519.97
+!@ 1524631692.46
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "second minifunc in test module"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _5EEITf6IFH7_4DbKG99zcPW ]
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
- [ _3qw9bnATIhq_8loBraLeXzQ ]
+_3qw9bnATIhq_8loBraLeXzQ
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
 _8yXqsN7LuB3_0vODsT2M9Lh
 !)_9O2lgu1TweO_0mVlpTwrBG1
