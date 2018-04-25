@@ -929,6 +929,7 @@ register_predefined_object_BM (objectval_tyBM * pob)
   ASSERT_BM (pob->ob_id.id_hi > 0 && pob->ob_id.id_lo > 0);
   ASSERT_BM (findobjofid_BM (pob->ob_id) == NULL);
   ASSERT_BM (((typedhead_tyBM *) pob)->hash == hashid_BM (pob->ob_id));
+  pthread_mutex_init (&pob->ob_mutex, &objmutexattr_BM);
   unsigned bucknum = bucknumserial63_BM (pob->ob_id.id_hi);
   growobucket_BM (bucknum, 6);
   struct objbucket_stBM *curbuck = buckarr_BM[bucknum];
