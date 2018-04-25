@@ -197,6 +197,8 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   if (!isobject_BM (_.obresult))
     FAILHERE (makenode1_BM (k_result, _.recv));
   WEAKASSERT_BM (_.bodyob);
+  WEAKASSERT_BM (isobject_BM (_.obmodhsetconst)
+                 && objhashashsetpayl_BM (_.obmodhsetconst));
   _.routprep = makeobj_BM ();
   objputclass_BM (_.routprep,
                   (objectval_tyBM *) k_simple_routine_preparation);
@@ -1987,8 +1989,7 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
                  value_tyBM expv;
                  value_tyBM avalv;
-                 objectval_tyBM * expob;
-                 objectval_tyBM * modgenob;
+                 objectval_tyBM * expob; objectval_tyBM * modgenob;
                  objectval_tyBM * typob; objectval_tyBM * routprepob;
                  objectval_tyBM * fromob; objectval_tyBM * connob;
                  value_tyBM exclamv; objectval_tyBM * exclamob;
