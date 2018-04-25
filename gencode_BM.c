@@ -3012,6 +3012,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   objectval_tyBM *k_emit_declaration = BMK_3NGaoN3yhbn_8yUwbtZfvp9;
   objectval_tyBM *k_emit_definition = BMK_1g8s9B96Irf_6Ix2Cyy8Hq0;
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
+  objectval_tyBM *k_functions_set = BMK_9stpgEfdDDE_7LUgqylTeFI;
   objectval_tyBM *k_generate_module = BMK_9mq0jsuz4XQ_4doHfd987Q6;
   const objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
   ASSERT_BM (isobject_BM (_.modulob));
@@ -3042,55 +3043,21 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
   WEAKASSERT_BM (!_.constsetv || isset_BM (_.constsetv));
   objstrbufferprintfpayl_BM (_.modgenob, "\n\n" "#include \"bismon.h\"\n\n");
-  unsigned nbrout = setcardinal_BM ((const setval_tyBM *) _.prepval);
-  _.vectprepob = makeobj_BM ();
-  objputclass_BM (_.vectprepob, k_vector_object);
-  objputdatavectpayl_BM (_.vectprepob, nbrout + 1);
-  objputattr_BM (_.modgenob, k_prepared_routines, _.vectprepob);
-  objtouchnow_BM (_.modgenob);
-  DBGPRINTF_BM ("@@generate_module°basiclo*module nbrout=%u vectprepob=%s",
-                nbrout, objectdbg_BM (_.vectprepob));
-  for (unsigned ix = 0; ix < nbrout; ix++)
-    {
-      _.curout = setelemnth_BM ((const setval_tyBM *) _.prepval, ix);
-      DBGPRINTF_BM ("@@generate_module°basiclo*module ix#%d\n"
-                    "... curout %s is a %s\n",
-                    ix, objectdbg_BM (_.curout),
-                    objectdbg1_BM (objclass_BM (_.curout)));
-      _.preproutval = send2_BM (_.curout, k_prepare_routine,
-                                CURFRAME_BM, _.modgenob, _.prepval);
-      DBGPRINTF_BM
-        ("@@generate_module°basiclo*module prepare_routine of %s ix#%d preproutval=%s",
-         objectdbg_BM (_.curout), ix,
-         debug_outstr_value_BM (_.preproutval, CURFRAME_BM, 0));
-      if (!_.preproutval)
-        {
-          DBGPRINTF_BM
-            ("@@generate_module°basiclo*module prepare_routine of %s failed",
-             objectdbg_BM (_.curout));
-          LOCALRETURN_BM (NULL);
-        }
-      objdatavectappendpayl_BM (_.vectprepob, _.preproutval);
-    }
-  _.prepmod =
-    (const value_tyBM) objdatavecttonodepayl_BM (_.vectprepob,
-                                                 k_prepared_routines);
-  objputattr_BM (_.modgenob, k_prepared_routines, _.prepmod);
-  objtouchnow_BM (_.modgenob);
   DBGPRINTF_BM
     ("@@generate_module°basiclo*module incomplete modgenob=%s prepmod=%s",
      objectdbg_BM (_.modgenob),
      debug_outstr_value_BM (_.prepmod, CURFRAME_BM, 0));
-  unsigned nbpreprout = nodewidth_BM (_.prepmod);
+  _.routsetv = objgetattr_BM(_.modgenob, k_functions_set);
+  unsigned nbrout = setcardinal_BM(_.routsetv);
   //////
   // we should now declare the routines
   objstrbufferprintfpayl_BM (_.modgenob, "\n\n// declare %u routines\n",
-                             nbpreprout);
+                             nbrout);
   _.preproutval = NULL;
   // we should now emit each routine's declaration...
-  for (unsigned routix = 0; routix < nbpreprout; routix++)
+  for (unsigned routix = 0; routix < nbrout; routix++)
     {
-      _.curout = objectcast_BM (nodenthson_BM (_.prepmod, routix));
+      _.curout = setelemnth_BM(_.routsetv, routix);
       _.emitv = NULL;
       DBGPRINTF_BM
         ("@@generate_module°basiclo*module declaring routix#%d curout %s",
@@ -3107,14 +3074,13 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
           DBGPRINTF_BM
             ("@@generate_module°basiclo*module emit_declaration of %s failed",
              objectdbg_BM (_.curout));
-          LOCALRETURN_BM (NULL);
+          FAILHERE(makenode2_BM(k_emit_declaration, _.curout, taggedint_BM(routix)));
         }
     }
   //// we should now emit the declarations of constants and of their ids
   unsigned nbconst = setcardinal_BM (_.constsetv);
   objstrbufferprintfpayl_BM (_.modgenob, "\n\n// declare %u constants\n",
                              nbconst);
-#warning emit declaration related to constants
   if (nbconst > 0)
     {
       objstrbufferprintfpayl_BM (_.modgenob, "objectval_tyBM* "
@@ -3129,12 +3095,12 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   //////
   // we should now define the routines
   objstrbufferprintfpayl_BM (_.modgenob, "\n\n// define %u routines\n",
-                             nbpreprout);
+                             nbrout);
   _.preproutval = NULL;
   // we should now emit each routine's definition...
-  for (unsigned routix = 0; routix < nbpreprout; routix++)
+  for (unsigned routix = 0; routix < nbrout; routix++)
     {
-      _.curout = objectcast_BM (nodenthson_BM (_.prepmod, routix));
+      _.curout = setelemnth_BM(_.routsetv, routix);
       _.emitv = NULL;
       DBGPRINTF_BM
         ("@@generate_module°basiclo*module defining routix#%d curout %s",
@@ -3151,13 +3117,13 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
           DBGPRINTF_BM
             ("@@generate_module°basiclo*module emit_declaration of %s failed",
              objectdbg_BM (_.curout));
-          LOCALRETURN_BM (NULL);
+          FAILHERE(makenode2_BM(k_emit_definition, _.curout, taggedint_BM(routix)));
         }
     }
   // ending comment
   objstrbufferprintfpayl_BM (_.modgenob,
                              "\n\n// end of %u generated routines\n",
-                             nbpreprout);
+                             nbrout);
   DBGPRINTF_BM
     ("@@generate_module°basiclo*module end modulob %s modgenob %s",
      objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
