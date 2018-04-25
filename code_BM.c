@@ -1954,11 +1954,12 @@ ROUTINEOBJNAME_BM (_60NdV04Lel2_5FSZVWKbSL7)    // put_data_value°basiclo_funct
 
 
 // for the method to generate_module in basiclo_temporary_module &
-// basiclo_dumpable_module
+// basiclo_dumpable_module/ generate_module°basiclo*module
 
-extern objrout_sigBM ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I);
+extern objrout_sigBM ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I);      // generate_module°basiclo*module
+
 value_tyBM
-ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
+ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*module
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // recieving module
  const value_tyBM arg2,         // module generator
@@ -1985,13 +1986,13 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    //
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
-  DBGPRINTF_BM
-    ("@@generate_module°basiclo*module modulob=%s /%s\n"
-     "... is a %s\n",
-     objectdbg_BM (_.modulob), modulidbuf,
-     objectdbg1_BM (objclass_BM (_.modulob)));
   _.modgenob = objectcast_BM (arg2);
   _.prepval = arg3;
+  DBGPRINTF_BM
+    ("@@generate_module°basiclo*module modulob=%s /%s\n"
+     "... is a %s, modgenob %s\n\n",
+     objectdbg_BM (_.modulob), modulidbuf,
+     objectdbg1_BM (objclass_BM (_.modulob)), objectdbg2_BM (_.modgenob));
   if (!_.modgenob)
     {
       DBGPRINTF_BM ("@@generate_module°basiclo*module bad modgenob");

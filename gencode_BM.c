@@ -2534,8 +2534,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * modulob;
-                 objectval_tyBM * modgenob;
+                 objectval_tyBM * modulob; objectval_tyBM * modgenob;
                  value_tyBM resprep; value_tyBM resgen; value_tyBM prefixv;
                  objectval_tyBM * dumpob; value_tyBM errorv;
                  value_tyBM closgenv;
@@ -2668,10 +2667,12 @@ failure:
 
 
 
-// for the method to prepare_module in basiclo_temporary_module &
-// basiclo_dumpable_module
 
-extern objrout_sigBM ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA);
+////////////////
+// for the method to prepare_module in basiclo_temporary_module &
+// basiclo_dumpable_module -- prepare_module°basiclo*module
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA); // prepare_module°basiclo*module 
 value_tyBM
 ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    // prepare_module°basiclo*module
 (struct stackframe_stBM * stkf, //
@@ -2841,9 +2842,10 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    // prepare_module°basiclo*modul
                     (k_basiclo_function, _.curcomp, taggedint_BM (ix)));
         }
     }
-  unsigned nbfun = objhashsetcardinalpayl_BM (_.funhsetob);
-  DBGPRINTF_BM ("@@prepare_module°basiclo*module hsetcard %u", nbfun);
   _.setfun = (setval_tyBM *) objhashsettosetpayl_BM (_.funhsetob);
+  DBGPRINTF_BM ("@@prepare_module°basiclo*module funhsetob %s setfun %s modgenob %s", objectdbg_BM(_.funhsetob),
+		debug_outstr_value_BM(_.setfun, CURFRAME_BM, 0),
+		objectdbg1_BM(_.modgenob));
   objputattr_BM (_.modgenob, k_functions_set, _.setfun);
   DBGPRINTF_BM
     ("@@prepare_module°basiclo*module before complete_module modulob=%s (of %s) modgenob=%s",
