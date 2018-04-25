@@ -1981,6 +1981,8 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
   objectval_tyBM *k_string = BMK_4T8am97muLl_5969SR22Ecq;
   objectval_tyBM *k_miniemit_node_conn = BMK_7L782rSgJBB_9vjsBdqAoz7;
   objectval_tyBM *k_variable = BMK_5ucAZimYynS_4VA0XHvr1nW;
+  objectval_tyBM *k_basiclo_connective = BMK_3DQ7z3EuAiT_4faSRNsy2lr;
+  objectval_tyBM *k_exclam = BMK_0e54seiZEXF_1Myf620cHoB;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
                  value_tyBM expv; value_tyBM avalv; objectval_tyBM * expob;
                  objectval_tyBM * modgenob; objectval_tyBM * typob;
@@ -2074,16 +2076,27 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
           ("emit_expression connob %s arity %d routprepob %s fromob %s before",
            objectdbg_BM (_.connob), arity, objectdbg1_BM (_.routprepob),
            objectdbg2_BM (_.fromob));
-        _.resv = send5_BM (_.connob, k_miniemit_node_conn,      //
-                           CURFRAME_BM, //
-                           _.expv,
-                           _.modgenob,
-                           _.routprepob, taggedint_BM (depth), _.fromob);
-        DBGPRINTF_BM ("emit_expression miniscan_node_conn->%s done resv=%s",    //
-                      objectdbg_BM (_.connob),  //
-                      debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
-        if (!_.resv)
-          FAILHERE (NULL);
+        if (_.connob == k_exclam && arity == 1)
+          {
+#warning emit_expression should handle !<object> and !<integer>
+            WEAKASSERT_BM (false
+                           && "unimplemented emit_expression_BM exclam");
+          }
+        else if (objectisinstance_BM (_.connob, k_basiclo_connective))
+          {
+            _.resv = send5_BM (_.connob, k_miniemit_node_conn,  //
+                               CURFRAME_BM,     //
+                               _.expv,
+                               _.modgenob,
+                               _.routprepob, taggedint_BM (depth), _.fromob);
+            DBGPRINTF_BM ("emit_expression miniscan_node_conn->%s done resv=%s",        //
+                          objectdbg_BM (_.connob),      //
+                          debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
+            if (!_.resv)
+              FAILHERE (NULL);
+          }
+        else
+          FAILHERE (BMP_node);
         objunlock_BM (_.connob);
         LOCALRETURN_BM (_.resv);
       }
