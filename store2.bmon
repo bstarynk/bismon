@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 312 objects
+// for 314 objects
 // with 0 modules
 
 
@@ -2097,6 +2097,21 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 
 
+!(_3DB5p6fxoKz_3UuCr6DjJov |=transient|
+!~ name (~ transient
+~)
+!@ 1524666350.92
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "command to make transient an object or a sequence of them"
+!: _0xbmmxnN8E8_0ZuEqJmqMNH |=command_handler|
+ % _2WuloCaOgGk_9oQOcW9c5Je ()
+!: _0NnNXZqWvmz_1ucZGX0YPu1 |=command_arity|
+ 1
+!)_3DB5p6fxoKz_3UuCr6DjJov
+
+
+
 !(_4ysNY0rIzNK_7JgIhrjYpxD |=tuplety|
 !~ name (~ tuplety
 ~)
@@ -2775,6 +2790,16 @@ _3XBrePAliOo_37VlAqBsb5C) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "miniscan_block\u00b0basiclo_block"
 !)_2PbDEXpkK5W_7MSfDy2pWkH
+
+
+
+!(_2WuloCaOgGk_9oQOcW9c5Je
+!|*
+!@ 1524666350.92
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "command_handler#transient"
+!)_2WuloCaOgGk_9oQOcW9c5Je
 
 
 

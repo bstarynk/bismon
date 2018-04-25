@@ -1937,3 +1937,103 @@ ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    //
     }
   LOCALRETURN_BM (NULL);
 }                               /* end emit_module command_handler _2bzzB0nZuUO_2xfj3rDb3DN */
+
+
+
+//  command_handler#transient _2WuloCaOgGk_9oQOcW9c5Je
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_2WuloCaOgGk_9oQOcW9c5Je);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_2WuloCaOgGk_9oQOcW9c5Je)    //command_handler#transient 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // transientv
+ const value_tyBM arg2_ __attribute__ ((unused)),       //
+ const value_tyBM arg3_ __attribute__ ((unused)),       //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_2WuloCaOgGk_9oQOcW9c5Je,
+                 value_tyBM transientv; objectval_tyBM * transob;
+                 value_tyBM resultv;
+    );
+  _.transientv = arg1;
+again:
+  if (isobject_BM (_.transientv))
+    {
+      _.transob = (objectval_tyBM *) _.transientv;
+      objlock_BM (_.transob);
+      objputspacenum_BM (_.transob, TransientSp_BM);
+      objtouchnow_BM (_.transob);
+      objunlock_BM (_.transob);
+      if (pthread_self () == mainthreadid_BM)
+        {
+          log_begin_message_BM ();
+          log_puts_message_BM ("made transient ");
+          log_object_message_BM (_.transob);
+          log_puts_message_BM (".");
+          log_end_message_BM ();
+        };
+    }
+  else if (issequence_BM (_.transientv))
+    {
+      unsigned siz = sequencesize_BM (_.transientv);
+      for (int ix = 0; ix < (int) siz; ix++)
+        {
+          _.transob = sequencenthcomp_BM (_.transientv, ix);
+          objlock_BM (_.transob);
+          objputspacenum_BM (_.transob, TransientSp_BM);
+          objtouchnow_BM (_.transob);
+          objunlock_BM (_.transob);
+        }
+      if (pthread_self () == mainthreadid_BM)
+        {
+          log_begin_message_BM ();
+          log_printf_message_BM ("made transient %d objects:", siz);
+          for (int ix = 0; ix < (int) siz; ix++)
+            {
+              _.transob = sequencenthcomp_BM (_.transientv, ix);
+              if (ix % 4 == 0)
+                log_puts_message_BM ("\n");
+              else
+                log_puts_message_BM (" ");
+              log_object_message_BM (_.transob);
+            };
+          log_puts_message_BM (".");
+          log_end_message_BM ();
+        }
+
+    }
+  else if (isclosure_BM (_.transientv))
+    {
+      _.resultv = apply0_BM (_.transientv, CURFRAME_BM);
+      if (isobject_BM (_.resultv) || issequence_BM (_.resultv))
+        {
+          _.transientv = _.resultv;
+          goto again;
+        }
+      else
+        {
+          if (pthread_self () == mainthreadid_BM)
+            {
+              log_begin_message_BM ();
+              log_printf_message_BM ("bad ,transient closure gave %s.",
+                                     debug_outstr_value_BM (_.resultv,
+                                                            CURFRAME_BM, 0));
+              log_end_message_BM ();
+            }
+        }
+    }
+  else
+    {
+      if (pthread_self () == mainthreadid_BM)
+        {
+          log_begin_message_BM ();
+          log_printf_message_BM ("invalid argument to ,transient %s.",
+                                 debug_outstr_value_BM (_.transientv,
+                                                        CURFRAME_BM, 0));
+          log_end_message_BM ();
+        }
+    }
+  LOCALRETURN_BM (_.transientv);
+}                               /* end command_handler#transient _2WuloCaOgGk_9oQOcW9c5Je */
