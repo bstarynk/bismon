@@ -590,11 +590,11 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
                 debug_outstr_value_BM (_.expv, CURFRAME_BM, 0), //
                 objectdbg1_BM (_.routprepob), depth,
                 objectdbg2_BM (_.fromob));
-  WEAKASSERT_BM (objectisinstance_BM
-                 (_.routprepob, k_simple_routine_preparation));
+  WEAKASSERT_BM (objectisinstance_BM (_.routprepob,
+                                      k_simple_routine_preparation));
   _.modgenob = objgetattr_BM (_.routprepob, k_modgenob);
-  WEAKASSERT_BM (objectisinstance_BM
-                 (_.modgenob, k_simple_module_generation));
+  WEAKASSERT_BM (objectisinstance_BM (_.modgenob,
+                                      k_simple_module_generation));
   int ke = valtype_BM (_.expv);
   switch (ke)
     {
@@ -648,15 +648,6 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
               {
                 _.consthsetobj =
                   objectcast_BM (objgetattr_BM (_.modgenob, k_constants));
-                if (!_.consthsetobj)
-                  {
-                    _.consthsetobj = makeobj_BM ();
-                    objputhashsetpayl_BM (_.consthsetobj, 11);
-                    objputclass_BM (_.consthsetobj, k_hset_object);
-                    objtouchnow_BM (_.consthsetobj);
-                    objputattr_BM (_.modgenob, k_constants, _.consthsetobj);
-                    objtouchnow_BM (_.modgenob);
-                  }
                 DBGPRINTF_BM
                   ("miniscan_expr exclamob=%s routprepob=%s consthsetobj=%s",
                    objectdbg_BM (_.exclamob), objectdbg1_BM (_.routprepob),
@@ -2537,14 +2528,17 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // recieving module
  const value_tyBM arg2,         /* optional dumperob or prefix */
- const value_tyBM arg3 __attribute__ ((unused)),
+ const value_tyBM arg3,         // optional closgenv closure to process the module generator
  const value_tyBM arg4 __attribute__ ((unused)),
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * modulob; objectval_tyBM * modgenob;
-                 value_tyBM resprep; value_tyBM resgen; value_tyBM prefixv;
+                 value_tyBM resprep;
+                 value_tyBM resgen;
+                 value_tyBM prefixv;
                  objectval_tyBM * dumpob; value_tyBM errorv;
+                 value_tyBM closgenv;
                  value_tyBM causev;
     );
   char *srcdirstr = NULL;
@@ -2557,6 +2551,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     LOCALRETURN_BM (NULL);
   _.modulob = (objectval_tyBM *) arg1;
   _.prefixv = arg2;
+  _.closgenv = arg3;
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
   if (isstring_BM (_.prefixv))
@@ -2578,7 +2573,6 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   if (!srcdirstr)
     FATAL_BM ("strdup failed for srcdirstr");
   _.modgenob = makeobj_BM ();
-
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
@@ -2589,6 +2583,20 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   DBGPRINTF_BM
     ("@@emit_module°plain_module modulob=%s [%s] made modgenob=%s *sbuf*",
      objectdbg_BM (_.modulob), modulidbuf, objectdbg1_BM (_.modgenob));
+  if (isclosure_BM (_.closgenv))
+    {
+      DBGPRINTF_BM
+        ("@@emit_module°plain_module modulob=%s closgenv=%s modgenob=%s",
+         objectdbg_BM (_.modulob),
+         debug_outstr_value_BM (_.closgenv, CURFRAME_BM, 0),
+         objectdbg1_BM (_.modgenob));
+      apply1_BM ((closure_tyBM *) _.closgenv, CURFRAME_BM, _.modgenob);
+      DBGPRINTF_BM
+        ("@@emit_module°plain_module modulob=%s after apply closgenv=%s modgenob=%s",
+         objectdbg_BM (_.modulob),
+         debug_outstr_value_BM (_.closgenv, CURFRAME_BM, 0),
+         objectdbg1_BM (_.modgenob));
+    }
   _.resprep = send1_BM (_.modulob, k_prepare_module, CURFRAME_BM, _.modgenob);
   DBGPRINTF_BM ("@@emit_module modulob=%s modgenob=%s resprep=%s",      //
                 objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),   //
