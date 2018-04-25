@@ -2017,7 +2017,9 @@ again:
           if (pthread_self () == mainthreadid_BM)
             {
               log_begin_message_BM ();
-              log_printf_message_BM ("bad ,transient closure gave %s.",
+              log_printf_message_BM ("bad ,transient closure %s gave %s.",
+                                     debug_outstr_value_BM (_.transientv,
+                                                            CURFRAME_BM, 0),
                                      debug_outstr_value_BM (_.resultv,
                                                             CURFRAME_BM, 0));
               log_end_message_BM ();

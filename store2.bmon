@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 314 objects
+// for 312 objects
 // with 0 modules
 
 
@@ -208,7 +208,6 @@ _0vgCFjXblkx_4zCMhMAWjVK
  "dumpable module with only basic closures"
 !~ class (~ |supercl plain_dumpable_module:| _2HjhGk7Engb_58InnCq3TZ1 
 ~: _17mrxkMdNtH_2CduQ2WDIy5  % _8zNBXSMY2Ts_1VI5dmY4umA () 
-~: _5MiY0SneC5A_7c2Ar72nm9O  % _10XOFm9ui6R_06F8qZQynnA () 
 ~: _9mq0jsuz4XQ_4doHfd987Q6  % _50d65bJypCN_6IJeVtssx9I ()
 ~)
 
@@ -405,7 +404,6 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !&  [ _2HlKptD03wA_7JJCG7lN5nS _8zNBXSMY2Ts_1VI5dmY4umA ]
 !~ class (~ |supercl plain_temporary_module:| _1oEp0eAAyFN_4lsobepyr1T 
 ~: _17mrxkMdNtH_2CduQ2WDIy5  % _8zNBXSMY2Ts_1VI5dmY4umA () 
-~: _5MiY0SneC5A_7c2Ar72nm9O  % _10XOFm9ui6R_06F8qZQynnA () 
 ~: _9mq0jsuz4XQ_4doHfd987Q6  % _50d65bJypCN_6IJeVtssx9I ()
 ~)
 
@@ -683,17 +681,6 @@ _5ve5gbSjN0r_1n61nNRPtnN _0jFqaPPHgYH_5JpjOPxQ67p _7DQyvJFMOrC_9IfC3CtYknn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "gives the closure handling a command"
 !)_0xbmmxnN8E8_0ZuEqJmqMNH
-
-
-
-!(_5MiY0SneC5A_7c2Ar72nm9O |=complete_module|
-!~ name (~ complete_module
-~)
-!@ 1506063223.90
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "selector to complete a module"
-!)_5MiY0SneC5A_7c2Ar72nm9O
 
 
 
@@ -2537,20 +2524,6 @@ _8dLpuaNoSGN_2tdmkpINCsu) ~)
 
 
 
-!(_10XOFm9ui6R_06F8qZQynnA
-!|*
-!@ 1510987798.39
-!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "method for complete_module\u00b0basiclo*module"
-
-!~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _9stpgEfdDDE_7LUgqylTeFI _8g1WBJBhDT9_1QK8IcuWYx2 
-_2Z04aTH1OXJ_4ekKKdOCiOM) ~)
-
-!)_10XOFm9ui6R_06F8qZQynnA
-
-
-
 !(_1etImV3nBtp_5rnHSE87XRj
 !|*
 !@ 1521200046.54
@@ -3482,7 +3455,7 @@ _4lKK08v9A0t_0GGsir35UxP _4bYUiDmxrKK_6nPPlEl8y8x) ~)
  [ _2HlKptD03wA_7JJCG7lN5nS _9stpgEfdDDE_7LUgqylTeFI _2Ir1i8qnrA4_3jSkierlc5z ]
 
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _2HlKptD03wA_7JJCG7lN5nS _9stpgEfdDDE_7LUgqylTeFI 
-_2Ir1i8qnrA4_3jSkierlc5z _5MiY0SneC5A_7c2Ar72nm9O) ~)
+_2Ir1i8qnrA4_3jSkierlc5z) ~)
 
 !)_8zNBXSMY2Ts_1VI5dmY4umA
 
