@@ -123,7 +123,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                  setval_tyBM * prepvalset;
                  objectval_tyBM * curprepob;
                  objectval_tyBM * curtypob;
-                 objectval_tyBM * routprep;
+                 objectval_tyBM * routprepob;
                  objectval_tyBM * obhsetblock;
                  objectval_tyBM * typob;
                  objectval_tyBM * bodyob;
@@ -179,9 +179,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   _.setnumbers = setcast_BM (objgetattr_BM (_.recv, k_numbers));
   _.setconsts = setcast_BM (objgetattr_BM (_.recv, k_constants));
   DBGPRINTF_BM
-    ("prepare_routine°basiclo_minifunction recv=%s routprep=%s tupargs=%s tupclosed=%s obresult=%s"
+    ("prepare_routine°basiclo_minifunction recv=%s tupargs=%s tupclosed=%s obresult=%s"
      "\n.. setlocals=%s setnumbers=%s setconsts=%s",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
+     objectdbg_BM (_.recv),
      debug_outstr_value_BM (_.tupargs, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.tupclosed, CURFRAME_BM, 0),
      objectdbg2_BM (_.obresult),
@@ -199,23 +199,24 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   WEAKASSERT_BM (_.bodyob);
   WEAKASSERT_BM (isobject_BM (_.obmodhsetconst)
                  && objhashashsetpayl_BM (_.obmodhsetconst));
-  _.routprep = makeobj_BM ();
-  objputclass_BM (_.routprep,
+  _.routprepob = makeobj_BM ();
+  objputclass_BM (_.routprepob,
                   (objectval_tyBM *) k_simple_routine_preparation);
-  objputattr_BM (_.routprep, k_in, _.recv);
-  objputattr_BM (_.routprep, k_modgenob, _.modgenob);
+  objputattr_BM (_.routprepob, k_in, _.recv);
+  objputattr_BM (_.routprepob, k_modgenob, _.modgenob);
   unsigned nbargs = tuplesize_BM (_.tupargs);
   unsigned nbclosed = tuplesize_BM (_.tupclosed);
   unsigned nblocals = setcardinal_BM (_.setlocals);
   unsigned nbnumbers = setcardinal_BM (_.setnumbers);
   unsigned nbconsts = setcardinal_BM (_.setconsts);
   DBGPRINTF_BM
-    ("start prepare_routine°basiclo_minifunction recv %s nbargs=%u nbclosed=%u nblocals=%u nbnumbers=%u nbconsts=%u",
-     objectdbg_BM (_.recv), nbargs, nbclosed, nblocals, nbnumbers, nbconsts);
-  objputassocpayl_BM (_.routprep,
+    ("start prepare_routine°basiclo_minifunction recv %s routprepob %s nbargs=%u nbclosed=%u nblocals=%u nbnumbers=%u nbconsts=%u",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob), nbargs, nbclosed,
+     nblocals, nbnumbers, nbconsts);
+  objputassocpayl_BM (_.routprepob,
                       2 + nbargs + nbclosed + nblocals + nbnumbers +
                       nbconsts);
-  objtouchnow_BM (_.routprep);
+  objtouchnow_BM (_.routprepob);
   //// check and bind the result
   if (_.obresult)
     {
@@ -224,7 +225,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       objunlock_BM (_.obresult);
       if (_.typob != BMP_value && _.typob != BMP_object)
         FAILHERE (makenode1_BM (k_result, _.obresult));
-      objassocaddattrpayl_BM (_.routprep, _.obresult, k_result);
+      objassocaddattrpayl_BM (_.routprepob, _.obresult, k_result);
     }
   /// bind the arguments
   for (unsigned argix = 0; argix < nbargs; argix++)
@@ -234,7 +235,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       DBGPRINTF_BM
         ("start prepare_routine°basiclo_minifunction argix=%u argum curvar=%s",
          argix, objectdbg_BM (_.curvar));
-      _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
+      _.oldrol = objassocgetattrpayl_BM (_.routprepob, _.curvar);
       if (_.oldrol)
         FAILHERE (makenode2_BM (k_arguments, _.curvar, _.oldrol));
       objlock_BM (_.curvar);
@@ -244,7 +245,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
         FAILHERE (makenode2_BM (k_arguments, _.curvar, _.oldrol));
 
       _.curol = makenode1_BM (k_arguments, taggedint_BM (argix));
-      objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
+      objassocaddattrpayl_BM (_.routprepob, _.curvar, _.curol);
       _.curol = NULL;
     }
   /// bind the closed
@@ -254,11 +255,11 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       DBGPRINTF_BM
         ("start prepare_routine°basiclo_minifunction cloix=%u closed curvar=%s",
          cloix, objectdbg_BM (_.curvar));
-      _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
+      _.oldrol = objassocgetattrpayl_BM (_.routprepob, _.curvar);
       if (_.oldrol)
         FAILHERE (makenode2_BM (k_closed, _.curvar, _.oldrol));
       _.curol = makenode1_BM (k_closed, taggedint_BM (cloix));
-      objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
+      objassocaddattrpayl_BM (_.routprepob, _.curvar, _.curol);
       _.curol = NULL;
     }
   /// bind the locals
@@ -268,13 +269,13 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       DBGPRINTF_BM
         ("start prepare_routine°basiclo_minifunction locix=%u local curvar=%s",
          locix, objectdbg_BM (_.curvar));
-      _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
+      _.oldrol = objassocgetattrpayl_BM (_.routprepob, _.curvar);
       if (_.oldrol)
         {
           FAILHERE (makenode2_BM (k_locals, _.curvar, _.oldrol));
         }
       _.curol = makenode1_BM (k_locals, taggedint_BM (locix));
-      objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
+      objassocaddattrpayl_BM (_.routprepob, _.curvar, _.curol);
       _.curol = NULL;
     }
   // bind the number vars
@@ -284,13 +285,13 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       DBGPRINTF_BM
         ("start prepare_routine°basiclo_minifunction numix=%u number curvar=%s",
          numix, objectdbg_BM (_.curvar));
-      _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
+      _.oldrol = objassocgetattrpayl_BM (_.routprepob, _.curvar);
       if (_.oldrol)
         {
           FAILHERE (makenode2_BM (k_numbers, _.curvar, _.oldrol));
         }
       _.curol = makenode1_BM (k_numbers, taggedint_BM (numix));
-      objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
+      objassocaddattrpayl_BM (_.routprepob, _.curvar, _.curol);
       _.curol = NULL;
     }
   // bind the constants
@@ -300,28 +301,28 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       DBGPRINTF_BM
         ("start prepare_routine°basiclo_minifunction cstix=%u constant curvar=%s",
          cstix, objectdbg_BM (_.curvar));
-      _.oldrol = objassocgetattrpayl_BM (_.routprep, _.curvar);
+      _.oldrol = objassocgetattrpayl_BM (_.routprepob, _.curvar);
       if (_.oldrol)
         {
           FAILHERE (makenode2_BM (k_constants, _.curvar, _.oldrol));
         }
       _.curol = makenode1_BM (k_constants, taggedint_BM (cstix));
-      objassocaddattrpayl_BM (_.routprep, _.curvar, _.curol);
+      objassocaddattrpayl_BM (_.routprepob, _.curvar, _.curol);
       objhashsetaddpayl_BM (_.obmodhsetconst, _.curvar);
       _.curol = NULL;
     }
   _.obhsetblock = makeobj_BM ();
   objputpayload_BM (_.obhsetblock, hashsetobj_grow_BM (NULL, 15));
   objputclass_BM (_.obhsetblock, (objectval_tyBM *) k_hset_object);
-  objputattr_BM (_.routprep, k_blocks, _.obhsetblock);
-  objputattr_BM (_.routprep, k_prepare_routine, _.recv);
-  objputattr_BM (_.routprep, k_in, _.modgenob);
-  objputattr_BM (_.obhsetblock, k_in, _.routprep);
+  objputattr_BM (_.routprepob, k_blocks, _.obhsetblock);
+  objputattr_BM (_.routprepob, k_prepare_routine, _.recv);
+  objputattr_BM (_.routprepob, k_in, _.modgenob);
+  objputattr_BM (_.obhsetblock, k_in, _.routprepob);
   objtouchnow_BM (_.obhsetblock);
-  objtouchnow_BM (_.routprep);
+  objtouchnow_BM (_.routprepob);
   DBGPRINTF_BM
     ("prepare_routine°basiclo_minifunction before miniscan_block recv %s routprep %s bodyob %s of %s",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
      objectdbg2_BM (_.bodyob), objectdbg3_BM (objclass_BM (_.bodyob)));
   {
     objlock_BM (_.bodyob);
@@ -334,7 +335,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
         FAILHERE (makenode2_BM (k_body, _.bodyob, _.recv));
       }
     _.msblov = send3_BM (_.bodyob, k_miniscan_block,
-                         CURFRAME_BM, _.routprep, taggedint_BM (0), _.recv);
+                         CURFRAME_BM, _.routprepob, taggedint_BM (0), _.recv);
     objunlock_BM (_.bodyob);
   }
   if (!_.msblov)
@@ -346,10 +347,10 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     }
   DBGPRINTF_BM
     ("prepare_routine°basiclo_minifunction after miniscan_block recv %s routprep %s bodyob=%s msblov=%s",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.routprep),
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
      objectdbg2_BM (_.bodyob),
      debug_outstr_value_BM (_.msblov, CURFRAME_BM, 0));
-  LOCALRETURN_BM (_.routprep);
+  LOCALRETURN_BM (_.routprepob);
 failure:
   _.errorv =
     makenode4_BM (k_prepare_routine, _.recv, _.modgenob, _.prepvalset,
@@ -2533,10 +2534,9 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * modulob; objectval_tyBM * modgenob;
-                 value_tyBM resprep;
-                 value_tyBM resgen;
-                 value_tyBM prefixv;
+                 objectval_tyBM * modulob;
+                 objectval_tyBM * modgenob;
+                 value_tyBM resprep; value_tyBM resgen; value_tyBM prefixv;
                  objectval_tyBM * dumpob; value_tyBM errorv;
                  value_tyBM closgenv;
                  value_tyBM causev;
