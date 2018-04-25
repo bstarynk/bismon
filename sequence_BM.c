@@ -662,6 +662,28 @@ datavect_to_node_BM (struct datavectval_stBM *dvec,
   return makenode_BM (obconn, cnt, valarr);
 }                               /* end datavect_to_node_BM */
 
+const tupleval_tyBM *
+datavect_to_tuple_BM (struct datavectval_stBM *dvec)
+{
+  if (valtype_BM ((const value_tyBM) dvec) != typayl_vectval_BM)
+    return NULL;
+  unsigned cnt = ((typedsize_tyBM *) dvec)->size;
+  const value_tyBM *valarr = dvec->vec_data;
+  bool allobj = true;
+  for (unsigned ix = 0; ix < cnt && allobj; ix++)
+    if (valarr[ix] && !isobject_BM (valarr[ix]))
+      allobj = false;
+  if (allobj)
+    return maketuple_BM ((objectval_tyBM **) valarr, cnt);
+  objectval_tyBM **objarr = calloc (cnt + 1, sizeof (objectval_tyBM *));
+  if (!objarr)
+    FATAL_BM ("failed to calloc for %d objects", cnt + 1);
+  for (unsigned ix = 0; ix < cnt; ix++)
+    objarr[ix] = objectcast_BM (valarr[ix]);
+  const tupleval_tyBM *tup = maketuple_BM (objarr, cnt);
+  free (objarr);
+  return tup;
+}                               /* end datavect_to_tuple_BM */
 
 void *
 datavectgcproc_BM (struct garbcoll_stBM *gc,

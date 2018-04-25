@@ -654,6 +654,8 @@ extern struct datavectval_stBM *datavect_remove_BM (struct datavectval_stBM
 
 extern const node_tyBM *datavect_to_node_BM (struct datavectval_stBM *dvec,
                                              const objectval_tyBM * obconn);
+extern const tupleval_tyBM *datavect_to_tuple_BM (struct datavectval_stBM
+                                                  *dvec);
 static inline value_tyBM datavectnth_BM (const struct datavectval_stBM *dvec,
                                          int rk);
 static inline value_tyBM datavectlast_BM (const struct datavectval_stBM
@@ -693,6 +695,8 @@ static inline void objdatavectremovepayl_BM (objectval_tyBM * obj, int rk,
                                              unsigned len);
 static inline const node_tyBM *objdatavecttonodepayl_BM //
   (objectval_tyBM * obj, const objectval_tyBM * obconn);
+static inline const tupleval_tyBM *objdatavecttotuplepayl_BM (objectval_tyBM *
+                                                              obj);
 static inline value_tyBM objdatavectnthpayl_BM (objectval_tyBM * obj, int rk);
 static inline void objdatavectputnthpayl_BM (objectval_tyBM * obj,
                                              int rk,

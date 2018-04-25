@@ -1054,6 +1054,7 @@ objdatavecttonodepayl_BM (objectval_tyBM * obj, const objectval_tyBM * obconn)
   return NULL;
 }                               /* end objdatavecttonodepayl_BM  */
 
+
 value_tyBM
 objdatavectnthpayl_BM (objectval_tyBM * obj, int rk)
 {
@@ -1072,6 +1073,16 @@ objdatavectputnthpayl_BM (objectval_tyBM * obj,
     datavectputnth_BM (dvec, rk, valcomp);
 }                               /* end objdatavectputnthpayl_BM */
 
+const tupleval_tyBM *
+objdatavecttotuplepayl_BM (objectval_tyBM * obj)
+{
+  if (!isobject_BM ((value_tyBM) obj))
+    return NULL;
+  struct datavectval_stBM *dvec = objgetdatavectpayl_BM (obj);
+  if (!dvec)
+    return NULL;
+  return datavect_to_tuple_BM (dvec);
+}                               /* end objdatavecttotuplepayl_BM */
 
 ////////////////////////////////
 bool
