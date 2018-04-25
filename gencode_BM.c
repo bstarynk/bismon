@@ -1983,13 +1983,18 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
   objectval_tyBM *k_variable = BMK_5ucAZimYynS_4VA0XHvr1nW;
   objectval_tyBM *k_basiclo_connective = BMK_3DQ7z3EuAiT_4faSRNsy2lr;
   objectval_tyBM *k_exclam = BMK_0e54seiZEXF_1Myf620cHoB;
+  objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
-                 value_tyBM expv; value_tyBM avalv; objectval_tyBM * expob;
-                 objectval_tyBM * modgenob; objectval_tyBM * typob;
-                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
-                 objectval_tyBM * connob; value_tyBM errorv;
-                 value_tyBM causev;
+                 value_tyBM expv;
+                 value_tyBM avalv;
+                 objectval_tyBM * expob;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * typob; objectval_tyBM * routprepob;
+                 objectval_tyBM * fromob; objectval_tyBM * connob;
+                 value_tyBM exclamv; objectval_tyBM * exclamob;
+                 value_tyBM errorv; value_tyBM causev;
                  value_tyBM resv;
+                 value_tyBM constantsv;
     );
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
@@ -2073,11 +2078,27 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
         objlock_BM (_.connob);
         unsigned arity = nodewidth_BM (_.expv);
         DBGPRINTF_BM
-          ("emit_expression connob %s arity %d routprepob %s fromob %s before",
+          ("emit_expression connob %s arity %d routprepob %s modgenob %s fromob %s before",
            objectdbg_BM (_.connob), arity, objectdbg1_BM (_.routprepob),
-           objectdbg2_BM (_.fromob));
+           objectdbg2_BM (_.modgenob), objectdbg3_BM (_.fromob));
         if (_.connob == k_exclam && arity == 1)
           {
+            _.exclamv = nodenthson_BM (_.expv, 0);
+            if (isobject_BM (_.exclamv))
+              {
+                _.exclamob = (objectval_tyBM *) _.exclamv;
+                _.constantsv = objgetattr_BM (_.modgenob, k_constants);
+                DBGPRINTF_BM ("emit_expression !exclamob %s constants %s",
+                              objectdbg_BM (_.exclamob),
+                              debug_outstr_value_BM (_.constantsv,
+                                                     CURFRAME_BM, 0));
+                WEAKASSERT_BM (false
+                               &&
+                               "unimplemented emit_expression_BM exclamob");
+              }
+            else if (istaggedint_BM (_.exclamv))
+              {
+              }
 #warning emit_expression should handle !<object> and !<integer>
             WEAKASSERT_BM (false
                            && "unimplemented emit_expression_BM exclam");
