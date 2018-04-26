@@ -2081,10 +2081,15 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
               }
             else if (istaggedint_BM (_.exclamv))
               {
+                intptr_t numexclam = getint_BM (_.exclamv);
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           " ((value_ty)%#llx /*!%lld*/)",
+                                           (long long) _.exclamv,
+                                           (long long) numexclam);
               }
-#warning emit_expression should handle !<object> and !<integer>
-            WEAKASSERT_BM (false
-                           && "unimplemented emit_expression_BM exclam");
+            else
+              WEAKASSERT_BM (false
+                             && "unimplemented emit_expression_BM exclam");
           }
         else if (objectisinstance_BM (_.connob, k_basiclo_connective))
           {
@@ -2524,10 +2529,9 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * modulob; objectval_tyBM * modgenob;
-                 value_tyBM resprep;
-                 value_tyBM resgen;
-                 value_tyBM prefixv;
+                 objectval_tyBM * modulob;
+                 objectval_tyBM * modgenob;
+                 value_tyBM resprep; value_tyBM resgen; value_tyBM prefixv;
                  objectval_tyBM * dumpob; value_tyBM errorv;
                  value_tyBM closgenv; value_tyBM srcdirstrv;
                  value_tyBM causev;
@@ -3398,9 +3402,9 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
   int childerr = -1;
   GError *errp = NULL;
 #warning should refactor process code and put it elsewhere
-  if (!g_spawn_async_with_pipes (realpardir, compilargs, NULL, //
-				 G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_SEARCH_PATH | G_SPAWN_CLOEXEC_PIPES, //
-				 (GSpawnChildSetupFunc) NULL, NULL, &childpid, NULL,     // no stdin
+  if (!g_spawn_async_with_pipes (realpardir, compilargs, NULL,  //
+                                 G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_SEARCH_PATH | G_SPAWN_CLOEXEC_PIPES,       //
+                                 (GSpawnChildSetupFunc) NULL, NULL, &childpid, NULL,    // no stdin
                                  &childout, &childerr, &errp))
     FATAL_BM ("failed to spawn module compilation "
               " modulob %s modgenob %s for realpardir %s (error %s)",
