@@ -2525,9 +2525,11 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * modulob; objectval_tyBM * modgenob;
-                 value_tyBM resprep; value_tyBM resgen; value_tyBM prefixv;
+                 value_tyBM resprep;
+                 value_tyBM resgen;
+                 value_tyBM prefixv;
                  objectval_tyBM * dumpob; value_tyBM errorv;
-                 value_tyBM closgenv;
+                 value_tyBM closgenv; value_tyBM srcdirstrv;
                  value_tyBM causev;
     );
   char *srcdirstr = NULL;
@@ -2682,10 +2684,11 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   if (gui_is_running_BM)
     {
       DBGPRINTF_BM
-        ("emit_module°plain_module srcpathstr %s modulob %s modgenob %s should compile the module",
-         srcpathstr, objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
+        ("emit_module°plain_module srcdirstr %s modulob %s modgenob %s should compile the module",
+         srcdirstr, objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
+      _.srcdirstrv = makestring_BM (srcdirstr);
       gtk_defer_apply3_BM (kk_deferred_compilation_of_module, _.modulob,
-                           _.modgenob, NULL, CURFRAME_BM);
+                           _.modgenob, _.srcdirstrv, CURFRAME_BM);
     }
   if (srcpathstr)
     free (srcpathstr), srcpathstr = NULL;
@@ -3313,27 +3316,111 @@ failure:
 
 // defer-compilation-of-module  _9EqBenFWb40_86MuuXslynk
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk);
-
+static void defer_compilation_watchcb_BM (GPid pid,
+                                          gint status, gpointer user_data);
 value_tyBM
 ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // modulob
  const value_tyBM arg2,         // modgenob
- const value_tyBM arg3_ __attribute__ ((unused)),       //
+ const value_tyBM arg3,         // srcdirstrv
  const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9EqBenFWb40_86MuuXslynk,
-                 value_tyBM resultv; objectval_tyBM * modulob;
-                 objectval_tyBM * modgenob;
+                 value_tyBM resultv;
+                 objectval_tyBM * modulob; objectval_tyBM * modgenob;
+                 value_tyBM srcdirstrv;
     );
   _.modulob = objectcast_BM (arg1);
   _.modgenob = objectcast_BM (arg2);
-  DBGPRINTF_BM ("defer-compilation-of-module start modulob %s modgenob %s",
-                objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
+  _.srcdirstrv = arg3;
+  DBGPRINTF_BM
+    ("defer-compilation-of-module start modulob %s modgenob %s srcdirstrv %s",
+     objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
+     debug_outstr_value_BM (_.srcdirstrv, CURFRAME_BM, 0));
+  WEAKASSERT_BM (_.modulob);
+  WEAKASSERT_BM (_.modgenob);
+  WEAKASSERT_BM (isstring_BM (_.srcdirstrv));
+  WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
+  log_begin_message_BM ();
+  log_puts_message_BM ("should compile module ");
+  log_object_message_BM (_.modulob);
+  log_puts_message_BM (" for generation ");
+  log_object_message_BM (_.modgenob);
+  log_printf_message_BM (" in source directory: %s.",
+                         bytstring_BM (_.srcdirstrv));
+  log_end_message_BM ();
+  char cwdpath[128];
+  memset (cwdpath, 0, sizeof (cwdpath));
+  getcwd (cwdpath, sizeof (cwdpath));
+  char *realsrcdir = realpath (bytstring_BM (_.srcdirstrv), NULL);
+  if (!realsrcdir)
+    FATAL_BM
+      ("failed to get realsrcdir from %s in defer-compilation-of-module modulob %s modgenob %s",
+       bytstring_BM (_.srcdirstrv), objectdbg_BM (_.modulob),
+       objectdbg1_BM (_.modgenob));
+  char *realpardir = NULL;
+  {
+    char *lastslash = strrchr (realsrcdir, '/');
+    if (lastslash)
+      {
+        *lastslash = (char) 0;
+        realpardir = strdup (realsrcdir);
+        *lastslash = '/';
+      }
+  }
+  DBGPRINTF_BM
+    ("defer-compilation-of-module realsrcdir %s realpardir %s bismondir %s cwdpath %s",
+     realsrcdir, realpardir, bismon_directory, cwdpath);
+  if (!realpardir)
+    FATAL_BM
+      ("failed to compute real parent directory in defer-compilation-of-module"
+       " modulob %s modgenob %s for realsrcdir %s", objectdbg_BM (_.modulob),
+       objectdbg1_BM (_.modgenob), realsrcdir);
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof (modulidbuf));
+  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+  char modulidassign[48];
+  snprintf (modulidassign, sizeof (modulidassign), "MODULEID=%s", modulidbuf);
+  char *compilargs[16] = { };
+  int nbargs = 0;
+  compilargs[nbargs++] = "make";
+  compilargs[nbargs++] = "-f";
+  compilargs[nbargs++] = bismon_makefile;
+  compilargs[nbargs++] = "singlemodule";
+  compilargs[nbargs++] = modulidassign;
+  DBGPRINTF_BM ("defer-compilation-of-module nbargs=%d", nbargs);
+  for (int ix = 0; ix < nbargs; ix++)
+    DBGPRINTF_BM ("..[%d]: %s", ix, compilargs[ix]);
+  GPid childpid = -1;
+  int childout = -1;
+  int childerr = -1;
+  GError *errp = NULL;
+#warning should refactor process code and put it elsewhere
+  if (!g_spawn_async_with_pipes (realpardir, compilargs, NULL, //
+				 G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_SEARCH_PATH | G_SPAWN_CLOEXEC_PIPES, //
+				 (GSpawnChildSetupFunc) NULL, NULL, &childpid, NULL,     // no stdin
+                                 &childout, &childerr, &errp))
+    FATAL_BM ("failed to spawn module compilation "
+              " modulob %s modgenob %s for realpardir %s (error %s)",
+              objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
+              realpardir, errp ? errp->message : "??");
+  DBGPRINTF_BM
+    ("defer-compilation-of-module childpid %d childout %d childerr %d",
+     (int) childpid);
+  int childwatch = g_child_watch_add (childpid, defer_compilation_watchcb_BM,
+                                      NULL);
 #warning unimplemented defer-compilation-of-module  _9EqBenFWb40_86MuuXslynk routine
   WEAKASSERT_BM (false
                  &&
                  "unimplemented defer-compilation-of-module _9EqBenFWb40_86MuuXslynk routine");
   LOCALRETURN_BM (_.resultv);
 }                               /* end  defer-compilation-of-module _9EqBenFWb40_86MuuXslynk */
+
+static void
+defer_compilation_watchcb_BM (GPid pid, gint status, gpointer user_data)
+{
+  DBGPRINTF_BM ("defer_compilation_watchcb_BM pid=%d status=%d", (int) pid,
+                (int) status);
+}                               /* end defer_compilation_watchcb_BM */
