@@ -1244,8 +1244,8 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                  objectval_tyBM * modgenob; objectval_tyBM * modulob;
                  objectval_tyBM * routob; objectval_tyBM * hsetblockob;
                  value_tyBM blocksetv; value_tyBM argtupv;
-                 objectval_tyBM * bodyob; objectval_tyBM * resultob;
-                 value_tyBM setnumv;
+                 objectval_tyBM * bodyob;
+                 objectval_tyBM * resultob; value_tyBM setnumv;
                  value_tyBM setvalv;
                  value_tyBM setconstv; objectval_tyBM * varob;
                  value_tyBM emitv; objectval_tyBM * typob; value_tyBM errorv;
@@ -1441,7 +1441,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objstrbufferprintfpayl_BM (_.modgenob,
                              "   _.stkfram_descr = " CONSTOBARRPREFIX_BM "%s"
                              ROUTINESUFFIX_BM
-                             "[%d] /*|%s*/)", modulidbuf,
+                             "[%d] /*|%s*/);\n", modulidbuf,
                              kroutix, objectdbg2_BM (_.routob));
   objstrbufferprintfpayl_BM (_.modgenob,
                              "   ASSERT_BM(!stkf\n"
@@ -3189,10 +3189,11 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
                      taggedint_BM (routix)));
         }
     }
-  // ending comment
+  // ending comment of routines
   objstrbufferprintfpayl_BM (_.modgenob,
                              "\n\n// end of %u generated routines\n\n",
                              nbrout);
+  // constant ids
   objstrbufferprintfpayl_BM (_.modgenob,
                              "\n// the constant ids for %d constants:\n",
                              nbconst);
@@ -3215,8 +3216,34 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
       else
         objstrbufferprintfpayl_BM (_.modgenob, "\n \"%s\",", constidbuf);
     }
-  objstrbufferprintfpayl_BM (_.modgenob, "\n NULL}; // end %d constant ids\n",
-                             nbconst);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "\n NULL}; // end %d constant ids\n\n", nbconst);
+  // routine ids
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "\n\n// the routine ids for %d routines:\n",
+                             nbrout);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "const char* const " ROUTIDARRPREFIX_BM "%s"
+                             ROUTINESUFFIX_BM "[%d+1] = {\n", modulidbuf,
+                             nbrout);
+  for (unsigned routix = 0; routix < nbrout; routix++)
+    {
+      _.curfunob = setelemnth_BM (_.routsetv, routix);
+      if (routix % 8 == 0)
+        objstrbufferprintfpayl_BM (_.modgenob, "  /*%d:*/\n", routix);
+      char *curfunname = findobjectname_BM (_.curfunob);
+      char funidbuf[32];
+      memset (funidbuf, 0, sizeof (funidbuf));
+      idtocbuf32_BM (objid_BM (_.curfunob), funidbuf);
+      if (curfunname)
+        objstrbufferprintfpayl_BM (_.modgenob, "  \"%s\",//%s\n",
+                                   funidbuf, curfunname);
+      else
+        objstrbufferprintfpayl_BM (_.modgenob, "  \"%s\",\n", funidbuf);
+    }
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "\n NULL}; // end %d routine ids\n\n", nbrout);
+
   DBGPRINTF_BM
     ("@@generate_module°basiclo*module end modulob %s modgenob %s",
      objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
