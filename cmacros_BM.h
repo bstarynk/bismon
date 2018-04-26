@@ -170,6 +170,7 @@
 #define ROUTINEOBJPREFIX_BM "crout"
 #define CONSTOBARRPREFIX_BM "constob"
 #define CONSTIDARRPREFIX_BM "constid"
+#define ROUTIDARRPREFIX_BM "routid"
 #define ROUTINESUFFIX_BM "_BM"
 
 #define GLOBAL_BM(Gnam) globdata_##Gnam##_BM
