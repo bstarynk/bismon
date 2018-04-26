@@ -1922,9 +1922,7 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
-                 value_tyBM expv;
-                 value_tyBM avalv;
-                 objectval_tyBM * expob;
+                 value_tyBM expv; value_tyBM avalv; objectval_tyBM * expob;
                  objectval_tyBM * modgenob; objectval_tyBM * modulob;
                  objectval_tyBM * typob; objectval_tyBM * routprepob;
                  objectval_tyBM * fromob; objectval_tyBM * connob;
@@ -3015,6 +3013,8 @@ failure:
 
 
 
+
+
 // for the method to generate_module in basiclo_temporary_module &
 // basiclo_dumpable_module/ generate_module°basiclo*module
 
@@ -3032,7 +3032,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * modulob;
                  objectval_tyBM * curfunob; objectval_tyBM * curoutprepob;
-                 objectval_tyBM * modgenob;
+                 objectval_tyBM * curconstob; objectval_tyBM * modgenob;
                  value_tyBM prepval; value_tyBM preproutval;
                  objectval_tyBM * vectprepob; value_tyBM preptupv;
                  value_tyBM prepmod;
@@ -3172,7 +3172,32 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
     }
   // ending comment
   objstrbufferprintfpayl_BM (_.modgenob,
-                             "\n\n// end of %u generated routines\n", nbrout);
+                             "\n\n// end of %u generated routines\n\n",
+                             nbrout);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "\n// the constant ids for %d constants:\n",
+                             nbconst);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "const char* const " CONSTIDARRPREFIX_BM "%s"
+                             ROUTINESUFFIX_BM "[%d+1] = {", modulidbuf,
+                             nbconst);
+  for (int kix = 0; kix < nbconst; kix++)
+    {
+      if (kix % 8 == 0)
+        objstrbufferprintfpayl_BM (_.modgenob, "\n /*%d:*/", kix);
+      _.curconstob = setelemnth_BM (_.constsetv, kix);
+      char *curconstname = findobjectname_BM (_.curconstob);
+      char constidbuf[32];
+      memset (constidbuf, 0, sizeof (constidbuf));
+      idtocbuf32_BM (objid_BM (_.curconstob), constidbuf);
+      if (curconstname)
+        objstrbufferprintfpayl_BM (_.modgenob, "\n \"%s\",//%s",
+                                   constidbuf, curconstname);
+      else
+        objstrbufferprintfpayl_BM (_.modgenob, "\n \"%s\",", constidbuf);
+    }
+  objstrbufferprintfpayl_BM (_.modgenob, "\n NULL}; // end %d constant ids\n",
+                             nbconst);
   DBGPRINTF_BM
     ("@@generate_module°basiclo*module end modulob %s modgenob %s",
      objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
