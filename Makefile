@@ -37,7 +37,7 @@ MODULES_SOURCES= $(sort $(wildcard modules/modbm*.c))
 
 OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst %.cc,%.o,$(BM_CXXSOURCES))
 
-.PHONY: all clean indent count modules measure measured-bismon doc redump outdump checksum indentsinglemodule
+.PHONY: all clean indent count modules measure measured-bismon doc redump outdump checksum indentsinglemodule singlemodule
 
 all: bismon doc
 
@@ -120,7 +120,7 @@ checksum:
 ## bismon would have made the backup modules/modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c-
 indentsinglemodule:
 	if [ ! -f modules/modbm$(MODULEID).c ]; then \
-	   echo missing modules/modbm$(MODULEID).c; exit 1
+	   echo missing modules/modbm$(MODULEID).c; exit 1 ; fi ; \
 	ms=modules/modbm$(MODULEID).c ; \
 	cp -a $$ms "$$ms%"; \
 	$(INDENT) $(INDENTFLAGS) $$ms; \
@@ -129,6 +129,11 @@ indentsinglemodule:
 	  else echo '*indented module ' $$ms ; fi 
 
 
+## to be used from C code as 'make singlemodule MODULEID=<id>'
+singlemodule:
+	if [ ! -f modules/modbm$(MODULEID).c ]; then \
+	   echo missing modules/modbm$(MODULEID).c; exit 1 ; fi 
+	$(MAKE) modules/modbm_$(MODULEID).so
 
 # cancel implicit rule for C files to force my explicit rules
 # https://stackoverflow.com/a/29227455/841108

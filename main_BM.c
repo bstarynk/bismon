@@ -490,7 +490,20 @@ do_emit_module_from_main_BM (void)
              module_to_emit_bm);
   else
     FATAL_BM ("failed emit module from main: %s", module_to_emit_bm);
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof (modulidbuf));
+  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+  char makemodulecmd[128];
+  memset (makemodulecmd, 0, sizeof (makemodulecmd));
+  snprintf (makemodulecmd, sizeof (makemodulecmd),
+            "make -f %s singlemodule MODULEID=%s", bismon_makefile,
+            modulidbuf);
+  DBGPRINTF_BM ("do_emit_module_from_main_bm makemodulecmd=%s",
+                makemodulecmd);
   fflush (NULL);
+  int cmdcod = system (makemodulecmd);
+  if (cmdcod)
+    FATAL_BM ("failed module making %s (%d)", makemodulecmd, cmdcod);
   return;
 }                               /* end do_emit_module_from_main_BM */
 
