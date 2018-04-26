@@ -295,30 +295,6 @@ textiterstrdbg_BM (GtkTextIter * it)
 }                               /* end textiterstrdbg_BM */
 
 
-void
-gcmarkoldgui_BM (struct garbcoll_stBM *gc)
-{
-  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
-  if (browsedobj_BM)
-    {
-      for (unsigned ix = 0; ix < browserobulen_BM; ix++)
-        {
-          gcobjmark_BM (gc, browsedobj_BM[ix].brow_obj);
-          gcobjmark_BM (gc, browsedobj_BM[ix].brow_objsel);
-        }
-    };
-  if (browsedval_BM)
-    {
-      for (unsigned ix = 0; ix < browsednvulen_BM; ix++)
-        {
-          VALUEGCPROC_BM (gc, browsedval_BM[ix].brow_val, 0);
-          VALUEGCPROC_BM (gc, browsedval_BM[ix].brow_name, 0);
-        }
-    }
-  if (complseqcmd_BM)
-    VALUEGCPROC_BM (gc, complseqcmd_BM, 0);
-}                               /* end gcmarkoldgui_BM */
-
 
 
 void

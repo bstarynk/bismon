@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 313 objects
+// for 314 objects
 // with 0 modules
 
 
@@ -1761,6 +1761,17 @@ _17mrxkMdNtH_2CduQ2WDIy5 _8g1WBJBhDT9_1QK8IcuWYx2)
 !: _0NnNXZqWvmz_1ucZGX0YPu1 |=command_arity|
  3
 !)_16OZeTBZLbW_6SCJt3rgxci
+
+
+
+!(_8DQ4VQ1FTfe_5oijDYr52Pb |=queue_process|
+!~ name (~ queue_process
+~)
+!@ 1524760636.49
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for queueing processes"
+!)_8DQ4VQ1FTfe_5oijDYr52Pb
 
 
 

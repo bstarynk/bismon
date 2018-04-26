@@ -326,7 +326,24 @@ gcmarknewgui_BM (struct garbcoll_stBM *gc)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   // mark the browsedobj_BM browsedval_stBM & complseqcmd_BM
-  gcmarkoldgui_BM (gc);
+  if (browsedobj_BM)
+    {
+      for (unsigned ix = 0; ix < browserobulen_BM; ix++)
+        {
+          gcobjmark_BM (gc, browsedobj_BM[ix].brow_obj);
+          gcobjmark_BM (gc, browsedobj_BM[ix].brow_objsel);
+        }
+    };
+  if (browsedval_BM)
+    {
+      for (unsigned ix = 0; ix < browsednvulen_BM; ix++)
+        {
+          VALUEGCPROC_BM (gc, browsedval_BM[ix].brow_val, 0);
+          VALUEGCPROC_BM (gc, browsedval_BM[ix].brow_name, 0);
+        }
+    }
+  if (complseqcmd_BM)
+    VALUEGCPROC_BM (gc, complseqcmd_BM, 0);
   VALUEGCPROC_BM (gc, astrval_bm, 0);
   for (struct objectwindow_newgui_stBM *
        obw = obwin_first_newgui_BM; obw != NULL; obw = obw->obw_next)
@@ -3880,3 +3897,57 @@ newobwin_newgui_cbBM (void)
   log_end_message_BM ();
   NONPRINTF_BM ("newobwin_newgui end newobw@%p", newobw);
 }                               /* end newobwin_newgui_cbBM */
+
+
+
+
+void
+queue_process_BM (const stringval_tyBM * dirstrarg,
+                  const node_tyBM * cmdnodarg,
+                  const closure_tyBM * endclosarg,
+                  struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_queue_process,
+                 const stringval_tyBM * dirstrv;
+                 const node_tyBM * cmdnodv;
+                 const closure_tyBM * endclosv; value_tyBM curargv;
+                 value_tyBM errorv;
+                 value_tyBM causev;
+    );
+  _.dirstrv = dirstrarg;
+  _.cmdnodv = cmdnodarg;
+  _.endclosv = endclosarg;
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ;  _.causev = (value_tyBM)(Cause); goto failure; } while(0)
+  if (_.dirstrv && !isstring_BM (_.dirstrv))
+    FAILHERE (makenode1_BM (BMP_string, _.dirstrv));
+  if (!isnode_BM (_.cmdnodv))
+    FAILHERE (makenode1_BM (BMP_node, _.cmdnodv));
+  if (_.endclosv && !isclosure_BM (_.endclosv))
+    FAILHERE (makenode1_BM (BMP_closure, _.cmdnodv));
+  unsigned cmdlen = nodewidth_BM (_.cmdnodv);
+  if (cmdlen == 0)
+    FAILHERE (makenode1_BM (BMP_node, _.cmdnodv));
+  for (unsigned aix = 0; aix < cmdlen; aix++)
+    {
+      _.curargv = nodenthson_BM (_.cmdnodv, aix);
+      if (!isstring_BM (_.curargv))
+        FAILHERE (makenode2_BM (BMP_node, _.cmdnodv, taggedint_BM (aix)));
+    }
+  WEAKASSERT_BM (false && "incomplete queue_process_BM");
+#warning incomplete queue_process_BM
+  LOCALJUSTRETURN_BM ();
+failure:
+#undef FAILHERE
+  DBGPRINTF_BM
+    ("queue_process failure failin %d dirstr %s, cmdnod %s endclos %, cause %s",
+     bytstring_BM (_.dirstrv), debug_outstr_value_BM (_.cmdnodv, CURFRAME_BM,
+                                                      0),
+     debug_outstr_value_BM (_.endclosv, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    makenode4_BM (k_queue_process, _.dirstrv, _.cmdnodv, _.endclosv,
+                  _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end queue_process_BM */
