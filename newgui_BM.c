@@ -1494,7 +1494,14 @@ const objectval_tyBM *parsobjexp_newguicmd_BM
           log_printf_message_BM (");\n\n"
                                  "value_tyBM\n" "ROUTINEOBJNAME_BM (");
           log_object_message_BM (_.obj);
-          log_printf_message_BM (") //\n" "(struct stackframe_stBM* stkf, //\n" " const value_tyBM arg1, //\n" " const value_tyBM arg2, //\n" " const value_tyBM arg3, //\n" " const value_tyBM arg4_  __attribute__((unused)), //\n" " const quasinode_tyBM* restargs_  __attribute__((unused)))\n" "{\n" "  LOCALFRAME_BM (stkf, /*descr:*/ BMK%s,\n" "                 value_tyBM resultv;\n" "  );\n",      //
+          log_printf_message_BM (") //\n" "(struct stackframe_stBM* stkf, //\n" //
+                                 " const value_tyBM arg1, //\n" //
+                                 " const value_tyBM arg2, //\n" //
+                                 " const value_tyBM arg3, //\n" //
+                                 " const value_tyBM arg4_  __attribute__((unused)), //\n"       //
+                                 " const quasinode_tyBM* restargs_  __attribute__((unused)))\n" //
+                                 "{\n" "  LOCALFRAME_BM (stkf, /*descr:*/ BMK%s,\n"     //
+                                 "                 value_tyBM resultv;\n" "  );\n",     //
                                  objidbuf);
           log_printf_message_BM ("#warning unimplemented ");
           log_object_message_BM (_.obj);

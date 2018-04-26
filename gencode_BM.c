@@ -2529,8 +2529,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * modulob;
-                 objectval_tyBM * modgenob;
+                 objectval_tyBM * modulob; objectval_tyBM * modgenob;
                  value_tyBM resprep; value_tyBM resgen; value_tyBM prefixv;
                  objectval_tyBM * dumpob; value_tyBM errorv;
                  value_tyBM closgenv; value_tyBM srcdirstrv;
