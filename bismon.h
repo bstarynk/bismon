@@ -56,6 +56,8 @@ using std::atomic_store;
 #include <ctype.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <fcntl.h>
+
 #include <sys/syscall.h>
 #include <unistd.h>
 #include <pthread.h>

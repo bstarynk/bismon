@@ -1,4 +1,4 @@
-                               /* file newgui_BM.c */
+ /* file newgui_BM.c */
 /***
     BISMON 
     Copyright © 2018 Basile Starynkevitch (working at CEA, LIST, France)
@@ -3926,6 +3926,8 @@ newobwin_newgui_cbBM (void)
 
 
 
+static void
+defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data);
 
 void
 queue_process_BM (const stringval_tyBM * dirstrarg,
@@ -3934,11 +3936,12 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
                   struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
+  objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_queue_process,
-                 const stringval_tyBM * dirstrv; const node_tyBM * cmdnodv;
-                 const closure_tyBM * endclosv; value_tyBM curargv;
-                 value_tyBM errorv;
-                 value_tyBM causev;
+                 const stringval_tyBM * dirstrv;
+                 const node_tyBM * cmdnodv; const closure_tyBM * endclosv;
+                 value_tyBM curargv; value_tyBM errorv; value_tyBM causev;
+                 objectval_tyBM * bufob;
     );
   _.dirstrv = dirstrarg;
   _.cmdnodv = cmdnodarg;
@@ -3975,8 +3978,49 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
   if (slotpos > 0 && !runpro_list_BM)
     {
       /// should fork the process
+      int pipfd[2] = { -1, -1 };
+      char **args = calloc (cmdlen + 1, sizeof (char *));
+      if (!args)
+        FATAL_BM ("calloc args %d failed - %m", cmdlen);
+      for (int aix = 0; aix < cmdlen; aix++)
+        args[aix] = bytstring_BM (nodenthson_BM (_.cmdnodv, aix));
+      if (pipe (pipfd))
+        FATAL_BM ("pipe failed - %m");
+      fflush (NULL);
+      pid_t pid = fork ();
+      if (pid < 0)
+        FATAL_BM ("failed to fork - %m");
+      if (pid == 0)
+        {
+          // child process
+          for (int ix = 3; ix < 64; ix++)
+            (void) close (ix);
+          int fd = open ("/dev/null", O_RDONLY);
+          dup2 (fd, STDIN_FILENO);
+          close (fd), fd = -1;
+          dup2 (pipfd[1], STDOUT_FILENO);
+          dup2 (pipfd[1], STDERR_FILENO);
+          execv (args[0], args);
+          perror (args[0]);
+          _exit (127);
+        }
+      else
+        {                       // parent process
+          runprocarr_BM[slotpos].rp_pid = pid;
+          runprocarr_BM[slotpos].rp_outpipe = pipfd[0];
+          runprocarr_BM[slotpos].rp_cmdnodv = _.cmdnodv;
+          runprocarr_BM[slotpos].rp_closv = _.endclosv;
+          _.bufob = makeobj_BM ();
+          objputclass_BM (_.bufob, k_sbuf_object);
+          objputstrbufferpayl_BM (_.bufob, 1024 * 1024);
+          runprocarr_BM[slotpos].rp_bufob = _.bufob;
+          int childwatch = g_child_watch_add (pid, defer_process_watchcb_BM,
+                                              (intptr_t) slotpos);
+        }
     }
+#warning should handle case with queue list in queue_process_BM
   WEAKASSERT_BM (false && "incomplete queue_process_BM");
+  FAILHERE (NULL);
 #warning incomplete queue_process_BM
   LOCALJUSTRETURN_BM ();
 failure:
@@ -3994,3 +4038,10 @@ failure:
                   _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end queue_process_BM */
+
+static void
+defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
+{
+  DBGPRINTF_BM ("defer_process_watchcb_BM pid=%d status=%d", (int) pid,
+                (int) status);
+}                               /* end defer_compilation_watchcb_BM */
