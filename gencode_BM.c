@@ -2013,9 +2013,10 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
         objlock_BM (_.connob);
         unsigned arity = nodewidth_BM (_.expv);
         DBGPRINTF_BM
-          ("emit_expression connob %s arity %d routprepob %s modgenob %s fromob %s before",
+          ("emit_expression connob %s arity %d routprepob %s modgenob %s fromob %s expv %s before",
            objectdbg_BM (_.connob), arity, objectdbg1_BM (_.routprepob),
-           objectdbg2_BM (_.modgenob), objectdbg3_BM (_.fromob));
+           objectdbg2_BM (_.modgenob), objectdbg3_BM (_.fromob),
+           debug_outstr_value_BM (_.expv, CURFRAME_BM, 0));
         if (_.connob == k_exclam && arity == 1)
           {
             _.exclamv = nodenthson_BM (_.expv, 0);
@@ -2997,9 +2998,11 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * modulob; objectval_tyBM * curout;
+                 objectval_tyBM * modulob;
+                 objectval_tyBM * curfunob; objectval_tyBM * curoutprepob;
                  objectval_tyBM * modgenob; value_tyBM prepval;
-                 value_tyBM preproutval; objectval_tyBM * vectprepob;
+                 value_tyBM preproutval;
+                 objectval_tyBM * vectprepob; value_tyBM preptupv;
                  value_tyBM prepmod;
                  value_tyBM emitv; value_tyBM constsetv; value_tyBM routsetv;
                  value_tyBM causev;
@@ -3047,8 +3050,12 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
     ("@@generate_module°basiclo*module incomplete modgenob=%s prepmod=%s",
      objectdbg_BM (_.modgenob),
      debug_outstr_value_BM (_.prepmod, CURFRAME_BM, 0));
-  _.routsetv = objgetattr_BM(_.modgenob, k_functions_set);
-  unsigned nbrout = setcardinal_BM(_.routsetv);
+  _.routsetv = objgetattr_BM (_.modgenob, k_functions_set);
+  _.preptupv = objgetattr_BM (_.modgenob, k_prepared_routines);
+  unsigned nbrout = setcardinal_BM (_.routsetv);
+  WEAKASSERT_BM (isset_BM (_.routsetv));
+  WEAKASSERT_BM (istuple_BM (_.preptupv));
+  WEAKASSERT_BM (nbrout == tuplesize_BM (_.preptupv));
   //////
   // we should now declare the routines
   objstrbufferprintfpayl_BM (_.modgenob, "\n\n// declare %u routines\n",
@@ -3057,24 +3064,30 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   // we should now emit each routine's declaration...
   for (unsigned routix = 0; routix < nbrout; routix++)
     {
-      _.curout = setelemnth_BM(_.routsetv, routix);
+      _.curfunob = setelemnth_BM (_.routsetv, routix);
+      _.curoutprepob = tuplecompnth_BM (_.preptupv, routix);
       _.emitv = NULL;
       DBGPRINTF_BM
-        ("@@generate_module°basiclo*module declaring routix#%d curout %s",
-         routix, objectdbg_BM (_.curout));
-      WEAKASSERT_BM (isobject_BM (_.curout));
-      _.emitv = send2_BM (_.curout, k_emit_declaration,
+        ("@@generate_module°basiclo*module declaring routix#%d before emit_declaration"
+         "\n ... curfunob %s curoutprepob %s modgenob %s",
+         routix, objectdbg_BM (_.curfunob), objectdbg1_BM (_.curoutprepob),
+         objectdbg2_BM (_.modgenob));
+      WEAKASSERT_BM (isobject_BM (_.curfunob));
+      WEAKASSERT_BM (isobject_BM (_.curoutprepob));
+      _.emitv = send2_BM (_.curoutprepob, k_emit_declaration,
                           CURFRAME_BM, _.modgenob, taggedint_BM (routix));
       DBGPRINTF_BM
-        ("@@generate_module°basiclo*module declared routix#%d curout %s emitv %s",
-         routix, objectdbg_BM (_.curout),
+        ("@@generate_module°basiclo*module declared routix#%d curoutprepob %s curfunob %s emitv %s",
+         routix, objectdbg_BM (_.curoutprepob), objectdbg1_BM (_.curfunob),
          debug_outstr_value_BM (_.emitv, CURFRAME_BM, 0));
       if (!_.emitv)
         {
           DBGPRINTF_BM
-            ("@@generate_module°basiclo*module emit_declaration of %s failed",
-             objectdbg_BM (_.curout));
-          FAILHERE(makenode2_BM(k_emit_declaration, _.curout, taggedint_BM(routix)));
+            ("@@generate_module°basiclo*module emit_declaration of %s for %s failed",
+             objectdbg_BM (_.curoutprepob), objectdbg1_BM (_.curfunob));
+          FAILHERE (makenode3_BM
+                    (k_emit_declaration, _.curoutprepob, _.curfunob,
+                     taggedint_BM (routix)));
         }
     }
   //// we should now emit the declarations of constants and of their ids
@@ -3100,30 +3113,34 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   // we should now emit each routine's definition...
   for (unsigned routix = 0; routix < nbrout; routix++)
     {
-      _.curout = setelemnth_BM(_.routsetv, routix);
+      _.curfunob = setelemnth_BM (_.routsetv, routix);
+      _.curoutprepob = tuplecompnth_BM (_.preptupv, routix);
+
       _.emitv = NULL;
       DBGPRINTF_BM
-        ("@@generate_module°basiclo*module defining routix#%d curout %s",
-         routix, objectdbg_BM (_.curout));
-      WEAKASSERT_BM (isobject_BM (_.curout));
-      _.emitv = send2_BM (_.curout, k_emit_definition,
+        ("@@generate_module°basiclo*module defining routix#%d curoutprepob %s curfunob %s",
+         routix, objectdbg_BM (_.curoutprepob), objectdbg1_BM (_.curfunob));
+      WEAKASSERT_BM (isobject_BM (_.curoutprepob));
+      _.emitv = send2_BM (_.curoutprepob, k_emit_definition,
                           CURFRAME_BM, _.modgenob, taggedint_BM (routix));
       DBGPRINTF_BM
-        ("@@generate_module°basiclo*module defined routix#%d curout %s emitv %s",
-         routix, objectdbg_BM (_.curout),
+        ("@@generate_module°basiclo*module defined routix#%d curoutprepob %s curfunob %s emitv %s",
+         routix, objectdbg_BM (_.curoutprepob), objectdbg1_BM (_.curfunob),
          debug_outstr_value_BM (_.emitv, CURFRAME_BM, 0));
       if (!_.emitv)
         {
           DBGPRINTF_BM
-            ("@@generate_module°basiclo*module emit_declaration of %s failed",
-             objectdbg_BM (_.curout));
-          FAILHERE(makenode2_BM(k_emit_definition, _.curout, taggedint_BM(routix)));
+            ("@@generate_module°basiclo*module emit_declaration of %s for %s failed routix#%d",
+             objectdbg_BM (_.curoutprepob), objectdbg1_BM (_.curfunob),
+             routix);
+          FAILHERE (makenode3_BM
+                    (k_emit_definition, _.curoutprepob, _.curfunob,
+                     taggedint_BM (routix)));
         }
     }
   // ending comment
   objstrbufferprintfpayl_BM (_.modgenob,
-                             "\n\n// end of %u generated routines\n",
-                             nbrout);
+                             "\n\n// end of %u generated routines\n", nbrout);
   DBGPRINTF_BM
     ("@@generate_module°basiclo*module end modulob %s modgenob %s",
      objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));

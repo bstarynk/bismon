@@ -9,8 +9,8 @@
 
 
 // declare 3 constants
-objectval_tyBM* constob_9oXtCgAbkqv_4y1xhhF5Nhz_BM[3+1];
-const char* const constid_9oXtCgAbkqv_4y1xhhF5Nhz_BM[3+1];
+objectval_tyBM *constob_9oXtCgAbkqv_4y1xhhF5Nhz_BM[3 + 1];
+const char *const constid_9oXtCgAbkqv_4y1xhhF5Nhz_BM[3 + 1];
 
 
 // define 0 routines
