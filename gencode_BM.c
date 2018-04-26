@@ -1240,11 +1240,10 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
-                 objectval_tyBM * routprepob;
-                 objectval_tyBM * modgenob; objectval_tyBM * modulob;
-                 objectval_tyBM * routob; objectval_tyBM * hsetblockob;
-                 value_tyBM blocksetv; value_tyBM argtupv;
-                 objectval_tyBM * bodyob;
+                 objectval_tyBM * routprepob; objectval_tyBM * modgenob;
+                 objectval_tyBM * modulob; objectval_tyBM * routob;
+                 objectval_tyBM * hsetblockob; value_tyBM blocksetv;
+                 value_tyBM argtupv; objectval_tyBM * bodyob;
                  objectval_tyBM * resultob; value_tyBM setnumv;
                  value_tyBM setvalv;
                  value_tyBM setconstv; objectval_tyBM * varob;
@@ -2637,7 +2636,33 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   if (!srcpathstr)
     FATAL_BM ("failed to allocate srcpathstr dir %s modulidbuf %s", srcdirstr,
               modulidbuf);
+  if (!access (srcpathstr, F_OK))
+    {
+      char *prevpathstr = NULL;
+      asprintf (&prevpathstr, "%s/" MODULEPREFIX_BM "%s.c-", srcdirstr,
+                modulidbuf);
+      if (prevpathstr)
+        rename (srcpathstr, prevpathstr);
+    }
   objstrbufferwritetofilepayl_BM (_.modgenob, srcpathstr);
+  {
+    char *indentcmdstr = NULL;
+    asprintf (&indentcmdstr, "make -f %s indentsinglemodule MODULEID=%s",
+              bismon_makefile, modulidbuf);
+    if (!indentcmdstr)
+      FATAL_BM ("failed to build indent command modulidbuf %s", modulidbuf);
+    DBGPRINTF_BM ("emit_module°plain_module indentcmdstr=%s", indentcmdstr);
+    fflush (NULL);
+    /// indent run quite quickly enough, often in a few dozens of milliseconds
+    int cmdcod = system (indentcmdstr);
+    if (cmdcod)
+      {
+        DBGPRINTF_BM
+          ("emit_module°plain_module indentcmdstr=%s failed cmdcod=%d",
+           indentcmdstr, cmdcod);
+        FAILHERE (makestring_BM (indentcmdstr));
+      }
+  }
   /// 
   if (srcpathstr)
     free (srcpathstr), srcpathstr = NULL;
