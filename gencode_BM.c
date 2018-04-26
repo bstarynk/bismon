@@ -1377,8 +1377,6 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                              "    struct stackframe_stBM *stkfram_prev;\n");
   objstrbufferprintfpayl_BM (_.modgenob,
                              "    objectval_tyBM *stkfram_descr;\n");
-  objstrbufferprintfpayl_BM (_.modgenob,
-                             "    struct stackframe_stBM *stkfram_descr;\n");
   objstrbufferprintfpayl_BM (_.modgenob, "    value_tyBM stkfram_callfun;\n");
   objstrbufferprintfpayl_BM (_.modgenob, "    int stkfram_state;\n");
   objstrbufferprintfpayl_BM (_.modgenob, "    int stkfram_extra;\n");
@@ -1440,7 +1438,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objstrbufferprintfpayl_BM (_.modgenob,
                              "   _.stkfram_descr = " CONSTOBARRPREFIX_BM "%s"
                              ROUTINESUFFIX_BM
-                             "[%d] /*|%s*/);\n", modulidbuf,
+                             "[%d] /*|%s*/;\n", modulidbuf,
                              kroutix, objectdbg2_BM (_.routob));
   objstrbufferprintfpayl_BM (_.modgenob,
                              "   ASSERT_BM(!stkf\n"
@@ -2010,7 +2008,7 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
                           objectdbg2_BM (_.typob));
             if (_.typob == BMP_value)
               {
-                objstrbufferprintfpayl_BM (_.modgenob, " v%s", varidbuf);
+                objstrbufferprintfpayl_BM (_.modgenob, " _.v%s", varidbuf);
               }
             else if (_.typob == BMP_object)
               {
@@ -2172,15 +2170,15 @@ emit_var_BM (struct stackframe_stBM *stkf, objectval_tyBM * refob,
                     objectdbg2_BM (_.typob));
       if (_.typob == BMP_value)
         {
-          objstrbufferprintfpayl_BM (_.modgenob, " v%s", varidbuf);
+          objstrbufferprintfpayl_BM (_.modgenob, " _.v%s", varidbuf);
         }
       else if (_.typob == BMP_object)
         {
-          objstrbufferprintfpayl_BM (_.modgenob, " o%s", varidbuf);
+          objstrbufferprintfpayl_BM (_.modgenob, " _.o%s", varidbuf);
         }
       else if (_.typob == BMP_int)
         {
-          objstrbufferprintfpayl_BM (_.modgenob, " n%s", varidbuf);
+          objstrbufferprintfpayl_BM (_.modgenob, " _.n%s", varidbuf);
         }
       else
         FAILHERE (makenode3_BM (k_variable, _.refob, _.avalv, _.typob));
