@@ -199,6 +199,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   WEAKASSERT_BM (_.bodyob);
   WEAKASSERT_BM (isobject_BM (_.obmodhsetconst)
                  && objhashashsetpayl_BM (_.obmodhsetconst));
+  objhashsetaddpayl_BM (_.obmodhsetconst, _.recv);
   _.routprepob = makeobj_BM ();
   objputclass_BM (_.routprepob,
                   (objectval_tyBM *) k_simple_routine_preparation);
@@ -1239,12 +1240,14 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
-                 objectval_tyBM * routprepob; objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob;
+                 objectval_tyBM * modgenob; objectval_tyBM * modulob;
                  objectval_tyBM * routob; objectval_tyBM * hsetblockob;
                  value_tyBM blocksetv; value_tyBM argtupv;
                  objectval_tyBM * bodyob; objectval_tyBM * resultob;
-                 value_tyBM setnumv; value_tyBM setvalv;
-                 objectval_tyBM * varob;
+                 value_tyBM setnumv;
+                 value_tyBM setvalv;
+                 value_tyBM setconstv; objectval_tyBM * varob;
                  value_tyBM emitv; objectval_tyBM * typob; value_tyBM errorv;
                  value_tyBM causev;
     );
@@ -1252,6 +1255,8 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
   char routidbuf[32];
   memset (routidbuf, 0, sizeof (routidbuf));
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof (modulidbuf));
   objectval_tyBM *k_emit_definition = BMK_1g8s9B96Irf_6Ix2Cyy8Hq0;
   objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
   objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
@@ -1268,6 +1273,8 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
   objectval_tyBM *k_emit_reference = BMK_6qzzDyr2eIo_3SapnOUpg6S;
+  objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
+  const objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   WEAKASSERT_BM (isobject_BM (arg1));
   _.routprepob = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (arg2));
@@ -1279,6 +1286,11 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
      objectdbg_BM (_.routprepob), objectdbg1_BM (_.modgenob), rank);
   objlock_BM (_.modgenob);
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
+  _.modulob = objectcast_BM (objgetattr_BM (_.modgenob, k_plain_module));
+  _.setconstv = objgetattr_BM (_.modgenob, k_constants);
+  WEAKASSERT_BM (_.modulob);
+  WEAKASSERT_BM (isset_BM (_.setconstv));
+  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
   {
     objlock_BM (_.routprepob);
     _.routob =
@@ -1288,9 +1300,9 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
     objunlock_BM (_.routprepob);
     idtocbuf32_BM (objid_BM (_.routob), routidbuf);
   }
-  DBGPRINTF_BM ("emit_definition°simple_routine_preparation routprepob=%s routob=%s\n" //
+  DBGPRINTF_BM ("emit_definition°simple_routine_preparation routprepob=%s routob=%s modulob=%s\n"      //
                 ".. setnum=%s setval=%s", objectdbg_BM (_.routprepob), objectdbg1_BM (_.routob),        //
-                debug_outstr_value_BM (_.setnumv, CURFRAME_BM, 0),      //
+                objectdbg2_BM (_.modulob), debug_outstr_value_BM (_.setnumv, CURFRAME_BM, 0),   //
                 debug_outstr_value_BM (_.setvalv, CURFRAME_BM, 0));
   WEAKASSERT_BM (isobject_BM (_.routob));
   {
@@ -1424,6 +1436,13 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objstrbufferprintfpayl_BM (_.modgenob, "   _.stkfram_head.hgc = 0;\n");
   objstrbufferprintfpayl_BM (_.modgenob, "   _.stkfram_head.rlen = %d;\n",
                              nbval);
+  int kroutix = setelemindex_BM (_.setconstv, _.routob);
+  WEAKASSERT_BM (kroutix >= 0);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "   _.stkfram_descr = " CONSTOBARRPREFIX_BM "%s"
+                             ROUTINESUFFIX_BM
+                             "[%d] /*|%s*/)", modulidbuf,
+                             kroutix, objectdbg2_BM (_.routob));
   objstrbufferprintfpayl_BM (_.modgenob,
                              "   ASSERT_BM(!stkf\n"
                              "             || stkf->htyp == typayl_StackFrame_BM\n"
