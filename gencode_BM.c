@@ -2536,6 +2536,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   objectval_tyBM *k_prepare_module = BMK_17mrxkMdNtH_2CduQ2WDIy5;
   objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
   objectval_tyBM *k_generate_module = BMK_9mq0jsuz4XQ_4doHfd987Q6;
+  objectval_tyBM *kk_deferred_compilation_of_module =
+    BMK_9EqBenFWb40_86MuuXslynk;
   if (!isobject_BM (arg1))
     LOCALRETURN_BM (NULL);
   _.modulob = (objectval_tyBM *) arg1;
@@ -2674,8 +2676,17 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                   modulname);
       DBGPRINTF_BM ("emit_module°plain_module linkstr=%s", linkstr);
       symlink (basename (srcpathstr), linkstr);
+      free (linkstr), linkstr = NULL;
     }
   /// 
+  if (gui_is_running_BM)
+    {
+      DBGPRINTF_BM
+        ("emit_module°plain_module srcpathstr %s modulob %s modgenob %s should compile the module",
+         srcpathstr, objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
+      gtk_defer_apply3_BM (kk_deferred_compilation_of_module, _.modulob,
+                           _.modgenob, NULL, CURFRAME_BM);
+    }
   if (srcpathstr)
     free (srcpathstr), srcpathstr = NULL;
   if (srcdirstr)
@@ -3297,3 +3308,32 @@ failure:
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 
 }                               /* end generate_module°basiclo*module  _50d65bJypCN_6IJeVtssx9I */
+
+
+
+// defer-compilation-of-module  _9EqBenFWb40_86MuuXslynk
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // modulob
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3_ __attribute__ ((unused)),       //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_9EqBenFWb40_86MuuXslynk,
+                 value_tyBM resultv; objectval_tyBM * modulob;
+                 objectval_tyBM * modgenob;
+    );
+  _.modulob = objectcast_BM (arg1);
+  _.modgenob = objectcast_BM (arg2);
+  DBGPRINTF_BM ("defer-compilation-of-module start modulob %s modgenob %s",
+                objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
+#warning unimplemented defer-compilation-of-module  _9EqBenFWb40_86MuuXslynk routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented defer-compilation-of-module _9EqBenFWb40_86MuuXslynk routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end  defer-compilation-of-module _9EqBenFWb40_86MuuXslynk */
