@@ -221,7 +221,6 @@ get_parse_value_after_load_bm (const gchar * optname __attribute__ ((unused)),
                 nb_parsed_values_after_load_bm, (int) strlen (val), val);
   parsed_values_after_loadarr_bm[nb_parsed_values_after_load_bm++] =
     strdup (val);
-  return FALSE;
 }                               /* end get_parse_value_after_load_bm */
 
 
@@ -984,7 +983,7 @@ printbt_callback_BM (void *data, uintptr_t pc, const char *filename,
     {
       Dl_info di;
       memset (&di, 0, sizeof (di));
-      if (dladdr (pc, &di))
+      if (dladdr ((void *) pc, &di))
         {
           if (di.dli_sname)
             {

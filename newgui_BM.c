@@ -1,5 +1,4 @@
-/* file newgui_BM.c */
-
+                               /* file newgui_BM.c */
 /***
     BISMON 
     Copyright © 2018 Basile Starynkevitch (working at CEA, LIST, France)
@@ -16,9 +15,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ***/
+
 #include "bismon.h"
 #include "newgui_BM.const.h"
-
 #define BROWSE_MAXDEPTH_NEWGUI_BM 48
 #define BROWSE_MAXREFRESHDELAY_NEWGUI_BM 10
 #define BROWSE_BLINKMILLISECOND_NEWGUI_BM 450
@@ -26,7 +25,6 @@
 //the value window, containing a GtkPane, in a GtkScrolledWindow
 //containing one GtkFrame (containing a GtkHeaderBar & GtkTextView)
 //per named value;
-
 struct namedvaluethings_stBM
 {
   GtkWidget *nvxt_frame;
@@ -44,6 +42,22 @@ struct namedvaluenewguixtra_stBM
 };
 
 static const stringval_tyBM *astrval_bm;        // the "a" string value, name of default results, $a
+
+//////////////// for process queue
+/// running processes
+struct
+{
+  pid_t rp_pid;
+  int rp_outpipe;
+  const stringval_tyBM *rp_dirstrv;
+  const node_tyBM *rp_cmdnodv;
+  const closure_tyBM *rp_closv;
+  objectval_tyBM *rp_bufob;
+} runprocarr_BM[MAXNBWORKJOBS_BM];
+/// queued process commands, of nodes (dir, cmd, clos)
+struct listtop_stBM *runpro_list_BM;
+pthread_mutex_t runpro_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
+
 
 static GtkCssProvider *cssprovider_newgui_bm;
 static GtkWidget *windowvalues_newgui_bm;
@@ -363,7 +377,19 @@ gcmarknewgui_BM (struct garbcoll_stBM *gc)
           gcobjmark_BM (gc, oview->obv_obsel);
         }
     }
+  pthread_mutex_lock (&runpro_mtx_BM);
+  for (int ix = 0; ix < MAXNBWORKJOBS_BM; ix++)
+    {
+      if (runprocarr_BM[ix].rp_pid <= 0)
+        continue;
+      VALUEGCPROC_BM (gc, runprocarr_BM[ix].rp_dirstrv, 0);
+      VALUEGCPROC_BM (gc, runprocarr_BM[ix].rp_cmdnodv, 0);
+      gcobjmark_BM (gc, runprocarr_BM[ix].rp_bufob);
+    }
+  listgcmark_BM (gc, runpro_list_BM, 0);
+  pthread_mutex_unlock (&runpro_mtx_BM);
 }                               /* end gcmarknewgui_BM */
+
 
 
 // for "key-press-event" signal to commandview_BM
@@ -3909,8 +3935,7 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
 {
   objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_queue_process,
-                 const stringval_tyBM * dirstrv;
-                 const node_tyBM * cmdnodv;
+                 const stringval_tyBM * dirstrv; const node_tyBM * cmdnodv;
                  const closure_tyBM * endclosv; value_tyBM curargv;
                  value_tyBM errorv;
                  value_tyBM causev;
@@ -3918,6 +3943,7 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
   _.dirstrv = dirstrarg;
   _.cmdnodv = cmdnodarg;
   _.endclosv = endclosarg;
+  bool lockedproc = false;
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ;  _.causev = (value_tyBM)(Cause); goto failure; } while(0)
   if (_.dirstrv && !isstring_BM (_.dirstrv))
@@ -3935,11 +3961,28 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
       if (!isstring_BM (_.curargv))
         FAILHERE (makenode2_BM (BMP_node, _.cmdnodv, taggedint_BM (aix)));
     }
+  pthread_mutex_lock (&runpro_mtx_BM);
+  lockedproc = true;
+  int slotpos = -1;
+  for (int ix = 0; ix < nbworkjobs_BM; ix++)
+    {
+      if (runprocarr_BM[ix].rp_pid == 0)
+        {
+          slotpos = ix;
+          break;
+        };
+    }
+  if (slotpos > 0 && !runpro_list_BM)
+    {
+      /// should fork the process
+    }
   WEAKASSERT_BM (false && "incomplete queue_process_BM");
 #warning incomplete queue_process_BM
   LOCALJUSTRETURN_BM ();
 failure:
 #undef FAILHERE
+  if (lockedproc)
+    pthread_mutex_unlock (&runpro_mtx_BM), lockedproc = false;
   DBGPRINTF_BM
     ("queue_process failure failin %d dirstr %s, cmdnod %s endclos %, cause %s",
      bytstring_BM (_.dirstrv), debug_outstr_value_BM (_.cmdnodv, CURFRAME_BM,
