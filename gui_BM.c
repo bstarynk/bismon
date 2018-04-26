@@ -376,8 +376,7 @@ browserblinkoff_BM (gpointer data __attribute__ ((unused)))
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;
   if (!browserbuf_BM)
     {
-      if (!oldgui_BM)
-        browserbuf_BM = newgui_get_browsebuf_BM ();
+      browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
         return G_SOURCE_REMOVE;
     };
@@ -397,8 +396,7 @@ browserblinkon_BM (gpointer data __attribute__ ((unused)))
       GtkTextIter openendit = EMPTY_TEXT_ITER_BM;
       if (!browserbuf_BM)
         {
-          if (!oldgui_BM)
-            browserbuf_BM = newgui_get_browsebuf_BM ();
+          browserbuf_BM = newgui_get_browsebuf_BM ();
           if (!browserbuf_BM)
             return G_SOURCE_REMOVE;
         };
@@ -463,8 +461,7 @@ start_browse_object_BM (const objectval_tyBM * obj,
 {
   if (!browserbuf_BM)
     {
-      if (!oldgui_BM)
-        browserbuf_BM = newgui_get_browsebuf_BM ();
+      browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
         return;
     };
@@ -599,8 +596,7 @@ find_browsed_object_BM (const objectval_tyBM * obj)
     return NULL;
   if (!browserbuf_BM)
     {
-      if (!oldgui_BM)
-        browserbuf_BM = newgui_get_browsebuf_BM ();
+      browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
         return NULL;
     };
@@ -635,8 +631,7 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
     return;
   if (!browserbuf_BM)
     {
-      if (!oldgui_BM)
-        browserbuf_BM = newgui_get_browsebuf_BM ();
+      browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
         return;
     };
@@ -701,8 +696,7 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
 {
   if (!browserbuf_BM)
     {
-      if (!oldgui_BM)
-        browserbuf_BM = newgui_get_browsebuf_BM ();
+      browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
         return;
     };
@@ -960,18 +954,16 @@ browse_show_start_offset_BM (void)
 {
   if (!browserbuf_BM)
     {
-      if (!oldgui_BM)
-        browserbuf_BM = newgui_get_browsebuf_BM ();
+      browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
         return -1;
     };
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
-  if (!oldgui_BM)
-    {
-      ASSERT_BM (browserbuf_BM != NULL);
-      gtk_text_buffer_get_start_iter (browserbuf_BM, &it);
-      return gtk_text_iter_get_offset (&it);
-    }
+  {
+    ASSERT_BM (browserbuf_BM != NULL);
+    gtk_text_buffer_get_start_iter (browserbuf_BM, &it);
+    return gtk_text_iter_get_offset (&it);
+  }
   // exactly one of browserobcurix_BM or browsednvcurix_BM is active so >=0
   ASSERT_BM (browserobcurix_BM >= 0 || browsednvcurix_BM >= 0);
   ASSERT_BM (browserobcurix_BM < 0 || browsednvcurix_BM < 0);
@@ -1018,7 +1010,7 @@ browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
                 openlen, closelen, xtralen, depth);
   ASSERT_BM ((browserobcurix_BM >= 0 && browserobcurix_BM < (int) browserobulen_BM)     //
              || (browsednvcurix_BM >= 0 && browsednvcurix_BM < (int) browsednvulen_BM)  //
-             || !oldgui_BM);
+             || true);
   if (browserobcurix_BM >= 0)
     {
       ASSERT_BM (browsednvcurix_BM < 0);
@@ -1075,13 +1067,11 @@ browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
       curpar->paroff_depth = depth;
       curbrval->brow_vparenulen = oldulen + 1;
     }
-  else if (!oldgui_BM)
+  else
     {
       newgui_browse_add_parens_BM (openoff, closeoff, xtraoff,
                                    openlen, closelen, xtralen, depth, stkf);
     }
-  else
-    FATAL_BM ("no browsed object or named value");
 }                               /* end browse_add_parens_BM */
 
 
@@ -2917,8 +2907,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 
           if (!browserbuf_BM)
             {
-              if (!oldgui_BM)
-                browserbuf_BM = newgui_get_browsebuf_BM ();
+              browserbuf_BM = newgui_get_browsebuf_BM ();
               if (!browserbuf_BM)
                 return;
             };
@@ -2955,8 +2944,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 
           if (!browserbuf_BM)
             {
-              if (!oldgui_BM)
-                browserbuf_BM = newgui_get_browsebuf_BM ();
+              browserbuf_BM = newgui_get_browsebuf_BM ();
               if (!browserbuf_BM)
                 return;
             };
@@ -3005,8 +2993,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
         {
           if (!browserbuf_BM)
             {
-              if (!oldgui_BM)
-                browserbuf_BM = newgui_get_browsebuf_BM ();
+              browserbuf_BM = newgui_get_browsebuf_BM ();
               if (!browserbuf_BM)
                 return;
             };
@@ -3042,8 +3029,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 
           if (!browserbuf_BM)
             {
-              if (!oldgui_BM)
-                browserbuf_BM = newgui_get_browsebuf_BM ();
+              browserbuf_BM = newgui_get_browsebuf_BM ();
             };
           if (!browserbuf_BM)
             parsererrorprintf_BM (pars, CURFRAME_BM,
@@ -3075,8 +3061,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
         {
           if (!browserbuf_BM)
             {
-              if (!oldgui_BM)
-                browserbuf_BM = newgui_get_browsebuf_BM ();
+              browserbuf_BM = newgui_get_browsebuf_BM ();
             };
           if (!browserbuf_BM)
             parsererrorprintf_BM (pars, CURFRAME_BM,
@@ -4347,8 +4332,7 @@ populatepopupbrow_BM (GtkTextView * txview, GtkWidget * popup, gpointer data)
   GtkTextIter cursit = EMPTY_TEXT_ITER_BM;
   if (!browserbuf_BM)
     {
-      if (!oldgui_BM)
-        browserbuf_BM = newgui_get_browsebuf_BM ();
+      browserbuf_BM = newgui_get_browsebuf_BM ();
       if (!browserbuf_BM)
         return;
     };
@@ -4682,48 +4666,6 @@ initialize_gui_menubar_BM (GtkWidget * mainvbox, GtkBuilder * bld)
 }                               /* end initialize_gui_menubar_BM */
 
 
-GtkWidget *
-initialize_oldgui_command_scrollview_BM (void)
-{
-  commandbuf_BM = gtk_text_buffer_new (commandtagtable_BM);
-  ASSERT_BM (GTK_IS_TEXT_BUFFER (commandbuf_BM));
-  for (int depth = 0; depth < CMD_MAXNEST_BM; depth++)
-    {
-      char opennamebuf[24];
-      snprintf (opennamebuf, sizeof (opennamebuf), "open%d_cmdtag", depth);
-      open_cmdtags_BM[depth] =  //
-        gtk_text_buffer_create_tag (commandbuf_BM, opennamebuf, NULL);
-      char closenamebuf[24];
-      snprintf (closenamebuf, sizeof (closenamebuf), "close%d_cmdtag", depth);
-      close_cmdtags_BM[depth] = //
-        gtk_text_buffer_create_tag (commandbuf_BM, closenamebuf, NULL);
-      char xtranamebuf[24];
-      snprintf (xtranamebuf, sizeof (xtranamebuf), "xtra%d_cmdtag", depth);
-      xtra_cmdtags_BM[depth] =  //
-        gtk_text_buffer_create_tag (commandbuf_BM, xtranamebuf, NULL);
-    };
-  commandview_BM = gtk_text_view_new_with_buffer (commandbuf_BM);
-  gtk_widget_set_name (commandview_BM, "commandview");
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (commandview_BM), true);
-  gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (commandview_BM), FALSE);
-  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (commandview_BM),
-                               GTK_WRAP_WORD_CHAR);
-  g_signal_connect (commandview_BM, "key-press-event",
-                    G_CALLBACK (handlekeypresscmd_BM), NULL);
-  g_signal_connect (commandbuf_BM, "end-user-action",
-                    G_CALLBACK (enduseractioncmd_BM), NULL);
-  g_signal_connect (commandview_BM, "populate-popup",
-                    G_CALLBACK (populatepopupcmd_BM), NULL);
-  g_signal_connect (commandbuf_BM, "mark-set",
-                    G_CALLBACK (marksetcmd_BM), NULL);
-  GtkWidget *commandscrolw = gtk_scrolled_window_new (NULL, NULL);
-  gtk_container_add (GTK_CONTAINER (commandscrolw), commandview_BM);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
-                                  (commandscrolw),
-                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  return commandscrolw;
-}                               /* end initialize_oldgui_command_scollview_BM */
-
 
 
 GtkWidget *
@@ -4751,90 +4693,6 @@ initialize_log_scrollview_BM (void)
   }
   return logscrolw;
 }                               /* end initialize_log_scrollview_BM */
-
-void
-initialize_gui_BM (const char *builderfile, const char *cssfile)
-{
-  if (!builderfile)
-    builderfile = "bismon.ui";
-  if (!cssfile)
-    cssfile = "bismon.css";
-  GtkBuilder *bld = gtk_builder_new_from_file (builderfile);
-  GtkCssProvider *cssprovider = gtk_css_provider_get_default ();
-  g_signal_connect (cssprovider, "parsing-error",
-                    G_CALLBACK (cssparsingerror_BM), NULL);
-  gtk_css_provider_load_from_path (cssprovider, cssfile, NULL);
-  initialize_gui_tags_BM (bld);
-  //gtk_builder_add_callback_symbols (bld, "quitaction_BM", quitgui_BM, NULL);
-  mainwin_BM = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_style_context_add_provider_for_screen
-    (gtk_window_get_screen (GTK_WINDOW (mainwin_BM)),
-     GTK_STYLE_PROVIDER (cssprovider),
-     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-  ////////////////
-  GtkWidget *mainvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
-  gtk_container_add (GTK_CONTAINER (mainwin_BM), mainvbox);
-  ///////////////
-  (void) initialize_gui_menubar_BM (mainvbox, bld);
-  ///////////////
-  GtkWidget *paned1 = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
-  gtk_paned_set_wide_handle (GTK_PANED (paned1), true);
-  gtk_paned_set_position (GTK_PANED (paned1), 330);
-  gtk_box_pack_start (GTK_BOX (mainvbox), paned1,
-                      BOXEXPAND_BM, BOXFILL_BM, 2);
-  browserbuf_BM = gtk_text_buffer_new (browsertagtable_BM);
-  {
-    GtkTextIter brit = EMPTY_TEXT_ITER_BM;
-    GtkTextIter endtit = EMPTY_TEXT_ITER_BM;
-    gtk_text_buffer_get_start_iter (browserbuf_BM, &brit);
-    gtk_text_buffer_insert_with_tags (browserbuf_BM, &brit, "** BROWSER **",
-                                      -1, pagetitle_brotag_BM, NULL);
-    gtk_text_buffer_insert (browserbuf_BM, &brit, "\n\n", 2);
-    endtit = brit;
-    gtk_text_iter_backward_char (&endtit);
-    browserendtitleoffset_BM =  //
-      gtk_text_iter_get_offset (&endtit);
-  }
-  browserview_BM = gtk_text_view_new_with_buffer (browserbuf_BM);
-  gtk_widget_set_name (browserview_BM, "browserview");
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (browserview_BM), false);
-  g_signal_connect (browserbuf_BM, "mark-set",
-                    G_CALLBACK (marksetbrows_BM), NULL);
-  g_signal_connect (browserview_BM, "populate-popup",
-                    G_CALLBACK (populatepopupbrow_BM), NULL);
-  GtkWidget *browserscrolw = gtk_scrolled_window_new (NULL, NULL);
-  gtk_container_add (GTK_CONTAINER (browserscrolw), browserview_BM);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
-                                  (browserscrolw),
-                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  browserobsize_BM = 13;
-  browserobulen_BM = 0;
-  browsedobj_BM = calloc (browserobsize_BM, sizeof (struct browsedobj_stBM));
-  if (!browsedobj_BM)
-    FATAL_BM ("calloc failed for %u browsed objects (%m)", browserobsize_BM);
-  browsednvsize_BM = 7;
-  browsednvulen_BM = 0;
-  browsedval_BM = calloc (browsednvsize_BM, sizeof (struct browsedval_stBM));
-  if (!browsedval_BM)
-    FATAL_BM ("calloc failed for %u browsed values (%m)", browsednvsize_BM);
-  //
-  GtkWidget *commandscrolw = initialize_oldgui_command_scrollview_BM ();
-  GtkWidget *logscrolw = initialize_log_scrollview_BM ();
-  //
-  gtk_paned_add1 (GTK_PANED (paned1), browserscrolw);
-  GtkWidget *paned2 = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
-  gtk_paned_set_wide_handle (GTK_PANED (paned2), true);
-  gtk_paned_set_position (GTK_PANED (paned2), 200);
-  gtk_paned_add2 (GTK_PANED (paned1), paned2);
-  gtk_paned_add1 (GTK_PANED (paned2), commandscrolw);
-  gtk_paned_add2 (GTK_PANED (paned2), logscrolw);
-  gtk_window_set_title (GTK_WINDOW (mainwin_BM), "bismon");
-  gtk_window_set_default_size (GTK_WINDOW (mainwin_BM), 650, 720);
-  // perhaps run the GC twice a second
-  g_timeout_add (500, guiperiodicgarbagecollection_BM, NULL);
-  gtk_widget_show_all (GTK_WIDGET (mainwin_BM));
-}                               /* end initialize_gui_BM */
-
 
 
 

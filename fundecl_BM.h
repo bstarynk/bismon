@@ -1210,7 +1210,6 @@ extern void browsenewlinefordepth_BM (int depth);
 
 // the function to handle tabautocomplete in command
 void tabautocomplete_gui_cmd_BM (void);
-extern void gcmarkoldgui_BM (struct garbcoll_stBM *gc);
 extern void gcmarknewgui_BM (struct garbcoll_stBM *gc);
 extern void gui_gc_message_BM (const char *msg);
 extern void

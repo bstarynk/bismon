@@ -120,7 +120,6 @@ int nb_parsed_values_after_load_bm;
 
 
 bool batch_bm;
-bool oldgui_BM;
 bool give_version_bm;
 
 
@@ -353,14 +352,6 @@ const GOptionEntry optab[] = {
    .arg_description = "MODULEOBJ"},
   //
   //
-  {.long_name = "old-gui",.short_name = (char) 0,
-   .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_NONE,
-   .arg_data = &oldgui_BM,
-   .description = "run the old GUI",
-   .arg_description = NULL},
-  //
-  //
   {.long_name = "version",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
@@ -432,7 +423,7 @@ idqcmp_BM (const void *p1, const void *p2)
 }                               /* end idqcmp_BM */
 
 
-static void rungui_BM (bool newgui, int nbjobs);
+static void rungui_BM (int nbjobs);
 
 static void parse_values_after_load_bm (void);
 
@@ -512,6 +503,7 @@ do_emit_module_from_main_BM (void)
 }                               /* end do_emit_module_from_main_BM */
 
 
+static void parse_values_after_load_BM (void);
 
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
@@ -598,10 +590,7 @@ main (int argc, char **argv)
     FATAL_BM ("gtk_init_with_args failed");
   if (!batch_bm)
     {
-      if (!oldgui_BM)
-        initialize_newgui_BM (builder_file_bm, css_file_bm);
-      else
-        initialize_gui_BM (builder_file_bm, css_file_bm);
+      initialize_newgui_BM (builder_file_bm, css_file_bm);
     }
   if (!load_dir_bm)
     load_dir_bm = ".";
@@ -641,7 +630,7 @@ main (int argc, char **argv)
       printf ("no GUI in batch mode\n");
     }
   else
-    rungui_BM (!oldgui_BM, nbworkjobs_BM);
+    rungui_BM (nbworkjobs_BM);
   fflush (NULL);
 }                               /* end main */
 
@@ -822,15 +811,15 @@ do_internal_deferred_send3_gtk_BM (value_tyBM recv, objectval_tyBM * obsel,
 }                               /* end do_internal_defer_send3_BM */
 
 
-static void startguilog_BM (bool newgui);
+static void startguilog_BM (void);
 static void endguilog_BM (void);
 
 
 ////////////////////////////////////////////////////////////////
 void
-rungui_BM (bool newgui, int nbjobs)
+rungui_BM (int nbjobs)
 {
-  NONPRINTF_BM ("rungui %s nbjobs %d start tid#%ld", newgui ? "new" : "old",
+  NONPRINTF_BM ("rungui nbjobs %d start tid#%ld",
                 nbjobs, (long) gettid_BM ());
   int deferpipes[2] = { -1, -1 };
   if (pipe (deferpipes) < 0)
@@ -843,17 +832,16 @@ rungui_BM (bool newgui, int nbjobs)
   g_io_add_watch (defer_gtk_readpipechan_BM, G_IO_IN, deferpipereadhandler_BM,
                   NULL);
   gui_is_running_BM = true;
-  startguilog_BM (newgui);
+  startguilog_BM ();
   start_agenda_work_threads_BM (nbjobs);
-  NONPRINTF_BM ("rungui %s nbjobs %d before gtkmain", newgui ? "new" : "old",
-                nbjobs);
+  NONPRINTF_BM ("rungui nbjobs %d before gtkmain", nbjobs);
   gtk_main ();
   NONPRINTF_BM
-    ("rungui %s nbjobs %d after gtkmain before stopagendawork tid#%ld elapsed %.3f s",
-     newgui ? "new" : "old", nbjobs, (long) gettid_BM (), elapsedtime_BM ());
+    ("rungui nbjobs %d after gtkmain before stopagendawork tid#%ld elapsed %.3f s",
+     nbjobs, (long) gettid_BM (), elapsedtime_BM ());
   stop_agenda_work_threads_BM ();
-  NONPRINTF_BM ("rungui %s nbjobs %d after stopagendawork elapsed %.3f s",
-                newgui ? "new" : "old", nbjobs, elapsedtime_BM ());
+  NONPRINTF_BM ("rungui nbjobs %d after stopagendawork elapsed %.3f s",
+                nbjobs, elapsedtime_BM ());
   g_io_channel_shutdown (defer_gtk_readpipechan_BM, false, NULL);
   g_io_channel_unref (defer_gtk_readpipechan_BM), defer_gtk_readpipechan_BM =
     NULL;
@@ -862,24 +850,23 @@ rungui_BM (bool newgui, int nbjobs)
   gui_is_running_BM = false;
   if (gui_command_log_file_BM)
     endguilog_BM ();
-  NONPRINTF_BM ("rungui %s nbjobs %d ending tid#%ld elapsed %.3f s",
-                newgui ? "new" : "old", nbjobs, (long) gettid_BM (),
-                elapsedtime_BM ());
+  NONPRINTF_BM ("rungui nbjobs %d ending tid#%ld elapsed %.3f s",
+                nbjobs, (long) gettid_BM (), elapsedtime_BM ());
 }                               /* end rungui_BM */
 
 
 void
-startguilog_BM (bool newgui)
+startguilog_BM (void)
 {
   if (!gui_log_name_bm || !gui_log_name_bm[0])
     {
       gui_command_log_file_BM = NULL;
-      printf ("no %s GUI log\n", newgui ? "new" : "old");
+      printf ("no GUI log\n");
     }
   else if (!strcmp (gui_log_name_bm, "-"))
     {
       gui_command_log_file_BM = stdout;
-      printf ("%s GUI log to stdout\n", newgui ? "new" : "old");
+      printf ("GUI log to stdout\n");
     }
   else
     {
@@ -895,10 +882,9 @@ startguilog_BM (bool newgui)
       gui_command_log_file_BM = fopen (gui_log_name_bm, "w");
       if (!gui_command_log_file_BM)
         FATAL_BM ("fopen GUI log %s failure (%m)", gui_log_name_bm);
-      fprintf (stderr, "%s GUI log to %s\n", newgui ? "new" : "old",
-               gui_log_name_bm);
-      fprintf (gui_command_log_file_BM, "// %s GUI command log file %s\n",
-               newgui ? "new" : "old", basename (gui_log_name_bm));
+      fprintf (stderr, "GUI log to %s\n", gui_log_name_bm);
+      fprintf (gui_command_log_file_BM, "// GUI command log file %s\n",
+               basename (gui_log_name_bm));
     }
   if (gui_command_log_file_BM)
     {

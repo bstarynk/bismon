@@ -36,7 +36,6 @@ extern const char *bmconstidstrings[];
 extern const char myhostname_BM[];
 extern atomic_bool want_garbage_collection_BM;
 extern bool gui_is_running_BM;
-extern bool oldgui_BM;
 extern FILE *gui_command_log_file_BM;
 
 extern GtkTextIter browserit_BM;
