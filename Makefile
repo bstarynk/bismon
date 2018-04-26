@@ -119,7 +119,7 @@ checksum:
 ## for example 'make indentsinglemodule MODULEID=_9oXtCgAbkqv_4y1xhhF5Nhz'
 ## bismon would have made the backup modules/modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c-
 indentsinglemodule:
-	if [ ! -f modules/modbm$(MODULEID).c ]; then \
+	@if [ ! -f modules/modbm$(MODULEID).c ]; then \
 	   echo missing modules/modbm$(MODULEID).c; exit 1 ; fi ; \
 	ms=modules/modbm$(MODULEID).c ; \
 	cp -a $$ms "$$ms%"; \
@@ -131,9 +131,9 @@ indentsinglemodule:
 
 ## to be used from C code as 'make singlemodule MODULEID=<id>'
 singlemodule:
-	if [ ! -f modules/modbm$(MODULEID).c ]; then \
+	@if [ ! -f modules/modbm$(MODULEID).c ]; then \
 	   echo missing modules/modbm$(MODULEID).c; exit 1 ; fi 
-	$(MAKE) modules/modbm_$(MODULEID).so
+	$(MAKE) modules/modbm$(MODULEID).so
 
 # cancel implicit rule for C files to force my explicit rules
 # https://stackoverflow.com/a/29227455/841108

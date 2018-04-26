@@ -504,6 +504,10 @@ do_emit_module_from_main_BM (void)
   int cmdcod = system (makemodulecmd);
   if (cmdcod)
     FATAL_BM ("failed module making %s (%d)", makemodulecmd, cmdcod);
+  fprintf (stderr,
+           "\n" "successfully compiled emitted module %s (%s) from main\n",
+           module_to_emit_bm, modulidbuf);
+  fflush (NULL);
   return;
 }                               /* end do_emit_module_from_main_BM */
 

@@ -1441,9 +1441,9 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                              "[%d] /*|%s*/;\n", modulidbuf,
                              kroutix, objectdbg2_BM (_.routob));
   objstrbufferprintfpayl_BM (_.modgenob,
-                             "   ASSERT_BM(!stkf\n"
-                             "             || stkf->htyp == typayl_StackFrame_BM\n"
-                             "             || stkf->htyp == typayl_SpecialFrame_BM)\n");
+                             "   ASSERT_BM (!stkf\n"
+                             "             || stkf->stkfram_pA.htyp == typayl_StackFrame_BM\n"
+                             "             || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);\n");
   objstrbufferprintfpayl_BM (_.modgenob, "   _.stkfram_prev = stkf;\n");
   objstrbufferprintfpayl_BM (_.modgenob, "   // fetch %d arguments:\n",
                              nbargs);
@@ -1541,8 +1541,9 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objstrbufferprintfpayl_BM (_.modgenob, "   return ");
   emit_var_BM (CURFRAME_BM, _.resultob, _.modgenob, _.routprepob, _.routob,
                0);
-  objstrbufferprintfpayl_BM (_.modgenob, ";\n" "} // end %s routine#%d\n\n\n",
-                             routidbuf, rank);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             ";\n" "} // end %s routine#%d %s\n\n\n",
+                             routidbuf, rank, objectdbg_BM (_.routob));
   objunlock_BM (_.modgenob);
   DBGPRINTF_BM
     ("emit_definition°simple_routine_preparation end routprepob=%s",
@@ -2030,11 +2031,11 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
                                                kix, objectdbg2_BM (_.expob));
                   }
                 else
-                  objstrbufferprintfpayl_BM (_.modgenob, " o%s", varidbuf);
+                  objstrbufferprintfpayl_BM (_.modgenob, " _.o%s", varidbuf);
               }
             else if (_.typob == BMP_int)
               {
-                objstrbufferprintfpayl_BM (_.modgenob, " n%s", varidbuf);
+                objstrbufferprintfpayl_BM (_.modgenob, " _.n%s", varidbuf);
               }
             else
               FAILHERE (makenode2_BM (k_variable, _.expob, _.typob));
@@ -2641,6 +2642,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                 modulidbuf);
       if (prevpathstr)
         rename (srcpathstr, prevpathstr);
+      free (prevpathstr), prevpathstr = NULL;
     }
   objstrbufferwritetofilepayl_BM (_.modgenob, srcpathstr);
   {
@@ -2660,7 +2662,19 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
            indentcmdstr, cmdcod);
         FAILHERE (makestring_BM (indentcmdstr));
       }
+    free (indentcmdstr), indentcmdstr = NULL;
   }
+  char *modulname = findobjectname_BM (_.modulob);
+  if (modulname)
+    {
+      char *linkstr = NULL;
+      asprintf (&linkstr, "%s/_%s_.c", srcdirstr, modulname);
+      if (!linkstr)
+        FATAL_BM ("failed to build symlink in %s for %s", srcdirstr,
+                  modulname);
+      DBGPRINTF_BM ("emit_module°plain_module linkstr=%s", linkstr);
+      symlink (basename (srcpathstr), linkstr);
+    }
   /// 
   if (srcpathstr)
     free (srcpathstr), srcpathstr = NULL;
