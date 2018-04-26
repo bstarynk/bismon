@@ -1920,10 +1920,12 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
   objectval_tyBM *k_basiclo_connective = BMK_3DQ7z3EuAiT_4faSRNsy2lr;
   objectval_tyBM *k_exclam = BMK_0e54seiZEXF_1Myf620cHoB;
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
+  objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
                  value_tyBM expv;
                  value_tyBM avalv;
-                 objectval_tyBM * expob; objectval_tyBM * modgenob;
+                 objectval_tyBM * expob;
+                 objectval_tyBM * modgenob; objectval_tyBM * modulob;
                  objectval_tyBM * typob; objectval_tyBM * routprepob;
                  objectval_tyBM * fromob; objectval_tyBM * connob;
                  value_tyBM exclamv; objectval_tyBM * exclamob;
@@ -1939,9 +1941,12 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
   _.fromob = objectcast_BM (fromob);
   WEAKASSERT_BM (_.modgenob);
   WEAKASSERT_BM (_.routprepob);
-  DBGPRINTF_BM ("emit_expression start expv %s modgen %s routprep %s",
-                debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
-                objectdbg_BM (_.modgenob), objectdbg1_BM (_.routprepob));
+  _.modulob = objgetattr_BM (_.modgenob, k_plain_module);
+  DBGPRINTF_BM
+    ("emit_expression start expv %s modgenob %s routprepob %s modulob %s",
+     debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
+     objectdbg_BM (_.modgenob), objectdbg1_BM (_.routprepob),
+     objectdbg2_BM (_.modulob));
   int ke = valtype_BM (_.expv);
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
   switch (ke)
@@ -1993,7 +1998,25 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
               }
             else if (_.typob == BMP_object)
               {
-                objstrbufferprintfpayl_BM (_.modgenob, " o%s", varidbuf);
+                if (isnode_BM (_.avalv)
+                    && nodeconn_BM (_.avalv) == k_constants)
+                  {
+                    char modulidbuf[32];
+                    memset (modulidbuf, 0, sizeof (modulidbuf));
+                    idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+                    _.constantsv = objgetattr_BM (_.modgenob, k_constants);
+                    WEAKASSERT_BM (isset_BM (_.constantsv));
+                    int kix =
+                      setelemindex_BM (setcast_BM (_.constantsv), _.expob);
+                    WEAKASSERT_BM (kix >= 0);
+                    objstrbufferprintfpayl_BM (_.modgenob,
+                                               " (" CONSTOBARRPREFIX_BM "%s"
+                                               ROUTINESUFFIX_BM
+                                               "[%d] /*|%s*/)", modulidbuf,
+                                               kix, objectdbg2_BM (_.expob));
+                  }
+                else
+                  objstrbufferprintfpayl_BM (_.modgenob, " o%s", varidbuf);
               }
             else if (_.typob == BMP_int)
               {
@@ -2012,6 +2035,9 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
         _.connob = nodeconn_BM (_.expv);
         objlock_BM (_.connob);
         unsigned arity = nodewidth_BM (_.expv);
+        char modulidbuf[32];
+        memset (modulidbuf, 0, sizeof (modulidbuf));
+        idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
         DBGPRINTF_BM
           ("emit_expression connob %s arity %d routprepob %s modgenob %s fromob %s expv %s before",
            objectdbg_BM (_.connob), arity, objectdbg1_BM (_.routprepob),
@@ -2028,9 +2054,15 @@ emit_expression_BM (struct stackframe_stBM *stkf, value_tyBM expv,
                               objectdbg_BM (_.exclamob),
                               debug_outstr_value_BM (_.constantsv,
                                                      CURFRAME_BM, 0));
-                WEAKASSERT_BM (false
-                               &&
-                               "unimplemented emit_expression_BM exclamob");
+                WEAKASSERT_BM (isset_BM (_.constantsv));
+                int kix =
+                  setelemindex_BM (setcast_BM (_.constantsv), _.exclamob);
+                WEAKASSERT_BM (kix >= 0);
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           " (" CONSTOBARRPREFIX_BM "%s"
+                                           ROUTINESUFFIX_BM "[%d] /*!%s*/)",
+                                           modulidbuf, kix,
+                                           objectdbg_BM (_.exclamob));
               }
             else if (istaggedint_BM (_.exclamv))
               {
@@ -3000,8 +3032,8 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * modulob;
                  objectval_tyBM * curfunob; objectval_tyBM * curoutprepob;
-                 objectval_tyBM * modgenob; value_tyBM prepval;
-                 value_tyBM preproutval;
+                 objectval_tyBM * modgenob;
+                 value_tyBM prepval; value_tyBM preproutval;
                  objectval_tyBM * vectprepob; value_tyBM preptupv;
                  value_tyBM prepmod;
                  value_tyBM emitv; value_tyBM constsetv; value_tyBM routsetv;
