@@ -62,7 +62,7 @@ extern pthread_mutex_t allocationmutex_BM;
 #define PREDEF_BM(Id) (predefptr##Id##_BM)
 
 extern const typedhead_tyBM unspecifieddata_BM;
-
+extern int nbworkjobs_BM;
 
 
 

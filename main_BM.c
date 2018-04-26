@@ -28,7 +28,7 @@
 struct timespec startrealtimespec_BM;
 void *dlprog_BM;
 bool gui_is_running_BM;
-static int nbworkjobs_BM;
+int nbworkjobs_BM;
 const char myhostname_BM[80];
 thread_local struct threadinfo_stBM *curthreadinfo_BM;
 thread_local volatile struct failurehandler_stBM *curfailurehandle_BM;
