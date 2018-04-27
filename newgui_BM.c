@@ -4121,6 +4121,7 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
                  const stringval_tyBM * dirstrv;        //
                  const node_tyBM * cmdnodv;     //
                  const closure_tyBM * endclosv; //
+                 const stringval_tyBM * outstrv;        //
     );
   // avoid failure inside, or handle them explicitly
   int slot = (int) user_data;
@@ -4164,9 +4165,31 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
                                CURFRAME_BM);
     }
   pthread_mutex_unlock (&runpro_mtx_BM);
-#warning defer_process_watchcb_BM unimplemented
-  WEAKASSERT_BM (false && "unimplemented defer_process_watchcb_BM");
-}                               /* end defer_compilation_watchcb_BM */
+  char *remstr = NULL;
+  gsize remlen = 0;
+  g_io_channel_read_to_end (pipchan, &remstr, &remlen, NULL);
+  if (remlen > 0 && remstr)
+    {
+      DBGPRINTF_BM
+        ("defer_process_watchcb_BM slot %d bufob=%s remlen=%d remstr=\n%s",
+         slot, objectdbg_BM (_.bufob), (int) remlen, remstr);
+      objlock_BM (_.bufob);
+      objstrbufferappendcstrpayl_BM (_.bufob, remstr);
+      objunlock_BM (_.bufob);
+    }
+  if (remstr)
+    g_free (remstr);
+  g_source_remove (pipewatch);
+  g_io_channel_unref (pipchan);
+  _.outstrv = makestring_BM (objstrbufferbytespayl_BM (_.bufob));
+  DBGPRINTF_BM
+    ("defer_process_watchcb_BM slot %d deferapply endclos=%s outstrv=%s status %d",
+     debug_outstr_value_BM (_.endclosv, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0), status);
+  gtk_defer_apply3_BM (_.endclosv, _.outstrv, taggedint_BM (status), NULL,
+                       CURFRAME_BM);
+  LOCALJUSTRETURN_BM ();
+}                               /* end defer_process_watchcb_BM */
 
 
 
@@ -4176,11 +4199,36 @@ gboolean
 pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond,
                          gpointer user_data)
 {
+  LOCALFRAME_BM ( /*prev: */ NULL,
+                 /*descr: */ NULL,
+                 objectval_tyBM * bufob;
+    );
   int slot = (int) user_data;
+  GIOChannel *pipchan = NULL;
   ASSERT_BM (slot >= 0 && slot < MAXNBWORKJOBS_BM);
+  ASSERT_BM (pthread_self () == mainthreadid_BM);
   DBGPRINTF_BM ("pipe_process_watchcb_BM slot %d", slot);
-  WEAKASSERT_BM (false && "unimplemented pipe_process_watchcb_BM");
+  pthread_mutex_lock (&runpro_mtx_BM);
+  ASSERT_BM (runprocarr_BM[slot].rp_pid != 0);
+  pipchan = runprocarr_BM[slot].rp_pipchan;
+  _.bufob = runprocarr_BM[slot].rp_bufob;
+  pthread_mutex_unlock (&runpro_mtx_BM);
+  ASSERT_BM (pipchan == source);
+  ASSERT_BM (isobject_BM (_.bufob));
+  char *remstr = NULL;
+  gsize remlen = 0;
+  g_io_channel_read_to_end (pipchan, &remstr, &remlen, NULL);
+  if (remlen > 0 && remstr)
+    {
+      DBGPRINTF_BM
+        ("pipe_process_watchcb_BM slot %d bufob=%s remlen=%d remstr=\n%s",
+         slot, objectdbg_BM (_.bufob), (int) remlen, remstr);
+      objlock_BM (_.bufob);
+      objstrbufferappendcstrpayl_BM (_.bufob, remstr);
+      objunlock_BM (_.bufob);
+    }
+  if (remstr)
+    g_free (remstr);
   // return FALSE to remove the event source
-#warning pipe_process_watchcb_BM unimplemented
   return TRUE;
 }                               /* end pipe_process_watchcb_BM */
