@@ -3929,6 +3929,10 @@ newobwin_newgui_cbBM (void)
 static void
 defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data);
 
+static gboolean
+pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond,
+                         gpointer data);
+
 void
 queue_process_BM (const stringval_tyBM * dirstrarg,
                   const node_tyBM * cmdnodarg,
@@ -3964,6 +3968,8 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
       if (!isstring_BM (_.curargv))
         FAILHERE (makenode2_BM (BMP_node, _.cmdnodv, taggedint_BM (aix)));
     }
+  ASSERT_BM (nbworkjobs_BM >= MINNBWORKJOBS_BM
+             && nbworkjobs_BM <= MAXNBWORKJOBS_BM);
   pthread_mutex_lock (&runpro_mtx_BM);
   lockedproc = true;
   int slotpos = -1;
@@ -3975,7 +3981,7 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
           break;
         };
     }
-  if (slotpos > 0 && !runpro_list_BM)
+  if (slotpos >= 0 && !runpro_list_BM)
     {
       /// should fork the process
       int pipfd[2] = { -1, -1 };
@@ -3994,7 +4000,8 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
         {
           // child process
           for (int ix = 3; ix < 64; ix++)
-            (void) close (ix);
+            if (ix != pipfd[1])
+              (void) close (ix);
           int fd = open ("/dev/null", O_RDONLY);
           dup2 (fd, STDIN_FILENO);
           close (fd), fd = -1;
@@ -4014,9 +4021,19 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
           objputclass_BM (_.bufob, k_sbuf_object);
           objputstrbufferpayl_BM (_.bufob, 1024 * 1024);
           runprocarr_BM[slotpos].rp_bufob = _.bufob;
+          // probably these should become fields of runprocarr_BM
           int childwatch = g_child_watch_add (pid, defer_process_watchcb_BM,
-                                              (intptr_t) slotpos);
+                                              (void *) slotpos);
+          GIOChannel *pipchan = g_io_channel_unix_new (pipfd[0]);
+          int chanwatch =
+            g_io_add_watch (pipchan, G_IO_IN, pipe_process_watchcb_BM,
+                            (void *) slotpos);
         }
+    }
+  else
+    {                           // append to runpro_list_BM
+      if (!runpro_list_BM)
+        runpro_list_BM = makelist_BM ();
     }
 #warning should handle case with queue list in queue_process_BM
   WEAKASSERT_BM (false && "incomplete queue_process_BM");
@@ -4042,6 +4059,23 @@ failure:
 static void
 defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
 {
-  DBGPRINTF_BM ("defer_process_watchcb_BM pid=%d status=%d", (int) pid,
-                (int) status);
+  int slot = (int) user_data;
+  ASSERT_BM (slot >= 0 && slot < MAXNBWORKJOBS_BM);
+  DBGPRINTF_BM ("defer_process_watchcb_BM pid=%d status=%d slot %d",
+                (int) pid, (int) status, slot);
+#warning defer_process_watchcb_BM unimplemented
+  WEAKASSERT_BM (false && "unimplemented defer_process_watchcb_BM");
 }                               /* end defer_compilation_watchcb_BM */
+
+gboolean
+pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond,
+                         gpointer user_data)
+{
+  int slot = (int) user_data;
+  ASSERT_BM (slot >= 0 && slot < MAXNBWORKJOBS_BM);
+  DBGPRINTF_BM ("pipe_process_watchcb_BM slot %d", slot);
+  WEAKASSERT_BM (false && "unimplemented pipe_process_watchcb_BM");
+  // return FALSE to remove the event source
+#warning pipe_process_watchcb_BM unimplemented
+  return TRUE;
+}                               /* end pipe_process_watchcb_BM */
