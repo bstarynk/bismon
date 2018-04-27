@@ -3319,8 +3319,6 @@ failure:
 
 // defer-compilation-of-module  _9EqBenFWb40_86MuuXslynk
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk);
-static void defer_compilation_watchcb_BM (GPid pid,
-                                          gint status, gpointer user_data);
 value_tyBM
 ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module 
 (struct stackframe_stBM * stkf, //
@@ -3332,8 +3330,12 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9EqBenFWb40_86MuuXslynk,
                  value_tyBM resultv;
-                 objectval_tyBM * modulob; objectval_tyBM * modgenob;
+                 objectval_tyBM * modulob;
+                 objectval_tyBM * modgenob;
                  value_tyBM srcdirstrv;
+                 value_tyBM pardirstrv;
+                 value_tyBM compilnodv; value_tyBM aftercompilclosv;
+                 value_tyBM argstrarr[8];
     );
   _.modulob = objectcast_BM (arg1);
   _.modgenob = objectcast_BM (arg2);
@@ -3386,44 +3388,22 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
   char modulidassign[48];
   snprintf (modulidassign, sizeof (modulidassign), "MODULEID=%s", modulidbuf);
-  char *compilargs[16] = { };
-  int nbargs = 0;
-  compilargs[nbargs++] = "make";
-  compilargs[nbargs++] = "-f";
-  compilargs[nbargs++] = bismon_makefile;
-  compilargs[nbargs++] = "singlemodule";
-  compilargs[nbargs++] = modulidassign;
+  char *compilargs[8] = { };
+  compilargs[0] = "make";
+  compilargs[1] = "-f";
+  compilargs[2] = bismon_makefile;
+  compilargs[3] = "singlemodule";
+  compilargs[4] = modulidassign;
+  int nbargs = 5;
   DBGPRINTF_BM ("defer-compilation-of-module nbargs=%d", nbargs);
   for (int ix = 0; ix < nbargs; ix++)
     DBGPRINTF_BM ("..[%d]: %s", ix, compilargs[ix]);
-  GPid childpid = -1;
-  int childout = -1;
-  int childerr = -1;
-  GError *errp = NULL;
-#warning should refactor process code and put it elsewhere
-  if (!g_spawn_async_with_pipes (realpardir, compilargs, NULL,  //
-                                 G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_SEARCH_PATH | G_SPAWN_CLOEXEC_PIPES,       //
-                                 (GSpawnChildSetupFunc) NULL, NULL, &childpid, NULL,    // no stdin
-                                 &childout, &childerr, &errp))
-    FATAL_BM ("failed to spawn module compilation "
-              " modulob %s modgenob %s for realpardir %s (error %s)",
-              objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
-              realpardir, errp ? errp->message : "??");
-  DBGPRINTF_BM
-    ("defer-compilation-of-module childpid %d childout %d childerr %d",
-     (int) childpid);
-  int childwatch = g_child_watch_add (childpid, defer_compilation_watchcb_BM,
-                                      NULL);
-#warning unimplemented defer-compilation-of-module  _9EqBenFWb40_86MuuXslynk routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented defer-compilation-of-module _9EqBenFWb40_86MuuXslynk routine");
+  memset (_.argstrarr, 0, sizeof (_.argstrarr));
+  for (int ix = 0; ix < nbargs; ix++)
+    _.argstrarr[ix] = makestring_BM (compilargs[ix]);
+  _.compilnodv = makenode_BM (BMP_node, nbargs, _.argstrarr);
+  _.pardirstrv = makestring_BM (realpardir);
+  _.aftercompilclosv = NULL;
+#warning incomplete defer-compilation-of-module should make closure aftercompilclosv and use queue_process_BM
   LOCALRETURN_BM (_.resultv);
 }                               /* end  defer-compilation-of-module _9EqBenFWb40_86MuuXslynk */
-
-static void
-defer_compilation_watchcb_BM (GPid pid, gint status, gpointer user_data)
-{
-  DBGPRINTF_BM ("defer_compilation_watchcb_BM pid=%d status=%d", (int) pid,
-                (int) status);
-}                               /* end defer_compilation_watchcb_BM */
