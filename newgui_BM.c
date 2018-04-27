@@ -152,6 +152,26 @@ static void destroy_objectviewbuffer_BM (struct objectview_newgui_stBM *obv,
                                          struct stackframe_stBM *stkf);
 static gboolean refresh_obwin_newgui_cbBM (gpointer data);
 
+static void lock_runpro_mtx_at_BM (int lineno);
+static void unlock_runpro_mtx_at_BM (int lineno);
+
+void
+lock_runpro_mtx_at_BM (lineno)
+{
+  DBGPRINTFAT_BM (__FILE__, lineno, "lock_runpro_mtx_BM thrid=%ld",
+                  (long) gettid_BM ());
+  pthread_mutex_lock (&runpro_mtx_BM);
+}                               /* end lock_runpro_mtx_at_BM */
+
+
+void
+unlock_runpro_mtx_at_BM (int lineno)
+{
+  DBGPRINTFAT_BM (__FILE__, lineno, "unlock_runpro_mtx_BM thrid=%ld",
+                  (long) gettid_BM ());
+  pthread_mutex_unlock (&runpro_mtx_BM);
+}                               /* end lock_runpro_mtx_at_BM */
+
 /*****************************************************************/
 // the function to handle keypresses of cmd, for Return & Tab
 static gboolean handlekeypress_newgui_cmd_BM (GtkWidget *, GdkEventKey *,
@@ -380,7 +400,7 @@ gcmarknewgui_BM (struct garbcoll_stBM *gc)
           gcobjmark_BM (gc, oview->obv_obsel);
         }
     }
-  pthread_mutex_lock (&runpro_mtx_BM);
+  lock_runpro_mtx_at_BM (__LINE__);
   for (int ix = 0; ix < MAXNBWORKJOBS_BM; ix++)
     {
       if (runprocarr_BM[ix].rp_pid <= 0)
@@ -390,7 +410,7 @@ gcmarknewgui_BM (struct garbcoll_stBM *gc)
       gcobjmark_BM (gc, runprocarr_BM[ix].rp_bufob);
     }
   listgcmark_BM (gc, runpro_list_BM, 0);
-  pthread_mutex_unlock (&runpro_mtx_BM);
+  unlock_runpro_mtx_at_BM (__LINE__);
 }                               /* end gcmarknewgui_BM */
 
 
@@ -3986,7 +4006,7 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
     }
   ASSERT_BM (nbworkjobs_BM >= MINNBWORKJOBS_BM
              && nbworkjobs_BM <= MAXNBWORKJOBS_BM);
-  pthread_mutex_lock (&runpro_mtx_BM);
+  lock_runpro_mtx_at_BM (__LINE__);
   lockedproc = true;
   int slotpos = -1;
   for (int ix = 0; ix < nbworkjobs_BM; ix++)
@@ -4011,12 +4031,12 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
       listappend_BM (runpro_list_BM, _.nodv);
     }
   ASSERT_BM (lockedproc);
-  pthread_mutex_unlock (&runpro_mtx_BM), lockedproc = false;
+  unlock_runpro_mtx_at_BM (__LINE__), lockedproc = false;
   LOCALJUSTRETURN_BM ();
 failure:
 #undef FAILHERE
   if (lockedproc)
-    pthread_mutex_unlock (&runpro_mtx_BM), lockedproc = false;
+    unlock_runpro_mtx_at_BM (__LINE__), lockedproc = false;
   DBGPRINTF_BM
     ("queue_process failure failin %d dirstr %s, cmdnod %s endclos %, cause %s",
      bytstring_BM (_.dirstrv), debug_outstr_value_BM (_.cmdnodv, CURFRAME_BM,
@@ -4132,7 +4152,7 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
   ASSERT_BM (pthread_self () == mainthreadid_BM);
   DBGPRINTF_BM ("defer_process_watchcb_BM pid=%d status=%d slot %d",
                 (int) pid, (int) status, slot);
-  pthread_mutex_lock (&runpro_mtx_BM);
+  lock_runpro_mtx_at_BM (__LINE__);
   _.pendingv = NULL;
   ASSERT_BM (runprocarr_BM[slot].rp_pid == pid);
   _.closv = runprocarr_BM[slot].rp_closv;
@@ -4164,7 +4184,7 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
       fork_process_at_slot_BM (slot, _.dirstrv, _.cmdnodv, _.endclosv,
                                CURFRAME_BM);
     }
-  pthread_mutex_unlock (&runpro_mtx_BM);
+  unlock_runpro_mtx_at_BM (__LINE__);
   char *remstr = NULL;
   gsize remlen = 0;
   g_io_channel_read_to_end (pipchan, &remstr, &remlen, NULL);
@@ -4208,11 +4228,11 @@ pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond,
   ASSERT_BM (slot >= 0 && slot < MAXNBWORKJOBS_BM);
   ASSERT_BM (pthread_self () == mainthreadid_BM);
   DBGPRINTF_BM ("pipe_process_watchcb_BM slot %d", slot);
-  pthread_mutex_lock (&runpro_mtx_BM);
+  lock_runpro_mtx_at_BM (__LINE__);
   ASSERT_BM (runprocarr_BM[slot].rp_pid != 0);
   pipchan = runprocarr_BM[slot].rp_pipchan;
   _.bufob = runprocarr_BM[slot].rp_bufob;
-  pthread_mutex_unlock (&runpro_mtx_BM);
+  unlock_runpro_mtx_at_BM (__LINE__);
   ASSERT_BM (pipchan == source);
   ASSERT_BM (isobject_BM (_.bufob));
   char *remstr = NULL;
