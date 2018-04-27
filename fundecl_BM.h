@@ -1250,7 +1250,7 @@ extern GtkTextBuffer *newgui_get_browsebuf_BM (void);
 // stderr are merged & captured; final string is given to the closure.
 // dirstrv is the string of the directory to run it in (if NULL, use
 // cwd) cmdnodv is a node with all sons being strings, for the command
-// to run endclosv is the closure getting the status, exitcode,
+// to run endclosv is the closure getting the status
 // stringoutput, could fail
 extern void queue_process_BM (const stringval_tyBM * dirstr,
                               const node_tyBM * cmdnodv,

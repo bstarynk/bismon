@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 314 objects
+// for 315 objects
 // with 0 modules
 
 
@@ -2549,12 +2549,12 @@ _8dLpuaNoSGN_2tdmkpINCsu) ~)
 
 !(_1gME6zn82Kf_8hzWibLFRfz
 !|*
-!@ 1524745213.22
+!@ 1524829944.48
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine to emit_module on plain_module"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
- { _9EqBenFWb40_86MuuXslynk }
+ { _9le67LL7S9y_5VGpniEUNDA _9EqBenFWb40_86MuuXslynk }
 
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _2HlKptD03wA_7JJCG7lN5nS _17mrxkMdNtH_2CduQ2WDIy5 
 _8g1WBJBhDT9_1QK8IcuWYx2 _9mq0jsuz4XQ_4doHfd987Q6) ~)
@@ -3598,6 +3598,16 @@ _7BROpIWQHzA_8b1C6i49Pkz) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to put_method in class"
 !)_9imDBaAxOpp_2HI9AuWrEKD
+
+
+
+!(_9le67LL7S9y_5VGpniEUNDA
+!|*
+!@ 1524829944.48
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "after-compilation-of-module"
+!)_9le67LL7S9y_5VGpniEUNDA
 
 
 

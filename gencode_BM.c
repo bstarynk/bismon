@@ -2613,6 +2613,11 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   objstrbufferprintfpayl_BM (_.modgenob,
                              "// generated module %s in file " MODULEPREFIX_BM
                              "%s.c\n", objectdbg_BM (_.modulob), modulidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "#ifdef BISMON_MODID\n"
+                             "DECLARE_MODULE_BM(%s);\n"
+                             "#endif /*BISMON_MODID*/\n", modulidbuf);
+
   _.resgen =
     send2_BM (_.modulob, k_generate_module, CURFRAME_BM, _.modgenob,
               _.resprep);
@@ -3328,12 +3333,13 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
  const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
+  objectval_tyBM *kk_after_compilation_of_module =
+    BMK_9le67LL7S9y_5VGpniEUNDA;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9EqBenFWb40_86MuuXslynk,
                  value_tyBM resultv;
                  objectval_tyBM * modulob;
                  objectval_tyBM * modgenob;
-                 value_tyBM srcdirstrv;
-                 value_tyBM pardirstrv;
+                 value_tyBM srcdirstrv; value_tyBM pardirstrv;
                  value_tyBM compilnodv; value_tyBM aftercompilclosv;
                  value_tyBM argstrarr[8];
     );
@@ -3403,7 +3409,56 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
     _.argstrarr[ix] = makestring_BM (compilargs[ix]);
   _.compilnodv = makenode_BM (BMP_node, nbargs, _.argstrarr);
   _.pardirstrv = makestring_BM (realpardir);
-  _.aftercompilclosv = NULL;
-#warning incomplete defer-compilation-of-module should make closure aftercompilclosv and use queue_process_BM
-  LOCALRETURN_BM (_.resultv);
+  _.aftercompilclosv =
+    makeclosure2_BM (kk_after_compilation_of_module, _.modulob, _.modgenob);
+  DBGPRINTF_BM
+    ("defer-compilation-of-module pardirstrv=%s compilnodv=%s aftercompilclosv=%s before queue_process_BM",
+     debug_outstr_value_BM (_.pardirstrv, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.compilnodv, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.aftercompilclosv, CURFRAME_BM, 0));
+  queue_process_BM (_.pardirstrv, _.compilnodv, _.aftercompilclosv,
+                    CURFRAME_BM);
+  LOCALRETURN_BM (_.aftercompilclosv);
 }                               /* end  defer-compilation-of-module _9EqBenFWb40_86MuuXslynk */
+
+
+
+
+// after-compilation-of-module _9le67LL7S9y_5VGpniEUNDA, closure called by process ending
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, process ending
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // outstr
+ const value_tyBM arg2,         // status
+ const value_tyBM arg3_ __attribute__ ((unused)),       //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_9le67LL7S9y_5VGpniEUNDA,
+                 value_tyBM outstrv;
+                 value_tyBM resultv;
+                 value_tyBM callingclosv; objectval_tyBM * modulob;
+                 objectval_tyBM * modgenob;
+    );
+  int status = -1;
+  _.outstrv = arg1;
+  ASSERT_BM (isstring_BM (_.outstrv));
+  ASSERT_BM (istaggedint_BM (arg2));
+  status = getint_BM (arg2);
+  LOCALGETFUNV_BM (_.callingclosv);
+  WEAKASSERT_BM (isclosure_BM (_.callingclosv)
+                 && closurewidth_BM (_.callingclosv) >= 2);
+  _.modulob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
+  _.modgenob = objectcast_BM (closurenthson_BM (_.callingclosv, 1));
+  DBGPRINTF_BM ("start after-compilation-of-module status %d outstr %s\n" //
+		".. modulob=%s modgenob=%s\n",
+		status,        //
+                debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0),
+                objectdbg_BM (_.modulob), objectdbg_BM (_.modgenob));
+#warning unimplemented _9le67LL7S9y_5VGpniEUNDA routine
+  WEAKASSERT_BM (false && "unimplemented _9le67LL7S9y_5VGpniEUNDA routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end routine _9le67LL7S9y_5VGpniEUNDA */
