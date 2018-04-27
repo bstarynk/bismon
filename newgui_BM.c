@@ -4146,6 +4146,7 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
   // avoid failure inside, or handle them explicitly
   int slot = (int) user_data;
   GIOChannel *pipchan = NULL;
+  int outpipefd = -1;
   guint childwatch = 0;
   guint pipewatch = 0;
   ASSERT_BM (slot >= 0 && slot < MAXNBWORKJOBS_BM);
@@ -4158,6 +4159,7 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
   _.closv = runprocarr_BM[slot].rp_closv;
   _.bufob = runprocarr_BM[slot].rp_bufob;
   pipchan = runprocarr_BM[slot].rp_pipchan;
+  outpipefd = runprocarr_BM[slot].rp_outpipe;
   childwatch = runprocarr_BM[slot].rp_childwatch;
   pipewatch = runprocarr_BM[slot].rp_pipewatch;
   memset (&runprocarr_BM[slot], 0, sizeof (runprocarr_BM[slot]));
@@ -4187,18 +4189,38 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
   unlock_runpro_mtx_at_BM (__LINE__);
   char *remstr = NULL;
   gsize remlen = 0;
-  g_io_channel_read_to_end (pipchan, &remstr, &remlen, NULL);
-  if (remlen > 0 && remstr)
+  int nbreadbytes = -1;
+  char readbuf[256];
+  GIOStatus readstatus = G_IO_STATUS_ERROR;
+  do
     {
+      nbreadbytes = -1;
+      memset (readbuf, 0, sizeof (readbuf));
+      if (outpipefd > 0)
+        ioctl (outpipefd, FIONREAD, &nbreadbytes);
       DBGPRINTF_BM
-        ("defer_process_watchcb_BM slot %d bufob=%s remlen=%d remstr=\n%s",
-         slot, objectdbg_BM (_.bufob), (int) remlen, remstr);
-      objlock_BM (_.bufob);
-      objstrbufferappendcstrpayl_BM (_.bufob, remstr);
-      objunlock_BM (_.bufob);
+        ("defer_process_watchcb_BM slot %d before g_io_channel_read_to_end outpipefd %d nbreadbytes %d",
+         slot, outpipefd, nbreadbytes);
+      if (nbreadbytes <= 0)
+        break;
+      readstatus =
+        g_io_channel_read_chars (pipchan, readbuf, sizeof (readbuf) - 1,
+                                 &remlen, NULL);
+      if (remlen > 0)
+        {
+          DBGPRINTF_BM
+            ("defer_process_watchcb_BM slot %d bufob=%s remlen=%d readstatus#%d readbuf=\n%s",
+             slot, objectdbg_BM (_.bufob), (int) remlen, readbuf);
+          objlock_BM (_.bufob);
+          objstrbufferappendcstrpayl_BM (_.bufob, readbuf);
+          objunlock_BM (_.bufob);
+        }
+      else
+        DBGPRINTF_BM
+          ("defer_process_watchcb_BM slot %d no remlen readstatus#%d", slot,
+           (int) readstatus);
     }
-  if (remstr)
-    g_free (remstr);
+  while (remlen > 0);
   g_source_remove (pipewatch);
   g_io_channel_unref (pipchan);
   _.outstrv = makestring_BM (objstrbufferbytespayl_BM (_.bufob));
@@ -4224,6 +4246,7 @@ pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond,
                  objectval_tyBM * bufob;
     );
   int slot = (int) user_data;
+  int outpipefd = -1;
   GIOChannel *pipchan = NULL;
   ASSERT_BM (slot >= 0 && slot < MAXNBWORKJOBS_BM);
   ASSERT_BM (pthread_self () == mainthreadid_BM);
@@ -4232,23 +4255,45 @@ pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond,
   ASSERT_BM (runprocarr_BM[slot].rp_pid != 0);
   pipchan = runprocarr_BM[slot].rp_pipchan;
   _.bufob = runprocarr_BM[slot].rp_bufob;
+  outpipefd = runprocarr_BM[slot].rp_outpipe;
   unlock_runpro_mtx_at_BM (__LINE__);
   ASSERT_BM (pipchan == source);
   ASSERT_BM (isobject_BM (_.bufob));
-  char *remstr = NULL;
+  char readbuf[256];
   gsize remlen = 0;
-  g_io_channel_read_to_end (pipchan, &remstr, &remlen, NULL);
-  if (remlen > 0 && remstr)
+  int nbreadbytes = -1;
+  GIOStatus readstatus = G_IO_STATUS_ERROR;
+  do
     {
+      remlen = 0;
+      nbreadbytes = -1;
+      memset (readbuf, 0, sizeof (readbuf));
+      if (outpipefd > 0)
+        ioctl (outpipefd, FIONREAD, &nbreadbytes);
       DBGPRINTF_BM
-        ("pipe_process_watchcb_BM slot %d bufob=%s remlen=%d remstr=\n%s",
-         slot, objectdbg_BM (_.bufob), (int) remlen, remstr);
-      objlock_BM (_.bufob);
-      objstrbufferappendcstrpayl_BM (_.bufob, remstr);
-      objunlock_BM (_.bufob);
+        ("pipe_process_watchcb_BM slot %d before g_io_channel_read_to_end outpipefd %d nbreadbytes %d",
+         slot, outpipefd, nbreadbytes);
+      if (nbreadbytes <= 0)
+        break;
+      readstatus =
+        g_io_channel_read_chars (pipchan, readbuf, sizeof (readbuf) - 1,
+                                 &remlen, NULL);
+      if (remlen > 0)
+        {
+          DBGPRINTF_BM
+            ("pipe_process_watchcb_BM slot %d bufob=%s remlen=%d readstatus#%d readbuf=\n%s",
+             slot, objectdbg_BM (_.bufob), (int) remlen, (int) readstatus,
+             readbuf);
+          objlock_BM (_.bufob);
+          objstrbufferappendcstrpayl_BM (_.bufob, readbuf);
+          objunlock_BM (_.bufob);
+        }
+      else
+        DBGPRINTF_BM ("pipe_process_watchcb_BM slot %d none readstatus#%d",
+                      slot, (int) readstatus);
+
     }
-  if (remstr)
-    g_free (remstr);
+  while (remlen > 0);
   // return FALSE to remove the event source
   return TRUE;
 }                               /* end pipe_process_watchcb_BM */

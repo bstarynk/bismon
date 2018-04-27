@@ -1,10 +1,11 @@
 // generated module first_test_module in file modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c
-#ifdef BISMON_MODID
-DECLARE_MODULE_BM (_9oXtCgAbkqv_4y1xhhF5Nhz);
-#endif /*BISMON_MODID */
 
 
 #include "bismon.h"
+
+#ifdef BISMON_MODID
+DECLARE_MODULE_BM (_9oXtCgAbkqv_4y1xhhF5Nhz);
+#endif /*BISMON_MODID */
 
 
 
