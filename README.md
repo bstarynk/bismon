@@ -101,7 +101,7 @@ generated code), but some few code is in C++14.
 
 * [markdown](https://www.markdownguide.org/) is required for some documentation, such as this `README.md`
 
-* GNU [indent](https://www.gnu.org/software/indent/) (2.2.x at last) and [astyle](https://sourceforge.net/projects/astyle/)  (3.1 at least) are useful for `make indent`
+* GNU [indent](https://www.gnu.org/software/indent/) (2.2.x at last) and [astyle](https://sourceforge.net/projects/astyle/)  (3.1 at least) are useful for `make indent`. `indent` is now **required** for generated modules.
 
 ### relevant Debian/Ubuntu build-dependency packages ###
 
