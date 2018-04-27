@@ -2613,10 +2613,6 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   objstrbufferprintfpayl_BM (_.modgenob,
                              "// generated module %s in file " MODULEPREFIX_BM
                              "%s.c\n", objectdbg_BM (_.modulob), modulidbuf);
-  objstrbufferprintfpayl_BM (_.modgenob,
-                             "#ifdef BISMON_MODID\n"
-                             "DECLARE_MODULE_BM(%s);\n"
-                             "#endif /*BISMON_MODID*/\n", modulidbuf);
 
   _.resgen =
     send2_BM (_.modulob, k_generate_module, CURFRAME_BM, _.modgenob,
@@ -3156,6 +3152,10 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
   WEAKASSERT_BM (!_.constsetv || isset_BM (_.constsetv));
   objstrbufferprintfpayl_BM (_.modgenob, "\n\n" "#include \"bismon.h\"\n\n");
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "#ifdef BISMON_MODID\n"
+                             "DECLARE_MODULE_BM(%s);\n"
+                             "#endif /*BISMON_MODID*/\n\n", modulidbuf);
   DBGPRINTF_BM
     ("@@generate_module°basiclo*module incomplete modgenob=%s prepmod=%s",
      objectdbg_BM (_.modgenob),
@@ -3337,8 +3337,7 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
     BMK_9le67LL7S9y_5VGpniEUNDA;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9EqBenFWb40_86MuuXslynk,
                  value_tyBM resultv;
-                 objectval_tyBM * modulob;
-                 objectval_tyBM * modgenob;
+                 objectval_tyBM * modulob; objectval_tyBM * modgenob;
                  value_tyBM srcdirstrv; value_tyBM pardirstrv;
                  value_tyBM compilnodv; value_tyBM aftercompilclosv;
                  value_tyBM argstrarr[8];
@@ -3438,8 +3437,7 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9le67LL7S9y_5VGpniEUNDA,
-                 value_tyBM outstrv;
-                 value_tyBM resultv;
+                 value_tyBM outstrv; value_tyBM resultv;
                  value_tyBM callingclosv; objectval_tyBM * modulob;
                  objectval_tyBM * modgenob;
     );
@@ -3453,9 +3451,8 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
                  && closurewidth_BM (_.callingclosv) >= 2);
   _.modulob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
   _.modgenob = objectcast_BM (closurenthson_BM (_.callingclosv, 1));
-  DBGPRINTF_BM ("start after-compilation-of-module status %d outstr %s\n" //
-		".. modulob=%s modgenob=%s\n",
-		status,        //
+  DBGPRINTF_BM ("start after-compilation-of-module status %d outstr %s\n"       //
+                ".. modulob=%s modgenob=%s\n", status,  //
                 debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0),
                 objectdbg_BM (_.modulob), objectdbg_BM (_.modgenob));
 #warning unimplemented _9le67LL7S9y_5VGpniEUNDA routine
