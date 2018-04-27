@@ -53,6 +53,9 @@ struct
   const node_tyBM *rp_cmdnodv;
   const closure_tyBM *rp_closv;
   objectval_tyBM *rp_bufob;
+  GIOChannel *rp_pipchan;
+  guint rp_childwatch;
+  guint rp_pipewatch;
 } runprocarr_BM[MAXNBWORKJOBS_BM];
 /// queued process commands, of nodes (dir, cmd, clos)
 struct listtop_stBM *runpro_list_BM;
@@ -3933,6 +3936,15 @@ static gboolean
 pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond,
                          gpointer data);
 
+
+// runpro_mtx_BM should be locked when calling this
+static void
+fork_process_at_slot_BM (int slotpos,
+                         const stringval_tyBM * dirstrarg,
+                         const node_tyBM * cmdnodarg,
+                         const closure_tyBM * endclosarg,
+                         struct stackframe_stBM *stkf);
+
 void
 queue_process_BM (const stringval_tyBM * dirstrarg,
                   const node_tyBM * cmdnodarg,
@@ -3941,11 +3953,15 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
 {
   objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
   objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
-  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_queue_process,
-                 const stringval_tyBM * dirstrv;
-                 const node_tyBM * cmdnodv; const closure_tyBM * endclosv;
-                 value_tyBM curargv; value_tyBM errorv; value_tyBM causev;
-                 objectval_tyBM * bufob;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_queue_process, //
+                 const stringval_tyBM * dirstrv;        //
+                 const node_tyBM * cmdnodv;     //
+                 const closure_tyBM * endclosv; //
+                 value_tyBM curargv;    //
+                 value_tyBM errorv;     //
+                 value_tyBM causev;     //
+                 objectval_tyBM * bufob;        //
+                 value_tyBM nodv;       //
     );
   _.dirstrv = dirstrarg;
   _.cmdnodv = cmdnodarg;
@@ -3957,7 +3973,7 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
     FAILHERE (makenode1_BM (BMP_string, _.dirstrv));
   if (!isnode_BM (_.cmdnodv))
     FAILHERE (makenode1_BM (BMP_node, _.cmdnodv));
-  if (_.endclosv && !isclosure_BM (_.endclosv))
+  if (!isclosure_BM (_.endclosv))
     FAILHERE (makenode1_BM (BMP_closure, _.cmdnodv));
   unsigned cmdlen = nodewidth_BM (_.cmdnodv);
   if (cmdlen == 0)
@@ -3983,62 +3999,19 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
     }
   if (slotpos >= 0 && !runpro_list_BM)
     {
-      /// should fork the process
-      int pipfd[2] = { -1, -1 };
-      char **args = calloc (cmdlen + 1, sizeof (char *));
-      if (!args)
-        FATAL_BM ("calloc args %d failed - %m", cmdlen);
-      for (int aix = 0; aix < cmdlen; aix++)
-        args[aix] = bytstring_BM (nodenthson_BM (_.cmdnodv, aix));
-      if (pipe (pipfd))
-        FATAL_BM ("pipe failed - %m");
-      fflush (NULL);
-      pid_t pid = fork ();
-      if (pid < 0)
-        FATAL_BM ("failed to fork - %m");
-      if (pid == 0)
-        {
-          // child process
-          for (int ix = 3; ix < 64; ix++)
-            if (ix != pipfd[1])
-              (void) close (ix);
-          int fd = open ("/dev/null", O_RDONLY);
-          dup2 (fd, STDIN_FILENO);
-          close (fd), fd = -1;
-          dup2 (pipfd[1], STDOUT_FILENO);
-          dup2 (pipfd[1], STDERR_FILENO);
-          execv (args[0], args);
-          perror (args[0]);
-          _exit (127);
-        }
-      else
-        {                       // parent process
-          runprocarr_BM[slotpos].rp_pid = pid;
-          runprocarr_BM[slotpos].rp_outpipe = pipfd[0];
-          runprocarr_BM[slotpos].rp_cmdnodv = _.cmdnodv;
-          runprocarr_BM[slotpos].rp_closv = _.endclosv;
-          _.bufob = makeobj_BM ();
-          objputclass_BM (_.bufob, k_sbuf_object);
-          objputstrbufferpayl_BM (_.bufob, 1024 * 1024);
-          runprocarr_BM[slotpos].rp_bufob = _.bufob;
-          // probably these should become fields of runprocarr_BM
-          int childwatch = g_child_watch_add (pid, defer_process_watchcb_BM,
-                                              (void *) slotpos);
-          GIOChannel *pipchan = g_io_channel_unix_new (pipfd[0]);
-          int chanwatch =
-            g_io_add_watch (pipchan, G_IO_IN, pipe_process_watchcb_BM,
-                            (void *) slotpos);
-        }
+      fork_process_at_slot_BM (slotpos, _.dirstrv, _.cmdnodv, _.endclosv,
+                               CURFRAME_BM);
     }
   else
     {                           // append to runpro_list_BM
       if (!runpro_list_BM)
         runpro_list_BM = makelist_BM ();
+      _.nodv =
+        makenode3_BM (k_queue_process, _.dirstrv, _.cmdnodv, _.endclosv);
+      listappend_BM (runpro_list_BM, _.nodv);
     }
-#warning should handle case with queue list in queue_process_BM
-  WEAKASSERT_BM (false && "incomplete queue_process_BM");
-  FAILHERE (NULL);
-#warning incomplete queue_process_BM
+  ASSERT_BM (lockedproc);
+  pthread_mutex_unlock (&runpro_mtx_BM), lockedproc = false;
   LOCALJUSTRETURN_BM ();
 failure:
 #undef FAILHERE
@@ -4056,17 +4029,149 @@ failure:
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end queue_process_BM */
 
+
+void
+fork_process_at_slot_BM (int slotpos,
+                         const stringval_tyBM * dirstrarg,
+                         const node_tyBM * cmdnodarg,
+                         const closure_tyBM * endclosarg,
+                         struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
+  objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
+  LOCALFRAME_BM ( /*prev: */ stkf,
+                 /*descr: */ NULL,
+                 const stringval_tyBM * dirstrv;        //
+                 const node_tyBM * cmdnodv;     //
+                 const closure_tyBM * endclosv; //
+                 value_tyBM curargv;    //
+                 objectval_tyBM * bufob;        //
+    );
+  _.dirstrv = dirstrarg;
+  _.cmdnodv = cmdnodarg;
+  _.endclosv = endclosarg;
+  int cmdlen = nodewidth_BM (_.cmdnodv);
+  ASSERT_BM (cmdlen > 0);
+  ASSERT_BM (slotpos >= 0 && slotpos < MAXNBWORKJOBS_BM);
+  /// should fork the process
+  int pipfd[2] = { -1, -1 };
+  char **args = calloc (cmdlen + 1, sizeof (char *));
+  if (!args)
+    FATAL_BM ("calloc args %d failed - %m", cmdlen);
+  for (int aix = 0; aix < cmdlen; aix++)
+    args[aix] = bytstring_BM (nodenthson_BM (_.cmdnodv, aix));
+  if (pipe (pipfd))
+    FATAL_BM ("pipe failed - %m");
+  fflush (NULL);
+  pid_t pid = fork ();
+  if (pid < 0)
+    FATAL_BM ("failed to fork - %m");
+  if (pid == 0)
+    {
+      // child process
+      for (int ix = 3; ix < 64; ix++)
+        if (ix != pipfd[1])
+          (void) close (ix);
+      int fd = open ("/dev/null", O_RDONLY);
+      dup2 (fd, STDIN_FILENO);
+      close (fd), fd = -1;
+      dup2 (pipfd[1], STDOUT_FILENO);
+      dup2 (pipfd[1], STDERR_FILENO);
+      execv (args[0], args);
+      perror (args[0]);
+      _exit (127);
+    }
+  else
+    {                           // parent process
+      runprocarr_BM[slotpos].rp_pid = pid;
+      runprocarr_BM[slotpos].rp_outpipe = pipfd[0];
+      runprocarr_BM[slotpos].rp_cmdnodv = _.cmdnodv;
+      runprocarr_BM[slotpos].rp_closv = _.endclosv;
+      _.bufob = makeobj_BM ();
+      objputclass_BM (_.bufob, k_sbuf_object);
+      objputstrbufferpayl_BM (_.bufob, 1024 * 1024);
+      runprocarr_BM[slotpos].rp_bufob = _.bufob;
+      runprocarr_BM[slotpos].rp_childwatch =
+        g_child_watch_add (pid, defer_process_watchcb_BM, (void *) slotpos);
+      if (!runprocarr_BM[slotpos].rp_childwatch)
+        FATAL_BM ("g_child_watch_add failure for pid#%d", (int) pid);
+      runprocarr_BM[slotpos].rp_pipchan = g_io_channel_unix_new (pipfd[0]);
+      if (!runprocarr_BM[slotpos].rp_pipchan)
+        FATAL_BM ("g_io_channel_unix_new failure for fd#%d - %m", pipfd[0]);
+      runprocarr_BM[slotpos].rp_pipewatch =
+        g_io_add_watch (runprocarr_BM[slotpos].rp_pipchan, G_IO_IN,
+                        pipe_process_watchcb_BM, (void *) slotpos);
+      if (!runprocarr_BM[slotpos].rp_pipewatch)
+        FATAL_BM ("g_io_add_watch failed - %m");
+    }
+}                               /* end fork_process_at_slot_BM */
+
+
+// callback installed by g_child_watch_add in fork_process_at_slot_BM
 static void
 defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
 {
+  objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
+  objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
+  LOCALFRAME_BM ( /*prev: */ NULL,
+                 /*descr: */ NULL,
+                 const closure_tyBM * closv;
+                 objectval_tyBM * bufob;
+                 value_tyBM pendingv;   //
+                 const stringval_tyBM * dirstrv;        //
+                 const node_tyBM * cmdnodv;     //
+                 const closure_tyBM * endclosv; //
+    );
+  // avoid failure inside, or handle them explicitly
   int slot = (int) user_data;
+  GIOChannel *pipchan = NULL;
+  guint childwatch = 0;
+  guint pipewatch = 0;
   ASSERT_BM (slot >= 0 && slot < MAXNBWORKJOBS_BM);
+  ASSERT_BM (pthread_self () == mainthreadid_BM);
   DBGPRINTF_BM ("defer_process_watchcb_BM pid=%d status=%d slot %d",
                 (int) pid, (int) status, slot);
+  pthread_mutex_lock (&runpro_mtx_BM);
+  _.pendingv = NULL;
+  ASSERT_BM (runprocarr_BM[slot].rp_pid == pid);
+  _.closv = runprocarr_BM[slot].rp_closv;
+  _.bufob = runprocarr_BM[slot].rp_bufob;
+  pipchan = runprocarr_BM[slot].rp_pipchan;
+  childwatch = runprocarr_BM[slot].rp_childwatch;
+  pipewatch = runprocarr_BM[slot].rp_pipewatch;
+  memset (&runprocarr_BM[slot], 0, sizeof (runprocarr_BM[slot]));
+  /// should take the head of runpro_list_BM
+  if (runpro_list_BM)
+    {
+      _.pendingv = listfirst_BM (runpro_list_BM);
+      listpopfirst_BM (runpro_list_BM);
+      if (listlength_BM (runpro_list_BM) == 0)
+        runpro_list_BM = NULL;
+    }
+  // start the process corresponding to pendingv
+  if (_.pendingv)
+    {
+      ASSERT_BM (isnode_BM (_.pendingv)
+                 && nodeconn_BM (_.pendingv) == k_queue_process
+                 && nodewidth_BM (_.pendingv == 3));
+      _.dirstrv = nodenthson_BM (_.pendingv, 0);
+      _.cmdnodv = nodenthson_BM (_.pendingv, 1);
+      _.endclosv = nodenthson_BM (_.pendingv, 2);
+      ASSERT_BM (!_.dirstrv || isstring_BM (_.dirstrv));
+      ASSERT_BM (isnode_BM (_.cmdnodv) && nodewidth_BM (_.cmdnodv) > 0);
+      ASSERT_BM (isclosure_BM (_.endclosv));
+      fork_process_at_slot_BM (slot, _.dirstrv, _.cmdnodv, _.endclosv,
+                               CURFRAME_BM);
+    }
+  pthread_mutex_unlock (&runpro_mtx_BM);
 #warning defer_process_watchcb_BM unimplemented
   WEAKASSERT_BM (false && "unimplemented defer_process_watchcb_BM");
 }                               /* end defer_compilation_watchcb_BM */
 
+
+
+
+// callback installed by g_io_add_watch in fork_process_at_slot_BM
 gboolean
 pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond,
                          gpointer user_data)
