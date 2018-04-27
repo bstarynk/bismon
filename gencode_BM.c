@@ -2655,8 +2655,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   objstrbufferwritetofilepayl_BM (_.modgenob, srcpathstr);
   {
     char *indentcmdstr = NULL;
-    asprintf (&indentcmdstr, "make -f %s indentsinglemodule MODULEID=%s",
-              bismon_makefile, modulidbuf);
+    asprintf (&indentcmdstr, "%s/build-bismon-module.sh %s",
+              bismon_directory, modulidbuf);
     if (!indentcmdstr)
       FATAL_BM ("failed to build indent command modulidbuf %s", modulidbuf);
     DBGPRINTF_BM ("emit_module°plain_module indentcmdstr=%s", indentcmdstr);
@@ -3391,15 +3391,14 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
-  char modulidassign[48];
-  snprintf (modulidassign, sizeof (modulidassign), "MODULEID=%s", modulidbuf);
   char *compilargs[8] = { };
-  compilargs[0] = "make";
-  compilargs[1] = "-f";
-  compilargs[2] = bismon_makefile;
-  compilargs[3] = "singlemodule";
-  compilargs[4] = modulidassign;
-  int nbargs = 5;
+  char buildscriptbuf[128];
+  memset (buildscriptbuf, 0, sizeof (buildscriptbuf));
+  snprintf (buildscriptbuf, sizeof (buildscriptbuf),
+            "%s/build-bismon-module.sh", bismon_directory);
+  compilargs[0] = buildscriptbuf;
+  compilargs[1] = modulidbuf;
+  int nbargs = 2;
   DBGPRINTF_BM ("defer-compilation-of-module nbargs=%d", nbargs);
   for (int ix = 0; ix < nbargs; ix++)
     DBGPRINTF_BM ("..[%d]: %s", ix, compilargs[ix]);

@@ -4105,6 +4105,7 @@ fork_process_at_slot_BM (int slotpos,
     {                           // parent process
       runprocarr_BM[slotpos].rp_pid = pid;
       runprocarr_BM[slotpos].rp_outpipe = pipfd[0];
+      fcntl (pipfd[0], F_SETFL, O_NONBLOCK);
       runprocarr_BM[slotpos].rp_cmdnodv = _.cmdnodv;
       runprocarr_BM[slotpos].rp_closv = _.endclosv;
       _.bufob = makeobj_BM ();
@@ -4226,11 +4227,12 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
   _.outstrv = makestring_BM (objstrbufferbytespayl_BM (_.bufob));
   DBGPRINTF_BM
     ("defer_process_watchcb_BM slot %d deferapply endclos=%s outstrv=%s status %d",
+     slot,
      debug_outstr_value_BM (_.endclosv, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0), status);
   gtk_defer_apply3_BM (_.endclosv, _.outstrv, taggedint_BM (status), NULL,
                        CURFRAME_BM);
-  LOCALJUSTRETURN_BM ();
+  return;
 }                               /* end defer_process_watchcb_BM */
 
 
