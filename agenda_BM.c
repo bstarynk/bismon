@@ -782,3 +782,87 @@ run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
   curfailurehandle_BM = NULL;
   objunlock_BM (_.obtk);
 }                               /* end run_agenda_internal_tasklet_BM */
+
+void
+defer_module_load_BM (objectval_tyBM * modulobarg,
+                      const closure_tyBM * postclosarg, value_tyBM * arg1,
+                      value_tyBM * arg2, value_tyBM * arg3,
+                      struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_defer_module_load = BMK_4fBgmgx2KrN_3PCZfdnI1CJ;
+  LOCALFRAME_BM (stkf, /*descr: */ k_defer_module_load,
+                 objectval_tyBM * modulob;      //
+                 const closure_tyBM * postclos;
+                 value_tyBM arg1v;      //
+                 value_tyBM arg2v;      //
+                 value_tyBM arg3v;      //
+                 objectval_tyBM * curob;        //
+                 objectval_tyBM * routob;       //
+                 value_tyBM causev;
+                 value_tyBM errorv;
+    );
+  extern void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data);     /* in misc_BM.cc */
+  _.modulob = objectcast_BM (modulobarg);
+  _.postclos = closurecast_BM (postclosarg);
+  _.arg1v = arg1;
+  _.arg2v = arg2;
+  _.arg3v = arg3;
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
+  if (!_.modulob)
+    FAILHERE (BMP_load_module);
+  if (!isclosure_BM (_.postclos))
+    FAILHERE (BMP_closure);
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof (modulidbuf));
+  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+  // test that the module file exists
+  char *modulpath = NULL;
+  asprintf (&modulpath, "%s/" MODULEDIR_BM "/" MODULEPREFIX_BM "%s.so",
+            bismon_directory, modulidbuf);
+  if (!modulpath)
+    FATAL_BM ("failed to make modulpath for %s", modulidbuf);
+  FILE *binmodf = fopen (modulpath, "r");
+  if (!binmodf)
+    {
+      fprintf (stderr, "failed to read binary module %s: %m\n", modulpath);
+      FAILHERE (makenode1_BM (BMP_load_module, makestring_BM (modulpath)));
+    }
+  char eident[EI_NIDENT];
+  memset (eident, 0, sizeof (eident));
+  if (fread (eident, EI_NIDENT, 1, binmodf) < 1
+      || eident[0] != EI_MAG0 || eident[1] != EI_MAG1 || eident[2] != EI_MAG2
+      || eident[3] != EI_MAG3)
+    {
+      fclose (binmodf);
+      FAILHERE (makenode1_BM (BMP_load_module, makestring_BM (modulpath)));
+    };
+  fclose (binmodf);
+  {
+    value_tyBM varr[6] = { };
+    varr[0] = _.modulob;
+    varr[1] = _.postclos;
+    varr[2] = _.arg1v;
+    varr[3] = _.arg2v;
+    varr[4] = _.arg3v;
+    agenda_defer_after_gc_BM (deferred_do_module_load_BM, varr, 5, modulpath);
+  }
+  atomic_store (&want_garbage_collection_BM, true);
+  agenda_notify_BM ();
+  return;
+failure:
+#undef FAILHERE
+  DBGPRINTF_BM
+    ("defer_module_load failin failin=%d causev=%s modulob=%s/%s arg1=%s arg2=%s arg3=%s",
+     failin, debug_outstr_value_BM (_.causev, CURFRAME_BM, 0),
+     objectdbg_BM (_.modulob), modulidbuf, debug_outstr_value_BM (_.arg1v,
+                                                                  CURFRAME_BM,
+                                                                  0),
+     debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
+  _.errorv =
+    makenode6_BM (k_defer_module_load, _.modulob, _.postclos, _.arg1v,
+                  _.arg2v, _.arg3v, _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+
+}                               /* end defer_module_load_BM */

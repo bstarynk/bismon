@@ -4038,7 +4038,8 @@ failure:
   if (lockedproc)
     unlock_runpro_mtx_at_BM (__LINE__), lockedproc = false;
   DBGPRINTF_BM
-    ("queue_process failure failin %d dirstr %s, cmdnod %s endclos %, cause %s",
+    ("queue_process failure failin %d dirstr %s, cmdnod %s endclos %s, cause %s",
+     failin,
      bytstring_BM (_.dirstrv), debug_outstr_value_BM (_.cmdnodv, CURFRAME_BM,
                                                       0),
      debug_outstr_value_BM (_.endclosv, CURFRAME_BM, 0),

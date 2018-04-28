@@ -527,6 +527,42 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
 } // end of open_module_for_loader_BM
 
 
+extern "C" void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data);
+
+/// called only indirectly thru agenda defer mechanism, see defer_module_load_BM
+void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data)
+{
+  struct thisframe
+  {
+    STACKFRAMEFIELDS_BM;
+    objectval_tyBM* modulob;
+    const closure_tyBM* postclos;
+    value_tyBM arg1v; //
+    value_tyBM arg2v; //
+    value_tyBM arg3v; //
+  } _;
+  memset ((void*)&_, 0, sizeof(_));
+  _.stkfram_pA.htyp = typayl_StackFrame_BM;
+  _.stkfram_pA.rlen = (sizeof(_) - sizeof(struct emptystackframe_stBM))/sizeof(value_tyBM);
+  _.stkfram_prev = NULL;
+  ASSERT_BM(nbval == 5);
+  ASSERT_BM(valarr != NULL);
+  ASSERT_BM(data != NULL);
+  char*binmodulpath = (char*)data;
+  _.modulob = objectcast_BM(valarr[0]);
+  _.postclos = closurecast_BM(valarr[1]);
+  _.arg1v = valarr[2];
+  _.arg2v = valarr[3];
+  _.arg3v = valarr[4];
+  DBGPRINTF_BM("deferred_do_module_load modulob=%s postclos=%s arg1=%s arg2=%s arg3=%s binmodulpath=%s",
+               objectdbg_BM(_.modulob),
+               debug_outstr_value_BM((value_tyBM)_.postclos, CURFRAME_BM, 0),
+               debug_outstr_value_BM(_.arg1v, CURFRAME_BM, 0),
+               debug_outstr_value_BM(_.arg2v, CURFRAME_BM, 0),
+               debug_outstr_value_BM(_.arg3v, CURFRAME_BM, 0),
+               binmodulpath);
+#warning deferred_do_module_load_BM incomplete
+} // end deferred_do_module_load_BM
 
 
 void gcmarkmodules_BM(struct garbcoll_stBM*gc)
