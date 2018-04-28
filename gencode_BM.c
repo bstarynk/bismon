@@ -3470,7 +3470,8 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9le67LL7S9y_5VGpniEUNDA,
                  value_tyBM outstrv; value_tyBM resultv;
-                 value_tyBM callingclosv; objectval_tyBM * modulob;
+                 value_tyBM callingclosv;
+                 objectval_tyBM * modulob; value_tyBM postclosv;
                  objectval_tyBM * modgenob;
     );
   int status = -1;
@@ -3486,11 +3487,53 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   DBGPRINTF_BM ("start after-compilation-of-module status %d outstr %s\n"       //
                 ".. modulob=%s modgenob=%s\n", status,  //
                 debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0),
-                objectdbg_BM (_.modulob), objectdbg_BM (_.modgenob));
-#warning unimplemented _9le67LL7S9y_5VGpniEUNDA routine
-  WEAKASSERT_BM (false && "unimplemented _9le67LL7S9y_5VGpniEUNDA routine");
-  LOCALRETURN_BM (_.resultv);
-}                               /* end routine _9le67LL7S9y_5VGpniEUNDA */
+                objectdbg_BM (_.modulob), objectdbg2_BM (_.modgenob));
+  if (pthread_self () == mainthreadid_BM && gui_is_running_BM)
+    {
+      log_begin_message_BM ();
+      log_printf_message_BM ("compilation of module ");
+      log_object_message_BM (_.modulob);
+      log_printf_message_BM (" with module generation ");
+      log_object_message_BM (_.modgenob);
+      log_printf_message_BM (" ");
+      if (status)
+        {
+          if (WIFEXITED (status))
+            log_printf_message_BM ("failed, exited %d.\n",
+                                   WEXITSTATUS (status));
+          else if (WIFSIGNALED (status))
+            log_printf_message_BM ("failed, terminated %s.\n",
+                                   strsignal (WTERMSIG (status)));
+          else
+            log_printf_message_BM ("failed (status %d=%#x).\n", status,
+                                   status);
+        }
+      else
+        {
+          log_printf_message_BM (" successful.\n");
+        }
+      unsigned lenout = lenstring_BM (_.outstrv);
+      if (lenout > 0)
+        log_printf_message_BM
+          ("+++++ (%d bytes)\n%s\n----- compile log of %s\n", lenout,
+           bytstring_BM (_.outstrv), objectdbg_BM (_.modulob));
+      log_end_message_BM ();
+    }
+  if (status)
+    fprintf (stderr, "compilation of module %s failed (%d=%#x)\n",
+             objectdbg_BM (_.modulob), status, status);
+  else
+    fprintf (stderr, "successful compilation of module %s\n",
+             objectdbg_BM (_.modulob));
+  if (status)
+    return;
+#warning missing after-load-of-module
+  _.postclosv = makeclosure0_BM (NULL);
+  defer_module_load_BM (_.modulob, _.postclosv,
+                        _.modgenob, NULL, NULL, CURFRAME_BM);
+  LOCALRETURN_BM (_.modgenob);
+}                               /* end after-compilation-of-module _9le67LL7S9y_5VGpniEUNDA */
+
 
 value_tyBM
 simple_module_initialize_BM (const value_tyBM arg1,     //
@@ -3501,7 +3544,7 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
                              const char *const *constidarr,     //
                              const char *const *routidarr,      //
                              void *dlh, // dlopened handle
-                             struct stackframe_stBM *stkf)
+                             struct stackframe_stBM * stkf)
 {
   objectval_tyBM *k_simple_module_initialize = BMK_3XOzJccMA25_76EfdJqsCSL;
   LOCALFRAME_BM (stkf, /*descr: */ k_simple_module_initialize,
