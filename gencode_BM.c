@@ -3526,12 +3526,20 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   else
     fprintf (stderr, "successful compilation of module %s\n",
              objectdbg_BM (_.modulob));
+  DBGPRINTF_BM
+    ("after-compilation-of-module modulob %s modgenob %s status %d",
+     objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob), status);
   if (status)
     return;
-#warning missing after-load-of-module
   _.postclosv = makeclosure0_BM (kk_after_load_of_module);
-  defer_module_load_BM (_.modulob, _.postclosv,
-                        _.modulob, _.modgenob, NULL, CURFRAME_BM);
+  DBGPRINTF_BM
+    ("after-compilation-of-module modulob %s postclosv=%s before defer_module_load",
+     objectdbg_BM (_.modulob), debug_outstr_value_BM (_.postclosv,
+                                                      CURFRAME_BM, 0));
+  defer_module_load_BM (_.modulob, _.postclosv, _.modulob, _.modgenob, NULL,
+                        CURFRAME_BM);
+  DBGPRINTF_BM ("after-compilation-of-module modulob %s modgenob=%s end",
+                objectdbg_BM (_.modulob), objectdbg_BM (_.modgenob));
   LOCALRETURN_BM (_.modgenob);
 }                               /* end after-compilation-of-module _9le67LL7S9y_5VGpniEUNDA */
 
@@ -3561,7 +3569,9 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
      objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
   // we probably should add some tasklet...
 #warning unimplemented after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq routine
-  WEAKASSERT_BM (false && "unimplemented after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq routine");
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq routine");
   LOCALRETURN_BM (_.resmodv);
 }                               /* end after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq */
 

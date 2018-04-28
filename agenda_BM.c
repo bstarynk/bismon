@@ -816,6 +816,13 @@ defer_module_load_BM (objectval_tyBM * modulobarg,
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+  DBGPRINTF_BM
+    ("defer_module_load_BM start modulob %s postclos %s arg1 %s arg2 %s arg3 %s",
+     objectdbg_BM (_.modulob), debug_outstr_value_BM (_.postclos, CURFRAME_BM,
+                                                      0),
+     debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
   // test that the module file exists
   char *modulpath = NULL;
   asprintf (&modulpath, "%s/" MODULEDIR_BM "/" MODULEPREFIX_BM "%s.so",
@@ -849,17 +856,15 @@ defer_module_load_BM (objectval_tyBM * modulobarg,
   }
   atomic_store (&want_garbage_collection_BM, true);
   agenda_notify_BM ();
+  DBGPRINTF_BM ("defer_module_load_BM end modulob %s",
+                objectdbg_BM (_.modulob));
   return;
 failure:
 #undef FAILHERE
-  DBGPRINTF_BM
-    ("defer_module_load failin failin=%d causev=%s modulob=%s/%s arg1=%s arg2=%s arg3=%s",
-     failin, debug_outstr_value_BM (_.causev, CURFRAME_BM, 0),
-     objectdbg_BM (_.modulob), modulidbuf, debug_outstr_value_BM (_.arg1v,
-                                                                  CURFRAME_BM,
-                                                                  0),
-     debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
-     debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
+  DBGPRINTF_BM ("defer_module_load failin failin=%d causev=%s modulob=%s/%s arg1=%s arg2=%s arg3=%s", failin, debug_outstr_value_BM (_.causev, CURFRAME_BM, 0), objectdbg_BM (_.modulob), modulidbuf,   //
+                debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),        //
+                debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),        //
+                debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
   _.errorv =
     makenode6_BM (k_defer_module_load, _.modulob, _.postclos, _.arg1v,
                   _.arg2v, _.arg3v, _.causev);
