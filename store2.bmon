@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 315 objects
+// for 316 objects
 // with 0 modules
 
 
@@ -1935,6 +1935,17 @@ _8yXqsN7LuB3_0vODsT2M9Lh
 ~)
 
 !)_2HlKptD03wA_7JJCG7lN5nS
+
+
+
+!(_3XOzJccMA25_76EfdJqsCSL |=simple_module_initialize|
+!~ name (~ simple_module_initialize
+~)
+!@ 1524900515.61
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "simple_module_initialize function"
+!)_3XOzJccMA25_76EfdJqsCSL
 
 
 

@@ -349,7 +349,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
           if (hashid_BM (modid) && endid >= linbuf + 2 * SERIALDIGITS_BM
               && (*endid == (char) 0 || isspace (*endid)))
             {
-              if (!openmoduleforloader_BM (modid, ld, NULL))
+              if (!open_module_for_loader_BM (modid, ld, NULL))
                 FATAL_BM ("loader failed to open module for %s", linbuf);
             }
           else

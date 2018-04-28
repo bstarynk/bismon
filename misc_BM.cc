@@ -428,8 +428,18 @@ setglobalobjects_BM(void)
 } // end setglobalobjects_BM
 
 bool
-openmoduleforloader_BM(const rawid_tyBM modid,struct loader_stBM*ld, struct  stackframe_stBM *stkf)
+open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct  stackframe_stBM *stkf)
 {
+  struct thisframe
+  {
+    STACKFRAMEFIELDS_BM;
+    objectval_tyBM* modulob;
+  } _;
+  memset ((void*)&_, 0, sizeof(_));
+  _.stkfram_pA.htyp = typayl_StackFrame_BM;
+  _.stkfram_pA.rlen = (sizeof(_) - sizeof(struct emptystackframe_stBM))/sizeof(value_tyBM);
+  _.stkfram_prev = stkf;
+  ASSERT_BM (ld && ld->ld_magic == LOADERMAGIC_BM);
   if (modid.id_hi == 0) return false;
   char modidbuf[32];
   memset (modidbuf, 0, sizeof(modidbuf));
@@ -483,37 +493,37 @@ openmoduleforloader_BM(const rawid_tyBM modid,struct loader_stBM*ld, struct  sta
       dlclose(dlh);
       return false;
     }
-  objectval_tyBM* objmod = ld?makeobjofid_BM(modid):findobjofid_BM(modid);
+  objectval_tyBM* objmod = makeobjofid_BM(modid);
   if (!objmod)
     {
       fprintf(stderr, "no object for module %s\n", modidbuf);
       dlclose(dlh);
       return false;
     }
+  _.modulob = objmod;
   modulemap_BM.insert({modid,ModuleData_BM{.mod_id=modid, .mod_dlh=dlh, .mod_obj=objmod}});
-  if (ld)
+  char modulinitname[48];
+  memset (modulinitname, 0, sizeof(modulinitname));
+  snprintf(modulinitname, sizeof(modulinitname),
+           MODULEINITPREFIX_BM "%s" MODULEINITSUFFIX_BM,
+           modid);
+  moduleinit_sigBM*modinitr = (moduleinit_sigBM*)dlsym(dlh, modulinitname);
+  if (!modinitr)
     {
-      ASSERT_BM (ld->ld_magic == LOADERMAGIC_BM);
-      ld->ld_modhset = hashsetobj_add_BM(ld->ld_modhset, objmod);
-      value_tyBM closargs[2] = {NULL,NULL};
-      closargs[0] = objmod;
-      const closure_tyBM*closloadm = makeclosure_BM (BMP_load_module,1,closargs);
-      load_addtodo_BM (closloadm);
+      fprintf(stderr, "missing module initializer %s in %s: %s\n",
+              modulinitname, binmodpath.c_str(), dlerror());
+      dlclose(dlh);
+      return false;
     }
-  else
-    {
-      value_tyBM v = send0_BM((const value_tyBM)objmod, BMP_load_module, stkf);
-      if (!v)
-        {
-          fprintf(stderr, "failed to send load_module for %s\n", modidbuf);
-          modulemap_BM.erase(modid);
-          dlclose(dlh);
-          return false;
-        }
-    }
+  ld->ld_modhset = hashsetobj_add_BM(ld->ld_modhset, objmod);
+  (*modinitr) (CURFRAME_BM, _.modulob, BMP_load_module, NULL, dlh);
+  value_tyBM closargs[2] = {NULL,NULL};
+  closargs[0] = objmod;
+  const closure_tyBM*closloadm = makeclosure_BM (BMP_load_module,1,closargs);
+  load_addtodo_BM (closloadm);
   ld->ld_nbmodules++;
   return true;
-} // end of openmoduleforloader_BM
+} // end of open_module_for_loader_BM
 
 ////////////////////////////////////////////////////////////////
 
@@ -878,7 +888,7 @@ gtk_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_ty
   } _;
   memset ((void*)&_, 0, sizeof(_));
   _.stkfram_pA.htyp = typayl_StackFrame_BM;
-  _.stkfram_pA.rlen = 4;
+  _.stkfram_pA.rlen = (sizeof(_) - sizeof(struct emptystackframe_stBM))/sizeof(value_tyBM);
   _.stkfram_prev = stkf;
   //
   _.funv = funv;

@@ -173,6 +173,11 @@
 #define ROUTIDARRPREFIX_BM "routid"
 #define ROUTINESUFFIX_BM "_BM"
 
+/// the initializer of module of id _9oXtCgAbkqv_4y1xhhF5Nhz is
+/// modulinit_9oXtCgAbkqv_4y1xhhF5Nhz_BM of type moduleinit_sigBM
+#define MODULEINITPREFIX_BM "modulinit"
+#define MODULEINITSUFFIX_BM "_BM"
+
 #define GLOBAL_BM(Gnam) globdata_##Gnam##_BM
 
 // we could use DBGPRINTF_BM and later replace it by NONPRINTF_BM

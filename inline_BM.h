@@ -1967,12 +1967,6 @@ const node_tyBM *objdictnodeofkeyspayl_BM
 }                               /* end objdictnodeofkeyspayl_BM */
 
 
-////////////////
-bool
-openmodule_BM (const rawid_tyBM id, struct stackframe_stBM * stkf)
-{
-  return openmoduleforloader_BM (id, NULL, stkf);
-}                               /* end openmodule_BM */
 
 ////////////////////////////////////////////////////////////////
 void

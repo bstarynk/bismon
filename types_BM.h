@@ -359,6 +359,12 @@ typedef value_tyBM objrout_sigBM (struct stackframe_stBM *stkf,
                                   const value_tyBM arg4,
                                   const quasinode_tyBM * restargs);
 
+// signature of module initialization
+typedef void moduleinit_sigBM (struct stackframe_stBM *stkf,
+                               const value_tyBM arg1,
+                               const value_tyBM arg2,
+                               const value_tyBM arg3,
+                               void *dlh /*dlopen handle of module */ );
 
 struct object_stBM              /*tyObject_BM */
 {
@@ -390,6 +396,11 @@ struct stackframe_stBM
 {                               // for typayl_StackFrame_BM, sitting on the callstack
   STACKFRAMEFIELDS_BM;
   value_tyBM stkfram_locals[];
+};
+
+struct emptystackframe_stBM
+{
+  STACKFRAMEFIELDS_BM;
 };
 
 // LOCALFRAME_BM is in cmacros_BM.h

@@ -3155,11 +3155,14 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   objstrbufferprintfpayl_BM (_.modgenob,
                              "#ifdef BISMON_MODID\n"
                              "DECLARE_MODULE_BM(%s);\n"
-                             "#endif /*BISMON_MODID*/\n\n", modulidbuf);
+                             "extern moduleinit_sigBM " MODULEINITPREFIX_BM
+                             "%s" MODULEINITSUFFIX_BM ";\n"
+                             "#endif /*BISMON_MODID*/\n\n", modulidbuf,
+                             modulidbuf);
   DBGPRINTF_BM
     ("@@generate_module°basiclo*module incomplete modgenob=%s prepmod=%s",
-     objectdbg_BM (_.modgenob),
-     debug_outstr_value_BM (_.prepmod, CURFRAME_BM, 0));
+     objectdbg_BM (_.modgenob), debug_outstr_value_BM (_.prepmod, CURFRAME_BM,
+                                                       0));
   _.routsetv = objgetattr_BM (_.modgenob, k_functions_set);
   _.preptupv = objgetattr_BM (_.modgenob, k_prepared_routines);
   unsigned nbrout = setcardinal_BM (_.routsetv);
@@ -3168,7 +3171,11 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   WEAKASSERT_BM (nbrout == tuplesize_BM (_.preptupv));
   //////
   // we should now declare the routines
-  objstrbufferprintfpayl_BM (_.modgenob, "\n\n// declare %u routines\n",
+  objstrbufferprintfpayl_BM (_.modgenob, "\n\n// declare %u routines\n\n",
+                             nbrout);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "extern const char *const " ROUTIDARRPREFIX_BM
+                             "%s" ROUTINESUFFIX_BM "[%d+1];\n", modulidbuf,
                              nbrout);
   _.preproutval = NULL;
   // we should now emit each routine's declaration...
@@ -3303,6 +3310,33 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   objstrbufferprintfpayl_BM (_.modgenob,
                              "\n NULL}; // end %d routine ids\n\n", nbrout);
 
+  /// emit the module initialization
+  objstrbufferprintfpayl_BM (_.modgenob, "\n\n// basiclo*module initialization\n"       //
+                             "#ifdef BISMON_MODID\n"
+                             "void " MODULEINITPREFIX_BM "%s"
+                             MODULEINITSUFFIX_BM "\n"
+                             "  (struct stackframe_stBM *stkf, //\n"
+                             "   const value_tyBM arg1, //\n"
+                             "   const value_tyBM arg2, //\n"
+                             "   const value_tyBM arg3, //\n"
+                             "   void* dlh) {\n", modulidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "   simple_module_initialize_BM(arg1, arg2, arg3, \"%s\",//\n",
+                             modulidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "       " CONSTOBARRPREFIX_BM "%s"
+                             ROUTINESUFFIX_BM ", //\n", modulidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "       " CONSTIDARRPREFIX_BM "%s"
+                             ROUTINESUFFIX_BM ", //\n", modulidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "       " ROUTIDARRPREFIX_BM "%s"
+                             ROUTINESUFFIX_BM ", //\n", modulidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob, "       dlh, stkf);\n");
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "} // end " MODULEINITPREFIX_BM "%s"
+                             MODULEINITSUFFIX_BM "\n"
+                             "#endif /*BISMON_MODID*/\n\n", modulidbuf);
   DBGPRINTF_BM
     ("@@generate_module°basiclo*module end modulob %s modgenob %s",
      objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
@@ -3458,3 +3492,108 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   WEAKASSERT_BM (false && "unimplemented _9le67LL7S9y_5VGpniEUNDA routine");
   LOCALRETURN_BM (_.resultv);
 }                               /* end routine _9le67LL7S9y_5VGpniEUNDA */
+
+void
+simple_module_initialize_BM (const value_tyBM arg1,     //
+                             const value_tyBM arg2,     //
+                             const value_tyBM arg3,     //
+                             const char *modulid,       //
+                             objectval_tyBM ** constobjarr,     //
+                             const char *const *constidarr,     //
+                             const char *const *routidarr,      //
+                             void *dlh, // dlopened handle
+                             struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_simple_module_initialize = BMK_3XOzJccMA25_76EfdJqsCSL;
+  LOCALFRAME_BM (stkf, /*descr: */ k_simple_module_initialize,
+                 value_tyBM arg1v; value_tyBM arg2v;
+                 value_tyBM arg3v;
+                 objectval_tyBM * curob; objectval_tyBM * routob;
+                 objectval_tyBM * modulob;
+    );
+  _.arg1v = arg1;
+  _.arg2v = arg2;
+  _.arg3v = arg3;
+  DBGPRINTF_BM
+    ("simple_module_initialize start modulid %s arg1 %s arg2 %s arg3 %s",
+     modulid, debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
+  {
+    rawid_tyBM modid = parse_rawid_BM (modulid, NULL);
+    _.modulob = findobjofid_BM (modid);
+    if (!_.modulob)
+      FATAL_BM ("simple_module_initialize cannot find modulob of %s",
+                modulid);
+  }
+  ASSERT_BM (constobjarr != NULL);
+  ASSERT_BM (constidarr != NULL);
+  ASSERT_BM (routidarr != NULL);
+  unsigned nbconstobj = 0;
+  for (int ix = 0; ix < MAXSIZE_BM; ix++)
+    if (constobjarr[ix] == NULL)
+      {
+        nbconstobj = ix;
+        break;
+      };
+  unsigned nbconstid = 0;
+  for (int ix = 0; ix < MAXSIZE_BM; ix++)
+    if (constidarr[ix] == NULL)
+      {
+        nbconstid = ix;
+        break;
+      };
+  unsigned nbroutid = 0;
+  for (int ix = 0; ix < MAXSIZE_BM; ix++)
+    if (routidarr[ix] == NULL)
+      {
+        nbconstid = ix;
+        break;
+      };
+  DBGPRINTF_BM
+    ("simple_module_initialize modulid %s nbconstobj %u, nbconstid %u, nbroutid %u.",
+     modulid, nbconstobj, nbconstid, nbroutid);
+  ASSERT_BM (nbconstobj == nbconstid);
+  for (unsigned oix = 0; oix < nbconstid; oix++)
+    {
+      _.curob = NULL;
+      rawid_tyBM objid = parse_rawid_BM (constidarr[oix], NULL);
+      ASSERT_BM (objid.id_hi != 0 && validid_BM (objid));
+      _.curob = findobjofid_BM (objid);
+      if (!_.curob)
+        FATAL_BM
+          ("simple_module_initialize: cannot find constant#%d %s for module %s",
+           oix, constidarr[oix], objectdbg_BM (_.modulob));
+      constobjarr[oix] = _.curob;
+    }
+  for (unsigned rix = 0; rix < nbroutid; rix++)
+    {
+      _.routob = NULL;
+      rawid_tyBM routid = parse_rawid_BM (routidarr[rix], NULL);
+      ASSERT_BM (routid.id_hi != 0 && validid_BM (routid));
+      _.routob = findobjofid_BM (routid);
+      if (!_.routob)
+        FATAL_BM
+          ("simple_module_initialize: cannot find routine#%d %s for module %s",
+           rix, routidarr[rix], objectdbg_BM (_.modulob));
+      char routidbuf[32];
+      memset (routidbuf, 0, sizeof (routidbuf));
+      idtocbuf32_BM (objid_BM (_.routob), routidbuf);
+      ASSERT_BM (!strcmp (routidbuf, routidarr[rix]));
+      char routname[48];
+      memset (routname, 0, sizeof (routname));
+      snprintf (routname, sizeof (routname),
+                ROUTINEOBJPREFIX_BM "%s" ROUTINESUFFIX_BM, routidbuf);
+      objrout_sigBM *routr = (objrout_sigBM *) dlsym (dlh, routname);
+      if (!routr)
+        FATAL_BM
+          ("simple_module_initialize: dlsym of %s in %s /%s failed: %s",
+           routname, objectdbg_BM (_.modulob), modulid, dlerror ());
+      _.routob->ob_rout = routr;
+      _.routob->ob_sig = BMP_function_sig;
+    }
+#warning simple_module_initialize should register into GC the constant set and routine tuple...
+  fprintf (stderr,
+           "initialized simple module %s /%s with %u constants and %u routines\n",
+           objectdbg_BM (_.modulob), modulid, nbconstid, nbroutid);
+}                               /* end simple_module_initialize_BM */

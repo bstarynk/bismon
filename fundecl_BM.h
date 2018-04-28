@@ -1012,8 +1012,11 @@ extern void loadergckeep_BM (struct garbcoll_stBM *gc,
                              struct loader_stBM *ld);
 
 ////////////////
+/// dumping should be done from the main thread
 extern struct dumpinfo_stBM dump_BM (const char *dirname,
                                      struct stackframe_stBM *stkf);
+
+
 extern void dumpgcmark_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du);
 extern void dumpgcdestroy_BM (struct garbcoll_stBM *gc,
                               struct dumper_stBM *du);
@@ -1116,10 +1119,11 @@ extern void gcframemark_BM (struct garbcoll_stBM *gc,
 extern void gctokenmark_BM (struct garbcoll_stBM *gc,
                             struct parstoken_stBM *tok);
 
-/// the full garbage collector
-extern void full_garbage_collection_BM (struct stackframe_stBM *stkfram);
+/// the full garbage collector, to be called from the main thread
+extern void full_garbage_collection_BM (struct stackframe_stBM *stkf);
+// conditional GC, to be called from the main thread
 static inline void garbage_collect_if_wanted_BM (struct stackframe_stBM
-                                                 *stkfram);
+                                                 *stkf);
 
 // names
 extern void initialize_predefined_names_BM (void);
@@ -1148,13 +1152,21 @@ extern void gcmarkglobals_BM (struct garbcoll_stBM *gc);
 extern void gcmarkdefergtk_BM (struct garbcoll_stBM *gc);
 extern void gcmarkconstants_BM (struct garbcoll_stBM *gc);
 
-/// open a module, returns true if ok
-extern bool openmoduleforloader_BM (const rawid_tyBM modid,
-                                    struct loader_stBM *ld,
-                                    struct stackframe_stBM *stkf);
-static inline bool openmodule_BM (const rawid_tyBM modid,
-                                  struct stackframe_stBM *stkf);
+/// open a module during loading, returns true if ok
+extern bool open_module_for_loader_BM (const rawid_tyBM modid,
+                                       struct loader_stBM *ld,
+                                       struct stackframe_stBM *stkf);
 
+/// simple module initialization
+extern void simple_module_initialize_BM (const value_tyBM arg1, //
+                                         const value_tyBM arg2, //
+                                         const value_tyBM arg3, //
+                                         const char *modulid,   //
+                                         objectval_tyBM ** constobjarr, //
+                                         const char *const *constidarr, //
+                                         const char *const *routidarr,  //
+                                         void *dlh,     // dlopened handle
+                                         struct stackframe_stBM *stkf);
 /// support for GUI, in misc_BM.cc
 void cmd_clear_parens_BM (void);        /* clear all parenthesis in cmd */
 void cmd_add_parens_BM (struct parenoffset_stBM *par);
@@ -1176,7 +1188,15 @@ extern GtkWidget *initialize_log_scrollview_BM (void);
 extern gboolean guiperiodicgarbagecollection_BM (gpointer);
 
 ////////////////////////////////////////////////////////////////
+// defer a dump while the agenda is running. Once dump is completed,
+// the closure is called on the arg1v, arg2v, arg3v, and a node
+// summarizing the dumpinfo....
+void defer_dump_BM (const char *dirname, const closure_tyBM * postclosv,
+                    value_tyBM * arg1v, value_tyBM * arg2v,
+                    value_tyBM * arg3v, struct stackframe_stBM *stkf);
 
+// defer a module load while the agenda is running.
+////////////////////////////////////////////////////////////////
 /******** GUI functions ***********/
 // browse the object objbrows, using the selector objsel
 extern void browse_object_gui_BM (const objectval_tyBM * objbrows,
