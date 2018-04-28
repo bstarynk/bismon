@@ -540,6 +540,8 @@ void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data
     value_tyBM arg1v; //
     value_tyBM arg2v; //
     value_tyBM arg3v; //
+    value_tyBM modresv; //
+    value_tyBM appresv; //
   } _;
   memset ((void*)&_, 0, sizeof(_));
   _.stkfram_pA.htyp = typayl_StackFrame_BM;
@@ -561,7 +563,43 @@ void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data
                debug_outstr_value_BM(_.arg2v, CURFRAME_BM, 0),
                debug_outstr_value_BM(_.arg3v, CURFRAME_BM, 0),
                binmodulpath);
-#warning deferred_do_module_load_BM incomplete
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof (modulidbuf));
+  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+  if (!strstr(binmodulpath, modulidbuf))
+    FATAL_BM("bad binary module path %s for %s /%s", binmodulpath, objectdbg_BM(_.modulob), modulidbuf);
+  void*dlh = dlopen(binmodulpath, RTLD_NOW | RTLD_GLOBAL);
+  if (!dlh)
+    FATAL_BM("module %s dlopen failed for %s : %s", binmodulpath, objectdbg_BM(_.modulob), dlerror());
+  const char*modidad = (const char*)dlsym(dlh,"module_id_BM");
+  if (!modidad || strcmp(modidad,modulidbuf))
+    FATAL_BM("bad module_id_BM in %s for %s: %s",
+             binmodulpath,  objectdbg_BM(_.modulob), (modidad?"modid mismatch":dlerror()));
+  auto it = modulemap_BM.insert({objid_BM (_.modulob),ModuleData_BM{.mod_id=objid_BM (_.modulob), .mod_dlh=dlh, .mod_obj=_.modulob, .mod_data=nullptr}});
+  char modulinitname[48];
+  memset (modulinitname, 0, sizeof(modulinitname));
+  snprintf(modulinitname, sizeof(modulinitname),
+           MODULEINITPREFIX_BM "%s" MODULEINITSUFFIX_BM,
+           modulidbuf);
+  moduleinit_sigBM*modinitr = (moduleinit_sigBM*)dlsym(dlh, modulinitname);
+  if (!modinitr)
+    FATAL_BM("missing module initializer %s in %s: %s\n",
+             modulinitname, binmodulpath, dlerror());
+  _.modresv = (*modinitr) (CURFRAME_BM, _.arg1v, _.arg2v, _.arg3v, dlh);
+  ASSERT_BM(_.modresv != nullptr);
+  it.first->second.mod_data = _.modresv;
+  DBGPRINTF_BM("deferred_do_module_load modulob=%s before apply postclos=%s modresv=%s",
+               objectdbg_BM(_.modulob),
+               debug_outstr_value_BM((value_tyBM)_.postclos, CURFRAME_BM, 0),
+               debug_outstr_value_BM((value_tyBM)_.modresv, CURFRAME_BM, 0));
+  _.appresv = apply1_BM((value_tyBM)_.postclos, CURFRAME_BM, _.modresv);
+  DBGPRINTF_BM("deferred_do_module_load modulob=%s after apply postclos=%s appresv %s",
+               objectdbg_BM(_.modulob),
+               debug_outstr_value_BM((value_tyBM)_.postclos, CURFRAME_BM, 0),
+               debug_outstr_value_BM((value_tyBM)_.appresv, CURFRAME_BM, 0));
+  it.first->second.mod_data = _.modresv;
+  binmodulpath[0] = (char)0;
+  free (binmodulpath), binmodulpath = NULL;
 } // end deferred_do_module_load_BM
 
 
