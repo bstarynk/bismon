@@ -515,6 +515,44 @@ agenda_run_deferred_after_gc_BM (void)
 }                               /* end agenda_run_deferred_after_gc_BM */
 
 void
+agenda_defer_after_gc_BM (deferredaftergc_sigBM * rout,
+                          value_tyBM * valarr, unsigned nbval, void *data)
+{
+  ASSERT_BM (rout != NULL);
+  ASSERT_BM (valarr != NULL || nbval == 0);
+  ASSERT_BM (nbval < 0x3ffff);
+  unsigned siz = prime_above_BM (nbval);
+  struct agenda_defer_stBM *newagd =
+    malloc (sizeof (struct agenda_defer_stBM *) + siz * sizeof (value_tyBM));
+  if (!newagd)
+    FATAL_BM ("failed to malloc newagd for %d values", siz);
+  memset (newagd, 0,
+          sizeof (struct agenda_defer_stBM *) + siz * sizeof (value_tyBM));
+  newagd->agd_magic = AGD_MAGIC_BM;
+  newagd->agd_nbval = nbval;
+  newagd->agd_rout = rout;
+  newagd->agd_data = data;
+  if (nbval > 0)
+    memcpy (newagd->agd_valarr, valarr, nbval * sizeof (value_tyBM));
+  pthread_mutex_lock (&ti_agendamtx_BM);
+  if (agd_first_BM == NULL)
+    {
+      ASSERT_BM (agd_last_BM == NULL);
+      agd_first_BM = agd_last_BM = newagd;
+    }
+  else
+    {
+      ASSERT_BM (agd_last_BM != NULL);
+      agd_last_BM->agd_next = newagd;
+      agd_last_BM = newagd;
+      newagd->agd_next = NULL;
+    }
+  pthread_mutex_unlock (&ti_agendamtx_BM);
+}                               /* end agenda_defer_after_gc_BM */
+
+
+
+void
 agenda_notify_BM (void)
 {
   pthread_cond_broadcast (&ti_agendacond_BM);
