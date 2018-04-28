@@ -3468,9 +3468,10 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
  const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
+  objectval_tyBM *kk_after_load_of_module = BMK_9le67LL7S9y_5VGpniEUNDA;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9le67LL7S9y_5VGpniEUNDA,
-                 value_tyBM outstrv; value_tyBM resultv;
-                 value_tyBM callingclosv;
+                 value_tyBM outstrv;
+                 value_tyBM resultv; value_tyBM callingclosv;
                  objectval_tyBM * modulob; value_tyBM postclosv;
                  objectval_tyBM * modgenob;
     );
@@ -3528,11 +3529,41 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   if (status)
     return;
 #warning missing after-load-of-module
-  _.postclosv = makeclosure0_BM (NULL);
+  _.postclosv = makeclosure0_BM (kk_after_load_of_module);
   defer_module_load_BM (_.modulob, _.postclosv,
-                        _.modgenob, NULL, NULL, CURFRAME_BM);
+                        _.modulob, _.modgenob, NULL, CURFRAME_BM);
   LOCALRETURN_BM (_.modgenob);
 }                               /* end after-compilation-of-module _9le67LL7S9y_5VGpniEUNDA */
+
+// after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq
+extern objrout_sigBM ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // modulob
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_0UHZG9vDlR2_2Aqx86LMFuq,
+                 value_tyBM resultv;
+                 value_tyBM resmodv; objectval_tyBM * modulob;
+                 objectval_tyBM * modgenob;
+    );
+  _.resmodv = arg1;
+  _.modulob = objectcast_BM (arg2);
+  _.modgenob = objectcast_BM (arg3);
+  DBGPRINTF_BM
+    ("after-load-of-module start resmodv=%s modulob=%s modgenob=%s",
+     debug_outstr_value_BM (_.resmodv, CURFRAME_BM, 0),
+     objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
+  // we probably should add some tasklet...
+#warning unimplemented after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq routine
+  WEAKASSERT_BM (false && "unimplemented after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq routine");
+  LOCALRETURN_BM (_.resmodv);
+}                               /* end after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq */
 
 
 value_tyBM
@@ -3544,7 +3575,7 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
                              const char *const *constidarr,     //
                              const char *const *routidarr,      //
                              void *dlh, // dlopened handle
-                             struct stackframe_stBM * stkf)
+                             struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_simple_module_initialize = BMK_3XOzJccMA25_76EfdJqsCSL;
   LOCALFRAME_BM (stkf, /*descr: */ k_simple_module_initialize,
