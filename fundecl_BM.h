@@ -1158,15 +1158,17 @@ extern bool open_module_for_loader_BM (const rawid_tyBM modid,
                                        struct stackframe_stBM *stkf);
 
 /// simple module initialization
-extern void simple_module_initialize_BM (const value_tyBM arg1, //
-                                         const value_tyBM arg2, //
-                                         const value_tyBM arg3, //
-                                         const char *modulid,   //
-                                         objectval_tyBM ** constobjarr, //
-                                         const char *const *constidarr, //
-                                         const char *const *routidarr,  //
-                                         void *dlh,     // dlopened handle
-                                         struct stackframe_stBM *stkf);
+extern value_tyBM simple_module_initialize_BM (const value_tyBM arg1,   //
+                                               const value_tyBM arg2,   //
+                                               const value_tyBM arg3,   //
+                                               const char *modulid,     //
+                                               objectval_tyBM ** constobjarr,   //
+                                               const char *const *constidarr,   //
+                                               const char *const *routidarr,    //
+                                               void *dlh,       // dlopened handle
+                                               struct stackframe_stBM *stkf);
+
+extern void gcmarkmodules_BM (struct garbcoll_stBM *gc);
 /// support for GUI, in misc_BM.cc
 void cmd_clear_parens_BM (void);        /* clear all parenthesis in cmd */
 void cmd_add_parens_BM (struct parenoffset_stBM *par);

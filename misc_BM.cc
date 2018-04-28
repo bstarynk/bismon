@@ -118,6 +118,7 @@ struct ModuleData_BM
   rawid_tyBM mod_id;
   void* mod_dlh;		// the dlopen handle
   objectval_tyBM* mod_obj;	// the module object
+  value_tyBM mod_data;		// its data
 };
 
 static std::map<rawid_tyBM,ModuleData_BM,IdLess_BM> modulemap_BM;
@@ -434,6 +435,7 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
   {
     STACKFRAMEFIELDS_BM;
     objectval_tyBM* modulob;
+    value_tyBM moduldata;
   } _;
   memset ((void*)&_, 0, sizeof(_));
   _.stkfram_pA.htyp = typayl_StackFrame_BM;
@@ -501,12 +503,12 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       return false;
     }
   _.modulob = objmod;
-  modulemap_BM.insert({modid,ModuleData_BM{.mod_id=modid, .mod_dlh=dlh, .mod_obj=objmod}});
+  auto it = modulemap_BM.insert({modid,ModuleData_BM{.mod_id=modid, .mod_dlh=dlh, .mod_obj=_.modulob, .mod_data=nullptr}});
   char modulinitname[48];
   memset (modulinitname, 0, sizeof(modulinitname));
   snprintf(modulinitname, sizeof(modulinitname),
            MODULEINITPREFIX_BM "%s" MODULEINITSUFFIX_BM,
-           modid);
+           modidbuf);
   moduleinit_sigBM*modinitr = (moduleinit_sigBM*)dlsym(dlh, modulinitname);
   if (!modinitr)
     {
@@ -516,15 +518,26 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       return false;
     }
   ld->ld_modhset = hashsetobj_add_BM(ld->ld_modhset, objmod);
-  (*modinitr) (CURFRAME_BM, _.modulob, BMP_load_module, NULL, dlh);
-  value_tyBM closargs[2] = {NULL,NULL};
-  closargs[0] = objmod;
-  const closure_tyBM*closloadm = makeclosure_BM (BMP_load_module,1,closargs);
+  _.moduldata = (*modinitr) (CURFRAME_BM, _.modulob, BMP_load_module, NULL, dlh);
+  it.first->second.mod_data = _.moduldata;
+  const closure_tyBM*closloadm = makeclosure2_BM (BMP_load_module,_.modulob, _.moduldata);
   load_addtodo_BM (closloadm);
   ld->ld_nbmodules++;
   return true;
 } // end of open_module_for_loader_BM
 
+
+
+
+void gcmarkmodules_BM(struct garbcoll_stBM*gc)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  for (auto it: modulemap_BM)
+    {
+      gcobjmark_BM(gc, it.second.mod_obj);
+      VALUEGCPROC_BM(gc, it.second.mod_data, 0);
+    }
+} // end gcmarkmodules_BM
 ////////////////////////////////////////////////////////////////
 
 typedef std::map<stringval_tyBM*,value_tyBM,ValStringLess_BM> dictmap_claBM;

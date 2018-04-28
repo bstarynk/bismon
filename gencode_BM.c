@@ -3313,7 +3313,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   /// emit the module initialization
   objstrbufferprintfpayl_BM (_.modgenob, "\n\n// basiclo*module initialization\n"       //
                              "#ifdef BISMON_MODID\n"
-                             "void " MODULEINITPREFIX_BM "%s"
+                             "value_tyBM " MODULEINITPREFIX_BM "%s"
                              MODULEINITSUFFIX_BM "\n"
                              "  (struct stackframe_stBM *stkf, //\n"
                              "   const value_tyBM arg1, //\n"
@@ -3321,7 +3321,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
                              "   const value_tyBM arg3, //\n"
                              "   void* dlh) {\n", modulidbuf);
   objstrbufferprintfpayl_BM (_.modgenob,
-                             "   simple_module_initialize_BM(arg1, arg2, arg3, \"%s\",//\n",
+                             "  return simple_module_initialize_BM(arg1, arg2, arg3, \"%s\",//\n",
                              modulidbuf);
   objstrbufferprintfpayl_BM (_.modgenob,
                              "       " CONSTOBARRPREFIX_BM "%s"
@@ -3493,7 +3493,7 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   LOCALRETURN_BM (_.resultv);
 }                               /* end routine _9le67LL7S9y_5VGpniEUNDA */
 
-void
+value_tyBM
 simple_module_initialize_BM (const value_tyBM arg1,     //
                              const value_tyBM arg2,     //
                              const value_tyBM arg3,     //
@@ -3506,8 +3506,9 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
 {
   objectval_tyBM *k_simple_module_initialize = BMK_3XOzJccMA25_76EfdJqsCSL;
   LOCALFRAME_BM (stkf, /*descr: */ k_simple_module_initialize,
-                 value_tyBM arg1v; value_tyBM arg2v;
-                 value_tyBM arg3v;
+                 value_tyBM arg1v;
+                 value_tyBM arg2v;
+                 value_tyBM arg3v; value_tyBM constsetv; value_tyBM routupv;
                  objectval_tyBM * curob; objectval_tyBM * routob;
                  objectval_tyBM * modulob;
     );
@@ -3566,6 +3567,10 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
            oix, constidarr[oix], objectdbg_BM (_.modulob));
       constobjarr[oix] = _.curob;
     }
+  _.constsetv = makeset_BM ((objectval_tyBM **) constobjarr, nbconstid);
+  objectval_tyBM **routarr = calloc (nbroutid + 1, sizeof (objectval_tyBM *));
+  if (!routarr)
+    FATAL_BM ("calloc failed for %d routines", nbroutid);
   for (unsigned rix = 0; rix < nbroutid; rix++)
     {
       _.routob = NULL;
@@ -3576,6 +3581,8 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
         FATAL_BM
           ("simple_module_initialize: cannot find routine#%d %s for module %s",
            rix, routidarr[rix], objectdbg_BM (_.modulob));
+      routarr[rix] = _.routob;
+      ASSERT_BM (setcontains_BM (_.constsetv, _.routob));
       char routidbuf[32];
       memset (routidbuf, 0, sizeof (routidbuf));
       idtocbuf32_BM (objid_BM (_.routob), routidbuf);
@@ -3592,8 +3599,11 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
       _.routob->ob_rout = routr;
       _.routob->ob_sig = BMP_function_sig;
     }
-#warning simple_module_initialize should register into GC the constant set and routine tuple...
+  _.routupv = maketuple_BM (routarr, nbroutid);
+  free (routarr), routarr = NULL;
   fprintf (stderr,
            "initialized simple module %s /%s with %u constants and %u routines\n",
            objectdbg_BM (_.modulob), modulid, nbconstid, nbroutid);
+  return makenode5_BM (k_simple_module_initialize, _.constsetv, _.routupv,
+                       _.arg1v, _.arg2v, _.arg3v);
 }                               /* end simple_module_initialize_BM */
