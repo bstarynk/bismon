@@ -3320,9 +3320,8 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
                              "   const value_tyBM arg2, //\n"
                              "   const value_tyBM arg3, //\n"
                              "   void* dlh) {\n", modulidbuf);
-  objstrbufferprintfpayl_BM (_.modgenob,
-                             "  return simple_module_initialize_BM(arg1, arg2, arg3, \"%s\",//\n",
-                             modulidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob, "  return simple_module_initialize_BM(arg1, arg2, arg3, //\n"  //
+                             "        \"%s\",//\n", modulidbuf);
   objstrbufferprintfpayl_BM (_.modgenob,
                              "       " CONSTOBARRPREFIX_BM "%s"
                              ROUTINESUFFIX_BM ", //\n", modulidbuf);

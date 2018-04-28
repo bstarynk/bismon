@@ -220,7 +220,8 @@ modulinit_9oXtCgAbkqv_4y1xhhF5Nhz_BM (struct stackframe_stBM *stkf,     //
                                       const value_tyBM arg3,    //
                                       void *dlh)
 {
-  return simple_module_initialize_BM (arg1, arg2, arg3, "_9oXtCgAbkqv_4y1xhhF5Nhz",     //
+  return simple_module_initialize_BM (arg1, arg2, arg3, //
+                                      "_9oXtCgAbkqv_4y1xhhF5Nhz",       //
                                       constob_9oXtCgAbkqv_4y1xhhF5Nhz_BM,       //
                                       constid_9oXtCgAbkqv_4y1xhhF5Nhz_BM,       //
                                       routid_9oXtCgAbkqv_4y1xhhF5Nhz_BM,        //

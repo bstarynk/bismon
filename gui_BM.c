@@ -1437,17 +1437,18 @@ dumpgui_BM (void)
 }                               /* end dumpgui_BM */
 
 void
-garbcollgui_BM (void)
+garbage_collect_from_gui_BM (void)
 {
-  DBGPRINTF_BM ("garbcollgui start tid#%ld", (long) gettid_BM ());
+  DBGPRINTF_BM ("garbage_collect_from_gui start tid#%ld",
+                (long) gettid_BM ());
   ASSERT_BM (mainthreadid_BM == pthread_self ());
   log_begin_message_BM ();
   atomic_store (&want_garbage_collection_BM, true);
   log_puts_message_BM ("forced garbage collection");
   log_end_message_BM ();
   full_garbage_collection_BM (NULL);
-  DBGPRINTF_BM ("garbcollgui end tid#%ld", (long) gettid_BM ());
-}                               /* end garbcollgui_BM */
+  DBGPRINTF_BM ("garbage_collect_from_gui end tid#%ld", (long) gettid_BM ());
+}                               /* end garbage_collect_from_gui_BM */
 
 bool
 deletemainwin_BM (GtkWidget * widget __attribute__ ((unused)),  //
@@ -4626,7 +4627,8 @@ initialize_gui_menubar_BM (GtkWidget * mainvbox, GtkBuilder * bld)
   g_signal_connect (appdump, "activate", dumpgui_BM, NULL);
   GtkWidget *appgarbcoll =
     GTK_WIDGET (gtk_builder_get_object (bld, "appgarbcoll_id"));
-  g_signal_connect (appgarbcoll, "activate", garbcollgui_BM, NULL);
+  g_signal_connect (appgarbcoll, "activate", garbage_collect_from_gui_BM,
+                    NULL);
   GtkWidget *appmenu =
     GTK_WIDGET (gtk_builder_get_object (bld, "menuapp_id"));
   ASSERT_BM (GTK_IS_WIDGET (appmenu));

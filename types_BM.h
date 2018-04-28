@@ -366,6 +366,9 @@ typedef value_tyBM moduleinit_sigBM (struct stackframe_stBM *stkf,
                                      const value_tyBM arg3,
                                      void *dlh /*dlopen handle of module */ );
 
+typedef void deferredaftergc_sigBM (value_tyBM * valarr, unsigned nbval,
+                                    void *data);
+
 struct object_stBM              /*tyObject_BM */
 {
   typedhead_tyBM pA;

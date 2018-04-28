@@ -763,6 +763,9 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
       fclose (fil);
       free (buf), buf = NULL;
     };
+  DBGPRINTF_BM
+    ("full_garbage_collection_BM before agenda_run_deferred_after_gc_BM");
+  agenda_run_deferred_after_gc_BM ();
   if (nbj > 0)
     {
       DBGPRINTF_BM

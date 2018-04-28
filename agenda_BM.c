@@ -34,8 +34,6 @@ struct threadinfo_stBM
 
 
 
-
-
 static struct threadinfo_stBM ti_array_BM[MAXNBWORKJOBS_BM + 2];
 static pthread_mutex_t ti_agendamtx_BM;
 static pthread_cond_t ti_agendacond_BM;
@@ -47,6 +45,23 @@ static struct hashsetobj_stBM *ti_high_taskhset_BM;
 static struct hashsetobj_stBM *ti_normal_taskhset_BM;
 static struct hashsetobj_stBM *ti_low_taskhset_BM;
 static struct hashsetobj_stBM *ti_verylow_taskhset_BM;
+
+// agenda defer data is under ti_agendamtx_BM lock
+#define AGD_MAGIC_BM 996723975  /*0x3b68cd07 */
+struct agenda_defer_stBM
+{
+  unsigned agd_magic;           // always AGD_MAGIC_BM
+  unsigned agd_nbval;
+  deferredaftergc_sigBM *agd_rout;
+  void *agd_data;
+  struct agenda_defer_stBM *agd_next;
+  value_tyBM agd_valarr[];      /* useful length is agd_nbval */
+};
+#define AGD_MAXCOUNT_BM 0x1ffff
+
+static struct agenda_defer_stBM *agd_first_BM;
+static struct agenda_defer_stBM *agd_last_BM;
+
 
 static void *run_agendaworker_BM (void *);
 static void run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
@@ -314,6 +329,28 @@ gcmarkagenda_BM (struct garbcoll_stBM *gc)
     hashsetgcmark_BM (gc, ti_low_taskhset_BM);
   if (ti_verylow_taskhset_BM)
     hashsetgcmark_BM (gc, ti_verylow_taskhset_BM);
+  if (agd_first_BM != NULL)
+    {
+      ASSERT_BM (agd_last_BM != NULL);
+      unsigned agdcount = 0;
+      unsigned agdvalcount = 0;
+      for (struct agenda_defer_stBM * agd = agd_first_BM; agd != NULL;
+           agd = agd->agd_next)
+        {
+          ASSERT_BM (agd->agd_magic == AGD_MAGIC_BM);
+          unsigned nbv = agd->agd_nbval;
+          for (unsigned vix = 0; vix < nbv; vix++)
+            {
+              agdvalcount++;
+              VALUEGCPROC_BM (gc, agd->agd_valarr[vix], 0);
+              if (agdvalcount > MILLION_BM)
+                FATAL_BM ("too many agenda defer values %u", agdvalcount);
+            }
+          agdcount++;
+          if (agdcount > AGD_MAXCOUNT_BM)
+            FATAL_BM ("too many agenda defer %u", agdcount);
+        }
+    };
   pthread_mutex_unlock (&ti_agendamtx_BM);
 }                               /* end gcmarkagenda_BM */
 
@@ -444,6 +481,38 @@ agenda_continue_after_gc_BM (void)
   NONPRINTF_BM ("agenda_continue_after_gc end tid#%ld elapsed %.3f s",
                 (long) gettid_BM (), elapsedtime_BM ());
 }                               /* end agenda_continue_after_gc_BM */
+
+void
+agenda_run_deferred_after_gc_BM (void)
+{
+  struct agenda_defer_stBM *oldfirst = NULL;
+  struct agenda_defer_stBM *oldlast = NULL;
+  struct failurehandler_stBM *oldflh = curfailurehandle_BM;
+  curfailurehandle_BM = NULL;
+  pthread_mutex_lock (&ti_agendamtx_BM);
+  oldfirst = agd_first_BM;
+  oldlast = agd_last_BM;
+  agd_first_BM = NULL;
+  agd_last_BM = NULL;
+  pthread_mutex_unlock (&ti_agendamtx_BM);
+  struct agenda_defer_stBM *nextagd = NULL;
+  unsigned agdcount = 0;
+  for (struct agenda_defer_stBM * curagd = oldfirst; curagd != NULL;
+       curagd = nextagd)
+    {
+      ASSERT_BM (curagd->agd_magic == AGD_MAGIC_BM);
+      nextagd = curagd->agd_next;
+      ASSERT_BM (nextagd != NULL || curagd == oldlast);
+      agdcount++;
+      ASSERT_BM (curagd->agd_rout != NULL);
+      (*curagd->agd_rout) (curagd->agd_valarr, curagd->agd_nbval,
+                           curagd->agd_data);
+      memset (curagd, 0, sizeof (*curagd));
+      free (curagd), curagd = NULL;
+      ASSERT_BM (agdcount <= AGD_MAXCOUNT_BM);
+    }
+  curfailurehandle_BM = oldflh;
+}                               /* end agenda_run_deferred_after_gc_BM */
 
 void
 agenda_notify_BM (void)

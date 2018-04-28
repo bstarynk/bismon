@@ -1190,14 +1190,20 @@ extern GtkWidget *initialize_log_scrollview_BM (void);
 extern gboolean guiperiodicgarbagecollection_BM (gpointer);
 
 ////////////////////////////////////////////////////////////////
-// defer a dump while the agenda is running. Once dump is completed,
-// the closure is called on the arg1v, arg2v, arg3v, and a node
-// summarizing the dumpinfo....
+// defer a dump (after a GC) while the agenda is running. Once dump is
+// completed, the closure is called on the arg1v, arg2v, arg3v, and a
+// node summarizing the dumpinfo....
 void defer_dump_BM (const char *dirname, const closure_tyBM * postclosv,
                     value_tyBM * arg1v, value_tyBM * arg2v,
                     value_tyBM * arg3v, struct stackframe_stBM *stkf);
 
-// defer a module load while the agenda is running.
+// defer a module load (after a GC) while the agenda is running. the 3
+// arguments are passed to the module initialization. Its result is
+// given to the closure.
+void defer_module_load_BM (objectval_tyBM * modulob,
+                           const closure_tyBM * postclosv, value_tyBM * arg1v,
+                           value_tyBM * arg2v, value_tyBM * arg3v,
+                           struct stackframe_stBM *stkf);
 ////////////////////////////////////////////////////////////////
 /******** GUI functions ***********/
 // browse the object objbrows, using the selector objsel
@@ -1264,7 +1270,7 @@ extern void cssparsingerror_BM (GtkCssProvider *, GtkCssSection *, GError *,
 extern void quitgui_BM (void);
 extern void exitgui_BM (void);
 extern void dumpgui_BM (void);
-extern void garbcollgui_BM (void);
+extern void garbage_collect_from_gui_BM (void);
 extern bool deletemainwin_BM (GtkWidget *, GdkEvent *, gpointer);
 extern GtkTextBuffer *newgui_get_browsebuf_BM (void);
 
@@ -1331,6 +1337,10 @@ extern void start_agenda_work_threads_BM (int nbjobs);
 extern void stop_agenda_work_threads_BM (void);
 // inside the GC, wait for all work thread to idle for garbage collection
 extern void agenda_suspend_for_gc_BM (void);
+extern void agenda_run_deferred_after_gc_BM (void);
+extern void agenda_defer_after_gc_BM (deferredaftergc_sigBM * rout,
+                                      value_tyBM * valarr,
+                                      unsigned nbval, void *data);
 extern void agenda_continue_after_gc_BM (void);
 extern void agenda_add_very_high_priority_tasklet_BM (objectval_tyBM *);
 extern void agenda_add_high_priority_tasklet_BM (objectval_tyBM *);
