@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 322 objects
+// for 323 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -399,7 +399,8 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of simple connective"
 !~ class (~ |supercl basiclo_connective:| _3DQ7z3EuAiT_4faSRNsy2lr 
-~: _5EGLdtUAQxA_1nebCsDKqOF  % _2ROGZRBpeCl_6HhgOZ5Uj7F ()
+~: _5EGLdtUAQxA_1nebCsDKqOF  % _2ROGZRBpeCl_6HhgOZ5Uj7F () 
+~: _7L782rSgJBB_9vjsBdqAoz7  % _48l341uEMuG_3gJ2HHIwYhn ()
 ~)
 
 !)_4G8QdnYR1LZ_1Ej0xQbVpn9
@@ -2944,6 +2945,16 @@ _3XBrePAliOo_37VlAqBsb5C) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "sysdata command_handler routine"
 !)_43m9jyNirvE_0wkbsL0Nvkp
+
+
+
+!(_48l341uEMuG_3gJ2HHIwYhn
+!|*
+!@ 1525012802.64
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniemit_node_conn\u00b0basiclo_simple_connective"
+!)_48l341uEMuG_3gJ2HHIwYhn
 
 
 

@@ -2398,6 +2398,27 @@ ROUTINEOBJNAME_BM (_2ROGZRBpeCl_6HhgOZ5Uj7F)    //miniscan_node_conn°basiclo_si
 
 
 
+// miniemit_node_conn°basiclo_simple_connective _48l341uEMuG_3gJ2HHIwYhn
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_48l341uEMuG_3gJ2HHIwYhn);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_48l341uEMuG_3gJ2HHIwYhn)    //miniemit_node_conn°basiclo_simple_connective
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         //
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_48l341uEMuG_3gJ2HHIwYhn,
+                 value_tyBM resultv;
+    );
+#warning unimplemented _48l341uEMuG_3gJ2HHIwYhn routine
+  WEAKASSERT_BM (false && "unimplemented _48l341uEMuG_3gJ2HHIwYhn routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end miniemit_node_conn°basiclo_simple_connective _48l341uEMuG_3gJ2HHIwYhn */
+
 
 
 
