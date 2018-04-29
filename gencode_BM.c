@@ -1338,13 +1338,13 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
     idtocbuf32_BM (objid_BM (_.routob), routidbuf);
     if (routname)
       objstrbufferprintfpayl_BM (_.modgenob, "\n\n"
-                                 "value_tyBM crout%s_BM\n"
-                                 " (struct stackframe_stBM* stkf, //#%d+ %s\n",
+                                 "value_tyBM crout%s_BM //#%d+\n"
+                                 " (struct stackframe_stBM* stkf, // %s\n",
                                  routidbuf, rank, routname);
     else
       objstrbufferprintfpayl_BM (_.modgenob, "\n\n"
-                                 "value_tyBM crout%s_BM\n"
-                                 " (struct stackframe_stBM* stkf, //#%d\n",
+                                 "value_tyBM crout%s_BM //#%d\n"
+                                 " (struct stackframe_stBM* stkf, //\n",
                                  routidbuf, rank);
     objstrbufferprintfpayl_BM (_.modgenob, "  // %d arguments\n", nbargs);
     for (int aix = 0; aix < 4; aix++)

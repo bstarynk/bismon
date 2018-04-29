@@ -27,18 +27,14 @@ const char *const constid_9oXtCgAbkqv_4y1xhhF5Nhz_BM[5 + 1];
 // define 2 routines
 
 
-value_tyBM
-crout_43Y25VLmh6s_3JRpERevcR4_BM (struct stackframe_stBM *stkf, //#0+ successor_test_minifunc
-                                  // 1 arguments
-                                  const value_tyBM arg0,        // v_i
-                                  const value_tyBM arg1_
-                                  __attribute__ ((unused)),
-                                  const value_tyBM arg2_
-                                  __attribute__ ((unused)),
-                                  const value_tyBM arg3_
-                                  __attribute__ ((unused)),
-                                  const quasinode_tyBM * restargs_
-                                  __attribute__ ((unused)))
+value_tyBM crout_43Y25VLmh6s_3JRpERevcR4_BM     //#0+
+  (struct stackframe_stBM *stkf,        // successor_test_minifunc
+   // 1 arguments
+   const value_tyBM arg0,       // v_i
+   const value_tyBM arg1_ __attribute__ ((unused)),
+   const value_tyBM arg2_ __attribute__ ((unused)),
+   const value_tyBM arg3_ __attribute__ ((unused)),
+   const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {                               // start of successor_test_minifunc
   struct frame_43Y25VLmh6s_3JRpERevcR4_BMst
   {
@@ -100,18 +96,14 @@ epilog_43Y25VLmh6s_3JRpERevcR4:        // routine _43Y25VLmh6s_3JRpERevcR4 epilo
 
 
 
-value_tyBM
-crout_9O2lgu1TweO_0mVlpTwrBG1_BM (struct stackframe_stBM * stkf,        //#1+ second_test_minifunc
-                                  // 1 arguments
-                                  const value_tyBM arg0,        // v1
-                                  const value_tyBM arg1_
-                                  __attribute__ ((unused)),
-                                  const value_tyBM arg2_
-                                  __attribute__ ((unused)),
-                                  const value_tyBM arg3_
-                                  __attribute__ ((unused)),
-                                  const quasinode_tyBM * restargs_
-                                  __attribute__ ((unused)))
+value_tyBM crout_9O2lgu1TweO_0mVlpTwrBG1_BM     //#1+
+  (struct stackframe_stBM * stkf,       // second_test_minifunc
+   // 1 arguments
+   const value_tyBM arg0,       // v1
+   const value_tyBM arg1_ __attribute__ ((unused)),
+   const value_tyBM arg2_ __attribute__ ((unused)),
+   const value_tyBM arg3_ __attribute__ ((unused)),
+   const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {                               // start of second_test_minifunc
   struct frame_9O2lgu1TweO_0mVlpTwrBG1_BMst
   {
