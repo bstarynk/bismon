@@ -3486,7 +3486,7 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
                 ".. modulob=%s modgenob=%s\n", status,  //
                 debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0),
                 objectdbg_BM (_.modulob), objectdbg2_BM (_.modgenob),
-                debug_outstr_value_BM (_.callingclos, CURFRAME_BM, 0));
+                debug_outstr_value_BM (_.callingclosv, CURFRAME_BM, 0));
   WEAKASSERT_BM (isclosure_BM (_.callingclosv)
                  && closurewidth_BM (_.callingclosv) >= 2);
   ASSERT_BM (isstring_BM (_.outstrv));
