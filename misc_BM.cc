@@ -984,21 +984,16 @@ gtk_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_ty
   _.arg3 = arg3;
   if (!isclosure_BM(funv) && !isobject_BM(funv))
     {
-      NONPRINTF_BM("gtk_defer_apply bad funv %s",
-                   debug_outstr_value_BM (_.funv, //
-                                          CURFRAME_BM, 0));
+      DBGPRINTF_BM("gtk_defer_apply bad funv %s",
+                   debug_outstr_value_BM (_.funv, CURFRAME_BM, 0));
       return;
     }
-  NONPRINTF_BM("gtk_defer_apply start tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
+  DBGPRINTF_BM("gtk_defer_apply start tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
                (long)gettid_BM(),
-               debug_outstr_value_BM (_.funv, //
-                                      CURFRAME_BM, 0), //
-               debug_outstr_value_BM (_.arg1, //
-                                      CURFRAME_BM, 0), //
-               debug_outstr_value_BM (_.arg2, //
-                                      CURFRAME_BM, 0), //
-               debug_outstr_value_BM (_.arg3, //
-                                      CURFRAME_BM, 0) //
+               debug_outstr_value_BM (_.funv, CURFRAME_BM, 0), //
+               debug_outstr_value_BM (_.arg1, CURFRAME_BM, 0), //
+               debug_outstr_value_BM (_.arg2, CURFRAME_BM, 0), //
+               debug_outstr_value_BM (_.arg3, CURFRAME_BM, 0) //
               );
   if (defer_gtk_writepipefd_BM<0)
     FATAL_BM("gtk_defer_apply3_BM without writepipe");
@@ -1013,7 +1008,7 @@ gtk_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_ty
     dap.defer_arg3 = arg3;
     deferdeque_BM.emplace_back(dap);
   }
-  NONPRINTF_BM("gtk_defer_apply ch '%c' elapsed %.3f s", ch, elapsedtime_BM());
+  DBGPRINTF_BM("gtk_defer_apply ch '%c' elapsed %.3f s", ch, elapsedtime_BM());
   int nbtry = 0;
   int wrcnt = 0;
   for(;;)   // most of the time, this loop runs once
@@ -1021,25 +1016,28 @@ gtk_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_ty
       wrcnt = write(defer_gtk_writepipefd_BM, &ch, 1);
       if (wrcnt>0)
         {
-          NONPRINTF_BM("gtk_defer_apply done funv %s arg1 %s arg2 %s arg3 %s",
-                       debug_outstr_value_BM (_.funv, //
-                                              CURFRAME_BM, 0), //
-                       debug_outstr_value_BM (_.arg1, //
-                                              CURFRAME_BM, 0), //
-                       debug_outstr_value_BM (_.arg2, //
-                                              CURFRAME_BM, 0), //
-                       debug_outstr_value_BM (_.arg3, //
-                                              CURFRAME_BM, 0) //
+          DBGPRINTF_BM("gtk_defer_apply done funv %s arg1 %s arg2 %s arg3 %s",
+                       debug_outstr_value_BM (_.funv, CURFRAME_BM, 0), //
+                       debug_outstr_value_BM (_.arg1, CURFRAME_BM, 0), //
+                       debug_outstr_value_BM (_.arg2, CURFRAME_BM, 0), //
+                       debug_outstr_value_BM (_.arg3, CURFRAME_BM, 0) //
                       );
           return;
         }
       else
-        NONPRINTF_BM("gtk_defer_apply ch '%c' wrcnt %d %m", ch, wrcnt);
+        DBGPRINTF_BM("gtk_defer_apply ch '%c' wrcnt %d %m", ch, wrcnt);
       usleep(1000);
       nbtry++;
       if (nbtry > 256)
         FATAL_BM("gtk_defer_apply3_BM failed to write to pipe");
     }
+  DBGPRINTF_BM("gtk_defer_apply end tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
+               (long)gettid_BM(),
+               debug_outstr_value_BM (_.funv, CURFRAME_BM, 0), //
+               debug_outstr_value_BM (_.arg1, CURFRAME_BM, 0), //
+               debug_outstr_value_BM (_.arg2, CURFRAME_BM, 0), //
+               debug_outstr_value_BM (_.arg3, CURFRAME_BM, 0) //
+              );
 } // end gtk_defer_apply3_BM
 
 
