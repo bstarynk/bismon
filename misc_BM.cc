@@ -504,23 +504,7 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
     }
   _.modulob = objmod;
   ld->ld_modhset = hashsetobj_add_BM(ld->ld_modhset, objmod);
-  auto it = modulemap_BM.insert({modid,ModuleData_BM{.mod_id=modid, .mod_dlh=dlh, .mod_obj=_.modulob, .mod_data=nullptr}});
-  //// the following should be done in second pass, thru load_addtodo_BM in load_module routine _3j4mbvFJZzA_9ucKetDMbdh
-  char modulinitname[48];
-  memset (modulinitname, 0, sizeof(modulinitname));
-  snprintf(modulinitname, sizeof(modulinitname),
-           MODULEINITPREFIX_BM "%s" MODULEINITSUFFIX_BM,
-           modidbuf);
-  moduleinit_sigBM*modinitr = (moduleinit_sigBM*)dlsym(dlh, modulinitname);
-  if (!modinitr)
-    {
-      fprintf(stderr, "missing module initializer %s in %s: %s\n",
-              modulinitname, binmodpath.c_str(), dlerror());
-      dlclose(dlh);
-      return false;
-    }
-  _.moduldata = (*modinitr) (CURFRAME_BM, _.modulob, BMP_load_module, NULL, dlh);
-  it.first->second.mod_data = _.moduldata;
+  (void) modulemap_BM.insert({modid,ModuleData_BM{.mod_id=modid, .mod_dlh=dlh, .mod_obj=_.modulob, .mod_data=nullptr}});
   ////
   const closure_tyBM*closloadm = makeclosure1_BM (BMP_load_module, _.modulob);
   load_addtodo_BM (closloadm);
@@ -570,7 +554,7 @@ void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data
   memset (modulidbuf, 0, sizeof (modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
   if (!strstr(binmodulpath, modulidbuf))
-    FATAL_BM("bad binary module path %s for %s /%s", binmodulpath, objectdbg_BM(_.modulob), modulidbuf);
+    FATAL_BM("bad binary module path%s for %s /%s", binmodulpath, objectdbg_BM(_.modulob), modulidbuf);
   void*dlh = dlopen(binmodulpath, RTLD_NOW | RTLD_GLOBAL);
   if (!dlh)
     FATAL_BM("module %s dlopen failed for %s : %s", binmodulpath, objectdbg_BM(_.modulob), dlerror());
