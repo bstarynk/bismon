@@ -2399,6 +2399,7 @@ ROUTINEOBJNAME_BM (_2ROGZRBpeCl_6HhgOZ5Uj7F)    //miniscan_node_conn°basiclo_si
                  value_tyBM expv;       //
                  objectval_tyBM * fromob;       //
                  value_tyBM resultv;    //
+                 value_tyBM funv;       //
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
     );
@@ -2419,12 +2420,29 @@ ROUTINEOBJNAME_BM (_2ROGZRBpeCl_6HhgOZ5Uj7F)    //miniscan_node_conn°basiclo_si
     FAILHERE (NULL);
   if (!_.fromob)
     FAILHERE (NULL);
-#warning unimplemented _2ROGZRBpeCl_6HhgOZ5Uj7F routine
-  WEAKASSERT_BM (false && "unimplemented _2ROGZRBpeCl_6HhgOZ5Uj7F routine");
+  objlock_BM (_.connob);
+  _.funv = objgetattr_BM (_.connob, k_miniscan_node_conn);
+  objunlock_BM (_.connob);
+  if (!_.funv)
+    FAILHERE (k_miniscan_node_conn);
+  DBGPRINTF_BM
+    ("miniscan_node_conn°basiclo_simple_connective connob %s has funv %s",
+     objectdbg_BM (_.connob), debug_outstr_value_BM (_.funv, CURFRAME_BM, 0));
+  if (!isobject_BM (_.funv) && !isclosure_BM (_.funv))
+    FAILHERE (makenode1_BM (k_miniscan_node_conn, _.funv));
+  _.resultv = apply4_BM (_.funv, CURFRAME_BM,
+                         _.routprepob, taggedint_BM (depth), _.expv,
+                         _.fromob);
+  DBGPRINTF_BM ("miniscan_node_conn°basiclo_simple_connective connob %s expv %s routprepob %s resultv %s", objectdbg_BM (_.connob), debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),    //
+                objectdbg1_BM (_.routprepob),
+                debug_outstr_value_BM (_.resultv, CURFRAME_BM, 0));
+  if (!_.resultv)
+    FAILHERE (_.funv);
   LOCALRETURN_BM (_.resultv);
 failure:
 #undef FAILHERE
-  DBGPRINTF_BM ("failure miniscan_node_conn°basiclo_simple_connective failin %d\n" ".. connob %s expv %s routprepob %s causev %s", failin, objectdbg_BM (_.connob),    //
+  DBGPRINTF_BM ("failure miniscan_node_conn°basiclo_simple_connective failin %d\n"     //
+                ".. connob %s expv %s routprepob %s causev %s", failin, objectdbg_BM (_.connob),        //
                 debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
                 objectdbg1_BM (_.routprepob),
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
@@ -2449,6 +2467,8 @@ ROUTINEOBJNAME_BM (_48l341uEMuG_3gJ2HHIwYhn)    //miniemit_node_conn°basiclo_si
  const value_tyBM arg4,         // routprepob
  const quasinode_tyBM * restargs /*depth, fromob. */ )
 {
+  objectval_tyBM *k_emit_expression = BMK_9lXSe7DrOl6_7hghYt0LhTF;
+  objectval_tyBM *k_miniemit_node_conn = BMK_7L782rSgJBB_9vjsBdqAoz7;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_48l341uEMuG_3gJ2HHIwYhn,
                  value_tyBM resultv;
                  objectval_tyBM * connob;
@@ -2456,10 +2476,10 @@ ROUTINEOBJNAME_BM (_48l341uEMuG_3gJ2HHIwYhn)    //miniemit_node_conn°basiclo_si
                  objectval_tyBM * modgenob;     //
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * fromob;       //
+                 value_tyBM funv;       //
                  value_tyBM errorv;     //
                  value_tyBM causev;
     );
-  objectval_tyBM *k_emit_expression = BMK_9lXSe7DrOl6_7hghYt0LhTF;
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
   _.connob = objectcast_BM (arg1);
@@ -2483,8 +2503,24 @@ ROUTINEOBJNAME_BM (_48l341uEMuG_3gJ2HHIwYhn)    //miniemit_node_conn°basiclo_si
      debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
      objectdbg1_BM (_.modgenob),
      objectdbg2_BM (_.routprepob), depth, objectdbg3_BM (_.fromob));
-#warning unimplemented _48l341uEMuG_3gJ2HHIwYhn routine
-  WEAKASSERT_BM (false && "unimplemented _48l341uEMuG_3gJ2HHIwYhn routine");
+  objlock_BM (_.connob);
+  _.funv = objgetattr_BM (_.connob, k_miniemit_node_conn);
+  objunlock_BM (_.connob);
+  if (!_.funv)
+    FAILHERE (k_miniemit_node_conn);
+  DBGPRINTF_BM
+    ("miniemit_node_conn°basiclo_simple_connective connob %s has funv %s",
+     objectdbg_BM (_.connob), debug_outstr_value_BM (_.funv, CURFRAME_BM, 0));
+  if (!isobject_BM (_.funv) && !isclosure_BM (_.funv))
+    FAILHERE (makenode1_BM (k_miniemit_node_conn, _.funv));
+  _.resultv = apply5_BM (_.funv, CURFRAME_BM,
+                         _.expv, _.modgenob, _.routprepob,
+                         taggedint_BM (depth), _.fromob);
+  DBGPRINTF_BM ("miniemit_node_conn°basiclo_simple_connective connob %s expv %s routprepob %s resultv %s", objectdbg_BM (_.connob), debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),    //
+                objectdbg1_BM (_.routprepob),
+                debug_outstr_value_BM (_.resultv, CURFRAME_BM, 0));
+  if (!_.resultv)
+    FAILHERE (_.funv);
   LOCALRETURN_BM (_.resultv);
 #undef FAILHERE
 failure:
