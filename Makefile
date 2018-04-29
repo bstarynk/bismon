@@ -39,7 +39,7 @@ OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst 
 
 .PHONY: all clean indent count modules measure measured-bismon doc redump outdump checksum indentsinglemodule singlemodule
 
-all: bismon doc
+all: bismon modules doc
 
 clean:
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
