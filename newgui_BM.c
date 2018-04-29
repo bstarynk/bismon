@@ -1182,7 +1182,7 @@ parsecommandbuf_newgui_BM (struct
                                           CURFRAME_BM,
                                           cmdtok.tok_line,
                                           cmdtok.tok_col,
-                                          "failed to run command %s",
+                                          "failed to run command %s arity %d",
                                           objectdbg_BM (_.cmdobj), arity);
                   log_begin_message_BM ();
                   log_puts_message_BM ("successful command ");
@@ -4153,7 +4153,7 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
   guint pipewatch = 0;
   ASSERT_BM (slot >= 0 && slot < MAXNBWORKJOBS_BM);
   ASSERT_BM (pthread_self () == mainthreadid_BM);
-  DBGPRINTF_BM ("defer_process_watchcb_BM pid=%d status=%d slot %d",
+  DBGPRINTF_BM ("defer_process_watchcb_BM start pid=%d status=%d slot %d",
                 (int) pid, (int) status, slot);
   lock_runpro_mtx_at_BM (__LINE__);
   _.pendingv = NULL;
@@ -4164,18 +4164,27 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
   outpipefd = runprocarr_BM[slot].rp_outpipe;
   childwatch = runprocarr_BM[slot].rp_childwatch;
   pipewatch = runprocarr_BM[slot].rp_pipewatch;
+  DBGPRINTF_BM ("defer_process_watchcb pid %d closv %s bufob %s",
+                pid, debug_outstr_value_BM (_.closv, CURFRAME_BM, 0),
+                objectdbg_BM (_.bufob));
   memset (&runprocarr_BM[slot], 0, sizeof (runprocarr_BM[slot]));
   /// should take the head of runpro_list_BM
   if (runpro_list_BM)
     {
       _.pendingv = listfirst_BM (runpro_list_BM);
-      listpopfirst_BM (runpro_list_BM);
+      DBGPRINTF_BM ("defer_process_watchcb_BM pid=%d pending %s",
+                    (int) pid, debug_outstr_value_BM (_.pendingv, CURFRAME_BM,
+                                                      0));
       if (listlength_BM (runpro_list_BM) == 0)
         runpro_list_BM = NULL;
+      listpopfirst_BM (runpro_list_BM);
     }
+  else
+    DBGPRINTF_BM ("defer_process_watchcb_BM pid=%d empty runpro_list_BM");
   // start the process corresponding to pendingv
   if (_.pendingv)
     {
+
       ASSERT_BM (isnode_BM (_.pendingv)
                  && nodeconn_BM (_.pendingv) == k_queue_process
                  && nodewidth_BM (_.pendingv == 3));
@@ -4227,11 +4236,11 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
   g_io_channel_unref (pipchan);
   _.outstrv = makestring_BM (objstrbufferbytespayl_BM (_.bufob));
   DBGPRINTF_BM
-    ("defer_process_watchcb_BM slot %d deferapply endclos=%s outstrv=%s status %d",
+    ("defer_process_watchcb_BM slot %d deferapply clos=%s outstrv=%s status %d",
      slot,
-     debug_outstr_value_BM (_.endclosv, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.closv, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0), status);
-  gtk_defer_apply3_BM (_.endclosv, _.outstrv, taggedint_BM (status), NULL,
+  gtk_defer_apply3_BM (_.closv, _.outstrv, taggedint_BM (status), NULL,
                        CURFRAME_BM);
   return;
 }                               /* end defer_process_watchcb_BM */
