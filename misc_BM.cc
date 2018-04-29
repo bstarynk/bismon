@@ -503,7 +503,9 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       return false;
     }
   _.modulob = objmod;
+  ld->ld_modhset = hashsetobj_add_BM(ld->ld_modhset, objmod);
   auto it = modulemap_BM.insert({modid,ModuleData_BM{.mod_id=modid, .mod_dlh=dlh, .mod_obj=_.modulob, .mod_data=nullptr}});
+  //// the following should be done in second pass, thru load_addtodo_BM in load_module routine _3j4mbvFJZzA_9ucKetDMbdh
   char modulinitname[48];
   memset (modulinitname, 0, sizeof(modulinitname));
   snprintf(modulinitname, sizeof(modulinitname),
@@ -517,15 +519,16 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       dlclose(dlh);
       return false;
     }
-  ld->ld_modhset = hashsetobj_add_BM(ld->ld_modhset, objmod);
   _.moduldata = (*modinitr) (CURFRAME_BM, _.modulob, BMP_load_module, NULL, dlh);
   it.first->second.mod_data = _.moduldata;
-  const closure_tyBM*closloadm = makeclosure2_BM (BMP_load_module,_.modulob, _.moduldata);
+  ////
+  const closure_tyBM*closloadm = makeclosure1_BM (BMP_load_module, _.modulob);
   load_addtodo_BM (closloadm);
   ld->ld_nbmodules++;
   return true;
 } // end of open_module_for_loader_BM
 
+extern "C" void postpone_loader_module_BM (objectval_tyBM*modulob, struct stackframe_stBM * stkf);
 
 extern "C" void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data);
 
@@ -575,32 +578,51 @@ void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data
   if (!modidad || strcmp(modidad,modulidbuf))
     FATAL_BM("bad module_id_BM in %s for %s: %s",
              binmodulpath,  objectdbg_BM(_.modulob), (modidad?"modid mismatch":dlerror()));
-  auto it = modulemap_BM.insert({objid_BM (_.modulob),ModuleData_BM{.mod_id=objid_BM (_.modulob), .mod_dlh=dlh, .mod_obj=_.modulob, .mod_data=nullptr}});
+  modulemap_BM.insert({objid_BM (_.modulob),ModuleData_BM{.mod_id=objid_BM (_.modulob), .mod_dlh=dlh, .mod_obj=_.modulob, .mod_data=nullptr}});
+  binmodulpath[0] = (char)0;
+  free (binmodulpath), binmodulpath = NULL;
+} // end deferred_do_module_load_BM
+
+
+void postpone_loader_module_BM (objectval_tyBM*modulobarg, struct stackframe_stBM * stkf) // called from load_module routine
+{
+  struct thisframe
+  {
+    STACKFRAMEFIELDS_BM;
+    objectval_tyBM* modulob;
+    value_tyBM appresv; //
+    value_tyBM modresv; //
+  } _;
+  memset ((void*)&_, 0, sizeof(_));
+  _.stkfram_pA.htyp = typayl_StackFrame_BM;
+  _.stkfram_pA.rlen = (sizeof(_) - sizeof(struct emptystackframe_stBM))/sizeof(value_tyBM);
+  _.stkfram_prev = stkf;
+  _.modulob = objectcast_BM(modulobarg);
+  DBGPRINTF_BM("postpone_loader_module start modulob %s", objectdbg_BM(_.modulob));
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof(modulidbuf));
+  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+  auto it = modulemap_BM.find(objid_BM (_.modulob));
+  ASSERT_BM(it != modulemap_BM.end());
+  void*dlh = it->second.mod_dlh;
+  ASSERT_BM(dlh != nullptr);
   char modulinitname[48];
   memset (modulinitname, 0, sizeof(modulinitname));
   snprintf(modulinitname, sizeof(modulinitname),
            MODULEINITPREFIX_BM "%s" MODULEINITSUFFIX_BM,
            modulidbuf);
+  DBGPRINTF_BM("postpone_loader_module modulob %s modulinitname %s",
+               objectdbg_BM(_.modulob), modulinitname);
   moduleinit_sigBM*modinitr = (moduleinit_sigBM*)dlsym(dlh, modulinitname);
   if (!modinitr)
-    FATAL_BM("missing module initializer %s in %s: %s\n",
-             modulinitname, binmodulpath, dlerror());
-  _.modresv = (*modinitr) (CURFRAME_BM, _.arg1v, _.arg2v, _.arg3v, dlh);
+    FATAL_BM("postpone_loader_module: missing module initializer %s in %s: %s\n",
+             modulinitname, objectdbg_BM(_.modulob), dlerror());
+  _.modresv = (*modinitr) (CURFRAME_BM, BMP_load_module, nullptr, nullptr, dlh);
   ASSERT_BM(_.modresv != nullptr);
-  it.first->second.mod_data = _.modresv;
-  DBGPRINTF_BM("deferred_do_module_load modulob=%s before apply postclos=%s modresv=%s",
-               objectdbg_BM(_.modulob),
-               debug_outstr_value_BM((value_tyBM)_.postclos, CURFRAME_BM, 0),
-               debug_outstr_value_BM((value_tyBM)_.modresv, CURFRAME_BM, 0));
-  _.appresv = apply1_BM((value_tyBM)_.postclos, CURFRAME_BM, _.modresv);
-  DBGPRINTF_BM("deferred_do_module_load modulob=%s after apply postclos=%s appresv %s",
-               objectdbg_BM(_.modulob),
-               debug_outstr_value_BM((value_tyBM)_.postclos, CURFRAME_BM, 0),
-               debug_outstr_value_BM((value_tyBM)_.appresv, CURFRAME_BM, 0));
-  it.first->second.mod_data = _.modresv;
-  binmodulpath[0] = (char)0;
-  free (binmodulpath), binmodulpath = NULL;
-} // end deferred_do_module_load_BM
+  it->second.mod_data = _.modresv;
+  DBGPRINTF_BM("postpone_loader_module end modulob %s modresv %s", objectdbg_BM(_.modulob),
+               debug_outstr_value_BM(_.modresv, CURFRAME_BM, 0));
+} // end postpone_loader_module_BM
 
 
 void gcmarkmodules_BM(struct garbcoll_stBM*gc)

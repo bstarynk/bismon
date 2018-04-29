@@ -72,9 +72,10 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_979hCujWp2g_9tjRbM8Ht1l);
 
 value_tyBM
 ROUTINEOBJNAME_BM (_979hCujWp2g_9tjRbM8Ht1l)    // emit_c_type:c_enum
-(struct stackframe_stBM * stkf,
- const value_tyBM arg1,
- const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
+(struct stackframe_stBM * stkf, const value_tyBM arg1,  //
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4,         //
  const quasinode_tyBM * restargs)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -3559,11 +3560,13 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0UHZG9vDlR2_2Aqx86LMFuq,
-                 value_tyBM resultv; value_tyBM resmodv;
-                 objectval_tyBM * modulob;
-                 objectval_tyBM * modgenob;
-                 objectval_tyBM * taskletob; value_tyBM callingclosv;
-                 value_tyBM todoclosv;
+                 value_tyBM resultv;    //
+                 value_tyBM resmodv;    //
+                 objectval_tyBM * modulob;      //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * taskletob;    //
+                 value_tyBM callingclosv;       //
+                 value_tyBM todoclosv;  //
     );
   objectval_tyBM *k_todo_after_module_load = BMK_5DXq2adUiam_4ySWA06AoyV;
   _.resmodv = arg1;

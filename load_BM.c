@@ -1020,6 +1020,9 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
 }                               /* end load_second_pass_BM */
 
 
+//// for the closure load_module, explicitly initialized in doload_BM
+extern objrout_sigBM ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh);
+
 
 void
 doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
@@ -1045,6 +1048,12 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
         FATAL_BM ("cannot find constant#%d %s in loaded dir %s", kix, kidstr,
                   ld->ld_dir);
       *(bmconstaddrs[kix]) = kobj;
+    }
+  /// ensure that BMP_load_module has its routine
+  if (BMP_load_module->ob_rout == NULL)
+    {
+      BMP_load_module->ob_rout = ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh);
+      BMP_load_module->ob_sig = BMP_function_sig;
     }
   /// run the second pass to fill objects
   for (int ix = 1; ix <= (int) ld->ld_maxnum; ix++)
@@ -1169,3 +1178,29 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
                           colpos, "unimplemented load modification");
 #warning postpone_load_modification unimplemented
 }                               // end ROUTINEOBJNAME_BM (_7kMNgL8eJ09_6aEpofzWJDP)  postpone_load_modification 
+
+
+//// for the closure load_module
+extern objrout_sigBM ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh)    // load_module
+(struct stackframe_stBM * stkf, const value_tyBM arg1,  // modulob
+ const value_tyBM arg2 __attribute__ ((unused)),
+ const value_tyBM arg3 __attribute__ ((unused)),
+ const value_tyBM arg4 __attribute__ ((unused)),
+ const quasinode_tyBM * restargs __attribute__ ((unused)))
+{
+  extern void postpone_loader_module_BM (objectval_tyBM * modulob,
+                                         struct stackframe_stBM *stkf);
+  LOCALFRAME_BM (stkf, BMP_load_module, //
+                 objectval_tyBM * modulob;
+    );
+  _.modulob = objectcast_BM (arg1);
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof (modulidbuf));
+  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+  DBGPRINTF_BM ("load_module start modulob %s id %s",
+                objectdbg_BM (_.modulob), modulidbuf);
+  postpone_loader_module_BM (_.modulob, CURFRAME_BM);
+}                               /* end load_module _3j4mbvFJZzA_9ucKetDMbdh */
