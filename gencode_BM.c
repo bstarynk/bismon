@@ -3534,16 +3534,16 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   if (status)
     return;
   _.postclosv = makeclosure0_BM (kk_after_load_of_module);
-  DBGPRINTF_BM
-    ("after-compilation-of-module modulob %s postclosv=%s before defer_module_load",
-     objectdbg_BM (_.modulob), debug_outstr_value_BM (_.postclosv,
-                                                      CURFRAME_BM, 0));
+  DBGPRINTF_BM ("after-compilation-of-module modulob %s postclosv=%s before defer_module_load", objectdbg_BM (_.modulob),       //
+                debug_outstr_value_BM (_.postclosv, CURFRAME_BM, 0));
   defer_module_load_BM (_.modulob, _.postclosv, _.modulob, _.modgenob, NULL,
                         CURFRAME_BM);
   DBGPRINTF_BM ("after-compilation-of-module modulob %s modgenob=%s end",
                 objectdbg_BM (_.modulob), objectdbg_BM (_.modgenob));
   LOCALRETURN_BM (_.modgenob);
 }                               /* end after-compilation-of-module _9le67LL7S9y_5VGpniEUNDA */
+
+
 
 // after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq);
@@ -3626,7 +3626,7 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
   for (int ix = 0; ix < MAXSIZE_BM; ix++)
     if (routidarr[ix] == NULL)
       {
-        nbconstid = ix;
+        nbroutid = ix;
         break;
       };
   DBGPRINTF_BM
@@ -3677,6 +3677,12 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
       _.routob->ob_sig = BMP_function_sig;
     }
   _.routupv = maketuple_BM (routarr, nbroutid);
+  DBGPRINTF_BM ("simple_module_initialize ending modulob %s modulid %s\n" ".. constset %s\n" ".. routup %s\n" ".. arg1 %s arg2 %s arg3 %s\n", objectdbg_BM (_.modulob), modulid,        //
+                debug_outstr_value_BM (_.constsetv, CURFRAME_BM, 0),    //
+                debug_outstr_value_BM (_.routupv, CURFRAME_BM, 0),      //
+                debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),        //
+                debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),        //
+                debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
   free (routarr), routarr = NULL;
   fprintf (stderr,
            "initialized simple module %s /%s with %u constants and %u routines\n",
