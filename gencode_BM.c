@@ -3533,7 +3533,8 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
      objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob), status);
   if (status)
     return;
-  _.postclosv = makeclosure0_BM (kk_after_load_of_module);
+  _.postclosv =
+    makeclosure2_BM (kk_after_load_of_module, _.modulob, _.modgenob);
   DBGPRINTF_BM ("after-compilation-of-module modulob %s postclosv=%s before defer_module_load", objectdbg_BM (_.modulob),       //
                 debug_outstr_value_BM (_.postclosv, CURFRAME_BM, 0));
   defer_module_load_BM (_.modulob, _.postclosv, _.modulob, _.modgenob, NULL,
@@ -3551,24 +3552,38 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq);
 value_tyBM
 ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
 (struct stackframe_stBM * stkf, //
- const value_tyBM arg1,         // modulob
- const value_tyBM arg2,         // modgenob
- const value_tyBM arg3,         //
+ const value_tyBM arg1,         // resmod
+ const value_tyBM arg2_ __attribute__ ((unused)),       //
+ const value_tyBM arg3_ __attribute__ ((unused)),       //
  const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0UHZG9vDlR2_2Aqx86LMFuq,
-                 value_tyBM resultv;
-                 value_tyBM resmodv; objectval_tyBM * modulob;
-                 objectval_tyBM * modgenob;
+                 value_tyBM resultv; value_tyBM resmodv;
+                 objectval_tyBM * modulob; objectval_tyBM * modgenob;
+                 value_tyBM callingclosv;
     );
   _.resmodv = arg1;
-  _.modulob = objectcast_BM (arg2);
-  _.modgenob = objectcast_BM (arg3);
-  DBGPRINTF_BM
-    ("after-load-of-module start resmodv=%s modulob=%s modgenob=%s",
-     debug_outstr_value_BM (_.resmodv, CURFRAME_BM, 0),
-     objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
+  LOCALGETFUNV_BM (_.callingclosv);
+  _.modulob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
+  _.modgenob = objectcast_BM (closurenthson_BM (_.callingclosv, 1));
+  DBGPRINTF_BM ("after-load-of-module start resmodv=%s callingclosv=%s modulob=%s modgenob=%s ",        //
+                debug_outstr_value_BM (_.resmodv, CURFRAME_BM, 0),      //
+                debug_outstr_value_BM (_.callingclosv, CURFRAME_BM, 0), //
+                objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
+  if (pthread_self () == mainthreadid_BM)
+    {
+      log_begin_message_BM ();
+      log_puts_message_BM ("Loaded module ");
+      log_object_message_BM (_.modulob);
+      log_puts_message_BM (" with generation ");
+      log_object_message_BM (_.modgenob);
+      log_puts_message_BM (".");
+      log_end_message_BM ();
+    };
+  fprintf (stderr, "loaded module %s with generation %s\n",
+           objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
+
   // we probably should add some tasklet...
 #warning unimplemented after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq routine
   WEAKASSERT_BM (false
@@ -3576,6 +3591,8 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
                  "unimplemented after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq routine");
   LOCALRETURN_BM (_.resmodv);
 }                               /* end after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq */
+
+
 
 
 value_tyBM
