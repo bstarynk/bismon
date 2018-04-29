@@ -837,10 +837,15 @@ defer_module_load_BM (objectval_tyBM * modulobarg,
     }
   char eident[EI_NIDENT];
   memset (eident, 0, sizeof (eident));
-  if (fread (eident, EI_NIDENT, 1, binmodf) < 1
-      || eident[0] != EI_MAG0 || eident[1] != EI_MAG1 || eident[2] != EI_MAG2
-      || eident[3] != EI_MAG3)
+  int nbread = fread (eident, EI_NIDENT, 1, binmodf);
+  if (nbread < 1
+      || eident[0] != ELFMAG0 || eident[1] != ELFMAG1 || eident[2] != ELFMAG2
+      || eident[3] != ELFMAG3)
     {
+      DBGPRINTF_BM
+        ("defer_module_load bad ELF ident %x %x %x %x (want %x %x %x %x) nbread %d for modulpath %s modulob %s",
+         eident[0], eident[1], eident[2], eident[3], ELFMAG0, ELFMAG1,
+         ELFMAG2, ELFMAG3, nbread, modulpath, objectdbg_BM (_.modulob));
       fclose (binmodf);
       FAILHERE (makenode1_BM (BMP_load_module, makestring_BM (modulpath)));
     };
@@ -852,6 +857,13 @@ defer_module_load_BM (objectval_tyBM * modulobarg,
     varr[2] = _.arg1v;
     varr[3] = _.arg2v;
     varr[4] = _.arg3v;
+    DBGPRINTF_BM
+      ("defer_module_load defer after gc modulob %s, postclos %s, arg1 %s, arg2 %s, arg3 %s",
+       objectdbg_BM (_.modulob), debug_outstr_value_BM (_.postclos,
+                                                        CURFRAME_BM, 0),
+       debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),
+       debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
+       debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
     agenda_defer_after_gc_BM (deferred_do_module_load_BM, varr, 5, modulpath);
   }
   atomic_store (&want_garbage_collection_BM, true);

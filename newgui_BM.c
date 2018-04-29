@@ -409,7 +409,8 @@ gcmarknewgui_BM (struct garbcoll_stBM *gc)
       VALUEGCPROC_BM (gc, runprocarr_BM[ix].rp_cmdnodv, 0);
       gcobjmark_BM (gc, runprocarr_BM[ix].rp_bufob);
     }
-  listgcmark_BM (gc, runpro_list_BM, 0);
+  if (runpro_list_BM)
+    listgcmark_BM (gc, runpro_list_BM, 0);
   unlock_runpro_mtx_at_BM (__LINE__);
 }                               /* end gcmarknewgui_BM */
 

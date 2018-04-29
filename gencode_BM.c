@@ -2687,10 +2687,11 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   /// 
   if (gui_is_running_BM)
     {
-      DBGPRINTF_BM
-        ("emit_module°plain_module srcdirstr %s modulob %s modgenob %s should compile the module",
-         srcdirstr, objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
       _.srcdirstrv = makestring_BM (srcdirstr);
+      DBGPRINTF_BM
+        ("emit_module°plain_module srcdirstr %s modulob %s modgenob %s deferred_compilation_of_module %s",
+         srcdirstr, objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
+         objectdbg2_BM (kk_deferred_compilation_of_module));
       gtk_defer_apply3_BM (kk_deferred_compilation_of_module, _.modulob,
                            _.modgenob, _.srcdirstrv, CURFRAME_BM);
     }
@@ -3477,18 +3478,19 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
     );
   int status = -1;
   _.outstrv = arg1;
-  ASSERT_BM (isstring_BM (_.outstrv));
-  ASSERT_BM (istaggedint_BM (arg2));
   status = getint_BM (arg2);
   LOCALGETFUNV_BM (_.callingclosv);
-  WEAKASSERT_BM (isclosure_BM (_.callingclosv)
-                 && closurewidth_BM (_.callingclosv) >= 2);
   _.modulob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
   _.modgenob = objectcast_BM (closurenthson_BM (_.callingclosv, 1));
-  DBGPRINTF_BM ("start after-compilation-of-module status %d outstr %s\n"       //
+  DBGPRINTF_BM ("start after-compilation-of-module status %d outstr %s callingclos %s\n"        //
                 ".. modulob=%s modgenob=%s\n", status,  //
                 debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0),
-                objectdbg_BM (_.modulob), objectdbg2_BM (_.modgenob));
+                objectdbg_BM (_.modulob), objectdbg2_BM (_.modgenob),
+                debug_outstr_value_BM (_.callingclos, CURFRAME_BM, 0));
+  WEAKASSERT_BM (isclosure_BM (_.callingclosv)
+                 && closurewidth_BM (_.callingclosv) >= 2);
+  ASSERT_BM (isstring_BM (_.outstrv));
+  ASSERT_BM (istaggedint_BM (arg2));
   if (pthread_self () == mainthreadid_BM && gui_is_running_BM)
     {
       log_begin_message_BM ();
@@ -3613,13 +3615,6 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
   ASSERT_BM (constobjarr != NULL);
   ASSERT_BM (constidarr != NULL);
   ASSERT_BM (routidarr != NULL);
-  unsigned nbconstobj = 0;
-  for (int ix = 0; ix < MAXSIZE_BM; ix++)
-    if (constobjarr[ix] == NULL)
-      {
-        nbconstobj = ix;
-        break;
-      };
   unsigned nbconstid = 0;
   for (int ix = 0; ix < MAXSIZE_BM; ix++)
     if (constidarr[ix] == NULL)
@@ -3635,9 +3630,8 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
         break;
       };
   DBGPRINTF_BM
-    ("simple_module_initialize modulid %s nbconstobj %u, nbconstid %u, nbroutid %u.",
-     modulid, nbconstobj, nbconstid, nbroutid);
-  ASSERT_BM (nbconstobj == nbconstid);
+    ("simple_module_initialize modulid %s nbconstid %u, nbroutid %u.",
+     modulid, nbconstid, nbroutid);
   for (unsigned oix = 0; oix < nbconstid; oix++)
     {
       _.curob = NULL;
