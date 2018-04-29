@@ -3545,7 +3545,7 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
 }                               /* end after-compilation-of-module _9le67LL7S9y_5VGpniEUNDA */
 
 
-
+////////////////////////////////////////////////////////////////
 // after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq);
 
@@ -3560,9 +3560,12 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0UHZG9vDlR2_2Aqx86LMFuq,
                  value_tyBM resultv; value_tyBM resmodv;
-                 objectval_tyBM * modulob; objectval_tyBM * modgenob;
-                 value_tyBM callingclosv;
+                 objectval_tyBM * modulob;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * taskletob; value_tyBM callingclosv;
+                 value_tyBM todoclosv;
     );
+  objectval_tyBM *k_todo_after_module_load = BMK_5DXq2adUiam_4ySWA06AoyV;
   _.resmodv = arg1;
   LOCALGETFUNV_BM (_.callingclosv);
   _.modulob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
@@ -3571,6 +3574,9 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
                 debug_outstr_value_BM (_.resmodv, CURFRAME_BM, 0),      //
                 debug_outstr_value_BM (_.callingclosv, CURFRAME_BM, 0), //
                 objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
+  WEAKASSERT_BM (isobject_BM (_.modulob));
+  WEAKASSERT_BM (isobject_BM (_.modgenob));
+  WEAKASSERT_BM (closurewidth_BM (_.callingclosv) >= 2);
   if (pthread_self () == mainthreadid_BM)
     {
       log_begin_message_BM ();
@@ -3583,12 +3589,49 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
     };
   fprintf (stderr, "loaded module %s with generation %s\n",
            objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
-
-  // we probably should add some tasklet...
-#warning unimplemented after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq routine");
+  {
+    objlock_BM (_.modgenob);
+    _.todoclosv = objgetattr_BM (_.modgenob, k_todo_after_module_load);
+    objunlock_BM (_.modgenob);
+  }
+  DBGPRINTF_BM
+    ("after-load-of-module modulob %s modgenob %s got todoclosv %s",
+     objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
+     debug_outstr_value_BM (_.todoclosv, CURFRAME_BM, 0));
+  if (_.todoclosv)
+    {
+      _.taskletob =
+        objectcast_BM (apply3_BM
+                       (_.todoclosv, CURFRAME_BM, _.modulob, _.modgenob,
+                        _.resmodv));
+      DBGPRINTF_BM
+        ("after-load-of-module modulob %s +modgenob %s taskletob %s",
+         objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
+         objectdbg2_BM (_.taskletob));
+    }
+  else
+    {
+      objlock_BM (_.modulob);
+      _.todoclosv = objgetattr_BM (_.modulob, k_todo_after_module_load);
+      objunlock_BM (_.modulob);
+      _.taskletob =
+        objectcast_BM (apply3_BM
+                       (_.todoclosv, CURFRAME_BM, _.modulob, _.modgenob,
+                        _.resmodv));
+      DBGPRINTF_BM
+        ("after-load-of-module +modulob %s modgenob %s taskletob %s",
+         objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
+         objectdbg2_BM (_.taskletob));
+    }
+  if (_.taskletob)
+    {
+      agenda_add_very_high_priority_tasklet_BM (_.taskletob);
+      LOCALRETURN_BM (_.taskletob);
+    };
+  DBGPRINTF_BM
+    ("after-load-of-module modulob %s modgenob %s no taskletob resmodv %s",
+     objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
+     debug_outstr_value_BM (_.resmodv, CURFRAME_BM, 0));
   LOCALRETURN_BM (_.resmodv);
 }                               /* end after-load-of-module _0UHZG9vDlR2_2Aqx86LMFuq */
 

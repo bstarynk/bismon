@@ -1,6 +1,7 @@
 // generated file store2.bmon
-// for 318 objects
-// with 0 modules
+// for 319 objects
+// with 1 modules
+!^_9oXtCgAbkqv_4y1xhhF5Nhz
 
 
 !(_1dzZlwqKdLH_8HjkBsL9Mar |=add|
@@ -1879,6 +1880,7 @@ _17mrxkMdNtH_2CduQ2WDIy5 _8g1WBJBhDT9_1QK8IcuWYx2)
 !(_9O2lgu1TweO_0mVlpTwrBG1 |=second_test_minifunc|
 !~ name (~ second_test_minifunc
 ~)
+!|*
 !@ 1524631692.46
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -2025,6 +2027,7 @@ _8yXqsN7LuB3_0vODsT2M9Lh
 !(_43Y25VLmh6s_3JRpERevcR4 |=successor_test_minifunc|
 !~ name (~ successor_test_minifunc
 ~)
+!|*
 !@ 1524221243.85
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -2116,6 +2119,17 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 ~)
 
 !)_8dM7Xmdup4k_4jwzwOtmC1a
+
+
+
+!(_5DXq2adUiam_4ySWA06AoyV |=todo_after_module_load|
+!~ name (~ todo_after_module_load
+~)
+!@ 1524989634.25
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "attribute, for modulobj or modgenobj, for"& " closure giving a tasklet to run after module"& " load, applied to modulob, modgenob, modres"
+!)_5DXq2adUiam_4ySWA06AoyV
 
 
 
