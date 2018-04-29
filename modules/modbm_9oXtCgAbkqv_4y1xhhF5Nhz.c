@@ -29,6 +29,7 @@ const char *const constid_9oXtCgAbkqv_4y1xhhF5Nhz_BM[5 + 1];
 
 value_tyBM
 crout_43Y25VLmh6s_3JRpERevcR4_BM (struct stackframe_stBM *stkf, //#0+ successor_test_minifunc
+                                  // 1 arguments
                                   const value_tyBM arg0,        // v_i
                                   const value_tyBM arg1_
                                   __attribute__ ((unused)),
@@ -101,6 +102,7 @@ epilog_43Y25VLmh6s_3JRpERevcR4:        // routine _43Y25VLmh6s_3JRpERevcR4 epilo
 
 value_tyBM
 crout_9O2lgu1TweO_0mVlpTwrBG1_BM (struct stackframe_stBM * stkf,        //#1+ second_test_minifunc
+                                  // 1 arguments
                                   const value_tyBM arg0,        // v1
                                   const value_tyBM arg1_
                                   __attribute__ ((unused)),

@@ -832,7 +832,8 @@ defer_module_load_BM (objectval_tyBM * modulobarg,
   FILE *binmodf = fopen (modulpath, "r");
   if (!binmodf)
     {
-      fprintf (stderr, "failed to read binary module %s: %m\n", modulpath);
+      fprintf (stderr, "failed to read binary module %s for %s: %m\n",
+               modulpath, objectdbg_BM (_.modulob));
       FAILHERE (makenode1_BM (BMP_load_module, makestring_BM (modulpath)));
     }
   char eident[EI_NIDENT];
@@ -842,10 +843,11 @@ defer_module_load_BM (objectval_tyBM * modulobarg,
       || eident[0] != ELFMAG0 || eident[1] != ELFMAG1 || eident[2] != ELFMAG2
       || eident[3] != ELFMAG3)
     {
-      DBGPRINTF_BM
-        ("defer_module_load bad ELF ident %x %x %x %x (want %x %x %x %x) nbread %d for modulpath %s modulob %s",
-         eident[0], eident[1], eident[2], eident[3], ELFMAG0, ELFMAG1,
-         ELFMAG2, ELFMAG3, nbread, modulpath, objectdbg_BM (_.modulob));
+      DBGPRINTF_BM ("defer_module_load bad ELF ident %x %x %x %x (want %x %x %x %x) nbread %d for modulpath %s modulob %s", eident[0], eident[1], eident[2], eident[3], //
+                    ELFMAG0, ELFMAG1, ELFMAG2, ELFMAG3, //
+                    nbread, modulpath, objectdbg_BM (_.modulob));
+      fprintf (stderr, "module binary %s for %s is not ELF.\n",
+               modulpath, objectdbg_BM (_.modulob));
       fclose (binmodf);
       FAILHERE (makenode1_BM (BMP_load_module, makestring_BM (modulpath)));
     };
