@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 319 objects
+// for 322 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -42,6 +42,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !@ 1513062722.74
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_3dmcFZldtxI_1bEIFl4jqe3
+
+
+
+!(_3Nl6LhfUZVb_1itsyWMBfYl |=apply|
+!~ name (~ apply
+~)
+!@ 1525011698.90
+!$_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "connective for application"
+!)_3Nl6LhfUZVb_1itsyWMBfYl
 
 
 
@@ -377,6 +388,21 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 ~)
 
 !)_4SHgzjNdlGo_1CxI9hBNDrC
+
+
+
+!(_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
+!~ name (~ basiclo_simple_connective
+~)
+!@ 1525011680.38
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of simple connective"
+!~ class (~ |supercl basiclo_connective:| _3DQ7z3EuAiT_4faSRNsy2lr 
+~: _5EGLdtUAQxA_1nebCsDKqOF  % _2ROGZRBpeCl_6HhgOZ5Uj7F ()
+~)
+
+!)_4G8QdnYR1LZ_1Ej0xQbVpn9
 
 
 
@@ -2824,6 +2850,16 @@ _3XBrePAliOo_37VlAqBsb5C) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "miniscan_block\u00b0basiclo_block"
 !)_2PbDEXpkK5W_7MSfDy2pWkH
+
+
+
+!(_2ROGZRBpeCl_6HhgOZ5Uj7F
+!|*
+!@ 1525012332.71
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniscan_node_conn\u00b0basiclo_simple_connective"
+!)_2ROGZRBpeCl_6HhgOZ5Uj7F
 
 
 

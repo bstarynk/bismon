@@ -2375,6 +2375,32 @@ failure:
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniemit_node_conn°basiclo_primitive _0BaXSIhDAHO_9x6t4zdbUhj */
 
+//miniscan_node_conn°basiclo_simple_connective _2ROGZRBpeCl_6HhgOZ5Uj7F
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_2ROGZRBpeCl_6HhgOZ5Uj7F);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_2ROGZRBpeCl_6HhgOZ5Uj7F)    //miniscan_node_conn°basiclo_simple_connective
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         //
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_2ROGZRBpeCl_6HhgOZ5Uj7F,
+                 value_tyBM resultv;
+    );
+#warning unimplemented _2ROGZRBpeCl_6HhgOZ5Uj7F routine
+  WEAKASSERT_BM (false && "unimplemented _2ROGZRBpeCl_6HhgOZ5Uj7F routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end miniscan_node_conn°basiclo_simple_connective _2ROGZRBpeCl_6HhgOZ5Uj7F */
+
+
+
+
+
+
 
 
 // emit_statement°basiclo_assign _22wwtRd69oP_3IH6VRfTzu6
