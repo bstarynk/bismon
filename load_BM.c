@@ -991,6 +991,14 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                                   lineno, colpos, "unexpected modification");
 
         }
+      //
+      // !^ <modulid> -- has been handled in first pass
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_exclamcaret)
+        {
+          parstoken_tyBM tokmodid = parsertokenget_BM (ldpars, CURFRAME_BM);
+          ASSERT_BM (tokmodid.tok_kind == plex_ID);
+        }
 
       //
       // eof
@@ -1068,6 +1076,8 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       _.firsttodo = listfirst_BM (ld->ld_todolist);
       ASSERT_BM (isclosure_BM (_.firsttodo) || isobject_BM (_.firsttodo));
       listpopfirst_BM (ld->ld_todolist);
+      DBGPRINTF_BM ("doload_BM firsttodo %s",
+                    debug_outstr_value_BM (_.firsttodo, CURFRAME_BM, 0));
       apply0_BM ((value_tyBM) (_.firsttodo), CURFRAME_BM);
       todocnt++;
       if (todocnt % 128 == 0)
@@ -1185,22 +1195,29 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh);
 
 value_tyBM
 ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh)    // load_module
-(struct stackframe_stBM * stkf, const value_tyBM arg1,  // modulob
- const value_tyBM arg2 __attribute__ ((unused)),
- const value_tyBM arg3 __attribute__ ((unused)),
- const value_tyBM arg4 __attribute__ ((unused)),
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1_ __attribute__ ((unused)),       //
+ const value_tyBM arg2_ __attribute__ ((unused)),       //
+ const value_tyBM arg3_ __attribute__ ((unused)),       //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   extern void postpone_loader_module_BM (objectval_tyBM * modulob,
                                          struct stackframe_stBM *stkf);
   LOCALFRAME_BM (stkf, BMP_load_module, //
                  objectval_tyBM * modulob;
+                 value_tyBM callingclosv;
     );
-  _.modulob = objectcast_BM (arg1);
+  LOCALGETFUNV_BM (_.callingclosv);
+  _.modulob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
-  DBGPRINTF_BM ("load_module start modulob %s id %s",
-                objectdbg_BM (_.modulob), modulidbuf);
+  DBGPRINTF_BM ("load_module start modulob %s id %s callingclos %s",
+                objectdbg_BM (_.modulob), modulidbuf,
+                debug_outstr_value_BM (_.callingclosv, CURFRAME_BM, 0));
+  ASSERT_BM (_.modulob);
   postpone_loader_module_BM (_.modulob, CURFRAME_BM);
+  DBGPRINTF_BM ("load_module end modulob %s", objectdbg_BM (_.modulob));
+  LOCALRETURN_BM (_.modulob);
 }                               /* end load_module _3j4mbvFJZzA_9ucKetDMbdh */

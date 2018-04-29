@@ -191,6 +191,8 @@ redump: bismon
 	time ./bismon --dump-after-load . --batch
 	printf "\n\n\n **** second redump run ***\n"
 	time ./bismon --dump-after-load . --batch
+	$(MAKE) indent
+
 outdump: bismon
 	time ./bismon  --run-command 'rm -rvf /tmp/bd'  --dump-after-load /tmp/bd --batch
 	for f in /tmp/bd/* ; do cmp $$f $$(basename $$f); done
