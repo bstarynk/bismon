@@ -666,3 +666,25 @@ applyvar_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
     }
   return NULL;
 }                               /* end applyvar_BM */
+
+value_tyBM
+applymany_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
+              unsigned nbargs, ...)
+{
+  if (nbargs > MAXAPPLYARGS_BM)
+    FATAL_BM ("applymany_BM too many %u arguments", nbargs);
+  value_tyBM tinyarr[TINYSIZE_BM] = { };
+  value_tyBM *arr = (nbargs < TINYSIZE_BM) ? tinyarr
+    : calloc (prime_above_BM (nbargs), sizeof (value_tyBM));
+  if (!arr)
+    FATAL_BM ("applymany failed to calloc for %u arguments", nbargs);
+  va_list arglist;
+  va_start (arglist, nbargs);
+  for (unsigned ix = 0; ix < nbargs; ix++)
+    arr[ix] = va_arg (arglist, value_tyBM);
+  va_end (arglist);
+  value_tyBM res = applyvar_BM (funv, stkf, nbargs, arr);
+  if (arr != tinyarr)
+    free (arr);
+  return res;
+}                               /* end applymany_BM */

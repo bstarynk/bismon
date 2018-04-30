@@ -995,6 +995,10 @@ extern value_tyBM apply9_BM (const value_tyBM funv,
 extern value_tyBM applyvar_BM (const value_tyBM funv, struct stackframe_stBM *stkf, unsigned nbargs,    // no more than MAXAPPLYARGS_BM
                                const value_tyBM * argarr);
 
+extern value_tyBM applymany_BM (const value_tyBM funv,
+                                struct stackframe_stBM *stkf, unsigned nbargs,
+                                ...);
+
 // send dump_value, making a buffer object, giving its byte contents
 extern const char *debug_outstr_value_BM (const value_tyBM val,
                                           struct stackframe_stBM *stkf,
@@ -1356,4 +1360,36 @@ extern long agenda_get_sets_BM (value_tyBM * pveryhighset,
                                 value_tyBM * phighset, value_tyBM * pnormset,
                                 value_tyBM * plowset,
                                 value_tyBM * pverylowset);
+
+
+/// C code generation see gencode_BM.c
+// return the ctype of a variable
+extern objectval_tyBM *miniscan_var_BM (objectval_tyBM * varob,
+                                        objectval_tyBM * routprepob,
+                                        int depth, objectval_tyBM * fromob,
+                                        struct stackframe_stBM *stkf);
+// return the ctype of an expression
+extern objectval_tyBM *miniscan_expr_BM (value_tyBM expv,
+                                         objectval_tyBM * routprepob,
+                                         int depth, objectval_tyBM * fromob,
+                                         struct stackframe_stBM *stkf);
+
+// test if two types are compatible and return their common supertype
+extern objectval_tyBM *miniscan_compatype_BM (objectval_tyBM * typ1ob,
+                                              objectval_tyBM * typ2ob,
+                                              struct stackframe_stBM *stkf);
+
+extern void miniemit_expression_BM (struct stackframe_stBM *stkf,
+                                    value_tyBM expv,
+                                    objectval_tyBM * modgenob,
+                                    objectval_tyBM * routprepob,
+                                    objectval_tyBM * fromob, int depth);
+
+extern void miniemit_var_BM (struct stackframe_stBM *stkf,
+                             objectval_tyBM * refob,
+                             objectval_tyBM * modgenob,
+                             objectval_tyBM * routprepob,
+                             objectval_tyBM * fromob, int depth);
+
+
 #endif /*FUNDECL_BM_INCLUDED */
