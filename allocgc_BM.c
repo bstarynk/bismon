@@ -413,8 +413,9 @@ deleteobjectpayload_BM (objectval_tyBM * obj, extendedval_tyBM payl)
     case typayl_dumper_BM:
       return;
     default:
-      FATAL_BM ("deleteobjectpayload_BM ty#%d unexpected for payl@%p", ty,
-                payl);
+      FATAL_BM
+        ("deleteobjectpayload_BM ty#%d unexpected for payl@%p of obj %s", ty,
+         payl, objectdbg_BM (obj));
     }
 }                               /* end deleteobjectpayload_BM */
 
