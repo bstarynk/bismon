@@ -1204,9 +1204,9 @@ void defer_dump_BM (const char *dirname, const closure_tyBM * postclosv,
 // defer a module load (after a GC) while the agenda is running. the 3
 // arguments are passed to the module initialization. Its result is
 // given to the closure.
-void defer_module_load_BM (objectval_tyBM * modulob,
-                           const closure_tyBM * postclosv, value_tyBM * arg1v,
-                           value_tyBM * arg2v, value_tyBM * arg3v,
+void defer_module_load_BM (objectval_tyBM * modulob, const closure_tyBM * postclosv,    //
+                           value_tyBM arg1v,
+                           value_tyBM arg2v, value_tyBM arg3v,
                            struct stackframe_stBM *stkf);
 ////////////////////////////////////////////////////////////////
 /******** GUI functions ***********/

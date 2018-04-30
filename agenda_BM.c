@@ -784,9 +784,8 @@ run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
 }                               /* end run_agenda_internal_tasklet_BM */
 
 void
-defer_module_load_BM (objectval_tyBM * modulobarg,
-                      const closure_tyBM * postclosarg, value_tyBM * arg1,
-                      value_tyBM * arg2, value_tyBM * arg3,
+defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclosarg,    //
+                      value_tyBM arg1, value_tyBM arg2, value_tyBM arg3,        //
                       struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_defer_module_load = BMK_4fBgmgx2KrN_3PCZfdnI1CJ;
@@ -818,8 +817,8 @@ defer_module_load_BM (objectval_tyBM * modulobarg,
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
   DBGPRINTF_BM
     ("defer_module_load_BM start modulob %s postclos %s arg1 %s arg2 %s arg3 %s",
-     objectdbg_BM (_.modulob), debug_outstr_value_BM (_.postclos, CURFRAME_BM,
-                                                      0),
+     objectdbg_BM (_.modulob),
+     debug_outstr_value_BM ((value_tyBM) _.postclos, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
