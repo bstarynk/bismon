@@ -848,7 +848,8 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
       fprintf (stderr, "module binary %s for %s is not ELF.\n",
                modulpath, objectdbg_BM (_.modulob));
       fclose (binmodf);
-      FAILHERE (makenode1_BM (BMP_load_module, makestring_BM (modulpath)));
+      FAILHERE (makenode1_BM (BMP_load_module,
+                              (value_tyBM) makestring_BM (modulpath)));
     };
   fclose (binmodf);
   {
