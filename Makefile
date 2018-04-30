@@ -185,7 +185,7 @@ doc: $(MARKDOWN_SOURCES)
 count:
 	@wc -cl $(wildcard *.c *.h *.cc) | sort -n
 
-redump: bismon
+redump: bismon modules
 	@for f in $(GENERATED_HEADERS) $(GENERATED_CSOURCES) $(MODULES_SOURCES) *.bmon ; \
            do cp -vab $$f $$f%~ ; done
 	time ./bismon --dump-after-load . --batch
@@ -193,6 +193,6 @@ redump: bismon
 	time ./bismon --dump-after-load . --batch
 	$(MAKE) indent
 
-outdump: bismon
+outdump: bismon modules
 	time ./bismon  --run-command 'rm -rvf /tmp/bd'  --dump-after-load /tmp/bd --batch
 	for f in /tmp/bd/* ; do cmp $$f $$(basename $$f); done
