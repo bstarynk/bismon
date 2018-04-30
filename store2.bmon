@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 324 objects
+// for 325 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -48,12 +48,14 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !(_3Nl6LhfUZVb_1itsyWMBfYl |=apply|
 !~ name (~ apply
 ~)
-!@ 1525065795.20
+!@ 1525076998.84
 !$_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "connective for application"
 !: _5EGLdtUAQxA_1nebCsDKqOF |=miniscan_node_conn|
  % _1X94b6LizfY_2W2ODAL1F3D ()
+!: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
+ % _6lTDbwKEMMc_0wsIKviDSce ()
 !)_3Nl6LhfUZVb_1itsyWMBfYl
 
 
@@ -3259,6 +3261,16 @@ _4lKK08v9A0t_0GGsir35UxP _4bYUiDmxrKK_6nPPlEl8y8x) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a closure"
 !)_6jvRZetUz36_978V6SKIWZC
+
+
+
+!(_6lTDbwKEMMc_0wsIKviDSce
+!|*
+!@ 1525076998.84
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniemit_node_conn#apply"
+!)_6lTDbwKEMMc_0wsIKviDSce
 
 
 

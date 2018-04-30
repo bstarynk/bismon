@@ -3960,12 +3960,12 @@ ROUTINEOBJNAME_BM (_1X94b6LizfY_2W2ODAL1F3D)    //miniscan_node_conn#apply
 
 
 
-// miniemit_node_conn#apply _95m3D4f5Eb5_9JzJaYtofj0
+// miniemit_node_conn#apply _6lTDbwKEMMc_0wsIKviDSce
 
-extern objrout_sigBM ROUTINEOBJNAME_BM (_95m3D4f5Eb5_9JzJaYtofj0);
+extern objrout_sigBM ROUTINEOBJNAME_BM (_6lTDbwKEMMc_0wsIKviDSce);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_XYZ)        //miniemit_node_conn#apply 
+ROUTINEOBJNAME_BM (_6lTDbwKEMMc_0wsIKviDSce)    //miniemit_node_conn#apply 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // connob
  const value_tyBM arg2,         // routprepob
@@ -3973,7 +3973,7 @@ ROUTINEOBJNAME_BM (_XYZ)        //miniemit_node_conn#apply
  const value_tyBM arg4,         // expv
  const quasinode_tyBM * restargs /*fromob. */ )
 {
-  LOCALFRAME_BM (stkf, /*descr: */ NULL,        //BMk_XYZ,
+  LOCALFRAME_BM (stkf, /*descr: */ NULL,        //BMk_6lTDbwKEMMc_0wsIKviDSce,
                  objectval_tyBM * connob;       //
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * fromob;       //
@@ -3982,7 +3982,7 @@ ROUTINEOBJNAME_BM (_XYZ)        //miniemit_node_conn#apply
                  value_tyBM errorv;
     );
 
-#warning unimplemented _XYZ routine
-  WEAKASSERT_BM (false && "unimplemented _XYZ routine");
+#warning unimplemented _6lTDbwKEMMc_0wsIKviDSce routine
+  WEAKASSERT_BM (false && "unimplemented _6lTDbwKEMMc_0wsIKviDSce routine");
   LOCALRETURN_BM (_.resultv);
-}                               /* end miniemit_node_conn#apply _XYZ */
+}                               /* end miniemit_node_conn#apply _6lTDbwKEMMc_0wsIKviDSce */
