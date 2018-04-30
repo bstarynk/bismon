@@ -1481,3 +1481,28 @@ sendmanyvar_BM (const value_tyBM recv,
     memcpy (locargs + 1, argarr, nbargs * sizeof (value_tyBM));
   return applyvar_BM ((const value_tyBM) mclos, stkf, nbargs + 1, locargs);
 }                               /* end sendmanyvar_BM */
+
+value_tyBM
+sendmany_BM (const value_tyBM recv, const objectval_tyBM * obselector,
+             struct stackframe_stBM *stkf, unsigned nbargs, ...)
+{
+  if (!isobject_BM ((const value_tyBM) obselector))
+    return NULL;
+  if (nbargs >= MAXAPPLYARGS_BM)
+    FATAL_BM ("too many %u arguments to send %s", nbargs,
+              objectdbg_BM (obselector));
+  value_tyBM tinyarr[TINYSIZE_BM] = { };
+  value_tyBM *arr = (nbargs < TINYSIZE_BM) ? tinyarr
+    : calloc (prime_above_BM (nbargs), sizeof (value_tyBM));
+  if (!arr)
+    FATAL_BM ("failed to allocate for %d arguments", nbargs);
+  va_list arglist;
+  va_start (arglist, nbargs);
+  for (unsigned ix = 0; ix < nbargs; ix++)
+    arr[ix] = va_arg (arglist, value_tyBM);
+  va_end (arglist);
+  value_tyBM res = sendvar_BM (recv, obselector, stkf, nbargs, arr);
+  if (arr != tinyarr)
+    free (arr);
+  return res;
+}                               /* end sendmany_BM */

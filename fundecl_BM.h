@@ -443,6 +443,10 @@ extern value_tyBM send8_BM (const value_tyBM recv,
                             const value_tyBM arg7, const value_tyBM arg8);
 static inline value_tyBM sendvar_BM (const value_tyBM recv, const objectval_tyBM * obselector, struct stackframe_stBM *stkf, unsigned nbargs,   // no more than MAXAPPLYARGS_BM-1
                                      const value_tyBM * argarr);
+extern value_tyBM sendmany_BM (const value_tyBM recv,
+                               const objectval_tyBM * obselector,
+                               struct stackframe_stBM *stkf, unsigned nbargs,
+                               ...);
 
 static inline unsigned objnbcomps_BM (const objectval_tyBM * obj);
 static inline value_tyBM *objcompdata_BM (const objectval_tyBM * obj);
@@ -1335,6 +1339,7 @@ extern parser_decorate_string_inside_sigBM parsstringinside_guicmd_BM;
 
 /******** agenda functions ***********/
 extern void initialize_agenda_BM (void);
+extern void agenda_notify_BM (void);
 extern int agenda_nb_work_jobs_BM (void);
 extern void gcmarkagenda_BM (struct garbcoll_stBM *gc);
 extern void start_agenda_work_threads_BM (int nbjobs);
