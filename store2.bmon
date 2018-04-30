@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 323 objects
+// for 324 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -48,10 +48,12 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !(_3Nl6LhfUZVb_1itsyWMBfYl |=apply|
 !~ name (~ apply
 ~)
-!@ 1525011698.90
+!@ 1525065795.20
 !$_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "connective for application"
+!: _5EGLdtUAQxA_1nebCsDKqOF |=miniscan_node_conn|
+ % _1X94b6LizfY_2W2ODAL1F3D ()
 !)_3Nl6LhfUZVb_1itsyWMBfYl
 
 
@@ -2720,6 +2722,16 @@ _3XBrePAliOo_37VlAqBsb5C) ~)
 !# 1
 !& _5mfKaUSS5M3_7TkY2bYFtdL
 !)_1UM3ERNWFgo_6pqkY9UiIDv
+
+
+
+!(_1X94b6LizfY_2W2ODAL1F3D
+!|*
+!@ 1525065795.20
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniscan_node_conn#apply"
+!)_1X94b6LizfY_2W2ODAL1F3D
 
 
 

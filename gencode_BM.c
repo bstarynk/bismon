@@ -3923,3 +3923,47 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
   return makenode5_BM (k_simple_module_initialize, _.constsetv, _.routupv,
                        _.arg1v, _.arg2v, _.arg3v);
 }                               /* end simple_module_initialize_BM */
+
+// miniscan_node_conn#apply _1X94b6LizfY_2W2ODAL1F3D
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_1X94b6LizfY_2W2ODAL1F3D);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_1X94b6LizfY_2W2ODAL1F3D)    //miniscan_node_conn#apply
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         //
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_1X94b6LizfY_2W2ODAL1F3D,
+                 value_tyBM resultv;
+    );
+#warning unimplemented _1X94b6LizfY_2W2ODAL1F3D routine
+  WEAKASSERT_BM (false && "unimplemented _1X94b6LizfY_2W2ODAL1F3D routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end miniscan_node_conn#apply _1X94b6LizfY_2W2ODAL1F3D */
+
+
+
+// miniemit_node_conn#apply _87VONLj0zaR_66XwxRonvyi
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_87VONLj0zaR_66XwxRonvyi);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_87VONLj0zaR_66XwxRonvyi)    //miniemit_node_conn#apply 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         //
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ NULL,
+                 value_tyBM resultv;
+    );
+#warning unimplemented _87VONLj0zaR_66XwxRonvyi routine
+  WEAKASSERT_BM (false && "unimplemented _87VONLj0zaR_66XwxRonvyi routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end miniemit_node_conn#apply _87VONLj0zaR_66XwxRonvyi */
