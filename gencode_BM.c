@@ -2751,7 +2751,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   else
     srcdirstr = strdup ("modules");
   if (!srcdirstr)
-    FATAL_BM ("strdup failed for srcdirstr");
+    FATAL_BM ("failed to compute source dir for module %s - %m",
+              objectdbg_BM (_.modulob));
   _.modgenob = makeobj_BM ();
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
@@ -2830,8 +2831,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   if (!access (srcpathstr, F_OK))
     {
       char *prevpathstr = NULL;
-      asprintf (&prevpathstr, "%s/" MODULEPREFIX_BM "%s.c-", srcdirstr,
-                modulidbuf);
+      asprintf (&prevpathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d~", srcdirstr,
+                modulidbuf, (int)getpid());
       if (prevpathstr)
         rename (srcpathstr, prevpathstr);
       free (prevpathstr), prevpathstr = NULL;
@@ -3628,9 +3629,10 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
   for (int ix = 0; ix < nbargs; ix++)
     _.argstrarr[ix] = (value_tyBM) makestring_BM (compilargs[ix]);
   _.compilnodv = (value_tyBM) makenode_BM (BMP_node, nbargs, _.argstrarr);
-  _.pardirstrv = (value_tyBM) makestring_BM (realpardir);
+  _.pardirstrv = (value_tyBM) makestring_BM (realsrcdir);
   _.aftercompilclosv = (value_tyBM)
-    makeclosure2_BM (kk_after_compilation_of_module, _.modulob, _.modgenob);
+    makeclosure3_BM (kk_after_compilation_of_module, _.modulob, _.modgenob,
+                     _.pardirstrv);
   DBGPRINTF_BM
     ("defer-compilation-of-module pardirstrv=%s compilnodv=%s aftercompilclosv=%s before queue_process_BM",
      debug_outstr_value_BM (_.pardirstrv, CURFRAME_BM, 0),
@@ -3661,8 +3663,9 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9le67LL7S9y_5VGpniEUNDA,
                  value_tyBM outstrv;
                  value_tyBM resultv; value_tyBM callingclosv;
-                 objectval_tyBM * modulob; value_tyBM postclosv;
-                 objectval_tyBM * modgenob;
+                 objectval_tyBM * modulob;
+                 value_tyBM postclosv; objectval_tyBM * modgenob;
+                 value_tyBM moddirstrv;
     );
   int status = -1;
   _.outstrv = arg1;
@@ -3670,11 +3673,17 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   LOCALGETFUNV_BM (_.callingclosv);
   _.modulob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
   _.modgenob = objectcast_BM (closurenthson_BM (_.callingclosv, 1));
+  _.moddirstrv = closurenthson_BM (_.callingclosv, 2);
   DBGPRINTF_BM ("start after-compilation-of-module status %d outstr %s callingclos %s\n"        //
-                ".. modulob=%s modgenob=%s\n", status,  //
-                debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0),
-                debug_outstr_value_BM (_.callingclosv, CURFRAME_BM, 0),
-                objectdbg_BM (_.modulob), objectdbg2_BM (_.modgenob));
+                ".. modulob=%s modgenob=%s moddirstr=%s\n", status,     //
+                debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0), debug_outstr_value_BM (_.callingclosv, CURFRAME_BM, 0), objectdbg_BM (_.modulob), objectdbg2_BM (_.modgenob),        //
+                debug_outstr_value_BM (_.moddirstrv, CURFRAME_BM, 0));
+  WEAKASSERT_BM (_.modulob);
+  WEAKASSERT_BM (_.modgenob);
+  WEAKASSERT_BM (isstring_BM (_.moddirstrv));
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof (modulidbuf));
+  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
   WEAKASSERT_BM (isclosure_BM (_.callingclosv)
                  && closurewidth_BM (_.callingclosv) >= 2);
   ASSERT_BM (isstring_BM (_.outstrv));
@@ -3684,7 +3693,7 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
       log_begin_message_BM ();
       log_printf_message_BM ("compilation of module ");
       log_object_message_BM (_.modulob);
-      log_printf_message_BM (" with module generation ");
+      log_printf_message_BM (" /%s with module generation ", modulidbuf);
       log_object_message_BM (_.modgenob);
       log_printf_message_BM (" ");
       if (status)
@@ -3708,14 +3717,36 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
         log_printf_message_BM
           ("+++++ (%d bytes)\n%s\n----- compile log of %s\n", lenout,
            bytstring_BM (_.outstrv), objectdbg_BM (_.modulob));
-      log_end_message_BM ();
     }
   if (status)
-    fprintf (stderr, "compilation of module %s failed (%d=%#x)\n",
-             objectdbg_BM (_.modulob), status, status);
+    {
+      char *prevpathstr = NULL;
+      char *badpathstr = NULL;
+      char *srcpathstr = NULL;
+      const char*moddirstr = bytstring_BM(_.moddirstrv);
+      asprintf (&srcpathstr, "%s/" MODULEPREFIX_BM "%s.c", moddirstr,
+                modulidbuf);
+      asprintf (&prevpathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d~", moddirstr,
+                modulidbuf, (int) getpid ());
+      asprintf (&badpathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d-bad~", moddirstr,
+                modulidbuf, (int) getpid ());
+      rename(srcpathstr, badpathstr);
+      rename(prevpathstr, srcpathstr);
+      fprintf (stderr, "compilation of module %s failed (%d=%#x);\n"
+	       "... restored previous %s with bad new source in %s\n",
+               objectdbg_BM (_.modulob), status, status, srcpathstr, badpathstr);
+      if (pthread_self () == mainthreadid_BM && gui_is_running_BM) {
+	log_printf_message_BM("restored previous %s,\n.. bad new source in %s.",
+			      srcpathstr, badpathstr);
+      }
+    }
   else
     fprintf (stderr, "successful compilation of module %s\n",
              objectdbg_BM (_.modulob));
+  if (pthread_self () == mainthreadid_BM && gui_is_running_BM)
+    {
+      log_end_message_BM ();
+    }
   DBGPRINTF_BM
     ("after-compilation-of-module modulob %s modgenob %s status %d",
      objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob), status);

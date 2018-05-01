@@ -486,7 +486,7 @@ do_emit_module_from_main_BM (void)
   char makemodulecmd[128];
   memset (makemodulecmd, 0, sizeof (makemodulecmd));
   snprintf (makemodulecmd, sizeof (makemodulecmd),
-            "make -f %s singlemodule MODULEID=%s", bismon_makefile,
+            "%s/build-bismon-module.sh %s", bismon_directory,
             modulidbuf);
   DBGPRINTF_BM ("do_emit_module_from_main_bm makemodulecmd=%s",
                 makemodulecmd);
