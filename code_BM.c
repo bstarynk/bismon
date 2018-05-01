@@ -2399,21 +2399,24 @@ ROUTINEOBJNAME_BM (_0XbMOJqLLPZ_1t2wg2TwPRA)    // readmacro#cond
 extern objrout_sigBM ROUTINEOBJNAME_BM (_5ZT4G2KhMyi_4mC2iDVPWQP);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_5ZT4G2KhMyi_4mC2iDVPWQP) //readmacro#wrong 
-(struct stackframe_stBM* stkf, //
- const value_tyBM arg1, //
- const value_tyBM arg2, //
- const value_tyBM arg3, //
- const value_tyBM arg4_  __attribute__((unused)), //
- const quasinode_tyBM* restargs_  __attribute__((unused)))
+ROUTINEOBJNAME_BM (_5ZT4G2KhMyi_4mC2iDVPWQP)    //readmacro#wrong 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         //
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
-  LOCALFRAME_BM (stkf, /*descr:*/ BMK_5ZT4G2KhMyi_4mC2iDVPWQP,
+  objectval_tyBM *k_basiclo_wrong = BMK_65wIF6z9pmQ_47VZsHJ6zdk;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_5ZT4G2KhMyi_4mC2iDVPWQP,
                  value_tyBM resultv;
-  );
+    );
 #warning unimplemented _5ZT4G2KhMyi_4mC2iDVPWQP routine
-  WEAKASSERT_BM(false && "unimplemented _5ZT4G2KhMyi_4mC2iDVPWQP routine");
-  LOCALRETURN_BM(_.resultv);
-} /* end routine _5ZT4G2KhMyi_4mC2iDVPWQP*/
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented readmacro#wrong  _5ZT4G2KhMyi_4mC2iDVPWQP routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end readmacro#wrong  _5ZT4G2KhMyi_4mC2iDVPWQP */
 
 
 

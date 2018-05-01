@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 329 objects
+// for 330 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -469,6 +469,20 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 ~)
 
 !)_4Af5NOOf7Qe_7KQdGPoNdJ0
+
+
+
+!(_65wIF6z9pmQ_47VZsHJ6zdk |=basiclo_wrong|
+!~ name (~ basiclo_wrong
+~)
+!@ 1525171454.31
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for wrong statements, emitting #error"
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+~)
+
+!)_65wIF6z9pmQ_47VZsHJ6zdk
 
 
 
