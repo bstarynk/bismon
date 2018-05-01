@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 325 objects
+// for 327 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -966,6 +966,32 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "in c_enum gives the computed tuple of enumerators"
 !)_7BROpIWQHzA_8b1C6i49Pkz
+
+
+
+!(_8SZxQlSMxya_4cEptWXlhiq |=erroneous_test_minifunc|
+!~ name (~ erroneous_test_minifunc
+~)
+!@ 1525166078.49
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "erroneous function, should have #error"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ ]
+!)_8SZxQlSMxya_4cEptWXlhiq
+
+
+
+!(_9kQRAaOWJ97_99Im2N6Lv0O |=erroneous_test_module|
+!~ name (~ erroneous_test_module
+~)
+!@ 1525166124.79
+!$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "a module to test compilation failure of the generated code"
+!# 1
+!& _8SZxQlSMxya_4cEptWXlhiq
+!)_9kQRAaOWJ97_99Im2N6Lv0O
 
 
 

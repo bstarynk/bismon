@@ -2832,7 +2832,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     {
       char *prevpathstr = NULL;
       asprintf (&prevpathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d~", srcdirstr,
-                modulidbuf, (int)getpid());
+                modulidbuf, (int) getpid ());
       if (prevpathstr)
         rename (srcpathstr, prevpathstr);
       free (prevpathstr), prevpathstr = NULL;
@@ -3661,9 +3661,8 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
 {
   objectval_tyBM *kk_after_load_of_module = BMK_0UHZG9vDlR2_2Aqx86LMFuq;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9le67LL7S9y_5VGpniEUNDA,
-                 value_tyBM outstrv;
-                 value_tyBM resultv; value_tyBM callingclosv;
-                 objectval_tyBM * modulob;
+                 value_tyBM outstrv; value_tyBM resultv;
+                 value_tyBM callingclosv; objectval_tyBM * modulob;
                  value_tyBM postclosv; objectval_tyBM * modgenob;
                  value_tyBM moddirstrv;
     );
@@ -3723,22 +3722,25 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
       char *prevpathstr = NULL;
       char *badpathstr = NULL;
       char *srcpathstr = NULL;
-      const char*moddirstr = bytstring_BM(_.moddirstrv);
+      const char *moddirstr = bytstring_BM (_.moddirstrv);
       asprintf (&srcpathstr, "%s/" MODULEPREFIX_BM "%s.c", moddirstr,
                 modulidbuf);
       asprintf (&prevpathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d~", moddirstr,
                 modulidbuf, (int) getpid ());
       asprintf (&badpathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d-bad~", moddirstr,
                 modulidbuf, (int) getpid ());
-      rename(srcpathstr, badpathstr);
-      rename(prevpathstr, srcpathstr);
+      rename (srcpathstr, badpathstr);
+      rename (prevpathstr, srcpathstr);
       fprintf (stderr, "compilation of module %s failed (%d=%#x);\n"
-	       "... restored previous %s with bad new source in %s\n",
-               objectdbg_BM (_.modulob), status, status, srcpathstr, badpathstr);
-      if (pthread_self () == mainthreadid_BM && gui_is_running_BM) {
-	log_printf_message_BM("restored previous %s,\n.. bad new source in %s.",
-			      srcpathstr, badpathstr);
-      }
+               "... restored previous %s with bad new source in %s\n",
+               objectdbg_BM (_.modulob), status, status, srcpathstr,
+               badpathstr);
+      if (pthread_self () == mainthreadid_BM && gui_is_running_BM)
+        {
+          log_printf_message_BM
+            ("restored previous %s,\n.. bad new source in %s.", srcpathstr,
+             badpathstr);
+        }
     }
   else
     fprintf (stderr, "successful compilation of module %s\n",
