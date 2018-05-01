@@ -2278,7 +2278,7 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0XbMOJqLLPZ_1t2wg2TwPRA);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_0XbMOJqLLPZ_1t2wg2TwPRA)    //
+ROUTINEOBJNAME_BM (_0XbMOJqLLPZ_1t2wg2TwPRA)    // readmacro#cond
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // node
  const value_tyBM arg2,         // lineno
@@ -2394,6 +2394,27 @@ ROUTINEOBJNAME_BM (_0XbMOJqLLPZ_1t2wg2TwPRA)    //
 }                               /* end ROUTINE _0XbMOJqLLPZ_1t2wg2TwPRA cond:readmacro */
 
 
+// readmacro#wrong _5ZT4G2KhMyi_4mC2iDVPWQP
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_5ZT4G2KhMyi_4mC2iDVPWQP);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_5ZT4G2KhMyi_4mC2iDVPWQP) //readmacro#wrong 
+(struct stackframe_stBM* stkf, //
+ const value_tyBM arg1, //
+ const value_tyBM arg2, //
+ const value_tyBM arg3, //
+ const value_tyBM arg4_  __attribute__((unused)), //
+ const quasinode_tyBM* restargs_  __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr:*/ BMK_5ZT4G2KhMyi_4mC2iDVPWQP,
+                 value_tyBM resultv;
+  );
+#warning unimplemented _5ZT4G2KhMyi_4mC2iDVPWQP routine
+  WEAKASSERT_BM(false && "unimplemented _5ZT4G2KhMyi_4mC2iDVPWQP routine");
+  LOCALRETURN_BM(_.resultv);
+} /* end routine _5ZT4G2KhMyi_4mC2iDVPWQP*/
+
 
 
 ////////////////
@@ -2402,7 +2423,7 @@ ROUTINEOBJNAME_BM (_0XbMOJqLLPZ_1t2wg2TwPRA)    //
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    //
+ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    // readmacro#intswitch
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // node
  const value_tyBM arg2,         // lineno
