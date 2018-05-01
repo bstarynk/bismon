@@ -582,7 +582,7 @@ void postpone_loader_module_BM (objectval_tyBM*modulobarg, struct stackframe_stB
   _.stkfram_pA.rlen = (sizeof(_) - sizeof(struct emptystackframe_stBM))/sizeof(value_tyBM);
   _.stkfram_prev = stkf;
   _.modulob = objectcast_BM(modulobarg);
-  DBGPRINTF_BM("postpone_loader_module start modulob %s", objectdbg_BM(_.modulob));
+  NONPRINTF_BM("postpone_loader_module start modulob %s", objectdbg_BM(_.modulob));
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof(modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
@@ -595,7 +595,7 @@ void postpone_loader_module_BM (objectval_tyBM*modulobarg, struct stackframe_stB
   snprintf(modulinitname, sizeof(modulinitname),
            MODULEINITPREFIX_BM "%s" MODULEINITSUFFIX_BM,
            modulidbuf);
-  DBGPRINTF_BM("postpone_loader_module modulob %s modulinitname %s",
+  NONPRINTF_BM("postpone_loader_module modulob %s modulinitname %s",
                objectdbg_BM(_.modulob), modulinitname);
   moduleinit_sigBM*modinitr = (moduleinit_sigBM*)dlsym(dlh, modulinitname);
   if (!modinitr)
@@ -604,7 +604,7 @@ void postpone_loader_module_BM (objectval_tyBM*modulobarg, struct stackframe_stB
   _.modresv = (*modinitr) (CURFRAME_BM, BMP_load_module, nullptr, nullptr, dlh);
   ASSERT_BM(_.modresv != nullptr);
   it->second.mod_data = _.modresv;
-  DBGPRINTF_BM("postpone_loader_module end modulob %s modresv %s", objectdbg_BM(_.modulob),
+  NONPRINTF_BM("postpone_loader_module end modulob %s modresv %s", objectdbg_BM(_.modulob),
                debug_outstr_value_BM(_.modresv, CURFRAME_BM, 0));
 } // end postpone_loader_module_BM
 

@@ -551,7 +551,7 @@ main (int argc, char **argv)
     nbworkjobs_BM = MINNBWORKJOBS_BM;
   else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
-  DBGPRINTF_BM ("main begin tid#%ld pid %d",
+  NONPRINTF_BM ("main begin tid#%ld pid %d",
                 (long) gettid_BM (), (int) getpid ());
   if (count_emit_has_predef_bm > 0)
     {

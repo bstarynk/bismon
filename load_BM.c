@@ -1076,7 +1076,7 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       _.firsttodo = listfirst_BM (ld->ld_todolist);
       ASSERT_BM (isclosure_BM (_.firsttodo) || isobject_BM (_.firsttodo));
       listpopfirst_BM (ld->ld_todolist);
-      DBGPRINTF_BM ("doload_BM firsttodo %s",
+      NONPRINTF_BM ("doload_BM firsttodo %s",
                     debug_outstr_value_BM (_.firsttodo, CURFRAME_BM, 0));
       apply0_BM ((value_tyBM) (_.firsttodo), CURFRAME_BM);
       todocnt++;
@@ -1213,11 +1213,11 @@ ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh)    // load_module
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
-  DBGPRINTF_BM ("load_module start modulob %s id %s callingclos %s",
+  NONPRINTF_BM ("load_module start modulob %s id %s callingclos %s",
                 objectdbg_BM (_.modulob), modulidbuf,
                 debug_outstr_value_BM (_.callingclosv, CURFRAME_BM, 0));
   ASSERT_BM (_.modulob);
   postpone_loader_module_BM (_.modulob, CURFRAME_BM);
-  DBGPRINTF_BM ("load_module end modulob %s", objectdbg_BM (_.modulob));
+  NONPRINTF_BM ("load_module end modulob %s", objectdbg_BM (_.modulob));
   LOCALRETURN_BM (_.modulob);
 }                               /* end load_module _3j4mbvFJZzA_9ucKetDMbdh */

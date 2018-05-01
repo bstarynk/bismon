@@ -3850,7 +3850,7 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
   _.arg1v = arg1;
   _.arg2v = arg2;
   _.arg3v = arg3;
-  DBGPRINTF_BM
+  NONPRINTF_BM
     ("simple_module_initialize start modulid %s arg1 %s arg2 %s arg3 %s",
      modulid, debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
@@ -3879,7 +3879,7 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
         nbroutid = ix;
         break;
       };
-  DBGPRINTF_BM
+  NONPRINTF_BM
     ("simple_module_initialize modulid %s nbconstid %u, nbroutid %u.",
      modulid, nbconstid, nbroutid);
   for (unsigned oix = 0; oix < nbconstid; oix++)
@@ -3927,7 +3927,7 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
       _.routob->ob_sig = BMP_function_sig;
     }
   _.routupv = maketuple_BM (routarr, nbroutid);
-  DBGPRINTF_BM ("simple_module_initialize ending modulob %s modulid %s\n" ".. constset %s\n" ".. routup %s\n" ".. arg1 %s arg2 %s arg3 %s\n", objectdbg_BM (_.modulob), modulid,        //
+  NONPRINTF_BM ("simple_module_initialize ending modulob %s modulid %s\n" ".. constset %s\n" ".. routup %s\n" ".. arg1 %s arg2 %s arg3 %s\n", objectdbg_BM (_.modulob), modulid,        //
                 debug_outstr_value_BM (_.constsetv, CURFRAME_BM, 0),    //
                 debug_outstr_value_BM (_.routupv, CURFRAME_BM, 0),      //
                 debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),        //
