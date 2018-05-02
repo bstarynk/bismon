@@ -1068,33 +1068,62 @@ failure:
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0Jvu8JxkNZZ_6K0zshkn9cP);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_0Jvu8JxkNZZ_6K0zshkn9cP) // miniscan_stmt°basiclo_wrong
-(struct stackframe_stBM* stkf, //
- const value_tyBM arg1, // recvob
- const value_tyBM arg2, // routprepob
- const value_tyBM arg3, // depth
- const value_tyBM arg4, // fromob
- const quasinode_tyBM* restargs_  __attribute__((unused)))
+ROUTINEOBJNAME_BM (_0Jvu8JxkNZZ_6K0zshkn9cP)    // miniscan_stmt°basiclo_wrong
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // recvob
+ const value_tyBM arg2,         // routprepob
+ const value_tyBM arg3,         // depth
+ const value_tyBM arg4,         // fromob
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
-  LOCALFRAME_BM (stkf, /*descr:*/ BMK_0Jvu8JxkNZZ_6K0zshkn9cP,
-		 objectval_tyBM* recvob;
-		 objectval_tyBM* routprepob;
-		 objectval_tyBM* fromob;
-                 value_tyBM resultv;
-  );
-  _.recvob = objectcast_BM(arg1);
-  WEAKASSERT_BM(_.recvob);
-  if (!_.recvob) LOCALRETURN_BM(NULL);
-  _.routprepob = objectcast_BM(arg2);
-  WEAKASSERT_BM(_.routprepob);
-  if (!_.routprepob) LOCALRETURN_BM(NULL);
-  _.fromob = objectcast_BM(arg3);
-  WEAKASSERT_BM(_.fromob);
-  if (!_.fromob) LOCALRETURN_BM(NULL);
-#warning unimplemented _0Jvu8JxkNZZ_6K0zshkn9cP routine
-  WEAKASSERT_BM(false && "unimplemented _0Jvu8JxkNZZ_6K0zshkn9cP routine");
-  LOCALRETURN_BM(_.resultv);
-} /* end miniscan_stmt°basiclo_wrong _0Jvu8JxkNZZ_6K0zshkn9cP*/
+  const objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
+  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_0Jvu8JxkNZZ_6K0zshkn9cP,
+                 objectval_tyBM * recvob;       //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * fromob;       //
+                 value_tyBM resultv;    //
+                 value_tyBM subexpv;    //
+                 objectval_tyBM * subtypob;     //
+                 value_tyBM causev;     //
+                 value_tyBM errorv;     //
+    );
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
+  _.recvob = objectcast_BM (arg1);
+  WEAKASSERT_BM (_.recvob);
+  if (!_.recvob)
+    LOCALRETURN_BM (NULL);
+  _.routprepob = objectcast_BM (arg2);
+  WEAKASSERT_BM (_.routprepob);
+  if (!_.routprepob)
+    LOCALRETURN_BM (NULL);
+  _.fromob = objectcast_BM (arg3);
+  WEAKASSERT_BM (_.fromob);
+  if (!_.fromob)
+    LOCALRETURN_BM (NULL);
+  unsigned nbsons = objnbcomps_BM (_.recvob);
+  for (unsigned ix = 0; ix < nbsons; ix++)
+    {
+      _.subexpv = objgetcomp_BM (_.recvob, ix);
+      _.subtypob =
+        miniscan_expr_BM (_.subexpv, _.routprepob, 0, _.recvob, CURFRAME_BM);
+      if (!_.subtypob)
+        FAILHERE (makenode2_BM (k_curcomp, _.subexpv, taggedint_BM (ix)));
+    }
+  LOCALRETURN_BM (_.recvob);
+failure:
+#undef FAILHERE
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_wrong failin %d recvob %s, routprepob %s, fromob %s, cause %s",
+     failin, objectdbg_BM (_.recvob), objectdbg1_BM (_.routprepob),
+     objectdbg2_BM (_.fromob), debug_outstr_value_BM (_.causev, CURFRAME_BM,
+                                                      0));
+  _.errorv =
+    (value_tyBM) makenode4_BM (k_miniscan_stmt, _.recvob, _.routprepob,
+                               _.fromob, _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end miniscan_stmt°basiclo_wrong _0Jvu8JxkNZZ_6K0zshkn9cP */
 
 
 
