@@ -1060,8 +1060,45 @@ failure:
 }                               /* end  miniscan_stmt°basiclo_return  _7vlMCZ0yvva_6tx0lFlqBG8 */
 
 
+////////////////
 
 
+// miniscan_stmt°basiclo_wrong _0Jvu8JxkNZZ_6K0zshkn9cP
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_0Jvu8JxkNZZ_6K0zshkn9cP);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_0Jvu8JxkNZZ_6K0zshkn9cP) // miniscan_stmt°basiclo_wrong
+(struct stackframe_stBM* stkf, //
+ const value_tyBM arg1, // recvob
+ const value_tyBM arg2, // routprepob
+ const value_tyBM arg3, // depth
+ const value_tyBM arg4, // fromob
+ const quasinode_tyBM* restargs_  __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr:*/ BMK_0Jvu8JxkNZZ_6K0zshkn9cP,
+		 objectval_tyBM* recvob;
+		 objectval_tyBM* routprepob;
+		 objectval_tyBM* fromob;
+                 value_tyBM resultv;
+  );
+  _.recvob = objectcast_BM(arg1);
+  WEAKASSERT_BM(_.recvob);
+  if (!_.recvob) LOCALRETURN_BM(NULL);
+  _.routprepob = objectcast_BM(arg2);
+  WEAKASSERT_BM(_.routprepob);
+  if (!_.routprepob) LOCALRETURN_BM(NULL);
+  _.fromob = objectcast_BM(arg3);
+  WEAKASSERT_BM(_.fromob);
+  if (!_.fromob) LOCALRETURN_BM(NULL);
+#warning unimplemented _0Jvu8JxkNZZ_6K0zshkn9cP routine
+  WEAKASSERT_BM(false && "unimplemented _0Jvu8JxkNZZ_6K0zshkn9cP routine");
+  LOCALRETURN_BM(_.resultv);
+} /* end miniscan_stmt°basiclo_wrong _0Jvu8JxkNZZ_6K0zshkn9cP*/
+
+
+
+////////////////////////////////////////////////////////////////
 
 // emit_declaration°simple_routine_preparation _9M3BqmOS7mA_96DTa52k7Xq
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq);
