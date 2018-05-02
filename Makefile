@@ -117,7 +117,8 @@ checksum:
 ## to be used from C code as 'make indentsinglemodule MODULEID=<id>'
 ## in emit_module°plain_module
 ## for example 'make indentsinglemodule MODULEID=_9oXtCgAbkqv_4y1xhhF5Nhz'
-## bismon would have made the backup modules/modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c-
+## bismon would have perhaps passed a PREVIOUSMODULESOURCE
+## see function emit_module°plain_module _1gME6zn82Kf_8hzWibLFRfz in gencode_BM.c
 indentsinglemodule:
 	@if [ ! -f modules/modbm$(MODULEID).c ]; then \
 	   echo missing modules/modbm$(MODULEID).c; exit 1 ; fi ; \
@@ -127,9 +128,10 @@ indentsinglemodule:
 	$(INDENT) $(INDENTFLAGS) $$ms; \
 	if cmp -s $$ms "$$ms%" ; then echo unchanged module $$ms ; mv "$$ms%" $$ms ; \
 	  else echo '*indented module ' $$ms ; fi
-	@if [ -f "$PREVIOUSMODULESOURCE" ] && cmp -s "$PREVIOUSMODULESOURCE" modules/modbm$(MODULEID).c ; then \
-	  mv "$PREVIOUSMODULESOURCE" modules/modbm$(MODULEID).c ; \
-	  echo same as previous module modules/modbm$(MODULEID).c \
+	@if [ -f "$(PREVIOUSMODULESOURCE)" ] && cmp -s "$(PREVIOUSMODULESOURCE)" modules/modbm$(MODULEID).c ; then \
+	  mv "$(PREVIOUSMODULESOURCE)" modules/modbm$(MODULEID).c ; \
+	  echo same as previous modules/modbm$(MODULEID).c ; \
+	else echo '**previous'  "$(PREVIOUSMODULESOURCE)" different of  modules/modbm$(MODULEID).c ; \
 	fi
 
 ## to be used from C code as 'make singlemodule MODULEID=<id>'
