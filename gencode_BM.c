@@ -354,8 +354,13 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
            objectdbg3_BM (objclass_BM (_.bodyob)));
         FAILHERE (makenode2_BM (k_body, _.bodyob, _.recv));
       }
-    _.msblov = send3_BM (_.bodyob, k_miniscan_block,
-                         CURFRAME_BM, _.routprepob, taggedint_BM (0), _.recv);
+    DBGPRINTF_BM
+      ("prepare_routine°basiclo_minifunction recv %s before send miniscan_block to body %s routprepob %s",
+       objectdbg_BM (_.recv), objectdbg1_BM (_.bodyob),
+       objectdbg2_BM (_.routprepob));
+    _.msblov =
+      send3_BM (_.bodyob, k_miniscan_block, CURFRAME_BM, _.routprepob,
+                taggedint_BM (0), _.recv);
     objunlock_BM (_.bodyob);
   }
   if (!_.msblov)
