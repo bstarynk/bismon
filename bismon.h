@@ -60,6 +60,7 @@ using std::atomic_store;
 #include <termios.h>
 #include <sys/ioctl.h>
 #include <elf.h>
+#include <errno.h>
 
 #include <sys/syscall.h>
 #include <unistd.h>
