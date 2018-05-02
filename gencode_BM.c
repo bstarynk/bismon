@@ -19,6 +19,22 @@
 #include "bismon.h"
 #include "gencode_BM.const.h"
 
+static const char *
+asprintf_prev_module_BM (const char *srcdir, objectval_tyBM * obmodule)
+{
+  char *pathstr = NULL;
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof (modulidbuf));
+  ASSERT_BM (srcdir && strlen (srcdir) > 0);
+  ASSERT_BM (isobject_BM (obmodule));
+  idtocbuf32_BM (objid_BM (obmodule), modulidbuf);
+  asprintf (&pathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d~",
+            srcdir, modulidbuf, (int) getpid ());
+  if (!pathstr)
+    FATAL_BM ("failed asprintf_prev_module srcdir %s obmodule %s - %m",
+              srcdir, objectdbg_BM (obmodule));
+  return pathstr;
+}                               /* end asprintf_prev_module_BM */
 
 
 
@@ -2904,8 +2920,12 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                  value_tyBM closgenv; value_tyBM srcdirstrv;
                  value_tyBM causev;
     );
+  // all these are heap allocated, e.g. strdup-ed or asprintf-ed
   char *srcdirstr = NULL;
+  char *pardirstr = NULL;
+  char *realpardirstr = NULL;
   char *srcpathstr = NULL;
+  char *prevsrcpathstr = NULL;
   objectval_tyBM *k_simple_module_generation = BMK_2HlKptD03wA_7JJCG7lN5nS;
   objectval_tyBM *k_prepare_module = BMK_17mrxkMdNtH_2CduQ2WDIy5;
   objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
@@ -2938,6 +2958,22 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   if (!srcdirstr)
     FATAL_BM ("failed to compute source dir for module %s - %m",
               objectdbg_BM (_.modulob));
+  if (g_mkdir_with_parents (srcdirstr, 0750))
+    {
+      fprintf (stderr, "cannot mkdir with parents %s (%m)\n", srcdirstr);
+      FAILHERE (makestring_BM (srcdirstr));
+    }
+  {
+    char *realsrcdirstr = realpath (srcdirstr, NULL);
+    if (!realsrcdirstr || !strchr (realsrcdirstr, '/'))
+      FATAL_BM
+        ("failed to compute real source dir for module %s from srcdirstr %s - %m",
+         objectdbg_BM (_.modulob), srcdirstr);
+    char *lastslash = strrchr (realsrcdirstr, '/');
+    ASSERT_BM (lastslash != NULL);
+    *lastslash = (char) 0;
+    realpardirstr = realsrcdirstr;
+  }
   _.modgenob = makeobj_BM ();
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
@@ -3004,31 +3040,42 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                              "// end of generated module %s in file "
                              MODULEPREFIX_BM "%s.c\n",
                              objectdbg_BM (_.modulob), modulidbuf);
-  if (g_mkdir_with_parents (srcdirstr, 0750))
-    {
-      fprintf (stderr, "cannot mkdir with parents %s (%m)\n", srcdirstr);
-      FAILHERE (makestring_BM (srcdirstr));
-    }
   asprintf (&srcpathstr, "%s/" MODULEPREFIX_BM "%s.c", srcdirstr, modulidbuf);
   if (!srcpathstr)
     FATAL_BM ("failed to allocate srcpathstr dir %s modulidbuf %s", srcdirstr,
               modulidbuf);
   if (!access (srcpathstr, F_OK))
     {
-      char *prevpathstr = NULL;
-      asprintf (&prevpathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d~", srcdirstr,
-                modulidbuf, (int) getpid ());
-      if (prevpathstr)
-        rename (srcpathstr, prevpathstr);
-      free (prevpathstr), prevpathstr = NULL;
+      prevsrcpathstr = asprintf_prev_module_BM (realpardirstr, _.modulob);
+      DBGPRINTF_BM ("emit_module°plain_module prevsrcpathstr=%s",
+                    prevsrcpathstr);
+      if (rename (srcpathstr, prevsrcpathstr))
+        FATAL_BM ("failed to rename %s -> %s - %m", srcpathstr,
+                  prevsrcpathstr);
     }
   objstrbufferwritetofilepayl_BM (_.modgenob, srcpathstr);
   {
     char *indentcmdstr = NULL;
-    asprintf (&indentcmdstr, "%s/build-bismon-module.sh %s",
-              bismon_directory, modulidbuf);
+    char *quotpardir = g_shell_quote (realpardirstr);
+    if (prevsrcpathstr)
+      {
+        char *quotprev = g_shell_quote (prevsrcpathstr);
+        asprintf (&indentcmdstr,
+                  "make -f %s -C %s indentsinglemodule MODULEID=%s PREVIOUSMODULESOURCE=%s",
+                  bismon_makefile, quotpardir, modulidbuf, quotprev);
+        g_free (quotprev);
+      }
+    else
+      asprintf (&indentcmdstr,
+                "make -f %s -C %s indentsinglemodule MODULEID=%s",
+                bismon_makefile, quotpardir, modulidbuf);
     if (!indentcmdstr)
       FATAL_BM ("failed to build indent command modulidbuf %s", modulidbuf);
+    g_free (quotpardir), quotpardir = NULL;
+    int fd = open (srcpathstr, O_RDONLY);
+    if (fd < 0)
+      FATAL_BM ("failed to open %s - %m", srcpathstr);
+    flock (fd, LOCK_EX);
     DBGPRINTF_BM ("emit_module°plain_module indentcmdstr=%s", indentcmdstr);
     fflush (NULL);
     /// indent run quite quickly enough, often in a few dozens of milliseconds
@@ -3040,6 +3087,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
            indentcmdstr, cmdcod);
         FAILHERE (makestring_BM (indentcmdstr));
       }
+    flock (fd, LOCK_UN);
+    close (fd);
     free (indentcmdstr), indentcmdstr = NULL;
   }
   const char *modulname = findobjectname_BM (_.modulob);
@@ -3069,13 +3118,22 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     free (srcpathstr), srcpathstr = NULL;
   if (srcdirstr)
     free (srcdirstr), srcdirstr = NULL;
+  if (realpardirstr)
+    free (realpardirstr), realpardirstr = NULL;
+  if (prevsrcpathstr)
+    free (prevsrcpathstr), prevsrcpathstr = NULL;
   LOCALRETURN_BM (_.modgenob);
 failure:
   if (srcdirstr)
     free (srcdirstr), srcdirstr = NULL;
   if (srcpathstr)
     free (srcpathstr), srcpathstr = NULL;
-  DBGPRINTF_BM ("emit_module°plain_module failin %d cause %s", failin,
+  if (realpardirstr)
+    free (realpardirstr), realpardirstr = NULL;
+  if (prevsrcpathstr)
+    free (prevsrcpathstr), prevsrcpathstr = NULL;
+  DBGPRINTF_BM ("emit_module°plain_module modulob %s failin %d cause %s",
+                failin, objectdbg_BM (_.modulob),
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode3_BM (BMP_emit_module, _.modulob, _.modgenob,
