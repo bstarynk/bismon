@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 333 objects
+// for 335 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1319,7 +1319,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !(_2nl9zcaSUwe_8UBiMp1OuMk |=identity_minifunc|
 !~ name (~ identity_minifunc
 ~)
-!@ 1525286696.54
+!@ 1525287028.00
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the identity minifunc, returning its first argument"
@@ -1327,6 +1327,8 @@ _0vgCFjXblkx_4zCMhMAWjVK
  [ _3vRFuniDv1K_4bQ7DeekM2I ]
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3qw9bnATIhq_8loBraLeXzQ
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_0CsCkIkpNX6_52gRCYPcnW2
 !)_2nl9zcaSUwe_8UBiMp1OuMk
 
 
@@ -2510,6 +2512,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_01p2tksvq9A_1b8os2WLues
+!@ 1525287028.00
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _2DH0ucElTgh_62vxjxLcfev ( _3vRFuniDv1K_4bQ7DeekM2I)
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+_3vRFuniDv1K_4bQ7DeekM2I
+!)_01p2tksvq9A_1b8os2WLues
+
+
+
 !(_075tZNHCAMa_7XNNBaNM4qv
 !|*
 !@ 1502085467.42
@@ -2637,6 +2650,17 @@ _8c9otZ4pwR6_55k81qyyYV2 _2lCuMosXupr_5GAoqVgJ8PZ
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value an object"
 !)_0BAnB0xjs23_0WEOCOi5Nbe
+
+
+
+!(_0CsCkIkpNX6_52gRCYPcnW2
+!@ 1525287028.00
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _2U8Sj78DMbl_5eerKpaJsNq ( _01p2tksvq9A_1b8os2WLues)
+!# 1
+!& _01p2tksvq9A_1b8os2WLues
+!)_0CsCkIkpNX6_52gRCYPcnW2
 
 
 
