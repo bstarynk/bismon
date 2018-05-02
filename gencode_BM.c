@@ -1099,6 +1099,7 @@ ROUTINEOBJNAME_BM (_0Jvu8JxkNZZ_6K0zshkn9cP)    // miniscan_stmt°basiclo_wrong
 {
   const objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
+  objectval_tyBM *k_origin = BMK_1xhcI0ZnQ6f_5xOLATXqawx;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0Jvu8JxkNZZ_6K0zshkn9cP,
                  objectval_tyBM * recvob;       //
                  objectval_tyBM * routprepob;   //
@@ -1112,16 +1113,18 @@ ROUTINEOBJNAME_BM (_0Jvu8JxkNZZ_6K0zshkn9cP)    // miniscan_stmt°basiclo_wrong
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
   _.recvob = objectcast_BM (arg1);
-  WEAKASSERT_BM (_.recvob);
-  if (!_.recvob)
-    LOCALRETURN_BM (NULL);
   _.routprepob = objectcast_BM (arg2);
+  int depth = getint_BM (arg3);
+  _.fromob = objectcast_BM (arg4);
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_wrong start recvob %s routprepob %s depth %d fromob %s", objectdbg1_BM (_.recvob), objectdbg2_BM (_.routprepob), depth, //
+                objectdbg3_BM (_.fromob));
+  if (!_.fromob)
+    FAILHERE (k_origin);
+  WEAKASSERT_BM (_.recvob);
+  if (!_.routprepob)
+    FAILHERE (NULL);
   WEAKASSERT_BM (_.routprepob);
   if (!_.routprepob)
-    LOCALRETURN_BM (NULL);
-  _.fromob = objectcast_BM (arg3);
-  WEAKASSERT_BM (_.fromob);
-  if (!_.fromob)
     LOCALRETURN_BM (NULL);
   unsigned nbsons = objnbcomps_BM (_.recvob);
   for (unsigned ix = 0; ix < nbsons; ix++)
@@ -1132,6 +1135,8 @@ ROUTINEOBJNAME_BM (_0Jvu8JxkNZZ_6K0zshkn9cP)    // miniscan_stmt°basiclo_wrong
       if (!_.subtypob)
         FAILHERE (makenode2_BM (k_curcomp, _.subexpv, taggedint_BM (ix)));
     }
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_wrong end recvob %s",
+                objectdbg_BM (_.recvob));
   LOCALRETURN_BM (_.recvob);
 failure:
 #undef FAILHERE
@@ -2823,10 +2828,6 @@ ROUTINEOBJNAME_BM (_1EFhqSytjSK_9Uchza7qmUD)    //emit_statement°basiclo_wrong
   _.stmtob = objectcast_BM (arg1);
   _.modgenob = objectcast_BM (arg2);
   _.routprepob = objectcast_BM (arg3);
-  WEAKASSERT_BM (_.stmtob);
-  WEAKASSERT_BM (_.modgenob);
-  WEAKASSERT_BM (_.routprepob);
-  WEAKASSERT_BM (istaggedint_BM (arg4));
   int depth = getint_BM (arg4);
   bool gotmessage = false;
   int failin = -1;
@@ -2835,6 +2836,10 @@ ROUTINEOBJNAME_BM (_1EFhqSytjSK_9Uchza7qmUD)    //emit_statement°basiclo_wrong
     ("emit_statement°basiclo_wrong start stmtob=%s modgenob=%s routprepob=%s depth#%d",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
      objectdbg2_BM (_.routprepob), depth);
+  WEAKASSERT_BM (_.stmtob);
+  WEAKASSERT_BM (_.modgenob);
+  WEAKASSERT_BM (_.routprepob);
+  WEAKASSERT_BM (istaggedint_BM (arg4));
   int stmtlen = objnbcomps_BM (_.stmtob);
   _.firstsubexpv = objgetcomp_BM (_.stmtob, 0);
   char stmtidbuf[32];
