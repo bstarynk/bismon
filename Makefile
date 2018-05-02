@@ -45,7 +45,7 @@ clean:
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
 	$(RM) core* *.i *.ii *prof.out gmon.out
 	$(RM) *_BM.const.h _bm_allconsts.c
-	$(RM) modules/*.so modules/*.i bismon
+	$(RM) modules/*.so modules/*.i modules/*% modules/*~ modules/*- bismon
 	$(RM) $(patsubst %.md,%.html, $(MARKDOWN_SOURCES))
 
 indent: .indent.pro
@@ -125,9 +125,12 @@ indentsinglemodule:
 	cp -a $$ms "$$ms%"; \
 	$(INDENT) $(INDENTFLAGS) $$ms; \
 	$(INDENT) $(INDENTFLAGS) $$ms; \
-	if cmp -s $$ms $$ms- ; then echo unchanged module $$ms ; mv $$ms- $$ms ; \
-	  else echo '*indented module ' $$ms ; fi 
-
+	if cmp -s $$ms "$$ms%" ; then echo unchanged module $$ms ; mv "$$ms%" $$ms ; \
+	  else echo '*indented module ' $$ms ; fi
+	@if [ -f "$PREVIOUSMODULESOURCE" ] && cmp -s "$PREVIOUSMODULESOURCE" modules/modbm$(MODULEID).c ; then \
+	  mv "$PREVIOUSMODULESOURCE" modules/modbm$(MODULEID).c ; \
+	  echo same as previous module modules/modbm$(MODULEID).c \
+	fi
 
 ## to be used from C code as 'make singlemodule MODULEID=<id>'
 singlemodule:
