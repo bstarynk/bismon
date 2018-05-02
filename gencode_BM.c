@@ -3918,7 +3918,9 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   _.moddirstrv = closurenthson_BM (_.callingclosv, 2);
   DBGPRINTF_BM ("start after-compilation-of-module status %d outstr %s callingclos %s\n"        //
                 ".. modulob=%s modgenob=%s moddirstr=%s\n", status,     //
-                debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0), debug_outstr_value_BM (_.callingclosv, CURFRAME_BM, 0), objectdbg_BM (_.modulob), objectdbg2_BM (_.modgenob),        //
+                debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0),      //
+                debug_outstr_value_BM (_.callingclosv, CURFRAME_BM, 0), //
+                objectdbg_BM (_.modulob), objectdbg2_BM (_.modgenob),   //
                 debug_outstr_value_BM (_.moddirstrv, CURFRAME_BM, 0));
   WEAKASSERT_BM (_.modulob);
   WEAKASSERT_BM (_.modgenob);
@@ -3960,30 +3962,39 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
           ("+++++ (%d bytes)\n%s\n----- compile log of %s\n", lenout,
            bytstring_BM (_.outstrv), objectdbg_BM (_.modulob));
     }
+  char *prevpathstr = NULL;
+  char *srcpathstr = NULL;
   if (status)
     {
-      char *prevpathstr = NULL;
+      int err = 0;
       char *badpathstr = NULL;
-      char *srcpathstr = NULL;
       const char *moddirstr = bytstring_BM (_.moddirstrv);
       asprintf (&srcpathstr, "%s/" MODULEPREFIX_BM "%s.c", moddirstr,
                 modulidbuf);
-      asprintf (&prevpathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d~", moddirstr,
-                modulidbuf, (int) getpid ());
+      prevpathstr = asprintf_prev_module_BM (moddirstr, _.modulob);
       asprintf (&badpathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d-bad~", moddirstr,
                 modulidbuf, (int) getpid ());
       rename (srcpathstr, badpathstr);
-      rename (prevpathstr, srcpathstr);
+      if (rename (prevpathstr, srcpathstr))
+        err = errno;
       fprintf (stderr, "compilation of module %s failed (%d=%#x);\n"
-               "... restored previous %s with bad new source in %s\n",
+               "... restored previous %s from %s with bad new source in %s\n",
                objectdbg_BM (_.modulob), status, status, srcpathstr,
-               badpathstr);
+               prevpathstr, badpathstr);
+      if (err > 0)
+        fprintf (stderr, "... renaming %s -> %s failed with %s\n",
+                 prevpathstr, srcpathstr, strerror (err));
       if (pthread_self () == mainthreadid_BM && gui_is_running_BM)
         {
           log_printf_message_BM
-            ("restored previous %s,\n.. bad new source in %s.", srcpathstr,
-             badpathstr);
+            ("restored previous %s from %s,\n.. bad new source in %s.\n",
+             srcpathstr, prevpathstr, badpathstr);
+          if (err > 0)
+            log_printf_message_BM
+              ("... renaming %s -> %s failed with %s\n",
+               prevpathstr, srcpathstr, strerror (err));
         }
+      free (badpathstr), badpathstr = NULL;
     }
   else
     fprintf (stderr, "successful compilation of module %s\n",
@@ -3995,6 +4006,25 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   DBGPRINTF_BM
     ("after-compilation-of-module modulob %s modgenob %s status %d",
      objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob), status);
+  if (prevpathstr && srcpathstr && !access (prevpathstr, F_OK))
+    {
+      char *bak1pathstr = NULL;
+      char *bak2pathstr = NULL;
+      asprintf (&bak1pathstr, "%s~%%", srcpathstr);
+      asprintf (&bak2pathstr, "%s~%%~", srcpathstr);
+      (void) rename (bak1pathstr, bak2pathstr);
+      DBGPRINTF_BM
+        ("after-compilation-of-module modulob %s prevpathstr %s bak1pathstr %s bak2pathstr %s",
+         objectdbg_BM (_.modulob), prevpathstr, bak1pathstr, bak2pathstr);
+      if (rename (prevpathstr, bak1pathstr))
+        FATAL_BM
+          ("after-compilation-of-modgenob %s failed to rename %s -> %s",
+           objectdbg_BM (_.modulob), prevpathstr, bak1pathstr);
+    }
+  if (prevpathstr)
+    free (prevpathstr), prevpathstr = NULL;
+  if (srcpathstr)
+    free (srcpathstr), srcpathstr = NULL;
   if (status)
     LOCALRETURN_BM (NULL);
   _.postclosv =
@@ -4213,8 +4243,9 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
   fprintf (stderr,
            "initialized simple module %s /%s with %u constants and %u routines\n",
            objectdbg_BM (_.modulob), modulid, nbconstid, nbroutid);
-  return makenode5_BM (k_simple_module_initialize, _.constsetv, _.routupv,
-                       _.arg1v, _.arg2v, _.arg3v);
+  return (value_tyBM)
+    makenode5_BM (k_simple_module_initialize, _.constsetv, _.routupv,
+                  _.arg1v, _.arg2v, _.arg3v);
 }                               /* end simple_module_initialize_BM */
 
 
