@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 335 objects
+// for 337 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -988,12 +988,16 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 !(_8SZxQlSMxya_4cEptWXlhiq |=erroneous_test_minifunc|
 !~ name (~ erroneous_test_minifunc
 ~)
-!@ 1525166078.49
+!@ 1525288559.76
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "erroneous function, should have #error"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_25bploLipYh_5nORxlMICy7
 !)_8SZxQlSMxya_4cEptWXlhiq
 
 
@@ -2885,6 +2889,17 @@ _3XBrePAliOo_37VlAqBsb5C) ~)
 
 
 
+!(_25bploLipYh_5nORxlMICy7
+!@ 1525288559.76
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _2U8Sj78DMbl_5eerKpaJsNq ( _9OaqU9Z1t4g_69oyWJH6jD3)
+!# 1
+!& _9OaqU9Z1t4g_69oyWJH6jD3
+!)_25bploLipYh_5nORxlMICy7
+
+
+
 !(_26FUvWKvkYr_5hyqhhV8NEh
 !|*
 !@ 1508144005.43
@@ -3908,6 +3923,18 @@ _0UHZG9vDlR2_2Aqx86LMFuq
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method add\u00b0hashsetval_object"
 !)_9O4E8Tcc2Fq_8MXrM73GJCM
+
+
+
+!(_9OaqU9Z1t4g_69oyWJH6jD3
+!$_65wIF6z9pmQ_47VZsHJ6zdk |=basiclo_wrong|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _2qtlhVU3gil_1SmwpjiT7Jm (  "wrong body in erroneous_test_minifunc" _3qw9bnATIhq_8loBraLeXzQ  123)
+!# 3
+!&  "wrong body in erroneous_test_minifunc"
+!& _3qw9bnATIhq_8loBraLeXzQ
+!&  123
+!)_9OaqU9Z1t4g_69oyWJH6jD3
 
 
 
