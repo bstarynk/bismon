@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 332 objects
+// for 333 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1313,6 +1313,21 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !@ 1508225843.52
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_7WjaQkqwdaZ_6PRtbDrJHnf
+
+
+
+!(_2nl9zcaSUwe_8UBiMp1OuMk |=identity_minifunc|
+!~ name (~ identity_minifunc
+~)
+!@ 1525286696.54
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the identity minifunc, returning its first argument"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _3vRFuniDv1K_4bQ7DeekM2I ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!)_2nl9zcaSUwe_8UBiMp1OuMk
 
 
 
