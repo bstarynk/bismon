@@ -1007,9 +1007,10 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
  "a module to test compilation failure of the generated code"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _8SZxQlSMxya_4cEptWXlhiq }
-!# 2
-!& _8SZxQlSMxya_4cEptWXlhiq
+!# 1
 !& _2nl9zcaSUwe_8UBiMp1OuMk
+ // emitted module modbm_9kQRAaOWJ97_99Im2N6Lv0O.c
+
 !)_9kQRAaOWJ97_99Im2N6Lv0O
 
 
