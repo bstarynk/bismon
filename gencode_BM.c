@@ -2778,18 +2778,109 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_1EFhqSytjSK_9Uchza7qmUD);
 value_tyBM
 ROUTINEOBJNAME_BM (_1EFhqSytjSK_9Uchza7qmUD)    //emit_statement°basiclo_wrong 
 (struct stackframe_stBM * stkf, //
- const value_tyBM arg1,         //
- const value_tyBM arg2,         //
- const value_tyBM arg3,         //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const value_tyBM arg1,         // stmtob
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // routprepob
+ const value_tyBM arg4,         // depth
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
+  objectval_tyBM *k_wrong = BMK_2qtlhVU3gil_1SmwpjiT7Jm;
+  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
+  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_1EFhqSytjSK_9Uchza7qmUD,
-                 value_tyBM resultv;
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * routob;       //
+                 value_tyBM * subexpv;  //
+                 value_tyBM * firstsubexpv;     //
+                 objectval_tyBM * subtypob;     //
+                 value_tyBM resultv;    //
+                 value_tyBM errorv;     //
+                 value_tyBM causev;     //
     );
-#warning unimplemented _1EFhqSytjSK_9Uchza7qmUD routine
-  WEAKASSERT_BM (false && "unimplemented _1EFhqSytjSK_9Uchza7qmUD routine");
-  LOCALRETURN_BM (_.resultv);
+  _.stmtob = objectcast_BM (arg1);
+  _.modgenob = objectcast_BM (arg2);
+  _.routprepob = objectcast_BM (arg3);
+  WEAKASSERT_BM (_.stmtob);
+  WEAKASSERT_BM (_.modgenob);
+  WEAKASSERT_BM (_.routprepob);
+  WEAKASSERT_BM (istaggedint_BM (arg4));
+  int depth = getint_BM (arg4);
+  bool gotmessage = false;
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_wrong start stmtob=%s modgenob=%s routprepob=%s depth#%d",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth);
+  int stmtlen = objnbcomps_BM (_.stmtob);
+  _.firstsubexpv = objgetcomp_BM (_.stmtob, 0);
+  char stmtidbuf[32];
+  memset (stmtidbuf, 0, sizeof (stmtidbuf));
+  idtocbuf32_BM (objid_BM (_.stmtob), stmtidbuf);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbuffernewlinepayl_BM (_.modgenob);
+  objstrbufferprintfpayl_BM (_.modgenob, "{ // wrong %s\n", stmtidbuf);
+  if (isstring_BM (_.firstsubexpv))
+    {
+      gotmessage = true;
+      objstrbufferprintfpayl_BM (_.modgenob, "#error wrong %s: ", stmtidbuf);
+      objstrbufferencodedcpayl_BM (_.modgenob, bytstring_BM (_.firstsubexpv),
+                                   lenstring_BM (_.firstsubexpv));
+      objstrbuffernewlinepayl_BM (_.modgenob);
+    }
+  else
+    {
+      objstrbuffernewlinepayl_BM (_.modgenob);
+      objstrbufferprintfpayl_BM (_.modgenob, "#error wrong %s\n", stmtidbuf);
+    }
+  for (int ix = gotmessage ? 1 : 0; ix < stmtlen; ix++)
+    {
+      _.subexpv = objgetcomp_BM (_.stmtob, ix);
+      _.subtypob =
+        miniscan_expr_BM (_.subexpv, _.routprepob, depth, _.stmtob,
+                          CURFRAME_BM);
+      if (!_.subtypob)
+        FAILHERE (makenode2_BM (k_curcomp, _.subexpv, taggedint_BM (ix)));
+      objstrbufferprintfpayl_BM (_.modgenob, "// wrong %s #%d typed %s:\n",
+                                 stmtidbuf, ix, objectdbg_BM (_.subtypob));
+      char *submsg =
+        strdup (debug_outstr_value_BM (_.subexpv, CURFRAME_BM, 0));
+      if (!submsg)
+        FATAL_BM ("failed to strdup wrong %s arg #%d", stmtidbuf, ix);
+      char *nextline = NULL;
+      for (char *pc = submsg; pc != NULL && *pc != 0; pc = nextline)
+        {
+          nextline = NULL;
+          const char *nl = strchr (pc, '\n');
+          if (nl)
+            nextline = (char *) nl + 1;
+          const char *ret = strchr (pc, '\r');
+          if (ret && ret < nextline)
+            nextline = (char *) ret + 1;
+          const char *ff = strchr (pc, '\f');
+          if (ff && ff < nextline)
+            nextline = (char *) ff + 1;
+          if (nextline && nextline > submsg)
+            nextline[-1] = (char) 0;
+          objstrbufferprintfpayl_BM (_.modgenob, "//// %s\n", pc);
+        }
+      free (submsg);
+    }
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbuffernewlinepayl_BM (_.modgenob);
+  objstrbufferprintfpayl_BM (_.modgenob, "} // end wrong %s\n", stmtidbuf);
+  LOCALRETURN_BM (_.stmtob);
+#undef FAILHERE
+failure:
+  DBGPRINTF_BM ("emit_statement°basiclo_wrong failin %d stmtob %s routprep %s cause %s",       //
+                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv = (value_tyBM)
+    makenode5_BM (k_emit_statement, _.stmtob, _.routprepob, _.modgenob,
+                  taggedint_BM (depth), _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_statement°basiclo_wrong _1EFhqSytjSK_9Uchza7qmUD */
 
 
