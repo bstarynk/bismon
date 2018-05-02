@@ -2706,12 +2706,15 @@ ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7)    //emit_statement°basiclo_return
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ NULL,
-                 objectval_tyBM * stmtob;
-                 objectval_tyBM * modgenob; objectval_tyBM * routprepob;
-                 objectval_tyBM * retvarob; objectval_tyBM * routob;
-                 value_tyBM srcexpv; value_tyBM resultv;
-                 value_tyBM errorv;
-                 value_tyBM causev;
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * retvarob;     //
+                 objectval_tyBM * routob;       //
+                 value_tyBM srcexpv;    //
+                 value_tyBM resultv;    //
+                 value_tyBM errorv;     //
+                 value_tyBM causev;     //
     );
   //objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_return = BMK_2DH0ucElTgh_62vxjxLcfev;
@@ -2766,6 +2769,31 @@ ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7)    //emit_statement°basiclo_return
 }                               /* end emit_statement°basiclo_return _7DErEWkQBmz_5hPwF6ARmJ7 */
 
 
+
+
+// emit_statement°basiclo_wrong _1EFhqSytjSK_9Uchza7qmUD
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_1EFhqSytjSK_9Uchza7qmUD);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_1EFhqSytjSK_9Uchza7qmUD)    //emit_statement°basiclo_wrong 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         //
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_1EFhqSytjSK_9Uchza7qmUD,
+                 value_tyBM resultv;
+    );
+#warning unimplemented _1EFhqSytjSK_9Uchza7qmUD routine
+  WEAKASSERT_BM (false && "unimplemented _1EFhqSytjSK_9Uchza7qmUD routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end emit_statement°basiclo_wrong _1EFhqSytjSK_9Uchza7qmUD */
+
+
+////////////////////////////////////////////////////////////////
 /// for the routine to emit_module in plain_module-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz);
 
