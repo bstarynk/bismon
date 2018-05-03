@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 344 objects
+// for 346 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2039,6 +2039,39 @@ _8yXqsN7LuB3_0vODsT2M9Lh
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "attribute to relate to some other stuff, e.g. a set of related objects"
 !)_4rz1Bi4weGz_8Y03gU81cRL
+
+
+
+!(_6OxZvyqSKh9_2YEn9jBgcW8 |=seqlength|
+!~ name (~ seqlength
+~)
+!@ 1525365090.83
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6OxZvyqSKh9_2YEn9jBgcW8  "*/"  "sequencesize_BM"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_6OxZvyqSKh9_2YEn9jBgcW8
+
+
+
+!(_2DON1hIQKnU_3lhsjBxQEWb |=seqnthcomp|
+!~ name (~ seqnthcomp
+~)
+!@ 1525365240.97
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW _94oPnbvjznL_0cdTCJt5pUp ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2DON1hIQKnU_3lhsjBxQEWb  "*/"  "sequencenthcomp_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_94oPnbvjznL_0cdTCJt5pUp)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_2DON1hIQKnU_3lhsjBxQEWb
 
 
 
