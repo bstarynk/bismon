@@ -953,8 +953,10 @@ ROUTINEOBJNAME_BM (_23F5sZIfO5Y_5m9O2FPHdzX)    // miniscan_stmt°basiclo_exit
   WEAKASSERT_BM (_.routprepob);
   WEAKASSERT_BM (istaggedint_BM (arg3) && depth >= 0);
   WEAKASSERT_BM (_.fromob);
-#warning unimplemented miniscan_stmt°basiclo_exit _23F5sZIfO5Y_5m9O2FPHdzX 
-  WEAKASSERT_BM (false && "unimplemented miniscan_stmt°basiclo_exit _23F5sZIfO5Y_5m9O2FPHdzX ");
+#warning unimplemented miniscan_stmt°basiclo_exit _23F5sZIfO5Y_5m9O2FPHdzX
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented miniscan_stmt°basiclo_exit _23F5sZIfO5Y_5m9O2FPHdzX ");
   LOCALRETURN_BM (_.resultv);
 }                               /* end miniscan_stmt°basiclo_exit  _23F5sZIfO5Y_5m9O2FPHdzX */
 
