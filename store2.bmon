@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 341 objects
+// for 342 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2423,6 +2423,19 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7bbeIqUSje9_4jVgC7ZJmvx
 !)_5Kx0gn1rGeJ_2pO2HN2MoAn
+
+
+
+!(_4Q4WBLjAPTV_5WVLmhAvCJY |=v_arg|
+!~ name (~ v_arg
+~)
+!@ 1525348973.24
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for 2nd-order argument"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_4Q4WBLjAPTV_5WVLmhAvCJY
 
 
 
