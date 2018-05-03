@@ -189,7 +189,7 @@ doc: $(MARKDOWN_SOURCES)
 	@for f in $^ ; do  $(MARKDOWN) $$f > $$(basename $$f .md).html ; done
 
 count:
-	@wc -cl $(wildcard *.c *.h *.cc) | sort -n
+	@wc -cl $(wildcard *.c *.h *.cc modules/*.c) | sort -n
 
 redump: bismon modules
 	@for f in $(GENERATED_HEADERS) $(GENERATED_CSOURCES) $(MODULES_SOURCES) *.bmon ; \
