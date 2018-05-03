@@ -2985,7 +2985,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   DBGPRINTF_BM ("emit_module°plain_module modulob %s /%s srcdirstr '%s'",
                 objectdbg_BM (_.modulob), modulidbuf, srcdirstr);
   {
-    char *realsrcdirstr = realpath (srcdirstr, NULL);
+    realsrcdirstr = realpath (srcdirstr, NULL);
     if (!realsrcdirstr || !strchr (realsrcdirstr, '/'))
       FATAL_BM
         ("failed to compute real source dir for module %s from srcdirstr %s - %m",
@@ -3070,8 +3070,9 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   if (!srcpathstr)
     FATAL_BM ("failed to allocate srcpathstr dir %s modulidbuf %s", srcdirstr,
               modulidbuf);
-  DBGPRINTF_BM ("emit_module°plain_module modulob %s /%s srcpathstr '%s'",
-                objectdbg_BM (_.modulob), modulidbuf, srcpathstr);
+  DBGPRINTF_BM
+    ("emit_module°plain_module modulob %s /%s srcpathstr '%s' realsrcdirstr '%s'",
+     objectdbg_BM (_.modulob), modulidbuf, srcpathstr, realsrcdirstr);
   if (!access (srcpathstr, F_OK))
     {
       char cwdbuf[80];
