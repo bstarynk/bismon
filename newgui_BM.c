@@ -196,9 +196,7 @@ static void enduact_newgui_objview_BM (GtkTextBuffer *, gpointer);
 // the function to handle "populate-popup" on objectviews
 static void populatepopup_objview_newgui_BM (GtkTextView *, GtkWidget *,
                                              gpointer);
-static struct parenoffset_stBM *paren_objview_at_offset_newgui_BM (struct
-                                                                   objectview_newgui_stBM
-                                                                   *obv,
+static struct parenoffset_stBM *paren_objview_at_offset_newgui_BM (struct objectview_newgui_stBM *obv,  //
                                                                    unsigned
                                                                    off);
 
@@ -4310,3 +4308,27 @@ pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond,
   // return FALSE to remove the event source
   return TRUE;
 }                               /* end pipe_process_watchcb_BM */
+
+////////////////////////////////////////////////////////////////
+void
+show_answer_value_newgui_BM (value_tyBM valarg, struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf,
+                 /*descr: */ NULL,
+                 value_tyBM astrv;
+                 value_tyBM val);
+  _.val = valarg;
+  ASSERT_BM (pthread_self () == mainthreadid_BM);
+  if (!astrval_bm
+      || !isstring_BM ((value_tyBM) astrval_bm)
+      || strcmp (bytstring_BM (astrval_bm), "a"))
+    {
+      _.astrv = makestring_BM ("a");
+      astrval_bm = _.astrv;
+    }
+  else
+    _.astrv = astrval_bm;
+  if (_.val)
+    browse_named_value_newgui_BM (_.astrv,
+                                  _.val, browserdepth_BM, CURFRAME_BM);
+}                               /* end show_answer_value_newgui_BM */

@@ -1846,7 +1846,7 @@ ROUTINEOBJNAME_BM (_5oSaKNehPiO_3GSlpH5boCW)    //
 extern objrout_sigBM ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    //
+ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    // emit_module#command_handler
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // modulob
  const value_tyBM arg2,         //
@@ -1922,6 +1922,7 @@ ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    //
           log_object_message_BM (objectcast_BM (_.resultv));
           log_puts_message_BM (" .");
           log_end_message_BM ();
+          show_answer_value_newgui_BM (_.resultv, CURFRAME_BM);
           LOCALRETURN_BM (_.resultv);
         };
     }
