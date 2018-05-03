@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 339 objects
+// for 341 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2426,6 +2426,19 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 
 
+!(_8jKgolslEuE_4dxzrK5R2B4 |=v_fun|
+!~ name (~ v_fun
+~)
+!@ 1525348171.81
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "function argument or variable"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_8jKgolslEuE_4dxzrK5R2B4
+
+
+
 !(_3vRFuniDv1K_4bQ7DeekM2I |=v_i|
 !~ name (~ v_i
 ~)
@@ -2445,6 +2458,19 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7bbeIqUSje9_4jVgC7ZJmvx
 !)_3qw9bnATIhq_8loBraLeXzQ
+
+
+
+!(_9vc0quxdnhj_3zLw1MEwl1e |=v_seq|
+!~ name (~ v_seq
+~)
+!@ 1525348149.12
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "sequence argument or variable"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_9vc0quxdnhj_3zLw1MEwl1e
 
 
 
