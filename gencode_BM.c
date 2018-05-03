@@ -1645,7 +1645,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objstrbuffersetindentpayl_BM (_.modgenob, 0);
   objstrbuffernewlinepayl_BM (_.modgenob);
   objstrbufferprintfpayl_BM (_.modgenob,
-                             " epilog%s: // routine %s epilogue:\n",
+                             " epilog%s: __attribute__ ((unused)); // routine %s epilogue:\n",
                              routidbuf, routidbuf);
   objstrbufferprintfpayl_BM (_.modgenob,
                              "   if (stkf) stkf->stkfram_callfun = NULL;\n");
@@ -3057,12 +3057,14 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   if (!access (srcpathstr, F_OK))
     {
       prevsrcpathstr = asprintf_prev_module_BM (realpardirstr, _.modulob);
-      DBGPRINTF_BM ("emit_module°plain_module prevsrcpathstr=%s",
-                    prevsrcpathstr);
+      DBGPRINTF_BM ("emit_module°plain_module rename srcpathstr %s -> prevsrcpathstr=%s",
+                    srcpathstr, prevsrcpathstr);
       if (rename (srcpathstr, prevsrcpathstr))
         FATAL_BM ("failed to rename %s -> %s - %m", srcpathstr,
                   prevsrcpathstr);
     }
+  DBGPRINTF_BM("emit_module°plain_module %s /%s writing to srcpathstr %s",
+	       objectdbg_BM(_.modulob), modulidbuf, srcpathstr);
   objstrbufferwritetofilepayl_BM (_.modgenob, srcpathstr);
   {
     char *indentcmdstr = NULL;
