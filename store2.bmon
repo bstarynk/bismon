@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 343 objects
+// for 344 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1332,8 +1332,10 @@ _0CsCkIkpNX6_52gRCYPcnW2
 !(_2W7Ckt2WxEM_4NVYgEWE73B |=ii|
 !~ name (~ ii
 ~)
-!@ 1511178454.48
+!@ 1525358968.24
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_0vgCFjXblkx_4zCMhMAWjVK
 !)_2W7Ckt2WxEM_4NVYgEWE73B
 
 
@@ -1403,12 +1405,14 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !(_8imWClcIFKt_6w2H2ouB4I6 |=iterate_sequence_minifunc|
 !~ name (~ iterate_sequence_minifunc
 ~)
-!@ 1525350220.74
+!@ 1525359056.66
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "iterate on sequence v_seq the function v_fun with 2nd argument v_arg"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _9vc0quxdnhj_3zLw1MEwl1e _8jKgolslEuE_4dxzrK5R2B4 _4Q4WBLjAPTV_5WVLmhAvCJY ]
+!: _32eKNcTZ9HN_80t0nk47Mha |=numbers|
+ { _2W7Ckt2WxEM_4NVYgEWE73B _833x2jYqhZh_8vDIuJhwz1k }
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3qw9bnATIhq_8loBraLeXzQ
 !)_8imWClcIFKt_6w2H2ouB4I6
@@ -1423,6 +1427,19 @@ _3qw9bnATIhq_8loBraLeXzQ
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "give label, e.g. in loop-s"
 !)_3XBrePAliOo_37VlAqBsb5C
+
+
+
+!(_833x2jYqhZh_8vDIuJhwz1k |=leni|
+!~ name (~ leni
+~)
+!@ 1525359016.37
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "variable to hold some length"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_833x2jYqhZh_8vDIuJhwz1k
 
 
 
