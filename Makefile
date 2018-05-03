@@ -167,7 +167,8 @@ _bm_allconsts.c: $(BM_COLDSOURCES)  BM_makeconst
 modules/modbm_%.so: modules/modbm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
 	$(CCACHE) $(LINK.c) -fPIC -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<) -shared $< -o $@
 
-modules: $(patsubst %.c,%.so,$(MODULES_SOURCES))
+modules:
+	$(MAKE) -k $(patsubst %.c,%.so,$(MODULES_SOURCES)) ; exit 0
 
 bismon: $(OBJECTS) _bm_allconsts.o
 	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi
