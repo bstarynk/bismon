@@ -2923,17 +2923,23 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
  const value_tyBM arg4 __attribute__ ((unused)),
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
-  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * modulob; objectval_tyBM * modgenob;
-                 value_tyBM resprep; value_tyBM resgen; value_tyBM prefixv;
-                 objectval_tyBM * dumpob; value_tyBM errorv;
-                 value_tyBM closgenv; value_tyBM srcdirstrv;
-                 value_tyBM causev;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ BMK_1gME6zn82Kf_8hzWibLFRfz,
+                 objectval_tyBM * modulob;      //
+                 objectval_tyBM * modgenob;     //
+                 value_tyBM resprep;    //
+                 value_tyBM resgen;     //
+                 value_tyBM prefixv;    //
+                 objectval_tyBM * dumpob;
+                 value_tyBM errorv;     //
+                 value_tyBM closgenv;   //
+                 value_tyBM srcdirstrv; //
+                 value_tyBM causev;     //
     );
   // all these are heap allocated, e.g. strdup-ed or asprintf-ed
   char *srcdirstr = NULL;
   char *pardirstr = NULL;
   char *realpardirstr = NULL;
+  char *realsrcdirstr = NULL;
   char *srcpathstr = NULL;
   char *prevsrcpathstr = NULL;
   objectval_tyBM *k_simple_module_generation = BMK_2HlKptD03wA_7JJCG7lN5nS;
@@ -2949,6 +2955,9 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   _.closgenv = arg3;
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof (modulidbuf));
+  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
   if (isstring_BM (_.prefixv))
     srcdirstr = strdup (bytstring_BM (_.prefixv));
   else if (isobject_BM (_.prefixv))
@@ -2973,6 +2982,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
       fprintf (stderr, "cannot mkdir with parents %s (%m)\n", srcdirstr);
       FAILHERE (makestring_BM (srcdirstr));
     }
+  DBGPRINTF_BM ("emit_module°plain_module modulob %s /%s srcdirstr '%s'",
+                objectdbg_BM (_.modulob), modulidbuf, srcdirstr);
   {
     char *realsrcdirstr = realpath (srcdirstr, NULL);
     if (!realsrcdirstr || !strchr (realsrcdirstr, '/'))
@@ -2981,19 +2992,23 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
          objectdbg_BM (_.modulob), srcdirstr);
     char *lastslash = strrchr (realsrcdirstr, '/');
     ASSERT_BM (lastslash != NULL);
-    *lastslash = (char) 0;
-    realpardirstr = realsrcdirstr;
+    realpardirstr = malloc (lastslash - realsrcdirstr + 2);
+    if (!realpardirstr)
+      FATAL_BM ("failed to malloc realpardirstr of %d bytes",
+                lastslash - realsrcdirstr + 2);
+    memset (realpardirstr, 0, lastslash - realsrcdirstr + 2);
+    memcpy (realpardirstr, realsrcdirstr, lastslash - realsrcdirstr);
   }
+  DBGPRINTF_BM
+    ("emit_module°plain_module modulob %s /%s realsrcdirstr '%s' realpardirstr '%s'",
+     objectdbg_BM (_.modulob), modulidbuf, realsrcdirstr, realpardirstr);
   _.modgenob = makeobj_BM ();
-  char modulidbuf[32];
-  memset (modulidbuf, 0, sizeof (modulidbuf));
-  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
   objputclass_BM (_.modgenob, k_simple_module_generation);
   objputattr_BM (_.modgenob, k_plain_module, _.modulob);
   objputstrbufferpayl_BM (_.modgenob, (1024 * 1024));
   objtouchnow_BM (_.modgenob);
   DBGPRINTF_BM
-    ("@@emit_module°plain_module modulob=%s [%s] made modgenob=%s *sbuf*",
+    ("@@emit_module°plain_module modulob=%s /%s made modgenob=%s *sbuf*",
      objectdbg_BM (_.modulob), modulidbuf, objectdbg1_BM (_.modgenob));
   if (isclosure_BM (_.closgenv))
     {
@@ -3043,28 +3058,41 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
       LOCALRETURN_BM (NULL);
     }
   else
-    DBGPRINTF_BM ("@@emit_module modulob=%s generate_module done resgen=%s",
-                  objectdbg_BM (_.modulob),
-                  debug_outstr_value_BM (_.resgen, CURFRAME_BM, 0));
-  objstrbufferprintfpayl_BM (_.modgenob, "\n\n"
-                             "// end of generated module %s in file "
+    DBGPRINTF_BM
+      ("@@emit_module°plain_module modulob=%s generate_module done resgen=%s",
+       objectdbg_BM (_.modulob), debug_outstr_value_BM (_.resgen, CURFRAME_BM,
+                                                        0));
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "\n\n" "// end of generated module %s in file "
                              MODULEPREFIX_BM "%s.c\n",
                              objectdbg_BM (_.modulob), modulidbuf);
   asprintf (&srcpathstr, "%s/" MODULEPREFIX_BM "%s.c", srcdirstr, modulidbuf);
   if (!srcpathstr)
     FATAL_BM ("failed to allocate srcpathstr dir %s modulidbuf %s", srcdirstr,
               modulidbuf);
+  DBGPRINTF_BM ("emit_module°plain_module modulob %s /%s srcpathstr '%s'",
+                objectdbg_BM (_.modulob), modulidbuf, srcpathstr);
   if (!access (srcpathstr, F_OK))
     {
-      prevsrcpathstr = asprintf_prev_module_BM (realpardirstr, _.modulob);
-      DBGPRINTF_BM ("emit_module°plain_module rename srcpathstr %s -> prevsrcpathstr=%s",
-                    srcpathstr, prevsrcpathstr);
+      char cwdbuf[80];
+      memset (cwdbuf, 0, sizeof (cwdbuf));
+      prevsrcpathstr = asprintf_prev_module_BM (realsrcdirstr, _.modulob);
+      DBGPRINTF_BM
+        ("emit_module°plain_module %s /%s rename srcpathstr '%s' -> prevsrcpathstr='%s' in %s",
+         objectdbg_BM (_.modulob), modulidbuf,
+         srcpathstr, prevsrcpathstr, (getcwd (cwdbuf, sizeof (cwdbuf))));
       if (rename (srcpathstr, prevsrcpathstr))
-        FATAL_BM ("failed to rename %s -> %s - %m", srcpathstr,
-                  prevsrcpathstr);
+        FATAL_BM ("failed to rename '%s' -> '%s' in %s - %m", srcpathstr,
+                  prevsrcpathstr, getcwd (cwdbuf, sizeof (cwdbuf)));
     }
-  DBGPRINTF_BM("emit_module°plain_module %s /%s writing to srcpathstr %s",
-	       objectdbg_BM(_.modulob), modulidbuf, srcpathstr);
+  {
+    char cwdbuf[80];
+    DBGPRINTF_BM
+      ("emit_module°plain_module %s /%s writing to srcpathstr '%s' in %s",
+       objectdbg_BM (_.modulob), modulidbuf, srcpathstr,
+       (memset (cwdbuf, 0, sizeof (cwdbuf)),
+        getcwd (cwdbuf, sizeof (cwdbuf))));
+  }
   objstrbufferwritetofilepayl_BM (_.modgenob, srcpathstr);
   {
     char *indentcmdstr = NULL;
@@ -3126,22 +3154,30 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
       gtk_defer_apply3_BM (kk_deferred_compilation_of_module, _.modulob,
                            _.modgenob, _.srcdirstrv, CURFRAME_BM);
     }
-  if (srcpathstr)
-    free (srcpathstr), srcpathstr = NULL;
   if (srcdirstr)
     free (srcdirstr), srcdirstr = NULL;
+  if (pardirstr)
+    free (pardirstr), pardirstr = NULL;
   if (realpardirstr)
     free (realpardirstr), realpardirstr = NULL;
+  if (realsrcdirstr)
+    free (realsrcdirstr), realsrcdirstr = NULL;
+  if (srcpathstr)
+    free (srcpathstr), srcpathstr = NULL;
   if (prevsrcpathstr)
     free (prevsrcpathstr), prevsrcpathstr = NULL;
   LOCALRETURN_BM (_.modgenob);
 failure:
   if (srcdirstr)
     free (srcdirstr), srcdirstr = NULL;
-  if (srcpathstr)
-    free (srcpathstr), srcpathstr = NULL;
+  if (pardirstr)
+    free (pardirstr), pardirstr = NULL;
   if (realpardirstr)
     free (realpardirstr), realpardirstr = NULL;
+  if (realsrcdirstr)
+    free (realsrcdirstr), realsrcdirstr = NULL;
+  if (srcpathstr)
+    free (srcpathstr), srcpathstr = NULL;
   if (prevsrcpathstr)
     free (prevsrcpathstr), prevsrcpathstr = NULL;
   DBGPRINTF_BM ("emit_module°plain_module modulob %s failin %d cause %s",
