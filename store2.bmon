@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 355 objects
+// for 357 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -987,6 +987,21 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "in c_enum gives the computed tuple of enumerators"
 !)_7BROpIWQHzA_8b1C6i49Pkz
+
+
+
+!(_6mRueRGWGTa_02FjdAdTggP |=equal_int|
+!~ name (~ equal_int
+~)
+!@ 1525374039.03
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "equal_int(i1 i2)  \u27f6 i1 == i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _94oPnbvjznL_0cdTCJt5pUp _2Z396p8p48p_848KxWmzoSb ]
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_6mRueRGWGTa_02FjdAdTggP
 
 
 
@@ -2442,6 +2457,21 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "error for unbound variable"
 !)_68PQkZp1UAq_8RNb44Ea88z
+
+
+
+!(_4d7WPuxi8mG_3Vto6jtTGst |=unequal_int|
+!~ name (~ unequal_int
+~)
+!@ 1525374068.36
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "unequal_int(i1 i2)  \u27f6 i1 != i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _94oPnbvjznL_0cdTCJt5pUp _2Z396p8p48p_848KxWmzoSb ]
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_4d7WPuxi8mG_3Vto6jtTGst
 
 
 
