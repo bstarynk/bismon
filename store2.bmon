@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 353 objects
+// for 355 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1261,6 +1261,36 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 !@ 1508128268.20
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_2LPrNfUHb6Y_1qOPmENNXqB
+
+
+
+!(_1KKr6us7q3i_8UQeBwuzHJ6 |=greater_int|
+!~ name (~ greater_int
+~)
+!@ 1525368260.95
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "greater_int(i1 i2) \u27f6 i1 > i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _94oPnbvjznL_0cdTCJt5pUp _2Z396p8p48p_848KxWmzoSb ]
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_1KKr6us7q3i_8UQeBwuzHJ6
+
+
+
+!(_7mzaOjboFZI_77BAEKfSTta |=greaterequal_int|
+!~ name (~ greaterequal_int
+~)
+!@ 1525368286.01
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "greaterequal_int(i1 i2) \u27f6 i1 >= i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _94oPnbvjznL_0cdTCJt5pUp _2Z396p8p48p_848KxWmzoSb ]
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_7mzaOjboFZI_77BAEKfSTta
 
 
 
