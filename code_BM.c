@@ -2797,8 +2797,9 @@ ROUTINEOBJNAME_BM (_63Q0R4r8xa7_7XOAxxP5pi2)    //
   if (!pars)
     LOCALRETURN_BM (NULL);
   _.resobj = NULL;
-  DBGPRINTF_BM ("start readmacro:exit  _63Q0R4r8xa7_7XOAxxP5pi2"
-                " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
+  DBGPRINTF_BM ("start readmacro:exit "
+                " lineno=%d colpos=%d nodwidth=%u rnodv=%s", lineno, colpos,
+                nodwidth, debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
   unsigned startix = 0;
   if (nodwidth > 0
       && (_.curson =
@@ -2822,12 +2823,16 @@ ROUTINEOBJNAME_BM (_63Q0R4r8xa7_7XOAxxP5pi2)    //
     }
   if (nodwidth > startix + 1)
     _.exitv = nodenthson_BM ((const value_tyBM) _.rnodv, startix);
+  DBGPRINTF_BM ("start readmacro:exit "
+                " lineno=%d colpos=%d exitv %s", lineno, colpos,
+                debug_outstr_value_BM (_.exitv, CURFRAME_BM, 0));
   if (!isobject_BM (_.exitv))
     {
       if (pars)
         parsererrorprintf_BM (pars,
                               CURFRAME_BM, lineno, colpos,
-                              "non-object exit argument for exit readmacro");
+                              "non-object exit argument #%d for exit readmacro",
+                              startix);
       LOCALRETURN_BM (NULL);
     }
   objresetcomps_BM (_.resobj, 2);
