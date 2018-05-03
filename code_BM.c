@@ -2844,8 +2844,9 @@ ROUTINEOBJNAME_BM (_63Q0R4r8xa7_7XOAxxP5pi2)    //
     _.resclass = (objectval_tyBM *) k_basiclo_exit;
   objputclass_BM (_.resobj, _.resclass);
   objtouchnow_BM (_.resobj);
-  DBGPRINTF_BM ("end readmacro:exit L%dC%d resobj %s for rnod %s", lineno, colpos, objectdbg_BM (_.resobj),
-		debug_outstr_value_BM(_.rnodv, CURFRAME_BM, 0));
+  DBGPRINTF_BM ("end readmacro:exit L%dC%d resobj %s for rnod %s", lineno,
+                colpos, objectdbg_BM (_.resobj),
+                debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
   LOCALRETURN_BM (_.resobj);
 }                               /* end ROUTINE  _63Q0R4r8xa7_7XOAxxP5pi2 exit:readmacro */
 
