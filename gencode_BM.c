@@ -1686,20 +1686,26 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
  const value_tyBM arg4,         // depth
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
-  LOCALFRAME_BM (stkf, /*descr: */ BMK_8UGpvfrcKbM_99IeP3BuxA5,
-                 objectval_tyBM * blockob; objectval_tyBM * modgenob;
-                 objectval_tyBM * routprepob; objectval_tyBM * stmtob;
-                 value_tyBM resultv; value_tyBM emitv;
-                 value_tyBM causev;
-                 value_tyBM errorv;
-    );
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_8UGpvfrcKbM_99IeP3BuxA5,
+                 objectval_tyBM * blockob;      //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * stmtob;       //
+                 value_tyBM resultv;    //
+                 value_tyBM emitv;      //
+                 value_tyBM causev;     //
+                 value_tyBM errorv;     //
+    );
   _.blockob = objectcast_BM (arg1);
   _.modgenob = objectcast_BM (arg2);
   _.routprepob = objectcast_BM (arg3);
   int depth = getint_BM (arg4);
   int failin = -1;
+  char blockidbuf[32];
+  memset (blockidbuf, 0, sizeof (blockidbuf));
+  idtocbuf32_BM (objid_BM (_.blockob), blockidbuf);
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
   DBGPRINTF_BM
     ("emit_block°basiclo_block start blockob=%s modgenob=%s routprepob=%s depth#%d",
@@ -1710,13 +1716,10 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
   WEAKASSERT_BM (isobject_BM (_.routprepob));
   WEAKASSERT_BM (istaggedint_BM (arg4));
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
-  char blockidbuf[32];
-  memset (blockidbuf, 0, sizeof (blockidbuf));
-  idtocbuf32_BM (objid_BM (_.blockob), blockidbuf);
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
   objstrbufferprintfpayl_BM (_.modgenob,
                              "\n"
-                             "startblock_%s: __attribute__((unused))\n"
+                             "startblock_%s: __attribute__((unused));\n"
                              "{ /* +block %s */", blockidbuf, blockidbuf);
   int indepth = depth + 1;
   unsigned blocklen = objnbcomps_BM (_.blockob);
@@ -1760,6 +1763,100 @@ failure:
                   _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_block°basiclo_block _8UGpvfrcKbM_99IeP3BuxA5 */
+
+// emit_block°basiclo_loop _56pDwW9peiP_8flH2fMQUnD
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_56pDwW9peiP_8flH2fMQUnD);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_56pDwW9peiP_8flH2fMQUnD)    //emit_block°basiclo_loop
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // recvob - loop
+ const value_tyBM arg2,         // modgenob 
+ const value_tyBM arg3,         // routprepob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_56pDwW9peiP_8flH2fMQUnD,
+                 objectval_tyBM * blockob;      //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * stmtob;       //
+                 value_tyBM resultv;    //
+                 value_tyBM emitv;      //
+                 value_tyBM causev;     //
+                 value_tyBM errorv;     //
+    );
+  _.blockob = objectcast_BM (arg1);
+  _.modgenob = objectcast_BM (arg2);
+  _.routprepob = objectcast_BM (arg3);
+  int depth = getint_BM (arg4);
+  int failin = -1;
+  char blockidbuf[32];
+  memset (blockidbuf, 0, sizeof (blockidbuf));
+  idtocbuf32_BM (objid_BM (_.blockob), blockidbuf);
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
+  DBGPRINTF_BM
+    ("emit_block°basiclo_block start blockob=%s modgenob=%s routprepob=%s depth#%d",
+     objectdbg_BM (_.blockob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth);
+  WEAKASSERT_BM (isobject_BM (_.blockob));
+  WEAKASSERT_BM (isobject_BM (_.modgenob));
+  WEAKASSERT_BM (isobject_BM (_.routprepob));
+  WEAKASSERT_BM (istaggedint_BM (arg4));
+  WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "\n"
+                             "startblock_%s: __attribute__((unused));\n"
+                             "{ /* +loop %s */\n", blockidbuf, blockidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "  startloop_%s: __attribute__((unused));\n",
+                             blockidbuf, blockidbuf);
+  int indepth = depth + 1;
+  unsigned blocklen = objnbcomps_BM (_.blockob);
+  for (unsigned insix = 0; insix < blocklen; insix++)
+    {
+      _.stmtob = objectcast_BM (objgetcomp_BM (_.blockob, insix));
+      DBGPRINTF_BM
+        ("emit_block°basiclo_loop blockob %s insix#%d stmtob %s of %s",
+         objectdbg_BM (_.blockob), insix, objectdbg2_BM (_.stmtob),
+         objectdbg3_BM (objclass_BM (_.stmtob)));
+      WEAKASSERT_BM (isobject_BM (_.stmtob));
+      {
+        objlock_BM (_.stmtob);
+        objstrbuffersetindentpayl_BM (_.modgenob, indepth);
+        objstrbuffernewlinepayl_BM (_.modgenob);
+        _.emitv = send3_BM (_.stmtob, k_emit_statement, CURFRAME_BM,    //
+                            _.modgenob, _.routprepob, taggedint_BM (indepth));
+        objstrbuffernewlinepayl_BM (_.modgenob);
+        objunlock_BM (_.stmtob);
+      }
+      if (!_.emitv)
+        FAILHERE (makenode1_BM (k_emit_statement, _.stmtob));
+    }
+  objstrbuffersetindentpayl_BM (_.modgenob, indepth);
+  objstrbufferprintfpayl_BM (_.modgenob, "\n/* !endingloop %s */\n"
+                             "goto startloop_%s;\n"
+                             "endblock_%s: __attribute__((unused));\n",
+                             blockidbuf, blockidbuf, blockidbuf);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbufferprintfpayl_BM (_.modgenob, "} /*-loop %s */\n", blockidbuf);
+  DBGPRINTF_BM
+    ("emit_block°basiclo_loop end blockob=%s modgenob=%s routprepob=%s depth#%d",
+     objectdbg_BM (_.blockob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth);
+  LOCALRETURN_BM (_.blockob);
+failure:
+  DBGPRINTF_BM ("emit_block°basiclo_loop failin %d routprep %s cause %s", failin, objectdbg_BM (_.routprepob), //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv = (value_tyBM)
+    makenode4_BM (k_emit_block, _.blockob, _.routprepob, _.modgenob,
+                  _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end emit_block°basiclo_loop _56pDwW9peiP_8flH2fMQUnD */
 
 
 

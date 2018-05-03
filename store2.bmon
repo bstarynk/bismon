@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 337 objects
+// for 338 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -302,8 +302,12 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !(_2EjH1ebLzli_4rmA1ZPtIBL |=basiclo_loop|
 !~ name (~ basiclo_loop
 ~)
-!@ 1506168667.26
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1525339076.06
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!~ class (~ |supercl basiclo_block:| _4bYUiDmxrKK_6nPPlEl8y8x 
+~: _6mk5eos8067_1odgCpnWMOj  % _56pDwW9peiP_8flH2fMQUnD ()
+~)
+
 !)_2EjH1ebLzli_4rmA1ZPtIBL
 
 
@@ -3199,6 +3203,16 @@ _3XBrePAliOo_37VlAqBsb5C) ~)
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _6qi1DW0Ygkl_4Aqdxq4n5IV _9qn0Hp8HaF5_7yeAJiNYtp5) ~)
 
 !)_50d65bJypCN_6IJeVtssx9I
+
+
+
+!(_56pDwW9peiP_8flH2fMQUnD
+!|*
+!@ 1525339110.45
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit_block\u00b0basiclo_loop"
+!)_56pDwW9peiP_8flH2fMQUnD
 
 
 
