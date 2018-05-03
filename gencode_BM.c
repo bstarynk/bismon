@@ -3984,6 +3984,20 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
       prevpathstr = asprintf_prev_module_BM (moddirstr, _.modulob);
       asprintf (&badpathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d-bad~", moddirstr,
                 modulidbuf, (int) getpid ());
+      DBGPRINTF_BM
+        ("after-compilation-of-module modulob %s moddirstr %s srcpathstr %s badpathstr %s prevpathstr %s",
+         objectdbg_BM (_.modulob), moddirstr, srcpathstr, badpathstr,
+         prevpathstr);
+      fflush (NULL);
+      {                         // for debugging only
+        char *cmdbuf = NULL;
+        asprintf (&cmdbuf,
+                  "echo after-compilation-of-module modulob %s id %s; ls -l %s %s %s %s; pwd",
+                  objectdbg_BM (_.modulob),
+                  modulidbuf, moddirstr, srcpathstr, badpathstr, prevpathstr);
+        system (cmdbuf);
+        free (cmdbuf), cmdbuf = NULL;
+      }
       rename (srcpathstr, badpathstr);
       if (rename (prevpathstr, srcpathstr))
         err = errno;
@@ -3992,8 +4006,17 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
                objectdbg_BM (_.modulob), status, status, srcpathstr,
                prevpathstr, badpathstr);
       if (err > 0)
-        fprintf (stderr, "... renaming %s -> %s failed with %s\n",
-                 prevpathstr, srcpathstr, strerror (err));
+        {
+          char cwdbuf[80];
+          memset (cwdbuf, 0, sizeof (cwdbuf));
+          getcwd (cwdbuf, sizeof (cwdbuf));
+          DBGPRINTF_BM
+            ("after-compilation-of-module %s failed renaming %s -> %s failed with #%d: %s in %s",
+             objectdbg_BM (_.modulob), prevpathstr, srcpathstr, err,
+             strerror (err), cwdbuf);
+          fprintf (stderr, "... renaming %s -> %s failed with %s\n",
+                   prevpathstr, srcpathstr, strerror (err));
+        }
       if (pthread_self () == mainthreadid_BM && gui_is_running_BM)
         {
           log_printf_message_BM
