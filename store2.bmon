@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 342 objects
+// for 343 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1397,6 +1397,21 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_1MOFdPyVDjv_9DbtuElMini
+
+
+
+!(_8imWClcIFKt_6w2H2ouB4I6 |=iterate_sequence_minifunc|
+!~ name (~ iterate_sequence_minifunc
+~)
+!@ 1525350220.74
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "iterate on sequence v_seq the function v_fun with 2nd argument v_arg"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _9vc0quxdnhj_3zLw1MEwl1e _8jKgolslEuE_4dxzrK5R2B4 _4Q4WBLjAPTV_5WVLmhAvCJY ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!)_8imWClcIFKt_6w2H2ouB4I6
 
 
 
