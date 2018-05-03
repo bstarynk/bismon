@@ -857,7 +857,7 @@ failure:
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //
+ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //miniscan_stmt°basiclo_assign
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // recieving assign
  const value_tyBM arg2,         // routine preparation
@@ -866,11 +866,14 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7LNRlilrowp_0GG6ZLUFovu,
-                 objectval_tyBM * recv;
-                 objectval_tyBM * routprepob; objectval_tyBM * fromblockob;
-                 objectval_tyBM * destob; value_tyBM srcexpv;
-                 objectval_tyBM * vartypob; objectval_tyBM * srctypob;
-                 value_tyBM resv;
+                 objectval_tyBM * recv; //
+                 objectval_tyBM * routprepob; //
+		 objectval_tyBM * fromblockob; //
+                 objectval_tyBM * destob; //
+		 value_tyBM srcexpv; //
+                 objectval_tyBM * vartypob; //
+		 objectval_tyBM * srctypob; //
+                 value_tyBM resv; //
     );
   int depth = 0;
   bool ok = false;
@@ -915,6 +918,31 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //
   else
     LOCALRETURN_BM (NULL);
 }                               /* end miniscan_stmt°basiclo_assign _7LNRlilrowp_0GG6ZLUFovu */
+
+
+// miniscan_stmt°basiclo_exit  _23F5sZIfO5Y_5m9O2FPHdzX
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_23F5sZIfO5Y_5m9O2FPHdzX);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_23F5sZIfO5Y_5m9O2FPHdzX) // miniscan_stmt°basiclo_exit 
+(struct stackframe_stBM* stkf, //
+ const value_tyBM arg1, //stmtob recieving exit 
+ const value_tyBM arg2, //routprepob
+ const value_tyBM arg3, //depth
+ const value_tyBM arg4, //fromob
+ const quasinode_tyBM* restargs_  __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr:*/ BMK_23F5sZIfO5Y_5m9O2FPHdzX,
+		 objectval_tyBM* stmtob; //
+		 objectval_tyBM* routprepob; //
+		 objectval_tyBM* fromob;//
+                 value_tyBM resultv; //
+  );
+#warning unimplemented _23F5sZIfO5Y_5m9O2FPHdzX routine
+  WEAKASSERT_BM(false && "unimplemented _23F5sZIfO5Y_5m9O2FPHdzX routine");
+  LOCALRETURN_BM(_.resultv);
+} /* end miniscan_stmt°basiclo_exit  _23F5sZIfO5Y_5m9O2FPHdzX*/
 
 
 
