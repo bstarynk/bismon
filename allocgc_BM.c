@@ -59,11 +59,10 @@ allocgcty_BM (unsigned type, size_t sz)
     {
       unsigned long new_alloc_size =
         ((4 * alloc_size / 3 + alloc_size / 8 + 600) | 511) - 2;
-      struct allalloc_stBM *new_allocvec = calloc (1,
-                                                   sizeof (struct
-                                                           allalloc_stBM) +
-                                                   new_alloc_size *
-                                                   sizeof (void *));
+      struct allalloc_stBM *new_allocvec =      //
+        calloc (1,
+                sizeof (struct
+                        allalloc_stBM) + new_alloc_size * sizeof (void *));
       if (!new_allocvec)
         FATAL_BM ("failed reallocation of allocvec %ld (%m)", new_alloc_size);
       new_allocvec->al_size = new_alloc_size;
@@ -73,6 +72,8 @@ allocgcty_BM (unsigned type, size_t sz)
       free (allocationvec_vBM), allocationvec_vBM = new_allocvec;
       atomic_store (&want_garbage_collection_BM, true);
     }
+  if (sz % 2 * sizeof (void *) != 0)
+    sz = (sz | (2 * sizeof (void *) - 1)) + 1;
   ASSERT_BM (sz > sizeof (typedhead_tyBM));
   ASSERT_BM (sz < MAXSIZE_BM * sizeof (double));
   typedhead_tyBM *newzon = malloc (sz);
@@ -414,9 +415,11 @@ deleteobjectpayload_BM (objectval_tyBM * obj, extendedval_tyBM payl)
       return;
     default:
       fprintf
-        (stderr, "deleteobjectpayload_BM ty#%d unexpected for payl@%p of object %s of %s",
+        (stderr,
+         "deleteobjectpayload_BM ty#%d unexpected for payl@%p of object %s of %s",
          ty, payl, objectdbg_BM (obj), objectdbg1_BM (objclass_BM (obj)));
-      weakassertfailureat_BM("deleteobjectpayload_BM unexpected payload", __FILE__, __LINE__);
+      weakassertfailureat_BM ("deleteobjectpayload_BM unexpected payload",
+                              __FILE__, __LINE__);
     }
 }                               /* end deleteobjectpayload_BM */
 
