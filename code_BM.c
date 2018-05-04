@@ -2819,11 +2819,14 @@ ROUTINEOBJNAME_BM (_63Q0R4r8xa7_7XOAxxP5pi2)    //
       _.resobj = _.inv;
       if (objectisinstance_BM (_.resobj, k_basiclo_exit))
         _.resclass = objclass_BM (_.resobj);
+      else _.resclass = k_basiclo_exit;
       startix++;
     }
-  if (nodwidth > startix + 1)
+  else
+    _.resclass = k_basiclo_exit;
+  if (nodwidth >= startix + 1)
     _.exitv = nodenthson_BM ((const value_tyBM) _.rnodv, startix);
-  DBGPRINTF_BM ("start readmacro:exit "
+  DBGPRINTF_BM ("readmacro:exit "
                 " lineno=%d colpos=%d exitv %s", lineno, colpos,
                 debug_outstr_value_BM (_.exitv, CURFRAME_BM, 0));
   if (!isobject_BM (_.exitv))
