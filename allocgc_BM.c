@@ -413,9 +413,10 @@ deleteobjectpayload_BM (objectval_tyBM * obj, extendedval_tyBM payl)
     case typayl_dumper_BM:
       return;
     default:
-      FATAL_BM
-        ("deleteobjectpayload_BM ty#%d unexpected for payl@%p of object %s of %s",
+      fprintf
+        (stderr, "deleteobjectpayload_BM ty#%d unexpected for payl@%p of object %s of %s",
          ty, payl, objectdbg_BM (obj), objectdbg1_BM (objclass_BM (obj)));
+      weakassertfailureat_BM("deleteobjectpayload_BM unexpected payload", __FILE__, __LINE__);
     }
 }                               /* end deleteobjectpayload_BM */
 
