@@ -185,8 +185,8 @@ measure_plugcc.so: measure_plugcc.cc  Makefile
 
 measure: measure_plugcc.so measured-bismon
 
-doc: $(MARKDOWN_SOURCES) all BM_split_latex_chunks.awk
-	@for f in $^ ; do  $(MARKDOWN) $$f > $$(basename $$f .md).html ; done
+doc: $(MARKDOWN_SOURCES) bismon modules
+	for f in $(MARKDOWN_SOURCES) ; do  $(MARKDOWN) $$f > $$(basename $$f .md).html ; done
 	./build-bismon-doc.sh
 
 count:
