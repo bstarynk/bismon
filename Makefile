@@ -45,7 +45,7 @@ clean:
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
 	$(RM) core* *.i *.ii *prof.out gmon.out
 	$(RM) *_BM.const.h _bm_allconsts.c
-	$(RM) modules/*.so modules/*.i modules/*% modules/*~ modules/*- bismon
+	$(RM) modules/*.so modules/*.i modules/*% modules/*~ modules/*- bismon BM_makeconst
 	$(RM) $(patsubst %.md,%.html, $(MARKDOWN_SOURCES))
 
 indent: .indent.pro
@@ -185,8 +185,9 @@ measure_plugcc.so: measure_plugcc.cc  Makefile
 
 measure: measure_plugcc.so measured-bismon
 
-doc: $(MARKDOWN_SOURCES)
+doc: $(MARKDOWN_SOURCES) all BM_split_latex_chunks.awk
 	@for f in $^ ; do  $(MARKDOWN) $$f > $$(basename $$f .md).html ; done
+	./build-bismon-doc.sh
 
 count:
 	@wc -cl $(wildcard *.c *.h *.cc modules/*.c) | sort -n
