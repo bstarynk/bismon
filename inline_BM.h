@@ -859,7 +859,7 @@ objassocremoveattrpayl_BM (objectval_tyBM * obj,
     return;
   anyassoc_tyBM *newasso = assoc_removeattr_BM (asso, obattr);
   if (newasso != asso)
-    obj->ob_payl = newasso;
+    objputpayload_BM (obj, newasso);
 }                               /* end  objassocremoveattrpayl_BM */
 
 void
@@ -868,7 +868,10 @@ objassocreorganizepayl_BM (objectval_tyBM * obj, unsigned gap)
   anyassoc_tyBM *asso = objgetassocpayl_BM (obj);
   if (!asso)
     return;
-  assoc_reorganize_BM (&obj->ob_payl, gap);
+  assoc_reorganize_BM (&asso, gap);
+  anyassoc_tyBM *newasso = asso;
+  if (newasso != asso)
+    objputpayload_BM (obj, newasso);
 }                               /* end objassocreorganizepayl_BM */
 
 
@@ -975,7 +978,7 @@ objdatavectgrowpayl_BM (objectval_tyBM * obj, unsigned gap)
     {
       struct datavectval_stBM *newdvec = datavect_grow_BM (dvec, gap);
       if (newdvec != dvec)
-        obj->ob_payl = newdvec;
+        objputpayload_BM (obj, newdvec);
     }
 }                               /* end objdatavectgrowpayl_BM */
 
@@ -988,7 +991,7 @@ objdatavectreservepayl_BM (objectval_tyBM * obj, unsigned gap)
     {
       struct datavectval_stBM *newdvec = datavect_reserve_BM (dvec, gap);
       if (newdvec != dvec)
-        obj->ob_payl = newdvec;
+        objputpayload_BM (obj, newdvec);
     }
 }                               /* end objdatavectreservepayl_BM */
 
@@ -1000,7 +1003,7 @@ objdatavectappendpayl_BM (objectval_tyBM * obj, value_tyBM val)
     {
       struct datavectval_stBM *newdvec = datavect_append_BM (dvec, val);
       if (newdvec != dvec)
-        obj->ob_payl = newdvec;
+        objputpayload_BM (obj, newdvec);
     }
 }                               /* end objdatavectappendpayl_BM */
 
@@ -1014,7 +1017,7 @@ objdatavectinsertpayl_BM (objectval_tyBM * obj,
       struct datavectval_stBM *newdvec =
         datavect_insert_BM (dvec, rk, valarr, len);
       if (newdvec != dvec)
-        obj->ob_payl = newdvec;
+        objputpayload_BM (obj, newdvec);
     }
 }                               /* end objdatavectinsertpayl_BM */
 
@@ -1027,7 +1030,7 @@ objdatavectinsertonepayl_BM (objectval_tyBM * obj, int rk, value_tyBM val)
       struct datavectval_stBM *newdvec =
         datavect_insertone_BM (dvec, rk, val);
       if (newdvec != dvec)
-        obj->ob_payl = newdvec;
+        objputpayload_BM (obj, newdvec);
     }
 }                               /* end objdatavectinsertonepayl_BM */
 
@@ -1039,7 +1042,7 @@ objdatavectremovepayl_BM (objectval_tyBM * obj, int rk, unsigned len)
     {
       struct datavectval_stBM *newdvec = datavect_remove_BM (dvec, rk, len);
       if (newdvec != dvec)
-        obj->ob_payl = newdvec;
+        objputpayload_BM (obj, newdvec);
     }
 }                               /* end objdatavectremovepayl_BM */
 
@@ -1182,7 +1185,7 @@ objhashsetaddpayl_BM (objectval_tyBM * obj, objectval_tyBM * obelem)
     {
       struct hashsetobj_stBM *newhset = hashsetobj_add_BM (hset, obelem);
       if (newhset != hset)
-        obj->ob_payl = newhset;
+        objputpayload_BM (obj, newhset);
     }
 }                               /* end objhashsetaddpayl_BM */
 
@@ -1196,7 +1199,7 @@ objhashsetremovepayl_BM (objectval_tyBM * obj, objectval_tyBM * obelem)
     {
       struct hashsetobj_stBM *newhset = hashsetobj_remove_BM (hset, obelem);
       if (newhset != hset)
-        obj->ob_payl = newhset;
+        objputpayload_BM (obj, newhset);
     }
 }                               /* end objhashsetremovepayl_BM */
 
@@ -1227,7 +1230,9 @@ objhashsetgrowpayl_BM (objectval_tyBM * obj, unsigned gap)
   struct hashsetobj_stBM *hset = objgethashsetpayl_BM (obj);
   if (!hset)
     return;
-  obj->ob_payl = hashsetobj_grow_BM (hset, gap);
+  struct hashsetobj_stBM *newhset = hashsetobj_grow_BM (hset, gap);
+  if (newhset != hset)
+    objputpayload_BM (obj, newhset);
 }                               /* end objhashsetgrowpayl_BM */
 
 objectval_tyBM *
@@ -1251,7 +1256,11 @@ objhashsettakerandompayl_BM (objectval_tyBM * obj)
       unsigned alsiz = ((typedhead_tyBM *) hset)->rlen;
       unsigned ucnt = ((typedsize_tyBM *) hset)->size;
       if (alsiz > 30 && 3 * ucnt < alsiz)
-        obj->ob_payl = hashsetobj_grow_BM (hset, 0);
+        {
+          struct hashsetobj_stBM *newhset = hashsetobj_grow_BM (hset, 0);
+          if (newhset != hset)
+            objputpayload_BM (obj, newhset);
+        }
     }
   return ob;
 }                               /* end objhashsettakerandompayl_BM */
@@ -2065,7 +2074,7 @@ objhashsetvalreorganizepayl_BM (objectval_tyBM * obj, unsigned gap)
     {
       struct hashsetval_stBM *newhsv = hashsetvalreorganize_BM (hsv, gap);
       if (newhsv != hsv)
-        obj->ob_payl = newhsv;
+        objputpayload_BM (obj, newhsv);
     }
 }                               /* end objhashsetvalreorganizepayl_BM */
 
@@ -2077,7 +2086,7 @@ objhashsetvalputpayl_BM (objectval_tyBM * obj, value_tyBM val)
     {
       struct hashsetval_stBM *newhsv = hashsetvalput_BM (hsv, val);
       if (newhsv != hsv)
-        obj->ob_payl = newhsv;
+        objputpayload_BM (obj, newhsv);
     }
 }                               /* end objhashsetvalputpayl_BM */
 
@@ -2089,7 +2098,7 @@ objhashsetvalremovepayl_BM (objectval_tyBM * obj, value_tyBM val)
     {
       struct hashsetval_stBM *newhsv = hashsetvalremove_BM (hsv, val);
       if (newhsv != hsv)
-        obj->ob_payl = newhsv;
+        objputpayload_BM (obj, newhsv);
     }
 }                               /* end objhashsetvalputpayl_BM */
 
@@ -2174,7 +2183,7 @@ objhashmapvalreorganizepayl_BM (objectval_tyBM * obj, unsigned gap)
     {
       struct hashmapval_stBM *newhma = hashmapvalreorganize_BM (hma, gap);
       if (newhma != hma)
-        obj->ob_payl = newhma;
+        objputpayload_BM (obj, newhma);
     }
 }                               /* end objhashmapvalreorganizepayl_BM */
 
@@ -2187,7 +2196,7 @@ objhashmapvalputpayl_BM (objectval_tyBM * obj, value_tyBM keyv,
     {
       struct hashmapval_stBM *newhma = hashmapvalput_BM (hma, keyv, valv);
       if (newhma != hma)
-        obj->ob_payl = newhma;
+        objputpayload_BM (obj, newhma);
     }
 }                               /* end objhashmapvalputpayl_BM */
 

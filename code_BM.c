@@ -2819,7 +2819,8 @@ ROUTINEOBJNAME_BM (_63Q0R4r8xa7_7XOAxxP5pi2)    //
       _.resobj = _.inv;
       if (objectisinstance_BM (_.resobj, k_basiclo_exit))
         _.resclass = objclass_BM (_.resobj);
-      else _.resclass = k_basiclo_exit;
+      else
+        _.resclass = k_basiclo_exit;
       startix++;
     }
   else
