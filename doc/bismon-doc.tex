@@ -1,4 +1,72 @@
 % file bismon-doc.tex
-\documentclass{report}
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{alltt}
+\usepackage{moreverb}
+\usepackage{fancyvrb}
+\usepackage{epsfig}
+\usepackage{makeidx}
+\usepackage{relsize}
+\usepackage{float}
+\usepackage{color}
+\usepackage{hyperref}
+
+\newcommand{\myemail}[1]{{\href{mailto:#1}{\texttt{\textbf{#1}}}}}
+\newcommand{\myurl}[1]{{\href{http:#1}{\texttt{\textbf{#1}}}}}
+\newcommand{\chariottitlelogo}[0]{\includegraphics[width=1.cm,keepaspectratio]{CHARIOT-logo}}
+% generated files
+\input{generated/git-commit.tex}
+\input{generated/timestamp.tex}
+
+\date{\mydocdate}
+
+\title{\emph{Bismon}\thanks{The \texttt{bismon} name is temporary and
+    could change later.} \thanks{see also the
+    \myurl{github.com/bstarynk/bismon} repository; this documentation was generated with its \texttt{build-bismon-doc.sh} script} documentation}
+
+\author{Basile \textsc{Starynkevitch}\thanks{Email
+    \myemail{basile@starynkevitch.net} or
+    \myemail{basile.starynkevitch@cea.fr}}, %
+  \\ {\small{CEA, LIST,
+      France}}}
 \begin{document}
+
+\begin{titlepage}
+\maketitle
+
+\begin{relsize}{-2}
+This work is partly but mostly funded (from start of 2018 to end of
+2020) thru the \textsc{\emph{Chariot}} project (see \myurl{chariotproject.eu})
+which has received funding from the European Union’s Horizon 2020
+research and innovation programme under the Grant Agreement No
+780075.
+\end{relsize}
+
+\hspace{2cm}
+
+\begin{center}
+{\small git commit: \texttt{\mygitcommit}}
+
+{\small generated: \textit{\mydoctimestamp}}
+
+\hspace{2cm}
+
+\begin{tabular}{cc}
+  \includegraphics[width=2cm]{images/CHARIOT-logo} & \includegraphics[width=2cm]{generated/Flag-of-Europe-fig}
+\end{tabular}
+\end{center}
+
+\end{titlepage}
+\newpage
+
+\tableofcontents
+
+\newpage
+
 \end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Local Variables: ;;
+%% compile-command: "./build-bismon-doc.sh" ;;
+%% End: ;;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

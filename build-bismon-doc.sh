@@ -19,7 +19,7 @@ mkdir -p doc/generated/
 git log --format=oneline -1 --abbrev=16 --abbrev-commit -q | awk '{printf "\\newcommand{\\mygitcommit}[0]{%s}\n", $1}' > doc/generated/git-commit.tex
 
 # generate the dates
-date +'\\newcommand{\\mydoctimestamp[0]{%c}%n\\mydocdate[0]{%b %d, %Y}' > doc/generated/timestamp.tex
+date +'\newcommand{\mydoctimestamp}[0]{%c}%n\newcommand{\mydocdate}[0]{%b %d, %Y}' > doc/generated/timestamp.tex
 
 for gscript in doc/genscripts/[0-9]*.sh ; do
     gbase="$(basename $gscript .sh)"

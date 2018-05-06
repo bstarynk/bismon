@@ -22,3 +22,13 @@ modules/_*_.c
 _*.log
 
 gmon.out
+
+# documentation related
+doc/generated/*
+doc/*.aux
+doc/*.bbl
+doc/*.log
+doc/*.out
+doc/*.pdf
+doc/*.blg
+doc/*.toc
