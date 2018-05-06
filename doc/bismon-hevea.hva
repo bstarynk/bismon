@@ -1,0 +1,3 @@
+% file bismon-hevea.hva for hevea (see http://hevea.inria.fr/ for more)
+
+\newcommand{\myincludewidthgraphics}[2]{\imgsrc[]{#2}}

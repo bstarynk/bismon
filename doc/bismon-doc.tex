@@ -11,6 +11,7 @@
 \usepackage{float}
 \usepackage{color}
 \usepackage{hyperref}
+\usepackage{hevea}
 
 \newcommand{\myemail}[1]{{\href{mailto:#1}{\texttt{\textbf{#1}}}}}
 \newcommand{\myurl}[1]{{\href{http:#1}{\texttt{\textbf{#1}}}}}
@@ -18,6 +19,10 @@
 % generated files
 \input{generated/git-commit.tex}
 \input{generated/timestamp.tex}
+
+
+% LaTeX specific macros that HeVeA should ignore
+\input{bismon-latex.tex}
 
 \date{\mydocdate}
 
@@ -53,7 +58,7 @@ research and innovation programme under the Grant Agreement No
 \hspace{2cm}
 
 \begin{tabular}{cc}
-  \includegraphics[width=2cm]{images/CHARIOT-logo} & \includegraphics[width=2cm]{generated/Flag-of-Europe-fig}
+  \myincludewidthgraphics{2cm}{images/CHARIOT-logo} & \myincludewidthgraphics{2cm}{generated/Flag-of-Europe-fig}
 \end{tabular}
 \end{center}
 

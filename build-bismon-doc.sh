@@ -47,3 +47,4 @@ bibtex bismon-doc
 pdflatex bismon-doc
 makeindex bismon-doc
 pdflatex bismon-doc
+hevea -o html/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-doc
