@@ -73,9 +73,12 @@ bibtex bismon-doc
 pdflatex -halt-on-error bismon-doc
 makeindex bismon-doc
 pdflatex -halt-on-error bismon-doc
-pdflatex -halt-on-error bismon-doc
 bibtex bismon-doc
-ls -l $PWD/*aux $PWD/*/*aux
-bibhva bismon-doc
+pdflatex -halt-on-error bismon-doc
+ls -l $PWD/*aux $PWD/*/*aux $PWD/*bbl $PWD/*/*bbl
+hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex svg.hva bismon-hevea.hva bismon-doc
+#bibhva bismon-doc
+bibhva htmldoc/bismon-htmldoc
+ls -l $PWD/*aux $PWD/*/*aux 
 hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-doc
-hacha -o htmldoc/index.html  htmldoc/bismon-htmldoc.html
+#hacha -o htmldoc/index.html  htmldoc/bismon-htmldoc.html
