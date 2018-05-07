@@ -15,7 +15,6 @@
 
 mkdir -p doc/generated/
 mkdir -p doc/htmldoc/
-rm -f doc/generated/*
 
 # generate the git tag
 git log --format=oneline -1 --abbrev=16 --abbrev-commit -q | awk '{printf "\\newcommand{\\bmgitcommit}[0]{%s}\n", $1}' > doc/generated/git-commit.tex
@@ -34,10 +33,14 @@ done
 
 # generate vector SVG images
 for svgfile in images/*.svg ; do
+    sbase="$(basename "$svgfile" .svg)"
     if [ -f "$svgfile" ]; then
-	sbase="$(basename "$svgfile" .svg)"
-	inkscape --without-gui --export-pdf="generated/$sbase-fig.pdf" "$svgfile"
-	inkscape --without-gui --export-eps="generated/$sbase-fig.eps" "$svgfile"
+	if [ ! -f "generated/$sbase-fig.pdf" -o "$svgfile" -nt "generated/$sbase-fig.pdf"  ]; then
+	    inkscape --without-gui --export-pdf="generated/$sbase-fig.pdf" "$svgfile"
+	fi
+	if  [ ! -f "generated/$sbase-fig.eps"  -o "$svgfile" -nt  "generated/$sbase-fig.eps" ]; then
+	    inkscape --without-gui --export-eps="generated/$sbase-fig.eps" "$svgfile"
+	fi
 	cp -v "$svgfile" "htmldoc/$sbase-fig.svg"
     fi
 done
@@ -46,8 +49,12 @@ done
 for jpegfile in images/*.jpeg ; do
     if [ -f "$jpegfile" ]; then
 	jbase=$(basename "$jpegfile" .jpeg)
-	convert "$jpegfile" "generated/$jbase-img.pdf"
-	convert "$jpegfile" "generated/$jbase-img.eps"
+	if [ ! -f "generated/$jbase-img.pdf" -o "$jpegfile" -nt "generated/$jbase-img.pdf" ]; then
+	    convert "$jpegfile" "generated/$jbase-img.pdf"
+	fi
+	if [ ! -f "generated/$jbase-img.eps" -o t "$jpegfile" -nt "generated/$jbase-img.eps" ]; then
+	    convert "$jpegfile" "generated/$jbase-img.eps"
+	fi
 	cp -v  "$jpegfile" "htmldoc/$jbase-img.jpeg"
     fi
 done
@@ -67,4 +74,8 @@ pdflatex -halt-on-error bismon-doc
 makeindex bismon-doc
 pdflatex -halt-on-error bismon-doc
 pdflatex -halt-on-error bismon-doc
-hevea -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-doc
+bibtex bismon-doc
+ls -l $PWD/*aux $PWD/*/*aux
+bibhva bismon-doc
+hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-doc
+hacha -o htmldoc/index.html  htmldoc/bismon-htmldoc.html

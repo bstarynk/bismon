@@ -36,4 +36,7 @@ doc/*.toc
 doc/*.idx
 doc/*.ind
 doc/*.ilg
+doc/*.haux
+doc/*.hind
+doc/*.htoc
 doc/htmldoc/*

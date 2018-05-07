@@ -47,6 +47,7 @@ clean:
 	$(RM) *_BM.const.h _bm_allconsts.c
 	$(RM) modules/*.so modules/*.i modules/*% modules/*~ modules/*- bismon BM_makeconst
 	$(RM) $(patsubst %.md,%.html, $(MARKDOWN_SOURCES))
+	$(RM)  doc/generated/* doc/htmldoc/*
 
 indent: .indent.pro
 	@printf "\n *** headers *** \n"
