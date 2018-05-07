@@ -11,7 +11,8 @@
 \usepackage{float}
 \usepackage{color}
 \usepackage{hyperref}
-\usepackage{natbib}
+\usepackage[square]{natbib}
+\usepackage{charter}
 \usepackage{hevea}
 
 \newcommand{\bmemail}[1]{{\href{mailto:#1}{\texttt{\textbf{#1}}}}}
@@ -28,7 +29,7 @@
 \date{\bmdocdate}
 
 \title{\emph{Bismon}\thanks{The \texttt{bismon} name is temporary and
-    could change later. See also the
+    is likely to change later. See also the
     \bmurl{github.com/bstarynk/bismon} repository; this documentation was generated with its \texttt{build-bismon-doc.sh} script} documentation}
 
 \author{Basile \textsc{Starynkevitch}\thanks{Email
@@ -41,6 +42,9 @@
 
 \begin{document}
 
+\bibliographystyle{abbrvnat}
+
+
 \begin{titlepage}
 \maketitle
 
@@ -50,6 +54,10 @@
 which has received funding from the European Union’s Horizon 2020
 research and innovation programme under the Grant Agreement No
 780075.
+
+\medskip
+
+This report will become the major part of \emph{\textsc{Chariot}} deliverable D1.3
 \end{quote}
 
 \hspace{2cm}
@@ -59,13 +67,35 @@ research and innovation programme under the Grant Agreement No
 
 {\small generated: \textit{\bmdoctimestamp}}
 
-\hspace{2cm}
+\hspace{1cm}
 
 \begin{tabular}{cc}
   \bmincludewidthgraphics{72pt}{CHARIOT-logo-img}{png}{png} %
   & \bmincludewidthgraphics{64pt}{Flag-of-Europe-fig}{eps}{svg}
 \end{tabular}
+
+
+\hspace{1cm}
+
+\begin{quote}
+\footnotesize \bmincludewidthgraphics{60pt}{CC-BY-SA-4-img}{png}{png} This document
+is licensed under the Creative Commons Attribution-ShareAlike 4.0
+International License. To view a copy of this license, visit
+\bmurl{creativecommons.org/licenses/by-sa/4.0/} or send a letter to
+Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\hrule
+\end{quote}
+
+
 \end{center}
+
+
+\begin{abstract}
+  \textit{Bismon} is a free software static source code analysis framework. \\
+  @@ ETC...
+\end{abstract}
+
 
 \end{titlepage}
 \newpage
@@ -78,9 +108,7 @@ research and innovation programme under the Grant Agreement No
 
 \newpage
 
-
 \bibliography{bismon-biblio}
-\bibliographystyle{alpha}
 
 \clearpage
 
