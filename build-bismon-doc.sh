@@ -14,6 +14,7 @@
 # perhaps ANT: http://mirror.hmc.edu/ctan/systems/ant/
 
 mkdir -p doc/generated/
+mkdir -p doc/htmldoc/
 rm -f doc/generated/*
 
 # generate the git tag
@@ -37,7 +38,7 @@ for svgfile in images/*.svg ; do
 	sbase="$(basename "$svgfile" .svg)"
 	inkscape --without-gui --export-pdf="generated/$sbase-fig.pdf" "$svgfile"
 	inkscape --without-gui --export-eps="generated/$sbase-fig.eps" "$svgfile"
-	cp -v "$svgfile" "generated/$sbase-fig.svg"
+	cp -v "$svgfile" "htmldoc/$sbase-fig.svg"
     fi
 done
 
@@ -47,7 +48,7 @@ for jpegfile in images/*.jpeg ; do
 	jbase=$(basename "$jpegfile" .jpeg)
 	convert "$jpegfile" "generated/$jbase-img.pdf"
 	convert "$jpegfile" "generated/$jbase-img.eps"
-	cp -v  "$jpegfile" "generated/$jbase-img.jpeg"
+	cp -v  "$jpegfile" "htmldoc/$jbase-img.jpeg"
     fi
 done
 
@@ -55,7 +56,7 @@ done
 for pngfile in images/*.png ; do
     if [ -f "$pngfile" ]; then
 	pbase=$(basename "$pngfile" .png)
-	cp -v "$pngfile" "generated/$pbase-img.png"
+	cp -v "$pngfile" "htmldoc/$pbase-img.png"
     fi
 done
 
@@ -64,4 +65,4 @@ bibtex bismon-doc
 pdflatex -halt-on-error bismon-doc
 makeindex bismon-doc
 pdflatex -halt-on-error bismon-doc
-hevea -o html/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-doc
+hevea -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-doc

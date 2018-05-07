@@ -33,3 +33,5 @@ doc/*.out
 doc/*.pdf
 doc/*.blg
 doc/*.toc
+
+doc/htmldoc/*
