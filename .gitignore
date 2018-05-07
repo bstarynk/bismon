@@ -33,5 +33,7 @@ doc/*.out
 doc/*.pdf
 doc/*.blg
 doc/*.toc
-
+doc/*.idx
+doc/*.ind
+doc/*.ilg
 doc/htmldoc/*

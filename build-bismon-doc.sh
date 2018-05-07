@@ -18,10 +18,10 @@ mkdir -p doc/htmldoc/
 rm -f doc/generated/*
 
 # generate the git tag
-git log --format=oneline -1 --abbrev=16 --abbrev-commit -q | awk '{printf "\\newcommand{\\mygitcommit}[0]{%s}\n", $1}' > doc/generated/git-commit.tex
+git log --format=oneline -1 --abbrev=16 --abbrev-commit -q | awk '{printf "\\newcommand{\\bmgitcommit}[0]{%s}\n", $1}' > doc/generated/git-commit.tex
 
 # generate the dates
-date +'\newcommand{\mydoctimestamp}[0]{%c}%n\newcommand{\mydocdate}[0]{%b %d, %Y}' > doc/generated/timestamp.tex
+date +'\newcommand{\bmdoctimestamp}[0]{%c}%n\newcommand{\bmdocdate}[0]{%b %d, %Y}' > doc/generated/timestamp.tex
 
 cd doc
 
@@ -56,6 +56,7 @@ done
 for pngfile in images/*.png ; do
     if [ -f "$pngfile" ]; then
 	pbase=$(basename "$pngfile" .png)
+	cp -v "$pngfile" "generated/$pbase-img.png"
 	cp -v "$pngfile" "htmldoc/$pbase-img.png"
     fi
 done
@@ -64,5 +65,6 @@ pdflatex -halt-on-error bismon-doc
 bibtex bismon-doc
 pdflatex -halt-on-error bismon-doc
 makeindex bismon-doc
+pdflatex -halt-on-error bismon-doc
 pdflatex -halt-on-error bismon-doc
 hevea -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-doc
