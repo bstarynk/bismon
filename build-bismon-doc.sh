@@ -14,6 +14,7 @@
 # perhaps ANT: http://mirror.hmc.edu/ctan/systems/ant/
 
 mkdir -p doc/generated/
+rm -f doc/generated/*
 
 # generate the git tag
 git log --format=oneline -1 --abbrev=16 --abbrev-commit -q | awk '{printf "\\newcommand{\\mygitcommit}[0]{%s}\n", $1}' > doc/generated/git-commit.tex
@@ -21,30 +22,46 @@ git log --format=oneline -1 --abbrev=16 --abbrev-commit -q | awk '{printf "\\new
 # generate the dates
 date +'\newcommand{\mydoctimestamp}[0]{%c}%n\newcommand{\mydocdate}[0]{%b %d, %Y}' > doc/generated/timestamp.tex
 
-for gscript in doc/genscripts/[0-9]*.sh ; do
+cd doc
+
+
+for gscript in genscripts/[0-9]*.sh ; do
     gbase="$(basename $gscript .sh)"
-    mv "doc/generated/$gbase.tex" "doc/generated/$gbase.tex~"
-    $gscript > "doc/generated/$gbase.tex"
+    mv "generated/$gbase.tex" "generated/$gbase.tex~"
+    $gscript > "generated/$gbase.tex"
 done
 
-# generate vectorial images
-for svgfile in doc/images/*.svg ; do
-    sbase="$(basename $svgfile .svg)"
-    inkscape --without-gui --export-pdf="doc/generated/$sbase-fig.pdf" "$svgfile"
-    inkscape --without-gui --export-eps="doc/generated/$sbase-fig.eps" "$svgfile"
+# generate vector SVG images
+for svgfile in images/*.svg ; do
+    if [ -f "$svgfile" ]; then
+	sbase="$(basename "$svgfile" .svg)"
+	inkscape --without-gui --export-pdf="generated/$sbase-fig.pdf" "$svgfile"
+	inkscape --without-gui --export-eps="generated/$sbase-fig.eps" "$svgfile"
+	cp -v "$svgfile" "generated/$sbase-fig.svg"
+    fi
 done
 
 # generate JPEG images
-for jpegfile in doc/images/*.jpeg ; do
-    jbase="$(basename $jpegfile .jpeg)"
-    convert "$jpegfile" "doc/generated/$jbase-img.pdf"
-    convert "$jpegfile" "doc/generated/$jbase-img.eps"
+for jpegfile in images/*.jpeg ; do
+    if [ -f "$jpegfile" ]; then
+	jbase=$(basename "$jpegfile" .jpeg)
+	convert "$jpegfile" "generated/$jbase-img.pdf"
+	convert "$jpegfile" "generated/$jbase-img.eps"
+	cp -v  "$jpegfile" "generated/$jbase-img.jpeg"
+    fi
 done
 
-cd doc
-pdflatex bismon-doc
+# link *.png images
+for pngfile in images/*.png ; do
+    if [ -f "$pngfile" ]; then
+	pbase=$(basename "$pngfile" .png)
+	cp -v "$pngfile" "generated/$pbase-img.png"
+    fi
+done
+
+pdflatex -halt-on-error bismon-doc
 bibtex bismon-doc
-pdflatex bismon-doc
+pdflatex -halt-on-error bismon-doc
 makeindex bismon-doc
-pdflatex bismon-doc
+pdflatex -halt-on-error bismon-doc
 hevea -o html/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-doc

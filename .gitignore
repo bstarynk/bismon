@@ -24,6 +24,7 @@ _*.log
 gmon.out
 
 # documentation related
+texput.log
 doc/generated/*
 doc/*.aux
 doc/*.bbl
