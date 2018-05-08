@@ -83,7 +83,7 @@ On Linux/x86-64 (e.g. Debian/Unstable or recent Ubuntu) only:
 ## prerequisites ##
 
 * recent [GCC](http://gcc.gnu.org/) (so [GCC
-7](https://gcc.gnu.org/gcc-7/) or GCC 8), with C and C++ and JIT
+7](https://gcc.gnu.org/gcc-7/) or [GCC 8](https://gcc.gnu.org/gcc-8/) ...), with C and C++ and JIT
 support and plugins enabled (check with `gcc -v`; if your system `gcc`
 and `g++` lack support for plugins and
 [libgccjit](https://gcc.gnu.org/onlinedocs/jit/), you should build and
@@ -103,6 +103,12 @@ generated code), but some few code is in C++14.
 
 * GNU [indent](https://www.gnu.org/software/indent/) (2.2.x at last) and [astyle](https://sourceforge.net/projects/astyle/)  (3.1 at least) are useful for `make indent`. `indent` is now **required** for generated modules.
 
+* [LaTeX](https://latex.org/) -probably as
+  [texlive](https://www.tug.org/texlive/) suite or
+  [luatex](http://luatex.org/)- and related utilities (`pdflatex`,
+  `makeidx`, `bibtex` ...) with [inkscape](https://inkscape.org/) and
+  [hevea](http://hevea.inria.fr/) are needed for documentation.
+
 ### relevant Debian/Ubuntu build-dependency packages ###
 
 On Debian/Unstable or Ubuntu, `apt-get install build-essential make gcc-7 g++-7 gcc-7-plugin-dev libgccjit-7-dev` for the building infrastructure. Replace 7 by 8 when using GCC 8.
@@ -112,7 +118,7 @@ On Debian/Unstable or Ubuntu, `apt-get install build-essential make gcc-7 g++-7 
 The `libbacktrace` is not independently packaged in Debian. I recommend building and installing
 it from its source code, or else (not recommended, :unamused: but doable) edit the `Makefile` to uses your system GCC compiler's one.
 
-`apt-get install markdown indent astyle` 
+`apt-get install markdown indent astyle` and `apt-get install texlive texlive-full hevea` 
 
 ## building ##
 
