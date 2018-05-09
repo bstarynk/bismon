@@ -1732,6 +1732,9 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
 {
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
+  objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
+  objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
+  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_8UGpvfrcKbM_99IeP3BuxA5,
                  objectval_tyBM * blockob;      //
                  objectval_tyBM * modgenob;     //
@@ -1779,13 +1782,35 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
         objlock_BM (_.stmtob);
         objstrbuffersetindentpayl_BM (_.modgenob, indepth);
         objstrbuffernewlinepayl_BM (_.modgenob);
-        _.emitv = send3_BM (_.stmtob, k_emit_statement, CURFRAME_BM,    //
-                            _.modgenob, _.routprepob, taggedint_BM (indepth));
-        objstrbuffernewlinepayl_BM (_.modgenob);
+        if (objectisinstance_BM (_.stmtob, k_basiclo_statement))
+          {
+            DBGPRINTF_BM
+              ("emit_block°basiclo_block blockob %s insix#%d stmtob %s is statement",
+               objectdbg_BM (_.blockob), insix, objectdbg2_BM (_.stmtob));
+            _.emitv = send3_BM (_.stmtob, k_emit_statement, CURFRAME_BM,        //
+                                _.modgenob, _.routprepob,
+                                taggedint_BM (indepth));
+            objstrbuffernewlinepayl_BM (_.modgenob);
+            if (!_.emitv)
+              FAILHERE (makenode2_BM
+                        (k_emit_statement, _.stmtob, taggedint_BM (insix)));
+          }
+        else if (objectisinstance_BM (_.stmtob, k_basiclo_block))
+          {
+            DBGPRINTF_BM
+              ("emit_block°basiclo_block blockob %s insix#%d stmtob %s is block",
+               objectdbg_BM (_.blockob), insix, objectdbg2_BM (_.stmtob));
+            _.emitv = send3_BM (_.stmtob, k_emit_block, CURFRAME_BM,    //
+                                _.modgenob, _.routprepob,
+                                taggedint_BM (indepth));
+            if (!_.emitv)
+              FAILHERE (makenode2_BM
+                        (k_emit_block, _.stmtob, taggedint_BM (insix)));
+          }
+        else
+          FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (insix), _.stmtob));
         objunlock_BM (_.stmtob);
       }
-      if (!_.emitv)
-        FAILHERE (makenode1_BM (k_emit_statement, _.stmtob));
     }
   objstrbuffersetindentpayl_BM (_.modgenob, indepth);
   objstrbufferprintfpayl_BM (_.modgenob, "/* !endingblock %s */\n"
@@ -1823,6 +1848,9 @@ ROUTINEOBJNAME_BM (_56pDwW9peiP_8flH2fMQUnD)    //emit_block°basiclo_loop
 {
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
+  objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
+  objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
+  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_56pDwW9peiP_8flH2fMQUnD,
                  objectval_tyBM * blockob;      //
                  objectval_tyBM * modgenob;     //
@@ -1843,7 +1871,7 @@ ROUTINEOBJNAME_BM (_56pDwW9peiP_8flH2fMQUnD)    //emit_block°basiclo_loop
   idtocbuf32_BM (objid_BM (_.blockob), blockidbuf);
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
   DBGPRINTF_BM
-    ("emit_block°basiclo_block start blockob=%s modgenob=%s routprepob=%s depth#%d",
+    ("emit_block°basiclo_loop start blockob=%s modgenob=%s routprepob=%s depth#%d",
      objectdbg_BM (_.blockob), objectdbg1_BM (_.modgenob),
      objectdbg2_BM (_.routprepob), depth);
   WEAKASSERT_BM (isobject_BM (_.blockob));
@@ -1873,10 +1901,41 @@ ROUTINEOBJNAME_BM (_56pDwW9peiP_8flH2fMQUnD)    //emit_block°basiclo_loop
         objlock_BM (_.stmtob);
         objstrbuffersetindentpayl_BM (_.modgenob, indepth);
         objstrbuffernewlinepayl_BM (_.modgenob);
-        _.emitv = send3_BM (_.stmtob, k_emit_statement, CURFRAME_BM,    //
-                            _.modgenob, _.routprepob, taggedint_BM (indepth));
+        {
+          objlock_BM (_.stmtob);
+          objstrbuffersetindentpayl_BM (_.modgenob, indepth);
+          objstrbuffernewlinepayl_BM (_.modgenob);
+          if (objectisinstance_BM (_.stmtob, k_basiclo_statement))
+            {
+              DBGPRINTF_BM
+                ("emit_block°basiclo_loop blockob %s insix#%d stmtob %s is statement",
+                 objectdbg_BM (_.blockob), insix, objectdbg2_BM (_.stmtob));
+              _.emitv = send3_BM (_.stmtob, k_emit_statement, CURFRAME_BM,      //
+                                  _.modgenob, _.routprepob,
+                                  taggedint_BM (indepth));
+              objstrbuffernewlinepayl_BM (_.modgenob);
+              if (!_.emitv)
+                FAILHERE (makenode2_BM
+                          (k_emit_statement, _.stmtob, taggedint_BM (insix)));
+            }
+          else if (objectisinstance_BM (_.stmtob, k_basiclo_block))
+            {
+              DBGPRINTF_BM
+                ("emit_block°basiclo_loop blockob %s insix#%d stmtob %s is block",
+                 objectdbg_BM (_.blockob), insix, objectdbg2_BM (_.stmtob));
+              _.emitv = send3_BM (_.stmtob, k_emit_block, CURFRAME_BM,  //
+                                  _.modgenob, _.routprepob,
+                                  taggedint_BM (indepth));
+              if (!_.emitv)
+                FAILHERE (makenode2_BM
+                          (k_emit_block, _.stmtob, taggedint_BM (insix)));
+            }
+          else
+            FAILHERE (makenode2_BM
+                      (k_curcomp, taggedint_BM (insix), _.stmtob));
+          objunlock_BM (_.stmtob);
+        }
         objstrbuffernewlinepayl_BM (_.modgenob);
-        objunlock_BM (_.stmtob);
       }
       if (!_.emitv)
         FAILHERE (makenode1_BM (k_emit_statement, _.stmtob));
