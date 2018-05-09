@@ -942,7 +942,6 @@ ROUTINEOBJNAME_BM (_23F5sZIfO5Y_5m9O2FPHdzX)    // miniscan_stmt°basiclo_exit
                  objectval_tyBM * fromob;       //
                  objectval_tyBM * exitob;       //
                  objectval_tyBM * hsetblockob;  //
-                 value_tyBM resultv;    //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
     );
@@ -974,12 +973,12 @@ ROUTINEOBJNAME_BM (_23F5sZIfO5Y_5m9O2FPHdzX)    // miniscan_stmt°basiclo_exit
     FAILHERE (k_blocks);
   if (!objhashashsetpayl_BM (_.hsetblockob))
     FAILHERE (makenode1_BM (k_blocks, _.hsetblockob));
-
-#warning unimplemented miniscan_stmt°basiclo_exit _23F5sZIfO5Y_5m9O2FPHdzX
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented miniscan_stmt°basiclo_exit _23F5sZIfO5Y_5m9O2FPHdzX ");
-  LOCALRETURN_BM (_.resultv);
+  if (!objhashsetcontainspayl_BM (_.hsetblockob, _.exitob))
+    {
+      ("miniscan_stmt°basiclo_exit stmtob=%s exitob=%s not in hsetblockob=%s", objectdbg_BM (_.stmtob), objectdbg1_BM (_.exitob), objectdbg2_BM (_.hsetblockob));
+      FAILHERE (makenode1_BM (k_exit, _.exitob));
+    }
+  LOCALRETURN_BM (_.exitob);
 failure:
   DBGPRINTF_BM ("miniscan_stmt°basiclo_exit failin %d stmtob=%s causev=%s routprepob=%s",      //
                 failin, objectdbg_BM (_.stmtob),        //
@@ -3029,6 +3028,63 @@ ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7)    //emit_statement°basiclo_return
 
 
 
+// emit_statement°basiclo_exit _4hS1jncZQAY_9pGS66eIlw9
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_4hS1jncZQAY_9pGS66eIlw9);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_4hS1jncZQAY_9pGS66eIlw9)    //emit_statement°basiclo_exit
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // stmtob
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // routprepob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM *k_exit = BMK_41gbFesxqzD_3l56OLiNdl2;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_4hS1jncZQAY_9pGS66eIlw9,
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * routob;       //
+                 objectval_tyBM * exitob;       //
+                 value_tyBM errorv;     //
+                 value_tyBM causev;     //
+    );
+  _.stmtob = objectcast_BM (arg1);
+  _.modgenob = objectcast_BM (arg2);
+  _.routprepob = objectcast_BM (arg3);
+  int depth = getint_BM (arg4);
+  bool gotmessage = false;
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_exit start stmtob=%s modgenob=%s routprepob=%s depth#%d",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth);
+  _.exitob = objectcast_BM (objgetattr_BM (_.stmtob, k_exit));
+  if (!_.exitob)
+    FAILHERE (k_exit);
+  char exitidbuf[32];
+  memset (exitidbuf, 0, sizeof (exitidbuf));
+  objstrbufferprintfpayl_BM (_.modgenob, "// exit %s\n",
+                             objectdbg_BM (_.stmtob));
+  idtocbuf32_BM (objid_BM (_.exitob), exitidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob, "goto endblock_%s;\n", exitidbuf);
+  LOCALRETURN_BM (_.exitob);
+#undef FAILHERE
+failure:
+  DBGPRINTF_BM ("emit_statement°basiclo_exit failin %d stmtob %s routprep %s cause %s",        //
+                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv = (value_tyBM)
+    makenode5_BM (k_emit_statement, _.stmtob, _.routprepob, _.modgenob,
+                  taggedint_BM (depth), _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end emit_statement°basiclo_exit _4hS1jncZQAY_9pGS66eIlw9 */
+
+
 
 // emit_statement°basiclo_wrong _1EFhqSytjSK_9Uchza7qmUD
 
@@ -3414,7 +3470,7 @@ failure:
     free (srcpathstr), srcpathstr = NULL;
   if (prevsrcpathstr)
     free (prevsrcpathstr), prevsrcpathstr = NULL;
-  DBGPRINTF_BM ("emit_module°plain_module modulob %s failin %d cause %s",
+  DBGPRINTF_BM ("emit_module°plain_module failin %d modulob %s cause %s",
                 failin, objectdbg_BM (_.modulob),
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
@@ -3718,6 +3774,9 @@ ROUTINEOBJNAME_BM (_2PbDEXpkK5W_7MSfDy2pWkH)    // miniscan_block°basiclo_block
      objectdbg_BM (_.blockob), objectdbg1_BM (objclass_BM (_.blockob)),
      objectdbg2_BM (_.routprepob), depth, objectdbg3_BM (_.fromob));
   _.blockshsetob = objgetattr_BM (_.routprepob, k_blocks);
+  DBGPRINTF_BM
+    ("miniscan_block°basiclo_block blockob %s blockshsetob %s",
+     objectdbg_BM (_.blockob), objectdbg1_BM (_.blockshsetob));
   WEAKASSERT_BM (objhashashsetpayl_BM (_.blockshsetob));
   bool duplicateblock = false;
   {

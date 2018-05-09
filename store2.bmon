@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 361 objects
+// for 362 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -239,6 +239,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of exit (of loop) statement"
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
+~: _1ERH9PxNhPb_2o869yOMuH0  % _4hS1jncZQAY_9pGS66eIlw9 () 
 ~: _6DdZwyaWLyK_7tS2BmECOJ0  % _23F5sZIfO5Y_5m9O2FPHdzX ()
 ~)
 
@@ -3410,6 +3411,16 @@ _3XBrePAliOo_37VlAqBsb5C) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "miniemit_node_conn\u00b0basiclo_simple_connective"
 !)_48l341uEMuG_3gJ2HHIwYhn
+
+
+
+!(_4hS1jncZQAY_9pGS66eIlw9
+!|*
+!@ 1525887198.48
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit_statement\u00b0basiclo_exit"
+!)_4hS1jncZQAY_9pGS66eIlw9
 
 
 

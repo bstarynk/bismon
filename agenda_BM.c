@@ -774,8 +774,8 @@ run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
       memset (curidbuf, 0, sizeof (curidbuf));
       idtocbuf32_BM (objid_BM (_.obtk), curidbuf);
       _.failres = fh.failh_reason;
-      char *failmsg = debug_outstr_value_BM (_.failres, CURFRAME_BM,
-                                             0);
+      const char *failmsg = debug_outstr_value_BM (_.failres, CURFRAME_BM,
+                                                   0);
       fprintf (stderr, "tasklet %s failed code#%d reason %s\n", curidbuf,
                failcod, failmsg);
     };
@@ -802,7 +802,7 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
     );
   extern void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data);     /* in misc_BM.cc */
   _.modulob = objectcast_BM (modulobarg);
-  _.postclos = closurecast_BM (postclosarg);
+  _.postclos = closurecast_BM ((value_tyBM) postclosarg);
   _.arg1v = arg1;
   _.arg2v = arg2;
   _.arg3v = arg3;
@@ -810,7 +810,7 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
   if (!_.modulob)
     FAILHERE (BMP_load_module);
-  if (!isclosure_BM (_.postclos))
+  if (!isclosure_BM ((value_tyBM) _.postclos))
     FAILHERE (BMP_closure);
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
@@ -833,7 +833,8 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
     {
       fprintf (stderr, "failed to read binary module %s for %s: %m\n",
                modulpath, objectdbg_BM (_.modulob));
-      FAILHERE (makenode1_BM (BMP_load_module, makestring_BM (modulpath)));
+      FAILHERE (makenode1_BM
+                (BMP_load_module, (value_tyBM) makestring_BM (modulpath)));
     }
   char eident[EI_NIDENT];
   memset (eident, 0, sizeof (eident));
@@ -855,7 +856,7 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
   {
     value_tyBM varr[6] = { };
     varr[0] = _.modulob;
-    varr[1] = _.postclos;
+    varr[1] = (value_tyBM) _.postclos;
     varr[2] = _.arg1v;
     varr[3] = _.arg2v;
     varr[4] = _.arg3v;
