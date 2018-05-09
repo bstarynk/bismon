@@ -3293,7 +3293,7 @@ fill_objectviewbuffer_BM (struct
   else
     {                           // first run
       int depth = browserdepth_BM;
-      NONPRINTF_BM
+      DBGPRINTF_BM
         ("fill_objectviewbuffer_BM object %s shobsel %s depth %d",
          objectdbg_BM (_.object), objectdbg1_BM (_.shobsel), depth);
       send1_BM ((const value_tyBM) _.object,
@@ -3303,7 +3303,7 @@ fill_objectviewbuffer_BM (struct
       browserdepth_BM = depth;
       gtk_text_buffer_get_end_iter (tbuf, &browserit_BM);
       gtk_text_buffer_insert (tbuf, &browserit_BM, "\n", -1);
-      NONPRINTF_BM
+      DBGPRINTF_BM
         ("fill_objectviewbuffer_BM object %s shobsel %s depth %d epilogue",
          objectdbg_BM (_.object), objectdbg1_BM (_.shobsel), depth);
       // should show some epilogue....
