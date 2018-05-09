@@ -1301,12 +1301,16 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !(_7mzaOjboFZI_77BAEKfSTta |=greaterequal_int|
 !~ name (~ greaterequal_int
 ~)
-!@ 1525368286.01
+!@ 1525854176.64
 !$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "greaterequal_int(i1 i2) \u27f6 i1 >= i2"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _94oPnbvjznL_0cdTCJt5pUp _2Z396p8p48p_848KxWmzoSb ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "(/*" _7mzaOjboFZI_77BAEKfSTta  ":*/("  * _5ucAZimYynS_4VA0XHvr1nW ( _94oPnbvjznL_0cdTCJt5pUp)  ")" 
+  " "  ">="  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb) 
+  "))")
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_7mzaOjboFZI_77BAEKfSTta
@@ -1529,12 +1533,16 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !(_68wubODZSVm_8gslCjdiTXO |=lessequal_int|
 !~ name (~ lessequal_int
 ~)
-!@ 1525368145.23
+!@ 1525854200.91
 !$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "lessequal_int(i1 i2) \u27f6 i1 <= i2"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _94oPnbvjznL_0cdTCJt5pUp _2Z396p8p48p_848KxWmzoSb ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "(/*" _68wubODZSVm_8gslCjdiTXO  ":*/("  * _5ucAZimYynS_4VA0XHvr1nW ( _94oPnbvjznL_0cdTCJt5pUp)  ")" 
+  " "  "<="  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb) 
+  "))")
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_68wubODZSVm_8gslCjdiTXO
