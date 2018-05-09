@@ -172,7 +172,7 @@ modules/modbm_%.so: modules/modbm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADER
 modules:
 	$(MAKE) -k $(patsubst %.c,%.so,$(MODULES_SOURCES)) ; exit 0
 
-bismon: $(OBJECTS) _bm_allconsts.o
+bismon: $(OBJECTS) _bm_allconsts.o | modules
 	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi
 	$(MAKE) __timestamp.c __timestamp.o _bm_allconsts.o
 	$(LINK.cc)  $(LINKFLAGS) -rdynamic $(OPTIMFLAGS) $(OBJECTS) __timestamp.o _bm_allconsts.o $(LIBES) -o $@
