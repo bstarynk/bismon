@@ -1916,7 +1916,7 @@ ROUTINEOBJNAME_BM (_2qppG2LJu79_9ljkbLS0eFQ)    //
   objputclassinfo_BM (_.recv, _.obsuperclass);
   objtouchnow_BM (_.recv);
   LOCALRETURN_BM (_.recv);
-}                               /* end ROUTINE _2qppG2LJu79_9ljkbLS0eFQ  */
+}                               /* end init_class:object _2qppG2LJu79_9ljkbLS0eFQ  */
 
 
 
@@ -2653,7 +2653,7 @@ ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf)    //
 extern objrout_sigBM ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
+ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    // loop:readmacro
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // node
  const value_tyBM arg2,         // lineno
@@ -2681,8 +2681,9 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
   const objectval_tyBM *k_basiclo_loop = BMK_2EjH1ebLzli_4rmA1ZPtIBL;
   const objectval_tyBM *k_label = BMK_3XBrePAliOo_37VlAqBsb5C;
   unsigned nodwidth = nodewidth_BM ((const value_tyBM) _.rnodv);
-  DBGPRINTF_BM ("start readmacro:loop  _6SUnsQrN1BV_1WnLPm4QoOq"
-                " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
+  DBGPRINTF_BM ("start readmacro:loop "
+                " lineno=%d colpos=%d nodwidth=%u rnod %s", lineno, colpos,
+                nodwidth, debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
   _.resobj = NULL;
   unsigned startix = 0;
   if (nodwidth > 0
@@ -2730,6 +2731,8 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
       _.resobj = makeobj_BM ();
       objputspacenum_BM (_.resobj, GlobalSp_BM);
     };
+  DBGPRINTF_BM ("readmacro:loop L%dC%d resobj %s", lineno, colpos,
+                objectdbg_BM (_.resobj));
   for (unsigned ix = startix; ix < nodwidth; ix++)
     {
       _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
@@ -2758,7 +2761,7 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    //
   objtouchnow_BM (_.resobj);
   DBGPRINTF_BM ("end readmacro:loop resobj %s", objectdbg_BM (_.resobj));
   LOCALRETURN_BM (_.resobj);
-}                               /* end ROUTINE  _6SUnsQrN1BV_1WnLPm4QoOq loop:readmacro */
+}                               /* end loop:readmacro  _6SUnsQrN1BV_1WnLPm4QoOq  */
 
 
 
