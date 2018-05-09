@@ -3068,6 +3068,7 @@ ROUTINEOBJNAME_BM (_4hS1jncZQAY_9pGS66eIlw9)    //emit_statement°basiclo_exit
     FAILHERE (k_exit);
   char exitidbuf[32];
   memset (exitidbuf, 0, sizeof (exitidbuf));
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
   objstrbufferprintfpayl_BM (_.modgenob, "// exit %s\n",
                              objectdbg_BM (_.stmtob));
   idtocbuf32_BM (objid_BM (_.exitob), exitidbuf);
