@@ -2842,6 +2842,11 @@ ROUTINEOBJNAME_BM (_63Q0R4r8xa7_7XOAxxP5pi2)    // exit:readmacro
                               startix);
       LOCALRETURN_BM (NULL);
     }
+  if (!_.resobj)
+    {
+      _.resobj = makeobj_BM ();
+      objputspacenum_BM (_.resobj, GlobalSp_BM);
+    }
   objresetcomps_BM (_.resobj, 2);
   objresetattrs_BM (_.resobj, 5);
   objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
