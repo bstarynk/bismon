@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 359 objects
+// for 360 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2341,6 +2341,19 @@ _7XasLoEUKwe_9upxyFeheD5
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7bbeIqUSje9_4jVgC7ZJmvx
 !)_6FWWN47uih2_5BhwEm9gnHu
+
+
+
+!(_66DuQtJBPqt_8w9fOCyxJve |=temp_test_module|
+!~ name (~ temp_test_module
+~)
+!@ 1525840621.30
+!$_0277f6mOd9j_0tVZSXnTzUK |=basiclo_temporary_module|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "temporary test module"
+!# 1
+!& _8imWClcIFKt_6w2H2ouB4I6
+!)_66DuQtJBPqt_8w9fOCyxJve
 
 
 
