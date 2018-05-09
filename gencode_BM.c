@@ -933,11 +933,16 @@ ROUTINEOBJNAME_BM (_23F5sZIfO5Y_5m9O2FPHdzX)    // miniscan_stmt°basiclo_exit
  const value_tyBM arg4,         //fromob
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
+  objectval_tyBM *k_exit = BMK_41gbFesxqzD_3l56OLiNdl2;
+  objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_23F5sZIfO5Y_5m9O2FPHdzX,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * fromob;       //
+                 objectval_tyBM * exitob;       //
                  value_tyBM resultv;    //
+                 value_tyBM causev;     //
+                 value_tyBM errorv;     //
     );
   int depth = 0;
   bool ok = false;
@@ -949,15 +954,34 @@ ROUTINEOBJNAME_BM (_23F5sZIfO5Y_5m9O2FPHdzX)    // miniscan_stmt°basiclo_exit
     ("miniscan_stmt°basiclo_exit start stmtob=%s routprepob=%s depth#%d fromob=%s",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), depth,
      objectdbg2_BM (_.fromob));
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev= (value_tyBM)(Cause); goto failure; } while(0)
   WEAKASSERT_BM (_.stmtob);
   WEAKASSERT_BM (_.routprepob);
   WEAKASSERT_BM (istaggedint_BM (arg3) && depth >= 0);
   WEAKASSERT_BM (_.fromob);
+  _.exitob = objectcast_BM (objgetattr_BM (_.stmtob, k_exit));
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_exit stmtob=%s routprepob=%s exitob=%s",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),
+     objectdbg2_BM (_.exitob));
+  if (!isobject_BM (_.exitob))
+    FAILHERE (k_exit);
 #warning unimplemented miniscan_stmt°basiclo_exit _23F5sZIfO5Y_5m9O2FPHdzX
   WEAKASSERT_BM (false
                  &&
                  "unimplemented miniscan_stmt°basiclo_exit _23F5sZIfO5Y_5m9O2FPHdzX ");
   LOCALRETURN_BM (_.resultv);
+failure:
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_exit failin %d stmtob=%s causev=%s routprepob=%s",      //
+                failin, objectdbg_BM (_.stmtob),        //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0),       //
+                objectdbg1_BM (_.routprepob));
+  _.errorv = (value_tyBM)
+    makenode5_BM (k_miniscan_stmt, _.stmtob, _.routprepob,
+                  taggedint_BM (depth), _.fromob, _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+#undef FAILHERE
 }                               /* end miniscan_stmt°basiclo_exit  _23F5sZIfO5Y_5m9O2FPHdzX */
 
 
