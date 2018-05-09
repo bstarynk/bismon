@@ -963,7 +963,7 @@ ROUTINEOBJNAME_BM (_23F5sZIfO5Y_5m9O2FPHdzX)    // miniscan_stmt°basiclo_exit
   WEAKASSERT_BM (istaggedint_BM (arg3) && depth >= 0);
   WEAKASSERT_BM (_.fromob);
   _.exitob = objectcast_BM (objgetattr_BM (_.stmtob, k_exit));
-  _.hsetblockob = objectcast_BM (objgetattr_BM(_.routprepob, k_blocks));
+  _.hsetblockob = objectcast_BM (objgetattr_BM (_.routprepob, k_blocks));
   DBGPRINTF_BM
     ("miniscan_stmt°basiclo_exit stmtob=%s routprepob=%s exitob=%s hsetblockob=%s",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),
@@ -3714,9 +3714,9 @@ ROUTINEOBJNAME_BM (_2PbDEXpkK5W_7MSfDy2pWkH)    // miniscan_block°basiclo_block
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM) (Cause); goto failure; } while(0)
   DBGPRINTF_BM
-    ("miniscan_block°basiclo_block start blockob=%s routprepob=%s depth=%d fromob=%s",
-     objectdbg_BM (_.blockob), objectdbg1_BM (_.routprepob), depth,
-     objectdbg2_BM (_.fromob));
+    ("miniscan_block°basiclo_block start blockob=%s of %s routprepob=%s depth=%d fromob=%s",
+     objectdbg_BM (_.blockob), objectdbg1_BM (objclass_BM (_.blockob)),
+     objectdbg2_BM (_.routprepob), depth, objectdbg3_BM (_.fromob));
   _.blockshsetob = objgetattr_BM (_.routprepob, k_blocks);
   WEAKASSERT_BM (objhashashsetpayl_BM (_.blockshsetob));
   bool duplicateblock = false;
