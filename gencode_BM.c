@@ -935,11 +935,13 @@ ROUTINEOBJNAME_BM (_23F5sZIfO5Y_5m9O2FPHdzX)    // miniscan_stmt°basiclo_exit
 {
   objectval_tyBM *k_exit = BMK_41gbFesxqzD_3l56OLiNdl2;
   objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
+  objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_23F5sZIfO5Y_5m9O2FPHdzX,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * fromob;       //
                  objectval_tyBM * exitob;       //
+                 objectval_tyBM * hsetblockob;  //
                  value_tyBM resultv;    //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
@@ -961,12 +963,18 @@ ROUTINEOBJNAME_BM (_23F5sZIfO5Y_5m9O2FPHdzX)    // miniscan_stmt°basiclo_exit
   WEAKASSERT_BM (istaggedint_BM (arg3) && depth >= 0);
   WEAKASSERT_BM (_.fromob);
   _.exitob = objectcast_BM (objgetattr_BM (_.stmtob, k_exit));
+  _.hsetblockob = objectcast_BM (objgetattr_BM(_.routprepob, k_blocks));
   DBGPRINTF_BM
-    ("miniscan_stmt°basiclo_exit stmtob=%s routprepob=%s exitob=%s",
+    ("miniscan_stmt°basiclo_exit stmtob=%s routprepob=%s exitob=%s hsetblockob=%s",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),
-     objectdbg2_BM (_.exitob));
+     objectdbg2_BM (_.exitob), objectdbg3_BM (_.hsetblockob));
   if (!isobject_BM (_.exitob))
     FAILHERE (k_exit);
+  if (!isobject_BM (_.hsetblockob))
+    FAILHERE (k_blocks);
+  if (!objhashashsetpayl_BM (_.hsetblockob))
+    FAILHERE (makenode1_BM (k_blocks, _.hsetblockob));
+
 #warning unimplemented miniscan_stmt°basiclo_exit _23F5sZIfO5Y_5m9O2FPHdzX
   WEAKASSERT_BM (false
                  &&
