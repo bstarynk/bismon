@@ -2563,7 +2563,7 @@ ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    // readmacro#intswitch
 extern objrout_sigBM ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf)    //
+ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf)    // objswitch:readmacro
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // node
  const value_tyBM arg2,         // lineno
