@@ -1039,7 +1039,9 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), depth,
      objectdbg2_BM (_.fromob));
 #warning unimplemented miniscan_stmt°basiclo_intswitch _2CKEpke8P0q_8s0Vli5gjxM routine
-  WEAKASSERT_BM (false && "unimplemented _2CKEpke8P0q_8s0Vli5gjxM routine");
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented miniscan_stmt°basiclo_intswitch  _2CKEpke8P0q_8s0Vli5gjxM routine");
   LOCALRETURN_BM (_.resultv);
 failure:
   DBGPRINTF_BM ("miniscan_stmt°basiclo_intswitch failin %d stmtob=%s causev=%s routprepob=%s", //
