@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 363 objects
+// for 364 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -299,7 +299,8 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of switch on integers"
-!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _2CKEpke8P0q_8s0Vli5gjxM ()
 ~)
 
 !)_12QTszi1FF0_5S77twbSETI
@@ -3257,6 +3258,16 @@ _3XBrePAliOo_37VlAqBsb5C) ~)
 !# 1
 !& _3g94RQiswhV_2O5raZogJao
 !)_2rCc2usyvqv_1TUCxOmrdFs
+
+
+
+!(_2CKEpke8P0q_8s0Vli5gjxM
+!|*
+!@ 1525935631.80
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniscan_stmt\u00b0basiclo_intswitch"
+!)_2CKEpke8P0q_8s0Vli5gjxM
 
 
 

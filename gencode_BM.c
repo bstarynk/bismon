@@ -1001,6 +1001,62 @@ failure:
 
 
 
+//miniscan_stmt°basiclo_intswitch _2CKEpke8P0q_8s0Vli5gjxM
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswitch 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         //stmtob - an intswitch 
+ const value_tyBM arg2,         //routprepob
+ const value_tyBM arg3,         //depth
+ const value_tyBM arg4,         //fromob
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_2CKEpke8P0q_8s0Vli5gjxM,
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * fromob;       //
+                 value_tyBM causev;     //
+                 value_tyBM errorv;     //
+                 value_tyBM resultv;
+    );
+  int depth = 0;
+  _.stmtob = objectcast_BM (arg1);
+  _.routprepob = objectcast_BM (arg2);
+  depth = getint_BM (arg3);
+  _.fromob = objectcast_BM (arg4);
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev= (value_tyBM)(Cause); goto failure; } while(0)
+  WEAKASSERT_BM (_.stmtob);
+  WEAKASSERT_BM (_.routprepob);
+  WEAKASSERT_BM (istaggedint_BM (arg3) && depth >= 0);
+  WEAKASSERT_BM (_.fromob);
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_intswitch start stmtob=%s routprepob=%s depth#%d fromob=%s",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), depth,
+     objectdbg2_BM (_.fromob));
+#warning unimplemented miniscan_stmt°basiclo_intswitch _2CKEpke8P0q_8s0Vli5gjxM routine
+  WEAKASSERT_BM (false && "unimplemented _2CKEpke8P0q_8s0Vli5gjxM routine");
+  LOCALRETURN_BM (_.resultv);
+failure:
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_intswitch failin %d stmtob=%s causev=%s routprepob=%s", //
+                failin, objectdbg_BM (_.stmtob),        //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0),       //
+                objectdbg1_BM (_.routprepob));
+  _.errorv = (value_tyBM)
+    makenode5_BM (k_miniscan_stmt, _.stmtob, _.routprepob,
+                  taggedint_BM (depth), _.fromob, _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+#undef FAILHERE
+}                               /* end miniscan_stmt°basiclo_intswitch  _2CKEpke8P0q_8s0Vli5gjxM */
+
+
+
+
+////////////////////////////////////////////////////////////////
 // miniscan_node_conn°basiclo_primitive  _1vuSUudDrEr_9UjFr4Pcy8r
 extern objrout_sigBM ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r);
 
