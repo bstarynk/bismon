@@ -146,6 +146,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                  objectval_tyBM * typob;
                  objectval_tyBM * bodyob;
                  objectval_tyBM * obmodhsetconst;
+                 objectval_tyBM * stmtpropob;
                  value_tyBM recv;
                  const tupleval_tyBM * tupargs;
                  const tupleval_tyBM * tupclosed;
@@ -169,7 +170,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   const objectval_tyBM *k_simple_routine_preparation =
     BMK_80060zKi6Un_3isCStegT8A;
   const objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
+  const objectval_tyBM *k_assoc_object = BMK_6ZQ05nCv3Ys_8LA6B5LkZgm;
   const objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
+  const objectval_tyBM *k_statement_properties = BMK_0OM3NoUpOBd_1nzwCJKw54A;
   const objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
   const objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   const objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
@@ -332,12 +335,17 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       _.curol = NULL;
     }
   _.obhsetblock = makeobj_BM ();
-  objputpayload_BM (_.obhsetblock, hashsetobj_grow_BM (NULL, 15));
+  objputhashsetpayl_BM (_.obhsetblock, 15);
   objputclass_BM (_.obhsetblock, (objectval_tyBM *) k_hset_object);
   objputattr_BM (_.routprepob, k_blocks, _.obhsetblock);
   objputattr_BM (_.routprepob, k_prepare_routine, _.recv);
   objputattr_BM (_.routprepob, k_in, _.modgenob);
   objputattr_BM (_.obhsetblock, k_in, _.routprepob);
+  _.stmtpropob = makeobj_BM ();
+  objputassocpayl_BM (_.stmtpropob, 15);
+  objputclass_BM (_.stmtpropob, k_assoc_object);
+  objputattr_BM (_.stmtpropob, k_in, _.routprepob);
+  objputattr_BM (_.routprepob, k_statement_properties, _.stmtpropob);
   objtouchnow_BM (_.obhsetblock);
   objtouchnow_BM (_.routprepob);
   DBGPRINTF_BM

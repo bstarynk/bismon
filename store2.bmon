@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 362 objects
+// for 363 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2293,6 +2293,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "give the state, e.g. of a frame"
 !)_5zHhLVgR3Dv_1zf1cxOQlJ4
+
+
+
+!(_0OM3NoUpOBd_1nzwCJKw54A |=statement_properties|
+!~ name (~ statement_properties
+~)
+!@ 1525930412.59
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "to associate a property to each statement"
+!)_0OM3NoUpOBd_1nzwCJKw54A
 
 
 
