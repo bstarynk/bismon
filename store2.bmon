@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 364 objects
+// for 365 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -3263,10 +3263,12 @@ _3XBrePAliOo_37VlAqBsb5C) ~)
 
 !(_2CKEpke8P0q_8s0Vli5gjxM
 !|*
-!@ 1525935631.80
+!@ 1525965944.81
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "miniscan_stmt\u00b0basiclo_intswitch"
+!: _4rz1Bi4weGz_8Y03gU81cRL |=see|
+ { _7X7mHMa1QpC_1TQBkXwqeik }
 !)_2CKEpke8P0q_8s0Vli5gjxM
 
 
@@ -4008,6 +4010,16 @@ _4lKK08v9A0t_0GGsir35UxP _4bYUiDmxrKK_6nPPlEl8y8x) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "miniscan_stmt\u00b0basiclo_assign"
 !)_7LNRlilrowp_0GG6ZLUFovu
+
+
+
+!(_7X7mHMa1QpC_1TQBkXwqeik
+!|*
+!@ 1525965944.81
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "int-switch-when-miniscan"
+!)_7X7mHMa1QpC_1TQBkXwqeik
 
 
 
