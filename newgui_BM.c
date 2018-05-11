@@ -1241,6 +1241,8 @@ parsecommandbuf_newgui_BM (struct
       // start of value?
       else if (parsertokenstartvalue_BM (pars, tok))
         {
+          bool matchname = tok.tok_kind == plex_DELIM
+            && tok.tok_delim == delim_tildecolon;
           parserseek_BM (pars, curlineno, curcolpos);
           bool gotval = false;
           _.val = parsergetvalue_BM (pars, CURFRAME_BM, 0, &gotval);
@@ -1253,10 +1255,65 @@ parsecommandbuf_newgui_BM (struct
               NONPRINTF_BM
                 ("parsecommandbuf_newgui val=%s",
                  debug_outstr_value_BM (_.val, CURFRAME_BM, 5));
-              if (_.val)
-                browse_named_value_newgui_BM (_.astrv,
-                                              _.val,
-                                              browserdepth_BM, CURFRAME_BM);
+              if (matchname && setcardinal_BM (_.val) == 0)
+                {
+                  log_begin_message_BM ();
+                  log_printf_message_BM ("no matching name");
+                  log_end_message_BM ();
+                }
+              else if (_.val)
+                {
+                  log_begin_message_BM ();
+                  int tyv = valtype_BM (_.val);
+                  switch (tyv)
+                    {
+                    case tyInt_BM:
+                      log_printf_message_BM ("got int %lld.",
+                                             (long long) getint_BM (_.val));
+                      break;
+                    case tyString_BM:
+                      log_printf_message_BM ("got string of %d bytes.",
+                                             lenstring_BM (_.val));
+                      break;
+                    case tySet_BM:
+                      log_printf_message_BM ("got set of %d elements.",
+                                             setcardinal_BM (_.val));
+                      break;
+                    case tyTuple_BM:
+                      log_printf_message_BM ("got tuple of %d components.",
+                                             tuplesize_BM (_.val));
+                      break;
+                    case tyNode_BM:
+                      log_printf_message_BM ("got node of connective ");
+                      log_object_message_BM (nodeconn_BM (_.val));
+                      log_printf_message_BM (" with %d sons.",
+                                             nodewidth_BM (_.val));
+                      break;
+                    case tyClosure_BM:
+                      log_printf_message_BM ("got closure of connective ");
+                      log_object_message_BM (nodeconn_BM (_.val));
+                      log_printf_message_BM (" with %d sons.",
+                                             nodewidth_BM (_.val));
+                      break;
+                    case tyObject_BM:
+                      log_printf_message_BM ("got object ");
+                      log_object_message_BM (objectcast_BM (_.val));
+                      log_printf_message_BM (".");
+                      break;
+                    case tyUnspecified_BM:
+                      log_printf_message_BM ("got the unspecified value.");
+                      break;
+                    default:
+                      log_printf_message_BM
+                        ("got unexpected value of type#%d", tyv);
+                      break;
+                    }
+                  browse_named_value_newgui_BM (_.astrv,
+                                                _.val,
+                                                browserdepth_BM, CURFRAME_BM);
+
+                  log_end_message_BM ();
+                }
               else
                 {
                   log_begin_message_BM ();
