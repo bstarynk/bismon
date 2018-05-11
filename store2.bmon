@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 367 objects
+// for 368 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1877,6 +1877,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !@ 1507030591.77
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_6bQLwLF3pc5_5gSAmlh5Nsx
+
+
+
+!(_8kgO3yCQf1K_9HShuVu6MBo |=or|
+!~ name (~ or
+~)
+!@ 1526059255.10
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "disjonctive or"
+!)_8kgO3yCQf1K_9HShuVu6MBo
 
 
 
