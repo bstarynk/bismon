@@ -2141,6 +2141,13 @@ ishashmapval_BM (const value_tyBM v)
   return ty == typayl_hashmapval_BM;
 }                               /* end ishashsetval_BM */
 
+unsigned
+hashmapvalsize_BM (const value_tyBM v)
+{
+  if (!ishashsetval_BM (v))
+    return 0;
+  return ((typedsize_tyBM *) v)->size;
+}                               /* end hashmapvalsize_BM */
 
 bool
 ishashmapbucket_BM (const value_tyBM v)
@@ -2165,6 +2172,15 @@ objhashashmapvalpayl_BM (objectval_tyBM * obj)
 {
   return objgethashmapvalpayl_BM (obj) != NULL;
 }                               /* end objhashashmapvalpayl_BM */
+
+unsigned
+objhashmapvalsizepayl_BM (objectval_tyBM * obj)
+{
+  struct hashmapval_stBM *hma = objgethashmapvalpayl_BM (obj);
+  if (hma)
+    return hashmapvalsize_BM (hma);
+  return 0;
+}                               /* end objhashmapvalsizepayl_BM */
 
 value_tyBM
 objhashmapvalgetpayl_BM (objectval_tyBM * obj, value_tyBM keyv)

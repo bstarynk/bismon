@@ -878,6 +878,7 @@ static inline value_tyBM objhashsetvalmakenodepayl_BM (objectval_tyBM * obj,
 //// hash maps associating values to values
 static inline bool ishashmapval_BM (const value_tyBM v);
 static inline bool ishashmapbucket_BM (const value_tyBM v);
+static inline unsigned hashmapvalsize_BM (const value_tyBM v);
 extern void hashmapvalgcmark_BM (struct garbcoll_stBM *gc,
                                  struct hashmapval_stBM *hsv, int depth);
 extern void hashmapbucketgcmark_BM (struct garbcoll_stBM *gc,
@@ -924,6 +925,8 @@ extern void objputhashmapvalpayl_BM (objectval_tyBM * obj, unsigned gap);
 static inline struct hashmapval_stBM *objgethashmapvalpayl_BM
   (objectval_tyBM * obj);
 static inline bool objhashashmapvalpayl_BM (objectval_tyBM * obj);
+static inline unsigned objhashmapvalsizepayl_BM (objectval_tyBM * obj);
+
 static inline value_tyBM objhashmapvalgetpayl_BM (objectval_tyBM * obj,
                                                   value_tyBM keyv);
 static inline void objhashmapvalreorganizepayl_BM (objectval_tyBM * obj,

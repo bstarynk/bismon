@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 365 objects
+// for 367 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1880,6 +1880,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_18VEwdmWZ1v_5cpJ8tDhbwH |=overflow|
+!~ name (~ overflow
+~)
+!@ 1526043968.58
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for overflow conditions"
+!)_18VEwdmWZ1v_5cpJ8tDhbwH
+
+
+
 !(_4ot0ZxxA31Y_8GVFlcbckIH |=own_enumeration|
 !~ name (~ own_enumeration
 ~)
@@ -2019,6 +2030,17 @@ _17mrxkMdNtH_2CduQ2WDIy5 _8g1WBJBhDT9_1QK8IcuWYx2)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for queueing processes"
 !)_8DQ4VQ1FTfe_5oijDYr52Pb
+
+
+
+!(_2A0PhF7YCym_7D4TZoZ5DUp |=range|
+!~ name (~ range
+~)
+!@ 1526044772.42
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for range of e.g. integers"
+!)_2A0PhF7YCym_7D4TZoZ5DUp
 
 
 
