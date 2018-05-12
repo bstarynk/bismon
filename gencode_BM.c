@@ -1200,6 +1200,7 @@ ROUTINEOBJNAME_BM (_7X7mHMa1QpC_1TQBkXwqeik)    //
   objectval_tyBM *k_range = BMK_2A0PhF7YCym_7D4TZoZ5DUp;
   objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
   objectval_tyBM *k_or = BMK_8kgO3yCQf1K_9HShuVu6MBo;
+  objectval_tyBM *k_depth = BMK_17YdW6dWrBA_2mn4QmBjMNs;
   objectval_tyBM *kk_intswitchwhenminiscan = BMK_7X7mHMa1QpC_1TQBkXwqeik;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7X7mHMa1QpC_1TQBkXwqeik,
                  value_tyBM testv;      //
@@ -1241,6 +1242,8 @@ ROUTINEOBJNAME_BM (_7X7mHMa1QpC_1TQBkXwqeik)    //
     {
       FAILHERE (makenode1_BM (k_overflow, taggedint_BM (nbhval)));
     }
+  if (depth >= MAXDEPTHPARSE_BM)
+    FAILHERE (makenode1_BM (k_depth, taggedint_BM (depth)));
   if (istaggedint_BM (_.testv))
     {
       intptr_t tnum = getint_BM (_.testv);
@@ -1325,7 +1328,7 @@ failure:
                                taggedint_BM (depth), _.stmtob,
                                taggedint_BM (wix));
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
-}                               /* end routine _7X7mHMa1QpC_1TQBkXwqeik */
+}                               /* end int-switch-when-miniscan _7X7mHMa1QpC_1TQBkXwqeik */
 
 
 ////////////////////////////////////////////////////////////////
