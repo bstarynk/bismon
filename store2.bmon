@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 368 objects
+// for 369 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1443,6 +1443,21 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_8VzbBncLSEl_2dNNPe0VjQh |=intswitch_test_minifunc|
+!~ name (~ intswitch_test_minifunc
+~)
+!@ 1526118727.99
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "function to test intswitch"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _3vRFuniDv1K_4bQ7DeekM2I ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!)_8VzbBncLSEl_2dNNPe0VjQh
+
+
+
 !(_9yI4D5OmheP_5gUmKXEzW9e |=is_intv|
 !~ name (~ is_intv
 ~)
@@ -2418,12 +2433,13 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !(_66DuQtJBPqt_8w9fOCyxJve |=temp_test_module|
 !~ name (~ temp_test_module
 ~)
-!@ 1525840621.30
+!@ 1526118483.14
 !$_0277f6mOd9j_0tVZSXnTzUK |=basiclo_temporary_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "temporary test module"
-!# 1
+!# 2
 !& _8imWClcIFKt_6w2H2ouB4I6
+!& _8VzbBncLSEl_2dNNPe0VjQh
 !)_66DuQtJBPqt_8w9fOCyxJve
 
 
