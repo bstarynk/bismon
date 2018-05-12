@@ -1087,10 +1087,12 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
         apply6_BM (kk_intswitchwhenminiscan, CURFRAME_BM, _.testv,
                    _.hashmapob, _.routprepob, taggedint_BM (depth), _.stmtob,
                    taggedint_BM (wix));
-      DBGPRINTF_BM
-        ("miniscan_stmt°basiclo_intswitch stmtob=%s wix=%d compob=%s after int-switch-when-miniscan compob %s wix#%d restestv %s",
-         objectdbg_BM (_.compob), wix,
-         debug_outstr_value_BM (_.restestv, CURFRAME_BM, 0));
+      DBGPRINTF_BM ("miniscan_stmt°basiclo_intswitch stmtob=%s wix=%d compob=%s\n"     //
+                    ".. after int-switch-when-miniscan hashmapob %s restestv %s",       //
+                    objectdbg_BM (_.stmtob), wix,       //
+                    objectdbg1_BM (_.compob),
+                    objectdbg2_BM (_.hashmapob),
+                    debug_outstr_value_BM (_.restestv, CURFRAME_BM, 0));
       unsigned complen = objnbcomps_BM (_.compob);
       for (unsigned cix = 0; cix < complen; cix++)
         {
