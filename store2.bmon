@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 369 objects
+// for 373 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -900,6 +900,15 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 
 
 
+!(_3tRRKffqUUS_7FYuK7MLmT6 |=eleven_or_twenty_to_thirty|
+!~ name (~ eleven_or_twenty_to_thirty
+~)
+!@ 1526120036.81
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_3tRRKffqUUS_7FYuK7MLmT6
+
+
+
 !(_6mk5eos8067_1odgCpnWMOj |=emit_block|
 !~ name (~ emit_block
 ~)
@@ -1196,6 +1205,15 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 
 
 
+!(_5r6ekO9FCAj_7hCbcooblXl |=five_to_ten|
+!~ name (~ five_to_ten
+~)
+!@ 1526120036.81
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_5r6ekO9FCAj_7hCbcooblXl
+
+
+
 !(_0EfjiBTrXEo_3ppwTZ0M7xf |=foreach_in_tuple|
 !~ name (~ foreach_in_tuple
 ~)
@@ -1446,12 +1464,14 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !(_8VzbBncLSEl_2dNNPe0VjQh |=intswitch_test_minifunc|
 !~ name (~ intswitch_test_minifunc
 ~)
-!@ 1526118727.99
+!@ 1526120036.81
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "function to test intswitch"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _3vRFuniDv1K_4bQ7DeekM2I ]
+!: _5l2zSKsFaVm_9zs6qDOP87i |=constants|
+ { _3tRRKffqUUS_7FYuK7MLmT6 _5r6ekO9FCAj_7hCbcooblXl _5yc7zU7sbF8_1dME4ONRdaf _7KVBiG9eTtM_8PS68aSImxy }
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3qw9bnATIhq_8loBraLeXzQ
 !)_8VzbBncLSEl_2dNNPe0VjQh
@@ -1892,6 +1912,15 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !@ 1507030591.77
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_6bQLwLF3pc5_5gSAmlh5Nsx
+
+
+
+!(_7KVBiG9eTtM_8PS68aSImxy |=one|
+!~ name (~ one
+~)
+!@ 1526120036.81
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_7KVBiG9eTtM_8PS68aSImxy
 
 
 
@@ -2513,6 +2542,15 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "c-type for tuple GC-values"
 !)_4ysNY0rIzNK_7JgIhrjYpxD
+
+
+
+!(_5yc7zU7sbF8_1dME4ONRdaf |=two_or_three|
+!~ name (~ two_or_three
+~)
+!@ 1526120036.81
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_5yc7zU7sbF8_1dME4ONRdaf
 
 
 
