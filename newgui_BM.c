@@ -1260,8 +1260,8 @@ parsecommandbuf_newgui_BM (struct
                   log_begin_message_BM ();
                   log_printf_message_BM ("no matching name");
                   log_end_message_BM ();
-                }
-              else if (_.val)
+                };
+              if (_.val)
                 {
                   log_begin_message_BM ();
                   int tyv = valtype_BM (_.val);
