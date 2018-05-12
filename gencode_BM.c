@@ -1079,9 +1079,10 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
         }
       _.testv = objgetattr_BM (_.compob, k_test);
       DBGPRINTF_BM
-        ("miniscan_stmt°basiclo_intswitch stmtob=%s wix=%d compob=%s testv=%s",
+        ("miniscan_stmt°basiclo_intswitch stmtob=%s wix=%d compob=%s testv=%s hashmapob=%s routprepob=%s",
          objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob),
-         debug_outstr_value_BM (_.testv, CURFRAME_BM, 0));
+         debug_outstr_value_BM (_.testv, CURFRAME_BM, 0),
+         objectdbg2_BM (_.hashmapob), objectdbg3_BM (_.routprepob));
       _.restestv =
         apply6_BM (kk_intswitchwhenminiscan, CURFRAME_BM, _.testv,
                    _.hashmapob, _.routprepob, taggedint_BM (depth), _.stmtob,
