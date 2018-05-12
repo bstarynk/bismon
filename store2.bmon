@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 373 objects
+// for 374 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2413,6 +2413,17 @@ _3qw9bnATIhq_8loBraLeXzQ
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
 _7XasLoEUKwe_9upxyFeheD5
 !)_43Y25VLmh6s_3JRpERevcR4
+
+
+
+!(_5PJV21P82kA_2KfQTz95vdH |=switch|
+!~ name (~ switch
+~)
+!@ 1526131154.49
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "give the switching expression"
+!)_5PJV21P82kA_2KfQTz95vdH
 
 
 

@@ -2481,12 +2481,16 @@ ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    // readmacro#intswitch
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * rnodv; objectval_tyBM * parsob;
-                 const node_tyBM * constnodv; objectval_tyBM * resobj;
-                 objectval_tyBM * closconn; value_tyBM curson;
-                 value_tyBM inv;
+                 const node_tyBM * rnodv;       //
+                 objectval_tyBM * parsob;       //
+                 objectval_tyBM * resobj;       //
+                 objectval_tyBM * classob;      //
+                 objectval_tyBM * closconn;     //
+                 value_tyBM curson;     //
+                 value_tyBM inv;        //
     );
-  objectval_tyBM *k_basiclo_intswitch = NULL;
+  objectval_tyBM *k_basiclo_intswitch = BMK_12QTszi1FF0_5S77twbSETI;
+  objectval_tyBM *k_switch = BMK_5PJV21P82kA_2KfQTz95vdH;
   _.rnodv = arg1;
   if (!isnode_BM (arg1))
     LOCALRETURN_BM (NULL);
@@ -2500,10 +2504,9 @@ ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    // readmacro#intswitch
   if (!pars)
     LOCALRETURN_BM (NULL);
   _.resobj = NULL;
-  _.constnodv = objpayload_BM (_.closconn);
-  k_basiclo_intswitch = BMK_12QTszi1FF0_5S77twbSETI;
-  DBGPRINTF_BM ("start readmacro:intswitch  _7ko2VZaPpqD_1eEmEcp0VV3"
-                " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
+  DBGPRINTF_BM ("start readmacro:intswitch  "
+                " lineno=%d colpos=%d rnod %s", lineno, colpos,
+                debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
   unsigned startix = 0;
   _.resobj = NULL;
   if (nodwidth > 0
@@ -2521,37 +2524,49 @@ ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    // readmacro#intswitch
           LOCALRETURN_BM (NULL);
         }
       _.resobj = _.inv;
+      if (objectisinstance_BM (_.resobj, k_basiclo_intswitch))
+        _.classob = objclass_BM (_.resobj);
+      else
+        _.classob = k_basiclo_intswitch;
       startix = 1;
     }
   else
     {
       startix = 0;
       _.resobj = makeobj_BM ();
+      _.classob = k_basiclo_intswitch;
       objputspacenum_BM (_.resobj, GlobalSp_BM);
     };
   for (unsigned ix = startix; ix < nodwidth; ix++)
     {
       _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
-      if (!isobject_BM (_.curson))
+      if (!isobject_BM (_.curson) && ix > startix)
         {
           parsererrorprintf_BM (pars,
                                 CURFRAME_BM, lineno,
                                 colpos,
-                                "non-object arg#%d for cond readmacro", ix);
+                                "non-object arg#%d for intswitch readmacro",
+                                ix);
           LOCALRETURN_BM (NULL);
         }
     }
+  if (!_.classob)
+    _.classob = k_basiclo_intswitch;
   objresetcomps_BM (_.resobj, nodwidth - startix);
   objresetattrs_BM (_.resobj, 5);
+  objputclass_BM (_.resobj, _.classob);
   objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
-  for (unsigned ix = startix; ix < nodwidth; ix++)
+  objputattr_BM (_.resobj, k_switch,
+                 nodenthson_BM ((const value_tyBM) _.rnodv, startix));
+  for (unsigned ix = startix + 1; ix < nodwidth; ix++)
     {
       _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
       objappendcomp_BM (_.resobj, _.curson);
     }
   objputclass_BM (_.resobj, k_basiclo_intswitch);
   objtouchnow_BM (_.resobj);
-  DBGPRINTF_BM ("end readmacro:intswitch resobj %s", objectdbg_BM (_.resobj));
+  DBGPRINTF_BM ("end readmacro:intswitch L%dC%d resobj %s", lineno, colpos,
+                objectdbg_BM (_.resobj));
   LOCALRETURN_BM (_.resobj);
 }                               /* end ROUTINE  _7ko2VZaPpqD_1eEmEcp0VV3 intswitch:readmacro */
 
@@ -2573,11 +2588,14 @@ ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf)    // objswitch:readmacro
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const node_tyBM * rnodv;
-                 objectval_tyBM * resobj; objectval_tyBM * parsob;
-                 objectval_tyBM * closconn; value_tyBM curson;
+                 objectval_tyBM * resobj;       //
+                 objectval_tyBM * parsob;       //
+                 objectval_tyBM * classob;      //
+                 value_tyBM curson;
                  value_tyBM inv;
     );
-  objectval_tyBM *k_basiclo_objswitch = NULL;
+  objectval_tyBM *k_basiclo_objswitch = BMK_3votvybaW1d_35YcL4p51kp;
+  objectval_tyBM *k_switch = BMK_5PJV21P82kA_2KfQTz95vdH;
   _.rnodv = arg1;
   if (!isnode_BM (arg1))
     LOCALRETURN_BM (NULL);
@@ -2592,8 +2610,9 @@ ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf)    // objswitch:readmacro
   if (!pars)
     LOCALRETURN_BM (NULL);
   k_basiclo_objswitch = BMK_3votvybaW1d_35YcL4p51kp;
-  DBGPRINTF_BM ("start readmacro:objswitch _8uFPIAUyvE6_36pUIgGwmbf"
-                " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
+  DBGPRINTF_BM ("start readmacro:objswitch "
+                " lineno=%d colpos=%d rnod=%s", lineno, colpos,
+                debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
   unsigned startix = 0;
   _.resobj = NULL;
   if (nodwidth > 0
@@ -2611,36 +2630,46 @@ ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf)    // objswitch:readmacro
           LOCALRETURN_BM (NULL);
         }
       _.resobj = _.inv;
+      if (objectisinstance_BM (_.resobj, k_basiclo_objswitch))
+        _.classob = objclass_BM (_.resobj);
+      else
+        _.classob = k_basiclo_objswitch;
       startix = 1;
     }
   else
     {
       startix = 0;
       _.resobj = makeobj_BM ();
+      _.classob = k_basiclo_objswitch;
       objputspacenum_BM (_.resobj, GlobalSp_BM);
     };
   for (unsigned ix = startix; ix < nodwidth; ix++)
     {
       _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
-      if (!isobject_BM (_.curson))
+      if (!isobject_BM (_.curson) && ix > startix)
         {
           if (pars)
             parsererrorprintf_BM (pars,
                                   CURFRAME_BM, lineno,
                                   colpos,
-                                  "non-object arg#%d for cond readmacro", ix);
+                                  "non-object arg#%d for objswitch readmacro",
+                                  ix);
           LOCALRETURN_BM (NULL);
         }
     }
+  if (!_.classob)
+    _.classob = k_basiclo_objswitch;
   objresetcomps_BM (_.resobj, nodwidth - startix);
   objresetattrs_BM (_.resobj, 5);
+  objputclass_BM (_.resobj, _.classob);
   objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
-  for (unsigned ix = startix; ix < nodwidth; ix++)
+  objputattr_BM (_.resobj, k_switch, nodenthson_BM (_.rnodv, startix));
+  for (unsigned ix = startix + 1; ix < nodwidth; ix++)
     {
       _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
       objappendcomp_BM (_.resobj, _.curson);
     }
-  objputclass_BM (_.resobj, k_basiclo_objswitch);
+  objputclass_BM (_.resobj, _.classob);
   objtouchnow_BM (_.resobj);
   DBGPRINTF_BM ("end readmacro:objswitch resobj %s", objectdbg_BM (_.resobj));
   LOCALRETURN_BM (_.resobj);
