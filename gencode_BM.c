@@ -1319,6 +1319,7 @@ ROUTINEOBJNAME_BM (_7X7mHMa1QpC_1TQBkXwqeik)    //
               if (!_.resultv)
                 FAILHERE (makenode2_BM (k_or, taggedint_BM (ix), _.tmpv));
             }
+          LOCALRETURN_BM (_.testv);
         }
     }
   FAILHERE (makenode1_BM (k_test, _.testv));
