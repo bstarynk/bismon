@@ -1408,7 +1408,7 @@ hashmapvalreorganize_BM (struct hashmapval_stBM *hmv, unsigned gap)
   if (newsiz > MAXSIZE_BM)
     FATAL_BM ("too big new size %u for hashmapval", newsiz);
   struct hashmapval_stBM *newhmv =      //
-    allocgcty_BM (typayl_hashsetval_BM,
+    allocgcty_BM (typayl_hashmapval_BM,
                   sizeof (struct hashmapval_stBM) +
                   newsiz * sizeof (struct hashmapbucket_stBM *));
   ((typedhead_tyBM *) newhmv)->rlen = newsiz;
