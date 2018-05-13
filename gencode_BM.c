@@ -1604,6 +1604,7 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
   objectval_tyBM *k_binding = BMK_6zu0x6tqX60_8QhJjiAOwul;
   //objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
   objectval_tyBM *k_emit_declaration = BMK_3NGaoN3yhbn_8yUwbtZfvp9;
+  objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   WEAKASSERT_BM (isobject_BM (arg1));
   _.routprepob = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (arg2));
@@ -1680,6 +1681,9 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
           else if (_.bindconnob == k_numbers)
             {
               objhashsetaddpayl_BM (_.hsetnumob, _.keyob);
+            }
+          else if (_.bindconnob == k_constants)
+            {
             }
           else
             FAILHERE (makenode1_BM (k_binding, _.keybindv));
@@ -2149,8 +2153,10 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
         if (objectisinstance_BM (_.stmtob, k_basiclo_statement))
           {
             DBGPRINTF_BM
-              ("emit_block°basiclo_block blockob %s insix#%d stmtob %s is statement",
-               objectdbg_BM (_.blockob), insix, objectdbg2_BM (_.stmtob));
+              ("emit_block°basiclo_block blockob %s insix#%d stmtob %s is statement of %s",
+               objectdbg_BM (_.blockob), insix,
+               objectdbg1_BM (_.stmtob),
+               objectdbg2_BM (objclass_BM (_.stmtob)));
             _.emitv = send3_BM (_.stmtob, k_emit_statement, CURFRAME_BM,        //
                                 _.modgenob,
                                 _.routprepob, taggedint_BM (indepth));
@@ -3521,6 +3527,59 @@ failure:
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_statement°basiclo_wrong _1EFhqSytjSK_9Uchza7qmUD */
 
+
+// emit_statement°basiclo_intswitch _273rNzykHOg_9NXqNHvVIHG
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswitch
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // stmtob
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // routprepob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_273rNzykHOg_9NXqNHvVIHG,
+                 value_tyBM resultv;    //
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 value_tyBM errorv;     //
+                 value_tyBM causev;     //
+    );
+  _.stmtob = objectcast_BM (arg1);
+  _.modgenob = objectcast_BM (arg2);
+  _.routprepob = objectcast_BM (arg3);
+  int depth = getint_BM (arg4);
+  bool gotmessage = false;
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_intswitch start stmtob=%s modgenob=%s routprepob=%s depth#%d",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth);
+  WEAKASSERT_BM (_.stmtob);
+  WEAKASSERT_BM (_.modgenob);
+  WEAKASSERT_BM (_.routprepob);
+  WEAKASSERT_BM (istaggedint_BM (arg4));
+#warning unimplemented emit_statement°basiclo_intswitch _273rNzykHOg_9NXqNHvVIHG routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented emit_statement°basiclo_intswitch _273rNzykHOg_9NXqNHvVIHG routine");
+  LOCALRETURN_BM (_.resultv);
+#undef FAILHERE
+failure:
+  DBGPRINTF_BM ("emit_statement°basiclo_intswitch failin %d stmtob %s routprep %s cause %s",   //
+                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    (value_tyBM) makenode5_BM (k_emit_statement, _.stmtob, _.routprepob,
+                               _.modgenob, taggedint_BM (depth), _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end  emit_statement°basiclo_intswitch _273rNzykHOg_9NXqNHvVIHG */
 
 ////////////////////////////////////////////////////////////////
 /// for the routine to emit_module in plain_module-s
