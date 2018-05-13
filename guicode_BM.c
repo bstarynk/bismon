@@ -1599,6 +1599,9 @@ ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //
   int maxdepth = getint_BM (arg2);
   WEAKASSERT_BM (objhashashmapvalpayl_BM (_.objbrows));
   _.nodv = objhashmapvalmakenodeofkeyspayl_BM (_.objbrows, BMP_node);
+  DBGPRINTF_BM ("browse_data°hashmapval_object start objbrows=%s nodv=%s\n",
+                objectdbg_BM (_.objbrows),
+                debug_outstr_value_BM (_.nodv, CURFRAME_BM, 0));
   WEAKASSERT_BM (isnode_BM (_.nodv));
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   int nbkeys = nodewidth_BM (_.nodv);

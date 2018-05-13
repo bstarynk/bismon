@@ -1060,13 +1060,14 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
      objectdbg2_BM (_.fromob));
   _.hashmapob = makeobj_BM ();
   int stmtlen = objnbcomps_BM (_.stmtob);
-  objputhashmapvalpayl_BM (_.hashmapob, prime_above_BM (10 + 3 * stmtlen));
   objputclass_BM (_.hashmapob, k_hashmapval_object);
+  objputhashmapvalpayl_BM (_.hashmapob, prime_above_BM (10 + 3 * stmtlen));
   objputattr_BM (_.hashmapob, k_for, _.stmtob);
   objputattr_BM (_.hashmapob, k_in, _.routprepob);
   DBGPRINTF_BM ("miniscan_stmt°basiclo_intswitch stmtob=%s hashmapob=%s stmtlen=%d",   //
                 objectdbg_BM (_.stmtob), objectdbg1_BM (_.hashmapob),
                 stmtlen);
+  WEAKASSERT_BM (objhashashmapvalpayl_BM (_.hashmapob));
   int lastwhenix = -1;
   for (int wix = 0; wix < stmtlen; wix++)
     {
