@@ -1025,7 +1025,7 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
   objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   objectval_tyBM *k_statement_properties = BMK_0OM3NoUpOBd_1nzwCJKw54A;
   objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
-  objectval_tyBM *k_for = BMK_1JB0L0RDz9S_2LbkJEumxzo;
+  objectval_tyBM *k_for = BMK_1SolDiQA2WM_4IDOJKBiPFc;
   objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   objectval_tyBM *kk_intswitchwhenminiscan = BMK_7X7mHMa1QpC_1TQBkXwqeik;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2CKEpke8P0q_8s0Vli5gjxM,
