@@ -1025,6 +1025,8 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
   objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   objectval_tyBM *k_statement_properties = BMK_0OM3NoUpOBd_1nzwCJKw54A;
   objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
+  objectval_tyBM *k_for = BMK_1JB0L0RDz9S_2LbkJEumxzo;
+  objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   objectval_tyBM *kk_intswitchwhenminiscan = BMK_7X7mHMa1QpC_1TQBkXwqeik;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2CKEpke8P0q_8s0Vli5gjxM,
                  objectval_tyBM * stmtob;       //
@@ -1060,6 +1062,8 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
   int stmtlen = objnbcomps_BM (_.stmtob);
   objputhashmapvalpayl_BM (_.hashmapob, prime_above_BM (10 + 3 * stmtlen));
   objputclass_BM (_.hashmapob, k_hashmapval_object);
+  objputattr_BM (_.hashmapob, k_for, _.stmtob);
+  objputattr_BM (_.hashmapob, k_in, _.routprepob);
   DBGPRINTF_BM ("miniscan_stmt°basiclo_intswitch stmtob=%s hashmapob=%s stmtlen=%d",   //
                 objectdbg_BM (_.stmtob), objectdbg1_BM (_.hashmapob),
                 stmtlen);
@@ -1321,7 +1325,7 @@ ROUTINEOBJNAME_BM (_7X7mHMa1QpC_1TQBkXwqeik)    //
 failure:
   DBGPRINTF_BM
     ("int-switch-when-miniscan failin %d testv=%s causev=%s hashmapob=%s routprepob=%s depth=%d stmtob=%s wix=%d",
-     debug_outstr_value_BM (_.testv, CURFRAME_BM, 0),
+     failin, debug_outstr_value_BM (_.testv, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.causev, CURFRAME_BM, 0),
      objectdbg_BM (_.hashmapob), objectdbg1_BM (_.routprepob), depth,
      objectdbg2_BM (_.stmtob), wix);
@@ -3542,11 +3546,14 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM *k_statement_properties = BMK_0OM3NoUpOBd_1nzwCJKw54A;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_273rNzykHOg_9NXqNHvVIHG,
                  value_tyBM resultv;    //
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * modgenob;     //
                  objectval_tyBM * routprepob;   //
+                 objectval_tyBM * stmtpropob;   //
+                 value_tyBM propv;      //
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
     );
@@ -3565,6 +3572,15 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
   WEAKASSERT_BM (_.modgenob);
   WEAKASSERT_BM (_.routprepob);
   WEAKASSERT_BM (istaggedint_BM (arg4));
+  _.stmtpropob =
+    objectcast_BM (objgetattr_BM (_.routprepob, k_statement_properties));
+  WEAKASSERT_BM (_.stmtpropob);
+  WEAKASSERT_BM (objhasassocpayl_BM (_.stmtpropob));
+  _.propv = objassocgetattrpayl_BM (_.stmtpropob, _.stmtob);
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_intswitch  stmtob=%s stmtpropob=%s propv=%s",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.stmtpropob),
+     debug_outstr_value_BM (_.propv, CURFRAME_BM, 0));
 #warning unimplemented emit_statement°basiclo_intswitch _273rNzykHOg_9NXqNHvVIHG routine
   WEAKASSERT_BM (false
                  &&
