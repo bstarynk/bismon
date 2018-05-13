@@ -2161,7 +2161,7 @@ objgethashmapvalpayl_BM (objectval_tyBM * obj)
 {
   if (!isobject_BM ((value_tyBM) obj))
     return NULL;
-  void *payl = obj->ob_payl;
+  void *payl = objpayload_BM(obj);
   if (ishashmapval_BM ((value_tyBM) payl))
     return (struct hashmapval_stBM *) payl;
   return NULL;

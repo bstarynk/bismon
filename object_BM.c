@@ -1280,7 +1280,9 @@ objputhashmapvalpayl_BM (objectval_tyBM * obj, unsigned gap)
 {
   if (!isobject_BM ((value_tyBM) obj))
     return;
-  objputpayload_BM (obj, hashmapvalreorganize_BM (NULL, gap + gap / 32 + 1));
+  struct hashmapval_stBM* hmv = hashmapvalreorganize_BM (NULL, gap + gap / 32 + 1);
+  ASSERT_BM(ishashmapval_BM(hmv));
+  objputpayload_BM (obj, hmv);
   if (objclass_BM (obj) == BMP_object)
     objputclass_BM (obj, BMP_hashmapval_object);
 }                               /* end objputhashmapvalpayl_BM */
