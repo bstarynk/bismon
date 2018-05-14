@@ -1021,6 +1021,8 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   objectval_tyBM *k_for = BMK_1SolDiQA2WM_4IDOJKBiPFc;
+  objectval_tyBM *k_when = BMK_7KdDnQYcbeY_4LbTWNwFIFY;
+  objectval_tyBM *k_default = BMK_0Ost4Do2yhq_95ticPFRmQO;
   objectval_tyBM *k_hashmapval_object = BMK_1DdzQEqzTvJ_1mjRDRDUdTw;
   objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
@@ -3578,9 +3580,11 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * stmtpropob;   //
                  objectval_tyBM * propob;       //
+                 objectval_tyBM * curwhenob;    //
                  value_tyBM propv;      //
                  value_tyBM switchexpv; //
                  value_tyBM keysnodv;   //
+                 value_tyBM curkeyv;
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
     );
@@ -3614,9 +3618,9 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
   _.propob = objectcast_BM (_.propv);
   WEAKASSERT_BM (objhashashmapvalpayl_BM (_.propob));
   char stmtidbuf[32];
-  char stmtpref[16];
   memset (stmtidbuf, 0, sizeof (stmtidbuf));
   idtocbuf32_BM (objid_BM (_.stmtob), stmtidbuf);
+  char stmtpref[16];
   memset (stmtpref, 0, sizeof (stmtpref));
   memcpy (stmtpref, stmtidbuf + 1, 8);
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
@@ -3630,12 +3634,39 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
                              stmtidbuf);
   DBGPRINTF_BM ("emit_statement°basiclo_intswitch stmtob=%s propob=%s before nodeofkeys",      //
                 objectdbg_BM (_.stmtob), objectdbg1_BM (_.propob));
-  _.keysnodv = objhashmapvalmakenodeofkeyspayl_BM (BMP_node, _.propob);
+  _.keysnodv = objhashmapvalmakenodeofkeyspayl_BM (_.propob, BMP_node);
   DBGPRINTF_BM ("emit_statement°basiclo_intswitch stmtob=%s /%s propob=%s keysnodv=%s",        //
                 objectdbg_BM (_.stmtob), stmtidbuf,     //
                 objectdbg1_BM (_.propob),       //
                 debug_outstr_value_BM (_.keysnodv, CURFRAME_BM, 0));
-
+  int nbkeys = nodewidth_BM (_.keysnodv);
+  objstrbuffernewlinepayl_BM (_.modgenob);
+  objstrbufferprintfpayl_BM (_.modgenob, "// %d cases in intswitch %s\n",
+                             nbkeys, stmtidbuf);
+  for (int kix = 0; kix < nbkeys; kix++)
+    {
+      _.curkeyv = nodenthson_BM (_.keysnodv, kix);
+      _.curwhenob =
+        objectcast_BM (objhashmapvalgetpayl_BM (_.propob, _.curkeyv));
+      WEAKASSERT_BM (istaggedint_BM (_.curkeyv));
+      intptr_t curkeynum = getint_BM (_.curkeyv);
+      DBGPRINTF_BM
+        ("emit_statement°basiclo_intswitch stmtob=%s kix#%d curkeynum=%lld curwhenob=%s",
+         objectdbg_BM (_.stmtob), kix, (long long) curkeynum,
+         objectdbg1_BM (_.curwhenob));
+      char whenidbuf[32];
+      memset (whenidbuf, 0, sizeof (whenidbuf));
+      idtocbuf32_BM (objid_BM (_.curwhenob), whenidbuf);
+      objstrbuffersetindentpayl_BM (_.modgenob, depth);
+      objstrbuffernewlinepayl_BM (_.modgenob);
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 " case %lld: goto whenint%s_%s;\n",
+                                 curkeynum, stmtpref, whenidbuf);
+    }
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_intswitch stmtob=%s propob=%s routprepob=%s modgenob=%s incomplete",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.propob),
+     objectdbg2_BM (_.routprepob), objectdbg3_BM (_.modgenob));
 #warning unimplemented emit_statement°basiclo_intswitch _273rNzykHOg_9NXqNHvVIHG routine
   WEAKASSERT_BM (false
                  &&
