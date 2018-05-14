@@ -2296,7 +2296,7 @@ ROUTINEOBJNAME_BM (_56pDwW9peiP_8flH2fMQUnD)    //emit_block°basiclo_loop
                              "{ /* +loop %s */\n", blockidbuf, blockidbuf);
   objstrbufferprintfpayl_BM (_.modgenob,
                              "  startloop_%s: __attribute__((unused));\n",
-                             blockidbuf, blockidbuf);
+                             blockidbuf);
   int indepth = depth + 1;
   unsigned blocklen = objnbcomps_BM (_.blockob);
   for (unsigned insix = 0; insix < blocklen; insix++)
@@ -3587,6 +3587,7 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
 {
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
+  objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
   objectval_tyBM *k_default = BMK_0Ost4Do2yhq_95ticPFRmQO;
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
@@ -3737,17 +3738,93 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
         FAILHERE (makenode2_BM (k_default, taggedint_BM (dix), _.compob));
 
       objunlock_BM (_.compob);
+      _.compob = NULL;
     }
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
   objstrbufferprintfpayl_BM (_.modgenob,
                              " break; // end default intswitch %s\n",
                              stmtidbuf, nbdef);
+  int nbwhen = setcardinal_BM (_.whensetv);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "// %d when cases of intswitch %s:\n",
+                             nbwhen, stmtidbuf);
+  for (int wix = 0; wix < nbwhen; wix++)
+    {
+      _.emitv = NULL;
+      _.curwhenob = setelemnth_BM (_.whensetv, wix);
+      objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+      objstrbuffernewlinepayl_BM (_.modgenob);
+      DBGPRINTF_BM
+        ("emit_statement°basiclo_intswitch stmtob=%s wix#%d curwhenob=%s routprepob=%s",
+         objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.curwhenob),
+         objectdbg2_BM (_.routprepob));
+      char whenidbuf[32];
+      memset (whenidbuf, 0, sizeof (whenidbuf));
+      idtocbuf32_BM (objid_BM (_.curwhenob), whenidbuf);
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 " whenint%s_%s:;\n", stmtpref, whenidbuf);
+      objlock_BM (_.curwhenob);
+      WEAKASSERT_BM (objectisinstance_BM (_.curwhenob, k_basiclo_when));
+      int whenlen = objnbcomps_BM (_.curwhenob);
+      for (int cix = 0; cix < whenlen; cix++)
+        {
+          _.compob = objectcast_BM (objgetcomp_BM (_.curwhenob, cix));
+          DBGPRINTF_BM
+            ("emit_statement°basiclo_intswitch stmtob=%s wix#%d compob=%s cix#%d",
+             objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob), cix);
+          WEAKASSERT_BM (_.compob != NULL);
+          objlock_BM (_.compob);
+          _.emitv = NULL;
+          if (objectisinstance_BM (_.compob, k_basiclo_statement))
+            {
+              DBGPRINTF_BM
+                ("emit_statement°basiclo_intswitch stmtob=%s cix#%d compob=%s statement",
+                 objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob));
+              _.emitv = send3_BM (_.compob, k_emit_statement, CURFRAME_BM,      //
+                                  _.modgenob,
+                                  _.routprepob, taggedint_BM (depth + 1));
+            }
+          else if (objectisinstance_BM (_.compob, k_basiclo_block))
+            {
+              DBGPRINTF_BM
+                ("emit_statement°basiclo_intswitch stmtob=%s cix#%d compob=%s block",
+                 objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob));
+              _.emitv = send3_BM (_.compob, k_emit_block, CURFRAME_BM,  //
+                                  _.modgenob,
+                                  _.routprepob, taggedint_BM (depth + 1));
+            }
+          else
+            FAILHERE (makenode3_BM
+                      (k_when, _.curwhenob, taggedint_BM (cix), _.compob));
+          DBGPRINTF_BM
+            ("emit_statement°basiclo_intswitch stmtob=%s cix#%d compob=%s curwhenob=%s got emitv=%s",
+             objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob),
+             objectdbg2_BM (_.curwhenob), debug_outstr_value_BM (_.emitv,
+                                                                 CURFRAME_BM,
+                                                                 0));
+          if (!_.emitv)
+            FAILHERE (makenode2_BM (k_default, taggedint_BM (cix), _.compob));
 
-#warning unimplemented emit_statement°basiclo_intswitch _273rNzykHOg_9NXqNHvVIHG routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented emit_statement°basiclo_intswitch _273rNzykHOg_9NXqNHvVIHG routine");
-  LOCALRETURN_BM (_.resultv);
+          objunlock_BM (_.compob);
+          _.compob = NULL;
+        }
+      objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+      objstrbuffernewlinepayl_BM (_.modgenob);
+      objstrbufferprintfpayl_BM (_.modgenob, " break; // end when %s\n",
+                                 whenidbuf);
+#warning incomplete emit_statement°basiclo_intswitch curwhenob
+      objunlock_BM (_.curwhenob);
+      _.curwhenob = NULL;
+    }
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbuffernewlinepayl_BM (_.modgenob);
+  objstrbufferprintfpayl_BM (_.modgenob, "} } // end intswitch %s\n",
+                             stmtidbuf);
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_intswitch end stmtob=%s propob=%s routprepob=%s\n",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.propob),
+     objectdbg2_BM (_.routprepob));
+  LOCALRETURN_BM (_.propob);
 #undef FAILHERE
 failure:
   DBGPRINTF_BM ("emit_statement°basiclo_intswitch failin %d stmtob %s routprep %s cause %s",   //
