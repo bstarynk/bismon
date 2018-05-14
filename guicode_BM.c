@@ -1625,7 +1625,7 @@ ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //
       char bufmsg[48];
       memset (bufmsg, 0, sizeof (bufmsg));
       snprintf (bufmsg, sizeof (bufmsg),        //
-                "\342\232\255 %d: ",    // U+26AD MARRIAGE SYMBOL ⚭
+                "\342\232\255 #%d: ",   // U+26AD MARRIAGE SYMBOL ⚭
                 ix);
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, bufmsg, -1,
