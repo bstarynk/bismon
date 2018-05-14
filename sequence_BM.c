@@ -687,10 +687,12 @@ datavect_to_tuple_BM (struct datavectval_stBM *dvec)
 
 void *
 datavectgcproc_BM (struct garbcoll_stBM *gc,
-                   struct datavectval_stBM *dvec, int depth)
+                   struct datavectval_stBM *dvec, objectval_tyBM * fromob,
+                   int depth)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((const value_tyBM) dvec) == typayl_vectval_BM);
+  ASSERT_BM (!fromob || isobject_BM (fromob));
   uint8_t oldmark = ((typedhead_tyBM *) dvec)->hgc;
   if (oldmark)
     return dvec;

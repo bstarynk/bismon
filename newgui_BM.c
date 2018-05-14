@@ -156,7 +156,7 @@ static void lock_runpro_mtx_at_BM (int lineno);
 static void unlock_runpro_mtx_at_BM (int lineno);
 
 void
-lock_runpro_mtx_at_BM (lineno)
+lock_runpro_mtx_at_BM (int lineno)
 {
   DBGPRINTFAT_BM (__FILE__, lineno, "lock_runpro_mtx_BM thrid=%ld",
                   (long) gettid_BM ());
@@ -408,7 +408,7 @@ gcmarknewgui_BM (struct garbcoll_stBM *gc)
       gcobjmark_BM (gc, runprocarr_BM[ix].rp_bufob);
     }
   if (runpro_list_BM)
-    listgcmark_BM (gc, runpro_list_BM, 0);
+    listgcmark_BM (gc, runpro_list_BM, NULL, 0);
   unlock_runpro_mtx_at_BM (__LINE__);
 }                               /* end gcmarknewgui_BM */
 

@@ -21,15 +21,18 @@
 
 
 void
-dumpgcmark_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du)
+dumpgcmark_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du,
+               objectval_tyBM * fromob)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (((typedhead_tyBM *) du)->htyp == typayl_dumper_BM);
+  ASSERT_BM (!fromob || isobject_BM (fromob));
+  ASSERT_BM (!fromob || fromob == du->dump_object);
   gcobjmark_BM (gc, (value_tyBM) du->dump_object);
   VALUEGCPROC_BM (gc, du->dump_dir, 0);
-  EXTENDEDGCPROC_BM (gc, du->dump_hset, 0);
-  EXTENDEDGCPROC_BM (gc, du->dump_scanlist, 0);
-  EXTENDEDGCPROC_BM (gc, du->dump_todolist, 0);
+  EXTENDEDGCPROC_BM (gc, du->dump_hset, du->dump_object, 0);
+  EXTENDEDGCPROC_BM (gc, du->dump_scanlist, du->dump_object, 0);
+  EXTENDEDGCPROC_BM (gc, du->dump_todolist, du->dump_object, 0);
 }                               /* end dumpgcmark_BM */
 
 void

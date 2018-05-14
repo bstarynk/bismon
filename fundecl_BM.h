@@ -523,7 +523,8 @@ extern void objstrbufferwritetofilepayl_BM (objectval_tyBM * obj,
 ///////
 
 extern void strbuffergcmark_BM (struct garbcoll_stBM *gc,
-                                struct strbuffer_stBM *sbuf, int depth);
+                                struct strbuffer_stBM *sbuf,
+                                objectval_tyBM * fromob, int depth);
 extern void strbuffergcdestroy_BM (struct garbcoll_stBM *gc,
                                    struct strbuffer_stBM *sbuf);
 extern void strbuffergckeep_BM (struct garbcoll_stBM *gc,
@@ -534,7 +535,8 @@ extern void strbuffergckeep_BM (struct garbcoll_stBM *gc,
 static inline bool isassoc_BM (value_tyBM v);
 static inline anyassoc_tyBM *assoccast_BM (value_tyBM v);
 extern void *assocgcproc_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc,
-                             int depth) __attribute__ ((warn_unused_result));
+                             objectval_tyBM * fromob, int depth)
+  __attribute__ ((warn_unused_result));
 extern void assocpairgcdestroy_BM (struct garbcoll_stBM *gc,
                                    struct assocpairs_stBM *assocpair);
 extern void assocbucketgcdestroy_BM (struct garbcoll_stBM *gc,
@@ -582,7 +584,8 @@ extern struct hashsetobj_stBM *hashsetobj_grow_BM (struct hashsetobj_stBM
                                                    *hset, unsigned gap);
 static inline struct hashsetobj_stBM *hashsetobjcast_BM (const value_tyBM v);
 extern void hashsetgcmark_BM (struct garbcoll_stBM *gc,
-                              struct hashsetobj_stBM *hset);
+                              struct hashsetobj_stBM *hset,
+                              objectval_tyBM * fromob);
 void hashsetgcdestroy_BM (struct garbcoll_stBM *gc,
                           struct hashsetobj_stBM *hset);
 void hashsetgckeep_BM (struct garbcoll_stBM *gc,
@@ -667,7 +670,8 @@ static inline value_tyBM datavectlast_BM (const struct datavectval_stBM
 static inline void datavectputnth_BM (struct datavectval_stBM *dvec, int rk,
                                       const value_tyBM valcomp);
 extern void *datavectgcproc_BM (struct garbcoll_stBM *gc,
-                                struct datavectval_stBM *dvec, int depth)
+                                struct datavectval_stBM *dvec,
+                                objectval_tyBM * fromob, int depth)
   __attribute__ ((warn_unused_result));
 extern void datavectgcdestroy_BM (struct garbcoll_stBM *gc,
                                   struct datavectval_stBM *dvec);
@@ -719,7 +723,8 @@ extern void listprepend_BM (struct listtop_stBM *lis, value_tyBM val);
 extern void listpopfirst_BM (struct listtop_stBM *lis);
 extern void listpoplast_BM (struct listtop_stBM *lis);
 extern void listgcmark_BM (struct garbcoll_stBM *gc,
-                           struct listtop_stBM *lis, int depth);
+                           struct listtop_stBM *lis, objectval_tyBM * fromob,
+                           int depth);
 extern void listgcdestroy_BM (struct garbcoll_stBM *gc,
                               struct listtop_stBM *lis);
 extern void listgckeep_BM (struct garbcoll_stBM *gc,
@@ -754,7 +759,8 @@ static inline const tupleval_tyBM *objlisttotuplepayl_BM (objectval_tyBM *
 
 
 extern void classinfogcmark_BM (struct garbcoll_stBM *gc,
-                                struct classinfo_stBM *clinf, int depth);
+                                struct classinfo_stBM *clinf,
+                                objectval_tyBM * fromob, int depth);
 extern void classinfogcdestroy_BM (struct garbcoll_stBM *gc,
                                    struct classinfo_stBM *clinf);
 extern void classinfogckeep_BM (struct garbcoll_stBM *gc,
@@ -765,7 +771,7 @@ extern struct dict_stBM *dictmake_BM (void);
 static inline bool isdict_BM (const value_tyBM v);
 extern unsigned dictsize_BM (const struct dict_stBM *dict);
 extern void dictgcmark_BM (struct garbcoll_stBM *gc, struct dict_stBM *dict,
-                           int depth);
+                           objectval_tyBM * fromob, int depth);
 extern void dictgcdestroy_BM (struct garbcoll_stBM *gc,
                               struct dict_stBM *dict);
 extern void dictgckeep_BM (struct garbcoll_stBM *gc, struct dict_stBM *dict);
@@ -812,10 +818,11 @@ static inline const node_tyBM *objdictnodeofkeyspayl_BM
 static inline bool ishashsetval_BM (const value_tyBM v);
 static inline bool ishashsetvbucket_BM (const value_tyBM v);
 extern void hashsetvalgcmark_BM (struct garbcoll_stBM *gc,
-                                 struct hashsetval_stBM *hsv, int depth);
+                                 struct hashsetval_stBM *hsv,
+                                 objectval_tyBM * fromob, int depth);
 extern void hashsetvbucketgcmark_BM (struct garbcoll_stBM *gc,
                                      struct hashsetvbucket_stBM *hvb,
-                                     int depth);
+                                     objectval_tyBM * fromob, int depth);
 extern void hashsetvalgcdestroy_BM (struct garbcoll_stBM *gc,
                                     struct hashsetval_stBM *hsv);
 extern void hashsetvbucketgcdestroy_BM (struct garbcoll_stBM *gc,
@@ -826,8 +833,8 @@ extern void hashsetvbucketgckeep_BM (struct garbcoll_stBM *gc,
                                      struct hashsetvbucket_stBM *hvb);
 extern bool hashsetvalcontains_BM (struct hashsetval_stBM *hsv,
                                    value_tyBM val);
-extern struct hashsetval_stBM *hashsetvalreorganize_BM
-  (struct hashsetval_stBM *hsv, unsigned gap);
+extern struct hashsetval_stBM *hashsetvalreorganize_BM (struct hashsetval_stBM
+                                                        *hsv, unsigned gap);
 extern struct hashsetval_stBM *hashsetvalput_BM (struct hashsetval_stBM *hsv,
                                                  value_tyBM val);
 extern struct hashsetval_stBM *hashsetvalremove_BM (struct hashsetval_stBM
@@ -880,10 +887,11 @@ static inline bool ishashmapval_BM (const value_tyBM v);
 static inline bool ishashmapbucket_BM (const value_tyBM v);
 static inline unsigned hashmapvalsize_BM (const value_tyBM v);
 extern void hashmapvalgcmark_BM (struct garbcoll_stBM *gc,
-                                 struct hashmapval_stBM *hsv, int depth);
+                                 struct hashmapval_stBM *hsv,
+                                 objectval_tyBM * fromob, int depth);
 extern void hashmapbucketgcmark_BM (struct garbcoll_stBM *gc,
                                     struct hashmapbucket_stBM *hvb,
-                                    int depth);
+                                    objectval_tyBM * fromob, int depth);
 extern void hashmapvalgcdestroy_BM (struct garbcoll_stBM *gc,
                                     struct hashmapval_stBM *hsv);
 extern void hashmapbucketgcdestroy_BM (struct garbcoll_stBM *gc,
@@ -1028,7 +1036,8 @@ extern struct dumpinfo_stBM dump_BM (const char *dirname,
                                      struct stackframe_stBM *stkf);
 
 
-extern void dumpgcmark_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du);
+extern void dumpgcmark_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du,
+                           objectval_tyBM * fromob);
 extern void dumpgcdestroy_BM (struct garbcoll_stBM *gc,
                               struct dumper_stBM *du);
 extern void dumpgckeep_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du);
@@ -1065,7 +1074,8 @@ static inline objectval_tyBM *checkedparserowner_BM (const extendedval_tyBM
                                                      v);
 static inline struct parser_stBM *parsercast_BM (const value_tyBM v);
 extern void parsergcmark_BM (struct garbcoll_stBM *gc,
-                             struct parser_stBM *pars);
+                             struct parser_stBM *pars,
+                             objectval_tyBM * fromob);
 extern void parsergcdestroy_BM (struct garbcoll_stBM *gc,
                                 struct parser_stBM *pars);
 extern void parsergckeep_BM (struct garbcoll_stBM *gc,
@@ -1121,7 +1131,8 @@ extern void *valuegcproc_BM (struct garbcoll_stBM *gc, value_tyBM val,
                              int depth) __attribute__ ((warn_unused_result));
 // used by EXTENDEDGCPROC_BM macro
 extern void *extendedgcproc_BM (struct garbcoll_stBM *gc,
-                                extendedval_tyBM xval, int depth)
+                                extendedval_tyBM xval,
+                                objectval_tyBM * fromob, int depth)
   __attribute__ ((warn_unused_result));
 
 extern void gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj);

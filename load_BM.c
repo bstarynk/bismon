@@ -26,9 +26,9 @@ loadergcmark_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((const value_tyBM) ld) == typayl_loader_BM);
   ASSERT_BM (ld->ld_magic == LOADERMAGIC_BM);
-  EXTENDEDGCPROC_BM (gc, ld->ld_objhset, 0);
-  EXTENDEDGCPROC_BM (gc, ld->ld_modhset, 0);
-  EXTENDEDGCPROC_BM (gc, ld->ld_todolist, 0);
+  EXTENDEDGCPROC_BM (gc, ld->ld_objhset, NULL, 0);
+  EXTENDEDGCPROC_BM (gc, ld->ld_modhset, NULL, 0);
+  EXTENDEDGCPROC_BM (gc, ld->ld_todolist, NULL, 0);
 }                               /* end loadergcmark_BM */
 
 void

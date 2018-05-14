@@ -636,10 +636,11 @@ dictmake_BM(void)
 
 void
 dictgcmark_BM(struct garbcoll_stBM *gc, struct dict_stBM*dict,
-              int depth)
+              objectval_tyBM* fromob, int depth)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (isdict_BM (dict));
+  ASSERT_BM (!fromob || isobject_BM(fromob));
   uint8_t oldmark = ((typedhead_tyBM *) dict)->hgc;
   if (oldmark)
     return;

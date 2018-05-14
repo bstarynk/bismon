@@ -382,10 +382,12 @@ list_to_tuple_BM (const struct listtop_stBM *lis)
 }                               /* end list_to_tuple_BM */
 
 void
-listgcmark_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis, int depth)
+listgcmark_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis,
+               objectval_tyBM * fromob, int depth)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((const value_tyBM) lis) == typayl_listtop_BM);
+  ASSERT_BM (!fromob || isobject_BM (fromob));
   uint8_t oldmark = ((typedhead_tyBM *) lis)->hgc;
   if (oldmark)
     return;
@@ -401,7 +403,8 @@ listgcmark_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis, int depth)
           VALUEGCPROC_BM (gc, link->link_mems[ix], depth + 1);
           cnt++;
           if (cnt > MAXSIZE_BM)
-            FATAL_BM ("huge or circular list %u with %d links", cnt, nblinks);
+            FATAL_BM ("huge or circular list %u with %d links fromob %s", cnt,
+                      nblinks, objectdbg_BM (fromob));
         };
       nblinks++;
     }

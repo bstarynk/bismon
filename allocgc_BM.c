@@ -136,13 +136,16 @@ valuegcproc_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
 }                               /* end valuegcproc_BM */
 
 void *
-extendedgcproc_BM (struct garbcoll_stBM *gc, extendedval_tyBM xval, int depth)
+extendedgcproc_BM (struct garbcoll_stBM *gc, extendedval_tyBM xval,
+                   objectval_tyBM * fromob, int depth)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (fromob == NULL || isobject_BM (fromob));
   if (!xval)
     return NULL;
   if (depth >= MAXDEPTHGC_BM)
-    FATAL_BM ("too deep %u gcextendedmark", depth);
+    FATAL_BM ("too deep %u gcextendedmark fromob %s", depth,
+              objectdbg_BM (fromob));
   int ty = valtype_BM (xval);
   if (!ty || ty == tyInt_BM)
     return xval;
@@ -169,44 +172,48 @@ extendedgcproc_BM (struct garbcoll_stBM *gc, extendedval_tyBM xval, int depth)
       ///
     case typayl_assocpairs_BM:
     case typayl_assocbucket_BM:
-      return assocgcproc_BM (gc, (anyassoc_tyBM *) xval, depth);
+      return assocgcproc_BM (gc, (anyassoc_tyBM *) xval, fromob, depth);
     case typayl_hashsetobj_BM:
-      hashsetgcmark_BM (gc, (struct hashsetobj_stBM *) xval);
+      hashsetgcmark_BM (gc, (struct hashsetobj_stBM *) xval, fromob);
       return xval;
     case typayl_listtop_BM:
-      listgcmark_BM (gc, (struct listtop_stBM *) xval, depth);
+      listgcmark_BM (gc, (struct listtop_stBM *) xval, fromob, depth);
       return xval;
     case typayl_strbuffer_BM:
-      strbuffergcmark_BM (gc, (struct strbuffer_stBM *) xval, depth);
+      strbuffergcmark_BM (gc, (struct strbuffer_stBM *) xval, fromob, depth);
       return xval;
     case typayl_loader_BM:
       loadergcmark_BM (gc, (struct loader_stBM *) xval);
       return xval;
     case typayl_dumper_BM:
-      dumpgcmark_BM (gc, (struct dumper_stBM *) xval);
+      dumpgcmark_BM (gc, (struct dumper_stBM *) xval, fromob);
       return xval;
     case typayl_quasinode_BM:
       return quasinodegcproc_BM (gc, (quasinode_tyBM *) xval, depth);
     case typayl_vectval_BM:
-      return datavectgcproc_BM (gc, (struct datavectval_stBM *) xval, depth);
+      return datavectgcproc_BM (gc, (struct datavectval_stBM *) xval, fromob,
+                                depth);
     case typayl_classinfo_BM:
-      classinfogcmark_BM (gc, (struct classinfo_stBM *) xval, depth);
+      classinfogcmark_BM (gc, (struct classinfo_stBM *) xval, fromob, depth);
       return xval;
     case typayl_dict_BM:
-      dictgcmark_BM (gc, (struct dict_stBM *) xval, depth);
+      dictgcmark_BM (gc, (struct dict_stBM *) xval, fromob, depth);
       return xval;
     case typayl_hashsetval_BM:
-      hashsetvalgcmark_BM (gc, (struct hashsetval_stBM *) xval, depth);
+      hashsetvalgcmark_BM (gc, (struct hashsetval_stBM *) xval, fromob,
+                           depth);
       return xval;
     case typayl_hashsetvbucket_BM:
       hashsetvbucketgcmark_BM (gc, (struct hashsetvbucket_stBM *) xval,
-                               depth);
+                               fromob, depth);
       return xval;
     case typayl_hashmapval_BM:
-      hashmapvalgcmark_BM (gc, (struct hashmapval_stBM *) xval, depth);
+      hashmapvalgcmark_BM (gc, (struct hashmapval_stBM *) xval, fromob,
+                           depth);
       return xval;
     case typayl_hashmapbucket_BM:
-      hashmapbucketgcmark_BM (gc, (struct hashmapbucket_stBM *) xval, depth);
+      hashmapbucketgcmark_BM (gc, (struct hashmapbucket_stBM *) xval, fromob,
+                              depth);
       return xval;
     case typayl_FailureHandler_BM:
       {
@@ -217,8 +224,9 @@ extendedgcproc_BM (struct garbcoll_stBM *gc, extendedval_tyBM xval, int depth)
         return xval;
       }
     default:
-      FATAL_BM ("extendedgcproc_BM ty#%d unexpected for xval@%p depth=%d",
-                ty, xval, depth);
+      FATAL_BM
+        ("extendedgcproc_BM ty#%d unexpected for xval@%p fromob=%s depth=%d",
+         ty, xval, objectdbg_BM (fromob), depth);
     }
 }                               /* end extendedgcproc_BM */
 

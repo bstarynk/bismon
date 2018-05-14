@@ -584,10 +584,12 @@ assoc_removeattr_BM (anyassoc_tyBM * assoc, const objectval_tyBM * obattr)
 }                               /* end assoc_removeattr_BM */
 
 void *
-assocgcproc_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc, int depth)
+assocgcproc_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc,
+                objectval_tyBM * fromob, int depth)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (isassoc_BM (assoc));
+  ASSERT_BM (!fromob || isobject_BM (fromob));
   uint8_t oldmark = ((typedhead_tyBM *) assoc)->hgc;
   if (oldmark)
     return assoc;
@@ -646,7 +648,7 @@ assocgcproc_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc, int depth)
       return assoc;
     }
   else
-    FATAL_BM ("unexpected assoc @%p", assoc);
+    FATAL_BM ("unexpected assoc @%p fromob %s", assoc, objectdbg_BM (fromob));
 }                               /* end assocgcproc_BM */
 
 
@@ -670,7 +672,7 @@ objputassocpayl_BM (objectval_tyBM * obj, unsigned maxsize)
 /*********** HASH SET VALUES **********/
 void
 hashsetvalgcmark_BM (struct garbcoll_stBM *gc, struct hashsetval_stBM *hsv,
-                     int depth)
+                     objectval_tyBM * fromob, int depth)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (ishashsetval_BM ((value_tyBM) hsv));
@@ -686,16 +688,18 @@ hashsetvalgcmark_BM (struct garbcoll_stBM *gc, struct hashsetval_stBM *hsv,
       if (!vbu || vbu == HASHEMPTYSLOT_BM)
         continue;
       ASSERT_BM (valtype_BM ((value_tyBM) vbu) == typayl_hashsetvbucket_BM);
-      EXTENDEDGCPROC_BM (gc, vbu, depth + 1);
+      EXTENDEDGCPROC_BM (gc, vbu, fromob, depth + 1);
     }
 }                               /* end hashsetvalgcmark_BM */
 
 void
 hashsetvbucketgcmark_BM (struct garbcoll_stBM *gc,
-                         struct hashsetvbucket_stBM *hvb, int depth)
+                         struct hashsetvbucket_stBM *hvb,
+                         objectval_tyBM * fromob, int depth)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (ishashsetvbucket_BM ((value_tyBM) hvb));
+  ASSERT_BM (!fromob || isobject_BM (fromob));
   uint8_t oldmark = ((typedhead_tyBM *) hvb)->hgc;
   if (oldmark)
     return;
@@ -1146,7 +1150,7 @@ hashsetvalmakenode_BM (struct hashsetval_stBM * hsv, objectval_tyBM * connob)
 
 void
 hashmapvalgcmark_BM (struct garbcoll_stBM *gc, struct hashmapval_stBM *hmv,
-                     int depth)
+                     objectval_tyBM * fromob, int depth)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (ishashmapval_BM ((value_tyBM) hmv));
@@ -1162,16 +1166,18 @@ hashmapvalgcmark_BM (struct garbcoll_stBM *gc, struct hashmapval_stBM *hmv,
       if (!vbu || vbu == HASHEMPTYSLOT_BM)
         continue;
       ASSERT_BM (valtype_BM ((value_tyBM) vbu) == typayl_hashmapbucket_BM);
-      EXTENDEDGCPROC_BM (gc, vbu, depth + 1);
+      EXTENDEDGCPROC_BM (gc, vbu, fromob, depth + 1);
     }
 }                               /* end hashmapvalgcmark_BM */
 
 void
 hashmapbucketgcmark_BM (struct garbcoll_stBM *gc,
-                        struct hashmapbucket_stBM *hvb, int depth)
+                        struct hashmapbucket_stBM *hvb,
+                        objectval_tyBM * fromob, int depth)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (ishashmapbucket_BM ((value_tyBM) hvb));
+  ASSERT_BM (!fromob || isobject_BM (fromob));
   uint8_t oldmark = ((typedhead_tyBM *) hvb)->hgc;
   if (oldmark)
     return;

@@ -43,8 +43,8 @@
       Val = (typeof(Val))(valuegcproc_BM ((Gc),	\
 					  (void*)(Val),(Depth))); } while(0)
 
-#define EXTENDEDGCPROC_BM(Gc,Xval,Depth) \
-  do { Xval = extendedgcproc_BM((Gc),(Xval),(Depth)); } while(0)
+#define EXTENDEDGCPROC_BM(Gc,Xval,Fromob,Depth)				\
+  do { Xval = extendedgcproc_BM((Gc),(Xval),(Fromob),(Depth)); } while(0)
 
 #define HASHEMPTYSLOT_BM ((void*)(-1))
 

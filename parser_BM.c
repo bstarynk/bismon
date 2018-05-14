@@ -126,10 +126,12 @@ makeparser_memopen_BM (const char *filemem, long size, objectval_tyBM * ownob)
 
 
 void
-parsergcmark_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars)
+parsergcmark_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars,
+                 objectval_tyBM * fromob)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (isparser_BM (pars));
+  ASSERT_BM (!fromob || isobject_BM (fromob));
   uint8_t oldmark = ((typedhead_tyBM *) pars)->hgc;
   if (oldmark)
     return;
@@ -1812,10 +1814,10 @@ parsergetvalue_BM (struct parser_stBM *pars,
           if (_.vecobj)
             objlock_BM (_.vecobj);
           _.resval = (value_tyBM)
-            (nbcomp < TINYARGSNUM_BM)
-            ? makeclosure_BM (_.connobj, nbcomp, (_.tinyargsarr))
-            : makeclosure_BM (_.connobj, objnbcomps_BM (_.vecobj),
-                              (objcompdata_BM (_.vecobj)));
+            ((nbcomp < TINYARGSNUM_BM)
+             ? makeclosure_BM (_.connobj, nbcomp, (_.tinyargsarr))
+             : makeclosure_BM (_.connobj, objnbcomps_BM (_.vecobj),
+                               (objcompdata_BM (_.vecobj))));
           if (_.vecobj)
             objunlock_BM (_.vecobj);
         }
@@ -1924,10 +1926,10 @@ parsergetvalue_BM (struct parser_stBM *pars,
       if (!nobuild)
         {
           _.macroval = (value_tyBM)
-            (nbsons < TINYARGSNUM_BM)
-            ? makenode_BM (_.connobj, nbsons, (_.tinyargsarr))
-            : makenode_BM (_.connobj, objnbcomps_BM (_.vecobj),
-                           (objcompdata_BM (_.vecobj)));
+            ((nbsons < TINYARGSNUM_BM)
+             ? makenode_BM (_.connobj, nbsons, (_.tinyargsarr))
+             : makenode_BM (_.connobj, objnbcomps_BM (_.vecobj),
+                            (objcompdata_BM (_.vecobj))));
           _.resval =            //
             parsops->parsop_expand_readmacro_rout
             (pars, nodlin, nodcol, depth, _.macroval, CURFRAME_BM);

@@ -320,15 +320,15 @@ gcmarkagenda_BM (struct garbcoll_stBM *gc)
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   pthread_mutex_lock (&ti_agendamtx_BM);
   if (ti_veryhigh_taskhset_BM)
-    hashsetgcmark_BM (gc, ti_veryhigh_taskhset_BM);
+    hashsetgcmark_BM (gc, ti_veryhigh_taskhset_BM, NULL);
   if (ti_high_taskhset_BM)
-    hashsetgcmark_BM (gc, ti_high_taskhset_BM);
+    hashsetgcmark_BM (gc, ti_high_taskhset_BM, NULL);
   if (ti_normal_taskhset_BM)
-    hashsetgcmark_BM (gc, ti_normal_taskhset_BM);
+    hashsetgcmark_BM (gc, ti_normal_taskhset_BM, NULL);
   if (ti_low_taskhset_BM)
-    hashsetgcmark_BM (gc, ti_low_taskhset_BM);
+    hashsetgcmark_BM (gc, ti_low_taskhset_BM, NULL);
   if (ti_verylow_taskhset_BM)
-    hashsetgcmark_BM (gc, ti_verylow_taskhset_BM);
+    hashsetgcmark_BM (gc, ti_verylow_taskhset_BM, NULL);
   if (agd_first_BM != NULL)
     {
       ASSERT_BM (agd_last_BM != NULL);
@@ -487,7 +487,8 @@ agenda_run_deferred_after_gc_BM (void)
 {
   struct agenda_defer_stBM *oldfirst = NULL;
   struct agenda_defer_stBM *oldlast = NULL;
-  struct failurehandler_stBM *oldflh = curfailurehandle_BM;
+  struct failurehandler_stBM *oldflh =
+    (struct failurehandler_stBM *) curfailurehandle_BM;
   curfailurehandle_BM = NULL;
   pthread_mutex_lock (&ti_agendamtx_BM);
   oldfirst = agd_first_BM;
@@ -862,8 +863,8 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
     varr[4] = _.arg3v;
     DBGPRINTF_BM
       ("defer_module_load defer after gc modulob %s, postclos %s, arg1 %s, arg2 %s, arg3 %s",
-       objectdbg_BM (_.modulob), debug_outstr_value_BM (_.postclos,
-                                                        CURFRAME_BM, 0),
+       objectdbg_BM (_.modulob),
+       debug_outstr_value_BM ((value_tyBM) _.postclos, CURFRAME_BM, 0),
        debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),
        debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
        debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
@@ -881,8 +882,8 @@ failure:
                 debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),        //
                 debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
   _.errorv =
-    makenode6_BM (k_defer_module_load, _.modulob, _.postclos, _.arg1v,
-                  _.arg2v, _.arg3v, _.causev);
+    makenode6_BM (k_defer_module_load, _.modulob, (value_tyBM) _.postclos,
+                  _.arg1v, _.arg2v, _.arg3v, _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 
 }                               /* end defer_module_load_BM */

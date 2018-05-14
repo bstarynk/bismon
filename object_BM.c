@@ -539,11 +539,11 @@ objectinteriorgcmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
   if (obj->ob_routaddr && obj->ob_sig)
     gcobjmark_BM (gc, obj->ob_sig);
   if (obj->ob_compvec)
-    obj->ob_compvec = datavectgcproc_BM (gc, obj->ob_compvec, 0);
+    obj->ob_compvec = datavectgcproc_BM (gc, obj->ob_compvec, obj, 0);
   if (obj->ob_attrassoc)
-    obj->ob_attrassoc = assocgcproc_BM (gc, obj->ob_attrassoc, 0);
+    obj->ob_attrassoc = assocgcproc_BM (gc, obj->ob_attrassoc, obj, 0);
   if (obj->ob_payl)
-    obj->ob_payl = extendedgcproc_BM (gc, obj->ob_payl, 0);
+    obj->ob_payl = extendedgcproc_BM (gc, obj->ob_payl, obj, 0);
 }                               /* end objectinteriorgcmark_BM */
 
 ////////////////////////////////////////////////////////////////
@@ -875,10 +875,12 @@ hashsetobj_take_random_BM (struct hashsetobj_stBM * hset)
 }                               /* end hashsetobj_take_random_BM */
 
 void
-hashsetgcmark_BM (struct garbcoll_stBM *gc, struct hashsetobj_stBM *hset)
+hashsetgcmark_BM (struct garbcoll_stBM *gc, struct hashsetobj_stBM *hset,
+                  objectval_tyBM * fromob)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((const value_tyBM) hset) == typayl_hashsetobj_BM);
+  ASSERT_BM (!fromob || isobject_BM (fromob));
   uint8_t oldmark = ((typedhead_tyBM *) hset)->hgc;
   if (oldmark)
     return;
@@ -1000,7 +1002,7 @@ gcmarkpredefinedobjects_BM (struct garbcoll_stBM *gc)
   }
 #include "_bm_predef.h"
   //
-  hashsetgcmark_BM (gc, hashset_predefined_objects_BM);
+  hashsetgcmark_BM (gc, hashset_predefined_objects_BM, NULL);
 }                               /* end gcmarkpredefinedobjects_BM */
 
 void
@@ -1088,10 +1090,11 @@ objremoveattr_BM (objectval_tyBM * obj, const objectval_tyBM * objattr)
 
 void
 classinfogcmark_BM (struct garbcoll_stBM *gc, struct classinfo_stBM *clinf,
-                    int depth)
+                    objectval_tyBM * fromob, int depth)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((const value_tyBM) clinf) == typayl_classinfo_BM);
+  ASSERT_BM (!fromob || isobject_BM (fromob));
   uint8_t oldmark = ((typedhead_tyBM *) clinf)->hgc;
   if (oldmark)
     return;
@@ -1100,7 +1103,8 @@ classinfogcmark_BM (struct garbcoll_stBM *gc, struct classinfo_stBM *clinf,
   if (clinf->clinf_superclass)
     gcobjmark_BM (gc, (objectval_tyBM *) clinf->clinf_superclass);
   if (clinf->clinf_dictmeth)
-    clinf->clinf_dictmeth = assocgcproc_BM (gc, clinf->clinf_dictmeth, depth);
+    clinf->clinf_dictmeth =
+      assocgcproc_BM (gc, clinf->clinf_dictmeth, fromob, depth);
 }                               /* end classinfogcmark_BM */
 
 void

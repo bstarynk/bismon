@@ -66,7 +66,8 @@ weakassertfailureat_BM (const char *condmsg, const char *fil, int lin)
     {
       fprintf (stderr, "\n\n\n** full backtrace **\n");
       fflush (stderr);
-      backtrace_print_BM (backtracestate_BM, 1, stderr);
+      backtrace_print_BM ((struct backtrace_state *) backtracestate_BM, 1,
+                          stderr);
       fprintf (stderr, "\n----- end full backtrace ------\n\n");
       fflush (stderr);
     }
@@ -144,7 +145,8 @@ failure_at_BM (int failcode, const char *fil, int lineno,
                    thnambuf);
           if (backtracestate_BM)
             {
-              backtrace_print_BM (backtracestate_BM, 1, stderr);
+              backtrace_print_BM ((struct backtrace_state *)
+                                  backtracestate_BM, 1, stderr);
               fprintf (stderr, "\n----- end failure backtrace ------\n\n");
             }
           fflush (stderr);
@@ -184,7 +186,8 @@ fatal_stop_at_BM (const char *fil, int lineno)
     {
       fprintf (stderr, "\n\n\n** full fatal backtrace **\n");
       fflush (stderr);
-      backtrace_print_BM (backtracestate_BM, 1, stderr);
+      backtrace_print_BM ((struct backtrace_state *) backtracestate_BM, 1,
+                          stderr);
       fprintf (stderr, "\n----- end full fatal backtrace ------\n\n");
     }
   fflush (stderr);
@@ -442,7 +445,8 @@ do_emit_module_from_main_BM (void)
   _.failres = NULL;
   int failcod = 0;
   struct failurelockset_stBM flockset = { };
-  struct failurehandler_stBM *prevfailurehandle = curfailurehandle_BM;
+  struct failurehandler_stBM *prevfailurehandle =
+    (struct failurehandler_stBM *) curfailurehandle_BM;
   initialize_failurelockset_BM (&flockset, sizeof (flockset));
   LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureemit, failcod, _.failres);
   if (failcod > 0)
@@ -1012,9 +1016,10 @@ printbt_callback_BM (void *data, uintptr_t pc, const char *filename,
 /* Print errors to stderr.  */
 
 static void
-errorbt_callback_BM (void *data, const char *msg, int errnum)
+errorbt_callback_BM (void *data_
+                     __attribute__ ((unused)), const char *msg, int errnum)
 {
-  struct print_data_BM *pdata = (struct print_data_BM *) data;
+  //  struct print_data_BM *pdata = (struct print_data_BM *) data;
 
   //if (pdata->state->filename != NULL)
   //  fprintf (stderr, "%s: ", pdata->state->filename);

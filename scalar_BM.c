@@ -448,9 +448,11 @@ valqcmp_BM (const void *p1, const void *p2)
 
 void
 strbuffergcmark_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf,
-                    int depth __attribute__ ((unused)))
+                    objectval_tyBM * fromob, int depth
+                    __attribute__ ((unused)))
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (!fromob || isobject_BM (fromob));
   ASSERT_BM (((typedhead_tyBM *) sbuf)->htyp == typayl_strbuffer_BM);
   ASSERT_BM (sbuf->sbuf_dbuf);
   ASSERT_BM (sbuf->sbuf_size > 0);

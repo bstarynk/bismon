@@ -2009,7 +2009,8 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
   DBGPRINTF_BM
     ("@@dump_data°plain_dumpable_module obmod=%s\n****++++++++++++++++\n",
      objectdbg_BM (_.obmod));
-  struct failurehandler_stBM *prevfailureh = curfailurehandle_BM;
+  struct failurehandler_stBM *prevfailureh =
+    (struct failurehandler_stBM *) curfailurehandle_BM;
   int failcod = 0;
   _.failreason = NULL;
   struct failurelockset_stBM flockset = {
@@ -2506,7 +2507,7 @@ ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    // readmacro#intswitch
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:intswitch  "
                 " lineno=%d colpos=%d rnod %s", lineno, colpos,
-                debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
+                debug_outstr_value_BM ((value_tyBM) _.rnodv, CURFRAME_BM, 0));
   unsigned startix = 0;
   _.resobj = NULL;
   if (nodwidth > 0
@@ -2612,7 +2613,7 @@ ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf)    // objswitch:readmacro
   k_basiclo_objswitch = BMK_3votvybaW1d_35YcL4p51kp;
   DBGPRINTF_BM ("start readmacro:objswitch "
                 " lineno=%d colpos=%d rnod=%s", lineno, colpos,
-                debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
+                debug_outstr_value_BM ((value_tyBM) _.rnodv, CURFRAME_BM, 0));
   unsigned startix = 0;
   _.resobj = NULL;
   if (nodwidth > 0
@@ -2712,7 +2713,8 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    // loop:readmacro
   unsigned nodwidth = nodewidth_BM ((const value_tyBM) _.rnodv);
   DBGPRINTF_BM ("start readmacro:loop "
                 " lineno=%d colpos=%d nodwidth=%u rnod %s", lineno, colpos,
-                nodwidth, debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
+                nodwidth, debug_outstr_value_BM ((value_tyBM) _.rnodv,
+                                                 CURFRAME_BM, 0));
   _.resobj = NULL;
   unsigned startix = 0;
   if (nodwidth > 0
@@ -2831,7 +2833,8 @@ ROUTINEOBJNAME_BM (_63Q0R4r8xa7_7XOAxxP5pi2)    // exit:readmacro
   _.resobj = NULL;
   DBGPRINTF_BM ("start readmacro:exit "
                 " lineno=%d colpos=%d nodwidth=%u rnodv=%s", lineno, colpos,
-                nodwidth, debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
+                nodwidth, debug_outstr_value_BM ((value_tyBM) _.rnodv,
+                                                 CURFRAME_BM, 0));
   unsigned startix = 0;
   if (nodwidth > 0
       && (_.curson =
@@ -2887,7 +2890,7 @@ ROUTINEOBJNAME_BM (_63Q0R4r8xa7_7XOAxxP5pi2)    // exit:readmacro
   objtouchnow_BM (_.resobj);
   DBGPRINTF_BM ("end readmacro:exit L%dC%d resobj %s for rnod %s", lineno,
                 colpos, objectdbg_BM (_.resobj),
-                debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
+                debug_outstr_value_BM ((value_tyBM) _.rnodv, CURFRAME_BM, 0));
   LOCALRETURN_BM (_.resobj);
 }                               /* end ROUTINE  _63Q0R4r8xa7_7XOAxxP5pi2 exit:readmacro */
 
