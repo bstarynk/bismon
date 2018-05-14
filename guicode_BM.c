@@ -1622,16 +1622,19 @@ ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //
       WEAKASSERT_BM (_.cursonv != NULL);
       _.curvalv = objhashmapvalgetpayl_BM (_.objbrows, _.cursonv);
       WEAKASSERT_BM (_.curvalv != NULL);
+      gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "\342\232\255 ", // U+26AD MARRIAGE SYMBOL ⚭);
+                                        -1, nest_brotag_BM, NULL);
       char bufmsg[48];
       memset (bufmsg, 0, sizeof (bufmsg));
       snprintf (bufmsg, sizeof (bufmsg),        //
-                "\342\232\255 #%d: ",   // U+26AD MARRIAGE SYMBOL ⚭
-                ix);
+                "|#%d| ", ix);
       gtk_text_buffer_insert_with_tags (brobuf,
-                                        &browserit_BM, bufmsg, -1,
-                                        nest_brotag_BM, NULL);
-      browse_value_BM ((const value_tyBM) _.cursonv,
-                       CURFRAME_BM, maxdepth, 1);
+                                        &browserit_BM, bufmsg,
+                                        -1,
+                                        nest_brotag_BM, miscomm_brotag_BM,
+                                        NULL);
+      browse_value_BM ((const value_tyBM) _.cursonv, CURFRAME_BM, maxdepth,
+                       1);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
                                         " \342\206\246 ", -1,   // U+21A6 RIGHTWARDS ARROW FROM BAR ↦
