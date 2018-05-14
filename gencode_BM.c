@@ -1020,13 +1020,15 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
+  objectval_tyBM *k_for = BMK_1SolDiQA2WM_4IDOJKBiPFc;
   objectval_tyBM *k_hashmapval_object = BMK_1DdzQEqzTvJ_1mjRDRDUdTw;
+  objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
+  objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
   objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
   objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   objectval_tyBM *k_statement_properties = BMK_0OM3NoUpOBd_1nzwCJKw54A;
+  objectval_tyBM *k_switch = BMK_5PJV21P82kA_2KfQTz95vdH;
   objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
-  objectval_tyBM *k_for = BMK_1SolDiQA2WM_4IDOJKBiPFc;
-  objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   objectval_tyBM *kk_intswitchwhenminiscan = BMK_7X7mHMa1QpC_1TQBkXwqeik;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2CKEpke8P0q_8s0Vli5gjxM,
                  objectval_tyBM * stmtob;       //
@@ -1034,8 +1036,10 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
                  objectval_tyBM * fromob;       //
                  objectval_tyBM * hashmapob;    //
                  objectval_tyBM * compob;       //
+                 objectval_tyBM * switchtypob;  //
                  objectval_tyBM * subcompob;    //
                  objectval_tyBM * stmtpropob;   //
+                 value_tyBM switchexpv;
                  value_tyBM testv;      //
                  value_tyBM restestv;   //
                  value_tyBM oldv;       //
@@ -1064,9 +1068,20 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
   objputhashmapvalpayl_BM (_.hashmapob, prime_above_BM (10 + 3 * stmtlen));
   objputattr_BM (_.hashmapob, k_for, _.stmtob);
   objputattr_BM (_.hashmapob, k_in, _.routprepob);
-  DBGPRINTF_BM ("miniscan_stmt°basiclo_intswitch stmtob=%s hashmapob=%s stmtlen=%d",   //
+  _.switchexpv = objgetattr_BM (_.stmtob, k_switch);
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_intswitch stmtob=%s hashmapob=%s switchexp=%s stmtlen=%d",      //
                 objectdbg_BM (_.stmtob), objectdbg1_BM (_.hashmapob),
+                debug_outstr_value_BM (_.switchexpv, CURFRAME_BM, 0),
                 stmtlen);
+  _.switchtypob =
+    miniscan_expr_BM (_.switchexpv, _.routprepob, depth + 1, _.stmtob,
+                      CURFRAME_BM);
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_intswitch stmtob=%s switchtypob=%s",
+                objectdbg_BM (_.stmtob), objectdbg1_BM (_.switchtypob));
+  if (_.switchtypob != k_int)
+    {
+      FAILHERE (makenode2_BM (k_int, _.switchexpv, _.switchtypob));
+    }
   WEAKASSERT_BM (objhashashmapvalpayl_BM (_.hashmapob));
   int lastwhenix = -1;
   for (int wix = 0; wix < stmtlen; wix++)
@@ -3552,13 +3567,17 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
 {
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_statement_properties = BMK_0OM3NoUpOBd_1nzwCJKw54A;
+  objectval_tyBM *k_switch = BMK_5PJV21P82kA_2KfQTz95vdH;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_273rNzykHOg_9NXqNHvVIHG,
                  value_tyBM resultv;    //
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * modgenob;     //
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * stmtpropob;   //
+                 objectval_tyBM * propob;       //
                  value_tyBM propv;      //
+                 value_tyBM switchexpv; //
+                 value_tyBM keysnodv;   //
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
     );
@@ -3579,13 +3598,22 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
   WEAKASSERT_BM (istaggedint_BM (arg4));
   _.stmtpropob =
     objectcast_BM (objgetattr_BM (_.routprepob, k_statement_properties));
+  _.switchexpv = objgetattr_BM (_.stmtob, k_switch);
   WEAKASSERT_BM (_.stmtpropob);
   WEAKASSERT_BM (objhasassocpayl_BM (_.stmtpropob));
   _.propv = objassocgetattrpayl_BM (_.stmtpropob, _.stmtob);
   DBGPRINTF_BM
-    ("emit_statement°basiclo_intswitch  stmtob=%s stmtpropob=%s propv=%s",
-     objectdbg_BM (_.stmtob), objectdbg1_BM (_.stmtpropob),
+    ("emit_statement°basiclo_intswitch stmtob=%s (of %s) stmtpropob=%s (of %s) propv=%s",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (objclass_BM (_.stmtob)),
+     objectdbg2_BM (_.stmtpropob), objectdbg3_BM (objclass_BM (_.stmtpropob)),
      debug_outstr_value_BM (_.propv, CURFRAME_BM, 0));
+  WEAKASSERT_BM (isobject_BM (_.propv));
+  _.propob = objectcast_BM (_.propv);
+  _.keysnodv = objhashmapvalmakenodeofkeyspayl_BM (BMP_node, _.propob);
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_intswitch stmtob=%s keysnodv=%s",
+     objectdbg_BM (_.stmtob), debug_outstr_value_BM (_.keysnodv, CURFRAME_BM,
+                                                     0));
 #warning unimplemented emit_statement°basiclo_intswitch _273rNzykHOg_9NXqNHvVIHG routine
   WEAKASSERT_BM (false
                  &&
