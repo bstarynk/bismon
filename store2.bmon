@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 387 objects
+// for 389 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1487,14 +1487,15 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !(_8VzbBncLSEl_2dNNPe0VjQh |=intswitch_test_minifunc|
 !~ name (~ intswitch_test_minifunc
 ~)
-!@ 1526132607.49
+!@ 1526289807.37
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "function to test intswitch"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _3vRFuniDv1K_4bQ7DeekM2I ]
 !: _5l2zSKsFaVm_9zs6qDOP87i |=constants|
- { _3tRRKffqUUS_7FYuK7MLmT6 _5r6ekO9FCAj_7hCbcooblXl _5yc7zU7sbF8_1dME4ONRdaf _7KVBiG9eTtM_8PS68aSImxy }
+ { _1yHf2QrNJFe_26wMXjkynuo _3tRRKffqUUS_7FYuK7MLmT6 _5r6ekO9FCAj_7hCbcooblXl _5yc7zU7sbF8_1dME4ONRdaf 
+ _7KVBiG9eTtM_8PS68aSImxy }
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3qw9bnATIhq_8loBraLeXzQ
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
@@ -2362,6 +2363,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_1yHf2QrNJFe_26wMXjkynuo |=something_else|
+!~ name (~ something_else
+~)
+!@ 1526289739.85
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for something else"
+!)_1yHf2QrNJFe_26wMXjkynuo
+
+
+
 !(_6QdXYI1ivTg_8NnpdDMRQK5 |=spacenum|
 !~ name (~ spacenum
 ~)
@@ -2989,6 +3001,17 @@ _8c9otZ4pwR6_55k81qyyYV2 _2lCuMosXupr_5GAoqVgJ8PZ
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _4bYUiDmxrKK_6nPPlEl8y8x _3XBrePAliOo_37VlAqBsb5C) ~)
 
 !)_0kUyX0U19K2_5mcH4RCaBl9
+
+
+
+!(_0tfhNza0plV_3imTs8UUGg6
+!@ 1526289739.85
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _2DH0ucElTgh_62vxjxLcfev ( _1yHf2QrNJFe_26wMXjkynuo)
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+_1yHf2QrNJFe_26wMXjkynuo
+!)_0tfhNza0plV_3imTs8UUGg6
 
 
 
@@ -3847,17 +3870,16 @@ _3tRRKffqUUS_7FYuK7MLmT6
 
 
 !(_5EPUNaYKjU7_3Sbmk43pvl3
-!@ 1526132607.49
+!@ 1526289739.85
 !$_12QTszi1FF0_5S77twbSETI |=basiclo_intswitch|
-!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
- * _3OYXwdPt9uq_98Ba6PM6vPV (  * _5MLPTLuT4ey_0YKIUpvXybX ( _3vRFuniDv1K_4bQ7DeekM2I) _7kKCmEDbyn0_2ts6dzNzVAF _5KHFyxWLviO_5eWRBpSkD4v _2Mimy9ZR42x_6sB3bNTWVnz _5JIaxmuc2HA_6VT8EhJUVXM)
 !: _5PJV21P82kA_2KfQTz95vdH |=switch|
  * _5MLPTLuT4ey_0YKIUpvXybX ( _3vRFuniDv1K_4bQ7DeekM2I)
-!# 4
+!# 5
 !& _7kKCmEDbyn0_2ts6dzNzVAF
 !& _5KHFyxWLviO_5eWRBpSkD4v
 !& _2Mimy9ZR42x_6sB3bNTWVnz
 !& _5JIaxmuc2HA_6VT8EhJUVXM
+!& _0tfhNza0plV_3imTs8UUGg6
 !)_5EPUNaYKjU7_3Sbmk43pvl3
 
 

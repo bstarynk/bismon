@@ -1180,17 +1180,20 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
       objunlock_BM (_.compob);
     }
   _.whentupv =
-    maketuple_BM ((objectval_tyBM **) objcompdata_BM (_.stmtob), lastwhenix);
+    maketuple_BM ((objectval_tyBM **) objcompdata_BM (_.stmtob),
+                  lastwhenix + 1);
   _.defaulttupv =
-    maketuple_BM ((objectval_tyBM **) objcompdata_BM (_.stmtob) + lastwhenix,
-                  stmtlen - lastwhenix);
+    maketuple_BM ((objectval_tyBM **) objcompdata_BM (_.stmtob) + lastwhenix +
+                  1, stmtlen - lastwhenix - 1);
   objputattr_BM (_.hashmapob, k_when, _.whentupv);
   objputattr_BM (_.hashmapob, k_default, _.defaulttupv);
   objtouchnow_BM (_.hashmapob);
   // put hashmapob
   _.stmtpropob =
     objectcast_BM (objgetattr_BM (_.routprepob, k_statement_properties));
-  DBGPRINTF_BM ("miniscan_stmt°basiclo_intswitch ending stmtob=%s\n" ".. routprepob=%s hashmapob=%s stmtpropob=%s stmtlen=%d lastwhenix=%d\n" ".. whentup=%s defaulttup=%s",   //
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_intswitch ending stmtob=%s\n"   //
+                ".. routprepob=%s hashmapob=%s stmtpropob=%s stmtlen=%d lastwhenix=%d\n"        //
+                ".. whentup=%s defaulttup=%s",  //
                 objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),
                 objectdbg2_BM (_.hashmapob), objectdbg3_BM (_.stmtpropob),
                 stmtlen, lastwhenix,
