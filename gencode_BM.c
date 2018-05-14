@@ -1089,9 +1089,9 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
          debug_outstr_value_BM (_.testv, CURFRAME_BM, 0),
          objectdbg2_BM (_.hashmapob), objectdbg3_BM (_.routprepob));
       _.restestv =
-        apply6_BM (kk_intswitchwhenminiscan, CURFRAME_BM, _.testv,
-                   _.hashmapob, _.routprepob, taggedint_BM (depth), _.stmtob,
-                   taggedint_BM (wix));
+        apply7_BM (kk_intswitchwhenminiscan, CURFRAME_BM, _.testv,
+                   _.hashmapob, _.routprepob, taggedint_BM (depth), _.compob,
+                   _.stmtob, taggedint_BM (wix));
       DBGPRINTF_BM ("miniscan_stmt°basiclo_intswitch stmtob=%s wix=%d compob=%s\n"     //
                     ".. after int-switch-when-miniscan hashmapob %s restestv %s",       //
                     objectdbg_BM (_.stmtob), wix,       //
@@ -1195,13 +1195,13 @@ failure:
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7X7mHMa1QpC_1TQBkXwqeik);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_7X7mHMa1QpC_1TQBkXwqeik)    //
+ROUTINEOBJNAME_BM (_7X7mHMa1QpC_1TQBkXwqeik)    // int-switch-when-miniscan
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // testv
  const value_tyBM arg2,         // hashmapob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * /*stmtob, wix. */ restargs)
+ const quasinode_tyBM * /*compob, stmtob, wix. */ restargs)
 {
   objectval_tyBM *k_duplicate = BMK_2YrbiKQ6lxP_3KNUOnU6TF5;
   objectval_tyBM *k_overflow = BMK_18VEwdmWZ1v_5cpJ8tDhbwH;
@@ -1216,6 +1216,7 @@ ROUTINEOBJNAME_BM (_7X7mHMa1QpC_1TQBkXwqeik)    //
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * connob;       //
+                 objectval_tyBM * compob;       //
                  value_tyBM resultv;    //
                  value_tyBM hashv;      //
                  value_tyBM errorv;     //
@@ -1231,19 +1232,21 @@ ROUTINEOBJNAME_BM (_7X7mHMa1QpC_1TQBkXwqeik)    //
   int wix = -1;
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
-  if (nbrestargs >= 2)
+  if (nbrestargs >= 3)
     {
-      _.stmtob = objectcast_BM (restargs->nodt_sons[0]);
-      wix = getint_BM (restargs->nodt_sons[1]);
+      _.compob = objectcast_BM (restargs->nodt_sons[0]);
+      _.stmtob = objectcast_BM (restargs->nodt_sons[1]);
+      wix = getint_BM (restargs->nodt_sons[2]);
     };
   DBGPRINTF_BM
-    ("int-switch-when-miniscan start testv=%s hashmapob=%s routprepob=%s depth=%d stmtob=%s wix=%d",
+    ("int-switch-when-miniscan start testv=%s hashmapob=%s routprepob=%s depth=%d compob=%s stmtob=%s wix=%d",
      debug_outstr_value_BM (_.testv, CURFRAME_BM, 0),
      objectdbg_BM (_.hashmapob), objectdbg1_BM (_.routprepob), depth,
-     objectdbg2_BM (_.stmtob), wix);
+     objectdbg2_BM (_.compob), objectdbg3_BM (_.stmtob), wix);
   WEAKASSERT_BM (_.hashmapob);
   WEAKASSERT_BM (_.routprepob);
   WEAKASSERT_BM (_.stmtob);
+  WEAKASSERT_BM (_.compob);
   WEAKASSERT_BM (objhashashmapvalpayl_BM (_.hashmapob));
   unsigned nbhval = objhashmapvalsizepayl_BM (_.hashmapob);
   if (nbhval > MAXINTCASES_BM)
@@ -1260,7 +1263,7 @@ ROUTINEOBJNAME_BM (_7X7mHMa1QpC_1TQBkXwqeik)    //
         {
           FAILHERE (makenode3_BM (k_duplicate, _.testv, _.hashv, _.stmtob));
         }
-      objhashmapvalputpayl_BM (_.hashmapob, _.testv, _.stmtob);
+      objhashmapvalputpayl_BM (_.hashmapob, _.testv, _.compob);
       LOCALRETURN_BM (_.testv);
     }
   else if (isnode_BM (_.testv))
@@ -1289,7 +1292,7 @@ ROUTINEOBJNAME_BM (_7X7mHMa1QpC_1TQBkXwqeik)    //
                                 (k_duplicate, _.tmpv, _.hashv, _.testv,
                                  _.stmtob));
                     }
-                  objhashmapvalputpayl_BM (_.hashmapob, _.tmpv, _.stmtob);
+                  objhashmapvalputpayl_BM (_.hashmapob, _.tmpv, _.compob);
                 }
               LOCALRETURN_BM (_.testv);
             }
@@ -1308,9 +1311,9 @@ ROUTINEOBJNAME_BM (_7X7mHMa1QpC_1TQBkXwqeik)    //
                 ("int-switch-when-miniscan or tmpv=%s ix#%d",
                  debug_outstr_value_BM (_.tmpv, CURFRAME_BM, 0), ix);
               _.resultv =
-                apply6_BM (kk_intswitchwhenminiscan, CURFRAME_BM, _.tmpv,
+                apply7_BM (kk_intswitchwhenminiscan, CURFRAME_BM, _.tmpv,
                            _.hashmapob, _.routprepob,
-                           taggedint_BM (depth + 1), _.stmtob,
+                           taggedint_BM (depth + 1), _.compob, _.stmtob,
                            taggedint_BM (wix));
               DBGPRINTF_BM
                 ("int-switch-when-miniscan or did tmpv=%s ix#%d result %s",
