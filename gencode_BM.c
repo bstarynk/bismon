@@ -3552,6 +3552,9 @@ failure:
 }                               /* end emit_statement°basiclo_wrong _1EFhqSytjSK_9Uchza7qmUD */
 
 
+
+
+
 // emit_statement°basiclo_intswitch _273rNzykHOg_9NXqNHvVIHG
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG);
@@ -3609,11 +3612,30 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
      debug_outstr_value_BM (_.propv, CURFRAME_BM, 0));
   WEAKASSERT_BM (isobject_BM (_.propv));
   _.propob = objectcast_BM (_.propv);
+  WEAKASSERT_BM (objhashashmapvalpayl_BM (_.propob));
+  char stmtidbuf[32];
+  char stmtpref[16];
+  memset (stmtidbuf, 0, sizeof (stmtidbuf));
+  idtocbuf32_BM (objid_BM (_.stmtob), stmtidbuf);
+  memset (stmtpref, 0, sizeof (stmtpref));
+  memcpy (stmtpref, stmtidbuf + 1, 8);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbuffernewlinepayl_BM (_.modgenob);
+  objstrbufferprintfpayl_BM (_.modgenob, "{ // begin intswitch %s\n",
+                             stmtidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob, " switch (");
+  miniemit_expression_BM (CURFRAME_BM, _.switchexpv, _.modgenob,
+                          _.routprepob, _.stmtob, depth + 1);
+  objstrbufferprintfpayl_BM (_.modgenob, ") { // cases intswitch %s\n",
+                             stmtidbuf);
+  DBGPRINTF_BM ("emit_statement°basiclo_intswitch stmtob=%s propob=%s before nodeofkeys",      //
+                objectdbg_BM (_.stmtob), objectdbg1_BM (_.propob));
   _.keysnodv = objhashmapvalmakenodeofkeyspayl_BM (BMP_node, _.propob);
-  DBGPRINTF_BM
-    ("emit_statement°basiclo_intswitch stmtob=%s keysnodv=%s",
-     objectdbg_BM (_.stmtob), debug_outstr_value_BM (_.keysnodv, CURFRAME_BM,
-                                                     0));
+  DBGPRINTF_BM ("emit_statement°basiclo_intswitch stmtob=%s /%s propob=%s keysnodv=%s",        //
+                objectdbg_BM (_.stmtob), stmtidbuf,     //
+                objectdbg1_BM (_.propob),       //
+                debug_outstr_value_BM (_.keysnodv, CURFRAME_BM, 0));
+
 #warning unimplemented emit_statement°basiclo_intswitch _273rNzykHOg_9NXqNHvVIHG routine
   WEAKASSERT_BM (false
                  &&
@@ -3629,6 +3651,8 @@ failure:
                                _.modgenob, taggedint_BM (depth), _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end  emit_statement°basiclo_intswitch _273rNzykHOg_9NXqNHvVIHG */
+
+
 
 ////////////////////////////////////////////////////////////////
 /// for the routine to emit_module in plain_module-s
