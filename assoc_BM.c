@@ -1324,6 +1324,8 @@ hashmapvalget_BM (struct hashmapval_stBM * hmv, value_tyBM keyv)
 static void hashmapvalrawput_BM (struct hashmapval_stBM *hmv, value_tyBM keyv,
                                  value_tyBM valv);
 
+#warning something probably wrong in hashmapval...
+
 static void
 hashmapvalrawput_BM (struct hashmapval_stBM *hmv, value_tyBM keyv,
                      value_tyBM valv)
@@ -1362,6 +1364,8 @@ hashmapvalrawput_BM (struct hashmapval_stBM *hmv, value_tyBM keyv,
   else if (compix < 0)
     {
       // curbuck is full, grow it
+      ASSERT_BM (valtype_BM ((value_tyBM) curbuck) ==
+                 typayl_hashmapbucket_BM);
       unsigned oldbucklen = ((typedhead_tyBM *) curbuck)->rlen;
       ASSERT_BM (oldbucklen == ((struct typedsize_stBM *) curbuck)->size);
       unsigned newsiz =
@@ -1382,6 +1386,7 @@ hashmapvalrawput_BM (struct hashmapval_stBM *hmv, value_tyBM keyv,
       ((struct typedsize_stBM *) hmv)->size++;
       return;
     }
+  ASSERT_BM (valtype_BM ((value_tyBM) curbuck) == typayl_hashmapbucket_BM);
   unsigned bucklen = ((typedhead_tyBM *) curbuck)->rlen;
   ASSERT_BM (compix >= 0 && compix < (int) bucklen);
   value_tyBM oldkeyv = curbuck->vbent_arr[compix].hmap_keyv;
@@ -1425,6 +1430,8 @@ hashmapvalreorganize_BM (struct hashmapval_stBM *hmv, unsigned gap)
       struct hashmapbucket_stBM *oldbuck = hmv->hashmap_vbuckets[oldbix];
       if (!oldbuck)
         continue;
+      ASSERT_BM (valtype_BM ((value_tyBM) oldbuck) ==
+                 typayl_hashmapbucket_BM);
       unsigned oldbucklen = ((typedhead_tyBM *) oldbuck)->rlen;
       for (unsigned oldelix = 0; oldelix < oldbucklen; oldelix++)
         {
