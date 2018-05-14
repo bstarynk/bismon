@@ -1044,6 +1044,8 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
                  value_tyBM switchexpv;
                  value_tyBM testv;      //
                  value_tyBM restestv;   //
+                 value_tyBM whentupv;   //
+                 value_tyBM defaulttupv;        //
                  value_tyBM oldv;       //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
@@ -1177,13 +1179,23 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
       lastwhenix = wix;
       objunlock_BM (_.compob);
     }
+  _.whentupv =
+    maketuple_BM ((objectval_tyBM **) objcompdata_BM (_.stmtob), lastwhenix);
+  _.defaulttupv =
+    maketuple_BM ((objectval_tyBM **) objcompdata_BM (_.stmtob) + lastwhenix,
+                  stmtlen - lastwhenix);
+  objputattr_BM (_.hashmapob, k_when, _.whentupv);
+  objputattr_BM (_.hashmapob, k_default, _.defaulttupv);
+  objtouchnow_BM (_.hashmapob);
   // put hashmapob
   _.stmtpropob =
     objectcast_BM (objgetattr_BM (_.routprepob, k_statement_properties));
-  DBGPRINTF_BM ("miniscan_stmt°basiclo_intswitch ending stmtob=%s routprepob=%s hashmapob=%s stmtpropob=%s stmtlen=%d",        //
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_intswitch ending stmtob=%s\n" ".. routprepob=%s hashmapob=%s stmtpropob=%s stmtlen=%d lastwhenix=%d\n" ".. whentup=%s defaulttup=%s",   //
                 objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),
                 objectdbg2_BM (_.hashmapob), objectdbg3_BM (_.stmtpropob),
-                stmtlen);
+                stmtlen, lastwhenix,
+                debug_outstr_value_BM (_.whentupv, CURFRAME_BM, 0),
+                debug_outstr_value_BM (_.defaulttupv, CURFRAME_BM, 0));
   WEAKASSERT_BM (isobject_BM (_.stmtpropob));
   WEAKASSERT_BM (objhasassocpayl_BM (_.stmtpropob));
   _.oldv = objassocgetattrpayl_BM (_.stmtpropob, _.stmtob);
@@ -3573,6 +3585,8 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_statement_properties = BMK_0OM3NoUpOBd_1nzwCJKw54A;
   objectval_tyBM *k_switch = BMK_5PJV21P82kA_2KfQTz95vdH;
+  objectval_tyBM *k_when = BMK_7KdDnQYcbeY_4LbTWNwFIFY;
+  objectval_tyBM *k_default = BMK_0Ost4Do2yhq_95ticPFRmQO;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_273rNzykHOg_9NXqNHvVIHG,
                  value_tyBM resultv;    //
                  objectval_tyBM * stmtob;       //
