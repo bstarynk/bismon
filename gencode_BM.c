@@ -1391,6 +1391,7 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
  const value_tyBM arg4,         //fromob
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
+  objectval_tyBM *k_assoc_object = BMK_6ZQ05nCv3Ys_8LA6B5LkZgm;
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
@@ -1445,6 +1446,7 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
   objputassocpayl_BM (_.assocob, prime_above_BM (10 + 3 * stmtlen));
   objputattr_BM (_.assocob, k_for, _.stmtob);
   objputattr_BM (_.assocob, k_in, _.routprepob);
+  objputclass_BM (_.assocob, k_assoc_object);
   _.switchexpv = objgetattr_BM (_.stmtob, k_switch);
   DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s assocob=%s switchexp=%s stmtlen=%d",        //
                 objectdbg_BM (_.stmtob), objectdbg1_BM (_.assocob),
@@ -1664,6 +1666,10 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
               (k_statement_properties, _.stmtpropob, _.stmtob, _.oldv,
                _.assocob));
   objassocaddattrpayl_BM (_.stmtpropob, _.stmtob, _.assocob);
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_objswitch ended stmtob=%s routprepob=%s assocob=%s",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),
+     objectdbg2_BM (_.assocob));
   LOCALRETURN_BM (_.stmtob);
 failure:
   DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch failin %d stmtob=%s causev=%s routprepob=%s", //
@@ -4138,6 +4144,85 @@ failure:
                                _.modgenob, taggedint_BM (depth), _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end  emit_statement°basiclo_intswitch _273rNzykHOg_9NXqNHvVIHG */
+
+
+
+// emit_statement°basiclo_objswitch _9d7mulcEVXf_7ZymszyOWDY
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswitch
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // stmtob
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // routprepob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
+  objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
+  objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
+  objectval_tyBM *k_default = BMK_0Ost4Do2yhq_95ticPFRmQO;
+  objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
+  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM *k_statement_properties = BMK_0OM3NoUpOBd_1nzwCJKw54A;
+  objectval_tyBM *k_switch = BMK_5PJV21P82kA_2KfQTz95vdH;
+  objectval_tyBM *k_when = BMK_7KdDnQYcbeY_4LbTWNwFIFY;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_9d7mulcEVXf_7ZymszyOWDY,
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * stmtpropob;   //
+                 objectval_tyBM * propob;       //
+                 objectval_tyBM * compob;       //
+                 objectval_tyBM * curwhenob;    //
+                 value_tyBM whensetv;   //
+                 value_tyBM defaulttupv;
+                 value_tyBM emitv;      //
+                 value_tyBM propv;      //
+                 value_tyBM switchexpv; //
+                 value_tyBM keysnodv;   //
+                 value_tyBM curkeyv;
+                 value_tyBM resultv;
+                 value_tyBM errorv;     //
+                 value_tyBM causev;     //
+    );
+  _.stmtob = objectcast_BM (arg1);
+  _.modgenob = objectcast_BM (arg2);
+  _.routprepob = objectcast_BM (arg3);
+  int depth = getint_BM (arg4);
+  bool gotmessage = false;
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM) (Cause); goto failure; } while(0)
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_intswitch start stmtob=%s modgenob=%s routprepob=%s depth#%d",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth);
+  WEAKASSERT_BM (_.stmtob);
+  WEAKASSERT_BM (_.modgenob);
+  WEAKASSERT_BM (_.routprepob);
+  WEAKASSERT_BM (istaggedint_BM (arg4));
+  _.stmtpropob =
+    objectcast_BM (objgetattr_BM (_.routprepob, k_statement_properties));
+  _.switchexpv = objgetattr_BM (_.stmtob, k_switch);
+  WEAKASSERT_BM (_.stmtpropob);
+  WEAKASSERT_BM (objhasassocpayl_BM (_.stmtpropob));
+  _.propv = objassocgetattrpayl_BM (_.stmtpropob, _.stmtob);
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_objswitch stmtob=%s (of %s) stmtpropob=%s (of %s) propv=%s",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (objclass_BM (_.stmtob)),
+     objectdbg2_BM (_.stmtpropob), objectdbg3_BM (objclass_BM (_.stmtpropob)),
+     debug_outstr_value_BM (_.propv, CURFRAME_BM, 0));
+  WEAKASSERT_BM (isobject_BM (_.propv));
+  _.propob = objectcast_BM (_.propv);
+  WEAKASSERT_BM (objhasassocpayl_BM (_.propob));
+#warning unimplemented _9d7mulcEVXf_7ZymszyOWDY routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented emit_statement°basiclo_objswitch _9d7mulcEVXf_7ZymszyOWDY routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end emit_statement°basiclo_objswitch  _9d7mulcEVXf_7ZymszyOWDY */
 
 
 

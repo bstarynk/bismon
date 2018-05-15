@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 403 objects
+// for 404 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -365,6 +365,7 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of objswitch statements"
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
+~: _1ERH9PxNhPb_2o869yOMuH0  % _9d7mulcEVXf_7ZymszyOWDY () 
 ~: _6DdZwyaWLyK_7tS2BmECOJ0  % _5nFFthyf8y9_00k5H4R0G6b ()
 ~)
 
@@ -4685,6 +4686,16 @@ _7BROpIWQHzA_8b1C6i49Pkz) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine dump_scan\u00b0vector_object"
 !)_99PsYq2Nw3w_9q4BJNeQ6Re
+
+
+
+!(_9d7mulcEVXf_7ZymszyOWDY
+!|*
+!@ 1526390268.99
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit_statement\u00b0basiclo_objswitch"
+!)_9d7mulcEVXf_7ZymszyOWDY
 
 
 
