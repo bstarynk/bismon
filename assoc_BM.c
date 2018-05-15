@@ -1240,7 +1240,6 @@ hashmapvalgckeep_BM (struct garbcoll_stBM *gc, struct hashmapval_stBM *hsv)
   unsigned ucnt = HASHMAPVALUCNT_BM (hsv);
   unsigned siz = HASHMAPVALSIZE_BM (hsv);
   ASSERT_BM (siz < MAXSIZE_BM && ucnt < MAXSIZE_BM);
-  ASSERT_BM (ucnt <= siz);
   gc->gc_keptbytes +=
     sizeof (*hsv) + siz * sizeof (struct hashmapvbucket_stBM *);
 }                               /* end  hashmapvalgckeep_BM */
