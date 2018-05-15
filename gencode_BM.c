@@ -1414,10 +1414,12 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                  objectval_tyBM * compob;       //
                  objectval_tyBM * caseob;       //
                  objectval_tyBM * subcompob;    //
+                 objectval_tyBM * stmtpropob;   //
                  value_tyBM switchexpv; //
                  value_tyBM testv;      //
                  value_tyBM oldwhenv;   //
                  value_tyBM whensetv;   //
+                 value_tyBM oldv;       //
                  value_tyBM defaulttupv;        //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
@@ -1638,14 +1640,30 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
   objputattr_BM (_.assocob, k_when, _.whensetv);
   objputattr_BM (_.assocob, k_default, _.defaulttupv);
   objtouchnow_BM (_.assocob);
-  DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s adding assocob=%s to routprepob=%s\n" ".. whenset=%s defaulttup=%s", objectdbg_BM (_.stmtob), objectdbg1_BM (_.assocob), objectdbg2_BM (_.routprepob), debug_outstr_value_BM (_.whensetv, CURFRAME_BM, 0),  //
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s adding assocob=%s to routprepob=%s\n"       //
+                ".. whenset=%s defaulttup=%s",  //
+                objectdbg_BM (_.stmtob), objectdbg1_BM (_.assocob), objectdbg2_BM (_.routprepob),       //
+                debug_outstr_value_BM (_.whensetv, CURFRAME_BM, 0),     //
                 debug_outstr_value_BM (_.defaulttupv, CURFRAME_BM, 0));
+  _.stmtpropob =
+    objectcast_BM (objgetattr_BM (_.routprepob, k_statement_properties));
   /// should add the assocob
-#warning unimplemented miniscan_stmt°basiclo_objswitch _5nFFthyf8y9_00k5H4R0G6b routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented miniscan_stmt°basiclo_objswitch  _5nFFthyf8y9_00k5H4R0G6b routine");
-  LOCALRETURN_BM (_.resultv);
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch ending stmtob=%s\n"   //
+                ".. routprepob=%s assocob=%s stmtpropob=%s stmtlen=%d lastwhenix=%d\n"  //
+                ".. whenset=%s defaulttup=%s",  //
+                objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),
+                objectdbg2_BM (_.assocob), objectdbg3_BM (_.stmtpropob),
+                stmtlen, lastwhenix,
+                debug_outstr_value_BM (_.whensetv, CURFRAME_BM, 0),
+                debug_outstr_value_BM (_.defaulttupv, CURFRAME_BM, 0));
+  WEAKASSERT_BM (isobject_BM (_.stmtpropob));
+  WEAKASSERT_BM (objhasassocpayl_BM (_.stmtpropob));
+  _.oldv = objassocgetattrpayl_BM (_.stmtpropob, _.stmtob);
+  if (_.oldv)
+    FAILHERE (makenode4_BM
+              (k_statement_properties, _.stmtpropob, _.stmtob, _.oldv,
+               _.assocob));
+  objassocaddattrpayl_BM (_.stmtpropob, _.stmtob, _.assocob);
   LOCALRETURN_BM (_.stmtob);
 failure:
   DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch failin %d stmtob=%s causev=%s routprepob=%s", //
