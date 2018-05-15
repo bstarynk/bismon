@@ -170,7 +170,7 @@ modules/modbm_%.so: modules/modbm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADER
 	$(CCACHE) $(LINK.c) -fPIC -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<) -shared $< -o $@
 
 modules:
-	$(MAKE) -k $(patsubst %.c,%.so,$(MODULES_SOURCES)) ; exit 0
+	$(MAKE) -k $(MAKEFLAGS)  $(patsubst %.c,%.so,$(MODULES_SOURCES)) ; exit 0
 
 bismon: $(OBJECTS) _bm_allconsts.o | modules
 	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi
