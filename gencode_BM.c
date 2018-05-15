@@ -1395,6 +1395,7 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
+  objectval_tyBM *k_duplicate = BMK_2YrbiKQ6lxP_3KNUOnU6TF5;
   objectval_tyBM *k_for = BMK_1SolDiQA2WM_4IDOJKBiPFc;
   objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
