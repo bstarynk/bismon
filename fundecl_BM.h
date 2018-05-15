@@ -122,7 +122,7 @@ extern const tupleval_tyBM *makesizedtuple_BM (unsigned nbargs, ...);
 // collect objects or sequences into a tuple
 extern const tupleval_tyBM *maketuplecollect_BM (value_tyBM, ...)
   __attribute__ ((sentinel));
-#define MAKETUPLECOLLECT_BM(...) maketuplecollect_BM(#__VA_ARGS__, NULL)
+#define MAKETUPLECOLLECT_BM(...) maketuplecollect_BM(__VA_ARGS__, NULL)
 extern unsigned tuplesize_BM (const tupleval_tyBM * tup);
 extern objectval_tyBM *tuplecompnth_BM (const tupleval_tyBM * tup, int rk);
 extern void *tuplegcproc_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup)
@@ -143,7 +143,7 @@ extern const setval_tyBM *makesizedset_BM (unsigned nbargs, ...);
 // collect objects or sequences into a set
 extern const setval_tyBM *makesetcollect_BM (value_tyBM, ...)
   __attribute__ ((sentinel));
-#define MAKESETCOLLECT_BM(...) makesetcollect_BM(#__VA_ARGS__, NULL)
+#define MAKESETCOLLECT_BM(...) makesetcollect_BM(__VA_ARGS__, NULL)
 static inline bool setcontains_BM (const setval_tyBM * setv,
                                    const objectval_tyBM * obelem);
 extern const tupleval_tyBM *settonamedsortedtuple_BM (const setval_tyBM *
