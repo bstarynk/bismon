@@ -345,7 +345,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   objputattr_BM (_.obhsetblock, k_in, _.routprepob);
   _.stmtpropob = makeobj_BM ();
   objputassocpayl_BM (_.stmtpropob, 15);
-  objputclass_BM (_.stmtpropob, k_assoc_object);
+  objputclass_BM (_.stmtpropob, (objectval_tyBM *) k_assoc_object);
   objputattr_BM (_.stmtpropob, k_in, _.routprepob);
   objputattr_BM (_.routprepob, k_statement_properties, _.stmtpropob);
   objtouchnow_BM (_.obhsetblock);
@@ -956,7 +956,6 @@ ROUTINEOBJNAME_BM (_23F5sZIfO5Y_5m9O2FPHdzX)    // miniscan_stmt°basiclo_exit
                  value_tyBM errorv;     //
     );
   int depth = 0;
-  bool ok = false;
   _.stmtob = objectcast_BM (arg1);
   _.routprepob = objectcast_BM (arg2);
   depth = getint_BM (arg3);
@@ -985,7 +984,10 @@ ROUTINEOBJNAME_BM (_23F5sZIfO5Y_5m9O2FPHdzX)    // miniscan_stmt°basiclo_exit
     FAILHERE (makenode1_BM (k_blocks, _.hsetblockob));
   if (!objhashsetcontainspayl_BM (_.hsetblockob, _.exitob))
     {
-      ("miniscan_stmt°basiclo_exit stmtob=%s exitob=%s not in hsetblockob=%s", objectdbg_BM (_.stmtob), objectdbg1_BM (_.exitob), objectdbg2_BM (_.hsetblockob));
+      DBGPRINTF_BM
+        ("miniscan_stmt°basiclo_exit stmtob=%s exitob=%s not in hsetblockob=%s",
+         objectdbg_BM (_.stmtob), objectdbg1_BM (_.exitob),
+         objectdbg2_BM (_.hsetblockob));
       FAILHERE (makenode1_BM (k_exit, _.exitob));
     }
   LOCALRETURN_BM (_.exitob);
@@ -1179,10 +1181,10 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
       lastwhenix = wix;
       objunlock_BM (_.compob);
     }
-  _.whensetv =
-    makeset_BM ((objectval_tyBM **) objcompdata_BM (_.stmtob),
+  _.whensetv = (value_tyBM)
+    makeset_BM ((const objectval_tyBM **) objcompdata_BM (_.stmtob),
                 lastwhenix + 1);
-  _.defaulttupv =
+  _.defaulttupv = (value_tyBM)
     maketuple_BM ((objectval_tyBM **) objcompdata_BM (_.stmtob) + lastwhenix +
                   1, stmtlen - lastwhenix - 1);
   objputattr_BM (_.hashmapob, k_when, _.whensetv);
@@ -1289,7 +1291,6 @@ ROUTINEOBJNAME_BM (_7X7mHMa1QpC_1TQBkXwqeik)    // int-switch-when-miniscan
     FAILHERE (makenode1_BM (k_depth, taggedint_BM (depth)));
   if (istaggedint_BM (_.testv))
     {
-      intptr_t tnum = getint_BM (_.testv);
       _.hashv = objhashmapvalgetpayl_BM (_.hashmapob, _.testv);
       if (_.hashv)
         {
@@ -3619,7 +3620,7 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
   int depth = getint_BM (arg4);
   bool gotmessage = false;
   int failin = -1;
-#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM) (Cause); goto failure; } while(0)
   DBGPRINTF_BM
     ("emit_statement°basiclo_intswitch start stmtob=%s modgenob=%s routprepob=%s depth#%d",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
@@ -3690,7 +3691,7 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
       objstrbuffernewlinepayl_BM (_.modgenob);
       objstrbufferprintfpayl_BM (_.modgenob,
                                  " case %lld: goto whenint%s_%s;\n",
-                                 curkeynum, stmtpref, whenidbuf);
+                                 (long long) curkeynum, stmtpref, whenidbuf);
     }
   DBGPRINTF_BM
     ("emit_statement°basiclo_intswitch stmtob=%s propob=%s routprepob=%s modgenob=%s incomplete",
@@ -3921,7 +3922,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     ASSERT_BM (lastslash != NULL);
     realpardirstr = malloc (lastslash - realsrcdirstr + 2);
     if (!realpardirstr)
-      FATAL_BM ("failed to malloc realpardirstr of %d bytes",
+      FATAL_BM ("failed to malloc realpardirstr of %zd bytes",
                 lastslash - realsrcdirstr + 2);
     memset (realpardirstr, 0, lastslash - realsrcdirstr + 2);
     memcpy (realpardirstr, realsrcdirstr, lastslash - realsrcdirstr);
