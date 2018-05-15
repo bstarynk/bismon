@@ -148,6 +148,10 @@ you want to see something, run `./bismon` then type `the_system` in the command 
 labelled *new-bismon*, then both *Ctrl* and *Return* keys pressed
 together.
 
+It is recommended to run `make clean` once in a while (e.g. daily or
+weekly). When generating files, `bismon` makes a backup of their
+previous version.
+
 Ask me (Basile Starynkevitch,
 [`basile@starynkevitch.net`](mailto:basile@starynkevitch.net) or
 [`basile.starynkevitch@cea.fr`](mailto:basile.starynkevitch@cea.fr)...)
