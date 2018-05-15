@@ -4280,12 +4280,13 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
     {
       _.curcaseob = setelemnth_BM (_.setkeysv, casix);
       unsigned hmod = objecthash_BM (_.curcaseob) % nbobjmod;
-      DBGPRINTF_BM
-        ("emit_statement°basiclo_objswitch stmtob=%s curcaseob=%s casix#%d hmod#%d",
-         objectdbg_BM (_.stmtob), objectdbg1_BM (_.curcaseob), casix, hmod);
       _.curswitchv = objgetcomp_BM (_.switchob, hmod);
+      DBGPRINTF_BM ("emit_statement°basiclo_objswitch stmtob=%s curcaseob=%s casix#%d hmod#%d old curswitch=%s", objectdbg_BM (_.stmtob), objectdbg1_BM (_.curcaseob), casix, hmod,    //
+                    debug_outstr_value_BM (_.curswitchv, CURFRAME_BM, 0));
       _.curswitchv = MAKESETCOLLECT_BM (_.curcaseob, _.curswitchv);
       objputcomp_BM (_.switchob, hmod, _.curswitchv);
+      DBGPRINTF_BM ("emit_statement°basiclo_objswitch stmtob=%s casix#%d curcaseob=%s curswitch=%s", objectdbg_BM (_.stmtob), casix, objectdbg1_BM (_.curcaseob),      //
+                    debug_outstr_value_BM (_.curswitchv, CURFRAME_BM, 0));
     }
   for (int mix = 0; mix < nbobjmod; mix++)
     {
