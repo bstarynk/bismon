@@ -1376,6 +1376,32 @@ failure:
 }                               /* end int-switch-when-miniscan _7X7mHMa1QpC_1TQBkXwqeik */
 
 
+
+
+//miniscan_stmt°basiclo_objswitch  _5nFFthyf8y9_00k5H4R0G6b
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswitch 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         //
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_5nFFthyf8y9_00k5H4R0G6b,
+                 value_tyBM resultv;
+    );
+#warning unimplemented miniscan_stmt°basiclo_objswitch _5nFFthyf8y9_00k5H4R0G6b routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented miniscan_stmt°basiclo_objswitch  _5nFFthyf8y9_00k5H4R0G6b routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end miniscan_stmt°basiclo_objswitch _5nFFthyf8y9_00k5H4R0G6b */
+
+
 ////////////////////////////////////////////////////////////////
 // miniscan_node_conn°basiclo_primitive  _1vuSUudDrEr_9UjFr4Pcy8r
 extern objrout_sigBM ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r);
