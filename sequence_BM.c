@@ -66,6 +66,82 @@ maketuple_BM (objectval_tyBM ** arr, unsigned rawsiz)
   return tup;
 }                               /* end maketuple_BM */
 
+
+const tupleval_tyBM *
+makesizedtuple_BM (unsigned nbargs, ...)
+{
+  objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+  if (nbargs > MAXSIZE_BM / 2)
+    FATAL_BM ("makesizedtuple_BM too big %u", nbargs);
+  objectval_tyBM **arr = (nbargs < TINYSIZE_BM) ? tinyarr
+    : calloc (nbargs, sizeof (objectval_tyBM *));
+  if (!arr)
+    FATAL_BM ("makesizedtuple_BM failed to calloc for %u arguments", nbargs);
+  int cnt = 0;
+  va_list args;
+  va_start (args, nbargs);
+  for (int ix = 0; ix < nbargs; ix++)
+    {
+      objectval_tyBM *curob = objectcast_BM (va_arg (args, objectval_tyBM *));
+      if (!curob)
+        continue;
+      arr[cnt++] = curob;
+    }
+  va_end (args);
+  const tupleval_tyBM *restup = maketuple_BM (arr, cnt);
+  if (arr != tinyarr)
+    free (arr), arr = NULL;
+  return restup;
+}                               /* end makesizedtuple_BM */
+
+const tupleval_tyBM *
+maketuplecollect_BM (value_tyBM first, ...)
+{
+  int cnt = 0;
+  va_list args;
+  value_tyBM curarg = NULL;
+  va_start (args, first);
+  for (curarg = first; curarg; curarg = va_arg (args, value_tyBM))
+    {
+      if (isobject_BM (curarg))
+        cnt++;
+      else if (issequence_BM (curarg))
+        cnt += sequencesize_BM (curarg);
+    }
+  va_end (args);
+  if (cnt > MAXSIZE_BM)
+    FATAL_BM ("maketuplecollect_BM too big cnt %d", cnt);
+  int siz = cnt;
+  objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+  objectval_tyBM **arr = (siz < TINYSIZE_BM) ? tinyarr
+    : calloc (siz, sizeof (objectval_tyBM *));
+  if (!arr)
+    FATAL_BM ("maketuplecollect_BM failed to calloc for %u arguments", siz);
+  va_start (args, first);
+  cnt = 0;
+  for (curarg = first; curarg; curarg = va_arg (args, value_tyBM))
+    {
+      if (isobject_BM (curarg))
+        arr[cnt++] = (objectval_tyBM *) curarg;
+      else if (issequence_BM (curarg))
+        {
+          unsigned seqlen = sequencesize_BM (curarg);
+          for (int six = 0; six < seqlen; six++)
+            {
+              arr[cnt++] = sequencenthcomp_BM (curarg, six);
+            }
+        }
+      else
+        continue;
+    }
+  va_end (args);
+  ASSERT_BM (cnt == siz);
+  const tupleval_tyBM *restup = maketuple_BM (arr, cnt);
+  if (arr != tinyarr)
+    free (arr), arr = NULL;
+  return restup;
+}                               /* end maketuplecollect_BM */
+
 void
 tuplegcdestroy_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup)
 {
@@ -73,11 +149,9 @@ tuplegcdestroy_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup)
   ASSERT_BM (((typedhead_tyBM *) tup)->htyp == tyTuple_BM);
   unsigned siz = ((typedsize_tyBM *) tup)->size;
   ASSERT_BM (siz < MAXSIZE_BM);
-  unsigned long tupsiz = sizeof (tupleval_tyBM) + ((siz > 0)    //
-                                                   ? (prime_above_BM (siz - 1)
-                                                      *
-                                                      sizeof (objectval_tyBM
-                                                              *)) : 0);
+  unsigned long tupsiz = sizeof (tupleval_tyBM) //
+    + ((siz > 0)                //
+       ? (prime_above_BM (siz - 1) * sizeof (objectval_tyBM *)) : 0);
   ASSERT_BM (tupsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
   memset (tup, 0, sizeof (*tup) + siz * sizeof (void *));
   free (tup);

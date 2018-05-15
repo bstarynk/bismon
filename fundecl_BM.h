@@ -118,6 +118,11 @@ static inline bool istuple_BM (const value_tyBM v);
 static inline const tupleval_tyBM *tuplecast_BM (const value_tyBM);
 extern const tupleval_tyBM *maketuple_BM (objectval_tyBM ** arr,
                                           unsigned rawsiz);
+extern const tupleval_tyBM *makesizedtuple_BM (unsigned nbargs, ...);
+// collect objects or sequences into a tuple
+extern const tupleval_tyBM *maketuplecollect_BM (value_tyBM, ...)
+  __attribute__ ((sentinel));
+#define MAKETUPLECOLLECT_BM(...) maketuplecollect_BM(#__VA_ARGS__, NULL)
 extern unsigned tuplesize_BM (const tupleval_tyBM * tup);
 extern objectval_tyBM *tuplecompnth_BM (const tupleval_tyBM * tup, int rk);
 extern void *tuplegcproc_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup)
