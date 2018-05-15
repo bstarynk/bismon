@@ -1409,9 +1409,11 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                  objectval_tyBM * assocob;      //
                  objectval_tyBM * switchtypob;  //
                  objectval_tyBM * compob;       //
+                 objectval_tyBM * caseob;       //
                  objectval_tyBM * subcompob;    //
                  value_tyBM switchexpv; //
                  value_tyBM testv;      //
+                 value_tyBM oldwhenv;   //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
                  value_tyBM resultv;
@@ -1528,6 +1530,41 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                         (k_curcomp, taggedint_BM (wix), _.subcompob,
                          taggedint_BM (cix)));
             }
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_objswitch stmtob=%s wix#%d compob=%s testv=%s",
+             objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob),
+             debug_outstr_value_BM (_.testv, CURFRAME_BM, 0));
+          if (isobject_BM (_.testv))
+            {
+              _.caseob = objectcast_BM (_.testv);
+              _.oldwhenv = objassocgetattrpayl_BM (_.assocob, _.caseob);
+              DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s wix#%d compob=%s caseob=%s oldwhen=%s", objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob), objectdbg2_BM (_.caseob),       //
+                            debug_outstr_value_BM (_.oldwhenv, CURFRAME_BM,
+                                                   0));
+              if (_.oldwhenv)
+                FAILHERE (makenode3_BM
+                          (k_duplicate, _.caseob, _.compob, _.oldwhenv));
+              objassocaddattrpayl_BM (_.assocob, _.caseob, _.compob);
+            }
+          else if (issequence_BM (_.testv))
+            {
+              int nbcases = sequencesize_BM (_.testv);
+              for (int casix = 0; casix < nbcases; casix++)
+                {
+                  _.caseob = sequencenthcomp_BM (_.testv, casix);
+                  _.oldwhenv = objassocgetattrpayl_BM (_.assocob, _.caseob);
+                  DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s wix#%d compob=%s caseob=%s oldwhen=%s", objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob), objectdbg2_BM (_.caseob),   //
+                                debug_outstr_value_BM (_.oldwhenv,
+                                                       CURFRAME_BM, 0));
+                  if (_.oldwhenv)
+                    FAILHERE (makenode3_BM
+                              (k_duplicate, _.caseob, _.compob, _.oldwhenv));
+                  objassocaddattrpayl_BM (_.assocob, _.caseob, _.compob);
+                }
+            }
+          else
+            FAILHERE (makenode3_BM
+                      (k_test, taggedint_BM (wix), _.compob, _.testv));
         }
       lastwhenix = wix;
       objunlock_BM (_.compob);
