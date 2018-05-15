@@ -346,13 +346,15 @@ makesetcollect_BM (value_tyBM first, ...)
   int cnt = 0;
   va_list args;
   value_tyBM curarg = NULL;
+  value_tyBM nextarg = NULL;
   va_start (args, first);
-  for (curarg = first; curarg; curarg = va_arg (args, value_tyBM))
+  for (curarg = first; curarg != NULL; curarg = nextarg)
     {
       if (isobject_BM (curarg))
         cnt++;
       else if (issequence_BM (curarg))
         cnt += sequencesize_BM (curarg);
+      nextarg = va_arg (args, value_tyBM);
     }
   va_end (args);
   if (cnt > MAXSIZE_BM)
