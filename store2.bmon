@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 402 objects
+// for 403 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2903,6 +2903,21 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_5MLPTLuT4ey_0YKIUpvXybX
+
+
+
+!(_1iRMAZlHGbs_9rPqm9Nc1eT |=val_to_object|
+!~ name (~ val_to_object
+~)
+!@ 1526385665.21
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "conversion of value to object"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_1iRMAZlHGbs_9rPqm9Nc1eT
 
 
 
