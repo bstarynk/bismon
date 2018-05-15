@@ -1573,6 +1573,59 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
     }
   DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch %s lastwhenix %d",
                 objectdbg_BM (_.stmtob), lastwhenix);
+  for (int dix = lastwhenix + 1; dix < stmtlen; dix++)
+    {
+      _.compob = objectcast_BM (objgetcomp_BM (_.stmtob, dix));
+      DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s dix=%d compob=%s",      //
+                    objectdbg_BM (_.stmtob), dix, objectdbg1_BM (_.compob));
+      if (!_.compob)
+        FAILHERE (makenode1_BM (k_curcomp, taggedint_BM (dix)));
+      objlock_BM (_.compob);
+      _.resultv = NULL;
+      if (objectisinstance_BM (_.compob, k_basiclo_block))
+        {
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_objswitch stmtob=%s dix#%d compob=%s block",
+             objectdbg_BM (_.stmtob), dix, objectdbg1_BM (_.compob));
+          _.resultv =
+            send3_BM (_.subcompob, k_miniscan_block,
+                      CURFRAME_BM, _.routprepob,
+                      taggedint_BM (depth + 1), _.stmtob);
+          if (!_.resultv)
+            {
+              objunlock_BM (_.compob);
+              FAILHERE (makenode2_BM
+                        (k_miniscan_block, taggedint_BM (dix), _.compob));
+            }
+        }
+      else if (objectisinstance_BM (_.compob, k_basiclo_statement))
+        {
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_objswitch stmtob=%s dix#%d compob=%s statement",
+             objectdbg_BM (_.stmtob), dix, objectdbg1_BM (_.compob));
+          _.resultv =
+            send3_BM (_.compob, k_miniscan_stmt, CURFRAME_BM,
+                      _.routprepob, taggedint_BM (depth + 1), _.stmtob);
+          if (!_.resultv)
+            {
+              objunlock_BM (_.compob);
+              FAILHERE (makenode2_BM
+                        (k_miniscan_stmt, taggedint_BM (dix), _.compob));
+            }
+        }
+      else
+        {
+          objunlock_BM (_.compob);
+          FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (dix), _.compob));
+        }
+      objunlock_BM (_.compob);
+      DBGPRINTF_BM
+        ("miniscan_stmt°basiclo_objswitch stmtob=%s dix#%d compob=%s result=%s",
+         objectdbg_BM (_.stmtob), dix, objectdbg1_BM (_.compob),
+         debug_outstr_value_BM (_.resultv, CURFRAME_BM, 0));
+      _.resultv = NULL;
+    }
+  /// should add the assocob
 #warning unimplemented miniscan_stmt°basiclo_objswitch _5nFFthyf8y9_00k5H4R0G6b routine
   WEAKASSERT_BM (false
                  &&
