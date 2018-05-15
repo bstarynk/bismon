@@ -524,11 +524,11 @@ agenda_defer_after_gc_BM (deferredaftergc_sigBM * rout,
   ASSERT_BM (nbval < 0x3ffff);
   unsigned siz = prime_above_BM (nbval);
   struct agenda_defer_stBM *newagd =
-    malloc (sizeof (struct agenda_defer_stBM *) + siz * sizeof (value_tyBM));
+    malloc (sizeof (struct agenda_defer_stBM) + siz * sizeof (value_tyBM));
   if (!newagd)
     FATAL_BM ("failed to malloc newagd for %d values", siz);
   memset (newagd, 0,
-          sizeof (struct agenda_defer_stBM *) + siz * sizeof (value_tyBM));
+          sizeof (struct agenda_defer_stBM) + siz * sizeof (value_tyBM));
   newagd->agd_magic = AGD_MAGIC_BM;
   newagd->agd_nbval = nbval;
   newagd->agd_rout = rout;
@@ -855,7 +855,7 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
     };
   fclose (binmodf);
   {
-    value_tyBM varr[6] = { };
+    value_tyBM varr[8] = { };
     varr[0] = _.modulob;
     varr[1] = (value_tyBM) _.postclos;
     varr[2] = _.arg1v;
