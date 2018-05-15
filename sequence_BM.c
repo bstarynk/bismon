@@ -310,6 +310,84 @@ makeset_BM (const objectval_tyBM ** arr, unsigned rawsiz)
   return set;
 }                               /* end makeset_BM */
 
+
+
+const setval_tyBM *
+makesizedset_BM (unsigned nbargs, ...)
+{
+  if (nbargs > MAXSIZE_BM / 2)
+    FATAL_BM ("makesizedset_BM too big %u", nbargs);
+  objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+  objectval_tyBM **arr = (nbargs < TINYSIZE_BM) ? tinyarr
+    : calloc (nbargs, sizeof (objectval_tyBM *));
+  if (!arr)
+    FATAL_BM ("calloc failed in makesizedset_BM for %u elements", nbargs);
+  va_list args;
+  int cnt = 0;
+  va_start (args, nbargs);
+  for (unsigned ix = 0; ix < nbargs; ix++)
+    {
+      objectval_tyBM *curob = objectcast_BM (va_arg (args, value_tyBM *));
+      if (!curob)
+        continue;
+      arr[cnt++] = curob;
+    }
+  va_end (args);
+  const setval_tyBM *res = makeset_BM (arr, cnt);
+  if (arr != tinyarr)
+    free (arr), arr = NULL;
+  return res;
+}                               /* end makesizedset_BM */
+
+
+const setval_tyBM *
+makesetcollect_BM (value_tyBM first, ...)
+{
+  int cnt = 0;
+  va_list args;
+  value_tyBM curarg = NULL;
+  va_start (args, first);
+  for (curarg = first; curarg; curarg = va_arg (args, value_tyBM))
+    {
+      if (isobject_BM (curarg))
+        cnt++;
+      else if (issequence_BM (curarg))
+        cnt += sequencesize_BM (curarg);
+    }
+  va_end (args);
+  if (cnt > MAXSIZE_BM)
+    FATAL_BM ("makesetcollect_BM too big cnt %d", cnt);
+  int siz = cnt;
+  objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+  objectval_tyBM **arr = (siz < TINYSIZE_BM) ? tinyarr
+    : calloc (siz, sizeof (objectval_tyBM *));
+  if (!arr)
+    FATAL_BM ("maketuplecollect_BM failed to calloc for %u arguments", siz);
+  va_start (args, first);
+  cnt = 0;
+  for (curarg = first; curarg; curarg = va_arg (args, value_tyBM))
+    {
+      if (isobject_BM (curarg))
+        arr[cnt++] = (objectval_tyBM *) curarg;
+      else if (issequence_BM (curarg))
+        {
+          unsigned seqlen = sequencesize_BM (curarg);
+          for (int six = 0; six < seqlen; six++)
+            {
+              arr[cnt++] = sequencenthcomp_BM (curarg, six);
+            }
+        }
+      else
+        continue;
+    }
+  va_end (args);
+  ASSERT_BM (cnt == siz);
+  const tupleval_tyBM *restup = makeset_BM (arr, cnt);
+  if (arr != tinyarr)
+    free (arr), arr = NULL;
+  return restup;
+}                               /* end makesetcollect_BM */
+
 void
 setgcdestroy_BM (struct garbcoll_stBM *gc, setval_tyBM * set)
 {

@@ -139,6 +139,11 @@ static inline bool isset_BM (const value_tyBM v);
 static inline const setval_tyBM *setcast_BM (const value_tyBM v);
 extern const setval_tyBM *makeset_BM (const objectval_tyBM ** arr,
                                       unsigned rawsiz);
+extern const setval_tyBM *makesizedset_BM (unsigned nbargs, ...);
+// collect objects or sequences into a set
+extern const setval_tyBM *makesetcollect_BM (value_tyBM, ...)
+  __attribute__ ((sentinel));
+#define MAKESETCOLLECT_BM(...) makesetcollect_BM(#__VA_ARGS__, NULL)
 static inline bool setcontains_BM (const setval_tyBM * setv,
                                    const objectval_tyBM * obelem);
 extern const tupleval_tyBM *settonamedsortedtuple_BM (const setval_tyBM *
