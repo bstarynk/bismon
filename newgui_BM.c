@@ -2416,9 +2416,13 @@ browse_indexed_named_value_newgui_BM (const
 static void
 hide_named_value_newgui_BM (const char *namestr, struct stackframe_stBM *stkf)
 {
+
+  LOCALFRAME_BM ( /*prev: */ stkf,
+                 /*descr: */ NULL,
+                 value_tyBM val;);
   if (!namestr)
     return;
-  int idx = find_named_value_newgui_BM (namestr, stkf);
+  int idx = index_named_value_newgui_BM (namestr);
   if (idx < 0)
     return;
   hide_index_named_value_newgui_BM (idx, stkf);
@@ -4046,14 +4050,14 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ;  _.causev = (value_tyBM)(Cause); goto failure; } while(0)
   if (_.dirstrv && !isstring_BM (_.dirstrv))
-    FAILHERE (makenode1_BM (BMP_string, _.dirstrv));
+    FAILHERE (makenode1_BM (BMP_string, (value_tyBM) _.dirstrv));
   if (!isnode_BM (_.cmdnodv))
-    FAILHERE (makenode1_BM (BMP_node, _.cmdnodv));
+    FAILHERE (makenode1_BM (BMP_node, (value_tyBM) _.cmdnodv));
   if (!isclosure_BM (_.endclosv))
-    FAILHERE (makenode1_BM (BMP_closure, _.cmdnodv));
+    FAILHERE (makenode1_BM (BMP_closure, (value_tyBM) _.cmdnodv));
   unsigned cmdlen = nodewidth_BM (_.cmdnodv);
   if (cmdlen == 0)
-    FAILHERE (makenode1_BM (BMP_node, _.cmdnodv));
+    FAILHERE (makenode1_BM (BMP_node, (value_tyBM) _.cmdnodv));
   for (unsigned aix = 0; aix < cmdlen; aix++)
     {
       _.curargv = nodenthson_BM (_.cmdnodv, aix);
