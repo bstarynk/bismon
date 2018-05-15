@@ -4147,6 +4147,7 @@ failure:
 
 
 
+
 // emit_statement°basiclo_objswitch _9d7mulcEVXf_7ZymszyOWDY
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY);
@@ -4166,6 +4167,7 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
   objectval_tyBM *k_default = BMK_0Ost4Do2yhq_95ticPFRmQO;
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   objectval_tyBM *k_statement_properties = BMK_0OM3NoUpOBd_1nzwCJKw54A;
   objectval_tyBM *k_switch = BMK_5PJV21P82kA_2KfQTz95vdH;
   objectval_tyBM *k_when = BMK_7KdDnQYcbeY_4LbTWNwFIFY;
@@ -4177,6 +4179,7 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
                  objectval_tyBM * propob;       //
                  objectval_tyBM * compob;       //
                  objectval_tyBM * curwhenob;    //
+                 objectval_tyBM * switchob;     //
                  value_tyBM whensetv;   //
                  value_tyBM defaulttupv;
                  value_tyBM emitv;      //
@@ -4217,6 +4220,42 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
   WEAKASSERT_BM (isobject_BM (_.propv));
   _.propob = objectcast_BM (_.propv);
   WEAKASSERT_BM (objhasassocpayl_BM (_.propob));
+  _.whensetv = objgetattr_BM (_.propob, k_when);
+  _.defaulttupv = objgetattr_BM (_.propob, k_default);
+  _.switchexpv = objgetattr_BM (_.stmtob, k_switch);
+  char stmtidbuf[32];
+  memset (stmtidbuf, 0, sizeof (stmtidbuf));
+  idtocbuf32_BM (objid_BM (_.stmtob), stmtidbuf);
+  char stmtpref[16];
+  memset (stmtpref, 0, sizeof (stmtpref));
+  memcpy (stmtpref, stmtidbuf + 1, 8);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbuffernewlinepayl_BM (_.modgenob);
+  objstrbufferprintfpayl_BM (_.modgenob, "{ // begin objswitch %s\n",
+                             stmtidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob, " objectval_tyBM* objswexp%s = (",
+                             stmtidbuf);
+  miniemit_expression_BM (CURFRAME_BM, _.switchexpv, _.modgenob,
+                          _.routprepob, _.stmtob, depth + 1);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbufferprintfpayl_BM (_.modgenob, ");\n");
+  int nbwhen = setcardinal_BM (_.whensetv);
+  int nbcases = objassocnbkeyspayl_BM (_.propob);
+  unsigned long nbobjmod =
+    1 << ILOG2_BM (2 * nbcases + nbwhen + nbcases / 2 + 10);
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_objswitch stmtob=%s propob=%s nbwhen=%d nbcases=%d nbobjmod=%ld=%#lx",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.propob), nbwhen, nbcases,
+     nbobjmod, nbobjmod);
+  _.switchob = makeobj_BM ();
+  objputattr_BM (_.switchob, k_in, _.propob);
+  objputattr_BM (_.propob, k_switch, _.switchob);
+  objtouchnow_BM (_.propob);
+  objreservecomps_BM (_.switchob, nbobjmod);
+  objresetcomps_BM (_.switchob, nbobjmod);
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_objswitch stmtob=%s switchob=%s",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.switchob));
 #warning unimplemented _9d7mulcEVXf_7ZymszyOWDY routine
   WEAKASSERT_BM (false
                  &&
