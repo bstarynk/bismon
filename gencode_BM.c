@@ -4188,6 +4188,7 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
                  objectval_tyBM * propob;       //
                  objectval_tyBM * compob;       //
                  objectval_tyBM * curwhenob;    //
+                 objectval_tyBM * curcaseob;    //
                  objectval_tyBM * switchob;     //
                  value_tyBM whensetv;   //
                  value_tyBM defaulttupv;
@@ -4196,6 +4197,8 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
                  value_tyBM switchexpv; //
                  value_tyBM keysnodv;   //
                  value_tyBM curkeyv;
+                 value_tyBM curswitchv;
+                 value_tyBM setkeysv;
                  value_tyBM resultv;
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
@@ -4265,6 +4268,36 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
   DBGPRINTF_BM
     ("emit_statement°basiclo_objswitch stmtob=%s switchob=%s",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.switchob));
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             " switch (objecthash_BM (objswexp%s) %% %ul) {\n",
+                             stmtidbuf, nbobjmod);
+  _.setkeysv = objassocsetattrspayl_BM (_.propob);
+  DBGPRINTF_BM ("emit_statement°basiclo_objswitch stmtob=%s setkeysv=%s",      //
+                objectdbg_BM (_.stmtob),        //
+                debug_outstr_value_BM (_.setkeysv, CURFRAME_BM, 0));
+  WEAKASSERT_BM (setcardinal_BM (_.setkeysv) == nbcases);
+  for (int casix = 0; casix < nbcases; casix++)
+    {
+      _.curcaseob = setelemnth_BM (_.setkeysv, casix);
+      unsigned hmod = objecthash_BM (_.curcaseob) % nbobjmod;
+      DBGPRINTF_BM
+        ("emit_statement°basiclo_objswitch stmtob=%s curcaseob=%s casix#%d hmod#%d",
+         objectdbg_BM (_.stmtob), objectdbg1_BM (_.curcaseob), casix, hmod);
+      _.curswitchv = objgetcomp_BM (_.switchob, hmod);
+      _.curswitchv = MAKESETCOLLECT_BM (_.curcaseob, _.curswitchv);
+      objputcomp_BM (_.switchob, hmod, _.curswitchv);
+    }
+  for (int mix = 0; mix < nbobjmod; mix++)
+    {
+      _.curswitchv = objgetcomp_BM (_.switchob, mix);
+      if (!_.curswitchv)
+        continue;
+      DBGPRINTF_BM ("emit_statement°basiclo_objswitch stmtob=%s mix#%d curswitch=%s", objectdbg_BM (_.stmtob), mix,    //
+                    debug_outstr_value_BM (_.curswitchv, CURFRAME_BM, 0));
+      objstrbufferprintfpayl_BM (_.modgenob, " case %d:\n", mix);
+      // should iterate on the small set curswitchv
+      WEAKASSERT_BM (isset_BM (_.curswitchv));
+    }
 #warning unimplemented _9d7mulcEVXf_7ZymszyOWDY routine
   WEAKASSERT_BM (false
                  &&
