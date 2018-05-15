@@ -1395,6 +1395,7 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
+  objectval_tyBM *k_default = BMK_0Ost4Do2yhq_95ticPFRmQO;
   objectval_tyBM *k_duplicate = BMK_2YrbiKQ6lxP_3KNUOnU6TF5;
   objectval_tyBM *k_for = BMK_1SolDiQA2WM_4IDOJKBiPFc;
   objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
@@ -1403,6 +1404,7 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
   objectval_tyBM *k_statement_properties = BMK_0OM3NoUpOBd_1nzwCJKw54A;
   objectval_tyBM *k_switch = BMK_5PJV21P82kA_2KfQTz95vdH;
   objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
+  objectval_tyBM *k_when = BMK_7KdDnQYcbeY_4LbTWNwFIFY;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_5nFFthyf8y9_00k5H4R0G6b,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * routprepob;   //
@@ -1415,6 +1417,8 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                  value_tyBM switchexpv; //
                  value_tyBM testv;      //
                  value_tyBM oldwhenv;   //
+                 value_tyBM whensetv;   //
+                 value_tyBM defaulttupv;        //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
                  value_tyBM resultv;
@@ -1625,6 +1629,17 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
          debug_outstr_value_BM (_.resultv, CURFRAME_BM, 0));
       _.resultv = NULL;
     }
+  _.whensetv = (value_tyBM)
+    makeset_BM ((const objectval_tyBM **) objcompdata_BM (_.stmtob),
+                lastwhenix + 1);
+  _.defaulttupv = (value_tyBM)
+    maketuple_BM ((objectval_tyBM **) objcompdata_BM (_.stmtob) + lastwhenix +
+                  1, stmtlen - lastwhenix - 1);
+  objputattr_BM (_.assocob, k_when, _.whensetv);
+  objputattr_BM (_.assocob, k_default, _.defaulttupv);
+  objtouchnow_BM (_.assocob);
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s adding assocob=%s to routprepob=%s\n" ".. whenset=%s defaulttup=%s", objectdbg_BM (_.stmtob), objectdbg1_BM (_.assocob), objectdbg2_BM (_.routprepob), debug_outstr_value_BM (_.whensetv, CURFRAME_BM, 0),  //
+                debug_outstr_value_BM (_.defaulttupv, CURFRAME_BM, 0));
   /// should add the assocob
 #warning unimplemented miniscan_stmt°basiclo_objswitch _5nFFthyf8y9_00k5H4R0G6b routine
   WEAKASSERT_BM (false
