@@ -4062,7 +4062,8 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
     {
       _.curargv = nodenthson_BM (_.cmdnodv, aix);
       if (!isstring_BM (_.curargv))
-        FAILHERE (makenode2_BM (BMP_node, _.cmdnodv, taggedint_BM (aix)));
+        FAILHERE (makenode2_BM
+                  (BMP_node, (value_tyBM) _.cmdnodv, taggedint_BM (aix)));
     }
   ASSERT_BM (nbworkjobs_BM >= MINNBWORKJOBS_BM
              && nbworkjobs_BM <= MAXNBWORKJOBS_BM);
@@ -4086,7 +4087,7 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
     {                           // append to runpro_list_BM
       if (!runpro_list_BM)
         runpro_list_BM = makelist_BM ();
-      _.nodv =
+      _.nodv = (value_tyBM)
         makenode3_BM (k_queue_process, _.dirstrv, _.cmdnodv, _.endclosv);
       listappend_BM (runpro_list_BM, _.nodv);
     }
@@ -4100,8 +4101,8 @@ failure:
   DBGPRINTF_BM
     ("queue_process failure failin %d dirstr %s, cmdnod %s endclos %s, cause %s",
      failin,
-     bytstring_BM (_.dirstrv), debug_outstr_value_BM (_.cmdnodv, CURFRAME_BM,
-                                                      0),
+     bytstring_BM (_.dirstrv), debug_outstr_value_BM ((value_tyBM) _.cmdnodv,
+                                                      CURFRAME_BM, 0),
      debug_outstr_value_BM (_.endclosv, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
