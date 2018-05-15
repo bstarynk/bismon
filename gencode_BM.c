@@ -1395,6 +1395,7 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
+  objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   objectval_tyBM *k_default = BMK_0Ost4Do2yhq_95ticPFRmQO;
   objectval_tyBM *k_duplicate = BMK_2YrbiKQ6lxP_3KNUOnU6TF5;
@@ -1402,6 +1403,7 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
   objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
   objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
+  objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
   objectval_tyBM *k_statement_properties = BMK_0OM3NoUpOBd_1nzwCJKw54A;
   objectval_tyBM *k_switch = BMK_5PJV21P82kA_2KfQTz95vdH;
   objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
@@ -1416,6 +1418,8 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                  objectval_tyBM * caseob;       //
                  objectval_tyBM * subcompob;    //
                  objectval_tyBM * stmtpropob;   //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * obmodhsetconst;       //
                  value_tyBM switchexpv; //
                  value_tyBM testv;      //
                  value_tyBM oldwhenv;   //
@@ -1448,10 +1452,13 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
   objputattr_BM (_.assocob, k_in, _.routprepob);
   objputclass_BM (_.assocob, k_assoc_object);
   _.switchexpv = objgetattr_BM (_.stmtob, k_switch);
-  DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s assocob=%s switchexp=%s stmtlen=%d",        //
+  _.modgenob = objectcast_BM (objgetattr_BM (_.routprepob, k_modgenob));
+  _.obmodhsetconst = objectcast_BM (objgetattr_BM (_.modgenob, k_constants));
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s assocob=%s switchexp=%s stmtlen=%d modgenob=%s obmodhsetconst=%s",  //
                 objectdbg_BM (_.stmtob), objectdbg1_BM (_.assocob),
                 debug_outstr_value_BM (_.switchexpv, CURFRAME_BM, 0),
-                stmtlen);
+                stmtlen,
+                objectdbg2_BM (_.modgenob), objectdbg3_BM (_.obmodhsetconst));
   _.switchtypob =
     miniscan_expr_BM (_.switchexpv, _.routprepob, depth + 1, _.stmtob,
                       CURFRAME_BM);
@@ -1553,6 +1560,7 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
               if (_.oldwhenv)
                 FAILHERE (makenode3_BM
                           (k_duplicate, _.caseob, _.compob, _.oldwhenv));
+              objhashsetaddpayl_BM (_.obmodhsetconst, _.caseob);
               objassocaddattrpayl_BM (_.assocob, _.caseob, _.compob);
             }
           else if (issequence_BM (_.testv))
@@ -1569,6 +1577,7 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                     FAILHERE (makenode3_BM
                               (k_duplicate, _.caseob, _.compob, _.oldwhenv));
                   objassocaddattrpayl_BM (_.assocob, _.caseob, _.compob);
+                  objhashsetaddpayl_BM (_.obmodhsetconst, _.caseob);
                 }
             }
           else
