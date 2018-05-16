@@ -4345,6 +4345,7 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
         };
       objstrbufferprintfpayl_BM (_.modgenob, "  goto defobj%s;\n", stmtidbuf);
     }
+  //// emit the default
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
   objstrbuffernewlinepayl_BM (_.modgenob);
   objstrbufferprintfpayl_BM (_.modgenob, "  default: defobj%s:;\n",
@@ -4389,6 +4390,9 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
           _.emitv = send3_BM (_.compob, k_emit_block, CURFRAME_BM,      //
                               _.modgenob,
                               _.routprepob, taggedint_BM (depth + 1));
+          if (!_.emitv)
+            FAILHERE (makenode2_BM
+                      (k_emit_block, _.compob, taggedint_BM (dfix)));
         }
       else
         FAILHERE (makenode2_BM (k_curcomp, _.compob, dfix));
@@ -4402,6 +4406,83 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
   objstrbufferprintfpayl_BM (_.modgenob,
                              "break; // end objswitch %s default\n",
                              stmtidbuf);
+  //// emit the when-s
+  objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "// objswitch %s with %d whens:\n",
+                             stmtidbuf, nbwhen);
+  for (int wix = 0; wix < nbwhen; wix++)
+    {
+      objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+      _.curwhenob = setelemnth_BM (_.whensetv, wix);
+      char whenidbuf[32];
+      memset (whenidbuf, 0, sizeof (whenidbuf));
+      idtocbuf32_BM (objid_BM (_.curwhenob), whenidbuf);
+      DBGPRINTF_BM
+        ("emit_statement°basiclo_objswitch stmtob=%s wix#%d emit curwhenob=%s",
+         objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.curwhenob));
+      objstrbuffernewlinepayl_BM (_.modgenob);
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "whenobj%s_%s:; // when #%d of objswitch %s\n",
+                                 stmtpref, whenidbuf, wix,
+                                 objectdbg_BM (_.stmtob));
+      int whenlen = objnbcomps_BM (_.curwhenob);
+      for (int six = 0; six < whenlen; six++)
+        {
+          _.compob = objgetcomp_BM (_.curwhenob, six);
+          objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+          _.emitv = NULL;
+          if (objectisinstance_BM (_.compob, k_basiclo_statement))
+            {
+              DBGPRINTF_BM
+                ("emit_statement°basiclo_objswitch compob %s six#%d in stmtob %s is statement of %s",
+                 objectdbg_BM (_.compob), six,
+                 objectdbg1_BM (_.stmtob),
+                 objectdbg2_BM (objclass_BM (_.compob)));
+              objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+              objstrbufferprintfpayl_BM (_.modgenob,
+                                         " // objswitch %s when %s #%d statement:\n",
+                                         stmtidbuf,
+                                         objectdbg_BM (_.curwhenob), six);
+              _.emitv = send3_BM (_.compob, k_emit_statement, CURFRAME_BM,      //
+                                  _.modgenob,
+                                  _.routprepob, taggedint_BM (depth + 1));
+              if (!_.emitv)
+                FAILHERE (makenode2_BM
+                          (k_emit_statement, _.compob, taggedint_BM (six)));
+              objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+              objstrbuffernewlinepayl_BM (_.modgenob);
+            }
+          else if (objectisinstance_BM (_.compob, k_basiclo_block))
+            {
+              DBGPRINTF_BM
+                ("emit_statement°basiclo_objswitch compob %s six#%d in stmtob %s is block of %s",
+                 objectdbg_BM (_.compob), six,
+                 objectdbg1_BM (_.stmtob),
+                 objectdbg2_BM (objclass_BM (_.compob)));
+              objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+              objstrbufferprintfpayl_BM (_.modgenob,
+                                         " // objswitch %s when %s #%d block:\n",
+                                         stmtidbuf,
+                                         objectdbg_BM (_.curwhenob), six);
+              _.emitv = send3_BM (_.compob, k_emit_block, CURFRAME_BM,  //
+                                  _.modgenob,
+                                  _.routprepob, taggedint_BM (depth + 1));
+              if (!_.emitv)
+                FAILHERE (makenode2_BM
+                          (k_emit_block, _.compob, taggedint_BM (six)));
+            }
+          else                  // should not happen
+            FAILHERE (makenode3_BM (k_curcomp, _.compob, six, _.curwhenob));
+          DBGPRINTF_BM
+            ("emit_statement°basiclo_objswitch done compob %s six#%d in stmtob %s wix#%d curwhenob %s\n",
+             objectdbg_BM (_.compob), six, objectdbg1_BM (_.stmtob), wix,
+             objectdbg2_BM (_.curwhenob));
+        }
+      DBGPRINTF_BM
+        ("emit_statement°basiclo_objswitch done in stmtob %s wix#%d curwhenob %s\n",
+         objectdbg1_BM (_.stmtob), wix, objectdbg2_BM (_.curwhenob));
+    }
 #warning unimplemented _9d7mulcEVXf_7ZymszyOWDY routine
   WEAKASSERT_BM (false
                  &&
