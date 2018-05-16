@@ -4482,12 +4482,22 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
       DBGPRINTF_BM
         ("emit_statement°basiclo_objswitch done in stmtob %s wix#%d curwhenob %s\n",
          objectdbg1_BM (_.stmtob), wix, objectdbg2_BM (_.curwhenob));
-    }
-#warning unimplemented _9d7mulcEVXf_7ZymszyOWDY routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented emit_statement°basiclo_objswitch _9d7mulcEVXf_7ZymszyOWDY routine");
-  LOCALRETURN_BM (_.resultv);
+      objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+      objstrbuffernewlinepayl_BM (_.modgenob);
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "break; // end when %s #%d of objswitch %s\n",
+                                 objectdbg_BM (_.curwhenob), wix,
+                                 objectdbg1_BM (_.stmtob));
+    }                           /* end for wix */
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbuffernewlinepayl_BM (_.modgenob);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "} } // end objswitch %s\n",
+                             objectdbg1_BM (_.stmtob));
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_objswitch end stmtob %s\n",
+     objectdbg_BM (_.stmtob));
+  LOCALRETURN_BM (_.stmtob);
 failure:
 #undef FAILHERE
   DBGPRINTF_BM ("emit_statement°basiclo_objswitch failin %d stmtob %s routprep %s cause %s",   //
