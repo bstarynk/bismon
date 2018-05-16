@@ -2835,6 +2835,9 @@ failure:
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_statment°basiclo_cond _2gpamAdSc26_6d1JjCmKHyw */
 
+
+
+
 // emit_when°basiclo_when  _9Wk97VJLuH1_0FwsSpfatDg
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9Wk97VJLuH1_0FwsSpfatDg);
@@ -4354,13 +4357,51 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
       _.emitv = NULL;
       if (objectisinstance_BM (_.compob, k_basiclo_statement))
         {
+          DBGPRINTF_BM
+            ("emit_statement°basiclo_objswitch compob %s dfix#%d in stmtob %s is statement of %s",
+             objectdbg_BM (_.compob), dfix,
+             objectdbg1_BM (_.stmtob),
+             objectdbg2_BM (objclass_BM (_.compob)));
+          objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+          objstrbufferprintfpayl_BM (_.modgenob,
+                                     " // objswitch %s default#%d statement:\n",
+                                     stmtidbuf, dfix);
+          _.emitv = send3_BM (_.compob, k_emit_statement, CURFRAME_BM,  //
+                              _.modgenob,
+                              _.routprepob, taggedint_BM (depth + 1));
+          if (!_.emitv)
+            FAILHERE (makenode2_BM
+                      (k_emit_statement, _.compob, taggedint_BM (dfix)));
+          objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+          objstrbuffernewlinepayl_BM (_.modgenob);
         }
       else if (objectisinstance_BM (_.compob, k_basiclo_block))
         {
+          DBGPRINTF_BM
+            ("emit_statement°basiclo_objswitch compob %s dfix#%d in stmtob %s is block of %s",
+             objectdbg_BM (_.compob), dfix,
+             objectdbg1_BM (_.stmtob),
+             objectdbg2_BM (objclass_BM (_.compob)));
+          objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+          objstrbufferprintfpayl_BM (_.modgenob,
+                                     " // objswitch %s default#%d block:\n",
+                                     stmtidbuf, dfix);
+          _.emitv = send3_BM (_.compob, k_emit_block, CURFRAME_BM,      //
+                              _.modgenob,
+                              _.routprepob, taggedint_BM (depth + 1));
         }
       else
         FAILHERE (makenode2_BM (k_curcomp, _.compob, dfix));
+      DBGPRINTF_BM
+        ("emit_statement°basiclo_objswitch compob %s dfix#%d in stmtob %s emitv=%s",
+         objectdbg_BM (_.compob), dfix,
+         objectdbg1_BM (_.stmtob), debug_outstr_value_BM (_.emitv,
+                                                          CURFRAME_BM, 0));
     }
+  objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "break; // end objswitch %s default\n",
+                             stmtidbuf);
 #warning unimplemented _9d7mulcEVXf_7ZymszyOWDY routine
   WEAKASSERT_BM (false
                  &&
