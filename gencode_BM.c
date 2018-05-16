@@ -3849,6 +3849,67 @@ ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7)    //emit_statement°basiclo_return
 
 
 
+// emit_statement°basiclo_run _0AUL5kbXVmq_06A8ZbHZi1Y
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // stmtob
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // routprepob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM *k_run = BMK_4RFtYFUdfau_7Vm5jZ4Wm8e;
+  objectval_tyBM *k_chunk = BMK_3pQnBS9ZjkQ_0uGmqUUhAum;
+  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
+  objectval_tyBM *k_variable = BMK_5ucAZimYynS_4VA0XHvr1nW;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_0AUL5kbXVmq_06A8ZbHZi1Y,
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * routob;       //
+                 objectval_tyBM * exitob;       //
+                 value_tyBM errorv;     //
+                 value_tyBM causev;     //
+                 value_tyBM resultv;
+    );
+  _.stmtob = objectcast_BM (arg1);
+  _.modgenob = objectcast_BM (arg2);
+  _.routprepob = objectcast_BM (arg3);
+  int depth = getint_BM (arg4);
+  WEAKASSERT_BM (_.stmtob);
+  WEAKASSERT_BM (_.modgenob);
+  WEAKASSERT_BM (_.routprepob);
+  WEAKASSERT_BM (istaggedint_BM (arg4));
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_run start stmtob=%s modgenob=%s routprepob=%s depth#%d",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth);
+#warning unimplemented _0AUL5kbXVmq_06A8ZbHZi1Y routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented emit_statement°basiclo_run _0AUL5kbXVmq_06A8ZbHZi1Y routine");
+  LOCALRETURN_BM (_.resultv);
+#undef FAILHERE
+failure:
+  DBGPRINTF_BM ("emit_statement°basiclo_run failin %d stmtob %s routprep %s cause %s", //
+                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    (value_tyBM) makenode5_BM (k_emit_statement, _.stmtob, _.routprepob,
+                               _.modgenob, taggedint_BM (depth), _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end  emit_statement°basiclo_run _0AUL5kbXVmq_06A8ZbHZi1Y */
+
+
+
+
 // emit_statement°basiclo_exit _4hS1jncZQAY_9pGS66eIlw9
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_4hS1jncZQAY_9pGS66eIlw9);

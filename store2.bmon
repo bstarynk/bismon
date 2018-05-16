@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 405 objects
+// for 406 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -413,6 +413,7 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of run statement"
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
+~: _1ERH9PxNhPb_2o869yOMuH0  % _0AUL5kbXVmq_06A8ZbHZi1Y () 
 ~: _6DdZwyaWLyK_7tS2BmECOJ0  % _6pA1Fxh7omw_0vJfR3s4tty ()
 ~)
 
@@ -3115,6 +3116,16 @@ _1yHf2QrNJFe_26wMXjkynuo
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine for miniscan_stmt\u00b0basiclo_cond"
 !)_0zzJJsAL6Qm_2uw3eoWQHEq
+
+
+
+!(_0AUL5kbXVmq_06A8ZbHZi1Y
+!|*
+!@ 1526487453.52
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit_statement\u00b0basiclo_run"
+!)_0AUL5kbXVmq_06A8ZbHZi1Y
 
 
 
