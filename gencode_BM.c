@@ -1003,6 +1003,9 @@ failure:
 #undef FAILHERE
 }                               /* end miniscan_stmt°basiclo_exit  _23F5sZIfO5Y_5m9O2FPHdzX */
 
+
+
+
 // miniscan_stmt°basiclo_run _6pA1Fxh7omw_0vJfR3s4tty
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty);
@@ -1055,10 +1058,9 @@ ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty)    //miniscan_stmt°basiclo_run
   _.runv = objgetattr_BM (_.stmtob, k_run);
   if (isnode_BM (_.runv) && ((_.connob = nodeconn_BM (_.runv)) == k_chunk))
     {
-      DBGPRINTF_BM ("miniscan_stmt°basiclo_run  stmtob=%s chunk runv=%s",
-                    objectdbg_BM (_.stmtob), debug_outstr_value_BM (_.runv,
-                                                                    CURFRAME_BM,
-                                                                    0));
+      DBGPRINTF_BM ("miniscan_stmt°basiclo_run  stmtob=%s chunk runv=%s",      //
+                    objectdbg_BM (_.stmtob),    //
+                    debug_outstr_value_BM (_.runv, CURFRAME_BM, 0));
       int chklen = nodewidth_BM (_.runv);
       for (int cix = 0; cix < chklen; cix++)
         {
@@ -1109,10 +1111,8 @@ ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty)    //miniscan_stmt°basiclo_run
     }
   else if (_.runv)
     {
-      DBGPRINTF_BM ("miniscan_stmt°basiclo_run  stmtob=%s nonchunk runv=%s",
-                    objectdbg_BM (_.stmtob), debug_outstr_value_BM (_.runv,
-                                                                    CURFRAME_BM,
-                                                                    0));
+      DBGPRINTF_BM ("miniscan_stmt°basiclo_run  stmtob=%s nonchunk runv=%s", objectdbg_BM (_.stmtob),  //
+                    debug_outstr_value_BM (_.runv, CURFRAME_BM, 0));
       _.runtypob =
         miniscan_expr_BM (_.runv, _.routprepob, depth + 1, _.stmtob,
                           CURFRAME_BM);
@@ -3873,6 +3873,8 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * routob;       //
                  objectval_tyBM * exitob;       //
+                 objectval_tyBM * connob;       //
+                 value_tyBM runv;       //
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
                  value_tyBM resultv;
@@ -3891,6 +3893,19 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
     ("emit_statement°basiclo_run start stmtob=%s modgenob=%s routprepob=%s depth#%d",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
      objectdbg2_BM (_.routprepob), depth);
+  _.runv = objgetattr_BM (_.stmtob, k_run);
+  if (isnode_BM (_.runv) && ((_.connob = nodeconn_BM (_.runv)) == k_chunk))
+    {
+      DBGPRINTF_BM ("emit_statement°basiclo_run stmtob=%s chunk runv=%s",      //
+                    objectdbg_BM (_.stmtob),    //
+                    debug_outstr_value_BM (_.runv, CURFRAME_BM, 0));
+      int chklen = nodewidth_BM (_.runv);
+    }
+  else if (_.runv)
+    {
+      DBGPRINTF_BM ("emit_statement°basiclo_run  stmtob=%s nonchunk runv=%s", objectdbg_BM (_.stmtob), //
+                    debug_outstr_value_BM (_.runv, CURFRAME_BM, 0));
+    }
 #warning unimplemented _0AUL5kbXVmq_06A8ZbHZi1Y routine
   WEAKASSERT_BM (false
                  &&
