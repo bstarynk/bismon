@@ -1008,29 +1008,35 @@ failure:
 extern objrout_sigBM ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty) //miniscan_stmt°basiclo_run
-(struct stackframe_stBM* stkf, //
+ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty)    //miniscan_stmt°basiclo_run
+(struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //stmtob - an intswitch 
  const value_tyBM arg2,         //routprepob
  const value_tyBM arg3,         //depth
  const value_tyBM arg4,         //fromob
- const quasinode_tyBM* restargs_  __attribute__((unused)))
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   objectval_tyBM *k_run = BMK_4RFtYFUdfau_7Vm5jZ4Wm8e;
   objectval_tyBM *k_chunk = BMK_3pQnBS9ZjkQ_0uGmqUUhAum;
-  LOCALFRAME_BM (stkf, /*descr:*/ BMK_6pA1Fxh7omw_0vJfR3s4tty,
+  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
+  objectval_tyBM *k_variable = BMK_5ucAZimYynS_4VA0XHvr1nW;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_6pA1Fxh7omw_0vJfR3s4tty,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * fromob;       //
-                 objectval_tyBM * runtypob;       //
-		 objectval_tyBM *connob;	  //
+                 objectval_tyBM * runtypob;     //
+                 objectval_tyBM * connob;       //
+                 objectval_tyBM * subconnob;    //
+                 objectval_tyBM * varob;        //
+                 objectval_tyBM * typsubob;     //
                  value_tyBM runv;
                  value_tyBM resultv;
                  value_tyBM compv;
+                 value_tyBM subcompv;
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
-  );
+    );
   int depth = 0;
   _.stmtob = objectcast_BM (arg1);
   _.routprepob = objectcast_BM (arg2);
@@ -1046,18 +1052,78 @@ ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty) //miniscan_stmt°basiclo_run
     ("miniscan_stmt°basiclo_run start stmtob=%s routprepob=%s depth#%d fromob=%s",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), depth,
      objectdbg2_BM (_.fromob));
-  _.runv = objgetattr_BM(_.stmtob, k_run);
-  if (isnode_BM(_.runv) && ((_.connob = nodeconn_BM(_.runv)) == k_chunk)) {
-    int chklen = nodewidth_BM(_.runv);
-    for (int cix=0; cix<chklen; cix++) {
-      _.compv = nodenthson_BM(_.runv, cix);
+  _.runv = objgetattr_BM (_.stmtob, k_run);
+  if (isnode_BM (_.runv) && ((_.connob = nodeconn_BM (_.runv)) == k_chunk))
+    {
+      DBGPRINTF_BM ("miniscan_stmt°basiclo_run  stmtob=%s chunk runv=%s",
+                    objectdbg_BM (_.stmtob), debug_outstr_value_BM (_.runv,
+                                                                    CURFRAME_BM,
+                                                                    0));
+      int chklen = nodewidth_BM (_.runv);
+      for (int cix = 0; cix < chklen; cix++)
+        {
+          _.compv = nodenthson_BM (_.runv, cix);
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_run  stmtob=%s chunk cix#%d compv=%s",
+             objectdbg_BM (_.stmtob), cix, debug_outstr_value_BM (_.compv,
+                                                                  CURFRAME_BM,
+                                                                  0));
+          if (isnode_BM (_.compv))
+            {
+              _.subconnob = nodeconn_BM (_.compv);
+              if (nodewidth_BM (_.compv) == 1 && _.subconnob == k_variable)
+                {
+                  _.varob = objectcast_BM (nodenthson_BM (_.compv, 0));
+                  if (!_.varob)
+                    FAILHERE (makenode2_BM
+                              (k_variable, taggedint_BM (cix), _.compv));
+                  _.typsubob =
+                    miniscan_var_BM (_.varob, _.routprepob, depth + 1,
+                                     _.stmtob, CURFRAME_BM);
+                  if (!_.typsubob)
+                    FAILHERE (makenode2_BM
+                              (k_variable, taggedint_BM (cix), _.compv));
+                }
+              else
+                {
+                  _.typsubob =
+                    miniscan_expr_BM (_.compv, _.routprepob, depth + 1,
+                                      _.stmtob, CURFRAME_BM);
+                  if (!_.typsubob)
+                    FAILHERE (makenode2_BM
+                              (k_curcomp, taggedint_BM (cix), _.compv));
+                }
+            }
+          else if (issequence_BM (_.compv))
+            FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (cix), _.compv));
+          else
+            {
+              _.typsubob =
+                miniscan_expr_BM (_.compv, _.routprepob, depth + 1, _.stmtob,
+                                  CURFRAME_BM);
+              if (!_.typsubob)
+                FAILHERE (makenode2_BM
+                          (k_curcomp, taggedint_BM (cix), _.compv));
+            }
+        }
     }
-  }
-#warning unimplemented miniscan_stmt°basiclo_run _6pA1Fxh7omw_0vJfR3s4tty routine
-  WEAKASSERT_BM(false && "unimplemented miniscan_stmt°basiclo_run routine _6pA1Fxh7omw_0vJfR3s4tty routine");
-  LOCALRETURN_BM(_.resultv);
+  else if (_.runv)
+    {
+      DBGPRINTF_BM ("miniscan_stmt°basiclo_run  stmtob=%s nonchunk runv=%s",
+                    objectdbg_BM (_.stmtob), debug_outstr_value_BM (_.runv,
+                                                                    CURFRAME_BM,
+                                                                    0));
+      _.runtypob =
+        miniscan_expr_BM (_.runv, _.routprepob, depth + 1, _.stmtob,
+                          CURFRAME_BM);
+      if (!_.runtypob)
+        FAILHERE (makenode1_BM (k_run, _.runv));
+    }
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_run end stmtob=%s",
+                objectdbg_BM (_.stmtob));
+  LOCALRETURN_BM (_.stmtob);
 failure:
-  DBGPRINTF_BM ("miniscan_stmt°basiclo_run failin %d stmtob=%s causev=%s routprepob=%s",      //
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_run failin %d stmtob=%s causev=%s routprepob=%s",       //
                 failin, objectdbg_BM (_.stmtob),        //
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0),       //
                 objectdbg1_BM (_.routprepob));
@@ -1066,7 +1132,7 @@ failure:
                   taggedint_BM (depth), _.fromob, _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
-} /* end miniscan_stmt°basiclo_run  _6pA1Fxh7omw_0vJfR3s4tty*/
+}                               /* end miniscan_stmt°basiclo_run  _6pA1Fxh7omw_0vJfR3s4tty */
 
 
 
