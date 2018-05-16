@@ -74,7 +74,7 @@ makesizedtuple_BM (unsigned nbargs, ...)
   if (nbargs > MAXSIZE_BM / 2)
     FATAL_BM ("makesizedtuple_BM too big %u", nbargs);
   objectval_tyBM **arr = (nbargs < TINYSIZE_BM) ? tinyarr
-    : calloc (nbargs, sizeof (objectval_tyBM *));
+    : calloc (prime_above_BM (nbargs), sizeof (objectval_tyBM *));
   if (!arr)
     FATAL_BM ("makesizedtuple_BM failed to calloc for %u arguments", nbargs);
   int cnt = 0;
@@ -103,6 +103,8 @@ maketuplecollect_BM (value_tyBM first, ...)
   va_start (args, first);
   for (curarg = first; curarg; curarg = va_arg (args, value_tyBM))
     {
+      if (curarg == HASHEMPTYSLOT_BM)
+        continue;
       if (isobject_BM (curarg))
         cnt++;
       else if (issequence_BM (curarg))
@@ -114,7 +116,7 @@ maketuplecollect_BM (value_tyBM first, ...)
   int siz = cnt;
   objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
   objectval_tyBM **arr = (siz < TINYSIZE_BM) ? tinyarr
-    : calloc (siz, sizeof (objectval_tyBM *));
+    : calloc (prime_above_BM (siz), sizeof (objectval_tyBM *));
   if (!arr)
     FATAL_BM ("maketuplecollect_BM failed to calloc for %u arguments", siz);
   va_start (args, first);
@@ -141,6 +143,60 @@ maketuplecollect_BM (value_tyBM first, ...)
     free (arr), arr = NULL;
   return restup;
 }                               /* end maketuplecollect_BM */
+
+
+const tupleval_tyBM *
+makesizedcollecttuple_BM (unsigned nbargs, ...)
+{
+  int cnt = 0;
+  if (nbargs > MAXSIZE_BM / 2)
+    FATAL_BM ("makesizedcollecttuple_BM too big nbargs %u", nbargs);
+  va_list args;
+  value_tyBM curarg = NULL;
+  va_start (args, nbargs);
+  for (unsigned ix = 0; ix < nbargs; ix++)
+    {
+      curarg = va_arg (args, value_tyBM);
+      if (curarg == HASHEMPTYSLOT_BM)
+        continue;
+      if (isobject_BM (curarg))
+        cnt++;
+      else if (issequence_BM (curarg))
+        cnt += sequencesize_BM (curarg);
+    }
+  va_end (args);
+  if (cnt > MAXSIZE_BM)
+    FATAL_BM ("makesizedcollecttuple_BM too big cnt %d", cnt);
+  int siz = cnt;
+  objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+  objectval_tyBM **arr = (siz < TINYSIZE_BM) ? tinyarr
+    : calloc (prime_above_BM (siz), sizeof (objectval_tyBM *));
+  if (!arr)
+    FATAL_BM ("makesizedcollecttuple_BM failed to calloc for %u arguments",
+              siz);
+  va_start (args, nbargs);
+  cnt = 0;
+  for (unsigned ix = 0; ix < nbargs; ix++)
+    {
+      curarg = va_arg (args, value_tyBM);
+      if (curarg == HASHEMPTYSLOT_BM)
+        continue;
+      if (isobject_BM (curarg))
+        arr[cnt++] = (objectval_tyBM *) curarg;
+      else if (issequence_BM (curarg))
+        {
+          int seqlen = sequencesize_BM (curarg);
+          for (int ix = 0; ix < seqlen; ix++)
+            arr[cnt++] = sequencenthcomp_BM (curarg, ix);
+        }
+    }
+  va_end (args);
+  ASSERT_BM (cnt == siz);
+  const tupleval_tyBM *restup = maketuple_BM (arr, cnt);
+  if (arr != tinyarr)
+    free (arr), arr = NULL;
+  return restup;
+}                               /* end makesizedcollecttuple_BM */
 
 void
 tuplegcdestroy_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup)
@@ -242,7 +298,7 @@ makeset_BM (const objectval_tyBM ** arr, unsigned rawsiz)
   if (siz < TINYSIZE_BM)
     tmparr = tinyarr;
   else
-    tmparr = calloc (siz + 1, sizeof (void *));
+    tmparr = calloc (prime_above_BM (siz), sizeof (void *));
   if (!tmparr)
     FATAL_BM ("makeset cannot allocate tmparr siz=%u", siz);
   unsigned cnt = 0;
@@ -319,7 +375,7 @@ makesizedset_BM (unsigned nbargs, ...)
     FATAL_BM ("makesizedset_BM too big %u", nbargs);
   objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
   objectval_tyBM **arr = (nbargs < TINYSIZE_BM) ? tinyarr
-    : calloc (nbargs, sizeof (objectval_tyBM *));
+    : calloc (prime_above_BM (nbargs), sizeof (objectval_tyBM *));
   if (!arr)
     FATAL_BM ("calloc failed in makesizedset_BM for %u elements", nbargs);
   va_list args;
@@ -362,7 +418,7 @@ makesetcollect_BM (value_tyBM first, ...)
   int siz = cnt;
   objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
   objectval_tyBM **arr = (siz < TINYSIZE_BM) ? tinyarr
-    : calloc (siz, sizeof (objectval_tyBM *));
+    : calloc (prime_above_BM (siz), sizeof (objectval_tyBM *));
   if (!arr)
     FATAL_BM ("maketuplecollect_BM failed to calloc for %u arguments", siz);
   va_start (args, first);
@@ -389,6 +445,64 @@ makesetcollect_BM (value_tyBM first, ...)
     free (arr), arr = NULL;
   return restup;
 }                               /* end makesetcollect_BM */
+
+
+
+const setval_tyBM *
+makesizedcollectset_BM (unsigned nbargs, ...)
+{
+  int cnt = 0;
+  if (nbargs > MAXSIZE_BM / 2)
+    FATAL_BM ("makesizedcollectset_BM too big nbargs %u", nbargs);
+  va_list args;
+  value_tyBM curarg = NULL;
+  va_start (args, nbargs);
+  for (unsigned ix = 0; ix < nbargs; ix++)
+    {
+      curarg = va_arg (args, value_tyBM);
+      if (curarg == HASHEMPTYSLOT_BM)
+        continue;
+      if (isobject_BM (curarg))
+        cnt++;
+      else if (issequence_BM (curarg))
+        cnt += sequencesize_BM (curarg);
+    }
+  va_end (args);
+  if (cnt > MAXSIZE_BM)
+    FATAL_BM ("makesizedcollectset_BM too big cnt %d", cnt);
+  int siz = cnt;
+  objectval_tyBM *tinyarr[TINYSIZE_BM] = { };
+  objectval_tyBM **arr = (siz < TINYSIZE_BM) ? tinyarr
+    : calloc (prime_above_BM (siz), sizeof (objectval_tyBM *));
+  if (!arr)
+    FATAL_BM ("makesizedcollectset_BM failed to calloc for %u arguments",
+              siz);
+  va_start (args, nbargs);
+  cnt = 0;
+  for (unsigned ix = 0; ix < nbargs; ix++)
+    {
+      curarg = va_arg (args, value_tyBM);
+      if (curarg == HASHEMPTYSLOT_BM)
+        continue;
+      if (isobject_BM (curarg))
+        arr[cnt++] = (objectval_tyBM *) curarg;
+      else if (issequence_BM (curarg))
+        {
+          int seqlen = sequencesize_BM (curarg);
+          for (int ix = 0; ix < seqlen; ix++)
+            arr[cnt++] = sequencenthcomp_BM (curarg, ix);
+        }
+    }
+  va_end (args);
+  ASSERT_BM (cnt == siz);
+  const setval_tyBM *rset = makeset_BM (arr, cnt);
+  if (arr != tinyarr)
+    free (arr), arr = NULL;
+  return rset;
+}                               /* end makesizedcollectset_BM */
+
+
+
 
 void
 setgcdestroy_BM (struct garbcoll_stBM *gc, setval_tyBM * set)
@@ -829,7 +943,8 @@ datavect_to_tuple_BM (struct datavectval_stBM *dvec)
       allobj = false;
   if (allobj)
     return maketuple_BM ((objectval_tyBM **) valarr, cnt);
-  objectval_tyBM **objarr = calloc (cnt + 1, sizeof (objectval_tyBM *));
+  objectval_tyBM **objarr =
+    calloc (prime_above_BM (cnt), sizeof (objectval_tyBM *));
   if (!objarr)
     FATAL_BM ("failed to calloc for %d objects", cnt + 1);
   for (unsigned ix = 0; ix < cnt; ix++)
