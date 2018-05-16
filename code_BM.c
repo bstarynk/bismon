@@ -3151,8 +3151,10 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
     LOCALRETURN_BM (NULL);
   unsigned nodwidth = nodewidth_BM ((const value_tyBM) _.rnodv);
   _.resobj = NULL;
-  DBGPRINTF_BM ("start readmacro:run  _7sg0DjYTA8n_66vhff9SgXH"
-                " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
+  DBGPRINTF_BM ("start readmacro:run "
+                " lineno=%d colpos=%d nodwidth=%u rnod=%s",
+                lineno, colpos, nodwidth,
+                debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
   const objectval_tyBM *k_basiclo_run = BMK_4SHgzjNdlGo_1CxI9hBNDrC;
   const objectval_tyBM *k_run = BMK_4RFtYFUdfau_7Vm5jZ4Wm8e;
   ///
@@ -3175,7 +3177,10 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
         _.resclass = objclass_BM (_.resobj);
       startix++;
     }
-  if (startix + 1 > nodwidth)
+  DBGPRINTF_BM (" readmacro:run "
+                " lineno=%d colpos=%d startix#%u nodwidth#%u", lineno, colpos,
+                startix, nodwidth);
+  if (startix + 1 < nodwidth)
     {
       parsererrorprintf_BM (pars,
                             CURFRAME_BM, lineno, colpos,
@@ -3199,7 +3204,7 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
   objtouchnow_BM (_.resobj);
   DBGPRINTF_BM ("end readmacro:run resobj %s", objectdbg_BM (_.resobj));
   LOCALRETURN_BM (_.resobj);
-}                               /* end ROUTINE   _7sg0DjYTA8n_66vhff9SgXH run:readmacro */
+}                               /* end   _7sg0DjYTA8n_66vhff9SgXH run:readmacro */
 
 
 
