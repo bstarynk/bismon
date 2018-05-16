@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 404 objects
+// for 405 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -412,7 +412,8 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of run statement"
-!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _6pA1Fxh7omw_0vJfR3s4tty ()
 ~)
 
 !)_4SHgzjNdlGo_1CxI9hBNDrC
@@ -4191,6 +4192,16 @@ _4lKK08v9A0t_0GGsir35UxP _4bYUiDmxrKK_6nPPlEl8y8x) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "miniemit_node_conn#apply"
 !)_6lTDbwKEMMc_0wsIKviDSce
+
+
+
+!(_6pA1Fxh7omw_0vJfR3s4tty
+!|*
+!@ 1526480045.92
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniscan_stmt\u00b0basiclo_run"
+!)_6pA1Fxh7omw_0vJfR3s4tty
 
 
 
