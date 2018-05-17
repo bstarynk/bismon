@@ -937,14 +937,14 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 !(_0YOXUe7rEJC_3jFMjOAQRs9 |=element_of_closed_minifunc|
 !~ name (~ element_of_closed_minifunc
 ~)
-!@ 1526564756.20
+!@ 1526565479.33
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "return argument if it is contained in the closed set"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _4Q4WBLjAPTV_5WVLmhAvCJY ]
 !: _24sSVIADeHm_0Sx34wQfG7W |=locals|
- [ _97rnxb0KFqq_44veN75DG2E ]
+ { _97rnxb0KFqq_44veN75DG2E }
 !: _2TwOyPJxIz8_1rIeqaN7oRz |=closed|
  [ _5EEITf6IFH7_4DbKG99zcPW ]
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
