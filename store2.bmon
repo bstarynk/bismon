@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 416 objects
+// for 422 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1903,6 +1903,84 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for named values"
 !)_5xGpTXhdqX1_1aVTq1TZOXX
+
+
+
+!(_97rnxb0KFqq_44veN75DG2E |=o1|
+!~ name (~ o1
+~)
+!@ 1526558548.41
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "object 1 -variable or arg"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_97rnxb0KFqq_44veN75DG2E
+
+
+
+!(_93FBSk1ML0f_2WjSuKa9TNU |=o2|
+!~ name (~ o2
+~)
+!@ 1526558561.00
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "object 2 -variable or arg"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_93FBSk1ML0f_2WjSuKa9TNU
+
+
+
+!(_1Bl1iFQ8boR_1xM6MOfHV1N |=o3|
+!~ name (~ o3
+~)
+!@ 1526558570.98
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "object 3 -variable or arg"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_1Bl1iFQ8boR_1xM6MOfHV1N
+
+
+
+!(_7J4TD6w7Oow_1wnvz3Y6MJq |=o4|
+!~ name (~ o4
+~)
+!@ 1526558582.74
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "object 4 -variable or arg"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_7J4TD6w7Oow_1wnvz3Y6MJq
+
+
+
+!(_5E5xXyQM8Ev_2MTW3fNBHby |=o5|
+!~ name (~ o5
+~)
+!@ 1526558593.52
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "object 5 -variable or arg"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_5E5xXyQM8Ev_2MTW3fNBHby
+
+
+
+!(_0e0OBmxUxHQ_5CYpfQeXywM |=o6|
+!~ name (~ o6
+~)
+!@ 1526558604.25
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "object 6 -variable or arg"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_0e0OBmxUxHQ_5CYpfQeXywM
 
 
 
