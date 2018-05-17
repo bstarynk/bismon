@@ -630,8 +630,14 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                                        "      _.o%s = objectcast_BM (callclos%s->nodt_sons[%d]);\n",
                                        varidbuf, routidbuf, clix);
           else
-            FAILHERE (makenode3_BM
-                      (k_closed, _.varob, _.typob, taggedint_BM (clix)));
+            {
+              objstrbufferprintfpayl_BM (_.modgenob,
+                                         "#error unexpected type %s for closed %s\n"
+                                         "      ;\n", objectdbg_BM (_.typob),
+                                         varidbuf);
+              FAILHERE (makenode3_BM
+                        (k_closed, _.varob, _.typob, taggedint_BM (clix)));
+            }
         }
       objstrbufferprintfpayl_BM (_.modgenob,
                                  "   } // fetched %d closed values in %s.\n",
