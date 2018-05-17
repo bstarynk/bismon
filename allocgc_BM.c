@@ -242,8 +242,9 @@ extendedgcproc_BM (struct garbcoll_stBM *gc, extendedval_tyBM xval,
       }
     default:
       FATAL_BM
-        ("extendedgcproc_BM ty#%d unexpected for xval@%p fromob=%s depth=%d",
-         ty, xval, objectdbg_BM (fromob), depth);
+        ("extendedgcproc_BM ty#%d unexpected for xval@%p fromob=%s of %s depth=%d",
+         ty, xval, objectdbg_BM (fromob),
+         objectdbg1_BM (objclass_BM (fromob)), depth);
     }
 }                               /* end extendedgcproc_BM */
 
