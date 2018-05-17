@@ -62,6 +62,16 @@ value_tyBM crout_3yQlckX4DRh_4b9l9FBSSSL_BM     //#0+
   // fetch 1 arguments:
   _.v_4Q4WBLjAPTV_5WVLmhAvCJY = arg0;
   // fetched 1 arguments.
+  {                             // fetch 1 closed values in same_as_closed_minifunc:
+    const closure_tyBM *callclos_3yQlckX4DRh_4b9l9FBSSSL =
+      (stkf && stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+      ? (closurecast_BM (stkf->stkfram_callfun)) : NULL;
+    unsigned nbclosed_3yQlckX4DRh_4b9l9FBSSSL =
+      closurewidth_BM ((const value_tyBM) callclos_3yQlckX4DRh_4b9l9FBSSSL);
+    if (nbclosed_3yQlckX4DRh_4b9l9FBSSSL > 0)
+      _.v_5EEITf6IFH7_4DbKG99zcPW =
+        callclos_3yQlckX4DRh_4b9l9FBSSSL->nodt_sons[0];
+  }                             // fetched 1 closed values in _3yQlckX4DRh_4b9l9FBSSSL.
   // routine _3yQlckX4DRh_4b9l9FBSSSL body:
 
 startblock__8seRhfNtGTR_4rOgARd0hVM:__attribute__ ((unused));
@@ -135,6 +145,7 @@ value_tyBM crout_8imWClcIFKt_6w2H2ouB4I6_BM     //#1+
   _.v_8jKgolslEuE_4dxzrK5R2B4 = arg1;
   _.v_4Q4WBLjAPTV_5WVLmhAvCJY = arg2;
   // fetched 3 arguments.
+  // no closed values in iterate_sequence_minifunc.
   // routine _8imWClcIFKt_6w2H2ouB4I6 body:
 
 startblock__2W6NObLb2d4_6OfkP3dYlF3:__attribute__ ((unused));

@@ -288,14 +288,24 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
-                 objectval_tyBM * routprepob; objectval_tyBM * modgenob;
-                 objectval_tyBM * modulob; objectval_tyBM * routob;
-                 objectval_tyBM * hsetblockob; value_tyBM blocksetv;
-                 value_tyBM argtupv; objectval_tyBM * bodyob;
-                 objectval_tyBM * resultob; value_tyBM setnumv;
-                 value_tyBM setvalv; value_tyBM setconstv;
-                 objectval_tyBM * varob; value_tyBM emitv;
-                 objectval_tyBM * typob; value_tyBM errorv;
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * modulob;      //
+                 objectval_tyBM * routob;       //
+                 objectval_tyBM * hsetblockob;  //
+                 objectval_tyBM * bodyob;       //
+                 objectval_tyBM * resultob;     //
+                 objectval_tyBM * curclosob;    //
+                 value_tyBM blocksetv;  //
+                 value_tyBM argtupv;
+                 value_tyBM closedseqv; //
+                 value_tyBM setnumv;    //
+                 value_tyBM setvalv;    //
+                 value_tyBM setconstv;  //
+                 objectval_tyBM * varob;        //
+                 value_tyBM emitv;      //
+                 objectval_tyBM * typob;        //
+                 value_tyBM errorv;     //
                  value_tyBM causev;);
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
@@ -314,6 +324,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
   objectval_tyBM *k_object = BMK_7T9OwSFlgov_0wVJaK1eZbn;
   objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
+  objectval_tyBM *k_closed = BMK_2TwOyPJxIz8_1rIeqaN7oRz;
   //objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
   //objectval_tyBM *k_emit_expression = BMK_9lXSe7DrOl6_7hghYt0LhTF;
   //objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
@@ -356,14 +367,16 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   {
     objlock_BM (_.routob);
     _.argtupv = objgetattr_BM (_.routob, k_arguments);
+    _.closedseqv = objgetattr_BM (_.routob, k_closed);
     _.bodyob = objectcast_BM (objgetattr_BM (_.routob, k_body));
     _.resultob = objectcast_BM (objgetattr_BM (_.routob, k_result));
     objunlock_BM (_.routob);
   }
   DBGPRINTF_BM
-    ("emit_definition°simple_routine_preparation routob=%s rank#%d argtup=%s bodyob=%s resultob=%s",
+    ("emit_definition°simple_routine_preparation routob=%s rank#%d argtup=%s closedseq=%s bodyob=%s resultob=%s",
      objectdbg_BM (_.routob), rank,
      debug_outstr_value_BM (_.argtupv, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.closedseqv, CURFRAME_BM, 0),
      objectdbg1_BM (_.bodyob), objectdbg2_BM (_.resultob));
   {
     objlock_BM (_.resultob);
@@ -495,6 +508,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                              "             || stkf->stkfram_pA.htyp == typayl_StackFrame_BM\n"
                              "             || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);\n");
   objstrbufferprintfpayl_BM (_.modgenob, "   _.stkfram_prev = stkf;\n");
+  //// emit the fetching of arguments
   objstrbufferprintfpayl_BM (_.modgenob,
                              "   // fetch %d arguments:\n", nbargs);
   DBGPRINTF_BM
@@ -566,6 +580,64 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
     }
   objstrbufferprintfpayl_BM (_.modgenob, "   // fetched %d arguments.\n",
                              nbargs);
+  /// emit the fetching of closed values
+  int nbclosed = sequencesize_BM (_.closedseqv);
+  DBGPRINTF_BM
+    ("emit_definition°simple_routine_preparation routprepob=%s closedseq=%s nbclosed#%d",
+     objectdbg_BM (_.routprepob), debug_outstr_value_BM (_.closedseqv,
+                                                         CURFRAME_BM, 0),
+     nbclosed);
+  if (nbclosed == 0)
+    objstrbufferprintfpayl_BM (_.modgenob, "   // no closed values in %s.\n",
+                               objectdbg_BM (_.routob));
+  else
+    {
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "   { // fetch %d closed values in %s:\n",
+                                 nbclosed, objectdbg_BM (_.routob));
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "   const closure_tyBM* callclos%s =\n",
+                                 routidbuf);
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)\n");
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;\n");
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "   unsigned nbclosed%s = closurewidth_BM ((const value_tyBM) callclos%s);\n",
+                                 routidbuf, routidbuf);
+      for (int clix = 0; clix < nbclosed; clix++)
+        {
+          _.varob = sequencenthcomp_BM (_.closedseqv, clix);
+          WEAKASSERT_BM (_.varob);
+          objlock_BM (_.varob);
+          _.typob = objectcast_BM (objgetattr_BM (_.varob, k_c_type));
+          objunlock_BM (_.varob);
+          DBGPRINTF_BM
+            ("emit_definition°simple_routine_preparation routprepob=%s routob=%s clix#%d closed varob=%s typob=%s",
+             objectdbg_BM (_.routprepob), objectdbg1_BM (_.routob), clix,
+             objectdbg2_BM (_.varob), objectdbg3_BM (_.typob));
+          char varidbuf[32];
+          memset (varidbuf, 0, sizeof (varidbuf));
+          idtocbuf32_BM (objid_BM (_.varob), varidbuf);
+          objstrbufferprintfpayl_BM (_.modgenob, "   if (nbclosed%s > %d)\n",
+                                     routidbuf, clix);
+          if (_.typob == k_value)
+            objstrbufferprintfpayl_BM (_.modgenob,
+                                       "      _.v%s = callclos%s->nodt_sons[%d];\n",
+                                       varidbuf, routidbuf, clix);
+          else if (_.typob == k_object)
+            objstrbufferprintfpayl_BM (_.modgenob,
+                                       "      _.o%s = objectcast_BM (callclos%s->nodt_sons[%d]);\n",
+                                       varidbuf, routidbuf, clix);
+          else
+            FAILHERE (makenode3_BM
+                      (k_closed, _.varob, _.typob, taggedint_BM (clix)));
+        }
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "   } // fetched %d closed values in %s.\n",
+                                 nbclosed, routidbuf);
+    }
+  /// emit the body
   objstrbufferprintfpayl_BM (_.modgenob, "   // routine %s body:\n",
                              routidbuf);
   DBGPRINTF_BM

@@ -62,6 +62,7 @@ value_tyBM crout_43Y25VLmh6s_3JRpERevcR4_BM     //#0+
   // fetch 1 arguments:
   _.v_3vRFuniDv1K_4bQ7DeekM2I = arg0;
   // fetched 1 arguments.
+  // no closed values in successor_test_minifunc.
   // routine _43Y25VLmh6s_3JRpERevcR4 body:
 
 startblock__7XasLoEUKwe_9upxyFeheD5:__attribute__ ((unused));
@@ -131,6 +132,7 @@ value_tyBM crout_9O2lgu1TweO_0mVlpTwrBG1_BM     //#1+
   // fetch 1 arguments:
   _.v_5EEITf6IFH7_4DbKG99zcPW = arg0;
   // fetched 1 arguments.
+  // no closed values in second_test_minifunc.
   // routine _9O2lgu1TweO_0mVlpTwrBG1 body:
 
 startblock__8yXqsN7LuB3_0vODsT2M9Lh:__attribute__ ((unused));
