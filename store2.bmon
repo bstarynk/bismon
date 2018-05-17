@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 415 objects
+// for 416 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1056,6 +1056,25 @@ _6QdXYI1ivTg_8NnpdDMRQK5 ])
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_6mRueRGWGTa_02FjdAdTggP
+
+
+
+!(_9uVMjU02S3p_5ojxFlLbSTx |=equal_val|
+!~ name (~ equal_val
+~)
+!@ 1526557459.97
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "primitive for deep value equality using valequal_BM(v1,v2)"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "(/*" _9uVMjU02S3p_5ojxFlLbSTx  ":*/"  "valequal_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_09RxU8xDco3_2Zxwfb13oDZ)  ")))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_9uVMjU02S3p_5ojxFlLbSTx
 
 
 
