@@ -2051,26 +2051,37 @@ again:
 
 
 ////////////////////////////////////////////////////////////////
-//_0FdMKAvShgD_7itPSCL8D6P
 
 // command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P
 
-/// ,find_object (criterium moreobjects skippredicate)
+/// ,find_object (criterium moreobjects predicateskip)
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P);
 
 value_tyBM
 ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
 (struct stackframe_stBM * stkf, //
- const value_tyBM arg1,         //
- const value_tyBM arg2,         //
- const value_tyBM arg3,         //
+ const value_tyBM arg1,         // criterv
+ const value_tyBM arg2,         // moreobjv
+ const value_tyBM arg3,         // predskipv
  const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0FdMKAvShgD_7itPSCL8D6P,
                  value_tyBM resultv;
+                 value_tyBM criterv;
+                 value_tyBM moreobjv;
+                 value_tyBM predskipv;
+                 value_tyBM criterclosv;
+                 value_tyBM moresetv; value_tyBM skipclosv;
+                 objectval_tyBM * finderob;
     );
-#warning unimplemented _0FdMKAvShgD_7itPSCL8D6P routine
+  _.criterv = arg1;
+  _.moreobjv = arg2;
+  _.predskipv = arg3;
+  DBGPRINTF_BM ("command_handler#find_object start criterv=%s moreobjv=%s predskipv=%s", debug_outstr_value_BM (_.criterv, CURFRAME_BM, 0),     //
+                debug_outstr_value_BM (_.moreobjv, CURFRAME_BM, 0),     //
+                debug_outstr_value_BM (_.predskipv, CURFRAME_BM, 0));
+#warning unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine
   WEAKASSERT_BM (false
                  &&
                  "unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine");

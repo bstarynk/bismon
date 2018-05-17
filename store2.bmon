@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 408 objects
+// for 409 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1231,6 +1231,21 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 !: _0xbmmxnN8E8_0ZuEqJmqMNH |=command_handler|
  % _0FdMKAvShgD_7itPSCL8D6P ()
 !)_5eeged9TJCp_198HZtkJ3rO
+
+
+
+!(_3BFt4NfJmZC_7iYi2dwM38B |=first_misc_module|
+!~ name (~ first_misc_module
+~)
+!@ 1526546716.63
+!$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "a module with various simple minifunc-s"
+!# 1
+!& _8imWClcIFKt_6w2H2ouB4I6
+ // emitted module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
+
+!)_3BFt4NfJmZC_7iYi2dwM38B
 
 
 
@@ -2571,8 +2586,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx
  "temporary test module"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _8imWClcIFKt_6w2H2ouB4I6 _8VzbBncLSEl_2dNNPe0VjQh }
-!# 3
-!& _8imWClcIFKt_6w2H2ouB4I6
+!# 2
 !& _8VzbBncLSEl_2dNNPe0VjQh
 !& _8U5iv96WH3y_7ILTBQ0nOiI
 !)_66DuQtJBPqt_8w9fOCyxJve
