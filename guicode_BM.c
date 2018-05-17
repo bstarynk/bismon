@@ -1060,19 +1060,19 @@ ROUTINEOBJNAME_BM (_0zf6nSKwSlU_6Cv3LMh1MmV)    //
         }
       LOCALRETURN_BM (_.recv);
     }
-//- else if (istaggedint_BM (_.attv))
-//-   {
-//-     int attix = getint_BM (_.attv);
-//-     objlock_BM (_.recv);
-//-     objputcomp_BM (_.recv, attix, _.compv);
-//-     objunlock_BM (_.recv);
-//-     log_begin_message_BM ();
-//-     log_puts_message_BM ("In object ");
-//-     log_object_message_BM (objectcast_BM (_.recv));
-//-     log_printf_message_BM (" remove component#%d.", attix);
-//-     log_end_message_BM ();
-//-     LOCALRETURN_BM (_.recv);
-//-   }
+  else if (istaggedint_BM (_.attv))
+    {
+      int attix = getint_BM (_.attv);
+      objlock_BM (_.recv);
+      objremoveonecomp_BM (_.recv, attix);
+      objunlock_BM (_.recv);
+      log_begin_message_BM ();
+      log_puts_message_BM ("In object ");
+      log_object_message_BM (objectcast_BM (_.recv));
+      log_printf_message_BM (" remove component#%d.", attix);
+      log_end_message_BM ();
+      LOCALRETURN_BM (_.recv);
+    }
   else
     {
       if (pthread_self () == mainthreadid_BM)

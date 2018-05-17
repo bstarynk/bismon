@@ -543,6 +543,13 @@ objreservecomps_BM (objectval_tyBM * obj, unsigned gap)
   obj->ob_compvec = datavect_reserve_BM (obj->ob_compvec, gap);
 }                               /* end objreservecomps_BM */
 
+void
+objremoveonecomp_BM (objectval_tyBM * obj, int rk)
+{
+  if (!isobject_BM ((const value_tyBM) obj) || !obj->ob_compvec)
+    return;
+  obj->ob_compvec = datavect_removeone_BM (obj->ob_compvec, rk);
+}                               /* end objremoveonecomp_BM */
 
 void
 objresetcomps_BM (objectval_tyBM * obj, unsigned len)

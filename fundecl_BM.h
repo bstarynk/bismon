@@ -466,6 +466,7 @@ static inline value_tyBM objgetcomp_BM (const objectval_tyBM * obj, int rk);
 static inline void objputcomp_BM (objectval_tyBM * obj, int rk,
                                   const value_tyBM compval);
 static inline void objreservecomps_BM (objectval_tyBM * obj, unsigned gap);
+static inline void objremoveonecomp_BM (objectval_tyBM * obj, int rk);
 static inline void objresetcomps_BM (objectval_tyBM * obj, unsigned len);
 static inline void objappendcomp_BM (objectval_tyBM * obj,
                                      value_tyBM compval);
@@ -670,6 +671,9 @@ static inline struct datavectval_stBM *datavect_insertone_BM (struct
 extern struct datavectval_stBM *datavect_remove_BM (struct datavectval_stBM
                                                     *dvec, int rk,
                                                     unsigned len);
+
+extern struct datavectval_stBM *datavect_removeone_BM (struct datavectval_stBM
+                                                       *dvec, int ix);
 
 extern const node_tyBM *datavect_to_node_BM (struct datavectval_stBM *dvec,
                                              const objectval_tyBM * obconn);
