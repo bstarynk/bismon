@@ -162,15 +162,12 @@ startblock__60FKeHfNUo3_9OSN4Cqm8zI:__attribute__ ((unused));
          valequal_BM ((_.v_5EEITf6IFH7_4DbKG99zcPW),
                       (_.v_4Q4WBLjAPTV_5WVLmhAvCJY))))
       {
-
-      }                         //endwhen _8hUpJbSLQUS_88aqogJAi2Q  
-    else
-      {                         /*cond else _7wPbopKi9ZB_1ifk5LEKSqu */
         /*return _3dJ2b1hmBuw_7Pu5iDjauLr: */ _.v_3qw9bnATIhq_8loBraLeXzQ =
-          // returned 
+          // returned  
           _.v_5EEITf6IFH7_4DbKG99zcPW;
         goto epilog_4iEFTEcHxeb_6lH464uFkTC;
-      }                         /*cond else _7wPbopKi9ZB_1ifk5LEKSqu */
+
+      }                         //endwhen _8hUpJbSLQUS_88aqogJAi2Q  
 /*endcond _7wPbopKi9ZB_1ifk5LEKSqu*/
 
 /* !endingblock _60FKeHfNUo3_9OSN4Cqm8zI */
