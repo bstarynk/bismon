@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 422 objects
+// for 423 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2518,6 +2518,26 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the serial number type"
 !)_535ulGVFUfw_4yWLeDp4Pxd
+
+
+
+!(_65D452VAyMn_9tMPMuJ8r2p |=set_contains|
+!~ name (~ set_contains
+~)
+!@ 1526558876.90
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "primitive for set_contains(v1,o2)"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "(/*" _65D452VAyMn_9tMPMuJ8r2p  ":*/"  " "  "setcontains_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU)  ")))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_65D452VAyMn_9tMPMuJ8r2p
 
 
 
