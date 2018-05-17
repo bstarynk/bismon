@@ -20,6 +20,8 @@
 #include "emitcode_BM.const.h"
 
 
+extern const char *asprintf_prev_module_BM (const char *srcdir,
+                                            objectval_tyBM * obmodule);
 
 //// for the method emit_c_type:c_opaque
 extern objrout_sigBM ROUTINEOBJNAME_BM (_6gRlN8loM4E_4pSsNmiCeIa);

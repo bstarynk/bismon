@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 406 objects
+// for 408 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1218,6 +1218,19 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector, e.g. to fill vector_object"
 !)_8pmtJTuEbBF_4xNgNCOElwL
+
+
+
+!(_5eeged9TJCp_198HZtkJ3rO |=find_object|
+!~ name (~ find_object
+~)
+!@ 1526544731.81
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "command ,find_object (criterium moreobjects skippredicate)"
+!: _0xbmmxnN8E8_0ZuEqJmqMNH |=command_handler|
+ % _0FdMKAvShgD_7itPSCL8D6P ()
+!)_5eeged9TJCp_198HZtkJ3rO
 
 
 
@@ -3167,6 +3180,16 @@ _1yHf2QrNJFe_26wMXjkynuo
 !# 1
 !& _01p2tksvq9A_1b8os2WLues
 !)_0CsCkIkpNX6_52gRCYPcnW2
+
+
+
+!(_0FdMKAvShgD_7itPSCL8D6P
+!|*
+!@ 1526544731.81
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "find_object#command_handler"
+!)_0FdMKAvShgD_7itPSCL8D6P
 
 
 

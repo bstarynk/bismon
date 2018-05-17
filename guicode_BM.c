@@ -2051,26 +2051,28 @@ again:
 
 
 ////////////////////////////////////////////////////////////////
+//_0FdMKAvShgD_7itPSCL8D6P
 
-
-// command_handler#find_object _7jnGWwcyFXI_0olcpbhyr0M
+// command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P
 
 /// ,find_object (criterium moreobjects skippredicate)
-extern objrout_sigBM ROUTINEOBJNAME_BM (_7jnGWwcyFXI_0olcpbhyr0M);
+extern objrout_sigBM ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_7jnGWwcyFXI_0olcpbhyr0M) // command_handler#find_object
-(struct stackframe_stBM* stkf, //
- const value_tyBM arg1, //
- const value_tyBM arg2, //
- const value_tyBM arg3, //
- const value_tyBM arg4_  __attribute__((unused)), //
- const quasinode_tyBM* restargs_  __attribute__((unused)))
+ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         //
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
-  LOCALFRAME_BM (stkf, /*descr:*/ NULL,
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_0FdMKAvShgD_7itPSCL8D6P,
                  value_tyBM resultv;
-  );
-#warning unimplemented _7jnGWwcyFXI_0olcpbhyr0M routine
-  WEAKASSERT_BM(false && "unimplemented command_handler#find_object _7jnGWwcyFXI_0olcpbhyr0M routine");
-  LOCALRETURN_BM(_.resultv);
-} /* end command_handler#find_object _7jnGWwcyFXI_0olcpbhyr0M*/
+    );
+#warning unimplemented _0FdMKAvShgD_7itPSCL8D6P routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P */
