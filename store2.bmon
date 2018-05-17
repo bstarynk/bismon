@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 414 objects
+// for 415 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1244,8 +1244,6 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 !# 2
 !& _8imWClcIFKt_6w2H2ouB4I6
 !& _3yQlckX4DRh_4b9l9FBSSSL
- // emitted module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
-
 !)_3BFt4NfJmZC_7iYi2dwM38B
 
 
@@ -3350,6 +3348,17 @@ _5r6ekO9FCAj_7hCbcooblXl
 
 
 
+!(_1qFf9AUO2W9_8azcQljqB3I
+!@ 1526552109.33
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _2DH0ucElTgh_62vxjxLcfev ( _4Q4WBLjAPTV_5WVLmhAvCJY)
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+_4Q4WBLjAPTV_5WVLmhAvCJY
+!)_1qFf9AUO2W9_8azcQljqB3I
+
+
+
 !(_1rIoTXPOfGY_2AFqgfS5G7T
 !@ 1524232080.98
 !$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
@@ -4082,10 +4091,12 @@ _5a7gOTbvw4I_6PzXru7uInx
 
 
 !(_5Ad0ZdurQuC_1A6Kn7qopbm
-!@ 1526547258.17
+!@ 1526552109.33
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
-!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
- * _7KdDnQYcbeY_4LbTWNwFIFY ()
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+ * _0zv9Zs8csvs_3peZsPzFTb6 ( _5EEITf6IFH7_4DbKG99zcPW _4Q4WBLjAPTV_5WVLmhAvCJY)
+!# 1
+!& _1qFf9AUO2W9_8azcQljqB3I
 !)_5Ad0ZdurQuC_1A6Kn7qopbm
 
 
