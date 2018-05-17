@@ -67,8 +67,14 @@ value_tyBM crout_3yQlckX4DRh_4b9l9FBSSSL_BM     //#0+
 startblock__8seRhfNtGTR_4rOgARd0hVM:__attribute__ ((unused));
   {                             /* +block _8seRhfNtGTR_4rOgARd0hVM */
     if                          /*cond _8aGb7reuzLX_3sgkigRSOpu */
-/*when _5Ad0ZdurQuC_1A6Kn7qopbm:*/ (NULL)
+      /*when _5Ad0ZdurQuC_1A6Kn7qopbm: */
+      ((                        /*same_val: */
+         (_.v_5EEITf6IFH7_4DbKG99zcPW) == (_.v_4Q4WBLjAPTV_5WVLmhAvCJY)))
       {
+        /*return _1qFf9AUO2W9_8azcQljqB3I: */ _.v_3qw9bnATIhq_8loBraLeXzQ =
+          // returned  
+          _.v_4Q4WBLjAPTV_5WVLmhAvCJY;
+        goto epilog_3yQlckX4DRh_4b9l9FBSSSL;
 
       }                         //endwhen _5Ad0ZdurQuC_1A6Kn7qopbm  
 /*endcond _8aGb7reuzLX_3sgkigRSOpu*/

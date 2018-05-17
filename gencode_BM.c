@@ -371,16 +371,16 @@ miniscan_var_BM (objectval_tyBM * varob,
                  objectval_tyBM * routprepob, int depth,
                  objectval_tyBM * fromob, struct stackframe_stBM *stkf)
 {
-  objectval_tyBM *k_miniscan_var = BMK_6jh60mO0Cgd_84B0HiNphqA;
-  objectval_tyBM *k_result = BMK_7bD9VtDkGSn_7lxHeYuuFLR;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
-  objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
-  objectval_tyBM *k_numbers = BMK_32eKNcTZ9HN_80t0nk47Mha;
-  objectval_tyBM *k_locals = BMK_24sSVIADeHm_0Sx34wQfG7W;
+  objectval_tyBM *k_closed = BMK_2TwOyPJxIz8_1rIeqaN7oRz;
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
-  const objectval_tyBM *k_simple_routine_preparation =
-    BMK_80060zKi6Un_3isCStegT8A;
+  objectval_tyBM *k_locals = BMK_24sSVIADeHm_0Sx34wQfG7W;
+  objectval_tyBM *k_miniscan_var = BMK_6jh60mO0Cgd_84B0HiNphqA;
+  objectval_tyBM *k_numbers = BMK_32eKNcTZ9HN_80t0nk47Mha;
+  objectval_tyBM *k_result = BMK_7bD9VtDkGSn_7lxHeYuuFLR;
+  objectval_tyBM *k_simple_routine_preparation = BMK_80060zKi6Un_3isCStegT8A;
+  objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
   int failin = -1;
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_var,
@@ -409,7 +409,8 @@ miniscan_var_BM (objectval_tyBM * varob,
   if (isnode_BM (_.vrolv))
     {
       _.rolconnob = nodeconn_BM (_.vrolv);
-      if (_.rolconnob == k_arguments || _.rolconnob == k_locals)
+      if (_.rolconnob == k_arguments || _.rolconnob == k_locals
+          || _.rolconnob == k_closed)
         {
           LOCALRETURN_BM (k_value);
         }
