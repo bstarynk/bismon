@@ -2067,9 +2067,7 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0FdMKAvShgD_7itPSCL8D6P,
-                 value_tyBM resultv;
-                 value_tyBM criterv;
-                 value_tyBM moreobjv;
+                 value_tyBM resultv; value_tyBM criterv; value_tyBM moreobjv;
                  value_tyBM predskipv; value_tyBM criterclosv;
                  value_tyBM moresetv; value_tyBM skipclosv;
                  objectval_tyBM * finderob;
