@@ -2231,8 +2231,7 @@ failure:
 extern void miniemit_expression_BM (struct stackframe_stBM
                                     *stkf, value_tyBM expv,
                                     objectval_tyBM * modgenob,
-                                    objectval_tyBM *
-                                    routprepob,
+                                    objectval_tyBM * routprepob,
                                     objectval_tyBM * fromob, int depth);
 extern void miniemit_var_BM (struct stackframe_stBM *stkf,
                              objectval_tyBM * refob,
@@ -3874,7 +3873,9 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
                  objectval_tyBM * routob;       //
                  objectval_tyBM * exitob;       //
                  objectval_tyBM * connob;       //
+                 objectval_tyBM * varob;        //
                  value_tyBM runv;       //
+                 value_tyBM compv;      //
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
                  value_tyBM resultv;
@@ -3888,11 +3889,17 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
   WEAKASSERT_BM (_.routprepob);
   WEAKASSERT_BM (istaggedint_BM (arg4));
   int failin = -1;
-#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (Cause); goto failure; } while(0)
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM) (Cause); goto failure; } while(0)
+  char stmtidbuf[32];
+  memset (stmtidbuf, 0, sizeof (stmtidbuf));
+  idtocbuf32_BM (objid_BM (_.stmtob), stmtidbuf);
   DBGPRINTF_BM
     ("emit_statement°basiclo_run start stmtob=%s modgenob=%s routprepob=%s depth#%d",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
      objectdbg2_BM (_.routprepob), depth);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbuffernewlinepayl_BM (_.modgenob);
+  objstrbufferprintfpayl_BM (_.modgenob, "{ // run %s\n", stmtidbuf);
   _.runv = objgetattr_BM (_.stmtob, k_run);
   if (isnode_BM (_.runv) && ((_.connob = nodeconn_BM (_.runv)) == k_chunk))
     {
@@ -3900,17 +3907,56 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
                     objectdbg_BM (_.stmtob),    //
                     debug_outstr_value_BM (_.runv, CURFRAME_BM, 0));
       int chklen = nodewidth_BM (_.runv);
+      for (int cix = 0; cix < chklen; cix++)
+        {
+          _.compv = nodenthson_BM (_.runv, cix);
+          if (istaggedint_BM (_.compv))
+            objstrbufferprintfpayl_BM (_.modgenob, "%lld",
+                                       (long long) getint_BM (_.compv));
+          else if (isstring_BM (_.compv))
+            objstrbufferappendcstrpayl_BM (_.modgenob,
+                                           bytstring_BM (_.compv));
+          else if (isobject_BM (_.compv))
+            {
+              char compidbuf[32];
+              memset (compidbuf, 0, sizeof (compidbuf));
+              idtocbuf32_BM (objid_BM ((objectval_tyBM *) _.compv),
+                             compidbuf);
+              objstrbufferappendcstrpayl_BM (_.modgenob, compidbuf);
+            }
+          else if (isnode_BM (_.compv))
+            {
+              _.connob = nodeconn_BM (_.compv);
+              int complen = nodewidth_BM (_.compv);
+              if (_.connob == k_variable && complen == 1)
+                {
+                  _.varob = nodenthson_BM (_.compv, 0);
+                  if (!_.varob)
+                    FAILHERE (makenode2_BM
+                              (k_variable, _.compv, taggedint_BM (cix)));
+                  miniemit_var_BM (CURFRAME_BM, _.varob, _.modgenob,
+                                   _.routprepob, _.stmtob, depth + 1);
+                }
+              else
+                FAILHERE (makenode2_BM
+                          (k_curcomp, _.compv, taggedint_BM (cix)));
+            }
+          else
+            FAILHERE (makenode2_BM (k_curcomp, _.compv, taggedint_BM (cix)));
+        }
     }
   else if (_.runv)
     {
       DBGPRINTF_BM ("emit_statement°basiclo_run  stmtob=%s nonchunk runv=%s", objectdbg_BM (_.stmtob), //
                     debug_outstr_value_BM (_.runv, CURFRAME_BM, 0));
+      miniemit_expression_BM (CURFRAME_BM, _.runv, _.modgenob, _.routprepob,
+                              _.stmtob, depth + 1);
     }
-#warning unimplemented _0AUL5kbXVmq_06A8ZbHZi1Y routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented emit_statement°basiclo_run _0AUL5kbXVmq_06A8ZbHZi1Y routine");
-  LOCALRETURN_BM (_.resultv);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbufferprintfpayl_BM (_.modgenob, ";\n} // end run %s\n", stmtidbuf);
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_run end stmtob=%s", objectdbg_BM (_.stmtob));
+  LOCALRETURN_BM (_.stmtob);
 #undef FAILHERE
 failure:
   DBGPRINTF_BM ("emit_statement°basiclo_run failin %d stmtob %s routprep %s cause %s", //
@@ -4488,8 +4534,8 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
   objputattr_BM (_.propob, k_switch, _.switchob);
   objtouchnow_BM (_.propob);
   objreservecomps_BM (_.switchob, nbobjmod);
-  for (int ix = 0; ix < nbobjmod; ix++)
-    objappendcomp_BM (_.switchob, makeset_BM (0, NULL));
+  for (int ix = 0; ix < (int) nbobjmod; ix++)
+    objappendcomp_BM (_.switchob, makeset_BM (NULL, 0));
   DBGPRINTF_BM
     ("emit_statement°basiclo_objswitch stmtob=%s switchob=%s",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.switchob));
