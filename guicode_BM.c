@@ -2046,3 +2046,31 @@ again:
     }
   LOCALRETURN_BM (_.transientv);
 }                               /* end command_handler#transient _2WuloCaOgGk_9oQOcW9c5Je */
+
+
+
+
+////////////////////////////////////////////////////////////////
+
+
+// command_handler#find_object _7jnGWwcyFXI_0olcpbhyr0M
+
+/// ,find_object (criterium moreobjects skippredicate)
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7jnGWwcyFXI_0olcpbhyr0M);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_7jnGWwcyFXI_0olcpbhyr0M) // command_handler#find_object
+(struct stackframe_stBM* stkf, //
+ const value_tyBM arg1, //
+ const value_tyBM arg2, //
+ const value_tyBM arg3, //
+ const value_tyBM arg4_  __attribute__((unused)), //
+ const quasinode_tyBM* restargs_  __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr:*/ NULL,
+                 value_tyBM resultv;
+  );
+#warning unimplemented _7jnGWwcyFXI_0olcpbhyr0M routine
+  WEAKASSERT_BM(false && "unimplemented command_handler#find_object _7jnGWwcyFXI_0olcpbhyr0M routine");
+  LOCALRETURN_BM(_.resultv);
+} /* end command_handler#find_object _7jnGWwcyFXI_0olcpbhyr0M*/
