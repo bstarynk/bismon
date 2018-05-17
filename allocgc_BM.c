@@ -387,6 +387,20 @@ deleteobjectpayload_BM (objectval_tyBM * obj, extendedval_tyBM payl)
   ASSERT_BM (isobject_BM (obj));
   if (!payl)
     return;
+  if (istaggedint_BM (payl))
+    return;
+  if (((uintptr_t) payl & 3) == 0)
+    {
+      typedhead_tyBM *ht = (typedhead_tyBM *) payl;
+      if (ht->htyp == 0)
+        fprintf
+          (stderr,
+           "deleteobjectpayload_BM zero-typed payload unexpected  payl@%p of object %s of %s",
+           payl, objectdbg_BM (obj), objectdbg1_BM (objclass_BM (obj)));
+      weakassertfailureat_BM ("deleteobjectpayload_BM zero-typed payload",
+                              __FILE__, __LINE__);
+      return;
+    }
   int ty = valtype_BM (payl);
   if (!ty || ty == tyInt_BM)
     return;
