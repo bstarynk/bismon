@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 434 objects
+// for 435 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1290,6 +1290,20 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 !: _0xbmmxnN8E8_0ZuEqJmqMNH |=command_handler|
  % _0FdMKAvShgD_7itPSCL8D6P ()
 !)_5eeged9TJCp_198HZtkJ3rO
+
+
+
+!(_64UbCFBD19G_43TeBXhcYMy |=findrun_object|
+!~ name (~ findrun_object
+~)
+!@ 1526631859.47
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for running ,find_obj command"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+
+!)_64UbCFBD19G_43TeBXhcYMy
 
 
 

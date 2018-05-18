@@ -2066,16 +2066,26 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
  const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
+  /// see module first_misc_module for the *_minifunc listed here
+  objectval_tyBM* k_element_of_closed_minifunc = BMK_0YOXUe7rEJC_3jFMjOAQRs9;
+  objectval_tyBM* k_same_as_closed_minifunc  = BMK_3yQlckX4DRh_4b9l9FBSSSL;
+  objectval_tyBM* k_equal_to_closed_minifunc = BMK_4iEFTEcHxeb_6lH464uFkTC;
+  objectval_tyBM* k_findrun_object = BMK_64UbCFBD19G_43TeBXhcYMy;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0FdMKAvShgD_7itPSCL8D6P,
-                 value_tyBM resultv; value_tyBM criterv; value_tyBM moreobjv;
-                 value_tyBM predskipv; value_tyBM criterclosv;
-                 value_tyBM moresetv; value_tyBM skipclosv;
+                 value_tyBM resultv;    //
+                 value_tyBM criterv;    //
+                 value_tyBM moreobjv;   //
+                 value_tyBM predskipv;  //
+                 value_tyBM criterclosv;        //
+                 value_tyBM moresetv;   //
+                 value_tyBM skipclosv;  //
                  objectval_tyBM * finderob;
     );
   _.criterv = arg1;
   _.moreobjv = arg2;
   _.predskipv = arg3;
-  DBGPRINTF_BM ("command_handler#find_object start criterv=%s moreobjv=%s predskipv=%s", debug_outstr_value_BM (_.criterv, CURFRAME_BM, 0),     //
+  DBGPRINTF_BM ("command_handler#find_object start criterv=%s moreobjv=%s predskipv=%s",        //
+                debug_outstr_value_BM (_.criterv, CURFRAME_BM, 0),      //
                 debug_outstr_value_BM (_.moreobjv, CURFRAME_BM, 0),     //
                 debug_outstr_value_BM (_.predskipv, CURFRAME_BM, 0));
 #warning unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine
