@@ -664,6 +664,10 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   gcmarkmodules_BM (&GCdata);
   gcframemark_BM (&GCdata, stkfram, 0);
   unsigned long nbobjscan = 0;
+  ASSERT_BM (GCdata.gc_scanlist != NULL);
+  ((typedhead_tyBM *) GCdata.gc_scanlist)->hgc = MARKGC_BM;
+  ASSERT_BM (GCdata.gc_hset != NULL);
+  ((typedhead_tyBM *) GCdata.gc_hset)->hgc = MARKGC_BM;
   while (listlength_BM (GCdata.gc_scanlist) > 0)
     {
       value_tyBM firstv = listfirst_BM (GCdata.gc_scanlist);
@@ -672,6 +676,10 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
       objectinteriorgcmark_BM (&GCdata, (objectval_tyBM *) firstv);
       nbobjscan++;
     }
+  ((typedhead_tyBM *) GCdata.gc_scanlist)->hgc = CLEARMGC_BM;
+  ((typedhead_tyBM *) GCdata.gc_hset)->hgc = CLEARMGC_BM;
+  GCdata.gc_scanlist = NULL;
+  GCdata.gc_hset = NULL;
   unsigned long nbalive = 0;
   unsigned long nbdestroy = 0;
   for (unsigned long ix = 0; ix < alcnt; ix++)
