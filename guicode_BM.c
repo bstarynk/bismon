@@ -2075,8 +2075,8 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objectval_tyBM *k_findrun_object = BMK_64UbCFBD19G_43TeBXhcYMy;
   objectval_tyBM *k_scan_queue = BMK_6eWBdICnzoa_2FKvuyZ7Ivq;
   objectval_tyBM *k_visited_hashset = BMK_8w8gLezc1gm_4plK3EfhuGk;
-  objectval_tyBM *k_criteria = NULL;
-  objectval_tyBM *k_skip = NULL;
+  objectval_tyBM *k_criteria = BMK_0EKpB4Re4KE_6v0jMEEJgPe;
+  objectval_tyBM *k_skip = BMK_1IZ2mh67gTz_0bHC4LiI29H;
   objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0FdMKAvShgD_7itPSCL8D6P,
                  value_tyBM resultv;    //

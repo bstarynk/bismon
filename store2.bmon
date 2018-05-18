@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 437 objects
+// for 439 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -777,6 +777,17 @@ _5ve5gbSjN0r_1n61nNRPtnN _0jFqaPPHgYH_5JpjOPxQ67p _7DQyvJFMOrC_9IfC3CtYknn
 !@ 1506853467.27
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_5l2zSKsFaVm_9zs6qDOP87i
+
+
+
+!(_0EKpB4Re4KE_6v0jMEEJgPe |=criteria|
+!~ name (~ criteria
+~)
+!@ 1526659453.86
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "give a criteria, e.g. some closure"
+!)_0EKpB4Re4KE_6v0jMEEJgPe
 
 
 
@@ -2653,6 +2664,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 ~)
 
 !)_80060zKi6Un_3isCStegT8A
+
+
+
+!(_1IZ2mh67gTz_0bHC4LiI29H |=skip|
+!~ name (~ skip
+~)
+!@ 1526659497.61
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "give a skip predicate or closure"
+!)_1IZ2mh67gTz_0bHC4LiI29H
 
 
 
