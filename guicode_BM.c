@@ -2056,7 +2056,7 @@ again:
 
 // command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P
 
-/// ,find_object (criterium moreobjects predicateskip)
+/// ,find_object (criteria moreobjects predicateskip)
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P);
 
 value_tyBM
@@ -2073,6 +2073,11 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objectval_tyBM *k_same_as_closed_minifunc = BMK_3yQlckX4DRh_4b9l9FBSSSL;
   objectval_tyBM *k_equal_to_closed_minifunc = BMK_4iEFTEcHxeb_6lH464uFkTC;
   objectval_tyBM *k_findrun_object = BMK_64UbCFBD19G_43TeBXhcYMy;
+  objectval_tyBM *k_scan_queue = BMK_6eWBdICnzoa_2FKvuyZ7Ivq;
+  objectval_tyBM *k_visited_hashset = BMK_8w8gLezc1gm_4plK3EfhuGk;
+  objectval_tyBM *k_criteria = NULL;
+  objectval_tyBM *k_skip = NULL;
+  objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0FdMKAvShgD_7itPSCL8D6P,
                  value_tyBM resultv;    //
                  value_tyBM criterv;    //
@@ -2083,7 +2088,9 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
                  value_tyBM qexpv;      //
                  value_tyBM valv;       //
                  value_tyBM skipclosv;  //
-                 objectval_tyBM * finderob;
+                 objectval_tyBM * findrunob;    //
+                 objectval_tyBM * scanquob;     //
+                 objectval_tyBM * vihsetob;     //
     );
   _.criterv = arg1;
   _.moreobjv = arg2;
@@ -2093,7 +2100,7 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
                 debug_outstr_value_BM (_.moreobjv, CURFRAME_BM, 0),     //
                 debug_outstr_value_BM (_.predskipv, CURFRAME_BM, 0));
   ///
-  /// build the criterium closure
+  /// build the criteria closure
   if (isobject_BM (_.criterv))
     _.criterclosv = makeclosure1_BM (k_same_as_closed_minifunc, _.criterv);
   else if (isset_BM (_.criterv))
@@ -2116,7 +2123,7 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
         {
           log_begin_message_BM ();
           log_printf_message_BM
-            ("bad  criterium %s\n... to ,find_obj",
+            ("bad  criteria %s\n... to ,find_obj",
              debug_outstr_value_BM (_.criterv, CURFRAME_BM, 0));
           log_end_message_BM ();
         };
@@ -2168,6 +2175,19 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
     _.skipclosv = NULL;
   DBGPRINTF_BM ("command_handler#find_object skipclos=%s",
                 debug_outstr_value_BM (_.skipclosv, CURFRAME_BM, 0));
+  ///
+  _.findrunob = makeobj_BM ();
+  objputclass_BM (_.findrunob, k_findrun_object);
+  objputattr_BM (_.findrunob, k_criteria, _.criterclosv);
+  if (_.skipclosv)
+    objputattr_BM (_.findrunob, k_skip, _.skipclosv);
+  _.scanquob = makeobj_BM ();
+  objputattr_BM (_.scanquob, k_in, _.findrunob);
+  objputlistpayl_BM (_.scanquob);
+
+
+  DBGPRINTF_BM ("command_handler#find_object findrunob=%s",
+                objectdbg_BM (_.findrunob));
 #warning unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine
   WEAKASSERT_BM (false
                  &&

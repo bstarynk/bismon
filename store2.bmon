@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 435 objects
+// for 437 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2477,6 +2477,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_6eWBdICnzoa_2FKvuyZ7Ivq |=scan_queue|
+!~ name (~ scan_queue
+~)
+!@ 1526641953.96
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "give the list, queue of objects to be scanned"
+!)_6eWBdICnzoa_2FKvuyZ7Ivq
+
+
+
 !(_9kQRAaOWJ97_99Im2N6Lv0O |=second_erroneous_test_module|
 !~ name (~ second_erroneous_test_module
 ~)
@@ -3183,6 +3194,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !@ 1516304599.14
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_420mStG8BOS_3taR8WQ2dO5
+
+
+
+!(_8w8gLezc1gm_4plK3EfhuGk |=visited_hashset|
+!~ name (~ visited_hashset
+~)
+!@ 1526642065.88
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "give the hashset of already visited object"
+!)_8w8gLezc1gm_4plK3EfhuGk
 
 
 
