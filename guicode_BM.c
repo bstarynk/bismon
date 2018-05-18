@@ -2078,6 +2078,9 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objectval_tyBM *k_criteria = BMK_0EKpB4Re4KE_6v0jMEEJgPe;
   objectval_tyBM *k_skip = BMK_1IZ2mh67gTz_0bHC4LiI29H;
   objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
+  objectval_tyBM *k_list_object = BMK_1GWAOAM0UNL_75ijaqJjLiM;
+  objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
+
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0FdMKAvShgD_7itPSCL8D6P,
                  value_tyBM resultv;    //
                  value_tyBM criterv;    //
@@ -2183,9 +2186,10 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
     objputattr_BM (_.findrunob, k_skip, _.skipclosv);
   _.scanquob = makeobj_BM ();
   objputattr_BM (_.scanquob, k_in, _.findrunob);
+  objputclass_BM (_.scanquob, k_list_object);
   objputlistpayl_BM (_.scanquob);
-
-
+  objputattr_BM (_.findrunob, k_scan_queue, _.scanquob);
+  objtouchnow_BM (_.findrunob);
   DBGPRINTF_BM ("command_handler#find_object findrunob=%s",
                 objectdbg_BM (_.findrunob));
 #warning unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine
