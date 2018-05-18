@@ -2067,10 +2067,10 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   /// see module first_misc_module for the *_minifunc listed here
-  objectval_tyBM* k_element_of_closed_minifunc = BMK_0YOXUe7rEJC_3jFMjOAQRs9;
-  objectval_tyBM* k_same_as_closed_minifunc  = BMK_3yQlckX4DRh_4b9l9FBSSSL;
-  objectval_tyBM* k_equal_to_closed_minifunc = BMK_4iEFTEcHxeb_6lH464uFkTC;
-  objectval_tyBM* k_findrun_object = BMK_64UbCFBD19G_43TeBXhcYMy;
+  objectval_tyBM *k_element_of_closed_minifunc = BMK_0YOXUe7rEJC_3jFMjOAQRs9;
+  objectval_tyBM *k_same_as_closed_minifunc = BMK_3yQlckX4DRh_4b9l9FBSSSL;
+  objectval_tyBM *k_equal_to_closed_minifunc = BMK_4iEFTEcHxeb_6lH464uFkTC;
+  objectval_tyBM *k_findrun_object = BMK_64UbCFBD19G_43TeBXhcYMy;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0FdMKAvShgD_7itPSCL8D6P,
                  value_tyBM resultv;    //
                  value_tyBM criterv;    //
@@ -2078,6 +2078,8 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
                  value_tyBM predskipv;  //
                  value_tyBM criterclosv;        //
                  value_tyBM moresetv;   //
+                 value_tyBM qexpv;      //
+                 value_tyBM valv;       //
                  value_tyBM skipclosv;  //
                  objectval_tyBM * finderob;
     );
@@ -2088,6 +2090,58 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
                 debug_outstr_value_BM (_.criterv, CURFRAME_BM, 0),      //
                 debug_outstr_value_BM (_.moreobjv, CURFRAME_BM, 0),     //
                 debug_outstr_value_BM (_.predskipv, CURFRAME_BM, 0));
+  if (isobject_BM (_.criterv))
+    _.criterclosv = makeclosure1_BM (k_same_as_closed_minifunc, _.criterv);
+  else if (isset_BM (_.criterv))
+    _.criterclosv = makeclosure1_BM (k_element_of_closed_minifunc, _.criterv);
+  else if (isclosure_BM (_.criterv))
+    _.criterclosv = _.criterv;
+  else if (isnode_BM (_.criterv) && nodewidth_BM (_.criterv) == 1
+           && nodeconn_BM (_.criterv) == BMP_exclam)
+    {
+      _.qexpv = nodenthson_BM (_.criterv, 0);
+      _.criterclosv = makeclosure1_BM (k_same_as_closed_minifunc, _.qexpv);
+    }
+  else
+    _.criterclosv = makeclosure1_BM (k_same_as_closed_minifunc, _.criterv);
+  DBGPRINTF_BM ("command_handler#find_object criterclos=%s",
+                debug_outstr_value_BM (_.criterclosv, CURFRAME_BM, 0));
+  if (!isclosure_BM (_.criterclosv))
+    {
+      if (pthread_self () == mainthreadid_BM)
+        {
+          log_begin_message_BM ();
+          log_printf_message_BM
+            ("bad  criterium %s\n... to ,find_obj",
+             debug_outstr_value_BM (_.criterv, CURFRAME_BM, 0));
+          log_end_message_BM ();
+        };
+      LOCALRETURN_BM (NULL);
+    }
+  if (isobject_BM (_.moreobjv))
+    {
+      _.moresetv = makesizedset_BM (1, _.moreobjv);
+    }
+  else if (isset_BM (_.moreobjv))
+    {
+      _.moresetv = _.moreobjv;
+    }
+  else if (_.moreobjv != NULL)
+    {
+      if (pthread_self () == mainthreadid_BM)
+        {
+          log_begin_message_BM ();
+          log_printf_message_BM
+            ("bad  more objects %s\n... to ,find_obj",
+             debug_outstr_value_BM (_.moreobjv, CURFRAME_BM, 0));
+          log_end_message_BM ();
+        };
+      LOCALRETURN_BM (NULL);
+    }
+  else
+    _.moresetv = NULL;
+  DBGPRINTF_BM ("command_handler#find_object moreset=%s",
+                debug_outstr_value_BM (_.moresetv, CURFRAME_BM, 0));
 #warning unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine
   WEAKASSERT_BM (false
                  &&
