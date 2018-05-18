@@ -1243,8 +1243,10 @@ ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2EtVNhr2mHz_8CsOQJdYeCE,
-                 value_tyBM resultv; const objectval_tyBM * objbrows;
-                 value_tyBM nodv; value_tyBM cursonv;
+                 value_tyBM resultv;    //
+                 objectval_tyBM * objbrows;     //
+                 value_tyBM nodv;       //
+                 value_tyBM cursonv;    //
     );
   WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
   if (!isobject_BM (arg1))
@@ -2090,6 +2092,8 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
                 debug_outstr_value_BM (_.criterv, CURFRAME_BM, 0),      //
                 debug_outstr_value_BM (_.moreobjv, CURFRAME_BM, 0),     //
                 debug_outstr_value_BM (_.predskipv, CURFRAME_BM, 0));
+  ///
+  /// build the criterium closure
   if (isobject_BM (_.criterv))
     _.criterclosv = makeclosure1_BM (k_same_as_closed_minifunc, _.criterv);
   else if (isset_BM (_.criterv))
@@ -2100,10 +2104,10 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
            && nodeconn_BM (_.criterv) == BMP_exclam)
     {
       _.qexpv = nodenthson_BM (_.criterv, 0);
-      _.criterclosv = makeclosure1_BM (k_same_as_closed_minifunc, _.qexpv);
+      _.criterclosv = makeclosure1_BM (k_equal_to_closed_minifunc, _.qexpv);
     }
   else
-    _.criterclosv = makeclosure1_BM (k_same_as_closed_minifunc, _.criterv);
+    _.criterclosv = makeclosure1_BM (k_equal_to_closed_minifunc, _.criterv);
   DBGPRINTF_BM ("command_handler#find_object criterclos=%s",
                 debug_outstr_value_BM (_.criterclosv, CURFRAME_BM, 0));
   if (!isclosure_BM (_.criterclosv))
@@ -2118,6 +2122,8 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
         };
       LOCALRETURN_BM (NULL);
     }
+  ///
+  /// construct the moreset of additional objects to scan
   if (isobject_BM (_.moreobjv))
     {
       _.moresetv = makesizedset_BM (1, _.moreobjv);
@@ -2142,6 +2148,26 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
     _.moresetv = NULL;
   DBGPRINTF_BM ("command_handler#find_object moreset=%s",
                 debug_outstr_value_BM (_.moresetv, CURFRAME_BM, 0));
+  ///
+  /// construct the skipclosv closure, which returns non-nil to skip a value (perhaps an object)
+  if (isobject_BM (_.predskipv))
+    _.skipclosv = makeclosure1_BM (k_same_as_closed_minifunc, _.predskipv);
+  else if (isset_BM (_.predskipv))
+    _.skipclosv = makeclosure1_BM (k_element_of_closed_minifunc, _.predskipv);
+  else if (isclosure_BM (_.predskipv))
+    _.skipclosv = _.predskipv;
+  else if (isnode_BM (_.predskipv) && nodewidth_BM (_.predskipv) == 1
+           && nodeconn_BM (_.predskipv) == BMP_exclam)
+    {
+      _.qexpv = nodenthson_BM (_.predskipv, 0);
+      _.skipclosv = makeclosure1_BM (k_equal_to_closed_minifunc, _.qexpv);
+    }
+  else if (_.predskipv)
+    _.skipclosv = makeclosure1_BM (k_equal_to_closed_minifunc, _.predskipv);
+  else
+    _.skipclosv = NULL;
+  DBGPRINTF_BM ("command_handler#find_object skipclos=%s",
+                debug_outstr_value_BM (_.skipclosv, CURFRAME_BM, 0));
 #warning unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine
   WEAKASSERT_BM (false
                  &&
