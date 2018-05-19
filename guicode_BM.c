@@ -2184,17 +2184,27 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objputattr_BM (_.findrunob, k_criteria, _.criterclosv);
   if (_.skipclosv)
     objputattr_BM (_.findrunob, k_skip, _.skipclosv);
+  ///
   _.scanquob = makeobj_BM ();
   objputattr_BM (_.scanquob, k_in, _.findrunob);
   objputclass_BM (_.scanquob, k_list_object);
   objputlistpayl_BM (_.scanquob);
   objputattr_BM (_.findrunob, k_scan_queue, _.scanquob);
+  ///
+  _.vihsetob = makeobj_BM ();
+  objputclass_BM (_.vihsetob, k_hset_object);
+  objputhashsetpayl_BM (_.vihsetob, 100);
+  objputattr_BM (_.vihsetob, k_in, _.findrunob);
+  objputattr_BM (_.findrunob, k_visited_hashset, _.vihsetob);
+  ///
   objtouchnow_BM (_.findrunob);
-  DBGPRINTF_BM ("command_handler#find_object findrunob=%s",
-                objectdbg_BM (_.findrunob));
+  DBGPRINTF_BM
+    ("command_handler#find_object findrunob=%s scanquob=%s vihsetob=%s",
+     objectdbg_BM (_.findrunob), objectdbg1_BM (_.scanquob),
+     objectdbg2_BM (_.vihsetob));
 #warning unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine
   WEAKASSERT_BM (false
                  &&
                  "unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine");
-  LOCALRETURN_BM (_.resultv);
+  LOCALRETURN_BM (_.findrunob);
 }                               /* end command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P */
