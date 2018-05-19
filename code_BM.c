@@ -2102,7 +2102,7 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
   WEAKASSERT_BM (pars != NULL);
   unsigned nodwidth = nodewidth_BM ((value_tyBM) _.rnodv);
   _.resobj = NULL;
-  DBGPRINTF_BM ("start readmacro:block _0kUyX0U19K2_5mcH4RCaBl9"
+  DBGPRINTF_BM ("start readmacro:block"
                 " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
   if (nodwidth > 0
       && (_.curson =
@@ -2180,6 +2180,74 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
 }                               /* end ROUTINE _0kUyX0U19K2_5mcH4RCaBl9 block:readmacro */
 
 
+// lockobj:readmacro _9QfwVBwmu2L_4mgyQ8AEwdt
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9QfwVBwmu2L_4mgyQ8AEwdt);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_9QfwVBwmu2L_4mgyQ8AEwdt)    //lockobj:readmacro
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // node
+ const value_tyBM arg2,         // lineno
+ const value_tyBM arg3,         // colpos
+ const value_tyBM arg4,         //  parsob
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  objectval_tyBM *k_basiclo_lockobj = BMK_5w3nODhHPwk_4sXXZ1AEOPq;
+  objectval_tyBM *k_lockobj = BMK_9dso3pFLYwm_3JwHqiJK3UL;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_9QfwVBwmu2L_4mgyQ8AEwdt,
+                 const node_tyBM * rnodv;       //
+                 objectval_tyBM * parsob;       //
+                 objectval_tyBM * resob;        //
+                 objectval_tyBM * classob;      //
+                 value_tyBM inv;        //
+                 value_tyBM destv;      //
+                 value_tyBM resultv;    //
+                 value_tyBM cursonv;    //
+    );
+  _.rnodv = arg1;
+  if (!isnode_BM (arg1))
+    LOCALRETURN_BM (NULL);
+  int lineno = getint_BM (arg2);
+  int colpos = getint_BM (arg3);
+  unsigned nodwidth = nodewidth_BM ((value_tyBM) _.rnodv);
+  unsigned startix = 0;
+  if (!isobject_BM (arg4))
+    LOCALRETURN_BM (NULL);
+  _.parsob = arg4;
+  struct parser_stBM *pars = objparserpayload_BM (_.parsob);
+  if (!pars)
+    LOCALRETURN_BM (NULL);
+  if (nodwidth > 0
+      && (_.cursonv = nodenthson_BM ((const value_tyBM) _.rnodv, 0)) != NULL
+      && isnode_BM (_.cursonv) && nodeconn_BM (_.cursonv) == BMP_in)
+    {
+      _.inv = nodenthson_BM (_.cursonv, 0);
+      if (!isobject_BM (_.inv))
+        {
+          if (pars)
+            parsererrorprintf_BM (pars,
+                                  CURFRAME_BM, lineno,
+                                  colpos,
+                                  "non-object `in` for lockobj readmacro");
+          LOCALRETURN_BM (NULL);
+        }
+      _.resob = _.inv;
+      if (objectisinstance_BM (_.resob, k_basiclo_lockobj))
+        _.classob = objclass_BM (_.resob);
+      startix = 1;
+    }
+  else
+    startix = 0;
+  if (!_.classob)
+    _.classob = k_basiclo_lockobj;
+#warning unimplemented _9QfwVBwmu2L_4mgyQ8AEwdt lockobj:readmacro routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented lockobj:readmacro  _9QfwVBwmu2L_4mgyQ8AEwdt routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end lockobj:readmacro _9QfwVBwmu2L_4mgyQ8AEwdt */
+
 ////////////////
 
 // for the routine command_readmacro for assign
@@ -2195,11 +2263,13 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * rnodv;
-                 objectval_tyBM * resobj; objectval_tyBM * parsob;
-                 value_tyBM inv; value_tyBM destv;
-                 value_tyBM srcv;
-                 value_tyBM curson;
+                 const node_tyBM * rnodv;       //
+                 objectval_tyBM * resobj;       // 
+                 objectval_tyBM * parsob;       //
+                 value_tyBM inv;        //
+                 value_tyBM destv;      //
+                 value_tyBM srcv;       //
+                 value_tyBM curson;     //
     );
   _.rnodv = arg1;
   if (!isnode_BM (arg1))
@@ -2213,9 +2283,6 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
   struct parser_stBM *pars = objparserpayload_BM (_.parsob);
   if (!pars)
     LOCALRETURN_BM (NULL);
-  if (!isnode_BM (arg1))
-    LOCALRETURN_BM (NULL);
-  _.rnodv = arg1;
   const objectval_tyBM *k_basiclo_assign = BMK_3HIw09Tmj0d_3CrcFHrGJab;
   unsigned startix = 0;
   _.resobj = NULL;

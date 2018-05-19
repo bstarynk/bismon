@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 439 objects
+// for 442 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -314,6 +314,20 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 ~)
 
 !)_12QTszi1FF0_5S77twbSETI
+
+
+
+!(_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
+!~ name (~ basiclo_lockobj
+~)
+!@ 1526724247.26
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for lockobj blocks"
+!~ class (~ |supercl basiclo_block:| _4bYUiDmxrKK_6nPPlEl8y8x
+~)
+
+!)_5w3nODhHPwk_4sXXZ1AEOPq
 
 
 
@@ -1764,6 +1778,19 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !@ 1506853455.83
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_24sSVIADeHm_0Sx34wQfG7W
+
+
+
+!(_9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
+!~ name (~ lockobj
+~)
+!@ 1526723648.73
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "readmacro for lockobj"
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _9QfwVBwmu2L_4mgyQ8AEwdt ()
+!)_9dso3pFLYwm_3JwHqiJK3UL
 
 
 
@@ -5277,6 +5304,16 @@ _0UHZG9vDlR2_2Aqx86LMFuq
 !& _3qw9bnATIhq_8loBraLeXzQ
 !&  123
 !)_9OaqU9Z1t4g_69oyWJH6jD3
+
+
+
+!(_9QfwVBwmu2L_4mgyQ8AEwdt
+!|*
+!@ 1526723648.73
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "lockobj#readmacro"
+!)_9QfwVBwmu2L_4mgyQ8AEwdt
 
 
 
