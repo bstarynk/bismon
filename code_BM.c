@@ -2180,8 +2180,9 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
 }                               /* end ROUTINE _0kUyX0U19K2_5mcH4RCaBl9 block:readmacro */
 
 
-// lockobj:readmacro _9QfwVBwmu2L_4mgyQ8AEwdt
 
+
+// lockobj:readmacro _9QfwVBwmu2L_4mgyQ8AEwdt
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9QfwVBwmu2L_4mgyQ8AEwdt);
 
 value_tyBM
@@ -2200,7 +2201,9 @@ ROUTINEOBJNAME_BM (_9QfwVBwmu2L_4mgyQ8AEwdt)    //lockobj:readmacro
                  objectval_tyBM * parsob;       //
                  objectval_tyBM * resob;        //
                  objectval_tyBM * classob;      //
+                 objectval_tyBM * curob;        //
                  value_tyBM inv;        //
+                 value_tyBM lockobexpv; //
                  value_tyBM destv;      //
                  value_tyBM resultv;    //
                  value_tyBM cursonv;    //
@@ -2239,14 +2242,56 @@ ROUTINEOBJNAME_BM (_9QfwVBwmu2L_4mgyQ8AEwdt)    //lockobj:readmacro
     }
   else
     startix = 0;
+  if (startix + 1 >= nodwidth)
+    {
+      if (pars)
+        parsererrorprintf_BM (pars,
+                              CURFRAME_BM, lineno,
+                              colpos,
+                              "missing object expression for lockobj readmacro");
+      LOCALRETURN_BM (NULL);
+    }
+  _.lockobexpv = nodenthson_BM ((const value_tyBM) _.rnodv, startix);
+  for (int ix = startix + 1; ix < (int) nodwidth; ix++)
+    {
+      _.curob =
+        objectcast_BM (nodenthson_BM ((const value_tyBM) _.rnodv, ix));
+      if (!_.curob)
+        {
+          if (pars)
+            parsererrorprintf_BM (pars,
+                                  CURFRAME_BM, lineno,
+                                  colpos,
+                                  "non object son #%d for lockobj readmacro",
+                                  ix);
+          LOCALRETURN_BM (NULL);
+        }
+    }
   if (!_.classob)
     _.classob = k_basiclo_lockobj;
-#warning unimplemented _9QfwVBwmu2L_4mgyQ8AEwdt lockobj:readmacro routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented lockobj:readmacro  _9QfwVBwmu2L_4mgyQ8AEwdt routine");
-  LOCALRETURN_BM (_.resultv);
+  if (!_.resob)
+    {
+      _.resob = makeobj_BM ();
+      objputclass_BM (_.resob, _.classob);
+    }
+  objlock_BM (_.resob);
+  objreservecomps_BM (_.resob, nodwidth - startix);
+  objputattr_BM (_.resob, k_lockobj, _.lockobexpv);
+  for (int ix = startix + 1; ix < (int) nodwidth; ix++)
+    {
+      _.curob =
+        objectcast_BM (nodenthson_BM ((const value_tyBM) _.rnodv, ix));
+      WEAKASSERT_BM (_.curob != NULL);
+      objappendcomp_BM (_.resob, _.curob);
+    }
+  objunlock_BM (_.resob);
+  DBGPRINTF_BM ("lockobj:readmacro L%dC%d gives resob=%s", lineno, colpos,
+                objectdbg_BM (_.resob));
+  LOCALRETURN_BM (_.resob);
 }                               /* end lockobj:readmacro _9QfwVBwmu2L_4mgyQ8AEwdt */
+
+
+
 
 ////////////////
 
