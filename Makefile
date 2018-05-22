@@ -37,7 +37,7 @@ MODULES_SOURCES= $(sort $(wildcard modules/modbm*.c))
 
 OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst %.cc,%.o,$(BM_CXXSOURCES))
 
-.PHONY: all clean indent count modules measure measured-bismon doc redump outdump checksum indentsinglemodule singlemodule
+.PHONY: all clean indent count modules measure measured-bismon doc redump outdump checksum indentsinglemodule singlemodule indenttempmodule tempmodule
 
 all: bismon modules doc
 
@@ -142,6 +142,28 @@ singlemodule:
 	   echo missing modules/modbm$(MODULEID).c; exit 1 ; fi 
 	$(MAKE) modules/modbm$(MODULEID).so
 
+#### for temporary modules
+indenttempmodule:
+	@if [ ! -f modules/tmpmobm$(MODULEID).c ]; then \
+	   echo missing modules/tmpmobm$(MODULEID).c; exit 1 ; fi ; \
+	ms=modules/tmpmobm$(MODULEID).c ; \
+	cp -a $$ms "$$ms%"; \
+	$(INDENT) $(INDENTFLAGS) $$ms; \
+	$(INDENT) $(INDENTFLAGS) $$ms; \
+	if cmp -s $$ms "$$ms%" ; then echo unchanged module $$ms ; mv "$$ms%" $$ms ; \
+	  else echo '*indented module ' $$ms ; fi
+	@if [ -f "$(PREVIOUSMODULESOURCE)" ] && cmp -s "$(PREVIOUSMODULESOURCE)" modules/tmpmobm$(MODULEID).c ; then \
+	  mv "$(PREVIOUSMODULESOURCE)" modules/tmpmobm$(MODULEID).c ; \
+	  echo same as previous modules/tmpmobm$(MODULEID).c ; \
+	else echo '**previous'  "$(PREVIOUSMODULESOURCE)" different of  modules/tmpmobm$(MODULEID).c ; \
+	fi
+
+## to be used from C code as 'make tempmodule MODULEID=<id>'
+tempmodule:
+	@if [ ! -f modules/tmpmobm$(MODULEID).c ]; then \
+	   echo missing modules/tmpmobm$(MODULEID).c; exit 1 ; fi 
+	$(MAKE) modules/tmpmobm$(MODULEID).so
+
 # cancel implicit rule for C files to force my explicit rules
 # https://stackoverflow.com/a/29227455/841108
 %.o: %.c
@@ -167,7 +189,10 @@ _bm_allconsts.c: $(BM_COLDSOURCES)  BM_makeconst
 	./BM_makeconst -C $@ $(BM_COLDSOURCES)
 
 modules/modbm_%.so: modules/modbm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
-	$(CCACHE) $(LINK.c) -fPIC -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<) -shared $< -o $@
+	$(CCACHE) $(LINK.c) -fPIC -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<) -DBISMON_PERSISTENT_MODULE -shared $< -o $@
+
+modules/tmpmobm_%.so: modules/tmpmobm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
+	$(CCACHE) $(LINK.c) -fPIC -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) -DBISMON_TEMPORARY_MODULE -shared $< -o $@
 
 modules:
 	$(MAKE) -k $(MAKEFLAGS)  $(patsubst %.c,%.so,$(MODULES_SOURCES)) ; exit 0

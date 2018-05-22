@@ -26,12 +26,19 @@ asprintf_prev_module_BM (const char *srcdir, objectval_tyBM * obmodule)
 {
   char *pathstr = NULL;
   char modulidbuf[32];
+  objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
   memset (modulidbuf, 0, sizeof (modulidbuf));
   ASSERT_BM (srcdir && strlen (srcdir) > 0);
   ASSERT_BM (isobject_BM (obmodule));
+  bool modulistemporary =
+    (objectisinstance_BM (obmodule, k_plain_temporary_module));
   idtocbuf32_BM (objid_BM (obmodule), modulidbuf);
-  asprintf (&pathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d~",
-            srcdir, modulidbuf, (int) getpid ());
+  if (modulistemporary)
+    asprintf (&pathstr, "%s/" TEMPMODULEPREFIX_BM "%s.c-p%d~",
+              srcdir, modulidbuf, (int) getpid ());
+  else
+    asprintf (&pathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d~",
+              srcdir, modulidbuf, (int) getpid ());
   if (!pathstr)
     FATAL_BM ("failed asprintf_prev_module srcdir %s obmodule %s - %m",
               srcdir, objectdbg_BM (obmodule));
@@ -2858,6 +2865,7 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   objectval_tyBM *kk_after_load_of_module = BMK_0UHZG9vDlR2_2Aqx86LMFuq;
+  objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9le67LL7S9y_5VGpniEUNDA,
                  value_tyBM outstrv;
                  value_tyBM resultv; value_tyBM callingclosv;
@@ -2870,11 +2878,14 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   _.modulob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
   _.modgenob = objectcast_BM (closurenthson_BM (_.callingclosv, 1));
   _.moddirstrv = closurenthson_BM (_.callingclosv, 2);
+  bool modulistemporary =
+    (objectisinstance_BM (_.modulob, k_plain_temporary_module));
   DBGPRINTF_BM ("start after-compilation-of-module status %d outstr %s callingclos %s\n"        //
-                ".. modulob=%s modgenob=%s moddirstr=%s\n", status,     //
+                ".. modulob=%s %s modgenob=%s moddirstr=%s\n", status,  //
                 debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0),      //
                 debug_outstr_value_BM (_.callingclosv, CURFRAME_BM, 0), //
-                objectdbg_BM (_.modulob), objectdbg2_BM (_.modgenob),   //
+                objectdbg_BM (_.modulob),       //
+                modulistemporary ? "temporary" : "persistent", objectdbg2_BM (_.modgenob),      //
                 debug_outstr_value_BM (_.moddirstrv, CURFRAME_BM, 0));
   WEAKASSERT_BM (_.modulob);
   WEAKASSERT_BM (_.modgenob);
@@ -2889,7 +2900,8 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   if (pthread_self () == mainthreadid_BM && gui_is_running_BM)
     {
       log_begin_message_BM ();
-      log_printf_message_BM ("compilation of module ");
+      log_printf_message_BM ("compilation of %s module ",
+                             modulistemporary ? "temporary" : "persistent");
       log_object_message_BM (_.modulob);
       log_printf_message_BM (" /%s with module generation ", modulidbuf);
       log_object_message_BM (_.modgenob);
@@ -2923,31 +2935,26 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
       int err = 0;
       char *badpathstr = NULL;
       const char *moddirstr = bytstring_BM (_.moddirstrv);
-      asprintf (&srcpathstr, "%s/" MODULEPREFIX_BM "%s.c",
-                moddirstr, modulidbuf);
+      if (modulistemporary)
+        asprintf (&srcpathstr, "%s/" TEMPMODULEPREFIX_BM "%s.c",
+                  moddirstr, modulidbuf);
+      else
+        asprintf (&srcpathstr, "%s/" MODULEPREFIX_BM "%s.c",
+                  moddirstr, modulidbuf);
       prevpathstr = asprintf_prev_module_BM (moddirstr, _.modulob);
       asprintf (&badpathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d-bad~",
                 moddirstr, modulidbuf, (int) getpid ());
-      DBGPRINTF_BM
-        ("after-compilation-of-module modulob %s moddirstr %s srcpathstr %s badpathstr %s prevpathstr %s",
-         objectdbg_BM (_.modulob), moddirstr, srcpathstr, badpathstr,
-         prevpathstr);
+      DBGPRINTF_BM ("after-compilation-of-module modulob %s %s moddirstr %s srcpathstr %s badpathstr %s prevpathstr %s", objectdbg_BM (_.modulob),      //
+                    modulistemporary ? "temporary" : "persistent",
+                    moddirstr, srcpathstr, badpathstr, prevpathstr);
       fflush (NULL);
-      {                         // for debugging only
-        char *cmdbuf = NULL;
-        asprintf (&cmdbuf,
-                  "echo after-compilation-of-module modulob %s id %s; ls -l %s %s %s %s; pwd",
-                  objectdbg_BM (_.modulob),
-                  modulidbuf, moddirstr, srcpathstr, badpathstr, prevpathstr);
-        system (cmdbuf);
-        free (cmdbuf), cmdbuf = NULL;
-      }
       rename (srcpathstr, badpathstr);
       if (rename (prevpathstr, srcpathstr))
         err = errno;
       fprintf (stderr,
-               "compilation of module %s failed (%d=%#x);\n"
+               "compilation of %s module %s failed (%d=%#x);\n"
                "... restored previous %s from %s with bad new source in %s\n",
+               modulistemporary ? "temporary" : "persistent",
                objectdbg_BM (_.modulob), status, status, srcpathstr,
                prevpathstr, badpathstr);
       if (err > 0)

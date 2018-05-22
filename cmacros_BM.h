@@ -66,6 +66,7 @@
 
 #define MODULEDIR_BM "modules"
 #define MODULEPREFIX_BM "modbm"
+#define TEMPMODULEPREFIX_BM "tmpmobm"
 
 /// each module should have DECLARE_MODULE_BM(BISMON_MODID); after inclusion of "bismon.h"
 #define DECLARE_MODULE_BM(Id) const char module_id_BM[] = #Id

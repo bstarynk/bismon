@@ -16,6 +16,7 @@ _bm_allconsts.c
 
 core*
 modules/_*_.c
+modules/tmpmob*.c
 
 *.html
 

@@ -790,6 +790,7 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
                       struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_defer_module_load = BMK_4fBgmgx2KrN_3PCZfdnI1CJ;
+  objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
   LOCALFRAME_BM (stkf, /*descr: */ k_defer_module_load,
                  objectval_tyBM * modulob;      //
                  const closure_tyBM * postclos;
@@ -813,27 +814,34 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
     FAILHERE (BMP_load_module);
   if (!isclosure_BM ((value_tyBM) _.postclos))
     FAILHERE (BMP_closure);
+  bool modulistemporary =
+    (objectisinstance_BM (_.modulob, k_plain_temporary_module));
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
   DBGPRINTF_BM
-    ("defer_module_load_BM start modulob %s postclos %s arg1 %s arg2 %s arg3 %s",
-     objectdbg_BM (_.modulob),
+    ("defer_module_load_BM start modulob %s %s postclos %s arg1 %s arg2 %s arg3 %s",
+     objectdbg_BM (_.modulob), modulistemporary ? "temporary" : "persistent",
      debug_outstr_value_BM ((value_tyBM) _.postclos, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
   // test that the module file exists
   char *modulpath = NULL;
-  asprintf (&modulpath, "%s/" MODULEDIR_BM "/" MODULEPREFIX_BM "%s.so",
-            bismon_directory, modulidbuf);
+  if (modulistemporary)
+    asprintf (&modulpath, "%s/" MODULEDIR_BM "/" TEMPMODULEPREFIX_BM "%s.so",
+              bismon_directory, modulidbuf);
+  else
+    asprintf (&modulpath, "%s/" MODULEDIR_BM "/" MODULEPREFIX_BM "%s.so",
+              bismon_directory, modulidbuf);
   if (!modulpath)
     FATAL_BM ("failed to make modulpath for %s", modulidbuf);
   FILE *binmodf = fopen (modulpath, "r");
   if (!binmodf)
     {
-      fprintf (stderr, "failed to read binary module %s for %s: %m\n",
-               modulpath, objectdbg_BM (_.modulob));
+      fprintf (stderr, "failed to read binary %s module %s for %s: %m\n",
+               modulpath, modulistemporary ? "temporary" : "persistent",
+               objectdbg_BM (_.modulob));
       FAILHERE (makenode1_BM
                 (BMP_load_module, (value_tyBM) makestring_BM (modulpath)));
     }

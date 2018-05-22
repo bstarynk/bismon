@@ -2839,6 +2839,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   objectval_tyBM *k_prepare_module = BMK_17mrxkMdNtH_2CduQ2WDIy5;
   objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
   objectval_tyBM *k_generate_module = BMK_9mq0jsuz4XQ_4doHfd987Q6;
+  objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
   objectval_tyBM *kk_deferred_compilation_of_module =
     BMK_9EqBenFWb40_86MuuXslynk;
   if (!isobject_BM (arg1))
@@ -2851,6 +2852,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+  bool modulistemporary =
+    (objectisinstance_BM (_.modulob, k_plain_temporary_module));
   if (isstring_BM (_.prefixv))
     srcdirstr = strdup (bytstring_BM (_.prefixv));
   else if (isobject_BM (_.prefixv))
@@ -2914,9 +2917,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
       apply1_BM ((closure_tyBM *) _.closgenv, CURFRAME_BM, _.modgenob);
       DBGPRINTF_BM
         ("@@emit_module°plain_module modulob=%s after apply closgenv=%s modgenob=%s",
-         objectdbg_BM (_.modulob), debug_outstr_value_BM (_.closgenv,
-                                                          CURFRAME_BM,
-                                                          0),
+         objectdbg_BM (_.modulob),
+         debug_outstr_value_BM (_.closgenv, CURFRAME_BM, 0),
          objectdbg1_BM (_.modgenob));
     }
   _.resprep = send1_BM (_.modulob, k_prepare_module, CURFRAME_BM, _.modgenob);
@@ -2937,10 +2939,16 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                   debug_outstr_value_BM (_.resprep,     //
                                          CURFRAME_BM, 0));
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
-  objstrbufferprintfpayl_BM (_.modgenob,
-                             "// generated module %s in file "
-                             MODULEPREFIX_BM "%s.c\n",
-                             objectdbg_BM (_.modulob), modulidbuf);
+  if (modulistemporary)
+    objstrbufferprintfpayl_BM (_.modgenob,
+                               "// generated temporary module %s in file "
+                               TEMPMODULEPREFIX_BM "%s.c\n",
+                               objectdbg_BM (_.modulob), modulidbuf);
+  else
+    objstrbufferprintfpayl_BM (_.modgenob,
+                               "// generated persistent module %s in file "
+                               MODULEPREFIX_BM "%s.c\n",
+                               objectdbg_BM (_.modulob), modulidbuf);
   _.resgen =
     send2_BM (_.modulob, k_generate_module, CURFRAME_BM,
               _.modgenob, _.resprep);
@@ -2958,12 +2966,26 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
       ("@@emit_module°plain_module modulob=%s generate_module done resgen=%s",
        objectdbg_BM (_.modulob), debug_outstr_value_BM (_.resgen,
                                                         CURFRAME_BM, 0));
-  objstrbufferprintfpayl_BM (_.modgenob,
-                             "\n\n"
-                             "// end of generated module %s in file "
-                             MODULEPREFIX_BM "%s.c\n",
-                             objectdbg_BM (_.modulob), modulidbuf);
-  asprintf (&srcpathstr, "%s/" MODULEPREFIX_BM "%s.c", srcdirstr, modulidbuf);
+  if (modulistemporary)
+    {
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "\n\n"
+                                 "// end of generated temporary module %s in file "
+                                 TEMPMODULEPREFIX_BM "%s.c\n",
+                                 objectdbg_BM (_.modulob), modulidbuf);
+      asprintf (&srcpathstr, "%s/" TEMPMODULEPREFIX_BM "%s.c", srcdirstr,
+                modulidbuf);
+    }
+  else
+    {
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "\n\n"
+                                 "// end of generated persistent module %s in file "
+                                 MODULEPREFIX_BM "%s.c\n",
+                                 objectdbg_BM (_.modulob), modulidbuf);
+      asprintf (&srcpathstr, "%s/" MODULEPREFIX_BM "%s.c", srcdirstr,
+                modulidbuf);
+    }
   if (!srcpathstr)
     FATAL_BM
       ("failed to allocate srcpathstr dir %s modulidbuf %s",
@@ -3091,6 +3113,8 @@ failure:
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end emit_module°plain_module _1gME6zn82Kf_8hzWibLFRfz */
+
+
 
 
 

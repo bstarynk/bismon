@@ -2050,8 +2050,8 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
       memset (idbuf, 0, sizeof (idbuf));
       idtocbuf32_BM (objid_BM (_.obmod), idbuf);
       objstrbufferprintfpayl_BM (_.bufob,
-                                 "\t// emitted module " MODULEPREFIX_BM
-                                 "%s.c\n", idbuf);
+                                 "\t// emitted persistent module "
+                                 MODULEPREFIX_BM "%s.c\n", idbuf);
       DBGPRINTF_BM
         ("@@dump_data°plain_dumpable_module emitted obmod=%s\n****----------------\n",
          objectdbg_BM (_.obmod));
