@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 443 objects
+// for 444 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1779,6 +1779,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !@ 1506853455.83
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_24sSVIADeHm_0Sx34wQfG7W
+
+
+
+!(_8yqFC2Qz7I2_7KoZMWLE0U3 |=locking|
+!~ name (~ locking
+~)
+!@ 1526997355.96
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives locking instructions, e.g. hashset in routine preparation"
+!)_8yqFC2Qz7I2_7KoZMWLE0U3
 
 
 

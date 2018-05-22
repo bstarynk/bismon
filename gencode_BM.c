@@ -832,12 +832,16 @@ ROUTINEOBJNAME_BM (_8fKRsxM1q9w_3hFovzBicI7)    // miniscan_stmt°basiclo_lockob
  const value_tyBM arg4,         // containingblock
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
-  objectval_tyBM *k_lockobj = BMK_9dso3pFLYwm_3JwHqiJK3UL;
-  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
+  objectval_tyBM *k_duplicate = BMK_2YrbiKQ6lxP_3KNUOnU6TF5;
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
+  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
+  objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
+  objectval_tyBM *k_locking = BMK_8yqFC2Qz7I2_7KoZMWLE0U3;
+  objectval_tyBM *k_lockobj = BMK_9dso3pFLYwm_3JwHqiJK3UL;
   objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
   objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
+  objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_8fKRsxM1q9w_3hFovzBicI7,
                  value_tyBM resv;       //
                  objectval_tyBM * stmtob;       //
@@ -846,6 +850,7 @@ ROUTINEOBJNAME_BM (_8fKRsxM1q9w_3hFovzBicI7)    // miniscan_stmt°basiclo_lockob
                  objectval_tyBM * destob;       //
                  objectval_tyBM * typob;        //
                  objectval_tyBM * compob;       //
+                 objectval_tyBM * lockhsetob;   //
                  value_tyBM lobexpv;    //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
@@ -865,6 +870,15 @@ ROUTINEOBJNAME_BM (_8fKRsxM1q9w_3hFovzBicI7)    // miniscan_stmt°basiclo_lockob
     ("miniscan_stmt°basiclo_lockobj start stmtob=%s routprepob=%s depth#%d fromblockob=%s start",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), depth,
      objectdbg2_BM (_.fromblockob));
+  _.lockhsetob = objgetattr_BM (_.routprepob, k_locking);
+  if (!_.lockhsetob)
+    {
+      _.lockhsetob = makeobj_BM ();
+      objputhashsetpayl_BM (_.lockhsetob, 15);
+      objputclass_BM (_.lockhsetob, k_hset_object);
+      objputattr_BM (_.lockhsetob, k_in, _.routprepob);
+      objputattr_BM (_.routprepob, k_locking, _.lockhsetob);
+    }
   objlock_BM (_.stmtob);
   _.lobexpv = objgetattr_BM (_.stmtob, k_lockobj);
   _.typob =
@@ -917,6 +931,13 @@ ROUTINEOBJNAME_BM (_8fKRsxM1q9w_3hFovzBicI7)    // miniscan_stmt°basiclo_lockob
         FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (ix), _.compob));
       objunlock_BM (_.compob);
     }
+  {
+    objlock_BM (_.lockhsetob);
+    if (objhashsetcontainspayl_BM (_.lockhsetob, _.stmtob))
+      FAILHERE (makenode1_BM (k_duplicate, _.stmtob));
+    objhashsetaddpayl_BM (_.lockhsetob, _.stmtob);
+    objunlock_BM (_.lockhsetob);
+  }
   objunlock_BM (_.stmtob);
   LOCALRETURN_BM (_.stmtob);
 failure:
