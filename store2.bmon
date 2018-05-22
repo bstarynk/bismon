@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 442 objects
+// for 443 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -324,7 +324,8 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for lockobj blocks"
-!~ class (~ |supercl basiclo_block:| _4bYUiDmxrKK_6nPPlEl8y8x
+!~ class (~ |supercl basiclo_block:| _4bYUiDmxrKK_6nPPlEl8y8x 
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _8fKRsxM1q9w_3hFovzBicI7 ()
 ~)
 
 !)_5w3nODhHPwk_4sXXZ1AEOPq
@@ -4967,6 +4968,16 @@ _4lKK08v9A0t_0GGsir35UxP _4bYUiDmxrKK_6nPPlEl8y8x) ~)
 !# 1
 !& _5Ad0ZdurQuC_1A6Kn7qopbm
 !)_8aGb7reuzLX_3sgkigRSOpu
+
+
+
+!(_8fKRsxM1q9w_3hFovzBicI7
+!|*
+!@ 1526979509.97
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniscan_stmt\u00b0basiclo_lockobj"
+!)_8fKRsxM1q9w_3hFovzBicI7
 
 
 

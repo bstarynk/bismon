@@ -21,6 +21,9 @@
 
 #define MAXINTCASES_BM 16384
 
+extern const char *asprintf_prev_module_BM (const char *srcdir,
+                                            objectval_tyBM * obmodule);
+
 const char *
 asprintf_prev_module_BM (const char *srcdir, objectval_tyBM * obmodule)
 {
@@ -656,8 +659,8 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
   objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
   // objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
-  const objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
-  const objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
+  objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
+  objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   objectval_tyBM *k_nb_conds = BMK_8dLpuaNoSGN_2tdmkpINCsu;
@@ -803,16 +806,133 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
                 objectdbg_BM (_.recv));
   LOCALRETURN_BM (_.recv);
 failure:
+#undef FAILHERE
   DBGPRINTF_BM ("miniscan_stmt°basiclo_cond  failin %d recv=%s", failin,
                 objectdbg_BM (_.recv));
   _.errorv = (value_tyBM)
     makenode4_BM (k_miniscan_stmt, _.recv, _.routprepob, taggedint_BM (depth),
                   _.fromblockob);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
-#undef FAILHERE
 }                               /* end routine miniscan_stmt°basiclo_cond _0zzJJsAL6Qm_2uw3eoWQHEq */
 
+////////////////
 
+
+
+// miniscan_stmt°basiclo_lockobj  _8fKRsxM1q9w_3hFovzBicI7
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_8fKRsxM1q9w_3hFovzBicI7);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_8fKRsxM1q9w_3hFovzBicI7)    // miniscan_stmt°basiclo_lockobj
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // recieving lockob stmt
+ const value_tyBM arg2,         // routine preparation
+ const value_tyBM arg3,         // depth
+ const value_tyBM arg4,         // containingblock
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  objectval_tyBM *k_lockobj = BMK_9dso3pFLYwm_3JwHqiJK3UL;
+  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
+  objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
+  objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
+  objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
+  objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_8fKRsxM1q9w_3hFovzBicI7,
+                 value_tyBM resv;       //
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * fromblockob;  //
+                 objectval_tyBM * destob;       //
+                 objectval_tyBM * typob;        //
+                 objectval_tyBM * compob;       //
+                 value_tyBM lobexpv;    //
+                 value_tyBM causev;     //
+                 value_tyBM errorv;     //
+    );
+  int depth = -1;
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev= (value_tyBM)(Cause); goto failure; } while(0)
+#warning unimplemented miniscan_stmt°basiclo_lockobj  _8fKRsxM1q9w_3hFovzBicI7 routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented  miniscan_stmt°basiclo_lockobj _8fKRsxM1q9w_3hFovzBicI7 routine");
+  _.stmtob = objectcast_BM (arg1);
+  _.routprepob = objectcast_BM (arg2);
+  depth = getint_BM (arg3);
+  _.fromblockob = objectcast_BM (arg4);
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_lockobj start stmtob=%s routprepob=%s depth#%d fromblockob=%s start",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), depth,
+     objectdbg2_BM (_.fromblockob));
+  objlock_BM (_.stmtob);
+  _.lobexpv = objgetattr_BM (_.stmtob, k_lockobj);
+  _.typob =
+    miniscan_expr_BM (_.lobexpv, _.routprepob, depth + 1, _.stmtob,
+                      CURFRAME_BM);
+  if (_.typob != BMP_object)
+    FAILHERE (makenode2_BM (k_lockobj, _.lobexpv, _.typob));
+  unsigned stmtlen = objnbcomps_BM (_.stmtob);
+  for (int ix = 0; ix < (int) stmtlen; ix++)
+    {
+      _.compob = objectcast_BM (objgetcomp_BM (_.stmtob, ix));
+      if (!_.compob)
+        FAILHERE (makenode1_BM (k_curcomp, taggedint_BM (ix)));
+      objlock_BM (_.compob);
+      if (objectisinstance_BM (_.compob, k_basiclo_block))
+        {
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_lockobj compob %s is block of %s",
+             objectdbg_BM (_.compob), objectdbg1_BM (objclass_BM (_.compob)));
+          _.resv =
+            send3_BM (_.compob, k_miniscan_block,
+                      CURFRAME_BM, _.routprepob,
+                      taggedint_BM (depth + 1), _.stmtob);
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_lockobj compob after miniscan_block->%s resv=%s",
+             objectdbg_BM (_.compob),
+             debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
+          if (!_.resv)
+            FAILHERE (makenode2_BM
+                      (k_miniscan_block, _.compob, taggedint_BM (ix)));
+        }
+      else if (objectisinstance_BM (_.compob, k_basiclo_statement))
+        {
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_lockobj compob %s is statement of %s",
+             objectdbg_BM (_.compob), objectdbg1_BM (objclass_BM (_.compob)));
+          _.resv =
+            send3_BM (_.compob, k_miniscan_stmt,
+                      CURFRAME_BM, _.routprepob,
+                      taggedint_BM (depth + 1), _.stmtob);
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_lockobj compob after miniscan_stmt->%s resv=%s",
+             objectdbg_BM (_.compob),
+             debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
+          if (!_.resv)
+            FAILHERE (makenode2_BM
+                      (k_miniscan_stmt, _.compob, taggedint_BM (ix)));
+        }
+      else
+        FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (ix), _.compob));
+      objunlock_BM (_.compob);
+    }
+  objunlock_BM (_.stmtob);
+  LOCALRETURN_BM (_.stmtob);
+failure:
+#undef FAILHERE
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_lockobj failin %d stmtob=%s", failin,
+                objectdbg_BM (_.stmtob));
+  _.errorv = (value_tyBM)
+    makenode5_BM (k_miniscan_stmt, _.stmtob, _.causev, _.routprepob,
+                  taggedint_BM (depth), _.fromblockob);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end miniscan_stmt°basiclo_lockobj  _8fKRsxM1q9w_3hFovzBicI7 */
+
+
+
+
+////////////////
 
 
 // miniscan_stmt°basiclo_assign _7LNRlilrowp_0GG6ZLUFovu
