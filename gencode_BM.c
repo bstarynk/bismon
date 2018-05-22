@@ -2764,6 +2764,7 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
 {
   objectval_tyBM *kk_after_compilation_of_module =
     BMK_9le67LL7S9y_5VGpniEUNDA;
+  objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9EqBenFWb40_86MuuXslynk,
                  value_tyBM resultv;
                  objectval_tyBM * modulob; objectval_tyBM * modgenob;
@@ -2773,8 +2774,11 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
   _.modulob = objectcast_BM (arg1);
   _.modgenob = objectcast_BM (arg2);
   _.srcdirstrv = arg3;
+  bool modulistemporary =
+    (objectisinstance_BM (_.modulob, k_plain_temporary_module));
   DBGPRINTF_BM
-    ("defer-compilation-of-module start modulob %s modgenob %s srcdirstrv %s",
+    ("defer-compilation-of-module start %s modulob %s modgenob %s srcdirstrv %s",
+     modulistemporary ? "temporary" : "persistent",
      objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
      debug_outstr_value_BM (_.srcdirstrv, CURFRAME_BM, 0));
   WEAKASSERT_BM (_.modulob);
@@ -2782,7 +2786,8 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
   WEAKASSERT_BM (isstring_BM (_.srcdirstrv));
   WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
   log_begin_message_BM ();
-  log_puts_message_BM ("should compile module ");
+  log_printf_message_BM ("should compile %s module ",
+                         modulistemporary ? "temporary" : "persistent");
   log_object_message_BM (_.modulob);
   log_puts_message_BM (" for generation ");
   log_object_message_BM (_.modgenob);
@@ -2823,8 +2828,12 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
   };
   char buildscriptbuf[128];
   memset (buildscriptbuf, 0, sizeof (buildscriptbuf));
-  snprintf (buildscriptbuf, sizeof (buildscriptbuf),
-            "%s/build-bismon-module.sh", bismon_directory);
+  if (modulistemporary)
+    snprintf (buildscriptbuf, sizeof (buildscriptbuf),
+              "%s/build-bismon-temporary-module.sh", bismon_directory);
+  else
+    snprintf (buildscriptbuf, sizeof (buildscriptbuf),
+              "%s/build-bismon-persistent-module.sh", bismon_directory);
   compilargs[0] = buildscriptbuf;
   compilargs[1] = modulidbuf;
   int nbargs = 2;
@@ -3036,6 +3045,7 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
  const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
+  objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0UHZG9vDlR2_2Aqx86LMFuq,
                  value_tyBM resultv;    //
                  value_tyBM resmodv;    //
@@ -3057,17 +3067,21 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
   WEAKASSERT_BM (isobject_BM (_.modulob));
   WEAKASSERT_BM (isobject_BM (_.modgenob));
   WEAKASSERT_BM (closurewidth_BM (_.callingclosv) >= 2);
+  bool modulistemporary =
+    (objectisinstance_BM (_.modulob, k_plain_temporary_module));
   if (pthread_self () == mainthreadid_BM)
     {
       log_begin_message_BM ();
-      log_puts_message_BM ("Loaded module ");
+      log_printf_message_BM ("Loaded %s module ",
+                             modulistemporary ? "temporary" : "persistent");
       log_object_message_BM (_.modulob);
       log_puts_message_BM (" with generation ");
       log_object_message_BM (_.modgenob);
       log_puts_message_BM (".");
       log_end_message_BM ();
     };
-  fprintf (stderr, "loaded module %s with generation %s\n",
+  fprintf (stderr, "loaded %s module %s with generation %s\n",
+           modulistemporary ? "temporary" : "persistent",
            objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
   {
     objlock_BM (_.modgenob);

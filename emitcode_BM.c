@@ -3022,15 +3022,27 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     if (prevsrcpathstr)
       {
         char *quotprev = g_shell_quote (prevsrcpathstr);
-        asprintf (&indentcmdstr,
-                  "make -f %s -C %s indentsinglemodule MODULEID=%s PREVIOUSMODULESOURCE=%s",
-                  bismon_makefile, quotpardir, modulidbuf, quotprev);
+        if (modulistemporary)
+          asprintf (&indentcmdstr,
+                    "make -f %s -C %s indenttempmodule MODULEID=%s PREVIOUSMODULESOURCE=%s",
+                    bismon_makefile, quotpardir, modulidbuf, quotprev);
+        else
+          asprintf (&indentcmdstr,
+                    "make -f %s -C %s indentsinglemodule MODULEID=%s PREVIOUSMODULESOURCE=%s",
+                    bismon_makefile, quotpardir, modulidbuf, quotprev);
         g_free (quotprev);
       }
     else
-      asprintf (&indentcmdstr,
-                "make -f %s -C %s indentsinglemodule MODULEID=%s",
-                bismon_makefile, quotpardir, modulidbuf);
+      {
+        if (modulistemporary)
+          asprintf (&indentcmdstr,
+                    "make -f %s -C %s indenttempmodule MODULEID=%s",
+                    bismon_makefile, quotpardir, modulidbuf);
+        else
+          asprintf (&indentcmdstr,
+                    "make -f %s -C %s indentsinglemodule MODULEID=%s",
+                    bismon_makefile, quotpardir, modulidbuf);
+      }
     if (!indentcmdstr)
       FATAL_BM ("failed to build indent command modulidbuf %s", modulidbuf);
     g_free (quotpardir), quotpardir = NULL;

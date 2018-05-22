@@ -1,4 +1,4 @@
-// generated module first_test_module in file modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c
+// generated persistent module first_test_module in file modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c
 
 
 #include "bismon.h"
@@ -229,4 +229,4 @@ modulinit_9oXtCgAbkqv_4y1xhhF5Nhz_BM (struct stackframe_stBM *stkf,     //
 
 
 
-// end of generated module first_test_module in file modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c
+// end of generated persistent module first_test_module in file modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c

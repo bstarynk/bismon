@@ -1,4 +1,4 @@
-// generated module first_misc_module in file modbm_3BFt4NfJmZC_7iYi2dwM38B.c
+// generated persistent module first_misc_module in file modbm_3BFt4NfJmZC_7iYi2dwM38B.c
 
 
 #include "bismon.h"
@@ -413,4 +413,4 @@ modulinit_3BFt4NfJmZC_7iYi2dwM38B_BM (struct stackframe_stBM *stkf,     //
 
 
 
-// end of generated module first_misc_module in file modbm_3BFt4NfJmZC_7iYi2dwM38B.c
+// end of generated persistent module first_misc_module in file modbm_3BFt4NfJmZC_7iYi2dwM38B.c
