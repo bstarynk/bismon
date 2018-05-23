@@ -2158,8 +2158,8 @@ ROUTINEOBJNAME_BM (_1EFhqSytjSK_9Uchza7qmUD)    //emit_statement°basiclo_wrong
                  objectval_tyBM * modgenob;     //
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * routob;       //
-                 value_tyBM * subexpv;  //
-                 value_tyBM * firstsubexpv;     //
+                 value_tyBM subexpv;    //
+                 value_tyBM firstsubexpv;       //
                  objectval_tyBM * subtypob;     //
                  value_tyBM resultv;    //
                  value_tyBM errorv;     //
@@ -2426,7 +2426,7 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
   objstrbufferprintfpayl_BM (_.modgenob,
                              " break; // end default intswitch %s\n",
-                             stmtidbuf, nbdef);
+                             stmtidbuf);
   int nbwhen = setcardinal_BM (_.whensetv);
   objstrbufferprintfpayl_BM (_.modgenob,
                              "// %d when cases of intswitch %s:\n",
@@ -2870,6 +2870,66 @@ failure:
                                _.modgenob, taggedint_BM (depth), _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_statement°basiclo_objswitch  _9d7mulcEVXf_7ZymszyOWDY */
+
+
+
+////////////////
+// emit_statement°basiclo_lockobj  _5XbwuHte8rl_1KjFdwMeolr
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr)    //emit_statement°basiclo_lockobj 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // stmtob
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // routprepob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
+  objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
+  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_5XbwuHte8rl_1KjFdwMeolr,
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * stmtpropob;   //
+                 objectval_tyBM * propob;       //
+                 value_tyBM resultv;
+                 value_tyBM errorv;
+                 value_tyBM causev;
+    );
+  _.stmtob = objectcast_BM (arg1);
+  _.modgenob = objectcast_BM (arg2);
+  _.routprepob = objectcast_BM (arg3);
+  int depth = getint_BM (arg4);
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM) (Cause); goto failure; } while(0)
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_lockobj start stmtob=%s modgenob=%s routprepob=%s depth#%d",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth);
+  WEAKASSERT_BM (_.stmtob);
+  WEAKASSERT_BM (_.modgenob);
+  WEAKASSERT_BM (_.routprepob);
+  WEAKASSERT_BM (istaggedint_BM (arg4));
+#warning unimplemented emit_statement°basiclo_lockobj  _5XbwuHte8rl_1KjFdwMeolr routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented emit_statement°basiclo_lockobj _5XbwuHte8rl_1KjFdwMeolr routine");
+  LOCALRETURN_BM (_.resultv);
+failure:
+#undef FAILHERE
+  DBGPRINTF_BM ("emit_statement°basiclo_lockobj failin %d stmtob %s routprep %s cause %s",     //
+                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    (value_tyBM) makenode5_BM (k_emit_statement, _.stmtob, _.routprepob,
+                               _.modgenob, taggedint_BM (depth), _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end  emit_statement°basiclo_lockobj  _5XbwuHte8rl_1KjFdwMeolr */
 
 
 ////////////////////////////////////////////////////////////////
