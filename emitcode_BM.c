@@ -118,14 +118,22 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9M3BqmOS7mA_96DTa52k7Xq,
-                 objectval_tyBM * routprepob;
-                 objectval_tyBM * modgenob; objectval_tyBM * routob;
-                 objectval_tyBM * hsetblockob; value_tyBM blocksetv;
-                 objectval_tyBM * hsetvalob; objectval_tyBM * hsetnumob;
-                 objectval_tyBM * keyob; objectval_tyBM * bindconnob;
-                 value_tyBM resultv; value_tyBM keysetv;
-                 value_tyBM setv; value_tyBM keybindv;
-                 value_tyBM errorv; value_tyBM errcausev;);
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routob;       //
+                 objectval_tyBM * lockhsetob;   //
+                 objectval_tyBM * hsetblockob;  //
+                 value_tyBM blocksetv;  //
+                 objectval_tyBM * hsetvalob;    //
+                 objectval_tyBM * hsetnumob;    //
+                 objectval_tyBM * keyob;        //
+                 objectval_tyBM * bindconnob;   //
+                 value_tyBM resultv;    //
+                 value_tyBM keysetv;    //
+                 value_tyBM setv;       //
+                 value_tyBM keybindv;   //
+                 value_tyBM errorv;     //
+                 value_tyBM errcausev;);
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.errcausev = (value_tyBM)(Cause); goto failure; } while(0)
   objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
@@ -143,6 +151,7 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
   //objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
   objectval_tyBM *k_emit_declaration = BMK_3NGaoN3yhbn_8yUwbtZfvp9;
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
+  objectval_tyBM *k_locking = BMK_8yqFC2Qz7I2_7KoZMWLE0U3;
   WEAKASSERT_BM (isobject_BM (arg1));
   _.routprepob = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (arg2));
@@ -157,10 +166,11 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
     _.routob =
       objectcast_BM (objgetattr_BM (_.routprepob, k_prepare_routine));
     _.hsetblockob = objectcast_BM (objgetattr_BM (_.routprepob, k_blocks));
+    _.lockhsetob = objectcast_BM (objgetattr_BM (_.routprepob, k_locking));
     DBGPRINTF_BM
-      ("emit_declaration°simple_routine_preparation routprepob=%s routob=%s hsetblockob=%s",
+      ("emit_declaration°simple_routine_preparation routprepob=%s routob=%s hsetblockob=%s lockhsetob=%s",
        objectdbg_BM (_.routprepob), objectdbg1_BM (_.routob),
-       objectdbg2_BM (_.hsetblockob));
+       objectdbg2_BM (_.hsetblockob), objectdbg3_BM (_.lockhsetob));
     {
       objlock_BM (_.hsetblockob);
       WEAKASSERT_BM (isobject_BM (_.hsetblockob));
@@ -238,6 +248,15 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
                     debug_outstr_value_BM (_.setv, CURFRAME_BM, 0));
       _.setv = NULL;
     }
+    if (_.lockhsetob)
+      {
+        _.setv = (value_tyBM) objhashsettosetpayl_BM (_.lockhsetob);
+        objputattr_BM (_.routprepob, k_locking, _.setv);
+        DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s locking %s",  //
+                      objectdbg_BM (_.routprepob),      //
+                      debug_outstr_value_BM (_.setv, CURFRAME_BM, 0));
+        _.setv = NULL;
+      }
     objunlock_BM (_.routprepob);
   }
   WEAKASSERT_BM (isobject_BM (_.routob));
@@ -287,32 +306,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
  const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
-  LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
-                 objectval_tyBM * routprepob;   //
-                 objectval_tyBM * modgenob;     //
-                 objectval_tyBM * modulob;      //
-                 objectval_tyBM * routob;       //
-                 objectval_tyBM * hsetblockob;  //
-                 objectval_tyBM * bodyob;       //
-                 objectval_tyBM * resultob;     //
-                 objectval_tyBM * curclosob;    //
-                 value_tyBM blocksetv;  //
-                 value_tyBM argtupv;
-                 value_tyBM closedseqv; //
-                 value_tyBM setnumv;    //
-                 value_tyBM setvalv;    //
-                 value_tyBM setconstv;  //
-                 objectval_tyBM * varob;        //
-                 value_tyBM emitv;      //
-                 objectval_tyBM * typob;        //
-                 value_tyBM errorv;     //
-                 value_tyBM causev;);
-  int failin = -1;
-#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
-  char routidbuf[32];
-  memset (routidbuf, 0, sizeof (routidbuf));
-  char modulidbuf[32];
-  memset (modulidbuf, 0, sizeof (modulidbuf));
+  objectval_tyBM *k_locking = BMK_8yqFC2Qz7I2_7KoZMWLE0U3;
   objectval_tyBM *k_emit_definition = BMK_1g8s9B96Irf_6Ix2Cyy8Hq0;
   //objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
   objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
@@ -331,7 +325,35 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
   //objectval_tyBM *k_emit_reference = BMK_6qzzDyr2eIo_3SapnOUpg6S;
   objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
-  const objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
+  objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_2Lk2DjTDzQh_3aTEVKDE2Ip,
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * modulob;      //
+                 objectval_tyBM * routob;       //
+                 objectval_tyBM * hsetblockob;  //
+                 objectval_tyBM * bodyob;       //
+                 objectval_tyBM * resultob;     //
+                 objectval_tyBM * curclosob;    //
+                 value_tyBM blocksetv;  //
+                 value_tyBM argtupv;
+                 value_tyBM closedseqv; //
+                 value_tyBM setnumv;    //
+                 value_tyBM setvalv;    //
+                 value_tyBM setconstv;  //
+                 value_tyBM setlockingv;        //
+                 objectval_tyBM * varob;        //
+                 objectval_tyBM * lockob;       //
+                 value_tyBM emitv;      //
+                 objectval_tyBM * typob;        //
+                 value_tyBM errorv;     //
+                 value_tyBM causev;);
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
+  char routidbuf[32];
+  memset (routidbuf, 0, sizeof (routidbuf));
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof (modulidbuf));
   WEAKASSERT_BM (isobject_BM (arg1));
   _.routprepob = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (arg2));
@@ -356,6 +378,8 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
       (value_tyBM) setcast_BM (objgetattr_BM (_.routprepob, k_number_set));
     _.setvalv =
       (value_tyBM) setcast_BM (objgetattr_BM (_.routprepob, k_value_set));
+    _.setlockingv =
+      (value_tyBM) setcast_BM (objgetattr_BM (_.routprepob, k_locking));
     objunlock_BM (_.routprepob);
     idtocbuf32_BM (objid_BM (_.routob), routidbuf);
   }
@@ -508,6 +532,27 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                              "             || stkf->stkfram_pA.htyp == typayl_StackFrame_BM\n"
                              "             || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);\n");
   objstrbufferprintfpayl_BM (_.modgenob, "   _.stkfram_prev = stkf;\n");
+  //// emit the locking variables, if any
+  if (_.setlockingv)
+    {
+      int nblocking = setcardinal_BM (_.setlockingv);
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "   // locking %d:\n", nblocking);
+      DBGPRINTF_BM ("emit_definition°simple_routine_preparation routprepob=%s setlocking=%s nblocking=%d", objectdbg_BM (_.routprepob),        //
+                    debug_outstr_value_BM (_.setlockingv, CURFRAME_BM, 0),      //
+                    nblocking);
+      for (int lkix = 0; lkix < nblocking; lkix++)
+        {
+          _.lockob = setelemnth_BM (_.setlockingv, lkix);
+          char lockidbuf[32];
+          memset (lockidbuf, 0, sizeof (lockidbuf));
+          idtocbuf32_BM (objid_BM (_.lockob), lockidbuf);
+          objstrbufferprintfpayl_BM (_.modgenob,
+                                     "    objectval_tyBM* locked%s = NULL; // %s\n",
+                                     lockidbuf, objectdbg_BM (_.lockob));
+        }
+      _.lockob = NULL;
+    }
   //// emit the fetching of arguments
   objstrbufferprintfpayl_BM (_.modgenob,
                              "   // fetch %d arguments:\n", nbargs);
@@ -664,6 +709,28 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objstrbufferprintfpayl_BM (_.modgenob,
                              " epilog%s: __attribute__ ((unused)); // routine %s epilogue:\n",
                              routidbuf, routidbuf);
+  if (_.setlockingv)
+    {
+      int nblocking = setcardinal_BM (_.setlockingv);
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "   // unlocking %d:\n", nblocking);
+      DBGPRINTF_BM ("emit_definition°simple_routine_preparation epilogue routprepob=%s setlocking=%s nblocking=%d", objectdbg_BM (_.routprepob),       //
+                    debug_outstr_value_BM (_.setlockingv, CURFRAME_BM, 0),      //
+                    nblocking);
+      for (int lkix = 0; lkix < nblocking; lkix++)
+        {
+          _.lockob = setelemnth_BM (_.setlockingv, lkix);
+          char lockidbuf[32];
+          memset (lockidbuf, 0, sizeof (lockidbuf));
+          idtocbuf32_BM (objid_BM (_.lockob), lockidbuf);
+          objstrbufferprintfpayl_BM (_.modgenob,
+                                     "    if (locked%s != NULL)\n"
+                                     "       objunlock_BM(locked%s), locked%s = NULL; // %s\n",
+                                     lockidbuf, lockidbuf, lockidbuf,
+                                     objectdbg_BM (_.lockob));
+        }
+      _.lockob = NULL;
+    }
   objstrbufferprintfpayl_BM (_.modgenob,
                              "   if (stkf) stkf->stkfram_callfun = NULL;\n");
   objstrbufferprintfpayl_BM (_.modgenob, "   return ");
