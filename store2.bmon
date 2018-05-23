@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 445 objects
+// for 446 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1443,6 +1443,17 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
   " "  * _5ucAZimYynS_4VA0XHvr1nW ( _7WjaQkqwdaZ_6PRtbDrJHnf)  " "  
 "*/"  "\n")
 !)_0EfjiBTrXEo_3ppwTZ0M7xf
+
+
+
+!(_6OUljmJkH3g_3fqpRSfbN5H |=found_hashset|
+!~ name (~ found_hashset
+~)
+!@ 1527080303.34
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "give the hashset of found objects"
+!)_6OUljmJkH3g_3fqpRSfbN5H
 
 
 

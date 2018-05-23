@@ -2080,6 +2080,7 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   objectval_tyBM *k_list_object = BMK_1GWAOAM0UNL_75ijaqJjLiM;
   objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
+  objectval_tyBM *k_found_hashset = BMK_6OUljmJkH3g_3fqpRSfbN5H;
 
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0FdMKAvShgD_7itPSCL8D6P,
                  value_tyBM resultv;    //
@@ -2094,6 +2095,7 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
                  objectval_tyBM * findrunob;    //
                  objectval_tyBM * scanquob;     //
                  objectval_tyBM * vihsetob;     //
+                 objectval_tyBM * fndhsetob;    //
     );
   _.criterv = arg1;
   _.moreobjv = arg2;
@@ -2197,11 +2199,17 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objputattr_BM (_.vihsetob, k_in, _.findrunob);
   objputattr_BM (_.findrunob, k_visited_hashset, _.vihsetob);
   ///
+  _.fndhsetob = makeobj_BM ();
+  objputclass_BM (_.fndhsetob, k_hset_object);
+  objputhashsetpayl_BM (_.fndhsetob, 30);
+  objputattr_BM (_.fndhsetob, k_in, _.findrunob);
+  objputattr_BM (_.findrunob, k_found_hashset, _.fndhsetob);
+  ///
   objtouchnow_BM (_.findrunob);
   DBGPRINTF_BM
-    ("command_handler#find_object findrunob=%s scanquob=%s vihsetob=%s",
+    ("command_handler#find_object findrunob=%s scanquob=%s vihsetob=%s fndhsetob=%s",
      objectdbg_BM (_.findrunob), objectdbg1_BM (_.scanquob),
-     objectdbg2_BM (_.vihsetob));
+     objectdbg2_BM (_.vihsetob), objectdbg3_BM (_.fndhsetob));
 #warning unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine
   WEAKASSERT_BM (false
                  &&
