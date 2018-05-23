@@ -2081,7 +2081,8 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objectval_tyBM *k_list_object = BMK_1GWAOAM0UNL_75ijaqJjLiM;
   objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   objectval_tyBM *k_found_hashset = BMK_6OUljmJkH3g_3fqpRSfbN5H;
-
+  objectval_tyBM *k_todo = BMK_7ljWW4bj70g_9PL9dZkgBxZ;
+  objectval_tyBM *kk_final_find_object = BMK_7EgSAlg8UbA_6x0iNxUOrYE;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0FdMKAvShgD_7itPSCL8D6P,
                  value_tyBM resultv;    //
                  value_tyBM criterv;    //
@@ -2092,6 +2093,7 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
                  value_tyBM qexpv;      //
                  value_tyBM valv;       //
                  value_tyBM skipclosv;  //
+                 value_tyBM todoclosv;  //
                  objectval_tyBM * findrunob;    //
                  objectval_tyBM * scanquob;     //
                  objectval_tyBM * vihsetob;     //
@@ -2205,6 +2207,9 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objputattr_BM (_.fndhsetob, k_in, _.findrunob);
   objputattr_BM (_.findrunob, k_found_hashset, _.fndhsetob);
   ///
+  _.todoclosv = makeclosure0_BM (kk_final_find_object);
+  objputattr_BM (_.findrunob, k_todo, _.todoclosv);
+  ///
   objtouchnow_BM (_.findrunob);
   DBGPRINTF_BM
     ("command_handler#find_object findrunob=%s scanquob=%s vihsetob=%s fndhsetob=%s",
@@ -2216,3 +2221,24 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
                  "unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine");
   LOCALRETURN_BM (_.findrunob);
 }                               /* end command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P */
+
+// final function -the todo added into the findrun_object _7EgSAlg8UbA_6x0iNxUOrYE
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7EgSAlg8UbA_6x0iNxUOrYE);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_7EgSAlg8UbA_6x0iNxUOrYE)    // final-find_object
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         //
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_7EgSAlg8UbA_6x0iNxUOrYE,
+                 value_tyBM resultv;
+    );
+#warning unimplemented _7EgSAlg8UbA_6x0iNxUOrYE routine
+  WEAKASSERT_BM (false && "unimplemented _7EgSAlg8UbA_6x0iNxUOrYE routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end final-find_object _7EgSAlg8UbA_6x0iNxUOrYE */
