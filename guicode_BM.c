@@ -2082,6 +2082,7 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   objectval_tyBM *k_found_hashset = BMK_6OUljmJkH3g_3fqpRSfbN5H;
   objectval_tyBM *k_todo = BMK_7ljWW4bj70g_9PL9dZkgBxZ;
+  objectval_tyBM *k_tiny_tasklet = BMK_8dM7Xmdup4k_4jwzwOtmC1a;
   objectval_tyBM *kk_final_find_object = BMK_7EgSAlg8UbA_6x0iNxUOrYE;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0FdMKAvShgD_7itPSCL8D6P,
                  value_tyBM resultv;    //

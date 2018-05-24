@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 447 objects
+// for 449 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1317,6 +1317,19 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 !: _0xbmmxnN8E8_0ZuEqJmqMNH |=command_handler|
  % _0FdMKAvShgD_7itPSCL8D6P ()
 !)_5eeged9TJCp_198HZtkJ3rO
+
+
+
+!(_6MFSw4tWUGk_59WGLSOq7v4 |=findobj_todo_minifunc|
+!~ name (~ findobj_todo_minifunc
+~)
+!@ 1527155797.08
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the todo function inside minitasklets related to find_object command"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _4MQajGM58gb_75DXhXvZmOJ ]
+!)_6MFSw4tWUGk_59WGLSOq7v4
 
 
 
@@ -3210,6 +3223,19 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7bbeIqUSje9_4jVgC7ZJmvx
 !)_9vc0quxdnhj_3zLw1MEwl1e
+
+
+
+!(_4MQajGM58gb_75DXhXvZmOJ |=v_tasklet|
+!~ name (~ v_tasklet
+~)
+!@ 1527154577.25
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "tasklet argument or variable"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_4MQajGM58gb_75DXhXvZmOJ
 
 
 

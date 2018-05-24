@@ -136,8 +136,9 @@ ROUTINEOBJNAME_BM (_1etImV3nBtp_5rnHSE87XRj)    //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_1etImV3nBtp_5rnHSE87XRj,
-                 objectval_tyBM * recv; value_tyBM * todov;
-                 value_tyBM * resv;
+                 objectval_tyBM * recv; //
+		 value_tyBM  todov; //
+                 value_tyBM  resv; //
     );
   objectval_tyBM *k_todo = BMK_7ljWW4bj70g_9PL9dZkgBxZ;
   _.recv = objectcast_BM (arg1);
