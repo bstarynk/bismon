@@ -2075,10 +2075,12 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objectval_tyBM *k_same_as_closed_minifunc = BMK_3yQlckX4DRh_4b9l9FBSSSL;
   objectval_tyBM *k_equal_to_closed_minifunc = BMK_4iEFTEcHxeb_6lH464uFkTC;
   objectval_tyBM *k_findobj_todo_minifunc = BMK_6MFSw4tWUGk_59WGLSOq7v4;
+  objectval_tyBM *k_findobj_scan_minifunc = BMK_82ho9wUUDji_4peMLha4PXl;
   objectval_tyBM *k_findrun_object = BMK_64UbCFBD19G_43TeBXhcYMy;
   objectval_tyBM *k_scan_queue = BMK_6eWBdICnzoa_2FKvuyZ7Ivq;
   objectval_tyBM *k_visited_hashset = BMK_8w8gLezc1gm_4plK3EfhuGk;
   objectval_tyBM *k_criteria = BMK_0EKpB4Re4KE_6v0jMEEJgPe;
+  objectval_tyBM *k_scan = BMK_9DKgwLNmTbn_2Tipc5TwGKW;
   objectval_tyBM *k_skip = BMK_1IZ2mh67gTz_0bHC4LiI29H;
   objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   objectval_tyBM *k_list_object = BMK_1GWAOAM0UNL_75ijaqJjLiM;
@@ -2095,9 +2097,11 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
                  value_tyBM predskipv;  //
                  value_tyBM criterclosv;        //
                  value_tyBM moresetv;   //
+                 value_tyBM predefsetv; //
                  value_tyBM qexpv;      //
                  value_tyBM valv;       //
                  value_tyBM skipclosv;  //
+                 value_tyBM scanclosv;  //
                  value_tyBM todoclosv;  //
                  value_tyBM tasksetv;   //
                  objectval_tyBM * findrunob;    //
@@ -2106,6 +2110,7 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
                  objectval_tyBM * fndhsetob;    //
                  objectval_tyBM * tskhsetob;    //
                  objectval_tyBM * curtaskob;    //
+                 objectval_tyBM * curscanob;    //
     );
   _.criterv = arg1;
   _.moreobjv = arg2;
@@ -2203,6 +2208,9 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objputlistpayl_BM (_.scanquob);
   objputattr_BM (_.findrunob, k_scan_queue, _.scanquob);
   ///
+  _.scanclosv = makeclosure1_BM (k_findobj_scan_minifunc, _.findrunob);
+  objputattr_BM (_.findrunob, k_scan, _.scanclosv);
+  ///
   _.vihsetob = makeobj_BM ();
   objputclass_BM (_.vihsetob, k_hset_object);
   objputhashsetpayl_BM (_.vihsetob, 100);
@@ -2238,17 +2246,43 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objputattr_BM (_.findrunob, k_todo, _.todoclosv);
   ///
   objtouchnow_BM (_.findrunob);
-  DBGPRINTF_BM
-    ("command_handler#find_object findrunob=%s scanquob=%s vihsetob=%s fndhsetob=%s",
-     objectdbg_BM (_.findrunob), objectdbg1_BM (_.scanquob),
-     objectdbg2_BM (_.vihsetob), objectdbg3_BM (_.fndhsetob));
-#warning unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine");
-#warning should collect the tskhsetob and add them into the agenda in command_handler#find_object
+  objlock_BM (_.findrunob);
+  /// scan the predefined objects and more
+  _.predefsetv = setpredefinedobjects_BM ();
+  int nbpredef = setcardinal_BM (_.predefsetv);
+  ASSERT_BM (nbpredef > 0);
+  for (int pix = 0; pix < nbpredef; pix++)
+    {
+      _.curscanob = setelemnth_BM (_.predefsetv, pix);
+      DBGPRINTF_BM
+        ("command_handler#find_object findrunob=%s predef pix#%d curscanob=%s",
+         objectdbg_BM (_.findrunob), pix, objectdbg1_BM (_.curscanob));
+      (void) apply1_BM (_.scanclosv, CURFRAME_BM, _.curscanob);
+    }
+  DBGPRINTF_BM ("command_handler#find_object findrunob=%s moresetv=%s", objectdbg_BM (_.findrunob),     //
+                debug_outstr_value_BM (_.moresetv, CURFRAME_BM, 0));
+  if (_.moresetv)
+    {
+      int nbmore = setcardinal_BM (_.moresetv);
+      for (int mix = 0; mix < nbmore; mix++)
+        {
+          _.curscanob = setelemnth_BM (_.moresetv, mix);
+          DBGPRINTF_BM
+            ("command_handler#find_object findrunob=%s more mix#%d curscanob=%s",
+             objectdbg_BM (_.findrunob), mix, objectdbg1_BM (_.curscanob));
+          (void) apply1_BM (_.scanclosv, CURFRAME_BM, _.curscanob);
+        }
+    }
+
+  objunlock_BM (_.findrunob);
   /// add the tasklets to the agenda!
   _.tasksetv = objhashsettosetpayl_BM (_.tskhsetob);
+  DBGPRINTF_BM
+    ("command_handler#find_object findrunob=%s scanquob=%s vihsetob=%s fndhsetob=%s tasksetv=%s scanclosv=%s",
+     objectdbg_BM (_.findrunob), objectdbg1_BM (_.scanquob),
+     objectdbg2_BM (_.vihsetob), objectdbg3_BM (_.fndhsetob),
+     debug_outstr_value_BM (_.tasksetv, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.scanclosv, CURFRAME_BM, 0));
   int nbtasklets = setcardinal_BM (_.tasksetv);
   WEAKASSERT_BM (nbtasklets > 0);
   for (int tix = 0; tix < nbtasklets; tix++)

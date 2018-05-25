@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 450 objects
+// for 452 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1320,6 +1320,17 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 
 
 
+!(_82ho9wUUDji_4peMLha4PXl |=findobj_scan_minifunc|
+!~ name (~ findobj_scan_minifunc
+~)
+!@ 1527245984.88
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "findobj_scan_minifunc scan, with the closed findobj, the given object"
+!)_82ho9wUUDji_4peMLha4PXl
+
+
+
 !(_6MFSw4tWUGk_59WGLSOq7v4 |=findobj_todo_minifunc|
 !~ name (~ findobj_todo_minifunc
 ~)
@@ -2549,6 +2560,17 @@ _8seRhfNtGTR_4rOgARd0hVM
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_0zv9Zs8csvs_3peZsPzFTb6
+
+
+
+!(_9DKgwLNmTbn_2Tipc5TwGKW |=scan|
+!~ name (~ scan
+~)
+!@ 1527246165.81
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for scanning"
+!)_9DKgwLNmTbn_2Tipc5TwGKW
 
 
 
