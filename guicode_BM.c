@@ -2052,6 +2052,8 @@ again:
 
 
 
+
+
 ////////////////////////////////////////////////////////////////
 
 // command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P
@@ -2097,11 +2099,13 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
                  value_tyBM valv;       //
                  value_tyBM skipclosv;  //
                  value_tyBM todoclosv;  //
+                 value_tyBM tasksetv;   //
                  objectval_tyBM * findrunob;    //
                  objectval_tyBM * scanquob;     //
                  objectval_tyBM * vihsetob;     //
                  objectval_tyBM * fndhsetob;    //
                  objectval_tyBM * tskhsetob;    //
+                 objectval_tyBM * curtaskob;    //
     );
   _.criterv = arg1;
   _.moreobjv = arg2;
@@ -2216,16 +2220,24 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objputhashsetpayl_BM (_.tskhsetob, 3 * MAXNBWORKJOBS_BM / 2);
   objputattr_BM (_.tskhsetob, k_in, _.findrunob);
   objputattr_BM (_.findrunob, k_tasklet_hashset, _.tskhsetob);
+  _.todoclosv = makeclosure1_BM (k_findobj_todo_minifunc, _.findrunob);
   for (unsigned ix = 0; ix < MAXNBWORKJOBS_BM; ix++)
     {
-#warning should create curtaskob and add it to tskhsetob in command_handler#find_object
+      _.curtaskob = makeobj_BM ();
+      objputattr_BM (_.curtaskob, k_in, _.findrunob);
+      objputattr_BM (_.curtaskob, k_todo, _.todoclosv);
+      objputclass_BM (_.curtaskob, k_tiny_tasklet);
+      objhashsetaddpayl_BM (_.tskhsetob, _.curtaskob);
+      objtouchnow_BM (_.curtaskob);
+      _.curtaskob = NULL;
     }
+  _.todoclosv = NULL;
+  objtouchnow_BM (_.tskhsetob);
   ///
   _.todoclosv = makeclosure1_BM (kk_final_find_object, _.findrunob);
   objputattr_BM (_.findrunob, k_todo, _.todoclosv);
   ///
   objtouchnow_BM (_.findrunob);
-#warning should collect the tskhsetob and add them into the agenda in command_handler#find_object
   DBGPRINTF_BM
     ("command_handler#find_object findrunob=%s scanquob=%s vihsetob=%s fndhsetob=%s",
      objectdbg_BM (_.findrunob), objectdbg1_BM (_.scanquob),
@@ -2234,6 +2246,17 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   WEAKASSERT_BM (false
                  &&
                  "unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine");
+#warning should collect the tskhsetob and add them into the agenda in command_handler#find_object
+  /// add the tasklets to the agenda!
+  _.tasksetv = objhashsettosetpayl_BM (_.tskhsetob);
+  int nbtasklets = setcardinal_BM (_.tasksetv);
+  WEAKASSERT_BM (nbtasklets > 0);
+  for (int tix = 0; tix < nbtasklets; tix++)
+    {
+      _.curtaskob = setelemnth_BM (_.tasksetv, tix);
+      agenda_add_normal_priority_tasklet_BM (_.curtaskob);
+    }
+
   LOCALRETURN_BM (_.findrunob);
 }                               /* end command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P */
 
