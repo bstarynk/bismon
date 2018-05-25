@@ -2273,7 +2273,6 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
           (void) apply1_BM (_.scanclosv, CURFRAME_BM, _.curscanob);
         }
     }
-
   objunlock_BM (_.findrunob);
   /// add the tasklets to the agenda!
   _.tasksetv = objhashsettosetpayl_BM (_.tskhsetob);

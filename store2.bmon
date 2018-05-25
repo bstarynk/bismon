@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 452 objects
+// for 454 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1323,10 +1323,16 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 !(_82ho9wUUDji_4peMLha4PXl |=findobj_scan_minifunc|
 !~ name (~ findobj_scan_minifunc
 ~)
-!@ 1527245984.88
+!@ 1527254803.65
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "findobj_scan_minifunc scan, with the closed findobj, the given object"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _4gykCX1QdLb_9Aooqa2FWTq ]
+!: _2TwOyPJxIz8_1rIeqaN7oRz |=closed|
+ [ _4ITcQtvlMmO_30Pss9oAVDB ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
 !)_82ho9wUUDji_4peMLha4PXl
 
 
@@ -2123,6 +2129,28 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_0e0OBmxUxHQ_5CYpfQeXywM
+
+
+
+!(_4ITcQtvlMmO_30Pss9oAVDB |=o_findobj|
+!~ name (~ o_findobj
+~)
+!@ 1527254803.65
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_4ITcQtvlMmO_30Pss9oAVDB
+
+
+
+!(_4gykCX1QdLb_9Aooqa2FWTq |=o_scan|
+!~ name (~ o_scan
+~)
+!@ 1527254720.90
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the scanned object argument"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_4gykCX1QdLb_9Aooqa2FWTq
 
 
 
