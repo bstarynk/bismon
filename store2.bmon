@@ -1323,7 +1323,7 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 !(_82ho9wUUDji_4peMLha4PXl |=findobj_scan_minifunc|
 !~ name (~ findobj_scan_minifunc
 ~)
-!@ 1527256312.63
+!@ 1527257109.68
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "findobj_scan_minifunc scans, with the closed"& " and locked o_findobj, the argument object"& " o_scan; give NULL if o_scan was already"& " scanned"
@@ -1331,6 +1331,8 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
  [ _4gykCX1QdLb_9Aooqa2FWTq ]
 !: _2TwOyPJxIz8_1rIeqaN7oRz |=closed|
  [ _4ITcQtvlMmO_30Pss9oAVDB ]
+!: _5l2zSKsFaVm_9zs6qDOP87i |=constants|
+ { _64UbCFBD19G_43TeBXhcYMy }
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3qw9bnATIhq_8loBraLeXzQ
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
