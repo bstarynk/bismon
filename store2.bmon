@@ -1,5 +1,5 @@
 // generated file store2.bmon
-// for 449 objects
+// for 450 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2883,6 +2883,17 @@ _7XasLoEUKwe_9upxyFeheD5
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7bbeIqUSje9_4jVgC7ZJmvx
 !)_6FWWN47uih2_5BhwEm9gnHu
+
+
+
+!(_5puWy6TPS5B_9fmeCvG70Kn |=tasklet_hashset|
+!~ name (~ tasklet_hashset
+~)
+!@ 1527226386.37
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "give the hashset of tasklets"
+!)_5puWy6TPS5B_9fmeCvG70Kn
 
 
 

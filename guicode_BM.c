@@ -2072,6 +2072,7 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objectval_tyBM *k_element_of_closed_minifunc = BMK_0YOXUe7rEJC_3jFMjOAQRs9;
   objectval_tyBM *k_same_as_closed_minifunc = BMK_3yQlckX4DRh_4b9l9FBSSSL;
   objectval_tyBM *k_equal_to_closed_minifunc = BMK_4iEFTEcHxeb_6lH464uFkTC;
+  objectval_tyBM *k_findobj_todo_minifunc = BMK_6MFSw4tWUGk_59WGLSOq7v4;
   objectval_tyBM *k_findrun_object = BMK_64UbCFBD19G_43TeBXhcYMy;
   objectval_tyBM *k_scan_queue = BMK_6eWBdICnzoa_2FKvuyZ7Ivq;
   objectval_tyBM *k_visited_hashset = BMK_8w8gLezc1gm_4plK3EfhuGk;
@@ -2083,6 +2084,7 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objectval_tyBM *k_found_hashset = BMK_6OUljmJkH3g_3fqpRSfbN5H;
   objectval_tyBM *k_todo = BMK_7ljWW4bj70g_9PL9dZkgBxZ;
   objectval_tyBM *k_tiny_tasklet = BMK_8dM7Xmdup4k_4jwzwOtmC1a;
+  objectval_tyBM *k_tasklet_hashset = BMK_5puWy6TPS5B_9fmeCvG70Kn;
   objectval_tyBM *kk_final_find_object = BMK_7EgSAlg8UbA_6x0iNxUOrYE;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0FdMKAvShgD_7itPSCL8D6P,
                  value_tyBM resultv;    //
@@ -2099,6 +2101,7 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
                  objectval_tyBM * scanquob;     //
                  objectval_tyBM * vihsetob;     //
                  objectval_tyBM * fndhsetob;    //
+                 objectval_tyBM * tskhsetob;    //
     );
   _.criterv = arg1;
   _.moreobjv = arg2;
@@ -2208,10 +2211,21 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
   objputattr_BM (_.fndhsetob, k_in, _.findrunob);
   objputattr_BM (_.findrunob, k_found_hashset, _.fndhsetob);
   ///
-  _.todoclosv = makeclosure0_BM (kk_final_find_object);
+  _.tskhsetob = makeobj_BM ();
+  objputclass_BM (_.tskhsetob, k_hset_object);
+  objputhashsetpayl_BM (_.tskhsetob, 3 * MAXNBWORKJOBS_BM / 2);
+  objputattr_BM (_.tskhsetob, k_in, _.findrunob);
+  objputattr_BM (_.findrunob, k_tasklet_hashset, _.tskhsetob);
+  for (unsigned ix = 0; ix < MAXNBWORKJOBS_BM; ix++)
+    {
+#warning should create curtaskob and add it to tskhsetob in command_handler#find_object
+    }
+  ///
+  _.todoclosv = makeclosure1_BM (kk_final_find_object, _.findrunob);
   objputattr_BM (_.findrunob, k_todo, _.todoclosv);
   ///
   objtouchnow_BM (_.findrunob);
+#warning should collect the tskhsetob and add them into the agenda in command_handler#find_object
   DBGPRINTF_BM
     ("command_handler#find_object findrunob=%s scanquob=%s vihsetob=%s fndhsetob=%s",
      objectdbg_BM (_.findrunob), objectdbg1_BM (_.scanquob),
@@ -2222,6 +2236,9 @@ ROUTINEOBJNAME_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
                  "unimplemented command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P routine");
   LOCALRETURN_BM (_.findrunob);
 }                               /* end command_handler#find_object _0FdMKAvShgD_7itPSCL8D6P */
+
+
+
 
 // final function -the todo added into the findrun_object _7EgSAlg8UbA_6x0iNxUOrYE
 
