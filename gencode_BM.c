@@ -1194,15 +1194,6 @@ ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty)    //miniscan_stmt°basiclo_run
             }
           else if (issequence_BM (_.compv))
             FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (cix), _.compv));
-          else
-            {
-              _.typsubob =
-                miniscan_expr_BM (_.compv, _.routprepob, depth + 1, _.stmtob,
-                                  CURFRAME_BM);
-              if (!_.typsubob)
-                FAILHERE (makenode2_BM
-                          (k_curcomp, taggedint_BM (cix), _.compv));
-            }
         }
     }
   else if (_.runv)

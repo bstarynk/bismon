@@ -489,7 +489,15 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                                    "    objectval_tyBM* o%s; // %s\n",
                                    varidbuf, objectdbg_BM (_.varob));
       else
-        WEAKASSERT_BM (false && "unexpected type of variable");
+        {
+          DBGPRINTF_BM
+            ("emit_definition°simple_routine_preparation routprepob=%s vix#%d varob %s typob %s",
+             objectdbg_BM (_.routprepob), vix, objectdbg1_BM (_.varob),
+             objectdbg2_BM (_.typob));
+          WEAKASSERT_BM (false && "unexpected type of variable");
+        }
+      _.varob = NULL;
+      _.typob = NULL;
     }
   unsigned nbnum = setcardinal_BM (_.setnumv);
   objstrbufferprintfpayl_BM (_.modgenob,
@@ -588,7 +596,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                                        varidbuf, aix);
           else if (_.typob == k_object)
             objstrbufferprintfpayl_BM (_.modgenob,
-                                       "   _.o%s = objectcast(arg%d);\n",
+                                       "   _.o%s = objectcast_BM (arg%d);\n",
                                        varidbuf, aix);
           else
             {
@@ -2019,6 +2027,9 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
       for (int cix = 0; cix < chklen; cix++)
         {
           _.compv = nodenthson_BM (_.runv, cix);
+          DBGPRINTF_BM ("emit_statement°basiclo_run stmtob=%s chunk cix#%d compv=%s", objectdbg_BM (_.stmtob), cix,    //
+                        debug_outstr_value_BM (_.compv, CURFRAME_BM, 0));
+
           if (istaggedint_BM (_.compv))
             objstrbufferprintfpayl_BM (_.modgenob, "%lld",
                                        (long long) getint_BM (_.compv));
@@ -2027,11 +2038,17 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
                                            bytstring_BM (_.compv));
           else if (isobject_BM (_.compv))
             {
-              char compidbuf[32];
-              memset (compidbuf, 0, sizeof (compidbuf));
-              idtocbuf32_BM (objid_BM ((objectval_tyBM *) _.compv),
-                             compidbuf);
-              objstrbufferappendcstrpayl_BM (_.modgenob, compidbuf);
+              char *compnam = findobjectname_BM (_.compv);
+              if (compnam)
+                objstrbufferappendcstrpayl_BM (_.modgenob, compnam);
+              else
+                {
+                  char compidbuf[32];
+                  memset (compidbuf, 0, sizeof (compidbuf));
+                  idtocbuf32_BM (objid_BM ((objectval_tyBM *) _.compv),
+                                 compidbuf);
+                  objstrbufferappendcstrpayl_BM (_.modgenob, compidbuf);
+                }
             }
           else if (isnode_BM (_.compv))
             {
@@ -2043,8 +2060,8 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
                   if (!_.varob)
                     FAILHERE (makenode2_BM
                               (k_variable, _.compv, taggedint_BM (cix)));
-                  miniemit_var_BM (CURFRAME_BM, _.varob, _.modgenob,
-                                   _.routprepob, _.stmtob, depth + 1);
+                  miniemit_expression_BM (CURFRAME_BM, _.varob, _.modgenob,
+                                          _.routprepob, _.stmtob, depth + 1);
                 }
               else
                 FAILHERE (makenode2_BM
