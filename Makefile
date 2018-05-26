@@ -39,6 +39,14 @@ OBJECTS= $(patsubst %.c,%.o,$(BM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst 
 
 .PHONY: all clean indent count modules measure measured-bismon doc redump outdump checksum indentsinglemodule singlemodule indenttempmodule tempmodule
 
+
+bismon: $(OBJECTS) _bm_allconsts.o | modules
+	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi
+	$(MAKE) __timestamp.c __timestamp.o _bm_allconsts.o
+	$(LINK.cc)  $(LINKFLAGS) -rdynamic $(OPTIMFLAGS) $(OBJECTS) __timestamp.o _bm_allconsts.o $(LIBES) -o $@
+	ls -l $@
+	$(RM) __timestamp.*
+
 all: bismon modules doc
 
 clean:
@@ -196,12 +204,6 @@ modules/tmpmobm_%.so: modules/tmpmobm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HE
 
 modules:
 	$(MAKE) -k $(MAKEFLAGS)  $(patsubst %.c,%.so,$(MODULES_SOURCES)) ; exit 0
-
-bismon: $(OBJECTS) _bm_allconsts.o | modules
-	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi
-	$(MAKE) __timestamp.c __timestamp.o _bm_allconsts.o
-	$(LINK.cc)  $(LINKFLAGS) -rdynamic $(OPTIMFLAGS) $(OBJECTS) __timestamp.o _bm_allconsts.o $(LIBES) -o $@
-	$(RM) __timestamp.*
 
 measured-bismon: measure_plugcc.so
 	$(RM) $(OBJECTS)
