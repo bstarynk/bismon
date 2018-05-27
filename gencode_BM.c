@@ -206,7 +206,8 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   objtouchnow_BM (_.routprepob);
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction recv %s routprepob %s obresult %s",
-     objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob), _.obresult);
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
+     objectdbg2_BM (_.obresult));
   //// check and bind the result
   if (_.obresult)
     {
@@ -221,7 +222,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction recv %s routprepob %s tupargs %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
-     debug_outstr_value_BM (_.tupargs, CURFRAME_BM, 0));
+     debug_outstr_value_BM ((value_tyBM) _.tupargs, CURFRAME_BM, 0));
   /// bind the arguments
   for (unsigned argix = 0; argix < nbargs; argix++)
     {
@@ -250,7 +251,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction recv %s routprepob %s tupclosed %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
-     debug_outstr_value_BM (_.tupclosed, CURFRAME_BM, 0));
+     debug_outstr_value_BM ((value_tyBM) _.tupclosed, CURFRAME_BM, 0));
   /// bind the closed
   for (unsigned cloix = 0; cloix < nbclosed; cloix++)
     {
@@ -280,7 +281,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction recv %s routprepob %s setlocals %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
-     debug_outstr_value_BM (_.setlocals, CURFRAME_BM, 0));
+     debug_outstr_value_BM ((value_tyBM) _.setlocals, CURFRAME_BM, 0));
   for (unsigned locix = 0; locix < nblocals; locix++)
     {
       _.curvar = setelemnth_BM (_.setlocals, locix);
@@ -309,7 +310,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction recv %s routprepob %s setnumbers %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
-     debug_outstr_value_BM (_.setnumbers, CURFRAME_BM, 0));
+     debug_outstr_value_BM ((value_tyBM) _.setnumbers, CURFRAME_BM, 0));
   // bind the number vars
   for (unsigned numix = 0; numix < nbnumbers; numix++)
     {
@@ -330,7 +331,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction recv %s routprepob %s setconsts %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
-     debug_outstr_value_BM (_.setconsts, CURFRAME_BM, 0));
+     debug_outstr_value_BM ((value_tyBM) _.setconsts, CURFRAME_BM, 0));
   for (unsigned cstix = 0; cstix < nbconsts; cstix++)
     {
       _.curvar = setelemnth_BM (_.setconsts, cstix);
@@ -1984,25 +1985,30 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
  const value_tyBM arg4,         // expv
  const quasinode_tyBM * restargs /*fromob. */ )
 {
-  LOCALFRAME_BM (stkf, /*descr: */ BMK_1vuSUudDrEr_9UjFr4Pcy8r,
-                 objectval_tyBM * connob;       //
-                 objectval_tyBM * routprepob;   //
-                 value_tyBM expv;       //
-                 objectval_tyBM * fromob;       //
-                 value_tyBM connargsv;
-                 objectval_tyBM * restypob; value_tyBM resultv;
-                 value_tyBM errorv;
-                 value_tyBM cursonv; objectval_tyBM * curargob;
-                 objectval_tyBM * curtypob; objectval_tyBM * curargctypob;
-                 objectval_tyBM * connrestypob; objectval_tyBM * curcomptypob;
-                 value_tyBM extraerrorv;);
-  int failin = -1;
-#define FAILHERE(Xtra) do { failin = __LINE__ ; _.extraerrorv = (value_tyBM)(Xtra); goto failure; } while(0)
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   objectval_tyBM *k_result_type = BMK_8oZ9fPJGhmS_24c2sSYsdr2;
   objectval_tyBM *k_miniscan_node_conn = BMK_5EGLdtUAQxA_1nebCsDKqOF;
   objectval_tyBM *k_arity = BMK_6fPPUXnZhy5_8Lh5DOOe0Nu;
   objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_1vuSUudDrEr_9UjFr4Pcy8r,
+                 objectval_tyBM * connob;       //
+                 objectval_tyBM * routprepob;   //
+                 value_tyBM expv;       //
+                 objectval_tyBM * fromob;       //
+                 value_tyBM connargsv;  //
+                 objectval_tyBM * restypob;     //
+                 value_tyBM resultv;    //
+                 value_tyBM errorv;     //
+                 value_tyBM cursonv;
+                 objectval_tyBM * curargob;     //
+                 objectval_tyBM * curtypob;     //
+                 objectval_tyBM * curargctypob; //
+                 objectval_tyBM * connrestypob; //
+                 objectval_tyBM * curcomptypob; //
+                 value_tyBM extraerrorv;        //
+    );
+  int failin = -1;
+#define FAILHERE(Xtra) do { failin = __LINE__ ; _.extraerrorv = (value_tyBM)(Xtra); goto failure; } while(0)
   _.connob = objectcast_BM (arg1);
   _.routprepob = objectcast_BM (arg2);
   int depth = getint_BM (arg3);
@@ -2029,7 +2035,7 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
                 debug_outstr_value_BM (_.connargsv, CURFRAME_BM, 0),    //
                 objectdbg1_BM (_.connrestypob));        //
   if (!istuple_BM (_.connargsv))
-    FAILHERE (k_arguments);
+    FAILHERE (makenode1_BM (k_arguments, _.connargsv));
   unsigned nbconnargs = tuplesize_BM (_.connargsv);
   unsigned nbexpargs = nodewidth_BM (_.expv);
   if (nbconnargs != nbexpargs)
@@ -2066,17 +2072,102 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
      objectdbg_BM (_.connrestypob));
   LOCALRETURN_BM (_.connrestypob);
 failure:
+#undef FAILHERE
   DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive failin %d", failin);
   _.errorv =
     (value_tyBM) makenode5_BM (k_miniscan_node_conn, _.expv,
                                _.routprepob, taggedint_BM (depth),
                                _.fromob, _.extraerrorv);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
-#undef FAILHERE
 }                               /* end miniscan_node_conn°basiclo_primitive  _1vuSUudDrEr_9UjFr4Pcy8r */
 
 
 
+////////////////
+
+// miniscan_node_conn°basiclo_variprimitive _0phg7TPFury_8PJoQkW2kf9
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_0phg7TPFury_8PJoQkW2kf9);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_0phg7TPFury_8PJoQkW2kf9)    //miniscan_node_conn°basiclo_variprimitive
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // connob
+ const value_tyBM arg2,         // routprepob
+ const value_tyBM arg3,         // depthv
+ const value_tyBM arg4,         // expv
+ const quasinode_tyBM * restargs /*fromob. */ )
+{
+  objectval_tyBM *k_miniscan_node_conn = BMK_5EGLdtUAQxA_1nebCsDKqOF;
+  objectval_tyBM *k_arity = BMK_6fPPUXnZhy5_8Lh5DOOe0Nu;
+  objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
+  objectval_tyBM *k_result_type = BMK_8oZ9fPJGhmS_24c2sSYsdr2;
+  objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_0phg7TPFury_8PJoQkW2kf9,
+                 value_tyBM resultv;    //
+                 objectval_tyBM * connob;       //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * fromob;       //
+                 objectval_tyBM * connrestypob; //
+                 value_tyBM connargsv;  //
+                 value_tyBM causev;     //
+                 value_tyBM expv;       //
+                 value_tyBM attrv;      //
+                 value_tyBM errorv;     //
+    );
+  int failin = -1;
+#define FAILHERE(Xtra) do { failin = __LINE__ ; _.causev = (value_tyBM)(Xtra); goto failure; } while(0)
+  _.connob = objectcast_BM (arg1);
+  _.routprepob = objectcast_BM (arg2);
+  int depth = getint_BM (arg3);
+  _.expv = arg4;
+  _.fromob = objectcast_BM (treenthson_BM ((value_tyBM) restargs, 0));
+  DBGPRINTF_BM ("miniscan_node_conn°basiclo_variprimitive start connob %s"     //
+                "\n... routprepob %s depth %d expv %s fromob %s",       //
+                objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob), depth,   //
+                debug_outstr_value_BM (_.expv, CURFRAME_BM, 0), //
+                objectdbg2_BM (_.fromob));
+  if (!_.routprepob)
+    FAILHERE (NULL);
+  if (!_.fromob)
+    FAILHERE (NULL);
+  {
+    objlock_BM (_.connob);
+    _.connargsv = objgetattr_BM (_.connob, k_arguments);
+    {
+      _.attrv = objgetattr_BM (_.connob, k_result_type);
+      _.connrestypob = objectcast_BM (_.attrv);
+      if (_.attrv && !_.connrestypob)
+        FAILHERE (makenode1_BM (k_result_type, k_result_type));
+      _.attrv = NULL;
+    }
+    objunlock_BM (_.connob);
+  }
+  DBGPRINTF_BM ("miniscan_node_conn°basiclo_variprimitive connob %s"   //
+                "\n... connargs %s connrestyp %s",      //
+                objectdbg_BM (_.connob),        //
+                debug_outstr_value_BM (_.connargsv, CURFRAME_BM, 0),    //
+                objectdbg1_BM (_.connrestypob));
+#warning unimplemented miniscan_node_conn°basiclo_variprimitive  _0phg7TPFury_8PJoQkW2kf9 routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented miniscan_node_conn°basiclo_variprimitive  _0phg7TPFury_8PJoQkW2kf9 routine");
+  LOCALRETURN_BM (_.resultv);
+failure:
+#undef FAILHERE
+  DBGPRINTF_BM
+    ("miniscan_node_conn°basiclo_variprimitive failin %d cause %s", failin,
+     debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    (value_tyBM) makenode5_BM (k_miniscan_node_conn, _.expv, _.routprepob,
+                               taggedint_BM (depth), _.fromob, _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end miniscan_node_conn°basiclo_variprimitive  _0phg7TPFury_8PJoQkW2kf9 */
+
+
+
+
+////////////////////////////////////////////////////////////////
 // miniscan_stmt°basiclo_return _7vlMCZ0yvva_6tx0lFlqBG8
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7vlMCZ0yvva_6tx0lFlqBG8);
 value_tyBM
@@ -3389,7 +3480,7 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
            oix, constidarr[oix], objectdbg_BM (_.modulob));
       constobjarr[oix] = _.curob;
     }
-  _.constsetv = makeset_BM ((objectval_tyBM **) constobjarr, nbconstid);
+  _.constsetv = makeset_BM ((const objectval_tyBM **) constobjarr, nbconstid);
   objectval_tyBM **routarr = calloc (nbroutid + 1, sizeof (objectval_tyBM *));
   if (!routarr)
     FATAL_BM ("calloc failed for %d routines", nbroutid);

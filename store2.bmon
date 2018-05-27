@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 460 objects
+// for 462 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -483,6 +483,21 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 ~)
 
 !)_0277f6mOd9j_0tVZSXnTzUK
+
+
+
+!(_5tyXzbxouTG_30OHxxp0HSf |=basiclo_variprimitive|
+!~ name (~ basiclo_variprimitive
+~)
+!@ 1527428889.95
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of variadic primitives"
+!~ class (~ |supercl basiclo_connective:| _3DQ7z3EuAiT_4faSRNsy2lr 
+~: _5EGLdtUAQxA_1nebCsDKqOF  % _0phg7TPFury_8PJoQkW2kf9 ()
+~)
+
+!)_5tyXzbxouTG_30OHxxp0HSf
 
 
 
@@ -3570,6 +3585,16 @@ _8c9otZ4pwR6_55k81qyyYV2 _2lCuMosXupr_5GAoqVgJ8PZ
 !: _2DH0ucElTgh_62vxjxLcfev |=return|
 _4Q4WBLjAPTV_5WVLmhAvCJY
 !)_0nis0ztlxLc_5t5q1Qbil78
+
+
+
+!(_0phg7TPFury_8PJoQkW2kf9
+!|*
+!@ 1527429004.54
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniscan_node_conn\u00b0basiclo_variprimitive"
+!)_0phg7TPFury_8PJoQkW2kf9
 
 
 
