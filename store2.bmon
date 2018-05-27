@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 456 objects
+// for 457 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1324,12 +1324,14 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 !(_82ho9wUUDji_4peMLha4PXl |=findobj_scan_minifunc|
 !~ name (~ findobj_scan_minifunc
 ~)
-!@ 1527257109.68
+!@ 1527402747.70
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "findobj_scan_minifunc scans, with the closed"& " and locked o_findobj, the argument object"& " o_scan; give NULL if o_scan was already"& " scanned"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _4gykCX1QdLb_9Aooqa2FWTq ]
+!: _24sSVIADeHm_0Sx34wQfG7W |=locals|
+ { _6Jkz6rphVkn_1KZto79j46r }
 !: _2TwOyPJxIz8_1rIeqaN7oRz |=closed|
  [ _4ITcQtvlMmO_30Pss9oAVDB ]
 !: _5l2zSKsFaVm_9zs6qDOP87i |=constants|
@@ -2159,6 +2161,19 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_4gykCX1QdLb_9Aooqa2FWTq
+
+
+
+!(_6Jkz6rphVkn_1KZto79j46r |=o_vihset|
+!~ name (~ o_vihset
+~)
+!@ 1527402747.70
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the visited hashset object"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_6Jkz6rphVkn_1KZto79j46r
 
 
 
@@ -4815,10 +4830,10 @@ _4lKK08v9A0t_0GGsir35UxP _4bYUiDmxrKK_6nPPlEl8y8x) ~)
 
 
 !(_6YnYKKsHo3f_9nIEOZMp744
-!@ 1527256312.63
+!@ 1527402798.58
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
-!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
- * _2U8Sj78DMbl_5eerKpaJsNq ( _7m9brpKxZkY_3BEI7YANJuJ)
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the body of findobj_scan_minifunc"
 !# 1
 !& _7m9brpKxZkY_3BEI7YANJuJ
 !)_6YnYKKsHo3f_9nIEOZMp744
