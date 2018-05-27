@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 458 objects
+// for 460 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1799,6 +1799,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_1jxHWln6JmG_4NeGZgGgaAp |=lenstring|
+!~ name (~ lenstring
+~)
+!@ 1527425703.67
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the length of a string value, or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _1jxHWln6JmG_4NeGZgGgaAp  ":*/"  "lenstring_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_1jxHWln6JmG_4NeGZgGgaAp
+
+
+
 !(_0P0Iffx3ohY_2vRksLXKZlK |=less_int|
 !~ name (~ less_int
 ~)
@@ -2885,6 +2903,25 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to associate a property to each statement"
 !)_0OM3NoUpOBd_1nzwCJKw54A
+
+
+
+!(_2lzmiyzRZyE_46Qhn9pXVFc |=string_cast|
+!~ name (~ string_cast
+~)
+!@ 1527425547.09
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dynamically cast into string value"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2lzmiyzRZyE_46Qhn9pXVFc  ":*/(("  "value_tyBM"  ")" 
+  "stringcast_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW) 
+ ")))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_2lzmiyzRZyE_46Qhn9pXVFc
 
 
 
