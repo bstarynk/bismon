@@ -1,4 +1,6 @@
-// generated persistent module first_test_module in file modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c
+// generated persistent module first_test_module
+// in file modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c -- DONT EDIT
+// this generated code is GPLv3+ licensed.
 
 
 #include "bismon.h"

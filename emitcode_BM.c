@@ -3162,14 +3162,18 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
   if (modulistemporary)
     objstrbufferprintfpayl_BM (_.modgenob,
-                               "// generated temporary module %s in file "
-                               TEMPMODULEPREFIX_BM "%s.c\n",
+                               "// generated temporary module %s\n"
+                               "// in file "
+                               TEMPMODULEPREFIX_BM "%s.c -- DONT EDIT\n",
                                objectdbg_BM (_.modulob), modulidbuf);
   else
     objstrbufferprintfpayl_BM (_.modgenob,
-                               "// generated persistent module %s in file "
-                               MODULEPREFIX_BM "%s.c\n",
+                               "// generated persistent module %s\n"
+                               "// in file "
+                               MODULEPREFIX_BM "%s.c -- DONT EDIT\n",
                                objectdbg_BM (_.modulob), modulidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "// this generated code is GPLv3+ licensed.\n");
   _.resgen =
     send2_BM (_.modulob, k_generate_module, CURFRAME_BM,
               _.modgenob, _.resprep);

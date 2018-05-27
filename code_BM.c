@@ -1531,7 +1531,10 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   ASSERT_BM (isstring_BM ((const value_tyBM) _.filnamv));
   const char *basepath = bytstring_BM (_.filnamv);
   objstrbufferprintfpayl_BM (_.prsbufob,
-                             "// generated file for predefined %s\n",
+                             "// generated header file for predefined %s\n",
+                             basepath);
+  objstrbufferprintfpayl_BM (_.prsbufob,
+                             "// this generated header file is GPLv3+ licensed\n",
                              basepath);
   _.prset = setpredefinedobjects_BM ();
   unsigned nbpredef = setcardinal_BM (_.prset);
@@ -1623,7 +1626,8 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
     };
   objstrbufferprintfpayl_BM (_.prsbufob, "\n#undef HAS_NAMED_PREDEF_BM\n"
                              "#endif/*HAS_NAMED_PREDEF_BM*/\n\n");
-  objstrbufferprintfpayl_BM (_.prsbufob, "// end of generated file %s\n",
+  objstrbufferprintfpayl_BM (_.prsbufob,
+                             "// end of generated predefined file %s\n",
                              basepath);
   char *filpath = NULL;
   asprintf (&filpath, "%s/%s", bytstring_BM (duptr->dump_dir), basepath);
@@ -1680,7 +1684,11 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   ASSERT_BM (isstring_BM ((const value_tyBM) _.filnamv));
   const char *basepath = bytstring_BM (_.filnamv);
   objstrbufferprintfpayl_BM (_.prsbufob,
-                             "// generated file for globals %s\n", basepath);
+                             "// generated code file for globals %s\n",
+                             basepath);
+  objstrbufferprintfpayl_BM (_.prsbufob,
+                             "// this generated file is GPLv3+ licensed\n",
+                             basepath);
   objstrbufferprintfpayl_BM (_.prsbufob,
                              "#ifndef HAS_GLOBAL_BM\n"
                              "#error missing HAS_GLOBAL_BM\n" "#endif\n\n");
@@ -1765,6 +1773,8 @@ ROUTINEOBJNAME_BM (_3yJPC4SxGtF_6ilaF37wdxG)    //
   objstrbufferprintfpayl_BM (_.prsbufob,
                              "// generated file for %u types %s\n", nbtypes,
                              basepath);
+  objstrbufferprintfpayl_BM (_.prsbufob,
+                             "// this generated file is GPLv3+ licensed\n");
   unsigned nbgoodtypes = 0;
   for (unsigned ix = 0; ix < nbtypes; ix++)
     {

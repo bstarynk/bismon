@@ -471,8 +471,9 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   if (!spfil)
     FATAL_BM ("dump_emit_space_BM cannot open %s (%m)",
               bytstring_BM (_.pathv));
-  fprintf (spfil, "// generated file %s\n",
+  fprintf (spfil, "// generated persistent data file %s\n",
            basename (bytstring_BM (_.pathv)));
+  fprintf (spfil, "// this generated data file is GPLv3+ licensed\n");
   unsigned nbobj = setcardinal_BM (_.setobjs);
   fprintf (spfil, "// for %u objects\n", nbobj);
   _.modhsetob = makeobj_BM ();
