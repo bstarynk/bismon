@@ -76,6 +76,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                  objectval_tyBM * obmodhsetconst;
                  objectval_tyBM * stmtpropob;
                  value_tyBM recv;
+                 value_tyBM attrv;
                  const tupleval_tyBM * tupargs;
                  const tupleval_tyBM * tupclosed;
                  objectval_tyBM * obresult;
@@ -121,12 +122,48 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     ("start prepare_routine°basiclo_minifunction recv=%s modgenob=%s nbprep=%u obmodhsetconst=%s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.modgenob), nbprep,
      objectdbg2_BM (_.obmodhsetconst));
-  _.tupargs = tuplecast_BM (objgetattr_BM (_.recv, k_arguments));
-  _.tupclosed = tuplecast_BM (objgetattr_BM (_.recv, k_closed));
-  _.obresult = objectcast_BM (objgetattr_BM (_.recv, k_result));
-  _.setlocals = setcast_BM (objgetattr_BM (_.recv, k_locals));
-  _.setnumbers = setcast_BM (objgetattr_BM (_.recv, k_numbers));
-  _.setconsts = setcast_BM (objgetattr_BM (_.recv, k_constants));
+  {
+    _.attrv = objgetattr_BM (_.recv, k_arguments);
+    _.tupargs = tuplecast_BM (_.attrv);
+    if (_.attrv && !_.tupargs)
+      FAILHERE (makenode1_BM (k_arguments, _.attrv));
+    _.attrv = NULL;
+  }
+  {
+    _.attrv = objgetattr_BM (_.recv, k_closed);
+    _.tupclosed = tuplecast_BM (_.attrv);
+    if (_.attrv && !_.tupclosed)
+      FAILHERE (makenode1_BM (k_closed, _.attrv));
+    _.attrv = NULL;
+  }
+  {
+    _.attrv = objgetattr_BM (_.recv, k_result);
+    _.obresult = objectcast_BM (_.attrv);
+    if (_.attrv && !_.obresult)
+      FAILHERE (makenode1_BM (k_result, _.attrv));
+    _.attrv = NULL;
+  }
+  {
+    _.attrv = objgetattr_BM (_.recv, k_locals);
+    _.setlocals = setcast_BM (_.attrv);
+    if (_.attrv && !_.setlocals)
+      FAILHERE (makenode1_BM (k_locals, _.attrv));
+    _.attrv = NULL;
+  }
+  {
+    _.attrv = objgetattr_BM (_.recv, k_numbers);
+    _.setnumbers = setcast_BM (_.attrv);
+    if (_.attrv && !_.setnumbers)
+      FAILHERE (makenode1_BM (k_numbers, _.attrv));
+    _.attrv = NULL;
+  }
+  {
+    _.attrv = objgetattr_BM (_.recv, k_constants);
+    _.setconsts = setcast_BM (_.attrv);
+    if (_.attrv && !_.setconsts)
+      FAILHERE (makenode1_BM (k_constants, _.attrv));
+    _.attrv = NULL;
+  }
   DBGPRINTF_BM
     ("prepare_routine°basiclo_minifunction recv=%s tupargs=%s tupclosed=%s obresult=%s"
      "\n.. setlocals=%s setnumbers=%s setconsts=%s",
@@ -167,6 +204,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                       2 + nbargs + nbclosed + nblocals + nbnumbers +
                       nbconsts);
   objtouchnow_BM (_.routprepob);
+  DBGPRINTF_BM
+    ("start prepare_routine°basiclo_minifunction recv %s routprepob %s obresult %s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob), _.obresult);
   //// check and bind the result
   if (_.obresult)
     {
@@ -178,6 +218,10 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       objassocaddattrpayl_BM (_.routprepob, _.obresult,
                               (value_tyBM) k_result);
     }
+  DBGPRINTF_BM
+    ("start prepare_routine°basiclo_minifunction recv %s routprepob %s tupargs %s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
+     debug_outstr_value_BM (_.tupargs, CURFRAME_BM, 0));
   /// bind the arguments
   for (unsigned argix = 0; argix < nbargs; argix++)
     {
@@ -203,6 +247,10 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       _.curol = NULL;
       _.curtypob = NULL;
     }
+  DBGPRINTF_BM
+    ("start prepare_routine°basiclo_minifunction recv %s routprepob %s tupclosed %s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
+     debug_outstr_value_BM (_.tupclosed, CURFRAME_BM, 0));
   /// bind the closed
   for (unsigned cloix = 0; cloix < nbclosed; cloix++)
     {
@@ -229,6 +277,10 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       _.curtypob = NULL;
     }
   /// bind the locals
+  DBGPRINTF_BM
+    ("start prepare_routine°basiclo_minifunction recv %s routprepob %s setlocals %s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
+     debug_outstr_value_BM (_.setlocals, CURFRAME_BM, 0));
   for (unsigned locix = 0; locix < nblocals; locix++)
     {
       _.curvar = setelemnth_BM (_.setlocals, locix);
@@ -253,6 +305,11 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       objassocaddattrpayl_BM (_.routprepob, _.curvar, _.curol);
       _.curol = NULL;
     }
+  /// bind the locals
+  DBGPRINTF_BM
+    ("start prepare_routine°basiclo_minifunction recv %s routprepob %s setnumbers %s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
+     debug_outstr_value_BM (_.setnumbers, CURFRAME_BM, 0));
   // bind the number vars
   for (unsigned numix = 0; numix < nbnumbers; numix++)
     {
@@ -270,6 +327,10 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       _.curol = NULL;
     }
   // bind the constants
+  DBGPRINTF_BM
+    ("start prepare_routine°basiclo_minifunction recv %s routprepob %s setconsts %s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
+     debug_outstr_value_BM (_.setconsts, CURFRAME_BM, 0));
   for (unsigned cstix = 0; cstix < nbconsts; cstix++)
     {
       _.curvar = setelemnth_BM (_.setconsts, cstix);
