@@ -293,17 +293,16 @@ value_tyBM crout_82ho9wUUDji_4peMLha4PXl_BM     //#3+
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 4 local values:
+    /// 3 local values:
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ;       // v_r
     objectval_tyBM *o_4gykCX1QdLb_9Aooqa2FWTq;  // o_scan
     objectval_tyBM *o_4ITcQtvlMmO_30Pss9oAVDB;  // o_findobj
-    objectval_tyBM *o_6Jkz6rphVkn_1KZto79j46r;  // o_vihset
     /// 0 local numbers:
   } _;
   memset (&_, 0, sizeof (struct frame_82ho9wUUDji_4peMLha4PXl_BMst));
   _.stkfram_head.htyp = typayl_StackFrame_BM;
   _.stkfram_head.hgc = 0;
-  _.stkfram_head.rlen = 4;
+  _.stkfram_head.rlen = 3;
   _.stkfram_descr =
     constob_3BFt4NfJmZC_7iYi2dwM38B_BM[4] /*|findobj_scan_minifunc */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
