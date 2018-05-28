@@ -3585,7 +3585,8 @@ ROUTINEOBJNAME_BM (_1nHMifVeQIt_0mCPhG89MWu)    //miniscan_node_conn#make_sequen
       _.subtypob =
         miniscan_expr_BM (_.subexpv, _.routprepob, depth + 1,
                           _.fromob, CURFRAME_BM);
-      if (_.subtypob != BMP_object)
+      if (_.subtypob != BMP_object
+	  || miniscan_compatype_BM (_.subtypob, BMP_object, CURFRAME_BM) != BMP_object)
         FAILHERE (makenode2_BM (BMP_node, taggedint_BM (ix), _.subtypob));
       _.subexpv = NULL;
       _.subtypob = NULL;
@@ -3655,7 +3656,8 @@ ROUTINEOBJNAME_BM (_9FtctWvW1qr_5mEGPxjn1co)    //miniscan_node_conn#collect_seq
       _.subtypob =
         miniscan_expr_BM (_.subexpv, _.routprepob, depth + 1,
                           _.fromob, CURFRAME_BM);
-      if (_.subtypob != BMP_object && _.subtypob != BMP_value)
+      if ((_.subtypob != BMP_object && _.subtypob != BMP_value)
+	  || miniscan_compatype_BM (_.subtypob, BMP_value, CURFRAME_BM) != BMP_value)
         FAILHERE (makenode2_BM (BMP_node, taggedint_BM (ix), _.subtypob));
       _.subexpv = NULL;
       _.subtypob = NULL;
