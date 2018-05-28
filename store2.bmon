@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 468 objects
+// for 472 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -815,6 +815,17 @@ _5ve5gbSjN0r_1n61nNRPtnN _0jFqaPPHgYH_5JpjOPxQ67p _7DQyvJFMOrC_9IfC3CtYknn
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
  % _0XbMOJqLLPZ_1t2wg2TwPRA ()
 !)_0v2RuabJSIV_7SLFx4XAdpr
+
+
+
+!(_64FyzTwMoeT_9W2OIW95K2H |=connective|
+!~ name (~ connective
+~)
+!@ 1527507859.01
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for connective related stuff"
+!)_64FyzTwMoeT_9W2OIW95K2H
 
 
 
@@ -1941,6 +1952,32 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3JH05KgIzty_1K7IDyF43V2
 !)_9MVKIIUC3fl_5Yz7jotlCtv
+
+
+
+!(_7TkUn0TDFnK_67wcGpqZLCD |=make_closure|
+!~ name (~ make_closure
+~)
+!@ 1527509829.56
+!$_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "connective to make a closure of given connective-object and sons"
+!: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
+ % _8ru2DB8XTmJ_7h8mj1NTpKM ( _93zjUzZVAaj_9ppXv7C34GR)
+!)_7TkUn0TDFnK_67wcGpqZLCD
+
+
+
+!(_0Vw4O8Wjf9x_3ANjSvs32bz |=make_node|
+!~ name (~ make_node
+~)
+!@ 1527506541.69
+!$_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "connective to make a node of given connective-objects and sons"
+!: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
+ % _8ru2DB8XTmJ_7h8mj1NTpKM ( _7D8xcWnEiys_8oqOVSkCxkA)
+!)_0Vw4O8Wjf9x_3ANjSvs32bz
 
 
 
@@ -5340,6 +5377,16 @@ _4lKK08v9A0t_0GGsir35UxP _4bYUiDmxrKK_6nPPlEl8y8x) ~)
 !# 1
 !& _9dmQwUU17M1_1km5cSGzJly
 !)_8qsLnTz2QdD_9nZub2hBMEb
+
+
+
+!(_8ru2DB8XTmJ_7h8mj1NTpKM
+!|*
+!@ 1527506541.69
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniemit_node_conn#make_tree"
+!)_8ru2DB8XTmJ_7h8mj1NTpKM
 
 
 
