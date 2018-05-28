@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 463 objects
+// for 464 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1917,12 +1917,14 @@ _3JH05KgIzty_1K7IDyF43V2
 !(_0DC23xnCbwH_9ASAWWIIO9L |=make_set|
 !~ name (~ make_set
 ~)
-!@ 1527491629.36
+!@ 1527495568.58
 !$_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "connective to make a set"
 !: _5EGLdtUAQxA_1nebCsDKqOF |=miniscan_node_conn|
  % _1nHMifVeQIt_0mCPhG89MWu ( _2mYaTh9kH4I_7ENiXcymRmy)
+!: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
+ % _0DW82XG9HTW_0SblkfpwJi3 ( _2mYaTh9kH4I_7ENiXcymRmy)
 !)_0DC23xnCbwH_9ASAWWIIO9L
 
 
@@ -1930,12 +1932,14 @@ _3JH05KgIzty_1K7IDyF43V2
 !(_4b6u5PDGTaj_7VUuVl3i7yx |=make_tuple|
 !~ name (~ make_tuple
 ~)
-!@ 1527491506.04
+!@ 1527495637.70
 !$_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "connective to make a tuple"
 !: _5EGLdtUAQxA_1nebCsDKqOF |=miniscan_node_conn|
  % _1nHMifVeQIt_0mCPhG89MWu ( _6TmLNh9vtVY_0pwkHRtJ44k)
+!: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
+ % _0DW82XG9HTW_0SblkfpwJi3 ( _6TmLNh9vtVY_0pwkHRtJ44k)
 !)_4b6u5PDGTaj_7VUuVl3i7yx
 
 
@@ -3688,6 +3692,16 @@ _1yHf2QrNJFe_26wMXjkynuo
 !# 1
 !& _01p2tksvq9A_1b8os2WLues
 !)_0CsCkIkpNX6_52gRCYPcnW2
+
+
+
+!(_0DW82XG9HTW_0SblkfpwJi3
+!|*
+!@ 1527495568.58
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniemit_node_conn#make_sequence"
+!)_0DW82XG9HTW_0SblkfpwJi3
 
 
 

@@ -3355,6 +3355,9 @@ failure:
 
 
 
+////////////////
+
+
 // miniemit_node_conn#apply _6lTDbwKEMMc_0wsIKviDSce
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_6lTDbwKEMMc_0wsIKviDSce);
@@ -3433,3 +3436,54 @@ failure:
     (value_tyBM) makenode3_BM (k_apply, _.expv, _.routprepob, _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniemit_node_conn#apply _6lTDbwKEMMc_0wsIKviDSce */
+
+
+
+
+////////////////
+// miniemit_node_conn#make_sequence  _0DW82XG9HTW_0SblkfpwJi3
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_0DW82XG9HTW_0SblkfpwJi3);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_0DW82XG9HTW_0SblkfpwJi3) //miniemit_node_conn#make_sequence
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // expv
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // routprepob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs /*fromob. */ )
+{
+  objectval_tyBM *k_tuple = BMK_6TmLNh9vtVY_0pwkHRtJ44k;
+  objectval_tyBM *k_set = BMK_2mYaTh9kH4I_7ENiXcymRmy;
+  LOCALFRAME_BM (stkf, /*descr:*/ BMK_0DW82XG9HTW_0SblkfpwJi3,
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * fromob;       //
+                 objectval_tyBM * modgenob;     //
+                 value_tyBM expv;       //
+                 value_tyBM subexpv;    //
+                 objectval_tyBM * subtypob; //
+                 objectval_tyBM * seqtypob; //
+		 value_tyBM resultv; //
+		 value_tyBM callingclosv; //
+                 value_tyBM funexpv;    //
+                 value_tyBM causev;     //
+                 value_tyBM errorv;);
+  LOCALGETFUNV_BM (_.callingclosv);
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
+  _.expv = arg1;
+  _.modgenob = objectcast_BM (arg2);
+  _.routprepob = objectcast_BM (arg3);
+  int depth = getint_BM (arg4);
+  if (restargs)
+    _.fromob = objectcast_BM (treenthson_BM ((value_tyBM) restargs, 0));
+  WEAKASSERT_BM (isobject_BM (_.modgenob));
+  WEAKASSERT_BM (isobject_BM (_.routprepob));
+  int nbsons = nodewidth_BM ((value_tyBM) _.expv);
+  _.seqtypob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
+  WEAKASSERT_BM (_.seqtypob == k_tuple || _.seqtypob == k_set);
+#warning unimplemented _0DW82XG9HTW_0SblkfpwJi3 routine
+  WEAKASSERT_BM(false && "unimplemented _0DW82XG9HTW_0SblkfpwJi3 routine");
+  LOCALRETURN_BM(_.resultv);
+} /* end miniemit_node_conn#make_sequence _0DW82XG9HTW_0SblkfpwJi3*/
