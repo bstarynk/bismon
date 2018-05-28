@@ -3488,13 +3488,13 @@ ROUTINEOBJNAME_BM (_0DW82XG9HTW_0SblkfpwJi3)    //miniemit_node_conn#make_sequen
   if (_.seqtypob == k_set)
     {
       objstrbufferprintfpayl_BM (_.modgenob,
-                                 "((value_tyBM) makesizedset_BM (%d,",
+                                 "((value_tyBM) makesizedset_BM (%dU,",
                                  nbsons);
     }
   else if (_.seqtypob == k_tuple)
     {
       objstrbufferprintfpayl_BM (_.modgenob,
-                                 "((value_tyBM) makesizedtuple_BM (%d,",
+                                 "((value_tyBM) makesizedtuple_BM (%dU,",
                                  nbsons);
     }
   else
@@ -3542,3 +3542,103 @@ failure:
                                _.routprepob, _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniemit_node_conn#make_sequence _0DW82XG9HTW_0SblkfpwJi3 */
+
+
+
+
+////////////////
+
+// miniemit_node_conn#collect_sequence _4qDfwZTHqD2_7Xti5ibNj8Z
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_4qDfwZTHqD2_7Xti5ibNj8Z);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_4qDfwZTHqD2_7Xti5ibNj8Z)    // miniemit_node_conn#collect_sequence 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // expv
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // routprepob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs /*fromob. */ )
+{
+  objectval_tyBM *k_tuple = BMK_6TmLNh9vtVY_0pwkHRtJ44k;
+  objectval_tyBM *k_set = BMK_2mYaTh9kH4I_7ENiXcymRmy;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_4qDfwZTHqD2_7Xti5ibNj8Z,
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * fromob;       //
+                 objectval_tyBM * modgenob;     //
+                 value_tyBM expv;       //
+                 value_tyBM subexpv;    //
+                 objectval_tyBM * connob;       //
+                 objectval_tyBM * subtypob;     //
+                 objectval_tyBM * seqtypob;     //
+                 value_tyBM resultv;    //
+                 value_tyBM callingclosv;       //
+                 value_tyBM funexpv;    //
+                 value_tyBM causev;     //
+                 value_tyBM errorv;);
+  LOCALGETFUNV_BM (_.callingclosv);
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
+  _.expv = arg1;
+  _.modgenob = objectcast_BM (arg2);
+  _.routprepob = objectcast_BM (arg3);
+  int depth = getint_BM (arg4);
+  if (restargs)
+    _.fromob = objectcast_BM (treenthson_BM ((value_tyBM) restargs, 0));
+  WEAKASSERT_BM (isobject_BM (_.modgenob));
+  WEAKASSERT_BM (isobject_BM (_.routprepob));
+  _.connob = nodeconn_BM ((value_tyBM) _.expv);
+  int nbsons = nodewidth_BM ((value_tyBM) _.expv);
+  _.seqtypob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
+  WEAKASSERT_BM (_.seqtypob == k_tuple || _.seqtypob == k_set);
+  if (_.seqtypob == k_set)
+    {
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "((value_tyBM) makesizedcollectset_BM (%dU,",
+                                 nbsons);
+    }
+  else if (_.seqtypob == k_tuple)
+    {
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "((value_tyBM) makesizedcollecttuple_BM (%dU,",
+                                 nbsons);
+    }
+  else
+    FAILHERE (_.seqtypob);
+  for (int ix = 0; ix < nbsons; ix++)
+    {
+      _.subexpv = nodenthson_BM (_.expv, ix);
+      objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+      objstrbuffernewlinepayl_BM (_.modgenob);
+      if (ix > 0 && ix % 8 == 0 && ix + 1 < nbsons)
+        {
+          objstrbufferprintfpayl_BM (_.modgenob, "// collectarg #%d\n", ix);
+        };
+      objstrbufferprintfpayl_BM (_.modgenob, "(");
+      miniemit_expression_BM (CURFRAME_BM, _.subexpv, _.modgenob,
+                              _.routprepob, _.fromob, depth + 1);
+      objstrbufferprintfpayl_BM (_.modgenob, ")");
+      if (ix + 1 < nbsons)
+        {
+          objstrbufferprintfpayl_BM (_.modgenob, ",");
+          objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+          objstrbuffernewlinepayl_BM (_.modgenob);
+        }
+    }
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbufferprintfpayl_BM (_.modgenob, ")");
+  LOCALRETURN_BM (_.modgenob);
+failure:
+#undef FAILHERE
+  DBGPRINTF_BM
+    ("miniemit_node_conn#make_sequence failure failin %d exp %s routprepob %s cause %s",
+     failin, debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
+     objectdbg_BM (_.routprepob), debug_outstr_value_BM (_.causev,
+                                                         CURFRAME_BM, 0));
+  _.errorv =
+    (value_tyBM) makenode3_BM (_.connob ? _.connob :
+                               BMK_4qDfwZTHqD2_7Xti5ibNj8Z, _.expv,
+                               _.routprepob, _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end miniemit_node_conn#collect_sequence _4qDfwZTHqD2_7Xti5ibNj8Z */

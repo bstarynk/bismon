@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 467 objects
+// for 468 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -756,12 +756,14 @@ _5ve5gbSjN0r_1n61nNRPtnN _0jFqaPPHgYH_5JpjOPxQ67p _7DQyvJFMOrC_9IfC3CtYknn
 !(_2rLSmJNw3Oy_85nknpTM9rF |=collect_set|
 !~ name (~ collect_set
 ~)
-!@ 1527504058.31
+!@ 1527504686.73
 !$_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "connective to collect a set from arbitrary values - objects or sequences"
 !: _5EGLdtUAQxA_1nebCsDKqOF |=miniscan_node_conn|
  % _9FtctWvW1qr_5mEGPxjn1co ()
+!: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
+ % _4qDfwZTHqD2_7Xti5ibNj8Z ( _2mYaTh9kH4I_7ENiXcymRmy)
 !)_2rLSmJNw3Oy_85nknpTM9rF
 
 
@@ -769,12 +771,14 @@ _5ve5gbSjN0r_1n61nNRPtnN _0jFqaPPHgYH_5JpjOPxQ67p _7DQyvJFMOrC_9IfC3CtYknn
 !(_7SShkTRrGuF_4EpjuW4zl4T |=collect_tuple|
 !~ name (~ collect_tuple
 ~)
-!@ 1527504154.97
+!@ 1527504785.20
 !$_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "connective to collect a tuple from arbitrary values - objects or sequences"
 !: _5EGLdtUAQxA_1nebCsDKqOF |=miniscan_node_conn|
  % _9FtctWvW1qr_5mEGPxjn1co ()
+!: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
+ % _4qDfwZTHqD2_7Xti5ibNj8Z ( _6TmLNh9vtVY_0pwkHRtJ44k)
 !)_7SShkTRrGuF_4EpjuW4zl4T
 
 
@@ -4448,6 +4452,16 @@ _3tRRKffqUUS_7FYuK7MLmT6
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to get\u00b0assoc_object"
 !)_4icYJnKsN0o_4xm5UbQOMTe
+
+
+
+!(_4qDfwZTHqD2_7Xti5ibNj8Z
+!|*
+!@ 1527504686.73
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniemit_node_conn#collect_sequence"
+!)_4qDfwZTHqD2_7Xti5ibNj8Z
 
 
 
