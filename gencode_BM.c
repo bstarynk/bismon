@@ -3448,7 +3448,7 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
 
 
 
-
+////////////////////////////////////////////////////////////////
 
 // miniscan_node_conn#apply _1X94b6LizfY_2W2ODAL1F3D
 
@@ -3524,3 +3524,79 @@ failure:
                                _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniscan_node_conn#apply _1X94b6LizfY_2W2ODAL1F3D */
+
+
+
+// miniscan_node_conn#make_sequence _1nHMifVeQIt_0mCPhG89MWu
+// for make_tuple or make_set
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_1nHMifVeQIt_0mCPhG89MWu);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_1nHMifVeQIt_0mCPhG89MWu)    //miniscan_node_conn#make_sequence
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // connob
+ const value_tyBM arg2,         // routprepob
+ const value_tyBM arg3,         // depth
+ const value_tyBM arg4,         // expv
+ const quasinode_tyBM * restargs /*fromob. */ )
+{
+  objectval_tyBM *k_tuple = BMK_6TmLNh9vtVY_0pwkHRtJ44k;
+  objectval_tyBM *k_set = BMK_2mYaTh9kH4I_7ENiXcymRmy;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_1nHMifVeQIt_0mCPhG89MWu,
+                 objectval_tyBM * connob;       //
+                 objectval_tyBM * routprepob;   //
+                 value_tyBM expv;       //
+                 value_tyBM subexpv;    //
+                 objectval_tyBM * fromob;       //
+                 objectval_tyBM * seqtypob;     //
+                 objectval_tyBM * subtypob;     //
+                 value_tyBM callingclosv;       //
+                 value_tyBM causev;     //
+                 value_tyBM errorv;     //
+                 value_tyBM resultv;    //
+    );
+  int depth = -1;
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
+  LOCALGETFUNV_BM (_.callingclosv);
+  WEAKASSERT_BM (isobject_BM (arg1));
+  _.connob = objectcast_BM (arg1);
+  WEAKASSERT_BM (isobject_BM (arg2));
+  _.routprepob = objectcast_BM (arg2);
+  WEAKASSERT_BM (istaggedint_BM (arg3));
+  depth = getint_BM (arg3);
+  _.expv = arg4;
+  if (restargs)
+    _.fromob = objectcast_BM (treenthson_BM ((value_tyBM) restargs, 0));
+  WEAKASSERT_BM (_.routprepob);
+  WEAKASSERT_BM (_.fromob);
+  DBGPRINTF_BM
+    ("miniscan_node_conn#make_sequence start routprepob %s depth %d exp %s fromob %s",
+     objectdbg_BM (_.routprepob), depth,
+     debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
+     objectdbg1_BM (_.fromob));
+  _.seqtypob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
+  WEAKASSERT_BM (_.seqtypob == k_tuple || _.seqtypob == k_set);
+  int nbsons = (int) nodewidth_BM ((value_tyBM) _.expv);
+  for (int ix = 0; ix < nbsons; ix++)
+    {
+      _.subexpv = (value_tyBM) nodenthson_BM ((value_tyBM) _.expv, ix);
+      _.subtypob =
+        miniscan_expr_BM (_.subexpv, _.routprepob, depth + 1,
+                          _.fromob, CURFRAME_BM);
+      if (_.subtypob != BMP_object)
+        FAILHERE (makenode2_BM (BMP_node, taggedint_BM (ix), _.subtypob));
+      _.subexpv = NULL;
+      _.subtypob = NULL;
+    }
+  LOCALRETURN_BM (BMP_value);
+failure:
+  DBGPRINTF_BM ("miniscan_node_conn#make_sequence failure failin %d exp %s routprepob %s cause %s", failin, debug_outstr_value_BM (_.expv, CURFRAME_BM, 0), objectdbg_BM (_.routprepob),        //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    (value_tyBM) makenode4_BM (_.connob ? _.connob :
+                               BMK_1nHMifVeQIt_0mCPhG89MWu, _.expv,
+                               _.routprepob, _.fromob, _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end miniscan_node_conn#make_sequence  _1nHMifVeQIt_0mCPhG89MWu */
