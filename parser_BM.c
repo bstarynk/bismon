@@ -728,7 +728,7 @@ parse_raw_cord_BM (struct parser_stBM *pars, const char *run, FILE * memfil,
 {
   ASSERT_BM (isparser_BM (pars));
   ASSERT_BM (memfil != NULL);
-  char endrunbuf[RUNLEN_BM + 8] = "";
+  char endrunbuf[2*RUNLEN_BM + 12] = "";
   unsigned runlen = strlen (run);
   ASSERT_BM (runlen <= RUNLEN_BM);
   unsigned nbc = 0;
