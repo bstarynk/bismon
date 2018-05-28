@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 472 objects
+// for 473 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1958,12 +1958,14 @@ _3JH05KgIzty_1K7IDyF43V2
 !(_7TkUn0TDFnK_67wcGpqZLCD |=make_closure|
 !~ name (~ make_closure
 ~)
-!@ 1527509829.56
+!@ 1527511077.15
 !$_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "connective to make a closure of given connective-object and sons"
-!: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
+!: _5EGLdtUAQxA_1nebCsDKqOF |=miniscan_node_conn|
  % _8ru2DB8XTmJ_7h8mj1NTpKM ( _93zjUzZVAaj_9ppXv7C34GR)
+!: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
+ % _1nsAyqOOy7S_1zodeivnxlm ( _93zjUzZVAaj_9ppXv7C34GR)
 !)_7TkUn0TDFnK_67wcGpqZLCD
 
 
@@ -1971,12 +1973,14 @@ _3JH05KgIzty_1K7IDyF43V2
 !(_0Vw4O8Wjf9x_3ANjSvs32bz |=make_node|
 !~ name (~ make_node
 ~)
-!@ 1527506541.69
+!@ 1527511053.36
 !$_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "connective to make a node of given connective-objects and sons"
-!: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
+!: _5EGLdtUAQxA_1nebCsDKqOF |=miniscan_node_conn|
  % _8ru2DB8XTmJ_7h8mj1NTpKM ( _7D8xcWnEiys_8oqOVSkCxkA)
+!: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
+ % _1nsAyqOOy7S_1zodeivnxlm ( _7D8xcWnEiys_8oqOVSkCxkA)
 !)_0Vw4O8Wjf9x_3ANjSvs32bz
 
 
@@ -3910,6 +3914,16 @@ _8g1WBJBhDT9_1QK8IcuWYx2 _9mq0jsuz4XQ_4doHfd987Q6) ~)
 !: _2DH0ucElTgh_62vxjxLcfev |=return|
 _5r6ekO9FCAj_7hCbcooblXl
 !)_1i7rGV4664X_2DN7hNBk5lK
+
+
+
+!(_1nsAyqOOy7S_1zodeivnxlm
+!|*
+!@ 1527511053.36
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniemit_node_conn#make_tree"
+!)_1nsAyqOOy7S_1zodeivnxlm
 
 
 
