@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 521 objects
+// for 523 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2858,6 +2858,25 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_4ox4xYmCVu9_9FvuadWlpU0 |=objhashashsetpayl|
+!~ name (~ objhashashsetpayl
+~)
+!@ 1527602169.392
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives non-0 if object o1 has an hashset payload"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4ox4xYmCVu9_9FvuadWlpU0  ":*/"  " "  "objhashashsetpayl_BM" 
+  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  
+")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_4ox4xYmCVu9_9FvuadWlpU0
+
+
+
 !(_30IYu85iibN_7HqcesTKigB |=objhasstrbufferpayl|
 !~ name (~ objhasstrbufferpayl
 ~)
@@ -2993,6 +3012,25 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !@ 1507030591.770
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_7nef89IRr1g_9XXq6jm1Pgs
+
+
+
+!(_049g4K8xARU_53xjsR8AiF9 |=objputhashsetpayl|
+!~ name (~ objputhashsetpayl
+~)
+!@ 1527601968.355
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return non-0 if did put into object o1 an hashset payload of initial size i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _049g4K8xARU_53xjsR8AiF9  ":*/"  "objputhashsetpayl_BM"  " " 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_049g4K8xARU_53xjsR8AiF9
 
 
 
