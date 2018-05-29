@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 523 objects
+// for 528 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2874,6 +2874,99 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_4ox4xYmCVu9_9FvuadWlpU0
+
+
+
+!(_47KarBe0MGF_18ee7QZOMsb |=objhashsetcardinalpayl|
+!~ name (~ objhashsetcardinalpayl
+~)
+!@ 1527603400.083
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the cardinal of the hashset payload of o1, or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _47KarBe0MGF_18ee7QZOMsb  ":*/"  "objhashsetcardinalpayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_47KarBe0MGF_18ee7QZOMsb
+
+
+
+!(_8M17WlWiKbw_1wb96GGPb5r |=objhashsetcontainspayl|
+!~ name (~ objhashsetcontainspayl
+~)
+!@ 1527603264.742
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "returns non-0 if object o1 has an hashset payload containing o2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _8M17WlWiKbw_1wb96GGPb5r  ":*/"  "  "  "objhashsetcontainspayl_BM" 
+  " "  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+ "),"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_8M17WlWiKbw_1wb96GGPb5r
+
+
+
+!(_7lgaJbw4kNm_1xQuwqs9OJS |=objhashsetpickrandompayl|
+!~ name (~ objhashsetpickrandompayl
+~)
+!@ 1527603780.091
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "pick in hashset payload of object o1 a random object, without changes"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _7lgaJbw4kNm_1xQuwqs9OJS  ":*/"  " "  "objhashsetpickrandompayl_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_7lgaJbw4kNm_1xQuwqs9OJS
+
+
+
+!(_0YQyyDRuG8W_2PRJyZagd6O |=objhashsettakerandompayl|
+!~ name (~ objhashsettakerandompayl
+~)
+!@ 1527603870.585
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "take in hashset payload of object o1 a random"& " object, so remove it and returns it"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _0YQyyDRuG8W_2PRJyZagd6O  ":*/"  "objhashsettakerandompayl_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_0YQyyDRuG8W_2PRJyZagd6O
+
+
+
+!(_2d5W2vwSCfD_3jdWU9Xfxu6 |=objhashsettosetpayl|
+!~ name (~ objhashsettosetpayl
+~)
+!@ 1527603500.097
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the set of elements in hashset payload of o1, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2d5W2vwSCfD_3jdWU9Xfxu6  ":*/"  " "  "(" 
+  "value_tyBM"  ")"  "objhashsettosetpayl_BM"  " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_2d5W2vwSCfD_3jdWU9Xfxu6
 
 
 
