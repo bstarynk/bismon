@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 502 objects
+// for 504 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2681,6 +2681,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_6UbMpw1ntUA_1JYxrB2jWeH |=objmtimeY2Kmilli|
+!~ name (~ objmtimeY2Kmilli
+~)
+!@ 1527594710.690
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the mtime of object o1 as Y2K milliseconds"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6UbMpw1ntUA_1JYxrB2jWeH  ":*/"  "objmtimeY2Kmilli_BM"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_6UbMpw1ntUA_1JYxrB2jWeH
+
+
+
 !(_2IKKQdVVAcB_6oxg5Tng8uK |=objnbattrs_BM|
 !~ name (~ objnbattrs_BM
 ~)
@@ -2714,6 +2732,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !@ 1507030591.770
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_7nef89IRr1g_9XXq6jm1Pgs
+
+
+
+!(_7XLaMwiV70H_9VzRvS7Nt94 |=objsignature|
+!~ name (~ objsignature
+~)
+!@ 1527594811.280
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the signature, if any, of object o1, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _7XLaMwiV70H_9VzRvS7Nt94  ":*/"  "objsignature_BM"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_7XLaMwiV70H_9VzRvS7Nt94
 
 
 

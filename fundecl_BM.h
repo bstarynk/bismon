@@ -332,6 +332,7 @@ extern const setval_tyBM *setobjectsofidprefixed_BM (const char *prefix);
 extern objectval_tyBM *makeobj_BM (void);
 static inline rawid_tyBM objid_BM (const objectval_tyBM * obj);
 static inline double objmtime_BM (const objectval_tyBM * obj);
+static inline intptr_t objmtimeY2Kmilli_BM (const objectval_tyBM * obj);
 static inline objectval_tyBM *objsignature_BM (const objectval_tyBM * obj);
 static inline void *objroutaddr_BM (const objectval_tyBM * obj,
                                     const objectval_tyBM * objsig);

@@ -316,6 +316,15 @@ objmtime_BM (const objectval_tyBM * obj)
   return obj->ob_mtime;
 }                               /* end objmtime_BM */
 
+
+intptr_t
+objmtimeY2Kmilli_BM (const objectval_tyBM * obj)
+{
+  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+    return 0;
+  return timetoY2Kmillisec_BM (obj->ob_mtime);
+}                               /* end objmtimeY2Kmilli_BM */
+
 void
 objtouchmtime_BM (objectval_tyBM * obj, double mtime)
 {
