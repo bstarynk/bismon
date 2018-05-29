@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 512 objects
+// for 513 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -3529,6 +3529,24 @@ _5EEITf6IFH7_4DbKG99zcPW)
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_2Xrym5RVfIf_9eomIh4miP5
+
+
+
+!(_34bwvAKgqsq_7BeGpoy7OQi |=setpredefinedobjects|
+!~ name (~ setpredefinedobjects
+~)
+!@ 1527599534.089
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the value, set of all predefined objects"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _34bwvAKgqsq_7BeGpoy7OQi  ":*/("  "value_tyBM"  ")" 
+  " "  "setpredefinedobjects_BM"  " "  "()")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_34bwvAKgqsq_7BeGpoy7OQi
 
 
 
