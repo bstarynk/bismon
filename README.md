@@ -78,9 +78,10 @@ Notice that the syntax and semantics (still undocumented) of `bismon` is *work-i
 
 # build instructions #
 
-On Linux/x86-64 (e.g. Debian/Unstable or recent Ubuntu) only:
+On Linux/x86-64 (e.g. Debian/Unstable or recent Ubuntu) only (won't work on 32 bits machines!):
 
 ## prerequisites ##
+
 
 * recent [GCC](http://gcc.gnu.org/) (so [GCC
 7](https://gcc.gnu.org/gcc-7/) or [GCC 8](https://gcc.gnu.org/gcc-8/) ...), with C and C++ and JIT
