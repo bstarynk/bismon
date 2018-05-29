@@ -553,10 +553,10 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for functions already in bismon.h"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
- { _1UKQqVj61xF_4VRIryDMmHP _20ZAQeICBGo_2yMovZAYFvM _2IKKQdVVAcB_6oxg5Tng8uK _3aavnAvDLd2_9JbORKE3B1k 
- _4SVbRxoB26K_51WExVpd75t _4VQLeU6mUyu_149lbQ2VWn6 _6bQLwLF3pc5_5gSAmlh5Nsx 
-_77KCDNTnjZk_6GqQlTMeyee 
- _7nef89IRr1g_9XXq6jm1Pgs _9MVKIIUC3fl_5Yz7jotlCtv }
+ { _20ZAQeICBGo_2yMovZAYFvM _2IKKQdVVAcB_6oxg5Tng8uK _3aavnAvDLd2_9JbORKE3B1k _4SVbRxoB26K_51WExVpd75t 
+ _4VQLeU6mUyu_149lbQ2VWn6 _6bQLwLF3pc5_5gSAmlh5Nsx _77KCDNTnjZk_6GqQlTMeyee 
+_7nef89IRr1g_9XXq6jm1Pgs 
+ _9MVKIIUC3fl_5Yz7jotlCtv }
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
 ~)
 
@@ -2567,12 +2567,21 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
-!(_1UKQqVj61xF_4VRIryDMmHP |=objclass_BM|
-!~ name (~ objclass_BM
+!(_6B4GDVBxxuL_7PC2WcfZXJU |=objclass|
+!~ name (~ objclass
 ~)
-!@ 1507030591.770
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
-!)_1UKQqVj61xF_4VRIryDMmHP
+!@ 1527595161.737
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the class of object o1, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6B4GDVBxxuL_7PC2WcfZXJU  ":*/"  "objclass_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_6B4GDVBxxuL_7PC2WcfZXJU
 
 
 
