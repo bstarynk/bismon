@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 487 objects
+// for 492 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -769,6 +769,24 @@ _5ve5gbSjN0r_1n61nNRPtnN _0jFqaPPHgYH_5JpjOPxQ67p _7DQyvJFMOrC_9IfC3CtYknn
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7bbeIqUSje9_4jVgC7ZJmvx
 !)_0hQ0Z6kxEQr_8YX2zplGDxQ
+
+
+
+!(_4wjIO9oEOB3_0TSoLmi790i |=closureconn|
+!~ name (~ closureconn
+~)
+!@ 1527583198.30
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the connective of closure v1, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4wjIO9oEOB3_0TSoLmi790i  ":*/"  "closureconn_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_4wjIO9oEOB3_0TSoLmi790i
 
 
 
@@ -1834,6 +1852,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_4CBwb24Zxug_3h75x1TKWwN |=isnode|
+!~ name (~ isnode
+~)
+!@ 1527582958.37
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test if v1 is a node, or else return 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4CBwb24Zxug_3h75x1TKWwN  ":*/"  "isnode_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_4CBwb24Zxug_3h75x1TKWwN
+
+
+
 !(_5ilJdoaFUCe_3VM5ouDESAV |=issequence|
 !~ name (~ issequence
 ~)
@@ -2252,6 +2288,43 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for command to hide a named value"
 !)_5mgZTJ64WH9_4r2XC8eZmW7
+
+
+
+!(_7dcAGcIDDfl_3zKzGzSHtJH |=node_cast|
+!~ name (~ node_cast
+~)
+!@ 1527583033.71
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dynamically cast v1 into a node value, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _7dcAGcIDDfl_3zKzGzSHtJH  ":*/("  "value_tyBM"  ")" 
+  "nodecast_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW) 
+ ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_7dcAGcIDDfl_3zKzGzSHtJH
+
+
+
+!(_30UWIU9ljmf_8rICvftAnIX |=nodeconn|
+!~ name (~ nodeconn
+~)
+!@ 1527583216.52
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the connective of node v1, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _30UWIU9ljmf_8rICvftAnIX  ":*/"  "nodeconn_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_30UWIU9ljmf_8rICvftAnIX
 
 
 
@@ -3420,6 +3493,24 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7bbeIqUSje9_4jVgC7ZJmvx
 !)_47FADx21m69_6ZrWTJEoFm6
+
+
+
+!(_3XaYt8WfQkt_27ihw1bNkyz |=treeconn|
+!~ name (~ treeconn
+~)
+!@ 1527583179.13
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the connective of tree v1, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3XaYt8WfQkt_27ihw1bNkyz  ":*/"  "treeconn_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_3XaYt8WfQkt_27ihw1bNkyz
 
 
 
