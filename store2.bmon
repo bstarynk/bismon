@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 509 objects
+// for 512 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2737,6 +2737,25 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_9VbFEiZdkIM_03T43FbMVI3 |=objgetcomp|
+!~ name (~ objgetcomp
+~)
+!@ 1527598768.825
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "get in object o1 the component at rank i2, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _9VbFEiZdkIM_03T43FbMVI3  ":*/" _4VQLeU6mUyu_149lbQ2VWn6  " " 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_9VbFEiZdkIM_03T43FbMVI3
+
+
+
 !(_4VQLeU6mUyu_149lbQ2VWn6 |=objgetcomp_BM|
 !~ name (~ objgetcomp_BM
 ~)
@@ -2762,6 +2781,24 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_2Fm6JbjcKt4_2nnGxHazkMH
+
+
+
+!(_3Lc02WgQszX_56W0z3TugcL |=objlastcomp|
+!~ name (~ objlastcomp
+~)
+!@ 1527598851.223
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "get the last component of object o1, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3Lc02WgQszX_56W0z3TugcL  ":*/"  "objlastcomp_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_3Lc02WgQszX_56W0z3TugcL
 
 
 
@@ -2799,6 +2836,25 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_2mlWpKuVWeh_12zFBcnRPSp
+
+
+
+!(_6VC4AAk9840_62dnB0pX5NM |=objnbcomps|
+!~ name (~ objnbcomps
+~)
+!@ 1527598654.876
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives number of components in object o1, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6VC4AAk9840_62dnB0pX5NM  ":*/"  " "  "objnbcomps_BM" 
+  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  
+")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_6VC4AAk9840_62dnB0pX5NM
 
 
 
