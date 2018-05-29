@@ -534,7 +534,7 @@ main (int argc, char **argv)
   {
     double nwt = clocktime_BM (CLOCK_REALTIME);
     intptr_t y2kwt = timetoY2Kmillisec_BM (nwt);
-    DBGPRINTF_BM ("nwt=%.4f y2kwt=%lld=%#llx as time=%.4f", nwt,
+    NONPRINTF_BM ("nwt=%.4f y2kwt=%lld=%#llx as time=%.4f", nwt,
                   (long long) y2kwt, (long long) y2kwt,
                   Y2Kmillisectotime_BM (y2kwt));
     ASSERT_BM (abs (Y2Kmillisectotime_BM (y2kwt) - nwt) < 0.1);
