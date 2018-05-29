@@ -35,6 +35,18 @@ clocktime_BM (clockid_t clid)
   return (double) ts.tv_sec + 1.0e-9 * ts.tv_nsec;
 }
 
+intptr_t
+timetoY2Kmillisec_BM (double t)
+{
+  return (intptr_t) ((t - (double) Y2KEPOCH_BM) * 1000.0);
+}                               /* end timetoY2Kmillisec_BM */
+
+double
+Y2Kmillisectotime_BM (intptr_t tt)
+{
+  return ((double) tt + (double) Y2KEPOCH_BM) * 1.0e-3;
+}                               /* end Y2Kmillisectotime_BM */
+
 double
 cputime_BM (void)
 {

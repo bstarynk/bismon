@@ -29,6 +29,12 @@ extern void
 backtrace_print_BM (struct backtrace_state *state, int skip, FILE * f);
 
 static inline double clocktime_BM (clockid_t);
+
+// convert some absolute Unix Epoch time into milliseconds since Y2K
+static inline intptr_t timetoY2Kmillisec_BM (double t);
+// convert milliseconds since Y2K to absolute Unix Epoch time
+static inline double Y2Kmillisectotime_BM (intptr_t);
+
 static inline double cputime_BM (void);
 static inline double elapsedtime_BM (void);
 static inline void get_realtimespec_delayedms_BM (struct timespec *pts,
