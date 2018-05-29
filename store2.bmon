@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 479 objects
+// for 484 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1797,6 +1797,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_4UlqXLITK9I_2m1wcAIKZZT |=isclosure|
+!~ name (~ isclosure
+~)
+!@ 1527579868.15
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives non-zero if v1 is a closure"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4UlqXLITK9I_2m1wcAIKZZT  ":*/"  "isclosure_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_4UlqXLITK9I_2m1wcAIKZZT
+
+
+
 !(_5ilJdoaFUCe_3VM5ouDESAV |=issequence|
 !~ name (~ issequence
 ~)
@@ -1812,6 +1830,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_5ilJdoaFUCe_3VM5ouDESAV
+
+
+
+!(_98vVY2otB3l_22hizSbpti6 |=istree|
+!~ name (~ istree
+~)
+!@ 1527579662.47
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives non-zero if v1 is a tree (node or closure)"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _98vVY2otB3l_22hizSbpti6  ":*/"  "istree_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_98vVY2otB3l_22hizSbpti6
 
 
 
@@ -2957,6 +2993,66 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_65D452VAyMn_9tMPMuJ8r2p
+
+
+
+!(_9SRTsZfikKV_36CYtPTt7MW |=setcardinal|
+!~ name (~ setcardinal
+~)
+!@ 1527579391.98
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the cardinal of set $v1 or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _9SRTsZfikKV_36CYtPTt7MW  ":*/"  "setcardinal_BM"  "((" 
+ _5DDSY1YgVZr_6dOU4tiBldk  " "  "setval_tyBM"  "*)("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_5EEITf6IFH7_4DbKG99zcPW) 
+  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_9SRTsZfikKV_36CYtPTt7MW
+
+
+
+!(_9sQxkzuZfle_8EeXi1eToCB |=setelemindex|
+!~ name (~ setelemindex
+~)
+!@ 1527579239.20
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives in set v1 the index of element o2, or else -1"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _9sQxkzuZfle_8EeXi1eToCB  ":*/"  "setelemindex_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  "),"  " " 
+ "("  * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU) 
+  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_9sQxkzuZfle_8EeXi1eToCB
+
+
+
+!(_2Xrym5RVfIf_9eomIh4miP5 |=setelemnth|
+!~ name (~ setelemnth
+~)
+!@ 1527579538.53
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives in set v1 the element of rank i2, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW _2Z396p8p48p_848KxWmzoSb ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2Xrym5RVfIf_9eomIh4miP5  ":*/"  "setelemnth_BM"  "((" 
+ _5DDSY1YgVZr_6dOU4tiBldk  " "  "setval_tyBM"  "*)("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_5EEITf6IFH7_4DbKG99zcPW) 
+  "),("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_2Xrym5RVfIf_9eomIh4miP5
 
 
 
