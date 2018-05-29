@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 501 objects
+// for 502 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2177,6 +2177,23 @@ _3JH05KgIzty_1K7IDyF43V2
 !: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
  % _0DW82XG9HTW_0SblkfpwJi3 ( _6TmLNh9vtVY_0pwkHRtJ44k)
 !)_4b6u5PDGTaj_7VUuVl3i7yx
+
+
+
+!(_9uuMot5qvtW_7J7V6SlaKg2 |=makeobj|
+!~ name (~ makeobj
+~)
+!@ 1527594206.477
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "make an empty object"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _9uuMot5qvtW_7J7V6SlaKg2  ":*/"  "makeobj_BM"  "()")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_9uuMot5qvtW_7J7V6SlaKg2
 
 
 
