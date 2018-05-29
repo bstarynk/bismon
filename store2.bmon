@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 492 objects
+// for 495 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -787,6 +787,25 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_4wjIO9oEOB3_0TSoLmi790i
+
+
+
+!(_59vdQYwZVgh_5Sb7hOsgiM2 |=closurewidth|
+!~ name (~ closurewidth
+~)
+!@ 1527583691.71
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the width of closure v1 or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _59vdQYwZVgh_5Sb7hOsgiM2  ":*/("  "intptr_t"  ")" 
+  "closurewidth_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW) 
+ ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_59vdQYwZVgh_5Sb7hOsgiM2
 
 
 
@@ -2328,6 +2347,25 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_7BCZoNhXs8o_4ogeZ1OGKxO |=nodewidth|
+!~ name (~ nodewidth
+~)
+!@ 1527583669.93
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the width of node v1 or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _7BCZoNhXs8o_4ogeZ1OGKxO  ":*/("  "intptr_t"  ")" 
+  "nodewidth_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW) 
+ ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_7BCZoNhXs8o_4ogeZ1OGKxO
+
+
+
 !(_5uPst3m4mdx_05Xl1AoTnZL |=number_set|
 !~ name (~ number_set
 ~)
@@ -3511,6 +3549,25 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_3XaYt8WfQkt_27ihw1bNkyz
+
+
+
+!(_6saAz0UNKHd_4lT5aIvZVFT |=treewidth|
+!~ name (~ treewidth
+~)
+!@ 1527583652.31
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the width of tree v1 or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6saAz0UNKHd_4lT5aIvZVFT  ":*/("  "intptr_t"  ")" 
+  "treewidth_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW) 
+ ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_6saAz0UNKHd_4lT5aIvZVFT
 
 
 
