@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 505 objects
+// for 509 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2680,12 +2680,88 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_4OwLpsFCkSa_4g9QJl2BK6q |=objgetclassinfomethod|
+!~ name (~ objgetclassinfomethod
+~)
+!@ 1527597716.512
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the closure value of the method in class o1 for selector o2, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4OwLpsFCkSa_4g9QJl2BK6q  ":*/("  "value_tyBM"  ")" 
+  "objgetclassinfomethod_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+ "),("  * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU) 
+  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_4OwLpsFCkSa_4g9QJl2BK6q
+
+
+
+!(_2jbdOd7n955_7MLRzq2r5Pq |=objgetclassinfosetofselectors|
+!~ name (~ objgetclassinfosetofselectors
+~)
+!@ 1527597853.165
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the set value of selectors in class o1, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2jbdOd7n955_7MLRzq2r5Pq  ":*/("  "value_tyBM"  ")" 
+  "objgetclassinfosetofselectors_BM"  " "  "(("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_2jbdOd7n955_7MLRzq2r5Pq
+
+
+
+!(_0dORW37qSJ3_656UykmADVe |=objgetclassinfosuperclass|
+!~ name (~ objgetclassinfosuperclass
+~)
+!@ 1527597558.116
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the class info\' superclass of $o1 if it carries a class, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _0dORW37qSJ3_656UykmADVe  ":*/"  "objgetclassinfosuperclass_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_0dORW37qSJ3_656UykmADVe
+
+
+
 !(_4VQLeU6mUyu_149lbQ2VWn6 |=objgetcomp_BM|
 !~ name (~ objgetcomp_BM
 ~)
 !@ 1507030591.770
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_4VQLeU6mUyu_149lbQ2VWn6
+
+
+
+!(_2Fm6JbjcKt4_2nnGxHazkMH |=objhasclassinfo|
+!~ name (~ objhasclassinfo
+~)
+!@ 1527597410.247
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "returns non-zero if object o1 has some class info"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2Fm6JbjcKt4_2nnGxHazkMH  ":*/(("  "intptr_t"  ")" 
+  "objhasclassinfo_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+ "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_2Fm6JbjcKt4_2nnGxHazkMH
 
 
 
