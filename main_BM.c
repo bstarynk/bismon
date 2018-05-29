@@ -537,7 +537,7 @@ main (int argc, char **argv)
     NONPRINTF_BM ("nwt=%.4f y2kwt=%lld=%#llx as time=%.4f", nwt,
                   (long long) y2kwt, (long long) y2kwt,
                   Y2Kmillisectotime_BM (y2kwt));
-    ASSERT_BM (abs (Y2Kmillisectotime_BM (y2kwt) - nwt) < 0.1);
+    ASSERT_BM (abs (Y2Kmillisectotime_BM (y2kwt) - nwt) < 0.5);
   }
   backtracestate_BM             //
     = backtrace_create_state ( /*filename: */ NULL,
