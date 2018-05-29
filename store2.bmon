@@ -553,10 +553,9 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for functions already in bismon.h"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
- { _20ZAQeICBGo_2yMovZAYFvM _2IKKQdVVAcB_6oxg5Tng8uK _3aavnAvDLd2_9JbORKE3B1k _4SVbRxoB26K_51WExVpd75t 
- _4VQLeU6mUyu_149lbQ2VWn6 _6bQLwLF3pc5_5gSAmlh5Nsx _77KCDNTnjZk_6GqQlTMeyee 
-_7nef89IRr1g_9XXq6jm1Pgs 
- _9MVKIIUC3fl_5Yz7jotlCtv }
+ { _20ZAQeICBGo_2yMovZAYFvM _3aavnAvDLd2_9JbORKE3B1k _4SVbRxoB26K_51WExVpd75t _4VQLeU6mUyu_149lbQ2VWn6 
+ _6bQLwLF3pc5_5gSAmlh5Nsx _77KCDNTnjZk_6GqQlTMeyee _7nef89IRr1g_9XXq6jm1Pgs 
+_9MVKIIUC3fl_5Yz7jotlCtv }
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
 ~)
 
@@ -2708,12 +2707,22 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
-!(_2IKKQdVVAcB_6oxg5Tng8uK |=objnbattrs_BM|
-!~ name (~ objnbattrs_BM
+!(_2mlWpKuVWeh_12zFBcnRPSp |=objnbattrs|
+!~ name (~ objnbattrs
 ~)
-!@ 1507030591.770
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
-!)_2IKKQdVVAcB_6oxg5Tng8uK
+!@ 1527595640.174
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "give the number of attributes of object o1, or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2mlWpKuVWeh_12zFBcnRPSp  ":*/"  " "  "objnbattrs_BM" 
+  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  
+")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_2mlWpKuVWeh_12zFBcnRPSp
 
 
 
