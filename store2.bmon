@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 513 objects
+// for 516 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2784,6 +2784,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_30IYu85iibN_7HqcesTKigB |=objhasstrbufferpayl|
+!~ name (~ objhasstrbufferpayl
+~)
+!@ 1527600131.291
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives non-zero if object o1 has some strbuffer payload"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _30IYu85iibN_7HqcesTKigB  ":*/"  "objhasstrbufferpayl_BM"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_30IYu85iibN_7HqcesTKigB
+
+
+
 !(_3Lc02WgQszX_56W0z3TugcL |=objlastcomp|
 !~ name (~ objlastcomp
 ~)
@@ -2885,6 +2903,25 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_2FXiwIpgvSK_8ToB2yuiBe4 |=objputstrbufferpayl|
+!~ name (~ objputstrbufferpayl
+~)
+!@ 1527599988.174
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives non-0 if o1 is an object into which"& " a strbuffer payload is initialized of maxsize"& " i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2FXiwIpgvSK_8ToB2yuiBe4  ":*/"  "objputstrbufferpayl_BM"  " " 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_2FXiwIpgvSK_8ToB2yuiBe4
+
+
+
 !(_6CxrHVpyW0R_0ut2ZnXNHBx |=objsetattrs|
 !~ name (~ objsetattrs
 ~)
@@ -2919,6 +2956,25 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_7XLaMwiV70H_9VzRvS7Nt94
+
+
+
+!(_9EmYFrb4c0B_6jRLCSLqttZ |=objstrbufferindentationpayl|
+!~ name (~ objstrbufferindentationpayl
+~)
+!@ 1527600233.465
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the indentation in strbuffer payload of o1 or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _9EmYFrb4c0B_6jRLCSLqttZ  ":*/"  " "  "objstrbufferindentationpayl_BM" 
+  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  
+")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_9EmYFrb4c0B_6jRLCSLqttZ
 
 
 
