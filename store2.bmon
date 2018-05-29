@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 516 objects
+// for 518 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2765,6 +2765,24 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 
 
+!(_0saT3fDy8bt_1R3vTikLuIx |=objhasassocpayl|
+!~ name (~ objhasassocpayl
+~)
+!@ 1527600823.003
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives non-0 if did put in object o1 an assoc payload of size i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _0saT3fDy8bt_1R3vTikLuIx  ":*/"  "objhasassocpayl_BM"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_0saT3fDy8bt_1R3vTikLuIx
+
+
+
 !(_2Fm6JbjcKt4_2nnGxHazkMH |=objhasclassinfo|
 !~ name (~ objhasclassinfo
 ~)
@@ -2873,6 +2891,25 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_6VC4AAk9840_62dnB0pX5NM
+
+
+
+!(_4bNJRwDDAwq_0d4dKUTkMgd |=objputassocpayl|
+!~ name (~ objputassocpayl
+~)
+!@ 1527600713.342
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives non-0 if did put into object o1 an assoc payload of size i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4bNJRwDDAwq_0d4dKUTkMgd  ":*/"  " "  "objputassocpayl_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ","  
+* _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_4bNJRwDDAwq_0d4dKUTkMgd
 
 
 
