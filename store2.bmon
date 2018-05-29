@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 502 objects
+// for 501 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -554,9 +554,9 @@ _9pCSj6h5qCP_1OZyKlhcrSY
  "class for functions already in bismon.h"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _1UKQqVj61xF_4VRIryDMmHP _20ZAQeICBGo_2yMovZAYFvM _2IKKQdVVAcB_6oxg5Tng8uK _3aavnAvDLd2_9JbORKE3B1k 
- _4KF9OJNVSba_96RJF3rETrY _4SVbRxoB26K_51WExVpd75t _4VQLeU6mUyu_149lbQ2VWn6 
-_6bQLwLF3pc5_5gSAmlh5Nsx 
- _77KCDNTnjZk_6GqQlTMeyee _7nef89IRr1g_9XXq6jm1Pgs _9MVKIIUC3fl_5Yz7jotlCtv }
+ _4SVbRxoB26K_51WExVpd75t _4VQLeU6mUyu_149lbQ2VWn6 _6bQLwLF3pc5_5gSAmlh5Nsx 
+_77KCDNTnjZk_6GqQlTMeyee 
+ _7nef89IRr1g_9XXq6jm1Pgs _9MVKIIUC3fl_5Yz7jotlCtv }
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
 ~)
 
@@ -2177,15 +2177,6 @@ _3JH05KgIzty_1K7IDyF43V2
 !: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
  % _0DW82XG9HTW_0SblkfpwJi3 ( _6TmLNh9vtVY_0pwkHRtJ44k)
 !)_4b6u5PDGTaj_7VUuVl3i7yx
-
-
-
-!(_4KF9OJNVSba_96RJF3rETrY |=makeobj_BM|
-!~ name (~ makeobj_BM
-~)
-!@ 1507030591.770
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
-!)_4KF9OJNVSba_96RJF3rETrY
 
 
 
