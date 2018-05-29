@@ -164,6 +164,7 @@ extern void setgckeep_BM (struct garbcoll_stBM *gc, setval_tyBM * set);
 
 
 static inline bool istree_BM (const value_tyBM v);
+static inline const tree_tyBM *treecast_BM (const value_tyBM);
 static inline bool isclosure_BM (const value_tyBM v);
 static inline const closure_tyBM *closurecast_BM (const value_tyBM);
 static inline bool isnode_BM (const value_tyBM v);

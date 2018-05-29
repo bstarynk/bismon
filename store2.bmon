@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 484 objects
+// for 486 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -1800,10 +1800,10 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !(_4UlqXLITK9I_2m1wcAIKZZT |=isclosure|
 !~ name (~ isclosure
 ~)
-!@ 1527579868.15
+!@ 1527581912.01
 !$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "gives non-zero if v1 is a closure"
+ "test if argument v1 is a closure"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _5EEITf6IFH7_4DbKG99zcPW ]
 !: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
@@ -2976,6 +2976,25 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_7UC9tX7DcjQ_4uqbx0yRW8Y |=set_cast|
+!~ name (~ set_cast
+~)
+!@ 1527581428.15
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dynamically cast v1 into set value"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _7UC9tX7DcjQ_4uqbx0yRW8Y  ":*/("  "value_tyBM"  ")" 
+  " "  "setcast_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW) 
+ "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_7UC9tX7DcjQ_4uqbx0yRW8Y
+
+
+
 !(_65D452VAyMn_9tMPMuJ8r2p |=set_contains|
 !~ name (~ set_contains
 ~)
@@ -3363,6 +3382,25 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _0NnNXZqWvmz_1ucZGX0YPu1 |=command_arity|
  1
 !)_3DB5p6fxoKz_3UuCr6DjJov
+
+
+
+!(_47FADx21m69_6ZrWTJEoFm6 |=tree_cast|
+!~ name (~ tree_cast
+~)
+!@ 1527581638.19
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dynamically cast the argument v1 into a tree value, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _47FADx21m69_6ZrWTJEoFm6  ":*/("  "value_tyBM"  ")" 
+  "treecast_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW) 
+ ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_47FADx21m69_6ZrWTJEoFm6
 
 
 

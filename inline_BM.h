@@ -1447,6 +1447,12 @@ istree_BM (const value_tyBM v)
   return (ty == tyClosure_BM || ty == tyNode_BM || ty == typayl_quasinode_BM);
 }                               /* end istree_BM */
 
+const tree_tyBM *
+treecast_BM (const value_tyBM v)
+{
+  return istree_BM (v) ? (const tree_tyBM *) v : NULL;
+}                               /* end treecast_BM */
+
 bool
 isclosure_BM (const value_tyBM v)
 {
