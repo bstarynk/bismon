@@ -1525,6 +1525,8 @@ log_end_message_BM (void)
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_end_iter (logbuf_BM, &it);
   gtk_text_buffer_insert (logbuf_BM, &it, "\n", 1);
+  gtk_text_view_scroll_to_iter (GTK_TEXT_VIEW (logview_BM),
+                                &it, 0.1, false, 0.3, 0.92);
 }                               /* end log_end_message_BM */
 
 
