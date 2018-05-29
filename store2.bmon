@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 518 objects
+// for 521 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2563,6 +2563,62 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !@ 1507030591.770
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_77KCDNTnjZk_6GqQlTMeyee
+
+
+
+!(_2vQl0HFq9l7_4XHBZf0SUMU |=objassocgetattrpayl|
+!~ name (~ objassocgetattrpayl
+~)
+!@ 1527601687.929
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "get in object of assoc payload o1 the value associated to o2, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2vQl0HFq9l7_4XHBZf0SUMU  ":*/"  "objassocgetattrpayl_BM"  " " 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_2vQl0HFq9l7_4XHBZf0SUMU
+
+
+
+!(_3tfgf8d0wIn_1nppIaBURjq |=objassocnbkeyspayl|
+!~ name (~ objassocnbkeyspayl
+~)
+!@ 1527601407.551
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the numbers of key in object assoc payload, or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3tfgf8d0wIn_1nppIaBURjq  ":*/"  " "  "objassocnbkeyspayl_BM" 
+  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  
+")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_3tfgf8d0wIn_1nppIaBURjq
+
+
+
+!(_20MKvDPmkRE_2tv8ZhJKbpZ |=objassocsetattrspayl|
+!~ name (~ objassocsetattrspayl
+~)
+!@ 1527601569.036
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the set of attributes of object\'s assoc payload o1, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _20MKvDPmkRE_2tv8ZhJKbpZ  ":*/("  "value_tyBM"  ")" 
+  "objassocsetattrspayl_BM"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E)  ")")
+!)_20MKvDPmkRE_2tv8ZhJKbpZ
 
 
 
