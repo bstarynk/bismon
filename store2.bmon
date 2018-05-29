@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 475 objects
+// for 479 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2894,6 +2894,41 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_0gsqcP1mmQT_84yegIjKv1C |=sequence_cast|
+!~ name (~ sequence_cast
+~)
+!@ 1527570018.26
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dynamic cast into a sequence"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _0gsqcP1mmQT_84yegIjKv1C  ":*/("  "value_tyBM"  ")" 
+  "sequencecast_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW) 
+ ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_0gsqcP1mmQT_84yegIjKv1C
+
+
+
+!(_97rJwcN7l9B_1w3sSfoRM6l |=sequencesize|
+!~ name (~ sequencesize
+~)
+!@ 1527570224.91
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the size of a sequence or else 0"
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _97rJwcN7l9B_1w3sSfoRM6l  ":*/"  "sequencesize_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_97rJwcN7l9B_1w3sSfoRM6l
+
+
+
 !(_535ulGVFUfw_4yWLeDp4Pxd |=serial63|
 !~ name (~ serial63
 ~)
@@ -3232,6 +3267,43 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _0NnNXZqWvmz_1ucZGX0YPu1 |=command_arity|
  1
 !)_3DB5p6fxoKz_3UuCr6DjJov
+
+
+
+!(_6xYp4xes2Nz_22q6VsFt2Ee |=tuple_cast|
+!~ name (~ tuple_cast
+~)
+!@ 1527569772.66
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dynamically cast into tuple value"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6xYp4xes2Nz_22q6VsFt2Ee  "*/(("  "value_tyBM"  ")" 
+  "tuplecast_VM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW) 
+ "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_6xYp4xes2Nz_22q6VsFt2Ee
+
+
+
+!(_25CDTeCWzmD_5yEnrPTeFLR |=tuplesize|
+!~ name (~ tuplesize
+~)
+!@ 1527569872.30
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the size of a tuple or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _25CDTeCWzmD_5yEnrPTeFLR  ":*/"  "tuplesize_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_25CDTeCWzmD_5yEnrPTeFLR
 
 
 
