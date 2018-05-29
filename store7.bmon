@@ -7,7 +7,7 @@
 !(_3URdyE0oa4Z_3oXj45Or0rB |=a|
 !~ name (~ a
 ~)
-!@ 1504241958.64
+!@ 1504241958.640
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_3URdyE0oa4Z_3oXj45Or0rB
 
@@ -16,7 +16,7 @@
 !(_0se0A3BDiXN_9v8gQ1Rzdtr |=b|
 !~ name (~ b
 ~)
-!@ 1504241958.64
+!@ 1504241958.640
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_0se0A3BDiXN_9v8gQ1Rzdtr
 
@@ -25,7 +25,7 @@
 !(_0DcIN3EYe3y_7cRpBDYhw3s |=c|
 !~ name (~ c
 ~)
-!@ 1504241958.64
+!@ 1504241958.640
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_0DcIN3EYe3y_7cRpBDYhw3s
 
@@ -34,7 +34,7 @@
 !(_5a7gOTbvw4I_6PzXru7uInx |=d|
 !~ name (~ d
 ~)
-!@ 1504241958.64
+!@ 1504241958.640
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_5a7gOTbvw4I_6PzXru7uInx
 
@@ -43,7 +43,7 @@
 !(_4oJ0GwzxGLe_7cHWwHYA0Di |=test_agenda|
 !~ name (~ test_agenda
 ~)
-!@ 1521229706.33
+!@ 1521229706.330
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "command to test agenda"
@@ -59,7 +59,7 @@
 
 !(_1eQ1a8KHixZ_1XDNH5iTQ0I
 !|*
-!@ 1521179450.50
+!@ 1521179450.500
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "test_agenda command_handler routine"

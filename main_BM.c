@@ -566,7 +566,7 @@ main (int argc, char **argv)
         idarr[ix] = randomid_BM ();
       qsort (idarr, count_emit_has_predef_bm, sizeof (rawid_tyBM), idqcmp_BM);
       printf ("\n\n" "/// %d extra predefs\n", count_emit_has_predef_bm);
-      printf ("// !@ %.2f\n", clocktime_BM (CLOCK_REALTIME));
+      printf ("// !@ %.3f\n", clocktime_BM (CLOCK_REALTIME));
       for (int ix = 0; ix < count_emit_has_predef_bm; ix++)
         {
           rawid_tyBM id = idarr[ix];

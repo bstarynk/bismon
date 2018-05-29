@@ -97,7 +97,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   {
     char mbuf[64];
     double mtime = _.objbrows->ob_mtime;
-    snprintf (mbuf, sizeof (mbuf), "!@ %.2f ", mtime);
+    snprintf (mbuf, sizeof (mbuf), "!@ %.3f ", mtime);
     gtk_text_buffer_insert_with_tags (brobuf,
                                       &browserit_BM, mbuf, -1, NULL, NULL);
     double now = clocktime_BM (CLOCK_REALTIME);

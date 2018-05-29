@@ -598,7 +598,7 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
         }
     }
   if (curobj->ob_mtime > 0)
-    fprintf (spfil, "!@ %.2f\n", curobj->ob_mtime);
+    fprintf (spfil, "!@ %.3f\n", curobj->ob_mtime);
   if (curobj->ob_class && obdumpobjisdumpable_BM (_.dumpob, curobj->ob_class))
     {
       char curclassid[32] = "";

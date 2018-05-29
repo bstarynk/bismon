@@ -7,7 +7,7 @@
 !(_6ZQ05nCv3Ys_8LA6B5LkZgm |=assoc_object|
 !~ name (~ assoc_object
 ~)
-!@ 1520945080.03
+!@ 1520945080.030
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for objects with assoc data"
@@ -28,7 +28,7 @@
 !(_9uRC9w2Gte9_5mW0NanaS19 |=browse_data|
 !~ name (~ browse_data
 ~)
-!@ 1502608883.26
+!@ 1502608883.260
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to browse extra data"
 !)_9uRC9w2Gte9_5mW0NanaS19
@@ -38,7 +38,7 @@
 !(_8Y99VufgRZo_9SFMiDUruXS |=browse_in_object|
 !~ name (~ browse_in_object
 ~)
-!@ 1502608883.26
+!@ 1502608883.260
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to browse object content"
 !)_8Y99VufgRZo_9SFMiDUruXS
@@ -48,7 +48,7 @@
 !(_6rHCoR6adv5_9SKAahoKWPj |=browse_value|
 !~ name (~ browse_value
 ~)
-!@ 1502608883.26
+!@ 1502608883.260
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to browse value"
 !)_6rHCoR6adv5_9SKAahoKWPj
@@ -58,7 +58,7 @@
 !(_83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 !~ name (~ c_type
 ~)
-!@ 1510325491.74
+!@ 1510325491.740
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to give the c type, also the super-class of ctypes"
@@ -77,7 +77,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_3pQnBS9ZjkQ_0uGmqUUhAum |=chunk|
 !~ name (~ chunk
 ~)
-!@ 1502268240.73
+!@ 1502268240.730
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for chunks"
 !)_3pQnBS9ZjkQ_0uGmqUUhAum
@@ -87,7 +87,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ name (~ class
 ~)
-!@ 1501521100.00
+!@ 1501521100.000
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the class of all classes"
@@ -108,7 +108,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_93zjUzZVAaj_9ppXv7C34GR |=closure|
 !~ name (~ closure
 ~)
-!@ 1501521100.00
+!@ 1501521100.000
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl value:| _7bbeIqUSje9_4jVgC7ZJmvx 
 ~: _1FEnnpEkGdI_5DAcVDL5XHG  % _6jvRZetUz36_978V6SKIWZC () 
@@ -122,7 +122,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_3HGHcRxE9bn_1ufs1gFf4Yh |=code|
 !~ name (~ code
 ~)
-!@ 1502268240.73
+!@ 1502268240.730
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for code chunks"
 !)_3HGHcRxE9bn_1ufs1gFf4Yh
@@ -132,7 +132,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_89fbFwzcTXz_3OsnBfN89BE |=colon|
 !~ name (~ colon
 ~)
-!@ 1516020204.58
+!@ 1516020204.580
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for unary parsed :<val>"
@@ -143,7 +143,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
 !~ name (~ command_readmacro
 ~)
-!@ 1505550618.58
+!@ 1505550618.580
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for command readmacros"
 !)_3EKD6vcwegI_3LMuXHuazib
@@ -153,7 +153,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_01h86SAfOfg_1q2oMegGRwW |=comment|
 !~ name (~ comment
 ~)
-!@ 1500472572.36
+!@ 1500472572.360
 !)_01h86SAfOfg_1q2oMegGRwW
 
 
@@ -162,7 +162,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !~ name (~ const
 ~)
 !|*
-!@ 1505238683.85
+!@ 1505238683.850
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for constants etc..."
 !)_5DDSY1YgVZr_6dOU4tiBldk
@@ -172,7 +172,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_6VGKPmigLUx_65sfKINCa6w |=dict_object|
 !~ name (~ dict_object
 ~)
-!@ 1520951659.65
+!@ 1520951659.650
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of object with dict payload"
@@ -187,7 +187,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|
 !~ name (~ dump_data
 ~)
-!@ 1501754200.00
+!@ 1501754200.000
 !)_0pSnxYMjpqQ_3opFGfXeh5o
 
 
@@ -195,7 +195,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_2oNMm2aR91J_4QthSpZxplW |=dump_scan|
 !~ name (~ dump_scan
 ~)
-!@ 1501754200.00
+!@ 1501754200.000
 !)_2oNMm2aR91J_4QthSpZxplW
 
 
@@ -203,7 +203,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_1FEnnpEkGdI_5DAcVDL5XHG |=dump_value|
 !~ name (~ dump_value
 ~)
-!@ 1501754200.00
+!@ 1501754200.000
 !)_1FEnnpEkGdI_5DAcVDL5XHG
 
 
@@ -211,7 +211,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_7aFDCz5prE3_7nspdPb6502 |=dumper_object|
 !~ name (~ dumper_object
 ~)
-!@ 1520945649.66
+!@ 1520945649.660
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of dumper"
@@ -225,7 +225,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_33imugvOze0_0wdPqjmME0U |=embed|
 !~ name (~ embed
 ~)
-!@ 1497705092.87
+!@ 1497705092.870
 !)_33imugvOze0_0wdPqjmME0U
 
 
@@ -233,7 +233,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_3MZiKuLf93a_3YTtdOHeUH8 |=emit_module|
 !~ name (~ emit_module
 ~)
-!@ 1522343718.09
+!@ 1522343718.090
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to emit a module"
 !: _0xbmmxnN8E8_0ZuEqJmqMNH |=command_handler|
@@ -247,7 +247,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_9HNJ3tJw4WW_3bTqGMi75wj |=equal|
 !~ name (~ equal
 ~)
-!@ 1516020204.58
+!@ 1516020204.580
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for unary parsed =<val>"
@@ -258,7 +258,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_0e54seiZEXF_1Myf620cHoB |=exclam|
 !~ name (~ exclam
 ~)
-!@ 1516020204.58
+!@ 1516020204.580
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for unary parsed !<val>"
@@ -269,7 +269,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_7rduHPDI4aV_3JkXcYrH2m6 |=function_sig|
 !~ name (~ function_sig
 ~)
-!@ 1509572185.26
+!@ 1509572185.260
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "signature of common functions"
@@ -282,7 +282,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_1DdzQEqzTvJ_1mjRDRDUdTw |=hashmapval_object|
 !~ name (~ hashmapval_object
 ~)
-!@ 1520951926.36
+!@ 1520951926.360
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for hashmapval payload"
@@ -301,7 +301,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_3cRGd7uw43z_6OibwMICv3P |=hashsetval_object|
 !~ name (~ hashsetval_object
 ~)
-!@ 1520946796.15
+!@ 1520946796.150
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
 ~: _0pSnxYMjpqQ_3opFGfXeh5o  % _6UxkFEHhNQS_0f65oUlZ7b5 () 
@@ -319,7 +319,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_8c9otZ4pwR6_55k81qyyYV2 |=hset_object|
 !~ name (~ hset_object
 ~)
-!@ 1520945353.66
+!@ 1520945353.660
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for objects with hashed set data"
@@ -341,7 +341,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_0eMGYofuNVh_8ZP2mXdhtHO |=in|
 !~ name (~ in
 ~)
-!@ 1506146007.91
+!@ 1506146007.910
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to give some container where the object is in"
 !)_0eMGYofuNVh_8ZP2mXdhtHO
@@ -351,7 +351,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_0vgCFjXblkx_4zCMhMAWjVK |=int|
 !~ name (~ int
 ~)
-!@ 1497636292.47
+!@ 1497636292.470
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
 ~: _1FEnnpEkGdI_5DAcVDL5XHG  % _3kMqlEugRVW_7DgwjR4CBbP () 
@@ -365,7 +365,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_1GWAOAM0UNL_75ijaqJjLiM |=list_object|
 !~ name (~ list_object
 ~)
-!@ 1520947578.66
+!@ 1520947578.660
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for objects with list payload"
@@ -381,7 +381,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !~ name (~ load_module
 ~)
 !|*
-!@ 1501754100.00
+!@ 1501754100.000
 !)_3j4mbvFJZzA_9ucKetDMbdh
 
 
@@ -389,7 +389,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_1jJjA6LcXiX_1V4ZcXlje09 |=name|
 !~ name (~ name
 ~)
-!@ 1493382726.98
+!@ 1493382726.980
 !)_1jJjA6LcXiX_1V4ZcXlje09
 
 
@@ -397,7 +397,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_7D8xcWnEiys_8oqOVSkCxkA |=node|
 !~ name (~ node
 ~)
-!@ 1497636412.76
+!@ 1497636412.760
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl value:| _7bbeIqUSje9_4jVgC7ZJmvx 
 ~: _1FEnnpEkGdI_5DAcVDL5XHG  % _5v30KC0IMxx_53ZzXprJTM6 () 
@@ -411,7 +411,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_1JSykdLcLdl_8rWxtDBaPGN |=none|
 !~ name (~ none
 ~)
-!@ 1497636292.47
+!@ 1497636292.470
 !)_1JSykdLcLdl_8rWxtDBaPGN
 
 
@@ -419,7 +419,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !(_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !~ name (~ object
 ~)
-!@ 1510509565.27
+!@ 1510509565.270
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _4hIFpPfuaR1_39hcoYwRAm0
@@ -437,7 +437,7 @@ _4hIFpPfuaR1_39hcoYwRAm0
 !(_1xhcI0ZnQ6f_5xOLATXqawx |=origin|
 !~ name (~ origin
 ~)
-!@ 1506156195.00
+!@ 1506156195.000
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to give some origin of the object"
 !)_1xhcI0ZnQ6f_5xOLATXqawx
@@ -447,7 +447,7 @@ _4hIFpPfuaR1_39hcoYwRAm0
 !(_70NgEtiUJSh_4E82Y6lFlHv |=parse_unary|
 !~ name (~ parse_unary
 ~)
-!@ 1516005732.68
+!@ 1516005732.680
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for unary parsed connectives, gives the closure"& " telling if it accepts an unary usage..."
@@ -459,7 +459,7 @@ _4hIFpPfuaR1_39hcoYwRAm0
 !~ name (~ postpone_load_modification
 ~)
 !|*
-!@ 1502787905.69
+!@ 1502787905.690
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to postpone loading modification"
 !)_7kMNgL8eJ09_6aEpofzWJDP
@@ -469,7 +469,7 @@ _4hIFpPfuaR1_39hcoYwRAm0
 !(_9G7cmLKeL7j_0ILBAfDNflG |=question|
 !~ name (~ question
 ~)
-!@ 1516020204.58
+!@ 1516020204.580
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for unary parsed ?<val>"
@@ -480,7 +480,7 @@ _4hIFpPfuaR1_39hcoYwRAm0
 !(_7bD9VtDkGSn_7lxHeYuuFLR |=result|
 !~ name (~ result
 ~)
-!@ 1504786642.76
+!@ 1504786642.760
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "result of something"
 !)_7bD9VtDkGSn_7lxHeYuuFLR
@@ -490,7 +490,7 @@ _4hIFpPfuaR1_39hcoYwRAm0
 !(_8emBk0Le2Vy_8MxJWC61DPw |=routine_builder|
 !~ name (~ routine_builder
 ~)
-!@ 1509570925.62
+!@ 1509570925.620
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for building routines at load, a prefix string or a closure"
 !)_8emBk0Le2Vy_8MxJWC61DPw
@@ -500,7 +500,7 @@ _4hIFpPfuaR1_39hcoYwRAm0
 !(_4xEm6fNYKrA_0GZas0sFyYp |=run_tasklet|
 !~ name (~ run_tasklet
 ~)
-!@ 1515745964.18
+!@ 1515745964.180
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to run a tasklet of the agenda"
@@ -511,7 +511,7 @@ _4hIFpPfuaR1_39hcoYwRAm0
 !(_77xbaw1emfK_1nhE4tp0bF3 |=sbuf_object|
 !~ name (~ sbuf_object
 ~)
-!@ 1520945670.87
+!@ 1520945670.870
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of strbuf payloaded objects"
@@ -526,7 +526,7 @@ _4hIFpPfuaR1_39hcoYwRAm0
 !(_2mYaTh9kH4I_7ENiXcymRmy |=set|
 !~ name (~ set
 ~)
-!@ 1510509744.59
+!@ 1510509744.590
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _3tjeTRoVZ9K_6jDMjF4cRyP
@@ -542,7 +542,7 @@ _3tjeTRoVZ9K_6jDMjF4cRyP
 !(_35gLacRFhq5_90zAPxiDIlh |=space|
 !~ name (~ space
 ~)
-!@ 1502296695.08
+!@ 1502296695.080
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for spaces"
 !)_35gLacRFhq5_90zAPxiDIlh
@@ -552,7 +552,7 @@ _3tjeTRoVZ9K_6jDMjF4cRyP
 !(_4T8am97muLl_5969SR22Ecq |=string|
 !~ name (~ string
 ~)
-!@ 1497636412.76
+!@ 1497636412.760
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl value:| _7bbeIqUSje9_4jVgC7ZJmvx 
 ~: _1FEnnpEkGdI_5DAcVDL5XHG  % _7mvOlkB1tAJ_3psVFz4QEAn () 
@@ -566,7 +566,7 @@ _3tjeTRoVZ9K_6jDMjF4cRyP
 !(_4ggW2XwfXdp_1XRSvOvZqTC |=the_system|
 !~ name (~ the_system
 ~)
-!@ 1527584767.72
+!@ 1527584767.720
 !$_8c9otZ4pwR6_55k81qyyYV2 |=hset_object|
 !: _58l4H04s9na_5H7OfXO5DEn |=expertises|
 _1zexIhXfZgP_0d6ostHCsjs
@@ -663,7 +663,7 @@ _9uVMjU02S3p_5ojxFlLbSTx
 !(_7ljWW4bj70g_9PL9dZkgBxZ |=todo|
 !~ name (~ todo
 ~)
-!@ 1507883376.93
+!@ 1507883376.930
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for todo-s"
 !)_7ljWW4bj70g_9PL9dZkgBxZ
@@ -674,7 +674,7 @@ _9uVMjU02S3p_5ojxFlLbSTx
 !~ name (~ todo_apply
 ~)
 !|*
-!@ 1507884810.72
+!@ 1507884810.720
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "closure for applying-todo-s"
 !)_3W8d51P1dJh_3b1BrOW6pua
@@ -685,7 +685,7 @@ _9uVMjU02S3p_5ojxFlLbSTx
 !~ name (~ todo_send
 ~)
 !|*
-!@ 1507884810.72
+!@ 1507884810.720
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "closure for sending-todo-s"
 !)_9mdRnBqdqf5_9UvgSFA7wIY
@@ -695,7 +695,7 @@ _9uVMjU02S3p_5ojxFlLbSTx
 !(_6TmLNh9vtVY_0pwkHRtJ44k |=tuple|
 !~ name (~ tuple
 ~)
-!@ 1510509702.07
+!@ 1510509702.070
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _4ysNY0rIzNK_7JgIhrjYpxD
@@ -711,7 +711,7 @@ _4ysNY0rIzNK_7JgIhrjYpxD
 !(_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
 !~ name (~ undefined
 ~)
-!@ 1500493047.47
+!@ 1500493047.470
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
 ~)
@@ -723,7 +723,7 @@ _4ysNY0rIzNK_7JgIhrjYpxD
 !(_55eJRRPyZDz_4uW8bzq75PI |=unspecified|
 !~ name (~ unspecified
 ~)
-!@ 1501521100.00
+!@ 1501521100.000
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl value:| _7bbeIqUSje9_4jVgC7ZJmvx
 ~)
@@ -735,7 +735,7 @@ _4ysNY0rIzNK_7JgIhrjYpxD
 !(_7bbeIqUSje9_4jVgC7ZJmvx |=value|
 !~ name (~ value
 ~)
-!@ 1510325672.92
+!@ 1510325672.920
 !$_9NAQwgAp8DQ_13qIsXE8j7H |=c_opaque|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for value payload etc etc etc..."
@@ -746,7 +746,7 @@ _4ysNY0rIzNK_7JgIhrjYpxD
 !(_5ucAZimYynS_4VA0XHvr1nW |=variable|
 !~ name (~ variable
 ~)
-!@ 1502361559.14
+!@ 1502361559.140
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for variables"
 !)_5ucAZimYynS_4VA0XHvr1nW
@@ -756,7 +756,7 @@ _4ysNY0rIzNK_7JgIhrjYpxD
 !(_0Ie11LN3K5q_0mcL2jRBwgk |=vector_object|
 !~ name (~ vector_object
 ~)
-!@ 1520947316.27
+!@ 1520947316.270
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|
  % _0y90r6nyAYP_2MmfH2V00B1 ()
@@ -773,7 +773,7 @@ _4ysNY0rIzNK_7JgIhrjYpxD
 !(_7zPvMEsQeeE_6zyBWbegVpo |=word|
 !~ name (~ word
 ~)
-!@ 1502296590.98
+!@ 1502296590.980
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for words"
 !)_7zPvMEsQeeE_6zyBWbegVpo
