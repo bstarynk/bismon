@@ -44,7 +44,7 @@ timetoY2Kmillisec_BM (double t)
 double
 Y2Kmillisectotime_BM (intptr_t tt)
 {
-  return (((double) tt + (double) Y2KEPOCH_BM) * 1.0e-3);
+  return (((double) tt * 1.0e-3 + (double) Y2KEPOCH_BM));
 }                               /* end Y2Kmillisectotime_BM */
 
 double
