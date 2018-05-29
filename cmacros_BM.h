@@ -20,6 +20,8 @@
 #define CMACROS_BM_INCLUDED
 
 
+// the first second of this millenium, date --date "2000-01-01 00:00:00 GMT" +"%s"
+#define Y2KEPOCH_BM 946684800
 #define MAXDEPTHGC_BM 256
 #define MAXDEPTHPARSE_BM 96
 #define MAXDEPTHMETHOD_BM 96
