@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 498 objects
+// for 499 objects
 // with 1 modules
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
 
@@ -2565,6 +2565,25 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !@ 1507030591.77
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_1UKQqVj61xF_4VRIryDMmHP
+
+
+
+!(_8wzBYvH45w0_5H9sN6WRr2w |=object_cast|
+!~ name (~ object_cast
+~)
+!@ 1527584346.68
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dynamically cast a value into an object value, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _8wzBYvH45w0_5H9sN6WRr2w  ":*/("  "value_tyBM"  ")" 
+  "objectcast_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW) 
+ ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_8wzBYvH45w0_5H9sN6WRr2w
 
 
 
