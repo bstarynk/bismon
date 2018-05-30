@@ -2352,13 +2352,9 @@ void
 }                               /* end replace_indexed_named_value_newgui_BM */
 
 static void
-browse_indexed_named_value_newgui_BM (const
-                                      value_tyBM
-                                      val,
-                                      int
-                                      browsdepth,
-                                      unsigned
-                                      idx, struct stackframe_stBM *stkf)
+  browse_indexed_named_value_newgui_BM
+  (const value_tyBM val,
+   int browsdepth, unsigned idx, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf,
                  /*descr: */ NULL,
