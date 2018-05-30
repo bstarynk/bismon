@@ -3355,7 +3355,7 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
   _.arg1v = arg1;
   _.arg2v = arg2;
   _.arg3v = arg3;
-  NONPRINTF_BM
+  DBGPRINTF_BM
     ("simple_module_initialize start modulid %s arg1 %s arg2 %s arg3 %s",
      modulid, debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
@@ -3439,9 +3439,29 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
                 debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),        //
                 debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
   free (routarr), routarr = NULL;
+  time_t nowtim = time (NULL);
+  struct tm nowtm = { };
+  localtime_r (&nowtim, &nowtm);
+  char nowbuf[64];
+  memset (nowbuf, 0, sizeof (nowbuf));
+  strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
   fprintf (stderr,
-           "initialized simple module %s /%s with %u constants and %u routines\n",
-           objectdbg_BM (_.modulob), modulid, nbconstid, nbroutid);
+           "initialized simple module %s /%s with %u constants and %u routines at %s\n",
+           objectdbg_BM (_.modulob), modulid, nbconstid, nbroutid, nowbuf);
+  if (pthread_self () == mainthreadid_BM && gui_is_running_BM)
+    {
+      log_begin_message_BM ();
+      log_puts_message_BM ("Initialized simple module ");
+      log_object_message_BM (_.modulob);
+      log_printf_message_BM (" /%s with %u constants and %u routines at %s.",
+                             modulid, nbconstid, nbroutid, nowbuf);
+      log_end_message_BM ();
+      if (gui_command_log_file_BM)
+        fprintf (gui_command_log_file_BM,
+                 "\n//// initialized simple module %s /%s  with %u constants and %u routines at %s\n",
+                 objectdbg_BM (_.modulob), modulid, nbconstid, nbroutid,
+                 nowbuf);
+    }
   return (value_tyBM) makenode5_BM (k_simple_module_initialize, _.constsetv,
                                     _.routupv, _.arg1v, _.arg2v, _.arg3v);
 }                               /* end simple_module_initialize_BM */
