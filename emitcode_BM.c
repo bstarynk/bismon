@@ -3377,7 +3377,8 @@ ROUTINEOBJNAME_BM (_6lTDbwKEMMc_0wsIKviDSce)    //miniemit_node_conn#apply
                  objectval_tyBM * modgenob;     //
                  value_tyBM expv;       //
                  value_tyBM subexpv;    //
-                 objectval_tyBM * subtypob; value_tyBM resultv; //
+                 objectval_tyBM * subtypob;     //
+                 value_tyBM resultv;    //
                  value_tyBM funexpv;    //
                  value_tyBM causev;     //
                  value_tyBM errorv;);
@@ -3438,6 +3439,95 @@ failure:
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniemit_node_conn#apply _6lTDbwKEMMc_0wsIKviDSce */
 
+////////////////
+
+//miniemit_node_conn#send _5ul3FB4ewSJ_7GbPhk05UVR
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_5ul3FB4ewSJ_7GbPhk05UVR);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_5ul3FB4ewSJ_7GbPhk05UVR)    ///miniemit_node_conn#send 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // expv
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // routprepob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs /*fromob. */ )
+{
+  objectval_tyBM *k_send = BMK_5P2fpxElfqT_7NlO7H9TYGI;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_5ul3FB4ewSJ_7GbPhk05UVR,
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * fromob;       //
+                 objectval_tyBM * modgenob;     //
+                 value_tyBM expv;       //
+                 value_tyBM subexpv;    //
+                 value_tyBM recvexpv;   //
+                 value_tyBM selexpv;    //
+                 objectval_tyBM * subtypob;     //
+                 value_tyBM resultv;    //
+                 value_tyBM funexpv;    //
+                 value_tyBM causev;     //
+                 value_tyBM errorv;);
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
+  _.expv = arg1;
+  _.modgenob = objectcast_BM (arg2);
+  _.routprepob = objectcast_BM (arg3);
+  int depth = getint_BM (arg4);
+  if (restargs)
+    _.fromob = objectcast_BM (treenthson_BM ((value_tyBM) restargs, 0));
+  WEAKASSERT_BM (isobject_BM (_.modgenob));
+  WEAKASSERT_BM (isobject_BM (_.routprepob));
+  int nbsons = nodewidth_BM ((value_tyBM) _.expv);
+  bool many = false;
+  int nbsendargs = nbsons - 2;
+  if (nbsons < 2)
+    FAILHERE (k_send);
+  else if (nbsendargs <= 9)
+    {
+      objstrbufferprintfpayl_BM (_.modgenob, "(send%d_BM ((", nbsendargs);
+    }
+  else if (nbsendargs < MAXAPPLYARGS_BM - 1)
+    {
+      many = true;
+      objstrbufferprintfpayl_BM (_.modgenob, "(sendmany_BM ((");
+    }
+  else
+    FAILHERE (k_send);
+  _.recvexpv = nodenthson_BM (_.expv, 0);
+  _.selexpv = nodenthson_BM (_.expv, 1);
+  miniemit_expression_BM (CURFRAME_BM, _.recvexpv, _.modgenob,
+                          _.routprepob, _.fromob, depth + 1);
+  objstrbufferprintfpayl_BM (_.modgenob, "), /*sel:*/(");
+  miniemit_expression_BM (CURFRAME_BM, _.selexpv, _.modgenob,
+                          _.routprepob, _.fromob, depth + 1);
+  _.funexpv = NULL;
+  objstrbufferprintfpayl_BM (_.modgenob, "), ((struct stackframe_stBM*)&_)");
+  if (many)
+    objstrbufferprintfpayl_BM (_.modgenob, ", /*nbargs=*/%d", nbsendargs);
+  for (int ix = 2; ix < nbsons; ix++)
+    {
+      _.subexpv = nodenthson_BM (_.expv, ix);
+      objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+      objstrbufferprintfpayl_BM (_.modgenob, ",\t (");
+      miniemit_expression_BM (CURFRAME_BM, _.subexpv, _.modgenob,
+                              _.routprepob, _.fromob, depth + 1);
+      objstrbufferprintfpayl_BM (_.modgenob, ")");
+    }
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbufferprintfpayl_BM (_.modgenob, "))");
+  LOCALRETURN_BM (_.expv);
+failure:
+#undef FAILHERE
+  DBGPRINTF_BM
+    ("miniemit_node_conn#send failure failin %d exp %s routprepob %s cause %s",
+     failin, debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
+     objectdbg_BM (_.routprepob), debug_outstr_value_BM (_.causev,
+                                                         CURFRAME_BM, 0));
+  _.errorv =
+    (value_tyBM) makenode3_BM (k_send, _.expv, _.routprepob, _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end routine _5ul3FB4ewSJ_7GbPhk05UVR */
 
 
 
@@ -3709,15 +3799,16 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn#make_tree
     {
       if (nbsons < MAXTREEOPTIMARGS_BM)
         objstrbufferprintfpayl_BM (_.modgenob,
-                                   "((value_tyBM) makeclosure%u_BM (");
+                                   "((value_tyBM) makeclosure%u_BM (",
+                                   (unsigned) nbsons);
       else
         objstrbufferprintfpayl_BM (_.modgenob,
                                    "((value_tyBM) makesizedclosure_BM (%dU,",
-                                   nbsons);
+                                   (unsigned) nbsons);
     }
   else
     FAILHERE (_.seqtypob);
-#undef MAXTREEOPTIMARGS_BM 8
+#undef MAXTREEOPTIMARGS_BM
   _.connexpv = nodenthson_BM (_.expv, 0);
   objstrbufferprintfpayl_BM (_.modgenob, "/*%s conn:*/",
                              objectdbg_BM (_.connob));

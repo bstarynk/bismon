@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 542 objects
+// for 543 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3659,12 +3659,14 @@ _8yXqsN7LuB3_0vODsT2M9Lh
 !(_5P2fpxElfqT_7NlO7H9TYGI |=send|
 !~ name (~ send
 ~)
-!@ 1527693278.546
+!@ 1527694943.613
 !$_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "connective to send to reciever arg1 the selector arg2 with arguments arg3..."
-!: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
+!: _5EGLdtUAQxA_1nebCsDKqOF |=miniscan_node_conn|
  % _9BWLfKtt9ID_2YwNGH3zu9Q ()
+!: _7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
+ % _5ul3FB4ewSJ_7GbPhk05UVR ()
 !)_5P2fpxElfqT_7NlO7H9TYGI
 
 
@@ -5879,6 +5881,16 @@ _6iYgjRt0FIx_4ax63M6n2U6
 !: _2DH0ucElTgh_62vxjxLcfev |=return|
 _5a7gOTbvw4I_6PzXru7uInx
 !)_5tPUeSSsiHU_3LUL2sBwyzM
+
+
+
+!(_5ul3FB4ewSJ_7GbPhk05UVR
+!|*
+!@ 1527694943.613
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniemit_node_conn#send"
+!)_5ul3FB4ewSJ_7GbPhk05UVR
 
 
 
