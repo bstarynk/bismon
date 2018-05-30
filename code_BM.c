@@ -3335,7 +3335,7 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
 extern objrout_sigBM ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
+ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    // cexpansion#readmacro
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // node
  const value_tyBM arg2,         // lineno
@@ -3349,13 +3349,18 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    //
     closix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * clos;
-                 const node_tyBM * rnodv; objectval_tyBM * resobj;
-                 objectval_tyBM * resclass; objectval_tyBM * inv;
-                 value_tyBM curson;
-                 value_tyBM runexpv; value_tyBM argsv; value_tyBM resultsv;
-                 value_tyBM tupresultsv; value_tyBM nodargsv;
-                 objectval_tyBM * parsob;
+                 const closure_tyBM * clos;     //
+                 const node_tyBM * rnodv;       //
+                 objectval_tyBM * resobj;       //
+                 objectval_tyBM * resclass;     //
+                 objectval_tyBM * inv;  //
+                 value_tyBM curson;     //
+                 value_tyBM runexpv;    //
+                 value_tyBM argsv;      //
+                 value_tyBM resultsv;   //
+                 value_tyBM tupresultsv;        //
+                 value_tyBM nodargsv;   //
+                 objectval_tyBM * parsob;       //
     );
   LOCALGETFUNV_BM (_.clos);
   if (!isclosure_BM ((value_tyBM) _.clos)
