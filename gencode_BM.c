@@ -2270,13 +2270,14 @@ ROUTINEOBJNAME_BM (_2ROGZRBpeCl_6HhgOZ5Uj7F)    //miniscan_node_conn°basiclo_si
   if (!_.funv)
     FAILHERE (k_miniscan_node_conn);
   DBGPRINTF_BM
-    ("miniscan_node_conn°basiclo_simple_connective connob %s has funv %s",
-     objectdbg_BM (_.connob), debug_outstr_value_BM (_.funv, CURFRAME_BM, 0));
+    ("miniscan_node_conn°basiclo_simple_connective connob %s has funv %s routpepob %s",
+     objectdbg_BM (_.connob), debug_outstr_value_BM (_.funv, CURFRAME_BM, 0),
+     objectdbg1_BM (_.routprepob));
   if (!isobject_BM (_.funv) && !isclosure_BM (_.funv))
     FAILHERE (makenode1_BM (k_miniscan_node_conn, _.funv));
   _.resultv =
-    apply4_BM (_.funv, CURFRAME_BM, _.routprepob, taggedint_BM (depth),
-               _.expv, _.fromob);
+    apply5_BM (_.funv, CURFRAME_BM, _.connob, _.routprepob,
+               taggedint_BM (depth), _.expv, _.fromob);
   DBGPRINTF_BM ("miniscan_node_conn°basiclo_simple_connective connob %s expv %s routprepob %s resultv %s",     //
                 objectdbg_BM (_.connob), debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),        //
                 objectdbg1_BM (_.routprepob),

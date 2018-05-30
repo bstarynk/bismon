@@ -3397,7 +3397,7 @@ ROUTINEOBJNAME_BM (_6lTDbwKEMMc_0wsIKviDSce)    //miniemit_node_conn#apply
     FAILHERE (k_apply);
   else if (nbsons <= 9)
     {
-      objstrbufferprintfpayl_BM (_.modgenob, "(apply%d_BM ((", nbsons);
+      objstrbufferprintfpayl_BM (_.modgenob, "(apply%d_BM ((", nbsons - 1);
     }
   else if (nbsons < MAXAPPLYARGS_BM)
     {
@@ -3423,7 +3423,7 @@ ROUTINEOBJNAME_BM (_6lTDbwKEMMc_0wsIKviDSce)    //miniemit_node_conn#apply
       objstrbufferprintfpayl_BM (_.modgenob, ")");
     }
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
-  objstrbufferprintfpayl_BM (_.modgenob, ")");
+  objstrbufferprintfpayl_BM (_.modgenob, "))");
   LOCALRETURN_BM (_.expv);
 failure:
 #undef FAILHERE
