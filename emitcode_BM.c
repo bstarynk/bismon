@@ -3393,16 +3393,17 @@ ROUTINEOBJNAME_BM (_6lTDbwKEMMc_0wsIKviDSce)    //miniemit_node_conn#apply
   WEAKASSERT_BM (isobject_BM (_.routprepob));
   int nbsons = nodewidth_BM ((value_tyBM) _.expv);
   bool many = false;
+  int nbappargs = nbsons - 1;
   if (nbsons == 0)
     FAILHERE (k_apply);
-  else if (nbsons <= 9)
+  else if (nbappargs <= 9)
     {
-      objstrbufferprintfpayl_BM (_.modgenob, "(apply%d_BM ((", nbsons - 1);
+      objstrbufferprintfpayl_BM (_.modgenob, "(apply%d_BM ((", nbappargs);
     }
-  else if (nbsons < MAXAPPLYARGS_BM)
+  else if (nbappargs < MAXAPPLYARGS_BM)
     {
       many = true;
-      objstrbufferprintfpayl_BM (_.modgenob, "(applymany_BM_BM ((");
+      objstrbufferprintfpayl_BM (_.modgenob, "(applymany_BM ((");
     }
   else
     FAILHERE (k_apply);
