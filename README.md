@@ -94,7 +94,9 @@ source code, and configure it to provide them.).
 Most of `bismon` is in C99 (including an increasing amount of
 generated code), but some few code is in C++14.
 
-* [GTK](http://gtk.org/) 3.22 or better
+* [GTK](http://gtk.org/) 3.22 or better. This is a temporary
+  dependency, we hope to have some web interface (above
+  [libonion](http://www.coralbits.com/libonion) probably) soon.
 
 * [GNU make](https://www.gnu.org/software/make/) 4 or better
 
