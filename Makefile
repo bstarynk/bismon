@@ -55,7 +55,7 @@ clean:
 	$(RM) *_BM.const.h _bm_allconsts.c
 	$(RM) modubin/*.so modules/*.i modules/*% modules/*~ modules/*- bismon BM_makeconst
 	$(RM) $(patsubst %.md,%.html, $(MARKDOWN_SOURCES))
-	$(RM)  doc/generated/* doc/htmldoc/*
+	$(RM)  doc/generated/* doc/htmldoc/*  doc/*/*~
 	$(RM) doc/*.aux doc/*.log doc/*.bbl doc/*.blg doc/*.idx doc/*.ilg doc/*.ind doc/*.log doc/*.out doc/*.toc doc/*.haux doc/*.hind doc/*.html doc/*.htoc
 
 indent: .indent.pro
