@@ -3379,7 +3379,7 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    // cexpansion#readmacro
   if (!pars)
     LOCALRETURN_BM (NULL);
   _.resobj = NULL;
-  DBGPRINTF_BM ("start readmacro cexpansion _42gEKfF4qca_6gGwxSFC1FO"
+  DBGPRINTF_BM ("start readmacro cexpansion"
                 " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
 
   const objectval_tyBM *closconn = closureconn_BM ((const value_tyBM) _.clos);
@@ -3389,23 +3389,17 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    // cexpansion#readmacro
     objectcast_BM (closurenthson_BM ((const value_tyBM) _.clos,
                                      closix_curcexp));
   const objectval_tyBM *k_basiclo_cexpansion = BMK_4GJJnvyrLyW_5mhopCYvh8h;
-  WEAKASSERT_BM (k_basiclo_cexpansion != NULL);
   const objectval_tyBM *k_basiclo_cexpander = BMK_9pJUJ57N6RL_2nsXFzR6S3E;
-  WEAKASSERT_BM (k_basiclo_cexpander != NULL);
   const objectval_tyBM *k_results = BMK_5ve5gbSjN0r_1n61nNRPtnN;
-  WEAKASSERT_BM (k_results != NULL);
   const objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
-  WEAKASSERT_BM (k_arguments != NULL);
-  const objectval_tyBM *k_body = BMK_7DQyvJFMOrC_9IfC3CtYknn;
-  WEAKASSERT_BM (k_body != NULL);
   const objectval_tyBM *k_expander = BMK_9OzBvYbDWm8_3XA4wkArOmo;
-  WEAKASSERT_BM (k_expander != NULL);
   if (!isobject_BM (clos_curcexp)
       || !objectisinstance_BM (clos_curcexp, k_basiclo_cexpander))
     {
       parsererrorprintf_BM (pars,
                             CURFRAME_BM, lineno, colpos,
-                            "bad cexpander for cexpansion readmacro");
+                            "bad cexpander for cexpansion readmacro %s",
+                            debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
       LOCALRETURN_BM (NULL);
     };
   _.resultsv = objgetattr_BM (clos_curcexp, k_results);
@@ -3416,8 +3410,10 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    // cexpansion#readmacro
   int nbargs =                  //
     istuple_BM (_.argsv) ? tuplesize_BM (_.argsv) :
     isobject_BM (_.argsv) ? 1 : 0;
-  DBGPRINTF_BM ("readmacro cexpansion curexp %s nbresults#%d nbargs#%d",
-                objectdbg_BM (clos_curcexp), nbresults, nbargs);
+  DBGPRINTF_BM
+    ("readmacro cexpansion curexp %s nbresults#%d nbargs#%d rnod %s",
+     objectdbg_BM (clos_curcexp), nbresults, nbargs,
+     debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
   unsigned startix = 0;
   if (nodwidth > 0
       && (_.curson =
@@ -3446,9 +3442,10 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    // cexpansion#readmacro
     {
       parsererrorprintf_BM (pars,
                             CURFRAME_BM, lineno, colpos,
-                            "too short %s cexpansion (%u) readmacro (%d results, %d arguments)",
+                            "too short %s cexpansion (%u) readmacro (%d results, %d arguments) rnod %s",
                             objectdbg_BM (clos_curcexp), nodwidth,
-                            nbresults, nbargs);
+                            nbresults, nbargs,
+                            debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
       LOCALRETURN_BM (NULL);
     }
   if (!_.resclass)
@@ -3463,37 +3460,37 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    // cexpansion#readmacro
               parsererrorprintf_BM (pars,
                                     CURFRAME_BM, lineno,
                                     colpos,
-                                    "non-object result#%d for cexpansion %s readmacro",
-                                    ix, objectdbg_BM (clos_curcexp));
+                                    "non-object result#%d for cexpansion %s readmacro rnod %s",
+                                    ix, objectdbg_BM (clos_curcexp),
+                                    debug_outstr_value_BM (_.rnodv,
+                                                           CURFRAME_BM, 0));
               LOCALRETURN_BM (NULL);
             }
         }
     }
-  for (int ix = startix + nbresults + nbargs; ix < (int) nodwidth; ix++)
+  if (startix + nbresults + nbargs < nodwidth)
     {
-      _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
-      if (!isobject_BM (_.curson))
-        {
-          parsererrorprintf_BM (pars,
-                                CURFRAME_BM, lineno,
-                                colpos,
-                                "non-object body component#%d for cexpansion %s readmacro",
-                                ix, objectdbg_BM (clos_curcexp));
-          LOCALRETURN_BM (NULL);
-        }
+      parsererrorprintf_BM (pars,
+                            CURFRAME_BM, lineno,
+                            colpos,
+                            "too wide %u cexpansion %s readmacro rnod %s",
+                            nodwidth, objectdbg_BM (clos_curcexp),
+                            debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
+      LOCALRETURN_BM (NULL);
     }
   if (!_.resobj)
     {
       _.resobj = makeobj_BM ();
       objputspacenum_BM (_.resobj, GlobalSp_BM);
     };
-  objresetcomps_BM (_.resobj, 1 + nodwidth - nbresults + nbargs);
+  objresetcomps_BM (_.resobj, 0);
   objresetattrs_BM (_.resobj, 5);
   objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   objputattr_BM (_.resobj, k_expander, clos_curcexp);
-  DBGPRINTF_BM ("%s cexpansion; k_expander= %s; resobj= %s",
+  DBGPRINTF_BM ("%s cexpansion; k_expander= %s; resobj= %s; rnod= %s",
                 objectdbg_BM (clos_curcexp),
-                objectdbg1_BM (k_expander), objectdbg2_BM (_.resobj));
+                objectdbg1_BM (k_expander), objectdbg2_BM (_.resobj),
+                debug_outstr_value_BM (_.rnodv, CURFRAME_BM, 0));
   if (nbresults > 0)
     {
       objectval_tyBM *tinyarr[TINYSIZE_BM] = {
@@ -3539,12 +3536,6 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    // cexpansion#readmacro
     }
   else
     objremoveattr_BM (_.resobj, k_arguments);
-  for (int ix = startix + nbresults + nbargs; ix < (int) nodwidth; ix++)
-    {
-      _.curson = nodenthson_BM ((const value_tyBM) _.rnodv, ix);
-      ASSERT_BM (isobject_BM (_.curson));
-      objappendcomp_BM (_.resobj, _.curson);
-    }
   objputclass_BM (_.resobj, _.resclass);
   objtouchnow_BM (_.resobj);
   DBGPRINTF_BM ("end readmacro cexpansion resobj %s",
