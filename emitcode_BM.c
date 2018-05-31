@@ -1821,7 +1821,7 @@ failure:
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniemit_node_conn°basiclo_simple_connective _48l341uEMuG_3gJ2HHIwYhn */
 
-
+////////////////////////////////////////////////////////////////
 
 
 
@@ -1876,7 +1876,7 @@ ROUTINEOBJNAME_BM (_22wwtRd69oP_3IH6VRfTzu6)    //
   objstrbufferprintfpayl_BM (_.modgenob, ";\n");
   LOCALRETURN_BM (_.stmtob);
 #undef FAILHERE
-failure:
+failure:__attribute ((unused));
   DBGPRINTF_BM ("emit_statement°basiclo_assign failin %d stmtob %s routprep %s cause %s",      //
                 failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
@@ -1964,6 +1964,8 @@ ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7)    //emit_statement°basiclo_return
 }                               /* end emit_statement°basiclo_return _7DErEWkQBmz_5hPwF6ARmJ7 */
 
 
+
+////////////////
 
 // emit_statement°basiclo_run _0AUL5kbXVmq_06A8ZbHZi1Y
 
@@ -2095,7 +2097,148 @@ failure:
 }                               /* end  emit_statement°basiclo_run _0AUL5kbXVmq_06A8ZbHZi1Y */
 
 
+////////////////
 
+// emit_statement°basiclo_cexpansion _7CWfvQEHVOQ_1iBMi9mvgOY
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY)    // emit_statement°basiclo_cexpansion
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // stmtob
+ const value_tyBM arg2,         // modgenob
+ const value_tyBM arg3,         // routprepob
+ const value_tyBM arg4,         // depth
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  objectval_tyBM *k_assoc_object = BMK_6ZQ05nCv3Ys_8LA6B5LkZgm;
+  objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
+  objectval_tyBM *k_origin = BMK_1xhcI0ZnQ6f_5xOLATXqawx;
+  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM *k_expander = BMK_9OzBvYbDWm8_3XA4wkArOmo;
+  objectval_tyBM *k_basiclo_cexpander = BMK_9pJUJ57N6RL_2nsXFzR6S3E;
+  objectval_tyBM *k_cexpansion = BMK_7yoiT31GmV4_2iTjHx3P2hb;
+  objectval_tyBM *k_chunk = BMK_3pQnBS9ZjkQ_0uGmqUUhAum;
+  objectval_tyBM *k_results = BMK_5ve5gbSjN0r_1n61nNRPtnN;
+  objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
+  objectval_tyBM *k_duplicate = BMK_2YrbiKQ6lxP_3KNUOnU6TF5;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_7CWfvQEHVOQ_1iBMi9mvgOY,
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * expandob;     //
+                 objectval_tyBM * routob;       //
+                 objectval_tyBM * substob;      //
+                 objectval_tyBM * curesob;      //
+                 objectval_tyBM * expresob;     //
+                 objectval_tyBM * expargob;     //
+                 value_tyBM cexpansionv;        //
+                 value_tyBM expresultsv;        //
+                 value_tyBM stmtresultsv;       //
+                 value_tyBM expargsv;   //
+                 value_tyBM curargexpv; //
+                 value_tyBM stmtargsv;  //
+                 value_tyBM errorv;     //
+                 value_tyBM causev;     //
+    );
+  _.stmtob = objectcast_BM (arg1);
+  _.modgenob = objectcast_BM (arg2);
+  _.routprepob = objectcast_BM (arg3);
+  int depth = getint_BM (arg4);
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
+  _.expandob = objectcast_BM (objgetattr_BM (_.stmtob, k_expander));
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_cexpansion start stmtob=%s modgenob=%s routprepob=%s depth#%d expandob=%s",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth, objectdbg3_BM (_.expandob));
+  if (!_.expandob)
+    FAILHERE (k_expander);
+  objlock_BM (_.expandob);
+  if (!objectisinstance_BM (_.expandob, k_basiclo_cexpander))
+    FAILHERE (k_expander);
+  _.expresultsv = objgetattr_BM (_.expandob, k_results);
+  _.stmtresultsv = objgetattr_BM (_.stmtob, k_results);
+  _.expargsv = objgetattr_BM (_.expandob, k_arguments);
+  _.stmtargsv = objgetattr_BM (_.stmtob, k_arguments);
+  _.cexpansionv = objgetattr_BM (_.expandob, k_cexpansion);
+  _.substob = makeobj_BM ();
+  objputattr_BM (_.substob, k_in, _.routprepob);
+  objputattr_BM (_.substob, k_origin, _.stmtob);
+  objputassocpayl_BM (_.substob,
+                      5 * (tuplesize_BM (_.expargsv) +
+                           tuplesize_BM (_.expresultsv)) / 4 + 2);
+  objputclass_BM (_.substob, k_assoc_object);
+  // bind the results in substob
+  {
+    int nbresults = tuplesize_BM (_.stmtresultsv);
+    if (isobject_BM (_.expresultsv))
+      {
+        if (nbresults != 1)
+          FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
+        objassocaddattrpayl_BM (_.substob, objectcast_BM (_.expresultsv),
+                                tuplecompnth_BM (_.stmtresultsv, 0));
+      }
+    else if (istuple_BM (_.expresultsv))
+      {
+        if (tuplesize_BM (_.expresultsv) != nbresults)
+          FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
+        for (int rix = 0; rix < nbresults; rix++)
+          {
+            _.curesob = tuplecompnth_BM (_.stmtresultsv, rix);
+            _.expresob = tuplecompnth_BM (_.expresultsv, rix);
+            if (objassocgetattrpayl_BM (_.substob, _.expresob) != NULL)
+              FAILHERE (makenode3_BM
+                        (k_duplicate, _.expresob, _.curesob,
+                         taggedint_BM (rix)));
+            objassocaddattrpayl_BM (_.substob, _.expresob, _.curesob);
+          }
+      }
+    else
+      FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
+    _.curesob = NULL;
+    _.expresob = NULL;
+  }
+  // bind the arguments in substob
+  {
+    int nbargs = nodewidth_BM (_.stmtargsv);
+    if (nbargs != tuplesize_BM (_.expargsv))
+      FAILHERE (makenode2_BM (k_arguments, _.expargsv, _.stmtargsv));
+    for (int aix = 0; aix < nbargs; aix++)
+      {
+        _.curargexpv = nodenthson_BM (_.stmtargsv, aix);
+        _.expargob = tuplecompnth_BM (_.expargsv, aix);
+        if (objassocgetattrpayl_BM (_.substob, _.expargob) != NULL)
+          FAILHERE (makenode3_BM
+                    (k_duplicate, _.expargob, _.curargexpv,
+                     taggedint_BM (aix)));
+        objassocaddattrpayl_BM (_.substob, _.expargob, _.curargexpv);
+      }
+    _.curargexpv = NULL;
+    _.expargob = NULL;
+  }
+  objunlock_BM (_.expandob);
+  /// should emit the code chunk, using substob
+#warning unimplemented _7CWfvQEHVOQ_1iBMi9mvgOY routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented emit_statement°basiclo_cexpansion _7CWfvQEHVOQ_1iBMi9mvgOY routine");
+  LOCALRETURN_BM (_.stmtob);
+#undef FAILHERE
+failure:
+  DBGPRINTF_BM ("emit_statement°basiclo_cexpansion failin %d stmtob %s routprep %s cause %s",  //
+                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    (value_tyBM) makenode6_BM (k_emit_statement, _.stmtob, _.routprepob,
+                               _.modgenob, taggedint_BM (depth), _.expandob,
+                               _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end emit_statement°basiclo_cexpansion _7CWfvQEHVOQ_1iBMi9mvgOY */
+
+
+////////////////
 
 // emit_statement°basiclo_exit _4hS1jncZQAY_9pGS66eIlw9
 

@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 544 objects
+// for 545 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -188,6 +188,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of cexpansions statements"
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
+~: _1ERH9PxNhPb_2o869yOMuH0  % _7CWfvQEHVOQ_1iBMi9mvgOY () 
 ~: _6DdZwyaWLyK_7tS2BmECOJ0  % _0Qplg2cn9xR_5pfROAJjrXZ ()
 ~)
 
@@ -6432,6 +6433,16 @@ _4lKK08v9A0t_0GGsir35UxP _4bYUiDmxrKK_6nPPlEl8y8x) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value a closure"
 !)_7CohjJ9tkfZ_4UMAIZCgwac
+
+
+
+!(_7CWfvQEHVOQ_1iBMi9mvgOY
+!|*
+!@ 1527757923.616
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit_statement\u00b0basiclo_cexpansion"
+!)_7CWfvQEHVOQ_1iBMi9mvgOY
 
 
 

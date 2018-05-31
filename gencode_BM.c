@@ -2237,7 +2237,7 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
   objectval_tyBM *k_basiclo_cexpander = BMK_9pJUJ57N6RL_2nsXFzR6S3E;
   objectval_tyBM *k_results = BMK_5ve5gbSjN0r_1n61nNRPtnN;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
-  objectval_tyBM *k_body = BMK_7DQyvJFMOrC_9IfC3CtYknn;
+  //objectval_tyBM *k_body = BMK_7DQyvJFMOrC_9IfC3CtYknn;
   objectval_tyBM *k_expander = BMK_9OzBvYbDWm8_3XA4wkArOmo;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0Qplg2cn9xR_5pfROAJjrXZ,
                  objectval_tyBM * stmtob;       //
@@ -2246,7 +2246,7 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
                  value_tyBM resultv;    //
                  value_tyBM subexpv;    //
                  objectval_tyBM * subtypob;     //
-                 objectval_tyBM * expansob;     //
+                 objectval_tyBM * expandob;     //
                  objectval_tyBM * curesob;      //
                  objectval_tyBM * curestypob;   //
                  objectval_tyBM * curexptypob;  //
@@ -2273,17 +2273,17 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
   WEAKASSERT_BM (_.stmtob);
   if (!_.routprepob)
     FAILHERE (NULL);
-  _.expansob = objectcast_BM (objgetattr_BM (_.stmtob, k_expander));
-  if (!_.expansob)
+  _.expandob = objectcast_BM (objgetattr_BM (_.stmtob, k_expander));
+  if (!_.expandob)
     FAILHERE (k_expander);
-  DBGPRINTF_BM ("miniscan_stmt°basiclo_cexpansion stmtob %s expansob %s",
-                objectdbg_BM (_.stmtob), objectdbg1_BM (_.expansob));
-  objlock_BM (_.expansob);
-  if (!objectisinstance_BM (_.expansob, k_basiclo_cexpander))
-    FAILHERE (makenode1_BM (k_expander, _.expansob));
-  _.expresultsv = objgetattr_BM (_.expansob, k_results);
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_cexpansion stmtob %s expandob %s",
+                objectdbg_BM (_.stmtob), objectdbg1_BM (_.expandob));
+  objlock_BM (_.expandob);
+  if (!objectisinstance_BM (_.expandob, k_basiclo_cexpander))
+    FAILHERE (makenode1_BM (k_expander, _.expandob));
+  _.expresultsv = objgetattr_BM (_.expandob, k_results);
   _.stmtresultsv = objgetattr_BM (_.stmtob, k_results);
-  _.expargsv = objgetattr_BM (_.expansob, k_arguments);
+  _.expargsv = objgetattr_BM (_.expandob, k_arguments);
   _.stmtargsv = objgetattr_BM (_.stmtob, k_arguments);
   DBGPRINTF_BM ("miniscan_stmt°basiclo_cexpansion stmtob %s\n" //
                 ".. expresults %s stmtresults %s expargs %s stmtargs %s",       //
@@ -2371,10 +2371,10 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
     _.curvarob = NULL;
     _.curargexpv = NULL;
   }
-  objunlock_BM (_.expansob);
+  objunlock_BM (_.expandob);
   DBGPRINTF_BM
-    ("miniscan_stmt°basiclo_cexpansion end stmtob=%s expansob=%s",
-     objectdbg_BM (_.stmtob), objectdbg1_BM (_.expansob));
+    ("miniscan_stmt°basiclo_cexpansion end stmtob=%s expandob=%s",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.expandob));
   LOCALRETURN_BM (_.stmtob);
 failure:
 #undef FAILHERE
