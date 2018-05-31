@@ -1584,15 +1584,24 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
  const quasinode_tyBM * restargs)       // depth, fromob
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0BaXSIhDAHO_9x6t4zdbUhj,
-                 value_tyBM resultv; objectval_tyBM * connob; value_tyBM expv;  //
+                 value_tyBM resultv;    //
+                 objectval_tyBM * connob;       //
+                 value_tyBM expv;       //
                  value_tyBM cursubexpv; //
-                 value_tyBM connargsv; value_tyBM conncexpansionv;
-                 value_tyBM connchunkv; value_tyBM chunksonv;
-                 objectval_tyBM * modgenob; objectval_tyBM * routprepob;
-                 objectval_tyBM * fromob; objectval_tyBM * substob;
-                 objectval_tyBM * varob; objectval_tyBM * curargob;
-                 objectval_tyBM * chunkob; objectval_tyBM * emptybindhsetob;
-                 value_tyBM errorv; value_tyBM causev;);
+                 value_tyBM connargsv;  //
+                 value_tyBM conncexpansionv;    //
+                 value_tyBM connchunkv; //
+                 value_tyBM chunksonv;  //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * fromob;       //
+                 objectval_tyBM * substob;      //
+                 objectval_tyBM * varob;        //
+                 objectval_tyBM * curargob;     //
+                 objectval_tyBM * chunkob;      //
+                 objectval_tyBM * emptybindhsetob;      //
+                 value_tyBM errorv;     //
+                 value_tyBM causev;);
   int depth = -1;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   objectval_tyBM *k_cexpansion = BMK_7yoiT31GmV4_2iTjHx3P2hb;
@@ -2125,6 +2134,7 @@ ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY)    // emit_statement°basiclo_cexpa
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   objectval_tyBM *k_duplicate = BMK_2YrbiKQ6lxP_3KNUOnU6TF5;
   objectval_tyBM *k_variable = BMK_5ucAZimYynS_4VA0XHvr1nW;
+  objectval_tyBM *k_stmtid = BMK_5Z5WNOYHi9A_29s2a7qpJej;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7CWfvQEHVOQ_1iBMi9mvgOY,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * modgenob;     //
@@ -2269,8 +2279,17 @@ ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY)    // emit_statement°basiclo_cexpa
                 if (!_.varob)
                   FAILHERE (makenode2_BM
                             (k_variable, _.compv, taggedint_BM (cix)));
-                miniemit_expression_BM (CURFRAME_BM, _.varob, _.modgenob,
-                                        _.routprepob, _.stmtob, depth + 1);
+                if (_.varob == k_stmtid)
+                  {
+                    objstrbufferappendcstrpayl_BM (_.modgenob, stmtidbuf);
+                  }
+                else
+                  {
+                    _.expargob = objassocgetattrpayl_BM (_.substob, _.varob);
+                    miniemit_expression_BM (CURFRAME_BM, _.expargob,
+                                            _.modgenob, _.routprepob,
+                                            _.stmtob, depth + 1);
+                  }
               }
             else
               FAILHERE (makenode2_BM

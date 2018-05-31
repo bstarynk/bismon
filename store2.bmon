@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 545 objects
+// for 546 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3995,6 +3995,17 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to associate a property to each statement"
 !)_0OM3NoUpOBd_1nzwCJKw54A
+
+
+
+!(_5Z5WNOYHi9A_29s2a7qpJej |=stmtid|
+!~ name (~ stmtid
+~)
+!@ 1527781243.492
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "useful in cexpansion-s"
+!)_5Z5WNOYHi9A_29s2a7qpJej
 
 
 
