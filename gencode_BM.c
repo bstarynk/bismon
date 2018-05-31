@@ -37,10 +37,10 @@ asprintf_prev_module_BM (const char *srcdir, objectval_tyBM * obmodule)
     (objectisinstance_BM (obmodule, k_plain_temporary_module));
   idtocbuf32_BM (objid_BM (obmodule), modulidbuf);
   if (modulistemporary)
-    asprintf (&pathstr, "%s/" TEMPMODULEPREFIX_BM "%s.c-p%d~",
+    asprintf (&pathstr, "%s/" TEMPMODULEPREFIX_BM "%s.c-prev%d~",
               srcdir, modulidbuf, (int) getpid ());
   else
-    asprintf (&pathstr, "%s/" MODULEPREFIX_BM "%s.c-p%d~",
+    asprintf (&pathstr, "%s/" MODULEPREFIX_BM "%s.c-prev%d~",
               srcdir, modulidbuf, (int) getpid ());
   if (!pathstr)
     FATAL_BM ("failed asprintf_prev_module srcdir %s obmodule %s - %m",
@@ -3172,13 +3172,13 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   objectval_tyBM *kk_after_load_of_module = BMK_0UHZG9vDlR2_2Aqx86LMFuq;
   objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9le67LL7S9y_5VGpniEUNDA,
-                 value_tyBM outstrv; //
-                 value_tyBM resultv; //
-		 value_tyBM callingclosv; //
-                 objectval_tyBM * modulob; //
-		 value_tyBM postclosv; //
+                 value_tyBM outstrv;    //
+                 value_tyBM resultv;    //
+                 value_tyBM callingclosv;       //
+                 objectval_tyBM * modulob;      //
+                 value_tyBM postclosv;  //
                  objectval_tyBM * modgenob;
-		 value_tyBM moddirstrv;);
+                 value_tyBM moddirstrv;);
   int status = -1;
   _.outstrv = arg1;
   status = getint_BM (arg2);
@@ -3321,7 +3321,8 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   if (status)
     LOCALRETURN_BM (NULL);
   _.postclosv =
-    makeclosure3_BM (kk_after_load_of_module, _.modulob, _.modgenob, _.moddirstrv);
+    makeclosure3_BM (kk_after_load_of_module, _.modulob, _.modgenob,
+                     _.moddirstrv);
   DBGPRINTF_BM ("after-compilation-of-module modulob %s postclosv=%s before defer_module_load", objectdbg_BM (_.modulob),       //
                 debug_outstr_value_BM (_.postclosv, CURFRAME_BM, 0));
   defer_module_load_BM (_.modulob, _.postclosv, _.modulob, _.modgenob, NULL,
@@ -3353,7 +3354,7 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
                  objectval_tyBM * taskletob;    //
                  value_tyBM callingclosv;       //
                  value_tyBM todoclosv;  //
-                 value_tyBM moddirstrv;  //
+                 value_tyBM moddirstrv; //
     );
   objectval_tyBM *k_todo_after_module_load = BMK_5DXq2adUiam_4ySWA06AoyV;
   _.resmodv = arg1;
@@ -3361,11 +3362,11 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
   _.modulob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
   _.modgenob = objectcast_BM (closurenthson_BM (_.callingclosv, 1));
   _.moddirstrv = closurenthson_BM (_.callingclosv, 2);
-  DBGPRINTF_BM ("after-load-of-module start resmodv=%s callingclosv=%s modulob=%s modgenob=%s moddirstr=%s",        //
+  DBGPRINTF_BM ("after-load-of-module start resmodv=%s callingclosv=%s modulob=%s modgenob=%s moddirstr=%s",    //
                 debug_outstr_value_BM (_.resmodv, CURFRAME_BM, 0),      //
                 debug_outstr_value_BM (_.callingclosv, CURFRAME_BM, 0), //
                 objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
-		debug_outstr_value_BM (_.moddirstrv, CURFRAME_BM, 0));
+                debug_outstr_value_BM (_.moddirstrv, CURFRAME_BM, 0));
   WEAKASSERT_BM (isobject_BM (_.modulob));
   WEAKASSERT_BM (isobject_BM (_.modgenob));
   WEAKASSERT_BM (closurewidth_BM (_.callingclosv) >= 2);
