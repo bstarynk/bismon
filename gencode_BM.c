@@ -2229,6 +2229,7 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
  const value_tyBM arg4,         // fromob
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
+  objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
   objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   objectval_tyBM *k_origin = BMK_1xhcI0ZnQ6f_5xOLATXqawx;
@@ -2246,6 +2247,10 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
                  value_tyBM subexpv;    //
                  objectval_tyBM * subtypob;     //
                  objectval_tyBM * expansob;     //
+                 objectval_tyBM * curesob;      //
+                 objectval_tyBM * curestypob;   //
+                 objectval_tyBM * curvarob;     //
+                 objectval_tyBM * curvartypob;  //
                  value_tyBM expresultsv;        //
                  value_tyBM stmtresultsv;       //
                  value_tyBM expargsv;   //
@@ -2285,7 +2290,52 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
                 debug_outstr_value_BM (_.stmtresultsv, CURFRAME_BM, 0), //
                 debug_outstr_value_BM (_.expargsv, CURFRAME_BM, 0),     //
                 debug_outstr_value_BM (_.stmtargsv, CURFRAME_BM, 0));   //
+  int nbstmtresults = tuplesize_BM (_.stmtresultsv);
   // match expresults with stmtresultsv
+  if (isobject_BM (_.expresultsv))
+    {
+      if (nbstmtresults != 1)
+        FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
+      _.curesob = tuplecompnth_BM (_.stmtresultsv, 0);
+      _.curvarob = objectcast_BM (_.expresultsv);
+      objlock_BM (_.curvarob);
+      _.curvartypob = objgetattr_BM (_.curvarob, k_c_type);
+      objunlock_BM (_.curvarob);
+      objlock_BM (_.curesob);
+      _.curestypob =
+        miniscan_var_BM (_.curesob, _.routprepob, depth + 1, _.stmtob,
+                         CURFRAME_BM);
+      objunlock_BM (_.curesob);
+      if (miniscan_compatype_BM (_.curvartypob, _.curesob, CURFRAME_BM) !=
+          _.curvartypob)
+        FAILHERE (makenode3_BM
+                  (k_results, _.expresultsv, _.stmtresultsv, _.curestypob));
+    }
+  else if (istuple_BM (_.expresultsv))
+    {
+      if (nbstmtresults != tuplesize_BM (_.expresultsv))
+        FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
+      for (int rix = 0; rix < nbstmtresults; rix++)
+        {
+          _.curesob = tuplecompnth_BM (_.stmtresultsv, rix);
+          _.curvarob = tuplecompnth_BM (_.expresultsv, rix);
+          objlock_BM (_.curvarob);
+          _.curvartypob = objgetattr_BM (_.curvarob, k_c_type);
+          objunlock_BM (_.curvarob);
+          objlock_BM (_.curesob);
+          _.curestypob =
+            miniscan_var_BM (_.curesob, _.routprepob, depth + 1, _.stmtob,
+                             CURFRAME_BM);
+          objunlock_BM (_.curesob);
+          if (miniscan_compatype_BM (_.curvartypob, _.curesob, CURFRAME_BM) !=
+              _.curvartypob)
+            FAILHERE (makenode4_BM
+                      (k_results, _.expresultsv, _.stmtresultsv, _.curestypob,
+                       taggedint_BM (rix)));
+        }
+    }
+  else if (_.expresultsv || _.stmtresultsv)
+    FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
   objunlock_BM (_.expansob);
 #warning unimplemented miniscan_stmt°basiclo_cexpansion _0Qplg2cn9xR_5pfROAJjrXZ routine
   WEAKASSERT_BM (false
@@ -3440,7 +3490,7 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
                       bytstring_BM (_.moddirstrv), modulidbuf,
                       (int) getpid ());
           if (bak1str)
-            asprintf (&bak2str, "%s~", bak1str);
+            asprintf (&bak2str, "%s~", bak1str);        // so make a file ending with .c~%~
           if (bak1str && bak2str)
             (void) rename (bak1str, bak2str);
           if (bak1str)
@@ -3570,7 +3620,8 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
                 debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
   free (routarr), routarr = NULL;
   time_t nowtim = time (NULL);
-  struct tm nowtm = { };
+  struct tm nowtm = {
+  };
   localtime_r (&nowtim, &nowtm);
   char nowbuf[64];
   memset (nowbuf, 0, sizeof (nowbuf));
