@@ -53,7 +53,7 @@ clean:
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
 	$(RM) core* *.i *.ii *prof.out gmon.out
 	$(RM) *_BM.const.h _bm_allconsts.c
-	$(RM) modulbin/*.so modules/*.i modules/*% modules/*~ modules/*- bismon BM_makeconst
+	$(RM) modubin/*.so modules/*.i modules/*% modules/*~ modules/*- bismon BM_makeconst
 	$(RM) $(patsubst %.md,%.html, $(MARKDOWN_SOURCES))
 	$(RM)  doc/generated/* doc/htmldoc/*
 	$(RM) doc/*.aux doc/*.log doc/*.bbl doc/*.blg doc/*.idx doc/*.ilg doc/*.ind doc/*.log doc/*.out doc/*.toc doc/*.haux doc/*.hind doc/*.html doc/*.htoc
@@ -148,7 +148,7 @@ indentsinglemodule:
 singlemodule:
 	@if [ ! -f modules/modbm$(MODULEID).c ]; then \
 	   echo missing modules/modbm$(MODULEID).c; exit 1 ; fi 
-	$(MAKE) modulbin/modbm$(MODULEID).so
+	$(MAKE) modubin/modbm$(MODULEID).so
 
 #### for temporary modules
 indenttempmodule:
@@ -170,7 +170,7 @@ indenttempmodule:
 tempmodule:
 	@if [ ! -f modules/tmpmobm$(MODULEID).c ]; then \
 	   echo missing modules/tmpmobm$(MODULEID).c; exit 1 ; fi 
-	$(MAKE) modulbin/tmpmobm$(MODULEID).so
+	$(MAKE) modubin/tmpmobm$(MODULEID).so
 
 # cancel implicit rule for C files to force my explicit rules
 # https://stackoverflow.com/a/29227455/841108
@@ -196,14 +196,14 @@ _bm_allconsts.o: _bm_allconsts.c
 _bm_allconsts.c: $(BM_COLDSOURCES)  BM_makeconst
 	./BM_makeconst -C $@ $(BM_COLDSOURCES)
 
-modulbin/modbm_%.so: modules/modbm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
+modubin/modbm_%.so: modules/modbm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
 	$(CCACHE) $(LINK.c) -fPIC -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<)  '-DBISMON_MOMD5="$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_PERSISTENT_MODULE -shared $< -o $@
 
-modulbin/tmpmobm_%.so: modules/tmpmobm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
+modubin/tmpmobm_%.so: modules/tmpmobm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
 	$(CCACHE) $(LINK.c) -fPIC -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) '-DBISMON_MOMD5="$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE -shared $< -o $@
 
 modules:
-	$(MAKE) -k $(MAKEFLAGS)  $(patsubst modules/%.c,modulbin/%.so,$(MODULES_SOURCES)) ; exit 0
+	$(MAKE) -k $(MAKEFLAGS)  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES)) ; exit 0
 
 measured-bismon: measure_plugcc.so
 	$(RM) $(OBJECTS)

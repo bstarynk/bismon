@@ -428,6 +428,8 @@ setglobalobjects_BM(void)
   return makeset_BM((const objectval_tyBM**)(vecobj.data()), vecobj.size());
 } // end setglobalobjects_BM
 
+
+
 bool
 open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct  stackframe_stBM *stkf)
 {
