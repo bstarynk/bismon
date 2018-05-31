@@ -2245,11 +2245,11 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
                  value_tyBM resultv;    //
                  value_tyBM subexpv;    //
                  objectval_tyBM * subtypob;     //
-		 objectval_tyBM *expansob; //
-		 value_tyBM expresultsv; //
-		 value_tyBM stmtresultsv; //
-		 value_tyBM expargsv; //
-		 value_tyBM stmtargsv; //
+                 objectval_tyBM * expansob;     //
+                 value_tyBM expresultsv;        //
+                 value_tyBM stmtresultsv;       //
+                 value_tyBM expargsv;   //
+                 value_tyBM stmtargsv;  //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
     );
@@ -2266,27 +2266,27 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
   WEAKASSERT_BM (_.stmtob);
   if (!_.routprepob)
     FAILHERE (NULL);
-  _.expansob = objectcast_BM(objgetattr_BM(_.stmtob, k_expander));
+  _.expansob = objectcast_BM (objgetattr_BM (_.stmtob, k_expander));
   if (!_.expansob)
-    FAILHERE(k_expander);
+    FAILHERE (k_expander);
   DBGPRINTF_BM ("miniscan_stmt°basiclo_cexpansion stmtob %s expansob %s",
-		objectdbg_BM (_.stmtob), objectdbg1_BM(_.expansob));
-  objlock_BM(_.expansob);
-  if (!objectisinstance_BM(_.expansob, k_basiclo_cexpander))
-    FAILHERE(makenode1_BM(k_expander, _.expansob));
-  _.expresultsv = objgetattr_BM(_.expansob, k_results);
-  _.stmtresultsv = objgetattr_BM(_.stmtob, k_results);
-  _.expargsv = objgetattr_BM(_.expansob, k_arguments);
-  _.stmtargsv = objgetattr_BM(_.stmtob, k_arguments);
+                objectdbg_BM (_.stmtob), objectdbg1_BM (_.expansob));
+  objlock_BM (_.expansob);
+  if (!objectisinstance_BM (_.expansob, k_basiclo_cexpander))
+    FAILHERE (makenode1_BM (k_expander, _.expansob));
+  _.expresultsv = objgetattr_BM (_.expansob, k_results);
+  _.stmtresultsv = objgetattr_BM (_.stmtob, k_results);
+  _.expargsv = objgetattr_BM (_.expansob, k_arguments);
+  _.stmtargsv = objgetattr_BM (_.stmtob, k_arguments);
   DBGPRINTF_BM ("miniscan_stmt°basiclo_cexpansion stmtob %s\n" //
-		".. expresults %s stmtresults %s expargs %s stmtargs %s", //
-		objectdbg_BM (_.stmtob), //
-		debug_outstr_value_BM(_.expresultsv, CURFRAME_BM, 0), //
-		debug_outstr_value_BM(_.stmtresultsv, CURFRAME_BM, 0), //
-		debug_outstr_value_BM(_.expargsv, CURFRAME_BM, 0), //
-		debug_outstr_value_BM(_.stmtargsv, CURFRAME_BM, 0)); //
+                ".. expresults %s stmtresults %s expargs %s stmtargs %s",       //
+                objectdbg_BM (_.stmtob),        //
+                debug_outstr_value_BM (_.expresultsv, CURFRAME_BM, 0),  //
+                debug_outstr_value_BM (_.stmtresultsv, CURFRAME_BM, 0), //
+                debug_outstr_value_BM (_.expargsv, CURFRAME_BM, 0),     //
+                debug_outstr_value_BM (_.stmtargsv, CURFRAME_BM, 0));   //
   // match expresults with stmtresultsv
-  objunlock_BM(_.expansob);
+  objunlock_BM (_.expansob);
 #warning unimplemented miniscan_stmt°basiclo_cexpansion _0Qplg2cn9xR_5pfROAJjrXZ routine
   WEAKASSERT_BM (false
                  &&

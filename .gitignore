@@ -17,7 +17,7 @@ _bm_allconsts.c
 core*
 modules/_*_.c
 modules/tmpmob*.c
-
+modulbin/*.so
 *.html
 
 _*.log

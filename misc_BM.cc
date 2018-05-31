@@ -446,13 +446,11 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
   char modidbuf[32];
   memset (modidbuf, 0, sizeof(modidbuf));
   idtocbuf32_BM(modid, modidbuf);
-  std::string commonprefixstr = //
-    std::string{bismon_directory} + "/" + MODULEDIR_BM + "/" + MODULEPREFIX_BM + modidbuf;
 
   std::string srcmodpath = //
-    commonprefixstr + ".c";
+    std::string{bismon_directory} + "/" + MODULESRCDIR_BM + "/" + MODULEPREFIX_BM + modidbuf + ".c";
   std::string binmodpath =  //
-    commonprefixstr + ".so";
+    std::string{bismon_directory} + "/" + MODULEBINDIR_BM + "/" + MODULEPREFIX_BM + modidbuf   + ".so";
   struct stat srcmodstat = {};
   struct stat binmodstat = {};
   if (::stat(srcmodpath.c_str(), &srcmodstat))

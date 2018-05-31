@@ -66,7 +66,8 @@
 #define EMPTY_TOKEN_BM (struct parstoken_stBM) { \
     .tok_kind= plex__NONE, .tok_line= -1, .tok_col= -1, .tok_ptr= NULL }
 
-#define MODULEDIR_BM "modules"
+#define MODULESRCDIR_BM "modules"
+#define MODULEBINDIR_BM "modubin"
 #define MODULEPREFIX_BM "modbm"
 #define TEMPMODULEPREFIX_BM "tmpmobm"
 

@@ -301,7 +301,7 @@ cmpid_BM (rawid_tyBM id1, rawid_tyBM id2)
 rawid_tyBM
 objid_BM (const objectval_tyBM * obj)
 {
-  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+  if ((valtype_BM ((value_tyBM) obj) != tyObject_BM))
     return (rawid_tyBM)
     {
     0, 0};
@@ -311,7 +311,7 @@ objid_BM (const objectval_tyBM * obj)
 double
 objmtime_BM (const objectval_tyBM * obj)
 {
-  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+  if ((valtype_BM ((value_tyBM) obj) != tyObject_BM))
     return 0.0;
   return obj->ob_mtime;
 }                               /* end objmtime_BM */
@@ -320,7 +320,7 @@ objmtime_BM (const objectval_tyBM * obj)
 intptr_t
 objmtimeY2Kmilli_BM (const objectval_tyBM * obj)
 {
-  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+  if ((valtype_BM ((value_tyBM) obj) != tyObject_BM))
     return 0;
   return timetoY2Kmillisec_BM (obj->ob_mtime);
 }                               /* end objmtimeY2Kmilli_BM */
@@ -337,7 +337,7 @@ objtouchmtime_BM (objectval_tyBM * obj, double mtime)
 void
 objtouchnow_BM (objectval_tyBM * obj)
 {
-  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+  if ((valtype_BM ((value_tyBM) obj) != tyObject_BM))
     return;
   obj->ob_mtime = clocktime_BM (CLOCK_REALTIME);
 }                               /* end objtouchnow_BM */
@@ -346,7 +346,7 @@ objtouchnow_BM (objectval_tyBM * obj)
 objectval_tyBM *
 objsignature_BM (const objectval_tyBM * obj)
 {
-  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+  if ((valtype_BM ((value_tyBM) obj) != tyObject_BM))
     return NULL;
   return obj->ob_sig;
 }                               /* end objsignature_BM */
@@ -354,7 +354,7 @@ objsignature_BM (const objectval_tyBM * obj)
 void *
 objroutaddr_BM (const objectval_tyBM * obj, const objectval_tyBM * objsig)
 {
-  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+  if ((valtype_BM ((value_tyBM) obj) != tyObject_BM))
     return NULL;
   if (obj->ob_sig != objsig)
     return NULL;
@@ -364,7 +364,7 @@ objroutaddr_BM (const objectval_tyBM * obj, const objectval_tyBM * objsig)
 objectval_tyBM *
 objclass_BM (const objectval_tyBM * obj)
 {
-  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+  if ((valtype_BM ((value_tyBM) obj) != tyObject_BM))
     return NULL;
   return obj->ob_class;
 }                               /* end objclass_BM */
@@ -454,7 +454,7 @@ objecthash_BM (const objectval_tyBM * pob)
 unsigned
 objspacenum_BM (const objectval_tyBM * obj)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return 0;
   return obj->ob_space;
 }                               /* end objspacenum_BM */
@@ -462,7 +462,7 @@ objspacenum_BM (const objectval_tyBM * obj)
 value_tyBM
 objgetattr_BM (const objectval_tyBM * obj, const objectval_tyBM * objattr)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return NULL;
   if (!isobject_BM ((const value_tyBM) objattr))
     return NULL;
@@ -474,7 +474,7 @@ objgetattr_BM (const objectval_tyBM * obj, const objectval_tyBM * objattr)
 unsigned
 objnbattrs_BM (const objectval_tyBM * obj)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return 0;
   if (!obj->ob_attrassoc)
     return 0;
