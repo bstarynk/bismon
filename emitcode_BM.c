@@ -2120,9 +2120,11 @@ ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY)    // emit_statement°basiclo_cexpa
   objectval_tyBM *k_basiclo_cexpander = BMK_9pJUJ57N6RL_2nsXFzR6S3E;
   objectval_tyBM *k_cexpansion = BMK_7yoiT31GmV4_2iTjHx3P2hb;
   objectval_tyBM *k_chunk = BMK_3pQnBS9ZjkQ_0uGmqUUhAum;
+  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   objectval_tyBM *k_results = BMK_5ve5gbSjN0r_1n61nNRPtnN;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   objectval_tyBM *k_duplicate = BMK_2YrbiKQ6lxP_3KNUOnU6TF5;
+  objectval_tyBM *k_variable = BMK_5ucAZimYynS_4VA0XHvr1nW;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7CWfvQEHVOQ_1iBMi9mvgOY,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * modgenob;     //
@@ -2133,12 +2135,15 @@ ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY)    // emit_statement°basiclo_cexpa
                  objectval_tyBM * curesob;      //
                  objectval_tyBM * expresob;     //
                  objectval_tyBM * expargob;     //
+                 objectval_tyBM * connob;       //
+                 objectval_tyBM * varob;        //
                  value_tyBM cexpansionv;        //
                  value_tyBM expresultsv;        //
                  value_tyBM stmtresultsv;       //
                  value_tyBM expargsv;   //
                  value_tyBM curargexpv; //
                  value_tyBM stmtargsv;  //
+                 value_tyBM compv;      //
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
     );
@@ -2182,7 +2187,7 @@ ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY)    // emit_statement°basiclo_cexpa
       }
     else if (istuple_BM (_.expresultsv))
       {
-        if (tuplesize_BM (_.expresultsv) != nbresults)
+        if ((int) tuplesize_BM (_.expresultsv) != nbresults)
           FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
         for (int rix = 0; rix < nbresults; rix++)
           {
@@ -2203,7 +2208,7 @@ ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY)    // emit_statement°basiclo_cexpa
   // bind the arguments in substob
   {
     int nbargs = nodewidth_BM (_.stmtargsv);
-    if (nbargs != tuplesize_BM (_.expargsv))
+    if (nbargs != (int) tuplesize_BM (_.expargsv))
       FAILHERE (makenode2_BM (k_arguments, _.expargsv, _.stmtargsv));
     for (int aix = 0; aix < nbargs; aix++)
       {
@@ -2218,12 +2223,65 @@ ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY)    // emit_statement°basiclo_cexpa
     _.curargexpv = NULL;
     _.expargob = NULL;
   }
-  objunlock_BM (_.expandob);
   /// should emit the code chunk, using substob
-#warning unimplemented _7CWfvQEHVOQ_1iBMi9mvgOY routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented emit_statement°basiclo_cexpansion _7CWfvQEHVOQ_1iBMi9mvgOY routine");
+  objunlock_BM (_.expandob);
+  if (!isnode_BM (_.cexpansionv) || nodeconn_BM (_.cexpansionv) != k_chunk)
+    FAILHERE (makenode1_BM (k_cexpansion, _.cexpansionv));
+  {
+    int chklen = nodewidth_BM (_.cexpansionv);
+    char stmtidbuf[32];
+    memset (stmtidbuf, 0, sizeof (stmtidbuf));
+    idtocbuf32_BM (objid_BM (_.stmtob), stmtidbuf);
+    objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+    objstrbufferprintfpayl_BM (_.modgenob, "{ // start cexpansion %s - %s\n",
+                               stmtidbuf, objectdbg_BM (_.expandob));
+    for (int cix = 0; cix < chklen; cix++)
+      {
+        _.compv = nodenthson_BM (_.cexpansionv, cix);
+        DBGPRINTF_BM ("emit_statement°basiclo_cexpansion stmtob=%s chunk cix#%d compv=%s", objectdbg_BM (_.stmtob), cix,       //
+                      debug_outstr_value_BM (_.compv, CURFRAME_BM, 0));
+        if (istaggedint_BM (_.compv))
+          objstrbufferprintfpayl_BM (_.modgenob, "%lld",
+                                     (long long) getint_BM (_.compv));
+        else if (isstring_BM (_.compv))
+          objstrbufferappendcstrpayl_BM (_.modgenob, bytstring_BM (_.compv));
+        else if (isobject_BM (_.compv))
+          {
+            const char *compnam = findobjectname_BM (_.compv);
+            if (compnam)
+              objstrbufferappendcstrpayl_BM (_.modgenob, compnam);
+            else
+              {
+                char compidbuf[32];
+                memset (compidbuf, 0, sizeof (compidbuf));
+                idtocbuf32_BM (objid_BM ((objectval_tyBM *) _.compv),
+                               compidbuf);
+                objstrbufferappendcstrpayl_BM (_.modgenob, compidbuf);
+              }
+          }
+        else if (isnode_BM (_.compv))
+          {
+            _.connob = nodeconn_BM (_.compv);
+            int complen = nodewidth_BM (_.compv);
+            if (_.connob == k_variable && complen == 1)
+              {
+                _.varob = nodenthson_BM (_.compv, 0);
+                if (!_.varob)
+                  FAILHERE (makenode2_BM
+                            (k_variable, _.compv, taggedint_BM (cix)));
+                miniemit_expression_BM (CURFRAME_BM, _.varob, _.modgenob,
+                                        _.routprepob, _.stmtob, depth + 1);
+              }
+            else
+              FAILHERE (makenode2_BM
+                        (k_curcomp, _.compv, taggedint_BM (cix)));
+          }
+        else
+          FAILHERE (makenode2_BM (k_curcomp, _.compv, taggedint_BM (cix)));
+      }
+    objstrbufferprintfpayl_BM (_.modgenob, "\n} // end cexpansion %s - %s\n",
+                               stmtidbuf, objectdbg_BM (_.expandob));
+  }
   LOCALRETURN_BM (_.stmtob);
 #undef FAILHERE
 failure:
