@@ -3420,6 +3420,36 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
          objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
          objectdbg2_BM (_.taskletob));
     }
+  if (isstring_BM (_.moddirstrv))
+    {
+      char *prevstr =
+        asprintf_prev_module_BM (bytstring_BM (_.moddirstrv), _.modulob);
+      if (!access (prevstr, R_OK))
+        {
+          char modulidbuf[32];
+          memset (modulidbuf, 0, sizeof (modulidbuf));
+          idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+          char *bak1str = NULL;
+          char *bak2str = NULL;
+          if (modulistemporary)
+            asprintf (&bak1str, "%s/" TEMPMODULEPREFIX_BM "%s.c~%%",
+                      bytstring_BM (_.moddirstrv), modulidbuf,
+                      (int) getpid ());
+          else
+            asprintf (&bak1str, "%s/" MODULEPREFIX_BM "%s.c~%%",
+                      bytstring_BM (_.moddirstrv), modulidbuf,
+                      (int) getpid ());
+          if (bak1str)
+            asprintf (&bak2str, "%s~", bak1str);
+          if (bak1str && bak2str)
+            (void) rename (bak1str, bak2str);
+          if (bak1str)
+            (void) rename (prevstr, bak1str);
+          free (bak1str), bak1str = NULL;
+          free (bak2str), bak2str = NULL;
+        }
+      free (prevstr), prevstr = NULL;
+    }
   if (_.taskletob)
     {
       agenda_add_very_high_priority_tasklet_BM (_.taskletob);
