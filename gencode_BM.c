@@ -2249,11 +2249,13 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
                  objectval_tyBM * expansob;     //
                  objectval_tyBM * curesob;      //
                  objectval_tyBM * curestypob;   //
+                 objectval_tyBM * curexptypob;  //
                  objectval_tyBM * curvarob;     //
                  objectval_tyBM * curvartypob;  //
                  value_tyBM expresultsv;        //
                  value_tyBM stmtresultsv;       //
                  value_tyBM expargsv;   //
+                 value_tyBM curargexpv; //
                  value_tyBM stmtargsv;  //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
@@ -2292,63 +2294,92 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
                 debug_outstr_value_BM (_.stmtargsv, CURFRAME_BM, 0));   //
   int nbstmtresults = tuplesize_BM (_.stmtresultsv);
   // match expresults with stmtresultsv
-  if (isobject_BM (_.expresultsv))
-    {
-      if (nbstmtresults != 1)
-        FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
-      _.curesob = tuplecompnth_BM (_.stmtresultsv, 0);
-      _.curvarob = objectcast_BM (_.expresultsv);
-      objlock_BM (_.curvarob);
-      _.curvartypob = objgetattr_BM (_.curvarob, k_c_type);
-      objunlock_BM (_.curvarob);
-      objlock_BM (_.curesob);
-      _.curestypob =
-        miniscan_var_BM (_.curesob, _.routprepob, depth + 1, _.stmtob,
-                         CURFRAME_BM);
-      objunlock_BM (_.curesob);
-      if (miniscan_compatype_BM (_.curvartypob, _.curesob, CURFRAME_BM) !=
-          _.curvartypob)
-        FAILHERE (makenode3_BM
-                  (k_results, _.expresultsv, _.stmtresultsv, _.curestypob));
-    }
-  else if (istuple_BM (_.expresultsv))
-    {
-      if (nbstmtresults != tuplesize_BM (_.expresultsv))
-        FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
-      for (int rix = 0; rix < nbstmtresults; rix++)
-        {
-          _.curesob = tuplecompnth_BM (_.stmtresultsv, rix);
-          _.curvarob = tuplecompnth_BM (_.expresultsv, rix);
-          objlock_BM (_.curvarob);
-          _.curvartypob = objgetattr_BM (_.curvarob, k_c_type);
-          objunlock_BM (_.curvarob);
-          objlock_BM (_.curesob);
-          _.curestypob =
-            miniscan_var_BM (_.curesob, _.routprepob, depth + 1, _.stmtob,
-                             CURFRAME_BM);
-          objunlock_BM (_.curesob);
-          if (miniscan_compatype_BM (_.curvartypob, _.curesob, CURFRAME_BM) !=
-              _.curvartypob)
-            FAILHERE (makenode4_BM
-                      (k_results, _.expresultsv, _.stmtresultsv, _.curestypob,
-                       taggedint_BM (rix)));
-        }
-    }
-  else if (_.expresultsv || _.stmtresultsv)
-    FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
+  {
+    if (isobject_BM (_.expresultsv))
+      {
+        if (nbstmtresults != 1)
+          FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
+        _.curesob = tuplecompnth_BM (_.stmtresultsv, 0);
+        _.curvarob = objectcast_BM (_.expresultsv);
+        objlock_BM (_.curvarob);
+        _.curvartypob = objgetattr_BM (_.curvarob, k_c_type);
+        objunlock_BM (_.curvarob);
+        objlock_BM (_.curesob);
+        _.curestypob =
+          miniscan_var_BM (_.curesob, _.routprepob, depth + 1, _.stmtob,
+                           CURFRAME_BM);
+        objunlock_BM (_.curesob);
+        if (miniscan_compatype_BM (_.curvartypob, _.curesob, CURFRAME_BM) !=
+            _.curvartypob)
+          FAILHERE (makenode3_BM
+                    (k_results, _.expresultsv, _.stmtresultsv, _.curestypob));
+      }
+    else if (istuple_BM (_.expresultsv))
+      {
+        if (nbstmtresults != tuplesize_BM (_.expresultsv))
+          FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
+        for (int rix = 0; rix < nbstmtresults; rix++)
+          {
+            _.curesob = tuplecompnth_BM (_.stmtresultsv, rix);
+            _.curvarob = tuplecompnth_BM (_.expresultsv, rix);
+            objlock_BM (_.curvarob);
+            _.curvartypob = objgetattr_BM (_.curvarob, k_c_type);
+            objunlock_BM (_.curvarob);
+            objlock_BM (_.curesob);
+            _.curestypob =
+              miniscan_var_BM (_.curesob, _.routprepob, depth + 1, _.stmtob,
+                               CURFRAME_BM);
+            objunlock_BM (_.curesob);
+            if (miniscan_compatype_BM
+                (_.curvartypob, _.curestypob, CURFRAME_BM) != _.curvartypob)
+              FAILHERE (makenode4_BM
+                        (k_results, _.expresultsv, _.stmtresultsv,
+                         _.curestypob, taggedint_BM (rix)));
+          }
+      }
+    else if (_.expresultsv || _.stmtresultsv)
+      FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
+    _.curvartypob = NULL;
+    _.curestypob = NULL;
+    _.curesob = NULL;
+    _.curvarob = NULL;
+  }
+  // match expargsv with stmtargsv
+  {
+    int nbstmtargs = nodewidth_BM (_.stmtargsv);
+    if (nbstmtargs != tuplesize_BM (_.expargsv))
+      FAILHERE (makenode2_BM (k_arguments, _.expresultsv, _.stmtresultsv));
+    for (int aix = 0; aix < nbstmtargs; aix++)
+      {
+        _.curvarob = tuplecompnth_BM (_.expargsv, aix);
+        _.curargexpv = nodenthson_BM (_.stmtargsv, aix);
+        objlock_BM (_.curvarob);
+        _.curvartypob = objgetattr_BM (_.curvarob, k_c_type);
+        objunlock_BM (_.curvarob);
+        _.curexptypob =
+          miniscan_expr_BM (_.curargexpv, _.routprepob, depth + 1, _.stmtob,
+                            CURFRAME_BM);
+        if (miniscan_compatype_BM (_.curvartypob, _.curexptypob, CURFRAME_BM)
+            != _.curvartypob)
+          FAILHERE (makenode4_BM
+                    (k_arguments, _.expresultsv, _.stmtresultsv,
+                     _.curexptypob, taggedint_BM (aix)));
+      }
+    _.curvartypob = NULL;
+    _.curexptypob = NULL;
+    _.curesob = NULL;
+    _.curvarob = NULL;
+    _.curargexpv = NULL;
+  }
   objunlock_BM (_.expansob);
-#warning unimplemented miniscan_stmt°basiclo_cexpansion _0Qplg2cn9xR_5pfROAJjrXZ routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented miniscan_stmt°basiclo_cexpansion _0Qplg2cn9xR_5pfROAJjrXZ routine");
-  LOCALRETURN_BM (_.resultv);
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_cexpansion end stmtob=%s expansob=%s",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.expansob));
+  LOCALRETURN_BM (_.stmtob);
 failure:
 #undef FAILHERE
-  DBGPRINTF_BM
-    ("miniscan_stmt°basiclo_cexpansion failin %d stmtob %s, routprepob %s, fromob %s, cause %s",
-     failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),
-     objectdbg2_BM (_.fromob), debug_outstr_value_BM (_.causev, CURFRAME_BM,
-                                                      0));
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_cexpansion failin %d stmtob %s, routprepob %s, fromob %s, cause %s", failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), objectdbg2_BM (_.fromob),   //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode4_BM (k_miniscan_stmt, _.stmtob, _.routprepob,
                                _.fromob, _.causev);
