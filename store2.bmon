@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 549 objects
+// for 551 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -4181,15 +4181,16 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !(_66DuQtJBPqt_8w9fOCyxJve |=temp_test_module|
 !~ name (~ temp_test_module
 ~)
-!@ 1526380097.330
+!@ 1527828021.358
 !$_0277f6mOd9j_0tVZSXnTzUK |=basiclo_temporary_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "temporary test module"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _8imWClcIFKt_6w2H2ouB4I6 _8VzbBncLSEl_2dNNPe0VjQh }
-!# 2
+!# 3
 !& _8VzbBncLSEl_2dNNPe0VjQh
 !& _8U5iv96WH3y_7ILTBQ0nOiI
+!& _364Qj8mb098_1ZKW5WqeFWg
 !)_66DuQtJBPqt_8w9fOCyxJve
 
 
@@ -5602,6 +5603,19 @@ _7KVBiG9eTtM_8PS68aSImxy
 
 
 
+!(_364Qj8mb098_1ZKW5WqeFWg
+!@ 1527828021.358
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "minifunction to test objtouchnow"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_7pm4Ds6506o_90TYgch40IW
+!)_364Qj8mb098_1ZKW5WqeFWg
+
+
+
 !(_3674ULyT2hz_5gMJA95w9aB
 !@ 1527689857.856
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
@@ -6419,6 +6433,15 @@ _4lKK08v9A0t_0GGsir35UxP _4bYUiDmxrKK_6nPPlEl8y8x) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_value a string"
 !)_7mvOlkB1tAJ_3psVFz4QEAn
+
+
+
+!(_7pm4Ds6506o_90TYgch40IW
+!@ 1527828021.358
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _2U8Sj78DMbl_5eerKpaJsNq ()
+!)_7pm4Ds6506o_90TYgch40IW
 
 
 
