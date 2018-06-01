@@ -35,6 +35,8 @@
 unsigned
 assoc_nbkeys_BM (const anyassoc_tyBM * assoc)
 {
+  if (!assoc)
+    return 0;
   int ty = valtype_BM ((value_tyBM) assoc);
   if (ty == typayl_assocpairs_BM)
     {
@@ -68,8 +70,6 @@ assocpair_put_BM (struct assocpairs_stBM *apairs,
                       newsiz * sizeof (struct assocentry_stBM));
       ASSOCPAIRSIZE_BM (newpairs) = newsiz;
       ASSOCPAIRUCNT_BM (newpairs) = 1;
-      memset (newpairs->apairs_ent, 0,
-              newsiz * sizeof (struct assocentry_stBM));
       newpairs->apairs_ent[0].asso_keyob = keyob;
       newpairs->apairs_ent[0].asso_val = val;
       return newpairs;
@@ -432,7 +432,7 @@ assoc_setattrs_BM (const anyassoc_tyBM * assoc)
   else if (valtype_BM ((const value_tyBM) assoc) == typayl_assocpairs_BM)
     {
       const struct assocpairs_stBM *curpairs = assoc;
-      unsigned bucklen = ((typedhead_tyBM *) curpairs)->rlen;
+      unsigned bucklen = ASSOCPAIRSIZE_BM (curpairs);
       for (unsigned pix = 0; pix < bucklen; pix++)
         {
           const objectval_tyBM *curkeyob =
