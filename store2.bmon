@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 546 objects
+// for 549 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3269,6 +3269,24 @@ _2MbEY8KXrxi_0JYIwVyj1is
 
 
 
+!(_2hKFAEuOQVE_9VS4qiuOGFE |=objtouchnow|
+!~ name (~ objtouchnow
+~)
+!@ 1527827207.203
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "touch object o1 and change its mtime to now"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _2hKFAEuOQVE_9VS4qiuOGFE)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2hKFAEuOQVE_9VS4qiuOGFE  ":*/" _6bQLwLF3pc5_5gSAmlh5Nsx  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!)_2hKFAEuOQVE_9VS4qiuOGFE
+
+
+
 !(_6bQLwLF3pc5_5gSAmlh5Nsx |=objtouchnow_BM|
 !~ name (~ objtouchnow_BM
 ~)
@@ -3400,6 +3418,42 @@ _17mrxkMdNtH_2CduQ2WDIy5 _8g1WBJBhDT9_1QK8IcuWYx2)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "give the previous frame"
 !)_7ALBmiM4ZPF_2LtorcTj8gO
+
+
+
+!(_9p6kYKOQtd4_50Kiva5VUQq |=prime_above|
+!~ name (~ prime_above
+~)
+!@ 1527826792.676
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives a prime number above argument i1"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _94oPnbvjznL_0cdTCJt5pUp ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _9p6kYKOQtd4_50Kiva5VUQq  ":*/" _9p6kYKOQtd4_50Kiva5VUQq  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _94oPnbvjznL_0cdTCJt5pUp)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_9p6kYKOQtd4_50Kiva5VUQq
+
+
+
+!(_0rwhcM8EboV_1zEmk8txgJq |=prime_below|
+!~ name (~ prime_below
+~)
+!@ 1527826829.887
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives a prime number below argument i1"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _94oPnbvjznL_0cdTCJt5pUp ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _0rwhcM8EboV_1zEmk8txgJq  ":*/" _0rwhcM8EboV_1zEmk8txgJq  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _94oPnbvjznL_0cdTCJt5pUp)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_0rwhcM8EboV_1zEmk8txgJq
 
 
 
