@@ -561,53 +561,42 @@ assoc_removeattr_BM (anyassoc_tyBM * assoc, const objectval_tyBM * obattr)
   if (valtype_BM ((const value_tyBM) obattr) != tyObject_BM)
     return assoc;
   unsigned nbkeys = assoc_nbkeys_BM (assoc);
-  if (valtype_BM ((const value_tyBM) assoc) == typayl_assoctable_BM)
+  int assotyp = valtype_BM ((const value_tyBM) assoc);
+  if (assotyp == typayl_assoctable_BM)
     {
-      struct assoctable_stBM *abuck = (struct assoctable_stBM *) assoc;
-      unsigned nbbuckets = ((typedhead_tyBM *) abuck)->rlen;
-      if (nbkeys < (nbbuckets * TINYSIZE_BM) / 2)
-        assoc_reorganize_BM (&assoc, 2);
-      if (valtype_BM ((const value_tyBM) assoc) == typayl_assoctable_BM)
+      struct assoctable_stBM *atable = (struct assoctable_stBM *) assoc;
+      unsigned nbbuckets = ASSOCTABLESIZE_BM (atable);
+      unsigned buckix = assoc_buckix_for_key_BM (assoc, obattr);
+      struct assocpairs_stBM *curpairs =
+        ((const struct assoctable_stBM *) assoc)->abuck_pairs[buckix];
+      ASSERT_BM (!curpairs
+                 || valtype_BM ((const value_tyBM) curpairs) ==
+                 typayl_assocpairs_BM);
+      if (curpairs)
         {
-          unsigned buckix = assoc_buckix_for_key_BM (assoc, obattr);
-          struct assocpairs_stBM *curpairs =
-            ((const struct assoctable_stBM *) assoc)->abuck_pairs[buckix];
-          ASSERT_BM (!curpairs
-                     || valtype_BM ((const value_tyBM) curpairs) ==
-                     typayl_assocpairs_BM);
-          if (curpairs)
+          unsigned busiz = ASSOCPAIRSIZE_BM (curpairs);
+          for (unsigned pix = 0; pix < busiz; pix++)
             {
-              unsigned nbent = ((typedhead_tyBM *) curpairs)->rlen;
-              for (unsigned pix = 0; pix < nbent; pix++)
+              const objectval_tyBM *curkeyob =
+                curpairs->apairs_ent[pix].asso_keyob;
+              if (curkeyob == obattr)
                 {
-                  const objectval_tyBM *curkeyob =
-                    curpairs->apairs_ent[pix].asso_keyob;
-                  if (curkeyob == obattr)
-                    {
-                      curpairs->apairs_ent[pix].asso_keyob = NULL;
-                      curpairs->apairs_ent[pix].asso_val = NULL;
-                      ((typedsize_tyBM *) curpairs)->size--;
-                      ((typedsize_tyBM *) abuck)->size--;
-                      return assoc;
-                    }
+                  curpairs->apairs_ent[pix].asso_keyob = NULL;
+                  curpairs->apairs_ent[pix].asso_val = NULL;
+                  ASSOCPAIRUCNT_BM (curpairs)--;
+                  ASSOCTABLECUMCNT_BM (atable)--;
+                  goto perhapsreorganize;
                 }
             }
-        }
+        };
+      return atable;
     }
-  if (valtype_BM ((const value_tyBM) assoc) == typayl_assocpairs_BM)
+  else if (assotyp == typayl_assocpairs_BM)
     {
       struct assocpairs_stBM *curpairs = assoc;
-      unsigned nbent = ((typedhead_tyBM *) curpairs)->rlen;
-      unsigned cnt = ((typedsize_tyBM *) curpairs)->size;
-      if (cnt < TINYSIZE_BM / 2)
-        {
-          assoc_reorganize_BM (&assoc, 1);
-          ASSERT_BM (valtype_BM ((const value_tyBM) assoc) ==
-                     typayl_assocpairs_BM);
-          curpairs = assoc;
-        }
-      nbent = ((typedhead_tyBM *) curpairs)->rlen;
-      for (unsigned pix = 0; pix < nbent; pix++)
+      unsigned pairsiz = ASSOCPAIRSIZE_BM (curpairs);
+      unsigned cnt = ASSOCPAIRUCNT_BM (curpairs);
+      for (unsigned pix = 0; pix < pairsiz; pix++)
         {
           const objectval_tyBM *curkeyob =
             curpairs->apairs_ent[pix].asso_keyob;
@@ -616,12 +605,37 @@ assoc_removeattr_BM (anyassoc_tyBM * assoc, const objectval_tyBM * obattr)
               ASSERT_BM (cnt > 0);
               curpairs->apairs_ent[pix].asso_keyob = NULL;
               curpairs->apairs_ent[pix].asso_val = NULL;
-              ((typedsize_tyBM *) curpairs)->size = cnt - 1;
-              return curpairs;
+              ASSOCPAIRUCNT_BM (curpairs) = cnt - 1;
+              goto perhapsreorganize;
             }
+        };
+      return curpairs;
+    }
+  else
+    FATAL_BM ("assoc_removeattr_BM: invalid assotyp #%d assoc@%p", assotyp,
+              (void *) assoc);
+perhapsreorganize:
+  if (assotyp == typayl_assoctable_BM)
+    {
+      if (ASSOCTABLECUMCNT_BM (assoc) <= 2 * TINYSIZE_BM
+          || (3 * ASSOCTABLECUMCNT_BM (assoc)) / 2 <
+          TINYSIZE_BM * ASSOCTABLESIZE_BM (assoc))
+        {
+          assoc_reorganize_BM (&assoc,
+                               3 + nbkeys / 128 + ILOG2_BM (nbkeys + 4));
+          return assoc;
         }
     }
-  return assoc;                 // key not found
+  else
+    {
+      if (ASSOCPAIRUCNT_BM (assoc) < 3 * ASSOCPAIRSIZE_BM (assoc))
+        {
+          assoc_reorganize_BM (&assoc,
+                               3 + nbkeys / 128 + ILOG2_BM (nbkeys + 4));
+          return assoc;
+        }
+    }
+  return assoc;
 }                               /* end assoc_removeattr_BM */
 
 

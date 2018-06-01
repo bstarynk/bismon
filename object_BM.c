@@ -1085,6 +1085,8 @@ objremoveattr_BM (objectval_tyBM * obj, const objectval_tyBM * objattr)
     return;
   if (!isobject_BM ((const value_tyBM) objattr))
     return;
+  if (!obj->ob_attrassoc)
+    return;
   obj->ob_attrassoc = assoc_removeattr_BM (obj->ob_attrassoc, objattr);
 }                               /* end objremoveattr_BM */
 
