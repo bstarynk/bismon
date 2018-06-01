@@ -48,7 +48,7 @@ enum gctyenum_BM
   ty_SpareG_BM = 14,
   ty_SpareH_BM = 15,
   typayl_vectval_BM,
-  typayl_assocbucket_BM,
+  typayl_assoctable_BM,
   typayl_assocpairs_BM,
   typayl_hashsetobj_BM,
   typayl_listtop_BM,
@@ -176,7 +176,7 @@ enum space_enBM
 };
 
 struct datavectval_stBM;        /*forward */
-struct assocbucket_stBM;        /*forward */
+struct assoctable_stBM;         /*forward */
 struct assocpairs_stBM;         /*forward */
 struct loader_stBM;             /* forward */
 struct classinfo_stBM;          /* forward */
@@ -203,10 +203,10 @@ struct strbuffer_stBM           /* for typayl_strbuffer_BM, in scalar.c */
   char *sbuf_lastnl;            /* last newline in buffer, or NULL if none */
 };
 
-struct assocbucket_stBM
-{                               /* typayl_assocbucket_BM */
+struct assoctable_stBM
+{                               /* typayl_assoctable_BM */
   typedsize_tyBM pA;
-  // rlen is allocated length of abuck_pairs,
+  // rlen is allocated size of abuck_pairs,
   // size is total count of entries
   struct assocpairs_stBM *abuck_pairs[];        // of rlen assocpairs
 };

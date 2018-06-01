@@ -558,16 +558,24 @@ static inline anyassoc_tyBM *assoccast_BM (value_tyBM v);
 extern void *assocgcproc_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc,
                              objectval_tyBM * fromob, int depth)
   __attribute__ ((warn_unused_result));
+extern void *assocpairsgcproc_BM (struct garbcoll_stBM *gc,
+                                  struct assocpairs_stBM *apairs,
+                                  objectval_tyBM * fromob, int depth)
+  __attribute__ ((warn_unused_result));
+extern void *assoctablegcproc_BM (struct garbcoll_stBM *gc,
+                                  struct assoctable_stBM *atable,
+                                  objectval_tyBM * fromob, int depth)
+  __attribute__ ((warn_unused_result));
 extern void assocpairgcdestroy_BM (struct garbcoll_stBM *gc,
                                    struct assocpairs_stBM *assocpair);
-extern void assocbucketgcdestroy_BM (struct garbcoll_stBM *gc,
-                                     struct assocbucket_stBM *assocbuck);
+extern void assoctablegcdestroy_BM (struct garbcoll_stBM *gc,
+                                    struct assoctable_stBM *assocbuck);
 extern void assocpairgckeep_BM (struct garbcoll_stBM *gc,
                                 struct assocpairs_stBM *assocpair);
-extern void assocbucketgckeep_BM (struct garbcoll_stBM *gc,
-                                  struct assocbucket_stBM *assocbuck);
+extern void assoctablegckeep_BM (struct garbcoll_stBM *gc,
+                                 struct assoctable_stBM *assocbuck);
 
-static inline unsigned assoc_nbkeys_BM (const anyassoc_tyBM * assoc);
+extern unsigned assoc_nbkeys_BM (const anyassoc_tyBM * assoc);
 
 extern void assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap);
 static inline anyassoc_tyBM *make_assoc_BM (unsigned ulen);

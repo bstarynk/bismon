@@ -188,8 +188,11 @@ extendedgcproc_BM (struct garbcoll_stBM *gc, extendedval_tyBM xval,
       return closuregcproc_BM (gc, (closure_tyBM *) xval, depth);
       ///
     case typayl_assocpairs_BM:
-    case typayl_assocbucket_BM:
-      return assocgcproc_BM (gc, (anyassoc_tyBM *) xval, fromob, depth);
+      return assocpairsgcproc_BM (gc, (struct assocpairs_stBM *) xval, fromob,
+                                  depth);
+    case typayl_assoctable_BM:
+      return assoctablegcproc_BM (gc, (struct assoctable_stBM *) xval, fromob,
+                                  depth);
     case typayl_hashsetobj_BM:
       hashsetgcmark_BM (gc, (struct hashsetobj_stBM *) xval, fromob);
       return xval;
@@ -282,8 +285,8 @@ valgcdestroy_BM (struct garbcoll_stBM *gc, value_tyBM val)
     case typayl_assocpairs_BM:
       assocpairgcdestroy_BM (gc, (struct assocpairs_stBM *) val);
       return;
-    case typayl_assocbucket_BM:
-      assocbucketgcdestroy_BM (gc, (struct assocbucket_stBM *) val);
+    case typayl_assoctable_BM:
+      assoctablegcdestroy_BM (gc, (struct assoctable_stBM *) val);
       return;
     case typayl_hashsetobj_BM:
       hashsetgcdestroy_BM (gc, (struct hashsetobj_stBM *) val);
@@ -356,8 +359,8 @@ typestring_BM (int ty)
       return "Closure";
     case typayl_assocpairs_BM:
       return "payl_assocpairs";
-    case typayl_assocbucket_BM:
-      return "payl_assocbucket";
+    case typayl_assoctable_BM:
+      return "payl_assoctable";
     case typayl_hashsetobj_BM:
       return "payl_hashsetobj";
     case typayl_listtop_BM:
@@ -436,7 +439,7 @@ deleteobjectpayload_BM (objectval_tyBM * obj, extendedval_tyBM payl)
       return;
     case typayl_assocpairs_BM:
       return;
-    case typayl_assocbucket_BM:
+    case typayl_assoctable_BM:
       return;
     case typayl_hashsetobj_BM:
       return;
@@ -500,8 +503,8 @@ valgckeep_BM (struct garbcoll_stBM *gc, value_tyBM val)
     case typayl_assocpairs_BM:
       assocpairgckeep_BM (gc, (struct assocpairs_stBM *) val);
       return;
-    case typayl_assocbucket_BM:
-      assocbucketgckeep_BM (gc, (struct assocbucket_stBM *) val);
+    case typayl_assoctable_BM:
+      assoctablegckeep_BM (gc, (struct assoctable_stBM *) val);
       return;
     case typayl_hashsetobj_BM:
       hashsetgckeep_BM (gc, (struct hashsetobj_stBM *) val);

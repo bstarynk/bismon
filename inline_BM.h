@@ -775,7 +775,7 @@ bool
 isassoc_BM (const value_tyBM v)
 {
   int ty = valtype_BM (v);
-  return ty == typayl_assocbucket_BM || ty == typayl_assocpairs_BM;
+  return ty == typayl_assoctable_BM || ty == typayl_assocpairs_BM;
 }                               /* end isassoc_BM */
 
 anyassoc_tyBM *
@@ -786,22 +786,6 @@ assoccast_BM (value_tyBM v)
   return NULL;
 }                               /* end assoccast_BM */
 
-unsigned
-assoc_nbkeys_BM (const anyassoc_tyBM * assoc)
-{
-  int ty = valtype_BM ((value_tyBM) assoc);
-  if (ty == typayl_assocpairs_BM)
-    {
-      struct assocpairs_stBM *apair = (struct assocpairs_stBM *) assoc;
-      return ((typedsize_tyBM *) apair)->size;
-    }
-  else if (ty == typayl_assocbucket_BM)
-    {
-      struct assocbucket_stBM *abuck = (struct assocbucket_stBM *) assoc;
-      return ((typedsize_tyBM *) abuck)->size;
-    }
-  return 0;
-}                               /* end assoc_nbkeys_BM */
 
 anyassoc_tyBM *
 make_assoc_BM (unsigned len)
