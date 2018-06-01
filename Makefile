@@ -219,7 +219,7 @@ doc: $(MARKDOWN_SOURCES) bismon modules
 	./build-bismon-doc.sh
 
 count:
-	@wc -cl $(wildcard *.c *.h *.cc modules/*.c) | sort -n
+	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n
 
 redump: bismon modules
 	@for f in $(GENERATED_HEADERS) $(GENERATED_CSOURCES) $(MODULES_SOURCES) *.bmon ; \
