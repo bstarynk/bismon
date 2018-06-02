@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 552 objects
+// for 551 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -557,8 +557,7 @@ _9pCSj6h5qCP_1OZyKlhcrSY
  "class for functions already in bismon.h"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _20ZAQeICBGo_2yMovZAYFvM _3aavnAvDLd2_9JbORKE3B1k _4SVbRxoB26K_51WExVpd75t _4VQLeU6mUyu_149lbQ2VWn6 
- _6bQLwLF3pc5_5gSAmlh5Nsx _77KCDNTnjZk_6GqQlTMeyee _7nef89IRr1g_9XXq6jm1Pgs 
-_9MVKIIUC3fl_5Yz7jotlCtv }
+ _77KCDNTnjZk_6GqQlTMeyee _7nef89IRr1g_9XXq6jm1Pgs _9MVKIIUC3fl_5Yz7jotlCtv }
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
 ~)
 
@@ -3281,18 +3280,9 @@ _2MbEY8KXrxi_0JYIwVyj1is
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
  % _42gEKfF4qca_6gGwxSFC1FO ( _2hKFAEuOQVE_9VS4qiuOGFE)
 !: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
- * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2hKFAEuOQVE_9VS4qiuOGFE  ":*/" _6bQLwLF3pc5_5gSAmlh5Nsx  "(" 
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2hKFAEuOQVE_9VS4qiuOGFE  ":*/"  "objtouchnow_BM"  "(" 
   * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ");")
 !)_2hKFAEuOQVE_9VS4qiuOGFE
-
-
-
-!(_6bQLwLF3pc5_5gSAmlh5Nsx |=objtouchnow_BM|
-!~ name (~ objtouchnow_BM
-~)
-!@ 1507030591.770
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
-!)_6bQLwLF3pc5_5gSAmlh5Nsx
 
 
 
