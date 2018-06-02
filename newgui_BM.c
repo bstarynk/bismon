@@ -3351,8 +3351,9 @@ fill_objectviewbuffer_BM (struct
     {                           // first run
       int depth = browserdepth_BM;
       DBGPRINTF_BM
-        ("fill_objectviewbuffer_BM object %s shobsel %s depth %d",
-         objectdbg_BM (_.object), objectdbg1_BM (_.shobsel), depth);
+        ("fill_objectviewbuffer_BM object %s (of %s) shobsel %s depth %d",
+         objectdbg_BM (_.object), objectdbg1_BM (objclass_BM (_.object)),
+         objectdbg2_BM (_.shobsel), depth);
       send1_BM ((const value_tyBM) _.object,
                 _.shobsel, CURFRAME_BM, taggedint_BM (depth));
       destroy_failurelockset_BM (&flockset);
