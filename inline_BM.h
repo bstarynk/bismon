@@ -108,7 +108,7 @@ valtype_BM (const value_tyBM v)
   if (((uintptr_t) v & 3) == 0)
     {
       typedhead_tyBM *ht = (typedhead_tyBM *) v;
-      ASSERT_BM (ht->htyp != 0);
+      WEAKASSERT_BM (ht->htyp != 0);
       return ht->htyp;
     }
   return tyNone_BM;
