@@ -556,8 +556,8 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for functions already in bismon.h"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
- { _20ZAQeICBGo_2yMovZAYFvM _3aavnAvDLd2_9JbORKE3B1k _4SVbRxoB26K_51WExVpd75t _4VQLeU6mUyu_149lbQ2VWn6 
- _77KCDNTnjZk_6GqQlTMeyee _7nef89IRr1g_9XXq6jm1Pgs _9MVKIIUC3fl_5Yz7jotlCtv }
+ { _3aavnAvDLd2_9JbORKE3B1k _4VQLeU6mUyu_149lbQ2VWn6 _77KCDNTnjZk_6GqQlTMeyee _7nef89IRr1g_9XXq6jm1Pgs 
+ _9MVKIIUC3fl_5Yz7jotlCtv }
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
 ~)
 
@@ -3114,21 +3114,42 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
-!(_4SVbRxoB26K_51WExVpd75t |=objputattr_BM|
-!~ name (~ objputattr_BM
+!(_2tEGXc8XwDB_3luMnYYAdZn |=objputattr|
+!~ name (~ objputattr
 ~)
-!@ 1507030591.770
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
-!)_4SVbRxoB26K_51WExVpd75t
+!@ 1527953632.779
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "put in object o1 attribute o2 associated to value v3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU _0sDAwfyl4r3_8kDdVlE90M3 ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _2tEGXc8XwDB_3luMnYYAdZn)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2tEGXc8XwDB_3luMnYYAdZn  ":*/"  "objputattr_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_93FBSk1ML0f_2WjSuKa9TNU)  "),("  * _5ucAZimYynS_4VA0XHvr1nW ( _0sDAwfyl4r3_8kDdVlE90M3) 
+  "))")
+!)_2tEGXc8XwDB_3luMnYYAdZn
 
 
 
-!(_20ZAQeICBGo_2yMovZAYFvM |=objputclass_BM|
-!~ name (~ objputclass_BM
+!(_1g2wHNuth12_1FfLuyW1CWJ |=objputclass|
+!~ name (~ objputclass
 ~)
-!@ 1507030591.770
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
-!)_20ZAQeICBGo_2yMovZAYFvM
+!@ 1527953308.881
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "set the class of object o1 to class-object o2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _1g2wHNuth12_1FfLuyW1CWJ)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _1g2wHNuth12_1FfLuyW1CWJ  ":*/"  "objputclass_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_93FBSk1ML0f_2WjSuKa9TNU)  "))")
+!)_1g2wHNuth12_1FfLuyW1CWJ
 
 
 
