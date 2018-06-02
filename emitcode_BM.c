@@ -2301,7 +2301,7 @@ ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY)    // emit_statement°basiclo_cexpa
         else
           FAILHERE (makenode2_BM (k_curcomp, _.compv, taggedint_BM (cix)));
       }
-    objstrbufferprintfpayl_BM (_.modgenob, "\n} // end cexpansion %s - %s\n",
+    objstrbufferprintfpayl_BM (_.modgenob, ";\n} // end cexpansion %s - %s\n",
                                stmtidbuf, objectdbg_BM (_.expandob));
   }
   LOCALRETURN_BM (_.stmtob);

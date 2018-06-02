@@ -1021,7 +1021,8 @@ objputspacenum_BM (objectval_tyBM * obj, unsigned spanum)
 {
   if (!isobject_BM ((const value_tyBM) obj))
     return;
-  ASSERT_BM (spanum < LASTSPACE__BM);
+  if (spanum >= LASTSPACE__BM)
+    return;
   unsigned oldspanum = obj->ob_space;
   if (oldspanum == spanum)
     return;
