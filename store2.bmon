@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 552 objects
+// for 554 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3217,6 +3217,45 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_2FXiwIpgvSK_8ToB2yuiBe4
+
+
+
+!(_6EKyQWK0QE1_5eL8Q7eNfz5 |=objremoveattr|
+!~ name (~ objremoveattr
+~)
+!@ 1527954147.080
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "remove in object o1 the attribute-object o2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _6EKyQWK0QE1_5eL8Q7eNfz5)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6EKyQWK0QE1_5eL8Q7eNfz5  ":*/"  " "  "objremoveattr_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU)  "))")
+!)_6EKyQWK0QE1_5eL8Q7eNfz5
+
+
+
+!(_8ard8t8gqwy_6kz1xj87syt |=objresetattrs|
+!~ name (~ objresetattrs
+~)
+!@ 1527954319.196
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "remove all attributes from o1 and reset to a hinted size of i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _8ard8t8gqwy_6kz1xj87syt)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _8ard8t8gqwy_6kz1xj87syt  ":*/"  " "  "objresetattrs_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ "unsigned"  ")(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "))")
+!)_8ard8t8gqwy_6kz1xj87syt
 
 
 
