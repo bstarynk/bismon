@@ -2210,7 +2210,7 @@ ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY)    // emit_statement°basiclo_cexpa
             objassocaddattrpayl_BM (_.substob, _.expresob, _.curesob);
           }
       }
-    else
+    else if (_.expresultsv || _.stmtresultsv)
       FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
     _.curesob = NULL;
     _.expresob = NULL;
@@ -2218,7 +2218,10 @@ ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY)    // emit_statement°basiclo_cexpa
   // bind the arguments in substob
   {
     int nbargs = nodewidth_BM (_.stmtargsv);
-    if (nbargs != (int) tuplesize_BM (_.expargsv))
+    if (nbargs == tuplesize_BM (_.expargsv))
+      {
+      }
+    else if (_.expargsv || _.stmtargsv)
       FAILHERE (makenode2_BM (k_arguments, _.expargsv, _.stmtargsv));
     for (int aix = 0; aix < nbargs; aix++)
       {
