@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 554 objects
+// for 557 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2673,6 +2673,48 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_0T1MnRPCfPh_3yiRmeHmZpY |=objclassinfoputmethod|
+!~ name (~ objclassinfoputmethod
+~)
+!@ 1527956064.720
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "put in object-class o1 a new method of selector o2 and closure v3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU _0sDAwfyl4r3_8kDdVlE90M3 ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _0T1MnRPCfPh_3yiRmeHmZpY)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _0T1MnRPCfPh_3yiRmeHmZpY  ":*/"  " "  "objclassinfoputmethod_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU)  "),"  " " 
+ "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0sDAwfyl4r3_8kDdVlE90M3) 
+  "))")
+!)_0T1MnRPCfPh_3yiRmeHmZpY
+
+
+
+!(_5NXk7JaUJxk_08Io37mzhAV |=objclassinforemovemethod|
+!~ name (~ objclassinforemovemethod
+~)
+!@ 1527956191.377
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "remove in object-class o1 the method of selector o2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _5NXk7JaUJxk_08Io37mzhAV)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5NXk7JaUJxk_08Io37mzhAV  ":*/"  " "  "objclassinforemovemethod_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU)  "))")
+!)_5NXk7JaUJxk_08Io37mzhAV
+
+
+
 !(_8wzBYvH45w0_5H9sN6WRr2w |=object_cast|
 !~ name (~ object_cast
 ~)
@@ -3150,6 +3192,25 @@ _93FBSk1ML0f_2WjSuKa9TNU)  "),("  * _5ucAZimYynS_4VA0XHvr1nW ( _0sDAwfyl4r3_8kDd
   * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
 _93FBSk1ML0f_2WjSuKa9TNU)  "))")
 !)_1g2wHNuth12_1FfLuyW1CWJ
+
+
+
+!(_1Eh3hnAfsgF_0TYirgtMtS4 |=objputclassinfo|
+!~ name (~ objputclassinfo
+~)
+!@ 1527955894.548
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "initialize object o1 to become a class of superclass o2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _1Eh3hnAfsgF_0TYirgtMtS4)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _1Eh3hnAfsgF_0TYirgtMtS4  ":*/"  " "  "objputclassinfo_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU)  "))")
+!)_1Eh3hnAfsgF_0TYirgtMtS4
 
 
 
