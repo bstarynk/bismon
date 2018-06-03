@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 558 objects
+// for 563 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2589,6 +2589,25 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_4jYMom293qa_4qW0J7r0LtZ |=objappendcomp|
+!~ name (~ objappendcomp
+~)
+!@ 1528003716.278
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "append into object o1 the component v2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _4jYMom293qa_4qW0J7r0LtZ)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4jYMom293qa_4qW0J7r0LtZ  ":*/" _77KCDNTnjZk_6GqQlTMeyee  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_09RxU8xDco3_2Zxwfb13oDZ)  "))")
+!)_4jYMom293qa_4qW0J7r0LtZ
+
+
+
 !(_77KCDNTnjZk_6GqQlTMeyee |=objappendcomp_BM|
 !~ name (~ objappendcomp_BM
 ~)
@@ -2895,6 +2914,26 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 
 
+!(_6jnhxh16Jqd_8xNsRzx8yaA |=objgrowcomps|
+!~ name (~ objgrowcomps
+~)
+!@ 1528003971.437
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "grow the components of o1 to have i2 more components"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _6jnhxh16Jqd_8xNsRzx8yaA)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6jnhxh16Jqd_8xNsRzx8yaA  ":*/"  "objtgrowcomps_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  "unsigned" 
+ ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb) 
+  "))")
+!)_6jnhxh16Jqd_8xNsRzx8yaA
+
+
+
 !(_0saT3fDy8bt_1R3vTikLuIx |=objhasassocpayl|
 !~ name (~ objhasassocpayl
 ~)
@@ -3136,6 +3175,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_2X6UvyHkeVW_78IiwpFxb7N |=objpoplastcomp|
+!~ name (~ objpoplastcomp
+~)
+!@ 1528003856.916
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "pop the last component of object o1"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _2X6UvyHkeVW_78IiwpFxb7N)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2X6UvyHkeVW_78IiwpFxb7N  ":*/"  "objpoplastcomp_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!)_2X6UvyHkeVW_78IiwpFxb7N
+
+
+
 !(_4bNJRwDDAwq_0d4dKUTkMgd |=objputassocpayl|
 !~ name (~ objputassocpayl
 ~)
@@ -3310,6 +3367,25 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_3xmThtyZ4mg_4gcntruApeS |=objremoveonecomp|
+!~ name (~ objremoveonecomp
+~)
+!@ 1528003463.954
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "remove in object o1 component at rank i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _3xmThtyZ4mg_4gcntruApeS)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3xmThtyZ4mg_4gcntruApeS  ":*/"  " "  "objremoveonecomp_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "))")
+!)_3xmThtyZ4mg_4gcntruApeS
+
+
+
 !(_6In3D82v3Ry_7y83THt9qXl |=objreservecomps|
 !~ name (~ objreservecomps
 ~)
@@ -3347,6 +3423,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
  "unsigned"  ")(" 
   * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "))")
 !)_8ard8t8gqwy_6kz1xj87syt
+
+
+
+!(_3Y1XmJwHD37_9p2vSuIaRXS |=objresetcomps|
+!~ name (~ objresetcomps
+~)
+!@ 1528003559.283
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "clear and reset the components of object o1 to length i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3Y1XmJwHD37_9p2vSuIaRXS  ":*/"  " "  "objresetcomps_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ "unsigned"  ")(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "))")
+!)_3Y1XmJwHD37_9p2vSuIaRXS
 
 
 
