@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 563 objects
+// for 568 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3481,6 +3481,24 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_9w9s5y0OXta_3pY0SvkQDoU |=objstrbufferclearindentpayl|
+!~ name (~ objstrbufferclearindentpayl
+~)
+!@ 1528010700.356
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in strbuffer-obj o1 clear the indentation"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _9w9s5y0OXta_3pY0SvkQDoU)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _9w9s5y0OXta_3pY0SvkQDoU  ":*/"  "objstrbufferclearindentpayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!)_9w9s5y0OXta_3pY0SvkQDoU
+
+
+
 !(_9EmYFrb4c0B_6jRLCSLqttZ |=objstrbufferindentationpayl|
 !~ name (~ objstrbufferindentationpayl
 ~)
@@ -3497,6 +3515,82 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_9EmYFrb4c0B_6jRLCSLqttZ
+
+
+
+!(_3VySP3m8Taw_41uOTTofaZ6 |=objstrbufferlessindentpayl|
+!~ name (~ objstrbufferlessindentpayl
+~)
+!@ 1528011085.975
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in object-strbuffer o1 decrease indentation"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _3VySP3m8Taw_41uOTTofaZ6)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3VySP3m8Taw_41uOTTofaZ6  ":*/"  "objstrbufferlessindentpayl_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!)_3VySP3m8Taw_41uOTTofaZ6
+
+
+
+!(_4wKReg6KxEo_5ztrKPmbWys |=objstrbuffermoreindentpayl|
+!~ name (~ objstrbuffermoreindentpayl
+~)
+!@ 1528010813.351
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in strbuffer-object o1 increase the indentation"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _4wKReg6KxEo_5ztrKPmbWys)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4wKReg6KxEo_5ztrKPmbWys  ":*/" _4wKReg6KxEo_5ztrKPmbWys  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!)_4wKReg6KxEo_5ztrKPmbWys
+
+
+
+!(_7Rj49b2GBh9_8VTIgypC5QO |=objstrbufferreservepayl|
+!~ name (~ objstrbufferreservepayl
+~)
+!@ 1528010561.307
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "reserve in strbuffer-object o1 enough space for i2 bytes"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _7Rj49b2GBh9_8VTIgypC5QO)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _7Rj49b2GBh9_8VTIgypC5QO  ":*/"  " "  "objstrbufferreservepayl_BM" 
+  " "  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+ "),"  " " 
+  "("  "unsigned"  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb) 
+ "))")
+!)_7Rj49b2GBh9_8VTIgypC5QO
+
+
+
+!(_50H7io7f948_10VeJz49q3W |=objstrbuffersetindentpayl|
+!~ name (~ objstrbuffersetindentpayl
+~)
+!@ 1528010972.807
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in object-strbuffer o1 set indentation to i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _50H7io7f948_10VeJz49q3W)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _50H7io7f948_10VeJz49q3W  ":*/" _50H7io7f948_10VeJz49q3W  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_2Z396p8p48p_848KxWmzoSb)  "))")
+!)_50H7io7f948_10VeJz49q3W
 
 
 
