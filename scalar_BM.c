@@ -751,6 +751,22 @@ objstrbufferrawprintfpayl_BM (objectval_tyBM * obj, const char *fmt, ...)
   free (tmpbuf), tmpbuf = NULL;
 }                               /* end strbufferrawprintfpayl_BM  */
 
+void
+objstrbufferspaceornewlinepayl_BM (objectval_tyBM * obj)
+{
+  struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (obj);
+  if (!sbuf)
+    return;
+  if (sbuf->sbuf_curp + 3 >= sbuf->sbuf_dbuf + sbuf->sbuf_size)
+    objstrbufferreservepayl_BM (obj, 5);
+  if (sbuf->sbuf_lastnl
+      && sbuf->sbuf_curp >
+      sbuf->sbuf_lastnl + 1 + (5 * STRBUFFERWANTEDWIDTH_BM) / 6)
+    objstrbuffernewlinepayl_BM (obj);
+  else
+    objstrbufferunsafeappendcstrpayl_BM (obj, " ");
+}                               /* end objstrbufferspaceornewlinepayl_BM */
+
 
 void
 objstrbufferprintfpayl_BM (objectval_tyBM * obj, const char *fmt, ...)

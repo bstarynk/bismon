@@ -524,6 +524,7 @@ extern unsigned objstrbufferlengthpayl_BM (const objectval_tyBM * obj);
 extern void objstrbufferrawprintfpayl_BM (objectval_tyBM * obj,
                                           const char *fmt, ...)
   __attribute__ ((format (printf, 2, 3)));
+extern void objstrbufferspaceornewlinepayl_BM (objectval_tyBM * obj);
 /// cooked printf: the tabs become spaces or indented-newlines, the
 /// newlines become indented
 extern void objstrbufferprintfpayl_BM (objectval_tyBM * obj, const char *fmt,
