@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 557 objects
+// for 558 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -556,8 +556,7 @@ _9pCSj6h5qCP_1OZyKlhcrSY
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for functions already in bismon.h"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
- { _3aavnAvDLd2_9JbORKE3B1k _4VQLeU6mUyu_149lbQ2VWn6 _77KCDNTnjZk_6GqQlTMeyee _7nef89IRr1g_9XXq6jm1Pgs 
- _9MVKIIUC3fl_5Yz7jotlCtv }
+ { _3aavnAvDLd2_9JbORKE3B1k _4VQLeU6mUyu_149lbQ2VWn6 _77KCDNTnjZk_6GqQlTMeyee _9MVKIIUC3fl_5Yz7jotlCtv }
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
 ~)
 
@@ -3214,12 +3213,23 @@ _93FBSk1ML0f_2WjSuKa9TNU)  "))")
 
 
 
-!(_7nef89IRr1g_9XXq6jm1Pgs |=objputcomp_BM|
-!~ name (~ objputcomp_BM
+!(_2H8iPPoqEKF_5hfZJ6acji7 |=objputcomp|
+!~ name (~ objputcomp
 ~)
-!@ 1507030591.770
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
-!)_7nef89IRr1g_9XXq6jm1Pgs
+!@ 1528000900.236
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "put in object o1 at rank i2 the component value v3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb _0sDAwfyl4r3_8kDdVlE90M3 ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _2H8iPPoqEKF_5hfZJ6acji7)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2H8iPPoqEKF_5hfZJ6acji7  ":*/"  "objputcomp_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_2Z396p8p48p_848KxWmzoSb)  "),("  * _5ucAZimYynS_4VA0XHvr1nW ( _0sDAwfyl4r3_8kDdVlE90M3) 
+  "))")
+!)_2H8iPPoqEKF_5hfZJ6acji7
 
 
 
@@ -3297,6 +3307,26 @@ _0vgCFjXblkx_4zCMhMAWjVK
   "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
  * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU)  "))")
 !)_6EKyQWK0QE1_5eL8Q7eNfz5
+
+
+
+!(_6In3D82v3Ry_7y83THt9qXl |=objreservecomps|
+!~ name (~ objreservecomps
+~)
+!@ 1528001059.433
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "reserve in object o1 enough space for i2 components"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _6In3D82v3Ry_7y83THt9qXl)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6In3D82v3Ry_7y83THt9qXl  ":*/"  "objreservecomps_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  "unsigned" 
+ ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb) 
+  "))")
+!)_6In3D82v3Ry_7y83THt9qXl
 
 
 
