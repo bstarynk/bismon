@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 568 objects
+// for 574 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3481,6 +3481,26 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_6jZqk9RP0Pe_12cIgV9WMFC |=objstrbufferappendcstrpayl|
+!~ name (~ objstrbufferappendcstrpayl
+~)
+!@ 1528012817.949
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in strbuffer-object o1 append string str2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _4ilpkwNBw3O_3l8ykbxbBom ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _6jZqk9RP0Pe_12cIgV9WMFC)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6jZqk9RP0Pe_12cIgV9WMFC  ":*/"  " " _6jZqk9RP0Pe_12cIgV9WMFC 
+  " "  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+ "),"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4ilpkwNBw3O_3l8ykbxbBom)  "))")
+!)_6jZqk9RP0Pe_12cIgV9WMFC
+
+
+
 !(_9w9s5y0OXta_3pY0SvkQDoU |=objstrbufferclearindentpayl|
 !~ name (~ objstrbufferclearindentpayl
 ~)
@@ -3572,6 +3592,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
   "("  "unsigned"  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb) 
  "))")
 !)_7Rj49b2GBh9_8VTIgypC5QO
+
+
+
+!(_4OQvl5JJCl4_4rHQoRAFNhN |=objstrbufferresetpayl|
+!~ name (~ objstrbufferresetpayl
+~)
+!@ 1528012969.888
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in object-strbuffer o1 reset the content to empty stringbuffer"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _4OQvl5JJCl4_4rHQoRAFNhN)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4OQvl5JJCl4_4rHQoRAFNhN  ":*/"  "objstrbufferresetpayl_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!)_4OQvl5JJCl4_4rHQoRAFNhN
 
 
 
@@ -4409,6 +4447,58 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "useful in cexpansion-s"
 !)_5Z5WNOYHi9A_29s2a7qpJej
+
+
+
+!(_4XsRxUKe1wv_30xcsGWFVkL |=str1|
+!~ name (~ str1
+~)
+!@ 1528012614.748
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "string 1 variable or argument"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_4T8am97muLl_5969SR22Ecq
+!)_4XsRxUKe1wv_30xcsGWFVkL
+
+
+
+!(_4ilpkwNBw3O_3l8ykbxbBom |=str2|
+!~ name (~ str2
+~)
+!@ 1528012632.690
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "string 2 variable or argument"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_4T8am97muLl_5969SR22Ecq
+!)_4ilpkwNBw3O_3l8ykbxbBom
+
+
+
+!(_8n7GWhlxWg7_5ag1u0MmBX5 |=str3|
+!~ name (~ str3
+~)
+!@ 1528012640.598
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "string 3 variable or argument"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_4T8am97muLl_5969SR22Ecq
+!)_8n7GWhlxWg7_5ag1u0MmBX5
+
+
+
+!(_5EwW9iRNI5A_8KipZxLRfWR |=str4|
+!~ name (~ str4
+~)
+!@ 1528012648.648
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "string 4 variable or argument"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_4T8am97muLl_5969SR22Ecq
+!)_5EwW9iRNI5A_8KipZxLRfWR
 
 
 
