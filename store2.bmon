@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 575 objects
+// for 579 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3571,6 +3571,180 @@ _0vgCFjXblkx_4zCMhMAWjVK
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4wKReg6KxEo_5ztrKPmbWys  ":*/" _4wKReg6KxEo_5ztrKPmbWys  "((" 
   * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
 !)_4wKReg6KxEo_5ztrKPmbWys
+
+
+
+!(_6cFSE2rDxvF_99QhDhtBeS4 |=objstrbufferprintint|
+!~ name (~ objstrbufferprintint
+~)
+!@ 1528089080.148
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "print in object-strbuf o1 the integer i1 in decimal"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _6cFSE2rDxvF_99QhDhtBeS4)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6cFSE2rDxvF_99QhDhtBeS4  ":*/"  "if"  " " 
+  "("  "objhasstrbufferpayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+ "))" 
+  " "  "{"  "\n"  " "  "char" 
+  " "  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "["  32 
+  "];"  " \n"  " "  "memset"  " " 
+  "("  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ ","  " " 
+  0  ","  " "  "sizeof"  "(" 
+  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "));" 
+ "\n"  " " 
+  "snprintf"  "("  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "," 
+  " "  "sizeof"  "("  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+  "),"  " "  "\"%"  "lld"  "\"," 
+  " "  "("  "long"  " "  "long" 
+  ")"  " "  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  
+");"  "\n" 
+  " "  "objstrbufferappendcstrpayl_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E)  ")," 
+  " "  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ ");"  "\n" 
+  "}"  " "  "//"  "end"  " " 
+ _6cFSE2rDxvF_99QhDhtBeS4  " "  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "\n")
+!)_6cFSE2rDxvF_99QhDhtBeS4
+
+
+
+!(_4gjtBqgrY3i_67ZPUd9LxPU |=objstrbufferprintobject|
+!~ name (~ objstrbufferprintobject
+~)
+!@ 1528090175.238
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "print in object-strbuffer o1 the name or id of object o2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _4gjtBqgrY3i_67ZPUd9LxPU)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4gjtBqgrY3i_67ZPUd9LxPU  " "  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  ":*/" 
+  "\n"  " "  "objectval_tyBM"  "*"  " " 
+  "obsbuf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  
+" "  "="  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ");" 
+ "\n"  " " 
+  "objectval_tyBM"  "*"  " "  "ob"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+  " "  "="  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU) 
+  ");"  "\n"  " "  "if"  " " 
+  "("  "objhasstrbufferpayl_BM"  "("  "obsbuf"  * _5ucAZimYynS_4VA0XHvr1nW (  
+_5Z5WNOYHi9A_29s2a7qpJej) 
+  ")"  " "  "&&"  " "  "isobject_BM" 
+  "("  "ob"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "))"  "\n" 
+  "  "  "objstrbufferappendcstrpayl_BM"  "("  "obsbuf"  * _5ucAZimYynS_4VA0XHvr1nW (  
+_5Z5WNOYHi9A_29s2a7qpJej) 
+  ","  " "  "objectdbg_BM"  "("  "ob" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "));"  "\n" 
+ "//"  " " 
+  "end"  " " _4gjtBqgrY3i_67ZPUd9LxPU  " "  * _5ucAZimYynS_4VA0XHvr1nW (  
+_5Z5WNOYHi9A_29s2a7qpJej) 
+  "\n")
+!)_4gjtBqgrY3i_67ZPUd9LxPU
+
+
+
+!(_2ZoqAiU7COz_0EfxfZbOgZj |=objstrbufferprintobjid|
+!~ name (~ objstrbufferprintobjid
+~)
+!@ 1528089938.133
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "print in object-strbuffer o1 the id of object o2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _2ZoqAiU7COz_0EfxfZbOgZj)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2ZoqAiU7COz_0EfxfZbOgZj  " "  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  ":*/" 
+  "\n"  " "  "objectval_tyBM"  "*"  " " 
+  "obsbuf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  
+" "  "="  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ");" 
+ "\n"  " " 
+  "objectval_tyBM"  "*"  " "  "ob"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+  " "  "="  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU) 
+  ");"  "\n"  " "  "if"  " " 
+  "("  "objhasstrbufferpayl_BM"  "("  "obsbuf"  * _5ucAZimYynS_4VA0XHvr1nW (  
+_5Z5WNOYHi9A_29s2a7qpJej) 
+  ")"  " "  "&&"  " "  "isobject_BM" 
+  "("  "ob"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "))"  " " 
+  "{"  "\n"  "  "  "char"  " " 
+  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "[" 
+ 32  "];" 
+  "\n"  "  "  "memset"  "("  "buf" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "["  32  "]," 
+ " " 
+  0  ","  " "  "sizeof"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "["  32  "]));" 
+ "\n" 
+  "  "  "idtocbuf32_BM"  " "  "("  "objid_BM" 
+  " "  "("  "ob"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ ")," 
+  " "  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ ");"  "\n" 
+  "  "  "objstrbufferappendcstrpayl_BM"  "("  "obsbuf"  * _5ucAZimYynS_4VA0XHvr1nW (  
+_5Z5WNOYHi9A_29s2a7qpJej) 
+  ","  " "  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ ");" 
+  "\n"  "}"  " "  "//"  " " 
+  "end"  " " _2ZoqAiU7COz_0EfxfZbOgZj  " "  * _5ucAZimYynS_4VA0XHvr1nW (  
+_5Z5WNOYHi9A_29s2a7qpJej) 
+  " \n")
+!)_2ZoqAiU7COz_0EfxfZbOgZj
+
+
+
+!(_55MQe7VDoR0_70DaCVCF3zj |=objstrbufferprintplainhex|
+!~ name (~ objstrbufferprintplainhex
+~)
+!@ 1528089307.836
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "print in object-strbuf o1 the pain hexadecimal i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _55MQe7VDoR0_70DaCVCF3zj)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _55MQe7VDoR0_70DaCVCF3zj  ":*/"  "if"  " " 
+  "("  "objhasstrbufferpayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+ "))" 
+  " "  "{"  "\n"  " "  "char" 
+  " "  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "["  32 
+  "];"  " \n"  " "  "memset"  " " 
+  "("  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ ","  " " 
+  0  ","  " "  "sizeof"  "(" 
+  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "));" 
+ "\n"  " " 
+  "snprintf"  "("  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "," 
+  " "  "sizeof"  "("  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+  "),"  " "  "\"%"  "llx"  "\"," 
+  " "  "("  "long"  " "  "long" 
+  ")"  " "  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  
+");"  "\n" 
+  " "  "objstrbufferappendcstrpayl_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E)  ")," 
+  " "  "buf"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ ");"  "\n" 
+  "}"  " "  "//"  "end"  " " 
+ _55MQe7VDoR0_70DaCVCF3zj  " "  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "\n")
+!)_55MQe7VDoR0_70DaCVCF3zj
 
 
 
