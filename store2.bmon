@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 582 objects
+// for 585 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2617,6 +2617,26 @@ _09RxU8xDco3_2Zxwfb13oDZ)  "))")
 
 
 
+!(_95J5VWlxn7h_9P3UNOuvpbl |=objassocaddattrpayl|
+!~ name (~ objassocaddattrpayl
+~)
+!@ 1528095067.884
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "add into assoc-obj o1 key o2 with value v3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU _0sDAwfyl4r3_8kDdVlE90M3 ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _95J5VWlxn7h_9P3UNOuvpbl)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _95J5VWlxn7h_9P3UNOuvpbl  ":*/"  " "  "objassocaddattrpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU)  "),(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _0sDAwfyl4r3_8kDdVlE90M3)  "))")
+!)_95J5VWlxn7h_9P3UNOuvpbl
+
+
+
 !(_2vQl0HFq9l7_4XHBZf0SUMU |=objassocgetattrpayl|
 !~ name (~ objassocgetattrpayl
 ~)
@@ -2653,6 +2673,45 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_3tfgf8d0wIn_1nppIaBURjq
+
+
+
+!(_5jpS81UMs4f_935C43gC72B |=objassocremoveattrpayl|
+!~ name (~ objassocremoveattrpayl
+~)
+!@ 1528095184.191
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "remove from obj-assoc o1 the key o2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _5jpS81UMs4f_935C43gC72B)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5jpS81UMs4f_935C43gC72B  ":*/"  " "  "objassocremoveattrpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU)  "))")
+!)_5jpS81UMs4f_935C43gC72B
+
+
+
+!(_4zvdwYSiVBN_7cTx8IHo9oX |=objassocreorganizepayl|
+!~ name (~ objassocreorganizepayl
+~)
+!@ 1528095315.880
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "reorganize obj-assoc o1 for extra gap i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _4zvdwYSiVBN_7cTx8IHo9oX)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4zvdwYSiVBN_7cTx8IHo9oX  ":*/"  " " _4zvdwYSiVBN_7cTx8IHo9oX 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ "unsigned"  ")(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "))")
+!)_4zvdwYSiVBN_7cTx8IHo9oX
 
 
 
