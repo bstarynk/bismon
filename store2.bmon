@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 588 objects
+// for 593 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2792,6 +2792,66 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_1OVlL6sVzyc_1mJweoKSn4E |=objdatavectgrowpayl|
+!~ name (~ objdatavectgrowpayl
+~)
+!@ 1528120068.728
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "grow the datavect-object o1 to contain i2 more values"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _1OVlL6sVzyc_1mJweoKSn4E)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _1OVlL6sVzyc_1mJweoKSn4E  ":*/"  " "  "objdatavectgrowpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "(" 
+  "unsigned"  ")"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb) 
+  "))")
+!)_1OVlL6sVzyc_1mJweoKSn4E
+
+
+
+!(_4LwjtuGgtA4_7AFunKqPsYa |=objdatavectlengthpayl|
+!~ name (~ objdatavectlengthpayl
+~)
+!@ 1528119869.948
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "returns the length of datavect payload of object o1, or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4LwjtuGgtA4_7AFunKqPsYa  ":*/"  " "  "objdatavectlengthpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_4LwjtuGgtA4_7AFunKqPsYa
+
+
+
+!(_0uQNOkuFJly_8W1Or2uy9wy |=objdatavectreservepayl|
+!~ name (~ objdatavectreservepayl
+~)
+!@ 1528120247.748
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "reserve in object-datavect o1 space for i2 values"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _0uQNOkuFJly_8W1Or2uy9wy)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _0uQNOkuFJly_8W1Or2uy9wy  ":*/"  " "  "objdatavectreservepayl_BM" 
+  " "  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+ "),"  " " 
+  "("  "unsigned"  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb) 
+ "))")
+!)_0uQNOkuFJly_8W1Or2uy9wy
+
+
+
 !(_8wzBYvH45w0_5H9sN6WRr2w |=object_cast|
 !~ name (~ object_cast
 ~)
@@ -3027,6 +3087,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_2Fm6JbjcKt4_2nnGxHazkMH
+
+
+
+!(_8nlzr987Nhz_6SidMY1jmnK |=objhasdatavectpayl|
+!~ name (~ objhasdatavectpayl
+~)
+!@ 1528119689.504
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test if object o1 has a datavector payload, then returns non-0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _8nlzr987Nhz_6SidMY1jmnK  ":*/"  " "  "objhasdatavectpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_8nlzr987Nhz_6SidMY1jmnK
 
 
 
@@ -3407,6 +3485,27 @@ _93FBSk1ML0f_2WjSuKa9TNU)  "))")
 _2Z396p8p48p_848KxWmzoSb)  "),("  * _5ucAZimYynS_4VA0XHvr1nW ( _0sDAwfyl4r3_8kDdVlE90M3) 
   "))")
 !)_2H8iPPoqEKF_5hfZJ6acji7
+
+
+
+!(_7IgifkxF5UA_1JvAigNwCN8 |=objputdatavectpayl|
+!~ name (~ objputdatavectpayl
+~)
+!@ 1528119552.819
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "put into object o1 a datavector payload of"& " initial size i2, and returns non-0 on success"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _7IgifkxF5UA_1JvAigNwCN8  ":*/"  " "  "objputdatavectpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "(" 
+  "unsigned"  ")"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb) 
+  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_7IgifkxF5UA_1JvAigNwCN8
 
 
 
