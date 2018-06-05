@@ -1263,6 +1263,34 @@ objputdatavectpayl_BM (objectval_tyBM * obj, unsigned inisiz)
 
 
 void
+objdatavectinsertcomponentspayl_BM (objectval_tyBM * obj,
+                                    int rk,
+                                    objectval_tyBM * obsrc,
+                                    int srcrk, unsigned len)
+{
+  if (!isobject_BM ((value_tyBM) obj) || !isobject_BM ((value_tyBM) obsrc))
+    return;
+  struct datavectval_stBM *dvec = objgetdatavectpayl_BM (obj);
+  if (!dvec)
+    return;
+  unsigned srcnbcomps = objnbcomps_BM (obsrc);
+  if (srcrk < 0)
+    srcrk += srcnbcomps;
+  if (srcrk < 0 || srcrk >= srcnbcomps)
+    return;
+  int srcend = srcrk + len;
+  if (srcend > srcnbcomps)
+    srcend = srcnbcomps;
+  if (srcend <= srcrk)
+    return;
+  const value_tyBM *valarr = objcompdata_BM (obsrc);
+  struct datavectval_stBM *newdvec =
+    datavect_insert_BM (dvec, rk, valarr + srcrk, srcend - srcrk);
+  if (newdvec != dvec)
+    objputpayload_BM (obj, newdvec);
+}                               /* end of objdatavectinsertcomponentspayl_BM */
+
+void
 objputlistpayl_BM (objectval_tyBM * obj)
 {
   if (!isobject_BM ((value_tyBM) obj))

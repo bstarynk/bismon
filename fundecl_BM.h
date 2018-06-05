@@ -730,6 +730,10 @@ static inline void objdatavectinsertpayl_BM (objectval_tyBM * obj,
                                              int rk,
                                              value_tyBM * valarr,
                                              unsigned len);
+extern void objdatavectinsertcomponentspayl_BM (objectval_tyBM * obj,
+                                                int rk,
+                                                objectval_tyBM * obsrc,
+                                                int srcrk, unsigned len);
 static inline void objdatavectinsertonepayl_BM (objectval_tyBM * obj,
                                                 int rk, value_tyBM val);
 
