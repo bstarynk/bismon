@@ -1290,15 +1290,18 @@ objdatavectinsertcomponentspayl_BM (objectval_tyBM * obj,
     objputpayload_BM (obj, newdvec);
 }                               /* end of objdatavectinsertcomponentspayl_BM */
 
-void
+
+
+bool
 objputlistpayl_BM (objectval_tyBM * obj)
 {
   if (!isobject_BM ((value_tyBM) obj))
-    return;
+    return false;
   struct listtop_stBM *lis = makelist_BM ();
   objputpayload_BM (obj, lis);
   if (objclass_BM (obj) == BMP_object)
     objputclass_BM (obj, BMP_list_object);
+  return true;
 }                               /* end objputlistpayl_BM */
 
 void
