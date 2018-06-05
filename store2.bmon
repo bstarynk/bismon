@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 597 objects
+// for 601 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -1756,6 +1756,45 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_6sTdPBk2Wis_5XNHK2Vy0pu |=i4|
+!~ name (~ i4
+~)
+!@ 1528189264.021
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "int argument 4"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_6sTdPBk2Wis_5XNHK2Vy0pu
+
+
+
+!(_77LgzDsVykz_5vxjmUES41f |=i5|
+!~ name (~ i5
+~)
+!@ 1528189273.909
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "int argument 5"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_77LgzDsVykz_5vxjmUES41f
+
+
+
+!(_3wveTSXffYe_07oxIDqDT9Z |=i6|
+!~ name (~ i6
+~)
+!@ 1528189284.477
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "int argument 6"
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_3wveTSXffYe_07oxIDqDT9Z
+
+
+
 !(_7WjaQkqwdaZ_6PRtbDrJHnf |=id|
 !~ name (~ id
 ~)
@@ -2830,6 +2869,29 @@ _7T9OwSFlgov_0wVJaK1eZbn
   "unsigned"  ")"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb) 
   "))")
 !)_1OVlL6sVzyc_1mJweoKSn4E
+
+
+
+!(_2QyvsKkRX3o_9QoHxmcDkwW |=objdatavectinsertcomponentspayl|
+!~ name (~ objdatavectinsertcomponentspayl
+~)
+!@ 1528189507.165
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in object-datavect o1 insert at rank i2 the"& " components of object o3 starting at rank"& " i4 of length i5"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb _1Bl1iFQ8boR_1xM6MOfHV1N _6sTdPBk2Wis_5XNHK2Vy0pu 
+ _77LgzDsVykz_5vxjmUES41f ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _2QyvsKkRX3o_9QoHxmcDkwW)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2QyvsKkRX3o_9QoHxmcDkwW  ":*/"  " "  "oobjdatavectinsertcomponentspayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "),(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _1Bl1iFQ8boR_1xM6MOfHV1N)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_6sTdPBk2Wis_5XNHK2Vy0pu)  "),("  "unsigned" 
+  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _77LgzDsVykz_5vxjmUES41f)  "))")
+!)_2QyvsKkRX3o_9QoHxmcDkwW
 
 
 
