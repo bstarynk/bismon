@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 593 objects
+// for 597 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2792,6 +2792,26 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_4ivfMqJMBkd_19dvRoM4Wig |=objdatavectappendpayl|
+!~ name (~ objdatavectappendpayl
+~)
+!@ 1528174634.906
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in datavect-object o1 append value v2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _4ivfMqJMBkd_19dvRoM4Wig)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4ivfMqJMBkd_19dvRoM4Wig  ":*/"  " "  "objdatavectappendpayl_BM" 
+  " "  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+ "),("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ) 
+  "))")
+!)_4ivfMqJMBkd_19dvRoM4Wig
+
+
+
 !(_1OVlL6sVzyc_1mJweoKSn4E |=objdatavectgrowpayl|
 !~ name (~ objdatavectgrowpayl
 ~)
@@ -2813,6 +2833,26 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_0PI5CGkUgfK_2jlTCMYren4 |=objdatavectinsertonepayl|
+!~ name (~ objdatavectinsertonepayl
+~)
+!@ 1528174799.409
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in datavect-object o1 insert at rank i2 the value v3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb _0sDAwfyl4r3_8kDdVlE90M3 ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _0PI5CGkUgfK_2jlTCMYren4)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _0PI5CGkUgfK_2jlTCMYren4  ":*/"  " "  "objdatavectinsertonepayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "),(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _0sDAwfyl4r3_8kDdVlE90M3)  "))")
+!)_0PI5CGkUgfK_2jlTCMYren4
+
+
+
 !(_4LwjtuGgtA4_7AFunKqPsYa |=objdatavectlengthpayl|
 !~ name (~ objdatavectlengthpayl
 ~)
@@ -2828,6 +2868,48 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_4LwjtuGgtA4_7AFunKqPsYa
+
+
+
+!(_4Dn2DOqSHj5_9DHt9dU3Jsd |=objdatavectputnthpayl|
+!~ name (~ objdatavectputnthpayl
+~)
+!@ 1528175143.418
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in datavect-object o1 put at rank i2 the value v3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb _0sDAwfyl4r3_8kDdVlE90M3 ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4Dn2DOqSHj5_9DHt9dU3Jsd  ":*/"  " "  "objdatavectputnthpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "),"  " " 
+ "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0sDAwfyl4r3_8kDdVlE90M3) 
+  "))")
+!)_4Dn2DOqSHj5_9DHt9dU3Jsd
+
+
+
+!(_05jOx1sif3K_2YM6878TkEy |=objdatavectremovepayl|
+!~ name (~ objdatavectremovepayl
+~)
+!@ 1528175032.442
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in datavect-object o1 remove at position i2 a span of length i3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb _8LYML1JB0Wx_8O52UHE0MEy ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _05jOx1sif3K_2YM6878TkEy)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _05jOx1sif3K_2YM6878TkEy  ":*/"  " "  "objdatavectremovepayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "),"  " " 
+ "("  "unsigned" 
+  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _8LYML1JB0Wx_8O52UHE0MEy)  "))")
+!)_05jOx1sif3K_2YM6878TkEy
 
 
 
