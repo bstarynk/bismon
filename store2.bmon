@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 609 objects
+// for 613 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3570,6 +3570,42 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_12oEwjUqQ1O_0p27hrShEEb |=objlistpopfirstpayl|
+!~ name (~ objlistpopfirstpayl
+~)
+!@ 1528273295.160
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in list-payload object o1 pop the first component"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _12oEwjUqQ1O_0p27hrShEEb)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _12oEwjUqQ1O_0p27hrShEEb  ":*/"  "objlistpopfirstpayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!)_12oEwjUqQ1O_0p27hrShEEb
+
+
+
+!(_7rIzdujpJxF_2MG9sAKbdcw |=objlistpoplastpayl|
+!~ name (~ objlistpoplastpayl
+~)
+!@ 1528273450.277
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in list-payload of o1 pop the last tail component"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _7rIzdujpJxF_2MG9sAKbdcw)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _7rIzdujpJxF_2MG9sAKbdcw  ":*/"  " "  "objlistpoplastpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!)_7rIzdujpJxF_2MG9sAKbdcw
+
+
+
 !(_4jMjZFW1jOu_0M1B6RqKe9T |=objlistprependpayl|
 !~ name (~ objlistprependpayl
 ~)
@@ -3586,6 +3622,45 @@ _0vgCFjXblkx_4zCMhMAWjVK
   * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
 _09RxU8xDco3_2Zxwfb13oDZ)  "))")
 !)_4jMjZFW1jOu_0M1B6RqKe9T
+
+
+
+!(_3qy5xtOlkT2_2Tep5hcvIn3 |=objlisttonodepayl|
+!~ name (~ objlisttonodepayl
+~)
+!@ 1528273665.856
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "make a node from the components of list-payload"& " of o1 with connective o2, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3qy5xtOlkT2_2Tep5hcvIn3  ":*/"  " "  "(" 
+  "value_tyBM"  ")"  " "  "objlisttonodepayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_93FBSk1ML0f_2WjSuKa9TNU)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_3qy5xtOlkT2_2Tep5hcvIn3
+
+
+
+!(_3KRBxAzE4NC_0T794ajSAzE |=objlisttotuplepayl|
+!~ name (~ objlisttotuplepayl
+~)
+!@ 1528273759.038
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "make a tuple from the object components of list-payload of o1 or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3KRBxAzE4NC_0T794ajSAzE  ":*/"  " "  "(" 
+  "value_tyBM"  ")"  " "  "objlisttotuplepayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_3KRBxAzE4NC_0T794ajSAzE
 
 
 
