@@ -830,7 +830,7 @@ extern const node_tyBM *dictnodeofkeys_BM (struct dict_stBM *dict,
                                            const objectval_tyBM * obj);
 
 //////////////// obj dict payload
-extern void objputdictpayl_BM (objectval_tyBM * obj);
+extern bool objputdictpayl_BM (objectval_tyBM * obj);
 static inline struct dict_stBM *objgetdictpayl_BM (objectval_tyBM * obj);
 static inline bool objhasdictpayl_BM (objectval_tyBM * obj);
 static inline unsigned objdictsizepayl_BM (objectval_tyBM * obj);

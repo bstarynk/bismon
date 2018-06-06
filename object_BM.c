@@ -1304,15 +1304,16 @@ objputlistpayl_BM (objectval_tyBM * obj)
   return true;
 }                               /* end objputlistpayl_BM */
 
-void
+bool
 objputdictpayl_BM (objectval_tyBM * obj)
 {
   if (!isobject_BM ((value_tyBM) obj))
-    return;
+    return false;
   struct dict_stBM *dic = dictmake_BM ();
   objputpayload_BM (obj, dic);
   if (objclass_BM (obj) == BMP_object)
     objputclass_BM (obj, BMP_dict_object);
+  return true;
 }                               /* end objputdictpayl_BM */
 
 
