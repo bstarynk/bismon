@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 615 objects
+// for 618 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2993,6 +2993,66 @@ _0vgCFjXblkx_4zCMhMAWjVK
   "("  "unsigned"  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb) 
  "))")
 !)_0uQNOkuFJly_8W1Or2uy9wy
+
+
+
+!(_6utQXd2to34_7Oljad6tQId |=objdictgetpayl|
+!~ name (~ objdictgetpayl
+~)
+!@ 1528290067.826
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "get in dict-payload of o1 the value associated to string-value v2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6utQXd2to34_7Oljad6tQId  ":*/"  " "  "objdictgetpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "stringcast_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_6utQXd2to34_7Oljad6tQId
+
+
+
+!(_3iCdBZl3PBl_8xZzF1QiNaO |=objdictremovepayl|
+!~ name (~ objdictremovepayl
+~)
+!@ 1528290229.446
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "remove from object with dict-payload o1 the string value v2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _3iCdBZl3PBl_8xZzF1QiNaO)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3iCdBZl3PBl_8xZzF1QiNaO  ":*/"  " "  "objdictremovepayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "stringcast_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  ")")
+!)_3iCdBZl3PBl_8xZzF1QiNaO
+
+
+
+!(_4TnAhKV3NFh_4kiK5ZEc5L0 |=objdictsizepayl|
+!~ name (~ objdictsizepayl
+~)
+!@ 1528289575.038
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "get the size of dict-payload in o1 or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4TnAhKV3NFh_4kiK5ZEc5L0  ":*/"  " "  "(" 
+  "intptr_t"  ")"  "objdictsizepayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E) 
+  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_4TnAhKV3NFh_4kiK5ZEc5L0
 
 
 
