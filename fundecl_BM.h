@@ -893,7 +893,7 @@ extern value_tyBM hashsetvalmakenode_BM (struct hashsetval_stBM *hsv,
 
 //////////////// obj hashsetval payload
 
-static inline void objputhashsetvalpayl_BM (objectval_tyBM * obj,
+static inline bool objputhashsetvalpayl_BM (objectval_tyBM * obj,
                                             unsigned gap);
 static inline struct hashsetval_stBM *objgethashsetvalpayl_BM (objectval_tyBM
                                                                * obj);

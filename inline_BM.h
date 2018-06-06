@@ -2050,12 +2050,13 @@ ishashsetvbucket_BM (const value_tyBM v)
 
 
 ////////////////////////////////////////////////////////////////
-void
+bool
 objputhashsetvalpayl_BM (objectval_tyBM * obj, unsigned gap)
 {
   if (!isobject_BM ((value_tyBM) obj))
-    return;
+    return false;
   objputpayload_BM (obj, hashsetvalreorganize_BM (NULL, gap + gap / 32 + 1));
+  return true;
 }                               /* end objputhashsetvalpayl_BM */
 
 struct hashsetval_stBM *
