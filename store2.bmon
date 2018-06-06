@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 601 objects
+// for 609 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3425,6 +3425,24 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 
 
+!(_1VTKgPjQzX9_2J9KdH0NGnX |=objhaslistpayl|
+!~ name (~ objhaslistpayl
+~)
+!@ 1528268506.960
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test if o1 has some list payload, then returns non-0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _1VTKgPjQzX9_2J9KdH0NGnX  ":*/"  "objhaslistpayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_1VTKgPjQzX9_2J9KdH0NGnX
+
+
+
 !(_30IYu85iibN_7HqcesTKigB |=objhasstrbufferpayl|
 !~ name (~ objhasstrbufferpayl
 ~)
@@ -3458,6 +3476,116 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7bbeIqUSje9_4jVgC7ZJmvx
 !)_3Lc02WgQszX_56W0z3TugcL
+
+
+
+!(_6VygUDFlHQf_561RUckRxmw |=objlistappendpayl|
+!~ name (~ objlistappendpayl
+~)
+!@ 1528269853.378
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "append at end of list-payload of o1 the value v2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _6VygUDFlHQf_561RUckRxmw)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6VygUDFlHQf_561RUckRxmw  ":*/"  "objlistappendpayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_09RxU8xDco3_2Zxwfb13oDZ)  "))")
+!)_6VygUDFlHQf_561RUckRxmw
+
+
+
+!(_8fxG5GUGV0d_4XMrpoHf2cG |=objlistclearpayl|
+!~ name (~ objlistclearpayl
+~)
+!@ 1528268956.166
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "clear the list payload of o1"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _8fxG5GUGV0d_4XMrpoHf2cG)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _8fxG5GUGV0d_4XMrpoHf2cG  ":*/"  "objlistclearpayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!)_8fxG5GUGV0d_4XMrpoHf2cG
+
+
+
+!(_9lYodNNXloq_0bQZRgeSMwD |=objlistfirstpayl|
+!~ name (~ objlistfirstpayl
+~)
+!@ 1528268743.963
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the first component of list-payload of o1"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _9lYodNNXloq_0bQZRgeSMwD  ":*/"  "objlistfirstpayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_9lYodNNXloq_0bQZRgeSMwD
+
+
+
+!(_352u3kzorFe_8T2pVqu0wsh |=objlistlastpayl|
+!~ name (~ objlistlastpayl
+~)
+!@ 1528268751.978
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the last component of list-payload of o1"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _352u3kzorFe_8T2pVqu0wsh  ":*/"  "objlistlastpayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_352u3kzorFe_8T2pVqu0wsh
+
+
+
+!(_1Q0P0OOs9KX_8HVN7Y0EDDt |=objlistlengthpayl|
+!~ name (~ objlistlengthpayl
+~)
+!@ 1528268828.857
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the length of the list payload of o1, or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*("  "intptr_t"  ")"  "objlistlengthpayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_1Q0P0OOs9KX_8HVN7Y0EDDt
+
+
+
+!(_4jMjZFW1jOu_0M1B6RqKe9T |=objlistprependpayl|
+!~ name (~ objlistprependpayl
+~)
+!@ 1528270264.250
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in list-payload of object o1 prepend at front the value v2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _4jMjZFW1jOu_0M1B6RqKe9T)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4jMjZFW1jOu_0M1B6RqKe9T  ":*/"  "objlistprependpayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_09RxU8xDco3_2Zxwfb13oDZ)  "))")
+!)_4jMjZFW1jOu_0M1B6RqKe9T
 
 
 
@@ -3669,6 +3797,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_049g4K8xARU_53xjsR8AiF9
+
+
+
+!(_5sCOUynjrwF_4glmcc6bfci |=objputlistpayl|
+!~ name (~ objputlistpayl
+~)
+!@ 1528268405.330
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "put into object o1 a list payload, gives non-0 when ok"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5sCOUynjrwF_4glmcc6bfci  ":*/"  "objputlistpayl_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_5sCOUynjrwF_4glmcc6bfci
 
 
 
