@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 613 objects
+// for 615 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3252,6 +3252,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_9Q1UEIfoXfR_42kESjPc2QQ |=objhasdictpayl|
+!~ name (~ objhasdictpayl
+~)
+!@ 1528275087.217
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "returns non-0 if object o1 has a dictionnary payload"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _9Q1UEIfoXfR_42kESjPc2QQ  ":*/"  " "  "objhasdictpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_9Q1UEIfoXfR_42kESjPc2QQ
+
+
+
 !(_4ox4xYmCVu9_9FvuadWlpU0 |=objhashashsetpayl|
 !~ name (~ objhashashsetpayl
 ~)
@@ -3853,6 +3871,24 @@ _2Z396p8p48p_848KxWmzoSb)  "),("  * _5ucAZimYynS_4VA0XHvr1nW ( _0sDAwfyl4r3_8kDd
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_7IgifkxF5UA_1JvAigNwCN8
+
+
+
+!(_2I5KAMwFYFx_9VyQG73F8QN |=objputdictpayl|
+!~ name (~ objputdictpayl
+~)
+!@ 1528275004.179
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "put a dictionnary payload into o1, then returns non-0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2I5KAMwFYFx_9VyQG73F8QN  ":*/"  " "  "objputdictpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_2I5KAMwFYFx_9VyQG73F8QN
 
 
 
