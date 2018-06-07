@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 627 objects
+// for 631 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3624,6 +3624,63 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_3UxDqhUq2m1_18t8umoBeXg |=objhashsetvalfirstpayl|
+!~ name (~ objhashsetvalfirstpayl
+~)
+!@ 1528348000.279
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for iterations, give the first element in an hashsetvalue payload of o1"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3UxDqhUq2m1_18t8umoBeXg  ":*/"  " "  "objhashsetvalfirstpayl_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_3UxDqhUq2m1_18t8umoBeXg
+
+
+
+!(_8ImK6qH322z_1iF7HsZauiI |=objhashsetvalmakenodepayl|
+!~ name (~ objhashsetvalmakenodepayl
+~)
+!@ 1528348350.249
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "from hashsetvalue payload of o1 make a node of all elements with connective o2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _8ImK6qH322z_1iF7HsZauiI  ":*/"  "  "  "objhashsetvalmakenodepayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_8ImK6qH322z_1iF7HsZauiI
+
+
+
+!(_2ibyw3gjhD8_3O2pRrYdKae |=objhashsetvalnextpayl|
+!~ name (~ objhashsetvalnextpayl
+~)
+!@ 1528348153.476
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for iterations, give the next element in"& " an hashsetvalue payload of o1 after element"& " v2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2ibyw3gjhD8_3O2pRrYdKae  ":*/"  "objhashsetvalnextpayl_BM"  " " 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_2ibyw3gjhD8_3O2pRrYdKae
+
+
+
 !(_3cMQTfAgXbx_65sFB4te0Eo |=objhashsetvalputpayl|
 !~ name (~ objhashsetvalputpayl
 ~)
@@ -3641,6 +3698,26 @@ _0vgCFjXblkx_4zCMhMAWjVK
  " "  "(" 
   * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  "))")
 !)_3cMQTfAgXbx_65sFB4te0Eo
+
+
+
+!(_5yOkXa0B9k0_6g1A1McZH0T |=objhashsetvalremovepayl|
+!~ name (~ objhashsetvalremovepayl
+~)
+!@ 1528347482.957
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "remove from hashsetvalue payload of o1 the value v2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _5yOkXa0B9k0_6g1A1McZH0T)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5yOkXa0B9k0_6g1A1McZH0T  ":*/"  " "  "objhashsetvalremovepayl_BM" 
+  " "  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+ "),"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _93FBSk1ML0f_2WjSuKa9TNU)  "))")
+!)_5yOkXa0B9k0_6g1A1McZH0T
 
 
 
