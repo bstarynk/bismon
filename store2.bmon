@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 631 objects
+// for 637 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3413,6 +3413,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_5ZaRKsj3MLZ_9OYesJXA7EO |=objhashashmapvalpayl|
+!~ name (~ objhashashmapvalpayl
+~)
+!@ 1528385462.567
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return non-0 if o1 has an hashmapval payload"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5ZaRKsj3MLZ_9OYesJXA7EO  ":*/"  " "  "objhashashmapvalpayl_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_5ZaRKsj3MLZ_9OYesJXA7EO
+
+
+
 !(_4ox4xYmCVu9_9FvuadWlpU0 |=objhashashsetpayl|
 !~ name (~ objhashashsetpayl
 ~)
@@ -3447,6 +3465,89 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_7BxeGaZe3IW_8IGgWmMQqrZ
+
+
+
+!(_5shjtxk33uF_09YRZhSnlYt |=objhashmapvalgetpayl|
+!~ name (~ objhashmapvalgetpayl
+~)
+!@ 1528385683.436
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "get in objhashmapval payload of o1 the value associated to v2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5shjtxk33uF_09YRZhSnlYt  ":*/"  " "  "objhashmapvalgetpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_5shjtxk33uF_09YRZhSnlYt
+
+
+
+!(_3u6wR6AvBxJ_35XuGjQdiAZ |=objhashmapvalputpayl|
+!~ name (~ objhashmapvalputpayl
+~)
+!@ 1528385997.242
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "put into hashmapval payload of o1 the association of v2 to v3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ _0sDAwfyl4r3_8kDdVlE90M3 ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _3u6wR6AvBxJ_35XuGjQdiAZ)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3u6wR6AvBxJ_35XuGjQdiAZ  ":*/"  " "  "objhashmapvalputpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " \n"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  ")," 
+ " \n"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0sDAwfyl4r3_8kDdVlE90M3)  "))")
+!)_3u6wR6AvBxJ_35XuGjQdiAZ
+
+
+
+!(_5Zv0WCpJEsU_6yJ1M7fxHzy |=objhashmapvalreorganizepayl|
+!~ name (~ objhashmapvalreorganizepayl
+~)
+!@ 1528385858.270
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "reorganize the hashmapval payload of o1 to contain i2 more entries"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _5Zv0WCpJEsU_6yJ1M7fxHzy)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5Zv0WCpJEsU_6yJ1M7fxHzy  ":*/"  " "  "objhashmapvalreorganizepayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "(" 
+  "unsigned"  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb) 
+ "))")
+!)_5Zv0WCpJEsU_6yJ1M7fxHzy
+
+
+
+!(_4yOOLLk63IA_9jIvg4VLw2N |=objhashmapvalsizepayl|
+!~ name (~ objhashmapvalsizepayl
+~)
+!@ 1528385566.331
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the size of the hashmapval payload of o1"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4yOOLLk63IA_9jIvg4VLw2N  ":*/"  " "  "(" 
+  "intptr_t"  ")"  "objhashmapvalsizepayl_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E) 
+  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_4yOOLLk63IA_9jIvg4VLw2N
 
 
 
@@ -4188,6 +4289,27 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_2I5KAMwFYFx_9VyQG73F8QN
+
+
+
+!(_9KoQQ8PgDJ9_3jRp83gDnmW |=objputhashmapvalpayl|
+!~ name (~ objputhashmapvalpayl
+~)
+!@ 1528385358.258
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "put an hashmapvalue payload into o1 with gap i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _9KoQQ8PgDJ9_3jRp83gDnmW  ":*/"  " "  "objputhashmapvalpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "(" 
+  "unsigned"  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb) 
+ "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_9KoQQ8PgDJ9_3jRp83gDnmW
 
 
 
