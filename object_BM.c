@@ -1317,24 +1317,25 @@ objputdictpayl_BM (objectval_tyBM * obj)
 }                               /* end objputdictpayl_BM */
 
 
-void
+bool
 objputhashmapvalpayl_BM (objectval_tyBM * obj, unsigned gap)
 {
   if (!isobject_BM ((value_tyBM) obj))
-    return;
+    return false;
   struct hashmapval_stBM *hmv =
     hashmapvalreorganize_BM (NULL, gap + gap / 32 + 1);
   ASSERT_BM (ishashmapval_BM (hmv));
   objputpayload_BM (obj, hmv);
   if (objclass_BM (obj) == BMP_object)
     objputclass_BM (obj, BMP_hashmapval_object);
+  return true;
 }                               /* end objputhashmapvalpayl_BM */
 
 ////////////////////////////////////////////////////////////////
 
 value_tyBM
 send0_BM (const value_tyBM recv, const objectval_tyBM * obselector,
-          struct stackframe_stBM *stkf)
+          struct stackframe_stBM * stkf)
 {
   if (!isobject_BM ((const value_tyBM) obselector))
     return NULL;
