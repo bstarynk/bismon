@@ -4,9 +4,10 @@
 *.gch
 __timestamp*
 *prog
-bismon
+bismongtk
+bismonion
 BM_makeconst
-_bm_allconsts.c
+_bm_allconsts*.c
 *_BM.const.h
 .ninja*
 *~

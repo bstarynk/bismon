@@ -32,7 +32,9 @@
 #include <ratio>
 #include <chrono>
 extern "C" {
+#ifdef BISMONGTK
 #include <gtk/gtk.h>
+#endif /*BISMONGTK*/
 #include <glib.h>
 #include "bismon.h"
 };

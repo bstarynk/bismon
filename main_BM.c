@@ -21,8 +21,6 @@
     basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 ***/
 #include "bismon.h"
-#include <gtk/gtk.h>
-#include <glib.h>
 #include <glib/giochannel.h>
 
 struct timespec startrealtimespec_BM;

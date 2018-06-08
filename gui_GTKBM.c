@@ -1,4 +1,4 @@
-// file gui_BM.c
+// file gui_GTKBM.c
 
 /***
     BISMON 
@@ -17,7 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 #include "bismon.h"
-#include "gui_BM.const.h"
+#include "gui_GTKBM.const.h"
 
 GtkWidget *mainwin_BM;
 GtkWidget *errormessagedialog_BM;
@@ -4943,4 +4943,4 @@ browse_value_BM (const value_tyBM val,
 }                               /* end browse_value_BM */
 
 
-// eof gui_BM.c
+// eof gui_GTKBM.c

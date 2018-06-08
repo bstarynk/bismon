@@ -38,7 +38,9 @@ extern atomic_bool want_garbage_collection_BM;
 extern bool gui_is_running_BM;
 extern FILE *gui_command_log_file_BM;
 
+#ifdef BISMONGTK
 extern GtkTextIter browserit_BM;
+#endif
 
 extern pthread_t mainthreadid_BM;
 
@@ -66,6 +68,7 @@ extern int nbworkjobs_BM;
 
 
 
+#ifdef BISMONGTK
 /********************************* GUI **************/
 extern GtkWidget *mainwin_BM;
 extern GtkWidget *errormessagedialog_BM;
@@ -188,12 +191,9 @@ extern guint commandblinkid_BM;
 extern struct parenoffset_stBM commandblinkparens_BM;   /// offsets are absolute
 extern const struct parserops_stBM parsop_command_build_BM;
 extern const struct parserops_stBM parsop_command_nobuild_BM;
-
-
+#endif /*BISMONGTK*/
 /*****************************************************************/
 #define UNSPECIFIED_BM ((void*)(&unspecifieddata_BM))
-
 #define HAS_GLOBAL_BM(Nam) extern objectval_tyBM*globdata_##Nam##_BM;
 #include "_bm_global.h"
-
 #endif /*GLOBALS_BM_INCLUDED */

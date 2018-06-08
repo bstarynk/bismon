@@ -236,9 +236,9 @@
   LOCAL_FAILURE_HANDLE_AT_BM(__FILE__,__LINE__,Lockset,Flabel,FcodVar,ReasonVar)
 
 // weak assert dont abort
-#ifndef NDEBUG
 extern void weakassertfailureat_BM (const char *condmsg, const char *fil,
                                     int lin);
+#ifndef NDEBUG
 #define WEAKASSERT_BM(Cond) do { if(!(Cond)) \
       { weakassertfailureat_BM(#Cond,__FILE__,__LINE__); return 0; }} \
   while(0)

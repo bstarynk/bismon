@@ -69,8 +69,11 @@ using std::atomic_store;
 #include <execinfo.h>
 #include <backtrace.h>
 
+#include <glib.h>
 
+#ifdef BISMONGTK
 #include <gtk/gtk.h>
+#endif
 
 #include "cmacros_BM.h"
 #include "types_BM.h"

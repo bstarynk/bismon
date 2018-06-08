@@ -96,10 +96,11 @@ extern const char *objectdbg2_BM (const objectval_tyBM * obj);  // non reentrant
 extern const char *objectdbg3_BM (const objectval_tyBM * obj);  // non reentrant!
 extern const char *objectdbg4_BM (const objectval_tyBM * obj);  // non reentrant!
 
+#ifdef BISMONGTK
 extern const char *gobjectclassnamedbg_BM (GObject * ptr);
 // return an static string for a textiter, for debugging only
 extern const char *textiterstrdbg_BM (GtkTextIter *);
-
+#endif /*BISMONGTK*/
 extern rawid_tyBM parse_rawid_BM (const char *buf, const char **pend);
 extern void *allocgcty_BM (unsigned type, size_t sz);
 
@@ -1229,6 +1230,8 @@ extern value_tyBM simple_module_initialize_BM (const value_tyBM arg1,   //
                                                struct stackframe_stBM *stkf);
 
 extern void gcmarkmodules_BM (struct garbcoll_stBM *gc);
+
+#ifdef BISMONGTK
 /// support for GUI, in misc_BM.cc
 void cmd_clear_parens_BM (void);        /* clear all parenthesis in cmd */
 void cmd_add_parens_BM (struct parenoffset_stBM *par);
@@ -1246,8 +1249,7 @@ extern GtkWidget *initialize_gui_menubar_BM (GtkWidget * mainvbox,
 extern GtkWidget *initialize_oldgui_command_scrollview_BM (void);
 extern GtkWidget *initialize_newgui_command_scrollview_BM (void);
 extern GtkWidget *initialize_log_scrollview_BM (void);
-
-
+#endif /*BISMONGTK*/
 // the periodic GC function
 extern gboolean guiperiodicgarbagecollection_BM (gpointer);
 
@@ -1324,6 +1326,7 @@ extern void newgui_browse_add_parens_BM (int openoff, int closeoff,
                                          int depth,
                                          struct stackframe_stBM *stkf);
 
+#ifdef BISMONGTK
 extern const char *textiterstrdbg_BM (GtkTextIter * it);
 
 extern void cssparsingerror_BM (GtkCssProvider *, GtkCssSection *, GError *,
@@ -1335,7 +1338,7 @@ extern void dumpgui_BM (void);
 extern void garbage_collect_from_gui_BM (void);
 extern bool deletemainwin_BM (GtkWidget *, GdkEvent *, gpointer);
 extern GtkTextBuffer *newgui_get_browsebuf_BM (void);
-
+#endif /*BISMONGTK*/
 // queue some external process; its stdin is /dev/null; both stdout &
 // stderr are merged & captured; final string is given to the closure.
 // dirstrv is the string of the directory to run it in (if NULL, use

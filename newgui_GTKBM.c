@@ -1,4 +1,4 @@
- /* file newgui_BM.c */
+ /* file newgui_GTKBM.c */
 /***
     BISMON 
     Copyright © 2018 Basile Starynkevitch (working at CEA, LIST, France)
@@ -17,7 +17,7 @@
 ***/
 
 #include "bismon.h"
-#include "newgui_BM.const.h"
+#include "newgui_GTKBM.const.h"
 #define BROWSE_MAXDEPTH_NEWGUI_BM 48
 #define BROWSE_MAXREFRESHDELAY_NEWGUI_BM 10
 #define BROWSE_BLINKMILLISECOND_NEWGUI_BM 450
@@ -4391,3 +4391,5 @@ show_answer_value_newgui_BM (value_tyBM valarg, struct stackframe_stBM *stkf)
     browse_named_value_newgui_BM (_.astrv,
                                   _.val, browserdepth_BM, CURFRAME_BM);
 }                               /* end show_answer_value_newgui_BM */
+
+// end of file newgui_GTKBM.c

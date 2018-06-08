@@ -33,7 +33,6 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
 {
   ASSERT_BM (isobject_BM (arg1));
   ASSERT_BM (istaggedint_BM (arg2));
-  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * objbrows;
                  const setval_tyBM * setattrs; const objectval_tyBM * curattr;
@@ -44,6 +43,8 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   memset (objbroid, 0, sizeof (objbroid));
   idtocbuf32_BM (objid_BM (_.objbrows), objbroid);
   const char *objbroname = findobjectname_BM (_.objbrows);
+#ifdef BISMONGTK
+  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   gtk_text_buffer_insert_with_tags      //
     (brobuf, &browserit_BM, "|\342\227\274 ",   /* U+25FC BLACK MEDIUM SQUARE ◼ */
      -1, miscomm_brotag_BM, NULL);
@@ -215,7 +216,12 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
     }
   /// return itself
-  LOCALRETURN_BM (_.objbrows);
+#else /*!BISMONGTK */
+  weakassertfailureat_BM
+    ("noGTK browse_in_object°object _23ViGouPnAg_15P5mpG9x3d", __FILE__,
+     __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
 }                               /* end  ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d) */
 
 
@@ -246,6 +252,7 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
   int curdepth = getint_BM (arg3);
   //  ASSERT_BM (curdepth <= maxdepth);
   const char *objnam = findobjectname_BM (_.objbrows);
+#ifdef BISMONGTK
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   char idbuf[32];
   memset (idbuf, 0, sizeof (idbuf));
@@ -272,14 +279,20 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
                                         idbuf, -1, objid_brotag_BM, NULL);
     }
-  LOCALRETURN_BM (_.objbrows);
+#else /*!BISMONGTK */
+  weakassertfailureat_BM
+    ("noGTK browse_value°object _0BAnB0xjs23_0WEOCOi5Nbe", __FILE__,
+     __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
 }                               /* end  ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe) */
+
 
 
 /// method to browse_data for class-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA);
 value_tyBM
-ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    //
+ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // browse_data°class
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -292,6 +305,7 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    //
                  const objectval_tyBM * cursel;
                  const objectval_tyBM * supercla;
                  value_tyBM curval;);
+#ifdef BISMONGTK
   WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   if (!isobject_BM (arg1))
@@ -358,14 +372,18 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    //
     free (arr), arr = NULL;
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "~)\n", -1,
                                     NULL, NULL);
-  LOCALRETURN_BM (_.objbrows);
-}                               /* end ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA) */
+#else /*!BISMONGTK */
+  weakassertfailureat_BM ("noGTK browse_data°class _09DxyieS5Wz_7pkad4F88FA",
+                          __FILE__, __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
+}                               /* end browse_data°class _09DxyieS5Wz_7pkad4F88FA */
 
 
 /// method to browse_value for tuple-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt);
 value_tyBM
-ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    //
+ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    // browse_value°tuple
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -386,6 +404,7 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    //
   int curdepth = getint_BM (arg3);
   int oboff = browse_show_start_offset_BM ();
   ASSERT_BM (curdepth <= maxdepth);
+#ifdef BISMONGTK
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
@@ -416,8 +435,13 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    //
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   browse_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth,
                         CURFRAME_BM);
-  LOCALRETURN_BM (_.objbrows);
-}                               /* end ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nb)  */
+#else /*!BISMONGTK */
+  weakassertfailureat_BM
+    ("noGTK browse_value°tuple _0BAnB0xjs23_0WEOCOi5Nb ", __FILE__,
+     __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
+}                               /* end browse_value°tuple _0BAnB0xjs23_0WEOCOi5Nb  */
 
 
 
@@ -426,7 +450,7 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    //
 /// method to browse_value for set-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr);
 value_tyBM
-ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
+ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //browse_value°set
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -447,6 +471,7 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   ASSERT_BM (curdepth <= maxdepth);
+#ifdef BISMONGTK
   int oboff = browse_show_start_offset_BM ();
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
@@ -489,8 +514,12 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   browse_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth,
                         CURFRAME_BM);
-  LOCALRETURN_BM (_.objbrows);
-}                               /* end ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)  */
+#else /*!BISMONGTK */
+  weakassertfailureat_BM ("noGTK browse_value°set _3rne4qbpnV9_0pywzeJp3Qr",
+                          __FILE__, __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
+}                               /* end browse_value°set _3rne4qbpnV9_0pywzeJp3Qr  */
 
 
 
@@ -499,7 +528,7 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //
 /// method to browse_value for int-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y);
 value_tyBM
-ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    //
+ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    // browse_value°int
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -515,14 +544,19 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    //
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
     );
   intptr_t i = getint_BM (arg1);
+#ifdef BISONGTK
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   char ibuf[32];
   memset (ibuf, 0, sizeof (ibuf));
   snprintf (ibuf, sizeof (ibuf), "%lld", (long long) i);
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
                                     ibuf, -1, num_brotag_BM, NULL);
-  LOCALRETURN_BM (arg1);
-}                               /* end ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)  */
+#else /*!BISMONGTK */
+  weakassertfailureat_BM ("noGTK browse_value°int _0HBMCM5CeLn_7L5YEV2jO7Y",
+                          __FILE__, __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (arg1);
+}                               /* end  browse_value°int _0HBMCM5CeLn_7L5YEV2jO7Y  */
 
 
 
@@ -530,7 +564,7 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    //
 extern objrout_sigBM ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud);
 #define WANTEDLINEWIDTH_BM 64
 value_tyBM
-ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
+ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    // browse_value°string
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -549,6 +583,7 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   ASSERT_BM (curdepth <= maxdepth);
+#ifdef BISMONGTK
   unsigned l = lenstring_BM (_.strbrows);
   const char *str = bytstring_BM (_.strbrows);
   if (l >= WANTEDLINEWIDTH_BM / 2)
@@ -658,15 +693,20 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    //
                         CURFRAME_BM);
   if (ccnt >= WANTEDLINEWIDTH_BM / 2)
     browsespacefordepth_BM (curdepth);
-  LOCALRETURN_BM (arg1);
-}                               /* end ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud) */
+#else /*!BISMONGTK */
+  weakassertfailureat_BM
+    ("noGTK browse_value°string _63ZPkXUI2Uv_6Cp3qmh6Uud", __FILE__,
+     __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (arg1);
+}                               /* end browse_value°string _63ZPkXUI2Uv_6Cp3qmh6Uud */
 
 
 
 /// method to browse_value for node-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg);
 value_tyBM
-ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
+ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    // browse_value°node
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -689,6 +729,7 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
   unsigned nw = nodewidth_BM ((const value_tyBM) _.nodbrows);
   _.connob = nodeconn_BM ((const value_tyBM) _.nodbrows);
   ASSERT_BM (isobject_BM ((const value_tyBM) _.connob));
+#ifdef BISMONGTK
   int oboff = browse_show_start_offset_BM ();
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   int xtraoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
@@ -726,8 +767,12 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   browse_add_parens_BM (openoff, closeoff, xtraoff, 1, 1, 1, curdepth,
                         CURFRAME_BM);
-  LOCALRETURN_BM (arg1);
-}                               /* end ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg) */
+#else /*!BISMONGTK */
+  weakassertfailureat_BM ("noGTK browse_value°node _7fJKfG4SN0U_1QTu5J832xg",
+                          __FILE__, __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (arg1);
+}                               /* end browse_value°node _7fJKfG4SN0U_1QTu5J832xg */
 
 
 
@@ -736,7 +781,7 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    //
 /// method to browse_value for closure-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac);
 value_tyBM
-ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
+ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    // browse_value°closure
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -759,6 +804,7 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
   unsigned cw = closurewidth_BM ((const value_tyBM) _.clobrows);
   _.connob = closureconn_BM ((const value_tyBM) _.clobrows);
   ASSERT_BM (isobject_BM ((const value_tyBM) _.connob));
+#ifdef BISMONGTK
   int oboff = browse_show_start_offset_BM ();
   int xtraoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
@@ -796,15 +842,20 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    //
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   browse_add_parens_BM (openoff, closeoff, xtraoff, 1, 1, 1, curdepth,
                         CURFRAME_BM);
-  LOCALRETURN_BM (arg1);
-}                               /* end ROUTINEOBJNAME_BM ( _7CohjJ9tkfZ_4UMAIZCgwac) */
+#else /*!BISMONGTK */
+  weakassertfailureat_BM
+    ("noGTK browse_value°closure _7CohjJ9tkfZ_4UMAIZCgwac", __FILE__,
+     __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (arg1);
+}                               /* end browse_value°closure  _7CohjJ9tkfZ_4UMAIZCgwac */
 
 
 
 /// method to browse_data for basiclo_function-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA);
 value_tyBM
-ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    //
+ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    // browse_data°basiclo_function
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -822,6 +873,7 @@ ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    //
   ASSERT_BM (isobject_BM ((const value_tyBM) _.objbrows));
   _.curval = objpayload_BM (_.objbrows);
   int tyval = valtype_BM (_.curval);
+#ifdef BISMONGTK
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   if (tyval == tyInt_BM
       || (tyval >= type_FIRST_BM && tyval <= type_LASTREAL_BM))
@@ -837,15 +889,20 @@ ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    //
       browse_value_BM ((const value_tyBM) _.curval, CURFRAME_BM, depth, 0);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
     };
-  LOCALRETURN_BM (_.objbrows);
-}                               /* end ROUTINE _9zpvXnTuDeB_2B7ZiBtN8fA */
+#else /*!BISMONGTK */
+  weakassertfailureat_BM
+    ("noGTK browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA", __FILE__,
+     __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
+}                               /* end browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA */
 
 
 
 /// method to browse_data°hset_object
 extern objrout_sigBM ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK);
 value_tyBM
-ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK)    //
+ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK)    //browse_data°hset_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -863,6 +920,7 @@ ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK)    //
   _.objbrows = (const objectval_tyBM *) arg1;
   int depth = getint_BM (arg2);
   ASSERT_BM (isobject_BM ((const value_tyBM) _.objbrows));
+#ifdef BISMONGTK
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   _.curval = objpayload_BM (_.objbrows);
   if (!_.curval)
@@ -885,7 +943,12 @@ ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK)    //
   gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   browse_value_BM ((const value_tyBM) _.setk, CURFRAME_BM, depth, 0);
   gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
-  LOCALRETURN_BM (_.objbrows);
+#else /*!BISMONGTK */
+  weakassertfailureat_BM
+    ("noGTK browse_data°hset_object _4IshjBIv6ol_5korHKUIjeK", __FILE__,
+     __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
 }                               /* end browse_data°hset_object _4IshjBIv6ol_5korHKUIjeK */
 
 
@@ -1234,7 +1297,7 @@ ROUTINEOBJNAME_BM (_9QuovXgtk9K_17pMbAD0XmX)    //
 extern objrout_sigBM ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    //
+ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    // browse_data°list_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -1255,6 +1318,7 @@ ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    //
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   WEAKASSERT_BM (objhaslistpayl_BM (_.objbrows));
+#ifdef BISMONGTK
   _.nodv = objlisttonodepayl_BM (_.objbrows, BMP_node);
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   int nodlen = nodewidth_BM (_.nodv);
@@ -1292,7 +1356,12 @@ ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    //
                                       miscomm_brotag_BM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
-  LOCALRETURN_BM (_.objbrows);
+#else /*!BISMONGTK */
+  weakassertfailureat_BM
+    ("noGTK browse_data°list_object _2EtVNhr2mHz_8CsOQJdYeCE", __FILE__,
+     __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
 }                               /* end browse_data°list_object _2EtVNhr2mHz_8CsOQJdYeCE */
 
 
@@ -1301,7 +1370,7 @@ ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    //
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //
+ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //browse_data°assoc_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
  const value_tyBM arg2,         //
@@ -1325,6 +1394,7 @@ ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //
   _.tupv = settonamedsortedtuple_BM (_.setv);
   int nbelem = tuplesize_BM (_.tupv);
   ASSERT_BM (nbelem == setcardinal_BM (_.setv));
+#ifdef BISMONGTK
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   {
     char bufmsg[48];
@@ -1360,7 +1430,12 @@ ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //
                                       miscomm_brotag_BM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
-  LOCALRETURN_BM (_.objbrows);
+#else /*!BISMONGTK */
+  weakassertfailureat_BM
+    ("noGTK browse_data°assoc_object  _0f1S28bCE26_3X6Vpz9lG4A", __FILE__,
+     __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
 }                               /* end browse_data°assoc_object  _0f1S28bCE26_3X6Vpz9lG4A */
 
 
@@ -1370,7 +1445,7 @@ ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //
 extern objrout_sigBM ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE)    //
+ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE)    //browse_data°dict_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -1389,6 +1464,7 @@ ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE)    //
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   WEAKASSERT_BM (objhasdictpayl_BM (_.objbrows));
+#ifdef BISMONGTK
   _.nodv = objdictnodeofkeyspayl_BM (_.objbrows, BMP_node);
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   int nbnames = nodewidth_BM (_.nodv);
@@ -1435,7 +1511,12 @@ ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE)    //
                                       miscomm_brotag_BM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
-  LOCALRETURN_BM (_.objbrows);
+#else /*!BISMONGTK */
+  weakassertfailureat_BM
+    ("noGTK browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE", __FILE__,
+     __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
 }                               /* end browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE */
 
 
@@ -1465,6 +1546,7 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // browse_data°sbuf_object
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.objbrows));
+#ifdef BISMONGTK
   const char *strsb = objstrbufferbytespayl_BM (_.objbrows);
   int bylen = objstrbufferlengthpayl_BM (_.objbrows);
   int unilen = g_utf8_strlen (strsb, bylen);
@@ -1505,7 +1587,12 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // browse_data°sbuf_object
                                           miscomm_brotag_BM, NULL);
       }
   }
-  LOCALRETURN_BM (_.objbrows);
+#else /*!BISMONGTK */
+  weakassertfailureat_BM
+    ("noGTK browse_data°sbuf_object  _8L6mTIICJRt_4RccFDlgACX", __FILE__,
+     __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
 }                               /* end browse_data°sbuf_object  _8L6mTIICJRt_4RccFDlgACX */
 
 
@@ -1515,7 +1602,7 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // browse_data°sbuf_object
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe)    //
+ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe)    //browse_data°hashsetval_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
  const value_tyBM arg2,         //
@@ -1534,6 +1621,7 @@ ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe)    //
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   WEAKASSERT_BM (objhashashsetvalpayl_BM (_.objbrows));
+#ifdef BISMONGTK
   _.nodv = objhashsetvalmakenodepayl_BM (_.objbrows, BMP_node);
   WEAKASSERT_BM (isnode_BM (_.nodv));
   int nbvals = nodewidth_BM (_.nodv);
@@ -1573,7 +1661,12 @@ ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe)    //
                                       miscomm_brotag_BM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
-  LOCALRETURN_BM (_.objbrows);
+#else /*!BISMONGTK */
+  weakassertfailureat_BM
+    ("noGTK browse_data°hashsetval_object  _9dKLCRPRn9Z_1tczFz5weBe",
+     __FILE__, __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
 }                               /* end browse_data°hashsetval_object  _9dKLCRPRn9Z_1tczFz5weBe */
 
 
@@ -1581,7 +1674,7 @@ ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe)    //
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //
+ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //browse_data°hashmapval_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // object
  const value_tyBM arg2,         // depth
@@ -1600,6 +1693,7 @@ ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   WEAKASSERT_BM (objhashashmapvalpayl_BM (_.objbrows));
+#ifdef BISMONGTK
   _.nodv = objhashmapvalmakenodeofkeyspayl_BM (_.objbrows, BMP_node);
   DBGPRINTF_BM ("browse_data°hashmapval_object start objbrows=%s nodv=%s\n",
                 objectdbg_BM (_.objbrows),
@@ -1654,7 +1748,12 @@ ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //
                                       miscomm_brotag_BM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
-  LOCALRETURN_BM (_.objbrows);
+#else /*!BISMONGTK */
+  weakassertfailureat_BM
+    ("noGTK browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi",
+     __FILE__, __LINE__);
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
 }                               /* end browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi */
 
 
@@ -1749,11 +1848,11 @@ ROUTINEOBJNAME_BM (_1eQ1a8KHixZ_1XDNH5iTQ0I)    //
 }                               /* end routine _1eQ1a8KHixZ_1XDNH5iTQ0I */
 
 
-//  test_agenda gtk _7rRjqfXs3QI_4Nwk2Lfm569
+//  test_agenda-log _7rRjqfXs3QI_4Nwk2Lfm569
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7rRjqfXs3QI_4Nwk2Lfm569);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_7rRjqfXs3QI_4Nwk2Lfm569)    //
+ROUTINEOBJNAME_BM (_7rRjqfXs3QI_4Nwk2Lfm569)    //test_agenda-log
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // taskob
  const value_tyBM arg2,         // rank
@@ -1771,7 +1870,7 @@ ROUTINEOBJNAME_BM (_7rRjqfXs3QI_4Nwk2Lfm569)    //
   WEAKASSERT_BM (istaggedint_BM (_.rankv));
   WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
   int rk = getint_BM (_.rankv);
-  NONPRINTF_BM ("test_agenda gtk taskob %s rk %d", objectdbg_BM (_.taskob),
+  NONPRINTF_BM ("test_agenda-log taskob %s rk %d", objectdbg_BM (_.taskob),
                 rk);
   log_begin_message_BM ();
   log_printf_message_BM ("testagenda elapsed %.3f s tasklet ",
@@ -1780,7 +1879,7 @@ ROUTINEOBJNAME_BM (_7rRjqfXs3QI_4Nwk2Lfm569)    //
   log_printf_message_BM (" rank %d.", rk);
   log_end_message_BM ();
   LOCALRETURN_BM (_.taskob);
-}                               /* end routine _7rRjqfXs3QI_4Nwk2Lfm569 */
+}                               /* end testagenda-log _7rRjqfXs3QI_4Nwk2Lfm569 */
 
 
 
@@ -1830,6 +1929,7 @@ ROUTINEOBJNAME_BM (_5oSaKNehPiO_3GSlpH5boCW)    //
   log_printf_message_BM ("in %.3f elapsed, %.4f cpu seconds.\n",
                          di.dumpinfo_elapsedtime, di.dumpinfo_cputime);
   log_end_message_BM ();
+#ifdef BISMONGTK
   if (gui_command_log_file_BM)
     {
       time_t nowtim = time (NULL);
@@ -1844,7 +1944,8 @@ ROUTINEOBJNAME_BM (_5oSaKNehPiO_3GSlpH5boCW)    //
                dumpstr, realstr ? realstr : dumpstr, nowbuf);
       fflush (gui_command_log_file_BM);
     }
-  free (dumpstr), dumpstr = NULL;
+#endif /*BISMONGTK*/
+    free (dumpstr), dumpstr = NULL;
   free (realstr), realstr = NULL;
   LOCALRETURN_BM (_.argv);
 }                               /* end dump command_handler _5oSaKNehPiO_3GSlpH5boCW */
@@ -1930,8 +2031,10 @@ ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    // emit_module#command_handler
           log_object_message_BM (objectcast_BM (_.resultv));
           log_puts_message_BM (" .");
           log_end_message_BM ();
+#ifdef BISMONGTK
           show_answer_value_newgui_BM (_.resultv, CURFRAME_BM);
-          LOCALRETURN_BM (_.resultv);
+#endif     /*BISMONGTK*/
+            LOCALRETURN_BM (_.resultv);
         };
     }
   else
