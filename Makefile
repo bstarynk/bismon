@@ -170,9 +170,15 @@ tempmodule:
 	echo BM.onioncc objcirc is $^ left $<
 	$(COMPILE.cc)  $(shell $(PKGCONFIG) --cflags $(GTKPACKAGES))  -DBISMONION $< -o $@
 
+%_ONIONBM.onion.o: %_ONIONBM.c bismon.h $(GENERATED_HEADERS) $(BM_HEADERS) %_ONIONBM.const.h
+	echo ONIONBM.onion objcirc is $^ left $<
+	$(COMPILE.c)  $(shell $(PKGCONFIG) --cflags $(ONIONPACKAGES)) -DBISMONION -c $< -o $@
+
 %_BM.const.h: %_BM.c BM_makeconst
 	./BM_makeconst -H $@ $<
 %_GTKBM.const.h: %_GTKBM.c BM_makeconst
+	./BM_makeconst -H $@ $<
+%_ONIONBM.const.h: %_ONIONBM.c BM_makeconst
 	./BM_makeconst -H $@ $<
 
 __timestamp.o: __timestamp.c

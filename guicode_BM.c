@@ -402,9 +402,9 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    // browse_value°tuple
   _.tupbrows = (const tupleval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
-  int oboff = browse_show_start_offset_BM ();
   ASSERT_BM (curdepth <= maxdepth);
 #ifdef BISMONGTK
+  int oboff = browse_show_start_offset_BM ();
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //

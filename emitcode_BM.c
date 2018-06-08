@@ -3540,8 +3540,9 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     }
 #else
 #warning emit_module°plain_module should be improved without BISMONGTK
-  FATAL_BM ("emit_module°plain_module unimplemented without BISMONGTK",
-            srcpathstr);
+  FATAL_BM
+    ("emit_module°plain_module unimplemented without BISMONGTK srcpathstr %s",
+     srcpathstr);
 #endif /*BISMONGTK*/
     if (srcdirstr)
     free (srcdirstr), srcdirstr = NULL;
