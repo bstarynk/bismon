@@ -3525,7 +3525,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
       symlink (basename (srcpathstr), linkstr);
       free (linkstr), linkstr = NULL;
     }
-  /// 
+  ///
+#ifdef BISMONGTK
   if (gui_is_running_BM)
     {
       _.srcdirstrv = (value_tyBM) makestring_BM (srcdirstr);
@@ -3537,7 +3538,12 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
       gtk_defer_apply3_BM (kk_deferred_compilation_of_module,
                            _.modulob, _.modgenob, _.srcdirstrv, CURFRAME_BM);
     }
-  if (srcdirstr)
+#else
+#warning emit_module°plain_module should be improved without BISMONGTK
+  FATAL_BM ("emit_module°plain_module unimplemented without BISMONGTK",
+            srcpathstr);
+#endif /*BISMONGTK*/
+    if (srcdirstr)
     free (srcdirstr), srcdirstr = NULL;
   if (pardirstr)
     free (pardirstr), pardirstr = NULL;

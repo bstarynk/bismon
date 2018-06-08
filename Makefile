@@ -187,7 +187,7 @@ _bm_allconsts-ONION.o: _bm_allconsts-ONION.c
 
 _bm_allconsts-GTK.c: $(BM_COLDSOURCES) $(GTKBM_COLDSOURCES) BM_makeconst
 	./BM_makeconst -C $@ $(BM_COLDSOURCES) $(GTKBM_COLDSOURCES)
-_bm_allconsts-ONIONS.c: $(BM_COLDSOURCES) $(ONIONBM_COLDSOURCES) BM_makeconst
+_bm_allconsts-ONION.c: $(BM_COLDSOURCES) $(ONIONBM_COLDSOURCES) BM_makeconst
 	./BM_makeconst -C $@ $(BM_COLDSOURCES) $(ONIONBM_COLDSOURCES)
 
 modubin/modbm_%.so: modules/modbm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)

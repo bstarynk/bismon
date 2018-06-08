@@ -34,10 +34,11 @@ thread_local volatile struct failurehandler_stBM *curfailurehandle_BM;
 static volatile struct backstrace_state *backtracestate_BM;
 static void backtracerrorcb_BM (void *data, const char *msg, int errnum);
 
+#ifdef BISMONGTK
 GIOChannel *defer_gtk_readpipechan_BM;
 int defer_gtk_readpipefd_BM = -1;
 int defer_gtk_writepipefd_BM = -1;
-
+#endif /*BISMONGTK*/
 extern void weakfailure_BM (void);
 
 // consider putting a gdb breakpoint here 
@@ -680,6 +681,7 @@ parse_values_after_load_BM (void)
            nb_parsed_values_after_load_bm);
 }                               /* end parse_values_after_load_bm */
 
+#ifdef BISMONGTK
 extern bool did_deferredgtk_BM (void);
 
 static gboolean
@@ -794,9 +796,8 @@ do_internal_deferred_send3_gtk_BM (value_tyBM recv, objectval_tyBM * obsel,
     {
       destroy_failurelockset_BM (&flockset);
       curfailurehandle_BM = NULL;
-      fprintf (stderr, "deffered_send3_gtk failure, failcod#%d failreason: %s\n", failcod, debug_outstr_value_BM (_.failres,    //
-                                                                                                                  CURFRAME_BM,
-                                                                                                                  0));
+      fprintf (stderr, "deffered_send3_gtk failure, failcod#%d failreason: %s\n",       //
+               failcod, debug_outstr_value_BM (_.failres, CURFRAME_BM, 0));
       return;
     }
   DBGPRINTF_BM ("internaldefersend recv %s obsel %s arg1 %s arg2 %s arg3 %s",   //
@@ -943,9 +944,8 @@ endguilog_BM (void)
   gui_command_log_file_BM = NULL;
   fflush (NULL);
 }                               /* end endguilog_BM */
-
-
-void
+#endif /*BISMONGTK*/
+  void
 give_prog_version_BM (const char *progname)
 {
   printf ("%s: version information\n", progname);

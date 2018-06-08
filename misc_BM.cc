@@ -874,6 +874,7 @@ cmd_find_enclosing_parens_BM(int off)
 
 ////////////////////////////////////////////////////////////////
 
+#ifdef BISMONGTK
 struct deferdoappl_stBM
 {
   union
@@ -1081,7 +1082,7 @@ gtk_defer_send3_BM(value_tyBM recv, objectval_tyBM*obsel,  value_tyBM arg1, valu
         FATAL_BM("gtk_defer_send3_BM failed to write to pipe");
     }
 } // end of gtk_defer_send3_BM
-
+#endif /*BISMONGTK*/
 
 
 ////////////////

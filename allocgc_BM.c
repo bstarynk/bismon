@@ -661,9 +661,11 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   gcmarkpredefinedobjects_BM (&GCdata);
   gcmarkconstants_BM (&GCdata);
   gcmarkglobals_BM (&GCdata);
+#ifdef BISMONGTK
   gcmarknewgui_BM (&GCdata);
   gcmarkdefergui_BM (&GCdata);
-  gcmarkagenda_BM (&GCdata);
+#endif /*BISMONGTK*/
+    gcmarkagenda_BM (&GCdata);
   gcmarkmodules_BM (&GCdata);
   gcframemark_BM (&GCdata, stkfram, 0);
   unsigned long nbobjscan = 0;
@@ -813,6 +815,7 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   fprintf (fil, "-------\n\n");
   fflush (fil);
   last_gctime_BM = clocktime_BM (CLOCK_REALTIME);
+#ifdef BISMONGTK
   if (fil != stderr)
     {
       ASSERT_BM (gui_is_running_BM);
@@ -822,7 +825,8 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
       fclose (fil);
       free (buf), buf = NULL;
     };
-  DBGPRINTF_BM
+#endif /*BISMONGTK*/
+    DBGPRINTF_BM
     ("full_garbage_collection_BM before agenda_run_deferred_after_gc_BM");
   agenda_run_deferred_after_gc_BM ();
   if (nbj > 0)

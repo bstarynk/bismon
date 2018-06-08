@@ -1210,7 +1210,9 @@ extern const node_tyBM *nodeglobalnames_BM (const objectval_tyBM * conn);
 extern const setval_tyBM *setglobalobjects_BM (void);
 
 extern void gcmarkglobals_BM (struct garbcoll_stBM *gc);
+#ifdef BISMONGTK
 extern void gcmarkdefergui_BM (struct garbcoll_stBM *gc);
+#endif /*BISMONGTK*/
 extern void gcmarkconstants_BM (struct garbcoll_stBM *gc);
 
 /// open a module during loading, returns true if ok
@@ -1270,6 +1272,7 @@ void defer_module_load_BM (objectval_tyBM * modulob, const closure_tyBM * postcl
                            struct stackframe_stBM *stkf);
 ////////////////////////////////////////////////////////////////
 /******** GUI functions ***********/
+#ifdef BISMONGTK
 // browse the object objbrows, using the selector objsel
 extern void browse_object_gui_BM (const objectval_tyBM * objbrows,
                                   const objectval_tyBM * objsel,
@@ -1326,7 +1329,6 @@ extern void newgui_browse_add_parens_BM (int openoff, int closeoff,
                                          int depth,
                                          struct stackframe_stBM *stkf);
 
-#ifdef BISMONGTK
 extern const char *textiterstrdbg_BM (GtkTextIter * it);
 
 extern void cssparsingerror_BM (GtkCssProvider *, GtkCssSection *, GError *,
