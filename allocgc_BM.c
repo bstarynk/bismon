@@ -662,7 +662,7 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   gcmarkconstants_BM (&GCdata);
   gcmarkglobals_BM (&GCdata);
   gcmarknewgui_BM (&GCdata);
-  gcmarkdefergtk_BM (&GCdata);
+  gcmarkdefergui_BM (&GCdata);
   gcmarkagenda_BM (&GCdata);
   gcmarkmodules_BM (&GCdata);
   gcframemark_BM (&GCdata, stkfram, 0);

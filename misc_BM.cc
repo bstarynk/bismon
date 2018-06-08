@@ -888,7 +888,7 @@ static std::deque<deferdoappl_stBM> deferdeque_BM;
 static std::mutex deferqmtx_BM;
 
 void
-gcmarkdefergtk_BM(struct garbcoll_stBM*gc)
+gcmarkdefergui_BM(struct garbcoll_stBM*gc)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   std::lock_guard<std::mutex> _g(deferqmtx_BM);
@@ -908,7 +908,7 @@ gcmarkdefergtk_BM(struct garbcoll_stBM*gc)
       if (itd.defer_arg3)
         VALUEGCPROC_BM (gc, itd.defer_arg3, 0);
     }
-} // end gcmarkdefergtk_BM
+} // end gcmarkdefergui_BM
 
 extern "C" void
 do_internal_deferred_send3_gtk_BM(value_tyBM recv, objectval_tyBM*obsel, value_tyBM arg1, value_tyBM arg2, value_tyBM arg3);
