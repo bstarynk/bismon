@@ -83,6 +83,8 @@ On Linux/x86-64 (e.g. Debian/Unstable or recent Ubuntu) only (won't work on 32 b
 ## prerequisites ##
 
 
+See also the [dependencies](dependencies/README-dependencies) subdirectory.
+
 * recent [GCC](http://gcc.gnu.org/) (so [GCC
 7](https://gcc.gnu.org/gcc-7/) or [GCC 8](https://gcc.gnu.org/gcc-8/) ...), with C and C++ and JIT
 support and plugins enabled (check with `gcc -v`; if your system `gcc`
@@ -127,7 +129,7 @@ The `libonion` is not independently packaged in Debian.
 
 `apt-get install markdown indent astyle` and `apt-get install texlive texlive-full hevea` 
 
-The `dependencies/` subdirectory is for `git submodules` related to `libbacktrace` and `libonion`
+The `dependencies/` subdirectory is for `git submodule`-s related to `libbacktrace` and `libonion`
 
 ## building ##
 
