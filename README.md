@@ -83,7 +83,7 @@ On Linux/x86-64 (e.g. Debian/Unstable or recent Ubuntu) only (won't work on 32 b
 ## prerequisites ##
 
 
-See also the [dependencies](dependencies/README-dependencies) subdirectory.
+See also the [dependencies](dependencies/) subdirectory and its [README-dependencies](dependencies//README-dependencies.md).
 
 * recent [GCC](http://gcc.gnu.org/) (so [GCC
 7](https://gcc.gnu.org/gcc-7/) or [GCC 8](https://gcc.gnu.org/gcc-8/) ...), with C and C++ and JIT
