@@ -95,8 +95,10 @@ Most of `bismon` is in C99 (including an increasing amount of
 generated code), but some few code is in C++14.
 
 * [GTK](http://gtk.org/) 3.22 or better. This is a temporary
-  dependency, we hope to have some web interface (above
-  [libonion](http://www.coralbits.com/libonion) probably) soon.
+  dependency (to be deprecated), we hope to have some web interface
+  (above [libonion](http://www.coralbits.com/libonion) probably) soon.
+  
+* [libonion](http://www.coralbits.com/libonion) is needed for the web interface.
 
 * [GNU make](https://www.gnu.org/software/make/) 4 or better
 
@@ -121,7 +123,11 @@ On Debian/Unstable or Ubuntu, `apt-get install build-essential make gcc-7 g++-7 
 The `libbacktrace` is not independently packaged in Debian. I recommend building and installing
 it from its source code, or else (not recommended, :unamused: but doable) edit the `Makefile` to uses your system GCC compiler's one.
 
+The `libonion` is not independently packaged in Debian.
+
 `apt-get install markdown indent astyle` and `apt-get install texlive texlive-full hevea` 
+
+The `dependencies/` subdirectory is for `git submodules` related to `libbacktrace` and `libonion`
 
 ## building ##
 
@@ -140,8 +146,11 @@ Run `make` or `make -j3`
 
 The persistency mechanism is tested by `make redump`
 
-The `./bismon` program accepts a `--help` and `--version`.
+The `./bismongtk` program accepts a `--help` and `--version`.
 It has a crude graphic user interface (perhaps to be replaced later by a Web one).
+
+The `./bismonion` program accepts a `--help` and `--version`. It has a
+Web interface (above `libonion`)
 
 ## using `bismon` ##
 

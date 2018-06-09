@@ -1,0 +1,6 @@
+[submodule "dependencies/libonion"]
+	path = dependencies/libonion
+	url = https://github.com/davidmoreno/onion
+[submodule "dependencies/libbacktrace"]
+	path = dependencies/libbacktrace
+	url = https://github.com/ianlancetaylor/libbacktrace
