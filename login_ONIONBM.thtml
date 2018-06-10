@@ -1,8 +1,10 @@
-{# file login_ONIONBM.thtml #}<!DOCTYPE html>
-{# a template file for Onion's template system #}<html>
+<!DOCTYPE html>
+<html>{# file login_ONIONBM.thtml #}
+{# a template file for Onion's template system #}
 <head>
 <title>Login to Bismon</title>
 </head>
 <body>
 <h1>Login</h1>
+Here {{somevar}} variable
 </html>
