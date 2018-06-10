@@ -22,10 +22,11 @@ GTKPACKAGES= glib-2.0 gtk+-3.0
 ONIONPACKAGES= glib-2.0 
 MODULESPACKAGES= glib-2.0 
 PKGCONFIG= pkg-config
+OTEMPLATE= otemplate
 PREPROFLAGS= -I. -I/usr/local/include -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED
 
 GTKLIBES= -L/usr/local/lib -lbacktrace $(shell $(PKGCONFIG) --libs $(GTKPACKAGES)) -ldl -lm
-ONIONLIBES= -L/usr/local/lib -lbacktrace $(shell $(PKGCONFIG) --libs $(ONIONPACKAGES)) -ldl -lm
+ONIONLIBES= -L/usr/local/lib -lonion -lbacktrace $(shell $(PKGCONFIG) --libs $(ONIONPACKAGES)) -ldl -lm
 RM= rm -fv
 
 
@@ -35,13 +36,15 @@ BM_HEADERS= $(sort $(wildcard *_BM.h))
 BM_COLDSOURCES= $(sort $(wildcard *_BM.c))
 GTKBM_COLDSOURCES= $(sort $(wildcard *_GTKBM.c))
 ONIONBM_COLDSOURCES= $(sort $(wildcard *_ONIONBM.c))
+ONIONBM_WEBTEMPLATES= $(sort  $(wildcard *_ONIONBM.wthml))
 GENERATED_HEADERS= $(sort $(wildcard _[a-z0-9]*.h))
 GENERATED_CSOURCES= $(filter-out _bm_allconsts-GTK.c _bm_allconsts-ONION.c, $(sort $(wildcard _[a-z0-9]*.c)))
+GENERATED_ONIONCSOURCES= $(patsubst %_ONIONBM.thtml,_%_ONIONBM.c,$(ONIONBM_WEBTEMPLATES))
 MARKDOWN_SOURCES= $(sort $(wildcard *.md))
 MODULES_SOURCES= $(sort $(wildcard modules/modbm*.c))
 
 GTKOBJECTS= $(patsubst %.c,%.gtk.o,$(BM_COLDSOURCES) $(GTKBM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst %.cc,%.gtk.o,$(BM_CXXSOURCES))
-ONIONOBJECTS= $(patsubst %.c,%.onion.o,$(BM_COLDSOURCES) $(ONIONBM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst %.cc,%.onion.o,$(BM_CXXSOURCES))
+ONIONOBJECTS= $(sort $(patsubst %.c,%.onion.o,$(BM_COLDSOURCES) $(ONIONBM_COLDSOURCES) $(GENERATED_CSOURCES) $(GENERATED_ONIONCSOURCES)) $(patsubst %.cc,%.onion.o,$(BM_CXXSOURCES)))
 
 .PHONY: all programs clean indent count modules measure measured-bismon doc redump outdump checksum indentsinglemodule singlemodule indenttempmodule tempmodule
 
@@ -180,7 +183,8 @@ tempmodule:
 	./BM_makeconst -H $@ $<
 %_ONIONBM.const.h: %_ONIONBM.c BM_makeconst
 	./BM_makeconst -H $@ $<
-
+_%_ONIONBM.c _%_ONIONBM.h: %_ONIONBM.thtml
+	$(OTEMPLATE) -a $(patsubst  %_ONIONBM.thtml,_%_ONIONBM.h,$<) $< $@
 __timestamp.o: __timestamp.c
 	$(COMPILE.c)  -DBMtimestamp -c $< -o $@
 

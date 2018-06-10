@@ -1,0 +1,8 @@
+{# file login_ONIONBM.thtml #}<!DOCTYPE html>
+{# a template file for Onion's template system #}<html>
+<head>
+<title>Login to Bismon</title>
+</head>
+<body>
+<h1>Login</h1>
+</html>

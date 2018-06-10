@@ -21,7 +21,14 @@
     basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 ***/
 #include "bismon.h"
+
+#if defined(BISMONGTK) && defined(BISMONION)
+#error cannot have both BISMONGTK and BISMONION
+#endif /*defined(BISMONGTK) && defined(BISMONION)*/
+
+#ifdef BISMONGTK
 #include <glib/giochannel.h>
+#endif
 
 struct timespec startrealtimespec_BM;
 void *dlprog_BM;
@@ -553,9 +560,11 @@ main (int argc, char **argv)
   /// should actually use gtk_init_with_args so define some
   /// GOptionEntry array
   GError *err = NULL;
-  bool guiok = gtk_init_with_args (&argc, &argv, " - The bismon program",
+#ifdef BISMONGTK
+  bool guiok = gtk_init_with_args (&argc, &argv, " - The bismongtk program",
                                    optab, NULL, &err);
-  if (give_version_bm)
+#endif /*BISMONGTK*/
+    if (give_version_bm)
     give_prog_version_BM (progname);
   if (nbworkjobs_BM < MINNBWORKJOBS_BM)
     nbworkjobs_BM = MINNBWORKJOBS_BM;
@@ -595,13 +604,15 @@ main (int argc, char **argv)
         }
       printf ("***/\n\n\n");
     }
+#ifdef BISMONGTK
   if (!guiok && !batch_bm)
     FATAL_BM ("gtk_init_with_args failed");
   if (!batch_bm)
     {
       initialize_newgui_BM (builder_file_bm, css_file_bm);
     }
-  if (!load_dir_bm)
+#endif /*BISMONGTK*/
+    if (!load_dir_bm)
     load_dir_bm = ".";
   if (!dump_dir_bm)
     dump_dir_bm = load_dir_bm;
@@ -633,6 +644,7 @@ main (int argc, char **argv)
          di.dumpinfo_elapsedtime * 1.0e6 / di.dumpinfo_emittedobjectcount,
          di.dumpinfo_cputime * 1.0e6 / di.dumpinfo_emittedobjectcount);
     }
+#ifdef BISMONGTK
   if (batch_bm)
     {
       nbworkjobs_BM = 0;
@@ -640,6 +652,7 @@ main (int argc, char **argv)
     }
   else
     rungui_BM (nbworkjobs_BM);
+#endif /*BISMONGTK*/
   fflush (NULL);
 }                               /* end main */
 
