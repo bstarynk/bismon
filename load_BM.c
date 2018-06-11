@@ -719,6 +719,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
   ASSERT_BM (ldpars != NULL);
   ld->ld_parsarr[ix] = ldpars;
   ldpars->pars_path = ld->ld_storepatharr[ix];
+  ldpars->pars_warnunknownid = true;
   long nbdirectives = 0;
   for (;;)
     {

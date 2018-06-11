@@ -1205,15 +1205,24 @@ parsergetobject_BM (struct parser_stBM * pars,
           return NULL;
         };
       const objectval_tyBM *obid = _.resobj     //
-        = nobuild ? NULL : (const objectval_tyBM
-                            *) (findobjofid_BM (tok.tok_id));
+        = nobuild ? NULL  //
+	: (const objectval_tyBM*) (findobjofid_BM (tok.tok_id));
       if (!obid && !nobuild)
         {
           char idbuf[32];
           memset (idbuf, 0, sizeof (idbuf));
           idtocbuf32_BM (tok.tok_id, idbuf);
+	  if (pars->pars_warnunknownid) {
+	    fprintf(stderr,
+		    "%s:%d:%d: ignoring unknown id %s\n",
+		    pars->pars_path?pars->pars_path:"???",
+		    lineno, colpos, idbuf);
+	    fflush(stderr);
+	  }
+	  else {
           parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,      //
                                 "unknown id %s", idbuf);
+	  }
         };
       *pgotobj = true;
       return (objectval_tyBM *) obid;
