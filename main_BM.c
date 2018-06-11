@@ -24,7 +24,7 @@
 
 #if defined(BISMONGTK) && defined(BISMONION)
 #error cannot have both BISMONGTK and BISMONION
-#endif /*defined(BISMONGTK) && defined(BISMONION)*/
+#endif /*defined(BISMONGTK) && defined(BISMONION) */
 
 #ifdef BISMONGTK
 #include <glib/giochannel.h>
@@ -557,13 +557,27 @@ main (int argc, char **argv)
   initialize_predefined_objects_BM ();
   initialize_predefined_names_BM ();
   initialize_agenda_BM ();
+  GError *opterr = NULL;
+#ifdef BISMONGTK
   /// should actually use gtk_init_with_args so define some
   /// GOptionEntry array
-  GError *err = NULL;
-#ifdef BISMONGTK
-  bool guiok = gtk_init_with_args (&argc, &argv, " - The bismongtk program",
-                                   optab, NULL, &err);
+  bool guiok = gtk_init_with_args (&argc, &argv,
+                                   " - The bismongtk program (with GTK GUI)",
+                                   optab, NULL, &opterr);
 #endif /*BISMONGTK*/
+#ifdef BISMONION
+  {
+    GOptionContext *weboptctx =
+      g_option_context_new ("- The bismonion program (with web interface)");
+    if (!weboptctx)
+      FATAL_BM ("no option context");
+    g_option_context_add_main_entries (weboptctx, optab, NULL);
+    if (!g_option_context_parse (weboptctx, &argc, &argv, &opterr))
+      FATAL_BM ("bismonion failed to parse options - %s",
+                opterr ? opterr->message : "??");
+    g_option_context_free (weboptctx);
+  }
+#endif /*BISMONION*/
     if (give_version_bm)
     give_prog_version_BM (progname);
   if (nbworkjobs_BM < MINNBWORKJOBS_BM)
@@ -653,7 +667,7 @@ main (int argc, char **argv)
   else
     rungui_BM (nbworkjobs_BM);
 #endif /*BISMONGTK*/
-  fflush (NULL);
+    fflush (NULL);
 }                               /* end main */
 
 
@@ -958,6 +972,7 @@ endguilog_BM (void)
   fflush (NULL);
 }                               /* end endguilog_BM */
 #endif /*BISMONGTK*/
+////////////////////////////////////////////////////////////////
   void
 give_prog_version_BM (const char *progname)
 {
