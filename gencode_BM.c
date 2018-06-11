@@ -3566,7 +3566,7 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
   _.arg1v = arg1;
   _.arg2v = arg2;
   _.arg3v = arg3;
-  DBGPRINTF_BM
+  NONPRINTF_BM
     ("simple_module_initialize start modulid %s arg1 %s arg2 %s arg3 %s",
      modulid, debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
