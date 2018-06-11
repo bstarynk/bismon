@@ -25,5 +25,49 @@ the infrastructure is not complete).
 
 \bigskip
 
+\subsection{Lessons learned from \textit{GCC MELT}}
+
+@@ To be written
+
+\subsection{Driving principles for  \textit{Bismon}}
+
+\textit{Bismon} is (like \textit{GCC MELT} was) a \textbf{domain
+  specific language} implementation, targetted to ease static source
+code analysis (above the \textit{GCC} compiler), with the following
+features:
+
+\begin{itemize}
+  \item \textbf{persistency}, somehow \textit{orthogonal
+    persistency}. So most of the data handled by \textit{Bismon} can
+    be persisted on disk, and reloaded at the next run. Some data is
+    temporary by nature and should not be persisted. Such data is
+    called temporary or \textbf{transient}. But the usual approach is
+    to run the \textit{Bismon} program from some initial loaded state
+    and have it dump its memory state on disk before exiting (and
+    reload that augmented state at the next run).
+
+  \item \textbf{dynamic typing}, like many scripting languages (such
+    as Guile, Python, Lua, etc)
+
+  \item \textbf{homoiconicity} and \textbf{reflection} with
+    \textbf{introspection}: all the DSL code is explicitly represented
+    as data which can be processed by \textit{Bismon}, and the current
+    state is accessible by the DSL.
+
+    \item \textbf{translated} to \emph{C} code (and generated
+      \emph{JavaScript} + \emph{HTML} in the browser, and generated
+      \emph{C++} code of \emph{GCC} plugins)
+
+    \item \textbf{bootstrapped implementation}: ideally, all of
+      \textit{Bismon} code (including C code dealing with data
+      representations, persistent store, etc...) should be
+      generated. However, this ideal has not yet be attained, and
+      there is still some hand-written C code. It is hoped that most
+      of the hand-written C code will become replaced by generated C
+      code.
+    \item ability to \textbf{generate GCC plugins}: the C++ code of
+      GCC plugins performing static analysis of a single translation
+      unit should be generated.
+\end{itemize}
 
 
