@@ -100,7 +100,9 @@ generated code), but some few code is in C++14.
   dependency (to be deprecated), we hope to have some web interface
   (above [libonion](http://www.coralbits.com/libonion) probably) soon.
   
-* [libonion](http://www.coralbits.com/libonion) is needed for the web interface.
+* [libonion](http://www.coralbits.com/libonion) is needed for the web
+  interface (at least 0.8.99 -master- later than june 10th 2018, or
+  0.9)
 
 * [GNU make](https://www.gnu.org/software/make/) 4 or better
 
@@ -148,8 +150,9 @@ Run `make` or `make -j3`
 
 The persistency mechanism is tested by `make redump`
 
-The `./bismongtk` program accepts a `--help` and `--version`.
-It has a crude graphic user interface (perhaps to be replaced later by a Web one).
+The `./bismongtk` program (soon deprecated) accepts a `--help` and
+`--version`.  It has a crude graphic user interface (perhaps to be
+replaced later by a Web one).
 
 The `./bismonion` program accepts a `--help` and `--version`. It has a
 Web interface (above `libonion`)
