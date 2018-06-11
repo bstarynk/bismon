@@ -29,39 +29,89 @@ GTKLIBES= -L/usr/local/lib -lbacktrace $(shell $(PKGCONFIG) --libs $(GTKPACKAGES
 ONIONLIBES= -L/usr/local/lib -lonion -lbacktrace $(shell $(PKGCONFIG) --libs $(ONIONPACKAGES)) -ldl -lm
 RM= rm -fv
 
+# the hand-written C source files common to both bismonion & bismongtk
+# keep in alphabetical order
+BM_COMMON_CSOURCES=				\
+ agenda_BM.c					\
+ allocgc_BM.c					\
+ assoc_BM.c					\
+ code_BM.c					\
+ dump_BM.c					\
+ emitcode_BM.c					\
+ engine_BM.c					\
+ gencode_BM.c					\
+ guicode_BM.c					\
+ id_BM.c					\
+ list_BM.c					\
+ load_BM.c					\
+ main_BM.c					\
+ node_BM.c					\
+ object_BM.c					\
+ parser_BM.c					\
+ primes_BM.c					\
+ scalar_BM.c					\
+ sequence_BM.c
 
-CSOURCES= $(sort  $(wildcard [a-zA-Z]*.c))
-BM_CXXSOURCES= $(sort  $(wildcard [a-zA-Z]*_BM.cc))
-BM_HEADERS= $(sort $(wildcard *_BM.h))
-BM_COLDSOURCES= $(sort $(wildcard *_BM.c))
-GTKBM_COLDSOURCES= $(sort $(wildcard *_GTKBM.c))
-ONIONBM_COLDSOURCES= $(sort $(wildcard *_ONIONBM.c))
-ONIONBM_WEBTEMPLATES= $(sort  $(wildcard *_ONIONBM.wthml))
-GENERATED_HEADERS= $(sort $(wildcard _[a-z0-9]*.h))
-GENERATED_ONIONCSOURCES= $(patsubst %_ONIONBM.thtml,_%_ONIONBM.c,$(ONIONBM_WEBTEMPLATES))
-GENERATED_CSOURCES= $(filter-out _bm_allconsts-GTK.c _bm_allconsts-ONION.c $(GENERATED_ONIONCSOURCES), $(sort $(wildcard _[a-z0-9]*.c)))
+# the hand-written C++ source files common to both bismonion & bismongtk
+BM_COMMON_CXXSOURCES= misc_BM.cc
+
+# the hand-written C source files specific to GTK GUI bismongtk
+BM_GTK_CSOURCES=		\
+ gui_GTKBM.c			\
+ newgui_GTKBM.c
+
+# the hand-written C source files specific to Onion-based Web server bismonion
+BM_ONION_CSOURCES= web_ONIONBM.c
+
+# hand-written C/C++ headers (common to both bismonion & bismongtk)
+BM_COMMON_HEADERS= bismon.h			\
+ cmacros_BM.h					\
+ fundecl_BM.h					\
+ globals_BM.h					\
+ inline_BM.h					\
+ types_BM.h
+
+# generated headers
+BM_GENERATED_HEADERS=				\
+ _bm_delim.h					\
+ _bm_global.h					\
+ _bm_predef.h					\
+ _bm_types.h
+
+# web templates for Onion's otemplates.
+# ∀ foo, a C file _foo_ONIONBM.h and a C header _foo_ONIONBM.h is generated from foo_ONIONBM.thtml
+ONIONBM_WEBTEMPLATES= login_ONIONBM.thtml
 MARKDOWN_SOURCES= $(sort $(wildcard *.md))
 MODULES_SOURCES= $(sort $(wildcard modules/modbm*.c))
 
-GTKOBJECTS= $(patsubst %.c,%.gtk.o,$(BM_COLDSOURCES) $(GTKBM_COLDSOURCES) $(GENERATED_CSOURCES)) $(patsubst %.cc,%.gtk.o,$(BM_CXXSOURCES))
-ONIONOBJECTS= $(sort $(patsubst %.c,%.onion.o,$(BM_COLDSOURCES) $(ONIONBM_COLDSOURCES) $(GENERATED_CSOURCES) $(GENERATED_ONIONCSOURCES)) $(patsubst %.cc,%.onion.o,$(BM_CXXSOURCES)))
+# the object files for the GTK GUI bismongtk
+BISMONGTKOBJECTS=								\
+ $(patsubst %.c,%.gtk.o, $(sort $(BM_COMMON_CSOURCES) $(BM_GTK_CSOURCES)))	\
+ $(patsubst %.cc,%.gtk.o, $(sort $(BM_COMMON_CXXSOURCES)))
+
+# the object files for the Onion web-server bismonion
+BISMONIONOBJECTS= 	\
+ $(patsubst %.c,%.onion.o, $(sort $(BM_COMMON_CSOURCES) $(BM_ONION_CSOURCES)))	\
+ $(patsubst %.cc,%.onion.o, $(sort $(BM_COMMON_CXXSOURCES)))
 
 .PHONY: all programs clean indent count modules measure measured-bismon doc redump outdump checksum indentsinglemodule singlemodule indenttempmodule tempmodule
 
 
 programs: bismongtk bismonion
 
-bismongtk: $(GTKOBJECTS) _bm_allconsts-GTK.o | modules
+bismongtk: $(BISMONGTKOBJECTS) _bm_allconsts-GTK.o | modules
+	echo bismongtk: $(BISMONGTKOBJECTS) 
 	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi
 	$(MAKE) __timestamp.c __timestamp.o _bm_allconsts-GTK.o
-	$(LINK.cc) -pthread  $(LINKFLAGS) -rdynamic $(OPTIMFLAGS) $(GTKOBJECTS) __timestamp.o _bm_allconsts-GTK.o $(GTKLIBES) -o $@
+	$(LINK.cc) -pthread  $(LINKFLAGS) -rdynamic $(OPTIMFLAGS) $(BISMONGTKOBJECTS) __timestamp.o _bm_allconsts-GTK.o $(GTKLIBES) -o $@
 	ls -l $@
 	$(RM) __timestamp.*
 
-bismonion: $(ONIONOBJECTS) _bm_allconsts-ONION.o | modules
+bismonion: $(BISMONIONOBJECTS) _bm_allconsts-ONION.o | modules
+	echo bismonion: $(BISMONIONOBJECTS)
 	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi
 	$(MAKE) __timestamp.c __timestamp.o _bm_allconsts-ONION.o
-	$(LINK.cc) -pthread  $(LINKFLAGS) -rdynamic $(OPTIMFLAGS) $(ONIONOBJECTS) __timestamp.o _bm_allconsts-ONION.o $(ONIONLIBES) -o $@
+	$(LINK.cc) -pthread  $(LINKFLAGS) -rdynamic $(OPTIMFLAGS) $(BISMONIONOBJECTS) __timestamp.o _bm_allconsts-ONION.o $(ONIONLIBES) -o $@
 	ls -l $@
 	$(RM) __timestamp.*
 
@@ -195,10 +245,10 @@ _bm_allconsts-GTK.o: _bm_allconsts-GTK.c
 _bm_allconsts-ONION.o: _bm_allconsts-ONION.c
 	$(COMPILE.c)  -DBMallconsts -c $< -o $@
 
-_bm_allconsts-GTK.c: $(BM_COLDSOURCES) $(GTKBM_COLDSOURCES) BM_makeconst
-	./BM_makeconst -C $@ $(BM_COLDSOURCES) $(GTKBM_COLDSOURCES)
-_bm_allconsts-ONION.c: $(BM_COLDSOURCES) $(ONIONBM_COLDSOURCES) BM_makeconst
-	./BM_makeconst -C $@ $(BM_COLDSOURCES) $(ONIONBM_COLDSOURCES)
+_bm_allconsts-GTK.c: $(sort $(BM_COMMON_CSOURCES) $(BM_GTK_CSOURCES))  BM_makeconst
+	./BM_makeconst -C $@  $(sort $(BM_COMMON_CSOURCES) $(BM_GTK_CSOURCES))
+_bm_allconsts-ONION.c: $(sort $(BM_COMMON_CSOURCES) $(BM_ONION_CSOURCES)) BM_makeconst
+	./BM_makeconst -C $@ $(sort $(BM_COMMON_CSOURCES) $(BM_ONION_CSOURCES))
 
 modubin/modbm_%.so: modules/modbm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
 	$(CCACHE) $(LINK.c) $(shell $(PKGCONFIG) --cflags $(MODULESPACKAGES)) -fPIC  -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<)  '-DBISMON_MOMD5="$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_PERSISTENT_MODULE -shared $< $(shell $(PKGCONFIG) --libs $(MODULESPACKAGES)) -o $@
