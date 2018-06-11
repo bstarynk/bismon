@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html>{# file login_ONIONBM.thtml #}
-{# a template file for Onion's template system #}
+{# a template file for libOnion's template system #}
 <head>
 <title>Login to Bismon</title>
 </head>
 <body>
-<h1>Login</h1>
-Here {{somevar}} variable
+  <h1>Login to Bismon</h1>
+  <p><b><tt>Bismon</tt> stores persistently some <i>personal data</i> about you</b>,
+    such as your username, internalid, email addresses. That data (as
+    all of <tt>Bismon</tt>'s persistent state) could be published
+    thru e.g. <a href='http://git-scm.com/'>git</a>. Do not login if you disagree.</p>
+  <form action="_login" method="post">
+    <input type='hidden' name='state' value='{{state}}'/>
+    <b>user:</b> <input type='text' name='user'/><br/>
+    <b>password:</b><input type='password' name='password'/><br/>
+    <b>Connect:</b> <input type='submit' name='login' value='loginv'/> &nbsp;
+    <b>Forgotten password:</b> <input type='submit' name='forgot' value='forgotv'>/> &nbsp;
+  </form>
 </html>
