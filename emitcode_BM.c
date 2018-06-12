@@ -3540,9 +3540,10 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     }
 #else
 #warning emit_module°plain_module should be improved without BISMONGTK
-  FATAL_BM
-    ("emit_module°plain_module unimplemented without BISMONGTK srcpathstr %s",
-     srcpathstr);
+  fprintf(stderr, "emit_module°plain_module BISMONION not implemented srcpathstr %s modulob %s modgenob %s srcdirstrv %s\n",
+	  srcpathstr, objectdbg_BM(_.modulob), objectdbg1_BM(_.modgenob), //
+	  debug_outstr_value_BM(_.srcdirstrv, CURFRAME_BM, 0));
+  fflush(stderr);
 #endif /*BISMONGTK*/
     if (srcdirstr)
     free (srcdirstr), srcdirstr = NULL;

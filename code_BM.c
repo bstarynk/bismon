@@ -4149,26 +4149,6 @@ ROUTINEOBJNAME_BM (_8AzRspWL4ws_3cdvWV4S1JH)    //
 
 //////////////// list_object methods
 
-// append°list_object _4SHtP3KRbRJ_7MyS1z6q4uH
-
-extern objrout_sigBM ROUTINEOBJNAME_BM (_4SHtP3KRbRJ_7MyS1z6q4uH);
-
-value_tyBM
-ROUTINEOBJNAME_BM (_4SHtP3KRbRJ_7MyS1z6q4uH) // append°list_object
-(struct stackframe_stBM* stkf, //
- const value_tyBM arg1, //
- const value_tyBM arg2, //
- const value_tyBM arg3, //
- const value_tyBM arg4_  __attribute__((unused)), //
- const quasinode_tyBM* restargs_  __attribute__((unused)))
-{
-  LOCALFRAME_BM (stkf, /*descr:*/ BMK_4SHtP3KRbRJ_7MyS1z6q4uH,
-                 value_tyBM resultv;
-  );
-#warning unimplemented append°list_object  _4SHtP3KRbRJ_7MyS1z6q4uH routine
-  WEAKASSERT_BM(false && "unimplemented append°list_object _4SHtP3KRbRJ_7MyS1z6q4uH routine");
-  LOCALRETURN_BM(_.resultv);
-} /* end append°list_object _4SHtP3KRbRJ_7MyS1z6q4uH*/
 
 
 // prepend°list_object _9rSvONCa1Oo_1Hlzny0C3aF
