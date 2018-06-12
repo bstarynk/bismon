@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 657 objects
+// for 660 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2640,6 +2640,43 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_5EOGu1l7Q5u_6QrYmcnVFvB |=obdumpobjisdumpable|
+!~ name (~ obdumpobjisdumpable
+~)
+!@ 1528795523.555
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test in dumperob o1 if the object o2 is dumpable"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5EOGu1l7Q5u_6QrYmcnVFvB  ":*/"  "obdumpobjisdumpable_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_93FBSk1ML0f_2WjSuKa9TNU)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_5EOGu1l7Q5u_6QrYmcnVFvB
+
+
+
+!(_8A6JBMMNvON_2KMriUszSwP |=obdumpvalisfullydumpable|
+!~ name (~ obdumpvalisfullydumpable
+~)
+!@ 1528795698.607
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test with dumperobj o1 if value v2 is fully"& " dumpable, including all its sons or components"& " then return non-0"
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _8A6JBMMNvON_2KMriUszSwP  ":*/"  " "  "obdumpvalisfullydumpable_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_8A6JBMMNvON_2KMriUszSwP
+
+
+
 !(_4jYMom293qa_4qW0J7r0LtZ |=objappendcomp|
 !~ name (~ objappendcomp
 ~)
@@ -3422,6 +3459,26 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_9Q1UEIfoXfR_42kESjPc2QQ
+
+
+
+!(_8EyMkdkTYdT_1UcGl6FGRpG |=objhasdumperpayl|
+!~ name (~ objhasdumperpayl
+~)
+!@ 1528795334.519
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test if o1 is a dumper"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _8EyMkdkTYdT_1UcGl6FGRpG  ":*/("  "obdumpgetdumper_BM"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")"  
+" "  "!=" 
+  " "  "NULL"  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_8EyMkdkTYdT_1UcGl6FGRpG
 
 
 
