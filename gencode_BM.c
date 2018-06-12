@@ -2073,8 +2073,9 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
   LOCALRETURN_BM (_.connrestypob);
 failure:
 #undef FAILHERE
-  DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive failin %d extraerror %s",
-		failin, debug_outstr_value_BM(_.extraerrorv, CURFRAME_BM, 0));
+  DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive failin %d expv %s; extraerror %s",
+		failin, debug_outstr_value_BM (_.expv, CURFRAME_BM, 0), //
+		debug_outstr_value_BM(_.extraerrorv, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode5_BM (k_miniscan_node_conn, _.expv,
                                _.routprepob, taggedint_BM (depth),
