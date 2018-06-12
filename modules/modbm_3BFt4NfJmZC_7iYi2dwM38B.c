@@ -45,6 +45,7 @@ const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[11 + 1];
 
 value_tyBM crout_0JktC4mAHCa_1KNr6uMIqIi_BM     //#0
   (struct stackframe_stBM *stkf,        //
+//!dump_scan°list_object minifunc for list_object o1 & dumperobj o2
    // 2 arguments
    const value_tyBM arg0,       // o1
    const value_tyBM arg1,       // o2
@@ -141,6 +142,7 @@ epilog_0JktC4mAHCa_1KNr6uMIqIi:__attribute__ ((unused));
 
 value_tyBM crout_0SinERsgdvQ_57dLCP63i9r_BM     //#1
   (struct stackframe_stBM * stkf,       //
+//!forgetname#command_handler
    // 1 arguments
    const value_tyBM arg0,       // v_arg
    const value_tyBM arg1_ __attribute__ ((unused)),
@@ -241,6 +243,7 @@ epilog_0SinERsgdvQ_57dLCP63i9r:__attribute__ ((unused));
 
 value_tyBM crout_0YOXUe7rEJC_3jFMjOAQRs9_BM     //#2+
   (struct stackframe_stBM * stkf,       // element_of_closed_minifunc
+//!return argument if it is contained in the closed set
    // 1 arguments
    const value_tyBM arg0,       // v_arg
    const value_tyBM arg1_ __attribute__ ((unused)),
@@ -325,6 +328,7 @@ epilog_0YOXUe7rEJC_3jFMjOAQRs9:__attribute__ ((unused));
 
 value_tyBM crout_3iiht57Wrs1_5NbiUi27oBn_BM     //#3
   (struct stackframe_stBM * stkf,       //
+//!prepend°list_object minifunc
    // 2 arguments
    const value_tyBM arg0,       // o1
    const value_tyBM arg1,       // v2
@@ -400,6 +404,7 @@ epilog_3iiht57Wrs1_5NbiUi27oBn:__attribute__ ((unused));
 
 value_tyBM crout_3yQlckX4DRh_4b9l9FBSSSL_BM     //#4+
   (struct stackframe_stBM * stkf,       // same_as_closed_minifunc
+//!return argument if it is the same as the closed value
    // 1 arguments
    const value_tyBM arg0,       // v_arg
    const value_tyBM arg1_ __attribute__ ((unused)),
@@ -478,6 +483,7 @@ epilog_3yQlckX4DRh_4b9l9FBSSSL:__attribute__ ((unused));
 
 value_tyBM crout_4iEFTEcHxeb_6lH464uFkTC_BM     //#5+
   (struct stackframe_stBM * stkf,       // equal_to_closed_minifunc
+//!return argument if it is the same as the closed value
    // 1 arguments
    const value_tyBM arg0,       // v_arg
    const value_tyBM arg1_ __attribute__ ((unused)),
@@ -557,6 +563,7 @@ epilog_4iEFTEcHxeb_6lH464uFkTC:__attribute__ ((unused));
 
 value_tyBM crout_4M7lr5cU6VD_5hxmeH3baBf_BM     //#6
   (struct stackframe_stBM * stkf,       //
+//!append°list_object minifunction
    // 2 arguments
    const value_tyBM arg0,       // o1
    const value_tyBM arg1,       // v2
@@ -632,6 +639,7 @@ epilog_4M7lr5cU6VD_5hxmeH3baBf:__attribute__ ((unused));
 
 value_tyBM crout_82ho9wUUDji_4peMLha4PXl_BM     //#7+
   (struct stackframe_stBM * stkf,       // findobj_scan_minifunc
+//!findobj_scan_minifunc scans, with the closed and locked o_findobj, the argument object o_scan; give NULL if o_scan was already scanned
    // 1 arguments
    const value_tyBM arg0,       // o_scan
    const value_tyBM arg1_ __attribute__ ((unused)),
@@ -707,6 +715,7 @@ epilog_82ho9wUUDji_4peMLha4PXl:__attribute__ ((unused));
 
 value_tyBM crout_8imWClcIFKt_6w2H2ouB4I6_BM     //#8+
   (struct stackframe_stBM * stkf,       // iterate_sequence_minifunc
+//!iterate on sequence v_seq the function v_fun with 2nd argument v_arg
    // 3 arguments
    const value_tyBM arg0,       // v_seq
    const value_tyBM arg1,       // v_fun

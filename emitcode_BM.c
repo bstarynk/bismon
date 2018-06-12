@@ -338,6 +338,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                  value_tyBM blocksetv;  //
                  value_tyBM argtupv;
                  value_tyBM closedseqv; //
+                 value_tyBM commentv;    //
                  value_tyBM setnumv;    //
                  value_tyBM setvalv;    //
                  value_tyBM setconstv;  //
@@ -390,6 +391,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   WEAKASSERT_BM (isobject_BM (_.routob));
   {
     objlock_BM (_.routob);
+    _.commentv = objgetattr_BM (_.routob, BMP_comment);
     _.argtupv = objgetattr_BM (_.routob, k_arguments);
     _.closedseqv = objgetattr_BM (_.routob, k_closed);
     _.bodyob = objectcast_BM (objgetattr_BM (_.routob, k_body));
@@ -430,6 +432,14 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                                  "value_tyBM crout%s_BM //#%d\n"
                                  " (struct stackframe_stBM* stkf, //\n",
                                  routidbuf, rank);
+    if (isstring_BM(_.commentv)) {
+      const char*combytes = bytstring_BM(_.commentv);
+      int comlen = lenstring_BM(_.commentv);
+      const char*eol = strchr(combytes, '\n');
+      if (eol) comlen = eol-combytes;
+      if (comlen>0) 
+	objstrbufferprintfpayl_BM (_.modgenob, "//!%*s\n", comlen, combytes);
+    }
     objstrbufferprintfpayl_BM (_.modgenob, "  // %d arguments\n", nbargs);
     for (int aix = 0; aix < 4; aix++)
       {
