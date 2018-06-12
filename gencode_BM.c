@@ -880,6 +880,28 @@ failure:
 ////////////////
 
 
+// miniscan_stmt°basiclo_while _2Cj1ZVDhCVO_8qT2Um5Ok7f
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_2Cj1ZVDhCVO_8qT2Um5Ok7f);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_2Cj1ZVDhCVO_8qT2Um5Ok7f) //miniscan_stmt°basiclo_while 
+(struct stackframe_stBM* stkf, //
+ const value_tyBM arg1, //
+ const value_tyBM arg2, //
+ const value_tyBM arg3, //
+ const value_tyBM arg4_  __attribute__((unused)), //
+ const quasinode_tyBM* restargs_  __attribute__((unused)))
+{
+  objectval_tyBM* k_while = BMK_7GNnckYYtcH_7wtOnPP4eKU;
+  LOCALFRAME_BM (stkf, /*descr:*/ BMK_2Cj1ZVDhCVO_8qT2Um5Ok7f,
+                 value_tyBM resultv;
+  );
+#warning unimplemented miniscan_stmt°basiclo_while  _2Cj1ZVDhCVO_8qT2Um5Ok7f routine
+  WEAKASSERT_BM(false && "unimplemented miniscan_stmt°basiclo_while  _2Cj1ZVDhCVO_8qT2Um5Ok7f routine");
+  LOCALRETURN_BM(_.resultv);
+} /* end miniscan_stmt°basiclo_while   _2Cj1ZVDhCVO_8qT2Um5Ok7f*/
+
 
 // miniscan_stmt°basiclo_lockobj  _8fKRsxM1q9w_3hFovzBicI7
 

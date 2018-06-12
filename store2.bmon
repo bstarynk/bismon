@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 671 objects
+// for 673 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -521,7 +521,9 @@ _9KIeH9wMRCV_12Gy2xILgpG }
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of while statements"
-!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
+~: _1ERH9PxNhPb_2o869yOMuH0  % _6eRPTujgMx5_9mLxL25hmr9 () 
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _2Cj1ZVDhCVO_8qT2Um5Ok7f ()
 ~)
 
 !)_4Af5NOOf7Qe_7KQdGPoNdJ0
@@ -7489,6 +7491,16 @@ _7KVBiG9eTtM_8PS68aSImxy
 
 
 
+!(_2Cj1ZVDhCVO_8qT2Um5Ok7f
+!|*
+!@ 1528802815.632
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniscan_stmt\u00b0basiclo_while"
+!)_2Cj1ZVDhCVO_8qT2Um5Ok7f
+
+
+
 !(_2CKEpke8P0q_8s0Vli5gjxM
 !|*
 !@ 1525965944.810
@@ -8317,6 +8329,16 @@ _5yc7zU7sbF8_1dME4ONRdaf
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method put\u00b0assoc_object"
 !)_6eD9Y1qYcnj_8uVDhxjBpG8
+
+
+
+!(_6eRPTujgMx5_9mLxL25hmr9
+!|*
+!@ 1528803054.322
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit_statement\u00b0basiclo_while"
+!)_6eRPTujgMx5_9mLxL25hmr9
 
 
 

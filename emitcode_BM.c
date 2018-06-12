@@ -1015,7 +1015,7 @@ failure:
 
 
 
-// emit_statment°basiclo_cond _2gpamAdSc26_6d1JjCmKHyw
+// emit_statement°basiclo_cond _2gpamAdSc26_6d1JjCmKHyw
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_2gpamAdSc26_6d1JjCmKHyw);
 value_tyBM
@@ -1159,6 +1159,34 @@ failure:
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end emit_statment°basiclo_cond _2gpamAdSc26_6d1JjCmKHyw */
 
+
+////////////////
+
+// emit_statement°basiclo_while _6eRPTujgMx5_9mLxL25hmr9
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_6eRPTujgMx5_9mLxL25hmr9);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_6eRPTujgMx5_9mLxL25hmr9) // emit_statement°basiclo_while
+(struct stackframe_stBM* stkf, //
+ const value_tyBM arg1, //
+ const value_tyBM arg2, //
+ const value_tyBM arg3, //
+ const value_tyBM arg4_  __attribute__((unused)), //
+ const quasinode_tyBM* restargs_  __attribute__((unused)))
+{
+  objectval_tyBM* k_while = BMK_7GNnckYYtcH_7wtOnPP4eKU;
+  LOCALFRAME_BM (stkf, /*descr:*/ BMK_6eRPTujgMx5_9mLxL25hmr9,
+                 value_tyBM resultv;
+  );
+#warning unimplemented  emit_statement°basiclo_while _6eRPTujgMx5_9mLxL25hmr9 routine
+  WEAKASSERT_BM(false && "unimplemented emit_statement°basiclo_while _6eRPTujgMx5_9mLxL25hmr9 routine");
+  LOCALRETURN_BM(_.resultv);
+} /* end emit_statement°basiclo_while _6eRPTujgMx5_9mLxL25hmr9*/
+
+
+
+////////////////
 
 // emit_when°basiclo_when  _9Wk97VJLuH1_0FwsSpfatDg
 
