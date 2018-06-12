@@ -276,29 +276,6 @@ const GOptionEntry optab[] = {
    .description = "dump after load directory DIR",
    .arg_description = "DIR"},
   //
-  {.long_name = "gui-builder",.short_name = (char) 0,
-   .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_FILENAME,
-   .arg_data = &builder_file_bm,
-   .description = "with GTK builder file FILE (default: bismon.ui)",
-   .arg_description = "FILE"},
-  //
-  {.long_name = "gui-style",.short_name = (char) 0,
-   .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_FILENAME,
-   .arg_data = &css_file_bm,
-   .description = "with GTK style CSS file FILE (default: bismon.css)",
-   .arg_description = "FILE"},
-  //
-  //
-  {.long_name = "gui-log",.short_name = (char) 0,
-   .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_FILENAME,
-   .arg_data = &gui_log_name_bm,
-   .description =
-   "GUI log file name (none if empty, - is stdout, default is _bismon.log)",
-   .arg_description = "FILE"},
-  //
   {.long_name = "emit-has-predef",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_INT,
@@ -367,6 +344,31 @@ const GOptionEntry optab[] = {
    .description = "gives version information",
    .arg_description = NULL},
   //
+#ifdef BISMONGTK
+  //////////////////
+  {.long_name = "gui-builder",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &builder_file_bm,
+   .description = "with GTK builder file FILE (default: bismon.ui)",
+   .arg_description = "FILE"},
+  //
+  {.long_name = "gui-style",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &css_file_bm,
+   .description = "with GTK style CSS file FILE (default: bismon.css)",
+   .arg_description = "FILE"},
+  //
+  {.long_name = "gui-log",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &gui_log_name_bm,
+   .description =
+   "GUI log file name (none if empty, - is stdout, default is _bismon.log)",
+   .arg_description = "FILE"},
+#endif /*BISMONGTK*/
+  //////////////////
   {}
 };
 
@@ -620,7 +622,7 @@ main (int argc, char **argv)
     }
 #ifdef BISMONGTK
   if (!guiok && !batch_bm)
-    FATAL_BM ("gtk_init_with_args failed");
+    FATAL_BM ("gtk_init_with_args failed : %s", opterr?opterr->message:"???");
   if (!batch_bm)
     {
       initialize_newgui_BM (builder_file_bm, css_file_bm);
