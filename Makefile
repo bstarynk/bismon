@@ -105,7 +105,7 @@ bismongtk: $(BISMONGTKOBJECTS) _bm_allconsts-GTK.o | modules __timestamp.c
 	$(MAKE) __timestamp.c __timestamp.o _bm_allconsts-GTK.o
 	$(LINK.cc) -pthread  $(LINKFLAGS) -rdynamic $(OPTIMFLAGS) $(BISMONGTKOBJECTS) __timestamp.o _bm_allconsts-GTK.o $(GTKLIBES) -o $@
 	ls -l $@
-	$(RM) __timestamp.*
+	$(RM) __timestamp.c
 
 bismonion: $(BISMONIONOBJECTS) _bm_allconsts-ONION.o | modules __timestamp.c 
 	echo bismonion: $(BISMONIONOBJECTS)
@@ -113,7 +113,7 @@ bismonion: $(BISMONIONOBJECTS) _bm_allconsts-ONION.o | modules __timestamp.c
 	$(MAKE) __timestamp.c __timestamp.o _bm_allconsts-ONION.o
 	$(LINK.cc) -pthread  $(LINKFLAGS) -rdynamic $(OPTIMFLAGS) $(BISMONIONOBJECTS) __timestamp.o _bm_allconsts-ONION.o $(ONIONLIBES) -o $@
 	ls -l $@
-	$(RM) __timestamp.*
+	$(RM) __timestamp.c
 
 all: programs modules doc
 
