@@ -893,6 +893,7 @@ ROUTINEOBJNAME_BM (_2Cj1ZVDhCVO_8qT2Um5Ok7f) //miniscan_stmt°basiclo_while
  const value_tyBM arg4, //fromob
  const quasinode_tyBM* restargs_  __attribute__((unused)))
 {
+  objectval_tyBM *k_duplicate = BMK_2YrbiKQ6lxP_3KNUOnU6TF5;
   objectval_tyBM* k_while = BMK_7GNnckYYtcH_7wtOnPP4eKU;
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
@@ -903,6 +904,7 @@ ROUTINEOBJNAME_BM (_2Cj1ZVDhCVO_8qT2Um5Ok7f) //miniscan_stmt°basiclo_while
   objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
   objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
   objectval_tyBM *k_string = BMK_4T8am97muLl_5969SR22Ecq;
+  objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
   LOCALFRAME_BM (stkf, /*descr:*/ BMK_2Cj1ZVDhCVO_8qT2Um5Ok7f,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * routprepob;   //
@@ -910,6 +912,7 @@ ROUTINEOBJNAME_BM (_2Cj1ZVDhCVO_8qT2Um5Ok7f) //miniscan_stmt°basiclo_while
                  objectval_tyBM * compob;  //
 		 value_tyBM whilexpv; //
                  objectval_tyBM * whiltypob;  //
+                 objectval_tyBM * hsetblockob;  //
                  value_tyBM resv; //
                  value_tyBM resultv; //
                  value_tyBM causev;     //
@@ -921,10 +924,16 @@ ROUTINEOBJNAME_BM (_2Cj1ZVDhCVO_8qT2Um5Ok7f) //miniscan_stmt°basiclo_while
   _.routprepob = objectcast_BM (arg2);
   int depth = getint_BM (arg3);
   _.fromob = objectcast_BM (arg4);
+  _.hsetblockob = objectcast_BM (objgetattr_BM (_.routprepob, k_blocks));
   DBGPRINTF_BM
-    ("miniscan_stmt°basiclo_while start stmtob=%s routprepob=%s depth#%d fromob=%s start",
+    ("miniscan_stmt°basiclo_while start stmtob=%s routprepob=%s depth#%d fromob=%s hsetblockob=%s start",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), depth,
-     objectdbg2_BM (_.fromob));
+     objectdbg2_BM (_.fromob), objectdbg3_BM (_.hsetblockob));
+  WEAKASSERT_BM(_.hsetblockob);
+  WEAKASSERT_BM(objhashashsetpayl_BM(_.hsetblockob));
+  if (objhashsetcontainspayl_BM(_.hsetblockob, _.stmtob))
+    FAILHERE(k_duplicate);
+  objhashsetaddpayl_BM(_.hsetblockob, _.stmtob);
   _.whilexpv = objgetattr_BM(_.stmtob, k_while);
   if (!_.whilexpv) 
     FAILHERE(k_while);
@@ -979,8 +988,9 @@ ROUTINEOBJNAME_BM (_2Cj1ZVDhCVO_8qT2Um5Ok7f) //miniscan_stmt°basiclo_while
         FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (ix), _.compob));
       objunlock_BM (_.compob);
     }
+  objhashsetremovepayl_BM(_.hsetblockob, _.stmtob);
   DBGPRINTF_BM
-    ("miniscan_stmt°basiclo_while end stmtob=%s routprepob=%s depth#%d fromob=%s start",
+    ("miniscan_stmt°basiclo_while end stmtob=%s routprepob=%s depth#%d fromob=%s",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), depth,
      objectdbg2_BM (_.fromob));  
   LOCALRETURN_BM(_.stmtob);
