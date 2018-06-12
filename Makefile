@@ -99,7 +99,7 @@ BISMONIONOBJECTS= 	\
 
 programs: bismongtk bismonion
 
-bismongtk: $(BISMONGTKOBJECTS) _bm_allconsts-GTK.o | modules
+bismongtk: $(BISMONGTKOBJECTS) _bm_allconsts-GTK.o | modules __timestamp.c 
 	echo bismongtk: $(BISMONGTKOBJECTS) 
 	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi
 	$(MAKE) __timestamp.c __timestamp.o _bm_allconsts-GTK.o
@@ -107,7 +107,7 @@ bismongtk: $(BISMONGTKOBJECTS) _bm_allconsts-GTK.o | modules
 	ls -l $@
 	$(RM) __timestamp.*
 
-bismonion: $(BISMONIONOBJECTS) _bm_allconsts-ONION.o | modules
+bismonion: $(BISMONIONOBJECTS) _bm_allconsts-ONION.o | modules __timestamp.c 
 	echo bismonion: $(BISMONIONOBJECTS)
 	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi
 	$(MAKE) __timestamp.c __timestamp.o _bm_allconsts-ONION.o
