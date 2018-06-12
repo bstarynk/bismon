@@ -262,7 +262,7 @@ modules:
 
 
 
-doc: $(MARKDOWN_SOURCES) bismon modules
+doc: $(MARKDOWN_SOURCES) bismongtk modules
 	for f in $(MARKDOWN_SOURCES) ; do  $(MARKDOWN) $$f > $$(basename $$f .md).html ; done
 	./build-bismon-doc.sh
 
