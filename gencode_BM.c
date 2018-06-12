@@ -993,7 +993,7 @@ failure:
     makenode5_BM (k_miniscan_stmt, _.stmtob, _.causev, _.routprepob,
                   taggedint_BM (depth), _.fromob);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
-} /* end miniscan_stmt°basiclo_while   _2Cj1ZVDhCVO_8qT2Um5Ok7f*/
+} /* end miniscan_stmt°basiclo_while _2Cj1ZVDhCVO_8qT2Um5Ok7f */
 
 
 
