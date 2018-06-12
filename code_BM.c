@@ -4151,26 +4151,6 @@ ROUTINEOBJNAME_BM (_8AzRspWL4ws_3cdvWV4S1JH)    //
 
 
 
-// prepend°list_object _9rSvONCa1Oo_1Hlzny0C3aF
-
-extern objrout_sigBM ROUTINEOBJNAME_BM (_9rSvONCa1Oo_1Hlzny0C3aF);
-
-value_tyBM
-ROUTINEOBJNAME_BM (_9rSvONCa1Oo_1Hlzny0C3aF) // prepend°list_object
-(struct stackframe_stBM* stkf, //
- const value_tyBM arg1, //
- const value_tyBM arg2, //
- const value_tyBM arg3, //
- const value_tyBM arg4_  __attribute__((unused)), //
- const quasinode_tyBM* restargs_  __attribute__((unused)))
-{
-  LOCALFRAME_BM (stkf, /*descr:*/ BMK_9rSvONCa1Oo_1Hlzny0C3aF,
-                 value_tyBM resultv;
-  );
-#warning unimplemented prepend°list_object _9rSvONCa1Oo_1Hlzny0C3aF routine
-  WEAKASSERT_BM(false && "unimplemented prepend°list_object _9rSvONCa1Oo_1Hlzny0C3aF routine");
-  LOCALRETURN_BM(_.resultv);
-} /* end  prepend°list_object _9rSvONCa1Oo_1Hlzny0C3aF*/
 
 // dump_scan°list_object _54m6lxyj7CC_4yjvMeuW5ed
 
