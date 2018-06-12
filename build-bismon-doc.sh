@@ -82,4 +82,4 @@ bibhva htmldoc/bismon-htmldoc
 ls -l $PWD/*aux $PWD/*/*aux 
 hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-doc
 #hacha -o htmldoc/index.html  htmldoc/bismon-htmldoc.html
-tar -cz -f bismondoc-html.tar.gz  htmldoc 
+tar -c -f - htmldoc/ | tardy -Remove_Prefix htmldoc -Prefix bismon-html-doc -User_NAme bismon -Group_NAme bismon | gzip -9 > bismon-html-doc.tar.gz

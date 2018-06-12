@@ -43,3 +43,4 @@ doc/*.haux
 doc/*.hind
 doc/*.htoc
 doc/htmldoc/*
+doc/bismon-html-doc.tar.gz

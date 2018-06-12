@@ -112,6 +112,8 @@ generated code), but some few code is in C++14.
 
 * GNU [indent](https://www.gnu.org/software/indent/) (2.2.x at last) and [astyle](https://sourceforge.net/projects/astyle/)  (3.1 at least) are useful for `make indent`. `indent` is now **required** for generated modules.
 
+* [tardy](http://tardy.sourceforge.net/) (a `tar` file postprocessor) is used to generate documentation.
+
 * [LaTeX](https://latex.org/) -probably as
   [texlive](https://www.tug.org/texlive/) suite or
   [luatex](http://luatex.org/)- and related utilities (`pdflatex`,
@@ -129,7 +131,7 @@ it from its source code, or else (not recommended, :unamused: but doable) edit t
 
 The `libonion` is not independently packaged in Debian.
 
-`apt-get install markdown indent astyle` and `apt-get install texlive texlive-full hevea` 
+`apt-get install markdown indent astyle tardy` and `apt-get install texlive texlive-full hevea` 
 
 The `dependencies/` subdirectory is for `git submodule`-s related to `libbacktrace` and `libonion`
 
