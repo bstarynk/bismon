@@ -887,21 +887,117 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_2Cj1ZVDhCVO_8qT2Um5Ok7f);
 value_tyBM
 ROUTINEOBJNAME_BM (_2Cj1ZVDhCVO_8qT2Um5Ok7f) //miniscan_stmt°basiclo_while 
 (struct stackframe_stBM* stkf, //
- const value_tyBM arg1, //
- const value_tyBM arg2, //
- const value_tyBM arg3, //
- const value_tyBM arg4_  __attribute__((unused)), //
+ const value_tyBM arg1, //recieving while obstmt
+ const value_tyBM arg2, //routine preparation
+ const value_tyBM arg3, //depth
+ const value_tyBM arg4, //fromob
  const quasinode_tyBM* restargs_  __attribute__((unused)))
 {
   objectval_tyBM* k_while = BMK_7GNnckYYtcH_7wtOnPP4eKU;
+  objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
+  objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
+  objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
+  objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
+  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
+  objectval_tyBM *k_object = BMK_7T9OwSFlgov_0wVJaK1eZbn;
+  objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
+  objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
+  objectval_tyBM *k_string = BMK_4T8am97muLl_5969SR22Ecq;
   LOCALFRAME_BM (stkf, /*descr:*/ BMK_2Cj1ZVDhCVO_8qT2Um5Ok7f,
-                 value_tyBM resultv;
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * fromob;  //
+                 objectval_tyBM * compob;  //
+		 value_tyBM whilexpv; //
+                 objectval_tyBM * whiltypob;  //
+                 value_tyBM resv; //
+                 value_tyBM resultv; //
+                 value_tyBM causev;     //
+                 value_tyBM errorv;     //
   );
-#warning unimplemented miniscan_stmt°basiclo_while  _2Cj1ZVDhCVO_8qT2Um5Ok7f routine
-  WEAKASSERT_BM(false && "unimplemented miniscan_stmt°basiclo_while  _2Cj1ZVDhCVO_8qT2Um5Ok7f routine");
-  LOCALRETURN_BM(_.resultv);
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev= (value_tyBM)(Cause); goto failure; } while(0)
+  _.stmtob = objectcast_BM (arg1);
+  _.routprepob = objectcast_BM (arg2);
+  int depth = getint_BM (arg3);
+  _.fromob = objectcast_BM (arg4);
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_while start stmtob=%s routprepob=%s depth#%d fromob=%s start",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), depth,
+     objectdbg2_BM (_.fromob));
+  _.whilexpv = objgetattr_BM(_.stmtob, k_while);
+  if (!_.whilexpv) 
+    FAILHERE(k_while);
+  _.whiltypob = miniscan_expr_BM (_.whilexpv, _.routprepob, 0, _.stmtob, CURFRAME_BM);
+  if (_.whiltypob != k_object && _.whiltypob != k_value && _.whiltypob != k_int
+      && _.whiltypob != k_string
+      && !miniscan_compatype_BM (_.whiltypob, k_value, CURFRAME_BM)
+      && !miniscan_compatype_BM (_.whiltypob, k_int, CURFRAME_BM)) 
+    FAILHERE(makenode2_BM(k_while, _.whilexpv, _.whiltypob));
+  unsigned stmtlen = objnbcomps_BM (_.stmtob);
+  for (int ix = 0; ix < (int) stmtlen; ix++)
+    {
+      _.compob = objectcast_BM (objgetcomp_BM (_.stmtob, ix));
+      if (!_.compob)
+        FAILHERE (makenode1_BM (k_curcomp, taggedint_BM (ix)));
+      objlock_BM (_.compob);
+      if (objectisinstance_BM (_.compob, k_basiclo_block))
+        {
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_while compob %s is block of %s",
+             objectdbg_BM (_.compob), objectdbg1_BM (objclass_BM (_.compob)));
+          _.resv =
+            send3_BM (_.compob, k_miniscan_block,
+                      CURFRAME_BM, _.routprepob,
+                      taggedint_BM (depth + 1), _.stmtob);
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_while compob after miniscan_block->%s resv=%s",
+             objectdbg_BM (_.compob),
+             debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
+          if (!_.resv)
+            FAILHERE (makenode2_BM
+                      (k_miniscan_block, _.compob, taggedint_BM (ix)));
+        }
+      else if (objectisinstance_BM (_.compob, k_basiclo_statement))
+        {
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_while compob %s is statement of %s",
+             objectdbg_BM (_.compob), objectdbg1_BM (objclass_BM (_.compob)));
+          _.resv =
+            send3_BM (_.compob, k_miniscan_stmt,
+                      CURFRAME_BM, _.routprepob,
+                      taggedint_BM (depth + 1), _.stmtob);
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_while compob after miniscan_stmt->%s resv=%s",
+             objectdbg_BM (_.compob),
+             debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
+          if (!_.resv)
+            FAILHERE (makenode2_BM
+                      (k_miniscan_stmt, _.compob, taggedint_BM (ix)));
+        }
+      else
+        FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (ix), _.compob));
+      objunlock_BM (_.compob);
+    }
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_while end stmtob=%s routprepob=%s depth#%d fromob=%s start",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), depth,
+     objectdbg2_BM (_.fromob));  
+  LOCALRETURN_BM(_.stmtob);
+failure:
+#undef FAILHERE
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_while failin %d stmtob=%s causev %s", failin,
+                objectdbg_BM (_.stmtob),
+		debug_outstr_value_BM(_.causev, CURFRAME_BM, 0));
+  _.errorv = (value_tyBM)
+    makenode5_BM (k_miniscan_stmt, _.stmtob, _.causev, _.routprepob,
+                  taggedint_BM (depth), _.fromob);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 } /* end miniscan_stmt°basiclo_while   _2Cj1ZVDhCVO_8qT2Um5Ok7f*/
 
+
+
+////////////////
 
 // miniscan_stmt°basiclo_lockobj  _8fKRsxM1q9w_3hFovzBicI7
 
@@ -942,10 +1038,6 @@ ROUTINEOBJNAME_BM (_8fKRsxM1q9w_3hFovzBicI7)    // miniscan_stmt°basiclo_lockob
   int depth = -1;
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev= (value_tyBM)(Cause); goto failure; } while(0)
-#warning unimplemented miniscan_stmt°basiclo_lockobj  _8fKRsxM1q9w_3hFovzBicI7 routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented  miniscan_stmt°basiclo_lockobj _8fKRsxM1q9w_3hFovzBicI7 routine");
   _.stmtob = objectcast_BM (arg1);
   _.routprepob = objectcast_BM (arg2);
   depth = getint_BM (arg3);
@@ -1026,8 +1118,9 @@ ROUTINEOBJNAME_BM (_8fKRsxM1q9w_3hFovzBicI7)    // miniscan_stmt°basiclo_lockob
   LOCALRETURN_BM (_.stmtob);
 failure:
 #undef FAILHERE
-  DBGPRINTF_BM ("miniscan_stmt°basiclo_lockobj failin %d stmtob=%s", failin,
-                objectdbg_BM (_.stmtob));
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_lockobj failin %d stmtob=%s cause %s", failin,
+                objectdbg_BM (_.stmtob),
+		debug_outstr_value_BM(_.causev, CURFRAME_BM, 0));
   _.errorv = (value_tyBM)
     makenode5_BM (k_miniscan_stmt, _.stmtob, _.causev, _.routprepob,
                   taggedint_BM (depth), _.fromblockob);
