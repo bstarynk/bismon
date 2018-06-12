@@ -231,7 +231,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
 /// method to browse_value for object-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe);
 value_tyBM
-ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
+ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    // browse_value°object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -245,13 +245,16 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
   ASSERT_BM (istaggedint_BM (arg2));
   ASSERT_BM (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * objbrows;);
+		  const objectval_tyBM * objbrows; //
+		  value_tyBM commentv; //
+		  );
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   ASSERT_BM (maxdepth > 0);
   int curdepth = getint_BM (arg3);
   //  ASSERT_BM (curdepth <= maxdepth);
   const char *objnam = findobjectname_BM (_.objbrows);
+  _.commentv = objgetattr_BM(_.objbrows, BMP_comment);
 #ifdef BISMONGTK
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   char idbuf[32];
@@ -278,6 +281,26 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
     {                           // anonymous
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
                                         idbuf, -1, objid_brotag_BM, NULL);
+      if (isstring_BM(_.commentv) && curdepth < 2) {
+	const char*commstr = bytstring_BM(_.commentv);
+	int commsiz = lenstring_BM(_.commentv);
+	int showsiz = commsiz;
+	const char*eolp = strchr(commstr, '\n');
+	const char*barp = strchr(commstr, '|');
+	if (eolp && eolp-commstr < showsiz) showsiz =  eolp-commstr;
+	if (barp && barp-commstr < showsiz) showsiz = barp-commstr;
+	if (showsiz>0) {
+          gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
+                                            " |/", -1, objrefcomm_brotag_BM,
+                                            NULL);
+          gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
+                                            commstr,
+                                            showsiz, objrefcomm_brotag_BM, NULL);
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, "|", -1,
+                                            objrefcomm_brotag_BM, NULL);
+	}
+      }
     }
 #else /*!BISMONGTK */
   weakassertfailureat_BM
@@ -285,7 +308,7 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    //
      __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
-}                               /* end  ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe) */
+}                               /* end browse_value°object _0BAnB0xjs23_0WEOCOi5Nbe */
 
 
 

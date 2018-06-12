@@ -1,5 +1,5 @@
 // generated header file for predefined _bm_predef.h
-// this generated header file is GPLv3+ licensed
+// this generated header file _bm_predef.h is GPLv3+ licensed
 #if !defined(HAS_PREDEF_BM) && !defined(HAS_NAMED_PREDEF_BM)
 #error missing HAS_PREDEF_BM or HAS_NAMED_PREDEF_BM
 #endif

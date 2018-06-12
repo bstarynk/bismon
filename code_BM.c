@@ -1534,7 +1534,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
                              "// generated header file for predefined %s\n",
                              basepath);
   objstrbufferprintfpayl_BM (_.prsbufob,
-                             "// this generated header file is GPLv3+ licensed\n",
+                             "// this generated header file %s is GPLv3+ licensed\n",
                              basepath);
   _.prset = setpredefinedobjects_BM ();
   unsigned nbpredef = setcardinal_BM (_.prset);
