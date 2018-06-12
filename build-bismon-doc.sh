@@ -82,4 +82,4 @@ bibhva htmldoc/bismon-htmldoc
 ls -l $PWD/*aux $PWD/*/*aux 
 hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-doc
 #hacha -o htmldoc/index.html  htmldoc/bismon-htmldoc.html
-tar -cz -f bismondoc-html.tar.gz -C doc htmldoc 
+tar -cz -f bismondoc-html.tar.gz  htmldoc 
