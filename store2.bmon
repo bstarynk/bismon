@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 641 objects
+// for 647 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -53,6 +53,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !@ 1513062722.740
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_3dmcFZldtxI_1bEIFl4jqe3
+
+
+
+!(_1n01DZ07WJd_6CFM4ML8wTl |=append|
+!~ name (~ append
+~)
+!@ 1528780912.899
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector to append something"
+!)_1n01DZ07WJd_6CFM4ML8wTl
 
 
 
@@ -5188,6 +5199,17 @@ _17mrxkMdNtH_2CduQ2WDIy5 _8g1WBJBhDT9_1QK8IcuWYx2)
 
 
 
+!(_2ZRs311i9vL_879JrfYeaKf |=prepend|
+!~ name (~ prepend
+~)
+!@ 1528781011.282
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector to prepend something"
+!)_2ZRs311i9vL_879JrfYeaKf
+
+
+
 !(_7ALBmiM4ZPF_2LtorcTj8gO |=previous_frame|
 !~ name (~ previous_frame
 ~)
@@ -7705,6 +7727,16 @@ _6iYgjRt0FIx_4ax63M6n2U6
 
 
 
+!(_4SHtP3KRbRJ_7MyS1z6q4uH
+!|*
+!@ 1528780912.906
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "append\u00b0list_object"
+!)_4SHtP3KRbRJ_7MyS1z6q4uH
+
+
+
 !(_50d65bJypCN_6IJeVtssx9I
 !|*
 !@ 1506846789.860
@@ -7715,6 +7747,16 @@ _6iYgjRt0FIx_4ax63M6n2U6
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _6qi1DW0Ygkl_4Aqdxq4n5IV _9qn0Hp8HaF5_7yeAJiNYtp5) ~)
 
 !)_50d65bJypCN_6IJeVtssx9I
+
+
+
+!(_54m6lxyj7CC_4yjvMeuW5ed
+!|*
+!@ 1528780412.512
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dump_scan\u00b0list_object"
+!)_54m6lxyj7CC_4yjvMeuW5ed
 
 
 
@@ -8168,6 +8210,16 @@ _4lKK08v9A0t_0GGsir35UxP _4bYUiDmxrKK_6nPPlEl8y8x) ~)
 !& _8y60zCwYsj4_4MKReQrfwGI
 !& _8X0BDdDTJe6_8OoRGA5RDeF
 !)_7aRr2DYoXS7_0jbH59RVcFR
+
+
+
+!(_7bYkaDpv7ax_0eU9qZZ9r5V
+!|*
+!@ 1528780523.889
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dump_data\u00b0list_object"
+!)_7bYkaDpv7ax_0eU9qZZ9r5V
 
 
 
@@ -8851,6 +8903,16 @@ _3vvVJBONOyK_3kn86nuYwr1
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
 _0UHZG9vDlR2_2Aqx86LMFuq
 !)_9le67LL7S9y_5VGpniEUNDA
+
+
+
+!(_9rSvONCa1Oo_1Hlzny0C3aF
+!|*
+!@ 1528781011.283
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "prepend\u00b0list_object"
+!)_9rSvONCa1Oo_1Hlzny0C3aF
 
 
 

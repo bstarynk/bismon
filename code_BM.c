@@ -4147,6 +4147,96 @@ ROUTINEOBJNAME_BM (_8AzRspWL4ws_3cdvWV4S1JH)    //
 }                               /* end dump_data°hashmapval_object _8AzRspWL4ws_3cdvWV4S1JH */
 
 
+//////////////// list_object methods
+
+// append°list_object _4SHtP3KRbRJ_7MyS1z6q4uH
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_4SHtP3KRbRJ_7MyS1z6q4uH);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_4SHtP3KRbRJ_7MyS1z6q4uH) // append°list_object
+(struct stackframe_stBM* stkf, //
+ const value_tyBM arg1, //
+ const value_tyBM arg2, //
+ const value_tyBM arg3, //
+ const value_tyBM arg4_  __attribute__((unused)), //
+ const quasinode_tyBM* restargs_  __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr:*/ BMK_4SHtP3KRbRJ_7MyS1z6q4uH,
+                 value_tyBM resultv;
+  );
+#warning unimplemented append°list_object  _4SHtP3KRbRJ_7MyS1z6q4uH routine
+  WEAKASSERT_BM(false && "unimplemented append°list_object _4SHtP3KRbRJ_7MyS1z6q4uH routine");
+  LOCALRETURN_BM(_.resultv);
+} /* end append°list_object _4SHtP3KRbRJ_7MyS1z6q4uH*/
+
+
+// prepend°list_object _9rSvONCa1Oo_1Hlzny0C3aF
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9rSvONCa1Oo_1Hlzny0C3aF);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_9rSvONCa1Oo_1Hlzny0C3aF) // prepend°list_object
+(struct stackframe_stBM* stkf, //
+ const value_tyBM arg1, //
+ const value_tyBM arg2, //
+ const value_tyBM arg3, //
+ const value_tyBM arg4_  __attribute__((unused)), //
+ const quasinode_tyBM* restargs_  __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr:*/ BMK_9rSvONCa1Oo_1Hlzny0C3aF,
+                 value_tyBM resultv;
+  );
+#warning unimplemented prepend°list_object _9rSvONCa1Oo_1Hlzny0C3aF routine
+  WEAKASSERT_BM(false && "unimplemented prepend°list_object _9rSvONCa1Oo_1Hlzny0C3aF routine");
+  LOCALRETURN_BM(_.resultv);
+} /* end  prepend°list_object _9rSvONCa1Oo_1Hlzny0C3aF*/
+
+// dump_scan°list_object _54m6lxyj7CC_4yjvMeuW5ed
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_54m6lxyj7CC_4yjvMeuW5ed);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_54m6lxyj7CC_4yjvMeuW5ed) //dump_scan°list_object
+(struct stackframe_stBM* stkf, //
+ const value_tyBM arg1, //
+ const value_tyBM arg2, //
+ const value_tyBM arg3, //
+ const value_tyBM arg4_  __attribute__((unused)), //
+ const quasinode_tyBM* restargs_  __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr:*/ BMK_54m6lxyj7CC_4yjvMeuW5ed,
+                 value_tyBM resultv;
+  );
+#warning unimplemented dump_scan°list_object routine
+  WEAKASSERT_BM(false && "dump_scan°list_object _54m6lxyj7CC_4yjvMeuW5ed routine");
+  LOCALRETURN_BM(_.resultv);
+} /* end dump_scan°list_object _54m6lxyj7CC_4yjvMeuW5ed*/
+
+
+
+// dump_data°list_object  _7bYkaDpv7ax_0eU9qZZ9r5V
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7bYkaDpv7ax_0eU9qZZ9r5V);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_7bYkaDpv7ax_0eU9qZZ9r5V) //dump_data°list_object
+(struct stackframe_stBM* stkf, //
+ const value_tyBM arg1, //
+ const value_tyBM arg2, //
+ const value_tyBM arg3, //
+ const value_tyBM arg4_  __attribute__((unused)), //
+ const quasinode_tyBM* restargs_  __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr:*/ BMK_7bYkaDpv7ax_0eU9qZZ9r5V,
+                 value_tyBM resultv;
+  );
+#warning unimplemented dump_data°list_object _7bYkaDpv7ax_0eU9qZZ9r5V routine
+  WEAKASSERT_BM(false && "unimplemented dump_data°list_object _7bYkaDpv7ax_0eU9qZZ9r5V routine");
+  LOCALRETURN_BM(_.resultv);
+} /* end dump_data°list_object _7bYkaDpv7ax_0eU9qZZ9r5V*/
+
+////////////////////////////////////////////////////////////////
 
 // todo function in our test_agenda  _7XDuHagbhi8_3V9zhBpbrrV
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7XDuHagbhi8_3V9zhBpbrrV);
