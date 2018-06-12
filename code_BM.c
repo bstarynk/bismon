@@ -3101,7 +3101,7 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
       _.resobj = makeobj_BM ();
       objputspacenum_BM (_.resobj, GlobalSp_BM);
     };
-  if (startix + 1 < nodwidth)
+  if (startix + 1 > nodwidth)
     {
       if (pars)
         parsererrorprintf_BM (pars,
