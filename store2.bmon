@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 675 objects
+// for 676 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -4869,6 +4869,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_6FcmuIO2DrS_7mzsaVpTMOI |=objstrbuffernewlinepayl|
+!~ name (~ objstrbuffernewlinepayl
+~)
+!@ 1528897474.528
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "add an indented newlines to strbuffer-object o1"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _6FcmuIO2DrS_7mzsaVpTMOI)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6FcmuIO2DrS_7mzsaVpTMOI  ":*/"  "objstrbuffernewlinepayl_BM"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!)_6FcmuIO2DrS_7mzsaVpTMOI
+
+
+
 !(_6cFSE2rDxvF_99QhDhtBeS4 |=objstrbufferprintint|
 !~ name (~ objstrbufferprintint
 ~)
@@ -9376,13 +9394,14 @@ _0UHZG9vDlR2_2Aqx86LMFuq
 
 
 !(_9Hf4n8AnqR7_7ve3Bi3kWMV
-!@ 1528893183.613
+!@ 1528896249.755
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of dump_data\u00b0list_object"
-!# 2
+!# 3
 !& _8ggHPTQI1iG_02hVE5KybEL
 !& _0zhpGzEVWGP_7WoL4LJocuS
+!& _0fygl91r6x5_8b3aCDptjAi
 !)_9Hf4n8AnqR7_7ve3Bi3kWMV
 
 

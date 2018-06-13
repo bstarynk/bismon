@@ -695,6 +695,10 @@ startblock__9Hf4n8AnqR7_7ve3Bi3kWMV:__attribute__ ((unused));
     _.n_833x2jYqhZh_8vDIuJhwz1k =       //assign _0zhpGzEVWGP_7WoL4LJocuS  
 /*nodewidth:*/ (intptr_t) nodewidth_BM (_.v_2BkOxf2KbS8_3bswrKbmgjy);
 
+
+    _.n_2W7Ckt2WxEM_4NVYgEWE73B =       //assign _0fygl91r6x5_8b3aCDptjAi  
+      0;
+
 /* !endingblock _9Hf4n8AnqR7_7ve3Bi3kWMV */
     goto endblock__9Hf4n8AnqR7_7ve3Bi3kWMV;
   endblock__9Hf4n8AnqR7_7ve3Bi3kWMV:;
