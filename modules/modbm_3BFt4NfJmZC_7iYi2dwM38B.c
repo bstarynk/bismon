@@ -721,7 +721,7 @@ startblock__9Hf4n8AnqR7_7ve3Bi3kWMV:__attribute__ ((unused));
 // while _9xjh4MB97y4_2d8ffcaNFYt comp#0:  
       {                         // start cexpansion _63n9WJxlgsW_7aRQkxcfyFp - objstrbuffersetindentpayl   
 /*objstrbuffersetindentpayl:*/
-        objstrbuffersetindentpayl ((_.o_1Bl1iFQ8boR_1xM6MOfHV1N), (1));
+        objstrbuffersetindentpayl_BM ((_.o_1Bl1iFQ8boR_1xM6MOfHV1N), (1));
       }                         // end cexpansion _63n9WJxlgsW_7aRQkxcfyFp - objstrbuffersetindentpayl   
 // while _9xjh4MB97y4_2d8ffcaNFYt comp#1:  
       if                        /*cond _77UdlAbpxto_6Df1iBKvvjP */
@@ -754,7 +754,7 @@ startblock__9Hf4n8AnqR7_7ve3Bi3kWMV:__attribute__ ((unused));
                     )), ((struct stackframe_stBM *) &_),
                    (_.o_1Bl1iFQ8boR_1xM6MOfHV1N),
                    (_.o_93FBSk1ML0f_2WjSuKa9TNU),
-                   (((value_ty) 0x3 /*!1 */ ))));
+                   (((value_tyBM) 0x3 /*!1 */ ))));
       }                         // end run _1dqdifzIKgH_2Lhk2bPUu7X  
 // while _9xjh4MB97y4_2d8ffcaNFYt comp#4:  
 
@@ -766,7 +766,7 @@ startblock__9Hf4n8AnqR7_7ve3Bi3kWMV:__attribute__ ((unused));
                    ((struct stackframe_stBM *) &_),
                    (_.o_1Bl1iFQ8boR_1xM6MOfHV1N),
                    (_.o_93FBSk1ML0f_2WjSuKa9TNU),
-                   (((value_ty) 0x3 /*!1 */ ))));
+                   (((value_tyBM) 0x3 /*!1 */ ))));
       }                         // end run _6HYDs1Zywvs_1w8OTn5XOZY  
 // while _9xjh4MB97y4_2d8ffcaNFYt comp#5:  
       _.n_2W7Ckt2WxEM_4NVYgEWE73B =     //assign _4nPRrjCznxv_354tRTC5amu   
@@ -786,7 +786,7 @@ startblock__9Hf4n8AnqR7_7ve3Bi3kWMV:__attribute__ ((unused));
 
     {                           // start cexpansion _5flu8xdOTMC_79tshj3uSa4 - objstrbuffersetindentpayl  
 /*objstrbuffersetindentpayl:*/
-      objstrbuffersetindentpayl ((_.o_1Bl1iFQ8boR_1xM6MOfHV1N), (0));
+      objstrbuffersetindentpayl_BM ((_.o_1Bl1iFQ8boR_1xM6MOfHV1N), (0));
     }                           // end cexpansion _5flu8xdOTMC_79tshj3uSa4 - objstrbuffersetindentpayl  
 
 

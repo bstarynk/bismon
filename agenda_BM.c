@@ -890,7 +890,7 @@ failure:
                 debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),        //
                 debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),        //
                 debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
-  _.errorv =
+  _.errorv = (value_tyBM)
     makenode6_BM (k_defer_module_load, _.modulob, (value_tyBM) _.postclos,
                   _.arg1v, _.arg2v, _.arg3v, _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);

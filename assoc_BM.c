@@ -565,7 +565,6 @@ assoc_removeattr_BM (anyassoc_tyBM * assoc, const objectval_tyBM * obattr)
   if (assotyp == typayl_assoctable_BM)
     {
       struct assoctable_stBM *atable = (struct assoctable_stBM *) assoc;
-      unsigned nbbuckets = ASSOCTABLESIZE_BM (atable);
       unsigned buckix = assoc_buckix_for_key_BM (assoc, obattr);
       struct assocpairs_stBM *curpairs =
         ((const struct assoctable_stBM *) assoc)->abuck_pairs[buckix];
@@ -1284,7 +1283,6 @@ hashmapvalgcdestroy_BM (struct garbcoll_stBM *gc, struct hashmapval_stBM *hsv)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (((typedhead_tyBM *) hsv)->htyp == typayl_hashmapval_BM);
-  unsigned ucnt = HASHMAPVALUCNT_BM (hsv);
   unsigned siz = HASHMAPVALSIZE_BM (hsv);
   memset (hsv, 0,
           sizeof (*hsv) + siz * sizeof (struct hashmapvbucket_stBM *));
@@ -1336,7 +1334,6 @@ hashmapvalfindindexes_BM (struct hashmapval_stBM *hmv, value_tyBM val)
   ASSERT_BM (hmv && ((typedhead_tyBM *) hmv)->htyp == typayl_hashmapval_BM);
   if (!val)
     return EMPTYPAIRINDEXES_BM;
-  unsigned ucnt = HASHMAPVALUCNT_BM (hmv);
   unsigned siz = HASHMAPVALSIZE_BM (hmv);
   ASSERT_BM (siz < MAXSIZE_BM && siz > 2);
   hash_tyBM hva = valhash_BM (val);
