@@ -6055,7 +6055,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !@ 1524221243.850
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "first minifunc in first_test_module;\n if"& " its argument is a number value, return its"& " successor as a taggedint value"
+ "first minifunc in first_test_module; if its"& " argument is a number value, return its successor"& " as a taggedint value"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _3vRFuniDv1K_4bQ7DeekM2I ]
 !: _32eKNcTZ9HN_80t0nk47Mha |=numbers|

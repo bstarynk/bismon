@@ -2358,9 +2358,9 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
 {
   objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
   objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
-  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
+  //objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   objectval_tyBM *k_origin = BMK_1xhcI0ZnQ6f_5xOLATXqawx;
-  objectval_tyBM *k_basiclo_cexpansion = BMK_4GJJnvyrLyW_5mhopCYvh8h;
+  //objectval_tyBM *k_basiclo_cexpansion = BMK_4GJJnvyrLyW_5mhopCYvh8h;
   objectval_tyBM *k_basiclo_cexpander = BMK_9pJUJ57N6RL_2nsXFzR6S3E;
   objectval_tyBM *k_results = BMK_5ve5gbSjN0r_1n61nNRPtnN;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
@@ -2443,7 +2443,7 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
       }
     else if (istuple_BM (_.expresultsv))
       {
-        if (nbstmtresults != tuplesize_BM (_.expresultsv))
+        if (nbstmtresults != (int) tuplesize_BM (_.expresultsv))
           FAILHERE (makenode2_BM (k_results, _.expresultsv, _.stmtresultsv));
         for (int rix = 0; rix < nbstmtresults; rix++)
           {
@@ -2474,7 +2474,7 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
   // match expargsv with stmtargsv
   {
     int nbstmtargs = nodewidth_BM (_.stmtargsv);
-    if (nbstmtargs != tuplesize_BM (_.expargsv))
+    if (nbstmtargs != (int) tuplesize_BM (_.expargsv))
       FAILHERE (makenode2_BM (k_arguments, _.expresultsv, _.stmtresultsv));
     for (int aix = 0; aix < nbstmtargs; aix++)
       {
@@ -3444,7 +3444,7 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
           ("+++++ (%d bytes)\n%s\n----- compile log of %s\n", lenout,
            bytstring_BM (_.outstrv), objectdbg_BM (_.modulob));
     }
-  char *prevpathstr = NULL;
+  const char *prevpathstr = NULL;
   char *srcpathstr = NULL;
   if (status)
     {
@@ -3528,7 +3528,7 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
     free (srcpathstr), srcpathstr = NULL;
   if (status)
     LOCALRETURN_BM (NULL);
-  _.postclosv =
+  _.postclosv = (value_tyBM)
     makeclosure3_BM (kk_after_load_of_module, _.modulob, _.modgenob,
                      _.moddirstrv);
   DBGPRINTF_BM ("after-compilation-of-module modulob %s postclosv=%s before defer_module_load", objectdbg_BM (_.modulob),       //
@@ -3630,7 +3630,7 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
     }
   if (isstring_BM (_.moddirstrv))
     {
-      char *prevstr =
+      const char *prevstr =
         asprintf_prev_module_BM (bytstring_BM (_.moddirstrv), _.modulob);
       if (!access (prevstr, R_OK))
         {
@@ -3641,12 +3641,10 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
           char *bak2str = NULL;
           if (modulistemporary)
             asprintf (&bak1str, "%s/" TEMPMODULEPREFIX_BM "%s.c~%%",
-                      bytstring_BM (_.moddirstrv), modulidbuf,
-                      (int) getpid ());
+                      bytstring_BM (_.moddirstrv), modulidbuf);
           else
             asprintf (&bak1str, "%s/" MODULEPREFIX_BM "%s.c~%%",
-                      bytstring_BM (_.moddirstrv), modulidbuf,
-                      (int) getpid ());
+                      bytstring_BM (_.moddirstrv), modulidbuf);
           if (bak1str)
             asprintf (&bak2str, "%s~", bak1str);        // so make a file ending with .c~%~
           if (bak1str && bak2str)
@@ -3656,7 +3654,7 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
           free (bak1str), bak1str = NULL;
           free (bak2str), bak2str = NULL;
         }
-      free (prevstr), prevstr = NULL;
+      free ((void*)prevstr), prevstr = NULL;
     }
   if (_.taskletob)
     {
@@ -3737,7 +3735,7 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
            oix, constidarr[oix], objectdbg_BM (_.modulob));
       constobjarr[oix] = _.curob;
     }
-  _.constsetv = makeset_BM ((const objectval_tyBM **) constobjarr, nbconstid);
+  _.constsetv = (value_tyBM) makeset_BM ((const objectval_tyBM **) constobjarr, nbconstid);
   objectval_tyBM **routarr = calloc (nbroutid + 1, sizeof (objectval_tyBM *));
   if (!routarr)
     FATAL_BM ("calloc failed for %d routines", nbroutid);
@@ -3769,7 +3767,7 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
       _.routob->ob_rout = routr;
       _.routob->ob_sig = BMP_function_sig;
     }
-  _.routupv = maketuple_BM (routarr, nbroutid);
+  _.routupv = (value_tyBM) maketuple_BM (routarr, nbroutid);
   NONPRINTF_BM ("simple_module_initialize ending modulob %s modulid %s\n" ".. constset %s\n" ".. routup %s\n" ".. arg1 %s arg2 %s arg3 %s\n", objectdbg_BM (_.modulob), modulid,        //
                 debug_outstr_value_BM (_.constsetv, CURFRAME_BM, 0),    //
                 debug_outstr_value_BM (_.routupv, CURFRAME_BM, 0),      //
@@ -4154,9 +4152,9 @@ ROUTINEOBJNAME_BM (_8ru2DB8XTmJ_7h8mj1NTpKM)    // miniscan_node_conn#make_tree
   objectval_tyBM *k_arity = BMK_6fPPUXnZhy5_8Lh5DOOe0Nu;
   objectval_tyBM *k_node = BMK_7D8xcWnEiys_8oqOVSkCxkA;
   objectval_tyBM *k_closure = BMK_93zjUzZVAaj_9ppXv7C34GR;
-  objectval_tyBM *k_connective = BMK_64FyzTwMoeT_9W2OIW95K2H;
+  //objectval_tyBM *k_connective = BMK_64FyzTwMoeT_9W2OIW95K2H;
   objectval_tyBM *k_object = BMK_7T9OwSFlgov_0wVJaK1eZbn;
-  objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
+  //objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_8ru2DB8XTmJ_7h8mj1NTpKM,
                  objectval_tyBM * connob;       //
