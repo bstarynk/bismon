@@ -1602,7 +1602,7 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
               {
                 intptr_t numexclam = getint_BM (_.exclamv);
                 objstrbufferprintfpayl_BM (_.modgenob,
-                                           " ((value_ty)%#llx /*!%lld*/)",
+                                           " ((value_tyBM)%#llx /*!%lld*/)",
                                            (long long) _.exclamv,
                                            (long long) numexclam);
               }
