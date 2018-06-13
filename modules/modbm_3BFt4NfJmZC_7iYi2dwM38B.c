@@ -685,7 +685,17 @@ value_tyBM crout_5j8LpQULt1p_9oeOaqmfYYr_BM     //#7
   // routine _5j8LpQULt1p_9oeOaqmfYYr body:
 
 startblock__9Hf4n8AnqR7_7ve3Bi3kWMV:__attribute__ ((unused));
-  {                             /* +block _9Hf4n8AnqR7_7ve3Bi3kWMV *//* !endingblock _9Hf4n8AnqR7_7ve3Bi3kWMV */
+  {                             /* +block _9Hf4n8AnqR7_7ve3Bi3kWMV */
+    _.v_2BkOxf2KbS8_3bswrKbmgjy =       //assign _8ggHPTQI1iG_02hVE5KybEL  
+      /*objlisttonodepayl: */
+      (value_tyBM) objlisttonodepayl_BM ((_.o_97rnxb0KFqq_44veN75DG2E), ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[9] /*|node */
+                                                                         )));
+
+
+    _.n_833x2jYqhZh_8vDIuJhwz1k =       //assign _0zhpGzEVWGP_7WoL4LJocuS  
+/*nodewidth:*/ (intptr_t) nodewidth_BM (_.v_2BkOxf2KbS8_3bswrKbmgjy);
+
+/* !endingblock _9Hf4n8AnqR7_7ve3Bi3kWMV */
     goto endblock__9Hf4n8AnqR7_7ve3Bi3kWMV;
   endblock__9Hf4n8AnqR7_7ve3Bi3kWMV:;
   }
