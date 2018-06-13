@@ -567,7 +567,7 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    // browse_value°int
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
     );
   intptr_t i = getint_BM (arg1);
-#ifdef BISONGTK
+#ifdef BISMONGTK
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   char ibuf[32];
   memset (ibuf, 0, sizeof (ibuf));
