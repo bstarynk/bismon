@@ -657,17 +657,20 @@ value_tyBM crout_5j8LpQULt1p_9oeOaqmfYYr_BM     //#7
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 4 local values:
+    /// 5 local values:
     objectval_tyBM *o_1Bl1iFQ8boR_1xM6MOfHV1N;  // o3
+    value_tyBM v_2BkOxf2KbS8_3bswrKbmgjy;       // v_node
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ;       // v_r
     objectval_tyBM *o_93FBSk1ML0f_2WjSuKa9TNU;  // o2
     objectval_tyBM *o_97rnxb0KFqq_44veN75DG2E;  // o1
-    /// 0 local numbers:
+    /// 2 local numbers:
+    intptr_t n_2W7Ckt2WxEM_4NVYgEWE73B; // ii
+    intptr_t n_833x2jYqhZh_8vDIuJhwz1k; // leni
   } _;
   memset (&_, 0, sizeof (struct frame_5j8LpQULt1p_9oeOaqmfYYr_BMst));
   _.stkfram_head.htyp = typayl_StackFrame_BM;
   _.stkfram_head.hgc = 0;
-  _.stkfram_head.rlen = 4;
+  _.stkfram_head.rlen = 5;
   _.stkfram_descr =
     constob_3BFt4NfJmZC_7iYi2dwM38B_BM[7] /*|_5j8LpQULt1p_9oeOaqmfYYr */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
