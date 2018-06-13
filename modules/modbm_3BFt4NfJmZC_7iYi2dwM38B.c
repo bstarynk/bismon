@@ -39,9 +39,9 @@ extern objrout_sigBM crout_82ho9wUUDji_4peMLha4PXl_BM;  //#9 findobj_scan_minifu
 extern objrout_sigBM crout_8imWClcIFKt_6w2H2ouB4I6_BM;  //#10 iterate_sequence_minifunc
 
 
-// declare 15 constants
-objectval_tyBM *constob_3BFt4NfJmZC_7iYi2dwM38B_BM[15 + 1];
-const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[15 + 1];
+// declare 16 constants
+objectval_tyBM *constob_3BFt4NfJmZC_7iYi2dwM38B_BM[16 + 1];
+const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[16 + 1];
 
 
 // define 11 routines
@@ -584,7 +584,7 @@ value_tyBM crout_4iEFTEcHxeb_6lH464uFkTC_BM     //#6+
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 3;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[8] /*|equal_to_closed_minifunc */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[1] /*|equal_to_closed_minifunc */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -803,8 +803,8 @@ startblock__9Hf4n8AnqR7_7ve3Bi3kWMV:__attribute__ ((unused));
       {                         // run _1dqdifzIKgH_2Lhk2bPUu7X  
         (send3_BM (((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[3] /*|add */ )),
                    /*sel: */
-                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[4]      /*|dump_value */
-                    )), ((struct stackframe_stBM *) &_),
+                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[4] /*|dump_value */
+                     )), ((struct stackframe_stBM *) &_),
                    (_.o_1Bl1iFQ8boR_1xM6MOfHV1N),
                    (_.o_93FBSk1ML0f_2WjSuKa9TNU),
                    (((value_tyBM) 0x3 /*!1 */ ))));
@@ -814,8 +814,8 @@ startblock__9Hf4n8AnqR7_7ve3Bi3kWMV:__attribute__ ((unused));
       {                         // run _6HYDs1Zywvs_1w8OTn5XOZY  
         (send3_BM ((            /*nodenthson: */
                      nodenthson_BM ((_.v_2BkOxf2KbS8_3bswrKbmgjy), (_.n_2W7Ckt2WxEM_4NVYgEWE73B))),     /*sel: */
-                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[4]      /*|dump_value */
-                    )),
+                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[4] /*|dump_value */
+                     )),
                    ((struct stackframe_stBM *) &_),
                    (_.o_1Bl1iFQ8boR_1xM6MOfHV1N),
                    (_.o_93FBSk1ML0f_2WjSuKa9TNU),
@@ -1037,8 +1037,8 @@ epilog_8imWClcIFKt_6w2H2ouB4I6:__attribute__ ((unused));
 // end of 11 generated routines
 
 
-// the constant ids for 15 constants:
-const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[15 + 1] = {
+// the constant ids for 16 constants:
+const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[16 + 1] = {
   /*0: */
   "_0JktC4mAHCa_1KNr6uMIqIi",
   "_0SinERsgdvQ_57dLCP63i9r",
@@ -1056,8 +1056,9 @@ const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[15 + 1] = {
   "_7D8xcWnEiys_8oqOVSkCxkA",   //node
   "_82ho9wUUDji_4peMLha4PXl",   //findobj_scan_minifunc
   "_8imWClcIFKt_6w2H2ouB4I6",   //iterate_sequence_minifunc
+  "_8lV53mLyu1H_3Z1SI8wDBK1",   //clear
   NULL
-};                              // end 15 constant ids
+};                              // end 16 constant ids
 
 
 
