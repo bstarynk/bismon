@@ -438,7 +438,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
       const char*eol = strchr(combytes, '\n');
       if (eol) comlen = eol-combytes;
       if (comlen>0) 
-	objstrbufferprintfpayl_BM (_.modgenob, "//!%*s\n", comlen, combytes);
+	objstrbufferprintfpayl_BM (_.modgenob, "//!%.*s\n", comlen, combytes);
     }
     objstrbufferprintfpayl_BM (_.modgenob, "  // %d arguments\n", nbargs);
     for (int aix = 0; aix < 4; aix++)
