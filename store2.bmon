@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 673 objects
+// for 675 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -1505,11 +1505,11 @@ _6YnYKKsHo3f_9nIEOZMp744
 !(_3BFt4NfJmZC_7iYi2dwM38B |=first_misc_module|
 !~ name (~ first_misc_module
 ~)
-!@ 1528799329.504
+!@ 1528874425.918
 !$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "a module with various simple minifunc-s"
-!# 9
+!# 10
 !& _8imWClcIFKt_6w2H2ouB4I6
 !& _3yQlckX4DRh_4b9l9FBSSSL
 !& _4iEFTEcHxeb_6lH464uFkTC
@@ -1519,6 +1519,7 @@ _6YnYKKsHo3f_9nIEOZMp744
 !& _4M7lr5cU6VD_5hxmeH3baBf
 !& _3iiht57Wrs1_5NbiUi27oBn
 !& _0JktC4mAHCa_1KNr6uMIqIi
+!& _5j8LpQULt1p_9oeOaqmfYYr
  // emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
 
 !)_3BFt4NfJmZC_7iYi2dwM38B
@@ -8073,6 +8074,21 @@ _883QaWUOedh_9zmHk2A3RPm
 
 
 
+!(_5j8LpQULt1p_9oeOaqmfYYr
+!@ 1528874587.003
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dump_data\u00b0list_object minifunc;\no1 is the"& " list_object, o2 is the dumperobj, o3 is"& " the strbufob"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _93FBSk1ML0f_2WjSuKa9TNU _1Bl1iFQ8boR_1xM6MOfHV1N ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_9Hf4n8AnqR7_7ve3Bi3kWMV
+!)_5j8LpQULt1p_9oeOaqmfYYr
+
+
+
 !(_5mfKaUSS5M3_7TkY2bYFtdL
 !@ 1513362380.720
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
@@ -9347,6 +9363,15 @@ _0UHZG9vDlR2_2Aqx86LMFuq
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "miniscan_node_conn#collect_sequence"
 !)_9FtctWvW1qr_5mEGPxjn1co
+
+
+
+!(_9Hf4n8AnqR7_7ve3Bi3kWMV
+!@ 1528874587.003
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _2U8Sj78DMbl_5eerKpaJsNq ()
+!)_9Hf4n8AnqR7_7ve3Bi3kWMV
 
 
 
