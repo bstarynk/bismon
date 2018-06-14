@@ -1254,9 +1254,20 @@ ROUTINEOBJNAME_BM (_01zabIzVKNR_8AGQGMBkSd7)    //commandhandler#,insert
  const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
+  objectval_tyBM *k_failure_non_object = BMK_6yWldsq3Rmk_01WqTfwSIDV;
+  objectval_tyBM *k_failure_bad_rank = BMK_8MFQuVGkedx_8OkpYlCQFip;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_01zabIzVKNR_8AGQGMBkSd7,
-                 value_tyBM resultv;
+                 value_tyBM resultv;    //
+                 objectval_tyBM * obj;  //
+                 value_tyBM val;        //
     );
+  _.obj = objectcast_BM (arg1);
+  int rk = getintdefault_BM (arg2, -1);
+  _.val = arg3;
+  if (!isobject_BM (_.obj))
+    FAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
+  if (!istaggedint_BM (arg2))
+    FAILURE_BM (__LINE__, k_failure_bad_rank, CURFRAME_BM);
 #warning unimplemented commandhandler#,insert _01zabIzVKNR_8AGQGMBkSd7 routine
   WEAKASSERT_BM (false
                  &&
