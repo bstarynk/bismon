@@ -1268,6 +1268,9 @@ ROUTINEOBJNAME_BM (_01zabIzVKNR_8AGQGMBkSd7)    //commandhandler#,insert
     FAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
   if (!istaggedint_BM (arg2))
     FAILURE_BM (__LINE__, k_failure_bad_rank, CURFRAME_BM);
+  DBGPRINTF_BM ("commandhandler#,insert obj %s rk %d val %s",
+                objectdbg_BM (_.obj), rk,
+                debug_outstr_value_BM (_.val, CURFRAME_BM, 0));
   objinsertonecomp_BM (_.obj, rk, _.val);
   if (pthread_self () == mainthreadid_BM)
     {
