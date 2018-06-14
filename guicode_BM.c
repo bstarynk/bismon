@@ -1268,11 +1268,16 @@ ROUTINEOBJNAME_BM (_01zabIzVKNR_8AGQGMBkSd7)    //commandhandler#,insert
     FAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
   if (!istaggedint_BM (arg2))
     FAILURE_BM (__LINE__, k_failure_bad_rank, CURFRAME_BM);
-#warning unimplemented commandhandler#,insert _01zabIzVKNR_8AGQGMBkSd7 routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented commandhandler#,insert  _01zabIzVKNR_8AGQGMBkSd7 routine");
-  LOCALRETURN_BM (_.resultv);
+  objinsertonecomp_BM (_.obj, rk, _.val);
+  if (pthread_self () == mainthreadid_BM)
+    {
+      log_begin_message_BM ();
+      log_puts_message_BM ("In object ");
+      log_object_message_BM (_.obj);
+      log_printf_message_BM (" inserted value at rank #%d.", rk);
+      log_end_message_BM ();
+    }
+  LOCALRETURN_BM (_.obj);
 }                               /* end commandhandler#,insert  _01zabIzVKNR_8AGQGMBkSd7 */
 
 ////////////////
