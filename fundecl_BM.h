@@ -43,6 +43,7 @@ extern double taskletcputime_BM (void);
 extern double taskletelapsedtime_BM (void);
 static inline bool istaggedint_BM (value_tyBM v);
 static inline intptr_t getint_BM (value_tyBM v);
+static inline intptr_t getintdefault_BM (value_tyBM v, intptr_t df);
 static inline value_tyBM taggedint_BM (intptr_t i);
 
 static inline int valtype_BM (const value_tyBM v);

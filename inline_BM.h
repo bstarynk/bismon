@@ -92,6 +92,14 @@ getint_BM (value_tyBM v)
   return 0;
 }                               /* end getint_BM */
 
+intptr_t
+getintdefault_BM (value_tyBM v, intptr_t def)
+{
+  if (istaggedint_BM (v))
+    return ((intptr_t) v) >> 1;
+  return def;
+}                               /* end getintdefault_BM */
+
 value_tyBM
 taggedint_BM (intptr_t i)
 {
