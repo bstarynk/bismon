@@ -7231,8 +7231,10 @@ _8dLpuaNoSGN_2tdmkpINCsu) ~)
 
 
 !(_1dqdifzIKgH_2Lhk2bPUu7X
-!@ 1528900815.960
+!@ 1528977565.700
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "send: add->dump_value ..."
 !: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
  * _4RFtYFUdfau_7Vm5jZ4Wm8e (  * _5P2fpxElfqT_7NlO7H9TYGI ( _1dzZlwqKdLH_8HjkBsL9Mar _1FEnnpEkGdI_5DAcVDL5XHG _1Bl1iFQ8boR_1xM6MOfHV1N _93FBSk1ML0f_2WjSuKa9TNU  * _0e54seiZEXF_1Myf620cHoB (  1)))
 !: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
@@ -8054,8 +8056,10 @@ _39pW7nyFqoI_5pikyvvGsZ5
 
 
 !(_4nPRrjCznxv_354tRTC5amu
-!@ 1528900815.961
+!@ 1528977870.974
 !$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "ii := ii + 1"
 !: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
  * _0aWpxE7aiWs_71KTgYdlifE ( _2W7Ckt2WxEM_4NVYgEWE73B  * _3fb1EHtMPwQ_7XEPTUgUmX4 ( _2W7Ckt2WxEM_4NVYgEWE73B  1))
 !# 2
@@ -8173,8 +8177,10 @@ _6iYgjRt0FIx_4ax63M6n2U6
 
 
 !(_4L5hoWsh9Dl_112aUlLRWBa
-!@ 1528900815.959
+!@ 1528977491.318
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit newline"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  * _0jFqaPPHgYH_5JpjOPxQ67p ( _1Bl1iFQ8boR_1xM6MOfHV1N)
 !: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
@@ -8564,8 +8570,10 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 !(_63n9WJxlgsW_7aRQkxcfyFp
-!@ 1528900815.957
+!@ 1528977452.119
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "indent @ 1"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  * _0jFqaPPHgYH_5JpjOPxQ67p ( _1Bl1iFQ8boR_1xM6MOfHV1N  1)
 !: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
@@ -8711,8 +8719,10 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 !(_6HYDs1Zywvs_1w8OTn5XOZY
-!@ 1528900815.960
+!@ 1528977814.047
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "send: v_node[ii]->dump_value ..."
 !: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
  * _4RFtYFUdfau_7Vm5jZ4Wm8e (  * _5P2fpxElfqT_7NlO7H9TYGI (  * _4spk03uJzY0_2H7bFVFr5Eb ( _2BkOxf2KbS8_3bswrKbmgjy _2W7Ckt2WxEM_4NVYgEWE73B) _1FEnnpEkGdI_5DAcVDL5XHG _1Bl1iFQ8boR_1xM6MOfHV1N _93FBSk1ML0f_2WjSuKa9TNU  * _0e54seiZEXF_1Myf620cHoB (  1)))
 !: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
