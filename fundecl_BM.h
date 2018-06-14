@@ -84,6 +84,7 @@ extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[]);
 extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32]);
 #endif
 // to be called from debugger
+// actually the objectdbg* functions use some static thread-local buffer
 extern const char *iddbg_BM (rawid_tyBM id);    // non reentrant!
 extern const char *objectdbg_BM (const objectval_tyBM * obj);   // non reentrant!
 

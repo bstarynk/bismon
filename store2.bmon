@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 690 objects
+// for 691 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -4084,6 +4084,28 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_7G8ttEOFL0O_0pzTv2Gzmxs |=objinsertonecomp|
+!~ name (~ objinsertonecomp
+~)
+!@ 1528959699.562
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in object o1 insert one component at position i2 of value v3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb _0sDAwfyl4r3_8kDdVlE90M3 ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _7G8ttEOFL0O_0pzTv2Gzmxs)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _7G8ttEOFL0O_0pzTv2Gzmxs  ":*/"  " "  "objinsertonecomp_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "),"  " " 
+ "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0sDAwfyl4r3_8kDdVlE90M3) 
+  "))")
+!)_7G8ttEOFL0O_0pzTv2Gzmxs
+
+
+
 !(_3Lc02WgQszX_56W0z3TugcL |=objlastcomp|
 !~ name (~ objlastcomp
 ~)
@@ -4637,7 +4659,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !(_3xmThtyZ4mg_4gcntruApeS |=objremoveonecomp|
 !~ name (~ objremoveonecomp
 ~)
-!@ 1528003463.954
+!@ 1528959566.973
 !$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "remove in object o1 component at rank i2"
