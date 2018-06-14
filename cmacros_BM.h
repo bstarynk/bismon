@@ -186,7 +186,7 @@
 
 // we could use DBGPRINTF_BM and later replace it by NONPRINTF_BM
 #define DBGPRINTFATBIS_BM(Fil,Lin,Fmt,...) do { \
-    printf("%s:%d: " Fmt "\n",			\
+    if (debugmsg_BM) printf("%s:%d: " Fmt "\n",	\
 	   basename((Fil)), (Lin),		\
 	 ##__VA_ARGS__);			\
 } while(0)

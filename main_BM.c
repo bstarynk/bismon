@@ -33,6 +33,7 @@
 struct timespec startrealtimespec_BM;
 void *dlprog_BM;
 bool gui_is_running_BM;
+bool debugmsg_BM;
 int nbworkjobs_BM;
 const char myhostname_BM[80];
 thread_local struct threadinfo_stBM *curthreadinfo_BM;
@@ -327,6 +328,13 @@ const GOptionEntry optab[] = {
    .arg = G_OPTION_ARG_NONE,
    .arg_data = &batch_bm,
    .description = "run in batch mode without GUI",
+   .arg_description = NULL},
+  //
+  {.long_name = "debug",.short_name = (char) 'D',
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &debugmsg_BM,
+   .description = "gives lots of debug messages",
    .arg_description = NULL},
   //
   {.long_name = "emit-module",.short_name = (char) 0,

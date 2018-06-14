@@ -38,6 +38,8 @@ extern atomic_bool want_garbage_collection_BM;
 extern bool gui_is_running_BM;
 extern FILE *gui_command_log_file_BM;
 
+extern bool debugmsg_BM;
+
 #ifdef BISMONGTK
 extern GtkTextIter browserit_BM;
 #endif
