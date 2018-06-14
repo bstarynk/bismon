@@ -536,7 +536,7 @@ main (int argc, char **argv)
       fprintf (stderr, "[bismon] requires at least one argument\n");
       exit (EXIT_FAILURE);
     }
-  if (argc > 1 && !strcmp (argv[1], "-D") || !strcmp (argv[1], "--debug"))
+  if (argc > 1 && (!strcmp (argv[1], "-D") || !strcmp (argv[1], "--debug")))
     debugmsg_BM = true;
   dlprog_BM = dlopen (NULL, RTLD_NOW | RTLD_GLOBAL);
   char *progname = argv[0];
@@ -590,7 +590,12 @@ main (int argc, char **argv)
     g_option_context_free (weboptctx);
   }
 #endif /*BISMONION*/
-    if (give_version_bm)
+    if (debugmsg_BM)
+    fprintf (stderr,
+             "debug messages enabled %s pid %d timestamp %s commit %s\n",
+             progname, (int) getpid (), bismon_timestamp,
+             bismon_lastgitcommit);
+  if (give_version_bm)
     give_prog_version_BM (progname);
   if (nbworkjobs_BM < MINNBWORKJOBS_BM)
     nbworkjobs_BM = MINNBWORKJOBS_BM;
