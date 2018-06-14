@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 693 objects
+// for 695 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -1417,6 +1417,17 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 !@ 1519401343.750
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_373gFe8m21E_47xzvCGxpI9
+
+
+
+!(_8MFQuVGkedx_8OkpYlCQFip |=failure_bad_rank|
+!~ name (~ failure_bad_rank
+~)
+!@ 1528968569.065
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "failure when the rank is bad"
+!)_8MFQuVGkedx_8OkpYlCQFip
 
 
 
@@ -6695,6 +6706,26 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_5MLPTLuT4ey_0YKIUpvXybX
+
+
+
+!(_4aleuMhUmfj_8qOgaQpQ1pv |=val_to_int_default|
+!~ name (~ val_to_int_default
+~)
+!@ 1528968464.219
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "convert value v1 to integer, or else give i2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW _2Z396p8p48p_848KxWmzoSb ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4aleuMhUmfj_8qOgaQpQ1pv  ":*/"  " "  "getintdefault_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_4aleuMhUmfj_8qOgaQpQ1pv
 
 
 
