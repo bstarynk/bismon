@@ -338,7 +338,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                  value_tyBM blocksetv;  //
                  value_tyBM argtupv;
                  value_tyBM closedseqv; //
-                 value_tyBM commentv;    //
+                 value_tyBM commentv;   //
                  value_tyBM setnumv;    //
                  value_tyBM setvalv;    //
                  value_tyBM setconstv;  //
@@ -432,14 +432,17 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                                  "value_tyBM crout%s_BM //#%d\n"
                                  " (struct stackframe_stBM* stkf, //\n",
                                  routidbuf, rank);
-    if (isstring_BM(_.commentv)) {
-      const char*combytes = bytstring_BM(_.commentv);
-      int comlen = lenstring_BM(_.commentv);
-      const char*eol = strchr(combytes, '\n');
-      if (eol) comlen = eol-combytes;
-      if (comlen>0) 
-	objstrbufferprintfpayl_BM (_.modgenob, "//!%.*s\n", comlen, combytes);
-    }
+    if (isstring_BM (_.commentv))
+      {
+        const char *combytes = bytstring_BM (_.commentv);
+        int comlen = lenstring_BM (_.commentv);
+        const char *eol = strchr (combytes, '\n');
+        if (eol)
+          comlen = eol - combytes;
+        if (comlen > 0)
+          objstrbufferprintfpayl_BM (_.modgenob, "//!%.*s\n", comlen,
+                                     combytes);
+      }
     objstrbufferprintfpayl_BM (_.modgenob, "  // %d arguments\n", nbargs);
     for (int aix = 0; aix < 4; aix++)
       {
@@ -1038,16 +1041,16 @@ ROUTINEOBJNAME_BM (_2gpamAdSc26_6d1JjCmKHyw)    //emit_statment°basiclo_cond
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2gpamAdSc26_6d1JjCmKHyw,
-                 objectval_tyBM * stmtob; //
-                 objectval_tyBM * modgenob; //
-		 objectval_tyBM * routprepob; //
-                 objectval_tyBM * compob; //
-		 value_tyBM tmpv; //
-                 value_tyBM resultv; //
-		 value_tyBM emitv; //		 
-                 value_tyBM causev; //
-		 value_tyBM errorv; //
-		 );
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * compob;       //
+                 value_tyBM tmpv;       //
+                 value_tyBM resultv;    //
+                 value_tyBM emitv;      //            
+                 value_tyBM causev;     //
+                 value_tyBM errorv;     //
+    );
   objectval_tyBM *k_emit_when = BMK_8BRpelfZZnA_85HsuPjg0G7;
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
@@ -1166,9 +1169,8 @@ ROUTINEOBJNAME_BM (_2gpamAdSc26_6d1JjCmKHyw)    //emit_statment°basiclo_cond
   LOCALRETURN_BM (_.stmtob);
 #undef FAILHERE
 failure:
-  DBGPRINTF_BM ("emit_statment°basiclo_cond failin %d stmtob %s routprep %s cause %s", failin,
-		objectdbg_BM (_.stmtob),      //
-		objectdbg1_BM (_.routprepob),      //
+  DBGPRINTF_BM ("emit_statment°basiclo_cond failin %d stmtob %s routprep %s cause %s", failin, objectdbg_BM (_.stmtob),        //
+                objectdbg1_BM (_.routprepob),   //
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode4_BM (k_emit_statement, _.stmtob, _.routprepob,
@@ -1184,32 +1186,32 @@ failure:
 extern objrout_sigBM ROUTINEOBJNAME_BM (_6eRPTujgMx5_9mLxL25hmr9);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_6eRPTujgMx5_9mLxL25hmr9) // emit_statement°basiclo_while
-(struct stackframe_stBM* stkf, //
+ROUTINEOBJNAME_BM (_6eRPTujgMx5_9mLxL25hmr9)    // emit_statement°basiclo_while
+(struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // stmtob
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM* restargs_  __attribute__((unused)))
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
-  objectval_tyBM* k_while = BMK_7GNnckYYtcH_7wtOnPP4eKU;
-  LOCALFRAME_BM (stkf, /*descr:*/ BMK_6eRPTujgMx5_9mLxL25hmr9,
-                 objectval_tyBM * stmtob; //
-                 objectval_tyBM * modgenob; //
-		 objectval_tyBM * routprepob; //
-                 objectval_tyBM * compob; //
-		 value_tyBM whilexpv; //
-		 value_tyBM tmpv; //
-                 value_tyBM resultv; //
-		 value_tyBM emitv; //		 
-                 value_tyBM causev; //
-		 value_tyBM errorv; //
-		 );
+  objectval_tyBM *k_while = BMK_7GNnckYYtcH_7wtOnPP4eKU;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_6eRPTujgMx5_9mLxL25hmr9,
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * compob;       //
+                 value_tyBM whilexpv;   //
+                 value_tyBM tmpv;       //
+                 value_tyBM resultv;    //
+                 value_tyBM emitv;      //            
+                 value_tyBM causev;     //
+                 value_tyBM errorv;     //
+    );
   _.stmtob = objectcast_BM (arg1);
   _.modgenob = objectcast_BM (arg2);
   _.routprepob = objectcast_BM (arg3);
@@ -1226,91 +1228,94 @@ ROUTINEOBJNAME_BM (_6eRPTujgMx5_9mLxL25hmr9) // emit_statement°basiclo_while
   char whilidbuf[32];
   memset (whilidbuf, 0, sizeof (whilidbuf));
   idtocbuf32_BM (objid_BM (_.stmtob), whilidbuf);
-  _.whilexpv = objgetattr_BM(_.stmtob, k_while);
-  DBGPRINTF_BM
-    ("emit_statment°basiclo_while start stmtob=%s modgenob=%s routprepob=%s depth#%d whilexp %s",
-     objectdbg_BM (_.stmtob), objectdbg2_BM (_.modgenob),
-     objectdbg3_BM (_.routprepob), depth, //
-     debug_outstr_value_BM(_.whilexpv, CURFRAME_BM, 0));
+  _.whilexpv = objgetattr_BM (_.stmtob, k_while);
+  DBGPRINTF_BM ("emit_statment°basiclo_while start stmtob=%s modgenob=%s routprepob=%s depth#%d whilexp %s", objectdbg_BM (_.stmtob), objectdbg2_BM (_.modgenob), objectdbg3_BM (_.routprepob), depth, //
+                debug_outstr_value_BM (_.whilexpv, CURFRAME_BM, 0));
   if (!_.whilexpv)
-    FAILHERE(k_while);
+    FAILHERE (k_while);
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
+  objstrbufferprintfpayl_BM (_.modgenob, "\n//// +while %s\n", whilidbuf);
   objstrbufferprintfpayl_BM (_.modgenob,
-                             "\n//// +while %s\n", whilidbuf);
-  objstrbufferprintfpayl_BM (_.modgenob,
-			     "startblock_%s:  /*+!while*/;\n"
+                             "startblock_%s:  /*+!while*/;\n"
                              "{ /* +while %s */", whilidbuf, whilidbuf);
   int indepth = depth + 1;
   objstrbuffersetindentpayl_BM (_.modgenob, indepth);
   objstrbuffernewlinepayl_BM (_.modgenob);
-  objstrbufferprintfpayl_BM (_.modgenob, "if (!(/*while %s cond:*/ ", whilidbuf);
-  miniemit_expression_BM (CURFRAME_BM, _.whilexpv, _.modgenob,
-                          _.routprepob, _.stmtob, indepth);
-  objstrbufferprintfpayl_BM (_.modgenob, ")) //: testwhile %s failing\n", whilidbuf);
-  objstrbufferprintfpayl_BM (_.modgenob, "  goto endblock_%s; //failwhile\n", whilidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob, "if (!(/*while %s cond:*/ ",
+                             whilidbuf);
+  miniemit_expression_BM (CURFRAME_BM, _.whilexpv, _.modgenob, _.routprepob,
+                          _.stmtob, indepth);
+  objstrbufferprintfpayl_BM (_.modgenob, ")) //: testwhile %s failing\n",
+                             whilidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob, "  goto endblock_%s; //failwhile\n",
+                             whilidbuf);
   objstrbufferprintfpayl_BM (_.modgenob, "// while %s body:\n", whilidbuf);
   int stmtlen = objnbcomps_BM (_.stmtob);
-  for (int cix=0; cix<stmtlen; cix++) {
-    _.compob = objectcast_BM (objgetcomp_BM (_.stmtob, cix));
-    _.emitv = NULL;
-    objstrbuffersetindentpayl_BM (_.modgenob, indepth);
-    DBGPRINTF_BM
-      ("emit_statment°basiclo_while stmtob=%s cix#%d compob=%s routprepob=%s",
-       objectdbg_BM (_.stmtob), cix, objectdbg1_BM(_.compob), objectdbg2_BM(_.routprepob));
-    if (!_.compob)
-      FAILHERE(makenode1_BM(k_curcomp, taggedint_BM(cix)));
-    objstrbufferprintfpayl_BM (_.modgenob, "// while %s comp#%d:\n", whilidbuf, cix);
-    objlock_BM (_.compob);
-    if (objectisinstance_BM (_.compob, k_basiclo_statement))
-      {
-	DBGPRINTF_BM
-	  ("emit_statement°basiclo_while stmtob=%s cix#%d compob=%s statement",
-	   objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob));
-	_.emitv = send3_BM (_.compob, k_emit_statement, CURFRAME_BM,  //
-			    _.modgenob,
-			    _.routprepob, taggedint_BM (depth + 1));
-      }
-    else if (objectisinstance_BM (_.compob, k_basiclo_block))
-      {
-	DBGPRINTF_BM
-	  ("emit_statement°basiclo_while stmtob=%s cix#%d compob=%s block",
-	   objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob));
-	_.emitv = send3_BM (_.compob, k_emit_block, CURFRAME_BM,      //
-			    _.modgenob,
-			    _.routprepob, taggedint_BM (depth + 1));
-      }
-    else
-      FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (cix), _.compob));
-    DBGPRINTF_BM
-      ("emit_statement°basiclo_while stmtob=%s cix#%d compob=%s got emitv=%s",
-       objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob),
-       debug_outstr_value_BM (_.emitv, CURFRAME_BM, 0));
-    if (!_.emitv)
-      FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (cix), _.compob));
-  }
-  objstrbuffersetindentpayl_BM (_.modgenob, indepth);  
+  for (int cix = 0; cix < stmtlen; cix++)
+    {
+      _.compob = objectcast_BM (objgetcomp_BM (_.stmtob, cix));
+      _.emitv = NULL;
+      objstrbuffersetindentpayl_BM (_.modgenob, indepth);
+      DBGPRINTF_BM
+        ("emit_statment°basiclo_while stmtob=%s cix#%d compob=%s routprepob=%s",
+         objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob),
+         objectdbg2_BM (_.routprepob));
+      if (!_.compob)
+        FAILHERE (makenode1_BM (k_curcomp, taggedint_BM (cix)));
+      objstrbufferprintfpayl_BM (_.modgenob, "// while %s comp#%d:\n",
+                                 whilidbuf, cix);
+      objlock_BM (_.compob);
+      if (objectisinstance_BM (_.compob, k_basiclo_statement))
+        {
+          DBGPRINTF_BM
+            ("emit_statement°basiclo_while stmtob=%s cix#%d compob=%s statement",
+             objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob));
+          _.emitv = send3_BM (_.compob, k_emit_statement, CURFRAME_BM,  //
+                              _.modgenob,
+                              _.routprepob, taggedint_BM (depth + 1));
+        }
+      else if (objectisinstance_BM (_.compob, k_basiclo_block))
+        {
+          DBGPRINTF_BM
+            ("emit_statement°basiclo_while stmtob=%s cix#%d compob=%s block",
+             objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob));
+          _.emitv = send3_BM (_.compob, k_emit_block, CURFRAME_BM,      //
+                              _.modgenob,
+                              _.routprepob, taggedint_BM (depth + 1));
+        }
+      else
+        FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (cix), _.compob));
+      DBGPRINTF_BM
+        ("emit_statement°basiclo_while stmtob=%s cix#%d compob=%s got emitv=%s",
+         objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob),
+         debug_outstr_value_BM (_.emitv, CURFRAME_BM, 0));
+      if (!_.emitv)
+        FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (cix), _.compob));
+    }
+  objstrbuffersetindentpayl_BM (_.modgenob, indepth);
   objstrbuffernewlinepayl_BM (_.modgenob);
-  objstrbufferprintfpayl_BM (_.modgenob, "goto startblock_%s; // repeatwhile\n", whilidbuf);
   objstrbufferprintfpayl_BM (_.modgenob,
-                             "endblock_%s: /*endingwhile*/;\n", whilidbuf, whilidbuf);
+                             "goto startblock_%s; // repeatwhile\n",
+                             whilidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob, "endblock_%s: /*endingwhile*/;\n",
+                             whilidbuf, whilidbuf);
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
   objstrbufferprintfpayl_BM (_.modgenob, "} /*-while %s */\n", whilidbuf);
   DBGPRINTF_BM
     ("emit_statement°basiclo_while end stmtob=%s modgenob=%s routprepob=%s depth#%d",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
      objectdbg2_BM (_.routprepob), depth);
-  LOCALRETURN_BM(_.stmtob);
+  LOCALRETURN_BM (_.stmtob);
 #undef FAILHERE
- failure:
-  DBGPRINTF_BM ("emit_statment°basiclo_while failin %d stmtob %s routprep %s cause %s", failin,
-		objectdbg_BM (_.stmtob),      //
-		objectdbg1_BM (_.routprepob),      //
+failure:
+  DBGPRINTF_BM ("emit_statment°basiclo_while failin %d stmtob %s routprep %s cause %s", failin, objectdbg_BM (_.stmtob),       //
+                objectdbg1_BM (_.routprepob),   //
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode4_BM (k_emit_statement, _.stmtob, _.routprepob,
                                _.modgenob, _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
-} /* end emit_statement°basiclo_while _6eRPTujgMx5_9mLxL25hmr9*/
+}                               /* end emit_statement°basiclo_while _6eRPTujgMx5_9mLxL25hmr9 */
 
 
 
@@ -3696,10 +3701,9 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     }
 #else
 #warning emit_module°plain_module should be improved without BISMONGTK
-  fprintf(stderr, "emit_module°plain_module BISMONION not implemented srcpathstr %s modulob %s modgenob %s srcdirstrv %s\n",
-	  srcpathstr, objectdbg_BM(_.modulob), objectdbg1_BM(_.modgenob), //
-	  debug_outstr_value_BM(_.srcdirstrv, CURFRAME_BM, 0));
-  fflush(stderr);
+  fprintf (stderr, "emit_module°plain_module BISMONION not implemented srcpathstr %s modulob %s modgenob %s srcdirstrv %s\n", srcpathstr, objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),        //
+           debug_outstr_value_BM (_.srcdirstrv, CURFRAME_BM, 0));
+  fflush (stderr);
 #endif /*BISMONGTK*/
     if (srcdirstr)
     free (srcdirstr), srcdirstr = NULL;

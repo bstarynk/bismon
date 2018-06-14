@@ -646,7 +646,7 @@ struct parser_stBM              /* for typayl_parser_BM */
   const struct parserops_stBM *pars_ops;
   FILE *pars_file;
   bool pars_debug;
-  bool pars_warnunknownid;	/* if set, an unknown-id gives a warning, not a parser error */
+  bool pars_warnunknownid;      /* if set, an unknown-id gives a warning, not a parser error */
   const char *pars_path;
   value_tyBM pars_cvalue;       /* client value */
   objectval_tyBM *pars_ownob;   /* owner object */

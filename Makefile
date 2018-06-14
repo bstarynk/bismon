@@ -78,6 +78,13 @@ BM_GENERATED_HEADERS=				\
  _bm_predef.h					\
  _bm_types.h
 
+## no GTK or ONION headers:
+BM_GTK_HEADERS=
+BM_ONION_HEADERS=
+
+BM_HEADERS= $(BM_COMMON_HEADERS) $(BM_GTK_HEADERS) $(BM_ONION_HEADERS)
+
+BM_COLDSOURCES= $(BM_COMMON_CSOURCES) $(BM_GTK_CSOURCES) $(BM_ONION_CSOURCES)
 # web templates for Onion's otemplates.
 # ∀ foo, a C file _foo_ONIONBM.h and a C header _foo_ONIONBM.h is generated from foo_ONIONBM.thtml
 ONIONBM_WEBTEMPLATES= login_ONIONBM.thtml

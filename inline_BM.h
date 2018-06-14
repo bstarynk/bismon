@@ -546,6 +546,7 @@ objputcomp_BM (objectval_tyBM * obj, int rk, const value_tyBM valcomp)
     datavectputnth_BM (obj->ob_compvec, rk, valcomp);
 }                               /* end objputcomp_BM */
 
+
 void
 objpoplastcomp_BM (objectval_tyBM * obj)
 {
@@ -571,6 +572,14 @@ objremoveonecomp_BM (objectval_tyBM * obj, int rk)
     return;
   obj->ob_compvec = datavect_removeone_BM (obj->ob_compvec, rk);
 }                               /* end objremoveonecomp_BM */
+
+void
+objinsertonecomp_BM (objectval_tyBM * obj, int rk, const value_tyBM compval)
+{
+  if (!isobject_BM ((const value_tyBM) obj))
+    return;
+  obj->ob_compvec = datavect_insertone_BM (obj->ob_compvec, rk, compval);
+}                               /* end objinsertonecomp_BM */
 
 void
 objresetcomps_BM (objectval_tyBM * obj, unsigned len)

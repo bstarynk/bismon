@@ -376,7 +376,7 @@ const GOptionEntry optab[] = {
    "GUI log file name (none if empty, - is stdout, default is _bismon.log)",
    .arg_description = "FILE"},
 #endif /*BISMONGTK*/
-  //////////////////
+    //////////////////
   {}
 };
 
@@ -536,7 +536,7 @@ main (int argc, char **argv)
       fprintf (stderr, "[bismon] requires at least one argument\n");
       exit (EXIT_FAILURE);
     }
-  if (argc > 1 && !strcmp(argv[1], "-D") || !strcmp(argv[1], "--debug"))
+  if (argc > 1 && !strcmp (argv[1], "-D") || !strcmp (argv[1], "--debug"))
     debugmsg_BM = true;
   dlprog_BM = dlopen (NULL, RTLD_NOW | RTLD_GLOBAL);
   char *progname = argv[0];
@@ -632,7 +632,8 @@ main (int argc, char **argv)
     }
 #ifdef BISMONGTK
   if (!guiok && !batch_bm)
-    FATAL_BM ("gtk_init_with_args failed : %s", opterr?opterr->message:"???");
+    FATAL_BM ("gtk_init_with_args failed : %s",
+              opterr ? opterr->message : "???");
   if (!batch_bm)
     {
       initialize_newgui_BM (builder_file_bm, css_file_bm);

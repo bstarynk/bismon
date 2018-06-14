@@ -476,6 +476,8 @@ static inline void objputcomp_BM (objectval_tyBM * obj, int rk,
                                   const value_tyBM compval);
 static inline void objreservecomps_BM (objectval_tyBM * obj, unsigned gap);
 static inline void objremoveonecomp_BM (objectval_tyBM * obj, int rk);
+static inline void objinsertonecomp_BM (objectval_tyBM * obj, int rk,
+                                        const value_tyBM compval);
 static inline void objresetcomps_BM (objectval_tyBM * obj, unsigned len);
 static inline void objappendcomp_BM (objectval_tyBM * obj,
                                      value_tyBM compval);
