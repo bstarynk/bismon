@@ -536,6 +536,8 @@ main (int argc, char **argv)
       fprintf (stderr, "[bismon] requires at least one argument\n");
       exit (EXIT_FAILURE);
     }
+  if (argc > 1 && !strcmp(argv[1], "-D") || !strcmp(argv[1], "--debug"))
+    debugmsg_BM = true;
   dlprog_BM = dlopen (NULL, RTLD_NOW | RTLD_GLOBAL);
   char *progname = argv[0];
   if (!dlprog_BM)
