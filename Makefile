@@ -296,6 +296,7 @@ clean:
 	$(RM) core* *.i *.ii *prof.out gmon.out
 	$(RM) *_BM.const.h _bm_allconsts*.c
 	$(RM) modubin/*.so modules/*.i modules/*% modules/*~ modules/*- bismon BM_makeconst
+	$(RM) __timestamp.*
 	$(RM) modules/tmpmobm*
 	$(RM) $(patsubst %.md,%.html, $(MARKDOWN_SOURCES))
 	$(RM)  doc/generated/* doc/htmldoc/*  doc/*/*~
