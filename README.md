@@ -106,6 +106,8 @@ generated code), but some few code is in C++14.
 
 * [GNU make](https://www.gnu.org/software/make/) 4 or better
 
+* [ccache](https://ccache.samba.org/) is used to avoid useless recompilations.
+
 * [libbacktrace](https://github.com/ianlancetaylor/libbacktrace) - it is sometimes part of your system *GCC*, but you'll better install it separately (e.g. in your `/usr/local/` prefix)
 
 * [markdown](https://www.markdownguide.org/) is required for some documentation, such as this `README.md`
@@ -122,7 +124,8 @@ generated code), but some few code is in C++14.
 
 ### relevant Debian/Ubuntu build-dependency packages ###
 
-On Debian/Unstable or Ubuntu, `apt-get install build-essential make gcc-7 g++-7 gcc-7-plugin-dev libgccjit-7-dev` for the building infrastructure. Replace 7 by 8 when using GCC 8.
+On Debian/Unstable or Ubuntu, `apt-get install build-essential make gcc-7 g++-7 gcc-7-plugin-dev libgccjit-7-dev ccache`
+for the building infrastructure. Replace 7 by 8 when using GCC 8.
 
 `apt-get install libgtk-3-dev` for GTK 3. This may pull a lot of dependencies.
 
