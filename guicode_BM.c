@@ -984,10 +984,10 @@ ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK)    //browse_data°hset_object
 
 ////////////////////////////////////////////////////////////////
 
-/// command handler for put
+/// command handler for ,put
 extern objrout_sigBM ROUTINEOBJNAME_BM (_1Xc5XJ7S5r7_3nYIzlf2XAw);
 value_tyBM
-ROUTINEOBJNAME_BM (_1Xc5XJ7S5r7_3nYIzlf2XAw)    //
+ROUTINEOBJNAME_BM (_1Xc5XJ7S5r7_3nYIzlf2XAw)    // ,put commandhandler
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the attr or index
@@ -1065,10 +1065,10 @@ ROUTINEOBJNAME_BM (_1Xc5XJ7S5r7_3nYIzlf2XAw)    //
       FAILURE_BM (__LINE__, k_failure_bad_attribute, CURFRAME_BM);
     }
   LOCALRETURN_BM (NULL);
-}                               /* end  command handler for put _1Xc5XJ7S5r7_3nYIzlf2XAw */
+}                               /* end  command handler for ,put _1Xc5XJ7S5r7_3nYIzlf2XAw */
 
 
-/// command handler for add
+/// command handler for ,add
 extern objrout_sigBM ROUTINEOBJNAME_BM (_5v5ChlG1IYh_1Pv87MZJFPl);
 value_tyBM
 ROUTINEOBJNAME_BM (_5v5ChlG1IYh_1Pv87MZJFPl)    //
@@ -1091,7 +1091,7 @@ ROUTINEOBJNAME_BM (_5v5ChlG1IYh_1Pv87MZJFPl)    //
     }
   _.recv = arg1;
   _.compv = arg2;
-  NONPRINTF_BM ("commandhandler°add recv=%s compv=%s",
+  NONPRINTF_BM ("commandhandler#,add recv=%s compv=%s",
                 objectdbg_BM (_.recv),
                 debug_outstr_value_BM (_.compv, CURFRAME_BM, 0));
   int oblen = 0;
@@ -1106,9 +1106,9 @@ ROUTINEOBJNAME_BM (_5v5ChlG1IYh_1Pv87MZJFPl)    //
   log_printf_message_BM (" added component#%d.", oblen);
   log_end_message_BM ();
   LOCALRETURN_BM (_.recv);
-}                               /* end commandhandler°add _5v5ChlG1IYh_1Pv87MZJFPl */
+}                               /* end commandhandler#,add _5v5ChlG1IYh_1Pv87MZJFPl */
 
-/// command handler for remove
+/// command handler for ,remove
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0zf6nSKwSlU_6Cv3LMh1MmV);
 value_tyBM
 ROUTINEOBJNAME_BM (_0zf6nSKwSlU_6Cv3LMh1MmV)    //
@@ -1130,7 +1130,7 @@ ROUTINEOBJNAME_BM (_0zf6nSKwSlU_6Cv3LMh1MmV)    //
     }
   _.recv = arg1;
   _.attv = arg2;
-  NONPRINTF_BM ("commandhandler°remove recv=%s attv=%s",
+  NONPRINTF_BM ("commandhandler#,remove recv=%s attv=%s",
                 objectdbg_BM (_.recv),
                 debug_outstr_value_BM (_.attv, CURFRAME_BM, 0));
   if (isobject_BM (_.attv))
@@ -1179,10 +1179,10 @@ ROUTINEOBJNAME_BM (_0zf6nSKwSlU_6Cv3LMh1MmV)    //
       FAILURE_BM (__LINE__, k_failure_bad_attribute, CURFRAME_BM);
     }
   LOCALRETURN_BM (NULL);
-}                               /* end  command handler for remove _0zf6nSKwSlU_6Cv3LMh1MmV  */
+}                               /* end  command handler for ,remove _0zf6nSKwSlU_6Cv3LMh1MmV  */
 
 
-/// command handler for init_class
+/// command handler for ,init_class
 extern objrout_sigBM ROUTINEOBJNAME_BM (_797zacMjvvt_3I2uxNJRfdq);
 value_tyBM
 ROUTINEOBJNAME_BM (_797zacMjvvt_3I2uxNJRfdq)    //
@@ -1237,10 +1237,36 @@ ROUTINEOBJNAME_BM (_797zacMjvvt_3I2uxNJRfdq)    //
       log_end_message_BM ();
     }
   LOCALRETURN_BM (_.recv);
-}                               /* end commandhandler°init_class _797zacMjvvt_3I2uxNJRfdq  */
+}                               /* end commandhandler#,init_class _797zacMjvvt_3I2uxNJRfdq  */
 
 
-/// command handler for put_method
+////////////////
+// commandhandler#,insert _01zabIzVKNR_8AGQGMBkSd7
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_01zabIzVKNR_8AGQGMBkSd7);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_01zabIzVKNR_8AGQGMBkSd7)    //commandhandler#,insert 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // object
+ const value_tyBM arg2,         // rank 
+ const value_tyBM arg3,         // value
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_01zabIzVKNR_8AGQGMBkSd7,
+                 value_tyBM resultv;
+    );
+#warning unimplemented commandhandler#,insert _01zabIzVKNR_8AGQGMBkSd7 routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented commandhandler#,insert  _01zabIzVKNR_8AGQGMBkSd7 routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end commandhandler#,insert  _01zabIzVKNR_8AGQGMBkSd7 */
+
+////////////////
+
+/// command handler for ,put_method
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9QuovXgtk9K_17pMbAD0XmX);
 value_tyBM
 ROUTINEOBJNAME_BM (_9QuovXgtk9K_17pMbAD0XmX)    //
@@ -1317,7 +1343,7 @@ ROUTINEOBJNAME_BM (_9QuovXgtk9K_17pMbAD0XmX)    //
       log_end_message_BM ();
     }
   LOCALRETURN_BM (_.recv);
-}                               /* end commandhandler°put_method _9QuovXgtk9K_17pMbAD0XmX */
+}                               /* end commandhandler#,put_method _9QuovXgtk9K_17pMbAD0XmX */
 
 
 

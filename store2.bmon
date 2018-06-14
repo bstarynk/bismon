@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 691 objects
+// for 693 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -1870,6 +1870,21 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _0NnNXZqWvmz_1ucZGX0YPu1 |=command_arity|
  2
 !)_75gnoii3mMp_41wgHkvJVyN
+
+
+
+!(_1lJ6eiFy7we_0V5AvQdSlzZ |=insert|
+!~ name (~ insert
+~)
+!@ 1528962627.974
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ ",insert <obj> <rank> <value> command"
+!: _0xbmmxnN8E8_0ZuEqJmqMNH |=command_handler|
+ % _01zabIzVKNR_8AGQGMBkSd7 ()
+!: _0NnNXZqWvmz_1ucZGX0YPu1 |=command_arity|
+ 3
+!)_1lJ6eiFy7we_0V5AvQdSlzZ
 
 
 
@@ -6779,6 +6794,16 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _2DH0ucElTgh_62vxjxLcfev |=return|
 _3vRFuniDv1K_4bQ7DeekM2I
 !)_01p2tksvq9A_1b8os2WLues
+
+
+
+!(_01zabIzVKNR_8AGQGMBkSd7
+!|*
+!@ 1528962627.973
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "commandhandler#,insert"
+!)_01zabIzVKNR_8AGQGMBkSd7
 
 
 
