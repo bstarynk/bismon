@@ -972,10 +972,11 @@ ROUTINEOBJNAME_BM (_2Cj1ZVDhCVO_8qT2Um5Ok7f)    //miniscan_stmt°basiclo_while
   unsigned stmtlen = objnbcomps_BM (_.stmtob);
   for (int ix = 0; ix < (int) stmtlen; ix++)
     {
+      _.compob = NULL;
       _.compv = objgetcomp_BM (_.stmtob, ix);
       if (!_.compv)
         continue;
-      _.compob = objectcast_BM (_.compob);
+      _.compob = objectcast_BM (_.compv);
       if (!_.compob)
         FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (ix), _.compv));
       objlock_BM (_.compob);
@@ -3121,6 +3122,11 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
                              "%s" MODULEINITSUFFIX_BM ";\n"
                              "#endif /*BISMON_MODID*/\n\n", modulidbuf,
                              modulidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "#ifdef BISMON_MOMD5\n"
+                             "const char " MODULEMD5CHECKSUMPREFIX_BM "%s"
+                             MODULEMD5CHECKSUMSUFFIX_BM "[] = BISMON_MOMD5;\n"
+                             "#endif /*BISMON_MOMD5*/\n\n", modulidbuf);
   DBGPRINTF_BM
     ("@@generate_module°basiclo*module incomplete modgenob=%s prepmod=%s",
      objectdbg_BM (_.modgenob), debug_outstr_value_BM (_.prepmod, CURFRAME_BM,

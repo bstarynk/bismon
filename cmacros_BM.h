@@ -182,6 +182,11 @@
 #define MODULEINITPREFIX_BM "modulinit"
 #define MODULEINITSUFFIX_BM "_BM"
 
+/// the checksum of module of id _9oXtCgAbkqv_4y1xhhF5Nhz is some
+/// const char modulmd5chksum_9oXtCgAbkqv_4y1xhhF5Nhz_BM[]
+#define MODULEMD5CHECKSUMPREFIX_BM "modulmd5chksum"
+#define MODULEMD5CHECKSUMSUFFIX_BM "_BM"
+
 #define GLOBAL_BM(Gnam) globdata_##Gnam##_BM
 
 // we could use DBGPRINTF_BM and later replace it by NONPRINTF_BM
