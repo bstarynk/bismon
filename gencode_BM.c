@@ -569,17 +569,20 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
   // objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
-                 objectval_tyBM * connob;
-                 objectval_tyBM * consthsetobj;
-                 objectval_tyBM * exclamob;
-                 objectval_tyBM * expob;
-                 objectval_tyBM * fromob;
-                 objectval_tyBM * modgenob;
-                 objectval_tyBM * routprepob; objectval_tyBM * typob;
-                 value_tyBM avalv;
-                 value_tyBM errorv; value_tyBM causev; value_tyBM exclamsonv;
-                 value_tyBM expv;
-                 value_tyBM resv;
+                 objectval_tyBM * connob;       //
+                 objectval_tyBM * consthsetobj; //
+                 objectval_tyBM * exclamob;     //
+                 objectval_tyBM * expob;        //
+                 objectval_tyBM * fromob;       //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * typob;        //
+                 value_tyBM avalv;      //
+                 value_tyBM errorv;     //
+                 value_tyBM causev;     //
+                 value_tyBM exclamsonv; //
+                 value_tyBM expv;       //
+                 value_tyBM resv;       //
     );
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM) (Cause); goto failure; } while(0)
