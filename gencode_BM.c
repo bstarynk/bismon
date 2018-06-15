@@ -547,44 +547,54 @@ failure:
 
 
 objectval_tyBM *
-miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
-                  int depth, objectval_tyBM * fromob,
+miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
+                  int depth, objectval_tyBM * fromarg,
                   struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
   objectval_tyBM *k_miniscan_node_conn = BMK_5EGLdtUAQxA_1nebCsDKqOF;
   objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
   objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
+  objectval_tyBM *k_set = BMK_2mYaTh9kH4I_7ENiXcymRmy;
+  objectval_tyBM *k_tuple = BMK_6TmLNh9vtVY_0pwkHRtJ44k;
   objectval_tyBM *k_string = BMK_4T8am97muLl_5969SR22Ecq;
+  objectval_tyBM *k_closure = BMK_93zjUzZVAaj_9ppXv7C34GR;
   objectval_tyBM *k_basiclo_connective = BMK_3DQ7z3EuAiT_4faSRNsy2lr;
   objectval_tyBM *k_exclam = BMK_0e54seiZEXF_1Myf620cHoB;
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
+  objectval_tyBM *k_unspecified = BMK_55eJRRPyZDz_4uW8bzq75PI;
   objectval_tyBM *k_simple_routine_preparation = BMK_80060zKi6Un_3isCStegT8A;
   objectval_tyBM *k_simple_module_generation = BMK_2HlKptD03wA_7JJCG7lN5nS;
+  objectval_tyBM *k_undefined = BMK_1z3DQ3EVAGs_3KlGdHJpWbX;
   // objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
-  int failin = -1;
-#define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
+                 objectval_tyBM * connob;
+                 objectval_tyBM * consthsetobj;
+                 objectval_tyBM * exclamob;
+                 objectval_tyBM * expob;
+                 objectval_tyBM * fromob;
+                 objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob;
+                 objectval_tyBM * typob;
+                 value_tyBM avalv;
+                 value_tyBM errorv; value_tyBM causev; value_tyBM exclamsonv;
                  value_tyBM expv;
-                 value_tyBM resv; objectval_tyBM * routprepob;
-                 objectval_tyBM * modgenob; objectval_tyBM * fromob;
-                 objectval_tyBM * expob; objectval_tyBM * connob;
-                 objectval_tyBM * exclamob; objectval_tyBM * consthsetobj;
-                 value_tyBM avalv; objectval_tyBM * typob; value_tyBM errorv;
-                 value_tyBM exclamsonv;
+                 value_tyBM resv;
     );
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM) (Cause); goto failure; } while(0)
   _.expv = expv;
-  _.routprepob = objectcast_BM (routprepob);
-  _.fromob = objectcast_BM (fromob);
-  if (!_.routprepob)
-    FAILHERE ();
-  if (!_.fromob)
-    FAILHERE ();
+  _.routprepob = objectcast_BM (routpreparg);
+  _.fromob = objectcast_BM (fromarg);
   DBGPRINTF_BM ("miniscan_expr start expv=%s routprepob=%s depth#%d fromob=%s", //
                 debug_outstr_value_BM (_.expv, CURFRAME_BM, 0), //
                 objectdbg1_BM (_.routprepob), depth,
                 objectdbg2_BM (_.fromob));
+  if (!_.routprepob)
+    FAILHERE (routpreparg);
+  if (!_.fromob)
+    FAILHERE (fromarg);
   WEAKASSERT_BM (objectisinstance_BM (_.routprepob,
                                       k_simple_routine_preparation));
   _.modgenob = objgetattr_BM (_.routprepob, k_modgenob);
@@ -600,13 +610,13 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
     case tyString_BM:
       LOCALRETURN_BM (k_string);
     case tySet_BM:
-      FAILHERE ();
+      FAILHERE (k_set);
     case tyTuple_BM:
-      FAILHERE ();
+      FAILHERE (k_tuple);
     case tyClosure_BM:
-      FAILHERE ();
+      FAILHERE (k_closure);
     case tyUnspecified_BM:
-      FAILHERE ();
+      FAILHERE (k_unspecified);
     case tyObject_BM:
       {
         _.expob = objectcast_BM (_.expv);
@@ -624,7 +634,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
             LOCALRETURN_BM (_.typob);
           }
         else
-          FAILHERE ();
+          FAILHERE (k_undefined);
         break;
       }
     case tyNode_BM:
@@ -653,8 +663,10 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
               }
             else if (istaggedint_BM (_.exclamsonv))
               LOCALRETURN_BM (BMP_value);
+            else if (_.exclamsonv == NULL)
+              LOCALRETURN_BM (BMP_value);
             else
-              FAILHERE ();
+              FAILHERE (k_undefined);
           }
         {
           objlock_BM (_.connob);
@@ -672,7 +684,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
                             objectdbg_BM (_.connob),    //
                             debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
               if (!_.resv)
-                FAILHERE ();
+                FAILHERE (k_undefined);
               LOCALRETURN_BM (_.resv);
             }
           objunlock_BM (_.connob);
@@ -680,16 +692,17 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routprepob,
         break;
       }
     default:
-      FAILHERE ();
+      FAILHERE (k_undefined);
     }
 #warning incomplete miniscan_expr_BM
   DBGPRINTF_BM ("miniscan_expr end expv=%s",    //
                 debug_outstr_value_BM (_.expv, CURFRAME_BM, 0));
   LOCALRETURN_BM (NULL);
 failure:
-  DBGPRINTF_BM ("miniscan_expr failin %d", failin);
+  DBGPRINTF_BM ("miniscan_expr failin %d cause %s", failin,
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv = (value_tyBM)
-    makenode4_BM (k_miniscan_expr, _.expv, _.routprepob,
+    makenode5_BM (k_miniscan_expr, _.expv, _.causev, _.routprepob,
                   taggedint_BM (depth), _.fromob);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
@@ -3594,9 +3607,9 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
            objectdbg_BM (_.modulob), prevpathstr, bak1pathstr);
     }
   if (prevpathstr)
-    free (prevpathstr), prevpathstr = NULL;
+    free ((void*)prevpathstr), prevpathstr = NULL;
   if (srcpathstr)
-    free (srcpathstr), srcpathstr = NULL;
+    free ((void*)srcpathstr), srcpathstr = NULL;
   if (status)
     LOCALRETURN_BM (NULL);
   _.postclosv = (value_tyBM)

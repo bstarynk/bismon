@@ -1325,7 +1325,7 @@ ROUTINEOBJNAME_BM (_6eRPTujgMx5_9mLxL25hmr9)    // emit_statement°basiclo_while
                              "goto startblock_%s; // repeatwhile\n",
                              whilidbuf);
   objstrbufferprintfpayl_BM (_.modgenob, "endblock_%s: /*endingwhile*/;\n",
-                             whilidbuf, whilidbuf);
+                             whilidbuf);
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
   objstrbufferprintfpayl_BM (_.modgenob, "} /*-while %s */\n", whilidbuf);
   DBGPRINTF_BM
@@ -1649,6 +1649,8 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                                            (long long) _.exclamv,
                                            (long long) numexclam);
               }
+            else if (_.exclamv == NULL)
+              objstrbufferprintfpayl_BM (_.modgenob, "((value_tyBM)NULL)");
             else
               WEAKASSERTRET_BM (false
                                 &&
