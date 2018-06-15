@@ -2120,8 +2120,10 @@ parsergetunary_BM (struct parser_stBM * pars,
 {
   LOCALFRAME_BM                 //
     (prevstkf, NULL,            //
-     value_tyBM resval;
-     value_tyBM arg; objectval_tyBM * uconnobj; objectval_tyBM * parsob;
+     value_tyBM resval;         //
+     value_tyBM arg;            //
+     objectval_tyBM * uconnobj; //
+     objectval_tyBM * parsob;   //
     );
   _.parsob = checkedparserowner_BM (pars);
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -2143,7 +2145,7 @@ parsergetunary_BM (struct parser_stBM * pars,
                               objectdbg_BM (unaryconn));
       DBGPRINTF_BM ("parsergetunary_BM uconnobj %s",
                     objectdbg_BM (_.uconnobj));
-      _.resval = makenode_BM (_.uconnobj, 1, &_.arg);
+      _.resval = makenode1_BM (_.uconnobj, _.arg);
       *pgotval = true;
       LOCALRETURN_BM (_.resval);
     }
