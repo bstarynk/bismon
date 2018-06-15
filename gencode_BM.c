@@ -575,8 +575,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
                  objectval_tyBM * expob;
                  objectval_tyBM * fromob;
                  objectval_tyBM * modgenob;
-                 objectval_tyBM * routprepob;
-                 objectval_tyBM * typob;
+                 objectval_tyBM * routprepob; objectval_tyBM * typob;
                  value_tyBM avalv;
                  value_tyBM errorv; value_tyBM causev; value_tyBM exclamsonv;
                  value_tyBM expv;
@@ -3607,9 +3606,9 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
            objectdbg_BM (_.modulob), prevpathstr, bak1pathstr);
     }
   if (prevpathstr)
-    free ((void*)prevpathstr), prevpathstr = NULL;
+    free ((void *) prevpathstr), prevpathstr = NULL;
   if (srcpathstr)
-    free ((void*)srcpathstr), srcpathstr = NULL;
+    free ((void *) srcpathstr), srcpathstr = NULL;
   if (status)
     LOCALRETURN_BM (NULL);
   _.postclosv = (value_tyBM)
