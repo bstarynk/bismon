@@ -2146,6 +2146,9 @@ parsergetunary_BM (struct parser_stBM * pars,
       DBGPRINTF_BM ("parsergetunary_BM uconnobj %s",
                     objectdbg_BM (_.uconnobj));
       _.resval = makenode1_BM (_.uconnobj, _.arg);
+      DBGPRINTF_BM ("parsergetunary_BM resval=%s of width %d",
+                    debug_outstr_value_BM (_.resval, CURFRAME_BM, 0),
+                    nodewidth_BM (_.resval));
       *pgotval = true;
       LOCALRETURN_BM (_.resval);
     }
