@@ -2256,8 +2256,9 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
         miniscan_expr_BM (_.cursonv, _.routprepob, depth + 1, _.fromob,
                           CURFRAME_BM);
       DBGPRINTF_BM ("miniscan_node_conn°basiclo_primitive ix#%d "      //
-                    "curtypob %s curargob=%s curargctypob=%s",  //
-                    ix, objectdbg_BM (_.curtypob), objectdbg1_BM (_.curargob),  //
+                    " cursonv=%s" " curtypob %s curargob=%s curargctypob=%s",   //
+                    ix, debug_outstr_value_BM (_.cursonv, CURFRAME_BM, 0),      //
+                    objectdbg_BM (_.curtypob), objectdbg1_BM (_.curargob),      //
                     objectdbg2_BM (_.curargctypob));
       _.curcomptypob =
         miniscan_compatype_BM (_.curargctypob, _.curtypob, CURFRAME_BM);
