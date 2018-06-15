@@ -10,6 +10,10 @@ DECLARE_MODULE_BM (_3BFt4NfJmZC_7iYi2dwM38B);
 extern moduleinit_sigBM modulinit_3BFt4NfJmZC_7iYi2dwM38B_BM;
 #endif /*BISMON_MODID */
 
+#ifdef BISMON_MOMD5
+const char modulmd5chksum_3BFt4NfJmZC_7iYi2dwM38B_BM[] = BISMON_MOMD5;
+#endif /*BISMON_MOMD5 */
+
 
 
 // declare 11 routines

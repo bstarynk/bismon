@@ -711,9 +711,13 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv;
-                 objectval_tyBM * routprepob; objectval_tyBM * fromblockob;
-                 objectval_tyBM * compob; objectval_tyBM * seqcompob;
+                 objectval_tyBM * recv; //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * fromblockob;  //
+                 objectval_tyBM * compob;       //
+                 objectval_tyBM * seqcompob;    //
+                 value_tyBM seqcompv;   //
+                 value_tyBM compv;      //
                  value_tyBM testexpv; value_tyBM resv;
                  value_tyBM errorv;
                  value_tyBM causev;
@@ -747,11 +751,13 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
   WEAKASSERT_BM ((int) nbconds <= (int) nbsons);
   for (int ix = 0; ix < nbconds; ix++)
     {
-      _.compob = objectcast_BM (objgetcomp_BM (_.recv, ix));
+      _.compv = objgetcomp_BM (_.recv, ix);
+      _.compob = objectcast_BM (_.compv);
       DBGPRINTF_BM
         ("miniscan_stmt°basiclo_cond recv=%s ix=%u compob=%s",
          objectdbg_BM (_.recv), ix, objectdbg1_BM (_.compob));
-      WEAKASSERT_BM (isobject_BM (_.compob));
+      if (!_.compob)
+        FAILHERE (makenode2_BM (k_curcomp, _.compv, taggedint_BM (ix)));
       objlock_BM (_.compob);
       if (objectisinstance_BM (_.compob, k_basiclo_when))
         {
@@ -761,12 +767,20 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
           unsigned nbsubcomp = objnbcomps_BM (_.compob);
           for (unsigned cix = 0; cix < nbsubcomp; cix++)
             {
-              _.seqcompob = objectcast_BM (objgetcomp_BM (_.compob, cix));
-              WEAKASSERT_BM (isobject_BM (_.seqcompob));
+              _.seqcompv = objgetcomp_BM (_.compob, cix);
+              _.seqcompob = objectcast_BM (_.seqcompv);
               DBGPRINTF_BM
                 ("miniscan_stmt°basiclo_cond recv=%s ix=%u compob=%s cix=%u seqcomp=%s",
                  objectdbg_BM (_.recv), ix, objectdbg1_BM (_.compob), cix,
                  objectdbg2_BM (_.seqcompob));
+              if (!_.seqcompob)
+                {
+                  if (_.seqcompv != NULL)
+                    FAILHERE (makenode3_BM
+                              (k_curcomp, _.seqcompv, taggedint_BM (cix),
+                               taggedint_BM (ix)));
+                  continue;
+                }
               objlock_BM (_.seqcompob);
               if (objectisinstance_BM (_.seqcompob, k_basiclo_block))
                 {
@@ -806,6 +820,10 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
                               (k_miniscan_stmt, _.seqcompob,
                                taggedint_BM (cix), taggedint_BM (ix)));
                 }
+              else
+                FAILHERE (makenode3_BM
+                          (k_curcomp, _.seqcompob, taggedint_BM (cix),
+                           taggedint_BM (ix)));
               objunlock_BM (_.seqcompob);
 
             }
@@ -822,10 +840,16 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
      objectdbg_BM (_.recv), nbsons - nbconds, nbconds, nbsons);
   for (unsigned ix = nbconds; ix < nbsons; ix++)
     {
-      _.compob = objectcast_BM (objgetcomp_BM (_.recv, ix));
+      _.compv = objgetcomp_BM (_.recv, ix);
+      _.compob = objectcast_BM (_.compv);
       DBGPRINTF_BM ("miniscan_stmt°basiclo_cond recv=%s ix=%u compob=%s",
                     objectdbg_BM (_.recv), ix, objectdbg1_BM (_.compob));
-      WEAKASSERT_BM (isobject_BM (_.compob));
+      if (!_.compob)
+        {
+          if (_.compv != NULL)
+            FAILHERE (makenode2_BM (k_curcomp, _.compv, taggedint_BM (ix)));
+          continue;
+        }
       objlock_BM (_.compob);
       if (objectisinstance_BM (_.compob, k_basiclo_statement))
         {
@@ -911,6 +935,7 @@ ROUTINEOBJNAME_BM (_2Cj1ZVDhCVO_8qT2Um5Ok7f)    //miniscan_stmt°basiclo_while
                  objectval_tyBM * fromob;       //
                  objectval_tyBM * compob;       //
                  value_tyBM whilexpv;   //
+                 value_tyBM compv;      //
                  objectval_tyBM * whiltypob;    //
                  objectval_tyBM * hsetblockob;  //
                  value_tyBM resv;       //
@@ -947,9 +972,12 @@ ROUTINEOBJNAME_BM (_2Cj1ZVDhCVO_8qT2Um5Ok7f)    //miniscan_stmt°basiclo_while
   unsigned stmtlen = objnbcomps_BM (_.stmtob);
   for (int ix = 0; ix < (int) stmtlen; ix++)
     {
-      _.compob = objectcast_BM (objgetcomp_BM (_.stmtob, ix));
+      _.compv = objgetcomp_BM (_.stmtob, ix);
+      if (!_.compv)
+        continue;
+      _.compob = objectcast_BM (_.compob);
       if (!_.compob)
-        FAILHERE (makenode1_BM (k_curcomp, taggedint_BM (ix)));
+        FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (ix), _.compv));
       objlock_BM (_.compob);
       if (objectisinstance_BM (_.compob, k_basiclo_block))
         {
@@ -1042,6 +1070,7 @@ ROUTINEOBJNAME_BM (_8fKRsxM1q9w_3hFovzBicI7)    // miniscan_stmt°basiclo_lockob
                  objectval_tyBM * typob;        //
                  objectval_tyBM * compob;       //
                  objectval_tyBM * lockhsetob;   //
+                 value_tyBM compv;      //
                  value_tyBM lobexpv;    //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
@@ -1076,9 +1105,12 @@ ROUTINEOBJNAME_BM (_8fKRsxM1q9w_3hFovzBicI7)    // miniscan_stmt°basiclo_lockob
   unsigned stmtlen = objnbcomps_BM (_.stmtob);
   for (int ix = 0; ix < (int) stmtlen; ix++)
     {
-      _.compob = objectcast_BM (objgetcomp_BM (_.stmtob, ix));
+      _.compv = objgetcomp_BM (_.stmtob, ix);
+      if (!_.compv)
+        continue;
+      _.compob = objectcast_BM (_.compv);
       if (!_.compob)
-        FAILHERE (makenode1_BM (k_curcomp, taggedint_BM (ix)));
+        FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (ix), _.compv));
       objlock_BM (_.compob);
       if (objectisinstance_BM (_.compob, k_basiclo_block))
         {
