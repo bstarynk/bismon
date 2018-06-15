@@ -157,7 +157,7 @@ failure_at_BM (int failcode, const char *fil, int lineno,
               fprintf (stderr, "\n----- end failure backtrace ------\n");
             }
           fflush (stderr);
-	  // we need that debug_outstr_value_BM should not fail...
+          // we need that debug_outstr_value_BM should not fail...
           fprintf (stderr, "*#* failure code#%d from %s:%d reason : %s\n",
                    failcode, fil ? fil : "???", lineno,
                    debug_outstr_value_BM (reasonv, stkf, 0));

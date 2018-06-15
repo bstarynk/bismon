@@ -31,6 +31,12 @@
 	    <property name='use-underline'>true</property>
           </object>
         </child>
+        <child>
+          <object class='GtkCheckMenuItem' id='appdebug_id'>
+            <property name='label'>_Debug</property>
+	    <property name='use-underline'>true</property>
+          </object>
+        </child>
       </object>
     </child>
   </object>
