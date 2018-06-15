@@ -802,6 +802,7 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
                  objectval_tyBM * modgenob;     //
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * stmtob;       //
+                 value_tyBM stmtv;      //
                  value_tyBM resultv;    //
                  value_tyBM emitv;      //
                  value_tyBM causev;     //
@@ -834,12 +835,16 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
   unsigned blocklen = objnbcomps_BM (_.blockob);
   for (unsigned insix = 0; insix < blocklen; insix++)
     {
-      _.stmtob = objectcast_BM (objgetcomp_BM (_.blockob, insix));
+      _.stmtv = objgetcomp_BM (_.blockob, insix);
+      if (!_.stmtv)
+        continue;
+      _.stmtob = objectcast_BM (_.stmtv);
       DBGPRINTF_BM
         ("emit_block°basiclo_block blockob %s insix#%d stmtob %s of %s",
          objectdbg_BM (_.blockob), insix, objectdbg2_BM (_.stmtob),
          objectdbg3_BM (objclass_BM (_.stmtob)));
-      WEAKASSERT_BM (isobject_BM (_.stmtob));
+      if (!_.stmtob)
+        FAILHERE (makenode2_BM (k_curcomp, _.stmtv, taggedint_BM (insix)));
       {
         objlock_BM (_.stmtob);
         objstrbuffersetindentpayl_BM (_.modgenob, indepth);
@@ -921,6 +926,7 @@ ROUTINEOBJNAME_BM (_56pDwW9peiP_8flH2fMQUnD)    //emit_block°basiclo_loop
                  objectval_tyBM * modgenob;     //
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * stmtob;       //
+                 value_tyBM stmtv;      //
                  value_tyBM resultv;    //
                  value_tyBM emitv;      //
                  value_tyBM causev;     //
@@ -956,12 +962,17 @@ ROUTINEOBJNAME_BM (_56pDwW9peiP_8flH2fMQUnD)    //emit_block°basiclo_loop
   unsigned blocklen = objnbcomps_BM (_.blockob);
   for (unsigned insix = 0; insix < blocklen; insix++)
     {
-      _.stmtob = objectcast_BM (objgetcomp_BM (_.blockob, insix));
+      _.stmtv = objgetcomp_BM (_.blockob, insix);
+      if (!_.stmtv)
+        continue;
+      _.stmtob = objectcast_BM (_.stmtv);
       DBGPRINTF_BM
         ("emit_block°basiclo_loop blockob %s insix#%d stmtob %s of %s",
          objectdbg_BM (_.blockob), insix, objectdbg2_BM (_.stmtob),
          objectdbg3_BM (objclass_BM (_.stmtob)));
-      WEAKASSERT_BM (isobject_BM (_.stmtob));
+      if (!_.stmtob)
+        FAILHERE (makenode2_BM (k_curcomp, _.stmtv, taggedint_BM (insix)));
+
       {
         objlock_BM (_.stmtob);
         objstrbuffersetindentpayl_BM (_.modgenob, indepth);
@@ -1028,6 +1039,7 @@ failure:
 
 
 
+////////////////
 // emit_statement°basiclo_cond _2gpamAdSc26_6d1JjCmKHyw
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_2gpamAdSc26_6d1JjCmKHyw);
@@ -1046,6 +1058,7 @@ ROUTINEOBJNAME_BM (_2gpamAdSc26_6d1JjCmKHyw)    //emit_statment°basiclo_cond
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * compob;       //
                  value_tyBM tmpv;       //
+                 value_tyBM compv;      //
                  value_tyBM resultv;    //
                  value_tyBM emitv;      //            
                  value_tyBM causev;     //
@@ -1089,10 +1102,15 @@ ROUTINEOBJNAME_BM (_2gpamAdSc26_6d1JjCmKHyw)    //emit_statment°basiclo_cond
      objectdbg_BM (_.stmtob), nbconds, stmtsiz, condidbuf);
   for (int ix = 0; ix < nbconds; ix++)
     {
-      _.compob = objectcast_BM (objgetcomp_BM (_.stmtob, ix));
+      _.compv = objgetcomp_BM (_.stmtob, ix);
+      if (!_.compv)
+        continue;
+      _.compob = objectcast_BM (_.compv);
       DBGPRINTF_BM
         ("emit_statment°basiclo_cond stmtob=%s ix#%d when compob=%s",
          objectdbg_BM (_.stmtob), ix, objectdbg2_BM (_.modgenob));
+      if (!_.compob)
+        FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (ix), _.compv));
       WEAKASSERT_BM (isobject_BM (_.compob));
       objlock_BM (_.compob);
       if (objectisinstance_BM (_.compob, k_basiclo_when))
@@ -1124,7 +1142,12 @@ ROUTINEOBJNAME_BM (_2gpamAdSc26_6d1JjCmKHyw)    //emit_statment°basiclo_cond
                                  "else { /*cond else %s*/\n", condidbuf);
       for (int ix = nbconds; ix < stmtsiz; ix++)
         {
-          _.compob = objectcast_BM (objgetcomp_BM (_.stmtob, ix));
+          _.compv = objgetcomp_BM (_.stmtob, ix);
+          if (!_.compv)
+            continue;
+          _.compob = objectcast_BM (_.compv);
+          if (!_.compob)
+            FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (ix), _.compv));
           objlock_BM (_.compob);
           DBGPRINTF_BM
             ("emit_statment°basiclo_cond stmtob=%s ix#%d else compob=%s",
@@ -1206,6 +1229,7 @@ ROUTINEOBJNAME_BM (_6eRPTujgMx5_9mLxL25hmr9)    // emit_statement°basiclo_while
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * compob;       //
                  value_tyBM whilexpv;   //
+                 value_tyBM compv;      //
                  value_tyBM tmpv;       //
                  value_tyBM resultv;    //
                  value_tyBM emitv;      //            
@@ -1253,7 +1277,10 @@ ROUTINEOBJNAME_BM (_6eRPTujgMx5_9mLxL25hmr9)    // emit_statement°basiclo_while
   int stmtlen = objnbcomps_BM (_.stmtob);
   for (int cix = 0; cix < stmtlen; cix++)
     {
-      _.compob = objectcast_BM (objgetcomp_BM (_.stmtob, cix));
+      _.compv = objgetcomp_BM (_.stmtob, cix);
+      if (!_.compv)
+        continue;
+      _.compob = objectcast_BM (_.compv);
       _.emitv = NULL;
       objstrbuffersetindentpayl_BM (_.modgenob, indepth);
       DBGPRINTF_BM
@@ -1261,7 +1288,7 @@ ROUTINEOBJNAME_BM (_6eRPTujgMx5_9mLxL25hmr9)    // emit_statement°basiclo_while
          objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob),
          objectdbg2_BM (_.routprepob));
       if (!_.compob)
-        FAILHERE (makenode1_BM (k_curcomp, taggedint_BM (cix)));
+        FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (cix), _.compv));
       objstrbufferprintfpayl_BM (_.modgenob, "// while %s comp#%d:\n",
                                  whilidbuf, cix);
       objlock_BM (_.compob);
@@ -1334,12 +1361,18 @@ ROUTINEOBJNAME_BM (_9Wk97VJLuH1_0FwsSpfatDg)    // emit_when°basiclo_when
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9Wk97VJLuH1_0FwsSpfatDg,
-                 objectval_tyBM * whenob;
-                 objectval_tyBM * modgenob; objectval_tyBM * routprepob;
-                 objectval_tyBM * compob; value_tyBM tmpv;
-                 value_tyBM resultv; value_tyBM emitv;
-                 value_tyBM causev; value_tyBM testexpv;
-                 value_tyBM errorv;);
+                 objectval_tyBM * whenob;       //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * compob;       //
+                 value_tyBM tmpv;       //
+                 value_tyBM compv;      //
+                 value_tyBM resultv;    //
+                 value_tyBM emitv;      //
+                 value_tyBM causev;     //
+                 value_tyBM testexpv;   //
+                 value_tyBM errorv;     //
+    );
   objectval_tyBM *k_emit_when = BMK_8BRpelfZZnA_85HsuPjg0G7;
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
@@ -1383,7 +1416,12 @@ ROUTINEOBJNAME_BM (_9Wk97VJLuH1_0FwsSpfatDg)    // emit_when°basiclo_when
      objectdbg_BM (_.whenob), whenlen, objectdbg1_BM (_.routprepob));
   for (int wix = 0; wix < whenlen; wix++)
     {
-      _.compob = objectcast_BM (objgetcomp_BM (_.whenob, wix));
+      _.compv = objgetcomp_BM (_.whenob, wix);
+      if (!_.compv)
+        continue;
+      _.compob = objectcast_BM (_.compv);
+      if (!_.compob)
+        FAILHERE (makenode2_BM (k_curcomp, _.compv, taggedint_BM (wix)));
       DBGPRINTF_BM
         ("emit_when°basiclo_when whenob=%s wix#%d compob=%s of %s",
          objectdbg_BM (_.whenob), wix, objectdbg1_BM (_.compob),
@@ -2686,13 +2724,14 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
                  objectval_tyBM * propob;       //
                  objectval_tyBM * compob;       //
                  objectval_tyBM * curwhenob;    //
+                 value_tyBM compv;      //
                  value_tyBM whensetv;   //
-                 value_tyBM defaulttupv;
+                 value_tyBM defaulttupv;        //
                  value_tyBM emitv;      //
                  value_tyBM propv;      //
                  value_tyBM switchexpv; //
                  value_tyBM keysnodv;   //
-                 value_tyBM curkeyv;
+                 value_tyBM curkeyv;    //
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
     );
@@ -2785,6 +2824,8 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
   for (int dix = 0; dix < nbdef; dix++)
     {
       _.compob = tuplecompnth_BM (_.defaulttupv, dix);
+      if (!_.compob)
+        continue;
       _.emitv = NULL;
       objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
       objstrbuffernewlinepayl_BM (_.modgenob);
@@ -2850,11 +2891,17 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
       int whenlen = objnbcomps_BM (_.curwhenob);
       for (int cix = 0; cix < whenlen; cix++)
         {
-          _.compob = objectcast_BM (objgetcomp_BM (_.curwhenob, cix));
+          _.compob = NULL;
+          _.compv = objgetcomp_BM (_.curwhenob, cix);
+          if (!_.compv)
+            continue;
+          _.compob = objectcast_BM (_.compv);
+          if (!_.compob)
+            FAILHERE (makenode3_BM
+                      (k_when, _.curwhenob, taggedint_BM (cix), _.compv));
           DBGPRINTF_BM
             ("emit_statement°basiclo_intswitch stmtob=%s wix#%d compob=%s cix#%d",
              objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob), cix);
-          WEAKASSERT_BM (_.compob != NULL);
           objlock_BM (_.compob);
           _.emitv = NULL;
           if (objectisinstance_BM (_.compob, k_basiclo_statement))
@@ -2878,23 +2925,19 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
           else
             FAILHERE (makenode3_BM
                       (k_when, _.curwhenob, taggedint_BM (cix), _.compob));
-          DBGPRINTF_BM
-            ("emit_statement°basiclo_intswitch stmtob=%s cix#%d compob=%s curwhenob=%s got emitv=%s",
-             objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob),
-             objectdbg2_BM (_.curwhenob), debug_outstr_value_BM (_.emitv,
-                                                                 CURFRAME_BM,
-                                                                 0));
+          DBGPRINTF_BM ("emit_statement°basiclo_intswitch stmtob=%s cix#%d compob=%s curwhenob=%s got emitv=%s", objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob), objectdbg2_BM (_.curwhenob),  //
+                        debug_outstr_value_BM (_.emitv, CURFRAME_BM, 0));
           if (!_.emitv)
             FAILHERE (makenode2_BM (k_default, taggedint_BM (cix), _.compob));
 
           objunlock_BM (_.compob);
           _.compob = NULL;
+          _.compv = NULL;
         }
       objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
       objstrbuffernewlinepayl_BM (_.modgenob);
       objstrbufferprintfpayl_BM (_.modgenob, " break; // end when %s\n",
                                  whenidbuf);
-#warning incomplete emit_statement°basiclo_intswitch curwhenob
       objunlock_BM (_.curwhenob);
       _.curwhenob = NULL;
     }
@@ -2958,16 +3001,17 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
                  objectval_tyBM * curcaseob;    //
                  objectval_tyBM * switchob;     //
                  objectval_tyBM * modulob;      //
+                 value_tyBM compv;      //
                  value_tyBM whensetv;   //
-                 value_tyBM defaulttupv;
+                 value_tyBM defaulttupv;        //
                  value_tyBM emitv;      //
                  value_tyBM propv;      //
                  value_tyBM switchexpv; //
                  value_tyBM keysnodv;   //
-                 value_tyBM curkeyv;
-                 value_tyBM curswitchv;
-                 value_tyBM setkeysv;
-                 value_tyBM resultv;
+                 value_tyBM curkeyv;    //
+                 value_tyBM curswitchv; //
+                 value_tyBM setkeysv;   //
+                 value_tyBM resultv;    //
                  value_tyBM constantsv; //
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
@@ -3116,6 +3160,8 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
   for (int dfix = 0; dfix < nbdef; dfix++)
     {
       _.compob = tuplecompnth_BM (_.defaulttupv, dfix);
+      if (!_.compob)
+        continue;
       _.emitv = NULL;
       if (objectisinstance_BM (_.compob, k_basiclo_statement))
         {
@@ -3190,7 +3236,14 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
       int whenlen = objnbcomps_BM (_.curwhenob);
       for (int six = 0; six < whenlen; six++)
         {
-          _.compob = objgetcomp_BM (_.curwhenob, six);
+          _.compob = NULL;
+          _.compv = objgetcomp_BM (_.curwhenob, six);
+          if (!_.compv)
+            continue;
+          _.compob = objectcast_BM (_.compv);
+          if (!_.compob)
+            FAILHERE (makenode3_BM
+                      (k_curcomp, _.compv, taggedint_BM (six), _.curwhenob));
           objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
           _.emitv = NULL;
           if (objectisinstance_BM (_.compob, k_basiclo_statement))
@@ -3301,6 +3354,7 @@ ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr)    //emit_statement°basiclo_lockob
                  objectval_tyBM * stmtpropob;   //
                  objectval_tyBM * propob;       //
                  objectval_tyBM * compob;       //
+                 value_tyBM compv;      //
                  value_tyBM resultv;    //
                  value_tyBM locksetv;   //
                  value_tyBM lobexpv;    //
@@ -3354,11 +3408,16 @@ ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr)    //emit_statement°basiclo_lockob
                              stmtidbuf, stmtidbuf);
   for (int cix = 0; cix < stmtlen; cix++)
     {
-      _.compob = objectcast_BM (objgetcomp_BM (_.stmtob, cix));
+      _.compob = NULL;
+      _.compv = objgetcomp_BM (_.stmtob, cix);
+      if (!_.compv)
+        continue;
+      _.compob = objectcast_BM (_.compv);
+      if (!_.compob)
+        FAILHERE (makenode2_BM (k_curcomp, _.compv, taggedint_BM (cix)));
       DBGPRINTF_BM
         ("emit_statement°basiclo_lockobj stmtob %s cix#%d compob %s",
          objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob));
-      WEAKASSERT_BM (_.compob != NULL);
       objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
       objstrbuffernewlinepayl_BM (_.modgenob);
       if (objectisinstance_BM (_.compob, k_basiclo_statement))
