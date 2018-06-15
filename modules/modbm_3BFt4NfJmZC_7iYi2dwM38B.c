@@ -340,10 +340,10 @@ epilog_0YOXUe7rEJC_3jFMjOAQRs9:__attribute__ ((unused));
 
 value_tyBM crout_22Zd68WPKUO_6AoIuBcbUb2_BM     //#3
   (struct stackframe_stBM * stkf,       //
-//!dump_scan°dict_object minifunc for dict-object o1 and dumper-object o2
+//!dump_scan°dict_object minifunc for dict-object odict and dumperobj odumper
    // 2 arguments
-   const value_tyBM arg0,       // o1
-   const value_tyBM arg1,       // o2
+   const value_tyBM arg0,       // odict
+   const value_tyBM arg1,       // odumper
    const value_tyBM arg2_ __attribute__ ((unused)),
    const value_tyBM arg3_ __attribute__ ((unused)),
    const quasinode_tyBM * restargs_ __attribute__ ((unused)))
@@ -356,24 +356,26 @@ value_tyBM crout_22Zd68WPKUO_6AoIuBcbUb2_BM     //#3
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 3 local values:
+    /// 5 local values:
+    value_tyBM v_167WczZjWtG_3FofhJxQWJi;       // v_str
+    objectval_tyBM *o_3cTC8W7d75H_1vteOyEoAao;  // odumper
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ;       // v_r
-    objectval_tyBM *o_93FBSk1ML0f_2WjSuKa9TNU;  // o2
-    objectval_tyBM *o_97rnxb0KFqq_44veN75DG2E;  // o1
+    value_tyBM v_5jRQCD1qTko_61I0j04ugAA;       // v_val
+    objectval_tyBM *o_7n2SLLuWOjH_4ArhFUjmckz;  // odict
     /// 0 local numbers:
   } _;
   memset (&_, 0, sizeof (struct frame_22Zd68WPKUO_6AoIuBcbUb2_BMst));
   _.stkfram_head.htyp = typayl_StackFrame_BM;
   _.stkfram_head.hgc = 0;
-  _.stkfram_head.rlen = 3;
+  _.stkfram_head.rlen = 5;
   _.stkfram_descr =
     constob_3BFt4NfJmZC_7iYi2dwM38B_BM[5] /*|_22Zd68WPKUO_6AoIuBcbUb2 */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 2 arguments:
-  _.o_97rnxb0KFqq_44veN75DG2E = objectcast_BM (arg0);
-  _.o_93FBSk1ML0f_2WjSuKa9TNU = objectcast_BM (arg1);
+  _.o_7n2SLLuWOjH_4ArhFUjmckz = objectcast_BM (arg0);
+  _.o_3cTC8W7d75H_1vteOyEoAao = objectcast_BM (arg1);
   // fetched 2 arguments.
   // no closed values in _22Zd68WPKUO_6AoIuBcbUb2.
   // routine _22Zd68WPKUO_6AoIuBcbUb2 body:
@@ -878,8 +880,8 @@ startblock__9Hf4n8AnqR7_7ve3Bi3kWMV:__attribute__ ((unused));
       {                         // run _6HYDs1Zywvs_1w8OTn5XOZY  
         (send3_BM ((            /*nodenthson: */
                      nodenthson_BM ((_.v_2BkOxf2KbS8_3bswrKbmgjy), (_.n_2W7Ckt2WxEM_4NVYgEWE73B))),     /*sel: */
-                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[4]      /*|dump_value */
-                    )),
+                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[4] /*|dump_value */
+                     )),
                    ((struct stackframe_stBM *) &_),
                    (_.o_1Bl1iFQ8boR_1xM6MOfHV1N),
                    (_.o_93FBSk1ML0f_2WjSuKa9TNU),
