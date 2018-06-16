@@ -2574,11 +2574,21 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
         _.curexptypob =
           miniscan_expr_BM (_.curargexpv, _.routprepob, depth + 1, _.stmtob,
                             CURFRAME_BM);
-        if (miniscan_compatype_BM (_.curvartypob, _.curexptypob, CURFRAME_BM)
-            != _.curvartypob)
-          FAILHERE (makenode4_BM
-                    (k_arguments, _.expresultsv, _.stmtresultsv,
-                     _.curexptypob, taggedint_BM (aix)));
+        _.commontypob =
+          miniscan_compatype_BM (_.curvartypob, _.curexptypob, CURFRAME_BM);
+        if (_.commontypob != _.curvartypob)
+          {
+            DBGPRINTF_BM
+              ("miniscan_stmt°basiclo_cexpansion stmtob=%s argumfailure aix=%d curvarob=%s curargexpv=%s\n"
+               "... curvartypob %s,  curexptypob %s, commontypob %s",
+               objectdbg_BM (_.stmtob), aix, objectdbg1_BM (_.curvarob),
+               debug_outstr_value_BM (_.curargexpv, CURFRAME_BM, 0),
+               objectdbg2_BM (_.curvartypob), objectdbg3_BM (_.curexptypob),
+               objectdbg4_BM (_.commontypob));
+            FAILHERE (makenode4_BM
+                      (k_arguments, _.expresultsv, _.stmtresultsv,
+                       _.curexptypob, taggedint_BM (aix)));
+          }
       }
     _.curvartypob = NULL;
     _.curexptypob = NULL;
