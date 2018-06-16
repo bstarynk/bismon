@@ -824,8 +824,14 @@ extern void dictput_BM (struct dict_stBM *dict, const stringval_tyBM * str,
                         const value_tyBM val);
 extern void dictremove_BM (struct dict_stBM *dict,
                            const stringval_tyBM * str);
+extern const stringval_tyBM *dictfirstkey_BM (struct dict_stBM *dict);
+extern const stringval_tyBM *dictlastkey_BM (struct dict_stBM *dict);
 extern const stringval_tyBM *dictkeyafter_BM (struct dict_stBM *dict,
                                               const stringval_tyBM * str);
+/// so iterate on a dict with
+/// for (const stringval_tyBM* ks = dictfirstkey_BM(dict);
+///      ks != NULL;
+///      ks = dictkeyafter_BM(dict, ks) { dosomethingwith(ks) }
 extern const stringval_tyBM *dictkeysameorafter_BM (struct dict_stBM *dict,
                                                     const stringval_tyBM *
                                                     str);
@@ -846,6 +852,10 @@ static inline void objdictputpayl_BM (objectval_tyBM * obj,
                                       const value_tyBM val);
 static inline void objdictremovepayl_BM (objectval_tyBM * obj,
                                          const stringval_tyBM * str);
+static inline const stringval_tyBM *objdictfirstkeypayl_BM
+  (objectval_tyBM * obj);
+static inline const stringval_tyBM *objdictlastkeypayl_BM
+  (objectval_tyBM * obj);
 static inline const stringval_tyBM *objdictkeyafterpayl_BM
   (objectval_tyBM * obj, const stringval_tyBM * str);
 static inline const stringval_tyBM

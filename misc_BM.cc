@@ -728,6 +728,28 @@ void dictremove_BM(struct dict_stBM* dict, const stringval_tyBM*str)
   dicm.erase(const_cast<stringval_tyBM*>(str));
 } // end dictremove_BM
 
+const stringval_tyBM*
+dictfirstkey_BM(struct dict_stBM* dict)
+{
+  if (!isdict_BM((const value_tyBM)dict))
+    return nullptr;
+  auto& dicm = *(dictmap_claBM*)dict->dict_data;
+  if (dicm.empty()) return nullptr;
+  auto firstn = dicm.begin();
+  return firstn->first;
+} // end dictfirstkey_BM
+
+const stringval_tyBM*
+dictlastkey_BM(struct dict_stBM* dict)
+{
+  if (!isdict_BM((const value_tyBM)dict))
+    return nullptr;
+  auto& dicm = *(dictmap_claBM*)dict->dict_data;
+  if (dicm.empty()) return nullptr;
+  auto endn = dicm.end();
+  endn--;
+  return endn->first;
+} // end dictlastkey_BM
 
 const stringval_tyBM*
 dictkeyafter_BM(struct dict_stBM* dict, const stringval_tyBM*str)
@@ -737,11 +759,7 @@ dictkeyafter_BM(struct dict_stBM* dict, const stringval_tyBM*str)
   auto& dicm = *(dictmap_claBM*)dict->dict_data;
   if (!isstring_BM((const value_tyBM)str)
       || !bytstring_BM(str)[0])
-    {
-      if (dicm.empty()) return nullptr;
-      auto firstn = dicm.begin();
-      return firstn->first;
-    }
+    return nullptr;
   auto itn = dicm.upper_bound(const_cast<stringval_tyBM*>(str));
   if (itn != dicm.end())
     return itn->first;
@@ -757,11 +775,7 @@ dictkeysameorafter_BM(struct dict_stBM* dict, const stringval_tyBM*str)
   auto& dicm = *(dictmap_claBM*)dict->dict_data;
   if (!isstring_BM((const value_tyBM)str)
       || !bytstring_BM(str)[0])
-    {
-      if (dicm.empty()) return nullptr;
-      auto firstn = dicm.begin();
-      return firstn->first;
-    }
+    return nullptr;
   auto itn = dicm.lower_bound(const_cast<stringval_tyBM*>(str));
   if (itn != dicm.end())
     return itn->first;
@@ -776,13 +790,7 @@ dictkeybefore_BM(struct dict_stBM* dict, const stringval_tyBM*str)
   auto& dicm = *(dictmap_claBM*)dict->dict_data;
   if (!isstring_BM((const value_tyBM)str)
       || !bytstring_BM(str)[0])
-    {
-      if (dicm.empty())
-        return nullptr;
-      auto lastn = dicm.end();
-      lastn--;
-      return lastn->first;
-    }
+    return nullptr;
   auto itn = dicm.lower_bound(const_cast<stringval_tyBM*>(str));
   if (itn != dicm.begin())
     itn--;

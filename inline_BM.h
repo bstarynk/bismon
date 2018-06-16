@@ -1965,6 +1965,25 @@ objdictremovepayl_BM (objectval_tyBM * obj, const stringval_tyBM * str)
 }                               /* end objdictremovepayl_BM */
 
 const stringval_tyBM *
+objdictfirstkeypayl_BM (objectval_tyBM * obj)
+{
+  struct dict_stBM *dic = objgetdictpayl_BM (obj);
+  if (dic)
+    return dictfirstkey_BM (dic);
+  return NULL;
+}                               /* end objdictfirstkeypayl_BM */
+
+const stringval_tyBM *
+objdictlastkeypayl_BM (objectval_tyBM * obj)
+{
+  struct dict_stBM *dic = objgetdictpayl_BM (obj);
+  if (dic)
+    return dictlastkey_BM (dic);
+  return NULL;
+}                               /* end objdictlastkeypayl_BM */
+
+
+const stringval_tyBM *
 objdictkeyafterpayl_BM (objectval_tyBM * obj, const stringval_tyBM * str)
 {
   struct dict_stBM *dic = objgetdictpayl_BM (obj);
