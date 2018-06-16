@@ -386,6 +386,42 @@ startblock__7csjYG7rNV4_68bJZT4W2BO:__attribute__ ((unused));
 /*objdictfirstkeypayl:*/
       (value_tyBM) objdictfirstkeypayl_BM ((_.o_7n2SLLuWOjH_4ArhFUjmckz));
 
+
+
+//// +while _0SWi4IZCeP3_0VPExGvOasL 
+  startblock__0SWi4IZCeP3_0VPExGvOasL: /*+!while */ ;
+    {                           /* +while _0SWi4IZCeP3_0VPExGvOasL */
+      if (!( /*while _0SWi4IZCeP3_0VPExGvOasL cond: */ _.v_167WczZjWtG_3FofhJxQWJi))    //: testwhile _0SWi4IZCeP3_0VPExGvOasL failing  
+        goto endblock__0SWi4IZCeP3_0VPExGvOasL; //failwhile  
+// while _0SWi4IZCeP3_0VPExGvOasL body:  
+// while _0SWi4IZCeP3_0VPExGvOasL comp#0:  
+      _.v_5jRQCD1qTko_61I0j04ugAA =     //assign _2dCjJpUS20B_3NM9eVa84hQ   
+/*objdictgetpayl:*/ objdictgetpayl_BM ((_.o_7n2SLLuWOjH_4ArhFUjmckz),
+                                       stringcast_BM
+                                       (_.v_167WczZjWtG_3FofhJxQWJi));
+// while _0SWi4IZCeP3_0VPExGvOasL comp#1:  
+      {                         // start cexpansion _0LKRJrD5wqK_5ZE495IAA7d - obdumpscanvalue   
+/*obdumpscanvalue:*/
+        obdumpscanvalue_BM ((_.o_3cTC8W7d75H_1vteOyEoAao),
+                            (_.v_5jRQCD1qTko_61I0j04ugAA), (1));
+      }                         // end cexpansion _0LKRJrD5wqK_5ZE495IAA7d - obdumpscanvalue   
+// while _0SWi4IZCeP3_0VPExGvOasL comp#2:  
+      _.v_167WczZjWtG_3FofhJxQWJi =     //assign _5UiotUrFshh_9xWCmys30Pe   
+/*objdictkeyafterpayl:*/
+        objdictkeyafterpayl_BM ((_.o_7n2SLLuWOjH_4ArhFUjmckz),
+                                stringcast_BM ((_.v_167WczZjWtG_3FofhJxQWJi)));
+
+      goto startblock__0SWi4IZCeP3_0VPExGvOasL; // repeatwhile  
+    endblock__0SWi4IZCeP3_0VPExGvOasL: /*endingwhile */ ;
+    }
+  /*-while _0SWi4IZCeP3_0VPExGvOasL */
+
+
+    /*return _8pmMgF3SSuE_2COzwjyI8lS: */ _.v_3qw9bnATIhq_8loBraLeXzQ =
+      // returned 
+      _.o_7n2SLLuWOjH_4ArhFUjmckz;
+    goto epilog_22Zd68WPKUO_6AoIuBcbUb2;
+
 /* !endingblock _7csjYG7rNV4_68bJZT4W2BO */
     goto endblock__7csjYG7rNV4_68bJZT4W2BO;
   endblock__7csjYG7rNV4_68bJZT4W2BO:;
