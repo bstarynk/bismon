@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 704 objects
+// for 705 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2448,6 +2448,24 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for command to hide a named value"
 !)_5mgZTJ64WH9_4r2XC8eZmW7
+
+
+
+!(_7SYPOwPm7jc_2PeGiJ8uQiX |=no_value|
+!~ name (~ no_value
+~)
+!@ 1529130067.190
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives nil, i.e. the absence of value"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _7SYPOwPm7jc_2PeGiJ8uQiX  ":*/(("  "value_tyBM"  ")" 
+  "NULL"  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_7SYPOwPm7jc_2PeGiJ8uQiX
 
 
 
