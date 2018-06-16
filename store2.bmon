@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 702 objects
+// for 704 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3130,6 +3130,25 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_2AEY5BJsU6w_2uyJAnqVqoK |=objdictfirstkeypayl|
+!~ name (~ objdictfirstkeypayl
+~)
+!@ 1529129780.158
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return the first key string of dict-object odict, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _7n2SLLuWOjH_4ArhFUjmckz ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2AEY5BJsU6w_2uyJAnqVqoK  ":*/"  " "  "(" 
+  "value_tyBM"  ")"  " "  "objdictfirstkeypayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _7n2SLLuWOjH_4ArhFUjmckz)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_2AEY5BJsU6w_2uyJAnqVqoK
+
+
+
 !(_6utQXd2to34_7Oljad6tQId |=objdictgetpayl|
 !~ name (~ objdictgetpayl
 ~)
@@ -3209,6 +3228,25 @@ _97rnxb0KFqq_44veN75DG2E)  "),"  " "
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7bbeIqUSje9_4jVgC7ZJmvx
 !)_0OvwRf15VsC_7bKX6wOGfBw
+
+
+
+!(_5EMj197fXKK_4uDIPhzwfdj |=objdictlastkeypayl|
+!~ name (~ objdictlastkeypayl
+~)
+!@ 1529129761.487
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return the last key string of dict-object odict, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _7n2SLLuWOjH_4ArhFUjmckz ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5EMj197fXKK_4uDIPhzwfdj  ":*/"  " "  "(" 
+  "value_tyBM"  ")"  " "  "objdictlastkeypayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _7n2SLLuWOjH_4ArhFUjmckz)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_5EMj197fXKK_4uDIPhzwfdj
 
 
 
