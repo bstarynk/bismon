@@ -665,8 +665,9 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
               }
             else if (istaggedint_BM (_.exclamsonv))
               LOCALRETURN_BM (BMP_value);
-            else if (_.exclamsonv == NULL)
-              LOCALRETURN_BM (BMP_value);
+            // we don't accept quotation of nil, since it is not a value
+            // else if (_.exclamsonv == NULL)
+            //   LOCALRETURN_BM (BMP_value);
             else
               FAILHERE (k_undefined);
           }

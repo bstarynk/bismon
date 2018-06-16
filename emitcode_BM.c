@@ -1649,9 +1649,11 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                                            (long long) _.exclamv,
                                            (long long) numexclam);
               }
-            else if (_.exclamv == NULL)
-              objstrbufferprintfpayl_BM (_.modgenob,
-                                         "(/*!__:*/(value_tyBM) NULL)");
+            /// this should never happen, since we don't accept
+            /// quotation of nil
+            /// else if (_.exclamv == NULL)
+            ///  objstrbufferprintfpayl_BM (_.modgenob,
+            ///                             "(/*!__:*/(value_tyBM) NULL)");
             else
               WEAKASSERTRET_BM (false
                                 &&
