@@ -1814,6 +1814,7 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
   objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   objectval_tyBM *k_variable = BMK_5ucAZimYynS_4VA0XHvr1nW;
   objectval_tyBM *k_emit_expression = BMK_9lXSe7DrOl6_7hghYt0LhTF;
+  objectval_tyBM *k_unbound_variable_error = BMK_68PQkZp1UAq_8RNb44Ea88z;
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
   _.connob = objectcast_BM (arg1);
@@ -1928,11 +1929,13 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
           else
             {
               DBGPRINTF_BM
-                ("miniemit_node_conn°basiclo_primitive connob=%s unbound varob=%s cix#%d",
-                 objectdbg_BM (_.connob), objectdbg1_BM (_.varob), cix);
-              WEAKASSERT_BM (false
-                             &&
-                             "unbound var in chunk _0BaXSIhDAHO_9x6t4zdbUhj routine");
+                ("miniemit_node_conn°basiclo_primitive connob=%s unbound varob=%s cix#%d fromob %s substob %s expv %s",
+                 objectdbg_BM (_.connob), objectdbg1_BM (_.varob), cix,
+                 objectdbg2_BM (_.fromob), objectdbg3_BM (_.substob),
+                 debug_outstr_value_BM (_.expv, CURFRAME_BM, 0));
+              FAILHERE (makenode4_BM
+                        (k_unbound_variable_error, _.varob, _.expv, _.substob,
+                         taggedint_BM (cix)));
             }
         }
       else
