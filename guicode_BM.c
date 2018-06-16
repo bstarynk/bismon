@@ -2082,7 +2082,10 @@ ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    // emit_module#command_handler
                                  debug_outstr_value_BM (_.failres,
                                                         CURFRAME_BM, 0));
           log_end_message_BM ();
-          LOCALRETURN_BM (NULL);
+#ifdef BISMONGTK
+          show_answer_value_newgui_BM (_.failres, CURFRAME_BM);
+#endif     /*BISMONGTK*/
+            LOCALRETURN_BM (NULL);
         };
     };
   objlock_BM (_.modulob);
