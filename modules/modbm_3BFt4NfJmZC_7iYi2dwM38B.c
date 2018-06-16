@@ -408,8 +408,9 @@ startblock__7csjYG7rNV4_68bJZT4W2BO:__attribute__ ((unused));
 // while _0SWi4IZCeP3_0VPExGvOasL comp#2:  
       _.v_167WczZjWtG_3FofhJxQWJi =     //assign _5UiotUrFshh_9xWCmys30Pe   
 /*objdictkeyafterpayl:*/
-        objdictkeyafterpayl_BM ((_.o_7n2SLLuWOjH_4ArhFUjmckz),
-                                stringcast_BM ((_.v_167WczZjWtG_3FofhJxQWJi)));
+        (value_tyBM) objdictkeyafterpayl_BM ((_.o_7n2SLLuWOjH_4ArhFUjmckz),
+                                             stringcast_BM
+                                             (_.v_167WczZjWtG_3FofhJxQWJi));
 
       goto startblock__0SWi4IZCeP3_0VPExGvOasL; // repeatwhile  
     endblock__0SWi4IZCeP3_0VPExGvOasL: /*endingwhile */ ;
