@@ -2453,6 +2453,7 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
                  objectval_tyBM * curexptypob;  //
                  objectval_tyBM * curvarob;     //
                  objectval_tyBM * curvartypob;  //
+                 objectval_tyBM * commontypob;  //
                  value_tyBM expresultsv;        //
                  value_tyBM stmtresultsv;       //
                  value_tyBM expargsv;   //
@@ -2531,11 +2532,24 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
               miniscan_var_BM (_.curesob, _.routprepob, depth + 1, _.stmtob,
                                CURFRAME_BM);
             objunlock_BM (_.curesob);
-            if (miniscan_compatype_BM
-                (_.curvartypob, _.curestypob, CURFRAME_BM) != _.curvartypob)
-              FAILHERE (makenode4_BM
-                        (k_results, _.expresultsv, _.stmtresultsv,
-                         _.curestypob, taggedint_BM (rix)));
+            _.commontypob =
+              miniscan_compatype_BM (_.curvartypob, _.curestypob,
+                                     CURFRAME_BM);
+            if (_.commontypob != _.curvartypob)
+              {
+                DBGPRINTF_BM
+                  ("miniscan_stmt°basiclo_cexpansion stmtob %s expandob %s\n"
+                   "... result mismatch rix#%d curesob %s curvarob %s\n"
+                   "... curvartypob %s curestypob %s commontypob %s",
+                   objectdbg_BM (_.stmtob), objectdbg1_BM (_.expandob), rix,
+                   objectdbg2_BM (_.curesob), objectdbg3_BM (_.curvarob),
+                   objectdbg4_BM (_.curvartypob),
+                   objectdbg5_BM (_.curestypob),
+                   objectdbg6_BM (_.commontypob));
+                FAILHERE (makenode4_BM
+                          (k_results, _.expresultsv, _.stmtresultsv,
+                           _.curestypob, taggedint_BM (rix)));
+              }
           }
       }
     else if (_.expresultsv || _.stmtresultsv)
