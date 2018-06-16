@@ -381,7 +381,12 @@ value_tyBM crout_22Zd68WPKUO_6AoIuBcbUb2_BM     //#3
   // routine _22Zd68WPKUO_6AoIuBcbUb2 body:
 
 startblock__7csjYG7rNV4_68bJZT4W2BO:__attribute__ ((unused));
-  {                             /* +block _7csjYG7rNV4_68bJZT4W2BO *//* !endingblock _7csjYG7rNV4_68bJZT4W2BO */
+  {                             /* +block _7csjYG7rNV4_68bJZT4W2BO */
+    _.v_167WczZjWtG_3FofhJxQWJi =       //assign _5mCmWSYOW7T_4G9YRC6tvRf  
+/*objdictfirstkeypayl:*/
+      (value_tyBM) objdictfirstkeypayl_BM ((_.o_7n2SLLuWOjH_4ArhFUjmckz));
+
+/* !endingblock _7csjYG7rNV4_68bJZT4W2BO */
     goto endblock__7csjYG7rNV4_68bJZT4W2BO;
   endblock__7csjYG7rNV4_68bJZT4W2BO:;
   }

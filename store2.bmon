@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 714 objects
+// for 720 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -1557,8 +1557,6 @@ _6YnYKKsHo3f_9nIEOZMp744
 !& _5j8LpQULt1p_9oeOaqmfYYr
 !& _3HAeZZQ0q7b_7qyDsekaz7Y
 !& _22Zd68WPKUO_6AoIuBcbUb2
- // emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
-
 !)_3BFt4NfJmZC_7iYi2dwM38B
 
 
@@ -7398,6 +7396,21 @@ _9xHQlk4snoU_6unWwGT6PcG
 
 
 
+!(_0LKRJrD5wqK_5ZE495IAA7d
+!@ 1529144464.105
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dumpscanvalue v_val"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _3cTC8W7d75H_1vteOyEoAao _5jRQCD1qTko_61I0j04ugAA  * _0e54seiZEXF_1Myf620cHoB (  1))
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _39pW7nyFqoI_5pikyvvGsZ5 ( _3cTC8W7d75H_1vteOyEoAao _5jRQCD1qTko_61I0j04ugAA  * _0e54seiZEXF_1Myf620cHoB (  1))
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_39pW7nyFqoI_5pikyvvGsZ5
+!)_0LKRJrD5wqK_5ZE495IAA7d
+
+
+
 !(_0M2jApBzFAy_8H8cpCjGpTi
 !|*
 !@ 1520711151.270
@@ -7435,6 +7448,23 @@ _3qw9bnATIhq_8loBraLeXzQ
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
 _84ATc5kpHjd_2wlYHZEUoeb
 !)_0SinERsgdvQ_57dLCP63i9r
+
+
+
+!(_0SWi4IZCeP3_0VPExGvOasL
+!@ 1529144464.107
+!$_4Af5NOOf7Qe_7KQdGPoNdJ0 |=basiclo_while|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "while v_str ..."
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _7GNnckYYtcH_7wtOnPP4eKU ( _167WczZjWtG_3FofhJxQWJi _2dCjJpUS20B_3NM9eVa84hQ _0LKRJrD5wqK_5ZE495IAA7d _5UiotUrFshh_9xWCmys30Pe)
+!: _7GNnckYYtcH_7wtOnPP4eKU |=while|
+_167WczZjWtG_3FofhJxQWJi
+!# 3
+!& _2dCjJpUS20B_3NM9eVa84hQ
+!& _0LKRJrD5wqK_5ZE495IAA7d
+!& _5UiotUrFshh_9xWCmys30Pe
+!)_0SWi4IZCeP3_0VPExGvOasL
 
 
 
@@ -7845,6 +7875,20 @@ _7csjYG7rNV4_68bJZT4W2BO
 !# 1
 !& _9Eu315oGSiW_2T0LUr58JnT
 !)_2cKxScfQVIk_8j9yMA8y0D2
+
+
+
+!(_2dCjJpUS20B_3NM9eVa84hQ
+!@ 1529144464.104
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "v_val := get-dict-value (odict v_str)"
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _0aWpxE7aiWs_71KTgYdlifE ( _5jRQCD1qTko_61I0j04ugAA  * _6utQXd2to34_7Oljad6tQId ( _7n2SLLuWOjH_4ArhFUjmckz _167WczZjWtG_3FofhJxQWJi))
+!# 2
+!& _5jRQCD1qTko_61I0j04ugAA
+!&  * _6utQXd2to34_7Oljad6tQId ( _7n2SLLuWOjH_4ArhFUjmckz _167WczZjWtG_3FofhJxQWJi)
+!)_2dCjJpUS20B_3NM9eVa84hQ
 
 
 
@@ -8651,6 +8695,20 @@ _9Hf4n8AnqR7_7ve3Bi3kWMV
 
 
 
+!(_5mCmWSYOW7T_4G9YRC6tvRf
+!@ 1529142191.864
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "v_str := firstkeystring odict"
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _0aWpxE7aiWs_71KTgYdlifE ( _167WczZjWtG_3FofhJxQWJi  * _2AEY5BJsU6w_2uyJAnqVqoK ( _7n2SLLuWOjH_4ArhFUjmckz))
+!# 2
+!& _167WczZjWtG_3FofhJxQWJi
+!&  * _2AEY5BJsU6w_2uyJAnqVqoK ( _7n2SLLuWOjH_4ArhFUjmckz)
+!)_5mCmWSYOW7T_4G9YRC6tvRf
+
+
+
 !(_5nFFthyf8y9_00k5H4R0G6b
 !|*
 !@ 1526380704.640
@@ -8802,6 +8860,20 @@ _5a7gOTbvw4I_6PzXru7uInx
 !: _2DH0ucElTgh_62vxjxLcfev |=return|
 _5yc7zU7sbF8_1dME4ONRdaf
 !)_5Oc7KmHXX90_7nCBU0cy2Bo
+
+
+
+!(_5UiotUrFshh_9xWCmys30Pe
+!@ 1529144464.106
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "v_str = next_dict_key(odict v_str)"
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _0aWpxE7aiWs_71KTgYdlifE ( _167WczZjWtG_3FofhJxQWJi  * _0e8EzDqgZAD_7f5RLVWP6AI ( _7n2SLLuWOjH_4ArhFUjmckz _167WczZjWtG_3FofhJxQWJi))
+!# 2
+!& _167WczZjWtG_3FofhJxQWJi
+!&  * _0e8EzDqgZAD_7f5RLVWP6AI ( _7n2SLLuWOjH_4ArhFUjmckz _167WczZjWtG_3FofhJxQWJi)
+!)_5UiotUrFshh_9xWCmys30Pe
 
 
 
@@ -9115,10 +9187,14 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 !(_7csjYG7rNV4_68bJZT4W2BO
-!@ 1529082854.321
+!@ 1529144485.139
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of dump_scan\u00b0dict_object"
+!# 3
+!& _5mCmWSYOW7T_4G9YRC6tvRf
+!& _0SWi4IZCeP3_0VPExGvOasL
+!& _8pmMgF3SSuE_2COzwjyI8lS
 !)_7csjYG7rNV4_68bJZT4W2BO
 
 
@@ -9551,6 +9627,19 @@ _97rnxb0KFqq_44veN75DG2E
 !# 1
 !& _3dJ2b1hmBuw_7Pu5iDjauLr
 !)_8hUpJbSLQUS_88aqogJAi2Q
+
+
+
+!(_8pmMgF3SSuE_2COzwjyI8lS
+!@ 1529144485.139
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return odict"
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _2DH0ucElTgh_62vxjxLcfev ( _7n2SLLuWOjH_4ArhFUjmckz)
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+_7n2SLLuWOjH_4ArhFUjmckz
+!)_8pmMgF3SSuE_2COzwjyI8lS
 
 
 
