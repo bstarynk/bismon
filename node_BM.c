@@ -28,21 +28,26 @@ makeclosure_BM (const objectval_tyBM * connob, unsigned nbval,
     nbval = 0;
   if (nbval >= MAXSIZE_BM)
     FATAL_BM ("too wide closure %u", nbval);
+  unsigned cnt = 0;
+  for (unsigned ix = 0; ix < nbval; ix++)
+    if (valtype_BM (closvalarr[ix]))
+      cnt++;
+  ASSERT_BM (cnt < MAXSIZE_BM);
   unsigned long closiz =
     sizeof (closure_tyBM)
-    + ((nbval > 0) ? (prime_above_BM (nbval - 1) * sizeof (value_tyBM)) : 0);
+    + ((cnt > 0) ? (prime_above_BM (cnt - 1) * sizeof (value_tyBM)) : 0);
   ASSERT_BM (closiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
   closure_tyBM *clos =          //
     allocgcty_BM (tyClosure_BM, closiz);
   hash_tyBM h1 = objecthash_BM (connob);
-  hash_tyBM h2 = nbval;
-  ((typedsize_tyBM *) clos)->size = nbval;
+  hash_tyBM h2 = cnt;
+  ((typedsize_tyBM *) clos)->size = cnt;
   clos->nodt_conn = (objectval_tyBM *) connob;
   unsigned newcnt = 0;
   for (unsigned ix = 0; ix < nbval; ix++)
     {
       value_tyBM curson = closvalarr[ix];
-      if (curson != NULL && valtype_BM (curson) != 0)
+      if (valtype_BM (curson))
         {
           hash_tyBM curh = valhash_BM (curson);
           if (newcnt % 2)
@@ -50,12 +55,6 @@ makeclosure_BM (const objectval_tyBM * connob, unsigned nbval,
           else
             h2 = (h2 * 7681 - 4 * newcnt) ^ (curh * 18661);
           clos->nodt_sons[newcnt++] = curson;
-        }
-      else
-        {
-          h1 = (h1 * 24677) ^ (h2 % 24767 + ix + ILOG2_BM (5 * ix + 6));
-          clos->nodt_sons[newcnt++] = NULL;
-
         }
     }
   hash_tyBM h = h1 ^ h2;
@@ -189,21 +188,26 @@ makenode_BM (const objectval_tyBM * connob, unsigned nbval,
     nbval = 0;
   if (nbval >= MAXSIZE_BM)
     FATAL_BM ("too wide node %u", nbval);
+  unsigned cnt = 0;
+  for (unsigned ix = 0; ix < nbval; ix++)
+    if (valtype_BM (sonvalarr[ix]))
+      cnt++;
+  ASSERT_BM (cnt < MAXSIZE_BM);
   unsigned long nodsiz =
     sizeof (node_tyBM)
-    + ((nbval > 0) ? (prime_above_BM (nbval - 1) * sizeof (value_tyBM)) : 0);
+    + ((cnt > 0) ? (prime_above_BM (cnt - 1) * sizeof (value_tyBM)) : 0);
   ASSERT_BM (nodsiz < (4L * MAXSIZE_BM / 3 + 5L) * sizeof (void *));
   closure_tyBM *node =          //
     allocgcty_BM (tyNode_BM, nodsiz);
   hash_tyBM h1 = objecthash_BM (connob);
-  hash_tyBM h2 = nbval;
-  ((typedsize_tyBM *) node)->size = nbval;
+  hash_tyBM h2 = cnt;
+  ((typedsize_tyBM *) node)->size = cnt;
   node->nodt_conn = (objectval_tyBM *) connob;
   unsigned newcnt = 0;
   for (unsigned ix = 0; ix < nbval; ix++)
     {
       value_tyBM curson = sonvalarr[ix];
-      if (curson != NULL && valtype_BM (curson) != 0)
+      if (valtype_BM (curson))
         {
           hash_tyBM curh = valhash_BM (curson);
           if (newcnt % 2)
@@ -211,12 +215,6 @@ makenode_BM (const objectval_tyBM * connob, unsigned nbval,
           else
             h2 = (h2 * 18457 - 17 * newcnt) ^ (curh * 12487);
           node->nodt_sons[newcnt++] = curson;
-        }
-      else
-        {
-          h1 =
-            (h1 * 54623) ^ (h2 % 547 + ix + ILOG2_BM (3 * ix + 5 + newcnt));
-          node->nodt_sons[newcnt++] = NULL;
         }
     }
   hash_tyBM h = h1 ^ h2;
