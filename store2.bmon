@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 709 objects
+// for 714 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2364,6 +2364,32 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_5MU33d0s2xU_3C4M6YL7cN8 |=miniemit_expression|
+!~ name (~ miniemit_expression
+~)
+!@ 1529135066.712
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniemit the expression expv in module-generator"& " modgenob for routine-preparation routprepob"& " from fromob at depth"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _4jelSXMVBrC_9rUv7SQiJhs _0Bl5ro9usp6_1Hll14QwC8f _9Vuh053HDYE_7a3I6tCVvBG _2ZpkK1GB4MR_7JRH0Ehuzvt 
+ _17YdW6dWrBA_2mn4QmBjMNs ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _5MU33d0s2xU_3C4M6YL7cN8)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5MU33d0s2xU_3C4M6YL7cN8  ":*/"  "miniemit_expression_BM"  "(" 
+  "CURFRAME_BM"  ","  " \n"  "  "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _4jelSXMVBrC_9rUv7SQiJhs)  "),"  " " 
+ "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0Bl5ro9usp6_1Hll14QwC8f) 
+  "),"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _9Vuh053HDYE_7a3I6tCVvBG) 
+ ")," 
+  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2ZpkK1GB4MR_7JRH0Ehuzvt)  
+"),"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _17YdW6dWrBA_2mn4QmBjMNs)  "))")
+!)_5MU33d0s2xU_3C4M6YL7cN8
+
+
+
 !(_7L782rSgJBB_9vjsBdqAoz7 |=miniemit_node_conn|
 !~ name (~ miniemit_node_conn
 ~)
@@ -2372,6 +2398,33 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to emit expression using their connective"
 !)_7L782rSgJBB_9vjsBdqAoz7
+
+
+
+!(_6YoFzs8Yra4_9Z3QsDkSpXi |=miniemit_var|
+!~ name (~ miniemit_var
+~)
+!@ 1529135268.172
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniemit the code for variable refob in module-generator"& " modgenob for routine-preparation routprepob"& " from fromob at depth"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _4p9WEGEiJI6_8G8ByFMGHu7 _0Bl5ro9usp6_1Hll14QwC8f _9Vuh053HDYE_7a3I6tCVvBG _2ZpkK1GB4MR_7JRH0Ehuzvt 
+ _17YdW6dWrBA_2mn4QmBjMNs ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _6YoFzs8Yra4_9Z3QsDkSpXi)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6YoFzs8Yra4_9Z3QsDkSpXi  ":*/"  " "  "miniemit_var_BM" 
+  " "  "("  "CURFRAME_BM"  ","  "\n" 
+  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4p9WEGEiJI6_8G8ByFMGHu7)  
+"),"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0Bl5ro9usp6_1Hll14QwC8f)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _9Vuh053HDYE_7a3I6tCVvBG)  "),"  " " 
+ "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2ZpkK1GB4MR_7JRH0Ehuzvt) 
+  "),"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _17YdW6dWrBA_2mn4QmBjMNs) 
+ "))")
+!)_6YoFzs8Yra4_9Z3QsDkSpXi
 
 
 
@@ -2387,10 +2440,21 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !(_82pYC6bEP7E_3cfHx6ELZFi |=miniscan_compatype|
 !~ name (~ miniscan_compatype
 ~)
-!@ 1522913130.420
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1529134601.249
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "test compatibility of types"
+ "test during miniscan that the types typ1ob"& " & typ2ob are compatibles, and give their"& " common supertype"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _7fx3JA4RYTy_52fzis60tJx _2CnjSPNPAeQ_7Mu3NekDt0d ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _82pYC6bEP7E_3cfHx6ELZFi  ":*/"  " "  "miniscan_compatype_BM" 
+  " "  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _7fx3JA4RYTy_52fzis60tJx) 
+ "),"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2CnjSPNPAeQ_7Mu3NekDt0d)  ")," 
+ " "  "CURFRAME_BM" 
+  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
 !)_82pYC6bEP7E_3cfHx6ELZFi
 
 
@@ -5658,6 +5722,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_4p9WEGEiJI6_8G8ByFMGHu7 |=refob|
+!~ name (~ refob
+~)
+!@ 1529135178.439
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_4p9WEGEiJI6_8G8ByFMGHu7
+
+
+
 !(_3OWP1zOtxz2_9uAVt50SUZO |=remove|
 !~ name (~ remove
 ~)
@@ -6568,6 +6643,28 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !@ 1526120036.810
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_5yc7zU7sbF8_1dME4ONRdaf
+
+
+
+!(_7fx3JA4RYTy_52fzis60tJx |=typ1ob|
+!~ name (~ typ1ob
+~)
+!@ 1529134542.832
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_7fx3JA4RYTy_52fzis60tJx
+
+
+
+!(_2CnjSPNPAeQ_7Mu3NekDt0d |=typ2ob|
+!~ name (~ typ2ob
+~)
+!@ 1529134542.832
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_2CnjSPNPAeQ_7Mu3NekDt0d
 
 
 
