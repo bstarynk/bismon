@@ -97,6 +97,9 @@ extern const char *objectdbg2_BM (const objectval_tyBM * obj);  // non reentrant
 
 extern const char *objectdbg3_BM (const objectval_tyBM * obj);  // non reentrant!
 extern const char *objectdbg4_BM (const objectval_tyBM * obj);  // non reentrant!
+extern const char *objectdbg5_BM (const objectval_tyBM * obj);  // non reentrant!
+extern const char *objectdbg6_BM (const objectval_tyBM * obj);  // non reentrant!
+extern const char *objectdbg7_BM (const objectval_tyBM * obj);  // non reentrant!
 
 #ifdef BISMONGTK
 extern const char *gobjectclassnamedbg_BM (GObject * ptr);

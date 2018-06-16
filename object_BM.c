@@ -515,6 +515,58 @@ objectdbg4_BM (const objectval_tyBM * obj)
 }                               /* end objectdbg4_BM */
 
 
+
+const char *
+objectdbg5_BM (const objectval_tyBM * obj)
+{
+  if (!obj)
+    return "__";
+  if (!isobject_BM ((const value_tyBM) obj))
+    return "*nonobject*";
+  const char *n = findobjectname_BM (obj);
+  if (n)
+    return n;
+  static thread_local char idbuf[32];
+  memset (idbuf, 0, sizeof (idbuf));
+  idtocbuf32_BM (obj->ob_id, idbuf);
+  return idbuf;
+}                               /* end objectdbg5_BM */
+
+
+
+const char *
+objectdbg6_BM (const objectval_tyBM * obj)
+{
+  if (!obj)
+    return "__";
+  if (!isobject_BM ((const value_tyBM) obj))
+    return "*nonobject*";
+  const char *n = findobjectname_BM (obj);
+  if (n)
+    return n;
+  static thread_local char idbuf[32];
+  memset (idbuf, 0, sizeof (idbuf));
+  idtocbuf32_BM (obj->ob_id, idbuf);
+  return idbuf;
+}                               /* end objectdbg6_BM */
+
+
+const char *
+objectdbg7_BM (const objectval_tyBM * obj)
+{
+  if (!obj)
+    return "__";
+  if (!isobject_BM ((const value_tyBM) obj))
+    return "*nonobject*";
+  const char *n = findobjectname_BM (obj);
+  if (n)
+    return n;
+  static thread_local char idbuf[32];
+  memset (idbuf, 0, sizeof (idbuf));
+  idtocbuf32_BM (obj->ob_id, idbuf);
+  return idbuf;
+}                               /* end objectdbg7_BM */
+
 objectval_tyBM *
 makeobj_BM (void)
 {
