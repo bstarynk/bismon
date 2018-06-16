@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 705 objects
+// for 709 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -1017,8 +1017,10 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !(_17YdW6dWrBA_2mn4QmBjMNs |=depth|
 !~ name (~ depth
 ~)
-!@ 1516304622.600
+!@ 1529131292.736
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_0vgCFjXblkx_4zCMhMAWjVK
 !)_17YdW6dWrBA_2mn4QmBjMNs
 
 
@@ -1382,6 +1384,17 @@ _5W4PPQFYdj2_3HYUlMsu3oZ
 
 
 
+!(_4jelSXMVBrC_9rUv7SQiJhs |=expv|
+!~ name (~ expv
+~)
+!@ 1529131292.735
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_4jelSXMVBrC_9rUv7SQiJhs
+
+
+
 !(_2bqFfs5OYL2_0HRi4lcgFcu |=extending|
 !~ name (~ extending
 ~)
@@ -1665,6 +1678,17 @@ _0SinERsgdvQ_57dLCP63i9r
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "give the hashset of found objects"
 !)_6OUljmJkH3g_3fqpRSfbN5H
+
+
+
+!(_2ZpkK1GB4MR_7JRH0Ehuzvt |=fromob|
+!~ name (~ fromob
+~)
+!@ 1529131292.737
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_2ZpkK1GB4MR_7JRH0Ehuzvt
 
 
 
@@ -2360,8 +2384,8 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
-!(_82pYC6bEP7E_3cfHx6ELZFi |=miniscan_compatyp|
-!~ name (~ miniscan_compatyp
+!(_82pYC6bEP7E_3cfHx6ELZFi |=miniscan_compatype|
+!~ name (~ miniscan_compatype
 ~)
 !@ 1522913130.420
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
@@ -2374,8 +2398,23 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !(_7k3xb0vred0_9ZRHcZmhw77 |=miniscan_expr|
 !~ name (~ miniscan_expr
 ~)
-!@ 1511369768.620
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1529131404.043
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniscan the expression expv with preparation-obj"& " routprepob at given depth and from given"& " fromob"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _4jelSXMVBrC_9rUv7SQiJhs _9Vuh053HDYE_7a3I6tCVvBG _17YdW6dWrBA_2mn4QmBjMNs _2ZpkK1GB4MR_7JRH0Ehuzvt ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _7k3xb0vred0_9ZRHcZmhw77  ":*/"  "miniscan_expr_BM"  " " 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _4jelSXMVBrC_9rUv7SQiJhs)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _9Vuh053HDYE_7a3I6tCVvBG)  "),"  " " 
+ "("  * _5ucAZimYynS_4VA0XHvr1nW ( _17YdW6dWrBA_2mn4QmBjMNs) 
+  "),"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2ZpkK1GB4MR_7JRH0Ehuzvt) 
+ ")," 
+  " "  "CURFRAME_BM"  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
 !)_7k3xb0vred0_9ZRHcZmhw77
 
 
@@ -2403,8 +2442,23 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !(_6jh60mO0Cgd_84B0HiNphqA |=miniscan_var|
 !~ name (~ miniscan_var
 ~)
-!@ 1511369768.620
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1529131653.138
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniscan the variable varob in preparation"& " routprepob at given depth from given fromob"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _4XednyA78KV_5X04ViqjHsT _9Vuh053HDYE_7a3I6tCVvBG _17YdW6dWrBA_2mn4QmBjMNs _2ZpkK1GB4MR_7JRH0Ehuzvt ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6jh60mO0Cgd_84B0HiNphqA  ":*/"  " "  "miniscan_var_BM" 
+  " "  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _4XednyA78KV_5X04ViqjHsT) 
+ "),"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _9Vuh053HDYE_7a3I6tCVvBG)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _17YdW6dWrBA_2mn4QmBjMNs)  "),"  " " 
+ "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2ZpkK1GB4MR_7JRH0Ehuzvt) 
+  "),"  " "  "CURFRAME_BM"  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
 !)_6jh60mO0Cgd_84B0HiNphqA
 
 
@@ -5659,6 +5713,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_9Vuh053HDYE_7a3I6tCVvBG |=routprepob|
+!~ name (~ routprepob
+~)
+!@ 1529131292.736
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_9Vuh053HDYE_7a3I6tCVvBG
+
+
+
 !(_4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
 !~ name (~ run
 ~)
@@ -6873,6 +6938,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !@ 1516304599.140
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_420mStG8BOS_3taR8WQ2dO5
+
+
+
+!(_4XednyA78KV_5X04ViqjHsT |=varob|
+!~ name (~ varob
+~)
+!@ 1529131569.104
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_4XednyA78KV_5X04ViqjHsT
 
 
 
