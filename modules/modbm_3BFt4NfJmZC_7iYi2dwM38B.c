@@ -16,9 +16,9 @@ const char modulmd5chksum_3BFt4NfJmZC_7iYi2dwM38B_BM[] = BISMON_MOMD5;
 
 
 
-// declare 13 routines
+// declare 14 routines
 
-extern const char *const routid_3BFt4NfJmZC_7iYi2dwM38B_BM[13 + 1];
+extern const char *const routid_3BFt4NfJmZC_7iYi2dwM38B_BM[14 + 1];
 
 extern objrout_sigBM crout_0JktC4mAHCa_1KNr6uMIqIi_BM;  //#0
 
@@ -46,13 +46,15 @@ extern objrout_sigBM crout_82ho9wUUDji_4peMLha4PXl_BM;  //#11 findobj_scan_minif
 
 extern objrout_sigBM crout_8imWClcIFKt_6w2H2ouB4I6_BM;  //#12 iterate_sequence_minifunc
 
-
-// declare 18 constants
-objectval_tyBM *constob_3BFt4NfJmZC_7iYi2dwM38B_BM[18 + 1];
-const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[18 + 1];
+extern objrout_sigBM crout_9CG8SKNs6Ql_4PiHd8cnydn_BM;  //#13
 
 
-// define 13 routines
+// declare 19 constants
+objectval_tyBM *constob_3BFt4NfJmZC_7iYi2dwM38B_BM[19 + 1];
+const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[19 + 1];
+
+
+// define 14 routines
 
 
 value_tyBM crout_0JktC4mAHCa_1KNr6uMIqIi_BM     //#0
@@ -1203,11 +1205,66 @@ epilog_8imWClcIFKt_6w2H2ouB4I6:__attribute__ ((unused));
 
 
 
-// end of 13 generated routines
+value_tyBM crout_9CG8SKNs6Ql_4PiHd8cnydn_BM     //#13
+  (struct stackframe_stBM * stkf,       //
+//!clear°dict_object minifunc
+   // 1 arguments
+   const value_tyBM arg0,       // odict
+   const value_tyBM arg1_ __attribute__ ((unused)),
+   const value_tyBM arg2_ __attribute__ ((unused)),
+   const value_tyBM arg3_ __attribute__ ((unused)),
+   const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{                               // start of _9CG8SKNs6Ql_4PiHd8cnydn
+  struct frame_9CG8SKNs6Ql_4PiHd8cnydn_BMst
+  {
+    typedhead_tyBM stkfram_head;
+    struct stackframe_stBM *stkfram_prev;
+    objectval_tyBM *stkfram_descr;
+    value_tyBM stkfram_callfun;
+    int stkfram_state;
+    int stkfram_extra;
+    /// 2 local values:
+    value_tyBM v_3qw9bnATIhq_8loBraLeXzQ;       // v_r
+    objectval_tyBM *o_7n2SLLuWOjH_4ArhFUjmckz;  // odict
+    /// 0 local numbers:
+  } _;
+  memset (&_, 0, sizeof (struct frame_9CG8SKNs6Ql_4PiHd8cnydn_BMst));
+  _.stkfram_head.htyp = typayl_StackFrame_BM;
+  _.stkfram_head.hgc = 0;
+  _.stkfram_head.rlen = 2;
+  _.stkfram_descr =
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[18] /*|_9CG8SKNs6Ql_4PiHd8cnydn */ ;
+  ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
+             || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
+  _.stkfram_prev = stkf;
+  // fetch 1 arguments:
+  _.o_7n2SLLuWOjH_4ArhFUjmckz = objectcast_BM (arg0);
+  // fetched 1 arguments.
+  // no closed values in _9CG8SKNs6Ql_4PiHd8cnydn.
+  // routine _9CG8SKNs6Ql_4PiHd8cnydn body:
+
+startblock__1lmLI285f7p_4im4Ls4Xewh:__attribute__ ((unused));
+  {                             /* +block _1lmLI285f7p_4im4Ls4Xewh *//* !endingblock _1lmLI285f7p_4im4Ls4Xewh */
+    goto endblock__1lmLI285f7p_4im4Ls4Xewh;
+  endblock__1lmLI285f7p_4im4Ls4Xewh:;
+  }
+  /*-block _1lmLI285f7p_4im4Ls4Xewh */
+
+epilog_9CG8SKNs6Ql_4PiHd8cnydn:__attribute__ ((unused));
+  // routine _9CG8SKNs6Ql_4PiHd8cnydn epilogue:
+  if (stkf)
+    stkf->stkfram_callfun = NULL;
+  return _.v_3qw9bnATIhq_8loBraLeXzQ;
+}                               // end _9CG8SKNs6Ql_4PiHd8cnydn routine#13 _9CG8SKNs6Ql_4PiHd8cnydn
 
 
-// the constant ids for 18 constants:
-const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[18 + 1] = {
+
+
+// end of 14 generated routines
+
+
+// the constant ids for 19 constants:
+const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[19 + 1] = {
   /*0: */
   "_0JktC4mAHCa_1KNr6uMIqIi",
   "_0SinERsgdvQ_57dLCP63i9r",
@@ -1229,13 +1286,14 @@ const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[18 + 1] = {
   /*16: */
   "_8imWClcIFKt_6w2H2ouB4I6",   //iterate_sequence_minifunc
   "_8lV53mLyu1H_3Z1SI8wDBK1",   //clear
+  "_9CG8SKNs6Ql_4PiHd8cnydn",
   NULL
-};                              // end 18 constant ids
+};                              // end 19 constant ids
 
 
 
-// the routine ids for 13 routines:
-const char *const routid_3BFt4NfJmZC_7iYi2dwM38B_BM[13 + 1] = {
+// the routine ids for 14 routines:
+const char *const routid_3BFt4NfJmZC_7iYi2dwM38B_BM[14 + 1] = {
   /*0: */
   "_0JktC4mAHCa_1KNr6uMIqIi",
   "_0SinERsgdvQ_57dLCP63i9r",
@@ -1251,9 +1309,10 @@ const char *const routid_3BFt4NfJmZC_7iYi2dwM38B_BM[13 + 1] = {
   "_5j8LpQULt1p_9oeOaqmfYYr",
   "_82ho9wUUDji_4peMLha4PXl",   //findobj_scan_minifunc
   "_8imWClcIFKt_6w2H2ouB4I6",   //iterate_sequence_minifunc
+  "_9CG8SKNs6Ql_4PiHd8cnydn",
 
   NULL
-};                              // end 13 routine ids
+};                              // end 14 routine ids
 
 
 

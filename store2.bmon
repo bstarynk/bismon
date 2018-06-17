@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 723 objects
+// for 725 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -1540,11 +1540,11 @@ _6YnYKKsHo3f_9nIEOZMp744
 !(_3BFt4NfJmZC_7iYi2dwM38B |=first_misc_module|
 !~ name (~ first_misc_module
 ~)
-!@ 1529215990.210
+!@ 1529218926.536
 !$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "a module with various simple minifunc-s"
-!# 13
+!# 14
 !& _8imWClcIFKt_6w2H2ouB4I6
 !& _3yQlckX4DRh_4b9l9FBSSSL
 !& _4iEFTEcHxeb_6lH464uFkTC
@@ -1558,6 +1558,7 @@ _6YnYKKsHo3f_9nIEOZMp744
 !& _3HAeZZQ0q7b_7qyDsekaz7Y
 !& _22Zd68WPKUO_6AoIuBcbUb2
 !& _4qlegfkPzrC_17skUfJP7v8
+!& _9CG8SKNs6Ql_4PiHd8cnydn
  // emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
 
 !)_3BFt4NfJmZC_7iYi2dwM38B
@@ -7608,6 +7609,17 @@ _5r6ekO9FCAj_7hCbcooblXl
 
 
 
+!(_1lmLI285f7p_4im4Ls4Xewh
+!@ 1529218917.068
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of clear\u00b0dict_object"
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _2U8Sj78DMbl_5eerKpaJsNq ()
+!)_1lmLI285f7p_4im4Ls4Xewh
+
+
+
 !(_1nsAyqOOy7S_1zodeivnxlm
 !|*
 !@ 1527511053.360
@@ -8425,6 +8437,7 @@ _39pW7nyFqoI_5pikyvvGsZ5
 
 
 !(_4qlegfkPzrC_17skUfJP7v8
+!|*
 !@ 1529215931.135
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -10084,6 +10097,22 @@ _0UHZG9vDlR2_2Aqx86LMFuq
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "miniemit_scan_conn#send"
 !)_9BWLfKtt9ID_2YwNGH3zu9Q
+
+
+
+!(_9CG8SKNs6Ql_4PiHd8cnydn
+!|*
+!@ 1529218917.068
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "clear\u00b0dict_object minifunc\nclear and initialize dict-object odict"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _7n2SLLuWOjH_4ArhFUjmckz ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_1lmLI285f7p_4im4Ls4Xewh
+!)_9CG8SKNs6Ql_4PiHd8cnydn
 
 
 
