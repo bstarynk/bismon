@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 720 objects
+// for 723 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -1540,11 +1540,11 @@ _6YnYKKsHo3f_9nIEOZMp744
 !(_3BFt4NfJmZC_7iYi2dwM38B |=first_misc_module|
 !~ name (~ first_misc_module
 ~)
-!@ 1529062973.248
+!@ 1529215990.210
 !$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "a module with various simple minifunc-s"
-!# 12
+!# 13
 !& _8imWClcIFKt_6w2H2ouB4I6
 !& _3yQlckX4DRh_4b9l9FBSSSL
 !& _4iEFTEcHxeb_6lH464uFkTC
@@ -1557,6 +1557,7 @@ _6YnYKKsHo3f_9nIEOZMp744
 !& _5j8LpQULt1p_9oeOaqmfYYr
 !& _3HAeZZQ0q7b_7qyDsekaz7Y
 !& _22Zd68WPKUO_6AoIuBcbUb2
+!& _4qlegfkPzrC_17skUfJP7v8
  // emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
 
 !)_3BFt4NfJmZC_7iYi2dwM38B
@@ -5492,6 +5493,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_6opEz55NyNu_3JKpBgxLijw |=osbuf|
+!~ name (~ osbuf
+~)
+!@ 1529215843.822
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_6opEz55NyNu_3JKpBgxLijw
+
+
+
 !(_18VEwdmWZ1v_5cpJ8tDhbwH |=overflow|
 !~ name (~ overflow
 ~)
@@ -8243,6 +8255,13 @@ _9BLJq5DadtZ_6I89t7ioVRS
 
 
 
+!(_3oMW0T4HlXx_8r7NLpyK1J8
+!@ 1529215975.383
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!)_3oMW0T4HlXx_8r7NLpyK1J8
+
+
+
 !(_3rne4qbpnV9_0pywzeJp3Qr
 !|*
 !@ 1502615054.060
@@ -8402,6 +8421,21 @@ _39pW7nyFqoI_5pikyvvGsZ5
 !& _2W7Ckt2WxEM_4NVYgEWE73B
 !&  * _3fb1EHtMPwQ_7XEPTUgUmX4 ( _2W7Ckt2WxEM_4NVYgEWE73B  1)
 !)_4nPRrjCznxv_354tRTC5amu
+
+
+
+!(_4qlegfkPzrC_17skUfJP7v8
+!@ 1529215931.135
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dump_data\u00b0dict_object minifunc\ndump objdict"& " odict with dumper odumper and strbuffer"& " osbuf"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _7n2SLLuWOjH_4ArhFUjmckz _3cTC8W7d75H_1vteOyEoAao _6opEz55NyNu_3JKpBgxLijw ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_3oMW0T4HlXx_8r7NLpyK1J8
+!)_4qlegfkPzrC_17skUfJP7v8
 
 
 
