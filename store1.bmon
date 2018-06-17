@@ -29,7 +29,7 @@
 !~ name (~ browse_data
 ~)
 !@ 1502608883.260
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to browse extra data"
 !)_9uRC9w2Gte9_5mW0NanaS19
@@ -40,7 +40,7 @@
 !~ name (~ browse_in_object
 ~)
 !@ 1502608883.260
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to browse object content"
 !)_8Y99VufgRZo_9SFMiDUruXS
@@ -51,7 +51,7 @@
 !~ name (~ browse_value
 ~)
 !@ 1502608883.260
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to browse value"
 !)_6rHCoR6adv5_9SKAahoKWPj
@@ -81,7 +81,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !~ name (~ chunk
 ~)
 !@ 1502268240.730
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for chunks"
 !)_3pQnBS9ZjkQ_0uGmqUUhAum
@@ -127,7 +127,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !~ name (~ code
 ~)
 !@ 1502268240.730
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for code chunks"
 !)_3HGHcRxE9bn_1ufs1gFf4Yh
@@ -149,7 +149,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !~ name (~ command_readmacro
 ~)
 !@ 1505550618.580
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for command readmacros"
 !)_3EKD6vcwegI_3LMuXHuazib
@@ -160,7 +160,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !~ name (~ comment
 ~)
 !@ 1500472572.360
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_01h86SAfOfg_1q2oMegGRwW
 
 
@@ -170,7 +170,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 ~)
 !|*
 !@ 1505238683.850
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for constants etc..."
 !)_5DDSY1YgVZr_6dOU4tiBldk
@@ -209,7 +209,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !~ name (~ dump_data
 ~)
 !@ 1501754200.000
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_0pSnxYMjpqQ_3opFGfXeh5o
 
 
@@ -218,7 +218,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !~ name (~ dump_scan
 ~)
 !@ 1501754200.000
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_2oNMm2aR91J_4QthSpZxplW
 
 
@@ -227,7 +227,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !~ name (~ dump_value
 ~)
 !@ 1501754200.000
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_1FEnnpEkGdI_5DAcVDL5XHG
 
 
@@ -250,7 +250,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !~ name (~ embed
 ~)
 !@ 1497705092.870
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_33imugvOze0_0wdPqjmME0U
 
 
@@ -259,7 +259,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !~ name (~ emit_module
 ~)
 !@ 1522343718.090
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to emit a module"
 !: _0xbmmxnN8E8_0ZuEqJmqMNH |=command_handler|
@@ -368,7 +368,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !~ name (~ in
 ~)
 !@ 1506146007.910
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to give some container where the object is in"
 !)_0eMGYofuNVh_8ZP2mXdhtHO
@@ -413,7 +413,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 ~)
 !|*
 !@ 1501754100.000
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !)_3j4mbvFJZzA_9ucKetDMbdh
 
 
@@ -422,7 +422,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !~ name (~ name
 ~)
 !@ 1493382726.980
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_1jJjA6LcXiX_1V4ZcXlje09
 
 
@@ -445,7 +445,7 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !~ name (~ none
 ~)
 !@ 1497636292.470
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_1JSykdLcLdl_8rWxtDBaPGN
 
 
@@ -472,7 +472,7 @@ _4hIFpPfuaR1_39hcoYwRAm0
 !~ name (~ origin
 ~)
 !@ 1506156195.000
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to give some origin of the object"
 !)_1xhcI0ZnQ6f_5xOLATXqawx
@@ -495,7 +495,7 @@ _4hIFpPfuaR1_39hcoYwRAm0
 ~)
 !|*
 !@ 1502787905.690
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to postpone loading modification"
 !)_7kMNgL8eJ09_6aEpofzWJDP
@@ -517,7 +517,7 @@ _4hIFpPfuaR1_39hcoYwRAm0
 !~ name (~ result
 ~)
 !@ 1504786642.760
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "result of something"
 !)_7bD9VtDkGSn_7lxHeYuuFLR
@@ -528,7 +528,7 @@ _4hIFpPfuaR1_39hcoYwRAm0
 !~ name (~ routine_builder
 ~)
 !@ 1509570925.620
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for building routines at load, a prefix string or a closure"
 !)_8emBk0Le2Vy_8MxJWC61DPw
@@ -581,7 +581,7 @@ _3tjeTRoVZ9K_6jDMjF4cRyP
 !~ name (~ space
 ~)
 !@ 1502296695.080
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for spaces"
 !)_35gLacRFhq5_90zAPxiDIlh
@@ -776,7 +776,7 @@ _9VbFEiZdkIM_03T43FbMVI3 }
 !~ name (~ todo
 ~)
 !@ 1507883376.930
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for todo-s"
 !)_7ljWW4bj70g_9PL9dZkgBxZ
@@ -788,7 +788,7 @@ _9VbFEiZdkIM_03T43FbMVI3 }
 ~)
 !|*
 !@ 1507884810.720
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "closure for applying-todo-s"
 !)_3W8d51P1dJh_3b1BrOW6pua
@@ -800,7 +800,7 @@ _9VbFEiZdkIM_03T43FbMVI3 }
 ~)
 !|*
 !@ 1507884810.720
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "closure for sending-todo-s"
 !)_9mdRnBqdqf5_9UvgSFA7wIY
@@ -862,7 +862,7 @@ _4ysNY0rIzNK_7JgIhrjYpxD
 !~ name (~ variable
 ~)
 !@ 1502361559.140
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for variables"
 !)_5ucAZimYynS_4VA0XHvr1nW
@@ -890,7 +890,7 @@ _4ysNY0rIzNK_7JgIhrjYpxD
 !~ name (~ word
 ~)
 !@ 1502296590.980
-!$_1z3DQ3EVAGs_3KlGdHJpWbX |=undefined|
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for words"
 !)_7zPvMEsQeeE_6zyBWbegVpo
