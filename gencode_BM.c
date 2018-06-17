@@ -570,6 +570,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
   objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
                  objectval_tyBM * connob;       //
+                 objectval_tyBM * indirconnob;  //
                  objectval_tyBM * consthsetobj; //
                  objectval_tyBM * exclamob;     //
                  objectval_tyBM * expob;        //
@@ -688,7 +689,37 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
                             debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
               if (!_.resv)
                 FAILHERE (k_undefined);
-              LOCALRETURN_BM (_.resv);
+              {
+                objunlock_BM (_.connob);
+                _.connob = NULL;
+                LOCALRETURN_BM (_.resv);
+              }
+            };
+          _.indirconnob =
+            objectcast_BM (objgetattr_BM (_.connob, k_basiclo_connective));
+          if (_.indirconnob
+              && objectisinstance_BM (_.indirconnob, k_basiclo_connective))
+            {
+              DBGPRINTF_BM
+                ("miniscan_expr miniscan_node_conn indirect %s arity %d routprepob %s fromob %s before",
+                 objectdbg_BM (_.indirconnob), arity,
+                 objectdbg1_BM (_.routprepob), objectdbg2_BM (_.fromob));
+              objlock_BM (_.indirconnob);
+              _.resv = send4_BM (_.indirconnob, k_miniscan_node_conn,   //
+                                 CURFRAME_BM,   //
+                                 _.routprepob,
+                                 taggedint_BM (depth), _.expv, _.fromob);
+              objunlock_BM (_.indirconnob);
+              DBGPRINTF_BM ("miniscan_expr miniscan_node_conn indirect %s done resv=%s",        //
+                            objectdbg_BM (_.indirconnob),       //
+                            debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
+              if (!_.resv)
+                FAILHERE (makenode1_BM (k_undefined, _.indirconnob));
+              {
+                objunlock_BM (_.connob);
+                _.connob = NULL;
+                LOCALRETURN_BM (_.resv);
+              }
             }
           objunlock_BM (_.connob);
         }

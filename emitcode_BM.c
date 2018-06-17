@@ -1518,15 +1518,23 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
-                 value_tyBM expv;
-                 value_tyBM avalv;
-                 objectval_tyBM * expob; objectval_tyBM * modgenob;
-                 objectval_tyBM * modulob; objectval_tyBM * typob;
-                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
-                 objectval_tyBM * connob; value_tyBM exclamv;
-                 objectval_tyBM * exclamob; value_tyBM errorv;
-                 value_tyBM causev; value_tyBM resv;
-                 value_tyBM constantsv;);
+                 value_tyBM expv;       //
+                 value_tyBM avalv;      //
+                 objectval_tyBM * expob;        //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * modulob;      //
+                 objectval_tyBM * typob;        //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * fromob;       //
+                 objectval_tyBM * connob;       //
+                 objectval_tyBM * indirconnob;  //
+                 value_tyBM exclamv;    //
+                 objectval_tyBM * exclamob;     //
+                 value_tyBM errorv;     //
+                 value_tyBM causev;     //
+                 value_tyBM resv;       //
+                 value_tyBM constantsv; //
+    );
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
   _.expv = expv;
@@ -1686,7 +1694,31 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                           objectdbg_BM (_.connob),      //
                           debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
             if (!_.resv)
-              FAILHERE (NULL);
+              {
+                objunlock_BM (_.connob);
+                FAILHERE (NULL);
+              }
+          }
+        else
+          if ((_.indirconnob =
+               objgetattr_BM (_.connob, k_basiclo_connective)) != NULL
+              && objectisinstance_BM (_.indirconnob, k_basiclo_connective))
+          {
+            objlock_BM (_.indirconnob);
+            _.resv = send5_BM (_.indirconnob, k_miniemit_node_conn,     //
+                               CURFRAME_BM,     //
+                               _.expv, _.modgenob, _.routprepob,
+                               taggedint_BM (depth), _.fromob);
+            DBGPRINTF_BM ("emit_expression miniscan_node_conn indirect %s done resv=%s",        //
+                          objectdbg_BM (_.indirconnob), //
+                          debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
+            objunlock_BM (_.indirconnob);
+            if (!_.resv)
+              {
+                objunlock_BM (_.connob);
+                _.connob = NULL;
+                FAILHERE (NULL);
+              }
           }
         else
           FAILHERE (BMP_node);
