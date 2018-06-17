@@ -158,7 +158,19 @@ valclass_BM (const value_tyBM v)
         case tyClosure_BM:
           return BMP_closure;
         case tyObject_BM:
-          return ((objectval_tyBM *) v)->ob_class ? : BMP_undefined;
+#ifdef __cplusplus
+          {
+            objectval_tyBM *ob = ((objectval_tyBM *) v);
+            objectval_tyBM *clv = std::atomic_load (&ob->ob_classatomic);
+            return clv ? : BMP_undefined;
+          }
+#else
+          {
+            objectval_tyBM *ob = ((objectval_tyBM *) v);
+            objectval_tyBM *clv = atomic_load (&ob->ob_aclass);
+            return clv ? : BMP_undefined;
+          }
+#endif
         case tyUnspecified_BM:
           return BMP_unspecified;
         }
@@ -374,7 +386,17 @@ objclass_BM (const objectval_tyBM * obj)
 {
   if ((valtype_BM ((value_tyBM) obj) != tyObject_BM))
     return NULL;
-  return obj->ob_class;
+#ifdef __cplusplus
+  {
+    objectval_tyBM *clv = std::atomic_load (&obj->ob_classatomic);
+    return clv ? : BMP_undefined;
+  }
+#else
+  {
+    objectval_tyBM *clv = atomic_load (&obj->ob_aclass);
+    return clv ? : BMP_undefined;
+  }
+#endif
 }                               /* end objclass_BM */
 
 bool
@@ -682,7 +704,7 @@ objectisinstance_BM (const objectval_tyBM * obj,
     return false;
   if (!isobject_BM ((const value_tyBM) obj))
     return false;
-  return objclassinfoissubclass_BM (obj->ob_class, obclass);
+  return objclassinfoissubclass_BM (objclass_BM (obj), obclass);
 }                               /* end objectisinstance_BM */
 
 const closure_tyBM *

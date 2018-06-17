@@ -2442,7 +2442,7 @@ ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY)    // emit_statement°basiclo_cexpa
   // bind the arguments in substob
   {
     int nbargs = nodewidth_BM (_.stmtargsv);
-    if (nbargs == tuplesize_BM (_.expargsv))
+    if (nbargs == (int) tuplesize_BM (_.expargsv))
       {
       }
     else if (_.expargsv || _.stmtargsv)

@@ -560,6 +560,7 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * dumpob;       //
                  objectval_tyBM * curobj;       //
+                 objectval_tyBM * classob;      //
                  const objectval_tyBM * curattr;        //
                  value_tyBM curval;     //
                  const setval_tyBM * attrset;
@@ -599,11 +600,12 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
     }
   if (curobj->ob_mtime > 0)
     fprintf (spfil, "!@ %.3f\n", curobj->ob_mtime);
-  if (curobj->ob_class && obdumpobjisdumpable_BM (_.dumpob, curobj->ob_class))
+  _.classob = objclass_BM (curobj);
+  if (_.classob && obdumpobjisdumpable_BM (_.dumpob, _.classob))
     {
       char curclassid[32] = "";
-      idtocbuf32_BM (objid_BM (curobj->ob_class), curclassid);
-      const char *clanam = findobjectname_BM (curobj->ob_class);
+      idtocbuf32_BM (objid_BM (_.classob), curclassid);
+      const char *clanam = findobjectname_BM (_.classob);
       if (clanam)
         fprintf (spfil, "!$%s |=%s|\n", curclassid, clanam);
       else

@@ -39,6 +39,10 @@ extern "C" {
 #include "bismon.h"
 };
 
+static_assert (sizeof(std::atomic<objectval_tyBM*>) == sizeof(objectval_tyBM*), "pointer to objects have same size as their atomic");
+
+static_assert (alignof(std::atomic<objectval_tyBM*>) == alignof(objectval_tyBM*), "pointer to objects have same alignment as their atomic");
+
 //// order with strcmp
 struct StrcmpLess_BM
 {

@@ -4279,7 +4279,7 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
         {
           DBGPRINTF_BM
             ("defer_process_watchcb_BM slot %d bufob=%s remlen=%d readstatus#%d readbuf=\n%s",
-             slot, objectdbg_BM (_.bufob), (int) remlen, readbuf);
+             slot, objectdbg_BM (_.bufob), (int) remlen, readstatus, readbuf);
           objlock_BM (_.bufob);
           objstrbufferappendcstrpayl_BM (_.bufob, readbuf);
           objunlock_BM (_.bufob);

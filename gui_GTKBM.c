@@ -3881,9 +3881,9 @@ tabautocomplete_gui_cmd_BM (void)
       else
         {                       /* complete by name */
           unsigned gotwidth = endname - begname;
-          const objectval_tyBM *tinyarr[TINYSIZE_BM] = {
+          objectval_tyBM *tinyarr[TINYSIZE_BM] = {
           };
-          const objectval_tyBM **arr =
+          objectval_tyBM **arr =
             (nbcompl <
              TINYSIZE_BM) ? tinyarr : calloc (prime_above_BM (nbcompl),
                                               sizeof (void *));

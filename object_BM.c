@@ -319,7 +319,7 @@ makeobjofid_BM (const rawid_tyBM id)
     }
   pob = allocgcty_BM (tyObject_BM, sizeof (objectval_tyBM));
   pob->ob_id = id;
-  pob->ob_class = BMP_object;
+  atomic_init (&pob->ob_aclass, BMP_object);
   pthread_mutex_init (&pob->ob_mutex, &objmutexattr_BM);
   ((typedhead_tyBM *) pob)->hash = hashid_BM (id);
   addtobucket_BM (curbuck, pob);
@@ -336,7 +336,7 @@ objectgcdestroy_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
   if (obj->ob_payl)
     objclearpayload_BM (obj);
   obj->ob_space = TransientSp_BM;
-  obj->ob_class = NULL;
+  atomic_store (&obj->ob_aclass, NULL);
   obj->ob_compvec = NULL;
   obj->ob_attrassoc = NULL;
   obj->ob_rout = NULL;
@@ -586,8 +586,9 @@ objectinteriorgcmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (isobject_BM (obj));
   ASSERT_BM (((typedhead_tyBM *) obj)->hgc == MARKGC_BM);
-  if (obj->ob_class)
-    gcobjmark_BM (gc, obj->ob_class);
+  objectval_tyBM *oclass = objclass_BM (obj);
+  if (oclass)
+    gcobjmark_BM (gc, oclass);
   if (obj->ob_routaddr && obj->ob_sig)
     gcobjmark_BM (gc, obj->ob_sig);
   if (obj->ob_compvec)
@@ -898,7 +899,7 @@ hashsetobj_pick_random_BM (struct hashsetobj_stBM * hset)
   int ix = hashsetobj_random_index_BM (hset);
   if (ix < 0)
     return NULL;
-  ASSERT_BM (ix < alsiz);
+  ASSERT_BM (ix < (int) alsiz);
   objectval_tyBM *curob = hset->hashset_objs[ix];
   ASSERT_BM (isobject_BM ((value_tyBM) curob));
   return curob;
@@ -918,7 +919,7 @@ hashsetobj_take_random_BM (struct hashsetobj_stBM * hset)
   int ix = hashsetobj_random_index_BM (hset);
   if (ix < 0)
     return NULL;
-  ASSERT_BM (ix < alsiz);
+  ASSERT_BM (ix < (int) alsiz);
   objectval_tyBM *curob = hset->hashset_objs[ix];
   ASSERT_BM (isobject_BM ((value_tyBM) curob));
   hset->hashset_objs[ix] = HASHEMPTYSLOT_BM;
@@ -1100,7 +1101,7 @@ objputclass_BM (objectval_tyBM * obj, objectval_tyBM * objclass)
     return;
   if (objclass && !isobject_BM ((const value_tyBM) objclass))
     return;
-  obj->ob_class = objclass;
+  atomic_store (&obj->ob_aclass, objclass);
 }                               /* end objputclass_BM */
 
 void
@@ -1328,16 +1329,16 @@ objdatavectinsertcomponentspayl_BM (objectval_tyBM * obj,
   unsigned srcnbcomps = objnbcomps_BM (obsrc);
   if (srcrk < 0)
     srcrk += srcnbcomps;
-  if (srcrk < 0 || srcrk >= srcnbcomps)
+  if (srcrk < 0 || srcrk >= (int) srcnbcomps)
     return;
   int srcend = srcrk + len;
-  if (srcend > srcnbcomps)
+  if (srcend > (int) srcnbcomps)
     srcend = srcnbcomps;
   if (srcend <= srcrk)
     return;
   const value_tyBM *valarr = objcompdata_BM (obsrc);
   struct datavectval_stBM *newdvec =
-    datavect_insert_BM (dvec, rk, valarr + srcrk, srcend - srcrk);
+    datavect_insert_BM (dvec, rk, (void **) (valarr + srcrk), srcend - srcrk);
   if (newdvec != dvec)
     objputpayload_BM (obj, newdvec);
 }                               /* end of objdatavectinsertcomponentspayl_BM */

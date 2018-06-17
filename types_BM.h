@@ -376,7 +376,11 @@ struct object_stBM              /*tyObject_BM */
   uint8_t ob_space;
   double ob_mtime;
   pthread_mutex_t ob_mutex;
-  objectval_tyBM *ob_class;
+#ifdef __cplusplus
+    std::atomic < objectval_tyBM * >ob_classatomic;
+#else
+  objectval_tyBM *_Atomic volatile ob_aclass;
+#endif /*__cplusplus*/
   struct datavectval_stBM *ob_compvec;
   anyassoc_tyBM *ob_attrassoc;
   union

@@ -34,8 +34,10 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
   ASSERT_BM (isobject_BM (arg1));
   ASSERT_BM (istaggedint_BM (arg2));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * objbrows;
-                 const setval_tyBM * setattrs; const objectval_tyBM * curattr;
+                 const objectval_tyBM * objbrows;       //
+                 objectval_tyBM * classob;      //
+                 const setval_tyBM * setattrs;  //
+                 const objectval_tyBM * curattr;        //
                  value_tyBM curval;);
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
@@ -136,11 +138,11 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
                                       &browserit_BM, commbuf, -1,
                                       miscomm_brotag_BM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
-    if (_.objbrows->ob_class)
+    _.classob = objclass_BM (_.objbrows);
+    if (_.classob)
       {
         gtk_text_buffer_insert (brobuf, &browserit_BM, "!$ ", -1);
-        browse_value_BM ((const value_tyBM) _.objbrows->ob_class,
-                         CURFRAME_BM, 2, 0);
+        browse_value_BM ((const value_tyBM) _.classob, CURFRAME_BM, 2, 0);
         gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       };
   }
