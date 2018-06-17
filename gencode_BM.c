@@ -559,6 +559,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
   objectval_tyBM *k_tuple = BMK_6TmLNh9vtVY_0pwkHRtJ44k;
   objectval_tyBM *k_string = BMK_4T8am97muLl_5969SR22Ecq;
   objectval_tyBM *k_closure = BMK_93zjUzZVAaj_9ppXv7C34GR;
+  objectval_tyBM *k_depth = BMK_17YdW6dWrBA_2mn4QmBjMNs;
   objectval_tyBM *k_basiclo_connective = BMK_3DQ7z3EuAiT_4faSRNsy2lr;
   objectval_tyBM *k_exclam = BMK_0e54seiZEXF_1Myf620cHoB;
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
@@ -604,6 +605,8 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
   WEAKASSERT_BM (objectisinstance_BM (_.modgenob,
                                       k_simple_module_generation));
   int ke = valtype_BM (_.expv);
+  if (depth > MAXDEPTHPARSE_BM || depth < 0)
+    FAILHERE (makenode1_BM (k_depth, taggedint_BM (depth)));
   switch (ke)
     {
     case tyNone_BM:
@@ -701,14 +704,18 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
               && objectisinstance_BM (_.indirconnob, k_basiclo_connective))
             {
               DBGPRINTF_BM
-                ("miniscan_expr miniscan_node_conn indirect %s arity %d routprepob %s fromob %s before",
+                ("miniscan_expr miniscan_node_conn indirect %s arity %d routprepob %s fromob %s before, depth %d",
                  objectdbg_BM (_.indirconnob), arity,
-                 objectdbg1_BM (_.routprepob), objectdbg2_BM (_.fromob));
+                 objectdbg1_BM (_.routprepob), objectdbg2_BM (_.fromob),
+                 depth);
+              if (depth + 1 > MAXDEPTHPARSE_BM || depth < 0)
+                FAILHERE (makenode2_BM
+                          (k_depth, taggedint_BM (depth), _.indirconnob));
               objlock_BM (_.indirconnob);
               _.resv = send4_BM (_.indirconnob, k_miniscan_node_conn,   //
                                  CURFRAME_BM,   //
                                  _.routprepob,
-                                 taggedint_BM (depth), _.expv, _.fromob);
+                                 taggedint_BM (depth + 1), _.expv, _.fromob);
               objunlock_BM (_.indirconnob);
               DBGPRINTF_BM ("miniscan_expr miniscan_node_conn indirect %s done resv=%s",        //
                             objectdbg_BM (_.indirconnob),       //

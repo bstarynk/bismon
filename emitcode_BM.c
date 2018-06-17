@@ -1517,6 +1517,7 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
   objectval_tyBM *k_exclam = BMK_0e54seiZEXF_1Myf620cHoB;
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
+  objectval_tyBM *k_depth = BMK_17YdW6dWrBA_2mn4QmBjMNs;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
                  value_tyBM expv;       //
                  value_tyBM avalv;      //
@@ -1545,10 +1546,12 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
   WEAKASSERTRET_BM (_.routprepob);
   _.modulob = objgetattr_BM (_.modgenob, k_plain_module);
   DBGPRINTF_BM
-    ("emit_expression start expv %s modgenob %s routprepob %s modulob %s",
+    ("emit_expression start expv %s modgenob %s routprepob %s modulob %s depth %d",
      debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
      objectdbg_BM (_.modgenob), objectdbg1_BM (_.routprepob),
-     objectdbg2_BM (_.modulob));
+     objectdbg2_BM (_.modulob), depth);
+  if (depth > MAXDEPTHPARSE_BM || depth < 0)
+    FAILHERE (makenode1_BM (k_depth, taggedint_BM (depth)));
   int ke = valtype_BM (_.expv);
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
   switch (ke)
@@ -1704,11 +1707,14 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                objgetattr_BM (_.connob, k_basiclo_connective)) != NULL
               && objectisinstance_BM (_.indirconnob, k_basiclo_connective))
           {
+            if (depth + 1 > MAXDEPTHPARSE_BM || depth < 0)
+              FAILHERE (makenode2_BM
+                        (k_depth, taggedint_BM (depth), _.indirconnob));
             objlock_BM (_.indirconnob);
             _.resv = send5_BM (_.indirconnob, k_miniemit_node_conn,     //
                                CURFRAME_BM,     //
                                _.expv, _.modgenob, _.routprepob,
-                               taggedint_BM (depth), _.fromob);
+                               taggedint_BM (depth + 1), _.fromob);
             DBGPRINTF_BM ("emit_expression miniscan_node_conn indirect %s done resv=%s",        //
                           objectdbg_BM (_.indirconnob), //
                           debug_outstr_value_BM (_.resv, CURFRAME_BM, 0));
