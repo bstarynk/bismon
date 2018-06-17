@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 730 objects
+// for 731 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -53,6 +53,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !@ 1513062722.740
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_3dmcFZldtxI_1bEIFl4jqe3
+
+
+
+!(_6vMEdC0qxdp_7shHwvOZEQx |=and|
+!~ name (~ and
+~)
+!@ 1529230954.326
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for conjunctions"
+!)_6vMEdC0qxdp_7shHwvOZEQx
 
 
 
@@ -7510,10 +7521,10 @@ _167WczZjWtG_3FofhJxQWJi
 
 
 !(_0VJTIqFfNXf_5chzuIlqcJP
-!@ 1529225102.012
+!@ 1529230798.348
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
-!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
- * _2U8Sj78DMbl_5eerKpaJsNq ()
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of put\u00b0dict_object"
 !)_0VJTIqFfNXf_5chzuIlqcJP
 
 
