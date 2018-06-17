@@ -1244,7 +1244,21 @@ value_tyBM crout_9CG8SKNs6Ql_4PiHd8cnydn_BM     //#13
   // routine _9CG8SKNs6Ql_4PiHd8cnydn body:
 
 startblock__1lmLI285f7p_4im4Ls4Xewh:__attribute__ ((unused));
-  {                             /* +block _1lmLI285f7p_4im4Ls4Xewh *//* !endingblock _1lmLI285f7p_4im4Ls4Xewh */
+  {                             /* +block _1lmLI285f7p_4im4Ls4Xewh */
+    if                          /*cond _58n2IHCyrnJ_19R71AKw5aF */
+      /*when _8QkV0tL7Jvt_9mc0QaZYbyv: */
+      (                         /*objputdictpayl: */
+        objputdictpayl_BM ((_.o_7n2SLLuWOjH_4ArhFUjmckz)))
+      {
+        /*return _2RCw0JQb23v_2NfFku112jv: */ _.v_3qw9bnATIhq_8loBraLeXzQ =
+          // returned  
+          _.o_7n2SLLuWOjH_4ArhFUjmckz;
+        goto epilog_9CG8SKNs6Ql_4PiHd8cnydn;
+
+      }                         //endwhen _8QkV0tL7Jvt_9mc0QaZYbyv  
+/*endcond _58n2IHCyrnJ_19R71AKw5aF*/
+
+/* !endingblock _1lmLI285f7p_4im4Ls4Xewh */
     goto endblock__1lmLI285f7p_4im4Ls4Xewh;
   endblock__1lmLI285f7p_4im4Ls4Xewh:;
   }

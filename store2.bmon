@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 725 objects
+// for 728 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -7610,12 +7610,10 @@ _5r6ekO9FCAj_7hCbcooblXl
 
 
 !(_1lmLI285f7p_4im4Ls4Xewh
-!@ 1529218917.068
+!@ 1529219710.994
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "body of clear\u00b0dict_object"
-!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
- * _2U8Sj78DMbl_5eerKpaJsNq ()
+!# 1
+!& _58n2IHCyrnJ_19R71AKw5aF
 !)_1lmLI285f7p_4im4Ls4Xewh
 
 
@@ -8078,6 +8076,17 @@ _7KVBiG9eTtM_8PS68aSImxy
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "miniscan_block\u00b0basiclo_block"
 !)_2PbDEXpkK5W_7MSfDy2pWkH
+
+
+
+!(_2RCw0JQb23v_2NfFku112jv
+!@ 1529219710.993
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _2DH0ucElTgh_62vxjxLcfev ( _7n2SLLuWOjH_4ArhFUjmckz)
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+_7n2SLLuWOjH_4ArhFUjmckz
+!)_2RCw0JQb23v_2NfFku112jv
 
 
 
@@ -8660,6 +8669,19 @@ _97rnxb0KFqq_44veN75DG2E
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _6dfdSwPGgR8_2EaBHYhuZ5G _2DH0ucElTgh_62vxjxLcfev) ~)
 
 !)_5788HpgOtVV_4zwZIr0jgmq
+
+
+
+!(_58n2IHCyrnJ_19R71AKw5aF
+!@ 1529219710.994
+!$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _0v2RuabJSIV_7SLFx4XAdpr ( _8QkV0tL7Jvt_9mc0QaZYbyv)
+!: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
+ 1
+!# 1
+!& _8QkV0tL7Jvt_9mc0QaZYbyv
+!)_58n2IHCyrnJ_19R71AKw5aF
 
 
 
@@ -9861,6 +9883,19 @@ _4jMjZFW1jOu_0M1B6RqKe9T
 !@ 1507996857.000
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_8MU0cEcpEYN_5SVe0jrv36o
+
+
+
+!(_8QkV0tL7Jvt_9mc0QaZYbyv
+!@ 1529219710.993
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _7KdDnQYcbeY_4LbTWNwFIFY (  * _2I5KAMwFYFx_9VyQG73F8QN ( _7n2SLLuWOjH_4ArhFUjmckz) _2RCw0JQb23v_2NfFku112jv)
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+ * _2I5KAMwFYFx_9VyQG73F8QN ( _7n2SLLuWOjH_4ArhFUjmckz)
+!# 1
+!& _2RCw0JQb23v_2NfFku112jv
+!)_8QkV0tL7Jvt_9mc0QaZYbyv
 
 
 
