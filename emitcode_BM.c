@@ -133,6 +133,7 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
                  value_tyBM setv;       //
                  value_tyBM keybindv;   //
                  value_tyBM errorv;     //
+                 value_tyBM commentv;   //
                  value_tyBM errcausev;);
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.errcausev = (value_tyBM)(Cause); goto failure; } while(0)
@@ -265,13 +266,29 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
     memset (routidbuf, 0, sizeof (routidbuf));
     idtocbuf32_BM (objid_BM (_.routob), routidbuf);
     objlock_BM (_.modgenob);
+    _.commentv = objgetattr_BM (_.routob, BMP_comment);
     const char *routname = findobjectname_BM (_.routob);
     WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
     if (routname)
       objstrbufferprintfpayl_BM (_.modgenob, "\n"
                                  "extern objrout_sigBM crout%s_BM; //#%d %s\n",
                                  routidbuf, rank, routname);
+    else if (isstring_BM (_.commentv))
+      {
+        const char *bytcom = bytstring_BM (_.commentv);
+        int comlen = lenstring_BM (_.commentv);
+        const char *eol = strchr (bytcom, '\n');
+        if (eol)
+          comlen = eol - bytcom - 1;
+        if (comlen > 1)
+          objstrbufferprintfpayl_BM (_.modgenob, "\n"
+                                     "extern objrout_sigBM crout%s_BM; //#%d !%.*s\n",
+                                     routidbuf, rank, comlen, bytcom);
+        else
+          goto plainrout;
+      }
     else
+    plainrout:
       objstrbufferprintfpayl_BM (_.modgenob, "\n"
                                  "extern objrout_sigBM crout%s_BM; //#%d\n",
                                  routidbuf, rank);
@@ -438,8 +455,8 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
         int comlen = lenstring_BM (_.commentv);
         const char *eol = strchr (combytes, '\n');
         if (eol)
-          comlen = eol - combytes;
-        if (comlen > 0)
+          comlen = eol - combytes - 1;
+        if (comlen > 1)
           objstrbufferprintfpayl_BM (_.modgenob, "//!%.*s\n", comlen,
                                      combytes);
       }

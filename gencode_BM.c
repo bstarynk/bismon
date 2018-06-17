@@ -3109,14 +3109,23 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * modulob; objectval_tyBM * curfunob;
-                 objectval_tyBM * curoutprepob; objectval_tyBM * curconstob;
-                 objectval_tyBM * modgenob; value_tyBM prepval;
-                 value_tyBM preproutval; objectval_tyBM * vectprepob;
-                 value_tyBM preptupv; value_tyBM prepmod;
-                 value_tyBM emitv; value_tyBM constsetv;
-                 value_tyBM routsetv; value_tyBM causev;
-                 value_tyBM errorv;);
+                 objectval_tyBM * modulob;      //
+                 objectval_tyBM * curfunob;     //
+                 objectval_tyBM * curoutprepob; //
+                 objectval_tyBM * curconstob;   //
+                 objectval_tyBM * modgenob;     //
+                 value_tyBM prepval;    //
+                 value_tyBM preproutval;        //
+                 objectval_tyBM * vectprepob;   //
+                 value_tyBM preptupv;   //
+                 value_tyBM prepmod;    //
+                 value_tyBM emitv;      //
+                 value_tyBM constsetv;  //
+                 value_tyBM commentv;   //
+                 value_tyBM routsetv;   //
+                 value_tyBM causev;     //
+                 value_tyBM errorv;     //
+    );
   _.modulob = arg1;
   //objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
   objectval_tyBM *k_prepared_routines = BMK_9qn0Hp8HaF5_7yeAJiNYtp5;
@@ -3312,6 +3321,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
       _.curfunob = setelemnth_BM (_.routsetv, routix);
       if (routix % 8 == 0)
         objstrbufferprintfpayl_BM (_.modgenob, "  /*%d:*/\n", routix);
+      _.commentv = objgetattr_BM (_.curfunob, BMP_comment);
       const char *curfunname = findobjectname_BM (_.curfunob);
       char funidbuf[32];
       memset (funidbuf, 0, sizeof (funidbuf));
@@ -3319,6 +3329,19 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
       if (curfunname)
         objstrbufferprintfpayl_BM (_.modgenob, "  \"%s\",//%s\n",
                                    funidbuf, curfunname);
+      else if (isstring_BM (_.commentv))
+        {
+          const char *comby = bytstring_BM (_.commentv);
+          int comlen = lenstring_BM (_.commentv);
+          const char *eol = strchr (comby, '\n');
+          if (eol)
+            comlen = eol - comby;
+          if (comlen > 1)
+            objstrbufferprintfpayl_BM (_.modgenob, "  \"%s\", //!%.*s\n",
+                                       funidbuf, comlen, comby);
+          else
+            objstrbufferprintfpayl_BM (_.modgenob, "  \"%s\",\n", funidbuf);
+        }
       else
         objstrbufferprintfpayl_BM (_.modgenob, "  \"%s\",\n", funidbuf);
     }
