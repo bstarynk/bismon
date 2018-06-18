@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 733 objects
+// for 735 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2077,6 +2077,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_5gx69v86kIR_4ODGlLUUWqo |=isstring|
+!~ name (~ isstring
+~)
+!@ 1529309935.098
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test if v1 is a string value"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5gx69v86kIR_4ODGlLUUWqo  ":*/"  "isstring_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_5gx69v86kIR_4ODGlLUUWqo
+
+
+
 !(_98vVY2otB3l_22hizSbpti6 |=istree|
 !~ name (~ istree
 ~)
@@ -3434,6 +3452,28 @@ _97rnxb0KFqq_44veN75DG2E)  "),"
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7bbeIqUSje9_4jVgC7ZJmvx
 !)_46jxQfacWlV_7bijQOMcHX5
+
+
+
+!(_2Zv64CfoneM_4dyKtH2SMQ3 |=objdictputpayl|
+!~ name (~ objdictputpayl
+~)
+!@ 1529310859.350
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "put in dict-object o1 the string-value v2 associated to value v3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ _0sDAwfyl4r3_8kDdVlE90M3 ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _2Zv64CfoneM_4dyKtH2SMQ3)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2Zv64CfoneM_4dyKtH2SMQ3  ":*/"  " "  "objdictputpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  "),"  " " 
+ "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0sDAwfyl4r3_8kDdVlE90M3) 
+  "))")
+!)_2Zv64CfoneM_4dyKtH2SMQ3
 
 
 
