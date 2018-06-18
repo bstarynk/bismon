@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 731 objects
+// for 733 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2673,6 +2673,19 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_7BCZoNhXs8o_4ogeZ1OGKxO
+
+
+
+!(_8CWn68WqI7f_4AnphIqCGOA |=not|
+!~ name (~ not
+~)
+!@ 1529299253.900
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for negations"
+!: _3DQ7z3EuAiT_4faSRNsy2lr |=basiclo_connective|
+_88uWfIorEBo_8uaVeuhqVff
+!)_8CWn68WqI7f_4AnphIqCGOA
 
 
 
@@ -9676,6 +9689,21 @@ _97rnxb0KFqq_44veN75DG2E
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to give the set in a hset_object"
 !)_88cUYsDqSFO_0DKwKLSOmpm
+
+
+
+!(_88uWfIorEBo_8uaVeuhqVff
+!@ 1529299455.754
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "not_int primitive"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _94oPnbvjznL_0cdTCJt5pUp ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _8CWn68WqI7f_4AnphIqCGOA  ":*/(!("  * _5ucAZimYynS_4VA0XHvr1nW ( _94oPnbvjznL_0cdTCJt5pUp)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_88uWfIorEBo_8uaVeuhqVff
 
 
 
