@@ -1347,6 +1347,20 @@ startblock__1lmLI285f7p_4im4Ls4Xewh:__attribute__ ((unused));
       }                         //endwhen _8QkV0tL7Jvt_9mc0QaZYbyv  
 /*endcond _58n2IHCyrnJ_19R71AKw5aF*/
 
+
+    if                          /*cond _4QR8kuWiKxV_9oKMeD79KDQ */
+      /*when _8bCPs7gML9M_12nXMrdhzvW: */
+      (                         /*objputdictpayl: */
+        objputdictpayl_BM ((_.o_7n2SLLuWOjH_4ArhFUjmckz)))
+      {
+        /*return _9198YxnrBs6_7u9nhmAA8Q6: */ _.v_3qw9bnATIhq_8loBraLeXzQ =
+          // returned  
+          _.o_7n2SLLuWOjH_4ArhFUjmckz;
+        goto epilog_9CG8SKNs6Ql_4PiHd8cnydn;
+
+      }                         //endwhen _8bCPs7gML9M_12nXMrdhzvW  
+/*endcond _4QR8kuWiKxV_9oKMeD79KDQ*/
+
 /* !endingblock _1lmLI285f7p_4im4Ls4Xewh */
     goto endblock__1lmLI285f7p_4im4Ls4Xewh;
   endblock__1lmLI285f7p_4im4Ls4Xewh:;

@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 741 objects
+// for 744 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -7686,10 +7686,13 @@ _5r6ekO9FCAj_7hCbcooblXl
 
 
 !(_1lmLI285f7p_4im4Ls4Xewh
-!@ 1529219710.994
+!@ 1529383540.812
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
-!# 1
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of clear\u00b0dict_object"
+!# 2
 !& _58n2IHCyrnJ_19R71AKw5aF
+!& _4QR8kuWiKxV_9oKMeD79KDQ
 !)_1lmLI285f7p_4im4Ls4Xewh
 
 
@@ -8382,8 +8385,10 @@ _9BLJq5DadtZ_6I89t7ioVRS
 
 
 !(_3oMW0T4HlXx_8r7NLpyK1J8
-!@ 1529215975.383
+!@ 1529383599.340
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of dump_data\u00b0dict_object"
 !)_3oMW0T4HlXx_8r7NLpyK1J8
 
 
@@ -8738,6 +8743,19 @@ _883QaWUOedh_9zmHk2A3RPm
 !: _2DH0ucElTgh_62vxjxLcfev |=return|
  * _0e54seiZEXF_1Myf620cHoB ( _7T9OwSFlgov_0wVJaK1eZbn)
 !)_4NQMyG7YDk8_44PdNNG87Sr
+
+
+
+!(_4QR8kuWiKxV_9oKMeD79KDQ
+!@ 1529383540.812
+!$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _0v2RuabJSIV_7SLFx4XAdpr ( _8bCPs7gML9M_12nXMrdhzvW)
+!: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
+ 1
+!# 1
+!& _8bCPs7gML9M_12nXMrdhzvW
+!)_4QR8kuWiKxV_9oKMeD79KDQ
 
 
 
@@ -9839,6 +9857,19 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_8bCPs7gML9M_12nXMrdhzvW
+!@ 1529383540.812
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _7KdDnQYcbeY_4LbTWNwFIFY (  * _2I5KAMwFYFx_9VyQG73F8QN ( _7n2SLLuWOjH_4ArhFUjmckz) _9198YxnrBs6_7u9nhmAA8Q6)
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+ * _2I5KAMwFYFx_9VyQG73F8QN ( _7n2SLLuWOjH_4ArhFUjmckz)
+!# 1
+!& _9198YxnrBs6_7u9nhmAA8Q6
+!)_8bCPs7gML9M_12nXMrdhzvW
+
+
+
 !(_8fKRsxM1q9w_3hFovzBicI7
 !|*
 !@ 1526979509.970
@@ -10151,6 +10182,17 @@ _3d9rq9TD6PH_6qUv4Hao767
 !& _4u9Asyd05eG_3iNFTkTpsJL
 !& _0nis0ztlxLc_5t5q1Qbil78
 !)_8Y3CrFLuAZv_5J3KoGgiSlM
+
+
+
+!(_9198YxnrBs6_7u9nhmAA8Q6
+!@ 1529383540.812
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _2DH0ucElTgh_62vxjxLcfev ( _7n2SLLuWOjH_4ArhFUjmckz)
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+_7n2SLLuWOjH_4ArhFUjmckz
+!)_9198YxnrBs6_7u9nhmAA8Q6
 
 
 
