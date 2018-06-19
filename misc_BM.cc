@@ -476,10 +476,12 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       struct tm srctm = {};
       struct tm bintm = {};
       char srcti[64] = "", binti[64] = "";
-      strftime(srcti, sizeof(srcti), "%c %Z", localtime_r(&srcmodstat.st_mtime, &srctm));
-      strftime(binti, sizeof(binti), "%c %Z", localtime_r(&binmodstat.st_mtime, &bintm));
-      fprintf (stderr, "module source %s [%s] younger than binary %s [%s]\n",
+      strftime(srcti, sizeof(srcti), "%c", localtime_r(&srcmodstat.st_mtime, &srctm));
+      strftime(binti, sizeof(binti), "%c", localtime_r(&binmodstat.st_mtime, &bintm));
+      fprintf (stderr, "module source code %s [%s]\n... younger than its binary %s [%s]\n",
                srcmodpath.c_str(), srcti, binmodpath.c_str(), binti);
+      fprintf (stderr, "***please rebuild that %s then restart...\n",
+	       basename(binmodpath.c_str()));
       return false;
     }
   if (modulemap_BM.find(modid) != modulemap_BM.end())
