@@ -51,9 +51,9 @@ extern objrout_sigBM crout_8imWClcIFKt_6w2H2ouB4I6_BM;  //#13 iterate_sequence_m
 extern objrout_sigBM crout_9CG8SKNs6Ql_4PiHd8cnydn_BM;  //#14 !clear°dict_object minifun
 
 
-// declare 20 constants
-objectval_tyBM *constob_3BFt4NfJmZC_7iYi2dwM38B_BM[20 + 1];
-const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[20 + 1];
+// declare 21 constants
+objectval_tyBM *constob_3BFt4NfJmZC_7iYi2dwM38B_BM[21 + 1];
+const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[21 + 1];
 
 
 // define 15 routines
@@ -853,9 +853,11 @@ value_tyBM crout_4qlegfkPzrC_17skUfJP7v8_BM     //#9
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 4 local values:
+    /// 6 local values:
+    value_tyBM v_167WczZjWtG_3FofhJxQWJi;       // v_str
     objectval_tyBM *o_3cTC8W7d75H_1vteOyEoAao;  // odumper
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ;       // v_r
+    value_tyBM v_5jRQCD1qTko_61I0j04ugAA;       // v_val
     objectval_tyBM *o_6opEz55NyNu_3JKpBgxLijw;  // osbuf
     objectval_tyBM *o_7n2SLLuWOjH_4ArhFUjmckz;  // odict
     /// 0 local numbers:
@@ -863,7 +865,7 @@ value_tyBM crout_4qlegfkPzrC_17skUfJP7v8_BM     //#9
   memset (&_, 0, sizeof (struct frame_4qlegfkPzrC_17skUfJP7v8_BMst));
   _.stkfram_head.htyp = typayl_StackFrame_BM;
   _.stkfram_head.hgc = 0;
-  _.stkfram_head.rlen = 4;
+  _.stkfram_head.rlen = 6;
   _.stkfram_descr =
     constob_3BFt4NfJmZC_7iYi2dwM38B_BM[11] /*|_4qlegfkPzrC_17skUfJP7v8 */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
@@ -878,7 +880,25 @@ value_tyBM crout_4qlegfkPzrC_17skUfJP7v8_BM     //#9
   // routine _4qlegfkPzrC_17skUfJP7v8 body:
 
 startblock__3oMW0T4HlXx_8r7NLpyK1J8:__attribute__ ((unused));
-  {                             /* +block _3oMW0T4HlXx_8r7NLpyK1J8 *//* !endingblock _3oMW0T4HlXx_8r7NLpyK1J8 */
+  {                             /* +block _3oMW0T4HlXx_8r7NLpyK1J8 */
+    {                           // start cexpansion _1IlaE9ACS7F_3voBCWLL2kq - objstrbufferclearindentpayl  
+/*objstrbufferclearindentpayl:*/
+      objstrbufferclearindentpayl_BM ((_.o_3cTC8W7d75H_1vteOyEoAao));
+    }                           // end cexpansion _1IlaE9ACS7F_3voBCWLL2kq - objstrbufferclearindentpayl  
+
+
+    {                           // start cexpansion _9vLmgXTefVI_2hPSqbABsfW - objstrbufferappendcstrpayl  
+/*objstrbufferappendcstrpayl:*/
+      objstrbufferappendcstrpayl_BM ((_.o_3cTC8W7d75H_1vteOyEoAao),
+                                     ("!~ todo (~\n"));
+    }                           // end cexpansion _9vLmgXTefVI_2hPSqbABsfW - objstrbufferappendcstrpayl  
+
+
+    _.v_167WczZjWtG_3FofhJxQWJi =       //assign _5mCmWSYOW7T_4G9YRC6tvRf  
+/*objdictfirstkeypayl:*/
+      (value_tyBM) objdictfirstkeypayl_BM ((_.o_7n2SLLuWOjH_4ArhFUjmckz));
+
+/* !endingblock _3oMW0T4HlXx_8r7NLpyK1J8 */
     goto endblock__3oMW0T4HlXx_8r7NLpyK1J8;
   endblock__3oMW0T4HlXx_8r7NLpyK1J8:;
   }
@@ -1322,7 +1342,7 @@ value_tyBM crout_9CG8SKNs6Ql_4PiHd8cnydn_BM     //#14
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 2;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[19] /*|_9CG8SKNs6Ql_4PiHd8cnydn */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[20] /*|_9CG8SKNs6Ql_4PiHd8cnydn */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -1380,8 +1400,8 @@ epilog_9CG8SKNs6Ql_4PiHd8cnydn:__attribute__ ((unused));
 // end of 15 generated routines
 
 
-// the constant ids for 20 constants:
-const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[20 + 1] = {
+// the constant ids for 21 constants:
+const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[21 + 1] = {
   /*0: */
   "_0JktC4mAHCa_1KNr6uMIqIi",
   "_0SinERsgdvQ_57dLCP63i9r",
@@ -1404,9 +1424,10 @@ const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[20 + 1] = {
   "_82ho9wUUDji_4peMLha4PXl",   //findobj_scan_minifunc
   "_8imWClcIFKt_6w2H2ouB4I6",   //iterate_sequence_minifunc
   "_8lV53mLyu1H_3Z1SI8wDBK1",   //clear
+  "_9pvzBeIKHXF_8YDPCrQ6OEK",   //put
   "_9CG8SKNs6Ql_4PiHd8cnydn",
   NULL
-};                              // end 20 constant ids
+};                              // end 21 constant ids
 
 
 
