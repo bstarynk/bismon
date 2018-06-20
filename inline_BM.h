@@ -746,7 +746,12 @@ objhasstrbufferpayl_BM (const objectval_tyBM * obj)
   extendedval_tyBM payl = objpayload_BM (obj);
   if (!payl)
     return false;
-  return (valtype_BM ((const value_tyBM) payl) == typayl_strbuffer_BM);
+  int pt = valtype_BM ((const value_tyBM) payl);
+  return (pt == typayl_strbuffer_BM
+#ifdef BISMONION
+          || pt == typayl_webexchange_BM
+#endif     /*BISMONION*/
+    );
 }                               /* end objhasstrbuffer_BM */
 
 
@@ -757,7 +762,12 @@ objgetstrbufferpayl_BM (objectval_tyBM * obj)
   extendedval_tyBM payl = objpayload_BM (obj);
   if (!payl)
     return NULL;
-  if (valtype_BM ((const value_tyBM) payl) == typayl_strbuffer_BM)
+  int pt = valtype_BM ((const value_tyBM) payl);
+  if (pt == typayl_strbuffer_BM
+#ifdef BISMONION
+      || pt == typayl_webexchange_BM
+#endif /*BISMONION*/
+    )
     return (struct strbuffer_stBM *) payl;
   return NULL;
 }                               /* end objgetstrbufferpayl_BM */

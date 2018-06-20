@@ -704,7 +704,7 @@ struct websessiondata_stBM      /// for typayl_websession_BM
 #define BISMONION_WEBX_MAGIC 0x11b63c9b /* webx magic 297155739 */
 struct webexchangedata_stBM
 {                               /// for typayl_webexchange_BM
-  typedhead_tyBM pa;
+  struct strbuffer_stBM webx_sbuf;      /* inherit from strbuffer */
   unsigned webx_magic;          /* always BISMONION_WEBX_MAGIC */
   int webx_num;
   objectval_tyBM *webx_obj;     /* owning object */
