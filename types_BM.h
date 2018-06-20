@@ -61,7 +61,11 @@ enum gctyenum_BM
   typayl_hashsetvbucket_BM,
   typayl_hashmapval_BM,
   typayl_hashmapbucket_BM,
-  typayl_dict_BM,
+#ifdef BISMONION
+  typayl_websession_BM,
+  typayl_webexchange_BM,
+#endif /*BISMONION*/
+    typayl_dict_BM,
 #define typayl_LAST_BM typayl_dict_BM
   typayl__SpareA_BM,
   typayl__SpareB_BM,
@@ -673,9 +677,47 @@ struct dict_stBM
   uintptr_t dict_data[8];       /* actually a C++ std::map */
 };
 
-/// NB: struct browsedval_stBM & struct browsedobj_stBM are in globals_BM.h
 
-struct garbcoll_stBM
+
+////////////////////////////////////////////////////////////////
+////// web related
+#ifdef BISMONION
+
+/// inspired by my (Basile Starynkevitch's) previous code in
+/// https://github.com/bstarynk/old-melt-monitor/ files monimelt.h &
+/// web-onion.c
+
+
+#define BISMONION_WEBSESS_MAGIC 0x31dcebad      /* websess magic 836561837 */
+#define BISMONION_WEBSESS_SUFLEN 48
+struct websessiondata_stBM      /// for typayl_websession_BM
+{
+  unsigned websess_magic;       /* always BISMONION_WEBSESS_MAGIC */
+  unsigned websess_rank;        /* unique rank */
+  objectval_tyBM *websess_obj;  /* owning object */
+  char websess_suffix[BISMONION_WEBSESS_SUFLEN];        /* random suffix */
+  double websess_createtime;    /* creation time */
+  double websess_expiretime;    /* expiry time */
+  onion_websocket *websess_websocket;   /* the web socket */
+};                              /* end websessiondata_stBM */
+
+#define BISMONION_WEBX_MAGIC 0x11b63c9b /* webx magic 297155739 */
+struct webexchangedata_stBM
+{                               /// for typayl_webexchange_BM
+  typedhead_tyBM pa;
+  unsigned webx_magic;          /* always BISMONION_WEBX_MAGIC */
+  int webx_num;
+  objectval_tyBM *webx_obj;     /* owning object */
+  double webx_time;
+  onion_request *webx_requ;
+  onion_response *webx_resp;
+  //// perhaps some strbuffer or some object with it?
+  char *webx_mime;
+};                              /* end webexchangedata_stBM */
+#endif /*BISMONION*/
+////////////////////////////////////////////////////////////////
+/// NB: struct browsedval_stBM & struct browsedobj_stBM are in globals_BM.h
+  struct garbcoll_stBM
 {
   uint32_t gc_magic;
   uint32_t gc_spareunsigned;

@@ -97,6 +97,8 @@ log_printf_message_BM (const char *fmt, ...)
     free (buf);
 }                               /* end log_printf_message_BM */
 
+
+
 // queue some external process; its stdin is /dev/null; both stdout &
 // stderr are merged & captured; final string is given to the closure.
 // dirstrv is the string of the directory to run it in (if NULL, use

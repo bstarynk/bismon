@@ -75,12 +75,26 @@ using std::atomic_store;
 
 #ifdef BISMONGTK
 #include <gtk/gtk.h>
-#endif
-
+#endif /*BISMONGTK*/
+#ifdef BISMONION
+// libonion from http://www.coralbits.com/libonion/ &
+// https://github.com/davidmoreno/onion
+#include <onion/onion.h>
+#include <onion/low.h>
+#include <onion/request.h>
+#include <onion/response.h>
+#include <onion/block.h>
+#include <onion/handler.h>
+#include <onion/dict.h>
+#include <onion/log.h>
+#include <onion/shortcuts.h>
+#include <onion/exportlocal.h>
+#include <onion/internal_status.h>
+#include <onion/websocket.h>
+#endif /*BISMONION */
 #include "cmacros_BM.h"
 #include "types_BM.h"
 #include "globals_BM.h"
 #include "fundecl_BM.h"
 #include "inline_BM.h"
-
 #endif /*BISMON_INCLUDED */

@@ -1463,13 +1463,13 @@ ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //browse_data°assoc_object
     FATAL_BM
       ("non-object for method to browse_data for assoc_object-s _0f1S28bCE26_3X6Vpz9lG4A");
   _.objbrows = (const objectval_tyBM *) arg1;
+#ifdef BISMONGTK
   int maxdepth = getint_BM (arg2);
   WEAKASSERT_BM (objhasassocpayl_BM (_.objbrows));
   _.setv = objassocsetattrspayl_BM (_.objbrows);
   _.tupv = settonamedsortedtuple_BM (_.setv);
   int nbelem = tuplesize_BM (_.tupv);
-  ASSERT_BM (nbelem == setcardinal_BM (_.setv));
-#ifdef BISMONGTK
+  ASSERT_BM (nbelem == (int) setcardinal_BM (_.setv));
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   {
     char bufmsg[48];
