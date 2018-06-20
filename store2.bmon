@@ -1571,6 +1571,8 @@ _6YnYKKsHo3f_9nIEOZMp744
 !& _4qlegfkPzrC_17skUfJP7v8
 !& _9CG8SKNs6Ql_4PiHd8cnydn
 !& _2bZ4BfCci5V_3WTzG7V25y4
+ // emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
+
 !)_3BFt4NfJmZC_7iYi2dwM38B
 
 
@@ -8681,7 +8683,7 @@ _39pW7nyFqoI_5pikyvvGsZ5
 
 !(_4qlegfkPzrC_17skUfJP7v8
 !|*
-!@ 1529385497.021
+!@ 1529497297.887
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "dump_data\u00b0dict_object minifunc\ndump objdict"& " odict with dumper odumper and strbuffer"& " osbuf"
@@ -8690,7 +8692,7 @@ _39pW7nyFqoI_5pikyvvGsZ5
 !: _24sSVIADeHm_0Sx34wQfG7W |=locals|
  { _167WczZjWtG_3FofhJxQWJi _5jRQCD1qTko_61I0j04ugAA }
 !: _5l2zSKsFaVm_9zs6qDOP87i |=constants|
- { _8lV53mLyu1H_3Z1SI8wDBK1 _9pvzBeIKHXF_8YDPCrQ6OEK }
+ { _1FEnnpEkGdI_5DAcVDL5XHG _8lV53mLyu1H_3Z1SI8wDBK1 _9pvzBeIKHXF_8YDPCrQ6OEK }
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3qw9bnATIhq_8loBraLeXzQ
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
