@@ -159,7 +159,7 @@ webexchangedatagcmark_BM (struct garbcoll_stBM *gc,
                           objectval_tyBM * fromob, int depth)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
-  ASSERT_BM (valtype_BM ((value_tyBM) ws) == typayl_webexchange_BM);
+  ASSERT_BM (valtype_BM ((value_tyBM) wex) == typayl_webexchange_BM);
   ASSERT_BM (!fromob || isobject_BM (fromob));
 }                               /* end webexchangedatagcmark_BM */
 
