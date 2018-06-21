@@ -16,6 +16,8 @@ _*ONIONBM.[ch]
 *%
 *.orig
 
+*BM.const.h
+
 core*
 modules/_*_.c
 modules/tmpmob*.c
