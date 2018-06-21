@@ -1398,6 +1398,11 @@ extern void webexchangedatagcdestroy_BM (struct garbcoll_stBM *gc,
                                          struct webexchangedata_stBM *wex);
 extern void webexchangedatagckeep_BM (struct garbcoll_stBM *gc,
                                       struct webexchangedata_stBM *we);
+// payload delete support for websessiondata & webexchangedata
+extern void websessiondelete_BM (objectval_tyBM * ownobj,
+                                 struct websessiondata_stBM *ws);
+extern void webexchangedelete_BM (objectval_tyBM * ownobj,
+                                  struct webexchangedata_stBM *we);
 
 #endif /*BISMONION*/
 ////////////////////////////////////////////////////////////////

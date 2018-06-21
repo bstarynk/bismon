@@ -687,32 +687,41 @@ struct dict_stBM
 /// https://github.com/bstarynk/old-melt-monitor/ files monimelt.h &
 /// web-onion.c
 
+/// both websessiondata & webexchangedata payloads and their owning
+/// objects are only created by the web infrastructure. So there is no
+/// public function to create them, or put them as a payload
 
+
+/// web session data reifies web HTTP session & HTTP cookie
 #define BISMONION_WEBSESS_MAGIC 0x31dcebad      /* websess magic 836561837 */
 #define BISMONION_WEBSESS_SUFLEN 48
 struct websessiondata_stBM      /// for typayl_websession_BM
 {
   unsigned websess_magic;       /* always BISMONION_WEBSESS_MAGIC */
   unsigned websess_rank;        /* unique rank */
-  objectval_tyBM *websess_obj;  /* owning object */
+  objectval_tyBM *websess_ownobj;       /* owning object having this payload */
+  objectval_tyBM *websess_userob;       /* the user logged in, or nil */
+  value_tyBM websess_datav;     /* supplementary data value */
   char websess_suffix[BISMONION_WEBSESS_SUFLEN];        /* random suffix */
   double websess_createtime;    /* creation time */
   double websess_expiretime;    /* expiry time */
   onion_websocket *websess_websocket;   /* the web socket */
 };                              /* end websessiondata_stBM */
 
+
+//// a webexchange object reifies an HTTP request and response
 #define BISMONION_WEBX_MAGIC 0x11b63c9b /* webx magic 297155739 */
 struct webexchangedata_stBM
 {                               /// for typayl_webexchange_BM
   struct strbuffer_stBM webx_sbuf;      /* inherit from strbuffer */
   unsigned webx_magic;          /* always BISMONION_WEBX_MAGIC */
   int webx_num;
-  objectval_tyBM *webx_obj;     /* owning object */
+  objectval_tyBM *webx_ownobj;  /* owning object having this payload */
+  objectval_tyBM *webx_sessobj; /* the websession object, if any */
+  value_tyBM webx_datav;        /* supplementary data value */
   double webx_time;
   onion_request *webx_requ;
   onion_response *webx_resp;
-  //// perhaps some strbuffer or some object with it?
-  char *webx_mime;
 };                              /* end webexchangedata_stBM */
 #endif /*BISMONION*/
 ////////////////////////////////////////////////////////////////

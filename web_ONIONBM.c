@@ -120,7 +120,6 @@ queue_process_BM (const stringval_tyBM * dirstr,
 
 ////////////////
 // GC support for websessiondata
-#warning incomplete GC support for Web data...
 void
 websessiondatagcmark_BM (struct garbcoll_stBM *gc,
                          struct websessiondata_stBM *ws,
@@ -129,23 +128,59 @@ websessiondatagcmark_BM (struct garbcoll_stBM *gc,
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((value_tyBM) ws) == typayl_websession_BM);
   ASSERT_BM (!fromob || isobject_BM (fromob));
+  ASSERT_BM (ws->websess_magic == BISMONION_WEBSESS_MAGIC);
+  ASSERT_BM (depth >= 0);
+  ASSERT_BM (!fromob || !ws->websess_ownobj || ws->websess_ownobj == fromob);
   uint8_t oldmark = ((typedhead_tyBM *) ws)->hgc;
   if (oldmark)
     return;
   ((typedhead_tyBM *) ws)->hgc = MARKGC_BM;
+  if (ws->websess_ownobj)
+    gcobjmark_BM (gc, ws->websess_ownobj);
+  if (ws->websess_userob)
+    gcobjmark_BM (gc, ws->websess_userob);
+  if (ws->websess_datav)
+    EXTENDEDGCPROC_BM (gc, ws->websess_datav, fromob, depth + 1);
   gc->gc_nbmarks++;
 }                               /* end websessiondatagcmark_BM */
+
 
 void
 websessiondatagcdestroy_BM (struct garbcoll_stBM *gc,
                             struct websessiondata_stBM *ws)
 {
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (valtype_BM ((value_tyBM) ws) == typayl_websession_BM);
+  ASSERT_BM (ws->websess_magic == BISMONION_WEBSESS_MAGIC);
+  if (ws->websess_ownobj)
+    {
+      objectval_tyBM *ownerob = ws->websess_ownobj;
+      ws->websess_ownobj = NULL;
+      objlock_BM (ownerob);
+      if (objpayload_BM (ownerob) == (extendedval_tyBM) ws)
+        objclearpayload_BM (ownerob);
+      objunlock_BM (ownerob);
+    };
+  if (ws->websess_websocket)
+    {
+      onion_websocket *websock = ws->websess_websocket;
+      ws->websess_websocket = NULL;
+      onion_websocket_free (websock);
+    };
+  memset ((void *) ws, 0, sizeof (*ws));
+  free (ws);
+  gc->gc_freedbytes += sizeof (*ws);
 }                               /* end  websessiondatagcdestroy_BM */
+
 
 void
 websessiondatagckeep_BM (struct garbcoll_stBM *gc,
                          struct websessiondata_stBM *ws)
 {
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (valtype_BM ((value_tyBM) ws) == typayl_websession_BM);
+  ASSERT_BM (ws->websess_magic == BISMONION_WEBSESS_MAGIC);
+  gc->gc_keptbytes += sizeof (*ws);
 }                               /* end websessiondatagckeep_BM */
 
 
@@ -160,7 +195,16 @@ webexchangedatagcmark_BM (struct garbcoll_stBM *gc,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((value_tyBM) wex) == typayl_webexchange_BM);
+  ASSERT_BM (wex->webx_magic == BISMONION_WEBX_MAGIC);
   ASSERT_BM (!fromob || isobject_BM (fromob));
+  ASSERT_BM (depth >= 0);
+  ASSERT_BM (!fromob || !wex->webx_ownobj || wex->webx_ownobj == fromob);
+  if (wex->webx_ownobj)
+    gcobjmark_BM (gc, wex->webx_ownobj);
+  if (wex->webx_sessobj)
+    gcobjmark_BM (gc, wex->webx_sessobj);
+  if (wex->webx_datav)
+    EXTENDEDGCPROC_BM (gc, wex->webx_datav, fromob, depth + 1);
 }                               /* end webexchangedatagcmark_BM */
 
 
@@ -168,13 +212,63 @@ void
 webexchangedatagcdestroy_BM (struct garbcoll_stBM *gc,
                              struct webexchangedata_stBM *wex)
 {
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (valtype_BM ((value_tyBM) wex) == typayl_webexchange_BM);
+  ASSERT_BM (wex->webx_magic == BISMONION_WEBX_MAGIC);
+  if (wex->webx_ownobj)
+    {
+      objectval_tyBM *ownerob = wex->webx_ownobj;
+      wex->webx_ownobj = NULL;
+      objlock_BM (ownerob);
+      if (objpayload_BM (ownerob) == (extendedval_tyBM) wex)
+        objclearpayload_BM (ownerob);
+      objunlock_BM (ownerob);
+    };
+  if (wex->webx_requ)
+    {
+      onion_request *oreq = wex->webx_requ;
+      wex->webx_requ = NULL;
+      onion_request_free (oreq);
+    };
+  if (wex->webx_resp)
+    {
+      onion_response *oresp = wex->webx_resp;
+      wex->webx_resp = NULL;
+      onion_response_free (oresp);
+    }
+  memset ((void *) wex, 0, sizeof (*wex));
+  free (wex);
+  gc->gc_freedbytes += sizeof (*wex);
 }                               /* end webexchangedatagcdestroy_BM */
 
 
 void
 webexchangedatagckeep_BM (struct garbcoll_stBM *gc,
-                          struct webexchangedata_stBM *we)
+                          struct webexchangedata_stBM *wex)
 {
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (valtype_BM ((value_tyBM) wex) == typayl_webexchange_BM);
+  ASSERT_BM (wex->webx_magic == BISMONION_WEBX_MAGIC);
+  gc->gc_keptbytes += sizeof (*wex);
 }                               /* end webexchangedatagckeep_BM */
+
+
+
+void
+websessiondelete_BM (objectval_tyBM * ownobj, struct websessiondata_stBM *ws)
+{
+#warning unimplemented websessiondelete_BM
+  FATAL_BM ("unimplemented websessiondelete_BM ownobj %s ws@%p",
+            objectdbg_BM (ownobj), (void *) ws);
+}                               /* end websessiondelete_BM */
+
+void
+webexchangedelete_BM (objectval_tyBM * ownobj,
+                      struct webexchangedata_stBM *wex)
+{
+#warning unimplemented webexchangedelete_BM
+  FATAL_BM ("unimplemented webexchangedelete_BM ownobj %s wex@%p",
+            objectdbg_BM (ownobj), (void *) wex);
+}                               /* end webexchangedelete_BM */
 
 ////////////////////////////////////////////////////////////////
