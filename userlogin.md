@@ -77,11 +77,16 @@ and of course the persistent store would have some object of id
 `_3sQID0mxoew_16uOC0jEIpe`
 
 An ordinary user might have a login line in the `users` file such as:
-`John Doe;_9hU3OhcrcY5_0RARFyQHgwf;john.doe@example.com`
+`John_Doe;_9hU3OhcrcY5_0RARFyQHgwf;john.doe@example.com`
 
 Pseudonimization (in the GDPR sense) might be done by moving (if he
 was a contributor) a login line to the `users` file and using a
 fictuous username and some `nobody@localhost` email.
+
+Removing a user could be done by also making his object temporary at
+dump time.
+
+Dump should also write some `dumped_user_ids` file?  Not sure of that!
 
 The password file would contain (semi-colon separated) lines with
 object-id, encrypted password, optional username.
