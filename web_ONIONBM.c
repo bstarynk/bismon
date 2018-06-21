@@ -253,7 +253,8 @@ webexchangedatagckeep_BM (struct garbcoll_stBM *gc,
 }                               /* end webexchangedatagckeep_BM */
 
 
-
+/* delete functions are called by deleteobjectpayload_BM for
+   objclearpayload_BM & objputpayload_BM */
 void
 websessiondelete_BM (objectval_tyBM * ownobj, struct websessiondata_stBM *ws)
 {
