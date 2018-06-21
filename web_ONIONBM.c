@@ -113,3 +113,68 @@ queue_process_BM (const stringval_tyBM * dirstr,
   FATAL_BM ("queue_process_BM unimplemented in web_ONIONBM");
 #warning queue_process_BM unimplemented in web_ONIONBM
 }                               /* end queue_process_BM */
+
+
+
+////////////////////////////////////////////////////////////////
+
+////////////////
+// GC support for websessiondata
+#warning incomplete GC support for Web data...
+void
+websessiondatagcmark_BM (struct garbcoll_stBM *gc,
+                         struct websessiondata_stBM *ws,
+                         objectval_tyBM * fromob, int depth)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (valtype_BM ((value_tyBM) ws) == typayl_websession_BM);
+  ASSERT_BM (!fromob || isobject_BM (fromob));
+  uint8_t oldmark = ((typedhead_tyBM *) ws)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) ws)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
+}                               /* end websessiondatagcmark_BM */
+
+void
+websessiondatagcdestroy_BM (struct garbcoll_stBM *gc,
+                            struct websessiondata_stBM *ws)
+{
+}                               /* end  websessiondatagcdestroy_BM */
+
+void
+websessiondatagckeep_BM (struct garbcoll_stBM *gc,
+                         struct websessiondata_stBM *ws)
+{
+}                               /* end websessiondatagckeep_BM */
+
+
+
+////////////////
+// GC support for webexchangedata
+
+void
+webexchangedatagcmark_BM (struct garbcoll_stBM *gc,
+                          struct webexchangedata_stBM *wex,
+                          objectval_tyBM * fromob, int depth)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (valtype_BM ((value_tyBM) ws) == typayl_webexchange_BM);
+  ASSERT_BM (!fromob || isobject_BM (fromob));
+}                               /* end webexchangedatagcmark_BM */
+
+
+void
+webexchangedatagcdestroy_BM (struct garbcoll_stBM *gc,
+                             struct webexchangedata_stBM *wex)
+{
+}                               /* end webexchangedatagcdestroy_BM */
+
+
+void
+webexchangedatagckeep_BM (struct garbcoll_stBM *gc,
+                          struct webexchangedata_stBM *we)
+{
+}                               /* end webexchangedatagckeep_BM */
+
+////////////////////////////////////////////////////////////////

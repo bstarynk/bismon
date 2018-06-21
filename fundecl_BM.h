@@ -1250,6 +1250,11 @@ extern value_tyBM simple_module_initialize_BM (const value_tyBM arg1,   //
 
 extern void gcmarkmodules_BM (struct garbcoll_stBM *gc);
 
+
+
+////////////////////////////////////////////////////////////////
+//**************************************************************
+////////////////////////////////////////////////////////////////
 #ifdef BISMONGTK
 /// support for GUI, in misc_BM.cc
 void cmd_clear_parens_BM (void);        /* clear all parenthesis in cmd */
@@ -1268,28 +1273,11 @@ extern GtkWidget *initialize_gui_menubar_BM (GtkWidget * mainvbox,
 extern GtkWidget *initialize_oldgui_command_scrollview_BM (void);
 extern GtkWidget *initialize_newgui_command_scrollview_BM (void);
 extern GtkWidget *initialize_log_scrollview_BM (void);
-#endif /*BISMONGTK*/
 // the periodic GC function
 extern gboolean guiperiodicgarbagecollection_BM (gpointer);
 
 ////////////////////////////////////////////////////////////////
-// defer a dump (after a GC) while the agenda is running. Once dump is
-// completed, the closure is called on the arg1v, arg2v, arg3v, and a
-// node summarizing the dumpinfo....
-void defer_dump_BM (const char *dirname, const closure_tyBM * postclosv,
-                    value_tyBM * arg1v, value_tyBM * arg2v,
-                    value_tyBM * arg3v, struct stackframe_stBM *stkf);
-
-// defer a module load (after a GC) while the agenda is running. the 3
-// arguments are passed to the module initialization. Its result is
-// given to the closure.
-void defer_module_load_BM (objectval_tyBM * modulob, const closure_tyBM * postclosv,    //
-                           value_tyBM arg1v,
-                           value_tyBM arg2v, value_tyBM arg3v,
-                           struct stackframe_stBM *stkf);
-////////////////////////////////////////////////////////////////
 /******** GUI functions ***********/
-#ifdef BISMONGTK
 // browse the object objbrows, using the selector objsel
 extern void browse_object_gui_BM (const objectval_tyBM * objbrows,
                                   const objectval_tyBM * objsel,
@@ -1357,29 +1345,6 @@ extern void dumpgui_BM (void);
 extern void garbage_collect_from_gui_BM (void);
 extern bool deletemainwin_BM (GtkWidget *, GdkEvent *, gpointer);
 extern GtkTextBuffer *newgui_get_browsebuf_BM (void);
-#endif /*BISMONGTK*/
-// queue some external process; its stdin is /dev/null; both stdout &
-// stderr are merged & captured; final string is given to the closure.
-// dirstrv is the string of the directory to run it in (if NULL, use
-// cwd) cmdnodv is a node with all sons being strings, for the command
-// to run endclosv is the closure getting the status
-// stringoutput, could fail
-extern void queue_process_BM (const stringval_tyBM * dirstr,
-                              const node_tyBM * cmdnodv,
-                              const closure_tyBM * endclosv,
-                              struct stackframe_stBM *stkf);
-
-extern void log_begin_message_BM (void);
-extern void log_object_message_BM (const objectval_tyBM * obj);
-extern void log_puts_message_BM (const char *msg);
-extern void log_printf_message_BM (const char *fmt, ...)
-  __attribute__ ((format (printf, 1, 2)));
-extern void log_end_message_BM (void);
-
-
-
-
-
 
 // decorate e.g. // or | with commentsign_cmdtag
 extern parser_decorate_comment_sign_sigBM parscommentsign_guicmd_BM;
@@ -1411,6 +1376,69 @@ extern parser_decorate_number_sigBM parsnumber_guicmd_BM;
 // decorate strings
 extern parser_decorate_string_sign_sigBM parsstringsign_guicmd_BM;
 extern parser_decorate_string_inside_sigBM parsstringinside_guicmd_BM;
+#endif /*BISMONGTK*/
+////////////////////////////////////////////////////////////////
+//**************************************************************
+////////////////////////////////////////////////////////////////
+#ifdef BISMONION
+/// web specific functions
+// GC support for websessiondata & webexchangedata
+extern void websessiondatagcmark_BM (struct garbcoll_stBM *gc,
+                                     struct websessiondata_stBM *ws,
+                                     objectval_tyBM * fromob, int depth);
+extern void websessiondatagcdestroy_BM (struct garbcoll_stBM *gc,
+                                        struct websessiondata_stBM *ws);
+extern void websessiondatagckeep_BM (struct garbcoll_stBM *gc,
+                                     struct websessiondata_stBM *ws);
+
+extern void webexchangedatagcmark_BM (struct garbcoll_stBM *gc,
+                                      struct webexchangedata_stBM *wex,
+                                      objectval_tyBM * fromob, int depth);
+extern void webexchangedatagcdestroy_BM (struct garbcoll_stBM *gc,
+                                         struct webexchangedata_stBM *wex);
+extern void webexchangedatagckeep_BM (struct garbcoll_stBM *gc,
+                                      struct webexchangedata_stBM *we);
+
+#endif /*BISMONION*/
+////////////////////////////////////////////////////////////////
+// defer a dump (after a GC) while the agenda is running. Once dump is
+// completed, the closure is called on the arg1v, arg2v, arg3v, and a
+// node summarizing the dumpinfo....
+void defer_dump_BM (const char *dirname, const closure_tyBM * postclosv,
+                    value_tyBM * arg1v, value_tyBM * arg2v,
+                    value_tyBM * arg3v, struct stackframe_stBM *stkf);
+
+// defer a module load (after a GC) while the agenda is running. the 3
+// arguments are passed to the module initialization. Its result is
+// given to the closure.
+void defer_module_load_BM (objectval_tyBM * modulob, const closure_tyBM * postclosv,    //
+                           value_tyBM arg1v,
+                           value_tyBM arg2v, value_tyBM arg3v,
+                           struct stackframe_stBM *stkf);
+////////////////////////////////////////////////////////////////
+// queue some external process; its stdin is /dev/null; both stdout &
+// stderr are merged & captured; final string is given to the closure.
+// dirstrv is the string of the directory to run it in (if NULL, use
+// cwd) cmdnodv is a node with all sons being strings, for the command
+// to run endclosv is the closure getting the status
+// stringoutput, could fail
+extern void queue_process_BM (const stringval_tyBM * dirstr,
+                              const node_tyBM * cmdnodv,
+                              const closure_tyBM * endclosv,
+                              struct stackframe_stBM *stkf);
+
+extern void log_begin_message_BM (void);
+extern void log_object_message_BM (const objectval_tyBM * obj);
+extern void log_puts_message_BM (const char *msg);
+extern void log_printf_message_BM (const char *fmt, ...)
+  __attribute__ ((format (printf, 1, 2)));
+extern void log_end_message_BM (void);
+
+
+
+
+
+
 ////////////////////////////////////////////////////////////////
 
 /******** agenda functions ***********/
