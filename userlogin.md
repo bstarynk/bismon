@@ -55,12 +55,11 @@ repository).
 The bismon login database (supposed to be short, perhaps less than a
 dozen entries) is kept into several files. There is one file for
 "contributors" - those which could appear in the `git` repository of
-`bismon`, and another file for *users* (or should I say plain users),
+`bismon`
 and a last file (with a different format) for encrypted passwords.
 
-The `contributors` and `users` files have the same textual format, and
-the `contributors` file is expected to be `git commit`-ed, but not the
-`users` file:
+The `contributors_BM` file has the same textual format, and
+ is expected to be `git commit`-ed:
 
 * empty lines, or lines starting with a hash-sign `#` are ignored and
   skipped.
@@ -76,8 +75,6 @@ file such as:
 and of course the persistent store would have some object of id
 `_3sQID0mxoew_16uOC0jEIpe`
 
-An ordinary user might have a login line in the `users` file such as:
-`John_Doe;_9hU3OhcrcY5_0RARFyQHgwf;john.doe@example.com`
 
 Pseudonimization (in the GDPR sense) might be done by moving (if he
 was a contributor) a login line to the `users` file and using a
@@ -88,6 +85,7 @@ dump time.
 
 Dump should also write some `dumped_user_ids` file?  Not sure of that!
 
-The password file would contain (semi-colon separated) lines with
-object-id, encrypted password, optional username.
+The password file `passwords_BM` would contain (semi-colon separated)
+lines with object-id, encrypted password, optional username and should
+be in `.gitigore`
 

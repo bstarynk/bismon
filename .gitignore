@@ -6,6 +6,7 @@ __timestamp*
 *prog
 bismongtk
 bismonion
+passwords_BM
 BM_makeconst
 _bm_allconsts*.c
 *_BM.const.h

@@ -651,7 +651,7 @@ objpayload_BM (const objectval_tyBM * obj)
 void
 objclearpayload_BM (objectval_tyBM * obj)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((const value_tyBM) obj) || obj == BMP_contributors)
     return;
   extendedval_tyBM payl = obj->ob_payl;
   if (!payl)

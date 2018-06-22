@@ -1,6 +1,6 @@
 // generated persistent data file store1.bmon
 // this generated data file is GPLv3+ licensed
-// for 58 objects
+// for 57 objects
 // with 0 modules
 
 
@@ -849,20 +849,6 @@ _4ysNY0rIzNK_7JgIhrjYpxD
 ~)
 
 !)_55eJRRPyZDz_4uW8bzq75PI
-
-
-
-!(_0WZHco0jjXk_4CXDFJuwQzL |=users|
-!~ name (~ users
-~)
-!@ 1529668013.183
-!$_8c9otZ4pwR6_55k81qyyYV2 |=hset_object|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "hashset of plain users"
-!~ todo (~ _9pvzBeIKHXF_8YDPCrQ6OEK  { }
-~)
-
-!)_0WZHco0jjXk_4CXDFJuwQzL
 
 
 
