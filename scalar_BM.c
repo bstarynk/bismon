@@ -1064,6 +1064,8 @@ usergckeep_BM (struct garbcoll_stBM *gc, struct user_stBM *us)
 }                               /* end usergckeep_BM */
 
 
+
+
 // payload delete support for user
 void
 userdelete_BM (objectval_tyBM * ownobj, struct user_stBM *us)
