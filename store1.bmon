@@ -1,6 +1,6 @@
 // generated persistent data file store1.bmon
 // this generated data file is GPLv3+ licensed
-// for 56 objects
+// for 58 objects
 // with 0 modules
 
 
@@ -174,6 +174,17 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for constants etc..."
 !)_5DDSY1YgVZr_6dOU4tiBldk
+
+
+
+!(_66guW6Jcjdd_4D59SRxOwYR |=contributors|
+!~ name (~ contributors
+~)
+!@ 1529667844.042
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "hashset of contributors"
+!)_66guW6Jcjdd_4D59SRxOwYR
 
 
 
@@ -835,6 +846,17 @@ _4ysNY0rIzNK_7JgIhrjYpxD
 ~)
 
 !)_55eJRRPyZDz_4uW8bzq75PI
+
+
+
+!(_0WZHco0jjXk_4CXDFJuwQzL |=users|
+!~ name (~ users
+~)
+!@ 1529667844.042
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "hashset of plain users"
+!)_0WZHco0jjXk_4CXDFJuwQzL
 
 
 
