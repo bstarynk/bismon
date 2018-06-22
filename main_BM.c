@@ -28,7 +28,7 @@
 
 #ifdef BISMONGTK
 #include <glib/giochannel.h>
-#endif
+#endif /* BISMONGTK */
 
 struct timespec startrealtimespec_BM;
 void *dlprog_BM;
@@ -46,6 +46,7 @@ static void backtracerrorcb_BM (void *data, const char *msg, int errnum);
 GIOChannel *defer_gtk_readpipechan_BM;
 int defer_gtk_readpipefd_BM = -1;
 int defer_gtk_writepipefd_BM = -1;
+static void rungui_BM (int nbjobs);
 #endif /*BISMONGTK*/
 extern void weakfailure_BM (void);
 
@@ -447,9 +448,7 @@ idqcmp_BM (const void *p1, const void *p2)
 }                               /* end idqcmp_BM */
 
 
-static void rungui_BM (int nbjobs);
 
-static void parse_values_after_load_bm (void);
 
 static void give_prog_version_BM (const char *progname);
 
@@ -458,12 +457,12 @@ static void do_emit_module_from_main_BM (void);
 void
 do_emit_module_from_main_BM (void)
 {
-  WEAKASSERT_BM (module_to_emit_bm != NULL);
   LOCALFRAME_BM (NULL, /*descr: */ BMP_emit_module,
                  objectval_tyBM * modulob;
                  objectval_tyBM * parsob; value_tyBM resultv;
                  value_tyBM failres;
     );
+  WEAKASSERTRET_BM (module_to_emit_bm != NULL);
   _.failres = NULL;
   int failcod = 0;
   struct failurelockset_stBM flockset = { };
@@ -564,11 +563,12 @@ main (int argc, char **argv)
     ASSERT_BM (abs (Y2Kmillisectotime_BM (y2kwt) - nwt) < 0.5);
   }
   backtracestate_BM             //
-    = backtrace_create_state ( /*filename: */ NULL,
-                              /*threaded: */ true,
-                              /*errorcb: */
-                              backtracerrorcb_BM,
-                              /*data: */ NULL);
+    = (volatile struct backstrace_state *)
+    backtrace_create_state ( /*filename: */ NULL,
+                            /*threaded: */ true,
+                            /*errorcb: */
+                            backtracerrorcb_BM,
+                            /*data: */ NULL);
   initialize_garbage_collector_BM ();
   check_delims_BM ();
   initialize_globals_BM ();
@@ -730,7 +730,7 @@ parse_values_after_load_BM (void)
     }
   fprintf (stderr, "done parsing %d values after load\n",
            nb_parsed_values_after_load_bm);
-}                               /* end parse_values_after_load_bm */
+}                               /* end parse_values_after_load_BM */
 
 #ifdef BISMONGTK
 extern bool did_deferredgtk_BM (void);
@@ -1023,7 +1023,8 @@ backtracerrorcb_BM (void *data __attribute__ ((unused)),
 
 ////////////////////////////////////////////////////////////////
 
-/// nearly copied from Ian Taylor's libbacktrace/print.c
+/// nearly copied from Ian Lance Taylor's libbacktrace/print.c
+/// see https://github.com/ianlancetaylor/libbacktrace
 struct print_data_BM
 {
   struct backtrace_state *state;
