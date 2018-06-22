@@ -65,7 +65,8 @@ enum gctyenum_BM
   typayl_websession_BM,
   typayl_webexchange_BM,
 #endif /*BISMONION*/
-    typayl_dict_BM,
+    typayl_user_BM,
+  typayl_dict_BM,
 #define typayl_LAST_BM typayl_dict_BM
   typayl__SpareA_BM,
   typayl__SpareB_BM,
@@ -187,6 +188,7 @@ struct classinfo_stBM;          /* forward */
 struct strbuffer_stBM;          /* forward */
 struct dumper_stBM;             /* forward */
 struct dict_stBM;               /* forward */
+struct user_stBM;               /* forward */
 
 typedef void anyassoc_tyBM;
 
@@ -395,6 +397,16 @@ struct object_stBM              /*tyObject_BM */
   objectval_tyBM *ob_sig;
   extendedval_tyBM ob_payl;
 };
+
+struct user_stBM                // for typayl_user_BM 
+{
+  typedhead_tyBM pA;            // rlen & hash are unused
+  objectval_tyBM *user_ownob;   /* owning object */
+  const stringval_tyBM *user_namev;     /* the user name */
+};                              /* end user_stBM */
+
+
+
 
 #define STACKFRAMEFIELDS_BM			\
   typedhead_tyBM stkfram_pA;			\
