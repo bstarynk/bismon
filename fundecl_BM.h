@@ -1406,6 +1406,17 @@ extern void webexchangedelete_BM (objectval_tyBM * ownobj,
 
 #endif /*BISMONION*/
 ////////////////////////////////////////////////////////////////
+// user data support - in scalar_BM.c
+/// user in GC
+extern void usergcmark_BM (struct garbcoll_stBM *gc,
+                           struct user_stBM *us,
+                           objectval_tyBM * fromob, int depth);
+extern void usergcdestroy_BM (struct garbcoll_stBM *gc, struct user_stBM *us);
+extern void usergckeep_BM (struct garbcoll_stBM *gc, struct user_stBM *us);
+// payload delete support for user
+extern void userdelete_BM (objectval_tyBM * ownobj, struct user_stBM *us);
+
+////////////////////////////////////////////////////////////////
 // defer a dump (after a GC) while the agenda is running. Once dump is
 // completed, the closure is called on the arg1v, arg2v, arg3v, and a
 // node summarizing the dumpinfo....

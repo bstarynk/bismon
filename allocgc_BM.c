@@ -235,6 +235,9 @@ extendedgcproc_BM (struct garbcoll_stBM *gc, extendedval_tyBM xval,
       hashmapbucketgcmark_BM (gc, (struct hashmapbucket_stBM *) xval, fromob,
                               depth);
       return xval;
+    case typayl_user_BM:
+      usergcmark_BM (gc, (struct user_stBM *) xval, fromob, depth);
+      return xval;
 #ifdef BISMONION
     case typayl_websession_BM:
       websessiondatagcmark_BM (gc, (struct websessiondata_stBM *) xval,
@@ -325,6 +328,9 @@ valgcdestroy_BM (struct garbcoll_stBM *gc, value_tyBM val)
     case typayl_dumper_BM:
       dumpgcdestroy_BM (gc, (struct dumper_stBM *) val);
       return;
+    case typayl_user_BM:
+      usergcdestroy_BM (gc, (struct user_stBM *) val);
+      return;
 #ifdef BISMONION
     case typayl_webexchange_BM:
       webexchangedatagcdestroy_BM (gc, (struct webexchangedata_stBM *) val);
@@ -411,6 +417,8 @@ typestring_BM (int ty)
       return "payl_hashmapval";
     case typayl_hashmapbucket_BM:
       return "payl_hashmapbucket";
+    case typayl_user_BM:
+      return "payl_user";
 #ifdef BISMONION
     case typayl_websession_BM:
       return "payl_websession";
@@ -484,12 +492,15 @@ deleteobjectpayload_BM (objectval_tyBM * obj, extendedval_tyBM payl)
       return;
     case typayl_dumper_BM:
       return;
-#ifdef BISMONION
-    case typayl_webexchange_BM:
-      webexchangedelete_BM (obj, (struct webexchangedata_stBM *) payl);
+    case typayl_user_BM:
+      userdelete_BM (obj, (struct user_stBM *) payl);
       return;
+#ifdef BISMONION
     case typayl_websession_BM:
       websessiondelete_BM (obj, (struct websessiondata_stBM *) payl);
+      return;
+    case typayl_webexchange_BM:
+      webexchangedelete_BM (obj, (struct webexchangedata_stBM *) payl);
       return;
 #endif /*BISMONION*/
     default:
@@ -578,12 +589,15 @@ valgckeep_BM (struct garbcoll_stBM *gc, value_tyBM val)
     case typayl_hashmapbucket_BM:
       hashmapbucketgckeep_BM (gc, (struct hashmapbucket_stBM *) val);
       return;
-#ifdef BISMONION
-    case typayl_webexchange_BM:
-      webexchangedatagckeep_BM (gc, (struct webexchangedata_stBM *) val);
+    case typayl_user_BM:
+      usergckeep_BM (gc, (struct user_stBM *) val);
       return;
+#ifdef BISMONION
     case typayl_websession_BM:
       websessiondatagckeep_BM (gc, (struct websessiondata_stBM *) val);
+      return;
+    case typayl_webexchange_BM:
+      webexchangedatagckeep_BM (gc, (struct webexchangedata_stBM *) val);
       return;
 #endif /*BISMONION*/
     default:

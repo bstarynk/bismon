@@ -61,10 +61,12 @@ enum gctyenum_BM
   typayl_hashsetvbucket_BM,
   typayl_hashmapval_BM,
   typayl_hashmapbucket_BM,
+  /// for webonion
 #ifdef BISMONION
   typayl_websession_BM,
   typayl_webexchange_BM,
 #endif /*BISMONION*/
+    /// 
     typayl_user_BM,
   typayl_dict_BM,
 #define typayl_LAST_BM typayl_dict_BM
@@ -398,11 +400,15 @@ struct object_stBM              /*tyObject_BM */
   extendedval_tyBM ob_payl;
 };
 
+/// user information, could be relevant to GDPR.  See explanations in
+/// userlogin.md
 struct user_stBM                // for typayl_user_BM 
 {
   typedhead_tyBM pA;            // rlen & hash are unused
-  objectval_tyBM *user_ownob;   /* owning object */
-  const stringval_tyBM *user_namev;     /* the user name */
+  objectval_tyBM *user_ownobj;  /* owning object */
+  const stringval_tyBM *user_namev;     /* the user name, could
+                                           contain underscores but no
+                                           spaces */
 };                              /* end user_stBM */
 
 
