@@ -1081,4 +1081,32 @@ userdelete_BM (objectval_tyBM * ownobj, struct user_stBM *us)
         objclearpayload_BM (ownerob);
       objunlock_BM (ownerob);
     }
+  bool wasuser = false;
+  bool wascontributor = false;
+  {
+    objlock_BM (BMP_contributors);
+    if (!objhashashsetpayl_BM (BMP_contributors))
+      FATAL_BM ("when deleting user %s, contributors has no hashset payload",
+                objectdbg_BM (ownobj));
+    if (objhashsetcontainspayl_BM (BMP_contributors, ownobj))
+      {
+        wascontributor = true;
+        objhashsetremovepayl_BM (BMP_contributors, ownobj);
+      }
+    objunlock_BM (BMP_contributors);
+  }
+  {
+    objlock_BM (BMP_users);
+    if (!objhashashsetpayl_BM (BMP_users))
+      FATAL_BM ("when deleting user %s, users has no hashset payload",
+                objectdbg_BM (ownobj));
+    if (objhashsetcontainspayl_BM (BMP_users, ownobj))
+      {
+        wasuser = true;
+        objhashsetremovepayl_BM (BMP_users, ownobj);
+      }
+    objunlock_BM (BMP_users);
+  }
+  if (!wasuser && !wascontributor)
+    FATAL_BM("deleted user %s was neither contributor nor user", objectdbg_BM(ownobj));
 }                               /* end userdelete_BM */
