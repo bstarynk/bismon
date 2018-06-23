@@ -32,6 +32,9 @@
 #define CLEARMGC_BM 0
 #define GCMAGIC_BM 24501383     /*0x175dc87 */
 
+#define VERBOSE_BM true
+#define SILENT_BM false
+
 #define MILLION_BM (1000*1000)
 #define BILLION_BM (1000*MILLION_BM)
 // see https://stackoverflow.com/a/11376759/841108

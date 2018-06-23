@@ -407,9 +407,7 @@ struct user_stBM                // for typayl_user_BM
 {
   typedhead_tyBM pA;            // rlen & hash are unused
   objectval_tyBM *user_ownobj;  /* owning object */
-  const stringval_tyBM *user_namev;     /* the user name, could
-                                           contain underscores but no
-                                           spaces */
+  const stringval_tyBM *user_namev;     /* the user name, e.g. First Lastname */
 };                              /* end user_stBM */
 
 

@@ -846,7 +846,8 @@ add_contributors_after_load_BM (void)
   for (int cix = 0; cix < count_added_contributors_bm; cix++)
     {
       _.userob =
-        add_contributor_user_BM (added_contributors_arr_bm[cix], CURFRAME_BM);
+        add_contributor_user_BM (added_contributors_arr_bm[cix], VERBOSE_BM,
+                                 CURFRAME_BM);
       if (!_.userob)
         FATAL_BM ("failed to add contributor user#%d %s", cix,
                   added_contributors_arr_bm[cix]);
@@ -873,8 +874,8 @@ remove_contributors_after_load_BM (void)
   for (int cix = 0; cix < count_removed_contributors_bm; cix++)
     {
       _.userob =
-        remove_contributor_user_by_string_BM (removed_contributors_arr_bm
-                                              [cix], CURFRAME_BM);
+        remove_contributor_user_by_string_BM
+        (removed_contributors_arr_bm[cix], VERBOSE_BM, CURFRAME_BM);
       if (!_.userob)
         FATAL_BM ("failed to add contributor user#%d %s", cix,
                   removed_contributors_arr_bm[cix]);
