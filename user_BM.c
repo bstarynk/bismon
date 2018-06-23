@@ -84,12 +84,29 @@ add_contributor_user_BM (const char *str, bool verbose,
   const char *lt = strchr (str, '<');
   const char *at = lt ? strchr (lt, '@') : NULL;
   const char *gt = at ? strchr (at, '>') : NULL;
+  const char *namestr = NULL;
+  const char *emailstr = NULL;
   if (lt && at && gt && lt > str && gt == endstr - 1)
     {
       // str could be like 'First Lastname <email@example.com>'
       char *namend = lt - 1;
       while (namend > str && *namend == ' ')
         namend--;
+      namestr = strndup (str, namend - str);
+      if (!namestr)
+        FATAL_BM ("strndup failed, when extracting name from %s", str);
+      emailstr = strndup (lt + 1, gt - lt - 1);
+      if (!emailstr)
+        FATAL_BM ("strndup failed, when extracting email from %s", str);
+      DBGPRINTF_BM ("add_contributor_user_BM namestr='%s' emailstr='%s'",
+                    namestr, emailstr);
+      _.userob =
+        add_contributor_name_email_alias_BM (namestr, emailstr, NULL, verbose,
+                                             CURFRAME_BM);
+      DBGPRINTF_BM
+        ("add_contributor_user_BM userob=%s for namestr='%s' emailstr='%s'",
+         objectdbg_BM (_.userob), namestr, emailstr);
+      LOCALRETURN_BM (_.userob);
     }
   // or like: 'First Lastname;email@example.com;aliasmail@example.org'
   FATAL_BM ("unimplemented add_contributor_user_BM str %s", str);
@@ -98,7 +115,7 @@ add_contributor_user_BM (const char *str, bool verbose,
 
 objectval_tyBM *
 remove_contributor_user_by_string_BM (const char *str,
-				      bool verbose,
+                                      bool verbose,
                                       struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
