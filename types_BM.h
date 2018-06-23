@@ -403,7 +403,6 @@ struct object_stBM              /*tyObject_BM */
 
 /// user information, could be relevant to GDPR.  See explanations in
 /// userlogin.md
-#warning we may want to remove the contributors predefined (keep only users), and add a boolean inside
 struct user_stBM                // for typayl_user_BM 
 {
   typedhead_tyBM pA;            // rlen & hash are unused

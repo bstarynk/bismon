@@ -123,6 +123,15 @@ struct
   const char *pr_name;
 } added_predef_bm[MAXADDEDPREDEF_BM];
 
+
+char **added_contributors_arr_bm;
+int count_added_contributors_bm;
+int size_added_contributors_bm;
+
+char **removed_contributors_arr_bm;
+int count_removed_contributors_bm;
+int size_removed_contributors_bm;
+
 #define MAXPARSED_VALUES_AFTER_LOAD_BM 10
 char *parsed_values_after_loadarr_bm[MAXPARSED_VALUES_AFTER_LOAD_BM];
 int nb_parsed_values_after_load_bm;
@@ -252,6 +261,8 @@ add_predef_bm (const gchar * optname __attribute__ ((unused)),
     FATAL_BM ("invalid predef name %s", val);
   if (nb_added_predef_bm >= MAXADDEDPREDEF_BM)
     FATAL_BM ("too many added predefined %i", nb_added_predef_bm);
+  // in principle the strdup-s below should be checked, but in
+  // practice this is so rarely used that we don't bother
   if (comment_bm)
     added_predef_bm[nb_added_predef_bm].pr_comment = strdup (comment_bm);
   added_predef_bm[nb_added_predef_bm].pr_name = strdup (val);
@@ -260,7 +271,67 @@ add_predef_bm (const gchar * optname __attribute__ ((unused)),
   return true;
 }                               /* end add_predef_bm */
 
+static bool
+add_contributor_bm (const gchar * optname __attribute__ ((unused)),
+                    const gchar * contrib,
+                    gpointer data __attribute__ ((unused)),
+                    GError ** perr __attribute__ ((unused)))
+{
+  if (count_added_contributors_bm >= size_added_contributors_bm)
+    {
+      int newsiz = prime_above_BM (3 * count_added_contributors_bm / 2 + 16);
+      char **newarr = calloc (newsiz, sizeof (char *));
+      if (!newarr || newsiz > MAXSIZE_BM / 2)   /*very unlikely to happen in practice */
+        FATAL_BM ("cannot grow added contributors array to %d for %s - %m",
+                  newsiz, contrib);
+      if (count_added_contributors_bm > 0)
+        memcpy (newarr, added_contributors_arr_bm,
+                count_added_contributors_bm * sizeof (char *));
+      free (added_contributors_arr_bm);
+      added_contributors_arr_bm = newarr;
+      size_added_contributors_bm = newsiz;
+    };
+  char *newcontrib = strdup (contrib);
+  if (!newcontrib)
+    FATAL_BM ("failed to strdup added contributor %s - %m", contrib);
+  added_contributors_arr_bm[count_added_contributors_bm++] = newcontrib;
+  return true;
+}                               /* end add_contributor_bm */
 
+
+
+static bool
+remove_contributor_bm (const gchar * optname __attribute__ ((unused)),
+                       const gchar * contrib,
+                       gpointer data __attribute__ ((unused)),
+                       GError ** perr __attribute__ ((unused)))
+{
+  if (count_removed_contributors_bm >= size_removed_contributors_bm)
+    {
+      int newsiz =
+        prime_above_BM (3 * count_removed_contributors_bm / 2 + 16);
+      char **newarr = calloc (newsiz, sizeof (char *));
+      if (!newarr || newsiz > MAXSIZE_BM / 2)   /*very unlikely to happen in practice */
+        FATAL_BM ("cannot grow removed contributors array to %d for %s - %m",
+                  newsiz, contrib);
+      if (count_removed_contributors_bm > 0)
+        memcpy (newarr, removed_contributors_arr_bm,
+                count_removed_contributors_bm * sizeof (char *));
+      free (removed_contributors_arr_bm);
+      removed_contributors_arr_bm = newarr;
+      size_removed_contributors_bm = newsiz;
+    };
+  char *newcontrib = strdup (contrib);
+  if (!newcontrib)
+    FATAL_BM ("failed to strdup removed contributor %s - %m", contrib);
+  removed_contributors_arr_bm[count_removed_contributors_bm++] = newcontrib;
+  return true;
+}                               /* end remove_contributor_bm */
+
+
+
+
+////////////////////////////////////////////////////////////////
 const GOptionEntry optab[] = {
   //
   {.long_name = "load",.short_name = 'l',
@@ -328,6 +399,31 @@ const GOptionEntry optab[] = {
    .arg_data = &add_predef_bm,
    .description = "add new predefined named PREDEFNAME",
    .arg_description = "PREDEFNAME"},
+
+  //
+  {.long_name = "contributor",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &add_contributor_bm,
+   .description = "add or change contributor CONTRIBUTOR,\n"
+   "\t like 'First Lastname <email@example.com>'\n"
+   "\t or 'First Lastname;email@example.com;aliasmail@example.org'\n"
+   "\t (this puts personal information relevant to European GDPR in file "
+   CONTRIBUTORS_FILE_BM ")",
+   .arg_description = "CONTRIBUTOR"},
+
+  //
+  {.long_name = "remove-contributor",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &remove_contributor_bm,
+   .description = "remove existing contributor CONTRIBUTOR,\n"
+   "\t like 'First Lastname'\n"
+   "\t or email@example.com\n"
+   "\t or some existing contributor oid similar to _2PFRochKb3N_3e8RFFAUi9K\n"
+   "\t (this should remove personal information relevant to European GDPR in file "
+   CONTRIBUTORS_FILE_BM ")",
+   .arg_description = "CONTRIBUTOR"},
 
   //
   {.long_name = "batch",.short_name = (char) 0,
@@ -527,6 +623,8 @@ do_emit_module_from_main_BM (void)
 
 
 static void parse_values_after_load_BM (void);
+static void add_contributors_after_load_BM (void);
+static void remove_contributors_after_load_BM (void);
 
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
@@ -659,6 +757,10 @@ main (int argc, char **argv)
     add_new_predefined_bm ();
   if (nb_parsed_values_after_load_bm > 0)
     parse_values_after_load_BM ();
+  if (count_added_contributors_bm > 0)
+    add_contributors_after_load_BM ();
+  if (count_removed_contributors_bm > 0)
+    remove_contributors_after_load_BM ();
   if (module_to_emit_bm != NULL)
     do_emit_module_from_main_BM ();
   if (dump_after_load_dir_bm)
@@ -732,6 +834,64 @@ parse_values_after_load_BM (void)
            nb_parsed_values_after_load_bm);
 }                               /* end parse_values_after_load_BM */
 
+
+void
+add_contributors_after_load_BM (void)
+{
+  LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
+                 objectval_tyBM * userob;
+    );
+  ASSERT_BM (count_added_contributors_bm > 0);
+  ASSERT_BM (added_contributors_arr_bm != NULL);
+  for (int cix = 0; cix < count_added_contributors_bm; cix++)
+    {
+      _.userob =
+        add_contributor_user_BM (added_contributors_arr_bm[cix], CURFRAME_BM);
+      if (!_.userob)
+        FATAL_BM ("failed to add contributor user#%d %s", cix,
+                  added_contributors_arr_bm[cix]);
+    }
+  for (int cix = 0; cix < count_added_contributors_bm; cix++)
+    free (added_contributors_arr_bm[cix]), added_contributors_arr_bm[cix] =
+      NULL;
+  free (added_contributors_arr_bm);
+  count_added_contributors_bm = 0;
+  size_added_contributors_bm = 0;
+}                               /* end add_contributors_after_load_BM */
+
+
+
+
+void
+remove_contributors_after_load_BM (void)
+{
+  LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
+                 objectval_tyBM * userob;
+    );
+  ASSERT_BM (count_removed_contributors_bm > 0);
+  ASSERT_BM (removed_contributors_arr_bm != NULL);
+  for (int cix = 0; cix < count_removed_contributors_bm; cix++)
+    {
+      _.userob =
+        remove_contributor_user_by_string_BM (removed_contributors_arr_bm
+                                              [cix], CURFRAME_BM);
+      if (!_.userob)
+        FATAL_BM ("failed to add contributor user#%d %s", cix,
+                  removed_contributors_arr_bm[cix]);
+      objputspacenum_BM (_.userob, TransientSp_BM);
+    }
+  for (int cix = 0; cix < count_removed_contributors_bm; cix++)
+    free (removed_contributors_arr_bm[cix]),
+      removed_contributors_arr_bm[cix] = NULL;
+  free (removed_contributors_arr_bm);
+  count_removed_contributors_bm = 0;
+  size_removed_contributors_bm = 0;
+}                               /* end remove_contributors_after_load_BM */
+
+
+
+
+////////////////////////////////////////////////////////////////
 #ifdef BISMONGTK
 extern bool did_deferredgtk_BM (void);
 

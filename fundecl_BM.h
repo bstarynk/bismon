@@ -1416,6 +1416,12 @@ extern void usergckeep_BM (struct garbcoll_stBM *gc, struct user_stBM *us);
 // payload delete support for user
 extern void userdelete_BM (objectval_tyBM * ownobj, struct user_stBM *us);
 
+extern objectval_tyBM *add_contributor_user_BM (const char *str,
+                                                struct stackframe_stBM *stkf);
+extern objectval_tyBM *remove_contributor_user_by_string_BM (const char *str,
+                                                             struct
+                                                             stackframe_stBM
+                                                             *stkf);
 ////////////////////////////////////////////////////////////////
 // defer a dump (after a GC) while the agenda is running. Once dump is
 // completed, the closure is called on the arg1v, arg2v, arg3v, and a

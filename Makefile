@@ -50,7 +50,8 @@ BM_COMMON_CSOURCES=				\
  parser_BM.c					\
  primes_BM.c					\
  scalar_BM.c					\
- sequence_BM.c
+ sequence_BM.c					\
+ user_BM.c
 
 # the hand-written C++ source files common to both bismonion & bismongtk
 BM_COMMON_CXXSOURCES= misc_BM.cc
