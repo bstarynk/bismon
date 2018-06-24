@@ -36,6 +36,14 @@ add_contributor_name_email_alias_BM (const char *name, const char *email,
                                      const char *alias, bool verbose,
                                      struct stackframe_stBM *stkf)
 {
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * userob;       //
+    );
+  if (!alias)
+    alias = "";
+  DBGPRINTF_BM
+    ("add_contributor_name_email_alias start name='%s' email='%s' alias='%s' verbose %s",
+     name, email, alias, verbose ? "yes" : "no");
 }                               /* end add_contributor_name_email_alias_BM */
 
 objectval_tyBM *
@@ -93,7 +101,7 @@ add_contributor_user_BM (const char *str, bool verbose,
       char *namend = lt - 1;
       while (namend > str && *namend == ' ')
         namend--;
-      namestr = strndup (str, namend - str);
+      namestr = strndup (str, namend - str + 1);
       if (!namestr)
         FATAL_BM ("strndup failed, when extracting name from %s", str);
       emailstr = strndup (lt + 1, gt - lt - 1);
