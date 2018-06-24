@@ -31,10 +31,56 @@ static
                                                        struct stackframe_stBM
                                                        *stkf);
 
+static bool valid_email_BM (const char *email);
+
+bool
+valid_email_BM (const char *email)
+{
+  if (!email)
+    return false;
+  if (!isalpha (email[0]))
+    return false;
+  const char *at = strchr (email, '@');
+  if (!at || !at[1])
+    return false;
+  if (strchr (at + 1, '@'))
+    return false;
+  for (const char *pc = email; pc < at; pc++)
+    {
+      if (isalnum (*pc))
+        continue;
+      if ((*pc == '.' || *pc == '+' || *pc == '-' || *pc == '_')
+          && !isalnum (pc[-1]) && !isalnum (pc[1]))
+        return false;
+      return false;
+    }
+  for (const char *pc = at + 1; pc < at; pc++)
+    {
+      if (isalnum (*pc))
+        continue;
+      if ((*pc == '.' || *pc == '+' || *pc == '-' || *pc == '_')
+          && !isalnum (pc[-1]) && !isalnum (pc[1]))
+        return false;
+      return false;
+    }
+  struct addrinfo* res = NULL;
+  int err = getaddrinfo (at + 1, "mail", NULL, &res);
+  if (err)
+    return false;
+  if (res)
+    freeaddrinfo (res);
+  else
+    return false;
+  return true;
+}                               /* end valid_email_BM */
+
+
+
+
 objectval_tyBM *
 add_contributor_name_email_alias_BM (const char *name, const char *email,
                                      const char *alias, bool verbose,
-                                     struct stackframe_stBM *stkf)
+                                     struct stackframe_stBM * stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * userob;       //
@@ -44,7 +90,64 @@ add_contributor_name_email_alias_BM (const char *name, const char *email,
   DBGPRINTF_BM
     ("add_contributor_name_email_alias start name='%s' email='%s' alias='%s' verbose %s",
      name, email, alias, verbose ? "yes" : "no");
+  ASSERT_BM (name && name[0]);
+  ASSERT_BM (email && email[0]);
+  const char *end = NULL;
+  if (!g_utf8_validate (name, -1, &end) && end && *end)
+    {
+      if (verbose)
+        fprintf (stderr, "invalid UTF8 in contributor name '%s'\n", name);
+      LOCALRETURN_BM (NULL);
+    }
+  end = NULL;
+  if (!g_utf8_validate (email, -1, &end) && end && *end)
+    {
+      if (verbose)
+        fprintf (stderr, "invalid UTF8 in contributor (for %s) email '%s'\n",
+                 name, email);
+      LOCALRETURN_BM (NULL);
+    }
+  end = NULL;
+  if (!g_utf8_validate (alias, -1, &end) && end && *end)
+    {
+      if (verbose)
+        fprintf (stderr, "invalid UTF8 in contributor (for %s)  alias '%s'\n",
+                 name, alias);
+      LOCALRETURN_BM (NULL);
+    }
+  // validate the name:
+  gunichar uc = 0;
+  gunichar prevuc = 0;
+  for (const char *p = name; *p && (uc = g_utf8_get_char (p)) != 0;
+       (p = g_utf8_next_char (p)), (prevuc = uc))
+    {
+      if (g_unichar_isalpha (uc))
+        continue;
+      else if (g_unichar_isalnum (uc) && p > name)
+        continue;
+      else if ((uc == '_' || uc == '-' || uc == '+' || uc == ' ')
+               && g_unichar_isalnum (prevuc) && *g_utf8_next_char (p))
+        continue;
+      if (verbose)
+        fprintf (stderr, "invalid contributor name '%s'\n", name);
+      LOCALRETURN_BM (NULL);
+    }
+  // validate the email and the alias (if given)
+  if (!valid_email_BM (email))
+    {
+      if (verbose)
+        fprintf (stderr, "invalid email %s for contributor %s", email, name);
+      LOCALRETURN_BM (NULL);
+    };
+  if (alias && alias[0] && !valid_email_BM (alias))
+    {
+      if (verbose)
+        fprintf (stderr, "invalid alias %s for contributor %s", alias, name);
+      LOCALRETURN_BM (NULL);
+    }
 }                               /* end add_contributor_name_email_alias_BM */
+
+
 
 objectval_tyBM *
 add_contributor_user_BM (const char *str, bool verbose,
