@@ -45,6 +45,9 @@ add_contributor_user_BM (const char *str, bool verbose,
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * userob;       //
     );
+  const char *namestr = NULL;
+  const char *emailstr = NULL;
+  const char *aliasstr = NULL;
   if (!str)
     return NULL;
   DBGPRINTF_BM ("add_contributor_user_BM str='%s'", str);
@@ -84,8 +87,6 @@ add_contributor_user_BM (const char *str, bool verbose,
   const char *lt = strchr (str, '<');
   const char *at = lt ? strchr (lt, '@') : NULL;
   const char *gt = at ? strchr (at, '>') : NULL;
-  const char *namestr = NULL;
-  const char *emailstr = NULL;
   if (lt && at && gt && lt > str && gt == endstr - 1)
     {
       // str could be like 'First Lastname <email@example.com>'
@@ -106,11 +107,63 @@ add_contributor_user_BM (const char *str, bool verbose,
       DBGPRINTF_BM
         ("add_contributor_user_BM userob=%s for namestr='%s' emailstr='%s'",
          objectdbg_BM (_.userob), namestr, emailstr);
+      free ((void *) namestr), namestr = NULL;
+      free ((void *) emailstr), emailstr = NULL;
       LOCALRETURN_BM (_.userob);
     }
   // or like: 'First Lastname;email@example.com;aliasmail@example.org'
-  FATAL_BM ("unimplemented add_contributor_user_BM str %s", str);
-#warning unimplemented add_contributor_user_BM
+  // or just: 'First Lastname;email@example.com'
+  const char *semcol1 = strchr (str, ';');
+  const char *semcol2 = semcol1 ? strchr (semcol1 + 1, ';') : NULL;
+  if (semcol1)
+    {
+      char *namend = semcol1 - 1;
+      while (namend > str && *namend == ' ')
+        namend--;
+      namestr = strndup (str, namend - str);
+      if (!namestr)
+        FATAL_BM ("strndup failed, when extracting name from %s", str);
+      if (semcol2)
+        {
+          emailstr = strndup (semcol1 + 1, semcol2 - semcol1 - 1);
+          if (!emailstr)
+            FATAL_BM ("strndup failed, when extracting email from %s", str);
+          aliasstr = strdup (semcol2 + 1);
+          if (!aliasstr)
+            FATAL_BM ("strndup failed, when extracting alias from %s", str);
+          DBGPRINTF_BM
+            ("add_contributor_user_BM namestr='%s' emailstr='%s' aliasstr='%s'",
+             namestr, emailstr, aliasstr);
+        }
+      else
+        {
+          emailstr = strdup (semcol1 + 1);
+          DBGPRINTF_BM ("add_contributor_user_BM namestr='%s' emailstr='%s'",
+                        namestr, emailstr);
+        }
+      _.userob =
+        add_contributor_name_email_alias_BM (namestr, emailstr, aliasstr,
+                                             verbose, CURFRAME_BM);
+      if (aliasstr)
+        DBGPRINTF_BM
+          ("add_contributor_user_BM userob=%s for namestr='%s' emailstr='%s' aliasstr='%s'",
+           objectdbg_BM (_.userob), namestr, emailstr, aliasstr);
+      else
+        DBGPRINTF_BM
+          ("add_contributor_user_BM userob=%s for namestr='%s' emailstr='%s'",
+           objectdbg_BM (_.userob), namestr, emailstr);
+      free ((void *) namestr), namestr = NULL;
+      free ((void *) emailstr), emailstr = NULL;
+      free ((void *) aliasstr), aliasstr = NULL;
+      LOCALRETURN_BM (_.userob);
+    }
+  if (verbose)
+    fprintf (stderr,
+             "invalid user string '%s',\n"
+             "... expecting 'First Lastname <email@example.com>'\n"
+             "... or 'First Lastname;email@example.com;aliasmail@example.org'\n",
+             str);
+  LOCALRETURN_BM (NULL);
 }                               /* end add_contributor_user_BM */
 
 objectval_tyBM *
