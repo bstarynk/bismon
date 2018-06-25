@@ -59,14 +59,18 @@ valid_email_BM (const char *email, bool verbose)
     {
       if (isalnum (*pc))
         continue;
-      if ((*pc == '.' || *pc == '+' || *pc == '-' || *pc == '_')
-          && !isalnum (pc[-1]) && !isalnum (pc[1]))
+      if (*pc == '.' || *pc == '+' || *pc == '-' || *pc == '_')
         {
-          if (verbose)
-            fprintf (stderr,
-                     "mail address %s with bad . + - or _ occurrences before at-sign\n",
-                     email);
-          return false;
+          if (!isalnum (pc[-1]) || !isalnum (pc[1]))
+            {
+              if (verbose)
+                fprintf (stderr,
+                         "mail address %s with bad . + - or _ occurrences before at-sign\n",
+                         email);
+              return false;
+            }
+          else
+            continue;
         }
       if (verbose)
         fprintf (stderr,
@@ -78,13 +82,17 @@ valid_email_BM (const char *email, bool verbose)
     {
       if (isalnum (*pc))
         continue;
-      if ((*pc == '.' || *pc == '+' || *pc == '-' || *pc == '_')
-          && !isalnum (pc[-1]) && !isalnum (pc[1]))
+      if (*pc == '.' || *pc == '+' || *pc == '-' || *pc == '_')
         {
-          fprintf (stderr,
-                   "mail address %s with bad . + - or _ occurrences after at-sign\n",
-                   email);
-          return false;
+          if (!isalnum (pc[-1]) || !isalnum (pc[1]))
+            {
+              fprintf (stderr,
+                       "mail address %s with bad . + - or _ occurrences after at-sign\n",
+                       email);
+              return false;
+            }
+          else
+            continue;
         }
       if (verbose)
         fprintf (stderr,
@@ -107,8 +115,8 @@ valid_email_BM (const char *email, bool verbose)
   else
     {
       if (verbose)
-        fprintf (stderr, "mail address %s domain %s invalid\n", email,
-                 at + 1);
+        fprintf (stderr,
+                 "mail address %s domain %s invalid\n", email, at + 1);
       return false;
     }
   return true;
@@ -118,8 +126,12 @@ valid_email_BM (const char *email, bool verbose)
 
 
 objectval_tyBM *
-add_contributor_name_email_alias_BM (const char *name, const char *email,
-                                     const char *alias, bool verbose,
+add_contributor_name_email_alias_BM (const char *name,
+                                     const char
+                                     *email,
+                                     const char
+                                     *alias,
+                                     bool verbose,
                                      struct stackframe_stBM * stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -143,7 +155,8 @@ add_contributor_name_email_alias_BM (const char *name, const char *email,
   if (!g_utf8_validate (email, -1, &end) && end && *end)
     {
       if (verbose)
-        fprintf (stderr, "invalid UTF8 in contributor (for %s) email '%s'\n",
+        fprintf (stderr,
+                 "invalid UTF8 in contributor (for %s) email '%s'\n",
                  name, email);
       LOCALRETURN_BM (NULL);
     }
@@ -151,22 +164,25 @@ add_contributor_name_email_alias_BM (const char *name, const char *email,
   if (!g_utf8_validate (alias, -1, &end) && end && *end)
     {
       if (verbose)
-        fprintf (stderr, "invalid UTF8 in contributor (for %s)  alias '%s'\n",
+        fprintf (stderr,
+                 "invalid UTF8 in contributor (for %s)  alias '%s'\n",
                  name, alias);
       LOCALRETURN_BM (NULL);
     }
   // validate the name:
   gunichar uc = 0;
   gunichar prevuc = 0;
-  for (const char *p = name; *p && (uc = g_utf8_get_char (p)) != 0;
+  for (const char *p = name;
+       *p && (uc = g_utf8_get_char (p)) != 0;
        (p = g_utf8_next_char (p)), (prevuc = uc))
     {
       if (g_unichar_isalpha (uc))
         continue;
       else if (g_unichar_isalnum (uc) && p > name)
         continue;
-      else if ((uc == '_' || uc == '-' || uc == '+' || uc == ' ')
-               && g_unichar_isalnum (prevuc) && *g_utf8_next_char (p))
+      else
+        if ((uc == '_' || uc == '-' || uc == '+' || uc == ' ')
+            && g_unichar_isalnum (prevuc) && *g_utf8_next_char (p))
         continue;
       if (verbose)
         fprintf (stderr, "invalid contributor name '%s'\n", name);
@@ -176,15 +192,15 @@ add_contributor_name_email_alias_BM (const char *name, const char *email,
   if (!valid_email_BM (email, verbose))
     {
       if (verbose)
-        fprintf (stderr, "invalid email %s for contributor %s\n", email,
-                 name);
+        fprintf (stderr,
+                 "invalid email %s for contributor %s\n", email, name);
       LOCALRETURN_BM (NULL);
     };
   if (alias && alias[0] && !valid_email_BM (alias, verbose))
     {
       if (verbose)
-        fprintf (stderr, "invalid alias %s for contributor %s\n", alias,
-                 name);
+        fprintf (stderr,
+                 "invalid alias %s for contributor %s\n", alias, name);
       LOCALRETURN_BM (NULL);
     }
   FILE *fil = fopen (CONTRIBUTORS_FILE_BM, "r+");
@@ -206,8 +222,8 @@ add_contributor_name_email_alias_BM (const char *name, const char *email,
 
 
 objectval_tyBM *
-add_contributor_user_BM (const char *str, bool verbose,
-                         struct stackframe_stBM *stkf)
+add_contributor_user_BM (const char *str,
+                         bool verbose, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * userob;       //
@@ -239,10 +255,9 @@ add_contributor_user_BM (const char *str, bool verbose,
       return NULL;
     }
   for (const char *pc = str; *pc; pc++)
-    if (*pc == '\n' || *pc == '\r' || *pc == '\t' || *pc == '\r'
-        || *pc == '\v' || *pc == '\f' || (*pc != ' '
-                                          && (isspace (*pc)
-                                              || iscntrl (*pc))))
+    if (*pc == '\n' || *pc == '\r' || *pc == '\t'
+        || *pc == '\r' || *pc == '\v' || *pc == '\f'
+        || (*pc != ' ' && (isspace (*pc) || iscntrl (*pc))))
       {
         if (verbose)
           fprintf (stderr,
@@ -266,11 +281,13 @@ add_contributor_user_BM (const char *str, bool verbose,
       emailstr = strndup (lt + 1, gt - lt - 1);
       if (!emailstr)
         FATAL_BM ("strndup failed, when extracting email from %s", str);
-      DBGPRINTF_BM ("add_contributor_user_BM namestr='%s' emailstr='%s'",
-                    namestr, emailstr);
+      DBGPRINTF_BM
+        ("add_contributor_user_BM namestr='%s' emailstr='%s'",
+         namestr, emailstr);
       _.userob =
-        add_contributor_name_email_alias_BM (namestr, emailstr, NULL, verbose,
-                                             CURFRAME_BM);
+        add_contributor_name_email_alias_BM (namestr,
+                                             emailstr, NULL,
+                                             verbose, CURFRAME_BM);
       DBGPRINTF_BM
         ("add_contributor_user_BM userob=%s for namestr='%s' emailstr='%s'",
          objectdbg_BM (_.userob), namestr, emailstr);
@@ -305,12 +322,14 @@ add_contributor_user_BM (const char *str, bool verbose,
       else
         {
           emailstr = strdup (semcol1 + 1);
-          DBGPRINTF_BM ("add_contributor_user_BM namestr='%s' emailstr='%s'",
-                        namestr, emailstr);
+          DBGPRINTF_BM
+            ("add_contributor_user_BM namestr='%s' emailstr='%s'",
+             namestr, emailstr);
         }
       _.userob =
-        add_contributor_name_email_alias_BM (namestr, emailstr, aliasstr,
-                                             verbose, CURFRAME_BM);
+        add_contributor_name_email_alias_BM (namestr,
+                                             emailstr,
+                                             aliasstr, verbose, CURFRAME_BM);
       if (aliasstr)
         DBGPRINTF_BM
           ("add_contributor_user_BM userob=%s for namestr='%s' emailstr='%s' aliasstr='%s'",

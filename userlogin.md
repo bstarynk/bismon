@@ -71,7 +71,7 @@ The `contributors_BM` file has the same textual format, and
   
 So I (Basile) might be described by a login line in the `contributors`
 file such as:
-`Basile_Starynkevitch;_3sQID0mxoew_16uOC0jEIpe;basile@starynkevitch.net;basile.starynkevitch@cea.fr`
+`Basile Starynkevitch;_3sQID0mxoew_16uOC0jEIpe;basile@starynkevitch.net;basile.starynkevitch@cea.fr`
 and of course the persistent store would have some object of id
 `_3sQID0mxoew_16uOC0jEIpe`
 
