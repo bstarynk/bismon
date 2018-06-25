@@ -28,6 +28,7 @@ static objectval_tyBM *add_contributor_name_email_alias_BM
    const char *email,
    const char *alias, bool verbose, struct stackframe_stBM *stkf);
 
+#warning we also need a valid_name_BM and the verbose flag should be replaced by some char** pointer...
 static bool valid_email_BM (const char *email, bool verbose);
 
 bool
