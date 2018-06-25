@@ -23,35 +23,55 @@
 #include "bismon.h"
 #include "user_BM.const.h"
 
-static
-  objectval_tyBM *add_contributor_name_email_alias_BM (const char *name,
-                                                       const char *email,
-                                                       const char *alias,
-                                                       bool verbose,
-                                                       struct stackframe_stBM
-                                                       *stkf);
+static objectval_tyBM *add_contributor_name_email_alias_BM
+  (const char *name,
+   const char *email,
+   const char *alias, bool verbose, struct stackframe_stBM *stkf);
 
-static bool valid_email_BM (const char *email);
+static bool valid_email_BM (const char *email, bool verbose);
 
 bool
-valid_email_BM (const char *email)
+valid_email_BM (const char *email, bool verbose)
 {
   if (!email)
     return false;
   if (!isalpha (email[0]))
-    return false;
+    {
+      if (verbose)
+        fprintf (stderr, "mail address %s don't start with letter\n", email);
+      return false;
+    }
   const char *at = strchr (email, '@');
   if (!at || !at[1])
-    return false;
+    {
+      if (verbose)
+        fprintf (stderr, "mail address %s don't have at-sign\n", email);
+      return false;
+    }
   if (strchr (at + 1, '@'))
-    return false;
+    {
+      if (verbose)
+        fprintf (stderr, "mail address %s has more than one at-sign\n",
+                 email);
+      return false;
+    }
   for (const char *pc = email; pc < at; pc++)
     {
       if (isalnum (*pc))
         continue;
       if ((*pc == '.' || *pc == '+' || *pc == '-' || *pc == '_')
           && !isalnum (pc[-1]) && !isalnum (pc[1]))
-        return false;
+        {
+          if (verbose)
+            fprintf (stderr,
+                     "mail address %s with bad . + - or _ occurrences before at-sign\n",
+                     email);
+          return false;
+        }
+      if (verbose)
+        fprintf (stderr,
+                 "mail address %s with unexpected characters before at-sign\n",
+                 email);
       return false;
     }
   for (const char *pc = at + 1; pc < at; pc++)
@@ -60,17 +80,37 @@ valid_email_BM (const char *email)
         continue;
       if ((*pc == '.' || *pc == '+' || *pc == '-' || *pc == '_')
           && !isalnum (pc[-1]) && !isalnum (pc[1]))
-        return false;
+        {
+          fprintf (stderr,
+                   "mail address %s with bad . + - or _ occurrences after at-sign\n",
+                   email);
+          return false;
+        }
+      if (verbose)
+        fprintf (stderr,
+                 "mail address %s with unexpected characters after at-sign\n",
+                 email);
       return false;
     }
-  struct addrinfo* res = NULL;
+  struct addrinfo *res = NULL;
   int err = getaddrinfo (at + 1, "mail", NULL, &res);
   if (err)
-    return false;
+    {
+      if (verbose)
+        fprintf (stderr,
+                 "mail address %s domain %s failed on getaddrinfo: %s\n",
+                 email, at + 1, gai_strerror (err));
+      return false;
+    }
   if (res)
     freeaddrinfo (res);
   else
-    return false;
+    {
+      if (verbose)
+        fprintf (stderr, "mail address %s domain %s invalid\n", email,
+                 at + 1);
+      return false;
+    }
   return true;
 }                               /* end valid_email_BM */
 
@@ -133,18 +173,34 @@ add_contributor_name_email_alias_BM (const char *name, const char *email,
       LOCALRETURN_BM (NULL);
     }
   // validate the email and the alias (if given)
-  if (!valid_email_BM (email))
+  if (!valid_email_BM (email, verbose))
     {
       if (verbose)
-        fprintf (stderr, "invalid email %s for contributor %s", email, name);
+        fprintf (stderr, "invalid email %s for contributor %s\n", email,
+                 name);
       LOCALRETURN_BM (NULL);
     };
-  if (alias && alias[0] && !valid_email_BM (alias))
+  if (alias && alias[0] && !valid_email_BM (alias, verbose))
     {
       if (verbose)
-        fprintf (stderr, "invalid alias %s for contributor %s", alias, name);
+        fprintf (stderr, "invalid alias %s for contributor %s\n", alias,
+                 name);
       LOCALRETURN_BM (NULL);
     }
+  FILE *fil = fopen (CONTRIBUTORS_FILE_BM, "r+");
+  if (!fil)
+    {
+      if (verbose)
+        fprintf (stderr, "fail to open %s : %m\n", CONTRIBUTORS_FILE_BM);
+      LOCALRETURN_BM (NULL);
+    }
+  int fd = fileno (fil);
+  if (flock (fd, LOCK_EX))
+    FATAL_BM ("failed to flock fd#%d for %s", fd, CONTRIBUTORS_FILE_BM);
+#warning add_contributor_name_email_alias unimplemented
+  FATAL_BM
+    ("add_contributor_name_email_alias unimplemented user name '%s' email '%s' alias '%s'",
+     name, email, alias);
 }                               /* end add_contributor_name_email_alias_BM */
 
 
@@ -231,7 +287,7 @@ add_contributor_user_BM (const char *str, bool verbose,
       char *namend = semcol1 - 1;
       while (namend > str && *namend == ' ')
         namend--;
-      namestr = strndup (str, namend - str);
+      namestr = strndup (str, namend - str + 1);
       if (!namestr)
         FATAL_BM ("strndup failed, when extracting name from %s", str);
       if (semcol2)
@@ -276,6 +332,8 @@ add_contributor_user_BM (const char *str, bool verbose,
              str);
   LOCALRETURN_BM (NULL);
 }                               /* end add_contributor_user_BM */
+
+
 
 objectval_tyBM *
 remove_contributor_user_by_string_BM (const char *str,
