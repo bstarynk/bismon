@@ -281,6 +281,8 @@ redump: bismongtk bismonion modules
 	@for f in $(GENERATED_HEADERS) $(GENERATED_CSOURCES) $(MODULES_SOURCES) *.bmon ; \
            do cp -vab $$f $$f%~ ; done
 	time ./bismongtk --dump-after-load . --batch
+	$(MAKE) indent
+	$(MAKE)  bismonion
 	printf "\n\n\n **** second redump run ***\n"
 	time ./bismonion --dump-after-load . --batch
 	$(MAKE) indent
