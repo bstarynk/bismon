@@ -228,10 +228,10 @@ check_contributors_file_BM (const char *path)
   size_t linsiz = 128;
   char *linbuf = calloc (linsiz, 1);
   int lincnt = 0;
+  int nbcontrib = 0;
   if (!linbuf)
     FATAL_BM
-      ("add_contributor_name_email_alias can't alloc line of %zd bytes",
-       linsiz);
+      ("check_contributors_file_BM can't alloc line of %zd bytes", linsiz);
   for (;;)
     {
       _.contribob = NULL;
@@ -316,6 +316,7 @@ check_contributors_file_BM (const char *path)
            bytstring_BM (_.namev));
       _.namev = NULL;
       _.contribob = NULL;
+      nbcontrib++;
     }
   if (flock (fd, LOCK_UN))
     FATAL_BM ("failed to un-flock fd#%d for %s", fd, rcpath);
@@ -335,6 +336,9 @@ check_contributors_file_BM (const char *path)
            bytstring_BM (objcontributornamepayl_BM (_.contribob)), rcpath);
     }
   fclose (fil), fil = NULL;
+  fprintf (stderr,
+           "check of %d contributors in file %s completed successfully\n",
+           nbcontrib, rcpath);
   free (rcpath), rcpath = NULL;
 }                               /* end check_contributors_file_BM */
 
