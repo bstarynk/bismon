@@ -343,14 +343,23 @@ check_contributors_file_BM (const char *path)
 }                               /* end check_contributors_file_BM */
 
 
-
+////////////////
 
 objectval_tyBM *add_contributor_name_email_alias_BM
   (const char *name, const char *email, const char *alias,
    char **perrmsg, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * userob;       //
+                 objectval_tyBM * contribob;    //current contributor object 
+                 objectval_tyBM * assocob;      // temporary assoc-object
+                 // mapping
+                 // contributors-objects to
+                 // *contributors(<email>,<alias>)
+                 // nodes
+                 value_tyBM namev;      // the name string
+                 value_tyBM emailv;     // the email string value
+                 value_tyBM aliasv;     // the alias string value
+                 value_tyBM nodev;      // the node
     );
   if (!alias)
     alias = "";
@@ -376,9 +385,20 @@ objectval_tyBM *add_contributor_name_email_alias_BM
                 CONTRIBUTORS_FILE_BM);
       LOCALRETURN_BM (NULL);
     }
+  const char *rcpath = realpath (CONTRIBUTORS_FILE_BM, NULL);
+  struct stat mystat = { };
+  if (!rcpath)
+    FATAL_BM ("cannot get real path of contributor file %s: %m",
+              CONTRIBUTORS_FILE_BM);
   int fd = fileno (fil);
+  memset (&mystat, 0, sizeof (mystat));
+  if (fstat (fd, &mystat))
+    FATAL_BM ("failed to fstat fd#%d for %s", fd, rcpath);
+  // the file size gives a guess on the initial size of assocob
+  _.assocob = makeobj_BM ();
+  objputassocpayl_BM (_.assocob, prime_above_BM (mystat.st_size / 64 + 10));
   if (flock (fd, LOCK_EX))
-    FATAL_BM ("failed to flock fd#%d for %s", fd, CONTRIBUTORS_FILE_BM);
+    FATAL_BM ("failed to flock fd#%d for %s", fd, rcpath);
   size_t linsiz = 128;
   char *linbuf = calloc (linsiz, 1);
   int lincnt = 0;
@@ -388,6 +408,11 @@ objectval_tyBM *add_contributor_name_email_alias_BM
        linsiz);
   for (;;)
     {
+      _.contribob = NULL;
+      _.namev = NULL;
+      _.emailv = NULL;
+      _.aliasv = NULL;
+      _.nodev = NULL;
       ssize_t linlen = getline (&linbuf, &linsiz, fil);
       if (linlen < 0)
         break;
@@ -399,7 +424,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
       const char *end = NULL;
       if (!g_utf8_validate (linbuf, -1, &end) && end && *end)
         FATAL_BM ("in %s line#%d is invalid UTF8: %s",
-                  CONTRIBUTORS_FILE_BM, lincnt, linbuf);
+                  rcpath, lincnt, linbuf);
       // linbuf should be like: <username>;<oid>;<email>;<alias>
       char *semcol1 = strchr (linbuf, ';');
       char *semcol2 = semcol1 ? strchr (semcol1 + 1, ';') : NULL;
@@ -407,7 +432,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
       if (!semcol3)
         FATAL_BM
           ("in %s line#%d should be like <username>;<oid>;<email>;<alias> but is %s",
-           CONTRIBUTORS_FILE_BM, lincnt, linbuf);
+           rcpath, lincnt, linbuf);
       *semcol1 = (char) 0;
       *semcol2 = (char) 0;
       *semcol3 = (char) 0;
@@ -417,28 +442,57 @@ objectval_tyBM *add_contributor_name_email_alias_BM
       const char *curalias = semcol3 + 1;
       DBGPRINTF_BM
         ("add_contributor_name_email_alias file %s line#%d curcontrib '%s' curoidstr '%s' curemail '%s' curalias '%s'",
-         CONTRIBUTORS_FILE_BM, lincnt,
-         curcontrib, curoidstr, curemail, curalias);
+         rcpath, lincnt, curcontrib, curoidstr, curemail, curalias);
       char *errmsg = NULL;
       if (!valid_contributor_name_BM (curcontrib, &errmsg))
         FATAL_BM ("in %s line#%d has invalid contributor name %s : %s",
-                  CONTRIBUTORS_FILE_BM, lincnt, curcontrib, errmsg);
+                  rcpath, lincnt, curcontrib, errmsg);
       const char *endid = NULL;
       rawid_tyBM curid = parse_rawid_BM (curoidstr, &endid);
       if (!endid || *endid || !curid.id_hi || !curid.id_lo)
         FATAL_BM ("in %s line#%d has invalid oid %s for contributor %s",
-                  CONTRIBUTORS_FILE_BM, lincnt, curoidstr, curcontrib);
+                  rcpath, lincnt, curoidstr, curcontrib);
       if (!valid_email_BM (curemail, DONTCHECKDNS_BM, &errmsg))
         FATAL_BM
           ("in %s line#%d has invalid email %s for contributor %s : %s",
-           CONTRIBUTORS_FILE_BM, lincnt, curemail, curcontrib, errmsg);
+           rcpath, lincnt, curemail, curcontrib, errmsg);
       if (curalias[0] && !isspace (curalias[0])
           && !valid_email_BM (curalias, DONTCHECKDNS_BM, &errmsg))
         FATAL_BM
           ("in %s line#%d has invalid alias %s for contributor %s : %s",
-           CONTRIBUTORS_FILE_BM, lincnt, curalias, curcontrib, errmsg);
+           rcpath, lincnt, curalias, curcontrib, errmsg);
+      _.contribob = findobjofid_BM (curid);
+      if (!_.contribob)
+        FATAL_BM
+          ("in %s line#%d contributor %s of oid %s is missing in persistent heap,"
+           " so remove or comment out that line, then add that contributor after restarting",
+           rcpath, lincnt, curcontrib, curoidstr);
+      objlock_BM (_.contribob);
+      if (!objhascontributorpayl_BM (_.contribob))
+        FATAL_BM
+          ("in %s line#%d contributor %s of oid %s and object %s is not a user-object",
+           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
+      _.namev = objcontributornamepayl_BM (_.contribob);
+      objunlock_BM (_.contribob);
+      if (objassocgetattrpayl_BM (_.assocob, _.contribob))
+        FATAL_BM
+          ("in %s line#%d contributor %s of oid %s and object %s is duplicated",
+           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
+      if (!isstring_BM (_.namev))
+        FATAL_BM
+          ("in %s line#%d contributor %s of oid %s and object %s has no user-name",
+           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
+      if (strcmp (bytstring_BM (_.namev), curcontrib))
+        FATAL_BM
+          ("in %s line#%d contributor %s of oid %s and object %s which has unexpected name %s",
+           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob),
+           bytstring_BM (_.namev));
+      _.emailv = makestring_BM (curemail);
+      _.aliasv = (curalias && curalias[0]) ? makestring_BM (curalias) : NULL;
+      _.nodev = makenode2_BM (BMP_contributors, _.emailv, _.aliasv);
+      objassocaddattrpayl_BM (_.assocob, _.contribob, _.nodev);
     }
-#warning add_contributor_name_email_alias unimplemented
+#warning add_contributor_name_email_alias incomplete
   FATAL_BM
     ("add_contributor_name_email_alias unimplemented user name '%s' email '%s' alias '%s'",
      name, email, alias);
