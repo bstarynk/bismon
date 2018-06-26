@@ -23,6 +23,18 @@
 #include "bismon.h"
 #include "user_BM.const.h"
 
+
+const stringval_tyBM *
+objcontributornamepayl_BM (objectval_tyBM * obj)
+{
+  if (!objhascontributorpayl_BM (obj))
+    return NULL;
+  struct user_stBM *usp = objpayload_BM (obj);
+  if (valtype_BM ((extendedval_tyBM) usp) != typayl_user_BM)
+    return NULL;
+  return usp->user_namev;
+}                               /* end objcontributornamepayl_BM */
+
 static objectval_tyBM *add_contributor_name_email_alias_BM
   (const char *name,
    const char *email,
@@ -189,6 +201,8 @@ check_contributors_file_BM (const char *path)
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * contribob;    //current contributor object
                  objectval_tyBM * hsetob;       //hash set of parsed contributors
+                 value_tyBM namev;      /* string value, name of contributor object */
+                 value_tyBM contribsetv;        /* set of keys in hsetob */
     );
   if (!path || !path[0])
     path = CONTRIBUTORS_FILE_BM;
@@ -207,6 +221,7 @@ check_contributors_file_BM (const char *path)
   memset (&mystat, 0, sizeof (mystat));
   if (fstat (fd, &mystat))
     FATAL_BM ("failed to fstat fd#%d for %s", fd, rcpath);
+  // the file size gives a guess on the initial size of hashset
   objputhashsetpayl_BM (_.hsetob, prime_above_BM (mystat.st_size / 64 + 10));
   if (flock (fd, LOCK_EX))
     FATAL_BM ("failed to flock fd#%d for %s", fd, rcpath);
@@ -219,6 +234,8 @@ check_contributors_file_BM (const char *path)
        linsiz);
   for (;;)
     {
+      _.contribob = NULL;
+      _.namev = NULL;
       ssize_t linlen = getline (&linbuf, &linsiz, fil);
       if (linlen < 0)
         break;
@@ -281,9 +298,42 @@ check_contributors_file_BM (const char *path)
         FATAL_BM
           ("in %s line#%d contributor %s of oid %s and object %s in not in `contributors` hashset-object",
            rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
+      objlock_BM (_.contribob);
+      if (!objhascontributorpayl_BM (_.contribob))
+        FATAL_BM
+          ("in %s line#%d contributor %s of oid %s and object %s is not a user-object",
+           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
+      _.namev = objcontributornamepayl_BM (_.contribob);
+      objunlock_BM (_.contribob);
+      if (!isstring_BM (_.namev))
+        FATAL_BM
+          ("in %s line#%d contributor %s of oid %s and object %s has no user-name",
+           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
+      if (strcmp (bytstring_BM (_.namev), curcontrib))
+        FATAL_BM
+          ("in %s line#%d contributor %s of oid %s and object %s which has unexpected name %s",
+           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob),
+           bytstring_BM (_.namev));
+      _.namev = NULL;
+      _.contribob = NULL;
     }
   if (flock (fd, LOCK_UN))
     FATAL_BM ("failed to un-flock fd#%d for %s", fd, rcpath);
+  // check that all the contributors in BMP_contributors are also in hsetob
+  _.contribob = NULL;
+  _.contribsetv = objhashsettosetpayl_BM (BMP_contributors);
+  if (!isset_BM (_.contribsetv))
+    FATAL_BM ("the `contributors` object has no hashset payload as expected");
+  int csetsiz = setcardinal_BM (_.contribsetv);
+  for (int cix = 0; cix < csetsiz; cix++)
+    {
+      _.contribob = setelemnth_BM (_.contribsetv, cix);
+      if (!objhashsetcontainspayl_BM (_.hsetob, _.contribob))
+        FATAL_BM
+          ("contributor object %s (of name %s) is in `contributors` but don't appear in %s",
+           objectdbg_BM (_.contribob),
+           bytstring_BM (objcontributornamepayl_BM (_.contribob)), rcpath);
+    }
   fclose (fil), fil = NULL;
   free (rcpath), rcpath = NULL;
 }                               /* end check_contributors_file_BM */

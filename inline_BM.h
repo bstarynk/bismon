@@ -1335,6 +1335,20 @@ objhashsettosetpayl_BM (objectval_tyBM * obj)
   return hashsetobj_to_set_BM (hset);
 }                               /* end objhashsettosetpayl_BM */
 
+
+////////////////
+
+bool
+objhascontributorpayl_BM (const objectval_tyBM * obj)
+{
+  if (!isobject_BM ((value_tyBM) obj))
+    return false;
+  extendedval_tyBM payl = objpayload_BM (obj);
+  if (!payl)
+    return false;
+  return valtype_BM (payl) == typayl_user_BM;
+}                               /* end objhascontributorpayl_BM */
+
 ////////////////
 
 bool
