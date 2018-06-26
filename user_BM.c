@@ -406,6 +406,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
     FATAL_BM
       ("add_contributor_name_email_alias can't alloc line of %zd bytes",
        linsiz);
+  /// reading loop
   for (;;)
     {
       _.contribob = NULL;
@@ -491,7 +492,41 @@ objectval_tyBM *add_contributor_name_email_alias_BM
       _.aliasv = (curalias && curalias[0]) ? makestring_BM (curalias) : NULL;
       _.nodev = makenode2_BM (BMP_contributors, _.emailv, _.aliasv);
       objassocaddattrpayl_BM (_.assocob, _.contribob, _.nodev);
-    }
+      _.contribob = NULL;
+      _.namev = NULL;
+      _.emailv = NULL;
+      _.aliasv = NULL;
+      _.nodev = NULL;
+    }                           /* end of reading loop */
+  fflush (fil);
+  /// writing loop
+  rewind (fil);
+  {
+    int nbcontrib = objassocnbkeyspayl_BM (_.assocob);
+    char nowtimbuf[80];
+    memset (nowtimbuf, 0, sizeof (nowtimbuf));
+    time_t nowt = 0;
+    time (&nowt);
+    struct tm nowtm = { };
+    memset (&nowtm, 0, sizeof (nowtm));
+    localtime_r (nowt, &nowtm);
+    strftime (nowtimbuf, sizeof (nowtimbuf), "%c\n", &nowtm);
+    fprintf (fil, "## BISMON contributors file %s\n", CONTRIBUTORS_FILE_BM);
+    fprintf (fil,
+             "## when BISMON is running, don't edit manually this file; it could be flock-ed.\n");
+    fprintf (fil,
+             "## use preferably the --contributor or --remove-contributor program options...");
+    fprintf (fil, "## ... of BISMON to change that file at startup\n");
+    fprintf (fil, "###############################################\n");
+    fprintf (fil, "## written by BISMON built at %s\n", bismon_timestamp);
+    fprintf (fil, "## BISMON lastgitcommit %s\n", bismon_lastgitcommit);
+    fprintf (fil, "## BISMON checksum %s\n", bismon_checksum);
+    fprintf (fil, "## emitted at %s on %s for %d contributors.\n", nowtimbuf,
+             myhostname_BM, nbcontrib);
+    fprintf (fil,
+             "## format: one login line per user or contributor like:\n");
+    fprintf (fil, "## <user-name>;<oid>;<email>;<alias>\n");
+  }
 #warning add_contributor_name_email_alias incomplete
   FATAL_BM
     ("add_contributor_name_email_alias unimplemented user name '%s' email '%s' alias '%s'",
