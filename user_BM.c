@@ -26,34 +26,44 @@
 static objectval_tyBM *add_contributor_name_email_alias_BM
   (const char *name,
    const char *email,
-   const char *alias, bool verbose, struct stackframe_stBM *stkf);
-
-#warning we also need a valid_name_BM and the verbose flag should be replaced by some char** pointer...
-static bool valid_email_BM (const char *email, bool verbose);
+   const char *alias, char **perrmsg, struct stackframe_stBM *stkf);
 
 bool
-valid_email_BM (const char *email, bool verbose)
+valid_email_BM (const char *email, char **perrmsg)
 {
+  if (perrmsg)
+    *perrmsg = NULL;
   if (!email)
-    return false;
+    {
+      if (perrmsg)
+        asprintf (perrmsg, "no email");
+      return false;
+    }
+  const char *end = NULL;
+  if (!g_utf8_validate (email, -1, &end) && end && *end)
+    {
+      if (perrmsg)
+        asprintf (perrmsg, "invalid utf8 email %s", email);
+      return false;
+    }
   if (!isalpha (email[0]))
     {
-      if (verbose)
-        fprintf (stderr, "mail address %s don't start with letter\n", email);
+      if (perrmsg)
+        asprintf (perrmsg, "mail address %s don't start with letter", email);
       return false;
     }
   const char *at = strchr (email, '@');
   if (!at || !at[1])
     {
-      if (verbose)
-        fprintf (stderr, "mail address %s don't have at-sign\n", email);
+      if (perrmsg)
+        asprintf (perrmsg, "mail address %s don't have at-sign", email);
       return false;
     }
   if (strchr (at + 1, '@'))
     {
-      if (verbose)
-        fprintf (stderr, "mail address %s has more than one at-sign\n",
-                 email);
+      if (perrmsg)
+        asprintf (perrmsg, "mail address %s has more than one at-sign",
+                  email);
       return false;
     }
   for (const char *pc = email; pc < at; pc++)
@@ -64,19 +74,19 @@ valid_email_BM (const char *email, bool verbose)
         {
           if (!isalnum (pc[-1]) || !isalnum (pc[1]))
             {
-              if (verbose)
-                fprintf (stderr,
-                         "mail address %s with bad . + - or _ occurrences before at-sign\n",
-                         email);
+              if (perrmsg)
+                asprintf (perrmsg,
+                          "mail address %s with bad . + - or _ occurrences before at-sign",
+                          email);
               return false;
             }
           else
             continue;
         }
-      if (verbose)
-        fprintf (stderr,
-                 "mail address %s with unexpected characters before at-sign\n",
-                 email);
+      if (perrmsg)
+        asprintf (perrmsg,
+                  "mail address %s with unexpected characters before at-sign\n",
+                  email);
       return false;
     }
   for (const char *pc = at + 1; pc < at; pc++)
@@ -87,88 +97,60 @@ valid_email_BM (const char *email, bool verbose)
         {
           if (!isalnum (pc[-1]) || !isalnum (pc[1]))
             {
-              fprintf (stderr,
-                       "mail address %s with bad . + - or _ occurrences after at-sign\n",
-                       email);
+              if (perrmsg)
+                asprintf (perrmsg,
+                          "mail address %s with bad . + - or _ occurrences after at-sign",
+                          email);
               return false;
             }
           else
             continue;
         }
-      if (verbose)
-        fprintf (stderr,
-                 "mail address %s with unexpected characters after at-sign\n",
-                 email);
+      if (perrmsg)
+        asprintf (perrmsg,
+                  "mail address %s with unexpected characters after at-sign",
+                  email);
       return false;
     }
   struct addrinfo *res = NULL;
   int err = getaddrinfo (at + 1, "mail", NULL, &res);
   if (err)
     {
-      if (verbose)
-        fprintf (stderr,
-                 "mail address %s domain %s failed on getaddrinfo: %s\n",
-                 email, at + 1, gai_strerror (err));
+      if (perrmsg)
+        asprintf (perrmsg,
+                  "mail address %s domain %s failed on getaddrinfo: %s",
+                  email, at + 1, gai_strerror (err));
       return false;
     }
   if (res)
     freeaddrinfo (res);
   else
     {
-      if (verbose)
-        fprintf (stderr,
-                 "mail address %s domain %s invalid\n", email, at + 1);
+      if (perrmsg)
+        asprintf (perrmsg,
+                  "mail address %s domain %s invalid\n", email, at + 1);
       return false;
     }
   return true;
 }                               /* end valid_email_BM */
 
-
-
-
-objectval_tyBM *
-add_contributor_name_email_alias_BM (const char *name,
-                                     const char
-                                     *email,
-                                     const char
-                                     *alias,
-                                     bool verbose,
-                                     struct stackframe_stBM * stkf)
+bool
+valid_contributor_name_BM (const char *name, char **perrmsg)
 {
-  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * userob;       //
-    );
-  if (!alias)
-    alias = "";
-  DBGPRINTF_BM
-    ("add_contributor_name_email_alias start name='%s' email='%s' alias='%s' verbose %s",
-     name, email, alias, verbose ? "yes" : "no");
-  ASSERT_BM (name && name[0]);
-  ASSERT_BM (email && email[0]);
+  if (perrmsg)
+    *perrmsg = NULL;
+  if (!name)
+    {
+      if (perrmsg)
+        asprintf (perrmsg, "no contributor name");
+      return false;
+    }
   const char *end = NULL;
   if (!g_utf8_validate (name, -1, &end) && end && *end)
     {
-      if (verbose)
-        fprintf (stderr, "invalid UTF8 in contributor name '%s'\n", name);
-      LOCALRETURN_BM (NULL);
-    }
-  end = NULL;
-  if (!g_utf8_validate (email, -1, &end) && end && *end)
-    {
-      if (verbose)
-        fprintf (stderr,
-                 "invalid UTF8 in contributor (for %s) email '%s'\n",
-                 name, email);
-      LOCALRETURN_BM (NULL);
-    }
-  end = NULL;
-  if (!g_utf8_validate (alias, -1, &end) && end && *end)
-    {
-      if (verbose)
-        fprintf (stderr,
-                 "invalid UTF8 in contributor (for %s)  alias '%s'\n",
-                 name, alias);
-      LOCALRETURN_BM (NULL);
+      if (perrmsg)
+        asprintf (perrmsg, "invalid utf8 contributor name %s", name);
+      return false;
     }
   // validate the name:
   gunichar uc = 0;
@@ -185,30 +167,42 @@ add_contributor_name_email_alias_BM (const char *name,
         if ((uc == '_' || uc == '-' || uc == '+' || uc == ' ')
             && g_unichar_isalnum (prevuc) && *g_utf8_next_char (p))
         continue;
-      if (verbose)
-        fprintf (stderr, "invalid contributor name '%s'\n", name);
-      LOCALRETURN_BM (NULL);
+      if (perrmsg)
+        asprintf (perrmsg, "invalid contributor name '%s'", name);
+      return false;
     }
-  // validate the email and the alias (if given)
-  if (!valid_email_BM (email, verbose))
-    {
-      if (verbose)
-        fprintf (stderr,
-                 "invalid email %s for contributor %s\n", email, name);
-      LOCALRETURN_BM (NULL);
-    };
-  if (alias && alias[0] && !valid_email_BM (alias, verbose))
-    {
-      if (verbose)
-        fprintf (stderr,
-                 "invalid alias %s for contributor %s\n", alias, name);
-      LOCALRETURN_BM (NULL);
-    }
+  return true;
+}                               /* end valid_contributor_name_BM */
+
+
+objectval_tyBM *add_contributor_name_email_alias_BM
+  (const char *name, const char *email, const char *alias,
+   char **perrmsg, struct stackframe_stBM * stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * userob;       //
+    );
+  if (!alias)
+    alias = "";
+  if (perrmsg)
+    *perrmsg = NULL;
+  DBGPRINTF_BM
+    ("add_contributor_name_email_alias start name='%s' email='%s' alias='%s' perrmsg@%p",
+     name, email, alias, (void *) perrmsg);
+  ASSERT_BM (name && name[0]);
+  ASSERT_BM (email && email[0]);
+  const char *end = NULL;
+  if (!valid_contributor_name_BM (name, perrmsg))
+    LOCALRETURN_BM (NULL);
+  if (!valid_email_BM (email, perrmsg))
+    LOCALRETURN_BM (NULL);
+  if (alias && alias[0] && !valid_email_BM (alias, perrmsg))
+    LOCALRETURN_BM (NULL);
   FILE *fil = fopen (CONTRIBUTORS_FILE_BM, "r+");
   if (!fil)
     {
-      if (verbose)
-        fprintf (stderr, "fail to open %s : %m\n", CONTRIBUTORS_FILE_BM);
+      if (perrmsg)
+        asprintf (perrmsg, "fail to open %s : %m", CONTRIBUTORS_FILE_BM);
       LOCALRETURN_BM (NULL);
     }
   int fd = fileno (fil);
@@ -224,7 +218,7 @@ add_contributor_name_email_alias_BM (const char *name,
 
 objectval_tyBM *
 add_contributor_user_BM (const char *str,
-                         bool verbose, struct stackframe_stBM *stkf)
+                         char **perrmsg, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * userob;       //
@@ -234,25 +228,34 @@ add_contributor_user_BM (const char *str,
   const char *aliasstr = NULL;
   if (!str)
     return NULL;
+  if (perrmsg)
+    *perrmsg = NULL;
   DBGPRINTF_BM ("add_contributor_user_BM str='%s'", str);
   if (!str[0])
     {
-      if (verbose)
-        fprintf (stderr, "empty user string\n");
+      if (perrmsg)
+        asprintf (perrmsg, "empty user string");
       return NULL;
+    }
+  const char *end = NULL;
+  if (!g_utf8_validate (str, -1, &end) && end && *end)
+    {
+      if (perrmsg)
+        asprintf (perrmsg, "invalid utf8 string %s", str);
+      return false;
     }
   if (isspace (str[0]))
     {
-      if (verbose)
-        fprintf (stderr, "user string '%s' cannot start with a space\n", str);
+      if (perrmsg)
+        asprintf (perrmsg, "user string '%s' cannot start with a space", str);
       return NULL;
     }
   if (isdigit (str[0]) || str[0] == '_')
     {
-      if (verbose)
-        fprintf (stderr,
-                 "user string '%s' cannot start with a digit or underscore\n",
-                 str);
+      if (perrmsg)
+        asprintf (perrmsg,
+                  "user string '%s' cannot start with a digit or underscore\n",
+                  str);
       return NULL;
     }
   for (const char *pc = str; *pc; pc++)
@@ -260,10 +263,10 @@ add_contributor_user_BM (const char *str,
         || *pc == '\r' || *pc == '\v' || *pc == '\f'
         || (*pc != ' ' && (isspace (*pc) || iscntrl (*pc))))
       {
-        if (verbose)
-          fprintf (stderr,
-                   "user string '%s' cannot contain control or tab, return or weird space characters",
-                   str);
+        if (perrmsg)
+          asprintf (perrmsg,
+                    "user string '%s' cannot contain control or tab, return or weird space characters",
+                    str);
         return NULL;
       }
   const char *endstr = str + strlen (str);
@@ -288,7 +291,7 @@ add_contributor_user_BM (const char *str,
       _.userob =
         add_contributor_name_email_alias_BM (namestr,
                                              emailstr, NULL,
-                                             verbose, CURFRAME_BM);
+                                             perrmsg, CURFRAME_BM);
       DBGPRINTF_BM
         ("add_contributor_user_BM userob=%s for namestr='%s' emailstr='%s'",
          objectdbg_BM (_.userob), namestr, emailstr);
@@ -330,7 +333,7 @@ add_contributor_user_BM (const char *str,
       _.userob =
         add_contributor_name_email_alias_BM (namestr,
                                              emailstr,
-                                             aliasstr, verbose, CURFRAME_BM);
+                                             aliasstr, perrmsg, CURFRAME_BM);
       if (aliasstr)
         DBGPRINTF_BM
           ("add_contributor_user_BM userob=%s for namestr='%s' emailstr='%s' aliasstr='%s'",
@@ -344,12 +347,12 @@ add_contributor_user_BM (const char *str,
       free ((void *) aliasstr), aliasstr = NULL;
       LOCALRETURN_BM (_.userob);
     }
-  if (verbose)
-    fprintf (stderr,
-             "invalid user string '%s',\n"
-             "... expecting 'First Lastname <email@example.com>'\n"
-             "... or 'First Lastname;email@example.com;aliasmail@example.org'\n",
-             str);
+  if (perrmsg)
+    asprintf (perrmsg,
+              "invalid user string '%s',\n"
+              "... expecting 'First Lastname <email@example.com>'\n"
+              "... or 'First Lastname;email@example.com;aliasmail@example.org'\n",
+              str);
   LOCALRETURN_BM (NULL);
 }                               /* end add_contributor_user_BM */
 
@@ -357,7 +360,7 @@ add_contributor_user_BM (const char *str,
 
 objectval_tyBM *
 remove_contributor_user_by_string_BM (const char *str,
-                                      bool verbose,
+                                      char **perrmsg,
                                       struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
