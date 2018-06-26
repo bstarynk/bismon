@@ -303,7 +303,7 @@ check_contributors_file_BM (const char *path)
         FATAL_BM
           ("in %s line#%d contributor %s of oid %s and object %s is not a user-object",
            rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
-      _.namev = objcontributornamepayl_BM (_.contribob);
+      _.namev = (value_tyBM) objcontributornamepayl_BM (_.contribob);
       objunlock_BM (_.contribob);
       if (!isstring_BM (_.namev))
         FATAL_BM
@@ -322,7 +322,7 @@ check_contributors_file_BM (const char *path)
     FATAL_BM ("failed to un-flock fd#%d for %s", fd, rcpath);
   // check that all the contributors in BMP_contributors are also in hsetob
   _.contribob = NULL;
-  _.contribsetv = objhashsettosetpayl_BM (BMP_contributors);
+  _.contribsetv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
   if (!isset_BM (_.contribsetv))
     FATAL_BM ("the `contributors` object has no hashset payload as expected");
   int csetsiz = setcardinal_BM (_.contribsetv);
@@ -349,7 +349,9 @@ objectval_tyBM *add_contributor_name_email_alias_BM
   (const char *name, const char *email, const char *alias,
    char **perrmsg, struct stackframe_stBM *stkf)
 {
+  objectval_tyBM *k_contributor_class = BMK_5BAqWtmxAH6_9rCGuxiNbfc;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * newcontribob; //returned contributor object 
                  objectval_tyBM * contribob;    //current contributor object 
                  objectval_tyBM * assocob;      // temporary assoc-object
                  // mapping
@@ -360,6 +362,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
                  value_tyBM emailv;     // the email string value
                  value_tyBM aliasv;     // the alias string value
                  value_tyBM nodev;      // the node
+                 value_tyBM keysetv;    // the set of keys
     );
   if (!alias)
     alias = "";
@@ -488,10 +491,30 @@ objectval_tyBM *add_contributor_name_email_alias_BM
           ("in %s line#%d contributor %s of oid %s and object %s which has unexpected name %s",
            rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob),
            bytstring_BM (_.namev));
-      _.emailv = makestring_BM (curemail);
-      _.aliasv = (curalias && curalias[0]) ? makestring_BM (curalias) : NULL;
-      _.nodev = makenode2_BM (BMP_contributors, _.emailv, _.aliasv);
+      _.emailv = (value_tyBM) makestring_BM (curemail);
+      _.aliasv = (curalias
+                  && curalias[0]) ? (value_tyBM) makestring_BM (curalias) :
+        NULL;
+      _.nodev =
+        (value_tyBM) makenode2_BM (BMP_contributors, _.emailv, _.aliasv);
       objassocaddattrpayl_BM (_.assocob, _.contribob, _.nodev);
+      // is the current contributor the added one? Then it should also have the same email
+      if (!strcmp (curcontrib, name))
+        {
+          if (strcmp (curemail, email))
+            FATAL_BM
+              ("in %s line#%d contributor %s of oid %s and object %s has same name but different email %s",
+               rcpath, lincnt, curcontrib, curoidstr,
+               objectdbg_BM (_.contribob), bytstring_BM (_.namev), curemail);
+          _.newcontribob = _.contribob;
+        }
+      if (!strcmp (curemail, email))
+        {
+          FATAL_BM
+            ("in %s line#%d contributor %s of oid %s and object %s has same email as added one %s",
+             rcpath, lincnt, curcontrib, curoidstr,
+             objectdbg_BM (_.contribob), bytstring_BM (_.namev), curemail);
+        }
       _.contribob = NULL;
       _.namev = NULL;
       _.emailv = NULL;
@@ -499,17 +522,42 @@ objectval_tyBM *add_contributor_name_email_alias_BM
       _.nodev = NULL;
     }                           /* end of reading loop */
   fflush (fil);
+  // create and enter the new contributor, if unknown one
+  if (!_.newcontribob)
+    {
+      _.newcontribob = makeobj_BM ();
+      struct user_stBM *us =
+        allocgcty_BM (typayl_user_BM, sizeof (struct user_stBM));
+      us->user_ownobj = _.newcontribob;
+      us->user_namev = makestring_BM (name);
+      objputpayload_BM (_.newcontribob, us);
+      objlock_BM (BMP_contributors);
+      objhashsetaddpayl_BM (BMP_contributors, _.newcontribob);
+      objputspacenum_BM (_.newcontribob, GlobalSp_BM);
+      _.emailv = (value_tyBM) makestring_BM (email);
+      _.aliasv = (alias
+                  && alias[0]) ? (value_tyBM) makestring_BM (alias) : NULL;
+      _.nodev =
+        (value_tyBM) makenode2_BM (BMP_contributors, _.emailv, _.aliasv);
+      objassocaddattrpayl_BM (_.assocob, _.newcontribob, _.nodev);
+      objputclass_BM (_.newcontribob, k_contributor_class);
+      DBGPRINTF_BM ("created new contributor %s for %s",
+                    objectdbg_BM (_.newcontribob), name);
+    }
   /// writing loop
   rewind (fil);
+  long filen = 0;
+  _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.assocob);
   {
     int nbcontrib = objassocnbkeyspayl_BM (_.assocob);
+    ASSERT_BM (setcardinal_BM (_.keysetv) == nbcontrib);
     char nowtimbuf[80];
     memset (nowtimbuf, 0, sizeof (nowtimbuf));
     time_t nowt = 0;
     time (&nowt);
     struct tm nowtm = { };
     memset (&nowtm, 0, sizeof (nowtm));
-    localtime_r (nowt, &nowtm);
+    localtime_r (&nowt, &nowtm);
     strftime (nowtimbuf, sizeof (nowtimbuf), "%c\n", &nowtm);
     fprintf (fil, "## BISMON contributors file %s\n", CONTRIBUTORS_FILE_BM);
     fprintf (fil,
@@ -526,7 +574,46 @@ objectval_tyBM *add_contributor_name_email_alias_BM
     fprintf (fil,
              "## format: one login line per user or contributor like:\n");
     fprintf (fil, "## <user-name>;<oid>;<email>;<alias>\n");
+    for (int cix = 0; cix < nbcontrib; cix++)
+      {
+        _.contribob = setelemnth_BM (_.keysetv, cix);
+        _.nodev = objassocgetattrpayl_BM (_.assocob, _.contribob);
+        ASSERT_BM (nodeconn_BM (_.nodev) == BMP_contributors
+                   && nodewidth_BM (_.nodev) == 2);
+        _.emailv = nodenthson_BM (_.nodev, 0);
+        _.aliasv = nodenthson_BM (_.nodev, 1);
+        objlock_BM (_.contribob);
+        _.namev = objcontributornamepayl_BM (_.contribob);
+        objunlock_BM (_.contribob);
+        char idbuf[32];
+        memset (idbuf, 0, sizeof (idbuf));
+        idtocbuf32_BM (objid_BM (_.contribob), idbuf);
+        ASSERT_BM (isstring_BM (_.namev));
+        ASSERT_BM (isstring_BM (_.emailv));
+        ASSERT_BM (!_.aliasv || isstring_BM (_.aliasv));
+        ASSERT_BM (valid_contributor_name_BM (bytstring_BM (_.namev), NULL));
+        ASSERT_BM (valid_email_BM
+                   (bytstring_BM (_.emailv), DONTCHECKDNS_BM, NULL));
+        ASSERT_BM (!_.aliasv
+                   || valid_email_BM (bytstring_BM (_.aliasv),
+                                      DONTCHECKDNS_BM, NULL));
+        if (!_.aliasv)
+          fprintf (fil, "%s;%s;%s;\n", bytstring_BM (_.namev), idbuf,
+                   bytstring_BM (_.emailv));
+        else
+          fprintf (fil, "%s;%s;%s;%s\n", bytstring_BM (_.namev), idbuf,
+                   bytstring_BM (_.emailv), bytstring_BM (_.aliasv));
+      }
+    fprintf (fil, "#### end of file %s with %d contributors sorted by oid\n",
+             CONTRIBUTORS_FILE_BM, nbcontrib);
   }
+  fflush (fil);
+  filen = ftell (fil);
+  ftruncate (fd, filen);
+  usleep (100);
+  if (flock (fd, LOCK_UN))
+    FATAL_BM ("failed to un-flock fd#%d for %s", fd, rcpath);
+  fclose (fil), fd = -1;
 #warning add_contributor_name_email_alias incomplete
   FATAL_BM
     ("add_contributor_name_email_alias unimplemented user name '%s' email '%s' alias '%s'",
