@@ -49,8 +49,8 @@ A `bismon` user (or `bismon` login) is defined by:
   unique and is "randomly" generated.
   
 Each `bismon` login has some password, which is stored in some
-encrypted fashion in some other file (which should *never* go to `git`
-repository).
+encrypted fashion in some other `password_BM` file (which should
+*never* go to `git` repository).
 
 The bismon login database (supposed to be short, perhaps less than a
 dozen entries) is kept into several files. There is one file for
@@ -68,8 +68,18 @@ The `contributors_BM` file has the same textual format, and
   field is the `bismon` user name; the second field is the object-id;
   the third field is the primary email; the last optional field is the
   secondary email.
+
+Notice that email or aliases could end with `@fake.email`. Then they
+are not really checked, but any email messages sent to them by Bismon
+is likely to be lost. So if for some reason you don't want to give (or
+to publish) real-life emails, invent an email ending with
+`@fake.email`. However, some facilities (like password recovery)
+requiring the ability to send an email won't work. However, if -for
+example- you do use some alias for you but don't want to publish it,
+you could (before `git commit`-ing the `contributors_BM` file) replace
+that alias by some pseudo-email address ending with `@fake.email`.
   
-So I (Basile) might be described by a login line in the `contributors`
+So I (Basile) might be described by a login line in the `contributors_BM`
 file such as:
 `Basile Starynkevitch;_3sQID0mxoew_16uOC0jEIpe;basile@starynkevitch.net;basile.starynkevitch@cea.fr`
 and of course the persistent store would have some object of id
@@ -78,7 +88,8 @@ and of course the persistent store would have some object of id
 
 Pseudonimization (in the GDPR sense) might be done by moving (if he
 was a contributor) a login line to the `users` file and using a
-fictuous username and some `nobody@localhost` email.
+fictuous username and some `nobody@localhost` or
+`uniquename@fake.email` email.
 
 Removing a user could be done by also making his object temporary at
 dump time.

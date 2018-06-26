@@ -1424,6 +1424,8 @@ extern objectval_tyBM *remove_contributor_user_by_string_BM
 extern bool valid_email_BM (const char *email, bool checkdns, char **perrmsg);
 extern bool valid_contributor_name_BM (const char *name, char **perrmsg);
 
+// check the contributors file at startup, just after the load
+void check_contributors_file_BM (const char *path);
 
 
 ////////////////////////////////////////////////////////////////
