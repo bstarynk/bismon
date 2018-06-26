@@ -34,6 +34,8 @@
 
 #define VERBOSE_BM true
 #define SILENT_BM false
+#define CHECKDNS_BM true
+#define DONTCHECKDNS_BM false
 
 #define MILLION_BM (1000*1000)
 #define BILLION_BM (1000*MILLION_BM)

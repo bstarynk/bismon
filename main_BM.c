@@ -845,12 +845,13 @@ add_contributors_after_load_BM (void)
   ASSERT_BM (added_contributors_arr_bm != NULL);
   for (int cix = 0; cix < count_added_contributors_bm; cix++)
     {
+      char *errmsg = NULL;
       _.userob =
-        add_contributor_user_BM (added_contributors_arr_bm[cix], VERBOSE_BM,
+        add_contributor_user_BM (added_contributors_arr_bm[cix], &errmsg,
                                  CURFRAME_BM);
       if (!_.userob)
-        FATAL_BM ("failed to add contributor user#%d %s", cix,
-                  added_contributors_arr_bm[cix]);
+        FATAL_BM ("failed to add contributor user#%d %s - %s", cix,
+                  added_contributors_arr_bm[cix], errmsg);
     }
   for (int cix = 0; cix < count_added_contributors_bm; cix++)
     free (added_contributors_arr_bm[cix]), added_contributors_arr_bm[cix] =
