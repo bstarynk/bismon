@@ -599,7 +599,7 @@ extern anyassoc_tyBM *assoc_removeattr_BM (anyassoc_tyBM * assoc,
 
 //// assoc payload support
 
-extern bool objputassocpayl_BM (objectval_tyBM * obj, unsigned maxsize);
+extern bool objputassocpayl_BM (objectval_tyBM * obj, unsigned initsize);
 static inline bool objhasassocpayl_BM (const objectval_tyBM * obj);
 static inline unsigned objassocnbkeyspayl_BM (const objectval_tyBM * obj);
 static inline anyassoc_tyBM *objgetassocpayl_BM (objectval_tyBM * obj);
