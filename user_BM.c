@@ -198,7 +198,7 @@ check_contributors_file_BM (const char *path)
     {
       FATAL_BM ("cannot open contributors file %s (real path %s) : %m", path,
                 rcpath);
-      LOCALRETURN_BM (NULL);
+      return;
     }
   if (!rcpath)
     FATAL_BM ("cannot get real path of contributors file %s", path);
@@ -253,7 +253,7 @@ check_contributors_file_BM (const char *path)
       if (!valid_contributor_name_BM (curcontrib, &errmsg))
         FATAL_BM ("in %s line#%d has invalid contributor name %s : %s",
                   rcpath, lincnt, curcontrib, errmsg);
-      char *endid = NULL;
+      const char *endid = NULL;
       rawid_tyBM curid = parse_rawid_BM (curoidstr, &endid);
       if (!endid || *endid || !curid.id_hi || !curid.id_lo)
         FATAL_BM ("in %s line#%d has invalid oid %s for contributor %s",
@@ -280,7 +280,7 @@ check_contributors_file_BM (const char *path)
       if (!objhashsetcontainspayl_BM (BMP_contributors, _.contribob))
         FATAL_BM
           ("in %s line#%d contributor %s of oid %s and object %s in not in `contributors` hashset-object",
-           curcontrib, curoidstr, objectdbg_BM (_.contribob));
+           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
     }
   if (flock (fd, LOCK_UN))
     FATAL_BM ("failed to un-flock fd#%d for %s", fd, rcpath);
@@ -307,7 +307,6 @@ objectval_tyBM *add_contributor_name_email_alias_BM
      name, email, alias, (void *) perrmsg);
   ASSERT_BM (name && name[0]);
   ASSERT_BM (email && email[0]);
-  const char *end = NULL;
   if (!valid_contributor_name_BM (name, perrmsg))
     LOCALRETURN_BM (NULL);
   if (!valid_email_BM (email, CHECKDNS_BM, perrmsg))
@@ -363,14 +362,14 @@ objectval_tyBM *add_contributor_name_email_alias_BM
       const char *curemail = semcol2 + 1;
       const char *curalias = semcol3 + 1;
       DBGPRINTF_BM
-        ("add_contributor_name_email_alias line#%d curcontrib '%s' curoidstr '%s' curemail '%s' curalias '%s'",
+        ("add_contributor_name_email_alias file %s line#%d curcontrib '%s' curoidstr '%s' curemail '%s' curalias '%s'",
          CONTRIBUTORS_FILE_BM, lincnt,
          curcontrib, curoidstr, curemail, curalias);
       char *errmsg = NULL;
       if (!valid_contributor_name_BM (curcontrib, &errmsg))
         FATAL_BM ("in %s line#%d has invalid contributor name %s : %s",
                   CONTRIBUTORS_FILE_BM, lincnt, curcontrib, errmsg);
-      char *endid = NULL;
+      const char *endid = NULL;
       rawid_tyBM curid = parse_rawid_BM (curoidstr, &endid);
       if (!endid || *endid || !curid.id_hi || !curid.id_lo)
         FATAL_BM ("in %s line#%d has invalid oid %s for contributor %s",
@@ -378,7 +377,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
       if (!valid_email_BM (curemail, DONTCHECKDNS_BM, &errmsg))
         FATAL_BM
           ("in %s line#%d has invalid email %s for contributor %s : %s",
-           curemail, curcontrib, errmsg);
+           CONTRIBUTORS_FILE_BM, lincnt, curemail, curcontrib, errmsg);
       if (curalias[0] && !isspace (curalias[0])
           && !valid_email_BM (curalias, DONTCHECKDNS_BM, &errmsg))
         FATAL_BM
@@ -453,7 +452,7 @@ add_contributor_user_BM (const char *str,
   if (lt && at && gt && lt > str && gt == endstr - 1)
     {
       // str could be like 'First Lastname <email@example.com>'
-      char *namend = lt - 1;
+      const char *namend = lt - 1;
       while (namend > str && *namend == ' ')
         namend--;
       namestr = strndup (str, namend - str + 1);
@@ -482,7 +481,7 @@ add_contributor_user_BM (const char *str,
   const char *semcol2 = semcol1 ? strchr (semcol1 + 1, ';') : NULL;
   if (semcol1)
     {
-      char *namend = semcol1 - 1;
+      const char *namend = semcol1 - 1;
       while (namend > str && *namend == ' ')
         namend--;
       namestr = strndup (str, namend - str + 1);
