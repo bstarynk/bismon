@@ -1070,8 +1070,6 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       load_second_pass_BM (ld, ix, CURFRAME_BM);
   if (ld->ld_storepatharr[0])
     load_second_pass_BM (ld, 0, CURFRAME_BM);
-  /// check and load contributors
-  check_and_load_contributors_file_BM (ld, CONTRIBUTORS_FILE_BM, CURFRAME_BM);
   /// run the todo list
   long todocnt = 0;
   while (islist_BM (ld->ld_todolist) && listlength_BM (ld->ld_todolist) > 0)
@@ -1086,6 +1084,8 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       if (todocnt % 128 == 0)
         full_garbage_collection_BM (CURFRAME_BM);
     }
+  /// check and load contributors
+  check_and_load_contributors_file_BM (ld, CONTRIBUTORS_FILE_BM, CURFRAME_BM);
   // close all files
   for (int ix = 0; ix <= (int) ld->ld_maxnum; ix++)
     {
