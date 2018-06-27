@@ -585,13 +585,14 @@ objectval_tyBM *add_contributor_name_email_alias_BM
     fprintf (fil,
              "## when BISMON is running, don't edit manually this file; it could be flock-ed.\n");
     fprintf (fil,
-             "## use preferably the --contributor or --remove-contributor program options...");
-    fprintf (fil, "## ... of BISMON to change that file at startup\n");
+             "## use preferably the --contributor or --remove-contributor BISMON  ...\n");
+    fprintf (fil,
+             "## ... program options of BISMON to change that file at startup\n");
     fprintf (fil, "###############################################\n");
     fprintf (fil, "## written by BISMON built at %s\n", bismon_timestamp);
     fprintf (fil, "## BISMON lastgitcommit %s\n", bismon_lastgitcommit);
     fprintf (fil, "## BISMON checksum %s\n", bismon_checksum);
-    fprintf (fil, "## emitted at %s on %s for %d contributors.\n", nowtimbuf,
+    fprintf (fil, "##- emitted at %s on %s for %d contributors.\n", nowtimbuf,
              myhostname_BM, nbcontrib);
     fprintf (fil,
              "## format: one login line per user or contributor like:\n");
@@ -642,7 +643,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
     char idbuf[32];
     memset (idbuf, 0, sizeof (idbuf));
     idtocbuf32_BM (objid_BM (_.newcontribob), idbuf);
-    if (knowncontrib)
+    if (knowncontrib)           // changed old contributor
       {
         if (alias && alias[0])
           printf
@@ -654,16 +655,17 @@ objectval_tyBM *add_contributor_name_email_alias_BM
             ("*** Changed contributor %s (of %d) with email %s registered thru object %s of id %s ***\n",
              name, nbcontrib, email, objectdbg_BM (_.newcontribob), idbuf);
       }
-    else
+    else                        // added new fresh contributor
       {
         if (alias && alias[0])
           printf
-            ("*** Add contributor %s (of %d) with email %s & alias %s registered thru object %s of id %s ***\n",
-             name, email, alias, objectdbg_BM (_.newcontribob), idbuf);
+            ("*** Added contributor %s (of %d) with email %s & alias %s registered thru object %s of id %s ***\n",
+             name, nbcontrib, email, alias, objectdbg_BM (_.newcontribob),
+             idbuf);
         else
           printf
-            ("*** Add contributor %s (of %d) with email %s registered thru object %s of id %s ***\n",
-             name, email, objectdbg_BM (_.newcontribob), idbuf);
+            ("*** Added contributor %s (of %d) with email %s registered thru object %s of id %s ***\n",
+             name, nbcontrib, email, objectdbg_BM (_.newcontribob), idbuf);
       }
   }
   LOCALRETURN_BM (_.newcontribob);
