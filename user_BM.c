@@ -573,7 +573,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
     struct tm nowtm = { };
     memset (&nowtm, 0, sizeof (nowtm));
     localtime_r (&nowt, &nowtm);
-    strftime (nowtimbuf, sizeof (nowtimbuf), "%c\n", &nowtm);
+    strftime (nowtimbuf, sizeof (nowtimbuf), "%c", &nowtm);
     fprintf (fil, "## BISMON contributors file %s\n", CONTRIBUTORS_FILE_BM);
     fprintf (fil,
              "## when BISMON is running, don't edit manually this file; it could be flock-ed.\n");
