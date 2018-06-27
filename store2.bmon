@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 760 objects
+// for 762 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3160,6 +3160,25 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_4IutT3Ehz9r_7yJ41rbU841 |=objcontributornamepayl|
+!~ name (~ objcontributornamepayl
+~)
+!@ 1530075785.873
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the string-value name of a contributor, or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4IutT3Ehz9r_7yJ41rbU841  ":*/"  " "  "(" 
+  "value_tyBM"  ")"  " "  "objcontributornamepayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_4IutT3Ehz9r_7yJ41rbU841
+
+
+
 !(_4ivfMqJMBkd_19dvRoM4Wig |=objdatavectappendpayl|
 !~ name (~ objdatavectappendpayl
 ~)
@@ -3766,6 +3785,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_2Fm6JbjcKt4_2nnGxHazkMH
+
+
+
+!(_8QrW0XA46ru_1OwlLEmzq64 |=objhascontributorpayl|
+!~ name (~ objhascontributorpayl
+~)
+!@ 1530075625.065
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test if object o1 has a contributor payload, then return non-0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _8QrW0XA46ru_1OwlLEmzq64  ":*/"  " "  "objhascontributorpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_8QrW0XA46ru_1OwlLEmzq64
 
 
 
