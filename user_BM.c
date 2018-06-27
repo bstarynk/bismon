@@ -374,6 +374,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
                  value_tyBM nodev;      // the node
                  value_tyBM keysetv;    // the set of keys
     );
+  bool knowncontrib = false;
   if (!alias)
     alias = "";
   if (perrmsg)
@@ -415,6 +416,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
   size_t linsiz = 128;
   char *linbuf = calloc (linsiz, 1);
   int lincnt = 0;
+  int nbcontrib = 0;
   if (!linbuf)
     FATAL_BM
       ("add_contributor_name_email_alias can't alloc line of %zd bytes",
@@ -554,12 +556,14 @@ objectval_tyBM *add_contributor_name_email_alias_BM
       DBGPRINTF_BM ("created new contributor %s for %s",
                     objectdbg_BM (_.newcontribob), name);
     }
+  else
+    knowncontrib = true;
   /// writing loop
   rewind (fil);
   long filen = 0;
   _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.assocob);
   {
-    int nbcontrib = objassocnbkeyspayl_BM (_.assocob);
+    nbcontrib = objassocnbkeyspayl_BM (_.assocob);
     ASSERT_BM (setcardinal_BM (_.keysetv) == nbcontrib);
     char nowtimbuf[80];
     memset (nowtimbuf, 0, sizeof (nowtimbuf));
@@ -624,10 +628,37 @@ objectval_tyBM *add_contributor_name_email_alias_BM
   if (flock (fd, LOCK_UN))
     FATAL_BM ("failed to un-flock fd#%d for %s", fd, rcpath);
   fclose (fil), fd = -1;
-#warning add_contributor_name_email_alias incomplete
-  FATAL_BM
-    ("add_contributor_name_email_alias unimplemented user name '%s' email '%s' alias '%s'",
-     name, email, alias);
+  ASSERT_BM (isobject_BM (_.newcontribob)
+             && objhascontributorpayl_BM (_.newcontribob));
+  {
+    char idbuf[32];
+    memset (idbuf, 0, sizeof (idbuf));
+    idtocbuf32_BM (objid_BM (_.newcontribob), idbuf);
+    if (knowncontrib)
+      {
+        if (alias && alias[0])
+          printf
+            ("*** Changed contributor %s (of %d) with email %s & alias %s registered thru object %s of id %s ***\n",
+             name, nbcontrib, email, alias, objectdbg_BM (_.newcontribob),
+             idbuf);
+        else
+          printf
+            ("*** Changed contributor %s (of %d) with email %s registered thru object %s of id %s ***\n",
+             name, nbcontrib, email, objectdbg_BM (_.newcontribob), idbuf);
+      }
+    else
+      {
+        if (alias && alias[0])
+          printf
+            ("*** Add contributor %s (of %d) with email %s & alias %s registered thru object %s of id %s ***\n",
+             name, email, alias, objectdbg_BM (_.newcontribob), idbuf);
+        else
+          printf
+            ("*** Add contributor %s (of %d) with email %s registered thru object %s of id %s ***\n",
+             name, email, objectdbg_BM (_.newcontribob), idbuf);
+      }
+  }
+  LOCALRETURN_BM (_.newcontribob);
 }                               /* end add_contributor_name_email_alias_BM */
 
 
