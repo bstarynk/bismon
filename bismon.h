@@ -66,6 +66,7 @@ using std::atomic_store;
 #include <elf.h>
 #include <errno.h>
 #include <netdb.h>
+#include <locale.h>
 
 #include <sys/syscall.h>
 #include <unistd.h>

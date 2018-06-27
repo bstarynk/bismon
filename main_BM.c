@@ -653,6 +653,10 @@ main (int argc, char **argv)
   if (gethostname ((char *) myhostname_BM, sizeof (myhostname_BM) - 1))
     FATAL_BM ("gethostname failure %m");
   {
+    char *oldloc = setlocale (LC_ALL, "POSIX");
+    DBGPRINTF_BM ("oldlocale %s", oldloc);
+  }
+  {
     double nwt = clocktime_BM (CLOCK_REALTIME);
     intptr_t y2kwt = timetoY2Kmillisec_BM (nwt);
     NONPRINTF_BM ("nwt=%.4f y2kwt=%lld=%#llx as time=%.4f", nwt,
