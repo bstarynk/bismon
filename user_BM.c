@@ -553,6 +553,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
         (value_tyBM) makenode2_BM (BMP_contributors, _.emailv, _.aliasv);
       objassocaddattrpayl_BM (_.assocob, _.newcontribob, _.nodev);
       objputclass_BM (_.newcontribob, k_contributor_class);
+      objtouchnow_BM (_.newcontribob);
       DBGPRINTF_BM ("created new contributor %s for %s",
                     objectdbg_BM (_.newcontribob), name);
     }
