@@ -1419,8 +1419,8 @@ extern void userdelete_BM (objectval_tyBM * ownobj, struct user_stBM *us);
 // the error message is asprintf-ed into perrmsg
 extern objectval_tyBM *add_contributor_user_BM
   (const char *str, char **perrmsg, struct stackframe_stBM *stkf);
-extern objectval_tyBM *remove_contributor_user_by_string_BM
-  (const char *str, char **perrmsg, struct stackframe_stBM *stkf);
+extern objectval_tyBM *remove_contributor_by_name_BM    // callable only from main!
+  (const char *str, struct stackframe_stBM *stkf);
 extern bool valid_email_BM (const char *email, bool checkdns, char **perrmsg);
 extern bool valid_contributor_name_BM (const char *name, char **perrmsg);
 

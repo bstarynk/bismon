@@ -872,19 +872,19 @@ void
 remove_contributors_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * userob;
+                 objectval_tyBM * oldcontribob;
     );
   ASSERT_BM (count_removed_contributors_bm > 0);
   ASSERT_BM (removed_contributors_arr_bm != NULL);
   for (int cix = 0; cix < count_removed_contributors_bm; cix++)
     {
-      _.userob =
-        remove_contributor_user_by_string_BM
-        (removed_contributors_arr_bm[cix], VERBOSE_BM, CURFRAME_BM);
-      if (!_.userob)
-        FATAL_BM ("failed to add contributor user#%d %s", cix,
-                  removed_contributors_arr_bm[cix]);
-      objputspacenum_BM (_.userob, TransientSp_BM);
+      _.oldcontribob =
+        remove_contributor_by_name_BM (removed_contributors_arr_bm[cix],
+                                       CURFRAME_BM);
+      if (!_.oldcontribob)
+        FATAL_BM ("failed to remove contributor user#%d %ss",
+                  cix, removed_contributors_arr_bm[cix]);
+      objputspacenum_BM (_.oldcontribob, TransientSp_BM);
     }
   for (int cix = 0; cix < count_removed_contributors_bm; cix++)
     free (removed_contributors_arr_bm[cix]),

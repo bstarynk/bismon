@@ -24,6 +24,52 @@
 #include "user_BM.const.h"
 
 
+////////////////////////////////////////////////////////////////
+//// user support; might be relevant to GDPR
+
+void
+usergcmark_BM (struct garbcoll_stBM *gc,
+               struct user_stBM *us, objectval_tyBM * fromob, int depth)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (valtype_BM ((value_tyBM) us) == typayl_user_BM);
+  ASSERT_BM (!fromob || isobject_BM (fromob));
+  ASSERT_BM (!fromob || !us->user_ownobj || us->user_ownobj == fromob);
+  ASSERT_BM (depth >= 0);
+  if (us->user_ownobj)
+    gcobjmark_BM (gc, us->user_ownobj);
+  if (us->user_namev)
+    EXTENDEDGCPROC_BM (gc, us->user_namev, fromob, depth + 1);
+}                               /* end usergcmark_BM */
+
+void
+usergcdestroy_BM (struct garbcoll_stBM *gc, struct user_stBM *us)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (valtype_BM ((value_tyBM) us) == typayl_user_BM);
+  if (us->user_ownobj)
+    {
+      objectval_tyBM *ownerob = us->user_ownobj;
+      us->user_ownobj = NULL;
+      objlock_BM (ownerob);
+      if (objpayload_BM (ownerob) == (extendedval_tyBM) us)
+        objclearpayload_BM (ownerob);
+      objunlock_BM (ownerob);
+    }
+  memset ((void *) us, 0, sizeof (*us));
+  free (us);
+  gc->gc_freedbytes += sizeof (*us);
+}                               /* end usergcdestroy_BM */
+
+void
+usergckeep_BM (struct garbcoll_stBM *gc, struct user_stBM *us)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (valtype_BM ((value_tyBM) us) == typayl_user_BM);
+  gc->gc_keptbytes += sizeof (*us);
+}                               /* end usergckeep_BM */
+
+
 const stringval_tyBM *
 objcontributornamepayl_BM (objectval_tyBM * obj)
 {
@@ -34,6 +80,93 @@ objcontributornamepayl_BM (objectval_tyBM * obj)
     return NULL;
   return usp->user_namev;
 }                               /* end objcontributornamepayl_BM */
+
+
+static void
+overwrite_contributor_file_BM (const char *rcpath, FILE * fil,
+                               objectval_tyBM * assocobarg,
+                               struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * contribob;    //current contributor object 
+                 objectval_tyBM * assocob;      //  assoc-object
+                 // mapping
+                 // contributors-objects to
+                 // *contributors(<email>,<alias>)
+                 // nodes
+                 value_tyBM namev;      // the name string
+                 value_tyBM emailv;     // the email string value
+                 value_tyBM aliasv;     // the alias string value
+                 value_tyBM nodev;      // the node
+                 value_tyBM keysetv;    // the set of keys
+    );
+  _.assocob = assocobarg;
+  ASSERT_BM (isobject_BM (assocobarg) && objhasassocpayl_BM (assocobarg));
+  rewind (fil);
+  long filen = 0;
+  int nbcontrib = 0;
+  _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.assocob);
+  {
+    nbcontrib = objassocnbkeyspayl_BM (_.assocob);
+    ASSERT_BM (setcardinal_BM (_.keysetv) == nbcontrib);
+    char nowtimbuf[80];
+    memset (nowtimbuf, 0, sizeof (nowtimbuf));
+    time_t nowt = 0;
+    time (&nowt);
+    struct tm nowtm = { };
+    memset (&nowtm, 0, sizeof (nowtm));
+    localtime_r (&nowt, &nowtm);
+    strftime (nowtimbuf, sizeof (nowtimbuf), "%c", &nowtm);
+    fprintf (fil, "## BISMON contributors file %s\n", CONTRIBUTORS_FILE_BM);
+    fprintf (fil,
+             "## when BISMON is running, don't edit manually this file; it could be flock-ed.\n");
+    fprintf (fil,
+             "## use preferably the --contributor or --remove-contributor BISMON  ...\n");
+    fprintf (fil,
+             "## ... program options of BISMON to change that file at startup\n");
+    fprintf (fil, "###############################################\n");
+    fprintf (fil, "## written by BISMON built at %s\n", bismon_timestamp);
+    fprintf (fil, "## BISMON lastgitcommit %s\n", bismon_lastgitcommit);
+    fprintf (fil, "## BISMON checksum %s\n", bismon_checksum);
+    fprintf (fil, "##- emitted at %s on %s for %d contributors.\n", nowtimbuf,
+             myhostname_BM, nbcontrib);
+    fprintf (fil,
+             "## format: one login line per user or contributor like:\n");
+    fprintf (fil, "## <user-name>;<oid>;<email>;<alias>\n");
+    for (int cix = 0; cix < nbcontrib; cix++)
+      {
+        _.contribob = setelemnth_BM (_.keysetv, cix);
+        _.nodev = objassocgetattrpayl_BM (_.assocob, _.contribob);
+        ASSERT_BM (nodeconn_BM (_.nodev) == BMP_contributors
+                   && nodewidth_BM (_.nodev) == 2);
+        _.emailv = nodenthson_BM (_.nodev, 0);
+        _.aliasv = nodenthson_BM (_.nodev, 1);
+        objlock_BM (_.contribob);
+        _.namev = objcontributornamepayl_BM (_.contribob);
+        objunlock_BM (_.contribob);
+        char idbuf[32];
+        memset (idbuf, 0, sizeof (idbuf));
+        idtocbuf32_BM (objid_BM (_.contribob), idbuf);
+        ASSERT_BM (isstring_BM (_.namev));
+        ASSERT_BM (isstring_BM (_.emailv));
+        ASSERT_BM (!_.aliasv || isstring_BM (_.aliasv));
+        ASSERT_BM (valid_contributor_name_BM (bytstring_BM (_.namev), NULL));
+        ASSERT_BM (valid_email_BM
+                   (bytstring_BM (_.emailv), DONTCHECKDNS_BM, NULL));
+        ASSERT_BM (!_.aliasv
+                   || valid_email_BM (bytstring_BM (_.aliasv),
+                                      DONTCHECKDNS_BM, NULL));
+        if (!_.aliasv)
+          fprintf (fil, "%s;%s;%s;\n", bytstring_BM (_.namev), idbuf,
+                   bytstring_BM (_.emailv));
+        else
+          fprintf (fil, "%s;%s;%s;%s\n", bytstring_BM (_.namev), idbuf,
+                   bytstring_BM (_.emailv), bytstring_BM (_.aliasv));
+      }
+    fprintf (fil, "#### end of file %s with %d contributors sorted by oid\n",
+             CONTRIBUTORS_FILE_BM, nbcontrib);
+  }
+}                               /* end overwrite_contributor_file_BM */
 
 static objectval_tyBM *add_contributor_name_email_alias_BM
   (const char *name,
@@ -393,7 +526,6 @@ objectval_tyBM *add_contributor_name_email_alias_BM
                  value_tyBM emailv;     // the email string value
                  value_tyBM aliasv;     // the alias string value
                  value_tyBM nodev;      // the node
-                 value_tyBM keysetv;    // the set of keys
     );
   bool knowncontrib = false;
   if (!alias)
@@ -581,71 +713,9 @@ objectval_tyBM *add_contributor_name_email_alias_BM
   else
     knowncontrib = true;
   /// writing loop
-  rewind (fil);
-  long filen = 0;
-  _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.assocob);
-  {
-    nbcontrib = objassocnbkeyspayl_BM (_.assocob);
-    ASSERT_BM (setcardinal_BM (_.keysetv) == nbcontrib);
-    char nowtimbuf[80];
-    memset (nowtimbuf, 0, sizeof (nowtimbuf));
-    time_t nowt = 0;
-    time (&nowt);
-    struct tm nowtm = { };
-    memset (&nowtm, 0, sizeof (nowtm));
-    localtime_r (&nowt, &nowtm);
-    strftime (nowtimbuf, sizeof (nowtimbuf), "%c", &nowtm);
-    fprintf (fil, "## BISMON contributors file %s\n", CONTRIBUTORS_FILE_BM);
-    fprintf (fil,
-             "## when BISMON is running, don't edit manually this file; it could be flock-ed.\n");
-    fprintf (fil,
-             "## use preferably the --contributor or --remove-contributor BISMON  ...\n");
-    fprintf (fil,
-             "## ... program options of BISMON to change that file at startup\n");
-    fprintf (fil, "###############################################\n");
-    fprintf (fil, "## written by BISMON built at %s\n", bismon_timestamp);
-    fprintf (fil, "## BISMON lastgitcommit %s\n", bismon_lastgitcommit);
-    fprintf (fil, "## BISMON checksum %s\n", bismon_checksum);
-    fprintf (fil, "##- emitted at %s on %s for %d contributors.\n", nowtimbuf,
-             myhostname_BM, nbcontrib);
-    fprintf (fil,
-             "## format: one login line per user or contributor like:\n");
-    fprintf (fil, "## <user-name>;<oid>;<email>;<alias>\n");
-    for (int cix = 0; cix < nbcontrib; cix++)
-      {
-        _.contribob = setelemnth_BM (_.keysetv, cix);
-        _.nodev = objassocgetattrpayl_BM (_.assocob, _.contribob);
-        ASSERT_BM (nodeconn_BM (_.nodev) == BMP_contributors
-                   && nodewidth_BM (_.nodev) == 2);
-        _.emailv = nodenthson_BM (_.nodev, 0);
-        _.aliasv = nodenthson_BM (_.nodev, 1);
-        objlock_BM (_.contribob);
-        _.namev = objcontributornamepayl_BM (_.contribob);
-        objunlock_BM (_.contribob);
-        char idbuf[32];
-        memset (idbuf, 0, sizeof (idbuf));
-        idtocbuf32_BM (objid_BM (_.contribob), idbuf);
-        ASSERT_BM (isstring_BM (_.namev));
-        ASSERT_BM (isstring_BM (_.emailv));
-        ASSERT_BM (!_.aliasv || isstring_BM (_.aliasv));
-        ASSERT_BM (valid_contributor_name_BM (bytstring_BM (_.namev), NULL));
-        ASSERT_BM (valid_email_BM
-                   (bytstring_BM (_.emailv), DONTCHECKDNS_BM, NULL));
-        ASSERT_BM (!_.aliasv
-                   || valid_email_BM (bytstring_BM (_.aliasv),
-                                      DONTCHECKDNS_BM, NULL));
-        if (!_.aliasv)
-          fprintf (fil, "%s;%s;%s;\n", bytstring_BM (_.namev), idbuf,
-                   bytstring_BM (_.emailv));
-        else
-          fprintf (fil, "%s;%s;%s;%s\n", bytstring_BM (_.namev), idbuf,
-                   bytstring_BM (_.emailv), bytstring_BM (_.aliasv));
-      }
-    fprintf (fil, "#### end of file %s with %d contributors sorted by oid\n",
-             CONTRIBUTORS_FILE_BM, nbcontrib);
-  }
+  overwrite_contributor_file_BM (rcpath, fil, _.assocob, CURFRAME_BM);
   fflush (fil);
-  filen = ftell (fil);
+  long filen = ftell (fil);
   ftruncate (fd, filen);
   usleep (100);
   if (flock (fd, LOCK_UN))
@@ -830,13 +900,213 @@ add_contributor_user_BM (const char *str,
 
 
 objectval_tyBM *
-remove_contributor_user_by_string_BM (const char *str,
-                                      char **perrmsg,
-                                      struct stackframe_stBM *stkf)
+remove_contributor_by_name_BM (const char *oldname,
+                               struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * userob;       //
+                 objectval_tyBM * oldcontribob; //removed contributor object
+                 objectval_tyBM * contribob;    //current contributor object 
+                 objectval_tyBM * assocob;      // temporary assoc-object
+                 value_tyBM namev;      // the name string
+                 value_tyBM emailv;     // the email string value
+                 value_tyBM aliasv;     // the alias string value
+                 value_tyBM nodev;      // the node
+                 value_tyBM keysetv;    // the set of keys
     );
-  FATAL_BM ("unimplemented remove_contributor_user_by_string_BM str %s", str);
-#warning unimplemented remove_contributor_user_by_string_BM
-}                               /* end remove_contributor_user_by_string_BM */
+  FILE *fil = fopen (CONTRIBUTORS_FILE_BM, "r+");
+  if (!fil)
+    {
+      FATAL_BM ("cannot open contributors file %s : %m",
+                CONTRIBUTORS_FILE_BM);
+      LOCALRETURN_BM (NULL);
+    }
+  const char *rcpath = realpath (CONTRIBUTORS_FILE_BM, NULL);
+  struct stat mystat = { };
+  if (!rcpath)
+    FATAL_BM ("cannot get real path of contributor file %s: %m",
+              CONTRIBUTORS_FILE_BM);
+  int fd = fileno (fil);
+  memset (&mystat, 0, sizeof (mystat));
+  if (fstat (fd, &mystat))
+    FATAL_BM ("failed to fstat fd#%d for %s", fd, rcpath);
+  // the file size gives a guess on the initial size of assocob
+  _.assocob = makeobj_BM ();
+  objputassocpayl_BM (_.assocob, prime_above_BM (mystat.st_size / 64 + 10));
+  if (flock (fd, LOCK_EX))
+    FATAL_BM ("failed to flock fd#%d for %s", fd, rcpath);
+  size_t linsiz = 128;
+  char *linbuf = calloc (linsiz, 1);
+  int lincnt = 0;
+  int nbcontrib = 0;
+  if (!linbuf)
+    FATAL_BM
+      ("remove_contributor_by_name_BM can't alloc line of %zd bytes", linsiz);
+  /// reading loop
+  for (;;)
+    {
+      _.contribob = NULL;
+      _.namev = NULL;
+      _.emailv = NULL;
+      _.aliasv = NULL;
+      _.nodev = NULL;
+      ssize_t linlen = getline (&linbuf, &linsiz, fil);
+      if (linlen < 0)
+        break;
+      if (linbuf[linlen] == '\n')
+        linbuf[linlen] = (char) 0;
+      lincnt++;
+      if (linbuf[0] == '#' || linbuf[0] == '\n')
+        continue;
+      const char *end = NULL;
+      if (!g_utf8_validate (linbuf, -1, &end) && end && *end)
+        FATAL_BM ("in %s line#%d is invalid UTF8: %s",
+                  rcpath, lincnt, linbuf);
+      // linbuf should be like: <username>;<oid>;<email>;<alias>
+      char *semcol1 = strchr (linbuf, ';');
+      char *semcol2 = semcol1 ? strchr (semcol1 + 1, ';') : NULL;
+      char *semcol3 = semcol2 ? strchr (semcol2 + 1, ';') : NULL;
+      if (!semcol3)
+        FATAL_BM
+          ("in %s line#%d should be like <username>;<oid>;<email>;<alias> but is %s",
+           rcpath, lincnt, linbuf);
+      *semcol1 = (char) 0;
+      *semcol2 = (char) 0;
+      *semcol3 = (char) 0;
+      const char *curcontrib = linbuf;
+      const char *curoidstr = semcol1 + 1;
+      const char *curemail = semcol2 + 1;
+      const char *curalias = semcol3 + 1;
+      DBGPRINTF_BM
+        ("remove_contributor_by_name_BM file %s line#%d curcontrib '%s' curoidstr '%s' curemail '%s' curalias '%s'",
+         rcpath, lincnt, curcontrib, curoidstr, curemail, curalias);
+      char *errmsg = NULL;
+      if (!valid_contributor_name_BM (curcontrib, &errmsg))
+        FATAL_BM ("in %s line#%d has invalid contributor name %s : %s",
+                  rcpath, lincnt, curcontrib, errmsg);
+      const char *endid = NULL;
+      rawid_tyBM curid = parse_rawid_BM (curoidstr, &endid);
+      if (!endid || *endid || !curid.id_hi || !curid.id_lo)
+        FATAL_BM ("in %s line#%d has invalid oid %s for contributor %s",
+                  rcpath, lincnt, curoidstr, curcontrib);
+      if (!valid_email_BM (curemail, DONTCHECKDNS_BM, &errmsg))
+        FATAL_BM
+          ("in %s line#%d has invalid email %s for contributor %s : %s",
+           rcpath, lincnt, curemail, curcontrib, errmsg);
+      if (curalias[0] && !isspace (curalias[0])
+          && !valid_email_BM (curalias, DONTCHECKDNS_BM, &errmsg))
+        FATAL_BM
+          ("in %s line#%d has invalid alias %s for contributor %s : %s",
+           rcpath, lincnt, curalias, curcontrib, errmsg);
+      _.contribob = findobjofid_BM (curid);
+      if (!_.contribob)
+        FATAL_BM
+          ("in %s line#%d contributor %s of oid %s is missing in persistent heap,"
+           " so remove or comment out that line, then add that contributor after restarting",
+           rcpath, lincnt, curcontrib, curoidstr);
+      objlock_BM (_.contribob);
+      if (!objhascontributorpayl_BM (_.contribob))
+        FATAL_BM
+          ("in %s line#%d contributor %s of oid %s and object %s is not a user-object",
+           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
+      _.namev = objcontributornamepayl_BM (_.contribob);
+      objunlock_BM (_.contribob);
+      if (objassocgetattrpayl_BM (_.assocob, _.contribob))
+        FATAL_BM
+          ("in %s line#%d contributor %s of oid %s and object %s is duplicated",
+           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
+      if (!isstring_BM (_.namev))
+        FATAL_BM
+          ("in %s line#%d contributor %s of oid %s and object %s has no user-name",
+           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
+      if (strcmp (bytstring_BM (_.namev), curcontrib))
+        FATAL_BM
+          ("in %s line#%d contributor %s of oid %s and object %s which has unexpected name %s",
+           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob),
+           bytstring_BM (_.namev));
+      _.emailv = (value_tyBM) makestring_BM (curemail);
+      _.aliasv = (curalias && curalias[0])      //
+        ? (value_tyBM) makestring_BM (curalias) : NULL;
+      _.nodev =
+        (value_tyBM) makenode2_BM (BMP_contributors, _.emailv, _.aliasv);
+      objassocaddattrpayl_BM (_.assocob, _.contribob, _.nodev);
+      if (!strcmp (curcontrib, oldname))
+        {
+          ASSERT_BM (!_.oldcontribob);
+          _.oldcontribob = _.contribob;
+        }
+    }                           /* end reading loop */
+  if (!_.oldcontribob)
+    FATAL_BM ("did not found old contributor %s in %s", oldname, rcpath);
+  if (!objhashsetcontainspayl_BM (BMP_contributors, _.oldcontribob))
+    FATAL_BM
+      ("old contributor %s of object %s is not in `contributors` but in %s",
+       oldname, objectdbg_BM (_.oldcontribob), rcpath);
+  // clear payload and make the oldcontribob transient to remove it from future dumps
+  {
+    objlock_BM (_.oldcontribob);
+    objclearpayload_BM (_.oldcontribob);
+    objputspacenum_BM (_.oldcontribob, TransientSp_BM);
+    objtouchnow_BM (_.oldcontribob);
+    objunlock_BM (_.oldcontribob);
+  }
+  // remove from contributors hashset; it probably has already been
+  // removed at clear payload above, but we need to be sure
+  {
+    objlock_BM (BMP_contributors);
+    objhashsetremovepayl_BM (BMP_contributors, _.oldcontribob);
+    objtouchnow_BM (BMP_contributors);
+    objunlock_BM (BMP_contributors);
+  }
+  objassocremoveattrpayl_BM (_.assocob, _.oldcontribob);
+  overwrite_contributor_file_BM (rcpath, fil, _.assocob, CURFRAME_BM);
+  fflush (fil);
+  long filen = ftell (fil);
+  ftruncate (fd, filen);
+  usleep (100);
+  if (flock (fd, LOCK_UN))
+    FATAL_BM ("failed to un-flock fd#%d for %s", fd, rcpath);
+  fclose (fil), fd = -1;
+  DBGPRINTF_BM
+    ("remove_contributor_by_name_BM oldname %s gives oldcontribob %s",
+     oldname, objectdbg_BM (_.oldcontribob));
+  LOCALRETURN_BM (_.oldcontribob);
+}                               /* end remove_contributor_by_name_BM */
+
+
+
+
+
+// payload delete support for user
+void
+userdelete_BM (objectval_tyBM * ownobj, struct user_stBM *us)
+{
+  ASSERT_BM (valtype_BM ((value_tyBM) us) == typayl_user_BM);
+  ASSERT_BM (isobject_BM (ownobj));
+  ASSERT_BM (!objpayload_BM (ownobj) || objpayload_BM (ownobj) == us);
+  if (us->user_ownobj)
+    {
+      ASSERT_BM (us->user_ownobj == ownobj || !ownobj);
+      objectval_tyBM *ownerob = us->user_ownobj;
+      us->user_ownobj = NULL;
+      objlock_BM (ownerob);
+      if (objpayload_BM (ownerob) == (extendedval_tyBM) us)
+        objclearpayload_BM (ownerob);
+      objunlock_BM (ownerob);
+    }
+  bool wascontributor = false;
+  {
+    objlock_BM (BMP_contributors);
+    if (!objhashashsetpayl_BM (BMP_contributors))
+      FATAL_BM ("when deleting user %s, contributors has no hashset payload",
+                objectdbg_BM (ownobj));
+    if (objhashsetcontainspayl_BM (BMP_contributors, ownobj))
+      {
+        wascontributor = true;
+        objhashsetremovepayl_BM (BMP_contributors, ownobj);
+      }
+    objunlock_BM (BMP_contributors);
+  }
+  if (!wascontributor)
+    fprintf (stderr, "deleted user %s was not in `contributors`",
+             objectdbg_BM (ownobj));
+}                               /* end userdelete_BM */

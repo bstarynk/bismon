@@ -831,9 +831,9 @@ datavect_removeone_BM (struct datavectval_stBM *dvec, int ix)
   unsigned oldcnt = ((typedsize_tyBM *) dvec)->size;
   if (ix < 0)
     ix += oldcnt;
-  if (ix >= 0 && ix < oldcnt)
+  if (ix >= 0 && ix < (int) oldcnt)
     {
-      for (int j = ix; j < oldcnt - 1; j++)
+      for (int j = ix; j < (int) oldcnt - 1; j++)
         dvec->vec_data[j] = dvec->vec_data[j + 1];
       dvec->vec_data[oldcnt - 1] = NULL;
       oldcnt--;
