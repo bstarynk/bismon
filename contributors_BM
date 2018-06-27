@@ -3,10 +3,11 @@
 ## use preferably the --contributor or --remove-contributor BISMON  ...
 ## ... program options of BISMON to change that file at startup
 ###############################################
-## written by BISMON built at Wed 27 Jun 2018 10:34:46 AM MEST
-## BISMON lastgitcommit f40b3aeae16f coded remove_contributor_by_name_BM; moved all user or contributor code to user_BM.c
+## written by BISMON built at Wed 27 Jun 2018 10:36:14 AM MEST
+## BISMON lastgitcommit e407e7f07a6d removed for testing purposes me Basile Starynkevitch as contributor
 ## BISMON checksum 3e48d57472e5851e8b9d4c9be341fcd1
-##- emitted at Wed 27 Jun 2018 10:35:04 AM MEST on hector for 0 contributors.
+##- emitted at Wed 27 Jun 2018 10:36:20 AM MEST on hector for 1 contributors.
 ## format: one login line per user or contributor like:
 ## <user-name>;<oid>;<email>;<alias>
-#### end of file contributors_BM with 0 contributors sorted by oid
+Basile Starynkevitch;_6UYrSn7piPM_3eYhLtoXlmL;basile@starynkevitch.net;basile.starynkevitch@cea.fr
+#### end of file contributors_BM with 1 contributors sorted by oid
