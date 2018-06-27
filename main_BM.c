@@ -757,7 +757,7 @@ main (int argc, char **argv)
     add_new_predefined_bm ();
   if (nb_parsed_values_after_load_bm > 0)
     parse_values_after_load_BM ();
-  check_contributors_file_BM (NULL);
+  check_and_load_contributors_file_BM (NULL);
   if (count_added_contributors_bm > 0)
     add_contributors_after_load_BM ();
   if (count_removed_contributors_bm > 0)

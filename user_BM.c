@@ -195,8 +195,9 @@ valid_contributor_name_BM (const char *name, char **perrmsg)
 
 // this check is done only once, early after load...
 void
-check_contributors_file_BM (const char *path)
+check_and_load_contributors_file_BM (const char *path)
 {
+  objectval_tyBM *k_contributor_class = BMK_5BAqWtmxAH6_9rCGuxiNbfc;
   struct stat mystat = { };
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * contribob;    //current contributor object
@@ -231,7 +232,9 @@ check_contributors_file_BM (const char *path)
   int nbcontrib = 0;
   if (!linbuf)
     FATAL_BM
-      ("check_contributors_file_BM can't alloc line of %zd bytes", linsiz);
+      ("check_and_load_contributors_file_BM can't alloc line of %zd bytes",
+       linsiz);
+  /// read loop
   for (;;)
     {
       _.contribob = NULL;
@@ -264,7 +267,7 @@ check_contributors_file_BM (const char *path)
       const char *curemail = semcol2 + 1;
       const char *curalias = semcol3 + 1;
       DBGPRINTF_BM
-        ("check_contributors_file line#%d curcontrib '%s' curoidstr '%s' curemail '%s' curalias '%s'",
+        ("check_and_load_contributors_file line#%d curcontrib '%s' curoidstr '%s' curemail '%s' curalias '%s'",
          lincnt, curcontrib, curoidstr, curemail, curalias);
       char *errmsg = NULL;
       if (!valid_contributor_name_BM (curcontrib, &errmsg))
@@ -299,11 +302,18 @@ check_contributors_file_BM (const char *path)
           ("in %s line#%d contributor %s of oid %s and object %s in not in `contributors` hashset-object",
            rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
       objlock_BM (_.contribob);
-      if (!objhascontributorpayl_BM (_.contribob))
+      if (!objectisinstance_BM (_.contribob, k_contributor_class))
         FATAL_BM
-          ("in %s line#%d contributor %s of oid %s and object %s is not a user-object",
+          ("in %s line#%d for contributor %s of oid %s the object %s is not of `contributor_class`",
            rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
-      _.namev = (value_tyBM) objcontributornamepayl_BM (_.contribob);
+      objclearpayload_BM (_.contribob);
+      {
+        struct user_stBM *us =
+          allocgcty_BM (typayl_user_BM, sizeof (struct user_stBM));
+        us->user_ownobj = _.contribob;
+        us->user_namev = makestring_BM (curcontrib);
+        objputpayload_BM (_.contribob, us);
+      }
       objunlock_BM (_.contribob);
       if (!isstring_BM (_.namev))
         FATAL_BM
@@ -337,10 +347,10 @@ check_contributors_file_BM (const char *path)
     }
   fclose (fil), fil = NULL;
   fprintf (stderr,
-           "check of %d contributors in file %s completed successfully\n",
+           "check and load of %d contributors in file %s completed successfully\n",
            nbcontrib, rcpath);
   free (rcpath), rcpath = NULL;
-}                               /* end check_contributors_file_BM */
+}                               /* end check_and_load_ontributors_file_BM */
 
 
 ////////////////

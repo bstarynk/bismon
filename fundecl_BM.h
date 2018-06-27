@@ -1424,8 +1424,8 @@ extern objectval_tyBM *remove_contributor_user_by_string_BM
 extern bool valid_email_BM (const char *email, bool checkdns, char **perrmsg);
 extern bool valid_contributor_name_BM (const char *name, char **perrmsg);
 
-// check the contributors file at startup, just after the load
-void check_contributors_file_BM (const char *path);
+// check then load the contributors file at startup, just after the load
+void check_and_load_contributors_file_BM (const char *path);
 
 // the only operations doable on user objects after load since adding
 // contributors is only possible on the command line!
