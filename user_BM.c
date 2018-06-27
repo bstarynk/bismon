@@ -205,6 +205,7 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld, const char *path,
                  objectval_tyBM * hsetob;       //hash set of parsed contributors
                  value_tyBM namev;      /* string value, name of contributor object */
                  value_tyBM contribsetv;        /* set of keys in hsetob */
+                 value_tyBM tmpv;       /* temporary */
     );
   ASSERT_BM (valtype_BM ((const value_tyBM) ld) == typayl_loader_BM);
   ASSERT_BM (ld->ld_magic == LOADERMAGIC_BM);
@@ -318,10 +319,14 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld, const char *path,
         struct user_stBM *us =
           allocgcty_BM (typayl_user_BM, sizeof (struct user_stBM));
         us->user_ownobj = _.contribob;
-        us->user_namev = makestring_BM (curcontrib);
+        us->user_namev = _.namev = makestring_BM (curcontrib);
         objputpayload_BM (_.contribob, us);
       }
       objunlock_BM (_.contribob);
+      DBGPRINTF_BM
+        ("check_and_load_contributors_file lincnt#%d contribob %s with name %s",
+         lincnt, objectdbg_BM (_.contribob), curcontrib);
+      objhashsetaddpayl_BM (_.hsetob, _.contribob);
       if (!isstring_BM (_.namev))
         FATAL_BM
           ("in %s line#%d contributor %s of oid %s and object %s has no user-name",
@@ -343,6 +348,15 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld, const char *path,
   if (!isset_BM (_.contribsetv))
     FATAL_BM ("the `contributors` object has no hashset payload as expected");
   int csetsiz = setcardinal_BM (_.contribsetv);
+  ASSERT_BM (objhashashsetpayl_BM (_.hsetob));
+  {
+    _.tmpv = (value_tyBM) objhashsettosetpayl_BM (_.hsetob);
+    DBGPRINTF_BM ("check_and_load_contributors_file hsetob %s with %s",
+                  objectdbg_BM (_.hsetob), debug_outstr_value_BM (_.tmpv,
+                                                                  CURFRAME_BM,
+                                                                  0));
+    _.tmpv = NULL;
+  }
   for (int cix = 0; cix < csetsiz; cix++)
     {
       _.contribob = setelemnth_BM (_.contribsetv, cix);
@@ -357,7 +371,7 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld, const char *path,
            "check and load of %d contributors in file %s completed successfully\n",
            nbcontrib, rcpath);
   free (rcpath), rcpath = NULL;
-}                               /* end check_and_load_ontributors_file_BM */
+}                               /* end check_and_load_contributors_file_BM */
 
 
 ////////////////
