@@ -193,18 +193,25 @@ valid_contributor_name_BM (const char *name, char **perrmsg)
 
 
 
-// this check is done only once, early after load...
+// this check is done only once, during load...
 void
-check_and_load_contributors_file_BM (const char *path)
+check_and_load_contributors_file_BM (struct loader_stBM *ld, const char *path,
+                                     struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_contributor_class = BMK_5BAqWtmxAH6_9rCGuxiNbfc;
   struct stat mystat = { };
-  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * contribob;    //current contributor object
                  objectval_tyBM * hsetob;       //hash set of parsed contributors
                  value_tyBM namev;      /* string value, name of contributor object */
                  value_tyBM contribsetv;        /* set of keys in hsetob */
     );
+  ASSERT_BM (valtype_BM ((const value_tyBM) ld) == typayl_loader_BM);
+  ASSERT_BM (ld->ld_magic == LOADERMAGIC_BM);
+  if (!ld || ld->ld_magic != LOADERMAGIC_BM)
+    FATAL_BM
+      ("check_and_load_contributors_file_BM invalid loader for path %s",
+       path);
   if (!path || !path[0])
     path = CONTRIBUTORS_FILE_BM;
   FILE *fil = fopen (path, "r+");
