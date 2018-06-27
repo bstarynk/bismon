@@ -1,3 +1,13 @@
-## file contributors_BM
-## format: one login line per user or contributor
-## <user name>;<oid>;<email>;<alias>
+## BISMON contributors file contributors_BM
+## when BISMON is running, don't edit manually this file; it could be flock-ed.
+## use preferably the --contributor or --remove-contributor BISMON  ...
+## ... program options of BISMON to change that file at startup
+###############################################
+## written by BISMON built at Wed 27 Jun 2018 09:00:23 AM MEST
+## BISMON lastgitcommit 462c5986045b corrected the final printf-s of add_contributor_name_email_alias_BM; improve the comments generated in contributors_BM
+## BISMON checksum 3c219e70c457eb4e60c7c27bec91a45e
+##- emitted at Wed 27 Jun 2018 09:01:39 AM MEST on ** for 1 contributors.
+## format: one login line per user or contributor like:
+## <user-name>;<oid>;<email>;<alias>
+Basile Starynkevitch;_2pHQ1L5OhYX_7GMs8AtLaJS;basile@starynkevitch.net;basile.starynkevitch@cea.fr
+#### end of file contributors_BM with 1 contributors sorted by oid
