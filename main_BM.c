@@ -36,6 +36,8 @@ bool gui_is_running_BM;
 bool debugmsg_BM;
 int nbworkjobs_BM;
 const char myhostname_BM[80];
+const char *contributors_filepath_BM;
+const char *passwords_filepath_BM;
 thread_local struct threadinfo_stBM *curthreadinfo_BM;
 thread_local volatile struct failurehandler_stBM *curfailurehandle_BM;
 
@@ -355,6 +357,22 @@ const GOptionEntry optab[] = {
    .description = "dump after load directory DIR",
    .arg_description = "DIR"},
   //
+  {.long_name = "contributors-file",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &contributors_filepath_BM,
+   .description = "use PATH as the contributors file;\n"
+   "\t .. default is contributors_BM or $HOME/contributors_BM",
+   .arg_description = "PATH"},
+  //
+  {.long_name = "passwords-file",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &passwords_filepath_BM,
+   .description = "use PATH as the password file;\n"
+   "\t .. default is passwords_BM or $HOME/passwords_BM",
+   .arg_description = "PATH"},
+  //
   {.long_name = "emit-has-predef",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_INT,
@@ -625,6 +643,7 @@ do_emit_module_from_main_BM (void)
 static void parse_values_after_load_BM (void);
 static void add_contributors_after_load_BM (void);
 static void remove_contributors_after_load_BM (void);
+static void initialize_contributors_path_BM (void);
 
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
@@ -709,6 +728,8 @@ main (int argc, char **argv)
     nbworkjobs_BM = MINNBWORKJOBS_BM;
   else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
+  initialize_contributors_path_BM ();
+#warning missing initialize_passwords_path_BM function
   NONPRINTF_BM ("main begin tid#%ld pid %d",
                 (long) gettid_BM (), (int) getpid ());
   if (count_emit_has_predef_bm > 0)
@@ -799,6 +820,56 @@ main (int argc, char **argv)
 #endif /*BISMONGTK*/
     fflush (NULL);
 }                               /* end main */
+
+
+void
+initialize_contributors_path_BM (void)
+{
+  if (!contributors_filepath_BM)
+    {
+      char *path = NULL;
+      char *homepath = NULL;
+      if (!access (CONTRIBUTORS_FILE_BM, R_OK))
+        contributors_filepath_BM = CONTRIBUTORS_FILE_BM;
+      else if ((homepath = getenv ("HOME")) != NULL
+               && asprintf (&path, "%s/" CONTRIBUTORS_FILE_BM, homepath) > 0
+               && path != NULL && (!access (path, R_OK)
+                                   || (free (path), (path = NULL))))
+        contributors_filepath_BM = path;
+      if (!contributors_filepath_BM)
+        {
+          char cwdbuf[128];
+          memset (cwdbuf, 0, sizeof (cwdbuf));
+          if (!getcwd (cwdbuf, sizeof (cwdbuf)))
+            strcpy (cwdbuf, "./");
+          FATAL_BM
+            ("no %s file found here in %s or in $HOME %s, pass --contributors-file=... option to give one",
+             CONTRIBUTORS_FILE_BM, cwdbuf, homepath);
+        }
+      if (!access (contributors_filepath_BM, R_OK))
+        FATAL_BM ("cannot read contributors file %s - %m",
+                  contributors_filepath_BM);
+      char *rcpath = realpath (contributors_filepath_BM, NULL);
+      if (!rcpath)
+        FATAL_BM ("cannot get real path of contributors file %s - %m",
+                  contributors_filepath_BM);
+      if (path && rcpath != path)
+        free (path), path = NULL;
+      contributors_filepath_BM = rcpath;
+    }
+  else
+    {                           // some given contributors_filepath_bm with --contributors-path= ... argument
+      if (!access (contributors_filepath_BM, R_OK))
+        FATAL_BM ("cannot read contributors file %s - %m",
+                  contributors_filepath_BM);
+      char *rcpath = realpath (contributors_filepath_BM, NULL);
+      if (!rcpath)
+        FATAL_BM ("cannot get real path of contributors file %s - %m",
+                  contributors_filepath_BM);
+      contributors_filepath_BM = rcpath;
+    }
+  printf ("using %s as the contributors file\n", contributors_filepath_BM);
+}                               /* end initialize_contributors_path_BM */
 
 
 
