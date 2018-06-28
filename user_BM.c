@@ -386,7 +386,7 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld, const char *path,
       if (linbuf[linlen] == '\n')
         linbuf[linlen] = (char) 0;
       lincnt++;
-      if (linbuf[0] == '#' || linbuf[0] == '\n')
+      if (linbuf[0] == '#' || linbuf[0] == '\n' || !linbuf[0])
         continue;
       const char *end = NULL;
       if (!g_utf8_validate (linbuf, -1, &end) && end && *end)
@@ -399,7 +399,7 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld, const char *path,
       if (!semcol3)
         FATAL_BM
           ("in %s line#%d should be like <username>;<oid>;<email>;<alias> but is %s",
-           path, lincnt, linbuf);
+           rcpath, lincnt, linbuf);
       *semcol1 = (char) 0;
       *semcol2 = (char) 0;
       *semcol3 = (char) 0;
@@ -499,7 +499,9 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld, const char *path,
            objectdbg_BM (_.contribob),
            bytstring_BM (objcontributornamepayl_BM (_.contribob)), rcpath);
     }
-  fclose (fil), fil = NULL;
+  if (fclose (fil))
+    FATAL_BM ("failed to fclose %s", rcpath);
+  fil = NULL;
   fprintf (stderr,
            "check and load of %d contributors in file %s completed successfully\n",
            nbcontrib, rcpath);
@@ -588,7 +590,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
       if (linbuf[linlen] == '\n')
         linbuf[linlen] = (char) 0;
       lincnt++;
-      if (linbuf[0] == '#' || linbuf[0] == '\n')
+      if (linbuf[0] == '#' || linbuf[0] == '\n' || !linbuf[0])
         continue;
       const char *end = NULL;
       if (!g_utf8_validate (linbuf, -1, &end) && end && *end)
@@ -720,7 +722,10 @@ objectval_tyBM *add_contributor_name_email_alias_BM
   usleep (100);
   if (flock (fd, LOCK_UN))
     FATAL_BM ("failed to un-flock fd#%d for %s", fd, rcpath);
-  fclose (fil), fd = -1;
+  if (fclose (fil))
+    FATAL_BM ("failed to fclose %s", rcpath);
+  fil = NULL;
+  fd = -1;
   ASSERT_BM (isobject_BM (_.newcontribob)
              && objhascontributorpayl_BM (_.newcontribob));
   {
@@ -955,7 +960,7 @@ remove_contributor_by_name_BM (const char *oldname,
       if (linbuf[linlen] == '\n')
         linbuf[linlen] = (char) 0;
       lincnt++;
-      if (linbuf[0] == '#' || linbuf[0] == '\n')
+      if (linbuf[0] == '#' || linbuf[0] == '\n' || !linbuf[0])
         continue;
       const char *end = NULL;
       if (!g_utf8_validate (linbuf, -1, &end) && end && *end)
@@ -1065,7 +1070,10 @@ remove_contributor_by_name_BM (const char *oldname,
   usleep (100);
   if (flock (fd, LOCK_UN))
     FATAL_BM ("failed to un-flock fd#%d for %s", fd, rcpath);
-  fclose (fil), fd = -1;
+  if (fclose (fil))
+    FATAL_BM ("failed to fclose %s", rcpath);
+  fil = NULL;
+  fd = -1;
   DBGPRINTF_BM
     ("remove_contributor_by_name_BM oldname %s gives oldcontribob %s",
      oldname, objectdbg_BM (_.oldcontribob));
@@ -1086,12 +1094,12 @@ userdelete_BM (objectval_tyBM * ownobj, struct user_stBM *us)
   if (us->user_ownobj)
     {
       ASSERT_BM (us->user_ownobj == ownobj || !ownobj);
-      objectval_tyBM *ownerob = us->user_ownobj;
+      objectval_tyBM *uownerob = us->user_ownobj;
       us->user_ownobj = NULL;
-      objlock_BM (ownerob);
-      if (objpayload_BM (ownerob) == (extendedval_tyBM) us)
-        objclearpayload_BM (ownerob);
-      objunlock_BM (ownerob);
+      objlock_BM (uownerob);
+      if (objpayload_BM (uownerob) == (extendedval_tyBM) us)
+        uownerob->ob_payl = NULL;
+      objunlock_BM (uownerob);
     }
   bool wascontributor = false;
   {
@@ -1110,3 +1118,95 @@ userdelete_BM (objectval_tyBM * ownobj, struct user_stBM *us)
     fprintf (stderr, "deleted user %s was not in `contributors`",
              objectdbg_BM (ownobj));
 }                               /* end userdelete_BM */
+
+
+bool
+check_contributor_password_BM (objectval_tyBM * contribobarg,
+                               const char *passwd,
+                               struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * contribob;    //current contributor object 
+    );
+  FILE *passfil = NULL;
+  char *rcpath = NULL;
+  bool ok = false;
+#define REJECT() do { DBGPRINTF_BM("check_contributor_password_BM rejects contribob %s passwd '%s'", \
+  objectdbg_BM(_.contribob), passwd); ok=false; goto end; } while(0)
+  // to make life harder for external malicious stuff 
+  usleep (1000 + g_random_int () % 1024);
+  _.contribob = objectcast_BM (contribobarg);
+  if (!_.contribob)
+    REJECT ();
+  if (!passwd || !passwd[0])
+    REJECT ();
+  if (!objhascontributorpayl_BM (_.contribob))
+    REJECT ();
+  DBGPRINTF_BM
+    ("check_contributor_password_BM contribob %s passwd '%s' start",
+     objectdbg_BM (_.contribob), passwd);
+  passfil = fopen (PASSWORDS_FILE_BM, "r");
+  if (!passfil)
+    FATAL_BM ("check_contributor_password fopen %s failed: %m",
+              PASSWORDS_FILE_BM);
+  rcpath = realpath (PASSWORDS_FILE_BM, NULL);
+  if (!rcpath)
+    FATAL_BM ("cannot get realpath of %s : %m", PASSWORDS_FILE_BM);
+  if (flock (fileno (passfil), LOCK_EX))
+    FATAL_BM ("check_contributor_password failed to flock fd#%d for %s",
+              fileno (passfil), rcpath);
+  size_t linsiz = 128;
+  char *linbuf = calloc (linsiz, 1);
+  int lincnt = 0;
+  if (!linbuf)
+    FATAL_BM ("check_contributor_password failed to calloc line of %zd",
+              linsiz);
+  /// read password file loop
+  for (;;)
+    {
+      ssize_t linlen = getline (&linbuf, &linsiz, passfil);
+      if (linlen < 0)
+        break;
+      if (linbuf[linlen] == '\n')
+        linbuf[linlen] = (char) 0;
+      lincnt++;
+      if (linbuf[0] == '#' || linbuf[0] == '\n' || !linbuf[0])
+        continue;
+      const char *end = NULL;
+      if (!g_utf8_validate (linbuf, -1, &end) && end && *end)
+        FATAL_BM ("in %s line#%d is invalid UTF8: %s", rcpath,
+                  lincnt, linbuf);
+      // linbuf should be like: <contribname>;<oid>;<encrypted-password>
+      char *semcol1 = strchr (linbuf, ';');
+      char *semcol2 = semcol1 ? strchr (semcol1 + 1, ';') : NULL;
+      if (!semcol2)
+        FATAL_BM
+          ("in %s line#%d should be like <contributor-name>;<oid>;<encrypted-password> but is %s",
+           rcpath, lincnt, linbuf);
+      *semcol1 = (char) 0;
+      *semcol2 = (char) 0;
+      const char *curcontribname = linbuf;
+      const char *curoidstr = semcol1 + 1;
+      const char *curcryptpass = semcol2 + 1;
+#warning incomplete check_contributor_password
+    }
+end:
+#undef REJECT
+  if (linbuf)
+    free (linbuf), linbuf = NULL;
+  if (passfil)
+    {
+      if (flock (fileno (passfil), LOCK_UN))
+        FATAL_BM ("failed to un-flock fd#%d for %s", fileno (passfil),
+                  rcpath);
+      if (fclose (passfil))
+        FATAL_BM ("failed to fclose %s", rcpath);
+      passfil = NULL;
+    }
+  if (rcpath)
+    free (rcpath), rcpath = NULL;
+  return ok;
+}                               /* end check_contributor_password_BM */
+
+
+/// end of file user_BM.c
