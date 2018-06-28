@@ -485,10 +485,8 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
   ASSERT_BM (objhashashsetpayl_BM (_.hsetob));
   {
     _.tmpv = (value_tyBM) objhashsettosetpayl_BM (_.hsetob);
-    DBGPRINTF_BM ("check_and_load_contributors_file hsetob %s with %s",
-                  objectdbg_BM (_.hsetob), debug_outstr_value_BM (_.tmpv,
-                                                                  CURFRAME_BM,
-                                                                  0));
+    DBGPRINTF_BM ("check_and_load_contributors_file hsetob %s with %s", objectdbg_BM (_.hsetob),        //
+                  debug_outstr_value_BM (_.tmpv, CURFRAME_BM, 0));
     _.tmpv = NULL;
   }
   for (int cix = 0; cix < csetsiz; cix++)
@@ -508,6 +506,107 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
            nbcontrib, rcpath);
 }                               /* end check_and_load_contributors_file_BM */
 
+////////////////
+
+void
+check_passwords_file_BM (struct loader_stBM *ld, struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * contribob;    //current contributor object
+                 value_tyBM namev;      /* string value, name of contributor object */
+    );
+  ASSERT_BM (ld->ld_magic == LOADERMAGIC_BM);
+  if (!ld || ld->ld_magic != LOADERMAGIC_BM)
+    FATAL_BM
+      ("check_passwords_file_BM invalid loader for path %s",
+       passwords_filepath_BM);
+  ASSERT_BM (passwords_filepath_BM && passwords_filepath_BM[0] == '/');
+  FILE *passfil = fopen (passwords_filepath_BM, "r");
+  if (!passfil)
+    FATAL_BM ("check_contributor_password fopen %s failed: %m",
+              passwords_filepath_BM);
+  if (flock (fileno (passfil), LOCK_EX))
+    FATAL_BM ("check_contributor_password failed to flock fd#%d for %s",
+              fileno (passfil), passwords_filepath_BM);
+  size_t linsiz = 128;
+  char *linbuf = calloc (linsiz, 1);
+  int lincnt = 0;
+  if (!linbuf)
+    FATAL_BM ("check_contributor_password failed to calloc line of %zd",
+              linsiz);
+  /// read password file loop
+  for (;;)
+    {
+      ssize_t linlen = getline (&linbuf, &linsiz, passfil);
+      if (linlen < 0)
+        break;
+      if (linbuf[linlen] == '\n')
+        linbuf[linlen] = (char) 0;
+      lincnt++;
+      if (linbuf[0] == '#' || linbuf[0] == '\n' || !linbuf[0])
+        continue;
+      const char *end = NULL;
+      if (!g_utf8_validate (linbuf, -1, &end) && end && *end)
+        FATAL_BM ("in password file %s line#%d is invalid UTF8: %s",
+                  passwords_filepath_BM, lincnt, linbuf);
+      // linbuf should be like: <contribname>;<oid>;<encrypted-password>
+      char *semcol1 = strchr (linbuf, ';');
+      char *semcol2 = semcol1 ? strchr (semcol1 + 1, ';') : NULL;
+      if (!semcol2)
+        FATAL_BM
+          ("in password file %s line#%d should be like <contributor-name>;<oid>;<encrypted-password> but is %s",
+           passwords_filepath_BM, lincnt, linbuf);
+      *semcol1 = (char) 0;
+      *semcol2 = (char) 0;
+      const char *curcontrib = linbuf;
+      const char *curoidstr = semcol1 + 1;
+      const char *curcryptpass = semcol2 + 1;
+      char *errmsg = NULL;
+      if (!valid_contributor_name_BM (curcontrib, &errmsg))
+        FATAL_BM
+          ("in password file %s line#%d has invalid contributor name %s : %s",
+           passwords_filepath_BM, lincnt, curcontrib, errmsg);
+      const char *endid = NULL;
+      rawid_tyBM curid = parse_rawid_BM (curoidstr, &endid);
+      if (!endid || *endid || !curid.id_hi || !curid.id_lo)
+        FATAL_BM
+          ("in password file %s line#%d has invalid oid %s for contributor %s",
+           passwords_filepath_BM, lincnt, curoidstr, curcontrib);
+      _.contribob = findobjofid_BM (curid);
+      if (!_.contribob)
+        {
+          fprintf (stderr,
+                   "in password file %s line#%d has unknown oid %s for contributor %s, skipping...\n",
+                   passwords_filepath_BM, lincnt, curoidstr, curcontrib);
+          continue;
+        }
+      objlock_BM (_.contribob);
+      if (!objhascontributorpayl_BM (_.contribob))
+        FATAL_BM
+          ("in password file %s line#%d contributor %s of oid %s and object %s is not a contributor-object",
+           passwords_filepath_BM, lincnt, curcontrib, curoidstr,
+           objectdbg_BM (_.contribob));
+      _.namev = objcontributornamepayl_BM (_.contribob);
+      objunlock_BM (_.contribob);
+      if (!isstring_BM (_.namev)
+          || strcmp (bytstring_BM (_.namev), curcontrib))
+        FATAL_BM
+          ("in password file %s line#%d contributor %s of oid %s and object %s which has unexpected name %s",
+           passwords_filepath_BM, lincnt, curcontrib, curoidstr,
+           objectdbg_BM (_.contribob), bytstring_BM (_.namev) ? : "**none**");
+    }
+  if (linbuf)
+    free (linbuf), linbuf = NULL;
+  if (passfil)
+    {
+      if (flock (fileno (passfil), LOCK_UN))
+        FATAL_BM ("failed to un-flock fd#%d for %s", fileno (passfil),
+                  passwords_filepath_BM);
+      if (fclose (passfil))
+        FATAL_BM ("failed to fclose %s", passwords_filepath_BM);
+      passfil = NULL;
+    }
+}                               /* end check_passwords_file_BM */
 
 ////////////////
 
@@ -1197,10 +1296,7 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
            passwords_filepath_BM, lincnt, curoidstr, curcontrib);
       _.contribob = findobjofid_BM (curid);
       if (!_.contribob)
-        FATAL_BM
-          ("in password file %s line#%d contributor %s of oid %s is missing in persistent heap,"
-           " so remove or comment out that line, or add that contributor",
-           passwords_filepath_BM, lincnt, curcontrib, curoidstr);
+        continue;
       if (!objhascontributorpayl_BM (_.contribob))
         FATAL_BM
           ("in password file %s line#%d contributor %s of oid %s for non-contributor object",
@@ -1215,7 +1311,12 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
         FATAL_BM
           ("in password file %s line#%d contributor %s of oid %s is expected to be %s",
            passwords_filepath_BM, lincnt, curcontrib, curoidstr, contrinam);
-#warning check_contributor_password_BM should somehow check the encrypted password
+      // read carefully crypt(3), that is http://man7.org/linux/man-pages/man3/crypt.3.html
+      // we want to use SHA-512, so "$6$" prefix
+      if (!strncmp ("$6$", curcryptpass, 3))
+        FATAL_BM
+          ("in password file %s line#%d contributor %s of oid %s with corrupted crypted password",
+           passwords_filepath_BM, lincnt, curcontrib, curoidstr);
     }
 end:
 #undef REJECT

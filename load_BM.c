@@ -1084,8 +1084,9 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       if (todocnt % 128 == 0)
         full_garbage_collection_BM (CURFRAME_BM);
     }
-  /// check and load contributors
+  /// check and load contributors and passwords files
   check_and_load_contributors_file_BM (ld, CURFRAME_BM);
+  check_passwords_file_BM (ld, CURFRAME_BM);
   // close all files
   for (int ix = 0; ix <= (int) ld->ld_maxnum; ix++)
     {

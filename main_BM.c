@@ -821,12 +821,13 @@ main (int argc, char **argv)
 #endif /*BISMONGTK*/
     free (contributors_filepath_BM), contributors_filepath_BM = NULL;
   free (passwords_filepath_BM), passwords_filepath_BM = NULL;
-  printf ("end of %s, pid %d, %.3f elapsed, %.3f cpu time\n"
+  printf ("end of %s, on %s, pid %d, %.3f elapsed, %.3f cpu time\n"
           "... timestamp %s\n"
           "... lastgitcommit %s\n"
           "... checksum %s\n",
-          progname, (int) getpid (), elapsedtime_BM (), cputime_BM (),
-          bismon_timestamp, bismon_lastgitcommit, bismon_checksum);
+          progname, myhostname_BM, (int) getpid (), elapsedtime_BM (),
+          cputime_BM (), bismon_timestamp, bismon_lastgitcommit,
+          bismon_checksum);
   fflush (NULL);
 }                               /* end main */
 

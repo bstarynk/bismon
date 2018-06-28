@@ -44,9 +44,6 @@ extern const char *passwords_filepath_BM;
 
 extern bool debugmsg_BM;
 
-#ifdef BISMONGTK
-extern GtkTextIter browserit_BM;
-#endif
 
 extern pthread_t mainthreadid_BM;
 
@@ -76,6 +73,7 @@ extern int nbworkjobs_BM;
 
 #ifdef BISMONGTK
 /********************************* GUI **************/
+extern GtkTextIter browserit_BM;
 extern GtkWidget *mainwin_BM;
 extern GtkWidget *errormessagedialog_BM;
 extern FILE *gui_command_log_file_BM;
