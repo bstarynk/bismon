@@ -1219,6 +1219,24 @@ userdelete_BM (objectval_tyBM * ownobj, struct user_stBM *us)
 }                               /* end userdelete_BM */
 
 
+
+static void
+compute_crypt_salt32_BM (char salt[32], objectval_tyBM * contribob)
+{
+  ASSERT_BM (salt != NULL);
+  memset (salt, 0, 32);
+  ASSERT_BM (isobject_BM (contribob) && objhascontributorpayl_BM (contribob));
+  char idbuf[32];
+  memset (idbuf, 0, sizeof (idbuf));
+  idtocbuf32_BM (objid_BM (contribob), idbuf);
+  const stringval_tyBM *namstr = objcontributornamepayl_BM (contribob);
+  ASSERT_BM (isstring_BM ((value_tyBM) namstr));
+  hash_tyBM hnam = valhash_BM ((value_tyBM) namstr);
+  ASSERT_BM (hnam > 0);
+  snprintf (salt, 32, "$6$%.12s%04x", idbuf + 1, hnam & 0xffff);
+}                               /* end compute_crypt_salt32_BM */
+
+
 bool
 check_contributor_password_BM (objectval_tyBM * contribobarg,
                                const char *passwd,
@@ -1226,6 +1244,7 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * contribob;    //current contributor object 
+                 objectval_tyBM * curcontribob; //current contributor object 
     );
   FILE *passfil = NULL;
   bool ok = false;
@@ -1240,9 +1259,20 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
     REJECT ();
   if (!objhascontributorpayl_BM (_.contribob))
     REJECT ();
+  char idbuf[32];
+  memset (idbuf, 0, sizeof (idbuf));
+  idtocbuf32_BM (objid_BM (_.contribob), idbuf);
   DBGPRINTF_BM
-    ("check_contributor_password_BM contribob %s passwd '%s' start",
-     objectdbg_BM (_.contribob), passwd);
+    ("check_contributor_password_BM contribob %s / %s passwd '%s' start",
+     objectdbg_BM (_.contribob), idbuf, passwd);
+  bool knowncontrib = false;
+  {
+    objlock_BM (BMP_contributors);
+    knowncontrib = objhashsetcontainspayl_BM (BMP_contributors, _.contribob);
+    objunlock_BM (BMP_contributors);
+  }
+  if (!knowncontrib)
+    REJECT ();
   passfil = fopen (passwords_filepath_BM, "r");
   if (!passfil)
     FATAL_BM ("check_contributor_password fopen %s failed: %m",
@@ -1294,15 +1324,13 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
         FATAL_BM
           ("in password file %s line#%d has invalid oid %s for contributor %s",
            passwords_filepath_BM, lincnt, curoidstr, curcontrib);
-      _.contribob = findobjofid_BM (curid);
-      if (!_.contribob)
+      _.curcontribob = findobjofid_BM (curid);
+      if (!_.curcontribob)
         continue;
-      if (!objhascontributorpayl_BM (_.contribob))
-        FATAL_BM
-          ("in password file %s line#%d contributor %s of oid %s for non-contributor object",
-           passwords_filepath_BM, lincnt, curcontrib, curoidstr);
+      if (!objhascontributorpayl_BM (_.curcontribob))
+        continue;
       const char *contrinam =
-        bytstring_BM (objcontributornamepayl_BM (_.contribob));
+        bytstring_BM (objcontributornamepayl_BM (_.curcontribob));
       if (!contrinam)
         FATAL_BM
           ("in password file %s line#%d corrupted contributor %s of oid %s",
@@ -1317,7 +1345,41 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
         FATAL_BM
           ("in password file %s line#%d contributor %s of oid %s with corrupted crypted password",
            passwords_filepath_BM, lincnt, curcontrib, curoidstr);
-    }
+      if (_.curcontribob != _.contribob)
+        continue;
+      char encrypassbuf[128];
+      memset (encrypassbuf, 0, sizeof (encrypassbuf));
+      {
+        char salt[32];
+        // crypt_data is quite big, more than 128Kbytes. So it cannot fit on the callstack.
+        struct crypt_data *crydat = calloc (sizeof (struct crypt_data), 1);
+        if (!crydat)
+          FATAL_BM ("calloc failed for crypt_data");
+        memset (salt, 0, sizeof (salt));
+        compute_crypt_salt32_BM (salt, _.contribob);
+        crydat->initialized = 0;
+        char *cryp = crypt_r (passwd, salt, crydat);
+        if (cryp)
+          strncpy (encrypassbuf, cryp, sizeof (encrypassbuf) - 8);
+        memset (crydat, 0, sizeof (struct crypt_data));
+        // the test below is always false, but we need the compiler to
+        // emit it. We don't want crypting secrets to leak!
+        if (((char *) crydat)[g_random_int () % sizeof (struct crypt_data)] !=
+            0)
+          FATAL_BM ("corruption in password crypting");
+        free (crydat), crydat = NULL;
+      }
+      DBGPRINTF_BM
+        ("for contributor %s encrypassbuf '%s' curcryptpass '%s' passwd '%s'",
+         objectdbg_BM (_.contribob), encrypassbuf, curcryptpass, passwd);
+      if (strcmp (encrypassbuf, curcryptpass))
+        REJECT ();
+      else
+        {
+          ok = true;
+          break;
+        }
+    }                           /* end readloop */
 end:
 #undef REJECT
   if (linbuf)
@@ -1331,6 +1393,8 @@ end:
         FATAL_BM ("failed to fclose %s", passwords_filepath_BM);
       passfil = NULL;
     }
+  // sleep some random delay, to make this call a bit costly...
+  usleep (100 + g_random_int () % 2048);
   return ok;
 }                               /* end check_contributor_password_BM */
 

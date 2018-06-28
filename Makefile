@@ -25,8 +25,8 @@ PKGCONFIG= pkg-config
 OTEMPLATE= otemplate
 PREPROFLAGS= -I. -I/usr/local/include -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED
 
-GTKLIBES= -L/usr/local/lib -lbacktrace $(shell $(PKGCONFIG) --libs $(GTKPACKAGES)) -ldl -lm
-ONIONLIBES= -L/usr/local/lib -lonion -lbacktrace $(shell $(PKGCONFIG) --libs $(ONIONPACKAGES)) -ldl -lm
+GTKLIBES= -L/usr/local/lib -lbacktrace $(shell $(PKGCONFIG) --libs $(GTKPACKAGES)) -lcrypt -ldl -lm
+ONIONLIBES= -L/usr/local/lib -lonion -lbacktrace $(shell $(PKGCONFIG) --libs $(ONIONPACKAGES)) -lcrypt -ldl -lm
 RM= rm -fv
 
 # the hand-written C source files common to both bismonion & bismongtk
