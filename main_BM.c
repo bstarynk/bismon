@@ -821,6 +821,12 @@ main (int argc, char **argv)
 #endif /*BISMONGTK*/
     free (contributors_filepath_BM), contributors_filepath_BM = NULL;
   free (passwords_filepath_BM), passwords_filepath_BM = NULL;
+  printf ("end of %s, pid %d, %.3f elapsed, %.3f cpu time\n"
+          "... timestamp %s\n"
+          "... lastgitcommit %s\n"
+          "... checksum %s\n",
+          progname, (int) getpid (), elapsedtime_BM (), cputime_BM (),
+          bismon_timestamp, bismon_lastgitcommit, bismon_checksum);
   fflush (NULL);
 }                               /* end main */
 
@@ -934,10 +940,10 @@ initialize_passwords_path_BM (void)
   if (stat (passwords_filepath_BM, &mystat))
     FATAL_BM ("cannot stat real passwords file %s - %m",
               passwords_filepath_BM);
-  if (mystat.st_mode & S_IFMT != S_IFREG)
+  if ((mystat.st_mode & S_IFMT) != S_IFREG)
     FATAL_BM ("real passwords file %s is not a regular file",
               passwords_filepath_BM);
-  if (mystat.st_mode & (S_IRWXG | S_IRWXO))
+  if ((mystat.st_mode & (S_IRWXG | S_IRWXO)) != 0)
     FATAL_BM
       ("real passwords file %s is should not be group or others readable/writable but only by owner",
        passwords_filepath_BM);
