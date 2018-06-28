@@ -644,6 +644,7 @@ static void parse_values_after_load_BM (void);
 static void add_contributors_after_load_BM (void);
 static void remove_contributors_after_load_BM (void);
 static void initialize_contributors_path_BM (void);
+static void initialize_passwords_path_BM (void);
 
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
@@ -728,10 +729,10 @@ main (int argc, char **argv)
     nbworkjobs_BM = MINNBWORKJOBS_BM;
   else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
+  //
   initialize_contributors_path_BM ();
-#warning missing initialize_passwords_path_BM function
-  NONPRINTF_BM ("main begin tid#%ld pid %d",
-                (long) gettid_BM (), (int) getpid ());
+  initialize_passwords_path_BM ();
+  //
   if (count_emit_has_predef_bm > 0)
     {
       rawid_tyBM *idarr =
@@ -818,7 +819,9 @@ main (int argc, char **argv)
   else
     rungui_BM (nbworkjobs_BM);
 #endif /*BISMONGTK*/
-    fflush (NULL);
+    free (contributors_filepath_BM), contributors_filepath_BM = NULL;
+  free (passwords_filepath_BM), passwords_filepath_BM = NULL;
+  fflush (NULL);
 }                               /* end main */
 
 
@@ -846,7 +849,7 @@ initialize_contributors_path_BM (void)
             ("no %s file found here in %s or in $HOME %s, pass --contributors-file=... option to give one",
              CONTRIBUTORS_FILE_BM, cwdbuf, homepath);
         }
-      if (!access (contributors_filepath_BM, R_OK))
+      if (access (contributors_filepath_BM, R_OK))
         FATAL_BM ("cannot read contributors file %s - %m",
                   contributors_filepath_BM);
       char *rcpath = realpath (contributors_filepath_BM, NULL);
@@ -859,7 +862,7 @@ initialize_contributors_path_BM (void)
     }
   else
     {                           // some given contributors_filepath_bm with --contributors-path= ... argument
-      if (!access (contributors_filepath_BM, R_OK))
+      if (access (contributors_filepath_BM, R_OK))
         FATAL_BM ("cannot read contributors file %s - %m",
                   contributors_filepath_BM);
       char *rcpath = realpath (contributors_filepath_BM, NULL);
@@ -868,11 +871,81 @@ initialize_contributors_path_BM (void)
                   contributors_filepath_BM);
       contributors_filepath_BM = rcpath;
     }
+  if (access (contributors_filepath_BM, R_OK))
+    FATAL_BM ("cannot read real contributors file %s - %m",
+              contributors_filepath_BM);
   printf ("using %s as the contributors file\n", contributors_filepath_BM);
 }                               /* end initialize_contributors_path_BM */
 
 
 
+////////////////
+
+void
+initialize_passwords_path_BM (void)
+{
+  if (!passwords_filepath_BM)
+    {
+      char *path = NULL;
+      char *homepath = NULL;
+      if (!access (PASSWORDS_FILE_BM, R_OK))
+        passwords_filepath_BM = PASSWORDS_FILE_BM;
+      else if ((homepath = getenv ("HOME")) != NULL
+               && asprintf (&path, "%s/" PASSWORDS_FILE_BM, homepath) > 0
+               && path != NULL && (!access (path, R_OK)
+                                   || (free (path), (path = NULL))))
+        passwords_filepath_BM = path;
+      if (!passwords_filepath_BM)
+        {
+          char cwdbuf[128];
+          memset (cwdbuf, 0, sizeof (cwdbuf));
+          if (!getcwd (cwdbuf, sizeof (cwdbuf)))
+            strcpy (cwdbuf, "./");
+          FATAL_BM
+            ("no %s file found here in %s or in $HOME %s, pass --passwords-file=... option to give one",
+             PASSWORDS_FILE_BM, cwdbuf, homepath);
+        }
+      if (access (passwords_filepath_BM, R_OK))
+        FATAL_BM ("cannot read passwords file %s - %m",
+                  passwords_filepath_BM);
+      char *rcpath = realpath (passwords_filepath_BM, NULL);
+      if (!rcpath)
+        FATAL_BM ("cannot get real path of passwords file %s - %m",
+                  passwords_filepath_BM);
+      if (path && rcpath != path)
+        free (path), path = NULL;
+      passwords_filepath_BM = rcpath;
+    }
+  else
+    {                           // some given passwords_filepath_bm with --passwords-path= ... argument
+      if (access (passwords_filepath_BM, R_OK))
+        FATAL_BM ("cannot read passwords file %s - %m",
+                  passwords_filepath_BM);
+      char *rcpath = realpath (passwords_filepath_BM, NULL);
+      if (!rcpath)
+        FATAL_BM ("cannot get real path of passwords file %s - %m",
+                  passwords_filepath_BM);
+      passwords_filepath_BM = rcpath;
+    }
+  if (access (passwords_filepath_BM, R_OK))
+    FATAL_BM ("cannot read real passwords file %s - %m",
+              passwords_filepath_BM);
+  struct stat mystat = { };
+  if (stat (passwords_filepath_BM, &mystat))
+    FATAL_BM ("cannot stat real passwords file %s - %m",
+              passwords_filepath_BM);
+  if (mystat.st_mode & S_IFMT != S_IFREG)
+    FATAL_BM ("real passwords file %s is not a regular file",
+              passwords_filepath_BM);
+  if (mystat.st_mode & (S_IRWXG | S_IRWXO))
+    FATAL_BM
+      ("real passwords file %s is should not be group or others readable/writable but only by owner",
+       passwords_filepath_BM);
+}                               /* end initialize_passwords_path_BM */
+
+
+
+////////////////
 void
 parse_values_after_load_BM (void)
 {

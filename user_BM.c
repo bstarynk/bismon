@@ -117,7 +117,12 @@ overwrite_contributor_file_BM (const char *rcpath, FILE * fil,
     memset (&nowtm, 0, sizeof (nowtm));
     localtime_r (&nowt, &nowtm);
     strftime (nowtimbuf, sizeof (nowtimbuf), "%c", &nowtm);
-    fprintf (fil, "## BISMON contributors file %s\n", CONTRIBUTORS_FILE_BM);
+    char *baspath = basename (contributors_filepath_BM);
+    if (strcmp (baspath, CONTRIBUTORS_FILE_BM))
+      fprintf (fil, "## BISMON contributors file %s (really %s)\n",
+               CONTRIBUTORS_FILE_BM, contributors_filepath_BM);
+    else
+      fprintf (fil, "## BISMON contributors file %s\n", CONTRIBUTORS_FILE_BM);
     fprintf (fil,
              "## when BISMON is running, don't edit manually this file; it could be flock-ed.\n");
     fprintf (fil,
@@ -328,7 +333,7 @@ valid_contributor_name_BM (const char *name, char **perrmsg)
 
 // this check is done only once, during load...
 void
-check_and_load_contributors_file_BM (struct loader_stBM *ld, const char *path,
+check_and_load_contributors_file_BM (struct loader_stBM *ld,
                                      struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_contributor_class = BMK_5BAqWtmxAH6_9rCGuxiNbfc;
@@ -345,19 +350,15 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld, const char *path,
   if (!ld || ld->ld_magic != LOADERMAGIC_BM)
     FATAL_BM
       ("check_and_load_contributors_file_BM invalid loader for path %s",
-       path);
-  if (!path || !path[0])
-    path = CONTRIBUTORS_FILE_BM;
-  FILE *fil = fopen (path, "r+");
-  char *rcpath = realpath (path, NULL);
+       contributors_filepath_BM);
+  char *rcpath = contributors_filepath_BM;
+  ASSERT_BM (rcpath != NULL && rcpath[0] == '/');
+  FILE *fil = fopen (rcpath, "r+");
   if (!fil)
     {
-      FATAL_BM ("cannot open contributors file %s (real path %s) : %m", path,
-                rcpath);
+      FATAL_BM ("cannot open contributors file %s  : %m", rcpath);
       return;
     }
-  if (!rcpath)
-    FATAL_BM ("cannot get real path of contributors file %s", path);
   _.hsetob = makeobj_BM ();
   int fd = fileno (fil);
   memset (&mystat, 0, sizeof (mystat));
@@ -422,7 +423,7 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld, const char *path,
       if (!valid_email_BM (curemail, DONTCHECKDNS_BM, &errmsg))
         FATAL_BM
           ("in %s line#%d has invalid email %s for contributor %s : %s",
-           path, lincnt, curemail, curcontrib, errmsg);
+           rcpath, lincnt, curemail, curcontrib, errmsg);
       if (curalias[0] && !isspace (curalias[0])
           && !valid_email_BM (curalias, DONTCHECKDNS_BM, &errmsg))
         FATAL_BM

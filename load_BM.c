@@ -1085,7 +1085,7 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
         full_garbage_collection_BM (CURFRAME_BM);
     }
   /// check and load contributors
-  check_and_load_contributors_file_BM (ld, CONTRIBUTORS_FILE_BM, CURFRAME_BM);
+  check_and_load_contributors_file_BM (ld, CURFRAME_BM);
   // close all files
   for (int ix = 0; ix <= (int) ld->ld_maxnum; ix++)
     {

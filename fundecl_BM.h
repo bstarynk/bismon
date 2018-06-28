@@ -1424,9 +1424,8 @@ extern objectval_tyBM *remove_contributor_by_name_BM    // callable only from ma
 extern bool valid_email_BM (const char *email, bool checkdns, char **perrmsg);
 extern bool valid_contributor_name_BM (const char *name, char **perrmsg);
 
-// check then load the contributors file at startup, during the load
+// check then load the contributors (and password) files at startup, during the load
 void check_and_load_contributors_file_BM (struct loader_stBM *ld,
-                                          const char *path,
                                           struct stackframe_stBM *stkf);
 
 // the only operations doable on user objects after load since adding
