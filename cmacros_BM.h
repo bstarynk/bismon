@@ -72,6 +72,7 @@
     .tok_kind= plex__NONE, .tok_line= -1, .tok_col= -1, .tok_ptr= NULL }
 
 #define CONTRIBUTORS_FILE_BM "contributors_BM"
+#define PASSWORDS_FILE_BM "passwords_BM"
 #define MODULESRCDIR_BM "modules"
 #define MODULEBINDIR_BM "modubin"
 #define MODULEPREFIX_BM "modbm"
