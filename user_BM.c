@@ -108,7 +108,7 @@ overwrite_contributor_file_BM (const char *rcpath, FILE * fil,
   _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.assocob);
   {
     nbcontrib = objassocnbkeyspayl_BM (_.assocob);
-    ASSERT_BM (setcardinal_BM (_.keysetv) == nbcontrib);
+    ASSERT_BM ((int) setcardinal_BM (_.keysetv) == nbcontrib);
     char nowtimbuf[80];
     memset (nowtimbuf, 0, sizeof (nowtimbuf));
     time_t nowt = 0;
@@ -506,7 +506,6 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
   fprintf (stderr,
            "check and load of %d contributors in file %s completed successfully\n",
            nbcontrib, rcpath);
-  free (rcpath), rcpath = NULL;
 }                               /* end check_and_load_contributors_file_BM */
 
 
@@ -548,14 +547,14 @@ objectval_tyBM *add_contributor_name_email_alias_BM
     LOCALRETURN_BM (NULL);
   // the contributor files should exist and contain only valid
   // entries. Otherwise fatal error!
-  FILE *fil = fopen (CONTRIBUTORS_FILE_BM, "r+");
+  FILE *fil = fopen (contributors_filepath_BM, "r+");
   if (!fil)
     {
       FATAL_BM ("cannot open contributors file %s : %m",
                 CONTRIBUTORS_FILE_BM);
       LOCALRETURN_BM (NULL);
     }
-  const char *rcpath = realpath (CONTRIBUTORS_FILE_BM, NULL);
+  const char *rcpath = contributors_filepath_BM;
   struct stat mystat = { };
   if (!rcpath)
     FATAL_BM ("cannot get real path of contributor file %s: %m",
@@ -1130,7 +1129,6 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
                  objectval_tyBM * contribob;    //current contributor object 
     );
   FILE *passfil = NULL;
-  char *rcpath = NULL;
   bool ok = false;
 #define REJECT() do { DBGPRINTF_BM("check_contributor_password_BM rejects contribob %s passwd '%s'", \
   objectdbg_BM(_.contribob), passwd); ok=false; goto end; } while(0)
@@ -1146,16 +1144,13 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
   DBGPRINTF_BM
     ("check_contributor_password_BM contribob %s passwd '%s' start",
      objectdbg_BM (_.contribob), passwd);
-  passfil = fopen (PASSWORDS_FILE_BM, "r");
+  passfil = fopen (passwords_filepath_BM, "r");
   if (!passfil)
     FATAL_BM ("check_contributor_password fopen %s failed: %m",
-              PASSWORDS_FILE_BM);
-  rcpath = realpath (PASSWORDS_FILE_BM, NULL);
-  if (!rcpath)
-    FATAL_BM ("cannot get realpath of %s : %m", PASSWORDS_FILE_BM);
+              passwords_filepath_BM);
   if (flock (fileno (passfil), LOCK_EX))
     FATAL_BM ("check_contributor_password failed to flock fd#%d for %s",
-              fileno (passfil), rcpath);
+              fileno (passfil), passwords_filepath_BM);
   size_t linsiz = 128;
   char *linbuf = calloc (linsiz, 1);
   int lincnt = 0;
@@ -1175,21 +1170,52 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
         continue;
       const char *end = NULL;
       if (!g_utf8_validate (linbuf, -1, &end) && end && *end)
-        FATAL_BM ("in %s line#%d is invalid UTF8: %s", rcpath,
-                  lincnt, linbuf);
+        FATAL_BM ("in password file %s line#%d is invalid UTF8: %s",
+                  passwords_filepath_BM, lincnt, linbuf);
       // linbuf should be like: <contribname>;<oid>;<encrypted-password>
       char *semcol1 = strchr (linbuf, ';');
       char *semcol2 = semcol1 ? strchr (semcol1 + 1, ';') : NULL;
       if (!semcol2)
         FATAL_BM
-          ("in %s line#%d should be like <contributor-name>;<oid>;<encrypted-password> but is %s",
-           rcpath, lincnt, linbuf);
+          ("in password file %s line#%d should be like <contributor-name>;<oid>;<encrypted-password> but is %s",
+           passwords_filepath_BM, lincnt, linbuf);
       *semcol1 = (char) 0;
       *semcol2 = (char) 0;
-      const char *curcontribname = linbuf;
+      const char *curcontrib = linbuf;
       const char *curoidstr = semcol1 + 1;
       const char *curcryptpass = semcol2 + 1;
-#warning incomplete check_contributor_password
+      char *errmsg = NULL;
+      if (!valid_contributor_name_BM (curcontrib, &errmsg))
+        FATAL_BM
+          ("in password file %s line#%d has invalid contributor name %s : %s",
+           passwords_filepath_BM, lincnt, curcontrib, errmsg);
+      const char *endid = NULL;
+      rawid_tyBM curid = parse_rawid_BM (curoidstr, &endid);
+      if (!endid || *endid || !curid.id_hi || !curid.id_lo)
+        FATAL_BM
+          ("in password file %s line#%d has invalid oid %s for contributor %s",
+           passwords_filepath_BM, lincnt, curoidstr, curcontrib);
+      _.contribob = findobjofid_BM (curid);
+      if (!_.contribob)
+        FATAL_BM
+          ("in password file %s line#%d contributor %s of oid %s is missing in persistent heap,"
+           " so remove or comment out that line, or add that contributor",
+           passwords_filepath_BM, lincnt, curcontrib, curoidstr);
+      if (!objhascontributorpayl_BM (_.contribob))
+        FATAL_BM
+          ("in password file %s line#%d contributor %s of oid %s for non-contributor object",
+           passwords_filepath_BM, lincnt, curcontrib, curoidstr);
+      const char *contrinam =
+        bytstring_BM (objcontributornamepayl_BM (_.contribob));
+      if (!contrinam)
+        FATAL_BM
+          ("in password file %s line#%d corrupted contributor %s of oid %s",
+           passwords_filepath_BM, lincnt, curcontrib, curoidstr);
+      if (strcmp (contrinam, curcontrib))
+        FATAL_BM
+          ("in password file %s line#%d contributor %s of oid %s is expected to be %s",
+           passwords_filepath_BM, lincnt, curcontrib, curoidstr, contrinam);
+#warning check_contributor_password_BM should somehow check the encrypted password
     }
 end:
 #undef REJECT
@@ -1199,13 +1225,11 @@ end:
     {
       if (flock (fileno (passfil), LOCK_UN))
         FATAL_BM ("failed to un-flock fd#%d for %s", fileno (passfil),
-                  rcpath);
+                  passwords_filepath_BM);
       if (fclose (passfil))
-        FATAL_BM ("failed to fclose %s", rcpath);
+        FATAL_BM ("failed to fclose %s", passwords_filepath_BM);
       passfil = NULL;
     }
-  if (rcpath)
-    free (rcpath), rcpath = NULL;
   return ok;
 }                               /* end check_contributor_password_BM */
 
