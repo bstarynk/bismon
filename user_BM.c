@@ -1565,9 +1565,32 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
       utime (backupath, &backtb);
       free (linbuf), linbuf = NULL;
     }
+  char encrypassbuf[128];
+  memset (encrypassbuf, 0, sizeof (encrypassbuf));
+  {
+    char salt[32];
+    // crypt_data is quite big, more than 128Kbytes. So it cannot fit on the callstack.
+    struct crypt_data *crydat = calloc (sizeof (struct crypt_data), 1);
+    if (!crydat)
+      FATAL_BM ("calloc failed for crypt_data");
+    memset (salt, 0, sizeof (salt));
+    compute_crypt_salt32_BM (salt, _.contribob);
+    crydat->initialized = 0;
+    char *cryp = crypt_r (passwd, salt, crydat);
+    if (cryp)
+      strncpy (encrypassbuf, cryp, sizeof (encrypassbuf) - 8);
+    memset (crydat, 0, sizeof (struct crypt_data));
+    // the test below is always false, but we need the compiler to
+    // emit it. We don't want crypting secrets to leak!
+    if (((char *) crydat)[g_random_int () % sizeof (struct crypt_data)] != 0)
+      FATAL_BM ("corruption in password crypting");
+    free (crydat), crydat = NULL;
+  }
+  _.curpasstrv = makestring_BM (encrypassbuf);
+  objassocaddattrpayl_BM (_.assocob, _.contribob, _.curpasstrv);
   /// rewrite loop of password
+  rewind (passfil);
   write_password_file_BM (passfil, _.assocob, CURFRAME_BM);
-#warning missing write loop of password file
 end:
 #undef REJECT
   objclearpayload_BM (_.assocob);
@@ -1664,7 +1687,7 @@ read_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
       if (objassocgetattrpayl_BM (_.assocob, _.curcontribob))
         FATAL_BM
           ("in password file %s line#%d duplicate contributor %s of oid %s",
-           curcontrib, curoidstr);
+           passwords_filepath_BM, lincnt, curcontrib, curoidstr);
       const char *contrinam =
         bytstring_BM (objcontributornamepayl_BM (_.curcontribob));
       if (!contrinam)
@@ -1686,6 +1709,8 @@ read_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
     }                           /* end readloop */
 }                               /* end read_password_file_BM */
 
+
+////////////////
 void
 write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
                         struct stackframe_stBM *stkf)
