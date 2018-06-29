@@ -1747,6 +1747,12 @@ write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
       fprintf (passfil, "%s;%s;%s\n", bytstring_BM (_.curnamev), contridbuf,
                bytstring_BM (_.curpasstrv));
     }
+  fprintf (passfil, "# end of BISMON password files for %d passwords\n",
+           nbpasswords);
+  if (fflush (passfil))
+    FATAL_BM ("failed to fflush password file %s", passwords_filepath_BM);
+  long ln = ftell (passfil);
+  ftruncate (fileno (passfil), ln);
 }                               /* end write_password_file_BM */
 
 /// end of file user_BM.c
