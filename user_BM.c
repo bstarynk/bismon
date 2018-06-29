@@ -83,7 +83,7 @@ objcontributornamepayl_BM (objectval_tyBM * obj)
 
 
 static void
-overwrite_contributor_file_BM (const char *rcpath, FILE * fil,
+overwrite_contributor_file_BM (FILE * fil,
                                objectval_tyBM * assocobarg,
                                struct stackframe_stBM *stkf)
 {
@@ -147,7 +147,7 @@ overwrite_contributor_file_BM (const char *rcpath, FILE * fil,
         _.emailv = nodenthson_BM (_.nodev, 0);
         _.aliasv = nodenthson_BM (_.nodev, 1);
         objlock_BM (_.contribob);
-        _.namev = objcontributornamepayl_BM (_.contribob);
+        _.namev = (value_tyBM) objcontributornamepayl_BM (_.contribob);
         objunlock_BM (_.contribob);
         char idbuf[32];
         memset (idbuf, 0, sizeof (idbuf));
@@ -458,7 +458,7 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
         struct user_stBM *us =
           allocgcty_BM (typayl_user_BM, sizeof (struct user_stBM));
         us->user_ownobj = _.contribob;
-        us->user_namev = _.namev = makestring_BM (curcontrib);
+        us->user_namev = _.namev = (value_tyBM) makestring_BM (curcontrib);
         objputpayload_BM (_.contribob, us);
       }
       objunlock_BM (_.contribob);
@@ -591,7 +591,7 @@ check_passwords_file_BM (struct loader_stBM *ld, struct stackframe_stBM *stkf)
           ("in password file %s line#%d contributor %s of oid %s and object %s is not a contributor-object",
            passwords_filepath_BM, lincnt, curcontrib, curoidstr,
            objectdbg_BM (_.contribob));
-      _.namev = objcontributornamepayl_BM (_.contribob);
+      _.namev = (value_tyBM) objcontributornamepayl_BM (_.contribob);
       objunlock_BM (_.contribob);
       if (!isstring_BM (_.namev)
           || strcmp (bytstring_BM (_.namev), curcontrib))
@@ -599,6 +599,12 @@ check_passwords_file_BM (struct loader_stBM *ld, struct stackframe_stBM *stkf)
           ("in password file %s line#%d contributor %s of oid %s and object %s which has unexpected name %s",
            passwords_filepath_BM, lincnt, curcontrib, curoidstr,
            objectdbg_BM (_.contribob), bytstring_BM (_.namev) ? : "**none**");
+      if (strncmp (curcryptpass, "$6$", 3))
+        FATAL_BM
+          ("in password file %s line#%d contributor %s of oid %s and object %s has bad encrypted password %s",
+           passwords_filepath_BM, lincnt, curcontrib, curoidstr,
+           objectdbg_BM (_.contribob), curcryptpass);
+
     }
   if (linbuf)
     free (linbuf), linbuf = NULL;
@@ -776,7 +782,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
             FATAL_BM
               ("in %s line#%d contributor %s of oid %s and object %s has same name but different email %s",
                rcpath, lincnt, curcontrib, curoidstr,
-               objectdbg_BM (_.contribob), bytstring_BM (_.namev), curemail);
+               objectdbg_BM (_.contribob), curemail);
           _.newcontribob = _.contribob;
         }
       if (!strcmp (curemail, email))
@@ -784,7 +790,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
           FATAL_BM
             ("in %s line#%d contributor %s of oid %s and object %s has same email as added one %s",
              rcpath, lincnt, curcontrib, curoidstr,
-             objectdbg_BM (_.contribob), bytstring_BM (_.namev), curemail);
+             objectdbg_BM (_.contribob), curemail);
         }
       _.contribob = NULL;
       _.namev = NULL;
@@ -819,7 +825,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
   else
     knowncontrib = true;
   /// writing loop
-  overwrite_contributor_file_BM (rcpath, fil, _.assocob, CURFRAME_BM);
+  overwrite_contributor_file_BM (fil, _.assocob, CURFRAME_BM);
   fflush (fil);
   long filen = ftell (fil);
   ftruncate (fd, filen);
@@ -1167,7 +1173,7 @@ remove_contributor_by_name_BM (const char *oldname,
     objunlock_BM (BMP_contributors);
   }
   objassocremoveattrpayl_BM (_.assocob, _.oldcontribob);
-  overwrite_contributor_file_BM (rcpath, fil, _.assocob, CURFRAME_BM);
+  overwrite_contributor_file_BM (fil, _.assocob, CURFRAME_BM);
   fflush (fil);
   long filen = ftell (fil);
   ftruncate (fd, filen);
@@ -1442,11 +1448,10 @@ end:
   return ok;
 }                               /* end check_contributor_password_BM */
 
-
+static pthread_mutex_t passwd_mutex_bm = PTHREAD_MUTEX_INITIALIZER;
 bool
 put_contributor_password_BM (objectval_tyBM * contribobarg,
-                             const char *passwd,
-                             struct stackframe_stBM * stkf)
+                             const char *passwd, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * contribob;    //current contributor object 
@@ -1456,11 +1461,13 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
 #warning we need a mutex to serialize and lock that routine
   FILE *passfil = NULL;
   bool ok = false;
+  static long putcount;
 #define REJECT() do { DBGPRINTF_BM("put_contributor_password_BM rejects contribob %s passwd '%s'", \
   objectdbg_BM(_.contribob), passwd); ok=false; goto end; } while(0)
   // to make life harder for external malicious stuff 
   usleep (1000 + g_random_int () % 1024);
   _.contribob = objectcast_BM (contribobarg);
+  pthread_mutex_lock (&passwd_mutex_bm);
   if (!_.contribob)
     REJECT ();
   if (!passwd || !passwd[0] || !valid_password_BM (passwd))
@@ -1471,8 +1478,8 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
   memset (idbuf, 0, sizeof (idbuf));
   idtocbuf32_BM (objid_BM (_.contribob), idbuf);
   DBGPRINTF_BM
-    ("put_contributor_password_BM contribob %s / %s passwd '%s' start",
-     objectdbg_BM (_.contribob), idbuf, passwd);
+    ("put_contributor_password_BM contribob %s / %s passwd '%s' start password file %s",
+     objectdbg_BM (_.contribob), idbuf, passwd, passwords_filepath_BM);
   bool knowncontrib = false;
   {
     objlock_BM (BMP_contributors);
@@ -1488,14 +1495,15 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
   if (flock (fileno (passfil), LOCK_EX))
     FATAL_BM ("put_contributor_password failed to flock fd#%d for %s",
               fileno (passfil), passwords_filepath_BM);
+  struct stat passwstat;
+  memset (&passwstat, 0, sizeof (passwstat));
   {
-    struct stat mystat;
-    memset (&mystat, 0, sizeof (mystat));
-    if (fstat (fileno (passfil), &mystat))
+    if (fstat (fileno (passfil), &passwstat))
       FATAL_BM ("failed to fstat password file %s fd#%d",
                 passwords_filepath_BM, fileno (passfil));
     _.assocob = makeobj_BM ();
-    objputassocpayl_BM (_.assocob, prime_above_BM (mystat.st_size / 64 + 10));
+    objputassocpayl_BM (_.assocob,
+                        prime_above_BM (passwstat.st_size / 64 + 10));
   }
   objtouchnow_BM (_.assocob);
   size_t linsiz = 128;
@@ -1582,6 +1590,43 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
     }                           /* end readloop */
   /// we first should do some backup copy, and we should do it once in
   /// the whole process
+  if (putcount++ == 0)
+    {                           // first call in this process, so backup the password file
+      char *backupath = NULL;
+      if (asprintf (&backupath, "%s~", passwords_filepath_BM) < 0
+          || !backupath)
+        FATAL_BM ("failed to get backup path for passwords file %s",
+                  passwords_filepath_BM);
+      DBGPRINTF_BM
+        ("put_contributor_password_BM backup password file %s -> %s",
+         passwords_filepath_BM, backupath);
+      FILE *backfil = fopen (backupath, "w");
+      if (!backfil)
+        FATAL_BM ("failed to fopen backup % for passwords file - %m",
+                  backupath);
+      rewind (passfil);
+      if (fchmod (fileno (backfil), 0600))
+        FATAL_BM ("failed to fchmod backup file %s - %m", backupath);
+      for (;;)
+        {
+          ssize_t linlen = getline (&linbuf, &linsiz, passfil);
+          if (linlen < 0)
+            break;
+          if (linbuf[linlen] == '\n')
+            linbuf[linlen] = (char) 0;
+          fputs (backfil, linbuf);
+          if (fputc (backfil, '\n') < 0)
+            FATAL_BM ("failed to write passwords backup %s - %m", backupath);
+        }
+      if (fclose (backfil))
+        FATAL_BM ("failed to fclose passwords backup %s - %m", backupath);
+      backfil = NULL;
+      struct utimbuf backtb;
+      memset (&backtb, 0, sizeof (backtb));
+      time (&backtb.actime);
+      backtb.modtime = passwstat.st_mtime;
+      utime (backupath, &backtb);
+    }
 #warning missing write loop of password file
 end:
 #undef REJECT
@@ -1599,6 +1644,8 @@ end:
         FATAL_BM ("failed to fclose %s", passwords_filepath_BM);
       passfil = NULL;
     }
+  usleep (100);
+  pthread_mutex_unlock (&passwd_mutex_bm);
   // sleep some random delay, to make this call a bit costly...
   usleep (100 + g_random_int () % 2048);
   return ok;
