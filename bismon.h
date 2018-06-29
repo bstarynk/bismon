@@ -51,6 +51,7 @@ using std::atomic_store;
 #include <string.h>
 #include <assert.h>
 #include <time.h>
+#include <utime.h>
 #include <setjmp.h>
 #include <math.h>
 #include <dlfcn.h>
