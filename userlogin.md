@@ -97,6 +97,7 @@ dump time.
 Dump should also write some `dumped_user_ids` file?  Not sure of that!
 
 The password file `passwords_BM` would contain (semi-colon separated)
-lines with object-id, encrypted password, optional username and should
-be in `.gitigore`
+lines with username, object-id, encrypted password, and should be in
+`.gitigore`. It usually is `$HOME/passwords_BM` but could be given on
+the command line.
 
