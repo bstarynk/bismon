@@ -1316,6 +1316,13 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
     ("check_contributor_password_BM contribob %s / %s passwd '%s' start",
      objectdbg_BM (_.contribob), idbuf, passwd);
   bool knowncontrib = false;
+  size_t linsiz = 128;
+  char *linbuf = calloc (linsiz, 1);
+  int lincnt = 0;
+  int nbcontrib = 0;
+  if (!linbuf)
+    FATAL_BM
+      ("check_contributor_file_BM can't alloc line of %zd bytes", linsiz);
   {
     objlock_BM (BMP_contributors);
     knowncontrib = objhashsetcontainspayl_BM (BMP_contributors, _.contribob);
@@ -1330,9 +1337,6 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
   if (flock (fileno (passfil), LOCK_EX))
     FATAL_BM ("check_contributor_password failed to flock fd#%d for %s",
               fileno (passfil), passwords_filepath_BM);
-  size_t linsiz = 128;
-  char *linbuf = calloc (linsiz, 1);
-  int lincnt = 0;
   if (!linbuf)
     FATAL_BM ("check_contributor_password failed to calloc line of %zd",
               linsiz);
@@ -1448,19 +1452,23 @@ end:
   return ok;
 }                               /* end check_contributor_password_BM */
 
+
+static void read_password_file_BM (FILE * passfil, objectval_tyBM * assocob,
+                                   struct stackframe_stBM *stkf);
+
 static pthread_mutex_t passwd_mutex_bm = PTHREAD_MUTEX_INITIALIZER;
 bool
 put_contributor_password_BM (objectval_tyBM * contribobarg,
                              const char *passwd, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * contribob;    //current contributor object 
+                 objectval_tyBM * contribob;    //given contributor object 
                  objectval_tyBM * curcontribob; //current contributor object
-		  objectval_tyBM * assocob; //
-		  value_tyBM keysetv; //
-		  value_tyBM curpasstrv; //
+                 objectval_tyBM * assocob;      //
+                 value_tyBM keysetv;    //
+                 value_tyBM curpasstrv; //
+                 value_tyBM curnamev;
     );
-#warning we need a mutex to serialize and lock that routine
   FILE *passfil = NULL;
   bool ok = false;
   static long putcount;
@@ -1508,12 +1516,147 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
                         prime_above_BM (passwstat.st_size / 64 + 10));
   }
   objtouchnow_BM (_.assocob);
+  read_password_file_BM (passfil, _.assocob, CURFRAME_BM);
+  /// we first should do some backup copy, and we should do it once in
+  /// the whole process
+  if (putcount++ == 0)
+    {                           // first call in this process, so backup the password file
+      size_t linsiz = 128;
+      char *linbuf = calloc (linsiz, 1);
+      int lincnt = 0;
+      int nbcontrib = 0;
+      if (!linbuf)
+        FATAL_BM
+          ("put_contributor_password_BM can't alloc line of %zd bytes",
+           linsiz);
+      char *backupath = NULL;
+      if (asprintf (&backupath, "%s~", passwords_filepath_BM) < 0
+          || !backupath)
+        FATAL_BM ("failed to get backup path for passwords file %s",
+                  passwords_filepath_BM);
+      DBGPRINTF_BM
+        ("put_contributor_password_BM backup password file %s -> %s",
+         passwords_filepath_BM, backupath);
+      FILE *backfil = fopen (backupath, "w");
+      if (!backfil)
+        FATAL_BM ("failed to fopen backup %s for passwords file - %m",
+                  backupath);
+      rewind (passfil);
+      if (fchmod (fileno (backfil), 0600))
+        FATAL_BM ("failed to fchmod backup file %s - %m", backupath);
+      for (;;)
+        {
+          ssize_t linlen = getline (&linbuf, &linsiz, passfil);
+          if (linlen < 0)
+            break;
+          if (linbuf[linlen] == '\n')
+            linbuf[linlen] = (char) 0;
+          fputs (backfil, linbuf);
+          if (fputc (backfil, '\n') < 0)
+            FATAL_BM ("failed to write passwords backup %s - %m", backupath);
+        }
+      if (fclose (backfil))
+        FATAL_BM ("failed to fclose passwords backup %s - %m", backupath);
+      backfil = NULL;
+      struct utimbuf backtb;
+      memset (&backtb, 0, sizeof (backtb));
+      time (&backtb.actime);
+      backtb.modtime = passwstat.st_mtime;
+      utime (backupath, &backtb);
+      free (linbuf), linbuf = NULL;
+    }
+  /// rewrite loop of password
+  {
+    rewind (passfil);
+    char nowtimbuf[80];
+    memset (nowtimbuf, 0, sizeof (nowtimbuf));
+    time_t nowt = 0;
+    time (&nowt);
+    struct tm nowtm = { };
+    memset (&nowtm, 0, sizeof (nowtm));
+    localtime_r (&nowt, &nowtm);
+    strftime (nowtimbuf, sizeof (nowtimbuf), "%c", &nowtm);
+    char *baspath = basename (passwords_filepath_BM);
+    int nbpasswords = objassocnbkeyspayl_BM (_.assocob);
+    if (strcmp (baspath, PASSWORDS_FILE_BM))
+      fprintf (passfil, "## BISMON passwords file %s (really %s)\n",
+               PASSWORDS_FILE_BM, passwords_filepath_BM);
+    else
+      fprintf (passfil, "## BISMON passwords file %s\n", PASSWORDS_FILE_BM);
+    fprintf (passfil,
+             "## when BISMON is running, don't edit manually this file; it could be flock-ed.\n");
+    fprintf (passfil, "###############################################\n");
+    fprintf (passfil, "## written by BISMON built at %s\n", bismon_timestamp);
+    fprintf (passfil, "## BISMON lastgitcommit %s\n", bismon_lastgitcommit);
+    fprintf (passfil, "## BISMON checksum %s\n", bismon_checksum);
+    fprintf (passfil, "##- emitted at %s on %s for %d passwords.\n",
+             nowtimbuf, myhostname_BM, nbpasswords);
+    fprintf (passfil,
+             "## passwords are encrypted, see http://man7.org/linux/man-pages/man3/crypt.3.html\n");
+    fprintf (passfil,
+             "## format: one password line per contributor or user like:\n"
+             "## <username>;<oid>;<encrypted-password>\n");
+    _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.assocob);
+    ASSERT_BM (isset_BM (_.keysetv)
+               && (int) setcardinal_BM (_.keysetv) == nbpasswords);
+    for (unsigned pix = 0; pix < nbpasswords; pix++)
+      {
+        _.curcontribob = setelemnth_BM (_.keysetv, pix);
+        ASSERT_BM (isobject_BM (_.curcontribob));
+        ASSERT_BM (objhascontributorpayl_BM (_.curcontribob));
+        _.curpasstrv = objassocgetattrpayl_BM (_.assocob, _.curcontribob);
+        ASSERT_BM (isstring_BM (_.curpasstrv));
+        _.curnamev = objcontributornamepayl_BM (_.curcontribob);
+        ASSERT_BM (isstring_BM (_.curnamev));
+        char contridbuf[32];
+        memset (contridbuf, 0, sizeof (contridbuf));
+        idtocbuf32_BM (objid_BM (_.contribob), contridbuf);
+        fprintf (passfil, "%s;%s;%s\n", bytstring_BM (_.curnamev), contridbuf,
+                 bytstring_BM (_.curpasstrv));
+      }
+  }
+#warning missing write loop of password file
+end:
+#undef REJECT
+  objclearpayload_BM (_.assocob);
+  objputclass_BM (_.assocob, BMP_object);
+  objtouchnow_BM (_.assocob);
+  if (passfil)
+    {
+      if (flock (fileno (passfil), LOCK_UN))
+        FATAL_BM ("failed to un-flock fd#%d for %s", fileno (passfil),
+                  passwords_filepath_BM);
+      if (fclose (passfil))
+        FATAL_BM ("failed to fclose %s", passwords_filepath_BM);
+      passfil = NULL;
+    }
+  usleep (100);
+  pthread_mutex_unlock (&passwd_mutex_bm);
+  // sleep some random delay, to make this call a bit costly...
+  usleep (100 + g_random_int () % 2048);
+  return ok;
+}                               /* end put_contributor_password_BM */
+
+
+void
+read_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
+                       struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * curcontribob; //current contributor object
+                 objectval_tyBM * assocob;      //
+                 value_tyBM keysetv;    //
+                 value_tyBM curpasstrv; //
+                 value_tyBM curnamev;
+    );
+  _.assocob = assocobarg;
+  ASSERT_BM (isobject_BM (_.assocob));
+  ASSERT_BM (objhasassocpayl_BM (_.assocob));
   size_t linsiz = 128;
   char *linbuf = calloc (linsiz, 1);
   int lincnt = 0;
   if (!linbuf)
-    FATAL_BM ("put_contributor_password failed to calloc line of %zd",
-              linsiz);
+    FATAL_BM ("read_password_file_BM failed to calloc line of %zd", linsiz);
   /// read password file loop
   for (;;)
     {
@@ -1570,7 +1713,6 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
         FATAL_BM
           ("in password file %s line#%d duplicate contributor %s of oid %s",
            curcontrib, curoidstr);
-
       const char *contrinam =
         bytstring_BM (objcontributornamepayl_BM (_.curcontribob));
       if (!contrinam)
@@ -1590,107 +1732,7 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
       objassocaddattrpayl_BM (_.assocob, _.curcontribob,
                               makestring_BM (curcryptpass));
     }                           /* end readloop */
-  /// we first should do some backup copy, and we should do it once in
-  /// the whole process
-  if (putcount++ == 0)
-    {                           // first call in this process, so backup the password file
-      char *backupath = NULL;
-      if (asprintf (&backupath, "%s~", passwords_filepath_BM) < 0
-          || !backupath)
-        FATAL_BM ("failed to get backup path for passwords file %s",
-                  passwords_filepath_BM);
-      DBGPRINTF_BM
-        ("put_contributor_password_BM backup password file %s -> %s",
-         passwords_filepath_BM, backupath);
-      FILE *backfil = fopen (backupath, "w");
-      if (!backfil)
-        FATAL_BM ("failed to fopen backup % for passwords file - %m",
-                  backupath);
-      rewind (passfil);
-      if (fchmod (fileno (backfil), 0600))
-        FATAL_BM ("failed to fchmod backup file %s - %m", backupath);
-      for (;;)
-        {
-          ssize_t linlen = getline (&linbuf, &linsiz, passfil);
-          if (linlen < 0)
-            break;
-          if (linbuf[linlen] == '\n')
-            linbuf[linlen] = (char) 0;
-          fputs (backfil, linbuf);
-          if (fputc (backfil, '\n') < 0)
-            FATAL_BM ("failed to write passwords backup %s - %m", backupath);
-        }
-      if (fclose (backfil))
-        FATAL_BM ("failed to fclose passwords backup %s - %m", backupath);
-      backfil = NULL;
-      struct utimbuf backtb;
-      memset (&backtb, 0, sizeof (backtb));
-      time (&backtb.actime);
-      backtb.modtime = passwstat.st_mtime;
-      utime (backupath, &backtb);
-    }
-  /// rewrite loop of password
-  {
-    rewind(passfil);
-    char nowtimbuf[80];
-    memset (nowtimbuf, 0, sizeof (nowtimbuf));
-    time_t nowt = 0;
-    time (&nowt);
-    struct tm nowtm = { };
-    memset (&nowtm, 0, sizeof (nowtm));
-    localtime_r (&nowt, &nowtm);
-    strftime (nowtimbuf, sizeof (nowtimbuf), "%c", &nowtm);
-    char *baspath = basename (passwords_filepath_BM);
-    int nbpasswords = objassocnbkeyspayl_BM(_.assocob);
-    if (strcmp (baspath, PASSWORDS_FILE_BM))
-      fprintf (passfil, "## BISMON passwords file %s (really %s)\n",
-	       PASSWORDS_FILE_BM, passwords_filepath_BM);
-    else
-      fprintf (passfil, "## BISMON passwords file %s\n", PASSWORDS_FILE_BM);
-    fprintf (passfil,
-             "## when BISMON is running, don't edit manually this file; it could be flock-ed.\n");
-    fprintf (passfil, "###############################################\n");
-    fprintf (passfil, "## written by BISMON built at %s\n", bismon_timestamp);
-    fprintf (passfil, "## BISMON lastgitcommit %s\n", bismon_lastgitcommit);
-    fprintf (passfil, "## BISMON checksum %s\n", bismon_checksum);
-    fprintf (passfil, "##- emitted at %s on %s for %d passwords.\n", nowtimbuf,
-             myhostname_BM, nbpasswords);
-    fprintf(passfil, "## passwords are encrypted, see http://man7.org/linux/man-pages/man3/crypt.3.html\n");
-    fprintf (passfil,
-             "## format: one password line per contributor or user like:\n"
-	     "## <username>;<oid>;<encrypted-password>\n");
-    _.keysetv = (value_tyBM)objassocsetattrspayl_BM(_.assocob);
-    ASSERT_BM(isset_BM(_.keysetv) && (int)setcardinal_BM(_.keysetv) == nbpasswords);
-    for (unsigned pix=0; pix<nbpasswords; pix++) {
-      _.curcontribob = setelemnth_BM(_.keysetv, pix);
-      ASSERT_BM(isobject_BM(_.curcontribob));
-      ASSERT_BM(objhascontributorpayl_BM(_.curcontribob));
-      _.curpasstrv = objassocgetattrpayl_BM(_.assocob, _.curcontribob);
-      ASSERT_BM(isstring_BM(_.curpasstrv));
-    }
-  }
-#warning missing write loop of password file
-end:
-#undef REJECT
-  if (linbuf)
-    free (linbuf), linbuf = NULL;
-  objclearpayload_BM (_.assocob);
-  objputclass_BM (_.assocob, BMP_object);
-  objtouchnow_BM (_.assocob);
-  if (passfil)
-    {
-      if (flock (fileno (passfil), LOCK_UN))
-        FATAL_BM ("failed to un-flock fd#%d for %s", fileno (passfil),
-                  passwords_filepath_BM);
-      if (fclose (passfil))
-        FATAL_BM ("failed to fclose %s", passwords_filepath_BM);
-      passfil = NULL;
-    }
-  usleep (100);
-  pthread_mutex_unlock (&passwd_mutex_bm);
-  // sleep some random delay, to make this call a bit costly...
-  usleep (100 + g_random_int () % 2048);
-  return ok;
-}                               /* end put_contributor_password_BM */
+}                               /* end read_password_file_BM */
+
 
 /// end of file user_BM.c
