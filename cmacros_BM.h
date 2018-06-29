@@ -51,7 +51,8 @@
 					  (void*)(Val),(Depth))); } while(0)
 
 #define EXTENDEDGCPROC_BM(Gc,Xval,Fromob,Depth)				\
-  do { Xval = extendedgcproc_BM((Gc),(Xval),(Fromob),(Depth)); } while(0)
+  do { Xval = (typeof(Xval)) (extendedgcproc_BM((Gc),			\
+				(void*)(Xval),(Fromob),(Depth))); } while(0)
 
 #define HASHEMPTYSLOT_BM ((void*)(-1))
 
