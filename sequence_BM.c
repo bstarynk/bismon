@@ -80,7 +80,7 @@ makesizedtuple_BM (unsigned nbargs, ...)
   int cnt = 0;
   va_list args;
   va_start (args, nbargs);
-  for (int ix = 0; ix < nbargs; ix++)
+  for (int ix = 0; ix < (int) nbargs; ix++)
     {
       objectval_tyBM *curob = objectcast_BM (va_arg (args, objectval_tyBM *));
       if (!curob)
