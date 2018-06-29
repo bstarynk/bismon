@@ -173,10 +173,15 @@ overwrite_contributor_file_BM (const char *rcpath, FILE * fil,
   }
 }                               /* end overwrite_contributor_file_BM */
 
+
+
 static objectval_tyBM *add_contributor_name_email_alias_BM
   (const char *name,
    const char *email,
    const char *alias, char **perrmsg, struct stackframe_stBM *stkf);
+
+static bool valid_password_BM (const char *passwd);
+
 
 bool
 valid_email_BM (const char *email, bool checkdns, char **perrmsg)
@@ -1237,10 +1242,49 @@ compute_crypt_salt32_BM (char salt[32], objectval_tyBM * contribob)
 }                               /* end compute_crypt_salt32_BM */
 
 
+#define MINIMAL_PASSWORD_LEN_BM 10
+bool
+valid_password_BM (const char *passwd)
+{
+  if (!passwd)
+    return false;
+  if (strlen (passwd) < MINIMAL_PASSWORD_LEN_BM)
+    return false;
+  const char *end = NULL;
+  if (!g_utf8_validate (passwd, -1, &end) && end && *end)
+    return false;
+  int nbdigits = 0, nbalphas = 0, nbpunct = 0;
+  int nbc = 0;
+  for (const char *p = passwd; *p; p = g_utf8_next_char (p))
+    {
+      gunichar uc = g_utf8_get_char (p);
+      if (!g_unichar_isprint (uc))
+        return false;
+      if (g_unichar_isalpha (uc))
+        nbalphas++;
+      else if (g_unichar_isdigit (uc))
+        nbdigits++;
+      else if (g_unichar_ispunct (uc))
+        nbpunct++;
+      else if (g_unichar_iszerowidth (uc))
+        continue;
+      nbc++;
+    }
+  if (nbc < MINIMAL_PASSWORD_LEN_BM)
+    return false;
+  if (nbdigits == 0)
+    return false;
+  if (nbalphas == 0)
+    return false;
+  if (nbpunct == 0)
+    return false;
+  return true;
+}                               /* end valid_password_BM */
+
 bool
 check_contributor_password_BM (objectval_tyBM * contribobarg,
                                const char *passwd,
-                               struct stackframe_stBM *stkf)
+                               struct stackframe_stBM * stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * contribob;    //current contributor object 
@@ -1255,7 +1299,7 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
   _.contribob = objectcast_BM (contribobarg);
   if (!_.contribob)
     REJECT ();
-  if (!passwd || !passwd[0])
+  if (!passwd || !valid_password_BM (passwd))
     REJECT ();
   if (!objhascontributorpayl_BM (_.contribob))
     REJECT ();
@@ -1398,5 +1442,166 @@ end:
   return ok;
 }                               /* end check_contributor_password_BM */
 
+
+bool
+put_contributor_password_BM (objectval_tyBM * contribobarg,
+                             const char *passwd,
+                             struct stackframe_stBM * stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * contribob;    //current contributor object 
+                 objectval_tyBM * curcontribob; //current contributor object
+                 objectval_tyBM * assocob;
+    );
+#warning we need a mutex to serialize and lock that routine
+  FILE *passfil = NULL;
+  bool ok = false;
+#define REJECT() do { DBGPRINTF_BM("put_contributor_password_BM rejects contribob %s passwd '%s'", \
+  objectdbg_BM(_.contribob), passwd); ok=false; goto end; } while(0)
+  // to make life harder for external malicious stuff 
+  usleep (1000 + g_random_int () % 1024);
+  _.contribob = objectcast_BM (contribobarg);
+  if (!_.contribob)
+    REJECT ();
+  if (!passwd || !passwd[0] || !valid_password_BM (passwd))
+    REJECT ();
+  if (!objhascontributorpayl_BM (_.contribob))
+    REJECT ();
+  char idbuf[32];
+  memset (idbuf, 0, sizeof (idbuf));
+  idtocbuf32_BM (objid_BM (_.contribob), idbuf);
+  DBGPRINTF_BM
+    ("put_contributor_password_BM contribob %s / %s passwd '%s' start",
+     objectdbg_BM (_.contribob), idbuf, passwd);
+  bool knowncontrib = false;
+  {
+    objlock_BM (BMP_contributors);
+    knowncontrib = objhashsetcontainspayl_BM (BMP_contributors, _.contribob);
+    objunlock_BM (BMP_contributors);
+  }
+  if (!knowncontrib)
+    REJECT ();
+  passfil = fopen (passwords_filepath_BM, "r+");
+  if (!passfil)
+    FATAL_BM ("put_contributor_password fopen %s failed: %m",
+              passwords_filepath_BM);
+  if (flock (fileno (passfil), LOCK_EX))
+    FATAL_BM ("put_contributor_password failed to flock fd#%d for %s",
+              fileno (passfil), passwords_filepath_BM);
+  {
+    struct stat mystat;
+    memset (&mystat, 0, sizeof (mystat));
+    if (fstat (fileno (passfil), &mystat))
+      FATAL_BM ("failed to fstat password file %s fd#%d",
+                passwords_filepath_BM, fileno (passfil));
+    _.assocob = makeobj_BM ();
+    objputassocpayl_BM (_.assocob, prime_above_BM (mystat.st_size / 64 + 10));
+  }
+  objtouchnow_BM (_.assocob);
+  size_t linsiz = 128;
+  char *linbuf = calloc (linsiz, 1);
+  int lincnt = 0;
+  if (!linbuf)
+    FATAL_BM ("put_contributor_password failed to calloc line of %zd",
+              linsiz);
+  /// read password file loop
+  for (;;)
+    {
+      ssize_t linlen = getline (&linbuf, &linsiz, passfil);
+      if (linlen < 0)
+        break;
+      if (linbuf[linlen] == '\n')
+        linbuf[linlen] = (char) 0;
+      lincnt++;
+      if (linbuf[0] == '#' || linbuf[0] == '\n' || !linbuf[0])
+        continue;
+      const char *end = NULL;
+      if (!g_utf8_validate (linbuf, -1, &end) && end && *end)
+        FATAL_BM ("in password file %s line#%d is invalid UTF8: %s",
+                  passwords_filepath_BM, lincnt, linbuf);
+      // linbuf should be like: <contribname>;<oid>;<encrypted-password>
+      char *semcol1 = strchr (linbuf, ';');
+      char *semcol2 = semcol1 ? strchr (semcol1 + 1, ';') : NULL;
+      if (!semcol2)
+        FATAL_BM
+          ("in password file %s line#%d should be like <contributor-name>;<oid>;<encrypted-password> but is %s",
+           passwords_filepath_BM, lincnt, linbuf);
+      *semcol1 = (char) 0;
+      *semcol2 = (char) 0;
+      const char *curcontrib = linbuf;
+      const char *curoidstr = semcol1 + 1;
+      const char *curcryptpass = semcol2 + 1;
+      char *errmsg = NULL;
+      if (!valid_contributor_name_BM (curcontrib, &errmsg))
+        FATAL_BM
+          ("in password file %s line#%d has invalid contributor name %s : %s",
+           passwords_filepath_BM, lincnt, curcontrib, errmsg);
+      const char *endid = NULL;
+      rawid_tyBM curid = parse_rawid_BM (curoidstr, &endid);
+      if (!endid || *endid || !curid.id_hi || !curid.id_lo)
+        FATAL_BM
+          ("in password file %s line#%d has invalid oid %s for contributor %s",
+           passwords_filepath_BM, lincnt, curoidstr, curcontrib);
+      _.curcontribob = findobjofid_BM (curid);
+      if (!_.curcontribob)
+        continue;
+      if (!objhascontributorpayl_BM (_.curcontribob))
+        continue;
+      {
+        bool knowncontrib = false;
+        objlock_BM (BMP_contributors);
+        knowncontrib =
+          objhashsetcontainspayl_BM (BMP_contributors, _.curcontribob);
+        objunlock_BM (BMP_contributors);
+        if (!knowncontrib)
+          continue;
+      }
+      if (objassocgetattrpayl_BM (_.assocob, _.curcontribob))
+        FATAL_BM
+          ("in password file %s line#%d duplicate contributor %s of oid %s",
+           curcontrib, curoidstr);
+
+      const char *contrinam =
+        bytstring_BM (objcontributornamepayl_BM (_.curcontribob));
+      if (!contrinam)
+        FATAL_BM
+          ("in password file %s line#%d corrupted contributor %s of oid %s",
+           passwords_filepath_BM, lincnt, curcontrib, curoidstr);
+      if (strcmp (contrinam, curcontrib))
+        FATAL_BM
+          ("in password file %s line#%d contributor %s of oid %s is expected to be %s",
+           passwords_filepath_BM, lincnt, curcontrib, curoidstr, contrinam);
+      // read carefully crypt(3), that is http://man7.org/linux/man-pages/man3/crypt.3.html
+      // we want to use SHA-512, so "$6$" prefix
+      if (!strncmp ("$6$", curcryptpass, 3))
+        FATAL_BM
+          ("in password file %s line#%d contributor %s of oid %s with corrupted crypted password",
+           passwords_filepath_BM, lincnt, curcontrib, curoidstr);
+      objassocaddattrpayl_BM (_.assocob, _.curcontribob,
+                              makestring_BM (curcryptpass));
+    }                           /* end readloop */
+  /// we first should do some backup copy, and we should do it once in
+  /// the whole process
+#warning missing write loop of password file
+end:
+#undef REJECT
+  if (linbuf)
+    free (linbuf), linbuf = NULL;
+  objclearpayload_BM (_.assocob);
+  objputclass_BM (_.assocob, BMP_object);
+  objtouchnow_BM (_.assocob);
+  if (passfil)
+    {
+      if (flock (fileno (passfil), LOCK_UN))
+        FATAL_BM ("failed to un-flock fd#%d for %s", fileno (passfil),
+                  passwords_filepath_BM);
+      if (fclose (passfil))
+        FATAL_BM ("failed to fclose %s", passwords_filepath_BM);
+      passfil = NULL;
+    }
+  // sleep some random delay, to make this call a bit costly...
+  usleep (100 + g_random_int () % 2048);
+  return ok;
+}                               /* end put_contributor_password_BM */
 
 /// end of file user_BM.c
