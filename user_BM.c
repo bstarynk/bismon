@@ -1566,55 +1566,7 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
       free (linbuf), linbuf = NULL;
     }
   /// rewrite loop of password
-  {
-    rewind (passfil);
-    char nowtimbuf[80];
-    memset (nowtimbuf, 0, sizeof (nowtimbuf));
-    time_t nowt = 0;
-    time (&nowt);
-    struct tm nowtm = { };
-    memset (&nowtm, 0, sizeof (nowtm));
-    localtime_r (&nowt, &nowtm);
-    strftime (nowtimbuf, sizeof (nowtimbuf), "%c", &nowtm);
-    char *baspath = basename (passwords_filepath_BM);
-    int nbpasswords = objassocnbkeyspayl_BM (_.assocob);
-    if (strcmp (baspath, PASSWORDS_FILE_BM))
-      fprintf (passfil, "## BISMON passwords file %s (really %s)\n",
-               PASSWORDS_FILE_BM, passwords_filepath_BM);
-    else
-      fprintf (passfil, "## BISMON passwords file %s\n", PASSWORDS_FILE_BM);
-    fprintf (passfil,
-             "## when BISMON is running, don't edit manually this file; it could be flock-ed.\n");
-    fprintf (passfil, "###############################################\n");
-    fprintf (passfil, "## written by BISMON built at %s\n", bismon_timestamp);
-    fprintf (passfil, "## BISMON lastgitcommit %s\n", bismon_lastgitcommit);
-    fprintf (passfil, "## BISMON checksum %s\n", bismon_checksum);
-    fprintf (passfil, "##- emitted at %s on %s for %d passwords.\n",
-             nowtimbuf, myhostname_BM, nbpasswords);
-    fprintf (passfil,
-             "## passwords are encrypted, see http://man7.org/linux/man-pages/man3/crypt.3.html\n");
-    fprintf (passfil,
-             "## format: one password line per contributor or user like:\n"
-             "## <username>;<oid>;<encrypted-password>\n");
-    _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.assocob);
-    ASSERT_BM (isset_BM (_.keysetv)
-               && (int) setcardinal_BM (_.keysetv) == nbpasswords);
-    for (unsigned pix = 0; pix < nbpasswords; pix++)
-      {
-        _.curcontribob = setelemnth_BM (_.keysetv, pix);
-        ASSERT_BM (isobject_BM (_.curcontribob));
-        ASSERT_BM (objhascontributorpayl_BM (_.curcontribob));
-        _.curpasstrv = objassocgetattrpayl_BM (_.assocob, _.curcontribob);
-        ASSERT_BM (isstring_BM (_.curpasstrv));
-        _.curnamev = objcontributornamepayl_BM (_.curcontribob);
-        ASSERT_BM (isstring_BM (_.curnamev));
-        char contridbuf[32];
-        memset (contridbuf, 0, sizeof (contridbuf));
-        idtocbuf32_BM (objid_BM (_.contribob), contridbuf);
-        fprintf (passfil, "%s;%s;%s\n", bytstring_BM (_.curnamev), contridbuf,
-                 bytstring_BM (_.curpasstrv));
-      }
-  }
+  write_password_file_BM (passfil, _.assocob, CURFRAME_BM);
 #warning missing write loop of password file
 end:
 #undef REJECT
@@ -1734,5 +1686,67 @@ read_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
     }                           /* end readloop */
 }                               /* end read_password_file_BM */
 
+void
+write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
+                        struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * curcontribob; //current contributor object
+                 objectval_tyBM * assocob;      //
+                 value_tyBM keysetv;    //
+                 value_tyBM curpasstrv; //
+                 value_tyBM curnamev;
+    );
+  _.assocob = assocobarg;
+  ASSERT_BM (isobject_BM (_.assocob));
+  ASSERT_BM (objhasassocpayl_BM (_.assocob));
+  rewind (passfil);
+  char nowtimbuf[80];
+  memset (nowtimbuf, 0, sizeof (nowtimbuf));
+  time_t nowt = 0;
+  time (&nowt);
+  struct tm nowtm = { };
+  memset (&nowtm, 0, sizeof (nowtm));
+  localtime_r (&nowt, &nowtm);
+  strftime (nowtimbuf, sizeof (nowtimbuf), "%c", &nowtm);
+  char *baspath = basename (passwords_filepath_BM);
+  int nbpasswords = objassocnbkeyspayl_BM (_.assocob);
+  if (strcmp (baspath, PASSWORDS_FILE_BM))
+    fprintf (passfil, "## BISMON passwords file %s (really %s)\n",
+             PASSWORDS_FILE_BM, passwords_filepath_BM);
+  else
+    fprintf (passfil, "## BISMON passwords file %s\n", PASSWORDS_FILE_BM);
+  fprintf (passfil,
+           "## when BISMON is running, don't edit manually this file; it could be flock-ed.\n");
+  fprintf (passfil, "###############################################\n");
+  fprintf (passfil, "## written by BISMON built at %s\n", bismon_timestamp);
+  fprintf (passfil, "## BISMON lastgitcommit %s\n", bismon_lastgitcommit);
+  fprintf (passfil, "## BISMON checksum %s\n", bismon_checksum);
+  fprintf (passfil, "##- emitted at %s on %s for %d passwords.\n",
+           nowtimbuf, myhostname_BM, nbpasswords);
+  fprintf (passfil,
+           "## passwords are encrypted, see http://man7.org/linux/man-pages/man3/crypt.3.html\n");
+  fprintf (passfil,
+           "## format: one password line per contributor or user like:\n"
+           "## <username>;<oid>;<encrypted-password>\n");
+  _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.assocob);
+  ASSERT_BM (isset_BM (_.keysetv)
+             && (int) setcardinal_BM (_.keysetv) == nbpasswords);
+  for (unsigned pix = 0; pix < nbpasswords; pix++)
+    {
+      _.curcontribob = setelemnth_BM (_.keysetv, pix);
+      ASSERT_BM (isobject_BM (_.curcontribob));
+      ASSERT_BM (objhascontributorpayl_BM (_.curcontribob));
+      _.curpasstrv = objassocgetattrpayl_BM (_.assocob, _.curcontribob);
+      ASSERT_BM (isstring_BM (_.curpasstrv));
+      _.curnamev = objcontributornamepayl_BM (_.curcontribob);
+      ASSERT_BM (isstring_BM (_.curnamev));
+      char contridbuf[32];
+      memset (contridbuf, 0, sizeof (contridbuf));
+      idtocbuf32_BM (objid_BM (_.curcontribob), contridbuf);
+      fprintf (passfil, "%s;%s;%s\n", bytstring_BM (_.curnamev), contridbuf,
+               bytstring_BM (_.curpasstrv));
+    }
+}                               /* end write_password_file_BM */
 
 /// end of file user_BM.c
