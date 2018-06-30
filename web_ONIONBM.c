@@ -21,6 +21,8 @@
 #include "web_ONIONBM.const.h"
 
 
+static onion *myonion_BM;
+
 void
 log_begin_message_BM (void)
 {
@@ -114,7 +116,22 @@ queue_process_BM (const stringval_tyBM * dirstr,
 #warning queue_process_BM unimplemented in web_ONIONBM
 }                               /* end queue_process_BM */
 
-
+////////////////////////////////////////////////////////////////
+void
+run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
+{
+  char *webhost = NULL;
+  int webport = 0;
+  int pos = -1;
+  if (!onion_web_base_BM)
+    FATAL_BM ("no --web-base given to %s", myprogname_BM);
+  if (sscanf
+      (onion_web_base_BM, "%m[a-zA-Z0-9+-]:%d%n", &webhost, &webport,
+       &pos) < 3 || pos < 0 || onion_web_base_BM[pos])
+    FATAL_BM ("bad web base %s", onion_web_base_BM);
+#warning run_onionweb_BM
+  FATAL_BM ("run_onionweb_BM unimplemented, nbjobs %d", nbjobs);
+}                               /* end run_onionweb_BM */
 
 ////////////////////////////////////////////////////////////////
 

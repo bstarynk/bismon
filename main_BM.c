@@ -32,6 +32,7 @@
 
 struct timespec startrealtimespec_BM;
 void *dlprog_BM;
+const char *myprogname_BM;
 bool gui_is_running_BM;
 bool debugmsg_BM;
 int nbworkjobs_BM;
@@ -50,8 +51,11 @@ int defer_gtk_readpipefd_BM = -1;
 int defer_gtk_writepipefd_BM = -1;
 static void rungui_BM (int nbjobs);
 #endif /*BISMONGTK*/
+////////////////
 #ifdef BISMONION
 const char *onion_ssl_certificate_BM;
+const char *onion_web_base_BM;
+extern void run_onionweb_BM (int nbjobs);
 #endif /*BISMONION*/
 extern void weakfailure_BM (void);
 
@@ -510,6 +514,14 @@ const GOptionEntry optionstab_bm[] = {
    .description =
    "Uses FILEPREFIX.pem & FILEPREFIX.key for SSL certificate to libonion",
    .arg_description = "FILEPREFIX"},
+  //
+  {.long_name = "web-base",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &onion_web_base_BM,
+   .description =
+   "A string like <host>:<port>, e.g. localhost:8086, describing the base of web URLs served by bismon",
+   .arg_description = "WEB_BASE"},
 #endif /*BISMONION*/
     /// end of options
   {}
@@ -675,10 +687,10 @@ main (int argc, char **argv)
       fprintf (stderr, "[bismon] requires at least one argument\n");
       exit (EXIT_FAILURE);
     }
+  myprogname_BM = argv[0];
   if (argc > 1 && (!strcmp (argv[1], "-D") || !strcmp (argv[1], "--debug")))
     debugmsg_BM = true;
   dlprog_BM = dlopen (NULL, RTLD_NOW | RTLD_GLOBAL);
-  char *progname = argv[0];
   if (!dlprog_BM)
     {
       fprintf (stderr, "%s: dlopen for whole program fails %s\n",
@@ -739,10 +751,10 @@ main (int argc, char **argv)
     if (debugmsg_BM)
     fprintf (stderr,
              "debug messages enabled %s pid %d timestamp %s commit %s\n",
-             progname, (int) getpid (), bismon_timestamp,
+             myprogname_BM, (int) getpid (), bismon_timestamp,
              bismon_lastgitcommit);
   if (give_version_bm)
-    give_prog_version_BM (progname);
+    give_prog_version_BM (myprogname_BM);
   if (nbworkjobs_BM < MINNBWORKJOBS_BM)
     nbworkjobs_BM = MINNBWORKJOBS_BM;
   else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
@@ -788,13 +800,23 @@ main (int argc, char **argv)
   else
     rungui_BM (nbworkjobs_BM);
 #endif /*BISMONGTK*/
+    //
+#ifdef BISMONION
+    if (batch_bm)
+    {
+      nbworkjobs_BM = 0;
+      printf ("no web in batch mode\n");
+    }
+  else
+    run_onionweb_BM (nbworkjobs_BM);
+#endif /*BISMONION*/
     free (contributors_filepath_BM), contributors_filepath_BM = NULL;
   free (passwords_filepath_BM), passwords_filepath_BM = NULL;
   printf ("end of %s, on %s, pid %d, %.3f elapsed, %.3f cpu time\n"
           "... timestamp %s\n"
           "... lastgitcommit %s\n"
           "... checksum %s\n",
-          progname, myhostname_BM, (int) getpid (), elapsedtime_BM (),
+          myprogname_BM, myhostname_BM, (int) getpid (), elapsedtime_BM (),
           cputime_BM (), bismon_timestamp, bismon_lastgitcommit,
           bismon_checksum);
   fflush (NULL);
@@ -916,7 +938,7 @@ initialize_contributors_path_BM (void)
 void
 initialize_passwords_path_BM (void)
 {
-  if (!passwords_filepath_BM)
+  if (!passwords_filepath_BM)   // no --passwords-file program option
     {
       char *path = NULL;
       char *homepath = NULL;

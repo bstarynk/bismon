@@ -42,6 +42,9 @@ extern FILE *gui_command_log_file_BM;
 extern const char *contributors_filepath_BM;
 extern const char *passwords_filepath_BM;
 
+
+extern const char *myprogname_BM;
+
 extern bool debugmsg_BM;
 
 
