@@ -50,6 +50,9 @@ int defer_gtk_readpipefd_BM = -1;
 int defer_gtk_writepipefd_BM = -1;
 static void rungui_BM (int nbjobs);
 #endif /*BISMONGTK*/
+#ifdef BISMONION
+const char *onion_ssl_certificate_BM;
+#endif /*BISMONION*/
 extern void weakfailure_BM (void);
 
 // consider putting a gdb breakpoint here 
@@ -334,7 +337,7 @@ remove_contributor_bm (const gchar * optname __attribute__ ((unused)),
 
 
 ////////////////////////////////////////////////////////////////
-const GOptionEntry optab[] = {
+const GOptionEntry optionstab_bm[] = {
   //
   {.long_name = "load",.short_name = 'l',
    .flags = G_OPTION_FLAG_NONE,
@@ -498,6 +501,17 @@ const GOptionEntry optab[] = {
    .arg_description = "FILE"},
 #endif /*BISMONGTK*/
     //////////////////
+#ifdef BISMONION
+    //
+  {.long_name = "ssl-certificate",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &onion_ssl_certificate_BM,
+   .description =
+   "Uses FILEPREFIX.pem & FILEPREFIX.key for SSL certificate to libonion",
+   .arg_description = "FILEPREFIX"},
+#endif /*BISMONION*/
+    /// end of options
   {}
 };
 
@@ -645,6 +659,8 @@ static void add_contributors_after_load_BM (void);
 static void remove_contributors_after_load_BM (void);
 static void initialize_contributors_path_BM (void);
 static void initialize_passwords_path_BM (void);
+static void emit_has_predef_BM (void);
+static void do_dump_after_load_BM (void);
 
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
@@ -703,21 +719,23 @@ main (int argc, char **argv)
   /// GOptionEntry array
   bool guiok = gtk_init_with_args (&argc, &argv,
                                    " - The bismongtk program (with GTK GUI)",
-                                   optab, NULL, &opterr);
+                                   optionstab_bm, NULL, &opterr);
 #endif /*BISMONGTK*/
+    ////
 #ifdef BISMONION
   {
     GOptionContext *weboptctx =
       g_option_context_new ("- The bismonion program (with web interface)");
     if (!weboptctx)
       FATAL_BM ("no option context");
-    g_option_context_add_main_entries (weboptctx, optab, NULL);
+    g_option_context_add_main_entries (weboptctx, optionstab_bm, NULL);
     if (!g_option_context_parse (weboptctx, &argc, &argv, &opterr))
       FATAL_BM ("bismonion failed to parse options - %s",
                 opterr ? opterr->message : "??");
     g_option_context_free (weboptctx);
   }
 #endif /*BISMONION*/
+    ///
     if (debugmsg_BM)
     fprintf (stderr,
              "debug messages enabled %s pid %d timestamp %s commit %s\n",
@@ -734,37 +752,7 @@ main (int argc, char **argv)
   initialize_passwords_path_BM ();
   //
   if (count_emit_has_predef_bm > 0)
-    {
-      rawid_tyBM *idarr =
-        calloc (count_emit_has_predef_bm, sizeof (rawid_tyBM));
-      if (!idarr)
-        FATAL_BM ("failed to calloc idarr for %d", count_emit_has_predef_bm);
-      for (int ix = 0; ix < count_emit_has_predef_bm; ix++)
-        idarr[ix] = randomid_BM ();
-      qsort (idarr, count_emit_has_predef_bm, sizeof (rawid_tyBM), idqcmp_BM);
-      printf ("\n\n" "/// %d extra predefs\n", count_emit_has_predef_bm);
-      printf ("// !@ %.3f\n", clocktime_BM (CLOCK_REALTIME));
-      for (int ix = 0; ix < count_emit_has_predef_bm; ix++)
-        {
-          rawid_tyBM id = idarr[ix];
-          char idbuf[32];
-          memset (idbuf, 0, sizeof (idbuf));
-          idtocbuf32_BM (id, idbuf);
-          printf ("HAS_PREDEF_BM(%s,%lld,%lld,%u)\n",
-                  idbuf, (long long) id.id_hi, (long long) id.id_lo,
-                  hashid_BM (id));
-        }
-      printf ("\n\n/***\n");
-      for (int ix = 0; ix < count_emit_has_predef_bm; ix++)
-        {
-          rawid_tyBM id = idarr[ix];
-          char idbuf[32];
-          memset (idbuf, 0, sizeof (idbuf));
-          idtocbuf32_BM (id, idbuf);
-          printf (" ROUTINEOBJNAME_BM (%s)\n", idbuf);
-        }
-      printf ("***/\n\n\n");
-    }
+    emit_has_predef_BM ();
 #ifdef BISMONGTK
   if (!guiok && !batch_bm)
     FATAL_BM ("gtk_init_with_args failed : %s",
@@ -790,26 +778,7 @@ main (int argc, char **argv)
   if (module_to_emit_bm != NULL)
     do_emit_module_from_main_BM ();
   if (dump_after_load_dir_bm)
-    {
-      struct dumpinfo_stBM di = dump_BM (dump_after_load_dir_bm, NULL);
-      printf ("dump after load into %s directory", dump_after_load_dir_bm);
-      char *rd = realpath (dump_after_load_dir_bm, NULL);
-      if (rd)
-        {
-          printf (" (%s)", rd);
-          free (rd), rd = NULL;
-        };
-      putchar ('\n');
-      printf ("dump: scanned %ld, emitted %ld objects\n",
-              di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount);
-      printf ("... did %ld todos, wrote %ld files\n",
-              di.dumpinfo_todocount, di.dumpinfo_wrotefilecount);
-      printf
-        ("... in %.3f elapsed, %.4f cpu seconds\n (%.1f elapsed, %.1f cpu µs/obj)\n",
-         di.dumpinfo_elapsedtime, di.dumpinfo_cputime,
-         di.dumpinfo_elapsedtime * 1.0e6 / di.dumpinfo_emittedobjectcount,
-         di.dumpinfo_cputime * 1.0e6 / di.dumpinfo_emittedobjectcount);
-    }
+    do_dump_after_load_BM ();
 #ifdef BISMONGTK
   if (batch_bm)
     {
@@ -830,6 +799,62 @@ main (int argc, char **argv)
           bismon_checksum);
   fflush (NULL);
 }                               /* end main */
+
+void
+do_dump_after_load_BM (void)
+{
+  struct dumpinfo_stBM di = dump_BM (dump_after_load_dir_bm, NULL);
+  printf ("dump after load into %s directory", dump_after_load_dir_bm);
+  char *rd = realpath (dump_after_load_dir_bm, NULL);
+  if (rd)
+    {
+      printf (" (%s)", rd);
+      free (rd), rd = NULL;
+    };
+  putchar ('\n');
+  printf ("dump: scanned %ld, emitted %ld objects\n",
+          di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount);
+  printf ("... did %ld todos, wrote %ld files\n",
+          di.dumpinfo_todocount, di.dumpinfo_wrotefilecount);
+  printf
+    ("... in %.3f elapsed, %.4f cpu seconds\n (%.1f elapsed, %.1f cpu µs/obj)\n",
+     di.dumpinfo_elapsedtime, di.dumpinfo_cputime,
+     di.dumpinfo_elapsedtime * 1.0e6 / di.dumpinfo_emittedobjectcount,
+     di.dumpinfo_cputime * 1.0e6 / di.dumpinfo_emittedobjectcount);
+}
+
+void
+emit_has_predef_BM (void)
+{
+  rawid_tyBM *idarr = calloc (count_emit_has_predef_bm, sizeof (rawid_tyBM));
+  if (!idarr)
+    FATAL_BM ("failed to calloc idarr for %d", count_emit_has_predef_bm);
+  for (int ix = 0; ix < count_emit_has_predef_bm; ix++)
+    idarr[ix] = randomid_BM ();
+  qsort (idarr, count_emit_has_predef_bm, sizeof (rawid_tyBM), idqcmp_BM);
+  printf ("\n\n" "/// %d extra predefs\n", count_emit_has_predef_bm);
+  printf ("// !@ %.3f\n", clocktime_BM (CLOCK_REALTIME));
+  for (int ix = 0; ix < count_emit_has_predef_bm; ix++)
+    {
+      rawid_tyBM id = idarr[ix];
+      char idbuf[32];
+      memset (idbuf, 0, sizeof (idbuf));
+      idtocbuf32_BM (id, idbuf);
+      printf ("HAS_PREDEF_BM(%s,%lld,%lld,%u)\n",
+              idbuf, (long long) id.id_hi, (long long) id.id_lo,
+              hashid_BM (id));
+    }
+  printf ("\n\n/***\n");
+  for (int ix = 0; ix < count_emit_has_predef_bm; ix++)
+    {
+      rawid_tyBM id = idarr[ix];
+      char idbuf[32];
+      memset (idbuf, 0, sizeof (idbuf));
+      idtocbuf32_BM (id, idbuf);
+      printf (" ROUTINEOBJNAME_BM (%s)\n", idbuf);
+    }
+  printf ("***/\n\n\n");
+}                               /* end emit_has_predef_BM */
 
 
 void
