@@ -993,7 +993,7 @@ initialize_passwords_path_BM (void)
               passwords_filepath_BM);
   if ((mystat.st_mode & (S_IRWXG | S_IRWXO)) != 0)
     FATAL_BM
-      ("real passwords file %s is should not be group or others readable/writable but only by owner",
+      ("real passwords file %s should not be group or others readable/writable but only by owner; run chmod go-rwx on it",
        passwords_filepath_BM);
 }                               /* end initialize_passwords_path_BM */
 
