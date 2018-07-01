@@ -520,7 +520,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &onion_web_base_BM,
    .description =
-   "A string like <host>:<port>, e.g. localhost:8086, describing the base of web URLs served by bismon",
+   "A string like <host>:<port>, default is localhost:8086, describing the base of web URLs served by bismon",
    .arg_description = "WEB_BASE"},
 #endif /*BISMONION*/
     /// end of options

@@ -20,7 +20,7 @@
 #include "bismon.h"
 #include "web_ONIONBM.const.h"
 
-
+extern void run_onionweb_BM (int nbjobs);
 static onion *myonion_BM;
 
 void
@@ -123,14 +123,40 @@ run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
   char *webhost = NULL;
   int webport = 0;
   int pos = -1;
+  if (nbjobs < MINNBWORKJOBS_BM)
+    nbjobs = MINNBWORKJOBS_BM;
+  else if (nbjobs > MAXNBWORKJOBS_BM)
+    nbjobs = MAXNBWORKJOBS_BM;
   if (!onion_web_base_BM)
-    FATAL_BM ("no --web-base given to %s", myprogname_BM);
+    onion_web_base_BM = "localhost:8086";
   if (sscanf
-      (onion_web_base_BM, "%m[a-zA-Z0-9+-]:%d%n", &webhost, &webport,
+      (onion_web_base_BM, "%m[.a-zA-Z0-9+-]:%d%n", &webhost, &webport,
        &pos) < 3 || pos < 0 || onion_web_base_BM[pos])
     FATAL_BM ("bad web base %s", onion_web_base_BM);
-#warning run_onionweb_BM
-  FATAL_BM ("run_onionweb_BM unimplemented, nbjobs %d", nbjobs);
+  myonion_BM = onion_new (O_THREADED | O_NO_SIGTERM);
+  if (!myonion_BM)
+    FATAL_BM ("failed to create onion");
+  onion_set_max_threads (myonion_BM, nbjobs);
+  DBGPRINTF_BM ("run_onionweb webhost '%s' webport %d", webhost, webport);
+  if (webhost && webhost[0])
+    onion_set_hostname (myonion_BM, webhost);
+  char *lastcolon = strrchr (onion_web_base_BM, ':');
+  if (lastcolon && isdigit (lastcolon[1]))
+    onion_set_port (myonion_BM, lastcolon + 1);
+  onion_handler *roothdl = onion_get_root_handler (myonion_BM);
+  if (!roothdl)
+    FATAL_BM ("failed to get onion root handler");
+  char *webrootpath = NULL;
+  if (asprintf (&webrootpath, "%s/webroot/", bismon_directory) < 0
+      || !webrootpath || !webrootpath[0] || access (webrootpath, R_OK | X_OK))
+    FATAL_BM ("failed to get or access webroot/ path - %m");
+  onion_handler *filehdl = onion_handler_export_local_new (webrootpath);
+  if (!filehdl)
+    FATAL_BM ("failed to get onion webroot handler for %s", webrootpath);
+  onion_handler_add (roothdl, filehdl);
+#warning run_onionweb_BM unimplemented
+  FATAL_BM ("run_onionweb_BM unimplemented, nbjobs %d webrootpath %s", nbjobs,
+            webrootpath);
 }                               /* end run_onionweb_BM */
 
 ////////////////////////////////////////////////////////////////
