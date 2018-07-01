@@ -133,7 +133,7 @@ run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
       (onion_web_base_BM, "%m[.a-zA-Z0-9+-]:%d%n", &webhost, &webport,
        &pos) < 3 || pos < 0 || onion_web_base_BM[pos])
     FATAL_BM ("bad web base %s", onion_web_base_BM);
-  myonion_BM = onion_new (O_THREADED | O_NO_SIGTERM);
+  myonion_BM = onion_new (O_THREADED | O_NO_SIGTERM | O_SYSTEMD);
   if (!myonion_BM)
     FATAL_BM ("failed to create onion");
   onion_set_max_threads (myonion_BM, nbjobs);
@@ -154,6 +154,9 @@ run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
   if (!filehdl)
     FATAL_BM ("failed to get onion webroot handler for %s", webrootpath);
   onion_handler_add (roothdl, filehdl);
+  onion_url_add_handler (onion_root_url (myonion_BM),
+                         "onion_status", onion_internal_status ());
+
 #warning run_onionweb_BM unimplemented
   FATAL_BM ("run_onionweb_BM unimplemented, nbjobs %d webrootpath %s", nbjobs,
             webrootpath);
