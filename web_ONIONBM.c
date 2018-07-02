@@ -1,5 +1,4 @@
-// file web_ONIONBM.c
-
+<                               // file web_ONIONBM.c
 /***
     BISMON 
     Copyright © 2018 Basile Starynkevitch (working at CEA, LIST, France)
@@ -19,7 +18,6 @@
 #include <onion/onion.h>
 #include "bismon.h"
 #include "web_ONIONBM.const.h"
-
 extern void run_onionweb_BM (int nbjobs);
 static onion *myonion_BM;
 
@@ -117,6 +115,9 @@ queue_process_BM (const stringval_tyBM * dirstr,
 }                               /* end queue_process_BM */
 
 ////////////////////////////////////////////////////////////////
+static onion_connection_status
+custom_onion_handler_BM (void *clientdata,
+                         onion_request * req, onion_response * resp);
 void
 run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
 {
@@ -156,7 +157,9 @@ run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
   onion_handler_add (roothdl, filehdl);
   onion_url_add_handler (onion_root_url (myonion_BM),
                          "onion_status", onion_internal_status ());
-
+  onion_handler *customhdl =
+    onion_handler_new (custom_onion_handler_BM, NULL, NULL);
+  onion_handler_add (roothdl, customhdl);
 #warning run_onionweb_BM unimplemented
   FATAL_BM ("run_onionweb_BM unimplemented, nbjobs %d webrootpath %s", nbjobs,
             webrootpath);
@@ -317,5 +320,16 @@ webexchangedelete_BM (objectval_tyBM * ownobj,
   FATAL_BM ("unimplemented webexchangedelete_BM ownobj %s wex@%p",
             objectdbg_BM (ownobj), (void *) wex);
 }                               /* end webexchangedelete_BM */
+
+
+onion_connection_status
+custom_onion_handler_BM (void *clientdata
+                         __attribute__ ((unused)), onion_request * req,
+                         onion_response * resp)
+{
+#warning unimplemented custom_onion_handler_BM
+  FATAL_BM ("unimplemented custom_onion_handler_BM");
+  /// probably should return OCS_PROCESSED if handled, or OCS_NOT_PROCESSED, OCS_FORBIDDEN, OCS_INTERNAL_ERROR, etc...
+}                               /* end custom_onion_handler_BM */
 
 ////////////////////////////////////////////////////////////////
