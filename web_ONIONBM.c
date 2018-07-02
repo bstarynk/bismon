@@ -1,4 +1,4 @@
-<                               // file web_ONIONBM.c
+                              // file web_ONIONBM.c
 /***
     BISMON 
     Copyright © 2018 Basile Starynkevitch (working at CEA, LIST, France)
@@ -134,7 +134,7 @@ run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
       (onion_web_base_BM, "%m[.a-zA-Z0-9+-]:%d%n", &webhost, &webport,
        &pos) < 3 || pos < 0 || onion_web_base_BM[pos])
     FATAL_BM ("bad web base %s", onion_web_base_BM);
-  myonion_BM = onion_new (O_THREADED | O_NO_SIGTERM | O_SYSTEMD);
+  myonion_BM = onion_new (O_THREADED | O_NO_SIGTERM | O_SYSTEMD | O_DETACHED);
   if (!myonion_BM)
     FATAL_BM ("failed to create onion");
   onion_set_max_threads (myonion_BM, nbjobs);
@@ -160,6 +160,17 @@ run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
   onion_handler *customhdl =
     onion_handler_new (custom_onion_handler_BM, NULL, NULL);
   onion_handler_add (roothdl, customhdl);
+  ///
+  /// should add our internal handlers
+  ///
+  int err = onion_listen (myonion_BM);  // since detached, returns now
+  if (err)
+    FATAL_BM ("failed to do onion_listen (err#%d / %s)", err, strerror (err));
+  ///
+  /// should add our event loop, at least related to queued processes
+  /// (and their output pipes), to SIGCHLD and SIGTERM + SIGQUIT
+  /// see https://groups.google.com/a/coralbits.com/d/msg/onion-dev/m-wH-BY2MA0/QJqLNcHvAAAJ
+  /// and https://groups.google.com/a/coralbits.com/d/msg/onion-dev/ImjNf1EIp68/R37DW3mZAAAJ
 #warning run_onionweb_BM unimplemented
   FATAL_BM ("run_onionweb_BM unimplemented, nbjobs %d webrootpath %s", nbjobs,
             webrootpath);
