@@ -334,13 +334,27 @@ webexchangedelete_BM (objectval_tyBM * ownobj,
 
 
 onion_connection_status
-custom_onion_handler_BM (void *clientdata
-                         __attribute__ ((unused)), onion_request * req,
-                         onion_response * resp)
+custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
+                         onion_request * req, onion_response * resp)
 {
+  const char *reqpath = onion_request_get_path (req);
+  unsigned reqflags = onion_request_get_flags (req);
+  unsigned reqmeth = (reqflags & OR_METHODS);
+  const char *bcookie = onion_request_get_cookie (req, "BISMONCOOKIE");
+  char dbgmethbuf[16];
+  DBGPRINTF_BM ("custom_onion_handler reqpath '%s' reqflags %#x:%s bcookie %s", //
+                reqpath, reqflags,      //
+                ((reqmeth == OR_GET) ? "GET"    //
+                 : (reqmeth == OR_HEAD) ? "HEAD"        //
+                 : (reqmeth == OR_POST) ? "POST"        //
+                 : (reqmeth == OR_OPTIONS) ? "OPTIONS"  //
+                 : (reqmeth == OR_PROPFIND) ? "PROPFIND"        //
+                 : snprintf (dbgmethbuf, sizeof (dbgmethbuf),   ///
+                             "meth#%d", reqmeth)),
+                bcookie ? bcookie : "*none*");
 #warning unimplemented custom_onion_handler_BM
-  FATAL_BM ("unimplemented custom_onion_handler_BM");
   /// probably should return OCS_PROCESSED if handled, or OCS_NOT_PROCESSED, OCS_FORBIDDEN, OCS_INTERNAL_ERROR, etc...
+  return OCS_NOT_PROCESSED;
 }                               /* end custom_onion_handler_BM */
 
 ////////////////////////////////////////////////////////////////
