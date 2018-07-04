@@ -23,9 +23,10 @@ static onion *myonion_BM;
 
 
 
+
 //////////////// for process queue
 /// running processes; similar to gtkrunprocarr_BM in newgui_GTKBM.c
-struct
+struct onionproc_stBM
 {
   pid_t rp_pid;
   int rp_outpipe;
@@ -35,29 +36,39 @@ struct
   objectval_tyBM *rp_bufob;
 } onionrunprocarr_BM[MAXNBWORKJOBS_BM];
 
-/// queued process commands, of nodes (dir, cmd, clos)
+/// queued process commands, of nodes (dir, cmd, clos); for processes
+/// which are not yet in the array above...
 struct listtop_stBM *onionrunpro_list_BM;
+
+// lock for the structures above
 pthread_mutex_t onionrunpro_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 
-static void lock_runpro_mtx_at_BM (int lineno);
-static void unlock_runpro_mtx_at_BM (int lineno);
+// the lock above should be set when calling:
+static void
+fork_onion_process_at_slot_BM (int slotpos,
+                               const stringval_tyBM * dirstrarg,
+                               const node_tyBM * cmdnodarg,
+                               const closure_tyBM * endclosarg,
+                               struct stackframe_stBM *stkf);
+static void lockonion_runpro_mtx_at_BM (int lineno);
+static void unlockonion_runpro_mtx_at_BM (int lineno);
 
 void
-lock_runpro_mtx_at_BM (int lineno)
+lockonion_runpro_mtx_at_BM (int lineno)
 {
-  DBGPRINTFAT_BM (__FILE__, lineno, "lock_gtkrunpro_mtx_BM thrid=%ld",
+  DBGPRINTFAT_BM (__FILE__, lineno, "lockonion_runpro_mtx_BM thrid=%ld",
                   (long) gettid_BM ());
   pthread_mutex_lock (&onionrunpro_mtx_BM);
-}                               /* end lock_runpro_mtx_at_BM */
+}                               /* end lockonion_runpro_mtx_at_BM */
 
 
 void
-unlock_runpro_mtx_at_BM (int lineno)
+unlockonion_runpro_mtx_at_BM (int lineno)
 {
-  DBGPRINTFAT_BM (__FILE__, lineno, "unlock_gtkrunpro_mtx_BM thrid=%ld",
+  DBGPRINTFAT_BM (__FILE__, lineno, "unlockonion_runpro_mtx_BM thrid=%ld",
                   (long) gettid_BM ());
   pthread_mutex_unlock (&onionrunpro_mtx_BM);
-}                               /* end lock_runpro_mtx_at_BM */
+}                               /* end lockonion_runpro_mtx_at_BM */
 
 void
 log_begin_message_BM (void)
@@ -138,6 +149,8 @@ log_printf_message_BM (const char *fmt, ...)
 
 
 
+
+
 // queue some external process; its stdin is /dev/null; both stdout &
 // stderr are merged & captured; final string is given to the closure.
 // dirstrv is the string of the directory to run it in (if NULL, use
@@ -170,6 +183,22 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
 #define FAILHERE(Cause) do { failin = __LINE__ ;  _.causev = (value_tyBM)(Cause); goto failure; } while(0)
   if (_.dirstrv && !isstring_BM (_.dirstrv))
     FAILHERE (makenode1_BM (BMP_string, (value_tyBM) _.dirstrv));
+  if (_.dirstrv && isstring_BM (_.dirstrv))
+    {
+      struct stat dirstat;
+      int olderrno = errno;
+      errno = 0;
+      memset (&dirstat, 0, sizeof (dirstat));
+      if (!stat (bytstring_BM (_.dirstrv), &dirstat)
+          && (dirstat.st_mode & S_IFMT) != S_IFDIR)
+        errno = ENOTDIR;
+      int newerrno = errno;
+      errno = olderrno;
+      if (newerrno)
+        FAILHERE (makenode2_BM
+                  (BMP_node, (value_tyBM) _.dirstrv,
+                   taggedint_BM (newerrno)));
+    }
   if (!isnode_BM (_.cmdnodv))
     FAILHERE (makenode1_BM (BMP_node, (value_tyBM) _.cmdnodv));
   if (!isclosure_BM (_.endclosv))
@@ -186,12 +215,37 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
     }
   ASSERT_BM (nbworkjobs_BM >= MINNBWORKJOBS_BM
              && nbworkjobs_BM <= MAXNBWORKJOBS_BM);
-#warning should nearly reproduce queue_process_BM from newgui_GTKBM.c
-  FATAL_BM ("queue_process_BM unimplemented in web_ONIONBM");
+  lockonion_runpro_mtx_at_BM (__LINE__);
+  lockedproc = true;
+  int slotpos = -1;
+  for (int ix = 0; ix < nbworkjobs_BM; ix++)
+    {
+      if (onionrunprocarr_BM[ix].rp_pid == 0)
+        {
+          slotpos = ix;
+          break;
+        };
+    }
+  if (slotpos >= 0 && !onionrunpro_list_BM)
+    {
+      fork_onion_process_at_slot_BM (slotpos, _.dirstrv, _.cmdnodv,
+                                     _.endclosv, CURFRAME_BM);
+    }
+  else
+    {                           // append to onionrunpro_list_BM
+      if (!onionrunpro_list_BM)
+        onionrunpro_list_BM = makelist_BM ();
+      _.nodv = (value_tyBM)
+        makenode3_BM (k_queue_process, _.dirstrv, _.cmdnodv, _.endclosv);
+      listappend_BM (onionrunpro_list_BM, _.nodv);
+    }
+  ASSERT_BM (lockedproc);
+  unlockonion_runpro_mtx_at_BM (__LINE__), lockedproc = false;
+  LOCALJUSTRETURN_BM ();
 failure:
 #undef FAILHERE
   if (lockedproc)
-    unlock_runpro_mtx_at_BM (__LINE__), lockedproc = false;
+    unlockonion_runpro_mtx_at_BM (__LINE__), lockedproc = false;
   DBGPRINTF_BM
     ("queue_process failure failin %d dirstr %s, cmdnod %s endclos %s, cause %s",
      failin,
@@ -203,8 +257,84 @@ failure:
     makenode4_BM (k_queue_process, _.dirstrv, _.cmdnodv, _.endclosv,
                   _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
-#warning queue_process_BM unimplemented in web_ONIONBM
 }                               /* end queue_process_BM */
+
+static void
+fork_onion_process_at_slot_BM (int slotpos,
+                               const stringval_tyBM * dirstrarg,
+                               const node_tyBM * cmdnodarg,
+                               const closure_tyBM * endclosarg,
+                               struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
+  objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
+  LOCALFRAME_BM ( /*prev: */ stkf,
+                 /*descr: */ NULL,
+                 const stringval_tyBM * dirstrv;        //
+                 const node_tyBM * cmdnodv;     //
+                 const closure_tyBM * endclosv; //
+                 value_tyBM curargv;    //
+                 objectval_tyBM * bufob;        //
+    );
+  _.dirstrv = dirstrarg;
+  _.cmdnodv = cmdnodarg;
+  _.endclosv = endclosarg;
+  int cmdlen = nodewidth_BM (_.cmdnodv);
+  ASSERT_BM (cmdlen > 0);
+  ASSERT_BM (slotpos >= 0 && slotpos < MAXNBWORKJOBS_BM);
+  /// should fork the process
+  int pipfd[2] = { -1, -1 };
+  char **args = calloc (cmdlen + 1, sizeof (char *));
+  if (!args)
+    FATAL_BM ("calloc args %d failed - %m", cmdlen);
+  for (int aix = 0; aix < cmdlen; aix++)
+    args[aix] = bytstring_BM (nodenthson_BM (_.cmdnodv, aix));
+  if (pipe (pipfd))
+    FATAL_BM ("pipe failed - %m");
+  ASSERT_BM (pipfd[0] > 0 && pipfd[1] > 0);
+  fflush (NULL);
+  pid_t pid = fork ();
+  if (pid < 0)
+    FATAL_BM ("failed to fork %s - %m", args[0]);
+  if (pid == 0)
+    {
+      // child process; in principle, most file descriptors should be
+      //close-on-exec, but just in case we close some of them...
+      for (int ix = 3; ix < 64; ix++)
+        if (ix != pipfd[1])
+          (void) close (ix);
+      if (isstring_BM (_.dirstrv))
+        {
+          if (chdir (bytstring_BM (_.dirstrv)))
+            {
+              perror (bytstring_BM (_.dirstrv));
+              exit (126);
+            }
+        }
+      int fd = open ("/dev/null", O_RDONLY);
+      dup2 (fd, STDIN_FILENO);
+      close (fd), fd = -1;
+      dup2 (pipfd[1], STDOUT_FILENO);
+      dup2 (pipfd[1], STDERR_FILENO);
+      execv (args[0], args);
+      perror (args[0]);
+      _exit (127);
+    }
+  else
+    {                           // parent process
+      struct onionproc_stBM *onproc = onionrunprocarr_BM + slotpos;
+      ASSERT_BM (onproc->rp_pid <= 0 && onproc->rp_outpipe <= 0);
+      onproc->rp_pid = pid;
+      onproc->rp_outpipe = pipfd[0];
+      fcntl (pipfd[0], F_SETFL, O_NONBLOCK);
+      onproc->rp_cmdnodv = _.cmdnodv;
+      onproc->rp_closv = _.endclosv;
+      onproc->rp_dirstrv = _.dirstrv;
+      _.bufob = makeobj_BM ();
+      onproc->rp_bufob = _.bufob;
+    }
+}                               /* end fork_onion_process_at_slot_BM */
+
 
 ////////////////////////////////////////////////////////////////
 static onion_connection_status

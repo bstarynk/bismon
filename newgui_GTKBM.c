@@ -4016,11 +4016,11 @@ pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond,
 
 // gtkrunpro_mtx_BM should be locked when calling this
 static void
-fork_process_at_slot_BM (int slotpos,
-                         const stringval_tyBM * dirstrarg,
-                         const node_tyBM * cmdnodarg,
-                         const closure_tyBM * endclosarg,
-                         struct stackframe_stBM *stkf);
+fork_gtk_process_at_slot_BM (int slotpos,
+                             const stringval_tyBM * dirstrarg,
+                             const node_tyBM * cmdnodarg,
+                             const closure_tyBM * endclosarg,
+                             struct stackframe_stBM *stkf);
 
 void
 queue_process_BM (const stringval_tyBM * dirstrarg,
@@ -4048,6 +4048,22 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
 #define FAILHERE(Cause) do { failin = __LINE__ ;  _.causev = (value_tyBM)(Cause); goto failure; } while(0)
   if (_.dirstrv && !isstring_BM (_.dirstrv))
     FAILHERE (makenode1_BM (BMP_string, (value_tyBM) _.dirstrv));
+  if (_.dirstrv && isstring_BM (_.dirstrv))
+    {
+      struct stat dirstat;
+      int olderrno = errno;
+      errno = 0;
+      memset (&dirstat, 0, sizeof (dirstat));
+      if (!stat (bytstring_BM (_.dirstrv), &dirstat)
+          && (dirstat.st_mode & S_IFMT) != S_IFDIR)
+        errno = ENOTDIR;
+      int newerrno = errno;
+      errno = olderrno;
+      if (newerrno)
+        FAILHERE (makenode2_BM
+                  (BMP_node, (value_tyBM) _.dirstrv,
+                   taggedint_BM (newerrno)));
+    }
   if (!isnode_BM (_.cmdnodv))
     FAILHERE (makenode1_BM (BMP_node, (value_tyBM) _.cmdnodv));
   if (!isclosure_BM (_.endclosv))
@@ -4077,8 +4093,8 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
     }
   if (slotpos >= 0 && !gtkrunpro_list_BM)
     {
-      fork_process_at_slot_BM (slotpos, _.dirstrv, _.cmdnodv, _.endclosv,
-                               CURFRAME_BM);
+      fork_gtk_process_at_slot_BM (slotpos, _.dirstrv, _.cmdnodv, _.endclosv,
+                                   CURFRAME_BM);
     }
   else
     {                           // append to gtkrunpro_list_BM
@@ -4110,11 +4126,11 @@ failure:
 
 
 void
-fork_process_at_slot_BM (int slotpos,
-                         const stringval_tyBM * dirstrarg,
-                         const node_tyBM * cmdnodarg,
-                         const closure_tyBM * endclosarg,
-                         struct stackframe_stBM *stkf)
+fork_gtk_process_at_slot_BM (int slotpos,
+                             const stringval_tyBM * dirstrarg,
+                             const node_tyBM * cmdnodarg,
+                             const closure_tyBM * endclosarg,
+                             struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
   objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
@@ -4144,9 +4160,17 @@ fork_process_at_slot_BM (int slotpos,
   fflush (NULL);
   pid_t pid = fork ();
   if (pid < 0)
-    FATAL_BM ("failed to fork - %m");
+    FATAL_BM ("failed to fork %s - %m", args[0]);
   if (pid == 0)
     {
+      if (isstring_BM (_.dirstrv))
+        {
+          if (chdir (bytstring_BM (_.dirstrv)))
+            {
+              perror (bytstring_BM (_.dirstrv));
+              exit (126);
+            }
+        }
       // child process
       for (int ix = 3; ix < 64; ix++)
         if (ix != pipfd[1])
@@ -4167,6 +4191,7 @@ fork_process_at_slot_BM (int slotpos,
       fcntl (pipfd[0], F_SETFL, O_NONBLOCK);
       gtkrunprocarr_BM[slotpos].rp_cmdnodv = _.cmdnodv;
       gtkrunprocarr_BM[slotpos].rp_closv = _.endclosv;
+      gtkrunprocarr_BM[slotpos].rp_dirstrv = _.dirstrv;
       _.bufob = makeobj_BM ();
       objputclass_BM (_.bufob, k_sbuf_object);
       objputstrbufferpayl_BM (_.bufob, 1024 * 1024);
@@ -4184,10 +4209,10 @@ fork_process_at_slot_BM (int slotpos,
       if (!gtkrunprocarr_BM[slotpos].rp_pipewatch)
         FATAL_BM ("g_io_add_watch failed - %m");
     }
-}                               /* end fork_process_at_slot_BM */
+}                               /* end fork_gtk_process_at_slot_BM */
 
 
-// callback installed by g_child_watch_add in fork_process_at_slot_BM
+// callback installed by g_child_watch_add in fork_gtk_process_at_slot_BM
 static void
 defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
 {
@@ -4252,8 +4277,8 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
       ASSERT_BM (!_.dirstrv || isstring_BM (_.dirstrv));
       ASSERT_BM (isnode_BM (_.cmdnodv) && nodewidth_BM (_.cmdnodv) > 0);
       ASSERT_BM (isclosure_BM (_.endclosv));
-      fork_process_at_slot_BM (slot, _.dirstrv, _.cmdnodv, _.endclosv,
-                               CURFRAME_BM);
+      fork_gtk_process_at_slot_BM (slot, _.dirstrv, _.cmdnodv, _.endclosv,
+                                   CURFRAME_BM);
     }
   unlock_runpro_mtx_at_BM (__LINE__);
   char *remstr = NULL;
@@ -4306,7 +4331,7 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
 
 
 
-// callback installed by g_io_add_watch in fork_process_at_slot_BM
+// callback installed by g_io_add_watch in fork_gtk_process_at_slot_BM
 gboolean
 pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond,
                          gpointer user_data)
