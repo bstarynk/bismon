@@ -21,6 +21,44 @@
 extern void run_onionweb_BM (int nbjobs);
 static onion *myonion_BM;
 
+
+
+//////////////// for process queue
+/// running processes; similar to gtkrunprocarr_BM in newgui_GTKBM.c
+struct
+{
+  pid_t rp_pid;
+  int rp_outpipe;
+  const stringval_tyBM *rp_dirstrv;
+  const node_tyBM *rp_cmdnodv;
+  const closure_tyBM *rp_closv;
+  objectval_tyBM *rp_bufob;
+} onionrunprocarr_BM[MAXNBWORKJOBS_BM];
+
+/// queued process commands, of nodes (dir, cmd, clos)
+struct listtop_stBM *onionrunpro_list_BM;
+pthread_mutex_t onionrunpro_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
+
+static void lock_runpro_mtx_at_BM (int lineno);
+static void unlock_runpro_mtx_at_BM (int lineno);
+
+void
+lock_runpro_mtx_at_BM (int lineno)
+{
+  DBGPRINTFAT_BM (__FILE__, lineno, "lock_gtkrunpro_mtx_BM thrid=%ld",
+                  (long) gettid_BM ());
+  pthread_mutex_lock (&onionrunpro_mtx_BM);
+}                               /* end lock_runpro_mtx_at_BM */
+
+
+void
+unlock_runpro_mtx_at_BM (int lineno)
+{
+  DBGPRINTFAT_BM (__FILE__, lineno, "unlock_gtkrunpro_mtx_BM thrid=%ld",
+                  (long) gettid_BM ());
+  pthread_mutex_unlock (&onionrunpro_mtx_BM);
+}                               /* end lock_runpro_mtx_at_BM */
+
 void
 log_begin_message_BM (void)
 {
@@ -29,6 +67,7 @@ log_begin_message_BM (void)
   double now = clocktime_BM (CLOCK_REALTIME);
   time_t nowt = (time_t) floor (now);
   double nowfrac = now - (double) nowt;
+  ASSERT_BM (nowfrac >= 0.0 && nowfrac < 1.0);
   struct tm nowtm = {
   };
   localtime_r (&nowt, &nowtm);
@@ -106,11 +145,64 @@ log_printf_message_BM (const char *fmt, ...)
 // to run endclosv is the closure getting the status
 // stringoutput, could fail
 void
-queue_process_BM (const stringval_tyBM * dirstr,
-                  const node_tyBM * cmdnodv,
-                  const closure_tyBM * endclosv, struct stackframe_stBM *stkf)
+queue_process_BM (const stringval_tyBM * dirstrarg,
+                  const node_tyBM * cmdnodarg,
+                  const closure_tyBM * endclosarg,
+                  struct stackframe_stBM *stkf)
 {
+  objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
+  objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_queue_process, //
+                 const stringval_tyBM * dirstrv;        //
+                 const node_tyBM * cmdnodv;     //
+                 const closure_tyBM * endclosv; //
+                 value_tyBM curargv;    //
+                 value_tyBM errorv;     //
+                 value_tyBM causev;     //
+                 objectval_tyBM * bufob;        //
+                 value_tyBM nodv;       //
+    );
+  _.dirstrv = dirstrarg;
+  _.cmdnodv = cmdnodarg;
+  _.endclosv = endclosarg;
+  bool lockedproc = false;
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ;  _.causev = (value_tyBM)(Cause); goto failure; } while(0)
+  if (_.dirstrv && !isstring_BM (_.dirstrv))
+    FAILHERE (makenode1_BM (BMP_string, (value_tyBM) _.dirstrv));
+  if (!isnode_BM (_.cmdnodv))
+    FAILHERE (makenode1_BM (BMP_node, (value_tyBM) _.cmdnodv));
+  if (!isclosure_BM (_.endclosv))
+    FAILHERE (makenode1_BM (BMP_closure, (value_tyBM) _.cmdnodv));
+  unsigned cmdlen = nodewidth_BM (_.cmdnodv);
+  if (cmdlen == 0)
+    FAILHERE (makenode1_BM (BMP_node, (value_tyBM) _.cmdnodv));
+  for (unsigned aix = 0; aix < cmdlen; aix++)
+    {
+      _.curargv = nodenthson_BM (_.cmdnodv, aix);
+      if (!isstring_BM (_.curargv))
+        FAILHERE (makenode2_BM
+                  (BMP_node, (value_tyBM) _.cmdnodv, taggedint_BM (aix)));
+    }
+  ASSERT_BM (nbworkjobs_BM >= MINNBWORKJOBS_BM
+             && nbworkjobs_BM <= MAXNBWORKJOBS_BM);
+#warning should nearly reproduce queue_process_BM from newgui_GTKBM.c
   FATAL_BM ("queue_process_BM unimplemented in web_ONIONBM");
+failure:
+#undef FAILHERE
+  if (lockedproc)
+    unlock_runpro_mtx_at_BM (__LINE__), lockedproc = false;
+  DBGPRINTF_BM
+    ("queue_process failure failin %d dirstr %s, cmdnod %s endclos %s, cause %s",
+     failin,
+     bytstring_BM (_.dirstrv), debug_outstr_value_BM ((value_tyBM) _.cmdnodv,
+                                                      CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.endclosv, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    makenode4_BM (k_queue_process, _.dirstrv, _.cmdnodv, _.endclosv,
+                  _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #warning queue_process_BM unimplemented in web_ONIONBM
 }                               /* end queue_process_BM */
 
