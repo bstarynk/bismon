@@ -56,10 +56,10 @@ struct
   GIOChannel *rp_pipchan;
   guint rp_childwatch;
   guint rp_pipewatch;
-} runprocarr_BM[MAXNBWORKJOBS_BM];
+} gtkrunprocarr_BM[MAXNBWORKJOBS_BM];
 /// queued process commands, of nodes (dir, cmd, clos)
-struct listtop_stBM *runpro_list_BM;
-pthread_mutex_t runpro_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
+struct listtop_stBM *gtkrunpro_list_BM;
+pthread_mutex_t gtkrunpro_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 
 
 static GtkCssProvider *cssprovider_newgui_bm;
@@ -158,18 +158,18 @@ static void unlock_runpro_mtx_at_BM (int lineno);
 void
 lock_runpro_mtx_at_BM (int lineno)
 {
-  DBGPRINTFAT_BM (__FILE__, lineno, "lock_runpro_mtx_BM thrid=%ld",
+  DBGPRINTFAT_BM (__FILE__, lineno, "lock_gtkrunpro_mtx_BM thrid=%ld",
                   (long) gettid_BM ());
-  pthread_mutex_lock (&runpro_mtx_BM);
+  pthread_mutex_lock (&gtkrunpro_mtx_BM);
 }                               /* end lock_runpro_mtx_at_BM */
 
 
 void
 unlock_runpro_mtx_at_BM (int lineno)
 {
-  DBGPRINTFAT_BM (__FILE__, lineno, "unlock_runpro_mtx_BM thrid=%ld",
+  DBGPRINTFAT_BM (__FILE__, lineno, "unlock_gtkrunpro_mtx_BM thrid=%ld",
                   (long) gettid_BM ());
-  pthread_mutex_unlock (&runpro_mtx_BM);
+  pthread_mutex_unlock (&gtkrunpro_mtx_BM);
 }                               /* end lock_runpro_mtx_at_BM */
 
 /*****************************************************************/
@@ -401,14 +401,14 @@ gcmarknewgui_BM (struct garbcoll_stBM *gc)
   lock_runpro_mtx_at_BM (__LINE__);
   for (int ix = 0; ix < MAXNBWORKJOBS_BM; ix++)
     {
-      if (runprocarr_BM[ix].rp_pid <= 0)
+      if (gtkrunprocarr_BM[ix].rp_pid <= 0)
         continue;
-      VALUEGCPROC_BM (gc, runprocarr_BM[ix].rp_dirstrv, 0);
-      VALUEGCPROC_BM (gc, runprocarr_BM[ix].rp_cmdnodv, 0);
-      gcobjmark_BM (gc, runprocarr_BM[ix].rp_bufob);
+      VALUEGCPROC_BM (gc, gtkrunprocarr_BM[ix].rp_dirstrv, 0);
+      VALUEGCPROC_BM (gc, gtkrunprocarr_BM[ix].rp_cmdnodv, 0);
+      gcobjmark_BM (gc, gtkrunprocarr_BM[ix].rp_bufob);
     }
-  if (runpro_list_BM)
-    listgcmark_BM (gc, runpro_list_BM, NULL, 0);
+  if (gtkrunpro_list_BM)
+    listgcmark_BM (gc, gtkrunpro_list_BM, NULL, 0);
   unlock_runpro_mtx_at_BM (__LINE__);
 }                               /* end gcmarknewgui_BM */
 
@@ -4014,7 +4014,7 @@ pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond,
                          gpointer data);
 
 
-// runpro_mtx_BM should be locked when calling this
+// gtkrunpro_mtx_BM should be locked when calling this
 static void
 fork_process_at_slot_BM (int slotpos,
                          const stringval_tyBM * dirstrarg,
@@ -4069,24 +4069,24 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
   int slotpos = -1;
   for (int ix = 0; ix < nbworkjobs_BM; ix++)
     {
-      if (runprocarr_BM[ix].rp_pid == 0)
+      if (gtkrunprocarr_BM[ix].rp_pid == 0)
         {
           slotpos = ix;
           break;
         };
     }
-  if (slotpos >= 0 && !runpro_list_BM)
+  if (slotpos >= 0 && !gtkrunpro_list_BM)
     {
       fork_process_at_slot_BM (slotpos, _.dirstrv, _.cmdnodv, _.endclosv,
                                CURFRAME_BM);
     }
   else
-    {                           // append to runpro_list_BM
-      if (!runpro_list_BM)
-        runpro_list_BM = makelist_BM ();
+    {                           // append to gtkrunpro_list_BM
+      if (!gtkrunpro_list_BM)
+        gtkrunpro_list_BM = makelist_BM ();
       _.nodv = (value_tyBM)
         makenode3_BM (k_queue_process, _.dirstrv, _.cmdnodv, _.endclosv);
-      listappend_BM (runpro_list_BM, _.nodv);
+      listappend_BM (gtkrunpro_list_BM, _.nodv);
     }
   ASSERT_BM (lockedproc);
   unlock_runpro_mtx_at_BM (__LINE__), lockedproc = false;
@@ -4162,26 +4162,26 @@ fork_process_at_slot_BM (int slotpos,
     }
   else
     {                           // parent process
-      runprocarr_BM[slotpos].rp_pid = pid;
-      runprocarr_BM[slotpos].rp_outpipe = pipfd[0];
+      gtkrunprocarr_BM[slotpos].rp_pid = pid;
+      gtkrunprocarr_BM[slotpos].rp_outpipe = pipfd[0];
       fcntl (pipfd[0], F_SETFL, O_NONBLOCK);
-      runprocarr_BM[slotpos].rp_cmdnodv = _.cmdnodv;
-      runprocarr_BM[slotpos].rp_closv = _.endclosv;
+      gtkrunprocarr_BM[slotpos].rp_cmdnodv = _.cmdnodv;
+      gtkrunprocarr_BM[slotpos].rp_closv = _.endclosv;
       _.bufob = makeobj_BM ();
       objputclass_BM (_.bufob, k_sbuf_object);
       objputstrbufferpayl_BM (_.bufob, 1024 * 1024);
-      runprocarr_BM[slotpos].rp_bufob = _.bufob;
-      runprocarr_BM[slotpos].rp_childwatch =
+      gtkrunprocarr_BM[slotpos].rp_bufob = _.bufob;
+      gtkrunprocarr_BM[slotpos].rp_childwatch =
         g_child_watch_add (pid, defer_process_watchcb_BM, (void *) slotpos);
-      if (!runprocarr_BM[slotpos].rp_childwatch)
+      if (!gtkrunprocarr_BM[slotpos].rp_childwatch)
         FATAL_BM ("g_child_watch_add failure for pid#%d", (int) pid);
-      runprocarr_BM[slotpos].rp_pipchan = g_io_channel_unix_new (pipfd[0]);
-      if (!runprocarr_BM[slotpos].rp_pipchan)
+      gtkrunprocarr_BM[slotpos].rp_pipchan = g_io_channel_unix_new (pipfd[0]);
+      if (!gtkrunprocarr_BM[slotpos].rp_pipchan)
         FATAL_BM ("g_io_channel_unix_new failure for fd#%d - %m", pipfd[0]);
-      runprocarr_BM[slotpos].rp_pipewatch =
-        g_io_add_watch (runprocarr_BM[slotpos].rp_pipchan, G_IO_IN,
+      gtkrunprocarr_BM[slotpos].rp_pipewatch =
+        g_io_add_watch (gtkrunprocarr_BM[slotpos].rp_pipchan, G_IO_IN,
                         pipe_process_watchcb_BM, (void *) slotpos);
-      if (!runprocarr_BM[slotpos].rp_pipewatch)
+      if (!gtkrunprocarr_BM[slotpos].rp_pipewatch)
         FATAL_BM ("g_io_add_watch failed - %m");
     }
 }                               /* end fork_process_at_slot_BM */
@@ -4215,30 +4215,30 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
                 (int) pid, (int) status, slot);
   lock_runpro_mtx_at_BM (__LINE__);
   _.pendingv = NULL;
-  ASSERT_BM (runprocarr_BM[slot].rp_pid == pid);
-  _.closv = runprocarr_BM[slot].rp_closv;
-  _.bufob = runprocarr_BM[slot].rp_bufob;
-  pipchan = runprocarr_BM[slot].rp_pipchan;
-  outpipefd = runprocarr_BM[slot].rp_outpipe;
-  childwatch = runprocarr_BM[slot].rp_childwatch;
-  pipewatch = runprocarr_BM[slot].rp_pipewatch;
+  ASSERT_BM (gtkrunprocarr_BM[slot].rp_pid == pid);
+  _.closv = gtkrunprocarr_BM[slot].rp_closv;
+  _.bufob = gtkrunprocarr_BM[slot].rp_bufob;
+  pipchan = gtkrunprocarr_BM[slot].rp_pipchan;
+  outpipefd = gtkrunprocarr_BM[slot].rp_outpipe;
+  childwatch = gtkrunprocarr_BM[slot].rp_childwatch;
+  pipewatch = gtkrunprocarr_BM[slot].rp_pipewatch;
   DBGPRINTF_BM ("defer_process_watchcb pid %d closv %s bufob %s",
                 pid, debug_outstr_value_BM (_.closv, CURFRAME_BM, 0),
                 objectdbg_BM (_.bufob));
-  memset (&runprocarr_BM[slot], 0, sizeof (runprocarr_BM[slot]));
-  /// should take the head of runpro_list_BM
-  if (runpro_list_BM)
+  memset (&gtkrunprocarr_BM[slot], 0, sizeof (gtkrunprocarr_BM[slot]));
+  /// should take the head of gtkrunpro_list_BM
+  if (gtkrunpro_list_BM)
     {
-      _.pendingv = listfirst_BM (runpro_list_BM);
+      _.pendingv = listfirst_BM (gtkrunpro_list_BM);
       DBGPRINTF_BM ("defer_process_watchcb_BM pid=%d pending %s",
                     (int) pid, debug_outstr_value_BM (_.pendingv, CURFRAME_BM,
                                                       0));
-      if (listlength_BM (runpro_list_BM) == 0)
-        runpro_list_BM = NULL;
-      listpopfirst_BM (runpro_list_BM);
+      if (listlength_BM (gtkrunpro_list_BM) == 0)
+        gtkrunpro_list_BM = NULL;
+      listpopfirst_BM (gtkrunpro_list_BM);
     }
   else
-    DBGPRINTF_BM ("defer_process_watchcb_BM pid=%d empty runpro_list_BM");
+    DBGPRINTF_BM ("defer_process_watchcb_BM pid=%d empty gtkrunpro_list_BM");
   // start the process corresponding to pendingv
   if (_.pendingv)
     {
@@ -4322,10 +4322,10 @@ pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond,
   ASSERT_BM (pthread_self () == mainthreadid_BM);
   DBGPRINTF_BM ("pipe_process_watchcb_BM slot %d", slot);
   lock_runpro_mtx_at_BM (__LINE__);
-  ASSERT_BM (runprocarr_BM[slot].rp_pid != 0);
-  pipchan = runprocarr_BM[slot].rp_pipchan;
-  _.bufob = runprocarr_BM[slot].rp_bufob;
-  outpipefd = runprocarr_BM[slot].rp_outpipe;
+  ASSERT_BM (gtkrunprocarr_BM[slot].rp_pid != 0);
+  pipchan = gtkrunprocarr_BM[slot].rp_pipchan;
+  _.bufob = gtkrunprocarr_BM[slot].rp_bufob;
+  outpipefd = gtkrunprocarr_BM[slot].rp_outpipe;
   unlock_runpro_mtx_at_BM (__LINE__);
   ASSERT_BM (pipchan == source);
   ASSERT_BM (isobject_BM (_.bufob));
