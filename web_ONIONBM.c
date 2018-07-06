@@ -24,8 +24,12 @@ static onion *myonion_BM;
 
 
 
-//////////////// for process queue
-/// running processes; similar to gtkrunprocarr_BM in newgui_GTKBM.c
+//////////////////////////////////////////////////////////////////////////
+/// For process queue running processes; similar to gtkrunprocarr_BM
+/// in newgui_GTKBM.c stuff is added into onionrunprocarr_BM &
+/// onionrunpro_list_BM by any thread doing queue_process_BM. Stuff is
+/// removed from them only by plain_event_loop_BM which would also
+/// apply the closures.
 struct onionproc_stBM
 {
   pid_t rp_pid;
@@ -52,6 +56,8 @@ fork_onion_process_at_slot_BM (int slotpos,
                                struct stackframe_stBM *stkf);
 static void lockonion_runpro_mtx_at_BM (int lineno);
 static void unlockonion_runpro_mtx_at_BM (int lineno);
+
+static void plain_event_loop_BM (void);
 
 void
 lockonion_runpro_mtx_at_BM (int lineno)
@@ -393,6 +399,7 @@ run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
   /// (and their output pipes), to SIGCHLD and SIGTERM + SIGQUIT
   /// see https://groups.google.com/a/coralbits.com/d/msg/onion-dev/m-wH-BY2MA0/QJqLNcHvAAAJ
   /// and https://groups.google.com/a/coralbits.com/d/msg/onion-dev/ImjNf1EIp68/R37DW3mZAAAJ
+  plain_event_loop_BM ();
 #warning run_onionweb_BM unimplemented
   FATAL_BM ("run_onionweb_BM unimplemented, nbjobs %d webrootpath %s", nbjobs,
             webrootpath);
@@ -578,5 +585,70 @@ custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
   /// probably should return OCS_PROCESSED if handled, or OCS_NOT_PROCESSED, OCS_FORBIDDEN, OCS_INTERNAL_ERROR, etc...
   return OCS_NOT_PROCESSED;
 }                               /* end custom_onion_handler_BM */
+
+/// remember that only plain_event_loop_BM is allowed to *remove*
+/// things from onionrunprocarr_BM or onionrunpro_list_BM
+void
+plain_event_loop_BM (void)
+{
+  bool running = true;
+  int termsigfd = -1;
+  int quitsigfd = -1;
+  {
+    sigset_t termsigset = { };
+    sigemptyset (&termsigset);
+    sigaddset (&termsigset, SIGTERM);
+    if (sigprocmask (SIG_BLOCK, &termsigset, NULL) == -1)
+      FATAL_BM ("sigprocmask termsigset failure");
+    termsigfd = signalfd (-1, &termsigset, NULL);
+    if (termsigfd < 0)
+      FATAL_BM ("signalfd failed for SIGTERM");
+  }
+  {
+    sigset_t quitsigset = { };
+    sigemptyset (&quitsigset);
+    sigaddset (&quitsigset, SIGQUIT);
+    if (sigprocmask (SIG_BLOCK, &quitsigset, NULL) == -1)
+      FATAL_BM ("sigprocmask quitsigset failure");
+    quitsigfd = signalfd (-1, &quitsigset, NULL);
+    if (quitsigfd < 0)
+      FATAL_BM ("signalfd failed for SIGQUIT");
+  }
+  long loopcnt = 0;
+  while (running)
+    {
+      struct pollfd pollarr[MAXNBWORKJOBS_BM + 5];
+      pid_t endedprocarr[MAXNBWORKJOBS_BM];
+      memset (pollarr, 0, sizeof (pollarr));
+      memset (endedprocarr, 0, sizeof (endedprocarr));
+      int nbpoll = 0;
+      pollarr[nbpoll].fd = termsigfd;
+      pollarr[nbpoll].events = POLL_IN;
+      nbpoll++;
+      pollarr[nbpoll].fd = quitsigfd;
+      pollarr[nbpoll].events = POLL_IN;
+      nbpoll++;
+      lockonion_runpro_mtx_at_BM (__LINE__);
+      for (int j = 0; j < nbworkjobs_BM; j++)
+        if (onionrunprocarr_BM[j].rp_pid > 0
+            && onionrunprocarr_BM[j].rp_outpipe > 0)
+          {
+            pollarr[nbpoll].fd = onionrunprocarr_BM[j].rp_outpipe;
+            pollarr[nbpoll].events = POLL_IN;
+            nbpoll++;
+          }
+      unlockonion_runpro_mtx_at_BM (__LINE__);
+#define POLL_DELAY_MILLISECS_BM 300
+      int nbready = poll (&pollarr, nbpoll, POLL_DELAY_MILLISECS_BM);
+      if (loopcnt % 4 == 0)
+        DBGPRINTF_BM ("plain_event_loop_BM nbready %d loop#%ld", nbready,
+                      loopcnt);
+      ///
+#warning missing code in plain_event_loop_BM
+      fprintf (stderr, "missing code in plain_event_loop_BM loop#%d\n",
+               loopcnt);
+      loopcnt++;
+    }
+}                               /* end plain_event_loop_BM */
 
 ////////////////////////////////////////////////////////////////
