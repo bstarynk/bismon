@@ -59,6 +59,11 @@ static void unlockonion_runpro_mtx_at_BM (int lineno);
 
 static void plain_event_loop_BM (void);
 
+// handle signals thu signafd(2)
+static void read_sigterm_BM (int sigfd);
+static void read_sigquit_BM (int sigfd);
+static void read_sigchld_BM (int sigfd);
+
 void
 lockonion_runpro_mtx_at_BM (int lineno)
 {
@@ -352,6 +357,7 @@ run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
   char *webhost = NULL;
   int webport = 0;
   int pos = -1;
+  int colonpos = -1;
   if (nbjobs < MINNBWORKJOBS_BM)
     nbjobs = MINNBWORKJOBS_BM;
   else if (nbjobs > MAXNBWORKJOBS_BM)
@@ -359,14 +365,16 @@ run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
   if (!onion_web_base_BM)
     onion_web_base_BM = "localhost:8086";
   if (sscanf
-      (onion_web_base_BM, "%m[.a-zA-Z0-9+-]:%d%n", &webhost, &webport,
-       &pos) < 3 || pos < 0 || onion_web_base_BM[pos])
-    FATAL_BM ("bad web base %s", onion_web_base_BM);
+      (onion_web_base_BM, "%m[.a-zA-Z0-9+-]%n:%d%n", &webhost, &colonpos,
+       &webport, &pos) < 2 || pos < 0 || onion_web_base_BM[pos])
+    FATAL_BM ("bad web base %s -host %s port %d", onion_web_base_BM,
+              webhost ? : "??", webport);
   myonion_BM = onion_new (O_THREADED | O_NO_SIGTERM | O_SYSTEMD | O_DETACHED);
   if (!myonion_BM)
     FATAL_BM ("failed to create onion");
   onion_set_max_threads (myonion_BM, nbjobs);
-  DBGPRINTF_BM ("run_onionweb webhost '%s' webport %d", webhost, webport);
+  DBGPRINTF_BM ("run_onionweb webhost '%s' webport %d", webhost ? : "??",
+                webport);
   if (webhost && webhost[0])
     onion_set_hostname (myonion_BM, webhost);
   char *lastcolon = strrchr (onion_web_base_BM, ':');
@@ -374,7 +382,7 @@ run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
     onion_set_port (myonion_BM, lastcolon + 1);
   onion_handler *roothdl = onion_get_root_handler (myonion_BM);
   if (!roothdl)
-    FATAL_BM ("failed to get onion root handler");
+    FATAL_BM ("failed to get onion root handler (myonion_BM@%p)", myonion_BM);
   char *webrootpath = NULL;
   if (asprintf (&webrootpath, "%s/webroot/", bismon_directory) < 0
       || !webrootpath || !webrootpath[0] || access (webrootpath, R_OK | X_OK))
@@ -594,6 +602,7 @@ plain_event_loop_BM (void)
   bool running = true;
   int termsigfd = -1;
   int quitsigfd = -1;
+  int chldsigfd = -1;
   {
     sigset_t termsigset = { };
     sigemptyset (&termsigset);
@@ -614,6 +623,16 @@ plain_event_loop_BM (void)
     if (quitsigfd < 0)
       FATAL_BM ("signalfd failed for SIGQUIT");
   }
+  {
+    sigset_t chldsigset = { };
+    sigemptyset (&chldsigset);
+    sigaddset (&chldsigset, SIGCHLD);
+    if (sigprocmask (SIG_BLOCK, &chldsigset, NULL) == -1)
+      FATAL_BM ("sigprocmask chldsigset failure");
+    chldsigfd = signalfd (-1, &chldsigset, NULL);
+    if (chldsigfd < 0)
+      FATAL_BM ("signalfd failed for SIGCHLD");
+  }
   long loopcnt = 0;
   while (running)
     {
@@ -622,12 +641,15 @@ plain_event_loop_BM (void)
       memset (pollarr, 0, sizeof (pollarr));
       memset (endedprocarr, 0, sizeof (endedprocarr));
       int nbpoll = 0;
-      pollarr[nbpoll].fd = termsigfd;
-      pollarr[nbpoll].events = POLL_IN;
-      nbpoll++;
-      pollarr[nbpoll].fd = quitsigfd;
-      pollarr[nbpoll].events = POLL_IN;
-      nbpoll++;
+      enum
+      { pollix_term, pollix_quit, pollix_chld, pollix__lastsig };
+      pollarr[pollix_term].fd = termsigfd;
+      pollarr[pollix_term].events = POLL_IN;
+      pollarr[pollix_quit].fd = quitsigfd;
+      pollarr[pollix_quit].events = POLL_IN;
+      pollarr[pollix_chld].fd = chldsigfd;
+      pollarr[pollix_chld].events = POLL_IN;
+      nbpoll = pollix__lastsig;
       lockonion_runpro_mtx_at_BM (__LINE__);
       for (int j = 0; j < nbworkjobs_BM; j++)
         if (onionrunprocarr_BM[j].rp_pid > 0
@@ -643,12 +665,80 @@ plain_event_loop_BM (void)
       if (loopcnt % 4 == 0)
         DBGPRINTF_BM ("plain_event_loop_BM nbready %d loop#%ld", nbready,
                       loopcnt);
-      ///
+      if (nbready == 0)         // no file descriptor read, timed out
+        continue;
+      if (nbready < 0)
+        {
+          if (errno != EINTR)
+            FATAL_BM ("plain_event_loop_BM poll failure");
+          continue;
+        }
+      if (pollarr[pollix_term].revents & POLL_IN)
+        {
+          read_sigterm_BM (termsigfd);
+          running = false;
+          break;
+          if (pollarr[pollix_quit].revents & POLL_IN)
+            {
+              read_sigquit_BM (quitsigfd);
+              running = false;
+              break;
+            };
+          if (pollarr[pollix_chld].revents & POLL_IN)
+            read_sigchld_BM (chldsigfd);
+          ///
 #warning missing code in plain_event_loop_BM
-      fprintf (stderr, "missing code in plain_event_loop_BM loop#%d\n",
-               loopcnt);
-      loopcnt++;
+          fprintf (stderr, "missing code in plain_event_loop_BM loop#%d\n",
+                   loopcnt);
+          loopcnt++;
+        }
     }
 }                               /* end plain_event_loop_BM */
+
+static void
+read_sigterm_BM (int sigfd)
+{
+  struct signalfd_siginfo sigterminf;
+  memset (&sigterminf, 0, sizeof (sigterminf));
+  int nbr = read (sigfd, &sigterminf, sizeof (sigterminf));
+  if (nbr != sizeof (sigterminf))       // very unlikely, probably impossible
+    FATAL_BM ("read_sigterm_BM: read fail (%d.by read, want %d) - %m",
+              nbr, (int) sizeof (sigterminf));
+  DBGPRINTF_BM ("read_sigterm_BM");
+}                               /* end read_sigterm_BM */
+
+
+static void
+read_sigquit_BM (int sigfd)
+{
+  struct signalfd_siginfo sigquitinf;
+  memset (&sigquitinf, 0, sizeof (sigquitinf));
+  int nbr = read (sigfd, &sigquitinf, sizeof (sigquitinf));
+  if (nbr != sizeof (sigquitinf))       // very unlikely, probably impossible
+    FATAL_BM ("read_sigquit_BM: read fail (%d.by read, want %d) - %m",
+              nbr, (int) sizeof (sigquitinf));
+  DBGPRINTF_BM ("read_sigquit_BM");
+}                               /* end read_sigquit_BM */
+
+static void
+read_sigchld_BM (int sigfd)
+{
+  struct signalfd_siginfo sigchldinf;
+  memset (&sigchldinf, 0, sizeof (sigchldinf));
+  int nbr = read (sigfd, &sigchldinf, sizeof (sigchldinf));
+  if (nbr != sizeof (sigchldinf))
+    // very unlikely, probably impossible
+    FATAL_BM ("read_sigchld_BM: read fail (%d.by read, want %d) - %m",
+              nbr, (int) sizeof (sigchldinf));
+  pid_t pid = sigchldinf.ssi_pid;
+  int ws = 0;
+  pid_t wpid = waitpid (pid, &ws, WNOHANG);
+  if (wpid == pid)
+    {
+      DBGPRINTF_BM ("read_sigchld_BM pid %d", (int) pid);
+    }
+  else
+    FATAL_BM ("read_sigchld_BM waitpid failure pid#%d", pid);
+}                               /* end read_sigchld_BM */
 
 ////////////////////////////////////////////////////////////////

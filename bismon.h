@@ -24,7 +24,7 @@
 **/
 
 #ifndef _GNU_SOURCE
-#define _GNU_SOURCE 1
+#define _GNU_SOURCE
 #endif
 
 #include <stddef.h>
@@ -65,6 +65,7 @@ using std::atomic_store;
 #include <termios.h>
 #include <sys/ioctl.h>
 #include <sys/file.h>
+#include <sys/signalfd.h>
 #include <elf.h>
 #include <errno.h>
 #include <netdb.h>
