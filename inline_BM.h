@@ -19,6 +19,18 @@
 #ifndef INLINE_BM_INCLUDED
 #define INLINE_BM_INCLUDED
 
+const char *
+basename_BM (const char *f)
+{
+  if (!f)
+    return "*null*";
+  const char *lsh = strrchr (f, '/');
+  if (lsh)
+    return lsh + 1;
+  else
+    return f;
+}                               /* end basename_BM */
+
 pid_t
 gettid_BM (void)
 {
