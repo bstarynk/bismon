@@ -4323,8 +4323,8 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
      slot,
      debug_outstr_value_BM (_.closv, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0), status);
-  gtk_defer_apply3_BM (_.closv, _.outstrv, taggedint_BM (status), NULL,
-                       CURFRAME_BM);
+  do_main_defer_apply3_BM (_.closv, _.outstrv, taggedint_BM (status), NULL,
+                           CURFRAME_BM);
   return;
 }                               /* end defer_process_watchcb_BM */
 

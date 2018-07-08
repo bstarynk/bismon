@@ -986,7 +986,7 @@ did_deferredgtk_BM (void)
 
 extern "C" int defer_gtk_writepipefd_BM;
 void
-gtk_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_tyBM arg3,
+do_main_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_tyBM arg3,
                      struct stackframe_stBM*stkf)
 {
   struct thisframe
@@ -1008,11 +1008,11 @@ gtk_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_ty
   _.arg3 = arg3;
   if (!isclosure_BM(funv) && !isobject_BM(funv))
     {
-      DBGPRINTF_BM("gtk_defer_apply bad funv %s",
+      DBGPRINTF_BM("do_main_defer_apply bad funv %s",
                    debug_outstr_value_BM (_.funv, CURFRAME_BM, 0));
       return;
     }
-  DBGPRINTF_BM("gtk_defer_apply start tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
+  DBGPRINTF_BM("do_main_defer_apply start tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
                (long)gettid_BM(),
                debug_outstr_value_BM (_.funv, CURFRAME_BM, 0), //
                debug_outstr_value_BM (_.arg1, CURFRAME_BM, 0), //
@@ -1020,7 +1020,7 @@ gtk_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_ty
                debug_outstr_value_BM (_.arg3, CURFRAME_BM, 0) //
               );
   if (defer_gtk_writepipefd_BM<0)
-    FATAL_BM("gtk_defer_apply3_BM without writepipe");
+    FATAL_BM("do_main_defer_apply3_BM without writepipe");
   char ch = "0123456789abcdefghijklmnopqrstuvwxyz" [valhash_BM (_.funv) % 36];
   {
     std::lock_guard<std::mutex> _g(deferqmtx_BM);
@@ -1032,7 +1032,7 @@ gtk_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_ty
     dap.defer_arg3 = arg3;
     deferdeque_BM.emplace_back(dap);
   }
-  DBGPRINTF_BM("gtk_defer_apply ch '%c' elapsed %.3f s", ch, elapsedtime_BM());
+  DBGPRINTF_BM("do_main_defer_apply ch '%c' elapsed %.3f s", ch, elapsedtime_BM());
   int nbtry = 0;
   int wrcnt = 0;
   for(;;)   // most of the time, this loop runs once
@@ -1040,7 +1040,7 @@ gtk_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_ty
       wrcnt = write(defer_gtk_writepipefd_BM, &ch, 1);
       if (wrcnt>0)
         {
-          DBGPRINTF_BM("gtk_defer_apply done funv %s arg1 %s arg2 %s arg3 %s",
+          DBGPRINTF_BM("do_main_defer_apply done funv %s arg1 %s arg2 %s arg3 %s",
                        debug_outstr_value_BM (_.funv, CURFRAME_BM, 0), //
                        debug_outstr_value_BM (_.arg1, CURFRAME_BM, 0), //
                        debug_outstr_value_BM (_.arg2, CURFRAME_BM, 0), //
@@ -1049,29 +1049,29 @@ gtk_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_ty
           return;
         }
       else
-        DBGPRINTF_BM("gtk_defer_apply ch '%c' wrcnt %d %m", ch, wrcnt);
+        DBGPRINTF_BM("do_main_defer_apply ch '%c' wrcnt %d %m", ch, wrcnt);
       usleep(1000);
       nbtry++;
       if (nbtry > 256)
-        FATAL_BM("gtk_defer_apply3_BM failed to write to pipe");
+        FATAL_BM("do_main_defer_apply3_BM failed to write to pipe");
     }
-  DBGPRINTF_BM("gtk_defer_apply end tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
+  DBGPRINTF_BM("do_main_defer_apply end tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
                (long)gettid_BM(),
                debug_outstr_value_BM (_.funv, CURFRAME_BM, 0), //
                debug_outstr_value_BM (_.arg1, CURFRAME_BM, 0), //
                debug_outstr_value_BM (_.arg2, CURFRAME_BM, 0), //
                debug_outstr_value_BM (_.arg3, CURFRAME_BM, 0) //
               );
-} // end gtk_defer_apply3_BM
+} // end do_main_defer_apply3_BM
 
 
 void
-gtk_defer_send3_BM(value_tyBM recv, objectval_tyBM*obsel,  value_tyBM arg1, value_tyBM arg2, value_tyBM arg3)
+do_main_defer_send3_BM(value_tyBM recv, objectval_tyBM*obsel,  value_tyBM arg1, value_tyBM arg2, value_tyBM arg3)
 {
   if (!recv) return;
   if (!isobject_BM(obsel)) return;
   if (defer_gtk_writepipefd_BM<0)
-    FATAL_BM("gtk_defer_send3_BM without writepipe");
+    FATAL_BM("do_main_defer_send3_BM without writepipe");
   char ch = "0123456789abcdefghijklmnopqrstuvwxyz" [valhash_BM (obsel) % 36];
   {
     std::lock_guard<std::mutex> _g(deferqmtx_BM);
@@ -1093,9 +1093,9 @@ gtk_defer_send3_BM(value_tyBM recv, objectval_tyBM*obsel,  value_tyBM arg1, valu
       usleep(1000);
       nbtry++;
       if (nbtry > 256)
-        FATAL_BM("gtk_defer_send3_BM failed to write to pipe");
+        FATAL_BM("do_main_defer_send3_BM failed to write to pipe");
     }
-} // end of gtk_defer_send3_BM
+} // end of do_main_defer_send3_BM
 #endif /*BISMONGTK*/
 
 

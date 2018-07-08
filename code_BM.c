@@ -4203,8 +4203,8 @@ ROUTINEOBJNAME_BM (_7XDuHagbhi8_3V9zhBpbrrV)    //
 #ifdef BISMONGTK
       NONPRINTF_BM ("todo!test_agenda defergtk %s rk#%d",       //
                     objectdbg_BM (_.taskob), rk);
-      gtk_defer_apply3_BM (kk_defer_show, _.taskob, _.rankv, NULL,
-                           CURFRAME_BM);
+      do_main_defer_apply3_BM (kk_defer_show, _.taskob, _.rankv, NULL,
+                               CURFRAME_BM);
       usleep (1000);
 #endif /*BISMONGTK*/
     }

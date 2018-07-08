@@ -3818,12 +3818,15 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
          srcdirstr, objectdbg_BM (_.modulob),
          objectdbg1_BM (_.modgenob),
          objectdbg2_BM (kk_deferred_compilation_of_module));
-      gtk_defer_apply3_BM (kk_deferred_compilation_of_module,
-                           _.modulob, _.modgenob, _.srcdirstrv, CURFRAME_BM);
+      do_main_defer_apply3_BM (kk_deferred_compilation_of_module,
+                               _.modulob, _.modgenob, _.srcdirstrv,
+                               CURFRAME_BM);
     }
 #else
 #warning emit_module°plain_module should be improved without BISMONGTK
-  fprintf (stderr, "emit_module°plain_module BISMONION not implemented srcpathstr %s modulob %s modgenob %s srcdirstrv %s\n", srcpathstr, objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),        //
+  fprintf (stderr, "emit_module°plain_module BISMONION not implemented...\n"   //
+           " ... srcpathstr %s modulob %s modgenob %s srcdirstrv %s\n", //
+           srcpathstr, objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),    //
            debug_outstr_value_BM (_.srcdirstrv, CURFRAME_BM, 0));
   fflush (stderr);
 #endif /*BISMONGTK*/
