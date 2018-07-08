@@ -1093,56 +1093,19 @@ remove_contributors_after_load_BM (void)
 }                               /* end remove_contributors_after_load_BM */
 
 
+extern void do_internal_deferred_apply3_BM (value_tyBM funv,
+                                            value_tyBM arg1,
+                                            value_tyBM arg2, value_tyBM arg3);
+extern void do_internal_deferred_send3_BM (value_tyBM recv,
+                                           objectval_tyBM * obsel,
+                                           value_tyBM arg1,
+                                           value_tyBM arg2, value_tyBM arg3);
 
-
-////////////////////////////////////////////////////////////////
-#ifdef BISMONGTK
-extern bool did_deferredgtk_BM (void);
-
-static gboolean
-deferpipereadhandler_BM (GIOChannel * source,
-                         GIOCondition condition __attribute__ ((unused)),
-                         gpointer data __attribute__ ((unused)))
-{
-  NONPRINTF_BM ("deferpipereadhandler_BM start tid#%ld", (long) gettid_BM ());
-  if (!source)
-    return false;
-  gchar buf[8] = "";
-  for (;;)
-    {
-      memset (buf, 0, sizeof (buf));
-      gsize nbrd = 0;
-      // reading more than one byte each time can block the program
-      GIOStatus st = g_io_channel_read_chars (source, buf, 1,
-                                              &nbrd, NULL);
-      NONPRINTF_BM ("deferpipereadhandler_BM nbrd=%d buf '%s' st#%d tid#%ld",
-                    (int) nbrd, buf, (int) st, (long) gettid_BM ());
-      if (st == G_IO_STATUS_EOF)
-        return FALSE;
-      if (!did_deferredgtk_BM ())
-        return TRUE;
-      if (st == G_IO_STATUS_NORMAL && nbrd > 0)
-        return TRUE;
-    }
-  return TRUE;                  // to keep watching
-}                               /* end deferpipereadhandler_BM */
-
-
-extern void do_internal_deferred_apply3_gtk_BM (value_tyBM funv,
-                                                value_tyBM arg1,
-                                                value_tyBM arg2,
-                                                value_tyBM arg3);
-extern void do_internal_deferred_send3_gtk_BM (value_tyBM recv,
-                                               objectval_tyBM * obsel,
-                                               value_tyBM arg1,
-                                               value_tyBM arg2,
-                                               value_tyBM arg3);
-
-// called from did_deferredgtk_BM
+// called from did_deferred_BM
 void
-do_internal_deferred_apply3_gtk_BM (value_tyBM fun,
-                                    value_tyBM arg1, value_tyBM arg2,
-                                    value_tyBM arg3)
+do_internal_deferred_apply3_BM (value_tyBM fun,
+                                value_tyBM arg1, value_tyBM arg2,
+                                value_tyBM arg3)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  value_tyBM funv; value_tyBM arg1v, arg2v, arg3v;
@@ -1185,11 +1148,11 @@ do_internal_deferred_apply3_gtk_BM (value_tyBM fun,
 }                               /* end do_internal_defer_apply3_BM */
 
 
-// called from did_deferredgtk_BM
+// called from did_deferred_BM
 void
-do_internal_deferred_send3_gtk_BM (value_tyBM recv, objectval_tyBM * obsel,
-                                   value_tyBM arg1, value_tyBM arg2,
-                                   value_tyBM arg3)
+do_internal_deferred_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
+                               value_tyBM arg1, value_tyBM arg2,
+                               value_tyBM arg3)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * obsel;
@@ -1234,6 +1197,42 @@ do_internal_deferred_send3_gtk_BM (value_tyBM recv, objectval_tyBM * obsel,
   curfailurehandle_BM = NULL;
 }                               /* end do_internal_defer_send3_BM */
 
+
+
+////////////////////////////////////////////////////////////////
+#ifdef BISMONGTK
+extern bool did_deferred_BM (void);
+
+static gboolean
+deferpipereadhandler_BM (GIOChannel * source,
+                         GIOCondition condition __attribute__ ((unused)),
+                         gpointer data __attribute__ ((unused)))
+{
+  NONPRINTF_BM ("deferpipereadhandler_BM start tid#%ld", (long) gettid_BM ());
+  if (!source)
+    return false;
+  gchar buf[8] = "";
+  for (;;)
+    {
+      memset (buf, 0, sizeof (buf));
+      gsize nbrd = 0;
+      // reading more than one byte each time can block the program
+      GIOStatus st = g_io_channel_read_chars (source, buf, 1,
+                                              &nbrd, NULL);
+      NONPRINTF_BM ("deferpipereadhandler_BM nbrd=%d buf '%s' st#%d tid#%ld",
+                    (int) nbrd, buf, (int) st, (long) gettid_BM ());
+      if (st == G_IO_STATUS_EOF)
+        return FALSE;
+      if (!did_deferred_BM ())
+        return TRUE;
+      if (st == G_IO_STATUS_NORMAL && nbrd > 0)
+        return TRUE;
+    }
+  return TRUE;                  // to keep watching
+}                               /* end deferpipereadhandler_BM */
+
+
+extern void add_defer_command_gtk_BM (void);
 
 static void startguilog_BM (void);
 static void endguilog_BM (void);
@@ -1359,6 +1358,42 @@ endguilog_BM (void)
   gui_command_log_file_BM = NULL;
   fflush (NULL);
 }                               /* end endguilog_BM */
+
+void
+add_defer_command_gtk_BM (void)
+{
+  DBGPRINTF_BM ("add_defer_command_gtk_BM start");
+  ASSERT_BM (defer_gtk_writepipefd_BM > 0);
+  int count = 0;
+  do
+    {                           /* most of the time, that loop runs once */
+      int nbw = write (defer_gtk_writepipefd_BM, "X", 1);
+      if (nbw < 0)
+        {
+          if (errno == EINTR)
+            {
+              count++;
+              continue;
+            }
+          if (errno == EWOULDBLOCK)
+            {
+              usleep (6500);
+              count++;
+              continue;
+            }
+          else
+            FATAL_BM ("add_defer_command_gtk_BM failed write, count %d - %m",
+                      count);
+        }
+      if (nbw == 1)
+        return;
+      usleep (1000);
+      count++;
+    }
+  while (count < 256);
+  FATAL_BM ("add_defer_command_gtk_BM failure count#%d", count);
+}                               /* end add_defer_command_gtk_BM */
+
 #endif /*BISMONGTK*/
 ////////////////////////////////////////////////////////////////
   void

@@ -4148,6 +4148,8 @@ fork_gtk_process_at_slot_BM (int slotpos,
   int cmdlen = nodewidth_BM (_.cmdnodv);
   ASSERT_BM (cmdlen > 0);
   ASSERT_BM (slotpos >= 0 && slotpos < MAXNBWORKJOBS_BM);
+  DBGPRINTF_BM ("fork_gtk_process_at_slot_BM slotpos %d cmdnod %s",
+                slotpos, debug_outstr_value_BM (_.cmdnodv, CURFRAME_BM, 0));
   /// should fork the process
   int pipfd[2] = { -1, -1 };
   char **args = calloc (cmdlen + 1, sizeof (char *));
