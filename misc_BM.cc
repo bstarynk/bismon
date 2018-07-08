@@ -888,7 +888,6 @@ cmd_find_enclosing_parens_BM(int off)
 
 ////////////////////////////////////////////////////////////////
 
-#ifdef BISMONGTK
 struct deferdoappl_stBM
 {
   union
@@ -905,7 +904,7 @@ static std::deque<deferdoappl_stBM> deferdeque_BM;
 static std::mutex deferqmtx_BM;
 
 void
-gcmarkdefergui_BM(struct garbcoll_stBM*gc)
+gcmarkdefer_BM(struct garbcoll_stBM*gc)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   std::lock_guard<std::mutex> _g(deferqmtx_BM);
@@ -925,8 +924,9 @@ gcmarkdefergui_BM(struct garbcoll_stBM*gc)
       if (itd.defer_arg3)
         VALUEGCPROC_BM (gc, itd.defer_arg3, 0);
     }
-} // end gcmarkdefergui_BM
+} // end gcmarkdefer_BM
 
+#ifdef BISMONGTK
 extern "C" void
 do_internal_deferred_send3_gtk_BM(value_tyBM recv, objectval_tyBM*obsel, value_tyBM arg1, value_tyBM arg2, value_tyBM arg3);
 
@@ -1098,6 +1098,86 @@ do_main_defer_send3_BM(value_tyBM recv, objectval_tyBM*obsel,  value_tyBM arg1, 
 } // end of do_main_defer_send3_BM
 #endif /*BISMONGTK*/
 
+
+////////////////////////////////////////////////////////////////
+
+#ifdef BISMONION
+
+extern "C" void add_defer_command_onion_BM (void);
+void
+do_main_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, value_tyBM arg3,
+                     struct stackframe_stBM*stkf)
+{
+  struct thisframe
+  {
+    STACKFRAMEFIELDS_BM;
+    value_tyBM funv;
+    value_tyBM arg1;
+    value_tyBM arg2;
+    value_tyBM arg3;
+  } _;
+  memset ((void*)&_, 0, sizeof(_));
+  _.stkfram_pA.htyp = typayl_StackFrame_BM;
+  _.stkfram_pA.rlen = (sizeof(_) - sizeof(struct emptystackframe_stBM))/sizeof(value_tyBM);
+  _.stkfram_prev = stkf;
+  //
+  _.funv = funv;
+  _.arg1 = arg1;
+  _.arg2 = arg2;
+  _.arg3 = arg3;
+  if (!isclosure_BM(funv) && !isobject_BM(funv))
+    {
+      DBGPRINTF_BM("do_main_defer_apply bad funv %s",
+                   debug_outstr_value_BM (_.funv, CURFRAME_BM, 0));
+      return;
+    }
+  DBGPRINTF_BM("do_main_defer_apply start tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
+               (long)gettid_BM(),
+               debug_outstr_value_BM (_.funv, CURFRAME_BM, 0), //
+               debug_outstr_value_BM (_.arg1, CURFRAME_BM, 0), //
+               debug_outstr_value_BM (_.arg2, CURFRAME_BM, 0), //
+               debug_outstr_value_BM (_.arg3, CURFRAME_BM, 0) //
+              );
+  {
+    std::lock_guard<std::mutex> _g(deferqmtx_BM);
+    struct deferdoappl_stBM dap = {};
+    dap.defer_fun = _.funv;
+    dap.defer_recv = nullptr;
+    dap.defer_arg1 = arg1;
+    dap.defer_arg2 = arg2;
+    dap.defer_arg3 = arg3;
+    deferdeque_BM.emplace_back(dap);
+  }
+  DBGPRINTF_BM("do_main_defer_apply elapsed %.3f s", elapsedtime_BM());
+  add_defer_command_onion_BM ();
+  DBGPRINTF_BM("do_main_defer_apply end tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
+               (long)gettid_BM(),
+               debug_outstr_value_BM (_.funv, CURFRAME_BM, 0), //
+               debug_outstr_value_BM (_.arg1, CURFRAME_BM, 0), //
+               debug_outstr_value_BM (_.arg2, CURFRAME_BM, 0), //
+               debug_outstr_value_BM (_.arg3, CURFRAME_BM, 0) //
+              );
+} // end do_main_defer_apply3_BM
+
+
+void
+do_main_defer_send3_BM(value_tyBM recv, objectval_tyBM*obsel,  value_tyBM arg1, value_tyBM arg2, value_tyBM arg3)
+{
+  if (!recv) return;
+  if (!isobject_BM(obsel)) return;
+  {
+    std::lock_guard<std::mutex> _g(deferqmtx_BM);
+    struct deferdoappl_stBM dap = {};
+    dap.defer_obsel = obsel;
+    dap.defer_recv = recv;
+    dap.defer_arg1 = arg1;
+    dap.defer_arg2 = arg2;
+    dap.defer_arg3 = arg3;
+    deferdeque_BM.emplace_back(dap);
+  }
+  add_defer_command_onion_BM ();
+} // end of do_main_defer_send3_BM
+#endif /*BISMONION*/
 
 ////////////////
 

@@ -716,9 +716,9 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   gcmarkpredefinedobjects_BM (&GCdata);
   gcmarkconstants_BM (&GCdata);
   gcmarkglobals_BM (&GCdata);
+  gcmarkdefer_BM (&GCdata);
 #ifdef BISMONGTK
   gcmarknewgui_BM (&GCdata);
-  gcmarkdefergui_BM (&GCdata);
 #endif /*BISMONGTK*/
     gcmarkagenda_BM (&GCdata);
   gcmarkmodules_BM (&GCdata);

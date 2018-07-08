@@ -23,7 +23,7 @@ static onion *myonion_BM;
 // the command pipe contains bytes, each considered as a different message
 static int cmdpipe_rd_BM = -1, cmdpipe_wr_BM = -1;
 
-
+extern void add_defer_command_onion_BM (void);
 
 //////////////////////////////////////////////////////////////////////////
 /// For process queue running processes; similar to gtkrunprocarr_BM
@@ -774,5 +774,30 @@ read_commandpipe_BM (void)
     DBGPRINTF_BM ("read_commandpipe_BM nbr %d - %s", nbr,
                   (nbr < 0) ? strerror (errno) : "--");
 }                               /* end read_commandpipe_BM */
+
+void
+add_defer_command_onion_BM (void)
+{
+  char buf[4];
+  memset (&buf, 0, sizeof (buf));
+  buf[0] = 'X';
+  int count = 0;
+  while (count < 256)
+    {                           /* this loop usually runs once */
+      int nbw = write (cmdpipe_wr_BM, buf, 1);
+      if (nbw < 0 && errno == EINTR)
+        continue;
+      if (nbw < 0 && errno == EWOULDBLOCK)
+        {
+          usleep (2000);
+          continue;
+        };
+      if (nbw == 1)
+        return;
+      FATAL_BM ("add_defer_command_onion_BM nbw %d - %s", nbw,
+                (nbw < 0) ? strerror (errno) : "--");
+    }
+  FATAL_BM ("add_defer_command_onion_BM failed");
+}                               /* end add_defer_command_onion_BM */
 
 ////////////////////////////////////////////////////////////////

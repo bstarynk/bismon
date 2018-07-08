@@ -1229,9 +1229,7 @@ extern const node_tyBM *nodeglobalnames_BM (const objectval_tyBM * conn);
 extern const setval_tyBM *setglobalobjects_BM (void);
 
 extern void gcmarkglobals_BM (struct garbcoll_stBM *gc);
-#ifdef BISMONGTK
-extern void gcmarkdefergui_BM (struct garbcoll_stBM *gc);
-#endif /*BISMONGTK*/
+extern void gcmarkdefer_BM (struct garbcoll_stBM *gc);
 extern void gcmarkconstants_BM (struct garbcoll_stBM *gc);
 
 /// open a module during loading, returns true if ok
