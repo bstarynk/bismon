@@ -20,7 +20,8 @@
 #include "web_ONIONBM.const.h"
 extern void run_onionweb_BM (int nbjobs);
 static onion *myonion_BM;
-
+// the command pipe contains bytes, each considered as a different message
+static int cmdpipe_rd_BM = -1, cmdpipe_wr_BM = -1;
 
 
 
@@ -63,6 +64,8 @@ static void plain_event_loop_BM (void);
 static void read_sigterm_BM (int sigfd);
 static void read_sigquit_BM (int sigfd);
 static void read_sigchld_BM (int sigfd);
+// handle the command pipe
+static void read_commandpipe_BM (void);
 
 void
 lockonion_runpro_mtx_at_BM (int lineno)
@@ -387,15 +390,24 @@ run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
   onion_handler *filehdl = onion_handler_export_local_new (webrootpath);
   if (!filehdl)
     FATAL_BM ("failed to get onion webroot handler for %s", webrootpath);
-  onion_set_root_handler(myonion_BM, filehdl);
-  DBGPRINTF_BM("run_onionweb after set root handler filehdl@%p", filehdl);
+  onion_set_root_handler (myonion_BM, filehdl);
+  DBGPRINTF_BM ("run_onionweb after set root handler filehdl@%p", filehdl);
   onion_handler *customhdl =
     onion_handler_new (custom_onion_handler_BM, NULL, NULL);
   onion_handler_add (filehdl, customhdl);
   ///
-  /// should add our internal handlers
-  ///
+  /// create the command pipe
+  {
+    int piparr[2] = { -1, -1 };
+    if (pipe2 (piparr, O_CLOEXEC | O_NONBLOCK))
+      FATAL_BM ("run_onionweb pipe failure for the command pipe - %m");
+    cmdpipe_rd_BM = piparr[0];
+    cmdpipe_wr_BM = piparr[1];
+    DBGPRINTF_BM ("run_onionweb before onion_listen cmdpiprd#%d cmdpipwr#%d",
+                  cmdpipe_rd_BM, cmdpipe_wr_BM);
+  }
   int err = onion_listen (myonion_BM);  // since detached, returns now
+  DBGPRINTF_BM ("run_onionweb after onion_listen err=%d", err);
   if (err)
     FATAL_BM ("failed to do onion_listen (err#%d / %s)", err, strerror (err));
   ///
@@ -632,19 +644,23 @@ plain_event_loop_BM (void)
   long loopcnt = 0;
   while (running)
     {
-      struct pollfd pollarr[MAXNBWORKJOBS_BM + 5];
+      struct pollfd pollarr[MAXNBWORKJOBS_BM + 8];
       pid_t endedprocarr[MAXNBWORKJOBS_BM];
       memset (pollarr, 0, sizeof (pollarr));
       memset (endedprocarr, 0, sizeof (endedprocarr));
       int nbpoll = 0;
       enum
-      { pollix_term, pollix_quit, pollix_chld, pollix__lastsig };
+      { pollix_term, pollix_quit, pollix_chld,
+        pollix_cmdp, pollix__lastsig
+      };
       pollarr[pollix_term].fd = termsigfd;
       pollarr[pollix_term].events = POLL_IN;
       pollarr[pollix_quit].fd = quitsigfd;
       pollarr[pollix_quit].events = POLL_IN;
       pollarr[pollix_chld].fd = chldsigfd;
       pollarr[pollix_chld].events = POLL_IN;
+      pollarr[pollix_cmdp].fd = cmdpipe_rd_BM;
+      pollarr[pollix_cmdp].events = POLL_IN;
       nbpoll = pollix__lastsig;
       lockonion_runpro_mtx_at_BM (__LINE__);
       for (int j = 0; j < nbworkjobs_BM; j++)
@@ -682,10 +698,12 @@ plain_event_loop_BM (void)
             };
           if (pollarr[pollix_chld].revents & POLL_IN)
             read_sigchld_BM (chldsigfd);
+          if (pollarr[pollix_cmdp].revents & POLL_IN)
+            read_commandpipe_BM ();
           ///
 #warning missing code in plain_event_loop_BM
-          fprintf (stderr, "missing code in plain_event_loop_BM loop#%d\n",
-                   loopcnt);
+          fprintf (stderr,
+                   "missing code in plain_event_loop_BM loop#%d\n", loopcnt);
           loopcnt++;
         }
     }
@@ -698,8 +716,8 @@ read_sigterm_BM (int sigfd)
   memset (&sigterminf, 0, sizeof (sigterminf));
   int nbr = read (sigfd, &sigterminf, sizeof (sigterminf));
   if (nbr != sizeof (sigterminf))       // very unlikely, probably impossible
-    FATAL_BM ("read_sigterm_BM: read fail (%d.by read, want %d) - %m",
-              nbr, (int) sizeof (sigterminf));
+    FATAL_BM ("read_sigterm_BM: read fail (%d.by read, want %d) - %m", nbr,
+              (int) sizeof (sigterminf));
   DBGPRINTF_BM ("read_sigterm_BM");
 }                               /* end read_sigterm_BM */
 
@@ -711,10 +729,11 @@ read_sigquit_BM (int sigfd)
   memset (&sigquitinf, 0, sizeof (sigquitinf));
   int nbr = read (sigfd, &sigquitinf, sizeof (sigquitinf));
   if (nbr != sizeof (sigquitinf))       // very unlikely, probably impossible
-    FATAL_BM ("read_sigquit_BM: read fail (%d.by read, want %d) - %m",
-              nbr, (int) sizeof (sigquitinf));
+    FATAL_BM ("read_sigquit_BM: read fail (%d.by read, want %d) - %m", nbr,
+              (int) sizeof (sigquitinf));
   DBGPRINTF_BM ("read_sigquit_BM");
 }                               /* end read_sigquit_BM */
+
 
 static void
 read_sigchld_BM (int sigfd)
@@ -724,8 +743,9 @@ read_sigchld_BM (int sigfd)
   int nbr = read (sigfd, &sigchldinf, sizeof (sigchldinf));
   if (nbr != sizeof (sigchldinf))
     // very unlikely, probably impossible
-    FATAL_BM ("read_sigchld_BM: read fail (%d.by read, want %d) - %m",
-              nbr, (int) sizeof (sigchldinf));
+    FATAL_BM
+      ("read_sigchld_BM: read fail (%d.by read, want %d) - %m",
+       nbr, (int) sizeof (sigchldinf));
   pid_t pid = sigchldinf.ssi_pid;
   int ws = 0;
   pid_t wpid = waitpid (pid, &ws, WNOHANG);
@@ -736,5 +756,23 @@ read_sigchld_BM (int sigfd)
   else
     FATAL_BM ("read_sigchld_BM waitpid failure pid#%d", pid);
 }                               /* end read_sigchld_BM */
+
+
+static void
+read_commandpipe_BM (void)
+{
+  char buf[4];
+  memset (&buf, 0, sizeof (buf));
+  int nbr = read (cmdpipe_rd_BM, buf, 1);
+  if (nbr == 1)
+    {
+      DBGPRINTF_BM ("read_commandpipe_BM '%s' incomplete", buf);
+#warning read_commandpipe_BM incomplete
+      // should handle the command
+    }
+  else
+    DBGPRINTF_BM ("read_commandpipe_BM nbr %d - %s", nbr,
+                  (nbr < 0) ? strerror (errno) : "--");
+}                               /* end read_commandpipe_BM */
 
 ////////////////////////////////////////////////////////////////
