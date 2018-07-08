@@ -380,9 +380,6 @@ run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
   char *lastcolon = strrchr (onion_web_base_BM, ':');
   if (lastcolon && isdigit (lastcolon[1]))
     onion_set_port (myonion_BM, lastcolon + 1);
-  onion_handler *roothdl = onion_get_root_handler (myonion_BM);
-  if (!roothdl)
-    FATAL_BM ("failed to get onion root handler (myonion_BM@%p)", myonion_BM);
   char *webrootpath = NULL;
   if (asprintf (&webrootpath, "%s/webroot/", bismon_directory) < 0
       || !webrootpath || !webrootpath[0] || access (webrootpath, R_OK | X_OK))
@@ -390,12 +387,11 @@ run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
   onion_handler *filehdl = onion_handler_export_local_new (webrootpath);
   if (!filehdl)
     FATAL_BM ("failed to get onion webroot handler for %s", webrootpath);
-  onion_handler_add (roothdl, filehdl);
-  onion_url_add_handler (onion_root_url (myonion_BM),
-                         "onion_status", onion_internal_status ());
+  onion_set_root_handler(myonion_BM, filehdl);
+  DBGPRINTF_BM("run_onionweb after set root handler filehdl@%p", filehdl);
   onion_handler *customhdl =
     onion_handler_new (custom_onion_handler_BM, NULL, NULL);
-  onion_handler_add (roothdl, customhdl);
+  onion_handler_add (filehdl, customhdl);
   ///
   /// should add our internal handlers
   ///
