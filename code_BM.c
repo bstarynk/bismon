@@ -1630,8 +1630,8 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
                              "// end of generated predefined file %s\n",
                              basepath);
   char *filpath = NULL;
-  asprintf (&filpath, "%s/%s", bytstring_BM (duptr->dump_dir), basepath);
-  if (!filpath)
+  if (asprintf (&filpath, "%s/%s", bytstring_BM (duptr->dump_dir), basepath) <
+      0 || !filpath)
     FATAL_BM ("asprintf failed for %s", basepath);
   objstrbufferwritetofilepayl_BM (_.prsbufob, filpath);
   objstrbufferresetpayl_BM (_.prsbufob);
@@ -1709,8 +1709,8 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
   objstrbufferprintfpayl_BM (_.prsbufob, "\n\n"
                              "// end of generated file %s\n", basepath);
   char *filpath = NULL;
-  asprintf (&filpath, "%s/%s", bytstring_BM (duptr->dump_dir), basepath);
-  if (!filpath)
+  if (asprintf (&filpath, "%s/%s", bytstring_BM (duptr->dump_dir), basepath) <
+      0 || !filpath)
     FATAL_BM ("asprintf failed for %s", basepath);
   objstrbufferwritetofilepayl_BM (_.prsbufob, filpath);
   objstrbufferresetpayl_BM (_.prsbufob);
@@ -1848,8 +1848,8 @@ ROUTINEOBJNAME_BM (_3yJPC4SxGtF_6ilaF37wdxG)    //
       _.emittedv = NULL;
     };
   char *filpath = NULL;
-  asprintf (&filpath, "%s/%s", bytstring_BM (duptr->dump_dir), basepath);
-  if (!filpath)
+  if (asprintf (&filpath, "%s/%s", bytstring_BM (duptr->dump_dir), basepath) <
+      0 || !filpath)
     FATAL_BM ("asprintf failed for %s", basepath);
   objstrbufferwritetofilepayl_BM (_.prsbufob, filpath);
   objstrbufferresetpayl_BM (_.prsbufob);

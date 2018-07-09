@@ -418,10 +418,12 @@ dump_emit_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
         {
           char *oldpathbuf = NULL;
           char *backpathbuf = NULL;
-          asprintf (&oldpathbuf, "%s/store%u.bmon",
-                    bytstring_BM (du->dump_dir), spix);
-          asprintf (&backpathbuf, "%s/store%u.bmon~",
-                    bytstring_BM (du->dump_dir), spix);
+          if (asprintf (&oldpathbuf, "%s/store%u.bmon",
+                        bytstring_BM (du->dump_dir), spix) < 0
+              || asprintf (&backpathbuf, "%s/store%u.bmon~",
+                           bytstring_BM (du->dump_dir), spix) < 0)
+            FATAL_BM ("asprintf backup in %s failed",
+                      bytstring_BM (du->dump_dir));
           if (oldpathbuf && backpathbuf)
             (void) rename (oldpathbuf, backpathbuf);
           free (oldpathbuf), oldpathbuf =

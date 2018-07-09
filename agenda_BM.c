@@ -828,15 +828,20 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
      debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
   // test that the module file exists
   char *modulpath = NULL;
-  if (modulistemporary)
-    asprintf (&modulpath,
-              "%s/" MODULEBINDIR_BM "/" TEMPMODULEPREFIX_BM "%s.so",
-              bismon_directory, modulidbuf);
-  else
-    asprintf (&modulpath, "%s/" MODULEBINDIR_BM "/" MODULEPREFIX_BM "%s.so",
-              bismon_directory, modulidbuf);
-  if (!modulpath)
-    FATAL_BM ("failed to make modulpath for %s", modulidbuf);
+  {
+    int a = -1;
+    if (modulistemporary)
+      a = asprintf (&modulpath,
+                    "%s/" MODULEBINDIR_BM "/" TEMPMODULEPREFIX_BM "%s.so",
+                    bismon_directory, modulidbuf);
+    else
+      a =
+        asprintf (&modulpath,
+                  "%s/" MODULEBINDIR_BM "/" MODULEPREFIX_BM "%s.so",
+                  bismon_directory, modulidbuf);
+    if (a < 0 || !modulpath)
+      FATAL_BM ("failed to make modulpath for %s", modulidbuf);
+  }
   FILE *binmodf = fopen (modulpath, "r");
   if (!binmodf)
     {

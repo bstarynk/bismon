@@ -3704,8 +3704,9 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                                  "// end of generated temporary module %s in file "
                                  TEMPMODULEPREFIX_BM "%s.c\n",
                                  objectdbg_BM (_.modulob), modulidbuf);
-      asprintf (&srcpathstr, "%s/" TEMPMODULEPREFIX_BM "%s.c", srcdirstr,
-                modulidbuf);
+      if (asprintf (&srcpathstr, "%s/" TEMPMODULEPREFIX_BM "%s.c", srcdirstr,
+                    modulidbuf) < 0)
+        FATAL_BM ("asprintf failure for srcdir %s", srcdirstr);
     }
   else
     {
@@ -3714,8 +3715,9 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                                  "// end of generated persistent module %s in file "
                                  MODULEPREFIX_BM "%s.c\n",
                                  objectdbg_BM (_.modulob), modulidbuf);
-      asprintf (&srcpathstr, "%s/" MODULEPREFIX_BM "%s.c", srcdirstr,
-                modulidbuf);
+      if (asprintf (&srcpathstr, "%s/" MODULEPREFIX_BM "%s.c", srcdirstr,
+                    modulidbuf) < 0)
+        FATAL_BM ("asprintf failure for srcdir %s", srcdirstr);
     }
   if (!srcpathstr)
     FATAL_BM
@@ -3753,14 +3755,18 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     if (prevsrcpathstr)
       {
         char *quotprev = g_shell_quote (prevsrcpathstr);
+        int a = -1;
         if (modulistemporary)
-          asprintf (&indentcmdstr,
-                    "make -f %s -C %s indenttempmodule MODULEID=%s PREVIOUSMODULESOURCE=%s",
-                    bismon_makefile, quotpardir, modulidbuf, quotprev);
+          a = asprintf (&indentcmdstr,
+                        "make -f %s -C %s indenttempmodule MODULEID=%s PREVIOUSMODULESOURCE=%s",
+                        bismon_makefile, quotpardir, modulidbuf, quotprev);
         else
-          asprintf (&indentcmdstr,
-                    "make -f %s -C %s indentsinglemodule MODULEID=%s PREVIOUSMODULESOURCE=%s",
-                    bismon_makefile, quotpardir, modulidbuf, quotprev);
+          a = asprintf (&indentcmdstr,
+                        "make -f %s -C %s indentsinglemodule MODULEID=%s PREVIOUSMODULESOURCE=%s",
+                        bismon_makefile, quotpardir, modulidbuf, quotprev);
+        if (a <= 0)
+          FATAL_BM ("asprintf failed for indent command of modulid %s",
+                    modulidbuf);
         g_free (quotprev);
       }
     else
