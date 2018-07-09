@@ -3490,6 +3490,25 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
         *lastslash = '/';
       }
   }
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof (modulidbuf));
+  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+  // check that the full source path exists
+  {
+    char *fullsrcpath = NULL;
+    asprintf (&fullsrcpath, "%s/%s%s.c",
+              realsrcdir,
+              modulistemporary ? TEMPMODULEPREFIX_BM : MODULEPREFIX_BM,
+              modulidbuf);
+    if (!fullsrcpath)
+      FATAL_BM ("asprintf fullsrcpath failure");
+    DBGPRINTF_BM ("defer-compilation-of-module fullsrcpath %s", fullsrcpath);
+    if (access (fullsrcpath, R_OK))
+      FATAL_BM
+        ("defer-compilation-of-module cannot access full source path %s - %m",
+         fullsrcpath);
+    free (fullsrcpath), fullsrcpath = NULL;
+  }
   DBGPRINTF_BM
     ("defer-compilation-of-module realsrcdir %s realpardir %s bismondir %s cwdpath %s",
      realsrcdir, realpardir, bismon_directory, cwdpath);
@@ -3498,9 +3517,6 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
       ("failed to compute real parent directory in defer-compilation-of-module"
        " modulob %s modgenob %s for realsrcdir %s",
        objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob), realsrcdir);
-  char modulidbuf[32];
-  memset (modulidbuf, 0, sizeof (modulidbuf));
-  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
   char *compilargs[8] = {
   };
   char buildscriptbuf[128];
