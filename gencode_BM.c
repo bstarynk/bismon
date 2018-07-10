@@ -3541,11 +3541,13 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
   _.aftercompilclosv =
     (value_tyBM) makeclosure3_BM (kk_after_compilation_of_module, _.modulob,
                                   _.modgenob, _.pardirstrv);
+  char cwdbuf[80];
   DBGPRINTF_BM
-    ("defer-compilation-of-module pardirstrv=%s compilnodv=%s aftercompilclosv=%s before queue_process_BM",
+    ("defer-compilation-of-module pardirstrv=%s compilnodv=%s aftercompilclosv=%s before queue_process_BM in dir %s",
      debug_outstr_value_BM (_.pardirstrv, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.compilnodv, CURFRAME_BM, 0),
-     debug_outstr_value_BM (_.aftercompilclosv, CURFRAME_BM, 0));
+     debug_outstr_value_BM (_.aftercompilclosv, CURFRAME_BM, 0),
+     getcwd (cwdbuf, sizeof (cwdbuf)) ? : "!!");
   queue_process_BM (_.pardirstrv, _.compilnodv, _.aftercompilclosv,
                     CURFRAME_BM);
   LOCALRETURN_BM (_.aftercompilclosv);
