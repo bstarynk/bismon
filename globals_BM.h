@@ -72,6 +72,7 @@ extern pthread_mutex_t allocationmutex_BM;
 extern const typedhead_tyBM unspecifieddata_BM;
 extern int nbworkjobs_BM;
 
+extern volatile struct backstrace_state *backtracestate_BM;
 
 
 #ifdef BISMONGTK

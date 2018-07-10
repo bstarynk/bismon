@@ -42,7 +42,7 @@ const char *passwords_filepath_BM;
 thread_local struct threadinfo_stBM *curthreadinfo_BM;
 thread_local volatile struct failurehandler_stBM *curfailurehandle_BM;
 
-static volatile struct backstrace_state *backtracestate_BM;
+volatile struct backstrace_state *backtracestate_BM;
 static void backtracerrorcb_BM (void *data, const char *msg, int errnum);
 
 #ifdef BISMONGTK
