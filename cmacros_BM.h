@@ -210,6 +210,27 @@
 #define DBGPRINTF_BM(Fmt,...) \
   DBGPRINTFAT_BM(__FILE__,__LINE__,Fmt,##__VA_ARGS__)
 
+////////////////
+
+#define DBGBACKTRACEPRINTFATBIS_BM(Fil,Lin,Fmt,...) do {	\
+    if (debugmsg_BM) { printf("%s:%d: " Fmt "\n",		\
+			      basename_BM((Fil)), (Lin),	\
+			      ##__VA_ARGS__);			\
+      backtrace_print_BM					\
+	((struct backtrace_state *) backtracestate_BM, 1,	\
+	 stdout);						\
+      printf("%s:%d: **** endbacktraceprintf ***\n\n",		\
+	     basename_BM((Fil)), (Lin));			\
+      fflush(stdout); }						\
+} while(0)
+
+#define DBGBACKTRACEPRINTFAT_BM(Fil,Lin,Fmt,...) \
+  DBGBACKTRACEPRINTFATBIS_BM(Fil,Lin,Fmt,##__VA_ARGS__)
+
+#define DBGBACKTRACEPRINTF_BM(Fmt,...) \
+  DBGBACKTRACEPRINTFAT_BM(__FILE__,__LINE__,Fmt,##__VA_ARGS__)
+
+  ////////////////
 #define NONPRINTF_BM(Fmt,...) do { if (false) \
       DBGPRINTF_BM(Fmt,##__VA_ARGS__); } while(0)
 
