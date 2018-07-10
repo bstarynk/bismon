@@ -4148,8 +4148,14 @@ fork_gtk_process_at_slot_BM (int slotpos,
   int cmdlen = nodewidth_BM (_.cmdnodv);
   ASSERT_BM (cmdlen > 0);
   ASSERT_BM (slotpos >= 0 && slotpos < MAXNBWORKJOBS_BM);
-  DBGPRINTF_BM ("fork_gtk_process_at_slot_BM slotpos %d cmdnod %s",
-                slotpos, debug_outstr_value_BM (_.cmdnodv, CURFRAME_BM, 0));
+  char cwdbuf[80];
+  memset (cwdbuf, 0, sizeof (cwdbuf));
+  DBGPRINTF_BM
+    ("fork_gtk_process_at_slot_BM slotpos %d cmdnod %s dirstrv %s cwd %s",
+     slotpos, debug_outstr_value_BM (_.cmdnodv, CURFRAME_BM, 0),
+     debug_outstr_value_BM (_.dirstrv, CURFRAME_BM, 0), getcwd (cwdbuf,
+                                                                sizeof
+                                                                (cwdbuf)));
   /// should fork the process
   int pipfd[2] = { -1, -1 };
   char **args = calloc (cmdlen + 1, sizeof (char *));
@@ -4165,6 +4171,7 @@ fork_gtk_process_at_slot_BM (int slotpos,
     FATAL_BM ("failed to fork %s - %m", args[0]);
   if (pid == 0)
     {
+      // child process
       if (isstring_BM (_.dirstrv))
         {
           if (chdir (bytstring_BM (_.dirstrv)))
@@ -4172,8 +4179,14 @@ fork_gtk_process_at_slot_BM (int slotpos,
               perror (bytstring_BM (_.dirstrv));
               exit (126);
             }
+          else
+            {
+              DBGPRINTF_BM
+                ("fork_gtk_process_at_slot child process %d did chdir %s",
+                 (int) getpid (), bytstring_BM (_.dirstrv));
+              fflush (NULL);
+            }
         }
-      // child process
       for (int ix = 3; ix < 64; ix++)
         if (ix != pipfd[1])
           (void) close (ix);
@@ -4210,8 +4223,10 @@ fork_gtk_process_at_slot_BM (int slotpos,
                         pipe_process_watchcb_BM, (void *) slotpos);
       if (!gtkrunprocarr_BM[slotpos].rp_pipewatch)
         FATAL_BM ("g_io_add_watch failed - %m");
+      usleep (2000);
     }
 }                               /* end fork_gtk_process_at_slot_BM */
+
 
 
 // callback installed by g_child_watch_add in fork_gtk_process_at_slot_BM
