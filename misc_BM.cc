@@ -1023,7 +1023,7 @@ do_main_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, valu
                    debug_outstr_value_BM (_.funv, CURFRAME_BM, 0));
       return;
     }
-  DBGPRINTF_BM("do_main_defer_apply start tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
+  DBGBACKTRACEPRINTF_BM("do_main_defer_apply start tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
                (long)gettid_BM(),
                debug_outstr_value_BM (_.funv, CURFRAME_BM, 0), //
                debug_outstr_value_BM (_.arg1, CURFRAME_BM, 0), //
