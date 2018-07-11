@@ -801,7 +801,7 @@ main (int argc, char **argv)
       if (chdir (chdir_after_load_bm))
         FATAL_BM ("failed to change directory after load to %s - %m",
                   chdir_after_load_bm);
-      char *newd = getcwd (cwdbuf, sizeof (getcwd));
+      char *newd = getcwd (cwdbuf, sizeof (cwdbuf));
       if (newd)
         printf ("changed directory after load to %s given as %s\n",
                 newd, chdir_after_load_bm);
