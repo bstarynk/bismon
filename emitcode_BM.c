@@ -3819,11 +3819,14 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   if (gui_is_running_BM)
     {
       _.srcdirstrv = (value_tyBM) makestring_BM (srcdirstr);
-      DBGPRINTF_BM
-        ("emit_module°plain_module srcdirstr %s modulob %s modgenob %s deferred_compilation_of_module %s",
+      char cwdbuf[64];
+      DBGBACKTRACEPRINTF_BM
+        ("emit_module°plain_module srcdirstr= %s, modulob= %s\n"
+         "... modgenob= %s, deferred_compilation_of_module= %s, cwd= %s",
          srcdirstr, objectdbg_BM (_.modulob),
          objectdbg1_BM (_.modgenob),
-         objectdbg2_BM (kk_deferred_compilation_of_module));
+         objectdbg2_BM (kk_deferred_compilation_of_module),
+         getcwd (cwdbuf, sizeof (cwdbuf)));
       do_main_defer_apply3_BM (kk_deferred_compilation_of_module,
                                _.modulob, _.modgenob, _.srcdirstrv,
                                CURFRAME_BM);
