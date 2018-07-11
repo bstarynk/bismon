@@ -217,7 +217,7 @@
 			      basename_BM((Fil)), (Lin),	\
 			      ##__VA_ARGS__);			\
       backtrace_print_BM					\
-	((struct backtrace_state *) backtracestate_BM, 1,	\
+	((struct backtrace_state *) backtracestate_BM, 0,	\
 	 stdout);						\
       printf("%s:%d: **** endbacktraceprintf ***\n\n",		\
 	     basename_BM((Fil)), (Lin));			\
