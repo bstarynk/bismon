@@ -39,6 +39,7 @@ int nbworkjobs_BM;
 const char myhostname_BM[80];
 const char *contributors_filepath_BM;
 const char *passwords_filepath_BM;
+static const char *chdir_after_load_bm;
 thread_local struct threadinfo_stBM *curthreadinfo_BM;
 thread_local volatile struct failurehandler_stBM *curfailurehandle_BM;
 
@@ -400,6 +401,13 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &run_command_bm,
    .description = "run the command CMD",
    .arg_description = "CMD"},
+  //
+  {.long_name = "chdir-after-load",.short_name = (char) 'c',
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &chdir_after_load_bm,
+   .description = "change directory after load to DIR (it should exist)",
+   .arg_description = "DIR"},
 
   //
   {.long_name = "parse-value",.short_name = (char) 0,
@@ -726,6 +734,7 @@ main (int argc, char **argv)
   initialize_predefined_names_BM ();
   initialize_agenda_BM ();
   GError *opterr = NULL;
+  bool shouldfreedumpdir = false;
 #ifdef BISMONGTK
   /// should actually use gtk_init_with_args so define some
   /// GOptionEntry array
@@ -777,8 +786,27 @@ main (int argc, char **argv)
     if (!load_dir_bm)
     load_dir_bm = ".";
   if (!dump_dir_bm)
-    dump_dir_bm = load_dir_bm;
+    {
+      dump_dir_bm = realpath (load_dir_bm, NULL);
+      shouldfreedumpdir = dump_dir_bm != NULL;
+    }
   load_initial_BM (load_dir_bm);
+  if (chdir_after_load_bm)
+    {
+      char cwdbuf[128];
+      memset (cwdbuf, 0, sizeof (cwdbuf));
+      if (chdir (chdir_after_load_bm))
+        FATAL_BM ("failed to change directory after load to %s - %m",
+                  chdir_after_load_bm);
+      char *newd = getcwd (cwdbuf, sizeof (getcwd));
+      if (newd)
+        printf ("changed directory after load to %s given as %s\n",
+                newd, chdir_after_load_bm);
+      else
+        printf ("changed directory, given as %s, after load\n",
+                chdir_after_load_bm);
+      fflush (NULL);
+    }
   if (nb_added_predef_bm > 0)
     add_new_predefined_bm ();
   if (nb_parsed_values_after_load_bm > 0)
@@ -812,6 +840,8 @@ main (int argc, char **argv)
 #endif /*BISMONION*/
     free (contributors_filepath_BM), contributors_filepath_BM = NULL;
   free (passwords_filepath_BM), passwords_filepath_BM = NULL;
+  if (shouldfreedumpdir)
+    free (dump_dir_bm), dump_dir_bm = NULL;
   printf ("end of %s, on %s, pid %d, %.3f elapsed, %.3f cpu time\n"
           "... timestamp %s\n"
           "... lastgitcommit %s\n"
