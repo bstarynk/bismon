@@ -406,7 +406,7 @@ const GOptionEntry optionstab_bm[] = {
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &chdir_after_load_bm,
-   .description = "change directory after load to DIR (it should exist)",
+   .description = "change directory after load to DIR (perhaps making it)",
    .arg_description = "DIR"},
 
   //
@@ -793,6 +793,9 @@ main (int argc, char **argv)
   load_initial_BM (load_dir_bm);
   if (chdir_after_load_bm)
     {
+      if (g_mkdir_with_parents (chdir_after_load_bm, 0750))
+        FATAL_BM ("failed to mkdir with parents %s for chdir-after-load",
+                  chdir_after_load_bm);
       char cwdbuf[128];
       memset (cwdbuf, 0, sizeof (cwdbuf));
       if (chdir (chdir_after_load_bm))
