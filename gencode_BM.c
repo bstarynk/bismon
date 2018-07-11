@@ -3450,14 +3450,21 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
                  value_tyBM argstrarr[8];);
   _.modulob = objectcast_BM (arg1);
   _.modgenob = objectcast_BM (arg2);
+  char modulidbuf[32];
+  memset (modulidbuf, 0, sizeof (modulidbuf));
+  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
   _.srcdirstrv = arg3;
   bool modulistemporary =
     (objectisinstance_BM (_.modulob, k_plain_temporary_module));
-  DBGPRINTF_BM
-    ("defer-compilation-of-module start %s modulob %s modgenob %s srcdirstrv %s",
-     modulistemporary ? "temporary" : "persistent",
-     objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
-     debug_outstr_value_BM (_.srcdirstrv, CURFRAME_BM, 0));
+  {
+    char cwdbuf[80];
+    DBGPRINTF_BM
+      ("defer-compilation-of-module start %s modulob %s /%s modgenob %s srcdirstrv %s in %s",
+       modulistemporary ? "temporary" : "persistent",
+       objectdbg_BM (_.modulob), modulidbuf, objectdbg1_BM (_.modgenob),
+       debug_outstr_value_BM (_.srcdirstrv, CURFRAME_BM, 0),
+       getcwd (cwdbuf, sizeof (cwdbuf)) ? : "??");
+  }
   WEAKASSERT_BM (_.modulob);
   WEAKASSERT_BM (_.modgenob);
   WEAKASSERT_BM (isstring_BM (_.srcdirstrv));
@@ -3474,6 +3481,9 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
   char cwdpath[128];
   memset (cwdpath, 0, sizeof (cwdpath));
   getcwd (cwdpath, sizeof (cwdpath));
+  DBGPRINTF_BM
+    ("defer-compilation-of-modgenob modulob %s srcdir %s cwdpath %s",
+     objectdbg_BM (_.modulob), bytstring_BM (_.srcdirstrv), cwdpath);
   char *realsrcdir = realpath (bytstring_BM (_.srcdirstrv), NULL);
   if (!realsrcdir)
     FATAL_BM
@@ -3490,9 +3500,20 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
         *lastslash = '/';
       }
   }
-  char modulidbuf[32];
-  memset (modulidbuf, 0, sizeof (modulidbuf));
-  idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+  DBGPRINTF_BM ("defer-compilation-of-module modulob %s realpardir %s",
+                objectdbg_BM (_.modulob), realpardir);
+  {
+    char *modubindir = NULL;
+    if (asprintf (&modubindir, "%s/modubin", realpardir) < 0 || !modubindir)
+      FATAL_BM
+        ("defer-compilation-of-modgenob failed to asprintf the modubin directory from %s",
+         realpardir);
+    if (g_mkdir_with_parents (modubindir, 0750))
+      FATAL_BM ("failed to mkdir with parents modbin directory %s",
+                modubindir);
+    DBGPRINTF_BM ("defer-compilation-of-module modubindir %s", modubindir);
+    free (modubindir), modubindir = NULL;
+  }
   // check that the full source path exists
   {
     char *fullsrcpath = NULL;
@@ -3537,7 +3558,7 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
   for (int ix = 0; ix < nbargs; ix++)
     _.argstrarr[ix] = (value_tyBM) makestring_BM (compilargs[ix]);
   _.compilnodv = (value_tyBM) makenode_BM (BMP_node, nbargs, _.argstrarr);
-  _.pardirstrv = (value_tyBM) makestring_BM (realsrcdir);
+  _.pardirstrv = (value_tyBM) makestring_BM (realpardir);
   _.aftercompilclosv =
     (value_tyBM) makeclosure3_BM (kk_after_compilation_of_module, _.modulob,
                                   _.modgenob, _.pardirstrv);
