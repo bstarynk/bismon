@@ -4335,11 +4335,15 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
   g_source_remove (pipewatch);
   g_io_channel_unref (pipchan);
   _.outstrv = makestring_BM (objstrbufferbytespayl_BM (_.bufob));
-  DBGPRINTF_BM
-    ("defer_process_watchcb_BM slot %d deferapply clos=%s outstrv=%s status %d",
-     slot,
-     debug_outstr_value_BM (_.closv, CURFRAME_BM, 0),
-     debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0), status);
+  {
+    char cwdbuf[64];
+    DBGPRINTF_BM
+      ("defer_process_watchcb_BM slot %d deferapply clos=%s outstrv=%s status %d in %s",
+       slot,
+       debug_outstr_value_BM (_.closv, CURFRAME_BM, 0),
+       debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0), status,
+       getcwd (cwdbuf, sizeof (cwdbuf)) ? : "??");
+  }
   do_main_defer_apply3_BM (_.closv, _.outstrv, taggedint_BM (status), NULL,
                            CURFRAME_BM);
   return;
