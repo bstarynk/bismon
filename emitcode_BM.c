@@ -3605,15 +3605,22 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
       fprintf (stderr, "cannot mkdir with parents %s (%m)\n", srcdirstr);
       FAILHERE (makestring_BM (srcdirstr));
     }
-  DBGPRINTF_BM
-    ("emit_module°plain_module modulob %s /%s srcdirstr '%s'",
-     objectdbg_BM (_.modulob), modulidbuf, srcdirstr);
+  {
+    char cwdbuf[80];
+    DBGPRINTF_BM
+      ("emit_module°plain_module modulob %s /%s srcdirstr '%s' cwd %s",
+       objectdbg_BM (_.modulob), modulidbuf, srcdirstr,
+       getcwd (cwdbuf, sizeof (cwdbuf)) ? : "./");
+  }
   {
     realsrcdirstr = realpath (srcdirstr, NULL);
     if (!realsrcdirstr || !strchr (realsrcdirstr, '/'))
       FATAL_BM
         ("failed to compute real source dir for module %s from srcdirstr %s - %m",
          objectdbg_BM (_.modulob), srcdirstr);
+    DBGPRINTF_BM
+      ("emit_module°plain_module realsrcdirstr %s for modulob %s /%s",
+       realsrcdirstr, objectdbg_BM (_.modulob), modulidbuf);
     char *lastslash = strrchr (realsrcdirstr, '/');
     ASSERT_BM (lastslash != NULL);
     realpardirstr = malloc (lastslash - realsrcdirstr + 2);
@@ -3802,6 +3809,12 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     close (fd);
     free (indentcmdstr), indentcmdstr = NULL;
   }
+  struct stat srcstat;
+  memset (&srcstat, 0, sizeof (srcstat));
+  if (stat (srcpathstr, &srcstat))
+    FATAL_BM ("emit_module°plain_module failed to stat %s - %m", srcpathstr);
+  DBGPRINTF_BM ("emit_module°plain_module srcpath %s st_size %ld",
+                srcpathstr, (long) srcstat.st_size);
   const char *modulname = findobjectname_BM (_.modulob);
   if (modulname)
     {
