@@ -182,8 +182,9 @@ indentsinglemodule:
 ## to be used from C code as 'make singlemodule MODULEID=<id>'
 singlemodule:
 	@if [ ! -f modules/modbm$(MODULEID).c ]; then \
-	   echo missing modules/modbm$(MODULEID).c; exit 1 ; fi 
-	$(MAKE) modubin/modbm$(MODULEID).so
+	   echo missing source modules/modbm$(MODULEID).c; exit 1 ; fi
+	echo '@!@singlemodule' with make= $(MAKE) makeflags= $(MAKEFLAGS) makefile_list= $(MAKEFILE_LIST) > /dev/tty
+	$(MAKE) $(MAKEFLAGS) modubin/modbm$(MODULEID).so
 
 #### for temporary modules
 indenttempmodule:

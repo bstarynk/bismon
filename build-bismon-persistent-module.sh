@@ -6,8 +6,11 @@ echo '@*@*@' $0 "$@" '::: in' $(pwd) > /dev/tty
 echo '@*@!!@*@' ls -ls  mod*/*${MODULEID}* > /dev/tty
 ls -ls mod*/*${MODULEID}* > /dev/tty
 (ls -lsd modules modubin; pwd) > /dev/tty
-make -f $(dirname $0)/Makefile --silent singlemodule MODULEID=$MODULEID
+# remove --silent in make
+echo '@*@!!@*@' in $(pwd) should-make "-f $(dirname $0)/Makefile singlemodule MODULEID=$MODULEID" > /dev/tty
+make -f $(dirname $0)/Makefile singlemodule MODULEID=$MODULEID
 makestatus=$?
+echo '@*@!!@*@' in $(pwd) makestatus $makestatus > /dev/tty
 if [ $makestatus -ne 0 ]; then
     logger --id=$$ -s -t build-bismon-persistent-module -p user.debug make for $MODULEID failed with $makestatus
     exit $makestatus
