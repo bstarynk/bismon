@@ -102,7 +102,7 @@ BISMONIONOBJECTS= 	\
  $(patsubst %.c,%.onion.o, $(sort $(BM_COMMON_CSOURCES) $(BM_ONION_CSOURCES)))	\
  $(patsubst %.cc,%.onion.o, $(sort $(BM_COMMON_CXXSOURCES)))
 
-.PHONY: all programs clean indent count modules measure measured-bismon doc redump outdump checksum indentsinglemodule singlemodule indenttempmodule tempmodule
+.PHONY: all programs clean indent count modules measure measured-bismon doc redump outdump checksum indentsinglemodule indenttempmodule 
 
 
 programs: bismongtk bismonion
@@ -179,13 +179,6 @@ indentsinglemodule:
 	else echo '**previous'  "$(PREVIOUSMODULESOURCE)" different of  modules/modbm$(MODULEID).c ; \
 	fi
 
-## to be used from C code as 'make singlemodule MODULEID=<id>'
-singlemodule:
-	@if [ ! -f modules/modbm$(MODULEID).c ]; then \
-	   echo missing source modules/modbm$(MODULEID).c; exit 1 ; fi
-	echo '@!@singlemodule' with make= $(MAKE) makeflags= $(MAKEFLAGS) makefile_list= $(MAKEFILE_LIST) > /dev/tty
-	$(MAKE) $(MAKEFLAGS) modubin/modbm$(MODULEID).so
-
 #### for temporary modules
 indenttempmodule:
 	@if [ ! -f modules/tmpmobm$(MODULEID).c ]; then \
@@ -202,11 +195,6 @@ indenttempmodule:
 	else echo '**previous'  "$(PREVIOUSMODULESOURCE)" different of  modules/tmpmobm$(MODULEID).c ; \
 	fi
 
-## to be used from C code as 'make tempmodule MODULEID=<id>'
-tempmodule:
-	@if [ ! -f modules/tmpmobm$(MODULEID).c ]; then \
-	   echo missing modules/tmpmobm$(MODULEID).c; exit 1 ; fi 
-	$(MAKE) modubin/tmpmobm$(MODULEID).so
 
 # cancel implicit rule for C files to force my explicit rules
 # https://stackoverflow.com/a/29227455/841108
@@ -260,10 +248,17 @@ _bm_allconsts-ONION.c: $(sort $(BM_COMMON_CSOURCES) $(BM_ONION_CSOURCES)) BM_mak
 	./BM_makeconst -C $@ $(sort $(BM_COMMON_CSOURCES) $(BM_ONION_CSOURCES))
 
 modubin/modbm_%.so: modules/modbm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
-	$(CCACHE) $(LINK.c) $(shell $(PKGCONFIG) --cflags $(MODULESPACKAGES)) -fPIC  -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<)  '-DBISMON_MOMD5="$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_PERSISTENT_MODULE -shared $< $(shell $(PKGCONFIG) --libs $(MODULESPACKAGES)) -o $@
+	$(CCACHE) $(LINK.c) $(shell $(PKGCONFIG) --cflags $(MODULESPACKAGES)) -I "$(dir $(word 2,$^))" -fPIC \
+	      -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<)  \
+              -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' \
+              -DBISMON_PERSISTENT_MODULE -shared $< $(shell $(PKGCONFIG) --libs $(MODULESPACKAGES)) -o $@
+
 
 modubin/tmpmobm_%.so: modules/tmpmobm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
-	$(CCACHE) $(LINK.c) $(shell $(PKGCONFIG) --cflags $(MODULESPACKAGES)) -fPIC -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) '-DBISMON_MOMD5="$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE -shared $< $(shell $(PKGCONFIG) --libs $(MODULESPACKAGES)) -o $@
+	$(CCACHE) $(LINK.c) $(shell $(PKGCONFIG) --cflags $(MODULESPACKAGES)) -I "$(dir $(word 2,$^))" -fPIC \
+	     -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) \
+	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE \
+	     -shared $< $(shell $(PKGCONFIG) --libs $(MODULESPACKAGES)) -o $@
 
 modules:
 	$(MAKE) -k $(MAKEFLAGS)  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES)) ; exit 0
