@@ -418,9 +418,6 @@ run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
   /// see https://groups.google.com/a/coralbits.com/d/msg/onion-dev/m-wH-BY2MA0/QJqLNcHvAAAJ
   /// and https://groups.google.com/a/coralbits.com/d/msg/onion-dev/ImjNf1EIp68/R37DW3mZAAAJ
   plain_event_loop_BM ();
-#warning run_onionweb_BM unimplemented
-  FATAL_BM ("run_onionweb_BM unimplemented, nbjobs %d webrootpath %s", nbjobs,
-            webrootpath);
 }                               /* end run_onionweb_BM */
 
 ////////////////////////////////////////////////////////////////
@@ -643,6 +640,8 @@ plain_event_loop_BM (void)
     if (chldsigfd < 0)
       FATAL_BM ("signalfd failed for SIGCHLD");
   }
+  DBGPRINTF_BM ("plain_event_loop_BM before loop termsigfd=%d quitsigfd=%d chldsigfd=%d",       //
+                termsigfd, quitsigfd, chldsigfd);
   long loopcnt = 0;
   while (running)
     {
@@ -664,16 +663,18 @@ plain_event_loop_BM (void)
       pollarr[pollix_cmdp].fd = cmdpipe_rd_BM;
       pollarr[pollix_cmdp].events = POLL_IN;
       nbpoll = pollix__lastsig;
-      lockonion_runpro_mtx_at_BM (__LINE__);
-      for (int j = 0; j < nbworkjobs_BM; j++)
-        if (onionrunprocarr_BM[j].rp_pid > 0
-            && onionrunprocarr_BM[j].rp_outpipe > 0)
-          {
-            pollarr[nbpoll].fd = onionrunprocarr_BM[j].rp_outpipe;
-            pollarr[nbpoll].events = POLL_IN;
-            nbpoll++;
-          }
-      unlockonion_runpro_mtx_at_BM (__LINE__);
+      {
+        lockonion_runpro_mtx_at_BM (__LINE__);
+        for (int j = 0; j < nbworkjobs_BM; j++)
+          if (onionrunprocarr_BM[j].rp_pid > 0
+              && onionrunprocarr_BM[j].rp_outpipe > 0)
+            {
+              pollarr[nbpoll].fd = onionrunprocarr_BM[j].rp_outpipe;
+              pollarr[nbpoll].events = POLL_IN;
+              nbpoll++;
+            }
+        unlockonion_runpro_mtx_at_BM (__LINE__);
+      }
 #define POLL_DELAY_MILLISECS_BM 300
       int nbready = poll (&pollarr, nbpoll, POLL_DELAY_MILLISECS_BM);
       if (loopcnt % 4 == 0)
@@ -687,28 +688,83 @@ plain_event_loop_BM (void)
             FATAL_BM ("plain_event_loop_BM poll failure");
           continue;
         }
+      {
+        char pipbuf[1024];
+        lockonion_runpro_mtx_at_BM (__LINE__);
+        int runix = 0;
+        for (int ix = pollix__lastsig; ix < nbpoll; ix++)
+          {
+            if (pollarr[ix].revents & POLL_IN)
+              {
+                int curfd = pollarr[ix].fd;
+                while (runix < nbworkjobs_BM)
+                  {
+                    if (onionrunprocarr_BM[runix].rp_outpipe == curfd)
+                      {
+                        runix++;
+                        int bytcnt = 0;
+                        do
+                          {
+                            memset (pipbuf, 0, sizeof (pipbuf));
+                            // we might do ioctl(curfd, FIONBIO, &cnt)
+                            // but it is not worth doing since the pipe
+                            // is non-blocking. See https://stackoverflow.com/a/1151077/841108
+                            bytcnt = read (curfd, pipbuf, sizeof (pipbuf));
+                            if (bytcnt < 0 && errno == EINTR)
+                              continue;
+                            if (bytcnt < 0 && errno == EWOULDBLOCK)
+                              break;
+                            if (bytcnt < 0)
+                              {
+                                // this probably should not happen
+                                FATAL_BM
+                                  ("unexpected error %m on output pipe fd#%d for pid %d",
+                                   curfd,
+                                   (int) onionrunprocarr_BM[runix].rp_pid);
+                              }
+                            if (bytcnt == 0)
+                              { // end of file on pipe
+                                // the forked process might close its stdout
+                                // and still be running, even if this is
+                                // unfriendly...
+                                close (curfd);
+                                onionrunprocarr_BM[runix].rp_outpipe = -1;
+                                break;
+                              }
+			    ASSERT_BM(bytcnt > 0);
+#warning incomplete, should append the pipbuf to the command strbuf object
+                          }
+                        while (bytcnt > 0);
+                        break;
+                      }
+                  }
+              }
+          }
+        unlockonion_runpro_mtx_at_BM (__LINE__);
+      }
       if (pollarr[pollix_term].revents & POLL_IN)
         {
           read_sigterm_BM (termsigfd);
           running = false;
           break;
-          if (pollarr[pollix_quit].revents & POLL_IN)
-            {
-              read_sigquit_BM (quitsigfd);
-              running = false;
-              break;
-            };
-          if (pollarr[pollix_chld].revents & POLL_IN)
-            read_sigchld_BM (chldsigfd);
-          if (pollarr[pollix_cmdp].revents & POLL_IN)
-            read_commandpipe_BM ();
-          ///
-#warning missing code in plain_event_loop_BM
-          fprintf (stderr,
-                   "missing code in plain_event_loop_BM loop#%d\n", loopcnt);
-          loopcnt++;
         }
-    }
+      if (pollarr[pollix_quit].revents & POLL_IN)
+        {
+          read_sigquit_BM (quitsigfd);
+          running = false;
+          break;
+        };
+      if (pollarr[pollix_chld].revents & POLL_IN)
+        read_sigchld_BM (chldsigfd);
+      if (pollarr[pollix_cmdp].revents & POLL_IN)
+        read_commandpipe_BM ();
+      ///
+#warning missing code in plain_event_loop_BM
+      fprintf (stderr,
+               "missing code in plain_event_loop_BM loop#%d\n", loopcnt);
+      loopcnt++;
+    }                           /* end while running */
+  DBGPRINTF_BM ("plain_event_loop_BM ended loopcnt=%ld", loopcnt);
 }                               /* end plain_event_loop_BM */
 
 static void
