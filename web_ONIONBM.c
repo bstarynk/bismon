@@ -45,7 +45,7 @@ struct onionproc_stBM
 /// which are not yet in the array above...
 struct listtop_stBM *onionrunpro_list_BM;
 
-// lock for the structures above
+// lock for the structures above (both onionrunprocarr_BM & onionrunpro_list_BM)
 pthread_mutex_t onionrunpro_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 
 // the lock above should be set when calling:
@@ -229,32 +229,35 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
     }
   ASSERT_BM (nbworkjobs_BM >= MINNBWORKJOBS_BM
              && nbworkjobs_BM <= MAXNBWORKJOBS_BM);
-  lockonion_runpro_mtx_at_BM (__LINE__);
-  lockedproc = true;
-  int slotpos = -1;
-  for (int ix = 0; ix < nbworkjobs_BM; ix++)
-    {
-      if (onionrunprocarr_BM[ix].rp_pid == 0)
-        {
-          slotpos = ix;
-          break;
-        };
-    }
-  if (slotpos >= 0 && !onionrunpro_list_BM)
-    {
-      fork_onion_process_at_slot_BM (slotpos, _.dirstrv, _.cmdnodv,
-                                     _.endclosv, CURFRAME_BM);
-    }
-  else
-    {                           // append to onionrunpro_list_BM
-      if (!onionrunpro_list_BM)
-        onionrunpro_list_BM = makelist_BM ();
-      _.nodv = (value_tyBM)
-        makenode3_BM (k_queue_process, _.dirstrv, _.cmdnodv, _.endclosv);
-      listappend_BM (onionrunpro_list_BM, _.nodv);
-    }
-  ASSERT_BM (lockedproc);
-  unlockonion_runpro_mtx_at_BM (__LINE__), lockedproc = false;
+  {
+    lockonion_runpro_mtx_at_BM (__LINE__);
+    lockedproc = true;
+    int slotpos = -1;
+    for (int ix = 0; ix < nbworkjobs_BM; ix++)
+      {
+        if (onionrunprocarr_BM[ix].rp_pid == 0)
+          {
+            slotpos = ix;
+            break;
+          };
+      }
+    if (slotpos >= 0 && !onionrunpro_list_BM)
+      {
+        fork_onion_process_at_slot_BM (slotpos, _.dirstrv, _.cmdnodv,
+                                       _.endclosv, CURFRAME_BM);
+      }
+    else
+      {                         // append to onionrunpro_list_BM
+        if (!onionrunpro_list_BM)
+          onionrunpro_list_BM = makelist_BM ();
+        _.nodv = (value_tyBM)
+          makenode3_BM (k_queue_process, (value_tyBM) _.dirstrv,
+                        (value_tyBM) _.cmdnodv, (value_tyBM) _.endclosv);
+        listappend_BM (onionrunpro_list_BM, _.nodv);
+      }
+    ASSERT_BM (lockedproc);
+    unlockonion_runpro_mtx_at_BM (__LINE__), lockedproc = false;
+  }
   LOCALJUSTRETURN_BM ();
 failure:
 #undef FAILHERE
@@ -273,6 +276,9 @@ failure:
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end queue_process_BM */
 
+
+
+////////////////
 static void
 fork_onion_process_at_slot_BM (int slotpos,
                                const stringval_tyBM * dirstrarg,
@@ -613,7 +619,7 @@ plain_event_loop_BM (void)
   int termsigfd = -1;
   int quitsigfd = -1;
   int chldsigfd = -1;
-  LOCALFRAME_BM ( /*prev: */ NULL, NULL,
+  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * bufob;
     );
   {
@@ -828,6 +834,19 @@ read_sigquit_BM (int sigfd)
 static void
 read_sigchld_BM (int sigfd)
 {
+  objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
+  bool didfork = false;
+  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
+                 /// for the terminating child process
+                 value_tyBM chdirstrv;  //
+                 value_tyBM chcmdnodv;  //
+                 value_tyBM chclosv;    //
+                 objectval_tyBM * chbufob;      //
+                 value_tyBM qnodv;      //
+                 value_tyBM newdirstrv; //
+                 value_tyBM newcmdnodv; //
+                 value_tyBM newendclosv;        //
+    );
   struct signalfd_siginfo sigchldinf;
   memset (&sigchldinf, 0, sizeof (sigchldinf));
   int nbr = read (sigfd, &sigchldinf, sizeof (sigchldinf));
@@ -842,10 +861,61 @@ read_sigchld_BM (int sigfd)
   if (wpid == pid)
     {
       DBGPRINTF_BM ("read_sigchld_BM pid %d", (int) pid);
+      {
+        int chix = -1;
+        int nbruncmds = 0;
+        lockonion_runpro_mtx_at_BM (__LINE__);
+        for (int oix = 0; oix < MAXNBWORKJOBS_BM; oix++)
+          {
+            struct onionproc_stBM *onproc = onionrunprocarr_BM + oix;
+            if (!onproc->rp_pid)
+              continue;
+            nbruncmds++;
+            if (onproc->rp_pid == pid)
+              {
+                ASSERT_BM (chix < 0);
+                chix = oix;
+                _.chdirstrv = onproc->rp_dirstrv;
+                _.chcmdnodv = onproc->rp_cmdnodv;
+                _.chclosv = onproc->rp_closv;
+                _.chbufob = onproc->rp_bufob;
+                memset ((void *) onproc, 0, sizeof (struct onionproc_stBM));
+              }
+          }
+        _.qnodv = nodecast_BM (listfirst_BM (onionrunpro_list_BM));
+        if (_.qnodv)
+          {
+            ASSERT_BM (nodeconn_BM (_.qnodv) == k_queue_process);
+            if (nbruncmds <= nbworkjobs_BM)
+              {
+                listpopfirst_BM (onionrunpro_list_BM);
+                _.newdirstrv = stringcast_BM (nodenthson_BM (_.qnodv, 0));
+                _.newcmdnodv = nodecast_BM (nodenthson_BM (_.qnodv, 1));
+                _.newendclosv = nodecast_BM (nodenthson_BM (_.qnodv, 2));
+                ASSERT_BM (isnode_BM (_.newcmdnodv));
+                ASSERT_BM (isclosure_BM (_.newendclosv));
+                DBGPRINTF_BM
+                  ("read_sigchld_BM chix#%d newdirstrv %s newcmdnodv %s newendclosv %s beforefork",
+                   chix, debug_outstr_value_BM (_.newdirstrv, CURFRAME_BM, 0),
+                   debug_outstr_value_BM (_.newcmdnodv, CURFRAME_BM, 0),
+                   debug_outstr_value_BM (_.newendclosv, CURFRAME_BM, 0));
+                fork_onion_process_at_slot_BM (chix, _.newdirstrv,
+                                               _.newcmdnodv, _.newendclosv,
+                                               CURFRAME_BM);
+                didfork = true;
+              }
+          }
+        unlockonion_runpro_mtx_at_BM (__LINE__);
+      }
+      /// should apply the chclosv for pid, ws, chdirstrv, chcmdnodv, chbufob
+      /// and handle any potentional failure in it
+#warning should apply the chcmdnodv in read_sigchld_BM
       WARNPRINTF_BM ("read_sigchld_BM unimplemented pid %d", (int) pid);
     }
   else
     FATAL_BM ("read_sigchld_BM waitpid failure pid#%d", pid);
+  if (didfork)
+    usleep (1000);
 }                               /* end read_sigchld_BM */
 
 
