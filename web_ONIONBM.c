@@ -601,6 +601,9 @@ custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
   return OCS_NOT_PROCESSED;
 }                               /* end custom_onion_handler_BM */
 
+
+
+
 /// remember that only plain_event_loop_BM is allowed to *remove*
 /// things from onionrunprocarr_BM or onionrunpro_list_BM
 void
@@ -610,6 +613,9 @@ plain_event_loop_BM (void)
   int termsigfd = -1;
   int quitsigfd = -1;
   int chldsigfd = -1;
+  LOCALFRAME_BM ( /*prev: */ NULL, NULL,
+                 objectval_tyBM * bufob;
+    );
   {
     sigset_t termsigset = { };
     sigemptyset (&termsigset);
@@ -701,6 +707,8 @@ plain_event_loop_BM (void)
                   {
                     if (onionrunprocarr_BM[runix].rp_outpipe == curfd)
                       {
+                        struct onionproc_stBM *onproc =
+                          onionrunprocarr_BM + runix;
                         runix++;
                         int bytcnt = 0;
                         do
@@ -720,8 +728,7 @@ plain_event_loop_BM (void)
                                 // this probably should not happen
                                 FATAL_BM
                                   ("unexpected error %m on output pipe fd#%d for pid %d",
-                                   curfd,
-                                   (int) onionrunprocarr_BM[runix].rp_pid);
+                                   curfd, (int) onproc->rp_pid);
                               }
                             if (bytcnt == 0)
                               { // end of file on pipe
@@ -729,25 +736,41 @@ plain_event_loop_BM (void)
                                 // and still be running, even if this is
                                 // unfriendly...
                                 close (curfd);
-                                onionrunprocarr_BM[runix].rp_outpipe = -1;
+                                onproc->rp_outpipe = -1;
                                 break;
                               }
                             ASSERT_BM (bytcnt > 0);
                             pipbuf[bytcnt] = (char) 0;
                             if (strlen (pipbuf) < bytcnt)
                               {
+                                WARNPRINTF_BM
+                                  ("unexpected null byte from process pid#%d command node %s in %s",
+                                   (int) onionrunprocarr_BM[runix].rp_pid,
+                                   debug_outstr_value_BM (onproc->rp_cmdnodv,
+                                                          CURFRAME_BM, 0),
+                                   bytstring_BM (onproc->rp_dirstrv) ? :
+                                   "./");
+                                if (kill (onproc->rp_pid, SIGTERM) == 0)
+                                  WARNPRINTF_BM ("sent SIGTERM to pid#%d",
+                                                 onproc->rp_pid);
+                                close (curfd);
+                                onproc->rp_outpipe = -1;
+                                usleep (1000);
+
                               }
-                            objectval_tyBM *bufob =
-                              onionrunprocarr_BM[runix].rp_bufob;
-                            ASSERT_BM (isobject_BM (bufob));
-                            ASSERT_BM (objhasstrbufferpayl_BM (bufob));
-#warning incomplete, should append the pipbuf to the command strbuf object
+                            _.bufob = onproc->rp_bufob;
+                            ASSERT_BM (isobject_BM (_.bufob));
+                            ASSERT_BM (objhasstrbufferpayl_BM (_.bufob));
+                            objstrbufferappendcstrpayl_BM (_.bufob, pipbuf);
+                            _.bufob = NULL;
+                            pipbuf[0] = (char) 0;
                           }
                         while (bytcnt > 0);
                         break;
                       }
                   }
               }
+            _.bufob = NULL;
           }
         unlockonion_runpro_mtx_at_BM (__LINE__);
       }
@@ -767,14 +790,12 @@ plain_event_loop_BM (void)
         read_sigchld_BM (chldsigfd);
       if (pollarr[pollix_cmdp].revents & POLL_IN)
         read_commandpipe_BM ();
-      ///
-#warning missing code in plain_event_loop_BM
-      WARNPRINTF_BM ("missing code in plain_event_loop_BM loop#%d\n",
-                     loopcnt);
       loopcnt++;
     }                           /* end while running */
   DBGPRINTF_BM ("plain_event_loop_BM ended loopcnt=%ld", loopcnt);
 }                               /* end plain_event_loop_BM */
+
+
 
 static void
 read_sigterm_BM (int sigfd)
