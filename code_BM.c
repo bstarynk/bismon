@@ -1804,8 +1804,8 @@ ROUTINEOBJNAME_BM (_3yJPC4SxGtF_6ilaF37wdxG)    //
     }
   if (nbgoodtypes != nbtypes)
     {
-      fprintf (stderr, "only %u good types out of %u for %s\n",
-               nbgoodtypes, nbtypes, basepath);
+      WARNPRINTF_BM ("only %u good types out of %u for %s\n",
+                     nbgoodtypes, nbtypes, basepath);
       LOCALRETURN_BM (NULL);
     }
   for (unsigned ix = 0; ix < nbtypes; ix++)

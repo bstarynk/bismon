@@ -670,7 +670,7 @@ initialize_newgui_BM (const char *builderfile, const char *cssfile)
 GtkTextBuffer *
 newgui_get_browsebuf_BM (void)
 {
-  fprintf (stderr, "newgui_get_browsebuf_BM unimplemented\n");
+  WARNPRINTF_BM ("newgui_get_browsebuf_BM unimplemented\n");
 #warning newgui_get_browsebuf_BM unimplemented
   return NULL;
 }                               /* end newgui_get_browsebuf_BM */

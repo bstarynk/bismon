@@ -199,7 +199,7 @@
 
 // we could use DBGPRINTF_BM and later replace it by NONPRINTF_BM
 #define DBGPRINTFATBIS_BM(Fil,Lin,Fmt,...) do { \
-    if (debugmsg_BM) printf("%s:%d: " Fmt "\n",	\
+    if (debugmsg_BM) printf("%s:%d+ " Fmt "\n",	\
 	   basename_BM((Fil)), (Lin),		\
 	 ##__VA_ARGS__);			\
 } while(0)
@@ -210,10 +210,38 @@
 #define DBGPRINTF_BM(Fmt,...) \
   DBGPRINTFAT_BM(__FILE__,__LINE__,Fmt,##__VA_ARGS__)
 
+
+////////////////
+
+#define WARNPRINTFATBIS_BM(Fil,Lin,Fmt,...) do {	\
+    fprintf(stderr, "%s:%d: ** " Fmt "\n",		\
+	   basename_BM((Fil)), (Lin),			\
+	 ##__VA_ARGS__);				\
+} while(0)
+
+#define WARNPRINTFAT_BM(Fil,Lin,Fmt,...) \
+  WARNPRINTFATBIS_BM(Fil,Lin,Fmt,##__VA_ARGS__)
+
+#define WARNPRINTF_BM(Fmt,...) \
+  WARNPRINTFAT_BM(__FILE__,__LINE__,Fmt,##__VA_ARGS__)
+
+////////////////
+#define INFOPRINTFATBIS_BM(Fil,Lin,Fmt,...) do {	\
+    fprintf(stderr, "%s:%d: !! " Fmt "\n",		\
+	   basename_BM((Fil)), (Lin),			\
+	 ##__VA_ARGS__);				\
+} while(0)
+
+#define INFOPRINTFAT_BM(Fil,Lin,Fmt,...) \
+  INFOPRINTFATBIS_BM(Fil,Lin,Fmt,##__VA_ARGS__)
+
+#define INFOPRINTF_BM(Fmt,...) \
+  INFOPRINTFAT_BM(__FILE__,__LINE__,Fmt,##__VA_ARGS__)
+
 ////////////////
 
 #define DBGBACKTRACEPRINTFATBIS_BM(Fil,Lin,Fmt,...) do {	\
-    if (debugmsg_BM) { printf("%s:%d: " Fmt "\n",		\
+    if (debugmsg_BM) { printf("%s:%d:+ " Fmt "\n",		\
 			      basename_BM((Fil)), (Lin),	\
 			      ##__VA_ARGS__);			\
       backtrace_print_BM					\

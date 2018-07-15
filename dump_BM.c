@@ -224,7 +224,7 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   DBGPRINTF_BM ("dump_BM dirname %s start tid#%ld",
                 dirname, (long) gettid_BM ());
   struct dumper_stBM *duptr = NULL;
-  fprintf (stderr, "start dumping into %s\n", dirname);
+  INFOPRINTF_BM ("start dumping into %s\n", dirname);
   if (g_mkdir_with_parents (dirname, 0750))
     FATAL_BM ("failed to mkdir with parents %s", dirname);
   _.dudirv = makestring_BM (dirname);

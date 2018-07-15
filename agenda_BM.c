@@ -777,8 +777,8 @@ run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
       _.failres = fh.failh_reason;
       const char *failmsg = debug_outstr_value_BM (_.failres, CURFRAME_BM,
                                                    0);
-      fprintf (stderr, "tasklet %s failed code#%d reason %s\n", curidbuf,
-               failcod, failmsg);
+      WARNPRINTF_BM ("tasklet %s failed code#%d reason %s\n", curidbuf,
+                     failcod, failmsg);
     };
   curfailurehandle_BM = NULL;
   objunlock_BM (_.obtk);
@@ -845,9 +845,9 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
   FILE *binmodf = fopen (modulpath, "r");
   if (!binmodf)
     {
-      fprintf (stderr, "failed to read binary %s module %s for %s: %m\n",
-               modulpath, modulistemporary ? "temporary" : "persistent",
-               objectdbg_BM (_.modulob));
+      WARNPRINTF_BM ("failed to read binary %s module %s for %s: %m\n",
+                     modulpath, modulistemporary ? "temporary" : "persistent",
+                     objectdbg_BM (_.modulob));
       FAILHERE (makenode1_BM
                 (BMP_load_module, (value_tyBM) makestring_BM (modulpath)));
     }
@@ -861,8 +861,8 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
       DBGPRINTF_BM ("defer_module_load bad ELF ident %x %x %x %x (want %x %x %x %x) nbread %d for modulpath %s modulob %s", eident[0], eident[1], eident[2], eident[3], //
                     ELFMAG0, ELFMAG1, ELFMAG2, ELFMAG3, //
                     nbread, modulpath, objectdbg_BM (_.modulob));
-      fprintf (stderr, "module binary %s for %s is not ELF.\n",
-               modulpath, objectdbg_BM (_.modulob));
+      WARNPRINTF_BM ("module binary %s for %s is not ELF.\n",
+                     modulpath, objectdbg_BM (_.modulob));
       fclose (binmodf);
       FAILHERE (makenode1_BM (BMP_load_module,
                               (value_tyBM) makestring_BM (modulpath)));

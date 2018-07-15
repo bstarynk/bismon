@@ -153,10 +153,10 @@ extendedgcproc_BM (struct garbcoll_stBM *gc, extendedval_tyBM xval,
       typedhead_tyBM *ht = (typedhead_tyBM *) xval;
       if (ht->htyp == 0)
         {
-          fprintf (stderr,
-                   "@*@ corrupted zero-typed extended-val @%p fromob %s of %s depth#%d\n",
-                   (void *) xval, objectdbg_BM (fromob),
-                   objectdbg1_BM (objclass_BM (fromob)), depth);
+          WARNPRINTF_BM
+            ("@*@ corrupted zero-typed extended-val @%p fromob %s of %s depth#%d\n",
+             (void *) xval, objectdbg_BM (fromob),
+             objectdbg1_BM (objclass_BM (fromob)), depth);
           weakassertfailureat_BM
             ("extendedgcproc_BM corruption zero-typed payload", __FILE__,
              __LINE__);
@@ -448,9 +448,8 @@ deleteobjectpayload_BM (objectval_tyBM * obj, extendedval_tyBM payl)
       typedhead_tyBM *ht = (typedhead_tyBM *) payl;
       if (ht->htyp == 0)
         {
-          fprintf
-            (stderr,
-             "@*@ deleteobjectpayload_BM corruption zero-typed payload unexpected  payl@%p of object %s of %s\n",
+          WARNPRINTF_BM
+            ("@*@ deleteobjectpayload_BM corruption zero-typed payload unexpected  payl@%p of object %s of %s\n",
              payl, objectdbg_BM (obj), objectdbg1_BM (objclass_BM (obj)));
           weakassertfailureat_BM
             ("deleteobjectpayload_BM corruption zero-typed payload", __FILE__,
@@ -504,9 +503,9 @@ deleteobjectpayload_BM (objectval_tyBM * obj, extendedval_tyBM payl)
       return;
 #endif /*BISMONION*/
     default:
-      fprintf
-        (stderr,
-         "deleteobjectpayload_BM ty#%d unexpected for payl@%p of object %s of %s",
+
+      WARNPRINTF_BM
+        ("deleteobjectpayload_BM ty#%d unexpected for payl@%p of object %s of %s",
          ty, payl, objectdbg_BM (obj), objectdbg1_BM (objclass_BM (obj)));
       weakassertfailureat_BM ("deleteobjectpayload_BM unexpected payload",
                               __FILE__, __LINE__);

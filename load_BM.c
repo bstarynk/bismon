@@ -37,7 +37,7 @@ loadergcdestroy_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((const value_tyBM) ld) == typayl_loader_BM);
   ASSERT_BM (ld->ld_magic == LOADERMAGIC_BM);
-  fprintf (stderr, "loadergcdestroy_BM called ld @%p\n", (void *) ld);
+  WARNPRINTF_BM ("loadergcdestroy_BM called ld @%p\n", (void *) ld);
   memset (ld, 0, sizeof (*ld));
   free (ld);
   gc->gc_freedbytes += sizeof (*ld);
@@ -49,7 +49,7 @@ loadergckeep_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((const value_tyBM) ld) == typayl_loader_BM);
   ASSERT_BM (ld->ld_magic == LOADERMAGIC_BM);
-  fprintf (stderr, "loadergckeep_BM called ld @%p\n", (void *) ld);
+  WARNPRINTF_BM ("loadergckeep_BM called ld @%p\n", (void *) ld);
   gc->gc_keptbytes += sizeof (struct loader_stBM);
 }                               /* end loadergckeep_BM */
 

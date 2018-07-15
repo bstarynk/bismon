@@ -3679,12 +3679,11 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
       rename (srcpathstr, badpathstr);
       if (rename (prevpathstr, srcpathstr))
         err = errno;
-      fprintf (stderr,
-               "compilation of %s module %s failed (%d=%#x);\n"
-               "... restored previous %s from %s with bad new source in %s\n",
-               modulistemporary ? "temporary" : "persistent",
-               objectdbg_BM (_.modulob), status, status, srcpathstr,
-               prevpathstr, badpathstr);
+      WARNPRINTF_BM ("compilation of %s module %s failed (%d=%#x);"
+                     "... restored previous %s from %s with bad new source in %s\n",
+                     modulistemporary ? "temporary" : "persistent",
+                     objectdbg_BM (_.modulob), status, status, srcpathstr,
+                     prevpathstr, badpathstr);
       if (err > 0)
         {
           char cwdbuf[80];
@@ -3694,8 +3693,8 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
             ("after-compilation-of-module %s failed renaming %s -> %s failed with #%d: %s in %s",
              objectdbg_BM (_.modulob), prevpathstr, srcpathstr, err,
              strerror (err), cwdbuf);
-          fprintf (stderr, "... renaming %s -> %s failed with %s\n",
-                   prevpathstr, srcpathstr, strerror (err));
+          WARNPRINTF_BM ("renaming %s -> %s failed with %s\n",
+                         prevpathstr, srcpathstr, strerror (err));
         }
       if (pthread_self () == mainthreadid_BM && gui_is_running_BM)
         {
@@ -3710,8 +3709,8 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
       free (badpathstr), badpathstr = NULL;
     }
   else
-    fprintf (stderr, "successful compilation of module %s\n",
-             objectdbg_BM (_.modulob));
+    INFOPRINTF_BM ("successful compilation of module %s\n",
+                   objectdbg_BM (_.modulob));
   if (pthread_self () == mainthreadid_BM && gui_is_running_BM)
     {
       log_end_message_BM ();
@@ -3803,9 +3802,9 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
       log_puts_message_BM (".");
       log_end_message_BM ();
     };
-  fprintf (stderr, "loaded %s module %s with generation %s\n",
-           modulistemporary ? "temporary" : "persistent",
-           objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
+  INFOPRINTF_BM ("loaded %s module %s with generation %s\n",
+                 modulistemporary ? "temporary" : "persistent",
+                 objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
   {
     objlock_BM (_.modgenob);
     _.todoclosv = objgetattr_BM (_.modgenob, k_todo_after_module_load);
@@ -3996,9 +3995,9 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
   char nowbuf[64];
   memset (nowbuf, 0, sizeof (nowbuf));
   strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
-  fprintf (stderr,
-           "initialized simple module %s /%s with %u constants and %u routines at %s\n",
-           objectdbg_BM (_.modulob), modulid, nbconstid, nbroutid, nowbuf);
+  INFOPRINTF_BM
+    ("initialized simple module %s /%s with %u constants and %u routines at %s\n",
+     objectdbg_BM (_.modulob), modulid, nbconstid, nbroutid, nowbuf);
   if (pthread_self () == mainthreadid_BM && gui_is_running_BM)
     {
       log_begin_message_BM ();

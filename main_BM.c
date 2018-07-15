@@ -236,7 +236,7 @@ run_command_bm (const gchar * optname
                 __attribute__ ((unused)), GError ** perr)
 {
   ASSERT_BM (val != NULL);
-  fprintf (stderr, "running command: %s\n", val);
+  INFOPRINTF_BM ("running command: %s\n", val);
   int ok = system (val);
   if (ok == 0)
     return TRUE;
@@ -623,14 +623,14 @@ do_emit_module_from_main_BM (void)
       destroy_failurelockset_BM (&flockset);
       curfailurehandle_BM = prevfailurehandle;
       {
-        fprintf (stderr,
-                 "Failed to emit module from main %s, with failcode#%d, failres %s\n",
-                 objectdbg_BM (_.modulob), failcod,
-                 debug_outstr_value_BM (_.failres, CURFRAME_BM, 0));
+        WARNPRINTF_BM
+          ("Failed to emit module from main %s, with failcode#%d, failres %s\n",
+           objectdbg_BM (_.modulob), failcod,
+           debug_outstr_value_BM (_.failres, CURFRAME_BM, 0));
         return;
       };
     };
-  fprintf (stderr, "begin emit module from main: %s\n", module_to_emit_bm);
+  INFOPRINTF_BM ("begin emit module from main: %s\n", module_to_emit_bm);
   _.parsob = makeobj_BM ();
   bool gotobj = false;
   struct parser_stBM *pars =
@@ -649,8 +649,8 @@ do_emit_module_from_main_BM (void)
                 objectdbg_BM (_.modulob),       //
                 debug_outstr_value_BM (_.resultv, CURFRAME_BM, 0));
   if (_.resultv)
-    fprintf (stderr, "\nsuccessful emit module from main: %s\n",
-             module_to_emit_bm);
+    INFOPRINTF_BM ("successful emit module from main: %s\n",
+                   module_to_emit_bm);
   else
     FATAL_BM ("failed emit module from main: %s", module_to_emit_bm);
   char modulidbuf[32];
@@ -666,9 +666,8 @@ do_emit_module_from_main_BM (void)
   int cmdcod = system (makemodulecmd);
   if (cmdcod)
     FATAL_BM ("failed module making %s (%d)", makemodulecmd, cmdcod);
-  fprintf (stderr,
-           "\n" "successfully compiled emitted module %s (%s) from main\n",
-           module_to_emit_bm, modulidbuf);
+  INFOPRINTF_BM ("successfully compiled emitted module %s (%s) from main\n",
+                 module_to_emit_bm, modulidbuf);
   fflush (NULL);
   return;
 }                               /* end do_emit_module_from_main_BM */
@@ -1041,13 +1040,13 @@ parse_values_after_load_BM (void)
                  value_tyBM parsedval;
     );
   _.parsob = makeobj_BM ();
-  fprintf (stderr, "parsing %d values after load %s using parsob %s\n",
-           nb_parsed_values_after_load_bm, load_dir_bm,
-           objectdbg_BM (_.parsob));
+  INFOPRINTF_BM ("parsing %d values after load %s using parsob %s\n",
+                 nb_parsed_values_after_load_bm, load_dir_bm,
+                 objectdbg_BM (_.parsob));
   for (int ix = 0; ix < nb_parsed_values_after_load_bm; ix++)
     {
       const char *curvalstr = parsed_values_after_loadarr_bm[ix];
-      fprintf (stderr, "parsing value#%d:::\n%s\n///----\n", ix, curvalstr);
+      INFOPRINTF_BM ("parsing value#%d:::\n%s\n///----\n", ix, curvalstr);
       struct parser_stBM *pars =
         makeparser_memopen_BM (curvalstr, strlen (curvalstr), _.parsob);
       ASSERT_BM (pars != NULL);
@@ -1055,8 +1054,8 @@ parse_values_after_load_BM (void)
       _.parsedval = parsergetvalue_BM (pars, CURFRAME_BM, 0, &gotval);
       if (!gotval)
         FATAL_BM ("failed to parse value#%d", ix);
-      fprintf (stderr, "parsed value#%d is:\n%s\n", ix,
-               debug_outstr_value_BM (_.parsedval, CURFRAME_BM, 0));
+      INFOPRINTF_BM ("parsed value#%d is:\n%s\n", ix,
+                     debug_outstr_value_BM (_.parsedval, CURFRAME_BM, 0));
       fflush (NULL);
       objclearpayload_BM (_.parsob);
     }
@@ -1065,8 +1064,8 @@ parse_values_after_load_BM (void)
       free (parsed_values_after_loadarr_bm[ix]),
         parsed_values_after_loadarr_bm[ix] = NULL;
     }
-  fprintf (stderr, "done parsing %d values after load\n",
-           nb_parsed_values_after_load_bm);
+  INFOPRINTF_BM ("done parsing %d values after load\n",
+                 nb_parsed_values_after_load_bm);
 }                               /* end parse_values_after_load_BM */
 
 
@@ -1158,9 +1157,9 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
     {
       destroy_failurelockset_BM (&flockset);
       curfailurehandle_BM = NULL;
-      fprintf (stderr, "deffered_apply3_gtk failure, failcod#%d failreason: %s\n", failcod,     //
-               debug_outstr_value_BM (_.failres,        //
-                                      CURFRAME_BM, 0));
+      WARNPRINTF_BM ("deffered_apply3_gtk failure, failcod#%d failreason: %s\n", failcod,       //
+                     debug_outstr_value_BM (_.failres,  //
+                                            CURFRAME_BM, 0));
       return;
     }
   NONPRINTF_BM ("internaldeferapply funv %s arg1 %s arg2 %s arg3 %s",   //
@@ -1207,8 +1206,9 @@ do_internal_deferred_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
     {
       destroy_failurelockset_BM (&flockset);
       curfailurehandle_BM = NULL;
-      fprintf (stderr, "deffered_send3_gtk failure, failcod#%d failreason: %s\n",       //
-               failcod, debug_outstr_value_BM (_.failres, CURFRAME_BM, 0));
+      WARNPRINTF_BM ("deffered_send3_gtk failure, failcod#%d failreason: %s\n", //
+                     failcod, debug_outstr_value_BM (_.failres, CURFRAME_BM,
+                                                     0));
       return;
     }
   DBGPRINTF_BM ("internaldefersend recv %s obsel %s arg1 %s arg2 %s arg3 %s",   //
@@ -1338,7 +1338,7 @@ startguilog_BM (void)
       gui_command_log_file_BM = fopen (gui_log_name_bm, "w");
       if (!gui_command_log_file_BM)
         FATAL_BM ("fopen GUI log %s failure (%m)", gui_log_name_bm);
-      fprintf (stderr, "GUI log to %s\n", gui_log_name_bm);
+      INFOPRINTF_BM ("GUI log to %s\n", gui_log_name_bm);
       fprintf (gui_command_log_file_BM, "// GUI command log file %s\n",
                basename (gui_log_name_bm));
     }
@@ -1514,10 +1514,10 @@ errorbt_callback_BM (void *data_
 
   //if (pdata->state->filename != NULL)
   //  fprintf (stderr, "%s: ", pdata->state->filename);
-  fprintf (stderr, "libbacktrace: %s", msg);
   if (errnum > 0)
-    fprintf (stderr, ": %s", strerror (errnum));
-  fputc ('\n', stderr);
+    WARNPRINTF_BM ("libbacktrace:: %s (%s)", msg, strerror (errnum));
+  else
+    WARNPRINTF_BM ("libbacktrace: %s", msg);
 }
 
 /* Print a backtrace.  */

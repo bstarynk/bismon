@@ -718,6 +718,7 @@ objstrbufferappendcstrpayl_BM (objectval_tyBM * obj, const char *cstr)
   objstrbufferunsafeappendcstrpayl_BM (obj, cstr);
 }                               /* end objstrbufferappendcstr_BM */
 
+
 void
 objstrbuffernewlinepayl_BM (objectval_tyBM * obj)
 {

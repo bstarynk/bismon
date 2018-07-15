@@ -3602,7 +3602,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
               objectdbg_BM (_.modulob));
   if (g_mkdir_with_parents (srcdirstr, 0750))
     {
-      fprintf (stderr, "cannot mkdir with parents %s (%m)\n", srcdirstr);
+      WARNPRINTF_BM ("cannot mkdir with parents %s (%m)\n", srcdirstr);
       FAILHERE (makestring_BM (srcdirstr));
     }
   {
@@ -3846,10 +3846,10 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     }
 #else
 #warning emit_module°plain_module should be improved without BISMONGTK
-  fprintf (stderr, "emit_module°plain_module BISMONION not implemented...\n"   //
-           " ... srcpathstr %s modulob %s modgenob %s srcdirstrv %s\n", //
-           srcpathstr, objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),    //
-           debug_outstr_value_BM (_.srcdirstrv, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_module°plain_module BISMONION not implemented...\n"     //
+                 " ... srcpathstr %s modulob %s modgenob %s srcdirstrv %s\n",   //
+                 srcpathstr, objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),      //
+                 debug_outstr_value_BM (_.srcdirstrv, CURFRAME_BM, 0));
   fflush (stderr);
 #endif /*BISMONGTK*/
     if (srcdirstr)

@@ -1214,11 +1214,9 @@ parsergetobject_BM (struct parser_stBM * pars,
           idtocbuf32_BM (tok.tok_id, idbuf);
           if (pars->pars_warnunknownid)
             {
-              fprintf (stderr,
-                       "%s:%d:%d: ignoring unknown id %s\n",
-                       pars->pars_path ? pars->pars_path : "???",
-                       lineno, colpos, idbuf);
-              fflush (stderr);
+              WARNPRINTF_BM ("in %s:%d:%d: ignoring unknown id %s\n",
+                             pars->pars_path ? pars->pars_path : "???",
+                             lineno, colpos, idbuf);
             }
           else
             {

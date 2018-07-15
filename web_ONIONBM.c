@@ -689,7 +689,7 @@ plain_event_loop_BM (void)
           continue;
         }
       {
-        char pipbuf[1024];
+        char pipbuf[1024 + 4];
         lockonion_runpro_mtx_at_BM (__LINE__);
         int runix = 0;
         for (int ix = pollix__lastsig; ix < nbpoll; ix++)
@@ -709,7 +709,8 @@ plain_event_loop_BM (void)
                             // we might do ioctl(curfd, FIONBIO, &cnt)
                             // but it is not worth doing since the pipe
                             // is non-blocking. See https://stackoverflow.com/a/1151077/841108
-                            bytcnt = read (curfd, pipbuf, sizeof (pipbuf));
+                            bytcnt =
+                              read (curfd, pipbuf, sizeof (pipbuf) - 4);
                             if (bytcnt < 0 && errno == EINTR)
                               continue;
                             if (bytcnt < 0 && errno == EWOULDBLOCK)
@@ -731,7 +732,15 @@ plain_event_loop_BM (void)
                                 onionrunprocarr_BM[runix].rp_outpipe = -1;
                                 break;
                               }
-			    ASSERT_BM(bytcnt > 0);
+                            ASSERT_BM (bytcnt > 0);
+                            pipbuf[bytcnt] = (char) 0;
+                            if (strlen (pipbuf) < bytcnt)
+                              {
+                              }
+                            objectval_tyBM *bufob =
+                              onionrunprocarr_BM[runix].rp_bufob;
+                            ASSERT_BM (isobject_BM (bufob));
+                            ASSERT_BM (objhasstrbufferpayl_BM (bufob));
 #warning incomplete, should append the pipbuf to the command strbuf object
                           }
                         while (bytcnt > 0);
@@ -760,8 +769,8 @@ plain_event_loop_BM (void)
         read_commandpipe_BM ();
       ///
 #warning missing code in plain_event_loop_BM
-      fprintf (stderr,
-               "missing code in plain_event_loop_BM loop#%d\n", loopcnt);
+      WARNPRINTF_BM ("missing code in plain_event_loop_BM loop#%d\n",
+                     loopcnt);
       loopcnt++;
     }                           /* end while running */
   DBGPRINTF_BM ("plain_event_loop_BM ended loopcnt=%ld", loopcnt);

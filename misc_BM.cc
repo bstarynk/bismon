@@ -463,12 +463,12 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
   struct stat binmodstat = {};
   if (::stat(srcmodpath.c_str(), &srcmodstat))
     {
-      fprintf(stderr, "missing module source %s (%m)\n", srcmodpath.c_str());
+      WARNPRINTF_BM("missing module source %s (%m)\n", srcmodpath.c_str());
       return false;
     }
   if (::stat(binmodpath.c_str(), &binmodstat))
     {
-      fprintf(stderr, "missing module binary %s (%m)\n", binmodpath.c_str());
+      WARNPRINTF_BM("missing module binary %s (%m)\n", binmodpath.c_str());
       return false;
     }
   if (srcmodstat.st_mtime > binmodstat.st_mtime)
@@ -478,10 +478,9 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       char srcti[64] = "", binti[64] = "";
       strftime(srcti, sizeof(srcti), "%c", localtime_r(&srcmodstat.st_mtime, &srctm));
       strftime(binti, sizeof(binti), "%c", localtime_r(&binmodstat.st_mtime, &bintm));
-      fprintf (stderr, "module source code %s [%s]\n... younger than its binary %s [%s]\n",
+      WARNPRINTF_BM("module source code %s [%s]\n... younger than its binary %s [%s]\n"
+		    "please rebuild that binary then restart",
                srcmodpath.c_str(), srcti, binmodpath.c_str(), binti);
-      fprintf (stderr, "***please rebuild that %s then restart...\n",
-	       basename(binmodpath.c_str()));
       return false;
     }
   if (modulemap_BM.find(modid) != modulemap_BM.end())
@@ -492,13 +491,13 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
   void*dlh = dlopen(binmodpath.c_str(), RTLD_NOW | RTLD_GLOBAL);
   if (!dlh)
     {
-      fprintf(stderr, "module dlopen failure %s\n", dlerror());
+      WARNPRINTF_BM("module dlopen failure %s\n", dlerror());
       return false;
     }
   const char*modidad = (const char*)dlsym(dlh,"module_id_BM");
   if (!modidad || strcmp(modidad,modidbuf))
     {
-      fprintf(stderr, "bad module_id_BM in %s : %s\n",
+      WARNPRINTF_BM("bad module_id_BM in %s : %s\n",
               binmodpath.c_str(), (modidad?"modid mismatch":dlerror()));
       dlclose(dlh);
       return false;
@@ -506,7 +505,7 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
   objectval_tyBM* objmod = makeobjofid_BM(modid);
   if (!objmod)
     {
-      fprintf(stderr, "no object for module %s\n", modidbuf);
+      WARNPRINTF_BM("no object for module %s\n", modidbuf);
       dlclose(dlh);
       return false;
     }

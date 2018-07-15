@@ -506,9 +506,9 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
   if (fclose (fil))
     FATAL_BM ("failed to fclose %s", rcpath);
   fil = NULL;
-  fprintf (stderr,
-           "check and load of %d contributors in file %s completed successfully\n",
-           nbcontrib, rcpath);
+  INFOPRINTF_BM
+    ("check and load of %d contributors in file %s completed successfully\n",
+     nbcontrib, rcpath);
 }                               /* end check_and_load_contributors_file_BM */
 
 ////////////////
@@ -580,9 +580,9 @@ check_passwords_file_BM (struct loader_stBM *ld, struct stackframe_stBM *stkf)
       _.contribob = findobjofid_BM (curid);
       if (!_.contribob)
         {
-          fprintf (stderr,
-                   "in password file %s line#%d has unknown oid %s for contributor %s, skipping...\n",
-                   passwords_filepath_BM, lincnt, curoidstr, curcontrib);
+          WARNPRINTF_BM
+            ("in password file %s line#%d has unknown oid %s for contributor %s, skipping...\n",
+             passwords_filepath_BM, lincnt, curoidstr, curcontrib);
           continue;
         }
       objlock_BM (_.contribob);
@@ -1225,8 +1225,8 @@ userdelete_BM (objectval_tyBM * ownobj, struct user_stBM *us)
     objunlock_BM (BMP_contributors);
   }
   if (!wascontributor)
-    fprintf (stderr, "deleted user %s was not in `contributors`",
-             objectdbg_BM (ownobj));
+    WARNPRINTF_BM ("deleted user %s was not in `contributors_BM`",
+                   objectdbg_BM (ownobj));
 }                               /* end userdelete_BM */
 
 
