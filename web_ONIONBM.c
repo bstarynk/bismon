@@ -806,6 +806,7 @@ read_sigterm_BM (int sigfd)
   if (nbr != sizeof (sigterminf))       // very unlikely, probably impossible
     FATAL_BM ("read_sigterm_BM: read fail (%d.by read, want %d) - %m", nbr,
               (int) sizeof (sigterminf));
+  WARNPRINTF_BM ("read_sigterm_BM unimplemented");
   DBGPRINTF_BM ("read_sigterm_BM");
 }                               /* end read_sigterm_BM */
 
@@ -819,6 +820,7 @@ read_sigquit_BM (int sigfd)
   if (nbr != sizeof (sigquitinf))       // very unlikely, probably impossible
     FATAL_BM ("read_sigquit_BM: read fail (%d.by read, want %d) - %m", nbr,
               (int) sizeof (sigquitinf));
+  WARNPRINTF_BM ("read_sigquit_BM unimplemented");
   DBGPRINTF_BM ("read_sigquit_BM");
 }                               /* end read_sigquit_BM */
 
@@ -840,6 +842,7 @@ read_sigchld_BM (int sigfd)
   if (wpid == pid)
     {
       DBGPRINTF_BM ("read_sigchld_BM pid %d", (int) pid);
+      WARNPRINTF_BM ("read_sigchld_BM unimplemented pid %d", (int) pid);
     }
   else
     FATAL_BM ("read_sigchld_BM waitpid failure pid#%d", pid);
@@ -855,6 +858,7 @@ read_commandpipe_BM (void)
   if (nbr == 1)
     {
       DBGPRINTF_BM ("read_commandpipe_BM '%s' incomplete", buf);
+      WARNPRINTF_BM ("read_commandpipe_BM unimplemented");
 #warning read_commandpipe_BM incomplete
       // should handle the command
     }
