@@ -784,6 +784,8 @@ run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
   objunlock_BM (_.obtk);
 }                               /* end run_agenda_internal_tasklet_BM */
 
+
+
 void
 defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclosarg,    //
                       value_tyBM arg1, value_tyBM arg2, value_tyBM arg3,        //
@@ -827,27 +829,52 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
      debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
      debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
   // test that the module file exists
+  char *progmodulpath = NULL;   // the asprintf-ed binary module in bismon_directory
+  char *curmodulpath = NULL;    // the asprintf-ed binary module in current directory
   char *modulpath = NULL;
   {
     int a = -1;
     if (modulistemporary)
-      a = asprintf (&modulpath,
+      a = asprintf (&progmodulpath,
                     "%s/" MODULEBINDIR_BM "/" TEMPMODULEPREFIX_BM "%s.so",
                     bismon_directory, modulidbuf);
     else
       a =
-        asprintf (&modulpath,
+        asprintf (&progmodulpath,
                   "%s/" MODULEBINDIR_BM "/" MODULEPREFIX_BM "%s.so",
                   bismon_directory, modulidbuf);
-    if (a < 0 || !modulpath)
-      FATAL_BM ("failed to make modulpath for %s", modulidbuf);
+    if (a < 0 || !progmodulpath)
+      FATAL_BM ("failed to make progmodulpath for %s", modulidbuf);
   }
-#warning we probably want to seek the module binary path first in the current directory, and then in the bismon directory
-  FILE *binmodf = fopen (modulpath, "r");
+  {
+    int a = -1;
+    if (modulistemporary)
+      a = asprintf (&curmodulpath,
+                    MODULEBINDIR_BM "/" TEMPMODULEPREFIX_BM "%s.so",
+                    modulidbuf);
+    else
+      a =
+        asprintf (&curmodulpath,
+                  MODULEBINDIR_BM "/" MODULEPREFIX_BM "%s.so", modulidbuf);
+    if (a < 0 || !curmodulpath)
+      FATAL_BM ("failed to make curmodulpath for %s", modulidbuf);
+  }
+  if (!access (curmodulpath, F_OK))
+    {
+      modulpath = curmodulpath;
+      free (progmodulpath), progmodulpath = NULL;
+    }
+  else if (!access (progmodulpath, F_OK))
+    {
+      modulpath = progmodulpath;
+      free (curmodulpath), curmodulpath = NULL;
+    };
+  FILE *binmodf = modulpath ? fopen (modulpath, "r") : NULL;
   if (!binmodf)
     {
       WARNPRINTF_BM ("failed to read binary %s module %s for %s: %m\n",
-                     modulpath, modulistemporary ? "temporary" : "persistent",
+                     modulpath ? : "*missing*",
+                     modulistemporary ? "temporary" : "persistent",
                      objectdbg_BM (_.modulob));
       FAILHERE (makenode1_BM
                 (BMP_load_module, (value_tyBM) makestring_BM (modulpath)));
@@ -859,7 +886,8 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
       || eident[0] != ELFMAG0 || eident[1] != ELFMAG1 || eident[2] != ELFMAG2
       || eident[3] != ELFMAG3)
     {
-      DBGPRINTF_BM ("defer_module_load bad ELF ident %x %x %x %x (want %x %x %x %x) nbread %d for modulpath %s modulob %s", eident[0], eident[1], eident[2], eident[3], //
+      DBGPRINTF_BM ("defer_module_load bad ELF ident %x %x %x %x (want %x %x %x %x) nbread %d for modulpath %s modulob %s",     //
+                    eident[0], eident[1], eident[2], eident[3], //
                     ELFMAG0, ELFMAG1, ELFMAG2, ELFMAG3, //
                     nbread, modulpath, objectdbg_BM (_.modulob));
       WARNPRINTF_BM ("module binary %s for %s is not ELF.\n",
