@@ -842,6 +842,7 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
     if (a < 0 || !modulpath)
       FATAL_BM ("failed to make modulpath for %s", modulidbuf);
   }
+#warning we probably want to seek the module binary path first in the current directory, and then in the bismon directory
   FILE *binmodf = fopen (modulpath, "r");
   if (!binmodf)
     {
