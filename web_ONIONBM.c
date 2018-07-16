@@ -842,6 +842,8 @@ read_sigchld_BM (int sigfd)
                  value_tyBM chcmdnodv;  //
                  value_tyBM chclosv;    //
                  objectval_tyBM * chbufob;      //
+                 value_tyBM choutstrv;  //
+                 // for queued commands
                  value_tyBM qnodv;      //
                  value_tyBM newdirstrv; //
                  value_tyBM newcmdnodv; //
@@ -856,8 +858,8 @@ read_sigchld_BM (int sigfd)
       ("read_sigchld_BM: read fail (%d.by read, want %d) - %m",
        nbr, (int) sizeof (sigchldinf));
   pid_t pid = sigchldinf.ssi_pid;
-  int ws = 0;
-  pid_t wpid = waitpid (pid, &ws, WNOHANG);
+  int wstatus = 0;
+  pid_t wpid = waitpid (pid, &wstatus, WNOHANG);
   if (wpid == pid)
     {
       DBGPRINTF_BM ("read_sigchld_BM pid %d", (int) pid);
@@ -906,16 +908,26 @@ read_sigchld_BM (int sigfd)
               }
           }
         unlockonion_runpro_mtx_at_BM (__LINE__);
+        if (chix >= 0)
+          {
+            _.choutstrv =
+              (value_tyBM)
+              makestring_BM (objstrbufferbytespayl_BM (_.chbufob));
+            DBGPRINTF_BM
+              ("read_sigchld_BM defer-apply chclosv %s choutstrv %s wstatus %#x=%d",
+               debug_outstr_value_BM (_.chclosv, CURFRAME_BM, 0),
+               debug_outstr_value_BM (_.choutstrv, CURFRAME_BM, 0), wstatus,
+               wstatus);
+            do_main_defer_apply3_BM (_.chclosv, _.choutstrv,
+                                     taggedint_BM (wstatus), NULL,
+                                     CURFRAME_BM);
+          }
       }
-      /// should apply the chclosv for pid, ws, chdirstrv, chcmdnodv, chbufob
-      /// and handle any potentional failure in it
-#warning should apply the chcmdnodv in read_sigchld_BM
-      WARNPRINTF_BM ("read_sigchld_BM unimplemented pid %d", (int) pid);
     }
   else
     FATAL_BM ("read_sigchld_BM waitpid failure pid#%d", pid);
   if (didfork)
-    usleep (1000);
+    usleep (1000);              // sleep a little bit, to let the child process start
 }                               /* end read_sigchld_BM */
 
 
