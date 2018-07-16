@@ -932,7 +932,7 @@ initialize_contributors_path_BM (void)
           if (!getcwd (cwdbuf, sizeof (cwdbuf)))
             strcpy (cwdbuf, "./");
           FATAL_BM
-            ("no %s file found here in %s or in $HOME %s, pass --contributors-file=... option to give one",
+            ("no %s file found here in %s or in $HOME %s, so pass --contributors-file=... option to give one",
              CONTRIBUTORS_FILE_BM, cwdbuf, homepath);
         }
       if (access (contributors_filepath_BM, R_OK))
@@ -988,7 +988,7 @@ initialize_passwords_path_BM (void)
           if (!getcwd (cwdbuf, sizeof (cwdbuf)))
             strcpy (cwdbuf, "./");
           FATAL_BM
-            ("no %s file found here in %s or in $HOME %s, pass --passwords-file=... option to give one",
+            ("no %s file found here in %s or in $HOME %s, pass --passwords-file=... option to give one, or make an empty one e.g. with touch(1)",
              PASSWORDS_FILE_BM, cwdbuf, homepath);
         }
       if (access (passwords_filepath_BM, R_OK))
