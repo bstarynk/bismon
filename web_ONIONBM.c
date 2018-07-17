@@ -387,7 +387,8 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
        &webport, &pos) < 2 || pos < 0 || onion_web_base_BM[pos])
     FATAL_BM ("bad web base %s -host %s port %d", onion_web_base_BM,
               webhost ? : "??", webport);
-  myonion_BM = onion_new (O_THREADED | O_NO_SIGTERM | O_SYSTEMD | O_DETACHED);
+  myonion_BM =
+    onion_new (O_THREADED | O_NO_SIGTERM | O_SYSTEMD | O_DETACH_LISTEN);
   if (!myonion_BM)
     FATAL_BM ("failed to create onion");
   onion_set_max_threads (myonion_BM, nbjobs);
@@ -632,7 +633,8 @@ plain_event_loop_BM (void)
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * bufob;
     );
-  atomic_init (&onionlooprunning_BM, false);
+  atomic_init (&onionlooprunning_BM, true);
+  // see also https://ldpreload.com/blog/signalfd-is-useless
   {
     sigset_t termsigset = { };
     sigemptyset (&termsigset);
@@ -699,6 +701,7 @@ plain_event_loop_BM (void)
         unlockonion_runpro_mtx_at_BM (__LINE__);
       }
 #define POLL_DELAY_MILLISECS_BM 300
+      DBGPRINTF_BM ("plain_event_loop_BM before poll nbpoll=%d", nbpoll);
       int nbready = poll (&pollarr, nbpoll, POLL_DELAY_MILLISECS_BM);
       if (loopcnt % 4 == 0)
         DBGPRINTF_BM ("plain_event_loop_BM nbready %d loop#%ld", nbready,
