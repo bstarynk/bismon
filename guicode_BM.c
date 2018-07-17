@@ -1972,7 +1972,6 @@ ROUTINEOBJNAME_BM (_5oSaKNehPiO_3GSlpH5boCW)    //
   LOCALFRAME_BM (stkf, /*descr: */ BMK_5oSaKNehPiO_3GSlpH5boCW,
                  value_tyBM argv;
     );
-  extern char *dump_dir_bm;
   char *dumpstr = NULL;
   char *realstr = NULL;
   _.argv = arg1;
@@ -1984,10 +1983,10 @@ ROUTINEOBJNAME_BM (_5oSaKNehPiO_3GSlpH5boCW)    //
     }
   else
     {
-      dumpstr = strdup (dump_dir_bm ? dump_dir_bm : ".");
+      dumpstr = strdup (dump_dir_BM ? dump_dir_BM : ".");
       if (!dumpstr)
         FATAL_BM ("failed to strdup default dump string %s",
-                  dump_dir_bm ? dump_dir_bm : ".");
+                  dump_dir_BM ? dump_dir_BM : ".");
       _.argv = makestring_BM (dumpstr);
     }
   realstr = realpath (dumpstr, NULL);
@@ -1995,7 +1994,7 @@ ROUTINEOBJNAME_BM (_5oSaKNehPiO_3GSlpH5boCW)    //
   log_printf_message_BM (",dump into  directory %s (%s)", dumpstr,
                          realstr ? realstr : "??");
   log_puts_message_BM (".\n");
-  struct dumpinfo_stBM di = dump_BM (dump_dir_bm, NULL);
+  struct dumpinfo_stBM di = dump_BM (dump_dir_BM, NULL);
   log_printf_message_BM ("dump: scanned %ld, emitted %ld objects\n",
                          di.dumpinfo_scanedobjectcount,
                          di.dumpinfo_emittedobjectcount);

@@ -1370,7 +1370,7 @@ exitgui_BM (void)
   DBGPRINTF_BM ("exitgui start tid#%ld elapsed %.3f s",
                 (long) gettid_BM (), elapsedtime_BM ());
   extern char *dump_dir_bm;
-  struct dumpinfo_stBM di = dump_BM (dump_dir_bm, NULL);
+  struct dumpinfo_stBM di = dump_BM (dump_dir_BM, NULL);
   gtk_main_quit ();
   if (gui_command_log_file_BM)
     {
@@ -1383,7 +1383,7 @@ exitgui_BM (void)
       fprintf (gui_command_log_file_BM,
                "\n//// at exit dumped %ld objects, %ld files to %s at %s\n\n",
                di.dumpinfo_emittedobjectcount, di.dumpinfo_wrotefilecount,
-               dump_dir_bm, nowbuf);
+               dump_dir_BM, nowbuf);
       fflush (gui_command_log_file_BM);
     }
   DBGPRINTF_BM ("exitgui end tid#%ld elapsed %.3f s",
@@ -1395,12 +1395,11 @@ void
 dumpgui_BM (void)
 {
   DBGPRINTF_BM ("dumpgui start tid#%ld", (long) gettid_BM ());
-  extern char *dump_dir_bm;
-  ASSERT_BM (dump_dir_bm != NULL);
+  ASSERT_BM (dump_dir_BM != NULL);
   log_begin_message_BM ();
-  log_printf_message_BM ("dumping into %s directory", dump_dir_bm);
+  log_printf_message_BM ("dumping into %s directory", dump_dir_BM);
   {
-    char *rd = realpath (dump_dir_bm, NULL);
+    char *rd = realpath (dump_dir_BM, NULL);
     if (rd)
       {
         log_printf_message_BM (" (%s)", rd);
@@ -1408,7 +1407,7 @@ dumpgui_BM (void)
       }
   }
   log_puts_message_BM (".\n");
-  struct dumpinfo_stBM di = dump_BM (dump_dir_bm, NULL);
+  struct dumpinfo_stBM di = dump_BM (dump_dir_BM, NULL);
   log_printf_message_BM ("dump: scanned %ld, emitted %ld objects\n",
                          di.dumpinfo_scanedobjectcount,
                          di.dumpinfo_emittedobjectcount);
@@ -1424,12 +1423,12 @@ dumpgui_BM (void)
       localtime_r (&nowtim, &nowtm);
       char nowbuf[64];
       memset (nowbuf, 0, sizeof (nowbuf));
-      char *rd = realpath (dump_dir_bm, NULL);
+      char *rd = realpath (dump_dir_BM, NULL);
       strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
       fprintf (gui_command_log_file_BM,
                "\n////! dumped %ld objects, %ld files to %s i.e. %s at %s\n\n",
                di.dumpinfo_emittedobjectcount, di.dumpinfo_wrotefilecount,
-               dump_dir_bm, rd, nowbuf);
+               dump_dir_BM, rd, nowbuf);
       free (rd);
       fflush (gui_command_log_file_BM);
     }

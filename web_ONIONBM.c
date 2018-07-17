@@ -364,8 +364,13 @@ fork_onion_process_at_slot_BM (int slotpos,
 static onion_connection_status
 custom_onion_handler_BM (void *clientdata,
                          onion_request * req, onion_response * resp);
+
+
+////////////////
 void
-run_onionweb_BM (int nbjobs)    // declared and used only in main_BM.c
+run_onionweb_BM (int nbjobs)    // declared and used only in
+                                // main_BM.c, called from main
+                                // function
 {
   char *webhost = NULL;
   int webport = 0;
@@ -810,30 +815,44 @@ plain_event_loop_BM (void)
 
 
 static void
-read_sigterm_BM (int sigfd)
+read_sigterm_BM (int sigfd)     // called from plain_event_loop_BM
 {
   struct signalfd_siginfo sigterminf;
   memset (&sigterminf, 0, sizeof (sigterminf));
+  DBGPRINTF_BM ("read_sigterm_BM start sigfd %d", sigfd);
   int nbr = read (sigfd, &sigterminf, sizeof (sigterminf));
   if (nbr != sizeof (sigterminf))       // very unlikely, probably impossible
     FATAL_BM ("read_sigterm_BM: read fail (%d bytes read, want %d) - %m", nbr,
               (int) sizeof (sigterminf));
-  WARNPRINTF_BM ("read_sigterm_BM unimplemented");
-  DBGPRINTF_BM ("read_sigterm_BM");
+  char *rp = realpath (dump_dir_BM ? : ".", NULL);
+  INFOPRINTF_BM
+    ("before dumping state into %s (really %s) after SIGTERM to process %d",
+     dump_dir_BM, rp, (int) getpid ());
+  free (rp), rp = NULL;
+  struct dumpinfo_stBM di = dump_BM (dump_dir_BM, NULL);
+  INFOPRINTF_BM
+    ("after dumping state into %s for SIGTERM: scanned %ld, emitted %ld objects\n"
+     "did %ld todos, wrote %ld files\n"
+     "in %.3f elapsed, %.4f cpu seconds.\n", dump_dir_BM,
+     di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount,
+     di.dumpinfo_todocount, di.dumpinfo_wrotefilecount,
+     di.dumpinfo_elapsedtime, di.dumpinfo_cputime);
+  DBGPRINTF_BM ("read_sigterm_BM ending");
 }                               /* end read_sigterm_BM */
 
 
 static void
-read_sigquit_BM (int sigfd)
+read_sigquit_BM (int sigfd)     // called from plain_event_loop_BM
 {
   struct signalfd_siginfo sigquitinf;
   memset (&sigquitinf, 0, sizeof (sigquitinf));
+  DBGPRINTF_BM ("read_sigquit_BM start");
   int nbr = read (sigfd, &sigquitinf, sizeof (sigquitinf));
   if (nbr != sizeof (sigquitinf))       // very unlikely, probably impossible
     FATAL_BM ("read_sigquit_BM: read fail (%d bytes read, want %d) - %m", nbr,
               (int) sizeof (sigquitinf));
-  WARNPRINTF_BM ("read_sigquit_BM unimplemented");
-  DBGPRINTF_BM ("read_sigquit_BM");
+  INFOPRINTF_BM ("quitting BISMON process %d without dump thru SIGQUIT",
+                 (int) getpid ());
 }                               /* end read_sigquit_BM */
 
 

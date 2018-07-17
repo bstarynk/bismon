@@ -55,6 +55,7 @@ extern struct timespec startrealtimespec_BM;
 
 // the loader, which is non-null only while loading
 extern struct loader_stBM *firstloader_BM;
+extern char *dump_dir_BM;
 
 extern thread_local struct threadinfo_stBM *curthreadinfo_BM;
 extern thread_local volatile struct failurehandler_stBM *curfailurehandle_BM;

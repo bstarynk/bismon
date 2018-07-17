@@ -116,7 +116,7 @@ abort_BM (void)
 
 ////////////////////////////////////////////////////////////////
 char *load_dir_bm;
-char *dump_dir_bm;
+char *dump_dir_BM;
 char *dump_after_load_dir_bm;
 char *builder_file_bm = "bismon.ui";
 char *css_file_bm = "bismon.css";
@@ -354,7 +354,7 @@ const GOptionEntry optionstab_bm[] = {
   {.long_name = "dump",.short_name = 'd',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
-   .arg_data = &dump_dir_bm,
+   .arg_data = &dump_dir_BM,
    .description = "dump directory DIR",
    .arg_description = "DIR"},
   //
@@ -784,10 +784,10 @@ main (int argc, char **argv)
 #endif /*BISMONGTK*/
     if (!load_dir_bm)
     load_dir_bm = ".";
-  if (!dump_dir_bm)
+  if (!dump_dir_BM)
     {
-      dump_dir_bm = realpath (load_dir_bm, NULL);
-      shouldfreedumpdir = dump_dir_bm != NULL;
+      dump_dir_BM = realpath (load_dir_bm, NULL);
+      shouldfreedumpdir = dump_dir_BM != NULL;
     }
   load_initial_BM (load_dir_bm);
   if (chdir_after_load_bm)
@@ -843,7 +843,7 @@ main (int argc, char **argv)
     free (contributors_filepath_BM), contributors_filepath_BM = NULL;
   free (passwords_filepath_BM), passwords_filepath_BM = NULL;
   if (shouldfreedumpdir)
-    free (dump_dir_bm), dump_dir_bm = NULL;
+    free (dump_dir_BM), dump_dir_BM = NULL;
   printf ("end of %s, on %s, pid %d, %.3f elapsed, %.3f cpu time\n"
           "... timestamp %s\n"
           "... lastgitcommit %s\n"
