@@ -322,7 +322,21 @@ fork_onion_process_at_slot_BM (int slotpos,
     FATAL_BM ("failed to fork %s - %m", args[0]);
   if (pid == 0)
     {
-      // child process; in principle, most file descriptors should be
+      {
+        // child process; 
+
+        sigset_t sigset = { };
+        sigemptyset (&sigset);
+        // restore default SIGTERM & SIGQUIT behavior
+        signal (SIGTERM, SIG_DFL);
+        signal (SIGQUIT, SIG_DFL);
+        signal (SIGCHLD, SIG_DFL);
+        sigaddset (&sigset, SIGTERM);
+        sigaddset (&sigset, SIGQUIT);
+        sigaddset (&sigset, SIGCHLD);
+        sigprocmask (SIG_UNBLOCK, &sigset, NULL);
+      }
+      //in principle, most file descriptors should be
       //close-on-exec, but just in case we close some of them...
       for (int ix = 3; ix < 64; ix++)
         if (ix != pipfd[1])
