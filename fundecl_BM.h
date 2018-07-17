@@ -1403,7 +1403,7 @@ extern void websessiondelete_BM (objectval_tyBM * ownobj,
                                  struct websessiondata_stBM *ws);
 extern void webexchangedelete_BM (objectval_tyBM * ownobj,
                                   struct webexchangedata_stBM *we);
-
+extern void stop_onion_event_loop_BM (void);
 #endif /*BISMONION*/
 ////////////////////////////////////////////////////////////////
 // user data support - in scalar_BM.c

@@ -48,6 +48,8 @@ struct listtop_stBM *onionrunpro_list_BM;
 // lock for the structures above (both onionrunprocarr_BM & onionrunpro_list_BM)
 pthread_mutex_t onionrunpro_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 
+static volatile atomic_bool onionlooprunning_BM;
+
 // the lock above should be set when calling:
 static void
 fork_onion_process_at_slot_BM (int slotpos,
@@ -608,20 +610,24 @@ custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
 }                               /* end custom_onion_handler_BM */
 
 
-
+void
+stop_onion_event_loop_BM (void)
+{
+  atomic_store (&onionlooprunning_BM, false);
+}                               /* end stop_onion_event_loop_BM */
 
 /// remember that only plain_event_loop_BM is allowed to *remove*
 /// things from onionrunprocarr_BM or onionrunpro_list_BM
 void
 plain_event_loop_BM (void)
 {
-  bool running = true;
   int termsigfd = -1;
   int quitsigfd = -1;
   int chldsigfd = -1;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * bufob;
     );
+  atomic_init (&onionlooprunning_BM, false);
   {
     sigset_t termsigset = { };
     sigemptyset (&termsigset);
@@ -655,7 +661,7 @@ plain_event_loop_BM (void)
   DBGPRINTF_BM ("plain_event_loop_BM before loop termsigfd=%d quitsigfd=%d chldsigfd=%d",       //
                 termsigfd, quitsigfd, chldsigfd);
   long loopcnt = 0;
-  while (running)
+  while (atomic_load (&onionlooprunning_BM))
     {
       struct pollfd pollarr[MAXNBWORKJOBS_BM + 8];
       pid_t endedprocarr[MAXNBWORKJOBS_BM];
@@ -783,13 +789,13 @@ plain_event_loop_BM (void)
       if (pollarr[pollix_term].revents & POLL_IN)
         {
           read_sigterm_BM (termsigfd);
-          running = false;
+          atomic_store (&onionlooprunning_BM, false);
           break;
         }
       if (pollarr[pollix_quit].revents & POLL_IN)
         {
           read_sigquit_BM (quitsigfd);
-          running = false;
+          atomic_store (&onionlooprunning_BM, false);
           break;
         };
       if (pollarr[pollix_chld].revents & POLL_IN)
@@ -797,7 +803,7 @@ plain_event_loop_BM (void)
       if (pollarr[pollix_cmdp].revents & POLL_IN)
         read_commandpipe_BM ();
       loopcnt++;
-    }                           /* end while running */
+    }                           /* end while onionlooprunning */
   DBGPRINTF_BM ("plain_event_loop_BM ended loopcnt=%ld", loopcnt);
 }                               /* end plain_event_loop_BM */
 
@@ -810,7 +816,7 @@ read_sigterm_BM (int sigfd)
   memset (&sigterminf, 0, sizeof (sigterminf));
   int nbr = read (sigfd, &sigterminf, sizeof (sigterminf));
   if (nbr != sizeof (sigterminf))       // very unlikely, probably impossible
-    FATAL_BM ("read_sigterm_BM: read fail (%d.by read, want %d) - %m", nbr,
+    FATAL_BM ("read_sigterm_BM: read fail (%d bytes read, want %d) - %m", nbr,
               (int) sizeof (sigterminf));
   WARNPRINTF_BM ("read_sigterm_BM unimplemented");
   DBGPRINTF_BM ("read_sigterm_BM");
@@ -824,7 +830,7 @@ read_sigquit_BM (int sigfd)
   memset (&sigquitinf, 0, sizeof (sigquitinf));
   int nbr = read (sigfd, &sigquitinf, sizeof (sigquitinf));
   if (nbr != sizeof (sigquitinf))       // very unlikely, probably impossible
-    FATAL_BM ("read_sigquit_BM: read fail (%d.by read, want %d) - %m", nbr,
+    FATAL_BM ("read_sigquit_BM: read fail (%d bytes read, want %d) - %m", nbr,
               (int) sizeof (sigquitinf));
   WARNPRINTF_BM ("read_sigquit_BM unimplemented");
   DBGPRINTF_BM ("read_sigquit_BM");
