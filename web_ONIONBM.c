@@ -324,7 +324,6 @@ fork_onion_process_at_slot_BM (int slotpos,
     {
       {
         // child process; 
-
         sigset_t sigset = { };
         sigemptyset (&sigset);
         // restore default SIGTERM & SIGQUIT behavior
@@ -684,6 +683,7 @@ plain_event_loop_BM (void)
   long loopcnt = 0;
   while (atomic_load (&onionlooprunning_BM))
     {
+      loopcnt++;
       struct pollfd pollarr[MAXNBWORKJOBS_BM + 8];
       pid_t endedprocarr[MAXNBWORKJOBS_BM];
       memset (pollarr, 0, sizeof (pollarr));
@@ -714,8 +714,9 @@ plain_event_loop_BM (void)
             }
         unlockonion_runpro_mtx_at_BM (__LINE__);
       }
-#define POLL_DELAY_MILLISECS_BM 300
-      DBGPRINTF_BM ("plain_event_loop_BM before poll nbpoll=%d", nbpoll);
+#define POLL_DELAY_MILLISECS_BM 450
+      DBGPRINTF_BM ("plain_event_loop_BM before poll nbpoll=%d loop#%ld",
+                    nbpoll, loopcnt);
       int nbready = poll (&pollarr, nbpoll, POLL_DELAY_MILLISECS_BM);
       if (loopcnt % 4 == 0)
         DBGPRINTF_BM ("plain_event_loop_BM nbready %d loop#%ld", nbready,
@@ -824,7 +825,6 @@ plain_event_loop_BM (void)
         read_sigchld_BM (chldsigfd);
       if (pollarr[pollix_cmdp].revents & POLL_IN)
         read_commandpipe_BM ();
-      loopcnt++;
     }                           /* end while onionlooprunning */
   DBGPRINTF_BM ("plain_event_loop_BM ended loopcnt=%ld", loopcnt);
 }                               /* end plain_event_loop_BM */
