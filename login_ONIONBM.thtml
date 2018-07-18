@@ -13,7 +13,7 @@
     e.g. <a href='http://git-scm.com/'>git</a> or other means. Do not
     login if you disagree.</p>
   <form action="_login" method="post">
-    <input type='hidden' name='state' value='{{state}}'/>
+    <input type='hidden' name='origpath' value='{{origpath}}'/>
     <b>user:</b> <input type='text' name='user'/><br/>
     <b>password:</b><input type='password' name='password'/><br/>
     <b>Connect:</b> <input type='submit' name='login' value='loginv'/> &nbsp;

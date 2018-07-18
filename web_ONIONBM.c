@@ -700,15 +700,26 @@ custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
     if (!goodcookie)
       _.sessionob = false;
   }
+  DBGPRINTF_BM ("sessionob %s", objectdbg_BM (_.sessionob));
   if (!_.sessionob)
     {
       if (reqmeth == OR_GET || reqmeth == OR_HEAD)
         {
           // send a login form, using login_ONIONBM_thtml(onion_dict *context, onion_response *res)
+          onion_dict *ctxdic = onion_dict_new ();
+          onion_dict_add (ctxdic, "origpath", reqpath, OD_DUP_VALUE);
+          login_ONIONBM_thtml (ctxdic, resp);
+          onion_dict_free (ctxdic);
+          return OCS_PROCESSED;
         }
       else
         {
-          // deny the request so return OCS_FORBIDDEN
+          // deny the request so return OCS_FORBIDDEN; we could use
+          // onion_server_set_internal_error_handler to make the eror
+          // page sexier
+          DBGPRINTF_BM
+            ("onion request which is not GET or HEAD without valid cookie");
+          return OCS_FORBIDDEN;
         }
     }
 #warning unimplemented custom_onion_handler_BM

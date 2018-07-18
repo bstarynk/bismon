@@ -100,7 +100,8 @@ BISMONGTKOBJECTS=								\
 # the object files for the Onion web-server bismonion
 BISMONIONOBJECTS= 	\
  $(patsubst %.c,%.onion.o, $(sort $(BM_COMMON_CSOURCES) $(BM_ONION_CSOURCES)))	\
- $(patsubst %.cc,%.onion.o, $(sort $(BM_COMMON_CXXSOURCES)))
+ $(patsubst %.cc,%.onion.o, $(sort $(BM_COMMON_CXXSOURCES))) \
+ $(patsubst %.thtml,_%.onion.o, $(sort $(ONIONBM_WEBTEMPLATES)))
 
 .PHONY: all programs clean indent count modules measure measured-bismon doc redump outdump checksum indentsinglemodule indenttempmodule 
 
