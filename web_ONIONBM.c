@@ -841,6 +841,7 @@ read_sigterm_BM (int sigfd)     // called from plain_event_loop_BM
   if (nbr != sizeof (sigterminf))       // very unlikely, probably impossible
     FATAL_BM ("read_sigterm_BM: read fail (%d bytes read, want %d) - %m", nbr,
               (int) sizeof (sigterminf));
+  stop_agenda_work_threads_BM ();
   char *rp = realpath (dump_dir_BM ? : ".", NULL);
   INFOPRINTF_BM
     ("before dumping state into %s (really %s) after SIGTERM to process %d",
@@ -868,6 +869,7 @@ read_sigquit_BM (int sigfd)     // called from plain_event_loop_BM
   if (nbr != sizeof (sigquitinf))       // very unlikely, probably impossible
     FATAL_BM ("read_sigquit_BM: read fail (%d bytes read, want %d) - %m", nbr,
               (int) sizeof (sigquitinf));
+  stop_agenda_work_threads_BM ();
   INFOPRINTF_BM ("quitting BISMON process %d without dump thru SIGQUIT",
                  (int) getpid ());
 }                               /* end read_sigquit_BM */
