@@ -711,15 +711,16 @@ struct dict_stBM
 
 /// web session data reifies web HTTP session & HTTP cookie
 #define BISMONION_WEBSESS_MAGIC 0x31dcebad      /* websess magic 836561837 */
-#define BISMONION_WEBSESS_SUFLEN 48
 struct websessiondata_stBM      /// for typayl_websession_BM
 {
   unsigned websess_magic;       /* always BISMONION_WEBSESS_MAGIC */
   unsigned websess_rank;        /* unique rank */
+  uint32_t websess_rand1;       /* first random integer */
+  uint32_t websess_rand2;       /* second random integer */
   objectval_tyBM *websess_ownobj;       /* owning object having this payload */
   objectval_tyBM *websess_userob;       /* the user logged in, or nil */
   value_tyBM websess_datav;     /* supplementary data value */
-  char websess_suffix[BISMONION_WEBSESS_SUFLEN];        /* random suffix */
+
   double websess_createtime;    /* creation time */
   double websess_expiretime;    /* expiry time */
   onion_websocket *websess_websocket;   /* the web socket */

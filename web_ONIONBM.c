@@ -69,6 +69,15 @@ static void read_sigchld_BM (int sigfd);
 // handle the command pipe
 static void read_commandpipe_BM (void);
 
+/*** Our websession cookies are something like
+     n<rank>r<rand1>,<rand2>:<oid> where <rank> is the websess_rank,
+     <rand1> and <rand2> are random integers, <oid> is the websession
+     object id
+ ***/
+
+#define BISMONION_WEBSESS_SUFLEN 40
+
+
 void
 lockonion_runpro_mtx_at_BM (int lineno)
 {
@@ -401,6 +410,8 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
        &webport, &pos) < 2 || pos < 0 || onion_web_base_BM[pos])
     FATAL_BM ("bad web base %s -host %s port %d", onion_web_base_BM,
               webhost ? : "??", webport);
+  /// clear and initialize the dictionnary of web sessions, whose keys are cookies
+  objputdictpayl_BM (BMP_the_web_sessions);
   myonion_BM =
     onion_new (O_THREADED | O_NO_SIGTERM | O_SYSTEMD | O_DETACH_LISTEN);
   if (!myonion_BM)
@@ -609,6 +620,10 @@ onion_connection_status
 custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
                          onion_request * req, onion_response * resp)
 {
+  objectval_tyBM *k_custom_onion_handler = BMK_5C5Dfd8eVkR_3306NWk09Bn;
+  objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
+  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_custom_onion_handler,
+                 objectval_tyBM * sessionob;);
   const char *reqpath = onion_request_get_path (req);
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);
@@ -624,7 +639,66 @@ custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
                  : snprintf (dbgmethbuf, sizeof (dbgmethbuf),   ///
                              "meth#%d", reqmeth)),
                 bcookie ? bcookie : "*none*");
-
+  bool goodcookie = false;
+  {
+    unsigned cookrank = 0;
+    uint32_t cookrand1 = 0, cookrand2 = 0;
+    int cookposoid = -1;
+    rawid_tyBM cookoid = { 0, 0 };
+    char *endcookie = NULL;
+    int blencookie = bcookie ? strlen (bcookie) : 0;
+    if (blencookie > BISMONION_WEBSESS_SUFLEN / 2
+        && sscanf (bcookie, "n%ur%u,%u:%n", &cookrank, &cookrand1, &cookrand2,
+                   &cookposoid) >= 3 && cookposoid > 4
+        && bcookie[cookposoid] == '_' && isdigit (bcookie[cookposoid + 1])
+        && ((cookoid = parse_rawid_BM (bcookie + cookposoid, &endcookie)),
+            validid_BM (cookoid)) && endcookie && *endcookie == (char) 0)
+      goodcookie = true;
+    objlock_BM (BMP_the_web_sessions);
+    if (objclass_BM (BMP_the_web_sessions) != k_websession_dict_object)
+      FATAL_BM
+        ("the_web_sessions is broken, should be of websession_dict_object class but is of %s",
+         objectdbg_BM (objclass_BM (BMP_the_web_sessions)));
+    if (!objhasdictpayl_BM (BMP_the_web_sessions))
+      FATAL_BM
+        ("the_web_sessions is broken, it has no dictionnary payload - for web BISMONCOOKIE-s");
+    if (goodcookie)
+      _.sessionob = objdictgetpayl_BM (BMP_the_web_sessions, bcookie);
+    else
+      _.sessionob = NULL;
+    objunlock_BM (BMP_the_web_sessions);
+    if (!_.sessionob)
+      goodcookie = false;
+    else if (!equalid_BM (cookoid, objid_BM (_.sessionob)))
+      goodcookie = false;
+    if (goodcookie)
+      {
+        objlock_BM (_.sessionob);
+        if (valtype_BM (objpayload_BM (_.sessionob)) != typayl_websession_BM)
+          goodcookie = false;
+        else
+          {
+            struct websessiondata_stBM *ws =
+              (struct websessiondata_stBM *) objpayload_BM (_.sessionob);
+            ASSERT_BM (ws != NULL
+                       && ws->websess_magic == BISMONION_WEBSESS_MAGIC);
+            if (ws->websess_ownobj != _.sessionob)
+              goodcookie = false;
+            else
+              {
+                if (ws->websess_rank != cookrank)
+                  goodcookie = false;
+                else if (ws->websess_rand1 != cookrand1)
+                  goodcookie = false;
+                else if (ws->websess_rand2 != cookrand2)
+                  goodcookie = false;
+              }
+            objunlock_BM (_.sessionob);
+          }
+      }
+    if (!goodcookie)
+      _.sessionob = false;
+  }
 #warning unimplemented custom_onion_handler_BM
   /// probably should return OCS_PROCESSED if handled, or OCS_NOT_PROCESSED, OCS_FORBIDDEN, OCS_INTERNAL_ERROR, etc...
   return OCS_NOT_PROCESSED;
@@ -636,6 +710,8 @@ stop_onion_event_loop_BM (void)
 {
   atomic_store (&onionlooprunning_BM, false);
 }                               /* end stop_onion_event_loop_BM */
+
+
 
 /// remember that only plain_event_loop_BM is allowed to *remove*
 /// things from onionrunprocarr_BM or onionrunpro_list_BM
@@ -783,8 +859,8 @@ plain_event_loop_BM (void)
                                 WARNPRINTF_BM
                                   ("unexpected null byte from process pid#%d command node %s in %s",
                                    (int) onionrunprocarr_BM[runix].rp_pid,
-                                   debug_outstr_value_BM (onproc->rp_cmdnodv,
-                                                          CURFRAME_BM, 0),
+                                   debug_outstr_value_BM
+                                   (onproc->rp_cmdnodv, CURFRAME_BM, 0),
                                    bytstring_BM (onproc->rp_dirstrv) ? :
                                    "./");
                                 if (kill (onproc->rp_pid, SIGTERM) == 0)
@@ -841,9 +917,12 @@ read_sigterm_BM (int sigfd)     // called from plain_event_loop_BM
   DBGPRINTF_BM ("read_sigterm_BM start sigfd %d", sigfd);
   int nbr = read (sigfd, &sigterminf, sizeof (sigterminf));
   if (nbr != sizeof (sigterminf))       // very unlikely, probably impossible
-    FATAL_BM ("read_sigterm_BM: read fail (%d bytes read, want %d) - %m", nbr,
-              (int) sizeof (sigterminf));
+    FATAL_BM ("read_sigterm_BM: read fail (%d bytes read, want %d) - %m",
+              nbr, (int) sizeof (sigterminf));
   stop_agenda_work_threads_BM ();
+  /// forcibly remove the payload of the_web_sessions.
+  // In principle, even if it remains, it should not be dumped (because the class of the_web_sessions should be 
+  objclearpayload_BM (BMP_the_web_sessions);
   char *rp = realpath (dump_dir_BM ? : ".", NULL);
   INFOPRINTF_BM
     ("before dumping state into %s (really %s) after SIGTERM to process %d",
@@ -869,8 +948,8 @@ read_sigquit_BM (int sigfd)     // called from plain_event_loop_BM
   DBGPRINTF_BM ("read_sigquit_BM start");
   int nbr = read (sigfd, &sigquitinf, sizeof (sigquitinf));
   if (nbr != sizeof (sigquitinf))       // very unlikely, probably impossible
-    FATAL_BM ("read_sigquit_BM: read fail (%d bytes read, want %d) - %m", nbr,
-              (int) sizeof (sigquitinf));
+    FATAL_BM ("read_sigquit_BM: read fail (%d bytes read, want %d) - %m",
+              nbr, (int) sizeof (sigquitinf));
   stop_agenda_work_threads_BM ();
   INFOPRINTF_BM ("quitting BISMON process %d without dump thru SIGQUIT",
                  (int) getpid ());
@@ -944,7 +1023,8 @@ read_sigchld_BM (int sigfd)
                 ASSERT_BM (isclosure_BM (_.newendclosv));
                 DBGPRINTF_BM
                   ("read_sigchld_BM chix#%d newdirstrv %s newcmdnodv %s newendclosv %s beforefork",
-                   chix, debug_outstr_value_BM (_.newdirstrv, CURFRAME_BM, 0),
+                   chix, debug_outstr_value_BM (_.newdirstrv, CURFRAME_BM,
+                                                0),
                    debug_outstr_value_BM (_.newcmdnodv, CURFRAME_BM, 0),
                    debug_outstr_value_BM (_.newendclosv, CURFRAME_BM, 0));
                 fork_onion_process_at_slot_BM (chix, _.newdirstrv,
