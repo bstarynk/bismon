@@ -3,24 +3,62 @@
 {# a template file for libOnion's template system #}
 <head>
 <title>Login to Bismon</title>
+<meta charset="utf-8">
+<style>
+  p.tinyinfo_cl { background-color: azure; font-size: 80% }
+  span.smallspan_cl { background-color: ivory; font-size: 90% }
+  label.expl_cl { background-color: peachpuff; foreground-color: navy; font-size: 75%; font-family: Serif }
+</style>
 </head>
 <body>
   <h1>Login to Bismon</h1>
-  <p><b><tt>Bismon</tt> stores <b>persistently</b> some <i>personal
-    data</i> about you</b>, such as your username, internalid, email
-    addresses. That data (as all of <tt>Bismon</tt>'s persistent
+  <p><tt><a href='http://github.com/bstarynk/bismon'>Bismon</a></tt>
+    stores <b>persistently</b> some few <i>personal
+    data</i> about you, such as your username, internalid, email
+    addresses.<br/>
+    <small>That data (with all of <tt>Bismon</tt>'s persistent
     state) might be shared or published thru
-    e.g. <a href='http://git-scm.com/'>git</a> or other means. Do not
-    login if you disagree.</p>
+      e.g. <a href='http://git-scm.com/'>git</a> or other means.</small>
+    <br/>
+    <i>Do not login if you disagree</i> <small>(be aware that removing
+    such personal data from the persistent state might be technically
+    impossible or very difficult)</small>.</p>
+  <p class='tinyinfo_cl'>If you login, you accept this personal data processing.</p>
   <form action="_login" method="post">
     <input type='hidden' name='origpath' value='{{origpath}}'/>
-    <b>user:</b> <input type='text' name='user'/><br/>
-    <b>password:</b><input type='password' name='password'/><br/>
-    <b>Connect:</b> <input type='submit' name='login' value='loginv'/> &nbsp;
-    <b>Forgotten password:</b> <input type='submit' name='forgot' value='forgotv'>/> &nbsp;
+    <b>user:</b> <input type='text' name='user'/>&nbsp;
+    <label for='user' class='expl_cl'>(enter your user or email)</label><br/>
+    <b>password:</b><input type='password' name='password'/>&nbsp;
+    <label for='password' class='expl_cl'>(enter your password)</label><br/>
+    <b>Connect:</b> <input type='submit' name='dologin' value='Login'/> &nbsp;
+    <label for='dologin' class='expl_cl'>(login to bismon, so sets a cookie)</label><br/>
+    <b>Forgotten password:</b> <input type='submit' name='doforgot' value='Forgot'/> &nbsp;
+    <label for='doforgot' class='expl_cl'>(get an email if you forgot your password)</label>
   </form>
   <p>If you login, you have agreed for
   our <a href='https://en.wikipedia.org/wiki/HTTP_cookie'>web
-  cookie</a>, and for the <tt>Bismon</tt> server to keep some personal
-  data about you, and this session.</p>
+  cookie</a>, and for this <tt>Bismon</tt> server <span class='smallspan_cl'>(running
+    on <tt>{{host}}</tt> pid {{pid}}, built at {{buildtime}}, commit <tt>{{lastgitcommit}}</tt>
+    checksum <tt>{{checksum}}</tt>, under Linux)</span> to keep some personal data about
+    you, and run this session (which stays temporary).</p>
+
+  <p class='tinyinfo_cl'>You need a <i>recent</i> HTML5 conforming web
+  browser (such
+  as <a href='https://www.mozilla.org/en-US/firefox/'>FireFox</a> 61
+  or better, or <a href='https://www.google.com/chrome'>Chrome</a> 67
+  or better) to use <tt>bismon</tt> (and you should enable JavaScript and WebSockets).</p>
+
+    <p class='tinyinfo_cl'>After a successful login, you'll be redirected to <tt>{{origpath}}</tt></p>
+
+  <hr/>
+  <p class='tinyinfo_cl'><b>NB:</b> The development
+of <a href='http://github.com/bstarynk/bismon'><tt>bismon</tt></a>
+(a <a href='https://www.gnu.org/licenses/gpl-3.0.en.html'>GPLv3+</a>
+licensed free software) -done by Basile Starynkevitch,
+from <a href='http://www-list.cea.fr/'>CEA, LIST</a> in France- is
+funded in 2018-2020 by the European Union, Horizon H2020
+programme, <a href='http://chariotproject.eu'>CHARIOT</a> project,
+under Grant Agreement No 780075.</p>
+
+  
 </html>

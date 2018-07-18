@@ -430,13 +430,13 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
       || !webrootpath || !webrootpath[0] || access (webrootpath, R_OK | X_OK))
     FATAL_BM ("failed to get or access webroot/ path - %m");
   onion_handler *filehdl = onion_handler_export_local_new (webrootpath);
-  if (!filehdl)
-    FATAL_BM ("failed to get onion webroot handler for %s", webrootpath);
-  onion_set_root_handler (myonion_BM, filehdl);
-  DBGPRINTF_BM ("run_onionweb after set root handler filehdl@%p", filehdl);
   onion_handler *customhdl =
     onion_handler_new (custom_onion_handler_BM, NULL, NULL);
-  onion_handler_add (filehdl, customhdl);
+  if (!filehdl)
+    FATAL_BM ("failed to get onion webroot handler for %s", webrootpath);
+  onion_set_root_handler (myonion_BM, customhdl);
+  DBGPRINTF_BM ("run_onionweb after set root handler filehdl@%p", filehdl);
+  onion_handler_add (customhdl, filehdl);
   ///
   /// create the command pipe
   {
@@ -640,6 +640,18 @@ custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
                  : snprintf (dbgmethbuf, sizeof (dbgmethbuf),   ///
                              "meth#%d", reqmeth)),
                 bcookie ? bcookie : "*none*");
+  if (strlen (reqpath) > 2
+      && !strstr (reqpath, "/.") & !strstr (reqpath, ".."))
+    {
+      char *fipath = NULL;
+      if (asprintf (&fipath, "%s/webroot/%s", bismon_directory, reqpath) > 0
+          && fipath && !access (fipath, R_OK))
+        {
+          DBGPRINTF_BM ("custom_onion_handler found fipath %s", fipath);
+          free (fipath), fipath = NULL;
+          return OCS_NOT_PROCESSED;
+        }
+    }
   bool goodcookie = false;
   {
     unsigned cookrank = 0;
@@ -705,9 +717,20 @@ custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
     {
       if (reqmeth == OR_GET || reqmeth == OR_HEAD)
         {
+          char pidbuf[16];
+          snprintf (pidbuf, sizeof (pidbuf), "%d", (int) getpid ());
           // send a login form, using login_ONIONBM_thtml(onion_dict *context, onion_response *res)
           onion_dict *ctxdic = onion_dict_new ();
-          onion_dict_add (ctxdic, "origpath", reqpath, OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "origpath",
+                          (reqpath
+                           && reqpath[0]) ? reqpath : "/", OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "buildtime", bismon_timestamp,
+                          OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "lastgitcommit", bismon_lastgitcommit,
+                          OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "checksum", bismon_checksum, OD_DUP_VALUE);
           login_ONIONBM_thtml (ctxdic, resp);
           onion_dict_free (ctxdic);
           return OCS_PROCESSED;
