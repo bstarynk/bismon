@@ -6,10 +6,12 @@
 </head>
 <body>
   <h1>Login to Bismon</h1>
-  <p><b><tt>Bismon</tt> stores persistently some <i>personal data</i> about you</b>,
-    such as your username, internalid, email addresses. That data (as
-    all of <tt>Bismon</tt>'s persistent state) could be published
-    thru e.g. <a href='http://git-scm.com/'>git</a>. Do not login if you disagree.</p>
+  <p><b><tt>Bismon</tt> stores <b>persistently</b> some <i>personal
+    data</i> about you</b>, such as your username, internalid, email
+    addresses. That data (as all of <tt>Bismon</tt>'s persistent
+    state) might be shared or published thru
+    e.g. <a href='http://git-scm.com/'>git</a> or other means. Do not
+    login if you disagree.</p>
   <form action="_login" method="post">
     <input type='hidden' name='state' value='{{state}}'/>
     <b>user:</b> <input type='text' name='user'/><br/>
@@ -17,4 +19,8 @@
     <b>Connect:</b> <input type='submit' name='login' value='loginv'/> &nbsp;
     <b>Forgotten password:</b> <input type='submit' name='forgot' value='forgotv'>/> &nbsp;
   </form>
+  <p>If you login, you have agreed for
+  our <a href='https://en.wikipedia.org/wiki/HTTP_cookie'>web
+  cookie</a>, and for the <tt>Bismon</tt> server to keep some personal
+  data about you, and this session.</p>
 </html>

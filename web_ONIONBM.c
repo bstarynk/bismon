@@ -18,6 +18,7 @@
 #include <onion/onion.h>
 #include "bismon.h"
 #include "web_ONIONBM.const.h"
+#include "_login_ONIONBM.h"
 extern void run_onionweb_BM (int nbjobs);
 static onion *myonion_BM;
 // the command pipe contains bytes, each considered as a different message
@@ -699,6 +700,17 @@ custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
     if (!goodcookie)
       _.sessionob = false;
   }
+  if (!_.sessionob)
+    {
+      if (reqmeth == OR_GET || reqmeth == OR_HEAD)
+        {
+          // send a login form, using login_ONIONBM_thtml(onion_dict *context, onion_response *res)
+        }
+      else
+        {
+          // deny the request so return OCS_FORBIDDEN
+        }
+    }
 #warning unimplemented custom_onion_handler_BM
   /// probably should return OCS_PROCESSED if handled, or OCS_NOT_PROCESSED, OCS_FORBIDDEN, OCS_INTERNAL_ERROR, etc...
   return OCS_NOT_PROCESSED;
