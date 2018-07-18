@@ -111,6 +111,7 @@ log_begin_message_BM (void)
   memset (logmbuf, 0, sizeof (logmbuf));
   snprintf (logmbuf, sizeof (logmbuf), "%s%s%s", nowtibuf,
             nowfracbuf + 1, nowcntbuf);
+  DBGBACKTRACEPRINTF_BM ("web log_begin_message_BM logmbuf %s", logmbuf);
   FATAL_BM ("log_begin_message_BM unimplemented in web_ONIONBM: %s", logmbuf);
 #warning log_begin_message_BM unimplemented in web_ONIONBM
 }                               /* end log_begin_message_BM */
@@ -151,7 +152,7 @@ log_printf_message_BM (const char *fmt, ...)
   va_end (args);
   if (ln >= (int) sizeof (smallbuf) - 1)
     {
-      buf = calloc ((prime_above_BM (ln + 2) | 7) + 1, 1);
+      buf = calloc (((prime_above_BM (ln / 4) | 7) + 2) * 4, 1);
       if (!buf)
         FATAL_BM ("failed to calloc for %d bytes (%m)", ln);
       va_start (args, fmt);
@@ -623,6 +624,7 @@ custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
                  : snprintf (dbgmethbuf, sizeof (dbgmethbuf),   ///
                              "meth#%d", reqmeth)),
                 bcookie ? bcookie : "*none*");
+
 #warning unimplemented custom_onion_handler_BM
   /// probably should return OCS_PROCESSED if handled, or OCS_NOT_PROCESSED, OCS_FORBIDDEN, OCS_INTERNAL_ERROR, etc...
   return OCS_NOT_PROCESSED;
