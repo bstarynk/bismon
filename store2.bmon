@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 763 objects
+// for 764 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -7189,6 +7189,22 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "give the hashset of already visited object"
 !)_8w8gLezc1gm_4plK3EfhuGk
+
+
+
+!(_2HGGdFqLH2E_8HktHZxdBd8 |=websession_dict_object|
+!~ name (~ websession_dict_object
+~)
+!@ 1531905573.428
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of the_websessions dictionnary"
+!~ class (~ |supercl dict_object:| _6VGKPmigLUx_65sfKINCa6w 
+~: _0pSnxYMjpqQ_3opFGfXeh5o  % _5DDSY1YgVZr_6dOU4tiBldk () 
+~: _2oNMm2aR91J_4QthSpZxplW  % _5DDSY1YgVZr_6dOU4tiBldk ()
+~)
+
+!)_2HGGdFqLH2E_8HktHZxdBd8
 
 
 
