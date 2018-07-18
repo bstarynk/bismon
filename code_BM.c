@@ -1635,7 +1635,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
     FATAL_BM ("asprintf failed for %s", basepath);
   objstrbufferwritetofilepayl_BM (_.prsbufob, filpath);
   objstrbufferresetpayl_BM (_.prsbufob);
-  printf ("wrote predefined file %s\n", filpath);
+  INFOPRINTF_BM ("wrote predefined file %s\n", filpath);
   duptr->dump_wrotefilecount++;
   free (filpath), filpath = NULL;
   LOCALRETURN_BM (_.cclos);
@@ -1714,7 +1714,7 @@ const quasinode_tyBM * restargs __attribute__ ((unused)))
     FATAL_BM ("asprintf failed for %s", basepath);
   objstrbufferwritetofilepayl_BM (_.prsbufob, filpath);
   objstrbufferresetpayl_BM (_.prsbufob);
-  printf ("wrote globals file %s\n", filpath);
+  INFOPRINTF_BM ("wrote globals file %s\n", filpath);
   duptr->dump_wrotefilecount++;
   free (filpath), filpath = NULL;
   LOCALRETURN_BM (_.cclosv);
@@ -1853,7 +1853,7 @@ ROUTINEOBJNAME_BM (_3yJPC4SxGtF_6ilaF37wdxG)    //
     FATAL_BM ("asprintf failed for %s", basepath);
   objstrbufferwritetofilepayl_BM (_.prsbufob, filpath);
   objstrbufferresetpayl_BM (_.prsbufob);
-  printf ("wrote types file %s\n", filpath);
+  INFOPRINTF_BM ("wrote types file %s\n", filpath);
   duptr->dump_wrotefilecount++;
   free (filpath), filpath = NULL;
   LOCALRETURN_BM (_.closv);

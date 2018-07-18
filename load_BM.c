@@ -123,7 +123,8 @@ load_initial_BM (const char *ldirpath)
   closedir (ldir);
   if (maxnum > MAXLOADEDFILES_BM)
     FATAL_BM ("too many store files %d to load", maxnum);
-  printf ("got %d store files in loaded directory %s\n", nbfiles, ldirpath);
+  INFOPRINTF_BM ("got %d store files in loaded directory %s\n", nbfiles,
+                 ldirpath);
   struct loader_stBM *ld =      //
     allocgcty_BM (typayl_loader_BM, sizeof (struct loader_stBM));
   // ((typedhead_tyBM *) ld)->htyp = typayl_loader_BM;
@@ -167,14 +168,14 @@ load_initial_BM (const char *ldirpath)
     double deltaelapsed = elapsedtime_BM () - ld->ld_startelapsedtime;
     double deltacpu = cputime_BM () - ld->ld_startcputime;
     char *realp = realpath (ld->ld_dir, NULL);
-    printf ("\n** loaded %d files from %s (%s) with %ld objects,\n"
-            "... %d modules, %d routines in %.4f cpu %.3f real seconds\n"
-            "... (%.1f cpu, %.1f real µs/obj)\n",
-            nbfiles, ld->ld_dir, realp, ld->ld_nbobjects,
-            ld->ld_nbmodules, ld->ld_nbroutines,
-            deltacpu, deltaelapsed,
-            (deltacpu * 1.0e6) / ld->ld_nbobjects,
-            (deltaelapsed * 1.0e6) / ld->ld_nbobjects);
+    INFOPRINTF_BM ("** loaded %d files from %s (%s) with %ld objects,\n"
+                   "... %d modules, %d routines in %.4f cpu %.3f real seconds\n"
+                   "... (%.1f cpu, %.1f real µs/obj)\n",
+                   nbfiles, ld->ld_dir, realp, ld->ld_nbobjects,
+                   ld->ld_nbmodules, ld->ld_nbroutines,
+                   deltacpu, deltaelapsed,
+                   (deltacpu * 1.0e6) / ld->ld_nbobjects,
+                   (deltaelapsed * 1.0e6) / ld->ld_nbobjects);
     free (realp), realp = NULL;
   }
   firstloader_BM = NULL;

@@ -572,7 +572,8 @@ add_new_predefined_bm (void)
           char idpred[32];
           memset (idpred, 0, sizeof (idpred));
           idtocbuf32_BM (objid_BM (predobj), idpred);
-          printf ("existing %s becomes predefined %s\n", idpred, predname);
+          INFOPRINTF_BM ("existing %s becomes predefined %s\n", idpred,
+                         predname);
         };
       objtouchnow_BM ((objectval_tyBM *) predobj);
       if (predcomm)
@@ -583,9 +584,10 @@ add_new_predefined_bm (void)
       memset (idpred, 0, sizeof (idpred));
       idtocbuf32_BM (objid_BM (predobj), idpred);
       if (predcomm)
-        printf ("made predefined %s (%s) - %s\n", predname, idpred, predcomm);
+        INFOPRINTF_BM ("made predefined %s (%s) - %s\n", predname, idpred,
+                       predcomm);
       else
-        printf ("made predefined %s (%s)\n", predname, idpred);
+        INFOPRINTF_BM ("made predefined %s (%s)\n", predname, idpred);
     }
 }                               /* end add_new_predefined_bm */
 
@@ -802,11 +804,11 @@ main (int argc, char **argv)
                   chdir_after_load_bm);
       char *newd = getcwd (cwdbuf, sizeof (cwdbuf));
       if (newd)
-        printf ("changed directory after load to %s given as %s\n",
-                newd, chdir_after_load_bm);
+        INFOPRINTF_BM ("changed directory after load to %s given as %s\n",
+                       newd, chdir_after_load_bm);
       else
-        printf ("changed directory, given as %s, after load\n",
-                chdir_after_load_bm);
+        INFOPRINTF_BM ("changed directory, given as %s, after load\n",
+                       chdir_after_load_bm);
       fflush (NULL);
     }
   if (nb_added_predef_bm > 0)
@@ -825,7 +827,7 @@ main (int argc, char **argv)
   if (batch_bm)
     {
       nbworkjobs_BM = 0;
-      printf ("no GUI in batch mode\n");
+      INFOPRINTF_BM ("no GUI in batch mode\n");
     }
   else
     rungui_BM (nbworkjobs_BM);
@@ -835,7 +837,7 @@ main (int argc, char **argv)
     if (batch_bm)
     {
       nbworkjobs_BM = 0;
-      printf ("no web in batch mode\n");
+      INFOPRINTF_BM ("no web in batch mode\n");
     }
   else
     run_onionweb_BM (nbworkjobs_BM);
@@ -844,38 +846,46 @@ main (int argc, char **argv)
   free (passwords_filepath_BM), passwords_filepath_BM = NULL;
   if (shouldfreedumpdir)
     free (dump_dir_BM), dump_dir_BM = NULL;
-  printf ("end of %s, on %s, pid %d, %.3f elapsed, %.3f cpu time\n"
-          "... timestamp %s\n"
-          "... lastgitcommit %s\n"
-          "... checksum %s\n",
-          myprogname_BM, myhostname_BM, (int) getpid (), elapsedtime_BM (),
-          cputime_BM (), bismon_timestamp, bismon_lastgitcommit,
-          bismon_checksum);
+  INFOPRINTF_BM ("end of %s, on %s, pid %d, %.3f elapsed, %.3f cpu time\n"
+                 "... timestamp %s\n"
+                 "... lastgitcommit %s\n"
+                 "... checksum %s\n",
+                 myprogname_BM, myhostname_BM, (int) getpid (),
+                 elapsedtime_BM (), cputime_BM (), bismon_timestamp,
+                 bismon_lastgitcommit, bismon_checksum);
   fflush (NULL);
 }                               /* end main */
 
 void
 do_dump_after_load_BM (void)
 {
+  {
+    char *rd = realpath (dump_after_load_dir_bm, NULL);
+    if (rd)
+      {
+        INFOPRINTF_BM ("dump after load into %s directory (%s)",
+                       dump_after_load_dir_bm, rd);
+        free (rd), rd = NULL;
+      }
+    else
+      INFOPRINTF_BM ("dump after load into %s directory",
+                     dump_after_load_dir_bm);
+  }
   struct dumpinfo_stBM di = dump_BM (dump_after_load_dir_bm, NULL);
-  printf ("dump after load into %s directory", dump_after_load_dir_bm);
-  char *rd = realpath (dump_after_load_dir_bm, NULL);
-  if (rd)
-    {
-      printf (" (%s)", rd);
-      free (rd), rd = NULL;
-    };
-  putchar ('\n');
-  printf ("dump: scanned %ld, emitted %ld objects\n",
-          di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount);
-  printf ("... did %ld todos, wrote %ld files\n",
-          di.dumpinfo_todocount, di.dumpinfo_wrotefilecount);
-  printf
-    ("... in %.3f elapsed, %.4f cpu seconds\n (%.1f elapsed, %.1f cpu µs/obj)\n",
-     di.dumpinfo_elapsedtime, di.dumpinfo_cputime,
-     di.dumpinfo_elapsedtime * 1.0e6 / di.dumpinfo_emittedobjectcount,
-     di.dumpinfo_cputime * 1.0e6 / di.dumpinfo_emittedobjectcount);
-}
+  INFOPRINTF_BM ("dump after load: scanned %ld, emitted %ld objects\n"
+                 "... did %ld todos, wrote %ld files\n"
+                 "... in %.3f elapsed, %.4f cpu seconds\n (%.1f elapsed, %.1f cpu µs/obj)\n",
+                 di.dumpinfo_scanedobjectcount,
+                 di.dumpinfo_emittedobjectcount, di.dumpinfo_todocount,
+                 di.dumpinfo_wrotefilecount, di.dumpinfo_elapsedtime,
+                 di.dumpinfo_cputime,
+                 di.dumpinfo_elapsedtime * 1.0e6 /
+                 di.dumpinfo_emittedobjectcount,
+                 di.dumpinfo_cputime * 1.0e6 /
+                 di.dumpinfo_emittedobjectcount);
+}                               /*  end do_dump_after_load_BM */
+
+
 
 void
 emit_has_predef_BM (void)
@@ -886,8 +896,9 @@ emit_has_predef_BM (void)
   for (int ix = 0; ix < count_emit_has_predef_bm; ix++)
     idarr[ix] = randomid_BM ();
   qsort (idarr, count_emit_has_predef_bm, sizeof (rawid_tyBM), idqcmp_BM);
-  printf ("\n\n" "/// %d extra predefs\n", count_emit_has_predef_bm);
-  printf ("// !@ %.3f\n", clocktime_BM (CLOCK_REALTIME));
+  INFOPRINTF_BM ("/// %d extra predefs\n", count_emit_has_predef_bm);
+  INFOPRINTF_BM ("// !@ %.3f\n", clocktime_BM (CLOCK_REALTIME));
+  // we won't use INFOPRINTF_BM below
   for (int ix = 0; ix < count_emit_has_predef_bm; ix++)
     {
       rawid_tyBM id = idarr[ix];
@@ -908,6 +919,7 @@ emit_has_predef_BM (void)
       printf (" ROUTINEOBJNAME_BM (%s)\n", idbuf);
     }
   printf ("***/\n\n\n");
+  INFOPRINTF_BM ("/// emitted %d extra predefs\n", count_emit_has_predef_bm);
 }                               /* end emit_has_predef_BM */
 
 
@@ -960,7 +972,8 @@ initialize_contributors_path_BM (void)
   if (access (contributors_filepath_BM, R_OK))
     FATAL_BM ("cannot read real contributors file %s - %m",
               contributors_filepath_BM);
-  printf ("using %s as the contributors file\n", contributors_filepath_BM);
+  INFOPRINTF_BM ("using %s as the contributors file\n",
+                 contributors_filepath_BM);
 }                               /* end initialize_contributors_path_BM */
 
 
@@ -1027,6 +1040,7 @@ initialize_passwords_path_BM (void)
     FATAL_BM
       ("real passwords file %s should not be group or others readable/writable but only by owner; run chmod go-rwx on it",
        passwords_filepath_BM);
+  INFOPRINTF_BM ("using %s as the password file", passwords_filepath_BM);
 }                               /* end initialize_passwords_path_BM */
 
 
@@ -1077,6 +1091,8 @@ add_contributors_after_load_BM (void)
     );
   ASSERT_BM (count_added_contributors_bm > 0);
   ASSERT_BM (added_contributors_arr_bm != NULL);
+  INFOPRINTF_BM ("adding %d contributors after load",
+                 count_added_contributors_bm);
   for (int cix = 0; cix < count_added_contributors_bm; cix++)
     {
       char *errmsg = NULL;
@@ -1086,10 +1102,15 @@ add_contributors_after_load_BM (void)
       if (!_.userob)
         FATAL_BM ("failed to add contributor user#%d %s - %s", cix,
                   added_contributors_arr_bm[cix], errmsg);
+      ASSERT_BM (errmsg == NULL);
+      INFOPRINTF_BM ("added contributor %s with object %s",
+                     added_contributors_arr_bm[cix], objectdbg_BM (_.userob));
     }
   for (int cix = 0; cix < count_added_contributors_bm; cix++)
     free (added_contributors_arr_bm[cix]), added_contributors_arr_bm[cix] =
       NULL;
+  INFOPRINTF_BM ("added %d contributors after load",
+                 count_added_contributors_bm);
   free (added_contributors_arr_bm);
   count_added_contributors_bm = 0;
   size_added_contributors_bm = 0;
@@ -1105,6 +1126,8 @@ remove_contributors_after_load_BM (void)
                  objectval_tyBM * oldcontribob;
     );
   ASSERT_BM (count_removed_contributors_bm > 0);
+  INFOPRINTF_BM ("removing %d contributors after load",
+                 count_removed_contributors_bm);
   ASSERT_BM (removed_contributors_arr_bm != NULL);
   for (int cix = 0; cix < count_removed_contributors_bm; cix++)
     {
@@ -1115,10 +1138,15 @@ remove_contributors_after_load_BM (void)
         FATAL_BM ("failed to remove contributor user#%d %ss",
                   cix, removed_contributors_arr_bm[cix]);
       objputspacenum_BM (_.oldcontribob, TransientSp_BM);
+      INFOPRINTF_BM ("removed contributor %s of object %s",
+                     removed_contributors_arr_bm[cix],
+                     objectdbg_BM (_.oldcontribob));
     }
   for (int cix = 0; cix < count_removed_contributors_bm; cix++)
     free (removed_contributors_arr_bm[cix]),
       removed_contributors_arr_bm[cix] = NULL;
+  INFOPRINTF_BM ("removed %d contributors after load",
+                 count_removed_contributors_bm);
   free (removed_contributors_arr_bm);
   count_removed_contributors_bm = 0;
   size_removed_contributors_bm = 0;

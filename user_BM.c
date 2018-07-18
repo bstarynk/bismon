@@ -845,26 +845,28 @@ objectval_tyBM *add_contributor_name_email_alias_BM
     if (knowncontrib)           // changed old contributor
       {
         if (alias && alias[0])
-          printf
-            ("*** Changed contributor %s (of %d) with email %s & alias %s registered thru object %s of id %s ***\n",
-             name, nbcontrib, email, alias, objectdbg_BM (_.newcontribob),
-             idbuf);
+          INFOPRINTF_BM ("*** Changed contributor %s (of %d) with email %s "
+                         "& alias %s registered thru object %s of id %s ***\n",
+                         name, nbcontrib, email, alias,
+                         objectdbg_BM (_.newcontribob), idbuf);
         else
-          printf
-            ("*** Changed contributor %s (of %d) with email %s registered thru object %s of id %s ***\n",
-             name, nbcontrib, email, objectdbg_BM (_.newcontribob), idbuf);
+          INFOPRINTF_BM ("*** Changed contributor %s (of %d) with email %s "
+                         "registered thru object %s of id %s ***\n",
+                         name, nbcontrib, email,
+                         objectdbg_BM (_.newcontribob), idbuf);
       }
     else                        // added new fresh contributor
       {
         if (alias && alias[0])
-          printf
-            ("*** Added contributor %s (of %d) with email %s & alias %s registered thru object %s of id %s ***\n",
-             name, nbcontrib, email, alias, objectdbg_BM (_.newcontribob),
-             idbuf);
+          INFOPRINTF_BM ("*** Added contributor %s (of %d) with email %s"
+                         " & alias %s registered thru object %s of id %s ***\n",
+                         name, nbcontrib, email, alias,
+                         objectdbg_BM (_.newcontribob), idbuf);
         else
-          printf
-            ("*** Added contributor %s (of %d) with email %s registered thru object %s of id %s ***\n",
-             name, nbcontrib, email, objectdbg_BM (_.newcontribob), idbuf);
+          INFOPRINTF_BM ("*** Added contributor %s (of %d) with email %s"
+                         " registered thru object %s of id %s ***\n",
+                         name, nbcontrib, email,
+                         objectdbg_BM (_.newcontribob), idbuf);
       }
   }
   LOCALRETURN_BM (_.newcontribob);
