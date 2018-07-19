@@ -1754,6 +1754,8 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
   /// rewrite loop of password
   rewind (passfil);
   write_password_file_BM (passfil, _.assocob, CURFRAME_BM);
+  ok = true;
+  DBGPRINTF_BM ("put_contributor_password ok for contrib %s", objectdbg_BM(_.contribob));
 end:
 #undef REJECT
   objclearpayload_BM (_.assocob);
@@ -1948,7 +1950,7 @@ write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
     FATAL_BM ("failed to fflush password file %s", passwords_filepath_BM);
   long ln = ftell (passfil);
   ftruncate (fileno (passfil), ln);
-  DBGPRINTF_BM ("write_password_file end ln %d", ln);
+  DBGPRINTF_BM ("write_password_file end ln %ld", ln);
 }                               /* end write_password_file_BM */
 
 /// end of file user_BM.c

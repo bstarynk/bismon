@@ -1208,9 +1208,10 @@ add_passwords_from_file_BM (const char *addedpasspath)
       const char *contributorstr = linpas;
       const char *passwdstr = pcol + 1;
       _.contribob = find_contributor_BM (contributorstr, CURFRAME_BM);
-      DBGPRINTF_BM
-        ("add_passwords_from_file  line#%d contributorstr '%s' passwdstr '%s' contribob %s",
-         lincnt, contributorstr, passwdstr, objectdbg_BM (_.contribob));
+      DBGPRINTF_BM ("add_passwords_from_file  line#%d contributorstr '%s' "
+                    " passwdstr '%s' contribob %s",
+                    lincnt, contributorstr, passwdstr,
+                    objectdbg_BM (_.contribob));
       if (!_.contribob)
         FATAL_BM
           ("add_passwords_from_file line#%d cannot find contributor for '%s'",
@@ -1221,10 +1222,19 @@ add_passwords_from_file_BM (const char *addedpasspath)
           FATAL_BM ("add_passwords_from_file line#%d password is invalid: %s",
                     lincnt, errmsg);
       }
+      DBGPRINTF_BM ("add_passwords_from_file  line#%d contributorstr '%s'"
+                    "  passwdstr '%s' contribob %s",
+                    lincnt, contributorstr, passwdstr,
+                    objectdbg_BM (_.contribob));
       if (!put_contributor_password_BM (_.contribob, passwdstr, CURFRAME_BM))
         FATAL_BM
           ("add_passwords_from_file line#%d cannot set password for '%s'",
            lincnt, contributorstr);
+      DBGPRINTF_BM ("add_passwords_from_file "
+                    "after put_contributor_password line#%d contributorstr '%s'"
+                    "  passwdstr '%s' contribob %s",
+                    lincnt, contributorstr, passwdstr,
+                    objectdbg_BM (_.contribob));
       {
         objlock_BM (_.contribob);
         INFOPRINTF_BM ("changed password for contributor %s named %s",
