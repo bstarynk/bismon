@@ -194,10 +194,10 @@ by you.
 Then you'll register yourself. If `Alan Turing` is your name or
 pseudo, and `alan@fake.email` is your main email, with your secondary
 email being `turing@localhost`, you can add yourself to `bismon` by
-running it (actually `./bismonion`) with the program option
+running it (actually `./bismonion`) with something similar to
 `--contributor='Alan Turing;alan@fake.email;turing@localhost'` and
 `--batch` and `--dump-after-load=.` program options. Of course you
-would replace `Alan Turing`, `alan@fake.email` and `turing@localhost`
+should replace `Alan Turing`, `alan@fake.email` and `turing@localhost`
 by whatever is appropriate for you. The secondary email (also called
 alias) is optional. If you don't use it (so if you don't provide any
 alias, which is likely - so replace `turing@localhost` with an empty
@@ -206,18 +206,21 @@ config](https://git-scm.com/docs/git-config) for `user.email` and
 `user.name`).
 
 At last you need to set your password (it is unrelated to other
-passwords in your computer or on the web), as known to `bismonion`,
-using the `--add-passwords` option (also with `--batch` and
-`--dump-after-load=.`). To set your initial password to `mypass123456`
-create some temporary text file (it contains contributor names and
-their updated passwords in *clear* text, so you should not keep it),
-perhaps `/tmp/addpassbismon`, containing `Alan Turing:mypass123456`
-add run `bismonion` with --add-passwords=/tmp/addpassbismon
---batch`. Of course you'll better write some shell script wrapping
-that.
+passwords in your computer or on the web, but should has at least 10
+Unicode characters, and digits, letters, punctuations), as known to
+`bismonion`, using the `--add-passwords` option (also with `--batch`
+and `--dump-after-load=.`). To set your initial password to
+`mypass!123456` create some temporary text file (it contains
+contributor names and their updated passwords in *clear* text, so you
+should not keep it), perhaps `/tmp/addpassbismon`, containing for
+example `Alan Turing:mypass!123456` add run `bismonion` with
+--add-passwords=/tmp/addpassbismon --batch`. Of course you'll better
+write some shell script wrapping that, and be sure to have a strong
+enough password which is not in this `README.md`.
 
 You might perhaps add a few other users (probably less than a dozen)
-that you trust and that can work with you. Be then sure to be
+that you trust and that can work with you.  Every user could mess or
+abuse the `bismon` system as easily as you could.  Be then sure to be
 compliant with the [GDPR](https://www.eugdpr.org/) if any of your
 users is European (and GDPR compliance is then *your
 responsability*). The login form is templated (with code from
