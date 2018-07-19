@@ -295,6 +295,8 @@ clean:
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
 	$(RM) core* *.i *.ii *prof.out gmon.out
 	$(RM) *_BM.const.h _bm_allconsts*.c
+	$(RM) $(patsubst %.thtml, _%.c, $(ONIONBM_WEBTEMPLATES))
+	$(RM) $(patsubst %.thtml, _%.h, $(ONIONBM_WEBTEMPLATES))
 	$(RM) modubin/*.so modules/*.i modules/*% modules/*~ modules/*- bismon BM_makeconst
 	$(RM) __timestamp.*
 	$(RM) modules/tmpmobm*
