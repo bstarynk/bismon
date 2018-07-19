@@ -203,7 +203,8 @@ alias) is optional. If you don't use it (so if you don't provide any
 alias, which is likely - so replace `turing@localhost` with an empty
 string), `bismon` knows no more about you than `git` does (see [git
 config](https://git-scm.com/docs/git-config) for `user.email` and
-`user.name`).
+`user.name`). You might even code some shell script to extract that
+personal data information from `git` and put it into `bismon`.
 
 At last you need to set your password (it is unrelated to other
 passwords in your computer or on the web, but should has at least 10
