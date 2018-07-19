@@ -6,6 +6,7 @@
 <meta charset="utf-8">
 <style>
   p.tinyinfo_cl { background-color: azure; font-size: 80% }
+  p.explain_cl { background-color: lavenderblush; font-size: 105%; }
   span.smallspan_cl { background-color: ivory; font-size: 90% }
   label.expl_cl { background-color: peachpuff; foreground-color: navy; font-size: 75%; font-family: Serif }
 </style>
@@ -35,6 +36,7 @@
     <b>Forgotten password:</b> <input type='submit' name='doforgot' value='Forgot'/> &nbsp;
     <label for='doforgot' class='expl_cl'>(get an email if you forgot your password)</label>
   </form>
+  {{extra}}
   <p>If you login, you have agreed for
   our <a href='https://en.wikipedia.org/wiki/HTTP_cookie'>web
   cookie</a>, and for <i>this</i> <tt>Bismon</tt> server <span class='smallspan_cl'>(running
@@ -50,6 +52,8 @@
 
     <p class='tinyinfo_cl'>After a successful login, you'll be redirected to <tt>{{origpath}}</tt></p>
 
+  <p class='tinyinfo_cl'>Login form generated at {{gentime}}.</p>
+  
   <hr/>
   <p class='tinyinfo_cl'><b>NB:</b> The development
 of <a href='http://github.com/bstarynk/bismon'><tt>Bismon</tt></a>

@@ -735,6 +735,14 @@ custom_onion_handler_BM (void *clientdata,
         {
           char pidbuf[16];
           snprintf (pidbuf, sizeof (pidbuf), "%d", (int) getpid ());
+          time_t nowt = 0;
+          time (&nowt);
+          struct tm nowtm;
+          char nowbuf[64];
+          memset (nowbuf, 0, sizeof (nowbuf));
+          memset (&nowtm, 0, sizeof (nowtm));
+          localtime_r (&nowt, &nowtm);
+          strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
           // send a login form, using login_ONIONBM_thtml(onion_dict *context, onion_response *res)
           onion_dict *ctxdic = onion_dict_new ();
           onion_dict_add (ctxdic, "origpath",
@@ -742,11 +750,14 @@ custom_onion_handler_BM (void *clientdata,
                            && reqpath[0]) ? reqpath : "/", OD_DUP_VALUE);
           onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
           onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "extra", "<!-- no extra, initially -->\n",
+                          OD_DUP_VALUE);
           onion_dict_add (ctxdic, "buildtime", bismon_timestamp,
                           OD_DUP_VALUE);
           onion_dict_add (ctxdic, "lastgitcommit", bismon_lastgitcommit,
                           OD_DUP_VALUE);
           onion_dict_add (ctxdic, "checksum", bismon_checksum, OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "gentime", nowbuf, OD_DUP_VALUE);
           login_ONIONBM_thtml (ctxdic, resp);
           onion_dict_free (ctxdic);
           return OCS_PROCESSED;
@@ -776,6 +787,7 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
   objectval_tyBM *k_login_onion_handler = BMK_8qHowkDvzRL_03sltCgsDN2;
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_login_onion_handler,
+                 objectval_tyBM * contribob;
                  objectval_tyBM * sessionob;);
   const char *reqpath = onion_request_get_path (req);
   unsigned reqflags = onion_request_get_flags (req);
@@ -800,11 +812,75 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
       const char *formpassword = onion_request_get_post (req, "password");
       const char *formdologin = onion_request_get_post (req, "dologin");
       const char *formdoforgot = onion_request_get_post (req, "doforgot");
-      DBGPRINTF_BM
-        ("login_onion_handler POST form origpath %s, user %s, password %s, dologin %s, doforgot %s",
-         formorigpath ? : "*no-origpath*", formuser ? : "*no-user*",
-         formpassword ? : "*no-password*", formdologin ? : "*no-dologin*",
-         formdoforgot ? : "*no-doforgot*");
+      bool good = false;
+      DBGPRINTF_BM ("login_onion_handler POST form origpath %s,"
+                    " user %s, password %s, dologin %s, doforgot %s",
+                    formorigpath ? : "*no-origpath*",
+                    formuser ? : "*no-user*",
+                    formpassword ? : "*no-password*",
+                    formdologin ? : "*no-dologin*",
+                    formdoforgot ? : "*no-doforgot*");
+      if (formuser && formpassword && formdologin && formorigpath)
+        {
+          _.contribob = find_contributor_BM (formuser, CURFRAME_BM);
+          DBGPRINTF_BM ("login_onion_handler POST contribob %s",
+                        objectdbg_BM (_.contribob));
+          if (_.contribob)
+            {
+              good =
+                check_contributor_password_BM (_.contribob, formpassword,
+                                               CURFRAME_BM);
+              DBGPRINTF_BM
+                ("login_onion_handler POST contribob %s password is %s",
+                 objectdbg_BM (_.contribob), good ? "good" : "bad");
+            }
+          else
+            {
+              DBGPRINTF_BM
+                ("login_onion_handler POST no contributor '%s' found",
+                 formuser);
+              good = false;
+            }
+          if (good)
+            {
+              DBGPRINTF_BM ("login_onion_handler POST good unhandled");
+            }
+          else
+            {
+              time_t nowt = 0;
+              time (&nowt);
+              struct tm nowtm;
+              char nowbuf[64];
+              char pidbuf[16];
+              memset (nowbuf, 0, sizeof (nowbuf));
+              memset (pidbuf, 0, sizeof (pidbuf));
+              memset (&nowtm, 0, sizeof (nowtm));
+              snprintf (pidbuf, sizeof (pidbuf), "%d", (int) getpid ());
+              localtime_r (&nowt, &nowtm);
+              strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
+              onion_dict *ctxdic = onion_dict_new ();
+              onion_dict_add (ctxdic, "origpath",
+                              (reqpath
+                               && reqpath[0]) ? reqpath : "/", OD_DUP_VALUE);
+              onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
+              onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
+              onion_dict_add (ctxdic, "extra",
+                              "<p class='explain_cl'>Invalid user or password.</p>\n",
+                              OD_DUP_VALUE);
+              onion_dict_add (ctxdic, "buildtime", bismon_timestamp,
+                              OD_DUP_VALUE);
+              onion_dict_add (ctxdic, "lastgitcommit", bismon_lastgitcommit,
+                              OD_DUP_VALUE);
+              onion_dict_add (ctxdic, "gentime", nowbuf, OD_DUP_VALUE);
+              onion_dict_add (ctxdic, "checksum", bismon_checksum,
+                              OD_DUP_VALUE);
+              onion_response_set_code (resp, HTTP_UNAUTHORIZED);
+              DBGPRINTF_BM ("login_onion_handler POST unauthorized");
+              login_ONIONBM_thtml (ctxdic, resp);
+              onion_dict_free (ctxdic);
+              return OCS_PROCESSED;
+            }
+        }
     }
   /// temporary
   WARNPRINTF_BM ("login_onion_handler incomplete");
@@ -841,7 +917,7 @@ plain_event_loop_BM (void)
     sigaddset (&termsigset, SIGTERM);
     if (sigprocmask (SIG_BLOCK, &termsigset, NULL) == -1)
       FATAL_BM ("sigprocmask termsigset failure");
-    termsigfd = signalfd (-1, &termsigset, NULL);
+    termsigfd = signalfd (-1, &termsigset, SFD_NONBLOCK | SFD_CLOEXEC);
     if (termsigfd < 0)
       FATAL_BM ("signalfd failed for SIGTERM");
   }
@@ -851,7 +927,7 @@ plain_event_loop_BM (void)
     sigaddset (&quitsigset, SIGQUIT);
     if (sigprocmask (SIG_BLOCK, &quitsigset, NULL) == -1)
       FATAL_BM ("sigprocmask quitsigset failure");
-    quitsigfd = signalfd (-1, &quitsigset, NULL);
+    quitsigfd = signalfd (-1, &quitsigset, SFD_NONBLOCK | SFD_CLOEXEC);
     if (quitsigfd < 0)
       FATAL_BM ("signalfd failed for SIGQUIT");
   }
@@ -861,7 +937,7 @@ plain_event_loop_BM (void)
     sigaddset (&chldsigset, SIGCHLD);
     if (sigprocmask (SIG_BLOCK, &chldsigset, NULL) == -1)
       FATAL_BM ("sigprocmask chldsigset failure");
-    chldsigfd = signalfd (-1, &chldsigset, NULL);
+    chldsigfd = signalfd (-1, &chldsigset, SFD_NONBLOCK | SFD_CLOEXEC);
     if (chldsigfd < 0)
       FATAL_BM ("signalfd failed for SIGCHLD");
   }

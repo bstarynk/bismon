@@ -1755,7 +1755,8 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
   rewind (passfil);
   write_password_file_BM (passfil, _.assocob, CURFRAME_BM);
   ok = true;
-  DBGPRINTF_BM ("put_contributor_password ok for contrib %s", objectdbg_BM(_.contribob));
+  DBGPRINTF_BM ("put_contributor_password ok for contrib %s",
+                objectdbg_BM (_.contribob));
 end:
 #undef REJECT
   objclearpayload_BM (_.assocob);
