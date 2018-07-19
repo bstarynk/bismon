@@ -36,7 +36,9 @@
     <b>Forgotten password:</b> <input type='submit' name='doforgot' value='Forgot'/> &nbsp;
     <label for='doforgot' class='expl_cl'>(get an email if you forgot your password)</label>
   </form>
-  {{extra}}
+
+  <p class='explain_cl'>{{extra}}</p>
+  
   <p>If you login, you have agreed for
   our <a href='https://en.wikipedia.org/wiki/HTTP_cookie'>web
   cookie</a>, and for <i>this</i> <tt>Bismon</tt> server <span class='smallspan_cl'>(running
