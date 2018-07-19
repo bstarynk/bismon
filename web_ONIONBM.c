@@ -743,7 +743,7 @@ custom_onion_handler_BM (void *clientdata,
           memset (&nowtm, 0, sizeof (nowtm));
           localtime_r (&nowt, &nowtm);
           strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
-          // send a login form, using login_ONIONBM_thtml(onion_dict *context, onion_response *res)
+          // send a fresh login form, using login_ONIONBM_thtml(onion_dict *context, onion_response *res)
           onion_dict *ctxdic = onion_dict_new ();
           onion_dict_add (ctxdic, "origpath",
                           (reqpath
@@ -859,9 +859,15 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
               localtime_r (&nowt, &nowtm);
               strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
               onion_dict *ctxdic = onion_dict_new ();
-              onion_dict_add (ctxdic, "origpath",
-                              (reqpath
-                               && reqpath[0]) ? reqpath : "/", OD_DUP_VALUE);
+              {
+                char *origpath = (reqpath && reqpath[0]) ? reqpath : "/";
+                if (reqpath && !strcmp (reqpath, "_login"))
+                  {
+                    if (formorigpath)
+                      origpath = formorigpath;
+                  }
+                onion_dict_add (ctxdic, "origpath", origpath, OD_DUP_VALUE);
+              }
               onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
               onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
               onion_dict_add (ctxdic, "extra", "Invalid user or password.",
