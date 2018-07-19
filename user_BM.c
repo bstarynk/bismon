@@ -184,7 +184,7 @@ static objectval_tyBM *add_contributor_name_email_alias_BM
    const char *email,
    const char *alias, char **perrmsg, struct stackframe_stBM *stkf);
 
-static bool valid_password_BM (const char *passwd);
+
 
 
 bool
@@ -348,9 +348,24 @@ find_contributor_BM (const char *str, struct stackframe_stBM * stkf)
   if (!str || !str[0])
     return NULL;
   bool withemail = valid_email_BM (str, DONTCHECKDNS_BM, NULL);
-  if (!withemail || !valid_contributor_name_BM (str, NULL))
-    return NULL;
-
+  DBGPRINTF_BM ("find_contributor str='%s' %s email", str,
+                withemail ? "with" : "without");
+  if (!withemail)
+    {
+      char *errmsg = NULL;
+      if (!valid_contributor_name_BM (str, &errmsg))
+        {
+          if (errmsg)
+            {
+              WARNPRINTF_BM ("contributor name %s is not valid: %s", str,
+                             errmsg);
+              free (errmsg), errmsg = NULL;
+            }
+          else
+            WARNPRINTF_BM ("invalid contributor name %s", str);
+          return NULL;
+        }
+    }
   FILE *fil = fopen (contributors_filepath_BM, "r+");
   if (!fil)
     FATAL_BM ("find_contributor_BM cannot open contributors file %s  : %m",
@@ -394,6 +409,9 @@ find_contributor_BM (const char *str, struct stackframe_stBM * stkf)
       const char *curoidstr = semcol1 + 1;
       const char *curemail = semcol2 + 1;
       const char *curalias = semcol3 + 1;
+      DBGPRINTF_BM
+        ("find_contributor line#%d curcontrib '%s' curoidstr '%s' curemail '%s' curalias '%s'",
+         lincnt, curcontrib, curoidstr, curemail, curalias);
       if ((withemail && !strcmp (curemail, str))
           || (!withemail && !strcmp (curcontrib, str)))
         {
@@ -404,12 +422,16 @@ find_contributor_BM (const char *str, struct stackframe_stBM * stkf)
                       contributors_filepath_BM, lincnt, curoidstr,
                       curcontrib);
           _.contribob = findobjofid_BM (curid);
+          DBGPRINTF_BM ("find_contributor str '%s' contribob %s'", str,
+                        objectdbg_BM (_.contribob));
           break;
         }
     }                           // end forloop
   if (flock (fd, LOCK_UN))
     FATAL_BM ("failed to un-flock fd#%d for %s", fd,
               contributors_filepath_BM);
+  DBGPRINTF_BM ("find_contributor str '%s' contribob %s'", str,
+                objectdbg_BM (_.contribob));
   if (_.contribob)
     {
       bool okcontrib = false;
@@ -419,6 +441,8 @@ find_contributor_BM (const char *str, struct stackframe_stBM * stkf)
       if (!okcontrib)
         _.contribob = NULL;
     }
+  DBGPRINTF_BM ("find_contributor str '%s' contribob %s'", str,
+                objectdbg_BM (_.contribob));
   if (_.contribob)
     {
       objlock_BM (BMP_contributors);
@@ -430,6 +454,7 @@ find_contributor_BM (const char *str, struct stackframe_stBM * stkf)
   usleep (100 + g_random_int () % 1024);
   DBGPRINTF_BM ("find_contributor_BM str '%s' gives %s",
                 str, objectdbg_BM (_.contribob));
+  return _.contribob;
 }                               /* end find_contributor_BM */
 
 
@@ -1351,22 +1376,42 @@ compute_crypt_salt32_BM (char salt[32], objectval_tyBM * contribob)
 
 #define MINIMAL_PASSWORD_LEN_BM 10
 bool
-valid_password_BM (const char *passwd)
+valid_password_BM (const char *passwd, char **perrmsg)
 {
   if (!passwd)
-    return false;
+    {
+      if (perrmsg)
+        asprintf (perrmsg, "nil password");
+      return false;
+    }
   if (strlen (passwd) < MINIMAL_PASSWORD_LEN_BM)
-    return false;
+    {
+      if (perrmsg)
+        asprintf (perrmsg, "too short password, needs at least %d bytes",
+                  MINIMAL_PASSWORD_LEN_BM);
+      return false;
+    }
   const char *end = NULL;
   if (!g_utf8_validate (passwd, -1, &end) && end && *end)
-    return false;
+    {
+      if (perrmsg)
+        asprintf (perrmsg, "password is not valid UTF8 at byte offset %d",
+                  end - passwd);
+      return false;
+    }
   int nbdigits = 0, nbalphas = 0, nbpunct = 0;
   int nbc = 0;
   for (const char *p = passwd; *p; p = g_utf8_next_char (p))
     {
       gunichar uc = g_utf8_get_char (p);
       if (!g_unichar_isprint (uc))
-        return false;
+        {
+          if (perrmsg)
+            asprintf (perrmsg,
+                      "password contain unprintable character of Unicode #%d",
+                      uc);
+          return false;
+        }
       if (g_unichar_isalpha (uc))
         nbalphas++;
       else if (g_unichar_isdigit (uc))
@@ -1378,13 +1423,32 @@ valid_password_BM (const char *passwd)
       nbc++;
     }
   if (nbc < MINIMAL_PASSWORD_LEN_BM)
-    return false;
+    {
+      if (perrmsg)
+        asprintf (perrmsg, "password has less than %d characters",
+                  MINIMAL_PASSWORD_LEN_BM);
+      return false;
+    }
   if (nbdigits == 0)
-    return false;
+    {
+      if (perrmsg)
+        asprintf (perrmsg, "password has no digits");
+      return false;
+    }
   if (nbalphas == 0)
-    return false;
+    {
+      if (perrmsg)
+        asprintf (perrmsg, "password has no letters");
+      return false;
+    }
   if (nbpunct == 0)
-    return false;
+    {
+      if (perrmsg)
+        asprintf (perrmsg, "password has no punctuation");
+      return false;
+    }
+  if (perrmsg)
+    *perrmsg = NULL;
   return true;
 }                               /* end valid_password_BM */
 
@@ -1406,7 +1470,7 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
   _.contribob = objectcast_BM (contribobarg);
   if (!_.contribob)
     REJECT ();
-  if (!passwd || !valid_password_BM (passwd))
+  if (!passwd || !valid_password_BM (passwd, NULL))
     REJECT ();
   if (!objhascontributorpayl_BM (_.contribob))
     REJECT ();
@@ -1580,7 +1644,7 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
   pthread_mutex_lock (&passwd_mutex_bm);
   if (!_.contribob)
     REJECT ();
-  if (!passwd || !passwd[0] || !valid_password_BM (passwd))
+  if (!passwd || !passwd[0] || !valid_password_BM (passwd, NULL))
     REJECT ();
   if (!objhascontributorpayl_BM (_.contribob))
     REJECT ();

@@ -1416,13 +1416,14 @@ extern void usergckeep_BM (struct garbcoll_stBM *gc, struct user_stBM *us);
 // payload delete support for user
 extern void userdelete_BM (objectval_tyBM * ownobj, struct user_stBM *us);
 
-// the error message is asprintf-ed into perrmsg
+// the error message is asprintf-ed into perrmsg when perrmsg is not null
 extern objectval_tyBM *add_contributor_user_BM
   (const char *str, char **perrmsg, struct stackframe_stBM *stkf);
 extern objectval_tyBM *remove_contributor_by_name_BM    // callable only from main!
   (const char *str, struct stackframe_stBM *stkf);
 extern bool valid_email_BM (const char *email, bool checkdns, char **perrmsg);
 extern bool valid_contributor_name_BM (const char *name, char **perrmsg);
+extern bool valid_password_BM (const char *name, char **perrmsg);
 
 // check then load the contributors (and password) files at startup, during the load
 extern void check_and_load_contributors_file_BM (struct loader_stBM *ld,
