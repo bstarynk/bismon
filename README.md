@@ -214,9 +214,10 @@ and `--dump-after-load=.`). To set your initial password to
 contributor names and their updated passwords in *clear* text, so you
 should not keep it), perhaps `/tmp/addpassbismon`, containing for
 example `Alan Turing:mypass!123456` add run `bismonion` with
---add-passwords=/tmp/addpassbismon --batch`. Of course you'll better
-write some shell script wrapping that, and be sure to have a strong
-enough password which is not in this `README.md`.
+`--add-passwords=/tmp/addpassbismon --batch` then *remove*
+`/tmp/addpassbismon`. Of course you'll better write some shell script
+wrapping that, and be sure to have a strong enough password which is
+not in this `README.md`.
 
 You might perhaps add a few other users (probably less than a dozen)
 that you trust and that can work with you.  Every user could mess or
