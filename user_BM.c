@@ -1478,14 +1478,13 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
   memset (idbuf, 0, sizeof (idbuf));
   idtocbuf32_BM (objid_BM (_.contribob), idbuf);
   DBGPRINTF_BM
-    ("check_contributor_password_BM contribob %s / %s passwd '%s' start",
+    ("check_contributor_password contribob %s / %s passwd '%s' start",
      objectdbg_BM (_.contribob), idbuf, passwd);
   bool knowncontrib = false;
   size_t linsiz = 128;
   char *linbuf = calloc (linsiz, 1);
   if (!linbuf)
-    FATAL_BM
-      ("check_contributor_file_BM can't alloc line of %zd bytes", linsiz);
+    FATAL_BM ("check_contributor_file can't alloc line of %zd bytes", linsiz);
   {
     objlock_BM (BMP_contributors);
     knowncontrib = objhashsetcontainspayl_BM (BMP_contributors, _.contribob);
@@ -1508,10 +1507,10 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
   for (;;)
     {
       ssize_t linlen = getline (&linbuf, &linsiz, passfil);
-      if (linlen < 0)
+      if (linlen <= 0)
         break;
-      if (linbuf[linlen] == '\n')
-        linbuf[linlen] = (char) 0;
+      if (linbuf[linlen - 1] == '\n')
+        linbuf[linlen - 1] = (char) 0;
       lincnt++;
       if (linbuf[0] == '#' || linbuf[0] == '\n' || !linbuf[0])
         continue;
@@ -1523,9 +1522,9 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
       char *semcol1 = strchr (linbuf, ';');
       char *semcol2 = semcol1 ? strchr (semcol1 + 1, ';') : NULL;
       if (!semcol2)
-        FATAL_BM
-          ("in password file %s line#%d should be like <contributor-name>;<oid>;<encrypted-password> but is %s",
-           passwords_filepath_BM, lincnt, linbuf);
+        FATAL_BM ("in password file %s line#%d should be like"
+                  " <contributor-name>;<oid>;<encrypted-password> but is %s",
+                  passwords_filepath_BM, lincnt, linbuf);
       *semcol1 = (char) 0;
       *semcol2 = (char) 0;
       const char *curcontrib = linbuf;
@@ -1533,14 +1532,18 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
       const char *curcryptpass = semcol2 + 1;
       char *errmsg = NULL;
       if (!valid_contributor_name_BM (curcontrib, &errmsg))
-        FATAL_BM
-          ("in password file %s line#%d has invalid contributor name %s : %s",
-           passwords_filepath_BM, lincnt, curcontrib, errmsg);
+        FATAL_BM ("in password file %s line#%d has"
+                  " invalid contributor name %s : %s",
+                  passwords_filepath_BM, lincnt, curcontrib, errmsg);
+      DBGPRINTF_BM ("check_contributor_file lin#%d"
+                    " curcontrib '%s' curoidstr '%s' curcryptpass '%s'",
+                    lincnt, curcontrib, curoidstr, curcryptpass);
       const char *endid = NULL;
       rawid_tyBM curid = parse_rawid_BM (curoidstr, &endid);
       if (!endid || *endid || !curid.id_hi || !curid.id_lo)
         FATAL_BM
-          ("in password file %s line#%d has invalid oid %s for contributor %s",
+          ("in password file %s line#%d has"
+           " invalid oid %s for contributor %s",
            passwords_filepath_BM, lincnt, curoidstr, curcontrib);
       _.curcontribob = findobjofid_BM (curid);
       if (!_.curcontribob)
@@ -1550,16 +1553,17 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
       const char *contrinam =
         bytstring_BM (objcontributornamepayl_BM (_.curcontribob));
       if (!contrinam)
-        FATAL_BM
-          ("in password file %s line#%d corrupted contributor %s of oid %s",
-           passwords_filepath_BM, lincnt, curcontrib, curoidstr);
+        FATAL_BM ("in password file %s line#%d corrupted"
+                  " contributor %s of oid %s",
+                  passwords_filepath_BM, lincnt, curcontrib, curoidstr);
       if (strcmp (contrinam, curcontrib))
-        FATAL_BM
-          ("in password file %s line#%d contributor %s of oid %s is expected to be %s",
-           passwords_filepath_BM, lincnt, curcontrib, curoidstr, contrinam);
+        FATAL_BM ("in password file %s line#%d contributor %s"
+                  " of oid %s is expected to be %s",
+                  passwords_filepath_BM, lincnt, curcontrib, curoidstr,
+                  contrinam);
       // read carefully crypt(3), that is http://man7.org/linux/man-pages/man3/crypt.3.html
       // we want to use SHA-512, so "$6$" prefix
-      if (!strncmp ("$6$", curcryptpass, 3))
+      if (strncmp ("$6$", curcryptpass, 3))
         FATAL_BM
           ("in password file %s line#%d contributor %s of oid %s with corrupted crypted password",
            passwords_filepath_BM, lincnt, curcontrib, curoidstr);
