@@ -339,6 +339,22 @@ valid_contributor_name_BM (const char *name, char **perrmsg)
 }                               /* end valid_contributor_name_BM */
 
 
+objectval_tyBM *
+find_contributor_BM (const char *str, struct stackframe_stBM * stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * contribob;    //current contributor object
+    );
+  if (!str || !str[0])
+    return NULL;
+  if (!valid_email_BM (str, DONTCHECKDNS_BM, NULL)
+      || !valid_contributor_name_BM (str, NULL))
+    return NULL;
+  FATAL_BM ("find_contributor_BM str %s unimplemented", str);
+#warning find_contributor_BM is not implemented
+}                               /* end find_contributor_BM */
+
+
 
 // this check is done only once, during load...
 void

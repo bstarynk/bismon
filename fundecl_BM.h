@@ -1425,20 +1425,29 @@ extern bool valid_email_BM (const char *email, bool checkdns, char **perrmsg);
 extern bool valid_contributor_name_BM (const char *name, char **perrmsg);
 
 // check then load the contributors (and password) files at startup, during the load
-void check_and_load_contributors_file_BM (struct loader_stBM *ld,
-                                          struct stackframe_stBM *stkf);
+extern void check_and_load_contributors_file_BM (struct loader_stBM *ld,
+                                                 struct stackframe_stBM
+                                                 *stkf);
 
-void check_passwords_file_BM (struct loader_stBM *ld,
-                              struct stackframe_stBM *stkf);
+extern void check_passwords_file_BM (struct loader_stBM *ld,
+                                     struct stackframe_stBM *stkf);
 
-bool
+extern bool
 check_contributor_password_BM (objectval_tyBM * contribobarg,
                                const char *passwd,
                                struct stackframe_stBM *stkf);
-bool
+extern bool
 put_contributor_password_BM (objectval_tyBM * contribobarg,
                              const char *passwd,
                              struct stackframe_stBM *stkf);
+
+// find an existing contributor by his/her name or primary email by
+// parsing the contributors file. Returns NULL if that does not exist.
+// secondary emails are ignored.
+
+objectval_tyBM *find_contributor_BM (const char *str,
+                                     struct stackframe_stBM *stkf);
+
 // the only operations doable on user objects after load since adding
 // contributors is only possible on the command line!
 static inline bool objhascontributorpayl_BM (const objectval_tyBM * obj);
