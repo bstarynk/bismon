@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 765 objects
+// for 766 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2286,6 +2286,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
  % _9QfwVBwmu2L_4mgyQ8AEwdt ()
 !)_9dso3pFLYwm_3JwHqiJK3UL
+
+
+
+!(_8qHowkDvzRL_03sltCgsDN2 |=login_onion_handler|
+!~ name (~ login_onion_handler
+~)
+!@ 1531989923.792
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the login onion handler routine login_onion_handler_BM in web_ONIONBM.c"
+!)_8qHowkDvzRL_03sltCgsDN2
 
 
 

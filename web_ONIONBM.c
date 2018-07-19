@@ -393,6 +393,9 @@ fork_onion_process_at_slot_BM (int slotpos,
 static onion_connection_status
 custom_onion_handler_BM (void *clientdata,
                          onion_request * req, onion_response * resp);
+static onion_connection_status
+login_onion_handler_BM (void *clientdata,
+                        onion_request * req, onion_response * resp);
 
 
 ////////////////
@@ -623,7 +626,7 @@ webexchangedelete_BM (objectval_tyBM * ownobj,
 
 
 onion_connection_status
-custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
+custom_onion_handler_BM (void *clientdata,
                          onion_request * req, onion_response * resp)
 {
   objectval_tyBM *k_custom_onion_handler = BMK_5C5Dfd8eVkR_3306NWk09Bn;
@@ -645,6 +648,11 @@ custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
                  : snprintf (dbgmethbuf, sizeof (dbgmethbuf),   ///
                              "meth#%d", reqmeth)),
                 bcookie ? bcookie : "*none*");
+  if (!strcmp (reqpath, "_login") || !strcmp (reqpath, "/_login"))
+    {
+      DBGPRINTF_BM ("custom_onion_handler login page reqpath %s", reqpath);
+      return login_onion_handler_BM (clientdata, req, resp);
+    }
   // for some reason, I can't make the webroot/ work reliably with this.
   // so I special-case when the request corresponds to an existing file path
   // but for safety I don't do that for any URL containing /. or ..
@@ -759,6 +767,52 @@ custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
   return OCS_NOT_PROCESSED;
 }                               /* end custom_onion_handler_BM */
 
+
+
+onion_connection_status
+login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
+                        onion_request * req, onion_response * resp)
+{
+  objectval_tyBM *k_login_onion_handler = BMK_8qHowkDvzRL_03sltCgsDN2;
+  objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
+  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_login_onion_handler,
+                 objectval_tyBM * sessionob;);
+  const char *reqpath = onion_request_get_path (req);
+  unsigned reqflags = onion_request_get_flags (req);
+  unsigned reqmeth = (reqflags & OR_METHODS);
+  const char *bcookie = onion_request_get_cookie (req, "BISMONCOOKIE");
+  char dbgmethbuf[16];
+  DBGPRINTF_BM ("login_onion_handler reqpath '%s' fullpath '%s' reqflags %#x:%s bcookie %s",    //
+                reqpath, onion_request_get_fullpath (req), reqflags,    //
+                ((reqmeth == OR_GET) ? "GET"    //
+                 : (reqmeth == OR_HEAD) ? "HEAD"        //
+                 : (reqmeth == OR_POST) ? "POST"        //
+                 : (reqmeth == OR_OPTIONS) ? "OPTIONS"  //
+                 : (reqmeth == OR_PROPFIND) ? "PROPFIND"        //
+                 : snprintf (dbgmethbuf, sizeof (dbgmethbuf),   ///
+                             "meth#%d", reqmeth)),
+                bcookie ? bcookie : "*none*");
+  if (reqmeth == OR_POST)
+    {
+      // see the login form in login_ONIONBM.thtml template
+      const char *formorigpath = onion_request_get_post (req, "origpath");
+      const char *formuser = onion_request_get_post (req, "user");
+      const char *formpassword = onion_request_get_post (req, "password");
+      const char *formdologin = onion_request_get_post (req, "dologin");
+      const char *formdoforgot = onion_request_get_post (req, "doforgot");
+      DBGPRINTF_BM
+        ("login_onion_handler POST form origpath %s, user %s, password %s, dologin %s, doforgot %s",
+         formorigpath ? : "*no-origpath*", formuser ? : "*no-user*",
+         formpassword ? : "*no-password*", formdologin ? : "*no-dologin*",
+         formdoforgot ? : "*no-doforgot*");
+    }
+  /// temporary
+  WARNPRINTF_BM ("login_onion_handler incomplete");
+#warning login_onion_handler_BM incomplete
+  return OCS_FORBIDDEN;
+}                               /* end login_onion_handler_BM */
+
+/******************************************************************/
 
 void
 stop_onion_event_loop_BM (void)

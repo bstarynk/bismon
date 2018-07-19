@@ -1344,6 +1344,7 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
     FATAL_BM ("check_contributor_password failed to calloc line of %zd",
               linsiz);
   /// read password file loop
+  int lincnt = 0;
   for (;;)
     {
       ssize_t linlen = getline (&linbuf, &linsiz, passfil);
