@@ -750,8 +750,7 @@ custom_onion_handler_BM (void *clientdata,
                            && reqpath[0]) ? reqpath : "/", OD_DUP_VALUE);
           onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
           onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "extra", "<!-- no extra, initially -->\n",
-                          OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "extra", "initial login", OD_DUP_VALUE);
           onion_dict_add (ctxdic, "buildtime", bismon_timestamp,
                           OD_DUP_VALUE);
           onion_dict_add (ctxdic, "lastgitcommit", bismon_lastgitcommit,
@@ -830,9 +829,10 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
               good =
                 check_contributor_password_BM (_.contribob, formpassword,
                                                CURFRAME_BM);
-              DBGPRINTF_BM
-                ("login_onion_handler POST contribob %s password is %s",
-                 objectdbg_BM (_.contribob), good ? "good" : "bad");
+              DBGPRINTF_BM ("login_onion_handler POST contribob %s "
+                            "password '%s' is %s",
+                            objectdbg_BM (_.contribob), formpassword,
+                            good ? "good" : "bad");
             }
           else
             {
@@ -864,8 +864,7 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
                                && reqpath[0]) ? reqpath : "/", OD_DUP_VALUE);
               onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
               onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
-              onion_dict_add (ctxdic, "extra",
-                              "<p class='explain_cl'>Invalid user or password.</p>\n",
+              onion_dict_add (ctxdic, "extra", "Invalid user or password.",
                               OD_DUP_VALUE);
               onion_dict_add (ctxdic, "buildtime", bismon_timestamp,
                               OD_DUP_VALUE);
