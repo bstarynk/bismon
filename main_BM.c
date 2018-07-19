@@ -1170,6 +1170,41 @@ remove_contributors_after_load_BM (void)
 void
 add_passwords_from_file_BM (const char *addedpasspath)
 {
+  ASSERT_BM (addedpasspath != NULL);
+  DBGPRINTF_BM ("add_passwords_from_file start addedpasspath %s",
+                addedpasspath);
+
+  FILE *pasfil = (!addedpasspath[0] || !strcmp (addedpasspath,
+                                                "-")) ? stdin :
+    fopen (addedpasspath, "r");
+  if (!pasfil)
+    FATAL_BM ("cannot open added passwords file %s : %m", addedpasspath);
+  size_t sizpas = 128;
+  char *linpas = calloc (sizpas, 0);
+  int lincnt = 0;
+  if (!linpas)
+    FATAL_BM ("calloc failure in add_passwords_from_file - %m");
+  do
+    {
+      ssize_t linlenpas = getline (&linpas, &sizpas, pasfil);
+      if (linlenpas < 0)
+        break;
+      if (linlenpas > 0 && linpas[linlenpas - 1] == '\n')
+        linpas[linlenpas - 1] = (char) 0;
+      lincnt++;
+      DBGPRINTF_BM ("add_passwords_from_file lincnt=%d linpas=%s",
+                    lincnt, linpas);
+      if (linpas[0] == (char) 0 || linpas[0] == '#')
+        continue;
+      char *pcol = strchr (linpas, ':');
+      if (linlenpas < 10 || !pcol || strlen (pcol + 1) < 8)
+        FATAL_BM ("bad or too short line#%d when adding passwords from %s",
+                  lincnt, addedpasspath);
+      *pcol = (char) 0;
+      const char *user = linpas;
+      const char *passwd = pcol + 1;
+    }
+  while (!feof (pasfil));
   FATAL_BM ("unimplemented added_passwords_filepath_BM %s", addedpasspath);
 #warning unimplemented add_passwords_from_file_BM
 }                               /* end of add_passwords_from_file_BM */
