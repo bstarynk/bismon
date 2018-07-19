@@ -347,12 +347,92 @@ find_contributor_BM (const char *str, struct stackframe_stBM * stkf)
     );
   if (!str || !str[0])
     return NULL;
-  if (!valid_email_BM (str, DONTCHECKDNS_BM, NULL)
-      || !valid_contributor_name_BM (str, NULL))
+  bool withemail = valid_email_BM (str, DONTCHECKDNS_BM, NULL);
+  if (!withemail || !valid_contributor_name_BM (str, NULL))
     return NULL;
-  FATAL_BM ("find_contributor_BM str %s unimplemented", str);
-#warning find_contributor_BM is not implemented
+
+  FILE *fil = fopen (contributors_filepath_BM, "r+");
+  if (!fil)
+    FATAL_BM ("find_contributor_BM cannot open contributors file %s  : %m",
+              contributors_filepath_BM);
+  int fd = fileno (fil);
+  if (flock (fd, LOCK_EX))
+    FATAL_BM ("failed to flock fd#%d for contributors file %s", fd,
+              contributors_filepath_BM);
+  size_t linsiz = 128;
+  char *linbuf = calloc (linsiz, 1);
+  int lincnt = 0;
+  if (!linbuf)
+    FATAL_BM ("find_contributor_BM can't alloc line of %zd bytes", linsiz);
+  /// read loop
+  for (;;)
+    {
+      ssize_t linlen = getline (&linbuf, &linsiz, fil);
+      if (linlen < 0)
+        break;
+      if (linbuf[linlen] == '\n')
+        linbuf[linlen] = (char) 0;
+      lincnt++;
+      if (linbuf[0] == '#' || linbuf[0] == '\n' || !linbuf[0])
+        continue;
+      const char *end = NULL;
+      if (!g_utf8_validate (linbuf, -1, &end) && end && *end)
+        FATAL_BM ("in %s line#%d is invalid UTF8: %s",
+                  contributors_filepath_BM, lincnt, linbuf);
+      // linbuf should be like: <username>;<oid>;<email>;<alias>
+      char *semcol1 = strchr (linbuf, ';');
+      char *semcol2 = semcol1 ? strchr (semcol1 + 1, ';') : NULL;
+      char *semcol3 = semcol2 ? strchr (semcol2 + 1, ';') : NULL;
+      if (!semcol3)
+        FATAL_BM
+          ("in %s line#%d should be like <username>;<oid>;<email>;<alias> but is %s",
+           contributors_filepath_BM, lincnt, linbuf);
+      *semcol1 = (char) 0;
+      *semcol2 = (char) 0;
+      *semcol3 = (char) 0;
+      const char *curcontrib = linbuf;
+      const char *curoidstr = semcol1 + 1;
+      const char *curemail = semcol2 + 1;
+      const char *curalias = semcol3 + 1;
+      if ((withemail && !strcmp (curemail, str))
+          || (!withemail && !strcmp (curcontrib, str)))
+        {
+          const char *endid = NULL;
+          rawid_tyBM curid = parse_rawid_BM (curoidstr, &endid);
+          if (!endid || *endid || !curid.id_hi || !curid.id_lo)
+            FATAL_BM ("in %s line#%d has invalid oid %s for contributor %s",
+                      contributors_filepath_BM, lincnt, curoidstr,
+                      curcontrib);
+          _.contribob = findobjofid_BM (curid);
+          break;
+        }
+    }                           // end forloop
+  if (flock (fd, LOCK_UN))
+    FATAL_BM ("failed to un-flock fd#%d for %s", fd,
+              contributors_filepath_BM);
+  if (_.contribob)
+    {
+      bool okcontrib = false;
+      objlock_BM (_.contribob);
+      okcontrib = objhascontributorpayl_BM (_.contribob);
+      objunlock_BM (_.contribob);
+      if (!okcontrib)
+        _.contribob = NULL;
+    }
+  if (_.contribob)
+    {
+      objlock_BM (BMP_contributors);
+      if (!objhashsetcontainspayl_BM (BMP_contributors, _.contribob))
+        _.contribob = NULL;
+      objunlock_BM (BMP_contributors);
+    }
+  // sleep a tiny random amount of time, to make this call unpredictable and a bit costly
+  usleep (100 + g_random_int () % 1024);
+  DBGPRINTF_BM ("find_contributor_BM str '%s' gives %s",
+                str, objectdbg_BM (_.contribob));
 }                               /* end find_contributor_BM */
+
+
 
 
 
@@ -1599,7 +1679,8 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
       strncpy (encrypassbuf, cryp, sizeof (encrypassbuf) - 8);
     memset (crydat, 0, sizeof (struct crypt_data));
     // the test below is always false, but we need the compiler to
-    // emit it. We don't want crypting secrets to leak!
+    // emit it.  We don't want crypting secrets to leak, even with very
+    // optimizing compilers!
     if (((char *) crydat)[g_random_int () % sizeof (struct crypt_data)] != 0)
       FATAL_BM ("corruption in password crypting");
     free (crydat), crydat = NULL;
