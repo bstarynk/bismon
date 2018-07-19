@@ -1167,21 +1167,25 @@ remove_contributors_after_load_BM (void)
 }                               /* end remove_contributors_after_load_BM */
 
 
+
+
 void
 add_passwords_from_file_BM (const char *addedpasspath)
 {
+  LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
+                 objectval_tyBM * contribob;
+    );
   ASSERT_BM (addedpasspath != NULL);
   DBGPRINTF_BM ("add_passwords_from_file start addedpasspath %s",
                 addedpasspath);
-
-  FILE *pasfil = (!addedpasspath[0] || !strcmp (addedpasspath,
-                                                "-")) ? stdin :
-    fopen (addedpasspath, "r");
+  bool withstdin = (!addedpasspath[0] || !strcmp (addedpasspath, "-"));
+  FILE *pasfil = withstdin ? stdin : fopen (addedpasspath, "r");
   if (!pasfil)
     FATAL_BM ("cannot open added passwords file %s : %m", addedpasspath);
   size_t sizpas = 128;
   char *linpas = calloc (sizpas, 0);
   int lincnt = 0;
+  int nbch = 0;
   if (!linpas)
     FATAL_BM ("calloc failure in add_passwords_from_file - %m");
   do
@@ -1201,12 +1205,36 @@ add_passwords_from_file_BM (const char *addedpasspath)
         FATAL_BM ("bad or too short line#%d when adding passwords from %s",
                   lincnt, addedpasspath);
       *pcol = (char) 0;
-      const char *user = linpas;
-      const char *passwd = pcol + 1;
+      const char *contributorstr = linpas;
+      const char *passwdstr = pcol + 1;
+      _.contribob = find_contributor_BM (contributorstr, CURFRAME_BM);
+      if (!_.contribob)
+        FATAL_BM
+          ("add_passwords_from_file line#%d cannot find contributor for '%s'",
+           lincnt, contributorstr);
+      if (!put_contributor_password_BM (_.contribob, passwdstr, CURFRAME_BM))
+        FATAL_BM
+          ("add_passwords_from_file line#%d cannot set password for '%s'",
+           lincnt, contributorstr);
+      {
+        objlock_BM (_.contribob);
+        INFOPRINTF_BM ("changed password for contributor %s named %s",
+                       objectdbg_BM (_.contribob),
+                       bytstring_BM (objcontributornamepayl_BM (_.contribob))
+                       ? : "**??**");
+        objunlock_BM (_.contribob);
+      }
+      nbch++;
     }
   while (!feof (pasfil));
-  FATAL_BM ("unimplemented added_passwords_filepath_BM %s", addedpasspath);
-#warning unimplemented add_passwords_from_file_BM
+  if (!withstdin)
+    fclose (pasfil), pasfil = NULL;
+  if (withstdin)
+    INFOPRINTF_BM ("Added or changed %d passwords using standard input",
+                   nbch);
+  else
+    INFOPRINTF_BM ("Added or changed %d passwords using file %s", nbch,
+                   addedpasspath);
 }                               /* end of add_passwords_from_file_BM */
 
 
