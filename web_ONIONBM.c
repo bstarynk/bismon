@@ -82,8 +82,11 @@ static void read_commandpipe_BM (void);
 void
 lockonion_runpro_mtx_at_BM (int lineno)
 {
+#if 0
+  // too verbose, so not needed
   DBGPRINTFAT_BM (__FILE__, lineno, "lockonion_runpro_mtx_BM thrid=%ld",
                   (long) gettid_BM ());
+#endif
   pthread_mutex_lock (&onionrunpro_mtx_BM);
 }                               /* end lockonion_runpro_mtx_at_BM */
 
@@ -91,8 +94,10 @@ lockonion_runpro_mtx_at_BM (int lineno)
 void
 unlockonion_runpro_mtx_at_BM (int lineno)
 {
+#if 0
   DBGPRINTFAT_BM (__FILE__, lineno, "unlockonion_runpro_mtx_BM thrid=%ld",
                   (long) gettid_BM ());
+#endif
   pthread_mutex_unlock (&onionrunpro_mtx_BM);
 }                               /* end lockonion_runpro_mtx_at_BM */
 
@@ -640,6 +645,9 @@ custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
                  : snprintf (dbgmethbuf, sizeof (dbgmethbuf),   ///
                              "meth#%d", reqmeth)),
                 bcookie ? bcookie : "*none*");
+  // for some reason, I can't make the webroot/ work reliably with this.
+  // so I special-case when the request corresponds to an existing file path
+  // but for safety I don't do that for any URL containing /. or ..
   if (strlen (reqpath) > 2
       && !strstr (reqpath, "/.") & !strstr (reqpath, ".."))
     {
@@ -741,7 +749,8 @@ custom_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
           // onion_server_set_internal_error_handler to make the eror
           // page sexier
           DBGPRINTF_BM
-            ("onion request which is not GET or HEAD without valid cookie");
+            ("onion request to %s which is not GET or HEAD without valid cookie",
+             reqpath);
           return OCS_FORBIDDEN;
         }
     }
@@ -838,9 +847,10 @@ plain_event_loop_BM (void)
             }
         unlockonion_runpro_mtx_at_BM (__LINE__);
       }
-#define POLL_DELAY_MILLISECS_BM 450
-      DBGPRINTF_BM ("plain_event_loop_BM before poll nbpoll=%d loop#%ld",
-                    nbpoll, loopcnt);
+#define POLL_DELAY_MILLISECS_BM 750
+      if (loopcnt % 4 == 0)
+        DBGPRINTF_BM ("plain_event_loop_BM before poll nbpoll=%d loop#%ld",
+                      nbpoll, loopcnt);
       int nbready = poll (&pollarr, nbpoll, POLL_DELAY_MILLISECS_BM);
       if (loopcnt % 4 == 0)
         DBGPRINTF_BM ("plain_event_loop_BM nbready %d loop#%ld", nbready,

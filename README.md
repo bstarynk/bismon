@@ -161,19 +161,59 @@ Run `make` or `make -j3`
 The persistency mechanism is tested by `make redump`
 
 The `./bismongtk` program (soon deprecated) accepts a `--help` and
-`--version`.  It has a crude graphic user interface (perhaps to be
-replaced later by a Web one).
+`--version`.  It has a crude GTK3 based graphic user interface (which is obsolete
+and should replaced later by a Web interface).
 
 The `./bismonion` program accepts a `--help` and `--version`. It has a
 Web interface (above `libonion`)
 
+Both `bismongtk` and `bismonion` are very similar executables with
+most of their code in common. The only difference is their user
+interface.
+
+Be sure to run `bismongtk` or `bismonion` with `--help` at first to
+understand the program options that are available.
+
+## adding yourself as a contributor
+
+`bismon` (at least its Web version) needs to know about you. So you
+should register yourself *once* to it (and that would grow its
+persistent state). And `bismon` (more exactly `bismonion`) has a login
+form, so you should have a password (specific to `bismon`, unrelated
+to any other password you have).
+
+You first need to initialize an *empty* password file (the default
+password file is `~/passwords_BM`; you could specify another one on
+the command line). So run the command `touch ~/passwords_BM` in a
+terminal (shell) to create that empty file. Then you need to restrict
+its permission (readable and writable by your Unix user only) with
+`chmod u+rw,go-rwx ~/passwords_BM`. At last, check with `ls -ls
+~/passwords_BM` that this file is empty and readable & writable only
+by you.
+
+Then you'll register yourself. If `Alan Turing` is your name or
+pseudo, and `alan@fake.email` is your main email, with your secondary
+email being `turing@localhost`, you can add yourself to `bismon` by
+running it (actually `./bismonion`) with the program option
+`--contributor='Alan Turing;alan@fake.email;turing@localhost'` and `--batch` and
+`--dump-after-load=.` program options. Of course you would replace
+`Alan Turing`, `alan@fake.email` and `turing@localhost` by whatever is
+appropriate for you.
+
+At last you need to set your password, as known to `bismonion`, using
+the `--add-passwords` option (also with `--batch` and
+`--dump-after-load=.`).
+
 ## using `bismon` ##
 
-It is **not really usable yet** except by me (Basile) in april 2018 (no
+It is **not really usable yet** except by me (Basile) in july 2018 (no
 static source code analysis yet, no generation of GCC plugins yet). If
-you want to see something, run `./bismon` then type `the_system` in the command window
-labelled *new-bismon*, then both *Ctrl* and *Return* keys pressed
-together.
+you want to see something using GTK, run `./bismongtk` then type
+`the_system` in the command window labelled *new-bismon*, then both
+*Ctrl* and *Return* keys pressed together. If you want to see
+something thru the web interface, run `./bismonion` then open its URL
+(perhaps `localhost:8086/` or whatever has been specified with
+`--web-base`) in your web browser.
 
 It is recommended to run `make clean` once in a while (e.g. daily or
 weekly). When generating files, `bismon` makes a backup of their

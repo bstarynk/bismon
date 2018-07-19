@@ -39,12 +39,16 @@ int nbworkjobs_BM;
 const char myhostname_BM[80];
 const char *contributors_filepath_BM;
 const char *passwords_filepath_BM;
+const char *added_passwords_filepath_BM;
 static const char *chdir_after_load_bm;
 thread_local struct threadinfo_stBM *curthreadinfo_BM;
 thread_local volatile struct failurehandler_stBM *curfailurehandle_BM;
 
 volatile struct backstrace_state *backtracestate_BM;
 static void backtracerrorcb_BM (void *data, const char *msg, int errnum);
+
+
+static void add_passwords_from_file_BM (const char *addedpasspath);
 
 #ifdef BISMONGTK
 GIOChannel *defer_gtk_readpipechan_BM;
@@ -380,6 +384,14 @@ const GOptionEntry optionstab_bm[] = {
    .description = "use PATH as the password file;\n"
    "\t .. default is passwords_BM or $HOME/passwords_BM",
    .arg_description = "PATH"},
+  //
+  {.long_name = "add-passwords",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &added_passwords_filepath_BM,
+   .description =
+   "use the given PASSWORDENTRIES file (if it is -, stdin) containing lines like <username>:<password> to add passwords",
+   .arg_description = "PASSWORDENTRIES"},
   //
   {.long_name = "emit-has-predef",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
@@ -792,6 +804,8 @@ main (int argc, char **argv)
       shouldfreedumpdir = dump_dir_BM != NULL;
     }
   load_initial_BM (load_dir_bm);
+  if (added_passwords_filepath_BM && added_passwords_filepath_BM[0])
+    add_passwords_from_file_BM (added_passwords_filepath_BM);
   if (chdir_after_load_bm)
     {
       if (g_mkdir_with_parents (chdir_after_load_bm, 0750))
@@ -1152,6 +1166,18 @@ remove_contributors_after_load_BM (void)
   size_removed_contributors_bm = 0;
 }                               /* end remove_contributors_after_load_BM */
 
+
+void
+add_passwords_from_file_BM (const char *addedpasspath)
+{
+  FATAL_BM ("unimplemented added_passwords_filepath_BM %s", addedpasspath);
+#warning unimplemented add_passwords_from_file_BM
+}                               /* end of add_passwords_from_file_BM */
+
+
+
+
+////////////////////////////////////////////////////////////////
 
 extern void do_internal_deferred_apply3_BM (value_tyBM funv,
                                             value_tyBM arg1,
