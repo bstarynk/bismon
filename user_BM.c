@@ -24,6 +24,10 @@
 #include "user_BM.const.h"
 
 
+static void
+write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
+                        struct stackframe_stBM *stkf);
+
 ////////////////////////////////////////////////////////////////
 //// user support; might be relevant to GDPR
 
@@ -1054,7 +1058,6 @@ remove_contributor_by_name_BM (const char *oldname,
   size_t linsiz = 128;
   char *linbuf = calloc (linsiz, 1);
   int lincnt = 0;
-  int nbcontrib = 0;
   if (!linbuf)
     FATAL_BM
       ("remove_contributor_by_name_BM can't alloc line of %zd bytes", linsiz);
@@ -1320,8 +1323,6 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
   bool knowncontrib = false;
   size_t linsiz = 128;
   char *linbuf = calloc (linsiz, 1);
-  int lincnt = 0;
-  int nbcontrib = 0;
   if (!linbuf)
     FATAL_BM
       ("check_contributor_file_BM can't alloc line of %zd bytes", linsiz);
@@ -1525,8 +1526,6 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
     {                           // first call in this process, so backup the password file
       size_t linsiz = 128;
       char *linbuf = calloc (linsiz, 1);
-      int lincnt = 0;
-      int nbcontrib = 0;
       if (!linbuf)
         FATAL_BM
           ("put_contributor_password_BM can't alloc line of %zd bytes",
@@ -1553,8 +1552,8 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
             break;
           if (linbuf[linlen] == '\n')
             linbuf[linlen] = (char) 0;
-          fputs (backfil, linbuf);
-          if (fputc (backfil, '\n') < 0)
+          fputs (linbuf, backfil);
+          if (fputc ('\n', backfil) < 0)
             FATAL_BM ("failed to write passwords backup %s - %m", backupath);
         }
       if (fclose (backfil))
@@ -1707,7 +1706,7 @@ read_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
           ("in password file %s line#%d contributor %s of oid %s with corrupted crypted password",
            passwords_filepath_BM, lincnt, curcontrib, curoidstr);
       objassocaddattrpayl_BM (_.assocob, _.curcontribob,
-                              makestring_BM (curcryptpass));
+                              (value_tyBM) makestring_BM (curcryptpass));
     }                           /* end readloop */
 }                               /* end read_password_file_BM */
 
