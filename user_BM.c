@@ -1888,6 +1888,8 @@ write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
   _.assocob = assocobarg;
   ASSERT_BM (isobject_BM (_.assocob));
   ASSERT_BM (objhasassocpayl_BM (_.assocob));
+  DBGPRINTF_BM ("write_password_file start assocob %s",
+                objectdbg_BM (_.assocob));
   rewind (passfil);
   char nowtimbuf[80];
   memset (nowtimbuf, 0, sizeof (nowtimbuf));
@@ -1929,6 +1931,11 @@ write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
       ASSERT_BM (isstring_BM (_.curpasstrv));
       _.curnamev = objcontributornamepayl_BM (_.curcontribob);
       ASSERT_BM (isstring_BM (_.curnamev));
+      DBGPRINTF_BM ("write_password_file pix#%d curcontribob %s curpasstr %s"
+                    " curname %s",
+                    pix, objectdbg_BM (_.curcontribob),
+                    debug_outstr_value_BM (_.curpasstrv, CURFRAME_BM, 0),
+                    debug_outstr_value_BM (_.curnamev, CURFRAME_BM, 0));
       char contridbuf[32];
       memset (contridbuf, 0, sizeof (contridbuf));
       idtocbuf32_BM (objid_BM (_.curcontribob), contridbuf);
@@ -1941,6 +1948,7 @@ write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
     FATAL_BM ("failed to fflush password file %s", passwords_filepath_BM);
   long ln = ftell (passfil);
   ftruncate (fileno (passfil), ln);
+  DBGPRINTF_BM ("write_password_file end ln %d", ln);
 }                               /* end write_password_file_BM */
 
 /// end of file user_BM.c
