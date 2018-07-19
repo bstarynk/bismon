@@ -115,7 +115,7 @@ log_begin_message_BM (void)
   localtime_r (&nowt, &nowtm);
   char nowtibuf[40];
   memset (nowtibuf, 0, sizeof (nowtibuf));
-  strftime (nowtibuf, sizeof (nowtibuf), "%T", &nowtm);
+  strftime (nowtibuf, sizeof (nowtibuf), "%T %Z", &nowtm);
   char nowfracbuf[8];
   memset (nowfracbuf, 0, sizeof (nowfracbuf));
   snprintf (nowfracbuf, sizeof (nowfracbuf), "%.2f", nowfrac);
@@ -742,7 +742,7 @@ custom_onion_handler_BM (void *clientdata,
           memset (nowbuf, 0, sizeof (nowbuf));
           memset (&nowtm, 0, sizeof (nowtm));
           localtime_r (&nowt, &nowtm);
-          strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
+          strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
           // send a fresh login form, using login_ONIONBM_thtml(onion_dict *context, onion_response *res)
           onion_dict *ctxdic = onion_dict_new ();
           onion_dict_add (ctxdic, "origpath",
@@ -857,7 +857,7 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
               memset (&nowtm, 0, sizeof (nowtm));
               snprintf (pidbuf, sizeof (pidbuf), "%d", (int) getpid ());
               localtime_r (&nowt, &nowtm);
-              strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
+              strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
               onion_dict *ctxdic = onion_dict_new ();
               {
                 char *origpath = (reqpath && reqpath[0]) ? reqpath : "/";
