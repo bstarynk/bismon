@@ -20,7 +20,6 @@
 #include "web_ONIONBM.const.h"
 #include "_login_ONIONBM.h"
 
-static char onion_webhost_bm[80];
 #define WEBSESSION_EXPIRATION_DELAY 4000.0
 extern void run_onionweb_BM (int nbjobs);
 static onion *myonion_BM;
@@ -444,10 +443,6 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
                 webport);
   if (webhost && webhost[0])
     {
-      if (strlen (webhost) >= sizeof (onion_webhost_bm))
-        FATAL_BM ("too long web host '%s' (at most %d bytes)",
-                  webhost, sizeof (onion_webhost_bm) - 1);
-      strcpy (onion_webhost_bm, webhost);
       onion_set_hostname (myonion_BM, webhost);
       char *lastcolon = strrchr (onion_web_base_BM, ':');
       if (lastcolon && isdigit (lastcolon[1]))
@@ -706,7 +701,17 @@ custom_onion_handler_BM (void *clientdata,
         && bcookie[cookposoid] == '_' && isdigit (bcookie[cookposoid + 1])
         && ((cookoid = parse_rawid_BM (bcookie + cookposoid, &endcookie)),
             validid_BM (cookoid)) && endcookie && *endcookie == (char) 0)
-      goodcookie = true;
+      {
+        DBGPRINTF_BM ("custom_onion_handler reqpath '%s' good cookie %s",
+                      reqpath, bcookie);
+        goodcookie = true;
+      }
+    else if (bcookie)
+      DBGPRINTF_BM ("custom_onion_handler reqpath '%s' bad cookie %s",
+                    reqpath, bcookie);
+    else
+      DBGPRINTF_BM ("custom_onion_handler reqpath '%s' no cookie", reqpath);
+
     objlock_BM (BMP_the_web_sessions);
     if (objclass_BM (BMP_the_web_sessions) != k_websession_dict_object)
       FATAL_BM
@@ -720,6 +725,8 @@ custom_onion_handler_BM (void *clientdata,
     else
       _.sessionob = NULL;
     objunlock_BM (BMP_the_web_sessions);
+    DBGPRINTF_BM ("custom_onion_handler reqpath %s sessionob %s",
+                  reqpath, objectdbg_BM (_.sessionob));
     if (!_.sessionob)
       goodcookie = false;
     else if (!equalid_BM (cookoid, objid_BM (_.sessionob)))
@@ -796,6 +803,16 @@ custom_onion_handler_BM (void *clientdata,
           return OCS_FORBIDDEN;
         }
     }
+  DBGPRINTF_BM ("end custom_onion_handler reqpath '%s' reqflags %#x:%s bcookie %s",     //
+                reqpath, reqflags,      //
+                ((reqmeth == OR_GET) ? "GET"    //
+                 : (reqmeth == OR_HEAD) ? "HEAD"        //
+                 : (reqmeth == OR_POST) ? "POST"        //
+                 : (reqmeth == OR_OPTIONS) ? "OPTIONS"  //
+                 : (reqmeth == OR_PROPFIND) ? "PROPFIND"        //
+                 : snprintf (dbgmethbuf, sizeof (dbgmethbuf),   ///
+                             "meth#%d", reqmeth)),
+                bcookie ? bcookie : "*none*");
 #warning unimplemented custom_onion_handler_BM
   /// probably should return OCS_PROCESSED if handled, or OCS_NOT_PROCESSED, OCS_FORBIDDEN, OCS_INTERNAL_ERROR, etc...
   return OCS_NOT_PROCESSED;
@@ -1039,13 +1056,13 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
                                bytstring_BM (_.cookiestrv),
                                (time_t) wsess->websess_expiretime,
                                "/",
-                               onion_webhost_bm,        /// domain
+                               onion_web_base_BM,       /// domain
                                0);
   onion_response_set_code (resp, HTTP_REDIRECT);
   onion_response_set_header (resp, "Location", location);
   DBGPRINTF_BM
-    ("do_login_redirect_onion_BM sessionob %s webhost %s addedcookie %s",
-     objectdbg_BM (_.sessionob), onion_webhost_bm,
+    ("do_login_redirect_onion_BM sessionob %s webbase %s addedcookie %s",
+     objectdbg_BM (_.sessionob), onion_web_base_BM,
      addedcookie ? "true" : "false");
   char *respbuf = NULL;
   size_t respsiz = 0;
@@ -1055,11 +1072,11 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
   fprintf (fresp, "<!DOCTYPE html>\n");
   fprintf (fresp, "<html><head><title>Bismon login redirect</title>\n"
            "<meta http-equiv='refresh' content='2; URL=http://%s/%s'/>\n",
-           onion_webhost_bm, location);
+           onion_web_base_BM, location);
   fprintf (fresp, "</head>\n<body>\n");
   fprintf (fresp,
            "<h1>Bismon login redirection to <a href='http://%s/%s'>%s</a></h1>\n",
-           onion_webhost_bm, location, location);
+           onion_web_base_BM, location, location);
   fprintf (fresp, "<hr/>\n");
   time_t nowt = 0;
   time (&nowt);
