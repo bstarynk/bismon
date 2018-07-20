@@ -721,7 +721,13 @@ custom_onion_handler_BM (void *clientdata,
       FATAL_BM
         ("the_web_sessions is broken, it has no dictionnary payload - for web BISMONCOOKIE-s");
     if (goodcookie)
-      _.sessionob = objdictgetpayl_BM (BMP_the_web_sessions, bcookie);
+      {
+        int nbsess = objdictsizepayl_BM (BMP_the_web_sessions);
+        _.sessionob = objdictgetpayl_BM (BMP_the_web_sessions, bcookie);
+        DBGPRINTF_BM
+          ("custom_onion_handler reqpath '%s' nbsess %d sessionob %s",
+           reqpath, nbsess, objectdbg_BM (_.sessionob));
+      }
     else
       _.sessionob = NULL;
     objunlock_BM (BMP_the_web_sessions);
@@ -1045,7 +1051,7 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
                         wsess->websess_rand1, wsess->websess_rand2,
                         sessidbuf);
     DBGPRINTF_BM ("do_login_redirect_onion_BM for contribob %s,\n"
-                  "... sessionob %s of cookie '%s'",
+                  "... adding sessionob %s of cookie '%s'",
                   objectdbg_BM (_.contribob), objectdbg1_BM (_.sessionob),
                   bytstring_BM (_.cookiestrv));
     objdictputpayl_BM (BMP_the_web_sessions, _.cookiestrv, _.sessionob);
