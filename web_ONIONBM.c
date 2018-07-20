@@ -396,6 +396,9 @@ custom_onion_handler_BM (void *clientdata,
 static onion_connection_status
 login_onion_handler_BM (void *clientdata,
                         onion_request * req, onion_response * resp);
+static onion_connection_status
+do_forgot_onion_BM (char *username,
+                    onion_request * req, onion_response * resp);
 
 
 ////////////////
@@ -891,48 +894,7 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
           DBGPRINTF_BM
             ("login_ONIONBM_thtml doforgot %s user '%s' unimplemented",
              formdoforgot, formuser);
-          WARNPRINTF_BM ("login_onion_handler doforgot for %s unimplemented",
-                         formuser);
-#warning login_onion_handler_BM unimplemented doforgot
-          char *respbuf = NULL;
-          size_t respsiz = 0;
-          FILE *fresp = open_memstream (&respbuf, &respsiz);
-          if (!fresp)
-            FATAL_BM ("login_onion_handler open_memstream failure %m");
-          fprintf (fresp, "<!DOCTYPE html>\n");
-          fprintf (fresp,
-                   "<html><head><title>Bismon forgot password unimplemented</title></head>\n");
-          fprintf (fresp,
-                   "<body><h1>Bismon <i>forgot password</i> feature unimplemented</h1>\n");
-          fprintf (fresp,
-                   "<p>The <i>forgot password</i> feature (for user <tt>%s</tt>)"
-                   " is <b>not implemented</b> yet.\n", formuser);
-          fprintf (fresp,
-                   "Sorry about that. So temporarily, use the <tt>--add-passwords</tt>"
-                   " program option on the Bismon server to change your password.<br/>\n"
-                   "See our <a href='https://github.com/bstarynk/bismon/blob/master/README.md'>"
-                   "README.md</a> file for more.</p>\n");
-          fprintf (fresp, "<hr/>\n");
-          time_t nowt = 0;
-          time (&nowt);
-          struct tm nowtm;
-          char nowbuf[64];
-          memset (nowbuf, 0, sizeof (nowbuf));
-          memset (&nowtm, 0, sizeof (nowtm));
-          localtime_r (&nowt, &nowtm);
-          strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
-          fprintf (fresp, "<p><small>generated on <i>%s</i></small></p>\n",
-                   nowbuf);
-          fprintf (fresp, "</body></html>\n");
-          fflush (fresp);
-          long ln = ftell (fresp);
-          fclose (fresp), fresp = NULL;
-          onion_response_set_length (resp, ln);
-          onion_response_set_code (resp, HTTP_NOT_IMPLEMENTED);
-          onion_response_write (resp, respbuf, ln);
-          onion_response_flush (resp);
-          free (respbuf), respbuf = NULL;
-          return OCS_PROCESSED;
+          return do_forgot_onion_BM (formuser, req, resp);
         }
     }
   /// temporary
@@ -940,6 +902,53 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
 #warning login_onion_handler_BM incomplete
   return OCS_FORBIDDEN;
 }                               /* end login_onion_handler_BM */
+
+
+static onion_connection_status
+do_forgot_onion_BM (char *formuser,
+                    onion_request * req, onion_response * resp)
+{
+  WARNPRINTF_BM ("do_forgot_onion_BM %s unimplemented", formuser);
+
+  char *respbuf = NULL;
+  size_t respsiz = 0;
+  FILE *fresp = open_memstream (&respbuf, &respsiz);
+  if (!fresp)
+    FATAL_BM ("login_onion_handler open_memstream failure %m");
+  fprintf (fresp, "<!DOCTYPE html>\n");
+  fprintf (fresp,
+           "<html><head><title>Bismon forgot password unimplemented</title></head>\n");
+  fprintf (fresp,
+           "<body><h1>Bismon <i>forgot password</i> feature unimplemented</h1>\n");
+  fprintf (fresp,
+           "<p>The <i>forgot password</i> feature (for user <tt>%s</tt>)"
+           " is <b>not implemented</b> yet.\n", formuser);
+  fprintf (fresp,
+           "Sorry about that. So temporarily, use the <tt>--add-passwords</tt>"
+           " program option on the Bismon server to change your password.<br/>\n"
+           "See our <a href='https://github.com/bstarynk/bismon/blob/master/README.md'>"
+           "README.md</a> file for more.</p>\n");
+  fprintf (fresp, "<hr/>\n");
+  time_t nowt = 0;
+  time (&nowt);
+  struct tm nowtm;
+  char nowbuf[64];
+  memset (nowbuf, 0, sizeof (nowbuf));
+  memset (&nowtm, 0, sizeof (nowtm));
+  localtime_r (&nowt, &nowtm);
+  strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
+  fprintf (fresp, "<p><small>generated on <i>%s</i></small></p>\n", nowbuf);
+  fprintf (fresp, "</body></html>\n");
+  fflush (fresp);
+  long ln = ftell (fresp);
+  fclose (fresp), fresp = NULL;
+  onion_response_set_length (resp, ln);
+  onion_response_set_code (resp, HTTP_NOT_IMPLEMENTED);
+  onion_response_write (resp, respbuf, ln);
+  onion_response_flush (resp);
+  free (respbuf), respbuf = NULL;
+  return OCS_PROCESSED;
+}                               /* end do_forgot_onion_BM */
 
 /******************************************************************/
 
