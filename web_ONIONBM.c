@@ -73,7 +73,7 @@ static void read_sigchld_BM (int sigfd);
 static void read_commandpipe_BM (void);
 
 /*** Our websession cookies are something like
-     n<rank>r<rand1>,<rand2>:<oid> where <rank> is the websess_rank,
+     n<rank>r<rand1>t<rand2>o<oid> where <rank> is the websess_rank,
      <rand1> and <rand2> are random integers, <oid> is the websession
      object id
  ***/
@@ -695,15 +695,19 @@ custom_onion_handler_BM (void *clientdata,
     rawid_tyBM cookoid = { 0, 0 };
     char *endcookie = NULL;
     int blencookie = bcookie ? strlen (bcookie) : 0;
+    char oidbuf[32];
     if (blencookie > BISMONION_WEBSESS_SUFLEN / 2
-        && sscanf (bcookie, "n%ur%u,%u:%n", &cookrank, &cookrand1,
+        && sscanf (bcookie, "n%uR%ut%uo%n", &cookrank, &cookrand1,
                    &cookrand2, &cookposoid) >= 3 && cookposoid > 4
         && bcookie[cookposoid] == '_' && isdigit (bcookie[cookposoid + 1])
         && ((cookoid = parse_rawid_BM (bcookie + cookposoid, &endcookie)),
             validid_BM (cookoid)) && endcookie && *endcookie == (char) 0)
       {
-        DBGPRINTF_BM ("custom_onion_handler reqpath '%s' good cookie %s",
-                      reqpath, bcookie);
+        memset (oidbuf, 0, sizeof (oidbuf));
+        idtocbuf32_BM (cookoid, oidbuf);
+        DBGPRINTF_BM
+          ("custom_onion_handler reqpath '%s' good cookie %s oid %s", reqpath,
+           bcookie, oidbuf);
         goodcookie = true;
       }
     else if (bcookie)
@@ -720,10 +724,16 @@ custom_onion_handler_BM (void *clientdata,
     if (!objhasdictpayl_BM (BMP_the_web_sessions))
       FATAL_BM
         ("the_web_sessions is broken, it has no dictionnary payload - for web BISMONCOOKIE-s");
+    DBGPRINTF_BM ("custom_onion_handler the_web_sessions keys are %s",
+                  debug_outstr_value_BM (objdictnodeofkeyspayl_BM
+                                         (BMP_the_web_sessions,
+                                          BMP_the_web_sessions), CURFRAME_BM,
+                                         0));
     if (goodcookie)
       {
         int nbsess = objdictsizepayl_BM (BMP_the_web_sessions);
-        _.sessionob = objdictgetpayl_BM (BMP_the_web_sessions, bcookie);
+        _.sessionob =
+          objdictgetpayl_BM (BMP_the_web_sessions, makestring_BM (bcookie));
         DBGPRINTF_BM
           ("custom_onion_handler reqpath '%s' nbsess %d sessionob %s",
            reqpath, nbsess, objectdbg_BM (_.sessionob));
@@ -731,17 +741,30 @@ custom_onion_handler_BM (void *clientdata,
     else
       _.sessionob = NULL;
     objunlock_BM (BMP_the_web_sessions);
-    DBGPRINTF_BM ("custom_onion_handler reqpath %s sessionob %s",
+    DBGPRINTF_BM ("custom_onion_handler reqpath '%s' sessionob %s",
                   reqpath, objectdbg_BM (_.sessionob));
     if (!_.sessionob)
       goodcookie = false;
     else if (!equalid_BM (cookoid, objid_BM (_.sessionob)))
-      goodcookie = false;
+      {
+        char cookoidbuf[32];
+        memset (cookoidbuf, 0, sizeof (cookoidbuf));
+        idtocbuf32_BM (cookoid, cookoidbuf);
+        DBGPRINTF_BM ("custom_onion_handler bad cookoid %s want sessionob %s",
+                      cookoidbuf, objectdbg_BM (_.sessionob));
+        goodcookie = false;
+      }
     if (goodcookie)
       {
+        DBGPRINTF_BM ("custom_onion_handle good cookie %s sessionob %s",
+                      bcookie, objectdbg_BM (_.sessionob));
         objlock_BM (_.sessionob);
         if (valtype_BM (objpayload_BM (_.sessionob)) != typayl_websession_BM)
-          goodcookie = false;
+          {
+            DBGPRINTF_BM ("custom_onion_handle bad sessionob %s",
+                          objectdbg_BM (_.sessionob));
+            goodcookie = false;
+          }
         else
           {
             struct websessiondata_stBM *ws =
@@ -762,6 +785,8 @@ custom_onion_handler_BM (void *clientdata,
             objunlock_BM (_.sessionob);
           }
       }
+    DBGPRINTF_BM ("custom_onion_handle goodcookie %s",
+                  goodcookie ? "true" : "false");
     if (!goodcookie)
       _.sessionob = false;
   }
@@ -1047,7 +1072,7 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
     sessioncounter++;
     wsess->websess_rank = sessioncounter;
     _.cookiestrv =
-      sprintfstring_BM ("n%ldr%d,%d:%s", wsess->websess_rank,
+      sprintfstring_BM ("n%06ldR%dt%do%s", wsess->websess_rank,
                         wsess->websess_rand1, wsess->websess_rand2,
                         sessidbuf);
     DBGPRINTF_BM ("do_login_redirect_onion_BM for contribob %s,\n"
@@ -1062,7 +1087,7 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
                                bytstring_BM (_.cookiestrv),
                                (time_t) wsess->websess_expiretime,
                                "/",
-                               onion_web_base_BM,       /// domain
+                               NULL,    /// domain
                                0);
   onion_response_set_code (resp, HTTP_REDIRECT);
   onion_response_set_header (resp, "Location", location);
