@@ -216,9 +216,9 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
   bool lockedproc = false;
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ;  _.causev = (value_tyBM)(Cause); goto failure; } while(0)
-  if (_.dirstrv && !isstring_BM (_.dirstrv))
+  if (_.dirstrv && !isstring_BM ((value_tyBM) _.dirstrv))
     FAILHERE (makenode1_BM (BMP_string, (value_tyBM) _.dirstrv));
-  if (_.dirstrv && isstring_BM (_.dirstrv))
+  if (_.dirstrv && isstring_BM ((value_tyBM) _.dirstrv))
     {
       struct stat dirstat;
       int olderrno = errno;
@@ -234,16 +234,16 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
                   (BMP_node, (value_tyBM) _.dirstrv,
                    taggedint_BM (newerrno)));
     }
-  if (!isnode_BM (_.cmdnodv))
+  if (!isnode_BM ((value_tyBM) _.cmdnodv))
     FAILHERE (makenode1_BM (BMP_node, (value_tyBM) _.cmdnodv));
-  if (!isclosure_BM (_.endclosv))
+  if (!isclosure_BM ((value_tyBM) _.endclosv))
     FAILHERE (makenode1_BM (BMP_closure, (value_tyBM) _.cmdnodv));
-  unsigned cmdlen = nodewidth_BM (_.cmdnodv);
+  unsigned cmdlen = nodewidth_BM ((value_tyBM) _.cmdnodv);
   if (cmdlen == 0)
     FAILHERE (makenode1_BM (BMP_node, (value_tyBM) _.cmdnodv));
   for (unsigned aix = 0; aix < cmdlen; aix++)
     {
-      _.curargv = nodenthson_BM (_.cmdnodv, aix);
+      _.curargv = nodenthson_BM ((value_tyBM) _.cmdnodv, aix);
       if (!isstring_BM (_.curargv))
         FAILHERE (makenode2_BM
                   (BMP_node, (value_tyBM) _.cmdnodv, taggedint_BM (aix)));
@@ -289,11 +289,11 @@ failure:
      failin,
      bytstring_BM (_.dirstrv), debug_outstr_value_BM ((value_tyBM) _.cmdnodv,
                                                       CURFRAME_BM, 0),
-     debug_outstr_value_BM (_.endclosv, CURFRAME_BM, 0),
-     debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
-  _.errorv =
-    makenode4_BM (k_queue_process, _.dirstrv, _.cmdnodv, _.endclosv,
-                  _.causev);
+     debug_outstr_value_BM ((value_tyBM) _.endclosv, CURFRAME_BM, 0),
+     debug_outstr_value_BM ((value_tyBM) _.causev, CURFRAME_BM, 0));
+  _.errorv = (value_tyBM) makenode4_BM (k_queue_process, (value_tyBM) _.dirstrv, (value_tyBM) _.cmdnodv,        //
+                                        (value_tyBM) _.endclosv,
+                                        (value_tyBM) _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end queue_process_BM */
 
@@ -320,11 +320,13 @@ fork_onion_process_at_slot_BM (int slotpos,
   _.dirstrv = dirstrarg;
   _.cmdnodv = cmdnodarg;
   _.endclosv = endclosarg;
-  int cmdlen = nodewidth_BM (_.cmdnodv);
+  int cmdlen = nodewidth_BM ((value_tyBM) _.cmdnodv);
   ASSERT_BM (cmdlen > 0);
   ASSERT_BM (slotpos >= 0 && slotpos < MAXNBWORKJOBS_BM);
   DBGPRINTF_BM ("fork_onion_process_at_slot_BM slotpos %d cmdnod %s",
-                slotpos, debug_outstr_value_BM (_.cmdnodv, CURFRAME_BM, 0));
+                slotpos,
+                debug_outstr_value_BM ((value_tyBM) _.cmdnodv, CURFRAME_BM,
+                                       0));
   /// should fork the process
   int pipfd[2] = { -1, -1 };
   char **args = calloc (cmdlen + 1, sizeof (char *));
@@ -1075,10 +1077,12 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
   onion_response_set_length (resp, ln);
   onion_response_write (resp, respbuf, ln);
   onion_response_flush (resp);
-  DBGPRINTF_BM
-    ("do_login_redirect_onion_BM sessionob %s redirection to %s:\n%s\n",
-     objectdbg_BM (_.sessionob), respbuf);
+  DBGPRINTF_BM ("do_login_redirect_onion_BM sessionob %s"
+                " redirection to %s:\n%s\n",
+                objectdbg_BM (_.sessionob), location, respbuf);
   free (respbuf), respbuf = NULL;
+  DBGPRINTF_BM ("do_login_redirect_onion  sessionob %s done",
+                objectdbg_BM (_.sessionob));
   return OCS_PROCESSED;
 }                               /* end do_login_redirect_onion_BM */
 
