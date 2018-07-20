@@ -886,6 +886,48 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
               return OCS_PROCESSED;
             }
         }
+      else if (formuser && formdoforgot)
+        {
+          WARNPRINTF_BM ("login_onion_handler doforgot for %s unimplemented",
+                         formuser);
+#warning login_onion_handler_BM unimplemented doforgot
+          char *respbuf = NULL;
+          size_t respsiz = 0;
+          FILE *fresp = open_memstream (&respbuf, &respsiz);
+          if (!fresp)
+            FATAL_BM ("login_onion_handler open_memstream failure %m");
+          fprintf (fresp, "<!DOCTYPE html>\n");
+          fprintf (fresp,
+                   "<html><head><title>Bismon forgot password unimplemented</title></head>\n");
+          fprintf (fresp,
+                   "<body><h1>Bismon forgot password unimplemented</h1>\n");
+          fprintf (fresp,
+                   "<p>The <i>forgot password</i> feature (for user <i>%s</i>) is not implemented yet.\n");
+          fprintf (fresp,
+                   "Sorry about that. So temporarily, use the <tt>--add-passwords</tt>"
+                   " program option on the Bismon server to change your password.</p>\n");
+          fprintf (fresp, "<hr/>\n");
+          time_t nowt = 0;
+          time (&nowt);
+          struct tm nowtm;
+          char nowbuf[64];
+          memset (nowbuf, 0, sizeof (nowbuf));
+          memset (&nowtm, 0, sizeof (nowtm));
+          localtime_r (&nowt, &nowtm);
+          strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
+          fprintf (fresp, "<p><small>generated on <i>%s</i></small></p>\n",
+                   nowbuf);
+          fprintf (fresp, "</body></html>\n");
+          fflush (fresp);
+          long ln = ftell (fresp);
+          fclose (fresp), fresp = NULL;
+          onion_response_set_length (resp, ln);
+          onion_response_set_code (resp, HTTP_NOT_IMPLEMENTED);
+          onion_response_write (resp, respbuf, ln);
+          onion_response_flush (resp);
+	  free (respbuf), respbuf = NULL;
+          return OCS_PROCESSED;
+        }
     }
   /// temporary
   WARNPRINTF_BM ("login_onion_handler incomplete");
