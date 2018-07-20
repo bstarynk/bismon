@@ -761,8 +761,11 @@ custom_onion_handler_BM (void *clientdata,
         objlock_BM (_.sessionob);
         if (valtype_BM (objpayload_BM (_.sessionob)) != typayl_websession_BM)
           {
-            DBGPRINTF_BM ("custom_onion_handle bad sessionob %s",
-                          objectdbg_BM (_.sessionob));
+            DBGPRINTF_BM
+              ("custom_onion_handle bad sessionob %s of payload@%p of type#%d %s",
+               objectdbg_BM (_.sessionob), objpayload_BM (_.sessionob),
+               valtype_BM (objpayload_BM (_.sessionob)),
+               typestring_BM (valtype_BM (objpayload_BM (_.sessionob))));
             goodcookie = false;
           }
         else
@@ -1048,6 +1051,7 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
   if (!wsess)
     FATAL_BM ("failed to allocate websession data for %s",
               objectdbg_BM (_.contribob));
+  wsess->websess_head.htyp = typayl_websession_BM;
   wsess->websess_magic = 1;
   wsess->websess_rank = 0;
   wsess->websess_rand1 = 100 + (g_random_int () % (INT_MAX / 2));
@@ -1060,6 +1064,7 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
   objputpayload_BM (_.sessionob, wsess);
   objputclass_BM (_.sessionob, k_websession_object);
   wsess->websess_magic = BISMONION_WEBSESS_MAGIC;
+  objtouchnow_BM (_.sessionob);
   /// add the session to the_web_sessions; its lock also serializes
   /// access to our sessioncounter...
   {
@@ -1091,10 +1096,10 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
                                0);
   onion_response_set_code (resp, HTTP_REDIRECT);
   onion_response_set_header (resp, "Location", location);
-  DBGPRINTF_BM
-    ("do_login_redirect_onion_BM sessionob %s webbase %s addedcookie %s",
-     objectdbg_BM (_.sessionob), onion_web_base_BM,
-     addedcookie ? "true" : "false");
+  DBGPRINTF_BM ("do_login_redirect_onion_BM sessionob %s addedcookie %s"
+                " location %s",
+                objectdbg_BM (_.sessionob),
+                addedcookie ? "true" : "false", location);
   char *respbuf = NULL;
   size_t respsiz = 0;
   FILE *fresp = open_memstream (&respbuf, &respsiz);

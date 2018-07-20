@@ -713,6 +713,7 @@ struct dict_stBM
 #define BISMONION_WEBSESS_MAGIC 0x31dcebad      /* websess magic 836561837 */
 struct websessiondata_stBM      /// for typayl_websession_BM
 {
+  typedhead_tyBM websess_head;  // rlen is unused
   unsigned websess_magic;       /* always BISMONION_WEBSESS_MAGIC */
   unsigned websess_rank;        /* unique rank */
   uint32_t websess_rand1;       /* first random integer */
