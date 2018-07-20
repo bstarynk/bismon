@@ -888,6 +888,9 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
         }
       else if (formuser && formdoforgot)
         {
+          DBGPRINTF_BM
+            ("login_ONIONBM_thtml doforgot %s user '%s' unimplemented",
+             formdoforgot, formuser);
           WARNPRINTF_BM ("login_onion_handler doforgot for %s unimplemented",
                          formuser);
 #warning login_onion_handler_BM unimplemented doforgot
@@ -900,12 +903,15 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
           fprintf (fresp,
                    "<html><head><title>Bismon forgot password unimplemented</title></head>\n");
           fprintf (fresp,
-                   "<body><h1>Bismon forgot password unimplemented</h1>\n");
+                   "<body><h1>Bismon <i>forgot password</i> feature unimplemented</h1>\n");
           fprintf (fresp,
-                   "<p>The <i>forgot password</i> feature (for user <i>%s</i>) is not implemented yet.\n");
+                   "<p>The <i>forgot password</i> feature (for user <tt>%s</tt>)"
+                   " is <b>not implemented</b> yet.\n", formuser);
           fprintf (fresp,
                    "Sorry about that. So temporarily, use the <tt>--add-passwords</tt>"
-                   " program option on the Bismon server to change your password.</p>\n");
+                   " program option on the Bismon server to change your password.<br/>\n"
+                   "See our <a href='https://github.com/bstarynk/bismon/blob/master/README.md'>"
+                   "README.md</a> file for more.</p>\n");
           fprintf (fresp, "<hr/>\n");
           time_t nowt = 0;
           time (&nowt);
@@ -925,7 +931,7 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
           onion_response_set_code (resp, HTTP_NOT_IMPLEMENTED);
           onion_response_write (resp, respbuf, ln);
           onion_response_flush (resp);
-	  free (respbuf), respbuf = NULL;
+          free (respbuf), respbuf = NULL;
           return OCS_PROCESSED;
         }
     }

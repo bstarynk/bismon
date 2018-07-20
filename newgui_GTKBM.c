@@ -4280,14 +4280,15 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
       listpopfirst_BM (gtkrunpro_list_BM);
     }
   else
-    DBGPRINTF_BM ("defer_process_watchcb_BM pid=%d empty gtkrunpro_list_BM");
+    DBGPRINTF_BM ("defer_process_watchcb_BM pid=%d empty gtkrunpro_list_BM",
+                  (int) getpid ());
   // start the process corresponding to pendingv
   if (_.pendingv)
     {
 
       ASSERT_BM (isnode_BM (_.pendingv)
                  && nodeconn_BM (_.pendingv) == k_queue_process
-                 && nodewidth_BM (_.pendingv == 3));
+                 && nodewidth_BM (_.pendingv) == 3);
       _.dirstrv = nodenthson_BM (_.pendingv, 0);
       _.cmdnodv = nodenthson_BM (_.pendingv, 1);
       _.endclosv = nodenthson_BM (_.pendingv, 2);
