@@ -718,7 +718,7 @@ struct websessiondata_stBM      /// for typayl_websession_BM
   uint32_t websess_rand1;       /* first random integer */
   uint32_t websess_rand2;       /* second random integer */
   objectval_tyBM *websess_ownobj;       /* owning object having this payload */
-  objectval_tyBM *websess_userob;       /* the user logged in, or nil */
+  objectval_tyBM *websess_contribob;    /* the contributor logged in, or nil */
   value_tyBM websess_datav;     /* supplementary data value */
 
   double websess_createtime;    /* creation time */

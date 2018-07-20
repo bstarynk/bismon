@@ -19,6 +19,9 @@
 #include "bismon.h"
 #include "web_ONIONBM.const.h"
 #include "_login_ONIONBM.h"
+
+static char onion_webhost_bm[80];
+#define WEBSESSION_EXPIRATION_DELAY 4000.0
 extern void run_onionweb_BM (int nbjobs);
 static onion *myonion_BM;
 // the command pipe contains bytes, each considered as a different message
@@ -80,7 +83,7 @@ static void read_commandpipe_BM (void);
 
 
 void
-lockonion_runpro_mtx_at_BM (int lineno)
+lockonion_runpro_mtx_at_BM (int lineno __attribute__ ((unused)))
 {
 #if 0
   // too verbose, so not needed
@@ -92,7 +95,7 @@ lockonion_runpro_mtx_at_BM (int lineno)
 
 
 void
-unlockonion_runpro_mtx_at_BM (int lineno)
+unlockonion_runpro_mtx_at_BM (int lineno __attribute__ ((unused)))
 {
 #if 0
   DBGPRINTFAT_BM (__FILE__, lineno, "unlockonion_runpro_mtx_BM thrid=%ld",
@@ -400,6 +403,12 @@ static onion_connection_status
 do_forgot_onion_BM (char *username,
                     onion_request * req, onion_response * resp);
 
+static onion_connection_status
+do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
+                            const char *location, onion_request * req,
+                            onion_response * resp,
+                            struct stackframe_stBM *stkf);
+
 
 ////////////////
 void
@@ -432,43 +441,53 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
   DBGPRINTF_BM ("run_onionweb webhost '%s' webport %d", webhost ? : "??",
                 webport);
   if (webhost && webhost[0])
-    onion_set_hostname (myonion_BM, webhost);
-  char *lastcolon = strrchr (onion_web_base_BM, ':');
-  if (lastcolon && isdigit (lastcolon[1]))
-    onion_set_port (myonion_BM, lastcolon + 1);
-  char *webrootpath = NULL;
-  if (asprintf (&webrootpath, "%s/webroot/", bismon_directory) < 0
-      || !webrootpath || !webrootpath[0] || access (webrootpath, R_OK | X_OK))
-    FATAL_BM ("failed to get or access webroot/ path - %m");
-  onion_handler *filehdl = onion_handler_export_local_new (webrootpath);
-  onion_handler *customhdl =
-    onion_handler_new (custom_onion_handler_BM, NULL, NULL);
-  if (!filehdl)
-    FATAL_BM ("failed to get onion webroot handler for %s", webrootpath);
-  onion_set_root_handler (myonion_BM, customhdl);
-  DBGPRINTF_BM ("run_onionweb after set root handler filehdl@%p", filehdl);
-  onion_handler_add (customhdl, filehdl);
-  ///
-  /// create the command pipe
-  {
-    int piparr[2] = { -1, -1 };
-    if (pipe2 (piparr, O_CLOEXEC | O_NONBLOCK))
-      FATAL_BM ("run_onionweb pipe failure for the command pipe - %m");
-    cmdpipe_rd_BM = piparr[0];
-    cmdpipe_wr_BM = piparr[1];
-    DBGPRINTF_BM ("run_onionweb before onion_listen cmdpiprd#%d cmdpipwr#%d",
-                  cmdpipe_rd_BM, cmdpipe_wr_BM);
-  }
-  int err = onion_listen (myonion_BM);  // since detached, returns now
-  DBGPRINTF_BM ("run_onionweb after onion_listen err=%d", err);
-  if (err)
-    FATAL_BM ("failed to do onion_listen (err#%d / %s)", err, strerror (err));
-  ///
-  /// should add our event loop, at least related to queued processes
-  /// (and their output pipes), to SIGCHLD and SIGTERM + SIGQUIT
-  /// see https://groups.google.com/a/coralbits.com/d/msg/onion-dev/m-wH-BY2MA0/QJqLNcHvAAAJ
-  /// and https://groups.google.com/a/coralbits.com/d/msg/onion-dev/ImjNf1EIp68/R37DW3mZAAAJ
-  plain_event_loop_BM ();
+    {
+      if (strlen (webhost) >= sizeof (onion_webhost_bm))
+        FATAL_BM ("too long web host '%s' (at most %d bytes)",
+                  webhost, sizeof (onion_webhost_bm) - 1);
+      strcpy (onion_webhost_bm, webhost);
+      onion_set_hostname (myonion_BM, webhost);
+      char *lastcolon = strrchr (onion_web_base_BM, ':');
+      if (lastcolon && isdigit (lastcolon[1]))
+        onion_set_port (myonion_BM, lastcolon + 1);
+      char *webrootpath = NULL;
+      if (asprintf (&webrootpath, "%s/webroot/", bismon_directory) < 0
+          || !webrootpath || !webrootpath[0]
+          || access (webrootpath, R_OK | X_OK))
+        FATAL_BM ("failed to get or access webroot/ path - %m");
+      onion_handler *filehdl = onion_handler_export_local_new (webrootpath);
+      onion_handler *customhdl =
+        onion_handler_new (custom_onion_handler_BM, NULL, NULL);
+      if (!filehdl)
+        FATAL_BM ("failed to get onion webroot handler for %s", webrootpath);
+      onion_set_root_handler (myonion_BM, customhdl);
+      DBGPRINTF_BM ("run_onionweb after set root handler filehdl@%p",
+                    filehdl);
+      onion_handler_add (customhdl, filehdl);
+      ///
+      /// create the command pipe
+      {
+        int piparr[2] = { -1, -1 };
+        if (pipe2 (piparr, O_CLOEXEC | O_NONBLOCK))
+          FATAL_BM ("run_onionweb pipe failure for the command pipe - %m");
+        cmdpipe_rd_BM = piparr[0];
+        cmdpipe_wr_BM = piparr[1];
+        DBGPRINTF_BM
+          ("run_onionweb before onion_listen cmdpiprd#%d cmdpipwr#%d",
+           cmdpipe_rd_BM, cmdpipe_wr_BM);
+      }
+      int err = onion_listen (myonion_BM);      // since detached, returns now
+      DBGPRINTF_BM ("run_onionweb after onion_listen err=%d", err);
+      if (err)
+        FATAL_BM ("failed to do onion_listen (err#%d / %s)", err,
+                  strerror (err));
+      ///
+      /// should add our event loop, at least related to queued processes
+      /// (and their output pipes), to SIGCHLD and SIGTERM + SIGQUIT
+      /// see https://groups.google.com/a/coralbits.com/d/msg/onion-dev/m-wH-BY2MA0/QJqLNcHvAAAJ
+      /// and https://groups.google.com/a/coralbits.com/d/msg/onion-dev/ImjNf1EIp68/R37DW3mZAAAJ
+      plain_event_loop_BM ();
+    }
 }                               /* end run_onionweb_BM */
 
 ////////////////////////////////////////////////////////////////
@@ -492,8 +511,8 @@ websessiondatagcmark_BM (struct garbcoll_stBM *gc,
   ((typedhead_tyBM *) ws)->hgc = MARKGC_BM;
   if (ws->websess_ownobj)
     gcobjmark_BM (gc, ws->websess_ownobj);
-  if (ws->websess_userob)
-    gcobjmark_BM (gc, ws->websess_userob);
+  if (ws->websess_contribob)
+    gcobjmark_BM (gc, ws->websess_contribob);
   if (ws->websess_datav)
     EXTENDEDGCPROC_BM (gc, ws->websess_datav, fromob, depth + 1);
   gc->gc_nbmarks++;
@@ -680,8 +699,8 @@ custom_onion_handler_BM (void *clientdata,
     char *endcookie = NULL;
     int blencookie = bcookie ? strlen (bcookie) : 0;
     if (blencookie > BISMONION_WEBSESS_SUFLEN / 2
-        && sscanf (bcookie, "n%ur%u,%u:%n", &cookrank, &cookrand1, &cookrand2,
-                   &cookposoid) >= 3 && cookposoid > 4
+        && sscanf (bcookie, "n%ur%u,%u:%n", &cookrank, &cookrand1,
+                   &cookrand2, &cookposoid) >= 3 && cookposoid > 4
         && bcookie[cookposoid] == '_' && isdigit (bcookie[cookposoid + 1])
         && ((cookoid = parse_rawid_BM (bcookie + cookposoid, &endcookie)),
             validid_BM (cookoid)) && endcookie && *endcookie == (char) 0)
@@ -787,10 +806,8 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
                         onion_request * req, onion_response * resp)
 {
   objectval_tyBM *k_login_onion_handler = BMK_8qHowkDvzRL_03sltCgsDN2;
-  objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_login_onion_handler,
-                 objectval_tyBM * contribob;
-                 objectval_tyBM * sessionob;);
+                 objectval_tyBM * contribob;);
   const char *reqpath = onion_request_get_path (req);
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);
@@ -846,7 +863,11 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
             }
           if (good)
             {
-              DBGPRINTF_BM ("login_onion_handler POST good unhandled");
+              DBGPRINTF_BM ("login_onion_handler POST good");
+              return
+                do_login_redirect_onion_BM (_.contribob,
+                                            formorigpath ? : "/",
+                                            req, resp, CURFRAME_BM);
             }
           else
             {
@@ -949,6 +970,117 @@ do_forgot_onion_BM (char *formuser,
   free (respbuf), respbuf = NULL;
   return OCS_PROCESSED;
 }                               /* end do_forgot_onion_BM */
+
+onion_connection_status
+do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
+                            const char *location, onion_request * req,
+                            onion_response * resp,
+                            struct stackframe_stBM * stkf)
+{
+  static long sessioncounter;
+  objectval_tyBM *k_websession_object = BMK_56KY6TzyCU5_12De0mHE48M;
+  objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * contribob;    //
+                 objectval_tyBM * sessionob;    //
+                 value_tyBM cookiestrv;
+    );
+  ASSERT_BM (isobject_BM (contribobarg));
+  _.contribob = contribobarg;
+  DBGPRINTF_BM ("do_login_redirect_onion_BM start contribob %s location '%s'",
+                objectdbg_BM (_.contribob), location);
+  /// create the session
+  char sessidbuf[32];
+  memset (sessidbuf, 0, sizeof (sessidbuf));
+  _.sessionob = makeobj_BM ();
+  idtocbuf32_BM (objid_BM (_.sessionob), sessidbuf);
+  struct websessiondata_stBM *wsess = calloc (sizeof (*wsess), 1);
+  if (!wsess)
+    FATAL_BM ("failed to allocate websession data for %s",
+              objectdbg_BM (_.contribob));
+  wsess->websess_magic = 1;
+  wsess->websess_rank = 0;
+  wsess->websess_rand1 = 100 + (g_random_int () % (INT_MAX / 2));
+  wsess->websess_rand2 = 105 + (g_random_int () % (INT_MAX / 2));
+  wsess->websess_ownobj = _.sessionob;
+  wsess->websess_contribob = _.contribob;
+  wsess->websess_createtime = clocktime_BM (CLOCK_REALTIME);
+  wsess->websess_expiretime =
+    wsess->websess_createtime + WEBSESSION_EXPIRATION_DELAY;
+  objputpayload_BM (_.sessionob, wsess);
+  objputclass_BM (_.sessionob, k_websession_object);
+  wsess->websess_magic = BISMONION_WEBSESS_MAGIC;
+  /// add the session to the_web_sessions; its lock also serializes
+  /// access to our sessioncounter...
+  {
+    objlock_BM (BMP_the_web_sessions);
+    // this should never happen, but it is better to check
+    if (!objhasdictpayl_BM (BMP_the_web_sessions)
+        || objclass_BM (BMP_the_web_sessions) != k_websession_dict_object)
+      FATAL_BM ("corrupted `the_web_sessions` (of class %s)",
+                objectdbg_BM (objclass_BM (BMP_the_web_sessions)));
+    sessioncounter++;
+    wsess->websess_rank = sessioncounter;
+    _.cookiestrv =
+      sprintfstring_BM ("n%ldr%d,%d:%s", wsess->websess_rank,
+                        wsess->websess_rand1, wsess->websess_rand2,
+                        sessidbuf);
+    DBGPRINTF_BM ("do_login_redirect_onion_BM for contribob %s,\n"
+                  "... sessionob %s of cookie '%s'",
+                  objectdbg_BM (_.contribob), objectdbg1_BM (_.sessionob),
+                  bytstring_BM (_.cookiestrv));
+    objdictputpayl_BM (BMP_the_web_sessions, _.cookiestrv, _.sessionob);
+    objunlock_BM (BMP_the_web_sessions);
+  }
+  bool addedcookie =            //
+    onion_response_add_cookie (resp, "BISMONCOOKIE",
+                               bytstring_BM (_.cookiestrv),
+                               (time_t) wsess->websess_expiretime,
+                               "/",
+                               onion_webhost_bm,        /// domain
+                               0);
+  onion_response_set_code (resp, HTTP_REDIRECT);
+  onion_response_set_header (resp, "Location", location);
+  DBGPRINTF_BM
+    ("do_login_redirect_onion_BM sessionob %s webhost %s addedcookie %s",
+     objectdbg_BM (_.sessionob), onion_webhost_bm,
+     addedcookie ? "true" : "false");
+  char *respbuf = NULL;
+  size_t respsiz = 0;
+  FILE *fresp = open_memstream (&respbuf, &respsiz);
+  if (!fresp)
+    FATAL_BM ("do_login_redirect_onion open_memstream failure %m");
+  fprintf (fresp, "<!DOCTYPE html>\n");
+  fprintf (fresp, "<html><head><title>Bismon login redirect</title>\n"
+           "<meta http-equiv='refresh' content='2; URL=http://%s/%s'/>\n",
+           onion_webhost_bm, location);
+  fprintf (fresp, "</head>\n<body>\n");
+  fprintf (fresp,
+           "<h1>Bismon login redirection to <a href='http://%s/%s'>%s</a></h1>\n",
+           onion_webhost_bm, location, location);
+  fprintf (fresp, "<hr/>\n");
+  time_t nowt = 0;
+  time (&nowt);
+  struct tm nowtm;
+  char nowbuf[64];
+  memset (nowbuf, 0, sizeof (nowbuf));
+  memset (&nowtm, 0, sizeof (nowtm));
+  localtime_r (&nowt, &nowtm);
+  strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
+  fprintf (fresp, "<p><small>generated on <i>%s</i></small></p>\n", nowbuf);
+  fprintf (fresp, "</body>\n</html>\n");
+  fflush (fresp);
+  long ln = ftell (fresp);
+  fclose (fresp), fresp = NULL;
+  onion_response_set_length (resp, ln);
+  onion_response_write (resp, respbuf, ln);
+  onion_response_flush (resp);
+  DBGPRINTF_BM
+    ("do_login_redirect_onion_BM sessionob %s redirection to %s:\n%s\n",
+     objectdbg_BM (_.sessionob), respbuf);
+  free (respbuf), respbuf = NULL;
+  return OCS_PROCESSED;
+}                               /* end do_login_redirect_onion_BM */
 
 /******************************************************************/
 

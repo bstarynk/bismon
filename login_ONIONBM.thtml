@@ -17,13 +17,14 @@
     <small>(a free software persistent monitor for static source code analysis above <a href='http://gcc.gnu.org/'>GCC</a>)</small> stores <b>persistently</b> some few <i>personal
     data</i> about you, such as your username, internalid, email
     addresses.<br/>
-    <small>That data (with all of <tt>Bismon</tt>'s persistent
-    state) might be later shared or published thru
-      e.g. <a href='http://git-scm.com/'>git</a> or other means.</small>
+    <small>That data (with all of <tt>Bismon</tt>'s persistent state)
+    could be later shared or published -by the person in charge of
+    this particular <tt>Bismon</tt> running on <tt>{{host}}</tt> pid {{pid}}.</small>
     <br/>
-    <i>Do not login if you disagree</i> <small>(be aware that removing
-    your personal data from the persistent state might be technically
-    impossible or very difficult)</small>.</p>
+    <i>Do not login if you disagree</i> <small>(be aware that
+    completely removing your personal data from the persistent state
+      might be technically impossible or very difficult)</small>.</p>
+  
   <p class='tinyinfo_cl'>If you login, you accept this personal data processing.</p>
   <form action="/_login" method="post">
     <input type='hidden' name='origpath' value='{{origpath}}'/>
