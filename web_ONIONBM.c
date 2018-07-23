@@ -801,8 +801,8 @@ custom_onion_handler_BM (void *clientdata,
     if (!goodcookie)
       _.sessionob = false;
   }
-  DBGPRINTF_BM ("custom_onion_handle sessionob %s reqpath '%s'", objectdbg_BM (_.sessionob),
-                reqpath);
+  DBGPRINTF_BM ("custom_onion_handle sessionob %s reqpath '%s'",
+                objectdbg_BM (_.sessionob), reqpath);
   if (!_.sessionob)
     {
       if (reqmeth == OR_GET || reqmeth == OR_HEAD)
