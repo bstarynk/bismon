@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 767 objects
+// for 768 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -7211,6 +7211,20 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "give the hashset of already visited object"
 !)_8w8gLezc1gm_4plK3EfhuGk
+
+
+
+!(_8keZiP7vbFw_1ovBXqd6a0d |=webexchange_object|
+!~ name (~ webexchange_object
+~)
+!@ 1532328556.590
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the class of webexchange-s, i.e. HTTP request + reply handled by bismon"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+
+!)_8keZiP7vbFw_1ovBXqd6a0d
 
 
 

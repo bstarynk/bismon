@@ -644,12 +644,15 @@ webexchangedelete_BM (objectval_tyBM * ownobj,
 }                               /* end webexchangedelete_BM */
 
 
+
+
 onion_connection_status
 custom_onion_handler_BM (void *clientdata,
                          onion_request * req, onion_response * resp)
 {
   objectval_tyBM *k_custom_onion_handler = BMK_5C5Dfd8eVkR_3306NWk09Bn;
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
+  objectval_tyBM *k_webexchange_object = BMK_8keZiP7vbFw_1ovBXqd6a0d;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_custom_onion_handler,
                  objectval_tyBM * sessionob;);
   const char *reqpath = onion_request_get_path (req);
