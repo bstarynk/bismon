@@ -801,7 +801,7 @@ custom_onion_handler_BM (void *clientdata,
     if (!goodcookie)
       _.sessionob = false;
   }
-  DBGPRINTF_BM ("sessionob %s reqpath %s", objectdbg_BM (_.sessionob),
+  DBGPRINTF_BM ("custom_onion_handle sessionob %s reqpath '%s'", objectdbg_BM (_.sessionob),
                 reqpath);
   if (!_.sessionob)
     {
@@ -1190,12 +1190,12 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
     );
   ASSERT_BM (isobject_BM (sessionobarg));
   _.sessionob = sessionobarg;
-  DBGPRINTF_BM ("do_dynamic_onion start sessionob %s reqpath %s post %s",
+  DBGPRINTF_BM ("do_dynamic_onion start sessionob %s reqpath '%s' post %s",
                 objectdbg_BM (_.sessionob), reqpath,
                 postrequest ? "true" : "false");
 #warning unimplemented do_dynamic_onion
   WARNPRINTF_BM
-    ("do_dynamic_onion unimplemented  sessionob %s reqpath %s post %s",
+    ("do_dynamic_onion unimplemented  sessionob %s reqpath '%s' post %s",
      objectdbg_BM (_.sessionob), reqpath, postrequest ? "true" : "false");
   return OCS_NOT_IMPLEMENTED;
 }                               /* end do_dynamic_onion_BM */
