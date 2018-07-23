@@ -796,11 +796,12 @@ custom_onion_handler_BM (void *clientdata,
     if (!goodcookie)
       _.sessionob = false;
   }
-  DBGPRINTF_BM ("sessionob %s", objectdbg_BM (_.sessionob));
+  DBGPRINTF_BM ("sessionob %s reqpath %s", objectdbg_BM (_.sessionob),
+                reqpath);
   if (!_.sessionob)
     {
       if (reqmeth == OR_GET || reqmeth == OR_HEAD)
-        {
+        {                       // no session
           char pidbuf[16];
           snprintf (pidbuf, sizeof (pidbuf), "%d", (int) getpid ());
           time_t nowt = 0;
@@ -832,13 +833,29 @@ custom_onion_handler_BM (void *clientdata,
       else
         {
           // deny the request so return OCS_FORBIDDEN; we could use
-          // onion_server_set_internal_error_handler to make the eror
-          // page sexier
+          // onion_server_set_internal_error_handler to make the error
+          // HTML page sexier
           DBGPRINTF_BM
             ("onion request to %s which is not GET or HEAD without valid cookie",
              reqpath);
           return OCS_FORBIDDEN;
         }
+    }
+  else
+    {
+      // got sessionob, should process the request by making some webexchange
+      WARNPRINTF_BM ("custom_onion_handler unimplemented"       //
+                     " reqpath '%s' reqflags %#x:%s sessionob %s",      //
+                     reqpath, reqflags, //
+                     ((reqmeth == OR_GET) ? "GET"       //
+                      : (reqmeth == OR_HEAD) ? "HEAD"   //
+                      : (reqmeth == OR_POST) ? "POST"   //
+                      : (reqmeth == OR_OPTIONS) ? "OPTIONS"     //
+                      : (reqmeth == OR_PROPFIND) ? "PROPFIND"   //
+                      : snprintf (dbgmethbuf, sizeof (dbgmethbuf),      ///
+                                  "meth#%d", reqmeth)),
+                     objectdbg_BM (_.sessionob));
+#warning custom_onion_handler should make a webexchange object and find the webhandler
     }
   DBGPRINTF_BM ("end custom_onion_handler reqpath '%s' reqflags %#x:%s bcookie %s",     //
                 reqpath, reqflags,      //
@@ -1026,6 +1043,8 @@ do_forgot_onion_BM (char *formuser,
   free (respbuf), respbuf = NULL;
   return OCS_PROCESSED;
 }                               /* end do_forgot_onion_BM */
+
+
 
 onion_connection_status
 do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
