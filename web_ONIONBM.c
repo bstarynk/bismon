@@ -411,6 +411,12 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
                             struct stackframe_stBM *stkf);
 
 
+static onion_connection_status
+do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
+                     bool postrequest,
+                     onion_request * req,
+                     onion_response * resp, struct stackframe_stBM *stkf);
+
 ////////////////
 void
 run_onionweb_BM (int nbjobs)    // declared and used only in
@@ -652,7 +658,6 @@ custom_onion_handler_BM (void *clientdata,
 {
   objectval_tyBM *k_custom_onion_handler = BMK_5C5Dfd8eVkR_3306NWk09Bn;
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
-  objectval_tyBM *k_webexchange_object = BMK_8keZiP7vbFw_1ovBXqd6a0d;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_custom_onion_handler,
                  objectval_tyBM * sessionob;);
   const char *reqpath = onion_request_get_path (req);
@@ -844,17 +849,28 @@ custom_onion_handler_BM (void *clientdata,
   else
     {
       // got sessionob, should process the request by making some webexchange
-      WARNPRINTF_BM ("custom_onion_handler unimplemented"       //
-                     " reqpath '%s' reqflags %#x:%s sessionob %s",      //
-                     reqpath, reqflags, //
-                     ((reqmeth == OR_GET) ? "GET"       //
-                      : (reqmeth == OR_HEAD) ? "HEAD"   //
-                      : (reqmeth == OR_POST) ? "POST"   //
-                      : (reqmeth == OR_OPTIONS) ? "OPTIONS"     //
-                      : (reqmeth == OR_PROPFIND) ? "PROPFIND"   //
-                      : snprintf (dbgmethbuf, sizeof (dbgmethbuf),      ///
-                                  "meth#%d", reqmeth)),
-                     objectdbg_BM (_.sessionob));
+      bool posthttp = false;
+      if ((reqmeth == OR_GET) || (reqmeth == OR_HEAD))
+        posthttp = false;
+      else if (reqmeth == OR_POST)
+        posthttp = true;
+      else
+        {
+          WARNPRINTF_BM ("custom_onion_handler unexpected method "      //
+                         " reqpath '%s' reqflags %#x:%s sessionob %s",  //
+                         reqpath, reqflags,     //
+                         ((reqmeth == OR_GET) ? "GET"   //
+                          : (reqmeth == OR_HEAD) ? "HEAD"       //
+                          : (reqmeth == OR_POST) ? "POST"       //
+                          : (reqmeth == OR_OPTIONS) ? "OPTIONS" //
+                          : (reqmeth == OR_PROPFIND) ? "PROPFIND"       //
+                          : snprintf (dbgmethbuf, sizeof (dbgmethbuf),  ///
+                                      "meth#%d", reqmeth)),
+                         objectdbg_BM (_.sessionob));
+          return OCS_NOT_IMPLEMENTED;
+        }
+      return do_dynamic_onion_BM (_.sessionob, reqpath, posthttp, req, resp,
+                                  CURFRAME_BM);
 #warning custom_onion_handler should make a webexchange object and find the webhandler
     }
   DBGPRINTF_BM ("end custom_onion_handler reqpath '%s' reqflags %#x:%s bcookie %s",     //
@@ -1160,6 +1176,29 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
                 objectdbg_BM (_.sessionob));
   return OCS_PROCESSED;
 }                               /* end do_login_redirect_onion_BM */
+
+static onion_connection_status
+do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
+                     bool postrequest,
+                     onion_request * req,
+                     onion_response * resp, struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_webexchange_object = BMK_8keZiP7vbFw_1ovBXqd6a0d;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * sessionob;
+                 objectval_tyBM * exchangeob;
+    );
+  ASSERT_BM (isobject_BM (sessionobarg));
+  _.sessionob = sessionobarg;
+  DBGPRINTF_BM ("do_dynamic_onion start sessionob %s reqpath %s post %s",
+                objectdbg_BM (_.sessionob), reqpath,
+                postrequest ? "true" : "false");
+#warning unimplemented do_dynamic_onion
+  WARNPRINTF_BM
+    ("do_dynamic_onion unimplemented  sessionob %s reqpath %s post %s",
+     objectdbg_BM (_.sessionob), reqpath, postrequest ? "true" : "false");
+  return OCS_NOT_IMPLEMENTED;
+}                               /* end do_dynamic_onion_BM */
 
 /******************************************************************/
 
