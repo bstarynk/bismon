@@ -1085,11 +1085,8 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
   memset (sessidbuf, 0, sizeof (sessidbuf));
   _.sessionob = makeobj_BM ();
   idtocbuf32_BM (objid_BM (_.sessionob), sessidbuf);
-  struct websessiondata_stBM *wsess = calloc (sizeof (*wsess), 1);
-  if (!wsess)
-    FATAL_BM ("failed to allocate websession data for %s",
-              objectdbg_BM (_.contribob));
-  wsess->websess_head.htyp = typayl_websession_BM;
+  struct websessiondata_stBM *wsess =
+    allocgcty_BM (typayl_websession_BM, sizeof (*wsess));
   wsess->websess_magic = 1;
   wsess->websess_rank = 0;
   wsess->websess_rand1 = 100 + (g_random_int () % (INT_MAX / 2));
@@ -1177,7 +1174,11 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
   return OCS_PROCESSED;
 }                               /* end do_login_redirect_onion_BM */
 
-static onion_connection_status
+////////////////
+// lock for the web exchange count
+static pthread_mutex_t webexonion_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
+static long webexonion_count_BM;
+onion_connection_status
 do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                      bool postrequest,
                      onion_request * req,
@@ -1186,17 +1187,47 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   objectval_tyBM *k_webexchange_object = BMK_8keZiP7vbFw_1ovBXqd6a0d;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * sessionob;
-                 objectval_tyBM * exchangeob;
+                 objectval_tyBM * webexob;
     );
   ASSERT_BM (isobject_BM (sessionobarg));
   _.sessionob = sessionobarg;
   DBGPRINTF_BM ("do_dynamic_onion start sessionob %s reqpath '%s' post %s",
                 objectdbg_BM (_.sessionob), reqpath,
                 postrequest ? "true" : "false");
+  _.webexob = makeobj_BM ();
+  objputclass_BM (_.webexob, k_webexchange_object);
+  struct webexchangedata_stBM *wexda =
+    allocgcty_BM (typayl_webexchange_BM, sizeof (*wexda));
+  unsigned inisizew = 8192;
+  char *dbuf = malloc (inisizew * sizeof (void *));
+  if (!dbuf)
+    FATAL_BM ("malloc %zu bytes failed (%m)", inisizew * sizeof (void *));
+  memset (dbuf, 0, inisizew * sizeof (void *));
+  wexda->webx_sbuf.sbuf_indent = 0;
+  wexda->webx_sbuf.sbuf_dbuf = dbuf;
+  wexda->webx_sbuf.sbuf_size = inisizew * sizeof (void *);
+  wexda->webx_sbuf.sbuf_curp = dbuf;
+  wexda->webx_sbuf.sbuf_lastnl = NULL;
+  {
+    pthread_mutex_lock (&webexonion_mtx_BM);
+    webexonion_count_BM++;
+    wexda->webx_num = webexonion_count_BM;
+    pthread_mutex_unlock (&webexonion_mtx_BM);
+  }
+  wexda->webx_ownobj = _.webexob;
+  wexda->webx_sessobj = _.sessionob;
+  wexda->webx_datav = NULL;
+  wexda->webx_time = clocktime_BM (CLOCK_REALTIME);
+  wexda->webx_requ = req;
+  wexda->webx_resp = resp;
+  objputpayload_BM (_.webexob, wexda);
+  objtouchnow_BM (_.webexob);
+  wexda->webx_magic = BISMONION_WEBX_MAGIC;
 #warning unimplemented do_dynamic_onion
   WARNPRINTF_BM
-    ("do_dynamic_onion unimplemented  sessionob %s reqpath '%s' post %s",
-     objectdbg_BM (_.sessionob), reqpath, postrequest ? "true" : "false");
+    ("do_dynamic_onion unimplemented  sessionob %s reqpath '%s' post %s wexnum %ld webexob %s",
+     objectdbg_BM (_.sessionob), reqpath, postrequest ? "true" : "false",
+     wexda->webx_num, objectdbg1_BM (_.webexob));
   return OCS_NOT_IMPLEMENTED;
 }                               /* end do_dynamic_onion_BM */
 
