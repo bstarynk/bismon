@@ -1174,10 +1174,14 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
   return OCS_PROCESSED;
 }                               /* end do_login_redirect_onion_BM */
 
-////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////
 // lock for the web exchange count
 static pthread_mutex_t webexonion_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 static long webexonion_count_BM;
+////////////////
 onion_connection_status
 do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                      bool postrequest,
@@ -1186,8 +1190,8 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
 {
   objectval_tyBM *k_webexchange_object = BMK_8keZiP7vbFw_1ovBXqd6a0d;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * sessionob;
-                 objectval_tyBM * webexob;
+                 objectval_tyBM * sessionob; objectval_tyBM * webexob;
+                 value_tyBM failreasonv;
     );
   ASSERT_BM (isobject_BM (sessionobarg));
   _.sessionob = sessionobarg;
@@ -1220,6 +1224,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   wexda->webx_time = clocktime_BM (CLOCK_REALTIME);
   wexda->webx_requ = req;
   wexda->webx_resp = resp;
+  pthread_cond_init (&wexda->webx_cond_ready, NULL);
   objputpayload_BM (_.webexob, wexda);
   objtouchnow_BM (_.webexob);
   wexda->webx_magic = BISMONION_WEBX_MAGIC;
@@ -1228,6 +1233,41 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
     ("do_dynamic_onion unimplemented  sessionob %s reqpath '%s' post %s wexnum %ld webexob %s",
      objectdbg_BM (_.sessionob), reqpath, postrequest ? "true" : "false",
      wexda->webx_num, objectdbg1_BM (_.webexob));
+  int failcod = 0;
+  _.failreasonv = NULL;
+  struct failurehandler_stBM *prevfailureh = curfailurehandle_BM;
+  {
+    struct failurelockset_stBM flockset = { };
+    initialize_failurelockset_BM (&flockset, sizeof (flockset));
+    LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureweb, failcod,
+                             _.failreasonv);
+    curfailurehandle_BM = prevfailureh;
+    if (failcod)
+    lab_failureweb:
+      {
+        DBGPRINTF_BM
+          ("do_dynamic_onion failure reqpath '%s' failcod=%d failreasonv %s",
+           reqpath, failcod, debug_outstr_value_BM (_.failreasonv,
+                                                    CURFRAME_BM, 0));
+        destroy_failurelockset_BM (&flockset);
+        curfailurehandle_BM = NULL;
+#warning should reply with some failure HTML
+      }
+    else
+      {
+        // normal case, should find the web processing closure then apply it
+        DBGPRINTF_BM
+          ("do_dynamic_onion normal  sessionob %s reqpath '%s' post %s wexnum %ld webexob %s",
+           objectdbg_BM (_.sessionob), reqpath,
+           postrequest ? "true" : "false", wexda->webx_num,
+           objectdbg1_BM (_.webexob));
+#warning missing code in do_dynamic_onion for normal case
+        // the code to find the web processing closure and apply it should go here
+        destroy_failurelockset_BM (&flockset);
+        curfailurehandle_BM = NULL;
+      }
+  }
+  // should wait for the wexda->webx_cond_ready
   return OCS_NOT_IMPLEMENTED;
 }                               /* end do_dynamic_onion_BM */
 

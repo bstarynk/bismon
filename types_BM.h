@@ -737,6 +737,7 @@ struct webexchangedata_stBM
   int webx_num;
   objectval_tyBM *webx_ownobj;  /* owning object having this payload */
   objectval_tyBM *webx_sessobj; /* the websession object, if any */
+  pthread_cond_t webx_cond_ready;       /* condvar for readiness, under owning object's mutex */
   value_tyBM webx_datav;        /* supplementary data value */
   double webx_time;
   onion_request *webx_requ;
