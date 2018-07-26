@@ -1,6 +1,6 @@
 // generated persistent data file store1.bmon
 // this generated data file is GPLv3+ licensed
-// for 58 objects
+// for 59 objects
 // with 0 modules
 
 
@@ -905,6 +905,17 @@ _4ysNY0rIzNK_7JgIhrjYpxD
 ~)
 
 !)_0Ie11LN3K5q_0mcL2jRBwgk
+
+
+
+!(_5pSDWgvxstl_0Fw7ABJttm8 |=webdict_root|
+!~ name (~ webdict_root
+~)
+!@ 1532591671.564
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "root dictionnary for web requests"
+!)_5pSDWgvxstl_0Fw7ABJttm8
 
 
 

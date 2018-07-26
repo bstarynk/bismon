@@ -684,7 +684,7 @@ custom_onion_handler_BM (void *clientdata,
   // so I special-case when the request corresponds to an existing file path
   // but for safety I don't do that for any URL containing /. or ..
   if (strlen (reqpath) > 2
-      && !strstr (reqpath, "/.") & !strstr (reqpath, ".."))
+      && !strstr (reqpath, "/.") && !strstr (reqpath, ".."))
     {
       char *fipath = NULL;
       if (asprintf (&fipath, "%s/webroot/%s", bismon_directory, reqpath) > 0
@@ -841,7 +841,7 @@ custom_onion_handler_BM (void *clientdata,
           // onion_server_set_internal_error_handler to make the error
           // HTML page sexier
           DBGPRINTF_BM
-            ("onion request to %s which is not GET or HEAD without valid cookie",
+            ("onion request to '%s' which is not GET or HEAD without valid cookie",
              reqpath);
           return OCS_FORBIDDEN;
         }
@@ -868,6 +868,11 @@ custom_onion_handler_BM (void *clientdata,
                                       "meth#%d", reqmeth)),
                          objectdbg_BM (_.sessionob));
           return OCS_NOT_IMPLEMENTED;
+        }
+      if (strstr (reqpath, "/.") || strstr (reqpath, ".."))
+        {
+          DBGPRINTF_BM ("onion request to invalid '%s'", reqpath);
+          return OCS_FORBIDDEN;
         }
       return do_dynamic_onion_BM (_.sessionob, reqpath, posthttp, req, resp,
                                   CURFRAME_BM);
