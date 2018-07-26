@@ -1404,6 +1404,9 @@ extern void websessiondelete_BM (objectval_tyBM * ownobj,
 extern void webexchangedelete_BM (objectval_tyBM * ownobj,
                                   struct webexchangedata_stBM *we);
 extern void stop_onion_event_loop_BM (void);
+static inline bool objhaswebexchangepayl_BM (const objectval_tyBM * obj);
+static inline struct webexchangedata_stBM
+  *objgetwebexchangepayl_BM (objectval_tyBM * obj);
 #endif /*BISMONION*/
 ////////////////////////////////////////////////////////////////
 // user data support - in scalar_BM.c

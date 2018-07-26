@@ -2371,5 +2371,25 @@ objhashmapvalmakenodeofkeyspayl_BM (objectval_tyBM * obj,
   return NULL;
 }                               /* end objhashmapvalmakenodeofkeyspayl_BM  */
 
+
+////////////////////////////////////////////////////////////////
+#ifdef BISMONION
+bool
+objhaswebexchangepayl_BM (const objectval_tyBM * obj)
+{
+  extendedval_tyBM payl = objpayload_BM (obj);
+  if (!payl)
+    return false;
+  return valtype_BM ((const value_tyBM) payl) == typayl_webexchange_BM;
+}                               /* end objhaswebexchangepayl_BM */
+
+struct webexchangedata_stBM *
+objgetwebexchangepayl_BM (objectval_tyBM * obj)
+{
+  if (objhaswebexchangepayl_BM (obj))
+    return (struct webexchangedata_stBM *) objpayload_BM (obj);
+}                               /* end objgetwebexchangepayl_BM */
+
+#endif /*BISMONION*/
 ////////////////////////////////////////////////////////////////
 #endif /*INLINE_BM_INCLUDED */
