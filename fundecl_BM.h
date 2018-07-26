@@ -1406,7 +1406,22 @@ extern void webexchangedelete_BM (objectval_tyBM * ownobj,
 extern void stop_onion_event_loop_BM (void);
 static inline bool objhaswebexchangepayl_BM (const objectval_tyBM * obj);
 static inline struct webexchangedata_stBM
-  *objgetwebexchangepayl_BM (objectval_tyBM * obj);
+  *objgetwebexchangepayl_BM (const objectval_tyBM * obj);
+static inline const char *objwebexchangerequestpathpayl_BM (const
+                                                            objectval_tyBM *
+                                                            obj);
+static inline unsigned objwebexchangerequestmethodpayl_BM (const
+                                                           objectval_tyBM *
+                                                           obj);
+static inline onion_request *objwebexchangerequestpayl_BM (const
+                                                           objectval_tyBM *
+                                                           obj);
+static inline onion_response *objwebexchangeresponsepayl_BM (const
+                                                             objectval_tyBM *
+                                                             obj);
+static inline objectval_tyBM *objwebexchangesessionpayl_BM (const
+                                                            objectval_tyBM *
+                                                            obj);
 #endif /*BISMONION*/
 ////////////////////////////////////////////////////////////////
 // user data support - in scalar_BM.c
