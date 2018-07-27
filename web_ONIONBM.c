@@ -1198,6 +1198,8 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                  objectval_tyBM * sessionob; objectval_tyBM * webexob;
                  value_tyBM failreasonv;
     );
+  unsigned reqflags = onion_request_get_flags (req);
+  unsigned reqmeth = (reqflags & OR_METHODS);
   ASSERT_BM (isobject_BM (sessionobarg));
   _.sessionob = sessionobarg;
   DBGPRINTF_BM ("do_dynamic_onion start sessionob %s reqpath '%s' post %s",
@@ -1256,7 +1258,43 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                                                     CURFRAME_BM, 0));
         destroy_failurelockset_BM (&flockset);
         curfailurehandle_BM = NULL;
-#warning should reply with some failure HTML
+        char *respbuf = NULL;
+        size_t respsiz = 0;
+        FILE *fresp = open_memstream (&respbuf, &respsiz);
+        if (!fresp)
+          FATAL_BM
+            ("do_dynamic_onion (failure case failcode %d) open_memstream failure %m",
+             failcod);
+        fprintf (fresp, "<!DOCTYPE html>\n");
+        fprintf (fresp, "<html><head><title>Bismon failure</title>\n");
+        fprintf (fresp, "</head>\n<body>\n");
+        fprintf (fresp, "<h1>Bismon failure</h1>\n");
+        fprintf (fresp, "<p>Request <i>%s</i> of path '<tt>%s</tt>' <b>failed</b>.<br/>\n",     //
+                 ((reqmeth == OR_GET) ? "GET"   //
+                  : (reqmeth == OR_HEAD) ? "HEAD"       //
+                  : (reqmeth == OR_POST) ? "POST"       //
+                  : "???"), reqpath);
+        fprintf (fresp, "Failure code %d, reason %s</p>\n", failcod,
+                 debug_outstr_value_BM (_.failreasonv, CURFRAME_BM, 0));
+        time_t nowt = 0;
+        time (&nowt);
+        struct tm nowtm;
+        char nowbuf[64];
+        memset (nowbuf, 0, sizeof (nowbuf));
+        memset (&nowtm, 0, sizeof (nowtm));
+        localtime_r (&nowt, &nowtm);
+        strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
+        fprintf (fresp, "<p><small>generated on <i>%s</i></small></p>\n",
+                 nowbuf);
+        fprintf (fresp, "</body>\n</html>\n");
+        fflush (fresp);
+        long ln = ftell (fresp);
+        fclose (fresp), fresp = NULL;
+        onion_response_set_code (resp, HTTP_INTERNAL_ERROR);
+        onion_response_set_length (resp, ln);
+        onion_response_write (resp, respbuf, ln);
+        onion_response_flush (resp);
+        return OCS_PROCESSED;
       }
     else
       {
