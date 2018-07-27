@@ -1187,6 +1187,13 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
 static pthread_mutex_t webexonion_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 static long webexonion_count_BM;
 ////////////////
+
+static value_tyBM find_web_handler_BM (objectval_tyBM * sessionobarg,
+                                       objectval_tyBM * dictobarg, int depth,
+                                       const char *path,
+                                       struct stackframe_stBM *stkf);
+
+
 onion_connection_status
 do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                      bool postrequest,
@@ -1196,7 +1203,8 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   objectval_tyBM *k_webexchange_object = BMK_8keZiP7vbFw_1ovBXqd6a0d;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * sessionob; objectval_tyBM * webexob;
-                 value_tyBM failreasonv;
+                 value_tyBM failreasonv;        //
+                 value_tyBM webhandlerv;        //
     );
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);
@@ -1301,6 +1309,9 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
            objectdbg_BM (_.sessionob), reqpath,
            postrequest ? "true" : "false", wexda->webx_num,
            objectdbg1_BM (_.webexob));
+        _.webhandlerv =
+          find_web_handler_BM (_.sessionob, BMP_webdict_root, 0, reqpath,
+                               CURFRAME_BM);
 #warning missing code in do_dynamic_onion for normal case
         // the code to find the web processing closure and apply it should go here
         destroy_failurelockset_BM (&flockset);
@@ -1310,6 +1321,28 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   // should wait for the wexda->webx_cond_ready
   return OCS_NOT_IMPLEMENTED;
 }                               /* end do_dynamic_onion_BM */
+
+
+#define MAX_WEB_HANDLER_DEPTH_BM 40
+value_tyBM
+find_web_handler_BM (objectval_tyBM * sessionobarg,
+                     objectval_tyBM * dictobarg, int depth, const char *path,
+                     struct stackframe_stBM * stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * sessionob; objectval_tyBM * dictob;
+    );
+  _.sessionob = sessionobarg;
+  _.dictob = dictobarg;
+  DBGPRINTF_BM
+    ("find_web_handler start sessionob %s dictob %s depth %d path '%s'",
+     objectdbg_BM (_.sessionob), objectdbg1_BM (_.dictob), depth, path);
+#warning find_web_handler unimplemented
+  if (depth > MAX_WEB_HANDLER_DEPTH_BM)
+    {
+    }
+  FATAL_BM ("find_web_handler_BM unimplemented path='%s'", path);
+}                               /* end find_web_handler_BM */
 
 /******************************************************************/
 
