@@ -1235,7 +1235,6 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   objputpayload_BM (_.webexob, wexda);
   objtouchnow_BM (_.webexob);
   wexda->webx_magic = BISMONION_WEBX_MAGIC;
-#warning unimplemented do_dynamic_onion
   WARNPRINTF_BM
     ("do_dynamic_onion unimplemented  sessionob %s reqpath '%s' post %s wexnum %ld webexob %s",
      objectdbg_BM (_.sessionob), reqpath, postrequest ? "true" : "false",
@@ -1252,10 +1251,8 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
     if (failcod)
     lab_failureweb:
       {
-        DBGPRINTF_BM
-          ("do_dynamic_onion failure reqpath '%s' failcod=%d failreasonv %s",
-           reqpath, failcod, debug_outstr_value_BM (_.failreasonv,
-                                                    CURFRAME_BM, 0));
+        WARNPRINTF_BM ("do_dynamic_onion failure reqpath '%s' failcod=%d failreasonv %s", reqpath, failcod,     //
+                       debug_outstr_value_BM (_.failreasonv, CURFRAME_BM, 0));
         destroy_failurelockset_BM (&flockset);
         curfailurehandle_BM = NULL;
         char *respbuf = NULL;
