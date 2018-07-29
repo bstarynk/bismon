@@ -1182,6 +1182,8 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
 
 
 
+
+
 //////////////////////////////////////////////////////////////////////////
 // lock for the web exchange count
 static pthread_mutex_t webexonion_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
@@ -1196,17 +1198,22 @@ static value_tyBM find_web_handler_BM (objectval_tyBM * sessionobarg,
                                        struct stackframe_stBM *stkf);
 
 
+////////////////
 onion_connection_status
 do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                      bool postrequest,
                      onion_request * req,
                      onion_response * resp, struct stackframe_stBM *stkf)
 {
+  objectval_tyBM *k_no_value = BMK_7SYPOwPm7jc_2PeGiJ8uQiX;
   objectval_tyBM *k_webexchange_object = BMK_8keZiP7vbFw_1ovBXqd6a0d;
+  objectval_tyBM *k_failure_bad_closure = BMK_373gFe8m21E_47xzvCGxpI9;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * sessionob; objectval_tyBM * webexob;
                  value_tyBM failreasonv;        //
                  value_tyBM webhandlerv;        //
+                 value_tyBM restpathv;  //
+                 value_tyBM appresv;    //
     );
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);
@@ -1306,6 +1313,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
     else
       {
         int off = 0;
+        int reqlen = strlen (reqpath);
         // normal case, should find the web processing closure then apply it
         DBGPRINTF_BM
           ("do_dynamic_onion normal  sessionob %s reqpath '%s' post %s wexnum %ld webexob %s",
@@ -1315,13 +1323,34 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         _.webhandlerv =
           find_web_handler_BM (_.sessionob, BMP_webdict_root, req, 0, &off,
                                CURFRAME_BM);
-#warning missing code in do_dynamic_onion for normal case
-        // the code to find the web processing closure and apply it should go here
+        if (!_.webhandlerv)
+          FAILURE_BM (__LINE__, k_no_value, CURFRAME_BM);
+        else if (!isclosure_BM (_.webhandlerv))
+          FAILURE_BM (__LINE__,
+                      makenode1_BM (k_failure_bad_closure, _.webhandlerv),
+                      CURFRAME_BM);
+        if (off < 0)
+          off = 0;
+        else if (off > reqlen)
+          off = reqlen;
+        _.restpathv = (value_tyBM) makestring_BM (reqpath + off);
+        DBGPRINTF_BM ("do_dynamic_onion before apply webhandler %s restpath %s webexob %s",     //
+                      debug_outstr_value_BM (_.webhandlerv, CURFRAME_BM, 0),    //
+                      debug_outstr_value_BM (_.restpathv, CURFRAME_BM, 0),      //
+                      objectdbg_BM (_.webexob));
+        _.appresv =
+          apply2_BM (_.webhandlerv, CURFRAME_BM, _.restpathv, _.webexob);
+        DBGPRINTF_BM ("do_dynamic_onion after apply webhandler %s restpath %s webexob %s appres %s",    //
+                      debug_outstr_value_BM (_.webhandlerv, CURFRAME_BM, 0),    //
+                      debug_outstr_value_BM (_.restpathv, CURFRAME_BM, 0),      //
+                      objectdbg_BM (_.webexob), //
+                      debug_outstr_value_BM (_.appresv, CURFRAME_BM, 0));
         destroy_failurelockset_BM (&flockset);
         curfailurehandle_BM = NULL;
       }
   }
   // should wait for the wexda->webx_cond_ready
+#warning missing code in do_dynamic_onion to wait
   return OCS_NOT_IMPLEMENTED;
 }                               /* end do_dynamic_onion_BM */
 
