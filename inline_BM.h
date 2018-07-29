@@ -2410,7 +2410,7 @@ objwebexchangerequestmethodpayl_BM (const objectval_tyBM * obj)
     return NULL;
   ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
   if (!wxda->webx_requ)
-    return NULL;
+    return 0;
   return onion_request_get_flags (wxda->webx_requ) & OR_METHODS;
 }                               /* end objwebexchangerequestmethodpayl_BM */
 

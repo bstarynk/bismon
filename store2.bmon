@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 771 objects
+// for 772 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -7247,6 +7247,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "give the hashset of already visited object"
 !)_8w8gLezc1gm_4plK3EfhuGk
+
+
+
+!(_8Rwc7G3hQ0G_230O74aoi1w |=web_empty_handler|
+!~ name (~ web_empty_handler
+~)
+!@ 1532848962.132
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the empty handler in web dictionnary"
+!)_8Rwc7G3hQ0G_230O74aoi1w
 
 
 

@@ -1189,8 +1189,10 @@ static long webexonion_count_BM;
 ////////////////
 
 static value_tyBM find_web_handler_BM (objectval_tyBM * sessionobarg,
-                                       objectval_tyBM * dictobarg, int depth,
-                                       const char *path,
+                                       objectval_tyBM * dictobarg,
+                                       onion_request * req,
+                                       int depth,
+                                       int *poffset,
                                        struct stackframe_stBM *stkf);
 
 
@@ -1303,6 +1305,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
       }
     else
       {
+        int off = 0;
         // normal case, should find the web processing closure then apply it
         DBGPRINTF_BM
           ("do_dynamic_onion normal  sessionob %s reqpath '%s' post %s wexnum %ld webexob %s",
@@ -1310,7 +1313,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
            postrequest ? "true" : "false", wexda->webx_num,
            objectdbg1_BM (_.webexob));
         _.webhandlerv =
-          find_web_handler_BM (_.sessionob, BMP_webdict_root, 0, reqpath,
+          find_web_handler_BM (_.sessionob, BMP_webdict_root, req, 0, &off,
                                CURFRAME_BM);
 #warning missing code in do_dynamic_onion for normal case
         // the code to find the web processing closure and apply it should go here
@@ -1326,22 +1329,101 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
 #define MAX_WEB_HANDLER_DEPTH_BM 40
 value_tyBM
 find_web_handler_BM (objectval_tyBM * sessionobarg,
-                     objectval_tyBM * dictobarg, int depth, const char *path,
-                     struct stackframe_stBM * stkf)
+                     objectval_tyBM * dictobarg,
+                     onion_request * req,
+                     int depth, int *poffset, struct stackframe_stBM * stkf)
 {
+  objectval_tyBM *k_depth = BMK_17YdW6dWrBA_2mn4QmBjMNs;
+  objectval_tyBM *k_web_empty_handler = BMK_8Rwc7G3hQ0G_230O74aoi1w;
+  objectval_tyBM *k_webhandler_dict_object = BMK_23YbAS1S796_1ZeW8OZfp1J;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * sessionob; objectval_tyBM * dictob;
+                 objectval_tyBM * sessionob;    //
+                 objectval_tyBM * dictob;       //
+                 objectval_tyBM * valob;        //
+                 objectval_tyBM * nextdictob;   //
+                 value_tyBM wordv;      //
+                 value_tyBM valv;       //
     );
   _.sessionob = sessionobarg;
   _.dictob = dictobarg;
+  ASSERT_BM (isobject_BM (_.dictob));
+  ASSERT_BM (isobject_BM (_.sessionob));
+  const char *path = onion_request_get_path (req);
+  int pathlen = strlen (path);
+  int off = *poffset;
+  if (off > pathlen)
+    off = pathlen;
   DBGPRINTF_BM
-    ("find_web_handler start sessionob %s dictob %s depth %d path '%s'",
-     objectdbg_BM (_.sessionob), objectdbg1_BM (_.dictob), depth, path);
-#warning find_web_handler unimplemented
+    ("find_web_handler start sessionob %s dictob %s depth %d path '%s' off#%d",
+     objectdbg_BM (_.sessionob), objectdbg1_BM (_.dictob), depth, path, off);
   if (depth > MAX_WEB_HANDLER_DEPTH_BM)
     {
+      WARNPRINTF_BM ("find_web_handler path '%s' too deep %d", path, depth);
+      FAILURE_BM (__LINE__, k_depth, CURFRAME_BM);
     }
-  FATAL_BM ("find_web_handler_BM unimplemented path='%s'", path);
+  const char *subpath = path + off;
+  const char *slash = strchr (subpath, '/');
+  if (!slash)
+    slash = subpath + strlen (subpath);
+  int wordlen = slash - subpath;
+  const char *word = NULL;
+  char wordbuf[64];
+  memset (wordbuf, 0, sizeof (wordbuf));
+  if (wordlen < sizeof (wordbuf))
+    {
+      if (wordlen > 0)
+        strncpy (wordbuf, subpath, wordlen - 1);
+      word = wordbuf;
+    }
+  else
+    {
+      word = strndup (subpath, wordlen - 1);
+      if (!word)
+        FATAL_BM ("strndup failure (wordlen=%d)", wordlen);
+    }
+  DBGPRINTF_BM ("find_web_handler path='%s' dictob %s off=%d word='%s'",
+                path, objectdbg_BM (_.dictob), off, word);
+  {
+    objlock_BM (_.dictob);
+    if (word && word[0])
+      {
+        _.wordv = (value_tyBM) makestring_BM (word);
+        _.valv = objdictgetpayl_BM (_.dictob, _.wordv);
+        *poffset = off + wordlen;
+      }
+    else
+      _.valv = objgetattr_BM (_.dictob, k_web_empty_handler);
+    objunlock_BM (_.dictob);
+  }
+  DBGPRINTF_BM ("find_web_handler word '%s' path '%s' dictob %s valv %s",
+                word, path, objectdbg_BM (_.dictob),
+                debug_outstr_value_BM (_.valv, CURFRAME_BM, 0));
+  if (isclosure_BM (_.valv))
+    LOCALRETURN_BM (_.valv);
+  else if (isobject_BM (_.valv))
+    {
+      _.nextdictob = NULL;
+      _.valob = objectcast_BM (_.valv);
+      objlock_BM (_.valob);
+      if (objectisinstance_BM (_.valob, k_webhandler_dict_object))
+        _.nextdictob = _.valob;
+      objunlock_BM (_.valob);
+      DBGPRINTF_BM ("find_web_handler word '%s' path '%s' nextdictob %s",
+                    word, path, objectdbg_BM (_.nextdictob));
+      _.valv = NULL;
+      if (_.nextdictob)
+        _.valv = find_web_handler_BM (_.sessionob, _.nextdictob,
+                                      req, depth + 1, poffset, CURFRAME_BM);
+      DBGPRINTF_BM
+        ("find_web_handler word '%s' path '%s' nextdictob %s depth %d gives valv %s",
+         word, path, objectdbg_BM (_.nextdictob), depth,
+         debug_outstr_value_BM (_.valv, CURFRAME_BM, 0));
+
+      LOCALRETURN_BM (_.valv);
+    }
+  DBGPRINTF_BM ("find_web_handler word '%s' path '%s' not found in dictob %s",
+                word, path, objectdbg_BM (_.dictob));
+  LOCALRETURN_BM (NULL);
 }                               /* end find_web_handler_BM */
 
 /******************************************************************/
