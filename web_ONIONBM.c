@@ -660,6 +660,11 @@ custom_onion_handler_BM (void *clientdata,
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_custom_onion_handler,
                  objectval_tyBM * sessionob;);
+  while (agenda_need_gc_BM ())
+    {
+      DBGPRINTF_BM ("custom_onion_handler need GC");
+      agenda_wait_gc_BM ();
+    }
   const char *reqpath = onion_request_get_path (req);
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);

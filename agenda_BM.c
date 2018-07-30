@@ -70,6 +70,12 @@ static objectval_tyBM *choose_task_internal_agenda_BM (void);
 static struct hashsetobj_stBM *maybe_reorganize_taskhshet_agenda_BM     //
   (struct hashsetobj_stBM *tkhset);
 
+volatile bool
+agenda_need_gc_BM (void)
+{
+  return atomic_load (&ti_needgc_BM);
+}                               /* end agenda_need_gc_BM */
+
 
 void
 initialize_agenda_BM (void)
@@ -83,6 +89,22 @@ initialize_agenda_BM (void)
 #define TASKWAITMILLISECONDS_BM 300
 #define STOPWAITMILLISECONDS_BM 440
 #define WORKTHREADSTACKSIZE_BM (10*1024*1024)
+
+
+
+void
+agenda_wait_gc_BM (void)
+{
+  struct timespec ts = { 0, 0 };
+  get_realtimespec_delayedms_BM (&ts, GCWAITMILLISECONDS_BM);
+  NONPRINTF_BM
+    ("agenda_wait_gc_BM tid#%ld before timedwait elapsed %.3f s",
+     (long) gettid_BM (), elapsedtime_BM ());
+  pthread_mutex_lock (&ti_agendamtx_BM);
+  pthread_cond_timedwait (&ti_agendacond_BM, &ti_agendamtx_BM, &ts);
+  pthread_mutex_unlock (&ti_agendamtx_BM);
+}                               /* end agenda_wait_gc_BM */
+
 // the work routine, passed to pthread_create
 void *
 run_agendaworker_BM (void *ad)
@@ -415,6 +437,8 @@ stop_agenda_work_threads_BM (void)
   while (atomic_load (&ti_countendedthreads_BM) < nbwth);
 }                               /* end stop_agenda_work_threads_BM */
 
+
+// agenda_suspend_for_gc_BM is called from full_garbage_collection_BM
 void
 agenda_suspend_for_gc_BM (void)
 {
