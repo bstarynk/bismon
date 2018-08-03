@@ -1815,6 +1815,7 @@ read_sigchld_BM (int sigfd)
 }                               /* end read_sigchld_BM */
 
 
+#warning perhaps webonion_suspend_before_gc_BM & webonion_continue_after_gc_BM are needed, see agenda_BM.c
 static void
 read_commandpipe_BM (void)
 {
@@ -1825,6 +1826,8 @@ read_commandpipe_BM (void)
     {
       DBGPRINTF_BM ("read_commandpipe_BM '%s' incomplete", buf);
       WARNPRINTF_BM ("read_commandpipe_BM unimplemented");
+      // if buf[0] is 'X', execute a deferred command
+      // if buf[0] is 'G', run the garbage collector. Not sure!
 #warning read_commandpipe_BM incomplete
       // should handle the command
     }

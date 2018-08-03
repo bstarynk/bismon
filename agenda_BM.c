@@ -483,6 +483,7 @@ agenda_suspend_for_gc_BM (void)
         break;
     }
   NONPRINTF_BM ("agenda_suspend_for_gc_BM done");
+#warning perhaps agenda_suspend_for_gc_BM should interact with web onion...
 }                               /* end agenda_suspend_for_gc_BM */
 
 void
@@ -504,6 +505,7 @@ agenda_continue_after_gc_BM (void)
   usleep (1);
   NONPRINTF_BM ("agenda_continue_after_gc end tid#%ld elapsed %.3f s",
                 (long) gettid_BM (), elapsedtime_BM ());
+#warning perhaps agenda_continue_after_gc_BM should interact with web onion...
 }                               /* end agenda_continue_after_gc_BM */
 
 void
