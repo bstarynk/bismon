@@ -225,6 +225,11 @@ indenttempmodule:
 	echo ONIONBM.onion objcirc is $^ left $<
 	$(COMPILE.c)  $(shell $(PKGCONFIG) --cflags $(ONIONPACKAGES)) -DBISMONION -c $< -o $@
 
+_%_ONIONBM.onion.o: _%_ONIONBM.c  _%_ONIONBM.h
+	echo _ONIONBM.onion objcirc is $^ left $<
+	$(COMPILE.c) -DBISMONION -c $< -o $@
+
+web_ONIONBM.onion.o:  web_ONIONBM.c bismon.h $(GENERATED_HEADERS) $(BM_HEADERS) web_ONIONBM.const.h _login_ONIONBM.h
 %_BM.const.h: %_BM.c BM_makeconst
 	./BM_makeconst -H $@ $<
 %_GTKBM.const.h: %_GTKBM.c BM_makeconst
@@ -294,7 +299,7 @@ outdump: bismongtk bismonion  modules
 clean:
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
 	$(RM) core* *.i *.ii *prof.out gmon.out
-	$(RM) *_BM.const.h _bm_allconsts*.c
+	$(RM) *BM.const.h _bm_allconsts*.c
 	$(RM) $(patsubst %.thtml, _%.c, $(ONIONBM_WEBTEMPLATES))
 	$(RM) $(patsubst %.thtml, _%.h, $(ONIONBM_WEBTEMPLATES))
 	$(RM) modubin/*.so modules/*.i modules/*% modules/*~ modules/*- bismon BM_makeconst
