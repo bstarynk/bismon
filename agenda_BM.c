@@ -448,13 +448,13 @@ agenda_suspend_for_gc_BM (void)
   bool alldoinggc = false;
   int nbwth = ti_nbworkers_BM;
   long loopcnt = 0;
-  NONPRINTF_BM ("agenda_suspend_for_gc_BM nwth=%d", nbwth);
+  DBGPRINTF_BM ("agenda_suspend_for_gc_BM nwth=%d", nbwth);
   while (!alldoinggc)
     {
       alldoinggc = false;
       int wix = 0;
       loopcnt++;
-      NONPRINTF_BM
+      DBGPRINTF_BM
         ("agenda_suspend_for_gc_BM elapsed %.3f s tid%ld loopcnt%ld",
          elapsedtime_BM (), (long) gettid_BM (), loopcnt);
       pthread_mutex_lock (&ti_agendamtx_BM);
@@ -482,7 +482,12 @@ agenda_suspend_for_gc_BM (void)
       else
         break;
     }
-  NONPRINTF_BM ("agenda_suspend_for_gc_BM done");
+#ifdef BISMONION
+  DBGPRINTF_BM
+    ("agenda_suspend_for_gc_BM before webonion_suspend_before_gc_BM");
+  webonion_suspend_before_gc_BM ();
+#endif //BISMONION
+  DBGPRINTF_BM ("agenda_suspend_for_gc_BM done");
 #warning perhaps agenda_suspend_for_gc_BM should interact with web onion...
 }                               /* end agenda_suspend_for_gc_BM */
 
@@ -491,7 +496,7 @@ agenda_continue_after_gc_BM (void)
 {
   ASSERT_BM (curthreadinfo_BM == NULL);
   int nbwth = ti_nbworkers_BM;
-  NONPRINTF_BM ("agenda_continue_after_gc tid#%ld elapsed %.3f s",
+  DBGPRINTF_BM ("agenda_continue_after_gc tid#%ld elapsed %.3f s",
                 (long) gettid_BM (), elapsedtime_BM ());
   atomic_store (&ti_needgc_BM, false);
   {
@@ -502,10 +507,15 @@ agenda_continue_after_gc_BM (void)
   }
   pthread_cond_broadcast (&ti_agendacond_BM);
   atomic_store (&ti_needgc_BM, false);
-  usleep (1);
-  NONPRINTF_BM ("agenda_continue_after_gc end tid#%ld elapsed %.3f s",
+#ifdef BISMONION
+  DBGPRINTF_BM
+    ("agenda_continue_after_gc before webonion_continue_after_gc_BM tid#%ld elapsed %.3f s",
+     (long) gettid_BM (), elapsedtime_BM ());
+  webonion_continue_after_gc_BM ();
+#endif /*BISMONION*/
+    usleep (5);
+  DBGPRINTF_BM ("agenda_continue_after_gc end tid#%ld elapsed %.3f s",
                 (long) gettid_BM (), elapsedtime_BM ());
-#warning perhaps agenda_continue_after_gc_BM should interact with web onion...
 }                               /* end agenda_continue_after_gc_BM */
 
 void

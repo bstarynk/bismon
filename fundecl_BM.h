@@ -1422,6 +1422,9 @@ static inline onion_response *objwebexchangeresponsepayl_BM (const
 static inline objectval_tyBM *objwebexchangesessionpayl_BM (const
                                                             objectval_tyBM *
                                                             obj);
+extern void webonion_suspend_before_gc_BM (void);
+extern void webonion_continue_after_gc_BM (void);
+extern void stop_onion_event_loop_BM (void);
 #endif /*BISMONION*/
 ////////////////////////////////////////////////////////////////
 // user data support - in scalar_BM.c

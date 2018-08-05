@@ -72,6 +72,9 @@ static void read_sigchld_BM (int sigfd);
 // handle the command pipe
 static void read_commandpipe_BM (void);
 
+static void register_onion_thread_stack_BM (struct stackframe_stBM *);
+static void unregister_onion_thread_stack_BM (struct stackframe_stBM *);
+
 /*** Our websession cookies are something like
      n<rank>r<rand1>t<rand2>o<oid> where <rank> is the websess_rank,
      <rand1> and <rand2> are random integers, <oid> is the websession
@@ -656,6 +659,7 @@ onion_connection_status
 custom_onion_handler_BM (void *clientdata,
                          onion_request * req, onion_response * resp)
 {
+  onion_connection_status result = OCS_NOT_PROCESSED;
   objectval_tyBM *k_custom_onion_handler = BMK_5C5Dfd8eVkR_3306NWk09Bn;
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_custom_onion_handler,
@@ -698,8 +702,10 @@ custom_onion_handler_BM (void *clientdata,
           DBGPRINTF_BM ("custom_onion_handler found fipath %s", fipath);
           free (fipath), fipath = NULL;
           return OCS_NOT_PROCESSED;
+
         }
     }
+  register_onion_thread_stack_BM (CURFRAME_BM);
   bool goodcookie = false;
   {
     unsigned cookrank = 0;
@@ -811,7 +817,7 @@ custom_onion_handler_BM (void *clientdata,
   if (!_.sessionob)
     {
       if (reqmeth == OR_GET || reqmeth == OR_HEAD)
-        {                       // no session
+        {                       // no session for a GET or HEAD request
           char pidbuf[16];
           snprintf (pidbuf, sizeof (pidbuf), "%d", (int) getpid ());
           time_t nowt = 0;
@@ -838,9 +844,11 @@ custom_onion_handler_BM (void *clientdata,
           onion_dict_add (ctxdic, "gentime", nowbuf, OD_DUP_VALUE);
           login_ONIONBM_thtml (ctxdic, resp);
           onion_dict_free (ctxdic);
-          return OCS_PROCESSED;
+          result = OCS_PROCESSED;
+          unregister_onion_thread_stack_BM (CURFRAME_BM);
+          return result;
         }
-      else
+      else                      // no session for a POST or other (non-GET, non-HEAD) request
         {
           // deny the request so return OCS_FORBIDDEN; we could use
           // onion_server_set_internal_error_handler to make the error
@@ -848,7 +856,9 @@ custom_onion_handler_BM (void *clientdata,
           DBGPRINTF_BM
             ("onion request to '%s' which is not GET or HEAD without valid cookie",
              reqpath);
-          return OCS_FORBIDDEN;
+          result = OCS_FORBIDDEN;
+          unregister_onion_thread_stack_BM (CURFRAME_BM);
+          return result;
         }
     }
   else
@@ -872,16 +882,21 @@ custom_onion_handler_BM (void *clientdata,
                           : snprintf (dbgmethbuf, sizeof (dbgmethbuf),  ///
                                       "meth#%d", reqmeth)),
                          objectdbg_BM (_.sessionob));
-          return OCS_NOT_IMPLEMENTED;
+          result = OCS_NOT_IMPLEMENTED;
+          unregister_onion_thread_stack_BM (CURFRAME_BM);
+          return result;
         }
       if (strstr (reqpath, "/.") || strstr (reqpath, ".."))
         {
           DBGPRINTF_BM ("onion request to invalid '%s'", reqpath);
-          return OCS_FORBIDDEN;
+          result = OCS_FORBIDDEN;
+          unregister_onion_thread_stack_BM (CURFRAME_BM);
+          return result;
         }
-      return do_dynamic_onion_BM (_.sessionob, reqpath, posthttp, req, resp,
-                                  CURFRAME_BM);
-#warning custom_onion_handler should make a webexchange object and find the webhandler
+      result = do_dynamic_onion_BM (_.sessionob, reqpath, posthttp, req, resp,
+                                    CURFRAME_BM);
+      unregister_onion_thread_stack_BM (CURFRAME_BM);
+      return result;
     }
   DBGPRINTF_BM ("end custom_onion_handler reqpath '%s' reqflags %#x:%s bcookie %s",     //
                 reqpath, reqflags,      //
@@ -895,7 +910,9 @@ custom_onion_handler_BM (void *clientdata,
                 bcookie ? bcookie : "*none*");
 #warning unimplemented custom_onion_handler_BM
   /// probably should return OCS_PROCESSED if handled, or OCS_NOT_PROCESSED, OCS_FORBIDDEN, OCS_INTERNAL_ERROR, etc...
-  return OCS_NOT_PROCESSED;
+  result = OCS_NOT_PROCESSED;
+  unregister_onion_thread_stack_BM (CURFRAME_BM);
+  return result;
 }                               /* end custom_onion_handler_BM */
 
 
@@ -1470,6 +1487,20 @@ stop_onion_event_loop_BM (void)
 
 
 
+void
+webonion_suspend_before_gc_BM (void)
+{
+  FATAL_BM ("unimplemented webonion_suspend_before_gc_BM");
+#warning unimplemented webonion_suspend_before_gc_BM
+}                               /* end webonion_suspend_before_gc_BM */
+
+void
+webonion_continue_after_gc_BM (void)
+{
+  FATAL_BM ("unimplemented webonion_continue_after_gc_BM");
+#warning unimplemented webonion_continue_after_gc_BM
+}                               /* end webonion_continue_after_gc_BM */
+
 /// remember that only plain_event_loop_BM is allowed to *remove*
 /// things from onionrunprocarr_BM or onionrunpro_list_BM
 void
@@ -1862,3 +1893,60 @@ add_defer_command_onion_BM (void)
 }                               /* end add_defer_command_onion_BM */
 
 ////////////////////////////////////////////////////////////////
+
+static pthread_mutex_t onionstack_mtx_bm = PTHREAD_MUTEX_INITIALIZER;
+struct onionstackinfo_stBM
+{
+  pthread_t ost_thread;
+  struct stackframe_stBM *ost_stkf;
+};
+static struct onionstackinfo_stBM onionstackinfo_bm[MAXNBWORKJOBS_BM + 1];
+static thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
+
+
+
+
+
+void
+register_onion_thread_stack_BM (struct stackframe_stBM *stkf)
+{
+  ASSERT_BM (stkf != NULL);
+  ASSERT_BM (stkf->stkfram_pA.htyp == typayl_StackFrame_BM);
+  pthread_mutex_lock (&onionstack_mtx_bm);
+  if (!curonionstackinfo_BM)
+    {
+      for (int ix = 0; ix < MAXNBWORKJOBS_BM; ix++)
+        {
+          if (onionstackinfo_bm[ix].ost_stkf == NULL
+              && onionstackinfo_bm[ix].ost_thread == (pthread_t) 0)
+            {
+              curonionstackinfo_BM = onionstackinfo_bm + ix;
+              onionstackinfo_bm[ix].ost_thread = pthread_self ();
+              break;
+            };
+        }
+    }
+  ASSERT_BM (curonionstackinfo_BM
+             && curonionstackinfo_BM->ost_thread == pthread_self ());
+  curonionstackinfo_BM->ost_stkf = stkf;
+  pthread_mutex_unlock (&onionstack_mtx_bm);
+}                               /* end register_onion_thread_stack_BM */
+
+
+void
+unregister_onion_thread_stack_BM (struct stackframe_stBM *stkf)
+{
+  ASSERT_BM (stkf != NULL);
+  ASSERT_BM (stkf->stkfram_pA.htyp == typayl_StackFrame_BM);
+  pthread_mutex_lock (&onionstack_mtx_bm);
+  ASSERT_BM (curonionstackinfo_BM != NULL);
+  ASSERT_BM (curonionstackinfo_BM->ost_thread == pthread_self ());
+  curonionstackinfo_BM->ost_thread = (pthread_t) 0;
+  curonionstackinfo_BM->ost_stkf = NULL;
+  curonionstackinfo_BM = NULL;
+  pthread_mutex_unlock (&onionstack_mtx_bm);
+}                               /* end unregister_onion_thread_stack_BM */
+
+
+
+//// end of file web_ONIONBM.c 
