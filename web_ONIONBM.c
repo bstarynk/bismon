@@ -1947,6 +1947,19 @@ unregister_onion_thread_stack_BM (struct stackframe_stBM *stkf)
   pthread_mutex_unlock (&onionstack_mtx_bm);
 }                               /* end unregister_onion_thread_stack_BM */
 
-
+// mark the stack of every webonion pthread; they all should be "inactive"
+void
+gcmarkwebonion_BM (struct garbcoll_stBM *gc)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  pthread_mutex_lock (&onionstack_mtx_bm);
+  for (int ix = 0; ix < MAXNBWORKJOBS_BM; ix++)
+    {
+      if (onionstackinfo_bm[ix].ost_stkf != NULL
+          && onionstackinfo_bm[ix].ost_thread != (pthread_t) 0)
+        gcframemark_BM (gc, onionstackinfo_bm[ix].ost_stkf, 0);
+    }
+  pthread_mutex_unlock (&onionstack_mtx_bm);
+}                               /* end gcmarkwebonion_BM */
 
 //// end of file web_ONIONBM.c 

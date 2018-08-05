@@ -719,6 +719,9 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
 #ifdef BISMONGTK
   gcmarknewgui_BM (&GCdata);
 #endif /*BISMONGTK*/
+#ifdef BISMONION
+    gcmarkwebonion_BM (&GCdata);
+#endif /*BISMONION*/
     gcmarkagenda_BM (&GCdata);
   gcmarkmodules_BM (&GCdata);
   gcframemark_BM (&GCdata, stkfram, 0);
