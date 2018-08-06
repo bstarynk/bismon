@@ -740,6 +740,7 @@ struct webexchangedata_stBM
   pthread_cond_t webx_cond_ready;       /* condvar for readiness, under owning object's mutex */
   value_tyBM webx_datav;        /* supplementary data value */
   double webx_time;
+  char webx_mimetype[40];
   onion_request *webx_requ;
   onion_response *webx_resp;
 };                              /* end webexchangedata_stBM */
