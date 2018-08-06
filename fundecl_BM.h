@@ -1422,6 +1422,17 @@ static inline onion_response *objwebexchangeresponsepayl_BM (const
 static inline objectval_tyBM *objwebexchangesessionpayl_BM (const
                                                             objectval_tyBM *
                                                             obj);
+static inline value_tyBM objwebexchangedatapayl_BM (const objectval_tyBM *
+                                                    obj);
+
+// the obj should be locked, otherwise it is undefined behavior
+extern void objwebexchangeputdatapayl_BM (const objectval_tyBM * obj,
+                                          value_tyBM val);
+extern void objwebexchangecompletepayl_BM (const objectval_tyBM * obj,
+                                           int httpstatus,
+                                           const char *mimetype);
+
+
 extern void webonion_suspend_before_gc_BM (void);
 extern void webonion_continue_after_gc_BM (void);
 extern void stop_onion_event_loop_BM (void);

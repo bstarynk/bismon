@@ -2388,6 +2388,7 @@ objgetwebexchangepayl_BM (const objectval_tyBM * obj)
 {
   if (objhaswebexchangepayl_BM (obj))
     return (struct webexchangedata_stBM *) objpayload_BM (obj);
+  return NULL;
 }                               /* end objgetwebexchangepayl_BM */
 
 static inline const char *
@@ -2401,6 +2402,27 @@ objwebexchangerequestpathpayl_BM (const objectval_tyBM * obj)
     return NULL;
   return onion_request_get_path (wxda->webx_requ);
 }                               /* end objwebexchangerequestpathpayl_BM */
+
+
+value_tyBM
+objwebexchangedatapayl_BM (const objectval_tyBM * obj)
+{
+  struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
+  if (!wxda)
+    return NULL;
+  ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
+  return wxda->webx_datav;
+}                               /* end objwebexchangedatapayl_BM */
+
+objectval_tyBM *
+objwebexchangesessionpayl_BM (const objectval_tyBM * obj)
+{
+  struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
+  if (!wxda)
+    return NULL;
+  ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
+  return wxda->webx_sessobj;
+}                               /* end objwebexchangesessionpayl_BM  */
 
 unsigned
 objwebexchangerequestmethodpayl_BM (const objectval_tyBM * obj)
@@ -2434,15 +2456,6 @@ objwebexchangeresponsepayl_BM (const objectval_tyBM * obj)
   return wxda->webx_resp;
 }                               /* end objwebexchangeresponsepayl_BM */
 
-objectval_tyBM *
-objwebexchangesessionpayl_BM (const objectval_tyBM * obj)
-{
-  struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
-  if (!wxda)
-    return NULL;
-  ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
-  return wxda->webx_sessobj;
-}                               /* end objwebexchangesessionpayl_BM */
 
 #endif /*BISMONION*/
 ////////////////////////////////////////////////////////////////

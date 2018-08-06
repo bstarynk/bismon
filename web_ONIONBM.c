@@ -74,6 +74,8 @@ static void read_commandpipe_BM (void);
 
 static void register_onion_thread_stack_BM (struct stackframe_stBM *);
 static void unregister_onion_thread_stack_BM (struct stackframe_stBM *);
+static void perhaps_suspend_for_gc_onion_thread_stack_BM (struct
+                                                          stackframe_stBM *);
 
 /*** Our websession cookies are something like
      n<rank>r<rand1>t<rand2>o<oid> where <rank> is the websess_rank,
@@ -760,6 +762,7 @@ custom_onion_handler_BM (void *clientdata,
     else
       _.sessionob = NULL;
     objunlock_BM (BMP_the_web_sessions);
+    perhaps_suspend_for_gc_onion_thread_stack_BM (CURFRAME_BM);
     DBGPRINTF_BM ("custom_onion_handler reqpath '%s' sessionob %s",
                   reqpath, objectdbg_BM (_.sessionob));
     if (!_.sessionob)
@@ -1221,6 +1224,7 @@ static value_tyBM find_web_handler_BM (objectval_tyBM * sessionobarg,
 
 
 ////////////////
+#define WEBEXCHANGE_DELAY_BM   (debugmsg_BM?40.0:2.5)
 onion_connection_status
 do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                      bool postrequest,
@@ -1264,6 +1268,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
     wexda->webx_num = webexonion_count_BM;
     pthread_mutex_unlock (&webexonion_mtx_BM);
   }
+  register_onion_thread_stack_BM (CURFRAME_BM);
   wexda->webx_ownobj = _.webexob;
   wexda->webx_sessobj = _.sessionob;
   wexda->webx_datav = NULL;
@@ -1320,8 +1325,9 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         memset (&nowtm, 0, sizeof (nowtm));
         localtime_r (&nowt, &nowtm);
         strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
-        fprintf (fresp, "<p><small>generated on <i>%s</i></small></p>\n",
-                 nowbuf);
+        fprintf (fresp,
+                 "<p><small>generated at <i>%s</i> on <tt>%s</tt> pid %d</small></p>\n",
+                 nowbuf, myhostname_BM, (int) getpid ());
         fprintf (fresp, "</body>\n</html>\n");
         fflush (fresp);
         long ln = ftell (fresp);
@@ -1371,6 +1377,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         curfailurehandle_BM = NULL;
       }
   }
+  perhaps_suspend_for_gc_onion_thread_stack_BM (CURFRAME_BM);
   // should wait for the wexda->webx_cond_ready
 #warning missing code in do_dynamic_onion to wait
   return OCS_NOT_IMPLEMENTED;
@@ -1476,6 +1483,35 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
                 word, path, objectdbg_BM (_.dictob));
   LOCALRETURN_BM (NULL);
 }                               /* end find_web_handler_BM */
+
+void
+objwebexchangeputdatapayl_BM (const objectval_tyBM * obj, value_tyBM val)
+{
+  struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
+  if (!wxda)
+    return NULL;
+  ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
+  wxda->webx_datav = val;
+}                               /* end  objwebexchangeputdatapayl_BM */
+
+void
+objwebexchangecompletepayl_BM (const objectval_tyBM * obj, int httpstatus,
+                               const char *mimetype)
+{
+  struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
+  if (!wxda)
+    return NULL;
+  ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
+  if (mimetype)
+    {
+      memset (wxda->webx_mimetype, 0, sizeof (wxda->webx_mimetype));
+      strncpy (wxda->webx_mimetype, mimetype,
+               sizeof (wxda->webx_mimetype) - 1);
+    }
+  ASSERT_BM (wxda->webx_resp != NULL);
+  onion_response_set_code (wxda->webx_resp, httpstatus);
+  pthread_cond_broadcast (&wxda->webx_cond_ready);
+}                               /* end objwebexchangecompletepayl_BM */
 
 /******************************************************************/
 
@@ -1846,7 +1882,6 @@ read_sigchld_BM (int sigfd)
 }                               /* end read_sigchld_BM */
 
 
-#warning perhaps webonion_suspend_before_gc_BM & webonion_continue_after_gc_BM are needed, see agenda_BM.c
 static void
 read_commandpipe_BM (void)
 {
@@ -1946,6 +1981,35 @@ unregister_onion_thread_stack_BM (struct stackframe_stBM *stkf)
   curonionstackinfo_BM = NULL;
   pthread_mutex_unlock (&onionstack_mtx_bm);
 }                               /* end unregister_onion_thread_stack_BM */
+
+
+void
+perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM *stkf)
+{
+  ASSERT_BM (stkf != NULL);
+  ASSERT_BM (stkf->stkfram_pA.htyp == typayl_StackFrame_BM);
+  DBGPRINTF_BM
+    ("perhaps_suspend_for_gc_onion_thread_stack_BM start tid#%ld  elapsed %.3f s",
+     (long) gettid_BM (), elapsedtime_BM ());
+  pthread_mutex_lock (&onionstack_mtx_bm);
+  ASSERT_BM (curonionstackinfo_BM != NULL);
+  ASSERT_BM (curonionstackinfo_BM->ost_thread == pthread_self ());
+  curonionstackinfo_BM->ost_stkf = stkf;
+  pthread_mutex_unlock (&onionstack_mtx_bm);
+  for (;;)
+    {
+      if (!agenda_need_gc_BM ())
+        return;
+      DBGPRINTF_BM
+        ("perhaps_suspend_for_gc_onion_thread_stack need GC tid#%ld  elapsed %.3f s",
+         (long) gettid_BM (), elapsedtime_BM ());
+      agenda_wait_gc_BM ();
+    }
+  DBGPRINTF_BM
+    ("perhaps_suspend_for_gc_onion_thread_stack_BM end tid#%ld  elapsed %.3f s",
+     (long) gettid_BM (), elapsedtime_BM ());
+}                               /* end perhaps_suspend_for_gc_onion_thread_stack_BM */
+
 
 // mark the stack of every webonion pthread; they all should be "inactive"
 void
