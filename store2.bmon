@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 772 objects
+// for 773 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -7258,6 +7258,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "gives the empty handler in web dictionnary"
 !)_8Rwc7G3hQ0G_230O74aoi1w
+
+
+
+!(_4vI7wCaySrU_0QhNU3wiwt2 |=web_timeout|
+!~ name (~ web_timeout
+~)
+!@ 1533570077.086
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "failure for web timeout"
+!)_4vI7wCaySrU_0QhNU3wiwt2
 
 
 
