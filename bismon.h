@@ -34,6 +34,7 @@
 #include <memory>
 #include <atomic>
 using std::atomic_bool;
+using std::atomic_int;
 using std::atomic_load;
 using std::atomic_store;
 #else

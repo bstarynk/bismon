@@ -1224,7 +1224,7 @@ static value_tyBM find_web_handler_BM (objectval_tyBM * sessionobarg,
 
 
 ////////////////
-#define WEBEXCHANGE_DELAY_BM   (debugmsg_BM?40.0:2.5)
+#define WEBEXCHANGE_DELAY_BM   (debugmsg_BM?41.0:2.4)
 onion_connection_status
 do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                      bool postrequest,
@@ -1234,12 +1234,14 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   objectval_tyBM *k_no_value = BMK_7SYPOwPm7jc_2PeGiJ8uQiX;
   objectval_tyBM *k_webexchange_object = BMK_8keZiP7vbFw_1ovBXqd6a0d;
   objectval_tyBM *k_failure_bad_closure = BMK_373gFe8m21E_47xzvCGxpI9;
+  objectval_tyBM *k_web_timeout = BMK_4vI7wCaySrU_0QhNU3wiwt2;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * sessionob; objectval_tyBM * webexob;
                  value_tyBM failreasonv;        //
                  value_tyBM webhandlerv;        //
                  value_tyBM restpathv;  //
                  value_tyBM appresv;    //
+                 value_tyBM errorv;     //
     );
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);
@@ -1279,6 +1281,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   objputpayload_BM (_.webexob, wexda);
   objtouchnow_BM (_.webexob);
   wexda->webx_magic = BISMONION_WEBX_MAGIC;
+  atomic_init (&wexda->webx_respcode, 0);
   WARNPRINTF_BM
     ("do_dynamic_onion unimplemented  sessionob %s reqpath '%s' post %s wexnum %ld webexob %s",
      objectdbg_BM (_.sessionob), reqpath, postrequest ? "true" : "false",
@@ -1354,9 +1357,12 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         if (!_.webhandlerv)
           FAILURE_BM (__LINE__, k_no_value, CURFRAME_BM);
         else if (!isclosure_BM (_.webhandlerv))
-          FAILURE_BM (__LINE__,
-                      makenode1_BM (k_failure_bad_closure, _.webhandlerv),
-                      CURFRAME_BM);
+          {
+            _.errorv =
+              (value_tyBM) makenode1_BM (k_failure_bad_closure,
+                                         _.webhandlerv);
+            FAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+          }
         if (off < 0)
           off = 0;
         else if (off > reqlen)
@@ -1377,11 +1383,89 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         curfailurehandle_BM = NULL;
       }
   }
-  perhaps_suspend_for_gc_onion_thread_stack_BM (CURFRAME_BM);
-  // should wait for the wexda->webx_cond_ready
-#warning missing code in do_dynamic_onion to wait
-  return OCS_NOT_IMPLEMENTED;
+  bool timedout = false;
+  bool completed = false;
+  int respcode = 0;
+  const char *bytes = NULL;
+  unsigned len = 0;
+  char mimetype[BISMONION_MIMETYPE_SIZE];
+  memset (mimetype, 0, sizeof (mimetype));
+  for (;;)
+    {
+      ASSERT_BM (wexda->webx_magic == BISMONION_WEBX_MAGIC);
+      perhaps_suspend_for_gc_onion_thread_stack_BM (CURFRAME_BM);
+      objlock_BM (_.webexob);
+      ASSERT_BM (objhaswebexchangepayl_BM (_.webexob));
+      ASSERT_BM (objgetwebexchangepayl_BM (_.webexob) == wexda);
+      struct timespec ts = { 0, 0 };
+      get_realtimespec_delayedms_BM (&ts, 200);
+      pthread_cond_timedwait (&wexda->webx_cond_ready, &_.webexob->ob_mutex,
+                              &ts);
+      respcode = atomic_load (&wexda->webx_respcode);
+      timedout =
+        clocktime_BM (CLOCK_REALTIME) >
+        wexda->webx_time + WEBEXCHANGE_DELAY_BM;
+      completed = respcode > 0;
+      if (completed)
+        {
+          bytes = objstrbufferbytespayl_BM (_.webexob);
+          len = objstrbufferlengthpayl_BM (_.webexob);
+          strncpy (mimetype, wexda->webx_mimetype,
+                   BISMONION_MIMETYPE_SIZE - 1);
+        }
+      objunlock_BM (_.webexob);
+      if (completed)
+        break;
+      if (timedout)
+        {
+          _.errorv = makenode1_BM (k_web_timeout, _.webexob);
+          FAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+        }
+    }
+  ASSERT_BM (resp != NULL);
+  ASSERT_BM (respcode > 0);
+  ASSERT_BM (bytes != NULL);
+  char cookiebuf[48];
+  memset (cookiebuf, 0, sizeof (cookiebuf));
+  char sessidbuf[32];
+  memset (sessidbuf, 0, sizeof (sessidbuf));
+  bool shouldputcookie = false;
+  objlock_BM (_.sessionob);
+  struct websessiondata_stBM *wsess = objpayload_BM (_.sessionob);
+  if (valtype_BM (wsess) != typayl_websession_BM)
+    wsess = NULL;
+  idtocbuf32_BM (objid_BM (_.sessionob), sessidbuf);
+  ASSERT_BM (wsess && wsess->websess_magic == BISMONION_WEBSESS_MAGIC);
+  if (wsess->websess_expiretime > 0.0)
+    {
+      wsess->websess_expiretime =
+        clocktime_BM (CLOCK_REALTIME) + WEBSESSION_EXPIRATION_DELAY;
+      shouldputcookie = true;
+      snprintf (cookiebuf, sizeof (cookiebuf), "n%06ldR%dt%do%s",
+                wsess->websess_rank, wsess->websess_rand1,
+                wsess->websess_rand2, sessidbuf);
+    }
+  objunlock_BM (_.sessionob);
+  if (mimetype[0])
+    onion_response_set_header (resp, "Content-Type", mimetype);
+  if (shouldputcookie)
+    onion_response_add_cookie (resp, "BISMONCOOKIE", cookiebuf, (time_t) wsess->websess_expiretime, "/", NULL,  /// domain
+                               0);
+  else
+    onion_response_add_cookie (resp, "BISMONCOOKIE", "", (time_t) 0, "/",
+                               NULL, 0);
+  onion_response_set_code (resp, respcode);
+  onion_response_set_length (resp, len);
+  onion_response_write (resp, bytes, len);
+  DBGPRINTF_BM
+    ("do_dynamic_onion end sessionob %s reqpath '%s' post %s mimetype '%s' respcode %s (%s) len=%d bytes:\n%s",
+     objectdbg_BM (_.sessionob), reqpath, postrequest ? "true" : "false",
+     mimetype, respcode, onion_response_code_description (respcode), len,
+     bytes);
+  return OCS_PROCESSED;
 }                               /* end do_dynamic_onion_BM */
+
+
 
 
 #define MAX_WEB_HANDLER_DEPTH_BM 40
@@ -1427,7 +1511,7 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
   const char *word = NULL;
   char wordbuf[64];
   memset (wordbuf, 0, sizeof (wordbuf));
-  if (wordlen < sizeof (wordbuf))
+  if (wordlen < (int) sizeof (wordbuf))
     {
       if (wordlen > 0)
         strncpy (wordbuf, subpath, wordlen - 1);
@@ -1489,7 +1573,7 @@ objwebexchangeputdatapayl_BM (const objectval_tyBM * obj, value_tyBM val)
 {
   struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
   if (!wxda)
-    return NULL;
+    return;
   ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
   wxda->webx_datav = val;
 }                               /* end  objwebexchangeputdatapayl_BM */
@@ -1509,7 +1593,7 @@ objwebexchangecompletepayl_BM (const objectval_tyBM * obj, int httpstatus,
                sizeof (wxda->webx_mimetype) - 1);
     }
   ASSERT_BM (wxda->webx_resp != NULL);
-  onion_response_set_code (wxda->webx_resp, httpstatus);
+  atomic_store (&wxda->webx_respcode, httpstatus);
   pthread_cond_broadcast (&wxda->webx_cond_ready);
 }                               /* end objwebexchangecompletepayl_BM */
 

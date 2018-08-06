@@ -730,6 +730,7 @@ struct websessiondata_stBM      /// for typayl_websession_BM
 
 //// a webexchange object reifies an HTTP request and response
 #define BISMONION_WEBX_MAGIC 0x11b63c9b /* webx magic 297155739 */
+#define BISMONION_MIMETYPE_SIZE 40
 struct webexchangedata_stBM
 {                               /// for typayl_webexchange_BM
   struct strbuffer_stBM webx_sbuf;      /* inherit from strbuffer */
@@ -740,7 +741,8 @@ struct webexchangedata_stBM
   pthread_cond_t webx_cond_ready;       /* condvar for readiness, under owning object's mutex */
   value_tyBM webx_datav;        /* supplementary data value */
   double webx_time;
-  char webx_mimetype[40];
+  char webx_mimetype[BISMONION_MIMETYPE_SIZE];
+  atomic_int webx_respcode;
   onion_request *webx_requ;
   onion_response *webx_resp;
 };                              /* end webexchangedata_stBM */
