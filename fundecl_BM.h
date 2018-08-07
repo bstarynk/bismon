@@ -1540,7 +1540,7 @@ extern void log_end_message_BM (void);
 extern void initialize_agenda_BM (void);
 extern void agenda_notify_BM (void);
 extern void agenda_wait_gc_BM (void);
-extern volatile bool agenda_need_gc_BM (void);
+extern bool agenda_need_gc_BM (void);
 extern int agenda_nb_work_jobs_BM (void);
 extern void gcmarkagenda_BM (struct garbcoll_stBM *gc);
 extern void start_agenda_work_threads_BM (int nbjobs);
