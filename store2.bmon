@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 775 objects
+// for 776 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -5607,8 +5607,8 @@ _2MbEY8KXrxi_0JYIwVyj1is
 !(_7OAWgbmvUYb_7KwwCqhyd93 |=objwebexchangedatapayl|
 !~ name (~ objwebexchangedatapayl
 ~)
-!@ 1533643864.822
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1533646313.108
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "get the value inside webexchange object o1"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
@@ -5625,8 +5625,8 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !(_1FI7p2bLa5O_88j8zXlKNeW |=objwebexchangerequestispostpayl|
 !~ name (~ objwebexchangerequestispostpayl
 ~)
-!@ 1533645320.391
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1533646356.740
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "return non-0 if o1 is a webexchange for an HTTP POST request"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
@@ -5637,6 +5637,24 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_1FI7p2bLa5O_88j8zXlKNeW
+
+
+
+!(_0ZFXQim1Rti_9o7NJEGbJO6 |=objwebexchangerequestpathstrvpayl|
+!~ name (~ objwebexchangerequestpathstrvpayl
+~)
+!@ 1533646254.147
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "give the path string value of the webexchange object o1 or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _0ZFXQim1Rti_9o7NJEGbJO6  ":*/"  " "  "objwebexchangerequestpathstrvpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_0ZFXQim1Rti_9o7NJEGbJO6
 
 
 
