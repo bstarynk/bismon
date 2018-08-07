@@ -1411,9 +1411,15 @@ static inline struct webexchangedata_stBM
 static inline const char *objwebexchangerequestpathpayl_BM (const
                                                             objectval_tyBM *
                                                             obj);
+static inline value_tyBM objwebexchangerequestpathstrvpayl_BM (const
+                                                               objectval_tyBM
+                                                               * obj);
 static inline unsigned objwebexchangerequestmethodpayl_BM (const
                                                            objectval_tyBM *
                                                            obj);
+// returns true is the webexchange request is an HTTP POST request
+static inline bool objwebexchangerequestispostpayl_BM (const
+                                                       objectval_tyBM * obj);
 static inline onion_request *objwebexchangerequestpayl_BM (const
                                                            objectval_tyBM *
                                                            obj);
