@@ -53,6 +53,18 @@ pthread_mutex_t onionrunpro_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 
 static volatile atomic_bool onionlooprunning_BM;
 
+static pthread_mutex_t onionstack_mtx_bm = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t onionstack_condchange_bm = PTHREAD_COND_INITIALIZER;
+struct onionstackinfo_stBM
+{
+  pthread_t ost_thread;
+  struct stackframe_stBM *ost_stkf;
+  atomic_bool ost_suspended;
+};
+static struct onionstackinfo_stBM onionstackinfo_bm[MAXNBWORKJOBS_BM + 1];
+static thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
+
+
 // the lock above should be set when calling:
 static void
 fork_onion_process_at_slot_BM (int slotpos,
@@ -911,8 +923,6 @@ custom_onion_handler_BM (void *clientdata,
                  : snprintf (dbgmethbuf, sizeof (dbgmethbuf),   ///
                              "meth#%d", reqmeth)),
                 bcookie ? bcookie : "*none*");
-#warning unimplemented custom_onion_handler_BM
-  /// probably should return OCS_PROCESSED if handled, or OCS_NOT_PROCESSED, OCS_FORBIDDEN, OCS_INTERNAL_ERROR, etc...
   result = OCS_NOT_PROCESSED;
   unregister_onion_thread_stack_BM (CURFRAME_BM);
   return result;
@@ -1610,15 +1620,44 @@ stop_onion_event_loop_BM (void)
 void
 webonion_suspend_before_gc_BM (void)
 {
-  FATAL_BM ("unimplemented webonion_suspend_before_gc_BM");
-#warning unimplemented webonion_suspend_before_gc_BM
+  int nbonionthreads = 0;
+  int nbonionsuspended = 0;
+  DBGPRINTF_BM ("webonion_suspend_before_gc start tid#%ld elapsed %.3f s",
+                (long) gettid_BM (), elapsedtime_BM ());
+  do
+    {
+      pthread_mutex_lock (&onionstack_mtx_bm);
+      for (int ix = 0; ix < MAXNBWORKJOBS_BM; ix++)
+        {
+          if (onionstackinfo_bm[ix].ost_thread != (pthread_t) 0
+              && onionstackinfo_bm[ix].ost_stkf)
+            {
+              nbonionthreads++;
+              if (atomic_load (&onionstackinfo_bm[ix].ost_suspended))
+                nbonionsuspended++;
+            }
+        }
+      struct timespec ts = { 0, 0 };
+      get_realtimespec_delayedms_BM (&ts, 200);
+      DBGPRINTF_BM
+        ("webonion_suspend_before_gc nbonionthreads=%d nbonionsuspended=%d tid#%ld elapsed %.3f s",
+         nbonionthreads, nbonionsuspended, (long) gettid_BM (),
+         elapsedtime_BM ());
+      if (nbonionthreads > 0 && nbonionsuspended < nbonionthreads)
+        pthread_cond_timedwait (&onionstack_mtx_bm, &onionstack_mtx_bm, &ts);
+      pthread_mutex_unlock (&onionstack_mtx_bm);
+    }
+  while (nbonionthreads > 0 && nbonionsuspended < nbonionthreads);
+  DBGPRINTF_BM ("webonion_suspend_before_gc end tid#%ld elapsed %.3f s",
+                (long) gettid_BM (), elapsedtime_BM ());
 }                               /* end webonion_suspend_before_gc_BM */
 
 void
 webonion_continue_after_gc_BM (void)
 {
-  FATAL_BM ("unimplemented webonion_continue_after_gc_BM");
-#warning unimplemented webonion_continue_after_gc_BM
+  DBGPRINTF_BM ("webonion_continue_after_gc_BM start tid#%ld elapsed %.3f s",
+                (long) gettid_BM (), elapsedtime_BM ());
+  // probably nothing to do...
 }                               /* end webonion_continue_after_gc_BM */
 
 /// remember that only plain_event_loop_BM is allowed to *remove*
@@ -2013,16 +2052,6 @@ add_defer_command_onion_BM (void)
 
 ////////////////////////////////////////////////////////////////
 
-static pthread_mutex_t onionstack_mtx_bm = PTHREAD_MUTEX_INITIALIZER;
-struct onionstackinfo_stBM
-{
-  pthread_t ost_thread;
-  struct stackframe_stBM *ost_stkf;
-};
-static struct onionstackinfo_stBM onionstackinfo_bm[MAXNBWORKJOBS_BM + 1];
-static thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
-
-
 
 
 
@@ -2041,6 +2070,7 @@ register_onion_thread_stack_BM (struct stackframe_stBM *stkf)
             {
               curonionstackinfo_BM = onionstackinfo_bm + ix;
               onionstackinfo_bm[ix].ost_thread = pthread_self ();
+              atomic_init (&onionstackinfo_bm[ix].ost_suspended, false);
               break;
             };
         }
@@ -2062,6 +2092,7 @@ unregister_onion_thread_stack_BM (struct stackframe_stBM *stkf)
   ASSERT_BM (curonionstackinfo_BM->ost_thread == pthread_self ());
   curonionstackinfo_BM->ost_thread = (pthread_t) 0;
   curonionstackinfo_BM->ost_stkf = NULL;
+  atomic_store (&curonionstackinfo_BM->ost_suspended, false);
   curonionstackinfo_BM = NULL;
   pthread_mutex_unlock (&onionstack_mtx_bm);
 }                               /* end unregister_onion_thread_stack_BM */
@@ -2073,22 +2104,29 @@ perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM *stkf)
   ASSERT_BM (stkf != NULL);
   ASSERT_BM (stkf->stkfram_pA.htyp == typayl_StackFrame_BM);
   DBGPRINTF_BM
-    ("perhaps_suspend_for_gc_onion_thread_stack_BM start tid#%ld  elapsed %.3f s",
+    ("perhaps_suspend_for_gc_onion_thread_stack_BM start tid#%ld elapsed %.3f s",
      (long) gettid_BM (), elapsedtime_BM ());
   pthread_mutex_lock (&onionstack_mtx_bm);
   ASSERT_BM (curonionstackinfo_BM != NULL);
   ASSERT_BM (curonionstackinfo_BM->ost_thread == pthread_self ());
   curonionstackinfo_BM->ost_stkf = stkf;
+  atomic_store (&curonionstackinfo_BM->ost_suspended, true);
   pthread_mutex_unlock (&onionstack_mtx_bm);
+  pthread_cond_broadcast (&onionstack_condchange_bm);
   for (;;)
     {
       if (!agenda_need_gc_BM ())
-        return;
+        break;
       DBGPRINTF_BM
         ("perhaps_suspend_for_gc_onion_thread_stack need GC tid#%ld  elapsed %.3f s",
          (long) gettid_BM (), elapsedtime_BM ());
       agenda_wait_gc_BM ();
     }
+  pthread_mutex_lock (&onionstack_mtx_bm);
+  ASSERT_BM (curonionstackinfo_BM != NULL);
+  atomic_store (&curonionstackinfo_BM->ost_suspended, false);
+  pthread_mutex_unlock (&onionstack_mtx_bm);
+  pthread_cond_broadcast (&onionstack_condchange_bm);
   DBGPRINTF_BM
     ("perhaps_suspend_for_gc_onion_thread_stack_BM end tid#%ld  elapsed %.3f s",
      (long) gettid_BM (), elapsedtime_BM ());
