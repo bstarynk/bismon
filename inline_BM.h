@@ -2481,6 +2481,23 @@ objwebexchangeresponsepayl_BM (const objectval_tyBM * obj)
 }                               /* end objwebexchangeresponsepayl_BM */
 
 
+bool
+objhaswebsessionpayl_BM (const objectval_tyBM * obj)
+{
+  extendedval_tyBM payl = objpayload_BM (obj);
+  if (!payl)
+    return false;
+  return valtype_BM ((const value_tyBM) payl) == typayl_websession_BM;
+}                               /* end objhaswebsessionpayl_BM */
+
+struct websessiondata_stBM *
+objgetwebsessionpayl_BM (const objectval_tyBM * obj)
+{
+  if (objhaswebsessionpayl_BM (obj))
+    return (struct websessiondata_stBM *) objpayload_BM (obj);
+  return NULL;
+}                               /* end objgetwebsessionpayl_BM */
+
 #endif /*BISMONION*/
 ////////////////////////////////////////////////////////////////
 #endif /*INLINE_BM_INCLUDED */

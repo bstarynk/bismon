@@ -875,7 +875,7 @@ custom_onion_handler_BM (void *clientdata,
           unregister_onion_thread_stack_BM (CURFRAME_BM);
           return result;
         }
-    }
+    }                           /* end if !_*.sessionob */
   else
     {
       // got sessionob, should process the request by making some webexchange
@@ -900,6 +900,47 @@ custom_onion_handler_BM (void *clientdata,
           result = OCS_NOT_IMPLEMENTED;
           unregister_onion_thread_stack_BM (CURFRAME_BM);
           return result;
+        }
+      if ((!strcmp (reqpath, "/_websocket")
+           || !strcmp (reqpath, "_websocket")) && !posthttp)
+        {
+          struct websessiondata_stBM *wsess = NULL;
+          onion_websocket *wsock = NULL;
+          DBGPRINTF_BM
+            ("custom_onion_handler sesswebsocket '%s' for sessionob %s",
+             reqpath, objectdbg_BM (_.sessionob));
+
+          objlock_BM (_.sessionob);
+          wsess = objgetwebsessionpayl_BM (_.sessionob);
+          if (wsess)
+            {
+              wsock = wsess->websess_websocket;
+              if (!wsock)
+                {
+                  wsock = onion_websocket_new (req, resp);
+                  wsess->websess_websocket = wsock;
+                  onion_websocket_set_userdata (wsock, wsess, NULL);
+                  DBGPRINTF_BM
+                    ("custom_onion_handler sesswebsocket '%s' for sessionob %s new wsock @%p",
+                     reqpath, objectdbg_BM (_.sessionob), wsock);
+#warning incomplete support for websocket in custom_onion_handler
+                  /// should probably call onion_websocket_set_callback
+                }
+            }
+          objunlock_BM (_.sessionob);
+          if (wsock)
+            {
+              result = OCS_WEBSOCKET;
+              unregister_onion_thread_stack_BM (CURFRAME_BM);
+              return result;
+            }
+          else
+            {
+              DBGPRINTF_BM ("onion no websocket for '%s'", reqpath);
+              result = OCS_FORBIDDEN;
+              unregister_onion_thread_stack_BM (CURFRAME_BM);
+              return result;
+            }
         }
       if (strstr (reqpath, "/.") || strstr (reqpath, ".."))
         {

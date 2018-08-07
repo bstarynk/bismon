@@ -1405,6 +1405,10 @@ extern void websessiondelete_BM (objectval_tyBM * ownobj,
 extern void webexchangedelete_BM (objectval_tyBM * ownobj,
                                   struct webexchangedata_stBM *we);
 extern void stop_onion_event_loop_BM (void);
+static inline bool objhaswebsessionpayl_BM (const objectval_tyBM * obj);
+static inline struct websessiondata_stBM *objgetwebsessionpayl_BM (const
+                                                                   objectval_tyBM
+                                                                   * obj);
 static inline bool objhaswebexchangepayl_BM (const objectval_tyBM * obj);
 static inline struct webexchangedata_stBM
   *objgetwebexchangepayl_BM (const objectval_tyBM * obj);
