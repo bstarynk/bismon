@@ -48,6 +48,16 @@ initialize_garbage_collector_BM (void)
 }                               /* end initialize_garbage_collector_BM */
 
 
+
+void
+request_delayed_garbage_collection_BM (void)
+{
+  // this should be the only place where want_garbage_collection_BM
+  // becomes true
+  atomic_store (&want_garbage_collection_BM, true);     // request delayed GC
+  agenda_notify_BM ();
+}                               /* end request_delayed_garbage_collection_BM */
+
 void *
 allocgcty_BM (unsigned type, size_t sz)
 {
@@ -61,8 +71,8 @@ allocgcty_BM (unsigned type, size_t sz)
         ((4 * alloc_size / 3 + alloc_size / 8 + 600) | 511) - 2;
       struct allalloc_stBM *new_allocvec =      //
         calloc (1,
-                sizeof (struct
-                        allalloc_stBM) + new_alloc_size * sizeof (void *));
+                sizeof (struct allalloc_stBM)   //
+                + new_alloc_size * sizeof (void *));
       if (!new_allocvec)
         FATAL_BM ("failed reallocation of allocvec %ld (%m)", new_alloc_size);
       new_allocvec->al_size = new_alloc_size;
@@ -70,7 +80,7 @@ allocgcty_BM (unsigned type, size_t sz)
       memcpy (new_allocvec->al_ptr, allocationvec_vBM->al_ptr,
               alloc_nb * sizeof (void *));
       free (allocationvec_vBM), allocationvec_vBM = new_allocvec;
-      atomic_store (&want_garbage_collection_BM, true);
+      request_delayed_garbage_collection_BM ();
     }
   if (sz % 2 * sizeof (void *) != 0)
     sz = (sz | (2 * sizeof (void *) - 1)) + 1;

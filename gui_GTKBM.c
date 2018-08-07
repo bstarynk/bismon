@@ -1442,7 +1442,7 @@ garbage_collect_from_gui_BM (void)
                 (long) gettid_BM ());
   ASSERT_BM (mainthreadid_BM == pthread_self ());
   log_begin_message_BM ();
-  atomic_store (&want_garbage_collection_BM, true);
+  request_delayed_garbage_collection_BM ();
   log_puts_message_BM ("forced garbage collection");
   log_end_message_BM ();
   full_garbage_collection_BM (NULL);

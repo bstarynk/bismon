@@ -1204,7 +1204,8 @@ extern void full_garbage_collection_BM (struct stackframe_stBM *stkf);
 // conditional GC, to be called from the main thread
 static inline void garbage_collect_if_wanted_BM (struct stackframe_stBM
                                                  *stkf);
-
+// request some GC in the future
+extern void request_delayed_garbage_collection_BM (void);
 // names
 extern void initialize_predefined_names_BM (void);
 extern bool validname_BM (const char *nam);

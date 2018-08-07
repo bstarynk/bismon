@@ -949,8 +949,7 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
        debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
     agenda_defer_after_gc_BM (deferred_do_module_load_BM, varr, 5, modulpath);
   }
-  atomic_store (&want_garbage_collection_BM, true);
-  agenda_notify_BM ();
+  request_delayed_garbage_collection_BM ();
   DBGPRINTF_BM ("defer_module_load_BM end modulob %s",
                 objectdbg_BM (_.modulob));
   return;
