@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 786 objects
+// for 787 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -5469,6 +5469,32 @@ _97rnxb0KFqq_44veN75DG2E)  "),"
 
 
 
+!(_5AqofhXYnzK_3leeJoJgmTJ |=objstrbufferprintstringval|
+!~ name (~ objstrbufferprintstringval
+~)
+!@ 1533726712.450
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "print in object-strbuf o1 the string value v2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _5AqofhXYnzK_3leeJoJgmTJ)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5AqofhXYnzK_3leeJoJgmTJ  ":*/"  "\n"  "if" 
+  " "  "("  "objhasstrbufferpayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E) 
+  ")"  " "  "&&"  " "  "isstring_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  "))" 
+ " "  "objstrbufferappendcstrpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " "  "bytstring_BM" 
+  "((" _5DDSY1YgVZr_6dOU4tiBldk  " "  "stringval_tyBM"  "*)(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  ")));")
+!)_5AqofhXYnzK_3leeJoJgmTJ
+
+
+
 !(_7Rj49b2GBh9_8VTIgypC5QO |=objstrbufferreservepayl|
 !~ name (~ objstrbufferreservepayl
 ~)
@@ -7621,6 +7647,7 @@ _8c9otZ4pwR6_55k81qyyYV2 _2lCuMosXupr_5GAoqVgJ8PZ
 
 
 !(_0cUdonky1bM_4IVhwlVRBMk
+!|*
 !@ 1533725398.436
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
