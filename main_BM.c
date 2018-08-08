@@ -796,6 +796,10 @@ main (int argc, char **argv)
       initialize_newgui_BM (builder_file_bm, css_file_bm);
     }
 #endif /*BISMONGTK*/
+#ifdef BISMONION
+    if (!batch_bm)
+    initialize_webonion_BM ();
+#endif /*BISMONION*/
     if (!load_dir_bm)
     load_dir_bm = ".";
   if (!dump_dir_BM)

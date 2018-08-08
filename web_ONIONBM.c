@@ -26,6 +26,7 @@ static onion *myonion_BM;
 // the command pipe contains bytes, each considered as a different message
 static int cmdpipe_rd_BM = -1, cmdpipe_wr_BM = -1;
 
+static int sigfd_BM = -1;
 extern void add_defer_command_onion_BM (void);
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,10 +78,8 @@ static void unlockonion_runpro_mtx_at_BM (int lineno);
 
 static void plain_event_loop_BM (void);
 
-// handle signals thu signafd(2)
-static void read_sigterm_BM (int sigfd);
-static void read_sigquit_BM (int sigfd);
-static void read_sigchld_BM (int sigfd);
+// handle signals thu signafd(2); return true to break plain_event_loop_BM
+static bool read_sigfd_BM (void);
 // handle the command pipe
 static void read_commandpipe_BM (void);
 
@@ -462,8 +461,9 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
   if (!myonion_BM)
     FATAL_BM ("failed to create onion");
   onion_set_max_threads (myonion_BM, nbjobs);
-  DBGPRINTF_BM ("run_onionweb webhost '%s' webport %d", webhost ? : "??",
-                webport);
+  DBGPRINTF_BM ("run_onionweb webhost '%s' webport %d tid#%ld elapsed %.3f s",
+                webhost ? : "??", webport, (long) gettid_BM (),
+                elapsedtime_BM ());
   if (webhost && webhost[0])
     {
       onion_set_hostname (myonion_BM, webhost);
@@ -1701,51 +1701,39 @@ webonion_continue_after_gc_BM (void)
   // probably nothing to do...
 }                               /* end webonion_continue_after_gc_BM */
 
+
+void
+initialize_webonion_BM (void)
+{
+  DBGPRINTF_BM ("initialize_webonion_BM start pid %d tid#%ld elapsed %.3f s",
+                (int) getpid (), (long) gettid_BM (), elapsedtime_BM ());
+  // see also https://ldpreload.com/blog/signalfd-is-useless
+  sigset_t mysigset = { };
+  sigemptyset (&mysigset);
+  sigaddset (&mysigset, SIGTERM);
+  sigaddset (&mysigset, SIGQUIT);
+  sigaddset (&mysigset, SIGCHLD);
+  if (sigprocmask (SIG_BLOCK, &mysigset, NULL) == -1)
+    FATAL_BM ("initialize_webonion: sigprocmask mysigset failure");
+  sigfd_BM = signalfd (-1, &mysigset, SFD_NONBLOCK | SFD_CLOEXEC);
+  DBGPRINTF_BM ("initialize_webonion_BM sigfd_BM=%d", sigfd_BM);
+  if (sigfd_BM < 0)
+    FATAL_BM ("signalfd failed in initialize_webonion");
+}                               /* end initialize_webonion_BM */
+
+
 /// remember that only plain_event_loop_BM is allowed to *remove*
 /// things from onionrunprocarr_BM or onionrunpro_list_BM
 void
 plain_event_loop_BM (void)
 {
-  int termsigfd = -1;
-  int quitsigfd = -1;
-  int chldsigfd = -1;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * bufob;
     );
   atomic_init (&onionlooprunning_BM, true);
-  // see also https://ldpreload.com/blog/signalfd-is-useless
-  {
-    sigset_t termsigset = { };
-    sigemptyset (&termsigset);
-    sigaddset (&termsigset, SIGTERM);
-    if (sigprocmask (SIG_BLOCK, &termsigset, NULL) == -1)
-      FATAL_BM ("sigprocmask termsigset failure");
-    termsigfd = signalfd (-1, &termsigset, SFD_NONBLOCK | SFD_CLOEXEC);
-    if (termsigfd < 0)
-      FATAL_BM ("signalfd failed for SIGTERM");
-  }
-  {
-    sigset_t quitsigset = { };
-    sigemptyset (&quitsigset);
-    sigaddset (&quitsigset, SIGQUIT);
-    if (sigprocmask (SIG_BLOCK, &quitsigset, NULL) == -1)
-      FATAL_BM ("sigprocmask quitsigset failure");
-    quitsigfd = signalfd (-1, &quitsigset, SFD_NONBLOCK | SFD_CLOEXEC);
-    if (quitsigfd < 0)
-      FATAL_BM ("signalfd failed for SIGQUIT");
-  }
-  {
-    sigset_t chldsigset = { };
-    sigemptyset (&chldsigset);
-    sigaddset (&chldsigset, SIGCHLD);
-    if (sigprocmask (SIG_BLOCK, &chldsigset, NULL) == -1)
-      FATAL_BM ("sigprocmask chldsigset failure");
-    chldsigfd = signalfd (-1, &chldsigset, SFD_NONBLOCK | SFD_CLOEXEC);
-    if (chldsigfd < 0)
-      FATAL_BM ("signalfd failed for SIGCHLD");
-  }
-  DBGPRINTF_BM ("plain_event_loop_BM before loop termsigfd=%d quitsigfd=%d chldsigfd=%d",       //
-                termsigfd, quitsigfd, chldsigfd);
+
+  DBGPRINTF_BM ("plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",   //
+                sigfd_BM, (long) gettid_BM (), elapsedtime_BM ());
   long loopcnt = 0;
   while (atomic_load (&onionlooprunning_BM))
     {
@@ -1756,18 +1744,14 @@ plain_event_loop_BM (void)
       memset (endedprocarr, 0, sizeof (endedprocarr));
       int nbpoll = 0;
       enum
-      { pollix_term, pollix_quit, pollix_chld,
-        pollix_cmdp, pollix__lastsig
+      { pollix_sigfd,
+        pollix_cmdp, pollix__last
       };
-      pollarr[pollix_term].fd = termsigfd;
-      pollarr[pollix_term].events = POLL_IN;
-      pollarr[pollix_quit].fd = quitsigfd;
-      pollarr[pollix_quit].events = POLL_IN;
-      pollarr[pollix_chld].fd = chldsigfd;
-      pollarr[pollix_chld].events = POLL_IN;
+      pollarr[pollix_sigfd].fd = sigfd_BM;
+      pollarr[pollix_sigfd].events = POLL_IN;
       pollarr[pollix_cmdp].fd = cmdpipe_rd_BM;
       pollarr[pollix_cmdp].events = POLL_IN;
-      nbpoll = pollix__lastsig;
+      nbpoll = pollix__last;
       {
         lockonion_runpro_mtx_at_BM (__LINE__);
         for (int j = 0; j < nbworkjobs_BM; j++)
@@ -1800,7 +1784,7 @@ plain_event_loop_BM (void)
         char pipbuf[1024 + 4];
         lockonion_runpro_mtx_at_BM (__LINE__);
         int runix = 0;
-        for (int ix = pollix__lastsig; ix < nbpoll; ix++)
+        for (int ix = pollix__last; ix < nbpoll; ix++)
           {
             if (pollarr[ix].revents & POLL_IN)
               {
@@ -1876,20 +1860,19 @@ plain_event_loop_BM (void)
           }
         unlockonion_runpro_mtx_at_BM (__LINE__);
       }
-      if (pollarr[pollix_term].revents & POLL_IN)
+      if (pollarr[pollix_sigfd].revents & POLL_IN)
         {
-          read_sigterm_BM (termsigfd);
-          atomic_store (&onionlooprunning_BM, false);
-          break;
+          DBGPRINTF_BM ("plain_event_loop sigfd readable");
+          bool stop = read_sigfd_BM ();
+          if (stop)
+            {
+              atomic_store (&onionlooprunning_BM, false);
+              DBGPRINTF_BM ("plain_event_loop sigfd stopping after sigfd");
+              break;
+            }
+          else
+            DBGPRINTF_BM ("plain_event_loop sigfd continuing after sigfd");
         }
-      if (pollarr[pollix_quit].revents & POLL_IN)
-        {
-          read_sigquit_BM (quitsigfd);
-          atomic_store (&onionlooprunning_BM, false);
-          break;
-        };
-      if (pollarr[pollix_chld].revents & POLL_IN)
-        read_sigchld_BM (chldsigfd);
       if (pollarr[pollix_cmdp].revents & POLL_IN)
         read_commandpipe_BM ();
     }                           /* end while onionlooprunning */
@@ -1898,16 +1881,33 @@ plain_event_loop_BM (void)
 
 
 
-static void
-read_sigterm_BM (int sigfd)     // called from plain_event_loop_BM
+static bool
+read_sigfd_BM (void)            // called from plain_event_loop_BM
 {
-  struct signalfd_siginfo sigterminf;
-  memset (&sigterminf, 0, sizeof (sigterminf));
-  DBGPRINTF_BM ("read_sigterm_BM start sigfd %d", sigfd);
-  int nbr = read (sigfd, &sigterminf, sizeof (sigterminf));
-  if (nbr != sizeof (sigterminf))       // very unlikely, probably impossible
-    FATAL_BM ("read_sigterm_BM: read fail (%d bytes read, want %d) - %m",
-              nbr, (int) sizeof (sigterminf));
+  struct signalfd_siginfo siginf;
+  memset (&siginf, 0, sizeof (siginf));
+  DBGPRINTF_BM ("read_sigfd_BM start sigfd_BM %d", sigfd_BM);
+  int nbr = read (sigfd_BM, &siginf, sizeof (siginf));
+  if (nbr != sizeof (siginf))   // very unlikely, probably impossible
+    FATAL_BM ("read_sigfd_BM: read fail (%d bytes read, want %d) - %m",
+              nbr, (int) sizeof (siginf));
+  DBGPRINTF_BM ("read_sigfd_BM signo=%d", siginf.ssi_signo);
+#warning incomplete read_sigfd_BM
+  switch (siginf.ssi_signo)
+    {
+    case SIGTERM:
+      FATAL_BM ("read_sigfd_BM should handle SIGTERM\n");
+      break;
+    case SIGQUIT:
+      FATAL_BM ("read_sigfd_BM should handle SIGQUIT\n");
+      break;
+    case SIGCHLD:
+      FATAL_BM ("read_sigfd_BM should handle SIGCHLD\n");
+      break;
+    default:
+      FATAL_BM ("read_sigfd_BM unexpected signo %d", siginf.ssi_signo);
+    };
+#if 0
   stop_agenda_work_threads_BM ();
   /// forcibly remove the payload of the_web_sessions.
   // In principle, even if it remains, it should not be dumped (because the class of the_web_sessions should be 
@@ -1925,8 +1925,9 @@ read_sigterm_BM (int sigfd)     // called from plain_event_loop_BM
      di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount,
      di.dumpinfo_todocount, di.dumpinfo_wrotefilecount,
      di.dumpinfo_elapsedtime, di.dumpinfo_cputime);
-  DBGPRINTF_BM ("read_sigterm_BM ending");
-}                               /* end read_sigterm_BM */
+#endif
+  DBGPRINTF_BM ("read_sigfd_BM ending");
+}                               /* end read_sigfd_BM */
 
 
 static void

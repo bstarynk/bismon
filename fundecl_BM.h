@@ -1383,6 +1383,7 @@ extern parser_decorate_string_inside_sigBM parsstringinside_guicmd_BM;
 ////////////////////////////////////////////////////////////////
 #ifdef BISMONION
 /// web specific functions
+extern void initialize_webonion_BM (void);      // initialize webonion before loading 
 // GC support for websessiondata & webexchangedata
 extern void websessiondatagcmark_BM (struct garbcoll_stBM *gc,
                                      struct websessiondata_stBM *ws,
