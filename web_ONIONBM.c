@@ -80,6 +80,8 @@ static void plain_event_loop_BM (void);
 
 // handle signals thu signafd(2); return true to break plain_event_loop_BM
 static bool read_sigfd_BM (void);
+// handle SIGCHLD
+static void handle_sigchld_BM (pid_t pid);
 // handle the command pipe
 static void read_commandpipe_BM (void);
 
@@ -370,6 +372,7 @@ fork_onion_process_at_slot_BM (int slotpos,
         sigaddset (&sigset, SIGQUIT);
         sigaddset (&sigset, SIGCHLD);
         sigprocmask (SIG_UNBLOCK, &sigset, NULL);
+	sigfd_BM = -2;
       }
       //in principle, most file descriptors should be
       //close-on-exec, but just in case we close some of them...
@@ -1928,19 +1931,22 @@ read_sigfd_BM (void)            // called from plain_event_loop_BM
          (int) getpid (), elapsedtime_BM ());
       return true;
     case SIGCHLD:
-      FATAL_BM ("read_sigfd_BM should handle SIGCHLD\n");
-#warning read_sigfd_BM should handle SIGCHLD
-      break;
+      {
+        pid_t pid = siginf.ssi_pid;
+        DBGPRINTF_BM ("read_sigfd_BM got SIGCHLD pid=%d", (int) pid);
+        handle_sigchld_BM (pid);
+        return false;
+      }
     default:
       FATAL_BM ("read_sigfd_BM unexpected signo %d", siginf.ssi_signo);
     };
   DBGPRINTF_BM ("read_sigfd_BM ending");
+  return false;
 }                               /* end read_sigfd_BM */
 
 
-#warning read_sigchld_BM should be given a pid and become handle_sigchld_BM
 static void
-read_sigchld_BM (int sigfd)
+handle_sigchld_BM (pid_t pid)
 {
   objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
   bool didfork = false;
@@ -1957,20 +1963,12 @@ read_sigchld_BM (int sigfd)
                  value_tyBM newcmdnodv; //
                  value_tyBM newendclosv;        //
     );
-  struct signalfd_siginfo sigchldinf;
-  memset (&sigchldinf, 0, sizeof (sigchldinf));
-  int nbr = read (sigfd, &sigchldinf, sizeof (sigchldinf));
-  if (nbr != sizeof (sigchldinf))
-    // very unlikely, probably impossible
-    FATAL_BM
-      ("read_sigchld_BM: read fail (%d.by read, want %d) - %m",
-       nbr, (int) sizeof (sigchldinf));
-  pid_t pid = sigchldinf.ssi_pid;
+  DBGPRINTF_BM ("handle_sigchld_BM start pid=%d", (int) pid);
   int wstatus = 0;
   pid_t wpid = waitpid (pid, &wstatus, WNOHANG);
   if (wpid == pid)
     {
-      DBGPRINTF_BM ("read_sigchld_BM pid %d", (int) pid);
+      DBGPRINTF_BM ("handle_sigchld_BM pid %d", (int) pid);
       {
         int chix = -1;
         int nbruncmds = 0;
@@ -2005,7 +2003,7 @@ read_sigchld_BM (int sigfd)
                 ASSERT_BM (isnode_BM (_.newcmdnodv));
                 ASSERT_BM (isclosure_BM (_.newendclosv));
                 DBGPRINTF_BM
-                  ("read_sigchld_BM chix#%d newdirstrv %s newcmdnodv %s newendclosv %s beforefork",
+                  ("handle_sigchld_BM chix#%d newdirstrv %s newcmdnodv %s newendclosv %s beforefork",
                    chix, debug_outstr_value_BM (_.newdirstrv, CURFRAME_BM,
                                                 0),
                    debug_outstr_value_BM (_.newcmdnodv, CURFRAME_BM, 0),
@@ -2023,7 +2021,7 @@ read_sigchld_BM (int sigfd)
               (value_tyBM)
               makestring_BM (objstrbufferbytespayl_BM (_.chbufob));
             DBGPRINTF_BM
-              ("read_sigchld_BM defer-apply chclosv %s choutstrv %s wstatus %#x=%d",
+              ("handle_sigchld_BM defer-apply chclosv %s choutstrv %s wstatus %#x=%d",
                debug_outstr_value_BM (_.chclosv, CURFRAME_BM, 0),
                debug_outstr_value_BM (_.choutstrv, CURFRAME_BM, 0), wstatus,
                wstatus);
@@ -2034,10 +2032,10 @@ read_sigchld_BM (int sigfd)
       }
     }
   else
-    FATAL_BM ("read_sigchld_BM waitpid failure pid#%d", pid);
+    FATAL_BM ("handle_sigchld_BM waitpid failure pid#%d", pid);
   if (didfork)
     usleep (1000);              // sleep a little bit, to let the child process start
-}                               /* end read_sigchld_BM */
+}                               /* end handle_sigchld_BM */
 
 
 static void
