@@ -372,7 +372,7 @@ fork_onion_process_at_slot_BM (int slotpos,
         sigaddset (&sigset, SIGQUIT);
         sigaddset (&sigset, SIGCHLD);
         sigprocmask (SIG_UNBLOCK, &sigset, NULL);
-	sigfd_BM = -2;
+        sigfd_BM = -2;
       }
       //in principle, most file descriptors should be
       //close-on-exec, but just in case we close some of them...
