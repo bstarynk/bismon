@@ -20,8 +20,14 @@
 !(_0se0A3BDiXN_9v8gQ1Rzdtr |=b|
 !~ name (~ b
 ~)
-!@ 1504241958.640
+!@ 1533730822.636
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "some object named b"
+!: _3URdyE0oa4Z_3oXj45Or0rB |=a|
+ [ _3URdyE0oa4Z_3oXj45Or0rB _0se0A3BDiXN_9v8gQ1Rzdtr _0DcIN3EYe3y_7cRpBDYhw3s ]
+!# 1
+!& _0DcIN3EYe3y_7cRpBDYhw3s
 !)_0se0A3BDiXN_9v8gQ1Rzdtr
 
 

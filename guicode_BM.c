@@ -1011,7 +1011,7 @@ ROUTINEOBJNAME_BM (_1Xc5XJ7S5r7_3nYIzlf2XAw)    // ,put commandhandler
   _.recv = arg1;
   _.attv = arg2;
   _.compv = arg3;
-  NONPRINTF_BM ("commandhandler°put recv=%s attv=%s compv=%s", objectdbg_BM (_.recv), debug_outstr_value_BM    //
+  DBGPRINTF_BM ("commandhandler°put recv=%s attv=%s compv=%s", objectdbg_BM (_.recv), debug_outstr_value_BM    //
                 (_.attv, CURFRAME_BM, 0), debug_outstr_value_BM //
                 (_.compv, CURFRAME_BM, 0));
   if (isobject_BM (_.attv))
