@@ -2416,6 +2416,120 @@ objwebexchangerequestpathstrvpayl_BM (const objectval_tyBM * obj)
     makestring_BM (onion_request_get_path (wxda->webx_requ));
 }                               /* end objwebexchangerequestpathstrvpayl_BM  */
 
+// return the value string associated with a constant request header field
+value_tyBM
+objwebexchangerequestcstrheaderpayl_BM (const objectval_tyBM * obj,
+                                        const char *cheader)
+{
+  struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
+  if (!wxda || !cheader)
+    return NULL;
+  ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
+  if (!wxda->webx_requ)
+    return NULL;
+  const char *cstr = onion_request_get_header (wxda->webx_requ, cheader);
+  if (cstr)
+    return (value_tyBM) makestring_BM (cstr);
+  return NULL;
+}                               /* end  objwebexchangerequestcstrheaderpayl */
+
+
+// return the value string associated with a value request header field
+value_tyBM
+objwebexchangerequestvalheaderpayl_BM (const objectval_tyBM * obj,
+                                       value_tyBM cval)
+{
+  if (!isstring_BM (cval))
+    return NULL;
+  struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
+  const char *cheader = bytstring_BM ((const stringval_tyBM *) cval);
+  if (!wxda || !cheader)
+    return NULL;
+  ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
+  if (!wxda->webx_requ)
+    return NULL;
+  const char *cstr = onion_request_get_header (wxda->webx_requ, cheader);
+  if (cstr)
+    return (value_tyBM) makestring_BM (cstr);
+  return NULL;
+}                               /* end  objwebexchangerequestvalheaderpayl */
+
+// return the value string associated with a constant queryarg
+value_tyBM
+objwebexchangerequestcstrquerypayl_BM (const objectval_tyBM * obj,
+                                       const char *cquery)
+{
+  struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
+  if (!wxda || !cquery)
+    return NULL;
+  ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
+  if (!wxda->webx_requ)
+    return NULL;
+  const char *cstr = onion_request_get_query (wxda->webx_requ, cquery);
+  if (cstr)
+    return (value_tyBM) makestring_BM (cstr);
+  return NULL;
+}                               /* end  objwebexchangerequestcstrquerypayl */
+
+
+// return the value string associated with a value queryarg
+value_tyBM
+objwebexchangerequestvalquerypayl_BM (const objectval_tyBM * obj,
+                                      value_tyBM cval)
+{
+  if (!isstring_BM (cval))
+    return NULL;
+  struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
+  const char *cquery = bytstring_BM ((const stringval_tyBM *) cval);
+  if (!wxda || !cquery)
+    return NULL;
+  ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
+  if (!wxda->webx_requ)
+    return NULL;
+  const char *cstr = onion_request_get_header (wxda->webx_requ, cquery);
+  if (cstr)
+    return (value_tyBM) makestring_BM (cstr);
+  return NULL;
+}                               /* end  objwebexchangerequestvalquerypayl */
+
+// return the value string associated with a constant postarg
+value_tyBM
+objwebexchangerequestcstrpostpayl_BM (const objectval_tyBM * obj,
+                                      const char *cpost)
+{
+  struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
+  if (!wxda || !cpost)
+    return NULL;
+  ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
+  if (!wxda->webx_requ)
+    return NULL;
+  const char *cstr = onion_request_get_post (wxda->webx_requ, cpost);
+  if (cstr)
+    return (value_tyBM) makestring_BM (cstr);
+  return NULL;
+}                               /* end  objwebexchangerequestcstrpostpayl */
+
+
+// return the value string associated with a value postarg
+value_tyBM
+objwebexchangerequestvalpostpayl_BM (const objectval_tyBM * obj,
+                                     value_tyBM cval)
+{
+  if (!isstring_BM (cval))
+    return NULL;
+  struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
+  const char *cpost = bytstring_BM ((const stringval_tyBM *) cval);
+  if (!wxda || !cpost)
+    return NULL;
+  ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
+  if (!wxda->webx_requ)
+    return NULL;
+  const char *cstr = onion_request_get_header (wxda->webx_requ, cpost);
+  if (cstr)
+    return (value_tyBM) makestring_BM (cstr);
+  return NULL;
+}                               /* end  objwebexchangerequestvalpostpayl */
+
 value_tyBM
 objwebexchangedatapayl_BM (const objectval_tyBM * obj)
 {

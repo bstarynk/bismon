@@ -1436,6 +1436,49 @@ static inline objectval_tyBM *objwebexchangesessionpayl_BM (const
 static inline value_tyBM objwebexchangedatapayl_BM (const objectval_tyBM *
                                                     obj);
 
+// return the value string associated with a constant request header field
+static inline value_tyBM objwebexchangerequestcstrheaderpayl_BM (const
+                                                                 objectval_tyBM
+                                                                 * obj,
+                                                                 const char
+                                                                 *cheader);
+
+
+// return the value string associated with a value request header field
+static inline value_tyBM objwebexchangerequestvalheaderpayl_BM (const
+                                                                objectval_tyBM
+                                                                * obj,
+                                                                value_tyBM
+                                                                cval);
+
+// return the value string associated with a constant queryarg
+static inline value_tyBM objwebexchangerequestcstrquerypayl_BM (const
+                                                                objectval_tyBM
+                                                                * obj,
+                                                                const char
+                                                                *cquery);
+
+// return the value string associated with a value queryarg
+static inline value_tyBM objwebexchangerequestvalquerypayl_BM (const
+                                                               objectval_tyBM
+                                                               * obj,
+                                                               value_tyBM
+                                                               cval);
+
+// return the value string associated with a constant postarg
+static inline value_tyBM objwebexchangerequestcstrpostpayl_BM (const
+                                                               objectval_tyBM
+                                                               * obj,
+                                                               const char
+                                                               *cpost);
+
+// return the value string associated with a value postarg
+static inline value_tyBM objwebexchangerequestvalpostpayl_BM (const
+                                                              objectval_tyBM *
+                                                              obj,
+                                                              value_tyBM
+                                                              cval);
+
 // the obj should be locked, otherwise it is undefined behavior
 extern void objwebexchangeputdatapayl_BM (const objectval_tyBM * obj,
                                           value_tyBM val);
