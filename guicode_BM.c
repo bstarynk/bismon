@@ -1132,7 +1132,7 @@ ROUTINEOBJNAME_BM (_0zf6nSKwSlU_6Cv3LMh1MmV)    //
     }
   _.recv = arg1;
   _.attv = arg2;
-  NONPRINTF_BM ("commandhandler#,remove recv=%s attv=%s",
+  DBGPRINTF_BM ("commandhandler#,remove recv=%s attv=%s",
                 objectdbg_BM (_.recv),
                 debug_outstr_value_BM (_.attv, CURFRAME_BM, 0));
   if (isobject_BM (_.attv))
