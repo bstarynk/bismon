@@ -9342,12 +9342,8 @@ _9w9s5y0OXta_3pY0SvkQDoU
 
 
 !(_4ZE2MUVTcHt_4lWsA1elKmS
-!@ 1533728104.384
+!@ 1533729362.445
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "emit head for testhello webhandler"
-!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
- * _2U8Sj78DMbl_5eerKpaJsNq ()
 !)_4ZE2MUVTcHt_4lWsA1elKmS
 
 
@@ -10561,8 +10557,10 @@ _7n2SLLuWOjH_4ArhFUjmckz
 
 
 !(_8prn9eFlYZD_6JJKKh2b8KW
-!@ 1533728071.536
+!@ 1533729324.365
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of webhandler testhello minifunc"
 !# 2
 !& _4ZE2MUVTcHt_4lWsA1elKmS
 !& _3VVvcLyYqv8_9yci7GvqEEv
