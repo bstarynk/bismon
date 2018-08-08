@@ -125,7 +125,7 @@ char *dump_after_load_dir_bm;
 char *builder_file_bm = "bismon.ui";
 char *css_file_bm = "bismon.css";
 char *gui_log_name_bm = "_bismon.log";  /* default log file */
-
+char *pid_filepath_bm = "_bismon.pid";  /* default pid file */
 char *comment_bm;
 char *module_to_emit_bm;
 int count_emit_has_predef_bm;
@@ -406,6 +406,14 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &nbworkjobs_BM,
    .description = "number of worker threads NBJOBS (>=2, <16)",
    .arg_description = "NBJOBS"},
+  //
+  {.long_name = "pid-file",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &pid_filepath_bm,
+   .description = "use PATH as the pid file;\n"
+   "\t .. default is _bismon.pid",
+   .arg_description = "PATH"},
   //
   {.long_name = "run-command",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
@@ -848,7 +856,20 @@ main (int argc, char **argv)
       INFOPRINTF_BM ("no GUI in batch mode\n");
     }
   else
-    rungui_BM (nbworkjobs_BM);
+    {
+      if (pid_filepath_bm && pid_filepath_bm[0]
+          && strcmp (pid_filepath_bm, "-"))
+        {
+          FILE *pidfile = fopen (pid_filepath_bm, "w");
+          if (!pidfile)
+            FATAL_BM ("failed to open pid file %s - %m", pid_filepath_bm);
+          fprintf (pidfile, "%d\n", (int) getpid ());
+          fclose (pidfile);
+          INFOPRINTF_BM ("wrote pid %d (BISMONGTK) in pid-file %s",
+                         (int) getpid (), pid_filepath_bm);
+        }
+      rungui_BM (nbworkjobs_BM);
+    }
 #endif /*BISMONGTK*/
     //
 #ifdef BISMONION
@@ -858,7 +879,20 @@ main (int argc, char **argv)
       INFOPRINTF_BM ("no web in batch mode\n");
     }
   else
-    run_onionweb_BM (nbworkjobs_BM);
+    {
+      if (pid_filepath_bm && pid_filepath_bm[0]
+          && strcmp (pid_filepath_bm, "-"))
+        {
+          FILE *pidfile = fopen (pid_filepath_bm, "w");
+          if (!pidfile)
+            FATAL_BM ("failed to open pid file %s - %m", pid_filepath_bm);
+          fprintf (pidfile, "%d\n", (int) getpid ());
+          fclose (pidfile);
+          INFOPRINTF_BM ("wrote pid %d (BISMONION) in pid-file %s",
+                         (int) getpid (), pid_filepath_bm);
+        }
+      run_onionweb_BM (nbworkjobs_BM);
+    }
 #endif /*BISMONION*/
     free (contributors_filepath_BM), contributors_filepath_BM = NULL;
   free (passwords_filepath_BM), passwords_filepath_BM = NULL;

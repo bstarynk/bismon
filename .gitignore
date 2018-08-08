@@ -26,6 +26,7 @@ modulbin/*.so
 *.html
 
 _*.log
+_*.pid
 
 gmon.out
 
