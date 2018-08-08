@@ -1886,7 +1886,8 @@ read_sigfd_BM (void)            // called from plain_event_loop_BM
 {
   struct signalfd_siginfo siginf;
   memset (&siginf, 0, sizeof (siginf));
-  DBGPRINTF_BM ("read_sigfd_BM start sigfd_BM %d", sigfd_BM);
+  DBGPRINTF_BM ("read_sigfd_BM start sigfd_BM %d elapsed %3.f s", sigfd_BM,
+                elapsedtime_BM ());
   int nbr = read (sigfd_BM, &siginf, sizeof (siginf));
   if (nbr != sizeof (siginf))   // very unlikely, probably impossible
     FATAL_BM ("read_sigfd_BM: read fail (%d bytes read, want %d) - %m",
@@ -1896,56 +1897,48 @@ read_sigfd_BM (void)            // called from plain_event_loop_BM
   switch (siginf.ssi_signo)
     {
     case SIGTERM:
-      FATAL_BM ("read_sigfd_BM should handle SIGTERM\n");
-      break;
+      {
+        DBGPRINTF_BM ("read_sigfd_BM got SIGTERM");
+        stop_agenda_work_threads_BM ();
+        /// forcibly remove the payload of the_web_sessions. Its payload
+        /// should not be dumped, because of its class, but anyway...
+        {
+          objlock_BM (BMP_the_web_sessions);
+          objclearpayload_BM (BMP_the_web_sessions);
+          objunlock_BM (BMP_the_web_sessions);
+        }
+        char *rp = realpath (dump_dir_BM ? : ".", NULL);
+        INFOPRINTF_BM
+          ("before dumping final state into %s (really %s) after SIGTERM to process %d, elapsed %.3f s",
+           dump_dir_BM, rp, (int) getpid (), elapsedtime_BM ());
+        free (rp), rp = NULL;
+        struct dumpinfo_stBM di = dump_BM (dump_dir_BM, NULL);
+        INFOPRINTF_BM
+          ("after dumping final state into %s for SIGTERM: scanned %ld, emitted %ld objects\n"
+           "did %ld todos, wrote %ld files\n"
+           "in %.3f elapsed, %.4f cpu seconds.\n", dump_dir_BM,
+           di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount,
+           di.dumpinfo_todocount, di.dumpinfo_wrotefilecount,
+           di.dumpinfo_elapsedtime, di.dumpinfo_cputime);
+      }
+      return true;
     case SIGQUIT:
-      FATAL_BM ("read_sigfd_BM should handle SIGQUIT\n");
-      break;
+      INFOPRINTF_BM
+        ("terminating without dump after SIGQUIT to process %d, elapsed %.3f s",
+         (int) getpid (), elapsedtime_BM ());
+      return true;
     case SIGCHLD:
       FATAL_BM ("read_sigfd_BM should handle SIGCHLD\n");
+#warning read_sigfd_BM should handle SIGCHLD
       break;
     default:
       FATAL_BM ("read_sigfd_BM unexpected signo %d", siginf.ssi_signo);
     };
-#if 0
-  stop_agenda_work_threads_BM ();
-  /// forcibly remove the payload of the_web_sessions.
-  // In principle, even if it remains, it should not be dumped (because the class of the_web_sessions should be 
-  objclearpayload_BM (BMP_the_web_sessions);
-  char *rp = realpath (dump_dir_BM ? : ".", NULL);
-  INFOPRINTF_BM
-    ("before dumping state into %s (really %s) after SIGTERM to process %d",
-     dump_dir_BM, rp, (int) getpid ());
-  free (rp), rp = NULL;
-  struct dumpinfo_stBM di = dump_BM (dump_dir_BM, NULL);
-  INFOPRINTF_BM
-    ("after dumping state into %s for SIGTERM: scanned %ld, emitted %ld objects\n"
-     "did %ld todos, wrote %ld files\n"
-     "in %.3f elapsed, %.4f cpu seconds.\n", dump_dir_BM,
-     di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount,
-     di.dumpinfo_todocount, di.dumpinfo_wrotefilecount,
-     di.dumpinfo_elapsedtime, di.dumpinfo_cputime);
-#endif
   DBGPRINTF_BM ("read_sigfd_BM ending");
 }                               /* end read_sigfd_BM */
 
 
-static void
-read_sigquit_BM (int sigfd)     // called from plain_event_loop_BM
-{
-  struct signalfd_siginfo sigquitinf;
-  memset (&sigquitinf, 0, sizeof (sigquitinf));
-  DBGPRINTF_BM ("read_sigquit_BM start");
-  int nbr = read (sigfd, &sigquitinf, sizeof (sigquitinf));
-  if (nbr != sizeof (sigquitinf))       // very unlikely, probably impossible
-    FATAL_BM ("read_sigquit_BM: read fail (%d bytes read, want %d) - %m",
-              nbr, (int) sizeof (sigquitinf));
-  stop_agenda_work_threads_BM ();
-  INFOPRINTF_BM ("quitting BISMON process %d without dump thru SIGQUIT",
-                 (int) getpid ());
-}                               /* end read_sigquit_BM */
-
-
+#warning read_sigchld_BM should be given a pid and become handle_sigchld_BM
 static void
 read_sigchld_BM (int sigfd)
 {
