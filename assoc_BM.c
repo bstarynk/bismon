@@ -183,6 +183,8 @@ assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap)
         newpairsiz = 2 * TINYSIZE_BM / 3;
       else
         newpairsiz = TINYSIZE_BM;
+      if (oldassocispairs && newpairsiz == ASSOCPAIRSIZE_BM (oldassoc))
+        return;
       struct assocpairs_stBM *newpairs = newpairsiz ?
         allocgcty_BM (typayl_assocpairs_BM,
                       sizeof (struct assocpairs_stBM) +
@@ -254,6 +256,7 @@ assoc_reorganize_BM (anyassoc_tyBM ** passoc, unsigned gap)
                 }
             }
           ASSERT_BM (newpaircnt == oldcnt);
+          ASSOCPAIRUCNT_BM (newpairs) = newpaircnt;
           *passoc = newpairs;
         }                       /* end if oldassocispairs */
       else
@@ -584,6 +587,7 @@ assoc_removeattr_BM (anyassoc_tyBM * assoc, const objectval_tyBM * obattr)
                   curpairs->apairs_ent[pix].asso_val = NULL;
                   ASSOCPAIRUCNT_BM (curpairs)--;
                   ASSOCTABLECUMCNT_BM (atable)--;
+                  nbkeys--;
                   goto perhapsreorganize;
                 }
             }
@@ -605,6 +609,7 @@ assoc_removeattr_BM (anyassoc_tyBM * assoc, const objectval_tyBM * obattr)
               curpairs->apairs_ent[pix].asso_keyob = NULL;
               curpairs->apairs_ent[pix].asso_val = NULL;
               ASSOCPAIRUCNT_BM (curpairs) = cnt - 1;
+              nbkeys--;
               goto perhapsreorganize;
             }
         };
@@ -620,17 +625,26 @@ perhapsreorganize:
           || (3 * ASSOCTABLECUMCNT_BM (assoc)) / 2 <
           TINYSIZE_BM * ASSOCTABLESIZE_BM (assoc))
         {
-          assoc_reorganize_BM (&assoc,
-                               3 + nbkeys / 128 + ILOG2_BM (nbkeys + 4));
+          unsigned aucnt = ASSOCTABLECUMCNT_BM (assoc);
+          unsigned apsiz = ASSOCTABLESIZE_BM (assoc);
+          ASSERT_BM (aucnt == nbkeys);
+          ASSERT_BM (aucnt < apsiz);
+          unsigned gap = 1 + ILOG2_BM (aucnt + 1);
+          assoc_reorganize_BM (&assoc, gap);
           return assoc;
         }
     }
   else
     {
-      if (ASSOCPAIRUCNT_BM (assoc) < 3 * ASSOCPAIRSIZE_BM (assoc))
+      ASSERT_BM (assotyp == typayl_assocpairs_BM);
+      unsigned aucnt = ASSOCPAIRUCNT_BM (assoc);
+      unsigned apsiz = ASSOCPAIRSIZE_BM (assoc);
+      ASSERT_BM (aucnt <= apsiz);
+      if (aucnt < 3 * apsiz)
         {
-          assoc_reorganize_BM (&assoc,
-                               3 + nbkeys / 128 + ILOG2_BM (nbkeys + 4));
+          ASSERT_BM (aucnt == nbkeys);
+          unsigned gap = 2 + aucnt / 64 + ILOG2_BM (aucnt + 1);
+          assoc_reorganize_BM (&assoc, gap);
           return assoc;
         }
     }
