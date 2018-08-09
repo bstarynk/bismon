@@ -65,6 +65,9 @@ enum gctyenum_BM
 #ifdef BISMONION
   typayl_websession_BM,
   typayl_webexchange_BM,
+#else
+  typayl_hole1_BM,
+  typayl_hole2_BM,
 #endif /*BISMONION*/
     /// 
     typayl_user_BM,

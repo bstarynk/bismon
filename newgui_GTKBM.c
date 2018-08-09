@@ -4440,6 +4440,7 @@ show_answer_value_newgui_BM (value_tyBM valarg, struct stackframe_stBM *stkf)
 }                               /* end show_answer_value_newgui_BM */
 
 
+#ifndef BISMONION
 // stubs for useless web related functions
 bool
 objhaswebexchangepayl_BM (const objectval_tyBM * obj __attribute__ ((unused)))
@@ -4550,5 +4551,6 @@ objhaswebsessionpayl_BM (const objectval_tyBM * obj __attribute__ ((unused)))
 {
   return false;
 }                               /* end objhaswebsessionpayl_BM */
+#endif /*no BISMONION */
 
 // end of file newgui_GTKBM.c
