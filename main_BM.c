@@ -31,6 +31,7 @@ struct timespec startrealtimespec_BM;
 void *dlprog_BM;
 const char *myprogname_BM;
 bool gui_is_running_BM;
+bool web_is_running_BM;
 bool debugmsg_BM;
 int nbworkjobs_BM;
 const char myhostname_BM[80];
@@ -738,11 +739,11 @@ main (int argc, char **argv)
     debugmsg_BM = true;
 #if defined(BISMONION) && defined (BISMONGTK)
   /* when both BISMONION and BISMONGTK */
-  if (!strstr (basename (myprogname_BM), "gtk")
+  if (strstr (basename (myprogname_BM), "gtk")
       || (argc > 1 && !strcmp (argv[1], "--gtk"))
       || (argc > 2 && argv[1][0] == '-' && !strcmp (argv[1], "--gtk")))
     run_gtk_BM = true;
-  if (!strstr (basename (myprogname_BM), "onion")
+  if (strstr (basename (myprogname_BM), "onion")
       || (argc > 1 && !strcmp (argv[1], "--onion"))
       || (argc > 2 && argv[1][0] == '-' && !strcmp (argv[1], "--onion")))
     run_onion_BM = true;
@@ -820,6 +821,8 @@ main (int argc, char **argv)
     nbworkjobs_BM = MINNBWORKJOBS_BM;
   else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
+  if (!batch_bm && !run_gtk_BM && !run_onion_BM)
+    FATAL_BM ("no batch or gtk or onion option");
   //
   initialize_contributors_path_BM ();
   initialize_passwords_path_BM ();
@@ -961,6 +964,19 @@ main (int argc, char **argv)
                  bismon_lastgitcommit, bismon_checksum);
   fflush (NULL);
 }                               /* end main */
+
+bool
+bismon_has_gui_BM (void)
+{
+  return gui_is_running_BM || run_gtk_BM;
+}                               /* end bismon_has_gui_BM */
+
+
+bool
+bismon_has_web_BM (void)
+{
+  return web_is_running_BM || run_onion_BM;
+}                               /* end bismon_has_web_BM */
 
 void
 do_dump_after_load_BM (void)
@@ -1760,3 +1776,174 @@ backtrace_print_BM (struct backtrace_state *state, int skip, FILE * f)
   backtrace_full (state, skip + 1, printbt_callback_BM, errorbt_callback_BM,
                   (void *) &data);
 }                               /* end backtrace_print_BM */
+
+////////////////////////////////////////////////////////////////
+void
+queue_process_BM (const stringval_tyBM * dirstrarg,
+                  const node_tyBM * cmdnodarg,
+                  const closure_tyBM * endclosarg,
+                  struct stackframe_stBM *stkf)
+{
+#ifdef BISMONGTK
+  extern void
+    gtk_queue_process_BM (const stringval_tyBM * dirstrarg,
+                          const node_tyBM * cmdnodarg,
+                          const closure_tyBM * endclosarg,
+                          struct stackframe_stBM *stkf);
+#endif
+#ifdef BISMONION
+  extern void
+    onion_queue_process_BM (const stringval_tyBM * dirstrarg,
+                            const node_tyBM * cmdnodarg,
+                            const closure_tyBM * endclosarg,
+                            struct stackframe_stBM *stkf);
+#endif
+#ifdef BISMONGTK
+  if (gui_is_running_BM)
+    {
+      gtk_queue_process_BM (dirstrarg, cmdnodarg, endclosarg, stkf);
+      return;
+    }
+#endif
+#ifdef BISMONION
+  if (web_is_running_BM)
+    {
+      onion_queue_process_BM (dirstrarg, cmdnodarg, endclosarg, stkf);
+      return;
+    }
+#endif
+  FATAL_BM ("queue_process_BM without web or GUI");
+}                               /* end queue_process_BM */
+
+void
+log_begin_message_BM (void)
+{
+#ifdef BISMONGTK
+  extern void gtk_log_begin_message_BM (void);
+#endif
+#ifdef BISMONION
+  extern void onion_log_begin_message_BM (void);
+#endif
+#ifdef BISMONGTK
+  if (gui_is_running_BM)
+    {
+      gtk_log_begin_message_BM ();
+      return;
+    };
+#endif /*BISMONGTK*/
+#ifdef BISMONION
+    if (web_is_running_BM)
+    {
+      onion_log_begin_message_BM ();
+      return;
+    }
+#endif
+  FATAL_BM ("log_begin_message_BM without web or GUI");
+}                               /* end log_begin_message_BM */
+
+
+
+void
+log_end_message_BM (void)
+{
+#ifdef BISMONGTK
+  extern void gtk_log_end_message_BM (void);
+#endif
+#ifdef BISMONION
+  extern void onion_log_end_message_BM (void);
+#endif
+#ifdef BISMONGTK
+  if (gui_is_running_BM)
+    {
+      gtk_log_end_message_BM ();
+      return;
+    };
+#endif /*BISMONGTK*/
+#ifdef BISMONION
+    if (web_is_running_BM)
+    {
+      onion_log_end_message_BM ();
+      return;
+    }
+#endif
+  FATAL_BM ("log_end_message_BM without web or GUI");
+}                               /* end log_end_message_BM */
+
+
+
+void
+log_puts_message_BM (const char *str)
+{
+#ifdef BISMONGTK
+  extern void gtk_log_puts_message_BM (void);
+#endif
+#ifdef BISMONION
+  extern void onion_log_puts_message_BM (void);
+#endif
+#ifdef BISMONGTK
+  if (gui_is_running_BM)
+    {
+      gtk_log_puts_message_BM ();
+      return;
+    };
+#endif /*BISMONGTK*/
+#ifdef BISMONION
+    if (web_is_running_BM)
+    {
+      onion_log_puts_message_BM ();
+      return;
+    }
+#endif
+  FATAL_BM ("log_puts_message_BM without web or GUI");
+}                               /* end log_puts_message_BM */
+
+void
+log_object_message_BM (const objectval_tyBM * obj)
+{
+#ifdef BISMONGTK
+  extern void gtk_log_object_message_BM (const objectval_tyBM *);
+#endif
+#ifdef BISMONION
+  extern void onion_log_object_message_BM (const objectval_tyBM *);
+#endif
+#ifdef BISMONGTK
+  if (gui_is_running_BM)
+    {
+      gtk_log_object_message_BM (obj);
+      return;
+    };
+#endif /*BISMONGTK*/
+#ifdef BISMONION
+    if (web_is_running_BM)
+    {
+      onion_log_object_message_BM (obj);
+      return;
+    }
+#endif
+  FATAL_BM ("log_object_message_BM without web or GUI for %s",
+            objectdbg_BM (obj));
+}                               /* end log_object_message_BM */
+
+void
+log_printf_message_BM (const char *fmt, ...)
+{
+  char smallbuf[64];
+  memset (smallbuf, 0, sizeof (smallbuf));
+  va_list args;
+  char *buf = smallbuf;
+  va_start (args, fmt);
+  int ln = vsnprintf (smallbuf, sizeof (smallbuf), fmt, args);
+  va_end (args);
+  if (ln >= (int) sizeof (smallbuf) - 1)
+    {
+      buf = calloc ((prime_above_BM (ln + 2) | 7) + 1, 1);
+      if (!buf)
+        FATAL_BM ("failed to calloc for %d bytes (%m)", ln);
+      va_start (args, fmt);
+      vsnprintf (buf, ln + 1, fmt, args);
+      va_end (args);
+    }
+  log_puts_message_BM (buf);
+  if (buf != smallbuf)
+    free (buf);
+}                               /* end log_printf_message_BM */

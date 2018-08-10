@@ -43,6 +43,11 @@ struct namedvaluenewguixtra_stBM
 
 static const stringval_tyBM *astrval_bm;        // the "a" string value, name of default results, $a
 
+extern void
+gtk_queue_process_BM (const stringval_tyBM * dirstrarg,
+                      const node_tyBM * cmdnodarg,
+                      const closure_tyBM * endclosarg,
+                      struct stackframe_stBM *stkf);
 //////////////// for process queue
 /// running processes
 struct
@@ -4023,10 +4028,10 @@ fork_gtk_process_at_slot_BM (int slotpos,
                              struct stackframe_stBM *stkf);
 
 void
-queue_process_BM (const stringval_tyBM * dirstrarg,
-                  const node_tyBM * cmdnodarg,
-                  const closure_tyBM * endclosarg,
-                  struct stackframe_stBM *stkf)
+gtk_queue_process_BM (const stringval_tyBM * dirstrarg,
+                      const node_tyBM * cmdnodarg,
+                      const closure_tyBM * endclosarg,
+                      struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
   objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;

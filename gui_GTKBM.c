@@ -19,6 +19,11 @@
 #include "bismon.h"
 #include "gui_GTKBM.const.h"
 
+extern void gtk_log_puts_message_BM (const char *msg);
+extern void gtk_log_begin_message_BM (void);
+extern void gtk_log_end_message_BM (void);
+extern void gtk_log_object_message_BM (const objectval_tyBM * obj);
+
 GtkWidget *mainwin_BM;
 GtkWidget *errormessagedialog_BM;
 FILE *gui_command_log_file_BM;
@@ -1486,7 +1491,7 @@ gui_gc_message_BM (const char *msg)
 }                               /* end gui_gc_message_BM */
 
 void
-log_begin_message_BM (void)
+gtk_log_begin_message_BM (void)
 {
   static long logcnt;
   logcnt++;
@@ -1519,7 +1524,7 @@ log_begin_message_BM (void)
 
 
 void
-log_end_message_BM (void)
+gtk_log_end_message_BM (void)
 {
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_end_iter (logbuf_BM, &it);
@@ -1530,7 +1535,7 @@ log_end_message_BM (void)
 
 
 void
-log_object_message_BM (const objectval_tyBM * obj)
+gtk_log_object_message_BM (const objectval_tyBM * obj)
 {
   GtkTextIter it = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_end_iter (logbuf_BM, &it);
@@ -1562,7 +1567,7 @@ log_object_message_BM (const objectval_tyBM * obj)
 }                               /* end log_object_message_BM */
 
 void
-log_puts_message_BM (const char *msg)
+gtk_log_puts_message_BM (const char *msg)
 {
   if (!msg || !msg[0])
     return;
@@ -1570,30 +1575,6 @@ log_puts_message_BM (const char *msg)
   gtk_text_buffer_get_end_iter (logbuf_BM, &it);
   gtk_text_buffer_insert (logbuf_BM, &it, msg, -1);
 }                               /* end log_puts_message_BM */
-
-void
-log_printf_message_BM (const char *fmt, ...)
-{
-  char smallbuf[64];
-  memset (smallbuf, 0, sizeof (smallbuf));
-  va_list args;
-  char *buf = smallbuf;
-  va_start (args, fmt);
-  int ln = vsnprintf (smallbuf, sizeof (smallbuf), fmt, args);
-  va_end (args);
-  if (ln >= (int) sizeof (smallbuf) - 1)
-    {
-      buf = calloc ((prime_above_BM (ln + 2) | 7) + 1, 1);
-      if (!buf)
-        FATAL_BM ("failed to calloc for %d bytes (%m)", ln);
-      va_start (args, fmt);
-      vsnprintf (buf, ln + 1, fmt, args);
-      va_end (args);
-    }
-  log_puts_message_BM (buf);
-  if (buf != smallbuf)
-    free (buf);
-}                               /* end log_printf_message_BM */
 
 void
 parserror_guicmd_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf,
@@ -4713,14 +4694,15 @@ initialize_log_scrollview_BM (void)
   gtk_container_add (GTK_CONTAINER (logscrolw), logview_BM);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (logscrolw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  {
-    log_begin_message_BM ();
-    log_printf_message_BM
-      ("log of bismon (build %s,\n commit %s,\n checksum %s) pid %d",
-       bismon_timestamp, bismon_lastgitcommit, bismon_checksum,
-       (int) getpid ());
-    log_end_message_BM ();
-  }
+  if (gui_is_running_BM)
+    {
+      log_begin_message_BM ();
+      log_printf_message_BM
+        ("log of bismon (build %s,\n commit %s,\n checksum %s) pid %d",
+         bismon_timestamp, bismon_lastgitcommit, bismon_checksum,
+         (int) getpid ());
+      log_end_message_BM ();
+    }
   return logscrolw;
 }                               /* end initialize_log_scrollview_BM */
 

@@ -4,8 +4,7 @@
 *.gch
 __timestamp*
 *prog
-bismongtk
-bismonion
+bismon
 passwords_BM
 BM_makeconst
 _bm_allconsts*.c

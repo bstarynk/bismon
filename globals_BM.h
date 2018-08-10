@@ -36,6 +36,7 @@ extern const char *bmconstidstrings[];
 extern const char myhostname_BM[];
 extern atomic_bool want_garbage_collection_BM;
 extern bool gui_is_running_BM;
+extern bool web_is_running_BM;
 extern FILE *gui_command_log_file_BM;
 
 /// these will be realpath-s after initialization

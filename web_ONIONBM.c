@@ -29,6 +29,17 @@ static int cmdpipe_rd_BM = -1, cmdpipe_wr_BM = -1;
 static int sigfd_BM = -1;
 extern void add_defer_command_onion_BM (void);
 
+extern void
+onion_queue_process_BM (const stringval_tyBM * dirstrarg,
+                        const node_tyBM * cmdnodarg,
+                        const closure_tyBM * endclosarg,
+                        struct stackframe_stBM *stkf);
+
+extern void onion_log_puts_message_BM (const char *msg);
+extern void onion_log_begin_message_BM (void);
+extern void onion_log_end_message_BM (void);
+extern void onion_log_object_message_BM (const objectval_tyBM * obj);
+
 //////////////////////////////////////////////////////////////////////////
 /// For process queue running processes; similar to gtkrunprocarr_BM
 /// in newgui_GTKBM.c stuff is added into onionrunprocarr_BM &
@@ -122,7 +133,7 @@ unlockonion_runpro_mtx_at_BM (int lineno __attribute__ ((unused)))
 }                               /* end lockonion_runpro_mtx_at_BM */
 
 void
-log_begin_message_BM (void)
+onion_log_begin_message_BM (void)
 {
   static long logcnt;
   logcnt++;
@@ -148,59 +159,33 @@ log_begin_message_BM (void)
             nowfracbuf + 1, nowcntbuf);
   DBGBACKTRACEPRINTF_BM ("web log_begin_message_BM logmbuf %s", logmbuf);
   FATAL_BM ("log_begin_message_BM unimplemented in web_ONIONBM: %s", logmbuf);
-#warning log_begin_message_BM unimplemented in web_ONIONBM
-}                               /* end log_begin_message_BM */
+#warning onion_log_begin_message_BM unimplemented in web_ONIONBM
+}                               /* end onion_log_begin_message_BM */
 
 void
-log_end_message_BM (void)
+onion_log_end_message_BM (void)
 {
   FATAL_BM ("log_end_message_BM unimplemented in web_ONIONBM");
-#warning log_end_message_BM  unimplemented in web_ONIONBM
-}                               /* end log_end_message_BM */
+#warning onion_log_end_message_BM  unimplemented in web_ONIONBM
+}                               /* end onion_log_end_message_BM */
 
 void
-log_object_message_BM (const objectval_tyBM * obj)
+onion_log_object_message_BM (const objectval_tyBM * obj)
 {
   FATAL_BM ("log_object_message_BM unimplemented in web_ONIONBM obj %s",
             objectdbg_BM (obj));
-#warning log_object_message_BM  unimplemented in web_ONIONBM
-}                               /* end log_object_message_BM */
+#warning onion_log_object_message_BM  unimplemented in web_ONIONBM
+}                               /* end onion_log_object_message_BM */
 
 void
-log_puts_message_BM (const char *msg)
+onion_log_puts_message_BM (const char *msg)
 {
   if (!msg || !msg[0])
     return;
-  FATAL_BM ("log_puts_message_BM unimplemented in web_ONIONBM msg %s", msg);
-#warning log_puts_message_BM  unimplemented in web_ONIONBM
-}                               /* end log_puts_message_BM */
-
-void
-log_printf_message_BM (const char *fmt, ...)
-{
-  char smallbuf[64];
-  memset (smallbuf, 0, sizeof (smallbuf));
-  va_list args;
-  char *buf = smallbuf;
-  va_start (args, fmt);
-  int ln = vsnprintf (smallbuf, sizeof (smallbuf), fmt, args);
-  va_end (args);
-  if (ln >= (int) sizeof (smallbuf) - 1)
-    {
-      buf = calloc (((prime_above_BM (ln / 4) | 7) + 2) * 4, 1);
-      if (!buf)
-        FATAL_BM ("failed to calloc for %d bytes (%m)", ln);
-      va_start (args, fmt);
-      vsnprintf (buf, ln + 1, fmt, args);
-      va_end (args);
-    }
-  log_puts_message_BM (buf);
-  if (buf != smallbuf)
-    free (buf);
-}                               /* end log_printf_message_BM */
-
-
-
+  FATAL_BM ("onion_log_puts_message_BM unimplemented in web_ONIONBM msg %s",
+            msg);
+#warning onion_log_puts_message_BM  unimplemented in web_ONIONBM
+}                               /* end onion_log_puts_message_BM */
 
 
 // queue some external process; its stdin is /dev/null; both stdout &
@@ -210,10 +195,10 @@ log_printf_message_BM (const char *fmt, ...)
 // to run endclosv is the closure getting the status
 // stringoutput, could fail
 void
-queue_process_BM (const stringval_tyBM * dirstrarg,
-                  const node_tyBM * cmdnodarg,
-                  const closure_tyBM * endclosarg,
-                  struct stackframe_stBM *stkf)
+onion_queue_process_BM (const stringval_tyBM * dirstrarg,
+                        const node_tyBM * cmdnodarg,
+                        const closure_tyBM * endclosarg,
+                        struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
   objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
@@ -509,7 +494,9 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
       /// (and their output pipes), to SIGCHLD and SIGTERM + SIGQUIT
       /// see https://groups.google.com/a/coralbits.com/d/msg/onion-dev/m-wH-BY2MA0/QJqLNcHvAAAJ
       /// and https://groups.google.com/a/coralbits.com/d/msg/onion-dev/ImjNf1EIp68/R37DW3mZAAAJ
+      web_is_running_BM = true;
       plain_event_loop_BM ();
+      web_is_running_BM = false;
     }
 }                               /* end run_onionweb_BM */
 

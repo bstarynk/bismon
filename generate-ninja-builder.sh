@@ -54,6 +54,11 @@ echo '  description = CC $out'
 echo '  depfile = $out.mkd'
 echo '  deps = gcc'
 echo
+echo '# compile a naked C file into an object file'
+echo 'rule NAKEDCC_r'
+echo '  command = $cc -Wall -g -O -o $out -c $in'
+echo '  description = NAKEDCC $out'
+echo
 echo '# compile a C++ file into an object file'
 echo 'rule CXX_r'
 echo '  command = $cxx -MMD -MT $out -MF $out.mkd $cxxflags -c $in -o $out'
@@ -83,9 +88,9 @@ echo '  description = BMALLCONSTSC $out'
 echo
 echo '# link the entire bismon program'
 echo 'rule LINKALLBISMON_r'
-echo '  command = $cxx  $cxxwarnflags  $incflags $optimflags $in $bm_ldflags $bm_libs -o $out ; rm __timestamp.c'
+echo '  command = $cxx  $cxxwarnflags  $incflags $optimflags $in $bm_ldflags $bm_libs -o $out && rm __timestamp.c'
 echo '  description = LINKALLBISMON $out'
-
+echo
 echo
 echo '# timestamp the bismon program'
 echo 'rule TIMESTAMP_r'
@@ -112,12 +117,7 @@ for f in $bm_cxxfiles ; do
     echo build $bf.o: CXX_r $f
 done
 
-echo '#object files for Onion templated C generated files'
-for t in *ONIONBM.thtml ; do
-    bt=$(basename $t .thtml)
-    echo build _$bt.o: CC_r _$bt.c
-done
-echo
+
 
 echo '#solo C++ program to deal with BISMON constants'
 echo 'build BM_makeconst: SOLOCXXPROG_r BM_makeconst.cc'
@@ -128,13 +128,14 @@ for f in $(fgrep -l const.h $bm_cfiles) ; do
     echo build $bf.const.h: BMCONSTH_r $f ' | BM_makeconst'
 done
 echo
-echo '#generated all constants summary C file'
+echo '#generated all constants summary C file and object'
 echo -n build _bm_allconsts.c: BMALLCONSTSC_r
 for f in $(fgrep -l const.h $bm_cfiles) ; do
     bf=$(basename $f .c)
     printf ' %s' $f
 done
 echo ' | BM_makeconst'
+echo build _bm_allconsts.o: NAKEDCC_r _bm_allconsts.c
 echo
 echo
 echo '# build from webtemplates'
@@ -146,10 +147,11 @@ for f in $bm_webtemplates ; do
     echo '  out_c = ' _$bf.c
 done
 echo
-echo '## build the timestamp'
-echo -n 'build __timestamp.c: TIMESTAMP_r ' $bm_cfiles $bm_cxxfiles ' | ' timestamp-emit.sh
+echo '## build the timestamp and object file'
+echo  'build __timestamp.c: TIMESTAMP_r ' $bm_cfiles $bm_cxxfiles ' | ' timestamp-emit.sh
+echo  'build __timestamp.o: NAKEDCC_r __timestamp.c'
 echo
-echo '## build the bismon program'
+echo '## build and link the bismon program'
 echo -n 'build bismon: LINKALLBISMON_r' 
 for f in $bm_cfiles ; do
     bf=$(basename $f .c)
@@ -160,11 +162,6 @@ for f in $bm_cxxfiles ; do
     bf=$(basename $f .cc)
     printf " %s" $bf.o
 done
-printf ' $\n'
-for t in *ONIONBM.thtml ; do
-    bt=$(basename $t .thtml)
-    printf " %s" _$bt.o
-done
-printf ' $\n  __timestamp.c'
+printf ' $\n  __timestamp.o _bm_allconsts.o'
 echo
 
