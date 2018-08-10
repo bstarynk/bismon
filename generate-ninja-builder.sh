@@ -6,6 +6,7 @@ bm_gcc=gcc
 bm_gxx=g++
 bm_cfiles="$(ls *BM.c)"
 bm_cxxfiles="$(ls *BM.cc)"
+bm_webtemplates="$(ls *BM.thtml)"
 date +"# DONT EDIT this build.ninja file ; it was generated%n# at %c by $0"
 echo 'ninja_required_version = 1.8'
 echo '#arguments passed to generate-ninja-builder.sh'
@@ -21,11 +22,13 @@ echo  "cxx = " $bm_gxx
 echo "bm_commonwarnflags =  -Wall -Wextra -Wstack-usage=1500 -fdiagnostics-color=auto"
 echo 'cwarnflags = $bm_commonwarnflags -Wmissing-prototypes'
 echo 'cxxwarnflags = $bm_commonwarnflags'
-echo 'defpreproflags = -DBISMONION -DBISMONGK  -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED'
+echo 'defpreproflags = -DBISMONION -DBISMONGTK  -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED'
 echo 'incflags = -I. -I/usr/local/include'
 echo 'optimflags = -O1 -g3'
 echo 'cflags = $cwarnflags $defpreproflags $incflags $optimflags $pkg_cflags'
 echo 'cxxflags = $cxxwarnflags $defpreproflags $incflags $optimflags $pkg_cflags'
+echo '#for web templates *thtml related to onion otemplate generator'
+echo 'otemplate = otemplate'
 #-echo '#our handwritten C files'
 #-echo "bm_cfiles = "  $bm_cfiles | fmt | sed -e '2,$s/^/ /' -e 's/$/ \$/' ; echo
 #-echo '#our handwritten C++ files'
@@ -38,7 +41,7 @@ echo '#our handwritten C/C++ headers'
 echo -n 'bm_headers = bismon.h ' ; ls [a-z]*BM.h | fmt | sed -e '2,$s/^/ /' -e 's/$/ \$/' ; echo
 
 echo '#our handwritten web templates for Onion otemplate'
-echo -n 'bm_webtemplates = '; ls *ONIONBM.thtml
+echo -n 'bm_webtemplates = ' $bm_webtemplates  | fmt | sed -e '2,$s/^/ /' -e 's/$/ \$/' ; echo
 
 echo '#our generated persistent headers'
 echo -n 'bm_generatedheaders = ' ; ls _bm*.h | fmt |  sed -e '2,$s/^/ /' -e 's/$/ \$/' ; echo
@@ -68,6 +71,11 @@ echo 'rule BMCONSTH_r'
 echo '  command = ./BM_makeconst -H $out $in'
 echo '  description = BMCONSTH $out'
 echo
+echo '# make _XXX_ONIONBM.c & _XXX_ONIONBM.h from web template XXX_ONIONBM.thtml'
+echo 'rule OTEMPLATE_r'
+echo '  command = $otemplate -a $out_h $in_thtml $out_c'
+echo '  description = OTEMPLATE asset $out_h code $out_c template $in_thtml'
+echo
 echo '# make the _bm_allconsts.c file'
 echo 'rule BMALLCONSTSC_r'
 echo '  command = ./BM_makeconst -C $out $in'
@@ -81,18 +89,7 @@ echo '  description = LINKALLBISMON $out'
 echo
 echo '# timestamp the bismon program'
 echo 'rule TIMESTAMP_r'
-echo -n '  command = '
-sed  -e 's/$/ \$/' << ENDTIMESTAMPING
-   date +'const char bismon_timestamp[]="%c";%n'
-   (echo -n 'const char bismon_lastgitcommit[]="' ; \
-    git log --format=oneline --abbrev=12 --abbrev-commit -q  \
-     | head -1 | tr -d '\n\r\f\"\\\\' ; \
-       echo '";') >> __timestamp.tmp
-	(echo -n 'const char bismon_lastgittag[]="'; (git describe --abbrev=0 --all || echo '*notag*') | tr -d '\n\r\f\"\\\\'; echo '";') >> __timestamp.tmp
-	(echo -n 'const char bismon_checksum[]="'; cat bismon.h $bm_headers $bm_cfiles $bm_cxxfiles | cut -d' ' -f1 | tr -d '\n\r\f\"\\' ; echo '";') >> __timestamp.tmp
-	(echo -n 'const char bismon_directory[]="'; /bin/pwd | tr -d '\n\\"' ; echo '";') >> __timestamp.tmp
-	mv __timestamp.tmp __timestamp.c
-ENDTIMESTAMPING
+echo '  command = ./timestamp-emit.sh $in'
 echo '  description = TIMESTAMP $out'
 echo
 
@@ -102,6 +99,10 @@ for f in $bm_cfiles ; do
     bf=$(basename $f .c)
     echo -n build $bf.o: CC_r $f 
     grep -q $bf.const.h $f && echo -n ' | ' $bf.const.h
+    for t in $bm_webtemplates ; do
+	bt=$(basename $t .thtml)
+	grep -q _$bt.h $f && echo -n ' ' _$bt.h
+    done
     echo
 done
 
@@ -114,7 +115,7 @@ done
 echo '#object files for Onion templated C generated files'
 for t in *ONIONBM.thtml ; do
     bt=$(basename $t .thtml)
-    echo build $bt.o: CC_r $t
+    echo build _$bt.o: CC_r _$bt.c
 done
 echo
 
@@ -136,8 +137,17 @@ done
 echo ' | BM_makeconst'
 echo
 echo
+echo '# build from webtemplates'
+for f in $bm_webtemplates ; do
+    bf=$(basename $f .thtml)
+    echo build _$bf.h _$bf.c: OTEMPLATE_r $f
+    echo '  in_thtml = ' $f
+    echo '  out_h = ' _$bf.h
+    echo '  out_c = ' _$bf.c
+done
+echo
 echo '## build the timestamp'
-echo -n 'build __timestamp.c: TIMESTAMP_r ' $bm_cfiles $bm_cxxfiles 
+echo -n 'build __timestamp.c: TIMESTAMP_r ' $bm_cfiles $bm_cxxfiles ' | ' timestamp-emit.sh
 echo
 echo '## build the bismon program'
 echo -n 'build bismon: LINKALLBISMON_r' 
@@ -153,7 +163,7 @@ done
 printf ' $\n'
 for t in *ONIONBM.thtml ; do
     bt=$(basename $t .thtml)
-    printf " %s" $bt.o
+    printf " %s" _$bt.o
 done
 printf ' $\n  __timestamp.c'
 echo
