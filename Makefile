@@ -22,9 +22,9 @@ MODULES_SOURCES= $(sort $(wildcard modules/modbm*.c))
 
 
 
-all: programs modules doc
+all: programs modules #doc
 
-programs: bismon
+programs: bismon modules
 
 bismon modulecflags.mk: build.ninja
 	$(NINJA) $@
