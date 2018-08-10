@@ -11,25 +11,25 @@ echo 'ninja_required_version = 1.8'
 echo '#arguments passed to generate-ninja-builder.sh'
 echo "generate_ninja_args = $@"
 echo "generate_ninja_script = $0"
+echo '#related to pkg-config'
+echo "bm_packages = " $bm_packages
+echo -n "pkg_cflags = "; pkg-config --cflags $bm_packages
+echo -n "pkg_libes = " ; pkg-config --libs $bm_packages
 echo '#our compilers and some compiler flags'
-echo -n "cc = "  ; which $bm_gcc
-echo -n "cxx = "   ; which $bm_gxx
+echo  "cc = "  $bm_gcc
+echo  "cxx = " $bm_gxx
 echo "bm_commonwarnflags =  -Wall -Wextra -Wstack-usage=1500 -fdiagnostics-color=auto"
 echo 'cwarnflags = $bm_commonwarnflags -Wmissing-prototypes'
 echo 'cxxwarnflags = $bm_commonwarnflags'
 echo 'defpreproflags = -DBISMONION -DBISMONGK  -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED'
 echo 'incflags = -I. -I/usr/local/include'
 echo 'optimflags = -O1 -g3'
-echo 'cflags = $cwarnflags $defpreproflags $incflags $optimflags'
-echo 'cxxflags = $cxxwarnflags $defpreproflags $incflags $optimflags'
-echo '#related to pkg-config'
-echo "bm_packages = " $bm_packages
-echo -n "pkg_cflags = "; pkg-config --cflags $bm_packages
-echo -n "pkg_libes = " ; pkg-config --libs $bm_packages
-echo '#our handwritten C files'
-echo "bm_cfiles = "  $bm_cfiles | fmt | sed -e '2,$s/^/ /' -e 's/$/ \$/' ; echo
-echo '#our handwritten C++ files'
-echo "bm_cxxfiles = "  $bm_cxxfiles | fmt | sed -e '2,$s/^/ /' -e 's/$/ \$/' ; echo
+echo 'cflags = $cwarnflags $defpreproflags $incflags $optimflags $pkg_cflags'
+echo 'cxxflags = $cxxwarnflags $defpreproflags $incflags $optimflags $pkg_cflags'
+#-echo '#our handwritten C files'
+#-echo "bm_cfiles = "  $bm_cfiles | fmt | sed -e '2,$s/^/ /' -e 's/$/ \$/' ; echo
+#-echo '#our handwritten C++ files'
+#-echo "bm_cxxfiles = "  $bm_cxxfiles | fmt | sed -e '2,$s/^/ /' -e 's/$/ \$/' ; echo
 echo '#our link flags for bismon'
 echo 'bm_ldflags = -L/usr/local/lib -rdynamic -pthread'
 echo '#our libraries for bismon'
@@ -100,15 +100,15 @@ printf '\n\n######## BUILD statements for ninja\n'
 echo '#object files for hand-written C sources'
 for f in $bm_cfiles ; do
     bf=$(basename $f .c)
-    echo -n build $bf.o: CC_r $f '$bm_headers' '$bm_generatedheaders'
-    grep -q $bf.const.h $f && echo -n ' ' $bf.const.h
+    echo -n build $bf.o: CC_r $f 
+    grep -q $bf.const.h $f && echo -n ' | ' $bf.const.h
     echo
 done
 
 echo '#object files for hand-written C++ sources'
 for f in $bm_cxxfiles ; do
     bf=$(basename $f .cc)
-    echo build $bf.o: CXX_r $f '$bm_headers' '$bm_generatedheaders'
+    echo build $bf.o: CXX_r $f
 done
 
 echo '#object files for Onion templated C generated files'
@@ -137,7 +137,7 @@ echo ' | BM_makeconst'
 echo
 echo
 echo '## build the timestamp'
-echo 'build __timestamp.c: TIMESTAMP_r $bm_cfiles $bm_cxxfiles $bm_headers $bm_generatedheaders'
+echo -n 'build __timestamp.c: TIMESTAMP_r ' $bm_cfiles $bm_cxxfiles 
 echo
 echo '## build the bismon program'
 echo -n 'build bismon: LINKALLBISMON_r' 
@@ -145,16 +145,16 @@ for f in $bm_cfiles ; do
     bf=$(basename $f .c)
     printf " %s" $bf.o
 done
-printf '$\n'
+printf ' $\n'
 for f in $bm_cxxfiles ; do
     bf=$(basename $f .cc)
     printf " %s" $bf.o
 done
-printf '$\n'
+printf ' $\n'
 for t in *ONIONBM.thtml ; do
     bt=$(basename $t .thtml)
     printf " %s" $bt.o
 done
-printf '$\n  __timestamp.c'
+printf ' $\n  __timestamp.c'
 echo
 
