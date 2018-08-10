@@ -298,6 +298,7 @@ outdump: bismongtk bismonion  modules
 
 clean:
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
+	$(RM) .ninja* *mkd
 	$(RM) core* *.i *.ii *prof.out gmon.out
 	$(RM) *BM.const.h _bm_allconsts*.c
 	$(RM) $(patsubst %.thtml, _%.c, $(ONIONBM_WEBTEMPLATES))
