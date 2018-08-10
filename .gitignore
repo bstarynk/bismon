@@ -30,6 +30,10 @@ _*.pid
 
 gmon.out
 
+build.ninja
+.ninja*
+*.mkd
+
 # documentation related
 texput.log
 doc/generated/*
