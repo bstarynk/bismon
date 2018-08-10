@@ -73,14 +73,14 @@ indenttempmodule:
 	fi
 
 
-modubin/modbm_%.so: modules/modbm_%.c | modulecflags.mk
+modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | modulecflags.mk
 	$(CCACHE) $(LINK.c) -fPIC $(BISMONMODULECFLAGS) \
 	      -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<)  \
               -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' \
               -DBISMON_PERSISTENT_MODULE -shared $< -o $@
 
 
-modubin/tmpmobm_%.so: modules/tmpmobm_%.c bismon.h | modulecflags.mk
+modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | modulecflags.mk
 	$(CCACHE) $(LINK.c) -fPIC   $(BISMONMODULECFLAGS) \
 	     -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) \
 	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE \

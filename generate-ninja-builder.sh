@@ -99,7 +99,7 @@ echo '  description = TIMESTAMP $out'
 echo
 echo '# cflags for modules'
 echo 'rule MODULECFLAGS_r'
-echo '  command =  (printf "#generated %s file from %s\nBISMONMODULECFLAGS = %s\n"  $out $in "$cflags"; date +"#generated %c%n") > $out'
+echo '  command =  (printf "#generated %s file from %s\nBISMONMODULECFLAGS = %s\nBISMONHEADERS = %s\n"  $out $in "$cflags" "$bm_headers $bm_generatedheaders"; date +"#generated %c%n") > $out'
 echo '  description = MODULECFLAGS $out'
 echo
 echo '# reconfiguration'
