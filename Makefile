@@ -131,17 +131,8 @@ all: programs modules doc
 ## not give any log comment... Notice that tr command is interpreting
 ## some backslash escapes itself
 
-__timestamp.c: Makefile
-	@date +'const char bismon_timestamp[]="%c";%n const unsigned long bismon_timelong=%sL;' > __timestamp.tmp
-	@(echo -n 'const char bismon_lastgitcommit[]="' ; \
-	   git log --format=oneline --abbrev=12 --abbrev-commit -q  \
-	     | head -1 | tr -d '\n\r\f\"\\\\' ; \
-	   echo '";') >> __timestamp.tmp
-	@(echo -n 'const char bismon_lastgittag[]="'; (git describe --abbrev=0 --all || echo '*notag*') | tr -d '\n\r\f\"\\\\'; echo '";') >> __timestamp.tmp
-	@(echo -n 'const char bismon_checksum[]="'; cat bismon.h $(BM_HEADERS) $(CSOURCES) | $(MD5SUM) | cut -d' ' -f1 | tr -d '\n\r\f\"\\' ; echo '";') >> __timestamp.tmp
-	@(echo -n 'const char bismon_directory[]="'; /bin/pwd | tr -d '\n\\"' ; echo '";') >> __timestamp.tmp
-	@(echo -n 'const char bismon_makefile[]="'; echo -n  $(realpath $(lastword $(MAKEFILE_LIST))); echo '";') >> __timestamp.tmp
-	@mv __timestamp.tmp __timestamp.c
+__timestamp.c: Makefile timestamp-emit.sh
+	./timestamp-emit.sh bismon.h $(BM_HEADERS) $(CSOURCES)
 
 
 
