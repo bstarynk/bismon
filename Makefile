@@ -1,155 +1,40 @@
 ## the Makefile
+NINJA= ninja
 GCC= gcc
 GXX= g++
 CC= $(GCC)
 CXX= $(GXX)
 CCACHE= ccache
 MARKDOWN= markdown
-WARNFLAGS= -Wall -Wextra -Wmissing-prototypes -Wstack-usage=1500 -fdiagnostics-color=auto
-## -Wmissing-prototypes dont exist for g++
-SKIPCXXWARNFLAGS= -Wmissing-prototypes
-OPTIMFLAGS= -O1 -g3
-PLUGINFLAGS=
-CFLAGS= -std=gnu11 $(PLUGINFLAGS) $(WARNFLAGS) $(PREPROFLAGS) $(OPTIMFLAGS)
-CXXFLAGS= -std=gnu++14  $(PLUGINFLAGS) $(filter-out $(SKIPCXXWARNFLAGS), $(WARNFLAGS)) $(PREPROFLAGS) $(OPTIMFLAGS)
-GCCPLUGINS_DIR:= $(shell $(CXX) -print-file-name=plugin)
 INDENT= indent
 ASTYLE= astyle
 MD5SUM= md5sum
 INDENTFLAGS= --gnu-style --no-tabs --honour-newlines
 ASTYLEFLAGS= --style=gnu -s2
-GTKPACKAGES= glib-2.0 gtk+-3.0
-ONIONPACKAGES= glib-2.0 
-MODULESPACKAGES= glib-2.0 
-PKGCONFIG= pkg-config
-OTEMPLATE= otemplate
-PREPROFLAGS= -I. -I/usr/local/include -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED
-
-GTKLIBES= -L/usr/local/lib -lbacktrace $(shell $(PKGCONFIG) --libs $(GTKPACKAGES)) -lcrypt -ldl -lm
-ONIONLIBES= -L/usr/local/lib -lonion -lbacktrace $(shell $(PKGCONFIG) --libs $(ONIONPACKAGES)) -lcrypt -ldl -lm
 RM= rm -fv
-
-# the hand-written C source files common to both bismonion & bismongtk
-# keep in alphabetical order
-BM_COMMON_CSOURCES=				\
- agenda_BM.c					\
- allocgc_BM.c					\
- assoc_BM.c					\
- code_BM.c					\
- dump_BM.c					\
- emitcode_BM.c					\
- engine_BM.c					\
- gencode_BM.c					\
- guicode_BM.c					\
- id_BM.c					\
- list_BM.c					\
- load_BM.c					\
- main_BM.c					\
- node_BM.c					\
- object_BM.c					\
- parser_BM.c					\
- primes_BM.c					\
- scalar_BM.c					\
- sequence_BM.c					\
- user_BM.c
-
-# the hand-written C++ source files common to both bismonion & bismongtk
-BM_COMMON_CXXSOURCES= misc_BM.cc
-
-# the hand-written C source files specific to GTK GUI bismongtk
-BM_GTK_CSOURCES=		\
- gui_GTKBM.c			\
- newgui_GTKBM.c
-
-# the hand-written C source files specific to Onion-based Web server bismonion
-BM_ONION_CSOURCES= web_ONIONBM.c
-
-# hand-written C/C++ headers (common to both bismonion & bismongtk)
-BM_COMMON_HEADERS= bismon.h			\
- cmacros_BM.h					\
- fundecl_BM.h					\
- globals_BM.h					\
- inline_BM.h					\
- types_BM.h
-
-# generated headers
-BM_GENERATED_HEADERS=				\
- _bm_delim.h					\
- _bm_global.h					\
- _bm_predef.h					\
- _bm_types.h
-
-## no GTK or ONION headers:
-BM_GTK_HEADERS=
-BM_ONION_HEADERS=
-
-BM_HEADERS= $(BM_COMMON_HEADERS) $(BM_GTK_HEADERS) $(BM_ONION_HEADERS)
-
-BM_COLDSOURCES= $(BM_COMMON_CSOURCES) $(BM_GTK_CSOURCES) $(BM_ONION_CSOURCES)
-# web templates for Onion's otemplates.
-# ∀ foo, a C file _foo_ONIONBM.h and a C header _foo_ONIONBM.h is generated from foo_ONIONBM.thtml
-ONIONBM_WEBTEMPLATES= login_ONIONBM.thtml
+-include modulecflags.mk
 MARKDOWN_SOURCES= $(sort $(wildcard *.md))
 MODULES_SOURCES= $(sort $(wildcard modules/modbm*.c))
 
-# the object files for the GTK GUI bismongtk
-BISMONGTKOBJECTS=								\
- $(patsubst %.c,%.gtk.o, $(sort $(BM_COMMON_CSOURCES) $(BM_GTK_CSOURCES)))	\
- $(patsubst %.cc,%.gtk.o, $(sort $(BM_COMMON_CXXSOURCES)))
 
-# the object files for the Onion web-server bismonion
-BISMONIONOBJECTS= 	\
- $(patsubst %.c,%.onion.o, $(sort $(BM_COMMON_CSOURCES) $(BM_ONION_CSOURCES)))	\
- $(patsubst %.cc,%.onion.o, $(sort $(BM_COMMON_CXXSOURCES))) \
- $(patsubst %.thtml,_%.onion.o, $(sort $(ONIONBM_WEBTEMPLATES)))
-
-.PHONY: all programs clean indent count modules measure measured-bismon doc redump outdump checksum indentsinglemodule indenttempmodule 
+.PHONY: all programs clean indent count modules measure doc redump outdump checksum indentsinglemodule indenttempmodule 
 
 
-programs: bismongtk bismonion
 
-bismongtk: $(BISMONGTKOBJECTS) _bm_allconsts-GTK.o | modules __timestamp.c 
-	echo bismongtk: $(BISMONGTKOBJECTS) 
-	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi
-	$(MAKE) __timestamp.c __timestamp.o _bm_allconsts-GTK.o
-	$(LINK.cc) -pthread  $(LINKFLAGS) -rdynamic $(OPTIMFLAGS) $(BISMONGTKOBJECTS) __timestamp.o _bm_allconsts-GTK.o $(GTKLIBES) -o $@
-	ls -l $@
-	$(RM) __timestamp.c
-
-bismonion: $(BISMONIONOBJECTS) _bm_allconsts-ONION.o | modules __timestamp.c 
-	echo bismonion: $(BISMONIONOBJECTS)
-	@if [ -f $@ ]; then echo -n backup old executable: ' ' ; mv -v $@ $@~ ; fi
-	$(MAKE) __timestamp.c __timestamp.o _bm_allconsts-ONION.o
-	$(LINK.cc) -pthread  $(LINKFLAGS) -rdynamic $(OPTIMFLAGS) $(BISMONIONOBJECTS) __timestamp.o _bm_allconsts-ONION.o $(ONIONLIBES) -o $@
-	ls -l $@
-	$(RM) __timestamp.c
 
 all: programs modules doc
 
+programs: bismon
 
-## we could use git rev-parse HEAD for the lastgitcommit, but it does
-## not give any log comment... Notice that tr command is interpreting
-## some backslash escapes itself
+bismon modulecflags.mk: build.ninja
+	$(NINJA) $@
 
-__timestamp.c: Makefile timestamp-emit.sh
-	./timestamp-emit.sh bismon.h $(BM_HEADERS) $(CSOURCES)
+build.ninja: generate-ninja-builder.sh
+	./$^ > $@.tmp; mv --backup -v $@.tmp $@
 
-
-
-
-checksum:
-	@cat bismon.h $(BM_HEADERS) $(CSOURCES) | $(MD5SUM) | cut -d' ' -f1
-
-%_BM-gtk.i: %_BM.c  %_BM.const.h bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
-	$(CC) $(CFLAGS) -DBISMONGTK $(shell $(PKGCONFIG) --cflags $(GTKPACKAGES)) -C -E $< | sed s:^#://#: | $(INDENT) -gnu > $@
-%_GTKBM-gtk.i: %_GTKBM.c  %_BM.const.h bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
-	$(CC) $(CFLAGS)  -DBISMONGTK $(shell $(PKGCONFIG) --cflags $(GTKPACKAGES)) -C -E $< | sed s:^#://#: | $(INDENT) -gnu > $@
-%_BM-onion.i: %_BM.c  %_BM.const.h bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
-	$(CC) $(CFLAGS) -DBISMONONION $(shell $(PKGCONFIG) --cflags $(ONIONPACKAGES)) -C -E $< | sed s:^#://#: | $(INDENT) -gnu > $@
-%_BM-gtk.ii: %_BM.cc  $(GENERATED_HEADERS) $(BM_HEADERS)
-	$(CCXX) $(CXXFLAGS)  -DBISMONGTK  $(shell $(PKGCONFIG) --cflags $(GTKPACKAGES)) -C -E $< | sed s:^#://#: > $@
-%_BM-onion.ii: %_BM.cc  $(GENERATED_HEADERS) $(BM_HEADERS)
-	$(CCXX) $(CXXFLAGS)  -DBISMONION  $(shell $(PKGCONFIG) --cflags $(GTKPACKAGES)) -C -E $< | sed s:^#://#: > $@
+#checksum:
+#	@cat bismon.h $(BM_HEADERS) $(CSOURCES) | $(MD5SUM) | cut -d' ' -f1
+ -C -E $< | sed s:^#://#: > $@
 
 ## to be used from C code as 'make indentsinglemodule MODULEID=<id>'
 ## in emit_module°plain_module
@@ -188,74 +73,18 @@ indenttempmodule:
 	fi
 
 
-# cancel implicit rule for C files to force my explicit rules
-# https://stackoverflow.com/a/29227455/841108
-%.o: %.c
-
-%_BM.gtk.o: %_BM.c bismon.h $(GENERATED_HEADERS) $(BM_HEADERS) %_BM.const.h
-	echo BM.gtk objcirc is $^ left $<
-	$(COMPILE.c) $(shell $(PKGCONFIG) --cflags $(GTKPACKAGES)) -DBISMONGTK -c $< -o $@
-
-%_GTKBM.gtk.o: %_GTKBM.c bismon.h $(GENERATED_HEADERS) $(BM_HEADERS) %_GTKBM.const.h
-	echo GTKBM.gtk objcirc is $^ left $<
-	$(COMPILE.c)  $(shell $(PKGCONFIG) --cflags $(GTKPACKAGES)) -DBISMONGTK -c $< -o $@
-
-%_BM.gtk.o: %_BM.cc bismon.h $(GENERATED_HEADERS) $(BM_HEADERS)
-	echo BM.gtkcc objcirc is $^ left $<
-	$(COMPILE.cc)  $(shell $(PKGCONFIG) --cflags $(GTKPACKAGES))  -DBISMONGTK $< -o $@
-
-%_BM.onion.o: %_BM.c bismon.h $(GENERATED_HEADERS) $(BM_HEADERS) %_BM.const.h
-	echo BM.onion objcirc is $^ left $<
-	$(COMPILE.c) $(shell $(PKGCONFIG) --cflags $(ONIONPACKAGES)) -DBISMONION -c $< -o $@
-
-%_BM.onion.o: %_BM.cc bismon.h $(GENERATED_HEADERS) $(BM_HEADERS)
-	echo BM.onioncc objcirc is $^ left $<
-	$(COMPILE.cc)  $(shell $(PKGCONFIG) --cflags $(GTKPACKAGES))  -DBISMONION $< -o $@
-
-%_ONIONBM.onion.o: %_ONIONBM.c bismon.h $(GENERATED_HEADERS) $(BM_HEADERS) %_ONIONBM.const.h
-	echo ONIONBM.onion objcirc is $^ left $<
-	$(COMPILE.c)  $(shell $(PKGCONFIG) --cflags $(ONIONPACKAGES)) -DBISMONION -c $< -o $@
-
-_%_ONIONBM.onion.o: _%_ONIONBM.c  _%_ONIONBM.h
-	echo _ONIONBM.onion objcirc is $^ left $<
-	$(COMPILE.c) -DBISMONION -c $< -o $@
-
-web_ONIONBM.onion.o:  web_ONIONBM.c bismon.h $(GENERATED_HEADERS) $(BM_HEADERS) web_ONIONBM.const.h _login_ONIONBM.h
-%_BM.const.h: %_BM.c BM_makeconst
-	./BM_makeconst -H $@ $<
-%_GTKBM.const.h: %_GTKBM.c BM_makeconst
-	./BM_makeconst -H $@ $<
-%_ONIONBM.const.h: %_ONIONBM.c BM_makeconst
-	./BM_makeconst -H $@ $<
-_%_ONIONBM.c _%_ONIONBM.h: %_ONIONBM.thtml
-	$(OTEMPLATE) -a $(patsubst  %_ONIONBM.thtml,_%_ONIONBM.h,$<) $< $@
-__timestamp.o: __timestamp.c
-	$(COMPILE.c)  -DBMtimestamp -c $< -o $@
-
-_bm_allconsts-GTK.o: _bm_allconsts-GTK.c
-	$(COMPILE.c)  -DBMallconsts -c $< -o $@
-
-
-_bm_allconsts-ONION.o: _bm_allconsts-ONION.c
-	$(COMPILE.c)  -DBMallconsts -c $< -o $@
-
-_bm_allconsts-GTK.c: $(sort $(BM_COMMON_CSOURCES) $(BM_GTK_CSOURCES))  BM_makeconst
-	./BM_makeconst -C $@  $(sort $(BM_COMMON_CSOURCES) $(BM_GTK_CSOURCES))
-_bm_allconsts-ONION.c: $(sort $(BM_COMMON_CSOURCES) $(BM_ONION_CSOURCES)) BM_makeconst
-	./BM_makeconst -C $@ $(sort $(BM_COMMON_CSOURCES) $(BM_ONION_CSOURCES))
-
-modubin/modbm_%.so: modules/modbm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
-	$(CCACHE) $(LINK.c) $(shell $(PKGCONFIG) --cflags $(MODULESPACKAGES)) -I "$(dir $(word 2,$^))" -fPIC \
+modubin/modbm_%.so: modules/modbm_%.c | modulecflags.mk
+	$(CCACHE) $(LINK.c) -fPIC $(BISMONMODULECFLAGS) \
 	      -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<)  \
               -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' \
-              -DBISMON_PERSISTENT_MODULE -shared $< $(shell $(PKGCONFIG) --libs $(MODULESPACKAGES)) -o $@
+              -DBISMON_PERSISTENT_MODULE -shared $< -o $@
 
 
-modubin/tmpmobm_%.so: modules/tmpmobm_%.c bismon.h  $(GENERATED_HEADERS) $(BM_HEADERS)
-	$(CCACHE) $(LINK.c) $(shell $(PKGCONFIG) --cflags $(MODULESPACKAGES)) -I "$(dir $(word 2,$^))" -fPIC \
+modubin/tmpmobm_%.so: modules/tmpmobm_%.c bismon.h | modulecflags.mk
+	$(CCACHE) $(LINK.c) -fPIC   $(BISMONMODULECFLAGS) \
 	     -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) \
 	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE \
-	     -shared $< $(shell $(PKGCONFIG) --libs $(MODULESPACKAGES)) -o $@
+	     -shared $< -o $@
 
 modules:
 	$(MAKE) -k $(MAKEFLAGS)  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES)) ; exit 0
@@ -270,7 +99,7 @@ doc: $(MARKDOWN_SOURCES) bismongtk modules
 count:
 	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n
 
-redump: bismongtk bismonion modules
+redump: bismon bismongtk bismonion modules
 	@for f in $(GENERATED_HEADERS) $(GENERATED_CSOURCES) $(MODULES_SOURCES) *.bmon ; \
            do cp -vab $$f $$f%~ ; done
 	time ./bismongtk --dump-after-load . --batch
@@ -280,7 +109,7 @@ redump: bismongtk bismonion modules
 	time ./bismonion --dump-after-load . --batch
 	$(MAKE) indent
 
-outdump: bismongtk bismonion  modules
+outdump: bismon bismongtk bismonion  modules
 	time ./bismongtk  --run-command 'rm -rvf /tmp/bd'  --dump-after-load /tmp/bd --batch
 	for f in /tmp/bd/* ; do cmp $$f $$(basename $$f); done
 
@@ -288,6 +117,7 @@ outdump: bismongtk bismonion  modules
 
 
 clean:
+	[ -f build.ninja ] && $(NINJA) -t clean
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
 	$(RM) .ninja* *mkd
 	$(RM) core* *.i *.ii *prof.out gmon.out

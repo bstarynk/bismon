@@ -98,8 +98,11 @@ and `g++` lack support for plugins and
 [install](https://gcc.gnu.org/install/) a recent GCC release from its
 source code, and configure it to provide them.).
 
-Most of `bismon` is in C99 (including an increasing amount of
+
+Most of `bismon` is in C99 or C11 (including an increasing amount of
 generated code), but some few code is in C++14.
+
+* [ninja](http://ninja-build.org/) builder 1.8 or newer is need (and runs by `make`)
 
 * [GTK](http://gtk.org/) 3.22 or better. This is a temporary
   dependency (to be deprecated), we hope to have some web interface
@@ -129,10 +132,10 @@ generated code), but some few code is in C++14.
 
 ### relevant Debian/Ubuntu build-dependency packages ###
 
-On Debian/Unstable or Ubuntu, `apt-get install build-essential make gcc-7 g++-7 gcc-7-plugin-dev libgccjit-7-dev ccache`
-for the building infrastructure. Replace 7 by 8 when using GCC 8.
+On Debian/Unstable or Ubuntu, `apt-get install build-essential make ninja gcc-8 g++-8 gcc-8-plugin-dev libgccjit-8-dev ccache`
+for the building infrastructure.
 
-`apt-get install libgtk-3-dev` for GTK 3. This may pull a lot of dependencies.
+We still need `apt-get install libgtk-3-dev` for GTK 3. This may pull a lot of dependencies.
 
 The `libbacktrace` is not independently packaged in Debian. I recommend building and installing
 it from its source code, or else (not recommended, :unamused: but doable) edit the `Makefile` to uses your system GCC compiler's one.
@@ -160,18 +163,13 @@ Run `make` or `make -j3`
 
 The persistency mechanism is tested by `make redump`
 
-The `./bismongtk` program (soon deprecated) accepts a `--help` and
-`--version`.  It has a crude GTK3 based graphic user interface (which is obsolete
-and should replaced later by a Web interface).
+The `./bismon` program is (temporarily) still using GTK and
+libonion. We want to get rid of GTK. It is symlinked as `bismongtk`
+and `bismonion`.
 
-The `./bismonion` program accepts a `--help` and `--version`. It has a
-Web interface (above `libonion`)
 
-Both `bismongtk` and `bismonion` are very similar executables with
-most of their code in common. The only difference is their user
-interface.
 
-Be sure to run `bismongtk` or `bismonion` with `--help` at first to
+Be sure to run `bismon`, `bismongtk` or `bismonion` with `--help` at first to
 understand the program options that are available.
 
 ## adding yourself as a contributor

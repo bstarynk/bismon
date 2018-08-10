@@ -16,6 +16,8 @@ _*ONIONBM.[ch]
 *%
 *.orig
 
+
+modulecflags.mk
 *BM.const.h
 
 core*

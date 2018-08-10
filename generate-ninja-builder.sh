@@ -4,9 +4,9 @@
 bm_packages='glib-2.0 gtk+-3.0'
 bm_gcc=gcc
 bm_gxx=g++
-bm_cfiles="$(ls *BM.c)"
-bm_cxxfiles="$(ls *BM.cc)"
-bm_webtemplates="$(ls *BM.thtml)"
+bm_cfiles="$(ls [a-z]*BM.c)"
+bm_cxxfiles="$(ls [a-z]*BM.cc)"
+bm_webtemplates="$(ls [a-z]*BM.thtml)"
 date +"# DONT EDIT this build.ninja file ; it was generated%n# at %c by $0"
 echo 'ninja_required_version = 1.8'
 echo '#arguments passed to generate-ninja-builder.sh'
@@ -97,6 +97,17 @@ echo 'rule TIMESTAMP_r'
 echo '  command = ./timestamp-emit.sh $in'
 echo '  description = TIMESTAMP $out'
 echo
+echo '# cflags for modules'
+echo 'rule MODULECFLAGS_r'
+echo '  command =  (printf "#generated %s file from %s\nBISMONMODULECFLAGS = %s\n"  $out $in "$cflags"; date +"#generated %c%n") > $out'
+echo '  description = MODULECFLAGS $out'
+echo
+echo '# reconfiguration'
+echo 'rule CONFIG_r'
+echo '  command = ./generate-ninja-builder.sh > $out.tmp ; mv -v --backup $out.tmp $out'
+echo '  generator = 1'
+echo '  description = CONFIG $out'
+echo
 
 printf '\n\n######## BUILD statements for ninja\n'
 echo '#object files for hand-written C sources'
@@ -145,6 +156,8 @@ for f in $bm_webtemplates ; do
     echo '  in_thtml = ' $f
     echo '  out_h = ' _$bf.h
     echo '  out_c = ' _$bf.c
+    echo
+    echo build _$bf.o: CC_r _$bf.c
 done
 echo
 echo '## build the timestamp and object file'
@@ -152,6 +165,9 @@ echo  'build __timestamp.c: TIMESTAMP_r ' $bm_cfiles $bm_cxxfiles ' | ' timestam
 echo  'build __timestamp.o: NAKEDCC_r __timestamp.c'
 echo
 echo '## build and link the bismon program'
+printf '#? bm_cfiles= %s\n' $bm_cfiles
+printf '#? bm_cxxfiles= %s\n' $bm_cxxfiles
+printf '#? bm_webtemplates= %s\n' $bm_webtemplates
 echo -n 'build bismon: LINKALLBISMON_r' 
 for f in $bm_cfiles ; do
     bf=$(basename $f .c)
@@ -162,6 +178,16 @@ for f in $bm_cxxfiles ; do
     bf=$(basename $f .cc)
     printf " %s" $bf.o
 done
+for f in $bm_webtemplates ; do
+    bf=$(basename $f .thtml)
+    echo -n " _$bf.o"
+done
 printf ' $\n  __timestamp.o _bm_allconsts.o'
 echo
-
+echo '## emit the cflags for make-ing modules'
+echo 'build modulecflags.mk: MODULECFLAGS_r build.ninja'
+printf '\n\n################## default target\n'
+echo 'default bismon modulecflags.mk'
+echo
+echo '## reconfigure'
+echo build build.ninja: CONFIG_r $0
