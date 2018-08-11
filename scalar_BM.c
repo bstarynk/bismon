@@ -816,6 +816,8 @@ objstrbufferprintfpayl_BM (objectval_tyBM * obj, const char *fmt, ...)
   free (tmpbuf), tmpbuf = NULL;
 }                               /* end objstrbufferprintfpayl_BM */
 
+
+
 void
 objstrbufferencodedutf8payl_BM (objectval_tyBM * obj, const char *str,
                                 ssize_t bytelen)
@@ -886,6 +888,78 @@ objstrbufferencodedutf8payl_BM (objectval_tyBM * obj, const char *str,
 
 
 
+
+void
+objstrbufferencodedhtmlpayl_BM (objectval_tyBM * obj, const char *str,
+                                ssize_t bytelen)
+{
+  if (!str)
+    return;
+  struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (obj);
+  if (!sbuf)
+    return;
+  if (bytelen < 0)
+    bytelen = strlen (str);
+  if (!g_utf8_validate (str, bytelen, NULL))
+    return;
+  objstrbufferreservepayl_BM (obj, 9 * bytelen / 8 + 10);
+  const char *ends = str + bytelen;
+  for (const char *pc = str; pc < ends; pc = g_utf8_next_char (pc))
+    {
+      gunichar uc = g_utf8_get_char (pc);
+      switch (uc)
+        {
+        case '\"':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "&quot;");
+          break;
+        case '\'':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "&apos;");
+          break;
+        case '<':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "&lt;");
+          break;
+        case '>':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "&gt;");
+          break;
+        case '&':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "&amp;");
+          break;
+        case '\n':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\n");
+          break;
+        case '\r':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\r");
+          break;
+        case '\f':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\f");
+          break;
+        case ' ':
+          objstrbufferunsafeappendcstrpayl_BM (obj, " ");
+          break;
+        default:
+          {	      
+            char ubuf[16];
+	    if (uc >= ' ' && uc < 127) {
+	      ubuf[0] = uc;
+	      ubuf[1] = (char)0;
+	    }
+	    else { 
+	      memset (ubuf, 0, sizeof (ubuf));
+	      if (uc >= ' ' && uc < 127)
+		ubuf[0] = (char) uc;
+	      else
+		snprintf (ubuf, sizeof (ubuf), "&#%d;", uc);
+	    }
+            objstrbufferunsafeappendcstrpayl_BM (obj, ubuf);
+          }
+          break;
+        }
+    }
+}                               /* end objstrbufferencodedhtmlpayl_BM */
+
+
+
+
 void
 objstrbufferencodedcpayl_BM (objectval_tyBM * obj, const char *str,
                              ssize_t bytelen)
@@ -948,7 +1022,7 @@ objstrbufferencodedcpayl_BM (objectval_tyBM * obj, const char *str,
           break;
         }
     }
-}                               /* end strbufferencodedc_BM */
+}                               /* end objstrbufferencodedcpayl_BM */
 
 
 

@@ -1199,7 +1199,7 @@ ROUTINEOBJNAME_BM (_797zacMjvvt_3I2uxNJRfdq)    //
                  objectval_tyBM * recv; objectval_tyBM * superob;
     );
   objectval_tyBM *k_failure_non_object = BMK_6yWldsq3Rmk_01WqTfwSIDV;
-  objectval_tyBM *k_failure_bad_attribute = BMK_4GumRf8w4jT_6lfDDJ5Y3TH;
+  //objectval_tyBM *k_failure_bad_attribute = BMK_4GumRf8w4jT_6lfDDJ5Y3TH;
   objectval_tyBM *k_failure_bad_class = BMK_797zacMjvvt_3I2uxNJRfdq;
   ASSERT_BM (pthread_self () == mainthreadid_BM);
   if (!isobject_BM (arg1))
@@ -1390,7 +1390,7 @@ ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    // browse_data°list_object
   if (!isobject_BM (arg1))
     FATAL_BM
       ("non-object for method to browse_data for list_object-s _2EtVNhr2mHz_8CsOQJdYeCE");
-  _.objbrows = (const objectval_tyBM *) arg1;
+  _.objbrows = ( objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   WEAKASSERT_BM (objhaslistpayl_BM (_.objbrows));
 #ifdef BISMONGTK
@@ -1449,7 +1449,7 @@ ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //browse_data°assoc_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
  const value_tyBM arg2,         //
- const value_tyBM arg3,         //
+ const value_tyBM arg3_ __attribute__ ((unused)),         //
  const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
@@ -1467,7 +1467,7 @@ ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //browse_data°assoc_object
   int maxdepth = getint_BM (arg2);
   WEAKASSERT_BM (objhasassocpayl_BM (_.objbrows));
   _.setv = objassocsetattrspayl_BM (_.objbrows);
-  _.tupv = settonamedsortedtuple_BM (_.setv);
+  _.tupv = (value_tyBM) settonamedsortedtuple_BM (_.setv);
   int nbelem = tuplesize_BM (_.tupv);
   ASSERT_BM (nbelem == (int) setcardinal_BM (_.setv));
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
@@ -2483,9 +2483,9 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_7EgSAlg8UbA_6x0iNxUOrYE);
 value_tyBM
 ROUTINEOBJNAME_BM (_7EgSAlg8UbA_6x0iNxUOrYE)    // final-find_object
 (struct stackframe_stBM * stkf, //
- const value_tyBM arg1,         //
- const value_tyBM arg2,         //
- const value_tyBM arg3,         //
+ const value_tyBM arg1_ __attribute__ ((unused)),         //
+ const value_tyBM arg2_ __attribute__ ((unused)),         //
+ const value_tyBM arg3_ __attribute__ ((unused)),         //
  const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {

@@ -661,7 +661,7 @@ initialize_newgui_BM (const char *builderfile, const char *cssfile)
   }
   ///
   gtk_window_set_title (GTK_WINDOW (mainwin_BM), "new-bismon");
-  gtk_window_set_default_size (GTK_WINDOW (mainwin_BM), 650, 720);
+  gtk_window_set_default_size (GTK_WINDOW (mainwin_BM), 780, 720);
   // perhaps run the GC twice a second
   g_timeout_add (500, guiperiodicgarbagecollection_BM, NULL);
   gtk_widget_show_all (GTK_WIDGET (mainwin_BM));
@@ -2757,7 +2757,7 @@ make_obwin_newgui_BM (void)
     newobw->obw_lowerobjvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
   gtk_container_add (GTK_CONTAINER (upperscrowin), upperobvbox);
   gtk_container_add (GTK_CONTAINER (lowerscrowin), lowerobvbox);
-  gtk_window_set_default_size (GTK_WINDOW (obwin), 660, 450);
+  gtk_window_set_default_size (GTK_WINDOW (obwin), 760, 650);
   gtk_widget_show_all (obwin);
   DBGPRINTF_BM
     ("make_obwin_newgui_BM incomplete obwin@%p rank#%d",

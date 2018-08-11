@@ -3737,7 +3737,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     {
       char cwdbuf[80];
       memset (cwdbuf, 0, sizeof (cwdbuf));
-      prevsrcpathstr = asprintf_prev_module_BM (realsrcdirstr, _.modulob);
+      prevsrcpathstr = (char*)asprintf_prev_module_BM (realsrcdirstr, _.modulob);
       DBGPRINTF_BM
         ("emit_module°plain_module %s /%s rename srcpathstr '%s' -> prevsrcpathstr='%s' in %s",
          objectdbg_BM (_.modulob), modulidbuf, srcpathstr,

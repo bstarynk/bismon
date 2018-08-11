@@ -552,6 +552,10 @@ extern void objstrbufferencodedutf8payl_BM (objectval_tyBM * obj,
 extern void objstrbufferencodedcpayl_BM (objectval_tyBM * obj,
                                          const char *str, ssize_t bytelen);
 
+/// output bytes encoded à la HTML
+extern void objstrbufferencodedhtmlpayl_BM (objectval_tyBM * obj,
+                                         const char *str, ssize_t bytelen);
+
 /// write the content to a file, if different
 extern void objstrbufferwritetofilepayl_BM (objectval_tyBM * obj,
                                             const char *filepath);
