@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 798 objects
+// for 799 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -5185,20 +5185,40 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !(_56tBVAwVxRl_5cYKmbPHN6z |=objstrbufferencodedcpayl|
 !~ name (~ objstrbufferencodedcpayl
 ~)
-!@ 1528094280.281
+!@ 1533976636.130
 !$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "output into obj-strbuffer o1 the C string str2 of length i3"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _97rnxb0KFqq_44veN75DG2E _4ilpkwNBw3O_3l8ykbxbBom _8LYML1JB0Wx_8O52UHE0MEy ]
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
- % _3EKD6vcwegI_3LMuXHuazib ( _56tBVAwVxRl_5cYKmbPHN6z)
+ % _42gEKfF4qca_6gGwxSFC1FO ( _56tBVAwVxRl_5cYKmbPHN6z)
 !: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _56tBVAwVxRl_5cYKmbPHN6z  ":*/"  "objstrbufferencodedcpayl_BM"  "((" 
   * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
 _4ilpkwNBw3O_3l8ykbxbBom)  "),("  * _5ucAZimYynS_4VA0XHvr1nW ( _8LYML1JB0Wx_8O52UHE0MEy) 
   "))")
 !)_56tBVAwVxRl_5cYKmbPHN6z
+
+
+
+!(_38wvolwKqai_3yizhmWzqfc |=objstrbufferencodedhtmlpayl|
+!~ name (~ objstrbufferencodedhtmlpayl
+~)
+!@ 1533976664.915
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "output into obj-strbuffer o1 the HTML-encoded cstring str2 of length i3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _4ilpkwNBw3O_3l8ykbxbBom _8LYML1JB0Wx_8O52UHE0MEy ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _38wvolwKqai_3yizhmWzqfc)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _38wvolwKqai_3yizhmWzqfc  ":*/"  "objstrbufferencodedhtmlpayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_4ilpkwNBw3O_3l8ykbxbBom)  "),("  * _5ucAZimYynS_4VA0XHvr1nW ( _8LYML1JB0Wx_8O52UHE0MEy) 
+  "))")
+!)_38wvolwKqai_3yizhmWzqfc
 
 
 
