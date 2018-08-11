@@ -17,7 +17,7 @@ MARKDOWN_SOURCES= $(sort $(wildcard *.md))
 MODULES_SOURCES= $(sort $(wildcard modules/modbm*.c))
 
 
-.PHONY: all programs clean indent count modules measure doc redump outdump checksum indentsinglemodule indenttempmodule 
+.PHONY: all programs clean verbose indent count modules measure doc redump outdump checksum indentsinglemodule indenttempmodule 
 
 
 
@@ -26,8 +26,11 @@ all: programs modules #doc
 
 programs: bismon modules
 
-bismon modulecflags.mk: build.ninja
+bismon modulecflags.mk: build.ninja $(wildcard *BM.c *_BM.cc)
 	$(NINJA) $@
+
+verbose: | build.ninja
+	$(NINJA) -v
 
 build.ninja: generate-ninja-builder.sh
 	./$^ > $@.tmp; mv --backup -v $@.tmp $@
