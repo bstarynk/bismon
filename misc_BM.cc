@@ -478,10 +478,9 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       char srcti[64] = "", binti[64] = "";
       strftime(srcti, sizeof(srcti), "%c", localtime_r(&srcmodstat.st_mtime, &srctm));
       strftime(binti, sizeof(binti), "%c", localtime_r(&binmodstat.st_mtime, &bintm));
-      WARNPRINTF_BM("module source code %s [%s]\n... younger than its binary %s [%s]\n"
-		    "please rebuild that binary then restart",
+      WARNPRINTF_BM("module source code %s [%s]\n... younger than its binary %s [%s]\n",
                srcmodpath.c_str(), srcti, binmodpath.c_str(), binti);
-      return false;
+      //return false;
     }
   if (modulemap_BM.find(modid) != modulemap_BM.end())
     {
@@ -1042,10 +1041,13 @@ do_main_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, valu
   DBGPRINTF_BM("do_main_defer_apply elapsed %.3f s", elapsedtime_BM());
   ////
 #if defined (BISMONION)
-  add_defer_command_onion_BM ();
-#elif defined (BISMONGTK)
-  add_defer_command_gtk_BM ();
-#endif /*BISMONION or BISMONGTK*/
+  if (bismon_has_web_BM())
+    add_defer_command_onion_BM ();
+#endif /* BISMONION */
+#if defined (BISMONGTK)
+  if (bismon_has_gui_BM())
+    add_defer_command_gtk_BM ();
+#endif /* or BISMONGTK*/
   ////
   DBGPRINTF_BM("do_main_defer_apply end tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
                (long)gettid_BM(),
