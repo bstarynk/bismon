@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 799 objects
+// for 802 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -5315,6 +5315,62 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_6CX55dgtj0u_9oBPIbnSDGJ |=objstrbufferprintcstringval|
+!~ name (~ objstrbufferprintcstringval
+~)
+!@ 1533977963.007
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "print in object-strbuf o1 the C-encoded string value v2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _6CX55dgtj0u_9oBPIbnSDGJ)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6CX55dgtj0u_9oBPIbnSDGJ  ":*/"  "\n"  "if" 
+  " "  "("  "objhasstrbufferpayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E) 
+  ")"  " "  "&&"  " "  "isstring_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  "))" 
+ "\n"  "  " 
+  "objstrbufferencodedcpayl_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E)  "),"  " " 
+  "bytstring_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ) 
+ "),"  " " 
+  "lenstring_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ) 
+ "));")
+!)_6CX55dgtj0u_9oBPIbnSDGJ
+
+
+
+!(_6CNxxDuR549_5nVIV57U3hP |=objstrbufferprinthtmlstringval|
+!~ name (~ objstrbufferprinthtmlstringval
+~)
+!@ 1533977942.820
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "print in object-strbuf o1 the HTML-encoded string value v2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _6CNxxDuR549_5nVIV57U3hP)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6CNxxDuR549_5nVIV57U3hP  ":*/"  "\n"  "if" 
+  " "  "("  "objhasstrbufferpayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E) 
+  ")"  " "  "&&"  " "  "isstring_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  "))" 
+ "\n"  "  " 
+  "objstrbufferencodedhtmlpayl_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E)  "),"  " " 
+  "bytstring_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ) 
+ "),"  " " 
+  "lenstring_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ) 
+ "));")
+!)_6CNxxDuR549_5nVIV57U3hP
+
+
+
 !(_6cFSE2rDxvF_99QhDhtBeS4 |=objstrbufferprintint|
 !~ name (~ objstrbufferprintint
 ~)
@@ -5508,6 +5564,34 @@ _97rnxb0KFqq_44veN75DG2E)
   "((" _5DDSY1YgVZr_6dOU4tiBldk  " "  "stringval_tyBM"  "*)(" 
   * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  ")));")
 !)_5AqofhXYnzK_3leeJoJgmTJ
+
+
+
+!(_23YfPQA5Vum_2A8XK6sBOCy |=objstrbufferprintutf8stringval|
+!~ name (~ objstrbufferprintutf8stringval
+~)
+!@ 1533977921.607
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "print in object-strbuf o1 the JSON UTF8-encoded string value v2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _23YfPQA5Vum_2A8XK6sBOCy)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _23YfPQA5Vum_2A8XK6sBOCy  ":*/"  "\n"  "if" 
+  " "  "("  "objhasstrbufferpayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E) 
+  ")"  " "  "&&"  " "  "isstring_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  "))" 
+ "\n"  "  " 
+  "objstrbufferencodedutf8payl_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E)  "),"  " " 
+  "bytstring_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ) 
+ "),"  " " 
+  "lenstring_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ) 
+ "));")
+!)_23YfPQA5Vum_2A8XK6sBOCy
 
 
 
