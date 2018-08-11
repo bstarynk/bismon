@@ -26,11 +26,14 @@ all: programs modules #doc
 
 programs: bismon modules
 
-bismon modulecflags.mk: build.ninja $(wildcard *BM.c *_BM.cc)
-	$(NINJA) $@
-
 verbose: | build.ninja
 	$(NINJA) -v
+
+bismon: build.ninja $(wildcard *BM.c *_BM.cc)
+	$(NINJA) $@
+
+modulecflags.mk: build.ninja 
+	$(NINJA) $@
 
 build.ninja: generate-ninja-builder.sh
 	./$^ > $@.tmp; mv --backup -v $@.tmp $@
@@ -89,7 +92,7 @@ modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | modulecflags.mk
 	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE \
 	     -shared $< -o $@
 
-modules:
+modules: modulecflags.mk
 	$(MAKE) -k $(MAKEFLAGS)  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES)) ; exit 0
 
 

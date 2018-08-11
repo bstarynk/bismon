@@ -830,7 +830,7 @@ main (int argc, char **argv)
   if (count_emit_has_predef_bm > 0)
     emit_has_predef_BM ();
 #ifdef BISMONGTK
-  if (!guiok && !batch_bm)
+  if (!guiok && !batch_bm && run_gtk_BM)
     FATAL_BM ("gtk_init_with_args failed : %s",
               opterr ? opterr->message : "???");
   if (!batch_bm)
@@ -902,8 +902,9 @@ main (int argc, char **argv)
       nbworkjobs_BM = 0;
       INFOPRINTF_BM ("no GUI in batch mode\n");
     }
-  else if (run_onion_BM)
+  else if (!run_onion_BM)
     {
+      DBGPRINTF_BM("no onion, with BISMONGTK");
       if (pid_filepath_bm && pid_filepath_bm[0]
           && strcmp (pid_filepath_bm, "-"))
         {
@@ -927,6 +928,7 @@ main (int argc, char **argv)
 #ifdef BISMONION
     if (run_onion_BM)
     {
+      DBGPRINTF_BM("BISMONION with run_onion_BM");
       if (batch_bm)
         {
           nbworkjobs_BM = 0;
@@ -951,6 +953,10 @@ main (int argc, char **argv)
         }
     }
 #endif /*BISMONION*/
+    DBGPRINTF_BM("ending BISMON run_gtk_BM %s run_onion_BM %s batch_bm %s",
+		 run_gtk_BM?"true":"false",
+		 run_onion_BM?"true":"false",
+		 batch_bm?"true":"false");
     free ((void *) contributors_filepath_BM), contributors_filepath_BM = NULL;
   free ((void *) passwords_filepath_BM), passwords_filepath_BM = NULL;
   if (shouldfreedumpdir)
@@ -1875,26 +1881,26 @@ void
 log_puts_message_BM (const char *str)
 {
 #ifdef BISMONGTK
-  extern void gtk_log_puts_message_BM (void);
+  extern void gtk_log_puts_message_BM (const char*);
 #endif
 #ifdef BISMONION
-  extern void onion_log_puts_message_BM (void);
+  extern void onion_log_puts_message_BM (const char*);
 #endif
 #ifdef BISMONGTK
   if (gui_is_running_BM)
     {
-      gtk_log_puts_message_BM ();
+      gtk_log_puts_message_BM (str);
       return;
     };
 #endif /*BISMONGTK*/
 #ifdef BISMONION
     if (web_is_running_BM)
     {
-      onion_log_puts_message_BM ();
+      onion_log_puts_message_BM (str);
       return;
     }
 #endif
-  FATAL_BM ("log_puts_message_BM without web or GUI");
+    FATAL_BM ("log_puts_message_BM without web or GUI for: %s", str);
 }                               /* end log_puts_message_BM */
 
 void

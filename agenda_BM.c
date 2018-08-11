@@ -70,7 +70,7 @@ static objectval_tyBM *choose_task_internal_agenda_BM (void);
 static struct hashsetobj_stBM *maybe_reorganize_taskhshet_agenda_BM     //
   (struct hashsetobj_stBM *tkhset);
 
-volatile bool
+bool
 agenda_need_gc_BM (void)
 {
   return atomic_load (&ti_needgc_BM);
@@ -508,10 +508,12 @@ agenda_continue_after_gc_BM (void)
   pthread_cond_broadcast (&ti_agendacond_BM);
   atomic_store (&ti_needgc_BM, false);
 #ifdef BISMONION
+  if (bismon_has_web_BM()) {
   DBGPRINTF_BM
     ("agenda_continue_after_gc before webonion_continue_after_gc_BM tid#%ld elapsed %.3f s",
      (long) gettid_BM (), elapsedtime_BM ());
   webonion_continue_after_gc_BM ();
+  }
 #endif /*BISMONION*/
     usleep (5);
   DBGPRINTF_BM ("agenda_continue_after_gc end tid#%ld elapsed %.3f s",
