@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 806 objects
+// for 807 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -5985,8 +5985,8 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !(_9rwuPIJ1rlW_5YmNcNe6FvE |=objwebexchangerequestvalpostpayl|
 !~ name (~ objwebexchangerequestvalpostpayl
 ~)
-!@ 1533714477.491
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1534254026.681
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "get value string of wexchange o1 post argument for value string v2"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
@@ -9226,6 +9226,18 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_3vXdUQt5mey_5MeGY4lFI0J
+!@ 1534254806.135
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "v_postbar := post arg(o_webex \'bar\')"
+!# 2
+!& _2nnQQ6Lvtpl_4oCJYx90FlI
+!&  * _6Mt5YqAPDev_8OCT0ieFCSY ( _5JuT4FgNFFh_7McrTYeT3jx  "bar")
+!)_3vXdUQt5mey_5MeGY4lFI0J
+
+
+
 !(_3yJPC4SxGtF_6ilaF37wdxG
 !|*
 !@ 1510323206.580
@@ -9300,16 +9312,17 @@ _7n2SLLuWOjH_4ArhFUjmckz
 
 
 !(_3VVvcLyYqv8_9yci7GvqEEv
-!@ 1533969995.120
+!@ 1534252566.522
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "emit body for testhello webhandler"
-!# 5
+!# 6
 !& _5lsoSuyLYE0_2cqb9QxFcos
 !& _1gjXCT3HN6V_5SGgDufAmKf
 !& _1XzuICo9tMz_2FMOEMMgKHC
 !& _9osbAnIQdp8_6wVcWPdPIBQ
 !& _5Aqv9Xln871_5IcSxT4moVS
+!& _3vXdUQt5mey_5MeGY4lFI0J
 !)_3VVvcLyYqv8_9yci7GvqEEv
 
 
