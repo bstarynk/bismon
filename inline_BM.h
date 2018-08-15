@@ -2594,6 +2594,24 @@ objwebexchangeresponsepayl_BM (const objectval_tyBM * obj)
   return wxda->webx_resp;
 }                               /* end objwebexchangeresponsepayl_BM */
 
+double objwebexchangedbltime_BM(const objectval_tyBM* obj)
+{
+  struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
+  if (!wxda)
+    return 0.0;
+  ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
+  return wxda->webx_time;
+} /* end objwebexchangedbltime_BM */
+
+
+time_t objwebexchangetime_BM(const objectval_tyBM* obj)
+{
+  struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
+  if (!wxda)
+    return 0;
+  ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
+  return (time_t) wxda->webx_time;
+} /* end objwebexchangecreatetime_BM */
 
 bool
 objhaswebsessionpayl_BM (const objectval_tyBM * obj)

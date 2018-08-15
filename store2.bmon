@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 822 objects
+// for 823 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -6076,6 +6076,22 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_69UUpYFZB4G_8FZR70BEdh0
+
+
+
+!(_3ajxKjRfP6L_3RfkEm8VnwC |=objwebexchangetime|
+!~ name (~ objwebexchangetime
+~)
+!@ 1534342428.529
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "returns the time of a webexchange object o1 or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3ajxKjRfP6L_3RfkEm8VnwC  ":*/"  "objwebexchangetime_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!)_3ajxKjRfP6L_3RfkEm8VnwC
 
 
 

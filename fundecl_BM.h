@@ -1499,6 +1499,10 @@ extern void objwebexchangecompletepayl_BM (const objectval_tyBM * obj,
                                            const char *mimetype);
 
 
+static inline double objwebexchangedbltime_BM(const objectval_tyBM* obj);
+static inline time_t objwebexchangetime_BM(const objectval_tyBM* obj);
+////////////////
+
 extern void webonion_suspend_before_gc_BM (void);
 extern void webonion_continue_after_gc_BM (void);
 extern void stop_onion_event_loop_BM (void);
