@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 821 objects
+// for 822 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -7117,6 +7117,24 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "third minifunc in test module"
 !)_6SSe2uyt8Cn_4QNhKM5hsDA
+
+
+
+!(_7bvEv3e503O_6F9xiquPbls |=timenow|
+!~ name (~ timenow
+~)
+!@ 1534341276.818
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "returns the current time(2) in seconds since the Unix Epoche"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "timehow"  ":*/("  "intptr_t"  ")" 
+  "time"  "("  "NULL"  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_7bvEv3e503O_6F9xiquPbls
 
 
 
