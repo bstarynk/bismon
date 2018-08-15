@@ -123,6 +123,10 @@ extern const stringval_tyBM *makestring_BM (const char *str);
 extern const stringval_tyBM *makestringlen_BM (const char *str, long len);
 extern const stringval_tyBM *sprintfstring_BM (const char *fmt, ...)
   __attribute__ ((format (printf, 1, 2)));
+// stringify the strftime of localtime, of gmtime...
+extern const stringval_tyBM *flocaltimestring_BM (const char*fmt, time_t ti);
+extern const stringval_tyBM *fgmtimestring_BM (const char*fmt, time_t ti);
+
 extern int lenstring_BM (const stringval_tyBM *);       // length in bytes
 extern const char *bytstring_BM (const stringval_tyBM *);
 extern void *stringgcproc_BM (struct garbcoll_stBM *gc, stringval_tyBM * str)
