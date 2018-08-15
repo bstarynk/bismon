@@ -258,6 +258,13 @@ startblock__8prn9eFlYZD_6JJKKh2b8KW:__attribute__ ((unused));
         }                       /*cond else _057nvpyNs61_4NN6PpJ3blv */
 /*endcond _057nvpyNs61_4NN6PpJ3blv*/
 
+
+      {                         // start cexpansion _1cxOV5GldRc_8pSs0K0x3sK - objstrbufferappendcstrpayl   
+/*objstrbufferappendcstrpayl:*/
+        objstrbufferappendcstrpayl_BM ((_.o_5JuT4FgNFFh_7McrTYeT3jx),
+                                       ("<form method=\'post\'><i>bar:</i> <input type=\'text\' name=\'bar\'/> <input type=\'submit\' name=\'dosubmit\' value=\'do!\'/> </form>\n"));
+      }                         // end cexpansion _1cxOV5GldRc_8pSs0K0x3sK - objstrbufferappendcstrpayl   
+
 /* !endingblock _3VVvcLyYqv8_9yci7GvqEEv */
       goto endblock__3VVvcLyYqv8_9yci7GvqEEv;
     endblock__3VVvcLyYqv8_9yci7GvqEEv:;

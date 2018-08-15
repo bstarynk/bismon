@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 823 objects
+// for 824 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -8424,6 +8424,21 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_1cxOV5GldRc_8pSs0K0x3sK
+!@ 1534345901.754
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit post form"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _5JuT4FgNFFh_7McrTYeT3jx  "<form method=\'post\'><i>bar:</i> <input type=\'text\'"& " name=\'bar\'/> <input type=\'submit\' name=\'dosubmit\'"& " value=\'do!\'/> </form>\n")
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _6jZqk9RP0Pe_12cIgV9WMFC ( _5JuT4FgNFFh_7McrTYeT3jx  "<form method=\'post\'><i>bar:</i> <input type=\'text\'"& " name=\'bar\'/> <input type=\'submit\' name=\'dosubmit\'"& " value=\'do!\'/> </form>\n")
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_6jZqk9RP0Pe_12cIgV9WMFC
+!)_1cxOV5GldRc_8pSs0K0x3sK
+
+
+
 !(_1etImV3nBtp_5rnHSE87XRj
 !|*
 !@ 1521200046.540
@@ -9481,11 +9496,11 @@ _7n2SLLuWOjH_4ArhFUjmckz
 
 
 !(_3VVvcLyYqv8_9yci7GvqEEv
-!@ 1534257687.370
+!@ 1534345901.754
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "emit body for testhello webhandler"
-!# 8
+!# 9
 !& _5lsoSuyLYE0_2cqb9QxFcos
 !& _1gjXCT3HN6V_5SGgDufAmKf
 !& _1XzuICo9tMz_2FMOEMMgKHC
@@ -9494,6 +9509,7 @@ _7n2SLLuWOjH_4ArhFUjmckz
 !& _3vXdUQt5mey_5MeGY4lFI0J
 !& _2THq8nc1q1F_4cGFcYCkXve
 !& _057nvpyNs61_4NN6PpJ3blv
+!& _1cxOV5GldRc_8pSs0K0x3sK
 !)_3VVvcLyYqv8_9yci7GvqEEv
 
 
