@@ -712,8 +712,11 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
       if (curp->htyp < type_FIRST_BM || curp->htyp > typayl_LAST_BM)
         {
           fflush (NULL);
-          FATAL_BM ("corrupted allocated#%ld @%p (htyp %d)", ix, curp,
-                    (int) (curp->htyp));
+          WARNPRINTF_BM ("corrupted allocated#%ld @%p (htyp %d)", ix, curp,
+                         (int) (curp->htyp));
+          WEAKASSERTWARN_BM (curp->htyp >= type_FIRST_BM
+                             && curp->htyp <= typayl_LAST_BM);
+          continue;
         };
       ASSERT_BM (curp->htyp >= type_FIRST_BM && curp->htyp <= typayl_LAST_BM);
       curp->hgc = CLEARMGC_BM;
