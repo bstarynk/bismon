@@ -261,32 +261,38 @@ bytstring_BM (const stringval_tyBM * strv)
 
 
 // stringify the strftime of localtime...
-const stringval_tyBM *flocaltimestring_BM (const char*fmt, time_t ti)
+const stringval_tyBM *
+flocaltimestring_BM (const char *fmt, time_t ti)
 {
-  const stringval_tyBM*res = NULL;
+  const stringval_tyBM *res = NULL;
   char buf[80];
-  struct tm mytm = {};
-  memset(buf, 0, sizeof(buf));
-  if (!fmt) return NULL;
-  localtime_r(&mytm, ti);
-  strftime(buf, sizeof(buf), fmt, &mytm);
-  buf[sizeof(buf)-1] = (char)0;
-  return makestring_BM(buf);
-} /* end flocaltimestring_BM */
+  struct tm mytm = { };
+  memset (buf, 0, sizeof (buf));
+  if (!fmt)
+    return NULL;
+  localtime_r (&mytm, ti);
+  strftime (buf, sizeof (buf), fmt, &mytm);
+  buf[sizeof (buf) - 1] = (char) 0;
+  return makestring_BM (buf);
+}                               /* end flocaltimestring_BM */
 
 // stringify the strftime of localtime...
-const stringval_tyBM *fgmtimestring_BM (const char*fmt, time_t ti)
-{  if (!fmt) return NULL;
-  const stringval_tyBM*res = NULL;
+const stringval_tyBM *
+fgmtimestring_BM (const char *fmt, time_t ti)
+{
+  if (!fmt)
+    return NULL;
+  const stringval_tyBM *res = NULL;
   char buf[80];
-  struct tm mytm = {};
-  memset(buf, 0, sizeof(buf));
-  if (!fmt) return NULL;
-  gmtime_r(&mytm, ti);
-  strftime(buf, sizeof(buf), fmt, &mytm);
-  buf[sizeof(buf)-1] = (char)0;
-  return makestring_BM(buf);
-} /* end fgmtimestring_BM */
+  struct tm mytm = { };
+  memset (buf, 0, sizeof (buf));
+  if (!fmt)
+    return NULL;
+  gmtime_r (&mytm, ti);
+  strftime (buf, sizeof (buf), fmt, &mytm);
+  buf[sizeof (buf) - 1] = (char) 0;
+  return makestring_BM (buf);
+}                               /* end fgmtimestring_BM */
 
 
 
@@ -969,19 +975,21 @@ objstrbufferencodedhtmlpayl_BM (objectval_tyBM * obj, const char *str,
           objstrbufferunsafeappendcstrpayl_BM (obj, " ");
           break;
         default:
-          {	      
+          {
             char ubuf[16];
-	    if (uc >= ' ' && uc < 127) {
-	      ubuf[0] = uc;
-	      ubuf[1] = (char)0;
-	    }
-	    else { 
-	      memset (ubuf, 0, sizeof (ubuf));
-	      if (uc >= ' ' && uc < 127)
-		ubuf[0] = (char) uc;
-	      else
-		snprintf (ubuf, sizeof (ubuf), "&#%d;", uc);
-	    }
+            if (uc >= ' ' && uc < 127)
+              {
+                ubuf[0] = uc;
+                ubuf[1] = (char) 0;
+              }
+            else
+              {
+                memset (ubuf, 0, sizeof (ubuf));
+                if (uc >= ' ' && uc < 127)
+                  ubuf[0] = (char) uc;
+                else
+                  snprintf (ubuf, sizeof (ubuf), "&#%d;", uc);
+              }
             objstrbufferunsafeappendcstrpayl_BM (obj, ubuf);
           }
           break;

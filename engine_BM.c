@@ -29,7 +29,7 @@ value_tyBM
 ROUTINEOBJNAME_BM (_5W4PPQFYdj2_3HYUlMsu3oZ)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__ ((unused)),         // 
+ const value_tyBM arg2_ __attribute__ ((unused)),       // 
  const value_tyBM arg3_ __attribute__ ((unused)),       //
  const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
@@ -299,7 +299,8 @@ evaluate_in_mini_frame_BM (value_tyBM expv, objectval_tyBM * framob,
       _.varob = objectcast_BM (nodenthson_BM (_.expv, 0));
       if (!_.varob)
         {
-          _.errorv = (value_tyBM) makenodevar_BM (k_syntax_error, _.expv, NULL);
+          _.errorv =
+            (value_tyBM) makenodevar_BM (k_syntax_error, _.expv, NULL);
           FAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
         }
       // find _.varob's binding in some frame
@@ -312,7 +313,8 @@ evaluate_in_mini_frame_BM (value_tyBM expv, objectval_tyBM * framob,
               || !objhasassocpayl_BM (_.framob))
             {
               _.errorv = (value_tyBM) makenodevar_BM (k_mini_frame, _.framob,
-                                         taggedint_BM (framedepth), NULL);
+                                                      taggedint_BM
+                                                      (framedepth), NULL);
               FAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
             }
           _.valv = objassocgetattrpayl_BM (_.framob, _.varob);

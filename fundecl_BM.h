@@ -124,8 +124,8 @@ extern const stringval_tyBM *makestringlen_BM (const char *str, long len);
 extern const stringval_tyBM *sprintfstring_BM (const char *fmt, ...)
   __attribute__ ((format (printf, 1, 2)));
 // stringify the strftime of localtime, of gmtime...
-extern const stringval_tyBM *flocaltimestring_BM (const char*fmt, time_t ti);
-extern const stringval_tyBM *fgmtimestring_BM (const char*fmt, time_t ti);
+extern const stringval_tyBM *flocaltimestring_BM (const char *fmt, time_t ti);
+extern const stringval_tyBM *fgmtimestring_BM (const char *fmt, time_t ti);
 
 extern int lenstring_BM (const stringval_tyBM *);       // length in bytes
 extern const char *bytstring_BM (const stringval_tyBM *);
@@ -558,7 +558,7 @@ extern void objstrbufferencodedcpayl_BM (objectval_tyBM * obj,
 
 /// output bytes encoded à la HTML
 extern void objstrbufferencodedhtmlpayl_BM (objectval_tyBM * obj,
-                                         const char *str, ssize_t bytelen);
+                                            const char *str, ssize_t bytelen);
 
 /// write the content to a file, if different
 extern void objstrbufferwritetofilepayl_BM (objectval_tyBM * obj,
@@ -1499,8 +1499,8 @@ extern void objwebexchangecompletepayl_BM (const objectval_tyBM * obj,
                                            const char *mimetype);
 
 
-static inline double objwebexchangedbltime_BM(const objectval_tyBM* obj);
-static inline time_t objwebexchangetime_BM(const objectval_tyBM* obj);
+static inline double objwebexchangedbltime_BM (const objectval_tyBM * obj);
+static inline time_t objwebexchangetime_BM (const objectval_tyBM * obj);
 ////////////////
 
 extern void webonion_suspend_before_gc_BM (void);

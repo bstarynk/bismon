@@ -1390,7 +1390,7 @@ ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    // browse_data°list_object
   if (!isobject_BM (arg1))
     FATAL_BM
       ("non-object for method to browse_data for list_object-s _2EtVNhr2mHz_8CsOQJdYeCE");
-  _.objbrows = ( objectval_tyBM *) arg1;
+  _.objbrows = (objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   WEAKASSERT_BM (objhaslistpayl_BM (_.objbrows));
 #ifdef BISMONGTK
@@ -1449,7 +1449,7 @@ ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //browse_data°assoc_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
  const value_tyBM arg2,         //
- const value_tyBM arg3_ __attribute__ ((unused)),         //
+ const value_tyBM arg3_ __attribute__ ((unused)),       //
  const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
@@ -2483,9 +2483,9 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_7EgSAlg8UbA_6x0iNxUOrYE);
 value_tyBM
 ROUTINEOBJNAME_BM (_7EgSAlg8UbA_6x0iNxUOrYE)    // final-find_object
 (struct stackframe_stBM * stkf, //
- const value_tyBM arg1_ __attribute__ ((unused)),         //
- const value_tyBM arg2_ __attribute__ ((unused)),         //
- const value_tyBM arg3_ __attribute__ ((unused)),         //
+ const value_tyBM arg1_ __attribute__ ((unused)),       //
+ const value_tyBM arg2_ __attribute__ ((unused)),       //
+ const value_tyBM arg3_ __attribute__ ((unused)),       //
  const value_tyBM arg4_ __attribute__ ((unused)),       //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
