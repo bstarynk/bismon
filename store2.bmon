@@ -8690,9 +8690,9 @@ _3XBrePAliOo_37VlAqBsb5C) ~)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "emit when no v_barpost"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
- * _0jFqaPPHgYH_5JpjOPxQ67p ( _5JuT4FgNFFh_7McrTYeT3jx  "<p><b>No</b> <i>bar</i> post!</p>")
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _5JuT4FgNFFh_7McrTYeT3jx  "<p><b>No</b> <i>bar</i> post!</p>\n")
 !: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
- * _6jZqk9RP0Pe_12cIgV9WMFC ( _5JuT4FgNFFh_7McrTYeT3jx  "<p><b>No</b> <i>bar</i> post!</p>")
+ * _6jZqk9RP0Pe_12cIgV9WMFC ( _5JuT4FgNFFh_7McrTYeT3jx  "<p><b>No</b> <i>bar</i> post!</p>\n")
 !: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
 _6jZqk9RP0Pe_12cIgV9WMFC
 !)_1KQI2bY1P58_8cNaZP3fXxP
@@ -10718,9 +10718,9 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "emit when no v_queryfoo"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
- * _0jFqaPPHgYH_5JpjOPxQ67p ( _5JuT4FgNFFh_7McrTYeT3jx  "<p><b>No</b> <i>foo</i> query!</p>")
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _5JuT4FgNFFh_7McrTYeT3jx  "<p><b>No</b> <i>foo</i> query!</p>\n")
 !: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
- * _6jZqk9RP0Pe_12cIgV9WMFC ( _5JuT4FgNFFh_7McrTYeT3jx  "<p><b>No</b> <i>foo</i> query!</p>")
+ * _6jZqk9RP0Pe_12cIgV9WMFC ( _5JuT4FgNFFh_7McrTYeT3jx  "<p><b>No</b> <i>foo</i> query!</p>\n")
 !: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
 _6jZqk9RP0Pe_12cIgV9WMFC
 !)_6RNWoVxR1o8_1HcOAeanMtD

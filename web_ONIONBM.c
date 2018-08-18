@@ -1474,7 +1474,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   ASSERT_BM (resp != NULL);
   ASSERT_BM (respcode > 0);
   ASSERT_BM (bytes != NULL);
-  char cookiebuf[48];
+  char cookiebuf[64];
   memset (cookiebuf, 0, sizeof (cookiebuf));
   char sessidbuf[32];
   memset (sessidbuf, 0, sizeof (sessidbuf));
@@ -1493,6 +1493,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
       snprintf (cookiebuf, sizeof (cookiebuf), "n%06dR%dt%do%s",
                 wsess->websess_rank, wsess->websess_rand1,
                 wsess->websess_rand2, sessidbuf);
+      WEAKASSERT_BM (strlen (cookiebuf) < sizeof (cookiebuf) - 3);
     }
   objunlock_BM (_.sessionob);
   DBGPRINTF_BM
