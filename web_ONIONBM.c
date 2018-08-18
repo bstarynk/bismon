@@ -15,6 +15,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ***/
+#define _GNU_SOURCE 1
+#include <stdio.h>
 #include <onion/onion.h>
 #include "bismon.h"
 #include "web_ONIONBM.const.h"
@@ -331,7 +333,7 @@ fork_onion_process_at_slot_BM (int slotpos,
                                        0));
   /// should fork the process
   int pipfd[2] = { -1, -1 };
-  char **args = calloc (cmdlen + 1, sizeof (char *));
+  const char **args = calloc (cmdlen + 1, sizeof (char *));
   if (!args)
     FATAL_BM ("calloc args %d failed - %m", cmdlen);
   for (int aix = 0; aix < cmdlen; aix++)
@@ -364,7 +366,7 @@ fork_onion_process_at_slot_BM (int slotpos,
       for (int ix = 3; ix < 64; ix++)
         if (ix != pipfd[1])
           (void) close (ix);
-      if (isstring_BM (_.dirstrv))
+      if (isstring_BM ((value_tyBM) _.dirstrv))
         {
           if (chdir (bytstring_BM (_.dirstrv)))
             {
@@ -377,7 +379,7 @@ fork_onion_process_at_slot_BM (int slotpos,
       close (fd), fd = -1;
       dup2 (pipfd[1], STDOUT_FILENO);
       dup2 (pipfd[1], STDERR_FILENO);
-      execv (args[0], args);
+      execv (args[0], (char *const *) args);
       perror (args[0]);
       _exit (127);
     }
@@ -685,8 +687,8 @@ custom_onion_handler_BM (void *clientdata,
                  : (reqmeth == OR_POST) ? "POST"        //
                  : (reqmeth == OR_OPTIONS) ? "OPTIONS"  //
                  : (reqmeth == OR_PROPFIND) ? "PROPFIND"        //
-                 : snprintf (dbgmethbuf, sizeof (dbgmethbuf),   ///
-                             "meth#%d", reqmeth)),
+                 : (snprintf (dbgmethbuf, sizeof (dbgmethbuf),  ///
+                              "meth#%d", reqmeth), dbgmethbuf)),
                 bcookie ? bcookie : "*none*");
   if (!strcmp (reqpath, "_login") || !strcmp (reqpath, "/_login"))
     {
@@ -884,8 +886,8 @@ custom_onion_handler_BM (void *clientdata,
                           : (reqmeth == OR_POST) ? "POST"       //
                           : (reqmeth == OR_OPTIONS) ? "OPTIONS" //
                           : (reqmeth == OR_PROPFIND) ? "PROPFIND"       //
-                          : snprintf (dbgmethbuf, sizeof (dbgmethbuf),  ///
-                                      "meth#%d", reqmeth)),
+                          : (snprintf (dbgmethbuf, sizeof (dbgmethbuf), ///
+                                       "meth#%d", reqmeth), dbgmethbuf)),
                          objectdbg_BM (_.sessionob));
           result = OCS_NOT_IMPLEMENTED;
           unregister_onion_thread_stack_BM (CURFRAME_BM);
@@ -951,8 +953,8 @@ custom_onion_handler_BM (void *clientdata,
                  : (reqmeth == OR_POST) ? "POST"        //
                  : (reqmeth == OR_OPTIONS) ? "OPTIONS"  //
                  : (reqmeth == OR_PROPFIND) ? "PROPFIND"        //
-                 : snprintf (dbgmethbuf, sizeof (dbgmethbuf),   ///
-                             "meth#%d", reqmeth)),
+                 : (snprintf (dbgmethbuf, sizeof (dbgmethbuf),  ///
+                              "meth#%d", reqmeth), dbgmethbuf)),
                 bcookie ? bcookie : "*none*");
   result = OCS_NOT_PROCESSED;
   unregister_onion_thread_stack_BM (CURFRAME_BM);
@@ -980,8 +982,8 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
                  : (reqmeth == OR_POST) ? "POST"        //
                  : (reqmeth == OR_OPTIONS) ? "OPTIONS"  //
                  : (reqmeth == OR_PROPFIND) ? "PROPFIND"        //
-                 : snprintf (dbgmethbuf, sizeof (dbgmethbuf),   ///
-                             "meth#%d", reqmeth)),
+                 : (snprintf (dbgmethbuf, sizeof (dbgmethbuf),  ///
+                              "meth#%d", reqmeth), dbgmethbuf)),
                 bcookie ? bcookie : "*none*");
   if (reqmeth == OR_POST)
     {
@@ -1044,7 +1046,8 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
               strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
               onion_dict *ctxdic = onion_dict_new ();
               {
-                char *origpath = (reqpath && reqpath[0]) ? reqpath : "/";
+                const char *origpath = (reqpath
+                                        && reqpath[0]) ? reqpath : "/";
                 if (reqpath && !strcmp (reqpath, "_login"))
                   {
                     if (formorigpath)
@@ -1183,7 +1186,7 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
     sessioncounter++;
     wsess->websess_rank = sessioncounter;
     _.cookiestrv =
-      sprintfstring_BM ("n%06ldR%dt%do%s", wsess->websess_rank,
+      sprintfstring_BM ("n%06dR%dt%do%s", wsess->websess_rank,
                         wsess->websess_rand1, wsess->websess_rand2,
                         sessidbuf);
     DBGPRINTF_BM ("do_login_redirect_onion_BM for contribob %s,\n"
@@ -1324,7 +1327,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   wexda->webx_magic = BISMONION_WEBX_MAGIC;
   atomic_init (&wexda->webx_respcode, 0);
   WARNPRINTF_BM
-    ("do_dynamic_onion unimplemented  sessionob %s reqpath '%s' post %s wexnum %ld webexob %s",
+    ("do_dynamic_onion unimplemented  sessionob %s reqpath '%s' post %s wexnum %d webexob %s",
      objectdbg_BM (_.sessionob), reqpath, postrequest ? "true" : "false",
      wexda->webx_num, objectdbg1_BM (_.webexob));
   int failcod = 0;
@@ -1387,7 +1390,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         int reqlen = strlen (reqpath);
         // normal case, should find the web processing closure then apply it
         DBGPRINTF_BM
-          ("do_dynamic_onion normal sessionob %s reqpath '%s' post %s wexnum %ld webexob %s",
+          ("do_dynamic_onion normal sessionob %s reqpath '%s' post %s wexnum %d webexob %s",
            objectdbg_BM (_.sessionob), reqpath,
            postrequest ? "true" : "false", wexda->webx_num,
            objectdbg1_BM (_.webexob));
@@ -1487,7 +1490,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
       wsess->websess_expiretime =
         clocktime_BM (CLOCK_REALTIME) + WEBSESSION_EXPIRATION_DELAY;
       shouldputcookie = true;
-      snprintf (cookiebuf, sizeof (cookiebuf), "n%06ldR%dt%do%s",
+      snprintf (cookiebuf, sizeof (cookiebuf), "n%06dR%dt%do%s",
                 wsess->websess_rank, wsess->websess_rand1,
                 wsess->websess_rand2, sessidbuf);
     }
@@ -1509,13 +1512,24 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                 objectdbg_BM (_.sessionob), objectdbg1_BM (_.webexob),
                 respcode, len);
   onion_response_set_code (resp, respcode);
+  DBGPRINTF_BM
+    ("do_dynamic_onion sessionob %s webexob %s did set resp@%p respcode %d, len %d",
+     objectdbg_BM (_.sessionob), objectdbg1_BM (_.webexob), resp, respcode,
+     len);
   onion_response_set_length (resp, len);
+  DBGPRINTF_BM
+    ("do_dynamic_onion sessionob %s webexob %s before onion_response_write len %d bytes@%p=\n%s\n",
+     objectdbg_BM (_.sessionob), objectdbg1_BM (_.webexob), len, bytes,
+     bytes);
   onion_response_write (resp, bytes, len);
   DBGPRINTF_BM
-    ("do_dynamic_onion end sessionob %s reqpath '%s' post %s mimetype '%s' respcode %s (%s) len=%d bytes:\n%s",
-     objectdbg_BM (_.sessionob), reqpath, postrequest ? "true" : "false",
-     mimetype, respcode, onion_response_code_description (respcode), len,
-     bytes);
+    ("do_dynamic_onion sessionob %s webexob %s after onion_response_write reqpath '%s' post %s mimetype %s",
+     objectdbg_BM (_.sessionob), objectdbg1_BM (_.webexob), reqpath,
+     postrequest ? "true" : "false", mimetype);
+  DBGPRINTF_BM
+    ("do_dynamic_onion end sessionob %s webexob %s reqpath '%s' respcode %d (%s) len=%d bytes:\n%s",
+     objectdbg_BM (_.sessionob), objectdbg1_BM (_.webexob), reqpath, respcode,
+     onion_response_code_description (respcode), len, bytes);
   return OCS_PROCESSED;
 }                               /* end do_dynamic_onion_BM */
 
@@ -1638,7 +1652,7 @@ objwebexchangecompletepayl_BM (const objectval_tyBM * obj, int httpstatus,
 {
   struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
   if (!wxda)
-    return NULL;
+    return;
   ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
   if (mimetype)
     {
@@ -1829,356 +1843,3 @@ plain_event_loop_BM (void)
                                 break;
                               }
                             ASSERT_BM (bytcnt > 0);
-                            pipbuf[bytcnt] = (char) 0;
-                            if (strlen (pipbuf) < bytcnt)
-                              {
-                                WARNPRINTF_BM
-                                  ("unexpected null byte from process pid#%d command node %s in %s",
-                                   (int) onionrunprocarr_BM[runix].rp_pid,
-                                   debug_outstr_value_BM
-                                   (onproc->rp_cmdnodv, CURFRAME_BM, 0),
-                                   bytstring_BM (onproc->rp_dirstrv) ? :
-                                   "./");
-                                if (kill (onproc->rp_pid, SIGTERM) == 0)
-                                  WARNPRINTF_BM ("sent SIGTERM to pid#%d",
-                                                 onproc->rp_pid);
-                                close (curfd);
-                                onproc->rp_outpipe = -1;
-                                usleep (1000);
-
-                              }
-                            _.bufob = onproc->rp_bufob;
-                            ASSERT_BM (isobject_BM (_.bufob));
-                            ASSERT_BM (objhasstrbufferpayl_BM (_.bufob));
-                            objstrbufferappendcstrpayl_BM (_.bufob, pipbuf);
-                            _.bufob = NULL;
-                            pipbuf[0] = (char) 0;
-                          }
-                        while (bytcnt > 0);
-                        break;
-                      }
-                  }
-              }
-            _.bufob = NULL;
-          }
-        unlockonion_runpro_mtx_at_BM (__LINE__);
-      }
-      if (pollarr[pollix_sigfd].revents & POLL_IN)
-        {
-          DBGPRINTF_BM ("plain_event_loop sigfd readable");
-          bool stop = read_sigfd_BM ();
-          if (stop)
-            {
-              atomic_store (&onionlooprunning_BM, false);
-              DBGPRINTF_BM ("plain_event_loop sigfd stopping after sigfd");
-              break;
-            }
-          else
-            DBGPRINTF_BM ("plain_event_loop sigfd continuing after sigfd");
-        }
-      if (pollarr[pollix_cmdp].revents & POLL_IN)
-        read_commandpipe_BM ();
-    }                           /* end while onionlooprunning */
-  DBGPRINTF_BM ("plain_event_loop_BM ended loopcnt=%ld", loopcnt);
-}                               /* end plain_event_loop_BM */
-
-
-
-static bool
-read_sigfd_BM (void)            // called from plain_event_loop_BM
-{
-  struct signalfd_siginfo siginf;
-  memset (&siginf, 0, sizeof (siginf));
-  DBGPRINTF_BM ("read_sigfd_BM start sigfd_BM %d elapsed %3.f s", sigfd_BM,
-                elapsedtime_BM ());
-  int nbr = read (sigfd_BM, &siginf, sizeof (siginf));
-  if (nbr != sizeof (siginf))   // very unlikely, probably impossible
-    FATAL_BM ("read_sigfd_BM: read fail (%d bytes read, want %d) - %m",
-              nbr, (int) sizeof (siginf));
-  DBGPRINTF_BM ("read_sigfd_BM signo=%d", siginf.ssi_signo);
-#warning incomplete read_sigfd_BM
-  switch (siginf.ssi_signo)
-    {
-    case SIGTERM:
-      {
-        DBGPRINTF_BM ("read_sigfd_BM got SIGTERM");
-        stop_agenda_work_threads_BM ();
-        /// forcibly remove the payload of the_web_sessions. Its payload
-        /// should not be dumped, because of its class, but anyway...
-        {
-          objlock_BM (BMP_the_web_sessions);
-          objclearpayload_BM (BMP_the_web_sessions);
-          objunlock_BM (BMP_the_web_sessions);
-        }
-        char *rp = realpath (dump_dir_BM ? : ".", NULL);
-        INFOPRINTF_BM
-          ("before dumping final state into %s (really %s) after SIGTERM to process %d, elapsed %.3f s",
-           dump_dir_BM, rp, (int) getpid (), elapsedtime_BM ());
-        free (rp), rp = NULL;
-        struct dumpinfo_stBM di = dump_BM (dump_dir_BM, NULL);
-        INFOPRINTF_BM
-          ("after dumping final state into %s for SIGTERM: scanned %ld, emitted %ld objects\n"
-           "did %ld todos, wrote %ld files\n"
-           "in %.3f elapsed, %.4f cpu seconds.\n", dump_dir_BM,
-           di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount,
-           di.dumpinfo_todocount, di.dumpinfo_wrotefilecount,
-           di.dumpinfo_elapsedtime, di.dumpinfo_cputime);
-      }
-      return true;
-    case SIGQUIT:
-      INFOPRINTF_BM
-        ("terminating without dump after SIGQUIT to process %d, elapsed %.3f s",
-         (int) getpid (), elapsedtime_BM ());
-      return true;
-    case SIGCHLD:
-      {
-        pid_t pid = siginf.ssi_pid;
-        DBGPRINTF_BM ("read_sigfd_BM got SIGCHLD pid=%d", (int) pid);
-        handle_sigchld_BM (pid);
-        return false;
-      }
-    default:
-      FATAL_BM ("read_sigfd_BM unexpected signo %d", siginf.ssi_signo);
-    };
-  DBGPRINTF_BM ("read_sigfd_BM ending");
-  return false;
-}                               /* end read_sigfd_BM */
-
-
-static void
-handle_sigchld_BM (pid_t pid)
-{
-  objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
-  bool didfork = false;
-  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 /// for the terminating child process
-                 value_tyBM chdirstrv;  //
-                 value_tyBM chcmdnodv;  //
-                 value_tyBM chclosv;    //
-                 objectval_tyBM * chbufob;      //
-                 value_tyBM choutstrv;  //
-                 // for queued commands
-                 value_tyBM qnodv;      //
-                 value_tyBM newdirstrv; //
-                 value_tyBM newcmdnodv; //
-                 value_tyBM newendclosv;        //
-    );
-  DBGPRINTF_BM ("handle_sigchld_BM start pid=%d", (int) pid);
-  int wstatus = 0;
-  pid_t wpid = waitpid (pid, &wstatus, WNOHANG);
-  if (wpid == pid)
-    {
-      DBGPRINTF_BM ("handle_sigchld_BM pid %d", (int) pid);
-      {
-        int chix = -1;
-        int nbruncmds = 0;
-        lockonion_runpro_mtx_at_BM (__LINE__);
-        for (int oix = 0; oix < MAXNBWORKJOBS_BM; oix++)
-          {
-            struct onionproc_stBM *onproc = onionrunprocarr_BM + oix;
-            if (!onproc->rp_pid)
-              continue;
-            nbruncmds++;
-            if (onproc->rp_pid == pid)
-              {
-                ASSERT_BM (chix < 0);
-                chix = oix;
-                _.chdirstrv = onproc->rp_dirstrv;
-                _.chcmdnodv = onproc->rp_cmdnodv;
-                _.chclosv = onproc->rp_closv;
-                _.chbufob = onproc->rp_bufob;
-                memset ((void *) onproc, 0, sizeof (struct onionproc_stBM));
-              }
-          }
-        _.qnodv = nodecast_BM (listfirst_BM (onionrunpro_list_BM));
-        if (_.qnodv)
-          {
-            ASSERT_BM (nodeconn_BM (_.qnodv) == k_queue_process);
-            if (nbruncmds <= nbworkjobs_BM)
-              {
-                listpopfirst_BM (onionrunpro_list_BM);
-                _.newdirstrv = stringcast_BM (nodenthson_BM (_.qnodv, 0));
-                _.newcmdnodv = nodecast_BM (nodenthson_BM (_.qnodv, 1));
-                _.newendclosv = nodecast_BM (nodenthson_BM (_.qnodv, 2));
-                ASSERT_BM (isnode_BM (_.newcmdnodv));
-                ASSERT_BM (isclosure_BM (_.newendclosv));
-                DBGPRINTF_BM
-                  ("handle_sigchld_BM chix#%d newdirstrv %s newcmdnodv %s newendclosv %s beforefork",
-                   chix, debug_outstr_value_BM (_.newdirstrv, CURFRAME_BM,
-                                                0),
-                   debug_outstr_value_BM (_.newcmdnodv, CURFRAME_BM, 0),
-                   debug_outstr_value_BM (_.newendclosv, CURFRAME_BM, 0));
-                fork_onion_process_at_slot_BM (chix, _.newdirstrv,
-                                               _.newcmdnodv, _.newendclosv,
-                                               CURFRAME_BM);
-                didfork = true;
-              }
-          }
-        unlockonion_runpro_mtx_at_BM (__LINE__);
-        if (chix >= 0)
-          {
-            _.choutstrv =
-              (value_tyBM)
-              makestring_BM (objstrbufferbytespayl_BM (_.chbufob));
-            DBGPRINTF_BM
-              ("handle_sigchld_BM defer-apply chclosv %s choutstrv %s wstatus %#x=%d",
-               debug_outstr_value_BM (_.chclosv, CURFRAME_BM, 0),
-               debug_outstr_value_BM (_.choutstrv, CURFRAME_BM, 0), wstatus,
-               wstatus);
-            do_main_defer_apply3_BM (_.chclosv, _.choutstrv,
-                                     taggedint_BM (wstatus), NULL,
-                                     CURFRAME_BM);
-          }
-      }
-    }
-  else
-    FATAL_BM ("handle_sigchld_BM waitpid failure pid#%d", pid);
-  if (didfork)
-    usleep (1000);              // sleep a little bit, to let the child process start
-}                               /* end handle_sigchld_BM */
-
-
-static void
-read_commandpipe_BM (void)
-{
-  char buf[4];
-  memset (&buf, 0, sizeof (buf));
-  int nbr = read (cmdpipe_rd_BM, buf, 1);
-  if (nbr == 1)
-    {
-      DBGPRINTF_BM ("read_commandpipe_BM '%s' incomplete", buf);
-      WARNPRINTF_BM ("read_commandpipe_BM unimplemented");
-      // if buf[0] is 'X', execute a deferred command
-      // if buf[0] is 'G', run the garbage collector. Not sure!
-#warning read_commandpipe_BM incomplete
-      // should handle the command
-    }
-  else
-    DBGPRINTF_BM ("read_commandpipe_BM nbr %d - %s", nbr,
-                  (nbr < 0) ? strerror (errno) : "--");
-}                               /* end read_commandpipe_BM */
-
-void
-add_defer_command_onion_BM (void)
-{
-  char buf[4];
-  memset (&buf, 0, sizeof (buf));
-  buf[0] = 'X';
-  int count = 0;
-  while (count < 256)
-    {                           /* this loop usually runs once */
-      int nbw = write (cmdpipe_wr_BM, buf, 1);
-      if (nbw < 0 && errno == EINTR)
-        continue;
-      if (nbw < 0 && errno == EWOULDBLOCK)
-        {
-          usleep (2000);
-          continue;
-        };
-      if (nbw == 1)
-        return;
-      FATAL_BM ("add_defer_command_onion_BM nbw %d - %s", nbw,
-                (nbw < 0) ? strerror (errno) : "--");
-    }
-  FATAL_BM ("add_defer_command_onion_BM failed");
-}                               /* end add_defer_command_onion_BM */
-
-////////////////////////////////////////////////////////////////
-
-
-
-
-void
-register_onion_thread_stack_BM (struct stackframe_stBM *stkf)
-{
-  ASSERT_BM (stkf != NULL);
-  ASSERT_BM (stkf->stkfram_pA.htyp == typayl_StackFrame_BM);
-  pthread_mutex_lock (&onionstack_mtx_bm);
-  if (!curonionstackinfo_BM)
-    {
-      for (int ix = 0; ix < MAXNBWORKJOBS_BM; ix++)
-        {
-          if (onionstackinfo_bm[ix].ost_stkf == NULL
-              && onionstackinfo_bm[ix].ost_thread == (pthread_t) 0)
-            {
-              curonionstackinfo_BM = onionstackinfo_bm + ix;
-              onionstackinfo_bm[ix].ost_thread = pthread_self ();
-              atomic_init (&onionstackinfo_bm[ix].ost_suspended, false);
-              break;
-            };
-        }
-    }
-  ASSERT_BM (curonionstackinfo_BM
-             && curonionstackinfo_BM->ost_thread == pthread_self ());
-  curonionstackinfo_BM->ost_stkf = stkf;
-  pthread_mutex_unlock (&onionstack_mtx_bm);
-}                               /* end register_onion_thread_stack_BM */
-
-
-void
-unregister_onion_thread_stack_BM (struct stackframe_stBM *stkf)
-{
-  ASSERT_BM (stkf != NULL);
-  ASSERT_BM (stkf->stkfram_pA.htyp == typayl_StackFrame_BM);
-  pthread_mutex_lock (&onionstack_mtx_bm);
-  ASSERT_BM (curonionstackinfo_BM != NULL);
-  ASSERT_BM (curonionstackinfo_BM->ost_thread == pthread_self ());
-  curonionstackinfo_BM->ost_thread = (pthread_t) 0;
-  curonionstackinfo_BM->ost_stkf = NULL;
-  atomic_store (&curonionstackinfo_BM->ost_suspended, false);
-  curonionstackinfo_BM = NULL;
-  pthread_mutex_unlock (&onionstack_mtx_bm);
-}                               /* end unregister_onion_thread_stack_BM */
-
-
-void
-perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM *stkf)
-{
-  ASSERT_BM (stkf != NULL);
-  ASSERT_BM (stkf->stkfram_pA.htyp == typayl_StackFrame_BM);
-  DBGPRINTF_BM
-    ("perhaps_suspend_for_gc_onion_thread_stack_BM start tid#%ld elapsed %.3f s",
-     (long) gettid_BM (), elapsedtime_BM ());
-  pthread_mutex_lock (&onionstack_mtx_bm);
-  ASSERT_BM (curonionstackinfo_BM != NULL);
-  ASSERT_BM (curonionstackinfo_BM->ost_thread == pthread_self ());
-  curonionstackinfo_BM->ost_stkf = stkf;
-  atomic_store (&curonionstackinfo_BM->ost_suspended, true);
-  pthread_mutex_unlock (&onionstack_mtx_bm);
-  pthread_cond_broadcast (&onionstack_condchange_bm);
-  for (;;)
-    {
-      if (!agenda_need_gc_BM ())
-        break;
-      DBGPRINTF_BM
-        ("perhaps_suspend_for_gc_onion_thread_stack need GC tid#%ld  elapsed %.3f s",
-         (long) gettid_BM (), elapsedtime_BM ());
-      agenda_wait_gc_BM ();
-    }
-  pthread_mutex_lock (&onionstack_mtx_bm);
-  ASSERT_BM (curonionstackinfo_BM != NULL);
-  atomic_store (&curonionstackinfo_BM->ost_suspended, false);
-  pthread_mutex_unlock (&onionstack_mtx_bm);
-  pthread_cond_broadcast (&onionstack_condchange_bm);
-  DBGPRINTF_BM
-    ("perhaps_suspend_for_gc_onion_thread_stack_BM end tid#%ld  elapsed %.3f s",
-     (long) gettid_BM (), elapsedtime_BM ());
-}                               /* end perhaps_suspend_for_gc_onion_thread_stack_BM */
-
-
-// mark the stack of every webonion pthread; they all should be "inactive"
-void
-gcmarkwebonion_BM (struct garbcoll_stBM *gc)
-{
-  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
-  pthread_mutex_lock (&onionstack_mtx_bm);
-  for (int ix = 0; ix < MAXNBWORKJOBS_BM; ix++)
-    {
-      if (onionstackinfo_bm[ix].ost_stkf != NULL
-          && onionstackinfo_bm[ix].ost_thread != (pthread_t) 0)
-        gcframemark_BM (gc, onionstackinfo_bm[ix].ost_stkf, 0);
-    }
-  pthread_mutex_unlock (&onionstack_mtx_bm);
-}                               /* end gcmarkwebonion_BM */
-
-//// end of file web_ONIONBM.c 
