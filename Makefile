@@ -15,6 +15,8 @@ RM= rm -fv
 -include modulecflags.mk
 MARKDOWN_SOURCES= $(sort $(wildcard *.md))
 MODULES_SOURCES= $(sort $(wildcard modules/modbm*.c))
+BM_HEADERS= $(wildcard [a-z]*BM.h bismon.h)
+BM_CSOURCES= $(wildcard [a-z]*BM.c)
 
 
 .PHONY: all programs clean verbose indent count modules measure doc redump outdump checksum indentsinglemodule indenttempmodule 
@@ -148,21 +150,7 @@ indent: .indent.pro
           else echo '*indented' $$h ; fi \
 	done
 	@printf "\n *** C sources *** \n"
-	@for c in $(BM_COLDSOURCES); do \
-	  cp -a $$c $$c% ; \
-	  $(INDENT) $(INDENTFLAGS) $$c ; \
-	  $(INDENT) $(INDENTFLAGS) $$c ; \
-	  if cmp -s $$c $$c% ; then echo unchanged $$c ; mv $$c% $$c ; \
-	  else echo '*indented' $$c ; fi ; \
-	done
-	@for c in $(GTKBM_COLDSOURCES); do \
-	  cp -a $$c $$c% ; \
-	  $(INDENT) $(INDENTFLAGS) $$c ; \
-	  $(INDENT) $(INDENTFLAGS) $$c ; \
-	  if cmp -s $$c $$c% ; then echo unchanged $$c ; mv $$c% $$c ; \
-	  else echo '*indented' $$c ; fi ; \
-	done
-	@for c in $(ONIONBM_COLDSOURCES); do \
+	@for c in $(BM_CSOURCES); do \
 	  cp -a $$c $$c% ; \
 	  $(INDENT) $(INDENTFLAGS) $$c ; \
 	  $(INDENT) $(INDENTFLAGS) $$c ; \
