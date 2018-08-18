@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 832 objects
+// for 833 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -10450,6 +10450,29 @@ _50H7io7f948_10VeJz49q3W
 
 
 
+!(_65239uTOHoM_0gCnjTxaNEB
+!@ 1534617967.953
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debugprintf start webhandler testhello"
+!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
+ * _4RFtYFUdfau_7Vm5jZ4Wm8e (  * _3pQnBS9ZjkQ_0uGmqUUhAum (  " "  "/*"  "Debug"  " "  "Web"  
+  " "  "TestHello"  "*/"  "\n"  "DBGPRINTF_BM"  
+  "(\""  "start"  " "  "webhandler"  " "  
+  "testhello"  " " _5JuT4FgNFFh_7McrTYeT3jx  "=\","  " "  
+  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5JuT4FgNFFh_7McrTYeT3jx)  
+ "));"  "\n"))
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  " "  "/*"  "Debug"  " "  "Web" 
+  " "  "TestHello"  "*/"  "\n"  "DBGPRINTF_BM" 
+  "(\""  "start"  " "  "webhandler"  " " 
+  "testhello"  " " _5JuT4FgNFFh_7McrTYeT3jx  "=\","  " " 
+  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5JuT4FgNFFh_7McrTYeT3jx) 
+ "));"  "\n")
+!)_65239uTOHoM_0gCnjTxaNEB
+
+
+
 !(_67IapmpeTLU_8MQKtlK8iAD
 !|*
 !@ 1501766546.150
@@ -11263,10 +11286,12 @@ _7n2SLLuWOjH_4ArhFUjmckz
 
 
 !(_8prn9eFlYZD_6JJKKh2b8KW
-!@ 1534609769.558
+!@ 1534618043.979
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of webhandler testhello minifunc"
+!: _4rz1Bi4weGz_8Y03gU81cRL |=see|
+ [ _65239uTOHoM_0gCnjTxaNEB ]
 !# 5
 !& _4ZE2MUVTcHt_4lWsA1elKmS
 !& _3VVvcLyYqv8_9yci7GvqEEv
