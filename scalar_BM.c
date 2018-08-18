@@ -264,13 +264,12 @@ bytstring_BM (const stringval_tyBM * strv)
 const stringval_tyBM *
 flocaltimestring_BM (const char *fmt, time_t ti)
 {
-  const stringval_tyBM *res = NULL;
   char buf[80];
   struct tm mytm = { };
   memset (buf, 0, sizeof (buf));
   if (!fmt)
     return NULL;
-  localtime_r (&mytm, ti);
+  localtime_r (&ti, &mytm);
   strftime (buf, sizeof (buf), fmt, &mytm);
   buf[sizeof (buf) - 1] = (char) 0;
   return makestring_BM (buf);
@@ -282,13 +281,12 @@ fgmtimestring_BM (const char *fmt, time_t ti)
 {
   if (!fmt)
     return NULL;
-  const stringval_tyBM *res = NULL;
   char buf[80];
   struct tm mytm = { };
   memset (buf, 0, sizeof (buf));
   if (!fmt)
     return NULL;
-  gmtime_r (&mytm, ti);
+  gmtime_r (&ti, &mytm);
   strftime (buf, sizeof (buf), fmt, &mytm);
   buf[sizeof (buf) - 1] = (char) 0;
   return makestring_BM (buf);

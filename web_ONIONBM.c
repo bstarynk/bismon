@@ -335,7 +335,7 @@ fork_onion_process_at_slot_BM (int slotpos,
   if (!args)
     FATAL_BM ("calloc args %d failed - %m", cmdlen);
   for (int aix = 0; aix < cmdlen; aix++)
-    args[aix] = bytstring_BM (nodenthson_BM (_.cmdnodv, aix));
+    args[aix] = bytstring_BM (nodenthson_BM ((value_tyBM) _.cmdnodv, aix));
   if (pipe (pipfd))
     FATAL_BM ("pipe failed - %m");
   ASSERT_BM (pipfd[0] > 0 && pipfd[1] > 0);
@@ -716,7 +716,7 @@ custom_onion_handler_BM (void *clientdata,
     uint32_t cookrand1 = 0, cookrand2 = 0;
     int cookposoid = -1;
     rawid_tyBM cookoid = { 0, 0 };
-    char *endcookie = NULL;
+    const char *endcookie = NULL;
     int blencookie = bcookie ? strlen (bcookie) : 0;
     char oidbuf[32];
     if (blencookie > BISMONION_WEBSESS_SUFLEN / 2
@@ -748,7 +748,7 @@ custom_onion_handler_BM (void *clientdata,
       FATAL_BM
         ("the_web_sessions is broken, it has no dictionnary payload - for web BISMONCOOKIE-s");
     DBGPRINTF_BM ("custom_onion_handler the_web_sessions keys are %s",
-                  debug_outstr_value_BM (objdictnodeofkeyspayl_BM
+                  debug_outstr_value_BM ((value_tyBM) objdictnodeofkeyspayl_BM
                                          (BMP_the_web_sessions,
                                           BMP_the_web_sessions), CURFRAME_BM,
                                          0));
@@ -1335,7 +1335,6 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
     initialize_failurelockset_BM (&flockset, sizeof (flockset));
     LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureweb, failcod,
                              _.failreasonv);
-    curfailurehandle_BM = prevfailureh;
     if (failcod)
     lab_failureweb:
       {
@@ -1388,13 +1387,19 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         int reqlen = strlen (reqpath);
         // normal case, should find the web processing closure then apply it
         DBGPRINTF_BM
-          ("do_dynamic_onion normal  sessionob %s reqpath '%s' post %s wexnum %ld webexob %s",
+          ("do_dynamic_onion normal sessionob %s reqpath '%s' post %s wexnum %ld webexob %s",
            objectdbg_BM (_.sessionob), reqpath,
            postrequest ? "true" : "false", wexda->webx_num,
            objectdbg1_BM (_.webexob));
         _.webhandlerv =
           find_web_handler_BM (_.sessionob, BMP_webdict_root, req, 0, &off,
                                CURFRAME_BM);
+        DBGPRINTF_BM
+          ("do_dynamic_onion normal sessionob %s reqpath '%s'  post %s webhandler %s",
+           objectdbg_BM (_.sessionob), reqpath,
+           postrequest ? "true" : "false",
+           debug_outstr_value_BM (_.webhandlerv, CURFRAME_BM, 0));
+
         if (!_.webhandlerv)
           FAILURE_BM (__LINE__, k_no_value, CURFRAME_BM);
         else if (!isclosure_BM (_.webhandlerv))
@@ -1487,6 +1492,11 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                 wsess->websess_rand2, sessidbuf);
     }
   objunlock_BM (_.sessionob);
+  DBGPRINTF_BM
+    ("do_dynamic_onion sessionob %s webexob %s mimetype '%s' cookiebuf '%s' shouldputcookie %s expiretime %.2f",
+     objectdbg_BM (_.sessionob), objectdbg1_BM (_.webexob), mimetype,
+     cookiebuf, shouldputcookie ? "true" : "false",
+     wsess->websess_expiretime);
   if (mimetype[0])
     onion_response_set_header (resp, "Content-Type", mimetype);
   if (shouldputcookie)
@@ -1495,6 +1505,9 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   else
     onion_response_add_cookie (resp, "BISMONCOOKIE", "", (time_t) 0, "/",
                                NULL, 0);
+  DBGPRINTF_BM ("do_dynamic_onion sessionob %s webexob %s respcode %d len %d",
+                objectdbg_BM (_.sessionob), objectdbg1_BM (_.webexob),
+                respcode, len);
   onion_response_set_code (resp, respcode);
   onion_response_set_length (resp, len);
   onion_response_write (resp, bytes, len);
@@ -1555,12 +1568,12 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
   if (wordlen < (int) sizeof (wordbuf))
     {
       if (wordlen > 0)
-        strncpy (wordbuf, subpath, wordlen - 1);
+        strncpy (wordbuf, subpath, wordlen);
       word = wordbuf;
     }
   else
     {
-      word = strndup (subpath, wordlen - 1);
+      word = strndup (subpath, wordlen);
       if (!word)
         FATAL_BM ("strndup failure (wordlen=%d)", wordlen);
     }

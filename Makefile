@@ -128,6 +128,7 @@ clean:
 	[ -f build.ninja ] && $(NINJA) -t clean
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
 	$(RM) .ninja* *mkd
+	$(RM) build.ninja
 	$(RM) core* *.i *.ii *prof.out gmon.out
 	$(RM) *BM.const.h _bm_allconsts*.c
 	$(RM) $(patsubst %.thtml, _%.c, $(ONIONBM_WEBTEMPLATES))
