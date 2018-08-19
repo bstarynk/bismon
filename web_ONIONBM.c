@@ -78,6 +78,8 @@ struct onionstackinfo_stBM
 static struct onionstackinfo_stBM onionstackinfo_bm[MAXNBWORKJOBS_BM + 1];
 static thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
 
+// return a malloced percent-encoded string for all the query arguments
+static char *percent_encode_onion_query_args_BM (onion_request * req);
 
 // the lock above should be set when calling:
 static void
@@ -503,6 +505,64 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
 }                               /* end run_onionweb_BM */
 
 ////////////////////////////////////////////////////////////////
+static void dict_query_visitor_bm (void *data, const char *key,
+                                   const void *value, int flags);
+
+char *
+percent_encode_onion_query_args_BM (onion_request * req)
+{
+  char *res = NULL;
+  if (!req)
+    return NULL;
+  onion_dict *odic = onion_request_get_query_dict (req);
+  if (!odic)
+    return NULL;
+  size_t bufsiz = 128;
+  char *buf = calloc (bufsiz, 1);
+  if (!buf)
+    FATAL_BM ("percent_encode_onion_query_args_BM failed to calloc %zd",
+              bufsiz);
+  FILE *fil = open_memstream (&buf, &bufsiz);
+  if (!fil)
+    FATAL_BM ("percent_encode_onion_query_args_BM failed to open_memstream");
+  onion_dict_lock_read (odic);
+  onion_dict_preorder (odic, dict_query_visitor_bm, fil);
+  onion_dict_unlock (odic);
+  fflush (fil);
+  long ln = ftell (fil);
+  fclose (fil);
+  res = strndup (buf, ln);
+  free (buf), buf = NULL;
+  return res;
+}                               /* end percent_encode_onion_query_args_BM */
+
+void
+dict_query_visitor_bm (void *data, const char *key, const void *value,
+                       int flags)
+{
+  FILE *fil = (FILE *) data;
+  ASSERT_BM (flags == 0);
+  ASSERT_BM (fil != NULL);
+  if (ftell (fil) > 0)
+    fputc ('&', fil);
+  for (const char *pc = key; *pc; pc++)
+    {
+      if (isalnum (*pc) || *pc == '-' || *pc == '_' || *pc == '.'
+          || *pc == '~')
+        fputc (*pc, fil);
+      else
+        fprintf (fil, "%%%02x", ((unsigned) (*pc)) & 0xff);
+    }
+  fputc ('=', fil);
+  for (const char *pc = (const char *)value; *pc; pc++)
+    {
+      if (isalnum (*pc) || *pc == '-' || *pc == '_' || *pc == '.'
+          || *pc == '~')
+        fputc (*pc, fil);
+      else
+        fprintf (fil, "%%%02x", ((unsigned) (*pc)) & 0xff);
+    }
+}                               /* end dict_query_visitor_bm */
 
 ////////////////
 // GC support for websessiondata
@@ -843,9 +903,27 @@ custom_onion_handler_BM (void *clientdata,
           strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
           // send a fresh login form, using login_ONIONBM_thtml(onion_dict *context, onion_response *res)
           onion_dict *ctxdic = onion_dict_new ();
-          onion_dict_add (ctxdic, "origpath",
-                          (reqpath
-                           && reqpath[0]) ? reqpath : "/", OD_DUP_VALUE);
+          if (onion_request_get_query_dict (req) != NULL)
+            {
+              char *locstr = NULL;
+              char *querystr = percent_encode_onion_query_args_BM (req);
+              asprintf (&locstr, "%s?%s",
+                        (reqpath
+                         && reqpath[0]) ? reqpath : "/",
+                        querystr ? querystr : "");
+              free (querystr), querystr = NULL;
+              if (!locstr)
+                FATAL_BM ("custom_onion_handle asprintf querydict failed");
+              onion_dict_add (ctxdic, "origpath", locstr, OD_DUP_VALUE);
+              DBGPRINTF_BM ("custom_onion_handle locstr=%s", locstr);
+              free (locstr), locstr = NULL;
+            }
+          else
+            {
+              onion_dict_add (ctxdic, "origpath",
+                              (reqpath
+                               && reqpath[0]) ? reqpath : "/", OD_DUP_VALUE);
+            }
           onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
           onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
           onion_dict_add (ctxdic, "extra", "initial login", OD_DUP_VALUE);
@@ -873,7 +951,7 @@ custom_onion_handler_BM (void *clientdata,
           unregister_onion_thread_stack_BM (CURFRAME_BM);
           return result;
         }
-    }                           /* end if !_*.sessionob */
+    }                           /* end if !_.sessionob */
   else
     {
       // got sessionob, should process the request by making some webexchange
@@ -1297,9 +1375,10 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   unsigned reqmeth = (reqflags & OR_METHODS);
   ASSERT_BM (isobject_BM (sessionobarg));
   _.sessionob = sessionobarg;
-  DBGPRINTF_BM ("do_dynamic_onion start sessionob %s reqpath '%s' post %s",
-                objectdbg_BM (_.sessionob), reqpath,
-                postrequest ? "true" : "false");
+  DBGPRINTF_BM
+    ("do_dynamic_onion start sessionob %s reqpath '%s' fullreq '%s' post %s",
+     objectdbg_BM (_.sessionob), reqpath, onion_request_get_fullpath (req),
+     postrequest ? "true" : "false");
   _.webexob = makeobj_BM ();
   objputclass_BM (_.webexob, k_webexchange_object);
   struct webexchangedata_stBM *wexda =
