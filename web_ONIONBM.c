@@ -601,6 +601,12 @@ webexchangedatagcdestroy_BM (struct garbcoll_stBM *gc,
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((value_tyBM) wex) == typayl_webexchange_BM);
   ASSERT_BM (wex->webx_magic == BISMONION_WEBX_MAGIC);
+  if (wex->webx_requ && wex->webx_resp && wex->webx_ownobj)
+    {
+      DBGPRINTF_BM ("webexchangedatagcdestroy_BM for owner %s",
+                    objectdbg_BM (wex->webx_ownobj));
+      onion_response_flush (wex->webx_resp);
+    }
   if (wex->webx_ownobj)
     {
       objectval_tyBM *ownerob = wex->webx_ownobj;
@@ -1523,6 +1529,21 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
      objectdbg_BM (_.sessionob), objectdbg1_BM (_.webexob), len, bytes,
      bytes);
   onion_response_write (resp, bytes, len);
+  {
+    objlock_BM (_.webexob);
+    wexda = objgetwebexchangepayl_BM (_.webexob);
+    if (wexda && wexda->webx_ownobj == _.webexob)
+      {
+        DBGPRINTF_BM ("do_dynamic_onion clear payload wexda@%p of webexob %s",
+                      wexda, objectdbg_BM (_.webexob));
+        ASSERT_BM (wexda->webx_magic == BISMONION_WEBX_MAGIC);
+        wexda->webx_requ = NULL;
+        wexda->webx_resp = NULL;
+        wexda->webx_ownobj = NULL;
+        objclearpayload_BM (_.webexob);
+      }
+    objunlock_BM (_.webexob);
+  }
   DBGPRINTF_BM
     ("do_dynamic_onion sessionob %s webexob %s after onion_response_write reqpath '%s' post %s mimetype %s",
      objectdbg_BM (_.sessionob), objectdbg1_BM (_.webexob), reqpath,
