@@ -1582,7 +1582,21 @@ startguilog_BM (void)
           asprintf (&backupath, "%s~", gui_log_name_bm);
           if (!backupath)
             FATAL_BM ("asprintf fail for backupath %s (%m)", gui_log_name_bm);
-          (void) rename (gui_log_name_bm, backupath);
+          if (!access (backupath, R_OK))
+            {
+              char *backup2path = NULL;
+              asprintf (&backup2path, "%s~%%", gui_log_name_bm);
+              if (backup2path)
+                {
+                  if (!rename (backupath, backup2path))
+                    INFOPRINTF_BM ("logfile backup^2: %s -> %s", backupath,
+                                   backup2path);
+                }
+              free (backup2path);
+            }
+          if (!rename (gui_log_name_bm, backupath))
+            INFOPRINTF_BM ("logfile backup: %s -> %s", gui_log_name_bm,
+                           backupath);
           free (backupath), backupath = NULL;
         };
       gui_command_log_file_BM = fopen (gui_log_name_bm, "w");
