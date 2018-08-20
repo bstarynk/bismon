@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 836 objects
+// for 838 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2215,6 +2215,20 @@ _3qw9bnATIhq_8loBraLeXzQ
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
 _2W6NObLb2d4_6OfkP3dYlF3
 !)_8imWClcIFKt_6w2H2ouB4I6
+
+
+
+!(_2dMQFZCLvzX_28pgF8Y8V5S |=jsmodule_object|
+!~ name (~ jsmodule_object
+~)
+!@ 1534745186.309
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for Javascript modules"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+
+!)_2dMQFZCLvzX_28pgF8Y8V5S
 
 
 
@@ -6208,6 +6222,20 @@ _7T9OwSFlgov_0wVJaK1eZbn
 ~)
 
 !)_2HjhGk7Engb_58InnCq3TZ1
+
+
+
+!(_3pO69EI4P0q_7Dnb672CUkN |=plain_jsmodule_object|
+!~ name (~ plain_jsmodule_object
+~)
+!@ 1534745224.773
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "plain JavaScript module class"
+!~ class (~ |supercl jsmodule_object:| _2dMQFZCLvzX_28pgF8Y8V5S
+~)
+
+!)_3pO69EI4P0q_7Dnb672CUkN
 
 
 
