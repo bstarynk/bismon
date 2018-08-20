@@ -3390,12 +3390,12 @@ failure:
 
 
 ////////////////
-// emit_statement°basiclo_lockobj  _5XbwuHte8rl_1KjFdwMeolr
+// emit_block°basiclo_lockobj  _5XbwuHte8rl_1KjFdwMeolr
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr)    //emit_statement°basiclo_lockobj 
+ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr)    //emit_block°basiclo_lockobj 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // stmtob
  const value_tyBM arg2,         // modgenob
@@ -3432,7 +3432,7 @@ ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr)    //emit_statement°basiclo_lockob
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM) (Cause); goto failure; } while(0)
   DBGPRINTF_BM
-    ("emit_statement°basiclo_lockobj start stmtob=%s modgenob=%s routprepob=%s depth#%d",
+    ("emit_block°basiclo_lockobj start stmtob=%s modgenob=%s routprepob=%s depth#%d",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
      objectdbg2_BM (_.routprepob), depth);
   WEAKASSERT_BM (_.stmtob);
@@ -3479,7 +3479,7 @@ ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr)    //emit_statement°basiclo_lockob
       if (!_.compob)
         FAILHERE (makenode2_BM (k_curcomp, _.compv, taggedint_BM (cix)));
       DBGPRINTF_BM
-        ("emit_statement°basiclo_lockobj stmtob %s cix#%d compob %s",
+        ("emit_block°basiclo_lockobj stmtob %s cix#%d compob %s",
          objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob));
       objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
       objstrbuffernewlinepayl_BM (_.modgenob);
@@ -3488,7 +3488,7 @@ ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr)    //emit_statement°basiclo_lockob
           _.emitv = send3_BM (_.compob, k_emit_statement, CURFRAME_BM,  //
                               _.modgenob, _.routprepob, taggedint_BM (depth));
           DBGPRINTF_BM
-            ("emit_statement°basiclo_lockobj stmtob=%s compob=%s emit_statment -> %s",
+            ("emit_block°basiclo_lockobj stmtob=%s compob=%s emit_statment -> %s",
              objectdbg_BM (_.stmtob), objectdbg2_BM (_.compob),
              debug_outstr_value_BM (_.emitv, CURFRAME_BM, 0));
           if (!_.emitv)
@@ -3522,14 +3522,14 @@ ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr)    //emit_statement°basiclo_lockob
   LOCALRETURN_BM (_.stmtob);
 failure:
 #undef FAILHERE
-  DBGPRINTF_BM ("emit_statement°basiclo_lockobj failin %d stmtob %s routprep %s cause %s",     //
+  DBGPRINTF_BM ("emit_block°basiclo_lockobj failin %d stmtob %s routprep %s cause %s", //
                 failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode5_BM (k_emit_statement, _.stmtob, _.routprepob,
                                _.modgenob, taggedint_BM (depth), _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
-}                               /* end  emit_statement°basiclo_lockobj  _5XbwuHte8rl_1KjFdwMeolr */
+}                               /* end  emit_block°basiclo_lockobj  _5XbwuHte8rl_1KjFdwMeolr */
 
 
 ////////////////////////////////////////////////////////////////

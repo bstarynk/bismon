@@ -349,8 +349,9 @@ _9KIeH9wMRCV_12Gy2xILgpG }
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for lockobj blocks"
-!~ class (~ |supercl basiclo_block:| _4bYUiDmxrKK_6nPPlEl8y8x 
+!~ class (~ |supercl basiclo_block:| _4bYUiDmxrKK_6nPPlEl8y8x
 ~: _1ERH9PxNhPb_2o869yOMuH0  % _5XbwuHte8rl_1KjFdwMeolr () 
+~: _6mk5eos8067_1odgCpnWMOj  % _5XbwuHte8rl_1KjFdwMeolr () 
 ~: _6DdZwyaWLyK_7tS2BmECOJ0  % _8fKRsxM1q9w_3hFovzBicI7 ()
 ~)
 
@@ -1618,8 +1619,6 @@ _6YnYKKsHo3f_9nIEOZMp744
 !& _2bZ4BfCci5V_3WTzG7V25y4
 !& _0cUdonky1bM_4IVhwlVRBMk
 !& _3vI0Qc3FHQG_1g4fmHYkxSA
- // emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
-
 !)_3BFt4NfJmZC_7iYi2dwM38B
 
 
