@@ -1281,12 +1281,13 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
     objunlock_BM (BMP_the_web_sessions);
   }
   bool addedcookie =            //
-    onion_response_add_cookie (resp, "BISMONCOOKIE",
-                               bytstring_BM (_.cookiestrv),
-                               (time_t) wsess->websess_expiretime,
-                               "/",
-                               NULL,    /// domain
-                               0);
+    onion_response_add_cookie   //
+    (resp, "BISMONCOOKIE",
+     bytstring_BM (_.cookiestrv),
+     (time_t) (wsess->websess_expiretime - clocktime_BM (CLOCK_REALTIME)),
+     "/",
+     NULL,                      /// domain
+     0);
   onion_response_set_code (resp, HTTP_REDIRECT);
   onion_response_set_header (resp, "Location", location);
   DBGPRINTF_BM ("do_login_redirect_onion_BM sessionob %s addedcookie %s"
@@ -1589,11 +1590,12 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   if (mimetype[0])
     onion_response_set_header (resp, "Content-Type", mimetype);
   if (shouldputcookie)
-    onion_response_add_cookie (resp, "BISMONCOOKIE", cookiebuf, (time_t) wsess->websess_expiretime, "/", NULL,  /// domain
-                               0);
+    onion_response_add_cookie   //
+      (resp, "BISMONCOOKIE", cookiebuf, (time_t) (wsess->websess_expiretime - clocktime_BM (CLOCK_REALTIME)), "/", NULL,        /// domain
+       0);
   else
-    onion_response_add_cookie (resp, "BISMONCOOKIE", "", (time_t) 0, "/",
-                               NULL, 0);
+    onion_response_add_cookie   //
+      (resp, "BISMONCOOKIE", "", (time_t) 0, "/", NULL, 0);
   DBGPRINTF_BM ("do_dynamic_onion sessionob %s webexob %s respcode %d len %d",
                 objectdbg_BM (_.sessionob), objectdbg1_BM (_.webexob),
                 respcode, len);

@@ -1269,7 +1269,7 @@ void
 do_main_defer_apply3_BM (value_tyBM closv, value_tyBM arg1, value_tyBM arg2,
                          value_tyBM arg3, struct stackframe_stBM *stkf);
 
-// defer a message send, running in the  main thread
+// defer a message send, running in the main thread
 void
 do_main_defer_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
                         value_tyBM arg1, value_tyBM arg2, value_tyBM arg3,
