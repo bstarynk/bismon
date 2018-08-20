@@ -997,32 +997,6 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                       (_.o_5V0w37YnN4F_8dZ6I79V60O));
     }                           // end cexpansion _8owvpghf95c_70WEDPAsJGV - objputattr  
 
-
-
-  startblock__2LH1Fkrvj4R_6UFpkwBKE1o:__attribute__ ((unused));
-    {                           /* +block _2LH1Fkrvj4R_6UFpkwBKE1o */
-
-    startblock__2Qn5kBmxRE7_0Y4y7ZspJpb:__attribute__ ((unused));
-      {                         /* +block _2Qn5kBmxRE7_0Y4y7ZspJpb */
-
-        {                       // run _006PuHFScXx_7MV57M5vJeh   
-/*dbgprintf after lock o_jsprepmod*/
-          DBGPRINTF_BM
-            ("jsmodule compiler: after lock o_jsmodule=%s o_jsprepmod=%s",
-             objectdbg_BM (_.o_5V0w37YnN4F_8dZ6I79V60O),
-             objectdbg1_BM (_.o_4JKd986pvM4_6yBzeeI40vW));
-        }                       // end run _006PuHFScXx_7MV57M5vJeh   
-
-/* !endingblock _2Qn5kBmxRE7_0Y4y7ZspJpb */
-        goto endblock__2Qn5kBmxRE7_0Y4y7ZspJpb;
-      endblock__2Qn5kBmxRE7_0Y4y7ZspJpb:;
-      }
-  /*-block _2Qn5kBmxRE7_0Y4y7ZspJpb */
-/* !endingblock _2LH1Fkrvj4R_6UFpkwBKE1o */
-      goto endblock__2LH1Fkrvj4R_6UFpkwBKE1o;
-    endblock__2LH1Fkrvj4R_6UFpkwBKE1o:;
-    }
-  /*-block _2LH1Fkrvj4R_6UFpkwBKE1o */
 /* !endingblock _7pji8vKR2XX_3psoWkfPtL2 */
     goto endblock__7pji8vKR2XX_3psoWkfPtL2;
   endblock__7pji8vKR2XX_3psoWkfPtL2:;
