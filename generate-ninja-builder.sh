@@ -88,7 +88,7 @@ echo '  description = BMALLCONSTSC $out'
 echo
 echo '# link the entire bismon program'
 echo 'rule LINKALLBISMON_r'
-echo '  command = $cxx  $cxxwarnflags  $incflags $optimflags $in $bm_ldflags $bm_libs -o $out && rm __timestamp.c'
+echo '  command = $cxx  $cxxwarnflags  $incflags $optimflags $in $bm_ldflags $bm_libs -o $out && mv -vf __timestamp.c __timestamp.c~ && rm __timestamp.o'
 echo '  description = LINKALLBISMON $out'
 echo
 echo
