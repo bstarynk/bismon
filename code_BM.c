@@ -2283,6 +2283,7 @@ ROUTINEOBJNAME_BM (_9QfwVBwmu2L_4mgyQ8AEwdt)    //lockobj:readmacro
     {
       _.resob = makeobj_BM ();
       objputclass_BM (_.resob, _.classob);
+      objputspacenum_BM (_.resob, GlobalSp_BM);
     }
   WEAKASSERT_BM (_.resob != NULL);
   objlock_BM (_.resob);
