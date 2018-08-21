@@ -2676,15 +2676,18 @@ ROUTINEOBJNAME_BM (_2oeeFe9Sdzx_8NaM3HUadSP)    // miniscan_stmt°basiclo_fail
  const value_tyBM fromarg,      //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
+  objectval_tyBM *k_fail = BMK_085lT8c13Ik_11pcWJfcLeM;
   objectval_tyBM *k_origin = BMK_1xhcI0ZnQ6f_5xOLATXqawx;
   objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2oeeFe9Sdzx_8NaM3HUadSP,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * fromob;       //
+                 objectval_tyBM * failtypob;
                  value_tyBM resultv;    //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
+                 value_tyBM failexpv;   //
     );
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
@@ -2699,7 +2702,15 @@ ROUTINEOBJNAME_BM (_2oeeFe9Sdzx_8NaM3HUadSP)    // miniscan_stmt°basiclo_fail
   WEAKASSERT_BM (_.stmtob);
   if (!_.routprepob)
     FAILHERE (NULL);
-#warning unimplemented  miniscan_stmt°basiclo_fail _2oeeFe9Sdzx_8NaM3HUadSP routine
+  _.failexpv = objgetattr_BM (_.stmtob, k_fail);
+  if (!_.failexpv)
+    FAILHERE (k_fail);
+  _.failtypob =
+    miniscan_expr_BM (_.failexpv, _.routprepob, depth + 1, _.stmtob,
+                      CURFRAME_BM);
+  if (!miniscan_compatype_BM (_.failtypob, BMP_object, CURFRAME_BM))
+    FAILHERE (makenode2_BM (k_fail, _.failexpv, _.failtypob));
+#warning unusednimplemented  miniscan_stmt°basiclo_fail _2oeeFe9Sdzx_8NaM3HUadSP routine
   WEAKASSERT_BM (false
                  &&
                  "unimplemented miniscan_stmt°basiclo_fail  _2oeeFe9Sdzx_8NaM3HUadSP routine");

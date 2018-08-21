@@ -2257,13 +2257,14 @@ ROUTINEOBJNAME_BM (_2NRUP36YT80_0SdozCZxyvv)    // fail:readmacro
       objputspacenum_BM (_.resob, GlobalSp_BM);
     };
 
-  if (startix + 1 >= nodwidth)
+  if (startix + 1 > nodwidth)
     {
       if (pars)
         parsererrorprintf_BM (pars,
                               CURFRAME_BM, lineno,
                               colpos,
-                              "missing failure expression for fail readmacro");
+                              "missing failure expression for fail readmacro (startix=%u nodwidth=%u)",
+                              startix, nodwidth);
       LOCALRETURN_BM (NULL);
     }
   _.failexpv = nodenthson_BM ((const value_tyBM) _.rnodv, startix);
@@ -2271,7 +2272,8 @@ ROUTINEOBJNAME_BM (_2NRUP36YT80_0SdozCZxyvv)    // fail:readmacro
     parsererrorprintf_BM (pars,
                           CURFRAME_BM, lineno,
                           colpos,
-                          "fail readmacro should have one failure-expression argument");
+                          "fail readmacro should have one failure-expression argument (startix=%u nodwidth=%u)",
+                          startix, nodwidth);
 
   if (!_.classob)
     _.classob = k_basiclo_fail;
