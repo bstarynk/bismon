@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 858 objects
+// for 862 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -293,6 +293,20 @@ _0vgCFjXblkx_4zCMhMAWjVK
 ~)
 
 !)_9pCSj6h5qCP_1OZyKlhcrSY
+
+
+
+!(_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
+!~ name (~ basiclo_fail
+~)
+!@ 1534855944.311
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for fail statements"
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+~)
+
+!)_4UklN1FKPMy_43NQnifo7Mn
 
 
 
@@ -1453,6 +1467,19 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 
 
+!(_085lT8c13Ik_11pcWJfcLeM |=fail|
+!~ name (~ fail
+~)
+!@ 1534855387.499
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "^fail(failure) #for failure, collected in the module\'s failure_set"
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _2NRUP36YT80_0SdozCZxyvv ()
+!)_085lT8c13Ik_11pcWJfcLeM
+
+
+
 !(_4GumRf8w4jT_6lfDDJ5Y3TH |=failure_bad_attribute|
 !~ name (~ failure_bad_attribute
 ~)
@@ -1506,6 +1533,17 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !@ 1519395689.350
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_6yWldsq3Rmk_01WqTfwSIDV
+
+
+
+!(_9QCfVAnPhdt_5NVyy8KOaLP |=failure_set|
+!~ name (~ failure_set
+~)
+!@ 1534855323.745
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in a module, gives the set of fail statements"
+!)_9QCfVAnPhdt_5NVyy8KOaLP
 
 
 
@@ -9292,6 +9330,16 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 !# 1
 !& _1i7rGV4664X_2DN7hNBk5lK
 !)_2Mimy9ZR42x_6sB3bNTWVnz
+
+
+
+!(_2NRUP36YT80_0SdozCZxyvv
+!|*
+!@ 1534855387.499
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "fail:readmacro"
+!)_2NRUP36YT80_0SdozCZxyvv
 
 
 
