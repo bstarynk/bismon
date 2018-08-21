@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 863 objects
+// for 864 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -304,6 +304,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for fail statements"
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
+~: _1ERH9PxNhPb_2o869yOMuH0  % _8XIt55nuPul_3MZfto9hmgy () 
 ~: _6DdZwyaWLyK_7tS2BmECOJ0  % _2oeeFe9Sdzx_8NaM3HUadSP ()
 ~)
 
@@ -12018,6 +12019,16 @@ _7daWyW7jPyL_0EvyGgObjJm
 !: _2DH0ucElTgh_62vxjxLcfev |=return|
 _3d9rq9TD6PH_6qUv4Hao767
 !)_8XEvCfxyr9e_5R3bP17xFf5
+
+
+
+!(_8XIt55nuPul_3MZfto9hmgy
+!|*
+!@ 1534859787.374
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit_statement\u00b0basiclo_fail in emitcode_BM.c"
+!)_8XIt55nuPul_3MZfto9hmgy
 
 
 

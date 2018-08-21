@@ -3388,6 +3388,49 @@ failure:
 }                               /* end emit_statement°basiclo_objswitch  _9d7mulcEVXf_7ZymszyOWDY */
 
 
+// emit_statement°basiclo_fail _8XIt55nuPul_3MZfto9hmgy
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_8XIt55nuPul_3MZfto9hmgy);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_8XIt55nuPul_3MZfto9hmgy)    // emit_statement°basiclo_fail
+(struct stackframe_stBM * stkf, //
+ const value_tyBM stmtarg,      //
+ const value_tyBM modgenarg,    //
+ const value_tyBM routpreparg,  //
+ const value_tyBM deptharg,     //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_8XIt55nuPul_3MZfto9hmgy,
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 value_tyBM resultv;    //
+                 value_tyBM errorv;     //
+                 value_tyBM causev;     //
+    );
+  _.stmtob = objectcast_BM (stmtarg);
+  _.modgenob = objectcast_BM (modgenarg);
+  _.routprepob = objectcast_BM (routpreparg);
+  int depth = getint_BM (deptharg);
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM) (Cause); goto failure; } while(0)
+  DBGPRINTF_BM
+    ("emit_statement°basiclo_fail start stmtob=%s modgenob=%s routprepob=%s depth#%d",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.routprepob), depth);
+  WEAKASSERT_BM (_.stmtob);
+  WEAKASSERT_BM (_.modgenob);
+  WEAKASSERT_BM (_.routprepob);
+  WEAKASSERT_BM (istaggedint_BM (deptharg));
+#warning unimplemented emit_statement°basiclo_fail _8XIt55nuPul_3MZfto9hmgy routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented emit_statement°basiclo_fail  _8XIt55nuPul_3MZfto9hmgy routine");
+  LOCALRETURN_BM (_.resultv);
+}                               /* end emit_statement°basiclo_fail _8XIt55nuPul_3MZfto9hmgy */
+
 
 ////////////////
 // emit_block°basiclo_lockobj  _5XbwuHte8rl_1KjFdwMeolr
