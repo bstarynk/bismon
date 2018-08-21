@@ -2176,7 +2176,7 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    //
     }
   objresetcomps_BM (_.resobj, nodwidth - startix);
   objresetattrs_BM (_.resobj, 5);
-  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  //objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   if (_.curlab)
     objputattr_BM (_.resobj, k_label, (const value_tyBM) _.curlab);
   for (unsigned ix = startix; ix < nodwidth; ix++)
@@ -2388,7 +2388,7 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
     }
   objresetcomps_BM (_.resobj, 2);
   objresetattrs_BM (_.resobj, 5);
-  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  //objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   objappendcomp_BM (_.resobj, _.destv);
   objappendcomp_BM (_.resobj, _.srcv);
   objputclass_BM (_.resobj, (objectval_tyBM *) k_basiclo_assign);
@@ -2504,7 +2504,7 @@ ROUTINEOBJNAME_BM (_0XbMOJqLLPZ_1t2wg2TwPRA)    // readmacro#cond
     }
   objresetcomps_BM (_.resobj, nodwidth - startix);
   objresetattrs_BM (_.resobj, 5);
-  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  //objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   for (unsigned ix = startix; ix < nodwidth; ix++)
     {
       _.curobj =
@@ -2582,7 +2582,7 @@ ROUTINEOBJNAME_BM (_5ZT4G2KhMyi_4mC2iDVPWQP)    //readmacro#wrong
     objputclass_BM (_.resob, k_basiclo_wrong);
   objresetattrs_BM (_.resob, 5);
   objresetcomps_BM (_.resob, nodwidth - startix);
-  objputattr_BM (_.resob, BMP_origin, (const value_tyBM) _.nodev);
+  //objputattr_BM (_.resob, BMP_origin, (const value_tyBM) _.nodev);
   for (unsigned ix = startix; ix < nodwidth; ix++)
     objappendcomp_BM (_.resob, nodenthson_BM (_.nodev, ix));
   objunlock_BM (_.resob);
@@ -2680,7 +2680,7 @@ ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    // readmacro#intswitch
   objresetcomps_BM (_.resobj, nodwidth - startix);
   objresetattrs_BM (_.resobj, 5);
   objputclass_BM (_.resobj, _.classob);
-  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  //objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   objputattr_BM (_.resobj, k_switch,
                  nodenthson_BM ((const value_tyBM) _.rnodv, startix));
   for (unsigned ix = startix + 1; ix < nodwidth; ix++)
@@ -2787,7 +2787,7 @@ ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf)    // objswitch:readmacro
   objresetcomps_BM (_.resobj, nodwidth - startix);
   objresetattrs_BM (_.resobj, 5);
   objputclass_BM (_.resobj, _.classob);
-  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  //objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   objputattr_BM (_.resobj, k_switch,
                  (value_tyBM) nodenthson_BM ((value_tyBM) _.rnodv, startix));
   for (unsigned ix = startix + 1; ix < nodwidth; ix++)
@@ -2905,7 +2905,7 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    // loop:readmacro
     }
   objresetcomps_BM (_.resobj, nodwidth - startix);
   objresetattrs_BM (_.resobj, 5);
-  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  //objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   if (_.curlab)
     objputattr_BM (_.resobj, k_label, (const value_tyBM) _.curlab);
   for (unsigned ix = startix; ix < nodwidth; ix++)
@@ -3010,7 +3010,7 @@ ROUTINEOBJNAME_BM (_63Q0R4r8xa7_7XOAxxP5pi2)    // exit:readmacro
     }
   objresetcomps_BM (_.resobj, 2);
   objresetattrs_BM (_.resobj, 5);
-  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  //objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   if (_.exitv)
     objputattr_BM (_.resobj, k_exit, (const value_tyBM) _.exitv);
   if (!_.resclass)
@@ -3140,7 +3140,7 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
     }
   objresetcomps_BM (_.resobj, nodwidth - startix);
   objresetattrs_BM (_.resobj, 5);
-  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  //objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   if (_.curlab)
     objputattr_BM (_.resobj, k_label, (const value_tyBM) _.curlab);
   objputattr_BM (_.resobj, k_while, (const value_tyBM) _.whilexpv);
@@ -3235,7 +3235,7 @@ ROUTINEOBJNAME_BM (_5788HpgOtVV_4zwZIr0jgmq)    //
     };
   objresetcomps_BM (_.resobj, 1);
   objresetattrs_BM (_.resobj, 5);
-  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  //objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   if (_.resexpv)
     objputattr_BM (_.resobj, k_return, (const value_tyBM) _.resexpv);
   objputclass_BM (_.resobj, _.resclass);
@@ -3326,7 +3326,7 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
     };
   objresetcomps_BM (_.resobj, 1);
   objresetattrs_BM (_.resobj, 5);
-  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  //objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   if (_.runexpv)
     objputattr_BM (_.resobj, k_run, (const value_tyBM) _.runexpv);
   objputclass_BM (_.resobj, _.resclass);
@@ -3489,7 +3489,7 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    // cexpansion#readmacro
     };
   objresetcomps_BM (_.resobj, 0);
   objresetattrs_BM (_.resobj, 5);
-  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  //objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   objputattr_BM (_.resobj, k_expander, cexpandob);
   DBGPRINTF_BM ("cexpansion#readmacro cexpand %s k_expander= %s; resobj= %s; rnod= %s", objectdbg_BM (cexpandob), objectdbg1_BM (k_expander), objectdbg2_BM (_.resobj), //
                 debug_outstr_value_BM ((value_tyBM) _.rnodv, CURFRAME_BM, 0));
@@ -3648,7 +3648,7 @@ ROUTINEOBJNAME_BM (_6gwxdBT3Mhv_8Gtgu8feoy3)    //
     };
   objresetcomps_BM (_.resobj, nodwidth - startix);
   objresetattrs_BM (_.resobj, 5);
-  objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
+  //objputattr_BM (_.resobj, BMP_origin, (const value_tyBM) _.rnodv);
   if (_.testexpv)
     objputattr_BM (_.resobj, k_test, (const value_tyBM) _.testexpv);
   for (unsigned ix = startix + 1; ix < nodwidth; ix++)
