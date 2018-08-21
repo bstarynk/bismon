@@ -266,7 +266,7 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    // browse_value°object
     {
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
                                         objnam, -1, objname_brotag_BM, NULL);
-      if (curdepth < 2)
+      if (curdepth <= 2)
         {
           gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
                                             " |=", -1, objrefcomm_brotag_BM,
@@ -283,7 +283,7 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    // browse_value°object
     {                           // anonymous
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
                                         idbuf, -1, objid_brotag_BM, NULL);
-      if (isstring_BM (_.commentv) && curdepth < 2)
+      if (isstring_BM (_.commentv) && curdepth <= 2)
         {
           const char *commstr = bytstring_BM (_.commentv);
           int commsiz = lenstring_BM (_.commentv);
