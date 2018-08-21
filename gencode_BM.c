@@ -2659,6 +2659,61 @@ failure:
 }                               /* end miniscan_stmt°basiclo_cexpansion  _0Qplg2cn9xR_5pfROAJjrXZ */
 
 
+
+////////////////
+
+
+// miniscan_stmt°basiclo_fail _2oeeFe9Sdzx_8NaM3HUadSP
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_2oeeFe9Sdzx_8NaM3HUadSP);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_2oeeFe9Sdzx_8NaM3HUadSP)    // miniscan_stmt°basiclo_fail 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM recvarg,      //
+ const value_tyBM routpreparg,  //
+ const value_tyBM deptharg,     //
+ const value_tyBM fromarg,      //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  objectval_tyBM *k_origin = BMK_1xhcI0ZnQ6f_5xOLATXqawx;
+  objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_2oeeFe9Sdzx_8NaM3HUadSP,
+                 objectval_tyBM * stmtob;       //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * fromob;       //
+                 value_tyBM resultv;    //
+                 value_tyBM causev;     //
+                 value_tyBM errorv;     //
+    );
+  int failin = -1;
+#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
+  _.stmtob = objectcast_BM (recvarg);
+  _.routprepob = objectcast_BM (routpreparg);
+  int depth = getint_BM (deptharg);
+  _.fromob = objectcast_BM (fromarg);
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_fail start stmtob %s routprepob %s depth %d fromob %s", objectdbg1_BM (_.stmtob), objectdbg2_BM (_.routprepob), depth,  //
+                objectdbg3_BM (_.fromob));
+  if (!_.fromob)
+    FAILHERE (k_origin);
+  WEAKASSERT_BM (_.stmtob);
+  if (!_.routprepob)
+    FAILHERE (NULL);
+#warning unimplemented  miniscan_stmt°basiclo_fail _2oeeFe9Sdzx_8NaM3HUadSP routine
+  WEAKASSERT_BM (false
+                 &&
+                 "unimplemented miniscan_stmt°basiclo_fail  _2oeeFe9Sdzx_8NaM3HUadSP routine");
+  LOCALRETURN_BM (_.stmtob);
+failure:
+#undef FAILHERE
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_fail failin %d stmtob %s, routprepob %s, fromob %s, cause %s", failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), objectdbg2_BM (_.fromob), //
+                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  _.errorv =
+    (value_tyBM) makenode4_BM (k_miniscan_stmt, _.stmtob, _.routprepob,
+                               _.fromob, _.causev);
+  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+}                               /* end  miniscan_stmt°basiclo_fail  _2oeeFe9Sdzx_8NaM3HUadSP */
+
 ////////////////////////////////////////////////////////////////
 
 
@@ -4450,3 +4505,5 @@ failure:
                                _.routprepob, _.fromob, _.causev);
   FAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniscan_node_conn#make_tree  _8ru2DB8XTmJ_7h8mj1NTpKM */
+
+///// end of file gencode_BM.c

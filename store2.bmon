@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 862 objects
+// for 863 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -303,7 +303,8 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for fail statements"
-!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _2oeeFe9Sdzx_8NaM3HUadSP ()
 ~)
 
 !)_4UklN1FKPMy_43NQnifo7Mn
@@ -9176,6 +9177,16 @@ _6iYgjRt0FIx_4ax63M6n2U6
 !@ 1520842008.670
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !)_2mWbSPeD8lw_8ea0EhwQUAa
+
+
+
+!(_2oeeFe9Sdzx_8NaM3HUadSP
+!|*
+!@ 1534858920.756
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "miniscan_stmt\u00b0basiclo_fail in gencode_BM.c"
+!)_2oeeFe9Sdzx_8NaM3HUadSP
 
 
 
