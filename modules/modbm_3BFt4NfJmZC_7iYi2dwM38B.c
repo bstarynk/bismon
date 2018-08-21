@@ -943,7 +943,8 @@ value_tyBM crout_3vI0Qc3FHQG_1g4fmHYkxSA_BM     //#7
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 4 local values:
+    /// 5 local values:
+    objectval_tyBM *o_2TaoEvH5OQU_8nKYBgAvkmW;  // o_jscurcomp
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ;       // v_r
     objectval_tyBM *o_41F1rKwGbaA_30OJWKsqNWy;  // o_strbuf
     objectval_tyBM *o_4JKd986pvM4_6yBzeeI40vW;  // o_jsprepmod
@@ -955,7 +956,7 @@ value_tyBM crout_3vI0Qc3FHQG_1g4fmHYkxSA_BM     //#7
   memset (&_, 0, sizeof (struct frame_3vI0Qc3FHQG_1g4fmHYkxSA_BMst));
   _.stkfram_head.htyp = typayl_StackFrame_BM;
   _.stkfram_head.hgc = 0;
-  _.stkfram_head.rlen = 4;
+  _.stkfram_head.rlen = 5;
   _.stkfram_descr =
     constob_3BFt4NfJmZC_7iYi2dwM38B_BM[11] /*|_3vI0Qc3FHQG_1g4fmHYkxSA */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
@@ -1029,6 +1030,32 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                      objectdbg_BM (_.o_5V0w37YnN4F_8dZ6I79V60O),
                      objectdbg1_BM (_.o_4JKd986pvM4_6yBzeeI40vW));
                 }               // end run _8g9Ms38jPls_58zTM8Ayy1u 
+
+                _.n_833x2jYqhZh_8vDIuJhwz1k =   //assign _0qK1TfyxaEU_0sLvlnHs4UT  
+/*objnbcomps:*/ objnbcomps_BM (_.o_5V0w37YnN4F_8dZ6I79V60O);
+
+                _.n_2W7Ckt2WxEM_4NVYgEWE73B =   //assign _4opDguH6Knp_1NiX0hlpo7s  
+                  0;
+
+
+//// +while _839zJGrmf26_2hQq2r1ehkR 
+              startblock__839zJGrmf26_2hQq2r1ehkR:     /*+!while */
+                ;
+                {               /* +while _839zJGrmf26_2hQq2r1ehkR */
+                  if (!( /*while _839zJGrmf26_2hQq2r1ehkR cond: */ ( /*less_int: */ (_.n_2W7Ckt2WxEM_4NVYgEWE73B) < (_.n_833x2jYqhZh_8vDIuJhwz1k))))    //: testwhile _839zJGrmf26_2hQq2r1ehkR failing   
+                    goto endblock__839zJGrmf26_2hQq2r1ehkR;     //failwhile   
+// while _839zJGrmf26_2hQq2r1ehkR body:   
+// while _839zJGrmf26_2hQq2r1ehkR comp#0:  
+                  _.o_2TaoEvH5OQU_8nKYBgAvkmW = //assign _0pkGibtvusS_9tl9TNLRL7F   
+                    /*val_to_object: */
+                    objectcast_BM (     /*objgetcomp: */
+                                    objgetcomp_BM ((_.o_5V0w37YnN4F_8dZ6I79V60O), (_.n_2W7Ckt2WxEM_4NVYgEWE73B)));
+
+                  goto startblock__839zJGrmf26_2hQq2r1ehkR;     // repeatwhile  
+                endblock__839zJGrmf26_2hQq2r1ehkR:     /*endingwhile */
+                  ;
+                }
+  /*-while _839zJGrmf26_2hQq2r1ehkR */
 
                 objunlock_BM (locked_3bsFDNiUKNe_9NjWM3BxFSt),
                   locked_3bsFDNiUKNe_9NjWM3BxFSt = NULL;
