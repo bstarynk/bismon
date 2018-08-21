@@ -1149,7 +1149,16 @@ ROUTINEOBJNAME_BM (_8fKRsxM1q9w_3hFovzBicI7)    // miniscan_stmt°basiclo_lockob
       objputclass_BM (_.lockhsetob, k_hset_object);
       objputattr_BM (_.lockhsetob, k_in, _.routprepob);
       objputattr_BM (_.routprepob, k_locking, _.lockhsetob);
+      DBGPRINTF_BM
+        ("miniscan_stmt°basiclo_lockobj stmtob=%s put lockhsetob=%s "
+         " in routprepob=%s",
+         objectdbg_BM (_.stmtob), objectdbg1_BM (_.lockhsetob),
+         objectdbg2_BM (_.routprepob));
     }
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_lockobj stmtob=%s lockhsetob=%s "
+     " in routprepob=%s", objectdbg_BM (_.stmtob),
+     objectdbg1_BM (_.lockhsetob), objectdbg2_BM (_.routprepob));
   objlock_BM (_.stmtob);
   _.lobexpv = objgetattr_BM (_.stmtob, k_lockobj);
   _.typob =

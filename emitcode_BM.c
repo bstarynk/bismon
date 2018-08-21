@@ -3513,7 +3513,7 @@ ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr)    //emit_block°basiclo_lockobj
   objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
   objstrbuffernewlinepayl_BM (_.modgenob);
   objstrbufferprintfpayl_BM (_.modgenob,
-                             "objunlock (locked%s), locked%s = NULL;",
+                             "objunlock_BM (locked%s), locked%s = NULL;",
                              stmtidbuf, stmtidbuf);
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
   objstrbuffernewlinepayl_BM (_.modgenob);
