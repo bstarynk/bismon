@@ -20,6 +20,9 @@ const char modulmd5chksum_9oXtCgAbkqv_4y1xhhF5Nhz_BM[] = BISMON_MOMD5;
 
 extern const char *const routid_9oXtCgAbkqv_4y1xhhF5Nhz_BM[2 + 1];
 
+
+// no failure
+
 extern objrout_sigBM crout_43Y25VLmh6s_3JRpERevcR4_BM;  //#0 successor_test_minifunc
 
 extern objrout_sigBM crout_9O2lgu1TweO_0mVlpTwrBG1_BM;  //#1 second_test_minifunc
