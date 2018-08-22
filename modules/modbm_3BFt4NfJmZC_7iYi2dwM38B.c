@@ -1095,7 +1095,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                               (((value_tyBM) makenode3_BM (
                                                                             /*make_node conn: */
                                                                             ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[17] /*!failure_bad_class */ )),
-                                                                            (_.o_2TaoEvH5OQU_8nKYBgAvkmW), ( /*taggedint: */ taggedint_BM (_.n_2W7Ckt2WxEM_4NVYgEWE73B))))),
+                                                                            (_.o_2TaoEvH5OQU_8nKYBgAvkmW), ( /*taggedint: */ taggedint_BM (_.n_2W7Ckt2WxEM_4NVYgEWE73B)), NULL))),
                                               /*failplace: */
                                               ( /*modconst: */
                                                 (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[15]

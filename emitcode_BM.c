@@ -3427,15 +3427,11 @@ ROUTINEOBJNAME_BM (_8XIt55nuPul_3MZfto9hmgy)    // emit_statement°basiclo_fail
                  objectval_tyBM * routprepob;   //
                  value_tyBM failexpv;   //
                  value_tyBM resultv;    //
-                 value_tyBM errorv;     //
-                 value_tyBM causev;     //
     );
   _.stmtob = objectcast_BM (stmtarg);
   _.modgenob = objectcast_BM (modgenarg);
   _.routprepob = objectcast_BM (routpreparg);
   int depth = getint_BM (deptharg);
-  int failin = -1;
-#define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM) (Cause); goto failure; } while(0)
   DBGPRINTF_BM
     ("emit_statement°basiclo_fail start stmtob=%s modgenob=%s routprepob=%s depth#%d",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
@@ -3747,11 +3743,26 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                                          CURFRAME_BM, 0));
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.modgenob));
   if (modulistemporary)
-    objstrbufferprintfpayl_BM (_.modgenob,
-                               "// generated temporary module %s\n"
-                               "// in file "
-                               TEMPMODULEPREFIX_BM "%s.c -- DONT EDIT\n",
-                               objectdbg_BM (_.modulob), modulidbuf);
+    {
+      char nowbuf[64];
+      struct tm nowtm = { };
+      time_t nowt = time (NULL);
+      localtime_r (&nowtm, &nowt);
+      strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "// generated temporary module %s at %s pid #%d on %s\n"
+                                 "// in file "
+                                 TEMPMODULEPREFIX_BM "%s.c -- DONT EDIT\n",
+                                 objectdbg_BM (_.modulob), nowbuf,
+                                 (int) getpid (), myhostname_BM, modulidbuf);
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "// generating bismon checksum %s directory %s\n",
+                                 bismon_checksum, bismon_directory);
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "// generating bismon timestamp %s lastgitcommit %s\n",
+                                 bismon_timestamp, bismon_lastgitcommit);
+      objstrbuffernewlinepayl_BM (_.modgenob);
+    }
   else
     objstrbufferprintfpayl_BM (_.modgenob,
                                "// generated persistent module %s\n"
