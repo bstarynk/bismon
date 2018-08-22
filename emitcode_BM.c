@@ -3749,7 +3749,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
       time_t tmpnowt = 0;
       time (&tmpnowt);
       ASSERT_BM (tmpnowt > (time_t) 1000000000);
-      localtime_r (&tmpnowtm, &tmpnowt);
+      localtime_r ( &tmpnowt, &tmpnowtm);
       strftime (tmpnowbuf, sizeof (tmpnowbuf), "%c", &tmpnowtm);
       objstrbufferprintfpayl_BM (_.modgenob,
                                  "// generated temporary module %s at %s pid #%d on %s\n"
