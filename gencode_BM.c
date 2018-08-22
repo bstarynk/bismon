@@ -3373,7 +3373,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
     objstrbufferprintfpayl_BM (_.modgenob, "\n\n// no failure\n");
   else
     {
-      objstrbufferprintfpayl_BM (_.modgenob, "\n\n// %u failures\n");
+      objstrbufferprintfpayl_BM (_.modgenob, "\n\n// %u failures\n", nbfail);
     };
   // we should now emit each routine's declaration...
   for (unsigned routix = 0; routix < nbrout; routix++)

@@ -1632,7 +1632,25 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
             LOCALJUSTRETURN_BM ();
           }
         else
-          FAILHERE (BMP_object);
+          {
+            _.constantsv = objgetattr_BM (_.modgenob, k_constants);
+            WEAKASSERTRET_BM (isset_BM (_.constantsv));
+            int kix = setelemindex_BM (setcast_BM (_.constantsv), _.expob);
+            if (kix >= 0)
+              {
+                char modulidbuf[32];
+                memset (modulidbuf, 0, sizeof (modulidbuf));
+                idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           " /*modconst:*/("
+                                           CONSTOBARRPREFIX_BM "%s"
+                                           ROUTINESUFFIX_BM "[%d] /*|%s*/)",
+                                           modulidbuf, kix,
+                                           objectdbg2_BM (_.expob));
+              }
+            else
+              FAILHERE (BMP_object);
+          }
         break;
       }
     case tyNode_BM:
@@ -3401,11 +3419,13 @@ ROUTINEOBJNAME_BM (_8XIt55nuPul_3MZfto9hmgy)    // emit_statement°basiclo_fail
  const value_tyBM deptharg,     //
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
-  objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
+  //objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
+  objectval_tyBM *k_fail = BMK_085lT8c13Ik_11pcWJfcLeM;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_8XIt55nuPul_3MZfto9hmgy,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * modgenob;     //
                  objectval_tyBM * routprepob;   //
+                 value_tyBM failexpv;   //
                  value_tyBM resultv;    //
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
@@ -3424,11 +3444,20 @@ ROUTINEOBJNAME_BM (_8XIt55nuPul_3MZfto9hmgy)    // emit_statement°basiclo_fail
   WEAKASSERT_BM (_.modgenob);
   WEAKASSERT_BM (_.routprepob);
   WEAKASSERT_BM (istaggedint_BM (deptharg));
-#warning unimplemented emit_statement°basiclo_fail _8XIt55nuPul_3MZfto9hmgy routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented emit_statement°basiclo_fail  _8XIt55nuPul_3MZfto9hmgy routine");
-  LOCALRETURN_BM (_.resultv);
+  _.failexpv = objgetattr_BM (_.stmtob, k_fail);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
+  objstrbufferprintfpayl_BM (_.modgenob, "//failure %s\n",
+                             objectdbg_BM (_.stmtob));
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "PLACEDFAILURE_BM(__LINE__, /*reason:*/");
+  miniemit_expression_BM (CURFRAME_BM, _.failexpv, _.modgenob, _.routprepob,
+                          _.stmtob, 0);
+  objstrbufferprintfpayl_BM (_.modgenob, ",\n                /*place:*/");
+  miniemit_expression_BM (CURFRAME_BM, (value_tyBM) _.stmtob, _.modgenob,
+                          _.routprepob, _.stmtob, 0);
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             ",\n                ((struct stackframe_stBM *) &_));\n");
+  LOCALRETURN_BM (_.stmtob);
 }                               /* end emit_statement°basiclo_fail _8XIt55nuPul_3MZfto9hmgy */
 
 
