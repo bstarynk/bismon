@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 873 objects
+// for 876 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -7310,8 +7310,9 @@ _7bbeIqUSje9_4jVgC7ZJmvx
  "temporary test module"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _8imWClcIFKt_6w2H2ouB4I6 _8VzbBncLSEl_2dNNPe0VjQh }
-!# 2
+!# 3
 !& _364Qj8mb098_1ZKW5WqeFWg
+!& _87zGbEccv7h_5gRm35estXS
 !& _3vI0Qc3FHQG_1g4fmHYkxSA
 !)_66DuQtJBPqt_8w9fOCyxJve
 
@@ -8781,10 +8782,10 @@ _5r6ekO9FCAj_7hCbcooblXl
 
 !(_1nsAyqOOy7S_1zodeivnxlm
 !|*
-!@ 1527511053.360
+!@ 1534940022.240
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "miniemit_node_conn#make_tree"
+ "miniemit_node_conn\u00b0make_tree in emitcode_BM.c"
 !)_1nsAyqOOy7S_1zodeivnxlm
 
 
@@ -9971,6 +9972,17 @@ _39pW7nyFqoI_5pikyvvGsZ5
 
 
 
+!(_4eIdg9F7Kd7_4V8EqmX5EdZ
+!@ 1534939387.216
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of test make_node"
+!# 1
+!& _6GnVh6VH0ba_5iNQzHx0RCt
+!)_4eIdg9F7Kd7_4V8EqmX5EdZ
+
+
+
 !(_4hS1jncZQAY_9pGS66eIlw9
 !|*
 !@ 1525887198.480
@@ -11065,6 +11077,17 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_6GnVh6VH0ba_5iNQzHx0RCt
+!@ 1534939439.760
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return make_node(o1 v2 v3)"
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+ * _0Vw4O8Wjf9x_3ANjSvs32bz ( _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ _0sDAwfyl4r3_8kDdVlE90M3)
+!)_6GnVh6VH0ba_5iNQzHx0RCt
+
+
+
 !(_6HYDs1Zywvs_1w8OTn5XOZY
 !@ 1528977814.047
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
@@ -11638,6 +11661,21 @@ _2Zv64CfoneM_4dyKtH2SMQ3
 !: _2DH0ucElTgh_62vxjxLcfev |=return|
 _97rnxb0KFqq_44veN75DG2E
 !)_86rGd2LLytX_4xsXHoCmw1Y
+
+
+
+!(_87zGbEccv7h_5gRm35estXS
+!@ 1534939309.329
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test make_node with connective o1 and arguments v2 v3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ _0sDAwfyl4r3_8kDdVlE90M3 ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_4eIdg9F7Kd7_4V8EqmX5EdZ
+!)_87zGbEccv7h_5gRm35estXS
 
 
 

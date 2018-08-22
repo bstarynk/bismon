@@ -4349,12 +4349,12 @@ failure:
 
 ////////////////
 
-// miniemit_node_conn#make_tree _1nsAyqOOy7S_1zodeivnxlm
+// miniemit_node_conn°make_tree _1nsAyqOOy7S_1zodeivnxlm
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn#make_tree
+ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // expv
  const value_tyBM arg2,         // modgenob
@@ -4389,6 +4389,11 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn#make_tree
   int depth = getint_BM (arg4);
   if (restargs)
     _.fromob = objectcast_BM (treenthson_BM ((value_tyBM) restargs, 0));
+  DBGPRINTF_BM
+    (" miniemit_node_conn#make_tree start expv %s modgenob %s routprepob %s fromob %s depth#%d",
+     debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
+     objectdbg_BM (_.modgenob), objectdbg1_BM (_.routprepob),
+     objectdbg2_BM (_.fromob), depth);
   WEAKASSERT_BM (isobject_BM (_.modgenob));
   WEAKASSERT_BM (isobject_BM (_.routprepob));
   _.connob = nodeconn_BM ((value_tyBM) _.expv);
@@ -4432,9 +4437,16 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn#make_tree
     objstrbufferprintfpayl_BM (_.modgenob, "),\n");
   else
     objstrbufferprintfpayl_BM (_.modgenob, ")");
+  DBGPRINTF_BM (" miniemit_node_conn°make_tree expv %s fromob %s nbsons#%d",
+                debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
+                objectdbg2_BM (_.fromob), nbsons);
   for (int ix = 1; ix < nbsons; ix++)
     {
       _.subexpv = nodenthson_BM (_.expv, ix);
+      DBGPRINTF_BM
+        (" miniemit_node_conn#make_tree subexpv %s fromob %s ix#%d",
+         debug_outstr_value_BM (_.subexpv, CURFRAME_BM, 0),
+         objectdbg2_BM (_.fromob), ix);
       objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
       objstrbuffernewlinepayl_BM (_.modgenob);
       if (ix > 0 && ix % 8 == 0 && ix + 1 < nbsons)
@@ -4454,12 +4466,17 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn#make_tree
         }
     }
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
-  objstrbufferprintfpayl_BM (_.modgenob, ")");
+  objstrbufferprintfpayl_BM (_.modgenob, "))");
+  DBGPRINTF_BM
+    (" miniemit_node_conn°make_tree end expv %s modgenob %s routprepob %s fromob %s depth#%d",
+     debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
+     objectdbg_BM (_.modgenob), objectdbg1_BM (_.routprepob),
+     objectdbg2_BM (_.fromob), depth);
   LOCALRETURN_BM (_.modgenob);
 failure:
 #undef FAILHERE
   DBGPRINTF_BM
-    ("miniemit_node_conn#make_tree failure failin %d exp %s routprepob %s cause %s",
+    ("miniemit_node_conn°make_tree failure failin %d exp %s routprepob %s cause %s",
      failin, debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
      objectdbg_BM (_.routprepob), debug_outstr_value_BM (_.causev,
                                                          CURFRAME_BM, 0));
@@ -4468,4 +4485,4 @@ failure:
                                BMK_1nsAyqOOy7S_1zodeivnxlm, _.expv,
                                _.routprepob, _.causev);
   PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
-}                               /* end miniemit_node_conn#make_tree _1nsAyqOOy7S_1zodeivnxlm */
+}                               /* end miniemit_node_conn°make_tree _1nsAyqOOy7S_1zodeivnxlm */
