@@ -4423,16 +4423,17 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
     (" miniemit_node_conn°make_tree nbsons %d fromob %s seqtypob %s", nbsons,
      objectdbg_BM (_.fromob), objectdbg1_BM (_.seqtypob));
   WEAKASSERT_BM (_.seqtypob == k_node || _.seqtypob == k_closure);
+  WEAKASSERT_BM (nbsons > 0);
   if (_.seqtypob == k_node)
     {
       if (nbsons < MAXTREEOPTIMARGS_BM)
         objstrbufferprintfpayl_BM (_.modgenob,
                                    "((value_tyBM) makenode%u_BM (",
-                                   (unsigned) nbsons);
+                                   (unsigned) nbsons - 1);
       else
         objstrbufferprintfpayl_BM (_.modgenob,
                                    "((value_tyBM) makesizednode_BM (%dU,",
-                                   (unsigned) nbsons);
+                                   (unsigned) nbsons - 1);
 
     }
   else if (_.seqtypob == k_closure)
@@ -4440,11 +4441,11 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
       if (nbsons < MAXTREEOPTIMARGS_BM)
         objstrbufferprintfpayl_BM (_.modgenob,
                                    "((value_tyBM) makeclosure%u_BM (",
-                                   (unsigned) nbsons);
+                                   (unsigned) nbsons - 1);
       else
         objstrbufferprintfpayl_BM (_.modgenob,
                                    "((value_tyBM) makesizedclosure_BM (%dU,",
-                                   (unsigned) nbsons);
+                                   (unsigned) nbsons - 1);
     }
   else
     FAILHERE (_.seqtypob);
