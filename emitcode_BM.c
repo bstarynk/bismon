@@ -3749,7 +3749,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
       time_t tmpnowt = 0;
       time (&tmpnowt);
       ASSERT_BM (tmpnowt > (time_t) 1000000000);
-      localtime_r ( &tmpnowt, &tmpnowtm);
+      localtime_r (&tmpnowt, &tmpnowtm);
       strftime (tmpnowbuf, sizeof (tmpnowbuf), "%c", &tmpnowtm);
       objstrbufferprintfpayl_BM (_.modgenob,
                                  "// generated temporary module %s at %s pid #%d on %s\n"
@@ -4457,7 +4457,8 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
   miniemit_expression_BM (CURFRAME_BM, _.connexpv, _.modgenob,
                           _.routprepob, _.fromob, depth + 1);
   if (nbsons > 1)
-    objstrbufferprintfpayl_BM (_.modgenob, "),\n");
+    objstrbufferprintfpayl_BM (_.modgenob, "),\n /*%s %d sons:*/",
+                               objectdbg_BM (_.connob), nbsons - 1);
   else
     objstrbufferprintfpayl_BM (_.modgenob, ")");
   DBGPRINTF_BM (" miniemit_node_conn°make_tree expv %s fromob %s nbsons#%d",
@@ -4472,7 +4473,7 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
          objectdbg2_BM (_.fromob), ix);
       objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
       objstrbuffernewlinepayl_BM (_.modgenob);
-      if (ix > 0 && ix % 8 == 0 && ix + 1 < nbsons)
+      if (ix > 0 && ix % 4 == 0 && ix + 1 < nbsons)
         {
           objstrbufferprintfpayl_BM (_.modgenob, "// %s arg #%d\n",
                                      objectdbg_BM (_.connob), ix);
@@ -4481,6 +4482,10 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
       miniemit_expression_BM (CURFRAME_BM, _.subexpv, _.modgenob,
                               _.routprepob, _.fromob, depth + 1);
       objstrbufferprintfpayl_BM (_.modgenob, ")");
+      DBGPRINTF_BM
+        (" miniemit_node_conn°make_tree done subexpv %s fromob %s ix#%d nbsons %d",
+         debug_outstr_value_BM (_.subexpv, CURFRAME_BM, 0),
+         objectdbg2_BM (_.fromob), ix, nbsons);
       if (ix + 1 < nbsons)
         {
           objstrbufferprintfpayl_BM (_.modgenob, ",");
