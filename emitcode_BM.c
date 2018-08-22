@@ -4390,7 +4390,7 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
   if (restargs)
     _.fromob = objectcast_BM (treenthson_BM ((value_tyBM) restargs, 0));
   DBGPRINTF_BM
-    (" miniemit_node_conn#make_tree start expv %s modgenob %s routprepob %s fromob %s depth#%d",
+    (" miniemit_node_conn°make_tree start expv %s modgenob %s routprepob %s fromob %s depth#%d",
      debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
      objectdbg_BM (_.modgenob), objectdbg1_BM (_.routprepob),
      objectdbg2_BM (_.fromob), depth);
@@ -4399,6 +4399,9 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
   _.connob = nodeconn_BM ((value_tyBM) _.expv);
   int nbsons = nodewidth_BM ((value_tyBM) _.expv);
   _.seqtypob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
+  DBGPRINTF_BM
+    (" miniemit_node_conn°make_tree nbsons %d fromob %s seqtypob %s", nbsons,
+     objectdbg_BM (_.fromob), objectdbg1_BM (_.seqtypob));
   WEAKASSERT_BM (_.seqtypob == k_node || _.seqtypob == k_closure);
   if (_.seqtypob == k_node)
     {
@@ -4444,7 +4447,7 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
     {
       _.subexpv = nodenthson_BM (_.expv, ix);
       DBGPRINTF_BM
-        (" miniemit_node_conn#make_tree subexpv %s fromob %s ix#%d",
+        (" miniemit_node_conn°make_tree subexpv %s fromob %s ix#%d",
          debug_outstr_value_BM (_.subexpv, CURFRAME_BM, 0),
          objectdbg2_BM (_.fromob), ix);
       objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
