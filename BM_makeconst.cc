@@ -65,6 +65,7 @@ int parse_cfile(const char*path, std::set<std::string>& bmconstset, bool verbose
                 pos++;
               continue;
             };
+
           int badpos = -1;
           int ix = -1;
           const char*badmsg = nullptr;
@@ -98,6 +99,18 @@ int parse_cfile(const char*path, std::set<std::string>& bmconstset, bool verbose
             };
           endpos = startpos+2*(SERIALDIGITS_BM)+1;
           std::string curid = line.substr(startpos, endpos-startpos);
+          bool goodid = true;
+          if (!isdigit(curid[0])) goodid = false;
+          if (curid[SERIALDIGITS_BM] != '_') goodid = false;
+          if (!isdigit(curid[SERIALDIGITS_BM+1])) goodid = false;
+          int curidlen = curid.size();
+          for (int ix=1; ix<curidlen; ix++) if (ix != SERIALDIGITS_BM && !isalnum(curid[ix])) goodid = false;
+          if (!goodid)
+            {
+              fprintf(stderr, "%s:%d:%d: incorrect BMK_constant '%s', not an id:: %s\n",
+                      path, linecnt+1, (int)startpos, curid.c_str(),  line.c_str()+startpos);
+              exit(EXIT_FAILURE);
+            }
           pos = endpos;
           bmconstset.insert(curid);
           totalnbocc++;
