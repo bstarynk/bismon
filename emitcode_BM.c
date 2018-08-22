@@ -3449,14 +3449,15 @@ ROUTINEOBJNAME_BM (_8XIt55nuPul_3MZfto9hmgy)    // emit_statement°basiclo_fail
   objstrbufferprintfpayl_BM (_.modgenob, "//failure %s\n",
                              objectdbg_BM (_.stmtob));
   objstrbufferprintfpayl_BM (_.modgenob,
-                             "PLACEDFAILURE_BM(__LINE__, /*reason:*/");
+                             "PLACEDFAILURE_BM(__LINE__, /*failreason:*/ (");
   miniemit_expression_BM (CURFRAME_BM, _.failexpv, _.modgenob, _.routprepob,
                           _.stmtob, 0);
-  objstrbufferprintfpayl_BM (_.modgenob, ",\n                /*place:*/");
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "),\n                /*failplace:*/ (");
   miniemit_expression_BM (CURFRAME_BM, (value_tyBM) _.stmtob, _.modgenob,
                           _.routprepob, _.stmtob, 0);
   objstrbufferprintfpayl_BM (_.modgenob,
-                             ",\n                ((struct stackframe_stBM *) &_));\n");
+                             "),\n                ((struct stackframe_stBM *) &_));\n");
   LOCALRETURN_BM (_.stmtob);
 }                               /* end emit_statement°basiclo_fail _8XIt55nuPul_3MZfto9hmgy */
 
