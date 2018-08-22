@@ -3756,11 +3756,18 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                                  objectdbg_BM (_.modulob), nowbuf,
                                  (int) getpid (), myhostname_BM, modulidbuf);
       objstrbufferprintfpayl_BM (_.modgenob,
-                                 "// generating bismon checksum %s directory %s\n",
-                                 bismon_checksum, bismon_directory);
+                                 "// generating bismon checksum %s\n",
+                                 bismon_checksum);
       objstrbufferprintfpayl_BM (_.modgenob,
-                                 "// generating bismon timestamp %s lastgitcommit %s\n",
-                                 bismon_timestamp, bismon_lastgitcommit);
+                                 "// generating bismon directory %s\n",
+                                 bismon_directory);
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "// generating bismon timestamp %s\n",
+                                 bismon_timestamp);
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "// generating bismon lastgitcommit %s\n",
+                                 bismon_lastgitcommit);
+      objstrbuffernewlinepayl_BM (_.modgenob);
       objstrbuffernewlinepayl_BM (_.modgenob);
     }
   else
