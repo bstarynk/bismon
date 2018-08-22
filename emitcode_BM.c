@@ -1419,11 +1419,12 @@ ROUTINEOBJNAME_BM (_9Wk97VJLuH1_0FwsSpfatDg)    // emit_when°basiclo_when
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
   objstrbuffernewlinepayl_BM (_.modgenob);
   // whenob is locked by caller emit_statment°basiclo_cond
-  objstrbufferprintfpayl_BM (_.modgenob, "/*when %s:*/ (",
+  objstrbufferprintfpayl_BM (_.modgenob, "/*when %s:*/\n (",
                              objectdbg_BM (_.whenob));
   miniemit_expression_BM (CURFRAME_BM, _.testexpv, _.modgenob,
                           _.routprepob, _.whenob, depth);
-  objstrbufferappendcstrpayl_BM (_.modgenob, ") {");
+  objstrbufferprintfpayl_BM (_.modgenob, ") { //body when %s",
+                             objectdbg_BM (_.whenob));
   int indepth = depth + 1;
   objstrbuffersetindentpayl_BM (_.modgenob, indepth);
   objstrbuffernewlinepayl_BM (_.modgenob);
