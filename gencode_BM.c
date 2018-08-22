@@ -89,23 +89,22 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                  value_tyBM errorv;
     );
   objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
-  const objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
-  const objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
-  const objectval_tyBM *k_result = BMK_7bD9VtDkGSn_7lxHeYuuFLR;
-  const objectval_tyBM *k_closed = BMK_2TwOyPJxIz8_1rIeqaN7oRz;
-  const objectval_tyBM *k_locals = BMK_24sSVIADeHm_0Sx34wQfG7W;
-  const objectval_tyBM *k_numbers = BMK_32eKNcTZ9HN_80t0nk47Mha;
-  const objectval_tyBM *k_body = BMK_7DQyvJFMOrC_9IfC3CtYknn;
-  const objectval_tyBM *k_simple_routine_preparation =
-    BMK_80060zKi6Un_3isCStegT8A;
-  const objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
-  const objectval_tyBM *k_assoc_object = BMK_6ZQ05nCv3Ys_8LA6B5LkZgm;
-  const objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
-  const objectval_tyBM *k_statement_properties = BMK_0OM3NoUpOBd_1nzwCJKw54A;
-  const objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
-  const objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
-  const objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
-  const objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
+  objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
+  objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
+  objectval_tyBM *k_result = BMK_7bD9VtDkGSn_7lxHeYuuFLR;
+  objectval_tyBM *k_closed = BMK_2TwOyPJxIz8_1rIeqaN7oRz;
+  objectval_tyBM *k_locals = BMK_24sSVIADeHm_0Sx34wQfG7W;
+  objectval_tyBM *k_numbers = BMK_32eKNcTZ9HN_80t0nk47Mha;
+  objectval_tyBM *k_body = BMK_7DQyvJFMOrC_9IfC3CtYknn;
+  objectval_tyBM *k_simple_routine_preparation = BMK_80060zKi6Un_3isCStegT8A;
+  objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
+  objectval_tyBM *k_assoc_object = BMK_6ZQ05nCv3Ys_8LA6B5LkZgm;
+  objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
+  objectval_tyBM *k_statement_properties = BMK_0OM3NoUpOBd_1nzwCJKw54A;
+  objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
+  objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
+  objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
+  objectval_tyBM *k_miniscan_block = BMK_2gthNYOWogO_4sVTU1JbmUH;
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
   // retrieve arguments
   _.recv = objectcast_BM (arg1);
@@ -405,7 +404,7 @@ failure:
   DBGPRINTF_BM
     ("failure prepare_routine°basiclo_minifunction  failin %d errorv %s",
      failin, debug_outstr_value_BM (_.errorv, CURFRAME_BM, 0));
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end prepare_routine°basiclo_minifunction  _07qYMXftJRR_9dde2ASz4e9  */
 
@@ -541,7 +540,7 @@ failure:
   _.errorv = (value_tyBM)
     makenode4_BM (k_miniscan_var, varob, routprepob, taggedint_BM (depth),
                   fromob);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end miniscan_var_BM */
 
@@ -745,7 +744,7 @@ failure:
   _.errorv = (value_tyBM)
     makenode5_BM (k_miniscan_expr, _.expv, _.causev, _.routprepob,
                   taggedint_BM (depth), _.fromob);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end miniscan_expr_BM */
 
@@ -952,7 +951,7 @@ failure:
   _.errorv = (value_tyBM)
     makenode4_BM (k_miniscan_stmt, _.recv, _.routprepob, taggedint_BM (depth),
                   _.fromblockob);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end routine miniscan_stmt°basiclo_cond _0zzJJsAL6Qm_2uw3eoWQHEq */
 
 ////////////////
@@ -1086,7 +1085,7 @@ failure:
   _.errorv =
     (value_tyBM) makenode5_BM (k_miniscan_stmt, _.stmtob, _.causev,
                                _.routprepob, taggedint_BM (depth), _.fromob);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniscan_stmt°basiclo_while _2Cj1ZVDhCVO_8qT2Um5Ok7f */
 
 
@@ -1232,7 +1231,7 @@ failure:
     (value_tyBM) makenode5_BM (k_miniscan_stmt, _.stmtob, _.causev,
                                _.routprepob, taggedint_BM (depth),
                                _.fromblockob);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniscan_stmt°basiclo_lockobj  _8fKRsxM1q9w_3hFovzBicI7 */
 
 
@@ -1380,7 +1379,7 @@ failure:
   _.errorv = (value_tyBM)
     makenode5_BM (k_miniscan_stmt, _.stmtob, _.routprepob,
                   taggedint_BM (depth), _.fromob, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end miniscan_stmt°basiclo_exit  _23F5sZIfO5Y_5m9O2FPHdzX */
 
@@ -1502,7 +1501,7 @@ failure:
   _.errorv = (value_tyBM)
     makenode5_BM (k_miniscan_stmt, _.stmtob, _.routprepob,
                   taggedint_BM (depth), _.fromob, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end miniscan_stmt°basiclo_run  _6pA1Fxh7omw_0vJfR3s4tty */
 
@@ -1730,7 +1729,7 @@ failure:
   _.errorv = (value_tyBM)
     makenode5_BM (k_miniscan_stmt, _.stmtob, _.routprepob,
                   taggedint_BM (depth), _.fromob, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end miniscan_stmt°basiclo_intswitch  _2CKEpke8P0q_8s0Vli5gjxM */
 
@@ -1884,7 +1883,7 @@ failure:
                                _.hashmapob, _.routprepob,
                                taggedint_BM (depth), _.stmtob,
                                taggedint_BM (wix));
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end int-switch-when-miniscan _7X7mHMa1QpC_1TQBkXwqeik */
 
 
@@ -2212,7 +2211,7 @@ failure:
   _.errorv = (value_tyBM)
     makenode5_BM (k_miniscan_stmt, _.stmtob, _.routprepob,
                   taggedint_BM (depth), _.fromob, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end miniscan_stmt°basiclo_objswitch _5nFFthyf8y9_00k5H4R0G6b */
 
@@ -2326,7 +2325,7 @@ failure:
     (value_tyBM) makenode5_BM (k_miniscan_node_conn, _.expv,
                                _.routprepob, taggedint_BM (depth),
                                _.fromob, _.extraerrorv);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniscan_node_conn°basiclo_primitive  _1vuSUudDrEr_9UjFr4Pcy8r */
 
 
@@ -2387,7 +2386,7 @@ failure:
   _.errorv =
     (value_tyBM) makenode4_BM (k_return, _.retexpv, _.routprepob,
                                taggedint_BM (depth), _.recv);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end  miniscan_stmt°basiclo_return  _7vlMCZ0yvva_6tx0lFlqBG8 */
 
 
@@ -2457,7 +2456,7 @@ failure:
   _.errorv =
     (value_tyBM) makenode4_BM (k_miniscan_stmt, _.recvob, _.routprepob,
                                _.fromob, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniscan_stmt°basiclo_wrong _0Jvu8JxkNZZ_6K0zshkn9cP */
 
 
@@ -2655,7 +2654,7 @@ failure:
   _.errorv =
     (value_tyBM) makenode4_BM (k_miniscan_stmt, _.stmtob, _.routprepob,
                                _.fromob, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniscan_stmt°basiclo_cexpansion  _0Qplg2cn9xR_5pfROAJjrXZ */
 
 
@@ -2682,6 +2681,7 @@ ROUTINEOBJNAME_BM (_2oeeFe9Sdzx_8NaM3HUadSP)    // miniscan_stmt°basiclo_fail
   objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
   objectval_tyBM *k_failure_set = BMK_9QCfVAnPhdt_5NVyy8KOaLP;
   objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
+  objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2oeeFe9Sdzx_8NaM3HUadSP,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * routprepob;   //
@@ -2689,6 +2689,7 @@ ROUTINEOBJNAME_BM (_2oeeFe9Sdzx_8NaM3HUadSP)    // miniscan_stmt°basiclo_fail
                  objectval_tyBM * failtypob;    //
                  objectval_tyBM * modgenob;     //
                  objectval_tyBM * failhsetob;   //
+                 objectval_tyBM * consthsetob;  //
                  value_tyBM resultv;    //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
@@ -2731,15 +2732,22 @@ ROUTINEOBJNAME_BM (_2oeeFe9Sdzx_8NaM3HUadSP)    // miniscan_stmt°basiclo_fail
          objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
          objectdbg2_BM (_.failhsetob));
     }
+  _.consthsetob = objectcast_BM (objgetattr_BM (_.modgenob, k_constants));
   DBGPRINTF_BM
-    ("miniscan_stmt°basiclo_fail stmtob %s modgenob %s  failhsetob %s",
+    ("miniscan_stmt°basiclo_fail stmtob %s modgenob %s  failhsetob %s consthsetob %s",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
-     objectdbg2_BM (_.failhsetob));
+     objectdbg2_BM (_.failhsetob), objectdbg3_BM (_.consthsetob));
   WEAKASSERT_BM (objhashashsetpayl_BM (_.failhsetob));
+  WEAKASSERT_BM (objhashashsetpayl_BM (_.consthsetob));
   {
     objlock_BM (_.failhsetob);
     objhashsetaddpayl_BM (_.failhsetob, _.stmtob);
     objunlock_BM (_.failhsetob);
+  }
+  {
+    objlock_BM (_.consthsetob);
+    objhashsetaddpayl_BM (_.consthsetob, _.stmtob);
+    objunlock_BM (_.consthsetob);
   }
   LOCALRETURN_BM (_.stmtob);
 failure:
@@ -2749,7 +2757,7 @@ failure:
   _.errorv =
     (value_tyBM) makenode4_BM (k_miniscan_stmt, _.stmtob, _.routprepob,
                                _.fromob, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end  miniscan_stmt°basiclo_fail  _2oeeFe9Sdzx_8NaM3HUadSP */
 
 ////////////////////////////////////////////////////////////////
@@ -2834,7 +2842,7 @@ failure:
   _.errorv =
     (value_tyBM) makenode5_BM (k_miniscan_node_conn, _.expv, _.routprepob,
                                taggedint_BM (depth), _.fromob, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniscan_node_conn°basiclo_simple_connective _2ROGZRBpeCl_6HhgOZ5Uj7F */
 
 
@@ -3109,7 +3117,7 @@ failure:
   _.errorv =
     (value_tyBM) makenode3_BM (BMP_emit_module, _.modulob,
                                _.modgenob, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end  prepare_module°basiclo*module _8zNBXSMY2Ts_1VI5dmY4umA */
 
@@ -3246,7 +3254,7 @@ failure:
     (value_tyBM) makenode5_BM (k_miniscan_block, _.blockob,
                                _.routprepob, taggedint_BM (depth),
                                _.fromob, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end miniscan_block°basiclo_block _2PbDEXpkK5W_7MSfDy2pWkH */
 
@@ -3268,6 +3276,16 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
  const value_tyBM arg4 __attribute__ ((unused)),        //
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
+  //objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
+  objectval_tyBM *k_failure_set = BMK_9QCfVAnPhdt_5NVyy8KOaLP;
+  objectval_tyBM *k_prepared_routines = BMK_9qn0Hp8HaF5_7yeAJiNYtp5;
+  //objectval_tyBM *k_vector_object = BMK_0Ie11LN3K5q_0mcL2jRBwgk;
+  objectval_tyBM *k_emit_declaration = BMK_3NGaoN3yhbn_8yUwbtZfvp9;
+  objectval_tyBM *k_emit_definition = BMK_1g8s9B96Irf_6Ix2Cyy8Hq0;
+  objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
+  objectval_tyBM *k_functions_set = BMK_9stpgEfdDDE_7LUgqylTeFI;
+  objectval_tyBM *k_generate_module = BMK_9mq0jsuz4XQ_4doHfd987Q6;
+  objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * modulob;      //
                  objectval_tyBM * curfunob;     //
@@ -3283,19 +3301,11 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
                  value_tyBM constsetv;  //
                  value_tyBM commentv;   //
                  value_tyBM routsetv;   //
+                 value_tyBM failsetv;   //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
     );
   _.modulob = arg1;
-  //objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
-  objectval_tyBM *k_prepared_routines = BMK_9qn0Hp8HaF5_7yeAJiNYtp5;
-  //objectval_tyBM *k_vector_object = BMK_0Ie11LN3K5q_0mcL2jRBwgk;
-  objectval_tyBM *k_emit_declaration = BMK_3NGaoN3yhbn_8yUwbtZfvp9;
-  objectval_tyBM *k_emit_definition = BMK_1g8s9B96Irf_6Ix2Cyy8Hq0;
-  objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
-  objectval_tyBM *k_functions_set = BMK_9stpgEfdDDE_7LUgqylTeFI;
-  objectval_tyBM *k_generate_module = BMK_9mq0jsuz4XQ_4doHfd987Q6;
-  objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
   ASSERT_BM (isobject_BM (_.modulob));
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
@@ -3343,6 +3353,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
                                                        0));
   _.routsetv = objgetattr_BM (_.modgenob, k_functions_set);
   _.preptupv = objgetattr_BM (_.modgenob, k_prepared_routines);
+  _.failsetv = objgetattr_BM (_.modgenob, k_failure_set);
   unsigned nbrout = setcardinal_BM (_.routsetv);
   WEAKASSERT_BM (isset_BM (_.routsetv));
   WEAKASSERT_BM (istuple_BM (_.preptupv));
@@ -3357,6 +3368,13 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
                              ROUTINESUFFIX_BM "[%d+1];\n",
                              modulidbuf, nbrout);
   _.preproutval = NULL;
+  unsigned nbfail = setcardinal_BM (_.failsetv);
+  if (nbfail == 0)
+    objstrbufferprintfpayl_BM (_.modgenob, "\n\n// no failure\n");
+  else
+    {
+      objstrbufferprintfpayl_BM (_.modgenob, "\n\n// %u failures\n");
+    };
   // we should now emit each routine's declaration...
   for (unsigned routix = 0; routix < nbrout; routix++)
     {
@@ -3545,7 +3563,7 @@ failure:
   _.errorv =
     (value_tyBM) makenode4_BM (k_generate_module, _.modulob, _.modgenob,
                                _.prepval, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end generate_module°basiclo*module  _50d65bJypCN_6IJeVtssx9I */
 
 
@@ -4217,7 +4235,7 @@ failure:
   _.errorv =
     (value_tyBM) makenode4_BM (k_apply, _.expv, _.routprepob, _.fromob,
                                _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniscan_node_conn#apply _1X94b6LizfY_2W2ODAL1F3D */
 
 ////////////////
@@ -4313,7 +4331,7 @@ failure:
   _.errorv =
     (value_tyBM) makenode4_BM (k_send, _.expv, _.routprepob, _.fromob,
                                _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniscan_node_conn#send  _9BWLfKtt9ID_2YwNGH3zu9Q */
 
 
@@ -4392,7 +4410,7 @@ failure:
     (value_tyBM) makenode4_BM (_.connob ? _.connob :
                                BMK_1nHMifVeQIt_0mCPhG89MWu, _.expv,
                                _.routprepob, _.fromob, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniscan_node_conn#make_sequence  _1nHMifVeQIt_0mCPhG89MWu */
 
 
@@ -4464,7 +4482,7 @@ failure:
     (value_tyBM) makenode4_BM (_.connob ? _.connob :
                                BMK_9FtctWvW1qr_5mEGPxjn1co, _.expv,
                                _.routprepob, _.fromob, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniscan_node_conn#collect_sequence _9FtctWvW1qr_5mEGPxjn1co */
 
 
@@ -4561,7 +4579,7 @@ failure:
     (value_tyBM) makenode4_BM (_.connob ? _.connob :
                                BMK_8ru2DB8XTmJ_7h8mj1NTpKM, _.expv,
                                _.routprepob, _.fromob, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniscan_node_conn#make_tree  _8ru2DB8XTmJ_7h8mj1NTpKM */
 
 ///// end of file gencode_BM.c

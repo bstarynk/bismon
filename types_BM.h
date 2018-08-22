@@ -467,6 +467,7 @@ struct failurehandler_stBM      // for typayl_FailureHandler_BM,
   bool failh_silent;
   struct failurelockset_stBM *failh_lockset;
   value_tyBM failh_reason;
+  value_tyBM failh_place;
   jmp_buf failh_jmpbuf;
 };                              /* end of failurehandler_stBM */
 

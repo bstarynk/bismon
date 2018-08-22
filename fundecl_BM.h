@@ -415,8 +415,10 @@ extern void fatal_stop_at_BM (const char *, int) __attribute__ ((noreturn));
 extern void failure_BM (int failcode, const value_tyBM reasonv,
                         struct stackframe_stBM *stkf)
   __attribute__ ((noreturn));
+// see PLAINFAILURE_BM & PLACEDFAILURE_BM macros
 extern void failure_at_BM (int failcode, const char *fil, int lineno,
                            const value_tyBM reasonv,
+                           const value_tyBM placev,
                            struct stackframe_stBM *stkf)
   __attribute__ ((noreturn));
 

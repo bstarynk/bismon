@@ -965,6 +965,6 @@ failure:
   _.errorv = (value_tyBM)
     makenode6_BM (k_defer_module_load, _.modulob, (value_tyBM) _.postclos,
                   _.arg1v, _.arg2v, _.arg3v, _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 
 }                               /* end defer_module_load_BM */

@@ -1006,7 +1006,7 @@ ROUTINEOBJNAME_BM (_1Xc5XJ7S5r7_3nYIzlf2XAw)    // ,put commandhandler
   objectval_tyBM *k_failure_bad_attribute = BMK_4GumRf8w4jT_6lfDDJ5Y3TH;
   if (!isobject_BM (arg1))
     {
-      FAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
+      PLAINFAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
     }
   _.recv = arg1;
   _.attv = arg2;
@@ -1064,7 +1064,7 @@ ROUTINEOBJNAME_BM (_1Xc5XJ7S5r7_3nYIzlf2XAw)    // ,put commandhandler
              debug_outstr_value_BM (_.attv, CURFRAME_BM, 0));
           log_end_message_BM ();
         }
-      FAILURE_BM (__LINE__, k_failure_bad_attribute, CURFRAME_BM);
+      PLAINFAILURE_BM (__LINE__, k_failure_bad_attribute, CURFRAME_BM);
     }
   LOCALRETURN_BM (NULL);
 }                               /* end  command handler for ,put _1Xc5XJ7S5r7_3nYIzlf2XAw */
@@ -1089,7 +1089,7 @@ ROUTINEOBJNAME_BM (_5v5ChlG1IYh_1Pv87MZJFPl)    //
   objectval_tyBM *k_failure_non_object = BMK_6yWldsq3Rmk_01WqTfwSIDV;
   if (!isobject_BM (arg1))
     {
-      FAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
+      PLAINFAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
     }
   _.recv = arg1;
   _.compv = arg2;
@@ -1128,7 +1128,7 @@ ROUTINEOBJNAME_BM (_0zf6nSKwSlU_6Cv3LMh1MmV)    //
   objectval_tyBM *k_failure_bad_attribute = BMK_4GumRf8w4jT_6lfDDJ5Y3TH;
   if (!isobject_BM (arg1))
     {
-      FAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
+      PLAINFAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
     }
   _.recv = arg1;
   _.attv = arg2;
@@ -1178,7 +1178,7 @@ ROUTINEOBJNAME_BM (_0zf6nSKwSlU_6Cv3LMh1MmV)    //
              debug_outstr_value_BM (_.attv, CURFRAME_BM, 0));
           log_end_message_BM ();
         }
-      FAILURE_BM (__LINE__, k_failure_bad_attribute, CURFRAME_BM);
+      PLAINFAILURE_BM (__LINE__, k_failure_bad_attribute, CURFRAME_BM);
     }
   LOCALRETURN_BM (NULL);
 }                               /* end  command handler for ,remove _0zf6nSKwSlU_6Cv3LMh1MmV  */
@@ -1204,11 +1204,11 @@ ROUTINEOBJNAME_BM (_797zacMjvvt_3I2uxNJRfdq)    //
   ASSERT_BM (pthread_self () == mainthreadid_BM);
   if (!isobject_BM (arg1))
     {
-      FAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
+      PLAINFAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
     }
   if (!isobject_BM (arg2))
     {
-      FAILURE_BM (__LINE__, k_failure_bad_class, CURFRAME_BM);
+      PLAINFAILURE_BM (__LINE__, k_failure_bad_class, CURFRAME_BM);
     };
   _.recv = (objectval_tyBM *) arg1;
   _.superob = (objectval_tyBM *) arg2;
@@ -1221,7 +1221,7 @@ ROUTINEOBJNAME_BM (_797zacMjvvt_3I2uxNJRfdq)    //
   }
   if (badsuper)
     {
-      FAILURE_BM (__LINE__, k_failure_bad_class, CURFRAME_BM);
+      PLAINFAILURE_BM (__LINE__, k_failure_bad_class, CURFRAME_BM);
     };
   objlock_BM (_.recv);
   objputclass_BM (_.recv, BMP_class);
@@ -1267,9 +1267,9 @@ ROUTINEOBJNAME_BM (_01zabIzVKNR_8AGQGMBkSd7)    //commandhandler#,insert
   int rk = getintdefault_BM (arg2, -1);
   _.val = arg3;
   if (!isobject_BM (_.obj))
-    FAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
+    PLAINFAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
   if (!istaggedint_BM (arg2))
-    FAILURE_BM (__LINE__, k_failure_bad_rank, CURFRAME_BM);
+    PLAINFAILURE_BM (__LINE__, k_failure_bad_rank, CURFRAME_BM);
   DBGPRINTF_BM ("commandhandler#,insert obj %s rk %d val %s",
                 objectdbg_BM (_.obj), rk,
                 debug_outstr_value_BM (_.val, CURFRAME_BM, 0));
@@ -1309,17 +1309,17 @@ ROUTINEOBJNAME_BM (_9QuovXgtk9K_17pMbAD0XmX)    //
   ASSERT_BM (pthread_self () == mainthreadid_BM);
   if (!isobject_BM (arg1))
     {
-      FAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
+      PLAINFAILURE_BM (__LINE__, k_failure_non_object, CURFRAME_BM);
     }
   _.recv = (objectval_tyBM *) arg1;
   if (!isobject_BM (arg2))
     {
-      FAILURE_BM (__LINE__, k_failure_bad_selector, CURFRAME_BM);
+      PLAINFAILURE_BM (__LINE__, k_failure_bad_selector, CURFRAME_BM);
     }
   _.obselv = arg2;
   if (arg3 && !isclosure_BM (arg3))
     {
-      FAILURE_BM (__LINE__, k_failure_bad_closure, CURFRAME_BM);
+      PLAINFAILURE_BM (__LINE__, k_failure_bad_closure, CURFRAME_BM);
     }
   _.closv = arg3;
   bool badclass = false;
@@ -1351,7 +1351,7 @@ ROUTINEOBJNAME_BM (_9QuovXgtk9K_17pMbAD0XmX)    //
           log_puts_message_BM (" is not a class.");
           log_end_message_BM ();
         }
-      FAILURE_BM (__LINE__, k_failure_bad_class, CURFRAME_BM);
+      PLAINFAILURE_BM (__LINE__, k_failure_bad_class, CURFRAME_BM);
     }
   if (pthread_self () == mainthreadid_BM)
     {

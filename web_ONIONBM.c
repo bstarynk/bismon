@@ -300,7 +300,7 @@ failure:
   _.errorv = (value_tyBM) makenode4_BM (k_queue_process, (value_tyBM) _.dirstrv, (value_tyBM) _.cmdnodv,        //
                                         (value_tyBM) _.endclosv,
                                         (value_tyBM) _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end queue_process_BM */
 
 
@@ -1490,13 +1490,13 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
            debug_outstr_value_BM (_.webhandlerv, CURFRAME_BM, 0));
 
         if (!_.webhandlerv)
-          FAILURE_BM (__LINE__, k_no_value, CURFRAME_BM);
+          PLAINFAILURE_BM (__LINE__, k_no_value, CURFRAME_BM);
         else if (!isclosure_BM (_.webhandlerv))
           {
             _.errorv =
               (value_tyBM) makenode1_BM (k_failure_bad_closure,
                                          _.webhandlerv);
-            FAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+            PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
           }
         if (off < 0)
           off = 0;
@@ -1554,7 +1554,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
       if (timedout)
         {
           _.errorv = makenode1_BM (k_web_timeout, _.webexob);
-          FAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+          PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
         }
     }
   ASSERT_BM (resp != NULL);
@@ -1672,7 +1672,7 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
   if (depth > MAX_WEB_HANDLER_DEPTH_BM)
     {
       WARNPRINTF_BM ("find_web_handler path '%s' too deep %d", path, depth);
-      FAILURE_BM (__LINE__, k_depth, CURFRAME_BM);
+      PLAINFAILURE_BM (__LINE__, k_depth, CURFRAME_BM);
     }
   const char *subpath = path + off;
   const char *slash = strchr (subpath, '/');

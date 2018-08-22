@@ -262,13 +262,13 @@
 #define NONPRINTF_BM(Fmt,...) do { if (false) \
       DBGPRINTF_BM(Fmt,##__VA_ARGS__); } while(0)
 
-#define FAILURE_AT_BIS_BM(Fcod,Fil,Lin,Reason,Stack) \
-  do {failure_at_BM((Fcod),(Fil),(Lin),(Reason),(Stack));} while(0)
+#define FAILURE_AT_BIS_BM(Fcod,Fil,Lin,Reason,Place,Stack)		\
+  do {failure_at_BM((Fcod),(Fil),(Lin),(Reason),(Place),(Stack));} while(0)
 
-#define FAILURE_AT_BM(Fcod,Fil,Lin,Reason,Stack) \
-       FAILURE_AT_BIS_BM(Fcod,Fil,Lin,Reason,Stack)
-#define FAILURE_BM(FailCod,Reason,Stack) FAILURE_AT_BM((FailCod),__FILE__,__LINE__,(Reason),(Stack))
-
+#define FAILURE_AT_BM(Fcod,Fil,Lin,Reason,Place,Stack) \
+  FAILURE_AT_BIS_BM(Fcod,Fil,Lin,Reason,Place,Stack)
+#define PLAINFAILURE_BM(FailCod,Reason,Stack) FAILURE_AT_BM((FailCod),__FILE__,__LINE__,(Reason),taggedint_BM(FailCod),(Stack))
+#define PLACEDFAILURE_BM(FailCod,Reason,Place,Stack) FAILURE_AT_BM((FailCod),__FILE__,__LINE__,(Reason),(Place),(Stack))
 
 #define CURFRAME_BM ((struct stackframe_stBM*)&_)
 

@@ -4126,7 +4126,7 @@ failure:
   _.errorv =
     makenode4_BM (k_queue_process, _.dirstrv, _.cmdnodv, _.endclosv,
                   _.causev);
-  FAILURE_BM (failin, _.errorv, CURFRAME_BM);
+  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end queue_process_BM */
 
 

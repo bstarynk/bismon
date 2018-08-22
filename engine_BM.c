@@ -301,7 +301,7 @@ evaluate_in_mini_frame_BM (value_tyBM expv, objectval_tyBM * framob,
         {
           _.errorv =
             (value_tyBM) makenodevar_BM (k_syntax_error, _.expv, NULL);
-          FAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+          PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
         }
       // find _.varob's binding in some frame
       int framedepth = 0;
@@ -315,7 +315,7 @@ evaluate_in_mini_frame_BM (value_tyBM expv, objectval_tyBM * framob,
               _.errorv = (value_tyBM) makenodevar_BM (k_mini_frame, _.framob,
                                                       taggedint_BM
                                                       (framedepth), NULL);
-              FAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+              PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
             }
           _.valv = objassocgetattrpayl_BM (_.framob, _.varob);
           if (_.valv)
@@ -328,7 +328,7 @@ evaluate_in_mini_frame_BM (value_tyBM expv, objectval_tyBM * framob,
       {
         _.errorv = (value_tyBM)
           makenodevar_BM (k_unbound_variable_error, _.varob, _.framob, NULL);
-        FAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+        PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
       }
     }                           /* end ?var */
   // !thing gives the thing (like quote in lisp)
