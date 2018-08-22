@@ -1396,7 +1396,7 @@ valid_password_BM (const char *passwd, char **perrmsg)
     {
       if (perrmsg)
         asprintf (perrmsg, "password is not valid UTF8 at byte offset %d",
-                  end - passwd);
+                  (int) (end - passwd));
       return false;
     }
   int nbdigits = 0, nbalphas = 0, nbpunct = 0;
