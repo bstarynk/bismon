@@ -2679,11 +2679,16 @@ ROUTINEOBJNAME_BM (_2oeeFe9Sdzx_8NaM3HUadSP)    // miniscan_stmt°basiclo_fail
   objectval_tyBM *k_fail = BMK_085lT8c13Ik_11pcWJfcLeM;
   objectval_tyBM *k_origin = BMK_1xhcI0ZnQ6f_5xOLATXqawx;
   objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
+  objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
+  objectval_tyBM *k_failure_set = BMK_9QCfVAnPhdt_5NVyy8KOaLP;
+  objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2oeeFe9Sdzx_8NaM3HUadSP,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * fromob;       //
-                 objectval_tyBM * failtypob;
+                 objectval_tyBM * failtypob;    //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * failhsetob;   //
                  value_tyBM resultv;    //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
@@ -2710,10 +2715,32 @@ ROUTINEOBJNAME_BM (_2oeeFe9Sdzx_8NaM3HUadSP)    // miniscan_stmt°basiclo_fail
                       CURFRAME_BM);
   if (!miniscan_compatype_BM (_.failtypob, BMP_object, CURFRAME_BM))
     FAILHERE (makenode2_BM (k_fail, _.failexpv, _.failtypob));
-#warning unusednimplemented  miniscan_stmt°basiclo_fail _2oeeFe9Sdzx_8NaM3HUadSP routine
-  WEAKASSERT_BM (false
-                 &&
-                 "unimplemented miniscan_stmt°basiclo_fail  _2oeeFe9Sdzx_8NaM3HUadSP routine");
+  _.modgenob = objgetattr_BM (_.routprepob, k_modgenob);
+  WEAKASSERT_BM (isobject_BM (_.modgenob));
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_fail stmtob %s modgenob %s",
+                objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob));
+  _.failhsetob = objectcast_BM (objgetattr_BM (_.modgenob, k_failure_set));
+  if (!_.failhsetob)
+    {
+      _.failhsetob = makeobj_BM ();
+      objputclass_BM (_.failhsetob, k_hset_object);
+      objputhashsetpayl_BM (_.failhsetob, 32);
+      objtouchnow_BM (_.failhsetob);
+      DBGPRINTF_BM
+        ("miniscan_stmt°basiclo_fail stmtob %s modgenob %s made failhsetob %s",
+         objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
+         objectdbg2_BM (_.failhsetob));
+    }
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_fail stmtob %s modgenob %s  failhsetob %s",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
+     objectdbg2_BM (_.failhsetob));
+  WEAKASSERT_BM (objhashashsetpayl_BM (_.failhsetob));
+  {
+    objlock_BM (_.failhsetob);
+    objhashsetaddpayl_BM (_.failhsetob, _.stmtob);
+    objunlock_BM (_.failhsetob);
+  }
   LOCALRETURN_BM (_.stmtob);
 failure:
 #undef FAILHERE
@@ -3248,7 +3275,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   objectval_tyBM *k_functions_set = BMK_9stpgEfdDDE_7LUgqylTeFI;
   objectval_tyBM *k_generate_module = BMK_9mq0jsuz4XQ_4doHfd987Q6;
-  const objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
+  objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
   ASSERT_BM (isobject_BM (_.modulob));
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
