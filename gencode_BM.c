@@ -2865,13 +2865,22 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    // prepare_module°basiclo*modul
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * modulob; objectval_tyBM * modgenob;   //
-                 objectval_tyBM * funhsetob; objectval_tyBM * consthsetob; objectval_tyBM * prepvecob; objectval_tyBM * curfunob; value_tyBM curcomp;   //
+                 objectval_tyBM * modulob;      //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * funhsetob;    //
+                 objectval_tyBM * consthsetob;
+                 objectval_tyBM * prepvecob;    //
+                 objectval_tyBM * curfunob;     //
+                 objectval_tyBM * failhsetob;   //
+                 value_tyBM curcomp;    //
                  seqobval_tyBM * curseq;        //
                  value_tyBM partres;    //
-                 setval_tyBM * setfun;
-                 setval_tyBM * setconst; value_tyBM errorv;
+                 setval_tyBM * setfun;  //
+                 setval_tyBM * setconst;        //
+                 value_tyBM setfail;    //
+                 value_tyBM errorv;
                  value_tyBM causev;);
+  objectval_tyBM *k_failure_set = BMK_9QCfVAnPhdt_5NVyy8KOaLP;
   objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   objectval_tyBM *k_functions_set = BMK_9stpgEfdDDE_7LUgqylTeFI;
   objectval_tyBM *k_basiclo_function = BMK_2Ir1i8qnrA4_3jSkierlc5z;
@@ -3076,6 +3085,17 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    // prepare_module°basiclo*modul
   DBGPRINTF_BM ("@@prepare_module°basiclo*module modulob %s modgenob %s setconst %s",  //
                 objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),   //
                 debug_outstr_value_BM (_.setconst, CURFRAME_BM, 0));
+  _.failhsetob = objgetattr_BM (_.modgenob, k_failure_set);
+  if (_.failhsetob)
+    {
+      DBGPRINTF_BM ("@@prepare_module°basiclo*module modulob %s modgenob %s failhsetob %s", objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),      //
+                    objectdbg2_BM (_.failhsetob));
+      WEAKASSERT_BM (isobject_BM (_.failhsetob));
+      WEAKASSERT_BM (objhashashsetpayl_BM (_.failhsetob));
+      _.setfail = (value_tyBM) objhashsettosetpayl_BM (_.failhsetob);
+      objputattr_BM (_.modgenob, k_failure_set, _.setfail);
+    };
+
   objputattr_BM (_.modgenob, k_constants, _.setconst);
   DBGPRINTF_BM
     ("@@prepare_module°basiclo*module done complete_module modulob=%s modgenob=%s",
