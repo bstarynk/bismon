@@ -3712,6 +3712,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   DBGPRINTF_BM
     ("@@emit_module°plain_module modulob=%s /%s made modgenob=%s *sbuf*",
      objectdbg_BM (_.modulob), modulidbuf, objectdbg1_BM (_.modgenob));
+  DBGPRINTF_BM ("@@emit_module°plain_module made modgenob=%s @%p",
+                objectdbg_BM (_.modgenob), (void *) _.modgenob);
   if (isclosure_BM (_.closgenv))
     {
       DBGPRINTF_BM

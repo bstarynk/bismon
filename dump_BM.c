@@ -28,6 +28,11 @@ dumpgcmark_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du,
   ASSERT_BM (((typedhead_tyBM *) du)->htyp == typayl_dumper_BM);
   ASSERT_BM (!fromob || isobject_BM (fromob));
   ASSERT_BM (!fromob || fromob == du->dump_object);
+  uint8_t oldmark = ((typedhead_tyBM *) du)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) du)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
   gcobjmark_BM (gc, (value_tyBM) du->dump_object);
   VALUEGCPROC_BM (gc, du->dump_dir, 0);
   EXTENDEDGCPROC_BM (gc, du->dump_hset, du->dump_object, 0);

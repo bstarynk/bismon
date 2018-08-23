@@ -21,7 +21,7 @@ const char modulmd5chksum_3BFt4NfJmZC_7iYi2dwM38B_BM[] = BISMON_MOMD5;
 extern const char *const routid_3BFt4NfJmZC_7iYi2dwM38B_BM[17 + 1];
 
 
-// no failure
+// 2 failures
 
 extern objrout_sigBM crout_0cUdonky1bM_4IVhwlVRBMk_BM;  //#0 !webhandler testhello minifunc
 

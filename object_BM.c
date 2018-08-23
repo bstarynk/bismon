@@ -340,6 +340,7 @@ objectgcdestroy_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
   obj->ob_compvec = NULL;
   obj->ob_attrassoc = NULL;
   obj->ob_rout = NULL;
+  obj->ob_payl = NULL;
   // should remove the object from its bucket
   const rawid_tyBM id = obj->ob_id;
   ASSERT_BM (validid_BM (id));

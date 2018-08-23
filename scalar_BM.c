@@ -494,6 +494,11 @@ strbuffergcmark_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf,
   ASSERT_BM (sbuf->sbuf_size > 0);
   ASSERT_BM (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
              && sbuf->sbuf_curp < sbuf->sbuf_dbuf + sbuf->sbuf_size);
+  uint8_t oldmark = ((typedhead_tyBM *) sbuf)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) sbuf)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
 }                               /* end  strbuffergcmark_BM */
 
 
