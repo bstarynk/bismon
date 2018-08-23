@@ -1620,8 +1620,25 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // browse_data°sbuf_object
       ("non-object for method to browse_data for sbuf_object-s _8L6mTIICJRt_4RccFDlgACX");
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
-  WEAKASSERT_BM (objhasstrbufferpayl_BM (_.objbrows));
 #ifdef BISMONGTK
+  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
+  if (!objpayload_BM (_.objbrows))
+    {
+      gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,
+                                        "|no payload in sbuf_object|", -1,
+                                        miscomm_brotag_BM, NULL);
+      gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+      return;
+    }
+  else if (!objhasstrbufferpayl_BM (_.objbrows))
+    {
+      gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,
+                                        "|bad payload in sbuf_object|", -1,
+                                        miscomm_brotag_BM, NULL);
+      gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+      return;
+    }
+  WEAKASSERT_BM (objhasstrbufferpayl_BM (_.objbrows));
   const char *strsb = objstrbufferbytespayl_BM (_.objbrows);
   int bylen = objstrbufferlengthpayl_BM (_.objbrows);
   int unilen = g_utf8_strlen (strsb, bylen);
@@ -1632,7 +1649,6 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // browse_data°sbuf_object
       eol = strchr (pc, '\n');
       nblines++;
     }
-  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   {
     char bufmsg[48];
     memset (bufmsg, 0, sizeof (bufmsg));
