@@ -74,6 +74,12 @@
 	    <property name='use-underline'>true</property>
           </object>
         </child>
+        <child>
+          <object class='GtkMenuItem' id='objectshow_id'>
+            <property name='label'>show object</property>
+	    <property name='use-underline'>true</property>
+          </object>
+        </child>
       </object>
     </child>
   </object>

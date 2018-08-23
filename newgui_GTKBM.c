@@ -107,6 +107,7 @@ struct objectview_newgui_stBM
 
 static struct objectview_newgui_stBM *curobjview_newgui_BM;
 static void newobwin_newgui_cbBM (void);
+static void objshow_newgui_cbBM (void);
 /// see https://specifications.freedesktop.org/icon-naming-spec/latest/
 
 
@@ -583,6 +584,10 @@ initialize_newgui_BM (const char *builderfile, const char *cssfile)
       GTK_WIDGET (gtk_builder_get_object (bld, "objectnewobwin_id"));
     ASSERT_BM (GTK_IS_WIDGET (newobwinmenu));
     g_signal_connect (newobwinmenu, "activate", newobwin_newgui_cbBM, NULL);
+    GtkWidget *objshowmenu =
+      GTK_WIDGET (gtk_builder_get_object (bld, "objectshow_id"));
+    ASSERT_BM (GTK_IS_WIDGET (newobwinmenu));
+    g_signal_connect (objshowmenu, "activate", objshow_newgui_cbBM, NULL);
     GtkWidget *objectmenu =
       GTK_WIDGET (gtk_builder_get_object (bld, "menuobject_id"));
     ASSERT_BM (GTK_IS_WIDGET (objectmenu));
@@ -4010,6 +4015,85 @@ newobwin_newgui_cbBM (void)
 }                               /* end newobwin_newgui_cbBM */
 
 
+static bool objshow_check_clipboard_bm (GtkClipboard *, GtkEntry *);
+
+void
+objshow_newgui_cbBM (void)
+{
+  DBGPRINTF_BM ("objshow_newgui_cbBM start");
+  GtkWidget *objshowdialog = gtk_message_dialog_new_with_markup //
+    (GTK_WINDOW (mainwin_BM),
+     GTK_DIALOG_DESTROY_WITH_PARENT,
+     GTK_MESSAGE_QUESTION,
+     GTK_BUTTONS_OK_CANCEL,
+     "<b>show object</b>");
+  GtkWidget *objshowmsgarea =
+    gtk_message_dialog_get_message_area (objshowdialog);
+  GtkWidget *objshowframe = gtk_frame_new ("show:");
+  GtkWidget *objshowentry = gtk_entry_new ();
+  GtkWidget *objshowstatus = gtk_statusbar_new ();
+  bool foundtext = false;
+  gtk_entry_set_width_chars (GTK_ENTRY (objshowentry), 64);
+  gtk_container_add (GTK_CONTAINER (objshowframe), objshowentry);
+  gtk_container_add (GTK_CONTAINER (objshowmsgarea), objshowframe);
+  gtk_container_add (GTK_CONTAINER (objshowmsgarea), objshowstatus);
+  GtkClipboard *primclip = gtk_clipboard_get (GDK_SELECTION_PRIMARY);
+  GtkClipboard *selclip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
+  foundtext = objshow_check_clipboard_bm (primclip, objshowentry);
+  if (!foundtext)
+    foundtext = objshow_check_clipboard_bm (selclip, objshowentry);
+  gtk_widget_show_all (objshowdialog);
+  int runres = gtk_dialog_run (GTK_DIALOG (objshowdialog));
+  gchar *oshtext = gtk_entry_get_text (GTK_ENTRY (objshowentry));
+  DBGPRINTF_BM ("objshow_newgui_cbBM runres=%d (%s) oshtext='%s'", runres,
+                (runres == GTK_RESPONSE_OK) ? "ok"
+                : (runres == GTK_RESPONSE_CANCEL) ? "cancel" : "??", oshtext);
+  gtk_widget_destroy (objshowdialog);
+}                               /* end objshow_newgui_cbBM */
+
+bool
+objshow_check_clipboard_bm (GtkClipboard * clip, GtkEntry * ent)
+{
+  gchar *ctext = gtk_clipboard_wait_for_text (clip);
+  if (!ctext)
+    return false;
+  char *end = NULL;
+  if (ctext[0] == '_' && isdigit (ctext[1]))
+    {
+      rawid_tyBM cid = parse_rawid_BM (ctext, &end);
+      if (cid.id_hi && cid.id_lo && end && (*end == 0 || isspace (*end)))
+        {
+          char bufid[32];
+          memset (bufid, 0, sizeof (bufid));
+          ASSERT_BM (end - ctext < sizeof (bufid));
+          strncpy (bufid, ctext, end - ctext);
+          gtk_entry_set_text (ent, bufid);
+          g_free (ctext);
+          return true;
+        }
+    }
+  if (isalpha (ctext[0]))
+    {
+      end = ctext;
+      while (isalnum (*end) || (*end == '_' && isalnum (end[1])))
+        end++;
+      if (*end == 0 && validname_BM (ctext))
+        {
+          gtk_entry_set_text (ent, ctext);
+          g_free (ctext);
+          return true;
+        };
+      char *duptext = strndup (ctext, end - ctext);
+      if (duptext && validname_BM (duptext))
+        {
+          gtk_entry_set_text (ent, duptext);
+          free (duptext);
+        }
+      g_free (ctext);
+      return true;
+    }
+  return false;
+}                               /* end objshow_check_clipboard_bm */
 
 static void
 defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data);
