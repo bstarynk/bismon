@@ -690,6 +690,7 @@ struct parser_stBM              /* for typayl_parser_BM */
   unsigned pars_memolsize;      /* allocated size of pars_memolines  */
   unsigned pars_memolcount;     /* used count of pars_memolines  */
   struct memolineoffset_stBM *pars_memolines;   // calloc-ed
+  void *pars_clientdata;        /* client data, for parsing routines */
 };                              /* end struct parser_stBM */
 
 struct dict_stBM
