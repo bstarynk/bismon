@@ -2732,6 +2732,14 @@ ROUTINEOBJNAME_BM (_2oeeFe9Sdzx_8NaM3HUadSP)    // miniscan_stmt°basiclo_fail
          objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
          objectdbg2_BM (_.failhsetob));
     }
+  else
+    DBGPRINTF_BM
+      ("miniscan_stmt°basiclo_fail stmtob %s modgenob %s got failhsetob %s containing %s",
+       objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
+       objectdbg2_BM (_.failhsetob),
+       debug_outstr_value_BM ((value_tyBM)
+                              objhashsettosetpayl_BM (_.failhsetob),
+                              CURFRAME_BM, 0));
   _.consthsetob = objectcast_BM (objgetattr_BM (_.modgenob, k_constants));
   DBGPRINTF_BM
     ("miniscan_stmt°basiclo_fail stmtob %s modgenob %s  failhsetob %s consthsetob %s",
