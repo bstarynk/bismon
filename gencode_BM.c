@@ -2727,6 +2727,7 @@ ROUTINEOBJNAME_BM (_2oeeFe9Sdzx_8NaM3HUadSP)    // miniscan_stmt°basiclo_fail
       objputclass_BM (_.failhsetob, k_hset_object);
       objputhashsetpayl_BM (_.failhsetob, 32);
       objtouchnow_BM (_.failhsetob);
+      objputattr_BM (_.modgenob, k_failure_set, _.failhsetob);
       DBGPRINTF_BM
         ("miniscan_stmt°basiclo_fail stmtob %s modgenob %s made failhsetob %s",
          objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),

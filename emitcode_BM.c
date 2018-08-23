@@ -1648,6 +1648,7 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                                            ROUTINESUFFIX_BM "[%d] /*|%s*/)",
                                            modulidbuf, kix,
                                            objectdbg2_BM (_.expob));
+                LOCALJUSTRETURN_BM ();
               }
             else
               FAILHERE (BMP_object);

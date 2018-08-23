@@ -437,7 +437,7 @@ typestring_BM (int ty)
 #endif /*BISMONION*/
     default:
       {
-        static char buf[32];
+        static thread_local char buf[32];
         snprintf (buf, sizeof (buf), "?ty#%d?", ty);
         return buf;
       }
