@@ -20,10 +20,10 @@
 #include "guicode_BM.const.h"
 
 
-/// method to browse_in_object for object-s
+/// method to browse_in_object°object-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d);
 value_tyBM
-ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
+ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //browse_in_object°object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the depth
@@ -175,6 +175,9 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //
         gtk_text_buffer_insert (brobuf, &browserit_BM, "!: ", -1);
         browse_value_BM ((const value_tyBM) _.curattr,
                          CURFRAME_BM, maxdepth, 2);
+        browsespacefordepth_BM (1);
+        gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "|\342\207\242|",      //⇢ U+21E2 RIGHTWARDS DASHED ARROW
+                                          -1, miscomm_brotag_BM, NULL);
         browsespacefordepth_BM (1);
         browse_value_BM ((const value_tyBM) _.curval,
                          CURFRAME_BM, maxdepth, 1);
@@ -393,6 +396,9 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // browse_data°class
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, " ", -1, NULL, NULL);
       browse_value_BM ((const value_tyBM) _.cursel, CURFRAME_BM, 2, 1);
+      browsespacefordepth_BM (1);
+      gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "|\342\207\242|",        //U+21E2 RIGHTWARDS DASHED ARROW ⇢
+                                        -1, miscomm_brotag_BM, NULL);
       browsespacefordepth_BM (1);
       browse_value_BM ((const value_tyBM) _.curval, CURFRAME_BM, depth, 1);
       gtk_text_buffer_insert_with_tags (brobuf,
