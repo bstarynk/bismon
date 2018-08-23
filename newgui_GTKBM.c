@@ -323,6 +323,14 @@ const struct parserops_stBM parsop_command_nobuild_newgui_BM = {
   .parsop_decorate_start_nesting_rout = parsstartnesting_guicmd_BM,
 };
 
+static parser_error_sigBM parserror_showobj_BM;
+const struct parserops_stBM parsop_showobj_newgui_BM = {
+  .parsop_magic = PARSOPMAGIC_BM,       //
+  .parsop_serial = 5,           //
+  .parsop_nobuild = false,      //
+  .parsop_error_rout = parserror_showobj_BM,
+};
+
 GtkWidget *
 initialize_newgui_command_scrollview_BM (void)
 {
@@ -3967,6 +3975,13 @@ populatepopup_objview_newgui_BM (GtkTextView * txview, GtkWidget * popup,
   gtk_menu_shell_append (GTK_MENU_SHELL (popup),
                          gtk_separator_menu_item_new ());
   {
+    GtkWidget *showobmenit =    //
+      gtk_menu_item_new_with_label ("show object");
+    gtk_menu_shell_append (GTK_MENU_SHELL (popup), showobmenit);
+    g_signal_connect (showobmenit, "activate",
+                      G_CALLBACK (objshow_newgui_cbBM), NULL);
+  }
+  {
     GtkWidget *cursinfomenit =  //
       gtk_menu_item_new_with_label (cursinfobuf);
     gtk_widget_set_sensitive (cursinfomenit, false);
@@ -4017,10 +4032,25 @@ newobwin_newgui_cbBM (void)
 
 static bool objshow_check_clipboard_bm (GtkClipboard *, GtkEntry *);
 
+#define OBSHOW_MAGIC_BM 0x065c4215      /*106709525 */
+struct objshow_stBM
+{
+  unsigned obshow_magic;
+  jmp_buf obshow_jbuf;
+  GtkEntry *obshow_entry;
+  GtkStatusbar *obshow_status;
+  guint obshow_stctxid;
+};
+
 void
 objshow_newgui_cbBM (void)
 {
+  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
+                 objectval_tyBM * showob;       // object to show
+                 objectval_tyBM * parsob;       // parser object
+    );
   DBGPRINTF_BM ("objshow_newgui_cbBM start");
+  ASSERT_BM (pthread_self () == mainthreadid_BM);
   GtkWidget *objshowdialog = gtk_message_dialog_new_with_markup //
     (GTK_WINDOW (mainwin_BM),
      GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -4032,6 +4062,9 @@ objshow_newgui_cbBM (void)
   GtkWidget *objshowframe = gtk_frame_new ("show:");
   GtkWidget *objshowentry = gtk_entry_new ();
   GtkWidget *objshowstatus = gtk_statusbar_new ();
+  guint objshowstctxid =
+    gtk_statusbar_get_context_id (GTK_STATUSBAR (objshowstatus),
+                                  "shown object error");
   bool foundtext = false;
   gtk_entry_set_width_chars (GTK_ENTRY (objshowentry), 64);
   gtk_container_add (GTK_CONTAINER (objshowframe), objshowentry);
@@ -4039,17 +4072,123 @@ objshow_newgui_cbBM (void)
   gtk_container_add (GTK_CONTAINER (objshowmsgarea), objshowstatus);
   GtkClipboard *primclip = gtk_clipboard_get (GDK_SELECTION_PRIMARY);
   GtkClipboard *selclip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-  foundtext = objshow_check_clipboard_bm (primclip, objshowentry);
+  foundtext = objshow_check_clipboard_bm (primclip, GTK_ENTRY (objshowentry));
   if (!foundtext)
-    foundtext = objshow_check_clipboard_bm (selclip, objshowentry);
+    foundtext =
+      objshow_check_clipboard_bm (selclip, GTK_ENTRY (objshowentry));
   gtk_widget_show_all (objshowdialog);
-  int runres = gtk_dialog_run (GTK_DIALOG (objshowdialog));
-  gchar *oshtext = gtk_entry_get_text (GTK_ENTRY (objshowentry));
-  DBGPRINTF_BM ("objshow_newgui_cbBM runres=%d (%s) oshtext='%s'", runres,
-                (runres == GTK_RESPONSE_OK) ? "ok"
-                : (runres == GTK_RESPONSE_CANCEL) ? "cancel" : "??", oshtext);
+  bool again = false;
+  do
+    {
+      int runres = gtk_dialog_run (GTK_DIALOG (objshowdialog));
+      gchar *oshtext = gtk_entry_get_text (GTK_ENTRY (objshowentry));
+      DBGPRINTF_BM ("objshow_newgui_cbBM runres=%d (%s) oshtext='%s'", runres,
+                    (runres == GTK_RESPONSE_OK) ? "ok"
+                    : (runres == GTK_RESPONSE_CANCEL) ? "cancel" : "??",
+                    oshtext);
+      if (runres == GTK_RESPONSE_OK)
+        {
+          struct objshow_stBM osh;
+          memset (&osh, 0, sizeof (osh));
+          _.parsob = makeobj_BM ();
+          struct parser_stBM *showpars =
+            makeparser_memopen_BM (oshtext, -1, _.parsob);
+          showpars->pars_ops = &parsop_showobj_newgui_BM;
+          showpars->pars_clientdata = &osh;
+          osh.obshow_entry = GTK_ENTRY (objshowentry);
+          osh.obshow_status = GTK_STATUSBAR (objshowstatus);
+          osh.obshow_stctxid = objshowstctxid;
+          osh.obshow_magic = OBSHOW_MAGIC_BM;
+          gtk_statusbar_remove_all (GTK_STATUSBAR (objshowstatus),
+                                    objshowstctxid);
+          // should setjmp
+          volatile int errpars = setjmp (osh.obshow_jbuf);
+          ASSERT_BM (osh.obshow_magic == OBSHOW_MAGIC_BM);
+          if (!errpars)
+            {
+              // should parse
+              bool gotob = false;
+              _.showob =
+                parsergetobject_BM (showpars, CURFRAME_BM, 0, &gotob);
+              if (gotob)
+                {
+                  DBGPRINTF_BM ("objshow_newgui_cbBM showob %s",
+                                objectdbg_BM (_.showob));
+                  if (!obwin_current_newgui_BM)
+                    parsererrorprintf_BM (showpars,
+                                          CURFRAME_BM,
+                                          1,
+                                          0,
+                                          "no current object window to show object %s",
+                                          objectdbg_BM (_.showob));
+                  show_object_in_obwin_newgui_BM
+                    (obwin_current_newgui_BM, _.showob,
+                     BMP_browse_in_object, browserdepth_BM, CURFRAME_BM);
+                  log_begin_message_BM ();
+                  log_puts_message_BM ("showing object ");
+                  log_object_message_BM (_.showob);
+                  log_printf_message_BM
+                    (" at depth %d in obwin#%d.", browserdepth_BM,
+                     obwin_current_newgui_BM->obw_rank);
+                  log_end_message_BM ();
+                }
+              else
+                {
+                  DBGPRINTF_BM ("objshow_newgui_cbBM without showob");
+                  parsererrorprintf_BM (showpars, 0, 0, "no object to show",
+                                        NULL);
+                }
+            }
+          else
+            {                   // got an error, so longjumped
+              DBGPRINTF_BM ("objshow_newgui_cbBM errpars %d", errpars);
+              objclearpayload_BM (_.parsob);
+              gtk_widget_show_all (objshowdialog);
+              again = true;
+            }
+          memset (&osh, 0, sizeof (osh));
+        }
+    }
+  while (again);
+  if (_.parsob)
+    objclearpayload_BM (_.parsob);
   gtk_widget_destroy (objshowdialog);
 }                               /* end objshow_newgui_cbBM */
+
+
+
+void
+parserror_showobj_BM (struct parser_stBM *pars,
+                      struct stackframe_stBM *stkf,
+                      unsigned lineno, unsigned colpos, char *msg)
+{
+
+  LOCALFRAME_BM ( /*prev: */ stkf,
+                 /*descr: */ NULL,
+                 objectval_tyBM * parsob;       //
+    );
+  ASSERT_BM (isparser_BM (pars));
+  ASSERT_BM (pars->pars_clientdata != NULL);
+  struct objshow_stBM *posh = (struct objshow_stBM *) pars->pars_clientdata;
+  ASSERT_BM (posh->obshow_magic == OBSHOW_MAGIC_BM);
+  DBGPRINTF_BM ("parserror_showobj_BM L%uC%u msg: %s", lineno, colpos, msg);
+  if (lineno <= 1)
+    gtk_editable_set_position (GTK_EDITABLE (posh->obshow_entry), colpos);
+  char *dynmsg = NULL;
+  if (colpos <= 1)
+    asprintf (&dynmsg, "error at C%u: %s", colpos, msg);
+  else
+    asprintf (&dynmsg, "error at L%uC%u: %s", lineno, colpos, msg);
+  if (!dynmsg)
+    FATAL_BM ("asprintf failure in parserror_showobj_BM L%uC%u: %s", lineno,
+              colpos, msg);
+  gtk_statusbar_push (GTK_STATUSBAR (posh->obshow_status),
+                      posh->obshow_stctxid, dynmsg);
+  free (dynmsg), dynmsg = NULL;
+  longjmp (posh->obshow_jbuf, 1);
+}                               /* end parserror_showobj_BM */
+
+
 
 bool
 objshow_check_clipboard_bm (GtkClipboard * clip, GtkEntry * ent)
