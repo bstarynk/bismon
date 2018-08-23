@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 879 objects
+// for 883 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -8342,6 +8342,20 @@ _1yHf2QrNJFe_26wMXjkynuo
 
 
 
+!(_0zlMtG04jy8_2ij3xWk69MU
+!@ 1534998043.544
+!$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "when v1 (resp v2) fail it"
+!: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
+ 2
+!# 2
+!& _6rLRowianAH_7gjV4CQfF2H
+!& _9pBXyzeTmNj_3WcrC3zEfni
+!)_0zlMtG04jy8_2ij3xWk69MU
+
+
+
 !(_0zzJJsAL6Qm_2uw3eoWQHEq
 !|*
 !@ 1513408055.840
@@ -9135,12 +9149,12 @@ _6CNxxDuR549_5nVIV57U3hP
 
 
 !(_2bqYsdDkB6J_35rYPGvtKa2
-!@ 1534946609.827
+!@ 1534997859.932
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "test failure v1"
+ "test failure v1 v2"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
- [ _5EEITf6IFH7_4DbKG99zcPW ]
+ [ _5EEITf6IFH7_4DbKG99zcPW _09RxU8xDco3_2Zxwfb13oDZ ]
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3qw9bnATIhq_8loBraLeXzQ
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
@@ -9974,12 +9988,12 @@ _39pW7nyFqoI_5pikyvvGsZ5
 
 
 !(_4b2oGzfvQk3_05M6ivLYFqs
-!@ 1534946710.643
+!@ 1534998043.544
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of test failure"
 !# 1
-!& _84tMaQ1iMDp_7GOOx5r50xD
+!& _0zlMtG04jy8_2ij3xWk69MU
 !)_4b2oGzfvQk3_05M6ivLYFqs
 
 
@@ -11078,6 +11092,19 @@ _6yWldsq3Rmk_01WqTfwSIDV
 
 
 
+!(_6rLRowianAH_7gjV4CQfF2H
+!@ 1534998043.542
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "when v1 fail it"
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+_5EEITf6IFH7_4DbKG99zcPW
+!# 1
+!& _84tMaQ1iMDp_7GOOx5r50xD
+!)_6rLRowianAH_7gjV4CQfF2H
+
+
+
 !(_6xPQJolJkUw_2jCiJ3IOKXE
 !|*
 !@ 1520702653.450
@@ -11654,6 +11681,17 @@ _2Zv64CfoneM_4dyKtH2SMQ3
 !& _4Y28SaFq44X_6qJmQdN4DMt
 !& _6mmsQZI3VuT_9OYUPR9OrsR
 !)_839zJGrmf26_2hQq2r1ehkR
+
+
+
+!(_83VdjnhqoG6_84VIp0qH5yM
+!@ 1534998043.543
+!$_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "fail v2"
+!: _085lT8c13Ik_11pcWJfcLeM |=fail|
+_09RxU8xDco3_2Zxwfb13oDZ
+!)_83VdjnhqoG6_84VIp0qH5yM
 
 
 
@@ -12387,6 +12425,19 @@ _0UHZG9vDlR2_2Aqx86LMFuq
 !: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
 _6jZqk9RP0Pe_12cIgV9WMFC
 !)_9osbAnIQdp8_6wVcWPdPIBQ
+
+
+
+!(_9pBXyzeTmNj_3WcrC3zEfni
+!@ 1534998043.544
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "when v2 fail it"
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+_09RxU8xDco3_2Zxwfb13oDZ
+!# 1
+!& _83VdjnhqoG6_84VIp0qH5yM
+!)_9pBXyzeTmNj_3WcrC3zEfni
 
 
 
