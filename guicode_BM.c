@@ -1280,6 +1280,8 @@ ROUTINEOBJNAME_BM (_01zabIzVKNR_8AGQGMBkSd7)    //commandhandler#,insert
                 objectdbg_BM (_.obj), rk,
                 debug_outstr_value_BM (_.val, CURFRAME_BM, 0));
   objinsertonecomp_BM (_.obj, rk, _.val);
+  DBGPRINTF_BM ("commandhandler#,insert after objinsertonecomp obj %s rk %d",
+                objectdbg_BM (_.obj), rk);
   if (pthread_self () == mainthreadid_BM)
     {
       log_begin_message_BM ();
