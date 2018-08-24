@@ -4131,6 +4131,12 @@ objshow_newgui_cbBM (void)
                     (" at depth %d in obwin#%d.", browserdepth_BM,
                      obwin_current_newgui_BM->obw_rank);
                   log_end_message_BM ();
+                  if (gui_command_log_file_BM)
+                    {
+                      fprintf (gui_command_log_file_BM, "//! showing %s\n",
+                               objectdbg_BM (_.showob));
+                      fflush (gui_command_log_file_BM);
+                    }
                 }
               else
                 {
