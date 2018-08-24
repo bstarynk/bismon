@@ -1150,7 +1150,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                   _.o_6Z4UU939WbU_8BK9xcKsXNb = //assign _2wctxoT0H2b_6wS53ggKTfT     
 /*sequencenthcomp:*/
                                     sequencenthcomp_BM
-                                    ((const seqobjval_tyBM
+                                    ((const seqobval_tyBM
                                       *) (_.v_7nytuRkZkOz_8T9QMYQtGps),
                                      (_.n_81BTKsrnoY8_2DoVevLPfsN));
 // while _9MmVsIQi0Gu_8lv339Vx7z8 comp#1:    
