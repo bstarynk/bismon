@@ -200,7 +200,7 @@ typedef void anyassoc_tyBM;
 
 struct datavectval_stBM
 {                               /* typayl_vectval_BM */
-  typedsize_tyBM pA;            /// rlen is allocated size, siz is used length
+  typedsize_tyBM pA;            /// rlen is allocated size, size is used length
   value_tyBM vec_data[];        // of rlen elements
 };
 

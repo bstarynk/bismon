@@ -46,7 +46,7 @@ maketuple_BM (objectval_tyBM ** arr, unsigned rawsiz)
     if (arr[ix])
       {
         const objectval_tyBM *curob = arr[ix];
-        if (!isobject_BM (curob))
+        if (!isobject_BM ((value_tyBM) curob))
           continue;
         hash_tyBM curhash = objecthash_BM (curob);
         if (curhash == 0)
@@ -128,7 +128,7 @@ maketuplecollect_BM (value_tyBM first, ...)
       else if (issequence_BM (curarg))
         {
           unsigned seqlen = sequencesize_BM (curarg);
-          for (int six = 0; six < seqlen; six++)
+          for (int six = 0; six < (int) seqlen; six++)
             {
               arr[cnt++] = sequencenthcomp_BM (curarg, six);
             }
@@ -289,7 +289,7 @@ makeset_BM (const objectval_tyBM ** arr, unsigned rawsiz)
   for (unsigned ix = 0; ix < rawsiz; ix++)
     if (arr[ix])
       {
-        if (!isobject_BM (arr[ix]))
+        if (!isobject_BM ((value_tyBM) arr[ix]))
           continue;
         siz++;
       };
@@ -303,7 +303,7 @@ makeset_BM (const objectval_tyBM ** arr, unsigned rawsiz)
     FATAL_BM ("makeset cannot allocate tmparr siz=%u", siz);
   unsigned cnt = 0;
   for (unsigned ix = 0; ix < rawsiz; ix++)
-    if (isobject_BM (arr[ix]))
+    if (isobject_BM ((value_tyBM) arr[ix]))
       tmparr[cnt++] = arr[ix];
   ASSERT_BM (cnt == siz);
   sortobjarr_BM ((objectval_tyBM **) tmparr, siz);
@@ -389,7 +389,7 @@ makesizedset_BM (unsigned nbargs, ...)
       arr[cnt++] = curob;
     }
   va_end (args);
-  const setval_tyBM *res = makeset_BM (arr, cnt);
+  const setval_tyBM *res = makeset_BM ((const objectval_tyBM **) arr, cnt);
   if (arr != tinyarr)
     free (arr), arr = NULL;
   return res;
@@ -430,7 +430,7 @@ makesetcollect_BM (value_tyBM first, ...)
       else if (issequence_BM (curarg))
         {
           unsigned seqlen = sequencesize_BM (curarg);
-          for (int six = 0; six < seqlen; six++)
+          for (int six = 0; six < (int) seqlen; six++)
             {
               arr[cnt++] = sequencenthcomp_BM (curarg, six);
             }
@@ -440,7 +440,8 @@ makesetcollect_BM (value_tyBM first, ...)
     }
   va_end (args);
   ASSERT_BM (cnt == siz);
-  const tupleval_tyBM *restup = makeset_BM (arr, cnt);
+  const tupleval_tyBM *restup =
+    makeset_BM ((const objectval_tyBM **) arr, cnt);
   if (arr != tinyarr)
     free (arr), arr = NULL;
   return restup;
@@ -495,7 +496,7 @@ makesizedcollectset_BM (unsigned nbargs, ...)
     }
   va_end (args);
   ASSERT_BM (cnt == siz);
-  const setval_tyBM *rset = makeset_BM (arr, cnt);
+  const setval_tyBM *rset = makeset_BM ((const objectval_tyBM **) arr, cnt);
   if (arr != tinyarr)
     free (arr), arr = NULL;
   return rset;
@@ -657,51 +658,60 @@ setgcproc_BM (struct garbcoll_stBM *gc, setval_tyBM * set)
 
 ////////////////////////////////////////////////////////////////
 
+// allocated size:
+#define DATAVECT_ASIZ_BM(Dvect) (((typedhead_tyBM *) (Dvect))->rlen)
+// used length:
+#define DATAVECT_ULEN_BM(Dvect)  (((typedsize_tyBM *) (Dvect))->size)
+
 struct datavectval_stBM *
 datavect_grow_BM (struct datavectval_stBM *dvec, unsigned gap)
 {
   if (valtype_BM ((const value_tyBM) dvec) != typayl_vectval_BM)
     {
-      unsigned siz = prime_above_BM (gap);
+      unsigned siz = prime_above_BM (gap + ILOG2_BM (gap + 2));
       dvec =
         allocgcty_BM (typayl_vectval_BM,
                       sizeof (struct datavectval_stBM)
                       + siz * sizeof (void *));
-      ((typedhead_tyBM *) dvec)->rlen = siz;
-      ((typedsize_tyBM *) dvec)->size = gap;
+      DATAVECT_ASIZ_BM (dvec) = siz;
+      DATAVECT_ULEN_BM (dvec) = gap;
       return dvec;
     }
-  unsigned oldlen = ((typedhead_tyBM *) dvec)->rlen;
-  unsigned oldcnt = ((typedsize_tyBM *) dvec)->size;
-  if (oldcnt + gap <= oldlen)
+  unsigned oldasiz = DATAVECT_ASIZ_BM (dvec);
+  unsigned oldulen = DATAVECT_ULEN_BM (dvec);
+  memset (dvec->vec_data + oldulen, 0, gap * sizeof (void *));
+  if (oldulen + gap <= oldasiz)
     return dvec;
-  unsigned long siz = prime_above_BM (oldlen + gap + (oldcnt + gap) / 32 + 2);
-  if (siz > MAXSIZE_BM)
-    FATAL_BM ("too big datavect %ld", siz);
+  unsigned long newsiz =        //
+    prime_above_BM (oldulen + gap + ILOG2_BM (oldulen + gap + 2));
+  if (newsiz > MAXSIZE_BM)
+    FATAL_BM ("too big datavect %ld", newsiz);
+  if (newsiz <= oldasiz)
+    return dvec;
   unsigned long vecsiz =
-    sizeof (struct datavectval_stBM) + siz * sizeof (void *);
+    sizeof (struct datavectval_stBM) + newsiz * sizeof (void *);
   ASSERT_BM (vecsiz < ((4L * MAXSIZE_BM / 3) + 5L) * sizeof (void *));
   struct datavectval_stBM *newdvec =    //
     allocgcty_BM (typayl_vectval_BM, vecsiz);
-  ((typedhead_tyBM *) newdvec)->rlen = siz;
-  ((typedsize_tyBM *) newdvec)->size = oldcnt + gap;
-  memcpy (newdvec->vec_data, dvec->vec_data, oldcnt * sizeof (void *));
+  DATAVECT_ASIZ_BM (newdvec) = newsiz;
+  DATAVECT_ULEN_BM (newdvec) = oldulen + gap;
   return newdvec;
 }                               /* end of datavect_grow_BM */
+
+
 
 void
 datavectgcdestroy_BM (struct garbcoll_stBM *gc, struct datavectval_stBM *dvec)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (((typedhead_tyBM *) dvec)->htyp == typayl_vectval_BM);
-  unsigned siz = ((typedhead_tyBM *) dvec)->rlen;
-  ASSERT_BM (siz < MAXSIZE_BM);
-  unsigned long vecsiz =
-    sizeof (struct datavectval_stBM) + siz * sizeof (void *);
-  ASSERT_BM (vecsiz < ((4L * MAXSIZE_BM / 3) + 5L) * sizeof (void *));
-  memset (dvec, 0, sizeof (*dvec) + siz * sizeof (void *));
+  unsigned asiz = DATAVECT_ASIZ_BM (dvec);
+  ASSERT_BM (asiz <= MAXSIZE_BM);
+  size_t bytsiz = sizeof (struct datavectval_stBM) + asiz * sizeof (void *);
+  ASSERT_BM (bytsiz < ((4L * MAXSIZE_BM / 3) + 5L) * sizeof (void *));
+  memset (dvec, 0, bytsiz);
   free (dvec);
-  gc->gc_freedbytes += vecsiz;
+  gc->gc_freedbytes += bytsiz;
 }                               /* end datavectgcdestroy_BM */
 
 
@@ -710,12 +720,11 @@ datavectgckeep_BM (struct garbcoll_stBM *gc, struct datavectval_stBM *dvec)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (((typedhead_tyBM *) dvec)->htyp == typayl_vectval_BM);
-  unsigned siz = ((typedhead_tyBM *) dvec)->rlen;
-  ASSERT_BM (siz < MAXSIZE_BM);
-  unsigned long vecsiz =
-    sizeof (struct datavectval_stBM) + siz * sizeof (void *);
-  ASSERT_BM (vecsiz < ((4L * MAXSIZE_BM / 3) + 5L) * sizeof (void *));
-  gc->gc_keptbytes += vecsiz;
+  unsigned asiz = DATAVECT_ASIZ_BM (dvec);
+  ASSERT_BM (asiz <= MAXSIZE_BM);
+  size_t bytsiz = sizeof (struct datavectval_stBM) + asiz * sizeof (void *);
+  ASSERT_BM (bytsiz < ((4L * MAXSIZE_BM / 3) + 5L) * sizeof (void *));
+  gc->gc_keptbytes += bytsiz;
 }                               /* end datavectgckeep_BM */
 
 
@@ -724,28 +733,32 @@ datavect_reserve_BM (struct datavectval_stBM *dvec, unsigned gap)
 {
   if (valtype_BM ((const value_tyBM) dvec) != typayl_vectval_BM)
     {
-      unsigned siz = prime_above_BM (gap);
+      unsigned asiz = prime_above_BM (gap + ILOG2_BM (gap + 1));
       dvec =
         allocgcty_BM (typayl_vectval_BM,
                       sizeof (struct datavectval_stBM)
-                      + siz * sizeof (void *));
-      ((typedhead_tyBM *) dvec)->rlen = siz;
+                      + asiz * sizeof (void *));
+      DATAVECT_ASIZ_BM (dvec) = asiz;
+      DATAVECT_ULEN_BM (dvec) = 0;
       return dvec;
     }
-  unsigned oldlen = ((typedhead_tyBM *) dvec)->rlen;
-  unsigned oldcnt = ((typedsize_tyBM *) dvec)->size;
-  if (oldcnt + gap <= oldlen)
+  unsigned oldasiz = DATAVECT_ASIZ_BM (dvec);
+  unsigned oldulen = DATAVECT_ULEN_BM (dvec);
+  if (oldulen + gap <= oldasiz)
     return dvec;
-  unsigned long siz = prime_above_BM (oldlen + gap + (oldcnt + gap) / 32 + 2);
-  if (siz > MAXSIZE_BM)
-    FATAL_BM ("too big datavect %ld", siz);
-  unsigned long vecsiz = sizeof (*dvec) + siz * sizeof (void *);
-  ASSERT_BM (vecsiz < ((4L * MAXSIZE_BM / 3) + 5L) * sizeof (void *));
+  unsigned long newasiz =
+    prime_above_BM (oldulen + gap + ILOG2_BM (oldulen + gap + 2));
+  if (newasiz > MAXSIZE_BM)
+    FATAL_BM ("too big datavect %lu", newasiz);
+  size_t bytsiz = sizeof (*dvec) + newasiz * sizeof (void *);
+  ASSERT_BM (bytsiz < ((4L * MAXSIZE_BM / 3) + 5L) * sizeof (void *));
+  if (newasiz <= oldasiz)
+    return dvec;
   struct datavectval_stBM *newdvec =    //
-    allocgcty_BM (typayl_vectval_BM, vecsiz);
-  ((typedhead_tyBM *) newdvec)->rlen = siz;
-  ((typedsize_tyBM *) newdvec)->size = oldcnt;
-  memcpy (newdvec->vec_data, dvec->vec_data, oldcnt * sizeof (void *));
+    allocgcty_BM (typayl_vectval_BM, bytsiz);
+  DATAVECT_ASIZ_BM (newdvec) = newasiz;
+  DATAVECT_ULEN_BM (newdvec) = oldulen;
+  memcpy (newdvec->vec_data, dvec->vec_data, oldulen * sizeof (void *));
   return newdvec;
 }                               /* end of datavect_reserve_BM */
 
@@ -754,104 +767,114 @@ datavect_reserve_BM (struct datavectval_stBM *dvec, unsigned gap)
 struct datavectval_stBM *
 datavect_append_BM (struct datavectval_stBM *dvec, value_tyBM val)
 {
+  if (!isgenuineval_BM (val))
+    val = NULL;
   if (valtype_BM ((const value_tyBM) dvec) != typayl_vectval_BM)
     {
-      unsigned siz = TINYSIZE_BM / 2;
+      unsigned newsiz = TINYSIZE_BM / 2;
       dvec =
         allocgcty_BM (typayl_vectval_BM,
                       sizeof (struct datavectval_stBM)
-                      + siz * sizeof (void *));
-      ((typedhead_tyBM *) dvec)->rlen = siz;
-      ((typedsize_tyBM *) dvec)->size = 1;
+                      + newsiz * sizeof (void *));
+      DATAVECT_ASIZ_BM (dvec) = newsiz;
+      DATAVECT_ULEN_BM (dvec) = 1;
       dvec->vec_data[0] = val;
       return dvec;
     }
-  if (!isgenuineval_BM (val))
-    val = NULL;
-  unsigned oldlen = ((typedhead_tyBM *) dvec)->rlen;
-  unsigned oldcnt = ((typedsize_tyBM *) dvec)->size;
-  if (oldcnt + 1 <= oldlen)
+  unsigned oldasiz = DATAVECT_ASIZ_BM (dvec);
+  unsigned oldulen = DATAVECT_ULEN_BM (dvec);
+  if (oldulen + 1 <= oldasiz)
     {
-      dvec->vec_data[oldcnt] = val;
-      ((typedsize_tyBM *) dvec)->size = oldcnt + 1;
+      dvec->vec_data[oldulen] = val;
+      DATAVECT_ULEN_BM (dvec) = oldulen + 1;
       return dvec;
     }
-  if (oldlen + 1 >= MAXSIZE_BM)
-    FATAL_BM ("datavect_append too big %u", oldlen);
-  unsigned newsiz = prime_above_BM (oldcnt + oldcnt / 5 + 4);
+  if (oldulen + 1 >= MAXSIZE_BM)
+    FATAL_BM ("datavect_append too big %u", oldulen);
+  unsigned newasiz =            //
+    prime_above_BM (oldulen + oldulen / 16 + ILOG2_BM (oldulen + 2));
+  if (newasiz <= oldasiz)
+    return dvec;
   struct datavectval_stBM *newdvec =    //
     allocgcty_BM (typayl_vectval_BM,
                   sizeof (struct datavectval_stBM)
-                  + newsiz * sizeof (void *));
-  ((typedhead_tyBM *) newdvec)->rlen = newsiz;
-  ((typedsize_tyBM *) newdvec)->size = oldcnt + 1;
-  memcpy (newdvec->vec_data, dvec->vec_data, oldcnt * sizeof (void *));
-  newdvec->vec_data[oldcnt] = val;
+                  + newasiz * sizeof (void *));
+  DATAVECT_ASIZ_BM (newdvec) = newasiz;
+  DATAVECT_ULEN_BM (newdvec) = oldulen + 1;
+  memcpy (newdvec->vec_data, dvec->vec_data, oldulen * sizeof (void *));
+  newdvec->vec_data[oldulen] = val;
   return newdvec;
 }                               /* end datavect_append_BM */
+
+
 
 struct datavectval_stBM *
 datavect_pop_BM (struct datavectval_stBM *dvec)
 {
   if (valtype_BM ((const value_tyBM) dvec) != typayl_vectval_BM)
     return NULL;
-  unsigned oldlen = ((typedhead_tyBM *) dvec)->rlen;
-  unsigned oldcnt = ((typedsize_tyBM *) dvec)->size;
-  if (oldcnt > 0)
+  unsigned oldasiz = DATAVECT_ASIZ_BM (dvec);
+  unsigned oldulen = DATAVECT_ULEN_BM (dvec);
+  if (oldulen > 0)
     {
-      dvec->vec_data[oldcnt - 1] = NULL;
-      ((typedsize_tyBM *) dvec)->size = --oldcnt;
-    };
-  if (oldlen > 6 && 2 * oldcnt < oldlen)
+      dvec->vec_data[oldulen - 1] = NULL;
+      oldulen--;
+      DATAVECT_ULEN_BM (dvec) = oldulen;
+    }
+  else
+    return dvec;
+  if (oldulen > TINYSIZE_BM / 2 && 2 * oldulen + 1 < oldasiz)
     {
-      unsigned newlen =
-        prime_above_BM (9 * oldcnt / 8 + ILOG2_BM (oldcnt + 2) + 3);
-      if (newlen < oldlen)
+      unsigned newasiz =        //
+        prime_above_BM (9 * oldulen / 8 + ILOG2_BM (oldulen + 2) + 2);
+      if (newasiz < oldasiz)
         {
           struct datavectval_stBM *newdvec =    //
             allocgcty_BM (typayl_vectval_BM,
                           sizeof (struct datavectval_stBM)
-                          + newlen * sizeof (void *));
-          ((typedhead_tyBM *) newdvec)->rlen = newlen;
-          ((typedsize_tyBM *) newdvec)->size = oldcnt;
+                          + newasiz * sizeof (void *));
+          DATAVECT_ASIZ_BM (newdvec) = newasiz;
+          DATAVECT_ULEN_BM (newdvec) = oldulen;
           memcpy (newdvec->vec_data, dvec->vec_data,
-                  oldcnt * sizeof (void *));
+                  oldulen * sizeof (void *));
           return newdvec;
         }
     }
   return dvec;
 }                               /* end datavect_pop_BM */
 
+
+
 struct datavectval_stBM *
 datavect_removeone_BM (struct datavectval_stBM *dvec, int ix)
 {
   if (valtype_BM ((const value_tyBM) dvec) != typayl_vectval_BM)
     return NULL;
-  unsigned oldlen = ((typedhead_tyBM *) dvec)->rlen;
-  unsigned oldcnt = ((typedsize_tyBM *) dvec)->size;
+  unsigned oldasiz = DATAVECT_ASIZ_BM (dvec);
+  unsigned oldulen = DATAVECT_ULEN_BM (dvec);
   if (ix < 0)
-    ix += oldcnt;
-  if (ix >= 0 && ix < (int) oldcnt)
+    ix += oldulen;
+  if (ix >= 0 && ix < (int) oldulen)
     {
-      for (int j = ix; j < (int) oldcnt - 1; j++)
+      for (int j = ix; j < (int) oldulen - 1; j++)
         dvec->vec_data[j] = dvec->vec_data[j + 1];
-      dvec->vec_data[oldcnt - 1] = NULL;
-      oldcnt--;
-      ((typedsize_tyBM *) dvec)->size = oldcnt;
-      if (oldlen > 6 && 2 * oldcnt < oldlen)
+      dvec->vec_data[oldulen - 1] = NULL;
+      oldulen--;
+      DATAVECT_ULEN_BM (dvec) = oldulen;
+      if (oldulen > TINYSIZE_BM / 2 && 2 * oldulen + 1 < oldasiz)
         {
-          unsigned newlen =
-            prime_above_BM (9 * oldcnt / 8 + ILOG2_BM (oldcnt + 2) + 3);
-          if (newlen < oldlen)
+          unsigned newasiz =
+            prime_above_BM (9 * oldulen / 8 + ILOG2_BM (oldulen + 2) + 1);
+          if (newasiz < oldasiz)
             {
               struct datavectval_stBM *newdvec =        //
                 allocgcty_BM (typayl_vectval_BM,
                               sizeof (struct datavectval_stBM)
-                              + newlen * sizeof (void *));
-              ((typedhead_tyBM *) newdvec)->rlen = newlen;
-              ((typedsize_tyBM *) newdvec)->size = oldcnt;
+                              + newasiz * sizeof (void *));
+              DATAVECT_ASIZ_BM (newdvec) = newasiz;
+              DATAVECT_ULEN_BM (newdvec) = oldulen;
               memcpy (newdvec->vec_data, dvec->vec_data,
-                      oldcnt * sizeof (void *));
+                      oldulen * sizeof (void *));
               return newdvec;
             }
         }
@@ -862,58 +885,64 @@ datavect_removeone_BM (struct datavectval_stBM *dvec, int ix)
 
 struct datavectval_stBM *
 datavect_insert_BM (struct datavectval_stBM *dvec,
-                    int rk, value_tyBM * valarr, unsigned len)
+                    int rk, value_tyBM * insvalarr, unsigned inslen)
 {
   if (valtype_BM ((const value_tyBM) dvec) != typayl_vectval_BM)
     return NULL;
-  if (len == 0 || valarr == NULL)
+  if (inslen == 0 || insvalarr == NULL)
     return dvec;
-  unsigned oldlen = ((typedhead_tyBM *) dvec)->rlen;
-  unsigned oldcnt = ((typedsize_tyBM *) dvec)->size;
+  unsigned oldasiz = DATAVECT_ASIZ_BM (dvec);
+  unsigned oldulen = DATAVECT_ULEN_BM (dvec);
   if (rk < 0)
-    rk += (int) oldcnt;
-  if (rk < 0 || rk >= (int) oldcnt)
+    rk += (int) oldulen;
+  if (rk < 0 || rk >= (int) oldulen)
     return dvec;
-  if (oldlen + len >= MAXSIZE_BM)
-    FATAL_BM ("datavect_insert too big %u", oldlen);
-  if (oldcnt + len >= oldlen)
+  if (oldulen + inslen >= MAXSIZE_BM)
+    FATAL_BM ("datavect_insert too big %u, adding %u", oldulen, inslen);
+  if (oldulen + inslen >= oldasiz)
     {
-      unsigned newsiz =
-        prime_above_BM (oldcnt + len + oldcnt / 16 + len / 32 + 1);
+      unsigned newasiz =
+        prime_above_BM (oldulen + inslen + inslen / 32 +
+                        ILOG2_BM (oldulen + inslen + 1));
       struct datavectval_stBM *newdvec =        //
         allocgcty_BM (typayl_vectval_BM,
                       sizeof (struct datavectval_stBM)
-                      + newsiz * sizeof (void *));
-      ((typedhead_tyBM *) newdvec)->rlen = newsiz;
+                      + newasiz * sizeof (void *));
+      DATAVECT_ASIZ_BM (newdvec) = newasiz;
       memcpy (newdvec->vec_data, dvec->vec_data, rk * sizeof (void *));
-      for (unsigned ix = 0; ix < len; ix++)
+      for (unsigned ix = 0; ix < inslen; ix++)
         {
-          value_tyBM curval = valarr[ix];
+          value_tyBM curval = insvalarr[ix];
           if (!isgenuineval_BM (curval))
             curval = NULL;
           newdvec->vec_data[rk + ix] = curval;
         };
-      memcpy (newdvec->vec_data + rk + len, dvec->vec_data + rk,
-              (oldcnt - rk) * sizeof (void *));
-      ((typedsize_tyBM *) newdvec)->size = oldcnt + len;
+      memcpy (newdvec->vec_data + rk + inslen, dvec->vec_data + rk,
+              (oldulen - rk) * sizeof (void *));
+      DATAVECT_ULEN_BM (newdvec) = oldulen + inslen;
       return newdvec;
     }
-  else
+  else                          // dont need to grow, insert in place
     {
-      memmove (dvec->vec_data + rk + oldcnt, dvec->vec_data + rk,
-               (oldcnt - rk) * sizeof (void *));
-      for (unsigned ix = 0; ix < len; ix++)
+      // we don't need to care about components 0 to rk-1 included, they don't change
+      // we move to the right the components rk to rk+olducnt-1 into rk+inslen to rk+len+olducnt-1
+      memmove (dvec->vec_data + rk + inslen,
+               dvec->vec_data + rk, (oldulen - rk) * sizeof (void *));
+      // we insert one by one the genuine values from insvalarr at rk
+      for (unsigned insix = 0; insix < inslen; insix++)
         {
-          value_tyBM curval = valarr[ix];
+          value_tyBM curval = insvalarr[insix];
           if (!isgenuineval_BM (curval))
             curval = NULL;
-          dvec->vec_data[rk + ix] = curval;
-        };
-      memcpy (dvec->vec_data + rk, valarr, len * sizeof (void *));
-      ((typedsize_tyBM *) dvec)->size = oldcnt + len;
+          dvec->vec_data[rk + insix] = curval;
+        }
+      DATAVECT_ULEN_BM (dvec) = oldulen + inslen;
       return dvec;
     }
 }                               /* end datavect_insert_BM */
+
+
+
 
 
 struct datavectval_stBM *
@@ -923,36 +952,39 @@ datavect_remove_BM (struct datavectval_stBM *dvec, int rk, unsigned len)
     return NULL;
   if (len == 0)
     return dvec;
-  unsigned oldlen = ((typedhead_tyBM *) dvec)->rlen;
-  unsigned oldcnt = ((typedsize_tyBM *) dvec)->size;
+  unsigned oldasiz = DATAVECT_ASIZ_BM (dvec);
+  unsigned oldulen = DATAVECT_ULEN_BM (dvec);
   if (rk < 0)
-    rk += oldcnt;
-  if (rk < 0 || rk >= (int) oldcnt)
+    rk += oldulen;
+  if (rk < 0 || rk >= (int) oldulen)
     return dvec;
-  if (len + rk > oldcnt)
-    len = oldcnt - rk;
-  if (oldcnt > TINYSIZE_BM / 2 && oldcnt - rk < oldlen / 2)
+  if (len + rk > oldulen)
+    len = oldulen - rk;
+  if (oldulen > TINYSIZE_BM / 2 && oldulen - len < oldasiz / 2)
     {
-      unsigned newsiz = prime_above_BM (9 * (oldcnt - rk) / 8 + 1);
-      if (newsiz < oldlen)
+      unsigned newasiz =
+        prime_above_BM (9 * (oldulen - len) / 8 +
+                        ILOG2_BM (oldulen - len + 2));
+      if (newasiz < oldasiz)
         {
           struct datavectval_stBM *newdvec =    //
             allocgcty_BM (typayl_vectval_BM,
                           sizeof (struct datavectval_stBM)
-                          + newsiz * sizeof (void *));
-          ((typedhead_tyBM *) newdvec)->rlen = newsiz;
+                          + newasiz * sizeof (void *));
+          DATAVECT_ASIZ_BM (newdvec) = newasiz;
           memcpy (newdvec->vec_data, dvec->vec_data, rk * sizeof (void *));
           memcpy (newdvec->vec_data + rk, dvec->vec_data + rk + len,
-                  (oldcnt - rk - len) * sizeof (void *));
-          ((typedsize_tyBM *) newdvec)->size = oldcnt - len;
+                  (oldulen - rk - len) * sizeof (void *));
+          DATAVECT_ULEN_BM (newdvec) = oldulen - len;
           return newdvec;
         }
     }
   memmove (dvec->vec_data + rk, dvec->vec_data + rk + len,
-           (oldcnt - rk - len) * sizeof (void *));
-  ((typedsize_tyBM *) dvec)->size = oldcnt - len;
+           (oldulen - rk - len) * sizeof (void *));
+  DATAVECT_ULEN_BM (dvec) = oldulen - len;
   return dvec;
 }                               /* end datavect_remove_BM */
+
 
 
 const node_tyBM *
@@ -1012,3 +1044,6 @@ datavectgcproc_BM (struct garbcoll_stBM *gc,
     VALUEGCPROC_BM (gc, dvec->vec_data[ix], depth + 1);
   return dvec;
 }                               /* end datavectgcproc_BM  */
+
+
+// end of file sequence_BM.c
