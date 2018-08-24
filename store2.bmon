@@ -3019,6 +3019,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_4JKd986pvM4_6yBzeeI40vW |=o_jsgenmod|
+!~ name (~ o_jsgenmod
+~)
+!@ 1534748727.122
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_4JKd986pvM4_6yBzeeI40vW
+
+
+
 !(_5V0w37YnN4F_8dZ6I79V60O |=o_jsmodule|
 !~ name (~ o_jsmodule
 ~)
@@ -3027,17 +3038,6 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_5V0w37YnN4F_8dZ6I79V60O
-
-
-
-!(_4JKd986pvM4_6yBzeeI40vW |=o_jsprepmod|
-!~ name (~ o_jsprepmod
-~)
-!@ 1534748727.122
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
-!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
-_7T9OwSFlgov_0wVJaK1eZbn
-!)_4JKd986pvM4_6yBzeeI40vW
 
 
 
@@ -9649,7 +9649,7 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 !@ 1534854264.757
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "lock o_jsprepmod after o_jsmodule"
+ "lock o_jsgenmod after o_jsmodule"
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _4JKd986pvM4_6yBzeeI40vW
 !# 4
@@ -10403,7 +10403,7 @@ _97rnxb0KFqq_44veN75DG2E
 !@ 1534749044.113
 !$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "o_jsprepmod := makeobj()"
+ "o_jsgenmod := makeobj()"
 !: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
  * _0aWpxE7aiWs_71KTgYdlifE ( _4JKd986pvM4_6yBzeeI40vW  * _9uuMot5qvtW_7J7V6SlaKg2 ())
 !# 2
@@ -10476,10 +10476,10 @@ _97rnxb0KFqq_44veN75DG2E
 
 
 !(_5aEEfO7SZge_3wLzFCRCBpn
-!@ 1534749385.083
+!@ 1535086620.863
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "put_class(o_jsprepmod jsmodule_preparation_object)"
+ "put_class(o_jsgenmod jsmodule_generation_object)"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  * _0jFqaPPHgYH_5JpjOPxQ67p ( _4JKd986pvM4_6yBzeeI40vW _9zzGR0VqDpm_259EJDSFYyu)
 !: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
@@ -11856,7 +11856,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !@ 1534786781.079
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "debugprint locked o_jsmodule, o_jsprepmod"
+ "debugprint locked o_jsmodule, o_jsgenmod"
 !: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
  * _4RFtYFUdfau_7Vm5jZ4Wm8e (  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "dbgprintf"  " "  "after"  " "  
   "lock"  " " _4JKd986pvM4_6yBzeeI40vW  "*/"  "\n"  
@@ -11941,7 +11941,7 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 !@ 1534749465.411
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "o_jsprepmod.for <- o_jsmodule"
+ "o_jsgenmod.for <- o_jsmodule"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  * _0jFqaPPHgYH_5JpjOPxQ67p ( _4JKd986pvM4_6yBzeeI40vW  * _0e54seiZEXF_1Myf620cHoB ( _1SolDiQA2WM_4IDOJKBiPFc) _5V0w37YnN4F_8dZ6I79V60O)
 !: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|

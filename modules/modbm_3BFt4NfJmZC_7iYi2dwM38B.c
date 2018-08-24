@@ -950,7 +950,7 @@ value_tyBM crout_3vI0Qc3FHQG_1g4fmHYkxSA_BM     //#7
     objectval_tyBM *o_2TaoEvH5OQU_8nKYBgAvkmW;  // o_jscurcomp
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ;       // v_r
     objectval_tyBM *o_41F1rKwGbaA_30OJWKsqNWy;  // o_strbuf
-    objectval_tyBM *o_4JKd986pvM4_6yBzeeI40vW;  // o_jsprepmod
+    objectval_tyBM *o_4JKd986pvM4_6yBzeeI40vW;  // o_jsgenmod
     objectval_tyBM *o_5V0w37YnN4F_8dZ6I79V60O;  // o_jsmodule
     value_tyBM v_7nytuRkZkOz_8T9QMYQtGps;       // v_resprep
     /// 2 local numbers:
@@ -994,9 +994,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
 
     {                           // start cexpansion _5aEEfO7SZge_3wLzFCRCBpn - objputclass  
       /*objputclass: */ objputclass_BM ((_.o_4JKd986pvM4_6yBzeeI40vW),
-                                        ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM
-                                          [30]
-                                          /*|jsmodule_preparation_object */
+                                        ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[30]        /*|jsmodule_generation_object */
                                          )));
     }                           // end cexpansion _5aEEfO7SZge_3wLzFCRCBpn - objputclass  
 
@@ -1029,9 +1027,9 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
 
 
                 {               // run _8g9Ms38jPls_58zTM8Ayy1u 
-/*dbgprintf after lock o_jsprepmod*/
+/*dbgprintf after lock o_jsgenmod*/
                   DBGPRINTF_BM
-                    ("jsmodule compiler: after lock o_jsmodule=%s o_jsprepmod=%s",
+                    ("jsmodule compiler: after lock o_jsmodule=%s o_jsgenmod=%s",
                      objectdbg_BM (_.o_5V0w37YnN4F_8dZ6I79V60O),
                      objectdbg1_BM (_.o_4JKd986pvM4_6yBzeeI40vW));
                 }               // end run _8g9Ms38jPls_58zTM8Ayy1u 
@@ -2084,7 +2082,7 @@ const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[32 + 1] = {
   "_8imWClcIFKt_6w2H2ouB4I6",   //iterate_sequence_minifunc
   "_8lV53mLyu1H_3Z1SI8wDBK1",   //clear
   "_9pvzBeIKHXF_8YDPCrQ6OEK",   //put
-  "_9zzGR0VqDpm_259EJDSFYyu",   //jsmodule_preparation_object
+  "_9zzGR0VqDpm_259EJDSFYyu",   //jsmodule_generation_object
   "_9CG8SKNs6Ql_4PiHd8cnydn",
   NULL
 };                              // end 32 constant ids
