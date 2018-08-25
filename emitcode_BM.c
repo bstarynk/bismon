@@ -4556,3 +4556,5 @@ failure:
                                _.routprepob, _.causev);
   PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniemit_node_conn°make_tree _1nsAyqOOy7S_1zodeivnxlm */
+
+/*** end of file emitcode_BM.c ***/

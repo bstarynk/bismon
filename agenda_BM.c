@@ -968,3 +968,5 @@ failure:
   PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 
 }                               /* end defer_module_load_BM */
+
+/***** end of file agenda_BM.c ****/

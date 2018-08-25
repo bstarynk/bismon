@@ -1606,3 +1606,5 @@ sendmany_BM (const value_tyBM recv, const objectval_tyBM * obselector,
     free (arr);
   return res;
 }                               /* end sendmany_BM */
+
+/**** end of file object_BM.c *****/

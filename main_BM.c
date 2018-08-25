@@ -1971,3 +1971,5 @@ log_printf_message_BM (const char *fmt, ...)
   if (buf != smallbuf)
     free (buf);
 }                               /* end log_printf_message_BM */
+
+/*** end of file main_BM.c ***/

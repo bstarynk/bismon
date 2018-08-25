@@ -2525,3 +2525,6 @@ ROUTINEOBJNAME_BM (_7EgSAlg8UbA_6x0iNxUOrYE)    // final-find_object
   WEAKASSERT_BM (false && "unimplemented _7EgSAlg8UbA_6x0iNxUOrYE routine");
   LOCALRETURN_BM (_.resultv);
 }                               /* end final-find_object _7EgSAlg8UbA_6x0iNxUOrYE */
+
+
+/**** end of file guicode_BM.c ***/

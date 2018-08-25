@@ -1232,3 +1232,5 @@ ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh)    // load_module
   NONPRINTF_BM ("load_module end modulob %s", objectdbg_BM (_.modulob));
   LOCALRETURN_BM (_.modulob);
 }                               /* end load_module _3j4mbvFJZzA_9ucKetDMbdh */
+
+/*** end of file load_BM.c ****/

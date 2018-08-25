@@ -173,3 +173,5 @@ parse_rawid_BM (const char *buf, const char **pend)
   {
   0, 0};
 }                               /* end parse_rawid_BM */
+
+/**** end of file id_BM.c ***/

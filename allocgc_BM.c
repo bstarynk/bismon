@@ -926,3 +926,5 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   DBGPRINTF_BM ("full_garbage_collection_BM end tid#%ld\n\n",
                 (long) gettid_BM ());
 }                               /* end full_garbage_collection_BM */
+
+/**** end of file allocgc_BM.c ****/

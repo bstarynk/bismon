@@ -410,3 +410,6 @@ listgcmark_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis,
     }
   ASSERT_BM (nblinks == lis->list_nblinks);
 }                               /* end listgcmark_BM  */
+
+
+/**** end of file list_BM.c ****/

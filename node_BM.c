@@ -688,3 +688,5 @@ applymany_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
     free (arr);
   return res;
 }                               /* end applymany_BM */
+
+/**** end of file node_BM.c ****/

@@ -341,3 +341,6 @@ evaluate_in_mini_frame_BM (value_tyBM expv, objectval_tyBM * framob,
 #warning evaluate_in_mini_frame_BM very incomplete
   WEAKASSERT_BM (false && "unimplemented evaluate_in_mini_frame_BM");
 }                               /* end evaluate_in_mini_frame_BM */
+
+
+/**** end of file engine_BM.c ***/
