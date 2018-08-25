@@ -338,7 +338,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objectval_tyBM *k_closed = BMK_2TwOyPJxIz8_1rIeqaN7oRz;
   //objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
   //objectval_tyBM *k_emit_expression = BMK_9lXSe7DrOl6_7hghYt0LhTF;
-  //objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  //objectval_tyBM *k_emit_tatement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
   //objectval_tyBM *k_emit_reference = BMK_6qzzDyr2eIo_3SapnOUpg6S;
   objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
@@ -1600,7 +1600,12 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                           objectdbg2_BM (_.typob));
             if (_.typob == BMP_value)
               {
-                objstrbufferprintfpayl_BM (_.modgenob, " _.v%s", varidbuf);
+                const char *varnam = findobjectname_BM (_.expob);
+                if (varnam)
+                  objstrbufferprintfpayl_BM (_.modgenob, " /*%s:*/_.v%s",
+                                             varnam, varidbuf);
+                else
+                  objstrbufferprintfpayl_BM (_.modgenob, " _.v%s", varidbuf);
               }
             else if (_.typob == BMP_object)
               {
@@ -1622,11 +1627,24 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                                                kix, objectdbg2_BM (_.expob));
                   }
                 else
-                  objstrbufferprintfpayl_BM (_.modgenob, " _.o%s", varidbuf);
+                  {
+                    const char *varnam = findobjectname_BM (_.expob);
+                    if (varnam)
+                      objstrbufferprintfpayl_BM (_.modgenob, " /*%s:*/_.o%s",
+                                                 varnam, varidbuf);
+                    else
+                      objstrbufferprintfpayl_BM (_.modgenob, " _.o%s",
+                                                 varidbuf);
+                  }
               }
             else if (_.typob == BMP_int)
               {
-                objstrbufferprintfpayl_BM (_.modgenob, " _.n%s", varidbuf);
+                const char *varnam = findobjectname_BM (_.expob);
+                if (varnam)
+                  objstrbufferprintfpayl_BM (_.modgenob, " /*%s:*/_.n%s",
+                                             varnam, varidbuf);
+                else
+                  objstrbufferprintfpayl_BM (_.modgenob, " _.n%s", varidbuf);
               }
             else
               FAILHERE (makenode2_BM (k_variable, _.expob, _.typob));
@@ -1787,10 +1805,14 @@ miniemit_var_BM (struct stackframe_stBM *stkf,
   //objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
   //objectval_tyBM *k_object = BMK_7T9OwSFlgov_0wVJaK1eZbn;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_reference,
-                 objectval_tyBM * refob; objectval_tyBM * modgenob;
-                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
-                 value_tyBM avalv; objectval_tyBM * connob;
-                 objectval_tyBM * typob; value_tyBM errorv;
+                 objectval_tyBM * refob;        //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * fromob;       //
+                 value_tyBM avalv;      //
+                 objectval_tyBM * connob;       //
+                 objectval_tyBM * typob;        //
+                 value_tyBM errorv;     //
                  value_tyBM causev;);
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
@@ -1821,15 +1843,30 @@ miniemit_var_BM (struct stackframe_stBM *stkf,
                     objectdbg2_BM (_.typob));
       if (_.typob == BMP_value)
         {
-          objstrbufferprintfpayl_BM (_.modgenob, " _.v%s", varidbuf);
+          const char *varnam = findobjectname_BM (_.refob);
+          if (varnam)
+            objstrbufferprintfpayl_BM (_.modgenob, " /*%s:*/_.v%s", varnam,
+                                       varidbuf);
+          else
+            objstrbufferprintfpayl_BM (_.modgenob, " _.v%s", varidbuf);
         }
       else if (_.typob == BMP_object)
         {
-          objstrbufferprintfpayl_BM (_.modgenob, " _.o%s", varidbuf);
+          const char *varnam = findobjectname_BM (_.refob);
+          if (varnam)
+            objstrbufferprintfpayl_BM (_.modgenob, " /*%s:*/_.o%s", varnam,
+                                       varidbuf);
+          else
+            objstrbufferprintfpayl_BM (_.modgenob, " _.o%s", varidbuf);
         }
       else if (_.typob == BMP_int)
         {
-          objstrbufferprintfpayl_BM (_.modgenob, " _.n%s", varidbuf);
+          const char *varnam = findobjectname_BM (_.refob);
+          if (varnam)
+            objstrbufferprintfpayl_BM (_.modgenob, " /*%s:*/_.n%s", varnam,
+                                       varidbuf);
+          else
+            objstrbufferprintfpayl_BM (_.modgenob, " _.n%s", varidbuf);
         }
       else
         FAILHERE (makenode3_BM (k_variable, _.refob, _.avalv, _.typob));
