@@ -1355,6 +1355,16 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                   }             //endwhen _1c7c99xtpkW_893Go0pwc1d  
 /*endcond _8HiULT2zhTE_7CfIm97BpV8*/
 
+                /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B =
+                  //assign _50kGK7AP8lP_9EQplRiiZb7  
+                  0;
+
+                /*leni: */ _.n_833x2jYqhZh_8vDIuJhwz1k =
+                  //assign _3BorPL79IE6_68JsQ2rTBM1  
+                  /*objnbcomps: */
+                  objnbcomps_BM ( /*o_jsgenmod: */ _.
+                                 o_4JKd986pvM4_6yBzeeI40vW);
+
                 objunlock_BM (locked_3bsFDNiUKNe_9NjWM3BxFSt),
                   locked_3bsFDNiUKNe_9NjWM3BxFSt = NULL;
               }
