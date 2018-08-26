@@ -1344,7 +1344,8 @@ ROUTINEOBJNAME_BM (_6eRPTujgMx5_9mLxL25hmr9)    // emit_statement°basiclo_while
   objstrbufferprintfpayl_BM (_.modgenob, "endblock_%s: /*endingwhile*/;\n",
                              whilidbuf);
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
-  objstrbufferprintfpayl_BM (_.modgenob, "} /*-while %s */\n", whilidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob, "} /*-endwhile %s */\n", whilidbuf);
+  objstrbuffernewlinepayl_BM (_.modgenob);
   DBGPRINTF_BM
     ("emit_statement°basiclo_while end stmtob=%s modgenob=%s routprepob=%s depth#%d",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),

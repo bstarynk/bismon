@@ -500,7 +500,8 @@ startblock__9xHQlk4snoU_6unWwGT6PcG:__attribute__ ((unused));
       goto startblock__1w1gkKpMOzk_6mZXddz3Y4L; // repeatwhile  
     endblock__1w1gkKpMOzk_6mZXddz3Y4L: /*endingwhile */ ;
     }
-  /*-while _1w1gkKpMOzk_6mZXddz3Y4L */
+  /*-endwhile _1w1gkKpMOzk_6mZXddz3Y4L */
+
 
 /* !endingblock _9xHQlk4snoU_6unWwGT6PcG */
     goto endblock__9xHQlk4snoU_6unWwGT6PcG;
@@ -797,7 +798,8 @@ startblock__7csjYG7rNV4_68bJZT4W2BO:__attribute__ ((unused));
       goto startblock__0SWi4IZCeP3_0VPExGvOasL; // repeatwhile  
     endblock__0SWi4IZCeP3_0VPExGvOasL: /*endingwhile */ ;
     }
-  /*-while _0SWi4IZCeP3_0VPExGvOasL */
+  /*-endwhile _0SWi4IZCeP3_0VPExGvOasL */
+
 
 
     /*return _8pmMgF3SSuE_2COzwjyI8lS: *//*v_r: */ _.
@@ -1288,7 +1290,8 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                 endblock__9MmVsIQi0Gu_8lv339Vx7z8:     /*endingwhile */
                                   ;
                                 }
-  /*-while _9MmVsIQi0Gu_8lv339Vx7z8 */
+  /*-endwhile _9MmVsIQi0Gu_8lv339Vx7z8 */
+
 
                               } //endwhen _3KLb54en912_65r4DOVLCQt   
                             else if
@@ -1343,7 +1346,8 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                 endblock__839zJGrmf26_2hQq2r1ehkR:     /*endingwhile */
                   ;
                 }
-  /*-while _839zJGrmf26_2hQq2r1ehkR */
+  /*-endwhile _839zJGrmf26_2hQq2r1ehkR */
+
 
                 /*v_resemit: */ _.v_0qTBOEAT5pa_2fz1SKfHrMV =
                   //assign _70ikqGyudad_7VauPdWkySh  
@@ -1816,7 +1820,8 @@ startblock__3oMW0T4HlXx_8r7NLpyK1J8:__attribute__ ((unused));
       goto startblock__9gJT0jotyox_8JQNlJn3qh6; // repeatwhile  
     endblock__9gJT0jotyox_8JQNlJn3qh6: /*endingwhile */ ;
     }
-  /*-while _9gJT0jotyox_8JQNlJn3qh6 */
+  /*-endwhile _9gJT0jotyox_8JQNlJn3qh6 */
+
 
 
     {                           // start cexpansion _1UfGW420Q3X_3osvimj3Myj - objstrbufferclearindentpayl  
@@ -2052,7 +2057,8 @@ startblock__9Hf4n8AnqR7_7ve3Bi3kWMV:__attribute__ ((unused));
       goto startblock__9xjh4MB97y4_2d8ffcaNFYt; // repeatwhile  
     endblock__9xjh4MB97y4_2d8ffcaNFYt: /*endingwhile */ ;
     }
-  /*-while _9xjh4MB97y4_2d8ffcaNFYt */
+  /*-endwhile _9xjh4MB97y4_2d8ffcaNFYt */
+
 
 
     {                           // start cexpansion _39EI0paA4hR_8y7JANajq5t - objstrbuffernewlinepayl  
