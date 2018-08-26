@@ -1252,6 +1252,8 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //miniscan_stmt°basiclo_assign
  const value_tyBM arg4,         // containingblock
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
+  objectval_tyBM *k_failure_type_error = BMK_95hdJENHNkN_3QuKIJTCQQQ;
+  objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7LNRlilrowp_0GG6ZLUFovu,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * routprepob;   //
@@ -1261,6 +1263,7 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //miniscan_stmt°basiclo_assign
                  objectval_tyBM * vartypob;     //
                  objectval_tyBM * srctypob;     //
                  value_tyBM resv;       //
+                 value_tyBM failv;      //
     );
   int depth = 0;
   bool ok = false;
@@ -1304,7 +1307,17 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //miniscan_stmt°basiclo_assign
   if (ok)
     LOCALRETURN_BM (_.stmtob);
   else
-    LOCALRETURN_BM (NULL);
+    {
+      DBGPRINTF_BM
+        ("miniscan_stmt°basiclo_assign stmtob=%s type mismatch srctypob=%s vartypob=%s",
+         objectdbg_BM (_.stmtob), objectdbg1_BM (_.srctypob),
+         objectdbg2_BM (_.vartypob));
+
+      _.failv =
+        makenode4_BM (k_miniscan_stmt, k_failure_type_error, _.stmtob,
+                      _.srctypob, _.vartypob);
+      PLAINFAILURE_BM (__LINE__, _.failv, CURFRAME_BM);
+    }
 }                               /* end miniscan_stmt°basiclo_assign _7LNRlilrowp_0GG6ZLUFovu */
 
 

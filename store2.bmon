@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 918 objects
+// for 919 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -1555,6 +1555,17 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "in a module, gives the set of fail statements"
 !)_9QCfVAnPhdt_5NVyy8KOaLP
+
+
+
+!(_95hdJENHNkN_3QuKIJTCQQQ |=failure_type_error|
+!~ name (~ failure_type_error
+~)
+!@ 1535290721.253
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "failure for type error"
+!)_95hdJENHNkN_3QuKIJTCQQQ
 
 
 
