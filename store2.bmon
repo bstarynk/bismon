@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 916 objects
+// for 918 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -1678,8 +1678,6 @@ _6YnYKKsHo3f_9nIEOZMp744
 !& _2bZ4BfCci5V_3WTzG7V25y4
 !& _0cUdonky1bM_4IVhwlVRBMk
 !& _3vI0Qc3FHQG_1g4fmHYkxSA
- // emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
-
 !)_3BFt4NfJmZC_7iYi2dwM38B
 
 
@@ -9412,6 +9410,19 @@ _0VJTIqFfNXf_5chzuIlqcJP
 
 
 
+!(_2g9fVMX8xE9_8YSV476XAcf
+!@ 1535283499.957
+!$_4Af5NOOf7Qe_7KQdGPoNdJ0 |=basiclo_while|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "while ii < leni ... o_jscurcomp inside o_jsgenmod ..."
+!: _7GNnckYYtcH_7wtOnPP4eKU |=while|
+ * _0P0Iffx3ohY_2vRksLXKZlK ( _2W7Ckt2WxEM_4NVYgEWE73B _833x2jYqhZh_8vDIuJhwz1k)
+!# 1
+!& _9pZtoHpgUnw_0ioNZOl7gSy
+!)_2g9fVMX8xE9_8YSV476XAcf
+
+
+
 !(_2gpamAdSc26_6d1JjCmKHyw
 !|*
 !@ 1523535346.720
@@ -9843,13 +9854,13 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 !(_3bsFDNiUKNe_9NjWM3BxFSt
-!@ 1535221547.553
+!@ 1535283499.957
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "lock o_jsgenmod after o_jsmodule"
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _4JKd986pvM4_6yBzeeI40vW
-!# 8
+!# 9
 !& _8g9Ms38jPls_58zTM8Ayy1u
 !& _0qK1TfyxaEU_0sLvlnHs4UT
 !& _4opDguH6Knp_1NiX0hlpo7s
@@ -9858,6 +9869,7 @@ _4JKd986pvM4_6yBzeeI40vW
 !& _8HiULT2zhTE_7CfIm97BpV8
 !& _50kGK7AP8lP_9EQplRiiZb7
 !& _3BorPL79IE6_68JsQ2rTBM1
+!& _2g9fVMX8xE9_8YSV476XAcf
 !)_3bsFDNiUKNe_9NjWM3BxFSt
 
 
@@ -12062,10 +12074,10 @@ _2Zv64CfoneM_4dyKtH2SMQ3
 
 
 !(_839zJGrmf26_2hQq2r1ehkR
-!@ 1535032022.774
+!@ 1535283277.737
 !$_4Af5NOOf7Qe_7KQdGPoNdJ0 |=basiclo_while|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "while (ii<leni)..."
+ "while (ii<leni) o_jscurcomp from o_jsmodule ...."
 !: _7GNnckYYtcH_7wtOnPP4eKU |=while|
  * _0P0Iffx3ohY_2vRksLXKZlK ( _2W7Ckt2WxEM_4NVYgEWE73B _833x2jYqhZh_8vDIuJhwz1k)
 !# 4
@@ -12870,6 +12882,18 @@ _09RxU8xDco3_2Zxwfb13oDZ
 !# 1
 !& _83VdjnhqoG6_84VIp0qH5yM
 !)_9pBXyzeTmNj_3WcrC3zEfni
+
+
+
+!(_9pZtoHpgUnw_0ioNZOl7gSy
+!@ 1535283499.956
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "o_jscurcomp := o_jsgenmod[ii]"
+!# 2
+!& _2TaoEvH5OQU_8nKYBgAvkmW
+!&  * _9VbFEiZdkIM_03T43FbMVI3 ( _4JKd986pvM4_6yBzeeI40vW _2W7Ckt2WxEM_4NVYgEWE73B)
+!)_9pZtoHpgUnw_0ioNZOl7gSy
 
 
 
