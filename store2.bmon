@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 919 objects
+// for 922 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -9423,14 +9423,16 @@ _0VJTIqFfNXf_5chzuIlqcJP
 
 
 !(_2g9fVMX8xE9_8YSV476XAcf
-!@ 1535283499.957
+!@ 1535306243.967
 !$_4Af5NOOf7Qe_7KQdGPoNdJ0 |=basiclo_while|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "while ii < leni ... o_jscurcomp inside o_jsgenmod ..."
 !: _7GNnckYYtcH_7wtOnPP4eKU |=while|
  * _0P0Iffx3ohY_2vRksLXKZlK ( _2W7Ckt2WxEM_4NVYgEWE73B _833x2jYqhZh_8vDIuJhwz1k)
-!# 1
+!# 3
 !& _9pZtoHpgUnw_0ioNZOl7gSy
+!& _4eIUh34K2C1_9Nhx6LdYEdp
+!& _9zi1Kmm4u72_6EIuoyYYCSj
 !)_2g9fVMX8xE9_8YSV476XAcf
 
 
@@ -9556,6 +9558,24 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 !& _6Z4UU939WbU_8BK9xcKsXNb
 !&  * _8xVNOAPAUX9_1ZuRegZEdrP ( _7nytuRkZkOz_8T9QMYQtGps _81BTKsrnoY8_2DoVevLPfsN)
 !)_2wctxoT0H2b_6wS53ggKTfT
+
+
+
+!(_2we9tWsEm78_8u1lMyPXfoS
+!@ 1535306187.335
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug ii & o_jscurcomp"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " " _2TaoEvH5OQU_8nKYBgAvkmW  "*/" 
+  " "  "DBGPRINTF_BM"  "(\""  "jscompile"  " " 
+ _2W7Ckt2WxEM_4NVYgEWE73B  "=%" _5a7gOTbvw4I_6PzXru7uInx  " " _2TaoEvH5OQU_8nKYBgAvkmW 
+  "=%"  "s"  "\","  " "  "(" 
+ _0vgCFjXblkx_4zCMhMAWjVK  ")"  * _5ucAZimYynS_4VA0XHvr1nW ( _2W7Ckt2WxEM_4NVYgEWE73B) 
+ "\n"  "    " 
+  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2TaoEvH5OQU_8nKYBgAvkmW) 
+ "));")
+!)_2we9tWsEm78_8u1lMyPXfoS
 
 
 
@@ -10321,6 +10341,19 @@ _39pW7nyFqoI_5pikyvvGsZ5
 !# 1
 !& _6GnVh6VH0ba_5iNQzHx0RCt
 !)_4eIdg9F7Kd7_4V8EqmX5EdZ
+
+
+
+!(_4eIUh34K2C1_9Nhx6LdYEdp
+!@ 1535306187.335
+!$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "lock o_jscurcomp ..."
+!: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
+_2TaoEvH5OQU_8nKYBgAvkmW
+!# 1
+!& _2we9tWsEm78_8u1lMyPXfoS
+!)_4eIUh34K2C1_9Nhx6LdYEdp
 
 
 
@@ -12956,6 +12989,18 @@ _3VVvcLyYqv8_9yci7GvqEEv
 !: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
 _6jZqk9RP0Pe_12cIgV9WMFC
 !)_9xLEdrWsdEt_3HIoqy3EsOT
+
+
+
+!(_9zi1Kmm4u72_6EIuoyYYCSj
+!@ 1535306243.967
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "ii := ii+1 for loop in o_jsgenmod"
+!# 2
+!& _2W7Ckt2WxEM_4NVYgEWE73B
+!&  * _3fb1EHtMPwQ_7XEPTUgUmX4 ( _2W7Ckt2WxEM_4NVYgEWE73B  1)
+!)_9zi1Kmm4u72_6EIuoyYYCSj
 
 
 

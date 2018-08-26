@@ -1032,9 +1032,10 @@ value_tyBM crout_3vI0Qc3FHQG_1g4fmHYkxSA_BM     //#7
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
-  // locking 3:
+  // locking 4:
   objectval_tyBM *locked_1flY7i4N8iV_5T74FnYd6Ee = NULL;        // _1flY7i4N8iV_5T74FnYd6Ee
   objectval_tyBM *locked_3bsFDNiUKNe_9NjWM3BxFSt = NULL;        // _3bsFDNiUKNe_9NjWM3BxFSt
+  objectval_tyBM *locked_4eIUh34K2C1_9Nhx6LdYEdp = NULL;        // _4eIUh34K2C1_9Nhx6LdYEdp
   objectval_tyBM *locked_6mmsQZI3VuT_9OYUPR9OrsR = NULL;        // _6mmsQZI3VuT_9OYUPR9OrsR
   // fetch 2 arguments:
   _.o_5V0w37YnN4F_8dZ6I79V60O = objectcast_BM (arg0);
@@ -1408,6 +1409,35 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                                     o_4JKd986pvM4_6yBzeeI40vW),
                                                    ( /*ii: */ _.
                                                     n_2W7Ckt2WxEM_4NVYgEWE73B)));
+// while _2g9fVMX8xE9_8YSV476XAcf comp#1:  
+
+                  {             // begin lockobj _4eIUh34K2C1_9Nhx6LdYEdp  
+                    objectval_tyBM *curlockedob_4eIUh34K2C1_9Nhx6LdYEdp =
+                      ( /*o_jscurcomp: */ _.o_2TaoEvH5OQU_8nKYBgAvkmW);
+                    if (objlock_BM (curlockedob_4eIUh34K2C1_9Nhx6LdYEdp))
+                      {
+                        locked_4eIUh34K2C1_9Nhx6LdYEdp =
+                          curlockedob_4eIUh34K2C1_9Nhx6LdYEdp;
+
+
+                        {       // run _2we9tWsEm78_8u1lMyPXfoS  
+                          /*debug o_jscurcomp */
+                          DBGPRINTF_BM ("jscompile ii=%d o_jscurcomp=%s",
+                                        (int) /*ii: */ _.
+                                        n_2W7Ckt2WxEM_4NVYgEWE73B
+                                        objectdbg_BM ( /*o_jscurcomp: */ _.
+                                                      o_2TaoEvH5OQU_8nKYBgAvkmW));;
+                        }       // end run _2we9tWsEm78_8u1lMyPXfoS  
+
+                        objunlock_BM (locked_4eIUh34K2C1_9Nhx6LdYEdp),
+                          locked_4eIUh34K2C1_9Nhx6LdYEdp = NULL;
+                      }
+                  }             // end objlock _4eIUh34K2C1_9Nhx6LdYEdp  
+// while _2g9fVMX8xE9_8YSV476XAcf comp#2:  
+                  /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B =
+                    //assign _9zi1Kmm4u72_6EIuoyYYCSj   
+                    /*add_int: */
+                    (( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B) + (1));
 
                   goto startblock__2g9fVMX8xE9_8YSV476XAcf;     // repeatwhile  
                 endblock__2g9fVMX8xE9_8YSV476XAcf:     /*endingwhile */
@@ -1433,11 +1463,13 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
 
 epilog_3vI0Qc3FHQG_1g4fmHYkxSA:__attribute__ ((unused));
   // routine _3vI0Qc3FHQG_1g4fmHYkxSA epilogue:
-  // unlocking 3:
+  // unlocking 4:
   if (locked_1flY7i4N8iV_5T74FnYd6Ee != NULL)
     objunlock_BM (locked_1flY7i4N8iV_5T74FnYd6Ee), locked_1flY7i4N8iV_5T74FnYd6Ee = NULL;       // _1flY7i4N8iV_5T74FnYd6Ee
   if (locked_3bsFDNiUKNe_9NjWM3BxFSt != NULL)
     objunlock_BM (locked_3bsFDNiUKNe_9NjWM3BxFSt), locked_3bsFDNiUKNe_9NjWM3BxFSt = NULL;       // _3bsFDNiUKNe_9NjWM3BxFSt
+  if (locked_4eIUh34K2C1_9Nhx6LdYEdp != NULL)
+    objunlock_BM (locked_4eIUh34K2C1_9Nhx6LdYEdp), locked_4eIUh34K2C1_9Nhx6LdYEdp = NULL;       // _4eIUh34K2C1_9Nhx6LdYEdp
   if (locked_6mmsQZI3VuT_9OYUPR9OrsR != NULL)
     objunlock_BM (locked_6mmsQZI3VuT_9OYUPR9OrsR), locked_6mmsQZI3VuT_9OYUPR9OrsR = NULL;       // _6mmsQZI3VuT_9OYUPR9OrsR
   if (stkf)
