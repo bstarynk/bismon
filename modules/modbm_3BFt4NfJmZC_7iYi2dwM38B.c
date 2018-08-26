@@ -1391,6 +1391,31 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                   objnbcomps_BM ( /*o_jsgenmod: */ _.
                                  o_4JKd986pvM4_6yBzeeI40vW);
 
+
+//// +while _2g9fVMX8xE9_8YSV476XAcf 
+              startblock__2g9fVMX8xE9_8YSV476XAcf:     /*+!while */
+                ;
+                {               /* +while _2g9fVMX8xE9_8YSV476XAcf */
+                  if (!( /*while _2g9fVMX8xE9_8YSV476XAcf cond: */ ( /*less_int: */ ( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B) < ( /*leni: */ _.n_833x2jYqhZh_8vDIuJhwz1k))))      //: testwhile _2g9fVMX8xE9_8YSV476XAcf failing   
+                    goto endblock__2g9fVMX8xE9_8YSV476XAcf;     //failwhile   
+// while _2g9fVMX8xE9_8YSV476XAcf body:   
+// while _2g9fVMX8xE9_8YSV476XAcf comp#0:  
+                  /*o_jscurcomp: */ _.o_2TaoEvH5OQU_8nKYBgAvkmW =
+                    //assign _9pZtoHpgUnw_0ioNZOl7gSy   
+                    /*val_to_object: */
+                    objectcast_BM (     /*objgetcomp: */
+                                    objgetcomp_BM (( /*o_jsgenmod: */ _.
+                                                    o_4JKd986pvM4_6yBzeeI40vW),
+                                                   ( /*ii: */ _.
+                                                    n_2W7Ckt2WxEM_4NVYgEWE73B)));
+
+                  goto startblock__2g9fVMX8xE9_8YSV476XAcf;     // repeatwhile  
+                endblock__2g9fVMX8xE9_8YSV476XAcf:     /*endingwhile */
+                  ;
+                }
+  /*-endwhile _2g9fVMX8xE9_8YSV476XAcf */
+
+
                 objunlock_BM (locked_3bsFDNiUKNe_9NjWM3BxFSt),
                   locked_3bsFDNiUKNe_9NjWM3BxFSt = NULL;
               }
