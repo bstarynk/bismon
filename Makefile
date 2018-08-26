@@ -12,7 +12,7 @@ MD5SUM= md5sum
 INDENTFLAGS= --gnu-style --no-tabs --honour-newlines
 ASTYLEFLAGS= --style=gnu -s2
 RM= rm -fv
--include modulecflags.mk
+-include _cflagsmodule.mk
 MARKDOWN_SOURCES= $(sort $(wildcard *.md))
 MODULES_SOURCES= $(sort $(wildcard modules/modbm*.c))
 BM_HEADERS= $(wildcard [a-z]*BM.h bismon.h)
@@ -34,7 +34,7 @@ verbose: | build.ninja
 bismon: build.ninja $(wildcard *BM.c *_BM.cc)
 	$(NINJA) $@
 
-modulecflags.mk: build.ninja 
+_cflagsmodule.mk: build.ninja 
 	$(NINJA) $@
 
 build.ninja: generate-ninja-builder.sh
@@ -81,20 +81,20 @@ indenttempmodule:
 	fi
 
 
-modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | modulecflags.mk
+modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
 	$(CCACHE) $(LINK.c) -fPIC $(BISMONMODULECFLAGS) \
 	      -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<)  \
               -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' \
               -DBISMON_PERSISTENT_MODULE -shared $< -o $@
 
 
-modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | modulecflags.mk
+modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
 	$(CCACHE) $(LINK.c) -fPIC   $(BISMONMODULECFLAGS) \
 	     -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) \
 	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE \
 	     -shared $< -o $@
 
-modules: modulecflags.mk
+modules: _cflagsmodule.mk
 	$(MAKE) -k $(MAKEFLAGS)  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES)) ; exit 0
 
 
@@ -127,7 +127,7 @@ outdump: bismon bismongtk bismonion  modules
 clean:
 	[ -f build.ninja ] && $(NINJA) -t clean
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
-	$(RM) .ninja* *mkd
+	$(RM) .ninja* *mkd  _cflagsmodule.mk
 	$(RM) build.ninja
 	$(RM) core* *.i *.ii *prof.out gmon.out
 	$(RM) *BM.const.h _bm_allconsts*.c

@@ -98,9 +98,9 @@ echo '  command = ./timestamp-emit.sh $in'
 echo '  description = TIMESTAMP $out'
 echo
 echo '# cflags for modules'
-echo 'rule MODULECFLAGS_r'
+echo 'rule CFLAGSMODULE_r'
 echo '  command =  (printf "#generated %s file from %s\nBISMONMODULECFLAGS = %s\nBISMONHEADERS = %s\n"  $out $in "$cflags" "$bm_headers $bm_generatedheaders"; date +"#generated %c%n") > $out'
-echo '  description = MODULECFLAGS $out'
+echo '  description = CFLAGSMODULE $out'
 echo
 echo '# reconfiguration'
 echo 'rule CONFIG_r'
@@ -185,9 +185,9 @@ done
 printf ' $\n  __timestamp.o _bm_allconsts.o'
 echo
 echo '## emit the cflags for make-ing modules'
-echo 'build modulecflags.mk: MODULECFLAGS_r build.ninja'
+echo 'build _cflagsmodule.mk: CFLAGSMODULE_r build.ninja'
 printf '\n\n################## default target\n'
-echo 'default bismon modulecflags.mk'
+echo 'default bismon _cflagsmodule.mk'
 echo
 echo '## reconfigure'
 echo build build.ninja: CONFIG_r $0

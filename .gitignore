@@ -17,7 +17,7 @@ _*ONIONBM.[ch]
 *.orig
 
 
-modulecflags.mk
+_cflagsmodule.mk
 *BM.const.h
 
 core*
