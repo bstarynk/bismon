@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 932 objects
+// for 935 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -1698,8 +1698,6 @@ _6YnYKKsHo3f_9nIEOZMp744
 !& _2bZ4BfCci5V_3WTzG7V25y4
 !& _0cUdonky1bM_4IVhwlVRBMk
 !& _3vI0Qc3FHQG_1g4fmHYkxSA
- // emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
-
 !)_3BFt4NfJmZC_7iYi2dwM38B
 
 
@@ -8998,6 +8996,19 @@ _5r6ekO9FCAj_7hCbcooblXl
 
 
 
+!(_1oT4wI1xxr0_6N4Xe9ZM0UT
+!@ 1535379634.619
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "when v_resemit null fail..."
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+ * _6EJRQxPiepy_50fow66D4Qn ( _0qTBOEAT5pa_2fz1SKfHrMV)
+!# 1
+!& _4lj3ntdp7xH_5LiKY8h0lHl
+!)_1oT4wI1xxr0_6N4Xe9ZM0UT
+
+
+
 !(_1qFf9AUO2W9_8azcQljqB3I
 !@ 1526552109.330
 !$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
@@ -10405,13 +10416,13 @@ _39pW7nyFqoI_5pikyvvGsZ5
 
 
 !(_4eIUh34K2C1_9Nhx6LdYEdp
-!@ 1535378463.770
+!@ 1535379634.620
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "lock o_jscurcomp (looping in o_jsgenmod)"
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _2TaoEvH5OQU_8nKYBgAvkmW
-!# 10
+!# 11
 !& _2we9tWsEm78_8u1lMyPXfoS
 !& _7PtLQyHzEtT_9uNchCVMZNN
 !& _58EVKWx2he4_3MQtKB8HQWY
@@ -10422,6 +10433,7 @@ _2TaoEvH5OQU_8nKYBgAvkmW
 !& _5kW1s42uEGN_4vbxExJpqpN
 !& _4c7mLUaGU0h_63ljLGyOBQX
 !& _6q9PrZRKTxh_6OG01D5gkin
+!& _90P1zCvpr9Q_1DMgI5of4Vm
 !)_4eIUh34K2C1_9Nhx6LdYEdp
 
 
@@ -10454,6 +10466,17 @@ _2TaoEvH5OQU_8nKYBgAvkmW
 !: _085lT8c13Ik_11pcWJfcLeM |=fail|
  * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _4HgYLk6htvP_4Ac2FCPfQ1C) _2TaoEvH5OQU_8nKYBgAvkmW  * _6FWWN47uih2_5BhwEm9gnHu ( _2W7Ckt2WxEM_4NVYgEWE73B))
 !)_4jwFGdaECBb_6dsBLTMoG9j
+
+
+
+!(_4lj3ntdp7xH_5LiKY8h0lHl
+!@ 1535379634.618
+!$_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "fail emit_jstoplevel (o_jscurcomp ii o_jsgenmod)"
+!: _085lT8c13Ik_11pcWJfcLeM |=fail|
+ * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _8dgEp1oxLMz_5iGP2Eq1wn7) _2TaoEvH5OQU_8nKYBgAvkmW _2W7Ckt2WxEM_4NVYgEWE73B _4JKd986pvM4_6yBzeeI40vW)
+!)_4lj3ntdp7xH_5LiKY8h0lHl
 
 
 
@@ -11591,26 +11614,25 @@ _6yWldsq3Rmk_01WqTfwSIDV
 
 
 !(_6q9PrZRKTxh_6OG01D5gkin
-!@ 1535378463.770
+!@ 1535379244.457
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "debug after emitjstoplevel (o_jscurcomp, ii, o_jsgenmod, v_resemit)"
 !: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "after"  " " 
-  "emitjstoplevel"  "*/"  "DBGPRINTF_BM"  "(\""  "after" 
-  " " _8dgEp1oxLMz_5iGP2Eq1wn7  " " _2TaoEvH5OQU_8nKYBgAvkmW  "=%" 
-  "s"  " " _2W7Ckt2WxEM_4NVYgEWE73B  "=%" _5a7gOTbvw4I_6PzXru7uInx 
-  " " _4JKd986pvM4_6yBzeeI40vW  "=%"  "s"  " " 
- _0qTBOEAT5pa_2fz1SKfHrMV  "=%"  "s"  "\","  "\n" 
-  " "  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2TaoEvH5OQU_8nKYBgAvkmW) 
- ")," 
-  " "  * _5ucAZimYynS_4VA0XHvr1nW ( _2W7Ckt2WxEM_4NVYgEWE73B)  ","  
-" "  "objectdbg1_BM" 
-  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4JKd986pvM4_6yBzeeI40vW)  ")," 
+  "emitjstoplevel"  "*/"  "\n"  "   "  "DBGPRINTF_BM" 
+  "(\""  "after"  " " _8dgEp1oxLMz_5iGP2Eq1wn7  " " 
+ _2TaoEvH5OQU_8nKYBgAvkmW  "=%"  "s"  " " _2W7Ckt2WxEM_4NVYgEWE73B 
+  "=%" _5a7gOTbvw4I_6PzXru7uInx  " " _4JKd986pvM4_6yBzeeI40vW  "=%" 
+  "s"  " " _0qTBOEAT5pa_2fz1SKfHrMV  "=%"  "s" 
+  "\","  "\n"  " "  "objectdbg_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _2TaoEvH5OQU_8nKYBgAvkmW)  "),"  " " 
+ "(" _0vgCFjXblkx_4zCMhMAWjVK 
+  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _2W7Ckt2WxEM_4NVYgEWE73B)  ")," 
  " "  "debug_outstr_value_BM" 
-  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0qTBOEAT5pa_2fz1SKfHrMV)  ","  
-" "  "CURFRAME_BM" 
-  ","  " "  0  "));")
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _0qTBOEAT5pa_2fz1SKfHrMV)  ")," 
+ " "  "CURFRAME_BM" 
+  ","  " "  0  "));"  "\n")
 !)_6q9PrZRKTxh_6OG01D5gkin
 
 
@@ -12897,6 +12919,19 @@ _3d9rq9TD6PH_6qUv4Hao767
 !& _4u9Asyd05eG_3iNFTkTpsJL
 !& _0nis0ztlxLc_5t5q1Qbil78
 !)_8Y3CrFLuAZv_5J3KoGgiSlM
+
+
+
+!(_90P1zCvpr9Q_1DMgI5of4Vm
+!@ 1535379634.620
+!$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "if v_resemit null fail..."
+!: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
+ 1
+!# 1
+!& _1oT4wI1xxr0_6N4Xe9ZM0UT
+!)_90P1zCvpr9Q_1DMgI5of4Vm
 
 
 
