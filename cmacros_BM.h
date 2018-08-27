@@ -199,10 +199,11 @@
 
 // we could use DBGPRINTF_BM and later replace it by NONPRINTF_BM
 #define DBGPRINTFATBIS_BM(Fil,Lin,Fmt,...) do { \
-    if (debugmsg_BM) printf("%s:%d+ " Fmt "\n",	\
-	   basename_BM((Fil)), (Lin),		\
-	 ##__VA_ARGS__);			\
-} while(0)
+    if (debugmsg_BM) {				\
+      printf("%s:%d+ ", basename_BM((Fil)),	\
+	     (Lin));				\
+      printf(Fmt "\n", ##__VA_ARGS__); }	\
+  } while(0)
 
 #define DBGPRINTFAT_BM(Fil,Lin,Fmt,...) \
   DBGPRINTFATBIS_BM(Fil,Lin,Fmt,##__VA_ARGS__)
