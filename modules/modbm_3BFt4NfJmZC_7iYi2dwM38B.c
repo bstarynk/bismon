@@ -102,8 +102,8 @@ value_tyBM crout_0cUdonky1bM_4IVhwlVRBMk_BM     //#0
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 2 arguments:
-  _.v_6QhNRfe1Cte_0niVlWfAlmO = arg0;
-  _.o_5JuT4FgNFFh_7McrTYeT3jx = objectcast_BM (arg1);
+  _.v_6QhNRfe1Cte_0niVlWfAlmO = arg0;   // v_restpath
+  _.o_5JuT4FgNFFh_7McrTYeT3jx = objectcast_BM (arg1);   // o_webex
   // fetched 2 arguments.
   // no closed values in _0cUdonky1bM_4IVhwlVRBMk.
   // routine _0cUdonky1bM_4IVhwlVRBMk body:
@@ -446,8 +446,8 @@ value_tyBM crout_0JktC4mAHCa_1KNr6uMIqIi_BM     //#1
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 2 arguments:
-  _.o_97rnxb0KFqq_44veN75DG2E = objectcast_BM (arg0);
-  _.o_93FBSk1ML0f_2WjSuKa9TNU = objectcast_BM (arg1);
+  _.o_97rnxb0KFqq_44veN75DG2E = objectcast_BM (arg0);   // o1
+  _.o_93FBSk1ML0f_2WjSuKa9TNU = objectcast_BM (arg1);   // o2
   // fetched 2 arguments.
   // no closed values in _0JktC4mAHCa_1KNr6uMIqIi.
   // routine _0JktC4mAHCa_1KNr6uMIqIi body:
@@ -553,7 +553,7 @@ value_tyBM crout_0SinERsgdvQ_57dLCP63i9r_BM     //#2
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 1 arguments:
-  _.v_4Q4WBLjAPTV_5WVLmhAvCJY = arg0;
+  _.v_4Q4WBLjAPTV_5WVLmhAvCJY = arg0;   // v_arg
   // fetched 1 arguments.
   // no closed values in _0SinERsgdvQ_57dLCP63i9r.
   // routine _0SinERsgdvQ_57dLCP63i9r body:
@@ -661,7 +661,7 @@ value_tyBM crout_0YOXUe7rEJC_3jFMjOAQRs9_BM     //#3+
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 1 arguments:
-  _.v_4Q4WBLjAPTV_5WVLmhAvCJY = arg0;
+  _.v_4Q4WBLjAPTV_5WVLmhAvCJY = arg0;   // v_arg
   // fetched 1 arguments.
   {                             // fetch 1 closed values in element_of_closed_minifunc:
     const closure_tyBM *callclos_0YOXUe7rEJC_3jFMjOAQRs9 =
@@ -670,8 +670,7 @@ value_tyBM crout_0YOXUe7rEJC_3jFMjOAQRs9_BM     //#3+
     unsigned nbclosed_0YOXUe7rEJC_3jFMjOAQRs9 =
       closurewidth_BM ((const value_tyBM) callclos_0YOXUe7rEJC_3jFMjOAQRs9);
     if (nbclosed_0YOXUe7rEJC_3jFMjOAQRs9 > 0)
-      _.v_5EEITf6IFH7_4DbKG99zcPW =
-        callclos_0YOXUe7rEJC_3jFMjOAQRs9->nodt_sons[0];
+      _.v_5EEITf6IFH7_4DbKG99zcPW = callclos_0YOXUe7rEJC_3jFMjOAQRs9->nodt_sons[0];     // v1
   }                             // fetched 1 closed values in _0YOXUe7rEJC_3jFMjOAQRs9.
   // routine _0YOXUe7rEJC_3jFMjOAQRs9 body:
 
@@ -750,8 +749,8 @@ value_tyBM crout_22Zd68WPKUO_6AoIuBcbUb2_BM     //#4
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 2 arguments:
-  _.o_7n2SLLuWOjH_4ArhFUjmckz = objectcast_BM (arg0);
-  _.o_3cTC8W7d75H_1vteOyEoAao = objectcast_BM (arg1);
+  _.o_7n2SLLuWOjH_4ArhFUjmckz = objectcast_BM (arg0);   // odict
+  _.o_3cTC8W7d75H_1vteOyEoAao = objectcast_BM (arg1);   // odumper
   // fetched 2 arguments.
   // no closed values in _22Zd68WPKUO_6AoIuBcbUb2.
   // routine _22Zd68WPKUO_6AoIuBcbUb2 body:
@@ -859,9 +858,9 @@ value_tyBM crout_2bZ4BfCci5V_3WTzG7V25y4_BM     //#5
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 3 arguments:
-  _.o_7n2SLLuWOjH_4ArhFUjmckz = objectcast_BM (arg0);
-  _.v_167WczZjWtG_3FofhJxQWJi = arg1;
-  _.v_5jRQCD1qTko_61I0j04ugAA = arg2;
+  _.o_7n2SLLuWOjH_4ArhFUjmckz = objectcast_BM (arg0);   // odict
+  _.v_167WczZjWtG_3FofhJxQWJi = arg1;   // v_str
+  _.v_5jRQCD1qTko_61I0j04ugAA = arg2;   // v_val
   // fetched 3 arguments.
   // no closed values in _2bZ4BfCci5V_3WTzG7V25y4.
   // routine _2bZ4BfCci5V_3WTzG7V25y4 body:
@@ -947,8 +946,8 @@ value_tyBM crout_3iiht57Wrs1_5NbiUi27oBn_BM     //#6
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 2 arguments:
-  _.o_97rnxb0KFqq_44veN75DG2E = objectcast_BM (arg0);
-  _.v_09RxU8xDco3_2Zxwfb13oDZ = arg1;
+  _.o_97rnxb0KFqq_44veN75DG2E = objectcast_BM (arg0);   // o1
+  _.v_09RxU8xDco3_2Zxwfb13oDZ = arg1;   // v2
   // fetched 2 arguments.
   // no closed values in _3iiht57Wrs1_5NbiUi27oBn.
   // routine _3iiht57Wrs1_5NbiUi27oBn body:
@@ -1033,13 +1032,13 @@ value_tyBM crout_3vI0Qc3FHQG_1g4fmHYkxSA_BM     //#7
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // locking 4:
-  objectval_tyBM *locked_1flY7i4N8iV_5T74FnYd6Ee = NULL;        // _1flY7i4N8iV_5T74FnYd6Ee
-  objectval_tyBM *locked_3bsFDNiUKNe_9NjWM3BxFSt = NULL;        // _3bsFDNiUKNe_9NjWM3BxFSt
-  objectval_tyBM *locked_4eIUh34K2C1_9Nhx6LdYEdp = NULL;        // _4eIUh34K2C1_9Nhx6LdYEdp
-  objectval_tyBM *locked_6mmsQZI3VuT_9OYUPR9OrsR = NULL;        // _6mmsQZI3VuT_9OYUPR9OrsR
+  objectval_tyBM *locked_1flY7i4N8iV_5T74FnYd6Ee = NULL;        // for o_jsmodule
+  objectval_tyBM *locked_3bsFDNiUKNe_9NjWM3BxFSt = NULL;        // for o_jsgenmod
+  objectval_tyBM *locked_4eIUh34K2C1_9Nhx6LdYEdp = NULL;        // for o_jscurcomp
+  objectval_tyBM *locked_6mmsQZI3VuT_9OYUPR9OrsR = NULL;        // for o_jscurcomp
   // fetch 2 arguments:
-  _.o_5V0w37YnN4F_8dZ6I79V60O = objectcast_BM (arg0);
-  _.o_41F1rKwGbaA_30OJWKsqNWy = objectcast_BM (arg1);
+  _.o_5V0w37YnN4F_8dZ6I79V60O = objectcast_BM (arg0);   // o_jsmodule
+  _.o_41F1rKwGbaA_30OJWKsqNWy = objectcast_BM (arg1);   // o_strbuf
   // fetched 2 arguments.
   // no closed values in _3vI0Qc3FHQG_1g4fmHYkxSA.
   // routine _3vI0Qc3FHQG_1g4fmHYkxSA body:
@@ -1514,7 +1513,7 @@ value_tyBM crout_3yQlckX4DRh_4b9l9FBSSSL_BM     //#8+
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 1 arguments:
-  _.v_4Q4WBLjAPTV_5WVLmhAvCJY = arg0;
+  _.v_4Q4WBLjAPTV_5WVLmhAvCJY = arg0;   // v_arg
   // fetched 1 arguments.
   {                             // fetch 1 closed values in same_as_closed_minifunc:
     const closure_tyBM *callclos_3yQlckX4DRh_4b9l9FBSSSL =
@@ -1523,8 +1522,7 @@ value_tyBM crout_3yQlckX4DRh_4b9l9FBSSSL_BM     //#8+
     unsigned nbclosed_3yQlckX4DRh_4b9l9FBSSSL =
       closurewidth_BM ((const value_tyBM) callclos_3yQlckX4DRh_4b9l9FBSSSL);
     if (nbclosed_3yQlckX4DRh_4b9l9FBSSSL > 0)
-      _.v_5EEITf6IFH7_4DbKG99zcPW =
-        callclos_3yQlckX4DRh_4b9l9FBSSSL->nodt_sons[0];
+      _.v_5EEITf6IFH7_4DbKG99zcPW = callclos_3yQlckX4DRh_4b9l9FBSSSL->nodt_sons[0];     // v1
   }                             // fetched 1 closed values in _3yQlckX4DRh_4b9l9FBSSSL.
   // routine _3yQlckX4DRh_4b9l9FBSSSL body:
 
@@ -1594,7 +1592,7 @@ value_tyBM crout_3HAeZZQ0q7b_7qyDsekaz7Y_BM     //#9
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 1 arguments:
-  _.o_97rnxb0KFqq_44veN75DG2E = objectcast_BM (arg0);
+  _.o_97rnxb0KFqq_44veN75DG2E = objectcast_BM (arg0);   // o1
   // fetched 1 arguments.
   // no closed values in _3HAeZZQ0q7b_7qyDsekaz7Y.
   // routine _3HAeZZQ0q7b_7qyDsekaz7Y body:
@@ -1665,7 +1663,7 @@ value_tyBM crout_4iEFTEcHxeb_6lH464uFkTC_BM     //#10+
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 1 arguments:
-  _.v_4Q4WBLjAPTV_5WVLmhAvCJY = arg0;
+  _.v_4Q4WBLjAPTV_5WVLmhAvCJY = arg0;   // v_arg
   // fetched 1 arguments.
   {                             // fetch 1 closed values in equal_to_closed_minifunc:
     const closure_tyBM *callclos_4iEFTEcHxeb_6lH464uFkTC =
@@ -1674,8 +1672,7 @@ value_tyBM crout_4iEFTEcHxeb_6lH464uFkTC_BM     //#10+
     unsigned nbclosed_4iEFTEcHxeb_6lH464uFkTC =
       closurewidth_BM ((const value_tyBM) callclos_4iEFTEcHxeb_6lH464uFkTC);
     if (nbclosed_4iEFTEcHxeb_6lH464uFkTC > 0)
-      _.v_5EEITf6IFH7_4DbKG99zcPW =
-        callclos_4iEFTEcHxeb_6lH464uFkTC->nodt_sons[0];
+      _.v_5EEITf6IFH7_4DbKG99zcPW = callclos_4iEFTEcHxeb_6lH464uFkTC->nodt_sons[0];     // v1
   }                             // fetched 1 closed values in _4iEFTEcHxeb_6lH464uFkTC.
   // routine _4iEFTEcHxeb_6lH464uFkTC body:
 
@@ -1749,9 +1746,9 @@ value_tyBM crout_4qlegfkPzrC_17skUfJP7v8_BM     //#11
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 3 arguments:
-  _.o_7n2SLLuWOjH_4ArhFUjmckz = objectcast_BM (arg0);
-  _.o_3cTC8W7d75H_1vteOyEoAao = objectcast_BM (arg1);
-  _.o_6opEz55NyNu_3JKpBgxLijw = objectcast_BM (arg2);
+  _.o_7n2SLLuWOjH_4ArhFUjmckz = objectcast_BM (arg0);   // odict
+  _.o_3cTC8W7d75H_1vteOyEoAao = objectcast_BM (arg1);   // odumper
+  _.o_6opEz55NyNu_3JKpBgxLijw = objectcast_BM (arg2);   // osbuf
   // fetched 3 arguments.
   // no closed values in _4qlegfkPzrC_17skUfJP7v8.
   // routine _4qlegfkPzrC_17skUfJP7v8 body:
@@ -1951,8 +1948,8 @@ value_tyBM crout_4M7lr5cU6VD_5hxmeH3baBf_BM     //#12
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 2 arguments:
-  _.o_97rnxb0KFqq_44veN75DG2E = objectcast_BM (arg0);
-  _.v_09RxU8xDco3_2Zxwfb13oDZ = arg1;
+  _.o_97rnxb0KFqq_44veN75DG2E = objectcast_BM (arg0);   // o1
+  _.v_09RxU8xDco3_2Zxwfb13oDZ = arg1;   // v2
   // fetched 2 arguments.
   // no closed values in _4M7lr5cU6VD_5hxmeH3baBf.
   // routine _4M7lr5cU6VD_5hxmeH3baBf body:
@@ -2032,9 +2029,9 @@ value_tyBM crout_5j8LpQULt1p_9oeOaqmfYYr_BM     //#13
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 3 arguments:
-  _.o_97rnxb0KFqq_44veN75DG2E = objectcast_BM (arg0);
-  _.o_93FBSk1ML0f_2WjSuKa9TNU = objectcast_BM (arg1);
-  _.o_1Bl1iFQ8boR_1xM6MOfHV1N = objectcast_BM (arg2);
+  _.o_97rnxb0KFqq_44veN75DG2E = objectcast_BM (arg0);   // o1
+  _.o_93FBSk1ML0f_2WjSuKa9TNU = objectcast_BM (arg1);   // o2
+  _.o_1Bl1iFQ8boR_1xM6MOfHV1N = objectcast_BM (arg2);   // o3
   // fetched 3 arguments.
   // no closed values in _5j8LpQULt1p_9oeOaqmfYYr.
   // routine _5j8LpQULt1p_9oeOaqmfYYr body:
@@ -2188,7 +2185,7 @@ value_tyBM crout_82ho9wUUDji_4peMLha4PXl_BM     //#14+
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 1 arguments:
-  _.o_4gykCX1QdLb_9Aooqa2FWTq = objectcast_BM (arg0);
+  _.o_4gykCX1QdLb_9Aooqa2FWTq = objectcast_BM (arg0);   // o_scan
   // fetched 1 arguments.
   {                             // fetch 1 closed values in findobj_scan_minifunc:
     const closure_tyBM *callclos_82ho9wUUDji_4peMLha4PXl =
@@ -2197,8 +2194,7 @@ value_tyBM crout_82ho9wUUDji_4peMLha4PXl_BM     //#14+
     unsigned nbclosed_82ho9wUUDji_4peMLha4PXl =
       closurewidth_BM ((const value_tyBM) callclos_82ho9wUUDji_4peMLha4PXl);
     if (nbclosed_82ho9wUUDji_4peMLha4PXl > 0)
-      _.o_4ITcQtvlMmO_30Pss9oAVDB =
-        objectcast_BM (callclos_82ho9wUUDji_4peMLha4PXl->nodt_sons[0]);
+      _.o_4ITcQtvlMmO_30Pss9oAVDB = objectcast_BM (callclos_82ho9wUUDji_4peMLha4PXl->nodt_sons[0]);     // o_findobj
   }                             // fetched 1 closed values in _82ho9wUUDji_4peMLha4PXl.
   // routine _82ho9wUUDji_4peMLha4PXl body:
 
@@ -2266,9 +2262,9 @@ value_tyBM crout_8imWClcIFKt_6w2H2ouB4I6_BM     //#15+
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 3 arguments:
-  _.v_9vc0quxdnhj_3zLw1MEwl1e = arg0;
-  _.v_8jKgolslEuE_4dxzrK5R2B4 = arg1;
-  _.v_4Q4WBLjAPTV_5WVLmhAvCJY = arg2;
+  _.v_9vc0quxdnhj_3zLw1MEwl1e = arg0;   // v_seq
+  _.v_8jKgolslEuE_4dxzrK5R2B4 = arg1;   // v_fun
+  _.v_4Q4WBLjAPTV_5WVLmhAvCJY = arg2;   // v_arg
   // fetched 3 arguments.
   // no closed values in iterate_sequence_minifunc.
   // routine _8imWClcIFKt_6w2H2ouB4I6 body:
@@ -2360,7 +2356,7 @@ value_tyBM crout_9CG8SKNs6Ql_4PiHd8cnydn_BM     //#16
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 1 arguments:
-  _.o_7n2SLLuWOjH_4ArhFUjmckz = objectcast_BM (arg0);
+  _.o_7n2SLLuWOjH_4ArhFUjmckz = objectcast_BM (arg0);   // odict
   // fetched 1 arguments.
   // no closed values in _9CG8SKNs6Ql_4PiHd8cnydn.
   // routine _9CG8SKNs6Ql_4PiHd8cnydn body:

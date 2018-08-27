@@ -70,7 +70,7 @@ value_tyBM crout_43Y25VLmh6s_3JRpERevcR4_BM     //#0+
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 1 arguments:
-  _.v_3vRFuniDv1K_4bQ7DeekM2I = arg0;
+  _.v_3vRFuniDv1K_4bQ7DeekM2I = arg0;   // v_i
   // fetched 1 arguments.
   // no closed values in successor_test_minifunc.
   // routine _43Y25VLmh6s_3JRpERevcR4 body:
@@ -144,7 +144,7 @@ value_tyBM crout_9O2lgu1TweO_0mVlpTwrBG1_BM     //#1+
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 1 arguments:
-  _.v_5EEITf6IFH7_4DbKG99zcPW = arg0;
+  _.v_5EEITf6IFH7_4DbKG99zcPW = arg0;   // v1
   // fetched 1 arguments.
   // no closed values in second_test_minifunc.
   // routine _9O2lgu1TweO_0mVlpTwrBG1 body:

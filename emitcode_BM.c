@@ -324,6 +324,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   objectval_tyBM *k_locking = BMK_8yqFC2Qz7I2_7KoZMWLE0U3;
+  objectval_tyBM *k_lockobj = BMK_9dso3pFLYwm_3JwHqiJK3UL;
   objectval_tyBM *k_emit_definition = BMK_1g8s9B96Irf_6Ix2Cyy8Hq0;
   //objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
   objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
@@ -582,14 +583,31 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
       for (int lkix = 0; lkix < nblocking; lkix++)
         {
           _.lockob = setelemnth_BM (_.setlockingv, lkix);
+          _.varob = NULL;
+          char *lockobnam = NULL;
+          {
+            ASSERT_BM (isobject_BM (_.lockob));
+            objlock_BM (_.lockob);
+            _.varob = objectcast_BM (objgetattr_BM (_.lockob, k_lockobj));
+            objunlock_BM (_.lockob);
+            if (isobject_BM (_.varob))
+              lockobnam = findobjectname_BM (_.varob);
+          }
           char lockidbuf[32];
           memset (lockidbuf, 0, sizeof (lockidbuf));
           idtocbuf32_BM (objid_BM (_.lockob), lockidbuf);
-          objstrbufferprintfpayl_BM (_.modgenob,
-                                     "    objectval_tyBM* locked%s = NULL; // %s\n",
-                                     lockidbuf, objectdbg_BM (_.lockob));
+          if (lockobnam)
+            objstrbufferprintfpayl_BM (_.modgenob,
+                                       "    objectval_tyBM* locked%s = NULL; // for %s\n",
+                                       lockidbuf, lockobnam);
+          else
+            objstrbufferprintfpayl_BM (_.modgenob,
+                                       "    objectval_tyBM* locked%s = NULL; // for %s\n",
+                                       lockidbuf, objectdbg_BM (_.varob));
+
         }
       _.lockob = NULL;
+      _.varob = NULL;
     }
   //// emit the fetching of arguments
   objstrbufferprintfpayl_BM (_.modgenob,
@@ -603,6 +621,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   for (int aix = 0; aix < nbargs; aix++)
     {
       _.varob = tuplecompnth_BM (_.argtupv, aix);
+      char *varobnam = findobjectname_BM (_.varob);
       _.typob = NULL;
       DBGPRINTF_BM
         ("emit_definition°simple_routine_preparation routprepob=%s aix#%d arg varob=%s bodyob=%s",
@@ -622,12 +641,26 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
       if (aix < 4)
         {
           if (_.typob == k_value)
-            objstrbufferprintfpayl_BM (_.modgenob, "   _.v%s = arg%d;\n",
-                                       varidbuf, aix);
+            {
+              if (varobnam)
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           "   _.v%s = arg%d; // %s\n",
+                                           varidbuf, aix, varobnam);
+              else
+                objstrbufferprintfpayl_BM (_.modgenob, "   _.v%s = arg%d;\n",
+                                           varidbuf, aix);
+            }
           else if (_.typob == k_object)
-            objstrbufferprintfpayl_BM (_.modgenob,
-                                       "   _.o%s = objectcast_BM (arg%d);\n",
-                                       varidbuf, aix);
+            {
+              if (varobnam)
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           "   _.o%s = objectcast_BM (arg%d); // %s\n",
+                                           varidbuf, aix, varobnam);
+              else
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           "   _.o%s = objectcast_BM (arg%d);\n",
+                                           varidbuf, aix);
+            }
           else
             {
               objstrbufferprintfpayl_BM (_.modgenob,
@@ -643,13 +676,27 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
           objstrbufferprintfpayl_BM (_.modgenob,
                                      "    if (nbrestargs >= %d)\n", aix - 4);
           if (_.typob == k_value)
-            objstrbufferprintfpayl_BM (_.modgenob,
-                                       "    _.v%s = restargs->nodt_sons[%d];\n",
-                                       varidbuf, aix - 4);
+            {
+              if (varobnam)
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           "    _.v%s = restargs->nodt_sons[%d]; // %s\n",
+                                           varidbuf, aix - 4, varobnam);
+              else
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           "    _.v%s = restargs->nodt_sons[%d];\n",
+                                           varidbuf, aix - 4);
+            }
           else if (_.typob == k_object)
-            objstrbufferprintfpayl_BM (_.modgenob,
-                                       "    _.o%s = objectcast(restargs->nodt_sons[%d]);\n",
-                                       varidbuf, aix - 4);
+            {
+              if (varobnam)
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           "    _.o%s = objectcast(restargs->nodt_sons[%d]); // %s\n",
+                                           varidbuf, aix - 4, varobnam);
+              else
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           "    _.o%s = objectcast(restargs->nodt_sons[%d]);\n",
+                                           varidbuf, aix - 4);
+            }
           else
             {
               objstrbufferprintfpayl_BM (_.modgenob,
@@ -691,6 +738,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
       for (int clix = 0; clix < nbclosed; clix++)
         {
           _.varob = sequencenthcomp_BM (_.closedseqv, clix);
+          char *varobnam = findobjectname_BM (_.varob);
           WEAKASSERT_BM (_.varob);
           objlock_BM (_.varob);
           _.typob = objectcast_BM (objgetattr_BM (_.varob, k_c_type));
@@ -705,13 +753,29 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
           objstrbufferprintfpayl_BM (_.modgenob, "   if (nbclosed%s > %d)\n",
                                      routidbuf, clix);
           if (_.typob == k_value)
-            objstrbufferprintfpayl_BM (_.modgenob,
-                                       "      _.v%s = callclos%s->nodt_sons[%d];\n",
-                                       varidbuf, routidbuf, clix);
+            {
+              if (varobnam)
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           "      _.v%s = callclos%s->nodt_sons[%d]; // %s\n",
+                                           varidbuf, routidbuf, clix,
+                                           varobnam);
+              else
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           "      _.v%s = callclos%s->nodt_sons[%d];\n",
+                                           varidbuf, routidbuf, clix);
+            }
           else if (_.typob == k_object)
-            objstrbufferprintfpayl_BM (_.modgenob,
-                                       "      _.o%s = objectcast_BM (callclos%s->nodt_sons[%d]);\n",
-                                       varidbuf, routidbuf, clix);
+            {
+              if (varobnam)
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           "      _.o%s = objectcast_BM (callclos%s->nodt_sons[%d]); // %s\n",
+                                           varidbuf, routidbuf, clix,
+                                           varobnam);
+              else
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           "      _.o%s = objectcast_BM (callclos%s->nodt_sons[%d]);\n",
+                                           varidbuf, routidbuf, clix);
+            }
           else
             {
               objstrbufferprintfpayl_BM (_.modgenob,
