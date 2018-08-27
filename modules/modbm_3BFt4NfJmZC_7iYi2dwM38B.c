@@ -1421,10 +1421,10 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
 
 
                         {       // run _2we9tWsEm78_8u1lMyPXfoS  
-                          /*debug o_jscurcomp */
+/*debug o_jscurcomp*/
                           DBGPRINTF_BM ("jscompile ii=%d o_jscurcomp=%s",
-                                        (int) /*ii: */ _.
-                                        n_2W7Ckt2WxEM_4NVYgEWE73B
+                                        (int) ( /*ii: */ _.
+                                               n_2W7Ckt2WxEM_4NVYgEWE73B),
                                         objectdbg_BM ( /*o_jscurcomp: */ _.
                                                       o_2TaoEvH5OQU_8nKYBgAvkmW));;
                         }       // end run _2we9tWsEm78_8u1lMyPXfoS  
