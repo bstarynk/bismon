@@ -4,7 +4,7 @@ GCC= gcc
 GXX= g++
 CC= $(GCC)
 CXX= $(GXX)
-CCACHE= ccache
+#CCACHE= ccache
 MARKDOWN= markdown
 INDENT= indent
 ASTYLE= astyle
@@ -82,14 +82,14 @@ indenttempmodule:
 
 
 modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
-	$(CCACHE) $(LINK.c) -fPIC $(BISMONMODULECFLAGS) \
+	$(LINK.c) -fPIC $(BISMONMODULECFLAGS) \
 	      -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<)  \
               -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' \
               -DBISMON_PERSISTENT_MODULE -shared $< -o $@
 
 
 modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
-	$(CCACHE) $(LINK.c) -fPIC   $(BISMONMODULECFLAGS) \
+	$(LINK.c) -fPIC   $(BISMONMODULECFLAGS) \
 	     -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) \
 	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE \
 	     -shared $< -o $@
