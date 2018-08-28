@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 950 objects
+// for 953 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -8828,6 +8828,19 @@ _5a7gOTbvw4I_6PzXru7uInx
 
 
 
+!(_0WDhX5koqTV_8hamJbCagx0
+!@ 1535460965.859
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit newline"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _5JuT4FgNFFh_7McrTYeT3jx)
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_6FcmuIO2DrS_7mzsaVpTMOI
+!)_0WDhX5koqTV_8hamJbCagx0
+
+
+
 !(_0XbMOJqLLPZ_1t2wg2TwPRA
 !|*
 !@ 1511768164.860
@@ -10267,6 +10280,19 @@ _7pji8vKR2XX_3psoWkfPtL2
 
 
 
+!(_3wwLQjWB3gd_1hBELsx2uQh
+!@ 1535460738.272
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit \' generated on \'"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _5JuT4FgNFFh_7McrTYeT3jx  " generated on ")
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_6jZqk9RP0Pe_12cIgV9WMFC
+!)_3wwLQjWB3gd_1hBELsx2uQh
+
+
+
 !(_3yJPC4SxGtF_6ilaF37wdxG
 !|*
 !@ 1510323206.580
@@ -10837,6 +10863,19 @@ _9w9s5y0OXta_3pY0SvkQDoU
 !# 1
 !& _8bCPs7gML9M_12nXMrdhzvW
 !)_4QR8kuWiKxV_9oKMeD79KDQ
+
+
+
+!(_4Td6Y7BXGce_3ur9tSNjAcl
+!@ 1535460891.331
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit generation timenow"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _5JuT4FgNFFh_7McrTYeT3jx  * _6HQCOo1Uowd_9HR7CrKxdoG (  "%c %Z"  * _7bvEv3e503O_6F9xiquPbls ()))
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_5AqofhXYnzK_3leeJoJgmTJ
+!)_4Td6Y7BXGce_3ur9tSNjAcl
 
 
 
@@ -11832,15 +11871,18 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 !(_6GIm9xpffcv_5ZeeEELYWND
-!@ 1535459591.010
+!@ 1535460965.859
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "lock o_jsmodule after o_webex"
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _5V0w37YnN4F_8dZ6I79V60O
-!# 2
+!# 5
 !& _0KB15AvyxFZ_4I5rT8hdFvI
 !& _1asQYb8sf6I_26hiF0qzmD5
+!& _3wwLQjWB3gd_1hBELsx2uQh
+!& _4Td6Y7BXGce_3ur9tSNjAcl
+!& _0WDhX5koqTV_8hamJbCagx0
 !)_6GIm9xpffcv_5ZeeEELYWND
 
 
