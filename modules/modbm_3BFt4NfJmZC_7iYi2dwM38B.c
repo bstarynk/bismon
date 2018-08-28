@@ -1646,6 +1646,12 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                   }             //endwhen _10qy9ZVTEVY_2ApRzne5Svx  
 /*endcond _11ovjN6N9uY_3B2eKLxolqc*/
 
+                /*return _1naTxcXF5Cp_7usMslj4poG: *//*v_r: */ _.
+                  v_3qw9bnATIhq_8loBraLeXzQ =
+                  // returned 
+                  /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW;
+                goto epilog_3vI0Qc3FHQG_1g4fmHYkxSA;
+
                 objunlock_BM (locked_3bsFDNiUKNe_9NjWM3BxFSt),
                   locked_3bsFDNiUKNe_9NjWM3BxFSt = NULL;
               }
@@ -1665,13 +1671,13 @@ epilog_3vI0Qc3FHQG_1g4fmHYkxSA:__attribute__ ((unused));
   // routine _3vI0Qc3FHQG_1g4fmHYkxSA epilogue:
   // unlocking 4:
   if (locked_1flY7i4N8iV_5T74FnYd6Ee != NULL)
-    objunlock_BM (locked_1flY7i4N8iV_5T74FnYd6Ee), locked_1flY7i4N8iV_5T74FnYd6Ee = NULL;       // _1flY7i4N8iV_5T74FnYd6Ee
+    objunlock_BM (locked_1flY7i4N8iV_5T74FnYd6Ee), locked_1flY7i4N8iV_5T74FnYd6Ee = NULL;       // for o_jsmodule
   if (locked_3bsFDNiUKNe_9NjWM3BxFSt != NULL)
-    objunlock_BM (locked_3bsFDNiUKNe_9NjWM3BxFSt), locked_3bsFDNiUKNe_9NjWM3BxFSt = NULL;       // _3bsFDNiUKNe_9NjWM3BxFSt
+    objunlock_BM (locked_3bsFDNiUKNe_9NjWM3BxFSt), locked_3bsFDNiUKNe_9NjWM3BxFSt = NULL;       // for o_jsgenmod
   if (locked_4eIUh34K2C1_9Nhx6LdYEdp != NULL)
-    objunlock_BM (locked_4eIUh34K2C1_9Nhx6LdYEdp), locked_4eIUh34K2C1_9Nhx6LdYEdp = NULL;       // _4eIUh34K2C1_9Nhx6LdYEdp
+    objunlock_BM (locked_4eIUh34K2C1_9Nhx6LdYEdp), locked_4eIUh34K2C1_9Nhx6LdYEdp = NULL;       // for o_jscurcomp
   if (locked_6mmsQZI3VuT_9OYUPR9OrsR != NULL)
-    objunlock_BM (locked_6mmsQZI3VuT_9OYUPR9OrsR), locked_6mmsQZI3VuT_9OYUPR9OrsR = NULL;       // _6mmsQZI3VuT_9OYUPR9OrsR
+    objunlock_BM (locked_6mmsQZI3VuT_9OYUPR9OrsR), locked_6mmsQZI3VuT_9OYUPR9OrsR = NULL;       // for o_jscurcomp
   if (stkf)
     stkf->stkfram_callfun = NULL;
   return /*v_r: */ _.v_3qw9bnATIhq_8loBraLeXzQ;
@@ -2674,9 +2680,9 @@ epilog_8VtkXEUFfhk_5RxrpY6JHI6:__attribute__ ((unused));
   // routine _8VtkXEUFfhk_5RxrpY6JHI6 epilogue:
   // unlocking 2:
   if (locked_4Yw5RJIrSwj_4NezE0gdaiQ != NULL)
-    objunlock_BM (locked_4Yw5RJIrSwj_4NezE0gdaiQ), locked_4Yw5RJIrSwj_4NezE0gdaiQ = NULL;       // _4Yw5RJIrSwj_4NezE0gdaiQ
+    objunlock_BM (locked_4Yw5RJIrSwj_4NezE0gdaiQ), locked_4Yw5RJIrSwj_4NezE0gdaiQ = NULL;       // for o_webex
   if (locked_6GIm9xpffcv_5ZeeEELYWND != NULL)
-    objunlock_BM (locked_6GIm9xpffcv_5ZeeEELYWND), locked_6GIm9xpffcv_5ZeeEELYWND = NULL;       // _6GIm9xpffcv_5ZeeEELYWND
+    objunlock_BM (locked_6GIm9xpffcv_5ZeeEELYWND), locked_6GIm9xpffcv_5ZeeEELYWND = NULL;       // for o_jsmodule
   if (stkf)
     stkf->stkfram_callfun = NULL;
   return /*v_r: */ _.v_3qw9bnATIhq_8loBraLeXzQ;
