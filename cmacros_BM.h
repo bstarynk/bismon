@@ -197,6 +197,7 @@
 
 #define GLOBAL_BM(Gnam) globdata_##Gnam##_BM
 
+
 // we could use DBGPRINTF_BM and later replace it by NONPRINTF_BM
 #define DBGPRINTFATBIS_BM(Fil,Lin,Fmt,...) do { \
     if (debugmsg_BM) {				\
@@ -272,6 +273,11 @@
 #define PLACEDFAILURE_BM(FailCod,Reason,Place,Stack) FAILURE_AT_BM((FailCod),__FILE__,__LINE__,(Reason),(Place),(Stack))
 
 #define CURFRAME_BM ((struct stackframe_stBM*)&_)
+
+
+
+#define OUTSTRVALUE_BM(Val) debug_outstr_value_BM((Val),CURFRAME_BM,0)
+
 
 #define LOCAL_FAILURE_HANDLE_ATBIS_BM(Fil,Lin,Lockset,Flabel,FcodVar,ReasonVar) \
   struct failurehandler_stBM fh_##Lin					\
