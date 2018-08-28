@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 940 objects
+// for 943 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -8805,6 +8805,32 @@ _8dLpuaNoSGN_2tdmkpINCsu) ~)
 
 
 
+!(_10qy9ZVTEVY_2ApRzne5Svx
+!@ 1535452593.039
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "fail when v_resemit null"
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+ * _6EJRQxPiepy_50fow66D4Qn ( _0qTBOEAT5pa_2fz1SKfHrMV)
+!# 1
+!& _75mkz7wH3u3_0ZQRFajA44k
+!)_10qy9ZVTEVY_2ApRzne5Svx
+
+
+
+!(_11ovjN6N9uY_3B2eKLxolqc
+!@ 1535452593.040
+!$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "check v_resemit non null after emit_epilogue_jsmodule or else fail"
+!: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
+ 1
+!# 1
+!& _10qy9ZVTEVY_2ApRzne5Svx
+!)_11ovjN6N9uY_3B2eKLxolqc
+
+
+
 !(_11EvX29IHDi_1da6fY8nL7Y
 !@ 1526564756.200
 !$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
@@ -9956,13 +9982,13 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 !(_3bsFDNiUKNe_9NjWM3BxFSt
-!@ 1535448371.459
+!@ 1535452593.040
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "lock o_jsgenmod after o_jsmodule"
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _4JKd986pvM4_6yBzeeI40vW
-!# 13
+!# 14
 !& _8g9Ms38jPls_58zTM8Ayy1u
 !& _0qK1TfyxaEU_0sLvlnHs4UT
 !& _4opDguH6Knp_1NiX0hlpo7s
@@ -9976,6 +10002,7 @@ _4JKd986pvM4_6yBzeeI40vW
 !& _7JB1R4MHBUk_0U5c5KdLtO6
 !& _5QbraFr74iN_8oD2wesuij2
 !& _9NCZAKVZV1F_4b1tg5oNMHD
+!& _11ovjN6N9uY_3B2eKLxolqc
 !)_3bsFDNiUKNe_9NjWM3BxFSt
 
 
@@ -11900,6 +11927,17 @@ _7nytuRkZkOz_8T9QMYQtGps)
   ","  " "  "CURFRAME_BM"  ","  " " 
   0  "));")
 !)_751OHscCCsT_1Kzky9o1pRk
+
+
+
+!(_75mkz7wH3u3_0ZQRFajA44k
+!@ 1535452593.039
+!$_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "fail since v_resemit null, giving o_jsgenmod"
+!: _085lT8c13Ik_11pcWJfcLeM |=fail|
+ * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _93zDz6jmlVq_8ckLb59DDIl) _4JKd986pvM4_6yBzeeI40vW)
+!)_75mkz7wH3u3_0ZQRFajA44k
 
 
 
