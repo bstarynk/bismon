@@ -822,16 +822,30 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
       for (int lkix = 0; lkix < nblocking; lkix++)
         {
           _.lockob = setelemnth_BM (_.setlockingv, lkix);
+          _.varob = NULL;
           char lockidbuf[32];
           memset (lockidbuf, 0, sizeof (lockidbuf));
           idtocbuf32_BM (objid_BM (_.lockob), lockidbuf);
-          objstrbufferprintfpayl_BM (_.modgenob,
-                                     "    if (locked%s != NULL)\n"
-                                     "       objunlock_BM(locked%s), locked%s = NULL; // %s\n",
-                                     lockidbuf, lockidbuf, lockidbuf,
-                                     objectdbg_BM (_.lockob));
+          {
+            objlock_BM (_.lockob);
+            _.varob = objectcast_BM (objgetattr_BM (_.lockob, k_lockobj));
+            objunlock_BM (_.lockob);
+          }
+          if (_.varob)
+            objstrbufferprintfpayl_BM (_.modgenob,
+                                       "    if (locked%s != NULL)\n"
+                                       "       objunlock_BM(locked%s), locked%s = NULL; // for %s\n",
+                                       lockidbuf, lockidbuf, lockidbuf,
+                                       objectdbg_BM (_.varob));
+          else
+            objstrbufferprintfpayl_BM (_.modgenob,
+                                       "    if (locked%s != NULL)\n"
+                                       "       objunlock_BM(locked%s), locked%s = NULL;\n",
+                                       lockidbuf, lockidbuf, lockidbuf);
+
         }
       _.lockob = NULL;
+      _.varob = NULL;
     }
   objstrbufferprintfpayl_BM (_.modgenob,
                              "   if (stkf) stkf->stkfram_callfun = NULL;\n");
