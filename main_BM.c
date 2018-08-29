@@ -348,7 +348,9 @@ remove_contributor_bm (const gchar * optname __attribute__ ((unused)),
 }                               /* end remove_contributor_bm */
 
 
-
+#if defined(BISMONION) && defined (BISMONGTK)
+#pragma message "both BISMONION and BISMONGTK are defined"
+#endif
 
 ////////////////////////////////////////////////////////////////
 const GOptionEntry optionstab_bm[] = {
@@ -482,17 +484,20 @@ const GOptionEntry optionstab_bm[] = {
    "\t (this should remove personal information relevant to European GDPR in file "
    CONTRIBUTORS_FILE_BM ")",
    .arg_description = "CONTRIBUTOR"},
-
 #if defined(BISMONION) && defined (BISMONGTK)
+  //
   /* when both BISMONION and BISMONGTK */
-  {.long_name = "gtk",.short_name = (char) 0,
+  {.long_name = "gui",          //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
    .arg_data = &run_gtk_BM,
    .description = "run GUI with GTK",
    .arg_description = NULL},
+  //  #warning both gtk & onion options
   //
-  {.long_name = "onion",.short_name = (char) 0,
+  {.long_name = "web",          //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
    .arg_data = &run_onion_BM,
@@ -749,23 +754,26 @@ main (int argc, char **argv)
 #if defined(BISMONION) && defined (BISMONGTK)
   /* when both BISMONION and BISMONGTK */
   if (strstr (basename (myprogname_BM), "gtk")
-      || (argc > 1 && !strcmp (argv[1], "--gtk"))
-      || (argc > 2 && argv[1][0] == '-' && !strcmp (argv[1], "--gtk")))
+      || (argc > 1 && !strcmp (argv[1], "--gui"))
+      || (argc > 2 && argv[1][0] == '-' && !strcmp (argv[1], "--gui")))
     run_gtk_BM = true;
   if (strstr (basename (myprogname_BM), "onion")
-      || (argc > 1 && !strcmp (argv[1], "--onion"))
-      || (argc > 2 && argv[1][0] == '-' && !strcmp (argv[1], "--onion")))
+      || (argc > 1 && !strcmp (argv[1], "--web"))
+      || (argc > 2 && argv[1][0] == '-' && !strcmp (argv[1], "--web")))
     run_onion_BM = true;
   for (int ix = 1; ix < argc; ix++)
     {
-      if (!strcmp (argv[ix], "--gtk"))
+      if (!strcmp (argv[ix], "--gui"))
         run_gtk_BM = true;
-      else if (!strcmp (argv[ix], "--onion"))
+      else if (!strcmp (argv[ix], "--web"))
         run_onion_BM = true;
     }
   if (run_gtk_BM && run_onion_BM)
     INFOPRINTF_BM ("running both GUI (GTK) & Web (Onion) interfaces");
 #endif /*both BISMONION and BISMONGTK */
+  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
+                run_gtk_BM ? "true" : "false",
+                run_onion_BM ? "true" : "false");
   dlprog_BM = dlopen (NULL, RTLD_NOW | RTLD_GLOBAL);
   if (!dlprog_BM)
     {
@@ -804,9 +812,9 @@ main (int argc, char **argv)
   GError *opterr = NULL;
   bool shouldfreedumpdir = false;
   bool guiok = false;
-  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
+  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s (argc=%d)",
                 run_gtk_BM ? "true" : "false",
-                run_onion_BM ? "true" : "false");
+                run_onion_BM ? "true" : "false", argc);
 #ifdef BISMONGTK
   if (run_gtk_BM)
     /// should actually use gtk_init_with_args so define some
@@ -814,10 +822,25 @@ main (int argc, char **argv)
     guiok = gtk_init_with_args (&argc, &argv,
                                 " - The bismon[gtk] program (with GTK GUI)",
                                 optionstab_bm, NULL, &opterr);
+  if (onion_web_base_BM)
+    {
+      DBGPRINTF_BM ("force run_onion with onion_web_base_BM '%s'",
+                    onion_web_base_BM);
+      run_onion_BM = true;
+    };
+  if (guiok)
+    {
+      DBGPRINTF_BM ("force run_gtk with guiok");
+      run_gtk_BM = true;
+    }
 #endif /*BISMONGTK*/
-    ////
+    DBGPRINTF_BM ("run_gtk is %s & run_onion is %s (argc=%d); guiok=%s",
+                  run_gtk_BM ? "true" : "false",
+                  run_onion_BM ? "true" : "false",
+                  argc, guiok ? "true" : "false");
+  ////
 #ifdef BISMONION
-    if (!guiok)
+  if (!guiok)
     {
       GOptionContext *weboptctx =
         g_option_context_new
@@ -837,6 +860,9 @@ main (int argc, char **argv)
              "debug messages enabled %s pid %d timestamp %s commit %s\n",
              myprogname_BM, (int) getpid (), bismon_timestamp,
              bismon_lastgitcommit);
+  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
+                run_gtk_BM ? "true" : "false",
+                run_onion_BM ? "true" : "false");
   if (give_version_bm)
     give_prog_version_BM (myprogname_BM);
   if (nbworkjobs_BM < MINNBWORKJOBS_BM)
@@ -859,6 +885,9 @@ main (int argc, char **argv)
   //
   if (count_emit_has_predef_bm > 0)
     emit_has_predef_BM ();
+  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
+                run_gtk_BM ? "true" : "false",
+                run_onion_BM ? "true" : "false");
 #ifdef BISMONGTK
   if (!guiok && !batch_bm && run_gtk_BM)
     FATAL_BM ("gtk_init_with_args failed : %s",
@@ -873,8 +902,11 @@ main (int argc, char **argv)
         }
     }
 #endif /*BISMONGTK*/
+    DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
+                  run_gtk_BM ? "true" : "false",
+                  run_onion_BM ? "true" : "false");
 #ifdef BISMONION
-    if (!batch_bm)
+  if (!batch_bm)
     {
       if (run_onion_BM)
         {
@@ -886,7 +918,10 @@ main (int argc, char **argv)
         }
     }
 #endif /*BISMONION*/
-    if (!load_dir_bm)
+    DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
+                  run_gtk_BM ? "true" : "false",
+                  run_onion_BM ? "true" : "false");
+  if (!load_dir_bm)
     load_dir_bm = ".";
   if (!dump_dir_BM)
     {
@@ -917,6 +952,9 @@ main (int argc, char **argv)
                        chdir_after_load_bm);
       fflush (NULL);
     }
+  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
+                run_gtk_BM ? "true" : "false",
+                run_onion_BM ? "true" : "false");
   if (nb_added_predef_bm > 0)
     add_new_predefined_bm ();
   if (nb_parsed_values_after_load_bm > 0)
@@ -929,6 +967,9 @@ main (int argc, char **argv)
     do_emit_module_from_main_BM ();
   if (dump_after_load_dir_bm)
     do_dump_after_load_BM ();
+  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
+                run_gtk_BM ? "true" : "false",
+                run_onion_BM ? "true" : "false");
 #ifdef BISMONGTK
   if (batch_bm)
     {
@@ -982,8 +1023,11 @@ main (int argc, char **argv)
 #endif /*BISMONION with BISMONGTK */
 #endif /*BISMONGTK*/
     //
+    DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
+                  run_gtk_BM ? "true" : "false",
+                  run_onion_BM ? "true" : "false");
 #ifdef BISMONION
-    if (run_onion_BM)
+  if (run_onion_BM)
     {
       DBGPRINTF_BM ("BISMONION with run_onion_BM");
       if (batch_bm)
