@@ -650,27 +650,32 @@ void
 do_emit_module_from_main_BM (void)
 {
   LOCALFRAME_BM (NULL, /*descr: */ BMP_emit_module,
-                 objectval_tyBM * modulob;
-                 objectval_tyBM * parsob; value_tyBM resultv;
-                 value_tyBM failres;
+                 objectval_tyBM * modulob;      //
+                 objectval_tyBM * parsob;       //
+                 value_tyBM resultv;    //
+                 value_tyBM failres;    //
+                 value_tyBM failplace;  //
     );
   WEAKASSERTRET_BM (module_to_emit_bm != NULL);
   _.failres = NULL;
+  _.failplace = NULL;
   int failcod = 0;
   struct failurelockset_stBM flockset = { };
   struct failurehandler_stBM *prevfailurehandle =
     (struct failurehandler_stBM *) curfailurehandle_BM;
   initialize_failurelockset_BM (&flockset, sizeof (flockset));
-  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureemit, failcod, _.failres);
+  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureemit, failcod, _.failres,
+                           _.failplace);
   if (failcod > 0)
   lab_failureemit:{
       destroy_failurelockset_BM (&flockset);
       curfailurehandle_BM = prevfailurehandle;
       {
         WARNPRINTF_BM
-          ("Failed to emit module from main %s, with failcode#%d, failres %s\n",
+          ("Failed to emit module from main %s, with failcode#%d, failres %s\n"
+           "failplace %s",
            objectdbg_BM (_.modulob), failcod,
-           debug_outstr_value_BM (_.failres, CURFRAME_BM, 0));
+           OUTSTRVALUE_BM (_.failres), OUTSTRVALUE_BM (_.failplace));
         return;
       };
     };
@@ -1395,7 +1400,8 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  value_tyBM funv; value_tyBM arg1v, arg2v, arg3v;
-                 value_tyBM failres;
+                 value_tyBM failres;    //
+                 value_tyBM failplace;  //
     );
   _.funv = fun;
   _.arg1v = arg1;
@@ -1403,9 +1409,11 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
   _.arg3v = arg3;
   int failcod = 0;
   _.failres = NULL;
+  _.failplace = NULL;
   struct failurelockset_stBM flockset = { };
   initialize_failurelockset_BM (&flockset, sizeof (flockset));
-  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureapply, failcod, _.failres);
+  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureapply, failcod, _.failres,
+                           _.failplace);
   if (failcod)
   lab_failureapply:
     {
@@ -1443,7 +1451,8 @@ do_internal_deferred_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * obsel;
                  value_tyBM recva, arg1v, arg2v, arg3v;
-                 value_tyBM failres;
+                 value_tyBM failres;    //
+                 value_tyBM failplace;  //
     );
   _.recva = recv;
   _.obsel = obsel;
@@ -1452,17 +1461,20 @@ do_internal_deferred_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
   _.arg3v = arg3;
   int failcod = 0;
   _.failres = NULL;
+  _.failplace = NULL;
   struct failurelockset_stBM flockset = { };
   initialize_failurelockset_BM (&flockset, sizeof (flockset));
-  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failuresend, failcod, _.failres);
+  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failuresend, failcod, _.failres,
+                           _.failplace);
   if (failcod)
   lab_failuresend:
     {
       destroy_failurelockset_BM (&flockset);
       curfailurehandle_BM = NULL;
-      WARNPRINTF_BM ("deffered_send3_gtk failure, failcod#%d failreason: %s\n", //
-                     failcod, debug_outstr_value_BM (_.failres, CURFRAME_BM,
-                                                     0));
+      WARNPRINTF_BM ("deffered_send3_gtk failure, failcod#%d\n" "failreason: %s\n" "failplace: %s\n",   //
+                     failcod,
+                     OUTSTRVALUE_BM (_.failres),
+                     OUTSTRVALUE_BM (_.failplace));
       return;
     }
   DBGPRINTF_BM ("internaldefersend recv %s obsel %s arg1 %s arg2 %s arg3 %s",   //

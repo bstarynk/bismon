@@ -1425,7 +1425,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
     struct failurelockset_stBM flockset = { };
     initialize_failurelockset_BM (&flockset, sizeof (flockset));
     LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureweb, failcod,
-                             _.failreasonv);
+                             _.failreasonv, _.failplacev);
     if (failcod)
     lab_failureweb:
       {
@@ -1449,9 +1449,9 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                   : (reqmeth == OR_HEAD) ? "HEAD"       //
                   : (reqmeth == OR_POST) ? "POST"       //
                   : "???"), reqpath);
-        fprintf (fresp, "Failure code %d,<br/>reason: <tt>\n", failcod);
+        fprintf (fresp, "Failure code %d,<br/>fail reason: <tt>\n", failcod);
         writefencodedhtml_BM (fresp, OUTSTRVALUE_BM (_.failreasonv), -1);
-        fputs ("</tt>,<br/>place: <tt>\n", fresp);
+        fputs ("</tt>,<br/>fail place: <tt>\n", fresp);
         writefencodedhtml_BM (fresp, OUTSTRVALUE_BM (_.failplacev), -1);
         fputs ("</tt></p>", fresp);
         time_t nowt = 0;

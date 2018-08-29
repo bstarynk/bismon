@@ -2008,7 +2008,8 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL, objectval_tyBM * obmod;
                  objectval_tyBM * dumpob;
                  objectval_tyBM * bufob; value_tyBM res;
-                 value_tyBM failreason;
+                 value_tyBM failreason; //
+                 value_tyBM failplace;  //
     );
   ASSERT_BM (isobject_BM (arg1));
   _.obmod = arg1;
@@ -2023,11 +2024,12 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
     (struct failurehandler_stBM *) curfailurehandle_BM;
   int failcod = 0;
   _.failreason = NULL;
+  _.failplace = NULL;
   struct failurelockset_stBM flockset = {
   };
   initialize_failurelockset_BM (&flockset, sizeof (flockset));
   LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failuremodule, failcod,
-                           _.failreason);
+                           _.failreason, _.failplace);
   _.res = send0_BM (_.obmod, BMP_emit_module, CURFRAME_BM);
   DBGPRINTF_BM ("@@dump_data°plain_dumpable_module emit_module succeess obmod %s res %s",      //
                 objectdbg_BM (_.obmod), //
@@ -2049,9 +2051,10 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
                                  idbuf);
       destroy_failurelockset_BM (&flockset);
       curfailurehandle_BM = prevfailureh;
-      DBGPRINTF_BM ("@@dump_data°plain_dumpable_module failed obmod=%s failcod=%d failreason %s\n****!!!!!!\n",        //
+      DBGPRINTF_BM ("@@dump_data°plain_dumpable_module failed obmod=%s failcod=%d failreason %s\n" "failplace %s\n" "****!!!!!!\n",    //
                     objectdbg_BM (_.obmod), failcod,    //
-                    debug_outstr_value_BM (_.failreason, CURFRAME_BM, 1));
+                    OUTSTRVALUE_BM (_.failreason),
+                    OUTSTRVALUE_BM (_.failplace));
       LOCALRETURN_BM (NULL);
     }
   else if (_.res)

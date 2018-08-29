@@ -279,8 +279,7 @@
 #define OUTSTRVALUE_BM(Val) debug_outstr_value_BM((Val),CURFRAME_BM,0)
 
 
-/// should take an additional PlaceVar argument
-#define LOCAL_FAILURE_HANDLE_ATBIS_BM(Fil,Lin,Lockset,Flabel,FcodVar,ReasonVar) \
+#define LOCAL_FAILURE_HANDLE_ATBIS_BM(Fil,Lin,Lockset,Flabel,FcodVar,ReasonVar,PlaceVar) \
   struct failurehandler_stBM fh_##Lin					\
    = {									\
      .pA = {.htyp = typayl_FailureHandler_BM},				\
@@ -293,17 +292,18 @@
   FcodVar = failcod_##Lin;						\
   if (failcod_##Lin) {							\
     ReasonVar = fh_##Lin.failh_reason;					\
+    PlaceVar = fh_##Lin.failh_place;					\
     goto Flabel;							\
   };									\
   (void)0
 
-#define LOCAL_FAILURE_HANDLE_AT_BM(Fil,Lin,Lockset,Flabel,FcodVar,ReasonVar) \
-  LOCAL_FAILURE_HANDLE_ATBIS_BM(Fil,Lin,Lockset,Flabel,FcodVar,ReasonVar)
+#define LOCAL_FAILURE_HANDLE_AT_BM(Fil,Lin,Lockset,Flabel,FcodVar,ReasonVar,PlaceVar) \
+  LOCAL_FAILURE_HANDLE_ATBIS_BM(Fil,Lin,Lockset,Flabel,FcodVar,ReasonVar,PlaceVar)
 
 /// code using LOCAL_FAILURE_HANDLE_BM should probably backup and
 /// restore the curfailurehandle_BM
-#define LOCAL_FAILURE_HANDLE_BM(Lockset,Flabel,FcodVar,ReasonVar) \
-  LOCAL_FAILURE_HANDLE_AT_BM(__FILE__,__LINE__,Lockset,Flabel,FcodVar,ReasonVar)
+#define LOCAL_FAILURE_HANDLE_BM(Lockset,Flabel,FcodVar,ReasonVar,PlaceVar)	\
+  LOCAL_FAILURE_HANDLE_AT_BM(__FILE__,__LINE__,Lockset,Flabel,FcodVar,ReasonVar,PlaceVar)
 
 // weak assert dont abort
 extern void weakassertfailureat_BM (const char *condmsg, const char *fil,

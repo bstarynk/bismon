@@ -2067,8 +2067,10 @@ ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    // emit_module#command_handler
  const quasinode_tyBM * restargs_ __attribute__ ((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2bzzB0nZuUO_2xfj3rDb3DN,
-                 objectval_tyBM * modulob; value_tyBM resultv;
-                 value_tyBM failres;
+                 objectval_tyBM * modulob;      //
+                 value_tyBM resultv;    //
+                 value_tyBM failres;    //
+                 value_tyBM failplace;  //
     );
   _.modulob = objectcast_BM (arg1);
   DBGPRINTF_BM ("emit_module command start modulob=%s",
@@ -2093,11 +2095,13 @@ ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    // emit_module#command_handler
     };
   /////
   _.failres = NULL;
+  _.failplace = NULL;
   int failcod = 0;
   struct failurelockset_stBM flockset = { };
   struct failurehandler_stBM *prevfailurehandle = curfailurehandle_BM;
   initialize_failurelockset_BM (&flockset, sizeof (flockset));
-  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureemit, failcod, _.failres);
+  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureemit, failcod, _.failres,
+                           _.failplace);
   if (failcod > 0)
   lab_failureemit:{
       destroy_failurelockset_BM (&flockset);
@@ -2107,10 +2111,11 @@ ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    // emit_module#command_handler
           log_begin_message_BM ();
           log_puts_message_BM ("failed to emit module ");
           log_object_message_BM (_.modulob);
-          log_printf_message_BM (" with failcode#%d\n.. failres %s\n",
+          log_printf_message_BM (" with failcode#%d\n.. failres %s\n"
+                                 "failplace %s",
                                  failcod,
-                                 debug_outstr_value_BM (_.failres,
-                                                        CURFRAME_BM, 0));
+                                 OUTSTRVALUE_BM (_.failres),
+                                 OUTSTRVALUE_BM (_.failplace));
           log_end_message_BM ();
 #ifdef BISMONGTK
           show_answer_value_newgui_BM (_.failres, CURFRAME_BM);

@@ -3276,7 +3276,9 @@ fill_objectviewbuffer_BM (struct
   LOCALFRAME_BM ( /*prev: */ stkf,
                  /*descr: */ NULL,
                  objectval_tyBM * object;
-                 objectval_tyBM * shobsel; volatile value_tyBM failreason;
+                 objectval_tyBM * shobsel;
+                 volatile value_tyBM failreason;
+                 volatile value_tyBM failplace;
                  value_tyBM val;);
   ASSERT_BM (obv != NULL);
   ASSERT_BM (pthread_self () == mainthreadid_BM);
@@ -3301,9 +3303,11 @@ fill_objectviewbuffer_BM (struct
   struct failurehandler_stBM *prevfailureh = curfailurehandle_BM;
   int failcod = 0;
   _.failreason = NULL;
+  _.failplace = NULL;
   struct failurelockset_stBM flockset = { };
   initialize_failurelockset_BM (&flockset, sizeof (flockset));
-  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureview, failcod, _.failreason);
+  LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failureview, failcod, _.failreason,
+                           _.failplace);
   curfailurehandle_BM = prevfailureh;
   curobjview_newgui_BM = obv;
   if (failcod)
@@ -3336,11 +3340,55 @@ fill_objectviewbuffer_BM (struct
           faildepth = 2;
         else if (faildepth > BROWSE_MAXDEPTH_NEWGUI_BM)
           faildepth = BROWSE_MAXDEPTH_NEWGUI_BM;
+        gtk_text_buffer_insert_with_tags (tbuf,
+                                          &browserit_BM,
+                                          "//failreason:",
+                                          -1,
+                                          epilogue_brotag_BM,
+                                          miscomm_brotag_BM, NULL);
         char *failvalstr =      //
           debug_outstr_value_BM (_.failreason,
                                  CURFRAME_BM, faildepth);
         char *nextnl = NULL;
         for (const char *curpc = failvalstr;
+             curpc != NULL
+             && ((nextnl = strchr (curpc, '\n')),
+                 curpc);
+             (curpc = nextnl ? (nextnl + 1) : NULL), (nextnl = NULL))
+          {
+            gtk_text_buffer_insert_with_tags (tbuf,
+                                              &browserit_BM,
+                                              "///!! ",
+                                              -1, epilogue_brotag_BM, NULL);
+            if (nextnl)
+              gtk_text_buffer_insert_with_tags (tbuf,
+                                                &browserit_BM,
+                                                curpc,
+                                                nextnl -
+                                                curpc,
+                                                epilogue_brotag_BM,
+                                                miscomm_brotag_BM, NULL);
+            else
+              gtk_text_buffer_insert_with_tags (tbuf,
+                                                &browserit_BM,
+                                                curpc,
+                                                -1,
+                                                epilogue_brotag_BM,
+                                                miscomm_brotag_BM, NULL);
+          }
+        gtk_text_buffer_insert (tbuf, &browserit_BM, "\n", -1);
+        nextnl = NULL;
+        gtk_text_buffer_insert_with_tags (tbuf,
+                                          &browserit_BM,
+                                          "//failplace:",
+                                          -1,
+                                          epilogue_brotag_BM,
+                                          miscomm_brotag_BM, NULL);
+        gtk_text_buffer_insert (tbuf, &browserit_BM, "\n", -1);
+        char *failplacestr =    //
+          debug_outstr_value_BM (_.failplace,
+                                 CURFRAME_BM, faildepth);
+        for (const char *curpc = failplacestr;
              curpc != NULL
              && ((nextnl = strchr (curpc, '\n')),
                  curpc);
