@@ -91,9 +91,9 @@ fork_onion_process_at_slot_BM (int slotpos,
 static void lockonion_runpro_mtx_at_BM (int lineno);
 static void unlockonion_runpro_mtx_at_BM (int lineno);
 
-static void plain_event_loop_BM (void);
+static void web_plain_event_loop_BM (void);
 
-// handle signals thu signafd(2); return true to break plain_event_loop_BM
+// handle signals thu signafd(2); return true to break web_plain_event_loop_BM
 static bool read_sigfd_BM (void);
 // handle SIGCHLD
 static void handle_sigchld_BM (pid_t pid);
@@ -498,9 +498,18 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
       /// (and their output pipes), to SIGCHLD and SIGTERM + SIGQUIT
       /// see https://groups.google.com/a/coralbits.com/d/msg/onion-dev/m-wH-BY2MA0/QJqLNcHvAAAJ
       /// and https://groups.google.com/a/coralbits.com/d/msg/onion-dev/ImjNf1EIp68/R37DW3mZAAAJ
-      web_is_running_BM = true;
-      plain_event_loop_BM ();
-      web_is_running_BM = false;
+      if (bismon_has_gui_BM ())
+        {
+          INFOPRINTF_BM
+            ("run_onionweb dont run web_plain_event_loop because we have GTK GUI");
+        }
+      else
+        {
+          INFOPRINTF_BM ("run_onionweb runs web_plain_event_loop");
+          web_is_running_BM = true;
+          web_plain_event_loop_BM ();
+          web_is_running_BM = false;
+        }
     }
 }                               /* end run_onionweb_BM */
 
@@ -1850,19 +1859,20 @@ initialize_webonion_BM (void)
 }                               /* end initialize_webonion_BM */
 
 
-/// remember that only plain_event_loop_BM is allowed to *remove*
+/// remember that only web_plain_event_loop_BM is allowed to *remove*
 /// things from onionrunprocarr_BM or onionrunpro_list_BM
 void
-plain_event_loop_BM (void)
+web_plain_event_loop_BM (void)
 {
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * bufob;
     );
   atomic_init (&onionlooprunning_BM, true);
 
-  DBGPRINTF_BM ("plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",   //
+  DBGPRINTF_BM ("web_plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",       //
                 sigfd_BM, (long) gettid_BM (), elapsedtime_BM ());
   long loopcnt = 0;
+  INFOPRINTF_BM ("start loop of web_plain_event_loop_BM");
   while (atomic_load (&onionlooprunning_BM))
     {
       loopcnt++;
@@ -1894,18 +1904,19 @@ plain_event_loop_BM (void)
       }
 #define POLL_DELAY_MILLISECS_BM 750
       if (loopcnt % 4 == 0)
-        DBGPRINTF_BM ("plain_event_loop_BM before poll nbpoll=%d loop#%ld",
-                      nbpoll, loopcnt);
+        DBGPRINTF_BM
+          ("web_plain_event_loop_BM before poll nbpoll=%d loop#%ld", nbpoll,
+           loopcnt);
       int nbready = poll (&pollarr, nbpoll, POLL_DELAY_MILLISECS_BM);
       if (loopcnt % 4 == 0)
-        DBGPRINTF_BM ("plain_event_loop_BM nbready %d loop#%ld", nbready,
+        DBGPRINTF_BM ("web_plain_event_loop_BM nbready %d loop#%ld", nbready,
                       loopcnt);
       if (nbready == 0)         // no file descriptor read, timed out
         continue;
       if (nbready < 0)
         {
           if (errno != EINTR)
-            FATAL_BM ("plain_event_loop_BM poll failure");
+            FATAL_BM ("web_plain_event_loop_BM poll failure");
           continue;
         }
       {
@@ -2004,13 +2015,13 @@ plain_event_loop_BM (void)
       if (pollarr[pollix_cmdp].revents & POLL_IN)
         read_commandpipe_BM ();
     }                           /* end while onionlooprunning */
-  DBGPRINTF_BM ("plain_event_loop_BM ended loopcnt=%ld", loopcnt);
-}                               /* end plain_event_loop_BM */
+  INFOPRINTF_BM ("web_plain_event_loop_BM ended loopcnt=%ld", loopcnt);
+}                               /* end web_plain_event_loop_BM */
 
 
 
 static bool
-read_sigfd_BM (void)            // called from plain_event_loop_BM
+read_sigfd_BM (void)            // called from web_plain_event_loop_BM
 {
   struct signalfd_siginfo siginf;
   memset (&siginf, 0, sizeof (siginf));
