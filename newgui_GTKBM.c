@@ -1941,6 +1941,11 @@ const objectval_tyBM *parsobjexp_newguicmd_BM
               log_object_message_BM (_.obj);
               log_puts_message_BM (" selector ");
               log_object_message_BM (_.obsel);
+              log_printf_message_BM (" with %d arguments", nbsons);
+              if (!_.val)
+                log_puts_message_BM (" without result.");
+              else
+                log_puts_message_BM (".");
               log_end_message_BM ();
               objunlock_BM (_.obj);
             }
