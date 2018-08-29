@@ -1109,11 +1109,16 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                 {               // run _8g9Ms38jPls_58zTM8Ayy1u 
 /*dbgprintf after lock o_jsgenmod*/
                   DBGPRINTF_BM
-                    ("jsmodule compiler: after lock o_jsmodule=%s o_jsgenmod=%s",
+                    ("jsmodule compiler: after lock o_jsmodule=%s (of %s); o_jsgenmod=%s (of %s)",
                      objectdbg_BM ( /*o_jsmodule: */ _.
                                    o_5V0w37YnN4F_8dZ6I79V60O),
-                     objectdbg1_BM ( /*o_jsgenmod: */ _.
-                                    o_4JKd986pvM4_6yBzeeI40vW));
+                     objectdbg1_BM (objclass_BM ( /*o_jsmodule: */ _.
+                                                 o_5V0w37YnN4F_8dZ6I79V60O)),
+                     objectdbg2_BM ( /*o_jsgenmod: */ _.
+                                    o_4JKd986pvM4_6yBzeeI40vW),
+                     objectdbg3_BM (objclass_BM ( /*o_jsgenmod: */ _.
+                                                 o_4JKd986pvM4_6yBzeeI40vW)));
+                  ;
                 }               // end run _8g9Ms38jPls_58zTM8Ayy1u 
 
                 /*leni: */ _.n_833x2jYqhZh_8vDIuJhwz1k =
