@@ -279,6 +279,7 @@
 #define OUTSTRVALUE_BM(Val) debug_outstr_value_BM((Val),CURFRAME_BM,0)
 
 
+/// should take an additional PlaceVar argument
 #define LOCAL_FAILURE_HANDLE_ATBIS_BM(Fil,Lin,Lockset,Flabel,FcodVar,ReasonVar) \
   struct failurehandler_stBM fh_##Lin					\
    = {									\

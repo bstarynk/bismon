@@ -1367,6 +1367,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * sessionob; objectval_tyBM * webexob;
                  value_tyBM failreasonv;        //
+                 value_tyBM failplacev; //
                  value_tyBM webhandlerv;        //
                  value_tyBM restpathv;  //
                  value_tyBM appresv;    //
@@ -1418,6 +1419,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
      wexda->webx_num, objectdbg1_BM (_.webexob));
   int failcod = 0;
   _.failreasonv = NULL;
+  _.failplacev = NULL;
   struct failurehandler_stBM *prevfailureh = curfailurehandle_BM;
   {
     struct failurelockset_stBM flockset = { };
@@ -1447,8 +1449,11 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                   : (reqmeth == OR_HEAD) ? "HEAD"       //
                   : (reqmeth == OR_POST) ? "POST"       //
                   : "???"), reqpath);
-        fprintf (fresp, "Failure code %d, reason %s</p>\n", failcod,
-                 debug_outstr_value_BM (_.failreasonv, CURFRAME_BM, 0));
+        fprintf (fresp, "Failure code %d,<br/>reason: <tt>\n", failcod);
+        writefencodedhtml_BM (fresp, OUTSTRVALUE_BM (_.failreasonv), -1);
+        fputs ("</tt>,<br/>place: <tt>\n", fresp);
+        writefencodedhtml_BM (fresp, OUTSTRVALUE_BM (_.failplacev), -1);
+        fputs ("</tt></p>", fresp);
         time_t nowt = 0;
         time (&nowt);
         struct tm nowtm;
