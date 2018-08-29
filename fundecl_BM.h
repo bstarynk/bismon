@@ -554,13 +554,23 @@ extern void objstrbuffernewlinepayl_BM (objectval_tyBM * obj);
 /// output UTF8 encoded à la JSON
 extern void objstrbufferencodedutf8payl_BM (objectval_tyBM * obj,
                                             const char *str, ssize_t bytelen);
+
+extern void writefencodedutf8_BM (FILE * fil, const char *str,
+                                  ssize_t bytelen);
+
+
 /// output bytes encoded à la C
 extern void objstrbufferencodedcpayl_BM (objectval_tyBM * obj,
                                          const char *str, ssize_t bytelen);
 
+extern void writefencodedc_BM (FILE * fil, const char *str, ssize_t bytelen);
+
 /// output bytes encoded à la HTML
 extern void objstrbufferencodedhtmlpayl_BM (objectval_tyBM * obj,
                                             const char *str, ssize_t bytelen);
+
+extern void writefencodedhtml_BM (FILE * fil, const char *str,
+                                  ssize_t bytelen);
 
 /// write the content to a file, if different
 extern void objstrbufferwritetofilepayl_BM (objectval_tyBM * obj,

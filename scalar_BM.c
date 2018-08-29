@@ -927,6 +927,72 @@ objstrbufferencodedutf8payl_BM (objectval_tyBM * obj, const char *str,
 }                               /* end objstrbufferencodedutf8payl_BM */
 
 
+void
+writefencodedutf8_BM (FILE * fil, const char *str, ssize_t bytelen)
+{
+  if (!fil)
+    return;
+  if (!str)
+    return;
+  if (bytelen < 0)
+    bytelen = strlen (str);
+  if (!g_utf8_validate (str, bytelen, NULL))
+    return;
+  const char *ends = str + bytelen;
+  for (const char *pc = str; pc < ends; pc = g_utf8_next_char (pc))
+    {
+      gunichar uc = g_utf8_get_char (pc);
+      switch (uc)
+        {
+        case '\"':
+          fputs ("\\\"", fil);
+          break;
+        case '\'':
+          fputs ("\\\'", fil);
+          break;
+        case '\a':
+          fputs ("\\a", fil);
+          break;
+        case '\b':
+          fputs ("\\b", fil);
+          break;
+        case '\f':
+          fputs ("\\f", fil);
+          break;
+        case '\n':
+          fputs ("\\n", fil);
+          break;
+        case '\r':
+          fputs ("\\r", fil);
+          break;
+        case '\t':
+          fputs ("\\t", fil);
+          break;
+        case '\v':
+          fputs ("\\v", fil);
+          break;
+        case '\033' /*ESCAPE*/:
+          fputs ("\\e", fil);
+          break;
+        default:
+          if (uc >= ' ' && uc < 127)
+            {
+              fputc ((char) uc, fil);
+            }
+          else
+            {
+              char ubuf[16];
+              memset (ubuf, 0, sizeof (ubuf));
+              if (uc < 0xffff)
+                snprintf (ubuf, sizeof (ubuf), "\\u%04x", uc);
+              else
+                snprintf (ubuf, sizeof (ubuf), "\\U%08x", uc);
+              fputs (ubuf, fil);
+            }
+          break;
+        }
+    }
+}                               /* end writefencodedutf8_BM */
 
 
 
@@ -1001,7 +1067,73 @@ objstrbufferencodedhtmlpayl_BM (objectval_tyBM * obj, const char *str,
 }                               /* end objstrbufferencodedhtmlpayl_BM */
 
 
+void
+writefencodedhtml_BM (FILE * fil, const char *str, ssize_t bytelen)
+{
+  if (!fil)
+    return;
+  if (!str)
+    return;
+  if (bytelen < 0)
+    bytelen = strlen (str);
+  if (!g_utf8_validate (str, bytelen, NULL))
+    return;
+  const char *ends = str + bytelen;
+  for (const char *pc = str; pc < ends; pc = g_utf8_next_char (pc))
+    {
+      gunichar uc = g_utf8_get_char (pc);
+      switch (uc)
+        {
+        case '\"':
+          fputs ("&quot;", fil);
+          break;
+        case '\'':
+          fputs ("&apos;", fil);
+          break;
+        case '<':
+          fputs ("&lt;", fil);
+          break;
+        case '>':
+          fputs ("&gt;", fil);
+          break;
+        case '&':
+          fputs ("&amp;", fil);
+          break;
+        case '\n':
+          fputs ("\n", fil);
+          break;
+        case '\r':
+          fputs ("\r", fil);
+          break;
+        case '\f':
+          fputs ("\f", fil);
+          break;
+        case ' ':
+          fputc (' ', fil);
+          break;
+        default:
+          {
+            if (uc >= ' ' && uc < 127)
+              {
+                fputc ((char) uc, fil);
+              }
+            else
+              {
+                char ubuf[16];
+                memset (ubuf, 0, sizeof (ubuf));
+                if (uc >= ' ' && uc < 127)
+                  ubuf[0] = (char) uc;
+                else
+                  snprintf (ubuf, sizeof (ubuf), "&#%d;", uc);
+                fputs (ubuf, fil);
+              }
+          }
+          break;
+        }
+    }
+}                               /* end writefencodedhtml_BM */
 
+/////////
 
 void
 objstrbufferencodedcpayl_BM (objectval_tyBM * obj, const char *str,
@@ -1069,6 +1201,70 @@ objstrbufferencodedcpayl_BM (objectval_tyBM * obj, const char *str,
 
 
 
+void
+writefencodedc_BM (FILE * fil, const char *str, ssize_t bytelen)
+{
+  if (!fil)
+    return;
+  if (!str)
+    return;
+  if (bytelen < 0)
+    bytelen = strlen (str);
+  const char *ends = str + bytelen;
+  for (const char *pc = str; pc < ends; pc++)
+    {
+      switch (*pc)
+        {
+        case '\"':
+          fputs ("\\\"", fil);
+          break;
+        case '\'':
+          fputs ("\\\'", fil);
+          break;
+        case '\a':
+          fputs ("\\a", fil);
+          break;
+        case '\b':
+          fputs ("\\b", fil);
+          break;
+        case '\f':
+          fputs ("\\f", fil);
+          break;
+        case '\n':
+          fputs ("\\n", fil);
+          break;
+        case '\r':
+          fputs ("\\r", fil);
+          break;
+        case '\t':
+          fputs ("\\t", fil);
+          break;
+        case '\v':
+          fputs ("\\v", fil);
+          break;
+        case '\033' /*ESCAPE*/:
+          fputs ("\\e", fil);
+          break;
+        default:
+          {
+            char ubuf[8] = "";
+            if (*pc < 127 && *pc >= ' ')
+              {
+                ubuf[0] = *pc;
+                ubuf[1] = (char) 0;
+              }
+            else
+              snprintf (ubuf, sizeof (ubuf), "\\x%02x", *pc);
+            fputs (ubuf, fil);
+          };
+          break;
+        }
+    }
+}                               /* end writefencodedc_BM */
+
+
+
+////////////////
 void
 objstrbufferwritetofilepayl_BM (objectval_tyBM * obj, const char *filepath)
 {
