@@ -907,10 +907,12 @@ custom_onion_handler_BM (void *clientdata,
             {
               char *locstr = NULL;
               char *querystr = percent_encode_onion_query_args_BM (req);
-              asprintf (&locstr, "%s?%s",
-                        (reqpath
-                         && reqpath[0]) ? reqpath : "/",
-                        querystr ? querystr : "");
+              if (querystr && querystr[0])
+                asprintf (&locstr, "%s?%s",
+                          (reqpath && reqpath[0]) ? reqpath : "/", querystr);
+              else
+                locstr = strdup ((reqpath && reqpath[0]) ? reqpath : "/");
+              DBGPRINTF_BM ("custom_onion_handle locstr=%s", locstr);
               free (querystr), querystr = NULL;
               if (!locstr)
                 FATAL_BM ("custom_onion_handle asprintf querydict failed");
