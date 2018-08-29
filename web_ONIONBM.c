@@ -1413,8 +1413,8 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   objtouchnow_BM (_.webexob);
   wexda->webx_magic = BISMONION_WEBX_MAGIC;
   atomic_init (&wexda->webx_respcode, 0);
-  WARNPRINTF_BM
-    ("do_dynamic_onion unimplemented  sessionob %s reqpath '%s' post %s wexnum %d webexob %s",
+  DBGPRINTF_BM
+    ("do_dynamic_onion sessionob %s reqpath '%s' post %s wexnum %d webexob %s",
      objectdbg_BM (_.sessionob), reqpath, postrequest ? "true" : "false",
      wexda->webx_num, objectdbg1_BM (_.webexob));
   int failcod = 0;
