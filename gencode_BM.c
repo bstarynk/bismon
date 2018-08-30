@@ -3493,7 +3493,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   for (int kix = 0; kix < (int) nbconst; kix++)
     {
       _.commentv = NULL;
-      if (kix % 8 == 0)
+      if (kix % 5 == 0)
         objstrbufferprintfpayl_BM (_.modgenob, "\n /*%d:*/", kix);
       _.curconstob = setelemnth_BM (_.constsetv, kix);
       objlock_BM (_.curconstob);

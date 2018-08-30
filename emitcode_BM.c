@@ -1772,14 +1772,20 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
               {
                 _.exclamob = (objectval_tyBM *) _.exclamv;
                 _.constantsv = objgetattr_BM (_.modgenob, k_constants);
-                DBGPRINTF_BM ("emit_expression !exclamob %s constants %s",
-                              objectdbg_BM (_.exclamob),
-                              debug_outstr_value_BM (_.constantsv,
-                                                     CURFRAME_BM, 0));
                 WEAKASSERTRET_BM (isset_BM (_.constantsv));
                 int kix =
                   setelemindex_BM (setcast_BM (_.constantsv), _.exclamob);
+                DBGPRINTF_BM
+                  ("emit_expression !exclamob %s, constants %s, kix=%d",
+                   objectdbg_BM (_.exclamob), OUTSTRVALUE_BM (_.constantsv),
+                   kix);
                 WEAKASSERTRET_BM (kix >= 0);
+                DBGPRINTF_BM
+                  ("emit_expression !exclamob %s, constants[%d] is %s",
+                   objectdbg_BM (_.exclamob), kix,
+                   objectdbg1_BM (setelemnth_BM (_.constantsv, kix)));
+                WEAKASSERTRET_BM (setelemnth_BM (_.constantsv, kix) ==
+                                  _.exclamob);
                 objstrbufferprintfpayl_BM (_.modgenob,
                                            " (" CONSTOBARRPREFIX_BM "%s"
                                            ROUTINESUFFIX_BM "[%d] /*!%s*/)",
