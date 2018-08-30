@@ -1012,6 +1012,8 @@ ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO)    // browse_data°contributor_clas
   _.objbrows = (const objectval_tyBM *) arg1;
   int depth = getint_BM (arg2);
   ASSERT_BM (isobject_BM ((const value_tyBM) _.objbrows));
+  DBGPRINTF_BM ("browse_data°contributor_class objbrows %s depth %d",
+                objectdbg_BM (_.objbrows), depth);
 #ifdef BISMONGTK
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   void *payl = objpayload_BM (_.objbrows);
