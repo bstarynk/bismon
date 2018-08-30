@@ -318,15 +318,15 @@ startblock__8prn9eFlYZD_6JJKKh2b8KW:__attribute__ ((unused));
                                            o_5JuT4FgNFFh_7McrTYeT3jx),
                                           bytstring_BM (
                                                           /*flocaltimestring: */
-                                                          (value_tyBM)
+                                          (value_tyBM)
                                                           flocaltimestring_BM
                                                           (("%c"), (time_t) (
-                                                                                /*timenow: */
-                                                                                (intptr_t) time (NULL)))), lenstring_BM ( /*flocaltimestring: */ (value_tyBM)
-                                                                                                                         flocaltimestring_BM
-                                                                                                                         (("%c"), (time_t) ( /*timenow: */ (intptr_t)
-                                                                                                                                            time
-                                                                                                                                            (NULL)))));;
+                                                                               /*timenow: */
+                                                                               (intptr_t) time (NULL)))), lenstring_BM ( /*flocaltimestring: */ (value_tyBM)
+                                                                                                                        flocaltimestring_BM
+                                                                                                                        (("%c"), (time_t) ( /*timenow: */ (intptr_t)
+                                                                                                                                           time
+                                                                                                                                           (NULL)))));;
       }                         // end cexpansion _6nzVdVGk8wB_0paW5wP6NFo - objstrbufferprinthtmlstringval    
 
 
@@ -735,17 +735,18 @@ value_tyBM crout_1HZc1VBbjdB_96aQTEPgEX0_BM     //#4
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 4 local values:
+    /// 5 local values:
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ;       // v_r
     objectval_tyBM *o_41F1rKwGbaA_30OJWKsqNWy;  // o_strbuf
     objectval_tyBM *o_4JKd986pvM4_6yBzeeI40vW;  // o_jsgenmod
     objectval_tyBM *o_5HkpTupRRIK_8iCooVukjb3;  // o_bindings
+    objectval_tyBM *o_5V0w37YnN4F_8dZ6I79V60O;  // o_jsmodule
     /// 0 local numbers:
   } _;
   memset (&_, 0, sizeof (struct frame_1HZc1VBbjdB_96aQTEPgEX0_BMst));
   _.stkfram_head.htyp = typayl_StackFrame_BM;
   _.stkfram_head.hgc = 0;
-  _.stkfram_head.rlen = 4;
+  _.stkfram_head.rlen = 5;
   _.stkfram_descr =
     constob_3BFt4NfJmZC_7iYi2dwM38B_BM[11] /*|_1HZc1VBbjdB_96aQTEPgEX0 */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
@@ -1226,12 +1227,11 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
 
 
                 {               // run _0ACW8XdRvUP_5WPy2xnm92L 
-                  /*objputassocpayl: */ objputassocpayl_BM (
-                                                             /*o_bindings: */
-                                                             _.o_5HkpTupRRIK_8iCooVukjb3,
-                                                             /*add_int: */
-                                                             ((5) +
-                                                              ( /*objnbcomps: */ objnbcomps_BM ( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW))));
+                                                                /*objputassocpayl: */ objputassocpayl_BM (
+                                                                /*o_bindings: */
+                                                                                                           _.o_5HkpTupRRIK_8iCooVukjb3,
+                                                                                                           /*add_int: */
+                                                                                                           ((5) + ( /*objnbcomps: */ objnbcomps_BM ( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW))));
                 }               // end run _0ACW8XdRvUP_5WPy2xnm92L 
 
                 {               // start cexpansion _8g10UR3mZt1_78B4Sk9h3pN - objtouchnow  
@@ -1337,7 +1337,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                               ( /*modconst: */
                                                 (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[21]
                                                  /*|_4jwFGdaECBb_6dsBLTMoG9j */
-                                                )),
+                                                 )),
                                               ((struct stackframe_stBM *)
                                                &_));
 
@@ -1459,7 +1459,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                                   (     /*modconst: */
                                                     (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[4]
                                                      /*|_0Lk9WQfjqpU_0XROvsMVANm */
-                                                    )),
+                                                     )),
                                                   ((struct stackframe_stBM *)
                                                    &_));
                               } /*cond else _1HknjNLZ7L3_1nUgvAJK6xV */
@@ -1687,7 +1687,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                               ( /*modconst: */
                                                 (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[22]
                                                  /*|_4lj3ntdp7xH_5LiKY8h0lHl */
-                                                )),
+                                                 )),
                                               ((struct stackframe_stBM *)
                                                &_));
 
@@ -2127,7 +2127,7 @@ startblock__3oMW0T4HlXx_8r7NLpyK1J8:__attribute__ ((unused));
 
     {                           // run _40XgQGIUZQY_246JbHmppCN 
       (send3_BM (((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[42] /*|clear */ )),
-                 /*sel: */
+                 /*sel: */ 
                  ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[10] /*|dump_value */ )),
                  ((struct stackframe_stBM *) &_),
                  ( /*osbuf: */ _.o_6opEz55NyNu_3JKpBgxLijw),
@@ -2162,8 +2162,8 @@ startblock__3oMW0T4HlXx_8r7NLpyK1J8:__attribute__ ((unused));
       {                         // run _4BOu5jhqyAD_3HGfVAY5hFx  
         (send3_BM (((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[45] /*|put */ )),
                    /*sel: */
-                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[10]     /*|dump_value */
-                    )), ((struct stackframe_stBM *) &_),
+                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[10] /*|dump_value */
+                     )), ((struct stackframe_stBM *) &_),
                    ( /*osbuf: */ _.o_6opEz55NyNu_3JKpBgxLijw),
                    ( /*odumper: */ _.o_3cTC8W7d75H_1vteOyEoAao),
                    (((value_tyBM) 0x3 /*!1 */ ))));
@@ -2178,8 +2178,8 @@ startblock__3oMW0T4HlXx_8r7NLpyK1J8:__attribute__ ((unused));
 
       {                         // run _634ecJogXve_7sycLMYAfdT  
         (send3_BM (( /*v_str: */ _.v_167WczZjWtG_3FofhJxQWJi),  /*sel: */
-                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[10]     /*|dump_value */
-                    )),
+                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[10] /*|dump_value */
+                     )),
                    ((struct stackframe_stBM *) &_),
                    ( /*osbuf: */ _.o_6opEz55NyNu_3JKpBgxLijw),
                    ( /*odumper: */ _.o_3cTC8W7d75H_1vteOyEoAao),
@@ -2187,16 +2187,16 @@ startblock__3oMW0T4HlXx_8r7NLpyK1J8:__attribute__ ((unused));
       }                         // end run _634ecJogXve_7sycLMYAfdT  
 // while _9gJT0jotyox_8JQNlJn3qh6 comp#5:  
       {                         // start cexpansion _3fFn9uY0hNS_2YU6fn9QOSh - objstrbuffernewlinepayl   
-        /*objstrbuffernewlinepayl: */ objstrbuffernewlinepayl_BM (
-                                                                   /*osbuf: */
-                                                                   _.o_6opEz55NyNu_3JKpBgxLijw);
+                                                                        /*objstrbuffernewlinepayl: */ objstrbuffernewlinepayl_BM (
+                                                                        /*osbuf: */
+                                                                                                                                   _.o_6opEz55NyNu_3JKpBgxLijw);
       }                         // end cexpansion _3fFn9uY0hNS_2YU6fn9QOSh - objstrbuffernewlinepayl   
 // while _9gJT0jotyox_8JQNlJn3qh6 comp#6:  
 
       {                         // run _1aLOinNfz2n_0WpWbC84CAL  
         (send3_BM (( /*v_val: */ _.v_5jRQCD1qTko_61I0j04ugAA),  /*sel: */
-                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[10]     /*|dump_value */
-                    )),
+                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[10] /*|dump_value */
+                     )),
                    ((struct stackframe_stBM *) &_),
                    ( /*osbuf: */ _.o_6opEz55NyNu_3JKpBgxLijw),
                    ( /*odumper: */ _.o_3cTC8W7d75H_1vteOyEoAao),
@@ -2435,9 +2435,10 @@ startblock__9Hf4n8AnqR7_7ve3Bi3kWMV:__attribute__ ((unused));
       {                         // run _6HYDs1Zywvs_1w8OTn5XOZY  
         (send3_BM ((            /*nodenthson: */
                      nodenthson_BM (( /*v_node: */ _.
-                                     v_2BkOxf2KbS8_3bswrKbmgjy), ( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B))),     /*sel: */
-                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[10]     /*|dump_value */
-                    )),
+                                     v_2BkOxf2KbS8_3bswrKbmgjy),
+                                    ( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B))),  /*sel: */
+                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[10] /*|dump_value */
+                     )),
                    ((struct stackframe_stBM *) &_),
                    ( /*o3: */ _.o_1Bl1iFQ8boR_1xM6MOfHV1N),
                    ( /*o2: */ _.o_93FBSk1ML0f_2WjSuKa9TNU),
