@@ -1313,7 +1313,7 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //miniscan_stmt°basiclo_assign
          objectdbg_BM (_.stmtob), objectdbg1_BM (_.srctypob),
          objectdbg2_BM (_.vartypob));
 
-      _.failv =
+      _.failv = (value_tyBM)
         makenode4_BM (k_miniscan_stmt, k_failure_type_error, _.stmtob,
                       _.srctypob, _.vartypob);
       PLAINFAILURE_BM (__LINE__, _.failv, CURFRAME_BM);
@@ -3492,9 +3492,13 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
                              modulidbuf, nbconst);
   for (int kix = 0; kix < (int) nbconst; kix++)
     {
+      _.commentv = NULL;
       if (kix % 8 == 0)
         objstrbufferprintfpayl_BM (_.modgenob, "\n /*%d:*/", kix);
       _.curconstob = setelemnth_BM (_.constsetv, kix);
+      objlock_BM (_.curconstob);
+      _.commentv = objgetattr_BM (_.curconstob, BMP_comment);
+      objunlock_BM (_.curconstob);
       const char *curconstname = findobjectname_BM (_.curconstob);
       char constidbuf[32];
       memset (constidbuf, 0, sizeof (constidbuf));
@@ -3502,11 +3506,26 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
       if (curconstname)
         objstrbufferprintfpayl_BM (_.modgenob, "\n \"%s\",//%s",
                                    constidbuf, curconstname);
+      else if (isstring_BM (_.commentv))
+        {
+          const char *comstr = bytstring_BM (_.commentv);
+          const char *nl = strchr (comstr, '\n');
+          int comlen = lenstring_BM (_.commentv);
+          if (nl)
+            comlen = nl - comstr - 1;
+          if (comlen > 2)
+            objstrbufferprintfpayl_BM (_.modgenob, "\n \"%s\", //! %.*s",
+                                       constidbuf, comlen, comstr);
+          else
+            objstrbufferprintfpayl_BM (_.modgenob, "\n \"%s\",", constidbuf);
+        }
       else
         objstrbufferprintfpayl_BM (_.modgenob, "\n \"%s\",", constidbuf);
     }
   objstrbufferprintfpayl_BM (_.modgenob,
                              "\n NULL}; // end %d constant ids\n\n", nbconst);
+  _.curconstob = NULL;
+  _.commentv = NULL;
   // routine ids
   objstrbufferprintfpayl_BM (_.modgenob,
                              "\n\n// the routine ids for %d routines:\n",
