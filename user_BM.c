@@ -107,7 +107,6 @@ overwrite_contributor_file_BM (FILE * fil,
   _.assocob = assocobarg;
   ASSERT_BM (isobject_BM (assocobarg) && objhasassocpayl_BM (assocobarg));
   rewind (fil);
-  long filen = 0;
   int nbcontrib = 0;
   _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.assocob);
   {
@@ -487,7 +486,7 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
     FATAL_BM
       ("check_and_load_contributors_file_BM invalid loader for path %s",
        contributors_filepath_BM);
-  char *rcpath = contributors_filepath_BM;
+  const char *rcpath = contributors_filepath_BM;
   ASSERT_BM (rcpath != NULL && rcpath[0] == '/');
   FILE *fil = fopen (rcpath, "r+");
   if (!fil)
@@ -495,6 +494,7 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
       FATAL_BM ("cannot open contributors file %s  : %m", rcpath);
       return;
     }
+  DBGPRINTF_BM ("check_and_load_contributors_file_BM rcpath='%s'", rcpath);
   _.hsetob = makeobj_BM ();
   int fd = fileno (fil);
   memset (&mystat, 0, sizeof (mystat));
@@ -612,6 +612,7 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
     }
   if (flock (fd, LOCK_UN))
     FATAL_BM ("failed to un-flock fd#%d for %s", fd, rcpath);
+  DBGPRINTF_BM ("check_and_load_contributors_file nbcontrib=%d", nbcontrib);
   // check that all the contributors in BMP_contributors are also in hsetob
   _.contribob = NULL;
   _.contribsetv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
@@ -884,7 +885,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
         FATAL_BM
           ("in %s line#%d contributor %s of oid %s and object %s is not a user-object",
            rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
-      _.namev = objcontributornamepayl_BM (_.contribob);
+      _.namev = (value_tyBM) objcontributornamepayl_BM (_.contribob);
       objunlock_BM (_.contribob);
       if (objassocgetattrpayl_BM (_.assocob, _.contribob))
         FATAL_BM
@@ -1255,7 +1256,7 @@ remove_contributor_by_name_BM (const char *oldname,
         FATAL_BM
           ("in %s line#%d contributor %s of oid %s and object %s is not a user-object",
            rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
-      _.namev = objcontributornamepayl_BM (_.contribob);
+      _.namev = (value_tyBM) objcontributornamepayl_BM (_.contribob);
       objunlock_BM (_.contribob);
       if (objassocgetattrpayl_BM (_.assocob, _.contribob))
         FATAL_BM
@@ -1759,7 +1760,7 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
       FATAL_BM ("corruption in password crypting");
     free (crydat), crydat = NULL;
   }
-  _.curpasstrv = makestring_BM (encrypassbuf);
+  _.curpasstrv = (value_tyBM) makestring_BM (encrypassbuf);
   objassocaddattrpayl_BM (_.assocob, _.contribob, _.curpasstrv);
   /// rewrite loop of password
   rewind (passfil);
@@ -1935,14 +1936,14 @@ write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
   _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.assocob);
   ASSERT_BM (isset_BM (_.keysetv)
              && (int) setcardinal_BM (_.keysetv) == nbpasswords);
-  for (unsigned pix = 0; pix < nbpasswords; pix++)
+  for (unsigned pix = 0; pix < (unsigned) nbpasswords; pix++)
     {
       _.curcontribob = setelemnth_BM (_.keysetv, pix);
       ASSERT_BM (isobject_BM (_.curcontribob));
       ASSERT_BM (objhascontributorpayl_BM (_.curcontribob));
       _.curpasstrv = objassocgetattrpayl_BM (_.assocob, _.curcontribob);
       ASSERT_BM (isstring_BM (_.curpasstrv));
-      _.curnamev = objcontributornamepayl_BM (_.curcontribob);
+      _.curnamev = (value_tyBM) objcontributornamepayl_BM (_.curcontribob);
       ASSERT_BM (isstring_BM (_.curnamev));
       DBGPRINTF_BM ("write_password_file pix#%d curcontribob %s curpasstr %s"
                     " curname %s",
