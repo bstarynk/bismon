@@ -90,7 +90,7 @@ usergckeep_BM (struct garbcoll_stBM *gc, struct user_stBM *us)
 
 
 const stringval_tyBM *
-objcontributornamepayl_BM (objectval_tyBM * obj)
+objcontributornamepayl_BM (const objectval_tyBM * obj)
 {
   if (!objhascontributorpayl_BM (obj))
     return NULL;

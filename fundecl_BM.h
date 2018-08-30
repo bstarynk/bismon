@@ -1567,7 +1567,7 @@ objectval_tyBM *find_contributor_BM (const char *str,
 // the only operations doable on user objects after load since adding
 // contributors is only possible on the command line!
 static inline bool objhascontributorpayl_BM (const objectval_tyBM * obj);
-const stringval_tyBM *objcontributornamepayl_BM (objectval_tyBM * obj);
+const stringval_tyBM *objcontributornamepayl_BM (const objectval_tyBM * obj);
 
 
 ////////////////////////////////////////////////////////////////
