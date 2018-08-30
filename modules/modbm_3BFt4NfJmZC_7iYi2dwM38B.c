@@ -1163,7 +1163,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
     {                           // start cexpansion _8owvpghf95c_70WEDPAsJGV - objputattr  
       /*objputattr: */
       objputattr_BM (( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW),
-                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[1] /*!for */ )),
+                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[12] /*!for */ )),
                      ( /*o_jsmodule: */ _.o_5V0w37YnN4F_8dZ6I79V60O));
     }                           // end cexpansion _8owvpghf95c_70WEDPAsJGV - objputattr  
 
@@ -1329,7 +1329,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                             PLACEDFAILURE_BM (__LINE__, /*failreason: */
                                               (((value_tyBM) makenode2_BM (
                                                                             /*make_node conn: */
-                                                                            ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[1] /*!failure_bad_class */ )),
+                                                                            ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[24] /*!failure_bad_class */ )),
 /*make_node 2 sons: */
                                                                             ( /*o_jscurcomp: */ _.o_2TaoEvH5OQU_8nKYBgAvkmW),
                                                                             ( /*taggedint: */ taggedint_BM ( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B))))),
@@ -1349,7 +1349,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                               (send2_BM (( /*o_jscurcomp: */ _.
                                           o_2TaoEvH5OQU_8nKYBgAvkmW),   /*sel: */
                                          ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM
-                                           [1]
+                                           [36]
                                            /*!prepare_for_jsmodule */ )),
                                          ((struct stackframe_stBM *) &_),
                                          ( /*o_jsgenmod: */ _.
@@ -3068,40 +3068,43 @@ const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[48 + 1] = {
   "_0eMGYofuNVh_8ZP2mXdhtHO",   //in
   "_0JktC4mAHCa_1KNr6uMIqIi",   //! dump_scan°list_object minifunc for list_object o1 & dumperobj o2
   "_0Lk9WQfjqpU_0XROvsMVANm",   //! otherwise fail since v_resprep bad
+  /*5: */
   "_0SinERsgdvQ_57dLCP63i9r",   //! forgetname#command_handler
   "_0YOXUe7rEJC_3jFMjOAQRs9",   //element_of_closed_minifunc
   "_1dzZlwqKdLH_8HjkBsL9Mar",   //add
-  /*8: */
   "_1v8IW7POMtj_8PSZo0ZuSlN",   //web_rest_path
   "_1DGcmfymxyC_2TiD1HX0HU5",   //emit_for_jsmodule
+  /*10: */
   "_1FEnnpEkGdI_5DAcVDL5XHG",   //dump_value
   "_1HZc1VBbjdB_96aQTEPgEX0",   //! emit_prologue_jsmodule°jsmodule_generation_object
   "_1SolDiQA2WM_4IDOJKBiPFc",   //for
   "_22Zd68WPKUO_6AoIuBcbUb2",   //! dump_scan°dict_object minifunc for dict-object odict and dumperobj odumper
   "_2bZ4BfCci5V_3WTzG7V25y4",   //! put°dict_object minifunc
+  /*15: */
   "_3iiht57Wrs1_5NbiUi27oBn",   //! prepend°list_object minifunc
-  /*16: */
   "_3vI0Qc3FHQG_1g4fmHYkxSA",   //! compile_to_javascript°jsmodule_object (o_jsmodule, o_strbuf)
   "_3yQlckX4DRh_4b9l9FBSSSL",   //same_as_closed_minifunc
   "_3HAeZZQ0q7b_7qyDsekaz7Y",   //! clear°list_object minifunc
   "_401XcQg0VWc_1SG4xaaQ3mU",   //! fail because v_resemit null after emit_prologue_jsmodule
+  /*20: */
   "_4iEFTEcHxeb_6lH464uFkTC",   //equal_to_closed_minifunc
   "_4jwFGdaECBb_6dsBLTMoG9j",   //! fail badclass o_jscurcomp
   "_4lj3ntdp7xH_5LiKY8h0lHl",   //! fail emit_jstoplevel (o_jscurcomp ii o_jsgenmod)
   "_4qlegfkPzrC_17skUfJP7v8",   //! dump_data°dict_object minifun
-  /*24: */
   "_4HgYLk6htvP_4Ac2FCPfQ1C",   //failure_bad_class
+  /*25: */
   "_4M7lr5cU6VD_5hxmeH3baBf",   //! append°list_object minifunction
   "_54fNPWQdMQd_4bZQKbcUvkR",   //emit_prologue_jsmodule
   "_5j8LpQULt1p_9oeOaqmfYYr",   //! dump_data°list_object minifunc
   "_5qJ7wfXtzlW_30GNcoDmv10",   //sbuf
   "_5YZZHXQmxrc_3SVoZ26utAx",   //! fail compile_to_javascript o_jsmodule
+  /*30: */
   "_64UbCFBD19G_43TeBXhcYMy",   //findrun_object
   "_6pp3g7GLuae_7OF8KezKzvx",   //! fail non-object
-  /*32: */
   "_6yWldsq3Rmk_01WqTfwSIDV",   //failure_non_object
   "_6ZQ05nCv3Ys_8LA6B5LkZgm",   //assoc_object
   "_75mkz7wH3u3_0ZQRFajA44k",   //! fail since v_resemit null, giving o_jsgenmod
+  /*35: */
   "_7icWqFMdb4f_2Z6ymmBVulP",   //compile_to_javascript
   "_7zLaPay40r6_5iPrtG8Hiq4",   //prepare_for_jsmodule
   "_7D8xcWnEiys_8oqOVSkCxkA",   //node
@@ -3113,6 +3116,7 @@ const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[48 + 1] = {
   "_8lV53mLyu1H_3Z1SI8wDBK1",   //clear
   "_8VtkXEUFfhk_5RxrpY6JHI6",   //! webhandler javascript-compile
   "_93zDz6jmlVq_8ckLb59DDIl",   //emit_epilogue_jsmodule
+  /*45: */
   "_9pvzBeIKHXF_8YDPCrQ6OEK",   //put
   "_9zzGR0VqDpm_259EJDSFYyu",   //jsmodule_generation_object
   "_9CG8SKNs6Ql_4PiHd8cnydn",   //! clear°dict_object minifun

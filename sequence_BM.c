@@ -550,7 +550,7 @@ setelemindex_BM (const setval_tyBM * setv, const objectval_tyBM * obelem)
       ASSERT_BM (mdob != NULL
                  && ((typedhead_tyBM *) mdob)->htyp == tyObject_BM);
       if (obelem == mdob)
-        return true;
+        return md;
       int cmp = objectcmp_BM (obelem, mdob);
       if (cmp < 0)
         hi = md;
