@@ -3170,7 +3170,7 @@ startblock__0n6WAcuQ159_6cO0bI9OjvI:__attribute__ ((unused));
                   objwebexchangecompletepayl_BM (( /*o_webex: */ _.
                                                   o_5JuT4FgNFFh_7McrTYeT3jx),
                                                  (200),
-                                                 ("application/javascript"));
+                                                 ("application/javascript; charset=utf-8"));
                 }               // end cexpansion _3Ik736kQ5Uw_5WxtZn5mvBq - objwebexchangecompletepayl  
 
                 /*return _5IknCErYDMv_1AeqYkXvrSL: *//*v_r: */ _.
