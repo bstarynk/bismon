@@ -1473,10 +1473,12 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         memset (nowbuf, 0, sizeof (nowbuf));
         memset (&nowtm, 0, sizeof (nowtm));
         localtime_r (&nowt, &nowtm);
-        strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
+        strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
         fprintf (fresp,
                  "<p><small>generated at <i>%s</i> on <tt>%s</tt> pid %d</small></p>\n",
                  nowbuf, myhostname_BM, (int) getpid ());
+        fprintf (fresp, "<!-- generated from %s:%d -->\n",
+                 basename_BM (__FILE__), __LINE__);
         fprintf (fresp, "</body>\n</html>\n");
         fflush (fresp);
         long ln = ftell (fresp);
