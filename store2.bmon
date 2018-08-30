@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 985 objects
+// for 986 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -8626,6 +8626,19 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 
+!(_0AUttc9DFqB_2C7fGlBJAxC
+!@ 1535629825.484
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit generated javascript comment prefix"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _41F1rKwGbaA_30OJWKsqNWy  "// generated javascript from ")
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_6jZqk9RP0Pe_12cIgV9WMFC
+!)_0AUttc9DFqB_2C7fGlBJAxC
+
+
+
 !(_0AUL5kbXVmq_06A8ZbHZi1Y
 !|*
 !@ 1526487453.520
@@ -13618,12 +13631,13 @@ _7BROpIWQHzA_8b1C6i49Pkz) ~)
 
 
 !(_97aF43R1sX0_4RGoHiXCqjO
-!@ 1535621165.658
+!@ 1535629825.484
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of emit_prologue_jsmodule\u00b0jsmodule_generation_object"
-!# 1
+!# 2
 !& _8vBskZZJ2Hf_1jdBnECZUSJ
+!& _0AUttc9DFqB_2C7fGlBJAxC
 !)_97aF43R1sX0_4RGoHiXCqjO
 
 

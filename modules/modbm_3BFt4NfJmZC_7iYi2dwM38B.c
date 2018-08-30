@@ -771,6 +771,14 @@ startblock__97aF43R1sX0_4RGoHiXCqjO:__attribute__ ((unused));
       ;
     }                           // end run _8vBskZZJ2Hf_1jdBnECZUSJ 
 
+
+    {                           // start cexpansion _0AUttc9DFqB_2C7fGlBJAxC - objstrbufferappendcstrpayl  
+      /*objstrbufferappendcstrpayl: */
+      objstrbufferappendcstrpayl_BM (( /*o_strbuf: */ _.
+                                      o_41F1rKwGbaA_30OJWKsqNWy),
+                                     ("// generated javascript from "));
+    }                           // end cexpansion _0AUttc9DFqB_2C7fGlBJAxC - objstrbufferappendcstrpayl  
+
 /* !endingblock _97aF43R1sX0_4RGoHiXCqjO */
     goto endblock__97aF43R1sX0_4RGoHiXCqjO;
   endblock__97aF43R1sX0_4RGoHiXCqjO:;
