@@ -1492,7 +1492,8 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
           if (objgetwebexchangepayl_BM (_.webexob) == wexda)
             {
               wexda->webx_ownobj = NULL;
-              objclearpayload_BM (_.webexob);
+              // we dont clear the payload, since the old sbuf could be browsed
+              //objclearpayload_BM (_.webexob);
             }
           objunlock_BM (_.webexob);
         }
