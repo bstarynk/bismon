@@ -151,7 +151,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //browse_in_object°object
   ///
   //// show attributes
   {
-    unsigned nbattrs = setcardinal_BM (_.setattrs);
+    unsigned nbattrs = objnbattrs_BM (_.objbrows);
     if (nbattrs == 0)
       {
         gtk_text_buffer_insert_with_tags (brobuf,
@@ -1057,7 +1057,7 @@ ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO)    // browse_data°contributor_clas
     }
   else if (objhascontributorpayl_BM (_.objbrows))
     {
-      _.namev = objcontributornamepayl_BM (_.objbrows);
+      _.namev = (value_tyBM) objcontributornamepayl_BM (_.objbrows);
       const char *namestr = bytstring_BM (_.namev);
       if (namestr)
         {
