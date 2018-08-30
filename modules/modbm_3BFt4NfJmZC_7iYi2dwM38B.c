@@ -780,6 +780,40 @@ startblock__97aF43R1sX0_4RGoHiXCqjO:__attribute__ ((unused));
                                      ("// generated javascript from "));
     }                           // end cexpansion _0AUttc9DFqB_2C7fGlBJAxC - objstrbufferappendcstrpayl  
 
+
+    /*o_jsmodule: */ _.o_5V0w37YnN4F_8dZ6I79V60O =
+      //assign _4Yn8XDOP2nB_0L3V8U88UpE  
+      /*val_to_object: */
+      objectcast_BM (           /*objgetattr: */
+                      objgetattr_BM (( /*o_jsgenmod: */ _.
+                                      o_4JKd986pvM4_6yBzeeI40vW),
+                                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[12]
+                                       /*!for */ ))));
+
+
+    {                           // start cexpansion _5YHmdVKNtkY_4sPvxIu308j - objstrbufferprintobject  
+/*objstrbufferprintobject _5YHmdVKNtkY_4sPvxIu308j:*/
+      objectval_tyBM *obsbuf_5YHmdVKNtkY_4sPvxIu308j =
+        ( /*o_strbuf: */ _.o_41F1rKwGbaA_30OJWKsqNWy);
+      objectval_tyBM *ob_5YHmdVKNtkY_4sPvxIu308j =
+        ( /*o_jsmodule: */ _.o_5V0w37YnN4F_8dZ6I79V60O);
+      if (objhasstrbufferpayl_BM (obsbuf_5YHmdVKNtkY_4sPvxIu308j)
+          && isobject_BM (ob_5YHmdVKNtkY_4sPvxIu308j))
+        objstrbufferappendcstrpayl_BM (obsbuf_5YHmdVKNtkY_4sPvxIu308j,
+                                       objectdbg_BM
+                                       (ob_5YHmdVKNtkY_4sPvxIu308j));
+// end objstrbufferprintobject _5YHmdVKNtkY_4sPvxIu308j
+      ;
+    }                           // end cexpansion _5YHmdVKNtkY_4sPvxIu308j - objstrbufferprintobject  
+
+
+    {                           // start cexpansion _6CzjvS4ZeEd_3jgRd8wIaO3 - objstrbufferappendcstrpayl  
+      /*objstrbufferappendcstrpayl: */
+      objstrbufferappendcstrpayl_BM (( /*o_strbuf: */ _.
+                                      o_41F1rKwGbaA_30OJWKsqNWy),
+                                     (" - generated script under GPLv3+ licence\n"));
+    }                           // end cexpansion _6CzjvS4ZeEd_3jgRd8wIaO3 - objstrbufferappendcstrpayl  
+
 /* !endingblock _97aF43R1sX0_4RGoHiXCqjO */
     goto endblock__97aF43R1sX0_4RGoHiXCqjO;
   endblock__97aF43R1sX0_4RGoHiXCqjO:;
