@@ -437,8 +437,9 @@ find_contributor_BM (const char *str, struct stackframe_stBM * stkf)
       objlock_BM (_.contribob);
       okcontrib = objhascontributorpayl_BM (_.contribob);
       objunlock_BM (_.contribob);
-      DBGPRINTF_BM ("find_contributor contribob %s has %s contributor",
-                    objectdbg_BM (_.contribob), okcontrib ? "a" : "no");
+      DBGPRINTF_BM
+        ("find_contributor contribob %s has %s contributor payload",
+         objectdbg_BM (_.contribob), okcontrib ? "a" : "no");
       if (!okcontrib)
         _.contribob = NULL;
     }
@@ -591,11 +592,12 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
         us->user_ownobj = _.contribob;
         us->user_namev = _.namev = (value_tyBM) makestring_BM (curcontrib);
         objputpayload_BM (_.contribob, us);
+        DBGPRINTF_BM
+          ("check_and_load_contributors_file lincnt#%d contribob %s with name %s, us@%p",
+           lincnt, objectdbg_BM (_.contribob), curcontrib, us);
+        ASSERT_BM (objpayload_BM (_.contribob) == us);
       }
       objunlock_BM (_.contribob);
-      DBGPRINTF_BM
-        ("check_and_load_contributors_file lincnt#%d contribob %s with name %s",
-         lincnt, objectdbg_BM (_.contribob), curcontrib);
       objhashsetaddpayl_BM (_.hsetob, _.contribob);
       if (!isstring_BM (_.namev))
         FATAL_BM

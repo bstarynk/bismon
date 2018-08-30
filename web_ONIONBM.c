@@ -1790,7 +1790,10 @@ objwebexchangecompletepayl_BM (const objectval_tyBM * obj, int httpstatus,
 void
 stop_onion_event_loop_BM (void)
 {
+  DBGPRINTF_BM ("stop_onion_event_loop_BM");
   atomic_store (&onionlooprunning_BM, false);
+  if (myonion_BM)
+    onion_listen_stop (myonion_BM);
 }                               /* end stop_onion_event_loop_BM */
 
 

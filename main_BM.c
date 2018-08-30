@@ -1027,9 +1027,9 @@ main (int argc, char **argv)
                   run_gtk_BM ? "true" : "false",
                   run_onion_BM ? "true" : "false");
 #ifdef BISMONION
-  if (run_onion_BM)
+  if (run_onion_BM && !run_gtk_BM)
     {
-      DBGPRINTF_BM ("BISMONION with run_onion_BM");
+      DBGPRINTF_BM ("BISMONION with run_onion_BM without run_gtk_BM");
       if (batch_bm)
         {
           nbworkjobs_BM = 0;
@@ -1057,10 +1057,13 @@ main (int argc, char **argv)
     }
 #endif /*BISMONION*/
     ///
-    DBGPRINTF_BM ("ending BISMON run_gtk_BM %s run_onion_BM %s batch_bm %s",
-                  run_gtk_BM ? "true" : "false",
-                  run_onion_BM ? "true" : "false",
-                  batch_bm ? "true" : "false");
+    if (run_onion_BM)
+    {
+      stop_onion_event_loop_BM ();
+    }
+  DBGPRINTF_BM ("ending BISMON run_gtk_BM %s run_onion_BM %s batch_bm %s",
+                run_gtk_BM ? "true" : "false",
+                run_onion_BM ? "true" : "false", batch_bm ? "true" : "false");
   free ((void *) contributors_filepath_BM), contributors_filepath_BM = NULL;
   free ((void *) passwords_filepath_BM), passwords_filepath_BM = NULL;
   if (shouldfreedumpdir)
