@@ -151,66 +151,86 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //browse_in_object°object
   ///
   //// show attributes
   {
-    char commbuf[64];
-    memset (commbuf, 0, sizeof (commbuf));
-    _.setattrs = objsetattrs_BM (_.objbrows);
     unsigned nbattrs = setcardinal_BM (_.setattrs);
-    snprintf (commbuf, sizeof (commbuf), "|%d attributes:|", nbattrs);
-    gtk_text_buffer_insert_with_tags (brobuf,
-                                      &browserit_BM, commbuf, -1,
-                                      miscomm_brotag_BM, NULL);
-    gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
-    objectval_tyBM *tinyarr[TINYSIZE_BM] = {
-    };
-    objectval_tyBM **arr = (nbattrs < TINYSIZE_BM) ? tinyarr    //
-      : calloc (prime_above_BM (nbattrs),
-                sizeof (const objectval_tyBM *));
-    if (!arr)
-      FATAL_BM ("failed to calloc arr for %d attrs", nbattrs);
-    for (unsigned ix = 0; ix < nbattrs; ix++)
-      arr[ix] = setelemnth_BM (_.setattrs, ix);
-    sortnamedobjarr_BM (arr, nbattrs);
-    for (unsigned aix = 0; aix < nbattrs; aix++)
+    if (nbattrs == 0)
       {
-        _.curattr = arr[aix];
-        _.curval = objgetattr_BM (_.objbrows, _.curattr);
-        gtk_text_buffer_insert (brobuf, &browserit_BM, "!: ", -1);
-        browse_value_BM ((const value_tyBM) _.curattr,
-                         CURFRAME_BM, maxdepth, 2);
-        browsespacefordepth_BM (1);
-        gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "|\342\207\242|",      //⇢ U+21E2 RIGHTWARDS DASHED ARROW
+        gtk_text_buffer_insert_with_tags (brobuf,
+                                          &browserit_BM, "|no attributes|",
                                           -1, miscomm_brotag_BM, NULL);
-        browsespacefordepth_BM (1);
-        browse_value_BM ((const value_tyBM) _.curval,
-                         CURFRAME_BM, maxdepth, 1);
         gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
-      };
-    if (arr != tinyarr)
-      free (arr), arr = NULL;
+      }
+    else
+      {
+        char commbuf[64];
+        memset (commbuf, 0, sizeof (commbuf));
+        _.setattrs = objsetattrs_BM (_.objbrows);
+        snprintf (commbuf, sizeof (commbuf), "|%d attributes:|", nbattrs);
+        gtk_text_buffer_insert_with_tags (brobuf,
+                                          &browserit_BM, commbuf, -1,
+                                          miscomm_brotag_BM, NULL);
+        gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+        objectval_tyBM *tinyarr[TINYSIZE_BM] = {
+        };
+        objectval_tyBM **arr = (nbattrs < TINYSIZE_BM) ? tinyarr        //
+          : calloc (prime_above_BM (nbattrs),
+                    sizeof (const objectval_tyBM *));
+        if (!arr)
+          FATAL_BM ("failed to calloc arr for %d attrs", nbattrs);
+        for (unsigned ix = 0; ix < nbattrs; ix++)
+          arr[ix] = setelemnth_BM (_.setattrs, ix);
+        sortnamedobjarr_BM (arr, nbattrs);
+        for (unsigned aix = 0; aix < nbattrs; aix++)
+          {
+            _.curattr = arr[aix];
+            _.curval = objgetattr_BM (_.objbrows, _.curattr);
+            gtk_text_buffer_insert (brobuf, &browserit_BM, "!: ", -1);
+            browse_value_BM ((const value_tyBM) _.curattr,
+                             CURFRAME_BM, maxdepth, 2);
+            browsespacefordepth_BM (1);
+            gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "|\342\207\242|",  //⇢ U+21E2 RIGHTWARDS DASHED ARROW
+                                              -1, miscomm_brotag_BM, NULL);
+            browsespacefordepth_BM (1);
+            browse_value_BM ((const value_tyBM) _.curval,
+                             CURFRAME_BM, maxdepth, 1);
+            gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+          };
+        if (arr != tinyarr)
+          free (arr), arr = NULL;
+      }
   }
   ///
   //// show the components
   {
-    char commbuf[64];
-    memset (commbuf, 0, sizeof (commbuf));
     unsigned nbcomps = objnbcomps_BM (_.objbrows);
-    snprintf (commbuf, sizeof (commbuf), "|%d components:|", nbcomps);
-    gtk_text_buffer_insert_with_tags (brobuf,
-                                      &browserit_BM, commbuf, -1,
-                                      miscomm_brotag_BM, NULL);
-    gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
-    for (unsigned cix = 0; cix < nbcomps; cix++)
+    if (nbcomps == 0)
       {
-        gtk_text_buffer_insert (brobuf, &browserit_BM, "!& ", -1);
-        snprintf (commbuf, sizeof (commbuf), "|#%d:|", cix);
+        gtk_text_buffer_insert_with_tags (brobuf,
+                                          &browserit_BM, "|no components|",
+                                          -1, miscomm_brotag_BM, NULL);
+        gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+      }
+    else
+      {
+        char commbuf[64];
+        memset (commbuf, 0, sizeof (commbuf));
+        snprintf (commbuf, sizeof (commbuf), "|%d components:|", nbcomps);
         gtk_text_buffer_insert_with_tags (brobuf,
                                           &browserit_BM, commbuf, -1,
                                           miscomm_brotag_BM, NULL);
-        _.curval = objgetcomp_BM (_.objbrows, cix);
-        browsespacefordepth_BM (1);
-        browse_value_BM ((const value_tyBM) _.curval,
-                         CURFRAME_BM, maxdepth, 1);
         gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+        for (unsigned cix = 0; cix < nbcomps; cix++)
+          {
+            gtk_text_buffer_insert (brobuf, &browserit_BM, "!& ", -1);
+            snprintf (commbuf, sizeof (commbuf), "|#%d:|", cix);
+            gtk_text_buffer_insert_with_tags (brobuf,
+                                              &browserit_BM, commbuf, -1,
+                                              miscomm_brotag_BM, NULL);
+            _.curval = objgetcomp_BM (_.objbrows, cix);
+            browsespacefordepth_BM (1);
+            browse_value_BM ((const value_tyBM) _.curval,
+                             CURFRAME_BM, maxdepth, 1);
+            gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+          }
       }
   }
   ///
