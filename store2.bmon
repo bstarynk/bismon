@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 976 objects
+// for 977 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -981,7 +981,8 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the class for contributors"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
+~: _9uRC9w2Gte9_5mW0NanaS19  % _7xwUcosBMjj_3Sa2de3sCGO ()
 ~)
 
 !)_5BAqWtmxAH6_9rCGuxiNbfc
@@ -12525,6 +12526,16 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 !# 1
 !& _8hUpJbSLQUS_88aqogJAi2Q
 !)_7wPbopKi9ZB_1ifk5LEKSqu
+
+
+
+!(_7xwUcosBMjj_3Sa2de3sCGO
+!|*
+!@ 1535602984.185
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "browse_data\u00b0contributor_class"
+!)_7xwUcosBMjj_3Sa2de3sCGO
 
 
 

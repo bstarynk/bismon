@@ -947,9 +947,11 @@ ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK)    //browse_data°hset_object
  const quasinode_tyBM * restargs __attribute__ ((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * objbrows; value_tyBM curval;
-                 const objectval_tyBM * curkeyob; value_tyBM curkeyval;
-                 const setval_tyBM * setk;
+                 const objectval_tyBM * objbrows;       //
+                 value_tyBM curval;     //
+                 const objectval_tyBM * curkeyob;       //
+                 value_tyBM curkeyval;  //
+                 const setval_tyBM * setk;      //
     );
   if (!isobject_BM (arg1))
     FATAL_BM ("non-object for method to browse_data for hset_object");
@@ -987,6 +989,79 @@ ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK)    //browse_data°hset_object
     LOCALRETURN_BM (_.objbrows);
 }                               /* end browse_data°hset_object _4IshjBIv6ol_5korHKUIjeK */
 
+
+// browse_data°contributor_class _7xwUcosBMjj_3Sa2de3sCGO
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO)    // browse_data°contributor_class 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         //
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4_ __attribute__ ((unused)),       //
+ const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_7xwUcosBMjj_3Sa2de3sCGO,
+                 const objectval_tyBM * objbrows;       //
+                 value_tyBM namev;
+    );
+  if (!isobject_BM (arg1))
+    FATAL_BM ("non-object for method to browse_data for hset_object");
+  _.objbrows = (const objectval_tyBM *) arg1;
+  int depth = getint_BM (arg2);
+  ASSERT_BM (isobject_BM ((const value_tyBM) _.objbrows));
+#ifdef BISMONGTK
+  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
+  void *payl = objpayload_BM (_.objbrows);
+  if (!payl)
+    {
+      gtk_text_buffer_insert_with_tags (brobuf,
+                                        &browserit_BM, "|no contributor|", -1,
+                                        miscomm_brotag_BM, NULL);
+      gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+      LOCALRETURN_BM (_.objbrows);
+    }
+  else if (objhascontributorpayl_BM (_.objbrows))
+    {
+      _.namev = objcontributornamepayl_BM (_.objbrows);
+      const char *namestr = bytstring_BM (_.namev);
+      if (namestr)
+        {
+          char *buf = NULL;
+          asprintf (&buf, "|contributor '%s'|", namestr);
+          if (!buf)
+            FATAL_BM ("asprintf failed for contributor %s", namestr);
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, buf, -1,
+                                            miscomm_brotag_BM, NULL);
+          gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+          free (buf), buf = NULL;
+          LOCALRETURN_BM (_.objbrows);
+        }
+      else
+        {
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM,
+                                            "|contributor without name|", -1,
+                                            miscomm_brotag_BM, NULL);
+          gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+          LOCALRETURN_BM (_.objbrows);
+        }
+    }
+  else
+    {
+      gtk_text_buffer_insert_with_tags (brobuf,
+                                        &browserit_BM,
+                                        "|bad payload for contributor|", -1,
+                                        miscomm_brotag_BM, NULL);
+      gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+      LOCALRETURN_BM (_.objbrows);
+    }
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
+}                               /* end  browse_data°contributor_class  _7xwUcosBMjj_3Sa2de3sCGO */
 
 
 
