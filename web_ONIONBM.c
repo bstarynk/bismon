@@ -1485,6 +1485,8 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         onion_response_set_length (resp, ln);
         onion_response_write (resp, respbuf, ln);
         onion_response_flush (resp);
+        wexda->webx_resp = NULL;
+        wexda->webx_requ = NULL;
         return OCS_PROCESSED;
       }
     else
