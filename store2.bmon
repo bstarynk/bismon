@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1003 objects
+// for 1004 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -10743,6 +10743,19 @@ _39pW7nyFqoI_5pikyvvGsZ5
 
 
 
+!(_40NemiO6zBn_3j7KYbIOPUv
+!@ 1535657076.340
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit \' components:\'"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _41F1rKwGbaA_30OJWKsqNWy  " components:")
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_6jZqk9RP0Pe_12cIgV9WMFC
+!)_40NemiO6zBn_3j7KYbIOPUv
+
+
+
 !(_40XgQGIUZQY_246JbHmppCN
 !@ 1529480099.844
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
@@ -13859,7 +13872,7 @@ _7BROpIWQHzA_8b1C6i49Pkz) ~)
  "body of emit_prologue_jsmodule\u00b0jsmodule_generation_object"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _1HZc1VBbjdB_96aQTEPgEX0
-!# 11
+!# 12
 !& _8vBskZZJ2Hf_1jdBnECZUSJ
 !& _0AUttc9DFqB_2C7fGlBJAxC
 !& _4Yn8XDOP2nB_0L3V8U88UpE
@@ -13867,6 +13880,7 @@ _1HZc1VBbjdB_96aQTEPgEX0
 !& _6CzjvS4ZeEd_3jgRd8wIaO3
 !& _9qubKXDFJ9a_06d4mGhbGcD
 !& _5QvtZKje3kD_3tHLU6QnZ4Z
+!& _40NemiO6zBn_3j7KYbIOPUv
 !& _3AEDXT43wEP_2xOTOn1ZvkA
 !& _5myPgr3VSsm_4V8dUGh1pWs
 !& _03Bdhkaqibd_6iFalfaX0oB
