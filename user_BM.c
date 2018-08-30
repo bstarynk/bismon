@@ -40,6 +40,15 @@ usergcmark_BM (struct garbcoll_stBM *gc,
   ASSERT_BM (!fromob || isobject_BM (fromob));
   ASSERT_BM (!fromob || !us->user_ownobj || us->user_ownobj == fromob);
   ASSERT_BM (depth >= 0);
+  uint8_t oldmark = ((typedhead_tyBM *) us)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) us)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
+  DBGPRINTF_BM
+    ("usergcmark_BM us@%p, usname %s, fromob %s, usownobj %s, depth %d", us,
+     bytstring_BM (us->user_namev), objectdbg_BM (fromob),
+     objectdbg1_BM (us->user_ownobj), depth);
   if (us->user_ownobj)
     gcobjmark_BM (gc, us->user_ownobj);
   if (us->user_namev)
@@ -51,6 +60,9 @@ usergcdestroy_BM (struct garbcoll_stBM *gc, struct user_stBM *us)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((value_tyBM) us) == typayl_user_BM);
+  DBGPRINTF_BM ("usergcdestroy_BM us@%p, usname %s, usownobj %s",
+                us, bytstring_BM (us->user_namev),
+                objectdbg1_BM (us->user_ownobj));
   if (us->user_ownobj)
     {
       objectval_tyBM *ownerob = us->user_ownobj;
@@ -70,6 +82,9 @@ usergckeep_BM (struct garbcoll_stBM *gc, struct user_stBM *us)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((value_tyBM) us) == typayl_user_BM);
+  DBGPRINTF_BM ("usergckeep_BM us@%p, usname %s, usownobj %s",
+                us, bytstring_BM (us->user_namev),
+                objectdbg1_BM (us->user_ownobj));
   gc->gc_keptbytes += sizeof (*us);
 }                               /* end usergckeep_BM */
 
