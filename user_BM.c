@@ -422,7 +422,7 @@ find_contributor_BM (const char *str, struct stackframe_stBM * stkf)
                       contributors_filepath_BM, lincnt, curoidstr,
                       curcontrib);
           _.contribob = findobjofid_BM (curid);
-          DBGPRINTF_BM ("find_contributor str '%s' contribob %s'", str,
+          DBGPRINTF_BM ("find_contributor str '%s' contribob %s", str,
                         objectdbg_BM (_.contribob));
           break;
         }
@@ -430,7 +430,7 @@ find_contributor_BM (const char *str, struct stackframe_stBM * stkf)
   if (flock (fd, LOCK_UN))
     FATAL_BM ("failed to un-flock fd#%d for %s", fd,
               contributors_filepath_BM);
-  DBGPRINTF_BM ("find_contributor str '%s' contribob %s'", str,
+  DBGPRINTF_BM ("find_contributor str '%s' contribob %s", str,
                 objectdbg_BM (_.contribob));
   if (_.contribob)
     {
@@ -438,16 +438,22 @@ find_contributor_BM (const char *str, struct stackframe_stBM * stkf)
       objlock_BM (_.contribob);
       okcontrib = objhascontributorpayl_BM (_.contribob);
       objunlock_BM (_.contribob);
+      DBGPRINTF_BM ("find_contributor contribob %s has %s contributor",
+                    objectdbg_BM (_.contribob), okcontrib ? "a" : "no");
       if (!okcontrib)
         _.contribob = NULL;
     }
-  DBGPRINTF_BM ("find_contributor str '%s' contribob %s'", str,
+  DBGPRINTF_BM ("find_contributor str '%s' contribob %s", str,
                 objectdbg_BM (_.contribob));
   if (_.contribob)
     {
       objlock_BM (BMP_contributors);
       if (!objhashsetcontainspayl_BM (BMP_contributors, _.contribob))
-        _.contribob = NULL;
+        {
+          DBGPRINTF_BM ("find_contributor contribob %s not in `contributors`",
+                        objectdbg_BM (_.contribob));
+          _.contribob = NULL;
+        }
       objunlock_BM (BMP_contributors);
     }
   // sleep a tiny random amount of time, to make this call unpredictable and a bit costly
