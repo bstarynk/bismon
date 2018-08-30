@@ -8190,11 +8190,11 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !(_8keZiP7vbFw_1ovBXqd6a0d |=webexchange_object|
 !~ name (~ webexchange_object
 ~)
-!@ 1532328556.590
+!@ 1535636010.561
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the class of webexchange-s, i.e. HTTP request + reply handled by bismon"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+!~ class (~ |supercl sbuf_object:| _77xbaw1emfK_1nhE4tp0bF3
 ~)
 
 !)_8keZiP7vbFw_1ovBXqd6a0d
