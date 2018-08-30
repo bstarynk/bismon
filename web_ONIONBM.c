@@ -1485,8 +1485,17 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         onion_response_set_length (resp, ln);
         onion_response_write (resp, respbuf, ln);
         onion_response_flush (resp);
-        wexda->webx_resp = NULL;
-        wexda->webx_requ = NULL;
+        {
+          objlock_BM (_.webexob);
+          wexda->webx_resp = NULL;
+          wexda->webx_requ = NULL;
+          if (objgetwebexchangepayl_BM (_.webexob) == wexda)
+            {
+              wexda->webx_ownobj = NULL;
+              objclearpayload_BM (_.webexob);
+            }
+          objunlock_BM (_.webexob);
+        }
         return OCS_PROCESSED;
       }
     else
