@@ -1797,6 +1797,36 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // browse_data°sbuf_object
                                           &browserit_BM, bufmsg, -1,
                                           miscomm_brotag_BM, NULL);
       }
+#ifdef BISMONION
+    if (objhaswebexchangepayl_BM (_.objbrows))
+      {
+        gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+        char *buf = NULL;
+        extern const char *onion_request_methods[16];
+        int meth = objwebexchangerequestmethodpayl_BM (_.objbrows);
+        time_t wexti = objwebexchangetime_BM (_.objbrows);
+        char extibuf[64];
+        memset (extibuf, 0, sizeof (extibuf));
+        struct tm extitm = { };
+        localtime_r (&wexti, &extitm);
+        strftime (extibuf, sizeof (extibuf), "%c", &extitm);
+        if (meth >= 0 && meth < 10)
+          asprintf (&buf, "|webexchange %s for %s at %s|",
+                    onion_request_methods[meth],
+                    objwebexchangerequestpathpayl_BM (_.objbrows), extibuf);
+        else
+          asprintf (&buf, "|webexchange #%d for %s at %s|",
+                    meth, objwebexchangerequestpathpayl_BM (_.objbrows),
+                    extibuf);
+        if (buf)
+          {
+            gtk_text_buffer_insert_with_tags (brobuf,
+                                              &browserit_BM, buf, -1,
+                                              miscomm_brotag_BM, NULL);
+            free (buf), buf = NULL;
+          }
+      }
+#endif /* BISMONION */
   }
 #else /*!BISMONGTK */
   weakassertfailureat_BM
