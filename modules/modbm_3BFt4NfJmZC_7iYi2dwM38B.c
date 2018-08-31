@@ -1687,13 +1687,14 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                               { /*cond else _1HknjNLZ7L3_1nUgvAJK6xV */
 //failure _0Lk9WQfjqpU_0XROvsMVANm   
                                 PLACEDFAILURE_BM (__LINE__,     /*failreason: */
-                                                  (((value_tyBM) makenode3_BM (
+                                                  (((value_tyBM) makenode4_BM (
                                                                                 /*make_node conn: */
                                                                                 ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[34] /*!failure_non_object */ )),
-/*make_node 3 sons: */
+/*make_node 4 sons: */
                                                                                 ( /*v_resprep: */ _.v_7nytuRkZkOz_8T9QMYQtGps),
                                                                                 ( /*o_jscurcomp: */ _.o_2TaoEvH5OQU_8nKYBgAvkmW),
-                                                                                ( /*taggedint: */ taggedint_BM ( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B))))),
+                                                                                ( /*taggedint: */ taggedint_BM ( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B)),
+                                                                                ( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW)))),
                                                   /*failplace: */
                                                   (     /*modconst: */
                                                     (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[5]
