@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1011 objects
+// for 1012 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2402,13 +2402,25 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_6OjcpLRgZn9_7hgI2v40ES2 |=jsv1|
+!~ name (~ jsv1
+~)
+!@ 1535704433.327
+!$_0YanmudmN6Q_0JCzJElBQ7u |=jsvar_object|
+!)_6OjcpLRgZn9_7hgI2v40ES2
+
+
+
 !(_0YanmudmN6Q_0JCzJElBQ7u |=jsvar_object|
 !~ name (~ jsvar_object
 ~)
-!@ 1535690576.173
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1535704073.145
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "class of javascript variables"
+ "class for Javascript variables"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+
 !)_0YanmudmN6Q_0JCzJElBQ7u
 
 
@@ -10315,10 +10327,12 @@ _7pm4Ds6506o_90TYgch40IW
 
 
 !(_391Ts8BF0Kl_5dq6x8peTCw
-!@ 1535690506.243
+!@ 1535704433.327
 !$_4rZ29e59UMt_7QXynMxokfx |=jscript_topvardef_object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "js.topvardef of jsv1"
+!: _5ucAZimYynS_4VA0XHvr1nW |=variable|
+_6OjcpLRgZn9_7hgI2v40ES2
 !)_391Ts8BF0Kl_5dq6x8peTCw
 
 
