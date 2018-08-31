@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1012 objects
+// for 1014 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -3197,6 +3197,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_41F1rKwGbaA_30OJWKsqNWy
+
+
+
+!(_7safxUAyjq9_7LcGUlnwwD1 |=o_variable|
+!~ name (~ o_variable
+~)
+!@ 1535711303.100
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_7safxUAyjq9_7LcGUlnwwD1
 
 
 
@@ -9902,14 +9913,15 @@ _6iYgjRt0FIx_4ax63M6n2U6
 
 
 !(_2kanmkRxrZV_3xnDrbqgMjR
-!@ 1535699135.146
+!@ 1535711413.998
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of prepare_for_jsmodule\u00b0jscript_topvardef_object"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _44Xro7p814I_406P69WFbq4
-!# 1
+!# 2
 !& _9d3xraR1Ehe_25Knbao41ye
+!& _4Nxi5Wwj408_6xaQvOAEE2n
 !)_2kanmkRxrZV_3xnDrbqgMjR
 
 
@@ -10844,12 +10856,14 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 !(_44Xro7p814I_406P69WFbq4
 !|*
-!@ 1535699135.146
+!@ 1535711303.100
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "prepare_for_jsmodule\u00b0jscript_topvardef_object <o_jscurcomp (o_jsgenmod)"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _2TaoEvH5OQU_8nKYBgAvkmW _4JKd986pvM4_6yBzeeI40vW ]
+!: _24sSVIADeHm_0Sx34wQfG7W |=locals|
+ { _5HkpTupRRIK_8iCooVukjb3 _7safxUAyjq9_7LcGUlnwwD1 }
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3qw9bnATIhq_8loBraLeXzQ
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
@@ -11220,6 +11234,18 @@ _3qw9bnATIhq_8loBraLeXzQ
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
 _883QaWUOedh_9zmHk2A3RPm
 !)_4M7lr5cU6VD_5hxmeH3baBf
+
+
+
+!(_4Nxi5Wwj408_6xaQvOAEE2n
+!@ 1535711413.998
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "o_variable <- o_jscurcomp.variable"
+!# 2
+!& _7safxUAyjq9_7LcGUlnwwD1
+!&  * _1iRMAZlHGbs_9rPqm9Nc1eT (  * _9179OMUDUQW_3gyzCFNJ7fQ ( _2TaoEvH5OQU_8nKYBgAvkmW  * _0e54seiZEXF_1Myf620cHoB ( _5ucAZimYynS_4VA0XHvr1nW)))
+!)_4Nxi5Wwj408_6xaQvOAEE2n
 
 
 
