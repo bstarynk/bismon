@@ -30,7 +30,7 @@ makeclosure_BM (const objectval_tyBM * connob, unsigned nbval,
     FATAL_BM ("too wide closure %u", nbval);
   unsigned cnt = 0;
   for (unsigned ix = 0; ix < nbval; ix++)
-    if (valtype_BM (closvalarr[ix]))
+    if (!closvalarr[ix] || valtype_BM (closvalarr[ix]))
       cnt++;
   ASSERT_BM (cnt < MAXSIZE_BM);
   unsigned long closiz =
@@ -47,7 +47,7 @@ makeclosure_BM (const objectval_tyBM * connob, unsigned nbval,
   for (unsigned ix = 0; ix < nbval; ix++)
     {
       value_tyBM curson = closvalarr[ix];
-      if (valtype_BM (curson))
+      if (!curson || valtype_BM (curson))
         {
           hash_tyBM curh = valhash_BM (curson);
           if (newcnt % 2)
@@ -190,7 +190,7 @@ makenode_BM (const objectval_tyBM * connob, unsigned nbval,
     FATAL_BM ("too wide node %u", nbval);
   unsigned cnt = 0;
   for (unsigned ix = 0; ix < nbval; ix++)
-    if (valtype_BM (sonvalarr[ix]))
+    if (!sonvalarr[ix] || valtype_BM (sonvalarr[ix]))
       cnt++;
   ASSERT_BM (cnt < MAXSIZE_BM);
   unsigned long nodsiz =
