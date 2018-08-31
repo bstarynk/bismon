@@ -202,8 +202,16 @@ ROUTINEOBJNAME_BM (_5v30KC0IMxx_53ZzXprJTM6)    //
   for (unsigned six = 0; six < width; six++)
     {
       _.curson = nodenthson_BM ((const value_tyBM) _.recv, six);
+      if (!_.curson)
+        {
+          objstrbufferprintfpayl_BM (_.bufob, "\t__");
+          continue;
+        }
       if (_.dumpob && !obdumpvalisdumpable_BM (_.dumpob, _.curson))
-        continue;
+        {
+          objstrbufferprintfpayl_BM (_.bufob, "\t__");
+          continue;
+        }
       if (cnt > 0 && cnt % 5 == 0)
         objstrbuffernewlinepayl_BM (_.bufob);
       objstrbufferprintfpayl_BM (_.bufob, "\t");
@@ -259,6 +267,11 @@ ROUTINEOBJNAME_BM (_6jvRZetUz36_978V6SKIWZC)    //
   for (unsigned six = 0; six < width; six++)
     {
       _.curson = closurenthson_BM ((const value_tyBM) _.recv, six);
+      if (!_.curson)
+        {
+          objstrbufferprintfpayl_BM (_.bufob, "\t__");
+          continue;
+        }
       if (_.dumpob && !obdumpvalisdumpable_BM (_.dumpob, _.curson))
         {
           objstrbufferprintfpayl_BM (_.bufob, "\t__");
