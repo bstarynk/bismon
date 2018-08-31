@@ -3569,7 +3569,7 @@ ROUTINEOBJNAME_BM (_8XIt55nuPul_3MZfto9hmgy)    // emit_statement°basiclo_fail
   objstrbufferprintfpayl_BM (_.modgenob, "//failure %s\n",
                              objectdbg_BM (_.stmtob));
   objstrbufferprintfpayl_BM (_.modgenob,
-                             "PLACEDFAILURE_BM(__LINE__, /*failreason:*/ (");
+                             "PLACEDFAILURE_BM(__LINE__,\n          /*failreason:*/ (");
   miniemit_expression_BM (CURFRAME_BM, _.failexpv, _.modgenob, _.routprepob,
                           _.stmtob, 0);
   objstrbufferprintfpayl_BM (_.modgenob,

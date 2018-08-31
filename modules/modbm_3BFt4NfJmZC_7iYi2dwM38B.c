@@ -1524,7 +1524,8 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                        o_2TaoEvH5OQU_8nKYBgAvkmW))))
                     {           //body when _71N9lq8UKd3_9zYq6i873Dp   
 //failure _6pp3g7GLuae_7OF8KezKzvx    
-                      PLACEDFAILURE_BM (__LINE__,       /*failreason: */
+                      PLACEDFAILURE_BM (__LINE__,
+                                        /*failreason: */
                                         ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM
                                           [37] /*|failure_non_object */ )),
                                         /*failplace: */
@@ -1565,15 +1566,14 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                                      ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[44] /*!jscript_toplevel_object */ ))))))
                           {     //body when _1icbJmDuvUd_03TJdGfrgqp   
 //failure _4jwFGdaECBb_6dsBLTMoG9j    
-                            PLACEDFAILURE_BM (__LINE__, /*failreason: */
-                                              (((value_tyBM) makenode2_BM (     /*make_node conn: */
-                                                                            ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[28] /*!failure_bad_class */ )),
-                                                                            /*make_node 2 sons: */
-                                                                            ( /*o_jscurcomp: */ _.
-                                                                             o_2TaoEvH5OQU_8nKYBgAvkmW), (      /*taggedint: */
-                                                                                                           taggedint_BM
-                                                                                                           ( /*ii: */ _.
-                                                                                                            n_2W7Ckt2WxEM_4NVYgEWE73B))))),
+                            PLACEDFAILURE_BM (__LINE__,
+                                              /*failreason: */ (((value_tyBM) makenode2_BM
+                                                                 (
+                                                                   /*make_node conn: */
+                                                                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[28] /*!failure_bad_class */ )),
+/*make_node 2 sons: */
+                                                                   ( /*o_jscurcomp: */ _.o_2TaoEvH5OQU_8nKYBgAvkmW),
+                                                                   ( /*taggedint: */ taggedint_BM ( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B))))),
                                               /*failplace: */
                                               ( /*modconst: */
                                                 (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[25]
@@ -1688,7 +1688,8 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                             else
                               { /*cond else _1HknjNLZ7L3_1nUgvAJK6xV */
 //failure _0Lk9WQfjqpU_0XROvsMVANm   
-                                PLACEDFAILURE_BM (__LINE__,     /*failreason: */
+                                PLACEDFAILURE_BM (__LINE__,
+                                                  /*failreason: */
                                                   (((value_tyBM) makenode4_BM ( /*make_node conn: */
                                                                                 ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[37] /*!failure_non_object */ )),
                                                                                 /*make_node 4 sons: */
@@ -1744,13 +1745,15 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                     (( /*v_resemit: */ _.v_0qTBOEAT5pa_2fz1SKfHrMV) == NULL))
                   {             //body when _1c7c99xtpkW_893Go0pwc1d  
 //failure _401XcQg0VWc_1SG4xaaQ3mU   
-                    PLACEDFAILURE_BM (__LINE__, /*failreason: */
-                                      (((value_tyBM) makenode1_BM (     /*make_node conn: */
-                                                                    ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[30]    /*!emit_prologue_jsmodule */
-                                                                     )),
-                                                                    /*make_node 1 sons: */
-                                                                    ( /*o_jsgenmod: */ _.
-                                                                     o_4JKd986pvM4_6yBzeeI40vW)))),
+                    PLACEDFAILURE_BM (__LINE__,
+                                      /*failreason: */ (((value_tyBM) makenode1_BM
+                                                         (
+                                                           /*make_node conn: */
+                                                           ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[30] /*!emit_prologue_jsmodule */ )),
+/*make_node 1 sons: */
+                                                           (    /*o_jsgenmod: */
+                                                             _.
+                                                             o_4JKd986pvM4_6yBzeeI40vW)))),
                                       /*failplace: */
                                       ( /*modconst: */
                                         (constob_3BFt4NfJmZC_7iYi2dwM38B_BM
@@ -1920,17 +1923,15 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                              NULL))
                           {     //body when _1oT4wI1xxr0_6N4Xe9ZM0UT   
 //failure _4lj3ntdp7xH_5LiKY8h0lHl    
-                            PLACEDFAILURE_BM (__LINE__, /*failreason: */
-                                              (((value_tyBM) makenode3_BM (     /*make_node conn: */
-                                                                            ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[46] /*!emit_jstoplevel */ )),
-                                                                            /*make_node 3 sons: */
-                                                                            ( /*o_jscurcomp: */ _.
-                                                                             o_2TaoEvH5OQU_8nKYBgAvkmW), (      /*taggedint: */
-                                                                                                           taggedint_BM
-                                                                                                           ( /*ii: */ _.
-                                                                                                            n_2W7Ckt2WxEM_4NVYgEWE73B)),
-                                                                            ( /*o_jsgenmod: */ _.
-                                                                             o_4JKd986pvM4_6yBzeeI40vW)))),
+                            PLACEDFAILURE_BM (__LINE__,
+                                              /*failreason: */ (((value_tyBM) makenode3_BM
+                                                                 (
+                                                                   /*make_node conn: */
+                                                                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[46] /*!emit_jstoplevel */ )),
+/*make_node 3 sons: */
+                                                                   ( /*o_jscurcomp: */ _.o_2TaoEvH5OQU_8nKYBgAvkmW),
+                                                                   ( /*taggedint: */ taggedint_BM ( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B)),
+                                                                   ( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW)))),
                                               /*failplace: */
                                               ( /*modconst: */
                                                 (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[26]
@@ -2010,13 +2011,15 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                     (( /*v_resemit: */ _.v_0qTBOEAT5pa_2fz1SKfHrMV) == NULL))
                   {             //body when _10qy9ZVTEVY_2ApRzne5Svx  
 //failure _75mkz7wH3u3_0ZQRFajA44k   
-                    PLACEDFAILURE_BM (__LINE__, /*failreason: */
-                                      (((value_tyBM) makenode1_BM (     /*make_node conn: */
-                                                                    ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[51]    /*!emit_epilogue_jsmodule */
-                                                                     )),
-                                                                    /*make_node 1 sons: */
-                                                                    ( /*o_jsgenmod: */ _.
-                                                                     o_4JKd986pvM4_6yBzeeI40vW)))),
+                    PLACEDFAILURE_BM (__LINE__,
+                                      /*failreason: */ (((value_tyBM) makenode1_BM
+                                                         (
+                                                           /*make_node conn: */
+                                                           ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[51] /*!emit_epilogue_jsmodule */ )),
+/*make_node 1 sons: */
+                                                           (    /*o_jsgenmod: */
+                                                             _.
+                                                             o_4JKd986pvM4_6yBzeeI40vW)))),
                                       /*failplace: */
                                       ( /*modconst: */
                                         (constob_3BFt4NfJmZC_7iYi2dwM38B_BM
@@ -2297,16 +2300,16 @@ startblock__2kanmkRxrZV_3xnDrbqgMjR:__attribute__ ((unused));
         (( /*o_variable: */ _.o_7safxUAyjq9_7LcGUlnwwD1) == NULL))
       {                         //body when _1zVy4aWJZ59_1TzU666WFqB  
 //failure _8Nb7qSIbE8N_7xJDtsS0rdb   
-        PLACEDFAILURE_BM (__LINE__, /*failreason: */ (((value_tyBM) makenode3_BM
-                                                       (        /*make_node conn: */
-                                                         ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[38] /*!is_null */ )),
-                                                         /*make_node 3 sons: */
-                                                         ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[33] /*!variable */ )),
-                                                         (      /*o_jscurcomp: */
-                                                           _.
-                                                           o_2TaoEvH5OQU_8nKYBgAvkmW),
-                                                         ( /*o_jsgenmod: */ _.
-                                                          o_4JKd986pvM4_6yBzeeI40vW)))),
+        PLACEDFAILURE_BM (__LINE__,
+                          /*failreason: */ (((value_tyBM) makenode3_BM
+                                             (  /*make_node conn: */
+                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[38] /*!is_null */ )),
+                                               /*make_node 3 sons: */
+                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[33] /*!variable */ )),
+                                               ( /*o_jscurcomp: */ _.
+                                                o_2TaoEvH5OQU_8nKYBgAvkmW),
+                                               ( /*o_jsgenmod: */ _.
+                                                o_4JKd986pvM4_6yBzeeI40vW)))),
                           /*failplace: */
                           (     /*modconst: */
                             (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[49]
@@ -2324,16 +2327,17 @@ startblock__2kanmkRxrZV_3xnDrbqgMjR:__attribute__ ((unused));
                                    /*!jsvar_object */ ))))))
       {                         //body when _4yZW46frHxN_6EbkzZ0uHHJ  
 //failure _3fycBOpG51y_7Jfx9BLe3U2   
-        PLACEDFAILURE_BM (__LINE__, /*failreason: */ (((value_tyBM) makenode3_BM
-                                                       (        /*make_node conn: */
-                                                         ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[28] /*!failure_bad_class */ )),
-                                                         /*make_node 3 sons: */
-                                                         ( /*o_variable: */ _.
-                                                          o_7safxUAyjq9_7LcGUlnwwD1), ( /*o_jscurcomp: */
-                                                                                        _.
-                                                                                        o_2TaoEvH5OQU_8nKYBgAvkmW),
-                                                         ( /*o_jsgenmod: */ _.
-                                                          o_4JKd986pvM4_6yBzeeI40vW)))),
+        PLACEDFAILURE_BM (__LINE__,
+                          /*failreason: */ (((value_tyBM) makenode3_BM
+                                             (  /*make_node conn: */
+                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[28] /*!failure_bad_class */ )),
+                                               /*make_node 3 sons: */
+                                               ( /*o_variable: */ _.
+                                                o_7safxUAyjq9_7LcGUlnwwD1),
+                                               ( /*o_jscurcomp: */ _.
+                                                o_2TaoEvH5OQU_8nKYBgAvkmW),
+                                               ( /*o_jsgenmod: */ _.
+                                                o_4JKd986pvM4_6yBzeeI40vW)))),
                           /*failplace: */
                           (     /*modconst: */
                             (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[17]
@@ -3221,12 +3225,15 @@ startblock__0n6WAcuQ159_6cO0bI9OjvI:__attribute__ ((unused));
                     (( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW) == NULL))
                   {             //body when _8wB9CPMDqLU_50GKqZfe8ms  
 //failure _5YZZHXQmxrc_3SVoZ26utAx   
-                    PLACEDFAILURE_BM (__LINE__, /*failreason: */
-                                      (((value_tyBM) makenode1_BM (     /*make_node conn: */
-                                                                    ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[41] /*!compile_to_javascript */ )),
-                                                                    /*make_node 1 sons: */
-                                                                    ( /*o_jsmodule: */ _.
-                                                                     o_5V0w37YnN4F_8dZ6I79V60O)))),
+                    PLACEDFAILURE_BM (__LINE__,
+                                      /*failreason: */ (((value_tyBM) makenode1_BM
+                                                         (
+                                                           /*make_node conn: */
+                                                           ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[41] /*!compile_to_javascript */ )),
+/*make_node 1 sons: */
+                                                           (    /*o_jsmodule: */
+                                                             _.
+                                                             o_5V0w37YnN4F_8dZ6I79V60O)))),
                                       /*failplace: */
                                       ( /*modconst: */
                                         (constob_3BFt4NfJmZC_7iYi2dwM38B_BM
