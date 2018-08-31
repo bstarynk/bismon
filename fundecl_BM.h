@@ -363,6 +363,8 @@ extern void objputclass_BM (objectval_tyBM * obj, objectval_tyBM * objclass);
 static inline bool objlock_BM (objectval_tyBM * obj);
 static inline bool objunlock_BM (objectval_tyBM * obj);
 static inline bool objtrylock_BM (objectval_tyBM * obj);
+// return true if the object was already locked in the same thread
+static inline bool objislocked_BM (objectval_tyBM * obj);
 static inline value_tyBM objgetattr_BM (const objectval_tyBM * obj,
                                         const objectval_tyBM * objattr);
 static inline unsigned objnbattrs_BM (const objectval_tyBM * obj);

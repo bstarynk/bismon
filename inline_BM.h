@@ -443,6 +443,22 @@ objlock_BM (objectval_tyBM * obj)
   return true;
 }                               /* end objlock_BM */
 
+/// this is mostly useful inside asserts, to check that the object was
+/// already locked in the same thread.
+bool
+objislocked_BM (objectval_tyBM * obj)
+{
+  if (valtype_BM (obj) != tyObject_BM)
+    return false;
+  int lk = pthread_mutex_trylock (&obj->ob_mutex);
+  if (lk == 0)
+    {
+      pthread_mutex_unlock (&obj->ob_mutex);
+      return true;
+    }
+  return false;
+}                               /* end objislocked_BM */
+
 bool
 objunlock_BM (objectval_tyBM * obj)
 {
