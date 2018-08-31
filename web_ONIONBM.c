@@ -1456,11 +1456,12 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         fprintf (fresp, "<html><head><title>Bismon failure</title>\n");
         fprintf (fresp, "</head>\n<body>\n");
         fprintf (fresp, "<h1>Bismon failure</h1>\n");
-        fprintf (fresp, "<p>Request <i>%s</i> of path '<tt>%s</tt>' <b>failed</b>.<br/>\n",     //
+        fprintf (fresp, "<p>Request <i>%s</i> of path '<tt>%s</tt>' <b>failed</b> <small>(webexchange <tt>%s</tt>, session <tt>%s</tt>)</small>.<br/>\n",       //
                  ((reqmeth == OR_GET) ? "GET"   //
                   : (reqmeth == OR_HEAD) ? "HEAD"       //
                   : (reqmeth == OR_POST) ? "POST"       //
-                  : "???"), reqpath);
+                  : "???"), reqpath,
+                 objectdbg_BM (_.webexob), objectdbg1_BM (_.sessionob));
         fprintf (fresp, "Failure code %d,<br/>fail reason: <tt>\n", failcod);
         writefencodedhtml_BM (fresp, OUTSTRVALUE_BM (_.failreasonv), -1);
         fputs ("</tt>,<br/>fail place: <tt>\n", fresp);
