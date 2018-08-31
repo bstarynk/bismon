@@ -4544,21 +4544,23 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
   WEAKASSERT_BM (isobject_BM (_.routprepob));
   _.connob = nodeconn_BM ((value_tyBM) _.expv);
   int nbsons = nodewidth_BM ((value_tyBM) _.expv);
+  int previndent = objstrbufferindentationpayl_BM (_.modgenob);
   _.seqtypob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
   DBGPRINTF_BM
     (" miniemit_node_conn°make_tree nbsons %d fromob %s seqtypob %s", nbsons,
      objectdbg_BM (_.fromob), objectdbg1_BM (_.seqtypob));
   WEAKASSERT_BM (_.seqtypob == k_node || _.seqtypob == k_closure);
   WEAKASSERT_BM (nbsons > 0);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth);
   if (_.seqtypob == k_node)
     {
       if (nbsons < MAXTREEOPTIMARGS_BM)
         objstrbufferprintfpayl_BM (_.modgenob,
-                                   "((value_tyBM) makenode%u_BM (",
+                                   "((value_tyBM) makenode%u_BM\n (",
                                    (unsigned) nbsons - 1);
       else
         objstrbufferprintfpayl_BM (_.modgenob,
-                                   "((value_tyBM) makesizednode_BM (%dU,",
+                                   "((value_tyBM) makesizednode_BM\n (%dU,",
                                    (unsigned) nbsons - 1);
 
     }
@@ -4566,17 +4568,18 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
     {
       if (nbsons < MAXTREEOPTIMARGS_BM)
         objstrbufferprintfpayl_BM (_.modgenob,
-                                   "((value_tyBM) makeclosure%u_BM (",
+                                   "((value_tyBM) makeclosure%u_BM\n (",
                                    (unsigned) nbsons - 1);
       else
         objstrbufferprintfpayl_BM (_.modgenob,
-                                   "((value_tyBM) makesizedclosure_BM (%dU,",
+                                   "((value_tyBM) makesizedclosure_BM\n (%dU,",
                                    (unsigned) nbsons - 1);
     }
   else
     FAILHERE (_.seqtypob);
 #undef MAXTREEOPTIMARGS_BM
   _.connexpv = nodenthson_BM (_.expv, 0);
+  objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
   objstrbufferprintfpayl_BM (_.modgenob, "/*%s conn:*/",
                              objectdbg_BM (_.connob));
   objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
@@ -4593,6 +4596,7 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
                 objectdbg2_BM (_.fromob), nbsons);
   for (int ix = 1; ix < nbsons; ix++)
     {
+      objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
       _.subexpv = nodenthson_BM (_.expv, ix);
       DBGPRINTF_BM
         (" miniemit_node_conn°make_tree subexpv %s fromob %s ix#%d",
@@ -4627,6 +4631,7 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
      debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
      objectdbg_BM (_.modgenob), objectdbg1_BM (_.routprepob),
      objectdbg2_BM (_.fromob), depth);
+  objstrbuffersetindentpayl_BM (_.modgenob, previndent);
   LOCALRETURN_BM (_.modgenob);
 failure:
 #undef FAILHERE
