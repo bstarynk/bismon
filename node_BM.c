@@ -207,7 +207,7 @@ makenode_BM (const objectval_tyBM * connob, unsigned nbval,
   for (unsigned ix = 0; ix < nbval; ix++)
     {
       value_tyBM curson = sonvalarr[ix];
-      if (valtype_BM (curson))
+      if (!curson || valtype_BM (curson))
         {
           hash_tyBM curh = valhash_BM (curson);
           if (newcnt % 2)
@@ -224,6 +224,8 @@ makenode_BM (const objectval_tyBM * connob, unsigned nbval,
   ((typedhead_tyBM *) node)->hash = h;
   return node;
 }                               /* end makenode_BM */
+
+
 
 const node_tyBM *
 makesizednode_BM (unsigned siz, const objectval_tyBM * connob, ...)
