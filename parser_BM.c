@@ -2175,9 +2175,11 @@ parsergetchunk_BM (struct parser_stBM *pars,
   bool nobuild = parsops && parsops->parsop_nobuild;
   LOCALFRAME_BM                 //
     (prevstkf, NULL,            //
-     value_tyBM resval;
-     struct datavectval_stBM *chunkvec; const objectval_tyBM * obj;
+     value_tyBM resval;         //
+     struct datavectval_stBM *chunkvec; //
+     const objectval_tyBM * obj;        //
      value_tyBM compv;
+     value_tyBM subv;
     );
   _.chunkvec = nobuild ? NULL : datavect_grow_BM (NULL, 5);
   const char *end = NULL;
@@ -2310,8 +2312,9 @@ parsergetchunk_BM (struct parser_stBM *pars,
             {
               _.compv =
                 (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
-              _.chunkvec =      //
-                datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+              if (_.compv)
+                _.chunkvec =    //
+                  datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
             }
           parseradvanceutf8_BM (pars, g_utf8_strlen (curpc, npc - curpc));
           continue;
@@ -2328,8 +2331,9 @@ parsergetchunk_BM (struct parser_stBM *pars,
             {
               _.compv =
                 (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
-              _.chunkvec =      //
-                datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+              if (_.compv)
+                _.chunkvec =    //
+                  datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
             }
           parseradvanceutf8_BM (pars, g_utf8_strlen (curpc, npc - curpc));
           continue;
@@ -2366,8 +2370,9 @@ parsergetchunk_BM (struct parser_stBM *pars,
             {
               _.compv =
                 (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
-              _.chunkvec =      //
-                datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+              if (_.compv)
+                _.chunkvec =    //
+                  datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
             }
           parseradvanceutf8_BM (pars,
                                 g_utf8_strlen (curpc,
@@ -2421,10 +2426,12 @@ parsergetchunk_BM (struct parser_stBM *pars,
                    delim_rightparen, clolineno, clocolpos);
               if (!nobuild)
                 {
-                  _.chunkvec =  //
-                    datavect_append_BM (_.chunkvec,
-                                        (const value_tyBM)
-                                        makenode_BM (BMP_embed, 1, &_.compv));
+                  _.subv = (const value_tyBM)
+                    makenode_BM (BMP_embed, 1, &_.compv);
+                  if (_.subv)
+                    _.chunkvec =        //
+                      datavect_append_BM (_.chunkvec, _.subv);
+                  _.subv = NULL;
                 }
             }                   /* end nested values $(...) */
           /// $name ...
@@ -2442,11 +2449,13 @@ parsergetchunk_BM (struct parser_stBM *pars,
                                       "invalid dollarvar %s in chunk", curpc);
               if (!nobuild)
                 {
-                  _.chunkvec =  //
-                    datavect_append_BM (_.chunkvec,
-                                        (const value_tyBM)
-                                        makenode_BM (BMP_variable, 1,
-                                                     (value_tyBM *) & _.obj));
+                  _.subv = makenode_BM (BMP_variable, 1,
+                                        (value_tyBM *) & _.obj);
+                  if (_.subv)
+                    _.chunkvec =        //
+                      datavect_append_BM (_.chunkvec,
+                                          (const value_tyBM) _.subv);
+                  _.subv = NULL;
                 }
               parseradvanceutf8_BM (pars, g_utf8_strlen (curpc, npc - curpc));
               continue;
@@ -2476,8 +2485,9 @@ parsergetchunk_BM (struct parser_stBM *pars,
             {
               _.compv =
                 (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
-              _.chunkvec =      //
-                datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
+              if (_.compv)
+                _.chunkvec =    //
+                  datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
             }
           parseradvanceutf8_BM (pars, 1);
 
