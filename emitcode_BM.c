@@ -2471,19 +2471,38 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
               int complen = nodewidth_BM (_.compv);
               if (_.connob == k_variable && complen == 1)
                 {
-                  _.varob = nodenthson_BM (_.compv, 0);
+                  _.varob = objectcast_BM (nodenthson_BM (_.compv, 0));
                   if (!_.varob)
-                    FAILHERE (makenode2_BM
-                              (k_variable, _.compv, taggedint_BM (cix)));
+                    {
+                      WARNPRINTF_BM
+                        ("in run statement %s component #%d : %s is not a variable",
+                         objectdbg_BM (_.stmtob), cix,
+                         OUTSTRVALUE_BM (_.compv));
+                      FAILHERE (makenode3_BM
+                                (k_variable, _.compv, taggedint_BM (cix),
+                                 _.stmtob));
+                    }
                   miniemit_expression_BM (CURFRAME_BM, _.varob, _.modgenob,
                                           _.routprepob, _.stmtob, depth + 1);
                 }
               else
-                FAILHERE (makenode2_BM
-                          (k_curcomp, _.compv, taggedint_BM (cix)));
+                {
+                  WARNPRINTF_BM
+                    ("in run statement %s component #%d : %s is some strange node",
+                     objectdbg_BM (_.stmtob), cix, OUTSTRVALUE_BM (_.compv));
+                  FAILHERE (makenode3_BM
+                            (k_curcomp, _.compv, taggedint_BM (cix),
+                             _.stmtob));
+                }
             }
           else
-            FAILHERE (makenode2_BM (k_curcomp, _.compv, taggedint_BM (cix)));
+            {
+              WARNPRINTF_BM
+                ("in run statement %s component #%d : %s unexpected",
+                 objectdbg_BM (_.stmtob), cix, OUTSTRVALUE_BM (_.compv));
+              FAILHERE (makenode3_BM
+                        (k_curcomp, _.compv, taggedint_BM (cix), _.stmtob));
+            }
         }
     }
   else if (_.runv)
