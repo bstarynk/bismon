@@ -1453,16 +1453,20 @@ ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty)    //miniscan_stmt°basiclo_run
     {
       DBGPRINTF_BM ("miniscan_stmt°basiclo_run  stmtob=%s chunk runv=%s",      //
                     objectdbg_BM (_.stmtob),    //
-                    debug_outstr_value_BM (_.runv, CURFRAME_BM, 0));
+                    OUTSTRVALUE_BM (_.runv));
       int chklen = nodewidth_BM (_.runv);
       for (int cix = 0; cix < chklen; cix++)
         {
           _.compv = nodenthson_BM (_.runv, cix);
           DBGPRINTF_BM
             ("miniscan_stmt°basiclo_run  stmtob=%s chunk cix#%d compv=%s",
-             objectdbg_BM (_.stmtob), cix, debug_outstr_value_BM (_.compv,
-                                                                  CURFRAME_BM,
-                                                                  0));
+             objectdbg_BM (_.stmtob), cix, OUTSTRVALUE_BM (_.compv));
+          if (!_.compv)
+            {
+              WARNPRINTF_BM ("run in basiclo_run %s with nil son#%d",
+                             objectdbg_BM (_.stmtob), cix);
+              FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (cix), _.runv));
+            }
           if (isnode_BM (_.compv))
             {
               _.subconnob = nodeconn_BM (_.compv);
