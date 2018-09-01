@@ -1469,7 +1469,7 @@ ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty)    //miniscan_stmt°basiclo_run
                              objectdbg_BM (_.stmtob), cix);
               FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (cix), _.runv));
             }
-          if (isnode_BM (_.compv))
+          else if (isnode_BM (_.compv))
             {
               _.subconnob = nodeconn_BM (_.compv);
               if (nodewidth_BM (_.compv) == 1 && _.subconnob == k_variable)
@@ -1520,8 +1520,14 @@ ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty)    //miniscan_stmt°basiclo_run
                     }
                 }
             }
-          else if (issequence_BM (_.compv))
-            FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (cix), _.compv));
+          else
+            {
+              WARNPRINTF_BM
+                ("run in basiclo_run %s with bad son #%s : %s",
+                 objectdbg_BM (_.stmtob), cix, OUTSTRVALUE_BM (_.compv));
+              FAILHERE (makenode2_BM
+                        (k_curcomp, taggedint_BM (cix), _.compv));
+            }
         }
     }
   else if (_.runv)
