@@ -1520,10 +1520,13 @@ ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty)    //miniscan_stmt°basiclo_run
                     }
                 }
             }
+          else if (isstring_BM (_.compv) || istaggedint_BM (_.compv)
+                   || isobject_BM (_.compv))
+            continue;
           else
             {
               WARNPRINTF_BM
-                ("run in basiclo_run %s with bad son #%s : %s",
+                ("run in basiclo_run %s with bad son #%d : %s",
                  objectdbg_BM (_.stmtob), cix, OUTSTRVALUE_BM (_.compv));
               FAILHERE (makenode2_BM
                         (k_curcomp, taggedint_BM (cix), _.compv));
