@@ -1909,13 +1909,14 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                         {       // run _6q9PrZRKTxh_6OG01D5gkin  
 /*debug after emitjstoplevel*/
                           DBGPRINTF_BM
-                            ("after emit_jstoplevel %.7s o_jscurcomp=%s ii=%d o_jsgenmod=%s v_resemit=%s",
+                            ("after emit_jstoplevel £%.7s o_jscurcomp=%s ii=%d o_jsgenmod=%s v_resemit=%s",
                              "_6q9PrZRKTxh_6OG01D5gkin",
                              objectdbg_BM ( /*o_jscurcomp: */ _.
                                            o_2TaoEvH5OQU_8nKYBgAvkmW),
+			     (int)-99,
                              objectdbg1_BM ( /*o_jsgenmod: */ _.
                                             o_4JKd986pvM4_6yBzeeI40vW),
-                             OUTSTRVALUE ( /*v_resemit: */ _.
+                             OUTSTRVALUE_BM ( /*v_resemit: */ _.
                                           v_0qTBOEAT5pa_2fz1SKfHrMV));
                           ;
                         }       // end run _6q9PrZRKTxh_6OG01D5gkin  
