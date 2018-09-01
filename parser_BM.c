@@ -2178,13 +2178,18 @@ parsergetchunk_BM (struct parser_stBM *pars,
      value_tyBM resval;         //
      struct datavectval_stBM *chunkvec; //
      const objectval_tyBM * obj;        //
+     objectval_tyBM * parsob;   //     
      value_tyBM compv;
      value_tyBM subv;
     );
   _.chunkvec = nobuild ? NULL : datavect_grow_BM (NULL, 5);
+  _.parsob = checkedparserowner_BM (pars);
   const char *end = NULL;
   bool gotend = false;
   int loopcnt = 0;
+  DBGPRINTF_BM ("parsergetchunk_BM start L%dC%d parsob %s",
+                parserlineno_BM (pars), parsercolpos_BM (pars),
+                objectdbg_BM (_.parsob));
   do
     {
       unsigned curlineno = parserlineno_BM (pars);
