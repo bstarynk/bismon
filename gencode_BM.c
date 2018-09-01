@@ -1417,6 +1417,8 @@ ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty)    //miniscan_stmt°basiclo_run
   objectval_tyBM *k_chunk = BMK_3pQnBS9ZjkQ_0uGmqUUhAum;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   objectval_tyBM *k_variable = BMK_5ucAZimYynS_4VA0XHvr1nW;
+  objectval_tyBM *k_stmtid = BMK_5Z5WNOYHi9A_29s2a7qpJej;
+  objectval_tyBM *k_string = BMK_4T8am97muLl_5969SR22Ecq;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_6pA1Fxh7omw_0vJfR3s4tty,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * routprepob;   //
@@ -1474,14 +1476,33 @@ ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty)    //miniscan_stmt°basiclo_run
                 {
                   _.varob = objectcast_BM (nodenthson_BM (_.compv, 0));
                   if (!_.varob)
-                    FAILHERE (makenode2_BM
-                              (k_variable, taggedint_BM (cix), _.compv));
-                  _.typsubob =
-                    miniscan_var_BM (_.varob, _.routprepob, depth + 1,
-                                     _.stmtob, CURFRAME_BM);
+                    {
+                      WARNPRINTF_BM
+                        ("run in basiclo_run %s with bad variable node #%d : %s",
+                         objectdbg_BM (_.stmtob), cix,
+                         OUTSTRVALUE_BM (_.compv));
+                      FAILHERE (makenode2_BM
+                                (k_variable, taggedint_BM (cix), _.compv));
+                    }
+                  if (_.varob == k_stmtid)
+                    {
+                      _.typsubob = k_string;
+                    }
+                  else
+                    {
+                      _.typsubob =
+                        miniscan_var_BM (_.varob, _.routprepob, depth + 1,
+                                         _.stmtob, CURFRAME_BM);
+                    }
                   if (!_.typsubob)
-                    FAILHERE (makenode2_BM
-                              (k_variable, taggedint_BM (cix), _.compv));
+                    {
+                      WARNPRINTF_BM
+                        ("run in basiclo_run %s with unbound variable node #%s : %s",
+                         objectdbg_BM (_.stmtob), cix,
+                         OUTSTRVALUE_BM (_.compv));
+                      FAILHERE (makenode2_BM
+                                (k_variable, taggedint_BM (cix), _.compv));
+                    }
                 }
               else
                 {
@@ -1489,8 +1510,14 @@ ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty)    //miniscan_stmt°basiclo_run
                     miniscan_expr_BM (_.compv, _.routprepob, depth + 1,
                                       _.stmtob, CURFRAME_BM);
                   if (!_.typsubob)
-                    FAILHERE (makenode2_BM
-                              (k_curcomp, taggedint_BM (cix), _.compv));
+                    {
+                      WARNPRINTF_BM
+                        ("run in basiclo_run %s with unbound son node #%s : %s",
+                         objectdbg_BM (_.stmtob), cix,
+                         OUTSTRVALUE_BM (_.compv));
+                      FAILHERE (makenode2_BM
+                                (k_curcomp, taggedint_BM (cix), _.compv));
+                    }
                 }
             }
           else if (issequence_BM (_.compv))

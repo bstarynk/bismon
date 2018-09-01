@@ -2398,6 +2398,7 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
   objectval_tyBM *k_chunk = BMK_3pQnBS9ZjkQ_0uGmqUUhAum;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   objectval_tyBM *k_variable = BMK_5ucAZimYynS_4VA0XHvr1nW;
+  objectval_tyBM *k_stmtid = BMK_5Z5WNOYHi9A_29s2a7qpJej;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0AUL5kbXVmq_06A8ZbHZi1Y,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * modgenob;     //
@@ -2482,8 +2483,14 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
                                 (k_variable, _.compv, taggedint_BM (cix),
                                  _.stmtob));
                     }
-                  miniemit_expression_BM (CURFRAME_BM, _.varob, _.modgenob,
-                                          _.routprepob, _.stmtob, depth + 1);
+                  else if (_.varob == k_stmtid)
+                    {
+                      objstrbufferappendcstrpayl_BM (_.modgenob, stmtidbuf);
+                    }
+                  else
+                    miniemit_expression_BM (CURFRAME_BM, _.varob, _.modgenob,
+                                            _.routprepob, _.stmtob,
+                                            depth + 1);
                 }
               else
                 {
