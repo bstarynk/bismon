@@ -759,6 +759,20 @@ runcommand_newgui_BM (bool erase)
     ("runcommand_newgui cmdparsob=%s cmdlen=%d, @@@cmdstr=\n%s\n\n",
      objectdbg_BM (_.cmdparsob), cmdlen, cmdstr);
   cmdpars->pars_ops = &parsop_command_build_newgui_BM;
+  if (parsedebugmsg_BM)
+    {
+      INFOPRINTF_BM
+        ("runcommand_newgui cmdparsob=%s enabling parse debugging",
+         objectdbg_BM (_.cmdparsob));
+      cmdpars->pars_debug = true;
+    }
+  else
+    {
+      DBGPRINTF_BM
+        ("runcommand_newgui cmdparsob=%s disabling parse debugging",
+         objectdbg_BM (_.cmdparsob));
+      cmdpars->pars_debug = false;
+    }
   volatile int errpars = setjmp (jmperrorcmd_BM);
   if (!errpars)
     {
@@ -2393,7 +2407,7 @@ static void
   struct browsedval_stBM *curbv = browsedval_BM + idx;
   struct namedvaluenewguixtra_stBM *nvx =
     (struct namedvaluenewguixtra_stBM *) (curbv->brow_vdata);
-  ASSERT_BM (nvx != NULL && nvx->nvx_index == idx);
+  ASSERT_BM (nvx != NULL && nvx->nvx_index == (int) idx);
   GtkTextBuffer *txbuf = nvx->nvx_tbuffer;
   ASSERT_BM (GTK_IS_TEXT_BUFFER (txbuf));
   _.val = val;
@@ -4586,7 +4600,7 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
                                    CURFRAME_BM);
     }
   unlock_runpro_mtx_at_BM (__LINE__);
-  char *remstr = NULL;
+  //char *remstr = NULL;
   gsize remlen = 0;
   int nbreadbytes = -1;
   char readbuf[256];
@@ -4642,14 +4656,14 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
 
 // callback installed by g_io_add_watch in fork_gtk_process_at_slot_BM
 gboolean
-pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond,
-                         gpointer user_data)
+pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond
+                         __attribute__ ((unused)), gpointer user_data)
 {
   LOCALFRAME_BM ( /*prev: */ NULL,
                  /*descr: */ NULL,
                  objectval_tyBM * bufob;
     );
-  int slot = (int) user_data;
+  int slot = (int) (intptr_t) user_data;
   int outpipefd = -1;
   GIOChannel *pipchan = NULL;
   ASSERT_BM (slot >= 0 && slot < MAXNBWORKJOBS_BM);

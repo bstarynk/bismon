@@ -37,6 +37,12 @@
 	    <property name='use-underline'>true</property>
           </object>
         </child>
+        <child>
+          <object class='GtkCheckMenuItem' id='appparsedebug_id'>
+            <property name='label'>_Parser debug</property>
+	    <property name='use-underline'>true</property>
+          </object>
+        </child>
       </object>
     </child>
   </object>

@@ -4606,6 +4606,9 @@ appsubmenuactivated_cbBM (GtkMenu * menu,
 
 static void
 appdebugtoggled_cbBM (GtkCheckMenuItem * checkmenuitem, gpointer user_data);
+static void
+apptoggledparsedebug_cbBM (GtkCheckMenuItem * checkmenuitem,
+                           gpointer user_data);
 void
 appdebugtoggled_cbBM (GtkCheckMenuItem * checkmenuitem, gpointer user_data)
 {
@@ -4620,19 +4623,48 @@ appdebugtoggled_cbBM (GtkCheckMenuItem * checkmenuitem, gpointer user_data)
   strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
   if (debugmsg_BM)
     {
-      printf ("\n**** debug messages enabled %s ***\n", nowbuf);
+      INFOPRINTF_BM ("\n**** debug messages enabled %s ***\n", nowbuf);
       log_begin_message_BM ();
       log_puts_message_BM ("debug messages enabled.");
       log_end_message_BM ();
     }
   else
     {
-      printf ("\n**** debug messages disabled %s **\n", nowbuf);
+      INFOPRINTF_BM ("\n**** debug messages disabled %s **\n", nowbuf);
       log_begin_message_BM ();
       log_puts_message_BM ("debug messages disabled.");
       log_end_message_BM ();
     }
 }                               /* end appdebugtoggled_cbBM */
+
+void
+apptoggledparsedebug_cbBM (GtkCheckMenuItem * checkmenuitem,
+                           gpointer user_data)
+{
+  bool newdebug = gtk_check_menu_item_get_active (checkmenuitem);
+  parsedebugmsg_BM = newdebug;
+  time_t nowt = 0;
+  time (&nowt);
+  struct tm nowtm = { };
+  localtime_r (&nowt, &nowtm);
+  char nowbuf[64];
+  memset (nowbuf, 0, sizeof (nowbuf));
+  strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
+  if (parsedebugmsg_BM)
+    {
+      INFOPRINTF_BM ("\n**** parse debug messages enabled %s ***\n", nowbuf);
+      log_begin_message_BM ();
+      log_puts_message_BM ("parse debug messages enabled.");
+      log_end_message_BM ();
+    }
+  else
+    {
+      INFOPRINTF_BM ("\n**** parse debug messages disabled %s **\n", nowbuf);
+      log_begin_message_BM ();
+      log_puts_message_BM ("parse debug messages disabled.");
+      log_end_message_BM ();
+    }
+}                               /* end apptoggledparsedebug */
 
 GtkWidget *
 initialize_gui_menubar_BM (GtkWidget * mainvbox, GtkBuilder * bld)
@@ -4655,6 +4687,8 @@ initialize_gui_menubar_BM (GtkWidget * mainvbox, GtkBuilder * bld)
     GTK_WIDGET (gtk_builder_get_object (bld, "appgarbcoll_id"));
   GtkWidget *appdebug =
     GTK_WIDGET (gtk_builder_get_object (bld, "appdebug_id"));
+  GtkWidget *appparsedebug =
+    GTK_WIDGET (gtk_builder_get_object (bld, "appparsedebug_id"));
   GtkWidget *appsubmenu =
     GTK_WIDGET (gtk_builder_get_object (bld, "appsubmenu_id"));
   g_signal_connect (appsubmenu, "activate-current", appsubmenuactivated_cbBM,
@@ -4662,6 +4696,8 @@ initialize_gui_menubar_BM (GtkWidget * mainvbox, GtkBuilder * bld)
   g_signal_connect (appgarbcoll, "activate", garbage_collect_from_gui_BM,
                     NULL);
   g_signal_connect (appdebug, "toggled", appdebugtoggled_cbBM, NULL);
+  g_signal_connect (appparsedebug, "toggled", apptoggledparsedebug_cbBM,
+                    NULL);
   GtkWidget *appmenu =
     GTK_WIDGET (gtk_builder_get_object (bld, "menuapp_id"));
   ASSERT_BM (GTK_IS_WIDGET (appmenu));

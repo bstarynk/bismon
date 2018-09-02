@@ -47,6 +47,7 @@ extern const char *passwords_filepath_BM;
 extern const char *myprogname_BM;
 
 extern bool debugmsg_BM;
+extern bool parsedebugmsg_BM;
 
 
 extern pthread_t mainthreadid_BM;

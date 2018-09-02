@@ -33,6 +33,7 @@ const char *myprogname_BM;
 bool gui_is_running_BM;
 bool web_is_running_BM;
 bool debugmsg_BM;
+bool parsedebugmsg_BM;
 int nbworkjobs_BM;
 const char myhostname_BM[80];
 const char *contributors_filepath_BM;
