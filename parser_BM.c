@@ -1304,7 +1304,8 @@ parsergetobject_BM (struct parser_stBM * pars,
           if (!nobuild)
             {
               _.resobj = parsops->parsop_expand_newname_rout    //
-                (pars, lineno, colpos, vartok.tok_cname, CURFRAME_BM);
+                (pars, lineno, colpos, (value_tyBM) vartok.tok_cname,
+                 CURFRAME_BM);
             }
           else
             _.resobj = NULL;
@@ -1719,7 +1720,7 @@ parsergetvalue_BM (struct parser_stBM *pars,
                                                CURFRAME_BM);
           if (!okunary)
             {
-              char *coname = findobjectname_BM (_.connobj);
+              const char *coname = findobjectname_BM (_.connobj);
               parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,  //
                                     "rejected unary node %s",
                                     coname ? : connid);
@@ -1731,7 +1732,7 @@ parsergetvalue_BM (struct parser_stBM *pars,
                                depth + 1, &gotson);
           if (!gotson)
             {
-              char *coname = findobjectname_BM (_.connobj);
+              const char *coname = findobjectname_BM (_.connobj);
               parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,  //
                                     "missing son for unary node %s",
                                     coname ? : connid);
@@ -1745,7 +1746,7 @@ parsergetvalue_BM (struct parser_stBM *pars,
         }
       else
         {
-          char *coname = findobjectname_BM (_.connobj);
+          const char *coname = findobjectname_BM (_.connobj);
           parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,      //
                                 "missing arguments for node %s",
                                 coname ? : connid);
@@ -1839,8 +1840,8 @@ parsergetvalue_BM (struct parser_stBM *pars,
   // parse unary nodes:  : object son
   else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_colon)
     {
-      int nodlin = tok.tok_line;
-      int nodcol = tok.tok_col;
+      //int nodlin = tok.tok_line;
+      //int nodcol = tok.tok_col;
       bool gotconnobj = false;
       _.connobj =               //
         parsergetobject_BM (pars, CURFRAME_BM,  //
@@ -2143,7 +2144,7 @@ parsergetunary_BM (struct parser_stBM * pars,
                               objectdbg_BM (unaryconn));
       DBGPRINTF_BM ("parsergetunary_BM uconnobj %s",
                     objectdbg_BM (_.uconnobj));
-      _.resval = makenode1_BM (_.uconnobj, _.arg);
+      _.resval = (value_tyBM) makenode1_BM (_.uconnobj, _.arg);
       DBGPRINTF_BM ("parsergetunary_BM resval=%s of width %d",
                     debug_outstr_value_BM (_.resval, CURFRAME_BM, 0),
                     nodewidth_BM (_.resval));
@@ -2228,6 +2229,11 @@ parsergetchunk_BM (struct parser_stBM *pars,
           bool allascii = uc < 127;
           for (const char *p = curpc; p < npc && allascii; p++)
             allascii = (*p) < 127 && (isalnum (*p) || *p == '_');
+          if (pars->pars_debug)
+            DBGPRINTF_BM
+              ("parsergetchunk_BM L%dC%d loop#%d word '%.*s' allascii %s",
+               curlineno, curcolpos, loopcnt, (int) (npc - curpc), curpc,
+               allascii ? "true" : "false");
           if (allascii)
             {
               char oldn = *npc;
@@ -2244,6 +2250,11 @@ parsergetchunk_BM (struct parser_stBM *pars,
                   _.obj = findobjofid_BM (id);
                   if (_.obj)
                     {
+                      if (pars->pars_debug)
+                        DBGPRINTF_BM
+                          ("parsergetchunk_BM L%dC%d loop#%d objbyid %s",
+                           curlineno, curcolpos, loopcnt,
+                           objectdbg_BM (_.obj));
                       if (!nobuild)
                         _.chunkvec =    //
                           datavect_append_BM (_.chunkvec,
@@ -2266,6 +2277,10 @@ parsergetchunk_BM (struct parser_stBM *pars,
                       && !strncmp (numbuf, curpc, npc - curpc))
                     {
                       *npc = oldn;
+                      if (pars->pars_debug)
+                        DBGPRINTF_BM
+                          ("parsergetchunk_BM L%dC%d loop#%d num %lld",
+                           curlineno, curcolpos, loopcnt, ll);
                       _.compv = taggedint_BM (ll);
                       if (!nobuild)
                         _.chunkvec =    //
@@ -2289,6 +2304,11 @@ parsergetchunk_BM (struct parser_stBM *pars,
                   *npc = oldn;
                   if (_.obj)
                     {
+                      if (pars->pars_debug)
+                        DBGPRINTF_BM
+                          ("parsergetchunk_BM L%dC%d loop#%d existing obj %s",
+                           curlineno, curcolpos, loopcnt,
+                           objectdbg_BM (_.obj));
                       if (parsops && parsops->parsop_decorate_known_name_rout)
                         parsops->parsop_decorate_known_name_rout
                           (pars, curlineno, curcolpos,
@@ -2304,6 +2324,11 @@ parsergetchunk_BM (struct parser_stBM *pars,
                     }
                   else
                     {
+                      if (pars->pars_debug)
+                        DBGPRINTF_BM
+                          ("parsergetchunk_BM L%dC%d loop#%d newname '%.*s'",
+                           curlineno, curcolpos, loopcnt, (int) (npc - curpc),
+                           curpc);
                       if (parsops && parsops->parsop_decorate_new_name_rout)
                         parsops->parsop_decorate_new_name_rout
                           (pars, curlineno, curcolpos,
@@ -2315,6 +2340,10 @@ parsergetchunk_BM (struct parser_stBM *pars,
           // plain word, make a string of it
           if (!nobuild)
             {
+              if (pars->pars_debug)
+                DBGPRINTF_BM
+                  ("parsergetchunk_BM L%dC%d loop#%d otherword '%.*s'",
+                   curlineno, curcolpos, loopcnt, (int) (npc - curpc), curpc);
               _.compv =
                 (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
               if (_.compv)
@@ -2334,6 +2363,10 @@ parsergetchunk_BM (struct parser_stBM *pars,
             npc = g_utf8_next_char (npc);
           if (!nobuild)
             {
+              if (pars->pars_debug)
+                DBGPRINTF_BM
+                  ("parsergetchunk_BM L%dC%d loop#%d spaces '%.*s'",
+                   curlineno, curcolpos, loopcnt, (int) (npc - curpc), curpc);
               _.compv =
                 (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
               if (_.compv)
@@ -2346,6 +2379,9 @@ parsergetchunk_BM (struct parser_stBM *pars,
       // handle end of chunk
       if (curpc[0] == '}' && curpc[1] == '#')
         {
+          if (pars->pars_debug)
+            DBGPRINTF_BM ("parsergetchunk_BM L%dC%d loop#%d endchunk",
+                          curlineno, curcolpos, loopcnt);
           if (parsops && parsops->parsop_decorate_nesting_rout)
             parsops->parsop_decorate_nesting_rout
               (pars, depth,
@@ -2373,6 +2409,10 @@ parsergetchunk_BM (struct parser_stBM *pars,
             npc++;
           if (!nobuild)
             {
+              if (pars->pars_debug)
+                DBGPRINTF_BM
+                  ("parsergetchunk_BM L%dC%d loop#%d punctuation '%.*s'",
+                   curlineno, curcolpos, loopcnt, (int) (npc - curpc), curpc);
               _.compv =
                 (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
               if (_.compv)
@@ -2414,6 +2454,10 @@ parsergetchunk_BM (struct parser_stBM *pars,
                 parsererrorprintf_BM (pars, CURFRAME_BM,
                                       curlineno, curcolpos,
                                       "$( not followed by value");
+              if (pars->pars_debug)
+                DBGPRINTF_BM ("parsergetchunk_BM L%dC%d loop#%d nestedval %s",
+                              curlineno, curcolpos, loopcnt,
+                              OUTSTRVALUE_BM (_.compv));
               parserskipspaces_BM (pars, CURFRAME_BM);
               parstoken_tyBM tok = parsertokenget_BM (pars, CURFRAME_BM);
               unsigned clolineno = parserlineno_BM (pars);
@@ -2454,8 +2498,12 @@ parsergetchunk_BM (struct parser_stBM *pars,
                                       "invalid dollarvar %s in chunk", curpc);
               if (!nobuild)
                 {
-                  _.subv = makenode_BM (BMP_variable, 1,
-                                        (value_tyBM *) & _.obj);
+                  if (pars->pars_debug)
+                    DBGPRINTF_BM
+                      ("parsergetchunk_BM L%dC%d loop#%d dollarname %s",
+                       curlineno, curcolpos, loopcnt, objectdbg_BM (_.obj));
+                  _.subv = (value_tyBM)
+                    makenode_BM (BMP_variable, 1, (value_tyBM *) & _.obj);
                   if (_.subv)
                     _.chunkvec =        //
                       datavect_append_BM (_.chunkvec,
@@ -2471,6 +2519,10 @@ parsergetchunk_BM (struct parser_stBM *pars,
               if (!nobuild)
                 {
                   _.compv = (const value_tyBM) makestring_BM ("$");
+                  if (pars->pars_debug)
+                    DBGPRINTF_BM
+                      ("parsergetchunk_BM L%dC%d loop#%d singledollar",
+                       curlineno, curcolpos, loopcnt);
                   _.chunkvec =  //
                     datavect_append_BM (_.chunkvec,
                                         (const value_tyBM) _.compv);
@@ -2490,6 +2542,10 @@ parsergetchunk_BM (struct parser_stBM *pars,
             {
               _.compv =
                 (const value_tyBM) makestringlen_BM (curpc, npc - curpc);
+              if (pars->pars_debug)
+                DBGPRINTF_BM ("parsergetchunk_BM L%dC%d loop#%d isolated %s",
+                              curlineno, curcolpos, loopcnt,
+                              bytstring_BM (_.compv));
               if (_.compv)
                 _.chunkvec =    //
                   datavect_append_BM (_.chunkvec, (const value_tyBM) _.compv);
