@@ -2197,10 +2197,10 @@ parsergetchunk_BM (struct parser_stBM *pars,
       unsigned curcolpos = parsercolpos_BM (pars);
       char *curpc = (char *) parserrestline_BM (pars);
       if (pars->pars_debug)
-        DBGPRINTF_BM ("parsergetchunk_BM L%dC%d loop#%d curpc(l%d):%s chunklen %d",
-                      curlineno, curcolpos, loopcnt,
-                      curpc ? ((int) strlen (curpc)) : -1, curpc,
-		      datavectlen_BM (_.chunkvec));
+        DBGPRINTF_BM
+          ("parsergetchunk_BM L%dC%d loop#%d curpc(l%d):%s chunklen %d",
+           curlineno, curcolpos, loopcnt, curpc ? ((int) strlen (curpc)) : -1,
+           curpc, datavectlen_BM (_.chunkvec));
       if (loopcnt++ > MAXSIZE_BM / 8)
         parsererrorprintf_BM (pars, CURFRAME_BM, curlineno,
                               curcolpos,
