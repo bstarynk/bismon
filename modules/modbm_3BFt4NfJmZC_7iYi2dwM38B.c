@@ -3267,13 +3267,13 @@ value_tyBM crout_8Kh2MKilKO4_5qPRBWX9W3a_BM     //#20
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
   // fetch 5 arguments:
-  unsigned nbrestargs = treewidth_BM (restargs);
+  unsigned nbrestargs = treewidth_BM ((value_tyBM) restargs);
   _.o_7ewC6QwZE7K_1LyFtggGrGW = objectcast_BM (arg0);   // o_jsexpr
   _.o_41F1rKwGbaA_30OJWKsqNWy = objectcast_BM (arg1);   // o_strbuf
   _.o_4JKd986pvM4_6yBzeeI40vW = objectcast_BM (arg2);   // o_jsgenmod
   _.o_5Lg7fb6zE3H_6ijQo6GbPN4 = objectcast_BM (arg3);   // o_jsgenfun
-  if (nbrestargs >= 0)
-    _.o_7N9BaY4jXQb_2V4VMnRwsGD = objectcast (restargs->nodt_sons[0]);  // o_paren
+  if (nbrestargs > 0)
+    _.o_7N9BaY4jXQb_2V4VMnRwsGD = objectcast_BM (restargs->nodt_sons[0]);       // o_paren
   // fetched 5 arguments.
   // no closed values in _8Kh2MKilKO4_5qPRBWX9W3a.
   // routine _8Kh2MKilKO4_5qPRBWX9W3a body:

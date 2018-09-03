@@ -617,7 +617,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
      objectdbg_BM (_.routprepob), nbargs, objectdbg1_BM (_.bodyob));
   if (nbargs > 4)
     objstrbufferprintfpayl_BM (_.modgenob,
-                               "   unsigned nbrestargs = treewidth_BM(restargs);\n");
+                               "   unsigned nbrestargs = treewidth_BM((value_tyBM)restargs);\n");
   for (int aix = 0; aix < nbargs; aix++)
     {
       _.varob = tuplecompnth_BM (_.argtupv, aix);
@@ -674,7 +674,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
       else
         {
           objstrbufferprintfpayl_BM (_.modgenob,
-                                     "    if (nbrestargs >= %d)\n", aix - 4);
+                                     "    if (nbrestargs > %d)\n", aix - 4);
           if (_.typob == k_value)
             {
               if (varobnam)
@@ -690,11 +690,11 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
             {
               if (varobnam)
                 objstrbufferprintfpayl_BM (_.modgenob,
-                                           "    _.o%s = objectcast(restargs->nodt_sons[%d]); // %s\n",
+                                           "    _.o%s = objectcast_BM(restargs->nodt_sons[%d]); // %s\n",
                                            varidbuf, aix - 4, varobnam);
               else
                 objstrbufferprintfpayl_BM (_.modgenob,
-                                           "    _.o%s = objectcast(restargs->nodt_sons[%d]);\n",
+                                           "    _.o%s = objectcast_BM(restargs->nodt_sons[%d]);\n",
                                            varidbuf, aix - 4);
             }
           else
