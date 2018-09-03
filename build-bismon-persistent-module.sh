@@ -12,6 +12,7 @@ make -f $(dirname $0)/Makefile -e "VPATH=$(pwd):$(dirname $0)" modubin/modbm$MOD
 makestatus=$?
 #echo '@*@!!@*@' in $(pwd) makestatus $makestatus > /dev/tty
 if [ $makestatus -ne 0 ]; then
+    cp -v modules/modbm${MODULEID}.c modules/badmodbm${MODULEID}.c
     logger --id=$$ -s -t build-bismon-persistent-module -p user.debug make for $MODULEID failed with $makestatus
     exit $makestatus
 else
