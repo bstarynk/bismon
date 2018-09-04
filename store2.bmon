@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1099 objects
+// for 1101 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2429,6 +2429,20 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to emit JavaScript expression >o_jsexpr"& " (o_strbuf o_jsgenmod o_jsgenfun o_paren)"
 !)_4NpdCbcwwBV_9f3dbfoieTG
+
+
+
+!(_0G2hYx4ZxhG_4bujYGDgno0 |=jsfun_preparation_object|
+!~ name (~ jsfun_preparation_object
+~)
+!@ 1536068291.200
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for preparing jsfunctions..."
+!~ class (~ |supercl assoc_object:| _6ZQ05nCv3Ys_8LA6B5LkZgm
+~)
+
+!)_0G2hYx4ZxhG_4bujYGDgno0
 
 
 
@@ -9344,12 +9358,13 @@ _8dLpuaNoSGN_2tdmkpINCsu) ~)
  "body of prepare_for_jsmodule\u00b0jscript_topfunction_object"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _7TK5bvNNTIg_4pzieotiEq8
-!# 7
+!# 8
 !& _1ukG2M9NPuZ_2sIG8oHLDHp
 !& _1w3JgPmiAfF_48yvQuvGHsk
 !& _9R4IEwtCZAA_4FUAfgVpsiG
 !& _5iCBTtIjSko_5Q0RtreqOjB
 !& _6DuGAgyCNes_129XCoRTqWa
+!& _2XRJevENsym_2Ea3mnMrmYR
 !& _2VVgYaTxYnt_65w95Yz9VEb
 !& _97A35sEceVZ_0wS1TFpkI0A
 !)_0Z73bFupVPc_5IIGLp2FEwc
@@ -10692,25 +10707,33 @@ _7n2SLLuWOjH_4ArhFUjmckz
 
 
 !(_2VVgYaTxYnt_65w95Yz9VEb
-!@ 1536059013.473
+!@ 1536069733.347
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "debug prepare_for_jsmodule\u00b0jscript_topfunction_object"& " o_jscurcomp v_arguments v_locals v_body"
 !: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " " _7zLaPay40r6_5iPrtG8Hiq4  "\u00b0" 
  _6ZfaIF6vqeB_6AKq247BuTe  " " _2TaoEvH5OQU_8nKYBgAvkmW  " " _8pbpqrN1W4l_7mZmRSPBjYz 
-  " " _3lXKQCJ5IpM_1W5tqNbhFtx  " " _9vVgSDTP8MG_7UPh9UN91Xh  "*/" 
-  "\n"  "DBGPRINTF_BM"  "(\"" _7zLaPay40r6_5iPrtG8Hiq4  "\u00b0" 
- _6ZfaIF6vqeB_6AKq247BuTe  " "  "\u20ac%."  "8s"  " " 
- _2TaoEvH5OQU_8nKYBgAvkmW  "=%"  "s"  " " _8pbpqrN1W4l_7mZmRSPBjYz 
-  "=%"  "s"  " " _3lXKQCJ5IpM_1W5tqNbhFtx  "=%" 
-  "s"  " " _9vVgSDTP8MG_7UPh9UN91Xh  "=%"  "s" 
-  "\","  "\n"  " "  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
-  "\","  " "  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2TaoEvH5OQU_8nKYBgAvkmW) 
-  "),"  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _8pbpqrN1W4l_7mZmRSPBjYz) 
-  "),"  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _3lXKQCJ5IpM_1W5tqNbhFtx) 
-  "),"  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _9vVgSDTP8MG_7UPh9UN91Xh) 
-  "));"  "\n")
+  " " _3lXKQCJ5IpM_1W5tqNbhFtx  " " _9vVgSDTP8MG_7UPh9UN91Xh  " " 
+ _5D1GbyYKAgk_9ureezAahw3  "*/"  "\n"  "DBGPRINTF_BM"  "(\"" 
+ _7zLaPay40r6_5iPrtG8Hiq4  "\u00b0" _6ZfaIF6vqeB_6AKq247BuTe  " "  "\u20ac%." 
+  "8s"  " " _2TaoEvH5OQU_8nKYBgAvkmW  "=%"  "s" 
+  " " _8pbpqrN1W4l_7mZmRSPBjYz  "=%"  "s"  " " 
+ _3lXKQCJ5IpM_1W5tqNbhFtx  "=%"  "s"  " " _9vVgSDTP8MG_7UPh9UN91Xh 
+  "=%"  "s"  " " _5D1GbyYKAgk_9ureezAahw3  "=%" 
+  "s"  "\","  "\n"  " "  "\"" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\","  " " 
+ "objectdbg_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _2TaoEvH5OQU_8nKYBgAvkmW)  "),"  " " 
+ "OUTSTRVALUE_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _8pbpqrN1W4l_7mZmRSPBjYz)  "),"  " " 
+ "OUTSTRVALUE_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _3lXKQCJ5IpM_1W5tqNbhFtx)  "),"  " " 
+ "OUTSTRVALUE_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _9vVgSDTP8MG_7UPh9UN91Xh)  "),"  "\n" 
+ " "  "objectdbg1_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5D1GbyYKAgk_9ureezAahw3)  "));" 
+ "\n")
 !)_2VVgYaTxYnt_65w95Yz9VEb
 
 
@@ -10747,6 +10770,19 @@ _7n2SLLuWOjH_4ArhFUjmckz
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method remove\u00b0hashsetval_object"
 !)_2WY2j1qroxH_1sjxiD6Yvad
+
+
+
+!(_2XRJevENsym_2Ea3mnMrmYR
+!@ 1536069284.061
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "o.prepjfun.class <- jsfun_preparation_object"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _5D1GbyYKAgk_9ureezAahw3  * _0e54seiZEXF_1Myf620cHoB ( _0G2hYx4ZxhG_4bujYGDgno0))
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_1g2wHNuth12_1FfLuyW1CWJ
+!)_2XRJevENsym_2Ea3mnMrmYR
 
 
 
