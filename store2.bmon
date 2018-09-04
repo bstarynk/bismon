@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1083 objects
+// for 1084 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -9428,7 +9428,7 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 !(_1dGYpQHFvMA_00Js64eAxrZ
-!@ 1536049990.820
+!@ 1536050764.203
 !$_6ZfaIF6vqeB_6AKq247BuTe |=jscript_topfunction_object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "jstopfun jf1"
@@ -9436,6 +9436,8 @@ _6jZqk9RP0Pe_12cIgV9WMFC
  [ _8yJaO60dqTh_85YVlGurgkV _0QWLYfliDBs_5ss5aw9899I _3tGEfvHDcN2_8SviWJ2CQk9 ]
 !: _24sSVIADeHm_0Sx34wQfG7W |=locals|
  { _1nTGKhwlFqj_7L7qyssnsj4 _4561iilkUHy_3UM4CxafRoU _4GVywi9q0oG_5dQmaBzBxpn _8TUTZwVoTMF_7IxEe2LibHt }
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_9H04rKodppx_6Uzf5T3DXLl
 !)_1dGYpQHFvMA_00Js64eAxrZ
 
 
@@ -15287,6 +15289,15 @@ _1lmLI285f7p_4im4Ls4Xewh
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "miniscan_node_conn#collect_sequence"
 !)_9FtctWvW1qr_5mEGPxjn1co
+
+
+
+!(_9H04rKodppx_6Uzf5T3DXLl
+!@ 1536050764.203
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of jf1 javascript function"
+!)_9H04rKodppx_6Uzf5T3DXLl
 
 
 
