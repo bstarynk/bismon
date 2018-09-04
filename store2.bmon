@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1076 objects
+// for 1083 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2339,6 +2339,33 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_8yJaO60dqTh_85YVlGurgkV |=jsarg1|
+!~ name (~ jsarg1
+~)
+!@ 1536049856.512
+!$_0YanmudmN6Q_0JCzJElBQ7u |=jsvar_object|
+!)_8yJaO60dqTh_85YVlGurgkV
+
+
+
+!(_0QWLYfliDBs_5ss5aw9899I |=jsarg2|
+!~ name (~ jsarg2
+~)
+!@ 1536049856.513
+!$_0YanmudmN6Q_0JCzJElBQ7u |=jsvar_object|
+!)_0QWLYfliDBs_5ss5aw9899I
+
+
+
+!(_3tGEfvHDcN2_8SviWJ2CQk9 |=jsarg3|
+!~ name (~ jsarg3
+~)
+!@ 1536049856.513
+!$_0YanmudmN6Q_0JCzJElBQ7u |=jsvar_object|
+!)_3tGEfvHDcN2_8SviWJ2CQk9
+
+
+
 !(_6ZfaIF6vqeB_6AKq247BuTe |=jscript_topfunction_object|
 !~ name (~ jscript_topfunction_object
 ~)
@@ -2402,6 +2429,33 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to emit JavaScript expression >o_jsexpr"& " (o_strbuf o_jsgenmod o_jsgenfun o_paren)"
 !)_4NpdCbcwwBV_9f3dbfoieTG
+
+
+
+!(_8TUTZwVoTMF_7IxEe2LibHt |=jsloc1|
+!~ name (~ jsloc1
+~)
+!@ 1536049990.818
+!$_0YanmudmN6Q_0JCzJElBQ7u |=jsvar_object|
+!)_8TUTZwVoTMF_7IxEe2LibHt
+
+
+
+!(_4GVywi9q0oG_5dQmaBzBxpn |=jsloc2|
+!~ name (~ jsloc2
+~)
+!@ 1536049990.818
+!$_0YanmudmN6Q_0JCzJElBQ7u |=jsvar_object|
+!)_4GVywi9q0oG_5dQmaBzBxpn
+
+
+
+!(_4561iilkUHy_3UM4CxafRoU |=jsloc3|
+!~ name (~ jsloc3
+~)
+!@ 1536049990.819
+!$_0YanmudmN6Q_0JCzJElBQ7u |=jsvar_object|
+!)_4561iilkUHy_3UM4CxafRoU
 
 
 
@@ -9374,10 +9428,14 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 !(_1dGYpQHFvMA_00Js64eAxrZ
-!@ 1536048766.547
+!@ 1536049990.820
 !$_6ZfaIF6vqeB_6AKq247BuTe |=jscript_topfunction_object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "jstopfun jf1"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _8yJaO60dqTh_85YVlGurgkV _0QWLYfliDBs_5ss5aw9899I _3tGEfvHDcN2_8SviWJ2CQk9 ]
+!: _24sSVIADeHm_0Sx34wQfG7W |=locals|
+ { _1nTGKhwlFqj_7L7qyssnsj4 _4561iilkUHy_3UM4CxafRoU _4GVywi9q0oG_5dQmaBzBxpn _8TUTZwVoTMF_7IxEe2LibHt }
 !)_1dGYpQHFvMA_00Js64eAxrZ
 
 
@@ -9533,6 +9591,15 @@ _4JKd986pvM4_6yBzeeI40vW
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "miniscan_node_conn#make_<sequence>"
 !)_1nHMifVeQIt_0mCPhG89MWu
+
+
+
+!(_1nTGKhwlFqj_7L7qyssnsj4
+!@ 1536049990.820
+!$_0YanmudmN6Q_0JCzJElBQ7u |=jsvar_object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "anon jsvar in test2"
+!)_1nTGKhwlFqj_7L7qyssnsj4
 
 
 
