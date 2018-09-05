@@ -3261,6 +3261,22 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
     }                           // end cexpansion _2XRJevENsym_2Ea3mnMrmYR - objputclass  
 
 
+    {                           // start cexpansion _67dU9VrW0XH_0JBGgMjnwDg - objputattr  
+      /*objputattr: */
+      objputattr_BM (( /*o_prepjfun: */ _.o_5D1GbyYKAgk_9ureezAahw3),
+                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[16] /*!for */ )),
+                     ( /*o_jscurcomp: */ _.o_2TaoEvH5OQU_8nKYBgAvkmW));
+    }                           // end cexpansion _67dU9VrW0XH_0JBGgMjnwDg - objputattr  
+
+
+    {                           // start cexpansion _1SmBG69REro_23Y5EpTU8n0 - objputattr  
+      /*objputattr: */
+      objputattr_BM (( /*o_prepjfun: */ _.o_5D1GbyYKAgk_9ureezAahw3),
+                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[3] /*!in */ )),
+                     ( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW));
+    }                           // end cexpansion _1SmBG69REro_23Y5EpTU8n0 - objputattr  
+
+
 
     {                           // run _2VVgYaTxYnt_65w95Yz9VEb 
 /*debug prepare_for_jsmodule°jscript_topfunction_object o_jscurcomp v_arguments v_locals v_body o_prepjfun*/
