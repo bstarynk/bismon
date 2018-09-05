@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1117 objects
+// for 1125 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -10635,6 +10635,17 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_2DqxWZnPmCl_6u5A6sFqFXA
+!@ 1536137177.321
+!$_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "fail duplicate o_curvar in o_modbindings"
+!: _085lT8c13Ik_11pcWJfcLeM |=fail|
+ * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _2YrbiKQ6lxP_3KNUOnU6TF5) _2LvSvKJFCCF_3QyFpcrySIi _2IlO5StAwIW_0LxxUBUJ2uf _2TaoEvH5OQU_8nKYBgAvkmW)
+!)_2DqxWZnPmCl_6u5A6sFqFXA
+
+
+
 !(_2EtVNhr2mHz_8CsOQJdYeCE
 !|*
 !@ 1520667287.530
@@ -10698,6 +10709,34 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 !: _2DH0ucElTgh_62vxjxLcfev |=return|
 _7ewC6QwZE7K_1LyFtggGrGW
 !)_2Mwj2UU5zMN_4XQkijImdbO
+
+
+
+!(_2N7gDnXxy9y_9pOqtTkZeMn
+!@ 1536137764.767
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug prepare_for_jsmodule\u00b0jscript_topfunction_object"& " has bound o_curvar as argument ii"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " " _7zLaPay40r6_5iPrtG8Hiq4  "\u00b0" 
+ _6ZfaIF6vqeB_6AKq247BuTe  " "  "has"  " "  "bound" 
+  " " _2LvSvKJFCCF_3QyFpcrySIi  " "  "as"  " " 
+  "argument"  " " _2W7Ckt2WxEM_4NVYgEWE73B  " " _0eMGYofuNVh_8ZP2mXdhtHO 
+  " " _5D1GbyYKAgk_9ureezAahw3  "*/"  "\n"  "DBGPRINTF_BM" 
+  "(\"" _7zLaPay40r6_5iPrtG8Hiq4  "\u00b0" _6ZfaIF6vqeB_6AKq247BuTe 
+ " " 
+  "\u20ac%."  "8s"  " "  "has"  " " 
+  "bound"  " " _2LvSvKJFCCF_3QyFpcrySIi  "=%"  "s" 
+  " " _2W7Ckt2WxEM_4NVYgEWE73B  "=%"  "ld"  "  " 
+ _0eMGYofuNVh_8ZP2mXdhtHO  " " _5D1GbyYKAgk_9ureezAahw3  "=%"  "s" 
+  "\","  "\n"  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "\"," 
+  " "  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2LvSvKJFCCF_3QyFpcrySIi) 
+ ")," 
+  " "  "("  "long"  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _2W7Ckt2WxEM_4NVYgEWE73B) 
+  "),"  " "  "objectdbg1_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5D1GbyYKAgk_9ureezAahw3) 
+  "));"  "\n")
+!)_2N7gDnXxy9y_9pOqtTkZeMn
 
 
 
@@ -11747,6 +11786,20 @@ _2TaoEvH5OQU_8nKYBgAvkmW
 
 
 
+!(_4hYNqPmPrvr_2XJ0OVHzWdw
+!@ 1536137177.324
+!$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "check that o_curvar is not already bound"
+!: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
+ 2
+!# 2
+!& _6SNWWI4Pg7C_0Hskc0Xd6Rn
+!& _5jO1s8WfK2I_3IqifeDU5iU
+!)_4hYNqPmPrvr_2XJ0OVHzWdw
+
+
+
 !(_4icYJnKsN0o_4xm5UbQOMTe
 !|*
 !@ 1508128314.710
@@ -12481,6 +12534,19 @@ _3qw9bnATIhq_8loBraLeXzQ
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
 _9Hf4n8AnqR7_7ve3Bi3kWMV
 !)_5j8LpQULt1p_9oeOaqmfYYr
+
+
+
+!(_5jO1s8WfK2I_3IqifeDU5iU
+!@ 1536137177.324
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "when o_prepjfun has o_curvar fail"
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+ * _2vQl0HFq9l7_4XHBZf0SUMU ( _5D1GbyYKAgk_9ureezAahw3 _2LvSvKJFCCF_3QyFpcrySIi)
+!# 1
+!& _8lWUsQmX7OH_3b4aiba7q3Y
+!)_5jO1s8WfK2I_3IqifeDU5iU
 
 
 
@@ -13567,6 +13633,19 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_6SNWWI4Pg7C_0Hskc0Xd6Rn
+!@ 1536137177.321
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "when o_modbindings has o_curvar fail"
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+ * _2vQl0HFq9l7_4XHBZf0SUMU ( _2IlO5StAwIW_0LxxUBUJ2uf _2LvSvKJFCCF_3QyFpcrySIi)
+!# 1
+!& _2DqxWZnPmCl_6u5A6sFqFXA
+!)_6SNWWI4Pg7C_0Hskc0Xd6Rn
+
+
+
 !(_6SUnsQrN1BV_1WnLPm4QoOq
 !|*
 !@ 1506505755.890
@@ -13734,14 +13813,14 @@ _7nytuRkZkOz_8T9QMYQtGps)
 
 
 !(_78OahSJuxQQ_3PS1bVuLz1Y
-!@ 1536069963.957
+!@ 1536136711.042
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "lock o_prepjfun"
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _5D1GbyYKAgk_9ureezAahw3
 !# 1
-!& _97A35sEceVZ_0wS1TFpkI0A
+!& _9WgDviTWSGu_0p2sVMd4PNY
 !)_78OahSJuxQQ_3PS1bVuLz1Y
 
 
@@ -14695,6 +14774,17 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_8lWUsQmX7OH_3b4aiba7q3Y
+!@ 1536137177.323
+!$_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "fail duplicate o_curvar in o_prepjfun"
+!: _085lT8c13Ik_11pcWJfcLeM |=fail|
+ * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _2YrbiKQ6lxP_3KNUOnU6TF5) _2LvSvKJFCCF_3QyFpcrySIi _5D1GbyYKAgk_9ureezAahw3 _2TaoEvH5OQU_8nKYBgAvkmW)
+!)_8lWUsQmX7OH_3b4aiba7q3Y
+
+
+
 !(_8owvpghf95c_70WEDPAsJGV
 !@ 1534749465.411
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -14796,6 +14886,19 @@ _4jYMom293qa_4qW0J7r0LtZ
 !~value (~  * _5DDSY1YgVZr_6dOU4tiBldk ( _3votvybaW1d_35YcL4p51kp) ~)
 
 !)_8uFPIAUyvE6_36pUIgGwmbf
+
+
+
+!(_8vldT3GXsT9_5ohHInrayea
+!@ 1536137387.210
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "assocadd o_prepjfun node(arguments ii)"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _5D1GbyYKAgk_9ureezAahw3 _2LvSvKJFCCF_3QyFpcrySIi  * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _0jFqaPPHgYH_5JpjOPxQ67p)  * _6FWWN47uih2_5BhwEm9gnHu ( _2W7Ckt2WxEM_4NVYgEWE73B)))
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_95J5VWlxn7h_9P3UNOuvpbl
+!)_8vldT3GXsT9_5ohHInrayea
 
 
 
@@ -15762,14 +15865,17 @@ _7n2SLLuWOjH_4ArhFUjmckz
 
 
 !(_9JK68akzlk7_5gjJfMCUAhq
-!@ 1536123792.968
+!@ 1536137764.767
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "lock o_curvar argument..."
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _2LvSvKJFCCF_3QyFpcrySIi
-!# 1
+!# 4
 !& _54mOgbkFXma_6bR6VE5ug9B
+!& _4hYNqPmPrvr_2XJ0OVHzWdw
+!& _8vldT3GXsT9_5ohHInrayea
+!& _2N7gDnXxy9y_9pOqtTkZeMn
 !)_9JK68akzlk7_5gjJfMCUAhq
 
 
@@ -15912,6 +16018,19 @@ _2ZoqAiU7COz_0EfxfZbOgZj
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_scan a basiclo_function"
 !)_9UhDZeDdg2r_55lUqYDPUiF
+
+
+
+!(_9WgDviTWSGu_0p2sVMd4PNY
+!@ 1536136711.042
+!$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "lock o_modbindings and handle v_arguments v_locals etc..."
+!: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
+_2IlO5StAwIW_0LxxUBUJ2uf
+!# 1
+!& _97A35sEceVZ_0wS1TFpkI0A
+!)_9WgDviTWSGu_0p2sVMd4PNY
 
 
 
