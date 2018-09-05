@@ -3278,6 +3278,19 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
 
 
 
+    {                           // run _1tblNbUO9U6_3Nkb4aEs1hD 
+      /*objputassocpayl: */ objputassocpayl_BM ( /*o_prepjfun: */ _.
+                                                o_5D1GbyYKAgk_9ureezAahw3,
+                                                /*add_int: */
+                                                ((      /*add_int: */
+                                                   (( /*sequencesize: */
+                                                     sequencesize_BM ( /*v_arguments: */ _.v_8pbpqrN1W4l_7mZmRSPBjYz)) +
+                                                    ( /*sequencesize: */
+                                                     sequencesize_BM ( /*v_locals: */ _.v_3lXKQCJ5IpM_1W5tqNbhFtx)))) + (4)));
+    }                           // end run _1tblNbUO9U6_3Nkb4aEs1hD 
+
+
+
     {                           // run _2VVgYaTxYnt_65w95Yz9VEb 
 /*debug prepare_for_jsmodule°jscript_topfunction_object o_jscurcomp v_arguments v_locals v_body o_prepjfun*/
       DBGPRINTF_BM
