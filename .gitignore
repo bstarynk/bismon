@@ -23,6 +23,7 @@ _cflagsmodule.mk
 core*
 modules/_*_.c
 modules/tmpmob*.c
+modules/badm*.c
 modulbin/*.so
 *.html
 
