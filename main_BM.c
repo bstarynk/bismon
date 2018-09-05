@@ -869,7 +869,7 @@ main (int argc, char **argv)
   if (give_version_bm)
     give_prog_version_BM (myprogname_BM);
   if (nbworkjobs_BM < MINNBWORKJOBS_BM)
-    nbworkjobs_BM = MINNBWORKJOBS_BM;
+    nbworkjobs_BM = MINNBWORKJOBS_BM + 1;
   else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
   if (!batch_bm && !run_gtk_BM && !run_onion_BM)
