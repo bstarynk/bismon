@@ -21,7 +21,7 @@ const char modulmd5chksum_3BFt4NfJmZC_7iYi2dwM38B_BM[] = BISMON_MOMD5;
 extern const char *const routid_3BFt4NfJmZC_7iYi2dwM38B_BM[27 + 1];
 
 
-// 21 failures
+// 22 failures
 
 extern objrout_sigBM crout_09Hug4WGnPK_7PpZby8pz84_BM;  //#0 !emit_epilogue_jsmodule°jsmodule_generation_object
 
@@ -78,9 +78,9 @@ extern objrout_sigBM crout_8VtkXEUFfhk_5RxrpY6JHI6_BM;  //#25 !webhandler javasc
 extern objrout_sigBM crout_9CG8SKNs6Ql_4PiHd8cnydn_BM;  //#26 !clear°dict_object minifun
 
 
-// declare 83 constants
-objectval_tyBM *constob_3BFt4NfJmZC_7iYi2dwM38B_BM[83 + 1];
-const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[83 + 1];
+// declare 86 constants
+objectval_tyBM *constob_3BFt4NfJmZC_7iYi2dwM38B_BM[86 + 1];
+const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[86 + 1];
 
 
 // define 27 routines
@@ -618,7 +618,7 @@ startblock__9xHQlk4snoU_6unWwGT6PcG:__attribute__ ((unused));
       /*objlisttonodepayl: */
       (value_tyBM)
       objlisttonodepayl_BM (( /*o1: */ _.o_97rnxb0KFqq_44veN75DG2E),
-                            ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[62]
+                            ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[65]
                               /*|node */ )));
 
 
@@ -759,7 +759,7 @@ startblock__84ATc5kpHjd_2wlYHZEUoeb:__attribute__ ((unused));
       {                         //body when _3674ULyT2hz_5gMJA95w9aB  
 
         {                       // run _2Gx3OIyj6WH_36HZRfp3Slv  
-          (apply1_BM (((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[69]
+          (apply1_BM (((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[72]
                         /*!iterate_sequence_minifunc */ )),
                       ((struct stackframe_stBM *) &_),
                       ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[8]
@@ -1359,7 +1359,7 @@ value_tyBM crout_3iiht57Wrs1_5NbiUi27oBn_BM     //#9
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 3;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[28] /*|_3iiht57Wrs1_5NbiUi27oBn */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[29] /*|_3iiht57Wrs1_5NbiUi27oBn */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -1446,7 +1446,7 @@ value_tyBM crout_3vI0Qc3FHQG_1g4fmHYkxSA_BM     //#10
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 9;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[29] /*|_3vI0Qc3FHQG_1g4fmHYkxSA */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[30] /*|_3vI0Qc3FHQG_1g4fmHYkxSA */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -1483,7 +1483,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
     {                           // start cexpansion _5aEEfO7SZge_3wLzFCRCBpn - objputclass  
       /*objputclass: */
       objputclass_BM (( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW),
-                      ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[80]
+                      ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[83]
                         /*|jsmodule_generation_object */ )));
     }                           // end cexpansion _5aEEfO7SZge_3wLzFCRCBpn - objputclass  
 
@@ -1491,7 +1491,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
     {                           // start cexpansion _1LQNZfT8P4L_3LBZMwCIKGf - objputattr  
       /*objputattr: */
       objputattr_BM (( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW),
-                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[48] /*!sbuf */ )),
+                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[50] /*!sbuf */ )),
                      ( /*o_strbuf: */ _.o_41F1rKwGbaA_30OJWKsqNWy));
     }                           // end cexpansion _1LQNZfT8P4L_3LBZMwCIKGf - objputattr  
 
@@ -1546,7 +1546,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                   /*objputclass: */
                   objputclass_BM (( /*o_bindings: */ _.
                                    o_5HkpTupRRIK_8iCooVukjb3),
-                                  ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[56]
+                                  ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[58]
                                     /*!assoc_object */ )));
                 }               // end cexpansion _1HYefveHUlj_3w6vbAI4HIv - objputclass  
 
@@ -1623,10 +1623,10 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                       PLACEDFAILURE_BM (__LINE__,
                                         /*failreason: */
                                         ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM
-                                          [54] /*|failure_non_object */ )),
+                                          [56] /*|failure_non_object */ )),
                                         /*failplace: */
                                         (       /*modconst: */
-                                          (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[53]       /*|_6pp3g7GLuae_7OF8KezKzvx */
+                                          (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[55]       /*|_6pp3g7GLuae_7OF8KezKzvx */
                                           )),
                                         ((struct stackframe_stBM *) &_));
 
@@ -1659,20 +1659,20 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                             (!( /*objectisinstance: */
                                 objectisinstance_BM (( /*o_jscurcomp: */ _.
                                                       o_2TaoEvH5OQU_8nKYBgAvkmW),
-                                                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[64] /*!jscript_toplevel_object */ ))))))
+                                                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[67] /*!jscript_toplevel_object */ ))))))
                           {     //body when _1icbJmDuvUd_03TJdGfrgqp   
 //failure _4jwFGdaECBb_6dsBLTMoG9j    
                             PLACEDFAILURE_BM (__LINE__,
                                               /*failreason: */ (((value_tyBM) makenode2_BM
                                                                  (
                                                                    /*make_node conn: */
-                                                                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[43] /*!failure_bad_class */ )),
+                                                                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[45] /*!failure_bad_class */ )),
 /*make_node 2 sons: */
                                                                    ( /*o_jscurcomp: */ _.o_2TaoEvH5OQU_8nKYBgAvkmW),
                                                                    ( /*taggedint: */ taggedint_BM ( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B))))),
                                               /*failplace: */
                                               ( /*modconst: */
-                                                (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[39]
+                                                (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[40]
                                                  /*|_4jwFGdaECBb_6dsBLTMoG9j */
                                                  )),
                                               ((struct stackframe_stBM *)
@@ -1686,7 +1686,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                               (send2_BM (( /*o_jscurcomp: */ _.
                                           o_2TaoEvH5OQU_8nKYBgAvkmW),   /*sel: */
                                          ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM
-                                           [61]
+                                           [64]
                                            /*!prepare_for_jsmodule */ )),
                                          ((struct stackframe_stBM *) &_),
                                          ( /*o_jsgenmod: */ _.
@@ -1787,7 +1787,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                 PLACEDFAILURE_BM (__LINE__,
                                                   /*failreason: */
                                                   (((value_tyBM) makenode4_BM ( /*make_node conn: */
-                                                                                ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[54] /*!failure_non_object */ )),
+                                                                                ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[56] /*!failure_non_object */ )),
                                                                                 /*make_node 4 sons: */
                                                                                 ( /*v_resprep: */ _.
                                                                                  v_7nytuRkZkOz_8T9QMYQtGps),
@@ -1830,7 +1830,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                   //assign _70ikqGyudad_7VauPdWkySh  
                   (send1_BM (( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW),
                              /*sel: */
-                             ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[46]
+                             ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[48]
                                /*!emit_prologue_jsmodule */ )),
                              ((struct stackframe_stBM *) &_),
                              ( /*o_strbuf: */ _.o_41F1rKwGbaA_30OJWKsqNWy)));
@@ -1845,7 +1845,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                       /*failreason: */ (((value_tyBM) makenode1_BM
                                                          (
                                                            /*make_node conn: */
-                                                           ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[46] /*!emit_prologue_jsmodule */ )),
+                                                           ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[48] /*!emit_prologue_jsmodule */ )),
 /*make_node 1 sons: */
                                                            ( /*o_jsgenmod: */
                                                             _.
@@ -1853,7 +1853,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                       /*failplace: */
                                       ( /*modconst: */
                                         (constob_3BFt4NfJmZC_7iYi2dwM38B_BM
-                                         [35]
+                                         [36]
                                          /*|_401XcQg0VWc_1SG4xaaQ3mU */ )),
                                       ((struct stackframe_stBM *) &_));
 
@@ -1988,7 +1988,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                           (send3_BM
                            (( /*o_jscurcomp: */ _.o_2TaoEvH5OQU_8nKYBgAvkmW),
                             /*sel: */
-                            ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[68]
+                            ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[71]
                               /*!emit_jstoplevel */ )),
                             ((struct stackframe_stBM *) &_),
                             ( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW),
@@ -2024,14 +2024,14 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                               /*failreason: */ (((value_tyBM) makenode3_BM
                                                                  (
                                                                    /*make_node conn: */
-                                                                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[68] /*!emit_jstoplevel */ )),
+                                                                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[71] /*!emit_jstoplevel */ )),
 /*make_node 3 sons: */
                                                                    ( /*o_jscurcomp: */ _.o_2TaoEvH5OQU_8nKYBgAvkmW),
                                                                    ( /*taggedint: */ taggedint_BM ( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B)),
                                                                    ( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW)))),
                                               /*failplace: */
                                               ( /*modconst: */
-                                                (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[40]
+                                                (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[41]
                                                  /*|_4lj3ntdp7xH_5LiKY8h0lHl */
                                                  )),
                                               ((struct stackframe_stBM *)
@@ -2097,7 +2097,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                   //assign _9NCZAKVZV1F_4b1tg5oNMHD  
                   (send1_BM (( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW),
                              /*sel: */
-                             ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[76]
+                             ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[79]
                                /*!emit_epilogue_jsmodule */ )),
                              ((struct stackframe_stBM *) &_),
                              ( /*o_strbuf: */ _.o_41F1rKwGbaA_30OJWKsqNWy)));
@@ -2112,7 +2112,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                       /*failreason: */ (((value_tyBM) makenode1_BM
                                                          (
                                                            /*make_node conn: */
-                                                           ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[76] /*!emit_epilogue_jsmodule */ )),
+                                                           ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[79] /*!emit_epilogue_jsmodule */ )),
 /*make_node 1 sons: */
                                                            ( /*o_jsgenmod: */
                                                             _.
@@ -2120,7 +2120,7 @@ startblock__7pji8vKR2XX_3psoWkfPtL2:__attribute__ ((unused));
                                       /*failplace: */
                                       ( /*modconst: */
                                         (constob_3BFt4NfJmZC_7iYi2dwM38B_BM
-                                         [58]
+                                         [60]
                                          /*|_75mkz7wH3u3_0ZQRFajA44k */ )),
                                       ((struct stackframe_stBM *) &_));
 
@@ -2196,7 +2196,7 @@ value_tyBM crout_3yQlckX4DRh_4b9l9FBSSSL_BM     //#11+
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 3;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[30] /*|same_as_closed_minifunc */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[31] /*|same_as_closed_minifunc */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -2279,10 +2279,12 @@ value_tyBM crout_3DSazBjnN2Z_3O1SEDV4tBX_BM     //#12
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 5;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[32] /*|_3DSazBjnN2Z_3O1SEDV4tBX */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[33] /*|_3DSazBjnN2Z_3O1SEDV4tBX */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
+  // locking 1:
+  objectval_tyBM *locked_1NPeTyWjNbQ_9J76YGTvbzy = NULL;        // for o_recv
   // fetch 4 arguments:
   _.o_57ZQXLDhLdj_7PrZMZMgLI1 = objectcast_BM (arg0);   // o_recv
   _.o_5D1GbyYKAgk_9ureezAahw3 = objectcast_BM (arg1);   // o_prepjfun
@@ -2312,6 +2314,104 @@ startblock__8O5DAuPguWF_8eEm6i2rd8x:__attribute__ ((unused));
       //assign _6CDEc3mSntr_0v4WQtvdcdq  
       /* val_to_int */ getint_BM ( /*v_depth: */ _.v_4nJKFtMqlkA_1teQSqofNux);
 
+
+    if                          /*cond _7wCbXBmXUtd_1j3Etk07UbI */
+/*when _1SZv8dt8A93_6TFBJWw1a2s:*/
+      ( /*is_null: */ (( /*o_recv: */ _.o_57ZQXLDhLdj_7PrZMZMgLI1) == NULL))
+      {                         //body when _1SZv8dt8A93_6TFBJWw1a2s  
+/*return _3oRM1vBhmMr_1QBXl5Dys8M:*/ goto
+          epilog_3DSazBjnN2Z_3O1SEDV4tBX;
+
+      }                         //endwhen _1SZv8dt8A93_6TFBJWw1a2s  
+    else
+      {                         /*cond else _7wCbXBmXUtd_1j3Etk07UbI */
+
+        {                       // begin lockobj _1NPeTyWjNbQ_9J76YGTvbzy 
+          objectval_tyBM *curlockedob_1NPeTyWjNbQ_9J76YGTvbzy =
+            ( /*o_recv: */ _.o_57ZQXLDhLdj_7PrZMZMgLI1);
+          if (objlock_BM (curlockedob_1NPeTyWjNbQ_9J76YGTvbzy))
+            {
+              locked_1NPeTyWjNbQ_9J76YGTvbzy =
+                curlockedob_1NPeTyWjNbQ_9J76YGTvbzy;
+
+              if                /*cond _8kGGO7ikqYd_7CUoC2fUd0o */
+/*when _1EkoCVcOz4X_8x3O4CJjcIn:*/
+                (               /*objectisinstance: */
+                  objectisinstance_BM (( /*o_recv: */ _.
+                                        o_57ZQXLDhLdj_7PrZMZMgLI1),
+                                       ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM
+                                         [38]
+                                         /*!basiclo_block */ ))))
+                {               //body when _1EkoCVcOz4X_8x3O4CJjcIn  
+                  /*return _8nXLDjuBEFl_8DkJJsDPAku: *//*v_r: */ _.
+                    v_3qw9bnATIhq_8loBraLeXzQ =
+                    // returned  
+                    (send3_BM (( /*o_recv: */ _.o_57ZQXLDhLdj_7PrZMZMgLI1),
+                               /*sel: */
+                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[23]
+                                 /*!scan_jsblock */ )),
+                               ((struct stackframe_stBM *) &_),
+                               ( /*o_prepjfun: */ _.
+                                o_5D1GbyYKAgk_9ureezAahw3), (   /*taggedint: */
+                                                              taggedint_BM ( /*i_depth: */ _.
+                                                                            n_6Y20GNUgnSZ_4LkbrcRMU8f)),
+                               ( /*o_from: */ _.o_89nz0KaXXZh_8eSgMmqnK37)));
+                  goto epilog_3DSazBjnN2Z_3O1SEDV4tBX;
+
+                }               //endwhen _1EkoCVcOz4X_8x3O4CJjcIn  
+              else if
+/*when _5HRnEmGcWpB_6P92M9BdPyy:*/
+                (               /*objectisinstance: */
+                  objectisinstance_BM (( /*o_recv: */ _.
+                                        o_57ZQXLDhLdj_7PrZMZMgLI1),
+                                       ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM
+                                         [42]
+                                         /*!basiclo_statement */ ))))
+                {               //body when _5HRnEmGcWpB_6P92M9BdPyy  
+                  /*return _7B1fVDX2TJs_1RKo6LM9YqX: *//*v_r: */ _.
+                    v_3qw9bnATIhq_8loBraLeXzQ =
+                    // returned  
+                    (send3_BM (( /*o_recv: */ _.o_57ZQXLDhLdj_7PrZMZMgLI1),
+                               /*sel: */
+                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[25]
+                                 /*!scan_jsstmt */ )),
+                               ((struct stackframe_stBM *) &_),
+                               ( /*o_prepjfun: */ _.
+                                o_5D1GbyYKAgk_9ureezAahw3), (   /*taggedint: */
+                                                              taggedint_BM ( /*i_depth: */ _.
+                                                                            n_6Y20GNUgnSZ_4LkbrcRMU8f)),
+                               ( /*o_from: */ _.o_89nz0KaXXZh_8eSgMmqnK37)));
+                  goto epilog_3DSazBjnN2Z_3O1SEDV4tBX;
+
+                }               //endwhen _5HRnEmGcWpB_6P92M9BdPyy  
+              else
+                {               /*cond else _8kGGO7ikqYd_7CUoC2fUd0o */
+//failure _7uvmKecN86g_614RK9nb6pw  
+                  PLACEDFAILURE_BM (__LINE__,
+                                    /*failreason: */ (((value_tyBM) makenode3_BM
+                                                       (        /*make_node conn: */
+                                                         ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[45] /*!failure_bad_class */ )),
+                                                         /*make_node 3 sons: */
+                                                         ( /*o_recv: */ _.
+                                                          o_57ZQXLDhLdj_7PrZMZMgLI1),
+                                                         ( /*o_prepjfun: */ _.
+                                                          o_5D1GbyYKAgk_9ureezAahw3),
+                                                         ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[33] /*!_3DSazBjnN2Z_3O1SEDV4tBX */ ))))),
+                                    /*failplace: */
+                                    (   /*modconst: */
+                                      (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[63]
+                                       /*|_7uvmKecN86g_614RK9nb6pw */ )),
+                                    ((struct stackframe_stBM *) &_));
+                }               /*cond else _8kGGO7ikqYd_7CUoC2fUd0o */
+/*endcond _8kGGO7ikqYd_7CUoC2fUd0o*/
+
+              objunlock_BM (locked_1NPeTyWjNbQ_9J76YGTvbzy),
+                locked_1NPeTyWjNbQ_9J76YGTvbzy = NULL;
+            }
+        }                       // end objlock _1NPeTyWjNbQ_9J76YGTvbzy 
+      }                         /*cond else _7wCbXBmXUtd_1j3Etk07UbI */
+/*endcond _7wCbXBmXUtd_1j3Etk07UbI*/
+
 /* !endingblock _8O5DAuPguWF_8eEm6i2rd8x */
     goto endblock__8O5DAuPguWF_8eEm6i2rd8x;
   endblock__8O5DAuPguWF_8eEm6i2rd8x:;
@@ -2320,6 +2420,9 @@ startblock__8O5DAuPguWF_8eEm6i2rd8x:__attribute__ ((unused));
 
 epilog_3DSazBjnN2Z_3O1SEDV4tBX:__attribute__ ((unused));
   // routine _3DSazBjnN2Z_3O1SEDV4tBX epilogue:
+  // unlocking 1:
+  if (locked_1NPeTyWjNbQ_9J76YGTvbzy != NULL)
+    objunlock_BM (locked_1NPeTyWjNbQ_9J76YGTvbzy), locked_1NPeTyWjNbQ_9J76YGTvbzy = NULL;       // for o_recv
   if (stkf)
     stkf->stkfram_callfun = NULL;
   return /*v_r: */ _.v_3qw9bnATIhq_8loBraLeXzQ;
@@ -2356,7 +2459,7 @@ value_tyBM crout_3HAeZZQ0q7b_7qyDsekaz7Y_BM     //#13
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 2;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[33] /*|_3HAeZZQ0q7b_7qyDsekaz7Y */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[34] /*|_3HAeZZQ0q7b_7qyDsekaz7Y */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -2430,7 +2533,7 @@ value_tyBM crout_44Xro7p814I_406P69WFbq4_BM     //#14
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 6;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[36] /*|_44Xro7p814I_406P69WFbq4 */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[37] /*|_44Xro7p814I_406P69WFbq4 */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -2459,7 +2562,7 @@ startblock__2kanmkRxrZV_3xnDrbqgMjR:__attribute__ ((unused));
       objectcast_BM (           /*objgetattr: */
                       objgetattr_BM (( /*o_jscurcomp: */ _.
                                       o_2TaoEvH5OQU_8nKYBgAvkmW),
-                                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[49]
+                                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[51]
                                        /*!variable */ ))));
 
 
@@ -2482,16 +2585,16 @@ startblock__2kanmkRxrZV_3xnDrbqgMjR:__attribute__ ((unused));
         PLACEDFAILURE_BM (__LINE__,
                           /*failreason: */ (((value_tyBM) makenode3_BM
                                              (  /*make_node conn: */
-                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[55] /*!is_null */ )),
+                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[57] /*!is_null */ )),
                                                /*make_node 3 sons: */
-                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[49] /*!variable */ )),
+                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[51] /*!variable */ )),
                                                ( /*o_jscurcomp: */ _.
                                                 o_2TaoEvH5OQU_8nKYBgAvkmW),
                                                ( /*o_jsgenmod: */ _.
                                                 o_4JKd986pvM4_6yBzeeI40vW)))),
                           /*failplace: */
                           (     /*modconst: */
-                            (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[73]
+                            (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[76]
                              /*|_8Nb7qSIbE8N_7xJDtsS0rdb */ )),
                           ((struct stackframe_stBM *) &_));
 
@@ -2509,7 +2612,7 @@ startblock__2kanmkRxrZV_3xnDrbqgMjR:__attribute__ ((unused));
         PLACEDFAILURE_BM (__LINE__,
                           /*failreason: */ (((value_tyBM) makenode3_BM
                                              (  /*make_node conn: */
-                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[43] /*!failure_bad_class */ )),
+                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[45] /*!failure_bad_class */ )),
                                                /*make_node 3 sons: */
                                                ( /*o_variable: */ _.
                                                 o_7safxUAyjq9_7LcGUlnwwD1),
@@ -2519,7 +2622,7 @@ startblock__2kanmkRxrZV_3xnDrbqgMjR:__attribute__ ((unused));
                                                 o_4JKd986pvM4_6yBzeeI40vW)))),
                           /*failplace: */
                           (     /*modconst: */
-                            (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[27]
+                            (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[28]
                              /*|_3fycBOpG51y_7Jfx9BLe3U2 */ )),
                           ((struct stackframe_stBM *) &_));
 
@@ -2543,7 +2646,7 @@ startblock__2kanmkRxrZV_3xnDrbqgMjR:__attribute__ ((unused));
         PLACEDFAILURE_BM (__LINE__,
                           /*failreason: */ (((value_tyBM) makenode4_BM
                                              (  /*make_node conn: */
-                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[26] /*!duplicate */ )),
+                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[27] /*!duplicate */ )),
                                                /*make_node 4 sons: */
                                                ( /*o_variable: */ _.
                                                 o_7safxUAyjq9_7LcGUlnwwD1),
@@ -2555,7 +2658,7 @@ startblock__2kanmkRxrZV_3xnDrbqgMjR:__attribute__ ((unused));
                                                 o_5HkpTupRRIK_8iCooVukjb3)))),
                           /*failplace: */
                           (     /*modconst: */
-                            (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[52]
+                            (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[54]
                              /*|_68ynNIWu3mp_1Th7hFVKtoO */ )),
                           ((struct stackframe_stBM *) &_));
 
@@ -2643,7 +2746,7 @@ value_tyBM crout_4iEFTEcHxeb_6lH464uFkTC_BM     //#15+
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 3;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[38] /*|equal_to_closed_minifunc */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[39] /*|equal_to_closed_minifunc */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -2726,7 +2829,7 @@ value_tyBM crout_4qlegfkPzrC_17skUfJP7v8_BM     //#16
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 6;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[42] /*|_4qlegfkPzrC_17skUfJP7v8 */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[44] /*|_4qlegfkPzrC_17skUfJP7v8 */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -2771,7 +2874,7 @@ startblock__3oMW0T4HlXx_8r7NLpyK1J8:__attribute__ ((unused));
 
 
     {                           // run _40XgQGIUZQY_246JbHmppCN 
-      (send3_BM (((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[70] /*|clear */ )),
+      (send3_BM (((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[73] /*|clear */ )),
                  /*sel: */ 
                  ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[15] /*|dump_value */ )),
                  ((struct stackframe_stBM *) &_),
@@ -2805,7 +2908,7 @@ startblock__3oMW0T4HlXx_8r7NLpyK1J8:__attribute__ ((unused));
 // while _9gJT0jotyox_8JQNlJn3qh6 comp#2:  
 
       {                         // run _4BOu5jhqyAD_3HGfVAY5hFx  
-        (send3_BM (((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[79] /*|put */ )),
+        (send3_BM (((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[82] /*|put */ )),
                    /*sel: */
                    ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[15] /*|dump_value */
                      )), ((struct stackframe_stBM *) &_),
@@ -2928,7 +3031,7 @@ value_tyBM crout_4M7lr5cU6VD_5hxmeH3baBf_BM     //#17
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 3;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[44] /*|_4M7lr5cU6VD_5hxmeH3baBf */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[46] /*|_4M7lr5cU6VD_5hxmeH3baBf */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -3009,7 +3112,7 @@ value_tyBM crout_5j8LpQULt1p_9oeOaqmfYYr_BM     //#18
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 5;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[47] /*|_5j8LpQULt1p_9oeOaqmfYYr */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[49] /*|_5j8LpQULt1p_9oeOaqmfYYr */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -3028,7 +3131,7 @@ startblock__9Hf4n8AnqR7_7ve3Bi3kWMV:__attribute__ ((unused));
       /*objlisttonodepayl: */
       (value_tyBM)
       objlisttonodepayl_BM (( /*o1: */ _.o_97rnxb0KFqq_44veN75DG2E),
-                            ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[62]
+                            ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[65]
                               /*|node */ )));
 
 
@@ -3170,7 +3273,7 @@ value_tyBM crout_74TaCoUa4dg_2bmUAanJYIJ_BM     //#19
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 7;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[57] /*|_74TaCoUa4dg_2bmUAanJYIJ */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[59] /*|_74TaCoUa4dg_2bmUAanJYIJ */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -3210,7 +3313,7 @@ startblock__89UMgXRvAgw_8wA2kYCSWVS:__attribute__ ((unused));
       objectcast_BM (           /*objgetattr: */
                       objgetattr_BM (( /*o_jscurcomp: */ _.
                                       o_2TaoEvH5OQU_8nKYBgAvkmW),
-                                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[49]
+                                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[51]
                                        /*!variable */ ))));
 
 
@@ -3227,7 +3330,7 @@ startblock__89UMgXRvAgw_8wA2kYCSWVS:__attribute__ ((unused));
         PLACEDFAILURE_BM (__LINE__,
                           /*failreason: */ (((value_tyBM) makenode3_BM
                                              (  /*make_node conn: */
-                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[43] /*!failure_bad_class */ )),
+                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[45] /*!failure_bad_class */ )),
                                                /*make_node 3 sons: */
                                                ( /*o_variable: */ _.
                                                 o_7safxUAyjq9_7LcGUlnwwD1),
@@ -3237,7 +3340,7 @@ startblock__89UMgXRvAgw_8wA2kYCSWVS:__attribute__ ((unused));
                                                 o_4JKd986pvM4_6yBzeeI40vW)))),
                           /*failplace: */
                           (     /*modconst: */
-                            (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[31]
+                            (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[32]
                              /*|_3BFLweNp6f9_4v8sSIEqDFa */ )),
                           ((struct stackframe_stBM *) &_));
 
@@ -3255,7 +3358,7 @@ startblock__89UMgXRvAgw_8wA2kYCSWVS:__attribute__ ((unused));
     /*v_resemit: */ _.v_0qTBOEAT5pa_2fz1SKfHrMV =
       //assign _32yBjb2MIGM_88lWbXGY4GA  
       (send4_BM (( /*o_variable: */ _.o_7safxUAyjq9_7LcGUlnwwD1),       /*sel: */
-                 ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[45]
+                 ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[47]
                    /*!jsemit_expression */ )),
                  ((struct stackframe_stBM *) &_),
                  ( /*o_strbuf: */ _.o_41F1rKwGbaA_30OJWKsqNWy),
@@ -3272,7 +3375,7 @@ startblock__89UMgXRvAgw_8wA2kYCSWVS:__attribute__ ((unused));
         PLACEDFAILURE_BM (__LINE__,
                           /*failreason: */ (((value_tyBM) makenode3_BM
                                              (  /*make_node conn: */
-                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[45] /*!jsemit_expression */ )),
+                                               ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[47] /*!jsemit_expression */ )),
                                                /*make_node 3 sons: */
                                                ( /*o_variable: */ _.
                                                 o_7safxUAyjq9_7LcGUlnwwD1),
@@ -3282,7 +3385,7 @@ startblock__89UMgXRvAgw_8wA2kYCSWVS:__attribute__ ((unused));
                                                 o_4JKd986pvM4_6yBzeeI40vW)))),
                           /*failplace: */
                           (     /*modconst: */
-                            (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[75]
+                            (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[78]
                              /*|_934Sfmj7uik_3F2IvtzKrgM */ )),
                           ((struct stackframe_stBM *) &_));
 
@@ -3372,7 +3475,7 @@ value_tyBM crout_7TK5bvNNTIg_4pzieotiEq8_BM     //#20
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 11;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[65] /*|_7TK5bvNNTIg_4pzieotiEq8 */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[68] /*|_7TK5bvNNTIg_4pzieotiEq8 */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -3420,7 +3523,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
       //assign _5iCBTtIjSko_5Q0RtreqOjB  
       /*objgetattr: */
       objgetattr_BM (( /*o_jscurcomp: */ _.o_2TaoEvH5OQU_8nKYBgAvkmW),
-                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[63] /*!body */ )));
+                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[66] /*!body */ )));
 
 
     /*o_prepjfun: */ _.o_5D1GbyYKAgk_9ureezAahw3 =
@@ -3527,7 +3630,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                                            o_2IlO5StAwIW_0LxxUBUJ2uf),
                                           ( /*o_jscurcomp: */ _.
                                            o_2TaoEvH5OQU_8nKYBgAvkmW), (((value_tyBM) makenode1_BM (    /*make_node conn: */
-                                                                                                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[77] /*!jscript_function */ )),
+                                                                                                     ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[80] /*!jscript_function */ )),
                                                                                                      /*make_node 1 sons: */
                                                                                                      ( /*o_prepjfun: */ _.
                                                                                                       o_5D1GbyYKAgk_9ureezAahw3)))));
@@ -3594,7 +3697,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                                                                  ( /*o_jscurcomp: */ _.o_2TaoEvH5OQU_8nKYBgAvkmW)))),
                                             /*failplace: */
                                             (   /*modconst: */
-                                              (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[60]
+                                              (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[62]
                                                /*|_7lrEc2aXmp8_6MlRQh2foQF */
                                                )),
                                             ((struct stackframe_stBM *) &_));
@@ -3635,7 +3738,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                                     PLACEDFAILURE_BM (__LINE__,
                                                       /*failreason: */
                                                       (((value_tyBM) makenode3_BM (     /*make_node conn: */
-                                                                                    ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[26] /*!duplicate */ )),
+                                                                                    ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[27] /*!duplicate */ )),
                                                                                     /*make_node 3 sons: */
                                                                                     ( /*o_curvar: */ _.
                                                                                      o_2LvSvKJFCCF_3QyFpcrySIi), (      /*o_modbindings: */
@@ -3663,7 +3766,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                                     PLACEDFAILURE_BM (__LINE__,
                                                       /*failreason: */
                                                       (((value_tyBM) makenode3_BM (     /*make_node conn: */
-                                                                                    ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[26] /*!duplicate */ )),
+                                                                                    ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[27] /*!duplicate */ )),
                                                                                     /*make_node 3 sons: */
                                                                                     ( /*o_curvar: */ _.
                                                                                      o_2LvSvKJFCCF_3QyFpcrySIi),
@@ -3672,7 +3775,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                                                                                                                    _.o_2TaoEvH5OQU_8nKYBgAvkmW)))),
                                                       /*failplace: */
                                                       ( /*modconst: */
-                                                        (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[71]
+                                                        (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[74]
                                                          /*|_8lWUsQmX7OH_3b4aiba7q3Y */
                                                          )),
                                                       ((struct stackframe_stBM
@@ -3752,7 +3855,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                                       /*failplace: */
                                       ( /*modconst: */
                                         (constob_3BFt4NfJmZC_7iYi2dwM38B_BM
-                                         [78]
+                                         [81]
                                          /*|_9onbEiQdZKJ_2CGamshEWbT */ )),
                                       ((struct stackframe_stBM *) &_));
 
@@ -3820,7 +3923,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                                                                  ( /*o_jscurcomp: */ _.o_2TaoEvH5OQU_8nKYBgAvkmW)))),
                                             /*failplace: */
                                             (   /*modconst: */
-                                              (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[81]
+                                              (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[84]
                                                /*|_9CEqpieg3Q2_7sTWXVDkPbf */
                                                )),
                                             ((struct stackframe_stBM *) &_));
@@ -3848,7 +3951,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                                     PLACEDFAILURE_BM (__LINE__,
                                                       /*failreason: */
                                                       (((value_tyBM) makenode3_BM (     /*make_node conn: */
-                                                                                    ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[26] /*!duplicate */ )),
+                                                                                    ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[27] /*!duplicate */ )),
                                                                                     /*make_node 3 sons: */
                                                                                     ( /*o_curvar: */ _.
                                                                                      o_2LvSvKJFCCF_3QyFpcrySIi), (      /*o_modbindings: */
@@ -3856,7 +3959,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                                                                                                                                                    _.o_2TaoEvH5OQU_8nKYBgAvkmW)))),
                                                       /*failplace: */
                                                       ( /*modconst: */
-                                                        (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[34]
+                                                        (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[35]
                                                          /*|_3J7W8ljFa7j_8is4mMLwngX */
                                                          )),
                                                       ((struct stackframe_stBM
@@ -3876,7 +3979,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                                     PLACEDFAILURE_BM (__LINE__,
                                                       /*failreason: */
                                                       (((value_tyBM) makenode3_BM (     /*make_node conn: */
-                                                                                    ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[26] /*!duplicate */ )),
+                                                                                    ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[27] /*!duplicate */ )),
                                                                                     /*make_node 3 sons: */
                                                                                     ( /*o_curvar: */ _.
                                                                                      o_2LvSvKJFCCF_3QyFpcrySIi),
@@ -3986,7 +4089,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                             (   /*objectisinstance: */
                               objectisinstance_BM (( /*o_body: */ _.
                                                     o_1HqWQ9s5egE_3wxHu3edfqP),
-                                                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[37] /*!basiclo_block */ ))))
+                                                   ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[38] /*!basiclo_block */ ))))
                             {   //body when _0gI4igjyYSA_9XrhrAI4UJQ   
                               /*v_scanres: */ _.v_5wKdFyGNJ5j_50nIjxm7LLY =
                                 //assign _3Qf3GiBbRee_48XYztNXBSt    
@@ -4045,7 +4148,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                                                                                    o_2TaoEvH5OQU_8nKYBgAvkmW)))),
                                                     /*failplace: */
                                                     (   /*modconst: */
-                                                      (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[25]
+                                                      (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[26]
                                                        /*|_2NA034TemFu_1ynl1DyeE5e */
                                                        )),
                                                     ((struct stackframe_stBM
@@ -4060,7 +4163,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                               PLACEDFAILURE_BM (__LINE__,
                                                 /*failreason: */
                                                 (((value_tyBM) makenode2_BM (   /*make_node conn: */
-                                                                              ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[43] /*!failure_bad_class */ )),
+                                                                              ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[45] /*!failure_bad_class */ )),
                                                                               /*make_node 2 sons: */
                                                                               ( /*o_body: */ _.
                                                                                o_1HqWQ9s5egE_3wxHu3edfqP),
@@ -4068,7 +4171,7 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                                                                                o_2TaoEvH5OQU_8nKYBgAvkmW)))),
                                                 /*failplace: */
                                                 (       /*modconst: */
-                                                  (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[41]
+                                                  (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[43]
                                                    /*|_4pvM250ih0o_3JDmGfPRNqg */
                                                    )),
                                                 ((struct stackframe_stBM *)
@@ -4152,7 +4255,7 @@ value_tyBM crout_82ho9wUUDji_4peMLha4PXl_BM     //#21+
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 4;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[66] /*|findobj_scan_minifunc */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[69] /*|findobj_scan_minifunc */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -4177,7 +4280,7 @@ startblock__6YnYKKsHo3f_9nIEOZMp744:__attribute__ ((unused));
       /*begin findobj_scan_minifunc */
       WEAKASSERT_BM (objectisinstance_BM
                      ( /*o_findobj: */ _.o_4ITcQtvlMmO_30Pss9oAVDB,
-                      (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[51]
+                      (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[53]
                        /*|findrun_object */ )));;
     }                           // end run _7m9brpKxZkY_3BEI7YANJuJ 
 
@@ -4227,7 +4330,7 @@ value_tyBM crout_83faYJmqTAm_5Um8Vj0myAd_BM     //#22
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 4;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[67] /*|_83faYJmqTAm_5Um8Vj0myAd */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[70] /*|_83faYJmqTAm_5Um8Vj0myAd */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -4301,7 +4404,7 @@ value_tyBM crout_8imWClcIFKt_6w2H2ouB4I6_BM     //#23+
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 4;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[69] /*|iterate_sequence_minifunc */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[72] /*|iterate_sequence_minifunc */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -4399,7 +4502,7 @@ value_tyBM crout_8Kh2MKilKO4_5qPRBWX9W3a_BM     //#24
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 6;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[72] /*|_8Kh2MKilKO4_5qPRBWX9W3a */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[75] /*|_8Kh2MKilKO4_5qPRBWX9W3a */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -4560,7 +4663,7 @@ value_tyBM crout_8VtkXEUFfhk_5RxrpY6JHI6_BM     //#25
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 5;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[74] /*|_8VtkXEUFfhk_5RxrpY6JHI6 */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[77] /*|_8VtkXEUFfhk_5RxrpY6JHI6 */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -4685,7 +4788,7 @@ startblock__0n6WAcuQ159_6cO0bI9OjvI:__attribute__ ((unused));
                   /*val_to_object: */
                   objectcast_BM ((send1_BM (( /*o_jsmodule: */ _.
                                              o_5V0w37YnN4F_8dZ6I79V60O),        /*sel: */
-                                            ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[59]
+                                            ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[61]
                                               /*!compile_to_javascript */ )),
                                             ((struct stackframe_stBM *) &_),
                                             ( /*o_webex: */ _.
@@ -4701,7 +4804,7 @@ startblock__0n6WAcuQ159_6cO0bI9OjvI:__attribute__ ((unused));
                                       /*failreason: */ (((value_tyBM) makenode1_BM
                                                          (
                                                            /*make_node conn: */
-                                                           ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[59] /*!compile_to_javascript */ )),
+                                                           ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[61] /*!compile_to_javascript */ )),
 /*make_node 1 sons: */
                                                            ( /*o_jsmodule: */
                                                             _.
@@ -4709,7 +4812,7 @@ startblock__0n6WAcuQ159_6cO0bI9OjvI:__attribute__ ((unused));
                                       /*failplace: */
                                       ( /*modconst: */
                                         (constob_3BFt4NfJmZC_7iYi2dwM38B_BM
-                                         [50]
+                                         [52]
                                          /*|_5YZZHXQmxrc_3SVoZ26utAx */ )),
                                       ((struct stackframe_stBM *) &_));
 
@@ -4869,7 +4972,7 @@ value_tyBM crout_9CG8SKNs6Ql_4PiHd8cnydn_BM     //#26
   _.stkfram_head.hgc = 0;
   _.stkfram_head.rlen = 2;
   _.stkfram_descr =
-    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[82] /*|_9CG8SKNs6Ql_4PiHd8cnydn */ ;
+    constob_3BFt4NfJmZC_7iYi2dwM38B_BM[85] /*|_9CG8SKNs6Ql_4PiHd8cnydn */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
@@ -4929,8 +5032,8 @@ epilog_9CG8SKNs6Ql_4PiHd8cnydn:__attribute__ ((unused));
 // end of 27 generated routines
 
 
-// the constant ids for 83 constants:
-const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[83 + 1] = {
+// the constant ids for 86 constants:
+const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[86 + 1] = {
   /*0: */
   "_09Hug4WGnPK_7PpZby8pz84",   //! emit_epilogue_jsmodule°jsmodule_generation_object
   "_0cRampCGHNI_3i998lc5QJ5",   //jsmodule_bindings
@@ -4962,77 +5065,81 @@ const char *const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[83 + 1] = {
   "_2vB50TsNQPm_6t0hFoWs2h0",   //scan_jsblock
   "_2DqxWZnPmCl_6u5A6sFqFXA",   //! fail duplicate o_curvar in o_modbindings
   /*25: */
+  "_2HRKwEmw3RU_8NbUiNToBgr",   //scan_jsstmt
   "_2NA034TemFu_1ynl1DyeE5e",   //! failed to scan jsfunction body: scan_jsblock o_body o_prepjfun 0 o_jscurcomp
   "_2YrbiKQ6lxP_3KNUOnU6TF5",   //duplicate
   "_3fycBOpG51y_7Jfx9BLe3U2",   //! fail since o_varialbe not instance of jsvar_object
   "_3iiht57Wrs1_5NbiUi27oBn",   //! prepend°list_object minifunc
-  "_3vI0Qc3FHQG_1g4fmHYkxSA",   //! compile_to_javascript°jsmodule_object (o_jsmodule, o_strbuf)
   /*30: */
+  "_3vI0Qc3FHQG_1g4fmHYkxSA",   //! compile_to_javascript°jsmodule_object (o_jsmodule, o_strbuf)
   "_3yQlckX4DRh_4b9l9FBSSSL",   //same_as_closed_minifunc
   "_3BFLweNp6f9_4v8sSIEqDFa",   //! fail with bad_class for o_variable o_jsexpr o_jsgenmod
   "_3DSazBjnN2Z_3O1SEDV4tBX",   //! scan_js_block_or_stmt (o_recv o_prepjfun v_depth o_from)
   "_3HAeZZQ0q7b_7qyDsekaz7Y",   //! clear°list_object minifunc
-  "_3J7W8ljFa7j_8is4mMLwngX",   //! fail duplicate o_curvar o_modbindings o_jscurcomp already module-bound
   /*35: */
+  "_3J7W8ljFa7j_8is4mMLwngX",   //! fail duplicate o_curvar o_modbindings o_jscurcomp already module-bound
   "_401XcQg0VWc_1SG4xaaQ3mU",   //! fail because v_resemit null after emit_prologue_jsmodule
   "_44Xro7p814I_406P69WFbq4",   //! prepare_for_jsmodule°jscript_topvardef_object <o_jscurcomp (o_jsgenmod)
   "_4bYUiDmxrKK_6nPPlEl8y8x",   //basiclo_block
   "_4iEFTEcHxeb_6lH464uFkTC",   //equal_to_closed_minifunc
-  "_4jwFGdaECBb_6dsBLTMoG9j",   //! fail badclass o_jscurcomp
   /*40: */
+  "_4jwFGdaECBb_6dsBLTMoG9j",   //! fail badclass o_jscurcomp
   "_4lj3ntdp7xH_5LiKY8h0lHl",   //! fail emit_jstoplevel (o_jscurcomp ii o_jsgenmod)
+  "_4lKK08v9A0t_0GGsir35UxP",   //basiclo_statement
   "_4pvM250ih0o_3JDmGfPRNqg",   //! fail bad class of o_body -wants a basiclo_block- in o_jscurcomp
   "_4qlegfkPzrC_17skUfJP7v8",   //! dump_data°dict_object minifun
+  /*45: */
   "_4HgYLk6htvP_4Ac2FCPfQ1C",   //failure_bad_class
   "_4M7lr5cU6VD_5hxmeH3baBf",   //! append°list_object minifunction
-  /*45: */
   "_4NpdCbcwwBV_9f3dbfoieTG",   //jsemit_expression
   "_54fNPWQdMQd_4bZQKbcUvkR",   //emit_prologue_jsmodule
   "_5j8LpQULt1p_9oeOaqmfYYr",   //! dump_data°list_object minifunc
+  /*50: */
   "_5qJ7wfXtzlW_30GNcoDmv10",   //sbuf
   "_5ucAZimYynS_4VA0XHvr1nW",   //variable
-  /*50: */
   "_5YZZHXQmxrc_3SVoZ26utAx",   //! fail compile_to_javascript o_jsmodule
   "_64UbCFBD19G_43TeBXhcYMy",   //findrun_object
   "_68ynNIWu3mp_1Th7hFVKtoO",   //! fail duplicate o_variable o_jscurcomp os_jgenmod o_bindings
+  /*55: */
   "_6pp3g7GLuae_7OF8KezKzvx",   //! fail non-object
   "_6yWldsq3Rmk_01WqTfwSIDV",   //failure_non_object
-  /*55: */
   "_6EJRQxPiepy_50fow66D4Qn",   //is_null
   "_6ZQ05nCv3Ys_8LA6B5LkZgm",   //assoc_object
   "_74TaCoUa4dg_2bmUAanJYIJ",   //! emit_jstoplevel°jscript_topvardef_object <o_jscurcomp (o_jsgenmod o_strbuf v_i)
+  /*60: */
   "_75mkz7wH3u3_0ZQRFajA44k",   //! fail since v_resemit null, giving o_jsgenmod
   "_7icWqFMdb4f_2Z6ymmBVulP",   //compile_to_javascript
-  /*60: */
   "_7lrEc2aXmp8_6MlRQh2foQF",   //! fail because o_curvar is null in v_arguments[ii]
+  "_7uvmKecN86g_614RK9nb6pw",   //! fail bad_class o_recv o_prepjfun...
   "_7zLaPay40r6_5iPrtG8Hiq4",   //prepare_for_jsmodule
+  /*65: */
   "_7D8xcWnEiys_8oqOVSkCxkA",   //node
   "_7DQyvJFMOrC_9IfC3CtYknn",   //body
   "_7KpOCu7pOza_0ApwnGaS3DP",   //jscript_toplevel_object
-  /*65: */
   "_7TK5bvNNTIg_4pzieotiEq8",   //! prepare_for_jsmodule°jscript_topfunction_object <o_jscurcomp (o_jsgenmod)
   "_82ho9wUUDji_4peMLha4PXl",   //findobj_scan_minifunc
+  /*70: */
   "_83faYJmqTAm_5Um8Vj0myAd",   //! emit_jstoplevel°jscript_topfunction_object <o_jscurcomp (o_jsgenmod o_strbuf v_i)
   "_8dgEp1oxLMz_5iGP2Eq1wn7",   //emit_jstoplevel
   "_8imWClcIFKt_6w2H2ouB4I6",   //iterate_sequence_minifunc
-  /*70: */
   "_8lV53mLyu1H_3Z1SI8wDBK1",   //clear
   "_8lWUsQmX7OH_3b4aiba7q3Y",   //! fail duplicate o_curvar in o_prepjfun
+  /*75: */
   "_8Kh2MKilKO4_5qPRBWX9W3a",   //! jsemit_expression°jsvar_object >o_jsexpr (o_strbuf o_jsgenmod o_jsgenfun o_paren)
   "_8Nb7qSIbE8N_7xJDtsS0rdb",   //! fail since o_variable null
   "_8VtkXEUFfhk_5RxrpY6JHI6",   //! webhandler javascript-compile
-  /*75: */
   "_934Sfmj7uik_3F2IvtzKrgM",   //! fail jsemit_expression o_variable o_strbuf o_jsgenmod
   "_93zDz6jmlVq_8ckLb59DDIl",   //emit_epilogue_jsmodule
+  /*80: */
   "_9nWPVhRYKLA_6T3JPvkTPud",   //jscript_function
   "_9onbEiQdZKJ_2CGamshEWbT",   //! fail arguments(o_jscurcomp o_jsgenmod v_arguments) when strange v_arguments
   "_9pvzBeIKHXF_8YDPCrQ6OEK",   //put
-  /*80: */
   "_9zzGR0VqDpm_259EJDSFYyu",   //jsmodule_generation_object
   "_9CEqpieg3Q2_7sTWXVDkPbf",   //! fail because o_curvar is null in v_locals
+  /*85: */
   "_9CG8SKNs6Ql_4PiHd8cnydn",   //! clear°dict_object minifun
   NULL
-};                              // end 83 constant ids
+};                              // end 86 constant ids
 
 
 
