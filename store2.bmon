@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1146 objects
+// for 1148 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -2363,6 +2363,15 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !@ 1536049856.513
 !$_0YanmudmN6Q_0JCzJElBQ7u |=jsvar_object|
 !)_3tGEfvHDcN2_8SviWJ2CQk9
+
+
+
+!(_9nWPVhRYKLA_6T3JPvkTPud |=jscript_function|
+!~ name (~ jscript_function
+~)
+!@ 1536158057.360
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_9nWPVhRYKLA_6T3JPvkTPud
 
 
 
@@ -10505,6 +10514,19 @@ _44Xro7p814I_406P69WFbq4
 
 
 
+!(_2mfbTmaIIgY_4Kt2l8ZZmEk
+!@ 1536158057.361
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "module-bind the current function o_jscurcomp"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _2IlO5StAwIW_0LxxUBUJ2uf _2TaoEvH5OQU_8nKYBgAvkmW  * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _9nWPVhRYKLA_6T3JPvkTPud) _5D1GbyYKAgk_9ureezAahw3))
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_95J5VWlxn7h_9P3UNOuvpbl
+!)_2mfbTmaIIgY_4Kt2l8ZZmEk
+
+
+
 !(_2mWbSPeD8lw_8ea0EhwQUAa
 !|*
 !@ 1520842008.670
@@ -16336,7 +16358,8 @@ _2ZoqAiU7COz_0EfxfZbOgZj
  "lock o_modbindings and handle v_arguments v_locals etc..."
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _2IlO5StAwIW_0LxxUBUJ2uf
-!# 4
+!# 5
+!& _2mfbTmaIIgY_4Kt2l8ZZmEk
 !& _4BpaiwXem4P_5gb85PfJB6O
 !& _97A35sEceVZ_0wS1TFpkI0A
 !& _3ucDZFPcZVN_61LQM0yknTG
