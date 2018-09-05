@@ -3349,6 +3349,21 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
                 locked_9WgDviTWSGu_0p2sVMd4PNY =
                   curlockedob_9WgDviTWSGu_0p2sVMd4PNY;
 
+
+                {               // run _4BpaiwXem4P_5gb85PfJB6O 
+/*debug v_arguments o_modbindings o_prepjfun*/
+                  DBGPRINTF_BM
+                    ("prepare_for_jsmodule°jscript_topfunction_object €%.8s handing v_arguments=%s with o_modbindings=%s o_prepjfun=%s",
+                     "_4BpaiwXem4P_5gb85PfJB6O",
+                     OUTSTRVALUE_BM ( /*v_arguments: */ _.
+                                     v_8pbpqrN1W4l_7mZmRSPBjYz),
+                     objectdbg_BM ( /*o_modbindings: */ _.
+                                   o_2IlO5StAwIW_0LxxUBUJ2uf),
+                     objectdbg1_BM ( /*o_prepjfun: */ _.
+                                    o_5D1GbyYKAgk_9ureezAahw3));
+                  ;
+                }               // end run _4BpaiwXem4P_5gb85PfJB6O 
+
                 if              /*cond _97A35sEceVZ_0wS1TFpkI0A */
 /*when _66yVbSMIfvB_76CaTvxn748:*/
                   (             /*issequence: */

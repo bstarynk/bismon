@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1125 objects
+// for 1126 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -12011,6 +12011,31 @@ _6iYgjRt0FIx_4ax63M6n2U6
 
 
 
+!(_4BpaiwXem4P_5gb85PfJB6O
+!@ 1536138218.419
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug v_arguments o_modbindings o_prepjfun"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " " _8pbpqrN1W4l_7mZmRSPBjYz  " " 
+ _2IlO5StAwIW_0LxxUBUJ2uf  " " _5D1GbyYKAgk_9ureezAahw3  "*/"  "\n" 
+  "DBGPRINTF_BM"  "(\"" _7zLaPay40r6_5iPrtG8Hiq4  "\u00b0" _6ZfaIF6vqeB_6AKq247BuTe 
+  " "  "\u20ac%."  "8s"  " "  "handing" 
+  " " _8pbpqrN1W4l_7mZmRSPBjYz  "=%"  "s"  " " 
+  "with"  " " _2IlO5StAwIW_0LxxUBUJ2uf  "=%"  "s" 
+  " " _5D1GbyYKAgk_9ureezAahw3  "=%"  "s"  "\"," 
+  "\n"  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "\","  " " 
+  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _8pbpqrN1W4l_7mZmRSPBjYz) 
+ "),"  " " 
+  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2IlO5StAwIW_0LxxUBUJ2uf) 
+ "),"  " " 
+  "objectdbg1_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5D1GbyYKAgk_9ureezAahw3) 
+ "));"  "\n")
+!)_4BpaiwXem4P_5gb85PfJB6O
+
+
+
 !(_4BOu5jhqyAD_3HGfVAY5hFx
 !@ 1529484397.755
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
@@ -16028,7 +16053,8 @@ _2ZoqAiU7COz_0EfxfZbOgZj
  "lock o_modbindings and handle v_arguments v_locals etc..."
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _2IlO5StAwIW_0LxxUBUJ2uf
-!# 1
+!# 2
+!& _4BpaiwXem4P_5gb85PfJB6O
 !& _97A35sEceVZ_0wS1TFpkI0A
 !)_9WgDviTWSGu_0p2sVMd4PNY
 
