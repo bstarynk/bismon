@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1164 objects
+// for 1165 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -12393,6 +12393,17 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 
+!(_4J5KFfgkANb_8HXcTimgXIo
+!@ 1536164108.807
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return o_prepjfun after successful scan_jsblock"
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+_5D1GbyYKAgk_9ureezAahw3
+!)_4J5KFfgkANb_8HXcTimgXIo
+
+
+
 !(_4L5hoWsh9Dl_112aUlLRWBa
 !@ 1528977491.318
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -13778,14 +13789,15 @@ _5EEITf6IFH7_4DbKG99zcPW
 
 
 !(_6x2rHb7dcEl_3XCEK37zSKW
-!@ 1536163181.839
+!@ 1536163974.357
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "when v_scanres"
 !: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
 _5wKdFyGNJ5j_50nIjxm7LLY
-!# 1
+!# 2
 !& _1zgCsTsYQmy_6gpQwxvWycJ
+!& _4J5KFfgkANb_8HXcTimgXIo
 !)_6x2rHb7dcEl_3XCEK37zSKW
 
 
