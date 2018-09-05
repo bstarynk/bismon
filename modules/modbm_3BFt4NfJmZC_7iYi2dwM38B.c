@@ -3183,7 +3183,8 @@ value_tyBM crout_7TK5bvNNTIg_4pzieotiEq8_BM     //#18
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 8 local values:
+    /// 9 local values:
+    objectval_tyBM *o_2IlO5StAwIW_0LxxUBUJ2uf;  // o_modbindings
     objectval_tyBM *o_2LvSvKJFCCF_3QyFpcrySIi;  // o_curvar
     objectval_tyBM *o_2TaoEvH5OQU_8nKYBgAvkmW;  // o_jscurcomp
     value_tyBM v_3lXKQCJ5IpM_1W5tqNbhFtx;       // v_locals
@@ -3199,13 +3200,14 @@ value_tyBM crout_7TK5bvNNTIg_4pzieotiEq8_BM     //#18
   memset (&_, 0, sizeof (struct frame_7TK5bvNNTIg_4pzieotiEq8_BMst));
   _.stkfram_head.htyp = typayl_StackFrame_BM;
   _.stkfram_head.hgc = 0;
-  _.stkfram_head.rlen = 8;
+  _.stkfram_head.rlen = 9;
   _.stkfram_descr =
     constob_3BFt4NfJmZC_7iYi2dwM38B_BM[56] /*|_7TK5bvNNTIg_4pzieotiEq8 */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
   _.stkfram_prev = stkf;
-  // locking 2:
+  // locking 3:
+  objectval_tyBM *locked_4n2iSJx5cBY_5SewRYEQ3dB = NULL;        // for o_jsgenmod
   objectval_tyBM *locked_78OahSJuxQQ_3PS1bVuLz1Y = NULL;        // for o_prepjfun
   objectval_tyBM *locked_9JK68akzlk7_5gjJfMCUAhq = NULL;        // for o_curvar
   // fetch 2 arguments:
@@ -3291,16 +3293,39 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
 
 
 
+    {                           // begin lockobj _4n2iSJx5cBY_5SewRYEQ3dB 
+      objectval_tyBM *curlockedob_4n2iSJx5cBY_5SewRYEQ3dB =
+        ( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW);
+      if (objlock_BM (curlockedob_4n2iSJx5cBY_5SewRYEQ3dB))
+        {
+          locked_4n2iSJx5cBY_5SewRYEQ3dB =
+            curlockedob_4n2iSJx5cBY_5SewRYEQ3dB;
+
+          /*o_modbindings: */ _.o_2IlO5StAwIW_0LxxUBUJ2uf =
+            //assign _89pRga6CODP_3tUn56PI0BL  
+            /*val_to_object: */
+            objectcast_BM (     /*objgetattr: */
+                            objgetattr_BM (( /*o_jsgenmod: */ _.
+                                            o_4JKd986pvM4_6yBzeeI40vW),
+                                           ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[1] /*!jsmodule_bindings */ ))));
+
+          objunlock_BM (locked_4n2iSJx5cBY_5SewRYEQ3dB),
+            locked_4n2iSJx5cBY_5SewRYEQ3dB = NULL;
+        }
+    }                           // end objlock _4n2iSJx5cBY_5SewRYEQ3dB 
+
+
     {                           // run _2VVgYaTxYnt_65w95Yz9VEb 
-/*debug prepare_for_jsmodule°jscript_topfunction_object o_jscurcomp v_arguments v_locals v_body o_prepjfun*/
+/*debug prepare_for_jsmodule°jscript_topfunction_object  o_jscurcomp v_arguments v_locals v_body o_prepjfun o_modbindings*/
       DBGPRINTF_BM
-        ("prepare_for_jsmodule°jscript_topfunction_object €%.8s o_jscurcomp=%s v_arguments=%s v_locals=%s v_body=%s o_prepjfun=%s",
+        ("prepare_for_jsmodule°jscript_topfunction_object €%.8s o_jscurcomp=%s v_arguments=%s v_locals=%s v_body=%s o_prepjfun=%s o_modbindings=%s",
          "_2VVgYaTxYnt_65w95Yz9VEb",
          objectdbg_BM ( /*o_jscurcomp: */ _.o_2TaoEvH5OQU_8nKYBgAvkmW),
          OUTSTRVALUE_BM ( /*v_arguments: */ _.v_8pbpqrN1W4l_7mZmRSPBjYz),
          OUTSTRVALUE_BM ( /*v_locals: */ _.v_3lXKQCJ5IpM_1W5tqNbhFtx),
          OUTSTRVALUE_BM ( /*v_body: */ _.v_9vVgSDTP8MG_7UPh9UN91Xh),
-         objectdbg1_BM ( /*o_prepjfun: */ _.o_5D1GbyYKAgk_9ureezAahw3));
+         objectdbg1_BM ( /*o_prepjfun: */ _.o_5D1GbyYKAgk_9ureezAahw3),
+         objectdbg2_BM ( /*o_modbindings: */ _.o_2IlO5StAwIW_0LxxUBUJ2uf));
       ;
     }                           // end run _2VVgYaTxYnt_65w95Yz9VEb 
 
@@ -3448,7 +3473,9 @@ startblock__0Z73bFupVPc_5IIGLp2FEwc:__attribute__ ((unused));
 
 epilog_7TK5bvNNTIg_4pzieotiEq8:__attribute__ ((unused));
   // routine _7TK5bvNNTIg_4pzieotiEq8 epilogue:
-  // unlocking 2:
+  // unlocking 3:
+  if (locked_4n2iSJx5cBY_5SewRYEQ3dB != NULL)
+    objunlock_BM (locked_4n2iSJx5cBY_5SewRYEQ3dB), locked_4n2iSJx5cBY_5SewRYEQ3dB = NULL;       // for o_jsgenmod
   if (locked_78OahSJuxQQ_3PS1bVuLz1Y != NULL)
     objunlock_BM (locked_78OahSJuxQQ_3PS1bVuLz1Y), locked_78OahSJuxQQ_3PS1bVuLz1Y = NULL;       // for o_prepjfun
   if (locked_9JK68akzlk7_5gjJfMCUAhq != NULL)
