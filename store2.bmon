@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1126 objects
+// for 1127 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -11244,6 +11244,28 @@ _50H7io7f948_10VeJz49q3W
 
 
 
+!(_3ucDZFPcZVN_61LQM0yknTG
+!@ 1536155041.110
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug v_locals o_modbindings o_prepjfun"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  " "  "debug"  " " _3lXKQCJ5IpM_1W5tqNbhFtx 
+  " " _2IlO5StAwIW_0LxxUBUJ2uf  " " _5D1GbyYKAgk_9ureezAahw3  " " 
+  "*/"  "\n"  "DBGPRINTF_BM"  "   "  "(\"" 
+ _7zLaPay40r6_5iPrtG8Hiq4  "\u00b0" _6ZfaIF6vqeB_6AKq247BuTe  " "  "\u20ac%." 
+  "8s"  " "  "handling"  " " _3lXKQCJ5IpM_1W5tqNbhFtx 
+  "=%"  "s"  " " _2IlO5StAwIW_0LxxUBUJ2uf  "=%" 
+  "s"  " " _5D1GbyYKAgk_9ureezAahw3  "=%"  "s" 
+  "\","  "\n"  " "  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+  "\","  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _3lXKQCJ5IpM_1W5tqNbhFtx) 
+  "),"  " "  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2IlO5StAwIW_0LxxUBUJ2uf) 
+  "),"  " "  "objectdbg1_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5D1GbyYKAgk_9ureezAahw3) 
+  "));"  "\n")
+!)_3ucDZFPcZVN_61LQM0yknTG
+
+
+
 !(_3urNBgu4IsT_4oyZ9YgJmbx
 !@ 1529484935.900
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -13996,12 +14018,12 @@ _2hKFAEuOQVE_9VS4qiuOGFE
 
 
 !(_7lrEc2aXmp8_6MlRQh2foQF
-!@ 1536123792.965
+!@ 1536153563.661
 !$_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "fail because o_curvar is null in v_arguments[ii]"
 !: _085lT8c13Ik_11pcWJfcLeM |=fail|
- * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _5ucAZimYynS_4VA0XHvr1nW) _8pbpqrN1W4l_7mZmRSPBjYz  * _6FWWN47uih2_5BhwEm9gnHu ( _2W7Ckt2WxEM_4NVYgEWE73B) _2TaoEvH5OQU_8nKYBgAvkmW)
+ * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _0jFqaPPHgYH_5JpjOPxQ67p) _8pbpqrN1W4l_7mZmRSPBjYz  * _6FWWN47uih2_5BhwEm9gnHu ( _2W7Ckt2WxEM_4NVYgEWE73B) _2TaoEvH5OQU_8nKYBgAvkmW)
 !)_7lrEc2aXmp8_6MlRQh2foQF
 
 
@@ -16047,15 +16069,16 @@ _2ZoqAiU7COz_0EfxfZbOgZj
 
 
 !(_9WgDviTWSGu_0p2sVMd4PNY
-!@ 1536136711.042
+!@ 1536152049.384
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "lock o_modbindings and handle v_arguments v_locals etc..."
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _2IlO5StAwIW_0LxxUBUJ2uf
-!# 2
+!# 3
 !& _4BpaiwXem4P_5gb85PfJB6O
 !& _97A35sEceVZ_0wS1TFpkI0A
+!& _3ucDZFPcZVN_61LQM0yknTG
 !)_9WgDviTWSGu_0p2sVMd4PNY
 
 
