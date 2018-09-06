@@ -1305,7 +1305,7 @@ startblock__0yecfJYJ0b8_9MNId7Bd2eG:__attribute__ ((unused));
     {                           // run _3DxQvT97tqw_5stLXuRXkZ4 
 /*debug start scan_jsblock°basiclo_block o_block o_prepjfun i_depth o_from*/
       DBGPRINTF_BM
-        ("start scan_jsblock°basiclo_block o_block €%.9s o_block=%s o_prepjfun=%s i_depth=%ld o_from=%s",
+        ("start scan_jsblock°basiclo_block €%.9s o_block=%s o_prepjfun=%s i_depth=%ld o_from=%s",
          "_3DxQvT97tqw_5stLXuRXkZ4",
          objectdbg_BM ( /*o_block: */ _.o_5XGKMg1Kevs_6eAce4ib9XW),
          objectdbg1_BM ( /*o_prepjfun: */ _.o_5D1GbyYKAgk_9ureezAahw3),
