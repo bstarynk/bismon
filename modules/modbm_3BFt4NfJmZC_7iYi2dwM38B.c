@@ -729,6 +729,18 @@ startblock__8RoxHXFm8Yb_7i6HiYCnAZF:__attribute__ ((unused));
             locked_4PPkqrKzzEb_572qQuiYMuR = NULL;
         }
     }                           // end objlock _4PPkqrKzzEb_572qQuiYMuR 
+
+
+    {                           // run _8KUGXp6YBvM_8FP9jEsJ1rw 
+/* final debug emit_jstoplevel°jsfun_preparation_object o_jsprepfun, o_strbuf */
+      DBGPRINTF_BM
+        ("emit_jstoplevel°jsfun_preparation_object final €%.9s o_jsprepfun=%s, o_strbuf=%s",
+         "_8KUGXp6YBvM_8FP9jEsJ1rw",
+         objectdbg_BM ( /*o_jsprepfun: */ _.o_7OVOMji0Mba_7vqXTikx9e3),
+         objectdbg1_BM ( /*o_strbuf: */ _.o_41F1rKwGbaA_30OJWKsqNWy));
+      ;
+    }                           // end run _8KUGXp6YBvM_8FP9jEsJ1rw 
+
 /* !endingblock _8RoxHXFm8Yb_7i6HiYCnAZF */
     goto endblock__8RoxHXFm8Yb_7i6HiYCnAZF;
   endblock__8RoxHXFm8Yb_7i6HiYCnAZF:;
