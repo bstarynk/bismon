@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1215 objects
+// for 1217 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -8718,6 +8718,17 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 
+!(_0338dFYqBM0_2lZ9WTfaRx4
+!@ 1536230984.191
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return o_block"
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+_5XGKMg1Kevs_6eAce4ib9XW
+!)_0338dFYqBM0_2lZ9WTfaRx4
+
+
+
 !(_03Bdhkaqibd_6iFalfaX0oB
 !@ 1535649849.526
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -9139,16 +9150,18 @@ _2TaoEvH5OQU_8nKYBgAvkmW
 
 
 !(_0yecfJYJ0b8_9MNId7Bd2eG
-!@ 1536226098.271
+!@ 1536230984.191
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of scan_jsblock\u00b0basiclo_block"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
 _2iH7ckEmGey_5cKpVIuFgY9
-!# 3
+!# 5
 !& _9ARTJ1qzS7G_8I5fLXTfnnC
 !& _3DxQvT97tqw_5stLXuRXkZ4
 !& _89KMNfbdLKJ_2KT1zXuDoTl
+!& _6AXWKD62NBM_8srTG7z76kO
+!& _0338dFYqBM0_2lZ9WTfaRx4
 !)_0yecfJYJ0b8_9MNId7Bd2eG
 
 
@@ -14231,6 +14244,24 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 !: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
 _4gjtBqgrY3i_67ZPUd9LxPU
 !)_6A1LVu1jMbs_1uJY58z11HY
+
+
+
+!(_6AXWKD62NBM_8srTG7z76kO
+!@ 1536230972.687
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug finish scan_jsblock\u00b0basiclo_block o_block"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "finish"  " " 
+ _2vB50TsNQPm_6t0hFoWs2h0  "\u00b0" _4bYUiDmxrKK_6nPPlEl8y8x  " " _5XGKMg1Kevs_6eAce4ib9XW 
+  "*/"  "\n"  "DBGPRINTF_BM"  "(\"" _2vB50TsNQPm_6t0hFoWs2h0 
+  "\u00b0" _4bYUiDmxrKK_6nPPlEl8y8x  " "  "\u20ac%."  "9s" 
+  " "  "finish"  " " _5XGKMg1Kevs_6eAce4ib9XW  "=%" 
+  "s"  "\","  " "  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+  "\","  "\n"  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5XGKMg1Kevs_6eAce4ib9XW) 
+  "));"  "\n")
+!)_6AXWKD62NBM_8srTG7z76kO
 
 
 

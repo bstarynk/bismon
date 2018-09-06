@@ -1463,6 +1463,24 @@ startblock__0yecfJYJ0b8_9MNId7Bd2eG:__attribute__ ((unused));
             locked_89KMNfbdLKJ_2KT1zXuDoTl = NULL;
         }
     }                           // end objlock _89KMNfbdLKJ_2KT1zXuDoTl 
+
+
+    {                           // run _6AXWKD62NBM_8srTG7z76kO 
+/*debug finish scan_jsblock°basiclo_block o_block*/
+      DBGPRINTF_BM ("scan_jsblock°basiclo_block €%.9s finish o_block=%s",
+                    "_6AXWKD62NBM_8srTG7z76kO",
+                    objectdbg_BM ( /*o_block: */ _.
+                                  o_5XGKMg1Kevs_6eAce4ib9XW));
+      ;
+    }                           // end run _6AXWKD62NBM_8srTG7z76kO 
+
+
+    /*return _0338dFYqBM0_2lZ9WTfaRx4: *//*v_r: */ _.
+      v_3qw9bnATIhq_8loBraLeXzQ =
+      // returned 
+      /*o_block: */ _.o_5XGKMg1Kevs_6eAce4ib9XW;
+    goto epilog_2iH7ckEmGey_5cKpVIuFgY9;
+
 /* !endingblock _0yecfJYJ0b8_9MNId7Bd2eG */
     goto endblock__0yecfJYJ0b8_9MNId7Bd2eG;
   endblock__0yecfJYJ0b8_9MNId7Bd2eG:;
