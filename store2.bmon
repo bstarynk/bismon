@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1237 objects
+// for 1236 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -9415,19 +9415,6 @@ _8RoxHXFm8Yb_7i6HiYCnAZF
 
 
 
-!(_0GWd0k1gXNi_9bnWGXJoon2
-!@ 1536238685.878
-!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "emit newline"
-!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
- * _0jFqaPPHgYH_5JpjOPxQ67p ( _41F1rKwGbaA_30OJWKsqNWy)
-!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
-_6FcmuIO2DrS_7mzsaVpTMOI
-!)_0GWd0k1gXNi_9bnWGXJoon2
-
-
-
 !(_0HBMCM5CeLn_7L5YEV2jO7Y
 !|*
 !@ 1502619190.010
@@ -13008,11 +12995,10 @@ _883QaWUOedh_9zmHk2A3RPm
  "lock o_jsprepfun, then emit javascript for it"
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _7OVOMji0Mba_7vqXTikx9e3
-!# 9
+!# 8
 !& _6IP8u0vB1kT_7sdJkVXkrZO
 !& _4oxX7bdgG7R_4u30KIaY2XM
 !& _3OBHK0TW1iV_1xmnERUvkDD
-!& _0GWd0k1gXNi_9bnWGXJoon2
 !& _9C5bLv69SNC_5ORohPAHb4x
 !& _9YFyybbQ1ax_7JsAvbed5Nc
 !& _6Ncf7ORQSr3_2Ux6SqVdhhS

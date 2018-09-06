@@ -673,10 +673,6 @@ startblock__8RoxHXFm8Yb_7i6HiYCnAZF:__attribute__ ((unused));
             /*objstrbuffernewlinepayl: */ objstrbuffernewlinepayl_BM ( /*o_strbuf: */ _.o_41F1rKwGbaA_30OJWKsqNWy);
           }                     // end cexpansion _3OBHK0TW1iV_1xmnERUvkDD - objstrbuffernewlinepayl  
 
-          {                     // start cexpansion _0GWd0k1gXNi_9bnWGXJoon2 - objstrbuffernewlinepayl  
-            /*objstrbuffernewlinepayl: */ objstrbuffernewlinepayl_BM ( /*o_strbuf: */ _.o_41F1rKwGbaA_30OJWKsqNWy);
-          }                     // end cexpansion _0GWd0k1gXNi_9bnWGXJoon2 - objstrbuffernewlinepayl  
-
           {                     // start cexpansion _9C5bLv69SNC_5ORohPAHb4x - objstrbufferappendcstrpayl  
             /*objstrbufferappendcstrpayl: */
             objstrbufferappendcstrpayl_BM (( /*o_strbuf: */ _.
