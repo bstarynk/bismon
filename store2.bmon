@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1234 objects
+// for 1237 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -8740,6 +8740,19 @@ _3vRFuniDv1K_4bQ7DeekM2I
 
 
 
+!(_01V1931VrNk_3TrIbjFUReA
+!@ 1536240227.986
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit objid o_jsfun"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _41F1rKwGbaA_30OJWKsqNWy _9cviE5EThOn_1uzO8G7LyRN)
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_2ZoqAiU7COz_0EfxfZbOgZj
+!)_01V1931VrNk_3TrIbjFUReA
+
+
+
 !(_02N8YyDubv0_4iLf4iVb08b
 !@ 1535464203.586
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -9529,6 +9542,19 @@ _39pW7nyFqoI_5pikyvvGsZ5
 
 
 
+!(_0RCymk53O4Y_08p9amVBvBB
+!@ 1536240176.642
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit \'function jtfun\'"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _41F1rKwGbaA_30OJWKsqNWy  "function jtfun")
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_6jZqk9RP0Pe_12cIgV9WMFC
+!)_0RCymk53O4Y_08p9amVBvBB
+
+
+
 !(_0SinERsgdvQ_57dLCP63i9r
 !|*
 !@ 1527690133.821
@@ -9859,7 +9885,7 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 !(_1dGYpQHFvMA_00Js64eAxrZ
-!@ 1536050764.203
+!@ 1536240275.810
 !$_6ZfaIF6vqeB_6AKq247BuTe |=jscript_topfunction_object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "jstopfun jf1"
@@ -9869,6 +9895,10 @@ _6jZqk9RP0Pe_12cIgV9WMFC
  { _1nTGKhwlFqj_7L7qyssnsj4 _4561iilkUHy_3UM4CxafRoU _4GVywi9q0oG_5dQmaBzBxpn _8TUTZwVoTMF_7IxEe2LibHt }
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
 _9H04rKodppx_6Uzf5T3DXLl
+!# 3
+!& _0RCymk53O4Y_08p9amVBvBB
+!& _01V1931VrNk_3TrIbjFUReA
+!& _9298n6FWVKJ_4hbJM77LlmA
 !)_1dGYpQHFvMA_00Js64eAxrZ
 
 
@@ -16634,6 +16664,19 @@ _7n2SLLuWOjH_4ArhFUjmckz
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "routine for put\u00b0hset_object"
 !)_91iTl2vqF09_72WJj4swbNi
+
+
+
+!(_9298n6FWVKJ_4hbJM77LlmA
+!@ 1536240275.810
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit \' (\'"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _41F1rKwGbaA_30OJWKsqNWy  " (")
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_6jZqk9RP0Pe_12cIgV9WMFC
+!)_9298n6FWVKJ_4hbJM77LlmA
 
 
 
