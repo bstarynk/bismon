@@ -112,22 +112,36 @@ features:
 
 \begin{itemize}
 
-  \item \textbf{persistency}, somehow \textit{orthogonal
-    persistency}. It is needed in particular because compiling some
-    software project (analyzed by \textit{Bismon}) is a long-lasting
-    procedure involving \textit{several} compiling and linking
-    processes and commands. So most of the data handled by
-    \textit{Bismon} can be persisted on disk, and reloaded at the next
-    run. Some data is temporary by nature and should not be
-    persisted. Such data is called temporary or
-    \textbf{transient}. But the usual approach is to run the
-    \textit{Bismon} program from some initial loaded state and have it
-    dump its memory state on disk before exiting (and reload that
-    augmented state at the next run).
+  \item \index{persistency}{\textbf{persistency}}, somehow
+    \textit{orthogonal persistency}. It is needed in particular
+    because compiling some software project (analyzed by
+    \textit{Bismon}) is a long-lasting procedure involving
+    \textit{several} compiling and linking processes and commands. So
+    most of the data handled by \textit{Bismon} can be persisted on
+    disk, and reloaded at the next run. However, some data is
+    temporary by nature\footnote{e.g. data related to a web session,
+      or to a web HTTP exchange, needs not to be persisted} and should
+    not be persisted. Such data is called temporary or
+    \index{transient}{\textbf{transient}}. But the usual approach is
+    to run the \textit{Bismon} program from some initial loaded state
+    and have it \index{dump}{\textbf{dump}} its memory state on disk
+    before exiting (and reload that augmented state at the next run),
+    and probably more often than that (e.g. twice an hour, or even
+    every five minutes).
 
   \item \textbf{dynamic typing}, like many scripting languages (such
     as Guile, Python, Lua, etc). Of course the dynamically typed data
-    inside the \textit{Bismon monitor} is \index{garbage collection}{\textbf{garbage collected}} (cf. \cite{Jones:2011:GC-handbook})
+    inside the \textit{Bismon monitor} is \index{garbage
+      collection}{\textbf{garbage collected}}
+    (cf. \cite{Jones:2011:GC-handbook})
+    \footnote{The initial GC of
+      the monitor is a crude precise garbage collector, but
+      multi-thread compatible; it uses a naive stop-the-world
+      mark\&sweep algorithm. Improving that GC is a difficult work
+      (past experience on \emph{GCC MELT} taught us that developing
+      and debugging a GC is hard). We might consider later using MPS
+      from \bmurl{https://www.ravenbrook.com/project/mps/} but doing
+      that could require recoding or regenerating a lot of code.}
 
   \item \textbf{homoiconicity} and \textbf{reflection} with
     \textbf{introspection}: all the DSL code is explicitly represented
@@ -158,11 +172,14 @@ features:
         should disappear at end of 2018}. The users of \emph{bismon}
       are expected to trust each other, and to use the \texttt{bismon}
       tool responsibly\footnote{For example, each \emph{bismon} user
-        has the technical ability to erase most of its data, but is
-        expected to not do so} (likewise, developers accessing a
-      \texttt{git} version control repository are supposed to act
-      responsibly). So protection against malicious behavior of
-      \texttt{bismon} users is out of scope.
+        has the technical ability to erase most of the data inside
+        \textit{Bismon monitor}, but is expected to not do so}
+      (likewise, developers accessing a \texttt{git} version control
+      repository are supposed to act responsibly even if they are
+      technically capable of removing most of the source code and its
+      history stored in that repository). So protection
+      against malicious behavior of \texttt{bismon} users is out of
+      scope.
 
       Since \textit{Bismon} should be usable by a small team of
       developers (perhaps two or a dozen of them)\footnote{So
