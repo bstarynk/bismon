@@ -1,6 +1,55 @@
 % file intro-bm.tex
 \section{Introduction}
 
+The reader of this document is expected to:
+\begin{itemize}
+
+  \item be fluent in C and C++ programming (notably on Linux and/or
+    for embedded products),
+
+  \item knowing well the C11 standard
+    \cite{C11:std,Memarian:2016:PLDI} and/or the C++11 one
+    \cite{CplusPlus11:std} and understanding well the notion of
+    \emph{undefined behavior} \footnote{see
+      \bmurl{http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html}
+      and \bmurl{https://blog.regehr.org/archives/1520}} in C or C++
+    programs,
+
+  \item be a daily advanced user of Linux for software development
+    activities using GCC and related developer tools
+
+\item to be capable of building large free software projects (such as
+  the GCC compiler, the Linux kernel, the Qt toolkit) from their
+  \emph{source} form
+
+\item to have contributed or participated to some free software or
+  open source projects (and understanding their social and economical
+  \cite{Weber:2004:SuccessOpenSource} implications, the practical work
+  flow, the importance of developer communities)
+  
+\item should be interested in static source code analysis (so have
+  already tried some such tools like \emph{Frama-C} \footnote{See
+    \bmurl{http://frama-c.com/}} \cite{Cuoq:2012:Frama-C}, \emph{Clang
+    analyzer} \footnote{See \bmurl{https://clang-analyzer.llvm.org/}},
+  ...), and be aware of compiler concepts and technologies.
+
+\item be familiar with operating systems principles
+  \cite{Tanenbaum:92:OS,ArpaciDusseau14-Book,OSTEP-web} and well
+  versed in Linux programming.
+
+  \item be interested in various programming languages, including
+    domain specific ones.
+
+\end{itemize}
+
+Feedback and improvements on this document can be suggested by email
+(to \bmemail{basile@starynkevitch.net} or
+\bmemail{basile.starynkevitch@cea.fr}) or by submitting patches to
+\textit{Bismon} thru its \bmurl{github.com/bstarynk/bismon} repository
+(or by email). Notice that this document may contain generated
+documentation, and will contain more and more generated parts in the
+future.
+
 \subsection{About \textit{Bismon}}
 
 \textit{Bismon} (a \emph{temporary name}) \footnote{\texttt{bismon} is a \textbf{temporary name}
@@ -37,6 +86,7 @@ code analysis (above the \textit{GCC} compiler), with the following
 features:
 
 \begin{itemize}
+
   \item \textbf{persistency}, somehow \textit{orthogonal
     persistency}. So most of the data handled by \textit{Bismon} can
     be persisted on disk, and reloaded at the next run. Some data is
@@ -54,9 +104,9 @@ features:
     as data which can be processed by \textit{Bismon}, and the current
     state is accessible by the DSL.
 
-    \item \textbf{translated} to \emph{C} code (and generated
+    \item \textbf{translated} to \emph{C} code; and \textbf{generated}
       \emph{JavaScript} + \emph{HTML} in the browser, and generated
-      \emph{C++} code of \emph{GCC} plugins)
+      \emph{C++} code of \emph{GCC} plugins
 
     \item \textbf{bootstrapped implementation}: ideally, all of
       \textit{Bismon} code (including C code dealing with data
@@ -68,6 +118,78 @@ features:
     \item ability to \textbf{generate GCC plugins}: the C++ code of
       GCC plugins performing static analysis of a single translation
       unit should be generated.
+
+    \item with \textbf{collaborative web interface}, used by a
+      \emph{small} team of \emph{trusted and well-behaving}
+      developers\footnote{The initial \texttt{bismon} implementation
+        had a GTK interface, nearly unusable. That interface is
+        temporarily used to fill the persistent store till the web
+        interface is usable. The GTK interface is already obsolete and
+        should disappear at end of 2018}. The users of \emph{bismon}
+      are expected to trust each other, and to use the \texttt{bismon}
+      tool responsibly\footnote{For example, each \emph{bismon} user
+        has the technical ability to erase most of its data, but is
+        expected to not do so} (likewise, developers accessing a
+      \texttt{git} version control repository are supposed to act
+      responsibly). So protection against malicious behavior of
+      \texttt{bismon} users is out of scope.
+
+      Since \textit{Bismon} should be usable by a small team of
+      developers (perhaps two or a dozen of them)\footnote{So
+        \textit{Bismon}, considered as a Web application, would have
+        at most a dozen of browsers -and associated users- accessing
+        it. Hence, scalability to many HTTP connections is not at all
+        a concern (in contrast with most usual web applications).}, it
+      is handling some personal data (relevant to GDPR), such as the
+      first and last names (or pseudos) of users and their email and
+      maintain a password file (used in the Web login
+      form). Compliance to regulations (e.g. European GDPR) is out of
+      scope and should be in charge of the entities using
+      \textit{Bismon}. The login form template \footnote{on
+      \bmurl{https://github.com/bstarynk/bismon/blob/master/login\_ONIONBM.thtml}}
+      could be adapted on each deployment site.
 \end{itemize}
 
+Notice that \textit{Bismon} is \textbf{provided as free software}
+(unreleased in 2018, but available on
+\bmurl{github.com/bstarynk/bismon} ...) in \emph{source form only} and
+should be \textbf{usable} (only) \textbf{on a Linux/x86-64
+  workstation}... (typically, at least 32 gigabytes of RAM, 8 cores,
+several hundred gigabytes of disk or SSD).
 
+The \textit{Bismon} system contains \textbf{persistent data} (which is
+part of the system itself and should not be considered as ``external''
+data; each team using \textit{Bismon} would run its own customized
+version of it.), and should be \textbf{regularily backed up}, and
+preferably version controlled at the user site. It is strongly
+recommended to use \texttt{git} (see \bmurl{http://git-scm.com/}), to
+\texttt{git commit} its files several times a day (probably hourly or
+even more frequently, as often as a developer is committing his C++
+code), and to backup the files on some external media or server at
+least daily. How that is done is outside of the scope of this
+document. The \emph{dump facilities} inside \textit{Bismon} are
+expected to be used quite often (as often as you would save your
+report in a word processor, or your source file in a source code
+editor), probably several times per hour. So a developer team using
+\textit{Bismon} would probably \texttt{git clone} either
+\texttt{git@github.com:bstarynk/bismon.git} thru SSH or
+\texttt{https://github.com/bstarynk/bismon.git}, build it (after
+downloading and building required dependencies), and work on that
+\texttt{git} repository (and of course back-up it quite often).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Multi-threaded and distributed aspects of \textit{Bismon}}
+
+The \textit{Bismon monitor} is by itself a multi-threaded process. It
+uses a \emph{fixed thread pool} of worker threads (often
+active)\footnote{The number of worker threads is given by the
+  \texttt{--job} program argument to \texttt{bismon}. For an 8-cores
+  workstation, it is suggested to set it to 5 or 6. It should be at
+  least 2, and at most 15. This number also limits the set of running
+  external processes.}, and additional (generally idle) threads for
+web support and other facilities. The \textit{Bismon monitor} is
+occasionally starting some external processes (e.g. for the
+compilation of \emph{C} code dynamically generated by \textit{Bismon},
+before \texttt{dlopen}-ing such modules). In practice the Bismon
+monitor is likely to be started every day.
