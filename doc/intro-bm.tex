@@ -7,19 +7,19 @@
 The reader of this document is expected to:
 \begin{itemize}
 
-  \item be fluent in C \cite{Kernighan:1988:CPL} and C++
-    \cite{Stroustrup:2014:CplusPlus} programming (notably on Linux
+  \item be fluent in C (cf. \cite{Kernighan:1988:CPL}) and C++
+    (\cite{Stroustrup:2014:CplusPlus}) programming (notably on Linux
     and/or for embedded products),
 
-  \item knowing well the C11 standard
-    \cite{C11:std,Memarian:2016:PLDI} and/or the C++11 one
-    \cite{CplusPlus11:std} and understanding well the notion of
-    \emph{undefined behavior} \footnote{See
+  \item knowing well the \index{C11}{C11} standard
+    (cf. \cite{C11:std,Memarian:2016:PLDI}) and/or the \index{C++11}{C++11} one
+    (\cite{CplusPlus11:std}) and understanding well the notion of
+    \index{undefined behavior}{\emph{undefined behavior}} \footnote{See
       \bmurl{http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html}
       and \bmurl{https://blog.regehr.org/archives/1520}} in C or C++
     programs,
 
-  \item be a daily advanced user of Linux for software development
+  \item be a daily advanced user of \index{Linux}{Linux} for software development
     activities using GCC and related developer tools
     (e.g. \textit{binutils}, \texttt{git}, \texttt{make} or
     \texttt{ninja}, source code editor like \texttt{emacs} or
@@ -29,8 +29,8 @@ The reader of this document is expected to:
 
 
 \item to be capable of building large free software projects (such as
-  the GCC compiler \cite{gcc-internals} \footnote{See
-    \bmurl{http://gcc.gnu.org}}, the Linux kernel, the Qt toolkit and
+  the GCC compiler (cf \cite{gcc-internals} \footnote{See
+    \bmurl{http://gcc.gnu.org}}), the Linux kernel, the Qt toolkit and
   other open source projects of perhaps millions of source code lines)
   and smaller ones (e.g. \texttt{libonion} \footnote{see
     \bmurl{https://coralbits.com/libonion/}}) from their \emph{source}
@@ -38,7 +38,7 @@ The reader of this document is expected to:
 
 \item to have contributed or participated to some free software or
   open source projects (and understanding their social and economical
-  \cite{Weber:2004:SuccessOpenSource} implications, the practical work
+  (cf \cite{Weber:2004:SuccessOpenSource}) implications, the practical work
   flow, the importance of developer communities)
   
 \item should be interested in static source code analysis (so have
@@ -64,7 +64,8 @@ The reader of this document is expected to:
 To build this document (both in PDF and HTML forms) : build
 \emph{bismon} \footnote{See the \emph{Readme} on
   \bmurl{https://github.com/bstarynk/bismon/} for building
-  instructions}, then run \texttt{make doc}.
+  instructions}, then run \texttt{make doc} (that uses {\LaTeX} and
+\emph{HeVeA}).
 
 Feedback and improvements on this document can be suggested by email
 (to \bmemail{basile@starynkevitch.net} or
@@ -168,13 +169,14 @@ features:
         at most a dozen of browsers -and associated users- accessing
         it. Hence, scalability to many HTTP connections is not at all
         a concern (in contrast with most usual web applications).}, it
-      is handling some personal data (relevant to GDPR), such as the
-      first and last names (or pseudos) of users and their email and
-      maintain a password file (used in the Web login
-      form). Compliance to regulations (e.g. European GDPR) is out of
-      scope and should be in charge of the entities using
+      is handling some \index{personal data}{personal data} (relevant
+      to \index{GDPR}{GDPR}), such as the first and last names (or
+      pseudos) of users and their email and maintain a password file
+      (used in the Web \index{login}{login} form). Compliance to
+      regulations (e.g. European GDPR) is out of scope and should be
+      in charge of the entities and/or persons using and/or deploying
       \textit{Bismon}. The login form template \footnote{on
-      \bmurl{https://github.com/bstarynk/bismon/blob/master/login\_ONIONBM.thtml}}
+        \bmurl{https://github.com/bstarynk/bismon/blob/master/login\_ONIONBM.thtml}}
       could be adapted on each deployment site.
 \end{itemize}
 
@@ -191,16 +193,18 @@ part of the system itself and should not be considered as ``external''
 data; each team using \textit{Bismon} would run its own customized
 version of it.), and should be \textbf{regularily backed up}, and
 preferably version controlled at the user site. It is strongly
-recommended to use \texttt{git} (see \bmurl{http://git-scm.com/}), to
-\texttt{git commit} its files several times a day (probably hourly or
-even more frequently, as often as a developer is committing his C++
-code), and to backup the files on some external media or server at
-least daily. How that is done is outside of the scope of this
-document. The \emph{dump facilities} inside \textit{Bismon} are
-expected to be used quite often (as often as you would save your
-report in a word processor, or your source file in a source code
-editor), probably several times per hour. So a developer team using
-\textit{Bismon} would probably \texttt{git clone} either
+recommended to use \index{git}{\texttt{git}} \footnote{See
+  \bmurl{http://git-scm.com/}} or perhaps some other distributed
+\index{version control}{version control} system, to \texttt{git
+  commit} its files several times a day (probably hourly or even more
+frequently, as often as a developer is committing his C++ code), and
+to backup the files on some external media or server at least
+daily. How that is done is outside of the scope of this document. The
+\emph{dump facilities} inside \textit{Bismon} are expected to be used
+quite often (as often as you would save your report in a word
+processor, or your source file in a source code editor), probably
+several times per hour. So a developer team using \textit{Bismon}
+would probably \texttt{git clone} either
 \texttt{git@github.com:bstarynk/bismon.git} thru SSH or
 \bmurl{https://github.com/bstarynk/bismon.git}, build it (after
 downloading and building required dependencies), and work on that
