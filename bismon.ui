@@ -176,8 +176,9 @@
         <child type="tag">
             <object class='GtkTextTag'>
                 <property name="name">objid_brotag</property>
-                <property name="font">Rokkit SemiBold</property>
-                <property name="foreground">tan4</property>
+                <property name="font">Nimbus Mono L Bold</property>
+                <property name="foreground">DarkGoldenRod4</property>
+                <property name="scale">1.18</property>
             </object>
         </child>
       <!-- objname_brotag for the name of an object -->
@@ -343,7 +344,7 @@
             <object class='GtkTextTag'>
               <property name="name">id_cmdtag</property>
 	      <property name='foreground'>saddlebrown</property>
-	      <property name='font'>Space Mono Bold</property>
+	      <property name='font'>Inconsolata Medium Bold</property>
             </object>
         </child>
       <!-- number_cmdtag for numbers -->
