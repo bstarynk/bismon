@@ -7,14 +7,15 @@
 The reader of this document is expected to:
 \begin{itemize}
 
-  \item be fluent in C (cf. \cite{Kernighan:1988:CPL}) and C++
+  \item be fluent in C (cf. \cite{Kernighan:1988:CPL}) and/or C++
     (\cite{Stroustrup:2014:CplusPlus}) programming (notably on Linux
-    and/or for embedded products),
+    and/or for embedded products, perhaps for IoT),
 
-  \item knowing well the \index{C11}{C11} standard
-    (cf. \cite{C11:std,Memarian:2016:PLDI}) and/or the \index{C++11}{C++11} one
-    (\cite{CplusPlus11:std}) and understanding well the notion of
-    \index{undefined behavior}{\emph{undefined behavior}} \footnote{See
+  \item knowing a bit the \index{C11}{C11} standard
+    (cf. \cite{C11:std,Memarian:2016:PLDI}) and/or the
+    \index{C++11}{C++11} one (\cite{CplusPlus11:std}) and
+    understanding well the notion of \index{undefined
+      behavior}{\emph{undefined behavior}} \footnote{See
       \bmurl{http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html}
       and \bmurl{https://blog.regehr.org/archives/1520}} in C or C++
     programs,
@@ -38,7 +39,7 @@ The reader of this document is expected to:
 
 \item to have contributed or participated to some free software or
   open source projects (and understanding their social and economical
-  (cf \cite{Weber:2004:SuccessOpenSource}) implications, the practical work
+  (cf \cite{Weber:2004:SuccessOpenSource,Tirole:2016:EcoBienCommun}) implications, the practical work
   flow, the importance of developer communities)
   
 \item should be interested in static source code analysis (so have
@@ -48,14 +49,14 @@ The reader of this document is expected to:
   ...), and be aware of compiler concepts and technologies (read \cite{Aho:2006:DragonBook}).
 
 \item be familiar with operating systems principles
-  \cite{Tanenbaum:92:OS,ArpaciDusseau14-Book} and well
+  (see \cite{Tanenbaum:92:OS,ArpaciDusseau14-Book}) and well
   versed in Linux programming
-  \cite{Mitchell:2001:ALP,Kerrisk:2010:LinuxProgramming} \footnote{look
+  (cf. \cite{Mitchell:2001:ALP,Kerrisk:2010:LinuxProgramming} \footnote{look
     into \texttt{man} pages on
-    \bmurl{http://man7.org/linux/man-pages/}}.
+    \bmurl{http://man7.org/linux/man-pages/}}).
 
   \item be interested in various programming languages
-    \cite{Abelson1996:SICP,Scott:2007:PLP,Queinnec:1996:LSP},
+    (cf. \cite{Abelson1996:SICP,Scott:2007:PLP,Queinnec:1996:LSP}),
     including domain specific ones.
 
 \end{itemize}
@@ -103,6 +104,8 @@ the infrastructure is not complete).
 
 @@ To be written
 
+\medskip
+
 \subsection{Driving principles for  \textit{Bismon}}
 
 \textit{Bismon} is (like \textit{GCC MELT} was) a \textbf{domain
@@ -134,12 +137,13 @@ features:
     inside the \textit{Bismon monitor} is \index{garbage
       collection}{\textbf{garbage collected}}
     (cf. \cite{Jones:2011:GC-handbook})
-    \footnote{The initial GC of
-      the monitor is a crude precise garbage collector, but
-      multi-thread compatible; it uses a naive stop-the-world
-      mark\&sweep algorithm. Improving that GC is a difficult work
-      (past experience on \emph{GCC MELT} taught us that developing
-      and debugging a GC is hard). We might consider later using MPS
+    \footnote{The initial GC of the monitor is a crude precise garbage
+      collector, but multi-thread compatible; it uses a naive
+      stop-the-world mark\&sweep algorithm. Improving that GC is a
+      difficult work (past experience on \emph{GCC MELT} taught us
+      that developing and debugging a GC is hard, and is a good
+      illustration of Hofstadter's law (See
+      \cite{Hofstadter:1979:GEB})). We might consider later using MPS
       from \bmurl{https://www.ravenbrook.com/project/mps/} but doing
       that could require recoding or regenerating a lot of code.}
 
@@ -209,26 +213,27 @@ or SSD).
 The \textit{Bismon} system contains \textbf{persistent data} (which is
 part of the system itself and should not be considered as ``external''
 data; each team using \textit{Bismon} would run its own customized
-version of it.), and should be \textbf{regularily backed up}, and
-preferably version controlled at the user site. It is strongly
-recommended to use \index{git}{\texttt{git}} \footnote{See
-  \bmurl{http://git-scm.com/}} or perhaps some other distributed
-\index{version control}{version control} system, to \texttt{git
-  commit} its files several times a day (probably hourly or even more
-frequently, as often as a developer is committing his C++ code), and
-to backup the files on some external media or server at least
-daily. How that is done is outside of the scope of this document. The
-\emph{dump facilities} inside \textit{Bismon} are expected to be used
-quite often (as often as you would save your report in a word
-processor, or your source file in a source code editor), probably
-several times per hour. So a developer team using \textit{Bismon}
-would probably \texttt{git clone} either
+version of their \textit{Bismon monitor}.), and should be
+\textbf{regularily backed up}, and preferably version controlled at
+the user site. It is strongly recommended to use
+\index{git}{\texttt{git}} \footnote{See \bmurl{http://git-scm.com/}}
+or perhaps some other distributed \index{version control}{version
+  control} system, to \texttt{git commit} its files several times a
+day (probably hourly or even more frequently, as often as a developer
+is committing his C++ code), and to backup the files on some external
+media or server at least daily. How that is done is outside of the
+scope of this document. The \emph{dump facilities} inside
+\textit{Bismon} are expected to be used quite often (as often as you
+would save your report in a word processor, or your source file in a
+source code editor), probably several times per hour. So a developer
+team using \textit{Bismon} would probably \texttt{git clone} either
 \texttt{git@github.com:bstarynk/bismon.git} thru SSH or
 \bmurl{https://github.com/bstarynk/bismon.git}, build it (after
 downloading and building required dependencies), and work on that
 \texttt{git} repository (and of course back-up it quite often).
 
 
+\medskip
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Multi-threaded and distributed aspects of \textit{Bismon}}
 
@@ -236,23 +241,48 @@ The \textit{Bismon monitor} is by itself a multi-threaded
 process\footnote{In contrast of most scripting languages
   implementations such as Python, Ocaml, Ruby, etc..., we try hard to
   avoid any ``global interpreter lock'' and strive to develop a
-  genuinely multi-threaded monitor.}.  It uses a \emph{fixed thread
-  pool} of worker threads (often active)
+  genuinely multi-threaded monitor.}.
+It uses a \emph{fixed} {\index{thread pool}{\emph{thread pool}}} of
+{\index{worker thread}{\emph{worker threads}}} (often active)
 \footnote{The number of worker threads is given by the \texttt{--job}
   program argument to \texttt{bismon}. For an 8-cores workstation, it
   is suggested to set it to 5 or 6. It should be at least 2, and at
-  most 15. This number also limits the set of simultaneously running
-  external processes.}, and additional (generally idle) threads for
-web support and other facilities. The \textit{Bismon monitor} is
-occasionally starting some external processes (e.g. for the
-compilation of \emph{C} code dynamically generated by \textit{Bismon},
-before \texttt{dlopen}-ing such modules).
+  most 15. This number of jobs also limits the set of simultaneously
+  running external processes, such as \texttt{gcc} processes started
+  by \emph{Bismon}.}, and additional (generally idle) threads for web
+support and other facilities. The \textit{Bismon monitor} is
+occasionally starting some external processes, in particular for the
+compilation of generated \emph{GCC} plugins, and for the compilation
+into \index{module}{\emph{module}s} -technically ``plugins''- of
+dynamically generated \emph{C} code by \textit{Bismon}; later it will
+dynamically load (with \texttt{dlopen}) these modules, and thus
+\textit{Bismon} can increase its code (but cannot decrease it, even if
+some code becomes unused and unreachable); however such modules are
+\emph{never} \index{garbage collection}{garbage collected} (so
+\texttt{dlclose} is never called). So in practice, it is recommended
+to restart \emph{Bismon} every day (to avoid endless growth of its
+code segments).
 
-% In practice the Bismon
-% monitor is likely to be started every working day and would run the
-% whole day (in particular because the set of \texttt{dlopen}-ed modules
-% is continuously growing and never shrinking; in other words, code
-% generated by \text{Bismon} for its internal purposes is \emph{never}
-%   \index{garbage collection}{garbage collected}).
-%
 
+The worker threads of \emph{Bismon} are implementing its
+\index{agenda}{\textbf{agenda}} \footnote{Details about the agenda are
+  subject to change.} machinery. Conceptually, the agenda is a 5-tuple
+of first-in first-out queues of \index{tasklet}{\textbf{tasklets}},
+each such FIFO queue is corresponding to one of the five
+\index{priority}{priorities} : \emph{very high}, \emph{high},
+\emph{normal}, \emph{low}, \emph{very low}. Each agenda worker thread
+removes one tasklet (chossing the queue of highest possible priority
+which is non empty, and picking the tasklet in front of that queue)
+and runs that tasklet quickly. A tasklet should run during a few
+milliseconds (e.g. with some implicit kind of non-preemptive
+scheduling) at most (so cannot do any blocking IO; so input and output
+happens outside of the agenda). It may add one or more tasklets
+(including itself) to the agenda (either at the front, or at the end,
+of a queue of given priority), and it may remove existing tasklets
+from the agenda. Of course tasklets run in parallel since there are
+several worker threads to run the agenda. The agenda itself is not
+persisted as a whole, but tasklets themselves may be
+\index{persistent}{persistent} or \index{transient}{transient}.
+Tasklets can also be created outside of the agenda (e.g. by incoming
+HTTP requests, by completion of external processes, by timers, ...)
+and added asynchronously into the agenda.
