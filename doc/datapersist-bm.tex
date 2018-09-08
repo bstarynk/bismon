@@ -81,10 +81,151 @@ Values (even references to objects, e.g. inside sequences or nodes)
 are represented as a machine pointer and fit in a 64 bits word. When
 its least significant bit is 1, it is a tagged integer.
 
-\subsubsection{Objects}
+Values, including objects, are comparable so sortable. For nodes,
+sets, tuples we use a lexicographical order.
+
+\subsubsection{Mutable objects}
 
 \index{object}{Objects} are the only kind of \index{mutable}{mutable}
-values, and are somehow heavy. They can be accessed nearly
-simultaneously by several worker threads running different tasklets,
-so they need a locking mechanism and contain a (recursive) mutex (so
-in reality only one thread is using them at a given time).
+values, and are somehow heavy (at least severy dozens of machine words
+in memory). They can be accessed nearly simultaneously by several
+worker threads running different tasklets, so they need a locking
+mechanism and contain a (recursive) mutex\footnote{Created with
+  \href{http://man7.org/linux/man-pages/man3/pthread\_mutex\_lock.3p.html}{\texttt{pthread\_mutex\_lock}(3)}
+  with \texttt{PTHREAD\_MUTEX\_RECURSIVE} attribute} (so in reality
+only one thread is using them at a given instant).
+
+\medskip
+
+\emph{Conceptually}, objects contain the following data:
+
+\begin{itemize}
+  \item a constant \emph{unique} serial id (of about 128 bits), called
+    the \index{objid}{\textbf{objid}}, randomly generated at object
+    creation time and never changed after. In many occasions, that
+    objid is printed as 24 characters (two glued blocks of 12
+    characters, the first being an underscore \texttt{\_}, the second
+    being a digit, the 10 others being alphanumerical with significant
+    case) such as \texttt{\_4ggW2XwfXdp\_1XRSvOvZqTC}~\footnote{That
+      objid \texttt{\_4ggW2XwfXdp\_1XRSvOvZqTC} is for the predefined
+      object \emph{\texttt{the\_system}}, and corresponds to the two
+      64 bits numbers 3577488711679049683, 1649751471969277032 i.e. to
+      128 bits hexadecimal 0x31a5cb0767997fd316e5183916681468} or
+    \texttt{\_0xbmmxnN8E8\_0ZuEqJmqMNH}. It is expected that objid
+    \index{collision}{collisions} never occur in practice, e.g. that
+    even thousands of \emph{Bismon monitor} processes (running on many
+    distant computers) would in fact never generate the same objid. In
+    other words, our objids are as unique as \index{UUID}{UUID}s (from
+    \href{https://tools.ietf.org/html/rfc4122}{RFC 4122}) are (but are
+    displayed differently, without hyphens). The concrete textual
+    ``syntax'' for objid-s is carefully chosen to be compatible and
+    friendly with identifiers in C, C++, Java, Ocaml, etc. The
+    \emph{Bismon} runtime maintains a large array of hashtables and
+    mutexes to be able to quickly find the object pointer of a given
+    objid (if such an object exists in memory). The objid is used to
+    compare (and sort) objects. The (32 bits, non-zero) hash code of
+    an object is obtained from its objid (but it is cached in the
+    object's memory, for performance reasons).
+
+    \item the recursive \textbf{mutex lock} of that object\footnote{We
+      have considered using a pthread \texttt{rwlock} instead of a
+      \texttt{mutex}, but that would probably be more heavy and
+      perhaps slower, but could be experimented in the future.}. So
+      locking (or unlocking) an object really means using that lock on
+      pthread mutex operations~\footnote{So accessing without the
+        protection of that lock being hold, any data inside an object,
+        other than its constant objid, its class, its routine pointer,
+        is forbidden and considered as \emph{undefined behavior}}.
+
+  \item a \index{space}{\textbf{space}} number fitting in a single
+    byte. The space 0 is for \index{transient}{\emph{transient}}
+    objects that are not persisted to disk. The space 1 is for
+    \index{predefined}{\emph{predefined}} objects (there are about 60
+    of them in Q3 of 2018), which are conceptually created before the
+    start of \emph{Bismon monitor} processes and are permanently
+    available, even at initial load time of the persistent
+    store. Those predefined objects are dumped in file
+    \texttt{store1.bmon}, the objects of space 2 (conventionally
+    called the \emph{global} space) are dumped and persisted in file
+    \texttt{store2.bmon}, etc...
+
+    \item the \index{mtime}{\textbf{mtime}} of an object holds its
+      modification time, with a millisecond granularity, since the
+      Unix Epoch. \index{touch}{Touching} an object is updating its
+      \emph{mtime} to the current time.
+
+    \item the (mutable!) \index{class}{\textbf{class}} of an object is
+      an \index{atomic}{\emph{atomic}}~\footnote{``atomic'' in the C
+        or C++ memory sense; so a pointer declared \texttt{\_Atomic}
+        in C or \texttt{std::atomic} in C++, supposing that they are
+        the same and interoperable.} pointer to an object (usually
+      another one) describing its class, as understood by
+      \emph{Bismon}. It is allowed to change
+      dynamically~\footnote{Changing classes is permitted with
+        reasonable bounds: the class of all classes should remain the
+        \emph{\texttt{class}} predefined object, but of course such an
+        invariant cannot be proved.} the class of any object. Classes
+      describe the behavior (i.e. the dictionnary of ``methods''), not
+      the content (i.e. the ``attributes'') of objects and enable
+      single-inheritance (every class has one super-class).
+
+    \item the \index{attribute}{\emph{attributes}} of an object are
+      organized as an hash-table associating attribute or key objects
+      to arbitrary non-nil values. An \textbf{attribute} is an
+      arbitrary object, and its value is arbitrary (but cannot be
+      nil).
+
+    \item the \index{component}{\emph{components}} of an object are
+      organized as a vector (whose size can change, grow, or shrink)
+      of values. A \textbf{component} inside an object is a value
+      (possibly nil).
+
+      \item objects may contain one \textbf{routine} pointer (or nil),
+        described by \begin{enumerate}
+          
+        \item the \index{routine address}{\emph{routine address}}
+          inside an object is a function or \index{routine}{routine}
+          pointer (in the C sense, possibly and often nil). The
+          signature of that function is described by the routine
+          signature~\footnote{Perhaps all our routines will keep the
+            same signature, and then it would not need to be
+            explicitly stored.}
+
+        \item the \index{routine signature}{\emph{routine signature}}
+          is (when the routine address is non-nil) describing the
+          signature of the routine address above.
+      \end{enumerate}
+
+      Notice that routine address and signature can only change when
+      a new module~\footnote{The generated C code of modules also
+        contains an array of constant objids, ana another array of
+        routine objids.} is loaded (or at initial persistent state load
+      time), and that can happen only when the agenda is
+      inactive. Conceptually they are mostly constant (and do not
+      require any locking).
+        
+      Most (in 2018, all) routines have the same C signature
+      \texttt{objrout\_sigBM} corresponding to the predefined object
+      \texttt{\emph{function\_sig}}. For an object of objid
+      \texttt{\emph{oid}} of that signature its routine address
+      corresponds to the C name \texttt{crout\emph{oid}\_BM}. For
+      instance, to initialize (at load time) the object of oid
+      \texttt{\_9CG8SKNs6Ql\_4PiHd8cnydn} the initial loader (or the
+      module loader) would \texttt{dlsym} the
+      \texttt{crout\_09Hug4WGnPK\_7PpZby8pz84\_BM} C function name.
+
+
+      \item objects may also have some (nearly arbitrary)
+        \index{payload}{\textbf{payload}}. That is a pointer (possibly
+        nil) to some client data owned by the object; the payload is
+        usually not a value but something else. The garbage collector
+        should know all the payload types. In 2018 the following payloads are possible:
+
+        \begin{enumerate}
+        \item mutable \index{vector}{\emph{vector}} of values (like for components)
+        \item mutable \index{associative table}{\emph{associative
+            table}} associating objects to non-nil values (like for
+          attributes)
+          \item mutable \index{hash set}{\emph{hash set}} of objects.
+        \end{enumerate}
+\end{itemize}
