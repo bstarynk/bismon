@@ -100,7 +100,7 @@ modules: _cflagsmodule.mk
 
 
 
-doc: $(MARKDOWN_SOURCES) bismongtk bismon modules 
+doc: $(MARKDOWN_SOURCES) bismongtk bismon modules $(wildcard doc/*.tex doc/*.bib doc/*.hva)
 	for f in $(MARKDOWN_SOURCES) ; do  $(MARKDOWN) $$f > $$(basename $$f .md).html ; done
 	./build-bismon-doc.sh
 

@@ -1,0 +1,90 @@
+%% file datapersist-bm.tex, which is \input from bismon-doc.tex
+\section{Data and its persistence in \emph{Bismon}}
+
+\subsection{data processed in \emph{Bismon}}
+
+The \emph{Bismon monitor} handles various kinds of
+\index{data}{data}. A lot of data is \index{immutable}{immutable} (its
+content cannot change once the data has been created, for example
+strings). But \index{object}{\textbf{objects}} are of course mutable
+and can be modified after creation. Since \emph{Bismon} is
+multi-threaded and its agenda is running \emph{several} worker threads
+in parallel, these mutable objects contain a \index{mutex}{mutex} for
+locking purposes.
+
+So the \emph{Bismon monitor} handle values: they can be immutable, or
+objects (and objects are the only kind of mutable data).
+
+\subsubsection{Immutable values}
+
+They include
+
+\begin{itemize}
+
+\item \textbf{tagged integer} (of 63 bits). The \index{integer}{integer} won't change
+  (and integer values don't require extra space to keep that integer).
+  
+\item UTF-8 encoded \textbf{string} (the bytes inside such
+  \index{string}{strings} don't change).
+
+  \item \textbf{tuple} of objects, that is an ordered (but immutable)
+    sequence of object pointers (the size or content of a tuple don't
+    change). A given object could appear in several positions in a
+    \index{tuple}{tuple}.
+
+    \item \textbf{set} of objects, organized internally as a sorted
+      array of object pointers. A given object can occur only once in
+      a set, and membership (of an object inside a set) is tested
+      dichotomically in logarithmic time. Of course, the size and
+      content of a \index{set}{set} don't change with time.
+
+      \item \textbf{node}. A \index{node}{node} has an object
+        connective, and a (possibly empty, but fixed) sequence of
+        \index{son}{sons} (sons are themselves values, so can
+        themselves be integers, strings, tuples, sets, sub-nodes). The
+        connective, size and sons of a node don't change with
+        time. Since a node is immutable and knows all its sons at
+        creation time, circularity (e.g. a node having itself as some
+        grand-son) inside it is impossible, and the node has a finite
+        depth.
+        
+\end{itemize}
+
+The \index{nil}{\textbf{nil}} value is generally not considered as a
+value, but as the absence of some value. We might (later) add other
+kind of values (perhaps vectors of integers, of doubles, bignums ...),
+but they should all be immutable. It is likely that we prefer complex
+or weird data to sit inside objects.
+
+Tuples and nodes could contain nil, but sets cannot. A node connective
+is a genuine object (so cannot be nil), but a node could have nil
+sons.
+
+Sets and tuples are sometimes both considered as
+\index{sequence}{\textbf{sequences}} and share some common operations.
+
+The immutable values are somehow lightweight. Most of them (strings,
+sets, tuples, nodes) internally keep some hash-code (e.g. to
+accelerate equality tests on them, or accessing hash tables having
+values as keys). The memory overhead for values is therefore small (a
+few extra words at most, to keep GC-data type and mark, size hash).
+
+The size of values (byte length of strings, number of objects in
+tuples or sets, number of sons in nodes) can in principle reach
+$2^{31} - 1$ but is generally much smaller (often less than a few
+dozens) and could be 0.
+
+Mutable values outside of objects (and their payload, see below)
+cannot exist.
+
+Values (even references to objects, e.g. inside sequences or nodes)
+are represented as a machine pointer and fit in a 64 bits word. When
+its least significant bit is 1, it is a tagged integer.
+
+\subsubsection{Objects}
+
+\index{object}{Objects} are the only kind of \index{mutable}{mutable}
+values, and are somehow heavy. They can be accessed nearly
+simultaneously by several worker threads running different tasklets,
+so they need a locking mechanism and contain a (recursive) mutex (so
+in reality only one thread is using them at a given time).
