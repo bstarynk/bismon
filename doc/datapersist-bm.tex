@@ -32,21 +32,26 @@ They include
     change). A given object could appear in several positions in a
     \index{tuple}{tuple}.
 
-    \item \textbf{set} of objects, organized internally as a sorted
-      array of object pointers. A given object can occur only once in
-      a set, and membership (of an object inside a set) is tested
-      dichotomically in logarithmic time. Of course, the size and
-      content of a \index{set}{set} don't change with time.
+  \item \textbf{set} of objects, organized internally as a sorted
+    array of object pointers. A given object can occur only once in a
+    set, and membership (of an object inside a set) is tested
+    dichotomically in logarithmic time. Of course, the size and
+    content of a \index{set}{set} don't change with time.
 
-      \item \textbf{node}. A \index{node}{node} has an object
-        connective, and a (possibly empty, but fixed) sequence of
-        \index{son}{sons} (sons are themselves values, so can
-        themselves be integers, strings, tuples, sets, sub-nodes). The
-        connective, size and sons of a node don't change with
-        time. Since a node is immutable and knows all its sons at
-        creation time, circularity (e.g. a node having itself as some
-        grand-son) inside it is impossible, and the node has a finite
-        depth.
+  \item \textbf{node}. A \index{node}{node} has an object connective,
+    and a (possibly empty, but fixed) sequence of \index{son}{sons}
+    (sons are themselves values, so can themselves be integers,
+    strings, tuples, sets, sub-nodes). The connective, size and sons
+    of a node don't change with time. Since a node is immutable and
+    knows all its sons at creation time, circularity (e.g. a node
+    having itself as some grand-son) inside it is impossible, and the
+    node has a finite depth.
+
+  \item \textbf{closure}. A \index{closure}{closure} is like a node
+    (it has a connective and sons), but its connective is interpreted
+    as the object giving the \index{routine}{routine} (see
+    §\ref{subsubsec:objects} below) to be called when that closure is
+    applied, and its sons are considered as closed values.
         
 \end{itemize}
 
@@ -54,7 +59,9 @@ The \index{nil}{\textbf{nil}} value is generally not considered as a
 value, but as the absence of some value. We might (later) add other
 kind of values (perhaps vectors of integers, of doubles, bignums ...),
 but they should all be immutable. It is likely that we prefer complex
-or weird data to sit inside objects.
+or weird data to sit inside objects. There is also a single
+\index{unspecified}{\textbf{unspecified}} value (which is non-nil so
+cannot be confused with lack of value represented by nil).
 
 Tuples and nodes could contain nil, but sets cannot. A node connective
 is a genuine object (so cannot be nil), but a node could have nil
@@ -85,6 +92,7 @@ Values, including objects, are comparable so sortable. For nodes,
 sets, tuples we use a lexicographical order.
 
 \subsubsection{Mutable objects}
+\label{subsubsec:objects}
 
 \index{object}{Objects} are the only kind of \index{mutable}{mutable}
 values, and are somehow heavy (at least severy dozens of machine words
@@ -104,13 +112,13 @@ only one thread is using them at a given instant).
     the \index{objid}{\textbf{objid}}, randomly generated at object
     creation time and never changed after. In many occasions, that
     objid is printed as 24 characters (two glued blocks of 12
-    characters, the first being an underscore \texttt{\_}, the second
+    characters each, the first being an underscore \texttt{\_}, the second
     being a digit, the 10 others being alphanumerical with significant
     case) such as \texttt{\_4ggW2XwfXdp\_1XRSvOvZqTC}~\footnote{That
       objid \texttt{\_4ggW2XwfXdp\_1XRSvOvZqTC} is for the predefined
       object \emph{\texttt{the\_system}}, and corresponds to the two
       64 bits numbers 3577488711679049683, 1649751471969277032 i.e. to
-      128 bits hexadecimal 0x31a5cb0767997fd316e5183916681468} or
+      128 bits hexadecimal \texttt{0x31a5cb0767997fd316e5183916681468}.} or
     \texttt{\_0xbmmxnN8E8\_0ZuEqJmqMNH}. It is expected that objid
     \index{collision}{collisions} never occur in practice, e.g. that
     even thousands of \emph{Bismon monitor} processes (running on many
@@ -163,10 +171,12 @@ only one thread is using them at a given instant).
       \emph{Bismon}. It is allowed to change
       dynamically~\footnote{Changing classes is permitted with
         reasonable bounds: the class of all classes should remain the
-        \emph{\texttt{class}} predefined object, but of course such an
-        invariant cannot be proved.} the class of any object. Classes
-      describe the behavior (i.e. the dictionnary of ``methods''), not
-      the content (i.e. the ``attributes'') of objects and enable
+        \emph{\texttt{class}} predefined object; all objects should be
+        instances of \emph{\texttt{object}} or more often of some
+        sub-classes of it; of course these invariants cannot be
+        proved.} the class of any object. Classes describe the
+      behavior (i.e. the dictionnary of ``methods''), not the content
+      (i.e. the ``attributes'') of objects and enable
       single-inheritance (every class has one super-class).
 
     \item the \index{attribute}{\emph{attributes}} of an object are
@@ -219,13 +229,98 @@ only one thread is using them at a given instant).
         \index{payload}{\textbf{payload}}. That is a pointer (possibly
         nil) to some client data owned by the object; the payload is
         usually not a value but something else. The garbage collector
-        should know all the payload types. In 2018 the following payloads are possible:
+        should know all the payload types. In 2018 the following
+        payloads are possible (with other specialized payloads,
+        e.g. for parsing, loading, dumping and web request and web
+        session support, contributors):
 
         \begin{enumerate}
-        \item mutable \index{vector}{\emph{vector}} of values (like for components)
+        \item mutable \index{string buffer}{\emph{string buffer}}.
+          \item mutable \index{class}{\emph{class} information} (with its super class, and
+            the method ``dictionnary'' associating objects -selectors-
+            to closures). The class objects are required to have such
+            a payload.
+        \item mutable \index{vector}{\emph{vector}} of values (like
+          for components).
+        \item mutable  doubly \index{linked list}{\emph{linked list}} of non-nil values.
         \item mutable \index{associative table}{\emph{associative
             table}} associating objects to non-nil values (like for
           attributes)
-          \item mutable \index{hash set}{\emph{hash set}} of objects.
+        \item mutable \index{hash set}{\emph{hash set}} of objects.
+        \item mutable \index{hash map}{\emph{hash maps}} to associate arbitrary
+            non-nil values used as keys to other arbitrary non-nil
+            values.
+            \item mutable \index{dictionnary}{\emph{string dictionnaries}} associating
+              non-empty strings to non-nil values.
+          \item etc...
         \end{enumerate}
+
+        Of course, the payload of an object should be accessed,
+        modified, or changed to another payload (or cleared) only
+        while that object is locked.
 \end{itemize}
+
+\medskip
+
+For convenience, (some) objects can also be (optionally) named, in
+some top-level \index{dictionnary}{``dictionnary''} or ``symbol
+table'' (which actually contain weak references to named objects). But
+the \index{name}{name} of an object is not part of it.
+
+\bigskip
+
+\subsection{garbage collection of values and objects}
+
+The \emph{Bismon monitor} has in 2018 a precise, but naive,
+mark\&sweep stop-the-world \index{garbage collector}{garbage
+  collector} for values \footnote{See also previous footnote
+  \ref{fn:initial-gc} on page \pageref{fn:initial-gc} for possible
+  improvements of the GC.}, of course including objects. When the GC
+is running, the agenda has been de-activated, and no tasklets are
+running.
+
+In contrast to most GC implementations (but inspired by the habits of
+\emph{GCC} itself in that area), the garbage collector of the
+\emph{Bismon monitor} is \textbf{not} directly triggered in allocation
+routines (but is started by the agenda machinery). When allocation
+routines detect that a significant amount of memory has been consumed,
+they set some atomic flag for wanting GC, and later that flag would be
+tested (regularily) by the agenda machinery which runs the GC.  So
+when the GC is actually running, the call stacks are conceptually
+empty \footnote{But the support threads, e.g. for web service with
+  \texttt{libonion}, add complication to this scheme. However,
+  ignoring conceptually the call stacks don't require us to use
+  A-normal forms in module code, as was needed in \emph{GCC MELT}, and
+  facilitate thus the generation of C code inside them.}.
+
+The garbage collection roots include:
+
+\begin{itemize}
+\item all the \index{tasklet}{tasklets} queued in the (several queues) of the agenda
+\item all the \index{predefined}{predefined} objects
+  \item all the constants (objects~\footnote{The object of objid
+    \texttt{\_1FEnnpEkGdI\_5DAcVDL5XHG} should be designed as
+    \texttt{BMK\_1FEnnpEkGdI\_5DAcVDL5XHG} in hand-written C code if
+    it is not predefined, and a special utility collects all such
+    names and generates a table of all these constants.}) referred by
+    both hand-written and generated C code (including constants
+    referred by \index{module}{modules}, and objects reifying
+    modules).
+\item some very few global variables (containing values), so
+  conceptually the idle queue of closures, and the queue related to
+  external running processes, the hash-set of active web request
+  objects, etc.
+\end{itemize}
+
+The naive \emph{Bismon monitor} garbage collection~\footnote{Some
+  previous experimentation with Boehm's GC in multithreaded settings
+  has been unsatisfactory.}  works as follow: a queue of non-visited
+objects to be scanned is maintained, with an hash-set of marked
+objects. Initially, we visit the GC roots above. Visiting a value
+involves marking it (recursively for sequences, nodes, closures, ...)
+and if it is a newly marked object absent from the hash-set, adding
+that object to the scan queue and to the hash set of marked
+objects. We repeatedly extract objects to be scanned from the queue
+and visit their content (including their attributes, their components,
+their signature and payload and the values inside that payload). When
+the scan queue is empty, GC is finished.

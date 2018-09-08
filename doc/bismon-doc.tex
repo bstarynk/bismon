@@ -14,6 +14,7 @@
 \usepackage[square]{natbib}
 \usepackage{charter}
 \usepackage{hevea}
+\usepackage{relsize}
 
 \newcommand{\bmemail}[1]{{\href{mailto:#1}{\texttt{\textbf{#1}}}}}
 \newcommand{\bmurl}[1]{{\href{http://#1}{\texttt{\textbf{#1}}}}}
@@ -114,12 +115,19 @@ Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
 \bibliography{bismon-biblio}
 
+\begin{flushright}
+  \begin{relsize}{-2}
+    For books in French, I have provided a tentative translation into
+    English of their title in brackets.
+  \end{relsize}
+\end{flushright}
+
 \clearpage
 
 \printindex
 \end{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Local Variables: ;;
-%% compile-command: "./build-bismon-doc.sh" ;;
+%% compile-command: "cd ..; ./build-bismon-doc.sh" ;;
 %% End: ;;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
