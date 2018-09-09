@@ -1,4 +1,4 @@
 % file bismon-hevea.hva for hevea (see http://hevea.inria.fr/ for more)
-
+% -*- tex-mode -*-
 % usage: \bmincludewidthgraphics{<width>}{<basename>}{<LaTeX-extension>}{<HeVeA-extension>}
 \newcommand{\bmincludewidthgraphics}[4]{\imgsrc[width=#1]{#2.#4}}

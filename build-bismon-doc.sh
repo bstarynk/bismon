@@ -27,8 +27,9 @@ cd doc
 
 for gscript in genscripts/[0-9]*.sh ; do
     gbase="$(basename $gscript .sh)"
-    mv "generated/$gbase.tex" "generated/$gbase.tex~"
+    mv -vf "generated/$gbase.tex" "generated/$gbase.tex~"
     $gscript > "generated/$gbase.tex"
+    echo "script-generated" $(wc -l "generated/$gbase.tex")
 done
 
 # generate vector SVG images

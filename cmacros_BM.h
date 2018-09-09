@@ -338,6 +338,6 @@ extern void weakassertfailureat_BM (const char *condmsg, const char *fil,
 #define BOXFILL_BM TRUE
 #define BOXNOFILL_BM FALSE
 // agenda support
-#define MAXNBWORKJOBS_BM 16
+#define MAXNBWORKJOBS_BM 24
 #define MINNBWORKJOBS_BM 2
 #endif /*CMACROS_BM_INCLUDED */

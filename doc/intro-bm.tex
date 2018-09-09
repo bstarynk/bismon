@@ -11,7 +11,7 @@ The reader of this document is expected to:
     (\cite{Stroustrup:2014:CplusPlus}) programming (notably on Linux
     and/or for embedded products, perhaps for IoT),
 
-  \item knowing a bit the \index{C11}{C11} standard
+  \item be knowing a bit the \index{C11}{C11} standard
     (cf. \cite{C11:std,Memarian:2016:PLDI}) and/or the
     \index{C++11}{C++11} one (\cite{CplusPlus11:std}) and
     understanding well the notion of \index{undefined
@@ -20,13 +20,14 @@ The reader of this document is expected to:
       and \bmurl{https://blog.regehr.org/archives/1520}} in C or C++
     programs,
 
-  \item be a daily advanced user of \index{Linux}{Linux} for software development
-    activities using GCC and related developer tools
+  \item be a daily advanced user of \index{Linux}{Linux} for software
+    development activities using GCC and related developer tools
     (e.g. \textit{binutils}, \texttt{git}, \texttt{make} or
     \texttt{ninja}, source code editor like \texttt{emacs} or
     \texttt{vim}, the {\LaTeX} text formatter\footnote{See
-      \bmurl{https://www.latex-project.org/}}) on the \emph{command
-      line}.
+      \bmurl{https://www.latex-project.org/}. Some knowledge of
+            {\LaTeX} is useful to improve or contribute to this
+            document.}) on the \emph{command line}.
 
 
 \item to be capable of building large free software projects (such as
@@ -37,17 +38,21 @@ The reader of this document is expected to:
     \bmurl{https://coralbits.com/libonion/}}) from their \emph{source}
   form.
 
-\item to have contributed or participated to some free software or
-  open source projects (and understanding their social and economical
+\item have successfully downloaded and built the \emph{Bismon
+  monitor} from its source code on
+  \bmurl{https://github.com/bstarynk/bismon}, on his Linux workstation.
+  
+\item have contributed or participated to some free software or
+  open source projects and understanding their social and economical
   (cf \cite{Weber:2004:SuccessOpenSource, Tirole:2016:EcoBienCommun,
     Nagle:2018:Contributing}) implications, the practical work flow,
-  the importance of developer communities)
+  the importance of developer communities.
   
-\item should be interested in static source code analysis (so have
+\item be interested in static source code analysis, so have
   already tried some such tools like \emph{Frama-C} \footnote{See
     \bmurl{http://frama-c.com/}} (cf. \cite{Cuoq:2012:Frama-C}), \emph{Clang
     analyzer} \footnote{See \bmurl{https://clang-analyzer.llvm.org/}},
-  ...), and be aware of compiler concepts and technologies (read \cite{Aho:2006:DragonBook}).
+  ..., and be aware of compiler concepts and technologies (read \cite{Aho:2006:DragonBook}).
 
 \item be familiar with operating systems principles
   (see \cite{Tanenbaum:92:OS,ArpaciDusseau14-Book}) and well
@@ -66,13 +71,14 @@ The reader of this document is expected to:
 To build this document (both in PDF and HTML forms) : build
 \emph{bismon} \footnote{See the \emph{Readme} on
   \bmurl{https://github.com/bstarynk/bismon/} for building
-  instructions}, then run \texttt{make doc} (that uses {\LaTeX} and
-\emph{HeVeA}).
+  instructions} on your Linux workstatation, then run \texttt{make
+  doc} (that uses {\LaTeX} and
+\href{http://hevea.inria.fr/}{\emph{HeVeA}}).
 
 Feedback and improvements on this document can be suggested by email
 (to \bmemail{basile@starynkevitch.net} or
 \bmemail{basile.starynkevitch@cea.fr}) or by submitting patches to
-\textit{Bismon} thru its \bmurl{github.com/bstarynk/bismon} repository
+\textit{Bismon} thru its \bmurl{https://github.com/bstarynk/bismon} repository
 (or by email). Notice that this document may contain generated
 documentation, and will contain more and more generated parts in the
 future.
@@ -84,7 +90,7 @@ be used for forward references).
 
 \textit{Bismon} (a \emph{temporary name}) \footnote{\texttt{bismon} is a \textbf{temporary name}
   and could be changed, once we find a better name for it} is a free
-software (GPLv3+ licensed)\footnote{The source code is unreleased but available, and continuously evolving, on \bmurl{github.com/bstarynk/bismon}} static source code whole-program analysis framework whose
+software (GPLv3+ licensed)\footnote{The source code is unreleased but available, and continuously evolving, on \bmurl{https://github.com/bstarynk/bismon}} static source code whole-program analysis framework whose
 initial domain will be \emph{Internet of Things} (or
 \index{IoT}{IoT})\footnote{IoT is viewed as the first application
   domain of \textit{Bismon}, but it is hoped that most of
@@ -94,7 +100,7 @@ initial domain will be \emph{Internet of Things} (or
 successor of \textit{GCC MELT} \footnote{The \textit{GCC MELT} web
   pages used to be on \texttt{gcc-melt.org} -a DNS domain relinquished
   in april 2018- and are archived on
-  \bmurl{starynkevitch.net/Basile/gcc-melt}} (see \cite{Starynkevitch2007Multistage, starynkevitch-DSL2011}).
+  \bmurl{https://starynkevitch.net/Basile/gcc-melt}} (see \cite{Starynkevitch2007Multistage, starynkevitch-DSL2011}).
 
 {\large \textit{Bismon} is \textbf{work in progress}}, and many things
 described here are not (fully, or even partly!) implemented in 2018 or
@@ -126,9 +132,11 @@ features:
     \textit{several} compiling and linking processes and commands. So
     most of the data handled by \textit{Bismon} can be persisted on
     disk, and reloaded at the next run. However, some data is
-    temporary by nature\footnote{e.g. data related to a web session,
-      or to a web HTTP exchange, needs not to be persisted} and should
-    not be persisted. Such data is called temporary or
+    temporary by nature\footnote{E.g. data related to a web session,
+      or to a web HTTP exchange, or to an ongoing \texttt{gcc}
+      compilation process, etc... needs not to be persisted, and would
+      be useless when restarting the \textit{Bismon monitor}.} and
+    should not be persisted. Such data is called temporary or
     \index{transient}{\textbf{transient}}. But the usual approach is
     to run the \textit{Bismon} program from some initial loaded state
     and have it \index{dump}{\textbf{dump}} its memory state on disk
@@ -144,10 +152,10 @@ features:
     \footnote{\label{fn:initial-gc}The initial GC of the monitor is a crude precise garbage
       collector, but multi-thread compatible; it uses a naive
       stop-the-world mark\&sweep algorithm. Improving that GC is a
-      difficult work (past experience on \emph{GCC MELT} taught us
+      difficult work, and past experience on \emph{GCC MELT} taught us
       that developing and debugging a GC is hard, and is a good
       illustration of Hofstadter's law (See
-      \cite{Hofstadter:1979:GEB})). We might consider later using MPS
+      \cite{Hofstadter:1979:GEB}). We might consider later using MPS
       from \bmurl{https://www.ravenbrook.com/project/mps/} but doing
       that could require recoding or regenerating a lot of code.}
 
@@ -159,7 +167,7 @@ features:
     the current state is accessible by the DSL.
 
     \item \textbf{translated} to \emph{C} code; and \textbf{generated}
-      \emph{JavaScript} + \emph{HTML} in the browser, and generated
+      \emph{JavaScript} + \emph{HTML} in the \index{browser}{browser}, and generated
       \emph{C++} code of \emph{GCC} plugins
 
     \item \textbf{bootstrapped implementation}: ideally, all of
@@ -190,7 +198,8 @@ features:
       other, and to use the \texttt{bismon} tool
       responsibly\footnote{For example, each \emph{bismon} user has
         the technical ability to erase most of the data inside
-        \textit{Bismon monitor}, but is expected to not do so}
+        \textit{Bismon monitor}, but is expected to not do so. There
+        is no mechanism to forbid or warn him doing such bad things.}
       (likewise, developers accessing a \texttt{git} version control
       repository are supposed to act responsibly even if they are
       technically capable of removing most of the source code and its
@@ -200,7 +209,7 @@ features:
       Since \textit{Bismon} should be usable by a small team of
       developers (perhaps two or a dozen of them)\footnote{So
         \textit{Bismon}, considered as a Web application, would have
-        at most a dozen of browsers -and associated users- accessing
+        at most a dozen of \index{browser}{browsers} -and associated users- accessing
         it. Hence, scalability to many HTTP connections is not at all
         a concern (in contrast with most usual web applications).}, it
       is handling some \index{personal data}{personal data} (relevant
@@ -296,17 +305,23 @@ several worker threads to run the agenda. The agenda itself is not
 persisted as a whole, but tasklets\footnote{Actually tasklets are
   objects (see §\ref{subsubsec:objects} page
   \pageref{subsubsec:objects} below), and to run them, the agenda is
-  sending them the predefined selector \texttt{\emph{run\_tasklet}}.}
-themselves may be \index{persistent}{persistent} or
-\index{transient}{transient}.  Tasklets can also be created outside of
-the agenda (e.g. by incoming HTTP requests, by completion of external
-processes, by timers, ...)  and added asynchronously into the agenda.
+  sending them a message with the predefined selector
+  \texttt{\emph{run\_tasklet}}.}  themselves may be
+\index{persistent}{persistent} or \index{transient}{transient}.
+Tasklets can also be created outside of the agenda (e.g. by incoming
+HTTP requests, by completion of external processes, by timers, ...)
+and added asynchronously into the agenda.
 
-Outside of the agenda, there is a queue of delayed todo closures (a
-queue of closures to be run, as if it was an idle priority queue). But
-that \index{idle queue}{idle queue} contains (perhaps) a few closures,
-not tasklets. Likewise, external running processes have associated to
-them the closure to run when they complete.
+Outside of the agenda, there is an \emph{idle queue} of delayed todo
+closures (a queue of closures to be run, as if it was an idle priority
+queue) with some arguments to apply to them. But that \index{idle
+  queue}{idle queue} don't contain directly any tasklets. That idle
+queue can be filled by external events~\footnote{For example, when an
+  external compilation process completes, that queue is filled with
+  some closure -provided when starting that compilation- and, as
+  arguments, an object with a string buffer containing the output of
+  that process, and the integer status of that process.}. Of course the idle
+queue is not persisted.
 
 \bigskip
 
@@ -315,10 +330,10 @@ When running (in 2019) for static source code analysis purposes, the \emph{Bismo
 \begin{itemize}
 \item the \emph{Bismon monitor} itself, with several threads (notably for the agenda mechanism described above)
   
-  \item the web browsers of developers using that particular
-    \emph{Bismon monitor}; each developer probably runs his/her own
-    browser. That web browser is expected to follow latest Web
-    technologies and standards (HTML5, Javascript6 i.e. EcmaScript
+  \item the web \index{browser}{browsers} of developers using that
+    particular \emph{Bismon monitor}; each developer probably runs
+    his/her own browser. That web browser is expected to follow latest
+    Web technologies and standards (HTML5, Javascript6 i.e. EcmaScript
     2016 at least, WebSockets, ...). It should probably be a Firefox
     or a Chrome browser from 2017 or after. The HTML and Javascript is
     dynamically generated by the \emph{Bismon monitor} and should
@@ -369,11 +384,13 @@ When running (in 2019) for static source code analysis purposes, the \emph{Bismo
         
     \end{enumerate}
 
-    It is yet unclear how such C++ code for GCC plugins is actually
-    compiled and when exactly is it executed. We might generate (at
-    least for the first common case of GCC plugins generated for
-    developers using \emph{Bismon}) \texttt{*.shar} archives (obtained
-    by Web requests) for \emph{GNU sharutils}\footnote{See
+    It is yet unclear how such generated C++ code for GCC plugins is
+    actually compiled and when exactly is it executed. We might
+    generate (at least for the first common case of GCC plugins
+    generated for developers using \emph{Bismon}) \texttt{*.shar}
+    archives (obtained by Web requests, or perhaps some \texttt{wget}
+    or \texttt{curl} command in some \texttt{Makefile}) for
+    \emph{GNU sharutils}\footnote{See
       \bmurl{https://www.gnu.org/software/sharutils/}}. containing the
     C++ code and also the \texttt{g++} command compiling it. The rare
     second case (GCC plugin code generated to inspect the GCC API)
@@ -383,10 +400,11 @@ When running (in 2019) for static source code analysis purposes, the \emph{Bismo
 \end{itemize}
 
 In principle, the various facets of \emph{Bismon} can run on different
-machines (obviously the web browser is not required to run on the same
-machine as the \emph{Bismon monitor}, but even the various
-compilations -of code generated by \emph{Bismon}, and the
-cross-compilation of IoT code- could happen on other machines).
+machines as \index{distributed computing}{distributed computing}
+(obviously the web browser is not required to run on the same machine
+as the \emph{Bismon monitor}, but even the various compilations -of
+code generated by \emph{Bismon}, and the cross-compilation of IoT
+code- could happen on other machines).
 
 Conceptually, we aim for a \index{multi-tier
   programming}{\textbf{multi-tier programming}} approach (inspired by
