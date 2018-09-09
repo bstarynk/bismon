@@ -421,11 +421,11 @@ systems~\footnote{Observe that an entire Linux distribution is also,
   when considered as a single system of ten billions lines of source
   code, fully bootstrapped. You could regenerate all of it. See
   \bmurl{http://www.linuxfromscratch.org/} for guidance.} such as CAIA
-(see \cite{Pitrat:blog} - it explains that all the 500KLOC of the C
-code of CAIA are generated), Ocaml (cf \cite{Ocaml,
+{\small (see \cite{Pitrat:blog} - it explains that all the 500KLOC of the C
+code of CAIA are generated)}, Ocaml {\small (cf \cite{Ocaml,
   Leroy-modular-modules} and many other papers by Xavier Leroy and the
-\href{http://gallium.inria.fr/}{Gallium} team at INRIA), Self (cf
-\cite{Ungar:1987:Self}), and Clasp (cf \cite{Schafmeister:2015:CLASP})
+\href{http://gallium.inria.fr/}{Gallium} team at INRIA)}, Self {\small (cf
+\cite{Ungar:1987:Self})}, and Clasp {\small (cf \cite{Schafmeister:2015:CLASP})}
 show that it is possible. The major advantage of generating \emph{all}
 the code of \emph{Bismon} would be to deal with internal consistency
 in some automated and systematic way and facilitate
@@ -439,12 +439,109 @@ improved in two ways: the ``source'' of the code could be improved (in
 the case of \emph{Bismon}, all the objects describing some module) and
 the ``generator'' of the code could also be improved
 (cf. \index{partial evaluation}{partial evaluation} and Futamura
-projections, e.g. \cite{Futamura:1999:PartialEval}).
+projections, e.g. \cite{Futamura:1999:PartialEval}; also,
+\cite{Pitrat:2009:ArtifBeings, Pitrat:blog} gives some interesting
+perspectives for artificial intelligence with such an approach).
 
 %%%%%%%%%%%%%%%%
 \subsubsection{persisting objects}
-\label{subsubsec:filestate}
+\label{subsubsec:persistobj}
 
+Obviously, the objects of \emph{Bismon} (§~\ref{subsubsec:objects})
+may have circular references, and circularity can only happen thru
+objects (since other composite values such as nodes or sets are
+immutable, §~\ref{subsubsec:immutvalues}). So the initial loader of
+the persistent state proceeds in two passes. The first pass is
+creating all the persisted objects as empty and loads the modules
+needed by them, and the second pass is filling these objects.
+
+\bigskip
+
+\begin{figure}[h]
+\fbox{\parbox{\textwidth}{
 \begin{scriptsize}
   \verbatiminput{generated/001-extract-firsttestmodule-dump.tex}
 \end{scriptsize}
+}}
+  \caption{dump example: \texttt{first\_test\_module} in file
+    \texttt{store2.bmon}}
+  \label{fig:objdumpfirsttestmodule}
+\end{figure}
+
+\bigskip
+
+The figure \ref{fig:objdumpfirsttestmodule} shows an example of the
+textual dump for some object (named \texttt{first\_test\_module}) of
+objid {\small\texttt{\_9oXtCgAbkqv\_4y1xhhF5Nhz}} extracted from the
+data file \texttt{store2.bmon}.
+
+\medskip
+
+\begin{quote}
+\begin{small}
+  
+  The lines starting with \texttt{!(} and with \texttt{!)} are
+  delimiting the object. Comments~\footnote{Once the persistence code
+    - loading and dumping of the state - is mature enough, we will
+    disable generation of comments in data files.} can start with a
+  bar \texttt{|} till the following bar, or with two slashes
+  \texttt{//} till the end of line.  {\verb+!~+} with matching
+         {\verb+(~+} ... \verb+~)+ are for ``modifications'' (here, we
+         set the \index{name}{\texttt{name}} of that object to
+         \texttt{first\_test\_module}). Object payloads are also
+         dumped in such ``modification'' form. \verb+!@+ puts the
+         \index{mtime}{\emph{mtime}}. \verb+!$+ \textit{classobjid}
+         sets the \index{class}{class} to the object of objid
+         \textit{classobjid}. \verb+!:+ \textit{attrobj}
+         \textit{valattr} put the attribute \textit{attrobj}
+         associated with the value \textit{valattr}. \verb+!#+
+         \textit{nbcomp} reserve the spaces for \textit{nbcomp}, and
+         \verb/!&/~\textit{valcomp} appends the value \textit{valcomp}
+         as a component.
+  
+\end{small}
+\end{quote}
+
+\begin{figure}[h]
+  \begin{center}
+  \begin{tabular}{l c l l}
+    \emph{value} & $\leftarrow$ & \emph{int} & ; tagged integers \\
+                 & $|$ & \texttt{\textbf{\_\_}} & ; nil \\
+                 & $|$ & \texttt{\textbf{"}}\emph{string}\texttt{\textbf{"}} & ; string  {\scriptsize with JSON-like escapes} \\
+                 & $|$ & \emph{objid} & ; object  {\scriptsize of given \emph{objid}}\\
+                 & $|$ & \texttt{\textbf{\{}} \emph{objid}$_{elem}$ {...} \texttt{\textbf{\}}}  & ; set  {\scriptsize of elements of given \emph{objid}}\\
+                 & $|$ & \texttt{\textbf{[}} \emph{objid}$_{comp}$ {...} \texttt{\textbf{]}}  & ; tuple  {\scriptsize of components of given \emph{objid}}\\
+                 & $|$ & \texttt{\textbf{*}} \emph{objid}$_{conn}$ \texttt{\textbf{(}} \emph{value}$_{son}$ {...} \texttt{\textbf{)}}  & ; node {\scriptsize of given connective and son[s]}\\
+                 & $|$ & \texttt{\textbf{\%}} \emph{objid}$_{conn}$ \texttt{\textbf{(}} \emph{value}$_{son}$ {...} \texttt{\textbf{)}}  & ; closure {\scriptsize of given connective and son[s]}\\
+  \end{tabular}
+  \end{center}
+  \caption{syntax of values in dumped data files.}
+  \label{fig:dumpvalsyntax}
+\end{figure}
+
+Data files start first with the \emph{objid} of modules used by
+routines (in objects mentioned in that data file). These module-objids
+are prefixed with \texttt{\textbf{!\^}}. Then the collection of
+objects (similar to figure \ref{fig:objdumpfirsttestmodule} each)
+follows.
+
+In data files, objects are represented by their \emph{objid}, perhaps
+followed by a useless comment like
+{\bf{\verb+|+}}\emph{this}{\bf{\verb+|+}}. And immutable values are in
+the grammar given in figure \ref{fig:dumpvalsyntax} (where
+\textbf{\texttt{\_\_}}, representing \emph{nil}, can also appear
+inside tuples, nodes, closures but not within sets).  At dump time, a
+\index{transient}{transient} object is replaced as \emph{nil}, so may
+be dumped as \textbf{\texttt{\_\_}}. Within a set, it is skipped so
+ignored. When the connective of a node or of a closure is a transient
+object, that node or closure is not dumped, but entirely replaced by
+\emph{nil} so dumped as \textbf{\texttt{\_\_}}.
+
+The dump works, in a similar fashion of our naive GC, in two phases: a
+scanning phase to build the hash-set of all dumped objects. A queue of
+objects to be scanned is also used. Then an emission phase is dumping
+them (one data file per object space). So dumping happens by sending
+messages with selectors like \texttt{\textit{dump\_scan}},
+\texttt{\textit{dump\_value}}, \texttt{\textit{dump\_data}}.
+
+
