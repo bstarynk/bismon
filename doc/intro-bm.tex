@@ -22,9 +22,10 @@ The reader of this document is expected to:
 
   \item be a daily advanced user of \index{Linux}{Linux} for software
     development activities using GCC and related developer tools
-    (e.g. \textit{binutils}, \texttt{git}, \texttt{make} or
-    \texttt{ninja}, source code editor like \texttt{emacs} or
-    \texttt{vim}, the {\LaTeX} text formatter\footnote{See
+    (e.g. \textit{binutils}, version control like \texttt{git}, build
+    automation like \texttt{make} or \texttt{ninja}, source code
+    editor like \texttt{emacs} or \texttt{vim}, the {\LaTeX} text
+    formatter~\footnote{See
       \bmurl{https://www.latex-project.org/}. Some knowledge of
             {\LaTeX} is useful to improve or contribute to this
             document.}) on the \emph{command line}.
@@ -68,6 +69,18 @@ The reader of this document is expected to:
 \end{itemize}
 
 
+
+The numerous footnotes in this report are for a second reading (and
+may be used for forward references). To understand this report
+describing a circular and reflexive system, you should read it twice
+(skipping footnotes at the first read).
+
+\bigskip
+
+\hrule
+
+\medskip
+
 To build this document (both in PDF and HTML forms) : build
 \emph{bismon} \footnote{See the \emph{Readme} on
   \bmurl{https://github.com/bstarynk/bismon/} for building
@@ -82,9 +95,6 @@ Feedback and improvements on this document can be suggested by email
 (or by email). Notice that this document may contain generated
 documentation, and will contain more and more generated parts in the
 future.
-
-The numerous footnotes in this report are for a second reading (and may
-be used for forward references).
 
 \subsection{About \textit{Bismon}}
 
@@ -223,10 +233,52 @@ features:
       could be adapted on each deployment site.
 \end{itemize}
 
-Notice that \textit{Bismon} is \textbf{provided as free software}
-(unreleased in 2018, but available on
-\bmurl{github.com/bstarynk/bismon} ...) in \emph{source form only} and
-should be \textbf{usable} (only) \textbf{on a Linux/x86-64
+
+\subsubsection{About \emph{Bismon} as a domain-specific language}
+
+Notice that \textit{Bismon} is not even thought as a \emph{textual}
+domain specific language~\footnote{In contrast, \emph{GCC MELT} was
+  textual and had \texttt{*.melt} source \emph{files} edited with
+  \texttt{emacs}. This made refactoring difficult.} (and this is
+possible because it is persistent). There is not (and there won't be)
+any canonical \emph{textual} syntax for ``source code'' in
+\textit{Bismon} ~\footnote{This idea is not new: neither Smalltalk
+  (cf. \cite{Goldberg:1983:Smalltalk}), nor Common Lisp
+  (cf. \cite{Steele:1990:CommonLisp}), are defined as having a textual
+  syntax with an associated operational semantics based on it. Even
+  the syntax of C is defined \emph{after} preprocessing. What is
+  -perhaps informally- defined for Smalltalk and Common Lisp is some
+  abstract internal representation of ``source code'' in ``memory''
+  and its ``behavior''. In contrast, Scheme has both its textual
+  syntax and its semantics well defined in R5RS, see
+  \cite{Adams:1998:R5RS}.}. \index{source code}{\emph{Source code}} is
+defined (socially) as the preferred form on which developers are
+working on programs. For C or C++ or Scheme programs, source code
+indeed sits in textual files in practice (even if the C standard don't
+speak of files, only of ``translation units'', see \cite{C11:std}),
+and the developer can use any source code editor (perhaps an editor
+unaware of the syntax of C, of C++, of Scheme) to change these source
+files. In contrast, a developer contributing to \textit{Bismon} is
+browsing and changing some internal representations thru the
+\textit{Bismon} user interface (a Web interface~\footnote{in mid-2018,
+  that Web interface was incomplete, and I still had to temporarily
+  use some obsolete GTK-based interface that even I find so disgusting
+  that I won't explain it, and sometimes even to edit manually some
+  \texttt{store2.bmon} data file, cf §~\ref{subsubsec:filestate}.})
+and interacts with \textit{Bismon} to do that. There is no really any
+\index{abstract syntax tree}{abstract syntax \emph{tree}} in
+\textit{Bismon}: what the developer is working on is some \emph{graph}
+(with circularities), and the entire persistent state of \emph{Bismon}
+could be viewed as some large graph in memory. 
+
+
+\subsubsection{About \emph{Bismon} as a evolving software system}
+
+So \emph{Bismon} is better thought of as an evolving software
+system. It is suggested to try it.  Notice that \textit{Bismon} is
+\textbf{provided as free software} (unreleased in 2018, but available
+on \bmurl{github.com/bstarynk/bismon} ...) in \emph{source form only}
+and should be \textbf{usable} (only) \textbf{on a Linux/x86-64
   workstation}... (typically, at least 32 gigabytes of RAM and
 preferably more, at least 8 cores, several hundreds gigabytes of disk
 or SSD).
@@ -253,8 +305,15 @@ team using \textit{Bismon} would probably \texttt{git clone} either
 downloading and building required dependencies), and work on that
 \texttt{git} repository (and of course back-up it quite often).
 
+People trying the \emph{Bismon monitor} will use some Web interface to
+interact with it.
 
-\medskip
+\subsubsection{About \emph{Bismon} as a static source code analyzer}
+
+@@@ to be written when some static source code analysis of some C or
+C++ code is possible with \emph{Bismon}.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Multi-threaded and distributed aspects of \textit{Bismon}}
 

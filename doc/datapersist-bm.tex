@@ -130,10 +130,10 @@ them at a given instant).
   \item a constant \emph{unique} serial id (of about 128 bits), called
     the \index{objid}{\textbf{objid}}, randomly generated at object
     creation time and never changed after. In many occasions, that
-    objid is printed as 24 characters (two glued blocks of 12
+    objid is printed as 24 characters {\small (two glued blocks of 12
     characters each, the first being an underscore \texttt{\_}, the
     second being a digit, the 10 others being alphanumerical with
-    significant case) such as
+    significant case)} such as
     \texttt{\_4ggW2XwfXdp\_1XRSvOvZqTC}~\footnote{That objid
       \texttt{\_4ggW2XwfXdp\_1XRSvOvZqTC} is for the predefined object
       \emph{\texttt{the\_system}}, and corresponds to the two 64 bits
@@ -375,10 +375,11 @@ backed-up and probably version-controlled~\footnote{How and when the
   lost everything since the latest dumped persistent store. The
   textual format of the persisted state should be friendly to most
   version control systems and other utilities.} at every site using
-the \emph{Bismon} monitor.
+the \emph{Bismon} monitor. 
 
 %%%%%%%%%%%%%%%%
 \subsubsection{file organization of the persistent state}
+\label{subsubsec:filestate}
 
 The persistent state contains both data and ``code''. So it is made of the following \index{file}{files}:
 
@@ -439,6 +440,10 @@ the case of \emph{Bismon}, all the objects describing some module) and
 the ``generator'' of the code could also be improved
 (cf. \index{partial evaluation}{partial evaluation} and Futamura
 projections, e.g. \cite{Futamura:1999:PartialEval}).
+
+%%%%%%%%%%%%%%%%
+\subsubsection{persisting objects}
+\label{subsubsec:filestate}
 
 \begin{scriptsize}
   \verbatiminput{generated/001-extract-firsttestmodule-dump.tex}
