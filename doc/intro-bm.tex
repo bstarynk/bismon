@@ -43,9 +43,10 @@ The reader of this document is expected to:
   monitor} from its source code on
   \bmurl{https://github.com/bstarynk/bismon}, on his Linux workstation.
   
-\item have contributed or participated to some free software or
-  open source projects and understanding their social and economical
-  (cf \cite{Weber:2004:SuccessOpenSource, Tirole:2016:EcoBienCommun,
+\item have contributed or participated to some free software or open
+  source projects and understanding their social (cf
+  \cite{Raymond:2001:CathBaz}) and economical (cf
+  \cite{Weber:2004:SuccessOpenSource, Tirole:2016:EcoBienCommun,
     Nagle:2018:Contributing}) implications, the practical work flow,
   the importance of developer communities.
   
@@ -135,8 +136,8 @@ features:
 
 \begin{itemize}
 
-  \item \index{persistency}{\textbf{persistency}}, somehow
-    \textit{orthogonal persistency}. It is needed in particular
+  \item \index{persistence}{\textbf{persistence}}, somehow
+    \textit{orthogonal persistence}. It is needed in particular
     because compiling some software project (analyzed by
     \textit{Bismon}) is a long-lasting procedure involving
     \textit{several} compiling and linking processes and commands. So
@@ -149,7 +150,11 @@ features:
     should not be persisted. Such data is called temporary or
     \index{transient}{\textbf{transient}}. But the usual approach is
     to run the \textit{Bismon} program from some initial loaded state
-    and have it \index{dump}{\textbf{dump}} its memory state on disk
+    and have it \index{dump}{\textbf{dump}} its memory state on
+    disk~\footnote{Look also into Liam Proven FOSDEM 2018 talk about
+      \emph{The circuit less traveled} on
+      \bmurl{https://archive.fosdem.org/2018/schedule/event/alternative\_histories/}
+      for an interesting point of view regarding persistent systems.}.
     before exiting (and reload that augmented state at the next run),
     and probably more often than that (e.g. twice an hour, or even
     every five minutes).

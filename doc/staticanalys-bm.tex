@@ -1,0 +1,27 @@
+% file staticanalys-bm.tex, which is \input from bismon-doc.tex
+\section{Static analysis of source code in \emph{Bismon}}
+\label{sec:staticanalys}
+
+{\Large @@ To be written.}
+
+A significant part of this chapter should be generated (like \emph{GCC
+  MELT} generated its documentation) from the persistent state of
+\emph{Bismon}. Perhaps this chapter should be put after the ``using
+Bismon'' chapter (§\ref{sec:using}).
+
+\subsection{static analysis of \emph{GCC}}
+
+The \emph{GCC} compiler has a complex (and ill-defined,
+under-documented and evolving, so unstable) API which can be used by
+plugins. So \emph{Bismon} needs to analyze the various \emph{GCC}
+plugin related headers to extract important information about that
+API, so to be later able to generate \emph{GCC} plugin code.
+
+@@ To be written
+
+\subsection{static analysis of other code}
+
+@@ To be written
+
+We probably would take as an example the analysis of
+\href{http://mqtt.org/}{MQTT library}
