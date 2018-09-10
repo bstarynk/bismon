@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1242 objects
+// for 1243 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -8000,6 +8000,27 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7bbeIqUSje9_4jVgC7ZJmvx
 !)_6xYp4xes2Nz_22q6VsFt2Ee
+
+
+
+!(_3Zhj19TAEot_8zgNbkZdJq7 |=tuplecompnth|
+!~ name (~ tuplecompnth
+~)
+!@ 1536562208.728
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "give in tuple v1 the component of rank i2 or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW _2Z396p8p48p_848KxWmzoSb ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3Zhj19TAEot_8zgNbkZdJq7  ":*/"  "tuplecompnth_BM"  "((" 
+ _5DDSY1YgVZr_6dOU4tiBldk  " "  "tupleval_tyBM"  "*)("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_5EEITf6IFH7_4DbKG99zcPW) 
+  "),"  " "  "(" _0vgCFjXblkx_4zCMhMAWjVK  ")(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_3Zhj19TAEot_8zgNbkZdJq7
 
 
 
