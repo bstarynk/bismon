@@ -584,7 +584,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
         {
           _.lockob = setelemnth_BM (_.setlockingv, lkix);
           _.varob = NULL;
-          char *lockobnam = NULL;
+          const char *lockobnam = NULL;
           {
             ASSERT_BM (isobject_BM (_.lockob));
             objlock_BM (_.lockob);
@@ -621,7 +621,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   for (int aix = 0; aix < nbargs; aix++)
     {
       _.varob = tuplecompnth_BM (_.argtupv, aix);
-      char *varobnam = findobjectname_BM (_.varob);
+      const char *varobnam = findobjectname_BM (_.varob);
       _.typob = NULL;
       DBGPRINTF_BM
         ("emit_definition°simple_routine_preparation routprepob=%s aix#%d arg varob=%s bodyob=%s",
@@ -738,7 +738,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
       for (int clix = 0; clix < nbclosed; clix++)
         {
           _.varob = sequencenthcomp_BM (_.closedseqv, clix);
-          char *varobnam = findobjectname_BM (_.varob);
+          const char *varobnam = findobjectname_BM (_.varob);
           WEAKASSERT_BM (_.varob);
           objlock_BM (_.varob);
           _.typob = objectcast_BM (objgetattr_BM (_.varob, k_c_type));
@@ -933,6 +933,10 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
       _.stmtv = objgetcomp_BM (_.blockob, insix);
       if (!_.stmtv)
         continue;
+      if (insix % 2 == 0 && insix > 0 && insix + 1 < blocklen)
+        objstrbufferprintfpayl_BM (_.modgenob,
+				   "//+ #%d/%d of block %s ::\n", insix, blocklen,
+                                   blockidbuf);
       _.stmtob = objectcast_BM (_.stmtv);
       DBGPRINTF_BM
         ("emit_block°basiclo_block blockob %s insix#%d stmtob %s of %s",
