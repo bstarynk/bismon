@@ -935,8 +935,8 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
         continue;
       if (insix % 2 == 0 && insix > 0 && insix + 1 < blocklen)
         objstrbufferprintfpayl_BM (_.modgenob,
-				   "//+ #%d/%d of block %s ::\n", insix, blocklen,
-                                   blockidbuf);
+                                   "//+ #%d/%d of block %s ::\n", insix,
+                                   blocklen, blockidbuf);
       _.stmtob = objectcast_BM (_.stmtv);
       DBGPRINTF_BM
         ("emit_block°basiclo_block blockob %s insix#%d stmtob %s of %s",
@@ -3706,6 +3706,10 @@ ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr)    //emit_block°basiclo_lockobj
          objectdbg_BM (_.stmtob), cix, objectdbg1_BM (_.compob));
       objstrbuffersetindentpayl_BM (_.modgenob, depth + 1);
       objstrbuffernewlinepayl_BM (_.modgenob);
+      if (cix % 2 == 0 && cix > 0 && cix + 1 < stmtlen)
+        objstrbufferprintfpayl_BM (_.modgenob,
+                                   "//+ #%d/%d of lockobj %s ::\n", cix,
+                                   stmtlen, stmtidbuf);
       if (objectisinstance_BM (_.compob, k_basiclo_statement))
         {
           _.emitv = send3_BM (_.compob, k_emit_statement, CURFRAME_BM,  //
