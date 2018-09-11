@@ -588,8 +588,9 @@ value_tyBM crout_0DGyKHi4Zo0_4eC8WMw5tyJ_BM     //#2
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 10 local values:
+    /// 11 local values:
     value_tyBM v_0qTBOEAT5pa_2fz1SKfHrMV;       // v_resemit
+    objectval_tyBM *o_1HqWQ9s5egE_3wxHu3edfqP;  // o_body
     objectval_tyBM *o_2LvSvKJFCCF_3QyFpcrySIi;  // o_curvar
     value_tyBM v_3lXKQCJ5IpM_1W5tqNbhFtx;       // v_locals
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ;       // v_r
@@ -607,7 +608,7 @@ value_tyBM crout_0DGyKHi4Zo0_4eC8WMw5tyJ_BM     //#2
   memset (&_, 0, sizeof (struct frame_0DGyKHi4Zo0_4eC8WMw5tyJ_BMst));
   _.stkfram_head.htyp = typayl_StackFrame_BM;
   _.stkfram_head.hgc = 0;
-  _.stkfram_head.rlen = 10;
+  _.stkfram_head.rlen = 11;
   _.stkfram_descr =
     constob_3BFt4NfJmZC_7iYi2dwM38B_BM[5] /*|_0DGyKHi4Zo0_4eC8WMw5tyJ */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
@@ -1097,6 +1098,26 @@ startblock__8RoxHXFm8Yb_7i6HiYCnAZF:__attribute__ ((unused));
                 }
   /*-endwhile _0SQBuKUUDxJ_2Wn8wvyC8yf */
 
+
+                /*o_body: */ _.o_1HqWQ9s5egE_3wxHu3edfqP =
+                  //assign _4ZxtdeuMIUJ_3CYnTWhHPsS  
+                  /*val_to_object: */
+                  objectcast_BM (       /*objgetattr: */
+                                  objgetattr_BM (( /*o_jsfun: */ _.
+                                                  o_9cviE5EThOn_1uzO8G7LyRN),
+                                                 ((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[70] /*!body */ ))));
+
+
+                {               // run _3nNasyrhTOd_7y9u9d61mbx 
+/*debug o_body from o_jsfun*/
+                  DBGPRINTF_BM
+                    ("emit_jstoplevel°jsfun_preparation_object €%.9s o_body=%s from o_jsfun=%s",
+                     "_3nNasyrhTOd_7y9u9d61mbx",
+                     objectdbg_BM ( /*o_body: */ _.o_1HqWQ9s5egE_3wxHu3edfqP),
+                     objectdbg1_BM ( /*o_jsfun: */ _.
+                                    o_9cviE5EThOn_1uzO8G7LyRN));
+                  ;
+                }               // end run _3nNasyrhTOd_7y9u9d61mbx 
 
                 objunlock_BM (locked_1JnIgB7kqaz_6lHJF3IhUv0),
                   locked_1JnIgB7kqaz_6lHJF3IhUv0 = NULL;
