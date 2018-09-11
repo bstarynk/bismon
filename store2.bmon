@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1276 objects
+// for 1278 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -1251,6 +1251,28 @@ _7gnMvoTqaQY_3kAwj2rwZEM
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector to emit a jsmodule element"
 !)_1DGcmfymxyC_2TiD1HX0HU5
+
+
+
+!(_6BRdQlnZFnr_5jKwoMJCYS6 |=emit_jsblock|
+!~ name (~ emit_jsblock
+~)
+!@ 1536640869.102
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector <o_block o_jsgenmod o_jsgenfun o_strbuf"& " v_depth to emit a javascript block"
+!)_6BRdQlnZFnr_5jKwoMJCYS6
+
+
+
+!(_2dsjWb0oYbZ_9aUSxaz9avx |=emit_jsstmt|
+!~ name (~ emit_jsstmt
+~)
+!@ 1536640908.062
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector <o_stmt o_jsgenmod o_jsgenfun o_strbuf"& " v_depth to emit a javascript statement"
+!)_2dsjWb0oYbZ_9aUSxaz9avx
 
 
 
