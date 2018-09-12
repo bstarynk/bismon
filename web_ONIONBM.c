@@ -81,6 +81,9 @@ static thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
 // return a malloced percent-encoded string for all the query arguments
 static char *percent_encode_onion_query_args_BM (onion_request * req);
 
+/// create the anonymous web session and write it into a file
+static void create_anonymous_web_session_BM (void);
+
 // the lock above should be set when calling:
 static void
 fork_onion_process_at_slot_BM (int slotpos,
@@ -488,6 +491,10 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
           ("run_onionweb before onion_listen cmdpiprd#%d cmdpipwr#%d",
            cmdpipe_rd_BM, cmdpipe_wr_BM);
       }
+      ///
+      if (onion_anon_web_session_BM && *onion_anon_web_session_BM)
+        create_anonymous_web_session_BM ();
+      /// listen to HTTP, in other threads
       int err = onion_listen (myonion_BM);      // since detached, returns now
       DBGPRINTF_BM ("run_onionweb after onion_listen err=%d", err);
       if (err)
@@ -1346,7 +1353,37 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
 
 
 
-
+void
+create_anonymous_web_session_BM (void)
+{
+  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
+                 objectval_tyBM * sessionob;    //
+                 value_tyBM cookiestrv;
+    );
+  DBGPRINTF_BM ("create_anonymous_web_session start onionanonwebsession '%s'",
+                onion_anon_web_session_BM);
+  // backup cookie file, if it exists
+  if (!access (onion_anon_web_session_BM, R_OK))
+    {
+      char *backupath = NULL;
+      asprintf (&backupath, "%s~", onion_anon_web_session_BM);
+      if (backupath)
+        {
+          if (!rename (onion_anon_web_session_BM, backupath))
+            INFOPRINTF_BM
+              ("backup anonymous web session cookie file: %s -> %s",
+               onion_anon_web_session_BM, backupath);
+        }
+    }
+  FILE *fil = fopen (onion_anon_web_session_BM, "w");
+  if (!fil)
+    FATAL_BM ("failed to fopen anonymous web session cookie file '%s' - %m",
+              onion_anon_web_session_BM);
+  WARNPRINTF_BM
+    ("create_anonymous_web_session unimplemented for anonymous web session cookie file '%s'",
+     onion_anon_web_session_BM);
+#warning create_anonymous_web_session unimplemented
+}                               /* end create_anonymous_web_session_BM */
 
 
 //////////////////////////////////////////////////////////////////////////

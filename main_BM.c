@@ -62,6 +62,7 @@ static void rungui_BM (int nbjobs);
 #ifdef BISMONION
 const char *onion_ssl_certificate_BM;
 const char *onion_web_base_BM;
+const char *onion_anon_web_session_BM;
 extern void run_onionweb_BM (int nbjobs);
 #endif /*BISMONION*/
 extern void weakfailure_BM (void);
@@ -580,6 +581,14 @@ const GOptionEntry optionstab_bm[] = {
    .description =
    "A string like <host>:<port>, default is localhost:8086, describing the base of web URLs served by bismon",
    .arg_description = "WEB_BASE"},
+  {.long_name = "anon-web-session",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &onion_anon_web_session_BM,
+   .description =
+   "Create an anonymous web session, and write its cookie in the given COOKIEFILE",
+   .arg_description = "COOKIEFILE"},
+
 #endif /*BISMONION*/
     /// end of options
   {}

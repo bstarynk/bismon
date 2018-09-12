@@ -207,6 +207,7 @@ extern const struct parserops_stBM parsop_command_nobuild_BM;
 #ifdef BISMONION
 extern const char *onion_ssl_certificate_BM;
 extern const char *onion_web_base_BM;
+extern const char *onion_anon_web_session_BM;
 #endif /*BISMONION*/
 /*****************************************************************/
 #define UNSPECIFIED_BM ((void*)(&unspecifieddata_BM))
