@@ -1497,7 +1497,7 @@ ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty)    //miniscan_stmt°basiclo_run
                   if (!_.typsubob)
                     {
                       WARNPRINTF_BM
-                        ("run in basiclo_run %s with unbound variable node #%s : %s",
+                        ("run in basiclo_run %s with unbound variable node #%d : %s",
                          objectdbg_BM (_.stmtob), cix,
                          OUTSTRVALUE_BM (_.compv));
                       FAILHERE (makenode2_BM
@@ -1512,7 +1512,7 @@ ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty)    //miniscan_stmt°basiclo_run
                   if (!_.typsubob)
                     {
                       WARNPRINTF_BM
-                        ("run in basiclo_run %s with unbound son node #%s : %s",
+                        ("run in basiclo_run %s with unbound son node #%d : %s",
                          objectdbg_BM (_.stmtob), cix,
                          OUTSTRVALUE_BM (_.compv));
                       FAILHERE (makenode2_BM
