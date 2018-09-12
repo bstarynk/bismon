@@ -4524,13 +4524,15 @@ value_tyBM crout_7gbmQg2dILF_76dK4SAVpqZ_BM     //#21
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 6 local values:
+    /// 8 local values:
+    value_tyBM v_0ZL8gaI6sH8_7UPhmAQcwMe;       // v_comp
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ;       // v_r
     objectval_tyBM *o_41F1rKwGbaA_30OJWKsqNWy;  // o_strbuf
     value_tyBM v_4nJKFtMqlkA_1teQSqofNux;       // v_depth
     objectval_tyBM *o_4JKd986pvM4_6yBzeeI40vW;  // o_jsgenmod
     objectval_tyBM *o_5Lg7fb6zE3H_6ijQo6GbPN4;  // o_jsgenfun
     objectval_tyBM *o_5XGKMg1Kevs_6eAce4ib9XW;  // o_block
+    objectval_tyBM *o_6Z4UU939WbU_8BK9xcKsXNb;  // o_comp
     /// 3 local numbers:
     intptr_t n_2W7Ckt2WxEM_4NVYgEWE73B; // ii
     intptr_t n_6Y20GNUgnSZ_4LkbrcRMU8f; // i_depth
@@ -4539,7 +4541,7 @@ value_tyBM crout_7gbmQg2dILF_76dK4SAVpqZ_BM     //#21
   memset (&_, 0, sizeof (struct frame_7gbmQg2dILF_76dK4SAVpqZ_BMst));
   _.stkfram_head.htyp = typayl_StackFrame_BM;
   _.stkfram_head.hgc = 0;
-  _.stkfram_head.rlen = 6;
+  _.stkfram_head.rlen = 8;
   _.stkfram_descr =
     constob_3BFt4NfJmZC_7iYi2dwM38B_BM[71] /*|_7gbmQg2dILF_76dK4SAVpqZ */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
@@ -4578,7 +4580,7 @@ startblock__25nKBJWCTfY_6oDXNLB33tM:__attribute__ ((unused));
       //assign _6LsY57GioDB_0Y6NIoq59hL  
       /* val_to_int */ getint_BM ( /*v_depth: */ _.v_4nJKFtMqlkA_1teQSqofNux);
 
-//+ #2/8 of block _25nKBJWCTfY_6oDXNLB33tM :: 
+//+ #2/9 of block _25nKBJWCTfY_6oDXNLB33tM :: 
 
     /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B =
       //assign _9uYB8EKu3q4_77tPqG4mIWo  
@@ -4592,7 +4594,7 @@ startblock__25nKBJWCTfY_6oDXNLB33tM:__attribute__ ((unused));
                                      ("{ //blk "));
     }                           // end cexpansion _8viqLuZ2r2M_6lrwqacOp6Z - objstrbufferappendcstrpayl  
 
-//+ #4/8 of block _25nKBJWCTfY_6oDXNLB33tM ::  
+//+ #4/9 of block _25nKBJWCTfY_6oDXNLB33tM ::  
 
     {                           // start cexpansion _7eRgPA92GZJ_2qlnC66APPw - objstrbufferprintobject  
 /*objstrbufferprintobject _7eRgPA92GZJ_2qlnC66APPw:*/
@@ -4619,7 +4621,7 @@ startblock__25nKBJWCTfY_6oDXNLB33tM:__attribute__ ((unused));
                                                                     + (1))));
     }                           // end cexpansion _4za1XRuccMv_6x6jaJW68mY - objstrbuffersetindentpayl   
 
-//+ #6/8 of block _25nKBJWCTfY_6oDXNLB33tM ::   
+//+ #6/9 of block _25nKBJWCTfY_6oDXNLB33tM ::   
 
     {                           // start cexpansion _0M3cmeXOpSu_1S2fV9rL9Rz - objstrbuffernewlinepayl  
                                                                         /*objstrbuffernewlinepayl: */ objstrbuffernewlinepayl_BM (
@@ -4632,6 +4634,31 @@ startblock__25nKBJWCTfY_6oDXNLB33tM:__attribute__ ((unused));
       //assign _2a0wvr3kiFD_33stkHwdejM  
       /*objnbcomps: */
       objnbcomps_BM ( /*o_block: */ _.o_5XGKMg1Kevs_6eAce4ib9XW);
+
+
+
+//// +while _0l3YPLBBvUL_7dgBMwKCPzG 
+  startblock__0l3YPLBBvUL_7dgBMwKCPzG: /*+!while */ ;
+    {                           /* +while _0l3YPLBBvUL_7dgBMwKCPzG */
+      if (!( /*while _0l3YPLBBvUL_7dgBMwKCPzG cond: */ ( /*less_int: */ ( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B) < ( /*leni: */ _.n_833x2jYqhZh_8vDIuJhwz1k))))  //: testwhile _0l3YPLBBvUL_7dgBMwKCPzG failing   
+        goto endblock__0l3YPLBBvUL_7dgBMwKCPzG; //failwhile   
+// while _0l3YPLBBvUL_7dgBMwKCPzG body:   
+// while _0l3YPLBBvUL_7dgBMwKCPzG comp#0:  
+      /*v_comp: */ _.v_0ZL8gaI6sH8_7UPhmAQcwMe =
+        //assign _0VwWrljZ6EA_1iHdYZQux1K   
+        /*objgetcomp: */
+        objgetcomp_BM (( /*o_block: */ _.o_5XGKMg1Kevs_6eAce4ib9XW),
+                       ( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B));
+// while _0l3YPLBBvUL_7dgBMwKCPzG comp#1:  
+      /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B =
+        //assign _8jFanjiQSIA_8BDoRFxiocB   
+        /*add_int: */ (( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B) + (1));
+
+      goto startblock__0l3YPLBBvUL_7dgBMwKCPzG; // repeatwhile  
+    endblock__0l3YPLBBvUL_7dgBMwKCPzG: /*endingwhile */ ;
+    }
+  /*-endwhile _0l3YPLBBvUL_7dgBMwKCPzG */
+
 
 /* !endingblock _25nKBJWCTfY_6oDXNLB33tM */
     goto endblock__25nKBJWCTfY_6oDXNLB33tM;
