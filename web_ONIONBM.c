@@ -22,7 +22,11 @@
 #include "web_ONIONBM.const.h"
 #include "_login_ONIONBM.h"
 
-#define WEBSESSION_EXPIRATION_DELAY 4000.0
+// expiration delay for user session, in seconds (more than an hour,
+// but increased on every web interaction)
+#define USER_WEBSESSION_EXPIRATION_DELAY 4000.0
+// expiration delay for the anonymous session, in seconds (more than ten years)
+#define ANON_WEBSESSION_EXPIRATION_DELAY 333.0e6
 extern void run_onionweb_BM (int nbjobs);
 static onion *myonion_BM;
 // the command pipe contains bytes, each considered as a different message
@@ -1238,13 +1242,14 @@ do_forgot_onion_BM (char *formuser,
 
 
 
+static long sessioncounter_bm;
+
 onion_connection_status
 do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
                             const char *location, onion_request * req,
                             onion_response * resp,
-                            struct stackframe_stBM * stkf)
+                            struct stackframe_stBM *stkf)
 {
-  static long sessioncounter;
   objectval_tyBM *k_websession_object = BMK_56KY6TzyCU5_12De0mHE48M;
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -1271,13 +1276,13 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
   wsess->websess_contribob = _.contribob;
   wsess->websess_createtime = clocktime_BM (CLOCK_REALTIME);
   wsess->websess_expiretime =
-    wsess->websess_createtime + WEBSESSION_EXPIRATION_DELAY;
+    wsess->websess_createtime + USER_WEBSESSION_EXPIRATION_DELAY;
   objputpayload_BM (_.sessionob, wsess);
   objputclass_BM (_.sessionob, k_websession_object);
   wsess->websess_magic = BISMONION_WEBSESS_MAGIC;
   objtouchnow_BM (_.sessionob);
   /// add the session to the_web_sessions; its lock also serializes
-  /// access to our sessioncounter...
+  /// access to our sessioncounter_bm...
   {
     objlock_BM (BMP_the_web_sessions);
     // this should never happen, but it is better to check
@@ -1285,8 +1290,8 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
         || objclass_BM (BMP_the_web_sessions) != k_websession_dict_object)
       FATAL_BM ("corrupted `the_web_sessions` (of class %s)",
                 objectdbg_BM (objclass_BM (BMP_the_web_sessions)));
-    sessioncounter++;
-    wsess->websess_rank = sessioncounter;
+    sessioncounter_bm++;
+    wsess->websess_rank = sessioncounter_bm;
     _.cookiestrv =
       sprintfstring_BM ("n%06dR%dt%do%s", wsess->websess_rank,
                         wsess->websess_rand1, wsess->websess_rand2,
@@ -1356,6 +1361,8 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
 void
 create_anonymous_web_session_BM (void)
 {
+  objectval_tyBM *k_websession_object = BMK_56KY6TzyCU5_12De0mHE48M;
+  objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * sessionob;    //
                  value_tyBM cookiestrv;
@@ -1371,18 +1378,61 @@ create_anonymous_web_session_BM (void)
         {
           if (!rename (onion_anon_web_session_BM, backupath))
             INFOPRINTF_BM
-              ("backup anonymous web session cookie file: %s -> %s",
+              ("back-up anonymous web session cookie file: %s -> %s",
                onion_anon_web_session_BM, backupath);
+          free (backupath), backupath = NULL;
         }
     }
   FILE *fil = fopen (onion_anon_web_session_BM, "w");
   if (!fil)
     FATAL_BM ("failed to fopen anonymous web session cookie file '%s' - %m",
               onion_anon_web_session_BM);
-  WARNPRINTF_BM
-    ("create_anonymous_web_session unimplemented for anonymous web session cookie file '%s'",
-     onion_anon_web_session_BM);
-#warning create_anonymous_web_session unimplemented
+  /// create the session
+  char sessidbuf[32];
+  memset (sessidbuf, 0, sizeof (sessidbuf));
+  _.sessionob = makeobj_BM ();
+  idtocbuf32_BM (objid_BM (_.sessionob), sessidbuf);
+  struct websessiondata_stBM *wsess =
+    allocgcty_BM (typayl_websession_BM, sizeof (*wsess));
+  wsess->websess_magic = 1;
+  wsess->websess_rank = 0;
+  wsess->websess_rand1 = 100 + (g_random_int () % (INT_MAX / 2));
+  wsess->websess_rand2 = 105 + (g_random_int () % (INT_MAX / 2));
+  wsess->websess_ownobj = _.sessionob;
+  wsess->websess_contribob = NULL;
+  wsess->websess_createtime = clocktime_BM (CLOCK_REALTIME);
+  wsess->websess_expiretime =
+    wsess->websess_createtime + ANON_WEBSESSION_EXPIRATION_DELAY;
+  objputpayload_BM (_.sessionob, wsess);
+  objputclass_BM (_.sessionob, k_websession_object);
+  wsess->websess_magic = BISMONION_WEBSESS_MAGIC;
+  objtouchnow_BM (_.sessionob);
+  /// add the session to the_web_sessions; its lock also serializes
+  /// access to our sessioncounter_bm...
+  {
+    objlock_BM (BMP_the_web_sessions);
+    // this should never happen, but it is better to check
+    if (!objhasdictpayl_BM (BMP_the_web_sessions)
+        || objclass_BM (BMP_the_web_sessions) != k_websession_dict_object)
+      FATAL_BM ("corrupted `the_web_sessions` (of class %s)",
+                objectdbg_BM (objclass_BM (BMP_the_web_sessions)));
+    sessioncounter_bm++;
+    wsess->websess_rank = sessioncounter_bm;
+    _.cookiestrv =
+      sprintfstring_BM ("n%06dR%dt%do%s", wsess->websess_rank,
+                        wsess->websess_rand1, wsess->websess_rand2,
+                        sessidbuf);
+    DBGPRINTF_BM
+      ("create_anonymous_web_session adding sessionob %s of cookie '%s'",
+       objectdbg_BM (_.sessionob), bytstring_BM (_.cookiestrv));
+    objdictputpayl_BM (BMP_the_web_sessions, _.cookiestrv, _.sessionob);
+    objunlock_BM (BMP_the_web_sessions);
+  }
+  fprintf (fil, "BISMONCOOKIE=%s\n", bytstring_BM (_.cookiestrv));
+  fclose (fil), fil = NULL;
+  INFOPRINTF_BM
+    ("generated web cookie for anonymous web session in file %s for sessionob %s",
+     onion_anon_web_session_BM, objectdbg_BM (_.sessionob));
 }                               /* end create_anonymous_web_session_BM */
 
 
@@ -1643,7 +1693,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   if (wsess->websess_expiretime > 0.0)
     {
       wsess->websess_expiretime =
-        clocktime_BM (CLOCK_REALTIME) + WEBSESSION_EXPIRATION_DELAY;
+        clocktime_BM (CLOCK_REALTIME) + USER_WEBSESSION_EXPIRATION_DELAY;
       shouldputcookie = true;
       snprintf (cookiebuf, sizeof (cookiebuf), "n%06dR%dt%do%s",
                 wsess->websess_rank, wsess->websess_rand1,
