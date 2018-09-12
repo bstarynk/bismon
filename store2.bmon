@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1313 objects
+// for 1315 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -10953,17 +10953,19 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 !(_27bDca0oCOf_41QFrC0lVa1
-!@ 1536765109.612
+!@ 1536765506.967
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of emit_js_block_or_stmt"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _7uTqbIQcGPn_8jiFSVCYrEg
-!# 4
+!# 6
 !& _5UqPIVgYfUw_10czR44kjPV
 !& _5L2zQTOlEND_6KTsbOYDW1r
 !& _3GqbV7QJbkH_2egAbCWUXwU
 !& _8eX9Etm6lmJ_3bbHqolOMxx
+!& _5v6XNgIJofQ_89NvftTTGGZ
+!& _3xKSCzlvGel_3U5DyPSRIoG
 !)_27bDca0oCOf_41QFrC0lVa1
 
 
@@ -12369,6 +12371,17 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 !# 1
 !& _0sXD3odjYPT_3812FqDKo12
 !)_3wD146RHTck_70wiyGziPvP
+
+
+
+!(_3xKSCzlvGel_3U5DyPSRIoG
+!@ 1536765506.967
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return v_resemit"
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+_0qTBOEAT5pa_2fz1SKfHrMV
+!)_3xKSCzlvGel_3U5DyPSRIoG
 
 
 
@@ -14280,6 +14293,29 @@ _5a7gOTbvw4I_6PzXru7uInx
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "commandhandler for add"
 !)_5v5ChlG1IYh_1Pv87MZJFPl
+
+
+
+!(_5v6XNgIJofQ_89NvftTTGGZ
+!@ 1536765481.563
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug final emit_js_block_or_stmt v_resemit o_recv"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  "  "  "final"  " " 
+  "emit_js_block_or_stmt"  " " _0qTBOEAT5pa_2fz1SKfHrMV  " " _57ZQXLDhLdj_7PrZMZMgLI1 
+  "*/"  "\n"  "DBGPRINTF_BM"  " "  "(\"" 
+  "emit_js_block_or_stmt"  " "  "final"  " "  "\u20ac%." 
+  "9s"  " " _0qTBOEAT5pa_2fz1SKfHrMV  "=%"  "s" 
+  " " _57ZQXLDhLdj_7PrZMZMgLI1  "=%"  "s"  "\"," 
+  "\n"  " "  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "\"," 
+  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0qTBOEAT5pa_2fz1SKfHrMV) 
+ ")," 
+  " "  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _57ZQXLDhLdj_7PrZMZMgLI1) 
+ "));" 
+  "\n")
+!)_5v6XNgIJofQ_89NvftTTGGZ
 
 
 
