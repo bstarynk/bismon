@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1299 objects
+// for 1301 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -1703,11 +1703,11 @@ _6YnYKKsHo3f_9nIEOZMp744
 !(_3BFt4NfJmZC_7iYi2dwM38B |=first_misc_module|
 !~ name (~ first_misc_module
 ~)
-!@ 1536730148.873
+!@ 1536760346.459
 !$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "a module with various simple minifunc-s"
-!# 29
+!# 30
 !& _8imWClcIFKt_6w2H2ouB4I6
 !& _3yQlckX4DRh_4b9l9FBSSSL
 !& _4iEFTEcHxeb_6lH464uFkTC
@@ -1737,6 +1737,7 @@ _6YnYKKsHo3f_9nIEOZMp744
 !& _3DSazBjnN2Z_3O1SEDV4tBX
 !& _0DGyKHi4Zo0_4eC8WMw5tyJ
 !& _7gbmQg2dILF_76dK4SAVpqZ
+!& _7uTqbIQcGPn_8jiFSVCYrEg
  // emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
 
 !)_3BFt4NfJmZC_7iYi2dwM38B
@@ -10926,6 +10927,15 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 
+!(_27bDca0oCOf_41QFrC0lVa1
+!@ 1536760346.459
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of emit_js_block_or_stmt (o_recv  o_jsgenmod o_jsgenfun o_strbuf v_depth)"
+!)_27bDca0oCOf_41QFrC0lVa1
+
+
+
 !(_27sh4N25FsE_1pTCEF1T86V
 !@ 1534257896.586
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -15964,6 +15974,22 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 !: _085lT8c13Ik_11pcWJfcLeM |=fail|
  * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _4HgYLk6htvP_4Ac2FCPfQ1C) _57ZQXLDhLdj_7PrZMZMgLI1 _5D1GbyYKAgk_9ureezAahw3  * _0e54seiZEXF_1Myf620cHoB ( _3DSazBjnN2Z_3O1SEDV4tBX))
 !)_7uvmKecN86g_614RK9nb6pw
+
+
+
+!(_7uTqbIQcGPn_8jiFSVCYrEg
+!@ 1536760346.459
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit_js_block_or_stmt (o_recv  o_jsgenmod o_jsgenfun o_strbuf v_depth)"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _57ZQXLDhLdj_7PrZMZMgLI1 _4JKd986pvM4_6yBzeeI40vW _5Lg7fb6zE3H_6ijQo6GbPN4 _41F1rKwGbaA_30OJWKsqNWy 
+ _4nJKFtMqlkA_1teQSqofNux ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_27bDca0oCOf_41QFrC0lVa1
+!)_7uTqbIQcGPn_8jiFSVCYrEg
 
 
 
