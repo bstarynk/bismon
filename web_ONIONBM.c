@@ -1396,8 +1396,8 @@ create_anonymous_web_session_BM (void)
     allocgcty_BM (typayl_websession_BM, sizeof (*wsess));
   wsess->websess_magic = 1;
   wsess->websess_rank = 0;
-  wsess->websess_rand1 = 100 + (g_random_int () % (INT_MAX / 2));
-  wsess->websess_rand2 = 105 + (g_random_int () % (INT_MAX / 2));
+  wsess->websess_rand1 = 500 + (g_random_int () % (INT_MAX / 2));
+  wsess->websess_rand2 = 305 + (g_random_int () % (INT_MAX / 2));
   wsess->websess_ownobj = _.sessionob;
   wsess->websess_contribob = NULL;
   wsess->websess_createtime = clocktime_BM (CLOCK_REALTIME);
