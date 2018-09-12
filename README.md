@@ -90,19 +90,22 @@ On Linux/x86-64 (e.g. Debian/Unstable or recent Ubuntu) only (won't work on 32 b
 
 See also the [dependencies](dependencies/) subdirectory and its [README-dependencies](dependencies//README-dependencies.md).
 
-* recent [GCC](http://gcc.gnu.org/) (so [GCC
-7](https://gcc.gnu.org/gcc-7/) or [GCC 8](https://gcc.gnu.org/gcc-8/) ...), with C and C++ and JIT
+* recent [GCC](http://gcc.gnu.org/) (so [GCC 7](https://gcc.gnu.org/gcc-7/) 
+or *preferably* [GCC 8](https://gcc.gnu.org/gcc-8/) ...), with C and C++ and JIT
 support and plugins enabled (check with `gcc -v`; if your system `gcc`
 and `g++` lack support for plugins and
 [libgccjit](https://gcc.gnu.org/onlinedocs/jit/), you should build and
 [install](https://gcc.gnu.org/install/) a recent GCC release from its
-source code, and configure it to provide them.).
+source code, and configure it to provide them.). An old GCC
+(e.g. version 6 or earlier) cannot be used.
 
 
 Most of `bismon` is in C99 or C11 (including an increasing amount of
 generated code), but some few code is in C++14.
 
-* [ninja](http://ninja-build.org/) builder 1.8 or newer is need (and runs by `make`)
+* [ninja](http://ninja-build.org/) builder, version 1.8 or newer is
+  need (and is started by `make`). Don't use an older one (check with
+  `ninja --version`).
 
 * [GTK](http://gtk.org/) 3.22 or better. This is a temporary
   dependency (to be deprecated), we hope to have some web interface
