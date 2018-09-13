@@ -4,7 +4,7 @@
 #endif
 
 #undef BM_NB_DELIM
-#define BM_NB_DELIM 51
+#define BM_NB_DELIM 52
  
 /// these should be sorted in ascending UTF8 order
 // HAS_DELIM_BM(String,Delimname)
@@ -30,6 +30,7 @@ HAS_DELIM_BM("$%",dollarpercent)
 HAS_DELIM_BM("$(",dollarleftparen)
 HAS_DELIM_BM("$*",dollarstar)
 HAS_DELIM_BM("$:",dollarcolon)
+HAS_DELIM_BM("$=",dollarequal)
 HAS_DELIM_BM("$[",dollarleftbracket)
 HAS_DELIM_BM("%",percent)
 HAS_DELIM_BM("(",leftparen)

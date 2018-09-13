@@ -1965,6 +1965,36 @@ const objectval_tyBM *parsobjexp_newguicmd_BM
             }
         }                       // end !>
       //
+      // $= name # store the object into name
+      else if (tok.tok_kind == plex_DELIM
+               && tok.tok_delim == delim_dollarequal)
+        {
+          parstoken_tyBM namtok =       //
+            parsertokenget_BM (pars,
+                               CURFRAME_BM);
+          if (namtok.tok_kind == plex_NAMEDOBJ)
+            _.namev = makestring_BM (findobjectname_BM (namtok.tok_namedobj));
+          else if (namtok.tok_kind == plex_CNAME)
+            _.namev = namtok.tok_cname;
+          else
+            parsererrorprintf_BM (pars,
+                                  CURFRAME_BM,
+                                  namtok.tok_line,
+                                  namtok.tok_col, "name expected after $=");
+          if (!nobuild)
+            {
+              browse_named_value_newgui_BM (_.namev,
+                                            _.obj,
+                                            browserdepth_BM, CURFRAME_BM);
+              log_begin_message_BM ();
+              log_printf_message_BM ("bound to name %s the object ",
+                                     bytstring_BM (_.namev));
+              log_object_message_BM (_.obj);
+              log_end_message_BM ();
+            }
+        }                       /* end $= */
+
+      //
       // error otherwise
       else
         parsererrorprintf_BM
