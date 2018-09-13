@@ -134,6 +134,7 @@ clean:
 	$(RM) $(patsubst %.thtml, _%.c, $(ONIONBM_WEBTEMPLATES))
 	$(RM) $(patsubst %.thtml, _%.h, $(ONIONBM_WEBTEMPLATES))
 	$(RM) modubin/*.so modules/*.i modules/*% modules/*~ modules/*- bismon BM_makeconst
+	$(RM) modules/badmodbm*
 	$(RM) __timestamp.*
 	$(RM) modules/tmpmobm*
 	$(RM) $(patsubst %.md,%.html, $(MARKDOWN_SOURCES))
