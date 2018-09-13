@@ -4524,7 +4524,8 @@ value_tyBM crout_7gbmQg2dILF_76dK4SAVpqZ_BM     //#21
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 8 local values:
+    /// 9 local values:
+    value_tyBM v_0qTBOEAT5pa_2fz1SKfHrMV;       // v_resemit
     value_tyBM v_0ZL8gaI6sH8_7UPhmAQcwMe;       // v_comp
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ;       // v_r
     objectval_tyBM *o_41F1rKwGbaA_30OJWKsqNWy;  // o_strbuf
@@ -4541,7 +4542,7 @@ value_tyBM crout_7gbmQg2dILF_76dK4SAVpqZ_BM     //#21
   memset (&_, 0, sizeof (struct frame_7gbmQg2dILF_76dK4SAVpqZ_BMst));
   _.stkfram_head.htyp = typayl_StackFrame_BM;
   _.stkfram_head.hgc = 0;
-  _.stkfram_head.rlen = 8;
+  _.stkfram_head.rlen = 9;
   _.stkfram_descr =
     constob_3BFt4NfJmZC_7iYi2dwM38B_BM[71] /*|_7gbmQg2dILF_76dK4SAVpqZ */ ;
   ASSERT_BM (!stkf || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
@@ -4665,6 +4666,31 @@ startblock__25nKBJWCTfY_6oDXNLB33tM:__attribute__ ((unused));
             //assign _6cV98pwapFn_70ztp0HcJBb    
             /*val_to_object: */
             objectcast_BM ( /*v_comp: */ _.v_0ZL8gaI6sH8_7UPhmAQcwMe);
+          /*v_resemit: */ _.v_0qTBOEAT5pa_2fz1SKfHrMV =
+            //assign _6jSWmetltFR_6vXfhUd7oDg    
+            (apply6_BM (((constob_3BFt4NfJmZC_7iYi2dwM38B_BM[75]
+                          /*!_7uTqbIQcGPn_8jiFSVCYrEg */ )),
+                        ((struct stackframe_stBM *) &_),
+                        ( /*o_comp: */ _.o_6Z4UU939WbU_8BK9xcKsXNb),
+                        ( /*o_jsgenmod: */ _.o_4JKd986pvM4_6yBzeeI40vW),
+                        ( /*o_jsgenfun: */ _.o_5Lg7fb6zE3H_6ijQo6GbPN4),
+                        ( /*o_strbuf: */ _.o_41F1rKwGbaA_30OJWKsqNWy),
+                        ( /*taggedint: */ taggedint_BM (        /*add_int: */
+                                                         (( /*i_depth: */ _.
+                                                           n_6Y20GNUgnSZ_4LkbrcRMU8f)
+                                                          + (1)))),
+                        ( /*o_block: */ _.o_5XGKMg1Kevs_6eAce4ib9XW)));
+
+          {                     // run _0EXaTsNXYcm_8fDG8bsONxV   
+/*debug v_resemit after emit_js_block_or_stmt on o_comp ii*/
+            DBGPRINTF_BM
+              ("emit_jsblock°basiclo_block €%.9s v_resemit=%s after emit_js_block_or_stmt on o_comp=%s ii=%ld",
+               "_0EXaTsNXYcm_8fDG8bsONxV",
+               OUTSTRVALUE_BM ( /*v_resemit: */ _.v_0qTBOEAT5pa_2fz1SKfHrMV),
+               objectdbg_BM ( /*o_comp: */ _.o_6Z4UU939WbU_8BK9xcKsXNb),
+               (long) ( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B));
+            ;
+          }                     // end run _0EXaTsNXYcm_8fDG8bsONxV   
 
         }                       //endwhen _0l59imoPw9b_30rDfh9YPdu   
       else
@@ -4690,6 +4716,10 @@ startblock__25nKBJWCTfY_6oDXNLB33tM:__attribute__ ((unused));
         }                       /*cond else _1hH9mFESygl_5Qzj6ems87p */
 /*endcond _1hH9mFESygl_5Qzj6ems87p*/
 // while _0l3YPLBBvUL_7dgBMwKCPzG comp#2:  
+      {                         // start cexpansion _29dsRBXV8Wx_5dvuogWEUZS - objstrbuffernewlinepayl   
+        /*objstrbuffernewlinepayl: */ objstrbuffernewlinepayl_BM ( /*o_strbuf: */ _.o_41F1rKwGbaA_30OJWKsqNWy);
+      }                         // end cexpansion _29dsRBXV8Wx_5dvuogWEUZS - objstrbuffernewlinepayl   
+// while _0l3YPLBBvUL_7dgBMwKCPzG comp#3:  
       /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B =
         //assign _8jFanjiQSIA_8BDoRFxiocB   
         /*add_int: */ (( /*ii: */ _.n_2W7Ckt2WxEM_4NVYgEWE73B) + (1));

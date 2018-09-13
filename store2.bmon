@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1330 objects
+// for 1333 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -9084,23 +9084,26 @@ _6jZqk9RP0Pe_12cIgV9WMFC
  "while (ii<leni) ..."
 !: _7GNnckYYtcH_7wtOnPP4eKU |=while|
  * _0P0Iffx3ohY_2vRksLXKZlK ( _2W7Ckt2WxEM_4NVYgEWE73B _833x2jYqhZh_8vDIuJhwz1k)
-!# 3
+!# 4
 !& _0VwWrljZ6EA_1iHdYZQux1K
 !& _1hH9mFESygl_5Qzj6ems87p
+!& _29dsRBXV8Wx_5dvuogWEUZS
 !& _8jFanjiQSIA_8BDoRFxiocB
 !)_0l3YPLBBvUL_7dgBMwKCPzG
 
 
 
 !(_0l59imoPw9b_30rDfh9YPdu
-!@ 1536782075.577
+!@ 1536815397.520
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "when v_comp is object"
 !: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
  * _1MOFdPyVDjv_9DbtuElMini ( _0ZL8gaI6sH8_7UPhmAQcwMe)
-!# 1
+!# 3
 !& _6cV98pwapFn_70ztp0HcJBb
+!& _6jSWmetltFR_6vXfhUd7oDg
+!& _0EXaTsNXYcm_8fDG8bsONxV
 !)_0l59imoPw9b_30rDfh9YPdu
 
 
@@ -9500,6 +9503,33 @@ _8RoxHXFm8Yb_7i6HiYCnAZF
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "miniemit_node_conn#make_sequence"
 !)_0DW82XG9HTW_0SblkfpwJi3
+
+
+
+!(_0EXaTsNXYcm_8fDG8bsONxV
+!@ 1536815397.520
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug  v_resemit after emit_js_block_or_stmt on o_comp ii"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " " _0qTBOEAT5pa_2fz1SKfHrMV  " " 
+  "after"  " "  "emit_js_block_or_stmt"  " "  "on" 
+  " " _6Z4UU939WbU_8BK9xcKsXNb  " " _2W7Ckt2WxEM_4NVYgEWE73B  "*/" 
+  "\n"  "DBGPRINTF_BM"  "(\"" _6BRdQlnZFnr_5jKwoMJCYS6  "\u00b0" 
+ _4bYUiDmxrKK_6nPPlEl8y8x  " "  "\u20ac%."  "9s"  " " 
+ _0qTBOEAT5pa_2fz1SKfHrMV  "=%"  "s"  " "  "after" 
+  " "  "emit_js_block_or_stmt"  " "  "on"  " " 
+ _6Z4UU939WbU_8BK9xcKsXNb  "=%"  "s"  " " _2W7Ckt2WxEM_4NVYgEWE73B 
+  "=%"  "ld"  "\","  "\n"  " " 
+  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\"," 
+ " "  "OUTSTRVALUE_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0qTBOEAT5pa_2fz1SKfHrMV)  ")," 
+ " "  "objectdbg_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6Z4UU939WbU_8BK9xcKsXNb)  ")," 
+ " "  "(" 
+  "long"  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _2W7Ckt2WxEM_4NVYgEWE73B) 
+ "));"  "\n")
+!)_0EXaTsNXYcm_8fDG8bsONxV
 
 
 
@@ -11075,6 +11105,19 @@ _6CNxxDuR549_5nVIV57U3hP
 !# 1
 !& _57I7rSuuKya_8AuIt3qlJI1
 !)_27HdixkwtUA_4tQyI0XopOj
+
+
+
+!(_29dsRBXV8Wx_5dvuogWEUZS
+!@ 1536815956.128
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit newline"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _41F1rKwGbaA_30OJWKsqNWy)
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_6FcmuIO2DrS_7mzsaVpTMOI
+!)_29dsRBXV8Wx_5dvuogWEUZS
 
 
 
@@ -15170,6 +15213,20 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_6jSWmetltFR_6vXfhUd7oDg
+!@ 1536815071.197
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "v_resemit := emit_js_block_or_stmt (o_comp"& " o_jsgenmod o_jsgenfun o_strbuf i_depth+1"& " o_block"
+!# 2
+!& _0qTBOEAT5pa_2fz1SKfHrMV
+!&  * _3Nl6LhfUZVb_1itsyWMBfYl (  * _0e54seiZEXF_1Myf620cHoB ( _7uTqbIQcGPn_8jiFSVCYrEg) _6Z4UU939WbU_8BK9xcKsXNb _4JKd986pvM4_6yBzeeI40vW _5Lg7fb6zE3H_6ijQo6GbPN4 _41F1rKwGbaA_30OJWKsqNWy 
+  * _6FWWN47uih2_5BhwEm9gnHu (  * _3fb1EHtMPwQ_7XEPTUgUmX4 ( _6Y20GNUgnSZ_4LkbrcRMU8f   
+ 1)) _5XGKMg1Kevs_6eAce4ib9XW)
+!)_6jSWmetltFR_6vXfhUd7oDg
+
+
+
 !(_6lTDbwKEMMc_0wsIKviDSce
 !|*
 !@ 1525076998.840
@@ -16053,7 +16110,7 @@ _4gjtBqgrY3i_67ZPUd9LxPU
 
 !(_7gbmQg2dILF_76dK4SAVpqZ
 !|*
-!@ 1536781030.795
+!@ 1536814846.110
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "emit_jsblock\u00b0basiclo_block <o_block (o_jsgenmod o_jsgenfun o_strbuf v_depth)"
@@ -16061,7 +16118,7 @@ _4gjtBqgrY3i_67ZPUd9LxPU
  [ _5XGKMg1Kevs_6eAce4ib9XW _4JKd986pvM4_6yBzeeI40vW _5Lg7fb6zE3H_6ijQo6GbPN4 _41F1rKwGbaA_30OJWKsqNWy 
  _4nJKFtMqlkA_1teQSqofNux ]
 !: _24sSVIADeHm_0Sx34wQfG7W |=locals|
- { _0ZL8gaI6sH8_7UPhmAQcwMe _6Z4UU939WbU_8BK9xcKsXNb }
+ { _0qTBOEAT5pa_2fz1SKfHrMV _0ZL8gaI6sH8_7UPhmAQcwMe _6Z4UU939WbU_8BK9xcKsXNb }
 !: _32eKNcTZ9HN_80t0nk47Mha |=numbers|
  { _2W7Ckt2WxEM_4NVYgEWE73B _6Y20GNUgnSZ_4LkbrcRMU8f _833x2jYqhZh_8vDIuJhwz1k }
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
