@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1342 objects
+// for 1343 objects
 // with 2 modules
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
@@ -10859,6 +10859,17 @@ _57ZQXLDhLdj_7PrZMZMgLI1
 
 
 
+!(_1QCf0uAOZqm_46siwfoL4qs
+!@ 1536829720.567
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return o_jsprepfun"
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+_7OVOMji0Mba_7vqXTikx9e3
+!)_1QCf0uAOZqm_46siwfoL4qs
+
+
+
 !(_1SmBG69REro_23Y5EpTU8n0
 !@ 1536131269.752
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -17923,17 +17934,18 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 !(_8RoxHXFm8Yb_7i6HiYCnAZF
-!@ 1536242280.483
+!@ 1536829720.567
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of emit_jstoplevel\u00b0jsfun_preparation_object"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _0DGyKHi4Zo0_4eC8WMw5tyJ
-!# 4
+!# 5
 !& _9XthLPjpTPY_5NPkqWLyh1s
 !& _0shQBZocYU4_5WJtD7jSHYM
 !& _4PPkqrKzzEb_572qQuiYMuR
 !& _8KUGXp6YBvM_8FP9jEsJ1rw
+!& _1QCf0uAOZqm_46siwfoL4qs
 !)_8RoxHXFm8Yb_7i6HiYCnAZF
 
 
