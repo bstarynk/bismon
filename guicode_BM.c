@@ -1743,7 +1743,7 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // browse_data°sbuf_object
                                         "|no payload in sbuf_object|", -1,
                                         miscomm_brotag_BM, NULL);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
-      LOCALRETURN_BM(_.objbrows);
+      LOCALRETURN_BM (_.objbrows);
     }
   else if (!objhasstrbufferpayl_BM (_.objbrows))
     {
@@ -1756,7 +1756,7 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // browse_data°sbuf_object
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, buf, -1,
                                         miscomm_brotag_BM, NULL);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
-      LOCALRETURN_BM(_.objbrows);
+      LOCALRETURN_BM (_.objbrows);
     }
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.objbrows));
   const char *strsb = objstrbufferbytespayl_BM (_.objbrows);

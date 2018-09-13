@@ -320,8 +320,8 @@ fork_onion_process_at_slot_BM (int slotpos,
                                const closure_tyBM * endclosarg,
                                struct stackframe_stBM *stkf)
 {
-  objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
-  objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
+  //objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
+  //objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
   LOCALFRAME_BM ( /*prev: */ stkf,
                  /*descr: */ NULL,
                  const stringval_tyBM * dirstrv;        //
@@ -416,7 +416,7 @@ static onion_connection_status
 login_onion_handler_BM (void *clientdata,
                         onion_request * req, onion_response * resp);
 static onion_connection_status
-do_forgot_onion_BM (char *username,
+do_forgot_onion_BM (const char *username,
                     onion_request * req, onion_response * resp);
 
 static onion_connection_status
@@ -1195,7 +1195,7 @@ login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
 
 
 static onion_connection_status
-do_forgot_onion_BM (char *formuser,
+do_forgot_onion_BM (const char *formuser,
                     onion_request * req, onion_response * resp)
 {
   WARNPRINTF_BM ("do_forgot_onion_BM %s unimplemented", formuser);
@@ -1549,9 +1549,9 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                   : (reqmeth == OR_POST) ? "POST"       //
                   : "???"), reqpath,
                  objectdbg_BM (_.webexob), objectdbg1_BM (_.sessionob));
-        fprintf (fresp, "Failure code %d,<br/>fail reason: <tt>\n", failcod);
+        fprintf (fresp, "Failure code %d<br/>Fail reason: <tt>\n", failcod);
         writefencodedhtml_BM (fresp, OUTSTRVALUE_BM (_.failreasonv), -1);
-        fputs ("</tt>,<br/>fail place: <tt>\n", fresp);
+        fputs ("</tt><br/>Fail place: <tt>\n", fresp);
         writefencodedhtml_BM (fresp, OUTSTRVALUE_BM (_.failplacev), -1);
         fputs ("</tt></p>", fresp);
         time_t nowt = 0;
