@@ -105,7 +105,7 @@ generated code), but some few code is in C++14.
 
 * [ninja](http://ninja-build.org/) builder, version 1.8 or newer is
   need (and is started by `make`). Don't use an older one (check with
-  `ninja --version`).
+  `ninja --version`; if that does not work, your `ninja` is too old).
 
 * [GTK](http://gtk.org/) 3.22 or better. This is a temporary
   dependency (to be deprecated), we hope to have some web interface
