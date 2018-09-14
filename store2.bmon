@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1359 objects
+// for 1365 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -134,6 +134,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
 ~: _1ERH9PxNhPb_2o869yOMuH0  % _22wwtRd69oP_3IH6VRfTzu6 () 
+~: _2HRKwEmw3RU_8NbUiNToBgr  % _91gYAd2Lx86_5fBVoAhGY7b () 
 ~: _6DdZwyaWLyK_7tS2BmECOJ0  % _7LNRlilrowp_0GG6ZLUFovu ()
 ~)
 
@@ -2577,6 +2578,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_2mL8lNxsg7u_2XX685yxjLD |=jsvalue|
+!~ name (~ jsvalue
+~)
+!@ 1536930545.361
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the type of any Javscript value"
+!)_2mL8lNxsg7u_2XX685yxjLD
+
+
+
 !(_0YanmudmN6Q_0JCzJElBQ7u |=jsvar_object|
 !~ name (~ jsvar_object
 ~)
@@ -3439,6 +3451,28 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_7OVOMji0Mba_7vqXTikx9e3
+
+
+
+!(_05IHFluwEai_9VxTGg7FVeQ |=o_jsstmt|
+!~ name (~ o_jsstmt
+~)
+!@ 1536932385.374
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_05IHFluwEai_9VxTGg7FVeQ
+
+
+
+!(_8xx2naPLkYK_63f1JPAkym5 |=o_lvar|
+!~ name (~ o_lvar
+~)
+!@ 1536932385.375
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_8xx2naPLkYK_63f1JPAkym5
 
 
 
@@ -8696,11 +8730,11 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !(_1zCsXG4OTPr_8PwkDAWr16S |=webjs_module|
 !~ name (~ webjs_module
 ~)
-!@ 1536877569.902
+!@ 1536932531.841
 !$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "module for web handlers and javascript generation"
-!# 16
+!# 17
 !& _3vI0Qc3FHQG_1g4fmHYkxSA
 !& _8VtkXEUFfhk_5RxrpY6JHI6
 !& _1HZc1VBbjdB_96aQTEPgEX0
@@ -8717,6 +8751,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !& _7uTqbIQcGPn_8jiFSVCYrEg
 !& _6tvn8CFOFbK_7tR4KRH8jTi
 !& _4gqOSRMDIRc_2fBJTqqK612
+!& _91gYAd2Lx86_5fBVoAhGY7b
  // emitted persistent module modbm_1zCsXG4OTPr_8PwkDAWr16S.c
 
 !)_1zCsXG4OTPr_8PwkDAWr16S
@@ -12432,6 +12467,36 @@ _9BLJq5DadtZ_6I89t7ioVRS
 
 
 
+!(_3jEcWg2i6K9_982KthpODGk
+!@ 1536932937.075
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug start scan_jsstmt\u00b0basiclo_assign o_jsstmt o_prepjfun v_depth o_from"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "start"  " " 
+ _2HRKwEmw3RU_8NbUiNToBgr  "\u00b0" _3HIw09Tmj0d_3CrcFHrGJab  "*/"  
+"\n" 
+  "DBGPRINTF_BM"  "(\"" _2HRKwEmw3RU_8NbUiNToBgr  "\u00b0" _3HIw09Tmj0d_3CrcFHrGJab 
+  " "  "\u20ac%."  "9s"  " "  "start" 
+  " " _05IHFluwEai_9VxTGg7FVeQ  "=%"  "s"  " " 
+ _5D1GbyYKAgk_9ureezAahw3  "=%"  "s"  " " _4nJKFtMqlkA_1teQSqofNux 
+  "=%"  "s"  " " _89nz0KaXXZh_8eSgMmqnK37  "=%" 
+  "s"  "\","  "\n"  " "  "\"" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\","  " " 
+ "objectdbg_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _05IHFluwEai_9VxTGg7FVeQ)  "),"  "\n" 
+ " "  "objectdbg1_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5D1GbyYKAgk_9ureezAahw3)  ")," 
+ "\n"  " " 
+  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4nJKFtMqlkA_1teQSqofNux) 
+ "),"  "\n" 
+  " "  "objectdbg2_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _89nz0KaXXZh_8eSgMmqnK37) 
+ "));" 
+  "\n")
+!)_3jEcWg2i6K9_982KthpODGk
+
+
+
 !(_3kMqlEugRVW_7DgwjR4CBbP
 !|*
 !@ 1501766546.150
@@ -15892,6 +15957,19 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_6DQpfnBo8KI_5QbEtyEeI2Y
+!@ 1536932937.076
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of scan_jsstmt\u00b0basiclo_assign"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_91gYAd2Lx86_5fBVoAhGY7b
+!# 1
+!& _3jEcWg2i6K9_982KthpODGk
+!)_6DQpfnBo8KI_5QbEtyEeI2Y
+
+
+
 !(_6GnVh6VH0ba_5iNQzHx0RCt
 !@ 1534939439.760
 !$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
@@ -18427,6 +18505,25 @@ _3d9rq9TD6PH_6qUv4Hao767
 !: _2DH0ucElTgh_62vxjxLcfev |=return|
 _7n2SLLuWOjH_4ArhFUjmckz
 !)_9198YxnrBs6_7u9nhmAA8Q6
+
+
+
+!(_91gYAd2Lx86_5fBVoAhGY7b
+!@ 1536932937.076
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "scan_jsstmt\u00b0basiclo_assign < o_jsstmt (o_prepjfun depth o_from)"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _05IHFluwEai_9VxTGg7FVeQ _5D1GbyYKAgk_9ureezAahw3 _4nJKFtMqlkA_1teQSqofNux _89nz0KaXXZh_8eSgMmqnK37 ]
+!: _24sSVIADeHm_0Sx34wQfG7W |=locals|
+ { _6CmIdtsXyBX_3lpk31Mve5M _8xx2naPLkYK_63f1JPAkym5 }
+!: _32eKNcTZ9HN_80t0nk47Mha |=numbers|
+ { _6Y20GNUgnSZ_4LkbrcRMU8f }
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_6DQpfnBo8KI_5QbEtyEeI2Y
+!)_91gYAd2Lx86_5fBVoAhGY7b
 
 
 
