@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1356 objects
+// for 1359 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -9620,6 +9620,19 @@ _8RoxHXFm8Yb_7i6HiYCnAZF
 
 
 
+!(_0HOtgZEmDEv_5h6zWyYqSG3
+!@ 1536913369.694
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of jfoo"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_1tIPJbY8ZnF_7r8xk0VuOxM
+!# 1
+!& _5m4LfMBuHiu_8AR6bL2vl7n
+!)_0HOtgZEmDEv_5h6zWyYqSG3
+
+
+
 !(_0Iy7CqJHDkb_6Kncq0r7cn9
 !@ 1536765109.610
 !$_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
@@ -10503,6 +10516,21 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 !: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
  * _4bNJRwDDAwq_0d4dKUTkMgd ( _5D1GbyYKAgk_9ureezAahw3  * _3fb1EHtMPwQ_7XEPTUgUmX4 (  * _3fb1EHtMPwQ_7XEPTUgUmX4 (  * _97rJwcN7l9B_1w3sSfoRM6l ( _8pbpqrN1W4l_7mZmRSPBjYz)  * _97rJwcN7l9B_1w3sSfoRM6l ( _3lXKQCJ5IpM_1W5tqNbhFtx))  4))
 !)_1tblNbUO9U6_3Nkb4aEs1hD
+
+
+
+!(_1tIPJbY8ZnF_7r8xk0VuOxM
+!@ 1536913369.694
+!$_6ZfaIF6vqeB_6AKq247BuTe |=jscript_topfunction_object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "jstopfun jfoo"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _8yJaO60dqTh_85YVlGurgkV _0QWLYfliDBs_5ss5aw9899I ]
+!: _24sSVIADeHm_0Sx34wQfG7W |=locals|
+ { _4GVywi9q0oG_5dQmaBzBxpn _8TUTZwVoTMF_7IxEe2LibHt }
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_0HOtgZEmDEv_5h6zWyYqSG3
+!)_1tIPJbY8ZnF_7r8xk0VuOxM
 
 
 
@@ -12083,12 +12111,13 @@ _1g2wHNuth12_1FfLuyW1CWJ
 
 
 !(_300GDBPcFsZ_5DUANASihWD
-!@ 1536909347.069
+!@ 1536912211.820
 !$_2dMQFZCLvzX_28pgF8Y8V5S |=jsmodule_object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "test3 jsmodule"
-!# 1
+!# 2
 !& _6mxwPzSn9He_2VOcIJvrU5V
+!& _1tIPJbY8ZnF_7r8xk0VuOxM
 !)_300GDBPcFsZ_5DUANASihWD
 
 
@@ -14518,6 +14547,18 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 !: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
 _6jZqk9RP0Pe_12cIgV9WMFC
 !)_5lsoSuyLYE0_2cqb9QxFcos
+
+
+
+!(_5m4LfMBuHiu_8AR6bL2vl7n
+!@ 1536913369.693
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "jsloc1 := jsarg1"
+!# 2
+!& _8TUTZwVoTMF_7IxEe2LibHt
+!& _8yJaO60dqTh_85YVlGurgkV
+!)_5m4LfMBuHiu_8AR6bL2vl7n
 
 
 
