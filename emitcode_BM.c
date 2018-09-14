@@ -3986,21 +3986,6 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   DBGPRINTF_BM
     ("emit_module°plain_module modulob %s /%s srcpathstr '%s' realsrcdirstr '%s'",
      objectdbg_BM (_.modulob), modulidbuf, srcpathstr, realsrcdirstr);
-  if (!access (srcpathstr, F_OK))
-    {
-      char cwdbuf[80];
-      memset (cwdbuf, 0, sizeof (cwdbuf));
-      prevsrcpathstr =
-        (char *) asprintf_prev_module_BM (realsrcdirstr, _.modulob);
-      DBGPRINTF_BM
-        ("emit_module°plain_module %s /%s rename srcpathstr '%s' -> prevsrcpathstr='%s' in %s",
-         objectdbg_BM (_.modulob), modulidbuf, srcpathstr, prevsrcpathstr,
-         (getcwd (cwdbuf, sizeof (cwdbuf))));
-      if (rename (srcpathstr, prevsrcpathstr))
-        FATAL_BM ("failed to rename '%s' -> '%s' in %s - %m",
-                  srcpathstr, prevsrcpathstr, getcwd (cwdbuf,
-                                                      sizeof (cwdbuf)));
-    }
   {
     char cwdbuf[80];
     DBGPRINTF_BM

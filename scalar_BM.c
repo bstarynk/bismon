@@ -1303,7 +1303,11 @@ objstrbufferwritetofilepayl_BM (objectval_tyBM * obj, const char *filepath)
       fclose (oldfil);
     }
   if (samefile)
-    return;
+    {
+      INFOPRINTF_BM
+        ("file %s not overwritten by same content as existing one", filepath);
+      return;
+    }
   if (strlen (filepath) < 3 * TINYSIZE_BM)
     {
       char backpath[3 * TINYSIZE_BM + 5];
@@ -1317,8 +1321,7 @@ objstrbufferwritetofilepayl_BM (objectval_tyBM * obj, const char *filepath)
       asprintf (&backpath, "%s~", filepath);
       if (!backpath)
         FATAL_BM ("asprintf failure for backpath %s", filepath);
-      if (rename (filepath, backpath))
-        FATAL_BM ("failed to rename %s as %s (%m)", filepath, backpath);
+      (void) rename (filepath, backpath);
       free (backpath), backpath = NULL;
     }
   FILE *newfil = fopen (filepath, "w");
@@ -1329,4 +1332,5 @@ objstrbufferwritetofilepayl_BM (objectval_tyBM * obj, const char *filepath)
               (unsigned) len);
   if (fclose (newfil))
     FATAL_BM ("fclose %s failed (%m)", filepath);
+  INFOPRINTF_BM ("file %s written", filepath);
 }                               /* end objstrbufferwritetofilepayl_BM */
