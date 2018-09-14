@@ -44,42 +44,43 @@ build.ninja: generate-ninja-builder.sh
 #	@cat bismon.h $(BM_HEADERS) $(CSOURCES) | $(MD5SUM) | cut -d' ' -f1
  -C -E $< | sed s:^#://#: > $@
 
-## to be used from C code as 'make indentsinglemodule MODULEID=<id>'
-## in emit_module°plain_module
-## for example 'make indentsinglemodule MODULEID=_9oXtCgAbkqv_4y1xhhF5Nhz'
-## bismon would have perhaps passed a PREVIOUSMODULESOURCE
-## see function emit_module°plain_module _1gME6zn82Kf_8hzWibLFRfz in gencode_BM.c
-indentsinglemodule:
-	@if [ ! -f modules/modbm$(MODULEID).c ]; then \
-	   echo missing modules/modbm$(MODULEID).c; exit 1 ; fi ; \
-	ms=modules/modbm$(MODULEID).c ; \
-	cp -a $$ms "$$ms%"; \
-	$(INDENT) $(INDENTFLAGS) $$ms; \
-	$(INDENT) $(INDENTFLAGS) $$ms; \
-	if cmp -s $$ms "$$ms%" ; then echo unchanged module $$ms ; mv "$$ms%" $$ms ; \
-	  else echo '*indented module ' $$ms ; fi
-	@if [ -f "$(PREVIOUSMODULESOURCE)" ] && cmp -s "$(PREVIOUSMODULESOURCE)" modules/modbm$(MODULEID).c ; then \
-	  mv "$(PREVIOUSMODULESOURCE)" modules/modbm$(MODULEID).c ; \
-	  echo same as previous modules/modbm$(MODULEID).c ; \
-	else echo '**previous'  "$(PREVIOUSMODULESOURCE)" different of  modules/modbm$(MODULEID).c ; \
-	fi
 
-#### for temporary modules
-indenttempmodule:
-	@if [ ! -f modules/tmpmobm$(MODULEID).c ]; then \
-	   echo missing modules/tmpmobm$(MODULEID).c; exit 1 ; fi ; \
-	ms=modules/tmpmobm$(MODULEID).c ; \
-	cp -a $$ms "$$ms%"; \
-	$(INDENT) $(INDENTFLAGS) $$ms; \
-	$(INDENT) $(INDENTFLAGS) $$ms; \
-	if cmp -s $$ms "$$ms%" ; then echo unchanged module $$ms ; mv "$$ms%" $$ms ; \
-	  else echo '*indented module ' $$ms ; fi
-	@if [ -f "$(PREVIOUSMODULESOURCE)" ] && cmp -s "$(PREVIOUSMODULESOURCE)" modules/tmpmobm$(MODULEID).c ; then \
-	  mv "$(PREVIOUSMODULESOURCE)" modules/tmpmobm$(MODULEID).c ; \
-	  echo same as previous modules/tmpmobm$(MODULEID).c ; \
-	else echo '**previous'  "$(PREVIOUSMODULESOURCE)" different of  modules/tmpmobm$(MODULEID).c ; \
-	fi
 
+#-!   ## to be used from C code as 'make indentsinglemodule MODULEID=<id>'
+#-!   ## in emit_module°plain_module
+#-!   ## for example 'make indentsinglemodule MODULEID=_9oXtCgAbkqv_4y1xhhF5Nhz'
+#-!   ## bismon would have perhaps passed a PREVIOUSMODULESOURCE
+#-!   ## see function emit_module°plain_module _1gME6zn82Kf_8hzWibLFRfz in emitcode_BM.c
+#-!   indentsinglemodule:
+#-!   	@if [ ! -f modules/modbm$(MODULEID).c ]; then \
+#-!   	   echo missing modules/modbm$(MODULEID).c; exit 1 ; fi ; \
+#-!   	ms=modules/modbm$(MODULEID).c ; \
+#-!   	cp -a $$ms "$$ms%"; \
+#-!   	$(INDENT) $(INDENTFLAGS) $$ms; \
+#-!   	$(INDENT) $(INDENTFLAGS) $$ms; \
+#-!   	if cmp -s $$ms "$$ms%" ; then echo unchanged module $$ms ; mv "$$ms%" $$ms ; \
+#-!   	  else echo '*indented module ' $$ms ; fi
+#-!   	@if [ -f "$(PREVIOUSMODULESOURCE)" ] && cmp -s "$(PREVIOUSMODULESOURCE)" modules/modbm$(MODULEID).c ; then \
+#-!   	  mv "$(PREVIOUSMODULESOURCE)" modules/modbm$(MODULEID).c ; \
+#-!   	  echo same as previous modules/modbm$(MODULEID).c ; \
+#-!   	else echo '**previous'  "$(PREVIOUSMODULESOURCE)" different of  modules/modbm$(MODULEID).c ; \
+#-!   	fi
+#-!
+#-!   #### for temporary modules
+#-!   indenttempmodule:
+#-!   	@if [ ! -f modules/tmpmobm$(MODULEID).c ]; then \
+#-!   	   echo missing modules/tmpmobm$(MODULEID).c; exit 1 ; fi ; \
+#-!   	ms=modules/tmpmobm$(MODULEID).c ; \
+#-!   	cp -a $$ms "$$ms%"; \
+#-!   	$(INDENT) $(INDENTFLAGS) $$ms; \
+#-!   	$(INDENT) $(INDENTFLAGS) $$ms; \
+#-!   	if cmp -s $$ms "$$ms%" ; then echo unchanged module $$ms ; mv "$$ms%" $$ms ; \
+#-!   	  else echo '*indented module ' $$ms ; fi
+#-!   	@if [ -f "$(PREVIOUSMODULESOURCE)" ] && cmp -s "$(PREVIOUSMODULESOURCE)" modules/tmpmobm$(MODULEID).c ; then \
+#-!   	  mv "$(PREVIOUSMODULESOURCE)" modules/tmpmobm$(MODULEID).c ; \
+#-!   	  echo same as previous modules/tmpmobm$(MODULEID).c ; \
+#-!   	else echo '**previous'  "$(PREVIOUSMODULESOURCE)" different of  modules/tmpmobm$(MODULEID).c ; \
+#-!   	fi
 
 modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
 	$(LINK.c) -fPIC $(BISMONMODULECFLAGS) \
@@ -111,11 +112,9 @@ redump: bismon bismongtk bismonion modules
 	@for f in $(GENERATED_HEADERS) $(GENERATED_CSOURCES) $(MODULES_SOURCES) *.bmon ; \
            do cp -vab $$f $$f%~ ; done
 	time ./bismongtk --dump-after-load . --batch
-	$(MAKE) indent
 	$(MAKE)  bismonion
 	printf "\n\n\n **** second redump run ***\n"
 	time ./bismonion --dump-after-load . --batch
-	$(MAKE) indent
 
 outdump: bismon bismongtk bismonion  modules
 	time ./bismongtk  --run-command 'rm -rvf /tmp/bd'  --dump-after-load /tmp/bd --batch
@@ -159,14 +158,14 @@ indent: .indent.pro
 	  if cmp -s $$c $$c% ; then echo unchanged $$c ; mv $$c% $$c ; \
 	  else echo '*indented' $$c ; fi ; \
 	done
-	@printf "\n *** C modules sources *** \n"
-	@for c in $(MODULES_SOURCES); do \
-	  cp -a $$c $$c% ; \
-	  $(INDENT) $(INDENTFLAGS) $$c ; \
-	  $(INDENT) $(INDENTFLAGS) $$c ; \
-	  if cmp -s $$c $$c% ; then echo unchanged $$c ; mv $$c% $$c ; \
-	  else echo '*indented' $$c ; fi ; \
-	done
+#!-      @printf "\n *** C modules sources *** \n"
+#!-      @for c in $(MODULES_SOURCES); do \
+#!-        cp -a $$c $$c% ; \
+#!-        $(INDENT) $(INDENTFLAGS) $$c ; \
+#!-        $(INDENT) $(INDENTFLAGS) $$c ; \
+#!-        if cmp -s $$c $$c% ; then echo unchanged $$c ; mv $$c% $$c ; \
+#!-        else echo '*indented' $$c ; fi ; \
+#!-      done
 	@printf "\n *** C++ sources *** \n"
 	@for x in $(BM_CXXSOURCES); do \
 	  $(ASTYLE) $(ASTYLEFLAGS) $$x ; \

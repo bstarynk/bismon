@@ -4010,7 +4010,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
         getcwd (cwdbuf, sizeof (cwdbuf))));
   }
   objstrbufferwritetofilepayl_BM (_.modgenob, srcpathstr);
-  {
+  //// DONT indent the generated code ANYMORE
+  if (false) {
     char *indentcmdstr = NULL;
     char *quotpardir = g_shell_quote (realpardirstr);
     if (prevsrcpathstr)
@@ -4063,6 +4064,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     close (fd);
     free (indentcmdstr), indentcmdstr = NULL;
   }
+  /////
   struct stat srcstat;
   memset (&srcstat, 0, sizeof (srcstat));
   if (stat (srcpathstr, &srcstat))
