@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1354 objects
+// for 1356 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -12082,6 +12082,17 @@ _1g2wHNuth12_1FfLuyW1CWJ
 
 
 
+!(_300GDBPcFsZ_5DUANASihWD
+!@ 1536909347.069
+!$_2dMQFZCLvzX_28pgF8Y8V5S |=jsmodule_object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test3 jsmodule"
+!# 1
+!& _6mxwPzSn9He_2VOcIJvrU5V
+!)_300GDBPcFsZ_5DUANASihWD
+
+
+
 !(_30VCwMspa4c_5QfIOmCi9CM
 !@ 1535375488.008
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -15483,6 +15494,17 @@ _2TaoEvH5OQU_8nKYBgAvkmW
 !& _5GmYFaClzSx_4eFHnP1tYxl
 !& _2d1yOe9s0xF_5zIO2nTexNd
 !)_6mmsQZI3VuT_9OYUPR9OrsR
+
+
+
+!(_6mxwPzSn9He_2VOcIJvrU5V
+!@ 1536909347.069
+!$_4rZ29e59UMt_7QXynMxokfx |=jscript_topvardef_object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "js.topvardef of jsv1"
+!: _5ucAZimYynS_4VA0XHvr1nW |=variable|
+_6OjcpLRgZn9_7hgI2v40ES2
+!)_6mxwPzSn9He_2VOcIJvrU5V
 
 
 
