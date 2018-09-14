@@ -31,7 +31,7 @@ programs: bismon modules
 verbose: | build.ninja
 	$(NINJA) -v
 
-bismon: build.ninja $(wildcard *BM.c *_BM.cc)
+bismon: build.ninja $(wildcard *BM.c *_BM.cc)  $(wildcard store*bmon)
 	$(NINJA) $@
 
 _cflagsmodule.mk: build.ninja 
@@ -45,42 +45,6 @@ build.ninja: generate-ninja-builder.sh
  -C -E $< | sed s:^#://#: > $@
 
 
-
-#-!   ## to be used from C code as 'make indentsinglemodule MODULEID=<id>'
-#-!   ## in emit_module°plain_module
-#-!   ## for example 'make indentsinglemodule MODULEID=_9oXtCgAbkqv_4y1xhhF5Nhz'
-#-!   ## bismon would have perhaps passed a PREVIOUSMODULESOURCE
-#-!   ## see function emit_module°plain_module _1gME6zn82Kf_8hzWibLFRfz in emitcode_BM.c
-#-!   indentsinglemodule:
-#-!   	@if [ ! -f modules/modbm$(MODULEID).c ]; then \
-#-!   	   echo missing modules/modbm$(MODULEID).c; exit 1 ; fi ; \
-#-!   	ms=modules/modbm$(MODULEID).c ; \
-#-!   	cp -a $$ms "$$ms%"; \
-#-!   	$(INDENT) $(INDENTFLAGS) $$ms; \
-#-!   	$(INDENT) $(INDENTFLAGS) $$ms; \
-#-!   	if cmp -s $$ms "$$ms%" ; then echo unchanged module $$ms ; mv "$$ms%" $$ms ; \
-#-!   	  else echo '*indented module ' $$ms ; fi
-#-!   	@if [ -f "$(PREVIOUSMODULESOURCE)" ] && cmp -s "$(PREVIOUSMODULESOURCE)" modules/modbm$(MODULEID).c ; then \
-#-!   	  mv "$(PREVIOUSMODULESOURCE)" modules/modbm$(MODULEID).c ; \
-#-!   	  echo same as previous modules/modbm$(MODULEID).c ; \
-#-!   	else echo '**previous'  "$(PREVIOUSMODULESOURCE)" different of  modules/modbm$(MODULEID).c ; \
-#-!   	fi
-#-!
-#-!   #### for temporary modules
-#-!   indenttempmodule:
-#-!   	@if [ ! -f modules/tmpmobm$(MODULEID).c ]; then \
-#-!   	   echo missing modules/tmpmobm$(MODULEID).c; exit 1 ; fi ; \
-#-!   	ms=modules/tmpmobm$(MODULEID).c ; \
-#-!   	cp -a $$ms "$$ms%"; \
-#-!   	$(INDENT) $(INDENTFLAGS) $$ms; \
-#-!   	$(INDENT) $(INDENTFLAGS) $$ms; \
-#-!   	if cmp -s $$ms "$$ms%" ; then echo unchanged module $$ms ; mv "$$ms%" $$ms ; \
-#-!   	  else echo '*indented module ' $$ms ; fi
-#-!   	@if [ -f "$(PREVIOUSMODULESOURCE)" ] && cmp -s "$(PREVIOUSMODULESOURCE)" modules/tmpmobm$(MODULEID).c ; then \
-#-!   	  mv "$(PREVIOUSMODULESOURCE)" modules/tmpmobm$(MODULEID).c ; \
-#-!   	  echo same as previous modules/tmpmobm$(MODULEID).c ; \
-#-!   	else echo '**previous'  "$(PREVIOUSMODULESOURCE)" different of  modules/tmpmobm$(MODULEID).c ; \
-#-!   	fi
 
 modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
 	$(LINK.c) -fPIC $(BISMONMODULECFLAGS) \

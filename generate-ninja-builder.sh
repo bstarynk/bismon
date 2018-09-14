@@ -182,11 +182,15 @@ for f in $bm_webtemplates ; do
     bf=$(basename $f .thtml)
     echo -n " _$bf.o"
 done
-printf ' $\n  __timestamp.o _bm_allconsts.o'
+printf ' $\n  __timestamp.o _bm_allconsts.o | '
+for s in store*.bmon ; do
+    echo -n " $s"
+done
+echo
 echo
 echo '## emit the cflags for make-ing modules'
 echo 'build _cflagsmodule.mk: CFLAGSMODULE_r build.ninja'
-printf '\n\n################## default target\n'
+printf '\n\n\n################## default target\n'
 echo 'default bismon _cflagsmodule.mk'
 echo
 echo '## reconfigure'

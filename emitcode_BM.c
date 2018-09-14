@@ -4010,61 +4010,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
         getcwd (cwdbuf, sizeof (cwdbuf))));
   }
   objstrbufferwritetofilepayl_BM (_.modgenob, srcpathstr);
-  //// DONT indent the generated code ANYMORE
-  if (false) {
-    char *indentcmdstr = NULL;
-    char *quotpardir = g_shell_quote (realpardirstr);
-    if (prevsrcpathstr)
-      {
-        char *quotprev = g_shell_quote (prevsrcpathstr);
-        int a = -1;
-        if (modulistemporary)
-          a = asprintf (&indentcmdstr,
-                        "make -f %s -C %s indenttempmodule MODULEID=%s PREVIOUSMODULESOURCE=%s",
-                        bismon_makefile, quotpardir, modulidbuf, quotprev);
-        else
-          a = asprintf (&indentcmdstr,
-                        "make -f %s -C %s indentsinglemodule MODULEID=%s PREVIOUSMODULESOURCE=%s",
-                        bismon_makefile, quotpardir, modulidbuf, quotprev);
-        if (a <= 0)
-          FATAL_BM ("asprintf failed for indent command of modulid %s",
-                    modulidbuf);
-        g_free (quotprev);
-      }
-    else
-      {
-        if (modulistemporary)
-          asprintf (&indentcmdstr,
-                    "make -f %s -C %s indenttempmodule MODULEID=%s",
-                    bismon_makefile, quotpardir, modulidbuf);
-        else
-          asprintf (&indentcmdstr,
-                    "make -f %s -C %s indentsinglemodule MODULEID=%s",
-                    bismon_makefile, quotpardir, modulidbuf);
-      }
-    if (!indentcmdstr)
-      FATAL_BM ("failed to build indent command modulidbuf %s", modulidbuf);
-    g_free (quotpardir), quotpardir = NULL;
-    int fd = open (srcpathstr, O_RDONLY);
-    if (fd < 0)
-      FATAL_BM ("failed to open %s - %m", srcpathstr);
-    flock (fd, LOCK_EX);
-    DBGPRINTF_BM ("emit_module°plain_module indentcmdstr=%s", indentcmdstr);
-    fflush (NULL);
-    /// indent run quite quickly enough, often in a few dozens of milliseconds
-    int cmdcod = system (indentcmdstr);
-    if (cmdcod)
-      {
-        DBGPRINTF_BM
-          ("emit_module°plain_module indentcmdstr=%s failed cmdcod=%d",
-           indentcmdstr, cmdcod);
-        FAILHERE (makestring_BM (indentcmdstr));
-      }
-    flock (fd, LOCK_UN);
-    close (fd);
-    free (indentcmdstr), indentcmdstr = NULL;
-  }
-  /////
+  ////
   struct stat srcstat;
   memset (&srcstat, 0, sizeof (srcstat));
   if (stat (srcpathstr, &srcstat))
