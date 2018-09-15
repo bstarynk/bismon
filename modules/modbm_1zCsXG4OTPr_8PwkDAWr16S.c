@@ -3596,7 +3596,7 @@ DBGPRINTF_BM("scan_jsstmt°basiclo_assign €%.9s start o_jsstmt=%s o_prepjfun=%
  /*o_lvar:*/_.o_8xx2naPLkYK_63f1JPAkym5 = //assign _5nt9mkSB1Cx_0orPuemR3vf  
 /*val_to_object:*/objectcast_BM(/*objgetcomp:*/objgetcomp_BM (( /*o_jsstmt:*/_.o_05IHFluwEai_9VxTGg7FVeQ),( 0))); 
  
-//+ #2/5 of block _6DQpfnBo8KI_5QbEtyEeI2Y :: 
+//+ #2/8 of block _6DQpfnBo8KI_5QbEtyEeI2Y :: 
  
  /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M = //assign _0O6rt7YsJDJ_16sCtC3ToPh  
 /*objgetcomp:*/objgetcomp_BM (( /*o_jsstmt:*/_.o_05IHFluwEai_9VxTGg7FVeQ),( 1)); 
@@ -3611,6 +3611,7 @@ DBGPRINTF_BM("scan_jsstmt°basiclo_assign €%.9s o_jsstmt=%s o_lvar=%s v_expr=%
  OUTSTRVALUE_BM( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M)); ; 
 } // end run _4o83rKvee9d_1nWvx4ndPAo 
  
+//+ #4/8 of block _6DQpfnBo8KI_5QbEtyEeI2Y :: 
  
 if /*cond _0n5hzDWSnoH_2HNXXwYrqSG*/  
 /*when _2DKCDbImSCJ_4MR3ZOl0e76:*/ 
@@ -3628,6 +3629,29 @@ PLACEDFAILURE_BM(__LINE__,
   
 } //endwhen _2DKCDbImSCJ_4MR3ZOl0e76  
 /*endcond _0n5hzDWSnoH_2HNXXwYrqSG*/ 
+ 
+ 
+ /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f = //assign _4AgrAQCvt54_133Bey7HOSe  
+ /* val_to_int */ getint_BM( /*v_depth:*/_.v_4nJKFtMqlkA_1teQSqofNux) ; 
+ 
+//+ #6/8 of block _6DQpfnBo8KI_5QbEtyEeI2Y :: 
+ 
+ /*v_scanres:*/_.v_5wKdFyGNJ5j_50nIjxm7LLY = //assign _1E7dxsvfegN_0mIZ0YsayxR  
+(apply4_BM (( (constob_1zCsXG4OTPr_8PwkDAWr16S_BM[50] /*!_6tvn8CFOFbK_7tR4KRH8jTi*/)), ((struct stackframe_stBM*)&_), 
+ ( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M),  ( /*o_prepjfun:*/_.o_5D1GbyYKAgk_9ureezAahw3), 
+ (/*taggedint:*/ taggedint_BM (/*add_int:*/(( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f) + ( 1)))), 
+ ( /*o_jsstmt:*/_.o_05IHFluwEai_9VxTGg7FVeQ))); 
+ 
+ 
+ 
+{ // run _2xfqGAUL4T1_8Dhi0l3s9O0 
+ /*debug v_scanres after scan_jsexpr v_expr o_jsstmt o_prepjfun*/
+DBGPRINTF_BM("scan_jsstmt°basiclo_assign €%s v_scanres=%s after scan_jsexpr v_expr=%s o_jsstmt=%s o_prepjfun=%s",
+ "_2xfqGAUL4T1_8Dhi0l3s9O0", OUTSTRVALUE_BM( /*v_scanres:*/_.v_5wKdFyGNJ5j_50nIjxm7LLY),
+ objectdbg_BM( /*o_jsstmt:*/_.o_05IHFluwEai_9VxTGg7FVeQ), 
+ objectdbg1_BM( /*o_prepjfun:*/_.o_5D1GbyYKAgk_9ureezAahw3));
+; 
+} // end run _2xfqGAUL4T1_8Dhi0l3s9O0 
  
 /* !endingblock _6DQpfnBo8KI_5QbEtyEeI2Y */ 
 goto endblock__6DQpfnBo8KI_5QbEtyEeI2Y; 
