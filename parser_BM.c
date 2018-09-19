@@ -316,13 +316,13 @@ parsererrorprintf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf,
                       unsigned line, unsigned col, const char *fmt, ...)
 {
   if (!isparser_BM (pars))
-    FATAL_BM ("non parser argument to parsererrorprintf_BM");
+    FATAL_BM ("non parser argument to parsererrorprintf_BM with format %s", fmt);
   va_list args;
   char *buf = NULL;
   va_start (args, fmt);
   vasprintf (&buf, fmt, args);
   if (!buf)
-    FATAL_BM ("vasprintf failed");
+    FATAL_BM ("vasprintf failed format %s", fmt);
   va_end (args);
   const struct parserops_stBM *parsops = pars->pars_ops;
   if (parsops)
