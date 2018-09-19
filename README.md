@@ -157,7 +157,12 @@ Italian or Greek or French). So it should be `POSIX` or `C` or
 `en_US.UTF-8` or `en_GB.UTF-8`. You might want to set your environment
 variables appropriately (at least `LANG=en_US.UTF-8` and
 `LANGUAGE=en_US:en` and `LC_ALL=en_US.UTF-8`, with no other `LC_*`
-environment variable).
+environment variable). See
+[locale(1)](http://man7.org/linux/man-pages/man1/locale.1.html),
+[locale(7)](http://man7.org/linux/man-pages/man7/locale.7.html),
+[utf-8(7)]((http://man7.org/linux/man-pages/man7/utf-8.7.html),
+[locale(5)](http://man7.org/linux/man-pages/man5/locale.5.html),
+[setlocale(3)](http://man7.org/linux/man-pages/man3/setlocale.3.html)
 
 
 ## building ##
