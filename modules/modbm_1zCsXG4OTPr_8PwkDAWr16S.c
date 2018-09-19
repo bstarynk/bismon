@@ -2818,6 +2818,17 @@ DBGPRINTF_BM("emit_js_block_or_stmt €%.9s locked o_recv=%s i_depth=%ld",
 if /*cond _68I40kazD2M_3T8HSSz6UfU*/  
 /*when _2u77Uf9GZw4_6EYYKSnSeOm:*/ 
  (/*objectisinstance:*/ objectisinstance_BM(( /*o_recv:*/_.o_57ZQXLDhLdj_7PrZMZMgLI1),( (constob_1zCsXG4OTPr_8PwkDAWr16S_BM[38] /*!basiclo_block*/)))) { //body when _2u77Uf9GZw4_6EYYKSnSeOm  
+  
+{ // run _8xyXVMSOZhe_0KOnBdmmGdL  
+/*debug o_recv is block o_jsgenmod o_jsgenfun i_depth*/
+DBGPRINTF_BM("emit_js_block_or_stmt €%.9s o_recv=%s is block o_jsgenmod=%s o_jsgenfun=%s i_depth=%ld",
+ "_8xyXVMSOZhe_0KOnBdmmGdL",
+ objectdbg_BM( /*o_recv:*/_.o_57ZQXLDhLdj_7PrZMZMgLI1),
+ objectdbg1_BM( /*o_jsgenmod:*/_.o_4JKd986pvM4_6yBzeeI40vW),
+ objectdbg2_BM( /*o_jsgenfun:*/_.o_5Lg7fb6zE3H_6ijQo6GbPN4),
+ (long)( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));
+;  
+} // end run _8xyXVMSOZhe_0KOnBdmmGdL  
  /*v_resemit:*/_.v_0qTBOEAT5pa_2fz1SKfHrMV = //assign _4M2O9miY8so_993I93OHIlW   
 (send4_BM (( /*o_recv:*/_.o_57ZQXLDhLdj_7PrZMZMgLI1), /*sel:*/( (constob_1zCsXG4OTPr_8PwkDAWr16S_BM[58] /*!emit_jsblock*/)), ((struct stackframe_stBM*)&_), 
  ( /*o_jsgenmod:*/_.o_4JKd986pvM4_6yBzeeI40vW),  ( /*o_jsgenfun:*/_.o_5Lg7fb6zE3H_6ijQo6GbPN4), 
@@ -2827,6 +2838,17 @@ if /*cond _68I40kazD2M_3T8HSSz6UfU*/
 else if  
 /*when _1rM1fmyLeEx_4LHmy5U0Oem:*/ 
  (/*objectisinstance:*/ objectisinstance_BM(( /*o_recv:*/_.o_57ZQXLDhLdj_7PrZMZMgLI1),( (constob_1zCsXG4OTPr_8PwkDAWr16S_BM[43] /*!basiclo_statement*/)))) { //body when _1rM1fmyLeEx_4LHmy5U0Oem  
+  
+{ // run _7pbCcJ2sOoz_7iSffyeBHZu  
+/*debug o_recv is stmt o_jsgenmod o_jsgenfun i_depth*/
+DBGPRINTF_BM("emit_js_block_or_stmt €%.9s o_recv=%s is stmt o_jsgenmod=%s o_jsgenfun=%s i_depth=%ld",
+ "_7pbCcJ2sOoz_7iSffyeBHZu",
+ objectdbg_BM( /*o_recv:*/_.o_57ZQXLDhLdj_7PrZMZMgLI1),
+ objectdbg1_BM( /*o_jsgenmod:*/_.o_4JKd986pvM4_6yBzeeI40vW),
+ objectdbg2_BM( /*o_jsgenfun:*/_.o_5Lg7fb6zE3H_6ijQo6GbPN4),
+ (long)( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));
+;  
+} // end run _7pbCcJ2sOoz_7iSffyeBHZu  
  /*v_resemit:*/_.v_0qTBOEAT5pa_2fz1SKfHrMV = //assign _4isqoxW4BXY_9DMQjd2wyTJ   
 (send4_BM (( /*o_recv:*/_.o_57ZQXLDhLdj_7PrZMZMgLI1), /*sel:*/( (constob_1zCsXG4OTPr_8PwkDAWr16S_BM[22] /*!emit_jsstmt*/)), ((struct stackframe_stBM*)&_), 
  ( /*o_jsgenmod:*/_.o_4JKd986pvM4_6yBzeeI40vW),  ( /*o_jsgenfun:*/_.o_5Lg7fb6zE3H_6ijQo6GbPN4), 
