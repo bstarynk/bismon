@@ -478,8 +478,9 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       char srcti[64] = "", binti[64] = "";
       strftime(srcti, sizeof(srcti), "%c", localtime_r(&srcmodstat.st_mtime, &srctm));
       strftime(binti, sizeof(binti), "%c", localtime_r(&binmodstat.st_mtime, &bintm));
-      WARNPRINTF_BM("module source code %s [%s]\n... younger than its binary %s [%s]\n",
-               srcmodpath.c_str(), srcti, binmodpath.c_str(), binti);
+      WARNPRINTF_BM("module source code %s [%s]\n... younger than its binary %s [%s]\n"
+		    "Consider running again the `make` command then starting again %s\n",
+		    srcmodpath.c_str(), srcti, binmodpath.c_str(), binti, myprogname_BM);
       //return false;
     }
   if (modulemap_BM.find(modid) != modulemap_BM.end())
