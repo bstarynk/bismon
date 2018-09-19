@@ -160,7 +160,7 @@ variables appropriately (at least `LANG=en_US.UTF-8` and
 environment variable). See
 [locale(1)](http://man7.org/linux/man-pages/man1/locale.1.html),
 [locale(7)](http://man7.org/linux/man-pages/man7/locale.7.html),
-[utf-8(7)]((http://man7.org/linux/man-pages/man7/utf-8.7.html),
+[utf-8(7)](http://man7.org/linux/man-pages/man7/utf-8.7.html),
 [locale(5)](http://man7.org/linux/man-pages/man5/locale.5.html),
 [setlocale(3)](http://man7.org/linux/man-pages/man3/setlocale.3.html)
 
