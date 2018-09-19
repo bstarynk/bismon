@@ -2040,7 +2040,7 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
       _.compv = objgetcomp_BM (_.stmtob, wix);
       if (!_.compv)
         continue;
-      _.compob = objectcast_BM (_.compob);
+      _.compob = objectcast_BM (_.compv);
       DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s wix=%d compob=%s",      //
                     objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob));
       if (!_.compob)
