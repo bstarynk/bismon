@@ -149,6 +149,17 @@ The `libonion` is not independently packaged in Debian.
 
 The `dependencies/` subdirectory is for `git submodule`-s related to `libbacktrace` and `libonion`
 
+### Localization
+
+Run `locale` to be sure that your localization is POSIX compliant or
+English (British or American) in UTF-8 (it cannot for instance be
+Italian or Greek or French). So it should be `POSIX` or `C` or
+`en_US.UTF-8` or `en_GB.UTF-8`. You might want to set your environment
+variables appropriately (at least `LANG=en_US.UTF-8` and
+`LANGUAGE=en_US:en` and `LC_ALL=en_US.UTF-8`, with no other `LC_*`
+environment variable).
+
+
 ## building ##
 
 Clone this `git` repository as usual, and build then use `bismon`
