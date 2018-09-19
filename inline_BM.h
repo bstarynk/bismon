@@ -360,7 +360,7 @@ objmtimeY2Kmilli_BM (const objectval_tyBM * obj)
 void
 objtouchmtime_BM (objectval_tyBM * obj, double mtime)
 {
-  if ((valtype_BM ((const value_tyBM) obj) != tyObject_BM))
+  if ((valtype_BM ((value_tyBM) obj) != tyObject_BM))
     return;
   obj->ob_mtime = mtime;
 }                               /* end objtouchmtime_BM */
@@ -522,7 +522,7 @@ objgetattr_BM (const objectval_tyBM * obj, const objectval_tyBM * objattr)
 {
   if (!isobject_BM ((value_tyBM) obj))
     return NULL;
-  if (!isobject_BM ((const value_tyBM) objattr))
+  if (!isobject_BM ((value_tyBM) objattr))
     return NULL;
   if (!obj->ob_attrassoc)
     return NULL;
@@ -544,7 +544,7 @@ objnbattrs_BM (const objectval_tyBM * obj)
 unsigned
 objnbcomps_BM (const objectval_tyBM * obj)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return 0;
   if (!obj->ob_compvec)
     return 0;
