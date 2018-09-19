@@ -2806,6 +2806,15 @@ if /*cond _5L2zQTOlEND_6KTsbOYDW1r*/
 if (objlock_BM (curlockedob_8eX9Etm6lmJ_3bbHqolOMxx)) {  
 locked_8eX9Etm6lmJ_3bbHqolOMxx = curlockedob_8eX9Etm6lmJ_3bbHqolOMxx;  
   
+ 
+{ // run _1c6nbLgrawv_2WM5gfvnO76 
+/*debug o_recv i_depth*/
+DBGPRINTF_BM("emit_js_block_or_stmt €%.9s locked o_recv=%s i_depth=%ld",
+ "_1c6nbLgrawv_2WM5gfvnO76", 
+ objectdbg_BM( /*o_recv:*/_.o_57ZQXLDhLdj_7PrZMZMgLI1),
+ (long)( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f)); ; 
+} // end run _1c6nbLgrawv_2WM5gfvnO76 
+  
 if /*cond _68I40kazD2M_3T8HSSz6UfU*/  
 /*when _2u77Uf9GZw4_6EYYKSnSeOm:*/ 
  (/*objectisinstance:*/ objectisinstance_BM(( /*o_recv:*/_.o_57ZQXLDhLdj_7PrZMZMgLI1),( (constob_1zCsXG4OTPr_8PwkDAWr16S_BM[38] /*!basiclo_block*/)))) { //body when _2u77Uf9GZw4_6EYYKSnSeOm  
