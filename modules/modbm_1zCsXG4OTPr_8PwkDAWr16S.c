@@ -2856,6 +2856,18 @@ PLACEDFAILURE_BM(__LINE__,
 } /*cond else _68I40kazD2M_3T8HSSz6UfU*/  
 /*endcond _68I40kazD2M_3T8HSSz6UfU*/ 
   
+ 
+{ // run _5DUmbW8P3O1_0cuIoDhDaND 
+/*debug v_resemit after send to o_recv o_jsgenmod o_jsgenfun*/
+DBGPRINTF_BM("emit_js_block_or_stmt €%.9s v_resemit=%s o_recv=%s o_jsgenmod=%s o_jsgenfun=%s",
+ "_5DUmbW8P3O1_0cuIoDhDaND",
+ OUTSTRVALUE_BM( /*v_resemit:*/_.v_0qTBOEAT5pa_2fz1SKfHrMV),
+ objectdbg_BM( /*o_recv:*/_.o_57ZQXLDhLdj_7PrZMZMgLI1),
+ objectdbg1_BM ( /*o_jsgenmod:*/_.o_4JKd986pvM4_6yBzeeI40vW),
+ objectdbg2_BM( /*o_jsgenfun:*/_.o_5Lg7fb6zE3H_6ijQo6GbPN4));
+; 
+} // end run _5DUmbW8P3O1_0cuIoDhDaND 
+  
 objunlock_BM (locked_8eX9Etm6lmJ_3bbHqolOMxx), locked_8eX9Etm6lmJ_3bbHqolOMxx = NULL; 
 } } // end objlock _8eX9Etm6lmJ_3bbHqolOMxx 
 //+ #4/6 of block _27bDca0oCOf_41QFrC0lVa1 :: 

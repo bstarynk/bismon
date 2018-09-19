@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1421 objects
+// for 1422 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -15494,6 +15494,34 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_5DUmbW8P3O1_0cuIoDhDaND
+!@ 1537382058.671
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug v_resemit after send to o_recv o_jsgenmod o_jsgenfun ..."
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " " _0qTBOEAT5pa_2fz1SKfHrMV  " " 
+  "after"  " " _5P2fpxElfqT_7NlO7H9TYGI  " "  "to" 
+  " " _57ZQXLDhLdj_7PrZMZMgLI1  " " _4JKd986pvM4_6yBzeeI40vW  " " 
+ _5Lg7fb6zE3H_6ijQo6GbPN4  "*/"  "\n"  "DBGPRINTF_BM"  "(\"" 
+  "emit_js_block_or_stmt"  " "  "\u20ac%."  "9s"  " " 
+ _0qTBOEAT5pa_2fz1SKfHrMV  "=%"  "s"  " " _57ZQXLDhLdj_7PrZMZMgLI1 
+  "=%"  "s"  " " _4JKd986pvM4_6yBzeeI40vW  "=%" 
+  "s"  " " _5Lg7fb6zE3H_6ijQo6GbPN4  "=%"  "s" 
+  "\","  "\n"  " "  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+  "\","  "\n"  " "  "OUTSTRVALUE_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _0qTBOEAT5pa_2fz1SKfHrMV)  "),"  "\n" 
+ " "  "objectdbg_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _57ZQXLDhLdj_7PrZMZMgLI1)  ")," 
+ "\n"  " " 
+  "objectdbg1_BM"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4JKd986pvM4_6yBzeeI40vW) 
+ ")," 
+  "\n"  " "  "objectdbg2_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5Lg7fb6zE3H_6ijQo6GbPN4) 
+  "));"  "\n")
+!)_5DUmbW8P3O1_0cuIoDhDaND
+
+
+
 !(_5EPUNaYKjU7_3Sbmk43pvl3
 !@ 1526289739.850
 !$_12QTszi1FF0_5S77twbSETI |=basiclo_intswitch|
@@ -18267,15 +18295,16 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 !(_8eX9Etm6lmJ_3bbHqolOMxx
-!@ 1536765109.612
+!@ 1537382058.671
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "lock o_recv and test its class..."
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _57ZQXLDhLdj_7PrZMZMgLI1
-!# 2
+!# 3
 !& _1c6nbLgrawv_2WM5gfvnO76
 !& _68I40kazD2M_3T8HSSz6UfU
+!& _5DUmbW8P3O1_0cuIoDhDaND
 !)_8eX9Etm6lmJ_3bbHqolOMxx
 
 
