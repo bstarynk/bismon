@@ -800,13 +800,11 @@ main (int argc, char **argv)
     char *oldloc = setlocale (LC_ALL, "POSIX");
     DBGPRINTF_BM ("oldlocale %s", oldloc);
     if (oldloc && strcmp (oldloc, "en_US.UTF-8")
-	&& strcmp (oldloc, "en_GB.UTF-8")
-	&& strcmp (oldloc, "C")
-        && strcmp (oldloc, "POSIX"))
+        && strcmp (oldloc, "en_GB.UTF-8")
+        && strcmp (oldloc, "C") && strcmp (oldloc, "POSIX"))
       WARNPRINTF_BM
         ("your locale '%s' is strange but should be in English, preferably encoded in UTF-8.\n"
-	 "Please use C or en_US.UTF-8 or en_GB.UTF-8 or POSIX",
-         oldloc);
+         "Please use C or en_US.UTF-8 or en_GB.UTF-8 or POSIX", oldloc);
   }
   {
     double nwt = clocktime_BM (CLOCK_REALTIME);

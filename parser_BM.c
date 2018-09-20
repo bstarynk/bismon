@@ -316,7 +316,8 @@ parsererrorprintf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf,
                       unsigned line, unsigned col, const char *fmt, ...)
 {
   if (!isparser_BM (pars))
-    FATAL_BM ("non parser argument to parsererrorprintf_BM with format %s", fmt);
+    FATAL_BM ("non parser argument to parsererrorprintf_BM with format %s",
+              fmt);
   va_list args;
   char *buf = NULL;
   va_start (args, fmt);

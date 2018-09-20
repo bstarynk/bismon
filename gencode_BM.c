@@ -2363,7 +2363,8 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
       _.curcomptypob =
         miniscan_compatype_BM (_.curargctypob, _.curtypob, CURFRAME_BM);
       if (!_.curcomptypob)
-        FAILHERE (makenode1_BM (k_arguments, taggedint_BM (ix)));
+        FAILHERE (makenode3_BM
+                  (k_arguments, taggedint_BM (ix), _.cursonv, _.curtypob));
     }
   DBGPRINTF_BM
     ("miniscan_node_conn°basiclo_primitive done expv=%s result connrestypob=%s",
