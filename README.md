@@ -265,3 +265,16 @@ Ask me (Basile Starynkevitch,
 [`basile@starynkevitch.net`](mailto:basile@starynkevitch.net) or
 [`basile.starynkevitch@cea.fr`](mailto:basile.starynkevitch@cea.fr)...)
 for details.
+
+#### N.B.
+
+
+**This is unreleased free software**
+
+The license (GPLv3+) is likely to not change (it is contractually
+specified in the [CHARIOT](http://chariotproject.eu/) grant).  The
+copyright notice is probably wrong: in generated files, it is not yet
+conforming to GPL expectations. Once formally released (in 2020), it
+is likely that the copyright owner will change (probably to CEA, my
+employer). These details are pending bugs, but there are much more
+other bugs too.
