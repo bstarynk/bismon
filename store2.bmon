@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1480 objects
+// for 1482 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -12253,6 +12253,36 @@ _3QVddP6n0iB_4lpbil0LgYY
 
 
 
+!(_2s6vTPahBbI_3QZCjo8ZfL0
+!@ 1537894226.702
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug end scan_jsstmt\u00b0basiclo_cond o_jsstmt o_prepjfun v_depth o_from"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "end"  " " 
+ _2HRKwEmw3RU_8NbUiNToBgr  "\u00b0" _0eCRnBKQ0eQ_1atum3gUgEz  " " _05IHFluwEai_9VxTGg7FVeQ 
+  " " _5D1GbyYKAgk_9ureezAahw3  " " _17YdW6dWrBA_2mn4QmBjMNs  " " 
+ _89nz0KaXXZh_8eSgMmqnK37  "*/"  "\n"  "DBGPRINTF_BM"  "(\"" 
+ _2HRKwEmw3RU_8NbUiNToBgr  "\u00b0" _0eCRnBKQ0eQ_1atum3gUgEz  " "  "\u20ac%." 
+  "9s"  " "  "end"  " " _05IHFluwEai_9VxTGg7FVeQ 
+  "=%"  "s"  " " _5D1GbyYKAgk_9ureezAahw3  "=%" 
+  "s"  " " _17YdW6dWrBA_2mn4QmBjMNs  "=%"  "ld" 
+  " " _89nz0KaXXZh_8eSgMmqnK37  "=%"  "s"  "\"," 
+  "\n"  " "  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "\"," 
+  "\n"  " "  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _05IHFluwEai_9VxTGg7FVeQ) 
+  "),"  "\n"  " "  "objectdbg1_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5D1GbyYKAgk_9ureezAahw3)  "),"  "\n" 
+ " "  "(" 
+  "long"  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _6Y20GNUgnSZ_4LkbrcRMU8f) 
+ "),"  "\n" 
+  " "  "objectdbg2_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _89nz0KaXXZh_8eSgMmqnK37) 
+ "));" 
+  "\n")
+!)_2s6vTPahBbI_3QZCjo8ZfL0
+
+
+
 !(_2tGjx8LHKZu_8aKwBckPEKr
 !@ 1536563968.423
 !$_4Af5NOOf7Qe_7KQdGPoNdJ0 |=basiclo_while|
@@ -17116,6 +17146,17 @@ _2wnsLSAYyry_0rJMVdRI7rE
 
 
 
+!(_6v6Zfl3fEy0_1lavXxDvPom
+!@ 1537894257.892
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return o_jsstmt"
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+_05IHFluwEai_9VxTGg7FVeQ
+!)_6v6Zfl3fEy0_1lavXxDvPom
+
+
+
 !(_6x2rHb7dcEl_3XCEK37zSKW
 !@ 1536163974.357
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
@@ -20147,13 +20188,13 @@ _5JuT4FgNFFh_7McrTYeT3jx
 
 
 !(_8W92KFbJAOs_9CiKMPRclCz
-!@ 1537892518.486
+!@ 1537894257.892
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of scan_jsstmt\u00b0basiclo_cond"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _4c5MCb4uv2z_05s1UFfXvwB
-!# 8
+!# 10
 !& _2HQtimnfUB9_2dHBegik6zS
 !& _5Ja8k9fpXQG_6Vdm3NDOgRX
 !& _6peFTaaG3sW_9CI4KEmn2H3
@@ -20162,6 +20203,8 @@ _4c5MCb4uv2z_05s1UFfXvwB
 !& _7R4TGkEgO0C_5Zgsg9EQUdU
 !& _0EBNAR24v52_99sjybLnGkR
 !& _2WhUQt3jl3D_17gvRB56rAb
+!& _2s6vTPahBbI_3QZCjo8ZfL0
+!& _6v6Zfl3fEy0_1lavXxDvPom
 !)_8W92KFbJAOs_9CiKMPRclCz
 
 
