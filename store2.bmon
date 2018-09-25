@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1460 objects
+// for 1463 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -10290,14 +10290,17 @@ _7TK5bvNNTIg_4pzieotiEq8
 
 
 !(_0ZGJ4h1jZc2_8g3jLP2t8dY
-!@ 1537420061.206
+!@ 1537881843.037
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of scan_jsstmt\u00b0basiclo_while"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _5F3Vb2iwCDj_70AlfryKbrk
-!# 1
+!# 4
 !& _6urB1TYnruR_64YbwtijNmf
+!& _5oOJOBT58na_7qkcZ0zRP8U
+!& _2RpJuafR5Q1_9BBgvsT5ejX
+!& _4Kp8YHwAg0f_3opV3zbSCsS
 !)_0ZGJ4h1jZc2_8g3jLP2t8dY
 
 
@@ -12667,6 +12670,18 @@ _7ewC6QwZE7K_1LyFtggGrGW
 
 
 
+!(_2RpJuafR5Q1_9BBgvsT5ejX
+!@ 1537881742.606
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "v_testexpr := o_jsstmt.while"
+!# 2
+!& _5lM9Kyl0vIH_2ldYhxjibuP
+!&  * _9179OMUDUQW_3gyzCFNJ7fQ ( _05IHFluwEai_9VxTGg7FVeQ  * _0e54seiZEXF_1Myf620cHoB ( _7GNnckYYtcH_7wtOnPP4eKU))
+!)_2RpJuafR5Q1_9BBgvsT5ejX
+
+
+
 !(_2RCw0JQb23v_2NfFku112jv
 !@ 1529219710.993
 !$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
@@ -14814,6 +14829,18 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_4Kp8YHwAg0f_3opV3zbSCsS
+!@ 1537881843.037
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "leni := objnbcomps(o_jsstmt)"
+!# 2
+!& _833x2jYqhZh_8vDIuJhwz1k
+!&  * _6VC4AAk9840_62dnB0pX5NM ( _05IHFluwEai_9VxTGg7FVeQ)
+!)_4Kp8YHwAg0f_3opV3zbSCsS
+
+
+
 !(_4L5hoWsh9Dl_112aUlLRWBa
 !@ 1528977491.318
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -15630,6 +15657,18 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "miniscan_stmt\u00b0basiclo_objswitch"
 !)_5nFFthyf8y9_00k5H4R0G6b
+
+
+
+!(_5oOJOBT58na_7qkcZ0zRP8U
+!@ 1537881573.332
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "i_depth := val_to_int(v_depth)"
+!# 2
+!& _6Y20GNUgnSZ_4LkbrcRMU8f
+!&  * _5MLPTLuT4ey_0YKIUpvXybX ( _4nJKFtMqlkA_1teQSqofNux)
+!)_5oOJOBT58na_7qkcZ0zRP8U
 
 
 
