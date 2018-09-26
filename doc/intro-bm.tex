@@ -29,6 +29,23 @@ The reader of this document is expected to:
       \bmurl{https://www.latex-project.org/}. Some knowledge of
             {\LaTeX} is useful to improve or contribute to this
             document.}) on the \emph{command line}.
+    
+    \item be \emph{easily} able, in principle, to
+      \textbf{compile}~\footnote{When compiling IoT software such as
+        firmware, it usually is of course some \emph{cross}-compilation.}  his/her or
+      other software coded in C (or in C++) \textbf{on the command
+        line} (\emph{without} any \index{IDE!integrated software environment}IDE -\index{integrated software environment} integrated software environment- or \index{SDK!software development kit} SDK ) with a
+      \textbf{\emph{sequence} of \texttt{gcc} (or \texttt{g++})
+        commands}~\footnote{In practice, we all use some \emph{build
+          automation} tool, such as \texttt{make}, \texttt{ninja} or
+        generators for them such as \texttt{cmake}, \emph{autoconf},
+        \texttt{meson}, etc... But the reader is expected to configure
+        that, e.g. to add more options to \texttt{gcc} or to
+        \texttt{g++} and is able to think in terms of a sequence of
+        elementary \texttt{gcc} or \texttt{g++} compilation commands
+        (or, when using Clang, \texttt{clang} or \texttt{clang++}
+        commands).} \textbf{on Linux}.
+
 
 
 \item to be capable of building large free software projects (such as
@@ -50,11 +67,13 @@ The reader of this document is expected to:
     Nagle:2018:Contributing}) implications, the practical work flow,
   the importance of developer communities.
   
-\item be interested in static source code analysis, so have
-  already tried some such tools like \emph{Frama-C} \footnote{See
-    \bmurl{http://frama-c.com/}} (cf. \cite{Cuoq:2012:Frama-C}), \emph{Clang
-    analyzer} \footnote{See \bmurl{https://clang-analyzer.llvm.org/}},
-  ..., and be aware of compiler concepts and technologies (read \cite{Aho:2006:DragonBook}).
+\item be interested in static source code analysis, so have already
+  tried some such tools like \emph{Frama-C} \footnote{See
+    \bmurl{http://frama-c.com/}} (cf. \cite{Cuoq:2012:Frama-C}),
+  \emph{Clang analyzer} \footnote{See
+    \bmurl{https://clang-analyzer.llvm.org/}}, ..., and be aware of
+  \index{compiler} compiler concepts and technologies (read
+  \cite{Aho:2006:DragonBook}).
 
 \item be familiar with operating systems principles
   (see \cite{Tanenbaum:92:OS,ArpaciDusseau14-Book}) and well
@@ -97,21 +116,44 @@ Feedback and improvements on this document can be suggested by email
 documentation, and will contain more and more generated parts in the
 future.
 
+\subsection{The \textsc{Chariot} vision on specialized static source code analysis for more secure and safer IoT software development}
+
+There are many existing documents related to improving safety and
+security in IoT software, and even more on static source code analysis
+in general. Several conferences are dedicated to static
+analysis~\footnote{The 25\textsuperscript{th} Static Analysis
+  Symposium will happen in august 2018, see
+  \bmurl{http://staticanalysis.org/sas2018/sas2018.html}; most ACM
+  SIGPLAN conferences such as POPL, PLDI, ICFP, OOPSLA, LCTES, SPLASH,
+  DSL, CGO, SLE... have papers related to static source code
+  analysis.}. All dominant C compilers (notably GCC and Clang) are
+using and providing static source code analysis techniques for
+optimizations and warnings purposes. Many taxonomies of software
+defects already exist, notably for IoT .
+
 \subsection{About \textit{Bismon}}
 
-\textit{Bismon} (a \emph{temporary name}) \footnote{\texttt{bismon} is a \textbf{temporary name}
-  and could be changed, once we find a better name for it} is a free
-software (GPLv3+ licensed)\footnote{The source code is unreleased but available, and continuously evolving, on \bmurl{https://github.com/bstarynk/bismon}} static source code whole-program analysis framework whose
-initial domain will be \emph{Internet of Things} (or
-\index{IoT}{IoT})\footnote{IoT is viewed as the first application
-  domain of \textit{Bismon}, but it is hoped that most of
-  \textit{Bismon} could be reused and later extended for other
-  domains}. It is designed to work with the \textit{Gcc} compiler (see
-\bmurl{gcc.gnu.org}) on a Linux workstation\footnote{Linux specific features are needed by \textit{Bismon}, which is unlikely to be buildable or run under other operating systems. My Linux distribution is \emph{Debian/Unstable}}. \textit{Bismon} is the
-successor of \textit{GCC MELT} \footnote{The \textit{GCC MELT} web
-  pages used to be on \texttt{gcc-melt.org} -a DNS domain relinquished
-  in april 2018- and are archived on
-  \bmurl{https://starynkevitch.net/Basile/gcc-melt}} (see \cite{Starynkevitch2007Multistage, starynkevitch-DSL2011}).
+\textit{Bismon} (a \emph{temporary name}) \footnote{\texttt{bismon} is
+  a \textbf{temporary name} and could be changed, once we find a
+  better name for it} is a free software (GPLv3+
+licensed)\footnote{The source code is unreleased but available, and
+  continuously evolving, on
+  \bmurl{https://github.com/bstarynk/bismon}} static source code
+whole-program analysis framework whose initial domain will be
+\emph{Internet of Things} (or \index{IoT}{IoT})\footnote{IoT is viewed
+  as the first application domain of \textit{Bismon}, but it is hoped
+  that most of \textit{Bismon} could be reused and later extended for
+  other domains}. It is designed to work with the \textit{Gcc}
+compiler (see \bmurl{gcc.gnu.org}) on a Linux
+workstation\footnote{Linux specific features are needed by
+  \textit{Bismon}, which is unlikely to be buildable or run under
+  other operating systems. My Linux distribution is
+  \emph{Debian/Unstable}}. \textit{Bismon} is the successor of
+\textit{GCC MELT} \footnote{The \textit{GCC MELT} web pages used to be
+  on \texttt{gcc-melt.org} -a DNS domain relinquished in april 2018-
+  and are archived on
+  \bmurl{https://starynkevitch.net/Basile/gcc-melt}} (see
+\cite{Starynkevitch2007Multistage, starynkevitch-DSL2011}).
 
 {\large \textit{Bismon} is \textbf{work in progress}}, and many things
 described here are not (fully, or even partly!) implemented in 2018 or
