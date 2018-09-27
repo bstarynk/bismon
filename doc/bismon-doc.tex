@@ -33,9 +33,9 @@
 \date{\bmdocdate}
 
 \title{Specialized Static Analysis tools for more secure and safer IoT software development.\\
-  \emph{Bismon}\thanks{The \texttt{bismon} name is temporary and
+  \emph{Bismon}~\thanks{The \texttt{bismon} name is temporary and
     is likely to change later. See also the
-    \bmurl{http://github.com/bstarynk/bismon} repository; this documentation was generated with its \texttt{build-bismon-doc.sh} script} documentation}
+    \bmurl{http://github.com/bstarynk/bismon} repository; this documentation was generated with its \texttt{build-bismon-doc.sh} script}~ documentation}
 
 \author{Basile \textsc{Starynkevitch}\thanks{Email
     \bmemail{basile@starynkevitch.net} or
@@ -52,24 +52,26 @@
 \pagestyle{fancy}
 \fancyhf{}
 \rhead{\textsc{Chariot} D1.3}
-\lhead{Specialized Static Analysis tools ... \emph{Bismon}}
+\lhead{Specialized Static Analysis tools for IoT \ldots - \emph{Bismon}}
 \renewcommand{\footrulewidth}{0.4pt}
 % https://tex.stackexchange.com/a/317531/42406
 \futurelet\TMPfootrule\def\footrule{{\color{orange}\TMPfootrule}}
 \futurelet\TMPheadrule\def\headrule{{\color{orange}\TMPheadrule}}
-\rfoot{Page \thepage ~ {\relsize{-2}{of \pageref{LastPage}}}}
+\rfoot{Page \thepage ~ {\relsize{-2.5}{of \pageref{LastPage}}}}
 \begin{titlepage}
 \maketitle
 
 \subsection*{notice}
 
 \begin{quote}
-\footnotesize This work is partly but mostly funded (from start of 2018 to end of
+\begin{relsize}{-2}
+\footnotesize This work is funded (from start of 2018 to end of
 2020) thru the \emph{\textsc{Chariot}} project (see \bmurl{http://chariotproject.eu/})
 which has received funding from the European Union’s Horizon 2020
 research and innovation programme under the Grant Agreement No
 780075.
-
+\end{relsize}
+\end{quote}
 \medskip
 
 \begin{abstract}
@@ -78,7 +80,6 @@ research and innovation programme under the Grant Agreement No
 \end{abstract}
 
 This report will become the major part of \emph{\textsc{Chariot}} deliverable D1.3
-\end{quote}
 
 \hspace{2cm}
 
@@ -102,10 +103,10 @@ This report will become the major part of \emph{\textsc{Chariot}} deliverable D1
 \bigskip
 
 \textbf{Deliverable created during the \href{http://chariotproject.eu/}{\textsc{Chariot}} project.}
+\end{center}
+\end{titlepage}
 
-\bigskip
 
-\hrule
 
 \subsection*{disclaimer}
 
@@ -140,7 +141,7 @@ clearly indicated otherwise. Acknowledgement of previously published
 material and of the work of others has been made through appropriate
 citation, quotation or both.
 
-\end{center}
+
 
 
 \begin{quote}
@@ -151,13 +152,13 @@ International License. To view a copy of this license, visit
 Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.}
 \end{quote}
 
-\end{titlepage}
 \newpage
 
 \tableofcontents
 
 \newpage
 
+\rfoot{Page \thepage ~ {\relsize{-2}{of \pageref{LastPage}}}}
 \input{intro-bm}
 
 \newpage
