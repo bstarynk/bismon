@@ -35,20 +35,21 @@ The reader of this document is expected to:
         firmware, it usually is of course some
         \emph{cross}-compilation.}  his/her or other software coded in
       C (or in C++) \textbf{on the command line} (\emph{without} any
-      \index{IDE!integrated software environment}IDE
-      -\index{integrated software environment} integrated software
+      \index{IDE!integrated development environment}IDE
+      -\index{integrated development environment} integrated software
       environment- or \index{SDK!software development kit} SDK
       -\index{software development kit} software development kit-)
       with a \textbf{\emph{sequence} of \texttt{gcc} (or \texttt{g++})
         commands}~\footnote{In practice, we all use some \emph{build
           automation} tool, such as \texttt{make}, \texttt{ninja} or
         generators for them such as \texttt{cmake}, \emph{autoconf},
-        \texttt{meson}, etc... But the reader is expected to configure
-        that, e.g. to add more options to \texttt{gcc} or to
-        \texttt{g++} and is able to think in terms of a sequence of
-        elementary \texttt{gcc} or \texttt{g++} compilation commands
-        (or, when using Clang, \texttt{clang} or \texttt{clang++}
-        commands).} \textbf{on Linux}.
+        \texttt{meson}, etc... But the reader is expected to be able
+        to configure that, e.g. to add more options to \texttt{gcc} or
+        to \texttt{g++} (perhaps in his/her \texttt{Makefile}) and is
+        able to think in terms of a sequence of elementary
+        \texttt{gcc} or \texttt{g++} compilation commands (or, when
+        using Clang, \texttt{clang} or \texttt{clang++} commands).}
+      \textbf{on Linux}.
 
 
 
@@ -122,6 +123,8 @@ future.
 
 \subsection{The \textsc{Chariot} vision on specialized static source code analysis for more secure and safer IoT software development}
 
+\subsubsection{About static source code analysis and IoT}
+
 There are many existing documents related to improving safety and
 security in IoT software (e.g. \cite{Chen:2011:DAS, Medwed:2016:ISC}),
 and even more on static source code analysis in general
@@ -133,21 +136,22 @@ dedicated to static analysis~\footnote{The 25\textsuperscript{th}
   SIGPLAN conferences such as POPL, PLDI, ICFP, OOPSLA, LCTES, SPLASH,
   DSL, CGO, SLE... have papers related to static source code
   analysis.}. All dominant C compilers (notably GCC and Clang, but
-also VisualC) are using complex static source code analysis techniques
+also MicroSoft's \emph{Visual C}\texttrademark) are using complex static source code analysis techniques
 for optimizations and warnings purposes (and that is why C compilers
 are monsters~\footnote{see
   \bmurl{https://softwareengineering.stackexchange.com/a/273711/40065}
   for more.}). It is wisely noticed (in
 \cite{GosevaPopstojanova2015OnTC}) that \textbf{state-of-the-art
   static source code analysis tools are \emph{not} very effective in
-  detecting security vulnerabilities}~\footnote{Se we can only hope an
-  \emph{incremental} progress in that area. Static source code
-  analysis in \textsc{Chariot} won't make miracles.}, so they are not
-a ``silver bullet'' (\cite{Brooks:1987:NSB}). Many taxonomies of
-software defects already exist (e.g. \cite{Silva:2016:SES,
-  Wagner:2008:DCD, Levine:2009:DDE} etc....), notably for IoT (see
-\cite{Carpent:2018:RRA, Ahmad:2018:ModelBasedIoT,
-  Laszlo:2018:Vessedia}).
+  detecting \index{vulnerability!security} security
+  vulnerabilities}~\footnote{Se we can only hope an \emph{incremental}
+  progress in that area. Static source code analysis in
+  \textsc{Chariot} won't make miracles.}, so they are not a ``silver
+bullet'' \index{silver bullet} (\cite{Brooks:1987:NSB}). Many
+taxonomies of software defects \index{defect!software} already exist
+(e.g. \cite{Silva:2016:SES, Wagner:2008:DCD, Levine:2009:DDE}
+etc....), notably for IoT\index{IoT} (see \cite{Carpent:2018:RRA,
+  Ahmad:2018:ModelBasedIoT, Laszlo:2018:Vessedia}).
 
 Static source code analysis tools can -grossly speaking-
 be~\footnote{This is a gross simplification! In practice, there is a
@@ -199,7 +203,11 @@ be~\footnote{This is a gross simplification! In practice, there is a
       standard dynamic C memory allocation above \texttt{malloc};
       since they target above all the safety critical real-time
       embedded software market where such allocations are
-      \emph{forbidden}.}). 
+      \emph{forbidden}.}).  In practice, the formal sound static
+    analyzers are able to prove \emph{automatically} some
+    \emph{simple} properties of small, highly critical, software
+    components (e.g. avoiding the need of \emph{unit testing} at the
+    expense of very \emph{costly software development efforts}).
 
   \item lightweight ``syntax'' oriented ``unsound'' tools, such as
     Coverity Scan~\footnote{See \bmurl{https://scan.coverity.com/}} or
@@ -221,6 +229,89 @@ Most static analyzers require some kind of interaction with their user
 analysis results and explanations about them, or complex information
 like control flow graphs, derived properties at each statements.
 
+The \href{http://vessedia.eu/}{VESSEDIA} project is an H2020
+IoT-related project~\footnote{The VESSEDIA project (Verification
+  Engineering of Safety and Security Critical Industrial Applications)
+  has received funding from the European Union's Horizon 2020 research
+  and innovation programme under grant agreement No. 731453, within
+  the call H2020-DS-LEIT-2016, started in january 2017, ending in
+  december 2019.} which is focusing on a strong formal methods
+approach for IoT \emph{software} and insists on a ``single system
+formal verification'' approach (so it makes quite weak hypothesis on
+the ``systems of systems'' view); it ``aims at enhancing safety and
+security of information and communication technology (ICT) and
+especially the Internet of Things (IoT). More precisely the aim of
+this [VESSEDIA] project consists in making formal methods more
+accessible for application domains that want to improve the security
+and reliability of their software applications by means of Formal
+Methods''~\footnote{Taken from
+  \bmurl{https://vessedia.eu/about}}. Most \textsc{Vessedia} partners
+(even the industrial ones) are versed in formal static analysis
+techniques (most of them being already trained to use \emph{Frama-C}
+several years before, and several of them contributing actively to
+that tool.). Some of the major achievements of \textsc{Vessedia}
+includes formal (but \emph{fully automatic}) proofs of \emph{simple}
+properties of some basic software components (e.g. lack of undefined
+behavior in the memory allocator, or the linked list implementation,
+of Contiki).  In contrast, \textsc{Chariot} focuses mainly on a
+\emph{systems of systems} (e.g. networks of systems and systems of
+networks) approach, so ``aims to address is how
+safety-critical-systems should be securely and appropriately managed
+and integrated with a fog network made up of heterogeneous IoT devices
+and gateways.''. Within \textsc{Chariot}, static analysis methods have
+to be ``simple'' and support its \emph{Open IoT Cloud Platform} thru
+its \emph{IoT Privacy, Security and Safety Supervision Engine}
+\index{IPSE}~\footnote{Taken from
+  \bmurl{https://www.chariotproject.eu/About/}}, and some industrial
+\textsc{Chariot} partners, while being IoT network and hardware
+experts, are discovering that their favorite IDE (provided by their
+main IoT hardware vendor) is running GCC underneath during the build
+of their firmware. No \textsc{Chariot} industrial partner have any
+prior extensive experience of static formal-methods based source code
+analysis techniques and tools such as \emph{Frama-C}. Most of them
+don't even build their firmware on a Linux workstation (but depend on
+some proprietary IDE containing an obsolete version of \emph{GCC} and
+have to run that on Windows.).
+
+\subsubsection{The power of an existing compiler: GCC}
+
+Current versions of \emph{GCC} (that is, GCC 8.2 in september 2018)
+are capable of quite surprising optimizations (internally based upon
+some sophisticated static analysis techniques and advanced
+heuristics). Some of them are explained in table \ref{tab:gccopt}.
+
+\begin{table}[h]
+  \caption{\label{tab:gccopt} examples of \emph{GCC} optimizations}
+  \medskip
+
+  \begin{center}
+  \begin{relsize}{-1}
+  \begin{tabular}{p{6cm}|p{4.5cm}}
+    \textbf{C code} & \textbf{optimization} \\
+    \hline \\
+    \begin{minipage}[c]{5.5cm}
+      \begin{relsize}{-0.5}
+        \begin{alltt}
+          \textbf{static} \textbf{\emph{int}} fact(\textbf{\emph{int}} n) \{\\
+          \hspace{2em}\textbf{if} (n > 1)\\
+          \hspace{4em}\textbf{return} n*fact(n-1);\\
+          \hspace{2em}\textbf{else} \textbf{return} 1;\\
+          \}
+          \textbf{\emph{int}} f12(\textbf{void})\\
+          \{ \textbf{return} fact(12); \} 
+        \end{alltt}
+      \end{relsize}
+    \end{minipage} & constant folding of recursive call 
+      
+  \end{tabular}
+  \end{relsize}
+  \end{center}
+\end{table}
+
+
+
+
+
 \subsection{About \textit{Bismon}}
 
 \textit{Bismon} (a \emph{temporary name}) \footnote{\texttt{bismon} is
@@ -238,12 +329,13 @@ compiler (see \bmurl{gcc.gnu.org}) on a Linux
 workstation\footnote{Linux specific features are needed by
   \textit{Bismon}, which is unlikely to be buildable or run under
   other operating systems. My Linux distribution is
-  \emph{Debian/Unstable}}. \textit{Bismon} is the successor of
-\textit{GCC MELT} \footnote{The \textit{GCC MELT} web pages used to be
-  on \texttt{gcc-melt.org} -a DNS domain relinquished in april 2018-
-  and are archived on
+  \emph{Debian/Unstable}}. \textit{Bismon} is conceptually the
+successor of \textit{GCC MELT} \footnote{The \textit{GCC MELT} web
+  pages used to be on \texttt{gcc-melt.org} -a DNS domain relinquished
+  in april 2018- and are archived on
   \bmurl{https://starynkevitch.net/Basile/gcc-melt}} (see
-\cite{Starynkevitch2007Multistage, starynkevitch-DSL2011}).
+\cite{Starynkevitch2007Multistage, starynkevitch-DSL2011}), but don't
+share any code with it.
 
 {\large \textit{Bismon} is \textbf{work in progress}}, and many things
 described here are not (fully, or even partly!) implemented in 2018 or

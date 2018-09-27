@@ -33,10 +33,11 @@
 
 \date{\bmdocdate}
 
-\title{Specialized Static Analysis tools for more secure and safer IoT software development.\\
-  \emph{Bismon}~\thanks{The \texttt{bismon} name is temporary and
+\title{{\color{orange}{D1.3}}~Specialized Static Analysis tools for more secure and safer IoT software development.
+  \\
+  {\large{\emph{Bismon}~\thanks{The \texttt{bismon} name is temporary and
     is likely to change later. See also the
-    \bmurl{http://github.com/bstarynk/bismon} repository; this documentation was generated with its \texttt{build-bismon-doc.sh} script}~ documentation}
+    \bmurl{http://github.com/bstarynk/bismon} repository; this documentation was generated with its \texttt{build-bismon-doc.sh} script}~ documentation}}}
 
 \author{Basile \textsc{Starynkevitch}\thanks{Email
     \bmemail{basile@starynkevitch.net} or
@@ -62,8 +63,8 @@
 \begin{titlepage}
 \maketitle
 
+\begin{relsize}{-1.2}
 \subsection*{document summary information}
-\begin{relsize}{-0.5}
   \begin{tabular}{|l|l|l|l|}
     \hline 
   \textbf{Grant Agreement} & 780075 & \textbf{Acronym} & \textsc{Chariot} \\
@@ -90,12 +91,48 @@
   \textbf{Contributions from} &\multicolumn{3}{l|}{ - }
   \\
     \hline
-  \textbf{Revision} &\multicolumn{3}{l|}{git commit \texttt{\bmgitcommit}, generated \textit{\bmdoctimestamp}}
-  \\
+  \textbf{Revision} &\multicolumn{3}{p{9cm}|}{git commit \texttt{\bmgitcommit}} \\
+    \hline 
+  {\small \emph{Generated on}} &\multicolumn{3}{p{9cm}|}{{\scriptsize\textit{\bmdoctimestamp}}} \\
     \hline
 \end{tabular}
 \end{relsize}
-\medskip
+
+\begin{abstract}
+  \textit{Bismon} is a free software static source code analysis framework. \\
+  @@ ETC...
+\end{abstract}
+
+\newpage
+
+
+\subsection*{document history}
+This partly generated document and the \emph{Bismon} software itself
+are co-developed and have exactly {\bmgitnumbercommits} \href{http://git-scm.com/}{\texttt{git}}
+commits on \textit{\bmdoctimestamp}. See
+\bmurl{https://github.com/bstarynk/bismon/commits/} for details.
+
+\begin{relsize}{-0.5}
+This document is co-developed with the \emph{Bismon} software itself,
+it is typeset using \LaTeX~on Linux and contains some \emph{generated}
+documentation~\footnote{Of course, a significant part of this
+  documented is hand-written, see the
+  \href{https://github.com/bstarynk/bismon/tree/master/doc}{\texttt{bismon/doc/}}
+  directory for details (and the \emph {generated} part goes in its
+  \texttt{bismon/doc/generated} directory, so is not versioned in the
+  \emph{\texttt{git}} repository; you need to build the documentation
+  on your Linux workstation). Hopefully, more and more documentation
+  would be generated for the \emph{Bismon} persistent system. Since
+  some parts of this report are generated, even a small software
+  change may impact this document (including bugs which could destroy
+  it locally).}. The entire history of \emph{Bismon} (both the
+software -including its persistent store- and this document) is
+available on \bmurl{https://github.com/bstarynk/bismon/commits} and
+has, for this document of commit id \texttt{\bmgitcommit} generated on
+\textit{\bmdocdate}, exactly {\bmgitnumbercommits} commits (or
+elementary changes).
+\end{relsize}
+\bigskip
 
 \subsection*{notice}
 
@@ -110,21 +147,16 @@ research and innovation programme under the Grant Agreement No
 \end{quote}
 \medskip
 
-\begin{abstract}
-  \textit{Bismon} is a free software static source code analysis framework. \\
-  @@ ETC...
-\end{abstract}
 
-This report will become the major part of \emph{\textsc{Chariot}} deliverable D1.3
 
 \hspace{2cm}
 
 \begin{center}
-{\small git commit: \texttt{\bmgitcommit}}
-
-{\small generated: \textit{\bmdoctimestamp}}
-
-\hspace{1cm}
+%{\small git commit: \texttt{\bmgitcommit}}
+%
+%{\small generated: \textit{\bmdoctimestamp}}
+%
+%\hspace{1cm}
 
 \begin{tabular}{cc}
   \bmincludewidthgraphics{72pt}{CHARIOT-logo-img}{png}{png} %
@@ -191,6 +223,13 @@ Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.}
 \newpage
 
 \tableofcontents
+
+\newpage
+\listoffigures
+
+\medskip
+
+\listoftables
 
 \newpage
 
