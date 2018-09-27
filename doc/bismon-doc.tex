@@ -13,6 +13,7 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{moreverb}
+\usepackage{multirow}
 \usepackage[square]{natbib}
 \usepackage{charter}
 \usepackage{hevea}
@@ -60,6 +61,41 @@
 \rfoot{Page \thepage ~ {\relsize{-2.5}{of \pageref{LastPage}}}}
 \begin{titlepage}
 \maketitle
+
+\subsection*{document summary information}
+\begin{relsize}{-0.5}
+  \begin{tabular}{|l|l|l|l|}
+    \hline 
+  \textbf{Grant Agreement} & 780075 & \textbf{Acronym} & \textsc{Chariot} \\
+  \hline 
+    {\textbf{Full title}} & %
+    \multicolumn{3}{l|}{\textbf{\relsize{+0.5}{C}}ognitive \textbf{\relsize{+0.5}{H}}eterogeneous \textbf{\relsize{+0.5}{A}}rchitecture for Industrial {\relsize{+0.5}{\textbf{IoT}}}}  \\
+    \hline
+    \textbf{Start date} & 01/01/2018 & \textbf{Duration} & 36 months \\
+    \hline
+  \textbf{Project URL} & \multicolumn{3}{l|}{{\large \href{http://www.chariotproject.eu}{\textbf{\texttt{www.chariotproject.eu}}}}} \\
+    \hline
+  \textbf{Deliverable} & \multicolumn{3}{p{9cm}|}{{\textbf{D1.3} Specialized Static Analysis tools for more secure and safer IoT software development.}} \\
+    \hline
+  \textbf{Workpackage} & \multicolumn{3}{l|}{\textbf{WP1}} \\
+    \hline
+  \textbf{Contractual due date} & {31/12/2018} & \textbf{Actual submission date} & - \\
+    \hline
+  \textbf{Nature} & R {\small (report)} & \textbf{dissemination level} & PU  {\small (public)} \\
+    \hline
+ \textbf{Lead beneficiary} & \multicolumn{3}{l|}{CEA, LIST} \\
+ \hline
+  \textbf{Responsible author} & \multicolumn{3}{l|}{Basile \textsc{Starynkevitch} (CEA, LIST)} \\
+  \hline
+  \textbf{Contributions from} &\multicolumn{3}{l|}{ - }
+  \\
+    \hline
+  \textbf{Revision} &\multicolumn{3}{l|}{git commit \texttt{\bmgitcommit}, generated \textit{\bmdoctimestamp}}
+  \\
+    \hline
+\end{tabular}
+\end{relsize}
+\medskip
 
 \subsection*{notice}
 
