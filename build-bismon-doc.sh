@@ -1,4 +1,4 @@
-#!/bin/bash -vx
+#!/bin/bash -x
 # file build-bismon-doc.sh
 ## requirement: generate PDF (with hyperlinks) and HTML5
 # considering following typesetters
@@ -18,6 +18,9 @@ mkdir -p doc/htmldoc/
 
 # generate the git tag
 git log --format=oneline -1 --abbrev=16 --abbrev-commit -q | awk '{printf "\\newcommand{\\bmgitcommit}[0]{%s}\n", $1}' > doc/generated/git-commit.tex
+# generate the number of commits; should be doable in a more efficient way
+nbc=$(git log | grep '^commit' | wc -l)
+printf '\\newcommand{\\bmgitnumbercommits}[0]{%d}\n' $nbc >> doc/generated/git-commit.tex
 
 # generate the dates
 date +'\newcommand{\bmdoctimestamp}[0]{%c}%n\newcommand{\bmdocdate}[0]{%b %d, %Y}' > doc/generated/timestamp.tex
