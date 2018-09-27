@@ -119,17 +119,93 @@ future.
 \subsection{The \textsc{Chariot} vision on specialized static source code analysis for more secure and safer IoT software development}
 
 There are many existing documents related to improving safety and
-security in IoT software, and even more on static source code analysis
-in general. Several conferences are dedicated to static
-analysis~\footnote{The 25\textsuperscript{th} Static Analysis
-  Symposium will happen in august 2018, see
+security in IoT software (e.g. \cite{Chen:2011:DAS, Medwed:2016:ISC}),
+and even more on static source code analysis in general
+(cf. \cite{Gomes2009AnOO, GosevaPopstojanova2015OnTC,
+  Binkley:2007:SCA} and many others). Several conferences are
+dedicated to static analysis~\footnote{The 25\textsuperscript{th}
+  Static Analysis Symposium will happen in august 2018, see
   \bmurl{http://staticanalysis.org/sas2018/sas2018.html}; most ACM
   SIGPLAN conferences such as POPL, PLDI, ICFP, OOPSLA, LCTES, SPLASH,
   DSL, CGO, SLE... have papers related to static source code
-  analysis.}. All dominant C compilers (notably GCC and Clang) are
-using and providing static source code analysis techniques for
-optimizations and warnings purposes. Many taxonomies of software
-defects already exist, notably for IoT .
+  analysis.}. All dominant C compilers (notably GCC and Clang, but
+also VisualC) are using complex static source code analysis techniques
+for optimizations and warnings purposes (and that is why C compilers
+are monsters~\footnote{see
+  \bmurl{https://softwareengineering.stackexchange.com/a/273711/40065}
+  for more.}). It is wisely noticed (in
+\cite{GosevaPopstojanova2015OnTC}) that \textbf{state-of-the-art static source
+code analysis tools are \emph{not} very effective in detecting security
+vulnerabilities}~\footnote{Se we can only hope an \emph{incremental}
+  progress in that area. Static source code analysis in
+  \textsc{Chariot} won't make miracles.}, so they are not a ``silver
+bullet'' (\cite{Brooks:1987:NSB}). Many taxonomies of software defects
+already exist (e.g. \cite{Silva:2016:SES, Wagner:2008:DCD,
+  Levine:2009:DDE} etc....), notably for IoT
+(cf. \cite{Carpent:2018:RRA}).
+
+Static source code analysis tools can -grossly speaking-
+be~\footnote{This is a gross simplification! In practice, there is a
+  continuous spectrum of source code analyzers, much like there is a
+  spectrum between compilers and interpreters (with e.g. bytecode or
+  JIT implementations sitting in between compilation and naive
+  interpretation).} viewed as being of either of two kinds:
+
+\begin{itemize}
+  \item strongly formal methods based, semantically oriented,
+    ``sound'' tools (e.g. built above abstract interpretation -cf
+    \cite{Cousot:2014:AIP,CousotCousot77-1}-, model checking -cf
+    \cite{Schlich:2010:MCS, Jhala:2009:SMC}-, and other formal
+    techniques on the whole program... See also
+    \cite{Andreasen:2017:SAI}) which can give excellent results but
+    require a lot of expertise to be used, and may take a long time to
+    run~\footnote{There are cases where those static analyzers need
+      weeks of computer time to give interesting results.}. For
+    examples, \emph{Frama-C} (cf \cite{Cuoq:2012:Frama-C}),
+    \emph{Astrée} (cf \cite{Mine:2015:TIU}), etc... The expert user
+    needs either to explicitly annotate the analyzed source code
+    (e.g. in ACSL for \emph{Frama-C}, see \cite{Baudin:2018:ACSL,
+      Delahaye:2013:CSL, Amin:2017:LAW}), or wisely tune the many
+    configuration knobs of the static analyzer, and often both. Often,
+    the static analyzer itself has to be extended to be able to give
+    interesting results on one particular analyzed source
+    code~\footnote{The \emph{Astrée} project can be seen as the
+      development of a powerful analyzer tool \emph{specifically}
+      suited for the needs of Airbus control command software; it
+      implements many complex abstract interpretation lattices wisely
+      chosen to fit the relevant traits of the analyzed code. Neither
+      \emph{Astrée} nor \emph{Frama-C} can easily -without any
+      additional tuning or annotations- and successfully be used on
+      most Linux command line utilities (e.g. \texttt{bash},
+      \texttt{\emph{coreutils}}, \texttt{\emph{binutils}},
+      \texttt{gcc}, ...)  or servers (e.g. \texttt{systemd},
+      \texttt{lighttpd}, \texttt{Wayland} or \texttt{Xorg}, or IoT
+      frameworks such as MQTT...). But \emph{Frama-C} can be extended
+      by additional plugins so is a \emph{framework} for sound static
+      analysis.}. Many formal static analyzers
+    (e.g. \cite{Greenaway:2014:DSS, Vedala:2012:ADP}) focus on
+    checking just \emph{one} aspect or property of security or
+    safety. Usually, formal and sound static analyzers can practically
+    cope only with small sized analyzed programs of at most one or a
+    few hundred thousands lines of C code (following some
+    \emph{particular} coding style~\footnote{Both \emph{Frama-C} and
+      \emph{Astrée} have issues in dealing with standard dynamic C
+      memory allocation above \texttt{malloc}; since they target above
+      all the safety critical real-time embedded software market where
+      such allocations are \emph{forbidden}.}).
+
+  \item lightweight ``syntax'' oriented ``unsound'' tools, such as
+    Coverity or Clang-Analyzer, or even recent compilers (GCC or
+    Clang) with all warnings and link-time
+    optimization~\footnote{Link-time optimization (e.g. compiling and
+      \emph{linking} with \texttt{gcc -O2 -flto} using GCC) slows down
+      the build time by more than a factor of 2 since the intermediate
+      representation of the compiler (e.g. Gimple for GCC) is kept in
+      object files and reload at ``link-time'' which is done by the
+      \emph{compiler} working on the whole program, so is rarely
+      used.}  enabled.
+    
+\end{itemize}
 
 \subsection{About \textit{Bismon}}
 
