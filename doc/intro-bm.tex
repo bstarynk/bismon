@@ -247,15 +247,22 @@ and reliability of their software applications by means of Formal
 Methods''~\footnote{Taken from
   \bmurl{https://vessedia.eu/about}}. Most \textsc{Vessedia} partners
 (even the industrial ones) are versed in formal static analysis
-techniques (most of them being already trained to use \emph{Frama-C}
+techniques (many of them being already trained to use \emph{Frama-C}
 several years before, and several of them contributing actively to
 that tool.). Some of the major achievements of \textsc{Vessedia}
-includes formal (but \emph{fully automatic}) proofs of \emph{simple}
+includes formal (but \emph{fully automatic}) proofs of often
+\emph{simple} (and sometimes very complex and very specific)
 properties of some basic software components (e.g. lack of undefined
 behavior in the memory allocator, or the linked list implementation,
-of Contiki).  In contrast, \textsc{Chariot} focuses mainly on a
-\emph{systems of systems} (e.g. networks of systems and systems of
-networks) approach, so ``aims to address is how
+of Contiki). Some automatically proven properties can be very complex,
+and the very hard work~\footnote{In terms of human efforts, the
+  formalization of the problem, and the annotation of the code and
+  guidance of the prover, takes much more time and money (often more
+  than a factor of 30x) than the coding of the C code.}  is in
+formalizing these properties (in terms of C code!) and then in
+assisting the formal tool to prove them. In contrast, \textsc{Chariot}
+focuses mainly on a \emph{systems of systems} (e.g. networks of
+systems and systems of networks) approach, so ``aims to address is how
 safety-critical-systems should be securely and appropriately managed
 and integrated with a fog network made up of heterogeneous IoT devices
 and gateways.''. Within \textsc{Chariot}, static analysis methods have
@@ -264,14 +271,14 @@ its \emph{IoT Privacy, Security and Safety Supervision Engine}
 \index{IPSE}~\footnote{Taken from
   \bmurl{https://www.chariotproject.eu/About/}}, and some industrial
 \textsc{Chariot} partners, while being IoT network and hardware
-experts, are discovering that their favorite IDE (provided by their
-main IoT hardware vendor) is running GCC underneath during the build
-of their firmware. No \textsc{Chariot} industrial partner have any
-prior extensive experience of static formal-methods based source code
-analysis techniques and tools such as \emph{Frama-C}. Most of them
-don't even build their firmware on a Linux workstation (but depend on
-some proprietary IDE containing an obsolete version of \emph{GCC} and
-have to run that on Windows.).
+experts, are noticing that their favorite IDE (provided by their main
+IoT hardware vendor) is running some GCC under the hoods during the
+build of their firmware. No \textsc{Chariot} industrial partner have
+any prior extensive experience of static formal-methods based source
+code analysis techniques and tools such as \emph{Frama-C}. Most of
+them don't even build their firmware on a Linux workstation (but
+depend on some proprietary IDE containing an obsolete version of
+\emph{GCC} and have to run that on Windows.).
 
 \subsubsection{The power of an existing compiler: GCC}
 
