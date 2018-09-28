@@ -52,5 +52,7 @@ doc/*.ilg
 doc/*.haux
 doc/*.hind
 doc/*.htoc
+doc/*.lof
+doc/*.lot
 doc/htmldoc/*
 doc/bismon-html-doc.tar.gz
