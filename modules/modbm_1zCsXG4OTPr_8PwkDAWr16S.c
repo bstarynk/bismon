@@ -2674,6 +2674,41 @@ startblock__1QWrSe5kAFI_8Je2Do0p89H: __attribute__((unused));
   ; 
 } // end run _53BsCmeCTdy_0y4gM2Z7Sli 
  
+ 
+ /*leni:*/_.n_833x2jYqhZh_8vDIuJhwz1k = //assign _6LCaGsQBEBI_5TtUkpb6lWG  
+/*objnbcomps:*/ objnbcomps_BM ( /*o_jsstmt:*/_.o_05IHFluwEai_9VxTGg7FVeQ); 
+ 
+//+ #2/7 of block _1QWrSe5kAFI_8Je2Do0p89H :: 
+ 
+ /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f = //assign _35LlIOW5pK5_1kj4TvNL1nq  
+ /* val_to_int */ getint_BM( /*v_depth:*/_.v_4nJKFtMqlkA_1teQSqofNux) ; 
+ 
+ 
+ /*v_testexpr:*/_.v_5lM9Kyl0vIH_2ldYhxjibuP = //assign _7FxNlJ7K0ft_8yCh84wVlnQ  
+/*objgetattr:*/objgetattr_BM(( /*o_jsstmt:*/_.o_05IHFluwEai_9VxTGg7FVeQ),( (constob_1zCsXG4OTPr_8PwkDAWr16S_BM[84] /*!while*/))); 
+ 
+//+ #4/7 of block _1QWrSe5kAFI_8Je2Do0p89H :: 
+ 
+{ // start cexpansion _5klo3mM9ePg_7ZGcMV8IpxC - objstrbufferappendcstrpayl  
+/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy), ( "while /*"));  
+} // end cexpansion _5klo3mM9ePg_7ZGcMV8IpxC - objstrbufferappendcstrpayl  
+  
+ 
+{ // start cexpansion _347bCwQVybq_4A0qHAAMuBY - objstrbufferprintobject  
+/*objstrbufferprintobject _347bCwQVybq_4A0qHAAMuBY:*/
+ objectval_tyBM* obsbuf_347bCwQVybq_4A0qHAAMuBY = ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy);
+ objectval_tyBM* ob_347bCwQVybq_4A0qHAAMuBY = ( /*o_jsstmt:*/_.o_05IHFluwEai_9VxTGg7FVeQ);
+ if (objhasstrbufferpayl_BM(obsbuf_347bCwQVybq_4A0qHAAMuBY) && isobject_BM(ob_347bCwQVybq_4A0qHAAMuBY))
+  objstrbufferappendcstrpayl_BM(obsbuf_347bCwQVybq_4A0qHAAMuBY, objectdbg_BM(ob_347bCwQVybq_4A0qHAAMuBY));
+// end objstrbufferprintobject _347bCwQVybq_4A0qHAAMuBY
+;  
+} // end cexpansion _347bCwQVybq_4A0qHAAMuBY - objstrbufferprintobject  
+  
+ 
+{ // start cexpansion _9qiwyTtzl2a_9x0jCBNO7KU - objstrbufferappendcstrpayl  
+/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy), ( "*/ ("));  
+} // end cexpansion _9qiwyTtzl2a_9x0jCBNO7KU - objstrbufferappendcstrpayl  
+  
 /* !endingblock _1QWrSe5kAFI_8Je2Do0p89H */ 
 goto endblock__1QWrSe5kAFI_8Je2Do0p89H; 
 endblock__1QWrSe5kAFI_8Je2Do0p89H: ; 
