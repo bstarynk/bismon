@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1508 objects
+// for 1509 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -8432,6 +8432,17 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 
 
+!(_8O8xCaYhusW_22asdiv1fpA |=v_bindstmt|
+!~ name (~ v_bindstmt
+~)
+!@ 1538371532.521
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_8O8xCaYhusW_22asdiv1fpA
+
+
+
 !(_9vVgSDTP8MG_7UPh9UN91Xh |=v_body|
 !~ name (~ v_body
 ~)
@@ -16366,14 +16377,15 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 !(_5F3Vb2iwCDj_70AlfryKbrk
 !|*
-!@ 1538227226.976
+!@ 1538371532.521
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "scan_jsstmt\u00b0basiclo_while < o_jsstmt (o_prepjfun v_depth o_from)"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _05IHFluwEai_9VxTGg7FVeQ _5D1GbyYKAgk_9ureezAahw3 _4nJKFtMqlkA_1teQSqofNux _89nz0KaXXZh_8eSgMmqnK37 ]
 !: _24sSVIADeHm_0Sx34wQfG7W |=locals|
- { _0ZL8gaI6sH8_7UPhmAQcwMe _2TaoEvH5OQU_8nKYBgAvkmW _5lM9Kyl0vIH_2ldYhxjibuP _5wKdFyGNJ5j_50nIjxm7LLY }
+ { _0ZL8gaI6sH8_7UPhmAQcwMe _2TaoEvH5OQU_8nKYBgAvkmW _5lM9Kyl0vIH_2ldYhxjibuP _5wKdFyGNJ5j_50nIjxm7LLY 
+ _8O8xCaYhusW_22asdiv1fpA }
 !: _32eKNcTZ9HN_80t0nk47Mha |=numbers|
  { _2W7Ckt2WxEM_4NVYgEWE73B _6Y20GNUgnSZ_4LkbrcRMU8f _833x2jYqhZh_8vDIuJhwz1k }
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
