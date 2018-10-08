@@ -241,7 +241,7 @@ formal verification'' approach (so it makes quite weak hypothesis on
 the ``systems of systems'' view); it ``aims at enhancing safety and
 security of information and communication technology (ICT) and
 especially the Internet of Things (IoT). More precisely the aim of
-this [VESSEDIA] project consists in making formal methods more
+[the VESSEDIA] project consists in making formal methods more
 accessible for application domains that want to improve the security
 and reliability of their software applications by means of Formal
 Methods''~\footnote{Taken from
@@ -274,12 +274,14 @@ support its \emph{Open IoT Cloud Platform} thru its \emph{IoT Privacy,
 industrial \textsc{Chariot} partners, while being IoT network and
 hardware experts, are noticing that their favorite IDE (provided by
 their main IoT hardware vendor) is running some GCC under the hoods
-during the build of their firmware. No \textsc{Chariot} industrial
-partner have any prior extensive experience of static formal-methods
-based source code analysis techniques and tools such as
-\emph{Frama-C}. Most of them don't even build their firmware on a
-Linux workstation (but depend on some proprietary IDE containing an
-obsolete version of \emph{GCC} and have to run that on Windows.).
+during the build of their firmware, but are not used to static source code analysis tools.
+
+%No \textsc{Chariot} industrial
+%partner have any prior extensive experience of static formal-methods
+%based source code analysis techniques and tools such as
+%\emph{Frama-C}. Most of them don't even build their firmware on a
+%Linux workstation (but depend on some proprietary IDE containing an
+%obsolete version of \emph{GCC} and have to run that on Windows.).
 
 \subsubsection{The power of an existing compiler: GCC}
 
@@ -348,7 +350,7 @@ successor of \textit{GCC MELT} \footnote{The \textit{GCC MELT} web
 share any code with it.
 
 {\large \textit{Bismon} is \textbf{work in progress}}, and many things
-described here are not (fully, or even partly!) implemented in 2018 or
+described here are not (fully) implemented in 2018 or
 could drastically change later. In particular, \textit{Bismon} is not
 yet usable as a static source code analyser in mid-2018 (since work on
 the infrastructure is not complete).
@@ -514,7 +516,7 @@ could be viewed as some large graph in memory.
 \subsubsection{About \emph{Bismon} as a evolving software system}
 
 So \emph{Bismon} is better thought of as an evolving software
-system. It is suggested to try it.  Notice that \textit{Bismon} is
+system. We recommend to try it. Notice that \textit{Bismon} is
 \textbf{provided as free software} (unreleased in 2018, but available
 on \bmurl{github.com/bstarynk/bismon} ...) in \emph{source form only}
 and should be \textbf{usable} (only) \textbf{on a Linux/x86-64

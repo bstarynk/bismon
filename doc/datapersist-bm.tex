@@ -405,41 +405,42 @@ The persistent state contains both data and ``code''. So it is made of the follo
     so that code file is part of the persistent state.
 \end{itemize}
 
-In an ideal world, the \emph{Bismon monitor} should be entirely
-bootstapped~\footnote{This was not completely the case of \emph{GCC
-    MELT}, but almost: about 80\% of \emph{GCC MELT} at the end of
-  that project was coded in \emph{MELT} itself. However, it was tied
-  to a particular version of \emph{GCC}.}, so all its files should be
-generated (including what is still in 2018 the hand-coded ``runtime''
-part of \emph{Bismon} such as our \texttt{*\_BM.c} files, notably the
-load and dump machinery in \texttt{load\_BM.c} and
-\texttt{dump\_BM.c}, the agenda mechanism in \texttt{agenda\_BM.c},
-miscellanous routines including the support of module loading in
-\texttt{misc\_BM.cc}, etc, etc...). Sadly, we are still quite far from
-that ideal and this is annoying. Existing bootstrapped
-systems~\footnote{Observe that an entire Linux distribution is also,
-  when considered as a single system of ten billions lines of source
-  code, fully bootstrapped. You could regenerate all of it. See
-  \bmurl{http://www.linuxfromscratch.org/} for guidance.} such as CAIA
-{\small (see \cite{Pitrat:blog} - it explains that all the 500KLOC of the C
-code of CAIA are generated)}, Ocaml {\small (cf \cite{Ocaml,
-  Leroy-modular-modules} and many other papers by Xavier Leroy and the
-\href{http://gallium.inria.fr/}{Gallium} team at INRIA)}, Self {\small (cf
-\cite{Ungar:1987:Self})}, and Clasp {\small (cf \cite{Schafmeister:2015:CLASP})}
-show that it is possible. The major advantage of generating \emph{all}
-the code of \emph{Bismon} would be to deal with internal consistency
-in some automated and systematic way and facilitate
-refactoring~\footnote{In 2018, if we decide painfully to change the
-  representation of attribute associations in objects, we have to
-  modify a lot of hand-written code and objects simultaneously, and
-  that is a difficult and brittle effort of refactoring. If all our
-  code was generated, it would be still hard, but much less.}. An
-important insight is that the behavior of a bootstrapped system can be
-improved in two ways: the ``source'' of the code could be improved (in
-the case of \emph{Bismon}, all the objects describing some module) and
-the ``generator'' of the code could also be improved
-(cf. \index{partial evaluation}{partial evaluation} and Futamura
-projections, e.g. \cite{Futamura:1999:PartialEval}; also,
+Ideally, in the future (after end of \textsc{Chariot}), the
+\emph{Bismon monitor} should be entirely bootstapped~\footnote{This
+  was not completely the case of \emph{GCC MELT}, but almost: about
+  80\% of \emph{GCC MELT} at the end of that project was coded in
+  \emph{MELT} itself. However, it was tied to a particular version of
+  \emph{GCC}.}, so all its files should be generated (including what
+is still in 2018 the hand-coded ``runtime'' part of \emph{Bismon} such
+as our \texttt{*\_BM.c} files, notably the load and dump machinery in
+\texttt{load\_BM.c} and \texttt{dump\_BM.c}, the agenda mechanism in
+\texttt{agenda\_BM.c}, miscellanous routines including the support of
+module loading in \texttt{misc\_BM.cc}, etc, etc...). Sadly, we are
+still quite far from that ideal and this is annoying. Existing
+bootstrapped systems~\footnote{Observe that an entire Linux
+  distribution is also, when considered as a single system of ten
+  billions lines of source code, fully bootstrapped. You could
+  regenerate all of it. See \bmurl{http://www.linuxfromscratch.org/}
+  for guidance.} such as CAIA {\small (see \cite{Pitrat:blog} - it
+  explains that all the 500KLOC of the C code of CAIA are generated)},
+Ocaml {\small (cf \cite{Ocaml, Leroy-modular-modules} and many other
+  papers by Xavier Leroy and the
+  \href{http://gallium.inria.fr/}{Gallium} team at INRIA)}, Self
+{\small (cf \cite{Ungar:1987:Self})}, and Clasp {\small (cf
+  \cite{Schafmeister:2015:CLASP})} show that it is possible. The major
+advantage of generating \emph{all} the code of \emph{Bismon} would be
+to deal with internal consistency in some automated and systematic way
+and facilitate refactoring~\footnote{In 2018, if we decide painfully
+  to change the representation of attribute associations in objects,
+  we have to modify a lot of hand-written code and objects
+  simultaneously, and that is a difficult and brittle effort of
+  refactoring. If all our code was generated, it would be still hard,
+  but much less.}. An important insight is that the behavior of a
+bootstrapped system can be improved in two ways: the ``source'' of the
+code could be improved (in the case of \emph{Bismon}, all the objects
+describing some module) and the ``generator'' of the code could also
+be improved (cf. \index{partial evaluation}{partial evaluation} and
+Futamura projections, e.g. \cite{Futamura:1999:PartialEval}; also,
 \cite{Pitrat:2009:ArtifBeings, Pitrat:blog} gives some interesting
 perspectives for artificial intelligence with such an approach).
 
