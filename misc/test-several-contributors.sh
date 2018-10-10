@@ -42,9 +42,21 @@ echo 'before adding contributors'
 ls -ls store1.bmon store2.bmon
 md5sum store1.bmon store2.bmon
 echo
-./bismon  $bismonflags --contributors-file=/tmp/contributors_BM --passwords-file=/tmp/passwords_BM --contributor='Alan PseudoTuring;alanpseudoturing@fake.email;alan-pseudo-turing@localhost' --batch --dump-after-load=.
+
+
+### Alan PseudoTuring
+echo Adding Alan PseudoTuring to bismon
+./bismon  $bismonflags \
+	  --contributors-file=/tmp/contributors_BM \
+	  --passwords-file=/tmp/passwords_BM \
+	  --contributor='Alan PseudoTuring;alanpseudoturing@fake.email;alan-pseudo-turing@localhost' \
+	  --batch --dump-after-load=. \
+    || (echo 'failed to add Alan PseudoTuring contributor' > /dev/stderr; exit 1)
 echo 'Alan PseudoTuring:AlanT-123+45A' |  \
-    ./bismon $bismonflags --contributors-file=/tmp/contributors_BM --passwords-file=/tmp/passwords_BM --add-passwords - --batch
+    ./bismon $bismonflags \
+	     --contributors-file=/tmp/contributors_BM \
+	     --passwords-file=/tmp/passwords_BM \
+	     --add-passwords - --batch || (echo 'failed to set Alan PseudoTuring password' > /dev/stderr; exit 1)
 echo
 echo after Alan PseudoTuring
 ls -ls /tmp/contributors_BM /tmp/passwords_BM store1.bmon store2.bmon
@@ -54,10 +66,19 @@ echo
 echo
 
 
-./bismon $bismonflags --contributors-file=/tmp/contributors_BM --passwords-file=/tmp/passwords_BM --contributor='Grace PseudoHopper;gracepseudohopper@fake.email;grace-pseudohopper@localhost' --batch --dump-after-load=.
+### Grace PseudoHopper
+echo Adding Grace PseudoHopper to bismon
+./bismon $bismonflags \
+	 --contributors-file=/tmp/contributors_BM \
+	 --passwords-file=/tmp/passwords_BM \
+	 --contributor='Grace PseudoHopper;gracepseudohopper@fake.email;grace-pseudohopper@localhost' \
+	 --batch --dump-after-load=. || (echo 'failed to add Grace PseudoHopper contributor' > /dev/stderr; exit 1)
 
 echo 'Grace PseudoHopper:GraceHo-456!78B' |  \
-    ./bismon $bismonflags --contributors-file=/tmp/contributors_BM --passwords-file=/tmp/passwords_BM --add-passwords - --batch
+    ./bismon $bismonflags \
+	     --contributors-file=/tmp/contributors_BM \
+	     --passwords-file=/tmp/passwords_BM \
+	     --add-passwords - --batch || (echo 'failed to set Grace PseudoHopper password' > /dev/stderr; exit 1)
 echo
 echo after Grace PseudoHopper
 ls -ls /tmp/contributors_BM /tmp/passwords_BM store1.bmon store2.bmon
@@ -66,22 +87,19 @@ head -99 /tmp/contributors_BM /tmp/passwords_BM
 echo
 echo
 
-./bismon --contributors-file=/tmp/contributors_BM --passwords-file=/tmp/passwords_BM --contributor='Grace PseudoHopper;gracehopperpseudo@fake.email;grace-hopperpseudo@localhost' --batch --dump-after-load=.
 
-echo 'Grace PseudoHopper:GraceHo-456!78B' |  \
-    ./bismon $bismonflags --contributors-file=/tmp/contributors_BM --passwords-file=/tmp/passwords_BM --add-passwords - --batch
-echo
-echo after Grace PseudoHopper
-ls -ls /tmp/contributors_BM /tmp/passwords_BM
-head -99 /tmp/contributors_BM /tmp/passwords_BM
-echo
-echo
-
-
-./bismon --contributors-file=/tmp/contributors_BM --passwords-file=/tmp/passwords_BM --contributor='Guy SteelePseudo;guy-steel-pseudo@fake.email;guy-steele-pseudo@localhost' --batch --dump-after-load=.
+#### Guy SteelePseudo
+echo Adding Guy SteelePseudo to bismon
+./bismon --contributors-file=/tmp/contributors_BM \
+	 --passwords-file=/tmp/passwords_BM \
+	 --contributor='Guy SteelePseudo;guy-steel-pseudo@fake.email;guy-steele-pseudo@localhost' \
+	 --batch --dump-after-load=. || (echo 'failed to add Guy SteelePseudo contributor' > /dev/stderr; exit 1)
 
 echo 'Guy SteelePseudo:GuySteele-987!453B' |  \
-    ./bismon $bismonflags --contributors-file=/tmp/contributors_BM --passwords-file=/tmp/passwords_BM --add-passwords - --batch
+    ./bismon $bismonflags \
+	     --contributors-file=/tmp/contributors_BM \
+	     --passwords-file=/tmp/passwords_BM \
+	     --add-passwords - --batch || (echo 'failed to set Guy SteelPseudo password' > /dev/stderr; exit 1)
 echo
 echo after Guy SteelePseudo
 ls -ls /tmp/contributors_BM /tmp/passwords_BM
