@@ -1894,10 +1894,10 @@ read_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
            passwords_filepath_BM, lincnt, curcontrib, curoidstr, contrinam);
       // read carefully crypt(3), that is http://man7.org/linux/man-pages/man3/crypt.3.html
       // we want to use SHA-512, so "$6$" prefix
-      if (!strncmp ("$6$", curcryptpass, 3))
+      if (strncmp ("$6$", curcryptpass, 3))
         FATAL_BM
-          ("in password file %s line#%d contributor %s of oid %s with corrupted crypted password",
-           passwords_filepath_BM, lincnt, curcontrib, curoidstr);
+          ("in password file %s line#%d contributor %s of oid %s with corrupted crypted password %.6s...",
+           passwords_filepath_BM, lincnt, curcontrib, curoidstr, curcryptpass);
       objassocaddattrpayl_BM (_.assocob, _.curcontribob,
                               (value_tyBM) makestring_BM (curcryptpass));
     }                           /* end readloop */
