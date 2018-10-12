@@ -1,5 +1,6 @@
 #! /bin/bash
 # file misc/test-several-contributors.sh
+
 # to test having several contributors
 # 
 #    BISMON 
@@ -20,6 +21,9 @@
 #----
 #    Contact me (Basile Starynkevitch) by email
 #    basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
+
+## to use valgrind on every bismon run, set the environment variable
+## export BISMON_WRAPPER=valgrind
 
 # https://stackoverflow.com/a/9894126/841108
 trap "exit 1" TERM
@@ -57,16 +61,30 @@ function runbismon () {
     local title=$1
     shift
     args="$@"
-    echo run bismon: $title args: "$args"
-    if ./bismon $bismonflags \
-	  --contributors-file=/tmp/contributors_BM \
-	  --passwords-file=/tmp/passwords_BM \
-	  "$@" ; then
-	echo OK bismon: $title
+    if [ -z "$BISMON_WRAPPER" ] ; then 
+	echo run bismon: $title args: "$args"
+	if ./bismon $bismonflags \
+		    --contributors-file=/tmp/contributors_BM \
+		    --passwords-file=/tmp/passwords_BM \
+		    "$@" ; then
+	    echo OK bismon: $title
+	else
+	    echo FAIL bismon: $title "$args"
+	    kill $TOP_PID
+	fi
     else
-	echo FAIL bismon: $title "$args"
-	kill $TOP_PID
+	echo wrap "$BISMON_WRAPPER" bismon: $title args: "$args"
+	if $BISMON_WRAPPER ./bismon $bismonflags \
+		    --contributors-file=/tmp/contributors_BM \
+		    --passwords-file=/tmp/passwords_BM \
+		    "$@" ; then
+	    echo OK wrap "$BISMON_WRAPPER" bismon: $title
+	else
+	    echo FAIL wrap "$BISMON_WRAPPER" bismon: $title "$args"
+	    kill $TOP_PID
+	fi
     fi
+	
 }
 ### Alan PseudoTuring
 echo Adding Alan PseudoTuring to bismon
