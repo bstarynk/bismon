@@ -21,6 +21,11 @@
 #    Contact me (Basile Starynkevitch) by email
 #    basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 
+# https://stackoverflow.com/a/9894126/841108
+trap "exit 1" TERM
+export TOP_PID=$$
+# so runbismon below can exit the entire script
+
 bismonflags="$@"
 if [ ! -f ./bismon -a ! -x ./bismon ] ; then
    echo Current directory $(pwd) does not contain ./bismon executable > /dev/stderr
@@ -38,25 +43,42 @@ ls -ls /tmp/passwords_BM
 tar cvf /tmp/bismonstore.tar.gz store*.bmon
 ls -ls /tmp/bismonstore.tar.gz
 
+echo
+echo 'making bismon'
+echo
+make bismon
+echo
 echo 'before adding contributors'
 ls -ls store1.bmon store2.bmon
 md5sum store1.bmon store2.bmon
 echo
 
-
-### Alan PseudoTuring
-echo Adding Alan PseudoTuring to bismon
-./bismon  $bismonflags \
+function runbismon () {
+    local title=$1
+    shift
+    args="$@"
+    echo run bismon: $title args: "$args"
+    if ./bismon $bismonflags \
 	  --contributors-file=/tmp/contributors_BM \
 	  --passwords-file=/tmp/passwords_BM \
+	  "$@" ; then
+	echo OK bismon: $title
+    else
+	echo FAIL bismon: $title "$args"
+	kill $TOP_PID
+    fi
+}
+### Alan PseudoTuring
+echo Adding Alan PseudoTuring to bismon
+runbismon 'add Alan PseudoTuring' \
 	  --contributor='Alan PseudoTuring;alanpseudoturing@fake.email;alan-pseudo-turing@localhost' \
-	  --batch --dump-after-load=. \
-    || (echo 'failed to add Alan PseudoTuring contributor' > /dev/stderr; exit 1)
-echo 'Alan PseudoTuring:AlanT-123+45A' |  \
-    ./bismon $bismonflags \
-	     --contributors-file=/tmp/contributors_BM \
-	     --passwords-file=/tmp/passwords_BM \
-	     --add-passwords - --batch || (echo 'failed to set Alan PseudoTuring password' > /dev/stderr; exit 1)
+	  --batch --dump-after-load=.
+echo 'making bismon after Alan PseudoTuring addition'
+make
+echo 
+echo 'Alan PseudoTuring:AlanT-123+45A' |  
+    runbismon 'password Alan PseudoTuring' --passwords-file=/tmp/passwords_BM \
+	     --add-passwords - --batch 
 echo
 echo after Alan PseudoTuring
 ls -ls /tmp/contributors_BM /tmp/passwords_BM store1.bmon store2.bmon
@@ -68,17 +90,15 @@ echo
 
 ### Grace PseudoHopper
 echo Adding Grace PseudoHopper to bismon
-./bismon $bismonflags \
-	 --contributors-file=/tmp/contributors_BM \
-	 --passwords-file=/tmp/passwords_BM \
+runbismon 'add Grace PseudoHopper' \
 	 --contributor='Grace PseudoHopper;gracepseudohopper@fake.email;grace-pseudohopper@localhost' \
-	 --batch --dump-after-load=. || (echo 'failed to add Grace PseudoHopper contributor' > /dev/stderr; exit 1)
-
+	 --batch --dump-after-load=.
+echo 'making bismon after Grace PseudoHopper addition'
+make
+echo 
 echo 'Grace PseudoHopper:GraceHo-456!78B' |  \
-    ./bismon $bismonflags \
-	     --contributors-file=/tmp/contributors_BM \
-	     --passwords-file=/tmp/passwords_BM \
-	     --add-passwords - --batch || (echo 'failed to set Grace PseudoHopper password' > /dev/stderr; exit 1)
+    runbismon 'password Grace PseudoHopper' \
+	     --add-passwords - --batch
 echo
 echo after Grace PseudoHopper
 ls -ls /tmp/contributors_BM /tmp/passwords_BM store1.bmon store2.bmon
@@ -90,16 +110,16 @@ echo
 
 #### Guy SteelePseudo
 echo Adding Guy SteelePseudo to bismon
-./bismon --contributors-file=/tmp/contributors_BM \
-	 --passwords-file=/tmp/passwords_BM \
+runbismon 'add Guy SteelePseudo' \
 	 --contributor='Guy SteelePseudo;guy-steel-pseudo@fake.email;guy-steele-pseudo@localhost' \
-	 --batch --dump-after-load=. || (echo 'failed to add Guy SteelePseudo contributor' > /dev/stderr; exit 1)
+	 --batch --dump-after-load=. 
+echo 'making bismon after Guy SteelePseudo addition'
+make
+echo 
 
 echo 'Guy SteelePseudo:GuySteele-987!453B' |  \
-    ./bismon $bismonflags \
-	     --contributors-file=/tmp/contributors_BM \
-	     --passwords-file=/tmp/passwords_BM \
-	     --add-passwords - --batch || (echo 'failed to set Guy SteelPseudo password' > /dev/stderr; exit 1)
+    runbismon 'password Guy SteelePseudo' \
+	     --add-passwords - --batch
 echo
 echo after Guy SteelePseudo
 ls -ls /tmp/contributors_BM /tmp/passwords_BM
@@ -107,10 +127,13 @@ head -99 /tmp/contributors_BM /tmp/passwords_BM
 echo
 echo
 
+echo 'git status before restore'
 git status
 
+echo
 echo 'restoring store'
 tar xvf /tmp/bismonstore.tar.gz
 
+echo 'final git status'
 git status
 
