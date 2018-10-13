@@ -2623,7 +2623,7 @@ value_tyBM crout_52KOJftDzaY_95rXXNMj4Md_BM //#12
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 9 local values:
+    /// 10 local values:
     objectval_tyBM* o_05IHFluwEai_9VxTGg7FVeQ; // o_jsstmt
     value_tyBM v_0qTBOEAT5pa_2fz1SKfHrMV; // v_resemit
     value_tyBM v_0ZL8gaI6sH8_7UPhmAQcwMe; // v_comp
@@ -2631,6 +2631,7 @@ value_tyBM crout_52KOJftDzaY_95rXXNMj4Md_BM //#12
     objectval_tyBM* o_41F1rKwGbaA_30OJWKsqNWy; // o_strbuf
     value_tyBM v_4nJKFtMqlkA_1teQSqofNux; // v_depth
     objectval_tyBM* o_4JKd986pvM4_6yBzeeI40vW; // o_jsgenmod
+    objectval_tyBM* o_57F0PqrLNtV_2YEJvdnNkAl; // o_bindstmt
     value_tyBM v_5lM9Kyl0vIH_2ldYhxjibuP; // v_testexpr
     objectval_tyBM* o_5Lg7fb6zE3H_6ijQo6GbPN4; // o_jsgenfun
     /// 3 local numbers:
@@ -2641,7 +2642,7 @@ value_tyBM crout_52KOJftDzaY_95rXXNMj4Md_BM //#12
    memset (&_, 0, sizeof(struct frame_52KOJftDzaY_95rXXNMj4Md_BMst));
    _.stkfram_head.htyp = typayl_StackFrame_BM;
    _.stkfram_head.hgc = 0;
-   _.stkfram_head.rlen = 9;
+   _.stkfram_head.rlen = 10;
    _.stkfram_descr = constob_1zCsXG4OTPr_8PwkDAWr16S_BM[58] /*|_52KOJftDzaY_95rXXNMj4Md*/;
    ASSERT_BM (!stkf
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
