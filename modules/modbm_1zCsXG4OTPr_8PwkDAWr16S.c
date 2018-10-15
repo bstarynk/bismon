@@ -2737,7 +2737,7 @@ locked_0Aqk1Kn9bds_0Bm1PG8SEoB = curlockedob_0Aqk1Kn9bds_0Bm1PG8SEoB;
    
   
 { // run _1NakFI5I6lD_01Thlk8czNm  
- /*debug o_conn when v_expr is node*/
+ /*emit_jsexpr debug o_conn when v_expr is node*/
     DBGPRINTF_BM("emit_jsexpr €%.9s o_conn=%s v_expr=%s o_jsgenmod=%s o_jsgenfun=%s o_strbuf=%s depth#%ld o_from=%s",
       "_1NakFI5I6lD_01Thlk8czNm",
       objectdbg_BM( /*o_conn:*/_.o_13K9OfeXRZR_84nyRTtoj81),
