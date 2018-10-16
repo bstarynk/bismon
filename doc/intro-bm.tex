@@ -36,9 +36,9 @@ The reader of this document is expected to:
         \emph{cross}-compilation.}  his/her or other software coded in
       C (or in C++) \textbf{on the command line} (\emph{without} any
       \index{IDE!integrated development environment}IDE
-      -\index{integrated development environment} integrated software
+      -\index{integrated development environment}~integrated software
       environment- or \index{SDK!software development kit} SDK
-      -\index{software development kit} software development kit-)
+      -\index{software development kit}~software development kit-)
       with a \textbf{\emph{sequence} of \texttt{gcc} (or \texttt{g++})
         commands}~\footnote{In practice, we all use some \emph{build
           automation} tool, such as \texttt{make}, \texttt{ninja} or
@@ -102,25 +102,6 @@ describing a circular and reflexive system, you should read it twice
 
 \bigskip
 
-\hrule
-
-\medskip
-
-To build this document (both in PDF and HTML forms) : build
-\emph{bismon} \footnote{See the \emph{Readme} on
-  \bmurl{https://github.com/bstarynk/bismon/} for building
-  instructions} on your Linux workstatation, then run \texttt{make
-  doc} (that uses {\LaTeX} and
-\href{http://hevea.inria.fr/}{\emph{HeVeA}}).
-
-Feedback and improvements on this document can be suggested by email
-(to \bmemail{basile@starynkevitch.net} or
-\bmemail{basile.starynkevitch@cea.fr}) or by submitting patches to
-\textit{Bismon} thru its \bmurl{https://github.com/bstarynk/bismon} repository
-(or by email). Notice that this document may contain generated
-documentation, and will contain more and more generated parts in the
-future.
-
 \subsection{The \textsc{Chariot} vision on specialized static source code analysis for more secure and safer IoT software development}
 
 \subsubsection{About static source code analysis and IoT}
@@ -129,16 +110,18 @@ There are many existing documents related to improving safety and
 security in IoT software (e.g. \cite{Chen:2011:DAS, Medwed:2016:ISC}),
 and even more on static source code analysis in general
 (cf. \cite{Gomes2009AnOO, GosevaPopstojanova2015OnTC,
-  Binkley:2007:SCA} and many others). Several conferences are
-dedicated to static analysis~\footnote{The 25\textsuperscript{th}
-  Static Analysis Symposium will happen in august 2018, see
+  Binkley:2007:SCA} and many others). %
+
+Several conferences are dedicated to static analysis~\footnote{The
+  25\textsuperscript{th} Static Analysis Symposium will happen in
+  august 2018, see
   \bmurl{http://staticanalysis.org/sas2018/sas2018.html}; most ACM
   SIGPLAN conferences such as POPL, PLDI, ICFP, OOPSLA, LCTES, SPLASH,
   DSL, CGO, SLE... have papers related to static source code
-  analysis.}. All dominant C compilers (notably GCC and Clang, but
-also MicroSoft's \emph{Visual C}\texttrademark) are using complex static source code analysis techniques
-for optimizations and warnings purposes (and that is why C compilers
-are monsters~\footnote{see
+  analysis.}.  All dominant C compilers (notably GCC and Clang, but
+also MicroSoft's \emph{Visual C}\texttrademark) are using complex
+static source code analysis techniques for optimizations and warnings
+purposes (and that is why C compilers are monsters~\footnote{see
   \bmurl{https://softwareengineering.stackexchange.com/a/273711/40065}
   for more.}). It is wisely noticed (in
 \cite{GosevaPopstojanova2015OnTC}) that \textbf{state-of-the-art
@@ -262,8 +245,11 @@ and the very hard work~\footnote{In terms of human efforts, the
   \textsc{Chariot} no large effort is explicitly allocated for such
   concrete but difficult tasks.}  is in formalizing these properties
 (in terms of C code!)  and then in assisting the formal tool to prove
-them. In contrast, \textsc{Chariot} focuses mainly on a \emph{systems
-  of systems} (e.g. networks of systems and systems of networks)
+them.
+
+
+In contrast, \textsc{Chariot} focuses mainly on a \emph{systems of
+  systems} (e.g. networks of systems and systems of networks)
 approach, so ``aims to address is how safety-critical-systems should
 be securely and appropriately managed and integrated with a fog
 network made up of heterogeneous IoT devices and gateways.''. Within
@@ -274,7 +260,8 @@ support its \emph{Open IoT Cloud Platform} thru its \emph{IoT Privacy,
 industrial \textsc{Chariot} partners, while being IoT network and
 hardware experts, are noticing that their favorite IDE (provided by
 their main IoT hardware vendor) is running some GCC under the hoods
-during the build of their firmware, but are not used to static source code analysis tools.
+during the build of their firmware, but are not used to static source
+code analysis tools.
 
 %No \textsc{Chariot} industrial
 %partner have any prior extensive experience of static formal-methods
@@ -285,10 +272,18 @@ during the build of their firmware, but are not used to static source code analy
 
 \subsubsection{The power of an existing compiler: GCC}
 
-Current versions of \emph{GCC} (that is, GCC 8.2 in september 2018)
-are capable of quite surprising optimizations (internally based upon
-some sophisticated static analysis techniques and advanced
-heuristics). Some of them are explained in table \ref{tab:gccopt}.
+\textsc{Chariot} static analysis tools will leverage on the mainstream
+\textsc{Gcc}~\footnote{``Gnu Compiler Collection''. See \bmurl{http://gcc.gnu.org/} for more. In
+  practice, it is useful to build a recent \textsc{Gcc}
+  cross-compiler, fitted for your IoT system, from its published
+  source code - see \bmurl{https://gcc.gnu.org/mirrors.html} for a
+  list of mirrors.} compiler (generally used as a
+\emph{\index{compiler}\index{cross-compiler}cross-compiler} for IoT
+firmware development) Current versions of \emph{GCC} (that is, GCC 8.2
+in september 2018) are capable of quite surprising optimizations
+(internally based upon some sophisticated static analysis techniques
+and advanced heuristics). Some of them are explained in table
+\ref{tab:gccopt}.
 
 \begin{table}[h]
   \caption{\label{tab:gccopt} examples of \emph{GCC} optimizations}
