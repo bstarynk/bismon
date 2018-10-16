@@ -678,6 +678,9 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    // browse_value°string
         case '\'':
           ADDESCAPESTR_BM ("\\\'");
           break;
+        case '\\':
+          ADDESCAPESTR_BM ("\\\\");
+          break;
         case '\a':
           ADDESCAPESTR_BM ("\\a");
           break;

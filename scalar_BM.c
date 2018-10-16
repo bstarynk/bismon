@@ -885,6 +885,9 @@ objstrbufferencodedutf8payl_BM (objectval_tyBM * obj, const char *str,
         case '\'':
           objstrbufferunsafeappendcstrpayl_BM (obj, "\\\'");
           break;
+        case '\\':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\\\\");
+          break;
         case '\a':
           objstrbufferunsafeappendcstrpayl_BM (obj, "\\a");
           break;
@@ -949,6 +952,9 @@ writefencodedutf8_BM (FILE * fil, const char *str, ssize_t bytelen)
           break;
         case '\'':
           fputs ("\\\'", fil);
+          break;
+        case '\\':
+          fputs ("\\\\", fil);
           break;
         case '\a':
           fputs ("\\a", fil);
@@ -1158,6 +1164,9 @@ objstrbufferencodedcpayl_BM (objectval_tyBM * obj, const char *str,
         case '\'':
           objstrbufferunsafeappendcstrpayl_BM (obj, "\\\'");
           break;
+        case '\\':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\\\\");
+          break;
         case '\a':
           objstrbufferunsafeappendcstrpayl_BM (obj, "\\a");
           break;
@@ -1220,6 +1229,9 @@ writefencodedc_BM (FILE * fil, const char *str, ssize_t bytelen)
           break;
         case '\'':
           fputs ("\\\'", fil);
+          break;
+        case '\\':
+          fputs ("\\\\", fil);
           break;
         case '\a':
           fputs ("\\a", fil);
