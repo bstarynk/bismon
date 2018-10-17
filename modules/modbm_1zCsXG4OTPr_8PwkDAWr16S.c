@@ -4759,13 +4759,16 @@ value_tyBM crout_8cxGPJUb6ZO_6gKkay3UrSY_BM //#20
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 7 local values:
+    /// 10 local values:
     value_tyBM v_0ZL8gaI6sH8_7UPhmAQcwMe; // v_comp
     objectval_tyBM* o_13K9OfeXRZR_84nyRTtoj81; // o_conn
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ; // v_r
+    objectval_tyBM* o_3OjnHSbyAvp_5WFWOCJ1dPr; // o_curformal
     value_tyBM v_4nJKFtMqlkA_1teQSqofNux; // v_depth
     objectval_tyBM* o_5D1GbyYKAgk_9ureezAahw3; // o_prepjfun
     value_tyBM v_6CmIdtsXyBX_3lpk31Mve5M; // v_expr
+    objectval_tyBM* o_6DIAK92zYLD_7Mt5MXWCMkT; // o_formaltype
+    objectval_tyBM* o_7EmC6hRqvn1_85IV5kF4W9l; // o_argtype
     value_tyBM v_8LWjSSWiPiQ_87yzCnQr6b2; // v_tupformals
     /// 4 local numbers:
     intptr_t n_2W7Ckt2WxEM_4NVYgEWE73B; // ii
@@ -4776,7 +4779,7 @@ value_tyBM crout_8cxGPJUb6ZO_6gKkay3UrSY_BM //#20
    memset (&_, 0, sizeof(struct frame_8cxGPJUb6ZO_6gKkay3UrSY_BMst));
    _.stkfram_head.htyp = typayl_StackFrame_BM;
    _.stkfram_head.hgc = 0;
-   _.stkfram_head.rlen = 7;
+   _.stkfram_head.rlen = 10;
    _.stkfram_descr = constob_1zCsXG4OTPr_8PwkDAWr16S_BM[100] /*|_8cxGPJUb6ZO_6gKkay3UrSY*/;
    ASSERT_BM (!stkf
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
@@ -4858,6 +4861,9 @@ if (!(/*while _1Q8hFAiUPIU_9ntR0DPPgBy cond:*/ (/*less_int:*/( /*ii:*/_.n_2W7Ckt
  /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe = //assign _1184aZhTqXa_12z38xB8Ntl   
 /*nodenthson:*/nodenthson_BM(( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M),( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B));  
 // while _1Q8hFAiUPIU_9ntR0DPPgBy comp#1:  
+ /*o_curformal:*/_.o_3OjnHSbyAvp_5WFWOCJ1dPr = //assign _4bloa98ysFZ_0F1nPVdEFF8   
+/*tuplecompnth:*/tuplecompnth_BM((const tupleval_tyBM*)( /*v_tupformals:*/_.v_8LWjSSWiPiQ_87yzCnQr6b2), (int)( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B));  
+// while _1Q8hFAiUPIU_9ntR0DPPgBy comp#2:  
  /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B = //assign _9Hozi4E4dHO_3O3R7VUp6Tz   
 /*add_int:*/(( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B) + ( 1));  
   
