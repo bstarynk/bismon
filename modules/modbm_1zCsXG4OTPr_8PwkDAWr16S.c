@@ -4785,6 +4785,8 @@ value_tyBM crout_8cxGPJUb6ZO_6gKkay3UrSY_BM //#20
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
    _.stkfram_prev = stkf;
+   // locking 1:
+    objectval_tyBM* locked_4OJMNqBP0dz_7LD0jHct5tV = NULL; // for o_curformal
    // fetch 4 arguments:
    _.v_8LWjSSWiPiQ_87yzCnQr6b2 = arg0; // v_tupformals
    _.v_6CmIdtsXyBX_3lpk31Mve5M = arg1; // v_expr
@@ -4864,6 +4866,30 @@ if (!(/*while _1Q8hFAiUPIU_9ntR0DPPgBy cond:*/ (/*less_int:*/( /*ii:*/_.n_2W7Ckt
  /*o_curformal:*/_.o_3OjnHSbyAvp_5WFWOCJ1dPr = //assign _4bloa98ysFZ_0F1nPVdEFF8   
 /*tuplecompnth:*/tuplecompnth_BM((const tupleval_tyBM*)( /*v_tupformals:*/_.v_8LWjSSWiPiQ_87yzCnQr6b2), (int)( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B));  
 // while _1Q8hFAiUPIU_9ntR0DPPgBy comp#2:  
+  
+{ // begin lockobj _4OJMNqBP0dz_7LD0jHct5tV  
+  objectval_tyBM* curlockedob_4OJMNqBP0dz_7LD0jHct5tV = ( /*o_curformal:*/_.o_3OjnHSbyAvp_5WFWOCJ1dPr);  
+if (objlock_BM (curlockedob_4OJMNqBP0dz_7LD0jHct5tV)) {   
+locked_4OJMNqBP0dz_7LD0jHct5tV = curlockedob_4OJMNqBP0dz_7LD0jHct5tV;   
+   
+  
+{ // run _7mruXwxE6b8_1dvHjmIubpj  
+/*debug ii v_comp o_curformal o_prepjfun depth v_expr*/
+DBGPRINTF_BM("scanjs_bind_node_formals €%.9s ii#%ld v_comp=%s o_curformal=%s o_prepjfun=%s depth#%ld v_expr=%s",
+"_7mruXwxE6b8_1dvHjmIubpj",
+(long int)( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B),
+OUTSTRVALUE_BM( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe),
+objectdbg_BM( /*o_curformal:*/_.o_3OjnHSbyAvp_5WFWOCJ1dPr),
+objectdbg1_BM( /*o_prepjfun:*/_.o_5D1GbyYKAgk_9ureezAahw3),
+(long int) ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f),
+OUTSTRVALUE_BM( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M)
+);
+;  
+} // end run _7mruXwxE6b8_1dvHjmIubpj  
+   
+objunlock_BM (locked_4OJMNqBP0dz_7LD0jHct5tV), locked_4OJMNqBP0dz_7LD0jHct5tV = NULL;  
+} } // end objlock _4OJMNqBP0dz_7LD0jHct5tV  
+// while _1Q8hFAiUPIU_9ntR0DPPgBy comp#3:  
  /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B = //assign _9Hozi4E4dHO_3O3R7VUp6Tz   
 /*add_int:*/(( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B) + ( 1));  
   
@@ -4878,6 +4904,9 @@ endblock__1VF18WTRAAq_9HdyYoMN6mj: ;
 } /*-block _1VF18WTRAAq_9HdyYoMN6mj */
 
  epilog_8cxGPJUb6ZO_6gKkay3UrSY: __attribute__ ((unused)); // routine _8cxGPJUb6ZO_6gKkay3UrSY epilogue:
+   // unlocking 1:
+    if (locked_4OJMNqBP0dz_7LD0jHct5tV != NULL)
+       objunlock_BM(locked_4OJMNqBP0dz_7LD0jHct5tV), locked_4OJMNqBP0dz_7LD0jHct5tV = NULL; // for o_curformal
    if (stkf) stkf->stkfram_callfun = NULL;
    return  /*v_r:*/_.v_3qw9bnATIhq_8loBraLeXzQ;
 } // end _8cxGPJUb6ZO_6gKkay3UrSY routine#20 _8cxGPJUb6ZO_6gKkay3UrSY
