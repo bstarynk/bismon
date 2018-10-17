@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1595 objects
+// for 1598 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -10640,6 +10640,18 @@ _5F3Vb2iwCDj_70AlfryKbrk
 
 
 
+!(_1184aZhTqXa_12z38xB8Ntl
+!@ 1539789169.613
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "v_comp := nodenthson(v_expr ii)"
+!# 2
+!& _0ZL8gaI6sH8_7UPhmAQcwMe
+!&  * _4spk03uJzY0_2H7bFVFr5Eb ( _6CmIdtsXyBX_3lpk31Mve5M _2W7Ckt2WxEM_4NVYgEWE73B)
+!)_1184aZhTqXa_12z38xB8Ntl
+
+
+
 !(_11ovjN6N9uY_3B2eKLxolqc
 !@ 1535452593.040
 !$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
@@ -11902,6 +11914,20 @@ _57ZQXLDhLdj_7PrZMZMgLI1
 
 
 
+!(_1Q8hFAiUPIU_9ntR0DPPgBy
+!@ 1539789169.615
+!$_4Af5NOOf7Qe_7KQdGPoNdJ0 |=basiclo_while|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "while ii<leni ..."
+!: _7GNnckYYtcH_7wtOnPP4eKU |=while|
+ * _0P0Iffx3ohY_2vRksLXKZlK ( _2W7Ckt2WxEM_4NVYgEWE73B _833x2jYqhZh_8vDIuJhwz1k)
+!# 2
+!& _1184aZhTqXa_12z38xB8Ntl
+!& _9Hozi4E4dHO_3O3R7VUp6Tz
+!)_1Q8hFAiUPIU_9ntR0DPPgBy
+
+
+
 !(_1QCf0uAOZqm_46siwfoL4qs
 !@ 1536829720.567
 !$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
@@ -12019,18 +12045,19 @@ _9w9s5y0OXta_3pY0SvkQDoU
 
 
 !(_1VF18WTRAAq_9HdyYoMN6mj
-!@ 1539786156.932
+!@ 1539789169.615
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of scanjs_bind_node_formals"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _8cxGPJUb6ZO_6gKkay3UrSY
-!# 5
+!# 6
 !& _8oVb08SMLjZ_6RW8WiYmpm5
 !& _2dKmF7Hn0W2_7e34LtMHIQK
 !& _9hdq9u0Um2h_9W3QF1njVwL
 !& _3DgIaN5163R_5rqDx6CVAoZ
 !& _26k3exmi5e5_0gV4eNPwTIh
+!& _1Q8hFAiUPIU_9ntR0DPPgBy
 !)_1VF18WTRAAq_9HdyYoMN6mj
 
 
@@ -22879,6 +22906,18 @@ _1lmLI285f7p_4im4Ls4Xewh
 !& _5flu8xdOTMC_79tshj3uSa4
 !& _5YxDaNaTjQ7_0v9tZ2seGmF
 !)_9Hf4n8AnqR7_7ve3Bi3kWMV
+
+
+
+!(_9Hozi4E4dHO_3O3R7VUp6Tz
+!@ 1539789169.615
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "ii := ii+1"
+!# 2
+!& _2W7Ckt2WxEM_4NVYgEWE73B
+!&  * _3fb1EHtMPwQ_7XEPTUgUmX4 ( _2W7Ckt2WxEM_4NVYgEWE73B  1)
+!)_9Hozi4E4dHO_3O3R7VUp6Tz
 
 
 

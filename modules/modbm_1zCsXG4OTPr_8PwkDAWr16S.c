@@ -4809,7 +4809,7 @@ DBGPRINTF_BM("scanjs_bind_node_formals start €%.9s v_tupformals=%s v_expr=%s o
  /*nbformals:*/_.n_3kJHggsAf4x_09dtbT2azSU = //assign _2dKmF7Hn0W2_7e34LtMHIQK  
 /*tuplesize:*/tuplesize_BM( /*v_tupformals:*/_.v_8LWjSSWiPiQ_87yzCnQr6b2); 
  
-//+ #2/5 of block _1VF18WTRAAq_9HdyYoMN6mj :: 
+//+ #2/6 of block _1VF18WTRAAq_9HdyYoMN6mj :: 
  
  /*leni:*/_.n_833x2jYqhZh_8vDIuJhwz1k = //assign _9hdq9u0Um2h_9W3QF1njVwL  
 /*nodewidth:*/(intptr_t)nodewidth_BM( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M); 
@@ -4841,9 +4841,30 @@ PLACEDFAILURE_BM(__LINE__,
 } //endwhen _6lSTF1rm26k_9gCV7Gd1542  
 /*endcond _3DgIaN5163R_5rqDx6CVAoZ*/ 
  
+//+ #4/6 of block _1VF18WTRAAq_9HdyYoMN6mj :: 
  
  /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B = //assign _26k3exmi5e5_0gV4eNPwTIh  
  0; 
+ 
+ 
+ 
+//// +while _1Q8hFAiUPIU_9ntR0DPPgBy 
+startblock__1Q8hFAiUPIU_9ntR0DPPgBy:  /*+!while*/; 
+{ /* +while _1Q8hFAiUPIU_9ntR0DPPgBy */  
+if (!(/*while _1Q8hFAiUPIU_9ntR0DPPgBy cond:*/ (/*less_int:*/( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B) < ( /*leni:*/_.n_833x2jYqhZh_8vDIuJhwz1k)))) //: testwhile _1Q8hFAiUPIU_9ntR0DPPgBy failing   
+  goto endblock__1Q8hFAiUPIU_9ntR0DPPgBy; //failwhile   
+// while _1Q8hFAiUPIU_9ntR0DPPgBy body:   
+// while _1Q8hFAiUPIU_9ntR0DPPgBy comp#0:  
+ /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe = //assign _1184aZhTqXa_12z38xB8Ntl   
+/*nodenthson:*/nodenthson_BM(( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M),( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B));  
+// while _1Q8hFAiUPIU_9ntR0DPPgBy comp#1:  
+ /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B = //assign _9Hozi4E4dHO_3O3R7VUp6Tz   
+/*add_int:*/(( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B) + ( 1));  
+  
+goto startblock__1Q8hFAiUPIU_9ntR0DPPgBy; // repeatwhile  
+endblock__1Q8hFAiUPIU_9ntR0DPPgBy: /*endingwhile*/;  
+} /*-endwhile _1Q8hFAiUPIU_9ntR0DPPgBy */ 
+ 
  
 /* !endingblock _1VF18WTRAAq_9HdyYoMN6mj */ 
 goto endblock__1VF18WTRAAq_9HdyYoMN6mj; 
