@@ -20812,10 +20812,10 @@ _74TaCoUa4dg_2bmUAanJYIJ
 
 !(_8cxGPJUb6ZO_6gKkay3UrSY
 !|*
-!@ 1539801846.714
+!@ 1539802454.634
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "scanjs_bind_node_formals (v_tupformals v_expr o_prepjsfun v_depth)"
+ "scanjs_bind_node_formals (v_tupformals v_expr o_prepjsfun v_depth o_from)"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _8LWjSSWiPiQ_87yzCnQr6b2 _6CmIdtsXyBX_3lpk31Mve5M _5D1GbyYKAgk_9ureezAahw3 _4nJKFtMqlkA_1teQSqofNux 
  _89nz0KaXXZh_8eSgMmqnK37 ]
@@ -21187,30 +21187,32 @@ _2tEGXc8XwDB_3luMnYYAdZn
 
 
 !(_8oVb08SMLjZ_6RW8WiYmpm5
-!@ 1539763523.138
+!@ 1539802694.484
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "debug start scanjs_bind_node_formals v_tupformals v_expr o_prepjfun v_depth"
+ "debug start scanjs_bind_node_formals v_tupformals"& " v_expr o_prepjfun v_depth o_from"
 !: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "start"  " " 
   "scanjs_bind_node_formals"  " " _8LWjSSWiPiQ_87yzCnQr6b2  " " _6CmIdtsXyBX_3lpk31Mve5M 
-  " " _5D1GbyYKAgk_9ureezAahw3  " " _4nJKFtMqlkA_1teQSqofNux  "*/" 
-  "\n"  "DBGPRINTF_BM"  "(\""  "scanjs_bind_node_formals"  " " 
-  "start"  " "  "\u20ac%."  "9s"  " " 
- _8LWjSSWiPiQ_87yzCnQr6b2  "=%"  "s"  " " _6CmIdtsXyBX_3lpk31Mve5M 
-  "=%"  "s"  " " _5D1GbyYKAgk_9ureezAahw3  "=%" 
-  "s"  " " _4nJKFtMqlkA_1teQSqofNux  "=%"  "s" 
-  "\","  "\n"  " "  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
-  "\","  "\n"  " "  "OUTSTRVALUE_BM"  "(" 
-  * _5ucAZimYynS_4VA0XHvr1nW ( _8LWjSSWiPiQ_87yzCnQr6b2)  "),"  "\n" 
+  " " _5D1GbyYKAgk_9ureezAahw3  " " _4nJKFtMqlkA_1teQSqofNux  " " 
+ _89nz0KaXXZh_8eSgMmqnK37  "*/"  "\n"  "DBGPRINTF_BM"  "(\"" 
+  "scanjs_bind_node_formals"  " "  "start"  " "  "\u20ac%." 
+  "9s"  " " _8LWjSSWiPiQ_87yzCnQr6b2  "=%"  "s" 
+  " " _6CmIdtsXyBX_3lpk31Mve5M  "=%"  "s"  " " 
+ _5D1GbyYKAgk_9ureezAahw3  "=%"  "s"  " " _4nJKFtMqlkA_1teQSqofNux 
+  "=%"  "s"  " " _89nz0KaXXZh_8eSgMmqnK37  "=%" 
+  "s"  "\","  "\n"  " "  "\"" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\","  "\n" 
  " "  "OUTSTRVALUE_BM" 
-  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6CmIdtsXyBX_3lpk31Mve5M)  ")," 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _8LWjSSWiPiQ_87yzCnQr6b2)  ")," 
  "\n"  " " 
-  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5D1GbyYKAgk_9ureezAahw3) 
+  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6CmIdtsXyBX_3lpk31Mve5M) 
  "),"  "\n" 
-  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4nJKFtMqlkA_1teQSqofNux) 
- "));" 
-  "\n")
+  " "  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5D1GbyYKAgk_9ureezAahw3) 
+ ")," 
+  "\n"  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4nJKFtMqlkA_1teQSqofNux) 
+  "),"  "\n"  " "  "objectdbg1_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _89nz0KaXXZh_8eSgMmqnK37)  "));"  "\n")
 !)_8oVb08SMLjZ_6RW8WiYmpm5
 
 
