@@ -19317,13 +19317,14 @@ _7nytuRkZkOz_8T9QMYQtGps)
 
 
 !(_78qFUfldcfZ_9AGcJyIiehd
-!@ 1539780360.781
+!@ 1539802899.784
 !$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "v_scanres := scanjs_bind_node_formals(v_arguments v_expr o_prepjfun depth)"
+ "v_scanres := scanjs_bind_node_formals(v_arguments"& " v_expr o_prepjfun depth o_from)"
 !# 2
 !& _5wKdFyGNJ5j_50nIjxm7LLY
-!&  * _3Nl6LhfUZVb_1itsyWMBfYl (  * _0e54seiZEXF_1Myf620cHoB ( _8cxGPJUb6ZO_6gKkay3UrSY) _8pbpqrN1W4l_7mZmRSPBjYz _6CmIdtsXyBX_3lpk31Mve5M _5D1GbyYKAgk_9ureezAahw3  * _6FWWN47uih2_5BhwEm9gnHu ( _6Y20GNUgnSZ_4LkbrcRMU8f))
+!&  * _3Nl6LhfUZVb_1itsyWMBfYl (  * _0e54seiZEXF_1Myf620cHoB ( _8cxGPJUb6ZO_6gKkay3UrSY) _8pbpqrN1W4l_7mZmRSPBjYz _6CmIdtsXyBX_3lpk31Mve5M _5D1GbyYKAgk_9ureezAahw3  * _6FWWN47uih2_5BhwEm9gnHu ( _6Y20GNUgnSZ_4LkbrcRMU8f) 
+ _89nz0KaXXZh_8eSgMmqnK37)
 !)_78qFUfldcfZ_9AGcJyIiehd
 
 
