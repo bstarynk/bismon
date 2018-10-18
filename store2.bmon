@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1611 objects
+// for 1614 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -12944,6 +12944,19 @@ _95J5VWlxn7h_9P3UNOuvpbl
 
 
 
+!(_2q0PLdoYfvp_0uSYUUZTzgD
+!@ 1539852789.448
+!$_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "fail-type because o_formaltype null for ii"& " o_curformal v_expr o_prepjfun depth o_from"
+!: _085lT8c13Ik_11pcWJfcLeM |=fail|
+ * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _95hdJENHNkN_3QuKIJTCQQQ)  * _0e54seiZEXF_1Myf620cHoB ( _0jFqaPPHgYH_5JpjOPxQ67p)  * _6FWWN47uih2_5BhwEm9gnHu ( _2W7Ckt2WxEM_4NVYgEWE73B) _3OjnHSbyAvp_5WFWOCJ1dPr _6CmIdtsXyBX_3lpk31Mve5M 
+ _5D1GbyYKAgk_9ureezAahw3  * _6FWWN47uih2_5BhwEm9gnHu ( _6Y20GNUgnSZ_4LkbrcRMU8f) 
+_89nz0KaXXZh_8eSgMmqnK37)
+!)_2q0PLdoYfvp_0uSYUUZTzgD
+
+
+
 !(_2q2tG2FP53N_76KbmEQ5yym
 !@ 1537421025.635
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
@@ -14602,6 +14615,19 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 
+!(_3C6sYhHeJDs_8AJo62LtBjh
+!@ 1539852789.450
+!$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "if null o_formaltype fail"
+!: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
+ 1
+!# 1
+!& _70i7qowU4I2_8my0qwfgH8h
+!)_3C6sYhHeJDs_8AJo62LtBjh
+
+
+
 !(_3DgIaN5163R_5rqDx6CVAoZ
 !@ 1539786116.029
 !$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
@@ -16159,10 +16185,11 @@ _6jZqk9RP0Pe_12cIgV9WMFC
  "lock o_curformal..."
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _3OjnHSbyAvp_5WFWOCJ1dPr
-!# 5
+!# 6
 !& _7mruXwxE6b8_1dvHjmIubpj
 !& _0XmhjAG1H2w_14P8OrJ19SY
 !& _6H9VuZuBqSl_9Xhm8gCkvMz
+!& _3C6sYhHeJDs_8AJo62LtBjh
 !& _9vSiu3Ayqcj_2ODISm2kSub
 !& _6IxqKiPTRxk_1g2NoFIUJHc
 !)_4OJMNqBP0dz_7LD0jHct5tV
@@ -19236,6 +19263,19 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 !# 1
 !& _7svunyd3cUm_7HERpKnW4ko
 !)_6YsDAbcOJUa_2rlu1PWJCdS
+
+
+
+!(_70i7qowU4I2_8my0qwfgH8h
+!@ 1539852789.449
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "when null o_formaltype fail"
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+ * _6EJRQxPiepy_50fow66D4Qn ( _6DIAK92zYLD_7Mt5MXWCMkT)
+!# 1
+!& _2q0PLdoYfvp_0uSYUUZTzgD
+!)_70i7qowU4I2_8my0qwfgH8h
 
 
 
