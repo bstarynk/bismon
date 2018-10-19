@@ -267,12 +267,12 @@ the \emph{Verified in Europe} label pushed by the \textsc{Vessedia}
 project.
 
 The \textbf{\textsc{Chariot} approach} to static source analysis
-\textbf{leverage on} an \textbf{\emph{existing}} \emph{recent}
+\textbf{leverages on} an \textbf{\emph{existing}} \emph{recent}
 \textbf{GCC cross-compiler}~\footnote{The actual version of \emph{GCC}
   is important; we want to stick to the latest GCC releases, e.g. to
   \href{https://gcc.gnu.org/gcc-8/}{GCC 8} in autumn 2018. In the
   usual case, that \emph{GCC} is a cross-compiler. In the rare case
-  where the IoT system runs on an x86-64 device underr Linux, that
+  where the IoT system runs on an x86-64 device under Linux, that
   \emph{GCC} is not a cross-, but a straight compiler.}. So the IoT
 developer following the \textsc{Chariot} methodology would just add
 some additional flags to \emph{existing} \texttt{gcc} or \texttt{g++}
@@ -317,39 +317,52 @@ called \texttt{bismon}.
 firmware development) Current versions of \emph{GCC} (that is, GCC 8.2
 in september 2018) are capable of quite surprising optimizations
 (internally based upon some sophisticated static analysis techniques
-and advanced heuristics). Some of them are explained in table
-\ref{tab:gccopt}.
+and advanced heuristics).
 
-\begin{table}[h]
-  \caption{\label{tab:gccopt} examples of \emph{GCC} optimizations}
-  \medskip
+ \begin{table}[h]
+   \caption{\label{tab:factinline} recursive inlining with constant folding in \emph{GCC}}
+   \medskip
+   \begin{center}
+     \begin{tabular}{c}
+       \lstinputlisting[language=C]{examples/factinline12.c} \\
+       \textbf{\color{blue}{\emph{C source code}}} \\
+       \hline
+       
+     \end{tabular}
+   \end{center}
+ \end{table}
 
-  \begin{center}
-    {\large @@crappy table, should be rewritten}
-    
-  \begin{relsize}{-1}
-  \begin{tabular}{p{6cm}|p{4.5cm}}
-    \textbf{C code} & \textbf{optimization} \\
-    \hline \\
-    \begin{minipage}[c]{5.5cm}
-      \begin{relsize}{-0.5}
-        \begin{alltt}
-          \textbf{static} \textbf{\emph{int}} fact(\textbf{\emph{int}} n) \{\\
-          \hspace{2em}\textbf{if} (n > 1)\\
-          \hspace{4em}\textbf{return} n*fact(n-1);\\
-          \hspace{2em}\textbf{else} \textbf{return} 1;\\
-          \}
-          \textbf{\emph{int}} f12(\textbf{void})\\
-          \{ \textbf{return} fact(12); \} 
-        \end{alltt}
-      \end{relsize}
-    \end{minipage} & constant folding of recursive call 
-      
-  \end{tabular}
-  \end{relsize}
-  \end{center}
-\end{table}
-
+%! Some of them are explained in table \ref{tab:gccopt}.
+%! 
+%! \begin{table}[h]
+%!   \caption{\label{tab:gccopt} examples of \emph{GCC} optimizations}
+%!   \medskip
+%! 
+%!   \begin{center}
+%!     {\large @@crappy table, should be rewritten}
+%!     
+%!   \begin{relsize}{-1}
+%!   \begin{tabular}{p{6cm}|p{4.5cm}}
+%!     \textbf{C code} & \textbf{optimization} \\
+%!     \hline \\
+%!     \begin{minipage}[c]{5.5cm}
+%!       \begin{relsize}{-0.5}
+%!         \begin{alltt}
+%!           \textbf{static} \textbf{\emph{int}} fact(\textbf{\emph{int}} n) \{\\
+%!           \hspace{2em}\textbf{if} (n > 1)\\
+%!           \hspace{4em}\textbf{return} n*fact(n-1);\\
+%!           \hspace{2em}\textbf{else} \textbf{return} 1;\\
+%!           \}
+%!           \textbf{\emph{int}} f12(\textbf{void})\\
+%!           \{ \textbf{return} fact(12); \} 
+%!         \end{alltt}
+%!       \end{relsize}
+%!     \end{minipage} & constant folding of recursive call 
+%!       
+%!   \end{tabular}
+%!   \end{relsize}
+%!   \end{center}
+%! \end{table}
 
 
 

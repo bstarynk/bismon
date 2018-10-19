@@ -1,3 +1,4 @@
+// file factinline12.c
 static int fact (int n) {
   if (n <= 1)
     return 1;
