@@ -749,19 +749,23 @@ value_tyBM crout_0TnNOA3XbNX_1HXoH9LI5af_BM //#2
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 6 local values:
+    /// 9 local values:
     objectval_tyBM* o_05IHFluwEai_9VxTGg7FVeQ; // o_jsstmt
+    value_tyBM v_0qTBOEAT5pa_2fz1SKfHrMV; // v_resemit
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ; // v_r
     objectval_tyBM* o_41F1rKwGbaA_30OJWKsqNWy; // o_strbuf
     value_tyBM v_4nJKFtMqlkA_1teQSqofNux; // v_depth
     objectval_tyBM* o_4JKd986pvM4_6yBzeeI40vW; // o_jsgenmod
     objectval_tyBM* o_5Lg7fb6zE3H_6ijQo6GbPN4; // o_jsgenfun
-    /// 0 local numbers:
+    value_tyBM v_6CmIdtsXyBX_3lpk31Mve5M; // v_expr
+    objectval_tyBM* o_8xx2naPLkYK_63f1JPAkym5; // o_lvar
+    /// 1 local numbers:
+    intptr_t n_6Y20GNUgnSZ_4LkbrcRMU8f; // i_depth
    } _;
    memset (&_, 0, sizeof(struct frame_0TnNOA3XbNX_1HXoH9LI5af_BMst));
    _.stkfram_head.htyp = typayl_StackFrame_BM;
    _.stkfram_head.hgc = 0;
-   _.stkfram_head.rlen = 6;
+   _.stkfram_head.rlen = 9;
    _.stkfram_descr = constob_1zCsXG4OTPr_8PwkDAWr16S_BM[14] /*|_0TnNOA3XbNX_1HXoH9LI5af*/;
    ASSERT_BM (!stkf
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
@@ -793,6 +797,32 @@ DBGPRINTF_BM("emit_jsstmt°basiclo_assign start €%.9s o_jsstmt=%s o_jsgenmod=%
  OUTSTRVALUE_BM( /*v_depth:*/_.v_4nJKFtMqlkA_1teQSqofNux));
 ; 
 } // end run _6SoxAM2Nx8r_6aNsWpsWYLl 
+ 
+ 
+ /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f = //assign _1M1iQcbhHPf_4AmLYjyFF0Z  
+ /* val_to_int */ getint_BM( /*v_depth:*/_.v_4nJKFtMqlkA_1teQSqofNux) ; 
+ 
+//+ #2/5 of block _73QjkOjlQNQ_4MVltVuD6gz :: 
+ 
+ /*o_lvar:*/_.o_8xx2naPLkYK_63f1JPAkym5 = //assign _1XOiZi7OISr_2OdoY1c81gc  
+/*val_to_object:*/objectcast_BM(/*objgetcomp:*/objgetcomp_BM (( /*o_jsstmt:*/_.o_05IHFluwEai_9VxTGg7FVeQ),( 0))); 
+ 
+ 
+ /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M = //assign _6ZqMoJULJF1_0vAD74CZgk8  
+/*objgetcomp:*/objgetcomp_BM (( /*o_jsstmt:*/_.o_05IHFluwEai_9VxTGg7FVeQ),( 1)); 
+ 
+ 
+ 
+{ // run _7KZxDq6vxfm_0vy1Y0PUFsv 
+/*debug o_jsstmt o_lvar v_expr depth*/
+DBGPRINTF_BM("emit_jsstmt°basiclo_assign €%.9s o_jsstmt=%s o_lvar=%s v_expr=%s depth#%ld",
+ "_7KZxDq6vxfm_0vy1Y0PUFsv",
+ objectdbg_BM( /*o_jsstmt:*/_.o_05IHFluwEai_9VxTGg7FVeQ),
+ objectdbg1_BM( /*o_lvar:*/_.o_8xx2naPLkYK_63f1JPAkym5),
+ OUTSTRVALUE_BM( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M),
+ (long int)( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));
+; 
+} // end run _7KZxDq6vxfm_0vy1Y0PUFsv 
  
 /* !endingblock _73QjkOjlQNQ_4MVltVuD6gz */ 
 goto endblock__73QjkOjlQNQ_4MVltVuD6gz; 
