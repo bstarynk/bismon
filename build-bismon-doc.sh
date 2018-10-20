@@ -16,7 +16,11 @@
 mkdir -p doc/generated/
 mkdir -p doc/htmldoc/
 
+## backup the old pdf file
+mv -vfb doc/bismon-doc.pdf doc/bismon-doc.pdf% 
+
 # generate the git tag
+bmgittag=$(git log --format=oneline -1 --abbrev=16 --abbrev-commit -q|cut -d' ' -f1)
 git log --format=oneline -1 --abbrev=16 --abbrev-commit -q | awk '{printf "\\newcommand{\\bmgitcommit}[0]{%s}\n", $1}' > doc/generated/git-commit.tex
 # generate the number of commits; should be doable in a more efficient way
 nbc=$(git log | grep '^commit' | wc -l)
@@ -72,13 +76,14 @@ for pngfile in images/*.png ; do
     fi
 done
 
-pdflatex -halt-on-error bismon-doc
-bibtex bismon-doc
-pdflatex -halt-on-error bismon-doc
-makeindex bismon-doc
-pdflatex -halt-on-error bismon-doc
-bibtex bismon-doc
-pdflatex -halt-on-error bismon-doc
+pdflatex -halt-on-error bismon-doc < /dev/null
+bibtex bismon-doc < /dev/null
+pdflatex -halt-on-error bismon-doc < /dev/null
+makeindex bismon-doc < /dev/null
+pdflatex -halt-on-error bismon-doc < /dev/null
+bibtex bismon-doc < /dev/null
+pdflatex -halt-on-error bismon-doc < /dev/null || (echo failed pdflatex -halt-on-error bismon-doc got $? >/dev/stderr)
+[ -d $HOME/tmp/ ] && cp -v bismon-doc.pdf $HOME/tmp/bismon-doc-$bmgittag.pdf
 ls -l $PWD/*aux $PWD/*/*aux $PWD/*bbl $PWD/*/*bbl
 hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex svg.hva bismon-hevea.hva bismon-doc
 #bibhva bismon-doc
