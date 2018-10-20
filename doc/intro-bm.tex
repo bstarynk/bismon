@@ -212,8 +212,8 @@ Most static analyzers require some kind of interaction with their user
 analysis results and explanations about them, or complex information
 like control flow graphs, derived properties at each statements.
 
-The \href{http://vessedia.eu/}{VESSEDIA} project is an H2020
-IoT-related project~\footnote{The VESSEDIA project (Verification
+The \href{http://vessedia.eu/}{\textsc{Vessedia}} \index{Vessedia} project is an H2020
+IoT-related project~\footnote{The \textsc{Vessedia} project (Verification
   Engineering of Safety and Security Critical Industrial Applications)
   has received funding from the European Union's Horizon 2020 research
   and innovation programme under grant agreement No. 731453, within
@@ -269,32 +269,32 @@ project.
 The \textbf{\textsc{Chariot} approach} to static source analysis
 \textbf{leverages on} an \textbf{\emph{existing}} \emph{recent}
 \textbf{GCC cross-compiler}~\footnote{The actual version of \emph{GCC}
-  is important; we want to stick to the latest GCC releases, e.g. to
-  \href{https://gcc.gnu.org/gcc-8/}{GCC 8} in autumn 2018. In the
-  usual case, that \emph{GCC} is a cross-compiler. In the rare case
-  where the IoT system runs on an x86-64 device under Linux, that
-  \emph{GCC} is not a cross-, but a straight compiler.}. So the IoT
-developer following the \textsc{Chariot} methodology would just add
-some additional flags to \emph{existing} \texttt{gcc} or \texttt{g++}
-cross-compilation commands, and needs simply to change slightly
-his/her build automation scripts (e.g. add a few lines to his
-\texttt{Makefile}). Such a gentle approach (see figure
-\ref{fig:chariotcompil}; of course the \emph {details} of compilation
-commands would change, the commands shown in the figure are grossly
-simplified!) has the advantage of not disturbing much the usual
-developer workflow and habit, and addresses also the \emph{junior} IoT
-software developer. The compilation and linking processes are
-communicating (via some additional \emph{GCC} plugins doing
-inter-process communication) with our \index{persistent monitor}
-\index{persistent!monitor} \emph{persistent monitor}, tentatively
-called \texttt{bismon}.
+  is important; we want to stick -when reasonably possible- to the
+  latest GCC releases, e.g. to \href{https://gcc.gnu.org/gcc-8/}{GCC
+    8} in autumn 2018. In the usual case, that \emph{GCC} is a
+  cross-compiler. In the rare case where the IoT system runs on an
+  x86-64 device under Linux, that \emph{GCC} is not a cross-, but a
+  straight compiler.}. So the IoT developer following the
+\textsc{Chariot} methodology would just add some additional flags to
+\emph{existing} \texttt{gcc} or \texttt{g++} cross-compilation
+commands, and needs simply to change slightly his/her build automation
+scripts (e.g. add a few lines to his \texttt{Makefile}). Such a gentle
+approach (see figure \ref{fig:chariotcompil}; of course the \emph
+{details} of compilation commands would change, the commands shown in
+the figure are grossly simplified!) has the advantage of not
+disturbing much the usual developer workflow and habit, and addresses
+also the \emph{junior} IoT software developer. The compilation and
+linking processes are communicating (via some additional \emph{GCC}
+plugins doing inter-process communication) with our \index{persistent
+  monitor} \index{persistent!monitor} \emph{persistent monitor},
+tentatively called \texttt{bismon}.
 
 \begin{figure}[h]
   \begin{center}
     \bmincludewidthgraphics{0.85\textwidth}{chariot-compil-fig}{eps}{svg}
   \end{center}
   \caption{the \textsc{Chariot} compilation of some IoT firmware or
-    application (simplified)}
+    application {\textbf{(simplified)}}}
   \label{fig:chariotcompil}
 \end{figure}
 
@@ -319,24 +319,7 @@ in september 2018) are capable of quite surprising optimizations
 (internally based upon some sophisticated static analysis techniques
 and advanced heuristics).
 
- \begin{table}[h]
-   \caption{\label{tab:factinline} recursive inlining with constant folding in \emph{GCC}}
-   \medskip
-   \begin{center}
-     \begin{tabular}{c}
-       \lstinputlisting[language=C]{examples/factinline12.c} \\
-       \textbf{\color{blue}{\emph{C source code}}} \\
-       \hline
-      % \bmexpandableinput{generated/002-gimple-factinline.tex}
-       \lstinputlisting[language=C]{generated/factinline12.c.004t.gimple} \\
-       \textbf{\color{blue}{\emph{GIMPLE code}}} \\
-       \hline
-       
-       
-       
-     \end{tabular}
-   \end{center}
- \end{table}
+\input{generated/002-gimple-factinline.tex}
 
 %! Some of them are explained in table \ref{tab:gccopt}.
 %! 
