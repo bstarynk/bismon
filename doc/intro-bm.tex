@@ -199,7 +199,7 @@ be~\footnote{This is a gross simplification! In practice, there is a
       optimization (e.g. compiling and \emph{linking} with \texttt{gcc
         -O2 -flto -Wall -Wextra} using GCC) slows down the build time by more than a
       factor of two since the intermediate internal representation (IR) of the
-      compiler (e.g. Gimple for GCC) is kept in object files and
+      compiler (e.g. Gimple \index{Gimple} for GCC) is kept in object files and
       reload at ``link-time'' which is done by the \emph{compiler}
       working on the whole program's IR, so is rarely used.}  enabled. Of
     course, these simpler approaches give many false positive warnings
@@ -319,40 +319,76 @@ in september 2018) are capable of quite surprising optimizations
 (internally based upon some sophisticated static analysis techniques
 and advanced heuristics).
 
+
+We show below several examples of optimizations done by recent  \emph{GCC}
+
+\bigskip
+
+{{\raisebox{3pt}{\rule{0.2\textwidth}{1.5pt}}} ~ \large{recursive inlining with constant folding}}
+
+
+\begin{table}[ht]
+\caption{\label{tab:factinlinecsrc} recursive inlining with constant folding in \emph{GCC} (C source)}
+   \medskip
+  \begin{center}
+    \begin{relsize}{-1.2}
+     \begin{tabular}{c}
+      \lstinputlisting[language=C]{examples/factinline12.c} \\ 
+       \textbf{\emph{C source code}} \\ 
+       \hline
+     \end{tabular}
+    \end{relsize}
+  \end{center}
+\end{table}
+
+The table \ref{tab:factinlinecsrc} shows a simple example of C
+code. After preprocessing and parsing, it becomes quickly expanded in
+some \emph{Gimple}\index{gimple} representation, whose elementary
+instructions are arithmetic with two operands, or simple tests with
+jumps, or simple calls (in so called \emph{A-normal form}
+\index{A-normal form}, where nested calls like \verb+a=f(g(x),y);+ get
+transformed into a sequence introducing a temporary $\tau$ such as
+$\tau$\verb+=g(x)+ then \verb+a=f(+$\tau$\verb+,y)+, etc...), shown in table
+\ref{tab:factinlinegimple}. This is a textual (and incomplete)
+representation of some in-memory \emph{internal intermediate
+  representation} during compilation.
+
 \input{generated/002-gimple-factinline.tex}
 
-%! Some of them are explained in table \ref{tab:gccopt}.
-%! 
-%! \begin{table}[h]
-%!   \caption{\label{tab:gccopt} examples of \emph{GCC} optimizations}
-%!   \medskip
-%! 
-%!   \begin{center}
-%!     {\large @@crappy table, should be rewritten}
-%!     
-%!   \begin{relsize}{-1}
-%!   \begin{tabular}{p{6cm}|p{4.5cm}}
-%!     \textbf{C code} & \textbf{optimization} \\
-%!     \hline \\
-%!     \begin{minipage}[c]{5.5cm}
-%!       \begin{relsize}{-0.5}
-%!         \begin{alltt}
-%!           \textbf{static} \textbf{\emph{int}} fact(\textbf{\emph{int}} n) \{\\
-%!           \hspace{2em}\textbf{if} (n > 1)\\
-%!           \hspace{4em}\textbf{return} n*fact(n-1);\\
-%!           \hspace{2em}\textbf{else} \textbf{return} 1;\\
-%!           \}
-%!           \textbf{\emph{int}} f12(\textbf{void})\\
-%!           \{ \textbf{return} fact(12); \} 
-%!         \end{alltt}
-%!       \end{relsize}
-%!     \end{minipage} & constant folding of recursive call 
-%!       
-%!   \end{tabular}
-%!   \end{relsize}
-%!   \end{center}
-%! \end{table}
+After gimplification, many other optimizations happen. \textbf{The
+  \emph{GCC} compiler runs more than two hundred optimization passes
+  !}\index{optimization}\index{pass!optimization}. The table
+\ref{tab:factinlinessa} shows the ``static single assigment'' form,
+where variables are duplicated so that each SSA variable gets assigned
+only \emph{once}. The control flow is reduced to \index{basic block}
+\emph{basic blocks} (with a single entry point at start, and perhaps
+several conditional exit edges). Then special $\phi$ nodes introduce
+places where such a variable may come from two other ones (after
+branches).
 
+\input{generated/003-ssaopt-factinline.tex}
+
+
+At last, many other optimizations happen. And the optimized form in
+table \ref{tab:factinlineoptim} shows that \texttt{fact12} just
+returns the constant 479001600 (which happens to be the result of
+\texttt{fact(12)} computed \emph{at compile-time}). Finally, the
+generated assembler code has no trace of \texttt{fact} function, and
+contains just what is shown in table \ref{tab:factinlineasm} (where
+many useless comment lines, giving the detailed configuration of the
+cross compiler, have been removed).
+
+\newpage
+
+
+\bigskip
+
+{{\raisebox{3pt}{\rule{0.2\textwidth}{1.5pt}}} ~ \large{heap allocation optimization}}
+
+Our second example shows that \emph{GCC} is capable of clever
+optimizations around dynamic heap allocation and de-allocation.
+
+\newpage
 
 
 
