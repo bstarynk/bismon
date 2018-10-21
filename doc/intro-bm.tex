@@ -593,16 +593,23 @@ and Bill are working on the same IoT project source code (and each
 have a slightly different version of that code, since Alice might work
 on routine \texttt{foo\_start} in file \texttt{foo.cc}, while Bob is
 coding the routine \texttt{bar\_event\_loop} in file
-\texttt{bar.c}). Both Alice and Bob are compiling with the same
+\texttt{bar.c}). Both Alice and Bob (IoT developers in the same team,
+working on the same IoT firmware) are compiling with the same
 \emph{GCC} cross-compiler (the GCC egg) enhanced by a plugin (the
-green puzzle piece). They use their favorite editor or IDE to work on
-the source code, and run from time to time a builder
-(e.g. \texttt{make}). They use a browser (with a rainbow in the
-figure) to interact with the monitor and query static analysis
-data. The purple dashed arrows represent HTTP exchanges between their
-browser and the monitor. The compilation processes, extended by the
-GCC plugin, communicate with the monitor (thru the gray dashed
-arrows).
+small green puzzle piece, at right of GCC eggs). They use their
+favorite editor or IDE to work on the IoT source code, and run from
+time to time a builder (e.g. \texttt{make}). They use a browser (with
+a rainbow in the figure) to interact with the monitor and query static
+analysis data. The purple dashed arrows represent HTTP exchanges
+between their browser and the monitor. The compilation processes,
+extended by the GCC plugin, communicate with the monitor (thru the
+gray dashed arrows). A static analysis expert (the ``geek'', at left
+of the Bismon monitor) is configuring the monitor thru his own web
+interface. The monitor is \emph{generating} (orange arrow) the C++
+code (small blue hexagon at right). It also uses meta-programming
+techniques to emit (curved blue arrow to left) internal code (bubble)
+- notably C code dynamically loaded by the monitor and JavaScript/HTML
+used in browsers.
 
 \begin{figure}
   \begin{center}
