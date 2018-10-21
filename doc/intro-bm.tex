@@ -587,12 +587,13 @@ browser~\footnote{We don't aim compatibility with all web browsers
   \emph{Firefox} browsers, using HTML5, JavaScript, WebSockets, AJAX
   technologies.}. In addition, a static analysis expert (which could
 perhaps be the very senior IoT developer of the team) will configure
-the static analysis (also thru a web interface). The figure
-\ref{fig:bismonit} gives an overall picture: on the top, both Alice
-and Bill are working on the same IoT project source code (and each
-have a slightly different version of that code, since Alice might work
-on routine \texttt{foo\_start} in file \texttt{foo.cc}, while Bob is
-coding the routine \texttt{bar\_event\_loop} in file
+the static analysis (also thru a web interface).
+
+The figure \ref{fig:bismonit} gives an overall picture: on the top,
+both Alice and Bill are working on the same IoT project source code
+(and each have a slightly different version of that code, since Alice
+might work on routine \texttt{foo\_start} in file \texttt{foo.cc},
+while Bob is coding the routine \texttt{bar\_event\_loop} in file
 \texttt{bar.c}). Both Alice and Bob (IoT developers in the same team,
 working on the same IoT firmware) are compiling with the same
 \emph{GCC} cross-compiler (the GCC egg) enhanced by a plugin (the
@@ -606,10 +607,13 @@ extended by the GCC plugin, communicate with the monitor (thru the
 gray dashed arrows). A static analysis expert (the ``geek'', at left
 of the Bismon monitor) is configuring the monitor thru his own web
 interface. The monitor is \emph{generating} (orange arrow) the C++
-code (small blue hexagon at right). It also uses meta-programming
+code for GCC plugins (small blue hexagon at right), and the IoT
+developer needs to change his/her build procedures to compile and use
+that generated GCC plugin. \emph{Bismon} also uses meta-programming
 techniques to emit (curved blue arrow to left) internal code (bubble)
 - notably C code dynamically loaded by the monitor and JavaScript/HTML
-used in browsers.
+used in browsers. The monitor persists its entire state on disk, so
+can restart in the state that it has dumped in its previous run.
 
 \begin{figure}
   \begin{center}
@@ -705,7 +709,7 @@ features:
       illustration of Hofstadter's law (See
       \cite{Hofstadter:1979:GEB}). We might consider later using MPS
       from \bmurl{https://www.ravenbrook.com/project/mps/} but doing
-      that could require recoding or regenerating a lot of code.}
+      that could require recoding or regenerating \emph{a lot} of code, since MPS has specific calling conventions and invariants.}
 
   \item \textbf{homoiconicity} and \textbf{reflection} with
     \textbf{introspection} (cf \cite{Pitrat:1996:FGCS,
