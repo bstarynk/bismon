@@ -19,12 +19,26 @@
 \usepackage{hevea}
 \usepackage{listings}
 \usepackage{relsize}
+\usepackage{verbatimbox}
 \usepackage{filecontents}
 \usepackage{catchfile}
 \usepackage{lastpage}
 
 \newcommand{\bmemail}[1]{{\href{mailto:#1}{\texttt{\textbf{#1}}}}}
 \newcommand{\bmurl}[1]{{\href{#1}{\texttt{\textbf{#1}}}}}
+
+%see https://tex.stackexchange.com/a/51656/42406
+\lstdefinelanguage
+   [x64]{Assembler}     % add a "x64" dialect of Assembler
+   [x86masm]{Assembler} % based on the "x86masm" dialect
+   % with these extra keywords:
+   {morekeywords={CDQE,CQO,CMPSQ,CMPXCHG16B,JRCXZ,LODSQ,MOVSXD, %
+                  POPFQ,PUSHFQ,SCASQ,STOSQ,IRETQ,RDTSCP,SWAPGS, %
+                  rax,rdx,rcx,rbx,rsi,rdi,rsp,rbp, %
+                  r8,r8d,r8w,r8b,r9,r9d,r9w,r9b, %
+                  r10,r10d,r10w,r10b,r11,r11d,r11w,r11b, %
+                  r12,r12d,r12w,r12b,r13,r13d,r13w,r13b, %
+                  r14,r14d,r14w,r14b,r15,r15d,r15w,r15b}} % etc.
 
 %% https://latex.org/forum/viewtopic.php?t=3970
 %\makeatletter

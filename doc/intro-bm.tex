@@ -327,7 +327,7 @@ We show below several examples of optimizations done by recent  \emph{GCC}
 {{\raisebox{3pt}{\rule{0.2\textwidth}{1.5pt}}} ~ \large{recursive inlining with constant folding}}
 
 
-\begin{table}[ht]
+\begin{table}[t]
 \caption{\label{tab:factinlinecsrc} recursive inlining with constant folding in \emph{GCC} (C source)}
    \medskip
   \begin{center}
@@ -378,15 +378,112 @@ contains just what is shown in table \ref{tab:factinlineasm} (where
 many useless comment lines, giving the detailed configuration of the
 cross compiler, have been removed).
 
-\newpage
-
 
 \bigskip
 
+\newpage
+
 {{\raisebox{3pt}{\rule{0.2\textwidth}{1.5pt}}} ~ \large{heap allocation optimization}}
 
+\bigskip
+
 Our second example shows that \emph{GCC} is capable of clever
-optimizations around dynamic heap allocation and de-allocation.
+optimizations around dynamic heap allocation and de-allocation. Its
+source code in file \texttt{mallfree.c} is shown in table
+\ref{tab:mallfreecsrc}. The straight \emph{GCC}
+compiler~\footnote{Similar optimizations also happen with a GCC MIPS
+  targetted cross-compiler.} (on Linux/x86-64) is optimizing and able
+to remove the calls to \texttt{malloc} and to \texttt{free}, following
+the \emph{as-if rule} \index{as-if rule}.
+
+\begin{table}[t]
+\caption{\label{tab:mallfreecsrc} optimization around heap allocation by \emph{GCC} (C source)}
+   \medskip
+  \begin{center}
+    \begin{relsize}{-1.2}
+     \begin{tabular}{c}
+      \lstinputlisting[language=C]{examples/mallfree.c} \\ 
+       \textbf{\emph{C source code}} \\ 
+       \hline
+     \end{tabular}
+    \end{relsize}
+  \end{center}
+\end{table}
+
+
+\include{generated/004-gimplessa-mallfree}
+
+The \emph{Gimple} form shown in table
+\ref{tab:mallfreegimple}. Pointer arithmetic has been expanded to
+target-specific \emph{address} arithmetic in byte units, knowing that
+\texttt{sizeof(int)} is 4.
+
+\begin{table}[t]
+\caption{\label{tab:mallfreegimple} optimization around heap allocation by \emph{GCC} (Gimple)}
+   \medskip
+  \begin{center}
+    \begin{relsize}{-1.5}
+     \begin{tabular}{c}
+      \lstinputlisting[language=C]{generated/mallfree-gimple.c} \\ 
+       \textbf{\emph{Gimple code}} \\ 
+       \hline
+     \end{tabular}
+    \end{relsize}
+  \end{center}
+\end{table}
+
+\medskip
+
+The \emph{SSA/optimized} form appears in table
+\ref{tab:mallfreeoptim}. It shows that the call to \texttt{malloc} and
+to \texttt{free} have been optimized away, so the \texttt{weirdsum}
+function don't use heap allocation anymore.
+
+\begin{table}[t]
+\caption{\label{tab:mallfreeoptim} optimization around heap allocation by \emph{GCC} (SSA/optimized)}
+   \medskip
+  \begin{center}
+    \begin{relsize}{-1.5}
+     \begin{tabular}{c}
+      \lstinputlisting[language=C]{generated/mallfree-optimized.c} \\ 
+       \textbf{\emph{SSA/optimized code}} \\ 
+       \hline
+     \end{tabular}
+    \end{relsize}
+  \end{center}
+\end{table}
+
+So the generated x86-64 assembler code in table \ref{tab:mallfreeasm}
+contain no calls to \texttt{malloc} or \texttt{free}, hence contains the same code that would be generated from just \texttt{int weirdsum(int x, int y) \{return x+y;\}}.
+
+%\verbfilebox{mallfree-tail.s}
+
+\smallskip
+
+\begin{table}[t]
+\caption{\label{tab:mallfreeasm} optimization around heap allocation by \emph{GCC} (x86-64 assembly)}
+   \medskip
+  \begin{center}
+    \begin{relsize}{-1.5}
+     \begin{tabular}{c}
+       %\lstinputlisting{language=[x64]Assembler}{generated/mallfree-tail.s} \\
+       \begin{minipage}{0.8\textwidth}
+         %\listinginput[4]{1}{generated/mallfree-tail.s}
+         \VerbatimInput{generated/mallfree-tail.s}
+       \end{minipage} \\
+       \textbf{\emph{x86-64 assembly}} \\ 
+       \hline
+     \end{tabular}
+    \end{relsize}
+  \end{center}
+\end{table}
+
+\medskip
+
+This \texttt{mallfree.c} example could look artificial (because human
+developers won't code this way). However, a similar example might
+happen in real life after preprocessor expansion and inlining in large
+header-mostly libraries.
 
 \newpage
 
@@ -548,9 +645,10 @@ features:
 Notice that \textit{Bismon} is not even thought as a \emph{textual}
 domain specific language~\footnote{In contrast, \emph{GCC MELT} was
   textual and had \texttt{*.melt} source \emph{files} edited with
-  \texttt{emacs}. This made refactoring difficult.} (and this is
-possible because it is persistent). There is not (and there won't be)
-any canonical \emph{textual} syntax for ``source code'' in
+  \texttt{emacs}. This made refactoring difficult, since automatic
+  move of textual fragments was not realistically possible.} (and this
+is possible because it is persistent). There is not (and there won't
+be) any canonical \emph{textual} syntax for ``source code'' in
 \textit{Bismon} ~\footnote{This idea is not new: neither Smalltalk
   (cf. \cite{Goldberg:1983:Smalltalk}), nor Common Lisp
   (cf. \cite{Steele:1990:CommonLisp}), are defined as having a textual
@@ -578,7 +676,7 @@ and interacts with \textit{Bismon} to do that. There is no really any
 \index{abstract syntax tree}{abstract syntax \emph{tree}} in
 \textit{Bismon}: what the developer is working on is some \emph{graph}
 (with circularities), and the entire persistent state of \emph{Bismon}
-could be viewed as some large graph in memory. 
+could be viewed as some large graph in memory.
 
 
 \subsubsection{About \emph{Bismon} as a evolving software system}
