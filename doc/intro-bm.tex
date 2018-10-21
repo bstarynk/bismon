@@ -568,15 +568,49 @@ some of the numerous intermediate data related to that static analysis
 and compilation. Practically, a small team of IoT developers working
 on the same IoT firmware project would interact with the static
 analysis infrastructure, that is with a single \emph{persistent
-  monitor} process. That persistent monitor would be some
-``server-like'' program, probably started every working day in the
-morning, and gently stopped every evening. It needs to keep its
+  monitor} process. That persistent monitor (\emph{Bismon}) would be
+some ``server-like'' program, started probably every working day in
+the morning and loading its previous state, and gently stopped every
+evening and dumping its current state on disk. It needs to keep its
 persistent state in some files. For convenience, a textual format is
 preferable~\footnote{This is conceptually similar the the SQL dump
   files of current RDBMS. But of course \emph{Bismon} don't use an SQL
   format, but its own textual format.}. These persistent store files
 could (and probably should) be regularily backed up and kept in some
 version control system.
+
+Since a single \emph{Bismon} process is used by a small team of IoT
+developers, it provides some Web interface: each IoT developer will
+interact with the persistent monitor thru his/her web
+browser~\footnote{We don't aim compatibility with all web browsers
+  -including old ones- but just with the latest \emph{Chrome} and
+  \emph{Firefox} browsers, using HTML5, JavaScript, WebSockets, AJAX
+  technologies.}. In addition, a static analysis expert (which could
+perhaps be the very senior IoT developer of the team) will configure
+the static analysis (also thru a web interface). The figure
+\ref{fig:bismonit} gives an overall picture: on the top, both Alice
+and Bill are working on the same IoT project source code (and each
+have a slightly different version of that code, since Alice might work
+on routine \texttt{foo\_start} in file \texttt{foo.cc}, while Bob is
+coding the routine \texttt{bar\_event\_loop} in file
+\texttt{bar.c}). Both Alice and Bob are compiling with the same
+\emph{GCC} cross-compiler (the GCC egg) enhanced by a plugin (the
+green puzzle piece). They use their favorite editor or IDE to work on
+the source code, and run from time to time a builder
+(e.g. \texttt{make}). They use a browser (with a rainbow in the
+figure) to interact with the monitor and query static analysis
+data. The purple dashed arrows represent HTTP exchanges between their
+browser and the monitor. The compilation processes, extended by the
+GCC plugin, communicate with the monitor (thru the gray dashed
+arrows).
+
+\begin{figure}
+  \begin{center}
+    \bmincludewidthgraphics{0.85\textwidth}{bismon-monitor-fig}{eps}{svg}
+  \end{center}
+  \caption{The \emph{Bismon} monitor used by some IoT developer team following the \textsc{Chariot} approach.}
+  \label{fig:bismonit}
+\end{figure}
 
 \newpage 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
