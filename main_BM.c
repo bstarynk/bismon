@@ -888,7 +888,14 @@ main (int argc, char **argv)
   else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
   if (!batch_bm && !run_gtk_BM && !run_onion_BM)
-    FATAL_BM ("no batch or gtk or onion option");
+    FATAL_BM ("no batch or gtk or onion option; please run with --batch or --web or --gui");
+  /// running as root is really unreasonable.
+  if (getuid() == 0)
+    FATAL_BM("bismon should not be running as root real user (and euid#%d)",
+	     (int) geteuid());
+  if (geteuid() == 0)
+    FATAL_BM("bismon should not be running as root effective user (and uid#%d)",
+	     (int) getuid()); 
   if (run_gtk_BM && run_onion_BM)
     INFOPRINTF_BM ("both GUI and Web interfaces requested");
   else if (run_onion_BM)
