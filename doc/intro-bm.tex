@@ -62,7 +62,7 @@ The reader of this document is expected to:
   form.
 
 \item have successfully downloaded and built the \emph{Bismon
-  monitor} from its source code on
+  monitor} \index{Bismon} from its source code on
   \bmurl{https://github.com/bstarynk/bismon}, on his Linux workstation.
   
 \item have contributed or participated to some free software or open
@@ -199,7 +199,7 @@ be~\footnote{This is a gross simplification! In practice, there is a
       optimization (e.g. compiling and \emph{linking} with \texttt{gcc
         -O2 -flto -Wall -Wextra} using GCC) slows down the build time by more than a
       factor of two since the intermediate internal representation (IR) of the
-      compiler (e.g. Gimple \index{Gimple} for GCC) is kept in object files and
+      compiler (e.g. Gimple \index{Gimple} for \emph{GCC}, see \cite{gcc-internals} §12) is kept in object files and
       reload at ``link-time'' which is done by the \emph{compiler}
       working on the whole program's IR, so is rarely used.}  enabled. Of
     course, these simpler approaches give many false positive warnings
@@ -284,10 +284,19 @@ approach (see figure \ref{fig:chariotcompil}; of course the \emph
 the figure are grossly simplified!) has the advantage of not
 disturbing much the usual developer workflow and habit, and addresses
 also the \emph{junior} IoT software developer. The compilation and
-linking processes are communicating (via some additional \emph{GCC}
-plugins doing inter-process communication) with our \index{persistent
-  monitor} \index{persistent!monitor} \emph{persistent monitor},
-tentatively called \texttt{bismon}.
+linking processes are communicating -via some additional \emph{GCC}
+plugins (cf. \cite{gcc-internals} §24) doing inter-process
+communication- with our \index{persistent monitor}
+\index{persistent!monitor} \emph{persistent monitor}, tentatively
+called \texttt{bismon} \index{Bismon}. It is preferable (see
+\cite{gcc-runtime-library-exception}) to use free software GCC plugins
+(or free software generators for them) when compiling proprietary
+firmware with the help of these plugins; otherwise, there might
+be~\footnote{Of course, I -Basile Starynkevitch- am not a lawyer, and
+  you should check any potential licensing issues with your own
+  lawyer.} some licensing issues on the obtained proprietary binary
+firmware blob, if it was compiled with the help of some hypothetical
+\emph{proprietary} GCC plugin.
 
 \begin{figure}[h]
   \begin{center}
@@ -320,11 +329,19 @@ in september 2018) are capable of quite surprising optimizations
 and advanced heuristics).
 
 
-We show below several examples of optimizations done by recent  \emph{GCC}
+We show below several examples of optimizations done by recent
+\emph{GCC} compilers. Usually, these optimizations happen in the
+middle-end and work on internal intermediate representations which are
+mostly not~\footnote{Most of the internal \emph{GCC} representations
+  -e.g. \emph{Gimple} or \emph{SSA}- are common to all target systems;
+  however, some constants, like the size and alignment of primitive
+  data types such as \texttt{long} or pointers, are known at
+  preprocessing phase or at early \emph{Gimplification} phase.} target
+specific.
 
 \bigskip
 
-{{\raisebox{3pt}{\textcolor{brown}{\rule{0.2\textwidth}{1.5pt}}}} ~ \large{recursive inlining with constant folding}}
+{{\raisebox{3pt}{\textcolor{brown}{\rule{0.2\textwidth}{2.0pt}}}} ~ \large{recursive inlining with constant folding}}
 
 
 \begin{table}[t]
@@ -358,13 +375,13 @@ representation of some in-memory \emph{internal intermediate
 After gimplification, many other optimizations happen. \textbf{The
   \emph{GCC} compiler runs more than two hundred optimization passes
   !}\index{optimization}\index{pass!optimization}. The table
-\ref{tab:factinlinessa} shows the ``static single assigment'' form,
-where variables are duplicated so that each SSA variable gets assigned
-only \emph{once}. The control flow is reduced to \index{basic block}
-\emph{basic blocks} (with a single entry point at start, and perhaps
-several conditional exit edges). Then special $\phi$ nodes introduce
-places where such a variable may come from two other ones (after
-branches).
+\ref{tab:factinlinessa} shows the ``static single assigment'' form
+(SSA, see \cite{pop:ssa} and \cite{gcc-internals} §13), where variables are duplicated so that each SSA
+variable gets assigned only \emph{once}. The control flow is reduced
+to \index{basic block} \emph{basic blocks} (with a single entry point
+at start, and perhaps several conditional exit edges). Then special
+$\phi$ nodes introduce places where such a variable may come from two
+other ones (after branches).
 
 \input{generated/003-ssaopt-factinline.tex}
 
@@ -383,7 +400,7 @@ cross compiler, have been removed).
 
 \newpage
 
-{{\raisebox{3pt}{\textcolor{brown}{\rule{0.2\textwidth}{1.5pt}}}} ~ \large{heap allocation optimization}}
+{{\raisebox{3pt}{\textcolor{brown}{\rule{0.2\textwidth}{2.0pt}}}} ~ \large{heap allocation optimization}}
 
 \bigskip
 
@@ -483,15 +500,89 @@ contain no calls to \texttt{malloc} or \texttt{free}, hence contains the same co
 This \texttt{mallfree.c} example could look artificial (because human
 developers won't code this way). However, a similar example might
 happen in real life after preprocessor expansion and inlining in large
-header-mostly libraries.
+header-mostly libraries. In addition, most genuine C++11 \index{C++11} code
+(e.g. using standard container \index{container!C++} templates from \texttt{<map>} or
+\texttt{<vector>} standard headers) would produce conceptually similar
+code (since many standard constructors and destructors would call
+internally the standard \texttt{::operator new} and \texttt{::operator
+  delete} operations, which get inlined into calling the system
+\texttt{malloc} and \texttt{free} functions).
 
 \newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+\subsubsection{Leveraging simple static source analysis on \emph{GCC}}
 
+By hooking thru \textsc{Chariot} specific GCC
+\emph{plugins}~\footnote{Notice that GCC plugins work mostly on Linux
+  -but not really on Windows-, so this explains the \textsc{Chariot}
+  requirement of [cross-]compiling IoT firmware on a Linux
+  workstation.}  into usual [cross-] \emph{compilation} processes
+(some \texttt{gcc} or \texttt{g++}, etc... such as a
+\texttt{mips-linux-gnu-gcc-8} or a \texttt{arm-linux-gnueabi-g++-8},
+etc...), IoT software developers will be able to take advantage of all
+the numerous optimizations and processing done by \emph{GCC}. However,
+a typical firmware build would take many dozens of such compilation
+processes, since every translation unit (practically \texttt{*.c} C
+source files and \texttt{*.cc} C++ source files of the IoT firmware)
+requires its compilation process~\footnote{Technically, a C
+  compilation process would be running some \texttt{cc1} internal
+  executable started by some \texttt{*gcc*} [cross-] compilation
+  command.}. In practice, IoT software developers would use some
+\emph{existing} \textbf{build automation} tool (such as \texttt{make},
+\texttt{ninja}, \texttt{meson}, \texttt{cmake} etc...)  \index{build
+  automation} which is running suitable compilation commands. They
+would need to adapt~\footnote{How to adapt cleverly their
+  \texttt{Makefile} to take advantage of \textsc{Chariot} provided
+  static analysis is of course the responsability of the IoT
+  developer. Surely several extra lines are needed, and the
+  \texttt{CFLAGS=} line of their \texttt{Makefile} should be
+  changed. For other builders such as \texttt{ninja}, etc..., some
+  similar configuration changes would be needed.}  and configure their
+build process (e.g. by editing their \texttt{Makefile}-s, etc...),
+notably to fetch their \emph{GCC} plugin C++ code and compile it into
+some \texttt{*.so} shared object to be later \texttt{dlopen}-ed by
+some cross-compiler \texttt{cc1} process, and to use these plugins in
+their cross-compilation of their IoT firmware. By working in
+cooperation with existing \emph{GCC} compilation tools, the IoT
+developer don't have to change much his/her current development
+practices. However, these various compilation processes are producing
+partial new (or updated) internal representations, and need to know
+about other translation units. So some \textbf{persistence is needed}
+to keep some data related to past~\footnote{Notice that recent
+  \emph{GCC} provide a link-time optimization (LTO) ability, if the
+  developer compiles \emph{and links} with e.g. \texttt{gcc -O2
+    -flto}. But LTO is not widely used since it slows down a lot the
+  building time, and the plugin infrastructure of GCC is not very LTO
+  friendly and would be brittle to use. At last, there won't be any
+  practical user interface with such an approach. So persistence is
+  practically needed, both without LTO and if using LTO.}  compilation
+processes during perhaps the entire project development work.
+
+IoT developers need to interact with their static source code analysis
+(\emph{GCC} based) tool. In particular, they might need to understand
+more the optimizations done by their (\textsc{Chariot} augmented, thru
+\emph{GCC} plugins) compiler, and they also need to be able to query
+some of the numerous intermediate data related to that static analysis
+and compilation. Practically, a small team of IoT developers working
+on the same IoT firmware project would interact with the static
+analysis infrastructure, that is with a single \emph{persistent
+  monitor} process. That persistent monitor would be some
+``server-like'' program, probably started every working day in the
+morning, and gently stopped every evening. It needs to keep its
+persistent state in some files. For convenience, a textual format is
+preferable~\footnote{This is conceptually similar the the SQL dump
+  files of current RDBMS. But of course \emph{Bismon} don't use an SQL
+  format, but its own textual format.}. These persistent store files
+could (and probably should) be regularily backed up and kept in some
+version control system.
+
+\newpage 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{About \textit{Bismon}}
 
-\textit{Bismon} (a \emph{temporary name}) \footnote{\texttt{bismon} is
+\textit{Bismon} (a \emph{temporary name})\index{Bismon} \footnote{\texttt{bismon} is
   a \textbf{temporary name} and could be changed, once we find a
   better name for it} is a free software (GPLv3+
 licensed)\footnote{The source code is unreleased but available, and
