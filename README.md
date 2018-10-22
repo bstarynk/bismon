@@ -17,6 +17,11 @@ some Linux desktop.
 
 Currently (mid-2018) `bismon` still in **pre alpha**-stage, and it is *free software* under [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.en.html) license. It is intended for a Linux x86-64 desktop developer's workstation (won't work on Windows or MacOSX or Android).
 
+Some *still incomplete* documentation (as a technical report
+`doc/bismon-doc.pdf` in PDF) can be generated (with `make` then `make
+doc`). An early draft of it might be available on
+http://starynkevitch.net/Basile/bismon-doc.pdf
+
 ## Approach ##
 
 *Develop some kind of* high-level (more expressive, more declarative)
