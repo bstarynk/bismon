@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1691 objects
+// for 1693 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -8991,11 +8991,11 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !(_1zCsXG4OTPr_8PwkDAWr16S |=webjs_module|
 !~ name (~ webjs_module
 ~)
-!@ 1539866879.984
+!@ 1540198370.540
 !$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "module for web handlers and javascript generation"
-!# 27
+!# 28
 !& _3vI0Qc3FHQG_1g4fmHYkxSA
 !& _8VtkXEUFfhk_5RxrpY6JHI6
 !& _1HZc1VBbjdB_96aQTEPgEX0
@@ -9023,6 +9023,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !& _8cxGPJUb6ZO_6gKkay3UrSY
 !& _6qgqb6eQuLf_805ANNku23h
 !& _82m25YlV36t_0rEvRK5bJiS
+!& _5E25xyHXQFi_0wTfQEys5ek
  // emitted persistent module modbm_1zCsXG4OTPr_8PwkDAWr16S.c
 
 !)_1zCsXG4OTPr_8PwkDAWr16S
@@ -18109,6 +18110,22 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_5E25xyHXQFi_0wTfQEys5ek
+!@ 1540198444.634
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emitjs_node_conn\u00b0basiclo_primitive < o_conn"& " (v_expr o_jsgenmod o_jsgenfun o_strbuf v_depth"& " o_from)"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _13K9OfeXRZR_84nyRTtoj81 _6CmIdtsXyBX_3lpk31Mve5M _4JKd986pvM4_6yBzeeI40vW _5Lg7fb6zE3H_6ijQo6GbPN4 
+ _41F1rKwGbaA_30OJWKsqNWy _4nJKFtMqlkA_1teQSqofNux _89nz0KaXXZh_8eSgMmqnK37 ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_7CVonsCMumZ_3pgPGUcDI11
+!)_5E25xyHXQFi_0wTfQEys5ek
+
+
+
 !(_5EPUNaYKjU7_3Sbmk43pvl3
 !@ 1526289739.850
 !$_12QTszi1FF0_5S77twbSETI |=basiclo_intswitch|
@@ -21046,6 +21063,17 @@ _27bDca0oCOf_41QFrC0lVa1
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to browse_value a closure"
 !)_7CohjJ9tkfZ_4UMAIZCgwac
+
+
+
+!(_7CVonsCMumZ_3pgPGUcDI11
+!@ 1540198469.402
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of emitjs_node_conn\u00b0basiclo_primitive"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_5E25xyHXQFi_0wTfQEys5ek
+!)_7CVonsCMumZ_3pgPGUcDI11
 
 
 
