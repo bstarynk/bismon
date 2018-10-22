@@ -1,10 +1,65 @@
 % file intro-bm.tex, which is \input from bismon-doc.tex
 \section{Introduction}
 
+This D1.3v1 \textsc{Chariot} deliverable is a first \textbf{draft}
+-and \emph{incomplete}- version of D1.3v2 scheduled at M30 on
+``Specialized Static Analysis tools for more secure and safer IoT
+software development''. It targets software engineering (and
+indirectly also software architects) experts working on IoT software
+coded in C or C++.
+
+\subsection{Mapping \textsc{Chariot} output}
+\label{subsec:mapchariot}
+
+We refer to \textsc{Chariot} \emph{Grant Agreement} (GA). See table \ref{tab:mapchariot}
+
+
+\begin{table}
+  \caption{\label{tab:mapchariot} adherence to CHARIOT's GA deliverable and tasks descriptions}
+  \medskip
+  \begin{relsize}{-1.3}
+    \begin{tabular}{|p{0.19\textwidth}|p{0.36\textwidth}|p{0.18\textwidth}|p{0.18\textwidth}|}
+      \hline \textbf{\textsc{Chariot} GA component title} &
+      \textbf{\textsc{Chariot} GA component outline} &
+      \textbf{respective document chapter[s]} & \textbf{justification}
+      \\ \hline \multicolumn{4}{|c|}{{\large \textbf{deliverable}}}
+      \\
+      \hline
+%
+      \begin{minipage}[t]{0.18\textwidth}
+        \smallskip
+        
+        \textbf{{\relsize{+1.5}{D1.3}}} \\
+        Specialized Static Analysis tools for
+          more secure and safer IoT software development.
+      \end{minipage}
+              &
+      % 
+      {The source code (top level documentation) of the prototype static
+      analysis tools developed in task T1.3, including the definition
+      of data formats and protocols, updates and adapation of existing
+      libraries and software components, the persistent monitor
+      outline and documentation, anf features description and
+      documentation of the compiler and linker extensions. An initial
+      version set (V1) will be compiled by M12 followed by a revised
+      version set (v2) in M30.}
+      & {this whole document} 
+      & {a single deliverable (with two versions of it) describes the work.} \\
+      \hline
+      \multicolumn{4}{|c|}{{\large \textbf{tasks}}} \\
+      \hline
+      
+    \end{tabular}
+ \end{relsize}
+\end{table}
 
 \subsection{Expected audience}
+\label{subsec:audience}
 
-The reader of this document is expected to:
+The reader of this document (within \textsc{Chariot}, a software
+engineering expert working on IoT software or firmware coded in C or
+C++) is expected to:
+
 \begin{itemize}
 
   \item be fluent in C (cf. \cite{Kernighan:1988:CPL}) and/or C++
