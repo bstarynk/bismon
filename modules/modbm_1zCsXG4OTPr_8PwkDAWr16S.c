@@ -4580,13 +4580,14 @@ PLACEDFAILURE_BM(__LINE__,
   
  
 { // run _5DUmbW8P3O1_0cuIoDhDaND 
-/*debug v_resemit after send to o_recv o_jsgenmod o_jsgenfun*/
-DBGPRINTF_BM("emit_js_block_or_stmt €%.9s v_resemit=%s o_recv=%s o_jsgenmod=%s o_jsgenfun=%s",
+/*debug v_resemit after send to o_recv o_jsgenmod o_jsgenfun o_strbuf*/
+DBGPRINTF_BM("emit_js_block_or_stmt €%.9s v_resemit=%s o_recv=%s o_jsgenmod=%s o_jsgenfun=%s o_strbuf=%s",
  "_5DUmbW8P3O1_0cuIoDhDaND",
  OUTSTRVALUE_BM( /*v_resemit:*/_.v_0qTBOEAT5pa_2fz1SKfHrMV),
  objectdbg_BM( /*o_recv:*/_.o_57ZQXLDhLdj_7PrZMZMgLI1),
- objectdbg1_BM ( /*o_jsgenmod:*/_.o_4JKd986pvM4_6yBzeeI40vW),
- objectdbg2_BM( /*o_jsgenfun:*/_.o_5Lg7fb6zE3H_6ijQo6GbPN4));
+ objectdbg1_BM( /*o_jsgenmod:*/_.o_4JKd986pvM4_6yBzeeI40vW),
+ objectdbg2_BM( /*o_jsgenfun:*/_.o_5Lg7fb6zE3H_6ijQo6GbPN4),
+ objectdbg3_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy));
 ; 
 } // end run _5DUmbW8P3O1_0cuIoDhDaND 
   
