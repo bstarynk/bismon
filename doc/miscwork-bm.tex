@@ -1,0 +1,43 @@
+% file miscwork-bm.tex, which is \input from bismon-doc.tex
+\section{miscellanous work}
+\label{sec:miscwork}
+
+\subsection{contributions to other free software projects}
+
+\label{subsec:contribfree}
+This is related to subtask ST1.3.2 of \textsc{Chariot} GA.
+
+\subsubsection{aborted contribution to \texttt{libonion}}
+\label{subsubsec:contriblibonion}
+The \texttt{libonion} library is an free software (LGPLv3 licensed)
+HTTP server library that is used in \texttt{bismon} for its web
+service feature. See \bmurl{https://www.coralbits.com/libonion/} for a
+description of it, and \bmurl{https://github.com/davidmoreno/onion}
+for its source repository.
+
+The handling of \texttt{SIGTERM} signal (and others) is deemed
+unsatifactory. See the opened issue 229 {\relsize{-1}{(on
+    \bmurl{https://github.com/davidmoreno/onion/issues/229})}} in
+\texttt{libonion}.  We discussed that issue on google group with the
+\emph{libonion} community, and came to a disagreement (our design was
+considered too complex, but we believe that such a complexity is
+needed to avoid bugs in the rare cases of a multi ``\texttt{onion}''
+application, which \texttt{bismon} is not).
+
+Independently of that issue, we improved our \texttt{bismon} to avoid
+needing or depending on that \texttt{SIGTERM} feature in
+\texttt{libonion} (by using \texttt{signalfd} Linux specific
+facilities in \texttt{bismon} itself and passing the
+\texttt{O\_NO\_SIGTERM} flag to \texttt{onion\_new}...).
+
+So the effort on improving \textttt{SIGTERM} handling in
+\texttt{libonion} was aborted.
+
+\subsubsection{contribution to \emph{GCC}}
+\label{subsubsec:contribgcc}
+There is no contribution yet to \emph{GCC}, because it is not yet
+needed in october 2018. We reserve some effort for future such
+contributions, when our \emph{GCC} plugin generator would require
+them. In the lucky case where no adaptation of \emph{GCC} plugin
+infrastructure is necessary, the effort could be moved to other work
+in T1.3 (notably ST1.3.3).
