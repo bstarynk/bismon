@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1693 objects
+// for 1695 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -429,6 +429,7 @@ _9KIeH9wMRCV_12Gy2xILgpG }
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of simple primitives"
 !~ class (~ |supercl basiclo_connective:| _3DQ7z3EuAiT_4faSRNsy2lr 
+~: _0ukiE59AwC5_9TTEuEJtFQp  % _5E25xyHXQFi_0wTfQEys5ek () 
 ~: _5EGLdtUAQxA_1nebCsDKqOF  % _1vuSUudDrEr_9UjFr4Pcy8r () 
 ~: _7Jrs4cc8qH4_4TACmtzvqbZ  % _9qmOPbwMhs9_3dJL09vcSKT () 
 ~: _7L782rSgJBB_9vjsBdqAoz7  % _0BaXSIhDAHO_9x6t4zdbUhj ()
@@ -9559,6 +9560,18 @@ _6Y20GNUgnSZ_4LkbrcRMU8f)
 
 
 
+!(_0gT4WusZmlq_5BWkqD7AclN
+!@ 1540270818.467
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "i_depth := val_to_int(v_depth)"
+!# 2
+!& _6Y20GNUgnSZ_4LkbrcRMU8f
+!&  * _5MLPTLuT4ey_0YKIUpvXybX ( _4nJKFtMqlkA_1teQSqofNux)
+!)_0gT4WusZmlq_5BWkqD7AclN
+
+
+
 !(_0ixvvbvycpg_6XwGIwBWqgT
 !@ 1535465225.118
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -15899,6 +15912,47 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_49P3zG3qCFv_5sEv47bp80V
+!@ 1540271083.153
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug start emitjs_node_conn\u00b0basiclo_primitive"& " o_conn v_expr o_jsgenmod o_jsgenfun o_strbuf"& "  depth o_from"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "start"  " " 
+ _0ukiE59AwC5_9TTEuEJtFQp  "\u00b0" _2SZvlA4wcJd_72ldva0oSGH  " " _13K9OfeXRZR_84nyRTtoj81 
+  " " _6CmIdtsXyBX_3lpk31Mve5M  " " _4JKd986pvM4_6yBzeeI40vW  " " 
+ _5Lg7fb6zE3H_6ijQo6GbPN4  " " _41F1rKwGbaA_30OJWKsqNWy  "  " _17YdW6dWrBA_2mn4QmBjMNs 
+  " " _89nz0KaXXZh_8eSgMmqnK37  "*/"  "\n"  "DBGPRINTF_BM" 
+  "(\"" _0ukiE59AwC5_9TTEuEJtFQp  "\u00b0" _2SZvlA4wcJd_72ldva0oSGH 
+ " " 
+  "\u20ac%."  "9s"  " "  "start"  " " 
+ _13K9OfeXRZR_84nyRTtoj81  "=%"  "s"  " " _6CmIdtsXyBX_3lpk31Mve5M 
+  "=%"  "s"  " " _4JKd986pvM4_6yBzeeI40vW  "=%" 
+  "s"  " " _5Lg7fb6zE3H_6ijQo6GbPN4  "=%"  "s" 
+  " " _41F1rKwGbaA_30OJWKsqNWy  "=%"  "s"  " " 
+ _17YdW6dWrBA_2mn4QmBjMNs  "#%"  "ld"  " " _89nz0KaXXZh_8eSgMmqnK37 
+  "=%"  "s"  "\","  "\n"  " " 
+  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\"," 
+ "\n"  " " 
+  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _13K9OfeXRZR_84nyRTtoj81) 
+ "),"  "\n" 
+  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6CmIdtsXyBX_3lpk31Mve5M) 
+ ")," 
+  "\n"  " "  "objectdbg1_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4JKd986pvM4_6yBzeeI40vW) 
+  "),"  "\n"  " "  "objectdbg2_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5Lg7fb6zE3H_6ijQo6GbPN4)  "),"  "\n" 
+ " "  "objectdbg3_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _41F1rKwGbaA_30OJWKsqNWy)  ")," 
+ "\n"  " " 
+  "("  "long"  " " _0vgCFjXblkx_4zCMhMAWjVK  ")(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _6Y20GNUgnSZ_4LkbrcRMU8f)  "),"  "\n" 
+ " "  "objectdbg4_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _89nz0KaXXZh_8eSgMmqnK37)  "));" 
+ "\n")
+!)_49P3zG3qCFv_5sEv47bp80V
+
+
+
 !(_4b2oGzfvQk3_05M6ivLYFqs
 !@ 1534998043.544
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
@@ -18112,13 +18166,15 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 !(_5E25xyHXQFi_0wTfQEys5ek
 !|*
-!@ 1540198444.634
+!@ 1540270736.032
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "emitjs_node_conn\u00b0basiclo_primitive < o_conn"& " (v_expr o_jsgenmod o_jsgenfun o_strbuf v_depth"& " o_from)"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _13K9OfeXRZR_84nyRTtoj81 _6CmIdtsXyBX_3lpk31Mve5M _4JKd986pvM4_6yBzeeI40vW _5Lg7fb6zE3H_6ijQo6GbPN4 
  _41F1rKwGbaA_30OJWKsqNWy _4nJKFtMqlkA_1teQSqofNux _89nz0KaXXZh_8eSgMmqnK37 ]
+!: _32eKNcTZ9HN_80t0nk47Mha |=numbers|
+ { _2W7Ckt2WxEM_4NVYgEWE73B _6Y20GNUgnSZ_4LkbrcRMU8f }
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3qw9bnATIhq_8loBraLeXzQ
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
@@ -21068,12 +21124,15 @@ _27bDca0oCOf_41QFrC0lVa1
 
 
 !(_7CVonsCMumZ_3pgPGUcDI11
-!@ 1540198469.402
+!@ 1540271083.153
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of emitjs_node_conn\u00b0basiclo_primitive"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _5E25xyHXQFi_0wTfQEys5ek
+!# 2
+!& _0gT4WusZmlq_5BWkqD7AclN
+!& _49P3zG3qCFv_5sEv47bp80V
 !)_7CVonsCMumZ_3pgPGUcDI11
 
 
