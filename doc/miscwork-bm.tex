@@ -41,3 +41,19 @@ contributions, when our \emph{GCC} plugin generator would require
 them. In the lucky case where no adaptation of \emph{GCC} plugin
 infrastructure is necessary, the effort could be moved to other work
 in T1.3 (notably ST1.3.3).
+
+\subsection{design and implementation of the compiler and linker extension}
+
+\label{subsec:compilinkext}
+This is related to subtask ST1.3.4 (and also ST1.3.1) of \textsc{Chariot} GA 
+
+The compiler extensions will be \emph{generated} GCC plugins.
+
+The linker extension will compute some ``cryptographic quality'' hash
+code of the C or C++ translation units of the IoT software. Then it
+will interact with the blockchain, according to the \emph{§6 API for
+  Private key related transactions} of the \emph{D1.2 Method for
+  coupling preprogrammed private keys on IoT devices with a Blockchain
+  system}. That API is a Web API and a C or C++ compatible plain API
+or library should be developed, following the tutorial code example of
+D1.2.
