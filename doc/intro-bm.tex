@@ -679,9 +679,9 @@ could (and probably should) be regularily backed up and kept in some
 version control system.
 
 Since a single \emph{Bismon} process is used by a small team of IoT
-developers, it provides some Web interface: each IoT developer will
-interact with the persistent monitor thru his/her web
-browser~\footnote{We don't aim compatibility with all web browsers
+developers, it provides some web interface\index{web interface}: each
+IoT developer will interact with the persistent monitor thru his/her
+web \index{browser} browser~\footnote{We don't aim compatibility with all web browsers
   -including old ones- but just with the latest \emph{Chrome} and
   \emph{Firefox} browsers, using HTML5, JavaScript, WebSockets, AJAX
   technologies.}. In addition, a static analysis expert (which could
@@ -819,21 +819,22 @@ features:
 
     \item \textbf{translated} to \emph{C} code; and \textbf{generated}
       \emph{JavaScript} + \emph{HTML} in the \index{browser}{browser}, and generated
-      \emph{C++} code of \emph{GCC} plugins
+      \emph{C++} code of \emph{GCC} plugins \index{plugin}
 
-    \item \textbf{bootstrapped implementation}: ideally, all of
-      \textit{Bismon} code (including C code dealing with data
-      representations, persistent store, etc...) should be
+    \item \textbf{bootstrapped implementation}: \index{bootstrap}
+      ideally, all of \textit{Bismon} code (including C code dealing
+      with data representations, persistent store, etc...) should be
       generated. However, this ideal has not yet be attained, and
-      there is still some hand-written C code. It is hoped that most
-      of the hand-written C code will become replaced by generated C
-      code.
+      there is still a significant amount of hand-written C code. It
+      is hoped that most of the hand-written C code will become
+      replaced by generated C code.
+      
     \item ability to \textbf{generate GCC plugins}: the C++ code of
-      GCC plugins performing static analysis of a single translation
-      unit should be generated.
+      GCC plugins \index{plugin} performing static analysis of a single translation
+      unit should be generated (this was also done in \cite{Starynkevitch-DSL2011}).
 
-    \item with \textbf{collaborative web interface}, used by a
-      \emph{small} team of \emph{trusted and well-behaving}
+    \item with \textbf{collaborative web interface}, \index{web interface} used
+      by a \emph{small} team of \emph{trusted and well-behaving}
       developers~\footnote{The initial \texttt{bismon} implementation
         had a hand-coded crude GTK interface, nearly unusable. That
         interface is temporarily used to fill the persistent store
@@ -920,7 +921,7 @@ So \emph{Bismon} is better thought of as an evolving software
 system. We recommend to try it. Notice that \textit{Bismon} is
 \textbf{provided as free software} (unreleased in 2018, but available
 on \bmurl{github.com/bstarynk/bismon} ...) in \emph{source form only}
-and should be \textbf{usable} (only) \textbf{on a Linux/x86-64
+and should be \textbf{usable} \emph{only} \textbf{on a Linux/x86-64
   workstation}... (typically, at least 32 gigabytes of RAM and
 preferably more, at least 8 cores, several hundreds gigabytes of disk
 or SSD).
