@@ -18,7 +18,7 @@ We refer to \textsc{Chariot} \emph{Grant Agreement} (GA). See table \ref{tab:map
   \caption{\label{tab:mapchariot} adherence to CHARIOT's GA deliverable and tasks descriptions}
   \medskip
   \begin{relsize}{-1.3}
-    \begin{tabular}{|p{0.19\textwidth}|p{0.36\textwidth}|p{0.13\textwidth}|p{0.21\textwidth}|}
+    \begin{tabular}{|p{0.19\textwidth}|p{0.36\textwidth}|p{0.11\textwidth}|p{0.22\textwidth}|}
       \hline \textbf{\textsc{Chariot} GA component title} &
       \textbf{\textsc{Chariot} GA component outline} &
       \textbf{respective document chapter[s]} & \textbf{justification}
@@ -55,7 +55,7 @@ We refer to \textsc{Chariot} \emph{Grant Agreement} (GA). See table \ref{tab:map
         \end{minipage}
       }
       & \textbf{ST1.3.1} definition of data formats and protocols
-      & §\ref{sec:datapersist}; §\ref{subsec:compilinext} \& §\ref{}
+      & §\ref{sec:datapersist}; §\ref{subsec:compilinkext}
       & The persistent monitor data and format are described in §\ref{sec:datapersist}.
       The protocol with \textsc{Chariot}'s blockchain is related to §\ref{subsec:compilinkext} and chapter 6 of D1.2 \\
       \cline{2-4}
@@ -63,9 +63,9 @@ We refer to \textsc{Chariot} \emph{Grant Agreement} (GA). See table \ref{tab:map
       & §\ref{subsec:contribfree}
       & Section §\ref{subsec:contribfree} describe past work, and why future contributions to \emph{GCC} could be needed. \\
       \cline{2-4}
-      & \textbf{ST1.3.3} design and implementation of the persistent monitor & HH & II \\
+      & \textbf{ST1.3.3} design and implementation of the persistent monitor & HH & IIxxx III \\
       \cline{2-4}
-      & \textbf{ST1.3.4} design and implementation of the compiler and linker extension & §\ref{subsec:compilinext} & LL \\
+      & \textbf{ST1.3.4} design and implementation of the compiler and linker extension & §\ref{subsec:compilinkext} & LLyyy LLLL \\
       \hline
 %-      \multirow{4}{*}{%
 %-     \begin{minipage}[t]{0.18\textwidth}
@@ -148,9 +148,14 @@ C++) is expected to:
 
 \item to be capable of building large free software projects (such as
   the GCC compiler (cf \cite{gcc-internals} \footnote{See
-    \bmurl{http://gcc.gnu.org}}), the Linux kernel, the Qt toolkit and
-  other open source projects of perhaps millions of source code lines)
-  and smaller ones (e.g. \texttt{libonion} \footnote{see
+    \bmurl{http://gcc.gnu.org} and notice that many cross-compiler
+    forms of \emph{GCC} may need to be compiled from the source code
+    of that compiler distributed by the \emph{FSF}, in particular
+    because GCC plugin ability is needed within \textsc{Chariot}, or
+    because hardware vendors provide only old versions of that
+    compiler.}), the Linux kernel, the Qt toolkit and other open
+  source projects of perhaps millions of source code lines) and
+  smaller ones (e.g. \texttt{libonion} \footnote{see
     \bmurl{https://coralbits.com/libonion/}}) from their \emph{source}
   form.
 
@@ -361,27 +366,28 @@ project.
 
 The \textbf{\textsc{Chariot} approach} to static source analysis
 \textbf{leverages on} an \textbf{\emph{existing}} \emph{recent}
-\textbf{GCC cross-compiler}~\footnote{The actual version of \emph{GCC}
-  is important; we want to stick -when reasonably possible- to the
-  latest GCC releases, e.g. to \href{https://gcc.gnu.org/gcc-8/}{GCC
-    8} in autumn 2018. In the usual case, that \emph{GCC} is a
-  cross-compiler. In the rare case where the IoT system runs on an
-  x86-64 device under Linux, that \emph{GCC} is not a cross-, but a
-  straight compiler.}. So the IoT developer following the
-\textsc{Chariot} methodology would just add some additional flags to
-\emph{existing} \texttt{gcc} or \texttt{g++} cross-compilation
-commands, and needs simply to change slightly his/her build automation
-scripts (e.g. add a few lines to his \texttt{Makefile}). Such a gentle
-approach (see figure \ref{fig:chariotcompil}; of course the \emph
-{details} of compilation commands would change, the commands shown in
-the figure are grossly simplified!) has the advantage of not
-disturbing much the usual developer workflow and habit, and addresses
-also the \emph{junior} IoT software developer. The compilation and
-linking processes are communicating -via some additional \emph{GCC}
-plugins (cf. \cite{gcc-internals} §24) doing inter-process
-communication- with our \index{persistent monitor}
-\index{persistent!monitor} \emph{persistent monitor}, tentatively
-called \texttt{bismon} \index{Bismon}. It is preferable (see
+\textbf{GCC cross-compiler}~\footnote{The actual version and
+  the concrete configuation of \emph{GCC} are important; we want to stick -when
+  reasonably possible- to the latest GCC releases, e.g. to
+  \href{https://gcc.gnu.org/gcc-8/}{GCC 8} in autumn 2018. In the
+  usual case, that \emph{GCC} is a cross-compiler. In the rare case
+  where the IoT system runs on an x86-64 device under Linux, that
+  \emph{GCC} is not a cross-, but a straight compiler.}. So the IoT
+developer following the \textsc{Chariot} methodology would just add
+some additional flags to \emph{existing} \texttt{gcc} or \texttt{g++}
+cross-compilation commands, and needs simply to change slightly
+his/her build automation scripts (e.g. add a few lines to his
+\texttt{Makefile}). Such a gentle approach (see figure
+\ref{fig:chariotcompil}; of course the \emph {details} of compilation
+commands would change, the commands shown in the figure are grossly
+simplified!) has the advantage of not disturbing much the usual
+developer workflow and habit, and addresses also the \emph{junior} IoT
+software developer. The compilation and linking processes are
+communicating -via some additional \emph{GCC} plugins
+(cf. \cite{gcc-internals} §24) doing inter-process communication- with
+our \index{persistent monitor} \index{persistent!monitor}
+\emph{persistent monitor}, tentatively called \texttt{bismon}
+\index{Bismon}. It is preferable (see
 \cite{gcc-runtime-library-exception}) to use free software GCC plugins
 (or free software generators for them) when compiling proprietary
 firmware with the help of these plugins; otherwise, there might
