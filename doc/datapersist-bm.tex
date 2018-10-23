@@ -395,7 +395,15 @@ The persistent state contains both data and ``code''. So it is made of the follo
   containing ``global'' objects useful on every instance of
   \emph{Bismon}), etc...
 
-  \item code files contain the \emph{generated} C code of persistent
+  \item code files~\footnote{Conceptually, the \texttt{dlopen}-ed
+    shared object files, such as our 
+    \texttt{modubin/modbm\_1zCsXG4OTPr\_8PwkDAWr16S.so} (which
+    corresponds to the emitted
+    \texttt{modules/modbm\_3BFt4NfJmZC\_7iYi2dwM38B.c} code file) are
+    \emph{not} part of the persistent state. In practice, these shared
+    object files obviously need to be built before starting
+    \emph{bismon}, since it \texttt{dlopen}-s them at initial load
+    time.} contain the \emph{generated} C code of persistent
     modules. Since each module is (also) reified by an object
     representing (and generating) that module, the code file paths
     contain objids. For example, our object
@@ -419,7 +427,7 @@ as our \texttt{*\_BM.c} files, notably the load and dump machinery in
 \texttt{agenda\_BM.c}, miscellanous routines including the support of
 module loading in \texttt{misc\_BM.cc}, etc, etc...). Sadly, we are
 still quite far from that ideal and this is annoying. Existing
-bootstrapped systems~\footnote{Observe that an entire Linux
+bootstrapped \index{bootstrap} systems~\footnote{Observe that an entire Linux
   distribution is also, when considered as a single system of ten
   billions lines of source code, fully bootstrapped. You could
   regenerate all of it. See \bmurl{http://www.linuxfromscratch.org/}
@@ -438,7 +446,7 @@ and facilitate refactoring~\footnote{In 2018, if we decide painfully
   simultaneously, and that is a difficult and brittle effort of
   refactoring. If all our code was generated, it would be still hard,
   but much less.}. An important insight is that the behavior of a
-bootstrapped system can be improved in two ways: the ``source'' of the
+bootstrapped \index{bootstrap} system can be improved in two ways: the ``source'' of the
 code could be improved (in the case of \emph{Bismon}, all the objects
 describing some module) and the ``generator'' of the code could also
 be improved (cf. \index{partial evaluation}{partial evaluation} and
