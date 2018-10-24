@@ -864,7 +864,7 @@ features:
       
     \item ability to \textbf{generate GCC plugins}: the C++ code of
       GCC plugins \index{plugin} performing static analysis of a single translation
-      unit should be generated (this was also done in \cite{Starynkevitch-DSL2011}).
+      unit should be generated (this was also done in GCC MELT, see \cite{Starynkevitch-DSL2011}).
 
     \item with \textbf{collaborative web interface}, \index{web interface} used
       by a \emph{small} team of \emph{trusted and well-behaving}
@@ -909,6 +909,17 @@ features:
       could and probably should be adapted on each deployment site (by
       giving there site-specific contacts for the data controller,
       etc...).
+
+      \item with a \textbf{syntax oriented editor} (for our DSLs),
+        inspired by the ideas of \textsc{Mentor}
+        \cite{donzeaugouge:inria-mentor}. So the static analysis
+        expert is not typing some raw text (in some concrete syntax of
+        our DSL) later handled by traditional parsing techniques (as
+        in \cite{Aho:2006:DragonBook}) but should interact using a web
+        interface to \emph{modify} and \emph{enhance} the persistent
+        store (like old Lisp machines or Smalltalk machines did in the
+        1980s), partially shown in a web browser. That web interface
+        is facilitating \emph{refactoring} of DSL code.
 \end{itemize}
 
 
