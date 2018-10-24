@@ -780,8 +780,9 @@ successor of \textit{GCC MELT} \footnote{The \textit{GCC MELT} web
 \cite{Starynkevitch2007Multistage, starynkevitch-DSL2011}), but don't
 share any code with it.
 
-{\large \textit{Bismon} is \textbf{work in progress}}, and many things
-described here are not (fully) implemented in 2018 or
+\textit{Bismon} is \textbf{work in progress}, and many things
+described here (this incomplete draft D1.3v1 of a future report D1.3v2
+scheduled for M30 - in 2020) are not completely implemented in 2018 or
 could drastically change later. In particular, \textit{Bismon} is not
 yet usable as a static source code analyser in mid-2018 (since work on
 the infrastructure is not complete).
@@ -855,10 +856,11 @@ features:
     \item \textbf{bootstrapped implementation}: \index{bootstrap}
       ideally, all of \textit{Bismon} code (including C code dealing
       with data representations, persistent store, etc...) should be
-      generated. However, this ideal has not yet be attained, and
-      there is still a significant amount of hand-written C code. It
-      is hoped that most of the hand-written C code will become
-      replaced by generated C code.
+      generated (but that won't happen entirely with the
+      \textsc{Chariot} timeframe). However, this ideal has not yet be
+      attained, and there is still a significant amount of
+      hand-written C code. It is hoped that most of the hand-written C
+      code will eventually become replaced by generated C code.
       
     \item ability to \textbf{generate GCC plugins}: the C++ code of
       GCC plugins \index{plugin} performing static analysis of a single translation
@@ -892,18 +894,21 @@ features:
       Since \textit{Bismon} should be usable by a small team of
       developers (perhaps two or a dozen of them)\footnote{So
         \textit{Bismon}, considered as a Web application, would have
-        at most a dozen of \index{browser}{browsers} -and associated users- accessing
-        it. Hence, scalability to many HTTP connections is not at all
-        a concern (in contrast with most usual web applications).}, it
-      is handling some \index{personal data}{personal data} (relevant
-      to \index{GDPR}{GDPR}), such as the first and last names (or
-      pseudos) of users and their email and maintain a password file
-      (used in the Web \index{login}{login} form). Compliance to
-      regulations (e.g. European GDPR) is out of scope and should be
-      in charge of the entities and/or persons using and/or deploying
+        at most a dozen of \index{browser}{browsers} -and associated
+        users- accessing it. Hence, scalability to many HTTP
+        connections is not at all a concern (in contrast with most
+        usual web applications).}, it is handling some \index{personal
+        data}{personal data} (relevant to \index{GDPR}{GDPR}), such as
+      the first and last names (or pseudos) of users and their email
+      and maintain a password file (used in the Web
+      \index{login}{login} form). Compliance to regulations
+      (e.g. European GDPR) is out of scope and should be in charge of
+      the entities and/or persons using and/or deploying
       \textit{Bismon}. The login form template \footnote{on
         \bmurl{https://github.com/bstarynk/bismon/blob/master/login\_ONIONBM.thtml}}
-      could be adapted on each deployment site.
+      could and probably should be adapted on each deployment site (by
+      giving there site-specific contacts for the data controller,
+      etc...).
 \end{itemize}
 
 
@@ -946,6 +951,24 @@ and interacts with \textit{Bismon} to do that. There is no really any
 (with circularities), and the entire persistent state of \emph{Bismon}
 could be viewed as some large graph in memory.
 
+Conceptually the initial \emph{Bismon} DSL is at first a
+dynamically-typed language, semantically similar to Scheme, Python (or
+to a lesser degree to JavaScript: however, it has classes, not
+prototypes, with single-inheritance). It is \emph{essentially} (unlike
+most Scheme or Python or JavaScript implementations) a
+\emph{multi-threaded} language, since the emitted routines can run in
+parallel in our agenda machinery (cf. §\ref{subsec:multithreadist}
+below). Meta-programming techniques (inspired by Lisp macro systems,
+and largely experimented in \emph{GCC MELT}) will ease the extension
+of that language.
+
+The base \emph{Bismon} DSL is currently implemented~\footnote{See
+  notably our hand-written files \texttt{gencode\_BM.c} and
+  \texttt{emitcode\_BM.c} in october 2018. Our bootstrap philosophy
+  might require replacing later these hand-written files by better,
+  \emph{bismon} generated, modules.} as a naive transpiler to C code
+(respecting the coding rules of our implementation, in particular of
+our garbage collector, see §\ref{subsec:gcvalobj}).
 
 \subsubsection{About \emph{Bismon} as a evolving software system}
 
@@ -983,20 +1006,24 @@ downloading and building required dependencies), and work on that
 We are still growing \emph{Bismon} by feeding it with additional
 interactions changing its persistent state. At first, we developed (at
 begin of bootstrap\index{bootstrap}) a crude GTK\index{GTK} interface,
-shown (a screenshot made on october 22\textsuperscript{th} 2018 on git
-commit \texttt{cbdcf1ec351c3f2a}) in figure
-\ref{fig:bismonscreenshot-cbdcf}. It shows several windows: the large
-top right window (named \texttt{new-bismon}) has a command textview
-(ivory background, top panel) and a command output (azure background,
-bottom panel). The small top left window (named \texttt{bismon values}
-show the read-eval-print-loop output (as \texttt{\$a} in two
-panes). The mid-sized bottom left window (titled \texttt{bismonob\#1})
-shows (in two text-views of the same GTK text buffer) shows (in top
-text-view) a large part of the body of the \texttt{emit\_jsstmt}
-method for the \texttt{basiclo\_while} class of \emph{Bismon} and (in
-bottom text-view) some components of our \texttt{webjs\_module}
-object. In the rear, bottom right, a tiny part of our \texttt{emacs}
-editor (used to run \texttt{bismon --gui}...) is visible.
+shown in figure \ref{fig:bismonscreenshot-cbdcf}, which is a
+screenshot made on october 22\textsuperscript{th} 2018 on git commit
+\texttt{cbdcf1ec351c3f2a}, when working on the JavaScript generator
+inside \emph{Bismon}. It shows several windows: the large top right
+window (named \texttt{new-bismon}) has a command textview (ivory
+background, top panel) and a command output (azure background, bottom
+panel). The small top left window (named \texttt{bismon values} show
+the read-eval-print-loop output (as \texttt{\$a} in two panes). The
+mid-sized bottom left window (titled \texttt{bismonob\#1}) shows (in
+two text-views of the same GTK text buffer) shows (in top text-view) a
+large part of the body of the \texttt{emit\_jsstmt} method for the
+\texttt{basiclo\_while} class of \emph{Bismon} and (in bottom
+text-view) some components of our \texttt{webjs\_module} object. In
+the rear, bottom right, a tiny part of our \texttt{emacs} editor (used
+to run \texttt{bismon --gui}...) is visible, and shows a
+backtrace~\footnote{Ian L. Taylor's
+  \href{https://github.com/ianlancetaylor/libbacktrace}{\texttt{libbacktrace}}
+  is used in \emph{bismon} to provide symbolic backtraces.}.
 
 
 \begin{figure}[h]
@@ -1007,8 +1034,85 @@ editor (used to run \texttt{bismon --gui}...) is visible.
   \label{fig:bismonscreenshot-cbdcf}
 \end{figure}
 
-People trying the \emph{Bismon monitor} will use some Web interface to
-interact with it.
+This crude GTK3 interface~\footnote{It is implemented in 12.5KLOC of C
+  code in \texttt{gui\_GTKBM.c}, \texttt{newgui\_GTKBM.c} and
+  \texttt{guicode\_BM.c}. We won't debug that code -which crashes
+  often- but will remove it once it can be replaced by a web
+  interface.} is buggy and not satisfactory. It will and needs to be
+replaced by a Web interface. Several lessons have been gained with
+this experience:
+
+\begin{itemize}
+\item using GTK~\footnote{Since GTK is a free software library, we
+  could consider patching its source code, but such a huge effort is
+  not reasonable within the timeframe of \textsc{Chariot}, and GTK is
+  still evolving a lot, so patching it would require freezing its
+  version. \texttt{gtk+-3.24.1} has 1.2 millions lines of source code,
+  measured by D.Wheeler \texttt{sloccount} but it depends also on
+  other libraries, such as Pango, Glib, etc... so patching GTK source
+  for our precise GC is not reasonable at all.}  is in practice
+  incompatible with a multi-threaded precise garbage collector, like
+  the one in \emph{Bismon} (cf §\ref{subsec:gcvalobj} below), in
+  particular because GTK may have several nested event loops, so many
+  local garbage collector pointers in internal call frames (which are
+  not accessible from routines above).
+
+    \item the model and the C API provided by GTK text views and text
+      buffers is not adequate for structured syntactic editing (like
+      pionneered in Mentor, see \cite{donzeaugouge:inria-mentor}). It is still too low-level and oriented for plain textual edition.
+
+      \item GTK is not compatible with several X11 displays, so a
+        single \emph{bismon} process cannot handle several users each
+        having its own screen.
+\end{itemize}
+
+So we decided to stop investing efforts on the GTK interface, and give
+more priority to a Web interface, which is required once a small team
+of \emph{several} IoT developers need to interact with the
+\emph{bismon} persistent monitor. The GTK interface is just
+temporarily needed to fill the persistent store (till our web
+interface is usable). At end of 2018 (or first quarter of 2019) it
+will be entirely scrapped, and the static analysis expert (and other
+users pof \emph{Bismon}) will interact with \emph{bismon} thru some
+Web interface.
+
+Work on the future Web interface has significantly progressed
+~\footnote{With the hand-written \texttt{web\_ONIONBM.c} using
+  \texttt{libonion}, and the \emph{bismon} module
+  \texttt{webjs\_module} translated into the
+  \texttt{modules/modbm\_1zCsXG4OTPr\_8PwkDAWr16S.c} emitted C file of
+  more than 6.5KLOC in october 2018.}. New users -called
+\emph{contributors}- can be voluntarily registered and unregistered on
+the command line~\footnote{Use the option \texttt{--contributor=} to
+  add them, \texttt{--remove-contributor=} to remove them and
+  \texttt{--add-passwords=} to set their encrypted
+  \emph{bismon}-specific password.} into \emph{bismon} in a way
+similar to \texttt{git}. When they access any dynamic web page, a
+login web form appears (with some GDPR \index{GDPR} related notice) if
+no web cookie identifies them. But that Web interface is still
+incomplete in october 2018. Several design decisions have been made:
+we will use the \texttt{codemirror}~\footnote{See
+  \bmurl{http://codemirror.net/} for more.} web framework to show the
+analyzed source code of IoT software. The web interface for IoT
+developers should be a ``single-page application'' one (so AJAX,
+HTML5, CSS3 techniques, with generated JavaScript and HTML
+code). \emph{WebSockets} should be used for asynchronous communication
+between browser and the \emph{bismon} monitor. The
+\href{http://jquery.com/}{\texttt{jquery}},
+\href{https://angular.io/}{\texttt{angular}},
+\href{https://semantic-ui.com/}{\texttt{semantic-ui}}, etc... web
+frameworks are considered as building blocks for that Web interface
+and should be installed with inside \emph{bismon}~\footnote{For
+  example, the \emph{bismon} source tree has a
+  \texttt{webroot/jscript/jquery.js} local file to serve HTTP
+  \texttt{GET} requests to an URL like
+  \texttt{http://localhost:8086/jscript/jquery.js} handled by the
+  \emph{bismon} monitor.} to enable using \emph{bismon} without any
+external Internet connection.
+
+
+IoT developers working with the \emph{Bismon monitor} will use some
+Web interface to interact with it.
 
 \subsubsection{About \emph{Bismon} as a static source code analyzer framework}
 
@@ -1021,6 +1125,7 @@ cross-compilation processed started by IoT developers following the
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Multi-threaded and distributed aspects of \textit{Bismon}}
+\label{subsec:multithreadist}
 
 The \textit{Bismon monitor} is by itself a multi-threaded
 process\footnote{In contrast of most scripting languages
