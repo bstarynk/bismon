@@ -272,7 +272,8 @@ be~\footnote{This is a gross simplification! In practice, there is a
       \texttt{lighttpd}, \texttt{Wayland} or \texttt{Xorg}, or IoT
       frameworks such as MQTT...). But \emph{Frama-C} can be extended
       by additional plugins so is a \emph{framework} for sound static
-      analysis.}. Many formal static analyzers
+      analysis.}, when that analyzed code is complex or quite
+    large. Many formal static analyzers
     (e.g. \cite{Greenaway:2014:DSS, Vedala:2012:ADP}) focus on
     checking just \emph{one} aspect or property of security or
     safety. Usually, formal and sound static analyzers can practically
@@ -416,17 +417,30 @@ firmware blob, if it was compiled with the help of some hypothetical
 \subsubsection{The power of an existing compiler: GCC}
 
 \textsc{Chariot} static analysis tools will leverage on the mainstream
-\textsc{Gcc}~\footnote{``Gnu Compiler Collection''. See \bmurl{http://gcc.gnu.org/} for more. In
-  practice, it is useful to build a recent \textsc{Gcc}
-  cross-compiler, fitted for your IoT system, from its published
-  source code - see \bmurl{https://gcc.gnu.org/mirrors.html} for a
-  list of mirrors.} compiler (generally used as a
+\textsc{Gcc}~\footnote{``Gnu Compiler Collection''. See
+  \bmurl{http://gcc.gnu.org/} for more. In practice, it is useful to
+  build a recent \textsc{Gcc} cross-compiler, fitted for your IoT
+  system, from its published source code - see
+  \bmurl{https://gcc.gnu.org/mirrors.html} for a list of mirrors.}
+compiler (generally used as a
 \emph{\index{compiler}\index{cross-compiler}cross-compiler} for IoT
 firmware development) Current versions of \emph{GCC} (that is, GCC 8.2
 in september 2018) are capable of quite surprising optimizations
 (internally based upon some sophisticated static analysis techniques
-and advanced heuristics).
+and advanced heuristics). But to provide such clever optimizations,
+the \textbf{\emph{GCC} compiler has to be quite a large software, of
+  more than 5.28 millions lines}~\footnote{Measured by
+  \href{https://dwheeler.com/sloccount/}{David Wheeler's
+    \texttt{sloccount}} utility} of source code (in
+\texttt{gcc-8.2.0}, measured by \texttt{sloccount}). This figure is an
+under-estimation~\footnote{The Unix \texttt{wc} utility gives 14.6
+  millions lines, including empty ones but excluding generated C++
+  code, in 498 megabytes.}, since \emph{GCC} contains a \emph{dozen of
+  domain specific languages} and their transpilers to generated C++
+code, which are not well recognized or measured by \texttt{sloccount}.
 
+
+\medskip
 
 We show below several examples of optimizations done by recent
 \emph{GCC} compilers. Usually, these optimizations happen in the
@@ -457,17 +471,30 @@ specific.
   \end{center}
 \end{table}
 
-The table \ref{tab:factinlinecsrc} shows a simple example of C
-code. After preprocessing and parsing, it becomes quickly expanded in
-some \emph{Gimple}\index{gimple} representation, whose elementary
+The table \ref{tab:factinlinecsrc} shows a simple example of C code
+(file \texttt{factinline12.c}). After preprocessing and parsing, it
+becomes quickly expanded in some \emph{Gimple}\index{gimple}
+representation (cf. §12 of \cite{gcc-internals}), whose elementary
 instructions are arithmetic with two operands, or simple tests with
 jumps, or simple calls (in so called \emph{A-normal form}
 \index{A-normal form}, where nested calls like \verb+a=f(g(x),y);+ get
 transformed into a sequence introducing a temporary $\tau$ such as
-$\tau$\verb+=g(x)+ then \verb+a=f(+$\tau$\verb+,y)+, etc...), shown in table
-\ref{tab:factinlinegimple}. This is a textual (and incomplete)
-representation of some in-memory \emph{internal intermediate
-  representation} during compilation.
+$\tau$\verb+=g(x)+ then \verb+a=f(+$\tau$\verb+,y)+, etc...), shown in
+table \ref{tab:factinlinegimple}. This is a textual (and quite
+\emph{incomplete} since a partial view of some) dump of some in-memory
+\emph{internal intermediate representation} during compilation. What
+really matters to the \textsc{Chariot} static source code analyzer
+framework is the data inside the compilation process \texttt{cc1}, not
+its partial textual dump~\footnote{It is possible to pass the
+  \texttt{-fdump-tree-all} flag to \texttt{gcc}; then hundreds of
+  intermediate textual dump files are emitted, including
+  \texttt{factinline12.c.004t.gimple} and
+  \texttt{factinline12.c.020t.ssa} and many others for the compilation
+  of \texttt{factinline12.c} source file.}. The \emph{Gimple} internal
+in-memory representation is declared inside several source files of
+\emph{GCC}, including its \texttt{gcc-8.2.0/gcc/gimple.def},
+\texttt{gcc-8.2.0/gcc/gimple.h},
+\texttt{gcc-8.2.0/gcc/gimple-iterator.h}, etc...
 
 \input{generated/002-gimple-factinline.tex}
 
@@ -649,15 +676,16 @@ developer don't have to change much his/her current development
 practices. However, these various compilation processes are producing
 partial new (or updated) internal representations, and need to know
 about other translation units. So some \textbf{persistence is needed}
-to keep some data related to past~\footnote{Notice that recent
-  \emph{GCC} provide a link-time optimization (LTO) ability, if the
-  developer compiles \emph{and links} with e.g. \texttt{gcc -O2
-    -flto}. But LTO is not widely used since it slows down a lot the
-  building time, and the plugin infrastructure of GCC is not very LTO
-  friendly and would be brittle to use. At last, there won't be any
-  practical user interface with such an approach. So persistence is
-  practically needed, both without LTO and if using LTO.}  compilation
-processes during perhaps the entire project development work.
+to keep some data (such as the control flow graph, etc...) related to
+past~\footnote{Notice that recent \emph{GCC} provide a link-time
+  optimization (LTO) ability, if the developer compiles \emph{and
+    links} with e.g. \texttt{gcc -O2 -flto}. But LTO is not widely
+  used since it slows down a lot the building time, and the plugin
+  infrastructure of GCC is not very LTO friendly and would be brittle
+  to use. At last, there won't be any practical user interface with
+  such an approach. So persistence is practically needed, both without
+  LTO and if using LTO.}  compilation processes during perhaps the
+entire project development work.
 
 IoT developers need to interact with their static source code analysis
 (\emph{GCC} based) tool. In particular, they might need to understand
@@ -711,8 +739,11 @@ developer needs to change his/her build procedures to compile and use
 that generated GCC plugin. \emph{Bismon} also uses meta-programming
 techniques to emit (curved blue arrow to left) internal code (bubble)
 - notably C code dynamically loaded by the monitor and JavaScript/HTML
-used in browsers. The monitor persists its entire state on disk, so
-can restart in the state that it has dumped in its previous run.
+used in browsers. The several ``Tux'' penguins remind that all
+this (cross-compilers, builders, the persistent monitor, etc...)
+should run on Linux systems. The monitor persists its entire state on
+disk, so can restart in the state that it has dumped in its previous
+run.
 
 \begin{figure}
   \begin{center}
@@ -881,11 +912,12 @@ features:
 Notice that \textit{Bismon} is not even thought as a \emph{textual}
 domain specific language~\footnote{In contrast, \emph{GCC MELT} was
   textual and had \texttt{*.melt} source \emph{files} edited with
-  \texttt{emacs}. This made refactoring difficult, since automatic
-  move of textual fragments was not realistically possible.} (and this
-is possible because it is persistent). There is not (and there won't
-be) any canonical \emph{textual} syntax for ``source code'' in
-\textit{Bismon} ~\footnote{This idea is not new: neither Smalltalk
+  \texttt{emacs} using its Lisp mode. This made refactoring difficult,
+  since automatic move of textual fragments was not realistically
+  possible.} (and this is possible because it is persistent). There is
+not (and there won't be) any canonical \emph{textual} syntax for
+``source code'' of the domain specific language in \textit{Bismon}
+~\footnote{This idea is not new: neither Smalltalk
   (cf. \cite{Goldberg:1983:Smalltalk}), nor Common Lisp
   (cf. \cite{Steele:1990:CommonLisp}), are defined as having a textual
   syntax with an associated operational semantics based on it. Even
@@ -948,13 +980,43 @@ team using \textit{Bismon} would probably \texttt{git clone} either
 downloading and building required dependencies), and work on that
 \texttt{git} repository (and of course back-up it quite often).
 
+We are still growing \emph{Bismon} by feeding it with additional
+interactions changing its persistent state. At first, we developed (at
+begin of bootstrap\index{bootstrap}) a crude GTK\index{GTK} interface,
+shown (a screenshot made on october 22\textsuperscript{th} 2018 on git
+commit \texttt{cbdcf1ec351c3f2a}) in figure
+\ref{fig:bismonscreenshot-cbdcf}. It shows several windows: the large
+top right window (named \texttt{new-bismon}) has a command textview
+(ivory background, top panel) and a command output (azure background,
+bottom panel). The small top left window (named \texttt{bismon values}
+show the read-eval-print-loop output (as \texttt{\$a} in two
+panes). The mid-sized bottom left window (titled \texttt{bismonob\#1})
+shows (in two text-views of the same GTK text buffer) shows (in top
+text-view) a large part of the body of the \texttt{emit\_jsstmt}
+method for the \texttt{basiclo\_while} class of \emph{Bismon} and (in
+bottom text-view) some components of our \texttt{webjs\_module}
+object. In the rear, bottom right, a tiny part of our \texttt{emacs}
+editor (used to run \texttt{bismon --gui}...) is visible.
+
+
+\begin{figure}[h]
+  \begin{center}
+    \bmincludewidthgraphics{0.97\textwidth}{bismon-cbdcf1ec351c3f2a-screenshot-22oct2018-img}{png}{png}
+  \end{center}
+  \caption{crude GTK interface, oct. 22, 2018, git commit \texttt{cbdcf1ec351c3f2a}}
+  \label{fig:bismonscreenshot-cbdcf}
+\end{figure}
+
 People trying the \emph{Bismon monitor} will use some Web interface to
 interact with it.
 
 \subsubsection{About \emph{Bismon} as a static source code analyzer framework}
 
 @@@ to be written when some static source code analysis of some C or
-C++ code is possible with \emph{Bismon}.
+C++ code is possible with \emph{Bismon}, using \emph{generated} GCC
+plugins (emitted as C++ code by \emph{Bismon}, and used inside the
+cross-compilation processed started by IoT developers following the
+\textsc{Chariot} approach.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -988,24 +1050,25 @@ code segments).
 
 
 The worker threads of \emph{Bismon} are implementing its
-\index{agenda}{\textbf{agenda}} \footnote{Details about the agenda are
-  subject to change.} machinery. Conceptually, the agenda is a 5-tuple
-of first-in first-out queues of \index{tasklet}{\textbf{tasklets}},
-each such FIFO queue is corresponding to one of the five
-\index{priority}{priorities} : \emph{very high}, \emph{high},
-\emph{normal}, \emph{low}, \emph{very low}. Each agenda worker thread
-removes one tasklet (chossing the queue of highest possible priority
-which is non empty, and picking the tasklet in front of that queue)
-and runs that tasklet quickly. A tasklet should run during a few
-milliseconds (e.g. with some implicit kind of non-preemptive
-scheduling) at most (so cannot do any blocking IO; so input and output
-happens outside of the agenda). It may add one or more tasklets
-(including itself) to the agenda (either at the front, or at the end,
-of a queue of given priority), and it may remove existing tasklets
-from the agenda. Of course tasklets run in parallel since there are
-several worker threads to run the agenda. The agenda itself is not
-persisted as a whole, but tasklets\footnote{Actually tasklets are
-  objects (see §\ref{subsubsec:objects} page
+\index{agenda}{\textbf{agenda}} \footnote{Details about the agenda,
+  such as the fixed set of available priorities, are subject to
+  change. We describe here the current implementation in mid-2018.}
+machinery. Conceptually, the agenda is a 5-tuple of first-in first-out
+queues of \index{tasklet}{\textbf{tasklets}}, each such FIFO queue is
+corresponding to one of the five \index{priority}{priorities} :
+\emph{very high}, \emph{high}, \emph{normal}, \emph{low}, \emph{very
+  low}. Each agenda worker thread removes one tasklet (chossing the
+queue of highest possible priority which is non empty, and picking the
+tasklet in front of that queue) and runs that tasklet quickly. A
+tasklet should run during a few milliseconds (e.g. with some implicit
+kind of non-preemptive scheduling) at most (so cannot do any blocking
+IO; so input and output happens outside of the agenda). It may add one
+or more tasklets (including itself) to the agenda (either at the
+front, or at the end, of a queue of given priority), and it may remove
+existing tasklets from the agenda. Of course tasklets run in parallel
+since there are several worker threads to run the agenda. The agenda
+itself is not persisted as a whole, but tasklets\footnote{Actually
+  tasklets are objects (see §\ref{subsubsec:objects} page
   \pageref{subsubsec:objects} below), and to run them, the agenda is
   sending them a message with the predefined selector
   \texttt{\emph{run\_tasklet}}.}  themselves may be
@@ -1090,18 +1153,35 @@ When running (in 2019) for static source code analysis purposes, the \emph{Bismo
         
     \end{enumerate}
 
-    It is yet unclear how such generated C++ code for GCC plugins is
-    actually compiled and when exactly is it executed. We might
+    We are considering several ways of providing (to the IoT developer
+    using them) such generated C++ code for GCC plugins. We might
     generate (at least for the first common case of GCC plugins
-    generated for developers using \emph{Bismon}) \texttt{*.shar}
-    archives (obtained by Web requests, or perhaps some \texttt{wget}
-    or \texttt{curl} command in some \texttt{Makefile}) for
-    \emph{GNU sharutils}\footnote{See
-      \bmurl{https://www.gnu.org/software/sharutils/}}. containing the
-    C++ code and also the \texttt{g++} command compiling it. The rare
-    second case (GCC plugin code generated to inspect the GCC API)
-    could be handled thru external processes (similar to compilation
-    of \emph{Bismon} modules).
+    generated for developers using \emph{Bismon}, and large enough to
+    need several~\footnote{By past experience in GCC MELT, we did
+      generate C++ files totalizing almost a million lines of C++
+      code, and compiling such a large generated C++ code base took
+      dozens of minutes, and created a bottleneck.} generated C++
+    files) \texttt{*.shar} archives (obtained by Web requests, or
+    perhaps some \texttt{wget} or \texttt{curl} command in some
+    \texttt{Makefile}) for \emph{GNU sharutils}~\footnote{See
+      \bmurl{https://www.gnu.org/software/sharutils/} for more.}
+    containing the C++ code and also the \texttt{g++} command
+    compiling it. That archive could instead be just a
+    \texttt{.tar.gz} file (and the IoT developer would extract it, and
+    run \texttt{make} or \texttt{ninja} inside the extracted directory
+    to build the shared object GCC plugin binary file), etc... For a
+    \emph{small} generated GCC plugin fitting in a single generated
+    C++ file of less than a dozen thousands lines, we could simply
+    serve in \emph{Bismon} an URL like
+    \texttt{http://localhost:8086/genplugin23.c} and require the IoT
+    developer to fetch then use that. Other approaches could also be
+    considered. The rare second case (GCC plugin code generated to
+    inspect the GCC API, running on the same machine as the
+    \emph{Bismon} server) could be handled thru external processes
+    (similar to compilation of \emph{Bismon} modules). Alternatively,
+    we might consider delegating such plugin-enhanced
+    cross-compilation processes to the \emph{Bismon} monitor itself,
+    etc, etc...
     
 \end{itemize}
 
