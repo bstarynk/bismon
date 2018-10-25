@@ -245,7 +245,7 @@ be~\footnote{This is a gross simplification! In practice, there is a
   \item strongly formal methods based, semantically oriented,
     ``sound'' tools (e.g. built above abstract interpretation -cf.
     \cite{Cousot:2014:AIP,CousotCousot77-1}-, model checking -cf.
-    \cite{Schlich:2010:MCS} and \cite{Jhala:2009:SMC}-, and other
+    \cite{Schlich:2010:MCS, Siddiqui:2018:adv-soft-model-check} and \cite{Jhala:2009:SMC}-, and other
     formal techniques on the whole program... See also
     \cite{Andreasen:2017:SAI}) which can give excellent results but
     require a lot of expertise to be used, and may take a long time to
@@ -777,7 +777,7 @@ successor of \textit{GCC MELT} \footnote{The \textit{GCC MELT} web
   pages used to be on \texttt{gcc-melt.org} -a DNS domain relinquished
   in april 2018- and are archived on
   \bmurl{https://starynkevitch.net/Basile/gcc-melt}} (see
-\cite{Starynkevitch2007Multistage, starynkevitch-DSL2011}), but don't
+\cite{Starynkevitch2007Multistage, Starynkevitch-DSL2011}), but don't
 share any code with it.
 
 \textit{Bismon} is \textbf{work in progress}, and many things
@@ -964,7 +964,7 @@ could be viewed as some large graph in memory.
 
 Conceptually the initial \emph{Bismon} DSL is at first a
 dynamically-typed language, semantically similar to Scheme, Python (or
-to a lesser degree to JavaScript: however, it has classes, not
+to a lesser degree, to JavaScript: however, it has classes, not
 prototypes, with single-inheritance). It is \emph{essentially} (unlike
 most Scheme or Python or JavaScript implementations) a
 \emph{multi-threaded} language, since the emitted routines can run in
@@ -980,6 +980,37 @@ The base \emph{Bismon} DSL is currently implemented~\footnote{See
   \emph{bismon} generated, modules.} as a naive transpiler to C code
 (respecting the coding rules of our implementation, in particular of
 our garbage collector, see §\ref{subsec:gcvalobj}).
+
+Our initial DSL is designed in terms of code representations as
+objects (see §\ref{subsubsec:objects} below) and immutable values (see
+§\ref{subsubsec:immutvalues} below). It is not defined by some EBNF
+textual syntax. For example, an assign statement $\alpha$ \texttt{=} $\beta$
+is represented by an object of class \texttt{basiclo\_assign} with its
+first component representing the left hand-side $\alpha$ and the
+second component representing the right hand-side $\beta$. Expressions
+in our DSL are either objects, or nodes, or scalars (integers,
+strings, etc...). Statements of our DSL include:
+
+\begin{itemize}
+\item assign, of class \texttt{basiclo\_assign}, as explained above.
+  
+  \item run statement, of class \texttt{basiclo\_run}, which
+    ``evaluates'' its single operand for side effects (similar to
+    expression statements in C or Go). As a special (and rather
+    common) case, that operand can be a ``code chunk'' (conceptually
+    similar to GCC MELT's code chunks, see
+    \cite{Starynkevitch-DSL2011} §3.4.1), that is a node of connective
+    \texttt{chunk} providing a ``template'' for expansion as C code.
+
+    \item conditional statement, of class \texttt{basiclo\_cond},
+      inspired by Lisp's \texttt{cond}. Its components are a sequence
+      of when clauses (objects of class \texttt{basiclo\_when})
+      followed the ``else'' statements or blocks. The
+      \texttt{nb\_conds} attribute in the statement gives the number
+      of when clauses.
+
+      \item etc...
+\end{itemize}
 
 \subsubsection{About \emph{Bismon} as a evolving software system}
 

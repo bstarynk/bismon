@@ -22,8 +22,8 @@ So the \emph{Bismon monitor} handle
   networks, etc...) processed by external libraries, it is advised to
   define new \emph{payloads} inside objects
   (cf. §\ref{subsubsec:objects} below), without adding some new kind
-  of values.} (represented as pointers) : they can be immutable, or objects (and objects are the
-only kind of mutable data).
+  of values.} (represented as pointers) : they can be immutable, or
+objects (and objects are the only kind of mutable data).
 
 %%%%%%%%%%%%%%%%
 \subsubsection{Immutable values}
@@ -33,10 +33,10 @@ They include
 
 \begin{itemize}
 
-\item \textbf{tagged integer} (of 63 bits). The
-  \index{integer}{integer} won't change (and integer values don't
-  require extra space to keep that integer, since they are encoded in
-  the pointer).
+\item \textbf{tagged integer} (of 63 bits, since the least significant
+  bit is a tag bit). The \index{integer}{integer} won't change (and
+  integer values don't require extra space to keep that integer, since
+  they are encoded in the pointer).
   
 \item UTF-8 encoded \textbf{string} (the bytes inside such
   \index{string}{strings} don't change).
