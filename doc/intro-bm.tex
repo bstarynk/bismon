@@ -924,6 +924,7 @@ features:
 
 
 \subsubsection{About \emph{Bismon} as a domain-specific language}
+\label{subsubsec:bismon-dsl}
 
 Notice that \textit{Bismon} is not even thought as a \emph{textual}
 domain specific language~\footnote{In contrast, \emph{GCC MELT} was
@@ -1004,10 +1005,10 @@ strings, etc...). Statements of our DSL include:
 
     \item conditional statement, of class \texttt{basiclo\_cond},
       inspired by Lisp's \texttt{cond}. Its components are a sequence
-      of when clauses (objects of class \texttt{basiclo\_when})
-      followed the ``else'' statements or blocks. The
-      \texttt{nb\_conds} attribute in the statement gives the number
-      of when clauses.
+      of when clauses (which are objects of class
+      \texttt{basiclo\_when}) followed the ``else'' statements or
+      blocks. The \texttt{nb\_conds} attribute in the statement gives
+      the number of when clauses.
 
       \item etc...
 \end{itemize}
@@ -1158,7 +1159,42 @@ Web interface to interact with it.
 
 \subsubsection{About \emph{Bismon} as a static source code analyzer framework}
 
-@@@ to be written when some static source code analysis of some C or
+The \emph{Bismon} persistent monitor will generate the C++ code of GCC
+plugins, leveraging on the experience of GCC MELT (see
+\cite{Starynkevitch-DSL2011,Starynkevitch2007Multistage,Starynkevitch-GCCMELTweb}). The
+C++ code generator will have a design similar to (and share some code
+and classes with) our internal initial DSL (cf
+§\ref{subsubsec:bismon-dsl}). It is extremely likely that in many
+cases, such a generated GCC plugin would just insert its appropriate
+passes by using the pass manager (cf \cite{gcc-internals} §9 and
+§24.3), and these passes will ``serialize'' internal representations
+(either in JSON, or using Google protocol buffer, or using a textual
+format close to our dump syntax, see figure \ref{fig:dumpvalsyntax}
+below, etc...)  such as \emph{Gimple}-s, \emph{Basic Block}-s and
+transmit some form of them to the \emph{Bismon} persistent monitor. In
+some simple cases, it is not even necessary to transmit most of that
+representation. For instance, a whole program static analysis to help
+avoiding stack overflow needs just the size of each call
+frame~\footnote{Notice that \emph{GCC} compute these call frame sizes
+  (see the \texttt{-fstack-usage} option), and can detect excessively
+  big call frame with \texttt{-Wstack-usage=} option.} and the control
+flow graph (so only the \emph{Gimple} call statements, ignoring
+anything else); with that information (and the control flow graph)
+the monitor should be able to estimate an approximation~\footnote{Of
+  course dynamic calls, e.g. call thru function pointers, make that
+  much more complex and will require manual annotation.} of the
+consumed call stack, whole program wide.
+
+Several design decisions have been made regarding the style of the
+generated C++ code of GCC plugins: it will use existing scalar data
+and \texttt{GTY}-ed classes (see \cite{gcc-internals} §23), to take
+advantage of the existing GCC garbage collector
+(\emph{Ggc}). Contrarily to GCC MELT, it won't provide a generational
+garbage collector (because most of the processing happens in the
+monitor, hence performance is less important), so transforming to
+A-normal form is not required at translation (to C++) time.
+
+@@@ to be completed when some static source code analysis of some C or
 C++ code is possible with \emph{Bismon}, using \emph{generated} GCC
 plugins (emitted as C++ code by \emph{Bismon}, and used inside the
 cross-compilation processed started by IoT developers following the
