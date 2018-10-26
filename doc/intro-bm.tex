@@ -1123,16 +1123,17 @@ Expressions in our DSL are typed (with types like \texttt{value},
 
 \item constant objects (mentioned with \texttt{constants} in the function)
 
-\item closure application. Often, the closure's connective would be a
+\item closure application (represented by a node of connective \texttt{apply}). Often, the closure's connective would be a
   function object.
 
   \item quotations (like in Lisp, represented by an unary node of
     connective \texttt{exclam})
 
-\item message sending
+\item message sending (represented by a node of connective \texttt{send})
 
 \item primitives (inspired by GCC MELT's ones, see
-  \cite{Starynkevitch-DSL2011})
+  \cite{Starynkevitch-DSL2011}; the connective of the node is of class
+  \texttt{basiclo\_primitive})
 
 \item etc...
   
