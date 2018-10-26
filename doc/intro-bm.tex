@@ -108,9 +108,20 @@ code for IoT firmware and application) analysis (see
 §\ref{subsec:chariotvision}), proposing a simple static analysis
 \emph{framework} leveraging on the powerful recent \emph{GCC}
      [cross-]compiler and explaining the necessity of persistence,
-     then gives the driving principles of our \emph{Bismon} persistent monitor (in §\ref{subsec:principles-bismon}); and explains its multi-threaded and distributed aspects (in §\ref{subsec:multithreadist}). The data and its persistence is detailed (in §\ref{sec:datapersist}, notably §\ref{subsec:dataproc} for the processed data, §\ref{subsec:gcvalobj} for the garbage collection, §\ref{subsec:persistence} for persistence.
+     then gives the driving principles of our \emph{Bismon} persistent
+     monitor (in §\ref{subsec:principles-bismon}); and explains its
+     multi-threaded and distributed aspects (in
+     §\ref{subsec:multithreadist}). The data and its persistence is
+     detailed (in §\ref{sec:datapersist}, notably
+     §\ref{subsec:dataproc} for the processed data,
+     §\ref{subsec:gcvalobj} for the garbage collection,
+     §\ref{subsec:persistence} for persistence).  The
+     §\ref{sec:staticanalys} needs still to be mostly written and will
+     describe (in the D1.3v2) how static analysis works. The
+     §\ref{sec:using} will contain the (mostly generated) user
+     documentation. The §\ref{sec:miscwork} describes some
+     miscellanous work.
 
-@@more details...
 
 Related previous \textsc{Chariot} deliverables include: D1.1 (on
 \emph{Classification and use guidelines of relevant standards and
@@ -1038,7 +1049,24 @@ is represented by an object of class \texttt{basiclo\_assign} with its
 first component representing the left hand-side $\alpha$ and the
 second component representing the right hand-side $\beta$. Expressions
 in our DSL are either objects, or nodes, or scalars (integers,
-strings, etc...). Statements of our DSL include:
+strings, etc...).
+
+
+What is transpiled to C are Bismon ``modules'' (for example our
+\texttt{webjs\_module} contains code related to emission of
+JavaScript), each with a sequence of routines. A module can be
+dumpable (into the persistent state, which then contains also the
+generated C code) or temporary (then the generated C code is not kept
+in that state). A routine or function~\footnote{Technically the
+  routine would be in the module's shared object binary; the function
+  is a \eph{Bismon} object reifying the code of that routine.}  is an
+object of class \texttt{basiclo\_function} or its subclass
+\texttt{basiclo\_minifunction}, etc... A function knows its arguments,
+local variables, local numbers, body by various attributes
+(e.g. \texttt{arguments}, \texttt{locals}, \texttt{numbers},
+\texttt{body} etc...). Its body is a block made of statements.
+
+Statements of our DSL include:
 
 \begin{itemize}
 \item assign, of class \texttt{basiclo\_assign}, as explained above.
@@ -1058,8 +1086,57 @@ strings, etc...). Statements of our DSL include:
       blocks. The \texttt{nb\_conds} attribute in the statement gives
       the number of when clauses.
 
+    \item for loops, we have a \texttt{basiclo\_while} class of
+      statements (for ``while'' loops) and a \texttt{basiclo\_loop}
+      class (for infinite loops). Exiting of loops and blocks are
+      using the \texttt{basiclo\_exit} class. Return statements use
+      the \texttt{basiclo\_return} class.
+
+      \item failure (inspired by Go's \texttt{panic}) statements are
+        of class \texttt{basiclo\_fail}. Failures are not exceptions,
+        but prematurely terminate the tasklet (of the agenda, see
+        \§ref{subsec:multithreadist} below) running that statement.
+
+      \item locking of objects use a \texttt{basiclo\_lockobj} class
+        (mentioning both a object to lock and a sequence of
+        sub-statements or blocks). A locked object is unlocked when
+        the end of its locking statement is reached, or when the
+        currently active routine terminates (on failure or on return).
+
+        \item execution of primitive side-effecting operations with no
+          result happens in C-expansion statements (of class
+          \texttt{basiclo\_cexpansion}), inspired by GCC MELT's
+          primitives (see \cite{Starynkevitch-DSL2011}) returning
+          \texttt{:void}.
+
       \item etc...
 \end{itemize}
+
+Expressions in our DSL are typed (with types like \textt{value},
+\texttt{object}, \texttt{int}, \texttt{string}, etc...)  and include:
+
+\begin{itemize}
+\item scalar (integers, constant strings)
+  
+\item local variables, or arguments, or numerical variables (of the current function).
+
+\item constant objects (mentioned with \texttt{constants} in the function)
+
+\item closure application. Often, the closure's connective would be a
+  function object.
+
+  \item quotations (like in Lisp, represented by an unary node of
+    connective \texttt{exclam})
+
+\item message sending
+
+\item primitives (inspired by GCC MELT's ones, see
+  \cite{Starynkevitch-DSL2011})
+
+\item etc...
+  
+\end{itemize}
+  
 
 \subsubsection{About \emph{Bismon} as a evolving software system}
 
