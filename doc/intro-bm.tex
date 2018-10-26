@@ -1059,7 +1059,7 @@ dumpable (into the persistent state, which then contains also the
 generated C code) or temporary (then the generated C code is not kept
 in that state). A routine or function~\footnote{Technically the
   routine would be in the module's shared object binary; the function
-  is a \eph{Bismon} object reifying the code of that routine.}  is an
+  is a \emph{Bismon} object reifying the code of that routine.}  is an
 object of class \texttt{basiclo\_function} or its subclass
 \texttt{basiclo\_minifunction}, etc... A function knows its arguments,
 local variables, local numbers, body by various attributes
@@ -1095,7 +1095,8 @@ Statements of our DSL include:
       \item failure (inspired by Go's \texttt{panic}) statements are
         of class \texttt{basiclo\_fail}. Failures are not exceptions,
         but prematurely terminate the tasklet (of the agenda, see
-        \§ref{subsec:multithreadist} below) running that statement.
+        §\ref{subsec:multithreadist} below) running the function
+        containing that statement.
 
       \item locking of objects use a \texttt{basiclo\_lockobj} class
         (mentioning both a object to lock and a sequence of
@@ -1112,7 +1113,7 @@ Statements of our DSL include:
       \item etc...
 \end{itemize}
 
-Expressions in our DSL are typed (with types like \textt{value},
+Expressions in our DSL are typed (with types like \texttt{value},
 \texttt{object}, \texttt{int}, \texttt{string}, etc...)  and include:
 
 \begin{itemize}
