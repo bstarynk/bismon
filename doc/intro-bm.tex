@@ -159,7 +159,7 @@ C++) is expected to:
   \item be knowing a bit the \index{C11}{C11} standard
     (cf. \cite{C11:std,Memarian:2016:PLDI}) and/or the
     \index{C++11}{C++11} one (\cite{CplusPlus11:std}) and
-    understanding well the notion of \index{undefined
+    understanding well the essential notion of \index{undefined
       behavior}{\emph{undefined behavior}} \footnote{See
       \bmurl{http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html}
       and \bmurl{https://blog.regehr.org/archives/1520}} in C or C++
@@ -211,9 +211,10 @@ C++) is expected to:
     \bmurl{https://coralbits.com/libonion/}}) from their \emph{source}
   form.
 
-\item have successfully downloaded and built the \emph{Bismon
-  monitor} \index{Bismon} from its source code on
-  \bmurl{https://github.com/bstarynk/bismon}, on his Linux workstation.
+\item have successfully downloaded and built the \emph{Bismon monitor}
+  \index{Bismon} from its source code available on
+  \bmurl{https://github.com/bstarynk/bismon}, on his Linux
+  workstation.
   
 \item have contributed or participated to some free software or open
   source projects and understanding their social (cf
@@ -284,7 +285,9 @@ bullet'' \index{silver bullet} (\cite{Brooks:1987:NSB}). Many
 taxonomies of software defects \index{defect!software} already exist
 (e.g. \cite{Silva:2016:SES, Wagner:2008:DCD, Levine:2009:DDE}
 etc....), notably for IoT\index{IoT} (see \cite{Carpent:2018:RRA,
-  Ahmad:2018:ModelBasedIoT, Laszlo:2018:Vessedia}).
+  Ahmad:2018:ModelBasedIoT, Laszlo:2018:Vessedia}); however the
+relation between an explicited defect and a source code property is
+generally fuzzy, or ill-defined.
 
 Static source code analysis tools can -grossly speaking-
 be~\footnote{This is a gross simplification! In practice, there is a
@@ -614,7 +617,8 @@ target-specific \emph{address} arithmetic in byte units, knowing that
 \texttt{sizeof(int)} is 4.
 
 \begin{table}[t]
-\caption{\label{tab:mallfreegimple} optimization around heap allocation by \emph{GCC} (Gimple)}
+\caption{\label{tab:mallfreegimple} optimization around heap
+  allocation by \emph{GCC} (generated Gimple)}
    \medskip
   \begin{center}
     \begin{relsize}{-1.5}
@@ -635,7 +639,8 @@ to \texttt{free} have been optimized away, so the \texttt{weirdsum}
 function don't use heap allocation anymore.
 
 \begin{table}[t]
-\caption{\label{tab:mallfreeoptim} optimization around heap allocation by \emph{GCC} (SSA/optimized)}
+\caption{\label{tab:mallfreeoptim} optimization around heap allocation
+  by \emph{GCC} (generated SSA/optimized)}
    \medskip
   \begin{center}
     \begin{relsize}{-1.5}
@@ -651,12 +656,12 @@ function don't use heap allocation anymore.
 So the generated x86-64 assembler code in table \ref{tab:mallfreeasm}
 contain no calls to \texttt{malloc} or \texttt{free}, hence contains the same code that would be generated from just \texttt{int weirdsum(int x, int y) \{return x+y;\}}.
 
-%\verbfilebox{mallfree-tail.s}
 
 \smallskip
 
 \begin{table}[t]
-\caption{\label{tab:mallfreeasm} optimization around heap allocation by \emph{GCC} (x86-64 assembly)}
+\caption{\label{tab:mallfreeasm} optimization around heap allocation
+  by \emph{GCC} (generated x86-64 assembly)}
    \medskip
   \begin{center}
     \begin{relsize}{-1.5}
@@ -761,9 +766,10 @@ version control system.
 Since a single \emph{Bismon} process is used by a small team of IoT
 developers, it provides some web interface\index{web interface}: each
 IoT developer will interact with the persistent monitor thru his/her
-web \index{browser} browser~\footnote{We don't aim compatibility with all web browsers
-  -including old ones- but just with the latest \emph{Chrome} and
-  \emph{Firefox} browsers, using HTML5, JavaScript, WebSockets, AJAX
+web \index{browser} browser~\footnote{We don't aim compatibility with
+  all web browsers -including old ones- but just with the latest
+  \emph{Chrome} (v.70 or newer) and \emph{Firefox} (v.63 or newer)
+  browsers, using HTML5, JavaScript, WebSockets, AJAX
   technologies.}. In addition, a static analysis expert (which could
 perhaps be the very senior IoT developer of the team) will configure
 the static analysis (also thru a web interface).
@@ -1209,7 +1215,9 @@ backtrace~\footnote{Ian L. Taylor's
   \begin{center}
     \bmincludewidthgraphics{0.98\textwidth}{bismon-cbdcf1ec351c3f2a-screenshot-22oct2018-img}{png}{png}
   \end{center}
-  \caption{crude GTK interface {\relsize{-1}{oct. 22, 2018, git commit \texttt{cbdcf1ec351c3f2a}}}}
+  \caption{crude {\relsize{-1}{(soon deprecated)}} GTK interface
+    {\relsize{-1}{oct. 22, 2018, git commit
+        \texttt{cbdcf1ec351c3f2a}}}}
   \label{fig:bismonscreenshot-cbdcf}
 \end{figure}
 
@@ -1230,11 +1238,14 @@ this experience:
   measured by D.Wheeler \texttt{sloccount} but it depends also on
   other libraries, such as Pango, Glib, etc... so patching GTK source
   for our precise GC is not reasonable at all.}  is in practice
-  incompatible with a multi-threaded precise garbage collector, like
-  the one in \emph{Bismon} (cf §\ref{subsec:gcvalobj} below), in
-  particular because GTK may have several nested event loops, so many
-  local garbage collector pointers in internal call frames (which are
-  not accessible from routines above).
+  incompatible with a multi-threaded precise garbage
+  collector~\footnote{See also
+    \bmurl{https://stackoverflow.com/q/43141659/841108} about GTK and
+    Boehm's conservative GC.}, like the one in \emph{Bismon} (cf
+  §\ref{subsec:gcvalobj} below), in particular because GTK may have
+  several nested event loops, so many local garbage collector pointers
+  in internal call frames (which are not accessible from routines
+  above).
 
     \item the model and the C API provided by GTK text views and text
       buffers is not adequate for structured syntactic editing (like
@@ -1342,7 +1353,7 @@ cross-compilation processed started by IoT developers following the
 \label{subsec:multithreadist}
 
 The \textit{Bismon monitor} is by itself a multi-threaded
-process\footnote{In contrast of most scripting languages
+process~\footnote{In contrast of most scripting languages
   implementations such as Python, Ocaml, Ruby, etc..., we try hard to
   avoid any ``global interpreter lock'' and strive to develop a
   genuinely multi-threaded monitor.}.
@@ -1409,7 +1420,8 @@ queue is not persisted.
 
 \bigskip
 
-When running (in 2019) for static source code analysis purposes, the \emph{Bismon system} involves several processes:
+In its final version, the \emph{Bismon system} will involve several
+cooperating Linux processes:
 
 \begin{itemize}
 \item the \emph{Bismon monitor} itself, with several threads (notably for the agenda mechanism described above)
@@ -1427,6 +1439,12 @@ When running (in 2019) for static source code analysis purposes, the \emph{Bismo
     feeling~\footnote{So using your browser's backward and forward
       navigation arrows won't work well because in single-page
       applications they \emph{cannot} work reliably}.
+
+    \item the IoT developers using \emph{Bismon} will build their IoT
+      firmware as usual; however they will add some extra options (to
+      their \texttt{gcc} or \texttt{g++} cross-compilation commands)
+        to use some \emph{Bismon} generated GCC plugin in their
+        cross-compilation processes.
 
   \item sometimes \emph{Bismon} would generate some
     \texttt{modules/*.c} file during execution, and fork a (direct)

@@ -23,6 +23,7 @@
 \usepackage{filecontents}
 \usepackage{catchfile}
 \usepackage{lastpage}
+\usepackage[a4paper, margin=2cm]{geometry}
 
 \newcommand{\bmemail}[1]{{\href{mailto:#1}{\texttt{\textbf{#1}}}}}
 \newcommand{\bmurl}[1]{{\href{#1}{\texttt{\textbf{#1}}}}}
@@ -55,7 +56,7 @@
 
 \date{\bmdocdate}
 
-\title{{\color{orange}{D1.3}}~Specialized Static Analysis tools for more secure and safer IoT software development.
+\title{{\color{orange}{D1.3v1}}~Specialized Static Analysis tools for more secure and safer IoT software development.
   \\
   {\large{\emph{Bismon}~\thanks{The \texttt{bismon} name is temporary and
     is likely to change later. See also the
@@ -75,7 +76,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\rhead{\textsc{Chariot} D1.3}
+\rhead{\textsc{Chariot} D1.3v1}
 \lhead{Specialized Static Analysis tools for IoT \ldots - \emph{Bismon}}
 \renewcommand{\footrulewidth}{0.4pt}
 % https://tex.stackexchange.com/a/317531/42406
@@ -121,8 +122,29 @@
 \end{relsize}
 
 \begin{abstract}
-  \textit{Bismon} is a free software static source code analysis framework. \\
-  @@ ETC...
+This D1.3v1 \textsc{Chariot} deliverable is a first \textbf{draft}
+-and \emph{incomplete}- version of D1.3v2 scheduled at M30 on
+``Specialized Static Analysis tools for more secure and safer IoT
+software development''.
+
+It describes the \textsc{Chariot} vision on static source code (mostly
+of C and C++ code for IoT firmware and application) analysis. It
+proposes a \emph{simple} static analysis \emph{framework} leveraging
+on the powerful recent \emph{GCC} [cross-]compiler. A \emph{persistent
+  monitor} (tentatively named \texttt{bismon}) is being designed and
+implemented as a GPLv3+ free software for Linux, using
+meta-programming techniques (leveraging on experience gained in the
+former GCC MELT project) to \emph{generate} GCC plugins, and able to
+keep some intermediate results (of compilation or static analysis)
+during the entire life of the IoT project, and giving to the IoT
+developers (thru a web interface) a whole-program view of the source
+code (as digested by the \emph{GCC} cross-compiler) and of its static
+analysis properties. That framework is configurable and scriptable by
+static analysis experts, hence permitting different IoT projects to
+address various concerns, while keeping the usual IoT development
+workflow (running as usual their \emph{GCC} cross-compiler on Linux,
+with extra plugin-related compilation flags).
+
 \end{abstract}
 
 \newpage
@@ -137,20 +159,13 @@ commits on \textit{\bmdoctimestamp}. See
 \begin{relsize}{-0.5}
 This document is co-developed with the \emph{Bismon} software itself,
 it is typeset using \LaTeX~on Linux and contains some \emph{generated}
-documentation~\footnote{Of course, a significant part of this
-  documented is hand-written, see the
-  \href{https://github.com/bstarynk/bismon/tree/master/doc}{\texttt{bismon/doc/}}
-  directory for details (and the \emph {generated} part goes in its
-  \texttt{bismon/doc/generated} directory, so is not versioned in the
-  \emph{\texttt{git}} repository; you need to build the documentation
-  on your Linux workstation). Hopefully, more and more documentation
-  would be generated for the \emph{Bismon} persistent system. Since
-  some parts of this report are generated, even a small software
-  change may impact this document (including bugs which could destroy
-  it locally).}. The entire history of \emph{Bismon} (both the
-software -including its persistent store- and this document) is
-available on \bmurl{https://github.com/bstarynk/bismon/commits} and
-has, for this document of commit id \texttt{\bmgitcommit} generated on
+documentation~\footnote{The generated parts are clearly identified as
+  such.}, mixed with hand-written text. During development of
+\texttt{bismon}, the amount of generated documentation will grow.  The
+entire history of \emph{Bismon} (both the software -including its
+persistent store- and this document) is available on
+\bmurl{https://github.com/bstarynk/bismon/commits} and has, for this
+document of commit id \texttt{\bmgitcommit} generated on
 \textit{\bmdocdate}, exactly {\bmgitnumbercommits} commits (or
 elementary changes).
 \end{relsize}
@@ -234,14 +249,6 @@ citation, quotation or both.
 
 
 
-\begin{quote}
-{\footnotesize \bmincludewidthgraphics{60pt}{CC-BY-SA-4-img}{png}{png} This document
-is licensed under the Creative Commons Attribution-ShareAlike 4.0
-International License. To view a copy of this license, visit
-\bmurl{http://creativecommons.org/licenses/by-sa/4.0/} or send a letter to
-Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.}
-\end{quote}
-
 \newpage
 
 \tableofcontents
@@ -289,6 +296,14 @@ Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.}
 \printindex
 
 \medskip
+
+\begin{quote}
+{\footnotesize \bmincludewidthgraphics{60pt}{CC-BY-SA-4-img}{png}{png} This document
+is licensed under the Creative Commons Attribution-ShareAlike 4.0
+International License. To view a copy of this license, visit
+\bmurl{http://creativecommons.org/licenses/by-sa/4.0/} or send a letter to
+Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.}
+\end{quote}
 
 \begin{flushright}
   \begin{relsize}{-1}

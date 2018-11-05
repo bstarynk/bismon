@@ -1,6 +1,21 @@
 % file conclus-bm.tex, which is \input from bismon-doc.tex
 \section{Conclusion}
 
+The \texttt{bismon} free software is developed in an agile and
+incremental manner~\footnote{So there are no released stable versions
+  of this software, but snapshots.} (required by its bootstrapping
+approach), with continuous updates to
+\bmurl{https://github.com/bstarynk/bismon/}.
+
+In october 2018, the persistence machinery is working and daily used
+to enhance \texttt{bismon}. The agenda mechanism is working. A naive
+stop-the-world mark-and-sweep precise garbage collector is
+implemented. The generation of internal C code is done (by
+hand-written routines, still coded in C). The web interface is worked
+upon: a \texttt{libonion} based infrastructure is already handling
+HTTP requests, and a GDPR-compliant login form is presented on web
+browsers.
+
 @@To be written
 
 \medskip

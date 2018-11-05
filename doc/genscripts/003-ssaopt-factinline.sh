@@ -24,7 +24,7 @@ ln -svf factinline12.c.[0-9]*t.ssa factinline12.ssa 1>&2
 ln -svf factinline12.c.[0-9]*t.optimized factinline12.optimized 1>&2
 
 printf '\\begin{table}[h]\n'
-printf '\\caption{\\label{tab:factinlinessa} recursive inlining with constant folding in \\emph{GCC} (SSA form)}\n'
+printf '\\caption{\\label{tab:factinlinessa} recursive inlining with constant folding in \\emph{GCC} (generated SSA form)}\n'
 printf '   \\medskip\n'
 printf '  \\begin{center}\n'
 printf '    \\begin{relsize}{-1.6}\n'
@@ -46,7 +46,7 @@ printf '\n\n%%%%%%\n\n'
 
 
 printf '\\begin{table}[t]\n'
-printf '\\caption{\\label{tab:factinlineoptim} recursive inlining with constant folding in \\emph{GCC} (optimized)}\n'
+printf '\\caption{\\label{tab:factinlineoptim} recursive inlining with constant folding in \\emph{GCC} (generated optimized)}\n'
 printf '   \\medskip\n'
 printf '  \\begin{center}\n'
 printf '    \\begin{relsize}{-1.6}\n'
@@ -67,7 +67,7 @@ printf '\\end{table}\n'
 printf '\n\n%%%%%%\n\n'
 
 printf '\\begin{table}[t]\n'
-printf '\\caption{\\label{tab:factinlineasm} recursive inlining with constant folding in \\emph{GCC} (MIPS assembler)}\n'
+printf '\\caption{\\label{tab:factinlineasm} recursive inlining with constant folding in \\emph{GCC} (generated MIPS assembler)}\n'
 printf '   \\medskip\n'
 printf '  \\begin{center}\n'
 printf '    \\begin{relsize}{-1.5}\n'
