@@ -886,7 +886,7 @@ again:
       char *endint = NULL;
       char *endflo = NULL;
       long long ll = strtoll (restlin, &endint, 0);
-      if (strchr (restlin, '.'))
+      if (endint && *endint == '.')
         {
           double x = strtod (restlin, &endflo);
           if (endflo > endint)
@@ -901,6 +901,19 @@ again:
               {
               .tok_kind = plex_DOUBLE,.tok_line = curlin,.tok_col =
                   curcol,.tok_dbl = x};
+            }
+          else
+            {
+              WARNPRINTF_BM ("your locale should be C.UTF-8,\n"
+                             " but LC_ALL is %s,\n"
+                             " LC_CTYPE is %s,\n"
+                             " LC_NUMERIC is %s",
+                             setlocale (LC_ALL, NULL),
+                             setlocale (LC_CTYPE, NULL),
+                             setlocale (LC_NUMERIC, NULL));
+              FATAL_BM
+                ("bad lexing (perhaps wrong locale) of double (endflo=%s) for %s",
+                 endflo, restlin);
             }
         }
       if (endint > restlin)
