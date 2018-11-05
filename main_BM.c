@@ -797,14 +797,51 @@ main (int argc, char **argv)
   if (gethostname ((char *) myhostname_BM, sizeof (myhostname_BM) - 1))
     FATAL_BM ("gethostname failure %m");
   {
-    char *oldloc = setlocale (LC_ALL, "POSIX");
-    DBGPRINTF_BM ("oldlocale %s", oldloc);
+    char *oldloc = setlocale (LC_ALL, NULL);
+    char *oldnumloc = setlocale (LC_NUMERIC, NULL);
+    char *oldctypeloc = setlocale (LC_CTYPE, NULL);
+    DBGPRINTF_BM ("oldlocale LC_ALL %s LC_NUMERIC %s LC_CTYPE %s", oldloc,
+                  oldnumloc, oldctypeloc);
     if (oldloc && strcmp (oldloc, "en_US.UTF-8")
-        && strcmp (oldloc, "en_GB.UTF-8")
+        && strcmp (oldloc, "en_GB.UTF-8") && strcmp (oldloc, "C.UTF-8")
         && strcmp (oldloc, "C") && strcmp (oldloc, "POSIX"))
       WARNPRINTF_BM
-        ("your locale '%s' is strange but should be in English, preferably encoded in UTF-8.\n"
-         "Please use C or en_US.UTF-8 or en_GB.UTF-8 or POSIX", oldloc);
+        ("your LC_ALL locale '%s' is strange but should be in English, encoded in UTF-8.\n"
+         "Please use C.UTF-8 or en_US.UTF-8 or en_GB.UTF-8 or POSIX.UTF-8",
+         oldloc);
+    if (oldnumloc && strcmp (oldnumloc, "en_US.UTF-8")
+        && strcmp (oldnumloc, "en_GB.UTF-8") && strcmp (oldnumloc, "C.UTF-8")
+        && strcmp (oldnumloc, "C.UTF-8") && strcmp (oldnumloc, "POSIX.UTF-8"))
+      WARNPRINTF_BM
+        ("your LC_NUMERIC locale '%s' is strange but should be in English, encoded in UTF-8.\n"
+         "Please use C.UTF-8 or en_US.UTF-8 or en_GB.UTF-8 or POSIX.UTF-8",
+         oldnumloc);
+    char *prevnumlocale = setlocale (LC_NUMERIC, "C.UTF-8");
+    if (!prevnumlocale)
+      FATAL_BM ("failed to setlocale LC_NUMERIC to C.UTF-8");
+    else
+      DBGPRINTF_BM ("prevnumlocale %s", prevnumlocale);
+    char *prevalllocale = setlocale (LC_ALL, "C.UTF-8");
+    if (!prevalllocale)
+      FATAL_BM ("failed to setlocale LC_ALL to C.UTF-8");
+    else
+      DBGPRINTF_BM ("prevalllocale %s", prevalllocale);
+  }
+  {
+    double x = 0;
+    int pos = 0;
+    if (sscanf ("4.5;", "%lf%n", &x, &pos) < 1 || x != 4.5 || pos != 3)
+      FATAL_BM
+        ("something wrong (probably your locale setting, which should be C.UTF-8)."
+         " Since '4.5;' is scanned as %f at position#%d", x, pos);
+    DBGPRINTF_BM ("after sscanf x=%f, pos#%d", x, pos);
+    char *end = NULL;
+    x = strtod ("4.5/", &end);
+    DBGPRINTF_BM ("after strtod x=%f, end=%s", x, end);
+    if (x != 4.5 || !end || *end != '/')
+      FATAL_BM
+        ("something wrong (probably your locale setting, which should be C.UTF-8)."
+         " Since '4.5/' is not converted as %f end at %s", x, end);
   }
   {
     double nwt = clocktime_BM (CLOCK_REALTIME);
@@ -888,14 +925,16 @@ main (int argc, char **argv)
   else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
   if (!batch_bm && !run_gtk_BM && !run_onion_BM)
-    FATAL_BM ("no batch or gtk or onion option; please run with --batch or --web or --gui");
+    FATAL_BM
+      ("no batch or gtk or onion option; please run with --batch or --web or --gui");
   /// running as root is really unreasonable.
-  if (getuid() == 0)
-    FATAL_BM("bismon should not be running as root real user (and euid#%d)",
-	     (int) geteuid());
-  if (geteuid() == 0)
-    FATAL_BM("bismon should not be running as root effective user (and uid#%d)",
-	     (int) getuid()); 
+  if (getuid () == 0)
+    FATAL_BM ("bismon should not be running as root real user (and euid#%d)",
+              (int) geteuid ());
+  if (geteuid () == 0)
+    FATAL_BM
+      ("bismon should not be running as root effective user (and uid#%d)",
+       (int) getuid ());
   if (run_gtk_BM && run_onion_BM)
     INFOPRINTF_BM ("both GUI and Web interfaces requested");
   else if (run_onion_BM)
