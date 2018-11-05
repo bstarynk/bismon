@@ -820,7 +820,8 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           if (tokmtim.tok_kind != plex_DOUBLE)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                   lineno, colpos,
-                                  "expecting double after !@");
+                                  "expecting double after !@, but got some %s",
+                                  lexkindname_BM (tokmtim.tok_kind));
           double t = tokmtim.tok_dbl;
           objtouchmtime_BM (_.curldobj, t);
         }
