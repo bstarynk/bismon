@@ -398,21 +398,21 @@ The persistent state contains both data and ``code''. So it is made of the follo
   \emph{Bismon}), etc...
 
   \item code files~\footnote{Conceptually, the \texttt{dlopen}-ed
-    shared object files, such as our 
+    shared object files, such as our
     \texttt{modubin/modbm\_1zCsXG4OTPr\_8PwkDAWr16S.so} (which
     corresponds to the emitted
     \texttt{modules/modbm\_3BFt4NfJmZC\_7iYi2dwM38B.c} code file) are
     \emph{not} part of the persistent state. In practice, these shared
     object files obviously need to be built before starting
     \emph{bismon}, since it \texttt{dlopen}-s them at initial load
-    time.} contain the \emph{generated} C code of persistent
-    modules. Since each module is (also) reified by an object
-    representing (and generating) that module, the code file paths
-    contain objids. For example, our object
-    \texttt{\_3BFt4NfJmZC\_7iYi2dwM38B} (it is tentatively named
-    \texttt{first\_misc\_module}, of class
+    time.} contain the \emph{generated} C code of persistent modules
+    (in the \texttt{modules/} sub-directory). Since each module is
+    (also) reified by an object representing (and generating) that
+    module, the code file paths contain objids. For example, our
+    object \texttt{\_3BFt4NfJmZC\_7iYi2dwM38B} (it is tentatively
+    named \texttt{first\_misc\_module}, of class
     \texttt{\emph{basiclo\_dumpable\_module}}) is emitting its C code
-    in the
+    in the generated
     {\small{\texttt{modules/modbm\_3BFt4NfJmZC\_7iYi2dwM38B.c}}} file,
     so that code file is part of the persistent state.
 \end{itemize}

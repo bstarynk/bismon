@@ -11,12 +11,16 @@ In october 2018, the persistence machinery is working and daily used
 to enhance \texttt{bismon}. The agenda mechanism is working. A naive
 stop-the-world mark-and-sweep precise garbage collector is
 implemented. The generation of internal C code is done (by
-hand-written routines, still coded in C). The web interface is worked
-upon: a \texttt{libonion} based infrastructure is already handling
-HTTP requests, and a GDPR-compliant login form is presented on web
-browsers.
+hand-written routines, still coded in C), this enables the
+meta-programming approach. The web interface is worked upon: a
+\texttt{libonion} based infrastructure is already handling HTTP
+requests, and a GDPR-compliant login form is presented on web
+browsers. Our \texttt{jsweb\_module} contains the functions related to
+Javascript (nearly complete) and HTML generation (incomplete). The
+syntactical editor (replacing the crude GTK interface) and the GCC
+plugin generation should be worked on.
 
-@@To be written
+@@To be completed
 
 \medskip
 

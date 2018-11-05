@@ -1443,8 +1443,11 @@ cooperating Linux processes:
     \item the IoT developers using \emph{Bismon} will build their IoT
       firmware as usual; however they will add some extra options (to
       their \texttt{gcc} or \texttt{g++} cross-compilation commands)
-        to use some \emph{Bismon} generated GCC plugin in their
-        cross-compilation processes.
+      to use some \emph{Bismon} generated GCC plugin in their
+      cross-compilation processes. So these cross-compilation
+      processes (i.e. \texttt{cc1} started from \texttt{gcc}, or
+      \texttt{cc1plus} started from some \texttt{g++}, etc...),
+      augmented by generated plugins, are involved.
 
   \item sometimes \emph{Bismon} would generate some
     \texttt{modules/*.c} file during execution, and fork a (direct)
@@ -1452,7 +1455,7 @@ cooperating Linux processes:
     \texttt{./build-bismon-persistent-module.sh} -for persistent
     modules- or a \texttt{./build-bismon-temporary-module.sh} -for
     temporary modules- shell script, which invokes \texttt{make} which
-    runs some \texttt{gcc} copmmand) into a ``plugin'' module
+    runs some \texttt{gcc} command) into a ``plugin'' module
     \texttt{modubin/*.so}, which would be \texttt{dlopen}-ed.
 
   \item \emph{Bismon} should also generate the C++ code of \emph{GCC
@@ -1461,17 +1464,22 @@ cooperating Linux processes:
     plugins are considered to be generated:
 
     \begin{enumerate}
-      \item usually, the GCC plugin would be generated to assist
-        [cross-] compilation (e.g. of IoT software) by developers
-        using \emph{Bismon}. So for an IoT developer targetting some
-        RaspberryPi, it could be a GCC plugin targetting the
-        \texttt{arm-linux-gnueabi-gcc-8} cross-compiler (but the C++
-        code of that plugin needs to be compiled by the native
-        \texttt{gcc} on the host system).
+      \item usually, the GCC plugin~\footnote{It is tempting to call
+        such plugins \emph{cross-}plugins, since they would be
+        \texttt{dlopen}-ed by a cross-compiler.} would be generated to
+        assist [cross-] compilation (e.g. of IoT software) by
+        developers using \emph{Bismon}. So for an IoT developer
+        targetting some RaspberryPi, it could be a GCC plugin
+        targetting the \texttt{arm-linux-gnueabi-gcc-8} cross-compiler
+        (but the C++ code of that plugin needs to be compiled by the
+        native \texttt{gcc} on the host system).
         
       \item But the GCC API is so complex (and under-documented) that
         it is worth extracting it automatically by sometimes
-        generating a GCC plugin to inspect the public headers of
+        generating a GCC plugin~\footnote{It is tempting to call such
+          plugins \emph{straight-}plugins, since they would be
+          \texttt{dlopen}-ed by a straight compiler, not a
+          cross-compiler.} to inspect the public headers of
         GCC\footnote{In \emph{GCC MELT}, we tried to describe by
           hand-coded \emph{MELT} code a small part of that GCC API and
           its glue for \emph{MELT}. This approach is exhausting, and
