@@ -1,7 +1,7 @@
 % file bismon-doc.tex
 \documentclass[11pt,a4paper]{article}
 \usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+\usepackage[utf8x]{inputenc}
 \usepackage{alltt}
 \usepackage{moreverb}
 \usepackage{fancyvrb}
@@ -56,27 +56,28 @@
 
 \date{\bmdocdate}
 
-\title{{\color{orange}{D1.3v1}}~Specialized Static Analysis tools for more secure and safer IoT software development.
-  \\
-  {\large{\emph{Bismon}~\thanks{The \texttt{bismon} name is temporary and
-    is likely to change later. See also the
-    \bmurl{http://github.com/bstarynk/bismon} repository; this documentation was generated with its \texttt{build-bismon-doc.sh} script}~ documentation}}}
-
-\author{Basile \textsc{Starynkevitch}\thanks{Email
-    \bmemail{basile@starynkevitch.net} or
-    \bmemail{basile.starynkevitch@cea.fr}}, %
-  \\ {\small{CEA, LIST,
-      France}}}
-
+%-\title{{\color{orange}{D1.3v1}}~Specialized Static Analysis tools for more secure and safer IoT software development.
+%-  \\
+%-  {\large{\emph{Bismon}~\thanks{The \texttt{bismon} name is temporary and
+%-    is likely to change later. See also the
+%-    \bmurl{http://github.com/bstarynk/bismon} repository; this documentation was generated with its \texttt{build-bismon-doc.sh} script}~ documentation}}}
+%-
+%-\author{Basile \textsc{Starynkevitch}\thanks{Email
+%-    \bmemail{basile@starynkevitch.net} or
+%-    \bmemail{basile.starynkevitch@cea.fr}}, %
+%-  \\ {\small{CEA, LIST,
+%-      France}}}
+%-
 \makeindex
 
 \begin{document}
 
 \bibliographystyle{abbrvnat}
 
+
 \pagestyle{fancy}
 \fancyhf{}
-\rhead{\textsc{Chariot} D1.3v1}
+\rhead{\textsc{Chariot} D1.3~\textsuperscript{v1}}
 \lhead{Specialized Static Analysis tools for IoT \ldots - \emph{Bismon}}
 \renewcommand{\footrulewidth}{0.4pt}
 % https://tex.stackexchange.com/a/317531/42406
@@ -86,8 +87,22 @@
 \begin{titlepage}
 %\maketitle
 
-\begin{relsize}{-1.2}
-\subsection*{document summary information}
+  \thispagestyle{empty}
+
+  \begin{center}
+    
+    %   \bmincludewidthgraphics{width=194pt}{CHARIOT-logo-fig}{eps}{eps}
+    \includegraphics[width=194pt]{images/CHARIOT-logo}
+
+    {\large \textbf{C}ognitive \textbf{H}eterogeneous  \textbf{Ar}chitecture for
+Industrial~\textbf{IoT}}
+    
+    {\color{orange}\Huge {D1.3~\textsuperscript{v1}~Specialized Static Analysis tools for more secure and safer IoT software development.}\\
+    {\Large \emph{Bismon} documentation.}}
+
+  
+\begin{relsize}{-0.1}
+\subsection*{Document Summary Information}
   \begin{tabular}{|l|l|l|l|}
     \hline 
   \textbf{Grant Agreement} & 780075 & \textbf{Acronym} & \textsc{Chariot} \\
@@ -116,14 +131,72 @@
     \hline
   \textbf{Revision} &\multicolumn{3}{p{9cm}|}{git commit \texttt{\bmgitcommit}} \\
     \hline 
-  {\small \emph{Generated on}} &\multicolumn{3}{p{9cm}|}{{\scriptsize\textit{\bmdoctimestamp}}} \\
+  {\emph{{\LaTeX}-generated}} &\multicolumn{3}{p{9cm}|}{{\scriptsize\textit{\bmdoctimestamp}}} \\
     \hline
 \end{tabular}
 \end{relsize}
 
-\begin{abstract}
-This D1.3v1 \textsc{Chariot} deliverable is a first \textbf{draft}
--and \emph{incomplete}- version of D1.3v2 scheduled at M30 on
+\bigskip
+
+\vspace{3cm}
+
+\bigskip
+
+ \begin{tabular}{c l}
+   \hline
+       \raisebox{-0.3cm}{{\bmincludewidthgraphics{0.08\textwidth}{Flag-of-Europe-fig}{eps}{svg}}}
+       &
+       \begin{minipage}{0.7\textwidth}\smallskip
+         
+           This \textsc{Chariot} project has received funding from the European Union’s Horizon 2020 research and innovation programme under the Grant Agreement No 780075.\\
+         \end{minipage}
+       \\
+   \hline
+ \end{tabular}
+
+  \end{center}
+
+  \newpage
+
+
+\subsection*{Document History}
+This partly generated document and the \emph{Bismon} software itself
+are co-developed and have exactly {\bmgitnumbercommits} \href{http://git-scm.com/}{\texttt{git}}
+commits on \textit{\bmdoctimestamp}. See
+\bmurl{https://github.com/bstarynk/bismon/commits/} for details.
+
+\begin{relsize}{-0.5}
+This document is co-developed with the \emph{Bismon} software itself,
+it is typeset using \LaTeX~on Linux and contains some \emph{generated}
+documentation~\footnote{The generated parts are clearly identified as
+  such, and are extracted from the \emph{Bismon} system.}, mixed with
+hand-written text. During development of \texttt{bismon}, the amount
+of generated documentation will grow.  The entire history of
+\emph{Bismon} (both the software -including its persistent store- and
+this document) is available on
+\bmurl{https://github.com/bstarynk/bismon/commits} and has, for this
+document of commit id \texttt{\bmgitcommit} generated on
+\textit{\bmdocdate}, exactly {\bmgitnumbercommits} commits (or
+elementary changes). Since changes on any file in the \texttt{git}
+repository can affect this document, no ``version'' is identifiable.
+\end{relsize}
+\bigskip
+
+For convenience to the reader, here are the last~\footnote{Obtained by the
+  \texttt{git log --name-status -4} command running in \emph{bismon}
+  top source directory.} four \texttt{git commit}-s:
+
+\begin{relsize}{-2}
+  \input{generated/000-lastgitcommits.tex}
+\end{relsize}
+
+There is no notion of any identifiable ``version'' in \emph{bismon}, so
+also in this D1.3 deliverable. The work is incremental and the
+development is agile.
+
+  \subsection*{Executive Summary}
+This D1.3\textsuperscript{v1} \textsc{Chariot} deliverable is a first \textbf{draft}
+-and \emph{preliminary}- version of D1.3\textsuperscript{v2} scheduled at M30 on
 ``Specialized Static Analysis tools for more secure and safer IoT
 software development''.
 
@@ -145,31 +218,6 @@ address various concerns, while keeping the usual IoT development
 workflow (running as usual their \emph{GCC} cross-compiler on Linux,
 with extra plugin-related compilation flags).
 
-\end{abstract}
-
-\newpage
-
-
-\subsection*{document history}
-This partly generated document and the \emph{Bismon} software itself
-are co-developed and have exactly {\bmgitnumbercommits} \href{http://git-scm.com/}{\texttt{git}}
-commits on \textit{\bmdoctimestamp}. See
-\bmurl{https://github.com/bstarynk/bismon/commits/} for details.
-
-\begin{relsize}{-0.5}
-This document is co-developed with the \emph{Bismon} software itself,
-it is typeset using \LaTeX~on Linux and contains some \emph{generated}
-documentation~\footnote{The generated parts are clearly identified as
-  such.}, mixed with hand-written text. During development of
-\texttt{bismon}, the amount of generated documentation will grow.  The
-entire history of \emph{Bismon} (both the software -including its
-persistent store- and this document) is available on
-\bmurl{https://github.com/bstarynk/bismon/commits} and has, for this
-document of commit id \texttt{\bmgitcommit} generated on
-\textit{\bmdocdate}, exactly {\bmgitnumbercommits} commits (or
-elementary changes).
-\end{relsize}
-\bigskip
 
 \subsection*{notice}
 
