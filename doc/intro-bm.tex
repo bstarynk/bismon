@@ -985,7 +985,7 @@ features:
         advantage of current multi-core processors.
 
       \item with a \textbf{syntax oriented editor} (for our DSLs),
-        inspired by the ideas of \textsc{Mentor}
+        inspired by the ideas of \textsc{Mentor} in
         \cite{donzeaugouge:inria-mentor}. So the static analysis
         expert is not typing some raw text (in some concrete syntax of
         our DSL) later handled by traditional parsing techniques (as
@@ -1030,7 +1030,7 @@ browsing and changing some internal representations thru the
   that Web interface was incomplete, and I still had to temporarily
   use some obsolete GTK-based interface that even I find so disgusting
   that I won't explain it, and sometimes even to edit manually some
-  \texttt{store2.bmon} data file, cf §~\ref{subsubsec:filestate}.})
+  \texttt{store2.bmon} data file, cf §~\ref{subsubsec:filestate}.}; see also \cite{Myers:2000:PPF} for a survey)
 and interacts with \textit{Bismon} to do that. There is no really any
 \index{abstract syntax tree}{abstract syntax \emph{tree}} in
 \textit{Bismon}: what the developer is working on is some \emph{graph}
@@ -1045,8 +1045,8 @@ most Scheme or Python or JavaScript implementations) a
 \emph{multi-threaded} language, since the emitted routines can run in
 parallel in our agenda machinery (cf. §\ref{subsec:multithreadist}
 below). Meta-programming techniques (inspired by Lisp macro systems,
-and largely experimented in \emph{GCC MELT}) will ease the extension
-of that language.
+see \cite{Queinnec:1996:LSP}, and largely experimented in \emph{GCC
+  MELT}) will ease the extension of that language.
 
 The base \emph{Bismon} DSL is currently implemented~\footnote{See
   notably our hand-written files \texttt{gencode\_BM.c} and
@@ -1084,9 +1084,9 @@ local variables, local numbers, body by various attributes
 Statements of our DSL include:
 
 \begin{itemize}
-\item assign, of class \texttt{basiclo\_assign}, as explained above.
+\item assignments, of class \texttt{basiclo\_assign}, as explained above.
   
-  \item run statement, of class \texttt{basiclo\_run}, which
+  \item run statements, of class \texttt{basiclo\_run}, which
     ``evaluates'' its single operand for side effects (similar to
     expression statements in C or Go). As a special (and rather
     common) case, that operand can be a ``code chunk'' (conceptually
@@ -1094,7 +1094,7 @@ Statements of our DSL include:
     \cite{Starynkevitch-DSL2011} §3.4.1), that is a node of connective
     \texttt{chunk} providing a ``template'' for expansion as C code.
 
-    \item conditional statement, of class \texttt{basiclo\_cond},
+    \item conditional statements, of class \texttt{basiclo\_cond},
       inspired by Lisp's \texttt{cond}. Its components are a sequence
       of when clauses (which are objects of class
       \texttt{basiclo\_when}) followed the ``else'' statements or
@@ -1119,8 +1119,8 @@ Statements of our DSL include:
         the end of its locking statement is reached, or when the
         currently active routine terminates (on failure or on return).
 
-        \item execution of primitive side-effecting operations with no
-          result happens in C-expansion statements (of class
+      \item execution of primitive side-effecting operations with no
+        result happens in C-expansion statements (of class
           \texttt{basiclo\_cexpansion}), inspired by GCC MELT's
           primitives (see \cite{Starynkevitch-DSL2011}) returning
           \texttt{:void}.
