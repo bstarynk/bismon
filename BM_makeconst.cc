@@ -1,10 +1,13 @@
 // file BM_makeconst.cc
 
 /***
-    BM_makeconst: a program to scan and collect BMK_<digit> constant names
-    for example BMK_0eMGYofuNVh_8ZP2mXdhtHO is the 'in' predefined constant
+    BISMON 
+    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    contributed by Basile Starynkevitch (working at CEA, LIST, France)
+    <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
-    Copyright (C) 2017 - 2018 Basile Starynkevitch
+    BM_makeconst: a standalone program to scan and collect BMK_<digit><alphanum> constant names
+    for example BMK_0eMGYofuNVh_8ZP2mXdhtHO is the 'in' predefined constant
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

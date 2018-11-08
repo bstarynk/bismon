@@ -1,7 +1,10 @@
                               // file web_ONIONBM.c
 /***
     BISMON 
-    Copyright © 2018 Basile Starynkevitch (working at CEA, LIST, France)
+    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    contributed by Basile Starynkevitch (working at CEA, LIST, France)
+    <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
