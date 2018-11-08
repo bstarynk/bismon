@@ -13,10 +13,10 @@ architects) experts working on IoT software coded in C or C++.
 \subsection{Mapping \textsc{Chariot} output}
 \label{subsec:mapchariot}
 
-We refer to \textsc{Chariot} \emph{Grant Agreement} (GA). See table \ref{tab:mapchariot}
+We refer to \textsc{Chariot} \emph{Grant Agreement} (GA). See table \ref{tab:mapchariot} below.
 
 
-\begin{table}
+\begin{table}[!htbp]
   \caption{\label{tab:mapchariot} adherence to CHARIOT's GA deliverable and tasks descriptions}
   \medskip
   \begin{relsize}{-1.3}
@@ -105,12 +105,12 @@ We refer to \textsc{Chariot} \emph{Grant Agreement} (GA). See table \ref{tab:map
 \subsection{Deliverable Overview and Report Structure}
 \label{subsec:overview}
 
-This \textsc{Chariot} deliverable D1.3v1 is the \emph{incomplete
-  draft} of a report D1.2v2 scheduled at M30 on \emph{Specialized
-  Static Analysis tools for more secure and safer IoT software
-  development} and relates to the work performed in \textbf{T1.3}
+This \textsc{Chariot} deliverable D1.3\textsuperscript{v1} is the
+\emph{preliminary draft} of a report D1.2\textsuperscript{v2} scheduled at M30 on
 \emph{Specialized Static Analysis tools for more secure and safer IoT
-  software development}.
+  software development} and relates to the work performed in
+\textbf{T1.3} \emph{Specialized Static Analysis tools for more secure
+  and safer IoT software development}.
 
 The introduction (this §\ref{sec:intro}) describes the
 \textsc{Chariot} vision on static source code (mostly of C and C++
@@ -818,6 +818,7 @@ run.
 
 \subsection{Lessons learned from \textit{GCC MELT}}
 
+
 @@ To be written
 
 \medskip
@@ -861,13 +862,13 @@ share any code with it while retaining several principles and
 approaches of \emph{GCC MELT}.
 
 \textit{Bismon} is \textbf{work in progress}, and many things
-described here (this incomplete draft D1.3v1 of a future report D1.3v2
-scheduled for M30 - in 2020) are not completely implemented in 2018 or
-could drastically change later. In particular, \textit{Bismon} is not
-yet usable as a static source code analyser in mid-2018 (since work on
-the infrastructure is not complete).
+described here (this preliminary draft D1.3~\textsuperscript{v1} of a
+future report D1.3~\textsuperscript{v2} scheduled for M30 - in 2020)
+are not completely implemented in 2018 or could drastically change
+later.
 
 \bigskip
+
 \textit{Bismon} is (like \textit{GCC MELT} was) a \textbf{domain
   specific language} implementation, targetted to ease static source
 code analysis (above the \textit{GCC} compiler), with the following
@@ -1342,11 +1343,11 @@ garbage collector (because most of the processing happens in the
 monitor, hence performance is less important), so transforming to
 A-normal form is not required at translation (to C++) time.
 
-@@@ to be completed when some static source code analysis of some C or
-C++ code is possible with \emph{Bismon}, using \emph{generated} GCC
-plugins (emitted as C++ code by \emph{Bismon}, and used inside the
-cross-compilation processed started by IoT developers following the
-\textsc{Chariot} approach.
+% @@@ to be completed when some static source code analysis of some C or
+% C++ code is possible with \emph{Bismon}, using \emph{generated} GCC
+% plugins (emitted as C++ code by \emph{Bismon}, and used inside the
+% cross-compilation processed started by IoT developers following the
+% \textsc{Chariot} approach.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
