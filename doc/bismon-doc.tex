@@ -1,5 +1,5 @@
 % file bismon-doc.tex
-\documentclass[11pt,a4paper]{article}
+\documentclass[11pt,a4paper,svgnames]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8x]{inputenc}
 \usepackage{alltt}
@@ -46,6 +46,14 @@
 %\newcommand*\bmexpandableinput[1]{\@@input#1 }
 %\makeatother
 
+ % see https://tex.stackexchange.com/a/51349/42406
+\hypersetup{
+  colorlinks   = true, %Colours links instead of ugly boxes
+  urlcolor     = NavyBlue, %Colour for external hyperlinks
+  linkcolor    = DarkGreen, %Colour of internal links
+  citecolor   = DarkMagenta, %Colour of citations
+  frenchlinks = true,
+}
 % generated files
 \input{generated/git-commit.tex}
 \input{generated/timestamp.tex}
@@ -368,6 +376,7 @@ research and innovation programme under the Grant Agreement No
   \hline \texttt{libonion} & an HTTP server library \bmurl{https://www.coralbits.com/libonion/} \\
   \hline LLVM & The LLVM Project is an open-source collection of modular and reusable compiler and toolchain technologies \bmurl{http://www.llvm.org/} \\
   \hline MELT & the Lisp-like domain specific language used in GCC MELT \\
+  \hline RTL & (register transfer language) back-end internal representation in GCC \\
   \hline SSA & Static Single Assignment (in GCC, a variant of Gimple) \\
   \hline
 \end{tabular}

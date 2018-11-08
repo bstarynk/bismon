@@ -20,7 +20,7 @@ echo "//...  -fdump-tree-gimple  -fdump-tree-ssa -fdump-tree-optimized factinlin
 ln -svf factinline12.c.0*t.gimple factinline12-gimple.c 1>&2
 
 
-printf '\\begin{table}[ht]\n'
+printf '\\begin{table}[!htbp]\n'
 printf '\\caption{\\label{tab:factinlinegimple} recursive inlining with constant folding in \\emph{GCC} (generated early Gimple)}\n'
 printf '   \\medskip\n'
 printf '  \\begin{center}\n'

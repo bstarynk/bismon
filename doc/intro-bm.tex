@@ -510,10 +510,13 @@ specific.
 
 \bigskip
 
+\bigskip
+
 {{\raisebox{3pt}{\textcolor{brown}{\rule{0.2\textwidth}{2.0pt}}}} ~ \large{recursive inlining with constant folding}}
 
 
-\begin{table}[t]
+
+\begin{table}[!htbp]
 \caption{\label{tab:factinlinecsrc} recursive inlining with constant folding in \emph{GCC} (C source)}
    \medskip
   \begin{center}
@@ -536,7 +539,11 @@ jumps, or simple calls (in so called \emph{A-normal form}
 \index{A-normal form}, where nested calls like \verb+a=f(g(x),y);+ get
 transformed into a sequence introducing a temporary $\tau$ such as
 $\tau$\verb+=g(x)+ then \verb+a=f(+$\tau$\verb+,y)+, etc...), shown in
-table \ref{tab:factinlinegimple}. This is a textual (and quite
+table \ref{tab:factinlinegimple}.
+
+\input{generated/002-gimple-factinline.tex}
+
+This is a textual (and quite
 \emph{incomplete} since a partial view of some) dump of some in-memory
 \emph{internal intermediate representation} during compilation. What
 really matters to the \textsc{Chariot} static source code analyzer
@@ -552,12 +559,11 @@ in-memory representation is declared inside several source files of
 \texttt{gcc-8.2.0/gcc/gimple.h},
 \texttt{gcc-8.2.0/gcc/gimple-iterator.h}, etc...
 
-\input{generated/002-gimple-factinline.tex}
 
 After gimplification, many other optimizations happen. \textbf{The
   \emph{GCC} compiler runs more than two hundred optimization passes
   !}\index{optimization}\index{pass!optimization}. The table
-\ref{tab:factinlinessa} shows the ``static single assigment'' form
+\ref{tab:factinlinessa} shows the ``static single assignment'' form
 (SSA, see \cite{pop:ssa} and \cite{gcc-internals} §13), where variables are duplicated so that each SSA
 variable gets assigned only \emph{once}. The control flow is reduced
 to \index{basic block} \emph{basic blocks} (with a single entry point
@@ -571,16 +577,20 @@ other ones (after branches).
 At last, many other optimizations happen. And the optimized form in
 table \ref{tab:factinlineoptim} shows that \texttt{fact12} just
 returns the constant 479001600 (which happens to be the result of
-\texttt{fact(12)} computed \emph{at compile-time}). Finally, the
-generated assembler code has no trace of \texttt{fact} function, and
-contains just what is shown in table \ref{tab:factinlineasm} (where
-many useless comment lines, giving the detailed configuration of the
-cross compiler, have been removed).
-
-
-\bigskip
+\texttt{fact(12)} computed \emph{at compile-time}).
 
 \newpage
+
+Finally, the generated assembler code has no trace of \texttt{fact}
+function, and contains just what is shown in table
+\ref{tab:factinlineasm} (where many useless comment lines, giving the
+detailed configuration of the cross compiler, have been removed).
+
+
+
+\pagebreak
+
+
 
 {{\raisebox{3pt}{\textcolor{brown}{\rule{0.2\textwidth}{2.0pt}}}} ~ \large{heap allocation optimization}}
 
@@ -589,13 +599,9 @@ cross compiler, have been removed).
 Our second example shows that \emph{GCC} is capable of clever
 optimizations around dynamic heap allocation and de-allocation. Its
 source code in file \texttt{mallfree.c} is shown in table
-\ref{tab:mallfreecsrc}. The straight \emph{GCC}
-compiler~\footnote{Similar optimizations also happen with a GCC MIPS
-  targetted cross-compiler.} (on Linux/x86-64) is optimizing and able
-to remove the calls to \texttt{malloc} and to \texttt{free}, following
-the \emph{as-if rule} \index{as-if rule}.
+\ref{tab:mallfreecsrc}.
 
-\begin{table}[t]
+\begin{table}[!htbp]
 \caption{\label{tab:mallfreecsrc} optimization around heap allocation by \emph{GCC} (C source)}
    \medskip
   \begin{center}
@@ -609,15 +615,23 @@ the \emph{as-if rule} \index{as-if rule}.
   \end{center}
 \end{table}
 
+ The straight \emph{GCC} compiler~\footnote{Similar optimizations also
+   happen with a GCC MIPS targetted cross-compiler.} (on Linux/x86-64)
+ is optimizing and able to remove the calls to \texttt{malloc} and to
+ \texttt{free}, following the \index{as-if rule} \href{https://en.wikipedia.org/wiki/As-if\_rule}{\emph{as-if rule}}.
 
-\include{generated/004-gimplessa-mallfree}
+ %\smallskip
 
 The \emph{Gimple} form shown in table
 \ref{tab:mallfreegimple}. Pointer arithmetic has been expanded to
 target-specific \emph{address} arithmetic in byte units, knowing that
 \texttt{sizeof(int)} is 4.
 
-\begin{table}[t]
+\include{generated/004-gimplessa-mallfree}
+
+ \smallskip
+
+\begin{table}[H]
 \caption{\label{tab:mallfreegimple} optimization around heap
   allocation by \emph{GCC} (generated Gimple)}
    \medskip
@@ -639,7 +653,7 @@ The \emph{SSA/optimized} form appears in table
 to \texttt{free} have been optimized away, so the \texttt{weirdsum}
 function don't use heap allocation anymore.
 
-\begin{table}[t]
+\begin{table}[H]
 \caption{\label{tab:mallfreeoptim} optimization around heap allocation
   by \emph{GCC} (generated SSA/optimized)}
    \medskip
@@ -817,9 +831,59 @@ run.
 
 
 \subsection{Lessons learned from \textit{GCC MELT}}
+\label{subsec:lessonsgccmelt}
+
+Our previous \emph{GCC MELT} project (see \cite{Starynkevitch-DSL2011,
+  Starynkevitch-GCCMELTweb, Starynkevitch2007Multistage}) provided a
+bootstrapped Lisp-like dialect (called \emph{MELT}) to easily extend
+\emph{GCC}. That Lisp-like dialect was translated to
+\emph{GCC}-specific C++ code (in a transpiler itself coded in
+\emph{MELT}). Then \emph{GCC MELT} gave us the following insights:
+
+\begin{itemize}
+  \item the \emph{GCC} software is a huge free software project (with
+    several hundreds of contributors, many of them working on GCC at
+    least half of their time), which is \emph{continuously}
+    evolving. Following that evolution requires a significant effort
+    by itself (see for example the mail traffic -of several hundreds
+    messages monthly- on
+    \href{https://gcc.gnu.org/ml/gcc/}{\texttt{gcc@gcc.gnu.org}} and
+    \href{https://gcc.gnu.org/ml/gcc-patches/}{\texttt{gcc-patches@gcc.gnu.org}}
 
 
-@@ To be written
+  \item pushing a patch or contribution inside \emph{GCC} is very
+    demanding, since the community is quite strict (but that explains
+    the quality of GCC).
+
+  \item the \emph{GCC} plugin API~\footnote{including of course the
+    API related to internal GCC representations, such as \emph{Gimple}
+    or \emph{SSA}.} is not ``carved in stone'', and can evolve
+    incompatibly from one release of \emph{GCC} to the
+    next. Therefore, the C++ code of a plugin for \texttt{gcc-7} may
+    require some (perhaps non-trivial) modifications to be usable on
+    \texttt{gcc-8}, etc...
+
+  \item a lot of C++ code (nearly two millions lines) was generated
+    within our \emph{GCC MELT} project, and the compilation by
+    \texttt{g++} into a shared object of that emitted C++ code was a
+    significant bottleneck.
+
+  \item Implementing a generational copying garbage collector above
+    \emph{Ggc}~\footnote{This is the internal GCC garbage collector, a
+      mark-and-sweep one which can run only \emph{between} GCC
+      passes.} was challenging (debugging GC code takes a lot of time).
+
+    \item Describing, in MELT, the interface to the
+      many~\footnote{Current \emph{GCC-8} have several thousands
+        \emph{GTY}-ed classes.} C++ classes internal to \emph{GCC}
+      takes a lot of effort. Some automation would be helpful.
+
+   \item In practice, whole-program static analysis requires a
+     persistent system, since the ``link-time optimization'' ability
+     of \emph{GCC} is not plugin-friendly and is very rarely used.
+\end{itemize}
+
+@@ To be completed
 
 \medskip
 
