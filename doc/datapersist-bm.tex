@@ -364,9 +364,9 @@ the scan queue is empty, GC is finished.
 \emph{Bismon monitor}. It always starts by loading some previous
 persisted \index{state}{state}, and usually dumps its current state
 before termination. On the next run, that new state is loaded, etc....
-For convenience and portability, \emph{the state is a set of textual
-  files}~\footnote{A gross analogy is the textual dump of some SQL
-  database. That dump is the only way to reliably recover the
+For convenience and portability, \emph{the persistent state is a set
+  of textual files}~\footnote{A gross analogy is the textual dump of
+  some SQL database. That dump is the only way to reliably recover the
   database, so it should be done frequently and the backed-up
   \texttt{database.sql} textual dump can be a large file of many
   gigabytes.}.
@@ -383,10 +383,34 @@ relational database management system (or server) such as
   its close variant \bmurl{http://mariadb.org/} for more. Notice also
   that \bmurl{http://sqlite.org/} is a library often used to embed a
   single, simple, relational database inside a program.}, etc etc...
-Databases are routinely capable to deal with large amount of data
-(e.g. many terabytes), much more than the available RAM, because the
-application using some database is \emph{explicitly} fetching and
-updating only a tiny part of it. Hence
+Databases are routinely capable to deal with a very large amount of
+data (e.g. many terabytes or even petabytes), much more than the
+available RAM, because the application using some database is
+\emph{explicitly} fetching and updating only a tiny part of it. Hence
+such persistence is not orthogonal.
+
+\emph{Orthogonal persistence} \index{persistence!orthogonal}
+\index{orthogonal persistence} (see \cite{Dearle-2010-orthopersist})
+is defined in
+\href{https://en.wikipedia.org/wiki/Persistence\_(computer\_science)\#Orthogonal\_or\_transparent\_persistence}{Wikipedia} as~: ``Persistence is said to be "orthogonal" or "transparent" when it is
+implemented as an intrinsic property of the execution environment of a
+program. An orthogonal persistence environment does not require any
+specific actions by programs running in it to retrieve or save their
+state.''.
+
+Since the \emph{Bismon} monitor deals only with the source code of
+some (perhaps large) IoT firmware and its related internal
+representations, the total volume of data should easily fit inside the
+RAM of a high-end workstation. For example, several millions lines of
+source code makes a large IoT firmware~\footnote{Most of the firmware
+  we heard of, even from \textsc{Chariot} partners, have less than
+  several hundreds thousands lines of C or C++, which expands to one
+  or two millions Gimple statements. This should fit into one or a few
+  dozens of gigabytes at most, even taking into account that several
+  variants of internal representations are kept.} but can be kept in
+RAM. Hence \emph{Bismon} favors a (nearly) orthogonal persistence. The
+only action required to keep its state is a full dump of its entire
+persistent heap.
 
 The persistent state should be considered as precious and as valuable
 as source code of most software, so it should be backed-up and
