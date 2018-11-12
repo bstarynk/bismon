@@ -775,7 +775,7 @@ its persistent state in some files. For convenience, a textual format
 is preferable~\footnote{This is conceptually similar the the SQL dump
   files of current RDBMS. But of course \emph{Bismon} don't use an SQL
   format, but its own textual format.}. These persistent store files
-could (and probably should) be regularily backed up and kept in some
+could (and actually should) be regularily backed up and kept in some
 version control system.
 
 Since a single \emph{Bismon} process is used by a small team of IoT
@@ -947,7 +947,7 @@ features:
     \textit{several} compiling and linking processes and commands. So
     most of the data handled by \textit{Bismon} can be persisted on
     disk, and reloaded at the next run. However, some data is
-    temporary by nature\footnote{E.g. data related to a web session,
+    temporary by nature~\footnote{E.g. data related to a web session,
       or to a web HTTP exchange, or to an ongoing \texttt{gcc}
       compilation process, etc... needs not to be persisted, and would
       be useless when restarting the \textit{Bismon monitor}.} and

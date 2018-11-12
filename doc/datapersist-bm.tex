@@ -369,17 +369,35 @@ For convenience and portability, \emph{the state is a set of textual
   database. That dump is the only way to reliably recover the
   database, so it should be done frequently and the backed-up
   \texttt{database.sql} textual dump can be a large file of many
-  gigabytes.}. The persistent state should be considered as precious
-and as valuable as source code of most software, so it should be
-backed-up and probably version-controlled~\footnote{How and when the
-  persistent state is dumped, backed up and version controlled is out
-  of scope of this report. We strongly recommend doing that
-  frequently, at least several times every day and probably a few
-  times each hour. If the \textit{Bismon monitor} crashes, you have
-  lost everything since the latest dumped persistent store. The
-  textual format of the persisted state should be friendly to most
-  version control systems and other utilities.} at every site using
-the \emph{Bismon} monitor. 
+  gigabytes.}.
+
+In the Internet world, persistence is generally handled \emph{outside}
+of the application, by using \index{database} databases. These
+databases can be relational (see \cite{Date:2005:Database-in-Depth})
+or non-relational (so called \emph{NoSQL} databases, see
+\cite{RAJ-2018-NoSQL}). Relational databases are often SQL based
+(cf. \cite{Date:2011:SQL-relth}), so applications are using a
+relational database management system (or server) such as
+\textsc{PostGreSQL}~\footnote{See \bmurl{http://postgresql.org/} for
+  more.} or \textsc{MySQL}~\footnote{See \bmurl{http://mysql.com/} and
+  its close variant \bmurl{http://mariadb.org/} for more. Notice also
+  that \bmurl{http://sqlite.org/} is a library often used to embed a
+  single, simple, relational database inside a program.}, etc etc...
+Databases are routinely capable to deal with large amount of data
+(e.g. many terabytes), much more than the available RAM, because the
+application using some database is \emph{explicitly} fetching and
+updating only a tiny part of it. Hence
+
+The persistent state should be considered as precious and as valuable
+as source code of most software, so it should be backed-up and
+probably version-controlled~\footnote{How and when the persistent
+  state is dumped, backed up and version controlled is out of scope of
+  this report. We strongly recommend doing that frequently, at least
+  several times every day and probably a few times each hour. If the
+  \textit{Bismon monitor} crashes, you have lost everything since the
+  latest dumped persistent store. The textual format of the persisted
+  state should be friendly to most version control systems and other
+  utilities.} at every site using the \emph{Bismon} monitor.
 
 %%%%%%%%%%%%%%%%
 \subsubsection{file organization of the persistent state}
