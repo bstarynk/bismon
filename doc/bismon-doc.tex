@@ -91,7 +91,8 @@
 % https://tex.stackexchange.com/a/317531/42406
 \futurelet\TMPfootrule\def\footrule{{\color{orange}\TMPfootrule}}
 \futurelet\TMPheadrule\def\headrule{{\color{orange}\TMPheadrule}}
-\rfoot{Page \thepage ~ {\relsize{-2.5}{of \pageref{LastPage}}}}
+\lfoot{{\color{LightSlateGrey}{\relsize{+1}{DRAFT}}}~\relsize{-1.5}{\texttt{\bmgitcommit}}}
+\rfoot{{Page \thepage ~ {\relsize{-2.5}{of \pageref{LastPage}}}}}
 \begin{titlepage}
 %\maketitle
 
@@ -180,21 +181,21 @@ Industrial~\textbf{IoT}}
 
   \medskip
   
-  {\large {\color{red}{@@For CHARIOT consortium: I (Basile Starynkevitch) could give a few \texttt{git commit}-s but not all of them. If you require them to be listed, then which \emph{precise}
-        \texttt{git commit}-s could be considered as having been
-        peer-reviewed and quality-controlled? Please list them
-        extensively and send an email to me, \href{mailto:basile.starynkevitch@cea.fr}{\texttt{basile.starynkevitch@cea.fr}}. Thanks!}}}
-
-  \medskip
+%- {\large {\color{red}{@@For CHARIOT consortium: I (Basile Starynkevitch) could give a few \texttt{git commit}-s but not all of them. If you require them to be listed, then which \emph{precise}
+%-       \texttt{git commit}-s could be considered as having been
+%-       peer-reviewed and quality-controlled? Please list them
+%-       extensively and send an email to me, \href{mailto:basile.starynkevitch@cea.fr}{\texttt{basile.starynkevitch@cea.fr}}. Thanks!}}}
+%-
+%- \medskip
   
 This partly generated document and the \emph{Bismon} software itself
 are co-developed in an agile and incremental manner, and have exactly {\bmgitnumbercommits} \href{http://git-scm.com/}{\texttt{git}}
 commits on \textit{\bmdoctimestamp}. See
-\bmurl{https://github.com/bstarynk/bismon/commits/} for details. These commits are too numerous and too fine grained to be considered as ``versions''. Given the agile and continuous workflow, it is unreasonable, and practically impossible, to identify any formalized versions.
+\bmurl{https://github.com/bstarynk/bismon/commits/} for details. These commits are too many and too fine grained to be considered as ``versions''. Given the agile and continuous workflow, it is unreasonable, and practically impossible, to identify any formalized versions.
 
 \begin{relsize}{-0.5}
 This document is co-developed with the \emph{Bismon} software itself,
-it is typeset using \LaTeX~on Linux and contains some \emph{generated}
+it was typeset using \LaTeX~on Linux and contains some \emph{generated}
 documentation~\footnote{The generated parts are clearly identified as
   such, and are extracted from the \emph{Bismon} system.}, mixed with
 hand-written text. During development of \texttt{bismon}, the amount
@@ -386,6 +387,7 @@ research and innovation programme under the Grant Agreement No
   \hline MELT & the Lisp-like domain specific language used in GCC MELT \\
   \hline Persistence & From Wikipedia~: ``In computer science, \emph{persistence} refers to the characteristic of state that outlives the process that created it. This is achieved in practice by storing the state as data in computer data storage''. \bmurl{https://en.wikipedia.org/wiki/Persistence\_(computer\_science)} \\
   \hline RTL & (register transfer language) back-end internal representation in GCC \\
+  \hline static code analysis & (or static program analysis) ``is the analysis of computer software that is performed without actually executing programs, in contrast with dynamic analysis, which is analysis performed on programs while they are executing.'' (from Wikipedia: \bmurl{https://en.wikipedia.org/wiki/Static\_program\_analysis}). In this D1.3\textsuperscript{v1} report, it means static source code analysis, in practice analysis of C or C++ code for IoT fed to the \emph{GCC} compiler. \\
   \hline SSA & Static Single Assignment (in GCC, a variant of Gimple) \\
   \hline
 \end{tabular}

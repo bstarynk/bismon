@@ -3,7 +3,7 @@
 \label{sec:datapersist}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{data processed in \emph{Bismon}}
+\subsection{Data processed in \emph{Bismon}}
 
 \label{subsec:dataproc}
 
@@ -112,7 +112,7 @@ also have an hashcode to be easily put in hash tables, etc..
 \label{subsubsec:objects}
 
 \index{object}{Objects} are the only kind of \index{mutable}{mutable}
-values, and are somehow heavy (at least severy dozens of machine words
+values, and are somehow heavy (at least several dozens of machine words
 in memory for each object). They can be accessed nearly simultaneously
 by several worker threads running different tasklets, so they need a
 locking mechanism and contain a (recursive) mutex~\footnote{Each
@@ -200,7 +200,7 @@ them at a given instant).
         \emph{\texttt{object}} or more often of some indirect
         sub-class of it; of course these invariants cannot be proved.}
       the class of any object. Classes describe the behavior (i.e. the
-      dictionnary of ``methods''), not the content (i.e. the
+      dictionary of ``methods''), not the content (i.e. the
       ``attributes'') of objects and enable single-inheritance (every
       class has one super-class).
 
@@ -263,7 +263,7 @@ them at a given instant).
         \begin{enumerate}
         \item mutable \index{string buffer}{\emph{string buffer}}.
           \item mutable \index{class}{\emph{class} information} (with its super class, and
-            the method ``dictionnary'' associating objects -selectors-
+            the method ``dictionary'' associating objects -selectors-
             to closures). The class objects are required to have such
             a payload.
         \item mutable \index{vector}{\emph{vector}} of values (like
@@ -276,7 +276,7 @@ them at a given instant).
         \item mutable \index{hash map}{\emph{hash maps}} to associate arbitrary
             non-nil values used as keys to other arbitrary non-nil
             values.
-            \item mutable \index{dictionnary}{\emph{string dictionnaries}} associating
+            \item mutable \index{dictionary}{\emph{string dictionaries}} associating
               non-empty strings to non-nil values.
           \item etc...
         \end{enumerate}
@@ -292,7 +292,7 @@ them at a given instant).
 \medskip
 
 For convenience, (some) objects can also be (optionally) named, in
-some top-level \index{dictionnary}{``dictionnary''} or ``symbol
+some top-level \index{dictionary}{``dictionary''} or ``symbol
 table'' (which actually contain weak references to named objects). But
 the \index{name}{name} of an object is not part of it.
 

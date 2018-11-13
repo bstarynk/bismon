@@ -45,8 +45,16 @@ We refer to \textsc{Chariot} \emph{Grant Agreement} (GA). See table \ref{tab:map
       documentation of the compiler and linker extensions. An initial
       version set (V1) will be compiled by M12 followed by a revised
       version set (v2) in M30.}
-      & {this whole document} 
-      & {a single deliverable (with two versions of it) describes the work.} \\
+      & {this whole document}      
+      & {a single deliverable (with two versions of it, a preliminary
+          draft one D1.3\textsuperscript{v1} and a final one
+          D1.3\textsuperscript{v2}) describes the
+          work. §\ref{sec:intro} is an overview and introduces the
+          main concepts. §\ref{sec:datapersist} explains
+          persistence. §\ref{sec:staticanalys} relates to static
+          analysis. §\ref{sec:using} will become a user
+          manual. §\ref{sec:miscwork} relates miscellanous work. The
+          conclusion is in §\ref{sec:conclusion}.} \\      
       \hline
       \multicolumn{4}{|c|}{{\large \textbf{tasks}}} \\
       \hline
@@ -287,15 +295,15 @@ taxonomies of software defects \index{defect!software} already exist
 (e.g. \cite{Silva:2016:SES, Wagner:2008:DCD, Levine:2009:DDE}
 etc....), notably for IoT\index{IoT} (see \cite{Carpent:2018:RRA,
   Ahmad:2018:ModelBasedIoT, Laszlo:2018:Vessedia}); however the
-relation between an explicited defect and a source code property is
+relation between an explicit defect and a source code property is
 generally fuzzy, or ill-defined.
 
-Static source code analysis tools can -grossly speaking-
+Static source code analysis tools can -generally speaking-
 be~\footnote{This is a gross simplification! In practice, there is a
   continuous spectrum of source code analyzers, much like there is a
   spectrum between compilers and interpreters (with e.g. bytecode or
   JIT implementations sitting in between compilation and naive
-  interpretation).} viewed as being of either one of two kinds:
+  interpretation).} viewed as being of one of two kinds:
 
 \begin{itemize}
   \item strongly formal methods based, semantically oriented,
@@ -405,7 +413,8 @@ them.
 
 In contrast, \textsc{Chariot} focuses mainly on a \emph{systems of
   systems} (e.g. networks of systems and systems of networks)
-approach, so ``aims to address is how safety-critical-systems should
+approach, so~\footnote{Taken in october 2018 from \bmurl{https://www.chariotproject.eu/About}, \emph{§Technical Approach}.}
+``aims to address how safety-critical-systems should
 be securely and appropriately managed and integrated with a fog
 network made up of heterogeneous IoT devices and gateways.''. Within
 \textsc{Chariot}, static analysis methods have to be ``simple'' and
@@ -417,7 +426,7 @@ hardware experts, are noticing that their favorite IDE (provided by
 their main IoT hardware vendor) is running some GCC under the hoods
 during the build of their firmware, but are not used to static source
 code analysis tools. The \textsc{Chariot} approach to static source
-code analysis do \emph{not} require the same level of expertise as needed for
+code analysis does \emph{not} require the same level of expertise as needed for
 the \emph{Verified in Europe} label pushed by the \textsc{Vessedia}
 project.
 
@@ -435,11 +444,11 @@ some additional flags to \emph{existing} \texttt{gcc} or \texttt{g++}
 cross-compilation commands, and needs simply to change slightly
 his/her build automation scripts (e.g. add a few lines to his
 \texttt{Makefile}). Such a gentle approach (see figure
-\ref{fig:chariotcompil}; of course the \emph {details} of compilation
-commands would change, the commands shown in the figure are grossly
-simplified!) has the advantage of not disturbing much the usual
+\ref{fig:chariotcompil}) has the advantage of not disturbing much the usual
 developer workflow and habit, and addresses also the \emph{junior} IoT
-software developer. The compilation and linking processes are
+software developer. Of course the \emph {details} of compilation
+commands would change, the commands shown in the figure \ref{fig:chariotcompil} are grossly
+simplified! The compilation and linking processes are
 communicating -via some additional \emph{GCC} plugins
 (cf. \cite{gcc-internals} §24) doing inter-process communication- with
 our \index{persistent monitor} \index{persistent!monitor}
@@ -481,7 +490,7 @@ firmware blob, if it was compiled with the help of some hypothetical
 compiler (generally used as a
 \emph{\index{compiler}\index{cross-compiler}cross-compiler} for IoT
 firmware development) Current versions of \emph{GCC} (that is, GCC 8.2
-in september 2018) are capable of quite surprising optimizations
+as of September 2018) are capable of quite surprising optimizations
 (internally based upon some sophisticated static analysis techniques
 and advanced heuristics). But to provide such clever optimizations,
 the \textbf{\emph{GCC} compiler has to be quite a large software, of
@@ -712,7 +721,7 @@ internally the standard \texttt{::operator new} and \texttt{::operator
 
 \subsubsection{Leveraging simple static source analysis on \emph{GCC}}
 
-By hooking thru \textsc{Chariot} specific GCC
+By hooking through \textsc{Chariot} specific GCC
 \emph{plugins}~\footnote{Notice that GCC plugins work mostly on Linux
   -but not really on Windows-, so this explains the \textsc{Chariot}
   requirement of [cross-]compiling IoT firmware on a Linux
@@ -775,19 +784,19 @@ its persistent state in some files. For convenience, a textual format
 is preferable~\footnote{This is conceptually similar the the SQL dump
   files of current RDBMS. But of course \emph{Bismon} don't use an SQL
   format, but its own textual format.}. These persistent store files
-could (and actually should) be regularily backed up and kept in some
+could (and actually should) be regularly backed up and kept in some
 version control system.
 
 Since a single \emph{Bismon} process is used by a small team of IoT
 developers, it provides some web interface\index{web interface}: each
-IoT developer will interact with the persistent monitor thru his/her
+IoT developer will interact with the persistent monitor through his/her
 web \index{browser} browser~\footnote{We don't aim compatibility with
   all web browsers -including old ones- but just with the latest
   \emph{Chrome} (v.70 or newer) and \emph{Firefox} (v.63 or newer)
   browsers, using HTML5, JavaScript, WebSockets, AJAX
   technologies.}. In addition, a static analysis expert (which could
 perhaps be the very senior IoT developer of the team) will configure
-the static analysis (also thru a web interface).
+the static analysis (also through a web interface).
 
 The figure \ref{fig:bismonit} gives an overall picture: on the top,
 both Alice and Bill are working on the same IoT project source code
@@ -883,7 +892,8 @@ bootstrapped Lisp-like dialect (called \emph{MELT}) to easily extend
      of \emph{GCC} is not plugin-friendly and is very rarely used.
 \end{itemize}
 
-@@ To be completed
+The final D1.3\textsuperscript{v2} document may add further relevant
+items to the above list.
 
 \medskip
 
@@ -1180,7 +1190,7 @@ Statements of our DSL include:
         containing that statement.
 
       \item locking of objects use a \texttt{basiclo\_lockobj} class
-        (mentioning both a object to lock and a sequence of
+        (mentioning both an object to lock and a sequence of
         sub-statements or blocks). A locked object is unlocked when
         the end of its locking statement is reached, or when the
         currently active routine terminates (on failure or on return).
@@ -1258,7 +1268,7 @@ We are still growing \emph{Bismon} by feeding it with additional
 interactions changing its persistent state. At first, we developed (at
 begin of bootstrap\index{bootstrap}) a crude GTK\index{GTK} interface,
 shown in figure \ref{fig:bismonscreenshot-cbdcf}, which is a
-screenshot made on october 22\textsuperscript{th} 2018 on git commit
+screenshot made on October 22\textsuperscript{nd} 2018 on git commit
 \texttt{cbdcf1ec351c3f2a}, when working on the JavaScript generator
 inside \emph{Bismon}. It shows several windows: the large top right
 window (named \texttt{new-bismon}) has a command textview (ivory
@@ -1346,7 +1356,7 @@ the command line~\footnote{Use the option \texttt{--contributor=} to
 similar to \texttt{git}. When they access any dynamic web page, a
 login web form appears (with some GDPR \index{GDPR} related notice) if
 no web cookie identifies them. But that Web interface is still
-incomplete in october 2018. Several design decisions have been made:
+incomplete in October 2018. Several design decisions have been made:
 we will use the \texttt{codemirror}~\footnote{See
   \bmurl{http://codemirror.net/} for more.} web framework to show the
 analyzed source code of IoT software. The web interface for IoT
@@ -1453,7 +1463,7 @@ machinery. Conceptually, the agenda is a 5-tuple of first-in first-out
 queues of \index{tasklet}{\textbf{tasklets}}, each such FIFO queue is
 corresponding to one of the five \index{priority}{priorities} :
 \emph{very high}, \emph{high}, \emph{normal}, \emph{low}, \emph{very
-  low}. Each agenda worker thread removes one tasklet (chossing the
+  low}. Each agenda worker thread removes one tasklet (choosing the
 queue of highest possible priority which is non empty, and picking the
 tasklet in front of that queue) and runs that tasklet quickly. A
 tasklet should run during a few milliseconds (e.g. with some implicit
@@ -1535,8 +1545,8 @@ cooperating Linux processes:
         \texttt{dlopen}-ed by a cross-compiler.} would be generated to
         assist [cross-] compilation (e.g. of IoT software) by
         developers using \emph{Bismon}. So for an IoT developer
-        targetting some RaspberryPi, it could be a GCC plugin
-        targetting the \texttt{arm-linux-gnueabi-gcc-8} cross-compiler
+        targeting some RaspberryPi, it could be a GCC plugin
+        targeting the \texttt{arm-linux-gnueabi-gcc-8} cross-compiler
         (but the C++ code of that plugin needs to be compiled by the
         native \texttt{gcc} on the host system).
         
