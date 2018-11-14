@@ -91,8 +91,8 @@
 % https://tex.stackexchange.com/a/317531/42406
 \futurelet\TMPfootrule\def\footrule{{\color{orange}\TMPfootrule}}
 \futurelet\TMPheadrule\def\headrule{{\color{orange}\TMPheadrule}}
-\lfoot{{\color{LightSlateGrey}{\relsize{+1}{DRAFT}}}~\relsize{-1.5}{\texttt{\bmgitcommit}}}
-\rfoot{{Page \thepage ~ {\relsize{-2.5}{of \pageref{LastPage}}}}}
+\fancyfoot[L]{{\raisebox{0.0cm}[1pt][1pt]{\color{LightSlateGrey}{{\relsize{+1}{DRAFT}}}~\relsize{-1.5}{\texttt{\bmgitcommit} on \emph{\bmgitdate}}}}}
+\fancyfoot[R]{{Page \thepage ~ {\relsize{-2.5}{of \pageref{LastPage}}}}}
 \begin{titlepage}
 %\maketitle
 
@@ -138,7 +138,7 @@ Industrial~\textbf{IoT}}
   \textbf{Contributions from} &\multicolumn{3}{l|}{ - }
   \\
     \hline
-  \textbf{Revision} &\multicolumn{3}{p{9cm}|}{git commit \texttt{\bmgitcommit}} \\
+  \textbf{Revision} &\multicolumn{3}{p{9cm}|}{git commit \texttt{\bmgitcommit} on \textit{\bmgitdate}} \\
     \hline 
   {\emph{{\LaTeX}-generated}} &\multicolumn{3}{p{9cm}|}{{\scriptsize\textit{\bmdoctimestamp}}} \\
     \hline
@@ -203,7 +203,7 @@ of generated documentation will grow.  The entire history of
 \emph{Bismon} (both the software -including its persistent store- and
 this document) is available on
 \bmurl{https://github.com/bstarynk/bismon/commits} and has, for this
-document of commit id \texttt{\bmgitcommit} generated on
+document of commit id \texttt{\bmgitcommit} (done on \emph{\bmgitdate}) generated on
 \textit{\bmdocdate}, exactly {\bmgitnumbercommits} commits (or
 elementary changes). Since changes on any file in the \texttt{git}
 repository can affect this document, no ``version'' is identifiable.

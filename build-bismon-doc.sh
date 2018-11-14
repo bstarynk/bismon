@@ -19,9 +19,10 @@ mkdir -p doc/htmldoc/
 ## backup the old pdf file
 mv -vfb doc/bismon-doc.pdf doc/bismon-doc.pdf% 
 
-# generate the git tag
+# generate the git tag and date
 bmgittag=$(git log --format=oneline -1 --abbrev=16 --abbrev-commit -q|cut -d' ' -f1)
 git log --format=oneline -1 --abbrev=16 --abbrev-commit -q | awk '{printf "\\newcommand{\\bmgitcommit}[0]{%s}\n", $1}' > doc/generated/git-commit.tex
+git log -1 '--format=tformat:\newcommand{\bmgitdate}[0]{%ad}' --date=format:%Y-%b-%d >> doc/generated/git-commit.tex
 # generate the number of commits; should be doable in a more efficient way
 nbc=$(git log | grep '^commit' | wc -l)
 printf '\\newcommand{\\bmgitnumbercommits}[0]{%d}\n' $nbc >> doc/generated/git-commit.tex
