@@ -3311,6 +3311,11 @@ DBGPRINTF_BM("debug emitjs_node_conn°basiclo_primitive €%.9s o_bindings=%s v_
 /*objputclass:*/objputclass_BM(( /*o_bindings:*/_.o_5HkpTupRRIK_8iCooVukjb3),( (constob_1zCsXG4OTPr_8PwkDAWr16S_BM[95] /*!assoc_object*/)));  
 } // end cexpansion _3QEnQSbjnSB_8N8njfcJdfF - objputclass  
   
+ 
+{ // run _6f69gReIEpU_5iWSSb6Zsao 
+/*objputassocpayl:*/ objputassocpayl_BM( /*o_bindings:*/_.o_5HkpTupRRIK_8iCooVukjb3,/*add_int:*/(( /*leni:*/_.n_833x2jYqhZh_8vDIuJhwz1k) + ( 3))); 
+} // end run _6f69gReIEpU_5iWSSb6Zsao 
+  
 objunlock_BM (locked_0zT69gURIgX_51wYIfWtdk7), locked_0zT69gURIgX_51wYIfWtdk7 = NULL; 
 } } // end objlock _0zT69gURIgX_51wYIfWtdk7 
 /* !endingblock _7CVonsCMumZ_3pgPGUcDI11 */ 

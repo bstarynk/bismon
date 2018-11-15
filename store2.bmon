@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1708 objects
+// for 1709 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -10133,15 +10133,16 @@ _5J5pv8d2W5o_5oKsK4Eu12b
 
 
 !(_0zT69gURIgX_51wYIfWtdk7
-!@ 1542295065.664
+!@ 1542295917.875
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "lock o_bindings ... fill it"
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _5HkpTupRRIK_8iCooVukjb3
-!# 2
+!# 3
 !& _6KmH1XZBu7b_338ohS7bqho
 !& _3QEnQSbjnSB_8N8njfcJdfF
+!& _6f69gReIEpU_5iWSSb6Zsao
 !)_0zT69gURIgX_51wYIfWtdk7
 
 
@@ -19102,6 +19103,17 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 !# 1
 !& _8jLK3j4Q9QN_5M9UwDUa5fG
 !)_6eS22VSTjYz_84cYIy5eErI
+
+
+
+!(_6f69gReIEpU_5iWSSb6Zsao
+!@ 1542295917.875
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "objputassocpayl(o_bindings leni+3)"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _4bNJRwDDAwq_0d4dKUTkMgd ( _5HkpTupRRIK_8iCooVukjb3  * _3fb1EHtMPwQ_7XEPTUgUmX4 ( _833x2jYqhZh_8vDIuJhwz1k  3))
+!)_6f69gReIEpU_5iWSSb6Zsao
 
 
 
