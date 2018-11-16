@@ -4241,7 +4241,7 @@ objshow_newgui_cbBM (void)
               else
                 {
                   DBGPRINTF_BM ("objshow_newgui_cbBM without showob");
-                  parsererrorprintf_BM (showpars, 0, 0, "no object to show",
+                  parsererrorprintf_BM (showpars, CURFRAME_BM, 0, 0, "no object to show",
                                         NULL);
                 }
             }
@@ -4628,7 +4628,7 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
       _.endclosv = nodenthson_BM (_.pendingv, 2);
       ASSERT_BM (!_.dirstrv || isstring_BM (_.dirstrv));
       ASSERT_BM (isnode_BM (_.cmdnodv) && nodewidth_BM (_.cmdnodv) > 0);
-      ASSERT_BM (isclosure_BM (_.endclosv));
+      ASSERT_BM (isclosure_BM ((value_tyBM)_.endclosv));
       fork_gtk_process_at_slot_BM (slot, _.dirstrv, _.cmdnodv, _.endclosv,
                                    CURFRAME_BM);
     }
