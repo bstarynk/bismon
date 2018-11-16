@@ -2319,7 +2319,7 @@ startblock__8GOPNT1AML7_5vAQJrMpDGM: __attribute__((unused));
  
 { // run _0G71wVRKzqP_6SuU5zb4jPA 
  /*debug start emitjs_fill_bindings_from_node o_bindings v_expr v_tupformals depth o_from*/
-DBGPRINTF("emitjs_fill_bindings_from_node start €%s o_bindings=%s v_expr=%s v_tupformals=%s depth=%s o_from=%s",
+DBGPRINTF_BM("emitjs_fill_bindings_from_node start €%s o_bindings=%s v_expr=%s v_tupformals=%s depth=%ld o_from=%s",
  "_0G71wVRKzqP_6SuU5zb4jPA",
  objectdbg_BM( /*o_bindings:*/_.o_5HkpTupRRIK_8iCooVukjb3),
  OUTSTRVALUE_BM( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M),
