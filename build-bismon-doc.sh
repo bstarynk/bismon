@@ -17,7 +17,7 @@ mkdir -p doc/generated/
 mkdir -p doc/htmldoc/
 
 ## backup the old pdf file
-mv -vfb doc/bismon-doc.pdf doc/bismon-doc.pdf% 
+mv -vfb doc/bismon-chariot-doc.pdf doc/bismon-chariot-doc.pdf% 
 
 # generate the git tag and date
 bmgittag=$(git log --format=oneline -1 --abbrev=16 --abbrev-commit -q|cut -d' ' -f1)
@@ -77,19 +77,19 @@ for pngfile in images/*.png ; do
     fi
 done
 
-pdflatex -halt-on-error bismon-doc < /dev/null
-bibtex bismon-doc < /dev/null
-pdflatex -halt-on-error bismon-doc < /dev/null
-makeindex bismon-doc < /dev/null
-pdflatex -halt-on-error bismon-doc < /dev/null
-bibtex bismon-doc < /dev/null
-pdflatex -halt-on-error bismon-doc < /dev/null || (echo failed pdflatex -halt-on-error bismon-doc got $? >/dev/stderr)
-[ -d $HOME/tmp/ ] && cp -v bismon-doc.pdf $HOME/tmp/bismon-doc-$bmgittag.pdf
+pdflatex -halt-on-error bismon-chariot-doc < /dev/null
+bibtex bismon-chariot-doc < /dev/null
+pdflatex -halt-on-error bismon-chariot-doc < /dev/null
+makeindex bismon-chariot-doc < /dev/null
+pdflatex -halt-on-error bismon-chariot-doc < /dev/null
+bibtex bismon-chariot-doc < /dev/null
+pdflatex -halt-on-error bismon-chariot-doc < /dev/null || (echo failed pdflatex -halt-on-error bismon-chariot-doc got $? >/dev/stderr)
+[ -d $HOME/tmp/ ] && cp -v bismon-chariot-doc.pdf $HOME/tmp/bismon-chariot-doc-$bmgittag.pdf
 ls -l $PWD/*aux $PWD/*/*aux $PWD/*bbl $PWD/*/*bbl
-hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex svg.hva bismon-hevea.hva bismon-doc
-#bibhva bismon-doc
+hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex svg.hva bismon-hevea.hva bismon-chariot-doc
+#bibhva bismon-chariot-doc
 bibhva htmldoc/bismon-htmldoc
 ls -l $PWD/*aux $PWD/*/*aux 
-hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-doc
+hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-chariot-doc
 #hacha -o htmldoc/index.html  htmldoc/bismon-htmldoc.html
 tar -c -f - htmldoc/ | tardy -Remove_Prefix htmldoc -Prefix bismon-html-doc -User_NAme bismon -Group_NAme bismon | gzip -9 > bismon-html-doc.tar.gz
