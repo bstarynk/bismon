@@ -2328,6 +2328,49 @@ DBGPRINTF_BM("emitjs_fill_bindings_from_node start €%s o_bindings=%s v_expr=%s
  objectdbg1_BM( /*o_from:*/_.o_89nz0KaXXZh_8eSgMmqnK37)); ; 
 } // end run _0G71wVRKzqP_6SuU5zb4jPA 
  
+//+ #2/5 of block _8GOPNT1AML7_5vAQJrMpDGM :: 
+ 
+ /*leni:*/_.n_833x2jYqhZh_8vDIuJhwz1k = //assign _3rp2THOrOaF_3szoh50xrvT  
+/*nodewidth:*/(intptr_t)nodewidth_BM( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M); 
+ 
+ 
+ /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B = //assign _1zWkLjTtOCC_50yzmrQXPRB  
+ 0; 
+ 
+ 
+ 
+//// +while _9O0AvAOjncA_3N89SZsQEoI 
+startblock__9O0AvAOjncA_3N89SZsQEoI:  /*+!while*/; 
+{ /* +while _9O0AvAOjncA_3N89SZsQEoI */  
+if (!(/*while _9O0AvAOjncA_3N89SZsQEoI cond:*/ (/*less_int:*/( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B) < ( /*leni:*/_.n_833x2jYqhZh_8vDIuJhwz1k)))) //: testwhile _9O0AvAOjncA_3N89SZsQEoI failing   
+  goto endblock__9O0AvAOjncA_3N89SZsQEoI; //failwhile   
+// while _9O0AvAOjncA_3N89SZsQEoI body:   
+// while _9O0AvAOjncA_3N89SZsQEoI comp#0:  
+ /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe = //assign _7hwY5FiYMZi_8dIHaDvpMFg   
+/*nodenthson:*/nodenthson_BM(( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M),( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B));  
+// while _9O0AvAOjncA_3N89SZsQEoI comp#1:  
+ /*o_curformal:*/_.o_3OjnHSbyAvp_5WFWOCJ1dPr = //assign _2TUCN1EQPLr_2Z5eW9eTNcD   
+/*tuplecompnth:*/tuplecompnth_BM((const tupleval_tyBM*)( /*v_tupformals:*/_.v_8LWjSSWiPiQ_87yzCnQr6b2), (int)( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B));  
+// while _9O0AvAOjncA_3N89SZsQEoI comp#2:  
+  
+{ // run _5RTvUlmHIl9_1GZhPlpZK6M  
+/*debug ii v_comp o_curformals*/
+  DBGPRINTF_BM("emitjs_fill_bindings_from_node €%.9s ii=%ld v_comp=%s o_curformal=%s",
+  "_5RTvUlmHIl9_1GZhPlpZK6M",
+  (long int) ( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B),
+  OUTSTRVALUE_BM( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe),
+  objectdbg_BM( /*o_curformal:*/_.o_3OjnHSbyAvp_5WFWOCJ1dPr));
+   ;  
+} // end run _5RTvUlmHIl9_1GZhPlpZK6M  
+// while _9O0AvAOjncA_3N89SZsQEoI comp#3:  
+ /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B = //assign _28KVkZUKvVm_3HMcW4UYJGT   
+/*add_int:*/(( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B) + ( 1));  
+  
+goto startblock__9O0AvAOjncA_3N89SZsQEoI; // repeatwhile  
+endblock__9O0AvAOjncA_3N89SZsQEoI: /*endingwhile*/;  
+} /*-endwhile _9O0AvAOjncA_3N89SZsQEoI */ 
+ 
+ 
 /* !endingblock _8GOPNT1AML7_5vAQJrMpDGM */ 
 goto endblock__8GOPNT1AML7_5vAQJrMpDGM; 
 endblock__8GOPNT1AML7_5vAQJrMpDGM: ; 
