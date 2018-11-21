@@ -2328,7 +2328,7 @@ DBGPRINTF_BM("emitjs_fill_bindings_from_node start €%s o_bindings=%s v_expr=%s
  objectdbg1_BM( /*o_from:*/_.o_89nz0KaXXZh_8eSgMmqnK37)); ; 
 } // end run _0G71wVRKzqP_6SuU5zb4jPA 
  
-//+ #2/5 of block _8GOPNT1AML7_5vAQJrMpDGM :: 
+//+ #2/7 of block _8GOPNT1AML7_5vAQJrMpDGM :: 
  
  /*leni:*/_.n_833x2jYqhZh_8vDIuJhwz1k = //assign _3rp2THOrOaF_3szoh50xrvT  
 /*nodewidth:*/(intptr_t)nodewidth_BM( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M); 
@@ -2337,6 +2337,7 @@ DBGPRINTF_BM("emitjs_fill_bindings_from_node start €%s o_bindings=%s v_expr=%s
  /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B = //assign _1zWkLjTtOCC_50yzmrQXPRB  
  0; 
  
+//+ #4/7 of block _8GOPNT1AML7_5vAQJrMpDGM :: 
  
  
 //// +while _9O0AvAOjncA_3N89SZsQEoI 
@@ -2354,15 +2355,20 @@ if (!(/*while _9O0AvAOjncA_3N89SZsQEoI cond:*/ (/*less_int:*/( /*ii:*/_.n_2W7Ckt
 // while _9O0AvAOjncA_3N89SZsQEoI comp#2:  
   
 { // run _5RTvUlmHIl9_1GZhPlpZK6M  
-/*debug ii v_comp o_curformals*/
-  DBGPRINTF_BM("emitjs_fill_bindings_from_node €%.9s ii=%ld v_comp=%s o_curformal=%s",
-  "_5RTvUlmHIl9_1GZhPlpZK6M",
-  (long int) ( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B),
-  OUTSTRVALUE_BM( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe),
-  objectdbg_BM( /*o_curformal:*/_.o_3OjnHSbyAvp_5WFWOCJ1dPr));
-   ;  
+/*debug ii v_comp o_curformal  o_bindings*/
+DBGPRINTF_BM("emitjs_fill_bindings_from_node €%.9s ii=%ld v_comp=%s o_curformal=%s o_bindings=%s",
+"_5RTvUlmHIl9_1GZhPlpZK6M",
+ (long int)( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B),
+ OUTSTRVALUE_BM( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe),
+ objectdbg_BM( /*o_curformal:*/_.o_3OjnHSbyAvp_5WFWOCJ1dPr),
+ objectdbg_BM( /*o_bindings:*/_.o_5HkpTupRRIK_8iCooVukjb3));
+;  
 } // end run _5RTvUlmHIl9_1GZhPlpZK6M  
 // while _9O0AvAOjncA_3N89SZsQEoI comp#3:  
+{ // start cexpansion _5GEvcryDhdy_9OQ1GWL8v8E - objassocaddattrpayl   
+/*objassocaddattrpayl:*/ objassocaddattrpayl_BM(( /*o_bindings:*/_.o_5HkpTupRRIK_8iCooVukjb3),( /*o_curformal:*/_.o_3OjnHSbyAvp_5WFWOCJ1dPr),( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe));   
+} // end cexpansion _5GEvcryDhdy_9OQ1GWL8v8E - objassocaddattrpayl   
+// while _9O0AvAOjncA_3N89SZsQEoI comp#4:  
  /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B = //assign _28KVkZUKvVm_3HMcW4UYJGT   
 /*add_int:*/(( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B) + ( 1));  
   
@@ -2370,6 +2376,22 @@ goto startblock__9O0AvAOjncA_3N89SZsQEoI; // repeatwhile
 endblock__9O0AvAOjncA_3N89SZsQEoI: /*endingwhile*/;  
 } /*-endwhile _9O0AvAOjncA_3N89SZsQEoI */ 
  
+ 
+ 
+ 
+{ // run _7deMDze6x1P_2yNsGw4y8NY 
+/*debug end emitjs_fill_bindings_from_node o_bindings leni*/
+DBGPRINTF_BM("emitjs_fill_bindings_from_node end €%.9s o_bindings=%s leni=%ld",
+ "_7deMDze6x1P_2yNsGw4y8NY",
+ objectdbg_BM( /*o_bindings:*/_.o_5HkpTupRRIK_8iCooVukjb3),
+ (long int)( /*leni:*/_.n_833x2jYqhZh_8vDIuJhwz1k));
+; 
+} // end run _7deMDze6x1P_2yNsGw4y8NY 
+ 
+ 
+/*return _3eFAH9r8nPS_3fnQHEuBsRx:*/  /*v_r:*/_.v_3qw9bnATIhq_8loBraLeXzQ = // returned 
+ /*o_bindings:*/_.o_5HkpTupRRIK_8iCooVukjb3; 
+ goto epilog_42eCU3i9GEu_1DZnhnLNaH6; 
  
 /* !endingblock _8GOPNT1AML7_5vAQJrMpDGM */ 
 goto endblock__8GOPNT1AML7_5vAQJrMpDGM; 
