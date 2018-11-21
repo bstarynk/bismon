@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1727 objects
+// for 1728 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -10134,18 +10134,19 @@ _5J5pv8d2W5o_5oKsK4Eu12b
 
 
 !(_0zT69gURIgX_51wYIfWtdk7
-!@ 1542378737.366
+!@ 1542815689.199
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "lock o_bindings ... fill it"
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _5HkpTupRRIK_8iCooVukjb3
-!# 5
+!# 6
 !& _6KmH1XZBu7b_338ohS7bqho
 !& _3QEnQSbjnSB_8N8njfcJdfF
 !& _6f69gReIEpU_5iWSSb6Zsao
 !& _59vd3HdVK2m_4mPC0zbOKSJ
 !& _1RRYml9rYNx_03sw6qHYuwi
+!& _7aOLebND7sQ_6sD1iT1NW00
 !)_0zT69gURIgX_51wYIfWtdk7
 
 
@@ -20805,6 +20806,33 @@ _5D1GbyYKAgk_9ureezAahw3
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _4HgYLk6htvP_4Ac2FCPfQ1C }
 !)_797zacMjvvt_3I2uxNJRfdq
+
+
+
+!(_7aOLebND7sQ_6sD1iT1NW00
+!@ 1542816181.469
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug emitjs_node_conn\u00b0basiclo_primitive"& "  o_bindings v_expr v_resemit after emitjs_fill_bindings_from_node"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " " _0ukiE59AwC5_9TTEuEJtFQp  "\u00b0" 
+ _2SZvlA4wcJd_72ldva0oSGH  " " _5HkpTupRRIK_8iCooVukjb3  " " _6CmIdtsXyBX_3lpk31Mve5M 
+  " " _0qTBOEAT5pa_2fz1SKfHrMV  " "  "after"  " " 
+  "emitjs_fill_bindings_from_node"  "*/"  "\n"  "DBGPRINTF_BM"  "(\"" 
+ _0ukiE59AwC5_9TTEuEJtFQp  "\u00b0" _2SZvlA4wcJd_72ldva0oSGH  " "  "\u20ac%." 
+  "9s"  " " _5HkpTupRRIK_8iCooVukjb3  "=%"  "s" 
+  " " _6CmIdtsXyBX_3lpk31Mve5M  "=%"  "s"  " " 
+ _0qTBOEAT5pa_2fz1SKfHrMV  "=%"  "s"  " "  "after" 
+  " "  "emitjs_fill_bindings_from_node"  "\","  "\n"  " " 
+  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\"," 
+ "\n"  " " 
+  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5HkpTupRRIK_8iCooVukjb3) 
+ "),"  "\n" 
+  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6CmIdtsXyBX_3lpk31Mve5M) 
+ ")," 
+  " \n"  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0qTBOEAT5pa_2fz1SKfHrMV) 
+  "));"  "\n")
+!)_7aOLebND7sQ_6sD1iT1NW00
 
 
 
