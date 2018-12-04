@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1740 objects
+// for 1743 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -11099,6 +11099,18 @@ _5F3Vb2iwCDj_70AlfryKbrk
 
 
 
+!(_157Zieq1neK_6FtqVMqZmdW
+!@ 1543924358.406
+!$_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "fail not-a-chunk type_error v_chunk o_bindings o_jsstmt depth o_from"
+!: _085lT8c13Ik_11pcWJfcLeM |=fail|
+ * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _95hdJENHNkN_3QuKIJTCQQQ) _5chvJRWb5ro_3zkkO8FQQ4b _5HkpTupRRIK_8iCooVukjb3 _05IHFluwEai_9VxTGg7FVeQ  * _6FWWN47uih2_5BhwEm9gnHu ( _6Y20GNUgnSZ_4LkbrcRMU8f) 
+ _89nz0KaXXZh_8eSgMmqnK37)
+!)_157Zieq1neK_6FtqVMqZmdW
+
+
+
 !(_15WmvoAu2Kx_9K4XFDxMyU4
 !@ 1529484837.342
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -15382,6 +15394,19 @@ _0qTBOEAT5pa_2fz1SKfHrMV
 
 
 
+!(_3ze8DAgIXST_0Do5r3VRG39
+!@ 1543924358.407
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "when v_chunk is not a chunk fail"
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+ * _42E6tC8luD9_1Ks29oZvXnp (  * _30UWIU9ljmf_8rICvftAnIX ( _5chvJRWb5ro_3zkkO8FQQ4b)  * _0e54seiZEXF_1Myf620cHoB ( _3pQnBS9ZjkQ_0uGmqUUhAum))
+!# 1
+!& _157Zieq1neK_6FtqVMqZmdW
+!)_3ze8DAgIXST_0Do5r3VRG39
+
+
+
 !(_3AEDXT43wEP_2xOTOn1ZvkA
 !@ 1535649843.095
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -16784,6 +16809,19 @@ _6iYgjRt0FIx_4ax63M6n2U6
 !# 1
 !& _5tPUeSSsiHU_3LUL2sBwyzM
 !)_4u9Asyd05eG_3iNFTkTpsJL
+
+
+
+!(_4wEfE43UvR8_2Nfxd8x3O6Q
+!@ 1543924358.408
+!$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "if v_chunk not a chunk fail"
+!: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
+ 1
+!# 1
+!& _3ze8DAgIXST_0Do5r3VRG39
+!)_4wEfE43UvR8_2Nfxd8x3O6Q
 
 
 
@@ -18473,15 +18511,16 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 !(_5y0LvPAOg2E_8bILD0ZDALb
-!@ 1543844369.647
+!@ 1543924358.408
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of emitjs_chunk_bindings"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _4n3pxDbCfJp_0NsE8uuJjF0
-!# 2
+!# 3
 !& _5Lq37xlAcNn_238uAq6ACU6
 !& _5GS9em3rK0b_13NCC0G6BK2
+!& _4wEfE43UvR8_2Nfxd8x3O6Q
 !)_5y0LvPAOg2E_8bILD0ZDALb
 
 
