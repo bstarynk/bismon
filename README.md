@@ -104,6 +104,7 @@ and `g++` lack support for plugins and
 source code, and configure it to provide them.). An old GCC
 (e.g. version 6 or earlier) cannot be used.
 
+* the documentation needs a `/usr/bin/mipsel-linux-gnu-gcc-8` cross-compiler provided by `gcc-8-mipsel-linux-gnu` Debian package.
 
 Most of `bismon` is in C99 or C11 (including an increasing amount of
 generated code), but some few code is in C++14.
