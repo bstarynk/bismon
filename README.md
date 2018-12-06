@@ -221,7 +221,7 @@ by you.
 Then you'll register yourself. If `Alan Turing` is your name or
 pseudo, and `alan@fake.email` is your main email, with your secondary
 email being `turing@localhost`, you can add yourself to `bismon` by
-running it (actually `./bismonion`) with something similar to
+running it with something similar to
 `--contributor='Alan Turing;alan@fake.email;turing@localhost'` and
 `--batch` and `--dump-after-load=.` program options. Of course you
 should replace `Alan Turing`, `alan@fake.email` and `turing@localhost`
@@ -236,7 +236,7 @@ personal data information from `git` and put it into `bismon`.
 At last you need to set your password (it is unrelated to other
 passwords in your computer or on the web, but should has at least 10
 Unicode characters, and digits, letters, punctuations), as known to
-`bismonion`, using the `--add-passwords` option (also with `--batch`
+`bismon`, using the `--add-passwords` option (also with `--batch`
 and `--dump-after-load=.`). To set your initial password to
 `mypass!123456` create some temporary text file (it contains
 contributor names and their updated passwords in *clear* text, so you
