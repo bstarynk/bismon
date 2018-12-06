@@ -141,8 +141,12 @@ generated code), but some few code is in C++14.
 
 ### relevant Debian/Ubuntu build-dependency packages ###
 
-On Debian/Unstable or Ubuntu, `apt-get install build-essential make ninja gcc-8 g++-8 gcc-8-plugin-dev libgccjit-8-dev ccache`
-for the building infrastructure.
+On Debian/Unstable or recent Ubuntu, `apt-get install build-essential
+make ninja-build gcc-8 g++-8 gcc-8-plugin-dev libgccjit-8-dev ccache
+gcc-8-mipsel-linux-gnu` for the building infrastructure (the MIPS
+cross-compiler is needed for the documentation).
+
+
 
 We still need `apt-get install libgtk-3-dev` for GTK 3. This may pull a lot of dependencies.
 
