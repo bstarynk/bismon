@@ -3384,6 +3384,8 @@ else if
  (/*isnode:*/isnode_BM(( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe))) { //body when _2x4mf8xxwfG_8hk4ggBLvKs   
  /*o_curconn:*/_.o_0CZF0izuznT_8qWyrzuY1Q0 = //assign _6nNiNUxZfxf_3g6oMpGlSmQ    
 /*nodeconn:*/nodeconn_BM( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe);   
+ /*v_resemit:*/_.v_0qTBOEAT5pa_2fz1SKfHrMV = //assign _82Z89nicH7r_9LdsC3eRz2o    
+ NULL;   
    
 { // run _7n8LI45xs6S_8SeFt4go1O5   
 /*debug emitjs_chunk_bindings /node ii v_comp o_curconn o_strbuf*/

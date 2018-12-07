@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1770 objects
+// for 1771 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -14039,8 +14039,9 @@ _7KVBiG9eTtM_8PS68aSImxy
  "when v_comp is a node...."
 !: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
  * _4CBwb24Zxug_3h75x1TKWwN ( _0ZL8gaI6sH8_7UPhmAQcwMe)
-!# 3
+!# 4
 !& _6nNiNUxZfxf_3g6oMpGlSmQ
+!& _82Z89nicH7r_9LdsC3eRz2o
 !& _7n8LI45xs6S_8SeFt4go1O5
 !& _5DSMaCiTCVG_8aAzyeKu4B8
 !)_2x4mf8xxwfG_8hk4ggBLvKs
@@ -22865,6 +22866,18 @@ _3qw9bnATIhq_8loBraLeXzQ
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
 _1Q9bb14ZILM_7qaCfMUXHig
 !)_82m25YlV36t_0rEvRK5bJiS
+
+
+
+!(_82Z89nicH7r_9LdsC3eRz2o
+!@ 1544191212.729
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "v_resemit := nil"
+!# 2
+!& _0qTBOEAT5pa_2fz1SKfHrMV
+!& __
+!)_82Z89nicH7r_9LdsC3eRz2o
 
 
 
