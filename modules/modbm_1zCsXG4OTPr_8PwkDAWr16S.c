@@ -3872,10 +3872,10 @@ endblock__4r30s03InhE_7WOfdyMRvT3: /*endingwhile*/;
  
 { // run _6RPjzVshRVZ_9vEeZ4keFCv 
 /*debug emit_jsstmt°basiclo_while end o_jsstmt o_strbuf*/
-DBGPRINTF_BM("emit_jsstmt°basiclo_while €%.9s end o_jsstmt o_strbuf",
-  "_6RPjzVshRVZ_9vEeZ4keFCv",
-  objectdbg1_BM( /*o_jsstmt:*/_.o_05IHFluwEai_9VxTGg7FVeQ),
-  objectdbg2_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy));
+DBGPRINTF_BM("emit_jsstmt°basiclo_while €%.9s end o_jsstmt=%s o_strbuf=%s",
+"_6RPjzVshRVZ_9vEeZ4keFCv",
+objectdbg_BM( /*o_jsstmt:*/_.o_05IHFluwEai_9VxTGg7FVeQ),
+objectdbg1_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy));
 ; 
 } // end run _6RPjzVshRVZ_9vEeZ4keFCv 
  
