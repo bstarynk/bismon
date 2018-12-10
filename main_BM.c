@@ -1927,7 +1927,7 @@ printbt_callback_BM (void *data, uintptr_t pc, const char *filename,
           && !strcmp (funame + fnl - strlen (ROUTINESUFFIX_BM),
                       ROUTINESUFFIX_BM))
         {
-          char *endid = NULL;
+          const char *endid = NULL;
           rawid_tyBM rid =
             parse_rawid_BM (funame + strlen (ROUTINEOBJPREFIX_BM), &endid);
           if (rid.id_hi > 0 && rid.id_lo > 0
@@ -1935,11 +1935,24 @@ printbt_callback_BM (void *data, uintptr_t pc, const char *filename,
             {
               fnob = findobjofid_BM (rid);
             }
-          if (fnob != NULL)
-            fprintf (pdata->f, "0x%lx %s ~%s\n", (unsigned long) pc, funame,
-                     objectdbg_BM (fnob));
+          if (fnob != NULL) {
+	    objlock_BM(fnob);
+	    value_tyBM commentv = objgetattr_BM (fnob, BMP_comment);
+	    if (isstring_BM(commentv)) {
+	      const char *combytes = bytstring_BM (commentv);
+	      int comlen = lenstring_BM (commentv);
+	      const char* eol = strchr(combytes, '\n');
+	      if (eol && eol>combytes) comlen = eol-combytes-1;
+	      fprintf (pdata->f, "0x%lx %s\n\t~%s |%*s\n", (unsigned long) pc, funame,
+		       objectdbg_BM (fnob), comlen, combytes);
+	    }
+	    else 
+	      fprintf (pdata->f, "0x%lx %s\n\t~%s\n", (unsigned long) pc, funame,
+		       objectdbg_BM (fnob));
+	    objunlock_BM(fnob);
+	  }
           else
-            fprintf (pdata->f, "0x%lx %s\n", (unsigned long) pc, funame);
+            fprintf (pdata->f, "0x%lx %s !\n", (unsigned long) pc, funame);
         }
       else
         fprintf (pdata->f, "0x%lx %s\n", (unsigned long) pc, funame);
