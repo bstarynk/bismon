@@ -1931,7 +1931,7 @@ printbt_callback_BM (void *data, uintptr_t pc, const char *filename,
           rawid_tyBM rid =
             parse_rawid_BM (funame + strlen (ROUTINEOBJPREFIX_BM), &endid);
           if (rid.id_hi > 0 && rid.id_lo > 0
-              && endid + strlen (ROUTINEOBJPREFIX_BM) == funame + fnl)
+              && endid + strlen (ROUTINESUFFIX_BM) == funame + fnl)
             {
               fnob = findobjofid_BM (rid);
             }
