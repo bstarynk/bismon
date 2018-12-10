@@ -6230,12 +6230,17 @@ startblock__1Q9bb14ZILM_7qaCfMUXHig: __attribute__((unused));
  /* val_to_int */ getint_BM( /*v_depth:*/_.v_4nJKFtMqlkA_1teQSqofNux) ; 
  
  
+ /*v_run:*/_.v_3kT5Lg2jQxl_0p7hfHekYiz = //assign _3fiNvfTEHuz_3yDiaQQ5uJN  
+/*objgetattr:*/objgetattr_BM(( /*o_jsstmt:*/_.o_05IHFluwEai_9VxTGg7FVeQ),( (constob_1zCsXG4OTPr_8PwkDAWr16S_BM[72] /*!run*/))); 
+ 
+ 
  
 { // run _3XJ0p3SEPOe_0l5G2FqwVjf 
-/*debug start emit_jsstmt°basiclo_run o_jsstmt o_jsgenmod o_jsgenfun o_strbuf depth*/
-DBGPRINTF_BM("emit_jsstmt°basiclo_run start €%.9s o_jsstmt=%s o_jsgenmod=%s o_jsgenfun=%s o_strbuf=%s depth#%ld",
+/*debug start emit_jsstmt°basiclo_run o_jsstmt v_run o_jsgenmod o_jsgenfun o_strbuf depth*/
+DBGPRINTF_BM("emit_jsstmt°basiclo_run start €%.9s o_jsstmt=%s v_run=%s o_jsgenmod=%s o_jsgenfun=%s o_strbuf=%s depth#%ld",
  "_3XJ0p3SEPOe_0l5G2FqwVjf",
  objectdbg_BM( /*o_jsstmt:*/_.o_05IHFluwEai_9VxTGg7FVeQ),
+ OUTSTRVALUE_BM( /*v_run:*/_.v_3kT5Lg2jQxl_0p7hfHekYiz),
  objectdbg1_BM( /*o_jsgenmod:*/_.o_4JKd986pvM4_6yBzeeI40vW),
  objectdbg2_BM( /*o_jsgenfun:*/_.o_5Lg7fb6zE3H_6ijQo6GbPN4),
  objectdbg3_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
