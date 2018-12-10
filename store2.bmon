@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1841 objects
+// for 1842 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -20620,17 +20620,18 @@ _4lKK08v9A0t_0GGsir35UxP _4bYUiDmxrKK_6nPPlEl8y8x) ~)
 
 
 !(_6hwrTRO9m90_8YLQTWroivn
-!@ 1539588169.193
+!@ 1544449578.466
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "lock o_expr to jsemit_expression it..."
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _932bmIlxKS0_1SsJjzk16n2
-!# 4
+!# 5
 !& _8xLBXmNbTzI_3anr0etEpKy
 !& _8Nxd62SyMqu_2LuikDfaXmU
 !& _2CfyA1l9d2D_4qQ5MlvPB5l
 !& _1o9FDvwjPNQ_8hbsE61k2qe
+!& _9V7GRUAYBUg_4TmgraQZ6lQ
 !)_6hwrTRO9m90_8YLQTWroivn
 
 
@@ -27238,6 +27239,17 @@ _6Y20GNUgnSZ_4LkbrcRMU8f)
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "method to dump_scan a basiclo_function"
 !)_9UhDZeDdg2r_55lUqYDPUiF
+
+
+
+!(_9V7GRUAYBUg_4TmgraQZ6lQ
+!@ 1544449578.466
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return v_resemit /// for o_expr"
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+_0qTBOEAT5pa_2fz1SKfHrMV
+!)_9V7GRUAYBUg_4TmgraQZ6lQ
 
 
 
