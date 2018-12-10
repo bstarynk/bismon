@@ -1918,7 +1918,33 @@ printbt_callback_BM (void *data, uintptr_t pc, const char *filename,
   const char *funame = function;
   char nambuf[80];
   memset (nambuf, 0, sizeof (nambuf));
-  if (!funame)
+  if (funame)
+    {
+      int fnl = strlen (funame);
+      objectval_tyBM *fnob = NULL;
+      if (!strncmp (funame, ROUTINEOBJPREFIX_BM, strlen (ROUTINEOBJPREFIX_BM))
+          && fnl > 5
+          && !strcmp (funame + fnl - strlen (ROUTINESUFFIX_BM),
+                      ROUTINESUFFIX_BM))
+        {
+          char *endid = NULL;
+          rawid_tyBM rid =
+            parse_rawid_BM (funame + strlen (ROUTINEOBJPREFIX_BM), &endid);
+          if (rid.id_hi > 0 && rid.id_lo > 0
+              && endid + strlen (ROUTINEOBJPREFIX_BM) == funame + fnl)
+            {
+              fnob = findobjofid_BM (rid);
+            }
+          if (fnob != NULL)
+            fprintf (pdata->f, "0x%lx %s ~%s\n", (unsigned long) pc, funame,
+                     objectdbg_BM (fnob));
+          else
+            fprintf (pdata->f, "0x%lx %s\n", (unsigned long) pc, funame);
+        }
+      else
+        fprintf (pdata->f, "0x%lx %s\n", (unsigned long) pc, funame);
+    }
+  else                          /* no funame */
     {
       Dl_info di;
       memset (&di, 0, sizeof (di));
@@ -1942,8 +1968,6 @@ printbt_callback_BM (void *data, uintptr_t pc, const char *filename,
       else
         fprintf (pdata->f, "0x%lx ???\n", (unsigned long) pc);
     }
-  else
-    fprintf (pdata->f, "0x%lx %s\n", (unsigned long) pc, funame);
   if (filename)
     fprintf (pdata->f, "\t%s:%d\n", basename (filename), lineno);
   return 0;

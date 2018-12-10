@@ -1900,7 +1900,8 @@ read_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
       if (strncmp ("$6$", curcryptpass, 3))
         FATAL_BM
           ("in password file %s line#%d contributor %s of oid %s with corrupted crypted password %.6s...",
-           passwords_filepath_BM, lincnt, curcontrib, curoidstr, curcryptpass);
+           passwords_filepath_BM, lincnt, curcontrib, curoidstr,
+           curcryptpass);
       objassocaddattrpayl_BM (_.assocob, _.curcontribob,
                               (value_tyBM) makestring_BM (curcryptpass));
     }                           /* end readloop */

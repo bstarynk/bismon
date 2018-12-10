@@ -1,7 +1,7 @@
 // file BM_makeconst.cc
 
 /***
-    BISMON 
+    BISMON
     Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
