@@ -4254,6 +4254,12 @@ objshow_newgui_cbBM (void)
             }
           memset (&osh, 0, sizeof (osh));
         }
+      else if (runres == GTK_RESPONSE_CANCEL)
+        {
+          DBGPRINTF_BM ("objshow_newgui_cbBM cancel runres=%d", runres);
+          gtk_widget_hide (objshowdialog);
+          again = false;
+        }
     }
   while (again);
   if (_.parsob)
