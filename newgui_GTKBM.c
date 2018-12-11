@@ -4490,12 +4490,8 @@ fork_gtk_process_at_slot_BM (int slotpos,
   ASSERT_BM (slotpos >= 0 && slotpos < MAXNBWORKJOBS_BM);
   char cwdbuf[80];
   memset (cwdbuf, 0, sizeof (cwdbuf));
-  DBGPRINTF_BM
-    ("fork_gtk_process_at_slot_BM slotpos %d cmdnod %s dirstrv %s cwd %s",
-     slotpos, debug_outstr_value_BM (_.cmdnodv, CURFRAME_BM, 0),
-     debug_outstr_value_BM (_.dirstrv, CURFRAME_BM, 0), getcwd (cwdbuf,
-                                                                sizeof
-                                                                (cwdbuf)));
+  DBGPRINTF_BM ("fork_gtk_process_at_slot_BM slotpos %d cmdnod %s dirstrv %s cwd %s", slotpos, OUTSTRVALUE_BM (_.cmdnodv), OUTSTRVALUE_BM (_.dirstrv),  //
+                getcwd (cwdbuf, sizeof (cwdbuf)));
   /// should fork the process
   int pipfd[2] = { -1, -1 };
   char **args = calloc (cmdlen + 1, sizeof (char *));

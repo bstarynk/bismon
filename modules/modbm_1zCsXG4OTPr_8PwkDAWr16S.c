@@ -2969,6 +2969,7 @@ startblock__41bm79uepd0_9PHtIQSeEjo: __attribute__((unused));
 /*debug start emit_jsexpr v_expr o_jsgenmod o_jsgenfun o_strbuf depth o_from*/
  DBGPRINTF_BM("emit_jsexpr start €%.9s v_expr=%s o_jsgenmod=%s o_jsgenfun=%s o_strbuf=%s/L%d depth#%d o_from=%s",
  "_8l6Qjk0mDnp_4SUfFK9def2",
+ OUTSTRVALUE_BM( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M),
  objectdbg_BM( /*o_jsgenmod:*/_.o_4JKd986pvM4_6yBzeeI40vW),
  objectdbg1_BM( /*o_jsgenfun:*/_.o_5Lg7fb6zE3H_6ijQo6GbPN4),
  objectdbg2_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
