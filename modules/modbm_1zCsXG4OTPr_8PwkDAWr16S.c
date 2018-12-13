@@ -5434,6 +5434,7 @@ DBGPRINTF_BM("emit_jsstmt°basiclo_return start €%.9s o_jsstmt=%s o_jsgenmod=%
  objectdbg2_BM( /*o_jsgenfun:*/_.o_5Lg7fb6zE3H_6ijQo6GbPN4),
  objectdbg3_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
  (int) objstrbufferlengthpayl_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
+ (long int) ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f),
  OUTSTRVALUE_BM( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M));; 
 } // end run _1cbIgYnDfjV_5sLDHq1QjdK 
  

@@ -11483,7 +11483,7 @@ _2ZoqAiU7COz_0EfxfZbOgZj
 
 
 !(_1cbIgYnDfjV_5sLDHq1QjdK
-!@ 1544705261.608
+!@ 1544706119.450
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "debug start emit_jsstmt\u00b0basiclo_return o_jsstmt"& " o_jsgenmod o_jsgenfun o_strbuf depth v_expr"
@@ -11513,8 +11513,11 @@ _2ZoqAiU7COz_0EfxfZbOgZj
   "\n"  " "  "(" _0vgCFjXblkx_4zCMhMAWjVK  ")" 
   " "  "objstrbufferlengthpayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
 _41F1rKwGbaA_30OJWKsqNWy)  ")," 
-  "\n"  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6CmIdtsXyBX_3lpk31Mve5M) 
-  "));")
+  "\n"  " "  "("  "long"  " " 
+ _0vgCFjXblkx_4zCMhMAWjVK  ")"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_6Y20GNUgnSZ_4LkbrcRMU8f) 
+  "),"  "\n"  " "  "OUTSTRVALUE_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _6CmIdtsXyBX_3lpk31Mve5M)  "));")
 !)_1cbIgYnDfjV_5sLDHq1QjdK
 
 
