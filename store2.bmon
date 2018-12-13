@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1847 objects
+// for 1849 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -9906,14 +9906,15 @@ _4Q4WBLjAPTV_5WVLmhAvCJY
 
 
 !(_0o65Pmq7e2i_3V9hP34hmQS
-!@ 1537344978.180
+!@ 1544692807.382
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "when v_bind non-null from o_modbindings"
 !: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
 _5J5pv8d2W5o_5oKsK4Eu12b
-!# 1
+!# 2
 !& _1KHrt6yEbC2_45YAVJWWSq3
+!& _0wpjTFm4ny3_90j0SvAVY05
 !)_0o65Pmq7e2i_3V9hP34hmQS
 
 
@@ -10146,6 +10147,17 @@ _6FcmuIO2DrS_7mzsaVpTMOI
  "));" 
   "\n"  " ")
 !)_0vO9oiLDQiP_9tXCqioyzTM
+
+
+
+!(_0wpjTFm4ny3_90j0SvAVY05
+!@ 1544692807.382
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return !jsvalue"
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+ * _0e54seiZEXF_1Myf620cHoB ( _2mL8lNxsg7u_2XX685yxjLD)
+!)_0wpjTFm4ny3_90j0SvAVY05
 
 
 
@@ -20440,6 +20452,18 @@ _50H7io7f948_10VeJz49q3W
 
 
 
+!(_63rIL39qEyQ_9kP7gpzUVQ0
+!@ 1544693117.366
+!$_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "fail scan_jsexpr\u00b0jvar_object unknown o_jsvar o_prepjfun v_depth o_from"
+!: _085lT8c13Ik_11pcWJfcLeM |=fail|
+ * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _95hdJENHNkN_3QuKIJTCQQQ)  * _0e54seiZEXF_1Myf620cHoB ( _3mBgHGhEYmP_9WN8gqaxhXg) _2FRfGeiauCO_9CdjKseaigc _5D1GbyYKAgk_9ureezAahw3 _4nJKFtMqlkA_1teQSqofNux 
+ _89nz0KaXXZh_8eSgMmqnK37)
+!)_63rIL39qEyQ_9kP7gpzUVQ0
+
+
+
 !(_63Q0R4r8xa7_7XOAxxP5pi2
 !|*
 !@ 1506606535.990
@@ -21498,13 +21522,13 @@ _8O8xCaYhusW_22asdiv1fpA
 
 
 !(_6G1aCgvTy3W_98wz76nldch
-!@ 1537344978.181
+!@ 1544693117.366
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of scan_jsexpr\u00b0jvar_object"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _3mBgHGhEYmP_9WN8gqaxhXg
-!# 8
+!# 9
 !& _7pulzA9kaiC_6NfvYttvSHa
 !& _6MAvSn7dXbZ_5MDRjsVNvVo
 !& _5uUlQ5WxT4o_8Jpm7w14hDn
@@ -21513,6 +21537,7 @@ _3mBgHGhEYmP_9WN8gqaxhXg
 !& _09AUb1Be07c_7LLHZqesyot
 !& _61EKx2L4xdC_6FWZTlY58Yu
 !& _7NtR1lvMKSn_6Tlef1rINeU
+!& _63rIL39qEyQ_9kP7gpzUVQ0
 !)_6G1aCgvTy3W_98wz76nldch
 
 
