@@ -2241,10 +2241,11 @@ value_tyBM crout_3QVddP6n0iB_4lpbil0LgYY_BM //#8
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 10 local values:
+    /// 11 local values:
     objectval_tyBM* o_05IHFluwEai_9VxTGg7FVeQ; // o_jsstmt
     value_tyBM v_0qTBOEAT5pa_2fz1SKfHrMV; // v_resemit
     value_tyBM v_0ZL8gaI6sH8_7UPhmAQcwMe; // v_comp
+    objectval_tyBM* o_1NOlyGkbWyD_5JUfiTznxM2; // o_substmt
     objectval_tyBM* o_2CZdxOfHhTT_77ItyVOgETt; // o_when
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ; // v_r
     objectval_tyBM* o_41F1rKwGbaA_30OJWKsqNWy; // o_strbuf
@@ -2263,7 +2264,7 @@ value_tyBM crout_3QVddP6n0iB_4lpbil0LgYY_BM //#8
    memset (&_, 0, sizeof(struct frame_3QVddP6n0iB_4lpbil0LgYY_BMst));
    _.stkfram_head.htyp = typayl_StackFrame_BM;
    _.stkfram_head.hgc = 0;
-   _.stkfram_head.rlen = 10;
+   _.stkfram_head.rlen = 11;
    _.stkfram_descr = constob_1zCsXG4OTPr_8PwkDAWr16S_BM[57] /*|_3QVddP6n0iB_4lpbil0LgYY*/;
    ASSERT_BM (!stkf
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
