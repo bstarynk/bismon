@@ -2689,9 +2689,10 @@ ROUTINEOBJNAME_BM (_0Qplg2cn9xR_5pfROAJjrXZ)    //miniscan_stmt°basiclo_cexpans
                debug_outstr_value_BM (_.curargexpv, CURFRAME_BM, 0),
                objectdbg2_BM (_.curvartypob), objectdbg3_BM (_.curexptypob),
                objectdbg4_BM (_.commontypob));
-            FAILHERE (makenode4_BM
+            FAILHERE (makenode6_BM
                       (k_arguments, _.expresultsv, _.stmtresultsv,
-                       _.curexptypob, taggedint_BM (aix)));
+                       _.curexptypob, _.curargexpv, _.stmtob,
+                       taggedint_BM (aix)));
           }
       }
     _.curvartypob = NULL;
