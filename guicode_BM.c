@@ -23,10 +23,10 @@
 #include "guicode_BM.const.h"
 
 
-/// method to browse_in_object°object-s
+/// method to gtk_browse_in_object°object-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d);
 value_tyBM
-ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //browse_in_object°object
+ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the depth
@@ -44,7 +44,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //browse_in_object°object
                  value_tyBM curval;);
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
-  DBGPRINTF_BM ("browse_in_object°object start objbrows %s, maxdepth %d",
+  DBGPRINTF_BM ("gtk_browse_in_object°object start objbrows %s, maxdepth %d",
                 objectdbg_BM (_.objbrows), maxdepth);
   char objbroid[32];
   memset (objbroid, 0, sizeof (objbroid));
@@ -82,7 +82,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //browse_in_object°object
                 objecthash_BM (_.objbrows),
                 di.dli_fname, di.dli_sname, (void *) _.objbrows->ob_rout);
       if (!commbuf)
-        FATAL_BM ("asprintf failure in browse_in_object]object");
+        FATAL_BM ("asprintf failure in gtk_browse_in_object]object");
 
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,
                                         commbuf, -1, miscomm_brotag_BM, NULL);
@@ -241,7 +241,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //browse_in_object°object
   extendedval_tyBM payl = objpayload_BM (_.objbrows);
   if (payl)
     {
-      send1_BM ((const value_tyBM) _.objbrows, BMP_browse_data,
+      send1_BM ((const value_tyBM) _.objbrows, BMP_gtk_browse_data,
                 CURFRAME_BM, taggedint_BM (maxdepth));
     }
   else
@@ -253,11 +253,11 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //browse_in_object°object
   /// return itself
 #else /*!BISMONGTK */
   weakassertfailureat_BM
-    ("noGTK browse_in_object°object _23ViGouPnAg_15P5mpG9x3d", __FILE__,
+    ("noGTK gtk_browse_in_object°object _23ViGouPnAg_15P5mpG9x3d", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
     DBGPRINTF_BM
-    ("browse_in_object°object end objbrows %s, payl@%p, maxdepth %d\n",
+    ("gtk_browse_in_object°object end objbrows %s, payl@%p, maxdepth %d\n",
      objectdbg_BM (_.objbrows), payl, maxdepth);
   LOCALRETURN_BM (_.objbrows);
 }                               /* end  ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d) */
@@ -266,10 +266,10 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //browse_in_object°object
 
 
 
-/// method to browse_value for object-s
+/// method to gtk_browse_value for object-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe);
 value_tyBM
-ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    // browse_value°object
+ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    // gtk_browse_value°object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -279,7 +279,7 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    // browse_value°object
 {
   if (!isobject_BM (arg1))
     FATAL_BM
-      ("non-object for method to browse_value for object-s _0BAnB0xjs23_0WEOCOi5Nbe");
+      ("non-object for method to gtk_browse_value for object-s _0BAnB0xjs23_0WEOCOi5Nbe");
   ASSERT_BM (istaggedint_BM (arg2));
   ASSERT_BM (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -347,18 +347,18 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    // browse_value°object
     }
 #else /*!BISMONGTK */
   weakassertfailureat_BM
-    ("noGTK browse_value°object _0BAnB0xjs23_0WEOCOi5Nbe", __FILE__,
+    ("noGTK gtk_browse_value°object _0BAnB0xjs23_0WEOCOi5Nbe", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
-}                               /* end browse_value°object _0BAnB0xjs23_0WEOCOi5Nbe */
+}                               /* end gtk_browse_value°object _0BAnB0xjs23_0WEOCOi5Nbe */
 
 
 
-/// method to browse_data for class-s
+/// method to gtk_browse_data for class-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA);
 value_tyBM
-ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // browse_data°class
+ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // gtk_browse_data°class
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -376,7 +376,7 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // browse_data°class
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   if (!isobject_BM (arg1))
     FATAL_BM
-      ("non-object for method to browse_data for class-s _09DxyieS5Wz_7pkad4F88FA");
+      ("non-object for method to gtk_browse_data for class-s _09DxyieS5Wz_7pkad4F88FA");
   _.objbrows = (const objectval_tyBM *) arg1;
   int depth = getint_BM (arg2);
   ASSERT_BM (isobject_BM ((const value_tyBM) _.objbrows));
@@ -442,17 +442,18 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // browse_data°class
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "~)\n", -1,
                                     NULL, NULL);
 #else /*!BISMONGTK */
-  weakassertfailureat_BM ("noGTK browse_data°class _09DxyieS5Wz_7pkad4F88FA",
-                          __FILE__, __LINE__);
+  weakassertfailureat_BM
+    ("noGTK gtk_browse_data°class _09DxyieS5Wz_7pkad4F88FA", __FILE__,
+     __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
-}                               /* end browse_data°class _09DxyieS5Wz_7pkad4F88FA */
+}                               /* end gtk_browse_data°class _09DxyieS5Wz_7pkad4F88FA */
 
 
-/// method to browse_value for tuple-s
+/// method to gtk_browse_value for tuple-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt);
 value_tyBM
-ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    // browse_value°tuple
+ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    // gtk_browse_value°tuple
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -462,7 +463,7 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    // browse_value°tuple
 {
   if (!istuple_BM (arg1))
     FATAL_BM
-      ("non-tuple for  method to browse_value for tuple-s _0BAnB0xjs23_0WEOCOi5Nb");
+      ("non-tuple for  method to gtk_browse_value for tuple-s _0BAnB0xjs23_0WEOCOi5Nb");
   ASSERT_BM (istaggedint_BM (arg2));
   ASSERT_BM (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -506,20 +507,20 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    // browse_value°tuple
                         CURFRAME_BM);
 #else /*!BISMONGTK */
   weakassertfailureat_BM
-    ("noGTK browse_value°tuple _0BAnB0xjs23_0WEOCOi5Nb ", __FILE__,
+    ("noGTK gtk_browse_value°tuple _0BAnB0xjs23_0WEOCOi5Nb ", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
-}                               /* end browse_value°tuple _0BAnB0xjs23_0WEOCOi5Nb  */
+}                               /* end gtk_browse_value°tuple _0BAnB0xjs23_0WEOCOi5Nb  */
 
 
 
 
 
-/// method to browse_value for set-s
+/// method to gtk_browse_value for set-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr);
 value_tyBM
-ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //browse_value°set
+ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //gtk_browse_value°set
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -529,7 +530,7 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //browse_value°set
 {
   if (!isset_BM (arg1))
     FATAL_BM
-      ("non-set for  method to browse_value for set-s _3rne4qbpnV9_0pywzeJp3Qr");
+      ("non-set for  method to gtk_browse_value for set-s _3rne4qbpnV9_0pywzeJp3Qr");
   ASSERT_BM (istaggedint_BM (arg2));
   ASSERT_BM (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -584,20 +585,21 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //browse_value°set
   browse_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth,
                         CURFRAME_BM);
 #else /*!BISMONGTK */
-  weakassertfailureat_BM ("noGTK browse_value°set _3rne4qbpnV9_0pywzeJp3Qr",
-                          __FILE__, __LINE__);
+  weakassertfailureat_BM
+    ("noGTK gtk_browse_value°set _3rne4qbpnV9_0pywzeJp3Qr", __FILE__,
+     __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
-}                               /* end browse_value°set _3rne4qbpnV9_0pywzeJp3Qr  */
+}                               /* end gtk_browse_value°set _3rne4qbpnV9_0pywzeJp3Qr  */
 
 
 
 
 
-/// method to browse_value for int-s
+/// method to gtk_browse_value for int-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y);
 value_tyBM
-ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    // browse_value°int
+ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    // gtk_browse_value°int
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -607,7 +609,7 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    // browse_value°int
 {
   if (!istaggedint_BM (arg1))
     FATAL_BM
-      ("non-int for method to browse_value for int-s _0HBMCM5CeLn_7L5YEV2jO7Y");
+      ("non-int for method to gtk_browse_value for int-s _0HBMCM5CeLn_7L5YEV2jO7Y");
   ASSERT_BM (istaggedint_BM (arg2));
   ASSERT_BM (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -621,19 +623,20 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    // browse_value°int
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
                                     ibuf, -1, num_brotag_BM, NULL);
 #else /*!BISMONGTK */
-  weakassertfailureat_BM ("noGTK browse_value°int _0HBMCM5CeLn_7L5YEV2jO7Y",
-                          __FILE__, __LINE__);
+  weakassertfailureat_BM
+    ("noGTK gtk_browse_value°int _0HBMCM5CeLn_7L5YEV2jO7Y", __FILE__,
+     __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (arg1);
-}                               /* end  browse_value°int _0HBMCM5CeLn_7L5YEV2jO7Y  */
+}                               /* end  gtk_browse_value°int _0HBMCM5CeLn_7L5YEV2jO7Y  */
 
 
 
-/// method to browse_value for string-s
+/// method to gtk_browse_value for string-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud);
 #define WANTEDLINEWIDTH_BM 64
 value_tyBM
-ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    // browse_value°string
+ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    // gtk_browse_value°string
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -643,7 +646,7 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    // browse_value°string
 {
   if (!isstring_BM (arg1))
     FATAL_BM
-      ("non-string for method to browse_value for string-s _63ZPkXUI2Uv_6Cp3qmh6Uud");
+      ("non-string for method to gtk_browse_value for string-s _63ZPkXUI2Uv_6Cp3qmh6Uud");
   ASSERT_BM (istaggedint_BM (arg2));
   ASSERT_BM (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -767,18 +770,18 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    // browse_value°string
     browsespacefordepth_BM (curdepth);
 #else /*!BISMONGTK */
   weakassertfailureat_BM
-    ("noGTK browse_value°string _63ZPkXUI2Uv_6Cp3qmh6Uud", __FILE__,
+    ("noGTK gtk_browse_value°string _63ZPkXUI2Uv_6Cp3qmh6Uud", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (arg1);
-}                               /* end browse_value°string _63ZPkXUI2Uv_6Cp3qmh6Uud */
+}                               /* end gtk_browse_value°string _63ZPkXUI2Uv_6Cp3qmh6Uud */
 
 
 
-/// method to browse_value for node-s
+/// method to gtk_browse_value for node-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg);
 value_tyBM
-ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    // browse_value°node
+ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    // gtk_browse_value°node
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -788,7 +791,7 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    // browse_value°node
 {
   if (!isnode_BM (arg1))
     FATAL_BM
-      ("non-node for method to browse_value for node-s _7fJKfG4SN0U_1QTu5J832xg");
+      ("non-node for method to gtk_browse_value for node-s _7fJKfG4SN0U_1QTu5J832xg");
   ASSERT_BM (istaggedint_BM (arg2));
   ASSERT_BM (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -840,20 +843,21 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    // browse_value°node
   browse_add_parens_BM (openoff, closeoff, xtraoff, 1, 1, 1, curdepth,
                         CURFRAME_BM);
 #else /*!BISMONGTK */
-  weakassertfailureat_BM ("noGTK browse_value°node _7fJKfG4SN0U_1QTu5J832xg",
-                          __FILE__, __LINE__);
+  weakassertfailureat_BM
+    ("noGTK gtk_browse_value°node _7fJKfG4SN0U_1QTu5J832xg", __FILE__,
+     __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (arg1);
-}                               /* end browse_value°node _7fJKfG4SN0U_1QTu5J832xg */
+}                               /* end gtk_browse_value°node _7fJKfG4SN0U_1QTu5J832xg */
 
 
 
 
 
-/// method to browse_value for closure-s
+/// method to gtk_browse_value for closure-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac);
 value_tyBM
-ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    // browse_value°closure
+ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    // gtk_browse_value°closure
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -863,7 +867,7 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    // browse_value°closure
 {
   if (!isclosure_BM (arg1))
     FATAL_BM
-      ("non-closure for method to browse_value for closure-s _7CohjJ9tkfZ_4UMAIZCgwac");
+      ("non-closure for method to gtk_browse_value for closure-s _7CohjJ9tkfZ_4UMAIZCgwac");
   ASSERT_BM (istaggedint_BM (arg2));
   ASSERT_BM (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -920,14 +924,14 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    // browse_value°closure
      __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (arg1);
-}                               /* end browse_value°closure  _7CohjJ9tkfZ_4UMAIZCgwac */
+}                               /* end gtk_browse_value°closure  _7CohjJ9tkfZ_4UMAIZCgwac */
 
 
 
-/// method to browse_data for basiclo_function-s
+/// method to gtk_browse_data for basiclo_function-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA);
 value_tyBM
-ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    // browse_data°basiclo_function
+ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    // gtk_browse_data°basiclo_function
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -939,7 +943,7 @@ ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    // browse_data°basiclo_function
                  value_tyBM curval;);
   if (!isobject_BM (arg1))
     FATAL_BM
-      ("non-object for method to browse_data for basiclo_function-s _9zpvXnTuDeB_2B7ZiBtN8fA");
+      ("non-object for method to gtk_browse_data for basiclo_function-s _9zpvXnTuDeB_2B7ZiBtN8fA");
   _.objbrows = (const objectval_tyBM *) arg1;
   int depth = getint_BM (arg2);
   ASSERT_BM (isobject_BM ((const value_tyBM) _.objbrows));
@@ -963,18 +967,18 @@ ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    // browse_data°basiclo_function
     };
 #else /*!BISMONGTK */
   weakassertfailureat_BM
-    ("noGTK browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA", __FILE__,
-     __LINE__);
+    ("noGTK gtk_browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA",
+     __FILE__, __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
-}                               /* end browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA */
+}                               /* end gtk_browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA */
 
 
 
-/// method to browse_data°hset_object
+/// method to gtk_browse_data°hset_object
 extern objrout_sigBM ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK);
 value_tyBM
-ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK)    //browse_data°hset_object
+ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK)    //gtk_browse_data°hset_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -990,7 +994,7 @@ ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK)    //browse_data°hset_object
                  const setval_tyBM * setk;      //
     );
   if (!isobject_BM (arg1))
-    FATAL_BM ("non-object for method to browse_data for hset_object");
+    FATAL_BM ("non-object for method to gtk_browse_data for hset_object");
   _.objbrows = (const objectval_tyBM *) arg1;
   int depth = getint_BM (arg2);
   ASSERT_BM (isobject_BM ((const value_tyBM) _.objbrows));
@@ -1019,19 +1023,19 @@ ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK)    //browse_data°hset_object
   gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
 #else /*!BISMONGTK */
   weakassertfailureat_BM
-    ("noGTK browse_data°hset_object _4IshjBIv6ol_5korHKUIjeK", __FILE__,
+    ("noGTK gtk_browse_data°hset_object _4IshjBIv6ol_5korHKUIjeK", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
-}                               /* end browse_data°hset_object _4IshjBIv6ol_5korHKUIjeK */
+}                               /* end gtk_browse_data°hset_object _4IshjBIv6ol_5korHKUIjeK */
 
 
-// browse_data°contributor_class _7xwUcosBMjj_3Sa2de3sCGO
+// gtk_browse_data°contributor_class _7xwUcosBMjj_3Sa2de3sCGO
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO)    // browse_data°contributor_class 
+ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO)    // gtk_browse_data°contributor_class 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
  const value_tyBM arg2,         //
@@ -1044,11 +1048,11 @@ ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO)    // browse_data°contributor_clas
                  value_tyBM namev;
     );
   if (!isobject_BM (arg1))
-    FATAL_BM ("non-object for method to browse_data for hset_object");
+    FATAL_BM ("non-object for method to gtk_browse_data for hset_object");
   _.objbrows = (const objectval_tyBM *) arg1;
   int depth = getint_BM (arg2);
   ASSERT_BM (isobject_BM ((const value_tyBM) _.objbrows));
-  DBGPRINTF_BM ("browse_data°contributor_class objbrows %s depth %d",
+  DBGPRINTF_BM ("gtk_browse_data°contributor_class objbrows %s depth %d",
                 objectdbg_BM (_.objbrows), depth);
 #ifdef BISMONGTK
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
@@ -1099,7 +1103,7 @@ ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO)    // browse_data°contributor_clas
     }
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
-}                               /* end  browse_data°contributor_class  _7xwUcosBMjj_3Sa2de3sCGO */
+}                               /* end  gtk_browse_data°contributor_class  _7xwUcosBMjj_3Sa2de3sCGO */
 
 
 
@@ -1489,11 +1493,11 @@ ROUTINEOBJNAME_BM (_9QuovXgtk9K_17pMbAD0XmX)    //
 
 
 
-// method browse_data°list_object _2EtVNhr2mHz_8CsOQJdYeCE
+// method gtk_browse_data°list_object _2EtVNhr2mHz_8CsOQJdYeCE
 extern objrout_sigBM ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    // browse_data°list_object
+ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    // gtk_browse_data°list_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -1510,7 +1514,7 @@ ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    // browse_data°list_object
   WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
   if (!isobject_BM (arg1))
     FATAL_BM
-      ("non-object for method to browse_data for list_object-s _2EtVNhr2mHz_8CsOQJdYeCE");
+      ("non-object for method to gtk_browse_data for list_object-s _2EtVNhr2mHz_8CsOQJdYeCE");
   _.objbrows = (objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   WEAKASSERT_BM (objhaslistpayl_BM (_.objbrows));
@@ -1554,19 +1558,19 @@ ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    // browse_data°list_object
   }
 #else /*!BISMONGTK */
   weakassertfailureat_BM
-    ("noGTK browse_data°list_object _2EtVNhr2mHz_8CsOQJdYeCE", __FILE__,
+    ("noGTK gtk_browse_data°list_object _2EtVNhr2mHz_8CsOQJdYeCE", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
-}                               /* end browse_data°list_object _2EtVNhr2mHz_8CsOQJdYeCE */
+}                               /* end gtk_browse_data°list_object _2EtVNhr2mHz_8CsOQJdYeCE */
 
 
 
-//browse_data°assoc_object _0f1S28bCE26_3X6Vpz9lG4A
+//gtk_browse_data°assoc_object _0f1S28bCE26_3X6Vpz9lG4A
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //browse_data°assoc_object
+ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //gtk_browse_data°assoc_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
  const value_tyBM arg2,         //
@@ -1582,7 +1586,7 @@ ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //browse_data°assoc_object
   WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
   if (!isobject_BM (arg1))
     FATAL_BM
-      ("non-object for method to browse_data for assoc_object-s _0f1S28bCE26_3X6Vpz9lG4A");
+      ("non-object for method to gtk_browse_data for assoc_object-s _0f1S28bCE26_3X6Vpz9lG4A");
   _.objbrows = (const objectval_tyBM *) arg1;
 #ifdef BISMONGTK
   int maxdepth = getint_BM (arg2);
@@ -1628,20 +1632,20 @@ ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //browse_data°assoc_object
   }
 #else /*!BISMONGTK */
   weakassertfailureat_BM
-    ("noGTK browse_data°assoc_object  _0f1S28bCE26_3X6Vpz9lG4A", __FILE__,
-     __LINE__);
+    ("noGTK gtk_browse_data°assoc_object  _0f1S28bCE26_3X6Vpz9lG4A",
+     __FILE__, __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
-}                               /* end browse_data°assoc_object  _0f1S28bCE26_3X6Vpz9lG4A */
+}                               /* end gtk_browse_data°assoc_object  _0f1S28bCE26_3X6Vpz9lG4A */
 
 
 
 /////
-// browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE
+// gtk_browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE
 extern objrout_sigBM ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE)    //browse_data°dict_object 
+ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE)    //gtk_browse_data°dict_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -1656,7 +1660,7 @@ ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE)    //browse_data°dict_object
   WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
   if (!isobject_BM (arg1))
     FATAL_BM
-      ("non-object for method to browse_data for dict_object-s _6xPQJolJkUw_2jCiJ3IOKXE");
+      ("non-object for method to gtk_browse_data for dict_object-s _6xPQJolJkUw_2jCiJ3IOKXE");
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   WEAKASSERT_BM (objhasdictpayl_BM (_.objbrows));
@@ -1709,21 +1713,21 @@ ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE)    //browse_data°dict_object
   }
 #else /*!BISMONGTK */
   weakassertfailureat_BM
-    ("noGTK browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE", __FILE__,
+    ("noGTK gtk_browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
-}                               /* end browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE */
+}                               /* end gtk_browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE */
 
 
 
 //////
-// browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX
+// gtk_browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // browse_data°sbuf_object 
+ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // gtk_browse_data°sbuf_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the browse maxdepth
@@ -1738,7 +1742,7 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // browse_data°sbuf_object
   WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
   if (!isobject_BM (arg1))
     FATAL_BM
-      ("non-object for method to browse_data for sbuf_object-s _8L6mTIICJRt_4RccFDlgACX");
+      ("non-object for method to gtk_browse_data for sbuf_object-s _8L6mTIICJRt_4RccFDlgACX");
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
 #ifdef BISMONGTK
@@ -1836,20 +1840,20 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // browse_data°sbuf_object
   }
 #else /*!BISMONGTK */
   weakassertfailureat_BM
-    ("noGTK browse_data°sbuf_object  _8L6mTIICJRt_4RccFDlgACX", __FILE__,
+    ("noGTK gtk_browse_data°sbuf_object  _8L6mTIICJRt_4RccFDlgACX", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
-}                               /* end browse_data°sbuf_object  _8L6mTIICJRt_4RccFDlgACX */
+}                               /* end gtk_browse_data°sbuf_object  _8L6mTIICJRt_4RccFDlgACX */
 
 
 
 /////
-// browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe
+// gtk_browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe)    //browse_data°hashsetval_object 
+ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe)    //gtk_browse_data°hashsetval_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
  const value_tyBM arg2,         //
@@ -1864,7 +1868,7 @@ ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe)    //browse_data°hashsetval_object
   WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
   if (!isobject_BM (arg1))
     FATAL_BM
-      ("non-object for method to browse_data for hashsetval_object-s _9dKLCRPRn9Z_1tczFz5weBe");
+      ("non-object for method to gtk_browse_data for hashsetval_object-s _9dKLCRPRn9Z_1tczFz5weBe");
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   WEAKASSERT_BM (objhashashsetvalpayl_BM (_.objbrows));
@@ -1910,18 +1914,18 @@ ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe)    //browse_data°hashsetval_object
   }
 #else /*!BISMONGTK */
   weakassertfailureat_BM
-    ("noGTK browse_data°hashsetval_object  _9dKLCRPRn9Z_1tczFz5weBe",
+    ("noGTK gtk_browse_data°hashsetval_object  _9dKLCRPRn9Z_1tczFz5weBe",
      __FILE__, __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
-}                               /* end browse_data°hashsetval_object  _9dKLCRPRn9Z_1tczFz5weBe */
+}                               /* end gtk_browse_data°hashsetval_object  _9dKLCRPRn9Z_1tczFz5weBe */
 
 
-// browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi
+// gtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //browse_data°hashmapval_object 
+ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //gtk_browse_data°hashmapval_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // object
  const value_tyBM arg2,         // depth
@@ -1936,15 +1940,16 @@ ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //browse_data°hashmapval_object
   WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
   if (!isobject_BM (arg1))
     FATAL_BM
-      ("non-object for method to browse_data for hashmapval_object-s _0M2jApBzFAy_8H8cpCjGpTi");
+      ("non-object for method to gtk_browse_data for hashmapval_object-s _0M2jApBzFAy_8H8cpCjGpTi");
   _.objbrows = (const objectval_tyBM *) arg1;
   int maxdepth = getint_BM (arg2);
   WEAKASSERT_BM (objhashashmapvalpayl_BM (_.objbrows));
 #ifdef BISMONGTK
   _.nodv = objhashmapvalmakenodeofkeyspayl_BM (_.objbrows, BMP_node);
-  DBGPRINTF_BM ("browse_data°hashmapval_object start objbrows=%s nodv=%s\n",
-                objectdbg_BM (_.objbrows),
-                debug_outstr_value_BM (_.nodv, CURFRAME_BM, 0));
+  DBGPRINTF_BM
+    ("gtk_browse_data°hashmapval_object start objbrows=%s nodv=%s\n",
+     objectdbg_BM (_.objbrows), debug_outstr_value_BM (_.nodv, CURFRAME_BM,
+                                                       0));
   WEAKASSERT_BM (isnode_BM (_.nodv));
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   int nbkeys = nodewidth_BM (_.nodv);
@@ -1997,11 +2002,11 @@ ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //browse_data°hashmapval_object
   }
 #else /*!BISMONGTK */
   weakassertfailureat_BM
-    ("noGTK browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi",
+    ("noGTK gtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi",
      __FILE__, __LINE__);
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
-}                               /* end browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi */
+}                               /* end gtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi */
 
 
 

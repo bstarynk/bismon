@@ -1326,7 +1326,7 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
         gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it,
                                      RIGHT_GRAVITY_BM);
       gtk_text_buffer_get_end_iter (browserbuf_BM, &browserit_BM);
-      browse_value_gui_content_BM (_.valname, _.valbrows, BMP_browse_value,
+      browse_value_gui_content_BM (_.valname, _.valbrows, BMP_gtk_browse_value,
                                    curbval->brow_vdepth, CURFRAME_BM);
       DBGPRINTF_BM ("refreshed bvix#%d browserit:%s",
                     bvix, textiterstrdbg_BM (&browserit_BM));
@@ -2112,7 +2112,7 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
             _.name = tok.tok_cname;
           ASSERT_BM (isstring_BM ((const value_tyBM) _.name));
           browse_named_value_gui_BM (_.name, _.targobj,
-                                     BMP_browse_value, browserdepth_BM,
+                                     BMP_gtk_browse_value, browserdepth_BM,
                                      CURFRAME_BM);
           log_begin_message_BM ();
           log_printf_message_BM ("bound name $%s to object ",
@@ -2564,7 +2564,7 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
                 _.name = tok.tok_cname;
               ASSERT_BM (isstring_BM ((const value_tyBM) _.name));
               browse_named_value_gui_BM (_.name, _.srcval,
-                                         BMP_browse_value, browserdepth_BM,
+                                         BMP_gtk_browse_value, browserdepth_BM,
                                          CURFRAME_BM);
               log_begin_message_BM ();
               log_printf_message_BM ("bound and show name $%s to value.",
@@ -2889,7 +2889,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                 find_browsed_object_BM (GLOBAL_BM (gui_focus_obj));
               ASSERT_BM (brfocusob != NULL);
               browse_object_gui_BM (GLOBAL_BM (gui_focus_obj),
-                                    BMP_browse_in_object,
+                                    BMP_gtk_browse_in_object,
                                     brfocusob->brow_odepth, CURFRAME_BM);
               log_begin_message_BM ();
               log_puts_message_BM ("[re-]browsing object ");
@@ -2926,7 +2926,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
               if (_.obj)
                 {
                   browse_object_gui_BM (GLOBAL_BM (gui_focus_obj),
-                                        BMP_browse_in_object,
+                                        BMP_gtk_browse_in_object,
                                         browserdepth_BM, CURFRAME_BM);
                   log_begin_message_BM ();
                   log_puts_message_BM ("showing and focusing object ");
@@ -2937,7 +2937,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
               if (broldfocusob && _.oldfocusobj != _.obj)
                 {
                   browse_object_gui_BM (_.oldfocusobj,
-                                        BMP_browse_in_object,
+                                        BMP_gtk_browse_in_object,
                                         broldfocusob->brow_odepth,
                                         CURFRAME_BM);
                   log_begin_message_BM ();
@@ -2972,7 +2972,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
           if (!nobuild)
             {
               browse_object_gui_BM (_.obj,
-                                    BMP_browse_in_object,
+                                    BMP_gtk_browse_in_object,
                                     browserdepth_BM, CURFRAME_BM);
               log_begin_message_BM ();
               log_puts_message_BM ("displaying object ");
@@ -3007,7 +3007,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
           if (!nobuild)
             {
               browse_object_gui_BM (_.obj,
-                                    BMP_browse_in_object,
+                                    BMP_gtk_browse_in_object,
                                     browserdepth_BM, CURFRAME_BM);
               log_begin_message_BM ();
               log_puts_message_BM ("displaying object ");
@@ -3082,7 +3082,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                      bytstring_BM (_.name), browserdepth_BM);
                   log_end_message_BM ();
                   browse_named_value_gui_BM (_.name, _.comp,
-                                             BMP_browse_value,
+                                             BMP_gtk_browse_value,
                                              browserdepth_BM, CURFRAME_BM);
                 }
               else
@@ -3183,7 +3183,7 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
                      browserdepth_BM);
                   log_end_message_BM ();
                   browse_named_value_gui_BM (_.result, _.comp,
-                                             BMP_browse_value,
+                                             BMP_gtk_browse_value,
                                              browserdepth_BM, CURFRAME_BM);
                 }
               else
@@ -5007,7 +5007,7 @@ browse_value_BM (const value_tyBM val,
       LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                      value_tyBM val);
       _.val = val;
-      send2_BM ((const value_tyBM) _.val, BMP_browse_value,
+      send2_BM ((const value_tyBM) _.val, BMP_gtk_browse_value,
                 CURFRAME_BM,
                 taggedint_BM (maxdepth), taggedint_BM (curdepth));
     }

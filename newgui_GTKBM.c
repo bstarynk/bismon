@@ -1262,7 +1262,7 @@ parsecommandbuf_newgui_BM (struct
                  obwin_current_newgui_BM->obw_rank);
               show_object_in_obwin_newgui_BM
                 (obwin_current_newgui_BM, _.obj,
-                 BMP_browse_in_object, depth, CURFRAME_BM);
+                 BMP_gtk_browse_in_object, depth, CURFRAME_BM);
               browserdepth_BM = depth;
               log_begin_message_BM ();
               log_puts_message_BM ("browsing object ");
@@ -2462,7 +2462,7 @@ static void
   browserbuf_BM = txbuf;
   curbv->brow_vstartmk =
     gtk_text_buffer_create_mark (txbuf, NULL, &browserit_BM, LEFT_GRAVITY_BM);
-  send2_BM ((const value_tyBM) _.val, BMP_browse_value,
+  send2_BM ((const value_tyBM) _.val, BMP_gtk_browse_value,
             CURFRAME_BM, taggedint_BM (browsdepth), taggedint_BM (0));
   gtk_text_buffer_get_end_iter (txbuf, &browserit_BM);
   curbv->brow_vendmk =
@@ -4223,7 +4223,7 @@ objshow_newgui_cbBM (void)
                                           objectdbg_BM (_.showob));
                   show_object_in_obwin_newgui_BM
                     (obwin_current_newgui_BM, _.showob,
-                     BMP_browse_in_object, browserdepth_BM, CURFRAME_BM);
+                     BMP_gtk_browse_in_object, browserdepth_BM, CURFRAME_BM);
                   log_begin_message_BM ();
                   log_puts_message_BM ("showing object ");
                   log_object_message_BM (_.showob);
