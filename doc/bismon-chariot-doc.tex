@@ -276,7 +276,7 @@ development is agile.
 
   \subsection*{Executive Summary}
 This D1.3\textsuperscript{v1} \textsc{Chariot} deliverable is a first \textbf{draft}
--and \emph{preliminary}- version of D1.3\textsuperscript{v2} scheduled at M30 on
+-and \emph{preliminary}- version (at M12) of D1.3\textsuperscript{v2} scheduled at M30 on
 ``Specialized Static Analysis tools for more secure and safer IoT
 software development''.
 
@@ -296,7 +296,20 @@ analysis properties. That framework is configurable and scriptable by
 static analysis experts, hence permitting different IoT projects to
 address various concerns, while keeping the usual IoT development
 workflow (running as usual their \emph{GCC} cross-compiler on Linux,
-with extra plugin-related compilation flags).
+with extra plugin-related compilation flags).  The deliverable has
+been structured starting from the identification of the software and
+tool users and the document expected audience as well as the vision on
+specialized source code analysis towards more secure and safer IoT
+software development. The report then describes its strong alignment
+to adding capabilities to \emph{GCC} as well as the driving principles of the
+tools. Data and their persistence character are also described
+including mutable and non-mutable values/types while persistence is
+considered to start by loading some previous persisted state, usually
+dumping its current state before termination and loading the next
+state on the next load-up. The framework for static code analysis is
+also defined as part of the \emph{GCC} compilation process. The described
+work is also analysed in terms of contributing to other free software
+projects.
 
 
 \subsection*{notice}
