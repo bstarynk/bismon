@@ -1326,10 +1326,11 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
         gtk_text_buffer_create_mark (browserbuf_BM, NULL, &it,
                                      RIGHT_GRAVITY_BM);
       gtk_text_buffer_get_end_iter (browserbuf_BM, &browserit_BM);
-      browse_value_gui_content_BM (_.valname, _.valbrows, BMP_gtk_browse_value,
-                                   curbval->brow_vdepth, CURFRAME_BM);
-      DBGPRINTF_BM ("refreshed bvix#%d browserit:%s",
-                    bvix, textiterstrdbg_BM (&browserit_BM));
+      browse_value_gui_content_BM (_.valname, _.valbrows,
+                                   BMP_gtk_browse_value, curbval->brow_vdepth,
+                                   CURFRAME_BM);
+      DBGPRINTF_BM ("refreshed bvix#%d browserit:%s", bvix,
+                    textiterstrdbg_BM (&browserit_BM));
       browsednvcurix_BM = -1;
       _.valbrows = NULL;
     };
@@ -2564,8 +2565,8 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
                 _.name = tok.tok_cname;
               ASSERT_BM (isstring_BM ((const value_tyBM) _.name));
               browse_named_value_gui_BM (_.name, _.srcval,
-                                         BMP_gtk_browse_value, browserdepth_BM,
-                                         CURFRAME_BM);
+                                         BMP_gtk_browse_value,
+                                         browserdepth_BM, CURFRAME_BM);
               log_begin_message_BM ();
               log_printf_message_BM ("bound and show name $%s to value.",
                                      bytstring_BM (_.name));

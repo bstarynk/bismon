@@ -1204,6 +1204,11 @@ extern void parsererrorprintf_BM (struct parser_stBM *pars,
                                   struct stackframe_stBM *stkf, unsigned line,
                                   unsigned col, const char *fmt, ...)
   __attribute__ ((format (printf, 5, 6), noreturn));
+extern void objparserrorprintf_BM (objectval_tyBM * obpars,
+                                   struct stackframe_stBM *stkf,
+                                   unsigned line, unsigned col,
+                                   const char *fmt, ...)
+  __attribute__ ((format (printf, 5, 6), noreturn));
 // skip spaces and comments
 extern void parserskipspaces_BM (struct parser_stBM *pars,
                                  struct stackframe_stBM *stkf);

@@ -333,10 +333,47 @@ parsererrorprintf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf,
     {
       ASSERT_BM (parsops->parsop_magic == PARSOPMAGIC_BM);
       if (parsops && parsops->parsop_error_rout)
-        parsops->parsop_error_rout (pars, stkf, line, col, buf);
+        {
+          parsops->parsop_error_rout (pars, stkf, line, col, buf);
+          return;
+        }
     };
   FATAL_BM ("%s:%d:%d: PARSER ERROR : %s", pars->pars_path, line, col, buf);
 }                               /* end parsererrorprintf_BM */
+
+
+
+void
+objparserrorprintf_BM (objectval_tyBM * obpars, struct stackframe_stBM *stkf,
+                       unsigned line, unsigned col, const char *fmt, ...)
+{
+  va_list args;
+  char *buf = NULL;
+  va_start (args, fmt);
+  vasprintf (&buf, fmt, args);
+  if (!buf)
+    FATAL_BM ("vasprintf failed format %s", fmt);
+  va_end (args);
+  struct parser_stBM *pars = objparserpayload_BM (obpars);
+  if (pars)
+    {
+      const struct parserops_stBM *parsops = pars->pars_ops;
+      if (parsops)
+        {
+          ASSERT_BM (parsops->parsop_magic == PARSOPMAGIC_BM);
+          if (parsops && parsops->parsop_error_rout)
+            {
+              parsops->parsop_error_rout (pars, stkf, line, col, buf);
+              return;
+            }
+        };
+      FATAL_BM ("%s:%d:%d: OBJPARSER ERROR <%s>: %s", pars->pars_path, line,
+                col, objectdbg_BM (obpars), buf);
+    }
+  else
+    FATAL_BM ("<%s>:%d:%d: OBJPARSER ERROR : %s", objectdbg_BM (obpars), line,
+              col, buf);
+}                               /* end objparserrorprintf_BM */
 
 
 
