@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1948 objects
+// for 1949 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -693,6 +693,17 @@ _9KIeH9wMRCV_12Gy2xILgpG }
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "gives the body of some function, etc..."
 !)_7DQyvJFMOrC_9IfC3CtYknn
+
+
+
+!(_4GfumpsCCfT_5VOyVw9igGJ |=bound|
+!~ name (~ bound
+~)
+!@ 1545125109.143
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "give some bound, e.g. inside counted loops"
+!)_4GfumpsCCfT_5VOyVw9igGJ
 
 
 
