@@ -21,14 +21,14 @@ const char modulmd5chksum_9dQJgjsq7hs_2T2RqXLkU0A_BM[] = BISMON_MOMD5;
 extern const char *const routid_9dQJgjsq7hs_2T2RqXLkU0A_BM[1+1];
 
 
-// no failure
+// 1 failures
 
 extern objrout_sigBM crout_5NH940lCHYJ_3nuRm3flnzc_BM; //#0 !emithtml_block (o_hblock o_emitctx o_strbuf v_depth)
 
 
-// declare 1 constants
-objectval_tyBM* constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[1+1];
-const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[1+1];
+// declare 3 constants
+objectval_tyBM* constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[3+1];
+const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[3+1];
 
 
 // define 1 routines
@@ -65,7 +65,7 @@ value_tyBM crout_5NH940lCHYJ_3nuRm3flnzc_BM //#0
    _.stkfram_head.htyp = typayl_StackFrame_BM;
    _.stkfram_head.hgc = 0;
    _.stkfram_head.rlen = 5;
-   _.stkfram_descr = constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[0] /*|_5NH940lCHYJ_3nuRm3flnzc*/;
+   _.stkfram_descr = constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[1] /*|_5NH940lCHYJ_3nuRm3flnzc*/;
    ASSERT_BM (!stkf
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
@@ -97,6 +97,28 @@ DBGPRINTF_BM("emithtml_block start €%.9s o_hblock=%s o_emitctx=%s o_strbuf=%s/
  (long int) ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));; 
 } // end run _9W3ifZwUp2j_3cTOMwHevI1 
  
+ 
+if /*cond _6VEZT6yN91n_1uTSi1gCAKy*/  
+/*when _0li4T620kcV_4nC1fD477pu:*/ 
+ (/*is_null:*/(( /*o_hblock:*/_.o_6Ef2ORO1Mni_0tpNoRQGmrW)==NULL)) { //body when _0li4T620kcV_4nC1fD477pu  
+//failure _2ekmsdDpheM_8iSH1r9pS9e   
+PLACEDFAILURE_BM(__LINE__,   
+          /*failreason:*/ (((value_tyBM) makenode4_BM
+ (/*make_node conn:*/( (constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[2] /*!failure_non_object*/)), 
+ /*make_node 4 sons:*/ 
+( (constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[1] /*!_5NH940lCHYJ_3nuRm3flnzc*/)), 
+ 
+( /*o_emitctx:*/_.o_9nXRmTATjN4_5F9V7RvvgW0), 
+ 
+( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy), 
+ 
+(/*taggedint:*/ taggedint_BM ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f))))),
+                /*failplace:*/ ( /*modconst:*/(constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[0] /*|_2ekmsdDpheM_8iSH1r9pS9e*/)),
+                ((struct stackframe_stBM *) &_));
+  
+} //endwhen _0li4T620kcV_4nC1fD477pu  
+/*endcond _6VEZT6yN91n_1uTSi1gCAKy*/ 
+ 
 /* !endingblock _86w0oglm27k_4ULVduuJiC6 */ 
 goto endblock__86w0oglm27k_4ULVduuJiC6; 
 endblock__86w0oglm27k_4ULVduuJiC6: ; 
@@ -113,11 +135,13 @@ endblock__86w0oglm27k_4ULVduuJiC6: ;
 // end of 1 generated routines
 
 
-// the constant ids for 1 constants:
-const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[1+1] = {
+// the constant ids for 3 constants:
+const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[3+1] = {
  /*0:*/
+ "_2ekmsdDpheM_8iSH1r9pS9e", //! fail non-object emithtml_block o_emitctx o_strbuf depth
  "_5NH940lCHYJ_3nuRm3flnzc", //! emithtml_block (o_hblock o_emitctx o_strbuf v_depth)
- NULL}; // end 1 constant ids
+ "_6yWldsq3Rmk_01WqTfwSIDV",//failure_non_object
+ NULL}; // end 3 constant ids
 
 
 
