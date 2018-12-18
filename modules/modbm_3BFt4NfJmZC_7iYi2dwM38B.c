@@ -1422,12 +1422,16 @@ value_tyBM crout_8dG7KZHgf3t_4ia32mWZqVQ_BM //#14
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 6 local values:
+    /// 10 local values:
     objectval_tyBM* o_0yYNVlhznPw_115q5g6EYO0; // o_class
+    value_tyBM v_0ZL8gaI6sH8_7UPhmAQcwMe; // v_comp
+    value_tyBM v_16Y2isgiwOY_4kEIm87NkH2; // v_in
     value_tyBM v_20uyDk84Vub_7xsAwkSm7lL; // v_lineno
     value_tyBM v_2BkOxf2KbS8_3bswrKbmgjy; // v_node
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ; // v_r
+    objectval_tyBM* o_4jyHvEiEzZ1_9ck99ShNTHx; // o_resobj
     objectval_tyBM* o_5fGGXIme43z_0mc4HIwzzMj; // o_parser
+    objectval_tyBM* o_79dADic8Iro_3skCK4hK3iW; // o_curlab
     value_tyBM v_7llbD3YIz2G_3vDyN1QuPCy; // v_colpos
     /// 4 local numbers:
     intptr_t n_2sygPI8PHgL_4RgFW0PkZbd; // i_colpos
@@ -1438,7 +1442,7 @@ value_tyBM crout_8dG7KZHgf3t_4ia32mWZqVQ_BM //#14
    memset (&_, 0, sizeof(struct frame_8dG7KZHgf3t_4ia32mWZqVQ_BMst));
    _.stkfram_head.htyp = typayl_StackFrame_BM;
    _.stkfram_head.hgc = 0;
-   _.stkfram_head.rlen = 6;
+   _.stkfram_head.rlen = 10;
    _.stkfram_descr = constob_3BFt4NfJmZC_7iYi2dwM38B_BM[18] /*|_8dG7KZHgf3t_4ia32mWZqVQ*/;
    ASSERT_BM (!stkf
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
@@ -1469,6 +1473,7 @@ startblock__5SooyVqYKIT_4dQpCFeTVkV: __attribute__((unused));
  /*i_colpos:*/_.n_2sygPI8PHgL_4RgFW0PkZbd = //assign _7pGANo80KI0_7YOZDlNgX2W  
  /* val_to_int */ getint_BM( /*v_colpos:*/_.v_7llbD3YIz2G_3vDyN1QuPCy) ; 
  
+//+ #2/6 of block _5SooyVqYKIT_4dQpCFeTVkV :: 
  
  
 { // run _90UqHX73obp_8XQ0EEfsW6q 
@@ -1482,6 +1487,19 @@ DBGPRINTF_BM("for_loop#readmacro start €%.9s v_node=%s lineno#%ld colpos#%ld o
  objectdbg1_BM( /*o_class:*/_.o_0yYNVlhznPw_115q5g6EYO0));
 ; 
 } // end run _90UqHX73obp_8XQ0EEfsW6q 
+ 
+ 
+ /*leni:*/_.n_833x2jYqhZh_8vDIuJhwz1k = //assign _4Cj2wfMNdSb_4STaolxG6qN  
+/*nodewidth:*/(intptr_t)nodewidth_BM( /*v_node:*/_.v_2BkOxf2KbS8_3bswrKbmgjy); 
+ 
+//+ #4/6 of block _5SooyVqYKIT_4dQpCFeTVkV :: 
+ 
+ /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B = //assign _6fyZzQUoppO_8VopYAJeuG9  
+ 0; 
+ 
+ 
+ /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe = //assign _210mSO8s3LZ_9iKjW7eaG6Q  
+/*nodenthson:*/nodenthson_BM(( /*v_node:*/_.v_2BkOxf2KbS8_3bswrKbmgjy),( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B)); 
  
 /* !endingblock _5SooyVqYKIT_4dQpCFeTVkV */ 
 goto endblock__5SooyVqYKIT_4dQpCFeTVkV; 
