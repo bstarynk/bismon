@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 1945 objects
+// for 1948 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -248,6 +248,20 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_5C1KcKsdD4h_1gouiJguEMx |=basiclo_countloop|
+!~ name (~ basiclo_countloop
+~)
+!@ 1545124788.822
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of counted-for-loops"
+!~ class (~ |supercl basiclo_loop:| _2EjH1ebLzli_4rmA1ZPtIBL
+~)
+
+!)_5C1KcKsdD4h_1gouiJguEMx
+
+
+
 !(_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !~ name (~ basiclo_dumpable_module
 ~)
@@ -307,6 +321,34 @@ _0vgCFjXblkx_4zCMhMAWjVK
 ~)
 
 !)_4UklN1FKPMy_43NQnifo7Mn
+
+
+
+!(_7f1EO8FBktm_6DM7x3gTDiT |=basiclo_for_down_loop|
+!~ name (~ basiclo_for_down_loop
+~)
+!@ 1545124922.006
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of counting loops, downframs, from the bound"
+!~ class (~ |supercl basiclo_countloop:| _5C1KcKsdD4h_1gouiJguEMx
+~)
+
+!)_7f1EO8FBktm_6DM7x3gTDiT
+
+
+
+!(_7JUZeKsjbx1_1VcZbR0vW41 |=basiclo_for_up_loop|
+!~ name (~ basiclo_for_up_loop
+~)
+!@ 1545124910.006
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of counting loop, upwards, up to the bound"
+!~ class (~ |supercl basiclo_countloop:| _5C1KcKsdD4h_1gouiJguEMx
+~)
+
+!)_7JUZeKsjbx1_1VcZbR0vW41
 
 
 
@@ -20930,12 +20972,14 @@ _5JuT4FgNFFh_7McrTYeT3jx
 
 
 !(_5NH940lCHYJ_3nuRm3flnzc
-!@ 1545113869.939
+!@ 1545124600.759
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "emithtml_block (o_hblock o_emitctx o_strbuf v_depth)"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _6Ef2ORO1Mni_0tpNoRQGmrW _9nXRmTATjN4_5F9V7RvvgW0 _41F1rKwGbaA_30OJWKsqNWy _4nJKFtMqlkA_1teQSqofNux ]
+!: _24sSVIADeHm_0Sx34wQfG7W |=locals|
+ { _0qTBOEAT5pa_2fz1SKfHrMV _0ZL8gaI6sH8_7UPhmAQcwMe _13K9OfeXRZR_84nyRTtoj81 _6Z4UU939WbU_8BK9xcKsXNb }
 !: _32eKNcTZ9HN_80t0nk47Mha |=numbers|
  { _2W7Ckt2WxEM_4NVYgEWE73B _6Y20GNUgnSZ_4LkbrcRMU8f }
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
