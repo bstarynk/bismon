@@ -1449,6 +1449,8 @@ value_tyBM crout_8dG7KZHgf3t_4ia32mWZqVQ_BM //#14
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
    _.stkfram_prev = stkf;
+   // locking 1:
+    objectval_tyBM* locked_9Om1a31BzaS_5TkPLp6j4lV = NULL; // for o_resobj
    // fetch 4 arguments:
    _.v_2BkOxf2KbS8_3bswrKbmgjy = arg0; // v_node
    _.v_20uyDk84Vub_7xsAwkSm7lL = arg1; // v_lineno
@@ -1474,7 +1476,7 @@ startblock__5SooyVqYKIT_4dQpCFeTVkV: __attribute__((unused));
  /*i_colpos:*/_.n_2sygPI8PHgL_4RgFW0PkZbd = //assign _7pGANo80KI0_7YOZDlNgX2W  
  /* val_to_int */ getint_BM( /*v_colpos:*/_.v_7llbD3YIz2G_3vDyN1QuPCy) ; 
  
-//+ #2/9 of block _5SooyVqYKIT_4dQpCFeTVkV :: 
+//+ #2/11 of block _5SooyVqYKIT_4dQpCFeTVkV :: 
  
  
 { // run _90UqHX73obp_8XQ0EEfsW6q 
@@ -1493,7 +1495,7 @@ DBGPRINTF_BM("for_loop#readmacro start €%.9s v_node=%s lineno#%ld colpos#%ld o
  /*leni:*/_.n_833x2jYqhZh_8vDIuJhwz1k = //assign _4Cj2wfMNdSb_4STaolxG6qN  
 /*nodewidth:*/(intptr_t)nodewidth_BM( /*v_node:*/_.v_2BkOxf2KbS8_3bswrKbmgjy); 
  
-//+ #4/9 of block _5SooyVqYKIT_4dQpCFeTVkV :: 
+//+ #4/11 of block _5SooyVqYKIT_4dQpCFeTVkV :: 
  
  /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B = //assign _6fyZzQUoppO_8VopYAJeuG9  
  0; 
@@ -1502,7 +1504,7 @@ DBGPRINTF_BM("for_loop#readmacro start €%.9s v_node=%s lineno#%ld colpos#%ld o
  /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe = //assign _210mSO8s3LZ_9iKjW7eaG6Q  
 /*nodenthson:*/nodenthson_BM(( /*v_node:*/_.v_2BkOxf2KbS8_3bswrKbmgjy),( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B)); 
  
-//+ #6/9 of block _5SooyVqYKIT_4dQpCFeTVkV :: 
+//+ #6/11 of block _5SooyVqYKIT_4dQpCFeTVkV :: 
  
  /*o_conn:*/_.o_13K9OfeXRZR_84nyRTtoj81 = //assign _7wn1KeIUJpE_8XLnDlRd9Wn  
 /*nodeconn:*/nodeconn_BM( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe); 
@@ -1523,6 +1525,7 @@ if /*cond _9wmUQdGs520_80QjLaRO5pa*/
 } //endwhen _1j5eDZEaK15_1f7jqPaTIVw  
 /*endcond _9wmUQdGs520_80QjLaRO5pa*/ 
  
+//+ #8/11 of block _5SooyVqYKIT_4dQpCFeTVkV :: 
  
 if /*cond _74NGaPfSZlF_0iubWpQ8MfB*/  
 /*when _8YCEgWraf8u_6RbayBBuUw2:*/ 
@@ -1539,12 +1542,45 @@ if /*cond _74NGaPfSZlF_0iubWpQ8MfB*/
 } //endwhen _8YCEgWraf8u_6RbayBBuUw2  
 /*endcond _74NGaPfSZlF_0iubWpQ8MfB*/ 
  
+ 
+if /*cond _0vn7ueI4Bxr_4hnicjlB78i*/  
+/*when _6utotmA8SWn_4ZHG6JuneX9:*/ 
+ (/*is_null:*/(( /*o_resobj:*/_.o_4jyHvEiEzZ1_9ck99ShNTHx)==NULL)) { //body when _6utotmA8SWn_4ZHG6JuneX9  
+ /*o_resobj:*/_.o_4jyHvEiEzZ1_9ck99ShNTHx = //assign _6fXfi9x99V4_8dSOffH1aBN   
+/*makeobj:*/makeobj_BM();  
+  
+} //endwhen _6utotmA8SWn_4ZHG6JuneX9  
+/*endcond _0vn7ueI4Bxr_4hnicjlB78i*/ 
+ 
+ 
+ 
+{ // begin lockobj _9Om1a31BzaS_5TkPLp6j4lV 
+  objectval_tyBM* curlockedob_9Om1a31BzaS_5TkPLp6j4lV = ( /*o_resobj:*/_.o_4jyHvEiEzZ1_9ck99ShNTHx); 
+if (objlock_BM (curlockedob_9Om1a31BzaS_5TkPLp6j4lV)) {  
+locked_9Om1a31BzaS_5TkPLp6j4lV = curlockedob_9Om1a31BzaS_5TkPLp6j4lV;  
+  
+ 
+{ // run _4AdqBDnuFGi_7lYJ3HxFm5x 
+/*debug for_loop#readmacro v_node lineno colpos o_resobj*/
+DBGPRINTF_BM("for_loop#readmacro €%.9s v_node=%s lineno#%ld colpos#%ld o_resobj=%s",
+ "_4AdqBDnuFGi_7lYJ3HxFm5x",
+ OUTSTRVALUE_BM( /*v_node:*/_.v_2BkOxf2KbS8_3bswrKbmgjy),
+ (long int) ( /*i_lineno:*/_.n_6x2LYnlYgQG_6FXtmtwODgo),
+ (long int) ( /*i_colpos:*/_.n_2sygPI8PHgL_4RgFW0PkZbd),
+ objectdbg_BM( /*o_resobj:*/_.o_4jyHvEiEzZ1_9ck99ShNTHx));; 
+} // end run _4AdqBDnuFGi_7lYJ3HxFm5x 
+  
+objunlock_BM (locked_9Om1a31BzaS_5TkPLp6j4lV), locked_9Om1a31BzaS_5TkPLp6j4lV = NULL; 
+} } // end objlock _9Om1a31BzaS_5TkPLp6j4lV 
 /* !endingblock _5SooyVqYKIT_4dQpCFeTVkV */ 
 goto endblock__5SooyVqYKIT_4dQpCFeTVkV; 
 endblock__5SooyVqYKIT_4dQpCFeTVkV: ; 
 } /*-block _5SooyVqYKIT_4dQpCFeTVkV */
 
  epilog_8dG7KZHgf3t_4ia32mWZqVQ: __attribute__ ((unused)); // routine _8dG7KZHgf3t_4ia32mWZqVQ epilogue:
+   // unlocking 1:
+    if (locked_9Om1a31BzaS_5TkPLp6j4lV != NULL)
+       objunlock_BM(locked_9Om1a31BzaS_5TkPLp6j4lV), locked_9Om1a31BzaS_5TkPLp6j4lV = NULL; // for o_resobj
    if (stkf) stkf->stkfram_callfun = NULL;
    return  /*v_r:*/_.v_3qw9bnATIhq_8loBraLeXzQ;
 } // end _8dG7KZHgf3t_4ia32mWZqVQ routine#14 _8dG7KZHgf3t_4ia32mWZqVQ
