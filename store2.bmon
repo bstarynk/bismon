@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2027 objects
+// for 2029 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -1922,6 +1922,32 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "give the object for which something is relevant"
 !)_1SolDiQA2WM_4IDOJKBiPFc
+
+
+
+!(_3kvgVKnUzJD_6ZEzcxAz3Xv |=for_down|
+!~ name (~ for_down
+~)
+!@ 1545296816.532
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "^for_down ([*in(obj)] [*label(obj)] varindex expcount stmts..."
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _8dG7KZHgf3t_4ia32mWZqVQ ( _7f1EO8FBktm_6DM7x3gTDiT _3kvgVKnUzJD_6ZEzcxAz3Xv)
+!)_3kvgVKnUzJD_6ZEzcxAz3Xv
+
+
+
+!(_21FxsSnH8nZ_3GTwzn561GM |=for_up|
+!~ name (~ for_up
+~)
+!@ 1545296787.283
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "^for_up ([*in(obj)] [*label(obj)] varindex expcount stmts..."
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _8dG7KZHgf3t_4ia32mWZqVQ ( _7JUZeKsjbx1_1VcZbR0vW41 _21FxsSnH8nZ_3GTwzn561GM)
+!)_21FxsSnH8nZ_3GTwzn561GM
 
 
 
