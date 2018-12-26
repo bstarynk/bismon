@@ -342,7 +342,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objectval_tyBM *k_closed = BMK_2TwOyPJxIz8_1rIeqaN7oRz;
   //objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
   //objectval_tyBM *k_emit_expression = BMK_9lXSe7DrOl6_7hghYt0LhTF;
-  //objectval_tyBM *k_emit_tatement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  //objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
   //objectval_tyBM *k_emit_reference = BMK_6qzzDyr2eIo_3SapnOUpg6S;
   objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
