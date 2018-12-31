@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2189 objects
+// for 2190 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -10374,6 +10374,7 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 !(_0g1CBaxjMIB_7NZdyHUikLG
+!|*
 !@ 1546254122.223
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -30292,6 +30293,36 @@ _0ZL8gaI6sH8_7UPhmAQcwMe
 
 
 
+!(_8SHsRPR2LVk_8x3tbafZmza
+!@ 1546272766.314
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug out#readmacro start  v_node lineno colpos o_parser"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " " _0EmM9kH8Wgr_7fpd0oIo9xQ  "#" 
+  "readmacro"  " "  "start"  "  " _2BkOxf2KbS8_3bswrKbmgjy 
+  " "  "lineno"  " "  "colpos"  " " 
+ _5fGGXIme43z_0mc4HIwzzMj  "*/"  "\n"  "DBGPRINTF_BM"  "(\"" 
+ _0EmM9kH8Wgr_7fpd0oIo9xQ  "#"  "readmacro"  " "  "start" 
+  " "  "\u20ac%."  "9s"  " " _2BkOxf2KbS8_3bswrKbmgjy 
+  "=%"  "s"  " "  "lineno"  "#%" 
+  "ld"  " "  "colpos"  "#%"  "ld" 
+  " " _5fGGXIme43z_0mc4HIwzzMj  "=%"  "s"  "\"," 
+  "\n"  " "  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "\"," 
+  "\n"  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2BkOxf2KbS8_3bswrKbmgjy) 
+  "),"  "\n"  " "  "("  "long" 
+  " " _0vgCFjXblkx_4zCMhMAWjVK  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _6x2LYnlYgQG_6FXtmtwODgo) 
+ ")," 
+  "\n"  " "  "("  "long"  " " 
+ _0vgCFjXblkx_4zCMhMAWjVK  ")"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_2sygPI8PHgL_4RgFW0PkZbd) 
+  "),"  "\n"  " "  "objectdbg_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5fGGXIme43z_0mc4HIwzzMj)  "));")
+!)_8SHsRPR2LVk_8x3tbafZmza
+
+
+
 !(_8Tru1efp1TD_3h85B2asoqL
 !@ 1536828152.682
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -30610,12 +30641,20 @@ _3d9rq9TD6PH_6qUv4Hao767
 
 
 !(_8Zow03fhyT0_8uAZxZPDM5k
-!@ 1546254155.314
+!@ 1546272846.762
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of out#readmacro"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _0g1CBaxjMIB_7NZdyHUikLG
+!# 7
+!& _67dfantiJB6_0raShkMRDHL
+!& _7pGANo80KI0_7YOZDlNgX2W
+!& _8SHsRPR2LVk_8x3tbafZmza
+!& _4Cj2wfMNdSb_4STaolxG6qN
+!& _210mSO8s3LZ_9iKjW7eaG6Q
+!& _7wn1KeIUJpE_8XLnDlRd9Wn
+!& _9wmUQdGs520_80QjLaRO5pa
 !)_8Zow03fhyT0_8uAZxZPDM5k
 
 
