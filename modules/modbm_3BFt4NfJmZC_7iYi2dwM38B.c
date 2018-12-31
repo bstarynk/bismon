@@ -66,9 +66,9 @@ extern objrout_sigBM crout_8NgOdlJACWN_8pbYZXkHpCj_BM; //#19 !emit_block°basicl
 extern objrout_sigBM crout_9CG8SKNs6Ql_4PiHd8cnydn_BM; //#20 !clear°dict_object minifun
 
 
-// declare 50 constants
-objectval_tyBM* constob_3BFt4NfJmZC_7iYi2dwM38B_BM[50+1];
-const char* const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[50+1];
+// declare 51 constants
+objectval_tyBM* constob_3BFt4NfJmZC_7iYi2dwM38B_BM[51+1];
+const char* const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[51+1];
 
 
 // define 21 routines
@@ -465,6 +465,25 @@ if /*cond _0vn7ueI4Bxr_4hnicjlB78i*/
   objectval_tyBM* curlockedob_2JvEoBxMhy7_9DZyjgGfHlv = ( /*o_resobj:*/_.o_4jyHvEiEzZ1_9ck99ShNTHx); 
 if (objlock_BM (curlockedob_2JvEoBxMhy7_9DZyjgGfHlv)) {  
 locked_2JvEoBxMhy7_9DZyjgGfHlv = curlockedob_2JvEoBxMhy7_9DZyjgGfHlv;  
+  
+if /*cond _4YKlELDYVOV_8RhceZSyfIv*/  
+/*when _8g6tUrNeSaK_9pEbME2mJdL:*/ 
+ (/*not:*/ (! (/*objectisinstance:*/ objectisinstance_BM(( /*o_resobj:*/_.o_4jyHvEiEzZ1_9ck99ShNTHx),( (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[50] /*!basiclo_outstmt*/)))))) { //body when _8g6tUrNeSaK_9pEbME2mJdL  
+{ // start cexpansion _8Zs5gF0Cjtl_8nrkFlDX8H6 - objputclass   
+/*objputclass:*/objputclass_BM(( /*o_resobj:*/_.o_4jyHvEiEzZ1_9ck99ShNTHx),( (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[50] /*!basiclo_outstmt*/)));   
+} // end cexpansion _8Zs5gF0Cjtl_8nrkFlDX8H6 - objputclass   
+  
+} //endwhen _8g6tUrNeSaK_9pEbME2mJdL  
+/*endcond _4YKlELDYVOV_8RhceZSyfIv*/ 
+  
+{ // start cexpansion _5ZvpQtV9DIb_5eIJPzrSdXF - objresetattrs  
+/*objresetattrs:*/ objresetattrs_BM(( /*o_resobj:*/_.o_4jyHvEiEzZ1_9ck99ShNTHx),(unsigned)(/*substract_int:*/(( /*leni:*/_.n_833x2jYqhZh_8vDIuJhwz1k) - ( /*i_start:*/_.n_4Dke6KoVx5r_1CoVhK8mVmc))));   
+} // end cexpansion _5ZvpQtV9DIb_5eIJPzrSdXF - objresetattrs   
+  
+//+ #2/4 of lockobj _2JvEoBxMhy7_9DZyjgGfHlv ::  
+{ // start cexpansion _4j8Yw7eNafO_3G8sPVjnCN9 - objresetattrs  
+/*objresetattrs:*/ objresetattrs_BM(( /*o_resobj:*/_.o_4jyHvEiEzZ1_9ck99ShNTHx),(unsigned)( 5));  
+} // end cexpansion _4j8Yw7eNafO_3G8sPVjnCN9 - objresetattrs  
   
  
 //// +while _3TURPJpX7th_5T3UCSyjzvv 
@@ -3417,8 +3436,8 @@ endblock__1lmLI285f7p_4im4Ls4Xewh: ;
 // end of 21 generated routines
 
 
-// the constant ids for 50 constants:
-const char* const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[50+1] = {
+// the constant ids for 51 constants:
+const char* const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[51+1] = {
  /*0:*/
  "_0cUdonky1bM_4IVhwlVRBMk", //! webhandler testhello minifunc
  "_0eMGYofuNVh_8ZP2mXdhtHO",//in
@@ -3479,7 +3498,9 @@ const char* const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[50+1] = {
  "_95hdJENHNkN_3QuKIJTCQQQ",//failure_type_error
  "_9pvzBeIKHXF_8YDPCrQ6OEK",//put
  "_9CG8SKNs6Ql_4PiHd8cnydn", //! clear°dict_object minifun
- NULL}; // end 50 constant ids
+ /*50:*/
+ "_9LFIEAPDbzj_9zfBn99RgU4",//basiclo_outstmt
+ NULL}; // end 51 constant ids
 
 
 
