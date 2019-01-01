@@ -2134,8 +2134,8 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                             debug_outstr_value_BM (_.oldwhenv, CURFRAME_BM,
                                                    0));
               if (_.oldwhenv)
-                FAILHERE (makenode3_BM
-                          (k_duplicate, _.caseob, _.compob, _.oldwhenv));
+                FAILHERE (makenode4_BM
+                          (k_duplicate, _.caseob, _.compob, _.oldwhenv, _.assocob));
               objhashsetaddpayl_BM (_.obmodhsetconst, _.caseob);
               objassocaddattrpayl_BM (_.assocob, _.caseob, _.compob);
             }
@@ -2150,8 +2150,8 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                                 debug_outstr_value_BM (_.oldwhenv,
                                                        CURFRAME_BM, 0));
                   if (_.oldwhenv)
-                    FAILHERE (makenode3_BM
-                              (k_duplicate, _.caseob, _.compob, _.oldwhenv));
+                    FAILHERE (makenode4_BM
+                              (k_duplicate, _.caseob, _.compob, _.oldwhenv, _.assocob));
                   objassocaddattrpayl_BM (_.assocob, _.caseob, _.compob);
                   objhashsetaddpayl_BM (_.obmodhsetconst, _.caseob);
                 }
