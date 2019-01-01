@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2223 objects
+// for 2228 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -743,6 +743,15 @@ _9KIeH9wMRCV_12Gy2xILgpG }
 ~)
 
 !)_2TYRxW1WRWb_1PuK1p9YKKq
+
+
+
+!(_6xxbA8aTjZm_1sCJbVkU3Pm |=c_enc|
+!~ name (~ c_enc
+~)
+!@ 1546346040.991
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_6xxbA8aTjZm_1sCJbVkU3Pm
 
 
 
@@ -2148,6 +2157,15 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_7YmEzAVe2hC_9iA0FVXAIqp |=hexa|
+!~ name (~ hexa
+~)
+!@ 1546346040.991
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_7YmEzAVe2hC_9iA0FVXAIqp
+
+
+
 !(_8RyQniG36zA_1c5YmZc3ysq |=hset|
 !~ name (~ hset
 ~)
@@ -2172,6 +2190,15 @@ _0vgCFjXblkx_4zCMhMAWjVK
 ~)
 
 !)_7FvfalQCaxj_24GCf5CtIWh
+
+
+
+!(_3QmxfIKpDVI_0C4Z01aFVxK |=html_enc|
+!~ name (~ html_enc
+~)
+!@ 1546346040.991
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_3QmxfIKpDVI_0C4Z01aFVxK
 
 
 
@@ -7483,6 +7510,15 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_1lCz1IP7t5R_8NTFVv0tnOi |=octa|
+!~ name (~ octa
+~)
+!@ 1546346040.991
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_1lCz1IP7t5R_8NTFVv0tnOi
+
+
+
 !(_7n2SLLuWOjH_4ArhFUjmckz |=odict|
 !~ name (~ odict
 ~)
@@ -7543,12 +7579,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !(_0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
 !~ name (~ out
 ~)
-!@ 1546253960.954
+!@ 1546347045.483
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "^out ([*in(obj)] varoutbuf outputs....)"
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
  % _0g1CBaxjMIB_7NZdyHUikLG ()
+!: _4rz1Bi4weGz_8Y03gU81cRL |=see|
+ { _0vgCFjXblkx_4zCMhMAWjVK _1jJjA6LcXiX_1V4ZcXlje09 _1lCz1IP7t5R_8NTFVv0tnOi _2P7OoZumXdx_5sUQ9SPbVwn 
+ _3QmxfIKpDVI_0C4Z01aFVxK _4T8am97muLl_5969SR22Ecq _6xxbA8aTjZm_1sCJbVkU3Pm 
+_7bbeIqUSje9_4jVgC7ZJmvx 
+ _7T9OwSFlgov_0wVJaK1eZbn _7WjaQkqwdaZ_6PRtbDrJHnf _7YmEzAVe2hC_9iA0FVXAIqp }
 !)_0EmM9kH8Wgr_7fpd0oIo9xQ
 
 
@@ -8976,6 +9017,15 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_3Vds0AKpJDp_7XkHCROBv8Q
+
+
+
+!(_2P7OoZumXdx_5sUQ9SPbVwn |=utf8_enc|
+!~ name (~ utf8_enc
+~)
+!@ 1546346040.991
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_2P7OoZumXdx_5sUQ9SPbVwn
 
 
 
