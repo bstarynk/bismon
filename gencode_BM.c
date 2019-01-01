@@ -2040,21 +2040,27 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
   int lastwhenix = -1;
   for (int wix = 0; wix < stmtlen; wix++)
     {
+      _.testv = NULL;
+      _.compob = NULL;
       _.compv = objgetcomp_BM (_.stmtob, wix);
+      DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s wix=%d compv=%s",       //
+                    objectdbg_BM (_.stmtob), wix, OUTSTRVALUE_BM (_.compv));
       if (!_.compv)
         continue;
       _.compob = objectcast_BM (_.compv);
-      DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s wix=%d compob=%s",      //
-                    objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob));
       if (!_.compob)
         FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (wix), _.compv));
       objlock_BM (_.compob);
       if (!objectisinstance_BM (_.compob, k_basiclo_when))
         {
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_objswitch stmtob=%s wix=%d non-when compob=%s, BREAK\n",
+             objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob));
           objunlock_BM (_.compob);
           break;
         }
       _.testv = objgetattr_BM (_.compob, k_test);
+      _.subcompv = NULL;
       DBGPRINTF_BM
         ("miniscan_stmt°basiclo_objswitch stmtob=%s wix=%d compob=%s testv=%s assocob=%s routprepob=%s",
          objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob),
@@ -2126,6 +2132,7 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
             ("miniscan_stmt°basiclo_objswitch stmtob=%s wix#%d compob=%s testv=%s",
              objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob),
              debug_outstr_value_BM (_.testv, CURFRAME_BM, 0));
+          ////
           if (isobject_BM (_.testv))
             {
               _.caseob = objectcast_BM (_.testv);
@@ -2144,21 +2151,22 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                  objectdbg1_BM (_.caseob), objectdbg2_BM (_.compob));
               objassocaddattrpayl_BM (_.assocob, _.caseob, _.compob);
             }
+          ///
           else if (issequence_BM (_.testv))
             {
               int nbcases = sequencesize_BM (_.testv);;
               DBGPRINTF_BM
-                ("miniscan_stmt°basiclo_objswitch stmtob=%s seq testv %s cix#%d",
-                 objectdbg_BM (_.stmtob), OUTSTRVALUE_BM (_.testv), cix);
+                ("miniscan_stmt°basiclo_objswitch stmtob=%s seq testv %s cix#%d nbcases=%d assocob=%s",
+                 objectdbg_BM (_.stmtob), OUTSTRVALUE_BM (_.testv), cix,
+                 nbcases, objectdbg1_BM (_.assocob));
 
               for (int casix = 0; casix < nbcases; casix++)
                 {
                   _.caseob = sequencenthcomp_BM (_.testv, casix);
                   _.oldwhenv = objassocgetattrpayl_BM (_.assocob, _.caseob);
-                  DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s wix#%d compob=%s caseob=%s casix=%d oldwhen=%s", objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob), objectdbg2_BM (_.caseob),  //
-                                casix,
-                                debug_outstr_value_BM (_.oldwhenv,
-                                                       CURFRAME_BM, 0));
+                  DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s wix#%d compob=%s caseob=%s casix=%d oldwhen=%s",    //
+                                objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob), objectdbg2_BM (_.caseob),       //
+                                casix, OUTSTRVALUE_BM (_.oldwhenv));
                   if (_.oldwhenv)
                     FAILHERE (makenode4_BM
                               (k_duplicate, _.caseob, _.compob, _.oldwhenv,
@@ -2172,13 +2180,17 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                   objhashsetaddpayl_BM (_.obmodhsetconst, _.caseob);
                 }
             }
+          ///
           else
             FAILHERE (makenode3_BM
                       (k_test, taggedint_BM (wix), _.compob, _.testv));
         }
+      _.subcompob = NULL;
       lastwhenix = wix;
       objunlock_BM (_.compob);
       _.compob = NULL;
+      DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s end wix=%d\n",
+                    objectdbg_BM (_.stmtob), wix);
     }
   DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch %s lastwhenix %d",
                 objectdbg_BM (_.stmtob), lastwhenix);
