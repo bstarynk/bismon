@@ -2135,23 +2135,30 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                                                    0));
               if (_.oldwhenv)
                 FAILHERE (makenode4_BM
-                          (k_duplicate, _.caseob, _.compob, _.oldwhenv, _.assocob));
+                          (k_duplicate, _.caseob, _.compob, _.oldwhenv,
+                           _.assocob));
               objhashsetaddpayl_BM (_.obmodhsetconst, _.caseob);
               objassocaddattrpayl_BM (_.assocob, _.caseob, _.compob);
             }
           else if (issequence_BM (_.testv))
             {
-              int nbcases = sequencesize_BM (_.testv);
+              int nbcases = sequencesize_BM (_.testv);;
+              DBGPRINTF_BM
+                ("miniscan_stmt°basiclo_objswitch stmtob=%s seq testv %s cix#%d",
+                 objectdbg_BM (_.stmtob), OUTSTRVALUE_BM (_.testv), cix);
+
               for (int casix = 0; casix < nbcases; casix++)
                 {
                   _.caseob = sequencenthcomp_BM (_.testv, casix);
                   _.oldwhenv = objassocgetattrpayl_BM (_.assocob, _.caseob);
-                  DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s wix#%d compob=%s caseob=%s oldwhen=%s", objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob), objectdbg2_BM (_.caseob),   //
+                  DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s wix#%d compob=%s caseob=%s casix=%d oldwhen=%s", objectdbg_BM (_.stmtob), wix, objectdbg1_BM (_.compob), objectdbg2_BM (_.caseob),  //
+                                casix,
                                 debug_outstr_value_BM (_.oldwhenv,
                                                        CURFRAME_BM, 0));
                   if (_.oldwhenv)
                     FAILHERE (makenode4_BM
-                              (k_duplicate, _.caseob, _.compob, _.oldwhenv, _.assocob));
+                              (k_duplicate, _.caseob, _.compob, _.oldwhenv,
+                               _.assocob));
                   objassocaddattrpayl_BM (_.assocob, _.caseob, _.compob);
                   objhashsetaddpayl_BM (_.obmodhsetconst, _.caseob);
                 }
