@@ -2266,7 +2266,7 @@ ROUTINEOBJNAME_BM (_2bzzB0nZuUO_2xfj3rDb3DN)    // emit_module#command_handler
                                  OUTSTRVALUE_BM (_.failplace));
           log_end_message_BM ();
 #ifdef BISMONGTK
-          show_answer_value_newgui_BM (_.failres, CURFRAME_BM);
+          show_failure_value_newgui_BM (_.failres, CURFRAME_BM);
 #endif     /*BISMONGTK*/
             LOCALRETURN_BM (NULL);
         };

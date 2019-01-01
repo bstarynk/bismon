@@ -1,7 +1,7 @@
  /* file newgui_GTKBM.c */
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -45,6 +45,7 @@ struct namedvaluenewguixtra_stBM
 };
 
 static const stringval_tyBM *astrval_bm;        // the "a" string value, name of default results, $a
+static const stringval_tyBM *failstrval_bm;     // the "fail" string value, name of failure, $fail
 
 extern void
 gtk_queue_process_BM (const stringval_tyBM * dirstrarg,
@@ -397,6 +398,7 @@ gcmarknewgui_BM (struct garbcoll_stBM *gc)
   if (complseqcmd_BM)
     VALUEGCPROC_BM (gc, complseqcmd_BM, 0);
   VALUEGCPROC_BM (gc, astrval_bm, 0);
+  VALUEGCPROC_BM (gc, failstrval_bm, 0);
   for (struct objectwindow_newgui_stBM *
        obw = obwin_first_newgui_BM; obw != NULL; obw = obw->obw_next)
     {
@@ -4774,6 +4776,30 @@ show_answer_value_newgui_BM (value_tyBM valarg, struct stackframe_stBM *stkf)
     browse_named_value_newgui_BM (_.astrv,
                                   _.val, browserdepth_BM, CURFRAME_BM);
 }                               /* end show_answer_value_newgui_BM */
+
+
+void
+show_failure_value_newgui_BM (value_tyBM valarg, struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf,
+                 /*descr: */ NULL,
+                 value_tyBM failstrv;
+                 value_tyBM val);
+  _.val = valarg;
+  ASSERT_BM (pthread_self () == mainthreadid_BM);
+  if (!failstrval_bm
+      || !isstring_BM ((value_tyBM) failstrval_bm)
+      || strcmp (bytstring_BM (failstrval_bm), "fail"))
+    {
+      _.failstrv = makestring_BM ("fail");
+      failstrval_bm = _.failstrv;
+    }
+  else
+    _.failstrv = failstrval_bm;
+  if (_.val)
+    browse_named_value_newgui_BM (_.failstrv,
+                                  _.val, browserdepth_BM, CURFRAME_BM);
+}                               /* end show_failure_value_newgui_BM */
 
 
 #ifndef BISMONION

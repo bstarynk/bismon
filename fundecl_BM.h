@@ -1313,6 +1313,8 @@ extern void initialize_newgui_BM (const char *builderfile,
                                   const char *cssfile);
 extern void show_answer_value_newgui_BM (value_tyBM val,
                                          struct stackframe_stBM *stkf);
+extern void show_failure_value_newgui_BM (value_tyBM val,
+                                          struct stackframe_stBM *stkf);
 extern void initialize_gui_tags_BM (GtkBuilder * bld);
 extern GtkWidget *initialize_gui_menubar_BM (GtkWidget * mainvbox,
                                              GtkBuilder * bld);

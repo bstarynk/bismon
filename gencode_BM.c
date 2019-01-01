@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -2138,6 +2138,10 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                           (k_duplicate, _.caseob, _.compob, _.oldwhenv,
                            _.assocob));
               objhashsetaddpayl_BM (_.obmodhsetconst, _.caseob);
+              DBGPRINTF_BM
+                ("miniscan_stmt°basiclo_objswitch stmtob=%s wix#%d +assocob %s, caseob %s, compob %s",
+                 objectdbg_BM (_.stmtob), wix, objectdbg_BM (_.assocob),
+                 objectdbg1_BM (_.caseob), objectdbg2_BM (_.compob));
               objassocaddattrpayl_BM (_.assocob, _.caseob, _.compob);
             }
           else if (issequence_BM (_.testv))
@@ -2159,6 +2163,11 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                     FAILHERE (makenode4_BM
                               (k_duplicate, _.caseob, _.compob, _.oldwhenv,
                                _.assocob));
+                  DBGPRINTF_BM
+                    ("miniscan_stmt°basiclo_objswitch stmtob=%s wix#%d casix#%d +assocob %s, caseob %s, compob %s",
+                     objectdbg_BM (_.stmtob), wix, casix,
+                     objectdbg_BM (_.assocob), objectdbg1_BM (_.caseob),
+                     objectdbg2_BM (_.compob));
                   objassocaddattrpayl_BM (_.assocob, _.caseob, _.compob);
                   objhashsetaddpayl_BM (_.obmodhsetconst, _.caseob);
                 }
