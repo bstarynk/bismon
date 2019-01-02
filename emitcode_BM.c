@@ -1733,7 +1733,12 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                   objstrbufferprintfpayl_BM (_.modgenob, " _.n%s", varidbuf);
               }
             else
-              FAILHERE (makenode2_BM (k_variable, _.expob, _.typob));
+              {
+                DBGPRINTF_BM ("emit_expr variable expob %s of unexpected type %s routprepob %s fromob %s", objectdbg_BM (_.expob), objectdbg1_BM (_.typob),     //
+                              objectdbg2_BM (_.routprepob),
+                              objectdbg3_BM (_.fromob));
+                FAILHERE (makenode2_BM (k_variable, _.expob, _.typob));
+              }
             LOCALJUSTRETURN_BM ();
           }
         else
@@ -1755,7 +1760,13 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                 LOCALJUSTRETURN_BM ();
               }
             else
-              FAILHERE (BMP_object);
+              {
+                DBGPRINTF_BM
+                  ("emit_expr variable unknown constant expob %s routprepob %s fromob %s",
+                   objectdbg_BM (_.expob), objectdbg2_BM (_.routprepob),
+                   objectdbg3_BM (_.fromob));
+                FAILHERE (makenode1_BM (BMP_object, _.expob));
+              }
           }
         break;
       }
@@ -1873,7 +1884,8 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
   LOCALJUSTRETURN_BM ();
 failure:
 #undef FAILHERE
-  DBGPRINTF_BM ("miniemit_expression_BM failin %d expv %s routprep %s cause %s", failin, debug_outstr_value_BM (_.expv, CURFRAME_BM, 0), objectdbg2_BM (_.routprepob),  //
+  DBGPRINTF_BM ("miniemit_expression_BM failin %d expv %s routprep %s cause %s",        //
+                failin, debug_outstr_value_BM (_.expv, CURFRAME_BM, 0), objectdbg2_BM (_.routprepob),   //
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode4_BM (k_emit_expression, expv, _.routprepob,
@@ -3348,8 +3360,8 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
       _.curswitchv =
         (value_tyBM) MAKESETCOLLECT_BM (_.curcaseob, _.curswitchv);
       objputcomp_BM (_.switchob, hmod, _.curswitchv);
-      DBGPRINTF_BM ("emit_statement°basiclo_objswitch stmtob=%s casix#%d curcaseob=%s curswitch=%s", //
-		    objectdbg_BM (_.stmtob), casix, objectdbg1_BM (_.curcaseob),      //
+      DBGPRINTF_BM ("emit_statement°basiclo_objswitch stmtob=%s casix#%d curcaseob=%s curswitch=%s",   //
+                    objectdbg_BM (_.stmtob), casix, objectdbg1_BM (_.curcaseob),        //
                     debug_outstr_value_BM (_.curswitchv, CURFRAME_BM, 0));
     }
   WEAKASSERT_BM (isset_BM (_.constantsv));
