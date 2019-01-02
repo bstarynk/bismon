@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -3348,7 +3348,8 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
       _.curswitchv =
         (value_tyBM) MAKESETCOLLECT_BM (_.curcaseob, _.curswitchv);
       objputcomp_BM (_.switchob, hmod, _.curswitchv);
-      DBGPRINTF_BM ("emit_statement°basiclo_objswitch stmtob=%s casix#%d curcaseob=%s curswitch=%s", objectdbg_BM (_.stmtob), casix, objectdbg1_BM (_.curcaseob),      //
+      DBGPRINTF_BM ("emit_statement°basiclo_objswitch stmtob=%s casix#%d curcaseob=%s curswitch=%s", //
+		    objectdbg_BM (_.stmtob), casix, objectdbg1_BM (_.curcaseob),      //
                     debug_outstr_value_BM (_.curswitchv, CURFRAME_BM, 0));
     }
   WEAKASSERT_BM (isset_BM (_.constantsv));
