@@ -1872,13 +1872,13 @@ _6YnYKKsHo3f_9nIEOZMp744
 !(_3BFt4NfJmZC_7iYi2dwM38B |=first_misc_module|
 !~ name (~ first_misc_module
 ~)
-!@ 1546371565.002
+!@ 1546446098.194
 !$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "a module with various simple minifunc-s"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  [ _1kz7viwMzTp_6PgLhdZzMEy ]
-!# 21
+!# 22
 !& _8imWClcIFKt_6w2H2ouB4I6
 !& _3yQlckX4DRh_4b9l9FBSSSL
 !& _4iEFTEcHxeb_6lH464uFkTC
@@ -1900,6 +1900,7 @@ _6YnYKKsHo3f_9nIEOZMp744
 !& _0vCFi47Ctm6_70R5Tci6JuH
 !& _8NgOdlJACWN_8pbYZXkHpCj
 !& _0g1CBaxjMIB_7NZdyHUikLG
+!& _1kz7viwMzTp_6PgLhdZzMEy
  // emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
 
 !)_3BFt4NfJmZC_7iYi2dwM38B
@@ -8695,8 +8696,6 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _2bqYsdDkB6J_35rYPGvtKa2 _364Qj8mb098_1ZKW5WqeFWg _3vI0Qc3FHQG_1g4fmHYkxSA _87zGbEccv7h_5gRm35estXS 
  _8imWClcIFKt_6w2H2ouB4I6 _8VzbBncLSEl_2dNNPe0VjQh }
-!# 1
-!& _1kz7viwMzTp_6PgLhdZzMEy
 !)_66DuQtJBPqt_8w9fOCyxJve
 
 
@@ -13278,6 +13277,7 @@ _05IHFluwEai_9VxTGg7FVeQ
 
 
 !(_1kz7viwMzTp_6PgLhdZzMEy
+!|*
 !@ 1546363041.460
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
