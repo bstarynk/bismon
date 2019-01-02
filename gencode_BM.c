@@ -1984,7 +1984,7 @@ stopscan_objswitch_comp_bm (struct stackframe_stBM *stkf,
       _.testob = NULL;
       _.oldwhenv = NULL;
       DBGPRINTF_BM
-        ("stopscan_objswitch_comp_bm compob=%s compix#%d testv=%s stmtob=%s fromob=%s",
+        ("stopscan_objswitch_comp_bm compob=%s when compix#%d testv=%s stmtob=%s fromob=%s",
          objectdbg_BM (_.compob), compix, OUTSTRVALUE_BM (_.testv),
          objectdbg1_BM (_.stmtob), objectdbg2_BM (_.fromob));
       if (isobject_BM (_.testv))
@@ -2033,13 +2033,18 @@ stopscan_objswitch_comp_bm (struct stackframe_stBM *stkf,
           FAILHERE (makenode2_BM (k_test, _.testv, _.compob));
         }
       DBGPRINTF_BM
-        ("stopscan_objswitch_comp_bm ending compob=%s compix#%d assocob=%s of keys %s",
+        ("stopscan_objswitch_comp_bm ending/when compob=%s compix#%d assocob=%s of keys %s",
          objectdbg_BM (_.compob), compix, objectdbg1_BM (_.assocob),
          OUTSTRVALUE_BM ((value_tyBM) objassocsetattrspayl_BM (_.assocob)));
       return false;
     }                           /* end if compob is a basiclo_when */
   else                          /* compob is not a basiclo_when */
-    return true;
+    {
+      DBGPRINTF_BM
+        ("stopscan_objswitch_comp_bm compob=%s compix#%d STOP notwhen",
+         objectdbg_BM (_.compob), compix);
+      return true;
+    }
 failure:
   DBGPRINTF_BM ("stopscan_objswitch_comp_bm failin %d compob=%s compix#%d stmtob=%s causev=%s routprepob=%s",   //
                 failin, objectdbg_BM (_.compob), compix, objectdbg1_BM (_.stmtob),      //
@@ -2147,7 +2152,7 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
     {
       FAILHERE (makenode2_BM (BMP_object, _.switchexpv, _.switchtypob));
     }
-  int nbwhens = -1;
+  int nbwhens = 0;
   ////////////////
   /// first loop to count the whens and collect in assocob the cases
   for (int wix = 0; wix < stmtlen; wix++)
@@ -2157,6 +2162,10 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
       if (!_.compv)
         continue;
       _.compob = objectcast_BM (_.compv);
+      DBGPRINTF_BM
+        ("miniscan_stmt°basiclo_objswitch stmtob=%s compob=%s fromob=%s wix=%d",
+         objectdbg_BM (_.stmtob),
+         objectdbg1_BM (_.compob), objectdbg2_BM (_.fromob), wix);
       if (!_.compob)
         FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (wix), _.compv));
       bool ending = false;
@@ -2168,15 +2177,30 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
       objunlock_BM (_.compob);
       if (ending)
         {
-          nbwhens = wix;
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_objswitch stmtob=%s compob=%s of %s fromob=%s wix=%d ENDING",
+             objectdbg_BM (_.stmtob),
+             objectdbg1_BM (_.compob),
+             objectdbg2_BM (objclass_BM (_.compob)),
+             objectdbg3_BM (_.fromob), wix);
           break;
+        }
+      else
+        {
+          DBGPRINTF_BM
+            ("miniscan_stmt°basiclo_objswitch stmtob=%s compob=%s of %s fromob=%s wix=%d stmtlen=%d again",
+             objectdbg_BM (_.stmtob),
+             objectdbg1_BM (_.compob),
+             objectdbg2_BM (objclass_BM (_.compob)),
+             objectdbg3_BM (_.fromob), wix, stmtlen);
+          nbwhens++;
         }
     }
   _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.assocob);
   DBGPRINTF_BM
-    ("miniscan_stmt°basiclo_objswitch stmtob=%s assocob=%s, keysetv %s, nbwhens=%d",
+    ("miniscan_stmt°basiclo_objswitch stmtob=%s assocob=%s, keysetv %s, nbwhens=%d, stmtlen=%d",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.assocob),
-     OUTSTRVALUE_BM (_.keysetv), nbwhens);
+     OUTSTRVALUE_BM (_.keysetv), nbwhens, stmtlen);
   /// add all the keys as module constants
   {
     unsigned nbkeys = setcardinal_BM (_.keysetv);
@@ -2330,11 +2354,10 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
         }
       else
         {
-	  DBGPRINTF_BM("strange compob %s of class %s dix#%d stmtob %s",
-		       objectdbg_BM(_.compob),
-		       objectdbg1_BM(objclass_BM(_.compob)),
-		       dix,
-		       objectdbg2_BM(_.stmtob));
+          DBGPRINTF_BM ("strange compob %s of class %s dix#%d stmtob %s",
+                        objectdbg_BM (_.compob),
+                        objectdbg1_BM (objclass_BM (_.compob)),
+                        dix, objectdbg2_BM (_.stmtob));
           objunlock_BM (_.compob);
           FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (dix), _.compob));
         }
