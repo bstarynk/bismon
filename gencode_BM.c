@@ -2282,9 +2282,10 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
 
   ////////////////
   //// third loop to scan the else-statements
-  DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch %s nbwhens %d",
-                objectdbg_BM (_.stmtob), nbwhens);
-  for (int dix = nbwhens + 1; dix < stmtlen; dix++)
+  DBGPRINTF_BM
+    ("miniscan_stmt°basiclo_objswitch stmtob=%s, nbwhens=%d, stmtlen=%d",
+     objectdbg_BM (_.stmtob), nbwhens, stmtlen);
+  for (int dix = nbwhens; dix < stmtlen; dix++)
     {
       _.compv = objgetcomp_BM (_.stmtob, dix);
       if (!_.compv)
