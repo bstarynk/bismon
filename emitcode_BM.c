@@ -3830,6 +3830,9 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
   bool modulistemporary =
     (objectisinstance_BM (_.modulob, k_plain_temporary_module));
+  INFOPRINTF_BM ("*!* start emitting %s module %s/%s *!*",
+                 modulistemporary ? "temporary" : "persistent",
+                 objectdbg_BM (_.modulob), modulidbuf);
   if (isstring_BM (_.prefixv))
     srcdirstr = strdup (bytstring_BM (_.prefixv));
   else if (isobject_BM (_.prefixv))
@@ -4062,6 +4065,14 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   fflush (stderr);
 #endif /*BISMONGTK*/
     if (srcdirstr)
+    INFOPRINTF_BM ("*!* ended emitting %s module %s/%s in %s *!*\n",
+                   modulistemporary ? "temporary" : "persistent",
+                   objectdbg_BM (_.modulob), modulidbuf, srcdirstr);
+  else
+    INFOPRINTF_BM ("*!* ended emitting %s module %s/%s *!*\n",
+                   modulistemporary ? "temporary" : "persistent",
+                   objectdbg_BM (_.modulob), modulidbuf);
+  if (srcdirstr)
     free (srcdirstr), srcdirstr = NULL;
   if (pardirstr)
     free (pardirstr), pardirstr = NULL;
