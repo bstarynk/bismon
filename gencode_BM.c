@@ -2032,9 +2032,14 @@ stopscan_objswitch_comp_bm (struct stackframe_stBM *stkf,
           // invalid test in basiclo_when
           FAILHERE (makenode2_BM (k_test, _.testv, _.compob));
         }
+      DBGPRINTF_BM
+        ("stopscan_objswitch_comp_bm ending compob=%s compix#%d assocob=%s of keys %s",
+         objectdbg_BM (_.compob), compix, objectdbg1_BM (_.assocob),
+         OUTSTRVALUE_BM ((value_tyBM) objassocsetattrspayl_BM (_.assocob)));
+      return false;
     }                           /* end if compob is a basiclo_when */
   else                          /* compob is not a basiclo_when */
-    return false;
+    return true;
 failure:
   DBGPRINTF_BM ("stopscan_objswitch_comp_bm failin %d compob=%s compix#%d stmtob=%s causev=%s routprepob=%s",   //
                 failin, objectdbg_BM (_.compob), compix, objectdbg1_BM (_.stmtob),      //
