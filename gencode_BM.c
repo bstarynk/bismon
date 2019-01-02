@@ -2094,13 +2094,14 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                  objectval_tyBM * subcompob;    //
                  objectval_tyBM * stmtpropob;   //
                  objectval_tyBM * modgenob;     //
-                 objectval_tyBM * obmodhsetconst;       //
+                 objectval_tyBM * consthsetob;  //
                  value_tyBM compv;      //
                  value_tyBM subcompv;   //
                  value_tyBM switchexpv; //
                  value_tyBM oldwhenv;   //
                  value_tyBM whensetv;   //
                  value_tyBM oldv;       //
+                 value_tyBM keysetv;    //
                  value_tyBM defaulttupv;        //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
@@ -2129,12 +2130,12 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
   objputclass_BM (_.assocob, k_assoc_object);
   _.switchexpv = objgetattr_BM (_.stmtob, k_switch);
   _.modgenob = objectcast_BM (objgetattr_BM (_.routprepob, k_modgenob));
-  _.obmodhsetconst = objectcast_BM (objgetattr_BM (_.modgenob, k_constants));
-  DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s assocob=%s switchexp=%s stmtlen=%d modgenob=%s obmodhsetconst=%s",  //
+  _.consthsetob = objectcast_BM (objgetattr_BM (_.modgenob, k_constants));
+  DBGPRINTF_BM ("miniscan_stmt°basiclo_objswitch stmtob=%s assocob=%s switchexp=%s stmtlen=%d modgenob=%s consthsetob=%s",     //
                 objectdbg_BM (_.stmtob), objectdbg1_BM (_.assocob),
                 debug_outstr_value_BM (_.switchexpv, CURFRAME_BM, 0),
                 stmtlen,
-                objectdbg2_BM (_.modgenob), objectdbg3_BM (_.obmodhsetconst));
+                objectdbg2_BM (_.modgenob), objectdbg3_BM (_.consthsetob));
   _.switchtypob =
     miniscan_expr_BM (_.switchexpv, _.routprepob, depth + 1, _.stmtob,
                       CURFRAME_BM);
@@ -2171,11 +2172,25 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
           break;
         }
     }
+  _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.assocob);
   DBGPRINTF_BM
-    ("miniscan_stmt°basiclo_objswitch stmtob=%s assocob=%s of keys %s nbwhens=%d",
-     objectdbg_BM (_.stmtob), objectdbg_BM (_.assocob),
-     OUTSTRVALUE_BM ((value_tyBM) objassocsetattrspayl_BM (_.assocob)),
-     nbwhens);
+    ("miniscan_stmt°basiclo_objswitch stmtob=%s assocob=%s, keysetv %s, nbwhens=%d",
+     objectdbg_BM (_.stmtob), objectdbg1_BM (_.assocob),
+     OUTSTRVALUE_BM (_.keysetv), nbwhens);
+  /// add all the keys as module constants
+  {
+    unsigned nbkeys = setcardinal_BM (_.keysetv);
+    DBGPRINTF_BM
+      ("miniscan_stmt°basiclo_objswitch stmtob=%s consthsetob=%s",
+       objectdbg_BM (_.stmtob), objectdbg1_BM (_.consthsetob));
+    WEAKASSERT_BM (objhashashsetpayl_BM (_.consthsetob));
+    for (unsigned kix = 0; kix < nbkeys; kix++)
+      {
+        _.caseob = setelemnth_BM (_.keysetv, kix);
+        objhashsetaddpayl_BM (_.consthsetob, _.caseob);
+      }
+    _.caseob = NULL;
+  }
   ////////////////
   /// second loop to scan the statements and blocks inside the when-s
   for (int wix = 0; wix < nbwhens; wix++)
