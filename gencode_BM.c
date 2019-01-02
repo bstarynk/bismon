@@ -2330,6 +2330,11 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
         }
       else
         {
+	  DBGPRINTF_BM("strange compob %s of class %s dix#%d stmtob %s",
+		       objectdbg_BM(_.compob),
+		       objectdbg1_BM(objclass_BM(_.compob)),
+		       dix,
+		       objectdbg2_BM(_.stmtob));
           objunlock_BM (_.compob);
           FAILHERE (makenode2_BM (k_curcomp, taggedint_BM (dix), _.compob));
         }

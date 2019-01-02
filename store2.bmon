@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2268 objects
+// for 2269 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -8669,6 +8669,19 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "give the hashset of tasklets"
 !)_5puWy6TPS5B_9fmeCvG70Kn
+
+
+
+!(_5qDkdj6NZ6A_2Z9bWMn6sE2 |=temp_other_module|
+!~ name (~ temp_other_module
+~)
+!@ 1546435132.493
+!$_0277f6mOd9j_0tVZSXnTzUK |=basiclo_temporary_module|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "temporary other module"
+!# 1
+!& _3mBgHGhEYmP_9WN8gqaxhXg
+!)_5qDkdj6NZ6A_2Z9bWMn6sE2
 
 
 
