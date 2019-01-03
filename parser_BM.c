@@ -1117,6 +1117,9 @@ again:
 
       pars->pars_curbyte += 1;
       pars->pars_colpos += 1;
+      if (pars->pars_debug)
+        DBGPRINTF_BM ("parstok $ curbyt %d colpos %d", pars->pars_curbyte,
+                      pars->pars_colpos);
       return (parstoken_tyBM)
       {
       .tok_kind = plex_DELIM,.tok_line = curlin,.tok_col =
@@ -1128,6 +1131,9 @@ again:
     {
       pars->pars_curbyte += 2;
       pars->pars_colpos += 2;
+      if (pars->pars_debug)
+        DBGPRINTF_BM ("parstok $: curbyt %d colpos %d", pars->pars_curbyte,
+                      pars->pars_colpos);
       return (parstoken_tyBM)
       {
       .tok_kind = plex_DELIM,.tok_line = curlin,.tok_col =
@@ -1138,6 +1144,9 @@ again:
     {
       pars->pars_curbyte += 2;
       pars->pars_colpos += 2;
+      if (pars->pars_debug)
+        DBGPRINTF_BM ("parstok $* curbyt %d colpos %d", pars->pars_curbyte,
+                      pars->pars_colpos);
       return (parstoken_tyBM)
       {
       .tok_kind = plex_DELIM,.tok_line = curlin,.tok_col =
@@ -1149,6 +1158,9 @@ again:
     {
       pars->pars_curbyte += EUROBYTELEN_BM;
       pars->pars_colpos += EUROBYTELEN_BM;
+      if (pars->pars_debug)
+        DBGPRINTF_BM ("parstok € curbyt %d colpos %d", pars->pars_curbyte,
+                      pars->pars_colpos);
       return (parstoken_tyBM)
       {
       .tok_kind = plex_DELIM,.tok_line = curlin,.tok_col =
@@ -1293,18 +1305,36 @@ parsergetobject_BM (struct parser_stBM * pars,
       parstoken_tyBM vartok = parsertokenget_BM (pars, CURFRAME_BM);
       if (vartok.tok_kind == plex_NAMEDOBJ)
         {
+          if (pars->pars_debug)
+            DBGPRINTF_BM ("parseobj varnamedobj L%uC%u %s",
+                          varlineno, varcolpos,
+                          objectdbg_BM (vartok.tok_namedobj));
           ASSERT_BM (varlineno == lineno);
           _.resobj =            //
             parsops->parsop_expand_dollarobj_rout
             (pars, varlineno, tok.tok_col,
              (const value_tyBM) vartok.tok_namedobj, CURFRAME_BM);
+          if (pars->pars_debug)
+            DBGPRINTF_BM ("parseobj varnamedobj L%uC%u %s: got %s",
+                          varlineno, varcolpos,
+                          objectdbg_BM (vartok.tok_namedobj),
+                          objectdbg1_BM (_.resobj));
         }
       else if (vartok.tok_kind == plex_CNAME)
         {
+          if (pars->pars_debug)
+            DBGPRINTF_BM ("parseobj varcname L%uC%u %s",
+                          varlineno, varcolpos,
+                          bytstring_BM (vartok.tok_cname));
           _.resobj =            //
             parsops->parsop_expand_dollarobj_rout
             (pars, varlineno, varcolpos, (const value_tyBM) vartok.tok_cname,
              CURFRAME_BM);
+          if (pars->pars_debug)
+            DBGPRINTF_BM ("parseobj varcname L%uC%u %s: got %s",
+                          varlineno, varcolpos,
+                          bytstring_BM (vartok.tok_cname),
+                          objectdbg1_BM (_.resobj));
         }
       else                      // could happen if $: is followed by word
         parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
@@ -2015,17 +2045,35 @@ parsergetvalue_BM (struct parser_stBM *pars,
       parstoken_tyBM vartok = parsertokenget_BM (pars, CURFRAME_BM);
       if (vartok.tok_kind == plex_NAMEDOBJ)
         {
+          if (pars->pars_debug)
+            DBGPRINTF_BM ("parseval varnamedobj L%uC%u %s",
+                          vartok.tok_line, vartok.tok_col,
+                          objectdbg_BM (vartok.tok_namedobj));
           ASSERT_BM (tok.tok_line == vartok.tok_line);
           _.resval = (value_tyBM) parsops->parsop_expand_dollarval_rout //
             (pars, tok.tok_line, tok.tok_col,
              (const value_tyBM) vartok.tok_namedobj, CURFRAME_BM);
+          if (pars->pars_debug)
+            DBGPRINTF_BM ("parseval varnamedobj L%uC%u %s: gives %s",
+                          vartok.tok_line, vartok.tok_col,
+                          objectdbg_BM (vartok.tok_namedobj),
+                          OUTSTRVALUE_BM (_.resval));
         }
       else if (vartok.tok_kind == plex_CNAME)
         {
           ASSERT_BM (tok.tok_line == vartok.tok_line);
+          if (pars->pars_debug)
+            DBGPRINTF_BM ("parseval varcname L%uC%u %s",
+                          vartok.tok_line, vartok.tok_col,
+                          bytstring_BM (vartok.tok_cname));
           _.resval = (value_tyBM) parsops->parsop_expand_dollarval_rout //
             (pars, tok.tok_line, vartok.tok_col,
              (const value_tyBM) vartok.tok_cname, CURFRAME_BM);
+          if (pars->pars_debug)
+            DBGPRINTF_BM ("parseval varcname L%uC%u %s: gives %s",
+                          vartok.tok_line, vartok.tok_col,
+                          bytstring_BM (vartok.tok_cname),
+                          OUTSTRVALUE_BM (_.resval));
         }
       else                      // could happen if $ is followed by word
         parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
@@ -2050,16 +2098,33 @@ parsergetvalue_BM (struct parser_stBM *pars,
       parstoken_tyBM vartok = parsertokenget_BM (pars, CURFRAME_BM);
       if (vartok.tok_kind == plex_NAMEDOBJ)
         {
+          if (pars->pars_debug)
+            DBGPRINTF_BM ("parseval varobnamedob L%uC%u %s",
+                          vartok.tok_line, vartok.tok_col,
+                          objectdbg_BM (vartok.tok_namedobj));
           ASSERT_BM (varlineno == lineno);
           _.resval = (value_tyBM) parsops->parsop_expand_dollarobj_rout //
             (pars, tok.tok_line, tok.tok_col,
              (const value_tyBM) vartok.tok_namedobj, CURFRAME_BM);
+          if (pars->pars_debug)
+            DBGPRINTF_BM ("parseval varobnamedob L%uC%u %s: gives %s",
+                          vartok.tok_line, vartok.tok_col,
+                          objectdbg_BM (vartok.tok_namedobj),
+                          OUTSTRVALUE_BM (_.resval));
         }
       else if (vartok.tok_kind == plex_CNAME)
         {
+          if (pars->pars_debug)
+            DBGPRINTF_BM ("parseval varobcname L%uC%u %s",
+                          vartok.tok_line, vartok.tok_col,
+                          bytstring_BM (vartok.tok_cname));
           _.resval = (value_tyBM) parsops->parsop_expand_dollarobj_rout //
             (pars, vartok.tok_line, tok.tok_col,
              (const value_tyBM) vartok.tok_cname, CURFRAME_BM);
+          DBGPRINTF_BM ("parseval varobcname L%uC%u %s: gives %s",
+                        vartok.tok_line, vartok.tok_col,
+                        bytstring_BM (vartok.tok_cname),
+                        OUTSTRVALUE_BM (_.resval));
         }
       else                      // could happen if $: is followed by word
         parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
