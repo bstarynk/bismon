@@ -1012,8 +1012,11 @@ parsecommandbuf_newgui_BM (struct
                                       cmdtok.tok_line,
                                       cmdtok.tok_col,
                                       "name expected after ,nval");
+              DBGPRINTF_BM (",nval name %s", bytstring_BM (_.name));
               bool gotval = false;
               _.val = parsergetvalue_BM (pars, CURFRAME_BM, 0, &gotval);
+              DBGPRINTF_BM (",nval name %s val %s", bytstring_BM (_.name),
+                            OUTSTRVALUE_BM (_.val));
               if (!gotval)
                 parsererrorprintf_BM (pars,
                                       CURFRAME_BM,
@@ -1393,11 +1396,15 @@ parsdollarobj_newguicmd_BM (struct parser_stBM *pars,   //
     varstr = bytstring_BM (varname);
   else if (isobject_BM (varname))
     varstr = findobjectname_BM (varname);
+  DBGPRINTF_BM ("parsdollarobj L%uC%u varstr %s", lineno, colpos, varstr);
   if (!varstr)
     parsererrorprintf_BM (pars, CURFRAME_BM,
                           lineno, colpos,
                           "invalid $:<var> !(%s:%d)", __FILE__, __LINE__);
   _.val = find_named_value_newgui_BM (varstr, CURFRAME_BM);
+  DBGPRINTF_BM ("parsdollarobj L%uC%u varstr %s: %s -> %s", lineno, colpos,
+                varstr, nobuild ? "nobuild" : "build",
+                OUTSTRVALUE_BM (_.val));
   if (!_.val && !nobuild)
     parsererrorprintf_BM (pars, CURFRAME_BM,
                           lineno, colpos,
@@ -1436,10 +1443,14 @@ parsdollarval_newguicmd_BM (struct parser_stBM *pars,
     varstr = bytstring_BM (varname);
   else if (isobject_BM (varname))
     varstr = findobjectname_BM (varname);
+  DBGPRINTF_BM ("parsdollarval L%uC%u varstr %s", lineno, colpos, varstr);
   if (!varstr)
     parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
                           "invalid $<var>");
   _.val = find_named_value_newgui_BM (varstr, CURFRAME_BM);
+  DBGPRINTF_BM ("parsdollarval L%uC%u varstr %s: %s -> %s", lineno, colpos,
+                varstr, nobuild ? "nobuild" : "build",
+                OUTSTRVALUE_BM (_.val));
   if (!_.val && !nobuild)
     parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
                           "not found $%s !(%s:%d)", varstr, __FILE__,
