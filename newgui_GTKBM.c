@@ -1395,14 +1395,19 @@ parsdollarobj_newguicmd_BM (struct parser_stBM *pars,   //
     varstr = findobjectname_BM (varname);
   if (!varstr)
     parsererrorprintf_BM (pars, CURFRAME_BM,
-                          lineno, colpos, "invalid $:<var>");
+                          lineno, colpos,
+                          "invalid $:<var> !(%s:%d)", __FILE__, __LINE__);
   _.val = find_named_value_newgui_BM (varstr, CURFRAME_BM);
   if (!_.val && !nobuild)
     parsererrorprintf_BM (pars, CURFRAME_BM,
-                          lineno, colpos, "not found $:%s", varstr);
+                          lineno, colpos,
+                          "not found $:%s !(%s:%d)", varstr, __FILE__,
+                          __LINE__);
   if (!isobject_BM (_.val) && !nobuild)
     parsererrorprintf_BM (pars, CURFRAME_BM,
-                          lineno, colpos, "non-object $:%s", varstr);
+                          lineno, colpos,
+                          "non-object $:%s !(%s:%d)", varstr, __FILE__,
+                          __LINE__);
   GtkTextIter it = EMPTY_TEXT_ITER_BM, endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
@@ -1437,7 +1442,8 @@ parsdollarval_newguicmd_BM (struct parser_stBM *pars,
   _.val = find_named_value_newgui_BM (varstr, CURFRAME_BM);
   if (!_.val && !nobuild)
     parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
-                          "not found $%s", varstr);
+                          "not found $%s !(%s:%d)", varstr, __FILE__,
+                          __LINE__);
   GtkTextIter it = EMPTY_TEXT_ITER_BM, endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);

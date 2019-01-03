@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -1652,7 +1652,8 @@ parsdollarval_guicmd_BM (struct parser_stBM *pars,
   _.val = find_named_value_gui_BM (varstr);
   if (!_.val && !nobuild)
     parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
-                          "not found $%s", varstr);
+                          "not found $%s !(%s:%d)", varstr, __FILE__,
+                          __LINE__);
   GtkTextIter it = EMPTY_TEXT_ITER_BM, endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);
@@ -1685,14 +1686,16 @@ parsdollarobj_guicmd_BM (struct parser_stBM *pars,
     varstr = BMK_7bD9VtDkGSn_7lxHeYuuFLR;       /* result */
   if (!varstr)
     parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
-                          "invalid $:<var>");
+                          "invalid $:<var> !(%s:%d)", __FILE__, __LINE__);
   _.val = find_named_value_gui_BM (varstr);
   if (!_.val && !nobuild)
     parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
-                          "not found $:%s", varstr);
+                          "not found $:%s !(%s:%d)", varstr, __FILE__,
+                          __LINE__);
   if (!isobject_BM (_.val) && !nobuild)
     parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
-                          "non-object $:%s", varstr);
+                          "non-object $:%s !(%s:%d)", varstr, __FILE__,
+                          __LINE__);
   GtkTextIter it = EMPTY_TEXT_ITER_BM, endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_iter_at_line (commandbuf_BM, &it, lineno - 1);
   gtk_text_iter_forward_chars (&it, colpos);

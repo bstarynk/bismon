@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -1308,12 +1308,13 @@ parsergetobject_BM (struct parser_stBM * pars,
         }
       else                      // could happen if $: is followed by word
         parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
-                              colpos, "bad $:<var> expansion for %s", reslin);
+                              colpos, "bad $:<var> expansion for %s !(%s:%d)",
+                              reslin, __FILE__, __LINE__);
       if (!nobuild && !isobject_BM ((const value_tyBM) _.resobj))
         parsererrorprintf_BM (pars, CURFRAME_BM, lineno,
                               colpos,
-                              "did not found $:<var> expansion for %s",
-                              reslin);
+                              "did not found $:<var> expansion for %s !(%s:%d)",
+                              reslin, __FILE__, __LINE__);
       *pgotobj = true;
       return (objectval_tyBM *) _.resobj;
     }
