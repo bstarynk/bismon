@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2289 objects
+// for 2294 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -730,6 +730,26 @@ _9KIeH9wMRCV_12Gy2xILgpG }
 !@ 1546281290.946
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_4U5ZaR7UTwF_2LXJtkMOr6l
+
+
+
+!(_65LACLrHMTz_08IziohYl0i |=bytstring|
+!~ name (~ bytstring
+~)
+!@ 1546520147.989
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "extract the byte-string of string value v1"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _65LACLrHMTz_08IziohYl0i  ":*/"  "bytstring_BM"  "((" 
+ _5DDSY1YgVZr_6dOU4tiBldk  " "  "stringval_tyBM"  "*)("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_5EEITf6IFH7_4DbKG99zcPW) 
+  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_4T8am97muLl_5969SR22Ecq
+!)_65LACLrHMTz_08IziohYl0i
 
 
 
@@ -6621,6 +6641,24 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_41sCssOlSDi_1BjjEN2LWfl |=objstrbufferbytespayl|
+!~ name (~ objstrbufferbytespayl
+~)
+!@ 1546523302.159
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "give the bytstring of obj-strbuf o1"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _41sCssOlSDi_1BjjEN2LWfl  ":*/"  "objstrbufferbytespayl_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_4T8am97muLl_5969SR22Ecq
+!)_41sCssOlSDi_1BjjEN2LWfl
+
+
+
 !(_9w9s5y0OXta_3pY0SvkQDoU |=objstrbufferclearindentpayl|
 !~ name (~ objstrbufferclearindentpayl
 ~)
@@ -6696,6 +6734,28 @@ _4ilpkwNBw3O_3l8ykbxbBom)  "),("  * _5ucAZimYynS_4VA0XHvr1nW ( _8LYML1JB0Wx_8O52
 _4ilpkwNBw3O_3l8ykbxbBom)  "),("  * _5ucAZimYynS_4VA0XHvr1nW ( _8LYML1JB0Wx_8O52UHE0MEy) 
   "))")
 !)_82THYgTJgfw_052jvjaZ9ZR
+
+
+
+!(_2ZmU7Y6pWZv_0AKGGCCC0kS |=objstrbufferencvalcpayl|
+!~ name (~ objstrbufferencvalcpayl
+~)
+!@ 1546515587.933
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "output into objstrbuf o1 the stringvalue v2 in C encoding"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _2ZmU7Y6pWZv_0AKGGCCC0kS)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2ZmU7Y6pWZv_0AKGGCCC0kS  ":*/"  "objstrbufferencodedcpayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),"  " \n" 
+ " "  "bytstring_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ)  ")," 
+ " "  "-" 
+  1  ")")
+!)_2ZmU7Y6pWZv_0AKGGCCC0kS
 
 
 
@@ -10307,6 +10367,19 @@ _0ncEyxweiqi_5Vj5U2xvh82
 !& _2W7Ckt2WxEM_4NVYgEWE73B
 !&  * _4aleuMhUmfj_8qOgaQpQ1pv ( _3vRFuniDv1K_4bQ7DeekM2I  -1)
 !)_0c1UQDoiMc9_7MORr2syzgQ
+
+
+
+!(_0ca6ncURG9Y_2Q3UrCgnMPd
+!@ 1546514572.246
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit-newline"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _2RUj1oyJ2rf_1ICZWr844Sv)
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_6FcmuIO2DrS_7mzsaVpTMOI
+!)_0ca6ncURG9Y_2Q3UrCgnMPd
 
 
 
@@ -15073,6 +15146,19 @@ _5XGKMg1Kevs_6eAce4ib9XW
 
 
 
+!(_20LtVgnHAm6_4soICKMimrK
+!@ 1546514521.457
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "setindent depth+1"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _2RUj1oyJ2rf_1ICZWr844Sv  * _3fb1EHtMPwQ_7XEPTUgUmX4 ( _6Y20GNUgnSZ_4LkbrcRMU8f  1))
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_50H7io7f948_10VeJz49q3W
+!)_20LtVgnHAm6_4soICKMimrK
+
+
+
 !(_210mSO8s3LZ_9iKjW7eaG6Q
 !@ 1545157705.455
 !$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
@@ -17916,7 +18002,7 @@ _4gjtBqgrY3i_67ZPUd9LxPU
 
 
 !(_3584humjRT7_5DRf4EbSEPp
-!@ 1546510966.920
+!@ 1546514572.246
 !$_7JUZeKsjbx1_1VcZbR0vW41 |=basiclo_for_up_loop|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for ii upto leni ... emit_statement\u00b0basiclo_outstmt"
@@ -17924,9 +18010,11 @@ _4gjtBqgrY3i_67ZPUd9LxPU
 _833x2jYqhZh_8vDIuJhwz1k
 !: _6EG5W7z0BRb_4TBM1gyenqk |=index|
 _2W7Ckt2WxEM_4NVYgEWE73B
-!# 2
+!# 4
 !& _1anzE3Jqqe6_6LhycgiaIC1
 !& _2EhsAjpzrKw_7oYghtMEgPV
+!& _20LtVgnHAm6_4soICKMimrK
+!& _0ca6ncURG9Y_2Q3UrCgnMPd
 !)_3584humjRT7_5DRf4EbSEPp
 
 
