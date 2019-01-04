@@ -1396,7 +1396,8 @@ parsdollarobj_newguicmd_BM (struct parser_stBM *pars,   //
     varstr = bytstring_BM (varname);
   else if (isobject_BM (varname))
     varstr = findobjectname_BM (varname);
-  DBGPRINTF_BM ("parsdollarobj L%uC%u varstr %s", lineno, colpos, varstr);
+  DBGPRINTF_BM ("parsdollarobj L%uC%u varstr %s '%s",
+                lineno, colpos, varstr, nobuild ? "nobuild" : "build");
   if (!varstr)
     parsererrorprintf_BM (pars, CURFRAME_BM,
                           lineno, colpos,
@@ -1443,7 +1444,8 @@ parsdollarval_newguicmd_BM (struct parser_stBM *pars,
     varstr = bytstring_BM (varname);
   else if (isobject_BM (varname))
     varstr = findobjectname_BM (varname);
-  DBGPRINTF_BM ("parsdollarval L%uC%u varstr %s", lineno, colpos, varstr);
+  DBGPRINTF_BM ("parsdollarval L%uC%u varstr %s '%s",
+                lineno, colpos, varstr, nobuild ? "nobuild" : "build");
   if (!varstr)
     parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,
                           "invalid $<var>");
@@ -2049,8 +2051,9 @@ index_named_value_newgui_BM (const char *vstr)
       md = (lo + hi) / 2;
       struct browsedval_stBM *mdbv = browsedval_BM + md;
       ASSERT_BM (isstring_BM ((const value_tyBM) (mdbv->brow_name)));
-      int cmp = strcmp (vstr,
-                        bytstring_BM (mdbv->brow_name));
+      const char *mdvstr = bytstring_BM (mdbv->brow_name);
+      ASSERT_BM (mdvstr != NULL);
+      int cmp = strcmp (vstr, mdvstr);
       if (cmp == 0)
         return md;
       else if (cmp < 0)
@@ -2062,8 +2065,28 @@ index_named_value_newgui_BM (const char *vstr)
     {
       struct browsedval_stBM *mdbv = browsedval_BM + md;
       ASSERT_BM (isstring_BM ((value_tyBM) mdbv->brow_name));
-      if (!strcmp (vstr, bytstring_BM (mdbv->brow_name)))
+      const char *mdvstr = bytstring_BM (mdbv->brow_name);
+      ASSERT_BM (mdvstr != NULL);
+      if (!strcmp (vstr, mdvstr))
         return md;
+    }
+  /// we have a bug elsewhere. The browsedval_BM array is sometimes
+  /// not well sorted, but it should be. I am ashamed, but I'm doing a
+  /// linear search.  The newgui is temporary and should be removed
+  /// soon (hopefully in Q1 2019). In practice, browsednvulen_BM is
+  /// small, at most a few dozens.
+  for (md = 0; md < browsednvulen_BM; md++)
+    {
+      struct browsedval_stBM *mdbv = browsedval_BM + md;
+      ASSERT_BM (isstring_BM ((value_tyBM) mdbv->brow_name));
+      const char *mdvstr = bytstring_BM (mdbv->brow_name);
+      ASSERT_BM (mdvstr != NULL);
+      if (!strcmp (vstr, mdvstr))
+        {
+          WARNPRINTF_BM ("buggy browsedval_BM (L%d). %s at #%d",
+                         browsednvulen_BM, vstr, md);
+          return md;
+        }
     }
   return -1;
 }                               /* end index_named_value_newgui_BM */
@@ -2093,14 +2116,14 @@ static void
    unsigned index, struct stackframe_stBM *stkf);
 
 static void
-browse_indexed_named_value_newgui_BM (const  value_tyBM   val,
+browse_indexed_named_value_newgui_BM (const value_tyBM val,
                                       int browsdepth,
                                       unsigned index,
-				      struct stackframe_stBM *stkf);
+                                      struct stackframe_stBM *stkf);
 
 void
-browse_named_value_newgui_BM (const stringval_tyBM* namev,
-                              const  value_tyBM    val,
+browse_named_value_newgui_BM (const stringval_tyBM * namev,
+                              const value_tyBM val,
                               int browsdepth, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf,
@@ -2118,14 +2141,14 @@ browse_named_value_newgui_BM (const stringval_tyBM* namev,
     return;
   if (!val)
     return;
-  NONPRINTF_BM
+  DBGPRINTF_BM
     ("browse_named_value_newgui start name: %s depth %d ulen %u",
      bytstring_BM ((value_tyBM) _.namev), browsdepth, browsednvulen_BM);
   if (browsednvulen_BM == 0)
     {
       if (!browsedval_BM)
         {
-          const unsigned inisiz = 71;
+          const unsigned inisiz = 19;
           browsedval_BM = calloc (inisiz, sizeof (struct browsedval_stBM));
           if (!browsedval_BM)
             FATAL_BM
@@ -2136,7 +2159,7 @@ browse_named_value_newgui_BM (const stringval_tyBM* namev,
       memset (browsedval_BM + 0, 0, sizeof (struct browsedval_stBM));
       add_indexed_named_value_newgui_BM //
         (_.namev, _.val, browsdepth, 0, CURFRAME_BM);
-      NONPRINTF_BM
+      DBGPRINTF_BM
         ("browse_named_value_newgui (empty) end name: %s",
          bytstring_BM (_.namev));
       return;
@@ -2144,7 +2167,7 @@ browse_named_value_newgui_BM (const stringval_tyBM* namev,
   // grow array if needed
   if (browsednvulen_BM >= browsednvsize_BM)
     {
-      unsigned newsiz = prime_above_BM (4 * browsednvsize_BM / 3 + 8);
+      unsigned newsiz = prime_above_BM ((4 * browsednvulen_BM) / 3 + 8);
       struct browsedval_stBM *newarr = calloc (newsiz,
                                                sizeof (struct
                                                        browsedval_stBM));
@@ -2154,7 +2177,7 @@ browse_named_value_newgui_BM (const stringval_tyBM* namev,
               browsednvulen_BM * sizeof (struct browsedval_stBM));
       free (browsedval_BM), (browsedval_BM = newarr);
       browsednvsize_BM = newsiz;
-      NONPRINTF_BM
+      DBGPRINTF_BM
         ("browse_named_value_newgui grow name: %s nvsize %u ulen %u",
          bytstring_BM (_.namev), browsednvsize_BM, browsednvulen_BM);
     }
@@ -2170,7 +2193,7 @@ browse_named_value_newgui_BM (const stringval_tyBM* namev,
         {
           replace_indexed_named_value_newgui_BM //
             (_.val, browsdepth, (unsigned) md, CURFRAME_BM);
-          NONPRINTF_BM
+          DBGPRINTF_BM
             ("browse_named_value_newgui end replaced name: %s md %d ulen %u",
              bytstring_BM (_.namev), md, browsednvulen_BM);
           return;
@@ -2190,7 +2213,7 @@ browse_named_value_newgui_BM (const stringval_tyBM* namev,
         {
           replace_indexed_named_value_newgui_BM //
             (_.val, browsdepth, (unsigned) md, CURFRAME_BM);
-          NONPRINTF_BM
+          DBGPRINTF_BM
             ("browse_named_value_newgui end replaced name: %s md %d ulen %u",
              bytstring_BM ((value_tyBM) _.namev), md, browsednvulen_BM);
           return;
@@ -2200,7 +2223,7 @@ browse_named_value_newgui_BM (const stringval_tyBM* namev,
     }
   // insert before md
   ASSERT_BM (md >= 0);
-  NONPRINTF_BM
+  DBGPRINTF_BM
     ("browse_named_value_newgui lo=%d, hi=%d, md=%d, ulen=%d, name=%s",
      lo, hi, md, browsednvulen_BM, bytstring_BM (_.namev));
   for (int ix = browsednvulen_BM; ix > md; ix--)
@@ -2218,7 +2241,7 @@ browse_named_value_newgui_BM (const stringval_tyBM* namev,
   browsednvulen_BM++;
   add_indexed_named_value_newgui_BM     //
     (_.namev, _.val, browsdepth, md, CURFRAME_BM);
-  NONPRINTF_BM ("browse_named_value_newgui end added name: %s md %d ulen %u",
+  DBGPRINTF_BM ("browse_named_value_newgui end added name: %s md %d ulen %u",
                 bytstring_BM (_.namev), md, browsednvulen_BM);
   return;
 }                               /* end browse_named_value_newgui_BM */

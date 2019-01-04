@@ -1049,6 +1049,11 @@ again:
               (pars, curlin, pars->pars_colpos, namlen);
           pars->pars_curbyte += namlen;
           pars->pars_colpos += namlen;
+          if (pars->pars_debug)
+            DBGPRINTF_BM ("NAMEDOBJ token L%dC%d namedobj=%s %s",
+                          curlin, curcol, objectdbg_BM (namedobj),
+                          nobuild ? "." : "build");
+          ASSERT_BM (nobuild || namedobj != NULL);
           return (parstoken_tyBM)
           {
           .tok_kind = plex_NAMEDOBJ,.tok_line = curlin,.tok_col =
@@ -1065,6 +1070,11 @@ again:
               (pars, curlin, pars->pars_colpos, namlen);
           pars->pars_curbyte += namlen;
           pars->pars_colpos += namlen;
+          if (pars->pars_debug)
+            DBGPRINTF_BM ("CNAME token L%dC%d newnam@%p for nambuf=%s %s",
+                          curlin, curcol, newnam, nambuf,
+                          nobuild ? "." : "build");
+          ASSERT_BM (nobuild || newnam != NULL);
           return (parstoken_tyBM)
           {
           .tok_kind = plex_CNAME,.tok_line = curlin,.tok_col =
