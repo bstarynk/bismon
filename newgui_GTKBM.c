@@ -1012,10 +1012,10 @@ parsecommandbuf_newgui_BM (struct
                                       cmdtok.tok_line,
                                       cmdtok.tok_col,
                                       "name expected after ,nval");
-              DBGPRINTF_BM (",nval name %s", bytstring_BM (_.name));
+              DBGPRINTF_BM (",nval name %s", OUTSTRVALUE_BM (_.name));
               bool gotval = false;
               _.val = parsergetvalue_BM (pars, CURFRAME_BM, 0, &gotval);
-              DBGPRINTF_BM (",nval name %s val %s", bytstring_BM (_.name),
+              DBGPRINTF_BM (",nval name %s : val %s", OUTSTRVALUE_BM (_.name),
                             OUTSTRVALUE_BM (_.val));
               if (!gotval)
                 parsererrorprintf_BM (pars,
@@ -2091,21 +2091,16 @@ static void
   replace_indexed_named_value_newgui_BM
   (const value_tyBM val, int browsdepth,
    unsigned index, struct stackframe_stBM *stkf);
+
 static void
-browse_indexed_named_value_newgui_BM (const
-                                      value_tyBM
-                                      val,
-                                      int
-                                      browsdepth,
-                                      unsigned
-                                      index, struct stackframe_stBM *stkf);
+browse_indexed_named_value_newgui_BM (const  value_tyBM   val,
+                                      int browsdepth,
+                                      unsigned index,
+				      struct stackframe_stBM *stkf);
+
 void
-browse_named_value_newgui_BM (const
-                              stringval_tyBM
-                              * namev,
-                              const
-                              value_tyBM
-                              val,
+browse_named_value_newgui_BM (const stringval_tyBM* namev,
+                              const  value_tyBM    val,
                               int browsdepth, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf,
@@ -2130,7 +2125,7 @@ browse_named_value_newgui_BM (const
     {
       if (!browsedval_BM)
         {
-          const unsigned inisiz = 11;
+          const unsigned inisiz = 71;
           browsedval_BM = calloc (inisiz, sizeof (struct browsedval_stBM));
           if (!browsedval_BM)
             FATAL_BM
