@@ -1,0 +1,234 @@
+,nval emitvarou $[^miniemit_var (o_varout o_modgen o_routprep o_stmt *add_int(i_depth 1)) !:comment "emit o_varout"]
+
+,nval getarg $[^assign (v_arg *nodenthson(v_comp 0)) !:comment "v_arg := v_comp[0]"]
+
+,nval emitcomma  $[^objstrbufferappendcstrpayl(o_modgen ", ") !:comment "emit ', '"]
+
+,nval emitcominusone  $[^objstrbufferappendcstrpayl(o_modgen ", -1") !:comment "emit ', -1'"]
+
+,nval emitarg $[^miniemit_expression (v_arg o_modgen o_routprep o_stmt *add_int(i_depth 1))
+ !:comment "emitexpr v_arg"]
+ 
+,nval emitclosemicol  $[^objstrbufferappendcstrpayl(o_modgen ");") !:comment "emit ');'"]
+
+////////////////
+[ $:emitvarou $:getarg $:emitcomma $:emitcominusone $:emitarg $:emitclosemicol ]
+
+////////////////////////////////////////////////////////////////
+
+,add _3584humjRT7_5DRf4EbSEPp
+$[^cond (
+ $[^when (*isstring (v_comp)
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferappendcstrpayl_BM (")
+   !:comment "emit 'objstrbufferappendcstrpayl_BM ('"]
+  $emitvarou
+  $[^objstrbufferappendcstrpayl(o_modgen ", \"") !:comment "emit ', \"'"]
+  $[^ objstrbufferencvalcpayl(o_modgen v_comp)
+    !:comment "emit-cenc-string v_comp"]
+  $[^objstrbufferappendcstrpayl(o_modgen "\");") !:comment "emit '\");"]
+  ) !:comment "when v_comp is string .. emit_statement°basiclo_outstmt"]
+  
+ $[^when (*isnode (v_comp)
+  $[^assign (o_conn *nodeconn(v_comp)) !:comment "o_conn := nodeconn(v_comp)"]
+  
+  $[^objswitch (o_conn
+  
+  $[^when (string
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferappendcstrpayl_BM (")
+   !:comment "emit 'objstrbufferappendcstrpayl_BM ('"]
+  $emitvarou
+  $getarg
+  $emitcomma
+  $emitarg
+  $emitclosemicol
+  ) !:comment "when *string(<string>) ..."]
+  
+  $[^when (c_enc
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferencodedcpayl_BM (")
+   !:comment "emit objstrbufferencodedcpayl_BM ('"]
+  $emitvarou
+  $getarg
+  $emitcomma
+  $emitarg
+  $emitcominusone
+  $emitclosemicol
+  ) !:comment "when *c_enc(<string>) ..."]
+  
+  $[^when (html_enc
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferencodedhtmlpayl_BM (")
+   !:comment "emit 'objstrbufferencodedhtmlpayl_BM ('"]
+  $emitvarou
+  $getarg
+  $emitcomma
+  $emitarg
+  $emitcominusone
+  $emitclosemicol
+  ) !:comment "when *html_enc(<string>) ..."]
+  
+  $[^when (utf8_enc
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferencodedutf8payl_BM (")
+   !:comment "emit 'objstrbufferencodedutf8payl_BM ('"]
+  $emitvarou
+  $getarg
+  $emitcomma
+  $emitarg
+  $emitcominusone
+  $emitclosemicol
+  ) !:comment "when *utf8_enc(<string>) ..."]
+  
+  $[^when (hexa
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferprintfpayl_BM (")
+   !:comment "emit 'objstrbufferprintfpayl_BM ('"]
+  $emitvarou
+  $getarg
+  $[^objstrbufferappendcstrpayl(o_modgen ", \"%llx\", ")
+   !:comment "emit ', \"%llx\", '"]
+  $emitarg
+  $emitclosemicol
+  ) !:comment "when *hexa(<number>) ..."]
+
+  $[^when (int
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferprintfpayl_BM (")
+   !:comment "emit 'objstrbufferprintfpayl_BM ('"]
+  $emitvarou
+  $getarg
+  $[^objstrbufferappendcstrpayl(o_modgen ", \"%lld\", ")
+   !:comment "emit ', \"%lld\", '"]
+  $emitarg
+  $emitclosemicol
+  ) !:comment "when *int(<number>) ..."]
+  
+  $[^when (octa
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferprintfpayl_BM (")
+   !:comment "emit 'objstrbufferprintfpayl_BM ('"]
+  $emitvarou
+  $getarg
+  $[^objstrbufferappendcstrpayl(o_modgen ", \"%llo\", ")
+   !:comment "emit ', \"%llo\", '"]
+  $emitarg
+  $emitclosemicol
+  ) !:comment "when *octa(<number>) ..."]
+
+  $[^when (set_indent
+  $[^objstrbufferappendcstrpayl(o_modgen " objstrbuffersetindentpayl_BM (")
+   !:comment "emit 'objstrbuffersetindentpayl_BM ('"]
+  $emitvarou
+  $getarg
+  $emitcomma
+  $emitarg
+  $emitclosemicol
+  ) !:comment "when *set_indent(<number>) ..."]
+  
+  $[^when (id
+  $[^objstrbufferappendcstrpayl(o_modgen "char idbuf") !:comment "emit 'char idbuf'"]
+  $[^objstrbufferprintobjid(o_modgen o_stmt) !:comment "emit stmtid"]
+  $[^objstrbufferappendcstrpayl(o_modgen "_n") !:comment "emit '_n'"]
+  $[^objstrbufferprintint(o_modgen ii) !:comment "printint ii"]
+  $[^objstrbufferappendcstrpayl(o_modgen "[32]={0};") !:comment "emit '[32]={0};'"]
+  $[^objstrbuffernewlinepayl(o_modgen) !:comment "emit-newline"]
+  $[^objstrbufferappendcstrpayl(o_modgen "idtocfbuf32_BM (objid_BM(") !:comment "emit 'idtocfbuf32_BM (objid_BM('"]
+  $getarg
+  $emitarg
+  $[^objstrbufferappendcstrpayl(o_modgen "), idbuf") !:comment "emit '), idbuf'"]
+  $[^objstrbufferprintobjid(o_modgen o_stmt) !:comment "emit stmtid"]
+  $[^objstrbufferappendcstrpayl(o_modgen "_n") !:comment "emit '_n'"]
+  $[^objstrbufferprintint(o_modgen ii) !:comment "printint ii"]
+  $emitclosemicol
+  $[^objstrbuffernewlinepayl(o_modgen) !:comment "emit-newline"]
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferappendcstrpayl_BM (")
+   !:comment "emit 'objstrbufferappendcstrpayl_BM ('"]
+  $emitvarou
+  $[^objstrbufferappendcstrpayl(o_modgen ", idbuf") !:comment "emit ', idbuf'"]
+  $[^objstrbufferprintobjid(o_modgen o_stmt) !:comment "emit stmtid"]
+  $[^objstrbufferappendcstrpayl(o_modgen "_n") !:comment "emit '_n'"]
+  $[^objstrbufferprintint(o_modgen ii) !:comment "printint ii"]
+  $emitclosemicol
+  ) !:comment "when *id(<object>) ..."]
+  
+  $[^when (name
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferappendcstrpayl_BM (")
+   !:comment "emit 'objstrbufferappendcstrpayl_BM ('"]
+  $emitvarou
+  $getarg
+  $[^objstrbufferappendcstrpayl(o_modgen ", findobjectname_BM (")
+   !:comment "emit ', findobjectname_BM ('"]
+  $emitarg
+  $[^objstrbufferappendcstrpayl(o_modgen "));")
+   !:comment "emit '));'"]
+  ) !:comment "when *name(<object>) ..."]
+  
+  $[^when (object
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferappendcstrpayl_BM (")
+   !:comment "emit 'objstrbufferappendcstrpayl_BM ('"]
+  $emitvarou
+  $getarg
+  $[^objstrbufferappendcstrpayl(o_modgen ", objectdbg_BM (")
+   !:comment "emit ', objectdbg_BM ('"]
+  $emitarg
+  $[^objstrbufferappendcstrpayl(o_modgen "));")
+   !:comment "emit '));'"]
+  ) !:comment "when *object(<object>) ..."]
+
+  $[^when (value
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferappendcstrpayl_BM (")
+   !:comment "emit 'objstrbufferappendcstrpayl_BM ('"]
+  $emitvarou
+  $getarg
+  $[^objstrbufferappendcstrpayl(o_modgen ", OUTSTRVALUE_BM (")
+   !:comment "emit ', OUTSTRVALUE_BM ('"]
+  $emitarg
+  $[^objstrbufferappendcstrpayl(o_modgen "));")
+   !:comment "emit '));'"]
+  ) !:comment "when *value(<value>) ..."]
+
+  $[^when (less_indent
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferlessindentpayl_BM (")
+   !:comment "emit 'objstrbufferlessindentpayl_BM ('"]
+  $emitvarou
+  $emitclosemicol
+  ) !:comment "when *less_indent() ..."]
+  
+  $[^when (more_indent
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbuffermoreindentpayl_BM (")
+   !:comment "emit 'objstrbuffermoreindentpayl_BM ('"]
+  $emitvarou
+  $emitclosemicol
+  ) !:comment "when *more_indent() ..."]
+  
+  $[^when (newline
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbuffernewlinepayl_BM (")
+   !:comment "emit 'objstrbuffernewlinepayl_BM ('"]
+  $emitvarou
+  $emitclosemicol
+  ) !:comment "when *newline() ..."]
+  
+  $[^when (nlsp
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferspaceornewlinepayl_BM (")
+   !:comment "emit 'objstrbufferspaceornewlinepayl_BM ('"]
+  $emitvarou
+  $emitclosemicol
+  ) !:comment "when *nlsp() ..."]
+  
+  $[^when (space
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferappendcstrpayl_BM (")
+   !:comment "emit 'objstrbufferappendcstrpayl_BM ('"]
+  $emitvarou
+  $[^objstrbufferappendcstrpayl(o_modgen ", \" \");")
+   !:comment "emit ', \" \");'"]
+  ) !:comment "when *space() ..."]
+
+  $[^fail (*make_node (! failure_miss ! _08PMymoD6YJ_8rspWoCg4Xu
+             o_conn v_comp *taggedint(ii)  o_stmt o_modgen o_routprep
+  )) !:comment "else/bad o_conn fail-miss emit_statement°basiclo_outstmt unexpected o_conn v_comp ii o_stmt o_modgen o_routprep"]
+
+  ) !:comment "objswitch o_conn .. emit_statement°basiclo_outstmt"]
+  
+  ) !:comment "when v_comp is node .. emit_statement°basiclo_outstmt"]
+  
+ $[^fail (*make_node ( ! failure_miss ! _08PMymoD6YJ_8rspWoCg4Xu
+             v_comp *taggedint (ii) o_stmt o_modgen o_routprep)
+	     )
+  !:comment "else fail-miss v_comp ii o_stmt o_modgen o_routprep in emit_statement°basiclo_outstmt"]
+  
+) !:comment "cond on v_comp .. emit_statement°basiclo_outstmt"]
+

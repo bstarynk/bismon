@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -3801,8 +3801,8 @@ ROUTINEOBJNAME_BM (_6gwxdBT3Mhv_8Gtgu8feoy3)    //
   objtouchnow_BM (_.resobj);
   objunlock_BM (_.resobj);
   DBGPRINTF_BM ("when readmacro cexpansion"
-                " lineno=%d colpos=%d gives %s",
-                lineno, colpos, objectdbg_BM (_.resobj));
+                " lineno=%d colpos=%d gives %s /L%u",
+                lineno, colpos, objectdbg_BM (_.resobj), objnbcomps_BM(_.resobj));
   LOCALRETURN_BM (_.resobj);
 }                               // end when:readmacro _6gwxdBT3Mhv_8Gtgu8feoy3
 
