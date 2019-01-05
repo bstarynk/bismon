@@ -1128,7 +1128,7 @@ again:
       pars->pars_curbyte += 1;
       pars->pars_colpos += 1;
       if (pars->pars_debug)
-        DBGPRINTF_BM ("parstok $ curbyt %d colpos %d", pars->pars_curbyte,
+        DBGPRINTF_BM ("parstok $ curbyt %p colpos %d", pars->pars_curbyte,
                       pars->pars_colpos);
       return (parstoken_tyBM)
       {
@@ -1142,7 +1142,7 @@ again:
       pars->pars_curbyte += 2;
       pars->pars_colpos += 2;
       if (pars->pars_debug)
-        DBGPRINTF_BM ("parstok $: curbyt %d colpos %d", pars->pars_curbyte,
+        DBGPRINTF_BM ("parstok $: curbyt %p colpos %d", pars->pars_curbyte,
                       pars->pars_colpos);
       return (parstoken_tyBM)
       {
@@ -1155,7 +1155,7 @@ again:
       pars->pars_curbyte += 2;
       pars->pars_colpos += 2;
       if (pars->pars_debug)
-        DBGPRINTF_BM ("parstok $* curbyt %d colpos %d", pars->pars_curbyte,
+        DBGPRINTF_BM ("parstok $* curbyt %p colpos %d", pars->pars_curbyte,
                       pars->pars_colpos);
       return (parstoken_tyBM)
       {
@@ -1169,7 +1169,7 @@ again:
       pars->pars_curbyte += EUROBYTELEN_BM;
       pars->pars_colpos += EUROBYTELEN_BM;
       if (pars->pars_debug)
-        DBGPRINTF_BM ("parstok € curbyt %d colpos %d", pars->pars_curbyte,
+        DBGPRINTF_BM ("parstok € curbyt %p colpos %d", pars->pars_curbyte,
                       pars->pars_colpos);
       return (parstoken_tyBM)
       {
@@ -1995,7 +1995,13 @@ parsergetvalue_BM (struct parser_stBM *pars,
           if (!nobuild)
             {
               if (nbsons < TINYARGSNUM_BM)
-                _.tinyargsarr[nbsons++] = (value_tyBM) _.sonval;
+                {
+                  if (pars->pars_debug)
+                    DBGPRINTF_BM
+                      ("before expand_readmacro tiny nbsons#%d sonval %s",
+                       nbsons, OUTSTRVALUE_BM (_.sonval));
+                  _.tinyargsarr[nbsons++] = (value_tyBM) _.sonval;
+                }
               else
                 {
                   if (!_.vecobj)
@@ -2009,6 +2015,11 @@ parsergetvalue_BM (struct parser_stBM *pars,
                     objlock_BM (_.vecobj);
                     objappendcomp_BM (_.vecobj, _.sonval);
                     objunlock_BM (_.vecobj);
+                    if (pars->pars_debug)
+                      DBGPRINTF_BM
+                        ("before expand_readmacro nontiny nbsons#%d sonval %s vecobj %s L%u",
+                         nbsons, OUTSTRVALUE_BM (_.sonval),
+                         objectdbg_BM (_.vecobj), objnbcomps_BM (_.vecobj));
                     nbsons++;
                   }
                 }
@@ -2035,9 +2046,20 @@ parsergetvalue_BM (struct parser_stBM *pars,
              ? makenode_BM (_.connobj, nbsons, (_.tinyargsarr))
              : makenode_BM (_.connobj, objnbcomps_BM (_.vecobj),
                             (objcompdata_BM (_.vecobj))));
+          if (pars->pars_debug)
+            DBGPRINTF_BM
+              ("before expand_readmacro connobj %s nbsons #%d vecobj %s L%u macroval %s",
+               objectdbg_BM (_.connobj), nbsons,
+               objectdbg1_BM (_.vecobj), objnbcomps_BM (_.vecobj),
+               OUTSTRVALUE_BM (_.macroval));
           _.resval =            //
             parsops->parsop_expand_readmacro_rout
             (pars, nodlin, nodcol, depth, _.macroval, CURFRAME_BM);
+          if (pars->pars_debug)
+            DBGPRINTF_BM
+              ("after expand_readmacro connobj %s nbsons #%d macroval %s resval %s",
+               objectdbg_BM (_.connobj), nbsons, OUTSTRVALUE_BM (_.macroval),
+               OUTSTRVALUE_BM (_.resval));
         }
       else
         _.resval = NULL;
