@@ -14,6 +14,17 @@
 ////////////////
 [ $:emitvarou $:getarg $:emitcomma $:emitcominusone $:emitarg $:emitclosemicol ]
 
+  $[^when (c_enc
+  $[^objstrbufferappendcstrpayl(o_modgen "objstrbufferencodedcpayl_BM (")
+   !:comment "emit objstrbufferencodedcpayl_BM ('"]
+  $:emitvarou
+  $:getarg
+  $:emitcomma
+  $:emitarg
+  $:emitcominusone
+  $:emitclosemicol
+  ) !:comment "test when *c_enc(<string>) ..."]
+
 ////////////////////////////////////////////////////////////////
 
 ,add _3584humjRT7_5DRf4EbSEPp

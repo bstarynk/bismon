@@ -3692,7 +3692,7 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    // cexpansion#readmacro
 extern objrout_sigBM ROUTINEOBJNAME_BM (_6gwxdBT3Mhv_8Gtgu8feoy3);
 
 value_tyBM
-ROUTINEOBJNAME_BM (_6gwxdBT3Mhv_8Gtgu8feoy3)    //
+ROUTINEOBJNAME_BM (_6gwxdBT3Mhv_8Gtgu8feoy3)    // when#read_macro
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // node
  const value_tyBM arg2,         // lineno
@@ -3760,7 +3760,7 @@ ROUTINEOBJNAME_BM (_6gwxdBT3Mhv_8Gtgu8feoy3)    //
       DBGPRINTF_BM ("when readmacro cexpansion"
                     " lineno=%d colpos=%d ix=%d\n... curarg=%s \n",
                     lineno, colpos, ix,
-                    debug_outstr_value_BM (_.curarg, CURFRAME_BM, 1));
+                    debug_outstr_value_BM (_.curarg, CURFRAME_BM, 2));
       if (!_.curobj
           || (!objectisinstance_BM (_.curobj, k_basiclo_statement)
               && !objectisinstance_BM (_.curobj, k_basiclo_block)))
@@ -3792,8 +3792,8 @@ ROUTINEOBJNAME_BM (_6gwxdBT3Mhv_8Gtgu8feoy3)    //
   for (unsigned ix = startix + 1; ix < nodwidth; ix++)
     {
       _.curobj = objectcast_BM (nodenthson_BM ((value_tyBM) _.rnodv, ix));
-      NONPRINTF_BM ("when readmacro cexpansion ix=%d curobj=%s",
-                    ix, objectdbg_BM (_.curobj));
+      DBGPRINTF_BM ("when readmacro cexpansion resobj=%s ix=%d curobj=%s",
+                    objectdbg_BM(_.resobj), ix, objectdbg1_BM (_.curobj));
       objappendcomp_BM (_.resobj, _.curobj);
       _.curobj = NULL;
     };
