@@ -3718,8 +3718,9 @@ ROUTINEOBJNAME_BM (_6gwxdBT3Mhv_8Gtgu8feoy3)    // when#read_macro
   struct parser_stBM *pars = objparserpayload_BM (_.parsob);
   if (!pars)
     LOCALRETURN_BM (NULL);
-  NONPRINTF_BM ("start when readmacro cexpansion _42gEKfF4qca_6gGwxSFC1FO"
-                " lineno=%d colpos=%d nodwidth=%u", lineno, colpos, nodwidth);
+  DBGPRINTF_BM ("start when readmacro cexpansion €_42gEKfF4"
+                " lineno=%d colpos=%d nodwidth=%u rnodv=%s",
+		lineno, colpos, nodwidth, OUTSTRVALUE_BM(_.rnodv));
   const objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
   WEAKASSERT_BM (k_test != NULL);
   const objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
@@ -3792,9 +3793,11 @@ ROUTINEOBJNAME_BM (_6gwxdBT3Mhv_8Gtgu8feoy3)    // when#read_macro
   for (unsigned ix = startix + 1; ix < nodwidth; ix++)
     {
       _.curobj = objectcast_BM (nodenthson_BM ((value_tyBM) _.rnodv, ix));
-      DBGPRINTF_BM ("when readmacro cexpansion resobj=%s ix=%d curobj=%s",
-                    objectdbg_BM(_.resobj), ix, objectdbg1_BM (_.curobj));
       objappendcomp_BM (_.resobj, _.curobj);
+      DBGPRINTF_BM ("when readmacro cexpansion resobj=%s /L%u ix=%d curobj=%s",
+                    objectdbg_BM(_.resobj),
+		    objnbcomps_BM(_.resobj),
+		    ix, objectdbg1_BM (_.curobj));
       _.curobj = NULL;
     };
   objputclass_BM (_.resobj, _.resclass);
