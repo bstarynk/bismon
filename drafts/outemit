@@ -1,3 +1,6 @@
+/// notice that ^testmacroid(1 2 3 4 4 5 6 7) exhibits the bug.
+/// but not  ^testmacroid(1 2 3 4 4 5 6) or ^testmacroid(1 2 3 4 4 5 6 7 8)
+
 ,nval emitvarou $[^miniemit_var (o_varout o_modgen o_routprep o_stmt *add_int(i_depth 1)) !:comment "emit o_varout"]
 
 ,nval getarg $[^assign (v_arg *nodenthson(v_comp 0)) !:comment "v_arg := v_comp[0]"]
