@@ -1974,6 +1974,10 @@ parsergetvalue_BM (struct parser_stBM *pars,
       if (!gotconnobj)
         parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,        //
                               "missing connective object of readmacro after *");
+      if (pars->pars_debug)
+        DBGPRINTF_BM
+          ("macroexpansion ^%s start at L%dC%d depth#%d TINYARGSNUM_BM=%d",
+           objectdbg_BM (_.connobj), nodlin, nodcol, depth, TINYARGSNUM_BM);
       parstoken_tyBM lefttok = parsertokenget_BM (pars, CURFRAME_BM);
       if (lefttok.tok_kind != plex_DELIM
           || lefttok.tok_delim != delim_leftparen)
