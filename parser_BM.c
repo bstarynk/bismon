@@ -2072,7 +2072,7 @@ parsergetvalue_BM (struct parser_stBM *pars,
 	       objectdbg_BM(_.connobj), nbsons,
 	       objectdbg1_BM(_.vecobj), objnbcomps_BM(_.vecobj));
           _.macroval = (value_tyBM)
-            ((nbsons < TINYARGSNUM_BM)
+            ((nbsons <= TINYARGSNUM_BM)
              ? makenode_BM (_.connobj, nbsons, (_.tinyargsarr))
              : makenode_BM (_.connobj, objnbcomps_BM (_.vecobj),
                             (objcompdata_BM (_.vecobj))));
