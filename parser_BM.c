@@ -1998,11 +1998,17 @@ parsergetvalue_BM (struct parser_stBM *pars,
         {
           if (!nobuild)
             {
+              if (pars->pars_debug)
+                DBGPRINTF_BM
+                  ("macroexpansion ^%s  L%dC%d depth#%d nbsons %d sonval %s",
+                   objectdbg_BM (_.connobj), nodlin, nodcol, depth, nbsons,
+                   OUTSTRVALUE_BM (_.sonval));
               if (nbsons < TINYARGSNUM_BM)
                 {
                   if (pars->pars_debug)
                     DBGPRINTF_BM
-                      ("before expand_readmacro tiny nbsons#%d sonval %s",
+                      ("in expand_readmacro ^%s tiny nbsons#%d sonval %s",
+                       objectdbg_BM (_.connobj),
                        nbsons, OUTSTRVALUE_BM (_.sonval));
                   _.tinyargsarr[nbsons++] = (value_tyBM) _.sonval;
                 }
@@ -2014,6 +2020,12 @@ parsergetvalue_BM (struct parser_stBM *pars,
                       objreservecomps_BM (_.vecobj, 2 * TINYARGSNUM_BM);
                       for (int ix = 0; ix < TINYARGSNUM_BM; ix++)
                         objappendcomp_BM (_.vecobj, _.tinyargsarr[ix]);
+                      if (pars->pars_debug)
+                        DBGPRINTF_BM
+                          ("in expand_readmacro ^%s made vecobj %s L%u",
+                           objectdbg_BM (_.connobj),
+                           objectdbg1_BM (_.vecobj),
+                           objnbcomps_BM (_.vecobj));
                     };
                   {
                     objlock_BM (_.vecobj);
@@ -2021,9 +2033,10 @@ parsergetvalue_BM (struct parser_stBM *pars,
                     objunlock_BM (_.vecobj);
                     if (pars->pars_debug)
                       DBGPRINTF_BM
-                        ("before expand_readmacro nontiny nbsons#%d sonval %s vecobj %s L%u",
+                        ("expand_readmacro ^%s nontiny nbsons#%d sonval %s vecobj %s L%u",
+                         objectdbg_BM (_.connobj),
                          nbsons, OUTSTRVALUE_BM (_.sonval),
-                         objectdbg_BM (_.vecobj), objnbcomps_BM (_.vecobj));
+                         objectdbg1_BM (_.vecobj), objnbcomps_BM (_.vecobj));
                     nbsons++;
                   }
                 }
@@ -2037,6 +2050,14 @@ parsergetvalue_BM (struct parser_stBM *pars,
                               "missing right parenthesis for readmacro");
       int endlin = endtok.tok_line;
       int endcol = endtok.tok_col;
+      if (pars->pars_debug && !nobuild)
+        DBGPRINTF_BM
+          ("expand_readmacro ^%s nod L%dC%d left L%dC%d ending L%dC%d nbsons %d",
+           objectdbg_BM (_.connobj),
+	   nodlin, nodcol,
+	   leftlin, leftcol,
+	   endlin, endcol,
+	   nbsons);
       if (parsops && parsops->parsop_decorate_start_nesting_rout)
         parsops->parsop_decorate_start_nesting_rout
           (pars, depth,
@@ -2045,6 +2066,11 @@ parsergetvalue_BM (struct parser_stBM *pars,
            delim_rightparen, endlin, endcol);
       if (!nobuild)
         {
+          if (pars->pars_debug)
+            DBGPRINTF_BM
+              ("expand_readmacro connobj %s nbsons #%d vecobj %s L%u before  makenode",
+	       objectdbg_BM(_.connobj), nbsons,
+	       objectdbg1_BM(_.vecobj), objnbcomps_BM(_.vecobj));
           _.macroval = (value_tyBM)
             ((nbsons < TINYARGSNUM_BM)
              ? makenode_BM (_.connobj, nbsons, (_.tinyargsarr))
