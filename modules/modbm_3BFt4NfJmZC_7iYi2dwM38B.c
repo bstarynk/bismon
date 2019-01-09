@@ -537,7 +537,7 @@ whenobj88CClQZG__0BVlPuwRd7W_2uZdnPJU4lL:; // when #2 of objswitch _88CClQZGP1N_
     
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _0BVlPuwRd7W_2uZdnPJU4lL #3 statement:    
 { // start cexpansion _0APoeium6EX_1BVXu0HmWIQ - objstrbufferappendcstrpayl     
-/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( ", \"%llx\", "));     
+/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( ", \"%llx\", (long long) "));     
 } // end cexpansion _0APoeium6EX_1BVXu0HmWIQ - objstrbufferappendcstrpayl     
     
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _0BVlPuwRd7W_2uZdnPJU4lL #4 statement:    
@@ -592,7 +592,7 @@ whenobj88CClQZG__1x34ns9L1vc_0NkwFmpgSZo:; // when #4 of objswitch _88CClQZGP1N_
     
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _1x34ns9L1vc_0NkwFmpgSZo #3 statement:    
 { // start cexpansion _8VsFpTwtckK_3bDjtkhIoU7 - objstrbufferappendcstrpayl     
-/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( ", \"%lld\", "));     
+/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( ", \"%lld\", (long long) "));     
 } // end cexpansion _8VsFpTwtckK_3bDjtkhIoU7 - objstrbufferappendcstrpayl     
     
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _1x34ns9L1vc_0NkwFmpgSZo #4 statement:    
@@ -662,7 +662,7 @@ whenobj88CClQZG__1Okz8TmaK4w_1h2DwizxeUm:; // when #6 of objswitch _88CClQZGP1N_
     
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _1Okz8TmaK4w_1h2DwizxeUm #3 statement:    
 { // start cexpansion _0zmQelH00Up_6fR1xIGtzy0 - objstrbufferappendcstrpayl     
-/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( ", \"%llo\", "));     
+/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( ", \"%llo\", (long long) "));     
 } // end cexpansion _0zmQelH00Up_6fR1xIGtzy0 - objstrbufferappendcstrpayl     
     
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _1Okz8TmaK4w_1h2DwizxeUm #4 statement:    
