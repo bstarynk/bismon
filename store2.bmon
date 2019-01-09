@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2379 objects
+// for 2381 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -7682,10 +7682,12 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !(_0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
 !~ name (~ out
 ~)
-!@ 1546505188.575
+!@ 1547043825.663
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "^out ([*in(obj)] varoutbuf outputs....)"
+!: _3dmcFZldtxI_1bEIFl4jqe3 |=also|
+_0hEcY9UzFy6_81oAjjDMu3D
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
  % _0g1CBaxjMIB_7NZdyHUikLG ()
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
@@ -8792,13 +8794,15 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !(_66DuQtJBPqt_8w9fOCyxJve |=temp_test_module|
 !~ name (~ temp_test_module
 ~)
-!@ 1546371529.269
+!@ 1547043893.396
 !$_0277f6mOd9j_0tVZSXnTzUK |=basiclo_temporary_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "temporary test module"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _2bqYsdDkB6J_35rYPGvtKa2 _364Qj8mb098_1ZKW5WqeFWg _3vI0Qc3FHQG_1g4fmHYkxSA _87zGbEccv7h_5gRm35estXS 
  _8imWClcIFKt_6w2H2ouB4I6 _8VzbBncLSEl_2dNNPe0VjQh }
+!# 1
+!& _0hEcY9UzFy6_81oAjjDMu3D
 !)_66DuQtJBPqt_8w9fOCyxJve
 
 
@@ -10728,6 +10732,21 @@ _8Zow03fhyT0_8uAZxZPDM5k
 !& _6Y20GNUgnSZ_4LkbrcRMU8f
 !&  * _5MLPTLuT4ey_0YKIUpvXybX ( _4nJKFtMqlkA_1teQSqofNux)
 !)_0gT4WusZmlq_5BWkqD7AclN
+
+
+
+!(_0hEcY9UzFy6_81oAjjDMu3D
+!@ 1547043825.663
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test routine for out"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW _09RxU8xDco3_2Zxwfb13oDZ ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_36qBmcXleA0_2UKl7qlF0BP
+!)_0hEcY9UzFy6_81oAjjDMu3D
 
 
 
@@ -18462,6 +18481,15 @@ _7pm4Ds6506o_90TYgch40IW
 !& _5wKdFyGNJ5j_50nIjxm7LLY
 !&  * _3Nl6LhfUZVb_1itsyWMBfYl (  * _0e54seiZEXF_1Myf620cHoB ( _6tvn8CFOFbK_7tR4KRH8jTi)  * _4spk03uJzY0_2H7bFVFr5Eb ( _0ZL8gaI6sH8_7UPhmAQcwMe  0) _5D1GbyYKAgk_9ureezAahw3  * _6FWWN47uih2_5BhwEm9gnHu (  * _3fb1EHtMPwQ_7XEPTUgUmX4 ( _6Y20GNUgnSZ_4LkbrcRMU8f  1)) _05IHFluwEai_9VxTGg7FVeQ)
 !)_36mRqNky4Bb_6RpUXZ2U3Fx
+
+
+
+!(_36qBmcXleA0_2UKl7qlF0BP
+!@ 1547043825.662
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of test routine for out"
+!)_36qBmcXleA0_2UKl7qlF0BP
 
 
 
