@@ -1203,7 +1203,7 @@ objstrbufferencodedcpayl_BM (objectval_tyBM * obj, const char *str,
                 ubuf[1] = (char) 0;
               }
             else
-              snprintf (ubuf, sizeof (ubuf), "\\x%02x", *pc);
+              snprintf (ubuf, sizeof (ubuf), "\\x%02x", (*pc) & 0xff);
             objstrbufferunsafeappendcstrpayl_BM (obj, ubuf);
           };
           break;
@@ -1269,7 +1269,7 @@ writefencodedc_BM (FILE * fil, const char *str, ssize_t bytelen)
                 ubuf[1] = (char) 0;
               }
             else
-              snprintf (ubuf, sizeof (ubuf), "\\x%02x", *pc);
+              snprintf (ubuf, sizeof (ubuf), "\\x%02x", 0xff & (*pc));
             fputs (ubuf, fil);
           };
           break;

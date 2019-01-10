@@ -2054,10 +2054,7 @@ parsergetvalue_BM (struct parser_stBM *pars,
         DBGPRINTF_BM
           ("expand_readmacro ^%s nod L%dC%d left L%dC%d ending L%dC%d nbsons %d",
            objectdbg_BM (_.connobj),
-	   nodlin, nodcol,
-	   leftlin, leftcol,
-	   endlin, endcol,
-	   nbsons);
+           nodlin, nodcol, leftlin, leftcol, endlin, endcol, nbsons);
       if (parsops && parsops->parsop_decorate_start_nesting_rout)
         parsops->parsop_decorate_start_nesting_rout
           (pars, depth,
@@ -2069,8 +2066,8 @@ parsergetvalue_BM (struct parser_stBM *pars,
           if (pars->pars_debug)
             DBGPRINTF_BM
               ("expand_readmacro connobj %s nbsons #%d vecobj %s L%u before  makenode",
-	       objectdbg_BM(_.connobj), nbsons,
-	       objectdbg1_BM(_.vecobj), objnbcomps_BM(_.vecobj));
+               objectdbg_BM (_.connobj), nbsons,
+               objectdbg1_BM (_.vecobj), objnbcomps_BM (_.vecobj));
           _.macroval = (value_tyBM)
             ((nbsons <= TINYARGSNUM_BM)
              ? makenode_BM (_.connobj, nbsons, (_.tinyargsarr))
