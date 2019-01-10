@@ -4046,7 +4046,7 @@ blink_objectview_cbBM (gpointer data)
         ("blink_objectview yellow obv rank#%d blinkcount=%d blinkix=%d, par open:%d close:%d",
          obv->obv_rank, obv->obv_blinkcount, obv->obv_blinkix,
          par->paroff_open, par->paroff_close);
-      if (par->paroff_open >= 0 && par->paroff_openlen > 0)
+      if (par && par->paroff_open >= 0 && par->paroff_openlen > 0)
         {
           gtk_text_buffer_get_iter_at_offset (obv->obv_tbuffer, &startit,
                                               par->paroff_open);
@@ -4055,7 +4055,7 @@ blink_objectview_cbBM (gpointer data)
           gtk_text_buffer_apply_tag (obv->obv_tbuffer, blink_brotag_BM,
                                      &startit, &endit);
         }
-      if (par->paroff_close >= 0 && par->paroff_closelen > 0)
+      if (par && par->paroff_close >= 0 && par->paroff_closelen > 0)
         {
           gtk_text_buffer_get_iter_at_offset (obv->obv_tbuffer, &endit,
                                               par->paroff_close);
@@ -4064,7 +4064,7 @@ blink_objectview_cbBM (gpointer data)
           gtk_text_buffer_apply_tag (obv->obv_tbuffer, blink_brotag_BM,
                                      &startit, &endit);
         }
-      if (par->paroff_xtra >= 0 && par->paroff_xtralen > 0)
+      if (par && par->paroff_xtra >= 0 && par->paroff_xtralen > 0)
         {
           gtk_text_buffer_get_iter_at_offset (obv->obv_tbuffer, &startit,
                                               par->paroff_xtra);
