@@ -339,7 +339,7 @@ break; // end objswitch _88CClQZGP1N_57QoKCh6Ivj default
 whenobj88CClQZG__0fRhe6eKSxc_717gH1gzxnY:; // when #0 of objswitch _88CClQZGP1N_57QoKCh6Ivj    
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _0fRhe6eKSxc_717gH1gzxnY #0 statement:    
 { // start cexpansion _0zKnZUvuFlU_5okP2gbCUIH - objstrbufferappendcstrpayl     
-/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( "char idbuf"));     
+/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( "/*out id:*/ char idbuf"));     
 } // end cexpansion _0zKnZUvuFlU_5okP2gbCUIH - objstrbufferappendcstrpayl     
     
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _0fRhe6eKSxc_717gH1gzxnY #1 statement:    
@@ -757,7 +757,7 @@ break; // end when _3UQkLJVILrN_5fQkMJuOnaO #8 of objswitch _88CClQZGP1N_57QoKCh
 whenobj88CClQZG__5BIPiYugHNh_27cx9JETCA7:; // when #9 of objswitch _88CClQZGP1N_57QoKCh6Ivj    
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _5BIPiYugHNh_27cx9JETCA7 #0 statement:    
 { // start cexpansion _9d3lEURT0ug_7LCapWY9hBT - objstrbufferappendcstrpayl     
-/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( "objstrbufferappendcstrpayl_BM ("));     
+/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( "/*out name:*/ objstrbufferappendcstrpayl_BM ("));     
 } // end cexpansion _9d3lEURT0ug_7LCapWY9hBT - objstrbufferappendcstrpayl     
     
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _5BIPiYugHNh_27cx9JETCA7 #1 statement:    

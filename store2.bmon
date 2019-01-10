@@ -11646,12 +11646,12 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 !(_0zKnZUvuFlU_5okP2gbCUIH
-!@ 1546982764.482
+!@ 1547135334.957
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "emit \'char idbuf\'"
+ "emit \'/*out_id:*/ char idbuf\'"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
- * _0jFqaPPHgYH_5JpjOPxQ67p ( _2RUj1oyJ2rf_1ICZWr844Sv  "char idbuf")
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _2RUj1oyJ2rf_1ICZWr844Sv  "/*out id:*/ char idbuf")
 !: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
 _6jZqk9RP0Pe_12cIgV9WMFC
 !)_0zKnZUvuFlU_5okP2gbCUIH
@@ -33819,12 +33819,12 @@ _13K9OfeXRZR_84nyRTtoj81
 
 
 !(_9d3lEURT0ug_7LCapWY9hBT
-!@ 1546982764.485
+!@ 1547135472.342
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "emit \'objstrbufferappendcstrpayl_BM (\'"
+ "emit \'*out name:*/ objstrbufferappendcstrpayl_BM (\'"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
- * _0jFqaPPHgYH_5JpjOPxQ67p ( _2RUj1oyJ2rf_1ICZWr844Sv  "objstrbufferappendcstrpayl_BM (")
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _2RUj1oyJ2rf_1ICZWr844Sv  "/*out name:*/ objstrbufferappendcstrpayl_BM (")
 !: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
 _6jZqk9RP0Pe_12cIgV9WMFC
 !)_9d3lEURT0ug_7LCapWY9hBT
