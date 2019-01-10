@@ -557,7 +557,7 @@ break; // end when _0BVlPuwRd7W_2uZdnPJU4lL #2 of objswitch _88CClQZGP1N_57QoKCh
 whenobj88CClQZG__114ixi5SECv_2Q1vNdDZoMs:; // when #3 of objswitch _88CClQZGP1N_57QoKCh6Ivj    
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _114ixi5SECv_2Q1vNdDZoMs #0 statement:    
 { // start cexpansion _0xL7VGIpR2r_1vJiJ88GK3r - objstrbufferappendcstrpayl     
-/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( "objstrbufferappendcstrpayl_BM ("));     
+/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( "/*out space:*/ objstrbufferappendcstrpayl_BM ("));     
 } // end cexpansion _0xL7VGIpR2r_1vJiJ88GK3r - objstrbufferappendcstrpayl     
     
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _114ixi5SECv_2Q1vNdDZoMs #1 statement:    
@@ -927,7 +927,7 @@ break; // end when _7ZmgWpB8hAR_9ZTbneZMSU1 #13 of objswitch _88CClQZGP1N_57QoKC
 whenobj88CClQZG__87vVePujNkG_0JOq1ftTQok:; // when #14 of objswitch _88CClQZGP1N_57QoKCh6Ivj    
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _87vVePujNkG_0JOq1ftTQok #0 statement:    
 { // start cexpansion _1zDV3OgdBWQ_7fM8urCKgoi - objstrbufferappendcstrpayl     
-/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( "objstrbufferspaceornewlinepayl_BM ("));     
+/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( "/*out nlsp:*/ objstrbufferspaceornewlinepayl_BM ("));     
 } // end cexpansion _1zDV3OgdBWQ_7fM8urCKgoi - objstrbufferappendcstrpayl     
     
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _87vVePujNkG_0JOq1ftTQok #1 statement:    
@@ -982,7 +982,7 @@ break; // end when _9d7rWinZqTW_3HJB0Tm1DtZ #15 of objswitch _88CClQZGP1N_57QoKC
 whenobj88CClQZG__9E2lY6UWtZc_1zqNjPXxrB1:; // when #16 of objswitch _88CClQZGP1N_57QoKCh6Ivj    
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _9E2lY6UWtZc_1zqNjPXxrB1 #0 statement:    
 { // start cexpansion _7dXnrwZwpMJ_5m6aSmqnq4b - objstrbufferappendcstrpayl     
-/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( "objstrbuffernewlinepayl_BM ("));     
+/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( "/*out newline:*/ objstrbuffernewlinepayl_BM ("));     
 } // end cexpansion _7dXnrwZwpMJ_5m6aSmqnq4b - objstrbufferappendcstrpayl     
     
  // objswitch _88CClQZGP1N_57QoKCh6Ivj when _9E2lY6UWtZc_1zqNjPXxrB1 #1 statement:    
