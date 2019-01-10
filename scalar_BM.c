@@ -1212,6 +1212,84 @@ objstrbufferencodedcpayl_BM (objectval_tyBM * obj, const char *str,
 }                               /* end objstrbufferencodedcpayl_BM */
 
 
+void
+objstrbufferliteralcstringpayl_BM (objectval_tyBM * obj, const char *str,
+                                   ssize_t bytelen)
+{
+  if (!str)
+    return;
+  struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (obj);
+  if (!sbuf)
+    return;
+  if (bytelen < 0)
+    bytelen = strlen (str);
+  objstrbufferreservepayl_BM (obj, 9 * bytelen / 8 + 10);
+  objstrbufferunsafeappendcstrpayl_BM (obj, "\"");
+  const char *ends = str + bytelen;
+  bool breakhere = false;
+  for (const char *pc = str; pc < ends; pc++)
+    {
+      if (breakhere)
+        objstrbufferappendcstrpayl_BM (obj, "\" \"");
+      breakhere = false;
+      switch (*pc)
+        {
+        case '\"':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\\\"");
+          break;
+        case '\'':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\\\'");
+          break;
+        case '\\':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\\\\");
+          break;
+        case '\a':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\\a");
+          break;
+        case '\b':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\\b");
+          break;
+        case '\f':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\\f");
+          break;
+        case '\n':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\\n");
+          break;
+        case '\r':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\\r");
+          break;
+        case '\t':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\\t");
+          break;
+        case '\v':
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\\v");
+          break;
+        case '\033' /*ESCAPE*/:
+          objstrbufferunsafeappendcstrpayl_BM (obj, "\\e");
+          break;
+        default:
+          {
+            char ubuf[8] = "";
+            if (*pc < 127 && *pc >= ' ')
+              {
+                ubuf[0] = *pc;
+                ubuf[1] = (char) 0;
+              }
+            else
+              {
+                snprintf (ubuf, sizeof (ubuf), "\\x%02x", (*pc) & 0xff);
+                if (pc < ends - 1 && isalnum (pc[1]))
+                  breakhere = true;
+              }
+            objstrbufferunsafeappendcstrpayl_BM (obj, ubuf);
+          };
+          break;
+        }
+    }
+  objstrbufferunsafeappendcstrpayl_BM (obj, "\"");
+}                               /* end objstrbufferliteralcstringpayl_BM */
+
+
 
 void
 writefencodedc_BM (FILE * fil, const char *str, ssize_t bytelen)

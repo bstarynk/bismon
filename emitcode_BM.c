@@ -1651,9 +1651,9 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                                  (long long) getint_BM (_.expv));
       LOCALJUSTRETURN_BM ();
     case tyString_BM:
-      objstrbufferappendcstrpayl_BM (_.modgenob, " \"");
-      objstrbufferencodedcpayl_BM (_.modgenob, bytstring_BM (_.expv), -1);
-      objstrbufferappendcstrpayl_BM (_.modgenob, "\"");
+      objstrbufferappendcstrpayl_BM (_.modgenob, " ");
+      objstrbufferliteralcstringpayl_BM (_.modgenob, bytstring_BM (_.expv),
+                                         -1);
       LOCALJUSTRETURN_BM ();
     case tySet_BM:
       FAILHERE (BMP_set);

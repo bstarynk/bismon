@@ -568,6 +568,11 @@ extern void writefencodedutf8_BM (FILE * fil, const char *str,
 extern void objstrbufferencodedcpayl_BM (objectval_tyBM * obj,
                                          const char *str, ssize_t bytelen);
 
+/// output literal string, with the double quotes, à la C
+extern void objstrbufferliteralcstringpayl_BM (objectval_tyBM * obj,
+                                               const char *str,
+                                               ssize_t bytelen);
+
 extern void writefencodedc_BM (FILE * fil, const char *str, ssize_t bytelen);
 
 /// output bytes encoded à la HTML
