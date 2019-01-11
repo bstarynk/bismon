@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2385 objects
+// for 2386 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -6813,6 +6813,26 @@ _0vgCFjXblkx_4zCMhMAWjVK
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3VySP3m8Taw_41uOTTofaZ6  ":*/"  "objstrbufferlessindentpayl_BM"  "(" 
   * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
 !)_3VySP3m8Taw_41uOTTofaZ6
+
+
+
+!(_5CMkxIwPI03_7XHnBogCtrq |=objstrbufferliteralcstringpayl|
+!~ name (~ objstrbufferliteralcstringpayl
+~)
+!@ 1547187323.677
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in strbuffer-object o1 append the quoted C string literal str2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _4ilpkwNBw3O_3l8ykbxbBom ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _5CMkxIwPI03_7XHnBogCtrq)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5CMkxIwPI03_7XHnBogCtrq  ":*/"  " "  "objstrbufferliteralcstringpayl_BM" 
+  " "  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+ "),"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4ilpkwNBw3O_3l8ykbxbBom)  "))")
+!)_5CMkxIwPI03_7XHnBogCtrq
 
 
 
