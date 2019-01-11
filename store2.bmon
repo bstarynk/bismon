@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2386 objects
+// for 2387 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -3077,6 +3077,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_68wubODZSVm_8gslCjdiTXO
+
+
+
+!(_5wNedaaTb99_3ZQe6xm9HNx |=literal_c_string|
+!~ name (~ literal_c_string
+~)
+!@ 1547191513.475
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "used for output of literal C strings in out"
+!)_5wNedaaTb99_3ZQe6xm9HNx
 
 
 
@@ -7702,7 +7713,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !(_0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
 !~ name (~ out
 ~)
-!@ 1547043825.663
+!@ 1547191548.643
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "^out ([*in(obj)] varoutbuf outputs....)"
@@ -7715,10 +7726,10 @@ _0hEcY9UzFy6_81oAjjDMu3D
  _2wGWzItVmrN_2CBwG6iHWFO _2yhrFze2uwV_6G7BfGXfplP _2P7OoZumXdx_5sUQ9SPbVwn 
 _35gLacRFhq5_90zAPxiDIlh 
  _3QmxfIKpDVI_0C4Z01aFVxK _4T8am97muLl_5969SR22Ecq _5t5nLVnGAqW_9IbjlqpPdp3 
-_6xxbA8aTjZm_1sCJbVkU3Pm 
- _7bbeIqUSje9_4jVgC7ZJmvx _7coI3Hezrvp_6CG1u3MlT83 _7T9OwSFlgov_0wVJaK1eZbn 
-_7WjaQkqwdaZ_6PRtbDrJHnf 
- _7YmEzAVe2hC_9iA0FVXAIqp }
+_5wNedaaTb99_3ZQe6xm9HNx 
+ _6xxbA8aTjZm_1sCJbVkU3Pm _7bbeIqUSje9_4jVgC7ZJmvx _7coI3Hezrvp_6CG1u3MlT83 
+_7T9OwSFlgov_0wVJaK1eZbn 
+ _7WjaQkqwdaZ_6PRtbDrJHnf _7YmEzAVe2hC_9iA0FVXAIqp }
 !)_0EmM9kH8Wgr_7fpd0oIo9xQ
 
 
@@ -32089,12 +32100,13 @@ _4jYMom293qa_4qW0J7r0LtZ
 
 
 !(_8v0XmN9JZTY_0xJ6ntfrc0z
-!@ 1546367953.007
+!@ 1547191802.232
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "when o_conn \u2208 {c_enc html_enc string utf8_enc}"& " ... miniscan_stmt\u00b0basiclo_outstmt"
+ "when o_conn \u2208 {c_enc html_enc string utf8_enc"& " literal_c_string} ... miniscan_stmt\u00b0basiclo_outstmt"
 !: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
- { _2P7OoZumXdx_5sUQ9SPbVwn _3QmxfIKpDVI_0C4Z01aFVxK _4T8am97muLl_5969SR22Ecq _6xxbA8aTjZm_1sCJbVkU3Pm }
+ { _2P7OoZumXdx_5sUQ9SPbVwn _3QmxfIKpDVI_0C4Z01aFVxK _4T8am97muLl_5969SR22Ecq _5wNedaaTb99_3ZQe6xm9HNx 
+ _6xxbA8aTjZm_1sCJbVkU3Pm }
 !# 4
 !& _0tPLTqqQhJ7_9Tr1hT1PRhR
 !& _4osMLGlPBTq_8rkCT8pCoQZ
