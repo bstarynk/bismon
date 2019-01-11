@@ -23440,7 +23440,7 @@ _05IHFluwEai_9VxTGg7FVeQ
  "out strbuf..."
 !: _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
 _41F1rKwGbaA_30OJWKsqNWy
-!# 18
+!# 19
 !&  "literal-string"
 !&  * _6xxbA8aTjZm_1sCJbVkU3Pm (  "abc")
 !&  * _7YmEzAVe2hC_9iA0FVXAIqp (  14)
@@ -23457,6 +23457,7 @@ _41F1rKwGbaA_30OJWKsqNWy
 !&  * _2yhrFze2uwV_6G7BfGXfplP (  2)
 !&  * _35gLacRFhq5_90zAPxiDIlh ()
 !&  * _4T8am97muLl_5969SR22Ecq (  "cde!\tyes")
+!&  * _5wNedaaTb99_3ZQe6xm9HNx (  "a\nb\fc")
 !&  * _2P7OoZumXdx_5sUQ9SPbVwn (  "a\u00b0b$\u00a4c")
 !&  * _7bbeIqUSje9_4jVgC7ZJmvx ( _09RxU8xDco3_2Zxwfb13oDZ)
 !)_5bFdl5EUltP_424dDzsfj0V
