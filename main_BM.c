@@ -997,6 +997,8 @@ main (int argc, char **argv)
     }
   if (run_gtk_BM && run_onion_BM)
     WARNPRINTF_BM ("bismon trying to run both GTK and ONION");
+  INFOPRINTF_BM ("bismon should load directory %s - git commit: %s",
+                 load_dir_bm, bismon_lastgitcommit);
   load_initial_BM (load_dir_bm);
   if (added_passwords_filepath_BM && added_passwords_filepath_BM[0])
     add_passwords_from_file_BM (added_passwords_filepath_BM);
