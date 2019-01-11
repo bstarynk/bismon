@@ -61,9 +61,10 @@ value_tyBM crout_5NH940lCHYJ_3nuRm3flnzc_BM //#0
     objectval_tyBM* o_6Ef2ORO1Mni_0tpNoRQGmrW; // o_hblock
     objectval_tyBM* o_6Z4UU939WbU_8BK9xcKsXNb; // o_comp
     objectval_tyBM* o_9nXRmTATjN4_5F9V7RvvgW0; // o_emitctx
-    /// 2 local numbers:
+    /// 3 local numbers:
     intptr_t n_2W7Ckt2WxEM_4NVYgEWE73B; // ii
     intptr_t n_6Y20GNUgnSZ_4LkbrcRMU8f; // i_depth
+    intptr_t n_833x2jYqhZh_8vDIuJhwz1k; // leni
    } _;
    memset (&_, 0, sizeof(struct frame_5NH940lCHYJ_3nuRm3flnzc_BMst));
    _.stkfram_head.htyp = typayl_StackFrame_BM;
@@ -162,6 +163,7 @@ PLACEDFAILURE_BM(__LINE__,
 } //endwhen _2vrXQXG9ekP_2af2adhJ59X  
 /*endcond _4Vd3Fe3lriq_1maa3fRM0K5*/ 
   
+//+ #2/4 of lockobj _36l0VwmZ11o_8vCwWpg2xIB ::  
  
 { // run _5uHXmQzi0xh_3EeoqFXMNFU 
 /*debug emithtml_block after emit_html_open_block v_resemit o_hblock o_emitctx o_strbuf depth*/
@@ -175,6 +177,9 @@ DBGPRINTF_BM("emithtml_block after emit_html_open_block €%.9s v_resemit=%s o_h
  (long int) ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));
 ; 
 } // end run _5uHXmQzi0xh_3EeoqFXMNFU 
+  
+ /*leni:*/_.n_833x2jYqhZh_8vDIuJhwz1k = //assign _1O9tiQKy3ZB_4oLghWljER9  
+/*objnbcomps:*/ objnbcomps_BM ( /*o_hblock:*/_.o_6Ef2ORO1Mni_0tpNoRQGmrW); 
   
 objunlock_BM (locked_36l0VwmZ11o_8vCwWpg2xIB), locked_36l0VwmZ11o_8vCwWpg2xIB = NULL; 
 } } // end objlock _36l0VwmZ11o_8vCwWpg2xIB 
