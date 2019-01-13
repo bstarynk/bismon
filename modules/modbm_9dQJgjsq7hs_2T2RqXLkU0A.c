@@ -16,22 +16,24 @@ const char modulmd5chksum_9dQJgjsq7hs_2T2RqXLkU0A_BM[] = BISMON_MOMD5;
 
 
 
-// declare 1 routines
+// declare 2 routines
 
-extern const char *const routid_9dQJgjsq7hs_2T2RqXLkU0A_BM[1+1];
+extern const char *const routid_9dQJgjsq7hs_2T2RqXLkU0A_BM[2+1];
 
 
 // 4 failures
 
 extern objrout_sigBM crout_5NH940lCHYJ_3nuRm3flnzc_BM; //#0 !emithtml_block (o_hblock o_emitctx o_strbuf v_depth)
 
-
-// declare 12 constants
-objectval_tyBM* constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[12+1];
-const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[12+1];
+extern objrout_sigBM crout_8IYFtn8osS2_4t1U3wyROLW_BM; //#1 emit_html
 
 
-// define 1 routines
+// declare 13 constants
+objectval_tyBM* constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[13+1];
+const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[13+1];
+
+
+// define 2 routines
 
 
 value_tyBM crout_5NH940lCHYJ_3nuRm3flnzc_BM //#0
@@ -309,11 +311,91 @@ endblock__86w0oglm27k_4ULVduuJiC6: ;
 
 
 
-// end of 1 generated routines
+value_tyBM crout_8IYFtn8osS2_4t1U3wyROLW_BM //#1+
+ (struct stackframe_stBM* stkf, // emit_html
+  // 4 arguments
+  const value_tyBM arg0,  // v_html
+  const value_tyBM arg1,  // o_emitctx
+  const value_tyBM arg2,  // o_strbuf
+  const value_tyBM arg3,  // v_depth
+  const quasinode_tyBM * restargs_ __attribute__((unused)))
+{ // start of emit_html
+  struct frame_8IYFtn8osS2_4t1U3wyROLW_BMst {
+    typedhead_tyBM stkfram_head;
+    struct stackframe_stBM *stkfram_prev;
+    objectval_tyBM *stkfram_descr;
+    value_tyBM stkfram_callfun;
+    int stkfram_state;
+    int stkfram_extra;
+    /// 9 local values:
+    value_tyBM v_0qTBOEAT5pa_2fz1SKfHrMV; // v_resemit
+    value_tyBM v_0DmuWueFbx9_5bzv8xgw3fu; // v_html
+    value_tyBM v_0ZL8gaI6sH8_7UPhmAQcwMe; // v_comp
+    objectval_tyBM* o_13K9OfeXRZR_84nyRTtoj81; // o_conn
+    value_tyBM v_3qw9bnATIhq_8loBraLeXzQ; // v_r
+    objectval_tyBM* o_41F1rKwGbaA_30OJWKsqNWy; // o_strbuf
+    value_tyBM v_4nJKFtMqlkA_1teQSqofNux; // v_depth
+    value_tyBM v_5GhvzWWP1jl_41tgAIAAa2X; // v_resapp
+    objectval_tyBM* o_9nXRmTATjN4_5F9V7RvvgW0; // o_emitctx
+    /// 3 local numbers:
+    intptr_t n_2W7Ckt2WxEM_4NVYgEWE73B; // ii
+    intptr_t n_6Y20GNUgnSZ_4LkbrcRMU8f; // i_depth
+    intptr_t n_833x2jYqhZh_8vDIuJhwz1k; // leni
+   } _;
+   memset (&_, 0, sizeof(struct frame_8IYFtn8osS2_4t1U3wyROLW_BMst));
+   _.stkfram_head.htyp = typayl_StackFrame_BM;
+   _.stkfram_head.hgc = 0;
+   _.stkfram_head.rlen = 9;
+   _.stkfram_descr = constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[12] /*|emit_html*/;
+   ASSERT_BM (!stkf
+             || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
+             || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
+   _.stkfram_prev = stkf;
+   // fetch 4 arguments:
+   _.v_0DmuWueFbx9_5bzv8xgw3fu = arg0; // v_html
+   _.o_9nXRmTATjN4_5F9V7RvvgW0 = objectcast_BM (arg1); // o_emitctx
+   _.o_41F1rKwGbaA_30OJWKsqNWy = objectcast_BM (arg2); // o_strbuf
+   _.v_4nJKFtMqlkA_1teQSqofNux = arg3; // v_depth
+   // fetched 4 arguments.
+   // no closed values in emit_html.
+   // routine _8IYFtn8osS2_4t1U3wyROLW body:
+
+startblock__3DcbHfTP2te_8Zw8Uhy9eU6: __attribute__((unused));
+{ /* +block _3DcbHfTP2te_8Zw8Uhy9eU6 */ 
+ /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f = //assign _8uqITOuF3yu_9Uyyhkc1y9S  
+ /* val_to_int */ getint_BM( /*v_depth:*/_.v_4nJKFtMqlkA_1teQSqofNux) ; 
+ 
+ 
+ 
+{ // run _7KjUhmzgBEC_2FAElSuzMNO 
+/*debug start emit_html v_html o_emitctx o_strbuf depth*/
+DBGPRINTF_BM("emit_html start €%.9s v_html=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+ "_7KjUhmzgBEC_2FAElSuzMNO",
+ OUTSTRVALUE_BM( /*v_html:*/_.v_0DmuWueFbx9_5bzv8xgw3fu),
+ objectdbg_BM( /*o_emitctx:*/_.o_9nXRmTATjN4_5F9V7RvvgW0),
+ objectdbg1_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
+ objstrbufferlengthpayl_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
+ (long int) ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));; 
+} // end run _7KjUhmzgBEC_2FAElSuzMNO 
+ 
+/* !endingblock _3DcbHfTP2te_8Zw8Uhy9eU6 */ 
+goto endblock__3DcbHfTP2te_8Zw8Uhy9eU6; 
+endblock__3DcbHfTP2te_8Zw8Uhy9eU6: ; 
+} /*-block _3DcbHfTP2te_8Zw8Uhy9eU6 */
+
+ epilog_8IYFtn8osS2_4t1U3wyROLW: __attribute__ ((unused)); // routine _8IYFtn8osS2_4t1U3wyROLW epilogue:
+   if (stkf) stkf->stkfram_callfun = NULL;
+   return  /*v_r:*/_.v_3qw9bnATIhq_8loBraLeXzQ;
+} // end _8IYFtn8osS2_4t1U3wyROLW routine#1 emit_html
 
 
-// the constant ids for 12 constants:
-const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[12+1] = {
+
+
+// end of 2 generated routines
+
+
+// the constant ids for 13 constants:
+const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[13+1] = {
  /*0:*/
  "_22MieznSASY_8V0HbjohiyB",//emit_html_open_block
  "_2ekmsdDpheM_8iSH1r9pS9e", //! fail non-object emithtml_block o_emitctx o_strbuf depth
@@ -329,16 +411,18 @@ const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[12+1] = {
  /*10:*/
  "_6yWldsq3Rmk_01WqTfwSIDV",//failure_non_object
  "_7FvfalQCaxj_24GCf5CtIWh",//html_element_object
- NULL}; // end 12 constant ids
+ "_8IYFtn8osS2_4t1U3wyROLW",//emit_html
+ NULL}; // end 13 constant ids
 
 
 
-// the routine ids for 1 routines:
-const char* const routid_9dQJgjsq7hs_2T2RqXLkU0A_BM[1+1] = {
+// the routine ids for 2 routines:
+const char* const routid_9dQJgjsq7hs_2T2RqXLkU0A_BM[2+1] = {
   /*0:*/
   "_5NH940lCHYJ_3nuRm3flnzc", //!emithtml_block (o_hblock o_emitctx o_strbuf v_depth)
+  "_8IYFtn8osS2_4t1U3wyROLW",//emit_html
 
- NULL}; // end 1 routine ids
+ NULL}; // end 2 routine ids
 
 
 
