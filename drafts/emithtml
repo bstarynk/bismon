@@ -1,0 +1,53 @@
+// in body €_3DcbHfTP2t of emit_html function €_8IYFtn8, after the debug start
+
+,add _3DcbHfTP2te_8Zw8Uhy9eU6 $[^cond (
+
+$[^when (*is_stringv (v_html)
+  $[^out (o_strbuf *html_enc(v_html)) !:comment "emit html-encoded v_html string"]
+ ) !:comment "when v_html is string"]
+
+$[^when (*is_intv (v_html)
+  $[^out (o_strbuf *int(*val_to_int(v_html))) !:comment "emit integer v_html"]
+ ) !:comment "when v_html is int"]
+
+$[^when (*is_null (v_html)
+ $[^no_op () !:comment "no_op for null"]
+) !:comment "when v_html is null noop"]
+
+
+$[^when (*is_objectv(v_html)
+ $[^assign (o_html *val_to_object(v_html)) !:comment "o_html := v_html"]
+ $[^objswitch (o_html
+ $[^when (newline
+  $[^out (o_strbuf *newline()) !:comment "emit-newline"]
+  ) !:comment "when newline"]
+ $[^when (nlsp
+  $[^out (o_strbuf *nlsp()) !:comment "emit-nl/sp"]
+  ) !:comment "when nlsp"]
+ $[^when (space
+  $[^out (o_strbuf *space()) !:comment "emit-space"]
+  ) !:comment "when space"]
+
+ $[^lockobj (o_html
+   $[^cond (
+   $[^when (*objectisinstance (o_html !html_element_object)
+   ) !:comment "when o_html is a html_element_object"]
+
+   $[^when (*objectisinstance (o_html !html_sequence_object)
+   ) !:comment "when o_html is a html_sequence_object"]
+   
+   ) !:comment "cond on o_html"]
+ ) !:comment "otherwise lock o_html ... in emit_html"]
+ 
+ ) !:comment "objswitch o_html ... in emit_html"]
+) !:comment "when v_html is an object... in emit_html"]
+
+
+$[^when (*isnode (v_html))
+ $[^assign (o_conn *nodeconn(v_html)) !:comment "o_conn := nodeconn(v_html)"]
+ /// should handle {buffer c_enc comment hexa  html_enc id int object octa raw_string sequence utf8_enc}
+ ]
+ $[^fail (*make_node (!failure_type_error !emit_html v_html o_emitctx o_strbuf *taggedint(i_depth)))
+  !:comment "else fail-typeerror emit_html v_html o_emitctx o_strbuf depth"]
+  
+) !:comment "cond on v_html in emit_html"]

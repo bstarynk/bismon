@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2459 objects
+// for 2464 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -1409,16 +1409,25 @@ _7gnMvoTqaQY_3kAwj2rwZEM
 !(_8IYFtn8osS2_4t1U3wyROLW |=emit_html|
 !~ name (~ emit_html
 ~)
-!@ 1547394657.309
+!@ 1547559639.536
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _0DmuWueFbx9_5bzv8xgw3fu _9nXRmTATjN4_5F9V7RvvgW0 _41F1rKwGbaA_30OJWKsqNWy _4nJKFtMqlkA_1teQSqofNux ]
+!: _1mxlOV9Konz_0KIuZw9m0PW |=see_connectives|
+ { _01h86SAfOfg_1q2oMegGRwW _0vgCFjXblkx_4zCMhMAWjVK _1lCz1IP7t5R_8NTFVv0tnOi _2EDrV58DM9y_5GXjoUigj3r 
+ _2P7OoZumXdx_5sUQ9SPbVwn _3QmxfIKpDVI_0C4Z01aFVxK _47qleKxWAvS_0wCCWm6gtfa 
+_4U5ZaR7UTwF_2LXJtkMOr6l 
+ _6xxbA8aTjZm_1sCJbVkU3Pm _7T9OwSFlgov_0wVJaK1eZbn _7WjaQkqwdaZ_6PRtbDrJHnf 
+_7YmEzAVe2hC_9iA0FVXAIqp }
 !: _24sSVIADeHm_0Sx34wQfG7W |=locals|
- { _0qTBOEAT5pa_2fz1SKfHrMV _0ZL8gaI6sH8_7UPhmAQcwMe _13K9OfeXRZR_84nyRTtoj81 _5GhvzWWP1jl_41tgAIAAa2X }
+ { _0qTBOEAT5pa_2fz1SKfHrMV _0ZL8gaI6sH8_7UPhmAQcwMe _13K9OfeXRZR_84nyRTtoj81 _5GhvzWWP1jl_41tgAIAAa2X 
+ _9GjmuXWAb93_7ZScgIdlvkf }
 !: _32eKNcTZ9HN_80t0nk47Mha |=numbers|
  { _2W7Ckt2WxEM_4NVYgEWE73B _6Y20GNUgnSZ_4LkbrcRMU8f _833x2jYqhZh_8vDIuJhwz1k }
 !: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3qw9bnATIhq_8loBraLeXzQ
+!: _7fsr4EmIq1w_7zFgb2U8Ggf |=see_objects|
+ { _2wGWzItVmrN_2CBwG6iHWFO _35gLacRFhq5_90zAPxiDIlh _7coI3Hezrvp_6CG1u3MlT83 }
 !: _7DQyvJFMOrC_9IfC3CtYknn |=body|
 _3DcbHfTP2te_8Zw8Uhy9eU6
 !)_8IYFtn8osS2_4t1U3wyROLW
@@ -4038,6 +4047,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_6Ef2ORO1Mni_0tpNoRQGmrW
+
+
+
+!(_9GjmuXWAb93_7ZScgIdlvkf |=o_html|
+!~ name (~ o_html
+~)
+!@ 1547554580.606
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_9GjmuXWAb93_7ZScgIdlvkf
 
 
 
@@ -8090,6 +8110,15 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_2EDrV58DM9y_5GXjoUigj3r |=raw_string|
+!~ name (~ raw_string
+~)
+!@ 1547559639.536
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_2EDrV58DM9y_5GXjoUigj3r
+
+
+
 !(_0ap8ZTtBsU9_6E2IyCg45Gu |=rawid|
 !~ name (~ rawid
 ~)
@@ -8346,6 +8375,24 @@ _8yXqsN7LuB3_0vODsT2M9Lh
 
 
 
+!(_1mxlOV9Konz_0KIuZw9m0PW |=see_connectives|
+!~ name (~ see_connectives
+~)
+!@ 1547559639.535
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_1mxlOV9Konz_0KIuZw9m0PW
+
+
+
+!(_7fsr4EmIq1w_7zFgb2U8Ggf |=see_objects|
+!~ name (~ see_objects
+~)
+!@ 1547559129.809
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_7fsr4EmIq1w_7zFgb2U8Ggf
+
+
+
 !(_5P2fpxElfqT_7NlO7H9TYGI |=send|
 !~ name (~ send
 ~)
@@ -8402,6 +8449,15 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the struct for sequence-like GC values, sets or tuples"
 !)_4mNIezUtVkz_1qg63n8juIs
+
+
+
+!(_47qleKxWAvS_0wCCWm6gtfa |=sequence|
+!~ name (~ sequence
+~)
+!@ 1547559639.536
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_47qleKxWAvS_0wCCWm6gtfa
 
 
 
