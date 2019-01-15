@@ -31,11 +31,14 @@ $[^when (*is_objectv(v_html)
  $[^lockobj (o_html
    $[^cond (
    $[^when (*objectisinstance (o_html !html_element_object)
+   /// emit_html_element 
    ) !:comment "when o_html is a html_element_object"]
 
    $[^when (*objectisinstance (o_html !html_sequence_object)
+   /// for each component, handle it...
    ) !:comment "when o_html is a html_sequence_object"]
-   
+
+   /// do we need some else clause here?
    ) !:comment "cond on o_html"]
  ) !:comment "otherwise lock o_html ... in emit_html"]
  
