@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2458 objects
+// for 2459 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -3586,6 +3586,23 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !@ 1546457027.471
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_7coI3Hezrvp_6CG1u3MlT83
+
+
+
+!(_5BGIsi5DNKq_1v1xxO0wrZs |=no_op|
+!~ name (~ no_op
+~)
+!@ 1547552847.631
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for no-op statements"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _5BGIsi5DNKq_1v1xxO0wrZs)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5BGIsi5DNKq_1v1xxO0wrZs  " "  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "*/")
+!)_5BGIsi5DNKq_1v1xxO0wrZs
 
 
 
