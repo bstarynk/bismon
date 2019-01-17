@@ -31,7 +31,7 @@ $[^when (*is_objectv(v_html)
  $[^lockobj (o_html
    $[^cond (
 
-   /// we need to introduce some html_empty_element_object
+   /// we need to introduce some html_void_element_object
    /// for HTML elements like <br /> or <hr />
 
    $[^when (*objectisinstance (o_html !html_element_object)
