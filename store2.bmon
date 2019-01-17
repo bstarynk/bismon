@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2465 objects
+// for 2467 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -2287,20 +2287,6 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
-!(_5ov2KpemmVg_0cMgvKrBTvJ |=html_void_element_object|
-!~ name (~ html_void_element_object
-~)
-!@ 1547705138.336
-!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "subclass for void HTML elements like <br/>"
-!~ class (~ |supercl html_element_object:| _7FvfalQCaxj_24GCf5CtIWh
-~)
-
-!)_5ov2KpemmVg_0cMgvKrBTvJ
-
-
-
 !(_3QmxfIKpDVI_0C4Z01aFVxK |=html_enc|
 !~ name (~ html_enc
 ~)
@@ -2346,6 +2332,20 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "selector: html_spacing < o_helem (o_emitctx"& " depth) giving a spacing e.g. space, nlsp,"& " newline"
 !)_84d7WOdRsJh_4Ud9BryxYUr
+
+
+
+!(_5ov2KpemmVg_0cMgvKrBTvJ |=html_void_element_object|
+!~ name (~ html_void_element_object
+~)
+!@ 1547705138.336
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "subclass for void HTML elements like <br/>"
+!~ class (~ |supercl html_element_object:| _7FvfalQCaxj_24GCf5CtIWh
+~)
+
+!)_5ov2KpemmVg_0cMgvKrBTvJ
 
 
 
@@ -6934,6 +6934,26 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_8ncu1EvHE8e_76KYZH7fNm9 |=objstrbufferispercentfullpayl|
+!~ name (~ objstrbufferispercentfullpayl
+~)
+!@ 1547733350.886
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test if string-buffer object o1 is more than i2 % full; or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _8ncu1EvHE8e_76KYZH7fNm9  ":*/("  "intptr_t"  ")" 
+  "objstrbufferispercentfullpayl_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E)  "),(" _0vgCFjXblkx_4zCMhMAWjVK 
+  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_8ncu1EvHE8e_76KYZH7fNm9
+
+
+
 !(_4pPn6kadKJQ_1jCihzWfHoO |=objstrbufferlengthpayl|
 !~ name (~ objstrbufferlengthpayl
 ~)
@@ -6967,6 +6987,25 @@ _0vgCFjXblkx_4zCMhMAWjVK
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3VySP3m8Taw_41uOTTofaZ6  ":*/"  "objstrbufferlessindentpayl_BM"  "(" 
   * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
 !)_3VySP3m8Taw_41uOTTofaZ6
+
+
+
+!(_2wSDMVzClDP_5OYUTosDo4c |=objstrbufferlimitpayl|
+!~ name (~ objstrbufferlimitpayl
+~)
+!@ 1547733217.317
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "limit, in bytes, of the stringbuffer object o1, or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2wSDMVzClDP_5OYUTosDo4c  ":*/("  "intptr_t"  ")" 
+  " "  "objstrbufferlimitpayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_2wSDMVzClDP_5OYUTosDo4c
 
 
 

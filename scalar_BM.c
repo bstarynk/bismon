@@ -673,6 +673,38 @@ objstrbufferlengthpayl_BM (const objectval_tyBM * obj)
   return sbuf->sbuf_curp - sbuf->sbuf_dbuf;
 }                               /* end objstrbufferlengthpayl_BM */
 
+unsigned
+objstrbufferlimitpayl_BM (const objectval_tyBM * obj)
+{
+  struct strbuffer_stBM *sbuf =
+    objgetstrbufferpayl_BM ((objectval_tyBM *) obj);
+  if (!sbuf)
+    return 0;
+  return sbuf->pA.rlen;
+}                               /* end of objstrbufferlimitpayl_BM */
+
+bool
+objstrbufferispercentfullpayl_BM (const objectval_tyBM * obj, int percentage)
+{
+  struct strbuffer_stBM *sbuf =
+    objgetstrbufferpayl_BM ((objectval_tyBM *) obj);
+  if (!sbuf)
+    return false;
+  if (percentage <= 0)
+    return false;
+  if (percentage > 100)
+    percentage = 100;
+  unsigned limit = sbuf->pA.rlen;
+  if (limit == 0)
+    return false;
+  ASSERT_BM (sbuf->sbuf_size < MAXSIZE_BM);
+  ASSERT_BM (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
+             && sbuf->sbuf_curp < sbuf->sbuf_dbuf + sbuf->sbuf_size);
+  unsigned len = sbuf->sbuf_curp - sbuf->sbuf_dbuf;
+  return (long) len *percentage + 2 * IDLEN_BM > (long) limit *100;
+}                               /* end of objstrbufferispercentfullpayl_BM */
+
+
 void
 objstrbufferclearindentpayl_BM (objectval_tyBM * obj)
 {
@@ -748,7 +780,8 @@ objstrbufferunsafeappendcstrpayl_BM (objectval_tyBM * obj, const char *cstr)
   sbuf->sbuf_curp += len;
   *sbuf->sbuf_curp = (char) 0;
   if (maxsiz > 0 && sbuf->sbuf_curp - sbuf->sbuf_dbuf > maxsiz)
-    FATAL_BM ("strbufferappendcstr overflow %ud", maxsiz);
+    FATAL_BM ("strbufferappendcstr overflow %ud for object buffer %s",
+              maxsiz, objectdbg_BM (obj));
 }                               /* end objstrbufferunsafeappendcstr_BM  */
 
 
@@ -758,6 +791,9 @@ objstrbufferappendcstrpayl_BM (objectval_tyBM * obj, const char *cstr)
   if (!objhasstrbufferpayl_BM (obj))
     return;
   if (!cstr || !cstr[0])
+    return;
+  struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (obj);
+  if (!sbuf)
     return;
   objstrbufferunsafeappendcstrpayl_BM (obj, cstr);
 }                               /* end objstrbufferappendcstr_BM */

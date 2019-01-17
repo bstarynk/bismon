@@ -542,8 +542,13 @@ extern void objstrbuffersetindentpayl_BM (objectval_tyBM * obj, int indent);
 extern void objstrbufferlessindentpayl_BM (objectval_tyBM * obj);
 extern void objstrbufferappendcstrpayl_BM (objectval_tyBM * obj,
                                            const char *cstr);
+extern bool objstrbufferispercentfullpayl_BM (const objectval_tyBM * obj,
+                                              int percentage);
 extern void objstrbufferresetpayl_BM (objectval_tyBM * obj);
 extern unsigned objstrbufferlengthpayl_BM (const objectval_tyBM * obj);
+extern unsigned objstrbufferlimitpayl_BM (const objectval_tyBM * obj);
+extern bool objstrbufferispercentfullpayl_BM (const objectval_tyBM * obj, int percentage);
+
 /// raw printf
 extern void objstrbufferrawprintfpayl_BM (objectval_tyBM * obj,
                                           const char *fmt, ...)
