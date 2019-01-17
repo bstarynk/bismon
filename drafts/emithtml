@@ -1,5 +1,6 @@
 // in body €_3DcbHfTP2t of emit_html function €_8IYFtn8, after the debug start
 
+/// we really want to emit XHTML5 ; should also look into MathML & mathjax.org
 ,add _3DcbHfTP2te_8Zw8Uhy9eU6 $[^cond (
 
 $[^when (*is_stringv (v_html)
