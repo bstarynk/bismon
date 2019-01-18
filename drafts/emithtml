@@ -35,6 +35,10 @@ $[^when (*is_objectv(v_html)
    /// we need to introduce some html_void_element_object
    /// for HTML elements like <br /> or <hr />
 
+   $[^when (*objectisinstance (o_html !html_void_element_object)
+   /// emit_void_html_element 
+   ) !:comment "when o_html is a html_void_element_object"]
+   
    $[^when (*objectisinstance (o_html !html_element_object)
    /// emit_html_element 
    ) !:comment "when o_html is a html_element_object"]
