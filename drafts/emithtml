@@ -1,4 +1,4 @@
-// in body €_3DcbHfTP2t of emit_html function €_8IYFtn8, after the debug start
+// in body €_3DcbHfTP2t of emit_xhtml function €_8IYFtn8, after the debug start
 
 /// we really want to emit XHTML5 ; should also look into MathML & mathjax.org
 ,add _3DcbHfTP2te_8Zw8Uhy9eU6 $[^cond (
@@ -40,7 +40,7 @@ $[^when (*is_objectv(v_html)
    ) !:comment "when o_html is a html_void_element_object"]
    
    $[^when (*objectisinstance (o_html !html_element_object)
-   /// emit_html_element 
+   /// emit_xhtml_element 
    ) !:comment "when o_html is a html_element_object"]
 
    $[^when (*objectisinstance (o_html !html_sequence_object)
@@ -49,17 +49,17 @@ $[^when (*is_objectv(v_html)
 
    /// do we need some else clause here?
    ) !:comment "cond on o_html"]
- ) !:comment "otherwise lock o_html ... in emit_html"]
+ ) !:comment "otherwise lock o_html ... in emit_xhtml"]
  
- ) !:comment "objswitch o_html ... in emit_html"]
-) !:comment "when v_html is an object... in emit_html"]
+ ) !:comment "objswitch o_html ... in emit_xhtml"]
+) !:comment "when v_html is an object... in emit_xhtml"]
 
 
 $[^when (*isnode (v_html))
  $[^assign (o_conn *nodeconn(v_html)) !:comment "o_conn := nodeconn(v_html)"]
  /// should handle {buffer c_enc comment hexa  html_enc id int object octa raw_string sequence utf8_enc}
  ]
- $[^fail (*make_node (!failure_type_error !emit_html v_html o_emitctx o_strbuf *taggedint(i_depth)))
-  !:comment "else fail-typeerror emit_html v_html o_emitctx o_strbuf depth"]
+ $[^fail (*make_node (!failure_type_error !emit_xhtml v_html o_emitctx o_strbuf *taggedint(i_depth)))
+  !:comment "else fail-typeerror emit_xhtml v_html o_emitctx o_strbuf depth"]
   
-) !:comment "cond on v_html in emit_html"]
+) !:comment "cond on v_html in emit_xhtml"]
