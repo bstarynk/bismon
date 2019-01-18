@@ -24,15 +24,17 @@ handle any denial-of-service attack. The network administrator running
 \texttt{iptables}, HTTP proxying, etc ...) to avoid them. The browsers
 instances interacting with \emph{bismon} are few (only a dozen of
 people in some IoT development team, and each uses his/her graphical
-browser - a recent Firefox or Chrome). They are physically and
-geographically located on the same local area network as the machine
-running the \emph{bismon} monitor. So, from web technologies
-perspective, \emph{bismon} is making different
-trade-offs~\footnote{For example, we could accept making some HTTP
-  exchange - e.g. with AJAX - on \emph{every} keystroke on the
-  keyboard, but such practice won't be acceptable in usual web
-  services. Also, we don't care much about minimizing the HTTP
-  exchanges - no ``minification'' needed in practice!} than
+browser - a \emph{recent} Firefox or Chrome~\footnote{So no particular
+  effort is even taken to support a variety of old browsers: we don't
+  have any code to e.g. support Internet Explorer pecularities or
+  deficiencies.}). They are physically and geographically located on
+the same local area network as the machine running the \emph{bismon}
+monitor. So, from web technologies perspective, \emph{bismon} is
+making different trade-offs~\footnote{For example, we could accept
+  making some HTTP exchange - e.g. with AJAX - on \emph{every}
+  keystroke on the keyboard, but such practice won't be acceptable in
+  usual web services. Also, we don't care much about minimizing the
+  HTTP exchanges - no ``minification'' needed in practice!} than
 ``traditional'' web servers.
 
 The web interface uses objects: each HTTP request either corresponds
@@ -40,7 +42,7 @@ to a ``static'' file path under \texttt{webroot/} or is handled
 dynamically. For a static file path, that file is served directly by
 \texttt{onion\_handler\_export\_local\_new} with a
 \texttt{Content-Type} corresponding to its suffix; for example an HTTP
-\texttt{GET} request of \textt{favicon.ico} is answered with the
+\texttt{GET} request of \texttt{favicon.ico} is answered with the
 content of \texttt{webroot/favicon.ico} file, and an \texttt{GET}
 request of \texttt{jscript/jquery.js} is served by the content of
 \texttt{webroot/jscript/favicon.ico}. Care is taken~\footnote{In
