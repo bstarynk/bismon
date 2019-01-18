@@ -361,15 +361,15 @@ the scan queue is empty, GC is finished.
 \label{subsec:persistence}
 
 \index{persistence}{\emph{Persistence}} is an essential feature of the
-\emph{Bismon monitor}. It always starts by loading some previous
-persisted \index{state}{state}, and usually dumps its current state
-before termination. On the next run, that new state is loaded, etc....
-For convenience and portability, \emph{the persistent state is a set
-  of textual files}~\footnote{A gross analogy is the textual dump of
-  some SQL database. That dump is the only way to reliably recover the
-  database, so it should be done frequently and the backed-up
-  \texttt{database.sql} textual dump can be a large file of many
-  gigabytes.}.
+\emph{Bismon monitor}. \index{load} It always starts by loading some
+previous persisted \index{state}{state}, and usually dumps
+\index{dump} its current state before termination. On the next run,
+that new state is loaded, etc....  For convenience and portability,
+\emph{the persistent state is a set of textual files}~\footnote{A
+  gross analogy is the textual dump of some SQL database. That dump is
+  the only way to reliably recover the database, so it should be done
+  frequently and the backed-up \texttt{database.sql} textual dump can
+  be a large file of many gigabytes.}.
 
 In the Internet world, persistence is generally handled \emph{outside}
 of the application, by using \index{database} databases. These
