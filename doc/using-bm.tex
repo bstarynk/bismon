@@ -2,11 +2,52 @@
 \section{Using \emph{Bismon}}
 \label{sec:using}
 
-This section §\ref{sec:using} should become somehow a user manual, and will be written for the final D1.3\textsuperscript{v2}.
+This section §\ref{sec:using} should become somehow a user manual, and
+will be written for the final D1.3\textsuperscript{v2}. It is both for
+the ordinary IoT developer just using \emph{bismon} for static
+analysis of IoT source code, and for the static analysis expert
+configuring and programming it.
 
 Most of that should be generated from data persisted inside \emph{bismon}. Perhaps
 should be exchanged with the ``static analysis'' chapter
 (§\ref{sec:staticanalys}).
+
+
+\subsection{Web interface internal design}
+\label{subsec:webinterf}
+
+The Web interface of \emph{bismon} is supposed to be used without
+malice (see §\ref{subsubsec:leveraging-static-analysis} and
+§\ref{subsubsec:about-bismon}). In particular, \emph{bismon} does not
+handle any denial-of-service attack. The network administrator running
+\emph{bismon} is expected to deploy relevant techniques (firewalls,
+\texttt{iptables}, HTTP proxying, etc ...) to avoid them. The browsers
+instances interacting with \emph{bismon} are few (only a dozen of
+people in some IoT development team, and each uses his/her graphical
+browser - a recent Firefox or Chrome). They are physically and
+geographically located on the same local area network as the machine
+running the \emph{bismon} monitor. So, from web technologies
+perspective, \emph{bismon} is making different
+trade-offs~\footnote{For example, we could accept making some HTTP
+  exchange - e.g. with AJAX - on \emph{every} keystroke on the
+  keyboard, but such practice won't be acceptable in usual web
+  services. Also, we don't care much about minimizing the HTTP
+  exchanges - no ``minification'' needed in practice!} than
+``traditional'' web servers.
+
+The web interface uses objects: each HTTP request either corresponds
+to a ``static'' file path under \texttt{webroot/} or is handled
+dynamically. For a static file path, that file is served directly by
+\texttt{onion\_handler\_export\_local\_new} with a
+\texttt{Content-Type} corresponding to its suffix; for example an HTTP
+\texttt{GET} request of \textt{favicon.ico} is answered with the
+content of \texttt{webroot/favicon.ico} file, and an \texttt{GET}
+request of \texttt{jscript/jquery.js} is served by the content of
+\texttt{webroot/jscript/favicon.ico}. Care is taken~\footnote{In
+  particular, any HTTP request containing \texttt{..} is rejected.} to
+avoid serving any static file outside of \texttt{webroot/}. So the
+\texttt{webroot/} directory contains static content such as images,
+external JavaScript libraries, CSS stylesheets, etc...
 
 %\bigskip
 
