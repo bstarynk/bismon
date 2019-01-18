@@ -143,8 +143,8 @@ generated code), but some few code is in C++14.
 
 On Debian/Unstable or recent Ubuntu, `apt-get install build-essential
 make ninja-build gcc-8 g++-8 gcc-8-plugin-dev libgccjit-8-dev ccache
-gcc-8-mipsel-linux-gnu` for the building infrastructure (the MIPS
-cross-compiler is needed for the documentation).
+gcc-8-mipsel-linux-gnu inkscape hevea` for the building infrastructure (the MIPS
+cross-compiler, `inkscape`, `hevea` are needed for the documentation).
 
 
 
