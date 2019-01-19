@@ -28,30 +28,32 @@ to be used without malice (see
 §\ref{subsubsec:leveraging-static-analysis} and
 §\ref{subsubsec:about-bismon}), with a recent graphical web browser
 using HTTP/1.1. In particular, \emph{bismon} does not take any measure
-against  \index{denial-of-service} denial-of-service attacks. The
-network administrator running \emph{bismon} could deploy
-usual relevant techniques (firewalls, \texttt{iptables}, HTTP
-proxying, DMZ, etc ...) to avoid them. The browsers instances
-interacting with \emph{bismon} are few (only a dozen of people in some
-IoT development team, and each uses his/her graphical browser - a
-\emph{recent} Firefox or Chrome~\footnote{So no particular effort is
-  even taken to support a variety of old browsers: we don't have any
-  code to e.g. support Internet Explorer pecularities or
-  deficiencies.}). They are physically and geographically located on
-the same local area network as the machine running the \emph{bismon}
-monitor. So, from web technologies perspective, \emph{bismon} is
-making different trade-offs~\footnote{For example, we could accept
-  making some HTTP exchange - e.g. with AJAX - on \emph{every}
-  keystroke on the keyboard, but such practice won't be acceptable in
-  usual web services. Also, we don't care much about minimizing the
-  HTTP exchanges - no ``minification'' needed in practice!} than
+against \index{denial-of-service} denial-of-service attacks, since it
+is supposed to be used on a trusted and friendly corporate intranet or
+local area network, not directly on the wild Internet. The network
+administrator running \emph{bismon} could deploy usual relevant
+techniques (firewalls, \texttt{iptables}, HTTP proxying, DMZ, etc ...)
+to avoid such attacks. The browsers instances interacting with
+\emph{bismon} are few (only a dozen of people in some IoT development
+team, and each uses his/her graphical browser - a \emph{recent}
+Firefox or Chrome~\footnote{So no particular effort is even taken to
+  support a variety of old browsers: we don't have any code to
+  e.g. support Internet Explorer pecularities or deficiencies.}). They
+are physically and geographically located on the same local area
+network as the machine running the \emph{bismon} monitor. So, from web
+technologies perspective, \emph{bismon} is making different
+trade-offs~\footnote{For example, we could accept making some HTTP
+  exchange - e.g. with AJAX - on \emph{every} keystroke on the
+  keyboard, but such practice won't be acceptable in usual web
+  services. Also, we don't care much about minimizing the HTTP
+  exchanges - no ``minification'' needed in practice!} than
 ``traditional'' web servers or web applications : the web browser
 $\leftrightarrow$ \emph{bismon} web server round-trip transmission
 time is supposed to be very small so frequent AJAX requests are
 possible, the bandwidth is expected to be quite large so voluminous
 HTTP responses are acceptable, the number of simultaneous web
-connections or of web sessions is tiny. Therefore most web optimizations
-are practically unneeded.
+connections or of web sessions is tiny. Therefore most web
+optimizations are practically unneeded.
 
 Each HTTP request \index{request} \index{web request} either
 corresponds to a ``static'' file path under \texttt{webroot/} (for a
@@ -164,19 +166,24 @@ more regular and easier to generate than with plain HTML5.
 The \texttt{webxhtml\_module} \index{module!\texttt{webxhtml\_module}}
 in \emph{bismon} has code to ease the emission of XHTML5. And XHTML5
 fragments are emitted by the \texttt{emit\_xhtml} routine
-object. That \texttt{emit\_xhtml}, which get as arguments:
-  the value \texttt{v\_html} to emit; an arbitrary web context object
-  \texttt{o\_emitctx} which might be in simple cases just some web
-  session object; a string buffer object \texttt{o\_strbuf} which is
-  often the web exchange object; the tagged integer recursion depth
-  \texttt{v\_depth} (which is in general \emph{not} the emitted
-  indentation). When the string buffer is too full or the recursion
-  depth is too deep, that \texttt{emit\_xhtml} fails. When the emitted
-  HTML-reifying value \texttt{v\_html} is nil, nothing happens. When
-  it is a scalar, it is emitted trivially: a string is emitted
-  HTML-encoded (so \texttt{\&lt;} for \texttt{<}, etc...); a tagged
-  integer is emitted in decimal notation; When \texttt{v\_html} is an
-  object, it is emitted per the following rules:
+object~\footnote{So that \texttt{emit\_xhtml} is, like PHP, a
+  machinery to emit arbitrary XHTML. However, we want to avoid
+  thinking -like PHP was originally designed- in terms of emitting a
+  stream of characters, and \texttt{emit\_xhtml} is supposed to emit
+  structured XHTML from some structured, tree-like, internal
+  representation.}. That \texttt{emit\_xhtml}, which get as arguments:
+the value \texttt{v\_html} to emit; an arbitrary web context object
+\texttt{o\_emitctx} which might be in simple cases just some web
+session object; a string buffer object \texttt{o\_strbuf} which is
+often the web exchange object; the tagged integer recursion depth
+\texttt{v\_depth} (which is in general \emph{not} the emitted
+indentation). When the string buffer is too full or the recursion
+depth is too deep, that \texttt{emit\_xhtml} fails. When the emitted
+HTML-reifying value \texttt{v\_html} is nil, nothing happens. When it
+is a scalar, it is emitted trivially: a string is emitted HTML-encoded
+(so \texttt{\&lt;} for \texttt{<}, etc...); a tagged integer is
+emitted in decimal notation; When \texttt{v\_html} is an object, it is
+emitted per the following rules:
 
 \begin{itemize}
 \item the \texttt{newline} object emits an indented newline.
@@ -191,6 +198,24 @@ object. That \texttt{emit\_xhtml}, which get as arguments:
 \item instances of \texttt{html\_sequence\_object} emit
       recursively their components but without surrounding tags.
 \item any other object is emitted by its name, if it has some, or by
-  its objid. This is mostly intended to represent common names or
+  its objid. This is mostly intended to represent common repeated names or
   words by a single and shared object.
 \end{itemize}
+
+When  \texttt{v\_html} is a node of connective $\omega_{html}$, it is emitted per the following rules:
+
+\begin{itemize}
+
+\item if $\omega_{html}$ is one of \texttt{int}, \texttt{hexa},
+  \texttt{octa} and \texttt{v\_html} is an unary node with a integer
+  son $n$, that integer $n$ is emitted in decimal, hexadecimal, octal respectively.
+  
+\item {\color{red}{@@ to be completed a lot.}}
+  
+\end{itemize}
+
+
+When \texttt{v\_html} is a closure, it is applied {\color{red}{@@ to
+    be completed}} and the result of that application is recursively
+emitted. When \texttt{v\_html} is a sequence (set or tuple), its
+components are emitted recursively.
