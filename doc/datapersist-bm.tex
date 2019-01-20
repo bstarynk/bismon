@@ -133,9 +133,9 @@ them at a given instant).
     the \index{objid}{\textbf{objid}}, randomly generated at object
     creation time and never changed after. In many occasions, that
     objid is printed as 24 characters {\small (two glued blocks of 12
-    characters each, the first being an underscore \texttt{\_}, the
-    second being a digit, the 10 others being alphanumerical with
-    significant case)} such as
+      characters each, the first being an underscore \texttt{\_}, the
+      second being a digit, the 10 others being alphanumerical with
+      significant case)} such as
     \texttt{\_4ggW2XwfXdp\_1XRSvOvZqTC}~\footnote{That objid
       \texttt{\_4ggW2XwfXdp\_1XRSvOvZqTC} is for the predefined object
       \emph{\texttt{the\_system}}, and corresponds to the two 64 bits
@@ -147,16 +147,20 @@ them at a given instant).
     distant computers) would in fact never generate the same objid. In
     other words, our objids are as unique as \index{UUID}{UUID}s (from
     \href{https://tools.ietf.org/html/rfc4122}{RFC 4122}) are (but are
-    displayed differently, without hyphens). The concrete textual
-    ``syntax'' for objid-s (starting with an underscore then a digit,
-    etc...) is carefully chosen to be compatible and friendly with
-    identifiers in C, C++, JavaScript, Ocaml, etc. The \emph{Bismon}
-    runtime maintains a large array of hashtables and mutexes to be
-    able to quickly find the object pointer of a given objid (if such
-    an object exists in memory). The objid is used to compare (and
-    sort) objects. The (32 bits, non-zero) hash code of an object is
-    obtained from its objid (but it is cached in the object's memory,
-    for performance reasons).
+    displayed differently, without hyphens). In practice, the first 5
+    or a few more characters of an objid are enough to uniquely
+    identify it, and we use the \index{€ objid abbreviation} € objid
+    abbreviation~\footnote{This € objid abbreviation is for documentation purposes; it is not acceptable in persistent store files.}, e.g. \texttt{€\_4ggW2XwfX} - an abbreviation for
+    \texttt{\_4ggW2XwfXdp\_1XRSvOvZqTC} - to uniquely identify it. The
+    concrete textual ``syntax'' for objid-s (starting with an
+    underscore then a digit, etc...) is carefully chosen to be
+    compatible and friendly with identifiers in C, C++, JavaScript,
+    Ocaml, etc. The \emph{Bismon} runtime maintains a large array of
+    hashtables and mutexes to be able to quickly find the object
+    pointer of a given objid (if such an object exists in memory). The
+    objid is used to compare (and sort) objects. The (32 bits,
+    non-zero) hash code of an object is obtained from its objid (but
+    it is cached in the object's memory, for performance reasons).
 
     \item the recursive \textbf{mutex lock} of that object~\footnote{We
       have considered using a pthread \texttt{rwlock} instead of a

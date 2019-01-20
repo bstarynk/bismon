@@ -96,18 +96,26 @@ contributor in \emph{bismon} parlance,
 cf. §\ref{subsubsec:bismon-evolving}) is not logged in.
 
 Dynamic requests are reified as very temporary \emph{bismon} objects
-of class \texttt{webexchange\_object}. Their payload contains not only
-a string buffer, to be filled with the HTTP response content, but also
-mentions the web request (as processed by \texttt{libonion}) and the
-web session object computed from the \texttt{BISMONCOOKIE} and may
-contain some arbitrary data value. That web session object is created
-at web login time and is of class \texttt{websession\_object}. It
-knows the contributor who is logged in, the expiration time of the
-session, some session data (an arbitrary \emph{bismon} value), and the
-web socket \index{web socket} connection (if any) to the browser using
-that session. An inactive web session expires in about an
-hour~\footnote{See the \texttt{USER\_WEBSESSION\_EXPIRATION\_DELAY}
-  constant in \texttt{web\_ONIONBM.c}}.
+of class \texttt{webexchange\_object}. Their \emph{web exchange}
+payload contains not only a string buffer~\footnote{Since a string
+  buffer should contain valid UTF-8 string content without nul bytes,
+  this restriction forbids binary contents in HTTP replies to dynamic
+  requests. Hence, dynamically computed image contents are not
+  possible, unless they use a textual format like SVG.}, to be filled
+with the HTTP response content, but also mentions the web request (as
+processed by \texttt{libonion}) and the web session object computed
+from the \texttt{BISMONCOOKIE} and may contain some arbitrary data
+value. The web exchange object is supposed to be filled -like string
+buffers are- and at last given some integer HTTP status and
+immediately sent back to the browser.  Their web session object is
+created at web login time and is of class
+\texttt{websession\_object}. It knows the contributor who is logged
+in, the expiration time of the session, some session data (an
+arbitrary \emph{bismon} value), and the web socket \index{web socket}
+connection (if any) to the browser using that session. An inactive web
+session expires in about an hour~\footnote{See the
+  \texttt{USER\_WEBSESSION\_EXPIRATION\_DELAY} constant in
+  \texttt{web\_ONIONBM.c}}.
 
 Of course, web request objects or web session objects are
 \index{transient} transient and are not and should not be persisted at
@@ -121,7 +129,7 @@ should be answered in a couple~\footnote{See the
   \texttt{web\_ONIONBM.c} ...} of seconds; otherwise a \index{web
   timeout} web timeout \index{timeout!web} occurs. That web handler
 \index{web handler} closure is applied to the remaining URL path
-string and to the web exchange object in the
+string and to the web exchange object created in the
 \texttt{libonion}-specific thread dealing with the HTTP request, so
 outside of the agenda machinery (cf §\ref{subsec:multithreadist}), and
 usually would add some \index{tasklet} tasklet into the \index{agenda}
@@ -143,14 +151,15 @@ handling dynamic requests for them is given by the
   applied to the suffix string \texttt{"status"} and to the web
   exchange object $\omega$ created for that HTTP request. The result
   of that application is ignored, only side effects -often adding some
-  tasklets into the agenda, etc...- are useful.}  predefined
-object. If no web handler closure is found, an \texttt{404 Not found}
-status is returned. The \texttt{the\_web\_sessions} predefined object
-stores the dictionnary of transient web session objects and associates
-a cookie string to its web session object. That dictionnary is
-forcibly cleared at start of the web server inside \emph{bismon},
-but it should be loaded empty, since web session objects are created
-and should remain transient.
+  tasklets into the agenda, and/or filling the web exchange object
+  with some XHTML5, etc...- are useful.}  predefined object. If no web
+handler closure is found, an \texttt{404 Not found} status is
+returned. The \texttt{the\_web\_sessions} predefined object stores the
+dictionnary of transient web session objects and associates a cookie
+string to its web session object. That dictionnary is forcibly cleared
+at start of the web server inside \emph{bismon}, but it should be
+loaded empty, since web session objects are created and should remain
+transient.
 
 In practice, dynamic requests are usually generating the HTML5
 \index{HTML5} content very dynamically. For generated HTML, it is much
@@ -180,25 +189,35 @@ often the web exchange object; the tagged integer recursion depth
 \texttt{v\_depth}, which is in general \emph{not}~\footnote{In very
   simple cases, without closures or sequences in the DAG of emitted
   values, the depth could be the depth of XHTML elements, so could be
-  the indentation. In general, it is not.}} the emitted
+  the indentation. In general, it is not.} the emitted
   indentation. When the string buffer is too full or the recursion
   depth is too deep, that \texttt{emit\_xhtml} fails. When the emitted
   HTML-reifying value \texttt{v\_html} is nil, nothing happens. When
   it is a scalar, it is emitted trivially: a string is emitted
   HTML-encoded (so \texttt{\&lt;} for \texttt{<}, etc...); a tagged
   integer is emitted in decimal notation; When \texttt{v\_html} is an
-  object, it is emitted per the following rules:
+  object $\omega_{html}$, it is emitted per the following rules:
 
 \begin{itemize}
 \item the \texttt{newline} object emits an indented newline.
 \item the \texttt{nlsp} object emits a newline when the current line is long enough, or else a space.
 \item the \texttt{space} object emits a space character.
-\item instances of \texttt{html\_void\_element\_object} emit some void XHTML5 element like e.g. \texttt{<hr />}.
+\item instances of \texttt{html\_void\_element\_object} emit some void
+  element like e.g. \texttt{<hr class='foo'/>} using the
+  \texttt{€\_0FRLxSGQlZ} routine. The \texttt{emit\_xhtml\_open}
+  selector should emit -as a side effect- the opening tag \texttt{<hr
+    class='foo'} without the ending \texttt{/>}.
 \item instances of \texttt{html\_element\_object} emit recursively
-    some nested XHTML element starting with a start tag like
-    \texttt{<div} but ending with an end tag like \texttt{</div>}; the
-    components of that objects are emitted recursively (with an
-    incremented recursion depth).
+  using \texttt{€\_5NH940lCHYJ} some nested XHTML element starting
+  with a start tag like \texttt{<div} but ending with an end tag like
+  \texttt{</div>}; the components of that objects are emitted
+  recursively (with an incremented recursion depth). The spacing style
+  is first determined by sending \texttt{html\_spacing} with the
+  \texttt{o\_emitctx} and the depth. It can be \texttt{newline} for
+  indented, newline separated, content; or \texttt{nlsp} for space or
+  newline separated, unindented content; or \texttt{space} for space
+  separated content; any other spacing style -notably nil- don't emit
+  any separators in the content.
 \item instances of \texttt{html\_sequence\_object} emit
       recursively their components but without surrounding tags.
 \item any other object is emitted by its name, if it has some, or by
@@ -206,11 +225,11 @@ often the web exchange object; the tagged integer recursion depth
   words by a single and shared object.
 \end{itemize}
 
-When  \texttt{v\_html} is a node of connective $\omega_{html}$, it is emitted per the following rules:
+When  \texttt{v\_html} is a node of connective $\omega_{conn}$, it is emitted per the following rules:
 
 \begin{itemize}
 
-\item if $\omega_{html}$ is one of \texttt{int}, \texttt{hexa},
+\item if $\omega_{conn}$ is one of \texttt{int}, \texttt{hexa},
   \texttt{octa} and \texttt{v\_html} is an unary node with a integer
   son $n$, that integer $n$ is emitted in decimal, hexadecimal, octal respectively.
   
