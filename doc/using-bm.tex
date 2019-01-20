@@ -171,19 +171,23 @@ object~\footnote{So that \texttt{emit\_xhtml} is, like PHP, a
   thinking -like PHP was originally designed- in terms of emitting a
   stream of characters, and \texttt{emit\_xhtml} is supposed to emit
   structured XHTML from some structured, tree-like, internal
-  representation.}. That \texttt{emit\_xhtml}, which get as arguments:
+  representation. That internal representation is a DAG (directed
+  acyclic graph).}. That \texttt{emit\_xhtml}, which get as arguments:
 the value \texttt{v\_html} to emit; an arbitrary web context object
 \texttt{o\_emitctx} which might be in simple cases just some web
 session object; a string buffer object \texttt{o\_strbuf} which is
 often the web exchange object; the tagged integer recursion depth
-\texttt{v\_depth} (which is in general \emph{not} the emitted
-indentation). When the string buffer is too full or the recursion
-depth is too deep, that \texttt{emit\_xhtml} fails. When the emitted
-HTML-reifying value \texttt{v\_html} is nil, nothing happens. When it
-is a scalar, it is emitted trivially: a string is emitted HTML-encoded
-(so \texttt{\&lt;} for \texttt{<}, etc...); a tagged integer is
-emitted in decimal notation; When \texttt{v\_html} is an object, it is
-emitted per the following rules:
+\texttt{v\_depth}, which is in general \emph{not}~\footnote{In very
+  simple cases, without closures or sequences in the DAG of emitted
+  values, the depth could be the depth of XHTML elements, so could be
+  the indentation. In general, it is not.}} the emitted
+  indentation. When the string buffer is too full or the recursion
+  depth is too deep, that \texttt{emit\_xhtml} fails. When the emitted
+  HTML-reifying value \texttt{v\_html} is nil, nothing happens. When
+  it is a scalar, it is emitted trivially: a string is emitted
+  HTML-encoded (so \texttt{\&lt;} for \texttt{<}, etc...); a tagged
+  integer is emitted in decimal notation; When \texttt{v\_html} is an
+  object, it is emitted per the following rules:
 
 \begin{itemize}
 \item the \texttt{newline} object emits an indented newline.
@@ -219,3 +223,9 @@ When \texttt{v\_html} is a closure, it is applied {\color{red}{@@ to
     be completed}} and the result of that application is recursively
 emitted. When \texttt{v\_html} is a sequence (set or tuple), its
 components are emitted recursively.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Local Variables: ;;
+%% compile-command: "cd ..; ./build-bismon-doc.sh" ;;
+%% End: ;;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
