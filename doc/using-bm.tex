@@ -206,7 +206,7 @@ often the web exchange object; the tagged integer recursion depth
   element like e.g. \texttt{<hr class='foo'/>} using the
   \texttt{€\_0FRLxSGQlZ} routine. The \texttt{emit\_xhtml\_open}
   selector should emit -as a side effect- the opening tag \texttt{<hr
-    class='foo'} without the ending \texttt{/>}. {\color{red}{@@ perhaps \texttt{emit\_xhtml\_open} should return the name of the tag, e.g. \texttt{hr} in this example? If yes, how? @@}}
+    class='foo'} without the ending \texttt{/>}, and returns the string naming the tag, e.g. \texttt{"hr"}. 
 \item instances of \texttt{html\_element\_object} emit recursively
   using \texttt{€\_5NH940lCHYJ} some nested XHTML element starting
   with a start tag like \texttt{<div} but ending with an end tag like
