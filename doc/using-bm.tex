@@ -33,20 +33,23 @@ is supposed to be used on a trusted and friendly corporate intranet or
 local area network, not directly on the wild Internet. The network
 administrator running \emph{bismon} could deploy usual relevant
 techniques (firewalls, \texttt{iptables}, HTTP proxying, DMZ, etc ...)
-to avoid such attacks. The browsers instances interacting with
-\emph{bismon} are few (only a dozen of people in some IoT development
-team, and each uses his/her graphical browser - a \emph{recent}
-Firefox or Chrome~\footnote{So no particular effort is even taken to
-  support a variety of old browsers: we don't have any code to
-  e.g. support Internet Explorer pecularities or deficiencies.}). They
-are physically and geographically located on the same local area
-network as the machine running the \emph{bismon} monitor. So, from web
-technologies perspective, \emph{bismon} is making different
-trade-offs~\footnote{For example, we could accept making some HTTP
-  exchange - e.g. with AJAX - on \emph{every} keystroke on the
-  keyboard, but such practice won't be acceptable in usual web
-  services. Also, we don't care much about minimizing the HTTP
-  exchanges - no ``minification'' needed in practice!} than
+to avoid such attacks. In practice, there are few web browsers - so
+few HTTP clients - interacting with \emph{bismon} simultaneously :
+only a dozen of people in some IoT development team, and each uses
+his/her graphical browser - a \emph{recent} Firefox or
+Chrome~\footnote{So no particular effort is even taken to support a
+  variety of old browsers: we don't have any code to e.g. support
+  Internet Explorer pecularities or deficiencies. Likewise,
+  scalability to thousands of simultaneous HTTP connections is out of
+  scope in \emph{bismon}, but it is essential in most web
+  applications.}. They are physically and geographically located on
+the same local area network as the machine running the \emph{bismon}
+monitor. So, from web technologies perspective, \emph{bismon} is
+making different trade-offs~\footnote{For example, we could accept
+  making some HTTP exchange - e.g. with AJAX - on \emph{every}
+  keystroke on the keyboard, but such practice won't be acceptable in
+  usual web services. Also, we don't care much about minimizing the
+  HTTP exchanges - no ``minification'' needed in practice!} than
 ``traditional'' web servers or web applications : the web browser
 $\leftrightarrow$ \emph{bismon} web server round-trip transmission
 time is supposed to be very small so frequent AJAX requests are
