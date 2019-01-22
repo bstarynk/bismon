@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2473 objects
+// for 2472 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -1533,17 +1533,6 @@ _3DcbHfTP2te_8Zw8Uhy9eU6
 !@ 1547305752.250
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_64Nwpjx4gnk_2y263bTCaB3
-
-
-
-!(_22MieznSASY_8V0HbjohiyB |=emit_xhtml_open_block|
-!~ name (~ emit_xhtml_open_block
-~)
-!@ 1547231267.940
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "selector: emit_xhtml_open_block < o_block (o_emitctx o_strbuf depth)"
-!)_22MieznSASY_8V0HbjohiyB
 
 
 
@@ -25069,12 +25058,12 @@ _41F1rKwGbaA_30OJWKsqNWy
 
 
 !(_5xGV4qXFkqJ_4imeaugtTzv
-!@ 1547231745.839
+!@ 1548161970.722
 !$_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "fail-miss emit_xhtml_open_block o_helem o_emitctx depth"
+ "fail-miss emit_xhtml_open _helem o_emitctx depth"
 !: _085lT8c13Ik_11pcWJfcLeM |=fail|
- * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _52XwytpOPVl_3ZjmQCtadbK)  * _0e54seiZEXF_1Myf620cHoB ( _22MieznSASY_8V0HbjohiyB) _6Ef2ORO1Mni_0tpNoRQGmrW _9nXRmTATjN4_5F9V7RvvgW0 _41F1rKwGbaA_30OJWKsqNWy 
+ * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _52XwytpOPVl_3ZjmQCtadbK)  * _0e54seiZEXF_1Myf620cHoB ( _64Nwpjx4gnk_2y263bTCaB3) _6Ef2ORO1Mni_0tpNoRQGmrW _9nXRmTATjN4_5F9V7RvvgW0 _41F1rKwGbaA_30OJWKsqNWy 
   * _6FWWN47uih2_5BhwEm9gnHu ( _6Y20GNUgnSZ_4LkbrcRMU8f))
 !)_5xGV4qXFkqJ_4imeaugtTzv
 
