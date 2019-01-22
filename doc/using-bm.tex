@@ -220,9 +220,16 @@ often the web exchange object; the tagged integer recursion depth
   indented, newline separated, content; or \texttt{nlsp} for space or
   newline separated, unindented content; or \texttt{space} for space
   separated content; any other spacing style -notably nil- don't emit
-  any separators in the content. The start tag is emitted with \texttt{emit\_xhtml\_open} like before, then the components, then the end tag with \texttt{emit\_xhtml\_close}  {\color{red}{@@ not sure, not really needed if \texttt{emit\_xhtml\_open} is giving the tag name...@@}}
+  any separators in the content. The start tag is emitted with
+  \texttt{emit\_xhtml\_open} returning the tag string like before
+  (e.g. \texttt{"span"} for a \texttt{<span class='somecl'} emission,
+  then \texttt{>} is output to end the opening tag, then the
+  components, then the end tag is emitted, using the returned tag
+  string from \texttt{emit\_xhtml\_open}.
 \item instances of \texttt{html\_sequence\_object} emit
       recursively their components but without surrounding tags.
+\item instances of \texttt{html\_active\_object} emit recursively HTML
+  stuff thru a message of selector \texttt{emit\_xhtml} sent to them.
 \item any other object is emitted by its name, if it has some, or by
   its objid. This is mostly intended to represent common repeated names or
   words by a single and shared object.
@@ -236,7 +243,16 @@ When  \texttt{v\_html} is a node of connective $\omega_{conn}$, it is emitted pe
   \texttt{octa} and \texttt{v\_html} is an unary node with a integer
   son $n$, that integer $n$ is emitted in decimal, hexadecimal, octal respectively.
 
-\item if $\omega_{conn}$ is \texttt{id} and \texttt{v\_html} is an unary node with an object son $\omega_{son}$ its objid is emitted.
+\item if $\omega_{conn}$ is \texttt{id}~\footnote{So nodes of
+  connective \texttt{id}, \texttt{object} or \texttt{name} can be used
+  to emit objects of class \texttt{html\_void\_element\_object},
+  \texttt{html\_element\_object}, \texttt{html\_sequence\_object},
+  \texttt{html\_active\_object} which would be handled specially
+  otherwise.}  and \texttt{v\_html} is an unary node with an object
+  son $\omega_{son}$ its objid is emitted.
+\item if $\omega_{conn}$ is \texttt{buffer} and \texttt{v\_html} is an
+  unary node with an object son $\omega_{son}$ which has a string
+  buffer payload, that string is emitted HTML-encoded.
 \item if $\omega_{conn}$ is \texttt{object} and \texttt{v\_html} is an unary node with an object son $\omega_{son}$ its name or objid is emitted.
 \item if $\omega_{conn}$ is \texttt{name} and \texttt{v\_html} is an
   unary node with an object son $\omega_{son}$ its name is emitted,
@@ -245,10 +261,10 @@ When  \texttt{v\_html} is a node of connective $\omega_{conn}$, it is emitted pe
   binary node with an object first son $\omega_{son}$, and some arbirary non-nil second son $\epsilon$ its name is emitted,
   and when $\omega_{son}$ is not a named object, the $\epsilon$ is recursively emitted
 \item for any other object $\omega_{conn}$ as connective, we extract
-  its \texttt{open\_xhtml} and \texttt{close\_xhtml} attributes. Both
-  should be closures. We also extract its \texttt{spacing\_xhtml}
-  attribute. Then proceed like for \texttt{html\_element\_object}
-  using the sons as components... {\color{red}{@@ not sure @@}}.
+  its \texttt{open\_xhtml} attribute. The associated value should be a
+  closure. We also extract its \texttt{spacing\_xhtml} attribute. Then
+  proceed like for \texttt{html\_element\_object} using the sons as
+  components... {\color{red}{@@ not sure @@}}.
 \item {\color{red}{@@ to be completed a lot.}}
   
 \end{itemize}
@@ -258,6 +274,8 @@ When \texttt{v\_html} is a closure, it is applied {\color{red}{@@ to
     be completed}} and the result of that application is recursively
 emitted. When \texttt{v\_html} is a sequence (set or tuple), its
 components are emitted recursively.
+
+If no rule is applicable, \texttt{emit\_xhtml} fails.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Local Variables: ;;
