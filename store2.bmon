@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2472 objects
+// for 2471 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -1513,17 +1513,6 @@ _3DcbHfTP2te_8Zw8Uhy9eU6
 !@ 1547305762.473
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_9gZVGQz0y78_7TEf371aZqR
-
-
-
-!(_7VIzYG6992w_8eP3lveYdIk |=emit_xhtml_close_block|
-!~ name (~ emit_xhtml_close_block
-~)
-!@ 1547231291.174
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "selector: emit_xhtml_close_block < o_block (o_emitctx o_strbuf depth)"
-!)_7VIzYG6992w_8eP3lveYdIk
 
 
 
