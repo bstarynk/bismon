@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2473 objects
+// for 2476 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -10472,6 +10472,19 @@ _8c9otZ4pwR6_55k81qyyYV2 _2lCuMosXupr_5GAoqVgJ8PZ
 
 
 
+!(_07EuRmnWGXF_5vxo4maeUAi
+!@ 1548433182.005
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "when o_helem not a html_void_element_object /emit_xhtml_void_element"
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+ * _8CWn68WqI7f_4AnphIqCGOA (  * _9I3XFQWBXxW_4DFVKCqBc7k ( _6Ef2ORO1Mni_0tpNoRQGmrW  * _0e54seiZEXF_1Myf620cHoB ( _5ov2KpemmVg_0cMgvKrBTvJ)))
+!# 1
+!& _3EfvM2lT7h3_8fHXQsltxSG
+!)_07EuRmnWGXF_5vxo4maeUAi
+
+
+
 !(_07EJzYvQNwn_2ugilIxE5q3
 !@ 1546367189.777
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
@@ -20329,6 +20342,18 @@ _8O5DAuPguWF_8eEm6i2rd8x
 
 
 
+!(_3EfvM2lT7h3_8fHXQsltxSG
+!@ 1548433182.004
+!$_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "fail-badclass emitxhtml_void_element "
+!: _085lT8c13Ik_11pcWJfcLeM |=fail|
+ * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _4HgYLk6htvP_4Ac2FCPfQ1C)  * _0e54seiZEXF_1Myf620cHoB ( _0FRLxSGQlZ0_0qrrUZlEeKp) _6Ef2ORO1Mni_0tpNoRQGmrW _9nXRmTATjN4_5F9V7RvvgW0 _41F1rKwGbaA_30OJWKsqNWy 
+  * _6FWWN47uih2_5BhwEm9gnHu ( _6Y20GNUgnSZ_4LkbrcRMU8f))
+!)_3EfvM2lT7h3_8fHXQsltxSG
+
+
+
 !(_3EoeNMRpnqL_7axOMOBffnQ
 !@ 1546982764.487
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
@@ -23456,6 +23481,19 @@ _4JKd986pvM4_6yBzeeI40vW _5Lg7fb6zE3H_6ijQo6GbPN4)
 
 
 
+!(_4Wn7pRPmEIx_0mreF5MM3NE
+!@ 1548433182.005
+!$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "if o_helem not an html_void_element_object fail"
+!: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
+ 1
+!# 1
+!& _07EuRmnWGXF_5vxo4maeUAi
+!)_4Wn7pRPmEIx_0mreF5MM3NE
+
+
+
 !(_4WLSpdl7KlA_7HKN9l4ULP3
 !@ 1547999490.104
 !$_9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
@@ -24795,14 +24833,15 @@ _50H7io7f948_10VeJz49q3W
 
 
 !(_5sxQbo4ocBH_0O96nRSvJV9
-!@ 1548325557.541
+!@ 1548433182.005
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "lock o_helem ... /emitxhtml_void_element"
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _6Ef2ORO1Mni_0tpNoRQGmrW
-!# 1
+!# 2
 !& _0YZHo35OESp_4FkmqT9KTF1
+!& _4Wn7pRPmEIx_0mreF5MM3NE
 !)_5sxQbo4ocBH_0O96nRSvJV9
 
 
