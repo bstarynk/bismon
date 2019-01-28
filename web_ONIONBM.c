@@ -2383,7 +2383,7 @@ perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM *stkf)
 {
   ASSERT_BM (stkf != NULL);
   ASSERT_BM (stkf->stkfram_pA.htyp == typayl_StackFrame_BM);
-  DBGPRINTF_BM
+  NONPRINTF_BM
     ("perhaps_suspend_for_gc_onion_thread_stack_BM start tid#%ld elapsed %.3f s",
      (long) gettid_BM (), elapsedtime_BM ());
   pthread_mutex_lock (&onionstack_mtx_bm);
@@ -2393,13 +2393,16 @@ perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM *stkf)
   atomic_store (&curonionstackinfo_BM->ost_suspended, true);
   pthread_mutex_unlock (&onionstack_mtx_bm);
   pthread_cond_broadcast (&onionstack_condchange_bm);
+  long nbloops = 0;
   for (;;)
     {
       if (!agenda_need_gc_BM ())
         break;
-      DBGPRINTF_BM
-        ("perhaps_suspend_for_gc_onion_thread_stack need GC tid#%ld  elapsed %.3f s",
-         (long) gettid_BM (), elapsedtime_BM ());
+      nbloops++;
+      if (nbloops % 16 == 0)
+        DBGPRINTF_BM
+          ("perhaps_suspend_for_gc_onion_thread_stack need GC tid#%ld  elapsed %.3f s loop#%ld",
+           (long) gettid_BM (), elapsedtime_BM (), nbloops);
       agenda_wait_gc_BM ();
     }
   pthread_mutex_lock (&onionstack_mtx_bm);
@@ -2407,9 +2410,10 @@ perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM *stkf)
   atomic_store (&curonionstackinfo_BM->ost_suspended, false);
   pthread_mutex_unlock (&onionstack_mtx_bm);
   pthread_cond_broadcast (&onionstack_condchange_bm);
-  DBGPRINTF_BM
-    ("perhaps_suspend_for_gc_onion_thread_stack_BM end tid#%ld  elapsed %.3f s",
-     (long) gettid_BM (), elapsedtime_BM ());
+  if (nbloops > 0)
+    DBGPRINTF_BM
+    ("perhaps_suspend_for_gc_onion_thread_stack_BM end tid#%ld  elapsed %.3f s loops#%ld",
+     (long) gettid_BM (), elapsedtime_BM (), nbloops);
 }                               /* end perhaps_suspend_for_gc_onion_thread_stack_BM */
 
 
