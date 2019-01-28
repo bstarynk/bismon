@@ -357,7 +357,7 @@ valid_contributor_name_BM (const char *name, char **perrmsg)
 
 
 objectval_tyBM *
-find_contributor_BM (const char *str, struct stackframe_stBM * stkf)
+find_contributor_BM (const char *str, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * contribob;    //current contributor object
@@ -1482,7 +1482,7 @@ valid_password_BM (const char *passwd, char **perrmsg)
 bool
 check_contributor_password_BM (objectval_tyBM * contribobarg,
                                const char *passwd,
-                               struct stackframe_stBM * stkf)
+                               struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * contribob;    //current contributor object 

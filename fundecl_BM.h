@@ -22,7 +22,7 @@
 #ifndef FUNDECL_BM_INCLUDED
 #define FUNDECL_BM_INCLUDED
 
-extern void abort_BM (void) __attribute__ ((noreturn));
+extern void abort_BM (void) __attribute__((noreturn));
 static inline pid_t gettid_BM (void);
 
 extern int64_t prime_above_BM (int64_t n);
@@ -125,7 +125,7 @@ extern hash_tyBM stringhashlen_BM (const char *str, long len);
 extern const stringval_tyBM *makestring_BM (const char *str);
 extern const stringval_tyBM *makestringlen_BM (const char *str, long len);
 extern const stringval_tyBM *sprintfstring_BM (const char *fmt, ...)
-  __attribute__ ((format (printf, 1, 2)));
+  __attribute__((format (printf, 1, 2)));
 // stringify the strftime of localtime, of gmtime...
 extern const stringval_tyBM *flocaltimestring_BM (const char *fmt, time_t ti);
 extern const stringval_tyBM *fgmtimestring_BM (const char *fmt, time_t ti);
@@ -133,7 +133,7 @@ extern const stringval_tyBM *fgmtimestring_BM (const char *fmt, time_t ti);
 extern int lenstring_BM (const stringval_tyBM *);       // length in bytes
 extern const char *bytstring_BM (const stringval_tyBM *);
 extern void *stringgcproc_BM (struct garbcoll_stBM *gc, stringval_tyBM * str)
-  __attribute__ ((warn_unused_result));
+  __attribute__((warn_unused_result));
 extern void stringgcdestroy_BM (struct garbcoll_stBM *, stringval_tyBM *);
 
 extern void stringgckeep_BM (struct garbcoll_stBM *, stringval_tyBM *);
@@ -145,13 +145,13 @@ extern const tupleval_tyBM *maketuple_BM (objectval_tyBM ** arr,
 extern const tupleval_tyBM *makesizedtuple_BM (unsigned nbargs, ...);
 // collect objects or sequences into a tuple
 extern const tupleval_tyBM *maketuplecollect_BM (value_tyBM, ...)
-  __attribute__ ((sentinel));
+  __attribute__((sentinel));
 #define MAKETUPLECOLLECT_BM(...) maketuplecollect_BM(__VA_ARGS__, NULL)
 extern const tupleval_tyBM *makesizedcollecttuple_BM (unsigned nbargs, ...);
 extern unsigned tuplesize_BM (const tupleval_tyBM * tup);
 extern objectval_tyBM *tuplecompnth_BM (const tupleval_tyBM * tup, int rk);
 extern void *tuplegcproc_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup)
-  __attribute__ ((warn_unused_result));
+  __attribute__((warn_unused_result));
 extern void tuplegcdestroy_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup);
 extern void tuplegckeep_BM (struct garbcoll_stBM *gc, tupleval_tyBM * tup);
 
@@ -167,7 +167,7 @@ extern const setval_tyBM *makeset_BM (const objectval_tyBM ** arr,
 extern const setval_tyBM *makesizedset_BM (unsigned nbargs, ...);
 // collect objects or sequences into a set
 extern const setval_tyBM *makesetcollect_BM (value_tyBM, ...)
-  __attribute__ ((sentinel));
+  __attribute__((sentinel));
 #define MAKESETCOLLECT_BM(...) makesetcollect_BM(__VA_ARGS__, NULL)
 extern const setval_tyBM *makesizedcollectset_BM (unsigned nbargs, ...);
 static inline bool setcontains_BM (const setval_tyBM * setv,
@@ -181,7 +181,7 @@ extern int setelemindex_BM (const setval_tyBM * setv,
 extern unsigned setcardinal_BM (const setval_tyBM * setv);
 extern objectval_tyBM *setelemnth_BM (const setval_tyBM * set, int rk);
 extern void *setgcproc_BM (struct garbcoll_stBM *gc, setval_tyBM * set)
-  __attribute__ ((warn_unused_result));
+  __attribute__((warn_unused_result));
 extern void setgcdestroy_BM (struct garbcoll_stBM *gc, setval_tyBM * set);
 extern void setgckeep_BM (struct garbcoll_stBM *gc, setval_tyBM * set);
 
@@ -207,7 +207,7 @@ static inline value_tyBM closurenthson_BM (const value_tyBM clo, int rk);
 static inline value_tyBM nodenthson_BM (const value_tyBM nod, int rk);
 
 extern void *nodegcproc_BM (struct garbcoll_stBM *gc, node_tyBM * nod,
-                            int depth) __attribute__ ((warn_unused_result));
+                            int depth) __attribute__((warn_unused_result));
 extern void nodegcdestroy_BM (struct garbcoll_stBM *gc, node_tyBM * nod);
 extern void nodegckeep_BM (struct garbcoll_stBM *gc, node_tyBM * nod);
 
@@ -249,7 +249,7 @@ extern const node_tyBM *makesizednode_BM (unsigned siz,
                                           const objectval_tyBM * connob, ...);
 
 extern const node_tyBM *makenodevar_BM (const objectval_tyBM * connob, ...)
-  __attribute__ ((sentinel));
+  __attribute__((sentinel));
 
 ////////
 extern const closure_tyBM *makeclosure_BM (const objectval_tyBM * conn,
@@ -308,18 +308,17 @@ extern const closure_tyBM *makesizedclosure_BM (unsigned siz,
                                                 ...);
 
 extern const closure_tyBM *makeclosurevar_BM (const objectval_tyBM * connob,
-                                              ...) __attribute__ ((sentinel));
+                                              ...) __attribute__((sentinel));
 
 extern void *closuregcproc_BM (struct garbcoll_stBM *gc, closure_tyBM * clos,
-                               int depth)
-  __attribute__ ((warn_unused_result));
+                               int depth) __attribute__((warn_unused_result));
 extern void closuregcdestroy_BM (struct garbcoll_stBM *gc,
                                  closure_tyBM * clos);
 extern void closuregckeep_BM (struct garbcoll_stBM *gc, closure_tyBM * clos);
 
 extern void *quasinodegcproc_BM (struct garbcoll_stBM *gc,
                                  quasinode_tyBM * quasi, int depth)
-  __attribute__ ((warn_unused_result));
+  __attribute__((warn_unused_result));
 ////////////////
 
 // initialize the GC and mainthreadid_BM
@@ -414,18 +413,18 @@ objectisinstance_BM (const objectval_tyBM * obj,
 
 
 // only used by FATAL_BM macro
-extern void fatal_stop_at_BM (const char *, int) __attribute__ ((noreturn));
+extern void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
 
 /// raise a failure; see also macro FAILURE_BM
 extern void failure_BM (int failcode, const value_tyBM reasonv,
                         struct stackframe_stBM *stkf)
-  __attribute__ ((noreturn));
+  __attribute__((noreturn));
 // see PLAINFAILURE_BM & PLACEDFAILURE_BM macros
 extern void failure_at_BM (int failcode, const char *fil, int lineno,
                            const value_tyBM reasonv,
                            const value_tyBM placev,
                            struct stackframe_stBM *stkf)
-  __attribute__ ((noreturn));
+  __attribute__((noreturn));
 
 extern void register_failock_BM (struct failurelockset_stBM *,
                                  objectval_tyBM *);
@@ -547,18 +546,19 @@ extern bool objstrbufferispercentfullpayl_BM (const objectval_tyBM * obj,
 extern void objstrbufferresetpayl_BM (objectval_tyBM * obj);
 extern unsigned objstrbufferlengthpayl_BM (const objectval_tyBM * obj);
 extern unsigned objstrbufferlimitpayl_BM (const objectval_tyBM * obj);
-extern bool objstrbufferispercentfullpayl_BM (const objectval_tyBM * obj, int percentage);
+extern bool objstrbufferispercentfullpayl_BM (const objectval_tyBM * obj,
+                                              int percentage);
 
 /// raw printf
 extern void objstrbufferrawprintfpayl_BM (objectval_tyBM * obj,
                                           const char *fmt, ...)
-  __attribute__ ((format (printf, 2, 3)));
+  __attribute__((format (printf, 2, 3)));
 extern void objstrbufferspaceornewlinepayl_BM (objectval_tyBM * obj);
 /// cooked printf: the tabs become spaces or indented-newlines, the
 /// newlines become indented
 extern void objstrbufferprintfpayl_BM (objectval_tyBM * obj, const char *fmt,
                                        ...)
-  __attribute__ ((format (printf, 2, 3)));
+  __attribute__((format (printf, 2, 3)));
 /// indented newline
 extern void objstrbuffernewlinepayl_BM (objectval_tyBM * obj);
 /// output UTF8 encoded à la JSON
@@ -606,15 +606,15 @@ static inline bool isassoc_BM (value_tyBM v);
 static inline anyassoc_tyBM *assoccast_BM (value_tyBM v);
 extern void *assocgcproc_BM (struct garbcoll_stBM *gc, anyassoc_tyBM * assoc,
                              objectval_tyBM * fromob, int depth)
-  __attribute__ ((warn_unused_result));
+  __attribute__((warn_unused_result));
 extern void *assocpairsgcproc_BM (struct garbcoll_stBM *gc,
                                   struct assocpairs_stBM *apairs,
                                   objectval_tyBM * fromob, int depth)
-  __attribute__ ((warn_unused_result));
+  __attribute__((warn_unused_result));
 extern void *assoctablegcproc_BM (struct garbcoll_stBM *gc,
                                   struct assoctable_stBM *atable,
                                   objectval_tyBM * fromob, int depth)
-  __attribute__ ((warn_unused_result));
+  __attribute__((warn_unused_result));
 extern void assocpairgcdestroy_BM (struct garbcoll_stBM *gc,
                                    struct assocpairs_stBM *assocpair);
 extern void assoctablegcdestroy_BM (struct garbcoll_stBM *gc,
@@ -753,7 +753,7 @@ static inline void datavectputnth_BM (struct datavectval_stBM *dvec, int rk,
 extern void *datavectgcproc_BM (struct garbcoll_stBM *gc,
                                 struct datavectval_stBM *dvec,
                                 objectval_tyBM * fromob, int depth)
-  __attribute__ ((warn_unused_result));
+  __attribute__((warn_unused_result));
 extern void datavectgcdestroy_BM (struct garbcoll_stBM *gc,
                                   struct datavectval_stBM *dvec);
 extern void datavectgckeep_BM (struct garbcoll_stBM *gc,
@@ -1183,7 +1183,7 @@ extern bool parsertokenstartobject_BM (struct parser_stBM *pars,
 // get the parsed object
 extern objectval_tyBM *parsergetobject_BM
   (struct parser_stBM *pars,
-   struct stackframe_stBM *stkf, int depth, bool * pgotobj);
+   struct stackframe_stBM *stkf, int depth, bool *pgotobj);
 
 /// test if a token can start a value
 extern bool parsertokenstartvalue_BM (struct parser_stBM *pars,
@@ -1191,11 +1191,11 @@ extern bool parsertokenstartvalue_BM (struct parser_stBM *pars,
 /// get the parsed value
 extern value_tyBM parsergetvalue_BM
   (struct parser_stBM *pars,
-   struct stackframe_stBM *stkf, int depth, bool * pgotval);
+   struct stackframe_stBM *stkf, int depth, bool *pgotval);
 
 extern value_tyBM parsergetchunk_BM
   (struct parser_stBM *pars,
-   struct stackframe_stBM *stkf, int depth, bool * pgotchunk);
+   struct stackframe_stBM *stkf, int depth, bool *pgotchunk);
 
 ///
 static inline unsigned parserlineno_BM (const struct parser_stBM *pars);
@@ -1213,12 +1213,12 @@ extern void parserseek_BM (struct parser_stBM *pars, unsigned line,
 extern void parsererrorprintf_BM (struct parser_stBM *pars,
                                   struct stackframe_stBM *stkf, unsigned line,
                                   unsigned col, const char *fmt, ...)
-  __attribute__ ((format (printf, 5, 6), noreturn));
+  __attribute__((format (printf, 5, 6), noreturn));
 extern void objparserrorprintf_BM (objectval_tyBM * obpars,
                                    struct stackframe_stBM *stkf,
                                    unsigned line, unsigned col,
                                    const char *fmt, ...)
-  __attribute__ ((format (printf, 5, 6), noreturn));
+  __attribute__((format (printf, 5, 6), noreturn));
 // skip spaces and comments
 extern void parserskipspaces_BM (struct parser_stBM *pars,
                                  struct stackframe_stBM *stkf);
@@ -1229,12 +1229,12 @@ extern parstoken_tyBM parsertokenget_BM (struct parser_stBM *pars,
 
 // used by VALUEGCPROC_BM macro
 extern void *valuegcproc_BM (struct garbcoll_stBM *gc, value_tyBM val,
-                             int depth) __attribute__ ((warn_unused_result));
+                             int depth) __attribute__((warn_unused_result));
 // used by EXTENDEDGCPROC_BM macro
 extern void *extendedgcproc_BM (struct garbcoll_stBM *gc,
                                 extendedval_tyBM xval,
                                 objectval_tyBM * fromob, int depth)
-  __attribute__ ((warn_unused_result));
+  __attribute__((warn_unused_result));
 
 extern void gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj);
 extern void gcframemark_BM (struct garbcoll_stBM *gc,
@@ -1383,7 +1383,7 @@ extern void newgui_browse_add_parens_BM (int openoff, int closeoff,
 extern const char *textiterstrdbg_BM (GtkTextIter * it);
 
 extern void cssparsingerror_BM (GtkCssProvider *, GtkCssSection *, GError *,
-                                gpointer) __attribute__ ((noreturn));
+                                gpointer) __attribute__((noreturn));
 
 extern void quitgui_BM (void);
 extern void exitgui_BM (void);
@@ -1623,7 +1623,7 @@ extern void log_begin_message_BM (void);
 extern void log_object_message_BM (const objectval_tyBM * obj);
 extern void log_puts_message_BM (const char *msg);
 extern void log_printf_message_BM (const char *fmt, ...)
-  __attribute__ ((format (printf, 1, 2)));
+  __attribute__((format (printf, 1, 2)));
 extern void log_end_message_BM (void);
 
 

@@ -103,13 +103,13 @@ weakassertfailureat_BM (const char *condmsg, const char *fil, int lin)
 }                               /* end weakassertfailureat_BM */
 
 value_tyBM
-objrout_placeholder_BM (struct stackframe_stBM *stkf __attribute__ ((unused)),  //
-                        const value_tyBM arg1 __attribute__ ((unused)), //
-                        const value_tyBM arg2 __attribute__ ((unused)), //
-                        const value_tyBM arg3 __attribute__ ((unused)), //
-                        const value_tyBM arg4 __attribute__ ((unused)), //
+objrout_placeholder_BM (struct stackframe_stBM *stkf __attribute__((unused)),   //
+                        const value_tyBM arg1 __attribute__((unused)),  //
+                        const value_tyBM arg2 __attribute__((unused)),  //
+                        const value_tyBM arg3 __attribute__((unused)),  //
+                        const value_tyBM arg4 __attribute__((unused)),  //
                         const quasinode_tyBM * restargs
-                        __attribute__ ((unused)))
+                        __attribute__((unused)))
 {
   weakassertfailureat_BM ("objrout_placeholder_BM", __FILE__, __LINE__);
   return NULL;
@@ -248,8 +248,8 @@ static void add_new_predefined_bm (void);
 
 static bool
 run_command_bm (const gchar * optname
-                __attribute__ ((unused)), const gchar * val, gpointer data
-                __attribute__ ((unused)), GError ** perr)
+                __attribute__((unused)), const gchar * val, gpointer data
+                __attribute__((unused)), GError ** perr)
 {
   ASSERT_BM (val != NULL);
   INFOPRINTF_BM ("running command: %s\n", val);
@@ -261,10 +261,10 @@ run_command_bm (const gchar * optname
 }                               /* end run_command_bm */
 
 static void
-get_parse_value_after_load_bm (const gchar * optname __attribute__ ((unused)),
+get_parse_value_after_load_bm (const gchar * optname __attribute__((unused)),
                                const gchar * val,
-                               gpointer data __attribute__ ((unused)),
-                               GError ** perr __attribute__ ((unused)))
+                               gpointer data __attribute__((unused)),
+                               GError ** perr __attribute__((unused)))
 {
   if (nb_parsed_values_after_load_bm >= MAXPARSED_VALUES_AFTER_LOAD_BM)
     FATAL_BM ("too many %d parsed values after load with --parse-value",
@@ -277,10 +277,10 @@ get_parse_value_after_load_bm (const gchar * optname __attribute__ ((unused)),
 
 
 static bool
-add_predef_bm (const gchar * optname __attribute__ ((unused)),
+add_predef_bm (const gchar * optname __attribute__((unused)),
                const gchar * val,
-               gpointer data __attribute__ ((unused)),
-               GError ** perr __attribute__ ((unused)))
+               gpointer data __attribute__((unused)),
+               GError ** perr __attribute__((unused)))
 {
   ASSERT_BM (val != NULL);
   if (!validname_BM (val))
@@ -298,10 +298,10 @@ add_predef_bm (const gchar * optname __attribute__ ((unused)),
 }                               /* end add_predef_bm */
 
 static bool
-add_contributor_bm (const gchar * optname __attribute__ ((unused)),
+add_contributor_bm (const gchar * optname __attribute__((unused)),
                     const gchar * contrib,
-                    gpointer data __attribute__ ((unused)),
-                    GError ** perr __attribute__ ((unused)))
+                    gpointer data __attribute__((unused)),
+                    GError ** perr __attribute__((unused)))
 {
   if (count_added_contributors_bm >= size_added_contributors_bm)
     {
@@ -327,10 +327,10 @@ add_contributor_bm (const gchar * optname __attribute__ ((unused)),
 
 
 static bool
-remove_contributor_bm (const gchar * optname __attribute__ ((unused)),
+remove_contributor_bm (const gchar * optname __attribute__((unused)),
                        const gchar * contrib,
-                       gpointer data __attribute__ ((unused)),
-                       GError ** perr __attribute__ ((unused)))
+                       gpointer data __attribute__((unused)),
+                       GError ** perr __attribute__((unused)))
 {
   if (count_removed_contributors_bm >= size_removed_contributors_bm)
     {
@@ -1671,8 +1671,8 @@ extern bool did_deferred_BM (void);
 
 static gboolean
 deferpipereadhandler_BM (GIOChannel * source,
-                         GIOCondition condition __attribute__ ((unused)),
-                         gpointer data __attribute__ ((unused)))
+                         GIOCondition condition __attribute__((unused)),
+                         gpointer data __attribute__((unused)))
 {
   NONPRINTF_BM ("deferpipereadhandler_BM start tid#%ld", (long) gettid_BM ());
   if (!source)
@@ -1892,7 +1892,7 @@ give_prog_version_BM (const char *progname)
 }                               /* end give_prog_version_BM */
 
 void
-backtracerrorcb_BM (void *data __attribute__ ((unused)),
+backtracerrorcb_BM (void *data __attribute__((unused)),
                     const char *msg, int errnum)
 {
   backtracestate_BM = NULL;
@@ -2000,7 +2000,7 @@ printbt_callback_BM (void *data, uintptr_t pc, const char *filename,
 
 static void
 errorbt_callback_BM (void *data_
-                     __attribute__ ((unused)), const char *msg, int errnum)
+                     __attribute__((unused)), const char *msg, int errnum)
 {
   //  struct print_data_BM *pdata = (struct print_data_BM *) data;
 

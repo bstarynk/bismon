@@ -357,7 +357,7 @@ quasinodegcproc_BM (struct garbcoll_stBM *gc, quasinode_tyBM * qnod,
 
 
 value_tyBM
-apply0_BM (const value_tyBM funv, struct stackframe_stBM * stkf)
+apply0_BM (const value_tyBM funv, struct stackframe_stBM *stkf)
 {
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
   objrout_sigBM *rout = NULL;
@@ -379,7 +379,7 @@ apply0_BM (const value_tyBM funv, struct stackframe_stBM * stkf)
 
 
 value_tyBM
-apply1_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
+apply1_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1)
 {
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
@@ -402,7 +402,7 @@ apply1_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
 
 
 value_tyBM
-apply2_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
+apply2_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2)
 {
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
@@ -425,7 +425,7 @@ apply2_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
 
 
 value_tyBM
-apply3_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
+apply3_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3)
 {
@@ -449,7 +449,7 @@ apply3_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
 
 
 value_tyBM
-apply4_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
+apply4_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4)
 {
@@ -473,7 +473,7 @@ apply4_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
 
 
 value_tyBM
-apply5_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
+apply5_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4,
            const value_tyBM arg5)
@@ -673,7 +673,7 @@ applyvar_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
 }                               /* end applyvar_BM */
 
 value_tyBM
-applymany_BM (const value_tyBM funv, struct stackframe_stBM * stkf,
+applymany_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
               unsigned nbargs, ...)
 {
   if (nbargs > MAXAPPLYARGS_BM)

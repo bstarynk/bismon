@@ -31,7 +31,7 @@ ROUTINEOBJNAME_BM (_3kMqlEugRVW_7DgwjR4CBbP)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,
  const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4,
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   ASSERT_BM (istaggedint_BM (arg1));    // the integer to dump
   // arg2 is the bufob
@@ -67,7 +67,7 @@ ROUTINEOBJNAME_BM (_3Tc3E4uo2p5_4EXWCPwCR5b)    //
  const value_tyBM arg2,         // bufob
  const value_tyBM arg3,         // dumpob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   ASSERT_BM (isset_BM (arg1));  // the set to dump
   // arg2 is the bufob
@@ -117,7 +117,7 @@ ROUTINEOBJNAME_BM (_5D9kkPHSPxq_8suDXpjlzjE)    // dump_value tuple
  const value_tyBM arg2,         // bufob
  const value_tyBM arg3,         // dumpob
  const value_tyBM arg4,         // depthv
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   ASSERT_BM (istuple_BM (arg1));        // the tuple to dump
   // arg2 is the bufob
@@ -167,7 +167,7 @@ ROUTINEOBJNAME_BM (_5v30KC0IMxx_53ZzXprJTM6)    //
  const value_tyBM arg2,         // bufob
  const value_tyBM arg3,         // dumpob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   ASSERT_BM (isnode_BM (arg1)); // the node to dump
   // arg2 is the bufob
@@ -237,7 +237,7 @@ ROUTINEOBJNAME_BM (_6jvRZetUz36_978V6SKIWZC)    //
  const value_tyBM arg2,         // bufob
  const value_tyBM arg3,         // dumpob
  const value_tyBM arg4,         // depthv
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   ASSERT_BM (isclosure_BM (arg1));      // the closure to dump
   // arg2 is the bufob
@@ -302,7 +302,7 @@ ROUTINEOBJNAME_BM (_7mvOlkB1tAJ_3psVFz4QEAn)    //
  const value_tyBM arg2,         // bufob
  const value_tyBM arg3,         // dumpb
  const value_tyBM arg4,         // depthv
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   ASSERT_BM (isstring_BM (arg1));       // the string to dump
   // arg2 is the bufob
@@ -382,9 +382,9 @@ ROUTINEOBJNAME_BM (_4EBQMvthjcP_2OiZxZviSQc)    // dump_scan°class
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // reciever
  const value_tyBM arg2,         // dumpob
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
@@ -427,8 +427,8 @@ ROUTINEOBJNAME_BM (_67IapmpeTLU_8MQKtlK8iAD)    // dump_data°class
  const value_tyBM arg1,         // reciever
  const value_tyBM arg2,         // dumpob
  const value_tyBM arg3,         // strbufob
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv; objectval_tyBM * dumpob;
@@ -506,9 +506,9 @@ ROUTINEOBJNAME_BM (_4DvEF1tVGFD_6VVLpFn6FPW)    //  dump_scan°hset_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // reciever
  const value_tyBM arg2,         // dumpob
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv;
@@ -542,10 +542,10 @@ ROUTINEOBJNAME_BM (_7GMLV81ntO3_4NHTv7fCL0A)    // dump_data°hset_object
  const value_tyBM arg1,         // reciever
  const value_tyBM arg2,         // dumpob
  const value_tyBM arg3,         // strbufob
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_dump_value = BMK_1FEnnpEkGdI_5DAcVDL5XHG;
+  objectval_tyBM * k_dump_value = BMK_1FEnnpEkGdI_5DAcVDL5XHG;
   ASSERT_BM (k_dump_value != NULL);
   objectval_tyBM *k_put = BMK_9pvzBeIKHXF_8YDPCrQ6OEK;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -587,9 +587,9 @@ ROUTINEOBJNAME_BM (_26FUvWKvkYr_5hyqhhV8NEh)    // get°hset_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         /* reciever */
  const value_tyBM arg2 /*elem */ ,
- const value_tyBM arg3 __attribute__ ((unused)),
- const value_tyBM arg4 __attribute__ ((unused)),
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg3 __attribute__((unused)),
+ const value_tyBM arg4 __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv;
@@ -649,9 +649,9 @@ ROUTINEOBJNAME_BM (_91iTl2vqF09_72WJj4swbNi)    // put°hset_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         /* reciever */
  const value_tyBM arg2 /*putseq */ ,
- const value_tyBM arg3 __attribute__ ((unused)),
- const value_tyBM arg4 __attribute__ ((unused)),
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg3 __attribute__((unused)),
+ const value_tyBM arg4 __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv;
@@ -684,9 +684,9 @@ ROUTINEOBJNAME_BM (_2juH5YMCcog_8pQGCuE5mod)    // add°hset_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         /* reciever */
  const value_tyBM arg2 /*addend */ ,
- const value_tyBM arg3 __attribute__ ((unused)),
- const value_tyBM arg4 __attribute__ ((unused)),
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg3 __attribute__((unused)),
+ const value_tyBM arg4 __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv; value_tyBM addend;
@@ -739,9 +739,9 @@ ROUTINEOBJNAME_BM (_5hedSPIXD0o_5ef69rR2kzb)    // remove°hset_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         /* reciever */
  const value_tyBM arg2 /*removedv */ ,
- const value_tyBM arg3 __attribute__ ((unused)),
- const value_tyBM arg4 __attribute__ ((unused)),
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg3 __attribute__((unused)),
+ const value_tyBM arg4 __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv; value_tyBM removedv;
@@ -782,10 +782,10 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_88cUYsDqSFO_0DKwKLSOmpm);
 value_tyBM
 ROUTINEOBJNAME_BM (_88cUYsDqSFO_0DKwKLSOmpm)    //
 (struct stackframe_stBM * stkf, const value_tyBM arg1,  /* reciever */
- const value_tyBM arg2 __attribute__ ((unused)),        //
- const value_tyBM arg3 __attribute__ ((unused)),        //
- const value_tyBM arg4 __attribute__ ((unused)),        //
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg2 __attribute__((unused)), //
+ const value_tyBM arg3 __attribute__((unused)), //
+ const value_tyBM arg4 __attribute__((unused)), //
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
@@ -810,9 +810,9 @@ ROUTINEOBJNAME_BM (_99PsYq2Nw3w_9q4BJNeQ6Re)    //  dump_scan°vector_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // reciever
  const value_tyBM arg2,         // dumpob
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv; objectval_tyBM * dumpob;
@@ -849,10 +849,10 @@ ROUTINEOBJNAME_BM (_0y90r6nyAYP_2MmfH2V00B1)    // dump_data°vector_object
  const value_tyBM arg1,         // reciever
  const value_tyBM arg2,         // dumpob 
  const value_tyBM arg3,         // strbufob
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_dump_value = BMK_1FEnnpEkGdI_5DAcVDL5XHG;
+  objectval_tyBM * k_dump_value = BMK_1FEnnpEkGdI_5DAcVDL5XHG;
   ASSERT_BM (k_dump_value != NULL);
   objectval_tyBM *k_fill = BMK_8pmtJTuEbBF_4xNgNCOElwL;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -894,9 +894,9 @@ ROUTINEOBJNAME_BM (_7BhZWKS2grS_3TnuK6o8ZFH)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // reciever
  const value_tyBM arg2,         // content
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7BhZWKS2grS_3TnuK6o8ZFH,
                  objectval_tyBM * recv; value_tyBM contv;
@@ -952,9 +952,9 @@ value_tyBM
 ROUTINEOBJNAME_BM (_8MU0cEcpEYN_5SVe0jrv36o)    //  dump_scan°assoc_object
 (struct stackframe_stBM * stkf, const value_tyBM arg1,  // recv
  const value_tyBM arg2,         // dumpob
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
@@ -1007,8 +1007,8 @@ ROUTINEOBJNAME_BM (_9EytjXNb76D_1ZP3iSk9cuu)    // dump_data°assoc_object
  const value_tyBM arg1,         // reciever
  const value_tyBM arg2,         // dumpob
  const value_tyBM arg3,         // strbufob
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv; objectval_tyBM * dumpob;
@@ -1073,10 +1073,10 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_4zaM2Itdsuq_9qNJK0HbcQI);
 value_tyBM
 ROUTINEOBJNAME_BM (_4zaM2Itdsuq_9qNJK0HbcQI)    //  set°assoc_object
 (struct stackframe_stBM * stkf, const value_tyBM arg1,  /*recv */
- const value_tyBM arg2 __attribute__ ((unused)),
- const value_tyBM arg3 __attribute__ ((unused)),
- const value_tyBM arg4 __attribute__ ((unused)),
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg2 __attribute__((unused)),
+ const value_tyBM arg3 __attribute__((unused)),
+ const value_tyBM arg4 __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv; const closure_tyBM * clos;
@@ -1100,9 +1100,9 @@ value_tyBM
 ROUTINEOBJNAME_BM (_4icYJnKsN0o_4xm5UbQOMTe)    //  get°assoc_object
 (struct stackframe_stBM * stkf, const value_tyBM arg1,  /* recv */
  const value_tyBM arg2,         /* obattr */
- const value_tyBM arg3 __attribute__ ((unused)),
- const value_tyBM arg4 __attribute__ ((unused)),
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg3 __attribute__((unused)),
+ const value_tyBM arg4 __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
@@ -1131,8 +1131,8 @@ ROUTINEOBJNAME_BM (_6eD9Y1qYcnj_8uVDhxjBpG8)    //  put°assoc_object
 (struct stackframe_stBM * stkf, const value_tyBM arg1,  /* recv */
  const value_tyBM arg2,         /* obattr */
  const value_tyBM arg3,         /* val */
- const value_tyBM arg4 __attribute__ ((unused)),
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg4 __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv;
@@ -1162,9 +1162,9 @@ value_tyBM
 ROUTINEOBJNAME_BM (_0ekJdzLOqAI_8mejMqkwuKQ)    //  remove°assoc_object
 (struct stackframe_stBM * stkf, const value_tyBM arg1,  /* recv */
  const value_tyBM arg2,         /* attrs */
- const value_tyBM arg3 __attribute__ ((unused)),
- const value_tyBM arg4 __attribute__ ((unused)),
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg3 __attribute__((unused)),
+ const value_tyBM arg4 __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv; objectval_tyBM * obattr;
@@ -1210,7 +1210,7 @@ ROUTINEOBJNAME_BM (_7fCcteNe7aR_3IKHeHjmzff)    // dump_value°object
  const value_tyBM arg2,         // bufob
  const value_tyBM arg3,         // dumpob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   ASSERT_BM (isobject_BM (arg1));       // the object to dump
   // arg2 is the bufob
@@ -1251,8 +1251,8 @@ ROUTINEOBJNAME_BM (_6PmxiZR9WBe_13DwWExCALl)    //
 (struct stackframe_stBM * stkf, const value_tyBM arg1,  // reciever
  const value_tyBM arg2,         // dumpob
  const value_tyBM arg3,         // strbufob
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
@@ -1285,10 +1285,10 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_7D36kHemyWQ_0YfwWnUhR9Y);
 value_tyBM ROUTINEOBJNAME_BM (_7D36kHemyWQ_0YfwWnUhR9Y) (struct stackframe_stBM * stkf, const value_tyBM arg1,  // reciever
                                                          const value_tyBM arg2, // dumpob
                                                          const value_tyBM arg3, // strbufob
-                                                         const value_tyBM arg4_ __attribute__ ((unused)),       //
+                                                         const value_tyBM arg4_ __attribute__((unused)),        //
                                                          const quasinode_tyBM
                                                          * restargs_
-                                                         __attribute__ ((unused)))
+                                                         __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
@@ -1328,7 +1328,7 @@ ROUTINEOBJNAME_BM (_9UhDZeDdg2r_55lUqYDPUiF)
 (struct stackframe_stBM * stkf,
 const value_tyBM arg1,
 const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4_
-__attribute__ ((unused)), const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+__attribute__((unused)), const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv; objectval_tyBM * dumpob;
@@ -1358,11 +1358,11 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_9mdRnBqdqf5_9UvgSFA7wIY);
 value_tyBM
 ROUTINEOBJNAME_BM (_9mdRnBqdqf5_9UvgSFA7wIY)
 (struct stackframe_stBM * stkf,
-const value_tyBM arg1 __attribute__ ((unused)),
-const value_tyBM arg2 __attribute__ ((unused)),
-const value_tyBM arg3 __attribute__ ((unused)),
-const value_tyBM arg4 __attribute__ ((unused)),
-const quasinode_tyBM * restargs __attribute__ ((unused)))
+const value_tyBM arg1 __attribute__((unused)),
+const value_tyBM arg2 __attribute__((unused)),
+const value_tyBM arg3 __attribute__((unused)),
+const value_tyBM arg4 __attribute__((unused)),
+const quasinode_tyBM * restargs __attribute__((unused)))
 {
   enum
   { closix_ldobj,
@@ -1436,11 +1436,11 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_3W8d51P1dJh_3b1BrOW6pua);
 value_tyBM
 ROUTINEOBJNAME_BM (_3W8d51P1dJh_3b1BrOW6pua)
 (struct stackframe_stBM * stkf,
-const value_tyBM arg1 __attribute__ ((unused)),
-const value_tyBM arg2 __attribute__ ((unused)),
-const value_tyBM arg3 __attribute__ ((unused)),
-const value_tyBM arg4 __attribute__ ((unused)),
-const quasinode_tyBM * restargs __attribute__ ((unused)))
+const value_tyBM arg1 __attribute__((unused)),
+const value_tyBM arg2 __attribute__((unused)),
+const value_tyBM arg3 __attribute__((unused)),
+const value_tyBM arg4 __attribute__((unused)),
+const quasinode_tyBM * restargs __attribute__((unused)))
 {
   enum
   {
@@ -1516,11 +1516,11 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_075tZNHCAMa_7XNNBaNM4qv);
 value_tyBM
 ROUTINEOBJNAME_BM (_075tZNHCAMa_7XNNBaNM4qv)
 (struct stackframe_stBM * stkf,
-const value_tyBM arg1 __attribute__ ((unused)),
+const value_tyBM arg1 __attribute__((unused)),
 const value_tyBM arg2,
-const value_tyBM arg3 __attribute__ ((unused)),
-const value_tyBM arg4 __attribute__ ((unused)),
-const quasinode_tyBM * restargs __attribute__ ((unused)))
+const value_tyBM arg3 __attribute__((unused)),
+const value_tyBM arg4 __attribute__((unused)),
+const quasinode_tyBM * restargs __attribute__((unused)))
 {
   enum
   {
@@ -1665,11 +1665,11 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_4ENXjApm7Qb_3bXo8F6Jg9z);
 value_tyBM
 ROUTINEOBJNAME_BM (_4ENXjApm7Qb_3bXo8F6Jg9z)
 (struct stackframe_stBM * stkf,
-const value_tyBM arg1 __attribute__ ((unused)),
+const value_tyBM arg1 __attribute__((unused)),
 const value_tyBM arg2,
-const value_tyBM arg3 __attribute__ ((unused)),
-const value_tyBM arg4 __attribute__ ((unused)),
-const quasinode_tyBM * restargs __attribute__ ((unused)))
+const value_tyBM arg3 __attribute__((unused)),
+const value_tyBM arg4 __attribute__((unused)),
+const quasinode_tyBM * restargs __attribute__((unused)))
 {
   enum
   {
@@ -1742,10 +1742,10 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_3yJPC4SxGtF_6ilaF37wdxG);
 
 value_tyBM
 ROUTINEOBJNAME_BM (_3yJPC4SxGtF_6ilaF37wdxG)    //
-(struct stackframe_stBM * stkf, const value_tyBM arg1 __attribute__ ((unused)), const value_tyBM arg2,  //
- const value_tyBM arg3 __attribute__ ((unused)),        //
- const value_tyBM arg4 __attribute__ ((unused)),        //
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+(struct stackframe_stBM * stkf, const value_tyBM arg1 __attribute__((unused)), const value_tyBM arg2,   //
+ const value_tyBM arg3 __attribute__((unused)), //
+ const value_tyBM arg4 __attribute__((unused)), //
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   enum closix_en
   {
@@ -1889,8 +1889,8 @@ ROUTINEOBJNAME_BM (_9imDBaAxOpp_2HI9AuWrEKD)    //
  const value_tyBM arg1,         // recieving class
  const value_tyBM arg2,         // new selector
  const value_tyBM arg3,         // new closure
- const value_tyBM arg4 __attribute__ ((unused)),        //
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg4 __attribute__((unused)), //
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv; objectval_tyBM * obsel;
@@ -1923,9 +1923,9 @@ ROUTINEOBJNAME_BM (_2qppG2LJu79_9ljkbLS0eFQ)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // recieving class
  const value_tyBM arg2,         // new superclass
- const value_tyBM arg3 __attribute__ ((unused)),        //
- const value_tyBM arg4 __attribute__ ((unused)),        //
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg3 __attribute__((unused)), //
+ const value_tyBM arg4 __attribute__((unused)), //
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv; objectval_tyBM * obsuperclass;
@@ -1959,9 +1959,9 @@ ROUTINEOBJNAME_BM (_60NdV04Lel2_5FSZVWKbSL7)    // put_data_value°basiclo_funct
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // recieving function
  const value_tyBM arg2,         // new value
- const value_tyBM arg3 __attribute__ ((unused)),
- const value_tyBM arg4 __attribute__ ((unused)),
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg3 __attribute__((unused)),
+ const value_tyBM arg4 __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * recv;
@@ -1988,11 +1988,11 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_5DDSY1YgVZr_6dOU4tiBldk);
 value_tyBM
 ROUTINEOBJNAME_BM (_5DDSY1YgVZr_6dOU4tiBldk)    //
 (struct stackframe_stBM * stkf, //
- const value_tyBM arg1 __attribute__ ((unused)),
- const value_tyBM arg2 __attribute__ ((unused)),
- const value_tyBM arg3 __attribute__ ((unused)),
- const value_tyBM arg4 __attribute__ ((unused)),
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg1 __attribute__((unused)),
+ const value_tyBM arg2 __attribute__((unused)),
+ const value_tyBM arg3 __attribute__((unused)),
+ const value_tyBM arg4 __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   enum
   { closix_constant,
@@ -2018,8 +2018,8 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
  const value_tyBM arg1,         // recieving module
  const value_tyBM arg2,         // dumper
  const value_tyBM arg3,         // dump strbuf
- const value_tyBM arg4 __attribute__ ((unused)),
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg4 __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL, objectval_tyBM * obmod;
                  objectval_tyBM * dumpob;
@@ -2105,7 +2105,7 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    // block:readmacro
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         // parsob
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const node_tyBM * rnodv; objectval_tyBM * resobj;
@@ -2223,9 +2223,9 @@ ROUTINEOBJNAME_BM (_2NRUP36YT80_0SdozCZxyvv)    // fail:readmacro
  const value_tyBM linenoarg,    //
  const value_tyBM colposarg,    //
  const value_tyBM parsobarg,    //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_basiclo_fail = BMK_4UklN1FKPMy_43NQnifo7Mn;
+  objectval_tyBM * k_basiclo_fail = BMK_4UklN1FKPMy_43NQnifo7Mn;
   objectval_tyBM *k_fail = BMK_085lT8c13Ik_11pcWJfcLeM;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2NRUP36YT80_0SdozCZxyvv,
                  const node_tyBM * rnodv;       //
@@ -2319,9 +2319,9 @@ ROUTINEOBJNAME_BM (_9QfwVBwmu2L_4mgyQ8AEwdt)    //lockobj:readmacro
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         //  parsob
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_basiclo_lockobj = BMK_5w3nODhHPwk_4sXXZ1AEOPq;
+  objectval_tyBM * k_basiclo_lockobj = BMK_5w3nODhHPwk_4sXXZ1AEOPq;
   objectval_tyBM *k_lockobj = BMK_9dso3pFLYwm_3JwHqiJK3UL;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9QfwVBwmu2L_4mgyQ8AEwdt,
                  const node_tyBM * rnodv;       //
@@ -2434,7 +2434,7 @@ ROUTINEOBJNAME_BM (_1Geqz0vsOKB_2Dpdb1LDu23)    //
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         //  parsob
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const node_tyBM * rnodv;       //
@@ -2528,7 +2528,7 @@ ROUTINEOBJNAME_BM (_0XbMOJqLLPZ_1t2wg2TwPRA)    // readmacro#cond
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         // parsob
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const node_tyBM * rnodv;
@@ -2651,9 +2651,9 @@ ROUTINEOBJNAME_BM (_5ZT4G2KhMyi_4mC2iDVPWQP)    //readmacro#wrong
  const value_tyBM arg2,         // lineo
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         // parsob
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_basiclo_wrong = BMK_65wIF6z9pmQ_47VZsHJ6zdk;
+  objectval_tyBM * k_basiclo_wrong = BMK_65wIF6z9pmQ_47VZsHJ6zdk;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_5ZT4G2KhMyi_4mC2iDVPWQP,
                  value_tyBM nodev;
                  objectval_tyBM * parsob; objectval_tyBM * resob;
@@ -2724,7 +2724,7 @@ ROUTINEOBJNAME_BM (_7ko2VZaPpqD_1eEmEcp0VV3)    // readmacro#intswitch
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         // parsob
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const node_tyBM * rnodv;       //
@@ -2832,7 +2832,7 @@ ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf)    // objswitch:readmacro
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         // parsob
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const node_tyBM * rnodv;
@@ -2939,7 +2939,7 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    // loop:readmacro
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         // parsob
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const node_tyBM * rnodv;
@@ -3061,7 +3061,7 @@ ROUTINEOBJNAME_BM (_63Q0R4r8xa7_7XOAxxP5pi2)    // exit:readmacro
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         // parsob
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const node_tyBM * rnodv;       //
@@ -3165,7 +3165,7 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         // parsob
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const node_tyBM * rnodv; objectval_tyBM * resobj;
@@ -3299,7 +3299,7 @@ ROUTINEOBJNAME_BM (_5788HpgOtVV_4zwZIr0jgmq)    //
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         // parsob
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const node_tyBM * rnodv;
@@ -3392,7 +3392,7 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         // parsob 
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const node_tyBM * rnodv;
@@ -3483,7 +3483,7 @@ ROUTINEOBJNAME_BM (_42gEKfF4qca_6gGwxSFC1FO)    // cexpansion#readmacro
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         // parsob
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   enum
   {
@@ -3698,7 +3698,7 @@ ROUTINEOBJNAME_BM (_6gwxdBT3Mhv_8Gtgu8feoy3)    // when#read_macro
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         // parsob
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const node_tyBM * rnodv;
@@ -3824,7 +3824,7 @@ ROUTINEOBJNAME_BM (_7iKya0Q5Jii_0mjPPia0yib)    //
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         // parsob
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7iKya0Q5Jii_0mjPPia0yib,
                  value_tyBM rnodv;
@@ -3906,7 +3906,7 @@ ROUTINEOBJNAME_BM (_2mWbSPeD8lw_8ea0EhwQUAa)    // readmacro:hset
  const value_tyBM arg2,         // lineno
  const value_tyBM arg3,         // colpos
  const value_tyBM arg4,         // parsob
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2mWbSPeD8lw_8ea0EhwQUAa,
                  value_tyBM rnodv;
@@ -3984,9 +3984,9 @@ value_tyBM
 ROUTINEOBJNAME_BM (_8RsUtTTwcw0_9DjQfQrNouU)    //  dump_scan°hashsetval_object
 (struct stackframe_stBM * stkf, const value_tyBM arg1,  // recv
  const value_tyBM arg2,         // dumpob
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ BMK_8RsUtTTwcw0_9DjQfQrNouU,
                  objectval_tyBM * recv;
@@ -4017,8 +4017,8 @@ ROUTINEOBJNAME_BM (_6UxkFEHhNQS_0f65oUlZ7b5)    // dump_data°hashsetval_object
  const value_tyBM arg1,         // reciever
  const value_tyBM arg2,         // dumpob
  const value_tyBM arg3,         // strbufob
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ BMK_6UxkFEHhNQS_0f65oUlZ7b5,
                  objectval_tyBM * recv;
@@ -4072,9 +4072,9 @@ ROUTINEOBJNAME_BM (_7IlDChYeWQk_1l1rM2cq5uj)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // reciever
  const value_tyBM arg2,         // sizev
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7IlDChYeWQk_1l1rM2cq5uj,
                  objectval_tyBM * obrecv;
@@ -4103,9 +4103,9 @@ ROUTINEOBJNAME_BM (_9O4E8Tcc2Fq_8MXrM73GJCM)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
  const value_tyBM arg2,         //
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9O4E8Tcc2Fq_8MXrM73GJCM,
                  value_tyBM valv;
@@ -4131,9 +4131,9 @@ ROUTINEOBJNAME_BM (_2WY2j1qroxH_1sjxiD6Yvad)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
  const value_tyBM arg2,         //
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2WY2j1qroxH_1sjxiD6Yvad,
                  value_tyBM valv;
@@ -4158,9 +4158,9 @@ ROUTINEOBJNAME_BM (_1PXiQf6nwlO_8J54FkeCF9A)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // reciever
  const value_tyBM arg2,         // sizev
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_1PXiQf6nwlO_8J54FkeCF9A,
                  objectval_tyBM * obrecv;
@@ -4189,8 +4189,8 @@ ROUTINEOBJNAME_BM (_8EqnYwr2sed_1Njis9lW96i)    //
  const value_tyBM arg1,         // reciever
  const value_tyBM arg2,         // keyv
  const value_tyBM arg3,         // valv
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_8EqnYwr2sed_1Njis9lW96i,
                  objectval_tyBM * obrecv;
@@ -4220,9 +4220,9 @@ ROUTINEOBJNAME_BM (_5DQ2V9upFQv_3I4NiDiwsdf)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // reciever
  const value_tyBM arg2,         // dumpob
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_5DQ2V9upFQv_3I4NiDiwsdf,
                  objectval_tyBM * recv; objectval_tyBM * dumpob;
@@ -4253,8 +4253,8 @@ ROUTINEOBJNAME_BM (_8AzRspWL4ws_3cdvWV4S1JH)    //
  const value_tyBM arg1,         // reciever
  const value_tyBM arg2,         // dumpob
  const value_tyBM arg3,         // strbufob
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_8AzRspWL4ws_3cdvWV4S1JH,
                  objectval_tyBM * recv; //
@@ -4321,10 +4321,10 @@ value_tyBM
 ROUTINEOBJNAME_BM (_7XDuHagbhi8_3V9zhBpbrrV)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // taskob
- const value_tyBM arg2_ __attribute__ ((unused)),       //
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7XDuHagbhi8_3V9zhBpbrrV,
                  objectval_tyBM * taskob; value_tyBM resultv;
@@ -4368,10 +4368,10 @@ value_tyBM
 ROUTINEOBJNAME_BM (_43m9jyNirvE_0wkbsL0Nvkp)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //newob
- const value_tyBM arg2_ __attribute__ ((unused)),       //
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_43m9jyNirvE_0wkbsL0Nvkp,
                  objectval_tyBM * ob;

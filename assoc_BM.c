@@ -879,7 +879,8 @@ hashsetvalfindindexes_BM (struct hashsetval_stBM *hsv, value_tyBM val)
     return (struct hashpairindexes_stBM)
     {
       .hvi_buckix = bix,        //
-    .hvi_compix = -1};
+      .hvi_compix = -1
+    };
   ASSERT_BM (((typedhead_tyBM *) curbuck)->htyp == typayl_hashsetvbucket_BM);
   unsigned bucklen = ((typedhead_tyBM *) curbuck)->rlen;
   int buckpos = -1;
@@ -893,7 +894,8 @@ hashsetvalfindindexes_BM (struct hashsetval_stBM *hsv, value_tyBM val)
           return (struct hashpairindexes_stBM)
           {
             .hvi_buckix = bix,  //
-          .hvi_compix = vix};
+            .hvi_compix = vix
+          };
         }
       else if (curval == (value_tyBM) HASHEMPTYSLOT_BM)
         {
@@ -906,14 +908,15 @@ hashsetvalfindindexes_BM (struct hashsetval_stBM *hsv, value_tyBM val)
           return (struct hashpairindexes_stBM)
           {
             .hvi_buckix = bix,  //
-          .hvi_compix = vix};
+            .hvi_compix = vix
+          };
         }
     }
   return EMPTYPAIRINDEXES_BM;
 }                               /* end hashsetvalfindindexes_BM */
 
 bool
-hashsetvalcontains_BM (struct hashsetval_stBM * hsv, value_tyBM val)
+hashsetvalcontains_BM (struct hashsetval_stBM *hsv, value_tyBM val)
 {
   if (!hsv || valtype_BM ((value_tyBM) hsv) != typayl_hashsetval_BM)
     return false;
@@ -1116,7 +1119,7 @@ hashsetvalremove_BM (struct hashsetval_stBM *hsv, value_tyBM val)
 }                               /* end hashsetvalremove_BM */
 
 value_tyBM
-hashsetvalfirst_BM (struct hashsetval_stBM * hsv)
+hashsetvalfirst_BM (struct hashsetval_stBM *hsv)
 {
   if (!ishashsetval_BM ((value_tyBM) hsv))
     return NULL;
@@ -1142,7 +1145,7 @@ hashsetvalfirst_BM (struct hashsetval_stBM * hsv)
 }                               /* end hashsetvalfirst_BM */
 
 value_tyBM
-hashsetvalnext_BM (struct hashsetval_stBM * hsv, value_tyBM prev)
+hashsetvalnext_BM (struct hashsetval_stBM *hsv, value_tyBM prev)
 {
   if (!ishashsetval_BM ((value_tyBM) hsv))
     return NULL;
@@ -1190,7 +1193,7 @@ hashsetvalnext_BM (struct hashsetval_stBM * hsv, value_tyBM prev)
 }                               /* end hashsetvalnext_BM */
 
 value_tyBM
-hashsetvalmakenode_BM (struct hashsetval_stBM * hsv, objectval_tyBM * connob)
+hashsetvalmakenode_BM (struct hashsetval_stBM *hsv, objectval_tyBM * connob)
 {
   value_tyBM resv = NULL;
   if (!ishashsetval_BM ((value_tyBM) hsv))
@@ -1360,7 +1363,8 @@ hashmapvalfindindexes_BM (struct hashmapval_stBM *hmv, value_tyBM val)
     return (struct hashpairindexes_stBM)
     {
       .hvi_buckix = bix,        //
-    .hvi_compix = -1};
+      .hvi_compix = -1
+    };
   ASSERT_BM (((typedhead_tyBM *) curbuck)->htyp == typayl_hashmapbucket_BM);
   unsigned bucksiz = HASHMAPBUCKSIZE_BM (curbuck);
   int buckpos = -1;
@@ -1374,7 +1378,8 @@ hashmapvalfindindexes_BM (struct hashmapval_stBM *hmv, value_tyBM val)
           return (struct hashpairindexes_stBM)
           {
             .hvi_buckix = bix,  //
-          .hvi_compix = vix};
+            .hvi_compix = vix
+          };
         }
       else if (curkey == (value_tyBM) HASHEMPTYSLOT_BM)
         {
@@ -1387,7 +1392,8 @@ hashmapvalfindindexes_BM (struct hashmapval_stBM *hmv, value_tyBM val)
           return (struct hashpairindexes_stBM)
           {
             .hvi_buckix = bix,  //
-          .hvi_compix = vix};
+            .hvi_compix = vix
+          };
         }
     }
   return EMPTYPAIRINDEXES_BM;
@@ -1395,7 +1401,7 @@ hashmapvalfindindexes_BM (struct hashmapval_stBM *hmv, value_tyBM val)
 
 
 value_tyBM
-hashmapvalget_BM (struct hashmapval_stBM * hmv, value_tyBM keyv)
+hashmapvalget_BM (struct hashmapval_stBM *hmv, value_tyBM keyv)
 {
   if (!hmv || valtype_BM ((value_tyBM) hmv) != typayl_hashmapval_BM)
     return false;
@@ -1617,7 +1623,7 @@ hashmapvalremove_BM (struct hashmapval_stBM *hmv, value_tyBM keyv)
 
 
 value_tyBM
-hashmapvalfirstkey_BM (struct hashmapval_stBM * hmv)
+hashmapvalfirstkey_BM (struct hashmapval_stBM *hmv)
 {
   if (!ishashmapval_BM ((value_tyBM) hmv))
     return NULL;
@@ -1645,7 +1651,7 @@ hashmapvalfirstkey_BM (struct hashmapval_stBM * hmv)
 
 
 value_tyBM
-hashmapvalnextkey_BM (struct hashmapval_stBM * hmv, value_tyBM keyv)
+hashmapvalnextkey_BM (struct hashmapval_stBM *hmv, value_tyBM keyv)
 {
   if (!ishashmapval_BM ((value_tyBM) hmv) || !keyv)
     return NULL;
@@ -1696,7 +1702,7 @@ hashmapvalnextkey_BM (struct hashmapval_stBM * hmv, value_tyBM keyv)
 
 value_tyBM
   hashmapvalmakenodeofkeys_BM
-  (struct hashmapval_stBM * hmv, objectval_tyBM * connob)
+  (struct hashmapval_stBM *hmv, objectval_tyBM * connob)
 {
   if (!ishashmapval_BM ((value_tyBM) hmv))
     return NULL;

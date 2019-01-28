@@ -32,10 +32,10 @@ value_tyBM
 ROUTINEOBJNAME_BM (_5W4PPQFYdj2_3HYUlMsu3oZ)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__ ((unused)),       // 
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg2_ __attribute__((unused)),        // 
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_5W4PPQFYdj2_3HYUlMsu3oZ,
                  value_tyBM argv;
@@ -133,10 +133,10 @@ value_tyBM
 ROUTINEOBJNAME_BM (_1etImV3nBtp_5rnHSE87XRj)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // recv
- const value_tyBM arg2_ __attribute__ ((unused)),       //
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_1etImV3nBtp_5rnHSE87XRj,
                  objectval_tyBM * recv; //
@@ -171,10 +171,10 @@ value_tyBM
 ROUTINEOBJNAME_BM (_8gAuOE933W3_5s7IF0hgpkz)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //taskob
- const value_tyBM arg2_ __attribute__ ((unused)),       //
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_8gAuOE933W3_5s7IF0hgpkz,
                  objectval_tyBM * taskob; objectval_tyBM * framob;
@@ -269,8 +269,8 @@ run_mini_frame_BM (objectval_tyBM * framob, objectval_tyBM * taskob,
 value_tyBM
 evaluate_in_mini_frame_BM (value_tyBM expv, objectval_tyBM * framob,
                            objectval_tyBM * taskob,
-                           enum minievalstate_enBM * pevalstate,
-                           struct stackframe_stBM * stkf)
+                           enum minievalstate_enBM *pevalstate,
+                           struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM (stkf, /*descr: */ NULL,
                  objectval_tyBM * taskob; objectval_tyBM * framob;

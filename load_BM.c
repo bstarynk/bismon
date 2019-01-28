@@ -1127,11 +1127,11 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_7kMNgL8eJ09_6aEpofzWJDP);
 value_tyBM
 ROUTINEOBJNAME_BM (_7kMNgL8eJ09_6aEpofzWJDP)
 (struct stackframe_stBM * stkf,
-const value_tyBM arg1 __attribute__ ((unused)),
-const value_tyBM arg2 __attribute__ ((unused)),
-const value_tyBM arg3 __attribute__ ((unused)),
-const value_tyBM arg4 __attribute__ ((unused)),
-const quasinode_tyBM * restargs __attribute__ ((unused)))
+const value_tyBM arg1 __attribute__((unused)),
+const value_tyBM arg2 __attribute__((unused)),
+const value_tyBM arg3 __attribute__((unused)),
+const value_tyBM arg4 __attribute__((unused)),
+const quasinode_tyBM * restargs __attribute__((unused)))
 {
   enum
   {
@@ -1214,11 +1214,11 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh);
 value_tyBM
 ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh)    // load_module
 (struct stackframe_stBM * stkf, //
- const value_tyBM arg1_ __attribute__ ((unused)),       //
- const value_tyBM arg2_ __attribute__ ((unused)),       //
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg1_ __attribute__((unused)),        //
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   extern void postpone_loader_module_BM (objectval_tyBM * modulob,
                                          struct stackframe_stBM *stkf);

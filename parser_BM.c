@@ -898,7 +898,7 @@ parse_cords_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 
 #define EUROBYTELEN_BM 3        /* strlen("€") */
 parstoken_tyBM
-parsertokenget_BM (struct parser_stBM * pars, struct stackframe_stBM * stkf)
+parsertokenget_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 {
   ASSERT_BM (strlen ("€") == EUROBYTELEN_BM);
   if (!isparser_BM ((const value_tyBM) pars))
@@ -1005,9 +1005,9 @@ again:
       pars->pars_colpos += 2;
       return (parstoken_tyBM)
       {
-        .tok_kind = plex_ID,.tok_line = curlin,.tok_col = curcol,.tok_id =
-        {
-        0, 0}
+        .tok_kind = plex_ID,.tok_line = curlin,.tok_col = curcol,.tok_id = {
+          0, 0
+        }
       };
     }
 
@@ -1220,7 +1220,7 @@ again:
 
 
 bool
-parsertokenstartobject_BM (struct parser_stBM * pars, parstoken_tyBM tok)
+parsertokenstartobject_BM (struct parser_stBM *pars, parstoken_tyBM tok)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return false;
@@ -1246,9 +1246,9 @@ parsertokenstartobject_BM (struct parser_stBM * pars, parstoken_tyBM tok)
 
 
 objectval_tyBM *
-parsergetobject_BM (struct parser_stBM * pars,
-                    struct stackframe_stBM * prevstkf, int depth,
-                    bool * pgotobj)
+parsergetobject_BM (struct parser_stBM *pars,
+                    struct stackframe_stBM *prevstkf, int depth,
+                    bool *pgotobj)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     FATAL_BM ("bad parser");
@@ -1423,7 +1423,7 @@ failure:
 
 ////////////////
 bool
-parsertokenstartvalue_BM (struct parser_stBM * pars, parstoken_tyBM tok)
+parsertokenstartvalue_BM (struct parser_stBM *pars, parstoken_tyBM tok)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return false;
@@ -1457,12 +1457,11 @@ static value_tyBM parsergetunary_BM (struct parser_stBM *pars,
                                      unsigned lineno, unsigned colpos,
                                      int depth,
                                      objectval_tyBM * unaryconn,
-                                     bool * pgotval);
+                                     bool *pgotval);
 
 value_tyBM
 parsergetvalue_BM (struct parser_stBM *pars,
-                   struct stackframe_stBM *prevstkf, int depth,
-                   bool * pgotval)
+                   struct stackframe_stBM *prevstkf, int depth, bool *pgotval)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     FATAL_BM ("bad parser");
@@ -2291,10 +2290,10 @@ failure:
 
 
 value_tyBM
-parsergetunary_BM (struct parser_stBM * pars,
-                   struct stackframe_stBM * prevstkf,
+parsergetunary_BM (struct parser_stBM *pars,
+                   struct stackframe_stBM *prevstkf,
                    unsigned lineno, unsigned colpos,
-                   int depth, objectval_tyBM * unaryconn, bool * pgotval)
+                   int depth, objectval_tyBM * unaryconn, bool *pgotval)
 {
   LOCALFRAME_BM                 //
     (prevstkf, NULL,            //
@@ -2342,7 +2341,7 @@ parsergetunary_BM (struct parser_stBM * pars,
 value_tyBM
 parsergetchunk_BM (struct parser_stBM *pars,
                    struct stackframe_stBM *prevstkf, int depth,
-                   bool * pgotchunk)
+                   bool *pgotchunk)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     FATAL_BM ("bad parser");

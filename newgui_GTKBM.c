@@ -1470,10 +1470,10 @@ parsdollarval_newguicmd_BM (struct parser_stBM *pars,
 // parse inside $(....)
 value_tyBM
 parsvalexp_newguicmd_BM (struct parser_stBM
-                         * pars,
+                         *pars,
                          unsigned lineno,
                          unsigned colpos,
-                         int depth, struct stackframe_stBM * stkf)
+                         int depth, struct stackframe_stBM *stkf)
 {
   ASSERT_BM (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -2092,7 +2092,7 @@ index_named_value_newgui_BM (const char *vstr)
 }                               /* end index_named_value_newgui_BM */
 
 value_tyBM
-find_named_value_newgui_BM (const char *vstr, struct stackframe_stBM * stkf)
+find_named_value_newgui_BM (const char *vstr, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf,
                  /*descr: */ NULL,
@@ -2635,9 +2635,9 @@ parsmakenewname_newguicmd_BM (struct
 
 // expand readmacro-s
 value_tyBM parsreadmacroexp_newguicmd_BM
-  (struct parser_stBM * pars,
+  (struct parser_stBM *pars,
    unsigned lineno, unsigned colpos,
-   int depth, const node_tyBM * nod, struct stackframe_stBM * stkf)
+   int depth, const node_tyBM * nod, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf,
                  /*descr: */ NULL,
@@ -2684,8 +2684,8 @@ value_tyBM parsreadmacroexp_newguicmd_BM
 /// accept unary operations
 bool
   parsacceptunary_newguicmd_BM
-  (struct parser_stBM * pars, unsigned lineno, unsigned colpos, int depth,
-   objectval_tyBM * unconnob, struct stackframe_stBM * stkf)
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos, int depth,
+   objectval_tyBM * unconnob, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf,
                  /*descr: */ NULL,
@@ -2920,7 +2920,7 @@ destroy_obwin_newgui_BM (struct objectwindow_newgui_stBM *oldobw,
 
 bool
 deleteobjectwin_newgui_cbBM (GtkWidget * widget,
-                             GdkEvent * ev __attribute__ ((unused)),
+                             GdkEvent * ev __attribute__((unused)),
                              gpointer data)
 {
   struct objectwindow_newgui_stBM *oldobw =
@@ -4097,8 +4097,9 @@ populatepopup_objview_newgui_BM (GtkTextView * txview, GtkWidget * popup,
   struct objectview_newgui_stBM *obv = (struct objectview_newgui_stBM *) data;
   ASSERT_BM (obv != NULL);
   ASSERT_BM (pthread_self () == mainthreadid_BM);
-  ASSERT_BM (txview == GTK_TEXT_VIEW (obv->obv_upper.obvt_textview)
-             || txview == GTK_TEXT_VIEW (obv->obv_lower.obvt_textview));
+  WEAKASSERTRET_BM (txview == GTK_TEXT_VIEW (obv->obv_upper.obvt_textview)
+                    || txview ==
+                    GTK_TEXT_VIEW (obv->obv_lower.obvt_textview));
   char cursinfobuf[32];
   memset (cursinfobuf, 0, sizeof (cursinfobuf));
   GtkTextIter cursit = EMPTY_TEXT_ITER_BM;
@@ -4729,7 +4730,7 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
 // callback installed by g_io_add_watch in fork_gtk_process_at_slot_BM
 gboolean
 pipe_process_watchcb_BM (GIOChannel * source, GIOCondition cond
-                         __attribute__ ((unused)), gpointer user_data)
+                         __attribute__((unused)), gpointer user_data)
 {
   LOCALFRAME_BM ( /*prev: */ NULL,
                  /*descr: */ NULL,
@@ -4840,36 +4841,36 @@ show_failure_value_newgui_BM (value_tyBM valarg, struct stackframe_stBM *stkf)
 #ifndef BISMONION
 // stubs for useless web related functions
 bool
-objhaswebexchangepayl_BM (const objectval_tyBM * obj __attribute__ ((unused)))
+objhaswebexchangepayl_BM (const objectval_tyBM * obj __attribute__((unused)))
 {
   return false;
 }                               /* end objhaswebexchangepayl_BM */
 
 struct webexchangedata_stBM *
-objgetwebexchangepayl_BM (const objectval_tyBM * obj __attribute__ ((unused)))
+objgetwebexchangepayl_BM (const objectval_tyBM * obj __attribute__((unused)))
 {
   return NULL;
 }                               /* end objgetwebexchangepayl_BM */
 
 static inline const char *
 objwebexchangerequestpathpayl_BM (const objectval_tyBM * obj
-                                  __attribute__ ((unused)))
+                                  __attribute__((unused)))
 {
   return NULL;
 }                               /* end objwebexchangerequestpathpayl_BM */
 
 value_tyBM
 objwebexchangerequestpathstrvpayl_BM (const objectval_tyBM * obj
-                                      __attribute__ ((unused)))
+                                      __attribute__((unused)))
 {
   return NULL;
 }                               /* end objwebexchangerequestpathstrvpayl */
 
 value_tyBM
 objwebexchangerequestcstrheaderpayl_BM (const objectval_tyBM * obj
-                                        __attribute__ ((unused)),
+                                        __attribute__((unused)),
                                         const char *cheader
-                                        __attribute__ ((unused)))
+                                        __attribute__((unused)))
 {
   return NULL;
 }                               /* end objwebexchangerequestcstrheaderpayl_BM */
@@ -4877,9 +4878,9 @@ objwebexchangerequestcstrheaderpayl_BM (const objectval_tyBM * obj
 // return the value string associated with a value request header field
 value_tyBM
 objwebexchangerequestvalheaderpayl_BM (const objectval_tyBM * obj
-                                       __attribute__ ((unused)),
+                                       __attribute__((unused)),
                                        value_tyBM cval
-                                       __attribute__ ((unused)))
+                                       __attribute__((unused)))
 {
   return NULL;
 }                               /* end objwebexchangerequestvalheaderpayl_BM */
@@ -4887,42 +4888,41 @@ objwebexchangerequestvalheaderpayl_BM (const objectval_tyBM * obj
 // return the value string associated with a constant queryarg
 value_tyBM
 objwebexchangerequestcstrquerypayl_BM (const objectval_tyBM * obj
-                                       __attribute__ ((unused)),
+                                       __attribute__((unused)),
                                        const char *cquery
-                                       __attribute__ ((unused)))
+                                       __attribute__((unused)))
 {
   return NULL;
 }                               /* end objwebexchangerequestcstrquerypayl */
 
 value_tyBM
 objwebexchangerequestvalquerypayl_BM (const objectval_tyBM * obj
-                                      __attribute__ ((unused)),
+                                      __attribute__((unused)),
                                       const char *cquery
-                                      __attribute__ ((unused)))
+                                      __attribute__((unused)))
 {
   return NULL;
 }                               /* end objwebexchangerequestvalquerypayl_BM */
 
 value_tyBM
 objwebexchangerequestcstrpostpayl_BM (const objectval_tyBM * obj
-                                      __attribute__ ((unused)),
+                                      __attribute__((unused)),
                                       const char *cquery
-                                      __attribute__ ((unused)))
+                                      __attribute__((unused)))
 {
   return NULL;
 }                               /* end objwebexchangerequestcstrpostpayl_BM */
 
 value_tyBM
 objwebexchangerequestvalpostpayl_BM (const objectval_tyBM * obj
-                                     __attribute__ ((unused)), value_tyBM cval
-                                     __attribute__ ((unused)))
+                                     __attribute__((unused)), value_tyBM cval
+                                     __attribute__((unused)))
 {
   return NULL;
 }                               /* end objwebexchangerequestvalpostpayl_BM */
 
 value_tyBM
-objwebexchangedatapayl_BM (const objectval_tyBM * obj
-                           __attribute__ ((unused)))
+objwebexchangedatapayl_BM (const objectval_tyBM * obj __attribute__((unused)))
 {
   return NULL;
 }                               /* end objwebexchangedatapayl_BM */
@@ -4930,7 +4930,7 @@ objwebexchangedatapayl_BM (const objectval_tyBM * obj
 
 objectval_tyBM *
 objwebexchangesessionpayl_BM (const objectval_tyBM * obj
-                              __attribute__ ((unused)))
+                              __attribute__((unused)))
 {
   return NULL;
 }                               /* end            objwebexchangesessionpayl_BM */
@@ -4938,13 +4938,13 @@ objwebexchangesessionpayl_BM (const objectval_tyBM * obj
 
 bool
 objwebexchangerequestispostpayl_BM (const objectval_tyBM * obj
-                                    __attribute__ ((unused)))
+                                    __attribute__((unused)))
 {
   return false;
 }                               /* end objwebexchangerequestispostpayl_BM */
 
 bool
-objhaswebsessionpayl_BM (const objectval_tyBM * obj __attribute__ ((unused)))
+objhaswebsessionpayl_BM (const objectval_tyBM * obj __attribute__((unused)))
 {
   return false;
 }                               /* end objhaswebsessionpayl_BM */

@@ -354,7 +354,7 @@ browserblinkstop_BM (void)
 }                               /* end browserblinkstop_BM */
 
 int
-browserblinkoff_BM (gpointer data __attribute__ ((unused)))
+browserblinkoff_BM (gpointer data __attribute__((unused)))
 {
   GtkTextIter startit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;
@@ -371,7 +371,7 @@ browserblinkoff_BM (gpointer data __attribute__ ((unused)))
 }                               /* end browserblinkoff_BM */
 
 int
-browserblinkon_BM (gpointer data __attribute__ ((unused)))
+browserblinkon_BM (gpointer data __attribute__((unused)))
 {
   if (browserblinkparens_BM.paroff_open > 0
       && browserblinkparens_BM.paroff_openlen > 0)
@@ -1459,9 +1459,9 @@ garbage_collect_from_gui_BM (void)
 }                               /* end garbage_collect_from_gui_BM */
 
 bool
-deletemainwin_BM (GtkWidget * widget __attribute__ ((unused)),  //
-                  GdkEvent * ev __attribute__ ((unused)),       //
-                  gpointer data __attribute__ ((unused)))
+deletemainwin_BM (GtkWidget * widget __attribute__((unused)),   //
+                  GdkEvent * ev __attribute__((unused)),        //
+                  gpointer data __attribute__((unused)))
 {
   // printf ("deletemainwin_BM\n");
   DBGPRINTF_BM ("deletemainwin_BM tid#%ld", (long) gettid_BM ());
@@ -2228,9 +2228,9 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
 
 // parse inside $(....)
 value_tyBM
-parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
+parsvalexp_guicmd_BM (struct parser_stBM *pars, unsigned lineno,
                       unsigned colpos, int depth,
-                      struct stackframe_stBM * stkf)
+                      struct stackframe_stBM *stkf)
 {
   ASSERT_BM (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -2589,8 +2589,8 @@ parsvalexp_guicmd_BM (struct parser_stBM * pars, unsigned lineno,
 
 // expand readmacro-s
 value_tyBM parsreadmacroexp_guicmd_BM
-  (struct parser_stBM * pars, unsigned lineno, unsigned colpos, int depth,
-   const node_tyBM * nod, struct stackframe_stBM * stkf)
+  (struct parser_stBM *pars, unsigned lineno, unsigned colpos, int depth,
+   const node_tyBM * nod, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  value_tyBM resval; const node_tyBM * nod; value_tyBM crm;
@@ -3511,7 +3511,7 @@ commandblinkstop_BM (void)
 }                               /* end commandblinkstop_BM */
 
 int
-commandblinkoff_BM (gpointer data __attribute__ ((unused)))
+commandblinkoff_BM (gpointer data __attribute__((unused)))
 {
   GtkTextIter startit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;
@@ -3522,7 +3522,7 @@ commandblinkoff_BM (gpointer data __attribute__ ((unused)))
 }                               /* end commandblinkoff_BM */
 
 int
-commandblinkon_BM (gpointer data __attribute__ ((unused)))
+commandblinkon_BM (gpointer data __attribute__((unused)))
 {
   if (commandblinkparens_BM.paroff_open > 0
       && commandblinkparens_BM.paroff_openlen > 0)
@@ -3628,7 +3628,7 @@ handlekeypresscmd_BM (GtkWidget * widg, GdkEventKey * evk, gpointer data)
 
 
 static gboolean
-timeoutrestoreopacitycmd_BM (gpointer data __attribute__ ((unused)))
+timeoutrestoreopacitycmd_BM (gpointer data __attribute__((unused)))
 {
   gtk_widget_set_opacity (commandview_BM, 1.0);
   return false;
@@ -3985,7 +3985,7 @@ failure:
 
 void
 replacecompletionbyidcmd_BM (GtkMenuItem * mit
-                             __attribute__ ((unused)), gpointer data)
+                             __attribute__((unused)), gpointer data)
 {
   unsigned ix = (unsigned) (intptr_t) data;
   ASSERT_BM (issequence_BM ((const value_tyBM) complseqcmd_BM));
@@ -4010,7 +4010,7 @@ replacecompletionbyidcmd_BM (GtkMenuItem * mit
 
 void
 replacecompletionbynamecmd_BM (GtkMenuItem * mit
-                               __attribute__ ((unused)), gpointer data)
+                               __attribute__((unused)), gpointer data)
 {
   unsigned ix = (unsigned) (intptr_t) data;
   ASSERT_BM (issequence_BM ((const value_tyBM) complseqcmd_BM));
@@ -4052,8 +4052,8 @@ replacecompletionbyprefixcmd_BM (void)
 
 void
 stopcompletionmenucmd_BM (GtkMenuItem * mit
-                          __attribute__ ((unused)),
-                          gpointer data __attribute__ ((unused)))
+                          __attribute__((unused)),
+                          gpointer data __attribute__((unused)))
 {
   ASSERT_BM (issequence_BM ((const value_tyBM) complseqcmd_BM));
   if (complcommonprefix_BM)
@@ -4406,9 +4406,9 @@ clearlog_BM (void)
 
 
 void
-cssparsingerror_BM (GtkCssProvider * prov __attribute__ ((unused)),
+cssparsingerror_BM (GtkCssProvider * prov __attribute__((unused)),
                     GtkCssSection * section, GError * err,
-                    gpointer data __attribute__ ((unused)))
+                    gpointer data __attribute__((unused)))
 {
   GFile *sfil = gtk_css_section_get_file (section);
   FATAL_BM ("CSS parsing error: %s [L%dC%d-L%dC%d] (%s#%d) %s",
@@ -4753,7 +4753,7 @@ initialize_log_scrollview_BM (void)
 
 void
 marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
-               GtkTextMark * txmark, gpointer data __attribute__ ((unused)))
+               GtkTextMark * txmark, gpointer data __attribute__((unused)))
 {
   ASSERT_BM (txbuf == commandbuf_BM);
   if (txmark != gtk_text_buffer_get_insert (txbuf))
@@ -4775,7 +4775,7 @@ marksetcmd_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
 
 void
 marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
-                 GtkTextMark * txmark, gpointer data __attribute__ ((unused)))
+                 GtkTextMark * txmark, gpointer data __attribute__((unused)))
 {
   ASSERT_BM (txbuf == browserbuf_BM);
   if (txmark != gtk_text_buffer_get_insert (txbuf))
@@ -4963,7 +4963,7 @@ marksetbrows_BM (GtkTextBuffer * txbuf, GtkTextIter * txit,
 
 extern bool did_deferred_BM (void);
 gboolean
-guiperiodicgarbagecollection_BM (gpointer data __attribute__ ((unused)))
+guiperiodicgarbagecollection_BM (gpointer data __attribute__((unused)))
 {
   ASSERT_BM (data == NULL);
   did_deferred_BM ();

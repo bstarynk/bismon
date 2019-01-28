@@ -986,7 +986,7 @@ datavectdata_BM (const struct datavectval_stBM *dvec)
 }                               /* end datavectdata_BM */
 
 value_tyBM
-datavectnth_BM (const struct datavectval_stBM * dvec, int rk)
+datavectnth_BM (const struct datavectval_stBM *dvec, int rk)
 {
   unsigned sz = datavectlen_BM (dvec);
   if (rk < 0)
@@ -997,7 +997,7 @@ datavectnth_BM (const struct datavectval_stBM * dvec, int rk)
 }                               /* end datavectnth_BM */
 
 value_tyBM
-datavectlast_BM (const struct datavectval_stBM * dvec)
+datavectlast_BM (const struct datavectval_stBM *dvec)
 {
   unsigned sz = datavectlen_BM (dvec);
   if (!sz)
@@ -1389,7 +1389,7 @@ islist_BM (const value_tyBM v)
 }
 
 value_tyBM
-listfirst_BM (const struct listtop_stBM * lis)
+listfirst_BM (const struct listtop_stBM *lis)
 {
   if (!islist_BM ((const value_tyBM) lis))
     return NULL;
@@ -1407,7 +1407,7 @@ listfirst_BM (const struct listtop_stBM * lis)
 }
 
 value_tyBM
-listlast_BM (const struct listtop_stBM * lis)
+listlast_BM (const struct listtop_stBM *lis)
 {
   if (!islist_BM ((const value_tyBM) lis))
     return NULL;
@@ -1897,7 +1897,7 @@ parserrestline_BM (const struct parser_stBM *pars)
 }                               /* end parserrestline_BM */
 
 gunichar
-parserunichar_BM (const struct parser_stBM * pars)
+parserunichar_BM (const struct parser_stBM *pars)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return 0;
@@ -1911,7 +1911,7 @@ parserunichar_BM (const struct parser_stBM * pars)
 }                               /* end parserunichar_BM */
 
 bool
-parsereol_BM (const struct parser_stBM * pars)
+parsereol_BM (const struct parser_stBM *pars)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return false;
@@ -1925,7 +1925,7 @@ parsereol_BM (const struct parser_stBM * pars)
 }                               /* end parsereol_BM */
 
 bool
-parserendoffile_BM (const struct parser_stBM * pars)
+parserendoffile_BM (const struct parser_stBM *pars)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return false;
@@ -1935,7 +1935,7 @@ parserendoffile_BM (const struct parser_stBM * pars)
 }                               /* end parserendoffile_BM */
 
 bool
-parseradvanceutf8_BM (struct parser_stBM * pars, unsigned nbc)
+parseradvanceutf8_BM (struct parser_stBM *pars, unsigned nbc)
 {
   if (!isparser_BM ((const value_tyBM) pars))
     return false;

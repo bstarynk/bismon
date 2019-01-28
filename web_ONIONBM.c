@@ -125,7 +125,7 @@ static void perhaps_suspend_for_gc_onion_thread_stack_BM (struct
 
 
 void
-lockonion_runpro_mtx_at_BM (int lineno __attribute__ ((unused)))
+lockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
 {
 #if 0
   // too verbose, so not needed
@@ -137,7 +137,7 @@ lockonion_runpro_mtx_at_BM (int lineno __attribute__ ((unused)))
 
 
 void
-unlockonion_runpro_mtx_at_BM (int lineno __attribute__ ((unused)))
+unlockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
 {
 #if 0
   DBGPRINTFAT_BM (__FILE__, lineno, "unlockonion_runpro_mtx_BM thrid=%ld",
@@ -1073,7 +1073,7 @@ custom_onion_handler_BM (void *clientdata,
 
 
 onion_connection_status
-login_onion_handler_BM (void *_clientdata __attribute__ ((unused)),
+login_onion_handler_BM (void *_clientdata __attribute__((unused)),
                         onion_request * req, onion_response * resp)
 {
   objectval_tyBM *k_login_onion_handler = BMK_8qHowkDvzRL_03sltCgsDN2;
@@ -1766,7 +1766,7 @@ value_tyBM
 find_web_handler_BM (objectval_tyBM * sessionobarg,
                      objectval_tyBM * dictobarg,
                      onion_request * req,
-                     int depth, int *poffset, struct stackframe_stBM * stkf)
+                     int depth, int *poffset, struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_depth = BMK_17YdW6dWrBA_2mn4QmBjMNs;
   objectval_tyBM *k_web_empty_handler = BMK_8Rwc7G3hQ0G_230O74aoi1w;

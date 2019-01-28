@@ -709,7 +709,7 @@ hashsetobj_grow_BM (struct hashsetobj_stBM *hset, unsigned gap)
 
 
 bool
-hashsetobj_contains_BM (struct hashsetobj_stBM * hset,
+hashsetobj_contains_BM (struct hashsetobj_stBM *hset,
                         const objectval_tyBM * obj)
 {
   if (valtype_BM ((const value_tyBM) obj) != tyObject_BM)
@@ -891,7 +891,7 @@ hashsetobj_random_index_BM (struct hashsetobj_stBM *hset)
 
 // pick some random element, and keep it in the hashset
 objectval_tyBM *
-hashsetobj_pick_random_BM (struct hashsetobj_stBM * hset)
+hashsetobj_pick_random_BM (struct hashsetobj_stBM *hset)
 {
   if (!hset || valtype_BM ((const value_tyBM) hset) != typayl_hashsetobj_BM)
     return NULL;
@@ -911,7 +911,7 @@ hashsetobj_pick_random_BM (struct hashsetobj_stBM * hset)
 
 // take some random element, and remove it from the hashset - without reorganizing it
 objectval_tyBM *
-hashsetobj_take_random_BM (struct hashsetobj_stBM * hset)
+hashsetobj_take_random_BM (struct hashsetobj_stBM *hset)
 {
   if (!hset || valtype_BM ((const value_tyBM) hset) != typayl_hashsetobj_BM)
     return NULL;
@@ -1392,7 +1392,7 @@ objputhashmapvalpayl_BM (objectval_tyBM * obj, unsigned gap)
 
 value_tyBM
 send0_BM (const value_tyBM recv, const objectval_tyBM * obselector,
-          struct stackframe_stBM * stkf)
+          struct stackframe_stBM *stkf)
 {
   if (!isobject_BM ((const value_tyBM) obselector))
     return NULL;

@@ -488,7 +488,7 @@ valqcmp_BM (const void *p1, const void *p2)
 void
 strbuffergcmark_BM (struct garbcoll_stBM *gc, struct strbuffer_stBM *sbuf,
                     objectval_tyBM * fromob, int depth
-                    __attribute__ ((unused)))
+                    __attribute__((unused)))
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (!fromob || isobject_BM (fromob));

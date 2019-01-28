@@ -33,9 +33,9 @@ value_tyBM
 ROUTINEOBJNAME_BM (_6gRlN8loM4E_4pSsNmiCeIa)    // emit_c_type:c_opaque
 (struct stackframe_stBM * stkf, const value_tyBM arg1,  //
  const value_tyBM arg2,         //
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  value_tyBM recv;
@@ -77,9 +77,9 @@ value_tyBM
 ROUTINEOBJNAME_BM (_979hCujWp2g_9tjRbM8Ht1l)    // emit_c_type:c_enum
 (struct stackframe_stBM * stkf, const value_tyBM arg1,  //
  const value_tyBM arg2,         //
- const value_tyBM arg3_ __attribute__ ((unused)),       //
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  value_tyBM recv;
@@ -117,8 +117,8 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
  const value_tyBM arg1,         // recv
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // index
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9M3BqmOS7mA_96DTa52k7Xq,
                  objectval_tyBM * routprepob;   //
@@ -323,10 +323,10 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
  const value_tyBM arg1,         // recv
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // index
- const value_tyBM arg4_ __attribute__ ((unused)),       //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_locking = BMK_8yqFC2Qz7I2_7KoZMWLE0U3;
+  objectval_tyBM * k_locking = BMK_8yqFC2Qz7I2_7KoZMWLE0U3;
   objectval_tyBM *k_lockobj = BMK_9dso3pFLYwm_3JwHqiJK3UL;
   objectval_tyBM *k_emit_definition = BMK_1g8s9B96Irf_6Ix2Cyy8Hq0;
   //objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
@@ -888,9 +888,9 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM * k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
@@ -1016,9 +1016,9 @@ ROUTINEOBJNAME_BM (_56pDwW9peiP_8flH2fMQUnD)    //emit_block°basiclo_loop
  const value_tyBM arg2,         // modgenob 
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM * k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
@@ -1152,7 +1152,7 @@ ROUTINEOBJNAME_BM (_2gpamAdSc26_6d1JjCmKHyw)    //emit_statment°basiclo_cond
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2gpamAdSc26_6d1JjCmKHyw,
                  objectval_tyBM * stmtob;       //
@@ -1317,9 +1317,9 @@ ROUTINEOBJNAME_BM (_6eRPTujgMx5_9mLxL25hmr9)    // emit_statement°basiclo_while
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
+  objectval_tyBM * k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   objectval_tyBM *k_emit_block = BMK_6mk5eos8067_1odgCpnWMOj;
@@ -1461,7 +1461,7 @@ ROUTINEOBJNAME_BM (_9Wk97VJLuH1_0FwsSpfatDg)    // emit_when°basiclo_when
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9Wk97VJLuH1_0FwsSpfatDg,
                  objectval_tyBM * whenob;       //
@@ -2187,7 +2187,7 @@ ROUTINEOBJNAME_BM (_48l341uEMuG_3gJ2HHIwYhn)    //miniemit_node_conn°basiclo_si
  const value_tyBM arg4,         // routprepob
  const quasinode_tyBM * restargs /*depth, fromob. */ )
 {
-  objectval_tyBM *k_emit_expression = BMK_9lXSe7DrOl6_7hghYt0LhTF;
+  objectval_tyBM * k_emit_expression = BMK_9lXSe7DrOl6_7hghYt0LhTF;
   objectval_tyBM *k_miniemit_node_conn = BMK_7L782rSgJBB_9vjsBdqAoz7;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_48l341uEMuG_3gJ2HHIwYhn,
                  value_tyBM resultv; objectval_tyBM * connob; value_tyBM expv;  //
@@ -2266,7 +2266,7 @@ ROUTINEOBJNAME_BM (_22wwtRd69oP_3IH6VRfTzu6)    //
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_22wwtRd69oP_3IH6VRfTzu6,
                  objectval_tyBM * stmtob;
@@ -2330,7 +2330,7 @@ ROUTINEOBJNAME_BM (_7DErEWkQBmz_5hPwF6ARmJ7)    //emit_statement°basiclo_return
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ NULL,
                  objectval_tyBM * stmtob;       //
@@ -2410,9 +2410,9 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM * k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_run = BMK_4RFtYFUdfau_7Vm5jZ4Wm8e;
   objectval_tyBM *k_chunk = BMK_3pQnBS9ZjkQ_0uGmqUUhAum;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
@@ -2568,9 +2568,9 @@ ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY)    // emit_statement°basiclo_cexpa
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_assoc_object = BMK_6ZQ05nCv3Ys_8LA6B5LkZgm;
+  objectval_tyBM * k_assoc_object = BMK_6ZQ05nCv3Ys_8LA6B5LkZgm;
   objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   objectval_tyBM *k_origin = BMK_1xhcI0ZnQ6f_5xOLATXqawx;
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
@@ -2779,9 +2779,9 @@ ROUTINEOBJNAME_BM (_4hS1jncZQAY_9pGS66eIlw9)    //emit_statement°basiclo_exit
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
+  objectval_tyBM * k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   objectval_tyBM *k_exit = BMK_41gbFesxqzD_3l56OLiNdl2;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_4hS1jncZQAY_9pGS66eIlw9,
                  objectval_tyBM * stmtob;       //
@@ -2836,10 +2836,10 @@ ROUTINEOBJNAME_BM (_1EFhqSytjSK_9Uchza7qmUD)    //emit_statement°basiclo_wrong
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   //objectval_tyBM *k_wrong = BMK_2qtlhVU3gil_1SmwpjiT7Jm;
-  objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
+  objectval_tyBM * k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_1EFhqSytjSK_9Uchza7qmUD,
                  objectval_tyBM * stmtob;       //
@@ -2954,9 +2954,9 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
+  objectval_tyBM * k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
   objectval_tyBM *k_default = BMK_0Ost4Do2yhq_95ticPFRmQO;
@@ -3225,9 +3225,9 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
+  objectval_tyBM * k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
   objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
   //objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
@@ -3587,10 +3587,10 @@ ROUTINEOBJNAME_BM (_8XIt55nuPul_3MZfto9hmgy)    // emit_statement°basiclo_fail
  const value_tyBM modgenarg,    //
  const value_tyBM routpreparg,  //
  const value_tyBM deptharg,     //
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   //objectval_tyBM *k_basiclo_statement = BMK_4lKK08v9A0t_0GGsir35UxP;
-  objectval_tyBM *k_fail = BMK_085lT8c13Ik_11pcWJfcLeM;
+  objectval_tyBM * k_fail = BMK_085lT8c13Ik_11pcWJfcLeM;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_8XIt55nuPul_3MZfto9hmgy,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * modgenob;     //
@@ -3646,9 +3646,9 @@ ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr)    //emit_block°basiclo_lockobj
  const value_tyBM arg2,         // modgenob
  const value_tyBM arg3,         // routprepob
  const value_tyBM arg4,         // depth
- const quasinode_tyBM * restargs_ __attribute__ ((unused)))
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM *k_locking = BMK_8yqFC2Qz7I2_7KoZMWLE0U3;
+  objectval_tyBM * k_locking = BMK_8yqFC2Qz7I2_7KoZMWLE0U3;
   objectval_tyBM *k_lockobj = BMK_9dso3pFLYwm_3JwHqiJK3UL;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   objectval_tyBM *k_basiclo_block = BMK_4bYUiDmxrKK_6nPPlEl8y8x;
@@ -3790,8 +3790,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
  const value_tyBM arg1,         // recieving module
  const value_tyBM arg2,         /* optional dumperob or prefix */
  const value_tyBM arg3,         // optional closgenv closure to process the module generator
- const value_tyBM arg4 __attribute__ ((unused)),
- const quasinode_tyBM * restargs __attribute__ ((unused)))
+ const value_tyBM arg4 __attribute__((unused)),
+ const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf,      /*descr: */
                  BMK_1gME6zn82Kf_8hzWibLFRfz, objectval_tyBM * modulob; //
@@ -4128,7 +4128,7 @@ ROUTINEOBJNAME_BM (_6lTDbwKEMMc_0wsIKviDSce)    //miniemit_node_conn#apply
  const value_tyBM arg4,         // depth
  const quasinode_tyBM * restargs /*fromob. */ )
 {
-  objectval_tyBM *k_apply = BMK_3Nl6LhfUZVb_1itsyWMBfYl;
+  objectval_tyBM * k_apply = BMK_3Nl6LhfUZVb_1itsyWMBfYl;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_6lTDbwKEMMc_0wsIKviDSce,
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * fromob;       //
@@ -4212,7 +4212,7 @@ ROUTINEOBJNAME_BM (_5ul3FB4ewSJ_7GbPhk05UVR)    ///miniemit_node_conn#send
  const value_tyBM arg4,         // depth
  const quasinode_tyBM * restargs /*fromob. */ )
 {
-  objectval_tyBM *k_send = BMK_5P2fpxElfqT_7NlO7H9TYGI;
+  objectval_tyBM * k_send = BMK_5P2fpxElfqT_7NlO7H9TYGI;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_5ul3FB4ewSJ_7GbPhk05UVR,
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * fromob;       //
@@ -4303,7 +4303,7 @@ ROUTINEOBJNAME_BM (_0DW82XG9HTW_0SblkfpwJi3)    //miniemit_node_conn#make_sequen
  const value_tyBM arg4,         // depth
  const quasinode_tyBM * restargs /*fromob. */ )
 {
-  objectval_tyBM *k_tuple = BMK_6TmLNh9vtVY_0pwkHRtJ44k;
+  objectval_tyBM * k_tuple = BMK_6TmLNh9vtVY_0pwkHRtJ44k;
   objectval_tyBM *k_set = BMK_2mYaTh9kH4I_7ENiXcymRmy;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0DW82XG9HTW_0SblkfpwJi3,
                  objectval_tyBM * routprepob;   //
@@ -4410,7 +4410,7 @@ ROUTINEOBJNAME_BM (_4qDfwZTHqD2_7Xti5ibNj8Z)    // miniemit_node_conn#collect_se
  const value_tyBM arg4,         // depth
  const quasinode_tyBM * restargs /*fromob. */ )
 {
-  objectval_tyBM *k_tuple = BMK_6TmLNh9vtVY_0pwkHRtJ44k;
+  objectval_tyBM * k_tuple = BMK_6TmLNh9vtVY_0pwkHRtJ44k;
   objectval_tyBM *k_set = BMK_2mYaTh9kH4I_7ENiXcymRmy;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_4qDfwZTHqD2_7Xti5ibNj8Z,
                  objectval_tyBM * routprepob;   //
@@ -4508,7 +4508,7 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
  const value_tyBM arg4,         // depth
  const quasinode_tyBM * restargs /*fromob. */ )
 {
-  objectval_tyBM *k_node = BMK_7D8xcWnEiys_8oqOVSkCxkA;
+  objectval_tyBM * k_node = BMK_7D8xcWnEiys_8oqOVSkCxkA;
   objectval_tyBM *k_closure = BMK_93zjUzZVAaj_9ppXv7C34GR;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_1nsAyqOOy7S_1zodeivnxlm,
                  objectval_tyBM * routprepob;   //

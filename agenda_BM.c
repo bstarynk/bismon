@@ -233,8 +233,8 @@ agenda_nb_work_jobs_BM (void)
   return ti_nbworkers_BM;
 }                               /* end agenda_nb_work_jobs_BM */
 
-extern double taskletcputime_BM (void) __attribute__ ((optimize ("-O3")));
-extern double taskletelapsedtime_BM (void) __attribute__ ((optimize ("-O3")));
+extern double taskletcputime_BM (void) __attribute__((optimize ("-O3")));
+extern double taskletelapsedtime_BM (void) __attribute__((optimize ("-O3")));
 
 double
 taskletcputime_BM (void)
