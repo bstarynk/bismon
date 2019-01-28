@@ -1675,7 +1675,10 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         break;
       if (timedout)
         {
+	  DBGPRINTF_BM("do_dynamic_onion webexob %s timedout",
+		       objectdbg_BM(_.webexob));
           _.errorv = makenode1_BM (k_web_timeout, _.webexob);
+#warning do_dynamic_onion should not fail on timedout, but reply with HTTP_INTERNAL_ERROR ...
           PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
         }
     }
