@@ -59,13 +59,18 @@
   
   <hr/>
   <p class='tinyinfo_cl'><b>NB:</b> The development
-of <a href='http://github.com/bstarynk/bismon'><tt>Bismon</tt></a>
+of <a href='http://github.com/bstarynk/bismon/'><tt>Bismon</tt></a>
 (a <a href='https://www.gnu.org/licenses/gpl-3.0.en.html'>GPLv3+</a>
-licensed free software) -done by Basile Starynkevitch,
+licensed free software whose name may be temporary and could change)
+-done by Basile Starynkevitch,
 from <a href='http://www-list.cea.fr/'>CEA, LIST</a> in France- is
-funded in 2018-2020 by the European Union, Horizon H2020
-programme, <a href='http://chariotproject.eu'>CHARIOT</a> project,
-under Grant Agreement No 780075.</p>
+funded in 2018-2020 by the European Union, Horizon H2020 research and
+innovation programme, <a href='http://chariotproject.eu'>CHARIOT</a>
+project (under Grant Agreement No 780075), and in 2019-2021 by the
+European Union, Horizon H2020 research and innovation
+programme, <a href='http://decoder-project.eu'>DECODER</a> project
+    (under Grant Agreement No 824231). <br/>
+  Any opinions are only those of the authors and contributors of <a href='http://github.com/bstarynk/bismon/'><tt>Bismon</tt></a>.</p>
 
   
 </html>
