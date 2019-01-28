@@ -1454,7 +1454,7 @@ static value_tyBM find_web_handler_BM (objectval_tyBM * sessionobarg,
 
 
 ////////////////
-#define WEBEXCHANGE_DELAY_BM   (debugmsg_BM?41.0:2.4)
+#define WEBEXCHANGE_DELAY_BM   (debugmsg_BM?21.0:2.4)
 onion_connection_status
 do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                      bool postrequest,
@@ -1534,7 +1534,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                        OUTSTRVALUE_BM (_.failreasonv),
                        OUTSTRVALUE_BM (_.failplacev));
         destroy_failurelockset_BM (&flockset);
-        curfailurehandle_BM = NULL;
+        curfailurehandle_BM = prevfailureh;
         char *respbuf = NULL;
         size_t respsiz = 0;
         FILE *fresp = open_memstream (&respbuf, &respsiz);
@@ -1545,7 +1545,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         fprintf (fresp, "<!DOCTYPE html>\n");
         fprintf (fresp, "<html><head><title>Bismon failure</title>\n");
         fprintf (fresp, "</head>\n<body>\n");
-        fprintf (fresp, "<h1>Bismon failure</h1>\n");
+        fprintf (fresp, "<h1>Bismon failure <i>internal error</i></h1>\n");
         fprintf (fresp, "<p>Request <i>%s</i> of path '<tt>%s</tt>' <b>failed</b> <small>(webexchange <tt>%s</tt>, session <tt>%s</tt>)</small>.<br/>\n",       //
                  ((reqmeth == OR_GET) ? "GET"   //
                   : (reqmeth == OR_HEAD) ? "HEAD"       //
@@ -1637,7 +1637,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                       objectdbg_BM (_.webexob), //
                       debug_outstr_value_BM (_.appresv, CURFRAME_BM, 0));
         destroy_failurelockset_BM (&flockset);
-        curfailurehandle_BM = NULL;
+        curfailurehandle_BM = prevfailureh;
       }
   }
   bool timedout = false;
@@ -1675,12 +1675,64 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         break;
       if (timedout)
         {
-	  DBGPRINTF_BM("do_dynamic_onion webexob %s timedout",
-		       objectdbg_BM(_.webexob));
-          _.errorv = makenode1_BM (k_web_timeout, _.webexob);
-#warning do_dynamic_onion should not fail on timedout, but reply with HTTP_INTERNAL_ERROR ...
-          PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+          DBGPRINTF_BM ("do_dynamic_onion webexob %s timedout",
+                        objectdbg_BM (_.webexob));
+          break;
         }
+    }
+  if (timedout)
+    {
+      char *respbuf = NULL;
+      size_t respsiz = 0;
+      FILE *fresp = open_memstream (&respbuf, &respsiz);
+      if (!fresp)
+        FATAL_BM ("do_dynamic_onion (timedout) open_memstream failure %m");
+      fprintf (fresp, "<!DOCTYPE html>\n");
+      fprintf (fresp, "<html><head><title>Bismon timeout</title>\n");
+      fprintf (fresp, "</head>\n<body>\n");
+      fprintf (fresp, "<h1>Bismon timeout <i>internal error</i></h1>\n");
+      fprintf (fresp, "<p>Request <i>%s</i> of path '<tt>%s</tt>' <b>timed out</b>" " <small>(webexchange <tt>%s</tt>, session <tt>%s</tt>, delay %.3f s)</small>.<br/>\n",     //
+               ((reqmeth == OR_GET) ? "GET"     //
+                : (reqmeth == OR_HEAD) ? "HEAD" //
+                : (reqmeth == OR_POST) ? "POST" //
+                : "???"), reqpath,
+               objectdbg_BM (_.webexob), objectdbg1_BM (_.sessionob),
+               clocktime_BM (CLOCK_REALTIME) - wexda->webx_time);
+      fputs ("</tt></p>", fresp);
+      time_t nowt = 0;
+      time (&nowt);
+      struct tm nowtm;
+      char nowbuf[64];
+      memset (nowbuf, 0, sizeof (nowbuf));
+      memset (&nowtm, 0, sizeof (nowtm));
+      localtime_r (&nowt, &nowtm);
+      strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
+      fprintf (fresp,
+               "<p><small>generated at <i>%s</i> on <tt>%s</tt> pid %d</small></p>\n",
+               nowbuf, myhostname_BM, (int) getpid ());
+      fprintf (fresp, "<!-- generated from %s:%d -->\n",
+               basename_BM (__FILE__), __LINE__);
+      fprintf (fresp, "</body>\n</html>\n");
+      fflush (fresp);
+      long ln = ftell (fresp);
+      fclose (fresp), fresp = NULL;
+      onion_response_set_code (resp, HTTP_INTERNAL_ERROR);
+      onion_response_set_length (resp, ln);
+      onion_response_write (resp, respbuf, ln);
+      onion_response_flush (resp);
+      {
+        objlock_BM (_.webexob);
+        wexda->webx_resp = NULL;
+        wexda->webx_requ = NULL;
+        if (objgetwebexchangepayl_BM (_.webexob) == wexda)
+          {
+            wexda->webx_ownobj = NULL;
+            // we dont clear the payload, since the old sbuf could be browsed
+            //objclearpayload_BM (_.webexob);
+          }
+        objunlock_BM (_.webexob);
+      }
+      return OCS_PROCESSED;
     }
   ASSERT_BM (resp != NULL);
   ASSERT_BM (respcode > 0);
@@ -2415,8 +2467,8 @@ perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM *stkf)
   pthread_cond_broadcast (&onionstack_condchange_bm);
   if (nbloops > 0)
     DBGPRINTF_BM
-    ("perhaps_suspend_for_gc_onion_thread_stack_BM end tid#%ld  elapsed %.3f s loops#%ld",
-     (long) gettid_BM (), elapsedtime_BM (), nbloops);
+      ("perhaps_suspend_for_gc_onion_thread_stack_BM end tid#%ld  elapsed %.3f s loops#%ld",
+       (long) gettid_BM (), elapsedtime_BM (), nbloops);
 }                               /* end perhaps_suspend_for_gc_onion_thread_stack_BM */
 
 
