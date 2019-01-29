@@ -627,7 +627,7 @@ websessiondatagcdestroy_BM (struct garbcoll_stBM *gc,
       ws->websess_ownobj = NULL;
       objlock_BM (ownerob);
       if (objpayload_BM (ownerob) == (extendedval_tyBM) ws)
-        objclearpayload_BM (ownerob);
+        objclearpayload_BM (ownerob);   /// this calls websessiondelete_BM...
       objunlock_BM (ownerob);
     };
   if (ws->websess_websocket)
@@ -696,7 +696,7 @@ webexchangedatagcdestroy_BM (struct garbcoll_stBM *gc,
       wex->webx_ownobj = NULL;
       objlock_BM (ownerob);
       if (objpayload_BM (ownerob) == (extendedval_tyBM) wex)
-        objclearpayload_BM (ownerob);
+        objclearpayload_BM (ownerob);   /// this calls webexchangedelete_BM
       objunlock_BM (ownerob);
     };
   if (wex->webx_requ)
@@ -746,6 +746,7 @@ websessiondelete_BM (objectval_tyBM * ownobj, struct websessiondata_stBM *wsd)
       return;
     }
   WEAKASSERT_BM (wsd->websess_ownobj == ownobj);
+  // websessions are rare enough, so we can inform about their deletion
   INFOPRINTF_BM ("deleting websession %s", objectdbg_BM (ownobj));
   {
     char cookiebuf[64];
@@ -810,13 +811,58 @@ websessiondelete_BM (objectval_tyBM * ownobj, struct websessiondata_stBM *wsd)
     }
 }                               /* end websessiondelete_BM */
 
+
+
 void
 webexchangedelete_BM (objectval_tyBM * ownobj,
                       struct webexchangedata_stBM *wex)
 {
-#warning unimplemented webexchangedelete_BM
-  FATAL_BM ("unimplemented webexchangedelete_BM ownobj %s wex@%p",
-            objectdbg_BM (ownobj), (void *) wex);
+  if (wex->webx_magic != BISMONION_WEBX_MAGIC)
+    {
+      // this should not happen, unless the same object is deleted twice...
+      WARNPRINTF_BM ("deleting webexchange object %s with invalid magic %u",
+                     objectdbg_BM (ownobj), wex->webx_magic);
+      DBGBACKTRACEPRINTF_BM
+        ("webexchange object %s with invalid magic %u deletion",
+         objectdbg_BM (ownobj), wex->webx_magic);
+      return;
+    }
+  WEAKASSERT_BM (wex->webx_ownobj == ownobj);
+  DBGPRINTF_BM ("webexchangedelete ownobj %s", objectdbg_BM (ownobj));
+  {
+    objlock_BM (ownobj);
+    if (wex->webx_requ && wex->webx_resp && wex->webx_ownobj)
+      {
+        DBGPRINTF_BM ("webexchangedelete flush for owner %s",
+                      objectdbg_BM (wex->webx_ownobj));
+        onion_response_flush (wex->webx_resp);
+      }
+    if (ownobj->ob_payl == wex)
+      ownobj->ob_payl = NULL;
+    wex->webx_ownobj = NULL;
+    if (wex->webx_sbuf.sbuf_size > 0)
+      {
+        wex->webx_sbuf.sbuf_curp = NULL;
+        wex->webx_sbuf.sbuf_lastnl = NULL;
+        wex->webx_sbuf.sbuf_size = 0;
+        wex->webx_sbuf.sbuf_indent = 0;
+        free (wex->webx_sbuf.sbuf_dbuf), wex->webx_sbuf.sbuf_dbuf = NULL;
+      }
+    if (wex->webx_requ)
+      {
+        onion_request *oreq = wex->webx_requ;
+        wex->webx_requ = NULL;
+        onion_request_free (oreq);
+      };
+    if (wex->webx_resp)
+      {
+        onion_response *oresp = wex->webx_resp;
+        wex->webx_resp = NULL;
+        onion_response_free (oresp);
+      }
+    wex->webx_magic = 0;
+    objunlock_BM (ownobj);
+  }
 }                               /* end webexchangedelete_BM */
 
 
