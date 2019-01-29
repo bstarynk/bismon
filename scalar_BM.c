@@ -140,6 +140,10 @@ stringhashlen_BM (const char *cstr, long len)
 }                               /* end stringhashlen_BM */
 
 
+/// In principle, every string value should be heap allocated with the
+/// below function.  But in practice, there is an exception in
+/// function websessiondelete_BM file web_ONIONBM.c which allocates a
+/// string value on stack.
 extern const stringval_tyBM *
 makestring_BM (const char *cstr)
 {
