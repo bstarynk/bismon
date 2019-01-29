@@ -1,7 +1,7 @@
                               // file web_ONIONBM.c
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -731,11 +731,83 @@ webexchangedatagckeep_BM (struct garbcoll_stBM *gc,
 /* delete functions are called by deleteobjectpayload_BM for
    objclearpayload_BM & objputpayload_BM */
 void
-websessiondelete_BM (objectval_tyBM * ownobj, struct websessiondata_stBM *ws)
+websessiondelete_BM (objectval_tyBM * ownobj, struct websessiondata_stBM *wsd)
 {
-#warning unimplemented websessiondelete_BM
-  FATAL_BM ("unimplemented websessiondelete_BM ownobj %s ws@%p",
-            objectdbg_BM (ownobj), (void *) ws);
+  objectval_tyBM *k_websession_object = BMK_56KY6TzyCU5_12De0mHE48M;
+  objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
+  if (wsd->websess_magic != BISMONION_WEBSESS_MAGIC)
+    {
+      // this should not happen, unless the same object is deleted twice...
+      WARNPRINTF_BM ("deleting websession object %s with invalid magic %u",
+                     objectdbg_BM (ownobj), wsd->websess_magic);
+      DBGBACKTRACEPRINTF_BM
+        ("websession object %s with invalid magic %u deletion",
+         objectdbg_BM (ownobj), wsd->websess_magic);
+      return;
+    }
+  WEAKASSERT_BM (wsd->websess_ownobj == ownobj);
+  INFOPRINTF_BM ("deleting websession %s", objectdbg_BM (ownobj));
+  {
+    char cookiebuf[64];
+    memset (cookiebuf, 0, sizeof (cookiebuf));
+    char sessidbuf[32];
+    memset (sessidbuf, 0, sizeof (sessidbuf));
+    idtocbuf32_BM (objid_BM (ownobj), sessidbuf);
+    snprintf (cookiebuf, sizeof (cookiebuf), "n%06dR%dt%do%s",
+              wsd->websess_rank, wsd->websess_rand1,
+              wsd->websess_rand2, sessidbuf);
+    unsigned cookielen = strlen (cookiebuf);
+    ASSERT_BM (cookielen < sizeof (cookiebuf) - 4);
+    DBGPRINTF_BM ("websessiondelete: ownobj %s cookiebuf %s",
+                  objectdbg_BM (ownobj), cookiebuf);
+    /** Tricky abstraction violation: 
+
+	Since websessiondelete_BM could be called from inside the
+	garbage collector, we cannot allocate here any string value
+	for the key. But for `the_web_sessions` we know that the key
+	are cookies.  So we allocate a string-like value on the stack,
+	only for the purpose of removing it from that
+	`the_web_sessions` object.
+
+	When we change our garbage collector, this code should be
+	updated accordingly.
+     **/
+    struct
+    {
+      stringval_tyBM sv;
+      char space[sizeof (cookiebuf) + 16];
+    }
+    stringlike;
+    memset (&stringlike, 0, sizeof (stringlike));
+    hash_tyBM h = stringhash_BM (cookiebuf);
+    ((typedhead_tyBM *) (&stringlike.sv))->htyp = tyString_BM;
+    ((typedhead_tyBM *) (&stringlike.sv))->hash = h;
+    ((typedsize_tyBM *) (&stringlike.sv))->size = cookielen;
+    /// the copy below "overflows" on purpose into stringlike.space
+    strcpy (stringlike.sv.strv_bytes, cookiebuf);
+    ASSERT_BM (stringlike.space[0] != (char) 0);
+    ASSERT_BM (strlen (stringlike.space) < sizeof (stringlike.space) - 4);
+    objlock_BM (BMP_the_web_sessions);
+    if (objclass_BM (BMP_the_web_sessions) != k_websession_dict_object)
+      FATAL_BM ("websessiondelete: the_web_sessions is broken,"
+                " should be of websession_dict_object class but is of %s",
+                objectdbg_BM (objclass_BM (BMP_the_web_sessions)));
+    if (!objhasdictpayl_BM (BMP_the_web_sessions))
+      FATAL_BM ("websessiondelete: the_web_sessions is broken,"
+                " it has no dictionnary payload - for web BISMONCOOKIE-s");
+    objdictremovepayl_BM (BMP_the_web_sessions,
+                          ((const stringval_tyBM *) &stringlike));
+    objunlock_BM (BMP_the_web_sessions);
+  }
+  wsd->websess_magic = 0;
+  onion_websocket *wsock = wsd->websess_websocket;
+  wsd->websess_websocket = NULL;
+  if (wsock)
+    {
+      // see also https://tools.ietf.org/html/rfc6455
+      onion_websocket_close (wsock, "BISMONCLOSE");     // not sure
+      onion_websocket_free (wsock);
+    }
 }                               /* end websessiondelete_BM */
 
 void
