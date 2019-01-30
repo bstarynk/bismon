@@ -256,13 +256,19 @@ them at a given instant).
 
       \item objects may also have some (nearly arbitrary)
         \index{payload}{\textbf{payload}} - which can contain anything
-        that don't fit elsewhere. That payload is a pointer (possibly
-        nil) to some client data owned by the object; the payload is
-        usually not a value but something else. The garbage collector
-        should know all the payload types. In 2018 the following
-        payloads are possible (with other specialized payloads,
-        e.g. for parsing, loading, dumping and web request and web
-        session support, contributors):
+        that don't fit elsewhere. That payload~\footnote{Some weird
+          payloads, in particular for web exchanges and web sessions,
+          cannot be created programmatically by public functions or by
+          Bismon code. Web exchange and web session payloads (cf
+          §\ref{subsec:webinterf}) are only internally created by the
+          HTTP server code in \emph{bismon}, and cannot and should not
+          be persisted.} is a pointer (possibly nil) to some client
+        data owned by the object; the payload is usually not a value
+        but something else. The garbage collector should know all the
+        payload types. In 2018 the following payloads are possible
+        (with other specialized payloads, e.g. for parsing, loading,
+        dumping and web request and web session support,
+        contributors):
 
         \begin{enumerate}
         \item mutable \index{string buffer}{\emph{string buffer}}.

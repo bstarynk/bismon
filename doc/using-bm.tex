@@ -100,10 +100,12 @@ cf. §\ref{subsubsec:bismon-evolving}) is not logged in.
 
 Dynamic requests are reified as very temporary \emph{bismon} objects
 of class \texttt{webexchange\_object}. Their \emph{web exchange}
-payload contains not only a string buffer~\footnote{Since a string
-  buffer should contain valid UTF-8 string content without nul bytes,
-  this restriction forbids binary contents in HTTP replies to dynamic
-  requests. Hence, dynamically computed image contents are not
+payload~\footnote{There is no programmatic way to create such a web
+  exchange payload. It can only be created by processing such dynamic
+  HTTP requests.} contains not only a string buffer~\footnote{Since a
+  string buffer should contain valid UTF-8 string content without nul
+  bytes, this restriction forbids binary contents in HTTP replies to
+  dynamic requests. Hence, dynamically computed image contents are not
   possible, unless they use a textual format like SVG.}, to be filled
 with the HTTP response content, but also mentions the web request (as
 processed by \texttt{libonion}) and the web session object computed
@@ -112,11 +114,14 @@ value. The web exchange object is supposed to be filled -like string
 buffers are- and at last given some integer HTTP status and
 immediately sent back to the browser.  Their web session object is
 created at web login time and is of class
-\texttt{websession\_object}. It knows the contributor who is logged
-in, the expiration time of the session, some session data (an
-arbitrary \emph{bismon} value), and the web socket \index{web socket}
-connection (if any) to the browser using that session. An inactive web
-session expires in about an hour~\footnote{See the
+\texttt{websession\_object}~\footnote{So the only way to create a web
+  session payload is thru the login form. There is no programmatic way
+  to create it.}. It knows the contributor who is logged in, the
+expiration time of the session, some session data (an arbitrary
+\emph{bismon} value; of course more data can sit in attributes or in
+components of that web session object), and the web socket \index{web
+  socket} connection (if any) to the browser using that session. An
+inactive web session expires in about an hour~\footnote{See the
   \texttt{USER\_WEBSESSION\_EXPIRATION\_DELAY} constant in
   \texttt{web\_ONIONBM.c}}.
 
@@ -155,14 +160,22 @@ handling dynamic requests for them is given by the
   exchange object $\omega$ created for that HTTP request. The result
   of that application is ignored, only side effects -often adding some
   tasklets into the agenda, and/or filling the web exchange object
-  with some XHTML5, etc...- are useful.}  predefined object. If no web
-handler closure is found, an \texttt{404 Not found} status is
-returned. The \texttt{the\_web\_sessions} predefined object stores the
-dictionnary of transient web session objects and associates a cookie
-string to its web session object. That dictionnary is forcibly cleared
-at start of the web server inside \emph{bismon}, but it should be
-loaded empty, since web session objects are created and should remain
-transient.
+  with some XHTML5, etc...- are useful. If the string in such a web
+  handling dictionnary is associated to some other object
+  $\omega_{wh}$ of class \texttt{webhandler\_dict\_object}, that
+  dictionnary object $\omega_{wh}$ is recursively explored with the
+  rest of that URL path (e.g. \texttt{"status"} in our example).}
+dictionnary predefined object; for an empty path in the URL (such as
+{\relsize{-1}{\texttt{http://localhost:8086/}}} for example), its
+\texttt{web\_empty\_handler} attribute is~\footnote{Since dictionnary
+  objects map \emph{non-empty} strings to non-nil values
+  (cf. §\ref{subsubsec:objects}).} used.  If finally no web handler
+closure is found, an \texttt{404 Not found} status is returned. The
+\texttt{the\_web\_sessions} predefined object stores the dictionnary
+of transient web session objects and associates a cookie string to its
+web session object. That dictionnary is forcibly cleared at start of
+the web server inside \emph{bismon}, but it should be loaded empty,
+since web session objects are created and should remain transient.
 
 In practice, dynamic requests are usually generating the HTML5
 \index{HTML5} content very dynamically. For generated HTML, it is much
