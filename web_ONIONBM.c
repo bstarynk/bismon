@@ -1145,6 +1145,10 @@ custom_onion_handler_BM (void *clientdata,
 #warning incomplete support for websocket in custom_onion_handler
                   /// should probably call onion_websocket_set_callback
                 }
+              else
+                DBGPRINTF_BM
+                  ("custom_onion_handler sesswebsocket '%s' for sessionob %s already has wsock@%p",
+                   reqpath, objectdbg_BM (_.sessionob), wsock);
             }
           objunlock_BM (_.sessionob);
           if (wsock)
@@ -1160,7 +1164,7 @@ custom_onion_handler_BM (void *clientdata,
               unregister_onion_thread_stack_BM (CURFRAME_BM);
               return result;
             }
-        }
+        }                       /* end if _websocket */
       if (strstr (reqpath, "/.") || strstr (reqpath, ".."))
         {
           DBGPRINTF_BM ("onion request to invalid '%s'", reqpath);
