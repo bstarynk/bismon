@@ -1195,7 +1195,7 @@ startblock__4ZE2MUVTcHt_4lWsA1elKmS: __attribute__((unused));
    
   
 { // start out _3GUB2GqOMv5_9mLZQWLvac5 to o_webex   
-/*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, "<script src=\'jscript/jquery.js\'/>\n");  
+/*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, "<script src=\'jscript/jquery.js\'></script>\n");  
 } // end out _3GUB2GqOMv5_9mLZQWLvac5  
   
 //+ #2/4 of block _4ZE2MUVTcHt_4lWsA1elKmS ::  

@@ -20529,14 +20529,14 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 !(_3GUB2GqOMv5_9mLZQWLvac5
-!@ 1549040867.244
+!@ 1549041800.658
 !$_9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "emit <script src=\'jscript/jquery.js\'/>"
+ "emit <script src=\'jscript/jquery.js\'></script>"
 !: _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
 _5JuT4FgNFFh_7McrTYeT3jx
 !# 1
-!&  "<script src=\'jscript/jquery.js\'/>\n"
+!&  "<script src=\'jscript/jquery.js\'></script>\n"
 !)_3GUB2GqOMv5_9mLZQWLvac5
 
 
