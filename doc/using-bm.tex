@@ -120,8 +120,12 @@ created at web login time and is of class
 expiration time of the session, some session data (an arbitrary
 \emph{bismon} value; of course more data can sit in attributes or in
 components of that web session object), and the web socket \index{web
-  socket} connection (if any) to the browser using that session. An
-inactive web session expires in about an hour~\footnote{See the
+  socket} connection (if any) to the browser using that session. The
+session storage~\footnote{See
+  \url{https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage}
+  for more.} associated to key \texttt{"bismontab"} identifies and
+gives the tab number in the browser. An inactive web session expires
+in about an hour~\footnote{See the
   \texttt{USER\_WEBSESSION\_EXPIRATION\_DELAY} constant in
   \texttt{web\_ONIONBM.c}}.
 

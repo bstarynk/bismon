@@ -9,7 +9,7 @@ My ([Basile Starynkevitch](http://starynkevitch.net/Basile/), employed
 at [CEA, LIST](http://www-list.cea.fr/) in France) work on `bismon` is
 partly funded (from start of 2018 to end of 2020) by the European
 Union, Horizon H2020 programme, [CHARIOT](http://chariotproject.eu/)
-project, under Grant Agreement No 780075. Within CHARIOT I will focus
+proj ect, under Grant Agreement No 780075. Within CHARIOT I will focus
 on analysis of some kind of
 [IoT](https://en.wikipedia.org/wiki/Internet_of_things) software coded
 in C or C++ and (cross-) compiled by [GCC](http://gcc.gnu.org/) on
@@ -18,7 +18,7 @@ partly funded by the [DECODER](http://decoder-project.eu/) H2020
 project, under Grant Agreement 824231 (related to its Persistent
 Knowledge Monitor WP1).
 
-Currently (mid-2018) `bismon` still in **pre alpha**-stage, and it is *free software* under [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.en.html) license. It is intended for a Linux x86-64 desktop developer's workstation (won't work on Windows or MacOSX or Android).
+Currently (start of 2019) `bismon` still in **pre alpha**-stage, and it is *free software* under [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.en.html) license. It is intended for a Linux x86-64 desktop developer's workstation (won't work on Windows or MacOSX or Android).
 
 Some *still incomplete* documentation (as a technical report
 `doc/bismon-chariot-doc.pdf` in PDF) can be generated (with `make` then `make

@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2488 objects
+// for 2489 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -10506,8 +10506,10 @@ _8c9otZ4pwR6_55k81qyyYV2 _2lCuMosXupr_5GAoqVgJ8PZ
 
 
 !(_07IfSVe5oBj_7I7w9nZbfgr
-!@ 1533729950.739
+!@ 1549040623.479
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit \'</head>\'"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  * _0jFqaPPHgYH_5JpjOPxQ67p ( _5JuT4FgNFFh_7McrTYeT3jx  "</head>\n")
 !: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
@@ -18079,12 +18081,12 @@ _41F1rKwGbaA_30OJWKsqNWy)
 
 
 !(_2CWJlYEwmaf_6nlLCxAfCx8
-!@ 1533729922.101
+!@ 1549040552.308
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit \'<!DOCTYPE\'...\'</title>\'"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  * _0jFqaPPHgYH_5JpjOPxQ67p ( _5JuT4FgNFFh_7McrTYeT3jx  "<!DOCTYPE html>\n<html><head><title>testhello bismon</title>\n")
-!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
- * _6jZqk9RP0Pe_12cIgV9WMFC ( _5JuT4FgNFFh_7McrTYeT3jx  "<!DOCTYPE html>\n<html><head><title>testhello bismon</title>\n")
 !: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
 _6jZqk9RP0Pe_12cIgV9WMFC
 !)_2CWJlYEwmaf_6nlLCxAfCx8
@@ -20523,6 +20525,19 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 !& _6Y20GNUgnSZ_4LkbrcRMU8f
 !&  * _5MLPTLuT4ey_0YKIUpvXybX ( _4nJKFtMqlkA_1teQSqofNux)
 !)_3GqbV7QJbkH_2egAbCWUXwU
+
+
+
+!(_3GUB2GqOMv5_9mLZQWLvac5
+!@ 1549040867.244
+!$_9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit <script src=\'jscript/jquery.js\'/>"
+!: _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
+_5JuT4FgNFFh_7McrTYeT3jx
+!# 1
+!&  "<script src=\'jscript/jquery.js\'/>\n"
+!)_3GUB2GqOMv5_9mLZQWLvac5
 
 
 
@@ -23728,8 +23743,9 @@ _5JuT4FgNFFh_7McrTYeT3jx
  "emit head for testhello webhandler"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _8prn9eFlYZD_6JJKKh2b8KW
-!# 3
+!# 4
 !& _2CWJlYEwmaf_6nlLCxAfCx8
+!& _3GUB2GqOMv5_9mLZQWLvac5
 !& _07IfSVe5oBj_7I7w9nZbfgr
 !& _4ootClJhCCt_4B3yo2Szuwj
 !)_4ZE2MUVTcHt_4lWsA1elKmS

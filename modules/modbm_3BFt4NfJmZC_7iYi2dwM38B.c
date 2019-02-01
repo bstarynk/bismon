@@ -1194,6 +1194,12 @@ startblock__4ZE2MUVTcHt_4lWsA1elKmS: __attribute__((unused));
 } // end cexpansion _2CWJlYEwmaf_6nlLCxAfCx8 - objstrbufferappendcstrpayl   
    
   
+{ // start out _3GUB2GqOMv5_9mLZQWLvac5 to o_webex   
+/*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, "<script src=\'jscript/jquery.js\'/>\n");  
+} // end out _3GUB2GqOMv5_9mLZQWLvac5  
+  
+//+ #2/4 of block _4ZE2MUVTcHt_4lWsA1elKmS ::  
+  
 { // start cexpansion _07IfSVe5oBj_7I7w9nZbfgr - objstrbufferappendcstrpayl   
 /*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), ( "</head>\n"));   
 } // end cexpansion _07IfSVe5oBj_7I7w9nZbfgr - objstrbufferappendcstrpayl   
