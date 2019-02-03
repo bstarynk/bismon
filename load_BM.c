@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -555,8 +555,8 @@ load_modif_value_BM (struct loader_stBM *ld, int ix,
 
 static void
 load_modif_json_BM (struct loader_stBM *ld, int ix,
-                     struct stackframe_stBM *parstkfrm,
-                     struct parser_stBM *ldpars, objectval_tyBM * argcurldobj)
+                    struct stackframe_stBM *parstkfrm,
+                    struct parser_stBM *ldpars, objectval_tyBM * argcurldobj)
 {
   ASSERT_BM (ld && ld->ld_magic == LOADERMAGIC_BM);
   ASSERT_BM (ix >= 0 && ix <= (int) ld->ld_maxnum);
@@ -578,7 +578,9 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
       || tokopen.tok_delim != delim_leftparentilde)
     parsererrorprintf_BM (ldpars, CURFRAME_BM, lineno,
                           colpos, "expecting (~ after !~json");
-} /* end load_modif_json_BM */
+#warning load_modif_json_BM incomplete
+  FATAL_BM ("load_modif_json incomplete L%uC%u", lineno, colpos);
+}                               /* end load_modif_json_BM */
 
 
 
@@ -1015,6 +1017,11 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           else if (tokmodif.tok_kind == plex_NAMEDOBJ
                    && tokmodif.tok_namedobj == BMP_todo)
             load_modif_todo_BM (ld, ix, CURFRAME_BM, ldpars, _.curldobj);
+
+          /// json modification
+          else if (tokmodif.tok_kind == plex_NAMEDOBJ
+                   && tokmodif.tok_namedobj == BMP_json)
+            load_modif_json_BM (ld, ix, CURFRAME_BM, ldpars, _.curldobj);
 
           //
           // otherwise postponed modification

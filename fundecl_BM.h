@@ -1023,6 +1023,17 @@ extern value_tyBM
   hashmapvalmakenodeofkeys_BM
   (struct hashmapval_stBM *hmv, objectval_tyBM * connob);
 
+//////////////// obj jansson JSON payload
+extern void jansjsongcmark_BM (struct garbcoll_stBM *gc,
+                               struct jansjson_stBM *jjs,
+                               objectval_tyBM * fromob, int depth);
+
+extern void jansjsongcdestroy_BM (struct garbcoll_stBM *gc,
+                                  struct jansjson_stBM *jjs);
+
+extern void jansjsongckeep_BM (struct garbcoll_stBM *gc,
+                               struct jansjson_stBM *jjs);
+
 //////////////// obj hashmapval payload 
 
 extern bool objputhashmapvalpayl_BM (objectval_tyBM * obj, unsigned gap);

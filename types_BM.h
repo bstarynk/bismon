@@ -72,8 +72,9 @@ enum gctyenum_BM
   typayl_hole1_BM,
   typayl_hole2_BM,
 #endif /*BISMONION*/
-    /// 
-    typayl_user_BM,
+    ///
+    typayl_jansjson_BM,
+  typayl_user_BM,
   typayl_dict_BM,
 #define typayl_LAST_BM typayl_dict_BM
   typayl__SpareA_BM,
@@ -703,10 +704,10 @@ struct dict_stBM
 };
 
 #warning jansson is a JSON library, need to support it
-struct jansson_stBM
+struct jansjson_stBM
 {
   typedhead_tyBM pa;
-  json_t* jansson_ptr;
+  json_t *jansjson_ptr;
 };
 
 ////////////////////////////////////////////////////////////////

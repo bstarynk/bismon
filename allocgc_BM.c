@@ -248,6 +248,9 @@ extendedgcproc_BM (struct garbcoll_stBM *gc, extendedval_tyBM xval,
       hashmapbucketgcmark_BM (gc, (struct hashmapbucket_stBM *) xval, fromob,
                               depth);
       return xval;
+    case typayl_jansjson_BM:
+      jansjsongcmark_BM (gc, (struct jansjson_stBM *) xval, fromob, depth);
+      return xval;
     case typayl_user_BM:
       usergcmark_BM (gc, (struct user_stBM *) xval, fromob, depth);
       return xval;
@@ -366,6 +369,9 @@ valgcdestroy_BM (struct garbcoll_stBM *gc, value_tyBM val)
     case typayl_hashmapbucket_BM:
       hashmapbucketgcdestroy_BM (gc, (struct hashmapbucket_stBM *) val);
       return;
+    case typayl_jansjson_BM:
+      jansjsongcdestroy_BM (gc, (struct jansjson_stBM *) val);
+      return;
     default:
       FATAL_BM ("gcdestroy ty#%d unexpected for val@%p", ty, val);
     }
@@ -428,6 +434,8 @@ typestring_BM (int ty)
       return "payl_hashsetbucket";
     case typayl_hashmapval_BM:
       return "payl_hashmapval";
+    case typayl_jansjson_BM:
+      return "payl_jansjson";
     case typayl_hashmapbucket_BM:
       return "payl_hashmapbucket";
     case typayl_user_BM:
@@ -600,6 +608,9 @@ valgckeep_BM (struct garbcoll_stBM *gc, value_tyBM val)
       return;
     case typayl_hashmapbucket_BM:
       hashmapbucketgckeep_BM (gc, (struct hashmapbucket_stBM *) val);
+      return;
+    case typayl_jansjson_BM:
+      jansjsongckeep_BM (gc, (struct jansjson_stBM *) val);
       return;
     case typayl_user_BM:
       usergckeep_BM (gc, (struct user_stBM *) val);
