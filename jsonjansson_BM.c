@@ -26,22 +26,38 @@ jansjsongcmark_BM (struct garbcoll_stBM *gc,
                    struct jansjson_stBM *jjs,
                    objectval_tyBM * fromob, int depth)
 {
-#warning unimplemented jansjsongcmark_BM
-  FATAL_BM ("unimplemented jansjsongcmark_BM");
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (!fromob || isobject_BM (fromob));
+  ASSERT_BM (((typedhead_tyBM *) jjs)->htyp == typayl_jansjson_BM);
+  uint8_t oldmark = ((typedhead_tyBM *) jjs)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) jjs)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
 }                               /* end jansjsongcmark_BM */
 
 void
 jansjsongcdestroy_BM (struct garbcoll_stBM *gc, struct jansjson_stBM *jjs)
 {
-#warning unimplemented jansjsongcdestroy_BM
-  FATAL_BM ("unimplemented jansjsongcdestroy_BM");
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (((typedhead_tyBM *) jjs)->htyp == typayl_jansjson_BM);
+  if (jjs->jansjson_ptr)
+    {
+      json_t *js = jjs->jansjson_ptr;
+      jjs->jansjson_ptr = NULL;
+      json_decref (js);
+    }
+  gc->gc_freedbytes += sizeof (*jjs);
+  memset (jjs, 0, sizeof (*jjs));
+  free (jjs);
 }                               /* end jansjsongcdestroy_BM */
 
 void
 jansjsongckeep_BM (struct garbcoll_stBM *gc, struct jansjson_stBM *jjs)
 {
-#warning unimplemented jansjsongckeep_BM
-  FATAL_BM ("unimplemented jansjsongckeep_BM");
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (((typedhead_tyBM *) jjs)->htyp == typayl_jansjson_BM);
+  gc->gc_keptbytes += sizeof (*jjs);
 }                               /* end jansjsongckeep_BM */
 
 ///// end of file jsonjansson_BM.c
