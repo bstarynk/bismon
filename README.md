@@ -120,6 +120,14 @@ generated code), but some few code is in C++14.
   dependency (to be deprecated), we hope to have some web interface
   (above [libonion](http://www.coralbits.com/libonion) probably) soon.
   
+* [Glib](https://developer.gnome.org/glib/stable/) 2.58 or better
+  (which is also needed to GTK above), because some low level routines,
+  notably [UTF-8](https://utf8everywhere.org/) related, are needed
+  (even when GTK won't be used anymore).
+
+* [Jansson](http://www.digip.org/jansson/) 2.12 or better is needed
+  for JSON (used in relation to WebSockets).
+
 * [libonion](http://www.coralbits.com/libonion) is needed for the web
   interface (at least 0.8.99 -master- later than june 10th 2018, or
   0.9)
@@ -152,6 +160,10 @@ cross-compiler, `inkscape`, `hevea` are needed for the documentation).
 
 
 We still need `apt-get install libgtk-3-dev` for GTK 3. This may pull a lot of dependencies.
+
+And `apt-get install libglib2.0-dev libjansson-dev` for our
+[Glib](https://developer.gnome.org/glib/stable/) and
+[Jansson](http://www.digip.org/jansson/) required dependencies.
 
 The `libbacktrace` is not independently packaged in Debian. I recommend building and installing
 it from its source code, or else (not recommended, :unamused: but doable) edit the `Makefile` to uses your system GCC compiler's one.
