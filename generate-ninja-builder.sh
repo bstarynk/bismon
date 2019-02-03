@@ -1,7 +1,7 @@
 #!/bin/bash
 # file generate-ninja-builder.sh is generating the build.ninja file
 # for http://ninja-build.org/ (i.e. Debian ninja-build package)
-bm_packages='glib-2.0 gtk+-3.0'
+bm_packages='glib-2.0 jansson gtk+-3.0'
 bm_gcc=gcc
 bm_gxx=g++
 bm_cfiles="$(ls [a-z]*BM.c)"

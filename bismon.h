@@ -75,7 +75,7 @@ using std::atomic_store;
 #include <locale.h>
 #include <crypt.h>
 #include <string.h>
-
+#include <jansson.h>
 #include <sys/syscall.h>
 #include <unistd.h>
 #include <pthread.h>

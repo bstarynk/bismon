@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -699,10 +699,15 @@ struct parser_stBM              /* for typayl_parser_BM */
 struct dict_stBM
 {
   typedhead_tyBM pa;
-  uintptr_t dict_data[8];       /* actually a C++ std::map */
+  uintptr_t dict_data[8];       /* actually a C++ std::map, see misc_BM.cc */
 };
 
-
+#warning jansson is a JSON library, need to support it
+struct jansson_stBM
+{
+  typedhead_tyBM pa;
+  json_t* jansson_ptr;
+};
 
 ////////////////////////////////////////////////////////////////
 ////// web related
