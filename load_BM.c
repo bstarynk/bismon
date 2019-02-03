@@ -553,6 +553,37 @@ load_modif_value_BM (struct loader_stBM *ld, int ix,
 }                               /* end load_modif_value_BM */
 
 
+static void
+load_modif_json_BM (struct loader_stBM *ld, int ix,
+                     struct stackframe_stBM *parstkfrm,
+                     struct parser_stBM *ldpars, objectval_tyBM * argcurldobj)
+{
+  ASSERT_BM (ld && ld->ld_magic == LOADERMAGIC_BM);
+  ASSERT_BM (ix >= 0 && ix <= (int) ld->ld_maxnum);
+  char *curldpath = ld->ld_storepatharr[ix];
+  ASSERT_BM (curldpath != NULL);
+  ASSERT_BM (ldpars != NULL);
+  ASSERT_BM (isobject_BM (argcurldobj));
+  LOCALFRAME_BM (parstkfrm, NULL,       //
+                 struct parser_stBM *ldparser;  //
+                 objectval_tyBM * curldobj;     //
+                 value_tyBM valv;
+    );
+  _.ldparser = ldpars;
+  _.curldobj = argcurldobj;
+  unsigned lineno = parserlineno_BM (ldpars);
+  unsigned colpos = parsercolpos_BM (ldpars);
+  parstoken_tyBM tokopen = parsertokenget_BM (ldpars, CURFRAME_BM);
+  if (tokopen.tok_kind != plex_DELIM
+      || tokopen.tok_delim != delim_leftparentilde)
+    parsererrorprintf_BM (ldpars, CURFRAME_BM, lineno,
+                          colpos, "expecting (~ after !~json");
+} /* end load_modif_json_BM */
+
+
+
+
+
 #define TODO_MAXARGS_BM 5
 static void
 load_modif_todo_BM (struct loader_stBM *ld, int ix,

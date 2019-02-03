@@ -1,6 +1,6 @@
 // generated persistent data file store1.bmon
 // this generated data file is GPLv3+ licensed
-// for 59 objects
+// for 60 objects
 // with 0 modules
 
 
@@ -391,6 +391,17 @@ _7jHHqKoSEZf_6G1dslcAaT8
 ~)
 
 !)_0vgCFjXblkx_4zCMhMAWjVK
+
+
+
+!(_2gNQ6wSYLGz_9FkMuCIKfmv |=json|
+!~ name (~ json
+~)
+!@ 1549182682.971
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for JSON payloads"
+!)_2gNQ6wSYLGz_9FkMuCIKfmv
 
 
 
