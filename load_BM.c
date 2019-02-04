@@ -578,8 +578,14 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
       || tokopen.tok_delim != delim_leftparentilde)
     parsererrorprintf_BM (ldpars, CURFRAME_BM, lineno,
                           colpos, "expecting (~ after !~json");
+  char *membuf = NULL;
+  size_t memsiz = 0;
+  FILE *memfil = open_memstream (&membuf, &memsiz);
+  if (!memfil)
+    FATAL_BM ("load_modif_json_BM L%uC%u %s failed to open_memstream", lineno,
+              colpos, ldpars->pars_path);
 #warning load_modif_json_BM incomplete
-  FATAL_BM ("load_modif_json incomplete L%uC%u", lineno, colpos);
+  FATAL_BM ("load_modif_json incomplete L%uC%u %s", lineno, colpos);
 }                               /* end load_modif_json_BM */
 
 
