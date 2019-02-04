@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2491 objects
+// for 2498 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -3015,6 +3015,50 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_56Om4CG9rer_8xF06AhNZ1I |=json_array|
+!~ name (~ json_array
+~)
+!@ 1549273007.172
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for JSON arrays"
+!)_56Om4CG9rer_8xF06AhNZ1I
+
+
+
+!(_1h1MMlmQi6f_2Z2g6rGMcPB |=json_false|
+!~ name (~ json_false
+~)
+!@ 1549273451.417
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for JSON false"
+!)_1h1MMlmQi6f_2Z2g6rGMcPB
+
+
+
+!(_8jCh9loDpOL_4eR6Nzk21xp |=json_integer|
+!~ name (~ json_integer
+~)
+!@ 1549273188.525
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for JSON integers"
+!)_8jCh9loDpOL_4eR6Nzk21xp
+
+
+
+!(_6WOSg1mpNxQ_6Dw2klXZFSk |=json_null|
+!~ name (~ json_null
+~)
+!@ 1549273510.053
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for JSON null"
+!)_6WOSg1mpNxQ_6Dw2klXZFSk
+
+
+
 !(_7hNqn2hxg1M_3wNHCtOf9IF |=json_object|
 !~ name (~ json_object
 ~)
@@ -3026,6 +3070,39 @@ _0vgCFjXblkx_4zCMhMAWjVK
 ~)
 
 !)_7hNqn2hxg1M_3wNHCtOf9IF
+
+
+
+!(_5ewBEYZh7EM_6dEinrBFpAE |=json_real|
+!~ name (~ json_real
+~)
+!@ 1549273269.625
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for JSON reals, i.e. floating point"
+!)_5ewBEYZh7EM_6dEinrBFpAE
+
+
+
+!(_419If27jxwQ_3WQnLqU53iq |=json_string|
+!~ name (~ json_string
+~)
+!@ 1549273084.494
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for JSON strings"
+!)_419If27jxwQ_3WQnLqU53iq
+
+
+
+!(_0ekuRPtKaIF_3nrHrhB59Kn |=json_true|
+!~ name (~ json_true
+~)
+!@ 1549273362.441
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for JSON true"
+!)_0ekuRPtKaIF_3nrHrhB59Kn
 
 
 

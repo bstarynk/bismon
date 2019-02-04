@@ -119,4 +119,41 @@ objputincrefjansjsonpayl_BM (objectval_tyBM * obj, json_t * js)
   return true;
 }                               /* end objputincrefjansjsonpayl_BM */
 
+objectval_tyBM *
+objkindjansjsonpayl_BM (const objectval_tyBM * obj)
+{
+  objectval_tyBM *k_json_object = BMK_7hNqn2hxg1M_3wNHCtOf9IF;
+  objectval_tyBM *k_json_array = BMK_56Om4CG9rer_8xF06AhNZ1I;
+  objectval_tyBM *k_json_string = BMK_419If27jxwQ_3WQnLqU53iq;
+  objectval_tyBM *k_json_integer = BMK_8jCh9loDpOL_4eR6Nzk21xp;
+  objectval_tyBM *k_json_real = BMK_5ewBEYZh7EM_6dEinrBFpAE;
+  objectval_tyBM *k_json_true = BMK_0ekuRPtKaIF_3nrHrhB59Kn;
+  objectval_tyBM *k_json_false = BMK_1h1MMlmQi6f_2Z2g6rGMcPB;
+  objectval_tyBM *k_json_null = BMK_6WOSg1mpNxQ_6Dw2klXZFSk;
+  json_t *js = objgetjansjsonpayl_BM (obj);
+  if (!js)
+    return NULL;
+  switch (json_typeof (js))
+    {
+    case JSON_OBJECT:
+      return k_json_object;
+    case JSON_ARRAY:
+      return k_json_array;
+    case JSON_STRING:
+      return k_json_string;
+    case JSON_INTEGER:
+      return k_json_integer;
+    case JSON_REAL:
+      return k_json_real;
+    case JSON_TRUE:
+      return k_json_true;
+    case JSON_FALSE:
+      return k_json_false;
+    case JSON_NULL:
+      return k_json_null;
+    default:
+      return NULL;
+    }
+}                               /* end objkindjansjsonpayl_BM */
+
 ///// end of file jsonjansson_BM.c
