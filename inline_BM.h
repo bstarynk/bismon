@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -2107,6 +2107,27 @@ const node_tyBM *objdictnodeofkeyspayl_BM
 }                               /* end objdictnodeofkeyspayl_BM */
 
 
+////////////////////////////////////////////////////////////////
+
+bool
+objhasjansjsonpayl_BM (const objectval_tyBM * obj)
+{
+  extendedval_tyBM payl = objpayload_BM (obj);
+  if (!payl)
+    return false;
+  return (valtype_BM ((const value_tyBM) payl) == typayl_jansjson_BM);
+}                               /* end objhasjansjsonpayl_BM */
+
+json_t *
+objgetjansjsonpayl_BM (const objectval_tyBM * obj)
+{
+  extendedval_tyBM payl = objpayload_BM (obj);
+  if (!payl)
+    return NULL;
+  if (valtype_BM ((const value_tyBM) payl) == typayl_jansjson_BM)
+    return ((struct jansjson_stBM *) payl)->jansjson_ptr;
+  return NULL;
+}                               /* end objgetjansjsonpayl_BM */
 
 ////////////////////////////////////////////////////////////////
 void

@@ -1034,6 +1034,11 @@ extern void jansjsongcdestroy_BM (struct garbcoll_stBM *gc,
 extern void jansjsongckeep_BM (struct garbcoll_stBM *gc,
                                struct jansjson_stBM *jjs);
 
+static inline bool objhasjansjsonpayl_BM (const objectval_tyBM * obj);
+static inline json_t *objgetjansjsonpayl_BM (const objectval_tyBM * obj);
+extern bool objputjansjsonpayl_BM (objectval_tyBM * obj, json_t * js);
+extern bool objputincrefjansjsonpayl_BM (objectval_tyBM * obj, json_t * js);
+
 //////////////// obj hashmapval payload 
 
 extern bool objputhashmapvalpayl_BM (objectval_tyBM * obj, unsigned gap);

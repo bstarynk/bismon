@@ -1,4 +1,5 @@
-// file jsonjansson_BM.c
+// file jsonjansson_BM.c; support for JSON payload above jansson library
+// see https://jansson.readthedocs.io/
 
 /***
     BISMON 
@@ -20,6 +21,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 #include "bismon.h"
+#include "jsonjansson_BM.const.h"
 
 void
 jansjsongcmark_BM (struct garbcoll_stBM *gc,
@@ -59,5 +61,19 @@ jansjsongckeep_BM (struct garbcoll_stBM *gc, struct jansjson_stBM *jjs)
   ASSERT_BM (((typedhead_tyBM *) jjs)->htyp == typayl_jansjson_BM);
   gc->gc_keptbytes += sizeof (*jjs);
 }                               /* end jansjsongckeep_BM */
+
+
+bool
+objputjansjsonpayl_BM (objectval_tyBM * obj, json_t * js)
+{
+  if (!isobject_BM (obj))
+    return false;
+  struct jansjson_stBM *jjs =   //
+    allocgcty_BM (typayl_jansjson_BM,
+                  sizeof (*jjs));
+  jjs->jansjson_ptr = js;
+  objputpayload_BM (obj, jjs);
+  return true;
+}                               /* end objputjansjsonpayl_BM */
 
 ///// end of file jsonjansson_BM.c
