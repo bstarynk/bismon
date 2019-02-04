@@ -66,14 +66,57 @@ jansjsongckeep_BM (struct garbcoll_stBM *gc, struct jansjson_stBM *jjs)
 bool
 objputjansjsonpayl_BM (objectval_tyBM * obj, json_t * js)
 {
+  objectval_tyBM *k_json_object = BMK_7hNqn2hxg1M_3wNHCtOf9IF;
   if (!isobject_BM (obj))
     return false;
+  if (objhasjansjsonpayl_BM (obj))
+    {
+      // special case for previously existing jansson payload
+      struct jansjson_stBM *oldjjs = obj->ob_payl;
+      ASSERT_BM (valtype_BM (oldjjs) == typayl_jansjson_BM);
+      if (oldjjs->jansjson_ptr)
+        json_decref (oldjjs->jansjson_ptr), oldjjs->jansjson_ptr = NULL;
+      oldjjs->jansjson_ptr = js;
+      return true;
+    }
   struct jansjson_stBM *jjs =   //
     allocgcty_BM (typayl_jansjson_BM,
                   sizeof (*jjs));
   jjs->jansjson_ptr = js;
   objputpayload_BM (obj, jjs);
+  if (!objectisinstance_BM (obj, k_json_object))
+    objputclass_BM (obj, k_json_object);
   return true;
 }                               /* end objputjansjsonpayl_BM */
+
+bool
+objputincrefjansjsonpayl_BM (objectval_tyBM * obj, json_t * js)
+{
+  objectval_tyBM *k_json_object = BMK_7hNqn2hxg1M_3wNHCtOf9IF;
+  if (!isobject_BM (obj))
+    return false;
+  if (objhasjansjsonpayl_BM (obj))
+    {
+      // special case for previously existing jansson payload
+      struct jansjson_stBM *oldjjs = obj->ob_payl;
+      ASSERT_BM (valtype_BM (oldjjs) == typayl_jansjson_BM);
+      if (oldjjs->jansjson_ptr)
+        json_decref (oldjjs->jansjson_ptr), oldjjs->jansjson_ptr = NULL;
+      oldjjs->jansjson_ptr = js;
+      if (js)
+        json_incref (js);
+      return true;
+    }
+  struct jansjson_stBM *jjs =   //
+    allocgcty_BM (typayl_jansjson_BM,
+                  sizeof (*jjs));
+  jjs->jansjson_ptr = js;
+  if (js)
+    json_incref (js);
+  objputpayload_BM (obj, jjs);
+  if (!objectisinstance_BM (obj, k_json_object))
+    objputclass_BM (obj, k_json_object);
+  return true;
+}                               /* end objputincrefjansjsonpayl_BM */
 
 ///// end of file jsonjansson_BM.c

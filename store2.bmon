@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2489 objects
+// for 2491 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -1236,6 +1236,20 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _0NnNXZqWvmz_1ucZGX0YPu1 |=command_arity|
  1
 !)_4kpOdmUag0O_4noJhwkmXjO
+
+
+
+!(_6Iemb8Xs6aS_9quFFex4qwG |=dumpable_json_object|
+!~ name (~ dumpable_json_object
+~)
+!@ 1549270309.011
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of dumpable JSON objects"
+!~ class (~ |supercl json_object:| _7hNqn2hxg1M_3wNHCtOf9IF
+~)
+
+!)_6Iemb8Xs6aS_9quFFex4qwG
 
 
 
@@ -2998,6 +3012,20 @@ _0vgCFjXblkx_4zCMhMAWjVK
 ~)
 
 !)_2dMQFZCLvzX_28pgF8Y8V5S
+
+
+
+!(_7hNqn2hxg1M_3wNHCtOf9IF |=json_object|
+!~ name (~ json_object
+~)
+!@ 1549270261.631
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of objects with Jansson JSON payloads"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+
+!)_7hNqn2hxg1M_3wNHCtOf9IF
 
 
 
