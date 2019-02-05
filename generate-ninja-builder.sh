@@ -66,9 +66,9 @@ echo '  description = CXX $out'
 echo '  depfile = $out.mkd'
 echo '  deps = gcc'
 echo
-echo '# compile a selfsufficient C++ program'
+echo '# compile a selfsufficient C++ program, which uses Glib and id_BM.o'
 echo 'rule SOLOCXXPROG_r'
-echo '  command = $cxx $cxxwarnflags  $incflags $optimflags $in -o $out'
+echo '  command = $cxx $cxxwarnflags  $incflags $pkg_cflags $optimflags $in -o $out id_BM.o $pkg_libes'
 echo '  description = SOLOCXXPROG $out'
 echo
 echo  '# make a XXX_BM.const.h header with constants in XXX_BM.c'
@@ -131,7 +131,7 @@ done
 
 
 echo '#solo C++ program to deal with BISMON constants'
-echo 'build BM_makeconst: SOLOCXXPROG_r BM_makeconst.cc'
+echo 'build BM_makeconst: SOLOCXXPROG_r BM_makeconst.cc | id_BM.o'
 echo
 echo '#generated constant headers'
 for f in $(fgrep -l const.h $bm_cfiles) ; do
