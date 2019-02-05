@@ -104,6 +104,7 @@ using std::atomic_store;
 #include <onion/websocket.h>
 #endif /*BISMONION */
 #include "cmacros_BM.h"
+#include "id_BM.h"
 #include "types_BM.h"
 #include "globals_BM.h"
 #include "fundecl_BM.h"

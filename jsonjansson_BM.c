@@ -119,6 +119,7 @@ objputincrefjansjsonpayl_BM (objectval_tyBM * obj, json_t * js)
   return true;
 }                               /* end objputincrefjansjsonpayl_BM */
 
+
 objectval_tyBM *
 objkindjansjsonpayl_BM (const objectval_tyBM * obj)
 {
@@ -155,5 +156,11 @@ objkindjansjsonpayl_BM (const objectval_tyBM * obj)
       return NULL;
     }
 }                               /* end objkindjansjsonpayl_BM */
+
+
+json_t *
+jansjsonfromvalue_BM (value_tyBM val, int depth, struct stackframe_stBM *stkf)
+{
+}                               /* end jansjsonfromvalue_BM */
 
 ///// end of file jsonjansson_BM.c

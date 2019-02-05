@@ -392,48 +392,6 @@ objectgckeep_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
   gc->gc_nbkeptobjects++;
 }                               /* end objectgckeep_BM */
 
-const char *
-iddbg_BM (rawid_tyBM id)
-{
-  if (id.id_hi == 0 && id.id_lo == 0)
-    return "__";
-  else
-    {
-      static char idbuf[32];
-      memset (idbuf, 0, sizeof (idbuf));
-      idtocbuf32_BM (id, idbuf);
-      return idbuf;
-    }
-}                               /* end iddbg_BM */
-
-const char *
-iddbg1_BM (rawid_tyBM id)
-{
-  if (id.id_hi == 0 && id.id_lo == 0)
-    return "__";
-  else
-    {
-      static char idbuf[32];
-      memset (idbuf, 0, sizeof (idbuf));
-      idtocbuf32_BM (id, idbuf);
-      return idbuf;
-    }
-}                               /* end iddbg1_BM */
-
-const char *
-iddbg2_BM (rawid_tyBM id)
-{
-  if (id.id_hi == 0 && id.id_lo == 0)
-    return "__";
-  else
-    {
-      static char idbuf[32];
-      memset (idbuf, 0, sizeof (idbuf));
-      idtocbuf32_BM (id, idbuf);
-      return idbuf;
-    }
-}                               /* end iddbg2_BM */
-
 
 const char *
 objectdbg_BM (const objectval_tyBM * obj)

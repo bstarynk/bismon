@@ -27,7 +27,6 @@ typedef void *value_tyBM;
 
 typedef void *extendedval_tyBM;
 
-typedef uint32_t hash_tyBM;
 // types of garbage collected values
 enum gctyenum_BM
 {
@@ -140,14 +139,6 @@ struct typedforward_stBM
 };
 typedef struct typedforward_stBM typedforward_tyBM;
 
-typedef uint64_t serial63_tyBM;
-
-struct rawid_stBM
-{
-  serial63_tyBM id_hi;
-  serial63_tyBM id_lo;
-};
-typedef struct rawid_stBM rawid_tyBM;
 
 struct allalloc_stBM
 {

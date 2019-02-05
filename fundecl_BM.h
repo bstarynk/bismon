@@ -70,39 +70,14 @@ extern bool valsamecontent_BM (const value_tyBM v1, const value_tyBM v2,
 static inline int valcmp_BM (const value_tyBM v1, const value_tyBM v2);
 extern int valqcmp_BM (const void *, const void *);     // for qsort
 static inline void valarrqsort_BM (value_tyBM * arr, unsigned siz);
-static inline bool validserial63_BM (serial63_tyBM s);
-extern serial63_tyBM randomserial63_BM (void);
-#if __cplusplus
-extern int serial63tocbuf16_BM (serial63_tyBM s, char cbuf[]);
-#else
-extern int serial63tocbuf16_BM (serial63_tyBM s, char cbuf[static 16]);
-#endif
 
-extern serial63_tyBM parse_serial63_BM (const char *buf, const char **pend);
-static inline unsigned bucknumserial63_BM (serial63_tyBM s);
-static inline uint64_t buckoffserial63_BM (serial63_tyBM s);
 
-extern rawid_tyBM randomid_BM (void);
-static inline bool validid_BM (rawid_tyBM id);
-static inline hash_tyBM hashid_BM (rawid_tyBM id);
-static inline int cmpid_BM (rawid_tyBM id1, rawid_tyBM id2);
-static inline bool equalid_BM (rawid_tyBM id1, rawid_tyBM id2);
-#if __cplusplus
-extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[]);
-#else
-extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32]);
-#endif
-// to be called from debugger
-// actually the objectdbg* functions use some static thread-local buffer
-extern const char *iddbg_BM (rawid_tyBM id);    // non reentrant!
+
+
+
 extern const char *objectdbg_BM (const objectval_tyBM * obj);   // non reentrant!
-
-extern const char *iddbg1_BM (rawid_tyBM id);   // non reentrant!
 extern const char *objectdbg1_BM (const objectval_tyBM * obj);  // non reentrant!
-
-extern const char *iddbg2_BM (rawid_tyBM id);   // non reentrant!
 extern const char *objectdbg2_BM (const objectval_tyBM * obj);  // non reentrant!
-
 extern const char *objectdbg3_BM (const objectval_tyBM * obj);  // non reentrant!
 extern const char *objectdbg4_BM (const objectval_tyBM * obj);  // non reentrant!
 extern const char *objectdbg5_BM (const objectval_tyBM * obj);  // non reentrant!
@@ -114,7 +89,6 @@ extern const char *gobjectclassnamedbg_BM (GObject * ptr);
 // return an static string for a textiter, for debugging only
 extern const char *textiterstrdbg_BM (GtkTextIter *);
 #endif /*BISMONGTK*/
-extern rawid_tyBM parse_rawid_BM (const char *buf, const char **pend);
 extern void *allocgcty_BM (unsigned type, size_t sz);
 
 
@@ -412,8 +386,6 @@ objectisinstance_BM (const objectval_tyBM * obj,
                      const objectval_tyBM * obclass);
 
 
-// only used by FATAL_BM macro
-extern void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
 
 /// raise a failure; see also macro FAILURE_BM
 extern void failure_BM (int failcode, const value_tyBM reasonv,
@@ -1038,6 +1010,8 @@ static inline bool objhasjansjsonpayl_BM (const objectval_tyBM * obj);
 static inline json_t *objgetjansjsonpayl_BM (const objectval_tyBM * obj);
 extern bool objputjansjsonpayl_BM (objectval_tyBM * obj, json_t * js);
 extern bool objputincrefjansjsonpayl_BM (objectval_tyBM * obj, json_t * js);
+extern json_t *jansjsonfromvalue_BM (value_tyBM val, int depth,
+                                     struct stackframe_stBM *stkf);
 
 //////////////// obj hashmapval payload 
 

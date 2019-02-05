@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -19,7 +19,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ***/
-#include "bismon.h"
+#include <stdint.h>
+#include <stdbool.h>
+#include <glib.h>
+#include "id_BM.h"
 
 serial63_tyBM
 randomserial63_BM (void)
@@ -176,5 +179,48 @@ parse_rawid_BM (const char *buf, const char **pend)
   {
   0, 0};
 }                               /* end parse_rawid_BM */
+
+
+const char *
+iddbg_BM (rawid_tyBM id)
+{
+  if (id.id_hi == 0 && id.id_lo == 0)
+    return "__";
+  else
+    {
+      static char idbuf[32];
+      memset (idbuf, 0, sizeof (idbuf));
+      idtocbuf32_BM (id, idbuf);
+      return idbuf;
+    }
+}                               /* end iddbg_BM */
+
+const char *
+iddbg1_BM (rawid_tyBM id)
+{
+  if (id.id_hi == 0 && id.id_lo == 0)
+    return "__";
+  else
+    {
+      static char idbuf[32];
+      memset (idbuf, 0, sizeof (idbuf));
+      idtocbuf32_BM (id, idbuf);
+      return idbuf;
+    }
+}                               /* end iddbg1_BM */
+
+const char *
+iddbg2_BM (rawid_tyBM id)
+{
+  if (id.id_hi == 0 && id.id_lo == 0)
+    return "__";
+  else
+    {
+      static char idbuf[32];
+      memset (idbuf, 0, sizeof (idbuf));
+      idtocbuf32_BM (id, idbuf);
+      return idbuf;
+    }
+}                               /* end iddbg2_BM */
 
 /**** end of file id_BM.c ***/

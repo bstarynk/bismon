@@ -63,15 +63,6 @@
 #define LOADERMAGIC_BM 281610361        /*0x10c90879 */
 #define MAXLOADEDFILES_BM 64
 
-#define MINSERIAL_BM (62*62)    /*3884 */
-#define MAXSERIAL_BM ((uint64_t)10 * 62 * (62* 62*62) * (62*62*62) * (62*62*62))        /*8392993658683402240 */
-#define DELTASERIAL_BM (MAXSERIAL_BM-MINSERIAL_BM)
-#define MAXBUCKETS_BM (10*62)
-#define B62DIGITS_BM   "0123456789"  "abcdefghijklmnopqrstuvwxyz"  "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-#define SERIALDIGITS_BM 11
-#define SERIALBASE_BM 62
-
 #define EMPTY_TOKEN_BM (struct parstoken_stBM) { \
     .tok_kind= plex__NONE, .tok_line= -1, .tok_col= -1, .tok_ptr= NULL }
 
@@ -85,12 +76,13 @@
 /// each module should have DECLARE_MODULE_BM(BISMON_MODID); after inclusion of "bismon.h"
 #define DECLARE_MODULE_BM(Id) const char module_id_BM[] = #Id
 
-#define IDLEN_BM 24
 #define MAXSIZE_BM ((1<<30)-1)
 #define TINYSIZE_BM 15
 
 #define PARSERMEMOLINERATIO_BM 16
 #define PARSOPMAGIC_BM 3144351953       /*0xbb6b00d1 */
+// only used by FATAL_BM macro
+extern void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
 #define FATAL_AT_BIS_BM(Fil,Lin,Fmt,...) do {                   \
     fprintf(stderr, "BM FATAL:%s:%d: <%s>\n " Fmt "\n\n",       \
             Fil, Lin, __func__, ##__VA_ARGS__);                 \
