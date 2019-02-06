@@ -17,7 +17,7 @@ echo "bm_packages = " $bm_packages
 for package in $(echo $bm_packages) ; do
     curpack=$(pkg-config --list-all | grep $package)
     if [ -z "$curpack" ]; then
-	echo "#missing package " $curpack > /dev/stderr
+	echo "#missing package " $package > /dev/stderr
 	exit 1
     else
 	echo "#package: " $curpack
