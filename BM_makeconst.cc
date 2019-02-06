@@ -43,9 +43,13 @@ To process all the files and generate the constants
     ./BM_makeconst -C _bm_allconsts.c *_BM.c misc_BM.cc
 ***/
 
+#define BMPREFIXSIZE 4 /* the length of both "BMK_" and "BMH_" prefixes */
+typedef std::set<rawid_tyBM, IdLess_BM> set_of_ids_BM;
+
+
 int totalnbocc;
 
-int parse_cfile(const char*path, std::set<std::string>& bmconstset, bool verbose=false)
+int parse_cfile(const char*path, set_of_ids_BM &bmconstset, set_of_ids_BM &bmhashset, bool verbose=false)
 {
   if (access(path, R_OK))
     {
@@ -59,74 +63,57 @@ int parse_cfile(const char*path, std::set<std::string>& bmconstset, bool verbose
     {
       std::string line;
       std::getline(srcin, line);
-      auto linesize = line.size();
-      ssize_t pos=0;
-      while (pos<(ssize_t)linesize)
+      ssize_t linesize = line.size();
+      ssize_t bmkpos=0;
+      ssize_t bmhpos=0;
+      while (bmkpos<(ssize_t)linesize && bmhpos<(ssize_t)linesize)
         {
-          pos=line.find("BMK_", pos);
-          if (pos<0)
+          bmkpos=line.find("BMK_", bmkpos);
+          bmhpos=line.find("BMH_", bmhpos);
+	  if (bmkpos>0 && bmhpos > 0) 
+            {
+              fprintf(stderr, "%s:%d: cannot have both BMK_ and BMH_ on the same line\n",
+                      path, linecnt+1);
+              exit(EXIT_FAILURE);
+	    };
+	  if (bmkpos < 0 && bmhpos < 0)
             break;
-          size_t startpos = pos+4;
+	  ///
           /// ignore BMK_ if following a letter, digit or underscore,
           /// or if not followed by digit
-          if (pos>0 && ((isalnum(line[pos-1]) || line[pos-1]=='_')
-                        || (startpos >= linesize || !isdigit(line[startpos]))))
+          if (bmkpos>0 && ((isalnum(line[bmkpos-1]) || line[bmkpos-1]=='_')
+                        || (bmkpos+BMPREFIXSIZE >= linesize || !isdigit(line[bmkpos+BMPREFIXSIZE]))))
             {
-              while (pos>0 && pos<(ssize_t)linesize && (isalnum(line[pos])||line[pos]=='_'))
-                pos++;
+              while (bmkpos>0 && bmkpos<(ssize_t)linesize && (isalnum(line[bmkpos])||line[bmkpos]=='_'))
+                bmkpos++;
               continue;
             };
-
-          int badpos = -1;
-          int ix = -1;
-          const char*badmsg = nullptr;
-          size_t endpos = 0;
-          for (ix=startpos;
-               badpos<0 && ix<(int)startpos+2*(SERIALDIGITS_BM);
-               ix++)
+	  ///
+          /// ignore BMH_ if following a letter, digit or underscore,
+          /// or if not followed by digit
+          if (bmhpos>0 && ((isalnum(line[bmhpos-1]) || line[bmhpos-1]=='_')
+                        || (bmhpos+BMPREFIXSIZE >= linesize || !isdigit(line[bmhpos+BMPREFIXSIZE]))))
             {
-              if (ix>=(int)linesize)
-                (badpos = ix), (badmsg="too short");
-              else if (ix == (int)startpos+SERIALDIGITS_BM)
-                {
-                  if (line[ix]!='_')
-                    (badpos=ix),(badmsg="no middle underscore");
-                }
-              else if (!isalnum(line[ix]))
-                (badpos = ix), (badmsg="alphanum expected");
+              while (bmhpos>0 && bmhpos<(ssize_t)linesize && (isalnum(line[bmhpos])||line[bmhpos]=='_'))
+                bmhpos++;
+              continue;
             };
-          if (startpos+2*(SERIALDIGITS_BM + 1)<linesize)
-            {
-              char nc = line[startpos +2*(SERIALDIGITS_BM + 1)];
-              if (isalnum(nc) || nc=='_')
-                (badpos=startpos +2*(SERIALDIGITS_BM + 1)),
-                (badmsg="too long id");
-            };
-          if (badpos>0)
-            {
-              fprintf(stderr, "%s:%d:%d: bad BMK_ constant, %s:: %s\n",
-                      path, linecnt+1, badpos+1, badmsg, line.c_str()+pos);
-              exit(EXIT_FAILURE);
-            };
-          endpos = startpos+2*(SERIALDIGITS_BM)+1;
-          std::string curid = line.substr(startpos, endpos-startpos);
-          bool goodid = true;
-          if (!isdigit(curid[0])) goodid = false;
-          if (curid[SERIALDIGITS_BM] != '_') goodid = false;
-          if (!isdigit(curid[SERIALDIGITS_BM+1])) goodid = false;
-          int curidlen = curid.size();
-          for (int ix=1; ix<curidlen; ix++) if (ix != SERIALDIGITS_BM && !isalnum(curid[ix])) goodid = false;
-          if (!goodid)
-            {
-              fprintf(stderr, "%s:%d:%d: incorrect BMK_constant '%s', not an id:: %s\n",
-                      path, linecnt+1, (int)startpos, curid.c_str(),  line.c_str()+startpos);
-              exit(EXIT_FAILURE);
-            }
-          pos = endpos;
-          bmconstset.insert(curid);
-          totalnbocc++;
-          nbocc++;
-        };
+	  ///
+	  /// 
+	  /// handle the id after BMK_
+	  if (bmkpos > 0) {
+	    const char*bmkcptr = line.c_str() + bmkpos;
+	    const char*endbmk = nullptr;
+	    rawid_tyBM bmkid = parse_rawid_BM(bmkcptr, &endbmk);
+	    if (validid_BM(bmkid) && endbmk != nullptr) {
+	      bmconstset.insert(bmkid);
+	      totalnbocc++;
+	      nbocc++;
+	      bmkpos = endbmk - line.c_str();
+	    }
+	    else bmkpos += BMPREFIXSIZE;	    
+	  }
+        };			// end while
       linecnt++;
     }
   while (srcin);
@@ -153,26 +140,31 @@ int main(int argc, char**argv)
   if (!strcmp(argv[1], "-H"))
     {
       auto hpath = argv[2];
-      std::set<std::string> bmconstset;
+      set_of_ids_BM bmconstset;
+      set_of_ids_BM bmhashset;
       for (int ix=3; ix<argc; ix++)
-        parse_cfile(argv[ix], bmconstset, true);
+        parse_cfile(argv[ix], bmconstset, bmhashset, true);
       std::ofstream outh(hpath);
       outh << "// generated header " << hpath << " for "
            << bmconstset.size() << " constants. DONT EDIT" << std::endl;
       for (auto id: bmconstset)
         {
-          outh << "extern void*bmconst_" << id << ";" << std::endl;
-          outh << "#define BMK_" << id << " bmconst_" << id <<std::endl;
+	  char bufid[32];
+	  memset (bufid, 0, sizeof(bufid));
+	  idtocbuf32_BM(id, bufid);
+          outh << "extern void*bmconst_" << bufid << ";" << std::endl;
+          outh << "#define BMK_" << bufid << " bmconst_" << bufid <<std::endl;
         }
       outh << "//- eof generated header " << hpath << std::endl;
     }
   else if (!strcmp(argv[1], "-C"))
     {
       auto spath = argv[2];
-      std::set<std::string> bmconstset;
       int nblines = 0;
+      set_of_ids_BM bmconstset;
+      set_of_ids_BM bmhashset;
       for (int ix=3; ix<argc; ix++)
-        nblines += parse_cfile(argv[ix], bmconstset, false);
+        nblines += parse_cfile(argv[ix], bmconstset, bmhashset, false);
       std::ofstream outs(spath);
       outs << "/** generated constant file " << spath << std::endl;
       outs << "  from:";
@@ -186,20 +178,29 @@ int main(int argc, char**argv)
       outs << std::endl << std::endl;
       for (auto id: bmconstset)
         {
-          outs << "void*bmconst_" << id << ";" << std::endl;
+	  char bufid[32];
+	  memset (bufid, 0, sizeof(bufid));
+	  idtocbuf32_BM(id, bufid);
+          outs << "void*bmconst_" << bufid << ";" << std::endl;
         };
       outs << std::endl;
       outs << "const int bmnbconsts=" << bmconstset.size() << ";" << std::endl;
       outs << "void** const bmconstaddrs[] = {" << std::endl;
       for (auto id: bmconstset)
         {
-          outs << "  &bmconst_" << id << "," << std::endl;
+	  char bufid[32];
+	  memset (bufid, 0, sizeof(bufid));
+	  idtocbuf32_BM(id, bufid);
+          outs << "  &bmconst_" << bufid << "," << std::endl;
         }
       outs << " (void**)0 };" << std::endl;
       outs << "const char* bmconstidstrings[] = {" << std::endl;
       for (auto id: bmconstset)
         {
-          outs << " \"_" << id << "\"," << std::endl;
+	  char bufid[32];
+	  memset (bufid, 0, sizeof(bufid));
+	  idtocbuf32_BM(id, bufid);
+          outs << " \"_" << bufid << "\"," << std::endl;
         }
       outs << " (const char*)0 };" << std::endl;
       outs << "//- eof generated constant file " << spath << std::endl;
@@ -212,6 +213,8 @@ int main(int argc, char**argv)
       exit(EXIT_FAILURE);
     }
   return 0;
-}
+} // end main
+
+/// eof BM_makeconst.cc
 
 
