@@ -14,6 +14,15 @@ echo "generate_ninja_args = $@"
 echo "generate_ninja_script = $0"
 echo '#related to pkg-config'
 echo "bm_packages = " $bm_packages
+for package in $(echo $bm_packages) ; do
+    curpack=$(pkg-config --list-all | grep $package)
+    if [ -z "$curpack" ]; then
+	echo "#missing package " $curpack > /dev/stderr
+	exit 1
+    else
+	echo "#package: " $curpack
+    fi
+done
 echo -n "pkg_cflags = "; pkg-config --cflags $bm_packages
 echo -n "pkg_libes = " ; pkg-config --libs $bm_packages
 echo '#our compilers and some compiler flags'
