@@ -161,9 +161,23 @@ objkindjansjsonpayl_BM (const objectval_tyBM * obj)
 json_t *
 jansjsonfromvalue_BM (value_tyBM val, int depth, struct stackframe_stBM *stkf)
 {
-#define HASHBM_json_object BMH_7hNqn2hxg1M_3wNHCtOf9IF
   objectval_tyBM *k_json = BMK_2gNQ6wSYLGz_9FkMuCIKfmv;
   objectval_tyBM *k_json_object = BMK_7hNqn2hxg1M_3wNHCtOf9IF;
+  objectval_tyBM *k_json_array = BMK_56Om4CG9rer_8xF06AhNZ1I;
+  objectval_tyBM *k_json_string = BMK_419If27jxwQ_3WQnLqU53iq;
+  objectval_tyBM *k_json_integer = BMK_8jCh9loDpOL_4eR6Nzk21xp;
+  objectval_tyBM *k_json_real = BMK_5ewBEYZh7EM_6dEinrBFpAE;
+  objectval_tyBM *k_json_true = BMK_0ekuRPtKaIF_3nrHrhB59Kn;
+  objectval_tyBM *k_json_false = BMK_1h1MMlmQi6f_2Z2g6rGMcPB;
+  objectval_tyBM *k_json_null = BMK_6WOSg1mpNxQ_6Dw2klXZFSk;
+#define HASHBM_json_object BMH_7hNqn2hxg1M_3wNHCtOf9IF
+#define HASHBM_json_array BMH_56Om4CG9rer_8xF06AhNZ1I
+#define HASHBM_json_string BMH_419If27jxwQ_3WQnLqU53iq
+#define HASHBM_json_integer BMH_8jCh9loDpOL_4eR6Nzk21xp
+#define HASHBM_json_real BMH_5ewBEYZh7EM_6dEinrBFpAE
+#define HASHBM_json_true BMH_0ekuRPtKaIF_3nrHrhB59Kn
+#define HASHBM_json_false BMH_1h1MMlmQi6f_2Z2g6rGMcPB
+#define HASHBM_json_null BMH_6WOSg1mpNxQ_6Dw2klXZFSk
   LOCALFRAME_BM (stkf, /*descr: */ k_json,
                  value_tyBM valarg;      //
                  objectval_tyBM * valob;      //
@@ -171,7 +185,26 @@ jansjsonfromvalue_BM (value_tyBM val, int depth, struct stackframe_stBM *stkf)
   _.valarg = val;
   if (isobject_BM(_.valarg)) {
     _.valob = objectcast_BM(_.valarg);
+#define MAXHASH_JSOB 67
+    switch (objecthash_BM(_.valob) % MAXHASH_JSOB) {
+    case HASHBM_json_null % MAXHASH_JSOB:
+      if (_.valob == k_json_null)
+	return json_null();
+      break;
+    case HASHBM_json_true % MAXHASH_JSOB:
+      if (_.valob == k_json_true)
+	return json_true();
+      break;
+    case HASHBM_json_false % MAXHASH_JSOB:
+      if (_.valob == k_json_false)
+	return json_false();
+      break;
+    default:
+      break;
+    }
   }
+#warning a lot of code is missing in jansjsonfromvalue_BM
+  return NULL;
 }                               /* end jansjsonfromvalue_BM */
 
 ///// end of file jsonjansson_BM.c
