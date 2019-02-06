@@ -4620,7 +4620,7 @@ defer_process_watchcb_BM (GPid pid, gint status, gpointer user_data)
                  const stringval_tyBM * outstrv;        //
     );
   // avoid failure inside, or handle them explicitly
-  int slot = (int) user_data;
+  int slot = (int) (intptr_t) user_data;
   GIOChannel *pipchan = NULL;
   int outpipefd = -1;
   guint childwatch = 0;

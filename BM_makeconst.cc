@@ -47,7 +47,9 @@ To process all the files and generate the constants
 typedef std::set<rawid_tyBM, IdLess_BM> set_of_ids_BM;
 
 
-int totalnbocc;
+int totalnbkocc;		// total cumulated number of occurrences of BMK_ for constants
+
+int totalnbhocc;		// total cumulated number of occurrences of BMH_ for hashes
 
 int parse_cfile(const char*path, set_of_ids_BM &bmconstset, set_of_ids_BM &bmhashset, bool verbose=false)
 {
@@ -58,7 +60,8 @@ int parse_cfile(const char*path, set_of_ids_BM &bmconstset, set_of_ids_BM &bmhas
     };
   std::ifstream srcin(path);
   int linecnt = 0;
-  int nbocc = 0;
+  int nbkocc = 0;
+  int nbhocc = 0;
   do
     {
       std::string line;
@@ -109,11 +112,28 @@ int parse_cfile(const char*path, set_of_ids_BM &bmconstset, set_of_ids_BM &bmhas
               if (validid_BM(bmkid) && endbmk != nullptr)
                 {
                   bmconstset.insert(bmkid);
-                  totalnbocc++;
-                  nbocc++;
+                  totalnbkocc++;
+                  nbkocc++;
                   bmkpos = endbmk - line.c_str();
                 }
               else bmkpos += BMPREFIXSIZE;
+            }
+          ///
+          ///
+          /// handle the id after BMH_
+          if (bmhpos > 0)
+            {
+              const char*bmhcptr = line.c_str() + bmhpos;
+              const char*endbmh = nullptr;
+              rawid_tyBM bmhid = parse_rawid_BM(bmhcptr+BMPREFIXSIZE-1, &endbmh);
+              if (validid_BM(bmhid) && endbmh != nullptr)
+                {
+                  bmhashset.insert(bmhid);
+                  totalnbhocc++;
+                  nbhocc++;
+                  bmhpos = endbmh - line.c_str();
+                }
+              else bmhpos += BMPREFIXSIZE;
             }
         };			// end while
       linecnt++;
@@ -121,8 +141,8 @@ int parse_cfile(const char*path, set_of_ids_BM &bmconstset, set_of_ids_BM &bmhas
   while (srcin);
   if (verbose)
     {
-      printf("processed %d lines from %s with %d occurrences\n",
-             linecnt, path, nbocc);
+      printf("processed %d lines from %s with %d constant occurrences, %d hashes\n",
+             linecnt, path, nbkocc, nbhocc);
       fflush(nullptr);
     }
   return linecnt;
@@ -148,7 +168,10 @@ int main(int argc, char**argv)
         parse_cfile(argv[ix], bmconstset, bmhashset, true);
       std::ofstream outh(hpath);
       outh << "// generated header " << hpath << " for "
-           << bmconstset.size() << " constants. DONT EDIT" << std::endl;
+           << bmconstset.size() << " constants and "
+	   << bmhashset.size() << " hashes;"
+	" DONT EDIT" << std::endl;
+      outh << std::endl << "// " << bmconstset.size() << " constants:" << std::endl;
       for (auto id: bmconstset)
         {
           char bufid[32];
@@ -156,6 +179,15 @@ int main(int argc, char**argv)
           idtocbuf32_BM(id, bufid);
           outh << "extern void*bmconst" << bufid << ";" << std::endl;
           outh << "#define BMK" << bufid << " bmconst" << bufid <<std::endl;
+        }
+      outh << std::endl << "// " << bmhashset.size() << " hashes:" << std::endl;
+      for (auto id: bmhashset)
+        {
+          char bufid[32];
+          memset (bufid, 0, sizeof(bufid));
+          idtocbuf32_BM(id, bufid);
+	  hash_tyBM h = hashid_BM(id);
+	  outh << "#define BMH" << bufid << " " << h << std::endl;
         }
       outh << "//- eof generated header " << hpath << std::endl;
     }
@@ -207,7 +239,7 @@ int main(int argc, char**argv)
       outs << " (const char*)0 };" << std::endl;
       outs << "//- eof generated constant file " << spath << std::endl;
       printf("processed %d lines in %d files with %d occurrences of %d constants\n",
-             nblines, argc-3, totalnbocc, (int) bmconstset.size());
+             nblines, argc-3, totalnbkocc, (int) bmconstset.size());
     }
   else
     {

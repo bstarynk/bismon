@@ -161,6 +161,17 @@ objkindjansjsonpayl_BM (const objectval_tyBM * obj)
 json_t *
 jansjsonfromvalue_BM (value_tyBM val, int depth, struct stackframe_stBM *stkf)
 {
+#define HASHBM_json_object BMH_7hNqn2hxg1M_3wNHCtOf9IF
+  objectval_tyBM *k_json = BMK_2gNQ6wSYLGz_9FkMuCIKfmv;
+  objectval_tyBM *k_json_object = BMK_7hNqn2hxg1M_3wNHCtOf9IF;
+  LOCALFRAME_BM (stkf, /*descr: */ k_json,
+                 value_tyBM valarg;      //
+                 objectval_tyBM * valob;      //
+		 );
+  _.valarg = val;
+  if (isobject_BM(_.valarg)) {
+    _.valob = objectcast_BM(_.valarg);
+  }
 }                               /* end jansjsonfromvalue_BM */
 
 ///// end of file jsonjansson_BM.c
