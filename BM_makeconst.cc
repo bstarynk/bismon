@@ -35,6 +35,14 @@
 #include <unistd.h>
 #include "id_BM.h"
 
+/** examples of invocation:
+To process a single file and generate its header
+    ./BM_makeconst -H user_BM.const.h user_BM.c
+
+To process all the files and generate the constants
+    ./BM_makeconst -C _bm_allconsts.c *_BM.c misc_BM.cc
+***/
+
 int totalnbocc;
 
 int parse_cfile(const char*path, std::set<std::string>& bmconstset, bool verbose=false)
