@@ -169,8 +169,8 @@ int main(int argc, char**argv)
       std::ofstream outh(hpath);
       outh << "// generated header " << hpath << " for "
            << bmconstset.size() << " constants and "
-	   << bmhashset.size() << " hashes;"
-	" DONT EDIT" << std::endl;
+           << bmhashset.size() << " hashes;"
+           " DONT EDIT" << std::endl;
       outh << std::endl << "// " << bmconstset.size() << " constants:" << std::endl;
       for (auto id: bmconstset)
         {
@@ -186,8 +186,8 @@ int main(int argc, char**argv)
           char bufid[32];
           memset (bufid, 0, sizeof(bufid));
           idtocbuf32_BM(id, bufid);
-	  hash_tyBM h = hashid_BM(id);
-	  outh << "#define BMH" << bufid << " " << h << std::endl;
+          hash_tyBM h = hashid_BM(id);
+          outh << "#define BMH" << bufid << " " << h << std::endl;
         }
       outh << "//- eof generated header " << hpath << std::endl;
     }

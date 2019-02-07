@@ -158,8 +158,10 @@ objkindjansjsonpayl_BM (const objectval_tyBM * obj)
 }                               /* end objkindjansjsonpayl_BM */
 
 
+#define MAXDEPTHJSON_BM 96
 json_t *
-jansjsonfromvalue_BM (value_tyBM val, int depth, struct stackframe_stBM *stkf)
+jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, int depth,
+                      struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_json = BMK_2gNQ6wSYLGz_9FkMuCIKfmv;
   objectval_tyBM *k_json_object = BMK_7hNqn2hxg1M_3wNHCtOf9IF;
@@ -179,30 +181,42 @@ jansjsonfromvalue_BM (value_tyBM val, int depth, struct stackframe_stBM *stkf)
 #define HASHBM_json_false BMH_1h1MMlmQi6f_2Z2g6rGMcPB
 #define HASHBM_json_null BMH_6WOSg1mpNxQ_6Dw2klXZFSk
   LOCALFRAME_BM (stkf, /*descr: */ k_json,
-                 value_tyBM valarg;      //
-                 objectval_tyBM * valob;      //
-		 );
+                 value_tyBM valarg;     //
+                 value_tyBM srcarg;     //
+                 objectval_tyBM * valob;        //
+                 value_tyBM errorv;     //
+    );
   _.valarg = val;
-  if (isobject_BM(_.valarg)) {
-    _.valob = objectcast_BM(_.valarg);
+  _.srcarg = src;
+  if (isobject_BM (_.valarg))
+    {
+      _.valob = objectcast_BM (_.valarg);
 #define MAXHASH_JSOB 67
-    switch (objecthash_BM(_.valob) % MAXHASH_JSOB) {
-    case HASHBM_json_null % MAXHASH_JSOB:
-      if (_.valob == k_json_null)
-	return json_null();
-      break;
-    case HASHBM_json_true % MAXHASH_JSOB:
-      if (_.valob == k_json_true)
-	return json_true();
-      break;
-    case HASHBM_json_false % MAXHASH_JSOB:
-      if (_.valob == k_json_false)
-	return json_false();
-      break;
-    default:
-      break;
+      switch (objecthash_BM (_.valob) % MAXHASH_JSOB)
+        {
+        case HASHBM_json_null % MAXHASH_JSOB:
+          if (_.valob == k_json_null)
+            return json_null ();
+          break;
+        case HASHBM_json_true % MAXHASH_JSOB:
+          if (_.valob == k_json_true)
+            return json_true ();
+          break;
+        case HASHBM_json_false % MAXHASH_JSOB:
+          if (_.valob == k_json_false)
+            return json_false ();
+          break;
+        default:
+          break;
+        }
     }
-  }
+  if (depth > MAXDEPTHJSON_BM)
+    {
+      // _.errorv =
+      //  makenode5_BM(k_json, k_depth, taggedint_BM(depth), _.valarg, _.srcarg);
+#warning missing code for too deep failure in jansjsonfromvalue_BM
+      PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+    }
 #warning a lot of code is missing in jansjsonfromvalue_BM
   return NULL;
 }                               /* end jansjsonfromvalue_BM */
