@@ -172,6 +172,7 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, int depth,
   objectval_tyBM *k_json_true = BMK_0ekuRPtKaIF_3nrHrhB59Kn;
   objectval_tyBM *k_json_false = BMK_1h1MMlmQi6f_2Z2g6rGMcPB;
   objectval_tyBM *k_json_null = BMK_6WOSg1mpNxQ_6Dw2klXZFSk;
+  objectval_tyBM *k_depth = BMK_17YdW6dWrBA_2mn4QmBjMNs;
 #define HASHBM_json_object BMH_7hNqn2hxg1M_3wNHCtOf9IF
 #define HASHBM_json_array BMH_56Om4CG9rer_8xF06AhNZ1I
 #define HASHBM_json_string BMH_419If27jxwQ_3WQnLqU53iq
@@ -212,9 +213,9 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, int depth,
     }
   if (depth > MAXDEPTHJSON_BM)
     {
-      // _.errorv =
-      //  makenode5_BM(k_json, k_depth, taggedint_BM(depth), _.valarg, _.srcarg);
-#warning missing code for too deep failure in jansjsonfromvalue_BM
+      _.errorv =
+        makenode4_BM (k_json, k_depth, taggedint_BM (depth), _.valarg,
+                      _.srcarg);
       PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
     }
 #warning a lot of code is missing in jansjsonfromvalue_BM
