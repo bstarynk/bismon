@@ -832,9 +832,9 @@ int doublecmp_BM(double x, double y)
     FATAL_BM("doublecmp_BM with Not-a-number x=%g y=%g", x,y);
   /// IEEE 754 distinguishes +0.0 from -0.0, but they compare equal
   if (x==y) {
-    if (x <= 0.0 && y >= 0.0)
+    if (x <= -0.0 && y >= +0.0)
       return -1;
-    if (x >= 0.0 && y <= 0.0)
+    if (x >= +0.0 && y <= -0.0)
       return +1;
     return 0;
   };
