@@ -160,8 +160,8 @@ objkindjansjsonpayl_BM (const objectval_tyBM * obj)
 
 #define MAXDEPTHJSON_BM 96
 json_t *
-jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, int depth,
-                      struct stackframe_stBM *stkf)
+jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
+                      int depth, struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_json = BMK_2gNQ6wSYLGz_9FkMuCIKfmv;
   objectval_tyBM *k_json_object = BMK_7hNqn2hxg1M_3wNHCtOf9IF;
@@ -173,6 +173,8 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, int depth,
   objectval_tyBM *k_json_false = BMK_1h1MMlmQi6f_2Z2g6rGMcPB;
   objectval_tyBM *k_json_null = BMK_6WOSg1mpNxQ_6Dw2klXZFSk;
   objectval_tyBM *k_depth = BMK_17YdW6dWrBA_2mn4QmBjMNs;
+  objectval_tyBM *k_apply = BMK_3Nl6LhfUZVb_1itsyWMBfYl;
+  objectval_tyBM *k_closure = BMK_93zjUzZVAaj_9ppXv7C34GR;
 #define HASHBM_json_object BMH_7hNqn2hxg1M_3wNHCtOf9IF
 #define HASHBM_json_array BMH_56Om4CG9rer_8xF06AhNZ1I
 #define HASHBM_json_string BMH_419If27jxwQ_3WQnLqU53iq
@@ -184,11 +186,15 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, int depth,
   LOCALFRAME_BM (stkf, /*descr: */ k_json,
                  value_tyBM valarg;     //
                  value_tyBM srcarg;     //
+                 value_tyBM ctxarg;     //
+                 value_tyBM resappv;    //
                  objectval_tyBM * valob;        //
+                 objectval_tyBM * compob;       //
                  value_tyBM errorv;     //
     );
   _.valarg = val;
   _.srcarg = src;
+  _.ctxarg = ctx;
   if (isobject_BM (_.valarg))
     {
       _.valob = objectcast_BM (_.valarg);
@@ -214,9 +220,51 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, int depth,
   if (depth > MAXDEPTHJSON_BM)
     {
       _.errorv =
-        makenode4_BM (k_json, k_depth, taggedint_BM (depth), _.valarg,
-                      _.srcarg);
+        makenode5_BM (k_json, k_depth, taggedint_BM (depth), _.valarg,
+                      _.srcarg, _.ctxarg);
       PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+    }
+  if (_.valob && objectisinstance_BM (_.valob, k_json_object)
+      && objhasjansjsonpayl_BM (_.valob))
+    return objgetjansjsonpayl_BM (_.valob);
+  else if (_.valob)
+    return json_string (objectdbg_BM (_.valob));
+  else if (isstring_BM (_.valob))
+    return json_string (bytstring_BM (_.valob));
+  else if (issequence_BM (_.valob))
+    {
+      unsigned ln = sequencesize_BM (_.valob);
+      json_t *jarr = json_array ();
+      for (int ix = 0; ix < (int) ln; ix++)
+        {
+          _.compob = sequencenthcomp_BM (_.valob, ix);
+          json_t *jcomp =
+            jansjsonfromvalue_BM (_.compob, _.srcarg, _.ctxarg, depth + 1,
+                                  CURFRAME_BM);
+          if (jcomp)
+            json_array_append (jarr, jcomp);
+        }
+      return jarr;
+    }
+  else if (isclosure_BM (_.valob))
+    {
+      _.resappv =
+        apply3_BM (_.valob, _.srcarg, _.ctxarg, taggedint_BM (depth),
+                   CURFRAME_BM);
+      if (!_.resappv)
+        {
+          _.errorv =
+            makenode5_BM (k_json, k_apply, taggedint_BM (depth), _.valarg,
+                          _.srcarg, _.ctxarg);
+          PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+        }
+      else if (isclosure_BM (_.resappv))
+        {
+          _.errorv =
+            makenode6_BM (k_json, k_closure, taggedint_BM (depth), _.resappv,
+                          _.valob, _.srcarg, _.ctxarg);
+          PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+        }
     }
 #warning a lot of code is missing in jansjsonfromvalue_BM
   return NULL;
