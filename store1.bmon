@@ -1,6 +1,6 @@
 // generated persistent data file store1.bmon
 // this generated data file is GPLv3+ licensed
-// for 60 objects
+// for 61 objects
 // with 0 modules
 
 
@@ -440,6 +440,17 @@ _7jHHqKoSEZf_6G1dslcAaT8
 !@ 1493382726.980
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_1jJjA6LcXiX_1V4ZcXlje09
+
+
+
+!(_96AZeYX4rXS_91yzLJ7Zg58 |=nan_double|
+!~ name (~ nan_double
+~)
+!@ 1549617133.687
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for Not-A-Number doubles"
+!)_96AZeYX4rXS_91yzLJ7Zg58
 
 
 
