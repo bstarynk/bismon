@@ -25,6 +25,11 @@ So the \emph{Bismon monitor} handle
   of values.} (represented as pointers) : they can be immutable, or
 objects (and objects are the only kind of mutable data).
 
+All values (immutable ones and mutable objects) are
+hashable~\footnote{Their hash is a non-zero 32 bits unsigned
+  number. Only the nil pointer has an hash of 0.}  and totally
+ordered.
+
 %%%%%%%%%%%%%%%%
 \subsubsection{Immutable values}
 \label{subsubsec:immutvalues}
@@ -40,6 +45,15 @@ They include
   
 \item UTF-8 encoded \textbf{string} (the bytes inside such
   \index{string}{strings} don't change).
+
+  \item boxed constant \textbf{double} (IEEE 754) floating point
+    numbers; but \texttt{NaN} is \emph{never} boxed and becomes
+    reified as the \texttt{nan\_double} \emph{object}; hence boxed
+    doubles stay comparable (with the convention~\footnote{The
+      intuition behind such a convention would be that $-0.0$ is a
+      very (or infinitely) small negative number, so less that $+0.0$
+      wich could be a very small positive number.}  that $-0.0 \lt
+    +0.0$, even if they compare equal in IEEE 754).
 
   \item \textbf{tuple} of objects, that is an ordered (but immutable)
     sequence of object pointers (the size or content of a tuple don't
