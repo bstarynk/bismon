@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2504 objects
+// for 2505 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -28728,6 +28728,15 @@ _0vCFi47Ctm6_70R5Tci6JuH
 !: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
 _6CNxxDuR549_5nVIV57U3hP
 !)_6KDkrFdjO9P_14wFqrvJOfp
+
+
+
+!(_6KYa0K6vqt5_00xCqyfhJhY
+!@ 1549636771.112
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the gtk_browse_value\u00b0double_float in guicode_BM.c"
+!)_6KYa0K6vqt5_00xCqyfhJhY
 
 
 

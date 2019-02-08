@@ -1506,10 +1506,11 @@ parsergetvalue_BM (struct parser_stBM *pars,
     }
   //
   // parse doubles
-  else if (tok.tok_kind == plex_DOUBLE) {
+  else if (tok.tok_kind == plex_DOUBLE)
+    {
       *pgotval = true;
-      return nobuild ? NULL : makedouble_BM(tok.tok_dbl);
-  }
+      return nobuild ? NULL : makedouble_BM (tok.tok_dbl);
+    }
   //
   // parse objects given by id
   else if (tok.tok_kind == plex_ID)

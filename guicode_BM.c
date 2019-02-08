@@ -631,6 +631,38 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    // gtk_browse_value°int
 }                               /* end  gtk_browse_value°int _0HBMCM5CeLn_7L5YEV2jO7Y  */
 
 
+// gtk_browse_value°double_float
+extern objrout_sigBM ROUTINEOBJNAME_BM (_6KYa0K6vqt5_00xCqyfhJhY);
+value_tyBM
+ROUTINEOBJNAME_BM (_6KYa0K6vqt5_00xCqyfhJhY)    // gtk_browse_value°double_float
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3,         // the current depth
+ const value_tyBM arg4 __attribute__((unused)), //
+ const quasinode_tyBM * restargs __attribute__((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const doubleval_tyBM * dblbrows;);
+  _.dblbrows = doublecast_BM (arg1);
+  int maxdepth = getint_BM (arg2);
+  int curdepth = getint_BM (arg3);
+  WEAKASSERT_BM (_.dblbrows != NULL);
+#ifdef BISMONGTK
+  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
+  double d = getdouble_BM ((value_tyBM) _.dblbrows);
+  char buf[32];
+  memset (buf, 0, sizeof (buf));
+  snprintf (buf, sizeof (buf), "%#.9f", d);
+  if (atof (buf) != d || !strchr (buf, '.'))
+    snprintf (buf, sizeof (buf), "%.12e", d);
+  gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
+                                    buf, -1, num_brotag_BM, NULL);
+#endif /* BISMONGTK */
+  return _.dblbrows;
+}                               /* end gtk_browse_value°double_float _63ZPkXUI2Uv_6Cp3qmh6Uud */
+
+
 
 /// method to gtk_browse_value for string-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud);
