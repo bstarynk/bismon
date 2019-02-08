@@ -172,6 +172,8 @@ valclass_BM (const value_tyBM v)
           return BMP_node;
         case tyClosure_BM:
           return BMP_closure;
+        case tyDouble_BM:
+          return BMP_double_float;
         case tyObject_BM:
 #ifdef __cplusplus
           {
@@ -1172,6 +1174,30 @@ stringcast_BM (const value_tyBM v)
 {
   return isstring_BM (v) ? (const stringval_tyBM *) v : NULL;
 }                               /* end stringcast_BM */
+
+////////////////
+bool
+isdouble_BM (const value_tyBM v)
+{
+  return (valtype_BM (v) == tyDouble_BM);
+}                               /* end isdouble_BM */
+
+const doubleval_tyBM *
+doublecast_BM (const value_tyBM val)
+{
+  if (isdouble_BM (val))
+    return (const doubleval_tyBM *) val;
+  return NULL;
+}                               /* end doublecast_BM */
+
+double
+getdouble_BM (const value_tyBM v)
+{
+  const doubleval_tyBM *db = doublecast_BM (v);
+  if (db)
+    return db->dbl_num;
+  return NAN;
+}                               /* end getdouble_BM */
 
 ////////////////
 struct hashsetobj_stBM *

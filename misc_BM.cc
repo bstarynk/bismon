@@ -2,7 +2,7 @@
 
 /***
     BISMON
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -34,6 +34,7 @@
 #include <thread>
 #include <ratio>
 #include <chrono>
+#include <functional>
 extern "C" {
 #ifdef BISMONGTK
 #include <gtk/gtk.h>
@@ -821,6 +822,21 @@ dictnodeofkeys_BM(struct dict_stBM* dict, const objectval_tyBM*obj)
   return nodv;
 } // end dictnodeofkeys_BM
 
+////////////////////////////////////////////////////////////////
+/// some support for doubles
+int doublecmp_BM(double x, double y)
+{
+  if (isnan(x) || isnan(y))
+    FATAL_BM("doublecmp_BM with Not-a-number x=%g y=%g", x,y);
+  /// IEEE 754 distinguishes +0.0 from -0.0
+  if (x==0.0 && y==0.0)
+    return (x==y) ? 0 : (x < y) ? -1 : +1;
+  if (x==y) return 0;
+  if (x<y) return -1;
+  if (x>y) return +1;
+  // this should never be reached
+  FATAL_BM("doublecmp_BM fail to compare x=%g, y=%g", x, y);
+} // end doublecmp_BM
 
 ////////////////////////////////////////////////////////////////
 /****** support for command window and paren blinking ******/

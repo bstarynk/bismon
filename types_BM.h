@@ -34,12 +34,13 @@ enum gctyenum_BM
   tyNone_BM = 0,                /* e.g. for nil */
 #define type_FIRST_BM tyString_BM
   tyString_BM = 1,              /* boxed strings */
-  tySet_BM = 2,                 /* boxed set of objects */
-  tyTuple_BM = 3,               /* boxed tuple of objects */
-  tyNode_BM = 4,                /* boxed node */
-  tyClosure_BM = 5,             /* boxed closure */
-  tyObject_BM = 6,              /* boxed object */
-  tyUnspecified_BM = 7,         /* the single unspecified value */
+  tyDouble_BM = 2,              /* single boxed double - never a NaN */
+  tySet_BM = 3,                 /* boxed set of objects */
+  tyTuple_BM = 4,               /* boxed tuple of objects */
+  tyNode_BM = 5,                /* boxed node */
+  tyClosure_BM = 6,             /* boxed closure */
+  tyObject_BM = 7,              /* boxed object */
+  tyUnspecified_BM = 8,         /* the single unspecified value */
 #define type_LASTREAL_BM tyUnspecified_BM
   ty_SpareA_BM = 8,
   ty_SpareB_BM = 9,
@@ -132,6 +133,7 @@ struct typedsize_stBM
 };
 typedef struct typedsize_stBM typedsize_tyBM;
 
+/// could be used in a forwarding, copying, GC
 struct typedforward_stBM
 {
   typedsize_tyBM pS;
@@ -139,6 +141,13 @@ struct typedforward_stBM
 };
 typedef struct typedforward_stBM typedforward_tyBM;
 
+
+struct doubleval_stBM           // for tyDouble_BM
+{
+  typedhead_tyBM pH;
+  double dbl_num;
+};
+typedef struct doubleval_stBM doubleval_tyBM;   /*tyDouble_BM */
 
 struct allalloc_stBM
 {
@@ -154,7 +163,7 @@ struct stringval_stBM           /* the size field is the length in bytes */
 };
 typedef struct stringval_stBM stringval_tyBM;   /*tyString_BM */
 
-// forward
+// forward declaration
 typedef struct object_stBM objectval_tyBM;      /*tyObject_BM */
 
 struct seqobval_stBM

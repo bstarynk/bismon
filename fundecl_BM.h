@@ -294,6 +294,16 @@ extern void *quasinodegcproc_BM (struct garbcoll_stBM *gc,
                                  quasinode_tyBM * quasi, int depth)
   __attribute__((warn_unused_result));
 ////////////////
+// support for boxed doubles
+extern void doublegcdestroy_BM (struct garbcoll_stBM *gc,
+                                doubleval_tyBM * dblv);
+extern void doublegckeep_BM (struct garbcoll_stBM *gc, doubleval_tyBM * dblv);
+extern value_tyBM makedouble_BM (double x);     /* gives the boxed double, or else `nan_double` if it is NaN */
+static inline bool isdouble_BM (const value_tyBM val);
+static inline const doubleval_tyBM *doublecast_BM (const value_tyBM  val);
+static inline double getdouble_BM (const value_tyBM val);       /* unbox the double or else gives NaN */
+extern int doublecmp_BM (double x, double y);   // a total order, but x and y cannot be NaN
+////////////////
 
 // initialize the GC and mainthreadid_BM
 extern void initialize_garbage_collector_BM (void);

@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -300,6 +300,8 @@ fgmtimestring_BM (const char *fmt, time_t ti)
 }                               /* end fgmtimestring_BM */
 
 
+////////////////////////////////////////////////////////////////
+// support for boxed double values
 
 
 ////////////////////////////////////////////////////////////////
