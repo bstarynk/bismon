@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2502 objects
+// for 2504 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -18209,12 +18209,15 @@ _41F1rKwGbaA_30OJWKsqNWy)
 
 
 !(_2CQSAWSZYj5_98YYbJMAfN2
-!@ 1549635024.296
+!@ 1549636257.064
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of dump_value\u00b0double_float"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _7MtjMTkmErH_2zSJ1YDKHVi
+!# 2
+!& _61LFWdfV7PM_5veZwiRLC2y
+!& _8SBPWoQTYFm_5EoKbU71sQi
 !)_2CQSAWSZYj5_98YYbJMAfN2
 
 
@@ -26837,6 +26840,33 @@ _8s5u19T0e2h_9ZqrO3YZDVS
 
 
 
+!(_61LFWdfV7PM_5veZwiRLC2y
+!@ 1549636222.473
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dump double v_dbl in o_strbuf"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "\n"  "double"  " "  "d_"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+  " "  "="  " "  "getdouble_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _7m9aaeG1xHx_6pPkRL8xYYT)  ");"  "\n" 
+ "if"  " " 
+  "("  "objstrbufferoutdoublepayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_41F1rKwGbaA_30OJWKsqNWy)  "," 
+  " "  "d_"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "))"  "\n" 
+  " "  "objstrbufferprintfpayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_41F1rKwGbaA_30OJWKsqNWy)  "," 
+  " "  "\"|==%"  "g"  "|"  " " 
+  "\","  " "  "d_"  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ ");" 
+  "\n"  "else"  " "  "objstrbufferappendcstrpayl_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _41F1rKwGbaA_30OJWKsqNWy)  ","  " "  
+"\""  " " 
+  "\");"  "\n")
+!)_61LFWdfV7PM_5veZwiRLC2y
+
+
+
 !(_61MCdztYidF_16139B2zGKg
 !@ 1545637347.212
 !$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
@@ -34639,6 +34669,17 @@ _0ZL8gaI6sH8_7UPhmAQcwMe
 !# 1
 !& _5ApW1H8BySt_0IeDlaMExl5
 !)_8SrLP2fiywp_9fgYcarfIGJ
+
+
+
+!(_8SBPWoQTYFm_5EoKbU71sQi
+!@ 1549636257.064
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return v_dbl"
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+_7m9aaeG1xHx_6pPkRL8xYYT
+!)_8SBPWoQTYFm_5EoKbU71sQi
 
 
 
