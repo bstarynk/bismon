@@ -1504,6 +1504,13 @@ parsergetvalue_BM (struct parser_stBM *pars,
       *pgotval = true;
       return nobuild ? NULL : (value_tyBM) tok.tok_string;
     }
+  //
+  // parse doubles
+  else if (tok.tok_kind == plex_DOUBLE) {
+      *pgotval = true;
+      return nobuild ? NULL : makedouble_BM(tok.tok_dbl);
+  }
+  //
   // parse objects given by id
   else if (tok.tok_kind == plex_ID)
     {
