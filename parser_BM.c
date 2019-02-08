@@ -1515,6 +1515,7 @@ parsergetvalue_BM (struct parser_stBM *pars,
   // parse doubles
   else if (tok.tok_kind == plex_DOUBLE)
     {
+#warning this does not work in the command window
       *pgotval = true;
       if (pars->pars_debug && !nobuild)
         DBGPRINTF_BM ("parsergetvalue double %g L%uC%u", tok.tok_dbl,
