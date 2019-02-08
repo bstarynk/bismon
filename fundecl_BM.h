@@ -300,9 +300,14 @@ extern void doublegcdestroy_BM (struct garbcoll_stBM *gc,
 extern void doublegckeep_BM (struct garbcoll_stBM *gc, doubleval_tyBM * dblv);
 extern value_tyBM makedouble_BM (double x);     /* gives the boxed double, or else `nan_double` if it is NaN */
 static inline bool isdouble_BM (const value_tyBM val);
-static inline const doubleval_tyBM *doublecast_BM (const value_tyBM  val);
+static inline const doubleval_tyBM *doublecast_BM (const value_tyBM val);
 static inline double getdouble_BM (const value_tyBM val);       /* unbox the double or else gives NaN */
-extern int doublecmp_BM (double x, double y);   // a total order, but x and y cannot be NaN
+
+// a total order, but x and y cannot be NaN, e.g. because the are from
+// a boxed double:
+extern int doublecmp_BM (double x, double y);
+// the hash of doubles
+extern hash_tyBM doublehash_BM (double x);
 ////////////////
 
 // initialize the GC and mainthreadid_BM

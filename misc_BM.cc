@@ -35,6 +35,7 @@
 #include <ratio>
 #include <chrono>
 #include <functional>
+#include <cmath>
 extern "C" {
 #ifdef BISMONGTK
 #include <gtk/gtk.h>
@@ -824,19 +825,36 @@ dictnodeofkeys_BM(struct dict_stBM* dict, const objectval_tyBM*obj)
 
 ////////////////////////////////////////////////////////////////
 /// some support for doubles
+/// compare of double-s inside boxed doubles, so they cannot be NaN
 int doublecmp_BM(double x, double y)
 {
-  if (isnan(x) || isnan(y))
+  if (std::isnan(x) || std::isnan(y) || std::isunordered(x,y))
     FATAL_BM("doublecmp_BM with Not-a-number x=%g y=%g", x,y);
-  /// IEEE 754 distinguishes +0.0 from -0.0
-  if (x==0.0 && y==0.0)
-    return (x==y) ? 0 : (x < y) ? -1 : +1;
-  if (x==y) return 0;
+  /// IEEE 754 distinguishes +0.0 from -0.0, but they compare equal
+  if (x==y) {
+    if (x <= 0.0 && y >= 0.0)
+      return -1;
+    if (x >= 0.0 && y <= 0.0)
+      return +1;
+    return 0;
+  };
   if (x<y) return -1;
   if (x>y) return +1;
   // this should never be reached
   FATAL_BM("doublecmp_BM fail to compare x=%g, y=%g", x, y);
 } // end doublecmp_BM
+
+hash_tyBM doublehash_BM (double x)
+{
+  std::size_t hs = std::hash<double>{}(x);
+  hash_tyBM h = (hash_tyBM) hs;
+  if (h == 0) {
+    h = hs % 12001057;
+    if (h == 0)
+      h = 1051079;
+  }
+  return h;
+} // end doublehash_BM
 
 ////////////////////////////////////////////////////////////////
 /****** support for command window and paren blinking ******/
