@@ -896,6 +896,7 @@ parse_cords_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
 }                               /* end parse_cords_BM */
 
 
+
 #define EUROBYTELEN_BM 3        /* strlen("€") */
 parstoken_tyBM
 parsertokenget_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
@@ -937,6 +938,9 @@ again:
                   (pars, pars->pars_lineno, pars->pars_colpos, coldbl);
               pars->pars_curbyte = endflo;
               pars->pars_colpos += coldbl;
+              if (pars->pars_debug)
+                DBGPRINTF_BM ("parsertokenget_BM L%dC%d double %g",
+                              curlin, curcol, x);
               return (parstoken_tyBM)
               {
               .tok_kind = plex_DOUBLE,.tok_line = curlin,.tok_col =
@@ -1095,6 +1099,9 @@ again:
       if (parsop && parsop->parsop_decorate_number_rout)
         parsop->parsop_decorate_number_rout (pars, curlin, pars->pars_colpos,
                                              4);
+      if (pars->pars_debug)
+        DBGPRINTF_BM ("parsertokenget_BM L%dC%d special double %g",
+                      curlin, pars->pars_colpos, x);
       pars->pars_curbyte += 4;
       pars->pars_colpos += 4;
       return (parstoken_tyBM)
@@ -1509,6 +1516,9 @@ parsergetvalue_BM (struct parser_stBM *pars,
   else if (tok.tok_kind == plex_DOUBLE)
     {
       *pgotval = true;
+      if (pars->pars_debug && !nobuild)
+        DBGPRINTF_BM ("parsergetvalue double %g L%uC%u", tok.tok_dbl,
+                      tok.tok_line, tok.tok_col);
       return nobuild ? NULL : makedouble_BM (tok.tok_dbl);
     }
   //
