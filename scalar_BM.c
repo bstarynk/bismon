@@ -302,6 +302,49 @@ fgmtimestring_BM (const char *fmt, time_t ti)
 
 ////////////////////////////////////////////////////////////////
 // support for boxed double values
+  /* gives the boxed double, or else the `nan_double` predefined object if it is NaN */
+value_tyBM
+makedouble_BM (double x)
+{
+  if (isnan (x))
+    return BMP_nan_double;      // this is a predefined object, not a boxed double!
+  doubleval_tyBM *dblv = allocgcty_BM (tyDouble_BM, sizeof (doubleval_tyBM));
+  hash_tyBM h = doublehash_BM (x);
+  ASSERT_BM (h != 0);
+  ((typedhead_tyBM *) dblv)->hash = h;
+  dblv->dbl_num = x;
+  return dblv;
+}                               /* end makedouble_BM */
+
+void *
+doublegcproc_BM (struct garbcoll_stBM *gc, doubleval_tyBM * dbl)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (((typedhead_tyBM *) dbl)->htyp == tyDouble_BM);
+  ((typedhead_tyBM *) dbl)->hgc = MARKGC_BM;
+#warning doublegcproc_BM should forward when needed
+  gc->gc_nbmarks++;
+  return dbl;
+}                               /* end doublegcproc_BM */
+
+void
+doublegcdestroy_BM (struct garbcoll_stBM *gc, doubleval_tyBM * dbl)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (((typedhead_tyBM *) dbl)->htyp == tyDouble_BM);
+  memset (dbl, 0, sizeof (*dbl));
+  free (dbl);
+  gc->gc_freedbytes += sizeof (*dbl);
+}                               /* end doublegcdestroy_BM */
+
+
+void
+doublegckeep_BM (struct garbcoll_stBM *gc, doubleval_tyBM * dbl)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (((typedhead_tyBM *) dbl)->htyp == tyDouble_BM);
+  gc->gc_keptbytes += sizeof (*dbl);
+}                               /* end doublegckeep_BM */
 
 
 ////////////////////////////////////////////////////////////////

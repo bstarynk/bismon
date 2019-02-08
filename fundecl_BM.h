@@ -295,6 +295,7 @@ extern void *quasinodegcproc_BM (struct garbcoll_stBM *gc,
   __attribute__((warn_unused_result));
 ////////////////
 // support for boxed doubles
+extern void *doublegcproc_BM (struct garbcoll_stBM *gc, doubleval_tyBM * dbl);
 extern void doublegcdestroy_BM (struct garbcoll_stBM *gc,
                                 doubleval_tyBM * dblv);
 extern void doublegckeep_BM (struct garbcoll_stBM *gc, doubleval_tyBM * dblv);
@@ -305,9 +306,9 @@ static inline double getdouble_BM (const value_tyBM val);       /* unbox the dou
 
 // a total order, but x and y cannot be NaN, e.g. because the are from
 // a boxed double:
-extern int doublecmp_BM (double x, double y);
+extern int doublecmp_BM (double x, double y);   /* in misc_BM.cc */
 // the hash of doubles
-extern hash_tyBM doublehash_BM (double x);
+extern hash_tyBM doublehash_BM (double x);      /* in misc_BM.cc */
 ////////////////
 
 // initialize the GC and mainthreadid_BM

@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -121,6 +121,8 @@ valuegcproc_BM (struct garbcoll_stBM *gc, value_tyBM val, int depth)
     {
     case tyString_BM:
       return stringgcproc_BM (gc, (stringval_tyBM *) val);
+    case tyDouble_BM:
+      return doublegcproc_BM (gc, (doubleval_tyBM *) val);
     case tyObject_BM:
       gcobjmark_BM (gc, val);
       return val;
@@ -186,6 +188,8 @@ extendedgcproc_BM (struct garbcoll_stBM *gc, extendedval_tyBM xval,
     {
     case tyString_BM:
       return stringgcproc_BM (gc, (stringval_tyBM *) xval);
+    case tyDouble_BM:
+      return doublegcproc_BM (gc, (doubleval_tyBM *) xval);
     case tyUnspecified_BM:
       return xval;
     case tyObject_BM:
@@ -296,6 +300,9 @@ valgcdestroy_BM (struct garbcoll_stBM *gc, value_tyBM val)
     case tyString_BM:
       stringgcdestroy_BM (gc, (stringval_tyBM *) val);
       return;
+    case tyDouble_BM:
+      doublegcdestroy_BM (gc, (doubleval_tyBM *) val);
+      return;
     case tyObject_BM:
       objectgcdestroy_BM (gc, val);
       return;
@@ -390,6 +397,8 @@ typestring_BM (int ty)
       return "None";
     case tyString_BM:
       return "String";
+    case tyDouble_BM:
+      return "Double";
     case tyObject_BM:
       return "Object";
     case tySet_BM:
@@ -484,6 +493,7 @@ deleteobjectpayload_BM (objectval_tyBM * obj, extendedval_tyBM payl)
   switch (ty)
     {
     case tyString_BM:
+    case tyDouble_BM:
     case tyObject_BM:
     case tySet_BM:
     case tyTuple_BM:
@@ -548,6 +558,9 @@ valgckeep_BM (struct garbcoll_stBM *gc, value_tyBM val)
     {
     case tyString_BM:
       stringgckeep_BM (gc, (stringval_tyBM *) val);
+      return;
+    case tyDouble_BM:
+      doublegckeep_BM (gc, (doubleval_tyBM *) val);
       return;
     case tyObject_BM:
       objectgckeep_BM (gc, val);
