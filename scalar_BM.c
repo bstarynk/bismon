@@ -903,6 +903,52 @@ objstrbufferprintfpayl_BM (objectval_tyBM * obj, const char *fmt, ...)
 }                               /* end objstrbufferprintfpayl_BM */
 
 
+void
+objstrbufferoutdoublepayl_BM (objectval_tyBM * obj, double x)
+{
+  struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (obj);
+  if (!sbuf)
+    return;
+  if (isnan (x))
+    {
+      objstrbufferappendcstrpayl_BM (obj, "+NAN");
+    }
+  else if (isinf (x))
+    {
+      if (x > 0.0)
+        objstrbufferappendcstrpayl_BM (obj, "+INF");
+      else
+        objstrbufferappendcstrpayl_BM (obj, "-INF");
+    }
+  char buf[40];
+  memset (buf, 0, sizeof (buf));
+  if (x > 1.0e-5 && x < 1.0e12 || x < -1.0e-5 && x > -1.0e12)
+    {
+      snprintf (buf, sizeof (buf) / 2, "%.5f", x);
+      if (atof (buf) == x)
+        {
+          objstrbufferappendcstrpayl_BM (obj, buf);
+          return;
+        }
+      memset (buf, 0, sizeof (buf));
+    }
+  snprintf (buf, 2 * sizeof (buf) / 3, "%.9g", x);
+  if (atof (buf) == x && (strchr (buf, 'e') || strchr (buf, '.')))
+    {
+      objstrbufferappendcstrpayl_BM (obj, buf);
+      return;
+    }
+  memset (buf, 0, sizeof (buf));
+  snprintf (buf, sizeof (buf), "%.16e", x);
+  if (atof (buf) == x)
+    {
+      objstrbufferappendcstrpayl_BM (obj, buf);
+      return;
+    }
+  snprintf (buf, sizeof (buf), "%#a", x);
+  objstrbufferappendcstrpayl_BM (obj, buf);
+}                               /* end objstrbufferoutdoublepayl_BM */
+
 
 void
 objstrbufferencodedutf8payl_BM (objectval_tyBM * obj, const char *str,
