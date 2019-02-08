@@ -903,15 +903,17 @@ objstrbufferprintfpayl_BM (objectval_tyBM * obj, const char *fmt, ...)
 }                               /* end objstrbufferprintfpayl_BM */
 
 
-void
+/// return true if hexadecimal was used
+bool
 objstrbufferoutdoublepayl_BM (objectval_tyBM * obj, double x)
 {
   struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (obj);
   if (!sbuf)
-    return;
+    return false;
   if (isnan (x))
     {
       objstrbufferappendcstrpayl_BM (obj, "+NAN");
+      return false;
     }
   else if (isinf (x))
     {
@@ -919,6 +921,7 @@ objstrbufferoutdoublepayl_BM (objectval_tyBM * obj, double x)
         objstrbufferappendcstrpayl_BM (obj, "+INF");
       else
         objstrbufferappendcstrpayl_BM (obj, "-INF");
+      return false;
     }
   char buf[40];
   memset (buf, 0, sizeof (buf));
@@ -928,7 +931,7 @@ objstrbufferoutdoublepayl_BM (objectval_tyBM * obj, double x)
       if (atof (buf) == x)
         {
           objstrbufferappendcstrpayl_BM (obj, buf);
-          return;
+          return false;
         }
       memset (buf, 0, sizeof (buf));
     }
@@ -936,17 +939,18 @@ objstrbufferoutdoublepayl_BM (objectval_tyBM * obj, double x)
   if (atof (buf) == x && (strchr (buf, 'e') || strchr (buf, '.')))
     {
       objstrbufferappendcstrpayl_BM (obj, buf);
-      return;
+      return false;
     }
   memset (buf, 0, sizeof (buf));
   snprintf (buf, sizeof (buf), "%.16e", x);
   if (atof (buf) == x)
     {
       objstrbufferappendcstrpayl_BM (obj, buf);
-      return;
+      return false;
     }
   snprintf (buf, sizeof (buf), "%#a", x);
   objstrbufferappendcstrpayl_BM (obj, buf);
+  return true;
 }                               /* end objstrbufferoutdoublepayl_BM */
 
 

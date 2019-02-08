@@ -557,8 +557,8 @@ extern void writefencodedutf8_BM (FILE * fil, const char *str,
 
 /// output a double number as precisely as possible, with at least a
 /// dot or an E for the exponent, so that it won't be parsed as long
-/// integer.
-extern void objstrbufferoutdoublepayl_BM (objectval_tyBM * obj, double x);
+/// integer. Returns true when hexadecimal %#a was used
+extern bool objstrbufferoutdoublepayl_BM (objectval_tyBM * obj, double x);
 
 /// output bytes encoded à la C
 extern void objstrbufferencodedcpayl_BM (objectval_tyBM * obj,
