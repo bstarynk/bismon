@@ -5,6 +5,7 @@
     Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
+    with help from Franck Védrine.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -832,7 +833,6 @@ int doublecmp_BM(double x, double y)
     FATAL_BM("doublecmp_BM with Not-a-number x=%g y=%g", x,y);
   /// IEEE 754 distinguishes +0.0 from -0.0, but they compare equal
   if (x==y) {
-  /// Thanks to Franck Védrine for help.
     bool signx = std::signbit(x), signy = std::signbit(y);
     if (signx != signy) return signx ? -1 /* x <= 0 && y >= 0 */ : +1;
     return 0;
