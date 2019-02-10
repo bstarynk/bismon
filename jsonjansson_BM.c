@@ -190,6 +190,7 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
                  value_tyBM resappv;    //
                  objectval_tyBM * valob;        //
                  objectval_tyBM * compob;       //
+                 objectval_tyBM * connob;       //
                  value_tyBM errorv;     //
     );
   _.valarg = val;
@@ -266,6 +267,16 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
           PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
         }
     }
+  else if (isnode_BM(_.valob)) {
+    unsigned nodari = nodewidth_BM(_.valob);
+    _.connob = nodecast_BM(_.valob);
+    /*** possible nodes
+     * id(<object>) -> the string of that object
+     * json_object(<attr1>,<val1>, ....) -> the JSON object
+     * json_array(<comp1>,<comp2>,....) -> the JSON array
+     *
+     ***/
+  }
 #warning a lot of code is missing in jansjsonfromvalue_BM
   return NULL;
 }                               /* end jansjsonfromvalue_BM */
