@@ -132,6 +132,11 @@ int compbegoffcmd_BM, compendoffcmd_BM;
 char *complcommonprefix_BM;
 bool complbyid_BM;
 
+
+/// the debug & parse debug check menu items
+static GtkWidget *appdebug_bm;
+static GtkWidget *appparsedebug_bm;
+
 // browse the named value
 static void browse_named_value_gui_BM (const stringval_tyBM * namev,
                                        const value_tyBM val,
@@ -4659,6 +4664,11 @@ apptoggledparsedebug_cbBM (GtkCheckMenuItem * checkmenuitem,
   strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
   if (parsedebugmsg_BM)
     {
+      if (!debugmsg_BM)
+        {
+          debugmsg_BM = true;
+          gtk_check_menu_item_set_active (appparsedebug_bm, true);
+        }
       INFOPRINTF_BM ("\n**** parse debug messages enabled %s ***\n", nowbuf);
       log_begin_message_BM ();
       log_puts_message_BM ("parse debug messages enabled.");
@@ -4692,18 +4702,17 @@ initialize_gui_menubar_BM (GtkWidget * mainvbox, GtkBuilder * bld)
   g_signal_connect (appdump, "activate", dumpgui_BM, NULL);
   GtkWidget *appgarbcoll =
     GTK_WIDGET (gtk_builder_get_object (bld, "appgarbcoll_id"));
-  GtkWidget *appdebug =
-    GTK_WIDGET (gtk_builder_get_object (bld, "appdebug_id"));
-  GtkWidget *appparsedebug =
+  appdebug_bm = GTK_WIDGET (gtk_builder_get_object (bld, "appdebug_id"));
+  appparsedebug_bm =
     GTK_WIDGET (gtk_builder_get_object (bld, "appparsedebug_id"));
   GtkWidget *appsubmenu =
     GTK_WIDGET (gtk_builder_get_object (bld, "appsubmenu_id"));
   g_signal_connect (appsubmenu, "activate-current", appsubmenuactivated_cbBM,
-                    appdebug);
+                    appdebug_bm);
   g_signal_connect (appgarbcoll, "activate", garbage_collect_from_gui_BM,
                     NULL);
-  g_signal_connect (appdebug, "toggled", appdebugtoggled_cbBM, NULL);
-  g_signal_connect (appparsedebug, "toggled", apptoggledparsedebug_cbBM,
+  g_signal_connect (appdebug_bm, "toggled", appdebugtoggled_cbBM, NULL);
+  g_signal_connect (appparsedebug_bm, "toggled", apptoggledparsedebug_cbBM,
                     NULL);
   GtkWidget *appmenu =
     GTK_WIDGET (gtk_builder_get_object (bld, "menuapp_id"));

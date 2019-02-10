@@ -1233,10 +1233,15 @@ parsecommandbuf_newgui_BM (struct
             }
           //
           else
-            parsererrorprintf_BM (pars,
-                                  CURFRAME_BM,
-                                  cmdtok.tok_line,
-                                  cmdtok.tok_col, "invalid command");
+            {
+              DBGPRINTF_BM
+                ("parsecommandbuf_newgui L%uC%u invalid command",
+                 cmdtok.tok_line, cmdtok.tok_col);
+              parsererrorprintf_BM (pars,
+                                    CURFRAME_BM,
+                                    cmdtok.tok_line,
+                                    cmdtok.tok_col, "invalid command");
+            }
         }                       //start of object?
       else if (parsertokenstartobject_BM (pars, tok))
         {
