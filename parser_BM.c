@@ -1439,7 +1439,7 @@ parsertokenstartvalue_BM (struct parser_stBM *pars, parstoken_tyBM tok)
   const struct parserops_stBM *parsops = pars->pars_ops;
   if (parsertokenstartobject_BM (pars, tok))
     return true;
-  if (tok.tok_kind == plex_LLONG || tok.tok_kind == plex_STRING ///
+  if (tok.tok_kind == plex_LLONG || tok.tok_kind == plex_STRING || tok.tok_kind == plex_DOUBLE  ///
       || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_hashleftbrace)   // code chunks 
       || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_leftbracket)     // tuples
       || (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_leftbrace)       // sets
