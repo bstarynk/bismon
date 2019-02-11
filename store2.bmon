@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2508 objects
+// for 2509 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -6706,6 +6706,28 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_3TjTX5Lxbs4_3PO1pzqzlCO
+
+
+
+!(_1EHaNKCQ1kr_5BydKBVPmOI |=objputjanssonpayl|
+!~ name (~ objputjanssonpayl
+~)
+!@ 1549893862.020
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "put in object o1 the JSON-value $v2 in context $v3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _09RxU8xDco3_2Zxwfb13oDZ _0sDAwfyl4r3_8kDdVlE90M3 ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _1EHaNKCQ1kr_5BydKBVPmOI)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _1EHaNKCQ1kr_5BydKBVPmOI  ":*/"  "objputjanssonpayl_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),"  " " 
+ "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09RxU8xDco3_2Zxwfb13oDZ) 
+  "),"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0sDAwfyl4r3_8kDdVlE90M3) 
+ ")," 
+  " "  "CURFRAME_BM"  ")")
+!)_1EHaNKCQ1kr_5BydKBVPmOI
 
 
 

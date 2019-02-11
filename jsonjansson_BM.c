@@ -120,6 +120,36 @@ objputincrefjansjsonpayl_BM (objectval_tyBM * obj, json_t * js)
 }                               /* end objputincrefjansjsonpayl_BM */
 
 
+
+void
+objputjanssonpayl_BM (objectval_tyBM * objarg, value_tyBM valarg,
+                      value_tyBM ctxarg, struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_json = BMK_2gNQ6wSYLGz_9FkMuCIKfmv;
+  LOCALFRAME_BM (stkf, /*descr: */ k_json,
+                 objectval_tyBM * obj;
+                 value_tyBM valv;       //
+                 value_tyBM ctxv;       //
+                 value_tyBM errorv;     //
+    );
+  _.obj = objectcast_BM (objarg);
+  _.valv = valarg;
+  _.ctxv = ctxarg;
+  if (!_.obj)
+    return;
+  if (!objputjansjsonpayl_BM
+      (_.obj, jansjsonfromvalue_BM (_.valv, _.valv, _.ctxv, 0, CURFRAME_BM)))
+    {
+      _.errorv = makenode3_BM (k_json, _.objv, _.valv, _.ctxv);
+      PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+    }
+}                               /* end objputjanssonpayl_BM */
+
+
+
+
+
+
 objectval_tyBM *
 objkindjansjsonpayl_BM (const objectval_tyBM * obj)
 {

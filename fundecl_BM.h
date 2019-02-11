@@ -1033,6 +1033,9 @@ extern bool objputincrefjansjsonpayl_BM (objectval_tyBM * obj, json_t * js);
 extern json_t *jansjsonfromvalue_BM (value_tyBM val, value_tyBM src,
                                      value_tyBM ctx, int depth,
                                      struct stackframe_stBM *stkf);
+extern void
+objputjanssonpayl_BM (objectval_tyBM * objarg, value_tyBM valarg,
+                      value_tyBM ctxarg, struct stackframe_stBM *stkf);
 
 //////////////// obj hashmapval payload 
 
