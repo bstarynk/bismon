@@ -202,6 +202,8 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
                  objectval_tyBM * compob;       //
                  objectval_tyBM * connob;       //
                  value_tyBM errorv;     //
+                 value_tyBM failresv;   //
+                 value_tyBM failplacev; //
     );
   _.valarg = val;
   _.srcarg = src;
@@ -229,7 +231,16 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
         }
       if (_.valob && objectisinstance_BM (_.valob, k_json_object)
           && objhasjansjsonpayl_BM (_.valob))
-        return objgetjansjsonpayl_BM (_.valob);
+        {
+          json_t *jscont = objgetjansjsonpayl_BM (_.valob);
+          if (jscont)
+            {
+              json_incref (jscont);
+              return jscont;
+            }
+          else
+            return json_null ();
+        }
       else if (_.valob)
         return json_string (objectdbg_BM (_.valob));
     }
@@ -281,14 +292,14 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
     {
       unsigned nodari = nodewidth_BM (_.valarg);
       _.connob = nodeconn_BM (_.valarg);
-    /*** possible nodes
-     * id(<object>) -> the string of that object
-     * name(<object>) -> the name of that object, else fail
-     * object(<object>) -> the name or id of that object
-     * json_object([jsob], json_entry(<attr1>,<val1>), ....) -> the JSON object
-     * json_array([jsarr], <comp1>,<comp2>,....) -> the JSON array
-     *
-     ***/
+      /*** possible nodes
+       * id(<object>) -> the string of that object
+       * name(<object>) -> the name of that object, else fail
+       * object(<object>) -> the name or id of that object
+       * json_object([jsob], json_entry(<attr1>,<val1>), ....) -> the JSON object
+       * json_array([jsarr], <comp1>,<comp2>,....) -> the JSON array
+       *
+       ***/
       if (nodari == 1
           && (_.connob == k_id || _.connob == k_name || _.connob == k_object))
         {
@@ -375,16 +386,104 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
                                   _.valarg, _.srcarg, _.ctxarg);
                   PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
                 }
+              else
+                json_incref (jsarr);
             }
           else
             jsarr = json_array ();
           for (; curix < nodari; curix++)
             {
-#warning jansjsonfromvalue_BM should catch eventual recursive failure to decref the failed jsarr...
+              _.failresv = NULL;
+              _.failplacev = NULL;
+              _.leftv = nodenthson_BM (_.valarg, curix);
+              int failcod = 0;
+              struct failurelockset_stBM flockset = { };
+              struct failurehandler_stBM *prevfailurehandle =
+                (struct failurehandler_stBM *) curfailurehandle_BM;
+              initialize_failurelockset_BM (&flockset, sizeof (flockset));
+              LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failurejsarr, failcod,
+                                       _.failresv, _.failplacev);
+              if (failcod > 0)
+              lab_failurejsarr:
+                {
+                  json_decref (jsarr), jsarr = NULL;
+                  curfailurehandle_BM = prevfailurehandle;
+                  destroy_failurelockset_BM (&flockset);
+                  PLACEDFAILURE_BM (failcod, _.failresv, _.failplacev,
+                                    CURFRAME_BM);
+                }
+              else
+                {
+                  json_t *jscomp =
+                    jansjsonfromvalue_BM (_.leftv, _.srcarg, _.ctxarg,
+                                          depth + 1, CURFRAME_BM);
+                  if (!jscomp)
+                    {
+                      _.errorv =
+                        makenode5_BM (k_json, _.connob, taggedint_BM (depth),
+                                      _.valarg, _.srcarg, _.ctxarg);
+                      PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+                    }
+                  else
+                    json_array_append_new (jsarr, jscomp);
+                }
             }
+          return jsarr;
         }
       else if (_.connob == k_json_object)
         {
+          int curix = 0;
+          json_t *jsobj = NULL;
+          if (nodari > 0 && (_.leftv = nodenthson_BM (_.valarg, 0)) != NULL
+              && isobject_BM (_.leftv))
+            {
+              _.leftob = objectcast_BM (_.leftv);
+              objlock_BM (_.leftob);
+              jsobj = objgetjansjsonpayl_BM (_.leftob);
+              objunlock_BM (_.leftob);
+              if (!jsobj || !json_is_object (jsobj))
+                {
+                  if (jsobj)
+                    json_decref (jsobj), jsobj = NULL;
+                  _.errorv =
+                    makenode5_BM (k_json, _.connob, taggedint_BM (depth),
+                                  _.valarg, _.srcarg, _.ctxarg);
+                  PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+                }
+              else
+                json_incref (jsobj);
+            }
+          else
+            jsobj = json_object ();
+          for (; curix < nodari; curix++)
+            {
+              _.failresv = NULL;
+              _.failplacev = NULL;
+              _.leftv = nodenthson_BM (_.valarg, curix);
+              int failcod = 0;
+              struct failurelockset_stBM flockset = { };
+              struct failurehandler_stBM *prevfailurehandle =
+                (struct failurehandler_stBM *) curfailurehandle_BM;
+              initialize_failurelockset_BM (&flockset, sizeof (flockset));
+              LOCAL_FAILURE_HANDLE_BM (&flockset, lab_failurejsobj, failcod,
+                                       _.failresv, _.failplacev);
+              if (failcod > 0)
+              lab_failurejsobj:
+                {
+                  json_decref (jsobj), jsobj = NULL;
+                  curfailurehandle_BM = prevfailurehandle;
+                  destroy_failurelockset_BM (&flockset);
+                  PLACEDFAILURE_BM (failcod, _.failresv, _.failplacev,
+                                    CURFRAME_BM);
+                }
+              else
+                {
+                  jansjson_add_to_json_object_bm (jsobj, _.leftv, _.srcarg,
+                                                  _.ctxarg, depth + 1,
+                                                  CURFRAME_BM);
+                }
+            }
+          return jsobj;
         }
       else
         {
@@ -394,8 +493,9 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
           PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
         }
     }
-#warning a lot of code is missing in jansjsonfromvalue_BM
-  return NULL;
+  _.errorv =
+    makenode4_BM (k_json, taggedint_BM (depth), _.valarg, _.srcarg, _.ctxarg);
+  PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
 }                               /* end jansjsonfromvalue_BM */
 
 
@@ -419,9 +519,9 @@ jansjson_add_to_json_object_bm (json_t * objs, value_tyBM val, value_tyBM src,
                  value_tyBM srcarg;     //
                  value_tyBM ctxarg;     //
                  value_tyBM resappv;    //
-                 value_tyBM argleftv; //
-		 value_tyBM argrightv; //
-		 objectval_tyBM * valob;     //
+                 value_tyBM argleftv;   //
+                 value_tyBM argrightv;  //
+                 objectval_tyBM * valob;        //
                  objectval_tyBM * compob;       //
                  objectval_tyBM * connob;       //
                  value_tyBM errorv;     //
