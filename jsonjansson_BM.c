@@ -299,12 +299,17 @@ jansjson_add_to_json_object_bm (json_t * objs, value_tyBM val, value_tyBM src,
                                 struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_json = BMK_2gNQ6wSYLGz_9FkMuCIKfmv;
-  objectval_tyBM *k_depth = BMK_17YdW6dWrBA_2mn4QmBjMNs;
+  objectval_tyBM *k_json_entry = BMK_78X6jYDHXpW_3opwNmDlnqc;
+  objectval_tyBM *k_json_attribute = BMK_2Xsji0gDHAg_6TTQQeKAnUY;
+  objectval_tyBM *k_json_value = BMK_78X6jYDHXpW_3opwNmDlnqc;
+  objectval_tyBM *k_depth = BMK_5LSPYWdN50R_3nt54XhyWMW;
   LOCALFRAME_BM (stkf, /*descr: */ k_json,
                  value_tyBM valarg;     //
                  value_tyBM srcarg;     //
                  value_tyBM ctxarg;     //
                  value_tyBM resappv;    //
+		 value_tyBM argleftv;
+		 value_tyBM argrightv;
                  objectval_tyBM * valob;        //
                  objectval_tyBM * compob;       //
                  objectval_tyBM * connob;       //
@@ -321,6 +326,22 @@ jansjson_add_to_json_object_bm (json_t * objs, value_tyBM val, value_tyBM src,
                       _.srcarg, _.ctxarg);
       PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
     }
+  if (isnode_BM(_.valarg)) {
+    _.connob = nodeconn_BM(_.valarg);
+    unsigned nodari = nodewidth_BM(_.valarg);
+    if (nodari == 2 && _.connob == k_json_entry) {
+      _.argleftv = nodenthson_BM(_.valarg, 0);
+      _.argrightv = nodenthson_BM(_.valarg, 0);
+      json_t* jsleft = //
+	jansjsonfromvalue_BM(_.argleftv, _.srcarg, _.ctxarg, depth+1, CURFRAME_BM);
+      if (!jsleft || !json_is_string(jsleft)) {
+      _.errorv =
+        makenode5_BM (k_json, k_json_attribute, taggedint_BM (depth), _.valarg,
+                      _.srcarg, _.ctxarg);
+      PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+      }
+    }
+  }
 #warning jansjson_add_to_json_object_bm incomplete
 }                               // end jansjson_add_to_json_object_bm
 
