@@ -579,6 +579,19 @@ extern void objstrbufferencodedhtmlpayl_BM (objectval_tyBM * obj,
 extern void writefencodedhtml_BM (FILE * fil, const char *str,
                                   ssize_t bytelen);
 
+/// output a JSON value, either indented, or compacted
+extern void objstrbufferoutputjsonindentedvaluepayl_BM (objectval_tyBM * obj,
+                                                        value_tyBM val,
+                                                        value_tyBM ctx,
+                                                        struct stackframe_stBM
+                                                        *stkf);
+extern void objstrbufferoutputjsoncompactedvaluepayl_BM (objectval_tyBM * obj,
+                                                         value_tyBM val,
+                                                         value_tyBM ctx,
+                                                         struct
+                                                         stackframe_stBM
+                                                         *stkf);
+
 /// write the content to a file, if different
 extern void objstrbufferwritetofilepayl_BM (objectval_tyBM * obj,
                                             const char *filepath);

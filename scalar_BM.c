@@ -20,6 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 #include "bismon.h"
+#include "scalar_BM.const.h"
 
 const typedhead_tyBM unspecifieddata_BM = {
   .htyp = tyUnspecified_BM,
@@ -968,7 +969,7 @@ objstrbufferoutdoublepayl_BM (objectval_tyBM * obj, double x)
     }
   char buf[40];
   memset (buf, 0, sizeof (buf));
-  if (x > 1.0e-5 && x < 1.0e12 || x < -1.0e-5 && x > -1.0e12)
+  if ((x > 1.0e-5 && x < 1.0e12) || (x < -1.0e-5 && x > -1.0e12))
     {
       snprintf (buf, sizeof (buf) / 2, "%.5f", x);
       if (atof (buf) == x)
@@ -1424,6 +1425,81 @@ objstrbufferliteralcstringpayl_BM (objectval_tyBM * obj, const char *str,
   objstrbufferunsafeappendcstrpayl_BM (obj, "\"");
 }                               /* end objstrbufferliteralcstringpayl_BM */
 
+
+void
+objstrbufferoutputjsonindentedvaluepayl_BM (objectval_tyBM * objarg,
+                                            value_tyBM valarg,
+                                            value_tyBM ctxarg,
+                                            struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_json = BMK_2gNQ6wSYLGz_9FkMuCIKfmv;
+  LOCALFRAME_BM (stkf, /*descr: */ k_json,
+                 objectval_tyBM * obj;
+                 value_tyBM val;
+                 value_tyBM ctxv);
+  _.obj = objectcast_BM (objarg);
+  _.val = valarg;
+  _.ctxv = ctxarg;
+  struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (_.obj);
+  if (!sbuf)
+    return;
+  json_t *js = jansjsonfromvalue_BM (_.val, _.val, _.ctxv, 0, CURFRAME_BM);
+  if (!js)
+    return;
+  char *membuf = NULL;
+  size_t memsiz = 0;
+  FILE *fmem = open_memstream (&membuf, &memsiz);
+  if (!fmem)
+    FATAL_BM
+      ("objstrbufferoutputjsonindentedvaluepayl_BM open_memstream failure");
+  if (json_dumpf
+      (js, fmem, JSON_INDENT (1) | JSON_SORT_KEYS | JSON_ENCODE_ANY))
+    FATAL_BM
+      ("objstrbufferoutputjsonindentedvaluepayl_BM json_dumpf failure");
+  json_decref (js);
+  fputc ('\n', fmem);
+  fflush (fmem);
+  objstrbufferappendcstrpayl_BM (_.obj, membuf);
+  fclose (fmem);
+  free (membuf), membuf = NULL;
+}                               /* end objstrbufferoutputjsonindentedvaluepayl_BM */
+
+
+void
+objstrbufferoutputjsoncompactedvaluepayl_BM (objectval_tyBM * objarg,
+                                             value_tyBM valarg,
+                                             value_tyBM ctxarg,
+                                             struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_json = BMK_2gNQ6wSYLGz_9FkMuCIKfmv;
+  LOCALFRAME_BM (stkf, /*descr: */ k_json,
+                 objectval_tyBM * obj;
+                 value_tyBM val;
+                 value_tyBM ctxv);
+  _.obj = objectcast_BM (objarg);
+  _.val = valarg;
+  _.ctxv = ctxarg;
+  struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (_.obj);
+  if (!sbuf)
+    return;
+  json_t *js = jansjsonfromvalue_BM (_.val, _.val, _.ctxv, 0, CURFRAME_BM);
+  if (!js)
+    return;
+  char *membuf = NULL;
+  size_t memsiz = 0;
+  FILE *fmem = open_memstream (&membuf, &memsiz);
+  if (!fmem)
+    FATAL_BM
+      ("objstrbufferoutputjsonindentedvaluepayl_BM open_memstream failure");
+  if (json_dumpf (js, fmem, JSON_COMPACT | JSON_SORT_KEYS | JSON_ENCODE_ANY))
+    FATAL_BM
+      ("objstrbufferoutputjsoncompactedvaluepayl_BM json_dumpf failure");
+  json_decref (js);
+  fflush (fmem);
+  objstrbufferappendcstrpayl_BM (_.obj, membuf);
+  fclose (fmem);
+  free (membuf), membuf = NULL;
+}                               /* end objstrbufferoutputjsoncompactedvaluepayl_BM */
 
 
 void
