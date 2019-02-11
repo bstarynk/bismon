@@ -157,6 +157,10 @@ objkindjansjsonpayl_BM (const objectval_tyBM * obj)
     }
 }                               /* end objkindjansjsonpayl_BM */
 
+static void
+jansjson_add_to_json_object_bm (json_t * objs, value_tyBM val, value_tyBM src,
+                                value_tyBM ctx, int depth,
+                                struct stackframe_stBM *stkf);
 
 #define MAXDEPTHJSON_BM 96
 json_t *
@@ -270,9 +274,10 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
           PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
         }
     }
-  else if (isnode_BM(_.valob)) {
-    unsigned nodari = nodewidth_BM(_.valob);
-    _.connob = nodecast_BM(_.valob);
+  else if (isnode_BM (_.valob))
+    {
+      unsigned nodari = nodewidth_BM (_.valob);
+      _.connob = nodecast_BM (_.valob);
     /*** possible nodes
      * id(<object>) -> the string of that object
      * name(<object>) -> the name of that object, else fail
@@ -281,9 +286,42 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
      * json_array(<comp1>,<comp2>,....) -> the JSON array
      *
      ***/
-  }
+    }
 #warning a lot of code is missing in jansjsonfromvalue_BM
   return NULL;
 }                               /* end jansjsonfromvalue_BM */
+
+
+
+void
+jansjson_add_to_json_object_bm (json_t * objs, value_tyBM val, value_tyBM src,
+                                value_tyBM ctx, int depth,
+                                struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_json = BMK_2gNQ6wSYLGz_9FkMuCIKfmv;
+  objectval_tyBM *k_depth = BMK_17YdW6dWrBA_2mn4QmBjMNs;
+  LOCALFRAME_BM (stkf, /*descr: */ k_json,
+                 value_tyBM valarg;     //
+                 value_tyBM srcarg;     //
+                 value_tyBM ctxarg;     //
+                 value_tyBM resappv;    //
+                 objectval_tyBM * valob;        //
+                 objectval_tyBM * compob;       //
+                 objectval_tyBM * connob;       //
+                 value_tyBM errorv;     //
+    );
+  _.valarg = val;
+  _.srcarg = src;
+  _.ctxarg = ctx;
+  WEAKASSERTRET_BM (objs && json_is_object (objs));
+  if (depth > MAXDEPTHJSON_BM)
+    {
+      _.errorv =
+        makenode5_BM (k_json, k_depth, taggedint_BM (depth), _.valarg,
+                      _.srcarg, _.ctxarg);
+      PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+    }
+#warning jansjson_add_to_json_object_bm incomplete
+}                               // end jansjson_add_to_json_object_bm
 
 ///// end of file jsonjansson_BM.c
