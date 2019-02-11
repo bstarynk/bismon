@@ -280,7 +280,7 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
   else if (isnode_BM (_.valarg))
     {
       unsigned nodari = nodewidth_BM (_.valarg);
-      _.connob = nodecast_BM (_.valarg);
+      _.connob = nodeconn_BM (_.valarg);
     /*** possible nodes
      * id(<object>) -> the string of that object
      * name(<object>) -> the name of that object, else fail
@@ -355,7 +355,44 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
               PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
             }
         }
-
+      else if (_.connob == k_json_array)
+        {
+          int curix = 0;
+          json_t *jsarr = NULL;
+          if (nodari > 0 && (_.leftv = nodenthson_BM (_.valarg, 0)) != NULL
+              && isobject_BM (_.leftv))
+            {
+              _.leftob = objectcast_BM (_.leftv);
+              objlock_BM (_.leftob);
+              jsarr = objgetjansjsonpayl_BM (_.leftob);
+              objunlock_BM (_.leftob);
+              if (!jsarr || !json_is_array (jsarr))
+                {
+                  if (jsarr)
+                    json_decref (jsarr), jsarr = NULL;
+                  _.errorv =
+                    makenode5_BM (k_json, _.connob, taggedint_BM (depth),
+                                  _.valarg, _.srcarg, _.ctxarg);
+                  PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+                }
+            }
+          else
+            jsarr = json_array ();
+          for (; curix < nodari; curix++)
+            {
+#warning jansjsonfromvalue_BM should catch eventual recursive failure to decref the failed jsarr...
+            }
+        }
+      else if (_.connob == k_json_object)
+        {
+        }
+      else
+        {
+          _.errorv =
+            makenode5_BM (k_json, _.connob, taggedint_BM (depth),
+                          _.valarg, _.srcarg, _.ctxarg);
+          PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+        }
     }
 #warning a lot of code is missing in jansjsonfromvalue_BM
   return NULL;
@@ -382,7 +419,9 @@ jansjson_add_to_json_object_bm (json_t * objs, value_tyBM val, value_tyBM src,
                  value_tyBM srcarg;     //
                  value_tyBM ctxarg;     //
                  value_tyBM resappv;    //
-                 value_tyBM argleftv; value_tyBM argrightv; objectval_tyBM * valob;     //
+                 value_tyBM argleftv; //
+		 value_tyBM argrightv; //
+		 objectval_tyBM * valob;     //
                  objectval_tyBM * compob;       //
                  objectval_tyBM * connob;       //
                  value_tyBM errorv;     //
