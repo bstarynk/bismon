@@ -172,9 +172,12 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
   objectval_tyBM *k_json_true = BMK_0ekuRPtKaIF_3nrHrhB59Kn;
   objectval_tyBM *k_json_false = BMK_1h1MMlmQi6f_2Z2g6rGMcPB;
   objectval_tyBM *k_json_null = BMK_6WOSg1mpNxQ_6Dw2klXZFSk;
+  objectval_tyBM *k_json_entry = BMK_78X6jYDHXpW_3opwNmDlnqc;
   objectval_tyBM *k_depth = BMK_17YdW6dWrBA_2mn4QmBjMNs;
   objectval_tyBM *k_apply = BMK_3Nl6LhfUZVb_1itsyWMBfYl;
   objectval_tyBM *k_closure = BMK_93zjUzZVAaj_9ppXv7C34GR;
+  objectval_tyBM *k_id = BMK_7WjaQkqwdaZ_6PRtbDrJHnf;
+  objectval_tyBM *k_name = BMK_1jJjA6LcXiX_1V4ZcXlje09;
 #define HASHBM_json_object BMH_7hNqn2hxg1M_3wNHCtOf9IF
 #define HASHBM_json_array BMH_56Om4CG9rer_8xF06AhNZ1I
 #define HASHBM_json_string BMH_419If27jxwQ_3WQnLqU53iq
@@ -272,7 +275,9 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
     _.connob = nodecast_BM(_.valob);
     /*** possible nodes
      * id(<object>) -> the string of that object
-     * json_object(<attr1>,<val1>, ....) -> the JSON object
+     * name(<object>) -> the name of that object, else fail
+     * object(<object>) -> the name or id of that object
+     * json_object(json_entry(<attr1>,<val1>), ....) -> the JSON object
      * json_array(<comp1>,<comp2>,....) -> the JSON array
      *
      ***/

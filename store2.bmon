@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2505 objects
+// for 2506 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -3024,6 +3024,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for JSON arrays"
 !)_56Om4CG9rer_8xF06AhNZ1I
+
+
+
+!(_78X6jYDHXpW_3opwNmDlnqc |=json_entry|
+!~ name (~ json_entry
+~)
+!@ 1549863803.624
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "to give an entry inside some JSON object"
+!)_78X6jYDHXpW_3opwNmDlnqc
 
 
 
