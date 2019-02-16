@@ -46,14 +46,23 @@ They include
 \item UTF-8 encoded \textbf{string} (the bytes inside such
   \index{string}{strings} don't change).
 
-  \item boxed constant \textbf{double} (IEEE 754) floating point
-    numbers; but \texttt{NaN} is \emph{never} boxed and becomes
-    reified as the \texttt{nan\_double} \emph{object}; hence boxed
-    doubles stay comparable (with the convention~\footnote{The
-      intuition behind such a convention would be that $-0.0$ is a
-      very (or infinitely) small negative number, so less that $+0.0$
-      which could be a very small positive number.}
-    that $-0.0 < +0.0$, even if they compare equal in IEEE 754).
+  \item boxed constant \textbf{double} (IEEE 754) floating
+    point~\footnote{The practical motivation for floating point
+      numbers is mostly related to JSON, since the \texttt{jansson}
+      library handle differently floating JSON and integer JSON
+      values, and perhaps to rare storage of timing data (CPU or
+      elapsed time) expressed as a floating point number. We don't
+      intend \emph{Bismon} to be used for complex numerical
+      processing. Should machine learning libraries become useful -
+      after the \textsc{Chariot} project - in \emph{bismon}, their
+      data would probably become some object payload.}  numbers; but
+    \texttt{NaN} is \emph{never} boxed and becomes reified as the
+    \texttt{nan\_double} \emph{object}; hence boxed doubles stay
+    comparable (with the convention~\footnote{The intuition behind
+      such a convention would be that $-0.0$ is a very (or infinitely)
+      small negative number, so less that $+0.0$ which could be a very
+      small positive number.}  that $-0.0 < +0.0$, even if they
+    compare equal in IEEE 754).
 
   \item \textbf{tuple} of objects, that is an ordered (but immutable)
     sequence of object pointers (the size or content of a tuple don't
@@ -448,6 +457,20 @@ probably version-controlled~\footnote{How and when the persistent
   state should be friendly to most version control systems and other
   utilities.} at every site using the \emph{Bismon} monitor.
 
+Notice that in \emph{Bismon} only the \emph{heap} is persisted, but
+``continuations'' or ``call stacks'' or threads~\footnote{The call
+  stack is not formally known to the C11 or C++11 standard (and the
+  optimizing C or C++ compiler[s] which optimize[s] \emph{Bismon} code
+  is permitted to ``mess it'' during compilation of the \emph{Bismon}
+  runtime). Trying to reify and persist it some ``portable'' C or C++
+  code is not reasonable, or would require some very implementation-
+  and architecture- specific and tricky code. Even generated C as a
+  portable assembler don't know about the call stack.}  are \emph{not
+  persisted}~\footnote{Some data related to the agenda
+  (cf. §\ref{subsec:multithreadist}) might be persisted. Persisting
+  continuations is however an interesting research topic (to be
+  worked out outside of \textsc{Chariot}).} by themselves.
+
 %%%%%%%%%%%%%%%%
 \subsubsection{file organization of the persistent state}
 \label{subsubsec:filestate}
@@ -611,12 +634,16 @@ followed by a useless comment like
 {\bf{\verb+|+}}\emph{this}{\bf{\verb+|+}}. And immutable values are in
 the grammar given in figure \ref{fig:dumpvalsyntax} (where
 \textbf{\texttt{\_\_}}, representing \emph{nil}, can also appear
-inside tuples, nodes, closures but not within sets).  At dump time, a
-\index{transient}{transient} object is replaced as \emph{nil}, so may
-be dumped as \textbf{\texttt{\_\_}}. Within a set, it is skipped so
-ignored. When the connective of a node or of a closure is a transient
-object, that node or closure is not dumped, but entirely replaced by
-\emph{nil} so dumped as \textbf{\texttt{\_\_}}.
+inside tuples, nodes, closures but not within sets). The
+\emph{float}-s are dumped~\footnote{ We don't care about some IEEE-754
+  double-precision 64 bits floating point numbers not retaining all
+  their significant bits between dump and reload.} with best
+effort. At dump time, a \index{transient}{transient} object is
+replaced as \emph{nil}, so may be dumped as
+\textbf{\texttt{\_\_}}. Within a set, it is skipped so ignored. When
+the connective of a node or of a closure is a transient object, that
+node or closure is not dumped, but entirely replaced by \emph{nil} so
+dumped as \textbf{\texttt{\_\_}}.
 
 The dump works, in a similar fashion of our naive GC, in two phases: a
 scanning phase to build the hash-set of all dumped objects. A queue of
