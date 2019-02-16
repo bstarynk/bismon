@@ -52,8 +52,8 @@ They include
     doubles stay comparable (with the convention~\footnote{The
       intuition behind such a convention would be that $-0.0$ is a
       very (or infinitely) small negative number, so less that $+0.0$
-      wich could be a very small positive number.}  that $-0.0 \lt
-    +0.0$, even if they compare equal in IEEE 754).
+      which could be a very small positive number.}
+    that $-0.0 < +0.0$, even if they compare equal in IEEE 754).
 
   \item \textbf{tuple} of objects, that is an ordered (but immutable)
     sequence of object pointers (the size or content of a tuple don't
@@ -300,9 +300,10 @@ them at a given instant).
         \item mutable \index{hash map}{\emph{hash maps}} to associate arbitrary
             non-nil values used as keys to other arbitrary non-nil
             values.
-            \item mutable \index{dictionary}{\emph{string dictionaries}} associating
-              non-empty strings to non-nil values.
-          \item etc...
+        \item mutable \index{dictionary}{\emph{string dictionaries}} associating
+          non-empty strings to non-nil values.
+        \item mutable JSON \index{JSON} data~\footnote{That is, \texttt{json\_t*} from the \emph{Jansson} library. It is practically useful for WebSocket messages.} 
+        \item etc...
         \end{enumerate}
 
         Of course, the payload of an object should be initialized (so
@@ -585,6 +586,7 @@ data file \texttt{store2.bmon}.
   \begin{center}
   \begin{tabular}{l c l l}
     \emph{value} & $\leftarrow$ & \emph{int} & ; tagged integers \\
+                 & $|$ & \emph{float} & ; double precision floats \\
                  & $|$ & \texttt{\textbf{\_\_}} & ; nil \\
                  & $|$ & \texttt{\textbf{"}}\emph{string}\texttt{\textbf{"}} & ; string  {\scriptsize with JSON-like escapes} \\
                  & $|$ & \emph{objid} & ; object  {\scriptsize of given \emph{objid}}\\
