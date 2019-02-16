@@ -81,6 +81,7 @@ pdflatex -halt-on-error bismon-chariot-doc < /dev/null
 bibtex bismon-chariot-doc < /dev/null
 pdflatex -halt-on-error bismon-chariot-doc < /dev/null
 makeindex bismon-chariot-doc < /dev/null
+printf '\n\n\n#### second pass latexing bismon chariot doc #####\n'
 pdflatex -halt-on-error bismon-chariot-doc < /dev/null
 bibtex bismon-chariot-doc < /dev/null
 pdflatex -halt-on-error bismon-chariot-doc < /dev/null || (echo failed pdflatex -halt-on-error bismon-chariot-doc got $? >/dev/stderr)
