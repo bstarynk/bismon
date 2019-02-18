@@ -300,7 +300,7 @@ bullet'' \index{silver bullet} (\cite{Brooks:1987:NSB}). Many
 taxonomies of software defects \index{defect!software} already exist
 (e.g. \cite{Silva:2016:SES, Wagner:2008:DCD, Levine:2009:DDE}
 etc....), notably for IoT\index{IoT} (see \cite{Carpent:2018:RRA,
-  Ahmad:2018:ModelBasedIoT, Laszlo:2018:Vessedia}); however the
+  Ahmad:2018:ModelBasedIoT, Laszlo:2017:Vessedia}); however the
 relation between an explicit defect and a source code property is
 generally fuzzy, or ill-defined.
 
@@ -398,7 +398,7 @@ accessible for application domains that want to improve the security
 and reliability of their software applications by means of Formal
 Methods''~\footnote{Taken from
   \bmurl{https://vessedia.eu/about}}. Most \textsc{Vessedia} partners
-(even the industrial ones) are versed in formal static analysis
+(even the industrial ones, cf. \cite{Berkes:2018:Vessedia-approach}) are versed in formal static analysis
 techniques (many of them being already trained to use \emph{Frama-C}
 several years before, and several of them contributing actively to
 that tool.). Some of the major achievements of \textsc{Vessedia}
@@ -966,12 +966,14 @@ features:
     \textit{Bismon}) is a long-lasting procedure involving
     \textit{several} compiling and linking processes and commands. So
     most of the data handled by \textit{Bismon} can be persisted on
-    disk, and reloaded at the next run. However, some data is
-    temporary by nature~\footnote{E.g. data related to a web session,
-      or to a web HTTP exchange, or to an ongoing \texttt{gcc}
-      compilation process, etc... needs not to be persisted, and would
-      be useless when restarting the \textit{Bismon monitor}.} and
-    should not be persisted. Such data is called temporary or
+    disk, and reloaded at the next run
+    (cf. \cite{Dearle-2010-orthopersist,
+      Dearle:2009:OrthogonalPR}). However, some data is temporary by
+    nature~\footnote{E.g. data related to a web session, or to a web
+      HTTP exchange, or to an ongoing \texttt{gcc} compilation
+      process, etc... needs not to be persisted, and would be useless
+      when restarting the \textit{Bismon monitor}.} and should not be
+    persisted. Such data is called temporary or
     \index{transient}{\textbf{transient}}. But the usual approach is
     to run the \textit{Bismon} program from some initial loaded state
     and have it \index{dump}{\textbf{dump}} its memory state on
