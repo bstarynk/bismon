@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2522 objects
+// for 2525 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -11513,19 +11513,20 @@ _13K9OfeXRZR_84nyRTtoj81
 
 
 !(_0msPpd1UF1h_6Q13YXMYlaN
-!@ 1550503109.097
+!@ 1550580374.941
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "when  o_conn \u2208 {json_compact json_indented}"& " ... miniscan_stmt\u00b0basiclo_outstmt"
 !: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
  { _4wmsNr582JT_9YyamGEMhJk _5J3InN9BK1k_3C8vurQQEGh }
-!# 6
+!# 7
 !& _9yQol9uXYsR_59RMrumL33A
 !& _4osMLGlPBTq_8rkCT8pCoQZ
 !& _33q3zXHuCff_4eYP4unG1XX
 !& _9ZN4tL5btf4_8In65Qnv7Q0
 !& _4reSlAwcFGJ_7dlcpvtEwM7
 !& _6m3V5fOZK2n_9AFeHjYt2ZV
+!& _3L9x4LFGCuY_3oHKGr2Cr7s
 !)_0msPpd1UF1h_6Q13YXMYlaN
 
 
@@ -20264,6 +20265,18 @@ _5wNedaaTb99_3ZQe6xm9HNx
 
 
 
+!(_3sn46xmHUCY_3garOQ6etZ2
+!@ 1550580374.939
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "o_restype := miniscan_expr(v_expctx o_routprep depth+1 o_stmt)"
+!# 2
+!& _0uATzRk8Ajt_6bIBwn6a86I
+!&  * _7k3xb0vred0_9ZRHcZmhw77 ( _96vo6uBKhke_6E1vyN3kIKD _6RpSqxAOt2p_35laNqeU6KH  * _3fb1EHtMPwQ_7XEPTUgUmX4 ( _6Y20GNUgnSZ_4LkbrcRMU8f  1) _34Qtvf1thwK_9rziG6sk6Vl)
+!)_3sn46xmHUCY_3garOQ6etZ2
+
+
+
 !(_3ucDZFPcZVN_61LQM0yknTG
 !@ 1536155041.110
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
@@ -20967,6 +20980,19 @@ _0ncEyxweiqi_5Vj5U2xvh82
 !& _3Z2yIPkoeSH_2OzLSKO3phv
 !& _9MmVsIQi0Gu_8lv339Vx7z8
 !)_3KLb54en912_65r4DOVLCQt
+
+
+
+!(_3L9x4LFGCuY_3oHKGr2Cr7s
+!@ 1550580374.941
+!$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "if v_expctx miniscan it... /miniscan_stmt\u00b0basiclo_outstmt"
+!: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
+ 1
+!# 1
+!& _5Cu0QpuvxD7_8rpyE1LiWIA
+!)_3L9x4LFGCuY_3oHKGr2Cr7s
 
 
 
@@ -25802,6 +25828,20 @@ _1jJjA6LcXiX_1V4ZcXlje09
 !& _1ibJngatIV4_0zFDxkfo8GR
 !& _9joCoPDJZPz_78kcVz01COq
 !)_5BJGeu6Rib0_1jHW94atiIm
+
+
+
+!(_5Cu0QpuvxD7_8rpyE1LiWIA
+!@ 1550580374.940
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "when v_expctx miniscan it..."
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+_96vo6uBKhke_6E1vyN3kIKD
+!# 2
+!& _3sn46xmHUCY_3garOQ6etZ2
+!& _6m3V5fOZK2n_9AFeHjYt2ZV
+!)_5Cu0QpuvxD7_8rpyE1LiWIA
 
 
 

@@ -2790,6 +2790,45 @@ PLACEDFAILURE_BM(__LINE__,
 } //endwhen _3FcUnG66DXT_7sllObXQZl3     
 /*endcond _6m3V5fOZK2n_9AFeHjYt2ZV*/    
     
+ // objswitch _3WmrD9dWzVs_6l9CVwfdtYt when _0msPpd1UF1h_6Q13YXMYlaN #6 statement:    
+if /*cond _3L9x4LFGCuY_3oHKGr2Cr7s*/     
+/*when _5Cu0QpuvxD7_8rpyE1LiWIA:*/    
+ ( /*v_expctx:*/_.v_96vo6uBKhke_6E1vyN3kIKD) { //body when _5Cu0QpuvxD7_8rpyE1LiWIA     
+ /*o_restype:*/_.o_0uATzRk8Ajt_6bIBwn6a86I = //assign _3sn46xmHUCY_3garOQ6etZ2      
+/*miniscan_expr:*/miniscan_expr_BM (( /*v_expctx:*/_.v_96vo6uBKhke_6E1vyN3kIKD), ( /*o_routprep:*/_.o_6RpSqxAOt2p_35laNqeU6KH), (/*add_int:*/(( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f) + ( 1))), ( /*o_stmt:*/_.o_34Qtvf1thwK_9rziG6sk6Vl), CURFRAME_BM);     
+if /*cond _6m3V5fOZK2n_9AFeHjYt2ZV*/      
+/*when _3FcUnG66DXT_7sllObXQZl3:*/     
+ (/*unequal_object:*/(( /*o_restype:*/_.o_0uATzRk8Ajt_6bIBwn6a86I) != ( (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[68] /*!value*/)))) { //body when _3FcUnG66DXT_7sllObXQZl3      
+//failure _9umIVqZhssC_2WJZljFrGaA       
+PLACEDFAILURE_BM(__LINE__,       
+          /*failreason:*/ (((value_tyBM) makesizednode_BM
+ (8U,/*make_node conn:*/( (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[82] /*!failure_type_error*/)), 
+ /*make_node 8 sons:*/ 
+( (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[68] /*!value*/)), 
+ 
+( /*o_restype:*/_.o_0uATzRk8Ajt_6bIBwn6a86I), 
+ 
+( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe), 
+ 
+// make_node arg #4 
+(/*taggedint:*/ taggedint_BM ( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B)), 
+ 
+( /*o_stmt:*/_.o_34Qtvf1thwK_9rziG6sk6Vl), 
+ 
+( /*o_routprep:*/_.o_6RpSqxAOt2p_35laNqeU6KH), 
+ 
+(/*taggedint:*/ taggedint_BM ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f)), 
+ 
+( /*o_from:*/_.o_89nz0KaXXZh_8eSgMmqnK37)))),
+                /*failplace:*/ ( /*modconst:*/(constob_3BFt4NfJmZC_7iYi2dwM38B_BM[84] /*|_9umIVqZhssC_2WJZljFrGaA*/)),
+                ((struct stackframe_stBM *) &_));
+      
+} //endwhen _3FcUnG66DXT_7sllObXQZl3      
+/*endcond _6m3V5fOZK2n_9AFeHjYt2ZV*/     
+     
+} //endwhen _5Cu0QpuvxD7_8rpyE1LiWIA     
+/*endcond _3L9x4LFGCuY_3oHKGr2Cr7s*/    
+    
     
 break; // end when _0msPpd1UF1h_6Q13YXMYlaN #0 of objswitch _3WmrD9dWzVs_6l9CVwfdtYt    
     
