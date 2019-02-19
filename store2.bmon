@@ -12133,10 +12133,10 @@ _2iH7ckEmGey_5cKpVIuFgY9
 
 
 !(_0z4pSxrVvjo_5sHi5Y1pLPY
-!@ 1550496913.996
+!@ 1550581320.713
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "when *json_indented(<value>)..."
+ "when *json_indented(<value> <optional-ctxt>?) ... "
 !: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
 _5J3InN9BK1k_3C8vurQQEGh
 !# 3
@@ -22226,10 +22226,10 @@ _2TaoEvH5OQU_8nKYBgAvkmW
 
 
 !(_4fv6GoqMJ2j_5mL5sYAy1MA
-!@ 1550496788.834
+!@ 1550581489.609
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "when *json_compact(<value>)..."
+ "when *json_compact(<value> <optional-ctxt>?) ..."
 !: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
 _4wmsNr582JT_9YyamGEMhJk
 !# 3
