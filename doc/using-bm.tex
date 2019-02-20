@@ -294,6 +294,19 @@ components are emitted recursively.
 
 If no rule is applicable, \texttt{emit\_xhtml} fails.
 
+\medskip
+
+The web session objects are also used for \index{WebSocket}
+\emph{WebSockets} with the following additional conventions. The
+\texttt{bismon} server uses WebSockets only for asynchronous
+communication from that \texttt{bismon} server to Web
+browsers~\footnote{So web browsers don't communicate
+  \emph{asynchronously} with the \texttt{bismon} server. For such
+  communications from browser to \texttt{bismon}, Web browser always
+  use synchronous HTTP requests, e.g. using AJAX techniques.}. The
+WebSocket messages from \texttt{bismon} to web browsers are arbitrary
+\emph{JSON} values.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Local Variables: ;;
 %% compile-command: "cd ..; ./build-bismon-doc.sh" ;;

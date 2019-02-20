@@ -416,6 +416,9 @@ static onion_connection_status
 custom_onion_handler_BM (void *clientdata,
                          onion_request * req, onion_response * resp);
 static onion_connection_status
+websocket_onion_handler_BM (void *clientdata,
+                            onion_websocket * ws, ssize_t data_ready_len);
+static onion_connection_status
 login_onion_handler_BM (void *clientdata,
                         onion_request * req, onion_response * resp);
 static onion_connection_status
@@ -1138,12 +1141,13 @@ custom_onion_handler_BM (void *clientdata,
                 {
                   wsock = onion_websocket_new (req, resp);
                   wsess->websess_websocket = wsock;
-                  onion_websocket_set_userdata (wsock, wsess, NULL);
+                  onion_websocket_set_userdata (wsock, wsess,   /*no freeing: */
+                                                NULL);
                   DBGPRINTF_BM
                     ("custom_onion_handler sesswebsocket '%s' for sessionob %s new wsock @%p",
                      reqpath, objectdbg_BM (_.sessionob), wsock);
-#warning incomplete support for websocket in custom_onion_handler
-                  /// should probably call onion_websocket_set_callback
+                  onion_websocket_set_callback (wsock,
+                                                websocket_onion_handler_BM);
                 }
               else
                 DBGPRINTF_BM
@@ -1482,6 +1486,45 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
 }                               /* end do_login_redirect_onion_BM */
 
 
+/// The websocket messages are conventionally JSON (arbitrary JSON
+/// data).  And by convention, no data flows asynchronously from
+/// browser to bismon server. The websockets are only used with
+/// asynchronous JSON messages from bismon to browser. For messages
+/// from browser to bismon, we use AJAX techniques by convention.
+/// So our WebSocket handler should just care about closing websockets.
+
+onion_connection_status
+websocket_onion_handler_BM (void *clientdata,
+                            onion_websocket * ws, ssize_t data_ready_len)
+{
+  struct websessiondata_stBM *wsess =
+    (struct websessiondata_stBM *) clientdata;
+  WEAKASSERT_BM (!wsess
+                 || (valtype_BM ((value_tyBM) wsess) == typayl_websession_BM
+                     && wsess->websess_magic == BISMONION_WEBSESS_MAGIC));
+  WEAKASSERT_BM (ws != NULL);
+  DBGPRINTF_BM
+    ("websocket_onion_handler_BM  start ws@%p data_ready_len=%d wsess@%p own %s",
+     (void *) ws, (int) data_ready_len, wsess,
+     wsess ? objectdbg_BM (wsess->websess_ownobj) : "?*none*?");
+  if (data_ready_len > 0)
+    {
+      /* the websocket should not recieve data from browser; so this should not happen */
+      FATAL_BM
+        ("websocket_onion_handler_BM getting unexpected asynchronous data (%d bytes) from browser of session %s",
+         (int) data_ready_len,
+         wsess ? objectdbg_BM (wsess->websess_ownobj) : "?*none*?");
+    }
+  else if (data_ready_len < 0)
+    {
+      /* we should somehow close the websocket and clear it in the session */
+    }
+  FATAL_BM
+    ("unimplemented websocket_onion_handler_BM, data_ready_len=%d, wsess own %s",
+     (int) data_ready_len,
+     wsess ? objectdbg_BM (wsess->websess_ownobj) : "?*none*?");
+#warning websocket_onion_handler_BM is not implemented yet
+}                               /* end websocket_onion_handler_BM */
 
 void
 create_anonymous_web_session_BM (void)
