@@ -57,7 +57,10 @@
   do { Xval = (typeof(Xval)) (extendedgcproc_BM((Gc),			\
 				(void*)(Xval),(Fromob),(Depth))); } while(0)
 
-#define HASHEMPTYSLOT_BM ((void*)(-1))
+// practically speaking, a pointer-like value in some part of the
+// address space which is never mapped.  Useful in hashtables for empty
+// slots.
+#define HASHEMPTYSLOT_BM ((void*)(-(sizeof(void*))))
 
 #define STRBUFFERWANTEDWIDTH_BM 80
 #define LOADERMAGIC_BM 281610361        /*0x10c90879 */
