@@ -1,4 +1,4 @@
-                              // file web_ONIONBM.c
+// file web_ONIONBM.c
 /***
     BISMON 
     Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
@@ -526,6 +526,7 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
           web_is_running_BM = true;
           web_plain_event_loop_BM ();
           web_is_running_BM = false;
+          INFOPRINTF_BM ("run_onionweb ended web_plain_event_loop");
         }
     }
 }                               /* end run_onionweb_BM */
@@ -1502,14 +1503,15 @@ websocket_onion_handler_BM (void *clientdata,
   WEAKASSERT_BM (!wsess
                  || (valtype_BM ((value_tyBM) wsess) == typayl_websession_BM
                      && wsess->websess_magic == BISMONION_WEBSESS_MAGIC));
+      objectval_tyBM* ownob =  wsess ?  wsess->websess_ownobj : NULL;
   WEAKASSERT_BM (ws != NULL);
   DBGPRINTF_BM
-    ("websocket_onion_handler_BM  start ws@%p data_ready_len=%d wsess@%p own %s",
+    ("websocket_onion_handler_BM  start ws@%p data_ready_len=%d wsess@%p ownob %s",
      (void *) ws, (int) data_ready_len, wsess,
-     wsess ? objectdbg_BM (wsess->websess_ownobj) : "?*none*?");
+     wsess ? objectdbg_BM (ownob) : "?*none*?");
   if (data_ready_len > 0)
     {
-      /* the websocket should not recieve data from browser; so this should not happen */
+      /* the websocket should not recieve data from browser; so this should never happen */
       FATAL_BM
         ("websocket_onion_handler_BM getting unexpected asynchronous data (%d bytes) from browser of session %s",
          (int) data_ready_len,
@@ -1517,7 +1519,21 @@ websocket_onion_handler_BM (void *clientdata,
     }
   else if (data_ready_len < 0)
     {
-      /* we should somehow close the websocket and clear it in the session */
+      /* the websocket is closing, so we clear it in the session */
+      DBGPRINTF_BM
+	("websocket_onion_handler_BM closing websocket ws@%p in session ownob %s",
+	 ws, wsess?objectdbg_BM (ownob) : "?*none*?");
+      if (ownob) {
+	objlock_BM(ownob);
+	ASSERT_BM(objpayload_BM(ownob) == wsess);
+	wsess->websess_websocket = NULL;
+	objunlock_BM(ownob);
+      }
+      /* It seems that
+	 https://github.com/davidmoreno/onion/blob/master/src/onion/websocket.c
+	 don't even use, in start of 2019, the return value of our
+	 websocket_onion_handler_BM */
+      return OCS_CLOSE_CONNECTION;
     }
   FATAL_BM
     ("unimplemented websocket_onion_handler_BM, data_ready_len=%d, wsess own %s",

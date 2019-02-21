@@ -738,6 +738,9 @@ struct websessiondata_stBM      /// for typayl_websession_BM
 
   double websess_createtime;    /* creation time */
   double websess_expiretime;    /* expiry time */
+  /* There is only one web socket per websession.  So if the user
+     "opens a link in new tab", another websession should be
+     created. */
   onion_websocket *websess_websocket;   /* the web socket */
 };                              /* end websessiondata_stBM */
 
