@@ -1621,6 +1621,8 @@ create_anonymous_web_session_BM (void)
      onion_anon_web_session_BM, objectdbg_BM (_.sessionob));
 }                               /* end create_anonymous_web_session_BM */
 
+
+
 void
 objwebsessionsendjsonwebsocketpayl_BM (objectval_tyBM * objarg,
                                        value_tyBM jsonarg, value_tyBM ctxtarg,
@@ -1635,7 +1637,7 @@ objwebsessionsendjsonwebsocketpayl_BM (objectval_tyBM * objarg,
   DBGPRINTF_BM
     ("objwebsessionsendjsonwebsocketpayl start websessob %s jsonv %s ctxv %s",
      objectdbg_BM (_.websessob), OUTSTRVALUE_BM (_.jsonv),
-     OUTSTRVALUE_BM (_.ctxtv));
+     OUTSTRVALUE_BM (_.ctxv));
   WEAKASSERTRET_BM (objislocked_BM (_.websessob));
   struct websessiondata_stBM *wsess = objgetwebsessionpayl_BM (_.websessob);
   if (!wsess)
@@ -1653,12 +1655,12 @@ objwebsessionsendjsonwebsocketpayl_BM (objectval_tyBM * objarg,
       return;
     }
   json_t *js =
-    jansjsonfromvalue_BM (_.jsonv, _.jsonv, _.ctxtv, 0, CURFRAME_BM);
+    jansjsonfromvalue_BM (_.jsonv, _.jsonv, _.ctxv, 0, CURFRAME_BM);
   if (!js)
     {
       WARNPRINTF_BM
         ("no JSON from value %s, context %s for websession object %s",
-         OUTSTRVALUE_BM (_.jsonv), OUTSTRVALUE_BM (_.ctxtv),
+         OUTSTRVALUE_BM (_.jsonv), OUTSTRVALUE_BM (_.ctxv),
          objectdbg_BM (_.websessob));
       return;
     }
