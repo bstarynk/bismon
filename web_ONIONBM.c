@@ -1664,13 +1664,38 @@ objwebsessionsendjsonwebsocketpayl_BM (objectval_tyBM * objarg,
          objectdbg_BM (_.websessob));
       return;
     }
-  // should debug print js
-  //
-  // should use open_memstream to output that js in compact form
-  //
-  // should send it on the websocket
-  //
-#warning incomplete objwebsessionsendjsonwebsocketpayl_BM
+  char *jsonbuf = NULL;
+  size_t jsonsiz = 0;
+  FILE *fjson = open_memstream (&jsonbuf, &jsonsiz);
+  if (!fjson)
+    FATAL_BM
+      ("objwebsessionsendjsonwebsocketpayl_BM websession object %s open_memstream failure %m",
+       objectdbg_BM (_.websessob));
+  if (json_dumpf (js, fjson, JSON_COMPACT | JSON_SORT_KEYS | JSON_ENCODE_ANY))
+    FATAL_BM
+      ("objwebsessionsendjsonwebsocketpayl_BM json_dumpf failure websession object %s",
+       objectdbg_BM (_.websessob));
+  fputc ('\n', fjson);
+  fflush (fjson);
+  long ln = ftell (fjson);
+  DBGPRINTF_BM ("objwebsessionsendjsonwebsocketpayl_BM websessob=%s; JSON:\n"
+                "%s\n//// end (%ld bytes)\n",
+                objectdbg_BM (_.websessob), jsonbuf, ln);
+  onion_websocket_set_opcode (wsess->websess_websocket, OWS_TEXT);
+  const char *partbuf = jsonbuf;
+  ssize_t remlen = ln;
+  do
+    {
+      int wln =
+        onion_websocket_write (wsess->websess_websocket, partbuf, remlen);
+      if (wln < 0)
+        FATAL_BM
+          ("objwebsessionsendjsonwebsocketpayl_BM websocket_write failure (%m) websession object %s",
+           objectdbg_BM (_.websessob));
+      remlen -= wln;
+      partbuf += wln;
+    }
+  while (remlen > 0);
 }                               /* end of objwebsessionsendjsonwebsocketpayl_BM */
 
 
