@@ -148,8 +148,8 @@ extern "C"
 
   struct IdLess_BM
   {
-    inline bool operator          () (const rawid_tyBM & id1,
-                                      const rawid_tyBM & id2)
+    inline bool operator            () (const rawid_tyBM & id1,
+                                        const rawid_tyBM & id2)
     {
       return cmpid_BM (id1, id2) < 0;
     };

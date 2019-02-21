@@ -880,7 +880,8 @@ custom_onion_handler_BM (void *clientdata,
   objectval_tyBM *k_custom_onion_handler = BMK_5C5Dfd8eVkR_3306NWk09Bn;
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_custom_onion_handler,
-                 objectval_tyBM * sessionob;);
+                 objectval_tyBM * sessionob;
+    );
   while (agenda_need_gc_BM ())
     {
       DBGPRINTF_BM ("custom_onion_handler need GC");
@@ -1205,7 +1206,8 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
 {
   objectval_tyBM *k_login_onion_handler = BMK_8qHowkDvzRL_03sltCgsDN2;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_login_onion_handler,
-                 objectval_tyBM * contribob;);
+                 objectval_tyBM * contribob;
+    );
   const char *reqpath = onion_request_get_path (req);
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);
@@ -1385,8 +1387,7 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * contribob;    //
                  objectval_tyBM * sessionob;    //
-                 value_tyBM cookiestrv;
-    );
+                 value_tyBM cookiestrv;);
   ASSERT_BM (isobject_BM (contribobarg));
   _.contribob = contribobarg;
   DBGPRINTF_BM ("do_login_redirect_onion_BM start contribob %s location '%s'",
@@ -1503,7 +1504,7 @@ websocket_onion_handler_BM (void *clientdata,
   WEAKASSERT_BM (!wsess
                  || (valtype_BM ((value_tyBM) wsess) == typayl_websession_BM
                      && wsess->websess_magic == BISMONION_WEBSESS_MAGIC));
-      objectval_tyBM* ownob =  wsess ?  wsess->websess_ownobj : NULL;
+  objectval_tyBM *ownob = wsess ? wsess->websess_ownobj : NULL;
   WEAKASSERT_BM (ws != NULL);
   DBGPRINTF_BM
     ("websocket_onion_handler_BM  start ws@%p data_ready_len=%d wsess@%p ownob %s",
@@ -1521,26 +1522,28 @@ websocket_onion_handler_BM (void *clientdata,
     {
       /* the websocket is closing, so we clear it in the session */
       DBGPRINTF_BM
-	("websocket_onion_handler_BM closing websocket ws@%p in session ownob %s",
-	 ws, wsess?objectdbg_BM (ownob) : "?*none*?");
-      if (ownob) {
-	objlock_BM(ownob);
-	ASSERT_BM(objpayload_BM(ownob) == wsess);
-	wsess->websess_websocket = NULL;
-	objunlock_BM(ownob);
-      }
+        ("websocket_onion_handler_BM closing websocket ws@%p in session ownob %s",
+         ws, wsess ? objectdbg_BM (ownob) : "?*none*?");
+      if (ownob)
+        {
+          objlock_BM (ownob);
+          ASSERT_BM (objpayload_BM (ownob) == wsess);
+          wsess->websess_websocket = NULL;
+          objunlock_BM (ownob);
+        }
       /* It seems that
-	 https://github.com/davidmoreno/onion/blob/master/src/onion/websocket.c
-	 don't even use, in start of 2019, the return value of our
-	 websocket_onion_handler_BM */
+         https://github.com/davidmoreno/onion/blob/master/src/onion/websocket.c
+         don't even use, in start of 2019, the return value of our
+         websocket_onion_handler_BM */
       return OCS_CLOSE_CONNECTION;
     }
   FATAL_BM
     ("unimplemented websocket_onion_handler_BM, data_ready_len=%d, wsess own %s",
      (int) data_ready_len,
      wsess ? objectdbg_BM (wsess->websess_ownobj) : "?*none*?");
-#warning websocket_onion_handler_BM is not implemented yet
 }                               /* end websocket_onion_handler_BM */
+
+
 
 void
 create_anonymous_web_session_BM (void)
@@ -1549,8 +1552,7 @@ create_anonymous_web_session_BM (void)
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * sessionob;    //
-                 value_tyBM cookiestrv;
-    );
+                 value_tyBM cookiestrv;);
   DBGPRINTF_BM ("create_anonymous_web_session start onionanonwebsession '%s'",
                 onion_anon_web_session_BM);
   // backup cookie file, if it exists
@@ -1619,6 +1621,56 @@ create_anonymous_web_session_BM (void)
      onion_anon_web_session_BM, objectdbg_BM (_.sessionob));
 }                               /* end create_anonymous_web_session_BM */
 
+void
+objwebsessionsendjsonwebsocketpayl_BM (objectval_tyBM * objarg,
+                                       value_tyBM jsonarg, value_tyBM ctxtarg,
+                                       struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * websessob;
+                 value_tyBM jsonv; value_tyBM ctxv;);
+  _.websessob = objarg;
+  _.jsonv = jsonarg;
+  _.ctxv = ctxtarg;
+  DBGPRINTF_BM
+    ("objwebsessionsendjsonwebsocketpayl start websessob %s jsonv %s ctxv %s",
+     objectdbg_BM (_.websessob), OUTSTRVALUE_BM (_.jsonv),
+     OUTSTRVALUE_BM (_.ctxtv));
+  WEAKASSERTRET_BM (objislocked_BM (_.websessob));
+  struct websessiondata_stBM *wsess = objgetwebsessionpayl_BM (_.websessob);
+  if (!wsess)
+    {
+      WARNPRINTF_BM ("bad websession object %s to send JSON on websocket",
+                     objectdbg_BM (_.websessob));
+      return;
+    }
+  WEAKASSERTRET_BM (wsess->websess_ownobj == _.websessob);
+  WEAKASSERTRET_BM (wsess->websess_magic == BISMONION_WEBSESS_MAGIC);
+  if (!wsess->websess_websocket)
+    {
+      WARNPRINTF_BM ("websession object %s without websocket",
+                     objectdbg_BM (_.websessob));
+      return;
+    }
+  json_t *js =
+    jansjsonfromvalue_BM (_.jsonv, _.jsonv, _.ctxtv, 0, CURFRAME_BM);
+  if (!js)
+    {
+      WARNPRINTF_BM
+        ("no JSON from value %s, context %s for websession object %s",
+         OUTSTRVALUE_BM (_.jsonv), OUTSTRVALUE_BM (_.ctxtv),
+         objectdbg_BM (_.websessob));
+      return;
+    }
+  // should debug print js
+  //
+  // should use open_memstream to output that js in compact form
+  //
+  // should send it on the websocket
+  //
+#warning incomplete objwebsessionsendjsonwebsocketpayl_BM
+}                               /* end of objwebsessionsendjsonwebsocketpayl_BM */
+
 
 //////////////////////////////////////////////////////////////////////////
 // lock for the web exchange count
@@ -1647,8 +1699,8 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   objectval_tyBM *k_failure_bad_closure = BMK_373gFe8m21E_47xzvCGxpI9;
   objectval_tyBM *k_web_timeout = BMK_4vI7wCaySrU_0QhNU3wiwt2;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * sessionob; objectval_tyBM * webexob;
-                 value_tyBM failreasonv;        //
+                 objectval_tyBM * sessionob;
+                 objectval_tyBM * webexob; value_tyBM failreasonv;      //
                  value_tyBM failplacev; //
                  value_tyBM webhandlerv;        //
                  value_tyBM restpathv;  //
@@ -2209,8 +2261,7 @@ void
 web_plain_event_loop_BM (void)
 {
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * bufob;
-    );
+                 objectval_tyBM * bufob;);
   atomic_init (&onionlooprunning_BM, true);
 
   DBGPRINTF_BM ("web_plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",       //

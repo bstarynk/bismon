@@ -1559,6 +1559,10 @@ extern void objwebexchangecompletepayl_BM (const objectval_tyBM * obj,
                                            int httpstatus,
                                            const char *mimetype);
 
+// send asynchronously on a websession object obj (that the caller
+// should have locked) a JSON message to its websocket
+extern void
+objwebsessionsendjsonwebsocketpayl_BM (objectval_tyBM * obj, value_tyBM jsonv, value_tyBM ctxtv, struct stackframe_stBM*stkf);
 
 static inline double objwebexchangedbltime_BM (const objectval_tyBM * obj);
 static inline time_t objwebexchangetime_BM (const objectval_tyBM * obj);
