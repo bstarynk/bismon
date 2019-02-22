@@ -1,7 +1,7 @@
 // file agenda_BM.c
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -863,13 +863,12 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
-  DBGPRINTF_BM
+  DBGBACKTRACEPRINTF_BM
     ("defer_module_load_BM start modulob %s %s postclos %s arg1 %s arg2 %s arg3 %s",
      objectdbg_BM (_.modulob), modulistemporary ? "temporary" : "persistent",
-     debug_outstr_value_BM ((value_tyBM) _.postclos, CURFRAME_BM, 0),
-     debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),
-     debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
-     debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
+     OUTSTRVALUE_BM ((value_tyBM) _.postclos),
+     OUTSTRVALUE_BM (_.arg1v),
+     OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v));
   // test that the module file exists
   char *progmodulpath = NULL;   // the asprintf-ed binary module in bismon_directory
   char *curmodulpath = NULL;    // the asprintf-ed binary module in current directory
@@ -946,13 +945,12 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
     varr[2] = _.arg1v;
     varr[3] = _.arg2v;
     varr[4] = _.arg3v;
-    DBGPRINTF_BM
+    DBGBACKTRACEPRINTF_BM
       ("defer_module_load defer after gc modulob %s, postclos %s, arg1 %s, arg2 %s, arg3 %s",
        objectdbg_BM (_.modulob),
-       debug_outstr_value_BM ((value_tyBM) _.postclos, CURFRAME_BM, 0),
-       debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),
-       debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
-       debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
+       OUTSTRVALUE_BM ((value_tyBM) _.postclos),
+       OUTSTRVALUE_BM (_.arg1v),
+       OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v));
     agenda_defer_after_gc_BM (deferred_do_module_load_BM, varr, 5, modulpath);
   }
   request_delayed_garbage_collection_BM ();
@@ -961,10 +959,12 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
   return;
 failure:
 #undef FAILHERE
-  DBGPRINTF_BM ("defer_module_load failin failin=%d causev=%s modulob=%s/%s arg1=%s arg2=%s arg3=%s", failin, debug_outstr_value_BM (_.causev, CURFRAME_BM, 0), objectdbg_BM (_.modulob), modulidbuf,   //
-                debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),        //
-                debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),        //
-                debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
+  DBGPRINTF_BM ("defer_module_load failin failin=%d causev=%s modulob=%s/%s arg1=%s arg2=%s arg3=%s",   //
+                failin, OUTSTRVALUE_BM (_.causev),      //
+                objectdbg_BM (_.modulob), modulidbuf,   //
+                OUTSTRVALUE_BM (_.arg1v),       //
+                OUTSTRVALUE_BM (_.arg2v),       //
+                OUTSTRVALUE_BM (_.arg3v));
   _.errorv = (value_tyBM)
     makenode6_BM (k_defer_module_load, _.modulob, (value_tyBM) _.postclos,
                   _.arg1v, _.arg2v, _.arg3v, _.causev);
