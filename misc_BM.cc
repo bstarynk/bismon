@@ -574,6 +574,19 @@ void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data
 		objectdbg_BM(_.modulob), binmodulpath);
   binmodulpath[0] = (char)0;
   free (binmodulpath), binmodulpath = NULL;
+  DBGPRINTF_BM("deferred_do_module_load before deferapply postclos=%s" //
+	       " arg1=%s arg2=%s arg3=%s",
+	       OUTSTRVALUE_BM((value_tyBM)_.postclos),
+	       OUTSTRVALUE_BM(_.arg1v),
+	       OUTSTRVALUE_BM(_.arg2v),
+	       OUTSTRVALUE_BM(_.arg3v));
+  do_main_defer_apply3_BM((value_tyBM)_.postclos, _.arg1v, _.arg2v, _.arg3v, CURFRAME_BM);
+  DBGBACKTRACEPRINTF_BM("deferred_do_module_load ending after deferapply postclos=%s" //
+	       " arg1=%s arg2=%s arg3=%s\n",
+	       OUTSTRVALUE_BM((value_tyBM)_.postclos),
+	       OUTSTRVALUE_BM(_.arg1v),
+	       OUTSTRVALUE_BM(_.arg2v),
+	       OUTSTRVALUE_BM(_.arg3v));
 } // end deferred_do_module_load_BM
 
 

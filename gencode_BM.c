@@ -4358,6 +4358,11 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
            routname, objectdbg_BM (_.modulob), modulid, dlerror ());
       _.routob->ob_rout = routr;
       _.routob->ob_sig = BMP_function_sig;
+      if (rix < 10)
+        DBGPRINTF_BM
+          ("simple_module_initialize modulob %s rix#%d routob %s routname %s routr@%p",
+           objectdbg_BM (_.modulob), rix, objectdbg_BM (_.routob), routname,
+           (void *) routr);
     }
   _.routupv = (value_tyBM) maketuple_BM (routarr, nbroutid);
   DBGPRINTF_BM ("simple_module_initialize ending modulob %s modulid %s\n"       //
