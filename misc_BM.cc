@@ -508,6 +508,7 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       return false;
     }
   _.modulob = objmod;
+  INFOPRINTF_BM("open_module_for_loader module %s", objectdbg_BM(_.modulob));
   ld->ld_modhset = hashsetobj_add_BM(ld->ld_modhset, objmod);
   (void) modulemap_BM.insert({modid,ModuleData_BM{.mod_id=modid, .mod_dlh=dlh, .mod_obj=_.modulob, .mod_data=nullptr}});
   ////
@@ -568,6 +569,8 @@ void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data
     FATAL_BM("bad module_id_BM in %s for %s: %s",
              binmodulpath,  objectdbg_BM(_.modulob), (modidad?"modid mismatch":dlerror()));
   modulemap_BM.insert({objid_BM (_.modulob),ModuleData_BM{.mod_id=objid_BM (_.modulob), .mod_dlh=dlh, .mod_obj=_.modulob, .mod_data=nullptr}});
+  INFOPRINTF_BM("deferred_do_module_load modulob=%s binmodulpath='%s'",
+		objectdbg_BM(_.modulob), binmodulpath);
   binmodulpath[0] = (char)0;
   free (binmodulpath), binmodulpath = NULL;
 } // end deferred_do_module_load_BM
@@ -600,7 +603,7 @@ void postpone_loader_module_BM (objectval_tyBM*modulobarg, struct stackframe_stB
   snprintf(modulinitname, sizeof(modulinitname),
            MODULEINITPREFIX_BM "%s" MODULEINITSUFFIX_BM,
            modulidbuf);
-  NONPRINTF_BM("postpone_loader_module modulob %s modulinitname %s",
+  DBGPRINTF_BM("postpone_loader_module modulob %s modulinitname %s",
                objectdbg_BM(_.modulob), modulinitname);
   moduleinit_sigBM*modinitr = (moduleinit_sigBM*)dlsym(dlh, modulinitname);
   if (!modinitr)
