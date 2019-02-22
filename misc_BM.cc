@@ -549,16 +549,17 @@ void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data
   _.arg1v = valarr[2];
   _.arg2v = valarr[3];
   _.arg3v = valarr[4];
-  DBGPRINTF_BM("deferred_do_module_load modulob=%s postclos=%s arg1=%s arg2=%s arg3=%s binmodulpath=%s",
-               objectdbg_BM(_.modulob),
-               debug_outstr_value_BM((value_tyBM)_.postclos, CURFRAME_BM, 0),
-               debug_outstr_value_BM(_.arg1v, CURFRAME_BM, 0),
-               debug_outstr_value_BM(_.arg2v, CURFRAME_BM, 0),
-               debug_outstr_value_BM(_.arg3v, CURFRAME_BM, 0),
-               binmodulpath);
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+  DBGBACKTRACEPRINTF_BM("deferred_do_module_load modulob=%s/%s postclos=%s" //
+			" arg1=%s arg2=%s arg3=%s binmodulpath=%s",
+               objectdbg_BM(_.modulob), modulidbuf,
+	       OUTSTRVALUE_BM((value_tyBM)_.postclos),
+	       OUTSTRVALUE_BM(_.arg1v),
+	       OUTSTRVALUE_BM(_.arg2v),
+	       OUTSTRVALUE_BM(_.arg3v),
+               binmodulpath);
   if (!strstr(binmodulpath, modulidbuf))
     FATAL_BM("bad binary module path%s for %s /%s", binmodulpath, objectdbg_BM(_.modulob), modulidbuf);
   void*dlh = dlopen(binmodulpath, RTLD_NOW | RTLD_GLOBAL);
