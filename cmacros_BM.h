@@ -258,6 +258,8 @@ extern void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
 #define DBGBACKTRACEPRINTF_BM(Fmt,...) \
   DBGBACKTRACEPRINTFAT_BM(__FILE__,__LINE__,Fmt,##__VA_ARGS__)
 
+#define DBGNONBACKTRACEPRINTF_FM(Fmt,...) DBGPRINTF_BM(Fmt,##__VA_ARGS__)
+
   ////////////////
 #define NONPRINTF_BM(Fmt,...) do { if (false) \
       DBGPRINTF_BM(Fmt,##__VA_ARGS__); } while(0)
