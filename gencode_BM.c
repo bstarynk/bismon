@@ -3962,9 +3962,11 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM * kk_after_load_of_module = BMK_0UHZG9vDlR2_2Aqx86LMFuq;
+  objectval_tyBM * kk_after_compilation_of_module =
+    BMK_9le67LL7S9y_5VGpniEUNDA;
+  objectval_tyBM *kk_after_load_of_module = BMK_0UHZG9vDlR2_2Aqx86LMFuq;
   objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
-  LOCALFRAME_BM (stkf, /*descr: */ BMK_9le67LL7S9y_5VGpniEUNDA,
+  LOCALFRAME_BM (stkf, /*descr: */ kk_after_compilation_of_module,
                  value_tyBM outstrv;    //
                  value_tyBM resultv;    //
                  value_tyBM callingclosv;       //
@@ -3981,13 +3983,15 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   _.moddirstrv = closurenthson_BM (_.callingclosv, 2);
   bool modulistemporary =
     (objectisinstance_BM (_.modulob, k_plain_temporary_module));
-  DBGPRINTF_BM ("start after-compilation-of-module status %d outstr %s callingclos %s\n"        //
-                ".. modulob=%s %s modgenob=%s moddirstr=%s\n", status,  //
-                debug_outstr_value_BM (_.outstrv, CURFRAME_BM, 0),      //
-                debug_outstr_value_BM (_.callingclosv, CURFRAME_BM, 0), //
-                objectdbg_BM (_.modulob),       //
-                modulistemporary ? "temporary" : "persistent", objectdbg2_BM (_.modgenob),      //
-                debug_outstr_value_BM (_.moddirstrv, CURFRAME_BM, 0));
+  DBGBACKTRACEPRINTF_BM ("start after-compilation-of-module %s status %d outstr %s callingclos %s\n"    //
+                         ".. modulob=%s %s modgenob=%s moddirstr=%s\n", //
+                         objectdbg_BM (kk_after_compilation_of_module), status, //
+                         OUTSTRVALUE_BM (_.outstrv),    //
+                         OUTSTRVALUE_BM (_.callingclosv),       //
+                         objectdbg1_BM (_.modulob),     //
+                         modulistemporary ? "temporary" : "persistent", //
+                         objectdbg2_BM (_.modgenob),    //
+                         OUTSTRVALUE_BM (_.moddirstrv));
   WEAKASSERT_BM (_.modulob);
   WEAKASSERT_BM (_.modgenob);
   WEAKASSERT_BM (isstring_BM (_.moddirstrv));
