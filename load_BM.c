@@ -584,8 +584,52 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
   if (!memfil)
     FATAL_BM ("load_modif_json_BM L%uC%u %s failed to open_memstream", lineno,
               colpos, ldpars->pars_path);
-#warning load_modif_json_BM incomplete
-  FATAL_BM ("load_modif_json incomplete L%uC%u %s", lineno, colpos);
+  fputs (ldpars->pars_linebuf + tokopen.tok_col + 1, memfil);
+  bool endjs = false;
+  do
+    {
+      ldpars->pars_linebuf[0] = (char) 0;
+      ldpars->pars_linelen =
+        getline (&ldpars->pars_linebuf, &ldpars->pars_linesiz,
+                 ldpars->pars_file);
+      if (ldpars->pars_linelen <= 0
+          || (ldpars->pars_linebuf[0] == '~'
+              && ldpars->pars_linebuf[1] == ')'))
+        {
+          endjs = true;
+        }
+      else
+        {
+          fputs (ldpars->pars_linebuf, memfil);
+        }
+      parsernextline_BM (ldpars);
+    }
+  while (!endjs);
+  fputc ('\n', memfil);
+  fflush (memfil);
+  long lnjs = ftell (memfil);
+  DBGPRINTF_BM
+    ("load_modif_json_BM L%uC%u curldobj=%s, JSON-membuf=\n%s\n//----\n",
+     objectdbg_BM (_.curldobj), membuf);
+  parstoken_tyBM tokclose = parsertokenget_BM (ldpars, CURFRAME_BM);
+  if (tokclose.tok_kind != plex_DELIM
+      || tokclose.tok_delim != delim_tilderightparen)
+    parsererrorprintf_BM (ldpars, CURFRAME_BM,
+                          parserlineno_BM (ldpars), parsercolpos_BM (ldpars),
+                          "expect )~ after !~json (~ <JSON> ");
+  json_error_t jserr = { };
+  json_t *js = json_loadb (membuf, lnjs,
+                           JSON_DISABLE_EOF_CHECK | JSON_REJECT_DUPLICATES |
+                           JSON_DECODE_ANY, &jserr);
+  if (!js)
+    FATAL_BM
+      ("load_modif_json_BM L%uC%u %s failed %s JSON decoding %s (~L%uC%u)",
+       lineno, colpos, ldpars->pars_path, objectdbg_BM (_.curldobj),
+       jserr.text, lineno + jserr.line,
+       (jserr.line > 1) ? jserr.column : colpos + jserr.column);
+  fclose (memfil);
+  free (membuf), membuf = NULL;
+  objputjansjsonpayl_BM (_.curldobj, js);
 }                               /* end load_modif_json_BM */
 
 
