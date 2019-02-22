@@ -561,7 +561,7 @@ void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data
 	       OUTSTRVALUE_BM(_.arg3v),
                binmodulpath);
   if (!strstr(binmodulpath, modulidbuf))
-    FATAL_BM("bad binary module path%s for %s /%s", binmodulpath, objectdbg_BM(_.modulob), modulidbuf);
+    FATAL_BM("bad binary module path %s for %s /%s", binmodulpath, objectdbg_BM(_.modulob), modulidbuf);
   void*dlh = dlopen(binmodulpath, RTLD_NOW | RTLD_GLOBAL);
   if (!dlh)
     FATAL_BM("module %s dlopen failed for %s : %s", binmodulpath, objectdbg_BM(_.modulob), dlerror());
