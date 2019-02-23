@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2535 objects
+// for 2537 objects
 // with 3 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -9255,6 +9255,23 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 
 
+!(_4oJ0GwzxGLe_7cHWwHYA0Di |=test_agenda|
+!~ name (~ test_agenda
+~)
+!@ 1521229706.330
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "command to test agenda"
+!: _0xbmmxnN8E8_0ZuEqJmqMNH |=command_handler|
+ % _1eQ1a8KHixZ_1XDNH5iTQ0I ()
+!: _4rz1Bi4weGz_8Y03gU81cRL |=see|
+ { _7rRjqfXs3QI_4Nwk2Lfm569 _7XDuHagbhi8_3V9zhBpbrrV }
+!# 1
+!& _8zRh2medTlP_0ImnPyO8NKH
+!)_4oJ0GwzxGLe_7cHWwHYA0Di
+
+
+
 !(_65JOhOOClWe_08TswocQMas |=testmacroid|
 !~ name (~ testmacroid
 ~)
@@ -14071,6 +14088,16 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 !& _7daWyW7jPyL_0EvyGgObjJm
 !&  * _1iRMAZlHGbs_9rPqm9Nc1eT ( _4Q4WBLjAPTV_5WVLmhAvCJY)
 !)_1eDeH7xPojd_3uCQMEEBsHc
+
+
+
+!(_1eQ1a8KHixZ_1XDNH5iTQ0I
+!|*
+!@ 1521179450.500
+!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test_agenda command_handler routine"
+!)_1eQ1a8KHixZ_1XDNH5iTQ0I
 
 
 

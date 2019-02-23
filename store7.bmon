@@ -1,11 +1,11 @@
 // generated persistent data file store7.bmon
 // this generated data file is GPLv3+ licensed
-// for 6 objects
+// for 4 objects
 // with 0 modules
 
 
-!(_3URdyE0oa4Z_3oXj45Or0rB |=a|
-!~ name (~ a
+!(_3URdyE0oa4Z_3oXj45Or0rB |=play_a|
+!~ name (~ play_a
 ~)
 !@ 1528978855.208
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
@@ -17,14 +17,14 @@
 
 
 
-!(_0se0A3BDiXN_9v8gQ1Rzdtr |=b|
-!~ name (~ b
+!(_0se0A3BDiXN_9v8gQ1Rzdtr |=play_b|
+!~ name (~ play_b
 ~)
 !@ 1533730822.636
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "some object named b"
-!: _3URdyE0oa4Z_3oXj45Or0rB |=a|
+ "some object named play_b"
+!: _3URdyE0oa4Z_3oXj45Or0rB |=play_a|
  [ _3URdyE0oa4Z_3oXj45Or0rB _0se0A3BDiXN_9v8gQ1Rzdtr _0DcIN3EYe3y_7cRpBDYhw3s ]
 !# 1
 !& _0DcIN3EYe3y_7cRpBDYhw3s
@@ -32,8 +32,8 @@
 
 
 
-!(_0DcIN3EYe3y_7cRpBDYhw3s |=c|
-!~ name (~ c
+!(_0DcIN3EYe3y_7cRpBDYhw3s |=play_c|
+!~ name (~ play_c
 ~)
 !@ 1504241958.640
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
@@ -41,39 +41,12 @@
 
 
 
-!(_5a7gOTbvw4I_6PzXru7uInx |=d|
-!~ name (~ d
+!(_5a7gOTbvw4I_6PzXru7uInx |=play_d|
+!~ name (~ play_d
 ~)
 !@ 1504241958.640
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_5a7gOTbvw4I_6PzXru7uInx
-
-
-
-!(_4oJ0GwzxGLe_7cHWwHYA0Di |=test_agenda|
-!~ name (~ test_agenda
-~)
-!@ 1521229706.330
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "command to test agenda"
-!: _0xbmmxnN8E8_0ZuEqJmqMNH |=command_handler|
- % _1eQ1a8KHixZ_1XDNH5iTQ0I ()
-!: _4rz1Bi4weGz_8Y03gU81cRL |=see|
- { _7rRjqfXs3QI_4Nwk2Lfm569 _7XDuHagbhi8_3V9zhBpbrrV }
-!# 1
-!& _8zRh2medTlP_0ImnPyO8NKH
-!)_4oJ0GwzxGLe_7cHWwHYA0Di
-
-
-
-!(_1eQ1a8KHixZ_1XDNH5iTQ0I
-!|*
-!@ 1521179450.500
-!$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "test_agenda command_handler routine"
-!)_1eQ1a8KHixZ_1XDNH5iTQ0I
 
 
 

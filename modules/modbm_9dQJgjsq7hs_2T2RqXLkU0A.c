@@ -326,7 +326,7 @@ startblock__86w0oglm27k_4ULVduuJiC6: __attribute__((unused));
  
 { // run _9W3ifZwUp2j_3cTOMwHevI1 
 /*debug emitxhtml_element start o_helem o_emitctx o_strbuf depth*/
-DBGPRINTF_BM("emitxhtml_element start €%.9s o_helem=%s o_emitctx=%s o_strbuf=%s/L%d depth#%ld",
+DBGPRINTF_BM("emitxhtml_element start €%.9s o_helem=%s o_emitctx=%s o_strbuf=%s/L%play_d depth#%ld",
  "_9W3ifZwUp2j_3cTOMwHevI1",
  objectdbg_BM( /*o_helem:*/_.o_6Ef2ORO1Mni_0tpNoRQGmrW),
  objectdbg1_BM( /*o_emitctx:*/_.o_9nXRmTATjN4_5F9V7RvvgW0),
