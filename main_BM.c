@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -1559,6 +1559,8 @@ extern void do_internal_deferred_send3_BM (value_tyBM recv,
                                            value_tyBM arg1,
                                            value_tyBM arg2, value_tyBM arg3);
 
+
+////////////////////////////////////////////////////////////////
 // called from did_deferred_BM
 void
 do_internal_deferred_apply3_BM (value_tyBM fun,
@@ -1566,7 +1568,10 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
                                 value_tyBM arg3)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 value_tyBM funv; value_tyBM arg1v, arg2v, arg3v;
+                 value_tyBM funv;       //
+                 objectval_tyBM * funob;        //
+                 value_tyBM arg1v, arg2v, arg3v;
+                 value_tyBM resappv;    //
                  value_tyBM failres;    //
                  value_tyBM failplace;  //
     );
@@ -1591,19 +1596,55 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
                                             CURFRAME_BM, 0));
       return;
     }
-  NONPRINTF_BM ("internaldeferapply funv %s arg1 %s arg2 %s arg3 %s",   //
-                debug_outstr_value_BM (_.funv,  //
-                                       CURFRAME_BM, 0), //
-                debug_outstr_value_BM (_.arg1v, //
-                                       CURFRAME_BM, 0), //
-                debug_outstr_value_BM (_.arg2v, //
-                                       CURFRAME_BM, 0), //
-                debug_outstr_value_BM (_.arg3v, //
-                                       CURFRAME_BM, 0));
-  (void) apply3_BM (_.funv, CURFRAME_BM, _.arg1v, _.arg2v, _.arg3v);
-  NONPRINTF_BM ("internaldeferapply applied funv %s",   //
-                debug_outstr_value_BM (_.funv,  //
-                                       CURFRAME_BM, 0));
+  DBGBACKTRACEPRINTF_BM ("internaldeferapply funv %s arg1 %s arg2 %s arg3 %s",  //
+                         OUTSTRVALUE_BM (_.funv),       //
+                         OUTSTRVALUE_BM (_.arg1v),      //
+                         OUTSTRVALUE_BM (_.arg2v),      //
+                         OUTSTRVALUE_BM (_.arg3v));
+  if (isclosure_BM (_.funv))
+    {
+      _.funob = closureconn_BM (_.funv);
+    }
+  else if (isobject_BM (_.funv))
+    {
+      _.funob = objectcast_BM (_.funv);
+    }
+  else
+    {
+      _.funob = NULL;
+      WARNPRINTF_BM ("internaldeferapply bad funv %s arg1 %s arg2 %s arg3 %s",  //
+                     OUTSTRVALUE_BM (_.funv),   //
+                     OUTSTRVALUE_BM (_.arg1v),  //
+                     OUTSTRVALUE_BM (_.arg2v),  //
+                     OUTSTRVALUE_BM (_.arg3v));
+    }
+  _.resappv = NULL;
+  if (!isobject_BM (_.funob) || !_.funob->ob_rout)
+    WARNPRINTF_BM ("internaldeferapply no routine for funv %s arg1 %s arg2 %s arg3 %s", //
+                   OUTSTRVALUE_BM (_.funv),     //
+                   OUTSTRVALUE_BM (_.arg1v),    //
+                   OUTSTRVALUE_BM (_.arg2v),    //
+                   OUTSTRVALUE_BM (_.arg3v));
+  else
+    {
+      objlock_BM (_.funob);
+      _.resappv = apply3_BM (_.funv, CURFRAME_BM, _.arg1v, _.arg2v, _.arg3v);
+      objunlock_BM (_.funob);
+    }
+  DBGPRINTF_BM ("internaldeferapply applied funv %s arg1 %s arg2 %s arg3 %s => resapp %s",      //
+                OUTSTRVALUE_BM (_.funv),        //
+                OUTSTRVALUE_BM (_.arg1v),       //
+                OUTSTRVALUE_BM (_.arg2v),       //
+                OUTSTRVALUE_BM (_.arg3v),       //
+                OUTSTRVALUE_BM (_.resappv));
+  if (!_.resappv)
+    {
+      WARNPRINTF_BM ("internaldeferapply NULL result of application of funv %s arg1 %s arg2 %s arg3 %s",        //
+                     OUTSTRVALUE_BM (_.funv),   //
+                     OUTSTRVALUE_BM (_.arg1v),  //
+                     OUTSTRVALUE_BM (_.arg2v),  //
+                     OUTSTRVALUE_BM (_.arg3v));
+    }
   destroy_failurelockset_BM (&flockset);
   curfailurehandle_BM = NULL;
 }                               /* end do_internal_defer_apply3_BM */

@@ -1234,7 +1234,7 @@ parsecommandbuf_newgui_BM (struct
           //
           else
             {
-              DBGPRINTF_BM
+              NONPRINTF_BM
                 ("parsecommandbuf_newgui L%uC%u invalid command",
                  cmdtok.tok_line, cmdtok.tok_col);
               parsererrorprintf_BM (pars,

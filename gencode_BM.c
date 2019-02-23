@@ -4274,18 +4274,23 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
 {
   objectval_tyBM *k_simple_module_initialize = BMK_3XOzJccMA25_76EfdJqsCSL;
   LOCALFRAME_BM (stkf, /*descr: */ k_simple_module_initialize,
-                 value_tyBM arg1v; value_tyBM arg2v;
-                 value_tyBM arg3v; value_tyBM constsetv; value_tyBM routupv;
-                 objectval_tyBM * curob; objectval_tyBM * routob;
-                 objectval_tyBM * modulob;);
+                 value_tyBM arg1v;      //
+                 value_tyBM arg2v;      //
+                 value_tyBM arg3v;      //
+                 value_tyBM constsetv;  //
+                 value_tyBM routupv;    //
+                 objectval_tyBM * curob;        //
+                 objectval_tyBM * routob;       //
+                 objectval_tyBM * modulob;      //
+    );
   _.arg1v = arg1;
   _.arg2v = arg2;
   _.arg3v = arg3;
-  NONPRINTF_BM
-    ("simple_module_initialize start modulid %s arg1 %s arg2 %s arg3 %s",
-     modulid, debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),
-     debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),
-     debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0));
+  DBGBACKTRACEPRINTF_BM ("simple_module_initialize start modulid %s"    //
+                         " arg1=%s arg2=%s arg3=%s",
+                         modulid,
+                         OUTSTRVALUE_BM (_.arg1v),
+                         OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v));
   {
     rawid_tyBM modid = parse_rawid_BM (modulid, NULL);
     _.modulob = findobjofid_BM (modid);

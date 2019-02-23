@@ -1061,19 +1061,22 @@ do_main_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, valu
   _.arg1 = arg1;
   _.arg2 = arg2;
   _.arg3 = arg3;
-  if (!isclosure_BM(funv) && !isobject_BM(funv))
-    {
-      DBGPRINTF_BM("do_main_defer_apply bad funv %s",
-                   debug_outstr_value_BM (_.funv, CURFRAME_BM, 0));
-      return;
-    }
   DBGBACKTRACEPRINTF_BM("do_main_defer_apply start tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
                (long)gettid_BM(),
-               debug_outstr_value_BM (_.funv, CURFRAME_BM, 0), //
-               debug_outstr_value_BM (_.arg1, CURFRAME_BM, 0), //
-               debug_outstr_value_BM (_.arg2, CURFRAME_BM, 0), //
-               debug_outstr_value_BM (_.arg3, CURFRAME_BM, 0) //
+               OUTSTRVALUE_BM (_.funv), //
+               OUTSTRVALUE_BM (_.arg1), //
+               OUTSTRVALUE_BM (_.arg2), //
+               OUTSTRVALUE_BM (_.arg3) //
               );
+  if (!isclosure_BM(funv) && !isobject_BM(funv))
+    {
+      WARNPRINTF_BM("do_main_defer_apply bad funv %s, arg1=%s, arg2=%s, arg3=%s",
+		    OUTSTRVALUE_BM (_.funv),
+		    OUTSTRVALUE_BM (_.arg1),
+		    OUTSTRVALUE_BM (_.arg2),
+		    OUTSTRVALUE_BM (_.arg3));
+      return;
+    }
   {
     std::lock_guard<std::mutex> _g(deferqmtx_BM);
     struct deferdoappl_stBM dap = {};
@@ -1097,10 +1100,10 @@ do_main_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, valu
   ////
   DBGPRINTF_BM("do_main_defer_apply end tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
                (long)gettid_BM(),
-               debug_outstr_value_BM (_.funv, CURFRAME_BM, 0), //
-               debug_outstr_value_BM (_.arg1, CURFRAME_BM, 0), //
-               debug_outstr_value_BM (_.arg2, CURFRAME_BM, 0), //
-               debug_outstr_value_BM (_.arg3, CURFRAME_BM, 0) //
+               OUTSTRVALUE_BM (_.funv), //
+               OUTSTRVALUE_BM (_.arg1), //
+               OUTSTRVALUE_BM (_.arg2), //
+               OUTSTRVALUE_BM (_.arg3) //
               );
 } // end do_main_defer_apply3_BM
 
