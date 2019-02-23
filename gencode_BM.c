@@ -4119,10 +4119,10 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
   _.postclosv = (value_tyBM)
     makeclosure3_BM (kk_after_load_of_module, _.modulob, _.modgenob,
                      _.moddirstrv);
-  DBGBACKTRACEPRINTF_BM ("after-compilation-of-module modulob %s postclosv=%s before defer_module_load", objectdbg_BM (_.modulob),      //
+  DBGBACKTRACEPRINTF_BM ("after-compilation-of-module modulob %s postclosv=%s before defer_module_dynload", objectdbg_BM (_.modulob),   //
                          OUTSTRVALUE_BM (_.postclosv));
-  defer_module_load_BM (_.modulob, _.postclosv, _.modulob, _.modgenob, NULL,
-                        CURFRAME_BM);
+  defer_module_dynload_BM (_.modulob, _.postclosv, _.modulob, _.modgenob,
+                           NULL, CURFRAME_BM);
   DBGPRINTF_BM
     ("after-compilation-of-module modulob=%s modgenob=%s postclosv=%s end\n",
      objectdbg_BM (_.modulob), objectdbg_BM (_.modgenob),

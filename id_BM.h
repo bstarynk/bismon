@@ -1,7 +1,7 @@
 // file id_BM.h - declarations and inline functions for objid-s
 
 /***
-    BISMON 
+    BISMON
     Copyright © 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
@@ -148,8 +148,8 @@ extern "C"
 
   struct IdLess_BM
   {
-    inline bool operator                        () (const rawid_tyBM & id1,
-                                                    const rawid_tyBM & id2)
+    inline bool                 //
+      operator     () (const rawid_tyBM & id1, const rawid_tyBM & id2)
     {
       return cmpid_BM (id1, id2) < 0;
     };

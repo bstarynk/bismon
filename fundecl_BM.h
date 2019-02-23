@@ -1633,13 +1633,13 @@ void defer_dump_BM (const char *dirname, const closure_tyBM * postclosv,
                     value_tyBM * arg1v, value_tyBM * arg2v,
                     value_tyBM * arg3v, struct stackframe_stBM *stkf);
 
-// defer a module load (after a GC) while the agenda is running. the 3
+// defer a module dynamic-load (after a GC) while the agenda is running. the 3
 // arguments are passed to the module initialization. Its result is
 // given to the closure.
-void defer_module_load_BM (objectval_tyBM * modulob, const closure_tyBM * postclosv,    //
-                           value_tyBM arg1v,
-                           value_tyBM arg2v, value_tyBM arg3v,
-                           struct stackframe_stBM *stkf);
+void defer_module_dynload_BM (objectval_tyBM * modulob, const closure_tyBM * postclosv, //
+                              value_tyBM arg1v,
+                              value_tyBM arg2v, value_tyBM arg3v,
+                              struct stackframe_stBM *stkf);
 ////////////////////////////////////////////////////////////////
 // queue some external process; its stdin is /dev/null; both stdout &
 // stderr are merged & captured; final string is given to the closure.

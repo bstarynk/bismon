@@ -1202,13 +1202,13 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
-!(_4fBgmgx2KrN_3PCZfdnI1CJ |=defer_module_load|
-!~ name (~ defer_module_load
+!(_4fBgmgx2KrN_3PCZfdnI1CJ |=defer_module_dynload|
+!~ name (~ defer_module_dynload
 ~)
 !@ 1524944653.030
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "defer_module_load"
+ "defer_module_dynload"
 !)_4fBgmgx2KrN_3PCZfdnI1CJ
 
 
@@ -9327,13 +9327,13 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
-!(_5DXq2adUiam_4ySWA06AoyV |=todo_after_module_load|
-!~ name (~ todo_after_module_load
+!(_5DXq2adUiam_4ySWA06AoyV |=todo_after_module_dynload|
+!~ name (~ todo_after_module_dynload
 ~)
 !@ 1524989634.250
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "attribute, for modulobj or modgenobj, for"& " closure giving a tasklet to run after module"& " load, applied to modulob, modgenob, modres"
+ "attribute, for modulobj or modgenobj, for"& " closure giving a tasklet to run after module"& " dynamic-load, applied to modulob, modgenob,"& " modres"
 !)_5DXq2adUiam_4ySWA06AoyV
 
 

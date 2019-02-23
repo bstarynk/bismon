@@ -527,10 +527,10 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
 
 extern "C" void postpone_loader_module_BM (objectval_tyBM*modulob, struct stackframe_stBM * stkf);
 
-extern "C" void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data);
+extern "C" void deferred_do_module_dynload_BM (value_tyBM * valarr, unsigned nbval, void *data);
 
-/// called only indirectly thru agenda defer mechanism, see defer_module_load_BM
-void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data)
+/// called only indirectly thru agenda defer mechanism, see defer_module_dynload_BM
+void deferred_do_module_dynload_BM (value_tyBM * valarr, unsigned nbval, void *data)
 {
   struct thisframe
   {
@@ -559,7 +559,7 @@ void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof (modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
-  DBGBACKTRACEPRINTF_BM("deferred_do_module_load modulob=%s/%s postclos=%s" //
+  DBGBACKTRACEPRINTF_BM("deferred_do_module_dynload modulob=%s/%s postclos=%s" //
 			" arg1=%s arg2=%s arg3=%s binmodulpath=%s",
                objectdbg_BM(_.modulob), modulidbuf,
 	       OUTSTRVALUE_BM((value_tyBM)_.postclos),
@@ -569,7 +569,7 @@ void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data
                binmodulpath);
   if (!strstr(binmodulpath, modulidbuf))
     FATAL_BM("bad binary module path %s for %s /%s", binmodulpath, objectdbg_BM(_.modulob), modulidbuf);
-  DBGPRINTF_BM("deferred_do_module_load before dlopen %s", binmodulpath);
+  DBGPRINTF_BM("deferred_do_module_dynload before dlopen %s", binmodulpath);
   void*dlh = dlopen(binmodulpath, RTLD_NOW | RTLD_GLOBAL);
   if (!dlh)
     FATAL_BM("module %s dlopen failed for %s : %s", binmodulpath, objectdbg_BM(_.modulob), dlerror());
@@ -578,24 +578,24 @@ void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data
     FATAL_BM("bad module_id_BM in %s for %s: %s",
              binmodulpath,  objectdbg_BM(_.modulob), (modidad?"modid mismatch":dlerror()));
   modulemap_BM.insert({objid_BM (_.modulob),ModuleData_BM{.mod_id=objid_BM (_.modulob), .mod_dlh=dlh, .mod_obj=_.modulob, .mod_data=nullptr}});
-  INFOPRINTF_BM("deferred_do_module_load modulob=%s binmodulpath='%s'",
+  INFOPRINTF_BM("deferred_do_module_dynload modulob=%s binmodulpath='%s'",
 		objectdbg_BM(_.modulob), binmodulpath);
   binmodulpath[0] = (char)0;
   free (binmodulpath), binmodulpath = NULL;
-  DBGPRINTF_BM("deferred_do_module_load before deferapply postclos=%s" //
+  DBGPRINTF_BM("deferred_do_module_dynload before deferapply postclos=%s" //
 	       " arg1=%s arg2=%s arg3=%s",
 	       OUTSTRVALUE_BM((value_tyBM)_.postclos),
 	       OUTSTRVALUE_BM(_.arg1v),
 	       OUTSTRVALUE_BM(_.arg2v),
 	       OUTSTRVALUE_BM(_.arg3v));
   do_main_defer_apply3_BM((value_tyBM)_.postclos, _.arg1v, _.arg2v, _.arg3v, CURFRAME_BM);
-  DBGBACKTRACEPRINTF_BM("deferred_do_module_load ending after deferapply postclos=%s" //
+  DBGBACKTRACEPRINTF_BM("deferred_do_module_dynload ending after deferapply postclos=%s" //
 	       " arg1=%s arg2=%s arg3=%s\n",
 	       OUTSTRVALUE_BM((value_tyBM)_.postclos),
 	       OUTSTRVALUE_BM(_.arg1v),
 	       OUTSTRVALUE_BM(_.arg2v),
 	       OUTSTRVALUE_BM(_.arg3v));
-} // end deferred_do_module_load_BM
+} // end deferred_do_module_dynload_BM
 
 
 void postpone_loader_module_BM (objectval_tyBM*modulobarg, struct stackframe_stBM * stkf) // called from load_module routine

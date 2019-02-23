@@ -827,15 +827,14 @@ run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
 }                               /* end run_agenda_internal_tasklet_BM */
 
 
-
 void
-defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclosarg,    //
-                      value_tyBM arg1, value_tyBM arg2, value_tyBM arg3,        //
-                      struct stackframe_stBM *stkf)
+defer_module_dynload_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclosarg, //
+                         value_tyBM arg1, value_tyBM arg2, value_tyBM arg3,     //
+                         struct stackframe_stBM *stkf)
 {
-  objectval_tyBM *k_defer_module_load = BMK_4fBgmgx2KrN_3PCZfdnI1CJ;
+  objectval_tyBM *k_defer_module_dynload = BMK_4fBgmgx2KrN_3PCZfdnI1CJ;
   objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
-  LOCALFRAME_BM (stkf, /*descr: */ k_defer_module_load,
+  LOCALFRAME_BM (stkf, /*descr: */ k_defer_module_dynload,
                  objectval_tyBM * modulob;      //
                  const closure_tyBM * postclos;
                  value_tyBM arg1v;      //
@@ -846,7 +845,7 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
                  value_tyBM causev;
                  value_tyBM errorv;
     );
-  extern void deferred_do_module_load_BM (value_tyBM * valarr, unsigned nbval, void *data);     /* in misc_BM.cc */
+  extern void deferred_do_module_dynload_BM (value_tyBM * valarr, unsigned nbval, void *data);  /* in misc_BM.cc */
   _.modulob = objectcast_BM (modulobarg);
   _.postclos = closurecast_BM ((value_tyBM) postclosarg);
   _.arg1v = arg1;
@@ -864,7 +863,7 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
   memset (modulidbuf, 0, sizeof (modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
   DBGBACKTRACEPRINTF_BM
-    ("defer_module_load_BM start modulob %s %s postclos %s arg1 %s arg2 %s arg3 %s",
+    ("defer_module_dynload_BM start modulob %s %s postclos %s arg1 %s arg2 %s arg3 %s",
      objectdbg_BM (_.modulob), modulistemporary ? "temporary" : "persistent",
      OUTSTRVALUE_BM ((value_tyBM) _.postclos),
      OUTSTRVALUE_BM (_.arg1v),
@@ -927,7 +926,7 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
       || eident[0] != ELFMAG0 || eident[1] != ELFMAG1 || eident[2] != ELFMAG2
       || eident[3] != ELFMAG3)
     {
-      DBGPRINTF_BM ("defer_module_load bad ELF ident %x %x %x %x (want %x %x %x %x) nbread %d for modulpath %s modulob %s",     //
+      DBGPRINTF_BM ("defer_module_dynload bad ELF ident %x %x %x %x (want %x %x %x %x) nbread %d for modulpath %s modulob %s",  //
                     eident[0], eident[1], eident[2], eident[3], //
                     ELFMAG0, ELFMAG1, ELFMAG2, ELFMAG3, //
                     nbread, modulpath, objectdbg_BM (_.modulob));
@@ -946,30 +945,31 @@ defer_module_load_BM (objectval_tyBM * modulobarg, const closure_tyBM * postclos
     varr[3] = _.arg2v;
     varr[4] = _.arg3v;
     DBGBACKTRACEPRINTF_BM
-      ("defer_module_load defer after gc modulob %s, postclos %s, arg1 %s, arg2 %s, arg3 %s",
+      ("defer_module_dynload defer after gc modulob %s, postclos %s, arg1 %s, arg2 %s, arg3 %s",
        objectdbg_BM (_.modulob),
        OUTSTRVALUE_BM ((value_tyBM) _.postclos),
        OUTSTRVALUE_BM (_.arg1v),
        OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v));
-    agenda_defer_after_gc_BM (deferred_do_module_load_BM, varr, 5, modulpath);
+    agenda_defer_after_gc_BM (deferred_do_module_dynload_BM, varr, 5,
+                              modulpath);
   }
   request_delayed_garbage_collection_BM ();
-  DBGPRINTF_BM ("defer_module_load_BM end modulob %s",
+  DBGPRINTF_BM ("defer_module_dynload_BM end modulob %s",
                 objectdbg_BM (_.modulob));
   return;
 failure:
 #undef FAILHERE
-  DBGPRINTF_BM ("defer_module_load failin failin=%d causev=%s modulob=%s/%s arg1=%s arg2=%s arg3=%s",   //
+  DBGPRINTF_BM ("defer_module_dynload failin failin=%d causev=%s modulob=%s/%s arg1=%s arg2=%s arg3=%s",        //
                 failin, OUTSTRVALUE_BM (_.causev),      //
                 objectdbg_BM (_.modulob), modulidbuf,   //
                 OUTSTRVALUE_BM (_.arg1v),       //
                 OUTSTRVALUE_BM (_.arg2v),       //
                 OUTSTRVALUE_BM (_.arg3v));
   _.errorv = (value_tyBM)
-    makenode6_BM (k_defer_module_load, _.modulob, (value_tyBM) _.postclos,
+    makenode6_BM (k_defer_module_dynload, _.modulob, (value_tyBM) _.postclos,
                   _.arg1v, _.arg2v, _.arg3v, _.causev);
   PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 
-}                               /* end defer_module_load_BM */
+}                               /* end defer_module_dynload_BM */
 
 /***** end of file agenda_BM.c ****/
