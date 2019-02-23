@@ -527,6 +527,7 @@ agenda_continue_after_gc_BM (void)
 void
 agenda_run_deferred_after_gc_BM (void)
 {
+  LOCALFRAME_BM (NULL, NULL, value_tyBM curv);
   struct agenda_defer_stBM *oldfirst = NULL;
   struct agenda_defer_stBM *oldlast = NULL;
   struct failurehandler_stBM *oldflh =
@@ -548,8 +549,29 @@ agenda_run_deferred_after_gc_BM (void)
       ASSERT_BM (nextagd != NULL || curagd == oldlast);
       agdcount++;
       ASSERT_BM (curagd->agd_rout != NULL);
+      if (debugmsg_BM)
+        {
+          Dl_info di = { };
+          if (dladdr (curagd->agd_rout, &di) && di.dli_fname)
+            DBGBACKTRACEPRINTF_BM
+              ("agenda_run_deferred_after_gc_BM rout %s @%p", di.dli_fname,
+               (void *) curagd->agd_rout);
+          else
+            DBGBACKTRACEPRINTF_BM ("agenda_run_deferred_after_gc_BM rout@%p",
+                                   (void *) curagd->agd_rout);
+          for (int ix = 0; ix < (int) curagd->agd_nbval; ix++)
+            {
+              _.curv = curagd->agd_valarr[ix];
+#warning perhaps dangerous DBGPRINTF_BM in agenda_run_deferred_after_gc_BM
+              /// this might not be safe if GC happens inside
+              DBGPRINTF_BM ("agenda_run_deferred_after_gc..val[%d]: %s",
+                            ix, OUTSTRVALUE_BM (_.curv));
+            }
+        }
       (*curagd->agd_rout) (curagd->agd_valarr, curagd->agd_nbval,
                            curagd->agd_data);
+      DBGPRINTF_BM ("agenda_run_deferred_after_gc done rout@%p\n",
+                    (void *) curagd->agd_rout);
       memset (curagd, 0, sizeof (*curagd));
       free (curagd), curagd = NULL;
       ASSERT_BM (agdcount <= AGD_MAXCOUNT_BM);
