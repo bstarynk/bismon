@@ -4160,11 +4160,11 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
   _.modulob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
   _.modgenob = objectcast_BM (closurenthson_BM (_.callingclosv, 1));
   _.moddirstrv = closurenthson_BM (_.callingclosv, 2);
-  DBGPRINTF_BM ("after-load-of-module start resmodv=%s callingclosv=%s modulob=%s modgenob=%s moddirstr=%s",    //
-                debug_outstr_value_BM (_.resmodv, CURFRAME_BM, 0),      //
-                debug_outstr_value_BM (_.callingclosv, CURFRAME_BM, 0), //
+  DBGPRINTF_BM ("after-load-of-module €_0UHZG9vDl start resmodv=%s callingclosv=%s modulob=%s modgenob=%s moddirstr=%s",      //
+                OUTSTRVALUE_BM (_.resmodv),     //
+                OUTSTRVALUE_BM (_.callingclosv),        //
                 objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),
-                debug_outstr_value_BM (_.moddirstrv, CURFRAME_BM, 0));
+                OUTSTRVALUE_BM (_.moddirstrv));
   WEAKASSERT_BM (isobject_BM (_.modulob));
   WEAKASSERT_BM (isobject_BM (_.modgenob));
   WEAKASSERT_BM (closurewidth_BM (_.callingclosv) >= 2);
