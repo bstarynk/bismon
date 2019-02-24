@@ -4356,6 +4356,8 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
       memset (routname, 0, sizeof (routname));
       snprintf (routname, sizeof (routname),
                 ROUTINEOBJPREFIX_BM "%s" ROUTINESUFFIX_BM, routidbuf);
+      if (rix < 10)
+	DBGPRINTF_BM("simple_module_initialize dlsyming '%s' in dlh@%p", routname, dlh);
       objrout_sigBM *routr = (objrout_sigBM *) dlsym (dlh, routname);
       if (!routr)
         FATAL_BM

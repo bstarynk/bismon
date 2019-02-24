@@ -312,6 +312,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
               snprintf (symbuf, sizeof (symbuf),        //
                         ROUTINEOBJPREFIX_BM "%s" ROUTINESUFFIX_BM,
                         curldidbuf32);
+	      DBGPRINTF_BM("dlsym-ing '%s' in whole program", symbuf);
               void *ad = dlsym (dlprog_BM, symbuf);
               if (ad)
                 {
@@ -340,6 +341,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
           memset (symbuf, 0, sizeof (symbuf));
           snprintf (symbuf, sizeof (symbuf),    //
                     ROUTINEOBJPREFIX_BM "%s" ROUTINESUFFIX_BM, idbuf32);
+	  DBGPRINTF_BM("load_first_pass ix#%d dlsym-ing '%s' in whole program", ix, symbuf);
           void *ad = dlsym (dlprog_BM, symbuf);
           if (ad)
             {
@@ -1005,6 +1007,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                         FATAL_BM ("asprintf failure for %s+%s - %m",
                                   bytstring_BM (_.routbuilder), curidbuf32);
                     };
+		  DBGPRINTF_BM("dlsym-ing '%s' in whole program", buf);
                   void *ad = dlsym (dlprog_BM, buf);
                   if (ad)
                     {

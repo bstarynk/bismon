@@ -496,6 +496,8 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       WARNPRINTF_BM("module dlopen failure %s\n", dlerror());
       return false;
     }
+  DBGPRINTF_BM("open_module_for_loader dlsym-ing module_id_BM in dlh@%p for %s",
+	       dlh, binmodpath.c_str());
   const char*modidad = (const char*)dlsym(dlh,"module_id_BM");
   if (!modidad || strcmp(modidad,modidbuf))
     {
@@ -573,6 +575,7 @@ void deferred_do_module_dynload_BM (value_tyBM * valarr, unsigned nbval, void *d
   void*dlh = dlopen(binmodulpath, RTLD_NOW | RTLD_GLOBAL);
   if (!dlh)
     FATAL_BM("module %s dlopen failed for %s : %s", binmodulpath, objectdbg_BM(_.modulob), dlerror());
+  DBGPRINTF_BM("deferred_do_module_dynload dlsym-ing module_id_BM in dlh@%p for %s", dlh, binmodulpath);
   const char*modidad = (const char*)dlsym(dlh,"module_id_BM");
   if (!modidad || strcmp(modidad,modulidbuf))
     FATAL_BM("bad module_id_BM in %s for %s: %s",
@@ -625,8 +628,8 @@ void postpone_loader_module_BM (objectval_tyBM*modulobarg, struct stackframe_stB
   snprintf(modulinitname, sizeof(modulinitname),
            MODULEINITPREFIX_BM "%s" MODULEINITSUFFIX_BM,
            modulidbuf);
-  DBGPRINTF_BM("postpone_loader_module modulob %s modulinitname %s",
-               objectdbg_BM(_.modulob), modulinitname);
+  DBGPRINTF_BM("postpone_loader_module modulob %s dlsym-ing modulinitname %s in dlh@%p",
+               objectdbg_BM(_.modulob), modulinitname, (void*)dlh);
   moduleinit_sigBM*modinitr = (moduleinit_sigBM*)dlsym(dlh, modulinitname);
   if (!modinitr)
     FATAL_BM("postpone_loader_module: missing module initializer %s in %s: %s\n",

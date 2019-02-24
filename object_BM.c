@@ -964,6 +964,7 @@ register_predefined_object_BM (objectval_tyBM * pob)
   memset (symbuf, 0, sizeof (symbuf));
   snprintf (symbuf, sizeof (symbuf),    //
             ROUTINEOBJPREFIX_BM "%s" ROUTINESUFFIX_BM, idbuf);
+  DBGPRINTF_BM("register_predefined_object dlsym-ing %s in whole program", symbuf);
   void *ad = dlsym (dlprog_BM, symbuf);
   if (ad)
     {
@@ -971,6 +972,8 @@ register_predefined_object_BM (objectval_tyBM * pob)
       pob->ob_rout = (objrout_sigBM *) ad;
     }
 }                               /* end register_predefined_object_BM */
+
+
 
 void
 initialize_predefined_objects_BM (void)

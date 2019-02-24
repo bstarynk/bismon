@@ -703,7 +703,6 @@ struct dict_stBM
   uintptr_t dict_data[8];       /* actually a C++ std::map, see misc_BM.cc */
 };
 
-#warning jansson is a JSON library, need to support it
 struct jansjson_stBM
 {
   typedhead_tyBM pa;
