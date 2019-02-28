@@ -185,7 +185,7 @@ extern void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
 
 /// the initializer of module of id _9oXtCgAbkqv_4y1xhhF5Nhz is
 /// modulinit_9oXtCgAbkqv_4y1xhhF5Nhz_BM of type moduleinit_sigBM
-#define MODULEINITPREFIX_BM "modulinit"
+#define MODULEINITPREFIX_BM "moduleinit"
 #define MODULEINITSUFFIX_BM "_BM"
 
 /// the checksum of module of id _9oXtCgAbkqv_4y1xhhF5Nhz is some

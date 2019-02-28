@@ -2048,7 +2048,8 @@ stopscan_objswitch_comp_bm (struct stackframe_stBM *stkf,
 failure:
   DBGPRINTF_BM ("stopscan_objswitch_comp_bm failin %d compob=%s compix#%d stmtob=%s causev=%s routprepob=%s",   //
                 failin, objectdbg_BM (_.compob), compix, objectdbg1_BM (_.stmtob),      //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+                OUTSTRVALUE_BM (_.causev),
+		objectdbg2_BM(_.routprepob));
   _.errorv = (value_tyBM)
     makenode6_BM (k_miniscan_stmt, _.stmtob, taggedint_BM (compix),
                   _.routprepob, taggedint_BM (depth), _.fromob, _.causev);

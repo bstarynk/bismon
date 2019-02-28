@@ -7,7 +7,7 @@
 
 #ifdef BISMON_MODID
 DECLARE_MODULE_BM(_1zCsXG4OTPr_8PwkDAWr16S);
-extern moduleinit_sigBM modulinit_1zCsXG4OTPr_8PwkDAWr16S_BM;
+extern moduleinit_sigBM moduleinit_1zCsXG4OTPr_8PwkDAWr16S_BM;
 #endif /*BISMON_MODID*/
 
 #ifdef BISMON_MOMD5
@@ -8617,7 +8617,7 @@ const char* const routid_1zCsXG4OTPr_8PwkDAWr16S_BM[32+1] = {
 
 // basiclo*module initialization
 #ifdef BISMON_MODID
-value_tyBM modulinit_1zCsXG4OTPr_8PwkDAWr16S_BM
+value_tyBM moduleinit_1zCsXG4OTPr_8PwkDAWr16S_BM
   (struct stackframe_stBM *stkf, //
    const value_tyBM arg1, //
    const value_tyBM arg2, //
@@ -8629,7 +8629,7 @@ value_tyBM modulinit_1zCsXG4OTPr_8PwkDAWr16S_BM
        constid_1zCsXG4OTPr_8PwkDAWr16S_BM, //
        routid_1zCsXG4OTPr_8PwkDAWr16S_BM, //
        dlh, stkf);
-} // end modulinit_1zCsXG4OTPr_8PwkDAWr16S_BM
+} // end moduleinit_1zCsXG4OTPr_8PwkDAWr16S_BM
 #endif /*BISMON_MODID*/
 
 

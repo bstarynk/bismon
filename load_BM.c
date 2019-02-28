@@ -1299,9 +1299,12 @@ const quasinode_tyBM * restargs __attribute__((unused)))
 }                               // end ROUTINEOBJNAME_BM (_7kMNgL8eJ09_6aEpofzWJDP)  postpone_load_modification 
 
 
+
+
 //// for the closure load_module
 extern objrout_sigBM ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh);
 
+// notice that BMP_load_module is _3j4mbvFJZzA_9ucKetDMbdh
 value_tyBM
 ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh)    // load_module
 (struct stackframe_stBM * stkf, //
