@@ -894,14 +894,7 @@ custom_onion_handler_BM (void *clientdata,
   char dbgmethbuf[16];
   DBGPRINTF_BM ("custom_onion_handler reqpath '%s' reqflags %#x:%s bcookie %s", //
                 reqpath, reqflags,      //
-                ((reqmeth == OR_GET) ? "GET"    //
-                 : (reqmeth == OR_HEAD) ? "HEAD"        //
-                 : (reqmeth == OR_POST) ? "POST"        //
-                 : (reqmeth == OR_OPTIONS) ? "OPTIONS"  //
-                 : (reqmeth == OR_PROPFIND) ? "PROPFIND"        //
-                 : (snprintf (dbgmethbuf, sizeof (dbgmethbuf),  ///
-                              "meth#%d", reqmeth), dbgmethbuf)),
-                bcookie ? bcookie : "*none*");
+                onion_request_methods[reqmeth], bcookie ? bcookie : "*none*");
   if (!strcmp (reqpath, "_login") || !strcmp (reqpath, "/_login"))
     {
       DBGPRINTF_BM ("custom_onion_handler login page reqpath %s", reqpath);
@@ -1185,14 +1178,7 @@ custom_onion_handler_BM (void *clientdata,
     }
   DBGPRINTF_BM ("end custom_onion_handler reqpath '%s' reqflags %#x:%s bcookie %s",     //
                 reqpath, reqflags,      //
-                ((reqmeth == OR_GET) ? "GET"    //
-                 : (reqmeth == OR_HEAD) ? "HEAD"        //
-                 : (reqmeth == OR_POST) ? "POST"        //
-                 : (reqmeth == OR_OPTIONS) ? "OPTIONS"  //
-                 : (reqmeth == OR_PROPFIND) ? "PROPFIND"        //
-                 : (snprintf (dbgmethbuf, sizeof (dbgmethbuf),  ///
-                              "meth#%d", reqmeth), dbgmethbuf)),
-                bcookie ? bcookie : "*none*");
+                onion_request_methods[reqmeth], bcookie ? bcookie : "*none*");
   result = OCS_NOT_PROCESSED;
   unregister_onion_thread_stack_BM (CURFRAME_BM);
   return result;
@@ -1215,14 +1201,7 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
   char dbgmethbuf[16];
   DBGPRINTF_BM ("login_onion_handler reqpath '%s' fullpath '%s' reqflags %#x:%s bcookie %s",    //
                 reqpath, onion_request_get_fullpath (req), reqflags,    //
-                ((reqmeth == OR_GET) ? "GET"    //
-                 : (reqmeth == OR_HEAD) ? "HEAD"        //
-                 : (reqmeth == OR_POST) ? "POST"        //
-                 : (reqmeth == OR_OPTIONS) ? "OPTIONS"  //
-                 : (reqmeth == OR_PROPFIND) ? "PROPFIND"        //
-                 : (snprintf (dbgmethbuf, sizeof (dbgmethbuf),  ///
-                              "meth#%d", reqmeth), dbgmethbuf)),
-                bcookie ? bcookie : "*none*");
+                onion_request_methods[reqmeth], bcookie ? bcookie : "*none*");
   if (reqmeth == OR_POST)
     {
       // see the login form in login_ONIONBM.thtml template
@@ -1806,11 +1785,10 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         fprintf (fresp, "<html><head><title>Bismon failure</title>\n");
         fprintf (fresp, "</head>\n<body>\n");
         fprintf (fresp, "<h1>Bismon failure <i>internal error</i></h1>\n");
-        fprintf (fresp, "<p>Request <i>%s</i> of path '<tt>%s</tt>' <b>failed</b> <small>(webexchange <tt>%s</tt>, session <tt>%s</tt>)</small>.<br/>\n",       //
-                 ((reqmeth == OR_GET) ? "GET"   //
-                  : (reqmeth == OR_HEAD) ? "HEAD"       //
-                  : (reqmeth == OR_POST) ? "POST"       //
-                  : "???"), reqpath,
+        fprintf (fresp, "<p>Request <i>%s</i> of path '<tt>%s</tt>' <small>(full path <tt>%s</tt>...)</small>"  //
+                 " <b>failed</b> <small>(webexchange <tt>%s</tt>, session <tt>%s</tt>)</small>.<br/>\n",        //
+                 onion_request_methods[reqmeth], reqpath,
+                 onion_request_get_fullpath (req),
                  objectdbg_BM (_.webexob), objectdbg1_BM (_.sessionob));
         fprintf (fresp, "Failure code %d<br/>Fail reason: <tt>\n", failcod);
         writefencodedhtml_BM (fresp, OUTSTRVALUE_BM (_.failreasonv), -1);
@@ -1826,8 +1804,10 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         localtime_r (&nowt, &nowtm);
         strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
         fprintf (fresp,
-                 "<p><small>generated at <i>%s</i> on <tt>%s</tt> pid %d</small></p>\n",
-                 nowbuf, myhostname_BM, (int) getpid ());
+                 "<p><small>generated at <i>%s</i> on <tt>%s</tt> pid %d</small><br/>"
+                 "<small>timestamp: <tt>%s</tt>; gitcommit: <tt>%ss</tt></p>\n",
+                 nowbuf, myhostname_BM, (int) getpid (),
+                 bismon_timestamp, bismon_lastgitcommit);
         fprintf (fresp, "<!-- generated from %s:%d -->\n",
                  basename_BM (__FILE__), __LINE__);
         fprintf (fresp, "</body>\n</html>\n");
@@ -1952,14 +1932,13 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
       fprintf (fresp, "<html><head><title>Bismon timeout</title>\n");
       fprintf (fresp, "</head>\n<body>\n");
       fprintf (fresp, "<h1>Bismon timeout <i>internal error</i></h1>\n");
-      fprintf (fresp, "<p>Request <i>%s</i> of path '<tt>%s</tt>' <b>timed out</b>" " <small>(webexchange <tt>%s</tt>, session <tt>%s</tt>, delay %.3f s)</small>.<br/>\n",     //
-               ((reqmeth == OR_GET) ? "GET"     //
-                : (reqmeth == OR_HEAD) ? "HEAD" //
-                : (reqmeth == OR_POST) ? "POST" //
-                : "???"), reqpath,
+      fprintf (fresp, "<p>Request <i>%s</i> of path '<tt>%s</tt>' <small>(full path <tt>%s</tt> ...)</small>"   //
+               " <b>timed out</b>" " <small>(webexchange <tt>%s</tt>, session <tt>%s</tt>, delay %.3f s)</small>.<br/>\n",      //
+               onion_request_methods[reqmeth],
+               reqpath, onion_request_get_fullpath (req),
                objectdbg_BM (_.webexob), objectdbg1_BM (_.sessionob),
                clocktime_BM (CLOCK_REALTIME) - wexda->webx_time);
-      fputs ("</tt></p>", fresp);
+      fputs ("</p>\n", fresp);
       time_t nowt = 0;
       time (&nowt);
       struct tm nowtm;
@@ -1969,8 +1948,11 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
       localtime_r (&nowt, &nowtm);
       strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
       fprintf (fresp,
-               "<p><small>generated at <i>%s</i> on <tt>%s</tt> pid %d</small></p>\n",
-               nowbuf, myhostname_BM, (int) getpid ());
+               "<p><small>generated at <i>%s</i> on <tt>%s</tt> pid %d</small><br/>"
+               "<small>timestamp: <tt>%s</tt>, git commit: <tt>%s</tt></small>"
+               "</p>\n",
+               nowbuf, myhostname_BM, (int) getpid (),
+               bismon_timestamp, bismon_lastgitcommit);
       fprintf (fresp, "<!-- generated from %s:%d -->\n",
                basename_BM (__FILE__), __LINE__);
       fprintf (fresp, "</body>\n</html>\n");
