@@ -1,6 +1,6 @@
 // generated persistent data file store1.bmon
 // this generated data file is GPLv3+ licensed
-// for 62 objects
+// for 63 objects
 // with 0 modules
 
 
@@ -231,6 +231,17 @@ _7jHHqKoSEZf_6G1dslcAaT8
 ~)
 
 !)_7aFDCz5prE3_7nspdPb6502
+
+
+
+!(_9RGvDp7v8Eo_1xV1e6p3qUc |=dynload_module|
+!~ name (~ dynload_module
+~)
+!@ 1551363400.408
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for dynamic-loading of modules"
+!)_9RGvDp7v8Eo_1xV1e6p3qUc
 
 
 

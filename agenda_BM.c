@@ -554,13 +554,13 @@ agenda_run_deferred_after_gc_BM (void)
           Dl_info di = { };
           if (dladdr (curagd->agd_rout, &di) && di.dli_sname)
             DBGBACKTRACEPRINTF_BM
-              ("agenda_run_deferred_after_gc_BM rout %s @%p nbval#%d", di.dli_sname,
-               (void *) curagd->agd_rout,
-	       (int) curagd->agd_nbval);
+              ("agenda_run_deferred_after_gc_BM rout %s @%p nbval#%d",
+               di.dli_sname, (void *) curagd->agd_rout,
+               (int) curagd->agd_nbval);
           else
-            DBGBACKTRACEPRINTF_BM ("agenda_run_deferred_after_gc_BM rout@%p nbval#%d",
-                                   (void *) curagd->agd_rout,
-				   (int) curagd->agd_nbval);
+            DBGBACKTRACEPRINTF_BM
+              ("agenda_run_deferred_after_gc_BM rout@%p nbval#%d",
+               (void *) curagd->agd_rout, (int) curagd->agd_nbval);
           for (int ix = 0; ix < (int) curagd->agd_nbval; ix++)
             {
               _.curv = curagd->agd_valarr[ix];

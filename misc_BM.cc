@@ -583,9 +583,23 @@ void deferred_do_module_dynload_BM (value_tyBM * valarr, unsigned nbval, void *d
   modulemap_BM.insert({objid_BM (_.modulob),ModuleData_BM{.mod_id=objid_BM (_.modulob), .mod_dlh=dlh, .mod_obj=_.modulob, .mod_data=nullptr}});
   INFOPRINTF_BM("deferred_do_module_dynload modulob=%s binmodulpath='%s'",
 		objectdbg_BM(_.modulob), binmodulpath);
+  char modulinitname[48];
+  memset (modulinitname, 0, sizeof(modulinitname));
+  snprintf(modulinitname, sizeof(modulinitname),
+           MODULEINITPREFIX_BM "%s" MODULEINITSUFFIX_BM,
+           modulidbuf);
+  DBGPRINTF_BM("deferred_do_module_dynload dlsym-ing '%s' in dlh@%p for %s",
+	       modulinitname, dlh, binmodulpath);
+  moduleinit_sigBM*modinitr = (moduleinit_sigBM*)dlsym(dlh, modulinitname);
+  if (!modinitr)
+    FATAL_BM("deferred_do_module_dynload: missing module initializer %s in %s: %s\n",
+             modulinitname, objectdbg_BM(_.modulob), dlerror());
+  DBGBACKTRACEPRINTF_BM("deferred_do_module_dynload dlsym-ed modulinitname=%s modinitr@%p", (void*)modinitr);
+  _.modresv = (*modinitr) (CURFRAME_BM, BMP_dynload_module, _.modulob, nullptr, dlh);
+  DBGPRINTF_BM("deferred_do_module_dynload after moduleinit of modulob=%s modresv=%s",
+	       objectdbg_BM(_.modulob), OUTSTRVALUE_BM(_.modresv));
   binmodulpath[0] = (char)0;
   free (binmodulpath), binmodulpath = NULL;
-#warning the moduleinit function should be called from deferred_do_module_dynload using dlh
   DBGPRINTF_BM("deferred_do_module_dynload before deferapply postclos=%s" //
 	       " arg1=%s arg2=%s arg3=%s",
 	       OUTSTRVALUE_BM((value_tyBM)_.postclos),
