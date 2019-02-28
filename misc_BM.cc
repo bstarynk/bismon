@@ -585,6 +585,7 @@ void deferred_do_module_dynload_BM (value_tyBM * valarr, unsigned nbval, void *d
 		objectdbg_BM(_.modulob), binmodulpath);
   binmodulpath[0] = (char)0;
   free (binmodulpath), binmodulpath = NULL;
+#warning the moduleinit function should be called from deferred_do_module_dynload using dlh
   DBGPRINTF_BM("deferred_do_module_dynload before deferapply postclos=%s" //
 	       " arg1=%s arg2=%s arg3=%s",
 	       OUTSTRVALUE_BM((value_tyBM)_.postclos),

@@ -4261,7 +4261,8 @@ ROUTINEOBJNAME_BM (_0UHZG9vDlR2_2Aqx86LMFuq)    // after-load-of-module
 
 
 
-
+/// In practice, this simple_module_initialize is the body of the
+/// moduleinit routine of generated modules.
 value_tyBM
 simple_module_initialize_BM (const value_tyBM arg1,     //
                              const value_tyBM arg2,     //
