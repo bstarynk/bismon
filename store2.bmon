@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2560 objects
+// for 2562 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -73,6 +73,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for conjunctions"
 !)_6vMEdC0qxdp_7shHwvOZEQx
+
+
+
+!(_6GcgFxSMvWY_4vzl0zmI5FA |=and_then|
+!~ name (~ and_then
+~)
+!@ 1551434934.808
+!$_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "connective for lazy and_then... "
+!)_6GcgFxSMvWY_4vzl0zmI5FA
 
 
 
@@ -8088,6 +8099,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "disjonctive or"
 !)_8kgO3yCQf1K_9HShuVu6MBo
+
+
+
+!(_34djinarLyR_73Q8MXulzOy |=or_else|
+!~ name (~ or_else
+~)
+!@ 1551434961.625
+!$_4G8QdnYR1LZ_1Ej0xQbVpn9 |=basiclo_simple_connective|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "connective for lazy or_else... "
+!)_34djinarLyR_73Q8MXulzOy
 
 
 
