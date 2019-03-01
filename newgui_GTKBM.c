@@ -2024,6 +2024,21 @@ const objectval_tyBM *parsobjexp_newguicmd_BM
         }                       /* end $= */
 
       //
+      // % # put the object in spaceE
+      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_percent)
+        {
+          if (!nobuild)
+            {
+              objputspacenum_BM (_.obj, UserEsp_BM);
+              log_begin_message_BM ();
+              log_puts_message_BM ("put object ");
+              log_object_message_BM (_.obj);
+              log_puts_message_BM ("in userE space.");
+              log_end_message_BM ();
+            }
+        }                       // end %
+
+      //
       // error otherwise
       else
         parsererrorprintf_BM
