@@ -16700,15 +16700,15 @@ _50H7io7f948_10VeJz49q3W
 !@ 1551448318.607
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "debug miniemlt_node_conn#lazy-bool start"& " [v_init v_separ] (o_conn v_expr o_modgen"& " o_routprep depth o_from"
+ "debug miniemit_node_conn#lazy-bool start"& " [v_init v_separ] (o_conn v_expr o_modgen"& " o_routprep depth o_from"
 !: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
- * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "miniemlt_node_conn"  "#" 
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "miniemit_node_conn"  "#" 
   "lazy"  "-"  "bool"  " "  "start" 
   " "  "[" _5Ed4AYrZZw4_8gOXzth8EQn  " " _9rTjH62XTQr_2Emf0VIx9Ys 
   "]"  " "  "(" _13K9OfeXRZR_84nyRTtoj81  " " 
  _6CmIdtsXyBX_3lpk31Mve5M  " " _2RUj1oyJ2rf_1ICZWr844Sv  " " _6RpSqxAOt2p_35laNqeU6KH 
   " " _17YdW6dWrBA_2mn4QmBjMNs  " " _89nz0KaXXZh_8eSgMmqnK37  "*/" 
-  "\n"  "DBGPRINTF_BM"  "(\""  "miniemlt_node_conn"  "#" 
+  "\n"  "DBGPRINTF_BM"  "(\""  "miniemit_node_conn"  "#" 
   "lazy"  "-"  "bool"  " "  "start" 
   " "  "\u20ac%."  "9s"  " "  "[" 
  _5Ed4AYrZZw4_8gOXzth8EQn  "=%"  "s"  " " _9rTjH62XTQr_2Emf0VIx9Ys 
@@ -22414,7 +22414,7 @@ _2kanmkRxrZV_3xnDrbqgMjR
 !@ 1551453803.519
 !$_7JUZeKsjbx1_1VcZbR0vW41 |=basiclo_for_up_loop|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "for ii up to leni //miniemlt_node_conn#lazy-bool"
+ "for ii up to leni //miniemit_node_conn#lazy-bool"
 !: _5OiKmAdUjY5_9BPLOECag6g |=count|
 _833x2jYqhZh_8vDIuJhwz1k
 !: _6EG5W7z0BRb_4TBM1gyenqk |=index|
@@ -27801,14 +27801,14 @@ _8ard8t8gqwy_6kz1xj87syt
 !@ 1551452338.897
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "debug miniemlt_node_conn#lazy-bool for v_comp"& " ii v_expr o_modgen o_routprep depth o_from"
+ "debug miniemit_node_conn#lazy-bool for v_comp"& " ii v_expr o_modgen o_routprep depth o_from"
 !: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
- * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "miniemlt_node_conn"  "#" 
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "miniemit_node_conn"  "#" 
   "lazy"  "-"  "bool"  " " _1SolDiQA2WM_4IDOJKBiPFc 
   " " _0ZL8gaI6sH8_7UPhmAQcwMe  " " _2W7Ckt2WxEM_4NVYgEWE73B  " " 
  _6CmIdtsXyBX_3lpk31Mve5M  " " _2RUj1oyJ2rf_1ICZWr844Sv  " " _6RpSqxAOt2p_35laNqeU6KH 
   " " _17YdW6dWrBA_2mn4QmBjMNs  " " _89nz0KaXXZh_8eSgMmqnK37  "*/" 
-  "\n"  " "  "DBGPRINTF_BM"  "(\""  "miniemlt_node_conn" 
+  "\n"  " "  "DBGPRINTF_BM"  "(\""  "miniemit_node_conn" 
   "#"  "lazy"  "-"  "bool"  " " 
   "\u20ac%."  "9s"  " " _1SolDiQA2WM_4IDOJKBiPFc  " " 
  _0ZL8gaI6sH8_7UPhmAQcwMe  "=%"  "s"  " " _2W7Ckt2WxEM_4NVYgEWE73B 
@@ -32813,7 +32813,7 @@ _2tEGXc8XwDB_3luMnYYAdZn
 !@ 1551448189.885
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "miniemlt_node_conn#lazy-bool [v_init v_separ]"& " (o_conn v_expr o_modgen o_routprep v_depth"& " o_from)"
+ "miniemit_node_conn#lazy-bool [v_init v_separ]"& " (o_conn v_expr o_modgen o_routprep v_depth"& " o_from)"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _13K9OfeXRZR_84nyRTtoj81 _6CmIdtsXyBX_3lpk31Mve5M _2RUj1oyJ2rf_1ICZWr844Sv _6RpSqxAOt2p_35laNqeU6KH 
  _4nJKFtMqlkA_1teQSqofNux _89nz0KaXXZh_8eSgMmqnK37 ]
@@ -33052,7 +33052,7 @@ _2CQSAWSZYj5_98YYbJMAfN2
 !@ 1551453921.054
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "body miniemlt_node_conn#lazy-bool"
+ "body miniemit_node_conn#lazy-bool"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _7IvnLvG7HVK_2qnOaIBtgVh
 !# 8

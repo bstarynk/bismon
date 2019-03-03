@@ -61,7 +61,7 @@ extern objrout_sigBM crout_4M7lr5cU6VD_5hxmeH3baBf_BM; //#17 !append°list_objec
 
 extern objrout_sigBM crout_5j8LpQULt1p_9oeOaqmfYYr_BM; //#18 !dump_data°list_object minifunc
 
-extern objrout_sigBM crout_7IvnLvG7HVK_2qnOaIBtgVh_BM; //#19 !miniemlt_node_conn#lazy-bool [v_init v_separ] (o_conn v_expr o_modgen o_routprep v_depth o_from)
+extern objrout_sigBM crout_7IvnLvG7HVK_2qnOaIBtgVh_BM; //#19 !miniemit_node_conn#lazy-bool [v_init v_separ] (o_conn v_expr o_modgen o_routprep v_depth o_from)
 
 extern objrout_sigBM crout_7MtjMTkmErH_2zSJ1YDKHVi_BM; //#20 !dump_value°double_float < v_dbl (o_strbuf o_dump v_depth)
 
@@ -4313,7 +4313,7 @@ endblock__9Hf4n8AnqR7_7ve3Bi3kWMV: ;
 
 value_tyBM crout_7IvnLvG7HVK_2qnOaIBtgVh_BM //#19
  (struct stackframe_stBM* stkf, //
-//!miniemlt_node_conn#lazy-bool [v_init v_separ] (o_conn v_expr o_modgen o_routprep v_depth o_from)
+//!miniemit_node_conn#lazy-bool [v_init v_separ] (o_conn v_expr o_modgen o_routprep v_depth o_from)
   // 6 arguments
   const value_tyBM arg0,  // o_conn
   const value_tyBM arg1,  // v_expr
@@ -4385,8 +4385,8 @@ startblock__7NMa7lSwvXP_9j5Hh30tuXg: __attribute__((unused));
  
  
 { // run _210M01XittR_84fKNMVa6pD 
-/*debug miniemlt_node_conn#lazy-bool start [v_init v_separ] (o_conn v_expr o_modgen o_routprep depth o_from*/
-DBGPRINTF_BM("miniemlt_node_conn#lazy-bool start €%.9s [v_init=%s v_separ=%s] (o_conn=%s v_expr=%s o_modgen=%s/L%u o_routprep=%s depth#%ld o_from=%s",
+/*debug miniemit_node_conn#lazy-bool start [v_init v_separ] (o_conn v_expr o_modgen o_routprep depth o_from*/
+DBGPRINTF_BM("miniemit_node_conn#lazy-bool start €%.9s [v_init=%s v_separ=%s] (o_conn=%s v_expr=%s o_modgen=%s/L%u o_routprep=%s depth#%ld o_from=%s",
  "_210M01XittR_84fKNMVa6pD",
  OUTSTRVALUE_BM( /*v_init:*/_.v_5Ed4AYrZZw4_8gOXzth8EQn),
  OUTSTRVALUE_BM( /*v_separ:*/_.v_9rTjH62XTQr_2Emf0VIx9Ys),
@@ -4426,8 +4426,8 @@ for ( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B =0;
 // for-up _48DIBYw2nm1_27rqv1dIn2D #1 :  
   
 { // run _5ZP8FhBKF9U_7aktVsOMBrz  
-/*debug miniemlt_node_conn#lazy-bool for v_comp ii v_expr o_modgen o_routprep depth o_from*/
- DBGPRINTF_BM("miniemlt_node_conn#lazy-bool €%.9s for v_comp=%s ii#%ld v_expr=%s o_modgen=%s/L%u o_routprep=%s depth#%ld o_from=%s",
+/*debug miniemit_node_conn#lazy-bool for v_comp ii v_expr o_modgen o_routprep depth o_from*/
+ DBGPRINTF_BM("miniemit_node_conn#lazy-bool €%.9s for v_comp=%s ii#%ld v_expr=%s o_modgen=%s/L%u o_routprep=%s depth#%ld o_from=%s",
  "_5ZP8FhBKF9U_7aktVsOMBrz",
  OUTSTRVALUE_BM( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe),
  (long int) ( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B),
@@ -6064,7 +6064,7 @@ const char* const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[91+1] = {
  "_7coI3Hezrvp_6CG1u3MlT83",//nlsp
  "_7k3xb0vred0_9ZRHcZmhw77",//miniscan_expr
  "_7D8xcWnEiys_8oqOVSkCxkA",//node
- "_7IvnLvG7HVK_2qnOaIBtgVh", //! miniemlt_node_conn#lazy-bool [v_init v_separ] (o_conn v_expr o_modgen o_routprep v_depth o_from)
+ "_7IvnLvG7HVK_2qnOaIBtgVh", //! miniemit_node_conn#lazy-bool [v_init v_separ] (o_conn v_expr o_modgen o_routprep v_depth o_from)
  /*75:*/
  "_7MtjMTkmErH_2zSJ1YDKHVi", //! dump_value°double_float < v_dbl (o_strbuf o_dump v_depth)
  "_7T9OwSFlgov_0wVJaK1eZbn",//object
@@ -6113,7 +6113,7 @@ const char* const routid_3BFt4NfJmZC_7iYi2dwM38B_BM[27+1] = {
   "_4qlegfkPzrC_17skUfJP7v8", //!dump_data°dict_object minifunc
   "_4M7lr5cU6VD_5hxmeH3baBf", //!append°list_object minifunction
   "_5j8LpQULt1p_9oeOaqmfYYr", //!dump_data°list_object minifunc;
-  "_7IvnLvG7HVK_2qnOaIBtgVh", //!miniemlt_node_conn#lazy-bool [v_init v_separ] (o_conn v_expr o_modgen o_routprep v_depth o_from)
+  "_7IvnLvG7HVK_2qnOaIBtgVh", //!miniemit_node_conn#lazy-bool [v_init v_separ] (o_conn v_expr o_modgen o_routprep v_depth o_from)
   "_7MtjMTkmErH_2zSJ1YDKHVi", //!dump_value°double_float < v_dbl (o_strbuf o_dump v_depth)
   "_82ho9wUUDji_4peMLha4PXl",//findobj_scan_minifunc
   "_85xjvzYjcd6_9mNZNPF6i2J", //!miniscan_stmt°basiclo_countloop < o_stmt (o_routprep v_depth o_from)
