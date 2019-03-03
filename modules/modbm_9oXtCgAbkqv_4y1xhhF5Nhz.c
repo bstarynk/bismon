@@ -337,4 +337,13 @@ value_tyBM moduleinit_9oXtCgAbkqv_4y1xhhF5Nhz_BM
 
 
 
+/************
+ ** for Emacs:
+ ** Local Variables: ;;
+ ** compile-command: "make -k -j -C .. modules" ;;
+ ** End: ;;
+ ************/
+
+
+
 // end of generated persistent module first_test_module in file modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c

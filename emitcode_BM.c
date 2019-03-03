@@ -3982,6 +3982,13 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
       ("@@emit_module°plain_module modulob=%s generate_module done resgen=%s",
        objectdbg_BM (_.modulob), debug_outstr_value_BM (_.resgen,
                                                         CURFRAME_BM, 0));
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "\n\n"
+                             "/************\n"
+                             " ** for Emacs:\n"
+                             " ** Local Variables: ;;\n"
+                             " ** compile-command: \"make -k -j -C .. modules\" ;;\n"
+                             " ** End: ;;\n" " ************/\n\n");
   if (modulistemporary)
     {
       objstrbufferprintfpayl_BM (_.modgenob,

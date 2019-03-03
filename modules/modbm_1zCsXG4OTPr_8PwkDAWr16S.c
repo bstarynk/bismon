@@ -8634,4 +8634,13 @@ value_tyBM moduleinit_1zCsXG4OTPr_8PwkDAWr16S_BM
 
 
 
+/************
+ ** for Emacs:
+ ** Local Variables: ;;
+ ** compile-command: "make -k -j -C .. modules" ;;
+ ** End: ;;
+ ************/
+
+
+
 // end of generated persistent module webjs_module in file modbm_1zCsXG4OTPr_8PwkDAWr16S.c

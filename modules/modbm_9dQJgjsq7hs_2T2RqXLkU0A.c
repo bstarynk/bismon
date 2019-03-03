@@ -1088,4 +1088,13 @@ value_tyBM moduleinit_9dQJgjsq7hs_2T2RqXLkU0A_BM
 
 
 
+/************
+ ** for Emacs:
+ ** Local Variables: ;;
+ ** compile-command: "make -k -j -C .. modules" ;;
+ ** End: ;;
+ ************/
+
+
+
 // end of generated persistent module webxhtml_module in file modbm_9dQJgjsq7hs_2T2RqXLkU0A.c
