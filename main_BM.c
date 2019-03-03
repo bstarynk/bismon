@@ -25,6 +25,8 @@
 ***/
 #include "bismon.h"
 
+/* for get_nprocs(3) */
+#include <sys/sysinfo.h>
 
 #ifdef BISMONGTK
 #include <glib/giochannel.h>
@@ -923,6 +925,14 @@ main (int argc, char **argv)
                 run_onion_BM ? "true" : "false");
   if (give_version_bm)
     give_prog_version_BM (myprogname_BM);
+  if (nbworkjobs_BM == 0)
+    {
+      int nbcores = get_nprocs ();
+      if (nbcores < 5 * MAXNBWORKJOBS_BM)
+        nbworkjobs_BM = nbcores / 5 + 1;
+      else
+        nbworkjobs_BM = MAXNBWORKJOBS_BM;
+    }
   if (nbworkjobs_BM < MINNBWORKJOBS_BM)
     nbworkjobs_BM = MINNBWORKJOBS_BM + 1;
   else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
@@ -939,13 +949,15 @@ main (int argc, char **argv)
       ("bismon should not be running as root effective user (and uid#%d)",
        (int) getuid ());
   if (run_gtk_BM && run_onion_BM)
-    INFOPRINTF_BM ("both GUI and Web interfaces requested");
+    INFOPRINTF_BM ("both GUI and Web interfaces requested (%d jobs)",
+                   nbworkjobs_BM);
   else if (run_onion_BM)
-    INFOPRINTF_BM ("Web interface requested alone");
+    INFOPRINTF_BM ("Web interface requested alone (%d jobs)", nbworkjobs_BM);
   else if (run_gtk_BM)
-    INFOPRINTF_BM ("GUI interface requested alone");
+    INFOPRINTF_BM ("GUI interface requested alone (%d jobs)", nbworkjobs_BM);
   else if (batch_bm)
-    INFOPRINTF_BM ("batch mode requested without Web or GUI");
+    INFOPRINTF_BM ("batch mode requested without Web or GUI (%d jobs)",
+                   nbworkjobs_BM);
   //
   initialize_contributors_path_BM ();
   initialize_passwords_path_BM ();
