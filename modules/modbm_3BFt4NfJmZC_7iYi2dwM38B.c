@@ -4314,12 +4314,12 @@ endblock__9Hf4n8AnqR7_7ve3Bi3kWMV: ;
 value_tyBM crout_7IvnLvG7HVK_2qnOaIBtgVh_BM //#19
  (struct stackframe_stBM* stkf, //
 //!miniemit_node_conn#lazy-bool [v_init v_separ] (o_conn v_expr o_modgen o_routprep v_depth o_from)
-  // 6 arguments
-  const value_tyBM arg0,  // o_conn
-  const value_tyBM arg1,  // v_expr
-  const value_tyBM arg2,  // o_modgen
-  const value_tyBM arg3,  // o_routprep
-  const quasinode_tyBM * restargs /* 2 extrargs */)
+  // 5 arguments
+  const value_tyBM arg0,  // v_expr
+  const value_tyBM arg1,  // o_modgen
+  const value_tyBM arg2,  // o_routprep
+  const value_tyBM arg3,  // v_depth
+  const quasinode_tyBM * restargs /* 1 extrargs */)
 { // start of _7IvnLvG7HVK_2qnOaIBtgVh
   struct frame_7IvnLvG7HVK_2qnOaIBtgVh_BMst {
     typedhead_tyBM stkfram_head;
@@ -4354,17 +4354,15 @@ value_tyBM crout_7IvnLvG7HVK_2qnOaIBtgVh_BM //#19
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
    _.stkfram_prev = stkf;
-   // fetch 6 arguments:
+   // fetch 5 arguments:
    unsigned nbrestargs = treewidth_BM((value_tyBM)restargs);
-   _.o_13K9OfeXRZR_84nyRTtoj81 = objectcast_BM (arg0); // o_conn
-   _.v_6CmIdtsXyBX_3lpk31Mve5M = arg1; // v_expr
-   _.o_2RUj1oyJ2rf_1ICZWr844Sv = objectcast_BM (arg2); // o_modgen
-   _.o_6RpSqxAOt2p_35laNqeU6KH = objectcast_BM (arg3); // o_routprep
+   _.v_6CmIdtsXyBX_3lpk31Mve5M = arg0; // v_expr
+   _.o_2RUj1oyJ2rf_1ICZWr844Sv = objectcast_BM (arg1); // o_modgen
+   _.o_6RpSqxAOt2p_35laNqeU6KH = objectcast_BM (arg2); // o_routprep
+   _.v_4nJKFtMqlkA_1teQSqofNux = arg3; // v_depth
     if (nbrestargs > 0)
-    _.v_4nJKFtMqlkA_1teQSqofNux = restargs->nodt_sons[0]; // v_depth
-    if (nbrestargs > 1)
-    _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM(restargs->nodt_sons[1]); // o_from
-   // fetched 6 arguments.
+    _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM(restargs->nodt_sons[0]); // o_from
+   // fetched 5 arguments.
    { // fetch 2 closed values in _7IvnLvG7HVK_2qnOaIBtgVh:
    const closure_tyBM* callclos_7IvnLvG7HVK_2qnOaIBtgVh =
      (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
@@ -4383,6 +4381,11 @@ startblock__7NMa7lSwvXP_9j5Hh30tuXg: __attribute__((unused));
  /* val_to_int */ getint_BM( /*v_depth:*/_.v_4nJKFtMqlkA_1teQSqofNux) ; 
  
  
+ /*o_conn:*/_.o_13K9OfeXRZR_84nyRTtoj81 = //assign _3RLJ8RBQJ1M_1hSsUsZA6K0  
+/*nodeconn:*/nodeconn_BM( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M); 
+ 
+//+ #2/9 of block _7NMa7lSwvXP_9j5Hh30tuXg :: 
+ 
  
 { // run _210M01XittR_84fKNMVa6pD 
 /*debug miniemit_node_conn#lazy-bool start [v_init v_separ] (o_conn v_expr o_modgen o_routprep depth o_from*/
@@ -4399,7 +4402,6 @@ DBGPRINTF_BM("miniemit_node_conn#lazy-bool start €%.9s [v_init=%s v_separ=%s] 
  objectdbg3_BM( /*o_from:*/_.o_89nz0KaXXZh_8eSgMmqnK37));; 
 } // end run _210M01XittR_84fKNMVa6pD 
  
-//+ #2/8 of block _7NMa7lSwvXP_9j5Hh30tuXg :: 
  
 { // start out _4qUtUCtxb5R_3wIO2NNv5SO to o_modgen  
 /*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv, "/*lazy ");  
@@ -4408,11 +4410,11 @@ DBGPRINTF_BM("miniemit_node_conn#lazy-bool start €%.9s [v_init=%s v_separ=%s] 
 /*out int:*/ objstrbufferprintfpayl_BM ( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv, "%lld", (long long)  /* val_to_int */ getint_BM( /*v_init:*/_.v_5Ed4AYrZZw4_8gOXzth8EQn) ); 
 } // end out _4qUtUCtxb5R_3wIO2NNv5SO 
  
+//+ #4/9 of block _7NMa7lSwvXP_9j5Hh30tuXg :: 
  
  /*leni:*/_.n_833x2jYqhZh_8vDIuJhwz1k = //assign _4GthV3VnHqQ_2aMR6Cff6ZL  
 /*nodewidth:*/(intptr_t)nodewidth_BM( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M); 
  
-//+ #4/8 of block _7NMa7lSwvXP_9j5Hh30tuXg :: 
  
 { //for-up _48DIBYw2nm1_27rqv1dIn2D  
 intptr_t cnt_48DIBYw2nm1_27rqv1dIn2D =  /*leni:*/_.n_833x2jYqhZh_8vDIuJhwz1k;  
@@ -4458,12 +4460,12 @@ for ( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B =0;
 } // end out _0gRK4BGl8n7_35yQqElfhHT  
  
 }} // end for-up _48DIBYw2nm1_27rqv1dIn2D 
+//+ #6/9 of block _7NMa7lSwvXP_9j5Hh30tuXg :: 
  
 { // start out _1rsKHNjPFsu_3aPtIim2oGS to o_modgen  
 /*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv, ")"); 
 } // end out _1rsKHNjPFsu_3aPtIim2oGS 
  
-//+ #6/8 of block _7NMa7lSwvXP_9j5Hh30tuXg :: 
  
  
 { // run _7poQO9jPFZN_79HDyTMqWZo 
