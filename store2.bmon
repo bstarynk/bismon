@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2608 objects
+// for 2609 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -32003,6 +32003,42 @@ _3vI0Qc3FHQG_1g4fmHYkxSA
 
 
 
+!(_7poQO9jPFZN_79HDyTMqWZo
+!@ 1551634954.917
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug miniemit_node_conn#lazy-bool end v_expr o_modgen depth o_from"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_7NMa7lSwvXP_9j5Hh30tuXg
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " " _7L782rSgJBB_9vjsBdqAoz7  "#" 
+  "lazy"  "-"  "bool"  " "  "end" 
+  " " _6CmIdtsXyBX_3lpk31Mve5M  " " _2RUj1oyJ2rf_1ICZWr844Sv  " " 
+ _17YdW6dWrBA_2mn4QmBjMNs  " " _89nz0KaXXZh_8eSgMmqnK37  "*/"  "\n" 
+  "DBGPRINTF_BM"  "(\"" _7L782rSgJBB_9vjsBdqAoz7  "#"  "lazy" 
+  "-"  "bool"  " "  "end"  " " 
+  "\u20ac%."  "9s"  " " _6CmIdtsXyBX_3lpk31Mve5M  "=%" 
+  "s"  " " _2RUj1oyJ2rf_1ICZWr844Sv  "=%"  "s" 
+  "/"  "L"  "%"  "u"  " " 
+ _17YdW6dWrBA_2mn4QmBjMNs  "#%"  "ld"  " " _89nz0KaXXZh_8eSgMmqnK37 
+  "=%"  "s"  "\","  "\n"  " " 
+  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\"," 
+ "\n"  " " 
+  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6CmIdtsXyBX_3lpk31Mve5M) 
+ "),"  "\n" 
+  " "  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2RUj1oyJ2rf_1ICZWr844Sv) 
+ ")," 
+  "\n"  " "  "objstrbufferlengthpayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_2RUj1oyJ2rf_1ICZWr844Sv) 
+  "),"  "\n"  " "  "("  "long" 
+  " " _0vgCFjXblkx_4zCMhMAWjVK  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _6Y20GNUgnSZ_4LkbrcRMU8f) 
+ ")," 
+  "\n"  " "  "objectdbg1_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _89nz0KaXXZh_8eSgMmqnK37) 
+  "));")
+!)_7poQO9jPFZN_79HDyTMqWZo
+
+
+
 !(_7pulzA9kaiC_6NfvYttvSHa
 !@ 1537022397.505
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
@@ -33019,13 +33055,14 @@ _2CQSAWSZYj5_98YYbJMAfN2
  "body miniemlt_node_conn#lazy-bool"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _7IvnLvG7HVK_2qnOaIBtgVh
-!# 7
+!# 8
 !& _0LnHhhNiBY3_4VR3kMAFQf2
 !& _210M01XittR_84fKNMVa6pD
 !& _4qUtUCtxb5R_3wIO2NNv5SO
 !& _4GthV3VnHqQ_2aMR6Cff6ZL
 !& _48DIBYw2nm1_27rqv1dIn2D
 !& _1rsKHNjPFsu_3aPtIim2oGS
+!& _7poQO9jPFZN_79HDyTMqWZo
 !& _0knavdDjRkM_149KbBkXyE9
 !)_7NMa7lSwvXP_9j5Hh30tuXg
 
