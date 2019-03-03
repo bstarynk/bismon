@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2592 objects
+// for 2599 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -4255,6 +4255,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_9GjmuXWAb93_7ZScgIdlvkf
+
+
+
+!(_1E1n1xq22bH_7JEWM863KYo |=o_idtarget|
+!~ name (~ o_idtarget
+~)
+!@ 1551601039.300
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_1E1n1xq22bH_7JEWM863KYo
 
 
 
@@ -10044,6 +10055,28 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 
 
+!(_8VgHiZPlXwn_5i6tFD7vAVB |=v_idprefix|
+!~ name (~ v_idprefix
+~)
+!@ 1551601039.300
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_8VgHiZPlXwn_5i6tFD7vAVB
+
+
+
+!(_6wh43lYjXiZ_9MUWTOiTsOl |=v_idprefixstr|
+!~ name (~ v_idprefixstr
+~)
+!@ 1551601039.301
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_6wh43lYjXiZ_9MUWTOiTsOl
+
+
+
 !(_16Y2isgiwOY_4kEIm87NkH2 |=v_in|
 !~ name (~ v_in
 ~)
@@ -10554,16 +10587,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !(_9dQJgjsq7hs_2T2RqXLkU0A |=webxhtml_module|
 !~ name (~ webxhtml_module
 ~)
-!@ 1551375614.492
+!@ 1551601039.301
 !$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "module for web HTML"
-!# 5
+!# 6
 !& _0FRLxSGQlZ0_0qrrUZlEeKp
 !& _5NH940lCHYJ_3nuRm3flnzc
 !& _8IYFtn8osS2_4t1U3wyROLW
 !& _6TYtJU0rl2h_2z4md7DV06z
 !& _4I0ksnAasRT_1bREYU29xgL
+!& _9hEreAemqXg_0uoN1Fr1ly4
  // emitted persistent module modbm_9dQJgjsq7hs_2T2RqXLkU0A.c
 
 !)_9dQJgjsq7hs_2T2RqXLkU0A
@@ -11207,6 +11241,20 @@ _2ZoqAiU7COz_0EfxfZbOgZj
 !& _2W7Ckt2WxEM_4NVYgEWE73B
 !&  * _3fb1EHtMPwQ_7XEPTUgUmX4 ( _2W7Ckt2WxEM_4NVYgEWE73B  1)
 !)_0diYr9ji2Mr_3kb6QR3hxRC
+
+
+
+!(_0dR2udLAHI6_6XdsSwwp24Y
+!@ 1551601976.390
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of emit-tagged-id-xhtml-open"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_9hEreAemqXg_0uoN1Fr1ly4
+!# 2
+!& _6R8abmMrOpU_5KYbLDXna5m
+!& _8iXI2RBp3Co_7oVgdUnvUGT
+!)_0dR2udLAHI6_6XdsSwwp24Y
 
 
 
@@ -30101,6 +30149,18 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_6R8abmMrOpU_5KYbLDXna5m
+!@ 1551601153.852
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "i_depth := val_to_int(v_depth)"
+!# 2
+!& _6Y20GNUgnSZ_4LkbrcRMU8f
+!&  * _5MLPTLuT4ey_0YKIUpvXybX ( _4nJKFtMqlkA_1teQSqofNux)
+!)_6R8abmMrOpU_5KYbLDXna5m
+
+
+
 !(_6Rc660mzjXf_6rWF1nupKVt
 !@ 1545383064.931
 !$_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
@@ -34354,6 +34414,53 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_8iXI2RBp3Co_7oVgdUnvUGT
+!@ 1551601976.390
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug start emit-tagged-id-xhtml-open [v_htmltag"& " v_htmlclass v_idprefix o_idtarget] o_emitctx"& " o_strbuf depth"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "start"  " " 
+  "emit"  "-"  "tagged"  "-" _7WjaQkqwdaZ_6PRtbDrJHnf 
+  "-"  "xhtml"  "-"  "open"  " " 
+  "[" _6nmKmS2Auzh_04y9gBqgcDG  " " _0wWVh40nozk_7OSKII1HZ6t  " " 
+ _8VgHiZPlXwn_5i6tFD7vAVB  " " _1E1n1xq22bH_7JEWM863KYo  "]"  " " 
+ _9nXRmTATjN4_5F9V7RvvgW0  " " _41F1rKwGbaA_30OJWKsqNWy  " " _17YdW6dWrBA_2mn4QmBjMNs 
+  "*/"  "\n"  "DBGPRINTF_BM"  "(\""  "start" 
+  " "  "emit"  "-"  "tagged"  "-" 
+ _7WjaQkqwdaZ_6PRtbDrJHnf  "-"  "xhtml"  "-"  "open" 
+  " "  "\u20ac%."  "9s"  " "  "[" 
+ _6nmKmS2Auzh_04y9gBqgcDG  "=%"  "s"  " " _0wWVh40nozk_7OSKII1HZ6t 
+  "=%"  "s"  " " _8VgHiZPlXwn_5i6tFD7vAVB  "=%" 
+  "s"  " " _1E1n1xq22bH_7JEWM863KYo  "=%"  "s" 
+  "]"  " " _9nXRmTATjN4_5F9V7RvvgW0  "=%"  "s" 
+  " " _41F1rKwGbaA_30OJWKsqNWy  "=%"  "s"  "/" 
+  "L"  "%"  "u"  " " _17YdW6dWrBA_2mn4QmBjMNs 
+  "#%"  "ld"  "\","  "\n"  " " 
+  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\"," 
+ "\n"  " " 
+  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6nmKmS2Auzh_04y9gBqgcDG) 
+ "),"  "\n" 
+  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0wWVh40nozk_7OSKII1HZ6t) 
+ ")," 
+  "\n"  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _8VgHiZPlXwn_5i6tFD7vAVB) 
+  "),"  "\n"  " "  "objectdbg_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _1E1n1xq22bH_7JEWM863KYo)  "),"  "\n" 
+ " "  "objectdbg1_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _9nXRmTATjN4_5F9V7RvvgW0)  ")," 
+ "\n"  " " 
+  "objectdbg2_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _41F1rKwGbaA_30OJWKsqNWy) 
+ "),"  "\n" 
+  " "  "objstrbufferlengthpayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_41F1rKwGbaA_30OJWKsqNWy)  ")," 
+  "\n"  " "  "("  "long"  " " 
+ _0vgCFjXblkx_4zCMhMAWjVK  ")"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_6Y20GNUgnSZ_4LkbrcRMU8f) 
+  "));"  "\n")
+!)_8iXI2RBp3Co_7oVgdUnvUGT
+
+
+
 !(_8jFanjiQSIA_8BDoRFxiocB
 !@ 1536780352.003
 !$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
@@ -37045,6 +37152,29 @@ _4jYMom293qa_4qW0J7r0LtZ
 !& _833x2jYqhZh_8vDIuJhwz1k
 !&  * _7BCZoNhXs8o_4ogeZ1OGKxO ( _6CmIdtsXyBX_3lpk31Mve5M)
 !)_9hdq9u0Um2h_9W3QF1njVwL
+
+
+
+!(_9hEreAemqXg_0uoN1Fr1ly4
+!@ 1551601593.272
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit-tagged-id-xhtml-open [v_htmltag v_htmlclass"& " v_idprefix o_idtarget] (o_emitctx o_strbuf"& " v_depth)"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_9dQJgjsq7hs_2T2RqXLkU0A
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _9nXRmTATjN4_5F9V7RvvgW0 _41F1rKwGbaA_30OJWKsqNWy _4nJKFtMqlkA_1teQSqofNux ]
+!: _24sSVIADeHm_0Sx34wQfG7W |=locals|
+ { _6p6w3jZv5gy_58EzMDpOBQJ _6wh43lYjXiZ_9MUWTOiTsOl _9AuPELEBCEG_3r2aCy2y3Pc }
+!: _2TwOyPJxIz8_1rIeqaN7oRz |=closed|
+ [ _6nmKmS2Auzh_04y9gBqgcDG _0wWVh40nozk_7OSKII1HZ6t _8VgHiZPlXwn_5i6tFD7vAVB _1E1n1xq22bH_7JEWM863KYo ]
+!: _32eKNcTZ9HN_80t0nk47Mha |=numbers|
+ { _6Y20GNUgnSZ_4LkbrcRMU8f }
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_0dR2udLAHI6_6XdsSwwp24Y
+!)_9hEreAemqXg_0uoN1Fr1ly4
 
 
 

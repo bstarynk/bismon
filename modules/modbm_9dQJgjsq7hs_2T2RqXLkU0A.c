@@ -16,9 +16,9 @@ const char modulmd5chksum_9dQJgjsq7hs_2T2RqXLkU0A_BM[] = BISMON_MOMD5;
 
 
 
-// declare 5 routines
+// declare 6 routines
 
-extern const char *const routid_9dQJgjsq7hs_2T2RqXLkU0A_BM[5+1];
+extern const char *const routid_9dQJgjsq7hs_2T2RqXLkU0A_BM[6+1];
 
 
 // 11 failures
@@ -33,13 +33,15 @@ extern objrout_sigBM crout_6TYtJU0rl2h_2z4md7DV06z_BM; //#3 !root-web-handler
 
 extern objrout_sigBM crout_8IYFtn8osS2_4t1U3wyROLW_BM; //#4 emit_xhtml
 
-
-// declare 30 constants
-objectval_tyBM* constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[30+1];
-const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[30+1];
+extern objrout_sigBM crout_9hEreAemqXg_0uoN1Fr1ly4_BM; //#5 !emit-tagged-id-xhtml-open [v_htmltag v_htmlclass v_idprefix o_idtarget] (o_emitctx o_strbuf v_depth)
 
 
-// define 5 routines
+// declare 31 constants
+objectval_tyBM* constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[31+1];
+const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[31+1];
+
+
+// define 6 routines
 
 
 value_tyBM crout_0FRLxSGQlZ0_0qrrUZlEeKp_BM //#0
@@ -1011,11 +1013,108 @@ endblock__3DcbHfTP2te_8Zw8Uhy9eU6: ;
 
 
 
-// end of 5 generated routines
+value_tyBM crout_9hEreAemqXg_0uoN1Fr1ly4_BM //#5
+ (struct stackframe_stBM* stkf, //
+//!emit-tagged-id-xhtml-open [v_htmltag v_htmlclass v_idprefix o_idtarget] (o_emitctx o_strbuf v_depth)
+  // 3 arguments
+  const value_tyBM arg0,  // o_emitctx
+  const value_tyBM arg1,  // o_strbuf
+  const value_tyBM arg2,  // v_depth
+  const value_tyBM arg3_ __attribute__((unused)),
+  const quasinode_tyBM * restargs_ __attribute__((unused)))
+{ // start of _9hEreAemqXg_0uoN1Fr1ly4
+  struct frame_9hEreAemqXg_0uoN1Fr1ly4_BMst {
+    typedhead_tyBM stkfram_head;
+    struct stackframe_stBM *stkfram_prev;
+    objectval_tyBM *stkfram_descr;
+    value_tyBM stkfram_callfun;
+    int stkfram_state;
+    int stkfram_extra;
+    /// 11 local values:
+    value_tyBM v_0wWVh40nozk_7OSKII1HZ6t; // v_htmlclass
+    value_tyBM v_1E1n1xq22bH_7JEWM863KYo; // o_idtarget
+    value_tyBM v_3qw9bnATIhq_8loBraLeXzQ; // v_r
+    objectval_tyBM* o_41F1rKwGbaA_30OJWKsqNWy; // o_strbuf
+    value_tyBM v_4nJKFtMqlkA_1teQSqofNux; // v_depth
+    value_tyBM v_6nmKmS2Auzh_04y9gBqgcDG; // v_htmltag
+    value_tyBM v_6p6w3jZv5gy_58EzMDpOBQJ; // v_htmltagstr
+    value_tyBM v_6wh43lYjXiZ_9MUWTOiTsOl; // v_idprefixstr
+    value_tyBM v_8VgHiZPlXwn_5i6tFD7vAVB; // v_idprefix
+    objectval_tyBM* o_9nXRmTATjN4_5F9V7RvvgW0; // o_emitctx
+    value_tyBM v_9AuPELEBCEG_3r2aCy2y3Pc; // v_htmlclassstr
+    /// 1 local numbers:
+    intptr_t n_6Y20GNUgnSZ_4LkbrcRMU8f; // i_depth
+   } _;
+   memset (&_, 0, sizeof(struct frame_9hEreAemqXg_0uoN1Fr1ly4_BMst));
+   _.stkfram_head.htyp = typayl_StackFrame_BM;
+   _.stkfram_head.hgc = 0;
+   _.stkfram_head.rlen = 11;
+   _.stkfram_descr = constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[30] /*|_9hEreAemqXg_0uoN1Fr1ly4*/;
+   ASSERT_BM (!stkf
+             || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
+             || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
+   _.stkfram_prev = stkf;
+   // fetch 3 arguments:
+   _.o_9nXRmTATjN4_5F9V7RvvgW0 = objectcast_BM (arg0); // o_emitctx
+   _.o_41F1rKwGbaA_30OJWKsqNWy = objectcast_BM (arg1); // o_strbuf
+   _.v_4nJKFtMqlkA_1teQSqofNux = arg2; // v_depth
+   // fetched 3 arguments.
+   { // fetch 4 closed values in _9hEreAemqXg_0uoN1Fr1ly4:
+   const closure_tyBM* callclos_9hEreAemqXg_0uoN1Fr1ly4 =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   unsigned nbclosed_9hEreAemqXg_0uoN1Fr1ly4 = closurewidth_BM ((const value_tyBM) callclos_9hEreAemqXg_0uoN1Fr1ly4);
+   if (nbclosed_9hEreAemqXg_0uoN1Fr1ly4 > 0)
+      _.v_6nmKmS2Auzh_04y9gBqgcDG = callclos_9hEreAemqXg_0uoN1Fr1ly4->nodt_sons[0]; // v_htmltag
+   if (nbclosed_9hEreAemqXg_0uoN1Fr1ly4 > 1)
+      _.v_0wWVh40nozk_7OSKII1HZ6t = callclos_9hEreAemqXg_0uoN1Fr1ly4->nodt_sons[1]; // v_htmlclass
+   if (nbclosed_9hEreAemqXg_0uoN1Fr1ly4 > 2)
+      _.v_8VgHiZPlXwn_5i6tFD7vAVB = callclos_9hEreAemqXg_0uoN1Fr1ly4->nodt_sons[2]; // v_idprefix
+   if (nbclosed_9hEreAemqXg_0uoN1Fr1ly4 > 3)
+      _.v_1E1n1xq22bH_7JEWM863KYo = callclos_9hEreAemqXg_0uoN1Fr1ly4->nodt_sons[3]; // o_idtarget
+   } // fetched 4 closed values in _9hEreAemqXg_0uoN1Fr1ly4.
+   // routine _9hEreAemqXg_0uoN1Fr1ly4 body:
+
+startblock__0dR2udLAHI6_6XdsSwwp24Y: __attribute__((unused));
+{ /* +block _0dR2udLAHI6_6XdsSwwp24Y */ 
+ /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f = //assign _6R8abmMrOpU_5KYbLDXna5m  
+ /* val_to_int */ getint_BM( /*v_depth:*/_.v_4nJKFtMqlkA_1teQSqofNux) ; 
+ 
+ 
+ 
+{ // run _8iXI2RBp3Co_7oVgdUnvUGT 
+/*debug start emit-tagged-id-xhtml-open [v_htmltag v_htmlclass v_idprefix o_idtarget] o_emitctx o_strbuf depth*/
+DBGPRINTF_BM("start emit-tagged-id-xhtml-open €%.9s [v_htmltag=%s v_htmlclass=%s v_idprefix=%s o_idtarget=%s] o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+ "_8iXI2RBp3Co_7oVgdUnvUGT",
+ OUTSTRVALUE_BM( /*v_htmltag:*/_.v_6nmKmS2Auzh_04y9gBqgcDG),
+ OUTSTRVALUE_BM( /*v_htmlclass:*/_.v_0wWVh40nozk_7OSKII1HZ6t),
+ OUTSTRVALUE_BM( /*v_idprefix:*/_.v_8VgHiZPlXwn_5i6tFD7vAVB),
+ objectdbg_BM( /*o_idtarget:*/_.v_1E1n1xq22bH_7JEWM863KYo),
+ objectdbg1_BM( /*o_emitctx:*/_.o_9nXRmTATjN4_5F9V7RvvgW0),
+ objectdbg2_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
+ objstrbufferlengthpayl_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
+ (long int) ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));
+; 
+} // end run _8iXI2RBp3Co_7oVgdUnvUGT 
+ 
+/* !endingblock _0dR2udLAHI6_6XdsSwwp24Y */ 
+goto endblock__0dR2udLAHI6_6XdsSwwp24Y; 
+endblock__0dR2udLAHI6_6XdsSwwp24Y: ; 
+} /*-block _0dR2udLAHI6_6XdsSwwp24Y */
+
+ epilog_9hEreAemqXg_0uoN1Fr1ly4: __attribute__ ((unused)); // routine _9hEreAemqXg_0uoN1Fr1ly4 epilogue:
+   if (stkf) stkf->stkfram_callfun = NULL;
+   return  /*v_r:*/_.v_3qw9bnATIhq_8loBraLeXzQ;
+} // end _9hEreAemqXg_0uoN1Fr1ly4 routine#5 _9hEreAemqXg_0uoN1Fr1ly4
 
 
-// the constant ids for 30 constants:
-const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[30+1] = {
+
+
+// end of 6 generated routines
+
+
+// the constant ids for 31 constants:
+const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[31+1] = {
  /*0:*/
  "_0FRLxSGQlZ0_0qrrUZlEeKp", //! emitxhtml_void_element (o_helem o_emitctx o_strbuf v_depth)
  "_2ekmsdDpheM_8iSH1r9pS9e", //! fail non-object emitxhtml_element o_emitctx o_strbuf depth
@@ -1052,20 +1151,23 @@ const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[30+1] = {
  "_8yowRQLZgzP_4vqWjo12OS4", //! fail failure_full emit_xhtml v_html o_emitctx depth
  "_8IYFtn8osS2_4t1U3wyROLW",//emit_xhtml
  "_95hdJENHNkN_3QuKIJTCQQQ",//failure_type_error
- NULL}; // end 30 constant ids
+ /*30:*/
+ "_9hEreAemqXg_0uoN1Fr1ly4", //! emit-tagged-id-xhtml-open [v_htmltag v_htmlclass v_idprefix o_idtarget] (o_emitctx o_strbuf v_depth)
+ NULL}; // end 31 constant ids
 
 
 
-// the routine ids for 5 routines:
-const char* const routid_9dQJgjsq7hs_2T2RqXLkU0A_BM[5+1] = {
+// the routine ids for 6 routines:
+const char* const routid_9dQJgjsq7hs_2T2RqXLkU0A_BM[6+1] = {
   /*0:*/
   "_0FRLxSGQlZ0_0qrrUZlEeKp", //!emitxhtml_void_element (o_helem o_emitctx o_strbuf v_depth)
   "_4I0ksnAasRT_1bREYU29xgL", //!emit-tagged-xhtml-open closed[v_htmltagstr v_htmlclass] (o_emitctx o_strbuf v_depth
   "_5NH940lCHYJ_3nuRm3flnzc", //!emitxhtml_element (o_helem o_emitctx o_strbuf v_depth)
   "_6TYtJU0rl2h_2z4md7DV06z", //!root-web-handler
   "_8IYFtn8osS2_4t1U3wyROLW",//emit_xhtml
+  "_9hEreAemqXg_0uoN1Fr1ly4", //!emit-tagged-id-xhtml-open [v_htmltag v_htmlclass v_idprefix o_idtarget] (o_emitctx o_strbuf v_depth)
 
- NULL}; // end 5 routine ids
+ NULL}; // end 6 routine ids
 
 
 
