@@ -219,6 +219,10 @@ static inline const node_tyBM *makenode8_BM (const objectval_tyBM * connob,
                                              value_tyBM v4, value_tyBM v5,
                                              value_tyBM v6, value_tyBM v7);
 
+/// make a node from the rest of some tree (node, closure or quasinode) value, with a starting index startix
+extern const node_tyBM *makenodetreerest_BM (const objectval_tyBM * connob,
+                                             value_tyBM treev, int startix);
+
 extern const node_tyBM *makesizednode_BM (unsigned siz,
                                           const objectval_tyBM * connob, ...);
 
@@ -1097,6 +1101,9 @@ extern value_tyBM apply4_BM (const value_tyBM funv,
                              const value_tyBM arg1, const value_tyBM arg2,
                              const value_tyBM arg3, const value_tyBM arg4);
 
+
+// the argmore should be a tree: node, closure, or quasinode; it gives
+// the rest of the arguments to apply.
 extern value_tyBM apply4more_BM (const value_tyBM funv,
                                  struct stackframe_stBM *stkf,
                                  const value_tyBM arg1, const value_tyBM arg2,

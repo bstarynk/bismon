@@ -256,6 +256,27 @@ makesizednode_BM (unsigned siz, const objectval_tyBM * connob, ...)
   return nod;
 }                               /* end makesizednode_BM */
 
+
+/// make a node from the rest of some tree (node, closure or quasinode) value, with a starting index startix
+const node_tyBM *
+makenodetreerest_BM (const objectval_tyBM * connob, value_tyBM treev,
+                     int startix)
+{
+  if (!isobject_BM ((const value_tyBM) connob))
+    return NULL;
+  if (!istree_BM ((const value_tyBM) treev))
+    return NULL;
+  unsigned w = treewidth_BM ((const value_tyBM) treev);
+  if (startix < 0)
+    startix += (int) w;
+  if (startix >= 0 && startix < w)
+    return makenode_BM (connob, w - startix,
+                        treecast_BM (treev)->nodt_sons + startix);
+  else
+    return NULL;
+}                               /* end makenodetreerest_BM */
+
+
 const node_tyBM *
 makenodevar_BM (const objectval_tyBM * connob, ...)
 {
