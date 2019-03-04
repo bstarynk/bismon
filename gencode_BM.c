@@ -482,23 +482,27 @@ miniscan_var_BM (objectval_tyBM * varob,
   objectval_tyBM *k_result = BMK_7bD9VtDkGSn_7lxHeYuuFLR;
   objectval_tyBM *k_simple_routine_preparation = BMK_80060zKi6Un_3isCStegT8A;
   objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
-  int failin = -1;
-#define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_var,
-                 objectval_tyBM * varob;
-                 objectval_tyBM * routprepob; objectval_tyBM * fromob;
-                 value_tyBM vrolv; objectval_tyBM * rolconnob;
+                 objectval_tyBM * varob;        //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * fromob;       //
+                 value_tyBM vrolv;      //
+                 objectval_tyBM * rolconnob;    //
+                 value_tyBM causev;
                  value_tyBM errorv;
     );
+  int failin = -1;
+#define FAILHERE(V) do { failin = __LINE__ ; _.causev = (value_tyBM)(V);\
+    goto failure; } while(0)
   _.varob = objectcast_BM (varob);
   _.routprepob = objectcast_BM (routprepob);
   _.fromob = objectcast_BM (fromob);
   if (!_.varob)
-    FAILHERE ();
+    FAILHERE (NULL);
   if (!_.routprepob)
-    FAILHERE ();
+    FAILHERE (NULL);
   if (!_.fromob)
-    FAILHERE ();
+    FAILHERE (NULL);
   DBGPRINTF_BM
     ("miniscan_var start varob=%s routprepob=%s depth#%d fromob=%s",
      objectdbg_BM (_.varob), objectdbg1_BM (_.routprepob), depth,
@@ -528,17 +532,17 @@ miniscan_var_BM (objectval_tyBM * varob,
           LOCALRETURN_BM (k_int);
         }
       else
-        FAILHERE ();
+        FAILHERE (_.vrolv);
     }
   else if (_.vrolv == k_result)
     {
       if (objectisinstance_BM (_.routprepob, k_simple_routine_preparation))
         LOCALRETURN_BM (k_value);
       else
-        FAILHERE ();
+        FAILHERE (_.vrolv);
     }
   else
-    FAILHERE ();
+    FAILHERE (_.vrolv);
 #warning incomplete miniscan_var_BM
   DBGPRINTF_BM ("miniscan_var end varob=%s", objectdbg_BM (_.varob));
   LOCALRETURN_BM (NULL);
