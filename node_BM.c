@@ -473,6 +473,32 @@ apply4_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
 
 
 value_tyBM
+apply4more_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
+               const value_tyBM arg1, const value_tyBM arg2,
+               const value_tyBM arg3, const value_tyBM arg4,
+               const value_tyBM argmore)
+{
+  ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
+  objrout_sigBM *rout = NULL;
+  if (isclosure_BM (funv))
+    {
+      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
+      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+    }
+  else if (isobject_BM (funv))
+    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+  else
+    return NULL;
+  if (!rout)
+    return NULL;
+  stkf->stkfram_callfun = funv;
+  value_tyBM morev = (value_tyBM) treecast_BM (argmore);
+  return (*rout) (stkf, arg1, arg2, arg3, arg4, morev);
+}                               /* end apply4more_BM */
+
+
+value_tyBM
 apply5_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4,

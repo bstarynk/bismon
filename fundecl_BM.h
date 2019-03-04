@@ -1097,6 +1097,12 @@ extern value_tyBM apply4_BM (const value_tyBM funv,
                              const value_tyBM arg1, const value_tyBM arg2,
                              const value_tyBM arg3, const value_tyBM arg4);
 
+extern value_tyBM apply4more_BM (const value_tyBM funv,
+                                 struct stackframe_stBM *stkf,
+                                 const value_tyBM arg1, const value_tyBM arg2,
+                                 const value_tyBM arg3, const value_tyBM arg4,
+                                 const value_tyBM argmore);
+
 extern value_tyBM apply5_BM (const value_tyBM funv,
                              struct stackframe_stBM *stkf,
                              const value_tyBM arg1, const value_tyBM arg2,
