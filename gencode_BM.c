@@ -67,29 +67,32 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))      //
 {
-  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * modgenob;
-                 const setval_tyBM * prepvalset;
-                 objectval_tyBM * curprepob;
-                 objectval_tyBM * curtypob;
-                 objectval_tyBM * routprepob;
-                 objectval_tyBM * obhsetblock;
-                 objectval_tyBM * typob;
-                 objectval_tyBM * bodyob;
-                 objectval_tyBM * obmodhsetconst;
-                 objectval_tyBM * stmtpropob;
-                 value_tyBM recv;
-                 value_tyBM attrv;
-                 const tupleval_tyBM * tupargs;
-                 const tupleval_tyBM * tupclosed;
-                 objectval_tyBM * obresult;
-                 const setval_tyBM * setlocals;
-                 const setval_tyBM * setnumbers;
-                 const setval_tyBM * setconsts; objectval_tyBM * curvar;
-                 value_tyBM curol;
-                 value_tyBM oldrol; value_tyBM bodyv; value_tyBM msblov;
-                 value_tyBM causev;
-                 value_tyBM errorv;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ BMK_07qYMXftJRR_9dde2ASz4e9,
+                 objectval_tyBM * modgenob;     //
+                 const setval_tyBM * prepvalset;        //
+                 objectval_tyBM * curprepob;    //
+                 objectval_tyBM * curtypob;     //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * obhsetblock;  //
+                 objectval_tyBM * typob;        //
+                 objectval_tyBM * bodyob;       //
+                 objectval_tyBM * obmodhsetconst;       //
+                 objectval_tyBM * stmtpropob;   //
+                 value_tyBM recv;       //
+                 value_tyBM attrv;      //
+                 const tupleval_tyBM * tupargs; //
+                 const tupleval_tyBM * tupclosed;       //
+                 objectval_tyBM * obresult;     //
+                 const setval_tyBM * setlocals; //
+                 const setval_tyBM * setnumbers;        //
+                 const setval_tyBM * setconsts; //
+                 objectval_tyBM * curvar;       //
+                 value_tyBM curol;      //
+                 value_tyBM oldrol;     //
+                 value_tyBM bodyv;      //
+                 value_tyBM msblov;     //
+                 value_tyBM causev;     //
+                 value_tyBM errorv;     //
     );
   objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
