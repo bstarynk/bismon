@@ -337,6 +337,11 @@ extern void sortnamedobjarr_BM (objectval_tyBM ** obarr, size_t arrsiz);
 
 extern objectval_tyBM *findobjofid_BM (const rawid_tyBM id);
 extern objectval_tyBM *makeobjofid_BM (const rawid_tyBM id);
+
+// from obconst, instance of basiclo_constant_object, retrieves its
+// value, whose hash is given
+extern value_tyBM *constobjvaluehashed_BM (objectval_tyBM * obconst,
+                                           hash_tyBM hash);
 // find the set of objects of an id prefixed by some prefix of at
 // least three characters starting with _ then a digit
 extern const setval_tyBM *setobjectsofidprefixed_BM (const char *prefix);

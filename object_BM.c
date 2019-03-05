@@ -562,7 +562,17 @@ objectinteriorgcmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
 }                               /* end objectinteriorgcmark_BM */
 
 ////////////////////////////////////////////////////////////////
+value_tyBM *
+constobjvaluehashed_BM (objectval_tyBM * obconst, hash_tyBM hash)
+{
+#warning constobjvaluehashed_BM unimplemented
+  FATAL_BM ("unimplemented constobjvaluehashed_BM obconst=%s hash=%u",
+            objectdbg_BM (obconst), hash);
+  // should lock obconst, check that it is a basiclo_constant_object,
+  // and get its `value` attribute, then unlock...
+}                               /* end constobjvaluehashed_BM */
 
+////////////////
 
 static bool
 hashsetobj_insert_BM (struct hashsetobj_stBM *hset,

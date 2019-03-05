@@ -1605,6 +1605,7 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
   objectval_tyBM *k_depth = BMK_17YdW6dWrBA_2mn4QmBjMNs;
+  objectval_tyBM *k_basiclo_constant_object = BMK_9bCobYhqBV5_5tIWuHnUPMX;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
                  value_tyBM expv;       //
                  value_tyBM avalv;      //
@@ -1618,6 +1619,7 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                  objectval_tyBM * indirconnob;  //
                  value_tyBM exclamv;    //
                  objectval_tyBM * exclamob;     //
+                 value_tyBM chunkv;     //
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
                  value_tyBM resv;       //
@@ -1740,6 +1742,20 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                 FAILHERE (makenode2_BM (k_variable, _.expob, _.typob));
               }
             LOCALJUSTRETURN_BM ();
+          }
+        else if (objectisinstance_BM (_.expob, k_basiclo_constant_object))
+          {
+            objlock_BM (_.expob);
+            _.typob = objectcast_BM (objgetattr_BM (_.expob, BMP_c_type));
+            _.avalv = objgetattr_BM (_.expob, BMP_value);
+            _.chunkv = objgetattr_BM (_.expob, BMP_chunk);
+            objunlock_BM (_.expob);
+#warning unimplemented miniemit_expression for basiclo_constant_object
+            WARNPRINTF_BM
+              ("emit_expr constobj expob=%s unimplemented typob=%s avalv=%s chunkv=%s",
+               objectdbg_BM (_.expob), objectdbg1_BM (_.typob),
+               OUTSTRVALUE_BM (_.avalv), OUTSTRVALUE_BM (_.chunkv));
+            FAILHERE (makenode1_BM (BMP_const, _.expob));
           }
         else
           {

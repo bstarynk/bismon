@@ -653,6 +653,9 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
           }
         else if (objectisinstance_BM (_.expob, k_basiclo_constant_object))
           {
+            /// actually, the _expob object should be locked till the
+            /// end of the compilation of the current module.
+#warning an instance of basiclo_constant_object should be locked till end of compilation of module
             objlock_BM (_.expob);
             _.typob = objectcast_BM (objgetattr_BM (_.expob, BMP_c_type));
             _.avalv = objgetattr_BM (_.expob, BMP_value);
@@ -672,6 +675,16 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
           }
         else
           FAILHERE (k_undefined);
+        if (_.avalv)
+          {
+            _.consthsetobj =
+              objectcast_BM (objgetattr_BM (_.modgenob, k_constants));
+            WEAKASSERT_BM (objhashashsetpayl_BM (_.consthsetobj));
+            DBGPRINTF_BM
+              ("miniscan_expr constob expob=%s added to consthsetobj=%s",
+               objectdbg_BM (_.expob), objectdbg1_BM (_.consthsetobj));
+            objhashsetaddpayl_BM (_.consthsetobj, _.expob);
+          }
         break;
       }
     case tyNode_BM:
