@@ -12885,16 +12885,15 @@ _2tEGXc8XwDB_3luMnYYAdZn
 
 
 !(_0ElmKog957y_3K5W7qvSMfO
-!@ 1551678829.689
+!@ 1551775851.968
 !$_9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "emit xhtml start, up to <html ..> tag included"
+ "emit xhtml5 start, up to doctype..."
 !: _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
 _5JuT4FgNFFh_7McrTYeT3jx
-!# 3
+!# 2
 !&  "<?xml version=\"1.0\" encoding=\"utf-8\">\n"
 !&  "<!DOCTYPE html>\n"
-!&  "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
 !)_0ElmKog957y_3K5W7qvSMfO
 
 
