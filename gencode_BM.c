@@ -562,6 +562,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
 {
   objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
   objectval_tyBM *k_miniscan_node_conn = BMK_5EGLdtUAQxA_1nebCsDKqOF;
+  objectval_tyBM *k_basiclo_constant_object = BMK_9bCobYhqBV5_5tIWuHnUPMX;
   objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
   objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
   objectval_tyBM *k_set = BMK_2mYaTh9kH4I_7ENiXcymRmy;
@@ -578,6 +579,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
   objectval_tyBM *k_undefined = BMK_1z3DQ3EVAGs_3KlGdHJpWbX;
   // objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
+  objectval_tyBM *k_failure_miss = BMK_52XwytpOPVl_3ZjmQCtadbK;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
                  objectval_tyBM * connob;       //
                  objectval_tyBM * indirconnob;  //
@@ -593,6 +595,7 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
                  value_tyBM causev;     //
                  value_tyBM exclamsonv; //
                  value_tyBM expv;       //
+                 value_tyBM chunkv;     //
                  value_tyBM resv;       //
     );
   int failin = -1;
@@ -646,6 +649,25 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
                                CURFRAME_BM);
             DBGPRINTF_BM ("miniscan_expr var expob=%s typob=%s",
                           objectdbg_BM (_.expob), objectdbg1_BM (_.typob));
+            LOCALRETURN_BM (_.typob);
+          }
+        else if (objectisinstance_BM (_.expob, k_basiclo_constant_object))
+          {
+            objlock_BM (_.expob);
+            _.typob = objectcast_BM (objgetattr_BM (_.expob, BMP_c_type));
+            _.avalv = objgetattr_BM (_.expob, BMP_value);
+            _.chunkv = objgetattr_BM (_.expob, BMP_chunk);
+            objunlock_BM (_.expob);
+            DBGPRINTF_BM
+              ("miniscan_expr constob expob=%s typob=%s avalv=%s chunkv=%s",
+               objectdbg_BM (_.expob), objectdbg1_BM (_.typob),
+               OUTSTRVALUE_BM (_.avalv), OUTSTRVALUE_BM (_.chunkv));
+            if (!_.typob)
+              FAILHERE (BMP_c_type);    // no c_type in constant object
+            if (_.avalv && _.chunkv)
+              FAILHERE (k_failure_miss);        // both chunk & value given in constant object
+            if (nodeconn_BM (_.chunkv) != BMP_chunk)
+              FAILHERE (BMP_chunk);     // invalid chunk in constant object
             LOCALRETURN_BM (_.typob);
           }
         else
