@@ -992,7 +992,8 @@ value_tyBM crout_6TYtJU0rl2h_2z4md7DV06z_BM //#5
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 5 local values:
+    /// 6 local values:
+    value_tyBM v_0qTBOEAT5pa_2fz1SKfHrMV; // v_resemit
     value_tyBM v_0ZL8gaI6sH8_7UPhmAQcwMe; // v_comp
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ; // v_r
     objectval_tyBM* o_5JuT4FgNFFh_7McrTYeT3jx; // o_webex
@@ -1003,7 +1004,7 @@ value_tyBM crout_6TYtJU0rl2h_2z4md7DV06z_BM //#5
    memset (&_, 0, sizeof(struct frame_6TYtJU0rl2h_2z4md7DV06z_BMst));
    _.stkfram_head.htyp = typayl_StackFrame_BM;
    _.stkfram_head.hgc = 0;
-   _.stkfram_head.rlen = 5;
+   _.stkfram_head.rlen = 6;
    _.stkfram_descr = constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[23] /*|_6TYtJU0rl2h_2z4md7DV06z*/;
    ASSERT_BM (!stkf
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
