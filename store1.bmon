@@ -1,6 +1,6 @@
 // generated persistent data file store1.bmon
 // this generated data file is GPLv3+ licensed
-// for 63 objects
+// for 64 objects
 // with 0 modules
 
 
@@ -22,6 +22,18 @@
 ~)
 
 !)_6ZQ05nCv3Ys_8LA6B5LkZgm
+
+
+
+!(_9bCobYhqBV5_5tIWuHnUPMX |=basiclo_constant_object|
+!~ name (~ basiclo_constant_object
+~)
+!@ 1551822169.110
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+
+!)_9bCobYhqBV5_5tIWuHnUPMX
 
 
 
