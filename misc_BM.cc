@@ -594,7 +594,7 @@ void deferred_do_module_dynload_BM (value_tyBM * valarr, unsigned nbval, void *d
   if (!modinitr)
     FATAL_BM("deferred_do_module_dynload: missing module initializer %s in %s: %s\n",
              modulinitname, objectdbg_BM(_.modulob), dlerror());
-  DBGBACKTRACEPRINTF_BM("deferred_do_module_dynload dlsym-ed modulinitname=%s modinitr@%p", (void*)modinitr);
+  DBGBACKTRACEPRINTF_BM("deferred_do_module_dynload dlsym-ed modulinitname=%s modinitr@%p", modulinitname, (void*)modinitr);
   _.modresv = (*modinitr) (CURFRAME_BM, BMP_dynload_module, _.modulob, nullptr, dlh);
   DBGPRINTF_BM("deferred_do_module_dynload after moduleinit of modulob=%s modresv=%s",
 	       objectdbg_BM(_.modulob), OUTSTRVALUE_BM(_.modresv));
