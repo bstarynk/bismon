@@ -1616,10 +1616,12 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * fromob;       //
                  objectval_tyBM * connob;       //
+                 objectval_tyBM * varob;        //
                  objectval_tyBM * indirconnob;  //
                  value_tyBM exclamv;    //
                  objectval_tyBM * exclamob;     //
                  value_tyBM chunkv;     //
+                 value_tyBM compv;      //
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
                  value_tyBM resv;       //
@@ -1745,17 +1747,145 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
           }
         else if (objectisinstance_BM (_.expob, k_basiclo_constant_object))
           {
+            char modulidbuf[32];
+            memset (modulidbuf, 0, sizeof (modulidbuf));
+            idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
             objlock_BM (_.expob);
             _.typob = objectcast_BM (objgetattr_BM (_.expob, BMP_c_type));
             _.avalv = objgetattr_BM (_.expob, BMP_value);
             _.chunkv = objgetattr_BM (_.expob, BMP_chunk);
             objunlock_BM (_.expob);
-#warning unimplemented miniemit_expression for basiclo_constant_object
-            WARNPRINTF_BM
-              ("emit_expr constobj expob=%s unimplemented typob=%s avalv=%s chunkv=%s",
-               objectdbg_BM (_.expob), objectdbg1_BM (_.typob),
-               OUTSTRVALUE_BM (_.avalv), OUTSTRVALUE_BM (_.chunkv));
-            FAILHERE (makenode1_BM (BMP_const, _.expob));
+            if (_.avalv)
+              {
+                int kix = -1;
+                _.constantsv = objgetattr_BM (_.modgenob, k_constants);
+                if (_.typob == BMP_int && istaggedint_BM (_.avalv))
+                  {
+                    objstrbufferprintfpayl_BM (_.modgenob,
+                                               "/*int-constob %s:*/(intptr_t)(%lld) ",
+                                               objectdbg_BM (_.expob),
+                                               (long long int)
+                                               getint_BM (_.avalv));
+                  }
+                else if (_.typob == BMP_double_float && isdouble_BM (_.avalv))
+                  {
+                    objstrbufferprintfpayl_BM (_.modgenob,
+                                               "/*double-constob %s:*/(double)(",
+                                               objectdbg_BM (_.expob));
+                    bool hexdbl = objstrbufferoutdoublepayl_BM (_.modgenob,
+                                                                getdouble_BM
+                                                                (_.avalv));
+                    if (hexdbl)
+                      objstrbufferprintfpayl_BM (_.modgenob, "/*=%g*/",
+                                                 getdouble_BM (_.avalv));
+                    objstrbufferprintfpayl_BM (_.modgenob, ") ");
+                  }
+                else if (_.typob == BMP_string && isstring_BM (_.avalv))
+                  {
+                    objstrbufferprintfpayl_BM (_.modgenob,
+                                               "/*string-constob %s:*/",
+                                               objectdbg_BM (_.expob));
+                    objstrbufferliteralcstringpayl_BM (_.modgenob,
+                                                       bytstring_BM (_.avalv),
+                                                       lenstring_BM
+                                                       (_.avalv));
+                  }
+                else if (_.typob == BMP_object
+                         &&
+                         ((kix =
+                           setelemindex_BM (setcast_BM (_.constantsv),
+                                            objectcast_BM (_.avalv))) >= 0))
+                  {
+                    objstrbufferprintfpayl_BM (_.modgenob,
+                                               "/*object-constob %s:*/("
+                                               CONSTOBARRPREFIX_BM "%s"
+                                               ROUTINESUFFIX_BM
+                                               "[%d] /*|%s*/)",
+                                               objectdbg_BM (_.expob),
+                                               modulidbuf, kix,
+                                               objectdbg2_BM (objectcast_BM
+                                                              (_.avalv)));
+                  }
+                else
+                  if (miniscan_compatype_BM (_.typob, BMP_value, CURFRAME_BM)
+                      && _.avalv
+                      &&
+                      ((kix =
+                        setelemindex_BM (setcast_BM (_.constantsv),
+                                         _.expob)) >= 0))
+                  {
+                    hash_tyBM h = valhash_BM (_.avalv);
+                    objstrbufferprintfpayl_BM (_.modgenob,
+                                               "/*value-constob %s:*/constobjvaluehashed_BM (("
+                                               CONSTOBARRPREFIX_BM "%s"
+                                               ROUTINESUFFIX_BM
+                                               "[%d] /*|%s*/), %u)",
+                                               objectdbg_BM (_.expob),
+                                               modulidbuf, kix,
+                                               objectdbg1_BM (_.expob), h);
+                  }
+                else
+                  {
+                    WARNPRINTF_BM
+                      ("bad constant object %s of type %s from %s",
+                       objectdbg_BM (_.expob), objectdbg1_BM (_.typob),
+                       objectdbg2_BM (_.fromob));
+                    FAILHERE (makenode1_BM (BMP_const, _.expob));
+                  }
+              }
+            else if (nodeconn_BM (_.chunkv) == BMP_chunk)
+              {
+                objstrbufferprintfpayl_BM (_.modgenob,
+                                           "/*chunk-constob %s:*/(",
+                                           objectdbg_BM (_.expob));
+                unsigned chklen = nodewidth_BM (_.chunkv);
+                for (int cix = 0; cix < (int) chklen; cix++)
+                  {
+                    _.compv = nodenthson_BM (_.chunkv, cix);
+                    _.varob = NULL;
+                    if (isstring_BM (_.compv))
+                      objstrbufferappendcstrpayl_BM (_.modgenob,
+                                                     bytstring_BM (_.compv));
+                    else if (istaggedint_BM (_.compv))
+                      objstrbufferprintfpayl_BM (_.modgenob, "%lld",
+                                                 (long long)
+                                                 getint_BM (_.compv));
+                    else if (isobject_BM (_.compv))
+                      objstrbufferprintfpayl_BM (_.modgenob, "%s",
+                                                 objectdbg_BM (objectcast_BM
+                                                               (_.compv)));
+                    else if (isdouble_BM (_.compv))
+                      (void) objstrbufferoutdoublepayl_BM (_.modgenob,
+                                                           getdouble_BM
+                                                           (_.compv));
+                    else if (isnode_BM (_.compv)
+                             && nodewidth_BM (_.compv) == 1
+                             && nodeconn_BM (_.compv) == BMP_variable)
+                      {
+                        _.varob = objectcast_BM (nodenthson_BM (_.compv, 0));
+#warning miniemit_expr incomplete $variable expansion in constant chunk
+                      }
+                    else
+                      {
+                        WARNPRINTF_BM
+                          ("bad component#%d %s in chunk %s of constob %s",
+                           cix, OUTSTRVALUE_BM (_.compv),
+                           OUTSTRVALUE_BM (_.chunkv), objectdbg_BM (_.expob));
+                        FAILHERE (makenode3_BM
+                                  (BMP_chunk, _.expob, taggedint_BM (cix),
+                                   _.chunkv));
+                      }
+                  }
+                _.compv = NULL;
+                _.varob = NULL;
+              }
+            else
+              {
+                WARNPRINTF_BM ("bad constant object %s from %s",
+                               objectdbg_BM (_.expob),
+                               objectdbg1_BM (_.fromob));
+                FAILHERE (makenode1_BM (BMP_const, _.expob));
+              }
           }
         else
           {
