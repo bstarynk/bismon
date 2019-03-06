@@ -2073,7 +2073,66 @@ failure:
   PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniemit_expression_BM */
 
-
+// emit magic variables $stmtid $modulid $routid or else return false
+bool
+miniemit_magic_variable_BM (struct stackframe_stBM *stkf,
+                            objectval_tyBM * varobarg,
+                            objectval_tyBM * modgenobarg,
+                            objectval_tyBM * routprepobarg,
+                            objectval_tyBM * fromobarg, int depth)
+{
+  objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
+  objectval_tyBM *k_stmtid = BMK_5Z5WNOYHi9A_29s2a7qpJej;
+  objectval_tyBM *k_modulid = BMK_4hxvngIgzCW_8a1qpSQsVA6;
+  objectval_tyBM *k_routid = BMK_9ZI9sMho4j6_77RxEYacaEF;
+  objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
+  objectval_tyBM *k_miniemit_magic_variable = BMK_9gpGGDTebtL_2GJXAwpfBPm;
+  LOCALFRAME_BM (stkf, /*descr: */ k_miniemit_magic_variable,
+                 objectval_tyBM * varob;        //
+                 objectval_tyBM * modgenob;     //
+                 objectval_tyBM * modulob;      //
+                 objectval_tyBM * routprepob;   //
+                 objectval_tyBM * routob;       //
+                 objectval_tyBM * fromob;       //
+    );
+  _.varob = objectcast_BM (varobarg);
+  _.modgenob = objectcast_BM (modgenobarg);
+  _.routprepob = objectcast_BM (routprepobarg);
+  _.fromob = objectcast_BM (fromobarg);
+  if (!_.varob)
+    return false;
+  char vidbuf[32];
+  memset (vidbuf, 0, sizeof (vidbuf));
+  if (_.varob == k_stmtid)
+    {
+      if (!_.fromob)
+        return false;
+      idtocbuf32_BM (objid_BM (_.fromob), vidbuf);
+      objstrbufferappendcstrpayl_BM (_.modgenob, vidbuf);
+      return true;
+    }
+  else if (_.varob == k_modulid)
+    {
+      _.modulob = objectcast_BM (objgetattr_BM (_.modgenob, k_plain_module));
+      if (!_.modulob)
+        return false;
+      idtocbuf32_BM (objid_BM (_.modulob), vidbuf);
+      objstrbufferappendcstrpayl_BM (_.modgenob, vidbuf);
+      return true;
+    }
+  else if (_.varob == k_routid)
+    {
+      _.routob =
+        objectcast_BM (objgetattr_BM (_.routprepob, k_prepare_routine));
+      if (!_.routob)
+        return false;
+      idtocbuf32_BM (objid_BM (_.routob), vidbuf);
+      objstrbufferappendcstrpayl_BM (_.modgenob, vidbuf);
+      return true;
+    }
+  else
+    return false;
+}                               /* end miniemit_magic_variable_BM */
 
 
 void
@@ -2597,7 +2656,6 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
   objectval_tyBM *k_chunk = BMK_3pQnBS9ZjkQ_0uGmqUUhAum;
   objectval_tyBM *k_curcomp = BMK_12cTZAaLTTx_4Bq4ez6eGJM;
   objectval_tyBM *k_variable = BMK_5ucAZimYynS_4VA0XHvr1nW;
-  objectval_tyBM *k_stmtid = BMK_5Z5WNOYHi9A_29s2a7qpJej;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_0AUL5kbXVmq_06A8ZbHZi1Y,
                  objectval_tyBM * stmtob;       //
                  objectval_tyBM * modgenob;     //
@@ -2622,15 +2680,15 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
   WEAKASSERT_BM (istaggedint_BM (arg4));
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM) (Cause); goto failure; } while(0)
-  char stmtidbuf[32];
-  memset (stmtidbuf, 0, sizeof (stmtidbuf));
-  idtocbuf32_BM (objid_BM (_.stmtob), stmtidbuf);
   DBGPRINTF_BM
     ("emit_statement°basiclo_run start stmtob=%s modgenob=%s routprepob=%s depth#%d",
      objectdbg_BM (_.stmtob), objectdbg1_BM (_.modgenob),
      objectdbg2_BM (_.routprepob), depth);
   objstrbuffersetindentpayl_BM (_.modgenob, depth);
   objstrbuffernewlinepayl_BM (_.modgenob);
+  char stmtidbuf[32];
+  memset (stmtidbuf, 0, sizeof (stmtidbuf));
+  idtocbuf32_BM (objid_BM (_.stmtob), stmtidbuf);
   objstrbufferprintfpayl_BM (_.modgenob, "{ // run %s\n", stmtidbuf);
   _.runv = objgetattr_BM (_.stmtob, k_run);
   if (isnode_BM (_.runv) && ((_.connob = nodeconn_BM (_.runv)) == k_chunk))
@@ -2682,9 +2740,12 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
                                 (k_variable, _.compv, taggedint_BM (cix),
                                  _.stmtob));
                     }
-                  else if (_.varob == k_stmtid)
-                    {
-                      objstrbufferappendcstrpayl_BM (_.modgenob, stmtidbuf);
+                  else if (miniemit_magic_variable_BM (CURFRAME_BM,
+                                                       _.varob,
+                                                       _.modgenob,
+                                                       _.routprepob,
+                                                       _.stmtob, depth + 1))
+                    {           /*no-op */
                     }
                   else
                     miniemit_expression_BM (CURFRAME_BM, _.varob, _.modgenob,

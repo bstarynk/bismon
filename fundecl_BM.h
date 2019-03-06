@@ -1739,6 +1739,13 @@ extern void miniemit_expression_BM (struct stackframe_stBM *stkf,
                                     objectval_tyBM * routprepob,
                                     objectval_tyBM * fromob, int depth);
 
+// emit magic variables $stmtid $modulid $routid or else return false
+extern bool miniemit_magic_variable_BM (struct stackframe_stBM *stkf,
+                                        objectval_tyBM * varob,
+                                        objectval_tyBM * modgenob,
+                                        objectval_tyBM * routprepob,
+                                        objectval_tyBM * fromob, int depth);
+
 extern void miniemit_var_BM (struct stackframe_stBM *stkf,
                              objectval_tyBM * refob,
                              objectval_tyBM * modgenob,

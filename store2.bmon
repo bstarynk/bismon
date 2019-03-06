@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2645 objects
+// for 2646 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -3562,6 +3562,33 @@ _7T9OwSFlgov_0wVJaK1eZbn
 "),"  " " 
   "("  * _5ucAZimYynS_4VA0XHvr1nW ( _17YdW6dWrBA_2mn4QmBjMNs)  "))")
 !)_5MU33d0s2xU_3C4M6YL7cN8
+
+
+
+!(_9gpGGDTebtL_2GJXAwpfBPm |=miniemit_magic_variable|
+!~ name (~ miniemit_magic_variable
+~)
+!@ 1551866933.320
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit magic variables like $stmtid, $routid, $modulid or else return 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _4XednyA78KV_5X04ViqjHsT _0Bl5ro9usp6_1Hll14QwC8f _9Vuh053HDYE_7a3I6tCVvBG _2ZpkK1GB4MR_7JRH0Ehuzvt 
+ _17YdW6dWrBA_2mn4QmBjMNs ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _9gpGGDTebtL_2GJXAwpfBPm  ":*/("  "intptr_t"  ")" 
+  " "  "miniemit_magic_variable_BM"  "("  "CURFRAME_BM"  "," 
+  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4XednyA78KV_5X04ViqjHsT)  
+"),"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0Bl5ro9usp6_1Hll14QwC8f)  ")," 
+ " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _9Vuh053HDYE_7a3I6tCVvBG)  "),"  " " 
+ "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2ZpkK1GB4MR_7JRH0Ehuzvt) 
+  "),"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _17YdW6dWrBA_2mn4QmBjMNs) 
+ "))")
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_9gpGGDTebtL_2GJXAwpfBPm
 
 
 
