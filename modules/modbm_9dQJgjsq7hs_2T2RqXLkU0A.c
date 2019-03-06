@@ -1153,7 +1153,7 @@ DBGPRINTF_BM("root-web-handler €%.9s start v_restpath=%s o_webex=%s",
  
  
 { // start out _0ElmKog957y_3K5W7qvSMfO to o_webex  
-/*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, "<?xml version=\"1.0\" encoding=\"utf-8\">\n");  
+/*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");  
 /*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, "<!DOCTYPE html>\n"); 
 } // end out _0ElmKog957y_3K5W7qvSMfO 
  
