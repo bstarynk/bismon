@@ -1866,27 +1866,9 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                              && nodeconn_BM (_.compv) == BMP_variable)
                       {
                         _.varob = objectcast_BM (nodenthson_BM (_.compv, 0));
-                        char vidbuf[32];
-                        memset (vidbuf, 0, sizeof (vidbuf));
                         // should handle $modulid $routid $stmtid specifically
                         // others are like constant objects
-                        if (_.varob == k_stmtid)
-                          {
-                            idtocbuf32_BM (objid_BM (_.fromob), vidbuf);
-                            objstrbufferappendcstrpayl_BM (_.modgenob,
-                                                           vidbuf);
-                          }
-                        else if (_.varob == k_modulid)
-                          {
-                            idtocbuf32_BM (objid_BM (_.modulob), vidbuf);
-                            objstrbufferappendcstrpayl_BM (_.modgenob,
-                                                           vidbuf);
-                          }
-                        else if (_.varob == k_routid)
-                          {
-#warning miniemit_expr incomplete for $routid
-                          }
-                        else if (_.varob == NULL)
+                        if (_.varob == NULL)
                           {
                             WARNPRINTF_BM
                               ("bad variable component#%d %s in chunk %s of constob %s",
@@ -1897,7 +1879,26 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                                       (BMP_variable, _.expob,
                                        taggedint_BM (cix), _.chunkv));
                           }
-#warning miniemit_expr incomplete $variable expansion in constant chunk
+                        else if (miniemit_magic_variable_BM (CURFRAME_BM,
+                                                             _.varob,
+                                                             _.modgenob,
+                                                             _.routprepob,
+                                                             _.fromob,
+                                                             depth + 1))
+                          {
+                            /* no - op */
+                          }
+                        else
+                          {
+                            WARNPRINTF_BM
+                              ("bad component#%d variable %s in chunk %s of constob %s",
+                               cix, objectdbg_BM (_.varob),
+                               OUTSTRVALUE_BM (_.chunkv),
+                               objectdbg_BM (_.expob));
+                            FAILHERE (makenode3_BM
+                                      (BMP_variable, _.varob,
+                                       taggedint_BM (cix), _.chunkv));
+                          }
                       }
                     else
                       {
