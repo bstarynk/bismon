@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2650 objects
+// for 2653 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -9424,13 +9424,15 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !(_66DuQtJBPqt_8w9fOCyxJve |=temp_test_module|
 !~ name (~ temp_test_module
 ~)
-!@ 1551630801.990
+!@ 1551891607.909
 !$_0277f6mOd9j_0tVZSXnTzUK |=basiclo_temporary_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "temporary test module"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _0hEcY9UzFy6_81oAjjDMu3D _2bqYsdDkB6J_35rYPGvtKa2 _364Qj8mb098_1ZKW5WqeFWg _3vI0Qc3FHQG_1g4fmHYkxSA 
  _87zGbEccv7h_5gRm35estXS _8imWClcIFKt_6w2H2ouB4I6 _8VzbBncLSEl_2dNNPe0VjQh }
+!# 1
+!& _5gAcBFb7oLW_6e5LZ0baMye
 !)_66DuQtJBPqt_8w9fOCyxJve
 
 
@@ -16414,6 +16416,17 @@ _4gjtBqgrY3i_67ZPUd9LxPU
 
 
 
+!(_1Mz2zlXYZOY_1PxMtC3ZE8R
+!@ 1551891676.667
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return HTTP_OK"
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+ * _6FWWN47uih2_5BhwEm9gnHu ( _3urOyDey7XM_7wRigC9AM2k)
+!)_1Mz2zlXYZOY_1PxMtC3ZE8R
+
+
+
 !(_1MOZNoNsgVi_3UmtfBE7TEv
 !@ 1545912979.569
 !$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
@@ -19642,6 +19655,19 @@ _7ewC6QwZE7K_1LyFtggGrGW
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "fail:readmacro"
 !)_2NRUP36YT80_0SdozCZxyvv
+
+
+
+!(_2O1B7nGptYG_4zKeZQdzgNJ
+!@ 1551891676.667
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body testroutine-return-HTTP_OK"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_5gAcBFb7oLW_6e5LZ0baMye
+!# 1
+!& _1Mz2zlXYZOY_1PxMtC3ZE8R
+!)_2O1B7nGptYG_4zKeZQdzgNJ
 
 
 
@@ -25993,6 +26019,21 @@ _50H7io7f948_10VeJz49q3W
 !: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
 _6jZqk9RP0Pe_12cIgV9WMFC
 !)_5fVxVvN0D70_5iLoRUEbGnA
+
+
+
+!(_5gAcBFb7oLW_6e5LZ0baMye
+!@ 1551891607.909
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "testroutine-return taggedint(HTTP_OK)"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_2O1B7nGptYG_4zKeZQdzgNJ
+!)_5gAcBFb7oLW_6e5LZ0baMye
 
 
 
