@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2643 objects
+// for 2645 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -3710,6 +3710,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_0Bl5ro9usp6_1Hll14QwC8f
+
+
+
+!(_4hxvngIgzCW_8a1qpSQsVA6 |=modulid|
+!~ name (~ modulid
+~)
+!@ 1551865046.296
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "can be expanded to the module id in chunks"
+!)_4hxvngIgzCW_8a1qpSQsVA6
 
 
 
@@ -8519,6 +8530,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
  % _5788HpgOtVV_4zwZIr0jgmq ()
 !)_2DH0ucElTgh_62vxjxLcfev
+
+
+
+!(_9ZI9sMho4j6_77RxEYacaEF |=routid|
+!~ name (~ routid
+~)
+!@ 1551865071.464
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "can be expanded to the routine id in chunks"
+!)_9ZI9sMho4j6_77RxEYacaEF
 
 
 

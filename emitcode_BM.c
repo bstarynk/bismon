@@ -1606,6 +1606,9 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
   objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
   objectval_tyBM *k_depth = BMK_17YdW6dWrBA_2mn4QmBjMNs;
   objectval_tyBM *k_basiclo_constant_object = BMK_9bCobYhqBV5_5tIWuHnUPMX;
+  objectval_tyBM *k_stmtid = BMK_5Z5WNOYHi9A_29s2a7qpJej;
+  objectval_tyBM *k_modulid = BMK_4hxvngIgzCW_8a1qpSQsVA6;
+  objectval_tyBM *k_routid = BMK_9ZI9sMho4j6_77RxEYacaEF;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
                  value_tyBM expv;       //
                  value_tyBM avalv;      //
@@ -1863,6 +1866,37 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                              && nodeconn_BM (_.compv) == BMP_variable)
                       {
                         _.varob = objectcast_BM (nodenthson_BM (_.compv, 0));
+                        char vidbuf[32];
+                        memset (vidbuf, 0, sizeof (vidbuf));
+                        // should handle $modulid $routid $stmtid specifically
+                        // others are like constant objects
+                        if (_.varob == k_stmtid)
+                          {
+                            idtocbuf32_BM (objid_BM (_.fromob), vidbuf);
+                            objstrbufferappendcstrpayl_BM (_.modgenob,
+                                                           vidbuf);
+                          }
+                        else if (_.varob == k_modulid)
+                          {
+                            idtocbuf32_BM (objid_BM (_.modulob), vidbuf);
+                            objstrbufferappendcstrpayl_BM (_.modgenob,
+                                                           vidbuf);
+                          }
+                        else if (_.varob == k_routid)
+                          {
+#warning miniemit_expr incomplete for $routid
+                          }
+                        else if (_.varob == NULL)
+                          {
+                            WARNPRINTF_BM
+                              ("bad variable component#%d %s in chunk %s of constob %s",
+                               cix, OUTSTRVALUE_BM (_.compv),
+                               OUTSTRVALUE_BM (_.chunkv),
+                               objectdbg_BM (_.expob));
+                            FAILHERE (makenode3_BM
+                                      (BMP_variable, _.expob,
+                                       taggedint_BM (cix), _.chunkv));
+                          }
 #warning miniemit_expr incomplete $variable expansion in constant chunk
                       }
                     else
