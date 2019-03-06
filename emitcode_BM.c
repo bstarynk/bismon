@@ -1657,6 +1657,16 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
       objstrbufferprintfpayl_BM (_.modgenob, " %lld",
                                  (long long) getint_BM (_.expv));
       LOCALJUSTRETURN_BM ();
+    case tyDouble_BM:
+      {
+        objstrbufferappendcstrpayl_BM (_.modgenob, " ");
+        bool hexd =
+          objstrbufferoutdoublepayl_BM (_.modgenob, getdouble_BM (_.expv));
+        if (hexd)
+          objstrbufferprintfpayl_BM (_.modgenob, "/*=%g*/ ",
+                                     getdouble_BM (_.expv));
+        LOCALJUSTRETURN_BM ();
+      }
     case tyString_BM:
       objstrbufferappendcstrpayl_BM (_.modgenob, " ");
       objstrbufferliteralcstringpayl_BM (_.modgenob, bytstring_BM (_.expv),

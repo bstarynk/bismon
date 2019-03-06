@@ -625,6 +625,8 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
       LOCALRETURN_BM (k_value);
     case tyInt_BM:
       LOCALRETURN_BM (k_int);
+    case tyDouble_BM:
+      LOCALRETURN_BM (BMP_double_float);
     case tyString_BM:
       LOCALRETURN_BM (k_string);
     case tySet_BM:
