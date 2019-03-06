@@ -1036,7 +1036,7 @@ DBGPRINTF_BM("root-web-handler €%.9s start v_restpath=%s o_webex=%s",
 /*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, "<!DOCTYPE html>\n"); 
 } // end out _0ElmKog957y_3K5W7qvSMfO 
  
-//+ #2/10 of block _6eHKA5eSoIV_4ajeKi1n1so :: 
+//+ #2/12 of block _6eHKA5eSoIV_4ajeKi1n1so :: 
  
  /*o_websess:*/_.o_7UzdV9wjuq2_2PRgXcyAlMi = //assign _1DBMlWZKVWz_9dK3Y2P7W36  
 /*objwebexchangesessionpayl:*/objwebexchangesessionpayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx)); 
@@ -1045,7 +1045,7 @@ DBGPRINTF_BM("root-web-handler €%.9s start v_restpath=%s o_webex=%s",
  /*o_helem:*/_.o_6Ef2ORO1Mni_0tpNoRQGmrW = //assign _8FJHJvnDQjZ_4kXI45kCcHt  
  (constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[7] /*!_3poYCpSsBfJ_8W7XNwG50hS*/); 
  
-//+ #4/10 of block _6eHKA5eSoIV_4ajeKi1n1so :: 
+//+ #4/12 of block _6eHKA5eSoIV_4ajeKi1n1so :: 
  
  
 { // run _2znMyOWdQVD_3yXIlsVORJc 
@@ -1063,7 +1063,7 @@ DBGPRINTF_BM("root-web-handler €%.9s o_webex=%s/L%u o_websess=%s o_helem=%s",
  ( /*o_helem:*/_.o_6Ef2ORO1Mni_0tpNoRQGmrW),  ( /*o_websess:*/_.o_7UzdV9wjuq2_2PRgXcyAlMi), 
  ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx),  (/*taggedint:*/ taggedint_BM ( 0)))); 
  
-//+ #6/10 of block _6eHKA5eSoIV_4ajeKi1n1so :: 
+//+ #6/12 of block _6eHKA5eSoIV_4ajeKi1n1so :: 
  
  
 { // run _19su0zeFPjT_3UNwwmuFUs3 
@@ -1098,7 +1098,7 @@ PLACEDFAILURE_BM(__LINE__,
 } //endwhen _7fOlXQV1qei_1jblKqwdvUu  
 /*endcond _7yqydEM9tDW_7REkbyJqGhi*/ 
  
-//+ #8/10 of block _6eHKA5eSoIV_4ajeKi1n1so :: 
+//+ #8/12 of block _6eHKA5eSoIV_4ajeKi1n1so :: 
  
 { // start out _1qF5JsX0Giz_1Y9rX4js1XY to o_webex  
 /*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, "<!-- end root-web-handler o_webex ");  
@@ -1120,6 +1120,17 @@ DBGPRINTF_BM("end root-web-handler €%.9s v_resemit=%s o_webex=%s/L%u:\n%s\n###
  objstrbufferbytespayl_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx));
 ; 
 } // end run _3CEacq7ZagN_1ZXfwthwX0P 
+ 
+//+ #10/12 of block _6eHKA5eSoIV_4ajeKi1n1so :: 
+ 
+{ // start cexpansion _3GNqxaIiNPt_2gUUJzEqzQN - objwebexchangecompletepayl  
+/*objwebexchangecompletepayl:*/ objwebexchangecompletepayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), (/*chunk-constob HTTP_OK:*/(HTTP_OK)), ( "application/xhtml+xml"));  
+} // end cexpansion _3GNqxaIiNPt_2gUUJzEqzQN - objwebexchangecompletepayl  
+  
+ 
+/*return _5wbwgEoYVpe_9Vlqsd7TbBg:*/  /*v_r:*/_.v_3qw9bnATIhq_8loBraLeXzQ = // returned 
+ /*v_resemit:*/_.v_0qTBOEAT5pa_2fz1SKfHrMV; 
+ goto epilog_6TYtJU0rl2h_2z4md7DV06z; 
  
 /* !endingblock _6eHKA5eSoIV_4ajeKi1n1so */ 
 goto endblock__6eHKA5eSoIV_4ajeKi1n1so; 
