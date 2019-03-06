@@ -1,11 +1,24 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2646 objects
+// for 2649 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_9dQJgjsq7hs_2T2RqXLkU0A
 !^_9oXtCgAbkqv_4y1xhhF5Nhz
+
+
+!(_3urOyDey7XM_7wRigC9AM2k |=HTTP_OK|
+!~ name (~ HTTP_OK
+~)
+!@ 1551875240.124
+!$_9bCobYhqBV5_5tIWuHnUPMX |=basiclo_constant_object|
+!: _3pQnBS9ZjkQ_0uGmqUUhAum |=chunk|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum ( _3urOyDey7XM_7wRigC9AM2k)
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_3urOyDey7XM_7wRigC9AM2k
+
 
 
 !(_3d9rq9TD6PH_6qUv4Hao767 |=a_to_c|
@@ -21734,6 +21747,19 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 
+!(_3GNqxaIiNPt_2gUUJzEqzQN
+!@ 1551875387.339
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "complete o_webex HTTP_OK application/xhtml+xml"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _5JuT4FgNFFh_7McrTYeT3jx _3urOyDey7XM_7wRigC9AM2k  "application/xhtml+xml")
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_0ncEyxweiqi_5Vj5U2xvh82
+!)_3GNqxaIiNPt_2gUUJzEqzQN
+
+
+
 !(_3GUB2GqOMv5_9mLZQWLvac5
 !@ 1549041800.658
 !$_9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
@@ -26891,6 +26917,17 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_5wbwgEoYVpe_9Vlqsd7TbBg
+!@ 1551875420.331
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return v_resemit"
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+_0qTBOEAT5pa_2fz1SKfHrMV
+!)_5wbwgEoYVpe_9Vlqsd7TbBg
+
+
+
 !(_5wt9NZ1cQAJ_3Gr6Fih5ecf
 !@ 1543995299.288
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
@@ -28969,13 +29006,13 @@ _6cFSE2rDxvF_99QhDhtBeS4
 
 
 !(_6eHKA5eSoIV_4ajeKi1n1so
-!@ 1551779336.356
+!@ 1551875420.331
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of root-web-handler"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _6TYtJU0rl2h_2z4md7DV06z
-!# 10
+!# 12
 !& _73hzmEhVjDY_2atb4XvtEi9
 !& _0ElmKog957y_3K5W7qvSMfO
 !& _1DBMlWZKVWz_9dK3Y2P7W36
@@ -28986,6 +29023,8 @@ _6TYtJU0rl2h_2z4md7DV06z
 !& _7yqydEM9tDW_7REkbyJqGhi
 !& _1qF5JsX0Giz_1Y9rX4js1XY
 !& _3CEacq7ZagN_1ZXfwthwX0P
+!& _3GNqxaIiNPt_2gUUJzEqzQN
+!& _5wbwgEoYVpe_9Vlqsd7TbBg
 !)_6eHKA5eSoIV_4ajeKi1n1so
 
 
