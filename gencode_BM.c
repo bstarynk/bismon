@@ -669,8 +669,15 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
               FAILHERE (BMP_c_type);    // no c_type in constant object
             if (_.avalv && _.chunkv)
               FAILHERE (k_failure_miss);        // both chunk & value given in constant object
-            if (nodeconn_BM (_.chunkv) != BMP_chunk)
+            if (_.chunkv && nodeconn_BM (_.chunkv) != BMP_chunk)
               FAILHERE (BMP_chunk);     // invalid chunk in constant object
+            if (_.avalv)
+              {
+                if (_.typob == BMP_int && !istaggedint_BM (_.avalv))
+                  FAILHERE (BMP_int);
+                if (_.typob == BMP_object && !isobject_BM (_.avalv))
+                  FAILHERE (BMP_object);
+              }
             LOCALRETURN_BM (_.typob);
           }
         else
