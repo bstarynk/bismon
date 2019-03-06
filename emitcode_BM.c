@@ -1920,7 +1920,8 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                                   (BMP_chunk, _.expob, taggedint_BM (cix),
                                    _.chunkv));
                       }
-                  }
+                  };
+		objstrbufferappendcstrpayl_BM (_.modgenob, ")");
                 _.compv = NULL;
                 _.varob = NULL;
               }
