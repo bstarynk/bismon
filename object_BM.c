@@ -562,14 +562,26 @@ objectinteriorgcmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
 }                               /* end objectinteriorgcmark_BM */
 
 ////////////////////////////////////////////////////////////////
-value_tyBM *
+value_tyBM
 constobjvaluehashed_BM (objectval_tyBM * obconst, hash_tyBM hash)
 {
-#warning constobjvaluehashed_BM unimplemented
-  FATAL_BM ("unimplemented constobjvaluehashed_BM obconst=%s hash=%u",
-            objectdbg_BM (obconst), hash);
-  // should lock obconst, check that it is a basiclo_constant_object,
-  // and get its `value` attribute, then unlock...
+  value_tyBM res = NULL;
+  if (!isobject_BM (obconst))
+    FATAL_BM ("invalid object to get constant from, of hash %u", hash);
+  objlock_BM (obconst);
+  if (!(objectisinstance_BM (obconst, BMP_basiclo_constant_object)))
+    WARNPRINTF_BM ("object %s is not a basiclo_constant_object",
+                   objectdbg_BM (obconst));
+  else
+    res = objgetattr_BM (obconst, BMP_value);
+  objunlock_BM (obconst);
+  if (res && valhash_BM (res) != hash)
+    {
+      WARNPRINTF_BM ("object %s has value of hash %u, expecting %u",
+                     objectdbg_BM (obconst), valhash_BM (res), hash);
+      res = NULL;
+    }
+  return res;
 }                               /* end constobjvaluehashed_BM */
 
 ////////////////
