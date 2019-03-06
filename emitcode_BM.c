@@ -1845,6 +1845,11 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                        objectdbg2_BM (_.fromob));
                     FAILHERE (makenode1_BM (BMP_const, _.expob));
                   }
+                DBGPRINTF_BM ("emitexpr const expob=%s avalv=%s ending",
+                              objectdbg_BM (_.expob),
+                              OUTSTRVALUE_BM (_.avalv));
+                LOCALJUSTRETURN_BM ();
+
               }
             else if (nodeconn_BM (_.chunkv) == BMP_chunk)
               {
@@ -1921,9 +1926,13 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                                    _.chunkv));
                       }
                   };
-		objstrbufferappendcstrpayl_BM (_.modgenob, ")");
+                objstrbufferappendcstrpayl_BM (_.modgenob, ")");
                 _.compv = NULL;
                 _.varob = NULL;
+                DBGPRINTF_BM ("emitexpr const expob=%s chunkv=%s ending",
+                              objectdbg_BM (_.expob),
+                              OUTSTRVALUE_BM (_.chunkv));
+                LOCALJUSTRETURN_BM ();
               }
             else
               {
@@ -2067,7 +2076,7 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
     default:
       FAILHERE (NULL);
     }
-  DBGPRINTF_BM
+  WARNPRINTF_BM
     ("emit_expression unimplemented for expv %s modgen %s routprep %s",
      debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),
      objectdbg_BM (_.modgenob), objectdbg1_BM (_.routprepob));
