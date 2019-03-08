@@ -37,7 +37,7 @@ extern objrout_sigBM crout_6RtF29C4pij_9r269Lc0d0W_BM; //#5 !emit_xhtml_open°si
 
 extern objrout_sigBM crout_6TYtJU0rl2h_2z4md7DV06z_BM; //#6 !root-web-handler (v_restpath o_webex)
 
-extern objrout_sigBM crout_8oKFbiPI4JW_7EPg4RP1e4Q_BM; //#7 !emit-raw-tag-xtml-open [v_tagstr v_restagstr] (o_helem o_emitctx o_strbuf v_depth]
+extern objrout_sigBM crout_8oKFbiPI4JW_7EPg4RP1e4Q_BM; //#7 !emit-raw-tag-xhtml-open [v_tagstr v_restagstr] (o_helem o_emitctx o_strbuf v_depth)
 
 extern objrout_sigBM crout_8IYFtn8osS2_4t1U3wyROLW_BM; //#8 emit_xhtml
 
@@ -1381,7 +1381,7 @@ endblock__6eHKA5eSoIV_4ajeKi1n1so: ;
 
 value_tyBM crout_8oKFbiPI4JW_7EPg4RP1e4Q_BM //#7
  (struct stackframe_stBM* stkf, //
-//!emit-raw-tag-xtml-open [v_tagstr v_restagstr] (o_helem o_emitctx o_strbuf v_depth]
+//!emit-raw-tag-xhtml-open [v_tagstr v_restagstr] (o_helem o_emitctx o_strbuf v_depth)
   // 4 arguments
   const value_tyBM arg0,  // o_helem
   const value_tyBM arg1,  // o_emitctx
@@ -1857,7 +1857,7 @@ const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[40+1] = {
  "_8c3wK0SptYZ_6EpzaOaJVJc", //! fail-type_error emit_xhtml_open o_helem o_emitctx o_strbuf depth /emitxhtml_element
  "_8mOOvH4LOKB_5gaXDGw68tw",//html_idprefix
  /*35:*/
- "_8oKFbiPI4JW_7EPg4RP1e4Q", //! emit-raw-tag-xtml-open [v_tagstr v_restagstr] (o_helem o_emitctx o_strbuf v_depth]
+ "_8oKFbiPI4JW_7EPg4RP1e4Q", //! emit-raw-tag-xhtml-open [v_tagstr v_restagstr] (o_helem o_emitctx o_strbuf v_depth)
  "_8yowRQLZgzP_4vqWjo12OS4", //! fail failure_full emit_xhtml v_html o_emitctx depth
  "_8IYFtn8osS2_4t1U3wyROLW",//emit_xhtml
  "_95hdJENHNkN_3QuKIJTCQQQ",//failure_type_error
@@ -1876,7 +1876,7 @@ const char* const routid_9dQJgjsq7hs_2T2RqXLkU0A_BM[10+1] = {
   "_5NH940lCHYJ_3nuRm3flnzc", //!emitxhtml_element (o_helem o_emitctx o_strbuf v_depth)
   "_6RtF29C4pij_9r269Lc0d0W", //!emit_xhtml_open°simple_void_html_element_object < o_helem (o_emitctx o_strbuf v_depth)
   "_6TYtJU0rl2h_2z4md7DV06z", //!root-web-handler (v_restpath o_webex)
-  "_8oKFbiPI4JW_7EPg4RP1e4Q", //!emit-raw-tag-xtml-open [v_tagstr v_restagstr] (o_helem o_emitctx o_strbuf v_depth]
+  "_8oKFbiPI4JW_7EPg4RP1e4Q", //!emit-raw-tag-xhtml-open [v_tagstr v_restagstr] (o_helem o_emitctx o_strbuf v_depth)
   /*8:*/
   "_8IYFtn8osS2_4t1U3wyROLW",//emit_xhtml
   "_9hEreAemqXg_0uoN1Fr1ly4", //!emit-tagged-id-xhtml-open [v_htmltag v_htmlclass v_idprefix o_idtarget] (o_helem o_emitctx o_strbuf v_depth)
