@@ -979,8 +979,9 @@ DBGPRINTF_BM(" emitxhtml_element €%.9s before emit_xhtml: v_comp=%s o_emitctx=
 // for-up _8QYxgALaJfV_49EojKGexX9 #4 :  
  /*v_resemit:*/_.v_0qTBOEAT5pa_2fz1SKfHrMV = //assign _9WzUvoIHCSM_4O5lNZm3jb2   
 (apply4_BM (( (constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[37] /*!emit_xhtml*/)), ((struct stackframe_stBM*)&_), 
- ( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe),  ( /*o_emitctx:*/_.o_9nXRmTATjN4_5F9V7RvvgW0), 
- ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),  (/*taggedint:*/ taggedint_BM (/*add_int:*/(( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f) + ( 1))))));  
+ (/*object_cast:*/(value_tyBM)objectcast_BM( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe)), 
+ ( /*o_emitctx:*/_.o_9nXRmTATjN4_5F9V7RvvgW0),  ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy), 
+ (/*taggedint:*/ taggedint_BM (/*add_int:*/(( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f) + ( 1))))));  
   
 // for-up _8QYxgALaJfV_49EojKGexX9 #5 :  
 if /*cond _6JhK96miaMx_3XLltRct5WU*/   
