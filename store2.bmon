@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2682 objects
+// for 2683 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -28971,6 +28971,42 @@ _50H7io7f948_10VeJz49q3W
 
 
 
+!(_63u3t8z297Q_8sNjKGmTWLe
+!@ 1552072429.225
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug emitxhtml_element before emit_xhtml: v_comp o_emitctx o_strbuf depth"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_8QYxgALaJfV_49EojKGexX9
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "emitxhtml_element"  " " 
+  "before"  " " _8IYFtn8osS2_4t1U3wyROLW  ":"  " " 
+ _0ZL8gaI6sH8_7UPhmAQcwMe  " " _9nXRmTATjN4_5F9V7RvvgW0  " " _41F1rKwGbaA_30OJWKsqNWy 
+  " " _17YdW6dWrBA_2mn4QmBjMNs  "*/"  "\n"  "DBGPRINTF_BM" 
+  "(\""  " "  "emitxhtml_element"  " "  "\u20ac%." 
+  "9s"  " "  "before"  " " _8IYFtn8osS2_4t1U3wyROLW 
+  ":"  " " _0ZL8gaI6sH8_7UPhmAQcwMe  "=%"  "s" 
+  " " _9nXRmTATjN4_5F9V7RvvgW0  "=%"  "s"  " " 
+ _41F1rKwGbaA_30OJWKsqNWy  "=%"  "s"  "/"  "L" 
+  "%"  "u"  " " _17YdW6dWrBA_2mn4QmBjMNs  "=%" 
+  "ld"  "\","  "\n"  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+  "\","  "\n"  " "  "OUTSTRVALUE_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _0ZL8gaI6sH8_7UPhmAQcwMe)  "),"  "\n" 
+ " "  "objectdbg_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _9nXRmTATjN4_5F9V7RvvgW0)  ")," 
+ "\n"  " " 
+  "objectdbg1_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _41F1rKwGbaA_30OJWKsqNWy) 
+ "),"  "\n" 
+  " "  "objstrbufferlengthpayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_41F1rKwGbaA_30OJWKsqNWy)  ")," 
+  "\n"  " "  "("  "long"  " " 
+ _0vgCFjXblkx_4zCMhMAWjVK  ")"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_6Y20GNUgnSZ_4LkbrcRMU8f) 
+  "));")
+!)_63u3t8z297Q_8sNjKGmTWLe
+
+
+
 !(_63Q0R4r8xa7_7XOAxxP5pi2
 !|*
 !@ 1506606535.990
@@ -37215,7 +37251,7 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 !(_8QYxgALaJfV_49EojKGexX9
-!@ 1547404927.821
+!@ 1552072429.225
 !$_7JUZeKsjbx1_1VcZbR0vW41 |=basiclo_for_up_loop|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "for-up ii ... emitxhtml_element"
@@ -37223,10 +37259,11 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 _833x2jYqhZh_8vDIuJhwz1k
 !: _6EG5W7z0BRb_4TBM1gyenqk |=index|
 _2W7Ckt2WxEM_4NVYgEWE73B
-!# 5
+!# 6
 !& _1e0bYiMflzj_5KajHdAnW2S
 !& _8ARi1AYq5Oh_3DoCCtCI4sE
 !& _9esS4NliRiB_2VgVZ0sULry
+!& _63u3t8z297Q_8sNjKGmTWLe
 !& _9WzUvoIHCSM_4O5lNZm3jb2
 !& _6JhK96miaMx_3XLltRct5WU
 !)_8QYxgALaJfV_49EojKGexX9
