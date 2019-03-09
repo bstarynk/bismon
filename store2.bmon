@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2683 objects
+// for 2684 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -2650,6 +2650,24 @@ _1zQP9C0mcAa_2K8aLjr6UoA
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_9oVvnmp5EZL_7M3ZbVZTjAs
+
+
+
+!(_2IdCZHNJPFb_4j8ZXbiuOmZ |=is_doublev|
+!~ name (~ is_doublev
+~)
+!@ 1552156910.244
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "test if v1 is a double value or else give 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2IdCZHNJPFb_4j8ZXbiuOmZ  ":*/"  "isdouble_BM"  "((" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_2IdCZHNJPFb_4j8ZXbiuOmZ
 
 
 
