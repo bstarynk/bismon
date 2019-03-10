@@ -1,7 +1,9 @@
 // in body €_3DcbHfTP2t of emit_xhtml function €_8IYFtn8, after the debug start
 
 /// we really want to emit XHTML5 ; should also look into MathML & mathjax.org
-,add _3DcbHfTP2te_8Zw8Uhy9eU6 $[^cond (
+,add _3DcbHfTP2te_8Zw8Uhy9eU6
+
+$[^cond (
 
 $[^when (*is_stringv (v_html)
   $[^out (o_strbuf *html_enc(v_html)) !:comment "emit html-encoded v_html string"]
@@ -14,6 +16,10 @@ $[^when (*is_intv (v_html)
 $[^when (*is_null (v_html)
  $[^no_op () !:comment "no_op for null"]
 ) !:comment "when v_html is null noop"]
+
+$[^when (*is_doublev (v_html)
+  $[^out (o_strbuf *double_plain(*val_to_double(v_html))) !:comment "emit double v_html"]
+ ) !:comment "when v_html is double"]
 
 
 $[^when (*is_objectv(v_html)

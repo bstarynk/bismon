@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2697 objects
+// for 2698 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -10532,6 +10532,24 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
 _7bbeIqUSje9_4jVgC7ZJmvx
 !)_5jRQCD1qTko_61I0j04ugAA
+
+
+
+!(_8LaBFXeCNi9_5Yf9zUHNA1T |=val_to_double|
+!~ name (~ val_to_double
+~)
+!@ 1552237560.818
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "convert value v1 to double, using getdouble_BM"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _8LaBFXeCNi9_5Yf9zUHNA1T  ":*/"  "getdouble_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_2qDaJRPDbEG_45AvdxtQXAM
+!)_8LaBFXeCNi9_5Yf9zUHNA1T
 
 
 
