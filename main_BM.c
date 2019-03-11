@@ -848,14 +848,14 @@ main (int argc, char **argv)
     //
     // force the LC_NUMERIC locale to English UTF-8
     if (!setlocale (LC_NUMERIC, "C.UTF-8")
-        || !setlocale (LC_NUMERIC, "C.utf8")
-        || !setlocale (LC_NUMERIC, "POSIX")
-        || !setlocale (LC_NUMERIC, "POSIX.utf8")
-        || !setlocale (LC_NUMERIC, "POSIX.utf-8")
-        || !setlocale (LC_NUMERIC, "en_US.utf8")
-        || !setlocale (LC_NUMERIC, "en_US.utf-8")
-        || !setlocale (LC_NUMERIC, "en_GB.utf8")
-        || !setlocale (LC_NUMERIC, "en_GB.utf-8"))
+        && !setlocale (LC_NUMERIC, "C.utf8")
+        && !setlocale (LC_NUMERIC, "POSIX")
+        && !setlocale (LC_NUMERIC, "POSIX.utf8")
+        && !setlocale (LC_NUMERIC, "POSIX.utf-8")
+        && !setlocale (LC_NUMERIC, "en_US.utf8")
+        && !setlocale (LC_NUMERIC, "en_US.utf-8")
+        && !setlocale (LC_NUMERIC, "en_GB.utf8")
+        && !setlocale (LC_NUMERIC, "en_GB.utf-8"))
       FATAL_BM
         ("failed to setlocale LC_NUMERIC appropriately to English UTF-8, previous was %s",
          oldnumloc ? : "*unset*");
@@ -864,14 +864,14 @@ main (int argc, char **argv)
     //
     // force the LC_ALL locale to English UTF-8
     if (!setlocale (LC_ALL, "C.UTF-8")
-        || !setlocale (LC_ALL, "C.utf8")
-        || !setlocale (LC_ALL, "POSIX")
-        || !setlocale (LC_ALL, "POSIX.utf8")
-        || !setlocale (LC_ALL, "POSIX.utf-8")
-        || !setlocale (LC_ALL, "en_US.utf8")
-        || !setlocale (LC_ALL, "en_US.utf-8")
-        || !setlocale (LC_ALL, "en_GB.utf8")
-        || !setlocale (LC_ALL, "en_GB.utf-8"))
+        && !setlocale (LC_ALL, "C.utf8")
+        && !setlocale (LC_ALL, "POSIX")
+        && !setlocale (LC_ALL, "POSIX.utf8")
+        && !setlocale (LC_ALL, "POSIX.utf-8")
+        && !setlocale (LC_ALL, "en_US.utf8")
+        && !setlocale (LC_ALL, "en_US.utf-8")
+        && !setlocale (LC_ALL, "en_GB.utf8")
+        && !setlocale (LC_ALL, "en_GB.utf-8"))
       FATAL_BM
         ("failed to setlocale LC_ALL appropriately to English UTF-8, previous was %s",
          oldloc ? : "*unset*");
@@ -1208,7 +1208,7 @@ main (int argc, char **argv)
 bool
 is_nice_locale_BM (const char *locstr)
 {
-#define NICE_LOCALE_REGEX_BM "^(en_[a-z_]*|C|POSIX)\\.*utf.*8.*"
+#define NICE_LOCALE_REGEX_BM "^\\(en_[a-z_]*\\|C\\|POSIX\\)\\.*utf.*8.*"
   static regex_t rx;
   static bool initedrx;
   /// initialize rx only once
