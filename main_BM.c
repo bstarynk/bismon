@@ -751,6 +751,11 @@ static void initialize_contributors_path_BM (void);
 static void initialize_passwords_path_BM (void);
 static void emit_has_predef_BM (void);
 static void do_dump_after_load_BM (void);
+static bool is_nice_locale_BM (const char *);
+
+
+
+
 
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
@@ -801,36 +806,76 @@ main (int argc, char **argv)
   memset ((char *) myhostname_BM, 0, sizeof (myhostname_BM));
   if (gethostname ((char *) myhostname_BM, sizeof (myhostname_BM) - 1))
     FATAL_BM ("gethostname failure %m");
+  bool explainlocale = false;
   {
     char *oldloc = setlocale (LC_ALL, NULL);
     char *oldnumloc = setlocale (LC_NUMERIC, NULL);
     char *oldctypeloc = setlocale (LC_CTYPE, NULL);
     DBGPRINTF_BM ("oldlocale LC_ALL %s LC_NUMERIC %s LC_CTYPE %s", oldloc,
                   oldnumloc, oldctypeloc);
-    if (oldloc && strcmp (oldloc, "en_US.UTF-8")
-        && strcmp (oldloc, "en_GB.UTF-8") && strcmp (oldloc, "C.UTF-8")
-        && strcmp (oldloc, "C") && strcmp (oldloc, "POSIX"))
-      WARNPRINTF_BM
-        ("your LC_ALL locale '%s' is strange but should be in English, encoded in UTF-8.\n"
-         "Please use C.UTF-8 or en_US.UTF-8 or en_GB.UTF-8 or POSIX.UTF-8",
-         oldloc);
-    if (oldnumloc && strcmp (oldnumloc, "en_US.UTF-8")
-        && strcmp (oldnumloc, "en_GB.UTF-8") && strcmp (oldnumloc, "C.UTF-8")
-        && strcmp (oldnumloc, "C.UTF-8") && strcmp (oldnumloc, "POSIX.UTF-8"))
-      WARNPRINTF_BM
-        ("your LC_NUMERIC locale '%s' is strange but should be in English, encoded in UTF-8.\n"
-         "Please use C.UTF-8 or en_US.UTF-8 or en_GB.UTF-8 or POSIX.UTF-8",
-         oldnumloc);
-    char *prevnumlocale = setlocale (LC_NUMERIC, "C.UTF-8");
-    if (!prevnumlocale)
-      FATAL_BM ("failed to setlocale LC_NUMERIC to C.UTF-8");
-    else
-      DBGPRINTF_BM ("prevnumlocale %s", prevnumlocale);
-    char *prevalllocale = setlocale (LC_ALL, "C.UTF-8");
-    if (!prevalllocale)
-      FATAL_BM ("failed to setlocale LC_ALL to C.UTF-8");
-    else
-      DBGPRINTF_BM ("prevalllocale %s", prevalllocale);
+    if (oldloc && !is_nice_locale_BM (oldloc))
+      {
+        WARNPRINTF_BM
+          ("your LC_ALL locale '%s' is strange but should be in English, encoded in UTF-8.\n",
+           oldloc);
+        explainlocale = true;
+      }
+    if (oldnumloc && !is_nice_locale_BM (oldloc))
+      {
+        WARNPRINTF_BM
+          ("your LC_NUMERIC locale '%s' is strange but should be in English, encoded in UTF-8.\n",
+           oldnumloc);
+        explainlocale = true;
+      }
+    if (oldctypeloc && !is_nice_locale_BM (oldctypeloc))
+      {
+        WARNPRINTF_BM
+          ("your LC_CTYPE locale '%s' is strange but should be in English, encoded in UTF-8.\n",
+           oldnumloc);
+        explainlocale = true;
+      }
+    if (explainlocale)
+      {
+        WARNPRINTF_BM
+          ("Bismon requires an English UTF-8 locale, in particular for floating point numbers in the persistent store.\n"
+           "Read carefully http://man7.org/linux/man-pages/man7/locale.7.html\n"
+           "You may use the 'locale' and/or 'localectl' programs to check your current locale.\n"
+           "You may want to set your locale thru several environment variables like LC_ALL LC_NUMERIC LC_CTYPE LANG LANGUAGE etc...\n"
+           "... using the export or setenv builtin of your shell\n"
+           "Please read carefully the %s/README.md file (Localization section)\n",
+           bismon_directory);
+      }
+    //
+    // force the LC_NUMERIC locale to English UTF-8
+    if (!setlocale (LC_NUMERIC, "C.UTF-8")
+        || !setlocale (LC_NUMERIC, "C.utf8")
+        || !setlocale (LC_NUMERIC, "POSIX")
+        || !setlocale (LC_NUMERIC, "POSIX.utf8")
+        || !setlocale (LC_NUMERIC, "POSIX.utf-8")
+        || !setlocale (LC_NUMERIC, "en_US.utf8")
+        || !setlocale (LC_NUMERIC, "en_US.utf-8")
+        || !setlocale (LC_NUMERIC, "en_GB.utf8")
+        || !setlocale (LC_NUMERIC, "en_GB.utf-8"))
+      FATAL_BM
+        ("failed to setlocale LC_NUMERIC appropriately to English UTF-8, previous was %s",
+         oldnumloc ? : "*unset*");
+    DBGPRINTF_BM ("now LC_NUMERIC locale is %s",
+                  setlocale (LC_NUMERIC, NULL));
+    //
+    // force the LC_ALL locale to English UTF-8
+    if (!setlocale (LC_ALL, "C.UTF-8")
+        || !setlocale (LC_ALL, "C.utf8")
+        || !setlocale (LC_ALL, "POSIX")
+        || !setlocale (LC_ALL, "POSIX.utf8")
+        || !setlocale (LC_ALL, "POSIX.utf-8")
+        || !setlocale (LC_ALL, "en_US.utf8")
+        || !setlocale (LC_ALL, "en_US.utf-8")
+        || !setlocale (LC_ALL, "en_GB.utf8")
+        || !setlocale (LC_ALL, "en_GB.utf-8"))
+      FATAL_BM
+        ("failed to setlocale LC_ALL appropriately to English UTF-8, previous was %s",
+         oldloc ? : "*unset*");
+    DBGPRINTF_BM ("now LC_ALL locale is %s", setlocale (LC_ALL, NULL));
   }
   {
     double x = 0;
@@ -1158,6 +1203,38 @@ main (int argc, char **argv)
                  bismon_lastgitcommit, bismon_checksum);
   fflush (NULL);
 }                               /* end main */
+
+
+bool
+is_nice_locale_BM (const char *locstr)
+{
+#define NICE_LOCALE_REGEX_BM "^(en_[a-z_]*|C|POSIX)\\.*utf.*8.*"
+  static regex_t rx;
+  static bool initedrx;
+  /// initialize rx only once
+  if (!initedrx)
+    {
+      int errcod =
+        regcomp (&rx, NICE_LOCALE_REGEX_BM, REG_EXTENDED | REG_ICASE);
+      if (errcod)
+        {                       // should never happen
+          char errbuf[128];
+          memset (errbuf, 0, sizeof (errbuf));
+          (void) regerror (errcod, &rx, errbuf, sizeof (errbuf) - 1);
+          FATAL_BM ("failed to compile regexp NICE_LOCALE_REGEX_BM '%s' - %s",
+                    NICE_LOCALE_REGEX_BM, errbuf);
+        }
+      initedrx = true;
+    }
+  regmatch_t rm[2];
+  memset (&rm, 0, sizeof (rm));
+  if (regexec (&rx, locstr, 1, rm, 0))
+    return false;
+  else
+    return true;
+}                               /* end is_nice_locale_BM */
+
+
 
 bool
 bismon_has_gui_BM (void)
