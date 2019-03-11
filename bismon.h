@@ -81,6 +81,7 @@ using std::atomic_store;
 #include <pthread.h>
 #include <execinfo.h>
 #include <backtrace.h>
+#include <regex.h>
 
 #include <glib.h>
 
