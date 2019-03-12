@@ -1,7 +1,9 @@
 // in body €_3DcbHfTP2t of emit_xhtml function €_8IYFtn8, after the debug start
 
+/// that was never added, up to commit 5c78727ecfb881045e2037 on Jan 18
 /// we really want to emit XHTML5 ; should also look into MathML & mathjax.org
-,add _3DcbHfTP2te_8Zw8Uhy9eU6
+/// ,put _3DcbHfTP2te_8Zw8Uhy9eU6 4
+,add  _3DcbHfTP2te_8Zw8Uhy9eU6
 
 $[^cond (
 
@@ -35,6 +37,7 @@ $[^when (*is_objectv(v_html)
   $[^out (o_strbuf *space()) !:comment "emit-space"]
   ) !:comment "when space"]
 
+ /// else
  $[^lockobj (o_html
    $[^cond (
 
