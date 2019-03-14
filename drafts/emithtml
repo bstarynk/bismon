@@ -1,6 +1,6 @@
 // in body €_3DcbHfTP2t of emit_xhtml function €_8IYFtn8, after the debug start
 // arguments of emit_xhtml: [v_html o_emitctx o_strbuf v_depth]
-// locals of emit_xhtml: {o_conn o_html v_comp v_resapp v_resemit o_spacing}
+// locals of emit_xhtml: {o_conn o_html v_comp v_resapp v_resemit o_spacing v_clos}
 // numbers of emit_xhtml: {i_depth ii leni}
 
 /// that was never added, up to commit 5c78727ecfb881045e2037 on Jan 18
@@ -79,7 +79,7 @@ $[^when (*is_objectv(v_html)
 
    $[^cond (
      $[^when (*is_null (v_resemit)
-       $[^fail(*make_node !failure_miss !_0FRLxSGQlZ0_0qrrUZlEeKp !emit_xhtml o_html o_emitctx o_strbuf *taggedint(i_depth))
+       $[^fail (*make_node (! failure_miss ! _0FRLxSGQlZ0_0qrrUZlEeKp !emit_xhtml o_html o_emitctx o_strbuf *taggedint(i_depth) ))
          !:comment "fail-miss emitxhtml_void_element emit_xhtml o_html o_emitctx o_strbuf depth"]
        ) !:comment "when v_resemit is null, fail / emit_xhtml after emitxhtml_void_element"]
    ) !:comment "if v_resemit is null, fail / emit_xhtml after emitxhtml_void_element"]
@@ -107,7 +107,7 @@ $[^when (*is_objectv(v_html)
 
    $[^cond (
      $[^when (*is_null (v_resemit)
-       $[^fail(*make_node !failure_miss !_5NH940lCHYJ_3nuRm3flnzc !emit_xhtml o_html o_emitctx o_strbuf *taggedint(i_depth))
+       $[^fail(*make_node (!failure_miss !_5NH940lCHYJ_3nuRm3flnzc !emit_xhtml o_html o_emitctx o_strbuf *taggedint(i_depth)))
          !:comment "fail-miss emitxhtml_element emit_xhtml o_html o_emitctx o_strbuf depth"]
        ) !:comment "when v_resemit is null, fail / emit_xhtml after emitxhtml_element"]
    ) !:comment "if v_resemit is null, fail / emit_xhtml after emitxhtml_element"]
@@ -118,9 +118,9 @@ $[^when (*is_objectv(v_html)
 
    ////////////////////////////////
    $[^when (*objectisinstance (o_html !html_sequence_object)
-     $[^assign (o_spacing *object_cast (*send o_html !html_spacing (o_emitctx *taggedint(i_depth))))
+     $[^assign (o_spacing *object_cast (*send (o_html !html_spacing o_emitctx *taggedint(i_depth))))
       !:comment "o_spacing := o_html.html_spacing(o_emitctx depth) // emit_xhtml for html_sequence_object"]
-      .
+
      $[^assign (leni *objnbcomps(o_html)) !:comment "leni := objnbcomps(o_html) // emit_xhtml for html_sequence_object"]
      $[^run ( #{/*debug emit_xhtml html_sequence_object o_html leni o_spacing o_emitctx o_strbuf depth*/
      DBGPRINTF_BM("emit_xhtml html_sequence_object  €%.9s o_html=%s leni#%ld o_spacing=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
@@ -140,10 +140,18 @@ $[^when (*is_objectv(v_html)
          $[^when (
 	   *and_then (*greater_int (ii 0) o_spacing)
 	   $[^objswitch (o_spacing
-	     ////@@@@@ A COMPLETER
+	     $[^when (space
+	       $[^out (o_strbuf *space()) !:comment "emit-space/ emit_xhtml html_sequence_object"]
+	     ) !:comment "when o_spacing is space // emit_xhtml html_sequence_object"]
+	     $[^when (newline
+	       $[^out (o_strbuf *newline()) !:comment "emit-newline/ emit_xhtml html_sequence_object"]
+	     ) !:comment "when o_spacing is newline // emit_xhtml html_sequence_object"]
+	     $[^when (nlsp
+	       $[^out (o_strbuf *nlsp()) !:comment "emit-nl/sp/ emit_xhtml html_sequence_object"]
+	     ) !:comment "when o_spacing is nlsp // emit_xhtml html_sequence_object"]
 	   ) !:comment "objswitch o_spacing  // emit_xhtml for html_sequence_object"]
 	 ) !:comment "when ii>0 && o_spacing // emit_xhtml for html_sequence_object"]
-       ) !:comment "if ii>0 && o_spacing // emit_xhtml for html_sequence_object"]
+       ) !:comment "if ii>0 && o_spacing use it // emit_xhtml for html_sequence_object"]
        
        $[^assign (v_comp *objgetcomp(o_html ii)) !:comment "v_comp := o_html[ii] // emit_xhtml for html_sequence_object"]
      $[^run ( #{/*debug emit_xhtml html_sequence_object ii v_comp o_html o_emitctx o_strbuf depth*/
@@ -160,6 +168,25 @@ $[^when (*is_objectv(v_html)
      
       $[^assign(v_resemit *apply (!emit_xhtml v_comp o_emitctx o_strbuf *taggedint(*add_int(i_depth 1))))
          !:comment "v_resemit := emit_xhtml (v_comp o_emitctx o_strbuf depth+1) // emit_xhtml for html_sequence_object"]
+   $[^run ( #{/*debug emit_xhtml for html_sequence_object v_resemit v_comp ii o_html o_emitctx o_strbuf depth*/
+   DBGPRINTF_BM("emit_xhtml for html_sequence_object €%.9s v_resemit=%s v_comp=%s ii#%ld o_html=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+   "$stmtid",
+   OUTSTRVALUE_BM($v_resemit),
+   OUTSTRVALUE_BM($v_comp),
+   (long int) ($ii),
+   objectdbg_BM($o_html),
+   objectdbg1_BM($o_emitctx),
+   objectdbg2_BM($o_strbuf),
+   objstrbufferlengthpayl_BM($o_strbuf),
+   (long int) ($i_depth));
+   }# ) !:comment "debug emit_xhtml for html_sequence_object v_resemit v_comp ii o_html o_emitctx o_strbuf depth"]
+
+   $[^cond (
+     $[^when (*is_null (v_resemit)
+       $[^fail(*make_node (!failure_miss !emit_xhtml !html_sequence_object v_comp *taggedint(ii) o_html o_emitctx o_strbuf *taggedint(i_depth)))
+         !:comment "fail-miss emit_xhtml html_sequence_object v_comp ii o_html o_emitctx o_strbuf depth"]
+       ) !:comment "when v_resemit is null, fail / emit_xhtml after emitxhtml_element"]
+   ) !:comment "if v_resemit is null, fail / emit_xhtml after emitxhtml_element"]
     
      ) !:comment "for ii upto leni // emit_xhtml for html_sequence_object"]
      
@@ -167,18 +194,51 @@ $[^when (*is_objectv(v_html)
 
    ) !:comment "when o_html is a html_sequence_object"]
 
+   ////////////////
+   /// otherwise, get the emit_xhtml slot of that object into v_clos....
+   $[^assign (v_clos *objgetattr(o_html !emit_xhtml)) !:comment "v_clos := objgetattr(o_html emit_xhtml) / emit_xhtml"]
 
-   /// do we need some else clause here?    Yes, we need to fail
-   ) !:comment "cond on o_html"]
+   $[^cond (
+     $[^when (v_clos
+     $[^run ( #{/*emit_xhtml ordinary v_clos o_html o_emitctx o_strbuf depth*/
+       DBGPRINTF_BM("emit_xhtml €%.9s ordinary v_clos=%s o_html=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+        "$stmtid",
+        OUTSTRVALUE_BM($v_clos),
+        objectdbg_BM($o_html),  objectdbg1_BM($o_emitctx),
+        objectdbg2_BM($o_strbuf),  objstrbufferlengthpayl_BM($o_strbuf),
+        (long int) ($i_depth));
+   }# ) !:comment "debug emit_xhtml ordinary v_clos o_html o_emitctx o_strbuf depth"]
+      $[^assign(v_resemit *apply (v_clos o_html o_emitctx o_strbuf *taggedint(*add_int(i_depth 1))))
+         !:comment "v_resemit := v_clos (o_html o_emitctx o_strbuf depth+1) // emit_xhtml for ordinary with v_clos"]
+     $[^run ( #{/*emit_xhtml ordinary v_resemit o_html o_emitctx o_strbuf depth*/
+       DBGPRINTF_BM("emit_xhtml €%.9s ordinary v_resemit=%s o_html=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+        "$stmtid",
+        OUTSTRVALUE_BM($v_resemit),
+        objectdbg_BM($o_html),  objectdbg1_BM($o_emitctx),
+        objectdbg2_BM($o_strbuf),   objstrbufferlengthpayl_BM($o_strbuf),
+        (long int) ($i_depth));
+   }# ) !:comment "debug emit_xhtml ordinary v_resemit o_html o_emitctx o_strbuf depth"]
+   $[^cond (
+     $[^when (*is_null (v_resemit)
+       $[^fail(*make_node (!failure_miss !emit_xhtml v_clos o_html o_emitctx o_strbuf *taggedint(i_depth)))
+         !:comment "fail-miss emit_xhtml v_clos o_html o_emitctx o_strbuf depth"]
+       ) !:comment "when v_resemit is null, fail / emit_xhtml ordinary with v_clos"]
+   ) !:comment "if v_resemit is null, fail / emit_xhtml after emitxhtml_element"]
+     ) !:comment "when v_clos exists from o_html.emit_xhtml in emit_xhtml"]
+
+     $[^out (o_strbuf *object(o_html)) !:comment "else emit object o_html // emit_xhtml"]
+     @@@@
+   ) !:comment "cond if v_clos in emit_xhtml for ordinary object o_html"]
  ) !:comment "otherwise lock o_html ... in emit_xhtml"]
  
  ) !:comment "objswitch o_html ... in emit_xhtml"]
 ) !:comment "when v_html is an object... in emit_xhtml"]
 
 
-$[^when (*isnode (v_html))
+$[^when (*isnode (v_html)
  $[^assign (o_conn *nodeconn(v_html)) !:comment "o_conn := nodeconn(v_html)"]
  /// should handle {buffer c_enc comment hexa  html_enc id int object octa raw_string sequence utf8_enc}
+ )
  ]
  $[^fail (*make_node (!failure_type_error !emit_xhtml v_html o_emitctx o_strbuf *taggedint(i_depth)))
   !:comment "else fail-typeerror emit_xhtml v_html o_emitctx o_strbuf depth"]
