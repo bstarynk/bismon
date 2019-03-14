@@ -1,9 +1,14 @@
 // in body €_3DcbHfTP2t of emit_xhtml function €_8IYFtn8, after the debug start
+// arguments of emit_xhtml: [v_html o_emitctx o_strbuf v_depth]
+// locals of emit_xhtml: {o_conn o_html v_comp v_resapp v_resemit}
+// numbers of emit_xhtml: {i_depth ii leni}
 
 /// that was never added, up to commit 5c78727ecfb881045e2037 on Jan 18
 /// we really want to emit XHTML5 ; should also look into MathML & mathjax.org
-/// ,put _3DcbHfTP2te_8Zw8Uhy9eU6 4
-,add  _3DcbHfTP2te_8Zw8Uhy9eU6
+
+// replace the €_2Pz8uFijO empty cond placeholder on v_html // emit_xhtml
+//
+,put _3DcbHfTP2te_8Zw8Uhy9eU6 4
 
 $[^cond (
 
@@ -39,22 +44,58 @@ $[^when (*is_objectv(v_html)
 
  /// else
  $[^lockobj (o_html
+
+   $[^run ( #{/*debug emit_xhtml object o_html o_emitctx o_strbuf depth*/
+   DBGPRINTF_BM("emit_xhtml object €%.9s o_html=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+   "$stmtid",
+   objectdbg_BM($o_html),
+   objectdbg1_BM($o_emitctx),
+   objectdbg2_BM($o_strbuf),
+   objstrbufferlengthpayl_BM($o_strbuf),
+   (long int) ($i_depth));
+   }# ) !:comment "debug emit_xhtml object o_html o_emitctx o_strbuf depth"]
+
    $[^cond (
 
-   /// we need to introduce some html_void_element_object
+   /// we did introduce some html_void_element_object
    /// for HTML elements like <br /> or <hr />
-
-   $[^when (*objectisinstance (o_html !html_void_element_object)
-   /// emit_void_html_element 
-   ) !:comment "when o_html is a html_void_element_object"]
    
+   //////////////////////////////////
+   $[^when (*objectisinstance (o_html !html_void_element_object)
+   /// emit_void_html_element
+   $[^assign(v_resemit *apply (! _0FRLxSGQlZ0_0qrrUZlEeKp  o_html o_emitctx o_strbuf *taggedint(i_depth)))
+    !:comment "v_resemit := emitxhtml_void_element (o_html o_emitctx o_strbuf depth) // emit_xhtml"]
+
+   $[^run ( #{/*debug emit_xhtml after emitxhtml_void_element v_resemit o_html o_emitctx o_strbuf depth*/
+   DBGPRINTF_BM("emit_xhtml after emitxhtml_void_element €%.9s v_resemit=%s o_html=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+   "$stmtid",
+   OUTSTRVALUE_BM($v_resemit),
+   objectdbg_BM($o_html),
+   objectdbg1_BM($o_emitctx),
+   objectdbg2_BM($o_strbuf),
+   objstrbufferlengthpayl_BM($o_strbuf),
+   (long int) ($i_depth));
+   }# ) !:comment "debug emit_xhtml after emitxhtml_void_element v_resemit o_html o_emitctx o_strbuf depth"]
+
+   $[^cond (
+     $[^when (*is_null (v_resemit)
+       $[^fail(*make_node !failure_miss !_0FRLxSGQlZ0_0qrrUZlEeKp !emit_xhtml o_html o_emitctx o_strbuf *taggedint(i_depth))
+         !:comment "fail-miss emitxhtml_void_element emit_xhtml o_html o_emitctx o_strbuf depth"]
+       ) !:comment "when v_resemit is null, fail / emit_xhtml after emitxhtml_void_element"]
+   ) !:comment "if v_resemit is null, fail / emit_xhtml after emitxhtml_void_element"]
+   
+   ) !:comment "when o_html is a html_void_element_object"]
+
+   ////////////////////////////////
    $[^when (*objectisinstance (o_html !html_element_object)
    /// emit_xhtml_element 
    ) !:comment "when o_html is a html_element_object"]
 
+   ////////////////////////////////
    $[^when (*objectisinstance (o_html !html_sequence_object)
-   /// for each component, handle it...
+   /// for each component, emit_xhtml it...
    ) !:comment "when o_html is a html_sequence_object"]
+
 
    /// do we need some else clause here?
    ) !:comment "cond on o_html"]
