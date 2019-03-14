@@ -62,7 +62,7 @@ $[^when (*is_objectv(v_html)
    
    //////////////////////////////////
    $[^when (*objectisinstance (o_html !html_void_element_object)
-   /// emit_void_html_element
+   /// emitxtml_void_html_element == _0FRLxSGQlZ0_0qrrUZlEeKp
    $[^assign(v_resemit *apply (! _0FRLxSGQlZ0_0qrrUZlEeKp  o_html o_emitctx o_strbuf *taggedint(i_depth)))
     !:comment "v_resemit := emitxhtml_void_element (o_html o_emitctx o_strbuf depth) // emit_xhtml"]
 
@@ -88,7 +88,27 @@ $[^when (*is_objectv(v_html)
 
    ////////////////////////////////
    $[^when (*objectisinstance (o_html !html_element_object)
-   /// emit_xhtml_element 
+   /// emitxhtml_element == _5NH940lCHYJ_3nuRm3flnzc
+   $[^assign(v_resemit *apply (! _5NH940lCHYJ_3nuRm3flnzc  o_html o_emitctx o_strbuf *taggedint(i_depth)))
+    !:comment "v_resemit := emitxhtml_element (o_html o_emitctx o_strbuf depth) // emit_xhtml"]
+   $[^run ( #{/*debug emit_xhtml after emitxhtml_element v_resemit o_html o_emitctx o_strbuf depth*/
+   DBGPRINTF_BM("emit_xhtml after emitxhtml_element €%.9s v_resemit=%s o_html=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+   "$stmtid",
+   OUTSTRVALUE_BM($v_resemit),
+   objectdbg_BM($o_html),
+   objectdbg1_BM($o_emitctx),
+   objectdbg2_BM($o_strbuf),
+   objstrbufferlengthpayl_BM($o_strbuf),
+   (long int) ($i_depth));
+   }# ) !:comment "debug emit_xhtml after emitxhtml_element v_resemit o_html o_emitctx o_strbuf depth"]
+
+   $[^cond (
+     $[^when (*is_null (v_resemit)
+       $[^fail(*make_node !failure_miss !_5NH940lCHYJ_3nuRm3flnzc !emit_xhtml o_html o_emitctx o_strbuf *taggedint(i_depth))
+         !:comment "fail-miss emitxhtml_element emit_xhtml o_html o_emitctx o_strbuf depth"]
+       ) !:comment "when v_resemit is null, fail / emit_xhtml after emitxhtml_element"]
+   ) !:comment "if v_resemit is null, fail / emit_xhtml after emitxhtml_element"]
+
    ) !:comment "when o_html is a html_element_object"]
 
    ////////////////////////////////
@@ -97,7 +117,7 @@ $[^when (*is_objectv(v_html)
    ) !:comment "when o_html is a html_sequence_object"]
 
 
-   /// do we need some else clause here?
+   /// do we need some else clause here?    Yes, we need to fail
    ) !:comment "cond on o_html"]
  ) !:comment "otherwise lock o_html ... in emit_xhtml"]
  
