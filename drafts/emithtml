@@ -1,6 +1,6 @@
 // in body €_3DcbHfTP2t of emit_xhtml function €_8IYFtn8, after the debug start
 // arguments of emit_xhtml: [v_html o_emitctx o_strbuf v_depth]
-// locals of emit_xhtml: {o_conn o_html v_comp v_resapp v_resemit}
+// locals of emit_xhtml: {o_conn o_html v_comp v_resapp v_resemit o_spacing}
 // numbers of emit_xhtml: {i_depth ii leni}
 
 /// that was never added, up to commit 5c78727ecfb881045e2037 on Jan 18
@@ -83,8 +83,11 @@ $[^when (*is_objectv(v_html)
          !:comment "fail-miss emitxhtml_void_element emit_xhtml o_html o_emitctx o_strbuf depth"]
        ) !:comment "when v_resemit is null, fail / emit_xhtml after emitxhtml_void_element"]
    ) !:comment "if v_resemit is null, fail / emit_xhtml after emitxhtml_void_element"]
+
+   $[^return (v_resemit) !:comment "return v_resemit // emit_xhtml after emitxhtml_void_element"]
    
    ) !:comment "when o_html is a html_void_element_object"]
+
 
    ////////////////////////////////
    $[^when (*objectisinstance (o_html !html_element_object)
@@ -108,12 +111,60 @@ $[^when (*is_objectv(v_html)
          !:comment "fail-miss emitxhtml_element emit_xhtml o_html o_emitctx o_strbuf depth"]
        ) !:comment "when v_resemit is null, fail / emit_xhtml after emitxhtml_element"]
    ) !:comment "if v_resemit is null, fail / emit_xhtml after emitxhtml_element"]
+   
+   $[^return (v_resemit) !:comment "return v_resemit // emit_xhtml after emitxhtml_element"]
 
    ) !:comment "when o_html is a html_element_object"]
 
    ////////////////////////////////
    $[^when (*objectisinstance (o_html !html_sequence_object)
-   /// for each component, emit_xhtml it...
+     $[^assign (o_spacing *object_cast (*send o_html !html_spacing (o_emitctx *taggedint(i_depth))))
+      !:comment "o_spacing := o_html.html_spacing(o_emitctx depth) // emit_xhtml for html_sequence_object"]
+      .
+     $[^assign (leni *objnbcomps(o_html)) !:comment "leni := objnbcomps(o_html) // emit_xhtml for html_sequence_object"]
+     $[^run ( #{/*debug emit_xhtml html_sequence_object o_html leni o_spacing o_emitctx o_strbuf depth*/
+     DBGPRINTF_BM("emit_xhtml html_sequence_object  €%.9s o_html=%s leni#%ld o_spacing=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+     "$stmtid",
+     objectdbg_BM($o_html),
+     (long int) ($leni),
+     objectdbg1_BM($o_spacing),
+     objectdbg2_BM($o_emitctx),
+     objectdbg3_BM($o_strbuf),
+     objstrbufferlengthpayl_BM($o_strbuf),
+     (long int) ($i_depth));
+     }# ) !:comment "debug emit_xhtml html_sequence_object o_html leni o_spacing o_emitctx o_strbuf depth"]
+
+     /// for each component, emit_xhtml it with depth+1..
+     $[^for_up (ii leni
+       $[^cond (
+         $[^when (
+	   *and_then (*greater_int (ii 0) o_spacing)
+	   $[^objswitch (o_spacing
+	     ////@@@@@ A COMPLETER
+	   ) !:comment "objswitch o_spacing  // emit_xhtml for html_sequence_object"]
+	 ) !:comment "when ii>0 && o_spacing // emit_xhtml for html_sequence_object"]
+       ) !:comment "if ii>0 && o_spacing // emit_xhtml for html_sequence_object"]
+       
+       $[^assign (v_comp *objgetcomp(o_html ii)) !:comment "v_comp := o_html[ii] // emit_xhtml for html_sequence_object"]
+     $[^run ( #{/*debug emit_xhtml html_sequence_object ii v_comp o_html o_emitctx o_strbuf depth*/
+     DBGPRINTF_BM("emit_xhtml html_sequence_object €%.9s ii#%ld v_comp=%s o_html=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+     "$stmtid",
+     (long int) ($ii),
+     OUTSTRVALUE_BM($v_comp),
+     objectdbg_BM($o_html),
+     objectdbg1_BM($o_emitctx),
+     objectdbg2_BM($o_strbuf),
+     objstrbufferlengthpayl_BM($o_strbuf),
+     (long int) ($i_depth));
+     }# ) !:comment "debug emit_xhtml html_sequence_object ii v_comp o_html o_emitctx o_strbuf depth"]
+     
+      $[^assign(v_resemit *apply (!emit_xhtml v_comp o_emitctx o_strbuf *taggedint(*add_int(i_depth 1))))
+         !:comment "v_resemit := emit_xhtml (v_comp o_emitctx o_strbuf depth+1) // emit_xhtml for html_sequence_object"]
+    
+     ) !:comment "for ii upto leni // emit_xhtml for html_sequence_object"]
+     
+   $[^return (v_resemit) !:comment "return o_html // emit_xhtml for html_sequence_object"]
+
    ) !:comment "when o_html is a html_sequence_object"]
 
 
