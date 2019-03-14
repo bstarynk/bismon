@@ -227,19 +227,32 @@ $[^when (*is_objectv(v_html)
      ) !:comment "when v_clos exists from o_html.emit_xhtml in emit_xhtml"]
 
      $[^out (o_strbuf *object(o_html)) !:comment "else emit object o_html // emit_xhtml"]
-     @@@@
-   ) !:comment "cond if v_clos in emit_xhtml for ordinary object o_html"]
+   ) !:comment "else .... cond if v_clos in emit_xhtml for ordinary object o_html"]
+
+
+   ) !:comment "cond on o_html ... in emit_xhtml"]
  ) !:comment "otherwise lock o_html ... in emit_xhtml"]
  
  ) !:comment "objswitch o_html ... in emit_xhtml"]
+
 ) !:comment "when v_html is an object... in emit_xhtml"]
 
-
+///////
 $[^when (*isnode (v_html)
  $[^assign (o_conn *nodeconn(v_html)) !:comment "o_conn := nodeconn(v_html)"]
+     $[^run ( #{/*emit_xhtml node v_html o_conn o_emitctx o_strbuf depth*/
+       DBGPRINTF_BM("emit_xhtml €%.9s node v_html=%s o_conn=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+        "$stmtid",
+        OUTSTRVALUE_BM($v_html),
+        objectdbg_BM($o_conn),  objectdbg1_BM($o_emitctx),
+        objectdbg2_BM($o_strbuf),   objstrbufferlengthpayl_BM($o_strbuf),
+        (long int) ($i_depth));
+   }# ) !:comment "debug emit_xhtml node v_html o_conn o_emitctx o_strbuf depth"]
  /// should handle {buffer c_enc comment hexa  html_enc id int object octa raw_string sequence utf8_enc}
  )
- ]
+ ] // end when v_html is a node
+
+//////
  $[^fail (*make_node (!failure_type_error !emit_xhtml v_html o_emitctx o_strbuf *taggedint(i_depth)))
   !:comment "else fail-typeerror emit_xhtml v_html o_emitctx o_strbuf depth"]
   
