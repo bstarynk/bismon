@@ -248,7 +248,34 @@ $[^when (*isnode (v_html)
         objectdbg2_BM($o_strbuf),   objstrbufferlengthpayl_BM($o_strbuf),
         (long int) ($i_depth));
    }# ) !:comment "debug emit_xhtml node v_html o_conn o_emitctx o_strbuf depth"]
- /// should handle {buffer c_enc comment hexa  html_enc id int object octa raw_string sequence utf8_enc}
+   /// should handle {buffer c_enc comment hexa html_enc id int object octa raw_string sequence utf8_enc}
+   $[^objswitch (o_conn
+      $[^when (buffer
+       ) !:comment "when o_conn is buffer // emit_xhtml node"]
+      $[^when (c_enc
+       ) !:comment "when o_conn is c_enc // emit_xhtml node"]
+      $[^when (comment
+       ) !:comment "when o_conn is comment // emit_xhtml node"]
+      $[^when (hexa
+       ) !:comment "when o_conn is hexa // emit_xhtml node"]
+      $[^when (html_enc
+       ) !:comment "when o_conn is html_enc // emit_xhtml node"]
+      $[^when (id
+       ) !:comment "when o_conn is id // emit_xhtml node"]
+      $[^when (int
+       ) !:comment "when o_conn is int // emit_xhtml node"]
+      $[^when (object
+       ) !:comment "when o_conn is object // emit_xhtml node"]
+      $[^when (octa
+       ) !:comment "when o_conn is octa // emit_xhtml node"]
+      $[^when (raw_string
+       ) !:comment "when o_conn is raw_string // emit_xhtml node"]
+      $[^when (sequence
+       ) !:comment "when o_conn is sequence // emit_xhtml node"]
+      $[^when (utf8_enc
+       ) !:comment "when o_conn is utf8_enc // emit_xhtml node"]
+       
+    ) !:comment "objswitch o_conn // emit_xhtml node"]
  )
  ] // end when v_html is a node
 
