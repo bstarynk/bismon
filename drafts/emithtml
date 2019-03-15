@@ -129,7 +129,7 @@ $[^when (*is_objectv(v_html)
    objectdbg2_BM($o_strbuf),
    objstrbufferlengthpayl_BM($o_strbuf),
    (long int) ($i_depth));
-   }# ) !:comment "debug emit_xhtml sent to html_active_object v_resemit o_html o_emitctx o_strbuf depth"]# ) !:comment "debug emit_xhtml after emitxhtml_element v_resemit o_html o_emitctx o_strbuf depth"]
+   }# ) !:comment "debug emit_xhtml sent to html_active_object v_resemit o_html o_emitctx o_strbuf depth"]
 
    $[^cond (
      $[^when (*is_null (v_resemit)
