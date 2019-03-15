@@ -13,7 +13,7 @@
 $[^cond (
 
 $[^when (*is_stringv (v_html)
-  $[^out (o_strbuf *html_enc(v_html)) !:comment "emit html-encoded v_html string"]
+  $[^out (o_strbuf *html_enc(*bytstring(v_html))) !:comment "emit html-encoded v_html string"]
  ) !:comment "when v_html is string"]
 
 $[^when (*is_intv (v_html)
