@@ -1,10 +1,18 @@
 // in body €_3DcbHfTP2t of emit_xhtml function €_8IYFtn8, after the debug start
 // arguments of emit_xhtml: [v_html o_emitctx o_strbuf v_depth]
-// locals of emit_xhtml: {o_conn o_html v_comp v_resapp v_resemit o_spacing v_clos}
+// locals of emit_xhtml: {o_comp o_conn o_html v_comp v_resapp v_resemit o_spacing v_clos}
 // numbers of emit_xhtml: {i_depth ii leni}
 
 /// that was never added, up to commit 5c78727ecfb881045e2037 on Jan 18
 /// we really want to emit XHTML5 ; should also look into MathML & mathjax.org
+
+
+,nval checklenione $[^cond ($[^when (
+  *unequal_int(leni 1)
+  $[^fail (*make_node (!failure_bad_rank !emit_xhtml v_html o_emitctx o_strbuf *taggedint(i_depth)
+  )) !:comment "fail-bad-rank emit_xhtml v_html o_emitctx o_strbuf depth"]
+) !:comment "when leni != 1 fail //emit_xhtml"]
+) !:comment "if leni != 1 fail //emit xhtml"]
 
 // replace the €_2Pz8uFijO empty cond placeholder on v_html // emit_xhtml
 //
@@ -274,32 +282,52 @@ $[^when (*isnode (v_html)
         objectdbg2_BM($o_strbuf),   objstrbufferlengthpayl_BM($o_strbuf),
         (long int) ($i_depth));
    }# ) !:comment "debug emit_xhtml node v_html o_conn o_emitctx o_strbuf depth"]
+   $[^assign (leni *nodewidth(v_comp)) !:comment "leni := nodewidth(v_comp) // emit_xhtml node"]
    /// should handle {buffer c_enc comment hexa html_enc id int object octa raw_string sequence utf8_enc}
    $[^objswitch (o_conn
       $[^when (buffer
+        $:checklenione
+	$[^assign (o_comp *val_to_object (*nodenthson(v_comp 0)))
+	   !:comment "o_comp := v_comp[0] as object /emit_xhtml"]
+	$[^out (o_strbuf *html_enc(*objstrbufferbytespayl(o_comp)))
+	   !:comment "emit html_enc(objstrbufferbytespayl(o_comp)) // emit_xhtml node !buffer"]
        ) !:comment "when o_conn is buffer // emit_xhtml node"]
       $[^when (c_enc
+        $:checklenione
+	$[^out (o_strbuf *c_enc(*bytstring(*nodenthson(v_comp 0))))
+	   !:comment "emit c_enc(bytstring(v_comp[0])) // emit_xhtml node !c_enc"]
        ) !:comment "when o_conn is c_enc // emit_xhtml node"]
       $[^when (comment
+        $:checklenione
+	$[^out (o_strbuf "<!--" *html_enc(*nodenthson(v_comp 0)) "-->")
+	   !:comment "emit '<!--' html_enc(v_comp[0]) '-->' // emit_xhtml node !buffer"]
        ) !:comment "when o_conn is comment // emit_xhtml node"]
       $[^when (hexa
+        $:checklenione
        ) !:comment "when o_conn is hexa // emit_xhtml node"]
       $[^when (html_enc
+        $:checklenione
        ) !:comment "when o_conn is html_enc // emit_xhtml node"]
       $[^when (id
+        $:checklenione
        ) !:comment "when o_conn is id // emit_xhtml node"]
       $[^when (int
+        $:checklenione
        ) !:comment "when o_conn is int // emit_xhtml node"]
       $[^when (object
        ) !:comment "when o_conn is object // emit_xhtml node"]
       $[^when (octa
+        $:checklenione
        ) !:comment "when o_conn is octa // emit_xhtml node"]
       $[^when (raw_string
+        $:checklenione
        ) !:comment "when o_conn is raw_string // emit_xhtml node"]
+      $[^when (utf8_enc
+        $:checklenione
+       ) !:comment "when o_conn is utf8_enc // emit_xhtml node"]
+       ///
       $[^when (sequence
        ) !:comment "when o_conn is sequence // emit_xhtml node"]
-      $[^when (utf8_enc
-       ) !:comment "when o_conn is utf8_enc // emit_xhtml node"]
        
     ) !:comment "objswitch o_conn // emit_xhtml node"]
  )
