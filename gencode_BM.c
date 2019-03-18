@@ -2378,7 +2378,7 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
             ("miniscan_stmt°basiclo_objswitch stmtob=%s dix#%d compob=%s block",
              objectdbg_BM (_.stmtob), dix, objectdbg1_BM (_.compob));
           _.resultv =
-            send3_BM (_.subcompob, k_miniscan_block,
+            send3_BM (_.compob, k_miniscan_block,
                       CURFRAME_BM, _.routprepob,
                       taggedint_BM (depth + 1), _.stmtob);
           if (!_.resultv)
