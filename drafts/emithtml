@@ -299,11 +299,14 @@ $[^when (*isnode (v_html)
        ) !:comment "when o_conn is c_enc // emit_xhtml node"]
       $[^when (comment
         $:checklenione
-	$[^out (o_strbuf "<!--" *html_enc(*nodenthson(v_comp 0)) "-->")
+	$[^out (o_strbuf "<!--" *html_enc(*bytstring(*nodenthson(v_comp 0)))
+	        "-->")
 	   !:comment "emit '<!--' html_enc(v_comp[0]) '-->' // emit_xhtml node !buffer"]
        ) !:comment "when o_conn is comment // emit_xhtml node"]
       $[^when (hexa
         $:checklenione
+	$[^out (o_strbuf *hexa (*val_to_int(*nodenthson(v_comp 0))))
+	   !:comment "emit v_comp[0] in hexa // emit_xhtml node !hexa"]
        ) !:comment "when o_conn is hexa // emit_xhtml node"]
       $[^when (html_enc
         $:checklenione
