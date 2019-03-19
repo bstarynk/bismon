@@ -309,19 +309,31 @@ $[^when (*isnode (v_html)
 	$[^out (o_strbuf *hexa (*val_to_int(*nodenthson(v_comp 0))))
 	   !:comment "emit v_comp[0] in hexa // emit_xhtml node !hexa"]
        ) !:comment "when o_conn is hexa // emit_xhtml node"]
-      $[^when (html_enc
+      $[^when (html_enc // double HTML encoding, rarely useful
         $:checklenione
        ) !:comment "when o_conn is html_enc // emit_xhtml node"]
       $[^when (id
         $:checklenione
+	$[^out (o_strbuf *id (*as_object(*nodenthson(v_comp 0))))
+	  !:comment "emit v_comp[0] as an object id"]
        ) !:comment "when o_conn is id // emit_xhtml node"]
       $[^when (int
         $:checklenione
+	$[^out (o_strbuf *int (*val_to_int(*nodenthson(v_comp 0))))
+	   !:comment "emit v_comp[0] in decimal // emit_xhtml node !int"]
        ) !:comment "when o_conn is int // emit_xhtml node"]
       $[^when (object
+	$[^out (o_strbuf *object (*as_object(*nodenthson(v_comp 0))))
+	  !:comment "emit v_comp[0] as an object"]
        ) !:comment "when o_conn is object // emit_xhtml node"]
+      $[^when (name
+	$[^out (o_strbuf *name (*as_object(*nodenthson(v_comp 0))))
+	  !:comment "emit v_comp[0] as an object name"]
+       ) !:comment "when o_conn is name // emit_xhtml node"]
       $[^when (octa
         $:checklenione
+	$[^out (o_strbuf *octa (*val_to_int(*nodenthson(v_comp 0))))
+	   !:comment "emit v_comp[0] in octal // emit_xhtml node !octa"]
        ) !:comment "when o_conn is octa // emit_xhtml node"]
       $[^when (raw_string
         $:checklenione
@@ -332,6 +344,10 @@ $[^when (*isnode (v_html)
        ///
       $[^when (sequence
        ) !:comment "when o_conn is sequence // emit_xhtml node"]
+      $[^when (and_then
+       ) !:comment "when o_conn is and_then // emit_xhtml node"]
+      $[^when (or_else
+       ) !:comment "when o_conn is or_else // emit_xhtml node"]
        
     ) !:comment "objswitch o_conn // emit_xhtml node"]
  )
