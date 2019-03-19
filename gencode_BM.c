@@ -2539,7 +2539,13 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
   if (nbconnargs != nbexpargs)
     FAILHERE (k_arity);
   if (!isobject_BM (_.connrestypob))
-    FAILHERE (k_result_type);
+    {
+      WARNPRINTF_BM
+        ("primitive connective %s with bad result_type for expression %s depth#%d from %s"
+         " (miniscan_node_conn°basiclo_primitive)", objectdbg_BM (_.connob),
+         OUTSTRVALUE_BM (_.expv), depth, objectdbg1_BM (_.fromob));
+      FAILHERE (k_result_type);
+    }
   for (unsigned ix = 0; ix < nbconnargs; ix++)
     {
       _.cursonv = nodenthson_BM (_.expv, ix);
