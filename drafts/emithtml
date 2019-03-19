@@ -151,7 +151,7 @@ $[^when (*is_objectv(v_html)
     
    ////////////////////////////////
    $[^when (*objectisinstance (o_html !html_sequence_object)
-     $[^assign (o_spacing *object_cast (*send (o_html !html_spacing o_emitctx *taggedint(i_depth))))
+     $[^assign (o_spacing *as_object (*send (o_html !html_spacing o_emitctx *taggedint(i_depth))))
       !:comment "o_spacing := o_html.html_spacing(o_emitctx depth) // emit_xhtml for html_sequence_object"]
 
      $[^assign (leni *objnbcomps(o_html)) !:comment "leni := objnbcomps(o_html) // emit_xhtml for html_sequence_object"]
