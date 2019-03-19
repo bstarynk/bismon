@@ -824,8 +824,8 @@ main (int argc, char **argv)
       {
         WARNPRINTF_BM
           ("your LC_NUMERIC locale '%s' is strange but should be in English, encoded in UTF-8, such that ...\n"
-	   " 3.14 (with decimal dot) should be parsed and printable as an approximation of Pi, and\n"
-	   " 6.022e23 should be parsed and printable as an approximation of the Avogadro constant.\n",
+           " 3.14 (with decimal dot) should be parsed and printable as an approximation of Pi, and\n"
+           " 6.022e23 should be parsed and printable as an approximation of the Avogadro constant.\n",
            oldnumloc);
         explainlocale = true;
       }
@@ -894,6 +894,12 @@ main (int argc, char **argv)
       FATAL_BM
         ("something wrong (probably your locale setting, which should be C.UTF-8)."
          " Since '4.5/' is not converted as %f end at %s", x, end);
+    x = 0.0;
+    if (sscanf ("-6.022e23;", "%lf%n", &x, &pos) < 1 || pos != 9
+        || fabs (x + 6.022e+23) > 1e20)
+      FATAL_BM
+        ("something wrong (probably your locale setting, which should be C.UTF-8)."
+         " Since '-6.022e23;' is scanned as %g at position#%d", x, pos);
   }
   {
     double nwt = clocktime_BM (CLOCK_REALTIME);
