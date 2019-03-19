@@ -990,7 +990,7 @@ DBGPRINTF_BM(" emitxhtml_element €%.9s before emit_xhtml: v_comp=%s o_emitctx=
  DBGPRINTF_BM("emitxhtml_element after emit_xhtml €%.9s: v_resemit=%s v_comp=%s ii#%ld o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
  "_5RzQzmfNZTu_5nQjP7QfLLD",
  OUTSTRVALUE_BM( /*v_resemit:*/_.v_0qTBOEAT5pa_2fz1SKfHrMV),
- OUTSTRVALUE_VM( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe),
+ OUTSTRVALUE_BM( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe),
  (long int) ( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B),
  objectdbg_BM( /*o_emitctx:*/_.o_9nXRmTATjN4_5F9V7RvvgW0),
  objectdbg1_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
