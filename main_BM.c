@@ -823,7 +823,9 @@ main (int argc, char **argv)
     if (oldnumloc && !is_nice_locale_BM (oldloc))
       {
         WARNPRINTF_BM
-          ("your LC_NUMERIC locale '%s' is strange but should be in English, encoded in UTF-8.\n",
+          ("your LC_NUMERIC locale '%s' is strange but should be in English, encoded in UTF-8, such that ...\n"
+	   " 3.14 (with decimal dot) should be parsed and printable as an approximation of Pi, and\n"
+	   " 6.022e23 should be parsed and printable as an approximation of the Avogadro constant.\n",
            oldnumloc);
         explainlocale = true;
       }
