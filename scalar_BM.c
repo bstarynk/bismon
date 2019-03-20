@@ -300,6 +300,72 @@ fgmtimestring_BM (const char *fmt, time_t ti)
   return makestring_BM (buf);
 }                               /* end fgmtimestring_BM */
 
+// stringify the strftime of localtime double, with .__ replaced by fractional digits ...
+const stringval_tyBM *
+flocaltimedblstring_BM (const char *fmt, double tidbl)
+{
+  char buf[80];
+  struct tm mytm = { };
+  memset (buf, 0, sizeof (buf));
+  if (!fmt)
+    return NULL;
+  time_t ti = (time_t) floor (tidbl);
+  localtime_r (&ti, &mytm);
+  strftime (buf, sizeof (buf), fmt, &mytm);
+  buf[sizeof (buf) - 1] = (char) 0;
+  char *dotpos = strstr (buf, ".__");
+  if (dotpos)
+    {
+      double ipart;
+      double frac = modf (tidbl, &ipart);
+      if (frac >= 0.0 && frac < 1.0)
+        {
+          char fracbuf[16];
+          memset (fracbuf, 0, sizeof (fracbuf));
+          snprintf (fracbuf, sizeof (fracbuf), "%.2f", frac);
+          strncpy (dotpos, fracbuf, 3);
+        }
+      else
+        strcpy (dotpos, ".00");
+    }
+  return makestring_BM (buf);
+}                               /* end flocaltimedblstring_BM */
+
+
+// stringify the strftime of localtime double tibdl, with .__ replaced by fractional digits ...
+const stringval_tyBM *
+fgmtimedblstring_BM (const char *fmt, double tidbl)
+{
+  if (!fmt)
+    return NULL;
+  char buf[80];
+  struct tm mytm = { };
+  memset (buf, 0, sizeof (buf));
+  if (!fmt)
+    return NULL;
+  time_t ti = (time_t) floor (tidbl);
+  gmtime_r (&ti, &mytm);
+  strftime (buf, sizeof (buf), fmt, &mytm);
+  buf[sizeof (buf) - 1] = (char) 0;
+  char *dotpos = strstr (buf, ".__");
+  if (dotpos)
+    {
+      double ipart;
+      double frac = modf (tidbl, &ipart);
+      if (frac >= 0.0 && frac < 1.0)
+        {
+          char fracbuf[16];
+          memset (fracbuf, 0, sizeof (fracbuf));
+          snprintf (fracbuf, sizeof (fracbuf), "%.2f", frac);
+          strncpy (dotpos, fracbuf, 3);
+        }
+      else
+        strcpy (dotpos, ".00");
+    }
+  return makestring_BM (buf);
+}                               /* end fgmtimedblstring_BM */
+
+
 
 ////////////////////////////////////////////////////////////////
 // support for boxed double values

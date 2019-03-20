@@ -3583,7 +3583,8 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
       const char *commstr = bytstring_BM (_.commentv);
       const char *eol = NULL;
       if (!(eol = strchr (commstr, '\n')) && !(eol = strchr (commstr, '\r')))
-        objstrbufferprintfpayl_BM (_.modgenob, "//!objswitch! %s .\n", commstr);
+        objstrbufferprintfpayl_BM (_.modgenob, "//!objswitch! %s .\n",
+                                   commstr);
       else
         objstrbufferprintfpayl_BM (_.modgenob, "//!objswitch!! %.*s\n",
                                    (int) (eol - commstr), commstr);

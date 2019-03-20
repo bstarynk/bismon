@@ -103,6 +103,10 @@ extern const stringval_tyBM *sprintfstring_BM (const char *fmt, ...)
 // stringify the strftime of localtime, of gmtime...
 extern const stringval_tyBM *flocaltimestring_BM (const char *fmt, time_t ti);
 extern const stringval_tyBM *fgmtimestring_BM (const char *fmt, time_t ti);
+// stringify the strftime, but a .__ is replaced by two decimal digits
+extern const stringval_tyBM *flocaltimedblstring_BM (const char *fmt,
+                                                     double ti);
+extern const stringval_tyBM *fgmtimedblstring_BM (const char *fmt, double ti);
 
 extern int lenstring_BM (const stringval_tyBM *);       // length in bytes
 extern const char *bytstring_BM (const stringval_tyBM *);
