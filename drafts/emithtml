@@ -40,7 +40,7 @@ $[^when (*is_doublev (v_html)
 
 $[^when (*is_objectv(v_html)
  $[^assign (o_html *val_to_object(v_html)) !:comment "o_html := v_html"]
- $[^objswitch (o_html
+ $[^objswitch (o_html // €_8lmPaSnQ7v
  $[^when (newline
   $[^out (o_strbuf *newline()) !:comment "emit-newline"]
   ) !:comment "when newline"]
@@ -50,6 +50,10 @@ $[^when (*is_objectv(v_html)
  $[^when (space
   $[^out (o_strbuf *space()) !:comment "emit-space"]
   ) !:comment "when space"]
+ $[^when (none
+  $[^run (#{/*no-op when none emit_xhtml*/}#)
+     !:comment "no-op when none //emit_xhtml"]
+  )  !:comment "when none //emit_xhtml"]
 
  /// else
  $[^lockobj (o_html
