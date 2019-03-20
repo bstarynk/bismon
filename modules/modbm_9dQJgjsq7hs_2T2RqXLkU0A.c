@@ -1364,10 +1364,14 @@ PLACEDFAILURE_BM(__LINE__,
  
 { // start out _1qF5JsX0Giz_1Y9rX4js1XY to o_webex  
 /*out newline:*/ objstrbuffernewlinepayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx);  
-/*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, "<!-- end root-web-handler o_webex ");  
+/*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, "<!-- end root-web-handler o_webex=");  
 /*out id:*/ char idbuf_1qF5JsX0Giz_1Y9rX4js1XY_n2[32]={0};  
 idtocbuf32_BM (objid_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), idbuf_1qF5JsX0Giz_1Y9rX4js1XY_n2);  
 objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, idbuf_1qF5JsX0Giz_1Y9rX4js1XY_n2);  
+/*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, "; o_websess=");  
+/*out id:*/ char idbuf_1qF5JsX0Giz_1Y9rX4js1XY_n4[32]={0};  
+idtocbuf32_BM (objid_BM( /*o_websess:*/_.o_7UzdV9wjuq2_2PRgXcyAlMi), idbuf_1qF5JsX0Giz_1Y9rX4js1XY_n4);  
+objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, idbuf_1qF5JsX0Giz_1Y9rX4js1XY_n4);  
 /*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, " -->\n"); 
 } // end out _1qF5JsX0Giz_1Y9rX4js1XY 
  
