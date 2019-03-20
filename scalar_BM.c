@@ -1064,6 +1064,34 @@ objstrbufferoutdoublepayl_BM (objectval_tyBM * obj, double x)
 }                               /* end objstrbufferoutdoublepayl_BM */
 
 
+
+void
+objstrbufferencodetimepayl_BM (objectval_tyBM * obj, double tidbl)
+{
+  char buf[80];
+  struct tm mytm = { };
+  memset (buf, 0, sizeof (buf));
+  time_t ti = (time_t) floor (tidbl);
+  localtime_r (&ti, &mytm);
+  strftime (buf, sizeof (buf), "%Y %b %d, %H:%M:%S.__ %Z", &mytm);
+  buf[sizeof (buf) - 1] = (char) 0;
+  char *dotpos = strstr (buf, ".__");
+  ASSERT_BM (dotpos != NULL);
+  double ipart;
+  double frac = modf (tidbl, &ipart);
+  if (frac >= 0.0 && frac < 1.0)
+    {
+      char fracbuf[16];
+      memset (fracbuf, 0, sizeof (fracbuf));
+      snprintf (fracbuf, sizeof (fracbuf), "%.2f", frac);
+      strncpy (dotpos, fracbuf, 3);
+    }
+  else
+    strcpy (dotpos, ".00");
+  objstrbufferappendcstrpayl_BM (obj, buf);
+}                               /* end objstrbufferencodetimepayl_BM */
+
+
 void
 objstrbufferencodedutf8payl_BM (objectval_tyBM * obj, const char *str,
                                 ssize_t bytelen)
@@ -1704,3 +1732,5 @@ objstrbufferwritetofilepayl_BM (objectval_tyBM * obj, const char *filepath)
     FATAL_BM ("fclose %s failed (%m)", filepath);
   INFOPRINTF_BM ("file %s written", filepath);
 }                               /* end objstrbufferwritetofilepayl_BM */
+
+// end of file scalar_BM.c

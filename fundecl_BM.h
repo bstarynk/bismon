@@ -574,6 +574,9 @@ extern void writefencodedutf8_BM (FILE * fil, const char *str,
 /// integer. Returns true when hexadecimal %#a was used
 extern bool objstrbufferoutdoublepayl_BM (objectval_tyBM * obj, double x);
 
+/// output a double, as a local time
+extern void objstrbufferencodetimepayl_BM (objectval_tyBM * obj, double tid);
+
 /// output bytes encoded à la C
 extern void objstrbufferencodedcpayl_BM (objectval_tyBM * obj,
                                          const char *str, ssize_t bytelen);
