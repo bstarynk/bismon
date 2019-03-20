@@ -273,7 +273,7 @@ $[^when (*is_objectv(v_html)
 ) !:comment "when v_html is an object... in emit_xhtml"]
 
 ///////
-$[^when (*isnode (v_html)
+$[^when (*isnode (v_html)  // this when is €_0TcBev05JBd
  $[^assign (o_conn *nodeconn(v_html)) !:comment "o_conn := nodeconn(v_html)"]
      $[^run ( #{/*emit_xhtml node v_html o_conn o_emitctx o_strbuf depth*/
        DBGPRINTF_BM("emit_xhtml €%.9s node v_html=%s o_conn=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
@@ -285,7 +285,8 @@ $[^when (*isnode (v_html)
    }# ) !:comment "debug emit_xhtml node v_html o_conn o_emitctx o_strbuf depth"]
    $[^assign (leni *nodewidth(v_comp)) !:comment "leni := nodewidth(v_comp) // emit_xhtml node"]
    /// should handle {buffer c_enc comment hexa html_enc id int object octa raw_string sequence utf8_enc}
-   $[^objswitch (o_conn
+   $[^objswitch // this objswitch is €_4ySLl7UU6H
+     (o_conn
       $[^when (buffer
         $:checklenione
 	$[^assign (o_comp *val_to_object (*nodenthson(v_comp 0)))
@@ -337,6 +338,8 @@ $[^when (*isnode (v_html)
        ) !:comment "when o_conn is octa // emit_xhtml node"]
       $[^when (raw_string
         $:checklenione
+	$[^out (o_strbuf *string(*bytstring(*nodenthson(v_comp 0))))
+	  !:comment "emit v_comp[0] as raw string // emit_xhtml node !raw_string"]
        ) !:comment "when o_conn is raw_string // emit_xhtml node"]
       $[^when (utf8_enc
         $:checklenione
