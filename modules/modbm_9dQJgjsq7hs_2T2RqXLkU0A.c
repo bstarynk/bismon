@@ -2317,6 +2317,11 @@ PLACEDFAILURE_BM(__LINE__,
 } //endwhen _2UrMXUkmSru_3wmMLxYIl9M    
 /*endcond _6kMu9FzjNaV_81NFYpU63dZ*/   
    
+ // objswitch _4ySLl7UU6Hw_7pgQRbU4gFX when _34JfZ8fuP0p_6pFQ2GljNtB #1 statement:   
+{ // start out _3jvq2V6NsBC_7LeoGHLIR1h to o_strbuf    
+/*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, /*bytstring:*/bytstring_BM((const stringval_tyBM*)(/*nodenthson:*/nodenthson_BM(( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe),( 0)))));   
+} // end out _3jvq2V6NsBC_7LeoGHLIR1h   
+   
    
 break; // end when _34JfZ8fuP0p_6pFQ2GljNtB #5 of objswitch _4ySLl7UU6Hw_7pgQRbU4gFX   
    
