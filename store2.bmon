@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2804 objects
+// for 2805 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -7989,6 +7989,24 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 
 
+!(_0XdSxSz2ISV_0gb9GZZJT0z |=objwebexchangedbltime|
+!~ name (~ objwebexchangedbltime
+~)
+!@ 1553075122.840
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the double, time of webexchange $o1 or else 0"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _0XdSxSz2ISV_0gb9GZZJT0z  ":*/"  "objwebexchangedbltime_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_2qDaJRPDbEG_45AvdxtQXAM
+!)_0XdSxSz2ISV_0gb9GZZJT0z
+
+
+
 !(_2mvvzOGwLYD_11UHbG2MXDC |=objwebexchangerequestcstrheaderpayl|
 !~ name (~ objwebexchangerequestcstrheaderpayl
 ~)
@@ -8160,7 +8178,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !(_3ajxKjRfP6L_3RfkEm8VnwC |=objwebexchangetime|
 !~ name (~ objwebexchangetime
 ~)
-!@ 1534342428.529
+!@ 1553074907.528
 !$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "returns the time of a webexchange object o1 or else 0"
@@ -8169,6 +8187,8 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3ajxKjRfP6L_3RfkEm8VnwC  ":*/"  "objwebexchangetime_BM"  "(" 
   * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
 !)_3ajxKjRfP6L_3RfkEm8VnwC
 
 
