@@ -265,6 +265,7 @@ else if
 /*nodeconn:*/nodeconn_BM( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe);   
    
 { // begin objswitch _88CClQZGP1N_57QoKCh6Ivj   
+//!objswitch! objswitch o_conn .. emit_statement°basiclo_outstmt .   
  objectval_tyBM* objswexp_88CClQZGP1N_57QoKCh6Ivj = ( /*o_conn:*/_.o_13K9OfeXRZR_84nyRTtoj81);   
  switch (objecthash_BM (objswexp_88CClQZGP1N_57QoKCh6Ivj) % 64) {   
  case 0:   
@@ -2932,6 +2933,7 @@ else if
 /*nodeconn:*/nodeconn_BM( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe);   
    
 { // begin objswitch _3WmrD9dWzVs_6l9CVwfdtYt   
+//!objswitch! obj-switch o_conn .. miniscan_stmt°basiclo_outstmt .   
  objectval_tyBM* objswexp_3WmrD9dWzVs_6l9CVwfdtYt = ( /*o_conn:*/_.o_13K9OfeXRZR_84nyRTtoj81);   
  switch (objecthash_BM (objswexp_3WmrD9dWzVs_6l9CVwfdtYt) % 64) {   
  case 0:   

@@ -1462,6 +1462,7 @@ DBGPRINTF_BM("scan_jsexpr°jsvar_object €%.9s v_bind=%s o_prepjfun=%s o_jsvar=
 /*nodeconn:*/nodeconn_BM( /*v_bind:*/_.v_5J5pv8d2W5o_5oKsK4Eu12b);  
   
 { // begin objswitch _9cUSZI2tbv0_7kViRPxWEAc  
+//!objswitch! objswitch o_conn from v_bind from o_prepjfun .  
  objectval_tyBM* objswexp_9cUSZI2tbv0_7kViRPxWEAc = ( /*o_conn:*/_.o_13K9OfeXRZR_84nyRTtoj81);  
  switch (objecthash_BM (objswexp_9cUSZI2tbv0_7kViRPxWEAc) % 16) {  
  case 5:  

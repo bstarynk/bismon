@@ -3514,6 +3514,7 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
                  objectval_tyBM * switchob;     //
                  objectval_tyBM * modulob;      //
                  value_tyBM compv;      //
+                 value_tyBM commentv;   //
                  value_tyBM whensetv;   //
                  value_tyBM defaulttupv;        //
                  value_tyBM emitv;      //
@@ -3566,6 +3567,7 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
   _.whensetv = objgetattr_BM (_.propob, k_when);
   _.defaulttupv = objgetattr_BM (_.propob, k_default);
   _.switchexpv = objgetattr_BM (_.stmtob, k_switch);
+  _.commentv = objgetattr_BM (_.stmtob, BMP_comment);
   char stmtidbuf[32];
   memset (stmtidbuf, 0, sizeof (stmtidbuf));
   idtocbuf32_BM (objid_BM (_.stmtob), stmtidbuf);
@@ -3576,6 +3578,16 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
   objstrbuffernewlinepayl_BM (_.modgenob);
   objstrbufferprintfpayl_BM (_.modgenob, "{ // begin objswitch %s\n",
                              stmtidbuf);
+  if (isstring_BM (_.commentv))
+    {
+      const char *commstr = bytstring_BM (_.commentv);
+      const char *eol = NULL;
+      if (!(eol = strchr (commstr, '\n')) && !(eol = strchr (commstr, '\r')))
+        objstrbufferprintfpayl_BM (_.modgenob, "//!objswitch! %s .\n", commstr);
+      else
+        objstrbufferprintfpayl_BM (_.modgenob, "//!objswitch!! %.*s\n",
+                                   (int) (eol - commstr), commstr);
+    }
   objstrbufferprintfpayl_BM (_.modgenob, " objectval_tyBM* objswexp%s = (",
                              stmtidbuf);
   miniemit_expression_BM (CURFRAME_BM, _.switchexpv, _.modgenob,

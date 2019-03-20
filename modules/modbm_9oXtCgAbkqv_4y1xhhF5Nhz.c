@@ -79,6 +79,7 @@ startblock__7eNL9Vje1Be_8iB8cXzHjcs: __attribute__((unused));
 { /* +block _7eNL9Vje1Be_8iB8cXzHjcs */ 
  
 { // begin objswitch _411NjvTH7B8_3FGcvfkrAZJ 
+//!objswitch! test objswitch o1 . 
  objectval_tyBM* objswexp_411NjvTH7B8_3FGcvfkrAZJ = ( /*o1:*/_.o_97rnxb0KFqq_44veN75DG2E); 
  switch (objecthash_BM (objswexp_411NjvTH7B8_3FGcvfkrAZJ) % 16) { 
  case 2: 

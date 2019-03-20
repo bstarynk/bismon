@@ -1677,6 +1677,7 @@ else if
 /*val_to_object:*/objectcast_BM( /*v_html:*/_.v_0DmuWueFbx9_5bzv8xgw3fu);  
   
 { // begin objswitch _8lmPaSnQ7vo_33pxLUv2PDV  
+//!objswitch! objswitch o_html ... in emit_xhtml .  
  objectval_tyBM* objswexp_8lmPaSnQ7vo_33pxLUv2PDV = ( /*o_html:*/_.o_9GjmuXWAb93_7ZScgIdlvkf);  
  switch (objecthash_BM (objswexp_8lmPaSnQ7vo_33pxLUv2PDV) % 16) {  
  case 2:  
@@ -1892,6 +1893,7 @@ if /*cond _3EDeEwM9fti_4HLOXeN3v92*/
  (/*lazy and_then:*/ (intptr_t) (1 && ((/*greater_int:*/( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B) > ( 0))) && ( /*o_spacing:*/_.o_7Ga6z7nroCG_3ikx3GHV41r))) { //body when _5icpCcWHLp9_3pKk7OH9VP9      
       
 { // begin objswitch _0shUy80I2UQ_5UJrLOmsND6      
+//!objswitch! objswitch o_spacing  // emit_xhtml for html_sequence_object .      
  objectval_tyBM* objswexp_0shUy80I2UQ_5UJrLOmsND6 = ( /*o_spacing:*/_.o_7Ga6z7nroCG_3ikx3GHV41r);      
  switch (objecthash_BM (objswexp_0shUy80I2UQ_5UJrLOmsND6) % 16) {      
  case 2:      
@@ -2142,6 +2144,7 @@ else if
 /*nodewidth:*/(intptr_t)nodewidth_BM( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe);  
   
 { // begin objswitch _4ySLl7UU6Hw_7pgQRbU4gFX  
+//!objswitch! objswitch o_conn // emit_xhtml node .  
  objectval_tyBM* objswexp_4ySLl7UU6Hw_7pgQRbU4gFX = ( /*o_conn:*/_.o_13K9OfeXRZR_84nyRTtoj81);  
  switch (objecthash_BM (objswexp_4ySLl7UU6Hw_7pgQRbU4gFX) % 32) {  
  case 0:  
