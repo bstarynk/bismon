@@ -575,7 +575,8 @@ extern void writefencodedutf8_BM (FILE * fil, const char *str,
 extern bool objstrbufferoutdoublepayl_BM (objectval_tyBM * obj, double x);
 
 /// output a double, as a local time
-extern void objstrbufferencodelocaltimepayl_BM (objectval_tyBM * obj, double tid);
+extern void objstrbufferencodelocaltimepayl_BM (objectval_tyBM * obj,
+                                                double tid);
 
 /// output bytes encoded à la C
 extern void objstrbufferencodedcpayl_BM (objectval_tyBM * obj,

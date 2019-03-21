@@ -1084,7 +1084,9 @@ objstrbufferencodelocaltimepayl_BM (objectval_tyBM * obj, double tidbl)
       char fracbuf[16];
       memset (fracbuf, 0, sizeof (fracbuf));
       snprintf (fracbuf, sizeof (fracbuf), "%.2f", frac);
-      strncpy (dotpos, fracbuf, 3);
+      char *fracdot = strchr (fracbuf, '.');
+      ASSERT_BM (fracdot != NULL);
+      strncpy (dotpos, fracdot, 3);
     }
   else
     strcpy (dotpos, ".00");
