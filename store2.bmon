@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2805 objects
+// for 2807 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -3446,6 +3446,28 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "used for output of literal C strings in out"
 !)_5wNedaaTb99_3ZQe6xm9HNx
+
+
+
+!(_2W2LFnO44dr_973izSVn0hU |=local_time|
+!~ name (~ local_time
+~)
+!@ 1553156019.920
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "converts time t1 to string value, as local time"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _53yfS6hPB5r_3jHEDsZCgGo ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2W2LFnO44dr_973izSVn0hU  ":*/"  "flocaltimedblstring_BM"  "(\"%" 
+  "Y"  " "  "%"  "b"  " " 
+  "%"  "d"  ","  " "  "%" 
+  "H"  ":%"  "M"  ":%"  "S" 
+  ".__"  " "  "%"  "Z"  "\"," 
+  " "  "(" _53yfS6hPB5r_3jHEDsZCgGo  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_2W2LFnO44dr_973izSVn0hU
 
 
 
@@ -9460,6 +9482,17 @@ _7XasLoEUKwe_9upxyFeheD5
 !: _0NnNXZqWvmz_1ucZGX0YPu1 |=command_arity|
  1
 !)_9b8m2z3Zx1m_7lvJF32Kzpz
+
+
+
+!(_53yfS6hPB5r_3jHEDsZCgGo |=t1|
+!~ name (~ t1
+~)
+!@ 1553155750.080
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_2qDaJRPDbEG_45AvdxtQXAM
+!)_53yfS6hPB5r_3jHEDsZCgGo
 
 
 
