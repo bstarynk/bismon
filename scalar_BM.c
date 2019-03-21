@@ -1073,7 +1073,7 @@ objstrbufferencodelocaltimepayl_BM (objectval_tyBM * obj, double tidbl)
   memset (buf, 0, sizeof (buf));
   time_t ti = (time_t) floor (tidbl);
   localtime_r (&ti, &mytm);
-  strftime (buf, sizeof (buf), "%Y %b %d, %H:%M:%S.__ %Z", &mytm);
+  strftime (buf, sizeof (buf), LOCAL_TIME_CENTISECOND_FMT_BM, &mytm);
   buf[sizeof (buf) - 1] = (char) 0;
   char *dotpos = strstr (buf, ".__");
   ASSERT_BM (dotpos != NULL);

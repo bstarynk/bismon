@@ -239,6 +239,9 @@ extern void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
   INFOPRINTFAT_BM(__FILE__,__LINE__,Fmt,##__VA_ARGS__)
 
 ////////////////
+/* the literal string used for local time, to the centisecond */
+#define LOCAL_TIME_CENTISECOND_FMT_BM "%Y %b %d, %H:%M:%S.__ %Z"
+////////////////
 
 #define DBGBACKTRACEPRINTFATBIS_BM(Fil,Lin,Fmt,...) do {	\
     if (debugmsg_BM) { printf("%s:%d:+ " Fmt "\n",		\
