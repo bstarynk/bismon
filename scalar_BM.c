@@ -1066,7 +1066,7 @@ objstrbufferoutdoublepayl_BM (objectval_tyBM * obj, double x)
 
 
 void
-objstrbufferencodetimepayl_BM (objectval_tyBM * obj, double tidbl)
+objstrbufferencodelocaltimepayl_BM (objectval_tyBM * obj, double tidbl)
 {
   char buf[80];
   struct tm mytm = { };
@@ -1089,7 +1089,7 @@ objstrbufferencodetimepayl_BM (objectval_tyBM * obj, double tidbl)
   else
     strcpy (dotpos, ".00");
   objstrbufferappendcstrpayl_BM (obj, buf);
-}                               /* end objstrbufferencodetimepayl_BM */
+}                               /* end objstrbufferencodelocaltimepayl_BM */
 
 
 void
