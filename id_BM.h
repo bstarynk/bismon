@@ -67,7 +67,6 @@ extern "C"
 
   extern serial63_tyBM parse_serial63_BM (const char *buf, const char **pend);
   static inline unsigned bucknumserial63_BM (serial63_tyBM s);
-  static inline uint64_t buckoffserial63_BM (serial63_tyBM s);
 
   extern rawid_tyBM parse_rawid_BM (const char *buf, const char **pend);
   extern rawid_tyBM randomid_BM (void);
@@ -98,11 +97,6 @@ extern "C"
   unsigned bucknumserial63_BM (serial63_tyBM s)
   {
     return s / (DELTASERIAL_BM / MAXBUCKETS_BM);
-  }
-
-  uint64_t buckoffserial63_BM (serial63_tyBM s)
-  {
-    return s % (DELTASERIAL_BM / MAXBUCKETS_BM);
   }
 
   bool validid_BM (rawid_tyBM id)
