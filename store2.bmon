@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2816 objects
+// for 2820 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -1935,6 +1935,15 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 
 
+!(_7brFPQS8mP9_4K0sGjTwZ3T |=file_path|
+!~ name (~ file_path
+~)
+!@ 1553193039.051
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_7brFPQS8mP9_4K0sGjTwZ3T
+
+
+
 !(_8pmtJTuEbBF_4xNgNCOElwL |=fill|
 !~ name (~ fill
 ~)
@@ -2069,6 +2078,17 @@ _6YnYKKsHo3f_9nIEOZMp744
  // emitted persistent module modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c
 
 !)_9oXtCgAbkqv_4y1xhhF5Nhz
+
+
+
+!(_0fP2AJNPfro_3k7iHzO2AaR |=first_web_theme|
+!~ name (~ first_web_theme
+~)
+!@ 1553193082.906
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _7brFPQS8mP9_4K0sGjTwZ3T |=file_path|
+ "themes/first-theme.css"
+!)_0fP2AJNPfro_3k7iHzO2AaR
 
 
 
@@ -8852,6 +8872,17 @@ _8yXqsN7LuB3_0vODsT2M9Lh
 
 
 
+!(_2gEhgfMqAJE_3TifBtAgQrw |=second_web_theme|
+!~ name (~ second_web_theme
+~)
+!@ 1553193095.070
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _7brFPQS8mP9_4K0sGjTwZ3T |=file_path|
+ "themes/second-theme.css"
+!)_2gEhgfMqAJE_3TifBtAgQrw
+
+
+
 !(_4rz1Bi4weGz_8Y03gU81cRL |=see|
 !~ name (~ see
 ~)
@@ -10749,6 +10780,15 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !@ 1535532369.122
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_1v8IW7POMtj_8PSZo0ZuSlN
+
+
+
+!(_6ZzylwfUKRZ_3C57CoxroMn |=web_themes|
+!~ name (~ web_themes
+~)
+!@ 1553193169.173
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_6ZzylwfUKRZ_3C57CoxroMn
 
 
 
