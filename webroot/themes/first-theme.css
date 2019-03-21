@@ -1,0 +1,12 @@
+/* file themes/first-theme.css */
+body {
+    background-color: ivory;
+    font-family: "Verdana", sans-serif;
+    font-size: 11px;
+}
+
+h1 {
+    font-size: 133%;
+    font-weight: bold;
+    color: navy;
+}
