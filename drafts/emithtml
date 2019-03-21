@@ -345,6 +345,23 @@ $[^when (*isnode (v_html)  // this when is €_0TcBev05JBd
 	$[^out (o_strbuf *string(*bytstring(*nodenthson(v_comp 0))))
 	  !:comment "emit v_comp[0] as raw string // emit_xhtml node !raw_string"]
        ) !:comment "when o_conn is raw_string // emit_xhtml node"]
+       ///
+       $[^when (double_plain
+        $:checklenione
+	$[^out (o_strbuf *double_plain(*val_to_double(*nodenthson(v_comp 0))))
+	  !:comment "emit v_comp[0] as plain double // emit_xhtml node !double_plain"]
+       ) !:comment "when o_conn is double_plain // emit_xhtml node"]
+       $[^when (double_float
+        $:checklenione
+	$[^out (o_strbuf *double_float(*val_to_double(*nodenthson(v_comp 0))))
+	  !:comment "emit v_comp[0] as a precise double // emit_xhtml node !double_float"]
+       ) !:comment "when o_conn is double_float // emit_xhtml node"]
+       $[^when (local_time
+        $:checklenione
+	$[^out (o_strbuf *local_time(*val_to_double(*nodenthson(v_comp 0))))
+	  !:comment "emit v_comp[0] as a precise double // emit_xhtml node !local_time"]
+       ) !:comment "when o_conn is local_time // emit_xhtml node"]
+       ///
       $[^when (utf8_enc
         $:checklenione
        ) !:comment "when o_conn is utf8_enc // emit_xhtml node"]
@@ -356,7 +373,7 @@ $[^when (*isnode (v_html)  // this when is €_0TcBev05JBd
       $[^when (or_else
        ) !:comment "when o_conn is or_else // emit_xhtml node"]
        
-    ) !:comment "objswitch o_conn // emit_xhtml node"]
+    ) !:comment "objswitch o_conn // emit_xhtml node"] // end  €_4ySLl7UU6H
  )
  ] // end when v_html is a node
 
