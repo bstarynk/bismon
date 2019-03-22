@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2831 objects
+// for 2836 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -10415,6 +10415,17 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 
 
+!(_09jnZdQe0uA_088LqcQDlbX |=v_more|
+!~ name (~ v_more
+~)
+!@ 1553265160.235
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_09jnZdQe0uA_088LqcQDlbX
+
+
+
 !(_2BkOxf2KbS8_3bswrKbmgjy |=v_node|
 !~ name (~ v_node
 ~)
@@ -10939,13 +10950,13 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !(_9dQJgjsq7hs_2T2RqXLkU0A |=webxhtml_module|
 !~ name (~ webxhtml_module
 ~)
-!@ 1552027553.240
+!@ 1553265160.235
 !$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "module for web HTML"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _3poYCpSsBfJ_8W7XNwG50hS }
-!# 10
+!# 11
 !& _0FRLxSGQlZ0_0qrrUZlEeKp
 !& _5NH940lCHYJ_3nuRm3flnzc
 !& _8IYFtn8osS2_4t1U3wyROLW
@@ -10956,6 +10967,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !& _0NH2lnQIrTb_7Kt3mvQUoVu
 !& _6RtF29C4pij_9r269Lc0d0W
 !& _4xwDKklt2v4_2lEbck0j4qs
+!& _85938GaqS1z_3mZSenKG7GG
  // emitted persistent module modbm_9dQJgjsq7hs_2T2RqXLkU0A.c
 
 !)_9dQJgjsq7hs_2T2RqXLkU0A
@@ -11447,6 +11459,20 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 !: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
 _0ncEyxweiqi_5Vj5U2xvh82
 !)_0aLvox3qw9g_6O8WY6Cew3g
+
+
+
+!(_0aMhdgQGit6_9yp9HB8SWvo
+!@ 1553265984.953
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of emit-tagged-id-more-xhtml-open"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_85938GaqS1z_3mZSenKG7GG
+!# 2
+!& _2SZByIWkrSr_00a8WjPOmYa
+!& _6wyVbP5mHws_8lY1isSulYj
+!)_0aMhdgQGit6_9yp9HB8SWvo
 
 
 
@@ -20684,6 +20710,18 @@ _6Z4UU939WbU_8BK9xcKsXNb
 !# 1
 !& _7PgBB7uIPOd_65NhmUjoLJf
 !)_2SAhgKsu5KC_4DxDUopQ4TG
+
+
+
+!(_2SZByIWkrSr_00a8WjPOmYa
+!@ 1553265544.774
+!$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "i_depth := val_to_int(v_depth)"
+!# 2
+!& _6Y20GNUgnSZ_4LkbrcRMU8f
+!&  * _5MLPTLuT4ey_0YKIUpvXybX ( _4nJKFtMqlkA_1teQSqofNux)
+!)_2SZByIWkrSr_00a8WjPOmYa
 
 
 
@@ -31923,6 +31961,62 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_6wyVbP5mHws_8lY1isSulYj
+!@ 1553265984.953
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug emit-tagged-id-more-xhtml-open start"& " [v_htmltag v_htmlclass v_idprefix o_idtarget"& " v_more] (o_helem o_emitctx o_strbuf depth"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_0aMhdgQGit6_9yp9HB8SWvo
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "emit"  "-" 
+  "tagged"  "-" _7WjaQkqwdaZ_6PRtbDrJHnf  "-"  "more" 
+  "-"  "xhtml"  "-"  "open"  " " 
+  "start"  " "  "[" _6nmKmS2Auzh_04y9gBqgcDG  " " 
+ _0wWVh40nozk_7OSKII1HZ6t  " " _8VgHiZPlXwn_5i6tFD7vAVB  " " _1E1n1xq22bH_7JEWM863KYo 
+  " " _09jnZdQe0uA_088LqcQDlbX  "]"  " "  "(" 
+ _6Ef2ORO1Mni_0tpNoRQGmrW  " " _9nXRmTATjN4_5F9V7RvvgW0  " " _41F1rKwGbaA_30OJWKsqNWy 
+  " " _17YdW6dWrBA_2mn4QmBjMNs  ")*/"  "\n"  "DBGPRINTF_BM" 
+  "(\""  "emit"  "-"  "tagged"  "-" 
+ _7WjaQkqwdaZ_6PRtbDrJHnf  "-"  "more"  "-"  "xhtml" 
+  "-"  "open"  " "  "start"  " " 
+  "\u20ac%."  "9s"  " "  "[" _6nmKmS2Auzh_04y9gBqgcDG 
+  "=%"  "s"  " " _0wWVh40nozk_7OSKII1HZ6t  "=%" 
+  "s"  " " _8VgHiZPlXwn_5i6tFD7vAVB  "=%"  "s" 
+  " " _1E1n1xq22bH_7JEWM863KYo  "=%"  "s"  " " 
+ _09jnZdQe0uA_088LqcQDlbX  "=%"  "s"  "]\\"  "n" 
+  ".."  " "  "(" _6Ef2ORO1Mni_0tpNoRQGmrW  "=%" 
+  "s"  " " _9nXRmTATjN4_5F9V7RvvgW0  "=%"  "s" 
+  " " _41F1rKwGbaA_30OJWKsqNWy  "=%"  "s"  "/" 
+  "L"  "%"  "u"  " " _17YdW6dWrBA_2mn4QmBjMNs 
+  "#%"  "ld"  "\","  "\n"  " " 
+  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\"," 
+ "\n"  " " 
+  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6nmKmS2Auzh_04y9gBqgcDG) 
+ "),"  "\n" 
+  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0wWVh40nozk_7OSKII1HZ6t) 
+ ")," 
+  "\n"  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _8VgHiZPlXwn_5i6tFD7vAVB) 
+  "),"  "\n"  " "  "objectdbg_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _1E1n1xq22bH_7JEWM863KYo)  "),"  "\n" 
+ " "  "OUTSTRVALUE_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _09jnZdQe0uA_088LqcQDlbX)  ")," 
+ "\n"  " " 
+  "objectdbg1_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6Ef2ORO1Mni_0tpNoRQGmrW) 
+ "),"  "\n" 
+  " "  "objectdbg2_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _9nXRmTATjN4_5F9V7RvvgW0) 
+ ")," 
+  "\n"  " "  "objectdbg3_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _41F1rKwGbaA_30OJWKsqNWy) 
+  "),"  "\n"  " "  "objstrbufferlengthpayl_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _41F1rKwGbaA_30OJWKsqNWy)  "),"  "\n" 
+ " "  "(" 
+  "long"  " " _0vgCFjXblkx_4zCMhMAWjVK  ")("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_6Y20GNUgnSZ_4LkbrcRMU8f) 
+  "));")
+!)_6wyVbP5mHws_8lY1isSulYj
+
+
+
 !(_6wN1BBVklb1_7hPBRYc2ARV
 !@ 1551774583.063
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
@@ -36673,6 +36767,30 @@ _5EEITf6IFH7_4DbKG99zcPW
 !# 1
 !& _0Vnb5tJpsaA_9C18YQWoCmH
 !)_84ATc5kpHjd_2wlYHZEUoeb
+
+
+
+!(_85938GaqS1z_3mZSenKG7GG
+!@ 1553265160.235
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit-tagged-id-more-xhtml-open [v_htmltag"& " v_htmlclass v_idprefix o_idtarget v_more]"& " (o_helem o_emitctx o_strbuf v_depth)"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_9dQJgjsq7hs_2T2RqXLkU0A
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _6Ef2ORO1Mni_0tpNoRQGmrW _9nXRmTATjN4_5F9V7RvvgW0 _41F1rKwGbaA_30OJWKsqNWy _4nJKFtMqlkA_1teQSqofNux ]
+!: _24sSVIADeHm_0Sx34wQfG7W |=locals|
+ { _0ZL8gaI6sH8_7UPhmAQcwMe _6p6w3jZv5gy_58EzMDpOBQJ _6wh43lYjXiZ_9MUWTOiTsOl _9AuPELEBCEG_3r2aCy2y3Pc }
+!: _2TwOyPJxIz8_1rIeqaN7oRz |=closed|
+ [ _6nmKmS2Auzh_04y9gBqgcDG _0wWVh40nozk_7OSKII1HZ6t _8VgHiZPlXwn_5i6tFD7vAVB _1E1n1xq22bH_7JEWM863KYo 
+ _09jnZdQe0uA_088LqcQDlbX ]
+!: _32eKNcTZ9HN_80t0nk47Mha |=numbers|
+ { _2W7Ckt2WxEM_4NVYgEWE73B _6Y20GNUgnSZ_4LkbrcRMU8f _833x2jYqhZh_8vDIuJhwz1k }
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_0aMhdgQGit6_9yp9HB8SWvo
+!)_85938GaqS1z_3mZSenKG7GG
 
 
 
