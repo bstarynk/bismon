@@ -2065,7 +2065,8 @@ parsergetvalue_BM (struct parser_stBM *pars,
       if (endtok.tok_kind != plex_DELIM
           || endtok.tok_delim != delim_rightparen)
         parsererrorprintf_BM (pars, CURFRAME_BM, lineno, colpos,        //
-                              "missing right parenthesis for readmacro");
+                              "missing right parenthesis for readmacro %s",
+                              objectdbg1_BM (_.connobj));
       int endlin = endtok.tok_line;
       int endcol = endtok.tok_col;
       if (pars->pars_debug && !nobuild)
