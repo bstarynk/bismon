@@ -257,6 +257,37 @@ C++) is expected to:
     (cf. \cite{Abelson1996:SICP,Scott:2007:PLP,Queinnec:1996:LSP}),
     including domain specific ones.
 
+    \item is aware that \emph{most software projects
+      fail}~\footnote{See
+      \bmurl{https://www.geneca.com/why-up-to-75-of-software-projects-will-fail/}}
+      (for \emph{some} definition of failure; see also \cite{Brooks:1995:MM, Khan:2016-GSEPIM,
+      Attarzadeh:2008:proj-man}, etc...), and that obviously includes
+      research software projects, which fail even more often, and any
+      IoT software in general. I believe that such a high failure rate
+      is
+      \emph{intrinsic}~\footnote{\href{https://en.wiktionary.org/wiki/IMHO}{IMHO},
+        allocation of much more time and efforts, including code
+        reviews, on software development is necessary -but not
+        sufficient- to lower that failure rate.}  to any non-trivial
+      software developed by humans (because of
+      \cite{Braun:1956:magical-seven}, of ``leaky
+      abstractions''~\footnote{See Spolsky's \emph{Law of leaky
+          abstractions} on
+        \bmurl{https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/}
+        etc...}  and of the
+      \href{https://en.wikipedia.org/wiki/Halting\_problem}{\emph{Halting
+          problem}}, etc...), and that formal methods approaches are
+      still vulnerable to specification~\footnote{A speculative
+        example of a tragic specification bug might include something
+        inside the Boeing 737 MAX - see
+        \bmurl{https://en.wikipedia.org/wiki/Boeing\_737\_MAX} - which
+        could have recent crashes related to bugs in specifications,
+        and probably developed with the most serious formal methods
+        approaches, dictated by DO-178-C -see
+        \bmurl{https://en.wikipedia.org/wiki/DO-178C} etc... But in
+        mid-2019 this is only a speculation (details are unknown to
+        me).} bugs.
+
 \end{itemize}
 
 
