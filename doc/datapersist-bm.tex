@@ -162,9 +162,10 @@ them at a given instant).
     \texttt{\_4ggW2XwfXdp\_1XRSvOvZqTC}~\footnote{That objid
       \texttt{\_4ggW2XwfXdp\_1XRSvOvZqTC} is for the predefined object
       \emph{\texttt{the\_system}}, and corresponds to the two 64 bits
-      numbers 3577488711679049683, 1649751471969277032 i.e. to 128
-      bits hexadecimal \texttt{0x31a5cb0767997fd316e5183916681468}.}
-    or \texttt{\_0xbmmxnN8E8\_0ZuEqJmqMNH}. It is expected that objid
+      numbers 3577488711679049683 {\relsize{-1}{(encoded in base  $62 = 10 + 2 \times 26$ as
+      \texttt{4ggW2XwfXdp})}}, 1649751471969277032 i.e. to 128 bits
+      hexadecimal \texttt{0x31a5cb0767997fd316e5183916681468}.}  or
+    \texttt{\_0xbmmxnN8E8\_0ZuEqJmqMNH}. It is expected that objid
     \index{collision}{collisions} never occur in practice, e.g. that
     even thousands of \emph{Bismon monitor} processes (running on many
     distant computers) would in fact never generate the same objid. In
@@ -173,7 +174,9 @@ them at a given instant).
     displayed differently, without hyphens). In practice, the first 5
     or a few more characters of an objid are enough to uniquely
     identify it, and we use the \index{€ objid abbreviation} € objid
-    abbreviation~\footnote{This € objid abbreviation is for documentation purposes; it is not acceptable in persistent store files.}, e.g. \texttt{€\_4ggW2XwfX} - an abbreviation for
+    abbreviation~\footnote{This € objid abbreviation is for
+      documentation purposes; it is not acceptable in persistent store
+      files.}, e.g. \texttt{€\_4ggW2XwfX} - an abbreviation for
     \texttt{\_4ggW2XwfXdp\_1XRSvOvZqTC} - to uniquely identify it. The
     concrete textual ``syntax'' for objid-s (starting with an
     underscore then a digit, etc...) is carefully chosen to be
