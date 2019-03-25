@@ -155,6 +155,14 @@ code).
 \subsection{Expected audience}
 \label{subsec:audience}
 
+
+The numerous footnotes in this report are for a second reading (and
+may be used for forward references). To understand this report
+describing a circular and reflexive system, you should read it twice
+(skipping footnotes at the first read).
+
+\bigskip
+
 The reader of this document (within \textsc{Chariot}, a software
 engineering expert working on IoT software or firmware coded in C or
 C++) is expected to:
@@ -267,14 +275,14 @@ C++) is expected to:
       is
       \emph{intrinsic}~\footnote{\href{https://en.wiktionary.org/wiki/IMHO}{IMHO},
         allocation of much more time and efforts, including code
-        reviews, on software development is necessary -but not
-        sufficient- to lower that failure rate.}  to any non-trivial
+        reviews, on software development is necessary - but sadly it is not
+        sufficient - to lower that failure rate. Read about the \emph{Joel Test} on \bmurl{https://www.joelonsoftware.com/2000/08/09/the-joel-test-12-steps-to-better-code/} for more.}  to any non-trivial
       software developed by humans (because of
       \cite{Braun:1956:magical-seven}, of ``leaky
-      abstractions''~\footnote{See Spolsky's \emph{Law of leaky
+      abstractions''~\footnote{Cf. Spolsky's \emph{Law of leaky
           abstractions} on
         \bmurl{https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/}
-        etc...}  and of the
+        etc... for more.}  and of the
       \href{https://en.wikipedia.org/wiki/Halting\_problem}{\emph{Halting
           problem}}, etc...), and that formal methods approaches are
       still vulnerable to specification~\footnote{A speculative
@@ -290,12 +298,6 @@ C++) is expected to:
 
 \end{itemize}
 
-
-
-The numerous footnotes in this report are for a second reading (and
-may be used for forward references). To understand this report
-describing a circular and reflexive system, you should read it twice
-(skipping footnotes at the first read).
 
 \bigskip
 
@@ -1020,16 +1022,18 @@ features:
     as Guile, Python, Lua, etc). Of course the dynamically typed data
     inside the \textit{Bismon monitor} is \index{garbage
       collection}{\textbf{garbage collected}}
-    (cf. \cite{Jones:2011:GC-handbook})
-    \footnote{\label{fn:initial-gc}The initial GC of the monitor is a crude precise garbage
-      collector, but multi-thread compatible; it uses a naive
-      stop-the-world mark\&sweep algorithm. Improving that GC is a
+    (cf. \cite{Jones:2011:GC-handbook}). The initial GC of the monitor
+    is a crude precise garbage collector, but multi-thread compatible (cf. §\ref{subsec:gcvalobj} below);
+    it uses a naive stop-the-world mark\&sweep algorithm. That GC
+    should be replaced by a better one, such as
+    \href{https://www.ravenbrook.com/project/mps/}{Ravenbrook MPS}
+    \footnote{\label{fn:initial-gc} Improving that GC is a
       difficult work, and past experience on \emph{GCC MELT} taught us
       that developing and debugging a GC is hard, and is a good
       illustration of Hofstadter's law (See
-      \cite{Hofstadter:1979:GEB}). We might consider later using MPS
+      \cite{Hofstadter:1979:GEB}). We should consider later using MPS
       from \bmurl{https://www.ravenbrook.com/project/mps/} but doing
-      that could require recoding or regenerating \emph{a lot} of code, since MPS has specific calling conventions and invariants.}
+      that could require recoding or regenerating \emph{a lot} of code, since MPS has specific calling conventions and invariants, including A-normal form. So, switching to MPS in \emph{Bismon} would require at least several months of work.}, if good performance and scalability is wanted in \emph{Bismon}.
 
   \item \textbf{homoiconicity} and \textbf{reflection} with
     \textbf{introspection} (cf \cite{Pitrat:1996:FGCS,

@@ -341,7 +341,9 @@ mark\&sweep stop-the-world \index{garbage collector}{garbage
   \ref{fn:initial-gc} on page \pageref{fn:initial-gc} for possible
   improvements of the GC.}, of course including objects. When the GC
 is running, the agenda has been de-activated, and no tasklets are
-running.
+running. Our initial GC is known to not scale well and to be
+unfriendly to serious interactive usage, so it should be replaced (see
+footnote \ref{fn:initial-gc} in §\ref{subsubsec:about-bismon} above).
 
 In contrast to most GC implementations (but inspired by the habits of
 \emph{GCC} itself -in its \emph{Ggc} garbage collector- in that area),
