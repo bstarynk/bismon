@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2864 objects
+// for 2867 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -11475,7 +11475,7 @@ _0ncEyxweiqi_5Vj5U2xvh82
 
 
 !(_0aMhdgQGit6_9yp9HB8SWvo
-!@ 1553523637.806
+!@ 1553612316.483
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of emit-tagged-id-more-xhtml-open"
@@ -11486,7 +11486,7 @@ _85938GaqS1z_3mZSenKG7GG
 !& _6wyVbP5mHws_8lY1isSulYj
 !& _8hn8DdBoSyJ_1NJHIGIUSmC
 !& _981Htnuqk2v_3f6kRQZBkNI
-!& _6r8MxUGERZ5_62WMoVCfmcU
+!& _3Wn4eMrYInK_5hxe6aYhYlR
 !& _9H0L8bKRxNs_6ZLNYQisXhr
 !& _28OEq9p17rL_4fKBMly70SD
 !& _2e8g1RnPvBb_8sEgpX6OvDV
@@ -23230,6 +23230,19 @@ _4wSCE1PqaMS_2XYzFgB0waZ
 
 
 
+!(_3IdCniEGOdw_5psqjJtiXYb
+!@ 1553612316.481
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "when v_htmlclass ... / emit-tagged-id-more-xhtml-open"
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+_0wWVh40nozk_7OSKII1HZ6t
+!# 1
+!& _6r8MxUGERZ5_62WMoVCfmcU
+!)_3IdCniEGOdw_5psqjJtiXYb
+
+
+
 !(_3IiwW7VU8wg_1DXedVREyl2
 !@ 1536226098.267
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
@@ -23917,6 +23930,20 @@ _13K9OfeXRZR_84nyRTtoj81
 !& _88RDzd8IqdR_360tNT6O81m
 !& _5J4f6u42le4_9UZMTZziEEw
 !)_3WmrD9dWzVs_6l9CVwfdtYt
+
+
+
+!(_3Wn4eMrYInK_5hxe6aYhYlR
+!@ 1553612316.483
+!$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "if v_htmlclass emit <v_htmltagstr class=\'v_htmlclass\'"& " else emit <v_htmltagstr / emit-tagged-id-more-xhtml-open"
+!: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
+ 1
+!# 2
+!& _3IdCniEGOdw_5psqjJtiXYb
+!& _9BHMSndJQWA_3rDFuwoYjeg
+!)_3Wn4eMrYInK_5hxe6aYhYlR
 
 
 
@@ -40093,7 +40120,7 @@ _6Z4UU939WbU_8BK9xcKsXNb
 !: _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
 _41F1rKwGbaA_30OJWKsqNWy
 !# 3
-!&  "src=\'"
+!&  " src=\'"
 !&  * _3QmxfIKpDVI_0C4Z01aFVxK (  * _65LACLrHMTz_08IziohYl0i ( _7KirpiCMhmI_0IfcivXUJfQ))
 !&  "\' "
 !)_8U4tim0A3AW_9Er3kDyv0dN
@@ -42234,6 +42261,21 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 !# 1
 !& _6FxYfpCMqWj_2x1fBqLWf57
 !)_9BdaJn6vBWW_7n07rdHXudX
+
+
+
+!(_9BHMSndJQWA_3rDFuwoYjeg
+!@ 1553612316.483
+!$_9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "else emit <v_htmltagstr"
+!: _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
+_41F1rKwGbaA_30OJWKsqNWy
+!# 3
+!&  * _2yhrFze2uwV_6G7BfGXfplP ( _6Y20GNUgnSZ_4LkbrcRMU8f)
+!&  "<"
+!&  * _4T8am97muLl_5969SR22Ecq (  * _65LACLrHMTz_08IziohYl0i ( _6p6w3jZv5gy_58EzMDpOBQJ))
+!)_9BHMSndJQWA_3rDFuwoYjeg
 
 
 
