@@ -428,7 +428,8 @@ value_tyBM crout_2Uksq9GtGL5_6mG06OtMZF1_BM //#2
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 7 local values:
+    /// 8 local values:
+    value_tyBM v_167WczZjWtG_3FofhJxQWJi; // v_str
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ; // v_r
     objectval_tyBM* o_41F1rKwGbaA_30OJWKsqNWy; // o_strbuf
     value_tyBM v_4nJKFtMqlkA_1teQSqofNux; // v_depth
@@ -442,7 +443,7 @@ value_tyBM crout_2Uksq9GtGL5_6mG06OtMZF1_BM //#2
    memset (&_, 0, sizeof(struct frame_2Uksq9GtGL5_6mG06OtMZF1_BMst));
    _.stkfram_head.htyp = typayl_StackFrame_BM;
    _.stkfram_head.hgc = 0;
-   _.stkfram_head.rlen = 7;
+   _.stkfram_head.rlen = 8;
    _.stkfram_descr = constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[15] /*|_2Uksq9GtGL5_6mG06OtMZF1*/;
    ASSERT_BM (!stkf
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
@@ -456,7 +457,14 @@ value_tyBM crout_2Uksq9GtGL5_6mG06OtMZF1_BM //#2
    _.o_41F1rKwGbaA_30OJWKsqNWy = objectcast_BM (arg2); // o_strbuf
    _.v_4nJKFtMqlkA_1teQSqofNux = arg3; // v_depth
    // fetched 4 arguments.
-   // no closed values in _2Uksq9GtGL5_6mG06OtMZF1.
+   { // fetch 1 closed values in _2Uksq9GtGL5_6mG06OtMZF1:
+   const closure_tyBM* callclos_2Uksq9GtGL5_6mG06OtMZF1 =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   unsigned nbclosed_2Uksq9GtGL5_6mG06OtMZF1 = closurewidth_BM ((const value_tyBM) callclos_2Uksq9GtGL5_6mG06OtMZF1);
+   if (nbclosed_2Uksq9GtGL5_6mG06OtMZF1 > 0)
+      _.v_167WczZjWtG_3FofhJxQWJi = callclos_2Uksq9GtGL5_6mG06OtMZF1->nodt_sons[0]; // v_str
+   } // fetched 1 closed values in _2Uksq9GtGL5_6mG06OtMZF1.
    // routine _2Uksq9GtGL5_6mG06OtMZF1 body:
 
 startblock__2Qv627ZT2Ot_42KOOsZ6KSp: __attribute__((unused));
@@ -522,17 +530,17 @@ locked_0DZ90FBZM3E_4v3rw8AWUQU = curlockedob_0DZ90FBZM3E_4v3rw8AWUQU;
   
  
 { // run _5YxbrdpgPxz_9SQkKYoIxHz 
-/*debug emit-src-from-webssession-web_theme o_theme v_filepath o_helem o_strbuf o_websess depth*/
-DBGPRINTF_BM("emit-src-from-webssession-web_theme €%.9s o_theme=%s v_filepath=%s o_helem=%s o_strbuf=%s/L%u o_websess=%s depth#%ld",
+/*debug emit-src-from-webssession-web_theme o_theme v_filepath v_str o_helem o_strbuf o_websess depth*/
+DBGPRINTF_BM("emit-src-from-webssession-web_theme €%.9s o_theme=%s v_filepath=%s v_str=%s o_helem=%s o_strbuf=%s/L%u o_websess=%s depth#%ld",
  "_5YxbrdpgPxz_9SQkKYoIxHz",
  objectdbg_BM( /*o_theme:*/_.o_6cRlOymtk44_3dId2Eescrt),
  OUTSTRVALUE_BM( /*v_filepath:*/_.v_7KirpiCMhmI_0IfcivXUJfQ),
+ OUTSTRVALUE_BM( /*v_str:*/_.v_167WczZjWtG_3FofhJxQWJi),
  objectdbg1_BM( /*o_helem:*/_.o_6Ef2ORO1Mni_0tpNoRQGmrW),
  objectdbg2_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
  objstrbufferlengthpayl_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
  objectdbg3_BM( /*o_websess:*/_.o_7UzdV9wjuq2_2PRgXcyAlMi),
- (long int) ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));
-; 
+(long int) ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));; 
 } // end run _5YxbrdpgPxz_9SQkKYoIxHz 
   
 //+ #2/4 of lockobj _0DZ90FBZM3E_4v3rw8AWUQU ::  
