@@ -1027,13 +1027,21 @@ features:
     it uses a naive stop-the-world mark\&sweep algorithm. That GC
     should be replaced by a better one, such as
     \href{https://www.ravenbrook.com/project/mps/}{Ravenbrook MPS}
-    \footnote{\label{fn:initial-gc} Improving that GC is a
-      difficult work, and past experience on \emph{GCC MELT} taught us
-      that developing and debugging a GC is hard, and is a good
-      illustration of Hofstadter's law (See
-      \cite{Hofstadter:1979:GEB}). We should consider later using MPS
-      from \bmurl{https://www.ravenbrook.com/project/mps/} but doing
-      that could require recoding or regenerating \emph{a lot} of code, since MPS has specific calling conventions and invariants, including A-normal form. So, switching to MPS in \emph{Bismon} would require at least several months of work.}, if good performance and scalability is wanted in \emph{Bismon}.
+    \footnote{\label{fn:initial-gc} Improving that GC is a difficult
+      work, and past experience on \emph{GCC MELT} taught us that
+      developing and debugging a GC is hard, and is a good
+      illustration of
+      \href{https://en.wikipedia.org/wiki/Hofstadter's_law}{Hofstadter's
+        law} (See \cite{Hofstadter:1979:GEB}). We should consider
+      later using MPS from
+      \bmurl{https://www.ravenbrook.com/project/mps/} but doing that
+      could require recoding or regenerating \emph{a lot} of code,
+      since MPS has specific calling conventions and invariants,
+      including
+      \href{https://en.wikipedia.org/wiki/A-normal_form}{A-normal
+        form}. So, switching to MPS in \emph{Bismon} would require at
+      least several months of work.}, if good performance and
+    scalability is wanted in \emph{Bismon}.
 
   \item \textbf{homoiconicity} and \textbf{reflection} with
     \textbf{introspection} (cf \cite{Pitrat:1996:FGCS,
