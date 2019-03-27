@@ -13274,7 +13274,7 @@ _50H7io7f948_10VeJz49q3W
 !@ 1553606598.907
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "lockobj o_theme /emit-src-from-webssesion-web_theme"
+ "lockobj o_theme /emit-href-from-webssesion-web_theme"
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _6cRlOymtk44_3dId2Eescrt
 !# 4
@@ -14565,7 +14565,7 @@ _41F1rKwGbaA_30OJWKsqNWy
 !@ 1553596075.172
 !$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "o_theme := o_websess.web_theme /emit-src-from-webssesion-web_theme"
+ "o_theme := o_websess.web_theme /emit-href-from-webssesion-web_theme"
 !# 2
 !& _6cRlOymtk44_3dId2Eescrt
 !&  * _1iRMAZlHGbs_9rPqm9Nc1eT (  * _9179OMUDUQW_3gyzCFNJ7fQ ( _7UzdV9wjuq2_2PRgXcyAlMi  * _0e54seiZEXF_1Myf620cHoB ( _4HR54GlXs46_4rDg4Tb637x)))
@@ -17484,7 +17484,7 @@ _52KOJftDzaY_95rXXNMj4Md
 !@ 1553596351.478
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "when o_theme null fail /emit-src-from-webssesion-web_theme"
+ "when o_theme null fail /emit-href-from-webssesion-web_theme"
 !: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
  * _6EJRQxPiepy_50fow66D4Qn ( _6cRlOymtk44_3dId2Eescrt)
 !# 1
@@ -17551,7 +17551,7 @@ _41F1rKwGbaA_30OJWKsqNWy
 !@ 1553596351.477
 !$_4UklN1FKPMy_43NQnifo7Mn |=basiclo_fail|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "fail-miss emit-src-from-webssesion-web_theme"& " web_theme o_helem o_websess o_strbuf depth"
+ "fail-miss emit-href-from-webssesion-web_theme"& " web_theme o_helem o_websess o_strbuf depth"
 !: _085lT8c13Ik_11pcWJfcLeM |=fail|
  * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _52XwytpOPVl_3ZjmQCtadbK)  * _0e54seiZEXF_1Myf620cHoB ( _2Uksq9GtGL5_6mG06OtMZF1)  * _0e54seiZEXF_1Myf620cHoB ( _4HR54GlXs46_4rDg4Tb637x) _6Ef2ORO1Mni_0tpNoRQGmrW _7UzdV9wjuq2_2PRgXcyAlMi 
  _41F1rKwGbaA_30OJWKsqNWy  * _6FWWN47uih2_5BhwEm9gnHu ( _6Y20GNUgnSZ_4LkbrcRMU8f))
@@ -18814,7 +18814,7 @@ _7Ga6z7nroCG_3ikx3GHV41r)
 !@ 1553594666.137
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "debug start emit-src-from-webssesion-web_theme o_helem o_websess o_strbuf depth"
+ "debug start emit-href-from-webssesion-web_theme"& " o_helem o_websess o_strbuf depth"
 !: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "start"  " " 
   "emit"  "-"  "src"  "-"  "from" 
@@ -20819,7 +20819,7 @@ _4I0ksnAasRT_1bREYU29xgL
 !@ 1553596747.821
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "body of emit-src-from-webssesion-web_theme"
+ "body of emit-href-from-webssesion-web_theme"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _2Uksq9GtGL5_6mG06OtMZF1
 !# 5
@@ -21049,10 +21049,10 @@ _2W7Ckt2WxEM_4NVYgEWE73B)
 
 !(_2Uksq9GtGL5_6mG06OtMZF1
 !|*
-!@ 1553610844.590
+!@ 1553704431.852
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "emit-src-from-webssesion-web_theme (o_helem o_websess o_strbuf depth)"
+ "emit-href-from-webssesion-web_theme (o_helem o_websess o_strbuf depth)"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _6Ef2ORO1Mni_0tpNoRQGmrW _7UzdV9wjuq2_2PRgXcyAlMi _41F1rKwGbaA_30OJWKsqNWy _4nJKFtMqlkA_1teQSqofNux ]
 !: _24sSVIADeHm_0Sx34wQfG7W |=locals|
@@ -29465,7 +29465,7 @@ _2W7Ckt2WxEM_4NVYgEWE73B)
 !@ 1553606598.907
 !$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "return o_theme /emit-src-from-webssesion-web_theme"
+ "return o_theme /emit-href-from-webssesion-web_theme"
 !: _2DH0ucElTgh_62vxjxLcfev |=return|
 _6cRlOymtk44_3dId2Eescrt
 !)_5DDFmWpJoFf_4scNstrHt5Z
@@ -30577,7 +30577,7 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 !@ 1553611464.353
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "debug emit-src-from-webssession-web_theme"& " o_theme v_filepath v_string o_helem o_strbuf"& " o_websess depth"
+ "debug emit-href-from-webssession-web_theme"& " o_theme v_filepath v_string o_helem o_strbuf"& " o_websess depth"
 !: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "emit"  "-" 
   "src"  "-"  "from"  "-"  "webssession" 
@@ -40120,7 +40120,7 @@ _6Z4UU939WbU_8BK9xcKsXNb
 !@ 1553676820.680
 !$_9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "emit src=\'$v_filepath\' $v_str /emit-src-from-webssesion"
+ "emit src=\'$v_filepath\' $v_str /emit-href-from-webssesion"
 !: _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
 _41F1rKwGbaA_30OJWKsqNWy
 !# 4
@@ -43508,7 +43508,7 @@ _4gjtBqgrY3i_67ZPUd9LxPU
 !@ 1553596351.478
 !$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "if o_theme is null fail /emit-src-from-webssesion-web_theme"
+ "if o_theme is null fail /emit-href-from-websession-web_theme"
 !: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
  1
 !# 1
