@@ -14,8 +14,10 @@ Use the [Firefox HTML Validator](http://users.skynet.be/mgueury/mozilla/index.ht
     * `<head` element €_1sitXrzOd
         * `<title` element €_1yXAklDk0
         * `<script` for `jquery.js`  element €_7pzlWqA1e
+        * `<script` for `jquery-ui.js`  element €_37OSgkA0Y
         * `<script` for generated `bismon-root-jsmodule.js` element €_7CbJCH86J
         * `<script` for handwritten `bismon-hwroot.js` element €_1ekuIkeTL
-        * `<link`  for the theme stylesheet element €_278dlMgNG
+        * `<link` for the theme stylesheet element €_278dlMgNG
+        * `<link` for the jquery-ui stylesheet element €_5eUsNI0Fz
     * `<body` element €_46W9FNT1h
         * `<h1` for *Bismon* element €_95vgIuQG
