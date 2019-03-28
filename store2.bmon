@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2867 objects
+// for 2870 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -8898,7 +8898,7 @@ _8yXqsN7LuB3_0vODsT2M9Lh
 !@ 1553193095.070
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _7brFPQS8mP9_4K0sGjTwZ3T |=file_path|
- "themes/second-theme.css"
+ "/themes/second-theme.css"
 !)_2gEhgfMqAJE_3TifBtAgQrw
 
 
@@ -15108,6 +15108,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+!(_1ekuIkeTLO0_8zjm6NaOV6Z
+!@ 1553768587.030
+!$_8Lqg0cPFwGr_3Nmu1EAnYbx |=simple_html_void_element_object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "HTML script handwritten bismon-hwroot.js"
+!: _64Nwpjx4gnk_2y263bTCaB3 |=emit_xhtml_open|
+ % _8oKFbiPI4JW_7EPg4RP1e4Q (  "script"  "src=\'/jscript/bismon-hwroot.js\'")
+!)_1ekuIkeTLO0_8zjm6NaOV6Z
+
+
+
 !(_1etImV3nBtp_5rnHSE87XRj
 !|*
 !@ 1521200046.540
@@ -16064,9 +16075,11 @@ _3poYCpSsBfJ_8W7XNwG50hS
  % _8oKFbiPI4JW_7EPg4RP1e4Q (  "head" __)
 !: _84d7WOdRsJh_4Ud9BryxYUr |=html_spacing|
 _2wGWzItVmrN_2CBwG6iHWFO
-!# 3
+!# 5
 !& _1yXAklDk0LE_8ravSds7ObH
 !& _7pzlWqA1e0P_6M4xMzDiTbo
+!& _7CbJCH86Jg1_39UYMeCz6vK
+!& _1ekuIkeTLO0_8zjm6NaOV6Z
 !& _278dlMgNGE3_1mSYZAe3U02
 !)_1sitXrzOdqd_1fP4WAF9ww9
 
@@ -17795,6 +17808,15 @@ _2ZoqAiU7COz_0EfxfZbOgZj
 !: _2DH0ucElTgh_62vxjxLcfev |=return|
 _5XGKMg1Kevs_6eAce4ib9XW
 !)_1YhS9WKCrol_14IfClpxnC0
+
+
+
+!(_1YP8aDi1ir7_7Xl7w6iGghW
+!@ 1553767866.407
+!$_2dMQFZCLvzX_28pgF8Y8V5S |=jsmodule_object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "bismon-root-jsmodule"
+!)_1YP8aDi1ir7_7Xl7w6iGghW
 
 
 
@@ -36088,6 +36110,17 @@ _6jZqk9RP0Pe_12cIgV9WMFC
  * _0Vw4O8Wjf9x_3ANjSvs32bz (  * _0e54seiZEXF_1Myf620cHoB ( _52XwytpOPVl_3ZjmQCtadbK)  * _0e54seiZEXF_1Myf620cHoB ( _42eCU3i9GEu_1DZnhnLNaH6) _5HkpTupRRIK_8iCooVukjb3 _6CmIdtsXyBX_3lpk31Mve5M _8pbpqrN1W4l_7mZmRSPBjYz 
   * _6FWWN47uih2_5BhwEm9gnHu ( _6Y20GNUgnSZ_4LkbrcRMU8f) _89nz0KaXXZh_8eSgMmqnK37)
 !)_7C7aabSlDzy_1jY3jdKsB9N
+
+
+
+!(_7CbJCH86Jg1_39UYMeCz6vK
+!@ 1553768368.792
+!$_8Lqg0cPFwGr_3Nmu1EAnYbx |=simple_html_void_element_object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "HTML script generated bismon-root-jsmodule.js"
+!: _64Nwpjx4gnk_2y263bTCaB3 |=emit_xhtml_open|
+ % _8oKFbiPI4JW_7EPg4RP1e4Q (  "script"  "src=\'/bismon-root-jsmodule.js\'")
+!)_7CbJCH86Jg1_39UYMeCz6vK
 
 
 
