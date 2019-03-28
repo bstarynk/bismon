@@ -11,4 +11,12 @@ h1 {
     color: navy;
 }
 
+nav.bmcl_topnav {
+    border-style: dotted;
+    border-color: darkred;
+    border-width: 1px;
+    margin: 3px;
+    padding: 2px;
+}
+
 /* end of themes/first-theme.css */

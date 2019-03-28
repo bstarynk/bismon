@@ -11,4 +11,11 @@ h1 {
     color: ivory;
 }
 
+nav.bmcl_topnav {
+    border-style: dashed;
+    border-color: lightblue;
+    border-width: 1px;
+    margin: 5px;
+    padding: 3px;
+}
 /* end of themes/second-theme.css */
