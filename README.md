@@ -291,6 +291,12 @@ Ask me (Basile Starynkevitch,
 [`basile.starynkevitch@cea.fr`](mailto:basile.starynkevitch@cea.fr)...)
 for details.
 
+#### Caveat
+
+This `git` repository also contains, for convenience, the
+[jqueryui](http://jqueryui.com/) 1.12 framework (which has a different
+MIT license) under `webroot/jquery-ui`
+
 #### N.B.
 
 
