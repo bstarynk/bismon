@@ -147,7 +147,7 @@ indent: .indent.pro
 jstimestamp: webroot/jscript/_timestamp.mjs
 
 
-webroot/jscript/_timestamp.mjs: 
+webroot/jscript/_timestamp.mjs: $(wildcard *.c *.h *.cc *.bmon webroot/jscript/[a-z]*.js webroot/jscript/[a-z]*.mjs) | bismon
 	date +'// generated file $@ - DONT EDIT%n export const bismonjs_timestamp = "%c";%n export const bismonjs_timelong=%s.0;' > _timestamp.mjs-tmp
 	(echo -n ' export const bismonjs_lastgitcommit="' ; \
            git log --format=oneline --abbrev=12 --abbrev-commit -q  \

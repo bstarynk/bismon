@@ -58,7 +58,6 @@ $(function () {
     console.debug("bismon-hwroot start topmenu_title=%o\n.. appmenu_button=%o appmenu_menu=%o dump_menuitem=%o exit_menuitem=%o quit_menuitem=%o",
 		  topmenu_title, appmenu_button, appmenu_menu, dump_menuitem,  exit_menuitem, quit_menuitem);
     appmenu_menu.menu();
-    topmenu_title.disable();
     appmenu_button.contextmenu(show_appmenu);
     appmenu_button.click(show_appmenu);
     appmenu_button.mouseup(hide_appmenu);
