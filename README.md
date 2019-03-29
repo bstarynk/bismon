@@ -129,8 +129,7 @@ generated code), but some few code is in C++14.
   for JSON (used in relation to WebSockets).
 
 * [libonion](http://www.coralbits.com/libonion) is needed for the web
-  interface (at least 0.8.99 -master- later than june 10th 2018, or
-  0.9)
+  interface (later than end of march 2019).
 
 * [GNU make](https://www.gnu.org/software/make/) 4 or better
 
@@ -173,6 +172,11 @@ The `libonion` is not independently packaged in Debian.
 `apt-get install markdown indent astyle tardy` and `apt-get install texlive texlive-full hevea` 
 
 The `dependencies/` subdirectory is for `git submodule`-s related to `libbacktrace` and `libonion`
+
+You may need to add `.mjs` as a valid suffix or file extension for
+`application/javascript` MIME type in your `/etc/mime.types` system
+file. Read about [Javascript modules on the
+web](https://developers.google.com/web/fundamentals/primers/modules)
 
 ### Localization
 
