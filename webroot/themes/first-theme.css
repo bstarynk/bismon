@@ -20,19 +20,34 @@ nav.bmcl_topnav {
 }
 
 button.bmcl_topbut {
+    background-color: lightpink;
+    color: navy;
     border-color: darkred;
     border-width: 1px;
     border-style: dashed;
     margin: 2px;
     padding: 3px;
-    background-color: lightpink;
-    color: navy;
 }
 
 button.bmcl_topbut:hover {
     border-color: red;
-    border-width: 2px;
     border-style: solid;
+    border-width: 2px;
+    margin: 3px;
+    padding: 2px;
 }
 
+ul.bmcl_topmenu {
+    background-color: #EDE4C3;
+    border-color: #915808;
+}
+
+
+li.bmcl_topmenuitem {
+    font-size: 95%;
+    border-style: solid;
+    border-witdh: 1px;
+    margin: 2px;
+    padding: 2px;
+}
 /* end of themes/first-theme.css */

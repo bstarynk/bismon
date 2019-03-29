@@ -28,10 +28,26 @@ button.bmcl_topbut {
     /* background-color: lightpink; */
     color: ivory;
 }
+
 button.bmcl_topbut:hover {
     border-color: blue;
     border-width: 2px;
     border-style: solid;
+    margin: 3px;
+    padding: 2px;
 }
 
+ul.bmcl_topmenu {
+    background-color: #1F2623;
+    border-color: #915808;
+}
+
+
+li.bmcl_topmenuitem {
+    font-size: 95%;
+    border-style: solid;
+    border-witdh: 1px;
+    margin: 2px;
+    padding: 2px;
+}
 /* end of themes/second-theme.css */
