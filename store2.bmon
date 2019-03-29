@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2878 objects
+// for 2879 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -15112,9 +15112,9 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !@ 1553768587.030
 !$_8Lqg0cPFwGr_3Nmu1EAnYbx |=simple_html_void_element_object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "HTML script handwritten bismon-hwroot.js"
+ "HTML script handwritten bismon-hwroot.js module"
 !: _64Nwpjx4gnk_2y263bTCaB3 |=emit_xhtml_open|
- % _8oKFbiPI4JW_7EPg4RP1e4Q (  "script"  "src=\'/jscript/bismon-hwroot.js\' type=\"text/javascript\"")
+ % _8oKFbiPI4JW_7EPg4RP1e4Q (  "script"  "src=\'/jscript/bismon-hwroot.js\' type=\"module\"")
 !)_1ekuIkeTLO0_8zjm6NaOV6Z
 
 
@@ -17501,7 +17501,7 @@ _52KOJftDzaY_95rXXNMj4Md
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "dump-app-menuitem-htmlel"
 !: _64Nwpjx4gnk_2y263bTCaB3 |=emit_xhtml_open|
- % _9hEreAemqXg_0uoN1Fr1ly4 (  "li"  "bmcl_topmenuitem"  "topmitem" _1SiDnlyQRR6_5meHUV4d3iF)
+ % _9hEreAemqXg_0uoN1Fr1ly4 (  "li"  "bmcl_topmenuitem ui-menu-item"  "topmitem" _1SiDnlyQRR6_5meHUV4d3iF)
 !: _84d7WOdRsJh_4Ud9BryxYUr |=html_spacing|
 _35gLacRFhq5_90zAPxiDIlh
 !# 1
@@ -19062,10 +19062,11 @@ _932bmIlxKS0_1SsJjzk16n2
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "appmenu-ul-htmlel"
 !: _64Nwpjx4gnk_2y263bTCaB3 |=emit_xhtml_open|
- % _9hEreAemqXg_0uoN1Fr1ly4 (  "ul"  "bmcl_topmenu"  "topmenu" _2hnb4LnCzga_48CQrsBJofR)
+ % _9hEreAemqXg_0uoN1Fr1ly4 (  "ul"  "bmcl_topmenu ui-menu"  "topmenu" _2hnb4LnCzga_48CQrsBJofR)
 !: _84d7WOdRsJh_4Ud9BryxYUr |=html_spacing|
 _2wGWzItVmrN_2CBwG6iHWFO
-!# 3
+!# 4
+!& _6G1xOyeten5_7SqZ4EcQe8T
 !& _1SiDnlyQRR6_5meHUV4d3iF
 !& _9ZmJrhdpjae_79WiEHOVpbE
 !& _2nguorns5mY_2UnseYw0xRf
@@ -19461,7 +19462,7 @@ _95J5VWlxn7h_9P3UNOuvpbl
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "quit-app-menuitem-htmlel"
 !: _64Nwpjx4gnk_2y263bTCaB3 |=emit_xhtml_open|
- % _9hEreAemqXg_0uoN1Fr1ly4 (  "li"  "bmcl_topmenuitem"  "topmitem" _2nguorns5mY_2UnseYw0xRf)
+ % _9hEreAemqXg_0uoN1Fr1ly4 (  "li"  "bmcl_topmenuitem ui-menu-item"  "topmitem" _2nguorns5mY_2UnseYw0xRf)
 !: _84d7WOdRsJh_4Ud9BryxYUr |=html_spacing|
 _35gLacRFhq5_90zAPxiDIlh
 !# 1
@@ -33067,6 +33068,21 @@ _3mBgHGhEYmP_9WN8gqaxhXg
 
 
 
+!(_6G1xOyeten5_7SqZ4EcQe8T
+!@ 1553871185.327
+!$_6HpZa1bRy0k_0KxrTwBFmDK |=simple_html_element_object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "appmenu-titleitem-htmlel"
+!: _64Nwpjx4gnk_2y263bTCaB3 |=emit_xhtml_open|
+ % _9hEreAemqXg_0uoN1Fr1ly4 (  "li"  "bmcl_topmenutitle ui-menu-item"  "topmtitle" _6G1xOyeten5_7SqZ4EcQe8T)
+!: _84d7WOdRsJh_4Ud9BryxYUr |=html_spacing|
+_2wGWzItVmrN_2CBwG6iHWFO
+!# 1
+!&  "application:"
+!)_6G1xOyeten5_7SqZ4EcQe8T
+
+
+
 !(_6GnVh6VH0ba_5iNQzHx0RCt
 !@ 1534939439.760
 !$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
@@ -43688,7 +43704,7 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "exit-app-menuitem-htmlel"
 !: _64Nwpjx4gnk_2y263bTCaB3 |=emit_xhtml_open|
- % _9hEreAemqXg_0uoN1Fr1ly4 (  "li"  "bmcl_topmenuitem"  "topmitem" _9ZmJrhdpjae_79WiEHOVpbE)
+ % _9hEreAemqXg_0uoN1Fr1ly4 (  "li"  "bmcl_topmenuitem ui-menu-item"  "topmitem" _9ZmJrhdpjae_79WiEHOVpbE)
 !: _84d7WOdRsJh_4Ud9BryxYUr |=html_spacing|
 _35gLacRFhq5_90zAPxiDIlh
 !# 1

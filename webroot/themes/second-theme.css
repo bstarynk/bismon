@@ -40,6 +40,18 @@ button.bmcl_topbut:hover {
 ul.bmcl_topmenu {
     background-color: #1F2623;
     border-color: #915808;
+    width: auto;
+    display: inline-block;
+}
+
+li.bmcl_topmenutitle {
+    font-size: 85%;
+    font-style: italic;
+    color: #109F38;
+    border-style: solid;
+    border-witdh: 1px;
+    margin: 2px;
+    padding: 2px;
 }
 
 

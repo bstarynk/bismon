@@ -24,6 +24,7 @@ Use the [Firefox HTML Validator](http://users.skynet.be/mgueury/mozilla/index.ht
 	* `<nav` element €_8LMWqayq5 of class `bmcl_topnav`
 	    * `<button` element €_4m9twhDXB  for app-menu
 	* `<ul` element €_2hnb4LnCz for app-menuitems of class `bmcl_topmenu`
-	    * `<li` element €_1SiDnlyQR for dump app-menuitem of class `bmcl_topmenuitem` 
-	    * `<li` element €_9ZmJrhdpj for exit app-menuitem of class `bmcl_topmenuitem`
-	    * `<li` element €_2nguorns5 for quit app-menitem of class `bmcl_topmenuitem`
+	    * `<li` element €_6G1xOyete for app-menu-titleitem of class `bmcl_topmenutitle` and `ui-menu-item` 
+	    * `<li` element €_1SiDnlyQR for dump app-menuitem of class `bmcl_topmenuitem` and `ui-menu-item`
+	    * `<li` element €_9ZmJrhdpj for exit app-menuitem of class `bmcl_topmenuitem` and `ui-menu-item`
+	    * `<li` element €_2nguorns5 for quit app-menitem of class `bmcl_topmenuitem` and `ui-menu-item`
