@@ -3,6 +3,7 @@
 *.so
 *.gch
 __timestamp*
+_*.mjs
 *prog
 bismon
 passwords_BM

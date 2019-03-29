@@ -19,12 +19,12 @@ BM_HEADERS= $(wildcard [a-z]*BM.h bismon.h)
 BM_CSOURCES= $(wildcard [a-z]*BM.c)
 
 
-.PHONY: all programs clean verbose indent count modules measure doc redump outdump checksum indentsinglemodule indenttempmodule 
+.PHONY: all programs clean verbose indent count modules measure doc redump outdump checksum indentsinglemodule indenttempmodule jstimestamp
 
 
 
 
-all: programs modules #doc
+all: programs modules jstimestamp #doc
 
 programs: bismon modules
 
@@ -142,3 +142,15 @@ indent: .indent.pro
 	@printf "\n *** C++ tool source *** \n"
 	@$(ASTYLE) $(ASTYLEFLAGS)  BM_makeconst.cc
 	@printf "\n"
+
+################
+jstimestamp: webroot/jscript/_timestamp.mjs
+
+
+webroot/jscript/_timestamp.mjs: 
+	date +'// generated file $@ - DONT EDIT%n export const bismonjs_timestamp = "%c";%n export const bismonjs_timelong=%s.0;' > _timestamp.mjs-tmp
+	(echo -n ' export const bismonjs_lastgitcommit="' ; \
+           git log --format=oneline --abbrev=12 --abbrev-commit -q  \
+         | head -1 | tr -d '\n\r\f\"\\\\' ; \
+	 echo '";') >> _timestamp.mjs-tmp
+	mv _timestamp.mjs-tmp $@
