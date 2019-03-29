@@ -19,4 +19,20 @@ nav.bmcl_topnav {
     padding: 2px;
 }
 
+button.bmcl_topbut {
+    border-color: darkred;
+    border-width: 1px;
+    border-style: dashed;
+    margin: 2px;
+    padding: 3px;
+    background-color: lightpink;
+    color: navy;
+}
+
+button.bmcl_topbut:hover {
+    border-color: red;
+    border-width: 2px;
+    border-style: solid;
+}
+
 /* end of themes/first-theme.css */

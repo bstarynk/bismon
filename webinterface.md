@@ -8,7 +8,7 @@ See first the *§4.1 Web interface internal design* of
 
 Use the [Firefox HTML Validator](http://users.skynet.be/mgueury/mozilla/index.html) to check the generated XHTML5.
 
-## organization of the root HTML tree
+## organization of the root HTML tree (only HTML elements are shown)
 
 * `<html` top root-html-element €_3poYCpSsB
     * `<head` element €_1sitXrzOd
@@ -21,4 +21,5 @@ Use the [Firefox HTML Validator](http://users.skynet.be/mgueury/mozilla/index.ht
         * `<link` for the jquery-ui stylesheet element €_5eUsNI0Fz
     * `<body` element €_46W9FNT1h
         * `<h1` for *Bismon* element €_95vgIuQG
-	* `<nav` element €_8LMWqayq5 of class `bmcl_topnav` 
+	* `<nav` element €_8LMWqayq5 of class `bmcl_topnav`
+	    * `<button` element €_4m9twhDXB  for app-menu
