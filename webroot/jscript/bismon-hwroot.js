@@ -61,6 +61,8 @@ $(function () {
     appmenu_button.contextmenu(show_appmenu);
     appmenu_button.click(show_appmenu);
     appmenu_button.mouseup(hide_appmenu);
+    topmenu_title.mouseup(hide_appmenu);
+    appmenu_menu.mouseup(hide_appmenu);
     appmenu_menu.hide();
     console.trace();
     console.debug("bismon-hwroot started");
