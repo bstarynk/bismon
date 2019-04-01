@@ -62,4 +62,14 @@ li.bmcl_topmenutitle {
     margin: 2px;
     padding: 2px;
 }
+
+p.bmcl_hellopara {
+    font-size: 105%;
+    color: #533790;
+    border-style: solid;
+    border-witdh: 1px;
+    margin: 3px;
+    padding: 3px;
+}
+    
 /* end of themes/first-theme.css */
