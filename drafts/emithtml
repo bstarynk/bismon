@@ -377,6 +377,46 @@ $[^when (*isnode (v_html)  // this when is €_0TcBev05JBd
  )
  ] // end when v_html is a node
 
+ $[^when (*isclosure(v_html)
+  $[^run(#{/*debug closure v_html o_emitctx o_strbug depth*/
+  }#) !:comment "debug closure v_html o_emitctx o_strbuf depth /emit_xhtml"]
+  $[^assign (v_resemit *apply(v_html o_emitctx o_strbuf *taggedint(*add_int(i_depth 1))))
+   !:comment "v_resemit := v_html(o_emitctx o_strbuf depth+1)"]
+  $[^run(#{/*debug after-closure v_resemit v_html o_emitctx o_strbug depth*/
+  }#) !:comment "debug after-closure v_resemit v_html o_emitctx o_strbuf depth /emit_xhtml"]
+  $[^cond (
+     $[^when (*isclosure(v_resemit)
+        $[^fail(*make_node(!failure_type_error !closure v_resemit v_html o_emitctx o_strbuf *taggedint(i_depth)))
+	 !:comment "fail-type_error closure v_resemit v_html o_emitctx o_strbuf depth /emit_xhtml"]
+	 ) !:comment "when v_resemit is closure fail-type_error /emit_xhtml closure"]
+     $[^when (*is_null(v_resemit)
+        $[^fail(*make_node(!failure_miss !closure v_html o_emitctx o_strbuf *taggedint(i_depth)))
+	 !:comment "fail-miss closure  v_html o_emitctx o_strbuf depth /emit_xhtml"]
+	 ) !:comment "when v_resemit is null fail-miss /emit_xhtml closure"]
+     ) !:comment "check v_resemit not closure or null after apply /emit_xhtml closure"]
+  $[^assign (v_comp v_resemit) !:comment "v_comp := v_resemit /emit_xhtml closure"]
+  $[^assign (v_resemit *apply(!emit_xhtml v_comp o_emitctx o_strbuf *taggedint (*add_int(i_depth 1))))
+   !:comment "v_resemit := emit_xhtml(v_comp o_emitctx o_strbuf depth+1"]
+  $[^run(#{/*debug closure after emit_xhtml v_resemit v_comp o_emitctx o_strbuf depth*/
+  DBGPRINTF_BM("closure after emit_xhtml €%.9s v_resemit=%s v_comp=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld /emit_xhtml",
+   "$stmtid",
+   OUTSTRVALUE_BM($v_resemit),
+   OUTSTRVALUE_BM($v_comp),
+   objectdbg_BM($o_emitctx),
+   objectdbg1_BM($o_strbuf),
+   objstrbufferlengthpayl_BM($o_strbuf),
+   (long int) ($i_depth));
+  }#) !:comment "debug closure after emit_xhtml v_resemit v_comp o_emitctx o_strbug depth /emit_xhtml"]
+  $[^cond (
+     $[^when (*is_null(v_resemit)
+        $[^fail(*make_node(!failure_miss !emit_xhtml v_comp v_html o_emitctx o_strbuf *taggedint(i_depth)))
+	 !:comment "fail-miss emit_xhtml v_comp  v_html o_emitctx o_strbuf depth /emit_xhtml"]
+	 ) !:comment "when v_resemit is null fail-miss /emit_xhtml closure second"]
+     ) !:comment "check v_resemit not null after second emit_xhtml /emit_xhtml closure"]
+  $[^return (v_resemit) !:comment "return v_resemit /emit_xhtml closure"]
+   
+  ) !:comment "when v_html is closure /emit_xhtml"] // endwhen €_2zIx3cm1V
+
 //////
  $[^fail (*make_node (!failure_type_error !emit_xhtml v_html o_emitctx o_strbuf *taggedint(i_depth)))
   !:comment "else fail-typeerror emit_xhtml v_html o_emitctx o_strbuf depth"]
