@@ -387,7 +387,8 @@ $[^when (*isnode (v_html)  // this when is €_0TcBev05JBd
       ///@@@@ A COMPLETER
       $[^cond ( 
         $[^when (*isclosure(v_comp)
-	  $[^assign (v_resemit *apply(v_comp v_html 
+	  $[^assign (v_resemit *apply(v_comp v_html o_emitctx o_strbuf *taggedint(*add_int(i_depth 1))))
+	   !:comment "v_resemit := v_comp(v_html  o_emitctx o_strbuf depth+1) /emit_xhtml node with conn having emit_xhtml_node"]
           ) !:comment "when v_comp is closure /emit_xhtml node else.."]
       ) !:comment "if v_comp is closure apply it else fail /emit_xhtml node else.."]
     ) !:comment "objswitch o_conn // emit_xhtml node"] // end  €_4ySLl7UU6H
@@ -415,7 +416,7 @@ $[^when (*isnode (v_html)  // this when is €_0TcBev05JBd
   $[^assign (v_resemit *apply(!emit_xhtml v_comp o_emitctx o_strbuf *taggedint (*add_int(i_depth 1))))
    !:comment "v_resemit := emit_xhtml(v_comp o_emitctx o_strbuf depth+1"]
   $[^run(#{/*debug closure after emit_xhtml v_resemit v_comp o_emitctx o_strbuf depth*/
-  DBGPRINTF_BM("closure after emit_xhtml €%.9s v_resemit=%s v_comp=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld /emit_xhtml",
+  DBGPRINTF_BM("closure after emit_xhtml €%.9s v_resemit=%s v_comp=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld /emit_xhtml_node",
    "$stmtid",
    OUTSTRVALUE_BM($v_resemit),
    OUTSTRVALUE_BM($v_comp),
