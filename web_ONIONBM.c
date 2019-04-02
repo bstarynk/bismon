@@ -1677,6 +1677,57 @@ objwebsessionsendjsonwebsocketpayl_BM (objectval_tyBM * objarg,
   while (remlen > 0);
 }                               /* end of objwebsessionsendjsonwebsocketpayl_BM */
 
+objectval_tyBM *
+objwebsessioncontributorpayl_BM (objectval_tyBM * obj)
+{
+  if (!isobject_BM (obj))
+    return NULL;
+  struct websessiondata_stBM *wsess = objgetwebsessionpayl_BM (obj);
+  if (!wsess)
+    return NULL;
+  ASSERT_BM (wsess->websess_magic == BISMONION_WEBSESS_MAGIC);
+  return wsess->websess_contribob;
+}                               /* end objwebsessioncontributorpayl_BM */
+
+
+double
+objwebsessioncreatetimepayl_BM (objectval_tyBM * obj)
+{
+  if (!isobject_BM (obj))
+    return 0.0;
+  struct websessiondata_stBM *wsess = objgetwebsessionpayl_BM (obj);
+  if (!wsess)
+    return 0.0;
+  ASSERT_BM (wsess->websess_magic == BISMONION_WEBSESS_MAGIC);
+  return wsess->websess_createtime;
+}                               /* end objwebsessioncreatetimepayl_BM */
+
+
+double
+objwebsessionexpiretimepayl_BM (objectval_tyBM * obj)
+{
+  if (!isobject_BM (obj))
+    return 0.0;
+  struct websessiondata_stBM *wsess = objgetwebsessionpayl_BM (obj);
+  if (!wsess)
+    return 0.0;
+  ASSERT_BM (wsess->websess_magic == BISMONION_WEBSESS_MAGIC);
+  return wsess->websess_expiretime;
+}                               /* end objwebsessioncreatetimepayl_BM */
+
+
+unsigned
+objwebsessionrankpayl_BM (objectval_tyBM * obj)
+{
+  if (!isobject_BM (obj))
+    return 0;
+  struct websessiondata_stBM *wsess = objgetwebsessionpayl_BM (obj);
+  if (!wsess)
+    return 0;
+  ASSERT_BM (wsess->websess_magic == BISMONION_WEBSESS_MAGIC);
+  return wsess->websess_rank;
+}                               /* end objwebsessionrankpayl_BM */
+
 
 //////////////////////////////////////////////////////////////////////////
 // lock for the web exchange count

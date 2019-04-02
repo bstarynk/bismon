@@ -360,12 +360,6 @@ objclass_BM (const objectval_tyBM * obj)
 #endif
 }                               /* end objclass_BM */
 
-bool
-equalid_BM (rawid_tyBM id1, rawid_tyBM id2)
-{
-  return id1.id_hi == id2.id_hi && id1.id_lo == id2.id_lo;
-}                               /* end equalid_BM */
-
 
 
 /// object support

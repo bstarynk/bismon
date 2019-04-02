@@ -614,7 +614,7 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
   long lnjs = ftell (memfil);
   DBGPRINTF_BM
     ("load_modif_json_BM L%uC%u curldobj=%s, JSON-membuf=\n%s\n//----\n",
-     objectdbg_BM (_.curldobj), membuf);
+     lineno, colpos, objectdbg_BM (_.curldobj), membuf);
   parstoken_tyBM tokclose = parsertokenget_BM (ldpars, CURFRAME_BM);
   if (tokclose.tok_kind != plex_DELIM
       || tokclose.tok_delim != delim_tilderightparen)
@@ -630,7 +630,7 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
       ("load_modif_json_BM L%uC%u %s failed %s JSON decoding %s (~L%uC%u)",
        lineno, colpos, ldpars->pars_path, objectdbg_BM (_.curldobj),
        jserr.text, lineno + jserr.line,
-       (jserr.line > 1) ? jserr.column : colpos + jserr.column);
+       (jserr.line > 1) ? (int) jserr.column : (int) colpos + jserr.column);
   fclose (memfil);
   free (membuf), membuf = NULL;
   objputjansjsonpayl_BM (_.curldobj, js);

@@ -386,7 +386,7 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
               else              // cannot happen
                 FATAL_BM
                   ("corruption jansjsonfromvalue_BM connob=%s valarg=%s",
-                   _.connob, OUTSTRVALUE_BM (_.valarg));
+                   objectdbg_BM (_.connob), OUTSTRVALUE_BM (_.valarg));
             }
           else
             {
@@ -570,7 +570,6 @@ jansjson_add_to_json_object_bm (json_t * objs, value_tyBM val, value_tyBM src,
   if (isclosure_BM (_.valarg))
     {
       _.resappv =
-        _.resappv =
         apply3_BM (_.valarg, _.srcarg, _.ctxarg, taggedint_BM (depth),
                    CURFRAME_BM);
       if (!_.resappv)

@@ -105,7 +105,6 @@ extern "C"
   }                             /* end validid_BM */
 
 
-
   hash_tyBM hashid_BM (rawid_tyBM id)
   {
     if (!validid_BM (id))
@@ -117,6 +116,11 @@ extern "C"
     return h;
   }                             /* end hashid_BM */
 
+
+  bool equalid_BM (rawid_tyBM id1, rawid_tyBM id2)
+  {
+    return id1.id_hi == id2.id_hi && id1.id_lo == id2.id_lo;
+  }                             /* end equalid_BM */
 
 
   int cmpid_BM (rawid_tyBM id1, rawid_tyBM id2)
@@ -144,8 +148,8 @@ extern "C"
   {
     inline bool                 //
      
-      operator                       () (const rawid_tyBM & id1,
-                                         const rawid_tyBM & id2)
+      operator                             () (const rawid_tyBM & id1,
+                                               const rawid_tyBM & id2)
     {
       return cmpid_BM (id1, id2) < 0;
     };

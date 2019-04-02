@@ -2079,7 +2079,7 @@ printbt_callback_BM (void *data, uintptr_t pc, const char *filename,
             {
               objlock_BM (fnob);
               value_tyBM commentv = NULL;
-              char *fnobnam = findobjectname_BM (fnob);
+              const char *fnobnam = findobjectname_BM (fnob);
               if (fnobnam)
                 fprintf (pdata->f, "0x%lx %s\n\t~%s\n", (unsigned long) pc,
                          funame, fnobnam);

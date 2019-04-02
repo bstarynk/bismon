@@ -4122,9 +4122,9 @@ keyrelcompletionmenucmd_cbBM (GtkWidget * w, GdkEventKey * evk, gpointer data)
     {
       int keyix = evk->keyval - GDK_KEY_F1;
       if (complbyid_BM)
-        replacecompletionbyidcmd_BM (NULL, keyix);
+        replacecompletionbyidcmd_BM (NULL, (gpointer) keyix);
       else
-        replacecompletionbynamecmd_BM (NULL, keyix);
+        replacecompletionbynamecmd_BM (NULL, (gpointer) keyix);
       return TRUE;              // don't propagate the event
     }
   else if (evk->keyval == GDK_KEY_space)

@@ -269,7 +269,7 @@ makenodetreerest_BM (const objectval_tyBM * connob, value_tyBM treev,
   unsigned w = treewidth_BM ((const value_tyBM) treev);
   if (startix < 0)
     startix += (int) w;
-  if (startix >= 0 && startix < w)
+  if (startix >= 0 && startix < (int) w)
     return makenode_BM (connob, w - startix,
                         treecast_BM (treev)->nodt_sons + startix);
   else
