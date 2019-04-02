@@ -219,7 +219,7 @@ ROUTINEOBJNAME_BM (_5v30KC0IMxx_53ZzXprJTM6)    //
           objstrbufferprintfpayl_BM (_.bufob, "\t__");
           continue;
         }
-      if (cnt > 0 && cnt % 5 == 0)
+      if (cnt > 0 && cnt % 4 == 0)
         objstrbuffernewlinepayl_BM (_.bufob);
       objstrbufferprintfpayl_BM (_.bufob, "\t");
       send3_BM (_.curson, BMP_dump_value,
@@ -284,7 +284,7 @@ ROUTINEOBJNAME_BM (_6jvRZetUz36_978V6SKIWZC)    //
           objstrbufferprintfpayl_BM (_.bufob, "\t__");
           continue;
         }
-      if (cnt > 0 && cnt % 5 == 0)
+      if (cnt > 0 && cnt % 4 == 0)
         objstrbuffernewlinepayl_BM (_.bufob);
       objstrbufferprintfpayl_BM (_.bufob, "\t");
       send3_BM (_.curson, BMP_dump_value,
