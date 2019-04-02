@@ -88,6 +88,8 @@ ROUTINEOBJNAME_BM (_3Tc3E4uo2p5_4EXWCPwCR5b)    //
   objstrbuffermoreindentpayl_BM (_.bufob);
   unsigned card = setcardinal_BM (_.recv);
   unsigned cnt = 0;
+  if (card > 2)
+    objstrbuffernewlinepayl_BM (_.bufob);
   for (unsigned ix = 0; ix < card; ix++)
     {
       _.curobj = setelemnth_BM (_.recv, ix);
@@ -95,7 +97,7 @@ ROUTINEOBJNAME_BM (_3Tc3E4uo2p5_4EXWCPwCR5b)    //
         continue;
       char curidbuf[32];
       idtocbuf32_BM (objid_BM (_.curobj), curidbuf);
-      if (cnt > 0 && cnt % 4 == 0)
+      if (cnt > 0 && cnt % 3 == 0)
         objstrbuffernewlinepayl_BM (_.bufob);
       objstrbufferprintfpayl_BM (_.bufob, "\t%s", curidbuf);
       cnt++;
@@ -138,6 +140,8 @@ ROUTINEOBJNAME_BM (_5D9kkPHSPxq_8suDXpjlzjE)    // dump_value tuple
   objstrbuffermoreindentpayl_BM (_.bufob);
   unsigned tsiz = tuplesize_BM (_.recv);
   unsigned cnt = 0;
+  if (tsiz > 2)
+    objstrbuffernewlinepayl_BM (_.bufob);
   for (unsigned ix = 0; ix < tsiz; ix++)
     {
       _.curobj = tuplecompnth_BM (_.recv, ix);
@@ -145,7 +149,7 @@ ROUTINEOBJNAME_BM (_5D9kkPHSPxq_8suDXpjlzjE)    // dump_value tuple
         continue;
       char curidbuf[32];
       idtocbuf32_BM (objid_BM (_.curobj), curidbuf);
-      if (cnt > 0 && cnt % 4 == 0)
+      if (cnt > 0 && cnt % 3 == 0)
         objstrbuffernewlinepayl_BM (_.bufob);
       objstrbufferprintfpayl_BM (_.bufob, "\t%s", curidbuf);
       cnt++;
