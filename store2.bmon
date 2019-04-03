@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2915 objects
+// for 2916 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -8446,6 +8446,27 @@ _97rnxb0KFqq_44veN75DG2E)  "))")
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_76vcAaIKZQ5_1HVlfWi8zuA
+
+
+
+!(_0zVJaHtSWNK_1ZT8dvdnBL9 |=objwebsessioncookiestringpayl|
+!~ name (~ objwebsessioncookiestringpayl
+~)
+!@ 1554279179.933
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ " object o1 gives, if it a websession object, the cookie string of prefix str2"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _4ilpkwNBw3O_3l8ykbxbBom ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _0zVJaHtSWNK_1ZT8dvdnBL9  ":*/"  " " 
+  "objwebsessioncookiestringpayl_BM"  " "  "(("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E) 
+  "),"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4ilpkwNBw3O_3l8ykbxbBom) 
+  "))"  " ")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+!)_0zVJaHtSWNK_1ZT8dvdnBL9
 
 
 
