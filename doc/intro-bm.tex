@@ -1192,7 +1192,8 @@ Our initial DSL is designed in terms of code representations as
 objects (see §\ref{subsubsec:objects} below) and immutable values (see
 §\ref{subsubsec:immutvalues} below). It is not defined by some EBNF
 textual syntax. For example, an assign statement $\alpha$ \texttt{=} $\beta$
-is represented by an object of class \texttt{basiclo\_assign} with its
+is represented by an object of class \texttt{basiclo\_assign}
+    \index{basiclo assign@\texttt{basiclo\_assign}} with its
 first component representing the left hand-side $\alpha$ and the
 second component representing the right hand-side $\beta$. Expressions
 in our DSL are either objects, or nodes, or scalars (integers,
@@ -1207,7 +1208,10 @@ generated C code) or temporary (then the generated C code is not kept
 in that state). A routine or function~\footnote{Technically the
   routine would be in the module's shared object binary; the function
   is a \emph{Bismon} object reifying the code of that routine.}  is an
-object of class \texttt{basiclo\_function} or its subclass
+object of class \texttt{basiclo\_function}
+\index{basiclo function@\texttt{basiclo\_function}}
+\index{basiclo minifunction@\texttt{basiclo\_minifunction}}
+or its subclass
 \texttt{basiclo\_minifunction}, etc... A function knows its arguments,
 local variables, local numbers, body by various attributes
 (e.g. \texttt{arguments}, \texttt{locals}, \texttt{numbers},
@@ -1218,15 +1222,19 @@ Statements of our DSL include:
 \begin{itemize}
 \item assignments, of class \texttt{basiclo\_assign}, as explained above.
   
-  \item run statements, of class \texttt{basiclo\_run}, which
-    ``evaluates'' its single operand for side effects (similar to
-    expression statements in C or Go). As a special (and rather
-    common) case, that operand can be a ``code chunk'' (conceptually
-    similar to GCC MELT's code chunks, see
-    \cite{Starynkevitch-DSL2011} §3.4.1), that is a node of connective
-    \texttt{chunk} providing a ``template'' for expansion as C code.
+  \item run statements, of class \texttt{basiclo\_run}, \index{basiclo
+    run@\texttt{basiclo\_run}} which ``evaluates'' its single operand
+    for side effects (similar to expression statements in C or Go). As
+    a special (and rather common) case, that operand can be a ``code
+    chunk'' \index{code chunk} (conceptually similar to GCC MELT's
+    code chunks, see \cite{Starynkevitch-DSL2011} §3.4.1), that is a
+    node of connective \texttt{chunk} providing a ``template'' for
+    expansion as C code.
 
-    \item conditional statements, of class \texttt{basiclo\_cond},
+  \item conditional statements, of class \texttt{basiclo\_cond},
+    \index{basiclo cond@\texttt{basiclo\_cond}} 
+    \index{basiclo when@\texttt{basiclo\_when}} 
+    \index{nb conds@\texttt{nb\_conds}} 
       inspired by Lisp's \texttt{cond}. Its components are a sequence
       of when clauses (which are objects of class
       \texttt{basiclo\_when}) followed the ``else'' statements or
@@ -1235,23 +1243,30 @@ Statements of our DSL include:
 
     \item for loops, we have a \texttt{basiclo\_while} class of
       statements (for ``while'' loops) and a \texttt{basiclo\_loop}
+    \index{basiclo while@\texttt{basiclo\_while}} 
+    \index{basiclo loop@\texttt{basiclo\_loop}} 
+    \index{basiclo exit@\texttt{basiclo\_exit}}
+    \index{basiclo return@\texttt{basiclo\_return}} 
       class (for infinite loops). Exiting of loops and blocks are
       using the \texttt{basiclo\_exit} class. Return statements use
       the \texttt{basiclo\_return} class.
 
       \item failure (inspired by Go's \texttt{panic}) statements are
+    \index{basiclo fail@\texttt{basiclo\_fail}} 
         of class \texttt{basiclo\_fail}. Failures are not exceptions,
         but prematurely terminate the tasklet (of the agenda, see
         §\ref{subsec:multithreadist} below) running the function
         containing that statement.
 
       \item locking of objects use a \texttt{basiclo\_lockobj} class
+    \index{basiclo lockobj@\texttt{basiclo\_lockobj}} 
         (mentioning both an object to lock and a sequence of
         sub-statements or blocks). A locked object is unlocked when
         the end of its locking statement is reached, or when the
         currently active routine terminates (on failure or on return).
 
       \item execution of primitive side-effecting operations with no
+    \index{basiclo cexpansion@\texttt{basiclo\_cexpansion}} 
         result happens in C-expansion statements (of class
           \texttt{basiclo\_cexpansion}), inspired by GCC MELT's
           primitives (see \cite{Starynkevitch-DSL2011}) returning
@@ -1281,6 +1296,19 @@ Expressions in our DSL are typed (with types like \texttt{value},
 \item primitives (inspired by GCC MELT's ones, see
   \cite{Starynkevitch-DSL2011}; the connective of the node is of class
   \texttt{basiclo\_primitive})
+
+  \item builtin objects like \texttt{current\_closure},
+    \texttt{current\_closure\_size}, \texttt{current\_module},
+    \texttt{current\_routine} are expanded in some ad-hoc
+    \index{current closure@\texttt{current\_closure}}
+   \index{current closure size@\texttt{current\_closure\_size}}
+   \index{current module@\texttt{current\_module}}
+   \index{current routine@\texttt{current\_routine}}
+    fashion~\footnote{That is: \texttt{current\_closure} $\rightarrow$
+      the current closure; \texttt{current\_closure\_size}
+      $\rightarrow$ its size; \texttt{current\_module} $\rightarrow$
+      the current module; \texttt{current\_routine} $\rightarrow$ the
+      current routine respectively.}.
 
 \item etc...
   
