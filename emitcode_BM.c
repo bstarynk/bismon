@@ -734,7 +734,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                                  "     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;\n");
       objstrbufferprintfpayl_BM (_.modgenob,
                                  "   const unsigned nbclosed%s  __attribute__((unused)) = 0;\n",
-				 routidbuf);
+                                 routidbuf);
     }
   else
     {
@@ -1622,6 +1622,11 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
   objectval_tyBM *k_stmtid = BMK_5Z5WNOYHi9A_29s2a7qpJej;
   objectval_tyBM *k_modulid = BMK_4hxvngIgzCW_8a1qpSQsVA6;
   objectval_tyBM *k_routid = BMK_9ZI9sMho4j6_77RxEYacaEF;
+  objectval_tyBM *k_current_closure = BMK_8zYmVLSwVrR_4o3f5Gbjkih;
+  objectval_tyBM *k_current_closure_size = BMK_2g7mdZfl2sa_80JC86F5fWc;
+  objectval_tyBM *k_current_module = BMK_9zefWWg5iwJ_7IDjDEU8ucb;
+  objectval_tyBM *k_current_routine = BMK_5oJ9QOQFfbX_6psQHyINASW;
+  objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
                  value_tyBM expv;       //
                  value_tyBM avalv;      //
@@ -1633,6 +1638,7 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                  objectval_tyBM * fromob;       //
                  objectval_tyBM * connob;       //
                  objectval_tyBM * varob;        //
+                 objectval_tyBM * routob;       //
                  objectval_tyBM * indirconnob;  //
                  value_tyBM exclamv;    //
                  objectval_tyBM * exclamob;     //
@@ -1697,6 +1703,68 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
     case tyObject_BM:
       {
         _.expob = objectcast_BM (_.expv);
+        if (_.expob == k_current_closure)
+          {
+            char routidbuf[32];
+            memset (routidbuf, 0, sizeof (routidbuf));
+            _.routob =
+              objectcast_BM (objgetattr_BM (_.routprepob, k_prepare_routine));
+            idtocbuf32_BM (objid_BM (_.routob), routidbuf);
+            objstrbufferprintfpayl_BM
+              (_.modgenob,
+               "/*current_closure:*/ ((valtype_BM)(callclos%s))", routidbuf);
+            LOCALJUSTRETURN_BM ();
+          }
+        else if (_.expob == k_current_closure_size)
+          {
+            char routidbuf[32];
+            memset (routidbuf, 0, sizeof (routidbuf));
+            _.routob =
+              objectcast_BM (objgetattr_BM (_.routprepob, k_prepare_routine));
+            idtocbuf32_BM (objid_BM (_.routob), routidbuf);
+            objstrbufferprintfpayl_BM
+              (_.modgenob,
+               "/*current_closure_size:*/ ((intptr_t)nbclosed%s)", routidbuf);
+            LOCALJUSTRETURN_BM ();
+          }
+        else if (_.expob == k_current_routine)
+          {
+            char modulidbuf[32];
+            memset (modulidbuf, 0, sizeof (modulidbuf));
+            idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+            _.routob =
+              objectcast_BM (objgetattr_BM (_.routprepob, k_prepare_routine));
+            _.constantsv = objgetattr_BM (_.modgenob, k_constants);
+            WEAKASSERTRET_BM (isset_BM (_.constantsv));
+            int kix = setelemindex_BM (setcast_BM (_.constantsv), _.routob);
+            WEAKASSERTRET_BM (kix >= 0);
+            objstrbufferprintfpayl_BM (_.modgenob,
+                                       " /*current_routine:*/ ("
+                                       CONSTOBARRPREFIX_BM "%s"
+                                       ROUTINESUFFIX_BM "[%d] /*|%s*/)",
+                                       modulidbuf, kix,
+                                       objectdbg2_BM (_.routob));
+            LOCALJUSTRETURN_BM ();
+          }
+        else if (_.expob == k_current_module)
+          {
+            char modulidbuf[32];
+            memset (modulidbuf, 0, sizeof (modulidbuf));
+            idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+            _.routob =
+              objectcast_BM (objgetattr_BM (_.routprepob, k_prepare_routine));
+            _.constantsv = objgetattr_BM (_.modgenob, k_constants);
+            WEAKASSERTRET_BM (isset_BM (_.constantsv));
+            int kix = setelemindex_BM (setcast_BM (_.constantsv), _.modulob);
+            WEAKASSERTRET_BM (kix >= 0);
+            objstrbufferprintfpayl_BM (_.modgenob,
+                                       " /*current_module:*/ ("
+                                       CONSTOBARRPREFIX_BM "%s"
+                                       ROUTINESUFFIX_BM "[%d] /*|%s*/)",
+                                       modulidbuf, kix,
+                                       objectdbg2_BM (_.modulob));
+            LOCALJUSTRETURN_BM ();
+          }
         _.avalv = objassocgetattrpayl_BM (_.routprepob, _.expob);
         char varidbuf[32];
         memset (varidbuf, 0, sizeof (varidbuf));
@@ -2106,6 +2174,7 @@ failure:
                                _.modgenob, _.causev);
   PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniemit_expression_BM */
+
 
 // emit magic variables $stmtid $modulid $routid or else return false
 bool

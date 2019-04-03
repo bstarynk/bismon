@@ -648,18 +648,22 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
         DBGPRINTF_BM ("miniscan_expr expob=%s avalv=%s",
                       objectdbg_BM (_.expob),
                       debug_outstr_value_BM (_.avalv, CURFRAME_BM, 0));
-	if (_.expob == k_current_closure) {
-	  LOCALRETURN_BM(BMP_value);
-	}
-	else if (_.expob == k_current_routine) {
-	  LOCALRETURN_BM(BMP_object);
-	}
-	else if (_.expob == k_current_module) {
-	  LOCALRETURN_BM(BMP_object);
-	}
-	else if (_.expob == k_current_closure_size) {
-	  LOCALRETURN_BM(BMP_int);
-	}
+        if (_.expob == k_current_closure)
+          {
+            LOCALRETURN_BM (BMP_value);
+          }
+        else if (_.expob == k_current_routine)
+          {
+            LOCALRETURN_BM (BMP_object);
+          }
+        else if (_.expob == k_current_module)
+          {
+            LOCALRETURN_BM (BMP_object);
+          }
+        else if (_.expob == k_current_closure_size)
+          {
+            LOCALRETURN_BM (BMP_int);
+          }
         if (_.avalv != NULL)
           {
             _.typob =
