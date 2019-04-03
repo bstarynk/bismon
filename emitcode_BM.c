@@ -721,8 +721,17 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                                                          CURFRAME_BM, 0),
      nbclosed);
   if (nbclosed == 0)
-    objstrbufferprintfpayl_BM (_.modgenob, "   // no closed values in %s.\n",
-                               objectdbg_BM (_.routob));
+    {
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "   // no closed values in %s.\n",
+                                 objectdbg_BM (_.routob));
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "   const closure_tyBM* callclos%s = NULL;\n",
+                                 routidbuf);
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "   const unsigned nbclosed%s = 0;\n",
+				 routidbuf);
+    }
   else
     {
       objstrbufferprintfpayl_BM (_.modgenob,
@@ -736,7 +745,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
       objstrbufferprintfpayl_BM (_.modgenob,
                                  "     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;\n");
       objstrbufferprintfpayl_BM (_.modgenob,
-                                 "   unsigned nbclosed%s = closurewidth_BM ((const value_tyBM) callclos%s);\n",
+                                 "   const unsigned nbclosed%s = closurewidth_BM ((const value_tyBM) callclos%s);\n",
                                  routidbuf, routidbuf);
       for (int clix = 0; clix < nbclosed; clix++)
         {
