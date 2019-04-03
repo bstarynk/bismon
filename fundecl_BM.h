@@ -1594,11 +1594,17 @@ extern void
 objwebsessionsendjsonwebsocketpayl_BM (objectval_tyBM * obj, value_tyBM jsonv,
                                        value_tyBM ctxtv,
                                        struct stackframe_stBM *stkf);
-
+/// gives the contributor of a websession object, or else NULL
 extern objectval_tyBM *objwebsessioncontributorpayl_BM (objectval_tyBM * obj);
+/// gives creation or expiration times of a websession object, or else 0.0
 extern double objwebsessioncreatetimepayl_BM (objectval_tyBM * obj);
 extern double objwebsessionexpiretimepayl_BM (objectval_tyBM * obj);
+/// gives the unique rank of a websession object, or else 0
 extern unsigned objwebsessionrankpayl_BM (objectval_tyBM * obj);
+/// gives a freshly allocated cookie string of a websession object
+/// with a given prefix (if NULL, without prefix) or else NULL
+extern value_tyBM objwebsessioncookiestringpayl_BM (objectval_tyBM * obj,
+                                                    const char *prefix);
 ////////////////
 
 extern void webonion_suspend_before_gc_BM (void);

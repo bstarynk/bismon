@@ -1729,6 +1729,32 @@ objwebsessionrankpayl_BM (objectval_tyBM * obj)
 }                               /* end objwebsessionrankpayl_BM */
 
 
+value_tyBM
+objwebsessioncookiestringpayl_BM (objectval_tyBM * obj, const char *prefix)
+{
+  if (!isobject_BM (obj))
+    return NULL;
+  struct websessiondata_stBM *wsess = objgetwebsessionpayl_BM (obj);
+  if (!wsess)
+    return NULL;
+  ASSERT_BM (wsess->websess_magic == BISMONION_WEBSESS_MAGIC);
+  char cookiebuf[64];
+  memset (cookiebuf, 0, sizeof (cookiebuf));
+  char sessidbuf[32];
+  memset (sessidbuf, 0, sizeof (sessidbuf));
+  idtocbuf32_BM (objid_BM (obj), sessidbuf);
+  snprintf (cookiebuf, sizeof (cookiebuf), "n%06dR%dt%do%s",
+            wsess->websess_rank, wsess->websess_rand1,
+            wsess->websess_rand2, sessidbuf);
+  unsigned cookielen = strlen (cookiebuf);
+  ASSERT_BM (cookielen < sizeof (cookiebuf) - 4);
+  if (prefix)
+    return sprintfstring_BM ("%s%s", prefix, cookiebuf);
+  else
+    return makestring_BM (cookiebuf);
+}                               /* end objwebsessioncookiestringpayl_BM */
+
+
 //////////////////////////////////////////////////////////////////////////
 // lock for the web exchange count
 static pthread_mutex_t webexonion_mtx_BM = PTHREAD_MUTEX_INITIALIZER;

@@ -1286,13 +1286,14 @@ ROUTINEOBJNAME_BM (_6PmxiZR9WBe_13DwWExCALl)    //
 //// for the method to dump_data a basiclo_function or any object with a value data
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7D36kHemyWQ_0YfwWnUhR9Y);
 
-value_tyBM ROUTINEOBJNAME_BM (_7D36kHemyWQ_0YfwWnUhR9Y) //
-  (struct stackframe_stBM * stkf, //
-   const value_tyBM arg1,  // reciever
-   const value_tyBM arg2, // dumpob
-   const value_tyBM arg3, // strbufob
-   const value_tyBM arg4_ __attribute__((unused)),        //
-   const quasinode_tyBM * restargs_  __attribute__((unused)))
+value_tyBM
+ROUTINEOBJNAME_BM (_7D36kHemyWQ_0YfwWnUhR9Y)    //
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // reciever
+ const value_tyBM arg2,         // dumpob
+ const value_tyBM arg3,         // strbufob
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
