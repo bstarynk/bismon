@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 2916 objects
+// for 2920 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -1208,12 +1208,56 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_8zYmVLSwVrR_4o3f5Gbjkih |=current_closure|
+!~ name (~ current_closure
+~)
+!@ 1554281518.622
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the current closure"
+!)_8zYmVLSwVrR_4o3f5Gbjkih
+
+
+
+!(_2g7mdZfl2sa_80JC86F5fWc |=current_closure_size|
+!~ name (~ current_closure_size
+~)
+!@ 1554281540.559
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the size of the current closure"
+!)_2g7mdZfl2sa_80JC86F5fWc
+
+
+
 !(_1Lw70JO0z4y_7VFmnlVAN2U |=current_expertise|
 !~ name (~ current_expertise
 ~)
 !@ 1521439289.950
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_1Lw70JO0z4y_7VFmnlVAN2U
+
+
+
+!(_9zefWWg5iwJ_7IDjDEU8ucb |=current_module|
+!~ name (~ current_module
+~)
+!@ 1554281467.422
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the current module"
+!)_9zefWWg5iwJ_7IDjDEU8ucb
+
+
+
+!(_5oJ9QOQFfbX_6psQHyINASW |=current_routine|
+!~ name (~ current_routine
+~)
+!@ 1554281491.796
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the current routine"
+!)_5oJ9QOQFfbX_6psQHyINASW
 
 
 

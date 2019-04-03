@@ -578,6 +578,10 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
   objectval_tyBM *k_simple_module_generation = BMK_2HlKptD03wA_7JJCG7lN5nS;
   objectval_tyBM *k_undefined = BMK_1z3DQ3EVAGs_3KlGdHJpWbX;
   // objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
+  objectval_tyBM *k_current_closure = BMK_8zYmVLSwVrR_4o3f5Gbjkih;
+  objectval_tyBM *k_current_closure_size = BMK_2g7mdZfl2sa_80JC86F5fWc;
+  objectval_tyBM *k_current_module = BMK_9zefWWg5iwJ_7IDjDEU8ucb;
+  objectval_tyBM *k_current_routine = BMK_5oJ9QOQFfbX_6psQHyINASW;
   objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
   objectval_tyBM *k_failure_miss = BMK_52XwytpOPVl_3ZjmQCtadbK;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
@@ -644,6 +648,18 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
         DBGPRINTF_BM ("miniscan_expr expob=%s avalv=%s",
                       objectdbg_BM (_.expob),
                       debug_outstr_value_BM (_.avalv, CURFRAME_BM, 0));
+	if (_.expob == k_current_closure) {
+	  LOCALRETURN_BM(BMP_value);
+	}
+	else if (_.expob == k_current_routine) {
+	  LOCALRETURN_BM(BMP_object);
+	}
+	else if (_.expob == k_current_module) {
+	  LOCALRETURN_BM(BMP_object);
+	}
+	else if (_.expob == k_current_closure_size) {
+	  LOCALRETURN_BM(BMP_int);
+	}
         if (_.avalv != NULL)
           {
             _.typob =
