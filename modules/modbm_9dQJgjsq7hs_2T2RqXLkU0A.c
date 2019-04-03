@@ -52,9 +52,9 @@ extern objrout_sigBM crout_8IYFtn8osS2_4t1U3wyROLW_BM; //#12 emit_xhtml
 extern objrout_sigBM crout_9hEreAemqXg_0uoN1Fr1ly4_BM; //#13 !emit-tagged-id-xhtml-open [v_htmltag v_htmlclass v_idprefix o_idtarget] (o_helem o_emitctx o_strbuf v_depth)
 
 
-// declare 82 constants
-objectval_tyBM* constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[82+1];
-const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[82+1];
+// declare 83 constants
+objectval_tyBM* constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[83+1];
+const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[83+1];
 
 
 // define 14 routines
@@ -3477,7 +3477,7 @@ PLACEDFAILURE_BM(__LINE__,
 ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy), 
  
 (/*taggedint:*/ taggedint_BM ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f))))),
-                /*failplace:*/ ( /*modconst:*/(constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[80] /*|_9BnClw26jr7_7AZtUCFn3Qg*/)),
+                /*failplace:*/ ( /*modconst:*/(constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[81] /*|_9BnClw26jr7_7AZtUCFn3Qg*/)),
                 ((struct stackframe_stBM *) &_));
    
 } //endwhen _7Tm3SaqITAB_7FjAFBmgHFi   
@@ -3547,7 +3547,7 @@ PLACEDFAILURE_BM(__LINE__,
 ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy), 
  
 (/*taggedint:*/ taggedint_BM ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f))))),
-                /*failplace:*/ ( /*modconst:*/(constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[81] /*|_9ICwe1aOJtc_5TzmQ59QZrs*/)),
+                /*failplace:*/ ( /*modconst:*/(constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[82] /*|_9ICwe1aOJtc_5TzmQ59QZrs*/)),
                 ((struct stackframe_stBM *) &_));
 } /*cond else _23svN0ubUj6_7fLFEqkDSEu*/  
 /*endcond _23svN0ubUj6_7fLFEqkDSEu*/ 
@@ -3623,7 +3623,7 @@ value_tyBM crout_9hEreAemqXg_0uoN1Fr1ly4_BM //#13
    _.stkfram_head.htyp = typayl_StackFrame_BM;
    _.stkfram_head.hgc = 0;
    _.stkfram_head.rlen = 12;
-   _.stkfram_descr = constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[79] /*|_9hEreAemqXg_0uoN1Fr1ly4*/;
+   _.stkfram_descr = constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[80] /*|_9hEreAemqXg_0uoN1Fr1ly4*/;
    ASSERT_BM (!stkf
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
@@ -3783,8 +3783,8 @@ endblock__0dR2udLAHI6_6XdsSwwp24Y: ;
 // end of 14 generated routines
 
 
-// the constant ids for 82 constants:
-const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[82+1] = {
+// the constant ids for 83 constants:
+const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[83+1] = {
  /*0:*/
  "_01h86SAfOfg_1q2oMegGRwW",//comment
  "_031bGeN8S0j_96cNAJfzYBE",//the_web_sessions
@@ -3880,11 +3880,12 @@ const char* const constid_9dQJgjsq7hs_2T2RqXLkU0A_BM[82+1] = {
  "_8MFQuVGkedx_8OkpYlCQFip",//failure_bad_rank
  "_93zjUzZVAaj_9ppXv7C34GR",//closure
  "_95hdJENHNkN_3QuKIJTCQQQ",//failure_type_error
- "_9hEreAemqXg_0uoN1Fr1ly4", //! emit-tagged-id-xhtml-open [v_htmltag v_htmlclass v_idprefix o_idtarget] (o_helem o_emitctx o_strbuf v_depth)
+ "_9dQJgjsq7hs_2T2RqXLkU0A",//webxhtml_module
  /*80:*/
+ "_9hEreAemqXg_0uoN1Fr1ly4", //! emit-tagged-id-xhtml-open [v_htmltag v_htmlclass v_idprefix o_idtarget] (o_helem o_emitctx o_strbuf v_depth)
  "_9BnClw26jr7_7AZtUCFn3Qg", //! fail-miss closure  v_html o_emitctx o_strbuf depth /emit_xhtml
  "_9ICwe1aOJtc_5TzmQ59QZrs", //! else fail-typeerror emit_xhtml v_html o_emitctx o_strbuf depth
- NULL}; // end 82 constant ids
+ NULL}; // end 83 constant ids
 
 
 

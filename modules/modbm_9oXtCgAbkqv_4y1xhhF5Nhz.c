@@ -30,9 +30,9 @@ extern objrout_sigBM crout_43Y25VLmh6s_3JRpERevcR4_BM; //#1 successor_test_minif
 extern objrout_sigBM crout_9O2lgu1TweO_0mVlpTwrBG1_BM; //#2 second_test_minifunc
 
 
-// declare 7 constants
-objectval_tyBM* constob_9oXtCgAbkqv_4y1xhhF5Nhz_BM[7+1];
-const char* const constid_9oXtCgAbkqv_4y1xhhF5Nhz_BM[7+1];
+// declare 8 constants
+objectval_tyBM* constob_9oXtCgAbkqv_4y1xhhF5Nhz_BM[8+1];
+const char* const constid_9oXtCgAbkqv_4y1xhhF5Nhz_BM[8+1];
 
 
 // define 3 routines
@@ -249,7 +249,7 @@ value_tyBM crout_9O2lgu1TweO_0mVlpTwrBG1_BM //#2+
    _.stkfram_head.htyp = typayl_StackFrame_BM;
    _.stkfram_head.hgc = 0;
    _.stkfram_head.rlen = 2;
-   _.stkfram_descr = constob_9oXtCgAbkqv_4y1xhhF5Nhz_BM[6] /*|second_test_minifunc*/;
+   _.stkfram_descr = constob_9oXtCgAbkqv_4y1xhhF5Nhz_BM[7] /*|second_test_minifunc*/;
    ASSERT_BM (!stkf
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
              || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
@@ -305,8 +305,8 @@ endblock__8yXqsN7LuB3_0vODsT2M9Lh: ;
 // end of 3 generated routines
 
 
-// the constant ids for 7 constants:
-const char* const constid_9oXtCgAbkqv_4y1xhhF5Nhz_BM[7+1] = {
+// the constant ids for 8 constants:
+const char* const constid_9oXtCgAbkqv_4y1xhhF5Nhz_BM[8+1] = {
  /*0:*/
  "_0qxuQEfimtp_1Wp2YuKHsJ3", //! test-objswitch(o1) minifunc
  "_0vgCFjXblkx_4zCMhMAWjVK",//int
@@ -315,8 +315,9 @@ const char* const constid_9oXtCgAbkqv_4y1xhhF5Nhz_BM[7+1] = {
  "_7T9OwSFlgov_0wVJaK1eZbn",//object
  /*5:*/
  "_7YmEzAVe2hC_9iA0FVXAIqp",//hexa
+ "_9oXtCgAbkqv_4y1xhhF5Nhz",//first_test_module
  "_9O2lgu1TweO_0mVlpTwrBG1",//second_test_minifunc
- NULL}; // end 7 constant ids
+ NULL}; // end 8 constant ids
 
 
 

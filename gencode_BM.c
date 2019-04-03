@@ -3190,6 +3190,7 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    // prepare_module°basiclo*modul
   _.consthsetob = makeobj_BM ();
   objputclass_BM (_.consthsetob, k_hset_object);
   objputhashsetpayl_BM (_.consthsetob, 5 * objnbcomps_BM (_.modulob) + 10);
+  objhashsetaddpayl_BM (_.consthsetob, _.modulob);
   objputattr_BM (_.modgenob, k_functions_set, _.funhsetob);
   objputattr_BM (_.modgenob, k_constants, _.consthsetob);
   DBGPRINTF_BM
