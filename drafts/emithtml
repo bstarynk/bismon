@@ -1,6 +1,6 @@
 // in body €_3DcbHfTP2t of emit_xhtml function €_8IYFtn8, after the debug start
 // arguments of emit_xhtml: [v_html o_emitctx o_strbuf v_depth]
-// locals of emit_xhtml: {o_comp o_conn o_html v_comp v_resapp v_resemit o_spacing v_clos}
+// locals of emit_xhtml: {o_comp o_conn o_html v_comp v_resapp v_resemit o_spacing v_clos v_emitnode v_emitopen}
 // numbers of emit_xhtml: {i_depth ii leni}
 
 /// that was never added, up to commit 5c78727ecfb881045e2037 on Jan 18
@@ -371,26 +371,58 @@ $[^when (*isnode (v_html)  // this when is €_0TcBev05JBd
       $[^when (and_then
        ) !:comment "when o_conn is and_then // emit_xhtml node"]
       $[^when (or_else
-       ) !:comment "when o_conn is or_else // emit_xhtml node"]
-      $[^assign(v_comp *objgetattr(o_conn !emit_xhtml_node)) !:comment "v_comp := o_conn.emit_xhtml_node /emit_xhtml_node node else.."]
-      $[^run (#{/*debug emit_xhtml node else o_conn v_comp v_html o_emitctx o_strbuf depth*/
-      DBGPRINTF_BM("emit_xhtml node else €%.9s o_conn=%s v_comp=%s v_html=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+       ) !:comment "when o_conn is or_else // emit_xhtml node"] 
+       // else of objswitch o_conn €_4ySLl7UU6H
+      $[^assign(v_emitnode *objgetattr(o_conn !emit_xhtml_node)) !:comment "Else: v_emitnode := o_conn.emit_xhtml_node /emit_xhtml_node node else.."]
+      $[^assign(v_emitopen *objgetattr(o_conn !emit_xhtml_connective_open)) !:comment "v_emitopen := o_conn.emit_xhtml_connective_open /emit_xhtml_open node else.."]
+      $[^run (#{/*debug emit_xhtml node else o_conn v_emitnode v_emitopen v_html o_emitctx o_strbuf depth*/
+      DBGPRINTF_BM("emit_xhtml node else €%.9s o_conn=%s v_emitnode=%s v_html=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
       "$stmtid",
       objectdbg_BM($o_conn),
-      OUTSTRVALUE_BM($v_comp),
+      OUTSTRVALUE_BM($v_emitnode),
+      OUTSTRVALUE_BM($v_emitopen),
       OUTSTRVALUE_BM($v_html),
       objectdbg1_BM($o_emitctx),
       objectdbg2_BM($o_strbuf),
       objstrbufferlengthpayl_BM($o_strbuf),
       (long int)($i_depth));}# )
-      !:comment "debug emit_xhtml node else o_conn v_comp v_html o_emitctx o_strbuf depth /emit_xhtml node else.."]
-      ///@@@@ A COMPLETER
+      !:comment "debug emit_xhtml node else o_conn v_emitnode v_emitopen v_html o_emitctx o_strbuf depth /emit_xhtml node else.."]
+      ///still else ... objswitch o_conn €_4ySLl7UU6H
       $[^cond ( 
-        $[^when (*isclosure(v_comp)
-	  $[^assign (v_resemit *apply(v_comp v_html o_emitctx o_strbuf *taggedint(*add_int(i_depth 1))))
-	   !:comment "v_resemit := v_comp(v_html  o_emitctx o_strbuf depth+1) /emit_xhtml node with conn having emit_xhtml_node"]
-          ) !:comment "when v_comp is closure /emit_xhtml node else.."]
-      ) !:comment "if v_comp is closure apply it else fail /emit_xhtml node else.."]
+        $[^when (*and_then (v_emitnode v_emitopen))
+        $[^fail(*make_node(!failure_both o_conn v_html o_emitctx o_strbuf *taggedint(i_depth)))
+	 !:comment "fail-both emit_xhtml_node & emit_xhtml_open in o_conn  v_html o_emitctx o_strbuf depth /emit_xhtml node else"]
+	 ) !:comment "when both v_emitnode & v_emitopen fail... / emit_xhtml node else.."]
+	//////-----
+        $[^when (*isclosure(v_emitnode)
+	  $[^assign (v_resemit *apply(v_emitnode v_html o_emitctx o_strbuf *taggedint(*add_int(i_depth 1))))
+	   !:comment "v_resemit := v_emitnode(v_html  o_emitctx o_strbuf depth+1) /emit_xhtml node with conn having emit_xhtml_node"]
+        $[^run (#{/*debug emit_xhtml v_resemit o_conn v_emitnode v_html o_emitctx o_strbuf depth*/
+          DBGPRINTF_BM("emit_xhtml node else €%.9s v_resemit=%s o_conn=%s v_emitnode=%s v_html=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+          "$stmtid",
+          OUTSTRVALUE_BM($v_resemit),
+          objectdbg_BM($o_conn),
+          OUTSTRVALUE_BM($v_emitnode),
+          OUTSTRVALUE_BM($v_html),
+          objectdbg1_BM($o_emitctx),
+          objectdbg2_BM($o_strbuf),
+          objstrbufferlengthpayl_BM($o_strbuf),
+          (long int)($i_depth));}# )
+          !:comment "debug emit_xhtml node else v_resemit o_conn v_emitnode v_html o_emitctx o_strbuf depth /emit_xhtml node with conn having emit_xhtml_node"]
+        $[^cond (
+           $[^when (*is_null(v_resemit)
+              $[^fail(*make_node(!failure_miss !emit_xhtml_node v_html o_emitctx o_strbuf *taggedint(i_depth)))
+	          !:comment "fail-miss emit_xhtml_node  v_html o_emitctx o_strbuf depth /emit_xhtml other node"]
+	        ) !:comment "when v_resemit is null fail-miss /emit_xhtml other node"]
+          ) !:comment "check v_resemit /emit_xhtml emit_xhtml_node  node else.."]
+	  $[^return (v_resemit) !:comment "return v_resemit /emit_xhtml emit_xhtml_node node else.."]
+	 ) !:comment "when v_emitnode is a closure //emit_xhtml emit_xhtml_node node else.."]
+        $[^when (*isclosure(v_emitopen)
+	  $[^assign (v_resemit *apply(v_emitopen v_html o_emitctx o_strbuf *taggedint(*add_int(i_depth 1))))
+	   !:comment "v_resemit := v_emitopen(v_html  o_emitctx o_strbuf depth+1) /emit_xhtml node with conn having emit_xhtml_connective_open"]
+          ) !:comment "when v_emitnode is closure /emit_xhtml node else.."]
+	  ////-----
+      ) !:comment "cond on v_emitnode & v_emitopen /emit_xhtml node else.."]
     ) !:comment "objswitch o_conn // emit_xhtml node"] // end  €_4ySLl7UU6H
  )
  ] // end when v_html is a node
