@@ -348,35 +348,35 @@ be~\footnote{This is a gross simplification! In practice, there is a
   \item strongly formal methods based, semantically oriented,
     ``sound'' tools (e.g. built above abstract interpretation -cf.
     \cite{Cousot:2014:AIP,CousotCousot77-1}-, model checking -cf.
-    \cite{Schlich:2010:MCS, Siddiqui:2018:adv-soft-model-check} and \cite{Jhala:2009:SMC}-, and other
-    formal techniques on the whole program... See also
-    \cite{Andreasen:2017:SAI}) which can give excellent results but
-    require a lot of expertise to be used, and may take a long time to
-    run~\footnote{There are cases where those static analyzers need
-      weeks of computer time to give interesting results.}. For
-    examples, \emph{Frama-C} (cf \cite{Cuoq:2012:Frama-C}),
-    \emph{Astrée} (cf \cite{Mine:2015:TIU}), etc... The expert user
-    needs either to explicitly annotate the analyzed source code
-    (e.g. in ACSL for \emph{Frama-C}, see \cite{Baudin:2018:ACSL,
-      Delahaye:2013:CSL, Amin:2017:LAW}), and/or cleverly tune the
-    many configuration knobs of the static analyzer, and often
-    both. Often, the static analyzer itself has to be extended to be
-    able to give interesting results on one particular analyzed source
-    code~\footnote{The \emph{Astrée} project can be seen as the
-      development of a powerful analyzer tool \emph{specifically}
-      suited for the needs of Airbus control command software; it
-      implements many complex abstract interpretation lattices wisely
-      chosen to fit the relevant traits of the analyzed code. Neither
-      \emph{Astrée} nor \emph{Frama-C} can easily -without any
-      additional tuning or annotations- and successfully be used on
-      most Linux command line utilities (e.g. \texttt{bash},
-      \texttt{\emph{coreutils}}, \texttt{\emph{binutils}},
-      \texttt{gcc}, ...)  or servers (e.g. \texttt{systemd},
-      \texttt{lighttpd}, \texttt{Wayland} or \texttt{Xorg}, or IoT
-      frameworks such as MQTT...). But \emph{Frama-C} can be extended
-      by additional plugins so is a \emph{framework} for sound static
-      analysis.}, when that analyzed code is complex or quite
-    large. Many formal static analyzers
+    \cite{Schlich:2010:MCS, Siddiqui:2018:adv-soft-model-check} and
+    \cite{Jhala:2009:SMC}-, and other formal techniques on the whole
+    program... See also \cite{Andreasen:2017:SAI}) which can give
+    excellent results but require a lot of expertise to be used, and
+    may take a long time to run~\footnote{There are cases where those
+      static analyzers need weeks of computer time to give interesting
+      results.}. For examples, \emph{Frama-C} (cf
+    \cite{Cuoq:2012:Frama-C}), \emph{Astrée} (cf
+    \cite{Mine:2015:TIU}), etc... The expert user needs either to
+    explicitly annotate the analyzed source code (e.g. in ACSL for
+    \emph{Frama-C}, see \cite{Baudin:2018:ACSL, Delahaye:2013:CSL,
+      Amin:2017:LAW}), and/or cleverly tune the many configuration
+    knobs of the static analyzer, and often both. Often, the static
+    analyzer itself has to be extended to be able to give interesting
+    results on one particular analyzed source code~\footnote{The
+      \emph{Astrée} project can be seen as the development of a
+      powerful analyzer tool \emph{specifically} suited for the needs
+      of Airbus control command software; it implements many complex
+      abstract interpretation lattices wisely chosen to fit the
+      relevant traits of the analyzed code. Neither \emph{Astrée} nor
+      \emph{Frama-C} can easily -without any additional tuning or
+      annotations- and successfully be used on most Linux command line
+      utilities (e.g. \texttt{bash}, \texttt{\emph{coreutils}},
+      \texttt{\emph{binutils}}, \texttt{gcc}, ...)  or servers
+      (e.g. \texttt{systemd}, \texttt{lighttpd}, \texttt{Wayland} or
+      \texttt{Xorg}, or IoT frameworks such as MQTT...). But
+      \emph{Frama-C} can be extended by additional plugins so is a
+      \emph{framework} for sound static analysis.}, when that analyzed
+    code is complex or quite large. Many formal static analyzers
     (e.g. \cite{Greenaway:2014:DSS, Vedala:2012:ADP}) focus on
     checking just \emph{one} aspect or property of security or
     safety. Usually, formal and sound static analyzers can practically
@@ -388,11 +388,14 @@ be~\footnote{This is a gross simplification! In practice, there is a
       standard dynamic C memory allocation above \texttt{malloc};
       since they target above all the safety critical real-time
       embedded software market where such allocations are
-      \emph{forbidden}.}).  In practice, the formal sound static
-    analyzers are able to prove \emph{automatically} some
-    \emph{simple} properties of small, highly critical, software
-    components (e.g. avoiding the need of \emph{unit testing} at the
-    expense of very \emph{costly software development efforts}).
+      \emph{forbidden}.}). Some formal analysis approaches include a
+    definition of a strict subset of \emph{C}, thru perhaps some
+    automatically generated code (cf. \cite{Bhargavan:DFHPRR17}) from
+    some DSL.  In practice, the formal sound static analyzers are able
+    to prove \emph{automatically} some \emph{simple} properties of
+    small, highly critical, software components (e.g. avoiding the
+    need of \emph{unit testing} at the expense of very \emph{costly
+      software development efforts}).
 
   \item lightweight ``syntax'' oriented ``unsound'' tools, such as
     Coverity Scan~\footnote{See \bmurl{https://scan.coverity.com/}} or
