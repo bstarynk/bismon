@@ -134,8 +134,10 @@ value_tyBM crout_09Hug4WGnPK_7PpZby8pz84_BM //#0
    _.o_41F1rKwGbaA_30OJWKsqNWy = objectcast_BM (arg1); // o_strbuf
    // fetched 2 arguments.
    // no closed values in _09Hug4WGnPK_7PpZby8pz84.
-   const closure_tyBM* callclos_09Hug4WGnPK_7PpZby8pz84 = NULL;
-   const unsigned nbclosed_09Hug4WGnPK_7PpZby8pz84 = 0;
+   const closure_tyBM* callclos_09Hug4WGnPK_7PpZby8pz84 __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_09Hug4WGnPK_7PpZby8pz84  __attribute__((unused)) = 0;
    // routine _09Hug4WGnPK_7PpZby8pz84 body:
 
 startblock__1hpDu2PfgvV_90ZIZrNWtpj: __attribute__((unused));
@@ -266,8 +268,10 @@ value_tyBM crout_0DGyKHi4Zo0_4eC8WMw5tyJ_BM //#1
    _.v_3vRFuniDv1K_4bQ7DeekM2I = arg3; // v_i
    // fetched 4 arguments.
    // no closed values in _0DGyKHi4Zo0_4eC8WMw5tyJ.
-   const closure_tyBM* callclos_0DGyKHi4Zo0_4eC8WMw5tyJ = NULL;
-   const unsigned nbclosed_0DGyKHi4Zo0_4eC8WMw5tyJ = 0;
+   const closure_tyBM* callclos_0DGyKHi4Zo0_4eC8WMw5tyJ __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_0DGyKHi4Zo0_4eC8WMw5tyJ  __attribute__((unused)) = 0;
    // routine _0DGyKHi4Zo0_4eC8WMw5tyJ body:
 
 startblock__8RoxHXFm8Yb_7i6HiYCnAZF: __attribute__((unused));
@@ -810,8 +814,10 @@ value_tyBM crout_0TnNOA3XbNX_1HXoH9LI5af_BM //#2
     _.v_4nJKFtMqlkA_1teQSqofNux = restargs->nodt_sons[0]; // v_depth
    // fetched 5 arguments.
    // no closed values in _0TnNOA3XbNX_1HXoH9LI5af.
-   const closure_tyBM* callclos_0TnNOA3XbNX_1HXoH9LI5af = NULL;
-   const unsigned nbclosed_0TnNOA3XbNX_1HXoH9LI5af = 0;
+   const closure_tyBM* callclos_0TnNOA3XbNX_1HXoH9LI5af __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_0TnNOA3XbNX_1HXoH9LI5af  __attribute__((unused)) = 0;
    // routine _0TnNOA3XbNX_1HXoH9LI5af body:
 
 startblock__73QjkOjlQNQ_4MVltVuD6gz: __attribute__((unused));
@@ -1068,8 +1074,10 @@ value_tyBM crout_1HZc1VBbjdB_96aQTEPgEX0_BM //#3
    _.o_41F1rKwGbaA_30OJWKsqNWy = objectcast_BM (arg1); // o_strbuf
    // fetched 2 arguments.
    // no closed values in _1HZc1VBbjdB_96aQTEPgEX0.
-   const closure_tyBM* callclos_1HZc1VBbjdB_96aQTEPgEX0 = NULL;
-   const unsigned nbclosed_1HZc1VBbjdB_96aQTEPgEX0 = 0;
+   const closure_tyBM* callclos_1HZc1VBbjdB_96aQTEPgEX0 __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_1HZc1VBbjdB_96aQTEPgEX0  __attribute__((unused)) = 0;
    // routine _1HZc1VBbjdB_96aQTEPgEX0 body:
 
 startblock__97aF43R1sX0_4RGoHiXCqjO: __attribute__((unused));
@@ -1218,8 +1226,10 @@ value_tyBM crout_2iH7ckEmGey_5cKpVIuFgY9_BM //#4
    _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM (arg3); // o_from
    // fetched 4 arguments.
    // no closed values in _2iH7ckEmGey_5cKpVIuFgY9.
-   const closure_tyBM* callclos_2iH7ckEmGey_5cKpVIuFgY9 = NULL;
-   const unsigned nbclosed_2iH7ckEmGey_5cKpVIuFgY9 = 0;
+   const closure_tyBM* callclos_2iH7ckEmGey_5cKpVIuFgY9 __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_2iH7ckEmGey_5cKpVIuFgY9  __attribute__((unused)) = 0;
    // routine _2iH7ckEmGey_5cKpVIuFgY9 body:
 
 startblock__0yecfJYJ0b8_9MNId7Bd2eG: __attribute__((unused));
@@ -1413,8 +1423,10 @@ value_tyBM crout_3mBgHGhEYmP_9WN8gqaxhXg_BM //#5
    _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM (arg3); // o_from
    // fetched 4 arguments.
    // no closed values in _3mBgHGhEYmP_9WN8gqaxhXg.
-   const closure_tyBM* callclos_3mBgHGhEYmP_9WN8gqaxhXg = NULL;
-   const unsigned nbclosed_3mBgHGhEYmP_9WN8gqaxhXg = 0;
+   const closure_tyBM* callclos_3mBgHGhEYmP_9WN8gqaxhXg __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_3mBgHGhEYmP_9WN8gqaxhXg  __attribute__((unused)) = 0;
    // routine _3mBgHGhEYmP_9WN8gqaxhXg body:
 
 startblock__6G1aCgvTy3W_98wz76nldch: __attribute__((unused));
@@ -1612,8 +1624,10 @@ value_tyBM crout_3vI0Qc3FHQG_1g4fmHYkxSA_BM //#6
    _.o_41F1rKwGbaA_30OJWKsqNWy = objectcast_BM (arg1); // o_strbuf
    // fetched 2 arguments.
    // no closed values in _3vI0Qc3FHQG_1g4fmHYkxSA.
-   const closure_tyBM* callclos_3vI0Qc3FHQG_1g4fmHYkxSA = NULL;
-   const unsigned nbclosed_3vI0Qc3FHQG_1g4fmHYkxSA = 0;
+   const closure_tyBM* callclos_3vI0Qc3FHQG_1g4fmHYkxSA __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_3vI0Qc3FHQG_1g4fmHYkxSA  __attribute__((unused)) = 0;
    // routine _3vI0Qc3FHQG_1g4fmHYkxSA body:
 
 startblock__7pji8vKR2XX_3psoWkfPtL2: __attribute__((unused));
@@ -2104,8 +2118,10 @@ value_tyBM crout_3DSazBjnN2Z_3O1SEDV4tBX_BM //#7
    _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM (arg3); // o_from
    // fetched 4 arguments.
    // no closed values in _3DSazBjnN2Z_3O1SEDV4tBX.
-   const closure_tyBM* callclos_3DSazBjnN2Z_3O1SEDV4tBX = NULL;
-   const unsigned nbclosed_3DSazBjnN2Z_3O1SEDV4tBX = 0;
+   const closure_tyBM* callclos_3DSazBjnN2Z_3O1SEDV4tBX __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_3DSazBjnN2Z_3O1SEDV4tBX  __attribute__((unused)) = 0;
    // routine _3DSazBjnN2Z_3O1SEDV4tBX body:
 
 startblock__8O5DAuPguWF_8eEm6i2rd8x: __attribute__((unused));
@@ -2300,8 +2316,10 @@ value_tyBM crout_3QVddP6n0iB_4lpbil0LgYY_BM //#8
     _.v_4nJKFtMqlkA_1teQSqofNux = restargs->nodt_sons[0]; // v_depth
    // fetched 5 arguments.
    // no closed values in _3QVddP6n0iB_4lpbil0LgYY.
-   const closure_tyBM* callclos_3QVddP6n0iB_4lpbil0LgYY = NULL;
-   const unsigned nbclosed_3QVddP6n0iB_4lpbil0LgYY = 0;
+   const closure_tyBM* callclos_3QVddP6n0iB_4lpbil0LgYY __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_3QVddP6n0iB_4lpbil0LgYY  __attribute__((unused)) = 0;
    // routine _3QVddP6n0iB_4lpbil0LgYY body:
 
 startblock__2q2tG2FP53N_76KbmEQ5yym: __attribute__((unused));
@@ -2758,8 +2776,10 @@ value_tyBM crout_42eCU3i9GEu_1DZnhnLNaH6_BM //#9
     _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM(restargs->nodt_sons[0]); // o_from
    // fetched 5 arguments.
    // no closed values in _42eCU3i9GEu_1DZnhnLNaH6.
-   const closure_tyBM* callclos_42eCU3i9GEu_1DZnhnLNaH6 = NULL;
-   const unsigned nbclosed_42eCU3i9GEu_1DZnhnLNaH6 = 0;
+   const closure_tyBM* callclos_42eCU3i9GEu_1DZnhnLNaH6 __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_42eCU3i9GEu_1DZnhnLNaH6  __attribute__((unused)) = 0;
    // routine _42eCU3i9GEu_1DZnhnLNaH6 body:
 
 startblock__8GOPNT1AML7_5vAQJrMpDGM: __attribute__((unused));
@@ -2898,8 +2918,10 @@ value_tyBM crout_44Xro7p814I_406P69WFbq4_BM //#10
    _.o_4JKd986pvM4_6yBzeeI40vW = objectcast_BM (arg1); // o_jsgenmod
    // fetched 2 arguments.
    // no closed values in _44Xro7p814I_406P69WFbq4.
-   const closure_tyBM* callclos_44Xro7p814I_406P69WFbq4 = NULL;
-   const unsigned nbclosed_44Xro7p814I_406P69WFbq4 = 0;
+   const closure_tyBM* callclos_44Xro7p814I_406P69WFbq4 __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_44Xro7p814I_406P69WFbq4  __attribute__((unused)) = 0;
    // routine _44Xro7p814I_406P69WFbq4 body:
 
 startblock__2kanmkRxrZV_3xnDrbqgMjR: __attribute__((unused));
@@ -3074,8 +3096,10 @@ value_tyBM crout_4c5MCb4uv2z_05s1UFfXvwB_BM //#11
    _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM (arg3); // o_from
    // fetched 4 arguments.
    // no closed values in _4c5MCb4uv2z_05s1UFfXvwB.
-   const closure_tyBM* callclos_4c5MCb4uv2z_05s1UFfXvwB = NULL;
-   const unsigned nbclosed_4c5MCb4uv2z_05s1UFfXvwB = 0;
+   const closure_tyBM* callclos_4c5MCb4uv2z_05s1UFfXvwB __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_4c5MCb4uv2z_05s1UFfXvwB  __attribute__((unused)) = 0;
    // routine _4c5MCb4uv2z_05s1UFfXvwB body:
 
 startblock__8W92KFbJAOs_9CiKMPRclCz: __attribute__((unused));
@@ -3391,8 +3415,10 @@ value_tyBM crout_4gqOSRMDIRc_2fBJTqqK612_BM //#12
     _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM(restargs->nodt_sons[1]); // o_from
    // fetched 6 arguments.
    // no closed values in _4gqOSRMDIRc_2fBJTqqK612.
-   const closure_tyBM* callclos_4gqOSRMDIRc_2fBJTqqK612 = NULL;
-   const unsigned nbclosed_4gqOSRMDIRc_2fBJTqqK612 = 0;
+   const closure_tyBM* callclos_4gqOSRMDIRc_2fBJTqqK612 __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_4gqOSRMDIRc_2fBJTqqK612  __attribute__((unused)) = 0;
    // routine _4gqOSRMDIRc_2fBJTqqK612 body:
 
 startblock__41bm79uepd0_9PHtIQSeEjo: __attribute__((unused));
@@ -3687,8 +3713,10 @@ value_tyBM crout_4jb31rXWAb8_1Y8sylmVciT_BM //#13
    _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM (arg3); // o_from
    // fetched 4 arguments.
    // no closed values in _4jb31rXWAb8_1Y8sylmVciT.
-   const closure_tyBM* callclos_4jb31rXWAb8_1Y8sylmVciT = NULL;
-   const unsigned nbclosed_4jb31rXWAb8_1Y8sylmVciT = 0;
+   const closure_tyBM* callclos_4jb31rXWAb8_1Y8sylmVciT __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_4jb31rXWAb8_1Y8sylmVciT  __attribute__((unused)) = 0;
    // routine _4jb31rXWAb8_1Y8sylmVciT body:
 
 startblock__4274DLs3OWk_0GB4aCrjpLe: __attribute__((unused));
@@ -3844,8 +3872,10 @@ value_tyBM crout_4n3pxDbCfJp_0NsE8uuJjF0_BM //#14
     _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM(restargs->nodt_sons[3]); // o_from
    // fetched 8 arguments.
    // no closed values in _4n3pxDbCfJp_0NsE8uuJjF0.
-   const closure_tyBM* callclos_4n3pxDbCfJp_0NsE8uuJjF0 = NULL;
-   const unsigned nbclosed_4n3pxDbCfJp_0NsE8uuJjF0 = 0;
+   const closure_tyBM* callclos_4n3pxDbCfJp_0NsE8uuJjF0 __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_4n3pxDbCfJp_0NsE8uuJjF0  __attribute__((unused)) = 0;
    // routine _4n3pxDbCfJp_0NsE8uuJjF0 body:
 
 startblock__5y0LvPAOg2E_8bILD0ZDALb: __attribute__((unused));
@@ -4158,8 +4188,10 @@ value_tyBM crout_52KOJftDzaY_95rXXNMj4Md_BM //#15
     _.v_4nJKFtMqlkA_1teQSqofNux = restargs->nodt_sons[0]; // v_depth
    // fetched 5 arguments.
    // no closed values in _52KOJftDzaY_95rXXNMj4Md.
-   const closure_tyBM* callclos_52KOJftDzaY_95rXXNMj4Md = NULL;
-   const unsigned nbclosed_52KOJftDzaY_95rXXNMj4Md = 0;
+   const closure_tyBM* callclos_52KOJftDzaY_95rXXNMj4Md __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_52KOJftDzaY_95rXXNMj4Md  __attribute__((unused)) = 0;
    // routine _52KOJftDzaY_95rXXNMj4Md body:
 
 startblock__1QWrSe5kAFI_8Je2Do0p89H: __attribute__((unused));
@@ -4570,8 +4602,10 @@ value_tyBM crout_5E25xyHXQFi_0wTfQEys5ek_BM //#16
     _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM(restargs->nodt_sons[2]); // o_from
    // fetched 7 arguments.
    // no closed values in _5E25xyHXQFi_0wTfQEys5ek.
-   const closure_tyBM* callclos_5E25xyHXQFi_0wTfQEys5ek = NULL;
-   const unsigned nbclosed_5E25xyHXQFi_0wTfQEys5ek = 0;
+   const closure_tyBM* callclos_5E25xyHXQFi_0wTfQEys5ek __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_5E25xyHXQFi_0wTfQEys5ek  __attribute__((unused)) = 0;
    // routine _5E25xyHXQFi_0wTfQEys5ek body:
 
 startblock__7CVonsCMumZ_3pgPGUcDI11: __attribute__((unused));
@@ -4822,8 +4856,10 @@ value_tyBM crout_5F3Vb2iwCDj_70AlfryKbrk_BM //#17
    _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM (arg3); // o_from
    // fetched 4 arguments.
    // no closed values in _5F3Vb2iwCDj_70AlfryKbrk.
-   const closure_tyBM* callclos_5F3Vb2iwCDj_70AlfryKbrk = NULL;
-   const unsigned nbclosed_5F3Vb2iwCDj_70AlfryKbrk = 0;
+   const closure_tyBM* callclos_5F3Vb2iwCDj_70AlfryKbrk __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_5F3Vb2iwCDj_70AlfryKbrk  __attribute__((unused)) = 0;
    // routine _5F3Vb2iwCDj_70AlfryKbrk body:
 
 startblock__0ZGJ4h1jZc2_8g3jLP2t8dY: __attribute__((unused));
@@ -5152,8 +5188,10 @@ value_tyBM crout_6qgqb6eQuLf_805ANNku23h_BM //#18
    _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM (arg3); // o_from
    // fetched 4 arguments.
    // no closed values in _6qgqb6eQuLf_805ANNku23h.
-   const closure_tyBM* callclos_6qgqb6eQuLf_805ANNku23h = NULL;
-   const unsigned nbclosed_6qgqb6eQuLf_805ANNku23h = 0;
+   const closure_tyBM* callclos_6qgqb6eQuLf_805ANNku23h __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_6qgqb6eQuLf_805ANNku23h  __attribute__((unused)) = 0;
    // routine _6qgqb6eQuLf_805ANNku23h body:
 
 startblock__2j2Ren49m0R_4OCAkdP9SbJ: __attribute__((unused));
@@ -5438,8 +5476,10 @@ value_tyBM crout_6tvn8CFOFbK_7tR4KRH8jTi_BM //#19
    _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM (arg3); // o_from
    // fetched 4 arguments.
    // no closed values in _6tvn8CFOFbK_7tR4KRH8jTi.
-   const closure_tyBM* callclos_6tvn8CFOFbK_7tR4KRH8jTi = NULL;
-   const unsigned nbclosed_6tvn8CFOFbK_7tR4KRH8jTi = 0;
+   const closure_tyBM* callclos_6tvn8CFOFbK_7tR4KRH8jTi __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_6tvn8CFOFbK_7tR4KRH8jTi  __attribute__((unused)) = 0;
    // routine _6tvn8CFOFbK_7tR4KRH8jTi body:
 
 startblock__2wnsLSAYyry_0rJMVdRI7rE: __attribute__((unused));
@@ -5673,8 +5713,10 @@ value_tyBM crout_74TaCoUa4dg_2bmUAanJYIJ_BM //#20
    _.v_3vRFuniDv1K_4bQ7DeekM2I = arg3; // v_i
    // fetched 4 arguments.
    // no closed values in _74TaCoUa4dg_2bmUAanJYIJ.
-   const closure_tyBM* callclos_74TaCoUa4dg_2bmUAanJYIJ = NULL;
-   const unsigned nbclosed_74TaCoUa4dg_2bmUAanJYIJ = 0;
+   const closure_tyBM* callclos_74TaCoUa4dg_2bmUAanJYIJ __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_74TaCoUa4dg_2bmUAanJYIJ  __attribute__((unused)) = 0;
    // routine _74TaCoUa4dg_2bmUAanJYIJ body:
 
 startblock__89UMgXRvAgw_8wA2kYCSWVS: __attribute__((unused));
@@ -5838,8 +5880,10 @@ value_tyBM crout_79dmjQ4v7Oq_1iLagDqA8vn_BM //#21
     _.v_4nJKFtMqlkA_1teQSqofNux = restargs->nodt_sons[0]; // v_depth
    // fetched 5 arguments.
    // no closed values in _79dmjQ4v7Oq_1iLagDqA8vn.
-   const closure_tyBM* callclos_79dmjQ4v7Oq_1iLagDqA8vn = NULL;
-   const unsigned nbclosed_79dmjQ4v7Oq_1iLagDqA8vn = 0;
+   const closure_tyBM* callclos_79dmjQ4v7Oq_1iLagDqA8vn __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_79dmjQ4v7Oq_1iLagDqA8vn  __attribute__((unused)) = 0;
    // routine _79dmjQ4v7Oq_1iLagDqA8vn body:
 
 startblock__0sSEANlamjt_3EtWuCexA5K: __attribute__((unused));
@@ -6001,8 +6045,10 @@ value_tyBM crout_7gbmQg2dILF_76dK4SAVpqZ_BM //#22
     _.v_4nJKFtMqlkA_1teQSqofNux = restargs->nodt_sons[0]; // v_depth
    // fetched 5 arguments.
    // no closed values in _7gbmQg2dILF_76dK4SAVpqZ.
-   const closure_tyBM* callclos_7gbmQg2dILF_76dK4SAVpqZ = NULL;
-   const unsigned nbclosed_7gbmQg2dILF_76dK4SAVpqZ = 0;
+   const closure_tyBM* callclos_7gbmQg2dILF_76dK4SAVpqZ __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_7gbmQg2dILF_76dK4SAVpqZ  __attribute__((unused)) = 0;
    // routine _7gbmQg2dILF_76dK4SAVpqZ body:
 
 startblock__25nKBJWCTfY_6oDXNLB33tM: __attribute__((unused));
@@ -6256,8 +6302,10 @@ value_tyBM crout_7uTqbIQcGPn_8jiFSVCYrEg_BM //#23
     _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM(restargs->nodt_sons[1]); // o_from
    // fetched 6 arguments.
    // no closed values in _7uTqbIQcGPn_8jiFSVCYrEg.
-   const closure_tyBM* callclos_7uTqbIQcGPn_8jiFSVCYrEg = NULL;
-   const unsigned nbclosed_7uTqbIQcGPn_8jiFSVCYrEg = 0;
+   const closure_tyBM* callclos_7uTqbIQcGPn_8jiFSVCYrEg __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_7uTqbIQcGPn_8jiFSVCYrEg  __attribute__((unused)) = 0;
    // routine _7uTqbIQcGPn_8jiFSVCYrEg body:
 
 startblock__27bDca0oCOf_41QFrC0lVa1: __attribute__((unused));
@@ -6501,8 +6549,10 @@ value_tyBM crout_7TK5bvNNTIg_4pzieotiEq8_BM //#24
    _.o_4JKd986pvM4_6yBzeeI40vW = objectcast_BM (arg1); // o_jsgenmod
    // fetched 2 arguments.
    // no closed values in _7TK5bvNNTIg_4pzieotiEq8.
-   const closure_tyBM* callclos_7TK5bvNNTIg_4pzieotiEq8 = NULL;
-   const unsigned nbclosed_7TK5bvNNTIg_4pzieotiEq8 = 0;
+   const closure_tyBM* callclos_7TK5bvNNTIg_4pzieotiEq8 __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_7TK5bvNNTIg_4pzieotiEq8  __attribute__((unused)) = 0;
    // routine _7TK5bvNNTIg_4pzieotiEq8 body:
 
 startblock__0Z73bFupVPc_5IIGLp2FEwc: __attribute__((unused));
@@ -7030,8 +7080,10 @@ value_tyBM crout_82m25YlV36t_0rEvRK5bJiS_BM //#25
     _.v_4nJKFtMqlkA_1teQSqofNux = restargs->nodt_sons[0]; // v_depth
    // fetched 5 arguments.
    // no closed values in _82m25YlV36t_0rEvRK5bJiS.
-   const closure_tyBM* callclos_82m25YlV36t_0rEvRK5bJiS = NULL;
-   const unsigned nbclosed_82m25YlV36t_0rEvRK5bJiS = 0;
+   const closure_tyBM* callclos_82m25YlV36t_0rEvRK5bJiS __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_82m25YlV36t_0rEvRK5bJiS  __attribute__((unused)) = 0;
    // routine _82m25YlV36t_0rEvRK5bJiS body:
 
 startblock__1Q9bb14ZILM_7qaCfMUXHig: __attribute__((unused));
@@ -7352,8 +7404,10 @@ value_tyBM crout_83faYJmqTAm_5Um8Vj0myAd_BM //#26
    _.v_3vRFuniDv1K_4bQ7DeekM2I = arg2; // v_i
    // fetched 3 arguments.
    // no closed values in _83faYJmqTAm_5Um8Vj0myAd.
-   const closure_tyBM* callclos_83faYJmqTAm_5Um8Vj0myAd = NULL;
-   const unsigned nbclosed_83faYJmqTAm_5Um8Vj0myAd = 0;
+   const closure_tyBM* callclos_83faYJmqTAm_5Um8Vj0myAd __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_83faYJmqTAm_5Um8Vj0myAd  __attribute__((unused)) = 0;
    // routine _83faYJmqTAm_5Um8Vj0myAd body:
 
 startblock__0tcJ6ukv6Ir_2lDrl0IhO5H: __attribute__((unused));
@@ -7438,8 +7492,10 @@ value_tyBM crout_8cxGPJUb6ZO_6gKkay3UrSY_BM //#27
     _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM(restargs->nodt_sons[0]); // o_from
    // fetched 5 arguments.
    // no closed values in _8cxGPJUb6ZO_6gKkay3UrSY.
-   const closure_tyBM* callclos_8cxGPJUb6ZO_6gKkay3UrSY = NULL;
-   const unsigned nbclosed_8cxGPJUb6ZO_6gKkay3UrSY = 0;
+   const closure_tyBM* callclos_8cxGPJUb6ZO_6gKkay3UrSY __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_8cxGPJUb6ZO_6gKkay3UrSY  __attribute__((unused)) = 0;
    // routine _8cxGPJUb6ZO_6gKkay3UrSY body:
 
 startblock__1VF18WTRAAq_9HdyYoMN6mj: __attribute__((unused));
@@ -7717,8 +7773,10 @@ value_tyBM crout_8Kh2MKilKO4_5qPRBWX9W3a_BM //#28
     _.o_7N9BaY4jXQb_2V4VMnRwsGD = objectcast_BM(restargs->nodt_sons[0]); // o_paren
    // fetched 5 arguments.
    // no closed values in _8Kh2MKilKO4_5qPRBWX9W3a.
-   const closure_tyBM* callclos_8Kh2MKilKO4_5qPRBWX9W3a = NULL;
-   const unsigned nbclosed_8Kh2MKilKO4_5qPRBWX9W3a = 0;
+   const closure_tyBM* callclos_8Kh2MKilKO4_5qPRBWX9W3a __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_8Kh2MKilKO4_5qPRBWX9W3a  __attribute__((unused)) = 0;
    // routine _8Kh2MKilKO4_5qPRBWX9W3a body:
 
 startblock__3FmlgpoQDOO_5eAL3UuBax6: __attribute__((unused));
@@ -8068,8 +8126,10 @@ value_tyBM crout_91gYAd2Lx86_5fBVoAhGY7b_BM //#30
    _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM (arg3); // o_from
    // fetched 4 arguments.
    // no closed values in _91gYAd2Lx86_5fBVoAhGY7b.
-   const closure_tyBM* callclos_91gYAd2Lx86_5fBVoAhGY7b = NULL;
-   const unsigned nbclosed_91gYAd2Lx86_5fBVoAhGY7b = 0;
+   const closure_tyBM* callclos_91gYAd2Lx86_5fBVoAhGY7b __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_91gYAd2Lx86_5fBVoAhGY7b  __attribute__((unused)) = 0;
    // routine _91gYAd2Lx86_5fBVoAhGY7b body:
 
 startblock__6DQpfnBo8KI_5QbEtyEeI2Y: __attribute__((unused));
@@ -8240,8 +8300,10 @@ value_tyBM crout_9qmOPbwMhs9_3dJL09vcSKT_BM //#31
     _.o_89nz0KaXXZh_8eSgMmqnK37 = objectcast_BM(restargs->nodt_sons[0]); // o_from
    // fetched 5 arguments.
    // no closed values in _9qmOPbwMhs9_3dJL09vcSKT.
-   const closure_tyBM* callclos_9qmOPbwMhs9_3dJL09vcSKT = NULL;
-   const unsigned nbclosed_9qmOPbwMhs9_3dJL09vcSKT = 0;
+   const closure_tyBM* callclos_9qmOPbwMhs9_3dJL09vcSKT __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_9qmOPbwMhs9_3dJL09vcSKT  __attribute__((unused)) = 0;
    // routine _9qmOPbwMhs9_3dJL09vcSKT body:
 
 startblock__1tUFyfob7x4_5pEDbLXici0: __attribute__((unused));

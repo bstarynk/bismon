@@ -726,10 +726,14 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                                  "   // no closed values in %s.\n",
                                  objectdbg_BM (_.routob));
       objstrbufferprintfpayl_BM (_.modgenob,
-                                 "   const closure_tyBM* callclos%s = NULL;\n",
+                                 "   const closure_tyBM* callclos%s __attribute__((unused)) =\n",
                                  routidbuf);
       objstrbufferprintfpayl_BM (_.modgenob,
-                                 "   const unsigned nbclosed%s = 0;\n",
+                                 "     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)\n");
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;\n");
+      objstrbufferprintfpayl_BM (_.modgenob,
+                                 "   const unsigned nbclosed%s  __attribute__((unused)) = 0;\n",
 				 routidbuf);
     }
   else

@@ -73,8 +73,10 @@ value_tyBM crout_0qxuQEfimtp_1Wp2YuKHsJ3_BM //#0
    _.o_97rnxb0KFqq_44veN75DG2E = objectcast_BM (arg0); // o1
    // fetched 1 arguments.
    // no closed values in _0qxuQEfimtp_1Wp2YuKHsJ3.
-   const closure_tyBM* callclos_0qxuQEfimtp_1Wp2YuKHsJ3 = NULL;
-   const unsigned nbclosed_0qxuQEfimtp_1Wp2YuKHsJ3 = 0;
+   const closure_tyBM* callclos_0qxuQEfimtp_1Wp2YuKHsJ3 __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_0qxuQEfimtp_1Wp2YuKHsJ3  __attribute__((unused)) = 0;
    // routine _0qxuQEfimtp_1Wp2YuKHsJ3 body:
 
 startblock__7eNL9Vje1Be_8iB8cXzHjcs: __attribute__((unused));
@@ -188,8 +190,10 @@ value_tyBM crout_43Y25VLmh6s_3JRpERevcR4_BM //#1+
    _.v_3vRFuniDv1K_4bQ7DeekM2I = arg0; // v_i
    // fetched 1 arguments.
    // no closed values in successor_test_minifunc.
-   const closure_tyBM* callclos_43Y25VLmh6s_3JRpERevcR4 = NULL;
-   const unsigned nbclosed_43Y25VLmh6s_3JRpERevcR4 = 0;
+   const closure_tyBM* callclos_43Y25VLmh6s_3JRpERevcR4 __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_43Y25VLmh6s_3JRpERevcR4  __attribute__((unused)) = 0;
    // routine _43Y25VLmh6s_3JRpERevcR4 body:
 
 startblock__7XasLoEUKwe_9upxyFeheD5: __attribute__((unused));
@@ -254,8 +258,10 @@ value_tyBM crout_9O2lgu1TweO_0mVlpTwrBG1_BM //#2+
    _.v_5EEITf6IFH7_4DbKG99zcPW = arg0; // v1
    // fetched 1 arguments.
    // no closed values in second_test_minifunc.
-   const closure_tyBM* callclos_9O2lgu1TweO_0mVlpTwrBG1 = NULL;
-   const unsigned nbclosed_9O2lgu1TweO_0mVlpTwrBG1 = 0;
+   const closure_tyBM* callclos_9O2lgu1TweO_0mVlpTwrBG1 __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_9O2lgu1TweO_0mVlpTwrBG1  __attribute__((unused)) = 0;
    // routine _9O2lgu1TweO_0mVlpTwrBG1 body:
 
 startblock__8yXqsN7LuB3_0vODsT2M9Lh: __attribute__((unused));
