@@ -548,8 +548,8 @@ miniscan_var_BM (objectval_tyBM * varob,
   LOCALRETURN_BM (NULL);
 failure:
   _.errorv = (value_tyBM)
-    makenode4_BM (k_miniscan_var, varob, routprepob, taggedint_BM (depth),
-                  fromob);
+    makenode5_BM (k_miniscan_var, _.varob, _.routprepob, taggedint_BM (depth),
+                  _.fromob, _.causev);
   PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 #undef FAILHERE
 }                               /* end miniscan_var_BM */
