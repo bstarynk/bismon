@@ -1717,18 +1717,18 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                "/*current_closure:*/ ((valtype_BM)(callclos%s))", routidbuf);
             LOCALJUSTRETURN_BM ();
           }
-	else if (_.expob == k_null_object) {
+        else if (_.expob == k_null_object)
+          {
             objstrbufferprintfpayl_BM
-              (_.modgenob,
-               "/*null_object:*/ ((objectval_tyBM*)NULL)");
+              (_.modgenob, "/*null_object:*/ ((objectval_tyBM*)NULL)");
             LOCALJUSTRETURN_BM ();
-	}
-	else if (_.expob == k_null_value) {
+          }
+        else if (_.expob == k_null_value)
+          {
             objstrbufferprintfpayl_BM
-              (_.modgenob,
-               "/*null_value:*/ ((value_tyBM)NULL)");
+              (_.modgenob, "/*null_value:*/ ((value_tyBM)NULL)");
             LOCALJUSTRETURN_BM ();
-	}
+          }
         else if (_.expob == k_current_closure_size)
           {
             char routidbuf[32];
