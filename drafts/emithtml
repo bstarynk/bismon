@@ -444,7 +444,7 @@ $[^when (*isnode (v_html)  // this when is €_0TcBev05JBd
 	   ) !:comment "check that v_resemit is string / after emit_xhtml_connective_open emit_xhtml node else.."]
 	 $[^assign (leni *nodewidth(v_html)) 
 	     !:comment "leni := nodewith (v_html) / emit_xhtml_connective_open emit_xhtml node else.."]
-	 $[^assign (o_spacing *object_cast (*objgetattr (o_conn !html_spacing)))
+	 $[^assign (o_spacing *as_object (*objgetattr (o_conn !html_spacing)))
 	     !:comment "o_spacing := o_conn.html_spacing / emit_xhtml_connective_open emit_xhtml node else.."]
 	 $[^for_up (ii leni
           $[^cond (
