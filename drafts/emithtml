@@ -478,13 +478,36 @@ $[^when (*isnode (v_html)  // this when is €_0TcBev05JBd
           (long int)($i_depth),
           OUTSTRVALUE_BM($v_html));}# )
 	  !:comment "debug emit_xhtml emit_xhtml_connective_open forup v_comp ii o_conn o_emitctx o_strbuf depth v_html"]
-            /// @@@ should emit_xhtml the v_comp
+          /// 
+          $[^assign(v_resemit *apply (!emit_xhtml v_comp o_emitctx o_strbuf *taggedint(*add_int(i_depth 1))))
+                  !:comment "v_resemit := emit_xhtml (v_comp o_emitctx o_strbuf depth+1) // emit_xhtml v_comp loop emit_xhtml_connective_open"]
+           $[^run ( #{/*debug emit_xhtml for loop emit_xhtml_connective_open v_resemit v_comp ii o_html o_emitctx o_strbuf depth*/
+   DBGPRINTF_BM("emit_xhtml for loop emit_xhtml_connective_open €%.9s v_resemit=%s v_comp=%s ii#%ld o_html=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+   "$stmtid",
+   OUTSTRVALUE_BM($v_resemit),
+   OUTSTRVALUE_BM($v_comp),
+   (long int) ($ii),
+   objectdbg_BM($o_html),
+   objectdbg1_BM($o_emitctx),
+   objectdbg2_BM($o_strbuf),
+   objstrbufferlengthpayl_BM($o_strbuf),
+   (long int) ($i_depth));
+   }# ) !:comment "debug emit_xhtml for loop emit_xhtml_connective_open v_resemit v_comp ii o_html o_emitctx o_strbuf depth"]
+   
+   $[^cond (
+     $[^when (*is_null (v_resemit)
+       $[^fail(*make_node (!failure_miss !emit_xhtml_connective_open  v_comp *taggedint(ii) o_html o_emitctx o_strbuf *taggedint(i_depth)))
+         !:comment "fail-miss emit_xhtml emit_xhtml_connective_open v_comp ii o_html o_emitctx o_strbuf depth"]
+       ) !:comment "when v_resemit is null, fail / emit_xhtml after emit_xhtml_connective_open"]
+   ) !:comment "if v_resemit is null, fail / emit_xhtml after emitxhtml_element"]
 	    ) !:comment "for-up ii to leni / emit_xhtml_connective_open emit_xhtml node else.."]
-	    /// @@@ should emit closing tag
+	    $[^out (o_strbuf "</" v_str ">") !:comment "emit </$v_str> /emit_xhtml node else.."]
           ) !:comment "when v_emitopen is closure /emit_xhtml node else.."]
 	  ////-----
       ) !:comment "cond on v_emitnode & v_emitopen /emit_xhtml node else.."]
     ) !:comment "objswitch o_conn // emit_xhtml node"] // end  €_4ySLl7UU6H
+    $[^return (o_conn) 
+    !:comment "return o_conn /when v_html is a node in emit_xhtml"]
  ] // end when v_html is a node
 
  $[^when (*isclosure(v_html)
