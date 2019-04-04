@@ -389,7 +389,7 @@ $[^when (*isnode (v_html)  // this when is €_0TcBev05JBd
       !:comment "debug emit_xhtml node else o_conn v_emitnode v_emitopen v_html o_emitctx o_strbuf depth /emit_xhtml node else.."]
       ///still else ... objswitch o_conn €_4ySLl7UU6H
       $[^cond ( 
-        $[^when (*and_then (v_emitnode v_emitopen))
+        $[^when (*and_then (v_emitnode v_emitopen)
         $[^fail(*make_node(!failure_both o_conn v_html o_emitctx o_strbuf *taggedint(i_depth)))
 	 !:comment "fail-both emit_xhtml_node & emit_xhtml_open in o_conn  v_html o_emitctx o_strbuf depth /emit_xhtml node else"]
 	 ) !:comment "when both v_emitnode & v_emitopen fail... / emit_xhtml node else.."]

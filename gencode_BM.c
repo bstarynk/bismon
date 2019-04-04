@@ -582,6 +582,8 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
   objectval_tyBM *k_current_closure_size = BMK_2g7mdZfl2sa_80JC86F5fWc;
   objectval_tyBM *k_current_module = BMK_9zefWWg5iwJ_7IDjDEU8ucb;
   objectval_tyBM *k_current_routine = BMK_5oJ9QOQFfbX_6psQHyINASW;
+  objectval_tyBM *k_null_object = BMK_5wZJ5RA9Dww_2S0cGLDXup0;
+  objectval_tyBM *k_null_value = BMK_2rFOCfhpUXp_9z1SVC5OYo9;
   objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
   objectval_tyBM *k_failure_miss = BMK_52XwytpOPVl_3ZjmQCtadbK;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_expr,
@@ -651,6 +653,14 @@ miniscan_expr_BM (value_tyBM expv, objectval_tyBM * routpreparg,
         if (_.expob == k_current_closure)
           {
             LOCALRETURN_BM (BMP_value);
+          }
+        else if (_.expob == k_null_value)
+          {
+            LOCALRETURN_BM (BMP_value);
+          }
+        else if (_.expob == k_null_object)
+          {
+            LOCALRETURN_BM (BMP_object);
           }
         else if (_.expob == k_current_routine)
           {

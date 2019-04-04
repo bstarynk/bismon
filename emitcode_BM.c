@@ -1627,6 +1627,8 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
   objectval_tyBM *k_current_module = BMK_9zefWWg5iwJ_7IDjDEU8ucb;
   objectval_tyBM *k_current_routine = BMK_5oJ9QOQFfbX_6psQHyINASW;
   objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
+  objectval_tyBM *k_null_object = BMK_5wZJ5RA9Dww_2S0cGLDXup0;
+  objectval_tyBM *k_null_value = BMK_2rFOCfhpUXp_9z1SVC5OYo9;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
                  value_tyBM expv;       //
                  value_tyBM avalv;      //
@@ -1715,6 +1717,18 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                "/*current_closure:*/ ((valtype_BM)(callclos%s))", routidbuf);
             LOCALJUSTRETURN_BM ();
           }
+	else if (_.expob == k_null_object) {
+            objstrbufferprintfpayl_BM
+              (_.modgenob,
+               "/*null_object:*/ ((objectval_tyBM*)NULL)");
+            LOCALJUSTRETURN_BM ();
+	}
+	else if (_.expob == k_null_value) {
+            objstrbufferprintfpayl_BM
+              (_.modgenob,
+               "/*null_value:*/ ((value_tyBM)NULL)");
+            LOCALJUSTRETURN_BM ();
+	}
         else if (_.expob == k_current_closure_size)
           {
             char routidbuf[32];
