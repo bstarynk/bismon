@@ -366,12 +366,16 @@ $[^when (*isnode (v_html)  // this when is €_0TcBev05JBd
         $:checklenione
        ) !:comment "when o_conn is utf8_enc // emit_xhtml node"]
        ///
-      $[^when (sequence
+      $[^when (sequence   // €_18MTh926l
        ) !:comment "when o_conn is sequence // emit_xhtml node"]
-      $[^when (and_then
-       ) !:comment "when o_conn is and_then // emit_xhtml node"]
-      $[^when (or_else
-       ) !:comment "when o_conn is or_else // emit_xhtml node"] 
+      $[^when (space      // €_4xEPE1lbF
+       ) !:comment "when o_conn is space // emit_xhtml node"]
+      $[^when (newline    // €_2pklfVqX1
+       ) !:comment "when o_conn is newline // emit_xhtml node"]
+      // $[^when (and_then
+      // ) !:comment "when o_conn is and_then // emit_xhtml node"]
+      // $[^when (or_else
+      // ) !:comment "when o_conn is or_else // emit_xhtml node"] 
        // else of objswitch o_conn €_4ySLl7UU6H
       $[^assign(v_emitnode *objgetattr(o_conn !emit_xhtml_node)) !:comment "Else: v_emitnode := o_conn.emit_xhtml_node /emit_xhtml_node node else.."]
       $[^assign(v_emitopen *objgetattr(o_conn !emit_xhtml_connective_open)) !:comment "v_emitopen := o_conn.emit_xhtml_connective_open /emit_xhtml_open node else.."]
