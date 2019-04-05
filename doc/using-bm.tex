@@ -317,17 +317,15 @@ When  \texttt{v\_html} is a node of connective $\omega_{conn}$, it is emitted pe
   
 \item if $\omega_{conn}$ is \texttt{sequence}, every son of
   \texttt{v\_html} is emitted in sequence, with an incremented
-  $depth$.  \index{sequence@\texttt{sequence}}
+  $depth$. Nothing is additionally emitted between
+  them. \index{sequence@\texttt{sequence}}
 
-\item if $\omega_{conn}$ is \texttt{space}, every son of
-  \texttt{v\_html} is emitted in sequence, with an incremented
-  $depth$. Between each son, a space is emitted.
-  \index{space@\texttt{space}}
-
-\item if $\omega_{conn}$ is \texttt{newline}, every son of
-  \texttt{v\_html} is emitted in sequence, with an incremented
-  $depth$. Between each son, a newline is emitted.
-  \index{newline@\texttt{newline}}
+\item if $\omega_{conn}$ is \texttt{space}, or \texttt{newline}, or
+  \texttt{nlsp}, every son of \texttt{v\_html} is emitted in sequence,
+  with an incremented $depth$. Between each son, a space
+  (respectively, a newline, or a smart space of newline) is emitted.
+  \index{space@\texttt{space}} \index{newline@\texttt{newline}}
+  \index{nlsp@\texttt{nlsp}}
 
 
 \item for any other object $\omega_{conn}$ as connective, we extract
