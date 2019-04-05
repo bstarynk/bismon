@@ -201,6 +201,7 @@ more regular and easier to generate than with plain HTML5.
 The \texttt{webxhtml\_module} \index{module!\texttt{webxhtml\_module}}
 in \emph{bismon} has code to ease the emission of XHTML5. And XHTML5
 fragments are emitted by the \texttt{emit\_xhtml} routine
+\index{emit xhtml@\texttt{emit\_xhtml}}
 object~\footnote{So that \texttt{emit\_xhtml} is, like PHP, a
   machinery to emit arbitrary XHTML. However, we want to avoid
   thinking -like PHP was originally designed- in terms of emitting a
@@ -224,20 +225,33 @@ often the web exchange object; the tagged integer recursion depth
   integer is emitted in decimal notation; When \texttt{v\_html} is an
   object $\omega_{html}$, it is emitted per the following rules:
 
-\begin{itemize}
+  \begin{itemize}
+    
 \item the \texttt{newline} object emits an indented newline.
-\item the \texttt{nlsp} object emits a newline when the current line is long enough, or else a space.
+  \index{newline@\texttt{newline}}
+  
+\item the \texttt{nlsp} object emits a newline when the current line
+  is long enough, or else a space.
+  \index{nlsp@\texttt{nlsp}}
+  
 \item the \texttt{space} object emits a space character.
+  \index{space@\texttt{space}}
+  
 \item instances of \texttt{html\_void\_element\_object} emit some void
+\index{html void element object@\texttt{html\_void\_element\_object}}
   element like e.g. \texttt{<hr class='foo'/>} using the
   \texttt{€\_0FRLxSGQlZ} routine. The \texttt{emit\_xhtml\_open}
+\index{emit xhtml open@\texttt{emit\_xhtml\_open}}
   selector should emit -as a side effect- the opening tag \texttt{<hr
-    class='foo'} without the ending \texttt{/>}, and returns the string naming the tag, e.g. \texttt{"hr"}. 
+    class='foo'} without the ending \texttt{/>}, and returns the string naming the tag, e.g. \texttt{"hr"}.
+  
 \item instances of \texttt{html\_element\_object} emit recursively
+\index{html element object@\texttt{html\_element\_object}}
   using \texttt{€\_5NH940lCHYJ} some nested XHTML element starting
   with a start tag like \texttt{<div} but ending with an end tag like
   \texttt{</div>}; the components of that objects are emitted
   recursively (with an incremented recursion depth). The spacing style
+\index{html spacing@\texttt{html\_spacing}}
   is first determined by sending \texttt{html\_spacing} with the
   \texttt{o\_emitctx} and the depth. It can be \texttt{newline} for
   indented, newline separated, content; or \texttt{nlsp} for space or
@@ -249,10 +263,15 @@ often the web exchange object; the tagged integer recursion depth
   then \texttt{>} is output to end the opening tag, then the
   components, then the end tag is emitted, using the returned tag
   string from \texttt{emit\_xhtml\_open}.
+  
 \item instances of \texttt{html\_sequence\_object} emit
       recursively their components but without surrounding tags.
+      \index{html sequence object@\texttt{html\_sequence\_object}}
+      
 \item instances of \texttt{html\_active\_object} emit recursively HTML
-  stuff thru a message of selector \texttt{emit\_xhtml} sent to them.
+      \index{html active object@\texttt{html\_active\_object}}
+      stuff thru a message of selector \texttt{emit\_xhtml} sent to them.
+      
 \item any other object is emitted by its name, if it has some, or by
   its objid. This is mostly intended to represent common repeated names or
   words by a single and shared object.
@@ -262,7 +281,11 @@ When  \texttt{v\_html} is a node of connective $\omega_{conn}$, it is emitted pe
 
 \begin{itemize}
 
+  \index{int@\texttt{int}}
 \item if $\omega_{conn}$ is one of \texttt{int}, \texttt{hexa},
+  \index{int@\texttt{int}}
+  \index{hexa@\texttt{hexa}}
+  \index{octa@\texttt{octa}}
   \texttt{octa} and \texttt{v\_html} is an unary node with a integer
   son $n$, that integer $n$ is emitted in decimal, hexadecimal, octal respectively.
 
@@ -272,26 +295,39 @@ When  \texttt{v\_html} is a node of connective $\omega_{conn}$, it is emitted pe
   \texttt{html\_element\_object}, \texttt{html\_sequence\_object},
   \texttt{html\_active\_object} which would be handled specially
   otherwise.}  and \texttt{v\_html} is an unary node with an object
+  \index{id@\texttt{id}}
+  \index{object@\texttt{object}}
+  \index{name@\texttt{name}}
   son $\omega_{son}$ its objid is emitted.
+  
 \item if $\omega_{conn}$ is \texttt{buffer} and \texttt{v\_html} is an
+  \index{buffer@\texttt{buffer}}
   unary node with an object son $\omega_{son}$ which has a string
   buffer payload, that string is emitted HTML-encoded.
+  
 \item if $\omega_{conn}$ is \texttt{object} and \texttt{v\_html} is an unary node with an object son $\omega_{son}$ its name or objid is emitted.
+  \index{object@\texttt{object}}
+  
 \item if $\omega_{conn}$ is \texttt{name} and \texttt{v\_html} is an
   unary node with an object son $\omega_{son}$ its name is emitted,
-  and when $\omega_{son}$ is not a named object, we have a failure.
-\item if $\omega_{conn}$ is \texttt{name} and \texttt{v\_html} is an
+  \index{name@\texttt{name}}
+  and when $\omega_{son}$ is not a named object, we have a failure. If $\omega_{conn}$ is \texttt{name} and \texttt{v\_html} is an
   binary node with an object first son $\omega_{son}$, and some arbirary non-nil second son $\epsilon$ its name is emitted,
   and when $\omega_{son}$ is not a named object, the $\epsilon$ is recursively emitted
+  
 \item for any other object $\omega_{conn}$ as connective, we extract
   its \texttt{emit\_xhtml\_node} attribute $v_{emit~node}$ and its
   \texttt{emit\_xhtml\_connective\_open} attribute
   $v_{emit~open}$. Only one of them should be present (non-nil value)
   and it should be a closure. If $v_{emit~node}$ is given, it is
   applied to $\omega_{conn}$ \texttt{o\_emitctx o\_strbuf $depth + 1$
-    v\_html}. We also extract its \texttt{spacing\_xhtml}
+    v\_html}, else if $v_{emit~open}$ is present, we apply it (like
+  the \texttt{emit\_xhtml\_open} selector above) to $\omega_{conn}$
+  \texttt{o\_emitctx o\_strbuf $depth + 1$ v\_html} to obtain an XHTML
+  element tag. We also extract its \texttt{spacing\_xhtml}
   attribute. Then proceed like for \texttt{html\_element\_object}
-  using the sons as components... {\color{red}{@@ not sure @@}}.
+  using the sons as components....
+  
 \item {\color{red}{@@ to be completed a lot.}}
   
 \end{itemize}
