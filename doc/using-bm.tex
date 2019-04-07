@@ -64,6 +64,14 @@ HTTP responses are acceptable, the number of simultaneous web
 connections or of web sessions is tiny. Therefore most web
 optimizations are practically unneeded.
 
+With its initial (and current, in mid-2019) naive stop-the-world
+garbage collector, the interactive performance and user experience
+(i.e. user look-and-feel) of \emph{Bismon} is expected to be
+unsatisfactory (since that GC could ``block'' the \texttt{bismon} for
+more than half a second - during which the web interface stays
+unresponsive, if running the GC on a large enough heap; but see
+footnote \ref{fn:initial-gc} suggesting an improvement).
+
 Each HTTP request \index{request} \index{web request} either
 corresponds to a ``static'' file path under \texttt{webroot/} (for a
 \texttt{GET} or \texttt{HEAD} HTTP request) or else it is handled
