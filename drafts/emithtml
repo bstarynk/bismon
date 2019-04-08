@@ -456,7 +456,55 @@ $[^when (*isnode (v_html)  // this when is €_0TcBev05JBd
        ) !:comment "when o_conn is space // emit_xhtml node"]
       ///====
       $[^when (newline    // €_2pklfVqX1 in objswitch €_4ySLl7UU6H
+        $[^assign (leni *nodewidth(v_html)) // €_3ZIKPBvKOT
+             !:comment "leni := nodewidth(v_html)// emit_xhtml node {sequence, space, newline}"]
+        $[^for_up (ii leni
+           $[^assign (v_comp *nodenthson(v_html ii))
+            !:comment "v_comp := v_html[ii]"]
+           $[^run (#{/*debug emit_xhtml node-newline v_html ii v_comp o_emitctx o_strbuf depth*/
+           DBGPRINTF_BM("debug emit_xhtml node-newline €%.9s v_html=%s ii#%ld v_comp=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+           "$stmtid",
+           OUTSTRVALUE_BM($v_html),
+           (long int) ($ii),
+           OUTSTRVALUE_BM($v_comp),
+           objectdbg_BM($o_emitctx),
+           objectdbg1_BM($o_strbuf),
+           objstrbufferlengthpayl_BM($o_strbuf),
+           (long int) ($i_depth));}#
+           ) !:comment "debug emit_xhtml node-newline v_html ii v_comp o_emitctx o_strbuf depth"]
+           ///
+            $[^cond (
+              $[^when (
+                *greater_int (ii 0)
+                    $[^out (o_strbuf *newline()) !:comment "emit_xhtml node-newline"]
+            ) !:comment "if ii>0 // emit_xhtml node-newline "]
+	    ) !:comment "emit_xhtml node-newline emit newline in between"]
+        ///
+        $[^assign(v_resemit *apply (!emit_xhtml v_comp o_emitctx o_strbuf *taggedint(*add_int(i_depth 1))))
+           !:comment "v_resemit := emit_xhtml (v_comp o_emitctx o_strbuf depth+1) // emit_xhtml node-newline"]
+         $[^run ( #{/*debug emit_xhtml node-newline v_resemit v_comp ii o_html o_emitctx o_strbuf depth*/
+            DBGPRINTF_BM("emit_xhtml node-newline €%.9s v_resemit=%s v_comp=%s ii#%ld o_html=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+          "$stmtid",
+          OUTSTRVALUE_BM($v_resemit),
+          OUTSTRVALUE_BM($v_comp),
+          (long int) ($ii),
+          objectdbg_BM($o_html),
+          objectdbg1_BM($o_emitctx),
+          objectdbg2_BM($o_strbuf),
+          objstrbufferlengthpayl_BM($o_strbuf),
+          (long int) ($i_depth));
+         }# ) !:comment "debug emit_xhtml node-newline v_resemit v_comp ii o_html o_emitctx o_strbuf depth"]
+            $[^cond (
+              $[^when (*is_null (v_resemit)
+                $[^fail(*make_node (!failure_miss !emit_xhtml !newline v_comp *taggedint(ii) o_html o_emitctx o_strbuf *taggedint(i_depth)))
+                  !:comment "fail-miss emit_xhtml newline v_comp ii o_html o_emitctx o_strbuf depth"]
+                ) !:comment "when v_resemit is null, fail / emit_xhtml node-newline"]
+            ) !:comment "if v_resemit is null, fail / emit_xhtml node-newline"]
+         ) !:comment "for ii upto leni ... //emit xhtml node-newline"]
        ) !:comment "when o_conn is newline // emit_xhtml node"]
+      ///====
+      $[^when (nlsp    // € in objswitch €_0SFfKhzb4p
+       ) !:comment "when o_conn is nlsp // emit_xhtml node"]
       // $[^when (and_then
       // ) !:comment "when o_conn is and_then // emit_xhtml node"]
       // $[^when (or_else
