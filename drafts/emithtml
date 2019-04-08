@@ -430,6 +430,7 @@ $[^when (*isnode (v_html)  // this when is €_0TcBev05JBd
                 *greater_int (ii 0)
                     $[^out (o_strbuf *space()) !:comment "emit_xhtml node-space"]
             ) !:comment "if ii>0 // emit_xhtml node-space "]
+	    ) !:comment "emit_xhtml node-space emit space in between"]
         ///
         $[^assign(v_resemit *apply (!emit_xhtml v_comp o_emitctx o_strbuf *taggedint(*add_int(i_depth 1))))
            !:comment "v_resemit := emit_xhtml (v_comp o_emitctx o_strbuf depth+1) // emit_xhtml node-space"]
