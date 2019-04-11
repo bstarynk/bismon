@@ -1461,6 +1461,35 @@ DBGPRINTF_BM("start emit-websession-cookie €%.9s o_emitctx=%s o_strbuf=%s/L%u 
  (long int)( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));; 
 } // end run _8LwX544DBCD_0OWmXrqpf79 
  
+//+ #2/6 of block _78vz52rnuig_4hIRsFAb9sT :: 
+ 
+ /*v_str:*/_.v_167WczZjWtG_3FofhJxQWJi = //assign _0RoQHgRlPSs_9jNriJnIB7r  
+/*objwebsessioncookiestringpayl:*/ objwebsessioncookiestringpayl_BM (( /*o_emitctx:*/_.o_9nXRmTATjN4_5F9V7RvvgW0), ( "BISMONCOOKIE=")) ; 
+ 
+ 
+{ // start out _03cK6NGcBcK_1NUQGdki0UX to o_strbuf  
+/*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, /*bytstring:*/bytstring_BM((const stringval_tyBM*)( /*v_str:*/_.v_167WczZjWtG_3FofhJxQWJi))); 
+} // end out _03cK6NGcBcK_1NUQGdki0UX 
+ 
+//+ #4/6 of block _78vz52rnuig_4hIRsFAb9sT :: 
+ 
+ 
+{ // run _9NRb7bhSErg_814ZzCFbREk 
+/*emit-websession-cookie end v_str o_emitctx o_strbuf depth*/
+DBGPRINTF_BM("emit-websession-cookie end €%.9s v_str=%s o_emitctx=%s o_strbuf=%s/L%u depth#%ld",
+ "_9NRb7bhSErg_814ZzCFbREk",
+ OUTSTRVALUE_BM( /*v_str:*/_.v_167WczZjWtG_3FofhJxQWJi),
+ objectdbg_BM( /*o_emitctx:*/_.o_9nXRmTATjN4_5F9V7RvvgW0),
+ objectdbg1_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
+ objstrbufferlengthpayl_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
+ (long int)( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));; 
+} // end run _9NRb7bhSErg_814ZzCFbREk 
+ 
+ 
+/*return _4aVDXEYalOj_0Xgrvj3zfJe:*/  /*v_r:*/_.v_3qw9bnATIhq_8loBraLeXzQ = // returned 
+ /*v_str:*/_.v_167WczZjWtG_3FofhJxQWJi; 
+ goto epilog_5T8fxyaeOFA_4UrB3BPbWdn; 
+ 
 /* !endingblock _78vz52rnuig_4hIRsFAb9sT */ 
 goto endblock__78vz52rnuig_4hIRsFAb9sT; 
 endblock__78vz52rnuig_4hIRsFAb9sT: ; 
