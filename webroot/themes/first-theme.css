@@ -73,5 +73,14 @@ p.bmcl_hellopara {
     padding: 4px;
     display: inline-block;
 }
-    
+
+tt.bmcl_cookie {
+    font-size: 97%;
+    font-family: "Lucida Console", Monaco, monospace;
+    background-color: #CCCBE6;
+    margin: 1px;
+    display: inline;
+    padding: 2px;
+}
+	     
 /* end of themes/first-theme.css */
