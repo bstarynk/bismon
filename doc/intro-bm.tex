@@ -472,30 +472,60 @@ code analysis does \emph{not} require the same level of expertise as needed for
 the \emph{Verified in Europe} label pushed by the \textsc{Vessedia}
 project.
 
+Non-critical~\footnote{In this report, a critical industrial software
+  is a piece of embedded code whose \emph{direct} failure impacts
+  \emph{human life} (e.g. train braking system, but not its preventive
+  maintenance), or \emph{costly industrial installations}
+  \index{critical software} (e.g. entire oil platforms, large power
+  plants) involving large equipement costing many dozens of M€;
+  anything else is non-critical \index{non-critical system}: air
+  conditioning of a office building, measurement of brake wear on a
+  train for preventive maintenance optimization, door opening
+  automation in an airport which can be quickly disabled in emergency
+  cases, etc...}, but communicating, industrial IoT is programmed in
+various languages\footnote{See
+  \bmurl{https://www.iotforall.com/2018-top-3-programming-languages-iot-development/}
+  for more.}: when a non-critical equipement should be autonomous so
+needs to consume very little energy, programming it in C, C++ or Rust
+is preferable (think of smart watches and similar wearables increasing
+worker productivity). When such a non-critical computing device is
+part of some larger equipement requiring constant and significant
+electric power (automatic expressway tollgate, some smart sensors in
+an oil refinery, high-end digital oscilloscopes, office
+air-conditioning facilities, etc...) it could makes sense to code it
+in a higher-level language, such as Java, Python, Lua, JavaScript \ldots making
+the embedded software developer more productive when producing code
+for industrial systems built in small series.
+
+\medskip
+
 The \textbf{\textsc{Chariot} approach} to static source analysis
 \textbf{leverages on} an \textbf{\emph{existing}} \emph{recent}
-\textbf{GCC cross-compiler}~\footnote{The actual version and
-  the concrete configuation of \emph{GCC} are important; we want to stick -when
-  reasonably possible- to the latest GCC releases, e.g. to
+\textbf{GCC cross-compiler}~\footnote{The actual version and the
+  concrete configuation of \emph{GCC} are important; we want to stick
+  -when reasonably possible- to the latest GCC releases, e.g. to
   \href{https://gcc.gnu.org/gcc-8/}{GCC 8} in autumn 2018. In the
   usual case, that \emph{GCC} is a cross-compiler. In the rare case
   where the IoT system runs on an x86-64 device under Linux, that
-  \emph{GCC} is not a cross-, but a straight compiler.}. So the IoT
-developer following the \textsc{Chariot} methodology would just add
-some additional flags to \emph{existing} \texttt{gcc} or \texttt{g++}
-cross-compilation commands, and needs simply to change slightly
-his/her build automation scripts (e.g. add a few lines to his
-\texttt{Makefile}). Such a gentle approach (see figure
-\ref{fig:chariotcompil}) has the advantage of not disturbing much the usual
-developer workflow and habit, and addresses also the \emph{junior} IoT
-software developer. Of course the \emph {details} of compilation
-commands would change, the commands shown in the figure \ref{fig:chariotcompil} are grossly
-simplified! The compilation and linking processes are
-communicating -via some additional \emph{GCC} plugins
-(cf. \cite{gcc-internals} §24) doing inter-process communication- with
-our \index{persistent monitor} \index{persistent!monitor}
-\emph{persistent monitor}, tentatively called \texttt{bismon}
-\index{Bismon}. It is preferable (see
+  \emph{GCC} is not a cross-, but a straight compiler.} so focuses on
+GCC-compiled languages\footnote{The 2019
+  \href{https://gcc.gnu.org/}{Gnu Compiler Collection} is able to
+  compile code written in C, C++, Objective-C, Fortran, Ada, Go,
+  and/or D.}. Hence, the IoT software developer following the
+\textsc{Chariot} methodology would just add some additional flags to
+\emph{existing} \texttt{gcc} or \texttt{g++} cross-compilation
+commands, and needs simply to change slightly his/her build automation
+scripts (e.g. add a few lines to his \texttt{Makefile}). Such a gentle
+approach (see figure \ref{fig:chariotcompil}) has the advantage of not
+disturbing much the usual developer workflow and habit, and addresses
+also the \emph{junior} IoT software developer. Of course the \emph
+{details} of compilation commands would change, the commands shown in
+the figure \ref{fig:chariotcompil} are grossly simplified! The
+compilation and linking processes are communicating -via some
+additional \emph{GCC} plugins (cf. \cite{gcc-internals} §24) doing
+inter-process communication- with our \index{persistent monitor}
+\index{persistent!monitor} \emph{persistent monitor}, tentatively
+called \texttt{bismon} \index{Bismon}. It is preferable (see
 \cite{gcc-runtime-library-exception}) to use free software GCC plugins
 (or free software generators for them) when compiling proprietary
 firmware with the help of these plugins; otherwise, there might
