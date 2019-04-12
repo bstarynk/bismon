@@ -761,6 +761,7 @@ struct webexchangedata_stBM
   atomic_int webx_respcode;
   onion_request *webx_requ;
   onion_response *webx_resp;
+#warning we may want a webx_jsonobj to carry the JSON data in REST POST requests
 };                              /* end webexchangedata_stBM */
 #endif /*BISMONION*/
 ////////////////////////////////////////////////////////////////

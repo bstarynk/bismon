@@ -2265,6 +2265,12 @@ objwebexchangecompletepayl_BM (const objectval_tyBM * obj, int httpstatus,
   pthread_cond_broadcast (&wxda->webx_cond_ready);
 }                               /* end objwebexchangecompletepayl_BM */
 
+
+// for REST-like POST requests with JSON data, we might want to use
+// onion_request_get_data and perhaps add some  webx_jsonobj field
+// see also https://softwareengineering.stackexchange.com/q/390262/40065
+// we then need some extra code to detect REST-like POST requests
+#warning we probably want to use onion_request_get_data for webx_jsonobj
 /******************************************************************/
 
 void
