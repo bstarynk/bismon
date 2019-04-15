@@ -1557,7 +1557,7 @@ do_afterload_bm ()
                      OUTSTRVALUE_BM (_.parsedval));
       fflush (NULL);
       objclearpayload_BM (_.parsob);
-      if (isclosure_BM (_.parsedval))
+      if (isclosure_BM (_.parsedval) || isobject_BM(_.parsedval))
         {
           _.resval = apply0_BM (_.parsedval, CURFRAME_BM);
           DBGPRINTF_BM ("after do-after-load closure#%d, resval=%s\n",
