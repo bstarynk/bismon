@@ -1532,6 +1532,8 @@ static inline onion_response *objwebexchangeresponsepayl_BM (const
 static inline objectval_tyBM *objwebexchangesessionpayl_BM (const
                                                             objectval_tyBM *
                                                             obj);
+static inline objectval_tyBM *objwebexchangejsonpayl_BM (const
+							 objectval_tyBM * obj);
 static inline value_tyBM objwebexchangedatapayl_BM (const objectval_tyBM *
                                                     obj);
 

@@ -2554,6 +2554,16 @@ objwebexchangesessionpayl_BM (const objectval_tyBM * obj)
   return wxda->webx_sessobj;
 }                               /* end objwebexchangesessionpayl_BM  */
 
+objectval_tyBM *
+objwebexchangejsonpayl_BM (const objectval_tyBM * obj)
+{
+  struct webexchangedata_stBM *wxda = objgetwebexchangepayl_BM (obj);
+  if (!wxda)
+    return NULL;
+  ASSERT_BM (wxda->webx_magic == BISMONION_WEBX_MAGIC);
+  return wxda->webx_jsonobj;
+}                               /* end objwebexchangejsonpayl_BM  */
+
 unsigned
 objwebexchangerequestmethodpayl_BM (const objectval_tyBM * obj)
 {                               // probably useless function.

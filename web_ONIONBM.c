@@ -676,6 +676,8 @@ webexchangedatagcmark_BM (struct garbcoll_stBM *gc,
     gcobjmark_BM (gc, wex->webx_ownobj);
   if (wex->webx_sessobj)
     gcobjmark_BM (gc, wex->webx_sessobj);
+  if (wex->webx_jsonobj)
+    gcobjmark_BM (gc, wex->webx_jsonobj);
   if (wex->webx_datav)
     EXTENDEDGCPROC_BM (gc, wex->webx_datav, fromob, depth + 1);
 }                               /* end webexchangedatagcmark_BM */
@@ -1820,7 +1822,8 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   }
   register_onion_thread_stack_BM (CURFRAME_BM);
   wexda->webx_ownobj = _.webexob;
-  wexda->webx_sessobj = _.sessionob;
+  wexda->webx_sessobj = _.sessionob;  
+  wexda->webx_jsonobj = NULL;
   wexda->webx_datav = NULL;
   wexda->webx_time = clocktime_BM (CLOCK_REALTIME);
   wexda->webx_requ = req;

@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3019 objects
+// for 3020 objects
 // with 4 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -8320,6 +8320,24 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _2qDaJRPDbEG_45AvdxtQXAM
 !)_0XdSxSz2ISV_0gb9GZZJT0z
+
+
+
+!(_3v18bLdjMRP_4CrjvtrZteq |=objwebexchangejsonpayl|
+!~ name (~ objwebexchangejsonpayl
+~)
+!@ 1555310602.735
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gives the JSON object inside an objwebexchange object or else nil"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3v18bLdjMRP_4CrjvtrZteq  ":*/"  "objwebexchangejsonpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+!)_3v18bLdjMRP_4CrjvtrZteq
 
 
 

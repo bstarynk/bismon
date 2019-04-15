@@ -709,6 +709,10 @@ struct jansjson_stBM
   json_t *jansjson_ptr;
 };
 
+
+
+
+
 ////////////////////////////////////////////////////////////////
 ////// web related
 #ifdef BISMONION
@@ -755,15 +759,25 @@ struct webexchangedata_stBM
   objectval_tyBM *webx_ownobj;  /* owning object having this payload */
   objectval_tyBM *webx_sessobj; /* the websession object, if any */
   pthread_cond_t webx_cond_ready;       /* condvar for readiness, under owning object's mutex */
+  // for HTTP REST-full like POST requests, the request could carry a
+  // JSON value, which we encapsulate as some object.  See also
+  // https://softwareengineering.stackexchange.com/q/390262/40065 for
+  // more.  This field is only set at creation time, for HTTP POST
+  // requests with a Content-Type: "application/json"
+  objectval_tyBM* webx_jsonobj;
   value_tyBM webx_datav;        /* supplementary data value */
   double webx_time;
   char webx_mimetype[BISMONION_MIMETYPE_SIZE];
   atomic_int webx_respcode;
   onion_request *webx_requ;
   onion_response *webx_resp;
-#warning we may want a webx_jsonobj to carry the JSON data in REST POST requests
 };                              /* end webexchangedata_stBM */
 #endif /*BISMONION*/
+
+
+
+
+
 ////////////////////////////////////////////////////////////////
 /// NB: struct browsedval_stBM & struct browsedobj_stBM are in globals_BM.h
   struct garbcoll_stBM
