@@ -96,10 +96,19 @@ objputjansjsoncstrpayl_BM (objectval_tyBM * obj, const char *jsonstr)
 {
   if (!isobject_BM (obj))
     return false;
-  if (!jsonstr)
+  if (!jsonstr || !jsonstr[0])
     return false;
-#warning objputjansjsoncstrpayl_BM unimplemented
-  FATAL_BM ("unimplemented objputjansjsoncstrpayl %s", objectdbg_BM (obj));
+  json_error_t jserr = { };
+  json_t *js = json_loads (jsonstr,
+                           JSON_DISABLE_EOF_CHECK | JSON_DECODE_ANY, &jserr);
+  if (!js)
+    {
+      WARNPRINTF_BM
+        ("failed to decode json string %.100s - L%dC%d - %s (#%d)", jsonstr,
+         jserr.line, jserr.column, jserr.text, json_error_code (&jserr));
+      return false;
+    }
+  return objputjansjsonpayl_BM (obj, js);
 }                               /* end objputjsoncstrpayl_BM */
 
 
