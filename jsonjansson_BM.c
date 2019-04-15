@@ -89,6 +89,21 @@ objputjansjsonpayl_BM (objectval_tyBM * obj, json_t * js)
   return true;
 }                               /* end objputjansjsonpayl_BM */
 
+
+
+bool
+objputjansjsoncstrpayl_BM (objectval_tyBM * obj, const char *jsonstr)
+{
+  if (!isobject_BM (obj))
+    return false;
+  if (!jsonstr)
+    return false;
+#warning objputjansjsoncstrpayl_BM unimplemented
+  FATAL_BM ("unimplemented objputjansjsoncstrpayl %s", objectdbg_BM (obj));
+}                               /* end objputjsoncstrpayl_BM */
+
+
+
 bool
 objputincrefjansjsonpayl_BM (objectval_tyBM * obj, json_t * js)
 {

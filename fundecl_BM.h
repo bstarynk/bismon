@@ -1060,12 +1060,14 @@ static inline bool objhasjansjsonpayl_BM (const objectval_tyBM * obj);
 static inline json_t *objgetjansjsonpayl_BM (const objectval_tyBM * obj);
 extern bool objputjansjsonpayl_BM (objectval_tyBM * obj, json_t * js);
 extern bool objputincrefjansjsonpayl_BM (objectval_tyBM * obj, json_t * js);
+extern bool objputjansjsoncstrpayl_BM (objectval_tyBM * obj,
+                                       const char *cstr);
 extern json_t *jansjsonfromvalue_BM (value_tyBM val, value_tyBM src,
                                      value_tyBM ctx, int depth,
                                      struct stackframe_stBM *stkf);
-extern void
-objputjanssonpayl_BM (objectval_tyBM * objarg, value_tyBM valarg,
-                      value_tyBM ctxarg, struct stackframe_stBM *stkf);
+extern void objputjanssonpayl_BM (objectval_tyBM * objarg, value_tyBM valarg,
+                                  value_tyBM ctxarg,
+                                  struct stackframe_stBM *stkf);
 
 //////////////// obj hashmapval payload 
 
@@ -1533,7 +1535,8 @@ static inline objectval_tyBM *objwebexchangesessionpayl_BM (const
                                                             objectval_tyBM *
                                                             obj);
 static inline objectval_tyBM *objwebexchangejsonpayl_BM (const
-							 objectval_tyBM * obj);
+                                                         objectval_tyBM *
+                                                         obj);
 static inline value_tyBM objwebexchangedatapayl_BM (const objectval_tyBM *
                                                     obj);
 

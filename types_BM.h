@@ -764,7 +764,7 @@ struct webexchangedata_stBM
   // https://softwareengineering.stackexchange.com/q/390262/40065 for
   // more.  This field is only set at creation time, for HTTP POST
   // requests with a Content-Type: "application/json"
-  objectval_tyBM* webx_jsonobj;
+  objectval_tyBM *webx_jsonobj;
   value_tyBM webx_datav;        /* supplementary data value */
   double webx_time;
   char webx_mimetype[BISMONION_MIMETYPE_SIZE];
@@ -773,11 +773,6 @@ struct webexchangedata_stBM
   onion_response *webx_resp;
 };                              /* end webexchangedata_stBM */
 #endif /*BISMONION*/
-
-
-
-
-
 ////////////////////////////////////////////////////////////////
 /// NB: struct browsedval_stBM & struct browsedobj_stBM are in globals_BM.h
   struct garbcoll_stBM

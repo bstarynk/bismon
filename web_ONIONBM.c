@@ -1783,9 +1783,13 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   objectval_tyBM *k_webexchange_object = BMK_8keZiP7vbFw_1ovBXqd6a0d;
   objectval_tyBM *k_failure_bad_closure = BMK_373gFe8m21E_47xzvCGxpI9;
   objectval_tyBM *k_web_timeout = BMK_4vI7wCaySrU_0QhNU3wiwt2;
+  objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
+  objectval_tyBM *k_json_object = BMK_7hNqn2hxg1M_3wNHCtOf9IF;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * sessionob;
-                 objectval_tyBM * webexob; value_tyBM failreasonv;      //
+                 objectval_tyBM * sessionob;    //
+                 objectval_tyBM * webexob;      //
+                 objectval_tyBM * jsonob;       //
+                 value_tyBM failreasonv;        //
                  value_tyBM failplacev; //
                  value_tyBM webhandlerv;        //
                  value_tyBM restpathv;  //
@@ -1822,13 +1826,46 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   }
   register_onion_thread_stack_BM (CURFRAME_BM);
   wexda->webx_ownobj = _.webexob;
-  wexda->webx_sessobj = _.sessionob;  
+  wexda->webx_sessobj = _.sessionob;
   wexda->webx_jsonobj = NULL;
   wexda->webx_datav = NULL;
   wexda->webx_time = clocktime_BM (CLOCK_REALTIME);
   wexda->webx_requ = req;
   wexda->webx_resp = resp;
   pthread_cond_init (&wexda->webx_cond_ready, NULL);
+  // if the request is POST and its Content-type is application/json,
+  // fill the webx_jsonobj field...
+  {
+    onion_block *obl = NULL;
+    const char *rctyp = NULL;
+    const char *rclen = NULL;
+    if (postrequest
+        && (rctyp = onion_request_get_header (req, "Content-Type")) != NULL
+        && !strcmp (rctyp, "application/json")
+        && (obl = onion_request_get_data (req)) != NULL
+        && (rclen = onion_request_get_header (req, "Content-Length")) != NULL)
+      {
+        off_t blsiz = onion_block_size (obl);
+        const char *bldata = onion_block_data (obl);
+        DBGPRINTF_BM
+          ("do_dynamic_onion webexob %s is a JSON RESTful POST for reqpath '%s'\n"
+           "... of Content-Type '%s' and Content-Length '%s' so size %ld\n"
+           "... and data *****\n%s\n****\n", objectdbg_BM (_.webexob),
+           reqpath, rctyp, rclen, (long) blsiz, bldata);
+        _.jsonob = makeobj_BM ();
+        objputclass_BM (_.jsonob, k_json_object);
+        objputattr_BM (_.jsonob, k_in, _.webexob);
+        if (objputjansjsoncstrpayl_BM (_.jsonob, bldata))
+          wexda->webx_jsonobj = _.jsonob;
+        else
+          WARNPRINTF_BM
+            ("failed to put JSON object in  webexob %s reqpath '%s' for size %ld\n"
+             "... and data *****\n%s\n****\n", objectdbg_BM (_.webexob),
+             reqpath, bldata);
+        objtouchnow_BM (_.jsonob);
+      }
+  }
+
   objputpayload_BM (_.webexob, wexda);
   objtouchnow_BM (_.webexob);
   wexda->webx_magic = BISMONION_WEBX_MAGIC;
