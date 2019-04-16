@@ -375,6 +375,14 @@ browsers~\footnote{So web browsers don't communicate
 WebSocket messages from \texttt{bismon} to web browsers are arbitrary
 \emph{JSON} values.
 
+\subsection{Using \texttt{bismon} for \textsc{Chariot}}
+\label{subsec:bismon-for-chariot}
+
+To run the \texttt{bismon} monitor for \textsc{Chariot} related
+activities, that monitor should initialize its state for these
+activities. So you need to pass `-i init\_chariotdemo` when running
+\texttt{bismon} in that case.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Local Variables: ;;
 %% compile-command: "cd ..; ./build-bismon-doc.sh" ;;
