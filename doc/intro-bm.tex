@@ -636,9 +636,9 @@ its partial textual dump~\footnote{It is possible to pass the
   \texttt{factinline12.c.020t.ssa} and many others for the compilation
   of \texttt{factinline12.c} source file.}. The \emph{Gimple} internal
 in-memory representation is declared inside several source files of
-\emph{GCC}, including its \texttt{gcc-8.2.0/gcc/gimple.def},
-\texttt{gcc-8.2.0/gcc/gimple.h},
-\texttt{gcc-8.2.0/gcc/gimple-iterator.h}, etc...
+\emph{GCC}, including its \texttt{gcc-8*/gcc/gimple.def},
+\texttt{gcc-8*/gcc/gimple.h},
+\texttt{gcc-8*/gcc/gimple-iterator.h}, etc...
 
 
 After gimplification, many other optimizations happen. \textbf{The
@@ -1067,14 +1067,17 @@ features:
       \href{https://en.wikipedia.org/wiki/Hofstadter's_law}{Hofstadter's
         law} (See \cite{Hofstadter:1979:GEB}). We should consider
       later using MPS from
-      \bmurl{https://www.ravenbrook.com/project/mps/} but doing that
-      could require recoding or regenerating \emph{a lot} of code,
-      since MPS has specific calling conventions and invariants,
+      \bmurl{https://www.ravenbrook.com/project/mps/} -or maybe some
+      other state of the art garbage collector, since MPS might become
+      an arphaned free software project- but doing that could require
+      recoding or regenerating \emph{a lot} of code, since MPS -like
+      any other GC- has specific calling conventions and invariants,
       including
       \href{https://en.wikipedia.org/wiki/A-normal_form}{A-normal
-        form}. So, switching to MPS in \emph{Bismon} would require at
-      least several months of work.}, if good performance and
-    scalability is wanted in \emph{Bismon}.
+        form}. So, switching to MPS or to any other good enough
+      garbage collector in \emph{Bismon} would require at least
+      several months of work.}, if good performance and scalability is
+    wanted in \emph{Bismon}.
 
   \item \textbf{homoiconicity} and \textbf{reflection} with
     \textbf{introspection} (cf \cite{Pitrat:1996:FGCS,
