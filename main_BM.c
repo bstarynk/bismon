@@ -139,9 +139,9 @@ char *module_to_emit_bm;
 int count_emit_has_predef_bm;
 int nb_added_predef_bm;
 
-int count_do_afterload_bm;      /* used count in arr_do_afterload_bm */
-int size_do_afterload_bm;       /* allocated size of arr_do_afterload_bm */
-char **arr_do_afterload_bm;     // allocated size is size_do_afterload_bm
+int count_init_afterload_bm;    /* used count in arr_init_afterload_bm */
+int size_init_afterload_bm;     /* allocated size of arr_init_afterload_bm */
+char **arr_init_afterload_bm;   // allocated size is size_init_afterload_bm
                            // and each string is strdup-ed
 
 #define MAXADDEDPREDEF_BM 16
@@ -253,7 +253,7 @@ fatal_stop_at_BM (const char *fil, int lineno)
 
 
 static void add_new_predefined_bm (void);
-static void do_afterload_bm (void);
+static void init_afterload_bm (void);
 
 static bool
 run_command_bm (const gchar * optname __attribute__((unused)),  //
@@ -271,35 +271,38 @@ run_command_bm (const gchar * optname __attribute__((unused)),  //
 }                               /* end run_command_bm */
 
 static bool
-handle_do_afterload_bm (const gchar * optname __attribute__((unused)),  //
-                        const gchar * val,      //
-                        gpointer data __attribute__((unused)),  //
-                        GError ** perr __attribute__((unused)))
+handle_init_afterload_bm (const gchar * optname __attribute__((unused)),        //
+                          const gchar * val,    //
+                          gpointer data __attribute__((unused)),        //
+                          GError ** perr __attribute__((unused)))
 {
   ASSERT_BM (val != NULL);
-  count_do_afterload_bm++;
-  DBGPRINTF_BM ("do_afterload #%d: %s (@%p)\n", count_do_afterload_bm, val,
-                val);
-  if (count_do_afterload_bm >= size_do_afterload_bm)
+  DBGPRINTF_BM ("init_afterload #%d: %s (@%p)\n", count_init_afterload_bm,
+                val, val);
+  if (count_init_afterload_bm + 1 >= size_init_afterload_bm)
     {
-      int newsiz = prime_above_BM (4 * size_do_afterload_bm / 3 + 20);
+      int newsiz = prime_above_BM (4 * count_init_afterload_bm / 3 + 30);
       char **newarr = calloc (newsiz, sizeof (char *));
       if (!newarr)
-        FATAL_BM ("failed to calloc for %d do_afterload", newsiz);
-      if (count_do_afterload_bm > 0)
-        memcpy (newarr, arr_do_afterload_bm,
-                count_do_afterload_bm * sizeof (char *));
-      free (arr_do_afterload_bm), arr_do_afterload_bm = newarr;
-      size_do_afterload_bm = newsiz;
+        FATAL_BM ("failed to calloc for %d init_afterload", newsiz);
+      if (count_init_afterload_bm > 0)
+        memcpy (newarr, arr_init_afterload_bm,
+                count_init_afterload_bm * sizeof (char *));
+      free (arr_init_afterload_bm), arr_init_afterload_bm = newarr;
+      size_init_afterload_bm = newsiz;
     }
   char *dupval = strdup (val);
   if (!dupval)
-    FATAL_BM ("failed to strdup %s for do_afterload#%d", val,
-              count_do_afterload_bm);
-  arr_do_afterload_bm[count_do_afterload_bm] = dupval;
+    FATAL_BM ("failed to strdup %s for init_afterload#%d", val,
+              count_init_afterload_bm);
+  arr_init_afterload_bm[count_init_afterload_bm] = dupval;
+  count_init_afterload_bm++;
   INFOPRINTF_BM ("should do after load: %s\n", val);
   return true;
-}                               /* end do_afterload_bm */
+}                               /* end handle_init_afterload_bm */
+
+
+
 
 static void
 get_parse_value_after_load_bm (const gchar * optname __attribute__((unused)),
@@ -477,12 +480,12 @@ const GOptionEntry optionstab_bm[] = {
    .description = "run the command CMD",
    .arg_description = "CMD"},
   //
-  {.long_name = "do-after-load",.short_name = 'd',
+  {.long_name = "init-after-load",.short_name = 'i',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
-   .arg_data = &handle_do_afterload_bm,
-   .description = "do the <closure> after loading",
-   .arg_description = "<closure>"},
+   .arg_data = &handle_init_afterload_bm,
+   .description = "do the <closure> after loading, as initialization",
+   .arg_description = "<closure> (or object)"},
   //
   {.long_name = "chdir-after-load",.short_name = (char) 'c',
    .flags = G_OPTION_FLAG_NONE,
@@ -1145,8 +1148,8 @@ main (int argc, char **argv)
     remove_contributors_after_load_BM ();
   if (module_to_emit_bm != NULL)
     do_emit_module_from_main_BM ();
-  if (count_do_afterload_bm > 0)
-    do_afterload_bm ();
+  if (count_init_afterload_bm > 0)
+    init_afterload_bm ();
   if (dump_after_load_dir_bm)
     do_dump_after_load_BM ();
   DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
@@ -1532,7 +1535,7 @@ parse_values_after_load_BM (void)
 }                               /* end parse_values_after_load_BM */
 
 void
-do_afterload_bm ()
+init_afterload_bm ()
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * parsob; value_tyBM parsedval;
@@ -1540,10 +1543,11 @@ do_afterload_bm ()
     );
   _.parsob = makeobj_BM ();
   INFOPRINTF_BM ("doing %d closures after load %s using parsob %s\n",
-                 count_do_afterload_bm, load_dir_bm, objectdbg_BM (_.parsob));
-  for (int ix = 0; ix < count_do_afterload_bm; ix++)
+                 count_init_afterload_bm, load_dir_bm,
+                 objectdbg_BM (_.parsob));
+  for (int ix = 0; ix < count_init_afterload_bm; ix++)
     {
-      const char *curclostr = arr_do_afterload_bm[ix];
+      const char *curclostr = arr_init_afterload_bm[ix];
       INFOPRINTF_BM ("parsing do-after-load closure#%d:::\n%s\n///----\n", ix,
                      curclostr);
       struct parser_stBM *pars =
@@ -1557,7 +1561,7 @@ do_afterload_bm ()
                      OUTSTRVALUE_BM (_.parsedval));
       fflush (NULL);
       objclearpayload_BM (_.parsob);
-      if (isclosure_BM (_.parsedval) || isobject_BM(_.parsedval))
+      if (isclosure_BM (_.parsedval) || isobject_BM (_.parsedval))
         {
           _.resval = apply0_BM (_.parsedval, CURFRAME_BM);
           DBGPRINTF_BM ("after do-after-load closure#%d, resval=%s\n",
@@ -1572,12 +1576,12 @@ do_afterload_bm ()
       else
         WARNPRINTF_BM ("bad do-after-load non-closure#%d:\n%s\n", ix,
                        OUTSTRVALUE_BM (_.parsedval));
-      arr_do_afterload_bm[ix] = NULL;
+      arr_init_afterload_bm[ix] = NULL;
       free ((void *) curclostr);
     }
-  free (arr_do_afterload_bm), arr_do_afterload_bm = NULL;
-  size_do_afterload_bm = 0;
-}                               /* end do_afterload_bm */
+  free (arr_init_afterload_bm), arr_init_afterload_bm = NULL;
+  size_init_afterload_bm = 0;
+}                               /* end init_afterload_bm */
 
 void
 add_contributors_after_load_BM (void)
