@@ -30,6 +30,7 @@ import {bismonjs_timestamp, bismonjs_timelong, bismonjs_lastgitcommit}
   from "/jscript/_timestamp.mjs";
 
 export var appmenu_button;
+export var appmenu_menuid;
 export var appmenu_menu;
 export var dump_menuitem;
 export var exit_menuitem;
@@ -37,6 +38,13 @@ export var quit_menuitem;
 
 function show_appmenu(ev) {
     console.debug("show_appmenu %o", ev);
+    // WRONG
+    appmenu_menu.position({
+	my: "left+3 bottom-3",
+	of:  appmenu_menuid,
+	at: "left+5 bottom-10",
+	collision: "fit"
+    });
     appmenu_menu.show();
     return false;
 };
@@ -51,7 +59,8 @@ $(function () {
     var topmenu_title = $("#topmtitle_6G1xOyeten5_7SqZ4EcQe8T")
     console.group("bismon-hwroot start");
     appmenu_button = $("#topbut_4m9twhDXB7k_88CBTgLfGvs");
-    appmenu_menu = $("#topmenu_2hnb4LnCzga_48CQrsBJofR");
+    appmenu_menuid = "#topmenu_2hnb4LnCzga_48CQrsBJofR";
+    appmenu_menu = $(appmenu_menuid);
     dump_menuitem = $("#topmitem_1SiDnlyQRR6_5meHUV4d3iF");
     exit_menuitem = $("#topmitem_9ZmJrhdpjae_79WiEHOVpbE");
     quit_menuitem = $("#topmitem_2nguorns5mY_2UnseYw0xRf");
