@@ -1017,16 +1017,18 @@ startblock__86w0oglm27k_4ULVduuJiC6: __attribute__((unused));
  
  
  
-{ // run _9W3ifZwUp2j_3cTOMwHevI1 
+{ // run _91ODIOIPXiS_7W461JEwQaX 
 /*debug emitxhtml_element start o_helem o_emitctx o_strbuf depth*/
-DBGPRINTF_BM("emitxhtml_element start €%.9s o_helem=%s o_emitctx=%s o_strbuf=%s/L%d depth#%ld",
- "_9W3ifZwUp2j_3cTOMwHevI1",
+DBGPRINTF_BM("emitxhtml_element start €%.9s o_helem=%s o_emitctx=%s o_strbuf=%s/L%u (lin:%u,col:%u) depth#%ld",
+ "_91ODIOIPXiS_7W461JEwQaX",
  objectdbg_BM( /*o_helem:*/_.o_6Ef2ORO1Mni_0tpNoRQGmrW),
  objectdbg1_BM( /*o_emitctx:*/_.o_9nXRmTATjN4_5F9V7RvvgW0),
  objectdbg2_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
- (int) objstrbufferlengthpayl_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
+ objstrbufferlengthpayl_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
+ objstrbufferlinecountpayl_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
+ objstrbuffercolumnpayl_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
  (long int) ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));; 
-} // end run _9W3ifZwUp2j_3cTOMwHevI1 
+} // end run _91ODIOIPXiS_7W461JEwQaX 
  
 //+ #2/4 of block _86w0oglm27k_4ULVduuJiC6 :: 
  

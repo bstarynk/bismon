@@ -50,7 +50,7 @@ function show_appmenu(ev) {
 };
 
 function hide_appmenu(ev) {
-    console.debug("show_appmenu %o", ev);
+    console.debug("hide_appmenu %o", ev);
     appmenu_menu.hide();
     return false;
 };
@@ -73,8 +73,9 @@ $(function () {
     topmenu_title.mouseup(hide_appmenu);
     appmenu_menu.mouseup(hide_appmenu);
     appmenu_menu.hide();
+    console.debug("bismon-hwroot hided appmenu_menu=%o", appmenu_menu);
     console.trace();
-    console.debug("bismon-hwroot started");
+    console.debug("bismon-hwroot did start");
     console.groupEnd();
 });
 
