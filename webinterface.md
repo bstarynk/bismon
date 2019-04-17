@@ -33,3 +33,7 @@ Use the [Firefox HTML Validator](http://users.skynet.be/mgueury/mozilla/index.ht
 	    * `<li` element €_1SiDnlyQR for dump app-menuitem of class `bmcl_topmenuitem` and `ui-menu-item`
 	    * `<li` element €_9ZmJrhdpj for exit app-menuitem of class `bmcl_topmenuitem` and `ui-menu-item`
 	    * `<li` element €_2nguorns5 for quit app-menitem of class `bmcl_topmenuitem` and `ui-menu-item`
+
+## suggestions
+
+Perhaps use [jquery-ui-contextmenu](https://github.com/mar10/jquery-ui-contextmenu)
