@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3025 objects
+// for 3027 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -7500,6 +7500,24 @@ _4T8am97muLl_5969SR22Ecq
 
 
 
+!(_225W93b5flg_4nOCMlzHHNB |=objstrbuffercolumnpayl|
+!~ name (~ objstrbuffercolumnpayl
+~)
+!@ 1555490089.036
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _225W93b5flg_4nOCMlzHHNB  ":*/(("  "intptr_t" 
+  ")"  "objstrbuffercolumnpayl_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E) 
+  ")))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_225W93b5flg_4nOCMlzHHNB
+
+
+
 !(_56tBVAwVxRl_5cYKmbPHN6z |=objstrbufferencodedcpayl|
 !~ name (~ objstrbufferencodedcpayl
 ~)
@@ -7678,6 +7696,24 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_2wSDMVzClDP_5OYUTosDo4c
+
+
+
+!(_5sxZiNooEAq_7GA93JJONul |=objstrbufferlinecountpayl|
+!~ name (~ objstrbufferlinecountpayl
+~)
+!@ 1555490053.053
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5sxZiNooEAq_7GA93JJONul  ":*/(("  "intptr_t" 
+  ")"  "objstrbufferlinecountpayl_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E) 
+  ")))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+!)_5sxZiNooEAq_7GA93JJONul
 
 
 
