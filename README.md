@@ -205,7 +205,7 @@ with an hash `#`, is a comment; what is important is the line
 mentioning `mjs`).
 
 ```
-# in your /etc/mime.types
+# in your /etc/mime.types for JavaScript modules
 text/javascript                                 mjs
 ```
 
