@@ -346,7 +346,7 @@ When  \texttt{v\_html} is a node of connective $\omega_{conn}$, it is emitted pe
     v\_html}, else if $v_{emit~open}$ is present, we apply it (like
   the \texttt{emit\_xhtml\_open} selector above) to $\omega_{conn}$
   \texttt{o\_emitctx o\_strbuf $depth + 1$ v\_html} to obtain an XHTML
-  element tag. We also extract its \texttt{spacing\_xhtml}
+  element tag. We also extract and use its \texttt{html\_spacing}
   attribute. Then proceed like for \texttt{html\_element\_object}
   using the sons as components....
   
