@@ -791,6 +791,7 @@ objstrbufferlengthpayl_BM (const objectval_tyBM * obj)
   return sbuf->sbuf_curp - sbuf->sbuf_dbuf;
 }                               /* end objstrbufferlengthpayl_BM */
 
+
 unsigned
 objstrbufferlinecountpayl_BM (const objectval_tyBM * obj)
 {
@@ -801,6 +802,7 @@ objstrbufferlinecountpayl_BM (const objectval_tyBM * obj)
   return sbuf->sbuf_linecount;
 }                               /* end objstrbufferlinecountpayl_BM */
 
+
 unsigned
 objstrbuffercolumnpayl_BM (const objectval_tyBM * obj)
 {
@@ -809,9 +811,22 @@ objstrbuffercolumnpayl_BM (const objectval_tyBM * obj)
   if (!sbuf)
     return 0;
   if (sbuf->sbuf_lastnl && sbuf->sbuf_curp >= sbuf->sbuf_lastnl)
-    return sbuf->sbuf_curp - sbuf->sbuf_lastnl + 1;
+    return (sbuf->sbuf_curp - sbuf->sbuf_lastnl);
   return 0;
 }                               /* end objstrbuffercolumnpayl_BM */
+
+
+const char *
+objstrbuffercurrentlastlinepayl_BM (const objectval_tyBM * obj)
+{
+  struct strbuffer_stBM *sbuf =
+    objgetstrbufferpayl_BM ((objectval_tyBM *) obj);
+  if (!sbuf)
+    return NULL;
+  if (sbuf->sbuf_lastnl && sbuf->sbuf_curp >= sbuf->sbuf_lastnl)
+    return sbuf->sbuf_lastnl;
+  return NULL;
+}                               /* end objstrbuffercurrentlastlinepayl_BM */
 
 unsigned
 objstrbufferlimitpayl_BM (const objectval_tyBM * obj)

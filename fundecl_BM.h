@@ -552,6 +552,10 @@ extern bool objstrbufferispercentfullpayl_BM (const objectval_tyBM * obj,
 
 extern unsigned objstrbufferlinecountpayl_BM (const objectval_tyBM * obj);
 extern unsigned objstrbuffercolumnpayl_BM (const objectval_tyBM * obj);
+// the current last line is invalid as soon as more content is added
+// to the buffer.
+extern const char *objstrbuffercurrentlastlinepayl_BM (const objectval_tyBM *
+                                                       obj);
 /// raw printf
 extern void objstrbufferrawprintfpayl_BM (objectval_tyBM * obj,
                                           const char *fmt, ...)
