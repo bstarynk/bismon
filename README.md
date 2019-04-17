@@ -178,6 +178,7 @@ You may need to add `.mjs` as a valid suffix or file extension for
 file. Read about [Javascript modules on the
 web](https://developers.google.com/web/fundamentals/primers/modules)
 
+
 ### Localization
 
 Run `locale` to be sure that your localization is POSIX compliant or
@@ -193,6 +194,20 @@ environment variable). See
 [locale(5)](http://man7.org/linux/man-pages/man5/locale.5.html),
 [setlocale(3)](http://man7.org/linux/man-pages/man3/setlocale.3.html)
 
+
+### Additional configuration
+
+The `.mjs` file extension is for [JavaScript
+modules](https://developers.google.com/web/fundamentals/primers/modules). If
+your `/etc/mime.types` file (used by `libonion`) does not know about
+it, you need to add there the following lines (the first line below,
+with an hash `#`, is a comment; what is important is the line
+mentioning `mjs`).
+
+```
+# in your /etc/mime.types
+text/javascript                                 mjs
+```
 
 ## building ##
 
