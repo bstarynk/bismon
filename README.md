@@ -177,6 +177,8 @@ You may need to add `.mjs` as a valid suffix or file extension for
 `application/javascript` MIME type in your `/etc/mime.types` system
 file. Read about [Javascript modules on the
 web](https://developers.google.com/web/fundamentals/primers/modules)
+and see [Debian
+bug#927300](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=927300).
 
 
 ### Localization
