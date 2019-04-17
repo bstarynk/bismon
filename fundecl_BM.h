@@ -550,6 +550,8 @@ extern unsigned objstrbufferlimitpayl_BM (const objectval_tyBM * obj);
 extern bool objstrbufferispercentfullpayl_BM (const objectval_tyBM * obj,
                                               int percentage);
 
+extern unsigned objstrbufferlinecountpayl_BM (const objectval_tyBM * obj);
+extern unsigned objstrbuffercolumnpayl_BM (const objectval_tyBM * obj);
 /// raw printf
 extern void objstrbufferrawprintfpayl_BM (objectval_tyBM * obj,
                                           const char *fmt, ...)

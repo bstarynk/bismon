@@ -208,10 +208,11 @@ struct datavectval_stBM
   value_tyBM vec_data[];        // of rlen elements
 };
 
-struct strbuffer_stBM           /* for typayl_strbuffer_BM, in scalar.c */
+struct strbuffer_stBM           /* for typayl_strbuffer_BM, in scalar_BM.c */
 {
   typedhead_tyBM pA;            // rlen is maximal length
   int sbuf_indent;              /* current indentation */
+  int sbuf_linecount;           /* count of lines */
   char *sbuf_dbuf;              /* malloc-ed buffer */
   size_t sbuf_size;             /* malloc-ed size */
   char *sbuf_curp;              /* current position in the buffer, never nil */

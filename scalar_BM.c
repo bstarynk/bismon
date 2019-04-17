@@ -674,6 +674,7 @@ objputstrbufferpayl_BM (objectval_tyBM * obj, unsigned maxsize)
     allocgcty_BM (typayl_strbuffer_BM, sizeof (*sbuf));
   ((typedhead_tyBM *) sbuf)->rlen = maxsize;
   sbuf->sbuf_indent = 0;
+  sbuf->sbuf_linecount = 0;
   sbuf->sbuf_dbuf = dbuf;
   sbuf->sbuf_size = inisizew * sizeof (void *);
   sbuf->sbuf_curp = dbuf;
@@ -774,6 +775,7 @@ objstrbufferresetpayl_BM (objectval_tyBM * obj)
   sbuf->sbuf_curp = sbuf->sbuf_dbuf;
   sbuf->sbuf_lastnl = NULL;
   sbuf->sbuf_indent = 0;
+  sbuf->sbuf_linecount = 0;
 }                               /* end objstrbufferresetpayl_BM */
 
 unsigned
@@ -788,6 +790,28 @@ objstrbufferlengthpayl_BM (const objectval_tyBM * obj)
              && sbuf->sbuf_curp < sbuf->sbuf_dbuf + sbuf->sbuf_size);
   return sbuf->sbuf_curp - sbuf->sbuf_dbuf;
 }                               /* end objstrbufferlengthpayl_BM */
+
+unsigned
+objstrbufferlinecountpayl_BM (const objectval_tyBM * obj)
+{
+  struct strbuffer_stBM *sbuf =
+    objgetstrbufferpayl_BM ((objectval_tyBM *) obj);
+  if (!sbuf)
+    return 0;
+  return sbuf->sbuf_linecount;
+}                               /* end objstrbufferlinecountpayl_BM */
+
+unsigned
+objstrbuffercolumnpayl_BM (const objectval_tyBM * obj)
+{
+  struct strbuffer_stBM *sbuf =
+    objgetstrbufferpayl_BM ((objectval_tyBM *) obj);
+  if (!sbuf)
+    return 0;
+  if (sbuf->sbuf_lastnl && sbuf->sbuf_curp >= sbuf->sbuf_lastnl)
+    return sbuf->sbuf_curp - sbuf->sbuf_lastnl + 1;
+  return 0;
+}                               /* end objstrbuffercolumnpayl_BM */
 
 unsigned
 objstrbufferlimitpayl_BM (const objectval_tyBM * obj)
@@ -892,7 +916,12 @@ objstrbufferunsafeappendcstrpayl_BM (objectval_tyBM * obj, const char *cstr)
   memcpy (sbuf->sbuf_curp, cstr, len);
   sbuf->sbuf_curp[len] = (char) 0;
   if (nloffset >= 0)
-    sbuf->sbuf_lastnl = sbuf->sbuf_curp + nloffset;
+    {
+      sbuf->sbuf_lastnl = sbuf->sbuf_curp + nloffset;
+      for (char *pc = cstr; *pc; pc++)
+        if (*pc == '\n')
+          sbuf->sbuf_linecount++;
+    }
   sbuf->sbuf_curp += len;
   *sbuf->sbuf_curp = (char) 0;
   if (maxsiz > 0 && sbuf->sbuf_curp - sbuf->sbuf_dbuf > maxsiz)
