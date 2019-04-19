@@ -16,22 +16,24 @@ const char modulmd5chksum_55roYj6pggy_95lbHks0q2X_BM[] = BISMON_MOMD5;
 
 
 
-// declare 1 routines
+// declare 2 routines
 
-extern const char *const routid_55roYj6pggy_95lbHks0q2X_BM[1+1];
+extern const char *const routid_55roYj6pggy_95lbHks0q2X_BM[2+1];
 
 
 // no failure
 
 extern objrout_sigBM crout_0oA6AajbKuk_8rDrkR7F4jZ_BM; //#0 init_chariotdemo
 
-
-// declare 2 constants
-objectval_tyBM* constob_55roYj6pggy_95lbHks0q2X_BM[2+1];
-const char* const constid_55roYj6pggy_95lbHks0q2X_BM[2+1];
+extern objrout_sigBM crout_5603DuLsw8z_4ztK4e4aYMp_BM; //#1 !restchariot2q19-httphandler (v_restpath o_webex)
 
 
-// define 1 routines
+// declare 3 constants
+objectval_tyBM* constob_55roYj6pggy_95lbHks0q2X_BM[3+1];
+const char* const constid_55roYj6pggy_95lbHks0q2X_BM[3+1];
+
+
+// define 2 routines
 
 
 value_tyBM crout_0oA6AajbKuk_8rDrkR7F4jZ_BM //#0+
@@ -99,24 +101,93 @@ endblock__2KLVzxCNqMd_2qnmhKI8PhM: ;
 
 
 
-// end of 1 generated routines
+value_tyBM crout_5603DuLsw8z_4ztK4e4aYMp_BM //#1
+ (struct stackframe_stBM* stkf, //
+//!restchariot2q19-httphandler (v_restpath o_webex)
+  // 2 arguments
+  const value_tyBM arg0,  // v_restpath
+  const value_tyBM arg1,  // o_webex
+  const value_tyBM arg2_ __attribute__((unused)),
+  const value_tyBM arg3_ __attribute__((unused)),
+  const quasinode_tyBM * restargs_ __attribute__((unused)))
+{ // start of _5603DuLsw8z_4ztK4e4aYMp
+  struct frame_5603DuLsw8z_4ztK4e4aYMp_BMst {
+    typedhead_tyBM stkfram_head;
+    struct stackframe_stBM *stkfram_prev;
+    objectval_tyBM *stkfram_descr;
+    value_tyBM stkfram_callfun;
+    int stkfram_state;
+    int stkfram_extra;
+    /// 3 local values:
+    value_tyBM v_3qw9bnATIhq_8loBraLeXzQ; // v_r
+    objectval_tyBM* o_5JuT4FgNFFh_7McrTYeT3jx; // o_webex
+    value_tyBM v_6QhNRfe1Cte_0niVlWfAlmO; // v_restpath
+    /// 0 local numbers:
+   } _;
+   memset (&_, 0, sizeof(struct frame_5603DuLsw8z_4ztK4e4aYMp_BMst));
+   _.stkfram_head.htyp = typayl_StackFrame_BM;
+   _.stkfram_head.hgc = 0;
+   _.stkfram_head.rlen = 3;
+   _.stkfram_descr = constob_55roYj6pggy_95lbHks0q2X_BM[2] /*|_5603DuLsw8z_4ztK4e4aYMp*/;
+   ASSERT_BM (!stkf
+             || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
+             || stkf->stkfram_pA.htyp == typayl_SpecialFrame_BM);
+   _.stkfram_prev = stkf;
+   // fetch 2 arguments:
+   _.v_6QhNRfe1Cte_0niVlWfAlmO = arg0; // v_restpath
+   _.o_5JuT4FgNFFh_7McrTYeT3jx = objectcast_BM (arg1); // o_webex
+   // fetched 2 arguments.
+   // no closed values in _5603DuLsw8z_4ztK4e4aYMp.
+   const closure_tyBM* callclos_5603DuLsw8z_4ztK4e4aYMp __attribute__((unused)) =
+     (stkf&&stkf->stkfram_pA.htyp == typayl_StackFrame_BM)
+     ? (closurecast_BM(stkf->stkfram_callfun)) : NULL;
+   const unsigned nbclosed_5603DuLsw8z_4ztK4e4aYMp  __attribute__((unused)) = 0;
+   // routine _5603DuLsw8z_4ztK4e4aYMp body:
+
+startblock__8CB2Do4OiFy_3dgoJSOayb7: __attribute__((unused));
+{ /* +block _8CB2Do4OiFy_3dgoJSOayb7 */ 
+ 
+{ // run _0nVw3Ihw1bt_675oHgyNYMg 
+/*debug  restchariot2q19-httphandler start v_restpath o_webex*/
+DBGPRINTF_BM("restchariot2q19-httphandler start €%.9s v_restpath=%s o_webex=%s",
+ "_0nVw3Ihw1bt_675oHgyNYMg",
+ OUTSTRVALUE_BM( /*v_restpath:*/_.v_6QhNRfe1Cte_0niVlWfAlmO),
+ objectdbg_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx)); 
+} // end run _0nVw3Ihw1bt_675oHgyNYMg 
+ 
+/* !endingblock _8CB2Do4OiFy_3dgoJSOayb7 */ 
+goto endblock__8CB2Do4OiFy_3dgoJSOayb7; 
+endblock__8CB2Do4OiFy_3dgoJSOayb7: ; 
+} /*-block _8CB2Do4OiFy_3dgoJSOayb7 */
+
+ epilog_5603DuLsw8z_4ztK4e4aYMp: __attribute__ ((unused)); // routine _5603DuLsw8z_4ztK4e4aYMp epilogue:
+   if (stkf) stkf->stkfram_callfun = NULL;
+   return  /*v_r:*/_.v_3qw9bnATIhq_8loBraLeXzQ;
+} // end _5603DuLsw8z_4ztK4e4aYMp routine#1 _5603DuLsw8z_4ztK4e4aYMp
 
 
-// the constant ids for 2 constants:
-const char* const constid_55roYj6pggy_95lbHks0q2X_BM[2+1] = {
+
+
+// end of 2 generated routines
+
+
+// the constant ids for 3 constants:
+const char* const constid_55roYj6pggy_95lbHks0q2X_BM[3+1] = {
  /*0:*/
  "_0oA6AajbKuk_8rDrkR7F4jZ",//init_chariotdemo
  "_55roYj6pggy_95lbHks0q2X",//chariotdemo_module
- NULL}; // end 2 constant ids
+ "_5603DuLsw8z_4ztK4e4aYMp", //! restchariot2q19-httphandler (v_restpath o_webex)
+ NULL}; // end 3 constant ids
 
 
 
-// the routine ids for 1 routines:
-const char* const routid_55roYj6pggy_95lbHks0q2X_BM[1+1] = {
+// the routine ids for 2 routines:
+const char* const routid_55roYj6pggy_95lbHks0q2X_BM[2+1] = {
   /*0:*/
   "_0oA6AajbKuk_8rDrkR7F4jZ",//init_chariotdemo
+  "_5603DuLsw8z_4ztK4e4aYMp", //!restchariot2q19-httphandler (v_restpath o_webex)
 
- NULL}; // end 1 routine ids
+ NULL}; // end 2 routine ids
 
 
 

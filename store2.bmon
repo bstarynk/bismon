@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3028 objects
+// for 3031 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -958,12 +958,13 @@ _5ve5gbSjN0r_1n61nNRPtnN _0jFqaPPHgYH_5JpjOPxQ67p
 !(_55roYj6pggy_95lbHks0q2X |=chariotdemo_module|
 !~ name (~ chariotdemo_module
 ~)
-!@ 1555403593.030
+!@ 1555651495.782
 !$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "module for CHARIOT H2020 demo"
-!# 1
+!# 2
 !& _0oA6AajbKuk_8rDrkR7F4jZ
+!& _5603DuLsw8z_4ztK4e4aYMp
  // emitted persistent module modbm_55roYj6pggy_95lbHks0q2X.c
 
 !)_55roYj6pggy_95lbHks0q2X
@@ -12905,6 +12906,31 @@ _41F1rKwGbaA_30OJWKsqNWy
   "\n"  " "  "objectdbg_BM"  "(" 
   * _5ucAZimYynS_4VA0XHvr1nW ( _4jyHvEiEzZ1_9ck99ShNTHx)  "));"  "\n")
 !)_0nQH8PHR97P_03T6CUirdCG
+
+
+
+!(_0nVw3Ihw1bt_675oHgyNYMg
+!@ 1555651715.696
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug  restchariot2q19-httphandler start v_restpath o_webex"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  "  "  "restchariot2q19" 
+  "-"  "httphandler"  " "  "start" 
+  " " _6QhNRfe1Cte_0niVlWfAlmO  " " _5JuT4FgNFFh_7McrTYeT3jx 
+  "*/"  "\n"  "DBGPRINTF_BM"  "(\"" 
+  "restchariot2q19"  "-"  "httphandler"  " " 
+  "start"  " "  "\u20ac%."  "9s" 
+  " " _6QhNRfe1Cte_0niVlWfAlmO  "=%"  "s" 
+  " " _5JuT4FgNFFh_7McrTYeT3jx  "=%"  "s" 
+  "\","  "\n"  " "  "\"" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\","  "\n" 
+ " " 
+  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6QhNRfe1Cte_0niVlWfAlmO) 
+ ")," 
+  "\n"  " "  "objectdbg_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5JuT4FgNFFh_7McrTYeT3jx)  "))")
+!)_0nVw3Ihw1bt_675oHgyNYMg
 
 
 
@@ -30358,6 +30384,21 @@ _2W7Ckt2WxEM_4NVYgEWE73B
 
 
 
+!(_5603DuLsw8z_4ztK4e4aYMp
+!@ 1555651495.782
+!$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "restchariot2q19-httphandler (v_restpath o_webex)"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _6QhNRfe1Cte_0niVlWfAlmO _5JuT4FgNFFh_7McrTYeT3jx ]
+!: _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+!: _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_8CB2Do4OiFy_3dgoJSOayb7
+!)_5603DuLsw8z_4ztK4e4aYMp
+
+
+
 !(_56nRoV0ayU1_2mHr757EZze
 !@ 1550653698.931
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -43226,6 +43267,19 @@ _6jZqk9RP0Pe_12cIgV9WMFC
   * _5ucAZimYynS_4VA0XHvr1nW ( _6Y20GNUgnSZ_4LkbrcRMU8f)  "));"  "\n" 
  "   ")
 !)_8C4hm3Zp5k4_705ymFnj8CK
+
+
+
+!(_8CB2Do4OiFy_3dgoJSOayb7
+!@ 1555651715.696
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of restchariot2q19-httphandler"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_5603DuLsw8z_4ztK4e4aYMp
+!# 1
+!& _0nVw3Ihw1bt_675oHgyNYMg
+!)_8CB2Do4OiFy_3dgoJSOayb7
 
 
 
