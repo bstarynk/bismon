@@ -1,7 +1,24 @@
 // generated persistent data file store7.bmon
 // this generated data file is GPLv3+ licensed
-// for 5 objects
+// for 6 objects
 // with 0 modules
+
+
+!(_5WVPhZvvSuo_7HL6xrPJQa0 |=chariot_demo2Q2019_projects|
+!~ name (~ chariot_demo2Q2019_projects
+~)
+!@ 1555672804.376
+!$_6VGKPmigLUx_65sfKINCa6w |=dict_object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "attribute giving the set of CHARIOT projects"& " of a contributor, also the dictionnary of"& " such projects"
+!~ todo (~
+_8lV53mLyu1H_3Z1SI8wDBK1 !&
+_9pvzBeIKHXF_8YDPCrQ6OEK	 "hello-kernel-demo" 
+_3IlTxec0j1J_546TPSp9NXm
+~)
+
+!)_5WVPhZvvSuo_7HL6xrPJQa0
+
 
 
 !(_3URdyE0oa4Z_3oXj45Or0rB |=play_a|
