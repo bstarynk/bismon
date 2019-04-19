@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3031 objects
+// for 3033 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -952,6 +952,31 @@ _5ve5gbSjN0r_1n61nNRPtnN _0jFqaPPHgYH_5JpjOPxQ67p
  _7DQyvJFMOrC_9IfC3CtYknn _9OzBvYbDWm8_3XA4wkArOmo) ~)
 
 !)_42gEKfF4qca_6gGwxSFC1FO
+
+
+
+!(_5WVPhZvvSuo_7HL6xrPJQa0 |=chariot_demo2Q2019_projects|
+!~ name (~ chariot_demo2Q2019_projects
+~)
+!@ 1555665882.983
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "attribute giving the set of CHARIOT projects"
+!)_5WVPhZvvSuo_7HL6xrPJQa0
+
+
+
+!(_0VBDbV4Glj9_49SjNYEwwJb |=chariot_project_class|
+!~ name (~ chariot_project_class
+~)
+!@ 1555665477.597
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the class of chariot projects"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+
+!)_0VBDbV4Glj9_49SjNYEwwJb
 
 
 
@@ -30385,6 +30410,7 @@ _2W7Ckt2WxEM_4NVYgEWE73B
 
 
 !(_5603DuLsw8z_4ztK4e4aYMp
+!|*
 !@ 1555651495.782
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -37334,8 +37360,10 @@ _41F1rKwGbaA_30OJWKsqNWy)
 
 
 !(_6UYrSn7piPM_3eYhLtoXlmL
-!@ 1530088580.748
+!@ 1555665882.983
 !$_5BAqWtmxAH6_9rCGuxiNbfc |=contributor_class|
+!: _5WVPhZvvSuo_7HL6xrPJQa0 |=chariot_demo2Q2019_projects|
+ { _3IlTxec0j1J_546TPSp9NXm }
 !)_6UYrSn7piPM_3eYhLtoXlmL
 
 
