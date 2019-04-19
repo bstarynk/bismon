@@ -824,7 +824,7 @@ objstrbuffercurrentlastlinepayl_BM (const objectval_tyBM * obj)
   if (!sbuf)
     return NULL;
   if (sbuf->sbuf_lastnl && sbuf->sbuf_curp >= sbuf->sbuf_lastnl)
-    return sbuf->sbuf_lastnl+1;
+    return sbuf->sbuf_lastnl + 1;
   return NULL;
 }                               /* end objstrbuffercurrentlastlinepayl_BM */
 
