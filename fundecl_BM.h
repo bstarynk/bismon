@@ -1071,6 +1071,32 @@ extern bool objputjansjsoncstrpayl_BM (objectval_tyBM * obj,
 extern json_t *jansjsonfromvalue_BM (value_tyBM val, value_tyBM src,
                                      value_tyBM ctx, int depth,
                                      struct stackframe_stBM *stkf);
+
+// FIXME: we need to explain how json_sequence, json_set, json_tuple,
+// jsonable_closure, jsonable_object are used.
+
+/// gives null or {"@object": id}; if the object has a jsonable_object
+/// which is not `none`
+extern json_t *jansjsonifyobject_BM (objectval_tyBM * obj,
+                                     struct stackframe_stBM *stkf);
+
+extern json_t *jansjsonifynode_BM (value_tyBM val, value_tyBM src,
+                                   value_tyBM ctx, int depth,
+                                   struct stackframe_stBM *stkf);
+
+extern json_t *jansjsonifyclosure_BM (value_tyBM val, value_tyBM src,
+                                      value_tyBM ctx, int depth,
+                                      struct stackframe_stBM *stkf);
+
+extern json_t *jansjsonifyvalue_BM (value_tyBM val, value_tyBM src,
+                                    value_tyBM ctx, int depth,
+                                    struct stackframe_stBM *stkf);
+
+/// unimplemented, not even sure of the signature
+extern value_tyBM value_of_json_BM (json_t * json, value_tyBM src,
+                                    value_tyBM ctx, int depth,
+                                    struct stackframe_stBM *stkf);
+
 extern void objputjanssonpayl_BM (objectval_tyBM * objarg, value_tyBM valarg,
                                   value_tyBM ctxarg,
                                   struct stackframe_stBM *stkf);

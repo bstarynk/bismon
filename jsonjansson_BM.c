@@ -30,6 +30,7 @@ jansjsongcmark_BM (struct garbcoll_stBM *gc,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (!fromob || isobject_BM (fromob));
+  ASSERT_BM (depth >= 0);
   ASSERT_BM (((typedhead_tyBM *) jjs)->htyp == typayl_jansjson_BM);
   uint8_t oldmark = ((typedhead_tyBM *) jjs)->hgc;
   if (oldmark)
@@ -215,6 +216,30 @@ static void
 jansjson_add_to_json_object_bm (json_t * objs, value_tyBM val, value_tyBM src,
                                 value_tyBM ctx, int depth,
                                 struct stackframe_stBM *stkf);
+
+json_t *
+jansjsonifyobject_BM (objectval_tyBM * obj, struct stackframe_stBM *stkf)
+{
+}
+
+json_t *
+jansjsonifyvalue_BM (value_tyBM val, value_tyBM src,
+                     value_tyBM ctx, int depth, struct stackframe_stBM *stkf)
+{
+}
+
+json_t *
+jansjsonifynode_BM (value_tyBM val, value_tyBM src,
+                    value_tyBM ctx, int depth, struct stackframe_stBM *stkf)
+{
+}
+
+json_t *
+jansjsonifyclosure_BM (value_tyBM val, value_tyBM src,
+                       value_tyBM ctx, int depth,
+                       struct stackframe_stBM *stkf)
+{
+}
 
 #define MAXDEPTHJSON_BM 96
 json_t *
@@ -677,5 +702,13 @@ jansjson_add_to_json_object_bm (json_t * objs, value_tyBM val, value_tyBM src,
       PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
     }
 }                               // end jansjson_add_to_json_object_bm
+
+value_tyBM
+value_of_json_BM (json_t * json, value_tyBM src,
+                  value_tyBM ctx, int depth, struct stackframe_stBM *stkf)
+{
+  FATAL_BM ("unimplemented value_of_json_BM");
+#warning unimplemented value_of_json_BM
+}                               /* end of value_of_json_BM */
 
 ///// end of file jsonjansson_BM.c
