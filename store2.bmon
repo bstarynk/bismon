@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3032 objects
+// for 3038 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -3414,6 +3414,28 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_6QlgyfRKCyD_1g6EhKC55Vj |=json_sequence|
+!~ name (~ json_sequence
+~)
+!@ 1555678104.300
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "to JSONify a sequence as {\'@set\':[elements]} or {\'@tup\':[components]}"
+!)_6QlgyfRKCyD_1g6EhKC55Vj
+
+
+
+!(_28Y5XSkBZZH_24NmhTCKRgd |=json_set|
+!~ name (~ json_set
+~)
+!@ 1555678128.364
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "to JSONify a set as {\'@set\':[elements]}"
+!)_28Y5XSkBZZH_24NmhTCKRgd
+
+
+
 !(_419If27jxwQ_3WQnLqU53iq |=json_string|
 !~ name (~ json_string
 ~)
@@ -3436,12 +3458,45 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_7d0o00yB7Zs_1USaaS25hxl |=json_tuple|
+!~ name (~ json_tuple
+~)
+!@ 1555678160.362
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "to JSONify a tuple as {\'@tuple\':[components]}"
+!)_7d0o00yB7Zs_1USaaS25hxl
+
+
+
 !(_5LSPYWdN50R_3nt54XhyWMW |=json_value|
 !~ name (~ json_value
 ~)
 !@ 1549880900.464
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !)_5LSPYWdN50R_3nt54XhyWMW
+
+
+
+!(_7W0zh0WgGCU_5AfEDjZ7XVZ |=jsonable_closure|
+!~ name (~ jsonable_closure
+~)
+!@ 1555676020.761
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "within a closure\'s routine, if given and"& " not `none`, make the closure transformed"& " to JSON"
+!)_7W0zh0WgGCU_5AfEDjZ7XVZ
+
+
+
+!(_3j87xFrfAfb_84QdVpi4LDD |=jsonable_object|
+!~ name (~ jsonable_object
+~)
+!@ 1555677439.066
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "if attribute is present and not `none`, the"& " object is JSONed to its string, otherwise"& " to {\'@obj\':<id>}"
+!)_3j87xFrfAfb_84QdVpi4LDD
 
 
 
@@ -11277,6 +11332,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the set of values"
 !)_6Fl0Z0OTtV9_8QTsq3uDu4q
+
+
+
+!(_0DYWTkQbFjG_1Ed0ex9v5xA |=value_to_json|
+!~ name (~ value_to_json
+~)
+!@ 1555675662.865
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "convert a value to JSON"
+!)_0DYWTkQbFjG_1Ed0ex9v5xA
 
 
 
