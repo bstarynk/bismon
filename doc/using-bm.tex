@@ -27,7 +27,38 @@ The JSON\footnote{See \bmurl{http://json.org/} for more} \index{JSON}
 textual format is a convenient, common and compact structured textual
 format. It is used in \emph{Bismon} and supported as a payload
 \index{payload} (but not directly as an immutable value) for objects
-of class \texttt{json\_object}.\index{json object@\texttt{json\_object}}
+of class \texttt{json\_object}.
+\index{json object@\texttt{json\_object}}
+
+Conceptually, the JSON model is close, but not identical to, the
+Bismon persistent model: it provides structured and compositional
+\index{object}%
+\index{attribute}%
+\index{component}%
+\index{payload}%
+constructs, but JSON objects have \emph{strings} as attributes, while
+Bismon objects have arbitrary object references as attributes, and
+also components and some optional payload.
+
+Therefore, there is some way to encode any \emph{Bismon} value into a JSON value; this is the canonical JSON encoding of values, given in figure \ref{fig:canon-json} below.
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{tabular}{l c l p{6cm}}
+      $\llbracket \textrm{integer}~ i \rrbracket_{json}$ &
+      $\rightarrow$ &
+      $i$ {\relsize{-1}{(JSON integer)}} &
+      tagged integers are encoded as is \\
+      $\llbracket \textrm{object}~ \omega$ {\relsize{-1.5}{\textrm{of objid}~ \textit{oid}}}$ \rrbracket_{json}$ &
+      $\rightarrow$ &
+      \texttt{\textbf{\{ "!oid" :}} $\mathit{oid}$ \texttt{\textbf{\}}} &
+      objects encoded with \texttt{"!oid"} JSON attribute giving the \index{objid}objid as a JSON string \\
+    \end{tabular}
+    \smallskip
+  \end{center}
+  \caption{canonical JSON encoding $\llbracket v \rrbracket_{json}$ of a Bismon value $v$.}
+  \label{fig:canon-json}
+\end{figure}
 
  {\color{red}{@@ to be completed a lot, explaining conversions of
      Bismon values to and from JSON.}}
