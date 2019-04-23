@@ -711,4 +711,102 @@ value_of_json_BM (json_t * json, value_tyBM src,
 #warning unimplemented value_of_json_BM
 }                               /* end of value_of_json_BM */
 
+
+#define MAXJSONIFYDEPTH_BM 96
+json_t *
+canonjsonifyvalue_BM (value_tyBM valarg,
+                      objectval_tyBM * ctxarg,
+                      int depth, struct stackframe_stBM *stkf)
+{
+  json_t *jres = NULL;
+  objectval_tyBM *k_json_value = BMK_78X6jYDHXpW_3opwNmDlnqc;
+  LOCALFRAME_BM (stkf, /*descr: */ k_json_value,
+                 value_tyBM valv;       //
+                 objectval_tyBM * octxt;        //
+                 objectval_tyBM * oconn;        //
+                 union
+                 {
+                 value_tyBM * vcomp;    //
+                 objectval_tyBM * ocomp;        //
+                 };
+    );
+  _.valv = valarg;
+  _.octxt = objectcast_BM (ctxarg);
+  DBGPRINTF_BM ("canonjsonifyvalue start val=%s ctx=%s depth#%d",
+                OUTSTRVALUE_BM (_.valv), objectdbg_BM (_.octxt), depth);
+  int vty = valtype_BM (_.valv);
+  if (depth < MAXDEPTHJSON_BM)
+    switch (vty)
+      {
+      case tyInt_BM:
+        jres = json_integer (getint_BM (_.valv));
+        break;
+      case tyNone_BM:
+        break;
+      case tyString_BM:
+        jres = json_string (bytstring_BM (_.valv));
+        break;
+      case tyUnspecified_BM:
+        jres = json_false ();
+      case tySet_BM:
+      case tyTuple_BM:
+        {
+          json_t *jarr = json_array ();
+          bool isset = (vty == tySet_BM);
+          unsigned ln = sequencesize_BM (_.valv);
+          for (int ix = 0; ix < (int) ln; ix++)
+            {
+              _.ocomp = sequencenthcomp_BM (_.valv, ix);
+              char idbuf[32];
+              memset (idbuf, 0, sizeof (idbuf));
+              idtocbuf32_BM (objid_BM (_.ocomp), idbuf);
+              json_array_append_new (jarr, json_string (idbuf));
+            }
+          jres = json_pack ("{so}", isset ? "!set" : "!tup", jarr);
+          break;
+        }
+        break;
+      case tyNode_BM:
+        {
+          json_t *jconn = NULL;
+          json_t *jarr = NULL;
+          json_t *jcomp = NULL;
+          _.oconn = nodeconn_BM (_.valv);
+          unsigned ln = nodewidth_BM (_.valv);
+          {
+            char connbuf[32];
+            memset (connbuf, 0, sizeof (connbuf));
+            idtocbuf32_BM (objid_BM (_.oconn), connbuf);
+            jconn = json_string (connbuf);
+          }
+          jarr = json_array ();
+          for (int ix = 0; ix < (int) ln; ix++)
+            {
+              jcomp = NULL;
+              _.vcomp = nodenthson_BM (_.valv, ix);
+              jcomp =
+                canonjsonifyvalue_BM (_.vcomp, _.octxt, depth + 1,
+                                      CURFRAME_BM);
+              if (!jcomp)
+                {
+                  json_decref (jarr);
+                  json_decref (jconn);
+                  return NULL;
+                }
+              json_array_append_new (jarr, jcomp);
+            }
+          jres = json_pack ("{soso}", "!node", jconn, "!sons", jarr);
+        }
+        break;
+#warning canonjsonifyvalue_BM is incomplete
+      case tyClosure_BM:
+      case tyObject_BM:
+        FATAL_BM ("unimplemented canonjsonifyvalue_BM for %s",
+                  OUTSTRVALUE_BM (_.valv));
+        break;
+      default:
+        jres = NULL;
+      }
+}                               /* end of canonjsonifyvalue_BM */
+
 ///// end of file jsonjansson_BM.c

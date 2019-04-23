@@ -1092,6 +1092,10 @@ extern json_t *jansjsonifyvalue_BM (value_tyBM val, value_tyBM src,
                                     value_tyBM ctx, int depth,
                                     struct stackframe_stBM *stkf);
 
+extern json_t *canonjsonifyvalue_BM (value_tyBM val,
+                                     objectval_tyBM * ctxob, int depth,
+                                     struct stackframe_stBM *stkf);
+
 /// unimplemented, not even sure of the signature
 extern value_tyBM value_of_json_BM (json_t * json, value_tyBM src,
                                     value_tyBM ctx, int depth,
