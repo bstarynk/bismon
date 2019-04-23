@@ -40,11 +40,11 @@ constructs, but JSON objects have \emph{strings} as attributes, while
 Bismon objects have arbitrary object references as attributes, and
 also components and some optional payload.
 
-Therefore, there is some way to encode any \emph{Bismon} value into a JSON value; this is the canonical JSON encoding of values, given in figure \ref{fig:canon-json} below.
+Therefore, there is some way to encode any \emph{Bismon} value into a JSON value; this is the \emph{canonical JSON encoding of values}\index{canonical JSON encoding}, given in figure \ref{fig:canon-json} below.
 
 \begin{figure}[h]
   \begin{center}
-    \begin{tabular}{lclp{5cm}}
+    \begin{tabular}{lclp{6cm}}
       %%%
       $\llbracket \textrm{nil}\rrbracket_{json}$ &
       $\rightarrow$ &
@@ -60,31 +60,46 @@ Therefore, there is some way to encode any \emph{Bismon} value into a JSON value
       $\rightarrow$ &
       $f$ {\relsize{-1}{(JSON float)}} &
       {\relsize{-1}{boxed floats encoded as is, with decimal point}} \\
+      \rule{0pt}{3ex} 
       %%%
       $\llbracket \textrm{object}~ \omega$ {\relsize{-1.5}{\textrm{of objid}~ \textit{oid}}}$ \rrbracket_{json}$ &
       $\rightarrow$ &
       \texttt{\textbf{\{ "!oid" :}} $\mathit{oid}$ \texttt{\textbf{\}}} &
-             {\relsize{-1}{Bismon objects encoded with \texttt{"!oid"} JSON attribute giving the \index{objid}objid as a JSON string}} \\
+             {{\relsize{-1}{Bismon objects encoded with \texttt{"!oid"} JSON attribute giving the \index{objid}objid as a JSON string}}} \\
+              \rule{0pt}{3ex}
       %%%
       $\llbracket \textrm{tuple}~ [ \omega_1 \ldots \omega_n ] ~ \rrbracket_{json}$ &
       $\rightarrow$ & %
-      \begin{minipage}{3.5cm}
+      \begin{minipage}[c]{4cm}
          \texttt{\textbf{\{ "!tup" :}} \\
          \hspace*{1.2em}  $\mathtt{\texttt{[}} ~ \mathit{oid}_1 \ldots \mathit{oid}_n ~ \mathtt{\texttt{]}}$ \texttt{\textbf{\}}}
       \end{minipage}
-      & {\relsize{-1}{Bismon tuples encoded  with \texttt{"!tup"} JSON attribute giving the JSON array of corresponding object ids : ~  \mbox{$\mathit{oid}_i = \mathrm{objid} (\omega_i)$}
+      & {\relsize{-1}{Bismon tuples encoded  with \texttt{"!tup"} JSON attribute giving the JSON array of corresponding objid JSON strings : ~  \mbox{$\mathit{oid}_i = \mathrm{objid} (\omega_i)$}
             }}
-             \\
+      \\
+       \rule{0pt}{3ex}
       %%%
       $\llbracket \textrm{set}~ \{ \omega_1 \ldots \omega_n \} ~ \rrbracket_{json}$ &
       $\rightarrow$ & %
-      \begin{minipage}{3.5cm}
+      \begin{minipage}[c]{4cm}
          \texttt{\textbf{\{ "!set" :}} \\
          \hspace*{1.2em}  $\mathtt{\texttt{[}} ~ \mathit{oid}_1 \ldots \mathit{oid}_n ~ \mathtt{\texttt{]}}$ \texttt{\textbf{\}}}
       \end{minipage}
-      & {\relsize{-1}{Bismon sets encoded  with \texttt{"!tup"} JSON attribute giving the JSON array of corresponding object ids : ~  \mbox{$\mathit{oid}_i = \mathrm{objid} (\omega_i)$}
+      & {\relsize{-1}{Bismon sets encoded  with \texttt{"!set"} JSON attribute giving the JSON array of corresponding objid JSON strings : ~  \mbox{$\mathit{oid}_i = \mathrm{objid} (\omega_i)$}
             }}
-             \\
+      \\
+       \rule{0pt}{3ex}
+      %%%
+      $\llbracket \textrm{node}~ \mathtt{\textbf{*}} ~ \omega_{conn} \mathtt{(} \sigma_1 \ldots \sigma_n \mathtt{)} ~ \rrbracket_{json}$ &
+      $\rightarrow$ & %
+      \begin{minipage}[c]{4cm}
+         \texttt{\textbf{\{ "!node" :}} $\mathit{oid}_{conn}$ \texttt{\textbf{,}} \\
+         \hspace*{1.2em}  $\mathtt{\texttt{[}} ~ \mathit{oid}_1 \ldots \mathit{oid}_n ~ \mathtt{\texttt{]}}$ \texttt{\textbf{\}}}
+      \end{minipage}
+      & {\relsize{-1}{Bismon nodes encoded  with \texttt{"!node"} JSON attribute bla bla}
+            }
+      \\
+       \rule{0pt}{3ex}
     \end{tabular}
     \smallskip
   \end{center}
