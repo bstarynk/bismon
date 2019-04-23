@@ -44,29 +44,46 @@ Therefore, there is some way to encode any \emph{Bismon} value into a JSON value
 
 \begin{figure}[h]
   \begin{center}
-    \begin{tabular}{l c l p{4cm}}
+    \begin{tabular}{lclp{5cm}}
+      %%%
       $\llbracket \textrm{nil}\rrbracket_{json}$ &
       $\rightarrow$ &
       \texttt{\textbf{null}}  &
       {\relsize{-1}{The Bismon nil is encoded as the JSON null}} \\
       $\llbracket \textrm{integer}~ i \rrbracket_{json}$ &
       $\rightarrow$ &
+      %%%
       $i$ {\relsize{-1}{(JSON integer)}} &
       {\relsize{-1}{tagged integers encoded as is}} \\
+      %%%
       $\llbracket \textrm{boxed float}~ f \rrbracket_{json}$ &
       $\rightarrow$ &
       $f$ {\relsize{-1}{(JSON float)}} &
-      {\relsize{-1}{boxed floats encoded as is}} \\
+      {\relsize{-1}{boxed floats encoded as is, with decimal point}} \\
+      %%%
       $\llbracket \textrm{object}~ \omega$ {\relsize{-1.5}{\textrm{of objid}~ \textit{oid}}}$ \rrbracket_{json}$ &
       $\rightarrow$ &
       \texttt{\textbf{\{ "!oid" :}} $\mathit{oid}$ \texttt{\textbf{\}}} &
-      {\relsize{-1}{objects encoded with \texttt{"!oid"} JSON attribute giving the \index{objid}objid as a JSON string}} \\
+             {\relsize{-1}{Bismon objects encoded with \texttt{"!oid"} JSON attribute giving the \index{objid}objid as a JSON string}} \\
+      %%%
       $\llbracket \textrm{tuple}~ [ \omega_1 \ldots \omega_n ] ~ \rrbracket_{json}$ &
-      $\rightarrow$ &
-    %  \texttt{\textbf{\{ "!tup" : \[}} $\mathit{oid}_1 \ldots \mathit{oid}_n$  \texttt{\textbf{\]  \}}}
-      &
-      %- {\relsize{-1}{objects encoded  with \texttt{"!tup"} JSON attribute giving the array of corresponding objid-s % $\mathit{oid}_i = \mathrm{objid} (\omega_i)$
-      %-       }}
+      $\rightarrow$ & %
+      \begin{minipage}{3.5cm}
+         \texttt{\textbf{\{ "!tup" :}} \\
+         \hspace*{1.2em}  $\mathtt{\texttt{[}} ~ \mathit{oid}_1 \ldots \mathit{oid}_n ~ \mathtt{\texttt{]}}$ \texttt{\textbf{\}}}
+      \end{minipage}
+      & {\relsize{-1}{Bismon tuples encoded  with \texttt{"!tup"} JSON attribute giving the JSON array of corresponding object ids : ~  \mbox{$\mathit{oid}_i = \mathrm{objid} (\omega_i)$}
+            }}
+             \\
+      %%%
+      $\llbracket \textrm{set}~ \{ \omega_1 \ldots \omega_n \} ~ \rrbracket_{json}$ &
+      $\rightarrow$ & %
+      \begin{minipage}{3.5cm}
+         \texttt{\textbf{\{ "!set" :}} \\
+         \hspace*{1.2em}  $\mathtt{\texttt{[}} ~ \mathit{oid}_1 \ldots \mathit{oid}_n ~ \mathtt{\texttt{]}}$ \texttt{\textbf{\}}}
+      \end{minipage}
+      & {\relsize{-1}{Bismon sets encoded  with \texttt{"!tup"} JSON attribute giving the JSON array of corresponding object ids : ~  \mbox{$\mathit{oid}_i = \mathrm{objid} (\omega_i)$}
+            }}
              \\
     \end{tabular}
     \smallskip
