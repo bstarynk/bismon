@@ -44,15 +44,30 @@ Therefore, there is some way to encode any \emph{Bismon} value into a JSON value
 
 \begin{figure}[h]
   \begin{center}
-    \begin{tabular}{l c l p{6cm}}
+    \begin{tabular}{l c l p{4cm}}
+      $\llbracket \textrm{nil}\rrbracket_{json}$ &
+      $\rightarrow$ &
+      \texttt{\textbf{null}}  &
+      {\relsize{-1}{The Bismon nil is encoded as the JSON null}} \\
       $\llbracket \textrm{integer}~ i \rrbracket_{json}$ &
       $\rightarrow$ &
       $i$ {\relsize{-1}{(JSON integer)}} &
-      tagged integers are encoded as is \\
+      {\relsize{-1}{tagged integers encoded as is}} \\
+      $\llbracket \textrm{boxed float}~ f \rrbracket_{json}$ &
+      $\rightarrow$ &
+      $f$ {\relsize{-1}{(JSON float)}} &
+      {\relsize{-1}{boxed floats encoded as is}} \\
       $\llbracket \textrm{object}~ \omega$ {\relsize{-1.5}{\textrm{of objid}~ \textit{oid}}}$ \rrbracket_{json}$ &
       $\rightarrow$ &
       \texttt{\textbf{\{ "!oid" :}} $\mathit{oid}$ \texttt{\textbf{\}}} &
-      objects encoded with \texttt{"!oid"} JSON attribute giving the \index{objid}objid as a JSON string \\
+      {\relsize{-1}{objects encoded with \texttt{"!oid"} JSON attribute giving the \index{objid}objid as a JSON string}} \\
+      $\llbracket \textrm{tuple}~ [ \omega_1 \ldots \omega_n ] ~ \rrbracket_{json}$ &
+      $\rightarrow$ &
+    %  \texttt{\textbf{\{ "!tup" : \[}} $\mathit{oid}_1 \ldots \mathit{oid}_n$  \texttt{\textbf{\]  \}}}
+      &
+      %- {\relsize{-1}{objects encoded  with \texttt{"!tup"} JSON attribute giving the array of corresponding objid-s % $\mathit{oid}_i = \mathrm{objid} (\omega_i)$
+      %-       }}
+             \\
     \end{tabular}
     \smallskip
   \end{center}
