@@ -1346,6 +1346,9 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
 #warning check that refresh_browse_BM is good
 }                               /* end refresh_browse_BM */
 
+
+static bool unconfirmdebugdump_BM (const char *reason);
+
 void
 quitgui_BM (void)
 {
@@ -1384,6 +1387,8 @@ exitgui_BM (void)
   DBGPRINTF_BM ("exitgui start tid#%ld elapsed %.3f s",
                 (long) gettid_BM (), elapsedtime_BM ());
   extern char *dump_dir_bm;
+  if (debugmsg_BM && unconfirmdebugdump_BM ("exit"))
+    return;
   struct dumpinfo_stBM di = dump_BM (dump_dir_BM, NULL);
   gtk_main_quit ();
   if (gui_command_log_file_BM)
@@ -1410,6 +1415,8 @@ dumpgui_BM (void)
 {
   DBGPRINTF_BM ("dumpgui start tid#%ld", (long) gettid_BM ());
   ASSERT_BM (dump_dir_BM != NULL);
+  if (debugmsg_BM && unconfirmdebugdump_BM ("dump"))
+    return;
   log_begin_message_BM ();
   log_printf_message_BM ("dumping into %s directory", dump_dir_BM);
   {
@@ -1449,12 +1456,97 @@ dumpgui_BM (void)
   DBGPRINTF_BM ("dumpgui end tid#%ld", (long) gettid_BM ());
 }                               /* end dumpgui_BM */
 
+
+
+
+bool
+unconfirmdebugdump_BM (const char *reason)
+{
+  bool result = false;
+  DBGPRINTF_BM ("unconfirmdebugdump reason='%s' start", reason);
+  GtkWidget *confirmdialog =    //
+    gtk_message_dialog_new_with_markup  //
+    (GTK_WINDOW (mainwin_BM),
+     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_QUESTION,
+     GTK_BUTTONS_OK_CANCEL, "Confirm dumping with debug for %s?", reason);
+  int resp = gtk_dialog_run (GTK_DIALOG (confirmdialog));
+  time_t nowtim = time (NULL);
+  struct tm nowtm = { };
+  localtime_r (&nowtim, &nowtm);
+  char nowbuf[64];
+  memset (nowbuf, 0, sizeof (nowbuf));
+  strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
+  if (resp == GTK_RESPONSE_OK)
+    {
+      log_begin_message_BM ();
+      log_printf_message_BM ("confirmed debug dump for '%s'", reason);
+      log_end_message_BM ();
+      if (gui_command_log_file_BM)
+        {
+          fprintf (gui_command_log_file_BM,
+                   "\n//// confirmed debug dump '%s' at %s\n\n", nowbuf,
+                   reason);
+          fflush (gui_command_log_file_BM);
+        }
+    }
+  else
+    {
+      log_begin_message_BM ();
+      log_printf_message_BM ("cancelled debug dump for '%s'", reason);
+      log_end_message_BM ();
+      if (gui_command_log_file_BM)
+        {
+          fprintf (gui_command_log_file_BM,
+                   "\n//// cancelled debug dump '%s' at %s\n\n", nowbuf,
+                   reason);
+          fflush (gui_command_log_file_BM);
+        }
+      result = true;
+    }
+  gtk_widget_destroy (confirmdialog);
+  return result;
+}                               /* end unconfirmdebugdump_BM */
+
+
+
+
 void
 garbage_collect_from_gui_BM (void)
 {
   DBGPRINTF_BM ("garbage_collect_from_gui start tid#%ld",
                 (long) gettid_BM ());
   ASSERT_BM (mainthreadid_BM == pthread_self ());
+  if (debugmsg_BM)
+    {
+      GtkWidget *confirmdialog =        //
+        gtk_message_dialog_new_with_markup      //
+        (GTK_WINDOW (mainwin_BM),
+         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+         GTK_MESSAGE_QUESTION,
+         GTK_BUTTONS_OK_CANCEL, "Confirm garbage collection with debug?");
+      int resp = gtk_dialog_run (GTK_DIALOG (confirmdialog));
+      gtk_widget_destroy (confirmdialog);
+      if (resp != GTK_RESPONSE_OK)
+        {
+          log_begin_message_BM ();
+          log_printf_message_BM ("cancelled debug garbage collection");
+          log_end_message_BM ();
+          if (gui_command_log_file_BM)
+            {
+              time_t nowtim = time (NULL);
+              struct tm nowtm = { };
+              localtime_r (&nowtim, &nowtm);
+              char nowbuf[64];
+              memset (nowbuf, 0, sizeof (nowbuf));
+              strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
+              fprintf (gui_command_log_file_BM,
+                       "\n//// cancelled GUI debug garbage collection at %s\n\n",
+                       nowbuf);
+              fflush (gui_command_log_file_BM);
+            };
+          return;
+        }
+    }
   log_begin_message_BM ();
   request_delayed_garbage_collection_BM ();
   log_puts_message_BM ("forced garbage collection");
