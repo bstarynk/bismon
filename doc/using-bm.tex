@@ -42,9 +42,10 @@ also components and some optional payload.
 
 Therefore, there is some way to encode any \emph{Bismon} value into a JSON value; this is the \emph{canonical JSON encoding of values}\index{canonical JSON encoding}, given in figure \ref{fig:canon-json} below.
 
-\begin{figure}[h]
+\begin{figure}[t]
+  \begin{relsize}{-0.5}
   \begin{center}
-    \begin{tabular}{lclp{6cm}}
+    \begin{tabular}{lclp{5cm}}
       %%%
       $\llbracket \textrm{nil}\rrbracket_{json}$ &
       $\rightarrow$ &
@@ -92,20 +93,40 @@ Therefore, there is some way to encode any \emph{Bismon} value into a JSON value
       %%%
       $\llbracket \textrm{node}~ \mathtt{\textbf{*}} ~ \omega_{conn} \mathtt{(} \sigma_1 \ldots \sigma_n \mathtt{)} ~ \rrbracket_{json}$ &
       $\rightarrow$ & %
-      \begin{minipage}[c]{4cm}
+      \begin{minipage}[c]{4.5cm}
         \texttt{\textbf{\{ "!node" :}} $\mathit{oid}_{conn}$ \texttt{\textbf{,}} \\
          \hspace*{0.8em}  \texttt{\textbf{"!sons" :}} \\
          \hspace*{1.2em} %
-         $\mathtt{\texttt{[}} ~ \llbracket \sigma_1 \rrbracket ~ \ldots ~  \llbracket \sigma_n \rrbracket ~ \mathtt{\texttt{]}}$
+         $\mathtt{\texttt{[}} ~ \llbracket \sigma_1 \rrbracket_{json} ~ \ldots ~  \llbracket \sigma_n \rrbracket_{json} ~ \mathtt{\texttt{]}}$
          \texttt{\textbf{\}}}
       \end{minipage}
-      & {\relsize{-1}{Bismon nodes encoded  with \texttt{"!node"} JSON attribute giving the objid of the connective, and with  \texttt{"!sons"} JSON attribute associated to the array of encodings of that node's sons $\sigma_i$}
+      & {\relsize{-1}{Bismon nodes encoded  with \texttt{"!node"} JSON attribute giving the objid $\mathit{oid}_{conn} = \mathrm{objid} (\omega_{conn})$ of the connective $\mathit{oid}_{conn}$, and with  \texttt{"!sons"} JSON attribute associated to the array of encodings of that node's sons $\sigma_i$}
             }
       \\
+       \rule{0pt}{3ex}
+      %%%
+      $\llbracket \textrm{closure}~ \mathtt{\textbf{\%}} ~ \omega_{rout} \mathtt{(} \kappa_1 \ldots \kappa_n \mathtt{)} ~ \rrbracket_{json}$ &
+      $\rightarrow$ & %
+      \begin{minipage}[c]{4.5cm}
+        \texttt{\textbf{\{ "!clos" :}} $\mathit{oid}_{rout}$ \texttt{\textbf{,}} \\
+         \hspace*{0.8em}  \texttt{\textbf{"!cval" :}} \\
+         \hspace*{1.2em} %
+         $\mathtt{\texttt{[}} ~ \llbracket \kappa_1 \rrbracket_{json} ~ \ldots ~  \llbracket \kappa_n \rrbracket_{json} ~ \mathtt{\texttt{]}}$
+         \texttt{\textbf{\}}}
+      \end{minipage}
+      & {\relsize{-1}{Bismon closures encoded  with \texttt{"!clos"} JSON attribute giving the objid  $\mathit{oid}_{rout} = \mathrm{objid} (\omega_{conn})$ of the closure's routine, and with  \texttt{"!cval"} JSON attribute associated to the array of encodings of that closure's closed values $\kappa_i$}
+            }
+      \\
+      \\
+      %%%
+    %- $\llbracket \nu = \mathrm{apply} \mathtt{\textbf{\%}} ~ \omega_{rout} \mathtt{(} \kappa_1 \ldots \kappa_n \mathtt{)}  \mathrm{apply} to \math{ctxt}, \mathrm{depth}, \omega_{json} \rrbracket$ &
+    %-  $\leftarrow$ & %
+      
        \rule{0pt}{3ex}
     \end{tabular}
     \smallskip
   \end{center}
+  \end{relsize}
   \caption{canonical JSON encoding $\llbracket v \rrbracket_{json}$ of a Bismon value $v$.}
   \label{fig:canon-json}
 \end{figure}
