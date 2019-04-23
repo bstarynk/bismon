@@ -93,10 +93,13 @@ Therefore, there is some way to encode any \emph{Bismon} value into a JSON value
       $\llbracket \textrm{node}~ \mathtt{\textbf{*}} ~ \omega_{conn} \mathtt{(} \sigma_1 \ldots \sigma_n \mathtt{)} ~ \rrbracket_{json}$ &
       $\rightarrow$ & %
       \begin{minipage}[c]{4cm}
-         \texttt{\textbf{\{ "!node" :}} $\mathit{oid}_{conn}$ \texttt{\textbf{,}} \\
-         \hspace*{1.2em}  $\mathtt{\texttt{[}} ~ \mathit{oid}_1 \ldots \mathit{oid}_n ~ \mathtt{\texttt{]}}$ \texttt{\textbf{\}}}
+        \texttt{\textbf{\{ "!node" :}} $\mathit{oid}_{conn}$ \texttt{\textbf{,}} \\
+         \hspace*{0.8em}  \texttt{\textbf{"!sons" :}} \\
+         \hspace*{1.2em} %
+         $\mathtt{\texttt{[}} ~ \llbracket \sigma_1 \rrbracket ~ \ldots ~  \llbracket \sigma_n \rrbracket ~ \mathtt{\texttt{]}}$
+         \texttt{\textbf{\}}}
       \end{minipage}
-      & {\relsize{-1}{Bismon nodes encoded  with \texttt{"!node"} JSON attribute bla bla}
+      & {\relsize{-1}{Bismon nodes encoded  with \texttt{"!node"} JSON attribute giving the objid of the connective, and with  \texttt{"!sons"} JSON attribute associated to the array of encodings of that node's sons $\sigma_i$}
             }
       \\
        \rule{0pt}{3ex}
