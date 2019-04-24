@@ -183,6 +183,7 @@ nodal decodings, depending on how JSON strings looking like
 i.e. \texttt{€\_0jFqaPPHg}) are really decoded.
 
 \begin{figure}[!htbp]
+  \begin{relsize}{-1}
   \begin{center}
     \begin{tabular}{lclp{5.3cm}}
       %%%
@@ -227,7 +228,7 @@ i.e. \texttt{€\_0jFqaPPHg}) are really decoded.
         \hspace*{0.4em} $\mathtt{json\_array}, \mathtt{json\_object} \}$
       \end{minipage}
       &
-      {\relsize{-1}{an objid-looking string $\sigma$ \emph{may} be nodal-decoded as
+      {\relsize{-1}{an objid-looking string $\sigma$, starting with an underscore \texttt{\_} and matching the objid of an existing object, \emph{may} be nodal-decoded as
           \emph{the existing} object $\omega$ such as
           $\mathrm{objid}(\omega) = \sigma$} or else as a node of connective \texttt{object} if $\omega$ is a special object mentioned here.}
       \\
@@ -241,7 +242,7 @@ i.e. \texttt{€\_0jFqaPPHg}) are really decoded.
         \hspace*{0.4em} $ \mathtt{json\_false},$ $  \mathtt{json\_true},$ \\
         \hspace*{0.4em} $\mathtt{json\_array}, \mathtt{json\_object} \}$
       \end{minipage} &
-      {\relsize{-1}{a name-looking string $\sigma$ is nodal-decoded as the \emph{existing named} object $\omega$ such as $\mathrm{name}(\omega) = \sigma$, or else, for names used here, is decoded as
+      {\relsize{-1}{a name-looking string $\sigma$, starting with a letter and naming an existing object, is nodal-decoded as the \emph{existing named} object $\omega$ such as $\mathrm{name}(\omega) = \sigma$, or else, for names used here, is decoded as
           \emph{a node}  \mbox{$\textbf{*}\; \mathtt{\textbf{\texttt{object}}} ( \omega) $} such as
           $\mathrm{name}(\omega) = \sigma$}}
       \\
@@ -267,14 +268,20 @@ i.e. \texttt{€\_0jFqaPPHg}) are really decoded.
       $\langle \mathtt{\textbf{\{}} \alpha_1 \mathtt{\textbf{:}} \mathit{\,js}_1 \mathtt{\textbf{,}} \ldots \alpha_n \mathtt{\textbf{:}} \mathit{\,js}_n \mathtt{\textbf{\}}}  \rangle^{nod}$ &
       $\rightarrow$ &
       \begin{minipage}{4.7cm}
-      $\mathtt{\texttt{\textbf{*}}} \mathtt{\texttt{\textbf{json\_object}}}$ \\
-       \hspace*{1.5em} $ ( \langle \mathit{\,js}_1 \rangle^{nod} \ldots  \langle \mathit{\,js}_n \rangle^{nod} ) $
+      $\mathtt{\texttt{\textbf{*}}} \mathtt{\texttt{\textbf{json\_object}}} ($ \\
+        \hspace*{0.5em} $ \mathtt{\texttt{\textbf{*}}} \mathtt{\texttt{\textbf{json\_entry}}} (  \langle \alpha_1 \rangle^{nod} \mathtt{\texttt{\textbf{,}}} $ \\
+         \hspace*{4.5em} $ \langle \mathit{\,js}_1 \rangle^{nod} )$ \\
+       \hspace*{2em} $\vdots$ \\
+        \hspace*{0.5em} $ \mathtt{\texttt{\textbf{*}}} \mathtt{\texttt{\textbf{json\_entry}}} (  \langle \alpha_n \rangle^{nod} \mathtt{\texttt{\textbf{,}}} $ \\
+         \hspace*{4.5em} $ \langle \mathit{\,js}_n \rangle^{nod} )$ \\
+        \hspace*{1em} $)$
       \end{minipage}
       &
-       {\relsize{-1}{A JSON object is compositionally decoded into a node of connective \texttt{json\_array} and sons given by \texttt{json\_entries} subnodes }} \\
+       {\relsize{-1}{A JSON object is compositionally nodal-decoded into a node of connective \texttt{json\_objects} and sons given by \texttt{json\_entries} subnodes whose first son is a string $\alpha_i$ or object $\omega_i$ or node $\mathtt{\textbf{\texttt{* id}}} (\omega_i)$ where $\alpha_i = \mathrm{objid}(\omega_i)$ or node  $\mathtt{\textbf{\texttt{* name}}} (\omega_i)$ where $\alpha_i = \mathrm{objname}(\omega_i)$ }} \\
       \rule{0pt}{6ex} \\
     \end{tabular}
   \end{center}
+  \end{relsize}
   \caption{nodal JSON decoding $\langle \mathit{js} \rangle^{nod}$ of a JSON value $\mathit{js}$.}
   \label{fig:nodal-json}
 \end{figure}
