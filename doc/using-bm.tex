@@ -43,33 +43,43 @@ also components and some optional payload.
 Therefore, there is some way to encode any \emph{Bismon} value into a JSON value; this is the \emph{canonical JSON encoding of values}\index{canonical JSON encoding}, given in figure \ref{fig:canon-json} below.
 
 \begin{figure}[!htbp]
-  \begin{relsize}{-0.5}
+  \begin{relsize}{-1}
   \begin{center}
     \begin{tabular}{lclp{5cm}}
       %%%
-      $\llbracket \textrm{nil}\rrbracket_{json}$ &
+      $\llbracket \textrm{nil} \rrbracket_{json}$ \index{nil} &
       $\rightarrow$ &
       \texttt{\textbf{null}}  &
       {\relsize{-1}{The Bismon nil is encoded as the JSON null}} \\
+      %%%
+      $\llbracket \textrm{unspecified} \rrbracket_{json}$ &
+      $\rightarrow$ &
+      \texttt{\textbf{false}}  &
+      {\relsize{-1}{The Bismon \emph{unspecified} \index{unspecified} is encoded as the JSON false}} \\
+      %%%
       $\llbracket \textrm{integer}~ i \rrbracket_{json}$ &
       $\rightarrow$ &
-      %%%
       $i$ {\relsize{-1}{(JSON integer)}} &
-      {\relsize{-1}{tagged integers encoded as is}} \\
+      {\relsize{-1}{tagged integers \index{integer} encoded as is}} \\
       %%%
       $\llbracket \textrm{boxed float}~ f \rrbracket_{json}$ &
       $\rightarrow$ &
       $f$ {\relsize{-1}{(JSON float)}} &
-      {\relsize{-1}{boxed floats encoded as is, with decimal point}} \\
+      {\relsize{-1}{boxed doubles \index{double} encoded as is, with decimal point}} \\
+      %%%
+      $\llbracket \textrm{string}~ s \rrbracket_{json}$ &
+      $\rightarrow$ &
+      $s$  {\relsize{-1}{(JSON string)}}  &
+      {\relsize{-1}{Bismon strings \index{string} encoded as is}} \\
       \rule{0pt}{3ex} 
       %%%
-      $\llbracket \textrm{object}~ \omega$ {\relsize{-1.5}{\textrm{of objid}~ \textit{oid}}}$ \rrbracket_{json}$ &
+      $\llbracket \textrm{object}~ \omega$ {\relsize{-1.5}{\textrm{of objid}~ \textit{oid}}}$ \rrbracket_{json}$ \index{object} \index{objid} &
       $\rightarrow$ &
       \texttt{\textbf{\{ "!oid" :}} $\mathit{oid}$ \texttt{\textbf{\}}} &
              {{\relsize{-1}{Bismon objects encoded with \texttt{"!oid"} JSON attribute giving the \index{objid}objid as a JSON string}}} \\
               \rule{0pt}{3ex}
       %%%
-      $\llbracket \textrm{tuple}~ [ \omega_1 \ldots \omega_n ] ~ \rrbracket_{json}$ &
+      $\llbracket \textrm{tuple}~ [ \omega_1 \ldots \omega_n ] ~ \rrbracket_{json}$ \index {tuple} &
       $\rightarrow$ & %
       \begin{minipage}[c]{4cm}
          \texttt{\textbf{\{ "!tup" :}} \\
@@ -80,7 +90,7 @@ Therefore, there is some way to encode any \emph{Bismon} value into a JSON value
       \\
        \rule{0pt}{3ex}
       %%%
-      $\llbracket \textrm{set}~ \{ \omega_1 \ldots \omega_n \} ~ \rrbracket_{json}$ &
+      $\llbracket \textrm{set}~ \{ \omega_1 \ldots \omega_n \} ~ \rrbracket_{json}$ \index{set} &
       $\rightarrow$ & %
       \begin{minipage}[c]{4cm}
          \texttt{\textbf{\{ "!set" :}} \\
@@ -91,7 +101,7 @@ Therefore, there is some way to encode any \emph{Bismon} value into a JSON value
       \\
        \rule{0pt}{3ex}
       %%%
-      $\llbracket \textrm{node}~ \mathtt{\textbf{*}} ~ \omega_{conn} \mathtt{(} \sigma_1 \ldots \sigma_n \mathtt{)} ~ \rrbracket_{json}$ &
+      $\llbracket \textrm{node}~ \mathtt{\textbf{*}} ~ \omega_{conn} \mathtt{(} \sigma_1 \ldots \sigma_n \mathtt{)} ~ \rrbracket_{json}$ \index{node} &
       $\rightarrow$ & %
       \begin{minipage}[c]{4.5cm}
         \texttt{\textbf{\{ "!node" :}} $\mathit{oid}_{conn}$ \texttt{\textbf{,}} \\
@@ -105,7 +115,7 @@ Therefore, there is some way to encode any \emph{Bismon} value into a JSON value
       \\
        \rule{0pt}{3ex}
       %%%
-      $\llbracket \textrm{closure}~ \mathtt{\textbf{\%}} ~ \omega_{rout} \mathtt{(} \kappa_1 \ldots \kappa_n \mathtt{)} ~ \rrbracket_{json}$ &
+      $\llbracket \textrm{closure}~ \mathtt{\textbf{\%}} ~ \omega_{rout} \mathtt{(} \kappa_1 \ldots \kappa_n \mathtt{)} ~ \rrbracket_{json}$ \index{closure} &
       $\rightarrow$ & %
       \begin{minipage}[c]{4.5cm}
         \texttt{\textbf{\{ "!clos" :}} $\mathit{oid}_{rout}$ \texttt{\textbf{,}} \\
