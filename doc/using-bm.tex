@@ -189,59 +189,59 @@ i.e. \texttt{€\_0jFqaPPHg}) are really decoded.
       $\langle \mathtt{\textit{\texttt{null}}} \rangle^{nod}$ \index{null} &
       $\rightarrow$ &
       \texttt{\textbf{json\_null}}  &
-             {\relsize{-1}{The JSON \texttt{null}\index{null!JSON} is decoded as the \texttt{json\_null} Bismon object \texttt{€\_6WOSg1mpN}}}
+             {\relsize{-1}{The JSON \texttt{null}\index{null!JSON} is nodal-decoded as the \texttt{json\_null} Bismon object \texttt{€\_6WOSg1mpN}}}
       \\
       %%%
       $\langle \mathtt{\textit{\texttt{false}}} \rangle^{nod}$ \index{null} &
       $\rightarrow$ &
       \texttt{\textbf{json\_false}}  &
-             {\relsize{-1}{The JSON \texttt{false} is decoded as the \texttt{json\_false} Bismon object \texttt{€\_1h1MMlmQi}}}
+             {\relsize{-1}{The JSON \texttt{false} is nodal-decoded as the \texttt{json\_false} Bismon object \texttt{€\_1h1MMlmQi}}}
       \\
       %%%
       $\langle \mathtt{\textit{\texttt{true}}} \rangle^{nod}$ \index{null} &
       $\rightarrow$ &
       \texttt{\textbf{json\_true}}  &
-             {\relsize{-1}{The JSON \texttt{true} is decoded as the \texttt{json\_true} Bismon object \texttt{€\_0ekuRPtKaI}}}
+             {\relsize{-1}{The JSON \texttt{true} is nodal-decoded as the \texttt{json\_true} Bismon object \texttt{€\_0ekuRPtKaI}}}
       \\
       %%%
       $\langle \mathrm{integer} ~ \iota \rangle^{nod}$  &
       $\rightarrow$ &
       tagged integer $\iota$  &
-             {\relsize{-1}{The JSON integers are decoded as the corresponding \emph{Bismon} integer}}
+             {\relsize{-1}{The JSON integers are nodal-decoded as the corresponding \emph{Bismon} integer}}
       \\
       %%%
       $\langle \mathrm{real} ~ \delta \rangle^{nod}$  &
       $\rightarrow$ &
       boxed double $\delta$  &
-             {\relsize{-1}{The JSON reals are decoded as the corresponding \emph{Bismon} boxed double}}
+             {\relsize{-1}{The JSON reals are nodal-decoded as the corresponding \emph{Bismon} boxed double}}
       \\
       \rule{0pt}{2ex} \\
       %%%
       $\langle \mathrm{\textrm{objid-looking} ~ string ~} \sigma \rangle^{nod}$ \index{objid} &
       $\rightarrow$ &
-      object $\omega$  &
-      {\relsize{-1}{an objid-looking string $\sigma$ \emph{may} be decoded as
+      \begin{minipage}{4.7cm}
+        object $\omega$, or else a \\
+        node $\textbf{*}\; \mathtt{\textbf{\texttt{object}}} (\omega) $ with an \\
+        object $\omega \in \{ \mathtt{json\_null},$ \\
+        \hspace*{0.4em} $ \mathtt{json\_false},$ $  \mathtt{json\_true},$ \\
+        \hspace*{0.4em} $\mathtt{json\_array}, \mathtt{json\_object} \}$
+      \end{minipage}
+      &
+      {\relsize{-1}{an objid-looking string $\sigma$ \emph{may} be nodal-decoded as
           \emph{the existing} object $\omega$ such as
-          $\mathrm{objid}(\omega) = \sigma$}}
-      \\
-      %%%
-      $\langle \mathrm{\textrm{object-naming} ~ string ~} \sigma \rangle^{nod}$ \index{objid} &
-      $\rightarrow$ &
-      object $\omega$  &
-      {\relsize{-1}{a name string $\sigma$ \emph{may} be decoded as
-          \emph{the existing} object $\omega$ such as
-          $\mathrm{name}(\omega) = \sigma$}}
+          $\mathrm{objid}(\omega) = \sigma$} or else as a node of connective \texttt{object} if $\omega$ is a special object mentioned here.}
       \\
       %%%
       $\langle \mathrm{\textrm{name-looking} ~ string ~} \sigma \rangle^{nod}$ \index{objid} &
       $\rightarrow$ &
       \begin{minipage}{4.7cm}
+        object $\omega$, or else a \\
         node $\textbf{*}\; \mathtt{\textbf{\texttt{object}}} (\omega) $ with an \\
         object $\omega \in \{ \mathtt{json\_null},$ \\
         \hspace*{0.4em} $ \mathtt{json\_false},$ $  \mathtt{json\_true},$ \\
         \hspace*{0.4em} $\mathtt{json\_array}, \mathtt{json\_object} \}$
       \end{minipage} &
-      {\relsize{-1}{a name-looking string $\sigma$, for names used here, is decoded as
+      {\relsize{-1}{a name-looking string $\sigma$ is nodal-decoded as the \emph{existing named} object $\omega$ such as $\mathrm{name}(\omega) = \sigma$, or else, for names used here, is decoded as
           \emph{a node}  \mbox{$\textbf{*}\; \mathtt{\textbf{\texttt{object}}} ( \omega) $} such as
           $\mathrm{name}(\omega) = \sigma$}}
       \\
@@ -250,7 +250,7 @@ i.e. \texttt{€\_0jFqaPPHg}) are really decoded.
       $\langle \mathrm{\textrm{any} ~ string} ~ \sigma \rangle^{nod}$ \index{objid} &
       $\rightarrow$ &
       \emph{Bismon} string $\sigma$  &
-      {\relsize{-1}{a string $\sigma$ \emph{would} otherwise be decoded as
+      {\relsize{-1}{a string $\sigma$ \emph{would} otherwise be nodal-decoded as
           is into the same \emph{Bismon string} $\sigma$}}
       \\
       %%%
@@ -261,7 +261,17 @@ i.e. \texttt{€\_0jFqaPPHg}) are really decoded.
        \hspace*{1.5em} $ ( \langle \mathit{\,js}_1 \rangle^{nod} \ldots  \langle \mathit{\,js}_n \rangle^{nod} ) $
       \end{minipage}
       &
-       {\relsize{-1}{A JSON array is compositionally decoded into a node of connective \texttt{json\_array} and sons given by decoding the components of that array}} \\
+       {\relsize{-1}{A JSON array is compositionally nodal-decoded into a node of connective \texttt{json\_array} and sons given by nodal-decoding the components of that array}} \\
+      \rule{0pt}{6ex} \\
+      %%%
+      $\langle \mathtt{\textbf{\{}} \alpha_1 \mathtt{\textbf{:}} \mathit{\,js}_1 \mathtt{\textbf{,}} \ldots \alpha_n \mathtt{\textbf{:}} \mathit{\,js}_n \mathtt{\textbf{\}}}  \rangle^{nod}$ &
+      $\rightarrow$ &
+      \begin{minipage}{4.7cm}
+      $\mathtt{\texttt{\textbf{*}}} \mathtt{\texttt{\textbf{json\_object}}}$ \\
+       \hspace*{1.5em} $ ( \langle \mathit{\,js}_1 \rangle^{nod} \ldots  \langle \mathit{\,js}_n \rangle^{nod} ) $
+      \end{minipage}
+      &
+       {\relsize{-1}{A JSON object is compositionally decoded into a node of connective \texttt{json\_array} and sons given by \texttt{json\_entries} subnodes }} \\
       \rule{0pt}{6ex} \\
     \end{tabular}
   \end{center}
