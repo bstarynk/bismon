@@ -798,15 +798,52 @@ canonjsonifyvalue_BM (value_tyBM valarg,
           jres = json_pack ("{soso}", "!node", jconn, "!sons", jarr);
         }
         break;
-#warning canonjsonifyvalue_BM is incomplete
       case tyClosure_BM:
+        {
+          json_t *jconn = NULL;
+          json_t *jarr = NULL;
+          json_t *jcomp = NULL;
+          _.oconn = closureconn_BM (_.valv);
+          unsigned ln = closurewidth_BM (_.valv);
+          {
+            char connbuf[32];
+            memset (connbuf, 0, sizeof (connbuf));
+            idtocbuf32_BM (objid_BM (_.oconn), connbuf);
+            jconn = json_string (connbuf);
+          }
+          jarr = json_array ();
+          for (int ix = 0; ix < (int) ln; ix++)
+            {
+              jcomp = NULL;
+              _.vcomp = closurenthson_BM (_.valv, ix);
+              jcomp =
+                canonjsonifyvalue_BM (_.vcomp, _.octxt, depth + 1,
+                                      CURFRAME_BM);
+              if (!jcomp)
+                {
+                  json_decref (jarr);
+                  json_decref (jconn);
+                  return NULL;
+                }
+              json_array_append_new (jarr, jcomp);
+            }
+          jres = json_pack ("{soso}", "!clos", jconn, "!cval", jarr);
+        }
+        break;
       case tyObject_BM:
-        FATAL_BM ("unimplemented canonjsonifyvalue_BM for %s",
-                  OUTSTRVALUE_BM (_.valv));
+        {
+          char idbuf[32];
+          memset (idbuf, 0, sizeof (idbuf));
+          idtocbuf32_BM (objid_BM (objectcast_BM (_.valv)), idbuf);
+          jres = json_pack ("{ss}", "!oid", idbuf);
+        }
         break;
       default:
         jres = NULL;
       }
+  return jres;
 }                               /* end of canonjsonifyvalue_BM */
+
+
 
 ///// end of file jsonjansson_BM.c
