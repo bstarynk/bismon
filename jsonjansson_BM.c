@@ -902,6 +902,7 @@ nodaljsonstring_BM (struct nodaljsonmode_st *njm, const char *str,
   objectval_tyBM *k_json_string = BMK_419If27jxwQ_3WQnLqU53iq;
   LOCALFRAME_BM (stkf, /*descr: */ k_json_string,
                  value_tyBM resv;
+                 value_tyBM setv;
                  objectval_tyBM * ob;
     );
   ASSERT_BM (njm && njm->njs_magic == NODALJSON_MAGIC_BM);
@@ -910,6 +911,7 @@ nodaljsonstring_BM (struct nodaljsonmode_st *njm, const char *str,
   _.resv = NULL;
   rawid_tyBM id = { 0, 0 };
   char *end = NULL;
+  int len_euro_underscore = strlen ("€_");
   if (str[0] == '_' && isdigit (str[1])
       && (id = parse_rawid_BM (str, &end)).id_hi != 0
       && end != NULL && *end == (char) 0
@@ -926,8 +928,19 @@ nodaljsonstring_BM (struct nodaljsonmode_st *njm, const char *str,
            && _.ob != k_json_string)
     {
       return _.ob;
-    };
-  _.resv = makestring_BM (str);
+    }
+  else if (!strncmp (str, "€_", len_euro_underscore)
+           && isdigit (str[len_euro_underscore + 1])
+           && !isalnum (str[len_euro_underscore + 2])
+           && !isalnum (str[len_euro_underscore + 3])
+           && !isalnum (str[len_euro_underscore + 4]))
+    {
+      _.setv = setobjectsofidprefixed_BM (str + len_euro_underscore - 1);
+      if (isset (_.setv) && setcardinal_BM (_.setv) == 1)
+        _.resv = setelemnth_BM (_.setv, 0);
+    }
+  if (!_.resv)
+    _.resv = makestring_BM (str);
   return _.resv;
 }                               /* end nodaljsonstring_BM */
 
@@ -945,8 +958,7 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
   objectval_tyBM *k_json_entry = BMK_78X6jYDHXpW_3opwNmDlnqc;
   ASSERT_BM (njm && njm->njs_magic == NODALJSON_MAGIC_BM);
   LOCALFRAME_BM (stkf, /*descr: */ k_nodal_json_decode,
-                 value_tyBM resv;
-                 value_tyBM tinarrv[TINYSIZE_BM];
+                 value_tyBM resv; value_tyBM tinarrv[TINYSIZE_BM];
                  objectval_tyBM * ob1; value_tyBM vkey;
                  value_tyBM vcomp;
                  value_tyBM vnode;
