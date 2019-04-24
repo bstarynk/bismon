@@ -470,7 +470,7 @@ jansjsonfromvalue_BM (value_tyBM val, value_tyBM src, value_tyBM ctx,
             }
           else
             jsarr = json_array ();
-          for (; curix < nodari; curix++)
+          for (; curix < (int) nodari; curix++)
             {
               _.failresv = NULL;
               _.failplacev = NULL;
@@ -891,18 +891,30 @@ struct nodaljsonmode_st
 ***/
 
 static value_tyBM
-nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js,
+nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
                     struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_nodal_json_decode = BMK_9oFdE54tXks_0St3kmk7akH;
   objectval_tyBM *k_json_null = BMK_6WOSg1mpNxQ_6Dw2klXZFSk;
   objectval_tyBM *k_json_true = BMK_0ekuRPtKaIF_3nrHrhB59Kn;
   objectval_tyBM *k_json_false = BMK_1h1MMlmQi6f_2Z2g6rGMcPB;
+  objectval_tyBM *k_json_array = BMK_56Om4CG9rer_8xF06AhNZ1I;
   ASSERT_BM (njm && njm->njs_magic == NODALJSON_MAGIC_BM);
   if (!js)
     return NULL;
+  if (depth > MAXDEPTHJSON_BM)
+    return NULL;
   LOCALFRAME_BM (stkf, /*descr: */ k_nodal_json_decode,
                  value_tyBM resv;
+                 union
+                 {
+                 value_tyBM tinarrv[TINYSIZE_BM];
+                 struct
+                 {
+                 objectval_tyBM * ob1;
+                 value_tyBM vcomp;
+                 };
+                 };
     );
   _.resv = NULL;
   if (json_is_null (js))
@@ -925,6 +937,34 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js,
     {
       double d = json_real_value (js);
       _.resv = makedouble_BM (d);
+    }
+  else if (json_is_array (js))
+    {
+      unsigned lnj = json_array_size (js);
+      if (lnj < TINYSIZE_BM)
+        {
+          memset (_.tinarrv, 0, sizeof (_.tinarrv));
+          for (int ix = 0; ix < (int) lnj; ix++)
+            {
+              _.tinarrv[ix] =
+                nodaljsondecode_BM (njm, json_array_get (js, ix), depth + 1,
+                                    CURFRAME_BM);
+            }
+          _.resv = makenode_BM (k_json_array, lnj, _.tinarrv);
+        }
+      else
+        {
+          _.ob1 = makeobj_BM ();
+          objreservecomps_BM (_.ob1, lnj);
+          for (int ix = 0; ix < (int) lnj; ix++)
+            {
+              _.vcomp =
+                nodaljsondecode_BM (njm, json_array_get (js, ix), depth + 1,
+                                    CURFRAME_BM);
+              objappendcomp_BM (_.ob1, _.vcomp);
+            }
+          _.resv = makenode_BM (k_json_array, lnj, objcompdata_BM (_.ob1));
+        }
     }
 #warning nodaljsondecode_BM is very incomplete
   FATAL_BM ("nodaljsondecode_BM is very incomplete js@%p", js);
