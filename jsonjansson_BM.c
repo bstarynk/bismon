@@ -897,6 +897,7 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js,
   objectval_tyBM *k_nodal_json_decode = BMK_9oFdE54tXks_0St3kmk7akH;
   objectval_tyBM *k_json_null = BMK_6WOSg1mpNxQ_6Dw2klXZFSk;
   objectval_tyBM *k_json_true = BMK_0ekuRPtKaIF_3nrHrhB59Kn;
+  objectval_tyBM *k_json_false = BMK_1h1MMlmQi6f_2Z2g6rGMcPB;
   ASSERT_BM (njm && njm->njs_magic == NODALJSON_MAGIC_BM);
   if (!js)
     return NULL;
@@ -912,9 +913,22 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js,
     {
       _.resv = k_json_true;
     }
+  else if (json_is_false (js))
+    {
+      _.resv = k_json_false;
+    }
+  else if (json_is_integer (js))
+    {
+      _.resv = taggedint_BM (json_integer_value (js));
+    }
+  else if (json_is_real (js))
+    {
+      double d = json_real_value (js);
+      _.resv = makedouble_BM (d);
+    }
 #warning nodaljsondecode_BM is very incomplete
   FATAL_BM ("nodaljsondecode_BM is very incomplete js@%p", js);
-  return resv;
+  return _.resv;
 }                               /* end of nodaljsondecode_BM */
 
 ///// end of file jsonjansson_BM.c
