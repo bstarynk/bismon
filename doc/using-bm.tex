@@ -25,10 +25,12 @@ should be exchanged with the ``static analysis'' chapter
 
 The JSON\footnote{See \bmurl{http://json.org/} for more} \index{JSON}
 textual format is a convenient, common and compact structured textual
-format. It is used in \emph{Bismon} and supported as a payload
-\index{payload} (but not directly as an immutable value) for objects
-of class \texttt{json\_object}.
-\index{json object@\texttt{json\_object}}
+format. It is used in \emph{Bismon}, in particular because of its web
+interface, and supported as a payload \index{payload} (but not
+directly\footnote{Adding immutable JSON values as a new kind of Bismon
+  value could be considered in the future.} as an immutable value) for
+objects of class \texttt{json\_object}.  \index{json
+  object@\texttt{json\_object}}
 
 Conceptually, the JSON model is close, but not identical to, the
 Bismon persistent model: it provides structured and compositional
@@ -40,7 +42,13 @@ constructs, but JSON objects have \emph{strings} as attributes, while
 Bismon objects have arbitrary object references as attributes, and
 also components and some optional payload.
 
-Therefore, there is some way to encode any \emph{Bismon} value into a JSON value; this is the \emph{canonical JSON encoding of values}\index{canonical JSON encoding}, given in figure \ref{fig:canon-json} below.
+\subsubsection{The canonical \emph{JSON} encoding of \emph{Bismon} values}
+\label{subsubsec:canonical-json-encoding}
+
+Therefore, there is some way to encode any \emph{Bismon} value into a
+JSON value; this is the \emph{canonical JSON encoding of
+  values}\index{canonical JSON encoding}, given in figure
+\ref{fig:canon-json} below.
 
 \begin{figure}[!htbp]
   \begin{relsize}{-1}
@@ -151,8 +159,68 @@ Therefore, there is some way to encode any \emph{Bismon} value into a JSON value
   \label{fig:canon-json}
 \end{figure}
 
- {\color{red}{@@ to be completed a lot, explaining conversions of
-     Bismon values to and from JSON.}}
+The canonical JSON encoding is implemented\footnote{Coded in C, in file
+\href{https://github.com/bstarynk/bismon/blob/master/jsonjansson\_BM.c}{\texttt{jsonjansson\_BM.c}}}
+as the \texttt{canonjsonifyvalue\_BM} \index{canonjsonifyvalue!\texttt{canonjsonifyvalue\_BM}} function.
+
+\medskip
+
+\subsubsection{The nodal \emph{JSON} decoding into \emph{Bismon} values}
+\label{subsubsec:nodal-json-decoding}
+
+Since JSON is a structured and compositional, \index{tree!JSON}
+tree-like, representation, and because \index{node} nodes are the only
+kind of structured immutable \emph{Bismon} values,
+\index{decoding!JSON nodal} \index{nodal!JSON decoding} any JSON value
+can obviously be decoded into a \emph{Bismon} values, using mostly
+nodes for structuring data, following the rules listed in
+\ref{fig:nodal-json} below. Actually, there are several variants of
+nodal decodings, depending on how JSON strings looking like
+\index{objid} full objids (e.g. JSON
+\texttt{"\_756o00yB7Zs\_1USbaS25hxl"}), or abbreviated objids
+(e.g. JSON \texttt{"€\_9Z2BgJbf4"}), or named objects (e.g.  JSON
+\texttt{"arguments"}, related to Bismon object \texttt{arguments},
+i.e. \texttt{€\_0jFqaPPHg}) are really decoded.
+
+\begin{figure}[!htbp]
+  \begin{center}
+    \begin{tabular}{lclp{5.3cm}}
+      %%%
+      $\langle \mathtt{\textit{\texttt{null}}} \rangle^{nod}$ \index{null} &
+      $\rightarrow$ &
+      \texttt{\textbf{json\_null}}  &
+             {\relsize{-1}{The JSON \texttt{null}\index{null!JSON} is decoded as the \texttt{json\_null} Bismon object \texttt{€\_6WOSg1mpN}}}
+      \\
+      %%%
+      $\langle \mathtt{\textit{\texttt{false}}} \rangle^{nod}$ \index{null} &
+      $\rightarrow$ &
+      \texttt{\textbf{json\_false}}  &
+             {\relsize{-1}{The JSON \texttt{false} is decoded as the \texttt{json\_false} Bismon object \texttt{€\_1h1MMlmQi}}}
+      \\
+      %%%
+      $\langle \mathtt{\textit{\texttt{true}}} \rangle^{nod}$ \index{null} &
+      $\rightarrow$ &
+      \texttt{\textbf{json\_true}}  &
+             {\relsize{-1}{The JSON \texttt{true} is decoded as the \texttt{json\_true} Bismon object \texttt{€\_0ekuRPtKaI}}}
+      \\
+      \rule{0pt}{6ex} \\
+      %%%
+      $\langle \mathtt{\textbf{[}} \mathit{\,js}_1 \mathtt{\textbf{,}} \ldots \mathit{\,js}_n \mathtt{\textbf{]}}  \rangle^{nod}$ &
+      $\rightarrow$ &
+      \begin{minipage}{4.7cm}
+      $\mathtt{\texttt{\textbf{*}}} \mathtt{\texttt{\textbf{json\_array}}}$ \\
+       \hspace*{1.5em} $ ( \langle \mathit{\,js}_1 \rangle^{nod} \ldots  \langle \mathit{\,js}_n \rangle^{nod} ) $
+      \end{minipage}
+      &
+       {\relsize{-1}{A JSON array is compositionally decoded into a node of connective \texttt{json\_array} and sons given by decoding the components of that array}} \\
+    \end{tabular}
+  \end{center}
+  \caption{nodal JSON decoding $\langle \mathit{js} \rangle^{nod}$ of a JSON value $\mathit{js}$.}
+  \label{fig:nodal-json}
+\end{figure}
+
+{\color{red}{@@ to be completed a lot,
+    explaining conversions of Bismon values to and from JSON.}}
 
 \subsection{Web interface internal design}
 \label{subsec:webinterf}
