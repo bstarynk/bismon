@@ -891,6 +891,57 @@ struct nodaljsonmode_st
 ***/
 
 static value_tyBM
+nodaljsonstring_BM (struct nodaljsonmode_st *njm, const char *str,
+                    struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_json_null = BMK_6WOSg1mpNxQ_6Dw2klXZFSk;
+  objectval_tyBM *k_json_true = BMK_0ekuRPtKaIF_3nrHrhB59Kn;
+  objectval_tyBM *k_json_false = BMK_1h1MMlmQi6f_2Z2g6rGMcPB;
+  objectval_tyBM *k_json_array = BMK_56Om4CG9rer_8xF06AhNZ1I;
+  objectval_tyBM *k_json_object = BMK_7hNqn2hxg1M_3wNHCtOf9IF;
+  objectval_tyBM *k_json_string = BMK_419If27jxwQ_3WQnLqU53iq;
+  LOCALFRAME_BM (stkf, /*descr: */ k_json_string,
+                 value_tyBM resv;
+                 objectval_tyBM * ob;
+    );
+  ASSERT_BM (njm && njm->njs_magic == NODALJSON_MAGIC_BM);
+  if (!str)
+    return NULL;
+  _.resv = NULL;
+  rawid_tyBM id = { 0, 0 };
+  char *end = NULL;
+  if (str[0] == '_' && isdigit (str[1])
+      && (id = parse_rawid_BM (str, &end)).id_hi != 0
+      && end != NULL && *end == (char) 0
+      && (_.ob = findobjofid_BM (id)) != NULL
+      && _.ob != k_json_null
+      && _.ob != k_json_true
+      && _.ob != k_json_false
+      && _.ob != k_json_array
+      && _.ob != k_json_object && _.ob != k_json_string)
+    {
+      return _.ob;
+    }
+  else if (isalpha (str[0])
+           && validname_BM (str)
+           && (_.ob = findnamedobj_BM (str)) != NULL
+           && _.ob != k_json_null
+           && _.ob != k_json_true
+           && _.ob != k_json_false
+           && _.ob != k_json_array
+           && _.ob != k_json_object && _.ob != k_json_string)
+    {
+      return _.ob;
+    }
+  else
+    {
+      _.resv = makestring_BM (str);
+      return _.resv;
+    }
+}                               /* end nodaljsonstring_BM */
+
+
+static value_tyBM
 nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
                     struct stackframe_stBM *stkf)
 {
@@ -899,11 +950,8 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
   objectval_tyBM *k_json_true = BMK_0ekuRPtKaIF_3nrHrhB59Kn;
   objectval_tyBM *k_json_false = BMK_1h1MMlmQi6f_2Z2g6rGMcPB;
   objectval_tyBM *k_json_array = BMK_56Om4CG9rer_8xF06AhNZ1I;
+  objectval_tyBM *k_json_object = BMK_7hNqn2hxg1M_3wNHCtOf9IF;
   ASSERT_BM (njm && njm->njs_magic == NODALJSON_MAGIC_BM);
-  if (!js)
-    return NULL;
-  if (depth > MAXDEPTHJSON_BM)
-    return NULL;
   LOCALFRAME_BM (stkf, /*descr: */ k_nodal_json_decode,
                  value_tyBM resv;
                  union
@@ -916,6 +964,10 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
                  };
                  };
     );
+  if (!js)
+    return NULL;
+  if (depth > MAXDEPTHJSON_BM)
+    return NULL;
   _.resv = NULL;
   if (json_is_null (js))
     {
@@ -938,6 +990,11 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
       double d = json_real_value (js);
       _.resv = makedouble_BM (d);
     }
+  else if (json_is_string (js))
+    {
+      _.resv = nodaljsonstring_BM (njm, json_string_value (js), CURFRAME_BM);
+    }
+  /// for JSON arrays
   else if (json_is_array (js))
     {
       unsigned lnj = json_array_size (js);
@@ -965,7 +1022,29 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
             }
           _.resv = makenode_BM (k_json_array, lnj, objcompdata_BM (_.ob1));
         }
-    }
+    }                           /* endif json_is_array */
+  /// for JSON objects
+  else if (json_is_object (js))
+    {
+      unsigned lnj = json_object_size (js);
+      json_t *jkey = NULL;
+      json_t *jval = NULL;
+      if (lnj < TINYSIZE_BM)
+        {
+          memset (_.tinarrv, 0, sizeof (_.tinarrv));
+          json_object_foreach (js, jkey, jval)
+          {
+          }
+        }
+      else
+        {
+          _.ob1 = makeobj_BM ();
+          objreservecomps_BM (_.ob1, lnj);
+          json_object_foreach (js, jkey, jval)
+          {
+          }
+        };
+    }                           /* endif json_is_object */
 #warning nodaljsondecode_BM is very incomplete
   FATAL_BM ("nodaljsondecode_BM is very incomplete js@%p", js);
   return _.resv;
