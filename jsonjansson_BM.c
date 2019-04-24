@@ -845,5 +845,76 @@ canonjsonifyvalue_BM (value_tyBM valarg,
 }                               /* end of canonjsonifyvalue_BM */
 
 
+//// nodal decoding
+
+enum nodaljsonvariantBM_en
+{
+  njv_none = 0,
+};
+
+//// the stack allocated structure holding some nodal decoding mode etc...
+#define NODALJSON_MAGIC_BM 0x1e4a9b51   /*508205905 */
+struct nodaljsonmode_st
+{
+  unsigned njs_magic;           // always NODALJSON_MAGIC_BM
+  enum nodaljsonvariantBM_en njs_variant;
+  void *njs_spare[6];
+};
+
+
+/****
+  JSON related objects ~: "*json*"
+ dumpable_json_object |=_6Iemb8Xs6aS_9quFFex4qwG|
+ json |=_2gNQ6wSYLGz_9FkMuCIKfmv|
+ json_array |=_56Om4CG9rer_8xF06AhNZ1I|
+ json_attribute |=_2Xsji0gDHAg_6TTQQeKAnUY|
+ json_compact |=_4wmsNr582JT_9YyamGEMhJk|
+ json_entry |=_78X6jYDHXpW_3opwNmDlnqc|
+ json_false |=_1h1MMlmQi6f_2Z2g6rGMcPB|
+ json_indented |=_5J3InN9BK1k_3C8vurQQEGh|
+ json_integer |=_8jCh9loDpOL_4eR6Nzk21xp|
+ json_null |=_6WOSg1mpNxQ_6Dw2klXZFSk|
+ json_object |=_7hNqn2hxg1M_3wNHCtOf9IF|
+ json_real |=_5ewBEYZh7EM_6dEinrBFpAE|
+ json_sequence |=_6QlgyfRKCyD_1g6EhKC55Vj|
+ json_set |=_28Y5XSkBZZH_24NmhTCKRgd|
+ json_string |=_419If27jxwQ_3WQnLqU53iq|
+ json_true |=_0ekuRPtKaIF_3nrHrhB59Kn|
+ json_tuple |=_7d0o00yB7Zs_1USaaS25hxl|
+ json_value |=_5LSPYWdN50R_3nt54XhyWMW|
+ jsonable_closure |=_7W0zh0WgGCU_5AfEDjZ7XVZ|
+ jsonable_object |=_3j87xFrfAfb_84QdVpi4LDD|
+ nodal_json_decode |=_9oFdE54tXks_0St3kmk7akH|
+ objwebexchangejsonpayl |=_3v18bLdjMRP_4CrjvtrZteq|
+ objwebsessionsendjsonwebsocketpayl |=_8k0A61NiezX_83vjEr6JmGf|
+ value_to_json |=_0DYWTkQbFjG_1Ed0ex9v5xA|
+***/
+
+static value_tyBM
+nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js,
+                    struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_nodal_json_decode = BMK_9oFdE54tXks_0St3kmk7akH;
+  objectval_tyBM *k_json_null = BMK_6WOSg1mpNxQ_6Dw2klXZFSk;
+  objectval_tyBM *k_json_true = BMK_0ekuRPtKaIF_3nrHrhB59Kn;
+  ASSERT_BM (njm && njm->njs_magic == NODALJSON_MAGIC_BM);
+  if (!js)
+    return NULL;
+  LOCALFRAME_BM (stkf, /*descr: */ k_nodal_json_decode,
+                 value_tyBM resv;
+    );
+  _.resv = NULL;
+  if (json_is_null (js))
+    {
+      _.resv = k_json_null;
+    }
+  else if (json_is_true (js))
+    {
+      _.resv = k_json_true;
+    }
+#warning nodaljsondecode_BM is very incomplete
+  FATAL_BM ("nodaljsondecode_BM is very incomplete js@%p", js);
+  return resv;
+}                               /* end of nodaljsondecode_BM */
 
 ///// end of file jsonjansson_BM.c
