@@ -1042,13 +1042,15 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
             _.vcomp = nodaljsondecode_BM (njm, jval, depth + 1, CURFRAME_BM);
             _.vnode = makenode2_BM (k_json_entry, _.vkey, _.vcomp);
             _.tinarrv[ix++] = _.vnode;
-          }
+          };
+          valarrqsort_BM (_.tinarrv, ix);
           _.resv = makenode_BM (k_json_object, lnj, _.tinarrv);
         }
       else                      // lnj >= TINYSIZE_BM
         {
           _.ob1 = makeobj_BM ();
           objreservecomps_BM (_.ob1, lnj);
+          int cnt = 0;
           json_object_foreach (js, jkey, jval)
           {
             ASSERT_BM (json_is_string (jkey));
@@ -1059,7 +1061,9 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
             _.vcomp = nodaljsondecode_BM (njm, jval, depth + 1, CURFRAME_BM);
             _.vnode = makenode2_BM (k_json_entry, _.vkey, _.vcomp);
             objappendcomp_BM (_.ob1, _.vnode);
+            cnt++;
           };
+          valarrqsort_BM (objcompdata_BM (_.ob1), cnt);
           _.resv = makenode_BM (k_json_object, lnj, objcompdata_BM (_.ob1));
         };
     }                           /* endif json_is_object */
