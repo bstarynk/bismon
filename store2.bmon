@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3038 objects
+// for 3039 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -4192,6 +4192,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7bbeIqUSje9_4jVgC7ZJmvx
 !)_7SYPOwPm7jc_2PeGiJ8uQiX
+
+
+
+!(_9oFdE54tXks_0St3kmk7akH |=nodal_json_decode|
+!~ name (~ nodal_json_decode
+~)
+!@ 1556093623.682
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for the nodal decoding of JSON values into Bismon values"
+!)_9oFdE54tXks_0St3kmk7akH
 
 
 
