@@ -287,12 +287,17 @@ i.e. \texttt{€\_0jFqaPPHg}) are really decoded.
 A \emph{Bismon} statement of class \texttt{basiclo\_extractjsonstmt},
 \index{basiclo extractjsonstmt@\texttt{basiclo\_extractjsonstmt}}
 obtained with the \texttt{{\^{}}{extract\_json} (} \textit{objson}
-\textit {extractornode} \texttt{)} readmacro, \index{extract
-  json@\texttt{extract\_json}} \index{JSON!extractor}
-\index{extractor!from JSON} can extract data from the JSON in a payload (of
-some object \textit{objson}, usually of class
+\textit {extractornode} \textit{sub-statements}... \texttt{)}
+readmacro, so having the attributes \texttt{json\_object :}
+\textit{objson} and \texttt{extract\_json :} \textit{extractornode},
+\index{extract json@\texttt{extract\_json}} \index{JSON!extractor}
+\index{extractor!from JSON} can extract data from the JSON in a
+payload (of some object \textit{objson}, usually of class
 \texttt{json\_object}). That extraction is driven by the given
-\textit{extractornode}, which should be a node.
+\textit{extractornode} in the statement, which should be a node.  Such
+a JSON extraction is compositional, has side-effects, and could
+fail. When the extraction has succeeded, the given
+\textit{sub-statements}... are executed.
 
 {\color{red}{@@ to be completed a lot,
     explaining conversions of Bismon values to and from JSON.}}
