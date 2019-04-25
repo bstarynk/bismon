@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3039 objects
+// for 3041 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -355,6 +355,22 @@ _7T9OwSFlgov_0wVJaK1eZbn
 ~)
 
 !)_9pCSj6h5qCP_1OZyKlhcrSY
+
+
+
+!(_9U8L2fXpZ9o_4x751rhsyve |=basiclo_extractjsonstmt|
+!~ name (~ basiclo_extractjsonstmt
+~)
+!@ 1556174489.732
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of statements to extract_json"
+!: _4rz1Bi4weGz_8Y03gU81cRL |=see|
+_6zj5YoW4CVg_7Az2Wsmlesm
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+~)
+
+!)_9U8L2fXpZ9o_4x751rhsyve
 
 
 
@@ -1915,6 +1931,17 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "in c_enum or c_union or c_struct gives the super-stuff"
 !)_2bqFfs5OYL2_0HRi4lcgFcu
+
+
+
+!(_6zj5YoW4CVg_7Az2Wsmlesm |=extract_json|
+!~ name (~ extract_json
+~)
+!@ 1556174471.601
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "to enter statements for extracting json ^extract_json(objson extractornode)"
+!)_6zj5YoW4CVg_7Az2Wsmlesm
 
 
 
