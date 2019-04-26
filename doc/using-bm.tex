@@ -304,60 +304,112 @@ during extraction.
 \begin{table}[!htbp]
   \begin{relsize}{-1}
   \begin{center}
-    \begin{tabular}{lcp{5.3cm}}
+    \begin{tabular}{lcp{5.7cm}}
       \textbf{extractor node} & \hspace*{1cm} \textbf{success condition} \hspace*{1cm}  & \textbf{side effects and explanation} \\
       %%%
       \texttt{\textbf{* json\_null ()}} &
-      $js \equiv \mathtt{null}$ &
-      succeeds when $js$ is the null JSON \\
+      $\mathit{js} \equiv \mathtt{null}$ &
+      succeeds when $\mathit{js}$ is the null JSON \\
       %%%
       \texttt{\textbf{* json\_false ()}} &
-      $js \equiv \mathtt{false}$ &
-      succeeds when $js$ is the false JSON \\
+      $\mathit{js} \equiv \mathtt{false}$ &
+      succeeds when $\mathit{js}$ is the false JSON \\
       %%%
       \texttt{\textbf{* json\_true ()}} &
-      $js \equiv \mathtt{true}$ &
-      succeeds when $js$ is the true JSON \\
+      $\mathit{js} \equiv \mathtt{true}$ &
+      succeeds when $\mathit{js}$ is the true JSON \\
       %%%
       \texttt{\textbf{* int ($v$)}} &
-      $js \equiv \mathrm{some ~ JSON ~ integer}~ i$ &
-      succeeds when $js$ is a JSON integer $i$, and assign to integer
+      $\mathit{js} \equiv \mathrm{some ~ JSON ~ integer}~ i$ &
+      succeeds when $\mathit{js}$ is a JSON integer $i$, and assign to integer
       variable $v$ its integral value $v \leftarrow i$\\
       %%%
       \texttt{\textbf{* double\_float ($v$)}} &
-      $js \equiv \mathrm{some ~ JSON ~ real}~ \delta$ &
-      succeeds when $js$ is a JSON real $\delta$, and assign to double
+      $\mathit{js} \equiv \mathrm{some ~ JSON ~ real}~ \delta$ &
+      succeeds when $\mathit{js}$ is a JSON real $\delta$, and assign to double
       variable $v$ its \emph{boxed} double value $v \leftarrow
       \mathrm{\textrm{boxed-double}} (\delta)$\\
       %%%
       \texttt{\textbf{* string ($v$)}} &
-      $js \equiv \mathrm{some ~ JSON ~ string}~ \sigma$ &
-      succeeds when $js$ is a JSON string $\sigma$, and assign to
+      $\mathit{js} \equiv \mathrm{some ~ JSON ~ string}~ \sigma$ &
+      succeeds when $\mathit{js}$ is a JSON string $\sigma$, and assign to
       value variable $v$ its \emph{boxed} string value $v \leftarrow
       \mathrm{\textrm{boxed-string}} (\sigma)$ \\
             \rule{0pt}{1ex} \\
       %%%
-      \texttt{\textbf{* json\_array ($\chi_1 \ldots \chi_n$)}} &
-      \begin{minipage}{4cm}
-        $js \equiv \mathrm{some ~ JSON ~ array}$ \\
-        \hspace*{2em}  $ \mathtt{\textbf{[}} js_1  \mathtt{\textbf{,}} \ldots  js_n \mathtt{\textbf{]}}$
+      \texttt{\textbf{* id ($v$)}} &
+      \begin{minipage}[t]{4cm}
+        $\mathit{js} \equiv \mathrm{some ~ JSON ~ string}~ \sigma$\\
+        \hspace*{0.5em} $ \wedge ~ \exists ~ \mathrm{object} ~ \omega, \mathrm{objid}(\omega) = \sigma$ 
       \end{minipage}
       &
-      succeeds when $js$ is a JSON array of \emph{\textbf{exactly}}
-      $n$ elements $js_1, \ldots js_n$, and extracts them in sequence,
-      using $\chi_1$ on $js_1$, then $\chi_2$ on $js_2$, etc... and at
-      last $\chi_n$ on $js_n$
+      succeeds when $\mathit{js}$ is some JSON string $\sigma$ looking like an objid, and that string $\sigma$ is the \emph{objid} of some \emph{existing} object $\omega$, then assign to
+      object variable $v$ that object $\omega$, so  $v \leftarrow \omega$ \\
+            \rule{0pt}{1ex} \\
+      %%%
+      \texttt{\textbf{* name ($v$)}} &
+      \begin{minipage}[t]{4.5cm}
+        $\mathit{js} \equiv \mathrm{some ~ JSON ~ string}~ \sigma$\\
+        \hspace*{0.5em} $ \wedge ~ \exists ~ \mathrm{object} ~ \omega, \mathrm{objname}(\omega) = \sigma$ 
+      \end{minipage}
+      &
+      succeeds when $\mathit{js}$ is some JSON string $\sigma$ looking like a name, and that string $\sigma$ is the \emph{objname} of some \emph{existing} object $\omega$, then assign to
+      object variable $v$ that named object $\omega$, so  $v \leftarrow \omega$ \\
+            \rule{0pt}{1ex} \\
+      %%%
+      \texttt{\textbf{* json\_array ($\chi_1 \ldots \chi_n$)}} &
+      \begin{minipage}[t]{4.5cm}
+        $\mathit{js} \equiv \mathrm{some ~ JSON ~ array}$ \\
+        \hspace*{3em}  $ \mathtt{\textbf{[}} \; \mathit{js}_1  \mathtt{\textbf{,}} \ldots  \mathit{js}_n \; \mathtt{\textbf{]}}$ \\
+        \hspace*{1em} $\wedge ~ \chi_1 \triangleright \mathit{js}_1 ~ \wedge ~ \ldots ~ \chi_n \triangleright \mathit{js}_n$\\
+      \end{minipage}
+      &
+      succeeds when $\mathit{js}$ is a JSON array of \emph{\textbf{exactly}
+      $n$ elements} : $\mathit{js}_1, \ldots \mathit{js}_n$, and extracts them in sequence,
+      using $\chi_1$ on $\mathit{js}_1$, then $\chi_2$ on $\mathit{js}_2$, etc... and at
+      last $\chi_n$ on $\mathit{js}_n$
+            \rule{0pt}{1ex} \\
       \\
+      %%%
+      \texttt{\textbf{* json\_entry ($\alpha ~ \chi$)}} &
+      \begin{minipage}[t]{4.5cm}
+        $\mathit{js} \equiv \mathrm{some ~ JSON ~ object}$ having \\
+        \hspace*{1.5em}  $ \exists i, \mathtt{\textbf{\{}} ~ \ldots \alpha ~ \mathtt{\textbf{:}} ~ \mathit{js}_i ~ \ldots  \mathtt{\textbf{\}}} ~ \wedge \chi \triangleright \mathit{js}_i $
+      \end{minipage} &
+      succeeds when $\mathit{js}$ is a JSON object having an attribute string $\alpha$ associated to some JSON value $\mathit{js}_i$ which can be extracted using $\chi$.
+            \rule{0pt}{1ex} \\
+      \\
+      %%%
+      \texttt{\textbf{* json\_object ($\chi_1 \ldots \chi_n$)}} &
+      \begin{minipage}[t]{4.5cm}
+        $\mathit{js} \equiv \mathrm{some ~ JSON ~ object}$ of length exactly $n$ such that \\
+        \hspace*{3em}  $ \chi_1 \triangleright \mathit{js} ~ \wedge \ldots ~ \wedge ~ \chi_n \triangleright \mathit{js}$ \\
+      \end{minipage}
+      &
+      succeeds when $\mathit{js}$ is a JSON object of \emph{\textbf{exactly}
+      $n$ members} : $\mathtt{\textbf{\{}} \; \alpha_1 \; \mathtt{\textbf{:}} \; \mathit{js}_1, \ldots ~ \alpha_n \; \mathtt{\textbf{:}} \;\mathit{js}_n \; \mathtt{\textbf{\}}}$, and that same object $\mathit{js}$ can be extracted by each of the $\chi_1 \ldots \chi_n$ in sequence; the sub-extractors $\chi_i$ are  often but not always of form \texttt{\textbf{* json\_entry ($\alpha_i ~ \chi'_i$)}}, \ldots.
+            \rule{0pt}{1ex} \\
+      \\
+      %%%
       {\textcolor{red}{@@ INCOMPLETE @@}} & {\textcolor{red}{...}} & {\textcolor{red}{...}} \\
       %%%
     \end{tabular}
   \end{center}
   \bigskip
-  Notation: $\chi, \chi', \chi_i$... are extractors, $\mathit{js},
-  \mathit{js}', \mathit{js}_i$... are JSON values, $v, v', v'', v_i,
-  w, $... are \emph{Bismon} local variables whose type is explained.
+  \textbf{Notation:} \hspace{1em} \begin{minipage}{0.8\textwidth}
+    %
+    The $\chi, \chi', \chi_i$... are extractors; the $\mathit{js},
+    \mathit{js}', \mathit{js}_i$... are JSON values; $\chi
+    \triangleright \mathit{js}$ means that the extraction using
+    extractor $\chi$ on JSON $ \mathit{js}$ was successful; the $v,
+    v', v'', v_i, w, $... are \emph{Bismon} local variables whose type
+    is explained; the $x, y$... are Bismon values, the
+    $\omega,$... are Bismon objects. The $\alpha$ are JSON strings in
+    attribute position. The $\sigma$ are strings (usually JSON
+    strings).
+  \end{minipage}
   \end{relsize}
-  \caption{extraction of JSON from some JSON $\mathit{js}$.}
+  \caption{extraction from some JSON thing $\mathit{js}$.}
   \label{tbl:extract-json}
   \end{table}
   
