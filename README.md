@@ -208,7 +208,7 @@ mentioning `mjs`).
 
 ```
 # in your /etc/mime.types for JavaScript modules
-text/javascript                                 mjs
+application/javascript                                 mjs
 ```
 
 ## building ##
