@@ -87,7 +87,7 @@ JSON value; this is the \emph{canonical JSON encoding of
              {{\relsize{-1}{Bismon objects encoded with \texttt{"!oid"} JSON attribute giving the \index{objid}objid as a JSON string}}} \\
               \rule{0pt}{3ex}
       %%%
-      $\llbracket \textrm{tuple}~ [ \omega_1 \ldots \omega_n ] ~ \rrbracket_{json}$ \index {tuple} &
+      $\llbracket \textrm{tuple}~ [ \omega_1 \ldots \omega_n ] ~ \rrbracket_{json}$ \index{tuple} &
       $\rightarrow$ & %
       \begin{minipage}[c]{4cm}
          \texttt{\textbf{\{ "!tup" :}} \\
@@ -134,23 +134,27 @@ JSON value; this is the \emph{canonical JSON encoding of
       \end{minipage}
       & {\relsize{-1}{Bismon closures encoded  with \texttt{"!clos"} JSON attribute giving the objid  $\mathit{oid}_{rout} = \mathrm{objid} (\omega_{conn})$ of the closure's routine, and with  \texttt{"!cval"} JSON attribute associated to the array of encodings of that closure's closed values $\kappa_i$}
             } \\
-      \hline \\
-      \rule{0pt}{6ex} \\
-      \begin{minipage}[c]{3.5cm}
-        $ \nu = $ \\ $\mathrm{apply}  ~ \mathtt{\textbf{\%}} ~ \omega_{rout} \mathtt{(} \kappa_1 \ldots \kappa_n \mathtt{)} $ \\
-        to $\mathit{ctxt}, \mathit{depth}$ 
-      \end{minipage} &
-      $\leftarrow$ & %
-      \begin{minipage}[c]{4.5cm}
-        \texttt{\textbf{\{ "!apply" :}} $\mathit{oid}_{rout}$ \texttt{\textbf{,}} \\
-         \hspace*{0.8em}  \texttt{\textbf{"!cval" :}} \\
-         \hspace*{1.2em} %
-         $\mathtt{\texttt{[}} ~ \mathit{json}_1 \ldots \mathit{json}_n ~ \mathtt{\texttt{]}}$
-         \texttt{\textbf{\}}}
-      \end{minipage}
-      & {\relsize{-1}{application of object routine $\omega_{rout}$ whose objid is $\mathit{oid}_{rout}$ with closed values $\kappa_1 = \mathit{encode}_{json} ( \mathit{json}_1 )$ \ldots  $\kappa_n = \mathit{encode}_{json} ( \mathit{json}_n )$ to the context, the depth  (during decoding) \textcolor{red}{@@NOT SURE}}}
-      \\
-       \rule{0pt}{3ex}
+%-    \hline \\
+%-    \rule{0pt}{6ex} \\
+%-    \begin{minipage}[c]{3.5cm}
+%-      $ \nu = $ \\ $\mathrm{apply}  ~ \mathtt{\textbf{\%}} ~ \omega_{rout} \mathtt{(} \kappa_1 \ldots \kappa_n \mathtt{)} $ \\
+%-      to $\mathit{ctxt}, \mathit{depth}$ 
+%-    \end{minipage} &
+%-    $\leftarrow$ & %
+%-    \begin{minipage}[c]{4.5cm}
+%-      \texttt{\textbf{\{ "!apply" :}} $\mathit{oid}_{rout}$ \texttt{\textbf{,}} \\
+%-       \hspace*{0.8em}  \texttt{\textbf{"!cval" :}} \\
+%-       \hspace*{1.2em} %
+%-       $\mathtt{\texttt{[}} ~ \mathit{json}_1 \ldots \mathit{json}_n ~ \mathtt{\texttt{]}}$
+%-       \texttt{\textbf{\}}}
+%-    \end{minipage}
+%-    & {\relsize{-1}{application of object routine $\omega_{rout}$
+%-          whose objid is $\mathit{oid}_{rout}$ with closed values
+%-          $\kappa_1 = \mathit{encode}_{json} ( \mathit{json}_1 )$
+%-          \ldots $\kappa_n = \mathit{encode}_{json} (
+%-          \mathit{json}_n )$ to the context, the depth (during
+%-          decoding) \textcolor{red}{@@NOT SURE}}} \\ \rule{0pt}{3ex}
+%-    %%%
     \end{tabular}
     \smallskip
   \end{center}
@@ -302,7 +306,7 @@ given \textit{sub-statements}... are executed. No backtracking occurs
 during extraction.
 
 \begin{table}[!htbp]
-  \begin{relsize}{-1}
+  \begin{relsize}{-1.2}
   \begin{center}
     \begin{tabular}{lcp{5.7cm}}
       \textbf{extractor node} & \hspace*{1cm} \textbf{success condition} \hspace*{1cm}  & \textbf{side effects and explanation} \\
@@ -357,6 +361,23 @@ during extraction.
       object variable $v$ that named object $\omega$, so  $v \leftarrow \omega$ \\
             \rule{0pt}{1ex} \\
       %%%
+      \texttt{\textbf{* set ($v$)}} &
+      \begin{minipage}[t]{4.5cm}
+        $\mathit{js} \equiv \mathrm{some ~ JSON ~ array}$ \\
+        \hspace*{2em}  $ \mathtt{\textbf{[}} \; \mathit{js}_1  \mathtt{\textbf{,}} \ldots  \mathit{js}_n \; \mathtt{\textbf{]}} $ of strings, so \\
+        \hspace*{1em} $\mathit{js}_1 = \mathrm{string} ~ \sigma_1 ~ \wedge$ \\
+        \hspace*{2em} $ \ldots ~ \wedge ~ \mathit{js}_n = \mathrm{string} ~ \sigma_n$ \\
+        \hspace*{0.5em} $ \wedge ~ \forall i, ~ \; ~ \exists ~ \mathrm{object} ~ \omega_i,$ \\
+        \hspace*{1em} $( ~ \mathrm{objname}(\omega_i) = \sigma_i $ \\
+        \hspace*{1.8em} $ \vee ~ \mathrm{objid} (\omega_i) = \sigma_i ~ )$ 
+      \end{minipage}
+      &
+      succeeds when $\mathit{js}$ is some JSON array of JSON strings
+      $\mathit{js}_i = \mathrm{string} ~ \sigma_i$,
+      then builds a Bismon set of \emph{existing} objects $ v_{set} = \{ \ldots \omega_i \ldots \} $ from these, with
+      $\sigma_i \rightarrow \omega_i$ such that $\mathrm{objname}(\omega_i) = \sigma_i$ or  $\mathrm{objid}(\omega_i) = \sigma_i$  \\
+            \rule{0pt}{1ex} \\
+      %%%
       \texttt{\textbf{* json\_array ($\chi_1 \ldots \chi_n$)}} &
       \begin{minipage}[t]{4.5cm}
         $\mathit{js} \equiv \mathrm{some ~ JSON ~ array}$ \\
@@ -386,17 +407,33 @@ during extraction.
         \hspace*{3em}  $ \chi_1 \triangleright \mathit{js} ~ \wedge \ldots ~ \wedge ~ \chi_n \triangleright \mathit{js}$ \\
       \end{minipage}
       &
-      succeeds when $\mathit{js}$ is a JSON object of \emph{\textbf{exactly}
-      $n$ members} : $\mathtt{\textbf{\{}} \; \alpha_1 \; \mathtt{\textbf{:}} \; \mathit{js}_1, \ldots ~ \alpha_n \; \mathtt{\textbf{:}} \;\mathit{js}_n \; \mathtt{\textbf{\}}}$, and that same object $\mathit{js}$ can be extracted by each of the $\chi_1 \ldots \chi_n$ in sequence; the sub-extractors $\chi_i$ are  often but not always of form \texttt{\textbf{* json\_entry ($\alpha_i ~ \chi'_i$)}}, \ldots.
-            \rule{0pt}{1ex} \\
-      \\
+      succeeds when $\mathit{js}$ is a JSON object of
+      \emph{\textbf{exactly} $n$ members} : $\mathtt{\textbf{\{}} \;
+      \alpha_1 \; \mathtt{\textbf{:}} \; \mathit{js}_1, \ldots ~
+      \alpha_n \; \mathtt{\textbf{:}} \;\mathit{js}_n \;
+      \mathtt{\textbf{\}}}$, and that same object $\mathit{js}$ can be
+      extracted by each of the $\chi_1 \ldots \chi_n$ in sequence; the
+      sub-extractors $\chi_i$ are often but not always of form
+      \texttt{\textbf{* json\_entry ($\alpha_i ~ \chi'_i$)}}, \ldots. \\
+      \rule{0pt}{1ex} \\ 
+      %%%
+      \texttt{\textbf{* json\_value ($v$)}} &
+      always succeeds &
+      assign  $v ~ \leftarrow ~ \langle \mathit{js} \rangle^{nod}$ to value variable $v$ the \emph{nodal-encoding} of $js$ \\
+      \rule{0pt}{1ex} \\    
+      %%%
+      \texttt{\textbf{* value ($v$)}} &
+      $\exists x ~ \mathrm{Bismon ~ value}, js \equiv  \llbracket x \rrbracket_{json}$  &
+      succeeds when $js$ is the minimal canonical encoding of some value $x$;
+      then assign $v \leftarrow x$ to value variable $v$ that Bismon value $x$ \\
+      \rule{0pt}{1ex} \\       
       %%%
       {\textcolor{red}{@@ INCOMPLETE @@}} & {\textcolor{red}{...}} & {\textcolor{red}{...}} \\
       %%%
     \end{tabular}
   \end{center}
   \bigskip
-  \textbf{Notation:} \hspace{1em} \begin{minipage}{0.8\textwidth}
+  \textbf{Notation:} \hspace{0.6em} \begin{minipage}{0.9\textwidth}
     %
     The $\chi, \chi', \chi_i$... are extractors; the $\mathit{js},
     \mathit{js}', \mathit{js}_i$... are JSON values; $\chi
@@ -404,9 +441,9 @@ during extraction.
     extractor $\chi$ on JSON $ \mathit{js}$ was successful; the $v,
     v', v'', v_i, w, $... are \emph{Bismon} local variables whose type
     is explained; the $x, y$... are Bismon values, the
-    $\omega,$... are Bismon objects. The $\alpha$ are JSON strings in
+    $\omega,$... are Bismon objects, the $\epsilon$ are Bismon expressions. The $\alpha$ are JSON strings in
     attribute position. The $\sigma$ are strings (usually JSON
-    strings).
+    strings). The $\mathit{stmt}$ are Bismon statements.
   \end{minipage}
   \end{relsize}
   \caption{extraction from some JSON thing $\mathit{js}$.}
