@@ -299,13 +299,12 @@ readmacro, so having the attributes \texttt{json\_object :}
 payload (of some object \textit{objson}, usually of class
 \texttt{json\_object}). That extraction is driven by the given
 \textit{extractornode} in the statement, which should be a node, as
-explained in table \ref{tbl:extract-json} below.  Such a JSON
-extraction is compositional, has side-effects (e.g. could set local
-variables), and could fail. When the extraction has succeeded, the
-given \textit{sub-statements}... are executed. No backtracking occurs
-during extraction.
+explained in tables \ref{tbl:extract-json-simple} (for simple
+extractions) and \ref{tbl:extract-json-complex} (for more complex
+extractions) below.
 
-\begin{table}[!htbp]
+%%%%%%%%%%%%%%%%
+\begin{table}%[!htbp]
   \begin{relsize}{-1.2}
   \begin{center}
     \begin{tabular}{lcp{5.7cm}}
@@ -359,7 +358,43 @@ during extraction.
       &
       succeeds when $\mathit{js}$ is some JSON string $\sigma$ looking like a name, and that string $\sigma$ is the \emph{objname} of some \emph{existing} object $\omega$, then assign to
       object variable $v$ that named object $\omega$, so  $v \leftarrow \omega$ \\
-            \rule{0pt}{1ex} \\
+      \rule{0pt}{3ex} \\
+      %%%%%%%
+    \end{tabular}
+  \end{center}
+  \bigskip
+  \textbf{Notation:} \hspace{0.6em} \begin{minipage}{0.9\textwidth}
+    %
+    The $\chi, \chi', \chi_i$... are extractors; the $\mathit{js},
+    \mathit{js}', \mathit{js}_i$... are JSON values; $\chi
+    \triangleright \mathit{js}$ means that the extraction using
+    extractor $\chi$ on JSON $ \mathit{js}$ was successful; the $v,
+    v', v'', v_i, w, $... are \emph{Bismon} local variables whose type
+    is explained; the $x, y$... are Bismon values, the
+    $\omega,$... are Bismon objects.
+  \end{minipage}
+  \end{relsize}
+  \caption{simple extraction from some JSON thing $\mathit{js}$;
+    {\relsize{-1}{(see also table \ref{tbl:extract-json-complex} below.)}}
+  }
+  \label{tbl:extract-json-simple}
+  \end{table}
+
+Such a JSON extraction is compositional, has side-effects (e.g. could
+set local variables), and could fail. When the extraction has
+succeeded, the given \textit{sub-statements}... are executed. No
+backtracking occurs during extraction.
+
+
+
+
+%%%%%%%%%%%%%%%%
+\begin{table}%[!htbp]
+  \begin{relsize}{-1.2}
+  \begin{center}
+    \begin{tabular}{lcp{5.7cm}}
+      \textbf{extractor node} & \hspace*{1cm} \textbf{success condition} \hspace*{1cm}  & \textbf{side effects and explanation} \\
+
       %%%
       \texttt{\textbf{* set ($v$)}} &
       \begin{minipage}[t]{4.5cm}
@@ -435,21 +470,19 @@ during extraction.
   \bigskip
   \textbf{Notation:} \hspace{0.6em} \begin{minipage}{0.9\textwidth}
     %
-    The $\chi, \chi', \chi_i$... are extractors; the $\mathit{js},
-    \mathit{js}', \mathit{js}_i$... are JSON values; $\chi
-    \triangleright \mathit{js}$ means that the extraction using
-    extractor $\chi$ on JSON $ \mathit{js}$ was successful; the $v,
-    v', v'', v_i, w, $... are \emph{Bismon} local variables whose type
-    is explained; the $x, y$... are Bismon values, the
-    $\omega,$... are Bismon objects, the $\epsilon$ are Bismon expressions. The $\alpha$ are JSON strings in
-    attribute position. The $\sigma$ are strings (usually JSON
-    strings). The $\mathit{stmt}$ are Bismon statements.
+    Share notation with table \ref{tbl:extract-json-simple} above. In
+    addition, the $\epsilon$ are Bismon expressions. The $\alpha$ are
+    JSON strings in attribute position. The $\sigma$ are strings
+    (usually JSON strings). The $\mathit{stmt}$ are Bismon statements.
   \end{minipage}
   \end{relsize}
-  \caption{extraction from some JSON thing $\mathit{js}$.}
-  \label{tbl:extract-json}
+  \caption{complex extraction from some JSON thing $\mathit{js}$;
+    {\relsize{-1}{(see also table \ref{tbl:extract-json-simple} above.)}}
+    }
+  \label{tbl:extract-json-complex}
   \end{table}
-  
+
+
 {\color{red}{@@ to be completed a lot,
     explaining conversions of Bismon values to and from JSON.}}
 
