@@ -1937,10 +1937,12 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !(_6zj5YoW4CVg_7Az2Wsmlesm |=extract_json|
 !~ name (~ extract_json
 ~)
-!@ 1556174471.601
+!@ 1556295750.647
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "to enter statements for extracting json ^extract_json(objson extractornode)"
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _0jZB3m3ntxR_7JPnMzyIoBg ()
 !)_6zj5YoW4CVg_7Az2Wsmlesm
 
 
@@ -2205,6 +2207,8 @@ _6YnYKKsHo3f_9nIEOZMp744
 !& _0UTjJP38fIh_02d0wLwrdAc
 !& _7IvnLvG7HVK_2qnOaIBtgVh
 !& _0jZB3m3ntxR_7JPnMzyIoBg
+ // emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
+
 !)_3BFt4NfJmZC_7iYi2dwM38B
 
 
@@ -12727,7 +12731,8 @@ _2RUj1oyJ2rf_1ICZWr844Sv)
 
 
 !(_0jZB3m3ntxR_7JPnMzyIoBg
-!@ 1556294680.640
+!|*
+!@ 1556295457.885
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "extract_json#readmacro(v_node v_lineno v_colpos o_parser)"
@@ -12737,8 +12742,8 @@ _2RUj1oyJ2rf_1ICZWr844Sv)
  _5fGGXIme43z_0mc4HIwzzMj ]
 !: _24sSVIADeHm_0Sx34wQfG7W |=locals|
  { 
- _0ZL8gaI6sH8_7UPhmAQcwMe _13K9OfeXRZR_84nyRTtoj81 _2BkOxf2KbS8_3bswrKbmgjy 
- _2FRfGeiauCO_9CdjKseaigc _4jyHvEiEzZ1_9ck99ShNTHx _6Z4UU939WbU_8BK9xcKsXNb }
+ _0ZL8gaI6sH8_7UPhmAQcwMe _13K9OfeXRZR_84nyRTtoj81 _2FRfGeiauCO_9CdjKseaigc 
+ _4jyHvEiEzZ1_9ck99ShNTHx _6Z4UU939WbU_8BK9xcKsXNb }
 !: _32eKNcTZ9HN_80t0nk47Mha |=numbers|
  { 
  _2sygPI8PHgL_4RgFW0PkZbd _2W7Ckt2WxEM_4NVYgEWE73B _4Dke6KoVx5r_1CoVhK8mVmc 
