@@ -386,7 +386,21 @@ succeeded, the given \textit{sub-statements}... are executed (they are
 the components of that JSON extraction statement). No backtracking
 occurs during extraction.
 
-
+For example, a JSON thing\footnote{We may call JSON things what the
+  JSON standard call JSON values; and that example could be inside
+  some AJAX or REST POST HTTP request.} like {\relsize{-1}{\texttt{\{
+      "do": "foo" , "obj" : "\_3d9rq9TD6PH\_6qUv4Hao767", "targets" :
+      [ "\_3dmcFZldtxI\_1bEIFl4jqe3", "\_6vMEdC0qxdp\_7shHwvOZEQx" ]
+      \}}}} could be extracted with the composite extractor
+{\relsize{-1.2}{\texttt{*json\_object(*json\_entry("do"
+      *string(v\_str)) *json\_entry("obj" *id(o\_comp))
+      *json\_entry("targets" *set(v\_set)))}}} successfully extracting
+the value variable \texttt{v\_str} assigned to the boxed string
+\texttt{"foo"}, the object variable \texttt{o\_comp} assigned to
+object \texttt{€\_3d9rq9TD} (that is, the object named
+\texttt{a\_to\_c}) and the value variable \texttt{v\_set} assigned to
+set \texttt{\{ €\_3dmcFZldt €\_6vMEdC0qxd \}} that is to
+\texttt{\{also and\}}.
 
 
 %%%%%%%%%%%%%%%%
