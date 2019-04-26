@@ -382,8 +382,9 @@ extractions) below.
 
 Such a JSON extraction is compositional, has side-effects (e.g. could
 set local variables), and could fail. When the extraction has
-succeeded, the given \textit{sub-statements}... are executed. No
-backtracking occurs during extraction.
+succeeded, the given \textit{sub-statements}... are executed (they are
+the components of that JSON extraction statement). No backtracking
+occurs during extraction.
 
 
 
@@ -461,7 +462,47 @@ backtracking occurs during extraction.
       $\exists x ~ \mathrm{Bismon ~ value}, js \equiv  \llbracket x \rrbracket_{json}$  &
       succeeds when $js$ is the minimal canonical encoding of some value $x$;
       then assign $v \leftarrow x$ to value variable $v$ that Bismon value $x$ \\
-      \rule{0pt}{1ex} \\       
+      \rule{0pt}{1ex} \\      
+      %%%
+      %
+      \texttt{\textbf{* when ($\epsilon ~ \mathit{stmt}_1 ~ \ldots ~ \mathit{stmt}_n$)}} &
+      \begin{minipage}[t]{4.5cm}
+      The testing expression $\epsilon$
+      evaluates as true (non-nil value, or non-zero integer)
+      \end{minipage} &
+      succeeds when expression $\epsilon$ is true (it usually involves
+      some variables computed by previous extractors), then executes
+      in sequence the statements $\mathit{stmt}_1 \ldots
+      \mathit{stmt}_n$ for their side effects
+      \\
+      \rule{0pt}{1ex} \\     
+      %%%
+      %
+      \texttt{\textbf{* and\_then ($\chi_1 ~ \ldots ~ \chi_n)$}} &
+      \begin{minipage}[t]{4.5cm} sequentially and lazily \\
+        $ ( ~ \chi_1 \triangleright \mathit{js} ~ \wedge $ \\
+        \hspace*{2em} $ \vdots$ \\
+        \hspace*{1em} $ \wedge ~ \chi_n \triangleright \mathit{js} ~ ) $
+      \end{minipage} &      
+      succeeds when the same $\mathit{js}$ can be successfully
+      extracted by \emph{each} of the $\chi_1$ \ldots $\chi_n$ in sequence from left to right
+      (failing lazily as soon as some $\chi_j$ fails), and combine
+      their side effects (visible from $\chi_j$ to the next
+      $\chi_{j+1}$).  \\
+      \rule{0pt}{1ex} \\
+      %%%%
+      \texttt{\textbf{* or\_else ($\chi_1 ~ \ldots ~ \chi_n)$}} &
+      \begin{minipage}[t]{4.5cm} sequentially and lazily \\
+        $ ( ~ \chi_1 \triangleright \mathit{js} ~ \vee $ \\
+        \hspace*{2em} $ \vdots$ \\
+        \hspace*{1em} $ \vee ~ \chi_n \triangleright \mathit{js} ~ ) $
+      \end{minipage} &      
+      succeeds as soon as the same $\mathit{js}$ can be successfully
+      extracted -from left to right- by \emph{some} of the $\chi_i$ 
+      (continuing lazily to the next $\chi_{i+1}$ when it fails), and combine
+      their side effects (visible from $\chi_j$ to the next
+      $\chi_{j+1}$).  \\
+      \rule{0pt}{1ex} \\  
       %%%
       {\textcolor{red}{@@ INCOMPLETE @@}} & {\textcolor{red}{...}} & {\textcolor{red}{...}} \\
       %%%
@@ -483,8 +524,6 @@ backtracking occurs during extraction.
   \end{table}
 
 
-{\color{red}{@@ to be completed a lot,
-    explaining conversions of Bismon values to and from JSON.}}
 
 \subsection{Web interface internal design}
 \label{subsec:webinterf}
