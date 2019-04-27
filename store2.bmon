@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3061 objects
+// for 3066 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -2207,8 +2207,6 @@ _6YnYKKsHo3f_9nIEOZMp744
 !& _0UTjJP38fIh_02d0wLwrdAc
 !& _7IvnLvG7HVK_2qnOaIBtgVh
 !& _0jZB3m3ntxR_7JPnMzyIoBg
- // emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
-
 !)_3BFt4NfJmZC_7iYi2dwM38B
 
 
@@ -11607,8 +11605,6 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !& _8sdgc5Y7vPU_9Nvj5CtRqaQ
 !& _3owspX08bkm_6vBzqS5jskf
 !& _5T8fxyaeOFA_4UrB3BPbWdn
- // emitted persistent module modbm_9dQJgjsq7hs_2T2RqXLkU0A.c
-
 !)_9dQJgjsq7hs_2T2RqXLkU0A
 
 
@@ -12648,6 +12644,19 @@ _36qBmcXleA0_2UKl7qlF0BP
 
 
 
+!(_0irx8Y0FXiq_6gtFr6NUf2Q
+!@ 1556383035.444
+!$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "if o_resobj is not a basiclo_extractjsonstmt"& " putclass... //extract_json#readmacro"
+!: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
+ 1
+!# 1
+!& _76fkBgDaGiN_3W7oI0G3NPL
+!)_0irx8Y0FXiq_6gtFr6NUf2Q
+
+
+
 !(_0ixvvbvycpg_6XwGIwBWqgT
 !@ 1535465225.118
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -12893,14 +12902,17 @@ _5t5nLVnGAqW_9IbjlqpPdp3
 
 
 !(_0kZ9svhUUIT_2zI3SPQhfGs
-!@ 1556376767.869
+!@ 1556383262.792
 !$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "lockobj o_resobj ... //extract_json#readmacro"
 !: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
 _4jyHvEiEzZ1_9ck99ShNTHx
-!# 1
+!# 4
 !& _7Gcop8vDYZT_7m7qR3MuU0P
+!& _0irx8Y0FXiq_6gtFr6NUf2Q
+!& _4jNX6WSUQdx_8QHojeACOOP
+!& _1fUZ2OOn262_3etmkiSA1dd
 !)_0kZ9svhUUIT_2zI3SPQhfGs
 
 
@@ -16277,6 +16289,19 @@ _5V0w37YnN4F_8dZ6I79V60O
 !# 1
 !& _3bsFDNiUKNe_9NjWM3BxFSt
 !)_1flY7i4N8iV_5T74FnYd6Ee
+
+
+
+!(_1fUZ2OOn262_3etmkiSA1dd
+!@ 1556383262.792
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "o_resobj.extract_json <- v_extractor //extract_json#readmacro"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _4jyHvEiEzZ1_9ck99ShNTHx  * _0e54seiZEXF_1Myf620cHoB ( _6zj5YoW4CVg_7Az2Wsmlesm) _9L1R3E9dI8L_6D8VI16BtDm)
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_2tEGXc8XwDB_3luMnYYAdZn
+!)_1fUZ2OOn262_3etmkiSA1dd
 
 
 
@@ -27893,6 +27918,19 @@ _4274DLs3OWk_0GB4aCrjpLe
 
 
 
+!(_4jNX6WSUQdx_8QHojeACOOP
+!@ 1556383180.264
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "o_resobj.json_object <- o_jsvar //extract_json#readmacro"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _4jyHvEiEzZ1_9ck99ShNTHx  * _0e54seiZEXF_1Myf620cHoB ( _7hNqn2hxg1M_3wNHCtOf9IF) _2FRfGeiauCO_9CdjKseaigc)
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_2tEGXc8XwDB_3luMnYYAdZn
+!)_4jNX6WSUQdx_8QHojeACOOP
+
+
+
 !(_4k7bXst8Ysh_6rBll1H8CUo
 !@ 1545267705.238
 !$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -38229,6 +38267,19 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_76fkBgDaGiN_3W7oI0G3NPL
+!@ 1556383035.443
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "when o_resobj is not a basiclo_extractjsonstmt"& " putclass... //extract_json#readmacro"
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+ * _8CWn68WqI7f_4AnphIqCGOA (  * _9I3XFQWBXxW_4DFVKCqBc7k ( _4jyHvEiEzZ1_9ck99ShNTHx  * _0e54seiZEXF_1Myf620cHoB ( _9U8L2fXpZ9o_4x751rhsyve)))
+!# 1
+!& _8f6pQKcFj7A_0usrGCfaW2c
+!)_76fkBgDaGiN_3W7oI0G3NPL
+
+
+
 !(_76hxCg5xWfV_4jJsIGYErv5
 !@ 1554707132.553
 !$_7JUZeKsjbx1_1VcZbR0vW41 |=basiclo_for_up_loop|
@@ -40281,20 +40332,23 @@ _6YoFzs8Yra4_9Z3QsDkSpXi
 
 
 !(_7Gcop8vDYZT_7m7qR3MuU0P
-!@ 1556376767.869
+!@ 1556383524.906
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "debug extract_json#readmacro o_resobj lineno colpos o_parser"
+ "debug extract_json#readmacro o_resobj lineno"& " colpos o_jsvar v_extractor o_parser"
 !: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " " _6zj5YoW4CVg_7Az2Wsmlesm 
   "#"  "readmacro"  " " _4jyHvEiEzZ1_9ck99ShNTHx 
   " "  "lineno"  " "  "colpos" 
+  " " _2FRfGeiauCO_9CdjKseaigc  " " _9L1R3E9dI8L_6D8VI16BtDm 
   " " _5fGGXIme43z_0mc4HIwzzMj  "*/"  "\n" 
   "DBGPRINTF_BM"  "(\"" _6zj5YoW4CVg_7Az2Wsmlesm  "#" 
   "readmacro"  " "  "\u20ac%."  "9s" 
   " " _4jyHvEiEzZ1_9ck99ShNTHx  "=%"  "s" 
-  " "  "lineno"  "=%"  "ld" 
-  " "  "colpos"  "=%"  "ld" 
+  " "  "lineno"  "#%"  "ld" 
+  " "  "colpos"  "#%"  "ld" 
+  " " _2FRfGeiauCO_9CdjKseaigc  "=%"  "s" 
+  " " _9L1R3E9dI8L_6D8VI16BtDm  "=%"  "s" 
   " " _5fGGXIme43z_0mc4HIwzzMj  "=%"  "s" 
   "\","  "\n"  " "  "\"" 
   * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\","  "\n" 
@@ -40302,12 +40356,19 @@ _6YoFzs8Yra4_9Z3QsDkSpXi
   "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4jyHvEiEzZ1_9ck99ShNTHx) 
  ")," 
   "\n"  " "  "("  "long" 
-  " " _0vgCFjXblkx_4zCMhMAWjVK  ")("  * _5ucAZimYynS_4VA0XHvr1nW ( _6x2LYnlYgQG_6FXtmtwODgo) 
-  "),"  "\n"  " "  "(" 
-  "long"  " " _0vgCFjXblkx_4zCMhMAWjVK  ")(" 
+  " " _0vgCFjXblkx_4zCMhMAWjVK  ")"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6x2LYnlYgQG_6FXtmtwODgo)  ")," 
+ "\n" 
+  " "  "("  "long"  " " 
+ _0vgCFjXblkx_4zCMhMAWjVK  ")"  " "  "(" 
   * _5ucAZimYynS_4VA0XHvr1nW ( _2sygPI8PHgL_4RgFW0PkZbd)  "),"  "\n" 
  " " 
-  "objectdbg1_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5fGGXIme43z_0mc4HIwzzMj) 
+  "objectdbg1_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2FRfGeiauCO_9CdjKseaigc) 
+ ")," 
+  "\n"  " "  "OUTSTRVALUE_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _9L1R3E9dI8L_6D8VI16BtDm)  "),"  "\n" 
+ " " 
+  "objectdbg2_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5fGGXIme43z_0mc4HIwzzMj) 
  "));")
 !)_7Gcop8vDYZT_7m7qR3MuU0P
 
@@ -42155,6 +42216,19 @@ _57ZQXLDhLdj_7PrZMZMgLI1
 !& _68I40kazD2M_3T8HSSz6UfU
 !& _5DUmbW8P3O1_0cuIoDhDaND
 !)_8eX9Etm6lmJ_3bbHqolOMxx
+
+
+
+!(_8f6pQKcFj7A_0usrGCfaW2c
+!@ 1556383035.443
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "objputclass(o_resobj basiclo_extractjsonstmt)"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _4jyHvEiEzZ1_9ck99ShNTHx  * _0e54seiZEXF_1Myf620cHoB ( _9U8L2fXpZ9o_4x751rhsyve))
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_1g2wHNuth12_1FfLuyW1CWJ
+!)_8f6pQKcFj7A_0usrGCfaW2c
 
 
 
