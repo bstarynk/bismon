@@ -356,21 +356,22 @@ be~\footnote{This is a gross simplification! In practice, there is a
       static analyzers need weeks of computer time to give interesting
       results.}. For examples, \emph{Frama-C} (cf
     \cite{Cuoq:2012:Frama-C}), \emph{Astrée} (cf
-    \cite{Mine:2015:TIU}), etc... The expert user needs either to
-    explicitly annotate the analyzed source code (e.g. in ACSL for
-    \emph{Frama-C}, see \cite{Baudin:2018:ACSL, Delahaye:2013:CSL,
-      Amin:2017:LAW}), and/or cleverly tune the many configuration
-    knobs of the static analyzer, and often both. Often, the static
-    analyzer itself has to be extended to be able to give interesting
-    results on one particular analyzed source code~\footnote{The
-      \emph{Astrée} project can be seen as the development of a
-      powerful analyzer tool \emph{specifically} suited for the needs
-      of Airbus control command software; it implements many complex
-      abstract interpretation lattices wisely chosen to fit the
-      relevant traits of the analyzed code. Neither \emph{Astrée} nor
-      \emph{Frama-C} can easily -without any additional tuning or
-      annotations- and successfully be used on most Linux command line
-      utilities (e.g. \texttt{bash}, \texttt{\emph{coreutils}},
+    \cite{Mine:2015:TIU}), \emph{Mopsa} (cf \cite{Mine:2018:Mopsa})
+    etc... The expert user needs either to explicitly annotate the
+    analyzed source code (e.g. in ACSL for \emph{Frama-C}, see
+    \cite{Baudin:2018:ACSL, Delahaye:2013:CSL, Amin:2017:LAW}), and/or
+    cleverly tune the many configuration knobs of the static analyzer,
+    and often both. Often, the static analyzer itself has to be
+    extended to be able to give interesting results on one particular
+    analyzed source code~\footnote{The \emph{Astrée} project can be
+      seen as the development of a powerful analyzer tool
+      \emph{specifically} suited for the needs of Airbus control
+      command software; it implements many complex abstract
+      interpretation lattices wisely chosen to fit the relevant traits
+      of the analyzed code. Neither \emph{Astrée} nor \emph{Frama-C}
+      can easily -without any additional tuning or annotations- and
+      successfully be used on most Linux command line utilities
+      (e.g. \texttt{bash}, \texttt{\emph{coreutils}},
       \texttt{\emph{binutils}}, \texttt{gcc}, ...)  or servers
       (e.g. \texttt{systemd}, \texttt{lighttpd}, \texttt{Wayland} or
       \texttt{Xorg}, or IoT frameworks such as MQTT...). But
