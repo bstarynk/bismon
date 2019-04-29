@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3042 objects
+// for 3044 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -23382,19 +23382,20 @@ _6Y20GNUgnSZ_4LkbrcRMU8f))
 
 
 !(_343D9JZkhoc_445lnDmWul4
-!@ 1556457796.038
+!@ 1556541491.941
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of miniscan_stmt\u00b0basiclo_extractjsonstmt"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _5x0WWw3QRXe_8u5OLA7sKJG
-!# 6
+!# 7
 !& _74XT4f1vWl9_7pfkRaZCCjn
 !& _1a4rnGQ9X5p_4tJnSawMpZZ
 !& _2JxwUzZQ2RV_8bQ2glsRJHp
 !& _1FOTvzCLRJB_4QzK8cffadO
 !& _9zk6qXScDWL_5w0SLx5QVxW
 !& _3Uco7hC02N1_1PFcN4zQiuY
+!& _4BdrGEISZ5x_3EiC9UtUU6j
 !)_343D9JZkhoc_445lnDmWul4
 
 
@@ -26224,10 +26225,10 @@ _6Y20GNUgnSZ_4LkbrcRMU8f))
 
 
 !(_3Uco7hC02N1_1PFcN4zQiuY
-!@ 1556530710.811
+!@ 1556541274.754
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "debug ]miniscan_stmt\u00b0basiclo_extractjsonstmt"& " start o_stmt o_routprep depth o_from leni"& " o_jsvar v_extractor o_stmtprops"
+ "debug miniscan_stmt\u00b0basiclo_extractjsonstmt"& " start o_stmt o_routprep depth o_from leni"& " o_jsvar v_extractor o_stmtprops"
 !: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _6DdZwyaWLyK_7tS2BmECOJ0  "\u00b0" _9U8L2fXpZ9o_4x751rhsyve 
   " "  "start"  " " _34Qtvf1thwK_9rziG6sk6Vl 
@@ -28996,6 +28997,19 @@ _6RtF29C4pij_9r269Lc0d0W
 !& _6Y20GNUgnSZ_4LkbrcRMU8f
 !&  * _5MLPTLuT4ey_0YKIUpvXybX ( _4nJKFtMqlkA_1teQSqofNux)
 !)_4AgrAQCvt54_133Bey7HOSe
+
+
+
+!(_4BdrGEISZ5x_3EiC9UtUU6j
+!@ 1556541491.941
+!$_5w3nODhHPwk_4sXXZ1AEOPq |=basiclo_lockobj|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "lockobj o_stmtprops ... //miniscan_stmt\u00b0basiclo_extractjsonstmt"
+!: _9dso3pFLYwm_3JwHqiJK3UL |=lockobj|
+_1xtK3luxH12_3zWtEuuvBAG
+!# 1
+!& _7OwvVlij1oe_0ei0s7DWjbm
+!)_4BdrGEISZ5x_3EiC9UtUU6j
 
 
 
@@ -40639,6 +40653,23 @@ _7IvnLvG7HVK_2qnOaIBtgVh
 !: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
 _2ZoqAiU7COz_0EfxfZbOgZj
 !)_7O1a8HkPkwu_2DmU02OwFX3
+
+
+
+!(_7OwvVlij1oe_0ei0s7DWjbm
+!@ 1556541491.940
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "weakasserts about o_stmtprops"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "weakasserts"  " "  "about" 
+  " " _1xtK3luxH12_3zWtEuuvBAG  ":*/"  "\n" 
+  "WEAKASSERT_BM"  "("  "isobject_BM"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _1xtK3luxH12_3zWtEuuvBAG)  "));" 
+ "\n" 
+  "WEAKASSERT_BM"  "("  "objhasassocpayl_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _1xtK3luxH12_3zWtEuuvBAG)  "));"  "\n")
+!)_7OwvVlij1oe_0ei0s7DWjbm
 
 
 
