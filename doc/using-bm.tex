@@ -361,6 +361,24 @@ extractions) below.
       succeeds when $\mathit{js}$ is some JSON string $\sigma$ looking like a name, and that string $\sigma$ is the \emph{objname} of some \emph{existing} object $\omega$, then assign to
       object variable $v$ that named object $\omega$, so  $v \leftarrow \omega$ \\
       \rule{0pt}{3ex} \\
+      %%%
+      \begin{minipage}[t]{3cm}
+        \texttt{\textbf{* set ($x ~ v$)}} \\
+        with $x$ being \\
+        some Bismon set
+      \end{minipage}
+        &
+      \begin{minipage}[t]{4.5cm}
+        $\mathit{js} \equiv \mathrm{some ~ JSON ~ string}~ \sigma$\\
+        \hspace*{0.5em} $ \wedge ~ \exists ~ \mathrm{object} ~ \omega \in x, $  \\
+        \hspace*{1.8em} $ ( \mathrm{objname}(\omega) = \sigma $ \\
+        \hspace*{2em} $  \vee  \mathrm{objid}(\omega) = \sigma )$ 
+      \end{minipage}
+      &
+      succeeds when $\mathit{js}$ is some JSON string $\sigma$ looking like a name or an id, and that string $\sigma$ is the \emph{objname} or \emph{objid} of some \emph{existing} object $\omega$ member of  set $x$, then assign to
+      object variable $v$ that object $\omega$, so  $v \leftarrow \omega$ \\
+      \rule{0pt}{3ex} \\
+      %%%
       %%%%%%%
     \end{tabular}
   \end{center}
