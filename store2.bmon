@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3044 objects
+// for 3045 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -2478,6 +2478,22 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_7mzaOjboFZI_77BAEKfSTta
+
+
+
+!(_2EwlACZSMng_4EsOBaICJHA |=hashset_jsonvar_object|
+!~ name (~ hashset_jsonvar_object
+~)
+!@ 1556612260.099
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of hashset of JSON variables, for extract_json"
+!: _4rz1Bi4weGz_8Y03gU81cRL |=see|
+ { _6zj5YoW4CVg_7Az2Wsmlesm }
+!~ class (~ |supercl hashsetval_object:| _3cRGd7uw43z_6OibwMICv3P
+~)
+
+!)_2EwlACZSMng_4EsOBaICJHA
 
 
 
@@ -32292,7 +32308,7 @@ _0qTBOEAT5pa_2fz1SKfHrMV
 
 !(_5x0WWw3QRXe_8u5OLA7sKJG
 !|*
-!@ 1556530176.665
+!@ 1556612415.588
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "miniscan_stmt\u00b0basiclo_extractjsonstmt < o_stmt (o_routprep v_depth o_from)"
@@ -32304,7 +32320,7 @@ _0qTBOEAT5pa_2fz1SKfHrMV
  { 
  _0uATzRk8Ajt_6bIBwn6a86I _0ZL8gaI6sH8_7UPhmAQcwMe _13K9OfeXRZR_84nyRTtoj81 
  _1xtK3luxH12_3zWtEuuvBAG _2FRfGeiauCO_9CdjKseaigc _5wKdFyGNJ5j_50nIjxm7LLY 
- _96vo6uBKhke_6E1vyN3kIKD _9L1R3E9dI8L_6D8VI16BtDm }
+ _6Jkz6rphVkn_1KZto79j46r _96vo6uBKhke_6E1vyN3kIKD _9L1R3E9dI8L_6D8VI16BtDm }
 !: _32eKNcTZ9HN_80t0nk47Mha |=numbers|
  { 
  _2W7Ckt2WxEM_4NVYgEWE73B _6Y20GNUgnSZ_4LkbrcRMU8f _833x2jYqhZh_8vDIuJhwz1k }
