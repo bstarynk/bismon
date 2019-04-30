@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3066 objects
+// for 3067 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -3809,6 +3809,15 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _7T9OwSFlgov_0wVJaK1eZbn
 !)_9uuMot5qvtW_7J7V6SlaKg2
+
+
+
+!(_1wd3by6gMx2_23iChYmjUf9 |=member|
+!~ name (~ member
+~)
+!@ 1556645770.802
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!)_1wd3by6gMx2_23iChYmjUf9
 
 
 
@@ -11574,6 +11583,8 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !& _8sdgc5Y7vPU_9Nvj5CtRqaQ
 !& _3owspX08bkm_6vBzqS5jskf
 !& _5T8fxyaeOFA_4UrB3BPbWdn
+ // emitted persistent module modbm_9dQJgjsq7hs_2T2RqXLkU0A.c
+
 !)_9dQJgjsq7hs_2T2RqXLkU0A
 
 
