@@ -5267,6 +5267,18 @@ PLACEDFAILURE_BM(__LINE__,
 } //endwhen _80QjHBKCbjh_8MDhSwLqFBI   
 /*endcond _913NZfIY3g1_8w9IxFmtXd9*/  
   
+ // objswitch _8kMEBcfqeWz_5JRhiMICep2 when _2bMHBytN5Xo_5RIQJZTjsYf #1 statement:  
+  
+{ // run _4jcWx6AizVD_2nzqO7HNWzC  
+/*debug 0arity end miniscan_json_extractor o_conn v_extractor o_vihset depth*/
+DBGPRINTF_BM("miniscan_json_extractor €%.9s 0arity end o_conn=%s v_extractor=%s o_vihset=%s depth#%ld",
+ "_4jcWx6AizVD_2nzqO7HNWzC",
+ objectdbg_BM( /*o_conn:*/_.o_13K9OfeXRZR_84nyRTtoj81),
+ OUTSTRVALUE_BM( /*v_extractor:*/_.v_9L1R3E9dI8L_6D8VI16BtDm),
+ objectdbg1_BM( /*o_vihset:*/_.o_6Jkz6rphVkn_1KZto79j46r),
+ (long int)( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));;  
+} // end run _4jcWx6AizVD_2nzqO7HNWzC  
+  
   
 break; // end when _2bMHBytN5Xo_5RIQJZTjsYf #1 of objswitch _8kMEBcfqeWz_5JRhiMICep2  
   
