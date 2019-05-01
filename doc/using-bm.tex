@@ -324,25 +324,25 @@ extractions) below.
       $\mathit{js} \equiv \mathtt{true}$ &
       succeeds when $\mathit{js}$ is the true JSON \\
       %%%
-      \texttt{\textbf{* int ($v$)}} &
+      \texttt{\textbf{* int ($v^{\mathrm{\textcolor{blue}{int}}}$)}} &
       $\mathit{js} \equiv \mathrm{some ~ JSON ~ integer}~ i$ &
       succeeds when $\mathit{js}$ is a JSON integer $i$, and assign to integer
       variable $v$ its integral value $v \leftarrow i$\\
       %%%
-      \texttt{\textbf{* double\_float ($v$)}} &
+      \texttt{\textbf{* double\_float ($v^{\mathrm{\textcolor{blue}{val}}}$)}} &
       $\mathit{js} \equiv \mathrm{some ~ JSON ~ real}~ \delta$ &
       succeeds when $\mathit{js}$ is a JSON real $\delta$, and assign to double
       variable $v$ its \emph{boxed} double value $v \leftarrow
       \mathrm{\textrm{boxed-double}} (\delta)$\\
       %%%
-      \texttt{\textbf{* string ($v$)}} &
+      \texttt{\textbf{* string ($v^{\mathrm{\textcolor{blue}{val}}}$)}} &
       $\mathit{js} \equiv \mathrm{some ~ JSON ~ string}~ \sigma$ &
       succeeds when $\mathit{js}$ is a JSON string $\sigma$, and assign to
       value variable $v$ its \emph{boxed} string value $v \leftarrow
       \mathrm{\textrm{boxed-string}} (\sigma)$ \\
             \rule{0pt}{1ex} \\
       %%%
-      \texttt{\textbf{* id ($v$)}} &
+      \texttt{\textbf{* id ($v^{\mathrm{\textcolor{blue}{obj}}}$)}} &
       \begin{minipage}[t]{4cm}
         $\mathit{js} \equiv \mathrm{some ~ JSON ~ string}~ \sigma$\\
         \hspace*{0.5em} $ \wedge ~ \exists ~ \mathrm{object} ~ \omega, \mathrm{objid}(\omega) = \sigma$ 
@@ -352,7 +352,7 @@ extractions) below.
       object variable $v$ that object $\omega$, so  $v \leftarrow \omega$ \\
             \rule{0pt}{1ex} \\
       %%%
-      \texttt{\textbf{* name ($v$)}} &
+      \texttt{\textbf{* name ($v^{\mathrm{\textcolor{blue}{obj}}}$)}} &
       \begin{minipage}[t]{4.5cm}
         $\mathit{js} \equiv \mathrm{some ~ JSON ~ string}~ \sigma$\\
         \hspace*{0.5em} $ \wedge ~ \exists ~ \mathrm{object} ~ \omega, \mathrm{objname}(\omega) = \sigma$ 
@@ -362,8 +362,8 @@ extractions) below.
       object variable $v$ that named object $\omega$, so  $v \leftarrow \omega$ \\
       \rule{0pt}{3ex} \\
       %%%
-      \begin{minipage}[t]{3cm}
-        \texttt{\textbf{* member ($x ~ v$)}} \\
+      \begin{minipage}[t]{3.5cm}
+        \texttt{\textbf{* member ($x^{\mathrm{\textcolor{blue}{val}}} ~ v^{\mathrm{\textcolor{blue}{obj}}}$)}} \\
         with $x$ being \\
         some Bismon set
       \end{minipage}
@@ -390,7 +390,7 @@ extractions) below.
     \triangleright \mathit{js}$ means that the extraction using
     extractor $\chi$ on JSON $ \mathit{js}$ was successful; the $v,
     v', v'', v_i, w, $... are \emph{Bismon} local variables whose type
-    is explained; the $x, y$... are Bismon values, the
+    is explained with blue annotations like ${}^{\mathrm{\textcolor{blue}{val}}}$; the $x, y$... are Bismon values, the
     $\omega,$... are Bismon objects.
   \end{minipage}
   \end{relsize}
@@ -431,7 +431,7 @@ set \texttt{\{ €\_3dmcFZldt €\_6vMEdC0qxd \}} that is to
       \textbf{extractor node} & \hspace*{1cm} \textbf{success condition} \hspace*{1cm}  & \textbf{side effects and explanation} \\
 
       %%%
-      \texttt{\textbf{* set ($v$)}} &
+      \texttt{\textbf{* set ($v^{\mathrm{\textcolor{blue}{val}}}$)}} &
       \begin{minipage}[t]{4.5cm}
         $\mathit{js} \equiv \mathrm{some ~ JSON ~ array}$ \\
         \hspace*{2em}  $ \mathtt{\textbf{[}} \; \mathit{js}_1  \mathtt{\textbf{,}} \ldots  \mathit{js}_n \; \mathtt{\textbf{]}} $ of strings, so \\
@@ -487,12 +487,12 @@ set \texttt{\{ €\_3dmcFZldt €\_6vMEdC0qxd \}} that is to
       \texttt{\textbf{* json\_entry ($\alpha_i ~ \chi'_i$)}}, \ldots. \\
       \rule{0pt}{1ex} \\ 
       %%%
-      \texttt{\textbf{* json\_value ($v$)}} &
+      \texttt{\textbf{* json\_value ($v^{\mathrm{\textcolor{blue}{val}}}$)}} &
       always succeeds &
       assign  $v ~ \leftarrow ~ \langle \mathit{js} \rangle^{nod}$ to value variable $v$ the \emph{nodal-encoding} of $js$ \\
       \rule{0pt}{1ex} \\    
       %%%
-      \texttt{\textbf{* value ($v$)}} &
+      \texttt{\textbf{* value ($v^{\mathrm{\textcolor{blue}{val}}}$)}} &
       $\exists x ~ \mathrm{Bismon ~ value}, js \equiv  \llbracket x \rrbracket_{json}$  &
       succeeds when $js$ is the minimal canonical encoding of some value $x$;
       then assign $v \leftarrow x$ to value variable $v$ that Bismon value $x$ \\
