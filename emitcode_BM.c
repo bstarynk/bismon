@@ -1981,10 +1981,11 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                         if (_.varob == NULL)
                           {
                             WARNPRINTF_BM
-                              ("bad variable component#%d %s in chunk %s of constob %s",
+                              ("bad variable component#%d %s in chunk %s of constob %s from %s",
                                cix, OUTSTRVALUE_BM (_.compv),
                                OUTSTRVALUE_BM (_.chunkv),
-                               objectdbg_BM (_.expob));
+                               objectdbg_BM (_.expob),
+                               objectdbg1_BM (_.fromob));
                             FAILHERE (makenode3_BM
                                       (BMP_variable, _.expob,
                                        taggedint_BM (cix), _.chunkv));
@@ -2001,10 +2002,11 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                         else
                           {
                             WARNPRINTF_BM
-                              ("bad component#%d variable %s in chunk %s of constob %s",
+                              ("bad component#%d variable %s in chunk %s of constob %s from %s",
                                cix, objectdbg_BM (_.varob),
                                OUTSTRVALUE_BM (_.chunkv),
-                               objectdbg_BM (_.expob));
+                               objectdbg_BM (_.expob),
+                               objectdbg1_BM (_.fromob));
                             FAILHERE (makenode3_BM
                                       (BMP_variable, _.varob,
                                        taggedint_BM (cix), _.chunkv));
@@ -2013,9 +2015,10 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                     else
                       {
                         WARNPRINTF_BM
-                          ("bad component#%d %s in chunk %s of constob %s",
+                          ("bad component#%d %s in chunk %s of constob %s from %s",
                            cix, OUTSTRVALUE_BM (_.compv),
-                           OUTSTRVALUE_BM (_.chunkv), objectdbg_BM (_.expob));
+                           OUTSTRVALUE_BM (_.chunkv),
+                           objectdbg_BM (_.expob), objectdbg1_BM (_.fromob));
                         FAILHERE (makenode3_BM
                                   (BMP_chunk, _.expob, taggedint_BM (cix),
                                    _.chunkv));
@@ -2057,7 +2060,7 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
               }
             else
               {
-                DBGPRINTF_BM
+                WARNPRINTF_BM
                   ("emit_expr variable unknown constant expob %s routprepob %s fromob %s",
                    objectdbg_BM (_.expob), objectdbg2_BM (_.routprepob),
                    objectdbg3_BM (_.fromob));
@@ -2136,6 +2139,10 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
             if (!_.resv)
               {
                 objunlock_BM (_.connob);
+                WARNPRINTF_BM
+                  ("emit_expression %s node of connective %s failed from %s",
+                   OUTSTRVALUE_BM (_.expv), objectdbg_BM (_.connob),
+                   objectdbg1_BM (_.fromob));
                 FAILHERE (NULL);
               }
           }
@@ -2160,15 +2167,29 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
               {
                 objunlock_BM (_.connob);
                 _.connob = NULL;
+                WARNPRINTF_BM
+                  ("emit_expression %s node of connective %s, indirectly %s, failed from %s",
+                   OUTSTRVALUE_BM (_.expv), objectdbg_BM (_.connob),
+                   objectdbg1_BM (_.indirconnob), objectdbg2_BM (_.fromob));
                 FAILHERE (NULL);
               }
           }
         else
-          FAILHERE (BMP_node);
+          {
+            WARNPRINTF_BM
+              ("emit_expression unexpected node expression %s of connective %s modgen %s routprep %s",
+               OUTSTRVALUE_BM (_.expv),
+               objectdbg_BM (_.connob),
+               objectdbg1_BM (_.modgenob), objectdbg2_BM (_.routprepob));
+            FAILHERE (BMP_node);
+          }
         objunlock_BM (_.connob);
         LOCALJUSTRETURN_BM ();
       }
     default:
+      WARNPRINTF_BM
+        ("emit_expression strange %s from %s",
+         OUTSTRVALUE_BM (_.expv), objectdbg_BM (_.fromob));
       FAILHERE (NULL);
     }
   WARNPRINTF_BM
@@ -2188,6 +2209,9 @@ failure:
                                _.modgenob, _.causev);
   PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniemit_expression_BM */
+
+
+
 
 
 // emit magic variables $stmtid $modulid $routid or else return false
