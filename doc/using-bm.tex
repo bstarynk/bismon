@@ -425,9 +425,9 @@ set \texttt{\{ €\_3dmcFZldt €\_6vMEdC0qxd \}} that is to
 
 %%%%%%%%%%%%%%%%
 \begin{table}%[!htbp]
-  \begin{relsize}{-1.2}
+  \begin{relsize}{-1.3}
   \begin{center}
-    \begin{tabular}{lcp{5.7cm}}
+    \begin{tabular}{lcp{6.4cm}}
       \textbf{extractor node} & \hspace*{1cm} \textbf{success condition} \hspace*{1cm}  & \textbf{side effects and explanation} \\
 
       %%%
@@ -468,6 +468,18 @@ set \texttt{\{ €\_3dmcFZldt €\_6vMEdC0qxd \}} that is to
         \hspace*{1.5em}  $ \exists i, \mathtt{\textbf{\{}} ~ \ldots \alpha ~ \mathtt{\textbf{:}} ~ \mathit{js}_i ~ \ldots  \mathtt{\textbf{\}}} ~ \wedge \chi \triangleright \mathit{js}_i $
       \end{minipage} &
       succeeds when $\mathit{js}$ is a JSON object having an attribute string $\alpha$ associated to some JSON value $\mathit{js}_i$ which can be extracted using $\chi$.
+            %\rule{0pt}{1ex} \\
+      \\
+      %%%
+      \texttt{\textbf{* json\_entry ($\omega ~ \chi$)}} &
+      \begin{minipage}[t]{4.8cm}
+        $\mathit{js} \equiv \mathrm{some ~ JSON ~ object}$ having \\
+        \hspace*{0.4em} $\exists ~ \mathrm{some ~ Bismon ~ object} ~ \omega$ \\
+        \hspace*{0.6em}  $ \exists ~ \mathrm{some ~ JSON ~ string} ~ \alpha, $\\
+        \hspace*{0.8em} {\relsize{-0.6}{$ (\mathrm{objid}(\omega) = \alpha  ~ \vee ~ \mathrm{objname}(\omega) = \alpha )$}}  \\
+        \hspace*{1.5em}  $ \exists i, \mathtt{\textbf{\{}} ~ \ldots \alpha ~ \mathtt{\textbf{:}} ~ \mathit{js}_i ~ \ldots  \mathtt{\textbf{\}}} ~ \wedge \chi \triangleright \mathit{js}_i $
+      \end{minipage} &
+      succeeds when $\mathit{js}$ is a JSON object having an attribute string $\alpha$ which is the name or objid of the given Bismon object $\omega$, associated to some JSON value $\mathit{js}_i$ which can be extracted using $\chi$.
             \rule{0pt}{1ex} \\
       \\
       %%%
@@ -536,9 +548,9 @@ set \texttt{\{ €\_3dmcFZldt €\_6vMEdC0qxd \}} that is to
       (continuing lazily to the next $\chi_{i+1}$ when it fails), and combine
       their side effects (visible from $\chi_j$ to the next
       $\chi_{j+1}$).  \\
-      \rule{0pt}{1ex} \\  
+      % \rule{0pt}{1ex} \\  
       %%%
-      {\textcolor{red}{@@ INCOMPLETE @@}} & {\textcolor{red}{...}} & {\textcolor{red}{...}} \\
+      %%% {\textcolor{red}{@@ INCOMPLETE @@}} & {\textcolor{red}{...}} & {\textcolor{red}{...}} \\
       %%%
     \end{tabular}
   \end{center}
