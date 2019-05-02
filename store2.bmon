@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3115 objects
+// for 3116 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -12192,6 +12192,19 @@ _85938GaqS1z_3mZSenKG7GG
 
 
 
+!(_0aXCagClstN_7ZzZJshvTWn
+!@ 1556801758.279
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "objhashsetaddpayl (o_vihset o_variable) //miniscan_json_extractor"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _6Jkz6rphVkn_1KZto79j46r _7safxUAyjq9_7LcGUlnwwD1)
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_2qd5IdY1fiz_3FB32ML3Ts8
+!)_0aXCagClstN_7ZzZJshvTWn
+
+
+
 !(_0c1UQDoiMc9_7MORr2syzgQ
 !@ 1535723343.567
 !$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
@@ -21656,7 +21669,7 @@ _3QVddP6n0iB_4lpbil0LgYY
  { 
  _2mYaTh9kH4I_7ENiXcymRmy _2qDaJRPDbEG_45AvdxtQXAM _4T8am97muLl_5969SR22Ecq 
  _5LSPYWdN50R_3nt54XhyWMW _7bbeIqUSje9_4jVgC7ZJmvx }
-!# 8
+!# 9
 !& _3H6PzuYCBcL_7VzbmMdP4Xa
 !& _67sfJmZYsXE_9I3vYI8eJEH
 !& _96Y5nrwoje7_1e4LZNxQTQX
@@ -21664,6 +21677,7 @@ _3QVddP6n0iB_4lpbil0LgYY
 !& _4zlASReWgsz_4NpSAjjGIgw
 !& _7cSLFpnscio_8FATJyYSrAD
 !& _0QkzNYmsGFf_67FqhVSfLLQ
+!& _0aXCagClstN_7ZzZJshvTWn
 !& _1LlXUsmU5LA_63prt17MkZy
 !)_2sqV9Dl4VRQ_1ToexeWybdB
 
@@ -45093,7 +45107,7 @@ _2wGWzItVmrN_2CBwG6iHWFO
  "when o_conn is int //1-arity miniscan_json_extractor"
 !: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
 _0vgCFjXblkx_4zCMhMAWjVK
-!# 8
+!# 9
 !& _1J3UMJ7CDfY_2VDeFmVWOuN
 !& _67sfJmZYsXE_9I3vYI8eJEH
 !& _3caq8gfHpDo_3wODM4tRLpA
@@ -45101,6 +45115,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !& _4zlASReWgsz_4NpSAjjGIgw
 !& _5E4C1rI970T_4VTQSSZDU1m
 !& _3eEVbbh4B9s_2BujOzYO5Ne
+!& _0aXCagClstN_7ZzZJshvTWn
 !& _5R2v6jNByHm_6tLsz7V8T3T
 !)_8M0gq6Ilc80_7xXcAmJOstP
 
