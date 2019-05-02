@@ -5326,6 +5326,64 @@ PLACEDFAILURE_BM(__LINE__,
 } //endwhen _8pmGJQw3Lvk_5BqxiCFx4o2   
 /*endcond _3H6PzuYCBcL_7VzbmMdP4Xa*/  
   
+ // objswitch _8kMEBcfqeWz_5JRhiMICep2 when _2sqV9Dl4VRQ_1ToexeWybdB #1 statement:  
+ /*o_variable:*/_.o_7safxUAyjq9_7LcGUlnwwD1 = //assign _67sfJmZYsXE_9I3vYI8eJEH   
+/*val_to_object:*/objectcast_BM(/*nodenthson:*/nodenthson_BM(( /*v_extractor:*/_.v_9L1R3E9dI8L_6D8VI16BtDm),( 0)));  
+  
+ // objswitch _8kMEBcfqeWz_5JRhiMICep2 when _2sqV9Dl4VRQ_1ToexeWybdB #2 statement:  
+if /*cond _96Y5nrwoje7_1e4LZNxQTQX*/   
+/*when _7XgxvQc17Dc_71t90fzpUvV:*/  
+ (/*is_null:*/(( /*o_variable:*/_.o_7safxUAyjq9_7LcGUlnwwD1)==NULL)) { //body when _7XgxvQc17Dc_71t90fzpUvV   
+//failure _7usb01gzlIN_2l3H7qTAe1g    
+PLACEDFAILURE_BM(__LINE__,    
+          /*failreason:*/ (((value_tyBM) makenode5_BM
+ (/*make_node conn:*/( (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[67] /*!failure_miss*/)), 
+ /*make_node 5 sons:*/ 
+( (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[96] /*!_73hC7TDRQc7_7AAWITxnirb*/)), 
+ 
+( /*o_conn:*/_.o_13K9OfeXRZR_84nyRTtoj81), 
+ 
+( /*v_extractor:*/_.v_9L1R3E9dI8L_6D8VI16BtDm), 
+ 
+// make_node arg #4 
+( /*o_vihset:*/_.o_6Jkz6rphVkn_1KZto79j46r), 
+ 
+(/*taggedint:*/ taggedint_BM ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f))))),
+                /*failplace:*/ ( /*modconst:*/(constob_3BFt4NfJmZC_7iYi2dwM38B_BM[102] /*|_7usb01gzlIN_2l3H7qTAe1g*/)),
+                ((struct stackframe_stBM *) &_));
+   
+} //endwhen _7XgxvQc17Dc_71t90fzpUvV   
+/*endcond _96Y5nrwoje7_1e4LZNxQTQX*/  
+  
+ // objswitch _8kMEBcfqeWz_5JRhiMICep2 when _2sqV9Dl4VRQ_1ToexeWybdB #3 statement:  
+  
+{ // run _4G7iJdXK8IT_8oz8HiLEuGe  
+/*debug 1-arity value miniscan_json_extractor o_variable v_extractor o_vihset depth*/
+DBGPRINTF("1-arity value miniscan_json_extractor €%.9s o_variable=%s v_extractor=%s o_vihset=%s depth#%ld",
+ "_4G7iJdXK8IT_8oz8HiLEuGe",
+ objectdbg_BM( /*o_variable:*/_.o_7safxUAyjq9_7LcGUlnwwD1),
+ OUTSTRVALUE_BM( /*v_extractor:*/_.v_9L1R3E9dI8L_6D8VI16BtDm),
+ objectdbg1_BM( /*o_vihset:*/_.o_6Jkz6rphVkn_1KZto79j46r),
+ (long int)( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));;  
+} // end run _4G7iJdXK8IT_8oz8HiLEuGe  
+  
+ // objswitch _8kMEBcfqeWz_5JRhiMICep2 when _2sqV9Dl4VRQ_1ToexeWybdB #4 statement:  
+ /*v_scanres:*/_.v_5wKdFyGNJ5j_50nIjxm7LLY = //assign _4zlASReWgsz_4NpSAjjGIgw   
+/*miniscan_var:*/ miniscan_var_BM (( /*o_variable:*/_.o_7safxUAyjq9_7LcGUlnwwD1), ( /*o_routprep:*/_.o_6RpSqxAOt2p_35laNqeU6KH), (/*add_int:*/(( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f) + ( 1))), ( /*o_stmt:*/_.o_34Qtvf1thwK_9rziG6sk6Vl), CURFRAME_BM);  
+  
+ // objswitch _8kMEBcfqeWz_5JRhiMICep2 when _2sqV9Dl4VRQ_1ToexeWybdB #5 statement:  
+  
+{ // run _7cSLFpnscio_8FATJyYSrAD  
+/*debug 1-arity value miniscan_json_extractor v_scanres o_variable v_extractor o_vihset depth*/
+DBGPRINTF("1-arity value miniscan_json_extractor €%.9s v_scanres=%s o_variable=%s v_extractor=%s o_vihset=%s depth#%ld",
+ "_7cSLFpnscio_8FATJyYSrAD",
+ OUTSTRVALUE_BM( /*v_scanres:*/_.v_5wKdFyGNJ5j_50nIjxm7LLY),
+ objectdbg_BM( /*o_variable:*/_.o_7safxUAyjq9_7LcGUlnwwD1),
+ OUTSTRVALUE_BM( /*v_extractor:*/_.v_9L1R3E9dI8L_6D8VI16BtDm),
+ objectdbg1_BM( /*o_vihset:*/_.o_6Jkz6rphVkn_1KZto79j46r),
+ (long int)( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));;  
+} // end run _7cSLFpnscio_8FATJyYSrAD  
+  
   
 break; // end when _2sqV9Dl4VRQ_1ToexeWybdB #2 of objswitch _8kMEBcfqeWz_5JRhiMICep2  
   
