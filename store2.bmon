@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3110 objects
+// for 3111 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -2486,6 +2486,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
 _0vgCFjXblkx_4zCMhMAWjVK
 !)_7mzaOjboFZI_77BAEKfSTta
+
+
+
+!(_2u9YAFmxxSj_1WizQTT1BHQ |=half_id|
+!~ name (~ half_id
+~)
+!@ 1556795474.437
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for out, emitting the first half of an objid"
+!)_2u9YAFmxxSj_1WizQTT1BHQ
 
 
 
@@ -17577,13 +17588,14 @@ _89nz0KaXXZh_8eSgMmqnK37)
 
 
 !(_1wFGt8trU1A_1Nb4JV3o0QV
-!@ 1546367953.008
+!@ 1556795710.670
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "when o_conn \u2208 {id name object} ... miniscan_stmt\u00b0basiclo_outstmt"
+ "when o_conn \u2208 {id name object half_id} ... miniscan_stmt\u00b0basiclo_outstmt"
 !: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
  { 
- _1jJjA6LcXiX_1V4ZcXlje09 _7T9OwSFlgov_0wVJaK1eZbn _7WjaQkqwdaZ_6PRtbDrJHnf }
+ _1jJjA6LcXiX_1V4ZcXlje09 _2u9YAFmxxSj_1WizQTT1BHQ _7T9OwSFlgov_0wVJaK1eZbn 
+ _7WjaQkqwdaZ_6PRtbDrJHnf }
 !# 4
 !& _0tPLTqqQhJ7_9Tr1hT1PRhR
 !& _4osMLGlPBTq_8rkCT8pCoQZ
