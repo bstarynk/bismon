@@ -1346,6 +1346,7 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //miniscan_stmt°basiclo_assign
                  value_tyBM srcexpv;    //
                  objectval_tyBM * vartypob;     //
                  objectval_tyBM * srctypob;     //
+                 objectval_tyBM * compatypob;   //
                  value_tyBM resv;       //
                  value_tyBM failv;      //
     );
@@ -1382,12 +1383,20 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //miniscan_stmt°basiclo_assign
      debug_outstr_value_BM (_.srcexpv, CURFRAME_BM, 0),
      objectdbg_BM (_.srctypob), objectdbg1_BM (_.vartypob),
      objectdbg2_BM (_.destob));
+  _.compatypob = NULL;
   objunlock_BM (_.stmtob);
   if (_.srctypob == _.vartypob && _.srctypob != NULL)
+    {
+      ok = true;
+      _.compatypob = _.vartypob;
+    }
+  else if ((_.compatypob = miniscan_compatype_BM (_.vartypob, _.srctypob,
+                                                  CURFRAME_BM)) == BMP_value)
     ok = true;
   DBGPRINTF_BM
-    ("miniscan_stmt°basiclo_assign end stmtob=%s ok=%s",
-     objectdbg_BM (_.stmtob), ok ? "true" : "false");
+    ("miniscan_stmt°basiclo_assign end stmtob=%s ok=%s compatypob=%s",
+     objectdbg_BM (_.stmtob), ok ? "true" : "false",
+     objectdbg1_BM (_.compatypob));
   if (ok)
     LOCALRETURN_BM (_.stmtob);
   else
