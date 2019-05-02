@@ -307,9 +307,9 @@ extractions) below.
 
 %%%%%%%%%%%%%%%%
 \begin{table}%[!htbp]
-  \begin{relsize}{-1.2}
+  \begin{relsize}{-1.3}
   \begin{center}
-    \begin{tabular}{lcp{5.7cm}}
+    \begin{tabular}{lcp{6.3cm}}
       \textbf{extractor node} & \hspace*{1cm} \textbf{success condition} \hspace*{1cm}  & \textbf{side effects and explanation} \\
       %%%
       \texttt{\textbf{* json\_null ()}} &
@@ -379,6 +379,9 @@ extractions) below.
       object variable $v$ that object $\omega$, so  $v \leftarrow \omega$ \\
       \rule{0pt}{3ex} \\
       %%%
+      \texttt{\textbf{* put ($\omega$)}} &
+        \emph{always succeeds} &
+        then put in that given Bismon object $\omega$ a JSON payload with $\mathit{js}$ inside \\
       %%%%%%%
     \end{tabular}
   \end{center}
