@@ -5674,7 +5674,7 @@ DBGPRINTF_BM("miniscan_json_extractor json_entry after miniscan_expr €%.9s: v_
  "_1S7kvxv8MCN_3lJLGLRum4c",
  OUTSTRVALUE_BM( /*v_scanres:*/_.v_5wKdFyGNJ5j_50nIjxm7LLY),
  OUTSTRVALUE_BM( /*v_extractor:*/_.v_9L1R3E9dI8L_6D8VI16BtDm),
- OUTSTRVALUE_VM( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M),
+ OUTSTRVALUE_BM( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M),
  objectdbg_BM( /*o_vihset:*/_.o_6Jkz6rphVkn_1KZto79j46r),
  (long int) ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f),
  objectdbg1_BM( /*o_routprep:*/_.o_6RpSqxAOt2p_35laNqeU6KH));;  
