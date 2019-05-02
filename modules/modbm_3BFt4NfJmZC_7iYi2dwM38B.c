@@ -5416,6 +5416,29 @@ whenobj8kMEBcfq__1keBRJyZiEA_7lQUiazpMnA:; // when #0 of objswitch _8kMEBcfqeWz_
  (long int) ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));;  
 } // end run _0TCp6EYAFhx_8oomGup3w0i  
   
+ // objswitch _8kMEBcfqeWz_5JRhiMICep2 when _1keBRJyZiEA_7lQUiazpMnA #1 statement:  
+ /*v_scanres:*/_.v_5wKdFyGNJ5j_50nIjxm7LLY = //assign _4vI97FeROeO_7sERP0mphxF   
+(apply3_BM (( (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[98] /*!_73hC7TDRQc7_7AAWITxnirb*/)), ((struct stackframe_stBM*)&_), 
+ ( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe),  ( /*o_vihset:*/_.o_6Jkz6rphVkn_1KZto79j46r), 
+ (/*taggedint:*/ taggedint_BM (/*add_int:*/(( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f) + ( 1))))));  
+  
+ // objswitch _8kMEBcfqeWz_5JRhiMICep2 when _1keBRJyZiEA_7lQUiazpMnA #2 statement:  
+  
+{ // run _5xe30X7Os4M_8bGDeAnqyD8  
+/*debug miniscan_json_extractor end variadic extractor o_conn v_extractor o_vihset depth*/
+DBGPRINTF_BM("miniscan_json_extractor end variadic extractor €%.9s o_conn=%s v_extractor=%s o_vihset=%s depth#%ld\n",
+ "_5xe30X7Os4M_8bGDeAnqyD8",
+ objectdbg_BM( /*o_conn:*/_.o_13K9OfeXRZR_84nyRTtoj81),
+ OUTSTRVALUE_BM( /*v_extractor:*/_.v_9L1R3E9dI8L_6D8VI16BtDm),
+ objectdbg1_BM( /*o_vihset:*/_.o_6Jkz6rphVkn_1KZto79j46r),
+ (long int) ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f));;  
+} // end run _5xe30X7Os4M_8bGDeAnqyD8  
+  
+ // objswitch _8kMEBcfqeWz_5JRhiMICep2 when _1keBRJyZiEA_7lQUiazpMnA #3 statement:  
+/*return _3D75CSHww0u_5ePusHYW8c7:*/  /*v_r:*/_.v_3qw9bnATIhq_8loBraLeXzQ = // returned  
+ /*o_conn:*/_.o_13K9OfeXRZR_84nyRTtoj81;  
+ goto epilog_73hC7TDRQc7_7AAWITxnirb;  
+  
   
 break; // end when _1keBRJyZiEA_7lQUiazpMnA #0 of objswitch _8kMEBcfqeWz_5JRhiMICep2  
   
@@ -5614,6 +5637,29 @@ PLACEDFAILURE_BM(__LINE__,
    
 } //endwhen _6emmALpqE2n_3Lsv1b9cd16   
 /*endcond _6UhYwDJja6O_9INWrGwiLpv*/  
+  
+ // objswitch _8kMEBcfqeWz_5JRhiMICep2 when _6EpJ2KoyuiU_8s0JUiNhxei #1 statement:  
+ /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M = //assign _1Ldv1NmrfhQ_27rJjZI8H8T   
+/*nodenthson:*/nodenthson_BM(( /*v_extractor:*/_.v_9L1R3E9dI8L_6D8VI16BtDm),( 0));  
+  
+ // objswitch _8kMEBcfqeWz_5JRhiMICep2 when _6EpJ2KoyuiU_8s0JUiNhxei #2 statement:  
+ /*v_subextractor:*/_.v_4vxTzYY836O_03Zx8TO4YLy = //assign _3zIPh1A3yCC_0RFMeN2cBFq   
+/*nodenthson:*/nodenthson_BM(( /*v_extractor:*/_.v_9L1R3E9dI8L_6D8VI16BtDm),( 1));  
+  
+ // objswitch _8kMEBcfqeWz_5JRhiMICep2 when _6EpJ2KoyuiU_8s0JUiNhxei #3 statement:  
+  
+{ // run _6JoruTt0zcz_58tnnEJzOO1  
+/*debug miniscan_json_extractor json_entry: v_extractor v_expr v_subextractor o_vihset depth o_routprep*/
+DBGPRINTF_BM("miniscan_json_extractor json_entry €%.9s: v_extractor=%s v_expr=%s v_subextractor=%s o_vihset=%s depth=#%ld, o_routprep=%s",
+ "_6JoruTt0zcz_58tnnEJzOO1",
+ OUTSTRVALUE_BM( /*v_extractor:*/_.v_9L1R3E9dI8L_6D8VI16BtDm),
+ OUTSTRVALUE_BM( /*v_expr:*/_.v_6CmIdtsXyBX_3lpk31Mve5M),
+ OUTSTRVALUE_BM( /*v_subextractor:*/_.v_4vxTzYY836O_03Zx8TO4YLy),
+ objectdbg_BM( /*o_vihset:*/_.o_6Jkz6rphVkn_1KZto79j46r),
+ (long int) ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f),
+ objectdbg1_BM( /*o_routprep:*/_.o_6RpSqxAOt2p_35laNqeU6KH)
+);;  
+} // end run _6JoruTt0zcz_58tnnEJzOO1  
   
   
 break; // end when _6EpJ2KoyuiU_8s0JUiNhxei #3 of objswitch _8kMEBcfqeWz_5JRhiMICep2  
