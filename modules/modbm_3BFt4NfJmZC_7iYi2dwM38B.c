@@ -5359,7 +5359,7 @@ PLACEDFAILURE_BM(__LINE__,
   
 { // run _4G7iJdXK8IT_8oz8HiLEuGe  
 /*debug 1-arity value miniscan_json_extractor o_variable v_extractor o_vihset depth*/
-DBGPRINTF("1-arity value miniscan_json_extractor €%.9s o_variable=%s v_extractor=%s o_vihset=%s depth#%ld",
+DBGPRINTF_BM("1-arity value miniscan_json_extractor €%.9s o_variable=%s v_extractor=%s o_vihset=%s depth#%ld",
  "_4G7iJdXK8IT_8oz8HiLEuGe",
  objectdbg_BM( /*o_variable:*/_.o_7safxUAyjq9_7LcGUlnwwD1),
  OUTSTRVALUE_BM( /*v_extractor:*/_.v_9L1R3E9dI8L_6D8VI16BtDm),
@@ -5375,7 +5375,7 @@ DBGPRINTF("1-arity value miniscan_json_extractor €%.9s o_variable=%s v_extract
   
 { // run _7cSLFpnscio_8FATJyYSrAD  
 /*debug 1-arity value miniscan_json_extractor v_scanres o_variable v_extractor o_vihset depth*/
-DBGPRINTF("1-arity value miniscan_json_extractor €%.9s v_scanres=%s o_variable=%s v_extractor=%s o_vihset=%s depth#%ld",
+DBGPRINTF_BM("1-arity value miniscan_json_extractor €%.9s v_scanres=%s o_variable=%s v_extractor=%s o_vihset=%s depth#%ld",
  "_7cSLFpnscio_8FATJyYSrAD",
  OUTSTRVALUE_BM( /*v_scanres:*/_.v_5wKdFyGNJ5j_50nIjxm7LLY),
  objectdbg_BM( /*o_variable:*/_.o_7safxUAyjq9_7LcGUlnwwD1),
