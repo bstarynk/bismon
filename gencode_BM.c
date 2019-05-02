@@ -1390,8 +1390,10 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //miniscan_stmt°basiclo_assign
       ok = true;
       _.compatypob = _.vartypob;
     }
-  else if ((_.compatypob = miniscan_compatype_BM (_.vartypob, _.srctypob,
-                                                  CURFRAME_BM)) == BMP_value)
+  else if (_.vartypob == BMP_value
+           && (_.compatypob = miniscan_compatype_BM (_.vartypob, _.srctypob,
+                                                     CURFRAME_BM))
+           == BMP_value)
     ok = true;
   DBGPRINTF_BM
     ("miniscan_stmt°basiclo_assign end stmtob=%s ok=%s compatypob=%s",
