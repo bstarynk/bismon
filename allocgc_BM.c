@@ -35,7 +35,7 @@ initialize_garbage_collector_BM (void)
   mainthreadid_BM = pthread_self ();
   char thnambuf[16];
   memset (thnambuf, 0, sizeof (thnambuf));
-  snprintf (thnambuf, sizeof (thnambuf), "bismain-p%d", (int) getpid ());
+  snprintf (thnambuf, sizeof (thnambuf), "bismon-p%d", (int) getpid ());
   pthread_setname_np (mainthreadid_BM, thnambuf);
   atomic_init (&want_garbage_collection_BM, false);
   pthread_mutex_init (&allocationmutex_BM, NULL);
