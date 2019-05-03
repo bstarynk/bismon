@@ -365,6 +365,26 @@ fgmtimedblstring_BM (const char *fmt, double tidbl)
   return makestring_BM (buf);
 }                               /* end fgmtimedblstring_BM */
 
+const stringval_tyBM *
+prefixtofirstspacestring_BM (const char *str)
+{
+  if (!str)
+    return NULL;
+  const char *spa = strchr (str, ' ');
+  if (spa)
+    {
+      return makestringlen_BM (str, spa - str);
+    }
+  else
+    return makestring_BM (str);
+}                               /* end prefixtofirstspacestring_BM */
+
+// stringify the lastgitcommit
+const stringval_tyBM *
+lastgitcommitstring_BM (void)
+{
+  return makestring_BM (bismon_lastgitcommit);
+}                               /* end lastgitcommitstring_BM */
 
 
 ////////////////////////////////////////////////////////////////

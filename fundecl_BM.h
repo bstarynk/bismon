@@ -107,6 +107,8 @@ extern const stringval_tyBM *fgmtimestring_BM (const char *fmt, time_t ti);
 extern const stringval_tyBM *flocaltimedblstring_BM (const char *fmt,
                                                      double ti);
 extern const stringval_tyBM *fgmtimedblstring_BM (const char *fmt, double ti);
+// stringify a raw string, up to its first space character
+extern const stringval_tyBM *prefixtofirstspacestring_BM (const char *str);
 
 extern int lenstring_BM (const stringval_tyBM *);       // length in bytes
 extern const char *bytstring_BM (const stringval_tyBM *);
