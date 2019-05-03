@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3148 objects
+// for 3153 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -723,6 +723,18 @@ _6zj5YoW4CVg_7Az2Wsmlesm
 
 
 
+!(_3K56XQom2FS_63A0Vfg9OFc |=bismon_directory|
+!~ name (~ bismon_directory
+~)
+!@ 1556916977.069
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in the_system, gives the build directory"
+
+!)_3K56XQom2FS_63A0Vfg9OFc
+
+
+
 !(_5SuHVsFWhDn_02X6Mh32emC |=bismon_function|
 !~ name (~ bismon_function
 ~)
@@ -733,6 +745,54 @@ _6zj5YoW4CVg_7Az2Wsmlesm
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
 ~)
 !)_5SuHVsFWhDn_02X6Mh32emC
+
+
+
+!(_50H69VarX44_2PAlJEqjRBN |=bismon_gitid|
+!~ name (~ bismon_gitid
+~)
+!@ 1556916941.417
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in the_system, gives the full gitid"
+
+!)_50H69VarX44_2PAlJEqjRBN
+
+
+
+!(_4uDLyv3om8P_34ow5q1gVGO |=bismon_lastgitcommit|
+!~ name (~ bismon_lastgitcommit
+~)
+!@ 1556917884.842
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in the_system, gives the last git commit"
+
+!)_4uDLyv3om8P_34ow5q1gVGO
+
+
+
+!(_4D4kCFt8Nis_8EWgKMYUxq9 |=bismon_time|
+!~ name (~ bismon_time
+~)
+!@ 1556916882.585
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in the_system, gives the timestamp in seconds"
+
+!)_4D4kCFt8Nis_8EWgKMYUxq9
+
+
+
+!(_4ZtOeXua93M_4fBK54ih15X |=bismon_timestamp|
+!~ name (~ bismon_timestamp
+~)
+!@ 1556916837.232
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in the_system, gives the timestamp"
+
+!)_4ZtOeXua93M_4fBK54ih15X
 
 
 

@@ -1146,6 +1146,7 @@ main (int argc, char **argv)
     add_contributors_after_load_BM ();
   if (count_removed_contributors_bm > 0)
     remove_contributors_after_load_BM ();
+  fill_the_system_with_bismon_BM (NULL);
   if (module_to_emit_bm != NULL)
     do_emit_module_from_main_BM ();
   if (count_init_afterload_bm > 0)

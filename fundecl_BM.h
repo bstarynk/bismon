@@ -1209,6 +1209,13 @@ extern const char *debug_outstr_value_BM (const value_tyBM val,
                                           int curdepth);
 
 ////////////////
+// fill `the_system` object with various `bismon_*` attributes
+extern void fill_the_system_with_bismon_BM (struct stackframe_stBM *stkf);
+// forget in  `the_system` object the `bismon_*` attributes added above
+extern void forget_the_system_with_bismon_BM (struct stackframe_stBM *stkf);
+
+
+////////////////
 extern void load_initial_BM (const char *dirname);
 extern void load_addtodo_BM (const closure_tyBM * clos);
 

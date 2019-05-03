@@ -1664,6 +1664,75 @@ objstrbufferoutputjsoncompactedvaluepayl_BM (objectval_tyBM * objarg,
 
 
 void
+fill_the_system_with_bismon_BM (struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_the_system = BMK_4ggW2XwfXdp_1XRSvOvZqTC;
+  objectval_tyBM *k_bismon_directory = BMK_3K56XQom2FS_63A0Vfg9OFc;
+  objectval_tyBM *k_bismon_gitid = BMK_50H69VarX44_2PAlJEqjRBN;
+  objectval_tyBM *k_bismon_lastgitcommit = BMK_4uDLyv3om8P_34ow5q1gVGO;
+  objectval_tyBM *k_bismon_time = BMK_4D4kCFt8Nis_8EWgKMYUxq9;
+  objectval_tyBM *k_bismon_timestamp = BMK_4ZtOeXua93M_4fBK54ih15X;
+  LOCALFRAME_BM (stkf, /*descr: */ k_the_system,
+                 objectval_tyBM * sysob;
+                 value_tyBM val;
+    );
+  _.sysob = k_the_system;
+  ///////
+  objlock_BM (_.sysob);
+  {
+    /// bismon_directory
+    _.val = makestring_BM (bismon_directory);
+    objputattr_BM (_.sysob, k_bismon_directory, _.val);
+    /// bismon_gitid
+    _.val = makestring_BM (bismon_gitid);
+    objputattr_BM (_.sysob, k_bismon_gitid, _.val);
+    /// bismon_lastgitcommit
+    _.val = makestring_BM (bismon_lastgitcommit);
+    objputattr_BM (_.sysob, k_bismon_lastgitcommit, _.val);
+    /// bismon_time
+    _.val = taggedint_BM (bismon_timelong);
+    objputattr_BM (_.sysob, k_bismon_time, _.val);
+    /// bismon_timestamp
+    _.val = makestring_BM (bismon_timestamp);
+    objputattr_BM (_.sysob, k_bismon_timestamp, _.val);
+  }
+  objunlock_BM (_.sysob);
+  ////////
+}                               /* end fill_the_system_with_bismon_BM */
+
+
+
+
+void
+forget_the_system_with_bismon_BM (struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_the_system = BMK_4ggW2XwfXdp_1XRSvOvZqTC;
+  objectval_tyBM *k_bismon_directory = BMK_3K56XQom2FS_63A0Vfg9OFc;
+  objectval_tyBM *k_bismon_gitid = BMK_50H69VarX44_2PAlJEqjRBN;
+  objectval_tyBM *k_bismon_lastgitcommit = BMK_4uDLyv3om8P_34ow5q1gVGO;
+  objectval_tyBM *k_bismon_time = BMK_4D4kCFt8Nis_8EWgKMYUxq9;
+  objectval_tyBM *k_bismon_timestamp = BMK_4ZtOeXua93M_4fBK54ih15X;
+  LOCALFRAME_BM (stkf, /*descr: */ k_the_system,
+                 objectval_tyBM * sysob;
+                 value_tyBM val;
+    );
+  _.sysob = k_the_system;
+  ///////
+  objlock_BM (_.sysob);
+  {
+    objremoveattr_BM (_.sysob, k_bismon_directory);
+    objremoveattr_BM (_.sysob, k_bismon_gitid);
+    objremoveattr_BM (_.sysob, k_bismon_lastgitcommit);
+    objremoveattr_BM (_.sysob, k_bismon_time);
+    objremoveattr_BM (_.sysob, k_bismon_timestamp);
+  }
+  objunlock_BM (_.sysob);
+}                               /* end forget_the_system_with_bismon_BM */
+
+
+
+
+void
 writefencodedc_BM (FILE * fil, const char *str, ssize_t bytelen)
 {
   if (!fil)
