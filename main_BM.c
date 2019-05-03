@@ -2118,6 +2118,7 @@ give_prog_version_BM (const char *progname)
 {
   printf ("%s: version information\n", progname);
   printf ("\t timestamp: %s\n", bismon_timestamp);
+  printf ("\t git id: %s\n", bismon_gitid);
   printf ("\t last git commit: %s\n", bismon_lastgitcommit);
   printf ("\t last git tag: %s\n", bismon_lastgittag);
   printf ("\t source checksum: %s\n", bismon_checksum);
