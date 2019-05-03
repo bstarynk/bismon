@@ -726,10 +726,14 @@ _6zj5YoW4CVg_7Az2Wsmlesm
 !(_3K56XQom2FS_63A0Vfg9OFc |=bismon_directory|
 !~ name (~ bismon_directory
 ~)
-!@ 1556916977.069
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1556920074.888
+!$_9bCobYhqBV5_5tIWuHnUPMX |=basiclo_constant_object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "in the_system, gives the build directory"
+!: _3pQnBS9ZjkQ_0uGmqUUhAum |=chunk|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum ( _3K56XQom2FS_63A0Vfg9OFc)
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_4T8am97muLl_5969SR22Ecq
 
 !)_3K56XQom2FS_63A0Vfg9OFc
 
@@ -751,10 +755,14 @@ _6zj5YoW4CVg_7Az2Wsmlesm
 !(_50H69VarX44_2PAlJEqjRBN |=bismon_gitid|
 !~ name (~ bismon_gitid
 ~)
-!@ 1556916941.417
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1556920080.694
+!$_9bCobYhqBV5_5tIWuHnUPMX |=basiclo_constant_object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "in the_system, gives the full gitid"
+!: _3pQnBS9ZjkQ_0uGmqUUhAum |=chunk|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum ( _50H69VarX44_2PAlJEqjRBN)
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_4T8am97muLl_5969SR22Ecq
 
 !)_50H69VarX44_2PAlJEqjRBN
 
@@ -763,10 +771,14 @@ _6zj5YoW4CVg_7Az2Wsmlesm
 !(_4uDLyv3om8P_34ow5q1gVGO |=bismon_lastgitcommit|
 !~ name (~ bismon_lastgitcommit
 ~)
-!@ 1556917884.842
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1556920089.491
+!$_9bCobYhqBV5_5tIWuHnUPMX |=basiclo_constant_object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "in the_system, gives the last git commit"
+!: _3pQnBS9ZjkQ_0uGmqUUhAum |=chunk|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum ( _4uDLyv3om8P_34ow5q1gVGO)
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_4T8am97muLl_5969SR22Ecq
 
 !)_4uDLyv3om8P_34ow5q1gVGO
 
@@ -775,10 +787,15 @@ _6zj5YoW4CVg_7Az2Wsmlesm
 !(_4D4kCFt8Nis_8EWgKMYUxq9 |=bismon_time|
 !~ name (~ bismon_time
 ~)
-!@ 1556916882.585
-!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!@ 1556920144.451
+!$_9bCobYhqBV5_5tIWuHnUPMX |=basiclo_constant_object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "in the_system, gives the timestamp in seconds"
+!: _3pQnBS9ZjkQ_0uGmqUUhAum |=chunk|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _4D4kCFt8Nis_8EWgKMYUxq9  ":*/(("  "intptr_t" 
+  ")"  "bismon_timelong"  ")")
+!: _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_0vgCFjXblkx_4zCMhMAWjVK
 
 !)_4D4kCFt8Nis_8EWgKMYUxq9
 
