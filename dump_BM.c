@@ -477,7 +477,9 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   _.tempathv =
     sprintfstring_BM ("%s+%s%%", bytstring_BM (_.pathv), randidbuf);
   _.backupv = sprintfstring_BM ("%s~", bytstring_BM (_.pathv));
-  spfil = fopen (bytstring_BM (_.tempathv), "w");
+  if (!access (bytstring_BM (_.tempathv), F_OK))
+    remove (bytstring_BM (_.tempathv));
+  spfil = fopen (bytstring_BM (_.tempathv), "w+");
   if (!spfil)
     FATAL_BM ("dump_emit_space_BM cannot open %s (%m)",
               bytstring_BM (_.pathv));
@@ -666,17 +668,17 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
                 send3_BM (_.curval, BMP_dump_value,
                           CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
               if (!_.dumpres || objstrbufferlengthpayl_BM (_.bufob) == 0)
-                fputs ("!& __\n", spfil);
+                fputs ("\n!& __ ", spfil);
               else
                 {
-                  fputs ("!& ", spfil);
+                  fputs ("\n!& ", spfil);
                   fputs (objstrbufferbytespayl_BM (_.bufob), spfil);
-                  fputc ('\n', spfil);
+                  fputc (' ', spfil);
                 }
             }
           else
             {
-              fputs ("!& __\n", spfil);
+              fputs ("\n!& __ ", spfil);
             }
         }
     }
@@ -689,6 +691,8 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
       fputs (objstrbufferbytespayl_BM (_.bufob), spfil);
       fputc ('\n', spfil);
     }
+  else
+    fputc ('\n', spfil);
   fprintf (spfil, "!)%s\n", curobjid);
   fputc ('\n', spfil);
   fputc ('\n', spfil);

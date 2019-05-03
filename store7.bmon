@@ -25,9 +25,10 @@ _8lV53mLyu1H_3Z1SI8wDBK1
 !@ 1528978855.208
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !# 3
-!&  "aaa"
-!&  "Ab"
-!&  "aab"
+
+!&  "aaa" 
+!&  "Ab" 
+!&  "aab" 
 !)_3URdyE0oa4Z_3oXj45Or0rB
 
 
@@ -43,7 +44,8 @@ _8lV53mLyu1H_3Z1SI8wDBK1
  [ 
  _3URdyE0oa4Z_3oXj45Or0rB _0se0A3BDiXN_9v8gQ1Rzdtr _0DcIN3EYe3y_7cRpBDYhw3s ]
 !# 1
-!& _0DcIN3EYe3y_7cRpBDYhw3s
+
+!& _0DcIN3EYe3y_7cRpBDYhw3s 
 !)_0se0A3BDiXN_9v8gQ1Rzdtr
 
 
@@ -53,6 +55,7 @@ _8lV53mLyu1H_3Z1SI8wDBK1
 ~)
 !@ 1504241958.640
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+
 !)_0DcIN3EYe3y_7cRpBDYhw3s
 
 
@@ -62,6 +65,7 @@ _8lV53mLyu1H_3Z1SI8wDBK1
 ~)
 !@ 1504241958.640
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+
 !)_5a7gOTbvw4I_6PzXru7uInx
 
 
@@ -71,6 +75,7 @@ _8lV53mLyu1H_3Z1SI8wDBK1
 !$_0VBDbV4Glj9_49SjNYEwwJb |=chariot_project_class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the Chariot 2Q2019 proof-of-concept demo project hello-kernel"
+
 !)_3IlTxec0j1J_546TPSp9NXm
 
 
