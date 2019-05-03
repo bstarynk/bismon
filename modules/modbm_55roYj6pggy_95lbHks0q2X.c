@@ -155,6 +155,29 @@ DBGPRINTF_BM("restchariot2q19-httphandler start €%.9s v_restpath=%s o_webex=%s
  objectdbg_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx)); 
 } // end run _0nVw3Ihw1bt_675oHgyNYMg 
  
+ 
+ 
+startblock__2MGfs8R6LWT_3TXgL3gYxuP: __attribute__((unused)); 
+{ /* +block _2MGfs8R6LWT_3TXgL3gYxuP *//* !endingblock _2MGfs8R6LWT_3TXgL3gYxuP */  
+goto endblock__2MGfs8R6LWT_3TXgL3gYxuP;  
+endblock__2MGfs8R6LWT_3TXgL3gYxuP: ;  
+} /*-block _2MGfs8R6LWT_3TXgL3gYxuP */ 
+ 
+ 
+{ // run _2j4uW6uN7uf_8DOo7iGaCMr 
+/*debug restchariot2q19-httphandler ending v_restpath o_webex*/
+DBGPRINTF_BM("debug restchariot2q19-httphandler ending €%.9s v_restpath=%s o_webex=%s (L%u, lin=%u, col=%u, last'%s')***\n%s\n***\n",
+ "_2j4uW6uN7uf_8DOo7iGaCMr",
+ OUTSTRVALUE_BM( /*v_restpath:*/_.v_6QhNRfe1Cte_0niVlWfAlmO),
+ objectdbg_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx),
+ objstrbufferlengthpayl_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx),
+ objstrbufferlinecountpayl_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx),
+ objstrbuffercolumnpayl_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx),
+ objstrbuffercurrentlastlinepayl_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx),
+ objstrbufferbytespayl_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx)
+);; 
+} // end run _2j4uW6uN7uf_8DOo7iGaCMr 
+ 
 /* !endingblock _8CB2Do4OiFy_3dgoJSOayb7 */ 
 goto endblock__8CB2Do4OiFy_3dgoJSOayb7; 
 endblock__8CB2Do4OiFy_3dgoJSOayb7: ; 
