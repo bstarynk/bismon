@@ -669,8 +669,12 @@ initialize_newgui_BM (const char *builderfile, const char *cssfile)
                         (lowervboxvalues_newgui_bm),
                         lowerlab, BOXNOEXPAND_BM, BOXNOFILL_BM, 2);
     gtk_paned_set_position (GTK_PANED (paned), 220);
-    gtk_window_set_title (GTK_WINDOW
-                          (windowvalues_newgui_bm), "bismon values");
+    {
+      char titlebuf[80];
+      snprintf (titlebuf, sizeof (titlebuf), "%s values",
+                basename_BM (myprogname_BM));
+      gtk_window_set_title (GTK_WINDOW (windowvalues_newgui_bm), titlebuf);
+    }
     gtk_window_set_default_size (GTK_WINDOW
                                  (windowvalues_newgui_bm), 550, 620);
     g_signal_connect (windowvalues_newgui_bm,
@@ -678,7 +682,12 @@ initialize_newgui_BM (const char *builderfile, const char *cssfile)
     gtk_widget_show_all (GTK_WIDGET (windowvalues_newgui_bm));
   }
   ///
-  gtk_window_set_title (GTK_WINDOW (mainwin_BM), "new-bismon");
+  {
+    char titlebuf[80];
+    snprintf (titlebuf, sizeof (titlebuf), "new-%s",
+              basename_BM (myprogname_BM));
+    gtk_window_set_title (GTK_WINDOW (mainwin_BM), titlebuf);
+  }
   gtk_window_set_default_size (GTK_WINDOW (mainwin_BM), 780, 720);
   // perhaps run the GC twice a second
   g_timeout_add (500, guiperiodicgarbagecollection_BM, NULL);
@@ -2806,11 +2815,12 @@ make_obwin_newgui_BM (void)
      (cssprovider_newgui_bm), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
   GtkWidget *mainvbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
   gtk_container_add (GTK_CONTAINER (obwin), mainvbox);
-  char labelbuf[32];
+  char labelbuf[80];
   wincount++;
   newobw->obw_rank = wincount;
   memset (labelbuf, 0, sizeof (labelbuf));
-  snprintf (labelbuf, sizeof (labelbuf), "bismonob#%d", newobw->obw_rank);
+  snprintf (labelbuf, sizeof (labelbuf), "%s-ob#%d",
+            basename_BM (myprogname_BM), newobw->obw_rank);
   gtk_window_set_title (GTK_WINDOW (obwin), labelbuf);
   GtkWidget *tophbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL,
                                     2);
