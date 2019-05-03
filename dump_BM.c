@@ -686,10 +686,13 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
   /// dump the data
   _.dumpres = send2_BM ((const value_tyBM) _.curobj, BMP_dump_data,
                         CURFRAME_BM, _.dumpob, _.bufob);
-  if (_.dumpres && objstrbufferlengthpayl_BM (_.bufob) > 0)
+  unsigned buflen = objstrbufferlengthpayl_BM (_.bufob);
+  if (_.dumpres && buflen > 0)
     {
-      fputs (objstrbufferbytespayl_BM (_.bufob), spfil);
-      fputc ('\n', spfil);
+      const char *bufbytes = objstrbufferbytespayl_BM (_.bufob);
+      fputs (bufbytes, spfil);
+      if (bufbytes[buflen - 1] != '\n')
+        fputc ('\n', spfil);
     }
   else
     fputc ('\n', spfil);
