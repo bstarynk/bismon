@@ -19,7 +19,7 @@ BM_HEADERS= $(wildcard [a-z]*BM.h bismon.h)
 BM_CSOURCES= $(wildcard [a-z]*BM.c)
 
 
-.PHONY: all programs clean verbose indent count modules measure doc redump outdump checksum indentsinglemodule indenttempmodule jstimestamp
+.PHONY: all programs clean verbose indent count modules measure doc redump outdump checksum indentsinglemodule indenttempmodule jstimestamp chariotdemo-bismon
 
 
 
@@ -146,6 +146,14 @@ indent: .indent.pro
 ################
 jstimestamp: webroot/jscript/_timestamp.mjs
 
+chariotdemo-bismon: bismon programs modules jstimestamp
+	@echo For the Chariot 2Q2019 demo, wait for Bismon to start,
+	@echo ... then visit http://localhost:8086/ in your browser;
+	@echo ... In another terminal, export your BISMONCOOKIE as shown
+	@echo ... then, in your Chariot_metadata_example directory ...
+	@echo ... do make chariotdemo-verbose-hello
+	@sleep 1
+	./bismon --gui --web  -i init_chariotdemo
 
 webroot/jscript/_timestamp.mjs: $(wildcard *.c *.h *.cc *.bmon webroot/jscript/[a-z]*.js webroot/jscript/[a-z]*.mjs) | bismon
 	date +'// generated file $@ - DONT EDIT%n export const bismonjs_timestamp = "%c";%n export const bismonjs_timelong=%s.0;' > _timestamp.mjs-tmp
