@@ -152,6 +152,8 @@ chariotdemo-bismon: bismon programs modules jstimestamp
 	@echo ... In another terminal, export your BISMONCOOKIE as shown
 	@echo ... then, in your Chariot_metadata_example directory ...
 	@echo ... do make chariotdemo-verbose-hello
+	@echo '*******************************************'
+	@echo ; echo ; echo
 	@sleep 1
 	./bismon --gui --web  -i init_chariotdemo
 
