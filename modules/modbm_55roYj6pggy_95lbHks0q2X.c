@@ -162,6 +162,7 @@ startblock__2MGfs8R6LWT_3TXgL3gYxuP: __attribute__((unused));
 goto endblock__2MGfs8R6LWT_3TXgL3gYxuP;  
 endblock__2MGfs8R6LWT_3TXgL3gYxuP: ;  
 } /*-block _2MGfs8R6LWT_3TXgL3gYxuP */ 
+//+ #2/5 of block _8CB2Do4OiFy_3dgoJSOayb7 :: 
  
  
 { // run _2j4uW6uN7uf_8DOo7iGaCMr 
@@ -177,6 +178,34 @@ DBGPRINTF_BM("debug restchariot2q19-httphandler ending €%.9s v_restpath=%s o_w
  objstrbufferbytespayl_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx)
 );; 
 } // end run _2j4uW6uN7uf_8DOo7iGaCMr 
+ 
+ 
+if /*cond _13zkrw8w8YT_3erup1bBeRM*/  
+/*when _4fh1339mQXL_1tYitrVTLhj:*/ 
+ (/*objstrbufferlengthpayl*/(intptr_t) objstrbufferlengthpayl_BM (( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx))) { //body when _4fh1339mQXL_1tYitrVTLhj  
+{ // start cexpansion _0YYpqZYUPQg_2ju17tmSr0l - objwebexchangecompletepayl   
+/*objwebexchangecompletepayl:*/ objwebexchangecompletepayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), (/*chunk-constob HTTP_OK:*/(HTTP_OK)), ( "application/json"));   
+} // end cexpansion _0YYpqZYUPQg_2ju17tmSr0l - objwebexchangecompletepayl   
+  
+} //endwhen _4fh1339mQXL_1tYitrVTLhj  
+else { /*cond else _13zkrw8w8YT_3erup1bBeRM*/  
+{ // start out _0ymYxguPvQq_0vGvlue6w0I to o_webex  
+/*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, "failed reschariot2q19 request ");  
+/*out id:*/ char idbuf_0ymYxguPvQq_0vGvlue6w0I_n1[32]={0};  
+idtocbuf32_BM (objid_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), idbuf_0ymYxguPvQq_0vGvlue6w0I_n1);  
+objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, idbuf_0ymYxguPvQq_0vGvlue6w0I_n1);  
+/*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, "\n"); 
+} // end out _0ymYxguPvQq_0vGvlue6w0I 
+{ // start cexpansion _1NPp5SdcXSf_0aVDpQjnsb5 - objwebexchangecompletepayl  
+/*objwebexchangecompletepayl:*/ objwebexchangecompletepayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), (/*chunk-constob HTTP_NOT_FOUND:*/(HTTP_NOT_FOUND)), ( "text/plain"));  
+} // end cexpansion _1NPp5SdcXSf_0aVDpQjnsb5 - objwebexchangecompletepayl  
+} /*cond else _13zkrw8w8YT_3erup1bBeRM*/  
+/*endcond _13zkrw8w8YT_3erup1bBeRM*/ 
+ 
+ 
+/*return _5JZqcb5njTR_3TUFY6Ss0QU:*/  /*v_r:*/_.v_3qw9bnATIhq_8loBraLeXzQ = // returned 
+ /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx; 
+ goto epilog_5603DuLsw8z_4ztK4e4aYMp; 
  
 /* !endingblock _8CB2Do4OiFy_3dgoJSOayb7 */ 
 goto endblock__8CB2Do4OiFy_3dgoJSOayb7; 
