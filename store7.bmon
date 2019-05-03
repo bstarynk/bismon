@@ -18,6 +18,20 @@ _8lV53mLyu1H_3Z1SI8wDBK1
 
 
 
+!(_70DUbNp62lB_5JRG5at7rJu |=chariotproject_hellokernel_demo2Q2019|
+!~ name (~ chariotproject_hellokernel_demo2Q2019
+~)
+!@ 1556877656.215
+!$_0VBDbV4Glj9_49SjNYEwwJb |=chariot_project_class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the hello world kernel proof-of-concept demo project for CHARIOT 2Q2019"
+!: _1jJjA6LcXiX_1V4ZcXlje09 |=name|
+ "hellokernel-2q2019-CHARIOT-project"
+
+!)_70DUbNp62lB_5JRG5at7rJu
+
+
+
 !(_3URdyE0oa4Z_3oXj45Or0rB |=play_a|
 !~ name (~ play_a
 ~)
@@ -66,16 +80,6 @@ _8lV53mLyu1H_3Z1SI8wDBK1
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 
 !)_5a7gOTbvw4I_6PzXru7uInx
-
-
-
-!(_3IlTxec0j1J_546TPSp9NXm
-!@ 1555665972.646
-!$_0VBDbV4Glj9_49SjNYEwwJb |=chariot_project_class|
-!: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "the Chariot 2Q2019 proof-of-concept demo project hello-kernel"
-
-!)_3IlTxec0j1J_546TPSp9NXm
 
 
 

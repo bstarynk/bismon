@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3146 objects
+// for 3147 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -3493,6 +3493,18 @@ _0vgCFjXblkx_4zCMhMAWjVK
  "to give an entry inside some JSON object"
 
 !)_78X6jYDHXpW_3opwNmDlnqc
+
+
+
+!(_3tC5AFXTXB7_96qbnLbmViD |=json_entry_object|
+!~ name (~ json_entry_object
+~)
+!@ 1556899895.457
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "for JSON extraction, of a json entry whose"& " attribute is given by a Bismon object"
+
+!)_3tC5AFXTXB7_96qbnLbmViD
 
 
 
@@ -33167,12 +33179,12 @@ _6Y20GNUgnSZ_4LkbrcRMU8f))
 
 
 !(_52JVWS59lpI_9b8pXDI10Pr
-!@ 1556812542.949
+!@ 1556900412.926
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "when v_scanres not in {string object} fail //miniscan_json_extract json_entry"
 !: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
- * _8CWn68WqI7f_4AnphIqCGOA (  * _34djinarLyR_73Q8MXulzOy (  * _9uVMjU02S3p_5ojxFlLbSTx ( _5wKdFyGNJ5j_50nIjxm7LLY  * _0e54seiZEXF_1Myf620cHoB ( _4T8am97muLl_5969SR22Ecq))  * _9uVMjU02S3p_5ojxFlLbSTx ( _5wKdFyGNJ5j_50nIjxm7LLY  * _0e54seiZEXF_1Myf620cHoB ( _7T9OwSFlgov_0wVJaK1eZbn))))
+ * _8CWn68WqI7f_4AnphIqCGOA (  * _34djinarLyR_73Q8MXulzOy (  * _6GcgFxSMvWY_4vzl0zmI5FA (  * _9uVMjU02S3p_5ojxFlLbSTx ( _5wKdFyGNJ5j_50nIjxm7LLY  * _0e54seiZEXF_1Myf620cHoB ( _4T8am97muLl_5969SR22Ecq))  * _2hkw8gYIKg9_8Pw57ljopAd ( _13K9OfeXRZR_84nyRTtoj81  * _0e54seiZEXF_1Myf620cHoB ( _78X6jYDHXpW_3opwNmDlnqc)))  * _6GcgFxSMvWY_4vzl0zmI5FA (  * _9uVMjU02S3p_5ojxFlLbSTx ( _5wKdFyGNJ5j_50nIjxm7LLY  * _0e54seiZEXF_1Myf620cHoB ( _7T9OwSFlgov_0wVJaK1eZbn))  * _2hkw8gYIKg9_8Pw57ljopAd ( _13K9OfeXRZR_84nyRTtoj81  * _0e54seiZEXF_1Myf620cHoB ( _3tC5AFXTXB7_96qbnLbmViD)))))
 !# 1
 
 !& _7TlPdNzYigl_2djAOJ1SLjA 
@@ -39782,12 +39794,12 @@ _91gYAd2Lx86_5fBVoAhGY7b
 
 
 !(_6EpJ2KoyuiU_8s0JUiNhxei
-!@ 1556813312.877
+!@ 1556900107.492
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "when o_conn == json_entry  //miniscan_json_extractor"
+ "when o_conn \u2208 { json_entry json_entry_object } //miniscan_json_extractor"
 !: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
-_78X6jYDHXpW_3opwNmDlnqc
+ { _3tC5AFXTXB7_96qbnLbmViD _78X6jYDHXpW_3opwNmDlnqc }
 !# 11
 
 !& _6UhYwDJja6O_9INWrGwiLpv 
@@ -41216,10 +41228,10 @@ _41F1rKwGbaA_30OJWKsqNWy)
 
 
 !(_6UYrSn7piPM_3eYhLtoXlmL
-!@ 1555665882.983
+!@ 1556875942.380
 !$_5BAqWtmxAH6_9rCGuxiNbfc |=contributor_class|
 !: _5WVPhZvvSuo_7HL6xrPJQa0 |=chariot_demo2Q2019_projects|
- { _3IlTxec0j1J_546TPSp9NXm }
+ { _70DUbNp62lB_5JRG5at7rJu }
 
 !)_6UYrSn7piPM_3eYhLtoXlmL
 
