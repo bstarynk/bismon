@@ -199,13 +199,15 @@ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, idbuf_0
  
 { // run _0E4GHlCR1Ls_96gFoyMzQuS 
 /*warn o_webex failure /restchariot2q19-httphandler*/
-WARNPRINTF_BM ("restchariot2q19-httphandler failing €%.9s o_webex=%s '%s'",
- "_0E4GHlCR1Ls_96gFoyMzQuS",
- objectdbg_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx),
- objstrbufferbytespayl_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx));
-DBGBACKTRACEPRINTF_BM("restchariot2q19-httphandler failing €%.9s o_webex=%s",
- "_0E4GHlCR1Ls_96gFoyMzQuS",
- objectdbg_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx));
+WARNPRINTF_BM ("restchariot2q19-httphandler failing €%.9s v_restpath=%s o_webex=%s '%s'",
+"_0E4GHlCR1Ls_96gFoyMzQuS",
+OUTSTRVALUE_BM( /*v_restpath:*/_.v_6QhNRfe1Cte_0niVlWfAlmO),
+objectdbg_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx),
+objstrbufferbytespayl_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx));
+DBGBACKTRACEPRINTF_BM("restchariot2q19-httphandler failing €%.9s v_restpath=%s o_webex=%s",
+"_0E4GHlCR1Ls_96gFoyMzQuS",
+OUTSTRVALUE_BM( /*v_restpath:*/_.v_6QhNRfe1Cte_0niVlWfAlmO),
+objectdbg_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx));
 ; 
 } // end run _0E4GHlCR1Ls_96gFoyMzQuS 
 { // start cexpansion _1NPp5SdcXSf_0aVDpQjnsb5 - objwebexchangecompletepayl  
