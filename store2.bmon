@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3155 objects
+// for 3158 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -24593,13 +24593,15 @@ _8sdgc5Y7vPU_9Nvj5CtRqaQ
 
 
 !(_2MGfs8R6LWT_3TXgL3gYxuP
-!@ 1556867701.896
+!@ 1556989449.301
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "real-handling in restchariot2q19-httphandler"
 !: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _8CB2Do4OiFy_3dgoJSOayb7
+!# 1
 
+!& _7XXRhHCoi55_7tQfMacQDc9 
 !)_2MGfs8R6LWT_3TXgL3gYxuP
 
 
@@ -26434,6 +26436,22 @@ _41F1rKwGbaA_30OJWKsqNWy
 _2RUj1oyJ2rf_1ICZWr844Sv _6RpSqxAOt2p_35laNqeU6KH)
 
 !)_3hMno2PB1II_6IrKetMkipy
+
+
+
+!(_3ia9CB9OTLD_7qmCT1GJ3Ni
+!@ 1556989449.301
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "when /startchariot //restchariot2q19-httphandler"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_2MGfs8R6LWT_3TXgL3gYxuP
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+ * _1fcng9EiQCR_1gTNoUHZuas ( _6QhNRfe1Cte_0niVlWfAlmO  "/startchariot")
+!# 1
+
+!& _4K7kSR4Ut7B_6fF7sSUy1m0 
+!)_3ia9CB9OTLD_7qmCT1GJ3Ni
 
 
 
@@ -32381,6 +32399,31 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 !&  * _5P2fpxElfqT_7NlO7H9TYGI ( _932bmIlxKS0_1SsJjzk16n2  * _0e54seiZEXF_1Myf620cHoB ( _552MZuuVhpe_2uyn7QLERAb) _5D1GbyYKAgk_9ureezAahw3  * _6FWWN47uih2_5BhwEm9gnHu ( _6Y20GNUgnSZ_4LkbrcRMU8f) 
  _89nz0KaXXZh_8eSgMmqnK37) 
 !)_4JjCUHXOjeW_8MUi9o80MqQ
+
+
+
+!(_4K7kSR4Ut7B_6fF7sSUy1m0
+!@ 1556989449.301
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug when /startchariot o_webex /:restchariot2q19-httphandler"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " " _7KdDnQYcbeY_4LbTWNwFIFY 
+  " "  "/"  "startchariot"  " " 
+ _5JuT4FgNFFh_7McrTYeT3jx  " "  "/:"  "restchariot2q19" 
+  "-"  "httphandler"  "*/"  "\n" 
+  "DBGPRINTF_BM"  "(\"" _7KdDnQYcbeY_4LbTWNwFIFY  " " 
+  "/"  "startchariot"  " "  "\u20ac%." 
+  "9s"  " " _5JuT4FgNFFh_7McrTYeT3jx  "=%" 
+  "s"  " "  "/:"  "restchariot2q19" 
+  "-"  "httphandler"  "\","  "\n" 
+  " "  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "\"," 
+  "\n"  " "  "objectdbg_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5JuT4FgNFFh_7McrTYeT3jx)  "));"  "\n" 
+ " ")
+
+!)_4K7kSR4Ut7B_6fF7sSUy1m0
 
 
 
@@ -45186,6 +45229,20 @@ _2tEGXc8XwDB_3luMnYYAdZn
  "todo function of our tasklets in test_agenda"
 
 !)_7XDuHagbhi8_3V9zhBpbrrV
+
+
+
+!(_7XXRhHCoi55_7tQfMacQDc9
+!@ 1556989449.301
+!$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "cond on v_restpath // restchariot2q19-httphandler"
+!: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
+ 1
+!# 1
+
+!& _3ia9CB9OTLD_7qmCT1GJ3Ni 
+!)_7XXRhHCoi55_7tQfMacQDc9
 
 
 

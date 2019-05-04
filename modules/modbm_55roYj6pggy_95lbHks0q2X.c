@@ -158,7 +158,23 @@ DBGPRINTF_BM("restchariot2q19-httphandler start €%.9s v_restpath=%s o_webex=%s
  
  
 startblock__2MGfs8R6LWT_3TXgL3gYxuP: __attribute__((unused)); 
-{ /* +block _2MGfs8R6LWT_3TXgL3gYxuP *//* !endingblock _2MGfs8R6LWT_3TXgL3gYxuP */  
+{ /* +block _2MGfs8R6LWT_3TXgL3gYxuP */  
+if /*cond _7XXRhHCoi55_7tQfMacQDc9*/   
+/*when _3ia9CB9OTLD_7qmCT1GJ3Ni:*/  
+ (/*has_string:*/hasstring_BM(( /*v_restpath:*/_.v_6QhNRfe1Cte_0niVlWfAlmO),( "/startchariot"))) { //body when _3ia9CB9OTLD_7qmCT1GJ3Ni   
+   
+{ // run _4K7kSR4Ut7B_6fF7sSUy1m0   
+/*debug when /startchariot o_webex /:restchariot2q19-httphandler*/
+DBGPRINTF_BM("when /startchariot €%.9s o_webex=%s /:restchariot2q19-httphandler",
+ "_4K7kSR4Ut7B_6fF7sSUy1m0",
+ objectdbg_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx));
+ ;   
+} // end run _4K7kSR4Ut7B_6fF7sSUy1m0   
+   
+} //endwhen _3ia9CB9OTLD_7qmCT1GJ3Ni   
+/*endcond _7XXRhHCoi55_7tQfMacQDc9*/  
+  
+/* !endingblock _2MGfs8R6LWT_3TXgL3gYxuP */  
 goto endblock__2MGfs8R6LWT_3TXgL3gYxuP;  
 endblock__2MGfs8R6LWT_3TXgL3gYxuP: ;  
 } /*-block _2MGfs8R6LWT_3TXgL3gYxuP */ 
