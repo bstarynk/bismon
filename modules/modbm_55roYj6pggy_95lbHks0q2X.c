@@ -196,6 +196,18 @@ idtocbuf32_BM (objid_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), idbuf_0ymYxgu
 objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, idbuf_0ymYxguPvQq_0vGvlue6w0I_n1);  
 /*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, "\n"); 
 } // end out _0ymYxguPvQq_0vGvlue6w0I 
+ 
+{ // run _0E4GHlCR1Ls_96gFoyMzQuS 
+/*warn o_webex failure /restchariot2q19-httphandler*/
+WARNPRINTF_BM ("restchariot2q19-httphandler failing €%.9s o_webex=%s '%s'",
+ "_0E4GHlCR1Ls_96gFoyMzQuS",
+ objectdbg_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx),
+ objstrbufferbytespayl_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx));
+DBGBACKTRACEPRINTF_BM("restchariot2q19-httphandler failing €%.9s o_webex=%s",
+ "_0E4GHlCR1Ls_96gFoyMzQuS",
+ objectdbg_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx));
+; 
+} // end run _0E4GHlCR1Ls_96gFoyMzQuS 
 { // start cexpansion _1NPp5SdcXSf_0aVDpQjnsb5 - objwebexchangecompletepayl  
 /*objwebexchangecompletepayl:*/ objwebexchangecompletepayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), (/*chunk-constob HTTP_NOT_FOUND:*/(HTTP_NOT_FOUND)), ( "text/plain"));  
 } // end cexpansion _1NPp5SdcXSf_0aVDpQjnsb5 - objwebexchangecompletepayl  
