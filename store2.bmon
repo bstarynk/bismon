@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3158 objects
+// for 3161 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -472,6 +472,36 @@ _6zj5YoW4CVg_7Az2Wsmlesm
 ~: _6DdZwyaWLyK_7tS2BmECOJ0  % _2CKEpke8P0q_8s0Vli5gjxM ()
 ~)
 !)_12QTszi1FF0_5S77twbSETI
+
+
+
+!(_6rqacMdYDSJ_0C6DWcO4C0t |=basiclo_label|
+!~ name (~ basiclo_label
+~)
+!@ 1557010732.194
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "label in generated C code, emitted with emit_label selector"
+!: _4rz1Bi4weGz_8Y03gU81cRL |=see|
+_7rJLemfzAk2_3B7wzh3wwTy
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+!)_6rqacMdYDSJ_0C6DWcO4C0t
+
+
+
+!(_4B1KLXz7HLh_2nwUhwCUcU4 |=basiclo_labeled_block|
+!~ name (~ basiclo_labeled_block
+~)
+!@ 1557010935.655
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "subclass for labeled block, should have a label"
+!: _4rz1Bi4weGz_8Y03gU81cRL |=see|
+_3XBrePAliOo_37VlAqBsb5C
+!~ class (~ |supercl basiclo_block:| _4bYUiDmxrKK_6nPPlEl8y8x
+~)
+!)_4B1KLXz7HLh_2nwUhwCUcU4
 
 
 
@@ -1720,6 +1750,18 @@ _7gnMvoTqaQY_3kAwj2rwZEM
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 
 !)_8dgEp1oxLMz_5iGP2Eq1wn7
+
+
+
+!(_7rJLemfzAk2_3B7wzh3wwTy |=emit_label|
+!~ name (~ emit_label
+~)
+!@ 1557010725.182
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "selector to emit label of signature <label (o_modgen o_routprep depth)"
+
+!)_7rJLemfzAk2_3B7wzh3wwTy
 
 
 
