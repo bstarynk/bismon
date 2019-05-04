@@ -45,117 +45,117 @@ extern "C"
 #define SERIALDIGITS_BM 11
 #define SERIALBASE_BM 62
 
-  typedef uint32_t hash_tyBM;
+typedef uint32_t hash_tyBM;
 
-  typedef uint64_t serial63_tyBM;
+typedef uint64_t serial63_tyBM;
 
-  struct rawid_stBM
-  {
-    serial63_tyBM id_hi;
-    serial63_tyBM id_lo;
-  };
-  typedef struct rawid_stBM rawid_tyBM;
+struct rawid_stBM
+{
+  serial63_tyBM id_hi;
+  serial63_tyBM id_lo;
+};
+typedef struct rawid_stBM rawid_tyBM;
 
 
-  static inline bool validserial63_BM (serial63_tyBM s);
-  extern serial63_tyBM randomserial63_BM (void);
+static inline bool validserial63_BM (serial63_tyBM s);
+extern serial63_tyBM randomserial63_BM (void);
 #if __cplusplus
-  extern int serial63tocbuf16_BM (serial63_tyBM s, char cbuf[]);
+extern int serial63tocbuf16_BM (serial63_tyBM s, char cbuf[]);
 #else
-  extern int serial63tocbuf16_BM (serial63_tyBM s, char cbuf[static 16]);
+extern int serial63tocbuf16_BM (serial63_tyBM s, char cbuf[static 16]);
 #endif
 
-  extern serial63_tyBM parse_serial63_BM (const char *buf, const char **pend);
-  static inline unsigned bucknumserial63_BM (serial63_tyBM s);
+extern serial63_tyBM parse_serial63_BM (const char *buf, const char **pend);
+static inline unsigned bucknumserial63_BM (serial63_tyBM s);
 
-  extern rawid_tyBM parse_rawid_BM (const char *buf, const char **pend);
-  extern rawid_tyBM randomid_BM (void);
-  static inline bool validid_BM (rawid_tyBM id);
-  static inline hash_tyBM hashid_BM (rawid_tyBM id);
-  static inline int cmpid_BM (rawid_tyBM id1, rawid_tyBM id2);
-  static inline bool equalid_BM (rawid_tyBM id1, rawid_tyBM id2);
+extern rawid_tyBM parse_rawid_BM (const char *buf, const char **pend);
+extern rawid_tyBM randomid_BM (void);
+static inline bool validid_BM (rawid_tyBM id);
+static inline hash_tyBM hashid_BM (rawid_tyBM id);
+static inline int cmpid_BM (rawid_tyBM id1, rawid_tyBM id2);
+static inline bool equalid_BM (rawid_tyBM id1, rawid_tyBM id2);
 #if __cplusplus
-  extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[]);
+extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[]);
 #else
-  extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32]);
+extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32]);
 #endif
 // to be called from debugger
 // actually the objectdbg* functions use some static thread-local buffer
-  extern const char *iddbg_BM (rawid_tyBM id);  // non reentrant!
+extern const char *iddbg_BM (rawid_tyBM id);  // non reentrant!
 
-  extern const char *iddbg1_BM (rawid_tyBM id); // non reentrant!
+extern const char *iddbg1_BM (rawid_tyBM id); // non reentrant!
 
-  extern const char *iddbg2_BM (rawid_tyBM id); // non reentrant!
-
-
-  bool validserial63_BM (serial63_tyBM s)
-  {
-    return (s > MINSERIAL_BM && s < MAXSERIAL_BM);
-  }                             /* end validserial63_BM */
+extern const char *iddbg2_BM (rawid_tyBM id); // non reentrant!
 
 
-  unsigned bucknumserial63_BM (serial63_tyBM s)
-  {
-    return s / (DELTASERIAL_BM / MAXBUCKETS_BM);
-  }
-
-  bool validid_BM (rawid_tyBM id)
-  {
-    return (validserial63_BM (id.id_hi) && validserial63_BM (id.id_lo));
-  }                             /* end validid_BM */
+bool validserial63_BM (serial63_tyBM s)
+{
+  return (s > MINSERIAL_BM && s < MAXSERIAL_BM);
+}                             /* end validserial63_BM */
 
 
-  hash_tyBM hashid_BM (rawid_tyBM id)
-  {
-    if (!validid_BM (id))
-      return 0;
-    hash_tyBM h = (id.id_hi % 1073741939) ^ (id.id_lo % 596789351);
-    if (h == 0)
-      h = (id.id_hi & 0xffffff) + (id.id_lo & 0x3ffffff) + 17;
-    ASSERT_BM (h > 0);
-    return h;
-  }                             /* end hashid_BM */
+unsigned bucknumserial63_BM (serial63_tyBM s)
+{
+  return s / (DELTASERIAL_BM / MAXBUCKETS_BM);
+}
+
+bool validid_BM (rawid_tyBM id)
+{
+  return (validserial63_BM (id.id_hi) && validserial63_BM (id.id_lo));
+}                             /* end validid_BM */
 
 
-  bool equalid_BM (rawid_tyBM id1, rawid_tyBM id2)
-  {
-    return id1.id_hi == id2.id_hi && id1.id_lo == id2.id_lo;
-  }                             /* end equalid_BM */
+hash_tyBM hashid_BM (rawid_tyBM id)
+{
+  if (!validid_BM (id))
+    return 0;
+  hash_tyBM h = (id.id_hi % 1073741939) ^ (id.id_lo % 596789351);
+  if (h == 0)
+    h = (id.id_hi & 0xffffff) + (id.id_lo & 0x3ffffff) + 17;
+  ASSERT_BM (h > 0);
+  return h;
+}                             /* end hashid_BM */
 
 
-  int cmpid_BM (rawid_tyBM id1, rawid_tyBM id2)
-  {
-    if (id1.id_hi == id2.id_hi)
-      {
-        if (id1.id_lo == id2.id_lo)
-          return 0;
-        else if (id1.id_lo < id2.id_lo)
-          return -1;
-        else
-          return +1;
-      }
-    else if (id1.id_hi < id2.id_hi)
-      return -1;
-    else
-      return +1;
-  }                             /* end cmpid_BM */
+bool equalid_BM (rawid_tyBM id1, rawid_tyBM id2)
+{
+  return id1.id_hi == id2.id_hi && id1.id_lo == id2.id_lo;
+}                             /* end equalid_BM */
+
+
+int cmpid_BM (rawid_tyBM id1, rawid_tyBM id2)
+{
+  if (id1.id_hi == id2.id_hi)
+    {
+      if (id1.id_lo == id2.id_lo)
+        return 0;
+      else if (id1.id_lo < id2.id_lo)
+        return -1;
+      else
+        return +1;
+    }
+  else if (id1.id_hi < id2.id_hi)
+    return -1;
+  else
+    return +1;
+}                             /* end cmpid_BM */
 
 
 
 #ifdef __cplusplus
 
-  struct IdLess_BM
+struct IdLess_BM
+{
+  inline bool                 //
+
+  operator                                       () (const rawid_tyBM &
+      id1,
+      const rawid_tyBM &
+      id2)
   {
-    inline bool                 //
-     
-      operator                                       () (const rawid_tyBM &
-                                                         id1,
-                                                         const rawid_tyBM &
-                                                         id2)
-    {
-      return cmpid_BM (id1, id2) < 0;
-    };
-  };                            // end IdLess_BM
+    return cmpid_BM (id1, id2) < 0;
+  };
+};                            // end IdLess_BM
 
 };                              /* end extern "C" */
 #endif /*__cplusplus*/
