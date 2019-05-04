@@ -1856,7 +1856,12 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         objputclass_BM (_.jsonob, k_json_object);
         objputattr_BM (_.jsonob, k_in, _.webexob);
         if (objputjansjsoncstrpayl_BM (_.jsonob, bldata))
-          wexda->webx_jsonobj = _.jsonob;
+          {
+            wexda->webx_jsonobj = _.jsonob;
+            DBGPRINTF_BM
+              ("do_dynamic_onion webexob %s with jsonob %s bldata:\n***\n%s\n****\n",
+               objectdbg_BM (_.webexob), objectdbg_BM (_.jsonob), bldata);
+          }
         else
           WARNPRINTF_BM
             ("failed to put JSON object in  webexob %s reqpath '%s' for size %ld\n"
