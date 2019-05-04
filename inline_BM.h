@@ -1169,6 +1169,14 @@ stringcast_BM (const value_tyBM v)
   return isstring_BM (v) ? (const stringval_tyBM *) v : NULL;
 }                               /* end stringcast_BM */
 
+bool
+hasstring_BM (const value_tyBM v, const char *str)
+{
+  if (!isstring_BM (v) || !str)
+    return false;
+  return !strcmp (bytstring_BM ((const stringval_tyBM*)v), str);
+}                               /* end hasstring_BM */
+
 ////////////////
 bool
 isdouble_BM (const value_tyBM v)

@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3154 objects
+// for 3155 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -2672,6 +2672,27 @@ _0vgCFjXblkx_4zCMhMAWjVK
  "for out, emitting the first half of an objid"
 
 !)_2u9YAFmxxSj_1WizQTT1BHQ
+
+
+
+!(_1fcng9EiQCR_1gTNoUHZuas |=has_string|
+!~ name (~ has_string
+~)
+!@ 1556988409.145
+!$_2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "has_string(<val> <str>) test if val is the string str"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _5EEITf6IFH7_4DbKG99zcPW _4ilpkwNBw3O_3l8ykbxbBom ]
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _1fcng9EiQCR_1gTNoUHZuas  ":*/"  "hasstring_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _5EEITf6IFH7_4DbKG99zcPW)  "),(" 
+ * _5ucAZimYynS_4VA0XHvr1nW ( _4ilpkwNBw3O_3l8ykbxbBom) 
+  "))")
+!: _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+
+!)_1fcng9EiQCR_1gTNoUHZuas
 
 
 
@@ -13986,10 +14007,12 @@ _41F1rKwGbaA_30OJWKsqNWy
 
 
 !(_0nVw3Ihw1bt_675oHgyNYMg
-!@ 1555651715.696
+!@ 1556988095.732
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "debug  restchariot2q19-httphandler start v_restpath o_webex"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_8CB2Do4OiFy_3dgoJSOayb7
 !: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  "  "  "restchariot2q19" 
   "-"  "httphandler"  " "  "start" 

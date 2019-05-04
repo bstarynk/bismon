@@ -93,6 +93,7 @@ extern void *allocgcty_BM (unsigned type, size_t sz);
 
 
 static inline bool isstring_BM (const value_tyBM v);
+static inline bool hasstring_BM (const value_tyBM v, const char *str);
 static inline const stringval_tyBM *stringcast_BM (const value_tyBM);
 extern hash_tyBM stringhash_BM (const char *str);
 extern hash_tyBM stringhashlen_BM (const char *str, long len);
