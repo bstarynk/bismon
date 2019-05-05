@@ -94,6 +94,7 @@ id_BM-g.o: id_BM.c id_BM.h
 
 clean:
 	[ -f build.ninja ] && $(NINJA) -t clean
+	if ls *.log ; then tar cvzf /tmp/bismon-prev-log.tar.gz _*.log; fi
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
 	$(RM) .ninja* *mkd  _cflagsmodule.mk
 	$(RM) build.ninja
