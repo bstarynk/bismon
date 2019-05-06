@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3170 objects
+// for 3171 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -20953,6 +20953,16 @@ _5XGKMg1Kevs_6eAce4ib9XW
 
 
 
+!(_1YP8aDi1ir7_7Xl7w6iGghW
+!@ 1553767866.407
+!$_2dMQFZCLvzX_28pgF8Y8V5S |=jsmodule_object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "bismon-root-jsmodule"
+
+!)_1YP8aDi1ir7_7Xl7w6iGghW
+
+
+
 !(_1YVsF8Amrcw_3caDbRlGQte
 !@ 1536226098.268
 !$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
@@ -24128,7 +24138,7 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 !(_2CbZoFeBvMY_65RpOWAwrai
-!@ 1557133154.999
+!@ 1557052544.688
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of emit_label\u00b0basiclo_jsonex_label"
