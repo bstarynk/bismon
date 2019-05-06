@@ -1660,7 +1660,7 @@ locked_4L5rTNmbMca_9wVIMVwG8t7 = curlockedob_4L5rTNmbMca_9wVIMVwG8t7;
  /*i_rank:*/_.n_2tUYLYs6CDE_5SlPd7sgYtY = //assign _4aM1U57Pxe2_2xzqbw3ZDGo  
  /* val_to_int */ getint_BM(/*objgetattr:*/objgetattr_BM(( /*o_label:*/_.o_0H23AXQRcQ6_5Vw1gVzCjxh),( (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[124] /*!rank*/)))) ; 
   
-//+ #2/5 of lockobj _4L5rTNmbMca_9wVIMVwG8t7 ::  
+//+ #2/6 of lockobj _4L5rTNmbMca_9wVIMVwG8t7 ::  
  /*o_from:*/_.o_89nz0KaXXZh_8eSgMmqnK37 = //assign _1KKDoXE4Ig7_1Oh5lfmrA5H  
 /*val_to_object:*/objectcast_BM(/*objgetattr:*/objgetattr_BM(( /*o_label:*/_.o_0H23AXQRcQ6_5Vw1gVzCjxh),( (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[26] /*!from*/)))); 
   
@@ -1678,6 +1678,7 @@ DBGPRINTF_BM("emit_label°basiclo_jsonex_label €%.9s o_label=%s v_extractor=%s
 ; 
 } // end run _6KsXNJ7Y8GV_5sEZhkPmwhm 
   
+//+ #4/6 of lockobj _4L5rTNmbMca_9wVIMVwG8t7 ::  
 { // start out _3zlVg7hRDTb_3PT9yIoUL78 to o_modgen  
 /*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv, " labjsonx");  
 /*out_half_id:*/ char idbuf_3zlVg7hRDTb_3PT9yIoUL78_n1[32]={0};  
@@ -1687,6 +1688,10 @@ objstrbufferprintfpayl_BM ( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv, "%.12s", i
 /*out int:*/ objstrbufferprintfpayl_BM ( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv, "%lld", (long long)  /*i_rank:*/_.n_2tUYLYs6CDE_5SlPd7sgYtY);  
 /*out literal:*/ objstrbufferappendcstrpayl_BM ( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv, " "); 
 } // end out _3zlVg7hRDTb_3PT9yIoUL78 
+  
+/*return _9ujwvyJ1Xoi_9T5297PanEW:*/  /*v_r:*/_.v_3qw9bnATIhq_8loBraLeXzQ = // returned 
+ /*o_label:*/_.o_0H23AXQRcQ6_5Vw1gVzCjxh; 
+ goto epilog_09YrB2RcKY0_8qXAVUhGxat; 
   
 objunlock_BM (locked_4L5rTNmbMca_9wVIMVwG8t7), locked_4L5rTNmbMca_9wVIMVwG8t7 = NULL; 
 } } // end objlock _4L5rTNmbMca_9wVIMVwG8t7 
