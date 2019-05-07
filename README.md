@@ -328,3 +328,14 @@ specified in the [CHARIOT](http://chariotproject.eu/) grant).  The
 copyright notice is probably wrong: in generated files, it is not yet
 conforming to GPL expectations.  These details are pending bugs, but
 there are much more other bugs too.
+
+#### P.S.
+
+The author is fully aware of **several bugs** in this `bismon`
+system - a research project -, but correcting them is *not* a priority
+(since continuing the progressive bootstrap of *Bismon* is **much more
+important**, and is not yet achieved. The GTK interface is buggy *by
+design* and crashes often (that won't be corrected), and should be as
+quickly as possible replaced by a more usable web interface - and that
+is work in progress in mid 2019-). Please contact by email the author
+to get possible workarounds.
