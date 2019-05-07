@@ -4132,6 +4132,45 @@ PLACEDFAILURE_BM(__LINE__,
 } //endwhen _9BPjp8ame7V_0AzorRD9WNm     
 /*endcond _6cOi4TgZpEg_7mN9SsWpWte*/    
     
+ // objswitch _3WmrD9dWzVs_6l9CVwfdtYt when _3S5MXOVnhRg_2OUoTkvbDYP #4 statement:    
+ /*v_arg:*/_.v_4Q4WBLjAPTV_5WVLmhAvCJY = //assign _9dzhW0pXvXk_42iYvzbccd3     
+/*nodenthson:*/nodenthson_BM(( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe),( 1));    
+    
+ // objswitch _3WmrD9dWzVs_6l9CVwfdtYt when _3S5MXOVnhRg_2OUoTkvbDYP #5 statement:    
+ /*o_restype:*/_.o_0uATzRk8Ajt_6bIBwn6a86I = //assign _4reSlAwcFGJ_7dlcpvtEwM7     
+/*miniscan_expr:*/miniscan_expr_BM (( /*v_arg:*/_.v_4Q4WBLjAPTV_5WVLmhAvCJY), ( /*o_routprep:*/_.o_6RpSqxAOt2p_35laNqeU6KH), (/*add_int:*/(( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f) + ( 1))), ( /*o_stmt:*/_.o_34Qtvf1thwK_9rziG6sk6Vl), CURFRAME_BM);    
+    
+ // objswitch _3WmrD9dWzVs_6l9CVwfdtYt when _3S5MXOVnhRg_2OUoTkvbDYP #6 statement:    
+if /*cond _6cOi4TgZpEg_7mN9SsWpWte*/     
+/*when _9BPjp8ame7V_0AzorRD9WNm:*/    
+ (/*unequal_object:*/(( /*o_restype:*/_.o_0uATzRk8Ajt_6bIBwn6a86I) != ( (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[70] /*!string*/)))) { //body when _9BPjp8ame7V_0AzorRD9WNm     
+//failure _4HAZLawO9HO_91oo1k4Ajat      
+PLACEDFAILURE_BM(__LINE__,      
+          /*failreason:*/ (((value_tyBM) makesizednode_BM
+ (8U,/*make_node conn:*/( (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[130] /*!failure_type_error*/)), 
+ /*make_node 8 sons:*/ 
+( (constob_3BFt4NfJmZC_7iYi2dwM38B_BM[70] /*!string*/)), 
+ 
+( /*o_restype:*/_.o_0uATzRk8Ajt_6bIBwn6a86I), 
+ 
+( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe), 
+ 
+// make_node arg #4 
+(/*taggedint:*/ taggedint_BM ( /*ii:*/_.n_2W7Ckt2WxEM_4NVYgEWE73B)), 
+ 
+( /*o_stmt:*/_.o_34Qtvf1thwK_9rziG6sk6Vl), 
+ 
+( /*o_routprep:*/_.o_6RpSqxAOt2p_35laNqeU6KH), 
+ 
+(/*taggedint:*/ taggedint_BM ( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f)), 
+ 
+( /*o_from:*/_.o_89nz0KaXXZh_8eSgMmqnK37)))),
+                /*failplace:*/ ( /*modconst:*/(constob_3BFt4NfJmZC_7iYi2dwM38B_BM[67] /*|_4HAZLawO9HO_91oo1k4Ajat*/)),
+                ((struct stackframe_stBM *) &_));
+     
+} //endwhen _9BPjp8ame7V_0AzorRD9WNm     
+/*endcond _6cOi4TgZpEg_7mN9SsWpWte*/    
+    
     
 break; // end when _3S5MXOVnhRg_2OUoTkvbDYP #4 of objswitch _3WmrD9dWzVs_6l9CVwfdtYt    
     
