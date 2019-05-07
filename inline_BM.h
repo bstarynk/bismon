@@ -1174,7 +1174,7 @@ hasstring_BM (const value_tyBM v, const char *str)
 {
   if (!isstring_BM (v) || !str)
     return false;
-  return !strcmp (bytstring_BM ((const stringval_tyBM*)v), str);
+  return !strcmp (bytstring_BM ((const stringval_tyBM *) v), str);
 }                               /* end hasstring_BM */
 
 ////////////////

@@ -575,6 +575,18 @@ extern void objstrbuffernewlinepayl_BM (objectval_tyBM * obj);
 extern void objstrbufferencodedutf8payl_BM (objectval_tyBM * obj,
                                             const char *str, ssize_t bytelen);
 
+/// output into buffer `obj` the first `len` bytes of string `cstr`
+void
+objstrbufferappendstartstrpayl_BM (objectval_tyBM * obj, const char *cstr,
+                                   int len);
+
+/// output into buffer `obj` every line of `lines` with the given
+/// `prefix`; could be used to safely emit a C or C++ comment starting
+/// with a prefix like //!
+void
+objstrbufferoutputprefixlines_BM (objectval_tyBM * obj, const char *prefix,
+                                  const char *lines);
+
 extern void writefencodedutf8_BM (FILE * fil, const char *str,
                                   ssize_t bytelen);
 

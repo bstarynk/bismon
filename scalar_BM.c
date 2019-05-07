@@ -966,6 +966,47 @@ objstrbufferunsafeappendcstrpayl_BM (objectval_tyBM * obj, const char *cstr)
 }                               /* end objstrbufferunsafeappendcstr_BM  */
 
 
+static void
+objstrbufferunsafeappendstartstr_BM (objectval_tyBM * obj,
+                                     const char *cstr, int len)
+{
+  struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (obj);
+  if (!sbuf || !cstr)
+    return;
+  if (len < 0)
+    len = strlen (cstr);
+  ASSERT_BM (len <= strlen (cstr));
+  ASSERT_BM (sbuf->sbuf_dbuf);
+  size_t siz = sbuf->sbuf_size;
+  unsigned maxsiz = ((typedhead_tyBM *) sbuf)->rlen;
+  ASSERT_BM (siz > 0);
+  ASSERT_BM (sbuf->sbuf_curp >= sbuf->sbuf_dbuf
+             && sbuf->sbuf_curp < sbuf->sbuf_dbuf + sbuf->sbuf_size);
+  if (sbuf->sbuf_curp + len + 3 >= sbuf->sbuf_dbuf + sbuf->sbuf_size)
+    objstrbufferreservepayl_BM (obj, len + 2);
+  int nloffset = -1;
+  {
+    char *lastnlcstr = strrchr (cstr, '\n');
+    if (lastnlcstr)
+      nloffset = lastnlcstr - cstr;
+  }
+  memcpy (sbuf->sbuf_curp, cstr, len);
+  sbuf->sbuf_curp[len] = (char) 0;
+  if (nloffset >= 0)
+    {
+      sbuf->sbuf_lastnl = sbuf->sbuf_curp + nloffset;
+      for (char *pc = cstr; *pc; pc++)
+        if (*pc == '\n')
+          sbuf->sbuf_linecount++;
+    }
+  sbuf->sbuf_curp += len;
+  *sbuf->sbuf_curp = (char) 0;
+  if (maxsiz > 0 && sbuf->sbuf_curp - sbuf->sbuf_dbuf > maxsiz)
+    FATAL_BM ("strbufferappendstartstr overflow %ud for object buffer %s",
+              maxsiz, objectdbg_BM (obj));
+}                               /* end objstrbufferunsafeappendstartstr_BM  */
+
+
 void
 objstrbufferappendcstrpayl_BM (objectval_tyBM * obj, const char *cstr)
 {
@@ -977,7 +1018,27 @@ objstrbufferappendcstrpayl_BM (objectval_tyBM * obj, const char *cstr)
   if (!sbuf)
     return;
   objstrbufferunsafeappendcstrpayl_BM (obj, cstr);
-}                               /* end objstrbufferappendcstr_BM */
+}                               /* end objstrbufferappendcstrpayl_BM */
+
+
+void
+objstrbufferappendstartstrpayl_BM (objectval_tyBM * obj, const char *cstr,
+                                   int len)
+{
+  if (!objhasstrbufferpayl_BM (obj))
+    return;
+  if (!cstr || !cstr[0])
+    return;
+  size_t slen = strlen (cstr);
+  if (len < 0)
+    len = slen;
+  if (len > slen)
+    len = slen;
+  struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (obj);
+  if (!sbuf)
+    return;
+  objstrbufferunsafeappendstartstr_BM (obj, cstr, len);
+}                               /* end objstrbufferappendstartstrpayl_BM */
 
 
 void
@@ -1228,6 +1289,43 @@ objstrbufferencodedutf8payl_BM (objectval_tyBM * obj, const char *str,
         }
     }
 }                               /* end objstrbufferencodedutf8payl_BM */
+
+
+/// output into buffer `obj` every line of `lines` with the given
+/// `prefix`; could be used to safely emit a C or C++ comment starting
+/// with a prefix like //!
+void
+objstrbufferoutputprefixlines_BM (objectval_tyBM * obj, const char *prefix,
+                                  const char *lines)
+{
+  struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (obj);
+  if (!sbuf)
+    return;
+  if (!prefix)
+    return;
+  if (!lines)
+    return;
+  const char *eol = NULL;
+  for (const char *pc = lines; (eol = strchr (pc, '\n')), pc != NULL;
+       pc = eol)
+    {
+      objstrbufferappendcstrpayl_BM (obj, prefix);
+      if (eol)
+        {
+          if (eol > pc)
+            objstrbufferappendstartstrpayl_BM (obj, pc, eol - pc - 1);
+          else
+            objstrbuffernewlinepayl_BM (obj);
+          objstrbuffernewlinepayl_BM (obj);
+          eol++;
+        }
+      else
+        {
+          objstrbuffernewlinepayl_BM (obj);
+          break;
+        }
+    }
+}                               /* end objstrbufferoutputprefixlines_BM */
 
 
 void
