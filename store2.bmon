@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3183 objects
+// for 3185 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -12984,7 +12984,7 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 !(_08PMymoD6YJ_8rspWoCg4Xu
 !|*
-!@ 1557222402.089
+!@ 1557258158.246
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "emit_statement\u00b0basiclo_outstmt < o_stmt (o_modgen o_routprep v_depth)"
@@ -40035,6 +40035,24 @@ _5wKdFyGNJ5j_50nIjxm7LLY
 
 
 
+!(_6ynq7YzdPfg_1NP6KTYRGay
+!@ 1557258661.906
+!$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "when *prefixed_lines(<prefixstr> <linesstr>) ..."
+!: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
+_0xjHtHT70tB_7ABtNzelPi8
+!# 5
+
+!& _7tRdjZA1xGU_66rNHqMnoVh 
+!& _7il9W2D3X8q_9zzCW4kDBba 
+!& _5a1ZtPFXtZ4_2MFRQSKhbKt 
+!& _6vPWb8w0spb_10ffMJKa3OH 
+!& _9P3jczeYo4m_5gpelMQi4Be 
+!)_6ynq7YzdPfg_1NP6KTYRGay
+
+
+
 !(_6yJXzskdfaJ_3Vin16Ghsp5
 !@ 1553000855.657
 !$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
@@ -43980,6 +43998,20 @@ _4gjtBqgrY3i_67ZPUd9LxPU
 
 
 
+!(_7tRdjZA1xGU_66rNHqMnoVh
+!@ 1557258588.102
+!$_4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit \'/*out prefixed_lines:*/objstrbufferoutputprefixlinespayl_BM (\'"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _2RUj1oyJ2rf_1ICZWr844Sv  "/*out prefixed_lines:*/objstrbufferoutputprefixlinespayl_BM (")
+!: _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_6jZqk9RP0Pe_12cIgV9WMFC
+
+!)_7tRdjZA1xGU_66rNHqMnoVh
+
+
+
 !(_7uiwyR9sfq3_1W9SQnuJLSz
 !@ 1553000855.666
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
@@ -46442,13 +46474,14 @@ _0vgCFjXblkx_4zCMhMAWjVK
  "objswitch o_conn .. emit_statement\u00b0basiclo_outstmt"
 !: _5PJV21P82kA_2KfQTz95vdH |=switch|
 _13K9OfeXRZR_84nyRTtoj81
-!# 25
+!# 26
 
 !& _9d7rWinZqTW_3HJB0Tm1DtZ 
 !& _5ET8jC0ulFr_8HwUqVh9ORX 
 !& _6aA6aV2YRMt_1NEYDaXpeC7 
 !& _3UQkLJVILrN_5fQkMJuOnaO 
 !& _3s1tzo7j8uB_0du3hmckL9U 
+!& _6ynq7YzdPfg_1NP6KTYRGay 
 !& _0BVlPuwRd7W_2uZdnPJU4lL 
 !& _1x34ns9L1vc_0NkwFmpgSZo 
 !& _1Okz8TmaK4w_1h2DwizxeUm 
