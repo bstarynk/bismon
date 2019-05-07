@@ -110,10 +110,12 @@ source code, and configure it to provide them.). An old GCC
 * the documentation needs a `/usr/bin/mipsel-linux-gnu-gcc-8` cross-compiler provided by `gcc-8-mipsel-linux-gnu` Debian package.
 
 Most of `bismon` is in C99 or C11 (including an increasing amount of
-generated code), but some few code is in C++14.
+*generated* C code under `modules/`), but some few hand-written code
+is in C++14 (notably `misc_BM.cc` and the `BM_makeconst.cc`
+metaprogram generating C headers).
 
 * [ninja](http://ninja-build.org/) builder, version 1.8 or newer is
-  need (and is started by `make`). Don't use an older one (check with
+  needed (and is started by `make`). Don't use an older one (check with
   `ninja --version`; if that does not work, your `ninja` is too old).
 
 * [GTK](http://gtk.org/) 3.22 or better. This is a temporary
