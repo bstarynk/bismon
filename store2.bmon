@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3176 objects
+// for 3178 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -8498,6 +8498,32 @@ _97rnxb0KFqq_44veN75DG2E)
 
 
 
+!(_3c4hJieVSRH_468EpQXBdQr |=objstrbufferoutputprefixlinesobjbuf|
+!~ name (~ objstrbufferoutputprefixlinesobjbuf
+~)
+!@ 1557221145.171
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "output in strbufobj o1, with prefix str2, all the lines in strbufobj o3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ 
+ _97rnxb0KFqq_44veN75DG2E _4ilpkwNBw3O_3l8ykbxbBom _1Bl1iFQ8boR_1xM6MOfHV1N ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _3c4hJieVSRH_468EpQXBdQr)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _3c4hJieVSRH_468EpQXBdQr  ":*/"  "objstrbufferoutputprefixlinespayl_BM" 
+  " "  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+ ")," 
+  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4ilpkwNBw3O_3l8ykbxbBom)  
+")," 
+  " "  "objstrbufferbytespayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_1Bl1iFQ8boR_1xM6MOfHV1N) 
+  "));")
+
+!)_3c4hJieVSRH_468EpQXBdQr
+
+
+
 !(_8KKFTizI6dx_2Y2kDDrE9Et |=objstrbufferoutputprefixlinespayl|
 !~ name (~ objstrbufferoutputprefixlinespayl
 ~)
@@ -8518,6 +8544,31 @@ _97rnxb0KFqq_44veN75DG2E)
  "\n")
 
 !)_8KKFTizI6dx_2Y2kDDrE9Et
+
+
+
+!(_7fqsTvJHAid_57G5HSs542f |=objstrbufferoutputprefixlinesval|
+!~ name (~ objstrbufferoutputprefixlinesval
+~)
+!@ 1557220998.068
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "output in strbufobj o1, with prefix str2, all the lines in valuestring v3"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ 
+ _97rnxb0KFqq_44veN75DG2E _4ilpkwNBw3O_3l8ykbxbBom _0sDAwfyl4r3_8kDdVlE90M3 ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _7fqsTvJHAid_57G5HSs542f)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _7fqsTvJHAid_57G5HSs542f  ":*/"  "objstrbufferoutputprefixlinespayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4ilpkwNBw3O_3l8ykbxbBom)  ")," 
+ " " 
+  "bytstring_BM"  "(("  "value_tyBM"  ")(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _0sDAwfyl4r3_8kDdVlE90M3)  ")));")
+
+!)_7fqsTvJHAid_57G5HSs542f
 
 
 
