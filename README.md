@@ -331,11 +331,14 @@ there are much more other bugs too.
 
 #### P.S.
 
-The author is fully aware of **several bugs** in this `bismon`
-system - a research project -, but correcting them is *not* a priority
-(since continuing the progressive bootstrap of *Bismon* is **much more
-important**, and is not yet achieved. The GTK interface is buggy *by
-design* and crashes often (that won't be corrected), and should be as
-quickly as possible replaced by a more usable web interface - and that
-is work in progress in mid 2019-). Please contact by email the author
-to get possible workarounds.
+The author is fully aware -in mid 2019- of **several bugs** in this
+`bismon` system - a research project -, but correcting them is *not* a
+priority (since continuing the progressive bootstrap of *Bismon* is
+**much more important**, and is not yet achieved). The GTK interface
+is buggy *by design* and crashes often (that won't be corrected), and
+should be as quickly as possible replaced by a more usable web
+interface - and that is work in progress in mid 2019. Please contact
+by email the author to get possible workarounds. Notice that such
+temporary bugs known to the author are *not* registered as [Bismon
+`gitlab` issues](https://github.com/bstarynk/bismon/issues), since
+this software is yet unreleased.
