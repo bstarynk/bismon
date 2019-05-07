@@ -1178,6 +1178,26 @@ whenobj88CClQZG__6ynq7YzdPfg_1NP6KTYRGay:; // when #17 of objswitch _88CClQZGP1N
   ( /*v_arg:*/_.v_4Q4WBLjAPTV_5WVLmhAvCJY), ( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( /*o_routprep:*/_.o_6RpSqxAOt2p_35laNqeU6KH), ( /*o_stmt:*/_.o_34Qtvf1thwK_9rziG6sk6Vl), (/*add_int:*/(( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f) + ( 1))));      
 } // end cexpansion _9P3jczeYo4m_5gpelMQi4Be - miniemit_expression      
     
+ // objswitch _88CClQZGP1N_57QoKCh6Ivj when _6ynq7YzdPfg_1NP6KTYRGay #5 statement:    
+{ // start cexpansion _6vPWb8w0spb_10ffMJKa3OH - objstrbufferappendcstrpayl     
+/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( ", "));     
+} // end cexpansion _6vPWb8w0spb_10ffMJKa3OH - objstrbufferappendcstrpayl     
+    
+ // objswitch _88CClQZGP1N_57QoKCh6Ivj when _6ynq7YzdPfg_1NP6KTYRGay #6 statement:    
+ /*v_arg:*/_.v_4Q4WBLjAPTV_5WVLmhAvCJY = //assign _6P24oZ9lBmf_6uQcEYnne94     
+/*nodenthson:*/nodenthson_BM(( /*v_comp:*/_.v_0ZL8gaI6sH8_7UPhmAQcwMe),( 1));    
+    
+ // objswitch _88CClQZGP1N_57QoKCh6Ivj when _6ynq7YzdPfg_1NP6KTYRGay #7 statement:    
+{ // start cexpansion _9P3jczeYo4m_5gpelMQi4Be - miniemit_expression     
+/*miniemit_expression:*/miniemit_expression_BM(CURFRAME_BM, 
+  ( /*v_arg:*/_.v_4Q4WBLjAPTV_5WVLmhAvCJY), ( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( /*o_routprep:*/_.o_6RpSqxAOt2p_35laNqeU6KH), ( /*o_stmt:*/_.o_34Qtvf1thwK_9rziG6sk6Vl), (/*add_int:*/(( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f) + ( 1))));      
+} // end cexpansion _9P3jczeYo4m_5gpelMQi4Be - miniemit_expression      
+    
+ // objswitch _88CClQZGP1N_57QoKCh6Ivj when _6ynq7YzdPfg_1NP6KTYRGay #8 statement:    
+{ // start cexpansion _9QlMhbIzTEX_20hleVtDJyt - objstrbufferappendcstrpayl     
+/*objstrbufferappendcstrpayl:*/ objstrbufferappendcstrpayl_BM(( /*o_modgen:*/_.o_2RUj1oyJ2rf_1ICZWr844Sv), ( ");"));     
+} // end cexpansion _9QlMhbIzTEX_20hleVtDJyt - objstrbufferappendcstrpayl     
+    
     
 break; // end when _6ynq7YzdPfg_1NP6KTYRGay #17 of objswitch _88CClQZGP1N_57QoKCh6Ivj    
     
