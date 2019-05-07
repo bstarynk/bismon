@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3174 objects
+// for 3175 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -8144,6 +8144,30 @@ _97rnxb0KFqq_44veN75DG2E)  "),"
 "))")
 
 !)_6jZqk9RP0Pe_12cIgV9WMFC
+
+
+
+!(_9rZ3CBfb9Yu_9DHa8Dq3C3q |=objstrbufferappendstartstrpayl|
+!~ name (~ objstrbufferappendstartstrpayl
+~)
+!@ 1557209808.644
+!$_9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "in strbufferobj o1 append start of string str2 for i2 bytes"
+!: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ 
+ _97rnxb0KFqq_44veN75DG2E _4ilpkwNBw3O_3l8ykbxbBom _8LYML1JB0Wx_8O52UHE0MEy ]
+!: _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
+ % _42gEKfF4qca_6gGwxSFC1FO ( _9rZ3CBfb9Yu_9DHa8Dq3C3q)
+!: _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _9rZ3CBfb9Yu_9DHa8Dq3C3q  ":*/"  "objstrbufferappendstartstrpayl_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),(" 
+ * _5ucAZimYynS_4VA0XHvr1nW ( _4ilpkwNBw3O_3l8ykbxbBom) 
+  "),(" _0vgCFjXblkx_4zCMhMAWjVK  ")("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_8LYML1JB0Wx_8O52UHE0MEy) 
+  "))")
+
+!)_9rZ3CBfb9Yu_9DHa8Dq3C3q
 
 
 

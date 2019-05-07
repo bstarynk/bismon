@@ -1295,8 +1295,8 @@ objstrbufferencodedutf8payl_BM (objectval_tyBM * obj, const char *str,
 /// `prefix`; could be used to safely emit a C or C++ comment starting
 /// with a prefix like //!
 void
-objstrbufferoutputprefixlines_BM (objectval_tyBM * obj, const char *prefix,
-                                  const char *lines)
+objstrbufferoutputprefixlinespayl_BM (objectval_tyBM * obj,
+                                      const char *prefix, const char *lines)
 {
   struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (obj);
   if (!sbuf)
@@ -1325,7 +1325,7 @@ objstrbufferoutputprefixlines_BM (objectval_tyBM * obj, const char *prefix,
           break;
         }
     }
-}                               /* end objstrbufferoutputprefixlines_BM */
+}                               /* end objstrbufferoutputprefixlinespayl_BM */
 
 
 void
