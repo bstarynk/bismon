@@ -32612,7 +32612,7 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 !(_4GXCnmBGznF_3E6F2jy9bbD
-!@ 1557285902.801
+!@ 1557303334.624
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "debug miniscan_block\u00b0basiclo_labeled_block"& " start o_block o_routprep depth o_from o_label"& " v_with_label"
@@ -32644,7 +32644,10 @@ _6FcmuIO2DrS_7mzsaVpTMOI
  "\n" 
   " "  "objectdbg2_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _89nz0KaXXZh_8eSgMmqnK37) 
   "),"  "\n"  " "  "objectdbg3_BM" 
-  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0H23AXQRcQ6_5Vw1gVzCjxh)  "));")
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0H23AXQRcQ6_5Vw1gVzCjxh)  ")," 
+ "\n" 
+  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _14bZuNJeHA7_1reECNXu6Ly) 
+  "));")
 
 !)_4GXCnmBGznF_3E6F2jy9bbD
 

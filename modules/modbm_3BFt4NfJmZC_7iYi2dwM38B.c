@@ -3526,7 +3526,8 @@ DBGPRINTF_BM("miniscan_block°basiclo_labeled_block start €%.9s o_block=%s o_r
  objectdbg1_BM( /*o_routprep:*/_.o_6RpSqxAOt2p_35laNqeU6KH),
  (long int)( /*i_depth:*/_.n_6Y20GNUgnSZ_4LkbrcRMU8f),
  objectdbg2_BM( /*o_from:*/_.o_89nz0KaXXZh_8eSgMmqnK37),
- objectdbg3_BM( /*o_label:*/_.o_0H23AXQRcQ6_5Vw1gVzCjxh));; 
+ objectdbg3_BM( /*o_label:*/_.o_0H23AXQRcQ6_5Vw1gVzCjxh),
+ OUTSTRVALUE_BM( /*v_with_label:*/_.v_14bZuNJeHA7_1reECNXu6Ly));; 
 } // end run _4GXCnmBGznF_3E6F2jy9bbD 
  
  
