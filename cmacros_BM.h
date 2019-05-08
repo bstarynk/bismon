@@ -238,6 +238,24 @@ extern void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
 #define INFOPRINTF_BM(Fmt,...) \
   INFOPRINTFAT_BM(__FILE__,__LINE__,Fmt,##__VA_ARGS__)
 
+
+//// to ease display of strbuffer objects
+#define FMTOBJSTRBUF_BM "%s L/%u (lin.%d, col.%d, end'%s')"
+#define OBJSTRBUFOUTMAC_BM(Mac,Ob) Mac(Ob),	\
+  objstrbufferlengthpayl_BM(Ob),		\
+  objstrbufferlinecountpayl_BM(Ob),		\
+  objstrbuffercolumnpayl_BM(Ob),		\
+  objstrbuffercurrentlastlinepayl_BM(Ob)
+
+#define OBJSTRBUFOUT_BM(Ob) OBJSTRBUFOUTMAC_BM(objectdbg_BM, Ob)
+#define OBJ1STRBUFOUT_BM(Ob) OBJSTRBUFOUTMAC_BM(objectdbg1_BM, Ob)
+#define OBJ2STRBUFOUT_BM(Ob) OBJSTRBUFOUTMAC_BM(objectdbg2_BM, Ob)
+#define OBJ3STRBUFOUT_BM(Ob) OBJSTRBUFOUTMAC_BM(objectdbg3_BM, Ob)
+#define OBJ4STRBUFOUT_BM(Ob) OBJSTRBUFOUTMAC_BM(objectdbg4_BM, Ob)
+#define OBJ5STRBUFOUT_BM(Ob) OBJSTRBUFOUTMAC_BM(objectdbg5_BM, Ob)
+#define OBJ6STRBUFOUT_BM(Ob) OBJSTRBUFOUTMAC_BM(objectdbg6_BM, Ob)
+#define OBJ7STRBUFOUT_BM(Ob) OBJSTRBUFOUTMAC_BM(objectdbg7_BM, Ob)
+
 ////////////////
 /* the literal string used for local time, to the centisecond */
 #define LOCAL_TIME_CENTISECOND_FMT_BM "%Y %b %d, %H:%M:%S.__ %Z"
