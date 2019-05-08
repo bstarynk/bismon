@@ -717,6 +717,18 @@ objstrbufferbytespayl_BM (objectval_tyBM * obj)
   return sbuf->sbuf_dbuf;
 }                               /* end objstrbufferbytespayl_BM */
 
+value_tyBM
+objstrbuffertostringvaluepayl_BM (objectval_tyBM * obj)
+{
+  if (!isobject_BM ((value_tyBM) obj))
+    return NULL;
+  struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (obj);
+  if (!sbuf)
+    return NULL;
+  return makestring_BM (sbuf->sbuf_dbuf);
+}                               /* end objstrbuffertostringvaluepayl_BM */
+
+
 void
 objstrbufferreservepayl_BM (objectval_tyBM * obj, unsigned gap)
 {

@@ -550,8 +550,6 @@ extern bool objstrbufferispercentfullpayl_BM (const objectval_tyBM * obj,
 extern void objstrbufferresetpayl_BM (objectval_tyBM * obj);
 extern unsigned objstrbufferlengthpayl_BM (const objectval_tyBM * obj);
 extern unsigned objstrbufferlimitpayl_BM (const objectval_tyBM * obj);
-extern bool objstrbufferispercentfullpayl_BM (const objectval_tyBM * obj,
-                                              int percentage);
 
 extern unsigned objstrbufferlinecountpayl_BM (const objectval_tyBM * obj);
 extern unsigned objstrbuffercolumnpayl_BM (const objectval_tyBM * obj);
@@ -633,6 +631,10 @@ extern void objstrbufferoutputjsoncompactedvaluepayl_BM (objectval_tyBM * obj,
 /// write the content to a file, if different
 extern void objstrbufferwritetofilepayl_BM (objectval_tyBM * obj,
                                             const char *filepath);
+
+/// make a string value from the content of an objstrbuffer, or else
+/// NULL:
+extern value_tyBM objstrbuffertostringvaluepayl_BM (objectval_tyBM * obj);
 ///////
 
 extern void strbuffergcmark_BM (struct garbcoll_stBM *gc,
