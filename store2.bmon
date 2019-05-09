@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3258 objects
+// for 3260 objects
 // with 5 modules
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
@@ -489,6 +489,19 @@ _6zj5YoW4CVg_7Az2Wsmlesm
 !~ class (~ |supercl basiclo_label:| _6rqacMdYDSJ_0C6DWcO4C0t
 ~)
 !)_22f75DXxUof_3i5MrN9g5wm
+
+
+
+!(_11NnAAfHJE4_2wDIZL6qRLu |=basiclo_jump|
+!~ name (~ basiclo_jump
+~)
+!@ 1557413466.841
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of unconditional jumps; to the labeled"& " block or label give bny the `target`  attribute"
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
+~)
+!)_11NnAAfHJE4_2wDIZL6qRLu
 
 
 
@@ -10999,6 +11012,18 @@ _2qDaJRPDbEG_45AvdxtQXAM
 _7bbeIqUSje9_4jVgC7ZJmvx
 
 !)_6FWWN47uih2_5BhwEm9gnHu
+
+
+
+!(_8GMdjIYTXX5_4FDHwSAG9vU |=target|
+!~ name (~ target
+~)
+!@ 1557413358.285
+!$_7T9OwSFlgov_0wVJaK1eZbn |=object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "attribute which could give a target, e.g. of a jump"
+
+!)_8GMdjIYTXX5_4FDHwSAG9vU
 
 
 
