@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -29,7 +29,7 @@
 // used count of typayl_assocpairs_BM
 #define ASSOCPAIRUCNT_BM(Asp)  ((typedsize_tyBM*)(Asp))->size
 
-/// assoctabless for larger associations, pointing to assocpairs (buckets)
+/// assoctables for larger associations, pointing to assocpairs (buckets)
 // allocated size of typayl_assoctable_BM
 #define ASSOCTABLESIZE_BM(Asb) ((typedhead_tyBM*)(Asb))->rlen
 // cumulated count - totals of used counts in the many assocpairs
@@ -353,7 +353,7 @@ assocpairgcdestroy_BM (struct garbcoll_stBM *gc, struct assocpairs_stBM *assp)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (((typedhead_tyBM *) assp)->htyp == typayl_assocpairs_BM);
-  unsigned len = ((typedhead_tyBM *) assp)->rlen;
+  unsigned len = ASSOCPAIRSIZE_BM(assp);
   memset (assp, 0, sizeof (*assp) + len * sizeof (struct assocentry_stBM));
   free (assp);
   gc->gc_freedbytes += sizeof (*assp) + len * sizeof (struct assocentry_stBM);
@@ -364,7 +364,7 @@ assocpairgckeep_BM (struct garbcoll_stBM *gc, struct assocpairs_stBM *assp)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (((typedhead_tyBM *) assp)->htyp == typayl_assocpairs_BM);
-  unsigned len = ((typedhead_tyBM *) assp)->rlen;
+  unsigned len = ASSOCPAIRSIZE_BM(assp);
   ASSERT_BM (len < MAXSIZE_BM);
   gc->gc_keptbytes += sizeof (*assp) + len * sizeof (struct assocentry_stBM);
 }                               /* end assocpairgckeep_BM */
@@ -375,7 +375,7 @@ assoctablegcdestroy_BM (struct garbcoll_stBM *gc,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (((typedhead_tyBM *) abuck)->htyp == typayl_assoctable_BM);
-  unsigned nbuckets = ((typedhead_tyBM *) abuck)->rlen;
+  unsigned nbuckets = ASSOCTABLESIZE_BM(abuck);
   memset (abuck, 0, sizeof (*abuck) + nbuckets * sizeof (void *));
   free (abuck);
   gc->gc_freedbytes += sizeof (*abuck) + nbuckets * sizeof (void *);
@@ -387,7 +387,7 @@ assoctablegckeep_BM (struct garbcoll_stBM *gc, struct assoctable_stBM *abuck)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (((typedhead_tyBM *) abuck)->htyp == typayl_assoctable_BM);
-  unsigned nbuckets = ((typedhead_tyBM *) abuck)->rlen;
+  unsigned nbuckets = ASSOCTABLESIZE_BM(abuck);
   ASSERT_BM (nbuckets < MAXSIZE_BM);
   gc->gc_keptbytes += sizeof (*abuck) + nbuckets * sizeof (void *);
 }                               /* end assoctablegckeep_BM */
