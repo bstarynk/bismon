@@ -651,6 +651,7 @@ void
 gcobjmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (obj != NULL && obj != HASHEMPTYSLOT_BM);
   if (valtype_BM ((const value_tyBM) obj) != tyObject_BM)
     FATAL_BM ("gcobjmark bad obj@%p", obj);
   uint8_t oldmark = ((typedhead_tyBM *) obj)->hgc;
