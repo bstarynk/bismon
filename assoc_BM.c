@@ -353,7 +353,7 @@ assocpairgcdestroy_BM (struct garbcoll_stBM *gc, struct assocpairs_stBM *assp)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (((typedhead_tyBM *) assp)->htyp == typayl_assocpairs_BM);
-  unsigned len = ASSOCPAIRSIZE_BM(assp);
+  unsigned len = ASSOCPAIRSIZE_BM (assp);
   memset (assp, 0, sizeof (*assp) + len * sizeof (struct assocentry_stBM));
   free (assp);
   gc->gc_freedbytes += sizeof (*assp) + len * sizeof (struct assocentry_stBM);
@@ -364,7 +364,7 @@ assocpairgckeep_BM (struct garbcoll_stBM *gc, struct assocpairs_stBM *assp)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (((typedhead_tyBM *) assp)->htyp == typayl_assocpairs_BM);
-  unsigned len = ASSOCPAIRSIZE_BM(assp);
+  unsigned len = ASSOCPAIRSIZE_BM (assp);
   ASSERT_BM (len < MAXSIZE_BM);
   gc->gc_keptbytes += sizeof (*assp) + len * sizeof (struct assocentry_stBM);
 }                               /* end assocpairgckeep_BM */
@@ -375,7 +375,7 @@ assoctablegcdestroy_BM (struct garbcoll_stBM *gc,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (((typedhead_tyBM *) abuck)->htyp == typayl_assoctable_BM);
-  unsigned nbuckets = ASSOCTABLESIZE_BM(abuck);
+  unsigned nbuckets = ASSOCTABLESIZE_BM (abuck);
   memset (abuck, 0, sizeof (*abuck) + nbuckets * sizeof (void *));
   free (abuck);
   gc->gc_freedbytes += sizeof (*abuck) + nbuckets * sizeof (void *);
@@ -387,7 +387,7 @@ assoctablegckeep_BM (struct garbcoll_stBM *gc, struct assoctable_stBM *abuck)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (((typedhead_tyBM *) abuck)->htyp == typayl_assoctable_BM);
-  unsigned nbuckets = ASSOCTABLESIZE_BM(abuck);
+  unsigned nbuckets = ASSOCTABLESIZE_BM (abuck);
   ASSERT_BM (nbuckets < MAXSIZE_BM);
   gc->gc_keptbytes += sizeof (*abuck) + nbuckets * sizeof (void *);
 }                               /* end assoctablegckeep_BM */
@@ -672,10 +672,15 @@ assocpairsgcproc_BM (struct garbcoll_stBM *gc,
   for (unsigned pix = 0; pix < pairsiz; pix++)
     {
       const objectval_tyBM *curkeyob = apairs->apairs_ent[pix].asso_keyob;
-      value_tyBM curval = apairs->apairs_ent[pix].asso_val;
-      if (curkeyob && curval)
+      if (!curkeyob || curkeyob == HASHEMPTYSLOT_BM)
         {
-          gcobjmark_BM (gc, (objectval_tyBM *) curkeyob);
+          apairs->apairs_ent[pix].asso_val = NULL;
+          continue;
+        };
+      gcobjmark_BM (gc, (objectval_tyBM *) curkeyob);
+      value_tyBM curval = apairs->apairs_ent[pix].asso_val;
+      if (curval)
+        {
           VALUEGCPROC_BM (gc, curval, depth + 1);
           apairs->apairs_ent[pix].asso_val = curval;
         }
@@ -711,10 +716,15 @@ assoctablegcproc_BM (struct garbcoll_stBM *gc,
         {
           const objectval_tyBM *curkeyob =
             curbuckpair->apairs_ent[pix].asso_keyob;
-          value_tyBM curval = curbuckpair->apairs_ent[pix].asso_val;
-          if (curkeyob && curval)
+          if (!curkeyob || curkeyob == HASHEMPTYSLOT_BM)
             {
-              gcobjmark_BM (gc, (objectval_tyBM *) curkeyob);
+              curbuckpair->apairs_ent[pix].asso_val = NULL;
+              continue;
+            }
+          gcobjmark_BM (gc, (objectval_tyBM *) curkeyob);
+          value_tyBM curval = curbuckpair->apairs_ent[pix].asso_val;
+          if (curval)
+            {
               VALUEGCPROC_BM (gc, curval, depth + 1);
               curbuckpair->apairs_ent[pix].asso_val = curval;
             }
