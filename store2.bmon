@@ -1,7 +1,8 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3260 objects
-// with 5 modules
+// for 3261 objects
+// with 6 modules
+!^_1lhXvXtIyPu_3nhuy4kN3wd
 !^_1zCsXG4OTPr_8PwkDAWr16S
 !^_3BFt4NfJmZC_7iYi2dwM38B
 !^_55roYj6pggy_95lbHks0q2X
@@ -1232,6 +1233,25 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+!(_1lhXvXtIyPu_3nhuy4kN3wd |=code_generator_module|
+!~ name (~ code_generator_module
+~)
+!@ 1558529978.277
+!$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the module with code generating (miniscan, miniemit...) related functions"
+!# 5
+
+!& _85xjvzYjcd6_9mNZNPF6i2J 
+!& _0vCFi47Ctm6_70R5Tci6JuH 
+!& _8NgOdlJACWN_8pbYZXkHpCj 
+!& _1kz7viwMzTp_6PgLhdZzMEy 
+!& _08PMymoD6YJ_8rspWoCg4Xu 
+// emitted persistent module modbm_1lhXvXtIyPu_3nhuy4kN3wd.c
+!)_1lhXvXtIyPu_3nhuy4kN3wd
+
+
+
 !(_2rLSmJNw3Oy_85nknpTM9rF |=collect_set|
 !~ name (~ collect_set
 ~)
@@ -2406,7 +2426,7 @@ _6YnYKKsHo3f_9nIEOZMp744
  "a module with various simple minifunc-s"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  [ _1kz7viwMzTp_6PgLhdZzMEy ]
-!# 34
+!# 29
 
 !& _2nl9zcaSUwe_8UBiMp1OuMk 
 !& _8imWClcIFKt_6w2H2ouB4I6 
@@ -2426,12 +2446,7 @@ _6YnYKKsHo3f_9nIEOZMp744
 !& _2bZ4BfCci5V_3WTzG7V25y4 
 !& _0cUdonky1bM_4IVhwlVRBMk 
 !& _8dG7KZHgf3t_4ia32mWZqVQ 
-!& _85xjvzYjcd6_9mNZNPF6i2J 
-!& _0vCFi47Ctm6_70R5Tci6JuH 
-!& _8NgOdlJACWN_8pbYZXkHpCj 
 !& _0g1CBaxjMIB_7NZdyHUikLG 
-!& _1kz7viwMzTp_6PgLhdZzMEy 
-!& _08PMymoD6YJ_8rspWoCg4Xu 
 !& _7MtjMTkmErH_2zSJ1YDKHVi 
 !& _0UTjJP38fIh_02d0wLwrdAc 
 !& _7IvnLvG7HVK_2qnOaIBtgVh 
