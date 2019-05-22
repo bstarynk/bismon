@@ -40,6 +40,7 @@ bool web_is_running_BM;
 bool debugmsg_BM;
 bool parsedebugmsg_BM;
 int nbworkjobs_BM;
+int randomseed_BM;
 const char myhostname_BM[80];
 const char *contributors_filepath_BM;
 const char *passwords_filepath_BM;
@@ -464,6 +465,13 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &nbworkjobs_BM,
    .description = "number of worker threads NBJOBS (>=2, <16)",
    .arg_description = "NBJOBS"},
+  //
+  {.long_name = "random-seed",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_INT,
+   .arg_data = &randomseed_BM,
+   .description = "set the initial PRNG seed for g_random_int to given SEED",
+   .arg_description = "SEED"},
   //
   {.long_name = "pid-file",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
@@ -965,6 +973,13 @@ main (int argc, char **argv)
                             /*errorcb: */
                             backtracerrorcb_BM,
                             /*data: */ NULL);
+  if (randomseed_BM > 0)
+    {
+      g_random_set_seed (randomseed_BM);
+      INFOPRINTF_BM
+        ("set -using g_random_set_seed- the Glib PRNG random seed to %d",
+         randomseed_BM);
+    }
   initialize_garbage_collector_BM ();
   check_delims_BM ();
   initialize_globals_BM ();
