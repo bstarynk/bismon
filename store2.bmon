@@ -1236,17 +1236,26 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !(_1lhXvXtIyPu_3nhuy4kN3wd |=code_generator_module|
 !~ name (~ code_generator_module
 ~)
-!@ 1558529978.277
+!@ 1558534523.554
 !$_5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the module with code generating (miniscan, miniemit...) related functions"
-!# 5
+!# 14
 
 !& _85xjvzYjcd6_9mNZNPF6i2J 
 !& _0vCFi47Ctm6_70R5Tci6JuH 
 !& _8NgOdlJACWN_8pbYZXkHpCj 
 !& _1kz7viwMzTp_6PgLhdZzMEy 
 !& _08PMymoD6YJ_8rspWoCg4Xu 
+!& _0eLqstoeREp_44oHD9QEdRx 
+!& _17b3bhqLPeu_04FWlRjdMvD 
+!& _55k0ot2Zxca_48c9pjWuNWQ 
+!& _73hC7TDRQc7_7AAWITxnirb 
+!& _5x0WWw3QRXe_8u5OLA7sKJG 
+!& _09YrB2RcKY0_8qXAVUhGxat 
+!& _0jZB3m3ntxR_7JPnMzyIoBg 
+!& _7IvnLvG7HVK_2qnOaIBtgVh 
+!& _0UTjJP38fIh_02d0wLwrdAc 
 // emitted persistent module modbm_1lhXvXtIyPu_3nhuy4kN3wd.c
 !)_1lhXvXtIyPu_3nhuy4kN3wd
 
@@ -2426,7 +2435,7 @@ _6YnYKKsHo3f_9nIEOZMp744
  "a module with various simple minifunc-s"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  [ _1kz7viwMzTp_6PgLhdZzMEy ]
-!# 29
+!# 20
 
 !& _2nl9zcaSUwe_8UBiMp1OuMk 
 !& _8imWClcIFKt_6w2H2ouB4I6 
@@ -2448,15 +2457,6 @@ _6YnYKKsHo3f_9nIEOZMp744
 !& _8dG7KZHgf3t_4ia32mWZqVQ 
 !& _0g1CBaxjMIB_7NZdyHUikLG 
 !& _7MtjMTkmErH_2zSJ1YDKHVi 
-!& _0UTjJP38fIh_02d0wLwrdAc 
-!& _7IvnLvG7HVK_2qnOaIBtgVh 
-!& _0jZB3m3ntxR_7JPnMzyIoBg 
-!& _09YrB2RcKY0_8qXAVUhGxat 
-!& _5x0WWw3QRXe_8u5OLA7sKJG 
-!& _73hC7TDRQc7_7AAWITxnirb 
-!& _55k0ot2Zxca_48c9pjWuNWQ 
-!& _17b3bhqLPeu_04FWlRjdMvD 
-!& _0eLqstoeREp_44oHD9QEdRx 
 // emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
 !)_3BFt4NfJmZC_7iYi2dwM38B
 
