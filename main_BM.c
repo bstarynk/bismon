@@ -624,6 +624,14 @@ const GOptionEntry optionstab_bm[] = {
    .description =
    "GUI log file name (none if empty, - is stdout, default is _bismon.log)",
    .arg_description = "FILE"},
+  //
+  {.long_name = "gui-init-command",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &gui_init_cmd_file_BM,
+   .description =
+   "GUI initial command FILE path, whose content goes into the command subwindow at startup",
+   .arg_description = "FILE"},
 #endif /*BISMONGTK*/
     //////////////////
 #ifdef BISMONION

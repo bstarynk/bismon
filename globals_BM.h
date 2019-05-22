@@ -84,6 +84,7 @@ extern volatile struct backstrace_state *backtracestate_BM;
 
 #ifdef BISMONGTK
 /********************************* GUI **************/
+extern char *gui_init_cmd_file_BM;
 extern GtkTextIter browserit_BM;
 extern GtkWidget *mainwin_BM;
 extern GtkWidget *errormessagedialog_BM;

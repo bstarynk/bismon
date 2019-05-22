@@ -21,6 +21,9 @@
 
 #include "bismon.h"
 #include "newgui_GTKBM.const.h"
+
+char *gui_init_cmd_file_BM;
+
 #define BROWSE_MAXDEPTH_NEWGUI_BM 48
 #define BROWSE_MAXREFRESHDELAY_NEWGUI_BM 10
 #define BROWSE_BLINKMILLISECOND_NEWGUI_BM 450
@@ -371,6 +374,39 @@ initialize_newgui_command_scrollview_BM (void)
   gtk_container_add (GTK_CONTAINER (commandscrolw), commandview_BM);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (commandscrolw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  if (gui_init_cmd_file_BM)
+    {
+      INFOPRINTF_BM ("should paste GUI init command file %s",
+                     gui_init_cmd_file_BM);
+      const int headsize = 72;  /*bytes */
+      gchar *cmdfilcontent = NULL;
+      unsigned long cmdfilsize = 0;
+      GError *err = NULL;
+      if (!g_file_get_contents (gui_init_cmd_file_BM,
+                                &cmdfilcontent, &cmdfilsize, &err))
+        FATAL_BM ("failed to get GUI init command file %s content : %s (%m)",
+                  gui_init_cmd_file_BM, err ? (err->message) : "??");
+      char *eol = cmdfilcontent;
+      if (cmdfilsize > headsize + 4)
+        {
+          eol = strchr (cmdfilcontent + headsize, '\n');
+          if (!eol)
+            eol = cmdfilcontent + headsize;
+          char *eol2 = strchr (eol + 1, '\n');
+          if (eol2)
+            eol = eol2;
+        }
+      else
+        eol = cmdfilcontent + cmdfilsize;
+      INFOPRINTF_BM
+        ("putting contents of file %s (%ld bytes) into command subwindow,\n"
+         "\t with first few lines being:\n%.*s\n=======",
+         gui_init_cmd_file_BM, (int) cmdfilsize, (int) (eol - cmdfilcontent),
+         cmdfilcontent);
+      gtk_text_buffer_insert_at_cursor (commandbuf_BM, cmdfilcontent,
+                                        cmdfilsize);
+      g_free (cmdfilcontent), cmdfilcontent = NULL;
+    }
   return commandscrolw;
 }                               /* end initialize_newgui_command_scrollview_BM */
 
