@@ -636,7 +636,17 @@ data file \texttt{store2.bmon}.
          \textit{nbcomp} reserve the spaces for \textit{nbcomp}, and
          \verb/!&/~\textit{valcomp} appends the value \textit{valcomp}
          as a component.
-  
+
+         Within every dumped object, attributes whose class is
+         \texttt{temporary\_attribute\_object} are \emph{not}
+         \index{temporary attribute
+           object@\texttt{temporary\_attribute\_object}} dumped. This
+         enables to mix both dumped attributes -as objects these
+         attributes are not indirect instances of
+         \texttt{temporary\_attribute\_object}\footnote{That
+           \texttt{temporary\_attribute\_object} class has objid
+           \texttt{€\_23vPTNrGYB}.}- and non-dumped attributes in the
+         same object.
 \end{small}
 \end{quote}
 
