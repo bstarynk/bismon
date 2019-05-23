@@ -91,6 +91,24 @@ pointers, which are infrequently used in most IoT code) are harder to
 handle (and could require interaction with the IoT developer using our
 monitor, to annotate them).
 
+A proof-of-concept GCC plugin for GCC 8 (and 9) to take advantage of
+existing internal GCC passes to compute some upper approximation of
+the call stack size has been developped. That hand-written GCC plugin,
+coded in file \texttt{gcc8plugin-demo-chariot-2019Q2.cc} of about a
+thousand lines of C++, communicate with the \texttt{bismon} monitor
+using some REST HTTP protocol with ad-hoc HTTP \texttt{POST} requests
+having a JSON payload, in some \textsc{Chariot} specific JSON
+format. The \texttt{bismon} monitor should display that diagnostic in
+a Web browser tab. It could also use the \emph{language server
+  protocol}~\footnote{See \bmurl{https://langserver.org/} for more.}
+which is, in 2019, understood by most free software source code
+editors running on Linux, including \texttt{emacs}, or \texttt{vim},
+or \texttt{VSCode}. It might even later use the new
+\emph{Sarif}\footnote{See
+  \bmurl{http://docs.oasis-open.org/sarif/sarif/v2.0/csprd01/sarif-v2.0-csprd01.html}
+  for more.}  protocol, designed for communication between static
+source code analyser.
+
 
 We probably would also take as an example the analysis of some
 \href{http://mqtt.org/}{MQTT library}. The insight is to trust some
