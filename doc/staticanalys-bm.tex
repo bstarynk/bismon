@@ -77,19 +77,20 @@ for cross-compilers used by IoT developers.
 
 A first static analysis, useful to IoT developers, will be related to
 whole-program detection of \emph{stack overflow} \index{stack
-  overflow}. By the way, such an analysis is currently not doable by
-\emph{Frama-C}, because it don't know the size of each call
-frame. However, \emph{GCC} is already computing that size (see the
-\texttt{-fstack-usage} option which dumps the size of the call frame
-of each function, and the \texttt{-Wframe-larger-than=\emph{bytesize}}
-option), and we simply need to extract and keep it. We also need to
-get a good approximation of the \emph{control flow graph\index{control
-    flow graph}}. For that we need to extract basic blocks and just
-\texttt{GIMPLE\_CALL} \emph{Gimple} statements (ignoring other kinds
-of \emph{Gimple} statements). Of course, indirect calls (thru function
-pointers, which are infrequently used in most IoT code) are harder to
-handle (and could require interaction with the IoT developer using our
-monitor, to annotate them).
+  overflow} (see also \cite{Payer:2018:MSV}). By the way, such an
+analysis is currently not doable by \emph{Frama-C}, because it don't
+know the size of each call frame. However, \emph{GCC} is already
+computing that size (see the \texttt{-fstack-usage} option which dumps
+the size of the call frame of each function, and the
+\texttt{-Wframe-larger-than=\emph{bytesize}} option), and we simply
+need to extract and keep it. We also need to get a good approximation
+of the \emph{control flow graph\index{control flow graph}}. For that
+we need to extract basic blocks and just \texttt{GIMPLE\_CALL}
+\emph{Gimple} statements (ignoring other kinds of \emph{Gimple}
+statements). Of course, indirect calls (thru function pointers, which
+are infrequently used in most IoT code) are harder to handle (and
+could require interaction with the IoT developer using our monitor, to
+annotate them).
 
 A proof-of-concept GCC plugin for GCC 8 (and 9) to take advantage of
 existing internal GCC passes to compute some upper approximation of
