@@ -1056,8 +1056,8 @@ features:
     as Guile, Python, Lua, etc). Of course the dynamically typed data
     inside the \textit{Bismon monitor} is \index{garbage
       collection}{\textbf{garbage collected}}
-    (cf. \cite{Jones:2011:GC-handbook}). The initial GC of the monitor
-    is a crude precise garbage collector, but multi-thread compatible (cf. §\ref{subsec:gcvalobj} below);
+    (cf. \cite{Jones:2016:GC-handbook}). The initial GC of the monitor
+    is a crude, mark and sweep, precise garbage collector, but multi-thread compatible (cf. §\ref{subsec:gcvalobj} below);
     it uses a naive stop-the-world mark\&sweep algorithm. That GC
     should be replaced by a better one, such as
     \href{https://www.ravenbrook.com/project/mps/}{Ravenbrook MPS}
@@ -1070,15 +1070,25 @@ features:
       later using MPS from
       \bmurl{https://www.ravenbrook.com/project/mps/} -or maybe some
       other state of the art garbage collector, since MPS might become
-      an arphaned free software project- but doing that could require
+      an orphaned free software project- but doing that could require
       recoding or regenerating \emph{a lot} of code, since MPS -like
       any other GC- has specific calling conventions and invariants,
       including
       \href{https://en.wikipedia.org/wiki/A-normal_form}{A-normal
         form}. So, switching to MPS or to any other good enough
       garbage collector in \emph{Bismon} would require at least
-      several months of work.}, if good performance and scalability is
-    wanted in \emph{Bismon}.
+      several months of work. And, as an open-source project, MPS
+      looks barely maintained in mid-2019.}  something better, if good
+    performance and scalability is wanted in \emph{Bismon}. The hard
+    point is the multi-threaded aspect of \emph{mutator
+      threads}\footnote{In garbage collection parlance, a mutator
+      thread is an applicative thread needing GC support, e.g. for
+      allocation or updates of GC-ed memory zones.}\index{mutator
+      thread}\index{thread!mutator} in that \texttt{bismon}
+    program. For more details about the difficulty of clever
+    trade-offs in such multi-threaded and user interaction-friendly
+    garbage collectors, read carefully chapters 14 to 18 of
+    \cite{Jones:2016:GC-handbook}.
 
   \item \textbf{homoiconicity} and \textbf{reflection} with
     \textbf{introspection} (cf \cite{Pitrat:1996:FGCS,
