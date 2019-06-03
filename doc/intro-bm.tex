@@ -301,8 +301,12 @@ C++) is expected to:
 
 \bigskip
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The \textsc{Chariot} vision on specialized static source code analysis for more secure and safer IoT software development}
 \label{subsec:chariotvision}
+
 \subsubsection{About static source code analysis and IoT}
 
 There are many existing documents related to improving safety and
@@ -413,10 +417,49 @@ be~\footnote{This is a gross simplification! In practice, there is a
     \cite{Perl:2015:VFP}) using bug databases could help.
     
 \end{itemize}
-Most static analyzers require some kind of interaction with their user
-(cf \cite{Lipford:2014:ICA}), in particular to present partial
-analysis results and explanations about them, or complex information
-like control flow graphs, derived properties at each statements.
+
+A generalization of strictly static source code analysis enables a
+mixed, semi-static and semi-dynamic approach, but leverages on
+extending some existing \emph{compilers} (such as \texttt{gcc} or
+\texttt{clang}...), linkers (e.g. \texttt{ld} started by
+\texttt{g++}), or even run-time loaders (e.g. \texttt{ld-linux.so} or
+\emph{crt0}): inserting some runtime checking code into the compiled
+executable, during compilation time or at link time\footnote{That
+  could even be at dynamic-link time, e.g. in \texttt{ld-linux.so}
+  just before running \texttt{main} in some C or C++ program.}. This
+is the design idea of widely used tools such as the \texttt{valgrind}
+memory checker\footnote{See \bmurl{http://valgrind.org/}, and be aware
+  that \texttt{valgrind} is capable of runtime checking many other
+  properties, such as \emph{some} race conditions\index{race
+    condition} or other \emph{undefined behavior}\index{undefined
+    behavior}.} or the address sanitizer (see
+\cite{Serebryany:2012:Asan}) originally in {Clang}, and now also in
+\emph{GCC}. Today, both \texttt{gcc} and \texttt{clang} have several
+\index{sanitizer!compiler} \index{compiler sanitizer} \emph{compiler
+  sanitizers} with such an approach. Some of them are very intrusive
+because they slow down the debugged program run time by an important
+factor of at least 10x, others are almost imperceptible, since they
+may increase memory consumption by perhaps 25\% at runtime, but CPU
+time by just a few percents. Some specialized semi-static source code
+analyzers also adopt a similiar instrumenting approach (for example,
+\cite{Biswas:2017:VVV}). Most sanitizers\footnote{Since our
+  \emph{Bismon} framework is becoming capable of customizing
+  \emph{GCC} by generating ad-hoc plugins, it could be later used in
+  such a way too, to easily develop ad-hoc and \emph{project-specific}
+  compiler sanitizers.} need some operating system kernel at runtime,
+but they provide yet another effective tool to embedded software
+developers.
+
+\medskip
+
+Most (fully) static\footnote{Some compiler sanitizers,
+  i.e. semi-static analyzers, may also require user interaction, but
+  that is generally done thru ad-hoc source code annotations such as
+  \texttt{\#pragma}-s.} source code analyzers require some kind of
+interaction with their user (cf \cite{Lipford:2014:ICA}), in
+particular to present partial analysis results and explanations about
+them, or complex information like control flow graphs, derived
+properties at each statements.
 
 The \href{http://vessedia.eu/}{\textsc{Vessedia}} \index{Vessedia} project is an H2020
 IoT-related project~\footnote{The \textsc{Vessedia} project (Verification
