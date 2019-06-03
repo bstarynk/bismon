@@ -446,7 +446,11 @@ analyzers also adopt a similiar instrumenting approach (for example,
   \emph{Bismon} framework is becoming capable of customizing
   \emph{GCC} by generating ad-hoc plugins, it could be later used in
   such a way too, to easily develop ad-hoc and \emph{project-specific}
-  compiler sanitizers.} need some operating system kernel at runtime,
+  compiler sanitizers.} are whole-program\footnote{That
+  ``whole-program'' holistic aspect is shared by most static source
+  code analyzers, such as \emph{Clang-analyzer} or \emph{Frama-C} and
+  is of course the major selling point of our \emph{Bismon}
+  framework.} tools and need some operating system kernel at runtime,
 but they provide yet another effective tool to embedded software
 developers.
 
