@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3261 objects
+// for 3262 objects
 // with 6 modules
 !^_1lhXvXtIyPu_3nhuy4kN3wd
 !^_1zCsXG4OTPr_8PwkDAWr16S
@@ -11057,13 +11057,13 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !(_5qDkdj6NZ6A_2Z9bWMn6sE2 |=temp_other_module|
 !~ name (~ temp_other_module
 ~)
-!@ 1546435132.493
+!@ 1558618209.122
 !$_0277f6mOd9j_0tVZSXnTzUK |=basiclo_temporary_module|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "temporary other module"
-!# 1
+!: _3dmcFZldtxI_1bEIFl4jqe3 |=also|
+ { _3mBgHGhEYmP_9WN8gqaxhXg }
 
-!& _3mBgHGhEYmP_9WN8gqaxhXg 
 !)_5qDkdj6NZ6A_2Z9bWMn6sE2
 
 
@@ -11084,6 +11084,19 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 !& _5gAcBFb7oLW_6e5LZ0baMye 
 !)_66DuQtJBPqt_8w9fOCyxJve
+
+
+
+!(_23vPTNrGYBF_3SlbvcOJx5M |=temporary_attribute_object|
+!~ name (~ temporary_attribute_object
+~)
+!@ 1558622228.887
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class of non-dumpable, so temporary, attributes"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
+~)
+!)_23vPTNrGYBF_3SlbvcOJx5M
 
 
 
