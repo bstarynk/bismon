@@ -157,10 +157,10 @@ metaprogram generating C headers).
 On Debian/Unstable or recent Ubuntu, `apt-get install build-essential
 make ninja-build gcc-8 g++-8 gcc-8-plugin-dev libgccjit-8-dev ccache
 gcc-8-mipsel-linux-gnu inkscape hevea texlive-full` for the building
-infrastructure; notice that `gcc-8-mipsel-linux-gnu is the MIPSel GCC
+infrastructure; notice that `gcc-8-mipsel-linux-gnu` is the MIPSel GCC
 cross-compiler - it is *conflicting* with `gcc-multilib*` packages;
-`inkscape`, `hevea`, `textlive-full` are needed for generating the
-documentation.
+`inkscape`, `hevea`, `texlive-full` (a *huge* meta-package) are needed
+for generating the documentation.
 
 
 
