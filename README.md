@@ -21,8 +21,9 @@ Knowledge Monitor* WP1).
 Currently (start of 2019) `bismon` still in **pre alpha**-stage, and it is *free software* under [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.en.html) license. It is intended for a Linux x86-64 desktop developer's workstation (won't work on Windows or MacOSX or Android).
 
 Some *still incomplete* documentation (as a technical report
-`doc/bismon-chariot-doc.pdf` in PDF) can be generated (with `make` then `make
-doc`). An early draft of it might be available on
+`doc/bismon-chariot-doc.pdf` in PDF) can be generated (with `make`
+then `make doc`; that command requires you to have a writable
+`$HOME/tmp/` directory). An early draft of it might be available on
 http://starynkevitch.net/Basile/bismon-chariot-doc.pdf
 
 ## Approach ##
@@ -107,7 +108,7 @@ and `g++` lack support for plugins and
 source code, and configure it to provide them.). An old GCC
 (e.g. version 6 or earlier) cannot be used.
 
-* the documentation needs a `/usr/bin/mipsel-linux-gnu-gcc-8` cross-compiler provided by `gcc-8-mipsel-linux-gnu` Debian package.
+* the documentation needs a `/usr/bin/mipsel-linux-gnu-gcc-8` cross-compiler provided by `gcc-8-mipsel-linux-gnu` Debian package. Beware, that package conflicts with `gcc-multilib*` packages on Debian.
 
 Most of `bismon` is in C99 or C11 (including an increasing amount of
 *generated* C code under `modules/`), but some few hand-written code
@@ -155,8 +156,11 @@ metaprogram generating C headers).
 
 On Debian/Unstable or recent Ubuntu, `apt-get install build-essential
 make ninja-build gcc-8 g++-8 gcc-8-plugin-dev libgccjit-8-dev ccache
-gcc-8-mipsel-linux-gnu inkscape hevea` for the building infrastructure (the MIPS
-cross-compiler, `inkscape`, `hevea` are needed for the documentation).
+gcc-8-mipsel-linux-gnu inkscape hevea texlive-full` for the building
+infrastructure; notice that `gcc-8-mipsel-linux-gnu is the MIPSel GCC
+cross-compiler - it is *conflicting* with `gcc-multilib*` packages;
+`inkscape`, `hevea`, `textlive-full` are needed for generating the
+documentation.
 
 
 
@@ -212,6 +216,9 @@ mentioning `mjs`).
 # in your /etc/mime.types for JavaScript modules
 application/javascript                                 mjs
 ```
+
+
+The documentation generation needs a writable `$HOME/tmp/` directory.
 
 ## building ##
 
