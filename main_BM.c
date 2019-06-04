@@ -41,6 +41,7 @@ bool debugmsg_BM;
 bool parsedebugmsg_BM;
 int nbworkjobs_BM;
 int randomseed_BM;
+bool debug_after_load_BM;
 const char myhostname_BM[80];
 const char *contributors_filepath_BM;
 const char *passwords_filepath_BM;
@@ -584,6 +585,13 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_NONE,
    .arg_data = &debugmsg_BM,
    .description = "gives lots of debug messages",
+   .arg_description = NULL},
+  //
+  {.long_name = "debug-after-load",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &debug_after_load_BM,
+   .description = "enable debug messages after load",
    .arg_description = NULL},
   //
   {.long_name = "emit-module",.short_name = (char) 0,
@@ -1158,6 +1166,12 @@ main (int argc, char **argv)
                        chdir_after_load_bm);
       fflush (NULL);
     }
+  if (debug_after_load_BM)
+    {
+      INFOPRINTF_BM ("bismon with debug messages after load from %s",
+                     load_dir_bm);
+      debugmsg_BM = true;
+    };
   DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
                 run_gtk_BM ? "true" : "false",
                 run_onion_BM ? "true" : "false");

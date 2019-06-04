@@ -299,8 +299,7 @@ dump_scan_object_content_BM (struct dumper_stBM *du,
                              const objectval_tyBM * objarg,
                              struct stackframe_stBM *stkf)
 {
-  objectval_tyBM* k_temporary_attribute_object
-    = BMK_23vPTNrGYBF_3SlbvcOJx5M;
+  objectval_tyBM *k_temporary_attribute_object = BMK_23vPTNrGYBF_3SlbvcOJx5M;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * obdump;       //
                  objectval_tyBM * curobj;       //
@@ -332,8 +331,8 @@ dump_scan_object_content_BM (struct dumper_stBM *du,
       obdumpscanobj_BM (_.obdump, _.curattrobj);
       if (!obdumpobjisdumpable_BM (_.obdump, _.curattrobj))
         continue;
-      if (objectisinstance_BM(_.curattrobj, k_temporary_attribute_object))
-	continue;
+      if (objectisinstance_BM (_.curattrobj, k_temporary_attribute_object))
+        continue;
       _.curval =
         objgetattr_BM ((objectval_tyBM *) _.curobj,
                        (objectval_tyBM *) _.curattrobj);
@@ -573,8 +572,7 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
                      FILE * spfil, struct stackframe_stBM *stkf)
 {
 
-  objectval_tyBM* k_temporary_attribute_object
-    = BMK_23vPTNrGYBF_3SlbvcOJx5M;
+  objectval_tyBM *k_temporary_attribute_object = BMK_23vPTNrGYBF_3SlbvcOJx5M;
   ASSERT_BM (valtype_BM ((const value_tyBM) du) == typayl_dumper_BM);
   ASSERT_BM (valtype_BM ((const value_tyBM) curobj) == tyObject_BM);
   ASSERT_BM (spfil != NULL);
@@ -642,8 +640,8 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
       _.curattr = setelemnth_BM (_.attrset, atix);
       if (!obdumpobjisdumpable_BM (_.dumpob, _.curattr))
         continue;
-      if (objectisinstance_BM(_.curattr, k_temporary_attribute_object))
-	continue;
+      if (objectisinstance_BM (_.curattr, k_temporary_attribute_object))
+        continue;
       _.curval = objgetattr_BM (curobj, _.curattr);
       if (!obdumpvalisdumpable_BM (_.dumpob, _.curval))
         continue;
