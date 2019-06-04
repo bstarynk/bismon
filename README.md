@@ -189,9 +189,9 @@ bug#927300](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=927300).
 
 ### Localization
 
-Run `locale` to be sure that your localization is POSIX compliant or
-English (British or American) in UTF-8 (it cannot for instance be
-Italian or Greek or French). So it should be `POSIX` or `C` or
+Run `locale` to **be sure that your localization is POSIX compliant or
+English** (British or American) **in UTF-8** (it cannot for instance
+be Italian or Greek or French). So it should be `POSIX` or `C` or
 `en_US.UTF-8` or `en_GB.UTF-8`. You might want to set your environment
 variables appropriately (at least `LANG=en_US.UTF-8` and
 `LANGUAGE=en_US:en` and `LC_ALL=en_US.UTF-8`, with no other `LC_*`
@@ -200,7 +200,14 @@ environment variable). See
 [locale(7)](http://man7.org/linux/man-pages/man7/locale.7.html),
 [utf-8(7)](http://man7.org/linux/man-pages/man7/utf-8.7.html),
 [locale(5)](http://man7.org/linux/man-pages/man5/locale.5.html),
-[setlocale(3)](http://man7.org/linux/man-pages/man3/setlocale.3.html)
+[setlocale(3)](http://man7.org/linux/man-pages/man3/setlocale.3.html). But
+don't ask me to understand more these very subtle [internationalizaion
+and
+localization](https://en.wikipedia.org/wiki/Internationalization_and_localization)
+details, that topic is *very* complex. If you still need that work to
+be done by me, send me an email at work to
+`basile.starynkevitch@cea.fr`. But don't expect it to be done by me
+before 2024.
 
 
 ### Additional configuration
