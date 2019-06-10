@@ -1068,15 +1068,18 @@ later.
 \bigskip
 
 \textit{Bismon} is (like \textit{GCC MELT} was) a \textbf{domain
-  specific language} implementation, targetted to ease static source
-code analysis (above the \textit{GCC} compiler), with the following
-features:
+  specific language}\footnote{See the
+  \href{https://en.wikipedia.org/wiki/Domain-specific\_language}{\emph{Domain-specific
+      language}} wikipage.} implementation, targetted to ease static
+source code analysis (above the \textit{GCC} compiler), with the
+following features:
 
 \begin{itemize}
 
-  \item \index{persistence}{\textbf{persistence}}, somehow
-    \textit{orthogonal persistence}. It is needed in particular
-    because compiling some software project (analyzed by
+  \item \index{persistence}{\textbf{persistence}}\footnote{See the
+    \href{https://en.wikipedia.org/wiki/Persistence\_(computer\_science)}{\emph{persistence}}
+    wikipage.}, somehow \textit{orthogonal persistence}. It is needed
+    in particular because compiling some software project (analyzed by
     \textit{Bismon}) is a long-lasting procedure involving
     \textit{several} compiling and linking processes and commands. So
     most of the data handled by \textit{Bismon} can be persisted on
@@ -1099,14 +1102,21 @@ features:
     and probably more often than that (e.g. twice an hour, or even
     every ten minutes).
 
-  \item \textbf{dynamic typing}, like many scripting languages (such
-    as Guile, Python, Lua, etc). Of course the dynamically typed data
-    inside the \textit{Bismon monitor} is \index{garbage
-      collection}{\textbf{garbage collected}}
-    (cf. \cite{Jones:2016:GC-handbook}). The initial GC of the monitor
-    is a crude, mark and sweep, precise garbage collector, but multi-thread compatible (cf. §\ref{subsec:gcvalobj} below);
-    it uses a naive stop-the-world mark\&sweep algorithm. That GC
-    should be replaced by a better one, such as
+  \item \textbf{dynamic typing}\footnote{See also the
+    \href{https://en.wikipedia.org/wiki/Dynamic\_programming\_language}{\emph{dynamic
+        programming language}} and
+    \href{https://en.wikipedia.org/wiki/Dynamic\_typing}{\emph{dynamic
+        typing}} wikipages.}, like many scripting
+    languages\footnote{See the
+      \href{https://en.wikipedia.org/wiki/Scripting_language}{\emph{scripting
+          language}} wikipage.} (such as Guile, Python, Lua, etc). Of
+    course the dynamically typed data inside the \textit{Bismon
+      monitor} is \index{garbage collection}{\textbf{garbage
+        collected}} (cf. \cite{Jones:2016:GC-handbook}). The initial
+    GC of the monitor is a crude, mark and sweep, precise garbage
+    collector, but multi-thread compatible (cf. §\ref{subsec:gcvalobj}
+    below); it uses a naive stop-the-world mark\&sweep algorithm. That
+    GC should be replaced by a better one, such as
     \href{https://www.ravenbrook.com/project/mps/}{Ravenbrook MPS}
     \footnote{\label{fn:initial-gc} Improving that GC is a difficult
       work, and past experience on \emph{GCC MELT} taught us that
@@ -1137,18 +1147,29 @@ features:
     garbage collectors, read carefully chapters 14 to 18 of
     \cite{Jones:2016:GC-handbook}.
 
-  \item \textbf{homoiconicity} and \textbf{reflection} with
-    \textbf{introspection} (cf \cite{Pitrat:1996:FGCS,
-      Pitrat:1990:Metaconnaissances, Pitrat:2009:AST,
-      Pitrat:2009:ArtifBeings}): all the DSL code is explicitly
-    represented as data which can be processed by \textit{Bismon}, and
-    the current state is accessible by the DSL.
+  \item \textbf{homoiconicity}\footnote{See the
+    \href{https://en.wikipedia.org/wiki/Homoiconicity}{\emph{homoiconicity}}
+    wikipage.} and \textbf{reflection}\footnote{See the
+    \href{https://en.wikipedia.org/wiki/Reflection\_(computer\_programming)}{\emph{reflection}}
+    wikipage.} with \textbf{introspection}\footnote{See the
+    \href{https://en.wikipedia.org/wiki/Self-awareness}{\emph{self-awareness}},
+    \href{https://en.wikipedia.org/wiki/Type\_introspection}{\emph{type
+        introspection}} and
+    \href{https://en.wikipedia.org/wiki/Virtual\_machine\_introspection}{\emph{virtual
+        machine introspection}} wikipages.} (cf
+    \cite{Pitrat:1996:FGCS, Pitrat:1990:Metaconnaissances,
+      Pitrat:2009:AST, Pitrat:2009:ArtifBeings}): all the DSL code is
+    explicitly represented as data which can be processed by
+    \textit{Bismon}, and the current state is accessible by the DSL.
 
-    \item \textbf{translated} to \emph{C} code; and \textbf{generated}
-      \emph{JavaScript} + \emph{HTML} in the \index{browser}{browser}, and generated
-      \emph{C++} code of \emph{GCC} plugins \index{plugin}
+    \item \textbf{translated}\footnote{See also the
+      \href{https://en.wikipedia.org/wiki/Source-to-source_compiler}{\emph{source-to-source
+          compiler}} (or \emph{transpiler}) wikipage.} to \emph{C}
+      code; and \textbf{generated} \emph{JavaScript} + \emph{HTML} in
+      the \index{browser}{browser}, and generated \emph{C++} code of
+      \emph{GCC} plugins \index{plugin}
 
-    \item \textbf{bootstrapped implementation}: \index{bootstrap} (cf. \cite{Pitrat:1996:FGCS, Polito:2014:Bootstrapping-pharo})
+    \item \textbf{bootstrapped\footnote{Read the \href{https://en.wikipedia.org/wiki/Bootstrapping_(compilers)}{\emph{bootstrapping (compilers)}} and \href{https://en.wikipedia.org/wiki/Chicken\_or\_the\_egg}{\emph{Chicken or the egg}} wikipages.} implementation}: \index{bootstrap} (cf. \cite{Pitrat:1996:FGCS, Polito:2014:Bootstrapping-pharo})
       ideally, all of \textit{Bismon} code (including C code dealing
       with data representations, persistent store, etc...) should be
       generated (but that won't happen entirely with the
@@ -1161,7 +1182,7 @@ features:
       GCC plugins \index{plugin} performing static analysis of a single translation
       unit should be generated (this was also done in GCC MELT, see \cite{Starynkevitch-DSL2011}).
 
-    \item with \textbf{collaborative web interface}, \index{web interface} used
+    \item with \textbf{collaborative web interface}\footnote{See also the \href{https://en.wikipedia.org/wiki/Web\_application}{\emph{web application}} wikipage, but \texttt{bismon} has highly specific pecularities, detailed more in §\ref{subsec:webinterf} below.}, \index{web interface} used
       by a \emph{small} team of \emph{trusted and well-behaving}
       developers~\footnote{The initial \texttt{bismon} implementation
         had a hand-coded crude GTK interface, nearly unusable. That
