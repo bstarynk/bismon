@@ -3,8 +3,7 @@
 # Overview and philosophy #
 
 `bismon` (this is a *temporary* name) is a **persistent monitor** which (in the future) would interact with the [GCC](http://gcc.gnu.org/) compiler thru plugins.
-It is (or will become) somehow a successor to my old [GCC MELT](http://starynkevitch.net/Basile/gcc-melt/) project; the medium-term goal is also [static program source code analysis](https://en.wikipedia.org/wiki/Static_program_analysis) with the help of [GCC](http://gcc.gnu.org/).
-
+It is (or will become) somehow a successor to my old [GCC MELT](http://starynkevitch.net/Basile/gcc-melt/) project; the medium-term goal is also [static program source code analysis](https://en.wikipedia.org/wiki/Static_program_analysis) with the help of [GCC](http://gcc.gnu.org/). The source code repository (GPLv3+ licensed) is on https://github.com/bstarynk/bismon ..
 My ([Basile Starynkevitch](http://starynkevitch.net/Basile/), employed
 at [CEA, LIST](http://www-list.cea.fr/) in France) work on `bismon` is
 partly funded (from start of 2018 to end of 2020) by the European
