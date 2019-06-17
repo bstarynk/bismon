@@ -36,14 +36,18 @@ export TOP_PID=$$
 # so runbismon below can exit the entire script
 
 bismonflags="$@"
-if [ ! -f ./bismon -a ! -x ./bismon ] ; then
-   echo Current directory $(pwd) does not contain ./bismon executable > /dev/stderr
+
+if [ ! -f bismon.h ] ; then
+   echo Current directory $(pwd) does not contain bismon.h header > /dev/stderr
    exit 1
 fi
 if [ ! -f store1.bmon ] ; then
    echo Current directory $(pwd) does not contain store1.bmon file > /dev/stderr
    exit 1
 fi
+
+make bismon all
+
 rm -vf /tmp/passwords_BM
 echo '# file /tmp/passwords_BM' > /tmp/passwords_BM
 chmod go-rwx /tmp/passwords_BM
@@ -150,12 +154,16 @@ head -99 /tmp/contributors_BM /tmp/passwords_BM
 echo
 echo
 
+tar cvf /tmp/bismonmodified.tar.gz $(git status -s | cut -d' ' -f3)
+
 echo 'git status before restore'
 git status
 
 echo
 echo 'restoring store'
 tar xvf /tmp/bismonstore.tar.gz
+
+ls -lt /tmp/bismon*.tar.gz
 
 echo 'final git status'
 git status
