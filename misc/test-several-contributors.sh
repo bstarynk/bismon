@@ -4,7 +4,7 @@
 # to test having several contributors
 # 
 #    BISMON 
-#    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+#    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
 #    contributed by Basile Starynkevitch (working at CEA, LIST, France)
 #    <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 #
@@ -27,6 +27,8 @@
 
 ## to use valgrind on every bismon run, set the environment variable
 ## export BISMON_WRAPPER=valgrind
+## to debug every bismon run, use perhaps:
+## export BISMON_WRAPPER='gdb --args' BISMON_OPTIMFLAGS='-O0 -g3'
 
 # https://stackoverflow.com/a/9894126/841108
 trap "exit 1" TERM
@@ -53,7 +55,7 @@ ls -ls /tmp/bismonstore.tar.gz
 echo
 echo 'making bismon'
 echo
-make bismon
+make bismon all
 echo
 echo 'before adding contributors'
 ls -ls store1.bmon store2.bmon
