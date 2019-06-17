@@ -936,7 +936,7 @@ nodaljsonstring_BM (struct nodaljsonmode_st *njm, const char *str,
            && !isalnum (str[len_euro_underscore + 4]))
     {
       _.setv = setobjectsofidprefixed_BM (str + len_euro_underscore - 1);
-      if (isset (_.setv) && setcardinal_BM (_.setv) == 1)
+      if (isset_BM (_.setv) && setcardinal_BM (_.setv) == 1)
         _.resv = setelemnth_BM (_.setv, 0);
     }
   if (!_.resv)
