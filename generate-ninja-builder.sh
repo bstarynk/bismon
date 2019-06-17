@@ -33,7 +33,13 @@ echo 'cwarnflags = $bm_commonwarnflags -Wmissing-prototypes'
 echo 'cxxwarnflags = $bm_commonwarnflags'
 echo 'defpreproflags = -DBISMONION -DBISMONGTK  -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED'
 echo 'incflags = -I. -I/usr/local/include'
-echo 'optimflags = -O1 -g3'
+if [ -n "$OPTIMFLAGS" ]; then
+    echo 'optimflags= '  "-DBISMON_WITH_OPTIMFLAGS $OPTIMFLAGS"
+elif [ -n "$BISMON_OPTIMFLAGS" ]; then
+    echo  'optimflags= '  "-DBISMON_HAS_OPTIMFLAGS $BISMON_OPTIMFLAGS"
+else
+    echo 'optimflags = -DBISMON_DEFAULT_OPTIMFLAGS -O1 -g3'
+fi
 echo 'cflags = $cwarnflags $defpreproflags $incflags $optimflags $pkg_cflags'
 echo 'cxxflags = $cxxwarnflags $defpreproflags $incflags $optimflags $pkg_cflags'
 echo '#for web templates *thtml related to onion otemplate generator'
