@@ -49,6 +49,8 @@ fi
 make bismon all
 
 rm -vf /tmp/passwords_BM
+rm -vf /tmp/fifopwbismon_BM
+mkfifo  /tmp/fifopwbismon_BM
 echo '# file /tmp/passwords_BM' > /tmp/passwords_BM
 chmod go-rwx /tmp/passwords_BM
 cp -v contributors_BM /tmp/contributors_BM
@@ -103,9 +105,10 @@ runbismon 'add Alan PseudoTuring' \
 echo 'making bismon after Alan PseudoTuring addition'
 make
 echo 
-echo 'Alan PseudoTuring:AlanT-123+45A' |  
+echo 'Alan PseudoTuring:AlanT-123+45A' >  /tmp/fifopwbismon_BM &
     runbismon 'password Alan PseudoTuring' --passwords-file=/tmp/passwords_BM \
-	     --add-passwords - --batch 
+	      --add-passwords /tmp/fifopwbismon_BM --batch
+wait
 echo
 echo after Alan PseudoTuring
 ls -ls /tmp/contributors_BM /tmp/passwords_BM store1.bmon store2.bmon
@@ -123,9 +126,10 @@ runbismon 'add Grace PseudoHopper' \
 echo 'making bismon after Grace PseudoHopper addition'
 make
 echo 
-echo 'Grace PseudoHopper:GraceHo-456!78B' |  \
+echo 'Grace PseudoHopper:GraceHo-456!78B' > /tmp/fifopwbismon_BM &
     runbismon 'password Grace PseudoHopper' \
-	     --add-passwords - --batch
+	      --add-passwords /tmp/fifopwbismon_BM --batch
+wait
 echo
 echo after Grace PseudoHopper
 ls -ls /tmp/contributors_BM /tmp/passwords_BM store1.bmon store2.bmon
@@ -144,9 +148,10 @@ echo 'making bismon after Guy SteelePseudo addition'
 make
 echo 
 
-echo 'Guy SteelePseudo:GuySteele-987!453B' |  \
+echo 'Guy SteelePseudo:GuySteele-987!453B' > /tmp/fifopwbismon_BM &
     runbismon 'password Guy SteelePseudo' \
-	     --add-passwords - --batch
+	      --add-passwords /tmp/fifopwbismon_BM --batch
+wait
 echo
 echo after Guy SteelePseudo
 ls -ls /tmp/contributors_BM /tmp/passwords_BM
