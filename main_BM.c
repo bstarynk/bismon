@@ -1189,7 +1189,16 @@ main (int argc, char **argv)
   if (count_init_afterload_bm > 0)
     init_afterload_bm ();
   if (dump_after_load_dir_bm)
-    do_dump_after_load_BM ();
+    {
+      if (debug_after_load_BM)
+        {
+          INFOPRINTF_BM
+            ("bismon disabling debug before dump after load to %s",
+             dump_after_load_dir_bm);
+          debugmsg_BM = false;
+        }
+      do_dump_after_load_BM ();
+    };
   DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
                 run_gtk_BM ? "true" : "false",
                 run_onion_BM ? "true" : "false");
