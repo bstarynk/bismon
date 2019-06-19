@@ -31,7 +31,6 @@
 ## export BISMON_WRAPPER='gdb --args' BISMON_OPTIMFLAGS='-O0 -g3'
 
 # https://stackoverflow.com/a/9894126/841108
-trap "exit 1" TERM
 export TOP_PID=$$
 # so runbismon below can exit the entire script
 
@@ -57,6 +56,25 @@ cp -v contributors_BM /tmp/contributors_BM
 ls -ls /tmp/passwords_BM
 tar cvf /tmp/bismonstore.tar.gz store*.bmon
 ls -ls /tmp/bismonstore.tar.gz
+
+function restorebismondata () {
+    tar cvf /tmp/bismonmodified.tar.gz $(git status -s | cut -d' ' -f3)
+    echo 'git status before restore'
+    git status
+    echo
+    if [ -f /tmp/bismonstore.tar.gz ]; then
+	echo 'restoring Bismon store'
+	tar xvf /tmp/bismonstore.tar.gz
+	mv -v  /tmp/bismonstore.tar.gz  /tmp/bismonprevstore.tar.gz
+    else
+	echo 'no /tmp/bismonstore.tar.gz to restore' > /dev/stderr
+    fi
+    ls -lt /tmp/bismon*.tar.gz
+    # restore default trap handing
+    trap - EXIT TERM ERR
+}
+
+trap restorebismondata EXIT INT TERM ERR
 
 echo
 echo 'making bismon'
@@ -159,16 +177,7 @@ head -99 /tmp/contributors_BM /tmp/passwords_BM
 echo
 echo
 
-tar cvf /tmp/bismonmodified.tar.gz $(git status -s | cut -d' ' -f3)
-
-echo 'git status before restore'
-git status
-
-echo
-echo 'restoring store'
-tar xvf /tmp/bismonstore.tar.gz
-
-ls -lt /tmp/bismon*.tar.gz
+restorebismondata
 
 echo 'final git status'
 git status
