@@ -513,8 +513,12 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
       FATAL_BM ("cannot open contributors file %s  : %m", rcpath);
       return;
     }
-  DBGBACKTRACEPRINTF_BM ("check_and_load_contributors_file_BM rcpath='%s'",
-                         rcpath);
+  if (debugmsg_BM)
+    _.tmpv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
+  DBGBACKTRACEPRINTF_BM
+    ("check_and_load_contributors_file_BM rcpath='%s' contributors=%s with set %s",
+     rcpath, objectdbg_BM (BMP_contributors), OUTSTRVALUE_BM (_.tmpv));
+  _.tmpv = NULL;
   _.hsetob = makeobj_BM ();
   int fd = fileno (fil);
   memset (&mystat, 0, sizeof (mystat));
