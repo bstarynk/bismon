@@ -58,7 +58,13 @@ tar cvf /tmp/bismonstore.tar.gz store*.bmon
 ls -ls /tmp/bismonstore.tar.gz
 
 function restorebismondata () {
-    tar cvf /tmp/bismonmodified.tar.gz $(git status -s | cut -d' ' -f3)
+    modiflist=$(git status -s | cut -d' ' -f3)
+    mkdir /tmp/modified-bismon
+    for f in $modiflist ; do
+	cp -va $f /tmp/modified-bismon/_new_$f
+    done
+    tar -cv -C /tmp/modified-bismon -f /tmp/bismonmodified.tar.gz .
+    rm -rf /tmp/modified-bismon
     echo 'git status before restore'
     git status
     echo
