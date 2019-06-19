@@ -513,7 +513,8 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
       FATAL_BM ("cannot open contributors file %s  : %m", rcpath);
       return;
     }
-  DBGPRINTF_BM ("check_and_load_contributors_file_BM rcpath='%s'", rcpath);
+  DBGBACKTRACEPRINTF_BM ("check_and_load_contributors_file_BM rcpath='%s'",
+                         rcpath);
   _.hsetob = makeobj_BM ();
   int fd = fileno (fil);
   memset (&mystat, 0, sizeof (mystat));
@@ -638,6 +639,8 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
   _.contribsetv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
   if (!isset_BM (_.contribsetv))
     FATAL_BM ("the `contributors` object has no hashset payload as expected");
+  DBGPRINTF_BM ("check_and_load_contributors_file contribsetv=%s",
+                OUTSTRVALUE_BM (_.contribsetv));
   int csetsiz = setcardinal_BM (_.contribsetv);
   ASSERT_BM (objhashashsetpayl_BM (_.hsetob));
   {
@@ -796,9 +799,9 @@ objectval_tyBM *add_contributor_name_email_alias_BM
     alias = "";
   if (perrmsg)
     *perrmsg = NULL;
-  DBGPRINTF_BM
-    ("add_contributor_name_email_alias start name='%s' email='%s' alias='%s' perrmsg@%p",
-     name, email, alias, (void *) perrmsg);
+  DBGPRINTF_BM ("add_contributor_name_email_alias start name='%s'"
+                " email='%s' alias='%s' perrmsg@%p",
+                name, email, alias, (void *) perrmsg);
   ASSERT_BM (name && name[0]);
   ASSERT_BM (email && email[0]);
   if (!valid_contributor_name_BM (name, perrmsg))
@@ -1182,6 +1185,7 @@ remove_contributor_by_name_BM (const char *oldname,
                  value_tyBM nodev;      // the node
                  value_tyBM keysetv;    // the set of keys
     );
+  DBGPRINTF_BM ("remove_contributor_by_name_BM oldname=%s", oldname);
   FILE *fil = fopen (CONTRIBUTORS_FILE_BM, "r+");
   if (!fil)
     {
@@ -1490,11 +1494,14 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
     );
   FILE *passfil = NULL;
   bool ok = false;
+  _.contribob = objectcast_BM (contribobarg);
+  DBGBACKTRACEPRINTF_BM
+    ("check_contributor_password_BM contribob=%s passwd=%s",
+     objectdbg_BM (_.contribob), passwd);
 #define REJECT() do { DBGPRINTF_BM("check_contributor_password_BM rejects contribob %s passwd '%s'", \
   objectdbg_BM(_.contribob), passwd); ok=false; goto end; } while(0)
   // to make life harder for external malicious stuff 
   usleep (1000 + g_random_int () % 1024);
-  _.contribob = objectcast_BM (contribobarg);
   if (!_.contribob)
     REJECT ();
   if (!passwd || !valid_password_BM (passwd, NULL))
@@ -1664,8 +1671,11 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
                  value_tyBM curpasstrv; //
                  value_tyBM curnamev;
     );
+  _.contribob = contribobarg;
   FILE *passfil = NULL;
   bool ok = false;
+  DBGBACKTRACEPRINTF_BM ("put_contributor_password_BM contribob=%s passwd=%s",
+                         objectdbg_BM (_.contribob), passwd);
   static long putcount;
 #define REJECT() do { DBGPRINTF_BM("put_contributor_password_BM rejects contribob %s passwd '%s'", \
   objectdbg_BM(_.contribob), passwd); ok=false; goto end; } while(0)
@@ -1824,6 +1834,8 @@ read_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
   _.assocob = assocobarg;
   ASSERT_BM (isobject_BM (_.assocob));
   ASSERT_BM (objhasassocpayl_BM (_.assocob));
+  DBGBACKTRACEPRINTF_BM ("read_password_file_BM start assocob=%s",
+                         objectdbg_BM (_.assocob));
   size_t linsiz = 128;
   char *linbuf = calloc (linsiz, 1);
   int lincnt = 0;
@@ -1923,8 +1935,8 @@ write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
   _.assocob = assocobarg;
   ASSERT_BM (isobject_BM (_.assocob));
   ASSERT_BM (objhasassocpayl_BM (_.assocob));
-  DBGPRINTF_BM ("write_password_file start assocob %s",
-                objectdbg_BM (_.assocob));
+  DBGBACKTRACEPRINTF_BM ("write_password_file start assocob %s",
+                         objectdbg_BM (_.assocob));
   rewind (passfil);
   char nowtimbuf[80];
   memset (nowtimbuf, 0, sizeof (nowtimbuf));

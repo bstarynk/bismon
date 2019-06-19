@@ -1192,8 +1192,24 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
         full_garbage_collection_BM (CURFRAME_BM);
     }
   /// check and load contributors and passwords files
-  check_and_load_contributors_file_BM (ld, CURFRAME_BM);
-  check_passwords_file_BM (ld, CURFRAME_BM);
+  {
+    extern bool debug_after_load_BM;
+    bool wasdebug = debugmsg_BM;
+    if (debug_after_load_BM)
+      {
+        debugmsg_BM = true;
+        INFOPRINTF_BM
+          ("load force debugging (since --debug-after-load) for contributors and passwords files");
+      }
+    check_and_load_contributors_file_BM (ld, CURFRAME_BM);
+    check_passwords_file_BM (ld, CURFRAME_BM);
+    if (debug_after_load_BM && !wasdebug)
+      {
+        INFOPRINTF_BM
+          ("load reset debugging after contributors and passwords files");
+        debugmsg_BM = false;
+      }
+  }
   // close all files
   for (int ix = 0; ix <= (int) ld->ld_maxnum; ix++)
     {
