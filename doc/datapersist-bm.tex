@@ -553,33 +553,49 @@ as our \texttt{*\_BM.c} files, notably the load and dump machinery in
 \texttt{load\_BM.c} and \texttt{dump\_BM.c}, the agenda mechanism in
 \texttt{agenda\_BM.c}, miscellanous routines including the support of
 module loading in \texttt{misc\_BM.cc}, etc, etc...). However, we are
-still quite far from that ideal. Existing
-bootstrapped \index{bootstrap} systems~\footnote{Observe that an entire Linux
+still quite far from that ideal. Existing bootstrapped
+\index{bootstrap} systems~\footnote{Observe that an entire Linux
   distribution is also, when considered as a single system of ten
   billions lines of source code, fully bootstrapped. You could
   regenerate all of it. See \bmurl{http://www.linuxfromscratch.org/}
-  for guidance.} such as CAIA {\small (see \cite{Pitrat:blog} - it
-  explains that all the 500KLOC of the C code of CAIA are generated)},
-Ocaml {\small (cf \cite{Ocaml, Leroy-modular-modules} and many other
-  papers by Xavier Leroy and the
-  \href{http://gallium.inria.fr/}{Gallium} team at INRIA)}, Self
-{\small (cf \cite{Ungar:1987:Self})}, and Clasp {\small (cf
-  \cite{Schafmeister:2015:CLASP})} show that it is possible. The major
-advantage of generating \emph{all} the code of \emph{Bismon} would be
-to deal with internal consistency in some automated and systematic way
-and facilitate refactoring~\footnote{In 2018, if we decide painfully
-  to change the representation of attribute associations in objects,
-  we have to modify a lot of hand-written code and objects
-  simultaneously, and that is a difficult and brittle effort of
-  refactoring. If all our code was generated, it would be still hard,
-  but much less.}. An important insight is that the behavior of a
-bootstrapped \index{bootstrap} system can be improved in two ways: the ``source'' of the
-code could be improved (in the case of \emph{Bismon}, all the objects
-describing some module) and the ``generator'' of the code could also
-be improved (cf. \index{partial evaluation}{partial evaluation} and
-Futamura projections, e.g. \cite{Futamura:1999:PartialEval}; also,
-\cite{Pitrat:2009:ArtifBeings, Pitrat:blog} gives some interesting
-perspectives for artificial intelligence with such an approach).
+  for guidance.} such as \textsc{Caia} \index{CAIA@\textsc{Caia}}
+      {\small (see \cite{Pitrat:2000:machine-intelligence, Pitrat:2009:AST, Pitrat:2009:ArtifBeings},  \cite{Pitrat:blog}\footnote{That \href{http://bootstrappingartificialintelligence.fr/WordPress3/}{blog} explains that all the
+        \href{http://starynkevitch.net/Basile/caia-su-24feb2016.tar.bz2}{500KLOC of the C code of CAIA and its persistent data} are generated.}, \textsc{Ocaml}
+      \index{Ocaml@\textsc{Ocaml}} {\small (cf \cite{Ocaml,
+          Leroy-modular-modules} and many other papers by Xavier Leroy
+        and the \href{http://gallium.inria.fr/}{Gallium} team at
+        INRIA)}, \textsc{Chicken/Scheme}\footnote{Notice that
+        \emph{semantically} Bismon is quite close to \emph{Scheme} and
+        shares many features with that language; see
+        \bmurl{http://starynkevitch.net/Basile/guile-tutorial-1.html}
+        for more. The bootstrapped \textsc{Chicken} system is on
+        \bmurl{https://www.call-cc.org/} and is, like Bismon,
+        translated to C.}, \textsc{Self} \index{Self@\textsc{Self}}
+            {\small (cf \cite{Ungar:1987:Self})},
+            \textsc{Sbcl}\footnote{See \bmurl{http://sbcl.org/} for
+              more} \index{Sbcl@\textsc{Sbcl}} and \textsc{Clasp}
+            \index{Clasp@\textsc{Clasp}} {\small (cf
+              \cite{Schafmeister:2015:CLASP})} show that it is
+            possible. The major advantage of generating \emph{all} the
+            code of \emph{Bismon} would be to deal with internal
+            consistency in some automated and systematic way and
+            facilitate refactoring~\footnote{In 2018, if we decide
+              painfully to change the representation of attribute
+              associations in objects, we have to modify a lot of
+              hand-written code and objects simultaneously, and that
+              is a difficult and brittle effort of refactoring. If all
+              our code was generated, it would be still hard, but much
+              less.}. An important insight is that the behavior of a
+            bootstrapped \index{bootstrap} system can be improved in
+            two ways: the ``source'' of the code could be improved (in
+            the case of \emph{Bismon}, all the objects describing some
+            module) and the ``generator'' of the code could also be
+            improved (cf. \index{partial evaluation}{partial
+              evaluation} and Futamura projections,
+            e.g. \cite{Futamura:1999:PartialEval}; also,
+            \cite{Pitrat:2009:ArtifBeings, Pitrat:blog} gives some
+            interesting perspectives for artificial intelligence with
+            such an approach).
 
 %%%%%%%%%%%%%%%%
 \subsubsection{persisting objects}
@@ -696,7 +712,7 @@ objects to be scanned is also used. Then an emission phase is dumping
 them (one data file per object space). A \emph{dumper} \index{dumper}
 transient object -of class \texttt{dumper\_object} \index{dumper
   object@\texttt{dumper\_object}} is made to reify the ``global'' dump
-status (notably the queue of objects to scan, and the set of dumped
+status (notably the queue of objects to scan, and the hash-set of dumped
 objects). So dumping happens by sending messages with selectors -used
 by the dumping routine sending messages- like \texttt{dump\_scan},
 \texttt{dump\_value}, \texttt{dump\_data}.  The \texttt{dump\_scan}
@@ -706,16 +722,20 @@ by the dumping routine sending messages- like \texttt{dump\_scan},
 the scanning phase. The \texttt{dump\_value} \index{dump
   value@\texttt{dump\_value}} message is sent\footnote{Additional
   arguments to to \texttt{dump\_value} are a string buffer object, the
-  \emph{dumper} object, and the depth as a tagged integer.} to dumped
-values during the emission phase.  The \texttt{dump\_data} \index{dump
-  data@\texttt{dump\_data}} message is sent\footnote{Extra arguments
-  to \texttt{dump\_value} are: the \emph{dumper} object and the string
-  buffer object.} when emitting an object content -notably its payload
-- \index{payload} if relevant-, after having dumped its class,
-attributes and components. But attributes \index{attribute} which are
-direct or indirect instances of \texttt{temporary\_attribute\_object}
-\index{temporary attribute object@
-  \texttt{temporary\_attribute\_object}} are not dumped.
+  \emph{dumper} object, and the depth as a tagged integer. Notice that
+  dumping of integers is implemented with the \texttt{dump\_value}
+  method of class \texttt{int}, dumping of tuples is implemented with
+  the \texttt{dump\_value} method of class \texttt{tuple}, dumping of
+  object references as objids \index{objid} is implemented with the
+  \texttt{dump\_value} method of class \texttt{object}, etc....} is to
+dumped values during the emission phase.  The \texttt{dump\_data}
+\index{dump data@\texttt{dump\_data}} message is sent\footnote{Extra
+  arguments to \texttt{dump\_value} are: the \emph{dumper} object and
+  the string buffer object.} when emitting an object content -notably
+its payload - \index{payload} if relevant-, after having dumped its
+class, attributes and components. But attributes \index{attribute}
+which are direct or indirect instances of
+\texttt{temporary\_attribute\_object} are not dumped.
 
 
 
