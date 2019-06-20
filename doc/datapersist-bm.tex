@@ -693,8 +693,8 @@ dumped as \textbf{\texttt{\_\_}}.
 The dump works, in a similar fashion of our naive GC, in two phases: a
 scanning phase to build the hash-set of all dumped objects. A queue of
 objects to be scanned is also used. Then an emission phase is dumping
-them (one data file per object space). A \emph{dumper} transient
-object -of class \texttt{dumper\_object} \index{dumper
+them (one data file per object space). A \emph{dumper} \index{dumper}
+transient object -of class \texttt{dumper\_object} \index{dumper
   object@\texttt{dumper\_object}} is made to reify the ``global'' dump
 status (notably the queue of objects to scan, and the set of dumped
 objects). So dumping happens by sending messages with selectors -used
@@ -710,9 +710,12 @@ the scanning phase. The \texttt{dump\_value} \index{dump
 values during the emission phase.  The \texttt{dump\_data} \index{dump
   data@\texttt{dump\_data}} message is sent\footnote{Extra arguments
   to \texttt{dump\_value} are: the \emph{dumper} object and the string
-  buffer object.} when emitting an object content -notably its payload -
-\index{payload} if relevant-, after having dumped its class,
-attributes and components.
+  buffer object.} when emitting an object content -notably its payload
+- \index{payload} if relevant-, after having dumped its class,
+attributes and components. But attributes \index{attribute} which are
+direct or indirect instances of \texttt{temporary\_attribute\_object}
+\index{temporary attribute object@
+  \texttt{temporary\_attribute\_object}} are not dumped.
 
 
 
