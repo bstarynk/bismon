@@ -120,6 +120,33 @@ existing MQTT implementation~\footnote{Our purpose is not to prove the
   rules.}, and to help \emph{junior} developers in using it, by
 checking simple coding rules relevant to MQTT.
 
+An interesting \textsc{Chariot}-compatible approach could be to use
+\emph{topological data analysis} \index{topological data analysis}
+\index{data analysis!topological} (cf
+\cite{Chazal:2017:topodatanalys}) techniques, combined with some
+machine learning, on some of the several directed graphs (notably the
+\emph{control flow graph}, the \emph{call graph}, the \emph{dependency
+  graph} for example) of the whole analyzed program. Reputable free
+software libraries\footnote{See \textsc{TensorFlow} on
+  \bmurl{https://www.tensorflow.org/}, and \textsc{Gudhi} on
+  \bmurl{http://gudhi.gforge.inria.fr/}, and many other similar
+  libraries.} are available on Linux. In principle, such an approach
+might be used in \texttt{bismon} for a \emph{semi-automatic} detection
+of \index{code smell} \index{smell!code} \emph{code smells}. Sadly,
+the lack of allocated human resources, and the strong focus on high
+TRL\footnote{\emph{Technical Readiness Level}, see
+  \href{https://en.wikipedia.org/wiki/Technology\_readiness_level}{its
+    wikipage} for more.} results, forbids even trying such an
+interesting approach in \textsc{Chariot}, taking into account that
+industrial corporations are not even dreaming of it. However, these
+approaches might be tried in some other projects, perhaps
+\textsc{Decoder}.
+
+\bigskip
+
+\hrule
+
+\medskip
 
 Additional content of this §\ref{subsec:analysiot} will be written for the final D1.3\textsuperscript{v2}.
 
