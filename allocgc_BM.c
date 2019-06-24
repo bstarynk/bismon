@@ -966,6 +966,9 @@ void
 final_cleanup_BM (void)
 {
   WARNPRINTF_BM ("final_cleanup_BM unimplemented");
+  backtrace_print_BM
+    ((struct backtrace_state *) backtracestate_BM, 0, stdout);
+  fflush (NULL);
 #warning final_cleanup_BM not implemented
 }                               /* end final_cleanup_BM */
 
