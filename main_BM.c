@@ -825,9 +825,105 @@ static void initialize_passwords_path_BM (void);
 static void emit_has_predef_BM (void);
 static void do_dump_after_load_BM (void);
 static bool is_nice_locale_BM (const char *);
+static void check_locale_BM (void);
 
 
 
+
+void
+check_locale_BM (void)
+{
+  bool explainlocale = false;
+  char *oldloc = setlocale (LC_ALL, NULL);
+  char *oldnumloc = setlocale (LC_NUMERIC, NULL);
+  char *oldctypeloc = setlocale (LC_CTYPE, NULL);
+  DBGPRINTF_BM ("oldlocale LC_ALL %s LC_NUMERIC %s LC_CTYPE %s", oldloc,
+                oldnumloc, oldctypeloc);
+  if (oldloc && !is_nice_locale_BM (oldloc))
+    {
+      WARNPRINTF_BM
+        ("your LC_ALL locale '%s' is strange but should be in English, encoded in UTF-8.\n",
+         oldloc);
+      explainlocale = true;
+    }
+  if (oldnumloc && !is_nice_locale_BM (oldloc))
+    {
+      WARNPRINTF_BM
+        ("your LC_NUMERIC locale '%s' is strange but should be in English, encoded in UTF-8, such that ...\n"
+         " 3.14 (with decimal dot) should be parsed and printable as an approximation of Pi, and\n"
+         " 6.022e23 should be parsed and printable as an approximation of the Avogadro constant.\n",
+         oldnumloc);
+      explainlocale = true;
+    }
+  if (oldctypeloc && !is_nice_locale_BM (oldctypeloc))
+    {
+      WARNPRINTF_BM
+        ("your LC_CTYPE locale '%s' is strange but should be in English, encoded in UTF-8.\n",
+         oldnumloc);
+      explainlocale = true;
+    }
+  if (explainlocale)
+    {
+      WARNPRINTF_BM
+        ("Bismon requires an English UTF-8 locale, in particular for floating point numbers in the persistent store.\n"
+         "Read carefully http://man7.org/linux/man-pages/man7/locale.7.html\n"
+         "You may use the 'locale' and/or 'localectl' programs to check your current locale.\n"
+         "You may want to set your locale thru several environment variables like LC_ALL LC_NUMERIC LC_CTYPE LANG LANGUAGE etc...\n"
+         "... using the export or setenv builtin of your shell\n"
+         "Please read carefully the %s/README.md file (Localization section)\n",
+         bismon_directory);
+    }
+  //
+  // force the LC_NUMERIC locale to English UTF-8
+  if (!setlocale (LC_NUMERIC, "C.UTF-8")
+      && !setlocale (LC_NUMERIC, "C.utf8")
+      && !setlocale (LC_NUMERIC, "POSIX")
+      && !setlocale (LC_NUMERIC, "POSIX.utf8")
+      && !setlocale (LC_NUMERIC, "POSIX.utf-8")
+      && !setlocale (LC_NUMERIC, "en_US.utf8")
+      && !setlocale (LC_NUMERIC, "en_US.utf-8")
+      && !setlocale (LC_NUMERIC, "en_GB.utf8")
+      && !setlocale (LC_NUMERIC, "en_GB.utf-8"))
+    FATAL_BM
+      ("failed to setlocale LC_NUMERIC appropriately to English UTF-8, previous was %s",
+       oldnumloc ? : "*unset*");
+  DBGPRINTF_BM ("now LC_NUMERIC locale is %s", setlocale (LC_NUMERIC, NULL));
+  //
+  // force the LC_ALL locale to English UTF-8
+  if (!setlocale (LC_ALL, "C.UTF-8")
+      && !setlocale (LC_ALL, "C.utf8")
+      && !setlocale (LC_ALL, "POSIX")
+      && !setlocale (LC_ALL, "POSIX.utf8")
+      && !setlocale (LC_ALL, "POSIX.utf-8")
+      && !setlocale (LC_ALL, "en_US.utf8")
+      && !setlocale (LC_ALL, "en_US.utf-8")
+      && !setlocale (LC_ALL, "en_GB.utf8")
+      && !setlocale (LC_ALL, "en_GB.utf-8"))
+    FATAL_BM
+      ("failed to setlocale LC_ALL appropriately to English UTF-8, previous was %s",
+       oldloc ? : "*unset*");
+  DBGPRINTF_BM ("now LC_ALL locale is %s", setlocale (LC_ALL, NULL));
+  double x = 0;
+  int pos = 0;
+  if (sscanf ("4.5;", "%lf%n", &x, &pos) < 1 || x != 4.5 || pos != 3)
+    FATAL_BM
+      ("something wrong (probably your locale setting, which should be C.UTF-8)."
+       " Since '4.5;' is scanned as %f at position#%d", x, pos);
+  DBGPRINTF_BM ("after sscanf x=%f, pos#%d", x, pos);
+  char *end = NULL;
+  x = strtod ("4.5/", &end);
+  DBGPRINTF_BM ("after strtod x=%f, end=%s", x, end);
+  if (x != 4.5 || !end || *end != '/')
+    FATAL_BM
+      ("something wrong (probably your locale setting, which should be C.UTF-8)."
+       " Since '4.5/' is not converted as %f end at %s", x, end);
+  x = 0.0;
+  if (sscanf ("-6.022e23;", "%lf%n", &x, &pos) < 1 || pos != 9
+      || fabs (x + 6.022e+23) > 1e20)
+    FATAL_BM
+      ("something wrong (probably your locale setting, which should be C.UTF-8)."
+       " Since '-6.022e23;' is scanned as %g at position#%d", x, pos);
+}                               /* end of check_locale_BM */
 
 
 //// see also https://github.com/dtrebbien/GNOME.supp and
@@ -879,107 +975,10 @@ main (int argc, char **argv)
   memset ((char *) myhostname_BM, 0, sizeof (myhostname_BM));
   if (gethostname ((char *) myhostname_BM, sizeof (myhostname_BM) - 1))
     FATAL_BM ("gethostname failure %m");
-  bool explainlocale = false;
-  {
-    char *oldloc = setlocale (LC_ALL, NULL);
-    char *oldnumloc = setlocale (LC_NUMERIC, NULL);
-    char *oldctypeloc = setlocale (LC_CTYPE, NULL);
-    DBGPRINTF_BM ("oldlocale LC_ALL %s LC_NUMERIC %s LC_CTYPE %s", oldloc,
-                  oldnumloc, oldctypeloc);
-    if (oldloc && !is_nice_locale_BM (oldloc))
-      {
-        WARNPRINTF_BM
-          ("your LC_ALL locale '%s' is strange but should be in English, encoded in UTF-8.\n",
-           oldloc);
-        explainlocale = true;
-      }
-    if (oldnumloc && !is_nice_locale_BM (oldloc))
-      {
-        WARNPRINTF_BM
-          ("your LC_NUMERIC locale '%s' is strange but should be in English, encoded in UTF-8, such that ...\n"
-           " 3.14 (with decimal dot) should be parsed and printable as an approximation of Pi, and\n"
-           " 6.022e23 should be parsed and printable as an approximation of the Avogadro constant.\n",
-           oldnumloc);
-        explainlocale = true;
-      }
-    if (oldctypeloc && !is_nice_locale_BM (oldctypeloc))
-      {
-        WARNPRINTF_BM
-          ("your LC_CTYPE locale '%s' is strange but should be in English, encoded in UTF-8.\n",
-           oldnumloc);
-        explainlocale = true;
-      }
-    if (explainlocale)
-      {
-        WARNPRINTF_BM
-          ("Bismon requires an English UTF-8 locale, in particular for floating point numbers in the persistent store.\n"
-           "Read carefully http://man7.org/linux/man-pages/man7/locale.7.html\n"
-           "You may use the 'locale' and/or 'localectl' programs to check your current locale.\n"
-           "You may want to set your locale thru several environment variables like LC_ALL LC_NUMERIC LC_CTYPE LANG LANGUAGE etc...\n"
-           "... using the export or setenv builtin of your shell\n"
-           "Please read carefully the %s/README.md file (Localization section)\n",
-           bismon_directory);
-      }
-    //
-    // force the LC_NUMERIC locale to English UTF-8
-    if (!setlocale (LC_NUMERIC, "C.UTF-8")
-        && !setlocale (LC_NUMERIC, "C.utf8")
-        && !setlocale (LC_NUMERIC, "POSIX")
-        && !setlocale (LC_NUMERIC, "POSIX.utf8")
-        && !setlocale (LC_NUMERIC, "POSIX.utf-8")
-        && !setlocale (LC_NUMERIC, "en_US.utf8")
-        && !setlocale (LC_NUMERIC, "en_US.utf-8")
-        && !setlocale (LC_NUMERIC, "en_GB.utf8")
-        && !setlocale (LC_NUMERIC, "en_GB.utf-8"))
-      FATAL_BM
-        ("failed to setlocale LC_NUMERIC appropriately to English UTF-8, previous was %s",
-         oldnumloc ? : "*unset*");
-    DBGPRINTF_BM ("now LC_NUMERIC locale is %s",
-                  setlocale (LC_NUMERIC, NULL));
-    //
-    // force the LC_ALL locale to English UTF-8
-    if (!setlocale (LC_ALL, "C.UTF-8")
-        && !setlocale (LC_ALL, "C.utf8")
-        && !setlocale (LC_ALL, "POSIX")
-        && !setlocale (LC_ALL, "POSIX.utf8")
-        && !setlocale (LC_ALL, "POSIX.utf-8")
-        && !setlocale (LC_ALL, "en_US.utf8")
-        && !setlocale (LC_ALL, "en_US.utf-8")
-        && !setlocale (LC_ALL, "en_GB.utf8")
-        && !setlocale (LC_ALL, "en_GB.utf-8"))
-      FATAL_BM
-        ("failed to setlocale LC_ALL appropriately to English UTF-8, previous was %s",
-         oldloc ? : "*unset*");
-    DBGPRINTF_BM ("now LC_ALL locale is %s", setlocale (LC_ALL, NULL));
-  }
-  {
-    double x = 0;
-    int pos = 0;
-    if (sscanf ("4.5;", "%lf%n", &x, &pos) < 1 || x != 4.5 || pos != 3)
-      FATAL_BM
-        ("something wrong (probably your locale setting, which should be C.UTF-8)."
-         " Since '4.5;' is scanned as %f at position#%d", x, pos);
-    DBGPRINTF_BM ("after sscanf x=%f, pos#%d", x, pos);
-    char *end = NULL;
-    x = strtod ("4.5/", &end);
-    DBGPRINTF_BM ("after strtod x=%f, end=%s", x, end);
-    if (x != 4.5 || !end || *end != '/')
-      FATAL_BM
-        ("something wrong (probably your locale setting, which should be C.UTF-8)."
-         " Since '4.5/' is not converted as %f end at %s", x, end);
-    x = 0.0;
-    if (sscanf ("-6.022e23;", "%lf%n", &x, &pos) < 1 || pos != 9
-        || fabs (x + 6.022e+23) > 1e20)
-      FATAL_BM
-        ("something wrong (probably your locale setting, which should be C.UTF-8)."
-         " Since '-6.022e23;' is scanned as %g at position#%d", x, pos);
-  }
+  check_locale_BM ();
   {
     double nwt = clocktime_BM (CLOCK_REALTIME);
     intptr_t y2kwt = timetoY2Kmillisec_BM (nwt);
-    NONPRINTF_BM ("nwt=%.4f y2kwt=%lld=%#llx as time=%.4f", nwt,
-                  (long long) y2kwt, (long long) y2kwt,
-                  Y2Kmillisectotime_BM (y2kwt));
     ASSERT_BM (abs (Y2Kmillisectotime_BM (y2kwt) - nwt) < 0.5);
   }
   backtracestate_BM             //
