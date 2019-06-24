@@ -30,7 +30,7 @@
 ###        ./misc/test-several-contributors.sh --debug-after-load
 
 ## to use valgrind on every bismon run, set the environment variable
-## export BISMON_WRAPPER=valgrind
+## export BISMON_WRAPPER='valgrind --error-exitcode=99'
 ## to debug every bismon run, use perhaps:
 ## export BISMON_WRAPPER='gdb --args' BISMON_OPTIMFLAGS='-O0 -g3'
 
@@ -97,6 +97,8 @@ ls -ls store1.bmon store2.bmon
 md5sum store1.bmon store2.bmon
 echo
 
+
+################################
 function runbismon () {
     local title=$1
     shift
@@ -109,6 +111,8 @@ function runbismon () {
 		    "$@" ; then
 	    echo OK bismon: $title
 	else
+	    failcode=$?
+	    printf '\n\n!!!!!!! FAIL plain bismon %s - exitcode %d\n' "$title" $failcode
 	    echo FAIL bismon: $title "$args"
 	    kill $TOP_PID
 	fi
@@ -120,12 +124,18 @@ function runbismon () {
 		    "$@" ; then
 	    echo OK wrap "$BISMON_WRAPPER" bismon: $title
 	else
+	    failcode=$?
+	    printf '\n\n!!!!!! FAIL wrapped %s bismon %s - exitcode %d\n' "$BISMON_WRAPPER" "$title" $failcode
 	    echo FAIL wrap "$BISMON_WRAPPER" bismon: $title "$args"
 	    kill $TOP_PID
+	    exit $failcode
 	fi
-    fi
-	
+    fi	
 }
+## end runbismon
+################################
+
+
 ### Alan PseudoTuring
 echo Adding Alan PseudoTuring to bismon
 runbismon 'add Alan PseudoTuring' \
