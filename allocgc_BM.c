@@ -959,4 +959,15 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
                 (long) gettid_BM ());
 }                               /* end full_garbage_collection_BM */
 
+
+////////////////////////////////////////////////////////////////
+
+void
+final_cleanup_BM (void)
+{
+  WARNPRINTF_BM ("final_cleanup_BM unimplemented");
+#warning final_cleanup_BM not implemented
+}                               /* end final_cleanup_BM */
+
+
 /**** end of file allocgc_BM.c ****/

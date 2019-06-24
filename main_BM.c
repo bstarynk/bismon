@@ -140,6 +140,7 @@ char *comment_bm;
 char *module_to_emit_bm;
 int count_emit_has_predef_bm;
 int nb_added_predef_bm;
+static bool want_cleanup_bm;    /* to make valgrind more happy; see http://valgrind.org/ for more */
 
 int count_init_afterload_bm;    /* used count in arr_init_afterload_bm */
 int size_init_afterload_bm;     /* allocated size of arr_init_afterload_bm */
@@ -551,6 +552,17 @@ const GOptionEntry optionstab_bm[] = {
    "\t (this should remove personal information relevant to European GDPR in file "
    CONTRIBUTORS_FILE_BM ")",
    .arg_description = "CONTRIBUTOR"},
+  ///
+  {.long_name = "cleanup",      //
+   .short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &want_cleanup_bm,
+   .description =
+   "cleanup memory at end to make valgrind happier\n"
+   "\t ... (see http://valgrind.org/ for more).",
+   .arg_description = NULL},
+  //
 #if defined(BISMONION) && defined (BISMONGTK)
   //
   /* when both BISMONION and BISMONGTK */
@@ -926,6 +938,10 @@ check_locale_BM (void)
 }                               /* end of check_locale_BM */
 
 
+
+
+
+////////////////////////////////////////////////////////////////
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
 //// GTK appplications
@@ -1002,7 +1018,6 @@ main (int argc, char **argv)
   initialize_predefined_names_BM ();
   initialize_agenda_BM ();
   GError *opterr = NULL;
-  bool shouldfreedumpdir = false;
   bool guiok = false;
   DBGPRINTF_BM ("run_gtk is %s & run_onion is %s (argc=%d)",
                 run_gtk_BM ? "true" : "false",
@@ -1135,10 +1150,7 @@ main (int argc, char **argv)
   if (!load_dir_bm)
     load_dir_bm = ".";
   if (!dump_dir_BM)
-    {
-      dump_dir_BM = realpath (load_dir_bm, NULL);
-      shouldfreedumpdir = dump_dir_BM != NULL;
-    }
+    dump_dir_BM = realpath (load_dir_bm, NULL);
   if (run_gtk_BM && run_onion_BM)
     WARNPRINTF_BM ("bismon trying to run both GTK and ONION");
   INFOPRINTF_BM ("bismon should load directory %s - git commit: %s",
@@ -1297,8 +1309,10 @@ main (int argc, char **argv)
                 run_onion_BM ? "true" : "false", batch_bm ? "true" : "false");
   free ((void *) contributors_filepath_BM), contributors_filepath_BM = NULL;
   free ((void *) passwords_filepath_BM), passwords_filepath_BM = NULL;
-  if (shouldfreedumpdir)
+  if (dump_dir_BM)
     free ((void *) dump_dir_BM), dump_dir_BM = NULL;
+  if (want_cleanup_bm)
+    final_cleanup_BM ();
   INFOPRINTF_BM ("end of %s, on %s, pid %d, %.3f elapsed, %.3f cpu time\n"
                  "... timestamp %s\n"
                  "... lastgitcommit %s\n"
