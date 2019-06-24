@@ -25,6 +25,10 @@
 #    Contact me (Basile Starynkevitch) by email
 #    basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 
+### For debugging purposes, a useful way might be to run this script as:
+###      env BISMON_WRAPPER='gdb --args' BISMON_OPTIMFLAGS='-O0 -g3' \
+###        ./misc/test-several-contributors.sh --debug-after-load
+
 ## to use valgrind on every bismon run, set the environment variable
 ## export BISMON_WRAPPER=valgrind
 ## to debug every bismon run, use perhaps:
@@ -34,6 +38,7 @@
 export TOP_PID=$$
 # so runbismon below can exit the entire script
 
+## it could be useful to pass --debug-after-load
 bismonflags="$@"
 
 if [ ! -f bismon.h ] ; then
