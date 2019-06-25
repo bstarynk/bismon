@@ -962,14 +962,52 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
 
 ////////////////////////////////////////////////////////////////
 
+static int clear_gcroots_bm (void);
+
+int
+clear_gcroots_bm (void)
+{
+  int cnt = 0;
+  // clear the makeconst-managed constants
+  for (void **p = bmconstaddrs; *p != NULL; p++)
+    {
+      if (*p)
+        {
+          cnt++;
+          *p = NULL;
+        }
+    };
+  // clear the predefined objects
+#define HAS_PREDEF_BM(Id,Hi,Lo,Hash) PREDEF_BM(Id)=NULL;
+#define HAS_NAMED_PREDEF_BM(Nam,id)
+#include "_bm_predef.h"
+  cnt += BM_NB_PREDEFINED;
+  return cnt;
+}                               /* end clear_gcroots_bm */
+
+
+
+// make valgrind happy at exit time!
 void
 final_cleanup_BM (void)
 {
-  WARNPRINTF_BM ("final_cleanup_BM unimplemented");
-  backtrace_print_BM
-    ((struct backtrace_state *) backtracestate_BM, 0, stdout);
-  fflush (NULL);
-#warning final_cleanup_BM not implemented
+  int nbgcroots = clear_gcroots_bm ();
+  pthread_mutex_lock (&allocationmutex_BM);
+  ASSERT_BM (allocationvec_vBM != NULL);
+  unsigned long alsiz = allocationvec_vBM->al_size;
+  unsigned long alcnt = allocationvec_vBM->al_nb;
+  ASSERT_BM (alcnt <= alsiz);
+  for (unsigned ix = 0; ix < alcnt; ix++)
+    {
+      free (allocationvec_vBM->al_ptr[ix]),
+        allocationvec_vBM->al_ptr[ix] = NULL;
+    }
+  allocationvec_vBM->al_nb = 0;
+  free (allocationvec_vBM), allocationvec_vBM = NULL;
+  pthread_mutex_unlock (&allocationmutex_BM);
+  INFOPRINTF_BM ("final cleanup:"
+                 " cleared %d GC roots and %ul allocated values.",
+                 nbgcroots, alcnt);
 }                               /* end final_cleanup_BM */
 
 
