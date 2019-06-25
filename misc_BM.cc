@@ -1194,3 +1194,54 @@ unregister_failock_BM(struct failurelockset_stBM*flh, objectval_tyBM* ob)
   ASSERT_BM (isobject_BM(ob));
   flh->flhobjset.erase(ob);
 } // end unregister_failock_BM
+
+
+
+// make valgrind happy for C++ data here
+void
+final_miscdata_cleanup_BM (void)
+{
+  {
+    std::vector<const char*> namevec;
+    namevec.reserve(namemap_BM.size()+1);
+    for (auto it : namemap_BM)
+      namevec.push_back(it.first);
+    namemap_BM.clear();
+    objhashtable_BM.clear();
+    for (const char*ptr : namevec)
+      free ((void*)ptr);
+  }
+  namemap_BM = typeof(namemap_BM){};
+  objhashtable_BM = typeof(objhashtable_BM){};
+  {
+    std::vector<std::pair<void*, rawid_tyBM>> vecmodu;
+    vecmodu.reserve(modulemap_BM.size());
+    for (auto modit : modulemap_BM) {
+      rawid_tyBM modid = modit.first;
+      ModuleData_BM& modata = modit.second;
+      ASSERT_BM(equalid_BM(modid, modata.mod_id));
+      void*modlh = modata.mod_dlh;
+      if (modlh) vecmodu.push_back({modlh,modid});
+      modata.mod_dlh = nullptr;
+      modata.mod_obj = nullptr;
+      modata.mod_data = nullptr;
+    }
+    modulemap_BM.clear();
+    modulemap_BM = typeof(modulemap_BM) {};
+    int modcnt = 0;
+    for (auto it: vecmodu) {
+      void* dlh = it.first;
+      rawid_tyBM modit = it.second;
+      if (dlclose(dlh)) {
+	char modidbuf[32];
+	memset (modidbuf, 0, sizeof(modidbuf));
+	idtocbuf32_BM(modit, modidbuf);
+	WARNPRINTF_BM("dlclose of %p (module %s) failed: %s", dlh, modidbuf, dlerror());
+      }
+      else modcnt++;
+    }
+    INFOPRINTF_BM("dlclosed %d modules", modcnt);
+  }
+} // end final_miscdata_cleanup_BM
+
+// end of file misc_BM.cc

@@ -973,7 +973,7 @@ clear_gcroots_bm (void)
     {
       if (*p)
         {
-	  objectval_tyBM *curobj = objectcast_BM(*p);
+          objectval_tyBM *curobj = objectcast_BM (*p);
           if (curobj != NULL)
             {
               objlock_BM (curobj);
@@ -982,6 +982,9 @@ clear_gcroots_bm (void)
             }
         }
     };
+  // clear the globals
+#define HAS_GLOBAL_BM(Glob) GLOBAL_BM(Glob) = NULL;
+#include "_bm_global.h"
   // clear the predefined objects except `object` & `class`
 #define HAS_PREDEF_BM(Id,Hi,Lo,Hash) do {	\
     objectval_tyBM* curprobj = PREDEF_BM(Id);	\
@@ -1015,6 +1018,7 @@ void
 final_cleanup_BM (void)
 {
   int nbgcroots = clear_gcroots_bm ();
+  final_miscdata_cleanup_BM ();
   pthread_mutex_lock (&allocationmutex_BM);
   ASSERT_BM (allocationvec_vBM != NULL);
   unsigned long alsiz = allocationvec_vBM->al_size;

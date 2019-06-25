@@ -325,6 +325,10 @@ extern hash_tyBM doublehash_BM (double x);      /* in misc_BM.cc */
 // initialize the GC and mainthreadid_BM
 extern void initialize_garbage_collector_BM (void);
 extern void initialize_predefined_objects_BM (void);
+
+// cleanup C++ miscellanous data; also dlclose-s modules!
+extern void final_miscdata_cleanup_BM (void);
+
 // final cleanup of memory to make valgrind happy
 extern void final_cleanup_BM (void);
 
