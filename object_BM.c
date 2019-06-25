@@ -543,6 +543,22 @@ makeobj_BM (void)
 }                               /* end of makeobj_BM */
 
 void
+objcompletelyclear_BM (objectval_tyBM * obj)
+{
+  if (!isobject_BM (obj))
+    return;
+  objclearpayload_BM (obj);
+  objputclass_BM (obj, BMP_object);
+  obj->ob_compvec = NULL;
+  obj->ob_attrassoc = NULL;
+  obj->ob_routaddr = NULL;
+  obj->ob_sig = NULL;
+  obj->ob_payl = NULL;
+  obj->ob_space = TransientSp_BM;
+  objtouchnow_BM (obj);
+}                               /* end of objcompletelyclear_BM */
+
+void
 objectinteriorgcmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);

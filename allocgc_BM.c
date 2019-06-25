@@ -969,18 +969,41 @@ clear_gcroots_bm (void)
 {
   int cnt = 0;
   // clear the makeconst-managed constants
-  for (void **p = bmconstaddrs; *p != NULL; p++)
+  for (void ***p = bmconstaddrs; *p != NULL; p++)
     {
       if (*p)
         {
-          cnt++;
-          *p = NULL;
+	  objectval_tyBM *curobj = objectcast_BM(*p);
+          if (curobj != NULL)
+            {
+              objlock_BM (curobj);
+              objcompletelyclear_BM (curobj);
+              objunlock_BM (curobj);
+            }
         }
     };
-  // clear the predefined objects
-#define HAS_PREDEF_BM(Id,Hi,Lo,Hash) PREDEF_BM(Id)=NULL;
+  // clear the predefined objects except `object` & `class`
+#define HAS_PREDEF_BM(Id,Hi,Lo,Hash) do {	\
+    objectval_tyBM* curprobj = PREDEF_BM(Id);	\
+    if (curprobj != BMP_object			\
+	&& curprobj != BMP_class) {		\
+      objlock_BM (curprobj);			\
+      objcompletelyclear_BM (curprobj);       	\
+      objunlock_BM (curprobj);			\
+      PREDEF_BM(Id)=NULL;			\
+    }						\
+  } while(0);
 #define HAS_NAMED_PREDEF_BM(Nam,id)
 #include "_bm_predef.h"
+  // at the very last, clear `object` and `class` predefined
+  objlock_BM (BMP_class);
+  objlock_BM (BMP_object);
+  objcompletelyclear_BM (BMP_class);
+  objcompletelyclear_BM (BMP_object);
+  objunlock_BM (BMP_class);
+  objunlock_BM (BMP_object);
+  BMP_class = NULL;
+  BMP_object = NULL;
   cnt += BM_NB_PREDEFINED;
   return cnt;
 }                               /* end clear_gcroots_bm */
@@ -997,6 +1020,16 @@ final_cleanup_BM (void)
   unsigned long alsiz = allocationvec_vBM->al_size;
   unsigned long alcnt = allocationvec_vBM->al_nb;
   ASSERT_BM (alcnt <= alsiz);
+  // first, completely clear all the objects in allocationvec_vBM
+  for (unsigned ix = 0; ix < alcnt; ix++)
+    {
+      void *curptr = allocationvec_vBM->al_ptr[ix];
+      if (!curptr)
+        continue;
+      if (isobject_BM (curptr))
+        objcompletelyclear_BM (curptr);
+    }
+  // then, free all the values  or payloads in allocationvec_vBM
   for (unsigned ix = 0; ix < alcnt; ix++)
     {
       free (allocationvec_vBM->al_ptr[ix]),

@@ -365,6 +365,10 @@ static inline void *objroutaddr_BM (const objectval_tyBM * obj,
 extern objrout_sigBM objrout_placeholder_BM;
 static inline void objtouchmtime_BM (objectval_tyBM * obj, double mtime);
 static inline void objtouchnow_BM (objectval_tyBM * obj);
+
+// the cleared object has no payload, no components, no attributes, no
+// routine, no signature, and becomes a transient instance of BMP_object
+extern void objcompletelyclear_BM (objectval_tyBM * obj);
 extern void objputspacenum_BM (objectval_tyBM * obj, unsigned spanum);
 static inline unsigned objspacenum_BM (const objectval_tyBM * obj);
 static inline objectval_tyBM *objclass_BM (const objectval_tyBM * obj);
