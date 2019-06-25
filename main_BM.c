@@ -140,6 +140,7 @@ char *comment_bm;
 char *module_to_emit_bm;
 int count_emit_has_predef_bm;
 int nb_added_predef_bm;
+static bool want_finalgc_bm;    /* to run a final GC */
 static bool want_cleanup_bm;    /* to make valgrind more happy; see http://valgrind.org/ for more */
 
 int count_init_afterload_bm;    /* used count in arr_init_afterload_bm */
@@ -561,6 +562,15 @@ const GOptionEntry optionstab_bm[] = {
    .description =
    "cleanup memory at end to make valgrind happier\n"
    "\t ... (see http://valgrind.org/ for more).",
+   .arg_description = NULL},
+  ///
+  {.long_name = "final-gc",     //
+   .short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &want_finalgc_bm,
+   .description =
+   "forcibly run a final garbage collection (after any dump or event loop)",
    .arg_description = NULL},
   //
 #if defined(BISMONION) && defined (BISMONGTK)
@@ -1303,6 +1313,14 @@ main (int argc, char **argv)
     if (run_onion_BM)
     {
       stop_onion_event_loop_BM ();
+    }
+  //
+  if (want_finalgc_bm)
+    {
+      INFOPRINTF_BM ("running final garbage collection.");
+      usleep (200);
+      full_garbage_collection_BM (NULL);
+
     }
   DBGPRINTF_BM ("ending BISMON run_gtk_BM %s run_onion_BM %s batch_bm %s",
                 run_gtk_BM ? "true" : "false",
