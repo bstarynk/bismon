@@ -219,7 +219,7 @@ int main(int argc, char**argv)
         };
       outs << std::endl;
       outs << "const int bmnbconsts=" << bmconstset.size() << ";" << std::endl;
-      outs << "void** const bmconstaddrs[] = {" << std::endl;
+      outs << "void** bmconstaddrs[] = {" << std::endl;
       for (auto id: bmconstset)
         {
           char bufid[32];

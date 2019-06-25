@@ -1006,7 +1006,7 @@ final_cleanup_BM (void)
   free (allocationvec_vBM), allocationvec_vBM = NULL;
   pthread_mutex_unlock (&allocationmutex_BM);
   INFOPRINTF_BM ("final cleanup:"
-                 " cleared %d GC roots and %ul allocated values.",
+                 " cleared %d GC roots and %lu allocated values.",
                  nbgcroots, alcnt);
 }                               /* end final_cleanup_BM */
 
