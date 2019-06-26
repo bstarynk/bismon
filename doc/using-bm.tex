@@ -580,9 +580,9 @@ set \texttt{\{ €\_3dmcFZldt €\_6vMEdC0qxd \}} that is to
 The Web interface \index{web interface} of \emph{bismon} is supposed
 to be used without malice (see
 §\ref{subsubsec:leveraging-static-analysis} and
-§\ref{subsubsec:about-bismon}), with a recent graphical web
-browser~\footnote{Such as Firefox 60.5 or later, or Google Chrome 72.0
-  or later, both exist in 2019Q1.}  using HTTP/1.1. In particular,
+§\ref{subsubsec:about-bismon}), with a \emph{recent} graphical web
+browser~\footnote{Such as Firefox 60.7 or later, or Google Chrome 75.0
+  or later, both exist in 2019Q2.}  using HTTP/1.1. In particular,
 \emph{bismon} does not take any measure against
 \index{denial-of-service} denial-of-service attacks, since it is
 supposed to be used on a trusted and friendly corporate intranet or
@@ -598,13 +598,21 @@ Chrome~\footnote{So no particular effort is even taken to support a
   Internet Explorer pecularities or deficiencies. Likewise,
   scalability to thousands of simultaneous HTTP connections is out of
   scope in \emph{bismon}, but it is essential in most web
-  applications.}. Each \emph{Bismon} user is expected to have one, or
-only a few, browser tab[s] interacting with the \texttt{bismon}
-server, and these tabs, if there are more than one, are handled as
-different web browsers so have different web sessions.  They are
-physically and geographically located on the same local area network
-as the machine running the \emph{bismon} monitor. So, from web
-technologies perspective, \emph{bismon} is making different
+  applications.}. Compatibility with other browsers\footnote{See
+  \bmurl{https://caniuse.com/} and
+  \bmurl{https://developer.mozilla.org/} and elsewhere for the many
+  subtle but present compatibility issues of current Web technologies,
+  and notably \bmurl{https://stackoverflow.com/q/33540051/841108} or
+  \bmurl{https://softwareengineering.stackexchange.com/q/393837/40065}
+  for some tricky questions directly relevant to our \emph{Bismon}
+  development.} is not yet a concern, given the low TRL\index{TRL}
+ambitioned. Each \emph{Bismon} user is expected to have one, or only a
+few, browser tab[s] interacting with the \texttt{bismon} server, and
+these tabs, if there are more than one, are handled as different web
+browsers so have different web sessions.  They are physically and
+geographically located on the same local area network as the machine
+running the \emph{bismon} monitor. So, from web technologies
+perspective, \emph{bismon} is making different
 trade-offs~\footnote{For example, we could accept making some HTTP
   exchange - e.g. with AJAX - on \emph{every} keystroke on the
   keyboard, but such practice won't be acceptable in usual web
@@ -631,7 +639,7 @@ Each HTTP request \index{request} \index{web request} either
 corresponds to a ``static'' file path under \texttt{webroot/} (for a
 \texttt{GET} or \texttt{HEAD} HTTP request) or else it is handled
 dynamically. For a static file path, that file is served directly by
-\texttt{onion\_handler\_export\_local\_new} with a
+the routine \texttt{onion\_handler\_export\_local\_new} with a
 \texttt{Content-Type} corresponding to its suffix; for example an HTTP
 \texttt{GET} request of \texttt{favicon.ico} is answered with the
 content of \texttt{webroot/favicon.ico} file, and an HTTP \texttt{GET}
