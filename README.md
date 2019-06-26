@@ -28,18 +28,20 @@ http://starynkevitch.net/Basile/bismon-chariot-doc.pdf
 
 ### Potential future usages
 
-While *BISMON* is currently funded by projects with static-analysis
-goals, it might later -when more mature, after 2024- be usable, with a
-*lot of additional work* (years, not months), for many other purposes
-(the most significant limit being your imagination, and the power of
-your computer), including perhaps even some kind of
+While *Bismon* is currently funded by H2020 projects with
+static-analysis goals, please **notice that *Bismon* might later**
+-when more mature, after 2024- **be later usable as a** somehow
+generic ***framework*, with a *lot of additional work*** (years, not
+months), **for many other purposes** (the most significant limit being
+your imagination, and the power of your computer), including perhaps
+even some kind of
 [AI](https://en.wikipedia.org/wiki/Artificial_intelligence),
 sophisticated
 [desktop](https://en.wikipedia.org/wiki/Desktop_environment)-like
 graphical environments, many interactive web-based [collaborative
 software](https://en.wikipedia.org/wiki/Collaborative_software) tools
-concurrently used by some team, or [Object
-database](https://en.wikipedia.org/wiki/Object_database)s approaches
+concurrently used by some team, or [object
+database](https://en.wikipedia.org/wiki/Object_database)s applications
 or relevant problems. Since *Bismon* is GPLv3+ licensed, any future
 software using it should, [IMHO](https://en.wiktionary.org/wiki/IMHO),
 practically also be GPLv3+ (but other licensing schemes could be
