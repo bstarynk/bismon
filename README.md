@@ -25,6 +25,18 @@ then `make doc`; that command requires you to have a writable
 `$HOME/tmp/` directory). An early draft of it might be available on
 http://starynkevitch.net/Basile/bismon-chariot-doc.pdf
 
+While *BISMON* is currently funded by projects with static-analysis
+goals, it might later -when more mature, after 2024- be usable, with a
+*lot of additional work* (years, not months), for many other purposes
+(the most significant limit being your imagination, and the power of
+your computer), including perhaps even some kind of
+[AI](https://en.wikipedia.org/wiki/Artificial_intelligence),
+sophisticated
+[desktop](https://en.wikipedia.org/wiki/Desktop_environment)-like
+graphical environments, or [Object
+database](https://en.wikipedia.org/wiki/Object_database)s approaches
+or relevant problems.
+
 ## Approach ##
 
 *Develop some kind of* high-level (more expressive, more declarative)
