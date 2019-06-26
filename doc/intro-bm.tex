@@ -1274,19 +1274,20 @@ following features:
         programs, \emph{Bismon} should be multi-threaded and take
         advantage of current multi-core processors.
 
-      \item with a \textbf{syntax-oriented editor} or syntactical \emph{editor}
-        \index{editor!syntactical} \index{syntax-oriented!editor}
-        (for our DSLs),
-        inspired by the ideas of \textsc{Mentor} in
+      \item with a \textbf{syntax-oriented editor} or syntactical
+        \emph{editor} \index{editor!syntactical}
+        \index{syntax-oriented!editor} (for our DSLs), inspired by the
+        ideas of \textsc{Mentor} in
         \cite{donzeaugouge:inria-mentor}. So the static analysis
-        expert is not typing some raw text (in some concrete syntax of
-        our \index{DSL} DSL) later handled by traditional parsing techniques (as
-        in \cite{Aho:2006:DragonBook}) but should interact using a web
-        interface to \emph{modify} and \emph{enhance} the persistent
-        store (like old Lisp machines or Smalltalk machines did in the
-        1980s), partially shown in a web browser (see also
-        §\ref{subsec:webinterf} below). That web interface is
-        facilitating \emph{refactoring} of DSL code.
+        expert \index{expert!static analysis} \index{static analysis}
+        is not typing some raw text (in some concrete syntax of our
+        \index{DSL} DSL) later handled by traditional parsing
+        techniques (as in \cite{Aho:2006:DragonBook}) but should
+        interact using a web interface to \emph{modify} and
+        \emph{enhance} the persistent store (like old Lisp machines or
+        Smalltalk machines did in the 1980s), partially shown in a web
+        browser (see also §\ref{subsec:webinterf} below). That web
+        interface is facilitating \emph{refactoring} of DSL code.
 \end{itemize}
 
 
@@ -1323,23 +1324,29 @@ browsing and changing some internal representations thru the
   that Web interface was incomplete, and I still had to temporarily
   use some obsolete GTK-based interface that even I find so disgusting
   that I won't explain it, and sometimes even to edit manually some
-  \texttt{store2.bmon} data file, cf §~\ref{subsubsec:filestate}.}; see also \cite{Myers:2000:PPF} for a survey)
-and interacts with \textit{Bismon} to do that. There is no really any
-\index{abstract syntax tree}{abstract syntax \emph{tree}} in
+  \texttt{store2.bmon} data file, cf §~\ref{subsubsec:filestate}.};
+see also \cite{Myers:2000:PPF} for a survey) and interacts with
+\textit{Bismon} to do that. There is no really any \index{abstract
+  syntax tree}{abstract syntax \emph{tree}} (or AST) \index{AST} in
 \textit{Bismon}: what the developer is working on is some \emph{graph}
 (with circularities), and the entire persistent state of \emph{Bismon}
 could be viewed as some large graph in memory.
 
-Conceptually the initial \emph{Bismon} DSL is at first a
-dynamically-typed language, semantically similar to Scheme, Python (or
-to a lesser degree, to JavaScript: however, it has classes, not
-prototypes, with single-inheritance). It is \emph{essentially} (unlike
-most Scheme or Python or JavaScript implementations) a
-\emph{multi-threaded} language, since the emitted routines can run in
-parallel in our agenda machinery (cf. §\ref{subsec:multithreadist}
-below). Meta-programming techniques (inspired by Lisp macro systems,
-see \cite{Queinnec:1996:LSP}, and largely experimented in \emph{GCC
-  MELT}) will ease the extension of that language.
+Conceptually the initial \emph{Bismon} DSL \index{DSL} is at first a
+\index{language!dynamic}
+\href{https://en.wikipedia.org/wiki/Dynamic\_programming\_language}{dynamic
+  programming language}, semantically similar to Scheme, Python (or to
+a lesser degree, to JavaScript: however, it has classes, not
+prototypes, with single-inheritance), and is somehow \emph{compiled}
+or
+\href{https://en.wikipedia.org/wiki/Source-to-source\_compiler}{\emph{transpiled}}\index{transpiler}\index{transcompiler}
+to C. It is \emph{essentially} (unlike most Scheme or Python or
+JavaScript implementations) a \emph{multi-threaded} language, since
+the emitted routines can run in parallel in our agenda machinery
+(cf. §\ref{subsec:multithreadist} below). Meta-programming techniques
+(inspired by Lisp macro systems, see \cite{Queinnec:1996:LSP}, and
+largely experimented in \emph{GCC MELT}) will ease the extension of
+that language.
 
 The base \emph{Bismon} DSL is currently implemented~\footnote{See
   notably our hand-written files \texttt{gencode\_BM.c} and

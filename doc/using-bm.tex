@@ -937,6 +937,43 @@ browsers~\footnote{So web browsers don't communicate
 WebSocket messages from \texttt{bismon} to web browsers are arbitrary
 \emph{JSON} values.
 
+\bigskip
+
+The \emph{syntax-oriented editor} \index{syntax-oriented!editor}
+\index{editor!syntactical} (inspired by \textsc{Mentor}:
+\cite{donzeaugouge:inria-mentor}) needed\footnote{See also end of
+  \ref{subsubsec:about-bismon} above.} in \emph{Bismon} by its
+homoiconicity \index{homoiconicity}, and used by the
+\index{expert!static analysis} static analysis expert, won't handle
+lines of tokens in an editor widget\footnote{Of course, using
+  \bmurl{https://codemirror.net/} will be useful to show analysed C or
+  C++ source code, but not for our \emph{Bismon}'s \index{DSL} DSL.},
+but should enable that expert user to enter and \emph{conveniently}
+manipulate the \emph{abstract syntax tree} (or \index{AST} AST) of our
+\emph{Bismon} \index{DSL} DSL. That AST should appear in the web
+browser as some ``graphical'' tree (e.g. displayed as
+\href{https://en.wikipedia.org/wiki/Scalable\_Vector\_Graphics}{SVG}
+\index{SVG} elements or in some
+\href{https://en.wikipedia.org/wiki/Canvas\_element}{Canvas element})
+and/or more probably as nested, but with visible borders,
+\href{https://en.wikipedia.org/wiki/HTML5}{HTML5} \index{HTML5} markup
+\index{markup!element} elements updated thru the \index{DOM}
+\href{https://en.wikipedia.org/wiki/Document\_Object\_Model}{DOM}. AST
+manipulation should be easy, e.g. using contextual menus and/or
+keyboard \index{keyboard} function keys \index{function!key} like
+\fbox{\texttt{F1}}, \fbox{\texttt{F2}} and/or control keyboard
+sequences\index{control!keyboard sequence} -with e.g. the
+\fbox{\texttt{Ctrl}} or \fbox{\texttt{Esc}} keys- inspired by those of
+\texttt{emacs} or \texttt{vim}, etc... The set of elementary AST
+user-doable manipulations\index{manipulation!of AST} -including copy
+and pasting \index{copy/paste} of AST sub-trees- should be carefully
+designed, but small. The design insight could represent these ASTs
+both in user's browser as DOM elements and inside \emph{Bismon} as AST
+transient \index{transient}\index{object} objects and/or \index{node}
+nodes.
+
+\medskip
+
 \subsection{Using \texttt{bismon} for \textsc{Chariot}}
 \label{subsec:bismon-for-chariot}
 
