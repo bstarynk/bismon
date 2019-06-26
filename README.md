@@ -30,7 +30,7 @@ http://starynkevitch.net/Basile/bismon-chariot-doc.pdf
 
 While *Bismon* is currently funded by H2020 projects with
 static-analysis goals, please **notice that *Bismon* might later**
--when more mature, after 2024- **be later usable as a** somehow
+-when more mature, after 2024- **be probably usable as a** somehow
 generic ***framework*, with a *lot of additional work*** (years, not
 months), **for many other purposes** (the most significant limit being
 your imagination, and the power of your computer), including perhaps
