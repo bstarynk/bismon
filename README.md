@@ -36,9 +36,15 @@ your computer), including perhaps even some kind of
 [AI](https://en.wikipedia.org/wiki/Artificial_intelligence),
 sophisticated
 [desktop](https://en.wikipedia.org/wiki/Desktop_environment)-like
-graphical environments, or [Object
+graphical environments, many interactive web-based [collaborative
+software](https://en.wikipedia.org/wiki/Collaborative_software) tools
+concurrently used by some team, or [Object
 database](https://en.wikipedia.org/wiki/Object_database)s approaches
-or relevant problems.
+or relevant problems. Since *Bismon* is GPLv3+ licensed, any future
+software using it should, [IMHO](https://en.wiktionary.org/wiki/IMHO),
+practically also be GPLv3+ (but other licensing schemes could be
+possible, contact me on `basile.starynkevitch@cea.fr` for more;
+however, [IANAL](https://en.wiktionary.org/wiki/IANAL) ...)
 
 ## Approach ##
 
