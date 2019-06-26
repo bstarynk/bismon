@@ -25,6 +25,9 @@ then `make doc`; that command requires you to have a writable
 `$HOME/tmp/` directory). An early draft of it might be available on
 http://starynkevitch.net/Basile/bismon-chariot-doc.pdf
 
+
+### Potential future usages
+
 While *BISMON* is currently funded by projects with static-analysis
 goals, it might later -when more mature, after 2024- be usable, with a
 *lot of additional work* (years, not months), for many other purposes
