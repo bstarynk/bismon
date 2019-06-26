@@ -164,7 +164,8 @@ describing a circular and reflexive system, you should read it twice
 \bigskip
 
 The reader of this document (within \textsc{Chariot}, a software
-engineering expert working on IoT software or firmware coded in C or
+engineering expert \index{expert!software-engineering} working on
+IoT\index{IoT} \index{expert!IoT} software or firmware coded in C or
 C++) is expected to:
 
 \begin{itemize}
@@ -183,7 +184,8 @@ C++) is expected to:
     programs,
 
   \item be a daily advanced user of \index{Linux}{Linux} for software
-    development activities using GCC and related developer tools
+    development activities \index{software development}
+    \index{development!software} using GCC and related developer tools
     (e.g. \textit{binutils}, version control like \texttt{git}, build
     automation like \texttt{make} or \texttt{ninja}, source code
     editor like \texttt{emacs} or \texttt{vim}, the {\LaTeX} text
@@ -268,26 +270,30 @@ C++) is expected to:
     \item is aware that \emph{most software projects
       fail}~\footnote{See
       \bmurl{https://www.geneca.com/why-up-to-75-of-software-projects-will-fail/}}
-      (for \emph{some} definition of failure; see also \cite{Brooks:1995:MM, Khan:2016-GSEPIM,
-      Attarzadeh:2008:proj-man}, etc...), and that obviously includes
-      research software projects, which fail even more often, and any
-      IoT software in general. I believe that such a high failure rate
-      is
+      (for \emph{some} definition of failure; see also
+      \cite{Brooks:1995:MM, Khan:2016-GSEPIM,
+        Attarzadeh:2008:proj-man}, etc...), and that obviously
+      includes research software projects, which fail even more often,
+      and any IoT software in general. I believe that such a high
+      failure rate is
       \emph{intrinsic}~\footnote{\href{https://en.wiktionary.org/wiki/IMHO}{IMHO},
         allocation of much more time and efforts, including code
-        reviews, on software development is necessary - but sadly it is not
-        sufficient - to lower that failure rate. Read about the \emph{Joel Test} on \bmurl{https://www.joelonsoftware.com/2000/08/09/the-joel-test-12-steps-to-better-code/} for more.}  to any non-trivial
-      software developed by humans (because of
-      \cite{Braun:1956:magical-seven}, of ``leaky
+        reviews, on software development is necessary - but sadly it
+        is not sufficient - to lower that failure rate. Read about the
+        \emph{Joel Test} on
+        \bmurl{https://www.joelonsoftware.com/2000/08/09/the-joel-test-12-steps-to-better-code/}
+        for more.}  to any non-trivial software developed by humans
+      (because of \cite{Braun:1956:magical-seven}, of ``leaky
       abstractions''~\footnote{Cf. Spolsky's \emph{Law of leaky
-          abstractions} on
+          abstractions} \index{abstraction} on
         \bmurl{https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/}
         etc... for more.}  and of the
       \href{https://en.wikipedia.org/wiki/Halting\_problem}{\emph{Halting
           problem}}, etc...), and that formal methods approaches are
-      still vulnerable to specification~\footnote{A speculative
-        example of a tragic specification bug might include something
-        inside the Boeing 737 MAX - see
+      still vulnerable \index{vulnerability} \index{specificaton} to
+      specification~\footnote{A speculative example of a tragic
+        specification bug might include something inside the Boeing
+        737 MAX - see
         \bmurl{https://en.wikipedia.org/wiki/Boeing\_737\_MAX} - which
         could have recent crashes related to bugs in specifications,
         and probably developed with the most serious formal methods
@@ -315,6 +321,7 @@ C++) is expected to:
 
 \subsubsection{About static source code analysis and IoT}
 
+\index{static analysis} \index{analysis!static}
 There are many existing documents related to improving safety and
 security in IoT software (e.g. \cite{Chen:2011:DAS, Medwed:2016:ISC}),
 and even more on static source code analysis in general
@@ -347,7 +354,36 @@ etc....), notably for IoT\index{IoT} (see \cite{Carpent:2018:RRA,
 relation between an explicit defect and a source code property is
 generally fuzzy, or ill-defined.
 
-Static source code analysis tools can -generally speaking-
+Observe that, while Debian and several other Linux distributions are
+packaging many thousands of C or C++ programs and libraries and
+several free software source code analyzers (notably \textsc{Frama-C}
+and \textsc{Clang} tools and \textsc{Coccinnelle}), very few Debian
+packages -coded in C or C++ for example- are conditionnally
+``build-depending''\footnote{The Debian packaging system is
+  sophisticated enough to just \emph{suggest} a tool useful to
+  \emph{build} a package from its source code.} on them. This could be
+explained by the practical difficulties, for Debian developers or
+packagers, to effectively use these source code analyzers. Large C or
+C++ Linux-related software - such as the Linux kernel, standard or
+widely used C or C++ libraries (including \texttt{libcurl},
+\textsc{Qt}, \textsc{GTK}, \textsc{libz}, \textsc{OpenSSL}, etc...),
+Firefox, Libreoffice, various interpreters (Python, Guile), runtime
+(Ocaml's or SBCL's ones) or compilers (GCC, Clang) etc... are still
+not really analyzable automatically today, in a cost-effective and
+time-efficient manner. But Debian cares a lot about software quality
+and stability, so when automatic tools are available and
+\emph{practically} useful, they \emph{are} used! The same observation
+holds even for specialized Linux distributions\footnote{The Raspbian
+  distribution is a typical example, see \bmurl{https://raspbian.org/}
+  for more. But look also into
+  \bmurl{https://www.automotivelinux.org/} or
+  \bmurl{https://www.genivi.org/} as another examples.} used in many
+non-critical embedded and connected IoT systems.
+
+
+\medskip
+
+Static source code analysis tools \index{static analysis!tool} can -generally speaking-
 be~\footnote{This is a gross simplification! In practice, there is a
   continuous spectrum of source code analyzers, much like there is a
   spectrum between compilers and interpreters (with e.g. bytecode or
@@ -355,7 +391,8 @@ be~\footnote{This is a gross simplification! In practice, there is a
   interpretation).} viewed as being of one of two kinds:
 
 \begin{itemize}
-  \item strongly formal methods based, semantically oriented,
+  \item strongly formal methods\index{formal
+    methods}\index{methods!formal} based, semantically oriented,
     ``sound'' tools (e.g. built above abstract interpretation -cf.
     \cite{Cousot:2014:AIP,CousotCousot77-1}-, model checking -cf.
     \cite{Schlich:2010:MCS, Siddiqui:2018:adv-soft-model-check} and
@@ -367,38 +404,39 @@ be~\footnote{This is a gross simplification! In practice, there is a
       results.}. For examples, \emph{Frama-C} (cf
     \cite{Cuoq:2012:Frama-C}), \emph{Astrée} (cf
     \cite{Mine:2015:TIU}), \emph{Mopsa} (cf \cite{Mine:2018:Mopsa})
-    etc... The expert user needs either to explicitly annotate the
-    analyzed source code (e.g. in ACSL for \emph{Frama-C}, see
-    \cite{Baudin:2018:ACSL, Delahaye:2013:CSL, Amin:2017:LAW}), and/or
-    cleverly tune the many configuration knobs of the static analyzer,
-    and often both. Often, the static analyzer itself has to be
-    extended to be able to give interesting results on one particular
-    analyzed source code~\footnote{The \emph{Astrée} project can be
-      seen as the development of a powerful analyzer tool
-      \emph{specifically} suited for the needs of Airbus control
-      command software; it implements many complex abstract
-      interpretation lattices wisely chosen to fit the relevant traits
-      of the analyzed code. Neither \emph{Astrée} nor \emph{Frama-C}
-      can easily -without any additional tuning or annotations- and
-      successfully be used on most Linux command line utilities
-      (e.g. \texttt{bash}, \texttt{\emph{coreutils}},
-      \texttt{\emph{binutils}}, \texttt{gcc}, ...)  or servers
-      (e.g. \texttt{systemd}, \texttt{lighttpd}, \texttt{Wayland} or
-      \texttt{Xorg}, or IoT frameworks such as MQTT...). But
-      \emph{Frama-C} can be extended by additional plugins so is a
-      \emph{framework} for sound static analysis.}, when that analyzed
-    code is complex or quite large. Many formal static analyzers
+    etc... The expert \index{expert!software engineering} user needs
+    either to explicitly annotate the analyzed source code (e.g. in
+    ACSL for \emph{Frama-C}, see \cite{Baudin:2018:ACSL,
+      Delahaye:2013:CSL, Amin:2017:LAW}), and/or cleverly tune the
+    many configuration knobs of the static analyzer, and often
+    both. Often, the static analyzer itself has to be extended to be
+    able to give interesting results on one particular analyzed source
+    code~\footnote{The \emph{Astrée} project can be seen as the
+      development of a powerful analyzer tool \emph{specifically}
+      suited for the needs of Airbus control command software; it
+      implements many complex abstract interpretation lattices wisely
+      chosen to fit the relevant traits of the analyzed code. Neither
+      \emph{Astrée} nor \emph{Frama-C} can easily -without any
+      additional tuning or annotations- and successfully be used on
+      most Linux command line utilities (e.g. \texttt{bash},
+      \texttt{\emph{coreutils}}, \texttt{\emph{binutils}},
+      \texttt{gcc}, ...)  or servers (e.g. \texttt{systemd},
+      \texttt{lighttpd}, \texttt{Wayland} or \texttt{Xorg}, or IoT
+      frameworks such as MQTT...). But \emph{Frama-C} can be extended
+      by additional plugins so is a \emph{framework} for sound static
+      analysis.}, when that analyzed code is complex or quite
+    large. Many formal static analyzers
     (e.g. \cite{Greenaway:2014:DSS, Vedala:2012:ADP}) focus on
     checking just \emph{one} aspect or property of security or
     safety. Usually, formal and sound static analyzers can practically
-    cope only with small sized analyzed programs of at most one or a
-    few hundred thousands lines of C code (following some
-    \emph{particular} coding style or using some definable
-    \emph{subset} of the C language~\footnote{For instance, both
-      \emph{Frama-C} and \emph{Astrée} have issues in dealing with
-      standard dynamic C memory allocation above \texttt{malloc};
-      since they target above all the safety critical real-time
-      embedded software market where such allocations are
+    cope only with small
+    sized analyzed programs of at most one or a few hundred thousands
+    lines of C code (following some \emph{particular} coding style or
+    using some definable \emph{subset} of the C language\footnote{For
+      instance, both \emph{Frama-C} and \emph{Astrée} have issues in
+      dealing with standard dynamic C memory allocation above
+      \texttt{malloc}; since they target above all the safety critical
+      real-time embedded software market where such allocations are
       \emph{forbidden}.}). Some formal analysis approaches include a
     definition of a strict subset of \emph{C}, thru perhaps some
     automatically generated code (cf. \cite{Bhargavan:DFHPRR17}) from
@@ -1076,7 +1114,7 @@ later.
 \textit{Bismon} is (like \textit{GCC MELT} was) a \textbf{domain
   specific language}\footnote{See the
   \href{https://en.wikipedia.org/wiki/Domain-specific\_language}{\emph{Domain-specific
-      language}} wikipage.} implementation, targetted to ease static
+      language}} wikipage.} \index{DSL} \index{Domain-Specific Language!DSL} implementation, targetted to ease static
 source code analysis (above the \textit{GCC} compiler), with the
 following features:
 
@@ -1236,13 +1274,13 @@ following features:
         programs, \emph{Bismon} should be multi-threaded and take
         advantage of current multi-core processors.
 
-      \item with a \textbf{syntax oriented editor} or syntactical \emph{editor}
+      \item with a \textbf{syntax-oriented editor} or syntactical \emph{editor}
         \index{editor!syntactical} \index{syntax-oriented!editor}
         (for our DSLs),
         inspired by the ideas of \textsc{Mentor} in
         \cite{donzeaugouge:inria-mentor}. So the static analysis
         expert is not typing some raw text (in some concrete syntax of
-        our DSL) later handled by traditional parsing techniques (as
+        our \index{DSL} DSL) later handled by traditional parsing techniques (as
         in \cite{Aho:2006:DragonBook}) but should interact using a web
         interface to \emph{modify} and \emph{enhance} the persistent
         store (like old Lisp machines or Smalltalk machines did in the
