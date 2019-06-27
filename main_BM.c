@@ -1005,7 +1005,7 @@ main (int argc, char **argv)
   {
     double nwt = clocktime_BM (CLOCK_REALTIME);
     intptr_t y2kwt = timetoY2Kmillisec_BM (nwt);
-    ASSERT_BM (abs (Y2Kmillisectotime_BM (y2kwt) - nwt) < 0.5);
+    ASSERT_BM (fabs (Y2Kmillisectotime_BM (y2kwt) - nwt) < 0.5);
   }
   backtracestate_BM             //
     = (volatile struct backstrace_state *)
@@ -1747,7 +1747,7 @@ add_passwords_from_file_BM (const char *addedpasspath)
   if (!pasfil)
     FATAL_BM ("cannot open added passwords file %s : %m", addedpasspath);
   size_t sizpas = 128;
-  char *linpas = calloc (sizpas, 0);
+  char *linpas = calloc (1, sizpas);
   int lincnt = 0;
   int nbch = 0;
   if (!linpas)
