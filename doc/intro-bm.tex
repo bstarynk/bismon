@@ -157,9 +157,9 @@ code).
 
 
 The numerous footnotes in this report are for a second reading (and
-may be used for forward references). To understand this report
-describing a circular and reflexive system, you should read it twice
-(skipping footnotes at the first read).
+may be used for forward references). \textbf{To understand this report}
+describing a circular and reflexive system, you should \textbf{read it
+  twice} (skipping footnotes at the first read).
 
 \bigskip
 
@@ -1290,6 +1290,27 @@ following features:
         interface is facilitating \emph{refactoring} of DSL code.
 \end{itemize}
 
+\bigskip
+
+It should be noticed that \textbf{\emph{Bismon} is} actually \textbf{a
+  somehow generic framework}, \index{framework} designed and usable to
+ease static analysis of C or C++ programs using generated \emph{GCC}
+plugins and other runtime emitted code. As an orthogonally persistent,
+meta-programmable, reflexive, and multi-threaded framework, and with a
+few years of additional work and funding, \emph{outside} of the
+\textsc{Chariot} project, \textbf{it could be even used for many other
+  purposes}, including \emph{artificial intelligence} and \emph{data
+  mining} applications on small volumes\footnote{The entire analyzed
+  data should fit in \emph{Bismon} persistent store, so dozens of
+  gigabytes, not terabytes.}  of data, web-based \emph{collaborative
+  software} tools, various multi-user \emph{web applications},
+\emph{declarative programming} approaches, etc... \index{artificial
+  intelligence} \index{data mining} \index{persistent store}
+\index{collaborative sofware} \index{application} \index{web
+  application} \index{application!web} \index{declarative programming}
+\index{programming!declarative}
+
+\medskip
 
 \subsubsection{About \emph{Bismon} as a domain-specific language}
 \label{subsubsec:bismon-dsl}
@@ -1673,8 +1694,11 @@ and \texttt{GTY}-ed classes (see \cite{gcc-internals} §23), to take
 advantage of the existing GCC garbage collector
 (\emph{Ggc}). Contrarily to GCC MELT, it won't provide a generational
 garbage collector (because most of the processing happens in the
-monitor, hence performance is less important), so transforming to
-A-normal form is not required at translation (to C++) time.
+monitor, hence performance of the generated GCC plugin\footnote{In
+  practice, generated GCC plugins would simply ``digest'' some
+  internal GCC representations and transmit their outcome to the
+  Bismon monitor.} is less important), so transforming to A-normal
+form is not required at translation (to C++) time.
 
 % @@@ to be completed when some static source code analysis of some C or
 % C++ code is possible with \emph{Bismon}, using \emph{generated} GCC
