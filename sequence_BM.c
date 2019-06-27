@@ -366,7 +366,7 @@ makeset_BM (const objectval_tyBM ** arr, unsigned rawsiz)
     h = (h1 & 0xffffff) + 3 * (h2 % 138599) + 11 * (siz & 0xffff) + 59;
   ASSERT_BM (h > 0);
   ((typedhead_tyBM *) set)->hash = h;
-  if (tmparr)
+  if (tmparr != tinyarr)
     free (tmparr);
   return set;
 }                               /* end makeset_BM */
