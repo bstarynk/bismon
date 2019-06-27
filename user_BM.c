@@ -1,8 +1,12 @@
-// file user_BM.c; management of European GDPR related personal data; see userlogin.md
+// file user_BM.c; management of European GDPR related personal data;
+// see also userlogin.md
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et
+    aux énergies alternatives)
+
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
