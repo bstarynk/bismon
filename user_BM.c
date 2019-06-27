@@ -138,6 +138,7 @@ overwrite_contributor_file_BM (FILE * fil,
         ("overwrite_contributor_file assocob %s set-contrib %s keyset %s",
          objectdbg_BM (_.assocob), OUTSTRVALUE_BM (_.tmpv),
          OUTSTRVALUE_BM (_.keysetv));
+      _.tmpv = NULL;
     }
   {
     nbcontrib = objassocnbkeyspayl_BM (_.assocob);
@@ -1058,7 +1059,8 @@ add_contributor_user_BM (const char *str,
                          char **perrmsg, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * userob;       //
+                 objectval_tyBM * userob;       // the user-object
+                 value_tyBM tmpv;       // temporary, for debugging
     );
   const char *namestr = NULL;
   const char *emailstr = NULL;
@@ -1067,7 +1069,13 @@ add_contributor_user_BM (const char *str,
     return NULL;
   if (perrmsg)
     *perrmsg = NULL;
-  DBGPRINTF_BM ("add_contributor_user_BM str='%s'", str);
+  if (debugmsg_BM)
+    {
+      _.tmpv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
+      DBGPRINTF_BM ("add_contributor_user_BM start str='%s' contrib-set=%s",
+                    str, OUTSTRVALUE_BM (_.tmpv));
+      _.tmpv = NULL;
+    }
   if (!str[0])
     {
       if (perrmsg)
@@ -1129,9 +1137,16 @@ add_contributor_user_BM (const char *str,
         add_contributor_name_email_alias_BM (namestr,
                                              emailstr, NULL,
                                              perrmsg, CURFRAME_BM);
-      DBGPRINTF_BM
-        ("add_contributor_user_BM userob=%s for namestr='%s' emailstr='%s'",
-         objectdbg_BM (_.userob), namestr, emailstr);
+      if (debugmsg_BM)
+        {
+          _.tmpv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
+          DBGPRINTF_BM
+            ("add_contributor_user_BM ending noalias userob=%s\n"
+             "... for namestr='%s' emailstr='%s' final contrib-set=%s",
+             objectdbg_BM (_.userob), namestr, emailstr,
+             OUTSTRVALUE_BM (_.tmpv));
+          _.tmpv = NULL;
+        }
       free ((void *) namestr), namestr = NULL;
       free ((void *) emailstr), emailstr = NULL;
       LOCALRETURN_BM (_.userob);
@@ -1171,14 +1186,16 @@ add_contributor_user_BM (const char *str,
         add_contributor_name_email_alias_BM (namestr,
                                              emailstr,
                                              aliasstr, perrmsg, CURFRAME_BM);
-      if (aliasstr)
-        DBGPRINTF_BM
-          ("add_contributor_user_BM userob=%s for namestr='%s' emailstr='%s' aliasstr='%s'",
-           objectdbg_BM (_.userob), namestr, emailstr, aliasstr);
-      else
-        DBGPRINTF_BM
-          ("add_contributor_user_BM userob=%s for namestr='%s' emailstr='%s'",
-           objectdbg_BM (_.userob), namestr, emailstr);
+      if (debugmsg_BM)
+        {
+          _.tmpv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
+          DBGPRINTF_BM
+            ("add_contributor_user_BM ending aliastr='%s' userob=%s\n"
+             "... for namestr='%s' emailstr='%s' final contrib-set=%s",
+             aliasstr, objectdbg_BM (_.userob), namestr, emailstr,
+             OUTSTRVALUE_BM (_.tmpv));
+          _.tmpv = NULL;
+        }
       free ((void *) namestr), namestr = NULL;
       free ((void *) emailstr), emailstr = NULL;
       free ((void *) aliasstr), aliasstr = NULL;
@@ -1208,8 +1225,16 @@ remove_contributor_by_name_BM (const char *oldname,
                  value_tyBM aliasv;     // the alias string value
                  value_tyBM nodev;      // the node
                  value_tyBM keysetv;    // the set of keys
+                 value_tyBM tmpv;       // temporary, for debugging
     );
-  DBGPRINTF_BM ("remove_contributor_by_name_BM oldname=%s", oldname);
+  if (debugmsg_BM)
+    {
+      _.tmpv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
+      DBGPRINTF_BM
+        ("remove_contributor_by_name_BM start oldname=%s contrib-set=%s",
+         oldname, OUTSTRVALUE_BM (_.tmpv));
+      _.tmpv = NULL;
+    }
   FILE *fil = fopen (CONTRIBUTORS_FILE_BM, "r+");
   if (!fil)
     {
@@ -1248,11 +1273,13 @@ remove_contributor_by_name_BM (const char *oldname,
       ssize_t linlen = getline (&linbuf, &linsiz, fil);
       if (linlen < 0)
         break;
-      if (linbuf[linlen] == '\n')
-        linbuf[linlen] = (char) 0;
       lincnt++;
       if (linbuf[0] == '#' || linbuf[0] == '\n' || !linbuf[0])
         continue;
+      if (linlen > 0 && linbuf[linlen - 1] == '\n')
+        linbuf[linlen - 1] = (char) 0;
+      DBGPRINTF_BM ("remove_contributor_by_name_BM file %s line#%d linbuf:%s",
+                    rcpath, lincnt, linbuf);
       const char *end = NULL;
       if (!g_utf8_validate (linbuf, -1, &end) && end && *end)
         FATAL_BM ("in %s line#%d is invalid UTF8: %s",
@@ -1365,9 +1392,14 @@ remove_contributor_by_name_BM (const char *oldname,
     FATAL_BM ("failed to fclose %s", rcpath);
   fil = NULL;
   fd = -1;
-  DBGPRINTF_BM
-    ("remove_contributor_by_name_BM oldname %s gives oldcontribob %s",
-     oldname, objectdbg_BM (_.oldcontribob));
+  if (debugmsg_BM)
+    {
+      _.tmpv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
+      DBGPRINTF_BM
+        ("remove_contributor_by_name_BM end oldname=%s gives oldcontribob=%s contrib-set=%s",
+         oldname, objectdbg_BM (_.oldcontribob), OUTSTRVALUE_BM (_.tmpv));
+      _.tmpv = NULL;
+    }
   LOCALRETURN_BM (_.oldcontribob);
 }                               /* end remove_contributor_by_name_BM */
 
