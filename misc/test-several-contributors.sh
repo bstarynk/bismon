@@ -154,8 +154,9 @@ ls -ls /tmp/contributors_BM /tmp/passwords_BM store1.bmon store2.bmon
 md5sum store1.bmon store2.bmon
 head -99 /tmp/contributors_BM /tmp/passwords_BM
 echo
+echo '@@@@@@@@@@@@@@@@@@@@@@@@@'  after Alan PseudoTuring
 echo
-
+echo
 
 ### Grace PseudoHopper
 echo Adding Grace PseudoHopper to bismon
@@ -175,8 +176,9 @@ ls -ls /tmp/contributors_BM /tmp/passwords_BM store1.bmon store2.bmon
 md5sum store1.bmon store2.bmon
 head -99 /tmp/contributors_BM /tmp/passwords_BM
 echo
+echo '@@@@@@@@@@@@@@@@@@@@@@@@@'  after Grace PseudoHopper
 echo
-
+echo
 
 #### Guy SteelePseudo
 echo Adding Guy SteelePseudo to bismon
@@ -195,6 +197,10 @@ echo
 echo after Guy SteelePseudo
 ls -ls /tmp/contributors_BM /tmp/passwords_BM
 head -99 /tmp/contributors_BM /tmp/passwords_BM
+echo
+echo
+echo
+echo '@@@@@@@@@@@@@@@@@@@@@@@@@'  after Guy SteelePseudo
 echo
 echo
 
