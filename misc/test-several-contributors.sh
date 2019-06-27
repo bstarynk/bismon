@@ -136,6 +136,17 @@ function runbismon () {
 ################################
 
 
+echo
+echo '!!!!!!!!!!!!!!!! INITIALLY'
+echo
+head -99 /tmp/contributors_BM /tmp/passwords_BM
+echo
+echo '@@@@@@@@@@@@@@@@@@@@@@@@@'  INITIALLY
+echo
+echo
+
+
+
 ### Alan PseudoTuring
 echo Adding Alan PseudoTuring to bismon
 runbismon 'add Alan PseudoTuring' \
