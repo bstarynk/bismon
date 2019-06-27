@@ -121,12 +121,24 @@ overwrite_contributor_file_BM (FILE * fil,
                  value_tyBM aliasv;     // the alias string value
                  value_tyBM nodev;      // the node
                  value_tyBM keysetv;    // the set of keys
+                 value_tyBM tmpv;       // temporary, for debugging
     );
   _.assocob = assocobarg;
   ASSERT_BM (isobject_BM (assocobarg) && objhasassocpayl_BM (assocobarg));
   rewind (fil);
   int nbcontrib = 0;
   _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.assocob);
+  if (debugmsg_BM)
+    {
+      char contidbuf[32];
+      memset (contidbuf, 0, sizeof (contidbuf));
+      idtocbuf32_BM (objid_BM (BMP_contributors), contidbuf);
+      _.tmpv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
+      DBGPRINTF_BM
+        ("overwrite_contributor_file assocob %s set-contrib %s keyset %s",
+         objectdbg_BM (_.assocob), OUTSTRVALUE_BM (_.tmpv),
+         OUTSTRVALUE_BM (_.keysetv));
+    }
   {
     nbcontrib = objassocnbkeyspayl_BM (_.assocob);
     ASSERT_BM ((int) setcardinal_BM (_.keysetv) == nbcontrib);
@@ -402,11 +414,11 @@ find_contributor_BM (const char *str, struct stackframe_stBM *stkf)
       ssize_t linlen = getline (&linbuf, &linsiz, fil);
       if (linlen < 0)
         break;
-      if (linbuf[linlen] == '\n')
-        linbuf[linlen] = (char) 0;
       lincnt++;
       if (linbuf[0] == '#' || linbuf[0] == '\n' || !linbuf[0])
         continue;
+      if (linlen > 0 && linbuf[linlen - 1] == '\n')
+        linbuf[linlen - 1] = (char) 0;
       const char *end = NULL;
       if (!g_utf8_validate (linbuf, -1, &end) && end && *end)
         FATAL_BM ("in %s line#%d is invalid UTF8: %s",
@@ -514,10 +526,17 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
       return;
     }
   if (debugmsg_BM)
-    _.tmpv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
-  DBGBACKTRACEPRINTF_BM
-    ("check_and_load_contributors_file_BM rcpath='%s' contributors=%s with set %s",
-     rcpath, objectdbg_BM (BMP_contributors), OUTSTRVALUE_BM (_.tmpv));
+    {
+      char contidbuf[32];
+      memset (contidbuf, 0, sizeof (contidbuf));
+      idtocbuf32_BM (objid_BM (BMP_contributors), contidbuf);
+      _.tmpv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
+      DBGBACKTRACEPRINTF_BM
+        ("check_and_load_contributors_file_BM rcpath='%s'\n"
+         "... contributors=%s/%s with set %s",
+         rcpath, objectdbg_BM (BMP_contributors), contidbuf,
+         OUTSTRVALUE_BM (_.tmpv));
+    }
   _.tmpv = NULL;
   _.hsetob = makeobj_BM ();
   int fd = fileno (fil);
@@ -544,15 +563,16 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
       ssize_t linlen = getline (&linbuf, &linsiz, fil);
       if (linlen < 0)
         break;
-      if (linbuf[linlen] == '\n')
-        linbuf[linlen] = (char) 0;
       lincnt++;
       if (linbuf[0] == '#' || linbuf[0] == '\n' || !linbuf[0])
         continue;
+      if (linlen > 0 && linbuf[linlen - 1] == '\n')
+        linbuf[linlen - 1] = (char) 0;
       const char *end = NULL;
       if (!g_utf8_validate (linbuf, -1, &end) && end && *end)
         FATAL_BM ("in %s line#%d is invalid UTF8: %s", rcpath,
                   lincnt, linbuf);
+      DBGPRINTF_BM ("contributor line#%d: %s", lincnt, linbuf);
       // linbuf should be like: <username>;<oid>;<email>;<alias>
       char *semcol1 = strchr (linbuf, ';');
       char *semcol2 = semcol1 ? strchr (semcol1 + 1, ';') : NULL;
