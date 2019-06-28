@@ -1159,8 +1159,36 @@ main (int argc, char **argv)
                   run_onion_BM ? "true" : "false");
   if (!load_dir_bm)
     load_dir_bm = ".";
+  else if (load_dir_bm[0] == '-')
+    FATAL_BM("--load directory '%s' cannot start with minus,\n"
+	     "... use '--load ./%s' instead",
+	     load_dir_bm, load_dir_bm);
   if (!dump_dir_BM)
     dump_dir_BM = realpath (load_dir_bm, NULL);
+  else if (dump_dir_BM[0] == '-')
+    FATAL_BM("--dump directory '%s' cannot start with minus,\n"
+	     "... use '--dump ./%s' instead",
+	     dump_dir_BM, dump_dir_BM);
+  if (dump_after_load_dir_bm && dump_after_load_dir_bm[0] == '-')
+    FATAL_BM("--dump-after-load directory '%s' cannot start with minus,\n"
+	     "... use '--dump-after-load ./%s' instead",
+	     dump_after_load_dir_bm, dump_after_load_dir_bm);
+  if (contributors_filepath_BM && contributors_filepath_BM[0] == '-')
+    FATAL_BM("--contributors-file path '%s' cannot start with minus,\n"
+	     "... use '--contributors-file ./%s' instead",
+	     contributors_filepath_BM, contributors_filepath_BM);
+  if (passwords_filepath_BM && passwords_filepath_BM[0] == '-')
+    FATAL_BM("--passwords-file path '%s' cannot start with minus,\n"
+	     "... use '--passwords-file ./%s' instead",
+	     passwords_filepath_BM, passwords_filepath_BM);
+  if (pid_filepath_bm && pid_filepath_bm[0] == '-')
+    FATAL_BM("--pid-file path '%s' cannot start with minus,\n"
+	     "... use '--pid-file ./%s' instead",
+	     pid_filepath_bm, pid_filepath_bm);
+  if (chdir_after_load_bm && chdir_after_load_bm[0] == '-')
+    FATAL_BM("--chdir-after-load directory '%s' cannot start with minus,\n"
+	     "... use '--chdir-after-load ./%s' instead",
+	    chdir_after_load_bm, chdir_after_load_bm);
   if (run_gtk_BM && run_onion_BM)
     WARNPRINTF_BM ("bismon trying to run both GTK and ONION");
   INFOPRINTF_BM ("bismon should load directory %s - git commit: %s",
