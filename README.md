@@ -158,7 +158,9 @@ metaprogram generating C headers).
 
 * [GNU make](https://www.gnu.org/software/make/) 4 or better
 
-* [ccache](https://ccache.samba.org/) is used to avoid useless recompilations.
+* [ccache](https://ccache.samba.org/) is used to avoid useless
+  recompilations. If you don't have it, you'll need to edit our
+  `Makefile` for compilation of generated modules.
 
 * [libbacktrace](https://github.com/ianlancetaylor/libbacktrace) - it is sometimes part of your system *GCC*, but you'll better install it separately (e.g. in your `/usr/local/` prefix)
 

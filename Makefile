@@ -4,7 +4,8 @@ GCC= gcc
 GXX= g++
 CC= $(GCC)
 CXX= $(GXX)
-#CCACHE= ccache
+#if you don't have or want ccache, set the below variable to empty
+CCACHE= ccache
 MARKDOWN= markdown
 INDENT= indent
 ASTYLE= astyle
@@ -47,14 +48,14 @@ build.ninja: generate-ninja-builder.sh
 
 
 modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
-	$(LINK.c) -fPIC $(BISMONMODULECFLAGS) \
+	$(CCACHE) $(LINK.c) -fPIC $(BISMONMODULECFLAGS) \
 	      -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<)  \
               -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' \
               -DBISMON_PERSISTENT_MODULE -shared $< -o $@
 
 
 modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
-	$(LINK.c) -fPIC   $(BISMONMODULECFLAGS) \
+	$(CCACHE) $(LINK.c) -fPIC   $(BISMONMODULECFLAGS) \
 	     -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) \
 	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE \
 	     -shared $< -o $@
