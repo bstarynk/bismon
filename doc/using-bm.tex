@@ -731,23 +731,29 @@ object has not been taken care of quickly enough, an HTTP \texttt{500
 request object is cleared.
 
 The mapping between URL paths (or prefixes) and web handler closures
-handling dynamic requests for them is given by the
-\texttt{webdict\_root}~\footnote{For example: an URL like
-  \texttt{http://localhost:8086/show/status} is handled by some
-  \emph{bismon} monitor listening HTTP requests on port 8086 and with
-  \texttt{webdict\_root} associating the string \texttt{"show"} to
-  some closure $\kappa$, that web handler closure $\kappa$ would be
-  applied to the suffix string \texttt{"status"} and to the web
-  exchange object $\omega$ created for that HTTP request. The result
-  of that application is ignored, only side effects -often adding some
-  tasklets into the agenda, and/or filling the web exchange object
-  with some XHTML5, etc...- are useful. If the string in such a web
-  handling dictionnary is associated to some other object
-  $\omega_{wh}$ of class \texttt{webhandler\_dict\_object}, that
-  dictionnary object $\omega_{wh}$ is recursively explored with the
-  rest of that URL path (e.g. \texttt{"status"} in our example).}
-dictionnary predefined object; for an empty path in the URL (such as
-{\relsize{-1}{\texttt{http://localhost:8086/}}} for example), its
+handling dynamic requests for them is given by the \index{webdict
+  root@\texttt{webdict\_root}} \texttt{webdict\_root}\footnote{For
+  example: an URL like \texttt{http://localhost:8086/show/status} is
+  handled by some \emph{bismon} monitor listening HTTP requests on
+  port 8086 and with \texttt{webdict\_root} associating the string
+  \texttt{"show"} to some closure $\kappa$, that web handler closure
+  $\kappa$ would be applied to the suffix string \texttt{"status"} and
+  to the web exchange object $\omega$ created for that HTTP
+  request. The result of that application is ignored, only side
+  effects -often adding some tasklets into the agenda, and/or filling
+  the web exchange object with some XHTML5, etc...- are useful. If the
+  string in such a web handling dictionnary $w_{dict}$ is associated
+  to some other object $\omega_{wh}$ of class
+  \texttt{webhandler\_dict\_object}, that dictionnary object
+  $\omega_{wh}$ is recursively explored with the rest of that URL path
+  (e.g. \texttt{"status"} in our example). If $w_{dict}$ has some
+  \texttt{and\_then} attribute associated to an object
+  $\omega_{andthen}$ which is a web dictionnary object, that
+  $\omega_{andthen}$ is explored with an incremented depth.}
+\index{and then@\texttt{and\_then}} dictionnary predefined object of
+class \index{webhandler dict object@\texttt{webhandler\_dict\_object}}
+\texttt{webhandler\_dict\_object}; for an empty path in the URL (such
+as {\relsize{-1}{\texttt{http://localhost:8086/}}} for example), its
 \texttt{web\_empty\_handler} attribute is~\footnote{Since dictionnary
   objects map \emph{non-empty} strings to non-nil values
   (cf. §\ref{subsubsec:objects}).} used.  If finally no web handler
@@ -756,7 +762,12 @@ closure is found, an \texttt{404 Not found} status is returned. The
 of transient web session objects and associates a cookie string to its
 web session object. That dictionnary is forcibly cleared at start of
 the web server inside \emph{bismon}, but it should be loaded empty,
-since web session objects are created and should remain transient.
+since web session objects are created and should remain transient.  A
+class \texttt{temporary\_webhandler\_dict\_object}, \index{temporary
+  webhandler dict object@\texttt{temporary\_webhandler\_dict\_object}}
+sub-class of the \texttt{webhandler\_dict\_object} class, also exists
+and have \index{transient} \emph{transient dictionnary entries} which
+are not dumped.
 
 In practice, dynamic requests are usually generating the HTML5
 \index{HTML5} content very dynamically. For generated HTML, it is much
