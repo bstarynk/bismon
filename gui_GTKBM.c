@@ -4795,6 +4795,9 @@ initialize_gui_menubar_BM (GtkWidget * mainvbox, GtkBuilder * bld)
   GtkWidget *appgarbcoll =
     GTK_WIDGET (gtk_builder_get_object (bld, "appgarbcoll_id"));
   appdebug_bm = GTK_WIDGET (gtk_builder_get_object (bld, "appdebug_id"));
+  ASSERT_BM (GTK_IS_CHECK_MENU_ITEM (appdebug_bm));
+  gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (appdebug_bm),
+                                  debugmsg_BM);
   appparsedebug_bm =
     GTK_WIDGET (gtk_builder_get_object (bld, "appparsedebug_id"));
   GtkWidget *appsubmenu =
