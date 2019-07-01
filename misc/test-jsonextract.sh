@@ -110,11 +110,13 @@ function runbismon () {
 
 
 rm -vf /tmp/bismoncookie
-( sleep 3; head /tmp/bismoncookie /dev/null; date +"start curl %c" ; \
+( sleep 3; head /tmp/bismoncookie; date +"start wget %c%n" ; source /tmp/bismoncookie; \
+  echo bismon cookie is $BISMONCOOKIE; \
   stdbuf --output=L --error=L \
-	 curl --cookie /tmp/bismoncookie --max-time 20 --connect-timeout 4 \
-	    -v  --trace-time -D /dev/stdout -d '{ "do": "test1json" }' \
-	    http://localhost:8086/test-jsonextract )  &
+	 wget --post-data='{ "do": "test1json" }' -v -S \
+	 --no-cookies --header "Cookie: BISMONCOOKIE=$BISMONCOOKIE" \
+	 --header 'Content-Type: application/json' \
+	 http://localhost:8086/test-jsonextract -O - ; sleep 0.01 )  &
 runbismon TEST1json -i init_testjsonextract
 wait
 head /tmp/bismoncookie /dev/null
