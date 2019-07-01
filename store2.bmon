@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3271 objects
+// for 3274 objects
 // with 7 modules
 !^_1lhXvXtIyPu_3nhuy4kN3wd
 !^_1zCsXG4OTPr_8PwkDAWr16S
@@ -47696,6 +47696,23 @@ _2LvSvKJFCCF_3QyFpcrySIi
 
 
 
+!(_89cUQMyOk6x_3BktMXXI88t
+!@ 1561984019.602
+!$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug end init_testjsonextract"
+!: _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "end" 
+  " " _63V5uVLvCcf_1VxMlB8V538  "*/"  "\n" 
+  "DBGPRINTF_BM"  "(\""  "end"  " " 
+ _63V5uVLvCcf_1VxMlB8V538  " "  "\u20ac%."  "9s" 
+  "\","  "\n"  " "  "\"" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\");"  "\n")
+
+!)_89cUQMyOk6x_3BktMXXI88t
+
+
+
 !(_89pRga6CODP_3tUn56PI0BL
 !@ 1536134987.088
 !$_3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
@@ -48488,6 +48505,18 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+!(_8l3UBEKzzDl_7qN30RQrNd3
+!@ 1561983434.688
+!$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "inner-body of start init_testjsonextract"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_8tAj8saPk7W_72rBxTK7KXk
+
+!)_8l3UBEKzzDl_7qN30RQrNd3
+
+
+
 !(_8l6Qjk0mDnp_4SUfFK9def2
 !@ 1544554054.953
 !$_4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
@@ -49122,13 +49151,16 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 !(_8tAj8saPk7W_72rBxTK7KXk
-!@ 1561970346.181
+!@ 1561983823.506
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of init_testjsonextract"
-!# 1
+!# 4
 
 !& _5aVIbUZVVtV_4m1UhgUJaXs 
+!& _8l3UBEKzzDl_7qN30RQrNd3 
+!& _89cUQMyOk6x_3BktMXXI88t 
+!& _8vAq3sHvz0Y_2k0khg31ZkV 
 !)_8tAj8saPk7W_72rBxTK7KXk
 
 
@@ -49253,6 +49285,18 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 _95J5VWlxn7h_9P3UNOuvpbl
 
 !)_8vldT3GXsT9_5ohHInrayea
+
+
+
+!(_8vAq3sHvz0Y_2k0khg31ZkV
+!@ 1561983823.506
+!$_6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return init_testjsonextract"
+!: _2DH0ucElTgh_62vxjxLcfev |=return|
+ * _0e54seiZEXF_1Myf620cHoB ( _63V5uVLvCcf_1VxMlB8V538)
+
+!)_8vAq3sHvz0Y_2k0khg31ZkV
 
 
 

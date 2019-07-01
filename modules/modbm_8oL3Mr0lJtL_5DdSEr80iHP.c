@@ -85,6 +85,28 @@ INFOPRINTF_BM("start init_testjsonextract €%.9s",
 ; 
 } // end run _5aVIbUZVVtV_4m1UhgUJaXs 
  
+ 
+ 
+startblock__8l3UBEKzzDl_7qN30RQrNd3: __attribute__((unused)); 
+{ /* +block _8l3UBEKzzDl_7qN30RQrNd3 *//* !endingblock _8l3UBEKzzDl_7qN30RQrNd3 */  
+goto endblock__8l3UBEKzzDl_7qN30RQrNd3;  
+endblock__8l3UBEKzzDl_7qN30RQrNd3: ;  
+} /*-block _8l3UBEKzzDl_7qN30RQrNd3 */ 
+//+ #2/4 of block _8tAj8saPk7W_72rBxTK7KXk :: 
+ 
+ 
+{ // run _89cUQMyOk6x_3BktMXXI88t 
+/*debug end init_testjsonextract*/
+DBGPRINTF_BM("end init_testjsonextract €%.9s",
+ "_89cUQMyOk6x_3BktMXXI88t");
+; 
+} // end run _89cUQMyOk6x_3BktMXXI88t 
+ 
+ 
+/*return _8vAq3sHvz0Y_2k0khg31ZkV:*/  /*v_r:*/_.v_3qw9bnATIhq_8loBraLeXzQ = // returned 
+ (constob_8oL3Mr0lJtL_5DdSEr80iHP_BM[0] /*!init_testjsonextract*/); 
+ goto epilog_63V5uVLvCcf_1VxMlB8V538; 
+ 
 /* !endingblock _8tAj8saPk7W_72rBxTK7KXk */ 
 goto endblock__8tAj8saPk7W_72rBxTK7KXk; 
 endblock__8tAj8saPk7W_72rBxTK7KXk: ; 
