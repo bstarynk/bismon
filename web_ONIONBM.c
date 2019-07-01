@@ -140,6 +140,7 @@ void
 unlockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
 {
 #if 0
+  // too verbose, so not needed
   DBGPRINTFAT_BM (__FILE__, lineno, "unlockonion_runpro_mtx_BM thrid=%ld",
                   (long) gettid_BM ());
 #endif
@@ -1891,7 +1892,9 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
     if (failcod)
     lab_failureweb:
       {
-        WARNPRINTF_BM ("do_dynamic_onion failure reqpath '%s' failcod=%d\n" ".. failreasonv %s\n" ".. failplacev %s\n", reqpath, failcod,       //
+        WARNPRINTF_BM ("do_dynamic_onion failure reqpath '%s' failcod=%d\n"     //
+                       ".. failreasonv %s\n"    //
+                       ".. failplacev %s\n", reqpath, failcod,  //
                        OUTSTRVALUE_BM (_.failreasonv),
                        OUTSTRVALUE_BM (_.failplacev));
         destroy_failurelockset_BM (&flockset);
@@ -2191,13 +2194,16 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
   objectval_tyBM *k_depth = BMK_17YdW6dWrBA_2mn4QmBjMNs;
   objectval_tyBM *k_web_empty_handler = BMK_8Rwc7G3hQ0G_230O74aoi1w;
   objectval_tyBM *k_webhandler_dict_object = BMK_23YbAS1S796_1ZeW8OZfp1J;
+  objectval_tyBM *k_and_then = BMK_6GcgFxSMvWY_4vzl0zmI5FA;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * sessionob;    //
                  objectval_tyBM * dictob;       //
                  objectval_tyBM * valob;        //
                  objectval_tyBM * nextdictob;   //
+                 objectval_tyBM * thendictob;   //
                  value_tyBM wordv;      //
                  value_tyBM valv;       //
+                 value_tyBM thenvalv;   //
     );
   _.sessionob = sessionobarg;
   _.dictob = dictobarg;
@@ -2239,22 +2245,30 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
   DBGPRINTF_BM ("find_web_handler path='%s' dictob %s off=%d word='%s'",
                 path, objectdbg_BM (_.dictob), off, word);
   {
+    _.nextdictob = NULL;
     objlock_BM (_.dictob);
     if (word && word[0])
       {
         _.wordv = (value_tyBM) makestring_BM (word);
         _.valv = objdictgetpayl_BM (_.dictob, _.wordv);
+        if (!_.valv)
+          _.thendictob = objgetattr_BM (_.dictob, k_and_then);
         *poffset = off + wordlen;
       }
     else
       _.valv = objgetattr_BM (_.dictob, k_web_empty_handler);
     objunlock_BM (_.dictob);
   }
-  DBGPRINTF_BM ("find_web_handler word '%s' path '%s' dictob %s valv %s",
-                word, path, objectdbg_BM (_.dictob),
-                debug_outstr_value_BM (_.valv, CURFRAME_BM, 0));
+  DBGPRINTF_BM
+    ("find_web_handler word '%s' path '%s' dictob %s nextdictob %s valv %s",
+     word, path, objectdbg_BM (_.dictob), objectdbg1_BM (_.nextdictob),
+     OUTSTRVALUE_BM (_.valv));
   if (isclosure_BM (_.valv))
-    LOCALRETURN_BM (_.valv);
+    {
+      if (word && word != wordbuf)
+        free (word);
+      LOCALRETURN_BM (_.valv);
+    }
   else if (isobject_BM (_.valv))
     {
       _.nextdictob = NULL;
@@ -2273,13 +2287,40 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
         ("find_web_handler word '%s' path '%s' nextdictob %s depth %d gives valv %s",
          word, path, objectdbg_BM (_.nextdictob), depth,
          debug_outstr_value_BM (_.valv, CURFRAME_BM, 0));
-
+      if (word && word != wordbuf)
+        free (word);
       LOCALRETURN_BM (_.valv);
+    }
+  else if (!_.valv && _.thendictob
+           && objectisinstance_BM (_.thendictob, k_webhandler_dict_object))
+    {
+      DBGPRINTF_BM ("find_web_handler uses thendictob %s from dictob %s,"       //
+                    "\n... at depth %d, offset %d ",
+                    objectdbg_BM (_.thendictob), objectdbg1_BM (_.dictob),
+                    depth, off);
+      _.thenvalv =
+        find_web_handler_BM (_.sessionob, _.thendictob, req, depth + 1, &off,
+                             CURFRAME_BM);
+      DBGPRINTF_BM ("find_web_handler_BM after thendictob %s at depth %d,"      //
+                    "\n... thenvalv %s offset %d",
+                    objectdbg_BM (_.thendictob), depth,
+                    OUTSTRVALUE_BM (_.thenvalv), off);
+      if (word && word != wordbuf)
+        free (word);
+      if (_.thenvalv
+          && (isclosure_BM (_.thenvalv) || isobject_BM (_.thenvalv)))
+        *poffset = off;
+      LOCALRETURN_BM (_.thenvalv);
     }
   DBGPRINTF_BM ("find_web_handler word '%s' path '%s' not found in dictob %s",
                 word, path, objectdbg_BM (_.dictob));
+  if (word && word != wordbuf)
+    free (word);
   LOCALRETURN_BM (NULL);
 }                               /* end find_web_handler_BM */
+
+
+
 
 void
 objwebexchangeputdatapayl_BM (const objectval_tyBM * obj, value_tyBM val)
