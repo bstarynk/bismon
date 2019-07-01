@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3274 objects
+// for 3275 objects
 // with 7 modules
 !^_1lhXvXtIyPu_3nhuy4kN3wd
 !^_1zCsXG4OTPr_8PwkDAWr16S
@@ -11137,6 +11137,21 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
 ~)
 !)_23vPTNrGYBF_3SlbvcOJx5M
+
+
+
+!(_9hPtWPdZbOZ_5dWTFuPESY3 |=temporary_webhandler_dict_object|
+!~ name (~ temporary_webhandler_dict_object
+~)
+!@ 1561989437.026
+!$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "temporary webhandler dict object whose entries are never dumped"
+!~ class (~ |supercl webhandler_dict_object:| _23YbAS1S796_1ZeW8OZfp1J 
+~: _0pSnxYMjpqQ_3opFGfXeh5o  % _5DDSY1YgVZr_6dOU4tiBldk ( __) 
+~: _2oNMm2aR91J_4QthSpZxplW  % _5DDSY1YgVZr_6dOU4tiBldk ( __)
+~)
+!)_9hPtWPdZbOZ_5dWTFuPESY3
 
 
 
