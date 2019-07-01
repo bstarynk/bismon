@@ -110,7 +110,11 @@ function runbismon () {
 
 
 rm -vf /tmp/bismoncookie
-(sleep 2; curl --cookie /tmp/bismoncookie -v -S -d '{ "do": "test1json" }' http://localhost:8086/test-jsonextract) &
+( sleep 3; head /tmp/bismoncookie /dev/null; date +"start curl %c" ; \
+  stdbuf --output=L --error=L \
+	 curl --cookie /tmp/bismoncookie --max-time 20 --connect-timeout 4 \
+	    -v  --trace-time -D /dev/stdout -d '{ "do": "test1json" }' \
+	    http://localhost:8086/test-jsonextract )  &
 runbismon TEST1json -i init_testjsonextract
 wait
 head /tmp/bismoncookie /dev/null
