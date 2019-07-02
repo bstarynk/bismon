@@ -20,7 +20,7 @@ BM_HEADERS= $(wildcard [a-z]*BM.h bismon.h)
 BM_CSOURCES= $(wildcard [a-z]*BM.c)
 
 
-.PHONY: all programs clean verbose indent count modules measure doc redump outdump checksum indentsinglemodule indenttempmodule jstimestamp chariotdemo-bismon
+.PHONY: all programs clean verbose indent count modules measure doc latexdoc heveadoc redump outdump checksum indentsinglemodule indenttempmodule jstimestamp chariotdemo-bismon
 
 
 
@@ -65,9 +65,15 @@ modules: _cflagsmodule.mk  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES
 
 
 
-doc: $(MARKDOWN_SOURCES) bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/*.hva)
+doc: $(MARKDOWN_SOURCES) bismon bismongtk modules $(wildcard doc/*.tex doc/images/* doc/*.bib doc/*.hva)
 	for f in $(MARKDOWN_SOURCES) ; do  $(MARKDOWN) $$f > $$(basename $$f .md).html ; done
 	./build-bismon-doc.sh
+
+latexdoc: bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
+	./build-bismon-doc.sh LaTeX
+
+heveadoc:  bismon bismongtk modules $(wildcard doc/*.tex doc/images/* doc/*.bib doc/*.hva)
+	./build-bismon-doc.sh HeVeA
 
 count:
 	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n

@@ -13,6 +13,8 @@
 # perhaps LEPTON: http://www.math.univ-paris13.fr/~lithiao/Lepton.html
 # perhaps ANT: http://mirror.hmc.edu/ctan/systems/ant/
 
+docmode=$1
+
 mkdir -p doc/generated/
 mkdir -p doc/htmldoc/
 
@@ -77,20 +79,27 @@ for pngfile in images/*.png ; do
     fi
 done
 
-pdflatex -halt-on-error bismon-chariot-doc < /dev/null
-bibtex bismon-chariot-doc < /dev/null
-pdflatex -halt-on-error bismon-chariot-doc < /dev/null
-makeindex bismon-chariot-doc < /dev/null
-printf '\n\n\n#### second pass latexing bismon chariot doc #####\n'
-pdflatex -halt-on-error bismon-chariot-doc < /dev/null
-bibtex bismon-chariot-doc < /dev/null
-pdflatex -halt-on-error bismon-chariot-doc < /dev/null || (echo failed pdflatex -halt-on-error bismon-chariot-doc got $? >/dev/stderr)
-[ -d $HOME/tmp/ ] && cp -v bismon-chariot-doc.pdf $HOME/tmp/bismon-chariot-doc-$bmgittag.pdf && (cd $HOME/tmp; ln -svf bismon-chariot-doc-$bmgittag.pdf bismon-chariot-doc.pdf)
-ls -l $PWD/*aux $PWD/*/*aux $PWD/*bbl $PWD/*/*bbl
-hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex svg.hva bismon-hevea.hva bismon-chariot-doc
+if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
+    pdflatex -halt-on-error bismon-chariot-doc < /dev/null
+    bibtex bismon-chariot-doc < /dev/null
+    pdflatex -halt-on-error bismon-chariot-doc < /dev/null
+    makeindex bismon-chariot-doc < /dev/null
+    printf '\n\n\n#### second pass latexing bismon chariot doc #####\n'
+    pdflatex -halt-on-error bismon-chariot-doc < /dev/null
+    bibtex bismon-chariot-doc < /dev/null
+    pdflatex -halt-on-error bismon-chariot-doc < /dev/null || (echo failed pdflatex -halt-on-error bismon-chariot-doc got $? >/dev/stderr)
+    [ -d $HOME/tmp/ ] && cp -v bismon-chariot-doc.pdf $HOME/tmp/bismon-chariot-doc-$bmgittag.pdf && (cd $HOME/tmp; ln -svf bismon-chariot-doc-$bmgittag.pdf bismon-chariot-doc.pdf)
+
+    ls -l $PWD/*aux $PWD/*/*aux $PWD/*bbl $PWD/*/*bbl
+fi
+
+if [ -z  "$docmode" -o "$docmode" == "HeVeA" ]; then
+    hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex svg.hva bismon-hevea.hva bismon-chariot-doc
 #bibhva bismon-chariot-doc
-bibhva htmldoc/bismon-htmldoc
-ls -l $PWD/*aux $PWD/*/*aux 
-hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-chariot-doc
-#hacha -o htmldoc/index.html  htmldoc/bismon-htmldoc.html
+    bibhva htmldoc/bismon-htmldoc
+    ls -l $PWD/*aux $PWD/*/*aux 
+    hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-chariot-doc
+    #hacha -o htmldoc/index.html  htmldoc/bismon-htmldoc.html
+fi
+
 tar -c -f - htmldoc/ | tardy -Remove_Prefix htmldoc -Prefix bismon-html-doc -User_NAme bismon -Group_NAme bismon | gzip -9 > bismon-html-doc.tar.gz
