@@ -1,6 +1,6 @@
 // generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
-// for 3275 objects
+// for 3276 objects
 // with 7 modules
 !^_1lhXvXtIyPu_3nhuy4kN3wd
 !^_1zCsXG4OTPr_8PwkDAWr16S
@@ -11124,6 +11124,18 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 !& _5gAcBFb7oLW_6e5LZ0baMye 
 !)_66DuQtJBPqt_8w9fOCyxJve
+
+
+
+!(_7OMM6Jlzdfh_2Keo2cQ8qNy |=temp_webdict_root|
+!~ name (~ temp_webdict_root
+~)
+!@ 1562139047.777
+!$_9hPtWPdZbOZ_5dWTFuPESY3 |=temporary_webhandler_dict_object|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the temporary webdictionnary at root, for"& " temporary URL stems installed by initializing"& " routines"
+
+!)_7OMM6Jlzdfh_2Keo2cQ8qNy
 
 
 
