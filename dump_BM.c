@@ -507,7 +507,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
            STORECONTENTMAGICPREFIX_BM /*which is "//!€Bismon" ... */ ,
            basename (bytstring_BM (_.pathv)));
   fprintf (spfil,
-           "// this data file, generated in %d, is GPLv3+ licensed.\n");
+           "// this data file, generated in %d, is GPLv3+ licensed.\n", nowyear);
   unsigned nbobj = setcardinal_BM (_.setobjs);
   fprintf (spfil, "// for %u objects\n", nbobj);
   fputs ("\n///‼ Notice that '" STOREOBJECTOPENPREFIX_BM "' and '"
