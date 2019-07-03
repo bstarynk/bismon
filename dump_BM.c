@@ -508,7 +508,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
 	"' for modules,\n"
 	"///‼… '" STOREFUNSIGNATUREPREFIX_BM "' and '" STOREFUNSIGNATUREALTPREFIX_BM
 	"' for function signatures,\n"
-	"///‼ are equivalent ….\n"
+	"///‼… are strictly equivalent ….\n"
 	"///---------------------\n\n",
 	spfil);
   _.modhsetob = makeobj_BM ();
