@@ -90,10 +90,6 @@ weakassertfailureat_BM (const char *condmsg, const char *fil, int lin)
   fprintf (stderr, "**** weakassertfailureat_BM (%s:%d) %s (tid#%d/%s)\n",
            fil, lin, condmsg, (int) gettid_BM (), thnambuf);
   fflush (stderr);
-  void *backbuf[50];
-  memset (backbuf, 0, sizeof (backbuf));
-  int nb = backtrace (backbuf, sizeof (backbuf) / sizeof (void *));
-  backtrace_symbols_fd (backbuf, nb, STDERR_FILENO);
   if (backtracestate_BM)
     {
       fprintf (stderr, "\n\n\n** full backtrace **\n");
@@ -102,6 +98,15 @@ weakassertfailureat_BM (const char *condmsg, const char *fil, int lin)
                           stderr);
       fprintf (stderr, "\n----- end full backtrace ------\n\n");
       fflush (stderr);
+    }
+  else
+    {
+      WARNPRINTF_BM ("weakassertfailureat_BM <%s:%d> %s - no backtracestate",
+                     fil, lin, condmsg);
+      void *backbuf[50];
+      memset (backbuf, 0, sizeof (backbuf));
+      int nb = backtrace (backbuf, sizeof (backbuf) / sizeof (void *));
+      backtrace_symbols_fd (backbuf, nb, STDERR_FILENO);
     }
   weakfailure_BM ();
 }                               /* end weakassertfailureat_BM */
