@@ -251,6 +251,16 @@ application/javascript                                 mjs
 
 The documentation generation needs a writable `$HOME/tmp/` directory.
 
+#### extra `git` configuration
+
+You might want (adapt
+[this](https://stackoverflow.com/a/46115809/841108) suggestion and
+[define your custom
+hunk-header](https://git-scm.com/docs/gitattributes#_defining_a_custom_hunk_header))
+to improve the interactive output of `git diff` on `store*.bmon`
+persistent data files.
+
+
 ## building ##
 
 Clone this `git` repository as usual, and build then use `bismon`
