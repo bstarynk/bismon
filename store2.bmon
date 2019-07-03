@@ -16747,10 +16747,12 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 !(_0VJTIqFfNXf_5chzuIlqcJP
-!@ 1529322492.669
+!@ 1562140758.426
 !$_4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of put\u00b0dict_object"
+!: _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_2bZ4BfCci5V_3WTzG7V25y4
 !# 1
 
 !& _838sw9thRfn_03qQ7lMn8Ij 
@@ -22668,10 +22670,10 @@ _4b2oGzfvQk3_05M6ivLYFqs
 
 !(_2bZ4BfCci5V_3WTzG7V25y4
 !|*
-!@ 1529225102.012
+!@ 1562140816.610
 !$_2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "put\u00b0dict_object minifunc;\n put in odict the key v_str associated to v_val"
+ "put\u00b0dict_object < o_dict (v_str v_val) method"
 !: _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ 
  _7n2SLLuWOjH_4ArhFUjmckz _167WczZjWtG_3FofhJxQWJi _5jRQCD1qTko_61I0j04ugAA ]
@@ -35007,10 +35009,8 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 !(_58oNVcHAUe4_3Z3PsPWQQWC
-!@ 1529322492.669
+!@ 1562141086.722
 !$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
-!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
- * _0v2RuabJSIV_7SLFx4XAdpr ( _5Zj20zoTMgi_2wX9L155Qet)
 !: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
  1
 !# 1
@@ -38725,10 +38725,8 @@ _4gjtBqgrY3i_67ZPUd9LxPU
 
 
 !(_5Zj20zoTMgi_2wX9L155Qet
-!@ 1529322492.669
+!@ 1562141126.018
 !$_3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
-!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
- * _7KdDnQYcbeY_4LbTWNwFIFY (  * _5gx69v86kIR_4ODGlLUUWqo ( _167WczZjWtG_3FofhJxQWJi) _7T2FZv58UYu_1HHqslZTor2 _3Q8xwomyj4D_36oIs4VyEfB)
 !: _2j84OTHlFdJ_1pMyQfgsmAz |=test|
  * _5gx69v86kIR_4ODGlLUUWqo ( _167WczZjWtG_3FofhJxQWJi)
 !# 2
@@ -47112,10 +47110,8 @@ _1Q9bb14ZILM_7qaCfMUXHig
 
 
 !(_838sw9thRfn_03qQ7lMn8Ij
-!@ 1529322492.669
+!@ 1562140884.474
 !$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
-!: _1xhcI0ZnQ6f_5xOLATXqawx |=origin|
- * _0v2RuabJSIV_7SLFx4XAdpr ( _2aMZ0ZBgKj2_35QKBjbmq4w)
 !: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
  1
 !# 1

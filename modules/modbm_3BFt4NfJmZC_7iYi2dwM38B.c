@@ -37,7 +37,7 @@ extern objrout_sigBM crout_110awzb480c_0n4frovb2yV_BM; //#5 !dump_data°contribu
 
 extern objrout_sigBM crout_22Zd68WPKUO_6AoIuBcbUb2_BM; //#6 !dump_scan°dict_object minifunc for dict-object odict and dumperobj odumper
 
-extern objrout_sigBM crout_2bZ4BfCci5V_3WTzG7V25y4_BM; //#7 !put°dict_object minifunc
+extern objrout_sigBM crout_2bZ4BfCci5V_3WTzG7V25y4_BM; //#7 !put°dict_object < o_dict (v_str v_val) method
 
 extern objrout_sigBM crout_2nl9zcaSUwe_8UBiMp1OuMk_BM; //#8 identity_minifunc
 
@@ -1022,7 +1022,7 @@ endblock__7csjYG7rNV4_68bJZT4W2BO: ;
 
 value_tyBM crout_2bZ4BfCci5V_3WTzG7V25y4_BM //#7
  (struct stackframe_stBM* stkf, //
-//!put°dict_object minifunc
+//!put°dict_object < o_dict (v_str v_val) method
   // 3 arguments
   const value_tyBM arg0,  // odict
   const value_tyBM arg1,  // v_str
@@ -2499,7 +2499,7 @@ const char* const constid_3BFt4NfJmZC_7iYi2dwM38B_BM[34+1] = {
  "_1FEnnpEkGdI_5DAcVDL5XHG",//dump_value
  /*10:*/
  "_22Zd68WPKUO_6AoIuBcbUb2", //! dump_scan°dict_object minifunc for dict-object odict and dumperobj odumper
- "_2bZ4BfCci5V_3WTzG7V25y4", //! put°dict_object minifunc
+ "_2bZ4BfCci5V_3WTzG7V25y4", //! put°dict_object < o_dict (v_str v_val) method
  "_2nl9zcaSUwe_8UBiMp1OuMk",//identity_minifunc
  "_3iiht57Wrs1_5NbiUi27oBn", //! prepend°list_object minifunc
  "_3yQlckX4DRh_4b9l9FBSSSL",//same_as_closed_minifunc
@@ -2540,7 +2540,7 @@ const char* const routid_3BFt4NfJmZC_7iYi2dwM38B_BM[21+1] = {
   "_0YOXUe7rEJC_3jFMjOAQRs9",//element_of_closed_minifunc
   "_110awzb480c_0n4frovb2yV", //!dump_data°contributor_class<o_contrib (o_dumper o_strbuf)
   "_22Zd68WPKUO_6AoIuBcbUb2", //!dump_scan°dict_object minifunc for dict-object odict and dumperobj odumper
-  "_2bZ4BfCci5V_3WTzG7V25y4", //!put°dict_object minifunc;
+  "_2bZ4BfCci5V_3WTzG7V25y4", //!put°dict_object < o_dict (v_str v_val) method
   /*8:*/
   "_2nl9zcaSUwe_8UBiMp1OuMk",//identity_minifunc
   "_3iiht57Wrs1_5NbiUi27oBn", //!prepend°list_object minifunc
