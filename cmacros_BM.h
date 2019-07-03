@@ -46,6 +46,10 @@
 // integer log in base 2, for a positive X
 #define ILOG2_BM(X) ((unsigned) (8*sizeof (unsigned long long) \
 				 - __builtin_clzll((X)) - 1))
+// optimization hints:
+#define LIKELY_BM(Test) !__builtin_expect(!(Test),0)
+#define UNLIKELY_BM(Test) __builtin_expect(!!(Test),0)
+
 #define FAILUREHANDLEMAGIC_BM    853401645      /*Ox32dde02d */
 
 #define VALUEGCPROC_BM(Gc,Val,Depth)		\
@@ -65,6 +69,34 @@
 #define STRBUFFERWANTEDWIDTH_BM 80
 #define LOADERMAGIC_BM 281610361        /*0x10c90879 */
 #define MAXLOADEDFILES_BM 64
+
+////////////////////////////////////////////////////////////////
+//////////////// about the store files.....
+// The first line of every store*.bmon file should start with the
+// following magic UTF-8 characters; the fourth character is the Euro
+// sign.
+#define STORECONTENTMAGICPREFIX_BM "//!€Bismon"
+
+
+
+/***
+ * Beware that the below prefixes and their ALTernatives should
+ * absolutely have the same byte length (as given by strlen or sizeof).
+ ***/
+
+#define STOREOBJECTOPENPREFIX_BM "«" /*U+00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK*/
+#define STOREOBJECTALTOPENPREFIX_BM "!("
+
+#define STOREOBJECTCLOSEPREFIX_BM "»" /*U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK*/
+#define STOREOBJECTALTCLOSEPREFIX_BM "!)"
+
+#define STOREMODULEPREFIX_BM "µ"
+#define STOREMODULEALTPREFIX_BM "!^"
+
+#define STOREFUNSIGNATUREPREFIX_BM "℺" /*U+213A ROTATED CAPITAL Q*/
+#define STOREFUNSIGNATUREALTPREFIX_BM "!|*"
+
+////////////////////////////////////////////////////////////////
 
 #define EMPTY_TOKEN_BM (struct parstoken_stBM) { \
     .tok_kind= plex__NONE, .tok_line= -1, .tok_col= -1, .tok_ptr= NULL }

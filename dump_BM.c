@@ -489,11 +489,28 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   if (!spfil)
     FATAL_BM ("dump_emit_space_BM cannot open %s (%m)",
               bytstring_BM (_.pathv));
-  fprintf (spfil, "// generated persistent data file %s\n",
+  /**
+   * Recall that STORECONTENTMAGICPREFIX_BM should be "//!€Bismon",
+   * and that magic string is on purpose also starting a Bismon line
+   * comment.
+   **/
+  fprintf (spfil, "%s generated persistent data file %s\n", //
+	   STORECONTENTMAGICPREFIX_BM /*which is "//!€Bismon" ...*/,
            basename (bytstring_BM (_.pathv)));
   fprintf (spfil, "// this generated data file is GPLv3+ licensed\n");
   unsigned nbobj = setcardinal_BM (_.setobjs);
   fprintf (spfil, "// for %u objects\n", nbobj);
+  fputs("\n///‼ Notice that '" STOREOBJECTOPENPREFIX_BM "' and '" STOREOBJECTALTOPENPREFIX_BM
+	"' for object opening,\n"
+	"///‼… '" STOREOBJECTCLOSEPREFIX_BM "' and '" STOREOBJECTALTCLOSEPREFIX_BM
+	"' for object closing,\n"
+	"///‼… '" STOREMODULEPREFIX_BM "' and '" STOREMODULEALTPREFIX_BM
+	"' for modules,\n"
+	"///‼… '" STOREFUNSIGNATUREPREFIX_BM "' and '" STOREFUNSIGNATUREALTPREFIX_BM
+	"' for function signatures,\n"
+	"///‼ are equivalent ….\n"
+	"///---------------------\n\n",
+	spfil);
   _.modhsetob = makeobj_BM ();
   objputhashsetpayl_BM (_.modhsetob, 2 + nbobj / 128);
   // compute the set of modules
