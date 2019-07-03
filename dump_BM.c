@@ -503,11 +503,12 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
    * and that magic string is on purpose also starting a Bismon line
    * comment.
    **/
-  fprintf (spfil, "%s generated persistent data file %s (Unicode UTF-8 encoded).\n",     //
+  fprintf (spfil, "%s generated persistent data file %s (Unicode UTF-8 encoded).\n",    //
            STORECONTENTMAGICPREFIX_BM /*which is "//!€Bismon" ... */ ,
            basename (bytstring_BM (_.pathv)));
   fprintf (spfil,
-           "/// This data file, generated in %d, is GPLv3+ licensed.\n", nowyear);
+           "/// This data file, generated in %d, is GPLv3+ licensed.\n",
+           nowyear);
   unsigned nbobj = setcardinal_BM (_.setobjs);
   fprintf (spfil, "// for %u objects\n", nbobj);
   fputs ("\n///‼ Notice that '" STOREOBJECTOPENPREFIX_BM "' and '"
@@ -617,7 +618,11 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
   char curobjid[32] = "";
   idtocbuf32_BM (objid_BM (curobj), curobjid);
   fputc ('\n', spfil);
-  fprintf (spfil, "!(%s", curobjid);
+  /** 
+   * The STOREOBJECTOPENPREFIX_BM is now "«" but we used to have the
+   * STOREOBJECTALTOPENPREFIX_BM i.e. "!(" before...
+   **/
+  fprintf (spfil, STOREOBJECTOPENPREFIX_BM "%s", curobjid);
   {
     const char *obnam = findobjectname_BM (curobj);
     if (obnam)
@@ -730,12 +735,19 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
     }
   else
     fputc ('\n', spfil);
-  fprintf (spfil, "!)%s\n", curobjid);
+  /**
+   * The STOREOBJECTCLOSEPREFIX_BM is now "»" but we used to have the
+   * STOREOBJECTALTCLOSEPREFIX_BM i.e. "!)" before...
+   **/
+  fprintf (spfil, STOREOBJECTCLOSEPREFIX_BM "%s\n", curobjid);
   fputc ('\n', spfil);
   fputc ('\n', spfil);
   objunlock_BM (_.curobj);
   du->dump_emittedobjectcount++;
 }                               /* end dump_emit_object_BM */
+
+
+
 
 
 const char *
