@@ -489,28 +489,36 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   if (!spfil)
     FATAL_BM ("dump_emit_space_BM cannot open %s (%m)",
               bytstring_BM (_.pathv));
+  int nowyear = 0;
+  {
+    time_t nowt = 0;
+    time (&nowt);
+    struct tm nowtm = { };
+    memset (&nowtm, 0, sizeof (nowtm));
+    localtime_r (nowt, &nowtm);
+    nowyear = nowtm.tm_year + 1900;
+  }
   /**
    * Recall that STORECONTENTMAGICPREFIX_BM should be "//!€Bismon",
    * and that magic string is on purpose also starting a Bismon line
    * comment.
    **/
-  fprintf (spfil, "%s generated persistent data file %s\n", //
-	   STORECONTENTMAGICPREFIX_BM /*which is "//!€Bismon" ...*/,
+  fprintf (spfil, "%s generated persistent data file %s (Unicode UTF-8 encoded)\n",     //
+           STORECONTENTMAGICPREFIX_BM /*which is "//!€Bismon" ... */ ,
            basename (bytstring_BM (_.pathv)));
-  fprintf (spfil, "// this generated data file is GPLv3+ licensed\n");
+  fprintf (spfil,
+           "// this data file, generated in %d, is GPLv3+ licensed.\n");
   unsigned nbobj = setcardinal_BM (_.setobjs);
   fprintf (spfil, "// for %u objects\n", nbobj);
-  fputs("\n///‼ Notice that '" STOREOBJECTOPENPREFIX_BM "' and '" STOREOBJECTALTOPENPREFIX_BM
-	"' for object opening,\n"
-	"///‼… '" STOREOBJECTCLOSEPREFIX_BM "' and '" STOREOBJECTALTCLOSEPREFIX_BM
-	"' for object closing,\n"
-	"///‼… '" STOREMODULEPREFIX_BM "' and '" STOREMODULEALTPREFIX_BM
-	"' for modules,\n"
-	"///‼… '" STOREFUNSIGNATUREPREFIX_BM "' and '" STOREFUNSIGNATUREALTPREFIX_BM
-	"' for function signatures,\n"
-	"///‼… are strictly equivalent ….\n"
-	"///---------------------\n\n",
-	spfil);
+  fputs ("\n///‼ Notice that '" STOREOBJECTOPENPREFIX_BM "' and '"
+         STOREOBJECTALTOPENPREFIX_BM "' for object opening,\n" "///‼… '"
+         STOREOBJECTCLOSEPREFIX_BM "' and '" STOREOBJECTALTCLOSEPREFIX_BM
+         "' for object closing,\n" "///‼… '" STOREMODULEPREFIX_BM
+         "' and '" STOREMODULEALTPREFIX_BM "' for modules,\n" "///‼… '"
+         STOREFUNSIGNATUREPREFIX_BM "' and '" STOREFUNSIGNATUREALTPREFIX_BM
+         "' for function signatures,\n"
+         "///‼… are strictly equivalent ….\n"
+         "///---------------------\n\n", spfil);
   _.modhsetob = makeobj_BM ();
   objputhashsetpayl_BM (_.modhsetob, 2 + nbobj / 128);
   // compute the set of modules

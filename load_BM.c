@@ -75,10 +75,14 @@ load_initial_BM (const char *ldirpath)
   DIR *ldir = opendir (ldirpath);
   if (!ldir)
     FATAL_BM ("load_initial failed to opendir %s : %m", ldirpath);
-  ASSERT_BM(strlen(STOREOBJECTOPENPREFIX_BM) == strlen(STOREOBJECTALTOPENPREFIX_BM));
-  ASSERT_BM(strlen(STOREOBJECTCLOSEPREFIX_BM) == strlen(STOREOBJECTALTCLOSEPREFIX_BM));
-  ASSERT_BM(strlen(STOREMODULEPREFIX_BM) == strlen(STOREMODULEALTPREFIX_BM));
-  ASSERT_BM(strlen(STOREFUNSIGNATUREPREFIX_BM) == strlen(STOREFUNSIGNATUREALTPREFIX_BM));
+  ASSERT_BM (strlen (STOREOBJECTOPENPREFIX_BM) ==
+             strlen (STOREOBJECTALTOPENPREFIX_BM));
+  ASSERT_BM (strlen (STOREOBJECTCLOSEPREFIX_BM) ==
+             strlen (STOREOBJECTALTCLOSEPREFIX_BM));
+  ASSERT_BM (strlen (STOREMODULEPREFIX_BM) ==
+             strlen (STOREMODULEALTPREFIX_BM));
+  ASSERT_BM (strlen (STOREFUNSIGNATUREPREFIX_BM) ==
+             strlen (STOREFUNSIGNATUREALTPREFIX_BM));
   struct dirent *de = NULL;
   char *todopath = NULL;
   int maxnum = 0;
@@ -253,16 +257,22 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
           break;
         }
       linbuf[linlen] = (char) 0;
-      if (UNLIKELY_BM(lincnt==0)) {
-	if (strncmp(linbuf, STORECONTENTMAGICPREFIX_BM, strlen(STORECONTENTMAGICPREFIX_BM)))
-	  WARNPRINTF_BM("loaded persistent store file %s does not start with magic '%s' characters",
-			curldpath, STORECONTENTMAGICPREFIX_BM);
-      }
+      if (UNLIKELY_BM (lincnt == 0))
+        {
+          if (strncmp
+              (linbuf, STORECONTENTMAGICPREFIX_BM,
+               strlen (STORECONTENTMAGICPREFIX_BM)))
+            WARNPRINTF_BM
+              ("loaded persistent store file %s does not start with magic '%s' characters",
+               curldpath, STORECONTENTMAGICPREFIX_BM);
+        }
       lincnt++;
       /* object definition lines are !(<oid> or «<oid> e.g. !(_7D8xcWnEiys_8oqOVSkCxkA */
-      if (((linbuf[0] == '!' && linbuf[1] == '(' /*:STOREOBJECTALTOPENPREFIX_BM*/)
-	   // U+00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK « :
-	   || (linbuf[0] == STOREOBJECTOPENPREFIX_BM[0] && linbuf[1] == STOREOBJECTOPENPREFIX_BM[1]))
+      if (((linbuf[0] == '!'
+            && linbuf[1] == '(' /*:STOREOBJECTALTOPENPREFIX_BM */ )
+           // U+00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK « :
+           || (linbuf[0] == STOREOBJECTOPENPREFIX_BM[0]
+               && linbuf[1] == STOREOBJECTOPENPREFIX_BM[1]))
           && linbuf[2] == '_' && isdigit (linbuf[3]))
         {
           const char *endid = NULL;
@@ -290,10 +300,13 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
         }
       //
       /* end of object: !)<oid> or »<oid> */
-      else if (((linbuf[0] == '!' && linbuf[1] == ')' /*:STOREOBJECTALTCLOSEPREFIX_BM*/)
-		// U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK » :
-		|| linbuf[0] == STOREOBJECTCLOSEPREFIX_BM[0] && linbuf[1]==STOREOBJECTCLOSEPREFIX_BM[1])
-		&& linbuf[2] == '_' && isdigit (linbuf[3]))
+      else
+        if (((linbuf[0] == '!'
+              && linbuf[1] == ')' /*:STOREOBJECTALTCLOSEPREFIX_BM */ )
+             // U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK » :
+             || linbuf[0] == STOREOBJECTCLOSEPREFIX_BM[0]
+             && linbuf[1] == STOREOBJECTCLOSEPREFIX_BM[1]) && linbuf[2] == '_'
+            && isdigit (linbuf[3]))
         {
           const char *endid = NULL;
           rawid_tyBM id = parse_rawid_BM (linbuf + 2, &endid);
@@ -341,9 +354,12 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
         }
       //
       /* function_sig signature !|*<sig-oid> or ℺<sig-oid> */
-      else if (((linbuf[0] == '!' && linbuf[1] == '|' && linbuf[2] == '*' /*:STOREFUNSIGNATUREALTPREFIX_BM*/)
-		|| !strncmp(linbuf, STOREFUNSIGNATUREPREFIX_BM, strlen(STOREFUNSIGNATUREPREFIX_BM)))
-	       && linbuf[3] == '_' && isdigit(linbuf[4]))
+      else
+        if (((linbuf[0] == '!' && linbuf[1] == '|'
+              && linbuf[2] == '*' /*:STOREFUNSIGNATUREALTPREFIX_BM */ )
+             || !strncmp (linbuf, STOREFUNSIGNATUREPREFIX_BM,
+                          strlen (STOREFUNSIGNATUREPREFIX_BM)))
+            && linbuf[3] == '_' && isdigit (linbuf[4]))
         {
           char idbuf32[32] = "";
           if (!curloadedobj)
