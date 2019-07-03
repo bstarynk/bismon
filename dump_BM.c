@@ -495,7 +495,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
     time (&nowt);
     struct tm nowtm = { };
     memset (&nowtm, 0, sizeof (nowtm));
-    localtime_r (nowt, &nowtm);
+    localtime_r (&nowt, &nowtm);
     nowyear = nowtm.tm_year + 1900;
   }
   /**
