@@ -503,11 +503,11 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
    * and that magic string is on purpose also starting a Bismon line
    * comment.
    **/
-  fprintf (spfil, "%s generated persistent data file %s (Unicode UTF-8 encoded)\n",     //
+  fprintf (spfil, "%s generated persistent data file %s (Unicode UTF-8 encoded).\n",     //
            STORECONTENTMAGICPREFIX_BM /*which is "//!€Bismon" ... */ ,
            basename (bytstring_BM (_.pathv)));
   fprintf (spfil,
-           "// this data file, generated in %d, is GPLv3+ licensed.\n", nowyear);
+           "/// This data file, generated in %d, is GPLv3+ licensed.\n", nowyear);
   unsigned nbobj = setcardinal_BM (_.setobjs);
   fprintf (spfil, "// for %u objects\n", nbobj);
   fputs ("\n///‼ Notice that '" STOREOBJECTOPENPREFIX_BM "' and '"
