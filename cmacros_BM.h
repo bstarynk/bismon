@@ -84,9 +84,11 @@
  * absolutely have the same byte length (as given by strlen or sizeof).
  ***/
 
+// also delim_dblanglequotleft & delim_exclamleft in load_second_pass_BM
 #define STOREOBJECTOPENPREFIX_BM "«"   /*U+00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK */
 #define STOREOBJECTALTOPENPREFIX_BM "!("
 
+// also delim_dblanglequotright & delim_exclamright in load_second_pass_BM
 #define STOREOBJECTCLOSEPREFIX_BM "»"  /*U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK */
 #define STOREOBJECTALTCLOSEPREFIX_BM "!)"
 

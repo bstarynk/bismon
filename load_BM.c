@@ -859,8 +859,9 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
       unsigned colpos = parsercolpos_BM (ldpars);
       parstoken_tyBM tok = parsertokenget_BM (ldpars, CURFRAME_BM);
       //
-      // !( <id>   starts a new object
-      if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamleft)
+      // !( <oid> or « <oid>  starts a new object
+      if (tok.tok_kind == plex_DELIM
+	  && (tok.tok_delim == delim_exclamleft || tok.tok_delim == delim_dblanglequotleft))
         {
           bool gotldobj = false;
           _.curldobj =          //
@@ -965,9 +966,9 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           _.classobj = NULL;
         }
       //
-      // !) <id>   terminates an object
+      // !)<oid> or »<oid>  terminates an object
       else if (tok.tok_kind == plex_DELIM
-               && tok.tok_delim == delim_exclamright)
+               && (tok.tok_delim == delim_exclamright || tok.tok_delim == delim_dblanglequotright))
         {
           if (!_.curldobj)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,

@@ -24,7 +24,7 @@
   ids have underscores in the same relative place and have the same
   length (24 signs).
   
-* The delimiters are listed in `_bm_delim.h` (should appear in UTF8
+* The delimiters are listed in `bm_delim.h` (should appear in UTF8
   ascending order) and include parenthesis, braces, brackets, comma,
   semi-colon, colon, star etc... Some are UTF8, and some others have
   several characters. The *nilid* delimiter `__` (double underscore)

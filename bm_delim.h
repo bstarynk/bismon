@@ -1,10 +1,35 @@
-// file _bm_delim.h
+// This file bm_delim.h is included several times.  It was previously
+// _bm_delim.h but we won't have time to generate that file, even if
+// conceptually we should.
+
+/**
+    BISMON 
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    contributed by Basile Starynkevitch.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+----
+    Contact me (Basile Starynkevitch) by email
+    basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
+**/
 #ifndef HAS_DELIM_BM
 #error missing HAS_DELIM_BM
 #endif
 
 #undef BM_NB_DELIM
-#define BM_NB_DELIM 52
+#define BM_NB_DELIM 56
  
 /// these should be sorted in ascending UTF8 order
 // HAS_DELIM_BM(String,Delimname)
@@ -58,8 +83,12 @@ HAS_DELIM_BM("}#",rightbracehash)
 HAS_DELIM_BM("~",tilde)
 HAS_DELIM_BM("~)",tilderightparen)
 HAS_DELIM_BM("~:",tildecolon)
+HAS_DELIM_BM("«", dblanglequotleft)
 HAS_DELIM_BM("°",degree)
+HAS_DELIM_BM("µ", mu)
+HAS_DELIM_BM("»", dblanglequotright)
 HAS_DELIM_BM("€",euro)
+HAS_DELIM_BM("℺", rotatedcapitalq)
 
 #undef HAS_DELIM_BM
 

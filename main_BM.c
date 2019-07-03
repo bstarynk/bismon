@@ -711,7 +711,7 @@ check_delims_BM (void)
 	       delimcnt, Str, prevdelim);		\
     prevdelim = Str;					\
   } while(0);
-#include "_bm_delim.h"
+#include "bm_delim.h"
   if (delimcnt != BM_NB_DELIM)
     FATAL_BM ("expected %d delimiters, got %d", BM_NB_DELIM, delimcnt);
 }                               /* end check_delims_BM */

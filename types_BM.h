@@ -520,7 +520,7 @@ enum lexdelim_enBM
 {
   delim__NONE,
 #define HAS_DELIM_BM(Str,Delimname) delim_##Delimname,
-#include "_bm_delim.h"
+#include "bm_delim.h"
   delim__LAST
 };                              /* end lexdelim_enBM */
 

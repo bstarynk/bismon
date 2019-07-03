@@ -47,7 +47,7 @@ lexkindname_BM (enum parslexkind_enBM k)
 
 static const char *const delimnamearr_BM[] = {
 #define HAS_DELIM_BM(Str,Delimname) [delim_##Delimname] = Str,
-#include "_bm_delim.h"
+#include "bm_delim.h"
 };
 
 const char *
@@ -1195,7 +1195,7 @@ again:
     strcpy(delimstr, Str);			\
     }}  while(0);
   //
-#include "_bm_delim.h"
+#include "bm_delim.h"
   //
   if (curdelim == delim__NONE)
     parsererrorprintf_BM (pars, stkf, pars->pars_lineno, pars->pars_colpos,
