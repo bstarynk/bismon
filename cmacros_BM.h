@@ -92,6 +92,7 @@
 #define STOREOBJECTCLOSEPREFIX_BM "»"  /*U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK */
 #define STOREOBJECTALTCLOSEPREFIX_BM "!)"
 
+// also delim_mu & delim_exclamcaret in load_second_pass_BM
 #define STOREMODULEPREFIX_BM "µ"
 #define STOREMODULEALTPREFIX_BM "!^"
 

@@ -304,9 +304,9 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
         if (((linbuf[0] == '!'
               && linbuf[1] == ')' /*:STOREOBJECTALTCLOSEPREFIX_BM */ )
              // U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK » :
-             || linbuf[0] == STOREOBJECTCLOSEPREFIX_BM[0]
-             && linbuf[1] == STOREOBJECTCLOSEPREFIX_BM[1]) && linbuf[2] == '_'
-            && isdigit (linbuf[3]))
+             || (linbuf[0] == STOREOBJECTCLOSEPREFIX_BM[0]
+                 && linbuf[1] == STOREOBJECTCLOSEPREFIX_BM[1]))
+            && linbuf[2] == '_' && isdigit (linbuf[3]))
         {
           const char *endid = NULL;
           rawid_tyBM id = parse_rawid_BM (linbuf + 2, &endid);
@@ -861,7 +861,9 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
       //
       // !( <oid> or « <oid>  starts a new object
       if (tok.tok_kind == plex_DELIM
-	  && (tok.tok_delim == delim_exclamleft || tok.tok_delim == delim_dblanglequotleft))
+          // see STOREOBJECTOPENPREFIX_BM & STOREOBJECTALTOPENPREFIX_BM
+          && (tok.tok_delim == delim_exclamleft
+              || tok.tok_delim == delim_dblanglequotleft))
         {
           bool gotldobj = false;
           _.curldobj =          //
@@ -968,7 +970,9 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
       //
       // !)<oid> or »<oid>  terminates an object
       else if (tok.tok_kind == plex_DELIM
-               && (tok.tok_delim == delim_exclamright || tok.tok_delim == delim_dblanglequotright))
+               // see STOREOBJECTCLOSEPREFIX_BM & STOREOBJECTALTCLOSEPREFIX_BM
+               && (tok.tok_delim == delim_exclamright
+                   || tok.tok_delim == delim_dblanglequotright))
         {
           if (!_.curldobj)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
@@ -1132,9 +1136,11 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
 
         }
       //
-      // !^ <modulid> -- has been handled in first pass
+      // !^ <modulid> or µ <modulid> has been handled in first pass
       else if (tok.tok_kind == plex_DELIM
-               && tok.tok_delim == delim_exclamcaret)
+               // see STOREMODULEPREFIX_BM & STOREMODULEALTPREFIX_BM
+               && (tok.tok_delim == delim_exclamcaret
+                   || tok.tok_delim == delim_mu))
         {
           parstoken_tyBM tokmodid = parsertokenget_BM (ldpars, CURFRAME_BM);
           ASSERT_BM (tokmodid.tok_kind == plex_ID);
@@ -1167,6 +1173,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
     };
 }                               /* end load_second_pass_BM */
 
+////////////////////////////////////////////////////////////////
 
 //// for the closure load_module, explicitly initialized in doload_BM
 extern objrout_sigBM ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh);
