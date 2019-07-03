@@ -1,6 +1,14 @@
-// generated persistent data file store2.bmon
+//!€Bismon generated persistent data file store2.bmon
 // this generated data file is GPLv3+ licensed
 // for 3276 objects
+
+///‼ Notice that '«' and '!(' for object opening,
+///‼… '»' and '!)' for object closing,
+///‼… 'µ' and '!^' for modules,
+///‼… '℺' and '!|*' for function signatures,
+///‼… are strictly equivalent ….
+///---------------------
+
 // with 7 modules
 !^_1lhXvXtIyPu_3nhuy4kN3wd
 !^_1zCsXG4OTPr_8PwkDAWr16S
