@@ -96,9 +96,9 @@
 #define STOREMODULEPREFIX_BM "µ"
 #define STOREMODULEALTPREFIX_BM "!^"
 
-// also delim_exclambarstar & delim_rotatedcapitalq  in load_second_pass_BM
-#define STOREFUNSIGNATUREPREFIX_BM "℺"        /*U+213A ROTATED CAPITAL Q */
-#define STOREFUNSIGNATUREALTPREFIX_BM "!|*"
+// also delim_exclambar & delim_greekcapsigma  in load_second_pass_BM
+#define STOREFUNSIGNATUREPREFIX_BM "Σ" /*U+03A3 GREEK CAPITAL LETTER SIGMA */
+#define STOREFUNSIGNATUREALTPREFIX_BM "!|"
 
 ////////////////////////////////////////////////////////////////
 

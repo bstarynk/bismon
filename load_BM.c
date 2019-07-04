@@ -353,13 +353,14 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
           curloadedobj = NULL;
         }
       //
-      /* function_sig signature !|*<sig-oid> or ℺<sig-oid> */
+      /* function_sig signature !|<signature> or Σ<signature> where
+         the <signature> is * or an objid; but we only handle the *
+         case in this first pass */
       else
-        if (((linbuf[0] == '!' && linbuf[1] == '|'
-              && linbuf[2] == '*' /*:STOREFUNSIGNATUREALTPREFIX_BM */ )
-             || !strncmp (linbuf, STOREFUNSIGNATUREPREFIX_BM,
-                          strlen (STOREFUNSIGNATUREPREFIX_BM)))
-            && linbuf[3] == '_' && isdigit (linbuf[4]))
+        if ((linbuf[0] == '!'
+             && linbuf[1] == '|' /*STOREFUNALTSIGNATUREPREFIX_BM */ )
+            || (linbuf[0] == STOREFUNSIGNATUREPREFIX_BM[0]
+                && linbuf[1] == STOREFUNSIGNATUREPREFIX_BM[1]))
         {
           char idbuf32[32] = "";
           if (!curloadedobj)
@@ -383,9 +384,13 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
               nbrout++;
             }
           else
-            FATAL_BM
-              ("bad function-sig line %s in file %s:%d, dlsym %s failed %s",
-               linbuf, curldpath, lincnt, symbuf, dlerror ());
+            {
+              int pos = -1;
+              if (sscanf (linbuf + 2, " *%n", &pos) >= 0 && pos > 0)
+                FATAL_BM ("bad default function-sig line %s in file %s:%d,"
+                          " dlsym %s failed %s",
+                          linbuf, curldpath, lincnt, symbuf, dlerror ());
+            }
         }
       //
       /* module requirement lines are µ<mod-id> or !^<mod-id> */
@@ -582,7 +587,8 @@ load_modif_value_BM (struct loader_stBM *ld, int ix,
   if (tokclose.tok_kind != plex_DELIM
       || tokclose.tok_delim != delim_tilderightparen)
     parsererrorprintf_BM (ldpars, CURFRAME_BM,
-                          parserlineno_BM (ldpars), parsercolpos_BM (ldpars),
+                          parserlineno_BM (ldpars),
+                          parsercolpos_BM (ldpars),
                           "expect )~ after !~value (~ <value> ");
   objputpayload_BM (_.curldobj, _.valv);
 }                               /* end load_modif_value_BM */
@@ -617,8 +623,8 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
   size_t memsiz = 0;
   FILE *memfil = open_memstream (&membuf, &memsiz);
   if (!memfil)
-    FATAL_BM ("load_modif_json_BM L%uC%u %s failed to open_memstream", lineno,
-              colpos, ldpars->pars_path);
+    FATAL_BM ("load_modif_json_BM L%uC%u %s failed to open_memstream",
+              lineno, colpos, ldpars->pars_path);
   fputs (ldpars->pars_linebuf + tokopen.tok_col + 1, memfil);
   bool endjs = false;
   do
@@ -686,9 +692,9 @@ load_modif_todo_BM (struct loader_stBM *ld, int ix,
   LOCALFRAME_BM (parstkfrm, NULL,       //
                  struct parser_stBM *ldparser;  //
                  objectval_tyBM * curldobj;     //
-                 value_tyBM valv; value_tyBM todov;
-                 const closure_tyBM * closv; objectval_tyBM * obselv;
-                 value_tyBM args[TODO_MAXARGS_BM];
+                 value_tyBM valv;
+                 value_tyBM todov; const closure_tyBM * closv;
+                 objectval_tyBM * obselv; value_tyBM args[TODO_MAXARGS_BM];
     );
   _.ldparser = ldpars;
   _.curldobj = argcurldobj;
@@ -1000,26 +1006,26 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           _.curldobj = NULL;
         }
       //
-      // !|* start a function signature *optionally* followed by an object, 
-      else if (tok.tok_kind == plex_DELIM
-               && (tok.tok_delim == delim_exclambarstar
-                   || tok.tok_delim == delim_rotatedcapitalq))
+      // !| or Σ starts a function signature followed by an object or a star
+      else if (tok.tok_kind == plex_DELIM && (tok.tok_delim == delim_exclambar  /*STOREFUNSIGNATUREALTPREFIX_BM */
+                                              || tok.tok_delim ==
+                                              delim_greekcapsigma
+                                              /*STOREFUNSIGNATUREPREFIX_BM */
+               ))
         {
           if (!_.curldobj)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
-                                  lineno, colpos, "!|* outside of object");
-	  /// should remember the current position.... and handle the
-	  /// rare case when we have a sigobject after...
+                                  lineno, colpos,
+                                  "!| or Σ outside of object");
           parstoken_tyBM toksig = parsertokenget_BM (ldpars, CURFRAME_BM);
-#warning FIXME: bad handling of function signature
           if (toksig.tok_kind == plex_DELIM && toksig.tok_delim == delim_star)
             {
-              DBGPRINTF_BM ("!| followed by * ix#%d line %d for %s",
+              DBGPRINTF_BM ("!| or Σ followed by * ix#%d line %d for %s",
                             ix, toksig.tok_line, objectdbg_BM (_.curldobj));
               if (!objroutaddr_BM (_.curldobj, BMP_function_sig))
                 parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                       lineno, colpos,
-                                      "object %s without function_sig has !|*",
+                                      "object %s without function_sig has !| followed by *",
                                       objectdbg_BM (_.curldobj));
             }
           else if (toksig.tok_kind == plex_ID)
@@ -1035,7 +1041,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                 {
                   parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                         lineno, colpos,
-                                        "object %s with  !|* or ℺ with bad function signature",
+                                        "object %s with  !|* or Σ with bad function signature",
                                         objectdbg_BM (_.curldobj));
                 };
               _.routbuilder = objgetattr_BM (_.attrobj, BMP_routine_builder);
@@ -1072,12 +1078,12 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                     free (buf), buf = NULL;
                 }
               //else if (isclosure_BM(_.routbuilder)) {
-#warning general signature with !|* unimplemented and routine builder
+#warning general signature with !| * unimplemented and routine builder
               //}
               else
                 /// we probably should get a prefix from the signature, etc...
                 FATAL_BM
-                  ("general signature %s with !|* or ℺ for %s unexpected builder",
+                  ("general signature %s with !| * or Σ for %s unexpected builder",
                    sigidbuf32, obnam ? obnam : curidbuf32);
             }
           else
@@ -1088,12 +1094,12 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
               if (obnam)
                 parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                       lineno, colpos,
-                                      "named object %s/%s with bad !|* or ℺ for function signature",
+                                      "named object %s/%s with bad !| * or Σ * for function signature",
                                       obnam, idbuf32);
               else
                 parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                       lineno, colpos,
-                                      "anonymous object %s with bad !|* or ℺ for function signature",
+                                      "anonymous object %s with bad !| * or Σ * for function signature",
                                       idbuf32);
 
             }
@@ -1218,8 +1224,8 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       rawid_tyBM kid = parse_rawid_BM (kidstr, NULL);
       objectval_tyBM *kobj = findobjofid_BM (kid);
       if (!kobj)
-        FATAL_BM ("cannot find constant#%d %s in loaded dir %s", kix, kidstr,
-                  ld->ld_dir);
+        FATAL_BM ("cannot find constant#%d %s in loaded dir %s", kix,
+                  kidstr, ld->ld_dir);
       *(bmconstaddrs[kix]) = kobj;
     }
   /// ensure that BMP_load_module has its routine

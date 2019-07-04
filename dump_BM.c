@@ -635,7 +635,7 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
     {
       _.curattr = curobj->ob_sig;
       if (_.curattr == BMP_function_sig)
-        fprintf (spfil, "!|*\n");
+        fprintf (spfil, "!| *\n");
       else
         {
           char cursigid[32] = "";
