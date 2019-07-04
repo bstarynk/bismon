@@ -638,7 +638,7 @@ The lines starting with \index{«@\texttt{«}}\texttt{«} or
 \index{"!(@\texttt{"!(}}\texttt{!(} and with
 \index{»@\texttt{»}}\texttt{»} or \index{"!)@\texttt{"!)}}\texttt{!)}
 are delimiting the object's persistent representation. %
-  %%% Comments~\footnote{Once the persistence code - loading and
+Comments~\footnote{Once the persistence code - loading and
 dumping of the state - is mature enough, we will disable generation of
 comments in data files.} can start with a bar \texttt{|} till the
       following bar, or with two slashes \texttt{//} till the end of
@@ -653,9 +653,12 @@ comments in data files.} can start with a bar \texttt{|} till the
       put the attribute \textit{attrobj} associated with the value
       \textit{valattr}. \verb+!#+ \textit{nbcomp} reserve the spaces
       for \textit{nbcomp}, and \verb/!&/~\textit{valcomp} appends the
-      value \textit{valcomp} as a component. The \index{Σ@\texttt{Σ}}
-      \texttt{Σ} or \index{"!|@\texttt{"!|}} \texttt{!|} is
-        for \index{signature!function} function signatures.
+      value \textit{valcomp} as a component. The
+      \index{"Σ@$\mathtt{\Sigma}$}
+      $\mathtt{\Sigma}$ or
+      %\index{"!"|@\texttt{!\textbar}}
+      \verb+!|+
+      is for \index{signature!function} function signatures.
 
          Within every dumped object, attributes whose class is
          \texttt{temporary\_attribute\_object} are \emph{not}
