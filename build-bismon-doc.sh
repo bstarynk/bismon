@@ -83,7 +83,7 @@ if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
     pdflatex -halt-on-error bismon-chariot-doc < /dev/null
     bibtex bismon-chariot-doc < /dev/null
     pdflatex -halt-on-error bismon-chariot-doc < /dev/null
-    makeindex bismon-chariot-doc < /dev/null
+    texindy bismon-chariot-doc < /dev/null
     printf '\n\n\n#### second pass latexing bismon chariot doc #####\n'
     pdflatex -halt-on-error bismon-chariot-doc < /dev/null
     bibtex bismon-chariot-doc < /dev/null
