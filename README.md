@@ -174,16 +174,16 @@ metaprogram generating C headers).
   [texlive](https://www.tug.org/texlive/) suite or
   [luatex](http://luatex.org/)- and related utilities (`pdflatex`,
   `makeidx`, `bibtex` ...) with [inkscape](https://inkscape.org/) and
-  [hevea](http://hevea.inria.fr/) are needed for documentation.
+  [hevea](http://hevea.inria.fr/) and  [xindy](http://www.xindy.org/) are needed for documentation.
 
 ### relevant Debian/Ubuntu build-dependency packages ###
 
 On Debian/Unstable or recent Ubuntu, `apt-get install build-essential
 make ninja-build gcc-8 g++-8 gcc-8-plugin-dev libgccjit-8-dev ccache
-gcc-8-mipsel-linux-gnu inkscape hevea texlive-full` for the building
+gcc-8-mipsel-linux-gnu inkscape hevea texlive-full xindy` for the building
 infrastructure; notice that `gcc-8-mipsel-linux-gnu` is the MIPSel GCC
 cross-compiler - it is *conflicting* with `gcc-multilib*` packages;
-`inkscape`, `hevea`, `texlive-full` (a *huge* meta-package) are needed
+`inkscape`, `hevea`, `texlive-full` (a *huge* meta-package), `xindy` are needed
 for generating the documentation.
 
 
