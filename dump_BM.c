@@ -562,7 +562,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
       _.modobj = setelemnth_BM (_.setmodules, mix);
       ASSERT_BM (_.modobj);
       idtocbuf32_BM (objid_BM (_.modobj), curmodid);
-      fprintf (spfil, "!^%s\n", curmodid);
+      fprintf (spfil, "%s%s\n", STOREMODULEPREFIX_BM /*so µ*/, curmodid);
     };
   fputc ('\n', spfil);
   objectval_tyBM **objarr = calloc (prime_above_BM (nbobj), sizeof (void *));
