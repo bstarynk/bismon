@@ -836,13 +836,15 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
   if (!fil)
     FATAL_BM ("failed to fopen %s (%m)", curldpath);
   LOCALFRAME_BM (parstkfrm, NULL,       //
-                 objectval_tyBM * ldparsownob;
-                 objectval_tyBM * curldobj; objectval_tyBM * attrobj;
-                 value_tyBM routbuilder;
+                 objectval_tyBM * ldparsownob;  //
+                 objectval_tyBM * curldobj;     //
+                 objectval_tyBM * attrobj;      //
+                 value_tyBM routbuilder;        //
                  union
                  {
-                 value_tyBM attrval; value_tyBM compval;
-                 objectval_tyBM * classobj;
+                 value_tyBM attrval;    //
+                 value_tyBM compval;    //
+                 objectval_tyBM * classobj;     //
                  };
     );
   _.ldparsownob = makeobj_BM ();
@@ -872,7 +874,9 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           if (!gotldobj)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                   lineno, colpos,
-                                  "expecting object after !(");
+                                  "expecting object after !( or «");
+          DBGPRINTF_BM ("**!++!** current loaded object %s at %s:%d",
+                        objectdbg_BM (_.curldobj), ldpars->pars_path, lineno);
         }
       //
       // !: <attrobj> <attrval>   adds an attribute and its value
@@ -991,19 +995,26 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                                     "expecting id %s after !)", idbuf);
 
             }
+          DBGPRINTF_BM ("**!--!** ending loaded object %s at %s:%d\n\n",
+                        objectdbg_BM (_.curldobj), ldpars->pars_path, lineno);
           _.curldobj = NULL;
         }
       //
-      // !| start a function signature
-      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclambar)
+      // !|* start a function signature *optionally* followed by an object, 
+      else if (tok.tok_kind == plex_DELIM
+               && (tok.tok_delim == delim_exclambarstar
+                   || tok.tok_delim == delim_rotatedcapitalq))
         {
           if (!_.curldobj)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
-                                  lineno, colpos, "!| outside of object");
+                                  lineno, colpos, "!|* outside of object");
+	  /// should remember the current position.... and handle the
+	  /// rare case when we have a sigobject after...
           parstoken_tyBM toksig = parsertokenget_BM (ldpars, CURFRAME_BM);
+#warning FIXME: bad handling of function signature
           if (toksig.tok_kind == plex_DELIM && toksig.tok_delim == delim_star)
             {
-              NONPRINTF_BM ("!| followed by * ix#%d line %d for %s",
+              DBGPRINTF_BM ("!| followed by * ix#%d line %d for %s",
                             ix, toksig.tok_line, objectdbg_BM (_.curldobj));
               if (!objroutaddr_BM (_.curldobj, BMP_function_sig))
                 parsererrorprintf_BM (ldpars, CURFRAME_BM,
@@ -1024,8 +1035,8 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                 {
                   parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                         lineno, colpos,
-                                        "object %s with  !| with bad signature",
-                                        obnam ? obnam : curidbuf32);
+                                        "object %s with  !|* or ℺ with bad function signature",
+                                        objectdbg_BM (_.curldobj));
                 };
               _.routbuilder = objgetattr_BM (_.attrobj, BMP_routine_builder);
               if (isstring_BM (_.routbuilder))
@@ -1061,12 +1072,12 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                     free (buf), buf = NULL;
                 }
               //else if (isclosure_BM(_.routbuilder)) {
-#warning general signature with !| unimplemented and routine builder
+#warning general signature with !|* unimplemented and routine builder
               //}
               else
                 /// we probably should get a prefix from the signature, etc...
                 FATAL_BM
-                  ("general signature %s with !| for %s unexpected builder",
+                  ("general signature %s with !|* or ℺ for %s unexpected builder",
                    sigidbuf32, obnam ? obnam : curidbuf32);
             }
           else
@@ -1074,10 +1085,17 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
               char idbuf32[32] = "";
               idtocbuf32_BM (_.curldobj->ob_id, idbuf32);
               const char *obnam = findobjectname_BM (_.curldobj);
-              parsererrorprintf_BM (ldpars, CURFRAME_BM,
-                                    lineno, colpos,
-                                    "object %s with bad !| for signature",
-                                    obnam ? obnam : idbuf32);
+              if (obnam)
+                parsererrorprintf_BM (ldpars, CURFRAME_BM,
+                                      lineno, colpos,
+                                      "named object %s/%s with bad !|* or ℺ for function signature",
+                                      obnam, idbuf32);
+              else
+                parsererrorprintf_BM (ldpars, CURFRAME_BM,
+                                      lineno, colpos,
+                                      "anonymous object %s with bad !|* or ℺ for function signature",
+                                      idbuf32);
+
             }
         }
       //

@@ -29,7 +29,7 @@
 #endif
 
 #undef BM_NB_DELIM
-#define BM_NB_DELIM 56
+#define BM_NB_DELIM 57
  
 /// these should be sorted in ascending UTF8 order
 // HAS_DELIM_BM(String,Delimname)
@@ -38,16 +38,17 @@ HAS_DELIM_BM("!#",exclamhash)
 HAS_DELIM_BM("!$",exclamdollar)
 HAS_DELIM_BM("!%",exclampercent)
 HAS_DELIM_BM("!&",exclamand)
-HAS_DELIM_BM("!(",exclamleft)
-HAS_DELIM_BM("!)",exclamright)
+HAS_DELIM_BM("!(",exclamleft) /*STOREOBJECTALTOPENPREFIX_BM*/
+HAS_DELIM_BM("!)",exclamright) /*STOREOBJECTALTCLOSEPREFIX_BM*/
 HAS_DELIM_BM("!*",exclamstar)
 HAS_DELIM_BM("!-",exclamminus)
 HAS_DELIM_BM("!.",exclamdot)
 HAS_DELIM_BM("!:",exclamcolon)
 HAS_DELIM_BM("!>",exclamgreater)
 HAS_DELIM_BM("!@",exclamat)
-HAS_DELIM_BM("!^",exclamcaret)
+HAS_DELIM_BM("!^",exclamcaret) /*STOREMODULEALTPREFIX_BM*/
 HAS_DELIM_BM("!|",exclambar)
+HAS_DELIM_BM("!|*",exclambarstar) /*STOREFUNSIGNATUREALTPREFIX_BM*/
 HAS_DELIM_BM("!~",exclamtilde)
 HAS_DELIM_BM("#{",hashleftbrace)
 HAS_DELIM_BM("$",dollar)
@@ -83,12 +84,12 @@ HAS_DELIM_BM("}#",rightbracehash)
 HAS_DELIM_BM("~",tilde)
 HAS_DELIM_BM("~)",tilderightparen)
 HAS_DELIM_BM("~:",tildecolon)
-HAS_DELIM_BM("«", dblanglequotleft)
+HAS_DELIM_BM("«", dblanglequotleft) /*STOREOBJECTOPENPREFIX_BM*/
 HAS_DELIM_BM("°",degree)
-HAS_DELIM_BM("µ", mu)
-HAS_DELIM_BM("»", dblanglequotright)
+HAS_DELIM_BM("µ", mu) /*STOREMODULEPREFIX_BM*/
+HAS_DELIM_BM("»", dblanglequotright) /*STOREOBJECTCLOSEPREFIX_BM*/
 HAS_DELIM_BM("€",euro)
-HAS_DELIM_BM("℺", rotatedcapitalq)
+HAS_DELIM_BM("℺", rotatedcapitalq) /*STOREFUNSIGNATUREPREFIX_BM*/
 
 #undef HAS_DELIM_BM
 
