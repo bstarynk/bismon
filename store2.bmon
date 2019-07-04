@@ -214,8 +214,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 ~: _1ERH9PxNhPb_2o869yOMuH0  % _22wwtRd69oP_3IH6VRfTzu6 () 
 ~: _2dsjWb0oYbZ_9aUSxaz9avx  % _0TnNOA3XbNX_1HXoH9LI5af () 
 ~: _2HRKwEmw3RU_8NbUiNToBgr  % _91gYAd2Lx86_5fBVoAhGY7b () 
-~: _6DdZwyaWLyK_7tS2BmECOJ0  % _7LNRlilrowp_0GG6ZLUFovu ()
-~)
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _7LNRlilrowp_0GG6ZLUFovu () ~)
 »_3HIw09Tmj0d_3CrcFHrGJab
 
 
@@ -230,8 +229,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 ~: _2gthNYOWogO_4sVTU1JbmUH  % _2PbDEXpkK5W_7MSfDy2pWkH () 
 ~: _2vB50TsNQPm_6t0hFoWs2h0  % _2iH7ckEmGey_5cKpVIuFgY9 () 
 ~: _6mk5eos8067_1odgCpnWMOj  % _8UGpvfrcKbM_99IeP3BuxA5 () 
-~: _6BRdQlnZFnr_5jKwoMJCYS6  % _7gbmQg2dILF_76dK4SAVpqZ ()
-~)
+~: _6BRdQlnZFnr_5jKwoMJCYS6  % _7gbmQg2dILF_76dK4SAVpqZ () ~)
 »_4bYUiDmxrKK_6nPPlEl8y8x
 
 
@@ -242,8 +240,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for calls"
-!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
-~)
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP ~)
 »_9KIeH9wMRCV_12Gy2xILgpG
 
 
@@ -256,8 +253,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
  "class for cexpander things"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _42gEKfF4qca_6gGwxSFC1FO }
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_9pJUJ57N6RL_2nsXFzR6S3E
 
 
@@ -270,8 +266,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
  "class of cexpansions statements"
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
 ~: _1ERH9PxNhPb_2o869yOMuH0  % _7CWfvQEHVOQ_1iBMi9mvgOY () 
-~: _6DdZwyaWLyK_7tS2BmECOJ0  % _0Qplg2cn9xR_5pfROAJjrXZ ()
-~)
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _0Qplg2cn9xR_5pfROAJjrXZ () ~)
 »_4GJJnvyrLyW_5mhopCYvh8h
 
 
@@ -288,8 +283,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 ~: _1ERH9PxNhPb_2o869yOMuH0  % _2gpamAdSc26_6d1JjCmKHyw () 
 ~: _2dsjWb0oYbZ_9aUSxaz9avx  % _3QVddP6n0iB_4lpbil0LgYY () 
 ~: _2HRKwEmw3RU_8NbUiNToBgr  % _4c5MCb4uv2z_05s1UFfXvwB () 
-~: _6DdZwyaWLyK_7tS2BmECOJ0  % _0zzJJsAL6Qm_2uw3eoWQHEq ()
-~)
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _0zzJJsAL6Qm_2uw3eoWQHEq () ~)
 »_0eCRnBKQ0eQ_1atum3gUgEz
 
 
@@ -300,8 +294,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for simple connectives"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_3DQ7z3EuAiT_4faSRNsy2lr
 
 
@@ -313,8 +306,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of counted-for-loops"
 !~ class (~ |supercl basiclo_loop:| _2EjH1ebLzli_4rmA1ZPtIBL 
-~: _6DdZwyaWLyK_7tS2BmECOJ0  % _85xjvzYjcd6_9mNZNPF6i2J ()
-~)
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _85xjvzYjcd6_9mNZNPF6i2J () ~)
 »_5C1KcKsdD4h_1gouiJguEMx
 
 
@@ -327,8 +319,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
  "dumpable module with only basic closures"
 !~ class (~ |supercl plain_dumpable_module:| _2HjhGk7Engb_58InnCq3TZ1 
 ~: _17mrxkMdNtH_2CduQ2WDIy5  % _8zNBXSMY2Ts_1VI5dmY4umA () 
-~: _9mq0jsuz4XQ_4doHfd987Q6  % _50d65bJypCN_6IJeVtssx9I ()
-~)
+~: _9mq0jsuz4XQ_4doHfd987Q6  % _50d65bJypCN_6IJeVtssx9I () ~)
 »_5bP4nozCTp0_1DPPTK398m1
 
 
@@ -341,8 +332,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
  "class of exit (of loop) statement"
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
 ~: _1ERH9PxNhPb_2o869yOMuH0  % _4hS1jncZQAY_9pGS66eIlw9 () 
-~: _6DdZwyaWLyK_7tS2BmECOJ0  % _23F5sZIfO5Y_5m9O2FPHdzX ()
-~)
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _23F5sZIfO5Y_5m9O2FPHdzX () ~)
 »_0Yis1n6EoBu_8nfbe8a8yKI
 
 
@@ -353,8 +343,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "superclass for expressions inside basiclo_statement-s"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_9pCSj6h5qCP_1OZyKlhcrSY
 
 
@@ -368,8 +357,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
 _6zj5YoW4CVg_7Az2Wsmlesm
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
-~: _6DdZwyaWLyK_7tS2BmECOJ0  % _5x0WWw3QRXe_8u5OLA7sKJG ()
-~)
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _5x0WWw3QRXe_8u5OLA7sKJG () ~)
 »_9U8L2fXpZ9o_4x751rhsyve
 
 
@@ -382,8 +370,7 @@ _6zj5YoW4CVg_7Az2Wsmlesm
  "class for fail statements"
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
 ~: _1ERH9PxNhPb_2o869yOMuH0  % _8XIt55nuPul_3MZfto9hmgy () 
-~: _6DdZwyaWLyK_7tS2BmECOJ0  % _2oeeFe9Sdzx_8NaM3HUadSP ()
-~)
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _2oeeFe9Sdzx_8NaM3HUadSP () ~)
 »_4UklN1FKPMy_43NQnifo7Mn
 
 
@@ -395,8 +382,7 @@ _6zj5YoW4CVg_7Az2Wsmlesm
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of counting loops, downframs, from the bound"
 !~ class (~ |supercl basiclo_countloop:| _5C1KcKsdD4h_1gouiJguEMx 
-~: _6mk5eos8067_1odgCpnWMOj  % _8NgOdlJACWN_8pbYZXkHpCj ()
-~)
+~: _6mk5eos8067_1odgCpnWMOj  % _8NgOdlJACWN_8pbYZXkHpCj () ~)
 »_7f1EO8FBktm_6DM7x3gTDiT
 
 
@@ -408,8 +394,7 @@ _6zj5YoW4CVg_7Az2Wsmlesm
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of counting loop, upwards, up to the bound"
 !~ class (~ |supercl basiclo_countloop:| _5C1KcKsdD4h_1gouiJguEMx 
-~: _6mk5eos8067_1odgCpnWMOj  % _0vCFi47Ctm6_70R5Tci6JuH ()
-~)
+~: _6mk5eos8067_1odgCpnWMOj  % _0vCFi47Ctm6_70R5Tci6JuH () ~)
 »_7JUZeKsjbx1_1VcZbR0vW41
 
 
@@ -434,8 +419,7 @@ _6zj5YoW4CVg_7Az2Wsmlesm
 ~: _0pSnxYMjpqQ_3opFGfXeh5o  % _7D36kHemyWQ_0YfwWnUhR9Y () 
 ~: _2oNMm2aR91J_4QthSpZxplW  % _9UhDZeDdg2r_55lUqYDPUiF () 
 ~: _7wDfX8mn5WT_2g0FYc80dLx  % _60NdV04Lel2_5FSZVWKbSL7 () 
-~: _9uRC9w2Gte9_5mW0NanaS19  % _9zpvXnTuDeB_2B7ZiBtN8fA ()
-~)
+~: _9uRC9w2Gte9_5mW0NanaS19  % _9zpvXnTuDeB_2B7ZiBtN8fA () ~)
 »_2Ir1i8qnrA4_3jSkierlc5z
 
 
@@ -448,8 +432,7 @@ _6zj5YoW4CVg_7Az2Wsmlesm
  "class of switch on integers"
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
 ~: _1ERH9PxNhPb_2o869yOMuH0  % _273rNzykHOg_9NXqNHvVIHG () 
-~: _6DdZwyaWLyK_7tS2BmECOJ0  % _2CKEpke8P0q_8s0Vli5gjxM ()
-~)
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _2CKEpke8P0q_8s0Vli5gjxM () ~)
 »_12QTszi1FF0_5S77twbSETI
 
 
@@ -464,8 +447,7 @@ _6zj5YoW4CVg_7Az2Wsmlesm
  { 
  _1YX5DiyMYdm_8wQmGBtI3SD _3XBrePAliOo_37VlAqBsb5C _6zj5YoW4CVg_7Az2Wsmlesm 
  _8zRh2medTlP_0ImnPyO8NKH _9U8L2fXpZ9o_4x751rhsyve }
-!~ class (~ |supercl basiclo_label:| _6rqacMdYDSJ_0C6DWcO4C0t
-~)
+!~ class (~ |supercl basiclo_label:| _6rqacMdYDSJ_0C6DWcO4C0t ~)
 »_22f75DXxUof_3i5MrN9g5wm
 
 
@@ -476,8 +458,7 @@ _6zj5YoW4CVg_7Az2Wsmlesm
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of unconditional jumps; to the labeled"& " block or label give bny the `target`  attribute"
-!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP
-~)
+!~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP ~)
 »_11NnAAfHJE4_2wDIZL6qRLu
 
 
@@ -490,8 +471,7 @@ _6zj5YoW4CVg_7Az2Wsmlesm
  "label in generated C code, emitted with emit_label selector"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
 _7rJLemfzAk2_3B7wzh3wwTy
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_6rqacMdYDSJ_0C6DWcO4C0t
 
 
@@ -505,8 +485,7 @@ _7rJLemfzAk2_3B7wzh3wwTy
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
 _3XBrePAliOo_37VlAqBsb5C
 !~ class (~ |supercl basiclo_block:| _4bYUiDmxrKK_6nPPlEl8y8x 
-~: _2gthNYOWogO_4sVTU1JbmUH  % _17b3bhqLPeu_04FWlRjdMvD ()
-~)
+~: _2gthNYOWogO_4sVTU1JbmUH  % _17b3bhqLPeu_04FWlRjdMvD () ~)
 »_4B1KLXz7HLh_2nwUhwCUcU4
 
 
@@ -519,8 +498,7 @@ _3XBrePAliOo_37VlAqBsb5C
  "class for lockobj blocks"
 !~ class (~ |supercl basiclo_block:| _4bYUiDmxrKK_6nPPlEl8y8x 
 ~: _2gthNYOWogO_4sVTU1JbmUH  % _8fKRsxM1q9w_3hFovzBicI7 () 
-~: _6mk5eos8067_1odgCpnWMOj  % _5XbwuHte8rl_1KjFdwMeolr ()
-~)
+~: _6mk5eos8067_1odgCpnWMOj  % _5XbwuHte8rl_1KjFdwMeolr () ~)
 »_5w3nODhHPwk_4sXXZ1AEOPq
 
 
@@ -530,8 +508,7 @@ _3XBrePAliOo_37VlAqBsb5C
 !@ 1525339076.060
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl basiclo_block:| _4bYUiDmxrKK_6nPPlEl8y8x 
-~: _6mk5eos8067_1odgCpnWMOj  % _56pDwW9peiP_8flH2fMQUnD ()
-~)
+~: _6mk5eos8067_1odgCpnWMOj  % _56pDwW9peiP_8flH2fMQUnD () ~)
 »_2EjH1ebLzli_4rmA1ZPtIBL
 
 
@@ -542,8 +519,7 @@ _3XBrePAliOo_37VlAqBsb5C
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "superclass for lvalues inside basiclo_statement-s"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_0lQvVoZ3RLA_1PuOJnJxuHi
 
 
@@ -553,8 +529,7 @@ _3XBrePAliOo_37VlAqBsb5C
 !@ 1510898608.420
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl basiclo_function:| _2Ir1i8qnrA4_3jSkierlc5z 
-~: _6qi1DW0Ygkl_4Aqdxq4n5IV  % _07qYMXftJRR_9dde2ASz4e9 ()
-~)
+~: _6qi1DW0Ygkl_4Aqdxq4n5IV  % _07qYMXftJRR_9dde2ASz4e9 () ~)
 »_2Z04aTH1OXJ_4ekKKdOCiOM
 
 
@@ -567,8 +542,7 @@ _3XBrePAliOo_37VlAqBsb5C
  "class of objswitch statements"
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
 ~: _1ERH9PxNhPb_2o869yOMuH0  % _9d7mulcEVXf_7ZymszyOWDY () 
-~: _6DdZwyaWLyK_7tS2BmECOJ0  % _5nFFthyf8y9_00k5H4R0G6b ()
-~)
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _5nFFthyf8y9_00k5H4R0G6b () ~)
 »_3votvybaW1d_35YcL4p51kp
 
 
@@ -579,8 +553,7 @@ _3XBrePAliOo_37VlAqBsb5C
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
 ~: _1ERH9PxNhPb_2o869yOMuH0  % _08PMymoD6YJ_8rspWoCg4Xu () 
-~: _6DdZwyaWLyK_7tS2BmECOJ0  % _1kz7viwMzTp_6PgLhdZzMEy ()
-~)
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _1kz7viwMzTp_6PgLhdZzMEy () ~)
 »_9LFIEAPDbzj_9zfBn99RgU4
 
 
@@ -595,8 +568,7 @@ _3XBrePAliOo_37VlAqBsb5C
 ~: _0ukiE59AwC5_9TTEuEJtFQp  % _5E25xyHXQFi_0wTfQEys5ek () 
 ~: _5EGLdtUAQxA_1nebCsDKqOF  % _1vuSUudDrEr_9UjFr4Pcy8r () 
 ~: _7Jrs4cc8qH4_4TACmtzvqbZ  % _9qmOPbwMhs9_3dJL09vcSKT () 
-~: _7L782rSgJBB_9vjsBdqAoz7  % _0BaXSIhDAHO_9x6t4zdbUhj ()
-~)
+~: _7L782rSgJBB_9vjsBdqAoz7  % _0BaXSIhDAHO_9x6t4zdbUhj () ~)
 »_2SZvlA4wcJd_72ldva0oSGH
 
 
@@ -611,8 +583,7 @@ _3XBrePAliOo_37VlAqBsb5C
 ~: _1ERH9PxNhPb_2o869yOMuH0  % _7DErEWkQBmz_5hPwF6ARmJ7 () 
 ~: _2dsjWb0oYbZ_9aUSxaz9avx  % _79dmjQ4v7Oq_1iLagDqA8vn () 
 ~: _2HRKwEmw3RU_8NbUiNToBgr  % _4jb31rXWAb8_1Y8sylmVciT () 
-~: _6DdZwyaWLyK_7tS2BmECOJ0  % _7vlMCZ0yvva_6tx0lFlqBG8 ()
-~)
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _7vlMCZ0yvva_6tx0lFlqBG8 () ~)
 »_6dfdSwPGgR8_2EaBHYhuZ5G
 
 
@@ -627,8 +598,7 @@ _3XBrePAliOo_37VlAqBsb5C
 ~: _1ERH9PxNhPb_2o869yOMuH0  % _0AUL5kbXVmq_06A8ZbHZi1Y () 
 ~: _2dsjWb0oYbZ_9aUSxaz9avx  % _82m25YlV36t_0rEvRK5bJiS () 
 ~: _2HRKwEmw3RU_8NbUiNToBgr  % _6qgqb6eQuLf_805ANNku23h () 
-~: _6DdZwyaWLyK_7tS2BmECOJ0  % _6pA1Fxh7omw_0vJfR3s4tty ()
-~)
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _6pA1Fxh7omw_0vJfR3s4tty () ~)
 »_4SHgzjNdlGo_1CxI9hBNDrC
 
 
@@ -641,8 +611,7 @@ _3XBrePAliOo_37VlAqBsb5C
  "class of simple connective"
 !~ class (~ |supercl basiclo_connective:| _3DQ7z3EuAiT_4faSRNsy2lr 
 ~: _5EGLdtUAQxA_1nebCsDKqOF  % _2ROGZRBpeCl_6HhgOZ5Uj7F () 
-~: _7L782rSgJBB_9vjsBdqAoz7  % _48l341uEMuG_3gJ2HHIwYhn ()
-~)
+~: _7L782rSgJBB_9vjsBdqAoz7  % _48l341uEMuG_3gJ2HHIwYhn () ~)
 »_4G8QdnYR1LZ_1Ej0xQbVpn9
 
 
@@ -653,8 +622,7 @@ _3XBrePAliOo_37VlAqBsb5C
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "superclass for statements inside basiclo_block-s"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_4lKK08v9A0t_0GGsir35UxP
 
 
@@ -669,8 +637,7 @@ _3XBrePAliOo_37VlAqBsb5C
 
 !&  [ _2HlKptD03wA_7JJCG7lN5nS _8zNBXSMY2Ts_1VI5dmY4umA ] !~ class (~ |supercl plain_temporary_module:| _1oEp0eAAyFN_4lsobepyr1T 
 ~: _17mrxkMdNtH_2CduQ2WDIy5  % _8zNBXSMY2Ts_1VI5dmY4umA () 
-~: _9mq0jsuz4XQ_4doHfd987Q6  % _50d65bJypCN_6IJeVtssx9I ()
-~)
+~: _9mq0jsuz4XQ_4doHfd987Q6  % _50d65bJypCN_6IJeVtssx9I () ~)
 »_0277f6mOd9j_0tVZSXnTzUK
 
 
@@ -682,8 +649,7 @@ _3XBrePAliOo_37VlAqBsb5C
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for ^when in cond"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
-~: _8BRpelfZZnA_85HsuPjg0G7  % _9Wk97VJLuH1_0FwsSpfatDg ()
-~)
+~: _8BRpelfZZnA_85HsuPjg0G7  % _9Wk97VJLuH1_0FwsSpfatDg () ~)
 »_3fvdRZNCmJS_5bTAPr83mXg
 
 
@@ -698,8 +664,7 @@ _3XBrePAliOo_37VlAqBsb5C
 ~: _1ERH9PxNhPb_2o869yOMuH0  % _6eRPTujgMx5_9mLxL25hmr9 () 
 ~: _2dsjWb0oYbZ_9aUSxaz9avx  % _52KOJftDzaY_95rXXNMj4Md () 
 ~: _2HRKwEmw3RU_8NbUiNToBgr  % _5F3Vb2iwCDj_70AlfryKbrk () 
-~: _6DdZwyaWLyK_7tS2BmECOJ0  % _2Cj1ZVDhCVO_8qT2Um5Ok7f ()
-~)
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _2Cj1ZVDhCVO_8qT2Um5Ok7f () ~)
 »_4Af5NOOf7Qe_7KQdGPoNdJ0
 
 
@@ -712,8 +677,7 @@ _3XBrePAliOo_37VlAqBsb5C
  "for wrong statements, emitting #error"
 !~ class (~ |supercl basiclo_statement:| _4lKK08v9A0t_0GGsir35UxP 
 ~: _1ERH9PxNhPb_2o869yOMuH0  % _1EFhqSytjSK_9Uchza7qmUD () 
-~: _6DdZwyaWLyK_7tS2BmECOJ0  % _0Jvu8JxkNZZ_6K0zshkn9cP ()
-~)
+~: _6DdZwyaWLyK_7tS2BmECOJ0  % _0Jvu8JxkNZZ_6K0zshkn9cP () ~)
 »_65wIF6z9pmQ_47VZsHJ6zdk
 
 
@@ -724,8 +688,7 @@ _3XBrePAliOo_37VlAqBsb5C
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of while bindings"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_9brbb1kBTG4_9OznDc47iZn
 
 
@@ -736,8 +699,7 @@ _3XBrePAliOo_37VlAqBsb5C
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of bindings"
-!~ class (~ |supercl assoc_object:| _6ZQ05nCv3Ys_8LA6B5LkZgm
-~)
+!~ class (~ |supercl assoc_object:| _6ZQ05nCv3Ys_8LA6B5LkZgm ~)
 »_6zu0x6tqX60_8QhJjiAOwul
 
 
@@ -763,8 +725,7 @@ _4T8am97muLl_5969SR22Ecq
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for functions already in bismon.h"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_5SuHVsFWhDn_02X6Mh32emC
 
 
@@ -904,8 +865,7 @@ _4T8am97muLl_5969SR22Ecq
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for c arrays"
-!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W
-~)
+!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W ~)
 »_2TYRxW1WRWb_1PuK1p9YKKq
 
 
@@ -924,8 +884,7 @@ _4T8am97muLl_5969SR22Ecq
 !@ 1510764776.200
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W 
-~: _0b4VyB0nxvZ_1RgKWePfQOx  % _979hCujWp2g_9tjRbM8Ht1l ()
-~)
+~: _0b4VyB0nxvZ_1RgKWePfQOx  % _979hCujWp2g_9tjRbM8Ht1l () ~)
 »_7jHHqKoSEZf_6G1dslcAaT8
 
 
@@ -934,8 +893,7 @@ _4T8am97muLl_5969SR22Ecq
 !~ name (~ c_flexible ~)
 !@ 1510307420.590
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl c_array:| _2TYRxW1WRWb_1PuK1p9YKKq
-~)
+!~ class (~ |supercl c_array:| _2TYRxW1WRWb_1PuK1p9YKKq ~)
 »_1PaVnMGuJiO_7IbWq9VjxDx
 
 
@@ -945,8 +903,7 @@ _4T8am97muLl_5969SR22Ecq
 !@ 1510512086.230
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W 
-~: _0b4VyB0nxvZ_1RgKWePfQOx  % _6gRlN8loM4E_4pSsNmiCeIa ()
-~)
+~: _0b4VyB0nxvZ_1RgKWePfQOx  % _6gRlN8loM4E_4pSsNmiCeIa () ~)
 »_9NAQwgAp8DQ_13qIsXE8j7H
 
 
@@ -964,8 +921,7 @@ _4T8am97muLl_5969SR22Ecq
 !~ name (~ c_pointer ~)
 !@ 1510305594.530
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W
-~)
+!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W ~)
 »_0yKZoc8SIEB_05bjVvmf0Tf
 
 
@@ -974,8 +930,7 @@ _4T8am97muLl_5969SR22Ecq
 !~ name (~ c_signature ~)
 !@ 1510308844.580
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W
-~)
+!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W ~)
 »_3gL816tKTsb_8tAZCbJdEu6
 
 
@@ -984,8 +939,7 @@ _4T8am97muLl_5969SR22Ecq
 !~ name (~ c_struct ~)
 !@ 1510306347.760
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W
-~)
+!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W ~)
 »_2kLuNTaOiuP_5pFUOB8MCGG
 
 
@@ -994,8 +948,7 @@ _4T8am97muLl_5969SR22Ecq
 !~ name (~ c_typedef ~)
 !@ 1510304732.300
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W
-~)
+!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W ~)
 »_60t4pPMSvnF_13DjOQdqjHT
 
 
@@ -1004,8 +957,7 @@ _4T8am97muLl_5969SR22Ecq
 !~ name (~ c_union ~)
 !@ 1510307022.390
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W
-~)
+!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W ~)
 »_1FEwcwp87Of_5cwdVo3VQF3
 
 
@@ -1040,8 +992,7 @@ _5ve5gbSjN0r_1n61nNRPtnN _0jFqaPPHgYH_5JpjOPxQ67p
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the class of chariot projects"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_0VBDbV4Glj9_49SjNYEwwJb
 
 
@@ -1287,8 +1238,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the class for contributors"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
-~: _9uRC9w2Gte9_5mW0NanaS19  % _7xwUcosBMjj_3Sa2de3sCGO ()
-~)
+~: _9uRC9w2Gte9_5mW0NanaS19  % _7xwUcosBMjj_3Sa2de3sCGO () ~)
 »_5BAqWtmxAH6_9rCGuxiNbfc
 
 
@@ -1487,8 +1437,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of dumpable JSON objects"
-!~ class (~ |supercl json_object:| _7hNqn2hxg1M_3wNHCtOf9IF
-~)
+!~ class (~ |supercl json_object:| _7hNqn2hxg1M_3wNHCtOf9IF ~)
 »_6Iemb8Xs6aS_9quFFex4qwG
 
 
@@ -1978,8 +1927,7 @@ _25bploLipYh_5nORxlMICy7
 _5W4PPQFYdj2_3HYUlMsu3oZ
 !: _0NnNXZqWvmz_1ucZGX0YPu1 |=command_arity|
  1
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_3BK1iRJQKks_9em7267pi4g
 
 
@@ -2253,8 +2201,7 @@ _6YnYKKsHo3f_9nIEOZMp744
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for running ,find_obj command"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_64UbCFBD19G_43TeBXhcYMy
 
 
@@ -2608,8 +2555,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
  "class of hashset of JSON variables, for extract_json"
 !: _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _6zj5YoW4CVg_7Az2Wsmlesm }
-!~ class (~ |supercl hashsetval_object:| _3cRGd7uw43z_6OibwMICv3P
-~)
+!~ class (~ |supercl hashsetval_object:| _3cRGd7uw43z_6OibwMICv3P ~)
 »_2EwlACZSMng_4EsOBaICJHA
 
 
@@ -2640,8 +2586,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !~ name (~ html_active_object ~)
 !@ 1552658773.257
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_77eAIoJ7YJJ_6zJy8HNioJC
 
 
@@ -2661,8 +2606,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the super-class of HTML elements"
-!~ class (~ |supercl html_object:| _9XeCuDfY95i_4oOVXeBk72R
-~)
+!~ class (~ |supercl html_object:| _9XeCuDfY95i_4oOVXeBk72R ~)
 »_7FvfalQCaxj_24GCf5CtIWh
 
 
@@ -2691,8 +2635,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the super-class of HTML object"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_9XeCuDfY95i_4oOVXeBk72R
 
 
@@ -2703,8 +2646,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the super-class of HTML sequence objects"
-!~ class (~ |supercl html_object:| _9XeCuDfY95i_4oOVXeBk72R
-~)
+!~ class (~ |supercl html_object:| _9XeCuDfY95i_4oOVXeBk72R ~)
 »_7gcGSxzwbaX_9tmqbEbjvo0
 
 
@@ -2735,8 +2677,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "subclass for void HTML elements like <br/>"
-!~ class (~ |supercl html_element_object:| _7FvfalQCaxj_24GCf5CtIWh
-~)
+!~ class (~ |supercl html_element_object:| _7FvfalQCaxj_24GCf5CtIWh ~)
 »_5ov2KpemmVg_0cMgvKrBTvJ
 
 
@@ -3328,8 +3269,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
  "toplevel javascript function definition"
 !~ class (~ |supercl jscript_toplevel_object:| _7KpOCu7pOza_0ApwnGaS3DP 
 ~: _7zLaPay40r6_5iPrtG8Hiq4  % _7TK5bvNNTIg_4pzieotiEq8 () 
-~: _8dgEp1oxLMz_5iGP2Eq1wn7  % _83faYJmqTAm_5Um8Vj0myAd ()
-~)
+~: _8dgEp1oxLMz_5iGP2Eq1wn7  % _83faYJmqTAm_5Um8Vj0myAd () ~)
 »_6ZfaIF6vqeB_6AKq247BuTe
 
 
@@ -3340,8 +3280,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "superclass of Javascript toplevel script elements"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_7KpOCu7pOza_0ApwnGaS3DP
 
 
@@ -3354,8 +3293,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
  "class for toplevel javascript variable definition"
 !~ class (~ |supercl jscript_toplevel_object:| _7KpOCu7pOza_0ApwnGaS3DP 
 ~: _7zLaPay40r6_5iPrtG8Hiq4  % _44Xro7p814I_406P69WFbq4 () 
-~: _8dgEp1oxLMz_5iGP2Eq1wn7  % _74TaCoUa4dg_2bmUAanJYIJ ()
-~)
+~: _8dgEp1oxLMz_5iGP2Eq1wn7  % _74TaCoUa4dg_2bmUAanJYIJ () ~)
 »_4rZ29e59UMt_7QXynMxokfx
 
 
@@ -3387,8 +3325,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for preparing jsfunctions..."
 !~ class (~ |supercl assoc_object:| _6ZQ05nCv3Ys_8LA6B5LkZgm 
-~: _8dgEp1oxLMz_5iGP2Eq1wn7  % _0DGyKHi4Zo0_4eC8WMw5tyJ ()
-~)
+~: _8dgEp1oxLMz_5iGP2Eq1wn7  % _0DGyKHi4Zo0_4eC8WMw5tyJ () ~)
 »_0G2hYx4ZxhG_4bujYGDgno0
 
 
@@ -3408,8 +3345,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
 ~: _54fNPWQdMQd_4bZQKbcUvkR  % _1HZc1VBbjdB_96aQTEPgEX0 () 
-~: _93zDz6jmlVq_8ckLb59DDIl  % _09Hug4WGnPK_7PpZby8pz84 ()
-~)
+~: _93zDz6jmlVq_8ckLb59DDIl  % _09Hug4WGnPK_7PpZby8pz84 () ~)
 »_9zzGR0VqDpm_259EJDSFYyu
 
 
@@ -3421,8 +3357,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for Javascript modules"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
-~: _7icWqFMdb4f_2Z6ymmBVulP  % _3vI0Qc3FHQG_1g4fmHYkxSA ()
-~)
+~: _7icWqFMdb4f_2Z6ymmBVulP  % _3vI0Qc3FHQG_1g4fmHYkxSA () ~)
 »_2dMQFZCLvzX_28pgF8Y8V5S
 
 
@@ -3530,8 +3465,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of objects with Jansson JSON payloads"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_7hNqn2hxg1M_3wNHCtOf9IF
 
 
@@ -3652,8 +3586,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
  "class for Javascript variables"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
 ~: _4NpdCbcwwBV_9f3dbfoieTG  % _8Kh2MKilKO4_5qPRBWX9W3a () 
-~: _552MZuuVhpe_2uyn7QLERAb  % _3mBgHGhEYmP_9WN8gqaxhXg ()
-~)
+~: _552MZuuVhpe_2uyn7QLERAb  % _3mBgHGhEYmP_9WN8gqaxhXg () ~)
 »_0YanmudmN6Q_0JCzJElBQ7u
 
 
@@ -3954,8 +3887,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of mini frames in mini_tasklets"
-!~ class (~ |supercl assoc_object:| _6ZQ05nCv3Ys_8LA6B5LkZgm
-~)
+!~ class (~ |supercl assoc_object:| _6ZQ05nCv3Ys_8LA6B5LkZgm ~)
 »_7iXMCmAFuoe_5IaAOnyr7vZ
 
 
@@ -3967,8 +3899,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of mini tasklets"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
-~: _4xEm6fNYKrA_0GZas0sFyYp  % _8gAuOE933W3_5s7IF0hgpkz ()
-~)
+~: _4xEm6fNYKrA_0GZas0sFyYp  % _8gAuOE933W3_5s7IF0hgpkz () ~)
 »_3CDY5oT7poq_6DZU5iVg2Ft
 
 
@@ -9213,8 +9144,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for plain dumpable modules"
 !~ class (~ |supercl plain_module:| _8g1WBJBhDT9_1QK8IcuWYx2 
-~: _0pSnxYMjpqQ_3opFGfXeh5o  % _5DyG7xVcxRI_1Ckpbj7b3QK ()
-~)
+~: _0pSnxYMjpqQ_3opFGfXeh5o  % _5DyG7xVcxRI_1Ckpbj7b3QK () ~)
 »_2HjhGk7Engb_58InnCq3TZ1
 
 
@@ -9225,8 +9155,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "plain JavaScript module class"
-!~ class (~ |supercl jsmodule_object:| _2dMQFZCLvzX_28pgF8Y8V5S
-~)
+!~ class (~ |supercl jsmodule_object:| _2dMQFZCLvzX_28pgF8Y8V5S ~)
 »_3pO69EI4P0q_7Dnb672CUkN
 
 
@@ -9237,8 +9166,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
 ~: _3MZiKuLf93a_3YTtdOHeUH8  % _1gME6zn82Kf_8hzWibLFRfz ( _2HlKptD03wA_7JJCG7lN5nS  
-_17mrxkMdNtH_2CduQ2WDIy5 _8g1WBJBhDT9_1QK8IcuWYx2)
-~)
+_17mrxkMdNtH_2CduQ2WDIy5 _8g1WBJBhDT9_1QK8IcuWYx2) ~)
 »_8g1WBJBhDT9_1QK8IcuWYx2
 
 
@@ -9249,8 +9177,7 @@ _17mrxkMdNtH_2CduQ2WDIy5 _8g1WBJBhDT9_1QK8IcuWYx2)
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for non-dumpable temporary modules"
-!~ class (~ |supercl plain_module:| _8g1WBJBhDT9_1QK8IcuWYx2
-~)
+!~ class (~ |supercl plain_module:| _8g1WBJBhDT9_1QK8IcuWYx2 ~)
 »_1oEp0eAAyFN_4lsobepyr1T
 
 
@@ -10038,8 +9965,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl html_element_object:| _7FvfalQCaxj_24GCf5CtIWh 
 ~: _64Nwpjx4gnk_2y263bTCaB3  % _0NH2lnQIrTb_7Kt3mvQUoVu () 
-~: _84d7WOdRsJh_4Ud9BryxYUr  % _4xwDKklt2v4_2lEbck0j4qs ()
-~)
+~: _84d7WOdRsJh_4Ud9BryxYUr  % _4xwDKklt2v4_2lEbck0j4qs () ~)
 »_6HpZa1bRy0k_0KxrTwBFmDK
 
 
@@ -10050,8 +9976,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl html_void_element_object:| _5ov2KpemmVg_0cMgvKrBTvJ 
 ~: _64Nwpjx4gnk_2y263bTCaB3  % _6RtF29C4pij_9r269Lc0d0W () 
-~: _84d7WOdRsJh_4Ud9BryxYUr  % _4xwDKklt2v4_2lEbck0j4qs ()
-~)
+~: _84d7WOdRsJh_4Ud9BryxYUr  % _4xwDKklt2v4_2lEbck0j4qs () ~)
 »_8Lqg0cPFwGr_3Nmu1EAnYbx
 
 
@@ -10060,8 +9985,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !~ name (~ simple_module_generation ~)
 !@ 1522241573.340
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
-!~ class (~ |supercl sbuf_object:| _77xbaw1emfK_1nhE4tp0bF3
-~)
+!~ class (~ |supercl sbuf_object:| _77xbaw1emfK_1nhE4tp0bF3 ~)
 »_2HlKptD03wA_7JJCG7lN5nS
 
 
@@ -10083,8 +10007,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !~ class (~ |supercl assoc_object:| _6ZQ05nCv3Ys_8LA6B5LkZgm 
 ~: _1g8s9B96Irf_6Ix2Cyy8Hq0  % _2Lk2DjTDzQh_3aTEVKDE2Ip () 
-~: _3NGaoN3yhbn_8yUwbtZfvp9  % _9M3BqmOS7mA_96DTa52k7Xq ()
-~)
+~: _3NGaoN3yhbn_8yUwbtZfvp9  % _9M3BqmOS7mA_96DTa52k7Xq () ~)
 »_80060zKi6Un_3isCStegT8A
 
 
@@ -10141,8 +10064,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for objects with dump_data attribute giving a closure"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
-~: _0pSnxYMjpqQ_3opFGfXeh5o  % _6PmxiZR9WBe_13DwWExCALl ()
-~)
+~: _0pSnxYMjpqQ_3opFGfXeh5o  % _6PmxiZR9WBe_13DwWExCALl () ~)
 »_4tiUQqbr6oh_5gZVoUWsppH
 
 
@@ -10458,8 +10380,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of non-dumpable, so temporary, attributes"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_23vPTNrGYBF_3SlbvcOJx5M
 
 
@@ -10472,8 +10393,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx
  "temporary webhandler dict object whose entries are never dumped"
 !~ class (~ |supercl webhandler_dict_object:| _23YbAS1S796_1ZeW8OZfp1J 
 ~: _0pSnxYMjpqQ_3opFGfXeh5o  % _5DDSY1YgVZr_6dOU4tiBldk ( __) 
-~: _2oNMm2aR91J_4QthSpZxplW  % _5DDSY1YgVZr_6dOU4tiBldk ( __)
-~)
+~: _2oNMm2aR91J_4QthSpZxplW  % _5DDSY1YgVZr_6dOU4tiBldk ( __) ~)
 »_9hPtWPdZbOZ_5dWTFuPESY3
 
 
@@ -10552,8 +10472,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for tiny tasklets"
 !~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
-~: _4xEm6fNYKrA_0GZas0sFyYp  % _1etImV3nBtp_5rnHSE87XRj ()
-~)
+~: _4xEm6fNYKrA_0GZas0sFyYp  % _1etImV3nBtp_5rnHSE87XRj () ~)
 »_8dM7Xmdup4k_4jwzwOtmC1a
 
 
@@ -11807,8 +11726,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the class of webexchange-s, i.e. HTTP request + reply handled by bismon"
-!~ class (~ |supercl sbuf_object:| _77xbaw1emfK_1nhE4tp0bF3
-~)
+!~ class (~ |supercl sbuf_object:| _77xbaw1emfK_1nhE4tp0bF3 ~)
 »_8keZiP7vbFw_1ovBXqd6a0d
 
 
@@ -11819,8 +11737,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of webhandling dictionnary objects"
-!~ class (~ |supercl dict_object:| _6VGKPmigLUx_65sfKINCa6w
-~)
+!~ class (~ |supercl dict_object:| _6VGKPmigLUx_65sfKINCa6w ~)
 »_23YbAS1S796_1ZeW8OZfp1J
 
 
@@ -11878,8 +11795,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
  "class of the_websessions dictionnary"
 !~ class (~ |supercl dict_object:| _6VGKPmigLUx_65sfKINCa6w 
 ~: _0pSnxYMjpqQ_3opFGfXeh5o  % _5DDSY1YgVZr_6dOU4tiBldk () 
-~: _2oNMm2aR91J_4QthSpZxplW  % _5DDSY1YgVZr_6dOU4tiBldk ()
-~)
+~: _2oNMm2aR91J_4QthSpZxplW  % _5DDSY1YgVZr_6dOU4tiBldk () ~)
 »_2HGGdFqLH2E_8HktHZxdBd8
 
 
@@ -11890,8 +11806,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 !$_0LK4TzFd6u1_0JFUsrQ4odG |=class|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the class of web sessions"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn
-~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
 »_56KY6TzyCU5_12De0mHE48M
 
 
