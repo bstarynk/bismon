@@ -10315,7 +10315,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 !@ 1557413358.285
 !$_7T9OwSFlgov_0wVJaK1eZbn |=object|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
- "attribute which could give a target, e.g. of a jump"
+ "attribute which could give a target, e.g. of a jump."
 
 »_8GMdjIYTXX5_4FDHwSAG9vU
 
@@ -46222,8 +46222,10 @@ _1Q9bb14ZILM_7qaCfMUXHig
 
 
 «_838sw9thRfn_03qQ7lMn8Ij
-!@ 1562140884.474
+!@ 1562248847.886
 !$_0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
+!: _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "if objhasdictpayl(o_dict)// put\u00b0dict_object"
 !: _8dLpuaNoSGN_2tdmkpINCsu |=nb_conds|
  1
 !# 1
