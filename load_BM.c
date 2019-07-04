@@ -394,7 +394,8 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
         }
       //
       /* module requirement lines are µ<mod-id> or !^<mod-id> */
-      else if (linbuf[0] == '!' && linbuf[1] == '^'
+	else if (((linbuf[0] == '!' && linbuf[1] == '^' /*STOREMODULEALTPREFIX_BM*/)
+		  || (linbuf[0] == STOREMODULEPREFIX_BM[0] && linbuf[1] == STOREMODULEPREFIX_BM[1] /*µ*/))
                && linbuf[2] == '_' && isdigit (linbuf[3]))
         {
           const char *endid = NULL;
