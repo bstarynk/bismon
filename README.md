@@ -258,7 +258,8 @@ You might want (adapt
 [define your custom
 hunk-header](https://git-scm.com/docs/gitattributes#_defining_a_custom_hunk_header))
 to improve the interactive output of `git diff` on `store*.bmon`
-persistent data files.
+persistent data files. Perhaps something inspired from
+`git config diff.bismon.xfuncname '^«_[0-9A-Za-z_]*$'` might work, but not really.
 
 
 ## building ##
