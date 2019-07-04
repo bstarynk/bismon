@@ -635,16 +635,16 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
     {
       _.curattr = curobj->ob_sig;
       if (_.curattr == BMP_function_sig)
-        fprintf (spfil, "!| *\n");
+        fprintf (spfil, "%s *\n", STOREFUNSIGNATUREPREFIX_BM);
       else
         {
           char cursigid[32] = "";
           idtocbuf32_BM (objid_BM (curobj->ob_sig), cursigid);
           const char *signam = findobjectname_BM (curobj->ob_sig);
           if (signam)
-            fprintf (spfil, "!| %s |=%s|\n", cursigid, signam);
+            fprintf (spfil, "%s %s |=%s|\n",STOREFUNSIGNATUREPREFIX_BM, cursigid, signam);
           else
-            fprintf (spfil, "!| %s\n", cursigid);
+            fprintf (spfil, "%s %s\n",  STOREFUNSIGNATUREPREFIX_BM, cursigid);
         }
     }
   if (curobj->ob_mtime > 0)
