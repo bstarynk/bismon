@@ -638,22 +638,24 @@ The lines starting with \index{«@\texttt{«}}\texttt{«} or
 \index{"!(@\texttt{"!(}}\texttt{!(} and with
 \index{»@\texttt{»}}\texttt{»} or \index{"!)@\texttt{"!)}}\texttt{!)}
 are delimiting the object's persistent representation. %
-  %%%
-  Comments~\footnote{Once the persistence code - loading and dumping
-    of the state - is mature enough, we will disable generation of
-    comments in data files.} can start with a bar \texttt{|} till the
-  following bar, or with two slashes \texttt{//} till the end of line.
-  {\verb+!~+} with matching {\verb+(~+} ... \verb+~)+ are for
-  ``modifications'' (here, we set the \index{name}{\texttt{name}} of
-  that object to \texttt{first\_test\_module}). Object payloads are
-  also dumped in such ``modification'' form. \verb+!@+ puts the
-  \index{mtime}{\emph{mtime}}. \verb+!$+ \textit{classobjid} sets the
-  \index{class}{class} to the object of objid
-  \textit{classobjid}. \verb+!:+ \textit{attrobj} \textit{valattr} put
-  the attribute \textit{attrobj} associated with the value
-  \textit{valattr}. \verb+!#+ \textit{nbcomp} reserve the spaces for
-  \textit{nbcomp}, and \verb/!&/~\textit{valcomp} appends the value
-  \textit{valcomp} as a component.
+  %%% Comments~\footnote{Once the persistence code - loading and
+dumping of the state - is mature enough, we will disable generation of
+comments in data files.} can start with a bar \texttt{|} till the
+      following bar, or with two slashes \texttt{//} till the end of
+      line.  {\verb+!~+} with matching {\verb+(~+} ... \verb+~)+ are
+      for ``modifications'' (here, we set the
+      \index{name}{\texttt{name}} of that object to
+      \texttt{first\_test\_module}). Object payloads are also dumped
+      in such ``modification'' form. \verb+!@+ puts the
+      \index{mtime}{\emph{mtime}}. \verb+!$+ \textit{classobjid} sets
+      the \index{class}{class} to the object of objid
+      \textit{classobjid}. \verb+!:+ \textit{attrobj} \textit{valattr}
+      put the attribute \textit{attrobj} associated with the value
+      \textit{valattr}. \verb+!#+ \textit{nbcomp} reserve the spaces
+      for \textit{nbcomp}, and \verb/!&/~\textit{valcomp} appends the
+      value \textit{valcomp} as a component. The \index{Σ@\texttt{Σ}}
+      \texttt{Σ} or \index{"!|@\texttt{"!|}} \texttt{!|} is
+        for \index{signature!function} function signatures.
 
          Within every dumped object, attributes whose class is
          \texttt{temporary\_attribute\_object} are \emph{not}
