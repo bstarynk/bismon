@@ -5,7 +5,7 @@
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing,
 ///‼… 'µ' and '!^' for modules,
-///‼… '℺' and '!|*' for function signatures,
+///‼… 'Σ' and '!|' for function signatures,
 ///‼… are strictly equivalent ….
 ///---------------------
 
@@ -145,7 +145,7 @@
 
 «_5DDSY1YgVZr_6dOU4tiBldk |=const|
 !~ name (~ const ~)
-!|*
+!| *
 !@ 1531905420.099
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -446,7 +446,7 @@
 
 «_3j4mbvFJZzA_9ucKetDMbdh |=load_module|
 !~ name (~ load_module ~)
-!|*
+!| *
 !@ 1501754100.000
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 
@@ -535,7 +535,7 @@ _4hIFpPfuaR1_39hcoYwRAm0
 
 «_7kMNgL8eJ09_6aEpofzWJDP |=postpone_load_modification|
 !~ name (~ postpone_load_modification ~)
-!|*
+!| *
 !@ 1502787905.690
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -853,7 +853,7 @@ _0fP2AJNPfro_3k7iHzO2AaR
 
 «_3W8d51P1dJh_3b1BrOW6pua |=todo_apply|
 !~ name (~ todo_apply ~)
-!|*
+!| *
 !@ 1507884810.720
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
@@ -865,7 +865,7 @@ _0fP2AJNPfro_3k7iHzO2AaR
 
 «_9mdRnBqdqf5_9UvgSFA7wIY |=todo_send|
 !~ name (~ todo_send ~)
-!|*
+!| *
 !@ 1507884810.720
 !$_2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 !: _01h86SAfOfg_1q2oMegGRwW |=comment|
