@@ -496,7 +496,7 @@ ROUTINEOBJNAME_BM (_67IapmpeTLU_8MQKtlK8iAD)    // dump_data°class
         objstrbufferprintfpayl_BM (_.bufob, "\t |nometh| __");
     }
   objstrbufferlessindentpayl_BM (_.bufob);
-  objstrbufferappendcstrpayl_BM (_.bufob, "\n~)\n");
+  objstrbufferappendcstrpayl_BM (_.bufob, " ~)\n");
   LOCALRETURN_BM ((value_tyBM) _.recv);
 }                               /* end ROUTINE _67IapmpeTLU_8MQKtlK8iAD */
 
