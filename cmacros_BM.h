@@ -100,6 +100,10 @@
 #define STOREFUNSIGNATUREPREFIX_BM "Σ" /*U+03A3 GREEK CAPITAL LETTER SIGMA */
 #define STOREFUNSIGNATUREALTPREFIX_BM "!|"
 
+// also delim_element & delim_exclamdollar
+#define STORECLASSPREFIX_BM "∈" /*U+2208 ELEMENT OF */
+#define STOREALTCLASSPREFIX_BM "!$"
+
 ////////////////////////////////////////////////////////////////
 
 #define EMPTY_TOKEN_BM (struct parstoken_stBM) { \

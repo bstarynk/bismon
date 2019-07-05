@@ -964,20 +964,23 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           objtouchmtime_BM (_.curldobj, t);
         }
       //
-      // !$ <class-obj>  sets the class
+      // !$<class-obj> or ∈<class-obj> sets the class
       else if (tok.tok_kind == plex_DELIM
-               && tok.tok_delim == delim_exclamdollar)
+	       // STORECLASSPREFIX_BM or STOREALTCLASSPREFIX_BM
+               && (tok.tok_delim == delim_exclamdollar
+		   || tok.tok_delim == delim_element))
         {
           if (!_.curldobj)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
-                                  lineno, colpos, "!$ outside of object");
+                                  lineno, colpos,
+				  "!$ or ∈ outside of object");
           bool gotclass = false;
           _.classobj =          //
             parsergetobject_BM (ldpars, CURFRAME_BM, 0, &gotclass);
           if (!gotclass)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                   lineno, colpos,
-                                  "expect [class] object after !$");
+                                  "expect [class] object after !$ or ∈");
           objputclass_BM (_.curldobj, _.classobj);
           _.classobj = NULL;
         }

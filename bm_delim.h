@@ -1,6 +1,6 @@
 // This file bm_delim.h is included several times.  It was previously
-// _bm_delim.h but we won't have time to generate that file, even if
-// conceptually we should.
+// _bm_delim.h but is renamed since we won't have enough developer
+// time to generate that file, even if conceptually we should.
 
 /**
     BISMON 
@@ -29,13 +29,13 @@
 #endif
 
 #undef BM_NB_DELIM
-#define BM_NB_DELIM 56
+#define BM_NB_DELIM 57
  
 /// these should be sorted in ascending UTF8 order
 // HAS_DELIM_BM(String,Delimname)
 HAS_DELIM_BM("!",exclam)
 HAS_DELIM_BM("!#",exclamhash)
-HAS_DELIM_BM("!$",exclamdollar)
+HAS_DELIM_BM("!$",exclamdollar) /*STOREALTCLASSPREFIX_BM*/
 HAS_DELIM_BM("!%",exclampercent)
 HAS_DELIM_BM("!&",exclamand)
 HAS_DELIM_BM("!(",exclamleft) /*STOREOBJECTALTOPENPREFIX_BM*/
@@ -89,6 +89,7 @@ HAS_DELIM_BM("µ", mu) /*STOREMODULEPREFIX_BM*/
 HAS_DELIM_BM("»", dblanglequotright) /*STOREOBJECTCLOSEPREFIX_BM*/
 HAS_DELIM_BM("Σ", greekcapsigma) /*STOREFUNSIGNATUREPREFIX_BM*/
 HAS_DELIM_BM("€",euro)
+HAS_DELIM_BM("∈",element) /*STORECLASSPREFIX_BM*/
 
 #undef HAS_DELIM_BM
 
