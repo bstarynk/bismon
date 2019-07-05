@@ -89,11 +89,11 @@
  ***/
 
 // also delim_dblanglequotleft & delim_exclamleft in load_second_pass_BM
-#define STORE_OBJECTOPEN_PREFIX_BM "«"   /*U+00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK */
+#define STORE_OBJECTOPEN_PREFIX_BM "«" /*U+00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK */
 #define STORE_OBJECTOPEN_ALTPREFIX_BM "!("
 
 // also delim_dblanglequotright & delim_exclamright in load_second_pass_BM
-#define STORE_OBJECTCLOSE_PREFIX_BM "»"  /*U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK */
+#define STORE_OBJECTCLOSE_PREFIX_BM "»"        /*U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK */
 #define STORE_OBJECTCLOSE_ALTPREFIX_BM "!)"
 
 // also delim_mu & delim_exclamcaret in load_second_pass_BM
@@ -101,24 +101,24 @@
 #define STORE_MODULE_ALTPREFIX_BM "!^"
 
 // also delim_exclambar & delim_greekcapsigma  in load_second_pass_BM
-#define STORE_FUNSIGNATURE_PREFIX_BM "Σ" /*U+03A3 GREEK CAPITAL LETTER SIGMA */
+#define STORE_FUNSIGNATURE_PREFIX_BM "Σ"       /*U+03A3 GREEK CAPITAL LETTER SIGMA */
 #define STORE_FUNSIGNATURE_ALTPREFIX_BM "!|"
 
 // also delim_element & delim_exclamdollar
-#define STORE_CLASS_PREFIX_BM "∈" /*U+2208 ELEMENT OF */
+#define STORE_CLASS_PREFIX_BM "∈"     /*U+2208 ELEMENT OF */
 #define STORE_CLASS_ALTPREFIX_BM "!$"
 
 
 // also delim_rightfrombar & delim_exclamcolon
-#define STORE_ATTRIBUTE_PREFIX_BM "↦" /*U+21A6 RIGHTWARDS ARROW FROM BAR*/
+#define STORE_ATTRIBUTE_PREFIX_BM "↦" /*U+21A6 RIGHTWARDS ARROW FROM BAR */
 #define STORE_ATTRIBUTE_ALTPREFIX_BM "!:"
 
 // also delim_downtipright & delim_exclamand
-#define STORE_COMPONENT_PREFIX_BM "↳" /*U+21B3 DOWNWARDS ARROW WITH TIP RIGHTWARDS*/
+#define STORE_COMPONENT_PREFIX_BM "↳" /*U+21B3 DOWNWARDS ARROW WITH TIP RIGHTWARDS */
 #define STORE_COMPONENT_ALTPREFIX_BM "!&"
 
 // also delim_plusminus & delim_exclamat
-#define STORE_MODTIME_PREFIX_BM "±" /*U+00B1 PLUS-MINUS SIGN*/
+#define STORE_MODTIME_PREFIX_BM "±"    /*U+00B1 PLUS-MINUS SIGN */
 #define STORE_MODTIME_ALTPREFIX_BM "!@"
 
 ////////////////////////////////////////////////////////////////

@@ -966,21 +966,25 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
       //
       // !$<class-obj> or ∈<class-obj> sets the class
       else if (tok.tok_kind == plex_DELIM
-	       // STORE_CLASS_PREFIX_BM or STORE_CLASS_ALTPREFIX_BM
+               // STORE_CLASS_PREFIX_BM or STORE_CLASS_ALTPREFIX_BM
                && (tok.tok_delim == delim_exclamdollar
-		   || tok.tok_delim == delim_element))
+                   || tok.tok_delim == delim_element))
         {
           if (!_.curldobj)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                   lineno, colpos,
-				  "!$ or ∈ outside of object");
+                                  STORE_CLASS_PREFIX_BM " or "
+                                  STORE_CLASS_ALTPREFIX_BM
+                                  " outside of object");
           bool gotclass = false;
           _.classobj =          //
             parsergetobject_BM (ldpars, CURFRAME_BM, 0, &gotclass);
           if (!gotclass)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                   lineno, colpos,
-                                  "expect [class] object after !$ or ∈");
+                                  "expect [class] object after "
+                                  STORE_CLASS_PREFIX_BM " or "
+                                  STORE_CLASS_ALTPREFIX_BM);
           objputclass_BM (_.curldobj, _.classobj);
           _.classobj = NULL;
         }
@@ -993,11 +997,17 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
         {
           if (!_.curldobj)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
-                                  lineno, colpos, "!) outside of object");
+                                  lineno, colpos,
+                                  STORE_OBJECTCLOSE_PREFIX_BM " or "
+                                  STORE_OBJECTCLOSE_ALTPREFIX_BM
+                                  " outside of object");
           parstoken_tyBM tokid = parsertokenget_BM (ldpars, CURFRAME_BM);
           if (tokid.tok_kind != plex_ID)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
-                                  lineno, colpos, "expecting id after !)");
+                                  lineno, colpos,
+                                  "expecting id after "
+                                  STORE_OBJECTCLOSE_PREFIX_BM " or "
+                                  STORE_OBJECTCLOSE_ALTPREFIX_BM);
           if (tokid.tok_id.id_hi
               && !equalid_BM (tokid.tok_id, objid_BM (_.curldobj)))
             {
@@ -1005,7 +1015,9 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
               idtocbuf32_BM (objid_BM (_.curldobj), idbuf);
               parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                     lineno, colpos,
-                                    "expecting id %s after !)", idbuf);
+                                    "expecting id %s after "
+                                    STORE_OBJECTCLOSE_PREFIX_BM " or "
+                                    STORE_OBJECTCLOSE_ALTPREFIX_BM, idbuf);
 
             }
           DBGPRINTF_BM ("**!--!** ending loaded object %s at %s:%d\n\n",
@@ -1023,16 +1035,23 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           if (!_.curldobj)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                   lineno, colpos,
-                                  "!| or Σ outside of object");
+                                  STORE_FUNSIGNATURE_PREFIX_BM " or "
+                                  STORE_FUNSIGNATURE_ALTPREFIX_BM
+                                  " outside of object");
           parstoken_tyBM toksig = parsertokenget_BM (ldpars, CURFRAME_BM);
           if (toksig.tok_kind == plex_DELIM && toksig.tok_delim == delim_star)
             {
-              DBGPRINTF_BM ("!| or Σ followed by * ix#%d line %d for %s",
-                            ix, toksig.tok_line, objectdbg_BM (_.curldobj));
+              DBGPRINTF_BM (STORE_FUNSIGNATURE_PREFIX_BM " or "
+                            STORE_FUNSIGNATURE_ALTPREFIX_BM
+                            " followed by * ix#%d line %d for %s", ix,
+                            toksig.tok_line, objectdbg_BM (_.curldobj));
               if (!objroutaddr_BM (_.curldobj, BMP_function_sig))
                 parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                       lineno, colpos,
-                                      "object %s without function_sig has !| followed by *",
+                                      "object %s without function_sig has "
+                                      STORE_FUNSIGNATURE_PREFIX_BM " or "
+                                      STORE_FUNSIGNATURE_ALTPREFIX_BM
+                                      " followed by *",
                                       objectdbg_BM (_.curldobj));
             }
           else if (toksig.tok_kind == plex_ID)
@@ -1048,7 +1067,10 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                 {
                   parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                         lineno, colpos,
-                                        "object %s with  !|* or Σ with bad function signature",
+                                        "object %s with "
+                                        STORE_FUNSIGNATURE_PREFIX_BM " or "
+                                        STORE_FUNSIGNATURE_ALTPREFIX_BM
+                                        " with bad function signature",
                                         objectdbg_BM (_.curldobj));
                 };
               _.routbuilder = objgetattr_BM (_.attrobj, BMP_routine_builder);
@@ -1090,8 +1112,10 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
               else
                 /// we probably should get a prefix from the signature, etc...
                 FATAL_BM
-                  ("general signature %s with !| * or Σ for %s unexpected builder",
-                   sigidbuf32, obnam ? obnam : curidbuf32);
+                  ("general signature %s with " STORE_FUNSIGNATURE_PREFIX_BM
+                   " or " STORE_FUNSIGNATURE_ALTPREFIX_BM
+                   " * or Σ for %s unexpected builder", sigidbuf32,
+                   obnam ? obnam : curidbuf32);
             }
           else
             {
@@ -1101,13 +1125,18 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
               if (obnam)
                 parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                       lineno, colpos,
-                                      "named object %s/%s with bad !| * or Σ * for function signature",
-                                      obnam, idbuf32);
+                                      "named object %s/%s with bad "
+                                      STORE_FUNSIGNATURE_PREFIX_BM " or "
+                                      STORE_FUNSIGNATURE_ALTPREFIX_BM
+                                      " * for function signature", obnam,
+                                      idbuf32);
               else
                 parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                       lineno, colpos,
-                                      "anonymous object %s with bad !| * or Σ * for function signature",
-                                      idbuf32);
+                                      "anonymous object %s with bad "
+                                      STORE_FUNSIGNATURE_PREFIX_BM " or "
+                                      STORE_FUNSIGNATURE_ALTPREFIX_BM
+                                      " * for function signature", idbuf32);
 
             }
         }

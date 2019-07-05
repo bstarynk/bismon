@@ -516,8 +516,8 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
          STORE_OBJECTCLOSE_PREFIX_BM "' and '" STORE_OBJECTCLOSE_ALTPREFIX_BM
          "' for object closing,\n" "///‼… '" STORE_MODULE_PREFIX_BM
          "' and '" STORE_MODULE_ALTPREFIX_BM "' for modules,\n" "///‼… '"
-         STORE_FUNSIGNATURE_PREFIX_BM "' and '" STORE_FUNSIGNATURE_ALTPREFIX_BM
-         "' for function signatures,\n"
+         STORE_FUNSIGNATURE_PREFIX_BM "' and '"
+         STORE_FUNSIGNATURE_ALTPREFIX_BM "' for function signatures,\n"
          "///‼… are strictly equivalent ….\n"
          "///---------------------\n\n", spfil);
   _.modhsetob = makeobj_BM ();
@@ -645,7 +645,8 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
             fprintf (spfil, "%s %s |=%s|\n", STORE_FUNSIGNATURE_PREFIX_BM,
                      cursigid, signam);
           else
-            fprintf (spfil, "%s %s\n", STORE_FUNSIGNATURE_PREFIX_BM, cursigid);
+            fprintf (spfil, "%s %s\n", STORE_FUNSIGNATURE_PREFIX_BM,
+                     cursigid);
         }
     }
   if (curobj->ob_mtime > 0)
