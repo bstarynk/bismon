@@ -43,9 +43,9 @@ HAS_DELIM_BM("!)",exclamright) /*STOREOBJECTALTCLOSEPREFIX_BM*/
 HAS_DELIM_BM("!*",exclamstar)
 HAS_DELIM_BM("!-",exclamminus)
 HAS_DELIM_BM("!.",exclamdot)
-HAS_DELIM_BM("!:",exclamcolon)
+HAS_DELIM_BM("!:",exclamcolon) /*STOREALTATTRIBUTEPREFIX_BM*/
 HAS_DELIM_BM("!>",exclamgreater)
-HAS_DELIM_BM("!@",exclamat)
+HAS_DELIM_BM("!@",exclamat) /*STOREALTMODPREFIX_BM*/
 HAS_DELIM_BM("!^",exclamcaret) /*STOREMODULEALTPREFIX_BM*/
 HAS_DELIM_BM("!|",exclambar) /*STOREFUNSIGNATUREALTPREFIX_BM*/
 HAS_DELIM_BM("!~",exclamtilde)
@@ -85,10 +85,13 @@ HAS_DELIM_BM("~)",tilderightparen)
 HAS_DELIM_BM("~:",tildecolon)
 HAS_DELIM_BM("«", dblanglequotleft) /*STOREOBJECTOPENPREFIX_BM*/
 HAS_DELIM_BM("°",degree)
+HAS_DELIM_BM("±",plusminus) /*STOREMODTIMEPREFIX_BM*/
 HAS_DELIM_BM("µ", mu) /*STOREMODULEPREFIX_BM*/
 HAS_DELIM_BM("»", dblanglequotright) /*STOREOBJECTCLOSEPREFIX_BM*/
 HAS_DELIM_BM("Σ", greekcapsigma) /*STOREFUNSIGNATUREPREFIX_BM*/
 HAS_DELIM_BM("€",euro)
+HAS_DELIM_BM("↦", rightfrombar) /*STOREATTRIBUTEPREFIX_BM*/
+HAS_DELIM_BM("↳", downtipright) /*STORECOMPONENTPREFIX_BM*/
 HAS_DELIM_BM("∈",element) /*STORECLASSPREFIX_BM*/
 
 #undef HAS_DELIM_BM

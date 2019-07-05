@@ -70,7 +70,11 @@
 #define LOADERMAGIC_BM 281610361        /*0x10c90879 */
 #define MAXLOADEDFILES_BM 64
 
-////////////////////////////////////////////////////////////////
+
+
+
+//================================================================
+//////////////////////////////////////////////////////////////////
 //////////////// about the store files.....
 // The first line of every store*.bmon file should start with the
 // following magic UTF-8 characters; the fourth character is the Euro
@@ -103,6 +107,19 @@
 // also delim_element & delim_exclamdollar
 #define STORECLASSPREFIX_BM "∈" /*U+2208 ELEMENT OF */
 #define STOREALTCLASSPREFIX_BM "!$"
+
+
+// also delim_rightfrombar & delim_exclamcolon
+#define STOREATTRIBUTEPREFIX_BM "↦" /*U+21A6 RIGHTWARDS ARROW FROM BAR*/
+#define STOREALTATTRIBUTEPREFIX_BM "!:"
+
+// also delim_downtipright & delim_exclamand
+#define STORECOMPONENTPREFIX_BM "↳" /*U+21B3 DOWNWARDS ARROW WITH TIP RIGHTWARDS*/
+#define STOREALTCOMPONENTPREFIX_BM "!&"
+
+// also delim_plusminus & delim_exclamat
+#define STOREMODTIMEPREFIX_BM "±" /*U+00B1 PLUS-MINUS SIGN*/
+#define STOREALTMODTIMEPREFIX_BM "!@"
 
 ////////////////////////////////////////////////////////////////
 
