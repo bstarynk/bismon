@@ -313,12 +313,12 @@ ROUTINEOBJNAME_BM (_7mvOlkB1tAJ_3psVFz4QEAn)    //
   // arg3 is the dumpob
   ASSERT_BM (istaggedint_BM (arg4));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-		  const stringval_tyBM * recv; //
-		  objectval_tyBM * dumpob; //
-		  objectval_tyBM * bufob; //
-		  value_tyBM depthv; //
-		  value_tyBM curson; //
-		  const objectval_tyBM * connobj; //
+                 const stringval_tyBM * recv;   //
+                 objectval_tyBM * dumpob;       //
+                 objectval_tyBM * bufob;        //
+                 value_tyBM depthv;     //
+                 value_tyBM curson;     //
+                 const objectval_tyBM * connobj;        //
     );
   _.recv = (arg1);
   _.bufob = objectcast_BM (arg2);
