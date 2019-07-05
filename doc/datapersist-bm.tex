@@ -693,11 +693,30 @@ comments in data files.} can start with a bar \texttt{|} till the
   \label{fig:dumpvalsyntax}
 \end{figure}
 
-Data files start first with the \emph{objid} of modules used by
-routines (in objects mentioned in that data file). These module-objids
-are prefixed with {\bf{\verb+!^+}}. Then the collection of
+Data files start
+first with the \emph{objid} of modules used by routines (in objects
+mentioned in that data file). These module-objids are prefixed with
+{\bf{\verb+!^+}} or with {\bf{\texttt{µ}}}. Then the collection of
 objects (similar to figure \ref{fig:objdumpfirsttestmodule} each)
 follows.
+
+
+%% see also: https://tex.stackexchange.com/a/58811/42406
+%%- \begin{quote}
+%%-   \begin{relsize}{-1}
+%%-   In July 2019, we have changed some lexical tokens
+%%-   in data files.  Notice that, inside thes dumped files, \texttt{«} and
+%%-   \verb'!(' for object opening, \texttt{»} and \verb'!)' for object
+%%-   closing;
+%%-   \texttt{µ} and \verb'!^' for modules,
+%%-   $\mathtt{\Sigma}$ and \verb'!|'
+%%-   for function signatures, \texttt{∈} and \verb'!$' for classes,
+%%-   \texttt{±} and \verb'!@' for modtime, \texttt{↦} and \verb'!:' for
+%%-   attributes, \texttt{↳} and \verb'!&' for components, are now strictly
+%%-   equivalent. The motivation for doing that change is related to
+%%-   \bmurl{https://stackoverflow.com/q/46113583/841108} \ldots
+%%-   \end{relsize}
+%%- \end{quote}
 
 In data files, objects are represented by their \emph{objid}, perhaps
 followed by a useless comment like
