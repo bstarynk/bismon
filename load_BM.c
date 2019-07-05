@@ -940,19 +940,27 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           objreservecomps_BM (_.curldobj, l);
         }
       //
-      // !& <comp-value>   append a component
-      else if (tok.tok_kind == plex_DELIM && tok.tok_delim == delim_exclamand)
+      // !& <comp-value> or  ↳ <comp-value> append a component
+      else if (tok.tok_kind == plex_DELIM
+               // STORE_COMPONENT_PREFIX_BM or STORE_COMPONENT_ALTPREFIX_BM
+               && (tok.tok_delim == delim_exclamand
+                   || tok.tok_delim == delim_downtipright))
         {
           if (!_.curldobj)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
-                                  lineno, colpos, "!& outside of object");
+                                  lineno, colpos,
+                                  STORE_COMPONENT_PREFIX_BM " or "
+                                  STORE_COMPONENT_ALTPREFIX_BM
+                                  " outside of object");
           bool gotval = false;
           _.compval =           //
             parsergetvalue_BM (ldpars, CURFRAME_BM, 0, &gotval);
           if (!gotval)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                   lineno, colpos,
-                                  "expect component value after !&");
+                                  "expect component value after "
+                                  STORE_COMPONENT_PREFIX_BM " or "
+                                  STORE_COMPONENT_ALTPREFIX_BM);
           objappendcomp_BM (_.curldobj, _.compval);
           _.compval = NULL;
         }
@@ -973,7 +981,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           if (tokmtim.tok_kind != plex_DOUBLE)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                   lineno, colpos,
-                                  "expecting double after "
+                                  "expecting double modtime after "
                                   STORE_MODTIME_PREFIX_BM " or "
                                   STORE_MODTIME_ALTPREFIX_BM
                                   ", but got some %s",
