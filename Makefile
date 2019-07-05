@@ -71,6 +71,7 @@ doc: $(MARKDOWN_SOURCES) bismon bismongtk modules $(wildcard doc/*.tex doc/image
 
 latexdoc: bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
 	./build-bismon-doc.sh LaTeX
+	ls -lt ~/tmp/bismon-chariot-doc*
 
 heveadoc:  bismon bismongtk modules $(wildcard doc/*.tex doc/images/* doc/*.bib doc/*.hva)
 	./build-bismon-doc.sh HeVeA
