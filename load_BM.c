@@ -889,20 +889,26 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                         objectdbg_BM (_.curldobj), ldpars->pars_path, lineno);
         }
       //
-      // !: <attrobj> <attrval>   adds an attribute and its value
+      // !: <attrobj> <attrval> or  ↦  <attrobj> <attrval> adds an attribute and its value
       else if (tok.tok_kind == plex_DELIM
-               && tok.tok_delim == delim_exclamcolon)
+               //STORE_ATTRIBUTE_PREFIX_BM or STORE_ATTRIBUTE_ALTPREFIX_BM
+               && (tok.tok_delim == delim_exclamcolon || delim_rightfrombar))
         {
           if (!_.curldobj)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
-                                  lineno, colpos, "!: outside of object");
+                                  lineno, colpos,
+                                  STORE_ATTRIBUTE_PREFIX_BM " or "
+                                  STORE_ATTRIBUTE_ALTPREFIX_BM
+                                  " outside of object");
           bool gotattr = false;
           _.attrobj =           //
             parsergetobject_BM (ldpars, CURFRAME_BM, 0, &gotattr);
           if (!gotattr)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                   lineno, colpos,
-                                  "expect attribute object after !:");
+                                  "expect attribute object after "
+                                  STORE_ATTRIBUTE_PREFIX_BM " or "
+                                  STORE_ATTRIBUTE_ALTPREFIX_BM);
           parserskipspaces_BM (ldpars, CURFRAME_BM);
           bool gotval = false;
           _.attrval =           //
@@ -910,7 +916,9 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
           if (!gotval)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
                                   lineno, colpos,
-                                  "expect value of attribute after !:");
+                                  "expect value of attribute after "
+                                  STORE_ATTRIBUTE_PREFIX_BM " or "
+                                  STORE_ATTRIBUTE_ALTPREFIX_BM);
           objputattr_BM (_.curldobj, _.attrobj, _.attrval);
           _.attrobj = NULL;
           _.attrval = NULL;
