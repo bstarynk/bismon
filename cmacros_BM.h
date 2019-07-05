@@ -105,21 +105,21 @@
 #define STORE_FUNSIGNATURE_ALTPREFIX_BM "!|"
 
 // also delim_element & delim_exclamdollar
-#define STORECLASSPREFIX_BM "∈" /*U+2208 ELEMENT OF */
-#define STOREALTCLASSPREFIX_BM "!$"
+#define STORE_CLASS_PREFIX_BM "∈" /*U+2208 ELEMENT OF */
+#define STORE_CLASS_ALTPREFIX_BM "!$"
 
 
 // also delim_rightfrombar & delim_exclamcolon
-#define STOREATTRIBUTEPREFIX_BM "↦" /*U+21A6 RIGHTWARDS ARROW FROM BAR*/
-#define STOREALTATTRIBUTEPREFIX_BM "!:"
+#define STORE_ATTRIBUTE_PREFIX_BM "↦" /*U+21A6 RIGHTWARDS ARROW FROM BAR*/
+#define STORE_ATTRIBUTE_ALTPREFIX_BM "!:"
 
 // also delim_downtipright & delim_exclamand
-#define STORECOMPONENTPREFIX_BM "↳" /*U+21B3 DOWNWARDS ARROW WITH TIP RIGHTWARDS*/
-#define STOREALTCOMPONENTPREFIX_BM "!&"
+#define STORE_COMPONENT_PREFIX_BM "↳" /*U+21B3 DOWNWARDS ARROW WITH TIP RIGHTWARDS*/
+#define STORE_COMPONENT_ALTPREFIX_BM "!&"
 
 // also delim_plusminus & delim_exclamat
-#define STOREMODTIMEPREFIX_BM "±" /*U+00B1 PLUS-MINUS SIGN*/
-#define STOREALTMODTIMEPREFIX_BM "!@"
+#define STORE_MODTIME_PREFIX_BM "±" /*U+00B1 PLUS-MINUS SIGN*/
+#define STORE_MODTIME_ALTPREFIX_BM "!@"
 
 ////////////////////////////////////////////////////////////////
 

@@ -966,7 +966,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
       //
       // !$<class-obj> or ∈<class-obj> sets the class
       else if (tok.tok_kind == plex_DELIM
-	       // STORECLASSPREFIX_BM or STOREALTCLASSPREFIX_BM
+	       // STORE_CLASS_PREFIX_BM or STORE_CLASS_ALTPREFIX_BM
                && (tok.tok_delim == delim_exclamdollar
 		   || tok.tok_delim == delim_element))
         {
