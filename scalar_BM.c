@@ -1291,9 +1291,11 @@ objstrbufferencodedutf8payl_BM (objectval_tyBM * obj, const char *str,
             memset (ubuf, 0, sizeof (ubuf));
             if (uc >= ' ' && uc < 127)
               ubuf[0] = (char) uc;
-	    else if (!g_unichar_iscntrl(uc) && g_unichar_isgraph (uc)) {
-	      g_unichar_to_utf8 (ubuf, uc);
-	    }
+            else if (!g_unichar_iscntrl (uc) && g_unichar_isgraph (uc)
+                     && !g_unichar_iszerowidth (uc))
+              {
+                g_unichar_to_utf8 (uc, ubuf);
+              }
             else if (uc < 0xffff)
               snprintf (ubuf, sizeof (ubuf), "\\u%04x", uc);
             else
