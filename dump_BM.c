@@ -512,13 +512,13 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   unsigned nbobj = setcardinal_BM (_.setobjs);
   fprintf (spfil, "// for %u objects\n", nbobj);
   fputs ("\n///‼ Notice that '" STORE_OBJECTOPEN_PREFIX_BM "' and '" STORE_OBJECTOPEN_ALTPREFIX_BM "' for object opening,\n"  //.
-         "///‼… '" STORE_OBJECTCLOSE_PREFIX_BM "' and '" STORE_OBJECTCLOSE_ALTPREFIX_BM "' for object closing,\n"   //.
-         "///‼… '" STORE_MODULE_PREFIX_BM "' and '" STORE_MODULE_ALTPREFIX_BM "' for modules,\n"    //.
+         "///‼… '" STORE_OBJECTCLOSE_PREFIX_BM "' and '" STORE_OBJECTCLOSE_ALTPREFIX_BM "' for object closing;"     //&
+         " '" STORE_MODULE_PREFIX_BM "' and '" STORE_MODULE_ALTPREFIX_BM "' for modules,\n"     //.
          "///‼… '" STORE_FUNSIGNATURE_PREFIX_BM "' and '" STORE_FUNSIGNATURE_ALTPREFIX_BM "' for function signatures,\n"    //.
-         "///‼… '" STORE_CLASS_PREFIX_BM "' and '" STORE_CLASS_ALTPREFIX_BM "' for classes,\n"      //.
-         "///‼… '" STORE_MODTIME_PREFIX_BM "' and '" STORE_MODTIME_ALTPREFIX_BM "' for modtime,\n"  //.
-         "///‼… '" STORE_ATTRIBUTE_PREFIX_BM "' and '" STORE_ATTRIBUTE_ALTPREFIX_BM "' for attributes,\n"   //.
-         "///‼… '" STORE_COMPONENT_PREFIX_BM "' and '" STORE_COMPONENT_ALTPREFIX_BM "' for components,\n"   //.
+         "///‼… '" STORE_CLASS_PREFIX_BM "' and '" STORE_CLASS_ALTPREFIX_BM "' for classes, "       //&
+         " '" STORE_MODTIME_PREFIX_BM "' and '" STORE_MODTIME_ALTPREFIX_BM "' for modtime,\n"   //.
+         "///‼… '" STORE_ATTRIBUTE_PREFIX_BM "' and '" STORE_ATTRIBUTE_ALTPREFIX_BM "' for attributes, "    //&
+         " '" STORE_COMPONENT_PREFIX_BM "' and '" STORE_COMPONENT_ALTPREFIX_BM "' for components,\n"    //.
          "///‼… are strictly equivalent ….\n"     //.
          "///---------------------\n\n", spfil);
   _.modhsetob = makeobj_BM ();
