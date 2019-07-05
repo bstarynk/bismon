@@ -75,14 +75,14 @@ load_initial_BM (const char *ldirpath)
   DIR *ldir = opendir (ldirpath);
   if (!ldir)
     FATAL_BM ("load_initial failed to opendir %s : %m", ldirpath);
-  ASSERT_BM (strlen (STOREOBJECTOPENPREFIX_BM) ==
-             strlen (STOREOBJECTALTOPENPREFIX_BM));
-  ASSERT_BM (strlen (STOREOBJECTCLOSEPREFIX_BM) ==
-             strlen (STOREOBJECTALTCLOSEPREFIX_BM));
-  ASSERT_BM (strlen (STOREMODULEPREFIX_BM) ==
-             strlen (STOREMODULEALTPREFIX_BM));
-  ASSERT_BM (strlen (STOREFUNSIGNATUREPREFIX_BM) ==
-             strlen (STOREFUNSIGNATUREALTPREFIX_BM));
+  ASSERT_BM (strlen (STORE_OBJECTOPEN_PREFIX_BM) ==
+             strlen (STORE_OBJECTOPEN_ALTPREFIX_BM));
+  ASSERT_BM (strlen (STORE_OBJECTCLOSE_PREFIX_BM) ==
+             strlen (STORE_OBJECTCLOSE_ALTPREFIX_BM));
+  ASSERT_BM (strlen (STORE_MODULE_PREFIX_BM) ==
+             strlen (STORE_MODULE_ALTPREFIX_BM));
+  ASSERT_BM (strlen (STORE_FUNSIGNATURE_PREFIX_BM) ==
+             strlen (STORE_FUNSIGNATURE_ALTPREFIX_BM));
   struct dirent *de = NULL;
   char *todopath = NULL;
   int maxnum = 0;
@@ -260,19 +260,19 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
       if (UNLIKELY_BM (lincnt == 0))
         {
           if (strncmp
-              (linbuf, STORECONTENTMAGICPREFIX_BM,
-               strlen (STORECONTENTMAGICPREFIX_BM)))
+              (linbuf, STORE_CONTENTMAGIC_PREFIX_BM,
+               strlen (STORE_CONTENTMAGIC_PREFIX_BM)))
             WARNPRINTF_BM
               ("loaded persistent store file %s does not start with magic '%s' characters",
-               curldpath, STORECONTENTMAGICPREFIX_BM);
+               curldpath, STORE_CONTENTMAGIC_PREFIX_BM);
         }
       lincnt++;
       /* object definition lines are !(<oid> or «<oid> e.g. !(_7D8xcWnEiys_8oqOVSkCxkA */
       if (((linbuf[0] == '!'
-            && linbuf[1] == '(' /*:STOREOBJECTALTOPENPREFIX_BM */ )
+            && linbuf[1] == '(' /*:STORE_OBJECTOPEN_ALTPREFIX_BM */ )
            // U+00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK « :
-           || (linbuf[0] == STOREOBJECTOPENPREFIX_BM[0]
-               && linbuf[1] == STOREOBJECTOPENPREFIX_BM[1]))
+           || (linbuf[0] == STORE_OBJECTOPEN_PREFIX_BM[0]
+               && linbuf[1] == STORE_OBJECTOPEN_PREFIX_BM[1]))
           && linbuf[2] == '_' && isdigit (linbuf[3]))
         {
           const char *endid = NULL;
@@ -302,10 +302,10 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
       /* end of object: !)<oid> or »<oid> */
       else
         if (((linbuf[0] == '!'
-              && linbuf[1] == ')' /*:STOREOBJECTALTCLOSEPREFIX_BM */ )
+              && linbuf[1] == ')' /*:STORE_OBJECTCLOSE_ALTPREFIX_BM */ )
              // U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK » :
-             || (linbuf[0] == STOREOBJECTCLOSEPREFIX_BM[0]
-                 && linbuf[1] == STOREOBJECTCLOSEPREFIX_BM[1]))
+             || (linbuf[0] == STORE_OBJECTCLOSE_PREFIX_BM[0]
+                 && linbuf[1] == STORE_OBJECTCLOSE_PREFIX_BM[1]))
             && linbuf[2] == '_' && isdigit (linbuf[3]))
         {
           const char *endid = NULL;
@@ -359,8 +359,8 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
       else
         if ((linbuf[0] == '!'
              && linbuf[1] == '|' /*STOREFUNALTSIGNATUREPREFIX_BM */ )
-            || (linbuf[0] == STOREFUNSIGNATUREPREFIX_BM[0]
-                && linbuf[1] == STOREFUNSIGNATUREPREFIX_BM[1]))
+            || (linbuf[0] == STORE_FUNSIGNATURE_PREFIX_BM[0]
+                && linbuf[1] == STORE_FUNSIGNATURE_PREFIX_BM[1]))
         {
           char idbuf32[32] = "";
           if (!curloadedobj)
@@ -396,9 +396,9 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
       /* module requirement lines are µ<mod-id> or !^<mod-id> */
       else
         if (((linbuf[0] == '!'
-              && linbuf[1] == '^' /*STOREMODULEALTPREFIX_BM */ )
-             || (linbuf[0] == STOREMODULEPREFIX_BM[0]
-                 && linbuf[1] == STOREMODULEPREFIX_BM[1] /*µ */ ))
+              && linbuf[1] == '^' /*STORE_MODULE_ALTPREFIX_BM */ )
+             || (linbuf[0] == STORE_MODULE_PREFIX_BM[0]
+                 && linbuf[1] == STORE_MODULE_PREFIX_BM[1] /*µ */ ))
             && linbuf[2] == '_' && isdigit (linbuf[3]))
         {
           const char *endid = NULL;
@@ -873,7 +873,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
       //
       // !( <oid> or « <oid>  starts a new object
       if (tok.tok_kind == plex_DELIM
-          // see STOREOBJECTOPENPREFIX_BM & STOREOBJECTALTOPENPREFIX_BM
+          // see STORE_OBJECTOPEN_PREFIX_BM & STORE_OBJECTOPEN_ALTPREFIX_BM
           && (tok.tok_delim == delim_exclamleft
               || tok.tok_delim == delim_dblanglequotleft))
         {
@@ -987,7 +987,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
       //
       // !)<oid> or »<oid>  terminates an object
       else if (tok.tok_kind == plex_DELIM
-               // see STOREOBJECTCLOSEPREFIX_BM & STOREOBJECTALTCLOSEPREFIX_BM
+               // see STORE_OBJECTCLOSE_PREFIX_BM & STORE_OBJECTCLOSE_ALTPREFIX_BM
                && (tok.tok_delim == delim_exclamright
                    || tok.tok_delim == delim_dblanglequotright))
         {
@@ -1014,10 +1014,10 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
         }
       //
       // !| or Σ starts a function signature followed by an object or a star
-      else if (tok.tok_kind == plex_DELIM && (tok.tok_delim == delim_exclambar  /*STOREFUNSIGNATUREALTPREFIX_BM */
+      else if (tok.tok_kind == plex_DELIM && (tok.tok_delim == delim_exclambar  /*STORE_FUNSIGNATURE_ALTPREFIX_BM */
                                               || tok.tok_delim ==
                                               delim_greekcapsigma
-                                              /*STOREFUNSIGNATUREPREFIX_BM */
+                                              /*STORE_FUNSIGNATURE_PREFIX_BM */
                ))
         {
           if (!_.curldobj)
@@ -1169,7 +1169,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
       //
       // !^ <modulid> or µ <modulid> has been handled in first pass
       else if (tok.tok_kind == plex_DELIM
-               // see STOREMODULEPREFIX_BM & STOREMODULEALTPREFIX_BM
+               // see STORE_MODULE_PREFIX_BM & STORE_MODULE_ALTPREFIX_BM
                && (tok.tok_delim == delim_exclamcaret
                    || tok.tok_delim == delim_mu))
         {

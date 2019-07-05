@@ -79,7 +79,7 @@
 // The first line of every store*.bmon file should start with the
 // following magic UTF-8 characters; the fourth character is the Euro
 // sign.
-#define STORECONTENTMAGICPREFIX_BM "//!€Bismon"
+#define STORE_CONTENTMAGIC_PREFIX_BM "//!€Bismon"
 
 
 
@@ -89,20 +89,20 @@
  ***/
 
 // also delim_dblanglequotleft & delim_exclamleft in load_second_pass_BM
-#define STOREOBJECTOPENPREFIX_BM "«"   /*U+00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK */
-#define STOREOBJECTALTOPENPREFIX_BM "!("
+#define STORE_OBJECTOPEN_PREFIX_BM "«"   /*U+00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK */
+#define STORE_OBJECTOPEN_ALTPREFIX_BM "!("
 
 // also delim_dblanglequotright & delim_exclamright in load_second_pass_BM
-#define STOREOBJECTCLOSEPREFIX_BM "»"  /*U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK */
-#define STOREOBJECTALTCLOSEPREFIX_BM "!)"
+#define STORE_OBJECTCLOSE_PREFIX_BM "»"  /*U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK */
+#define STORE_OBJECTCLOSE_ALTPREFIX_BM "!)"
 
 // also delim_mu & delim_exclamcaret in load_second_pass_BM
-#define STOREMODULEPREFIX_BM "µ"
-#define STOREMODULEALTPREFIX_BM "!^"
+#define STORE_MODULE_PREFIX_BM "µ"
+#define STORE_MODULE_ALTPREFIX_BM "!^"
 
 // also delim_exclambar & delim_greekcapsigma  in load_second_pass_BM
-#define STOREFUNSIGNATUREPREFIX_BM "Σ" /*U+03A3 GREEK CAPITAL LETTER SIGMA */
-#define STOREFUNSIGNATUREALTPREFIX_BM "!|"
+#define STORE_FUNSIGNATURE_PREFIX_BM "Σ" /*U+03A3 GREEK CAPITAL LETTER SIGMA */
+#define STORE_FUNSIGNATURE_ALTPREFIX_BM "!|"
 
 // also delim_element & delim_exclamdollar
 #define STORECLASSPREFIX_BM "∈" /*U+2208 ELEMENT OF */

@@ -499,24 +499,24 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
     nowyear = nowtm.tm_year + 1900;
   }
   /**
-   * Recall that STORECONTENTMAGICPREFIX_BM should be "//!€Bismon",
+   * Recall that STORE_CONTENTMAGIC_PREFIX_BM should be "//!€Bismon",
    * and that magic string is on purpose also starting a Bismon line
    * comment.
    **/
   fprintf (spfil, "%s generated persistent data file %s (Unicode UTF-8 encoded).\n",    //
-           STORECONTENTMAGICPREFIX_BM /*which is "//!€Bismon" ... */ ,
+           STORE_CONTENTMAGIC_PREFIX_BM /*which is "//!€Bismon" ... */ ,
            basename (bytstring_BM (_.pathv)));
   fprintf (spfil,
            "/// This data file, generated in %d, is GPLv3+ licensed.\n",
            nowyear);
   unsigned nbobj = setcardinal_BM (_.setobjs);
   fprintf (spfil, "// for %u objects\n", nbobj);
-  fputs ("\n///‼ Notice that '" STOREOBJECTOPENPREFIX_BM "' and '"
-         STOREOBJECTALTOPENPREFIX_BM "' for object opening,\n" "///‼… '"
-         STOREOBJECTCLOSEPREFIX_BM "' and '" STOREOBJECTALTCLOSEPREFIX_BM
-         "' for object closing,\n" "///‼… '" STOREMODULEPREFIX_BM
-         "' and '" STOREMODULEALTPREFIX_BM "' for modules,\n" "///‼… '"
-         STOREFUNSIGNATUREPREFIX_BM "' and '" STOREFUNSIGNATUREALTPREFIX_BM
+  fputs ("\n///‼ Notice that '" STORE_OBJECTOPEN_PREFIX_BM "' and '"
+         STORE_OBJECTOPEN_ALTPREFIX_BM "' for object opening,\n" "///‼… '"
+         STORE_OBJECTCLOSE_PREFIX_BM "' and '" STORE_OBJECTCLOSE_ALTPREFIX_BM
+         "' for object closing,\n" "///‼… '" STORE_MODULE_PREFIX_BM
+         "' and '" STORE_MODULE_ALTPREFIX_BM "' for modules,\n" "///‼… '"
+         STORE_FUNSIGNATURE_PREFIX_BM "' and '" STORE_FUNSIGNATURE_ALTPREFIX_BM
          "' for function signatures,\n"
          "///‼… are strictly equivalent ….\n"
          "///---------------------\n\n", spfil);
@@ -562,7 +562,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
       _.modobj = setelemnth_BM (_.setmodules, mix);
       ASSERT_BM (_.modobj);
       idtocbuf32_BM (objid_BM (_.modobj), curmodid);
-      fprintf (spfil, "%s%s\n", STOREMODULEPREFIX_BM /*so µ */ , curmodid);
+      fprintf (spfil, "%s%s\n", STORE_MODULE_PREFIX_BM /*so µ */ , curmodid);
     };
   fputc ('\n', spfil);
   objectval_tyBM **objarr = calloc (prime_above_BM (nbobj), sizeof (void *));
@@ -619,10 +619,10 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
   idtocbuf32_BM (objid_BM (curobj), curobjid);
   fputc ('\n', spfil);
   /** 
-   * The STOREOBJECTOPENPREFIX_BM is now "«" but we used to have the
-   * STOREOBJECTALTOPENPREFIX_BM i.e. "!(" before...
+   * The STORE_OBJECTOPEN_PREFIX_BM is now "«" but we used to have the
+   * STORE_OBJECTOPEN_ALTPREFIX_BM i.e. "!(" before...
    **/
-  fprintf (spfil, STOREOBJECTOPENPREFIX_BM "%s", curobjid);
+  fprintf (spfil, STORE_OBJECTOPEN_PREFIX_BM "%s", curobjid);
   {
     const char *obnam = findobjectname_BM (curobj);
     if (obnam)
@@ -635,17 +635,17 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
     {
       _.curattr = curobj->ob_sig;
       if (_.curattr == BMP_function_sig)
-        fprintf (spfil, "%s *\n", STOREFUNSIGNATUREPREFIX_BM);
+        fprintf (spfil, "%s *\n", STORE_FUNSIGNATURE_PREFIX_BM);
       else
         {
           char cursigid[32] = "";
           idtocbuf32_BM (objid_BM (curobj->ob_sig), cursigid);
           const char *signam = findobjectname_BM (curobj->ob_sig);
           if (signam)
-            fprintf (spfil, "%s %s |=%s|\n", STOREFUNSIGNATUREPREFIX_BM,
+            fprintf (spfil, "%s %s |=%s|\n", STORE_FUNSIGNATURE_PREFIX_BM,
                      cursigid, signam);
           else
-            fprintf (spfil, "%s %s\n", STOREFUNSIGNATUREPREFIX_BM, cursigid);
+            fprintf (spfil, "%s %s\n", STORE_FUNSIGNATURE_PREFIX_BM, cursigid);
         }
     }
   if (curobj->ob_mtime > 0)
@@ -737,10 +737,10 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
   else
     fputc ('\n', spfil);
   /**
-   * The STOREOBJECTCLOSEPREFIX_BM is now "»" but we used to have the
-   * STOREOBJECTALTCLOSEPREFIX_BM i.e. "!)" before...
+   * The STORE_OBJECTCLOSE_PREFIX_BM is now "»" but we used to have the
+   * STORE_OBJECTCLOSE_ALTPREFIX_BM i.e. "!)" before...
    **/
-  fprintf (spfil, STOREOBJECTCLOSEPREFIX_BM "%s\n", curobjid);
+  fprintf (spfil, STORE_OBJECTCLOSE_PREFIX_BM "%s\n", curobjid);
   fputc ('\n', spfil);
   fputc ('\n', spfil);
   objunlock_BM (_.curobj);
