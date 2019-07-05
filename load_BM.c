@@ -892,7 +892,8 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
       // !: <attrobj> <attrval> or  ↦  <attrobj> <attrval> adds an attribute and its value
       else if (tok.tok_kind == plex_DELIM
                //STORE_ATTRIBUTE_PREFIX_BM or STORE_ATTRIBUTE_ALTPREFIX_BM
-               && (tok.tok_delim == delim_exclamcolon || delim_rightfrombar))
+               && (tok.tok_delim == delim_exclamcolon
+                   || tok.tok_delim == delim_rightfrombar))
         {
           if (!_.curldobj)
             parsererrorprintf_BM (ldpars, CURFRAME_BM,
