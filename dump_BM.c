@@ -511,14 +511,15 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
            nowyear);
   unsigned nbobj = setcardinal_BM (_.setobjs);
   fprintf (spfil, "// for %u objects\n", nbobj);
-  fputs ("\n///‼ Notice that '" STORE_OBJECTOPEN_PREFIX_BM "' and '"
-         STORE_OBJECTOPEN_ALTPREFIX_BM "' for object opening,\n" "///‼… '"
-         STORE_OBJECTCLOSE_PREFIX_BM "' and '" STORE_OBJECTCLOSE_ALTPREFIX_BM
-         "' for object closing,\n" "///‼… '" STORE_MODULE_PREFIX_BM
-         "' and '" STORE_MODULE_ALTPREFIX_BM "' for modules,\n" "///‼… '"
-         STORE_FUNSIGNATURE_PREFIX_BM "' and '"
-         STORE_FUNSIGNATURE_ALTPREFIX_BM "' for function signatures,\n"
-         "///‼… are strictly equivalent ….\n"
+  fputs ("\n///‼ Notice that '" STORE_OBJECTOPEN_PREFIX_BM "' and '" STORE_OBJECTOPEN_ALTPREFIX_BM "' for object opening,\n"  //.
+         "///‼… '" STORE_OBJECTCLOSE_PREFIX_BM "' and '" STORE_OBJECTCLOSE_ALTPREFIX_BM "' for object closing,\n"   //.
+         "///‼… '" STORE_MODULE_PREFIX_BM "' and '" STORE_MODULE_ALTPREFIX_BM "' for modules,\n"    //.
+         "///‼… '" STORE_FUNSIGNATURE_PREFIX_BM "' and '" STORE_FUNSIGNATURE_ALTPREFIX_BM "' for function signatures,\n"    //.
+         "///‼… '" STORE_CLASS_PREFIX_BM "' and '" STORE_CLASS_ALTPREFIX_BM "' for classes,\n"      //.
+         "///‼… '" STORE_MODTIME_PREFIX_BM "' and '" STORE_MODTIME_ALTPREFIX_BM "' for modtime,\n"  //.
+         "///‼… '" STORE_ATTRIBUTE_PREFIX_BM "' and '" STORE_ATTRIBUTE_ALTPREFIX_BM "' for attributes,\n"   //.
+         "///‼… '" STORE_COMPONENT_PREFIX_BM "' and '" STORE_COMPONENT_ALTPREFIX_BM "' for components,\n"   //.
+         "///‼… are strictly equivalent ….\n"     //.
          "///---------------------\n\n", spfil);
   _.modhsetob = makeobj_BM ();
   objputhashsetpayl_BM (_.modhsetob, 2 + nbobj / 128);
@@ -650,7 +651,7 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
         }
     }
   if (curobj->ob_mtime > 0)
-    fprintf (spfil, "!@ %.3f\n", curobj->ob_mtime);
+    fprintf (spfil, STORE_MODTIME_PREFIX_BM " %.3f\n", curobj->ob_mtime);
   _.classob = objclass_BM (curobj);
   if (_.classob && obdumpobjisdumpable_BM (_.dumpob, _.classob))
     {
@@ -658,9 +659,10 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
       idtocbuf32_BM (objid_BM (_.classob), curclassid);
       const char *clanam = findobjectname_BM (_.classob);
       if (clanam)
-        fprintf (spfil, "!$%s |=%s|\n", curclassid, clanam);
+        fprintf (spfil, STORE_CLASS_PREFIX_BM " %s |=%s|\n", curclassid,
+                 clanam);
       else
-        fprintf (spfil, "!$%s\n", curclassid);
+        fprintf (spfil, STORE_CLASS_PREFIX_BM " %s\n", curclassid);
     }
   _.attrset = objsetattrs_BM (curobj);
   _.bufob = makeobj_BM ();
@@ -687,9 +689,10 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
       idtocbuf32_BM (objid_BM (_.curattr), curattrid);
       const char *attrnam = findobjectname_BM (_.curattr);
       if (attrnam)
-        fprintf (spfil, "!: %s |=%s|\n", curattrid, attrnam);
+        fprintf (spfil, STORE_ATTRIBUTE_PREFIX_BM " %s |=%s|\n", curattrid,
+                 attrnam);
       else
-        fprintf (spfil, "!: %s\n", curattrid);
+        fprintf (spfil, STORE_ATTRIBUTE_PREFIX_BM " %s\n", curattrid);
       fputs (objstrbufferbytespayl_BM (_.bufob), spfil);
       fputc ('\n', spfil);
     }
@@ -709,17 +712,17 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
                 send3_BM (_.curval, BMP_dump_value,
                           CURFRAME_BM, _.bufob, _.dumpob, taggedint_BM (0));
               if (!_.dumpres || objstrbufferlengthpayl_BM (_.bufob) == 0)
-                fputs ("\n!& __ ", spfil);
+                fputs ("\n" STORE_COMPONENT_PREFIX_BM " __ ", spfil);
               else
                 {
-                  fputs ("\n!& ", spfil);
+                  fputs ("\n" STORE_COMPONENT_PREFIX_BM " ", spfil);
                   fputs (objstrbufferbytespayl_BM (_.bufob), spfil);
                   fputc (' ', spfil);
                 }
             }
           else
             {
-              fputs ("\n!& __ ", spfil);
+              fputs ("\n" STORE_COMPONENT_PREFIX_BM " __ ", spfil);
             }
         }
     }
