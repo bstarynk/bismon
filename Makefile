@@ -70,6 +70,7 @@ doc: $(MARKDOWN_SOURCES) bismon bismongtk modules $(wildcard doc/*.tex doc/image
 	./build-bismon-doc.sh
 
 latexdoc: bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
+	rm -vf $(shell realpath $HOME/tmp/bismon-chariot-doc.pdf)
 	./build-bismon-doc.sh LaTeX
 	ls -lt ~/tmp/bismon-chariot-doc*
 
