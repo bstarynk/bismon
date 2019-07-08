@@ -517,8 +517,8 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
          "///‼… '" STORE_FUNSIGNATURE_PREFIX_BM "' and '" STORE_FUNSIGNATURE_ALTPREFIX_BM "' for function signatures,\n"    //.
          "///‼… '" STORE_CLASS_PREFIX_BM "' and '" STORE_CLASS_ALTPREFIX_BM "' for classes, "       //&
          " '" STORE_MODTIME_PREFIX_BM "' and '" STORE_MODTIME_ALTPREFIX_BM "' for modtime,\n"   //.
-         "///‼… '" STORE_ATTRIBUTE_PREFIX_BM "' and '" STORE_ATTRIBUTE_ALTPREFIX_BM "' for attributes, "    //&
-         " '" STORE_COMPONENT_PREFIX_BM "' and '" STORE_COMPONENT_ALTPREFIX_BM "' for components,\n"    //.
+         "///‼… '" STORE_ATTRIBUTE_PREFIX_BM "' and '" STORE_ATTRIBUTE_ALTPREFIX_BM "' for putting attributes, "    //&
+         " '" STORE_COMPONENT_PREFIX_BM "' and '" STORE_COMPONENT_ALTPREFIX_BM "' for appending components,\n"    //.
          "///‼… are strictly equivalent ….\n"     //.
          "///---------------------\n\n", spfil);
   _.modhsetob = makeobj_BM ();
