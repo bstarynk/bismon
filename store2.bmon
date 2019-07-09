@@ -6,7 +6,7 @@
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
 ///‼… 'Σ' and '!|' for function signatures,
 ///‼… '∈' and '!$' for classes,  '±' and '!@' for modtime,
-///‼… '↦' and '!:' for attributes,  '↳' and '!&' for components,
+///‼… '↦' and '!:' for putting attributes,  '↳' and '!&' for appending components,
 ///‼… are strictly equivalent ….
 ///---------------------
 
