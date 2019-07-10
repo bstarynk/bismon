@@ -228,6 +228,17 @@ load_addtodo_BM (const closure_tyBM * clos)
 }                               /* end load_addtodo_BM */
 
 
+#define FIRST_PASS_HAS_bm(LinBuf,StorDelim)		\
+  (!strncmp(LinBuf, StorDelim##_PREFIX_BM,		\
+	    strlen(StorDelim##_PREFIX_BM))		\
+  || !strncmp(LinBuf, StorDelim##_ALTPREFIX_BM,		\
+	      strlen(StorDelim##_ALTPREFIX_BM))		\
+  || ((StorDelim##_TERPREFIX_BM != NULL)        	\
+      ? (!strncmp(LinBuf, StorDelim##_TERPREFIX_BM,	\
+		  strlen(StorDelim##_TERPREFIX_BM)))	\
+      : false))
+
+
 static void
 load_first_pass_BM (struct loader_stBM *ld, int ix)
 {
@@ -249,6 +260,8 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
   objectval_tyBM *curloadedobj = NULL;
   do
     {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnonnull"
       ssize_t linlen = getline (&linbuf, &linsiz, fil);
       if (linlen < 0)
         {
@@ -268,11 +281,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
         }
       lincnt++;
       /* object definition lines are !(<oid> or «<oid> e.g. !(_7D8xcWnEiys_8oqOVSkCxkA */
-      if (((linbuf[0] == '!'
-            && linbuf[1] == '(' /*:STORE_OBJECTOPEN_ALTPREFIX_BM */ )
-           // U+00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK « :
-           || (linbuf[0] == STORE_OBJECTOPEN_PREFIX_BM[0]
-               && linbuf[1] == STORE_OBJECTOPEN_PREFIX_BM[1]))
+      if (FIRST_PASS_HAS_bm(linbuf, STORE_OBJECTOPEN)
           && linbuf[2] == '_' && isdigit (linbuf[3]))
         {
           const char *endid = NULL;
@@ -300,6 +309,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
         }
       //
       /* end of object: !)<oid> or »<oid> */
+#warning improve code here using FIRST_PASS_HAS_bm
       else
         if (((linbuf[0] == '!'
               && linbuf[1] == ')' /*:STORE_OBJECTCLOSE_ALTPREFIX_BM */ )
@@ -413,6 +423,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
             FATAL_BM ("invalid module requirement line %s in file %s:%d",
                       linbuf, curldpath, lincnt);
         }
+#pragma GCC diagnostic pop
     }
   while (!feof (fil));
   if (nbobjdef == 0 && ix > 0)
