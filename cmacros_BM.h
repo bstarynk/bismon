@@ -84,42 +84,73 @@
 
 
 /***
- * Beware that the below prefixes and their ALTernatives should
+ * Beware that some of the below prefixes and their ALTernatives should
  * absolutely have the same byte length (as given by strlen or sizeof).
+ *
+ * Notice that the TERDELIM-s below are never used, except when we
+ * temporarily change the delimiters because LaTeX don't like them
+ * See also https://tex.stackexchange.com/a/342804/42406
  ***/
+
+
 
 // also delim_dblanglequotleft & delim_exclamleft in load_second_pass_BM
 #define STORE_OBJECTOPEN_PREFIX_BM "«" /*U+00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK */
 #define STORE_OBJECTOPEN_ALTPREFIX_BM "!("
+#define STORE_OBJECTOPEN_DELIM_BM delim_dblanglequotleft
+#define STORE_OBJECTOPEN_ALTDELIM_BM delim_exclamleft
+#define STORE_OBJECTOPEN_TERDELIM_BM delim__NONE
 
 // also delim_dblanglequotright & delim_exclamright in load_second_pass_BM
 #define STORE_OBJECTCLOSE_PREFIX_BM "»"        /*U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK */
 #define STORE_OBJECTCLOSE_ALTPREFIX_BM "!)"
+#define STORE_OBJECTCLOSE_DELIM_BM delim_dblanglequotright
+#define STORE_OBJECTCLOSE_ALTDELIM_BM delim_exclamright
+#define STORE_OBJECTCLOSE_TERDELIM_BM delim__NONE
 
 // also delim_mu & delim_exclamcaret in load_second_pass_BM
 #define STORE_MODULE_PREFIX_BM "µ"
 #define STORE_MODULE_ALTPREFIX_BM "!^"
+#define STORE_MODULE_DELIM_BM delim_mu
+#define STORE_MODULE_ATLDELIM_BM delim_exclamcaret
+#define STORE_MODULE_TERDELIM_BM delim__NONE
 
 // also delim_exclambar & delim_greekcapsigma  in load_second_pass_BM
 #define STORE_FUNSIGNATURE_PREFIX_BM "Σ"       /*U+03A3 GREEK CAPITAL LETTER SIGMA */
 #define STORE_FUNSIGNATURE_ALTPREFIX_BM "!|"
+#define STORE_FUNSIGNATURE_DELIM_BM delim_greekcapsigma
+#define STORE_FUNSIGNATURE_ALTDELIM_BM delim_exclambar
+#define STORE_FUNSIGNATURE_TERDELIM_BM delim__NONE
 
 // also delim_element & delim_exclamdollar
 #define STORE_CLASS_PREFIX_BM "∈"     /*U+2208 ELEMENT OF */
 #define STORE_CLASS_ALTPREFIX_BM "!$"
+#define STORE_CLASS_DELIM_BM delim_element
+#define STORE_CLASS_ALTDELIM_BM delim_exclamdollar
+#define STORE_CLASS_TERDELIM_BM delim__NONE
 
 
 // also delim_rightfrombar & delim_exclamcolon
 #define STORE_ATTRIBUTE_PREFIX_BM "↦" /*U+21A6 RIGHTWARDS ARROW FROM BAR */
 #define STORE_ATTRIBUTE_ALTPREFIX_BM "!:"
+#define STORE_ATTRIBUTE_DELIM_BM delim_rightfrombar
+#define STORE_ATTRIBUTE_ALTDELIM_BM delim_exclamcolon
+#define STORE_ATTRIBUTE_TERDELIM_BM delim__NONE
+
 
 // also delim_downtipright & delim_exclamand
 #define STORE_COMPONENT_PREFIX_BM "↳" /*U+21B3 DOWNWARDS ARROW WITH TIP RIGHTWARDS */
 #define STORE_COMPONENT_ALTPREFIX_BM "!&"
+#define STORE_COMPONENT_DELIM_BM delim_downtipright
+#define STORE_COMPONENT_ALTDELIM_BM delim_exclamand
+#define STORE_COMPONENT_TERDELIM_BM delim__NONE
 
 // also delim_plusminus & delim_exclamat
 #define STORE_MODTIME_PREFIX_BM "±"    /*U+00B1 PLUS-MINUS SIGN */
 #define STORE_MODTIME_ALTPREFIX_BM "!@"
+#define STORE_MODTIME_DELIM_BM delim_plusminus
+#define STORE_MODTIME_ALTDELIM_BM delim_exclamat
+#define STORE_MODTIME_TERDELIM_BM delim__NONE
 
 ////////////////////////////////////////////////////////////////
 
