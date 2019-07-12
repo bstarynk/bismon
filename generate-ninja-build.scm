@@ -26,12 +26,12 @@
 ;; for http://ninja-build.org/ (i.e. Debian ninja-build package)
 !#     ;; this is ending a block comment
 ;;;###############################################################
-(use-modules  
+(use-modules
+ ;; see https://www.gnu.org/software/guile/manual/html_node/Modules.html
+  (ice-9 posix)
   (ice-9 readline)
   (ice-9 format)
   (ice-9 pretty-print)
- ; (posix)
-  ; (ice-9 posix)
   )
 
 ;;;;;;;;;;;;;;;; constants
