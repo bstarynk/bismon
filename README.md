@@ -114,7 +114,13 @@ or C++ (and preferably a free software project).
 
 # build instructions #
 
-On Linux/x86-64 (e.g. Debian/Unstable or recent Ubuntu) only (won't work on 32 bits machines!):
+Most of `bismon` is in C99 or C11 (including an increasing amount of
+*generated* C code under `modules/`), but some few hand-written code
+is in C++14 (notably `misc_BM.cc` and the `BM_makeconst.cc`
+metaprogram generating C headers).
+
+
+**On Linux/x86-64** (e.g. Debian/Unstable or recent Ubuntu) ***only*** (Without additional patches or work, *Bismon* won't work on 32 bits machines!) :
 
 ## prerequisites ##
 
@@ -130,19 +136,34 @@ and `g++` lack support for plugins and
 source code, and configure it to provide them.). An old GCC
 (e.g. version 6 or earlier) cannot be used.
 
-* the documentation needs a `/usr/bin/mipsel-linux-gnu-gcc-8` cross-compiler provided by `gcc-8-mipsel-linux-gnu` Debian package. Beware, that package conflicts with `gcc-multilib*` packages on Debian.
 
-Most of `bismon` is in C99 or C11 (including an increasing amount of
-*generated* C code under `modules/`), but some few hand-written code
-is in C++14 (notably `misc_BM.cc` and the `BM_makeconst.cc`
-metaprogram generating C headers).
+* the documentation needs a `/usr/bin/mipsel-linux-gnu-gcc-8`
+  cross-compiler provided by `gcc-8-mipsel-linux-gnu` Debian
+  package. Beware, that package conflicts with `gcc-multilib*`
+  packages on Debian.
+
 
 * [ninja](http://ninja-build.org/) builder, version 1.8 or newer is
   needed (and is started by `make`). Don't use an older one (check with
   `ninja --version`; if that does not work, your `ninja` is too old).
 
-* [GTK](http://gtk.org/) 3.22 or better. This is a temporary
-  dependency (to be deprecated), we hope to have some web interface
+* a recent [Guile](https://www.gnu.org/software/guile/) interpreter is
+  required, version 2 or better (preferably Guile 2.2). I don't know
+  and strongly dislike [Python](http://python.org/) and the *Guile*
+  interpreter is [GNU](https://www.gnu.org/software/software.html),
+  [LGPLv3+](http://www.gnu.org/licenses/lgpl.html), and much more
+  [familiar to
+  me](http://starynkevitch.net/Basile/guile-tutorial-1.html). Also,
+  concepts from
+  [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language))
+  dialects such as [Scheme](https://schemers.org/) (the language
+  implemented by *Guile*) are strongly relevant to [understand
+  *Bismon*](http://starynkevitch.net/Basile/bismon-chariot-doc.pdf),
+  where *Guile* is used to generate the `build.ninja` script used by
+  the [ninja](http://ninja-build.org/) builder.
+
+* [GTK](http://gtk.org/) 3.22 or better. **This is a *temporary*
+  dependency** (to be deprecated), we hope to have some web interface
   (above [libonion](http://www.coralbits.com/libonion) probably) soon.
   
 * [Glib](https://developer.gnome.org/glib/stable/) 2.58 or better
@@ -181,7 +202,7 @@ metaprogram generating C headers).
 On Debian/Unstable or recent Ubuntu, `apt-get install build-essential
 make ninja-build gcc-8 g++-8 gcc-8-plugin-dev libgccjit-8-dev ccache
 gcc-8-mipsel-linux-gnu inkscape hevea texlive-full xindy
-fonts-inconsolata ttf-ubuntu-font-family fonts-ubuntu ttfautohint` for
+fonts-inconsolata ttf-ubuntu-font-family fonts-ubuntu ttfautohint guile-2.2` for
 the building infrastructure; notice that `gcc-8-mipsel-linux-gnu` is
 the MIPSel GCC cross-compiler - it is *conflicting* with
 `gcc-multilib*` packages; `inkscape`, `hevea`, `texlive-full` (a
