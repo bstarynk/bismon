@@ -29,7 +29,8 @@
 (use-modules
  ;; see https://www.gnu.org/software/guile/manual/html_node/Modules.html
  ;;;
- ;;; (ice-9 posix); not needed, https://stackoverflow.com/a/57040696/841108
+ ;;; posix is not a module, https://stackoverflow.com/a/57040696/841108
+ ;;; https://www.gnu.org/software/guile/manual/html_node/POSIX.html
  ;;;
   (ice-9 readline)
   (ice-9 format)
