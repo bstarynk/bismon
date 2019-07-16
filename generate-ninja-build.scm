@@ -54,12 +54,17 @@
 (define bm-g++ "g++")
 
 (format #t "*** file tree **** ~%")
-(pretty-print (file-system-tree "."
-				(lambda (filnam filstat)
-				  (format #t "filnam=~s filstat=~a~%"
-					  filnam filstat)
-				  (eq? "." filnam))))
+(pretty-print
+ (file-system-tree "."
+		   (lambda (filnam filstat)
+		     (format #t "filnam=~s filstat=~a~%"
+			     filnam filstat)
+		     (eq? "." filnam))))
 
+
+(format #t "~%*** scandir **** ~%")
+(pretty-print
+ (scandir "."))
 ;; ================================================================
 ;; ================================================================
 ;; ---------------- end of file generate-ninja-build.scm ----------
