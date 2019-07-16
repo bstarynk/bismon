@@ -32,15 +32,33 @@
  ;;; posix is not a module, https://stackoverflow.com/a/57040696/841108
  ;;; https://www.gnu.org/software/guile/manual/html_node/POSIX.html
  ;;;
-  (ice-9 readline)
-  (ice-9 format)
-  (ice-9 pretty-print)
+ (ice-9 readline)
+ ;;;
+  ;; https://www.gnu.org/software/guile/manual/html_node/Formatted-Output.html ::
+ (ice-9 format)
+ ;;;
+ (ice-9 pretty-print)
+ ;;;
+  ;; https://www.gnu.org/software/guile/manual/html_node/File-Tree-Walk.html
+ (ice-9 ftw)
+ ;;;
   )
+
+
+;;; convention: public Guile names start with bm-
+;;; and private Guile names might end with -BM
 
 ;;;;;;;;;;;;;;;; constants
 (define bm-packages '("glib-2.0" "jansson" "gtk+-3.0"))
 (define bm-gcc "gcc")
+(define bm-g++ "g++")
 
+(format #t "*** file tree **** ~%")
+(pretty-print (file-system-tree "."
+				(lambda (filnam filstat)
+				  (format #t "filnam=~s filstat=~a~%"
+					  filnam filstat)
+				  (eq? "." filnam))))
 
 ;; ================================================================
 ;; ================================================================
