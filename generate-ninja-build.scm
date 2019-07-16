@@ -62,9 +62,38 @@
 		     (eq? "." filnam))))
 
 
-(format #t "~%*** scandir **** ~%")
+(define (files-ending-with-BM suffixstr)
+  (let ( (suffixlen (string-length suffixstr))
+	 )
+    (let ( (is-good-path
+	    (lambda (filpath)
+	      (let ( (filpathlen (string-length filpath))
+		     )
+		(and (> filpathlen suffixlen)
+		     (let* (  (endstr (substring filpath
+						 (- filpathlen suffixlen)
+						 filpathlen))
+			      (good?
+			       (string=? suffixstr endstr))
+			      )
+		       (format #t "is-good-path ~s endstr ~s: good? ~a ... ~%"
+			       filpath endstr good?)
+		       good?
+		       )
+		     )
+		)
+	      )
+	    )
+	   )
+      (scandir "."
+	       is-good-path
+	       ))
+    ))
+
+(format #t "~%*** files-ending-with .c **** ~%")
 (pretty-print
- (scandir "."))
+ (files-ending-with-BM ".c"))
+
 ;; ================================================================
 ;; ================================================================
 ;; ---------------- end of file generate-ninja-build.scm ----------
