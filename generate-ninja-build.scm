@@ -98,9 +98,16 @@
   (filter-files-starting-alpha-BM (files-ending-with-BM "BM.c")))
 (define bm-cxxfiles
   (filter-files-starting-alpha-BM (files-ending-with-BM "BM.cc")))
+(define bm-webtemplates
+  (filter-files-starting-alpha-BM (files-ending-with-BM "BM.thtml")))
 
-(format #t "bm-cfiles::: ~a~%" bm-cfiles)
-(format #t "bm-cxxfiles::: ~a~%" bm-cxxfiles)
+(format #t "## DONT EDIT this build.ninja file ; it was generated ...~%")
+(format #t "## ... at ~a by generate-ninja-build ~%"
+	(strftime "%c" (localtime (current-time))))
+(format #t "#; bm-cfiles::: ~a~%" bm-cfiles)
+(format #t "#; bm-cxxfiles::: ~a~%" bm-cxxfiles)
+(format #t "#; bm-webtemplates::: ~a~%" bm-webtemplates)
+
 ;; ================================================================
 ;; ================================================================
 ;; ---------------- end of file generate-ninja-build.scm ----------
