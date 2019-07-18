@@ -34,34 +34,23 @@
  ;;;
  (ice-9 readline)
  ;;;
-  ;; https://www.gnu.org/software/guile/manual/html_node/Formatted-Output.html ::
+ ;; https://www.gnu.org/software/guile/manual/html_node/Formatted-Output.html ::
  (ice-9 format)
  ;;;
  (ice-9 pretty-print)
  ;;;
-  ;; https://www.gnu.org/software/guile/manual/html_node/File-Tree-Walk.html
+ ;; https://www.gnu.org/software/guile/manual/html_node/File-Tree-Walk.html
  (ice-9 ftw)
  ;;;
-  )
+ )
 
 
 ;;; convention: public Guile names start with bm-
 ;;; and private Guile names might end with -BM
 
-;;;;;;;;;;;;;;;; constants
-(define bm-packages '("glib-2.0" "jansson" "gtk+-3.0"))
-(define bm-gcc "gcc")
-(define bm-g++ "g++")
-
-(format #t "*** file tree **** ~%")
-(pretty-print
- (file-system-tree "."
-		   (lambda (filnam filstat)
-		     (format #t "filnam=~s filstat=~a~%"
-			     filnam filstat)
-		     (eq? "." filnam))))
-
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;; functions
+;; collect in the current directory the list of files with the given suffix
 (define (files-ending-with-BM suffixstr)
   (let ( (suffixlen (string-length suffixstr))
 	 )
@@ -76,8 +65,8 @@
 			      (good?
 			       (string=? suffixstr endstr))
 			      )
-		       (format #t "is-good-path ~s endstr ~s: good? ~a ... ~%"
-			       filpath endstr good?)
+		       ;; (format #t "is-good-path ~s endstr ~s: good? ~a ... ~%"
+		       ;;       filpath endstr good?)
 		       good?
 		       )
 		     )
@@ -88,12 +77,30 @@
       (scandir "."
 	       is-good-path
 	       ))
-    ))
+    ))					;end files-ending-with-BM
 
-(format #t "~%*** files-ending-with .c **** ~%")
-(pretty-print
- (files-ending-with-BM ".c"))
 
+
+;; from some given list of files, remove those not starting with a letter
+(define (filter-files-starting-alpha-BM listfiles)
+  (filter (lambda (filpath)
+	    (and (> (string-length filpath) 1)
+		 (char-alphabetic? (string-ref filpath 0)))
+	    )
+	  listfiles)
+  )					;end filter-files-starting-alpha-BM
+
+;;;;;;;;;;;;;;;; constants
+(define bm-packages '("glib-2.0" "jansson" "gtk+-3.0"))
+(define bm-gcc "gcc")
+(define bm-g++ "g++")
+(define bm-cfiles
+  (filter-files-starting-alpha-BM (files-ending-with-BM "BM.c")))
+(define bm-cxxfiles
+  (filter-files-starting-alpha-BM (files-ending-with-BM "BM.cc")))
+
+(format #t "bm-cfiles::: ~a~%" bm-cfiles)
+(format #t "bm-cxxfiles::: ~a~%" bm-cxxfiles)
 ;; ================================================================
 ;; ================================================================
 ;; ---------------- end of file generate-ninja-build.scm ----------
