@@ -31,8 +31,9 @@
 \usepackage{catchfile}
 \usepackage{lastpage}
 \usepackage{stmaryrd}
-%\usepackage{ucs}
+\usepackage{ucs}
 \usepackage{stix}
+\usepackage{newunicodechar}
 % bigfoot enables \verb in footnotes
 \usepackage{bigfoot}
 \usepackage[a4paper, margin=2cm]{geometry}
@@ -40,7 +41,14 @@
 \newcommand{\bmemail}[1]{{\href{mailto:#1}{\texttt{\textbf{#1}}}}}
 \newcommand{\bmurl}[1]{{\href{#1}{\texttt{\textbf{#1}}}}}
 
-%see https://tex.stackexchange.com/a/51656/42406
+
+% see also http://www.sascha-frank.com/Arrow/latex-arrows.html
+% and https://ctan.math.illinois.edu/macros/latex/contrib/newunicodechar/newunicodechar.pdf
+\newunicodechar{↳}{\rotatebox[origin=c]{180}{$\Lsh$}}
+
+
+
+%see https://tex.stackexchange.com/a/51656/42406 
 \lstdefinelanguage
    [x64]{Assembler}     % add a "x64" dialect of Assembler
    [x86masm]{Assembler} % based on the "x86masm" dialect
