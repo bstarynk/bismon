@@ -305,7 +305,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
         continue;
       /* object definition starting lines are !(<oid> or «<oid> e.g. !(_7D8xcWnEiys_8oqOVSkCxkA */
       if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_OBJECTOPEN)
-          && linbuf[delimlen + 2] == '_' && isdigit (linbuf[delimlen + 3]))
+          && linbuf[delimlen] == '_' && isdigit (linbuf[delimlen + 1]))
         {
           DBGPRINTF_BM
             ("first_pass %s:%d got STORE_OBJECTOPEN linbuf='%s' delimlen=%d curloadedobj=%s",
@@ -338,7 +338,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
       else
         /* object definition ending lines are like !)<oid> or »<oid> so e.g. »_7D8xcWnEiys_8oqOVSkCxkA */
       if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_OBJECTCLOSE)
-            && linbuf[delimlen + 2] == '_' && isdigit (linbuf[delimlen + 3]))
+            && linbuf[delimlen] == '_' && isdigit (linbuf[delimlen + 1]))
         {
           DBGPRINTF_BM
             ("first_pass %s:%d got STORE_OBJECTCLOSE linbuf='%s' delimlen=%d curloadedobj=%s",
@@ -432,7 +432,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
       /* module requirement lines are µ<mod-id> or !^<mod-id> */
       else
         if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_MODULE)
-            && linbuf[delimlen + 2] == '_' && isdigit (linbuf[delimlen + 3]))
+            && linbuf[delimlen] == '_' && isdigit (linbuf[delimlen + 1]))
         {
           DBGPRINTF_BM
             ("first_pass %s:%d got STORE_MODULE linbuf='%s' delimlen=%d curloadedobj=%s",
