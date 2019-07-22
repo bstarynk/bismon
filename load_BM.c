@@ -227,14 +227,22 @@ load_addtodo_BM (const closure_tyBM * clos)
   listappend_BM (firstloader_BM->ld_todolist, (value_tyBM) clos);
 }                               /* end load_addtodo_BM */
 
+
+
 static inline int
-first_pass_got_delim_bm(const char*buf, const char*delimstr) {
-  ASSERT_BM(buf != NULL);
-  if (!delimstr) return 0;
-  int delimlen = strlen(delimstr);
-  if (!strncmp(buf, delimstr, delimlen)) return delimlen;
-  else return 0;
-} /* end of first_pass_got_delim_bm */
+first_pass_got_delim_bm (const char *buf, const char *delimstr)
+{
+  ASSERT_BM (buf != NULL);
+  if (!delimstr)
+    return 0;
+  int delimlen = strlen (delimstr);
+  if (!strncmp (buf, delimstr, delimlen))
+    return delimlen;
+  else
+    return 0;
+}                               /* end of first_pass_got_delim_bm */
+
+
 
 #define FIRST_PASS_HAS_DELIM_bm(LinBuf,DelimLen,StorDelim)      \
   (((DelimLen =                                                 \
@@ -290,9 +298,9 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
                curldpath, STORE_CONTENTMAGIC_PREFIX_BM);
         }
       lincnt++;
-      /* object definition lines are !(<oid> or «<oid> e.g. !(_7D8xcWnEiys_8oqOVSkCxkA */
-      if (FIRST_PASS_HAS_DELIM_bm(linbuf, delimlen, STORE_OBJECTOPEN)
-          && linbuf[delimlen+2] == '_' && isdigit (linbuf[delimlen+3]))
+      /* object definition starting lines are !(<oid> or «<oid> e.g. !(_7D8xcWnEiys_8oqOVSkCxkA */
+      if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_OBJECTOPEN)
+          && linbuf[delimlen + 2] == '_' && isdigit (linbuf[delimlen + 3]))
         {
           const char *endid = NULL;
           rawid_tyBM id = parse_rawid_BM (linbuf + 2, &endid);
@@ -318,15 +326,10 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
                       linbuf, curldpath, lincnt);
         }
       //
-      /* end of object: !)<oid> or »<oid> */
-#warning improve code here using FIRST_PASS_HAS_DELIM_bm
       else
-        if (((linbuf[0] == '!'
-              && linbuf[1] == ')' /*:STORE_OBJECTCLOSE_ALTPREFIX_BM */ )
-             // U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK » :
-             || (linbuf[0] == STORE_OBJECTCLOSE_PREFIX_BM[0]
-                 && linbuf[1] == STORE_OBJECTCLOSE_PREFIX_BM[1]))
-            && linbuf[2] == '_' && isdigit (linbuf[3]))
+        /* object definition ending lines are like !)<oid> or »<oid> so e.g. »_7D8xcWnEiys_8oqOVSkCxkA */
+      if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_OBJECTCLOSE)
+            && linbuf[delimlen + 2] == '_' && isdigit (linbuf[delimlen + 3]))
         {
           const char *endid = NULL;
           rawid_tyBM id = parse_rawid_BM (linbuf + 2, &endid);
@@ -376,11 +379,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
       /* function_sig signature !|<signature> or Σ<signature> where
          the <signature> is * or an objid; but we only handle the *
          case in this first pass */
-      else
-        if ((linbuf[0] == '!'
-             && linbuf[1] == '|' /*STOREFUNALTSIGNATUREPREFIX_BM */ )
-            || (linbuf[0] == STORE_FUNSIGNATURE_PREFIX_BM[0]
-                && linbuf[1] == STORE_FUNSIGNATURE_PREFIX_BM[1]))
+      else if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_FUNSIGNATURE))
         {
           char idbuf32[32] = "";
           if (!curloadedobj)
@@ -406,7 +405,7 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
           else
             {
               int pos = -1;
-              if (sscanf (linbuf + 2, " *%n", &pos) >= 0 && pos > 0)
+              if (sscanf (linbuf + delimlen, " *%n", &pos) >= 0 && pos > 0)
                 FATAL_BM ("bad default function-sig line %s in file %s:%d,"
                           " dlsym %s failed %s",
                           linbuf, curldpath, lincnt, symbuf, dlerror ());
@@ -415,11 +414,8 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
       //
       /* module requirement lines are µ<mod-id> or !^<mod-id> */
       else
-        if (((linbuf[0] == '!'
-              && linbuf[1] == '^' /*STORE_MODULE_ALTPREFIX_BM */ )
-             || (linbuf[0] == STORE_MODULE_PREFIX_BM[0]
-                 && linbuf[1] == STORE_MODULE_PREFIX_BM[1] /*µ */ ))
-            && linbuf[2] == '_' && isdigit (linbuf[3]))
+        if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_MODULE)
+            && linbuf[delimlen + 2] == '_' && isdigit (linbuf[delimlen + 3]))
         {
           const char *endid = NULL;
           rawid_tyBM modid = parse_rawid_BM (linbuf + 2, &endid);
@@ -442,6 +438,10 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
   ld->ld_nbobjects += nbobjdef;
   ld->ld_nbroutines += nbrout;
 }                               /* end load_first_pass_BM */
+
+
+
+
 
 static void
 load_modif_class_BM (struct loader_stBM *ld, int ix,
