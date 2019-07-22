@@ -298,10 +298,19 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
                curldpath, STORE_CONTENTMAGIC_PREFIX_BM);
         }
       lincnt++;
+      // skip comment lines and empty lines
+      if (linbuf[0] == '/' && linbuf[1] == '/')
+        continue;
+      if (!linbuf[0])
+        continue;
       /* object definition starting lines are !(<oid> or «<oid> e.g. !(_7D8xcWnEiys_8oqOVSkCxkA */
       if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_OBJECTOPEN)
           && linbuf[delimlen + 2] == '_' && isdigit (linbuf[delimlen + 3]))
         {
+          DBGPRINTF_BM
+            ("first_pass %s:%d got STORE_OBJECTOPEN linbuf='%s' delimlen=%d curloadedobj=%s",
+             curldpath, lincnt, linbuf, delimlen,
+             objectdbg_BM (curloadedobj));
           const char *endid = NULL;
           rawid_tyBM id = parse_rawid_BM (linbuf + 2, &endid);
           if (hashid_BM (id) && endid >= linbuf + 2 * SERIALDIGITS_BM
@@ -331,6 +340,10 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
       if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_OBJECTCLOSE)
             && linbuf[delimlen + 2] == '_' && isdigit (linbuf[delimlen + 3]))
         {
+          DBGPRINTF_BM
+            ("first_pass %s:%d got STORE_OBJECTCLOSE linbuf='%s' delimlen=%d curloadedobj=%s",
+             curldpath, lincnt, linbuf, delimlen,
+             objectdbg_BM (curloadedobj));
           const char *endid = NULL;
           rawid_tyBM id = parse_rawid_BM (linbuf + 2, &endid);
           if (hashid_BM (id) && endid >= linbuf + 2 * SERIALDIGITS_BM
@@ -381,6 +394,10 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
          case in this first pass */
       else if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_FUNSIGNATURE))
         {
+          DBGPRINTF_BM
+            ("first_pass %s:%d got STORE_FUNSIGNATURE linbuf='%s' delimlen=%d curloadedobj=%s",
+             curldpath, lincnt, linbuf, delimlen,
+             objectdbg_BM (curloadedobj));
           char idbuf32[32] = "";
           if (!curloadedobj)
             FATAL_BM
@@ -417,8 +434,12 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
         if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_MODULE)
             && linbuf[delimlen + 2] == '_' && isdigit (linbuf[delimlen + 3]))
         {
+          DBGPRINTF_BM
+            ("first_pass %s:%d got STORE_MODULE linbuf='%s' delimlen=%d curloadedobj=%s",
+             curldpath, lincnt, linbuf, delimlen,
+             objectdbg_BM (curloadedobj));
           const char *endid = NULL;
-          rawid_tyBM modid = parse_rawid_BM (linbuf + 2, &endid);
+          rawid_tyBM modid = parse_rawid_BM (linbuf + delimlen, &endid);
           if (hashid_BM (modid) && endid >= linbuf + 2 * SERIALDIGITS_BM
               && (*endid == (char) 0 || isspace (*endid)))
             {
