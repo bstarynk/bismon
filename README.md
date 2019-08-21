@@ -120,7 +120,10 @@ is in C++14 (notably `misc_BM.cc` and the `BM_makeconst.cc`
 metaprogram generating C headers).
 
 
-**On Linux/x86-64** (e.g. Debian/Unstable or recent Ubuntu) ***only*** (Without additional patches or work, *Bismon* won't work on 32 bits machines!) :
+**On Linux/x86-64** (e.g. Debian/Unstable or
+[Buster](https://www.debian.org/News/2019/20190706) or recent Ubuntu
+18 or 19) ***only*** (Without additional patches or work, *Bismon*
+won't work on 32 bits machines!) :
 
 ## prerequisites ##
 
