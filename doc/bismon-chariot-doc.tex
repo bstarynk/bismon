@@ -4,7 +4,7 @@
 % from bismon/ source directory.
 \documentclass[11pt,a4paper,svgnames]{article}
 \usepackage[T1]{fontenc}
-\usepackage[utf8x]{inputenc}
+%\usepackage[utf8x]{inputenc}
 \usepackage{alltt}
 % https://tex.stackexchange.com/a/342804/42406
 % IMPORTANT! see also: https://tex.stackexchange.com/a/500963/42406
@@ -13,16 +13,20 @@
 \usepackage{fancyvrb}
 \usepackage{fancyhdr}
 \usepackage{fancybox}
-\usepackage{epsfig}
+% libertine, see https://tex.stackexchange.com/a/9868/42406
+\usepackage{libertine}
+%\usepackage{epsfig}
+\usepackage{graphicx}
 \usepackage{makeidx}
 \usepackage{float}
 \usepackage{xcolor}
-\usepackage{hyperref}
 \usepackage{moreverb}
 \usepackage{multirow}
 \usepackage{boxedminipage}
 \usepackage[square]{natbib}
-\usepackage{charter}
+% https://tex.stackexchange.com/a/16992/42406
+\usepackage{mathabx}
+%\usepackage{charter}
 %\usepackage{inconsolata}
 \usepackage{hevea}
 \usepackage{listings}
@@ -32,12 +36,13 @@
 \usepackage{catchfile}
 \usepackage{lastpage}
 \usepackage{stmaryrd}
-\usepackage{ucs}
-\usepackage{stix}
+%\usepackage{ucs}
+%\usepackage{stix}
 \usepackage{newunicodechar}
 % bigfoot enables \verb in footnotes
 \usepackage{bigfoot}
 \usepackage[a4paper, margin=2cm]{geometry}
+\usepackage{hyperref}
 
 \newcommand{\bmemail}[1]{{\href{mailto:#1}{\texttt{\textbf{#1}}}}}
 \newcommand{\bmurl}[1]{{\href{#1}{\texttt{\textbf{#1}}}}}
@@ -45,7 +50,13 @@
 
 % see also http://www.sascha-frank.com/Arrow/latex-arrows.html
 % and https://ctan.math.illinois.edu/macros/latex/contrib/newunicodechar/newunicodechar.pdf
+%%%% keep in order
+%U+21A6 RIGHTWARDS ARROW FROM BAR
+\newunicodechar{↦}{$\mapsto$}
+%U+21B3 DOWNWARDS ARROW WITH TIP RIGHTWARDS
 \newunicodechar{↳}{\rotatebox[origin=c]{180}{$\Lsh$}}
+%U+2208 ELEMENT OF
+\newunicodechar{∈}{$\in$}
 
 
 

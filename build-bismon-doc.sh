@@ -87,7 +87,7 @@ if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
     printf '\n\n\n#### second pass latexing bismon chariot doc #####\n'
     pdflatex -halt-on-error bismon-chariot-doc < /dev/null
     bibtex bismon-chariot-doc < /dev/null
-    pdflatex -halt-on-error bismon-chariot-doc < /dev/null || (echo failed pdflatex -halt-on-error bismon-chariot-doc got $? >/dev/stderr)
+    pdflatex -halt-on-error bismon-chariot-doc < /dev/null || (echo failed pdflatex -halt-on-error bismon-chariot-doc got $? ; exit $? >/dev/stderr)
     [ -d $HOME/tmp/ ] && cp -v bismon-chariot-doc.pdf $HOME/tmp/bismon-chariot-doc-$bmgittag.pdf && (cd $HOME/tmp; ln -svf bismon-chariot-doc-$bmgittag.pdf bismon-chariot-doc.pdf)
 
     ls -l $PWD/*aux $PWD/*/*aux $PWD/*bbl $PWD/*/*bbl
