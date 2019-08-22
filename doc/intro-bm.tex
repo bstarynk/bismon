@@ -1270,12 +1270,32 @@ following features:
       \textit{Bismon}. The login form template \footnote{on
         \bmurl{https://github.com/bstarynk/bismon/blob/master/login\_ONIONBM.thtml}}
       could and probably should be adapted on each deployment site (by
-      giving there site-specific contacts for the data controller,
-      etc...).
+      giving there site-specific contacts, such as the GDPR data
+      controller, and perhaps add corporate logos and social
+      rules, etc...).
 
       \item \textbf{multi-threaded} - as many ``server'' like
-        programs, \emph{Bismon} should be multi-threaded and take
-        advantage of current multi-core processors.
+        programs, \emph{Bismon} should practically be
+        \href{https://en.wikipedia.org/wiki/Thread_(computing)}{multi-threaded}
+        \index{multi-threading} to take advantage of current
+        \href{https://en.wikipedia.org/wiki/Multi-core\_processor}{multi-core
+          processors} \index{processor!multi-core} with
+        \href{https://en.wikipedia.org/wiki/Shared\_memory}{shared}
+        \href{https://en.wikipedia.org/wiki/Virtual\_memory}{virtual
+          memory}\index{memory!virtual} \index{memory!shared}
+        \index{shared memory} \index{virtual memory}. Therefore
+        \index{synchronization}
+        \href{https://en.wikipedia.org/wiki/Synchronization}{synchronization}
+        issues (using
+        \href{https://computing.llnl.gov/tutorials/pthreads/#ConVarSignal}{condition
+          variables} \index{condition variable} and
+        \href{https://computing.llnl.gov/tutorials/pthreads/#MutexLocking}{mutexes}
+        \index{mutex} and/or
+        \href{https://en.wikipedia.org/wiki/Atomic\_semantics}{atomic}
+        variables) \index{atomic variable} between threads become
+        important to avoid \index{race condition}
+        \href{https://en.wikipedia.org/wiki/Race\_condition}{race
+          conditions}.
 
       \item with a \textbf{syntax-oriented editor} or syntactical
         \emph{editor} \index{editor!syntactical}
