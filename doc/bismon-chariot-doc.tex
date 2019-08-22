@@ -17,7 +17,6 @@
 \usepackage{libertine}
 %\usepackage{epsfig}
 \usepackage{graphicx}
-\usepackage{makeidx}
 \usepackage{float}
 \usepackage{xcolor}
 \usepackage{moreverb}
@@ -41,6 +40,7 @@
 \usepackage{newunicodechar}
 % bigfoot enables \verb in footnotes
 \usepackage{bigfoot}
+\usepackage{makeidx}
 \usepackage{times}
 \usepackage[a4paper, margin=2cm]{geometry}
 \usepackage{hyperref}
@@ -496,9 +496,24 @@ programme under the Grant Agreement No 780075.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \clearpage
+
+%% https://en.wikibooks.org/wiki/LaTeX/Indexing#Adding_index_to_table_of_contents
+\addcontentsline{toc}{section}{Index}
+
+\medskip
+
+%\section*{sec Index}
+
+\printindex
+
+\medskip
+
+\clearpage
 \addcontentsline{toc}{section}{References}
 
 %\section*{sec References}
+
+\medskip
 
 \bibliography{bismon-biblio}
 
@@ -509,17 +524,13 @@ programme under the Grant Agreement No 780075.
   \end{relsize}
 \end{flushright}
 
-\clearpage
-
-%% https://en.wikibooks.org/wiki/LaTeX/Indexing#Adding_index_to_table_of_contents
-\addcontentsline{toc}{section}{Index}
-
-%\section*{sec Index}
-
-\printindex
-
 \medskip
 
+\bigskip
+
+\hrule
+
+\bigskip
 
 \subsubsection*{About this document}
 
