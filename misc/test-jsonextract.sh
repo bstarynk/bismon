@@ -32,7 +32,8 @@
 ## it could be useful to pass --debug-after-load to this
 ## misc/test-jsonextract.sh shell script
 
-
+## TODO near commit a2a88e6e0a50bd1: we need to handle, thru
+## webdict_root, the /test-jsonextract
 
 ################
 bismonflags="$@"

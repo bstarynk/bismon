@@ -1963,7 +1963,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         int reqlen = strlen (reqpath);
         // normal case, should find the web processing closure then apply it
         DBGPRINTF_BM
-          ("do_dynamic_onion normal sessionob %s reqpath '%s' post %s wexnum %d webexob %s",
+          ("do_dynamic_onion normal sessionob %s reqpath '%s' post %s wexnum %d webexob %s before using `webdict_root`",
            objectdbg_BM (_.sessionob), reqpath,
            postrequest ? "true" : "false", wexda->webx_num,
            objectdbg1_BM (_.webexob));
@@ -1971,7 +1971,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
           find_web_handler_BM (_.sessionob, BMP_webdict_root, req, 0, &off,
                                CURFRAME_BM);
         DBGPRINTF_BM
-          ("do_dynamic_onion normal sessionob %s reqpath '%s' fullpath '%s' method %s webhandler %s",
+          ("do_dynamic_onion normal sessionob %s reqpath '%s' fullpath '%s' method %s webhandler %s from `webdict_root`",
            objectdbg_BM (_.sessionob), reqpath,
            onion_request_get_fullpath (req),
            onion_request_methods[onion_request_get_flags (req) & 0xf],
