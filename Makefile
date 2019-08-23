@@ -46,7 +46,9 @@ BM_HEADERS= $(wildcard [a-z]*BM.h bismon.h)
 BM_CSOURCES= $(wildcard [a-z]*BM.c)
 
 
-.PHONY: all programs clean verbose indent count modules measure doc latexdoc heveadoc redump outdump checksum indentsinglemodule indenttempmodule jstimestamp chariotdemo-bismon
+.PHONY: all programs clean verbose indent count modules measure \
+  doc latexdoc latexcleandoc heveadoc redump outdump checksum \
+  indentsinglemodule indenttempmodule jstimestamp chariotdemo-bismon
 
 
 
@@ -96,9 +98,18 @@ doc: $(MARKDOWN_SOURCES) bismon bismongtk modules $(wildcard doc/*.tex doc/image
 	./build-bismon-doc.sh
 
 latexdoc: bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
-	rm -vf $(shell realpath $$HOME/tmp/bismon-chariot-doc.pdf)
+	[ -d $$HOME/tmp/ ] || mkdir -v $$HOME/tmp
+	$(RM) $(shell realpath $$HOME/tmp/bismon-chariot-doc.pdf)
 	./build-bismon-doc.sh LaTeX
 	ls -lt ~/tmp/bismon-chariot-doc*
+
+latexcleandoc: bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
+	[ -d $$HOME/tmp/ ] || mkdir -v $$HOME/tmp
+	$(RM) $(shell realpath $$HOME/tmp/bismon-chariot-doc.pdf)
+	$(RM) doc/bismon-chariot-doc.{aux,bbl,blg,idx,log,log,lot,out,toc,pdf} 
+	./build-bismon-doc.sh LaTeX
+	ls -lt ~/tmp/bismon-chariot-doc*
+
 
 heveadoc:  bismon bismongtk modules $(wildcard doc/*.tex doc/images/* doc/*.bib doc/*.hva)
 	./build-bismon-doc.sh HeVeA
