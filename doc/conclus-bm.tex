@@ -21,6 +21,21 @@ Javascript (nearly complete) and HTML generation (work in progress). The
 syntactical editor (replacing the crude GTK interface) and then the
 GCC plugin generation should be worked on.
 
+In august 2019, the web machinery is mostly working. More generated C
+code is available. The JSON handling is incomplete. Bismon
+continuations \index{contination!reification} \index{reification!of
+  continuations} are almost\footnote{Thanks to generated invocations of
+  the \texttt{LOCALFRAME\_BM}
+  \index{LOCALFRAME\_BM@\texttt{LOCALFRAME\_BM}} \emph{C} macro, which
+  provides 90\% of the development work: full transient reification of
+  partial continuations, that is of \index{call stack} \index{call
+    frame} call stack segments, is just a matter of clustering emitted
+  stack-local \index{stackframe\_stBM@\texttt{stackframe\_stBM}}
+  \texttt{struct stackframe\_stBM}-based linked-lists of Bismon call
+  frames.}  reifiable into transient \index{transient!object for
+  continuations} objects, having as payload a linked-list sequence of
+\index{call frame} call frames.
+
 The final D1.3~\textsuperscript{v2} version (scheduled for M30) of
 this deliverable will explain the Web interfaces (both for the
 ordinary user, i.e. the IoT developer; and for the static analysis
