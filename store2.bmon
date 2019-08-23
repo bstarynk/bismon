@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3276 objects
+// for 3279 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -10026,11 +10026,12 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 «_8oL3Mr0lJtL_5DdSEr80iHP |=sometests_module|
 !~ name (~ sometests_module ~)
-± 1561970151.265
+± 1566567523.487
 ∈ _5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
-!# 1
+!# 2
 
 ↳ _63V5uVLvCcf_1VxMlB8V538 
+↳ _24HgO9VzdQK_5jmxGYUgdi4 
 // emitted persistent module modbm_8oL3Mr0lJtL_5DdSEr80iHP.c
 »_8oL3Mr0lJtL_5DdSEr80iHP
 
@@ -13060,6 +13061,34 @@ _3qw9bnATIhq_8loBraLeXzQ
 _36qBmcXleA0_2UKl7qlF0BP
 
 »_0hEcY9UzFy6_81oAjjDMu3D
+
+
+
+«_0hLP6ssXFIv_2rHw8yK5GMR
+± 1566567877.967
+∈ _4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug start rest-test-jsonextract-httphandler"
+↦ _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "start" 
+  " "  "rest"  "-" _2j84OTHlFdJ_1pMyQfgsmAz 
+  "-"  "jsonextract"  "-"  "httphandler" 
+  " " _6QhNRfe1Cte_0niVlWfAlmO  " " _5JuT4FgNFFh_7McrTYeT3jx 
+  "*/"  "\n"  "DBGPRINTF_BM"  "(\"" 
+  "start"  " "  "rest"  "-" 
+ _2j84OTHlFdJ_1pMyQfgsmAz  "-"  "jsonextract"  "-" 
+  "httphandler"  " "  "€%."  "9s" 
+  " " _6QhNRfe1Cte_0niVlWfAlmO  "=%"  "s" 
+  " " _5JuT4FgNFFh_7McrTYeT3jx  "=%"  "s" 
+  "\","  "\n"  " "  "\"" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\","  " \n" 
+ " " 
+  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6QhNRfe1Cte_0niVlWfAlmO) 
+ ")," 
+  "\n"  " "  "objectdbg_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5JuT4FgNFFh_7McrTYeT3jx)  "));"  "\n")
+
+»_0hLP6ssXFIv_2rHw8yK5GMR
 
 
 
@@ -21135,6 +21164,22 @@ _2P7OoZumXdx_5sUQ9SPbVwn
 
 ↳ _0lnsrM6CMWA_4PCoTTYLR3e 
 »_24sbIpdvwNd_9c4S4cSYLYE
+
+
+
+«_24HgO9VzdQK_5jmxGYUgdi4
+± 1566567523.487
+∈ _2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "rest-test-jsonextract-httphandler (v_restpath o_webex)"
+↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _6QhNRfe1Cte_0niVlWfAlmO _5JuT4FgNFFh_7McrTYeT3jx ]
+↦ _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+↦ _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_6ZnPB3sdFWL_6hMysLssv5h
+
+»_24HgO9VzdQK_5jmxGYUgdi4
 
 
 
@@ -42224,6 +42269,20 @@ _6Z4UU939WbU_8BK9xcKsXNb
 
 ↳ _7svunyd3cUm_7HERpKnW4ko 
 »_6YsDAbcOJUa_2rlu1PWJCdS
+
+
+
+«_6ZnPB3sdFWL_6hMysLssv5h
+± 1566567877.967
+∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of rest-test-jsonextract-httphandler €_24HgO9Vz"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_24HgO9VzdQK_5jmxGYUgdi4
+!# 1
+
+↳ _0hLP6ssXFIv_2rHw8yK5GMR 
+»_6ZnPB3sdFWL_6hMysLssv5h
 
 
 
