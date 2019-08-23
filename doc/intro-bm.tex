@@ -121,24 +121,32 @@ This \textsc{Chariot} deliverable D1.3\textsuperscript{v1} is the
   and safer IoT software development}.
 
 The introduction (this §\ref{sec:intro}) describes the
-\textsc{Chariot} vision on static source code (mostly of C and C++
-code for IoT firmware and application) analysis (see
-§\ref{subsec:chariotvision}), proposing a simple static analysis
-\emph{framework} leveraging on the powerful recent \emph{GCC}
-     [cross-]compiler and explaining the necessity of persistence,
-     then gives the driving principles of our \emph{Bismon} persistent
-     monitor (in §\ref{subsec:principles-bismon}); and explains its
-     multi-threaded and distributed aspects (in
-     §\ref{subsec:multithreadist}). The data and its persistence is
-     detailed (in §\ref{sec:datapersist}, notably
-     §\ref{subsec:dataproc} for the processed data,
-     §\ref{subsec:gcvalobj} for the garbage collection,
-     §\ref{subsec:persistence} for persistence).  The
-     §\ref{sec:staticanalys} needs still to be mostly written and will
-     describe (in the D1.3v2) how static analysis works. The
-     §\ref{sec:using} will contain the (mostly generated) user
-     documentation. The §\ref{sec:miscwork} describes some
-     miscellanous work.
+\textsc{Chariot} vision on static source code\footnote{Our favorite
+  definition of \emph{source code} is inspired by the
+  \href{https://www.fsf.org/}{FSF}: the source code is the preferred
+  form on which software developers should work. In practice, source
+  code is what usually (but not always) should be managed by some
+  version control system like a
+  \href{http://git-scm.com/}{\texttt{git}} code \index{repository}
+  \href{https://en.wikipedia.org/wiki/Comparison_of_source-code-hosting\_facilities}{repository},
+  or in some \index{forge}
+  \href{https://en.wikipedia.org/wiki/Forge\_(software)}{software
+    forge}.}  \index{source code} (mostly of C and C++ code for IoT
+firmware and application) analysis (see §\ref{subsec:chariotvision}),
+proposing a simple static analysis \emph{framework} leveraging on the
+powerful recent \emph{GCC} [cross-]compiler and explaining the
+necessity of persistence, then gives the driving principles of our
+\emph{Bismon} persistent monitor (in §\ref{subsec:principles-bismon});
+and explains its multi-threaded and distributed aspects (in
+§\ref{subsec:multithreadist}). The data and its persistence is
+detailed (in §\ref{sec:datapersist}, notably §\ref{subsec:dataproc}
+for the processed data, §\ref{subsec:gcvalobj} for the garbage
+collection, §\ref{subsec:persistence} for persistence).  The
+§\ref{sec:staticanalys} needs still to be mostly written and will
+describe (in the D1.3v2) how static analysis works. The
+§\ref{sec:using} will contain the (mostly generated) user
+documentation. The §\ref{sec:miscwork} describes some miscellanous
+work.
 
 
 Related previous \textsc{Chariot} deliverables include: D1.1 (on
@@ -231,8 +239,8 @@ C++) is expected to:
   form.
 
 \item have successfully downloaded and built the \emph{Bismon monitor}
-  \index{Bismon} from its source code available on
-  \bmurl{https://github.com/bstarynk/bismon}, on his Linux
+  \index{Bismon} from its source code \index{source code!Bismon} available on
+  \\ \bmurl{https://github.com/bstarynk/bismon}, on his/her Linux
   workstation.
   
 \item have contributed or participated to some free software or open
@@ -285,7 +293,7 @@ C++) is expected to:
         for more.}  to any non-trivial software developed by humans
       (because of \cite{Braun:1956:magical-seven}, of ``leaky
       abstractions''~\footnote{Cf. Spolsky's \emph{Law of leaky
-          abstractions} \index{abstraction} on
+          abstractions} \index{abstraction} on \\
         \bmurl{https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/}
         etc... for more.}  and of the
       \href{https://en.wikipedia.org/wiki/Halting\_problem}{\emph{Halting
@@ -331,8 +339,8 @@ and even more on static source code analysis in general
 (cf. \cite{Gomes2009AnOO, GosevaPopstojanova2015OnTC,
   Binkley:2007:SCA} and many others). %
 
-Several conferences are dedicated to static analysis~\footnote{The
-  25\textsuperscript{th} Static Analysis Symposium will happen in
+Several conferences are dedicated to static analysis\footnote{The
+  25\textsuperscript{th} Static Analysis Symposium happened in
   august 2018, see
   \bmurl{http://staticanalysis.org/sas2018/sas2018.html}; most ACM
   SIGPLAN conferences such as POPL, PLDI, ICFP, OOPSLA, LCTES, SPLASH,
