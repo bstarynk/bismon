@@ -1,7 +1,8 @@
 #!/bin/bash
 # file misc/test-jsonextract.sh
 
-## to test json extraction thru HTTP REST requests
+## to test json extraction thru HTTP REST requests.  See comments
+## after GPLv3+ notice.
 
 # 
 #    BISMON 
@@ -26,12 +27,20 @@
 #    Contact me (Basile Starynkevitch) by email
 #    basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 
+
+##### NOTICES
+## it could be useful to pass --debug-after-load to this
+## misc/test-jsonextract.sh shell script
+
+
+
+################
+bismonflags="$@"
+
 # https://stackoverflow.com/a/9894126/841108
 export TOP_PID=$$
 # so runbismon below can exit the entire script
 
-## it could be useful to pass --debug-after-load
-bismonflags="$@"
 
 if [ ! -f bismon.h ] ; then
    echo Current directory $(pwd) does not contain bismon.h header > /dev/stderr
