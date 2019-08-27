@@ -1214,11 +1214,14 @@ following features:
         machine introspection}} wikipages.} (cf
     \cite{Pitrat:1996:FGCS, Pitrat:1990:Metaconnaissances,
       Pitrat:2009:AST, Pitrat:2009:ArtifBeings,
-      Doucet:2003:introspection, carle-1992-meringIV,
-      Starynkevitch-1990-EUM,
-      fouet-starynkevitch:describing-control:1987}): all the DSL code
-    is explicitly represented as data which can be processed by
-    \textit{Bismon}, and the current state is accessible by the DSL.
+      Doucet:2003:introspection, carle-1992-meringIV}): all the DSL
+    code is explicitly represented as data which can be processed by
+    \textit{Bismon}, and the current state (including even its
+    continuation represented as a reified call stack, cf
+    \cite{fouet-starynkevitch:describing-control:1987,
+      fouet-1987:gosseyn, Starynkevitch-1990-EUM,
+      Reynolds:1993:continuations} and §\ref{subsubsec:bismon-dsl}) is
+    accessible by the DSL.
 
     \item \textbf{translated}\footnote{See also the
       \href{https://en.wikipedia.org/wiki/Source-to-source_compiler}{\emph{source-to-source
