@@ -83,8 +83,12 @@ if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
     pdflatex -halt-on-error bismon-chariot-doc < /dev/null
     bibtex bismon-chariot-doc < /dev/null
     pdflatex -halt-on-error bismon-chariot-doc < /dev/null
-    ## on Debian texindy is inside indy package
-    texindy bismon-chariot-doc < /dev/null || (echo texindy failure > /dev/stderr; exit 1)
+    ## on Debian texindy & xindy is inside indy package
+    pwd && ls -lt bismon-chariot-doc.*
+    if texindy -v -C utf8 -I latex bismon-chariot-doc.idx ; then
+	echo texindy failure in $PWD > /dev/stderr
+	exit 1
+    fi
     printf '\n\n\n#### second pass latexing bismon chariot doc #####\n'
     pdflatex -halt-on-error bismon-chariot-doc < /dev/null
     bibtex bismon-chariot-doc < /dev/null
