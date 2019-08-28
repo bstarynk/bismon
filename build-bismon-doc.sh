@@ -85,9 +85,9 @@ if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
     lualatex -halt-on-error bismon-chariot-doc 
     ## on Debian texindy & xindy is inside indy package
     pwd && ls -lt bismon-chariot-doc.*
+    texindy -v -C utf8 -I latex bismon-chariot-doc.idx >& /tmp/texindy-bismon.log || true
     if texindy -v -C utf8 -I latex bismon-chariot-doc.idx ; then
-	echo texindy failure in $PWD > /dev/stderr
-	exit 1
+	echo error texindy failure in $PWD >& /dev/stderr
     fi
     printf '\n\n\n#### second pass latexing bismon chariot doc #####\n'
     lualatex -halt-on-error bismon-chariot-doc 
