@@ -29,6 +29,9 @@
 
 
 ##### NOTICES
+## This script should be run from Bismon source directory
+## git cloned from github.com/bstarynk/bismon/
+
 ## it could be useful to pass --debug-after-load to this
 ## misc/test-jsonextract.sh shell script
 
