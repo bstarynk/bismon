@@ -80,9 +80,9 @@ for pngfile in images/*.png ; do
 done
 
 if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
-    lualatex -halt-on-error bismon-chariot-doc < /dev/null
+    lualatex -halt-on-error bismon-chariot-doc 
     bibtex bismon-chariot-doc < /dev/null
-    lualatex -halt-on-error bismon-chariot-doc < /dev/null
+    lualatex -halt-on-error bismon-chariot-doc 
     ## on Debian texindy & xindy is inside indy package
     pwd && ls -lt bismon-chariot-doc.*
     if texindy -v -C utf8 -I latex bismon-chariot-doc.idx ; then
@@ -90,9 +90,9 @@ if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
 	exit 1
     fi
     printf '\n\n\n#### second pass latexing bismon chariot doc #####\n'
-    lualatex -halt-on-error bismon-chariot-doc < /dev/null
+    lualatex -halt-on-error bismon-chariot-doc 
     bibtex bismon-chariot-doc < /dev/null
-    lualatex -halt-on-error bismon-chariot-doc < /dev/null || (echo failed lualatex -halt-on-error bismon-chariot-doc got $? ; exit $? >/dev/stderr)
+    lualatex -halt-on-error bismon-chariot-doc || (echo failed lualatex -halt-on-error bismon-chariot-doc got $? ; exit $? >/dev/stderr)
     [ -d $HOME/tmp/ ] && cp -v bismon-chariot-doc.pdf $HOME/tmp/bismon-chariot-doc-$bmgittag.pdf && (cd $HOME/tmp; ln -svf bismon-chariot-doc-$bmgittag.pdf bismon-chariot-doc.pdf)
 
     ls -l $PWD/*aux $PWD/*/*aux $PWD/*bbl $PWD/*/*bbl
