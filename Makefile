@@ -108,6 +108,8 @@ latexcleandoc: bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/image
 	$(RM) $(shell realpath $$HOME/tmp/bismon-chariot-doc.pdf)
 	$(RM) doc/bismon-chariot-doc.{aux,bbl,blg,idx,log,log,lot,out,toc,pdf} 
 	./build-bismon-doc.sh LaTeX
+	echo remaking latexdoc
+	-$(MAKE) latexdoc
 	ls -lt ~/tmp/bismon-chariot-doc*
 
 
