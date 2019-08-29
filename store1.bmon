@@ -936,14 +936,14 @@ _4ysNY0rIzNK_7JgIhrjYpxD
 
 «_5pSDWgvxstl_0Fw7ABJttm8 |=webdict_root|
 !~ name (~ webdict_root ~)
-± 1562138586.362
+± 1567085617.350
 ∈ _23YbAS1S796_1ZeW8OZfp1J |=webhandler_dict_object|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "root dictionnary for web requests"
 ↦ _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { 
- _1YP8aDi1ir7_7Xl7w6iGghW _5603DuLsw8z_4ztK4e4aYMp _8VtkXEUFfhk_5RxrpY6JHI6 
- _9pvzBeIKHXF_8YDPCrQ6OEK }
+ _1YP8aDi1ir7_7Xl7w6iGghW _24HgO9VzdQK_5jmxGYUgdi4 _5603DuLsw8z_4ztK4e4aYMp 
+ _8VtkXEUFfhk_5RxrpY6JHI6 _9pvzBeIKHXF_8YDPCrQ6OEK }
 ↦ _6GcgFxSMvWY_4vzl0zmI5FA |=and_then|
 _7OMM6Jlzdfh_2Keo2cQ8qNy
 ↦ _8Rwc7G3hQ0G_230O74aoi1w |=web_empty_handler|
@@ -953,9 +953,7 @@ _8lV53mLyu1H_3Z1SI8wDBK1 !&
 _9pvzBeIKHXF_8YDPCrQ6OEK	 "bismon-root-jsmodule.js" 
  % _8VtkXEUFfhk_5RxrpY6JHI6 ( _1YP8aDi1ir7_7Xl7w6iGghW) !&
 _9pvzBeIKHXF_8YDPCrQ6OEK	 "restchariot2q19" 
- % _5603DuLsw8z_4ztK4e4aYMp () !&
-_9pvzBeIKHXF_8YDPCrQ6OEK	 "test-jsonextract" 
- % _24HgO9VzdQK_5jmxGYUgdi4 ()
+ % _5603DuLsw8z_4ztK4e4aYMp ()
 ~)
 »_5pSDWgvxstl_0Fw7ABJttm8
 
