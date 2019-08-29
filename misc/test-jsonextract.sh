@@ -94,6 +94,7 @@ function runbismon () {
 	echo run bismon: $title args: "$args"
 	if ./bismon $bismonflags \
 		    --anon-web-session=/tmp/bismoncookie --web \
+		    --init-after-load init_testjsonextract \
 		    "$@" ; then
 	    echo OK bismon: $title
 	else
@@ -107,6 +108,7 @@ function runbismon () {
 	echo wrap "$BISMON_WRAPPER" bismon: $title args: "$args"
 	if $BISMON_WRAPPER ./bismon $bismonflags \
 		    --anon-web-session=/tmp/bismoncookie --web \
+		    --init-after-load init_testjsonextract \
 		    "$@" ; then
 	    echo OK wrap "$BISMON_WRAPPER" bismon: $title
 	else
