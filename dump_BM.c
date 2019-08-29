@@ -604,7 +604,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   while (guirun && gtk_events_pending ())
     guirun = !gtk_main_iteration_do (false);
   // CAUTION: this is brittle and GC-unfriendly
-  if (gunrun)
+  if (guirun)
     WARNPRINTF_BM("dump_emit_space is brittle, but did GTK");
 #endif /*BISMONGTK*/
 }                               /* end  dump_emit_space_BM */
