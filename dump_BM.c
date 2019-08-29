@@ -576,13 +576,21 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
       objarr[obix] = _.curobj;
     };
   sortnamedobjarr_BM (objarr, nbobj);
+  bool guirun = gui_is_running_BM;
   for (unsigned obix = 0; obix < nbobj; obix++)
     {
       _.curobj = objarr[obix];
       ASSERT_BM (_.curobj != NULL);
       dump_emit_object_BM (du, _.curobj, spfil, CURFRAME_BM);
       if (obix % 64 == 0 && obix > 0)
-        garbage_collect_if_wanted_BM (CURFRAME_BM);
+        {
+          garbage_collect_if_wanted_BM (CURFRAME_BM);
+#ifdef BISMONGTK
+	  // CAUTION: this is brittle and GC-unfriendly
+          if (guirun)
+            guirun = !gtk_main_iteration_do (false);
+#endif     /*BISMONGTK*/
+        };
     }
   free (objarr), objarr = NULL;
   fprintf (spfil, "\n// end of file %s\n", basename (bytstring_BM (_.pathv)));
@@ -592,7 +600,17 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
     FATAL_BM ("rename failure %s -> %s for dump of spix#%u",
               bytstring_BM (_.tempathv), bytstring_BM (_.pathv), spix);
   du->dump_wrotefilecount++;
+#ifdef BISMONGTK
+  while (guirun && gtk_events_pending ())
+    guirun = !gtk_main_iteration_do (false);
+  // CAUTION: this is brittle and GC-unfriendly
+  if (gunrun)
+    WARNPRINTF_BM("dump_emit_space is brittle, but did GTK");
+#endif /*BISMONGTK*/
 }                               /* end  dump_emit_space_BM */
+
+
+
 
 void
 dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
