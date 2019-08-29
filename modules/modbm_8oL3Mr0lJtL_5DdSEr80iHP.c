@@ -121,8 +121,9 @@ value_tyBM crout_63V5uVLvCcf_1VxMlB8V538_BM //#1+
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 2 local values:
+    /// 3 local values:
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ; // v_r
+    value_tyBM v_5GhvzWWP1jl_41tgAIAAa2X; // v_resapp
     objectval_tyBM* o_6Z4UU939WbU_8BK9xcKsXNb; // o_comp
     /// 1 local numbers:
     intptr_t n_2W7Ckt2WxEM_4NVYgEWE73B; // ii
@@ -130,7 +131,7 @@ value_tyBM crout_63V5uVLvCcf_1VxMlB8V538_BM //#1+
    memset (&_, 0, sizeof(struct frame_63V5uVLvCcf_1VxMlB8V538_BMst));
    _.stkfram_head.htyp = typayl_StackFrame_BM;
    _.stkfram_head.hgc = 0;
-   _.stkfram_head.rlen = 2;
+   _.stkfram_head.rlen = 3;
    _.stkfram_descr = constob_8oL3Mr0lJtL_5DdSEr80iHP_BM[1] /*|init_testjsonextract*/;
    ASSERT_BM (!stkf
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM

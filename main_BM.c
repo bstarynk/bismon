@@ -279,6 +279,11 @@ run_command_bm (const gchar * optname __attribute__((unused)),  //
   return FALSE;
 }                               /* end run_command_bm */
 
+
+
+
+
+
 static bool
 handle_init_afterload_bm (const gchar * optname __attribute__((unused)),        //
                           const gchar * val,    //
@@ -1643,6 +1648,10 @@ parse_values_after_load_BM (void)
                  nb_parsed_values_after_load_bm);
 }                               /* end parse_values_after_load_BM */
 
+
+
+////////////////
+/// run initializations, if any, after the load
 void
 init_afterload_bm ()
 {
