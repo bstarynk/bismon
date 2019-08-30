@@ -21,7 +21,7 @@ So the \emph{Bismon monitor} handle
   handle some new kind of custom data (such as bignums, images, neural
   networks, etc...) processed by external libraries, it is advised to
   define new \emph{payloads} inside objects
-  (cf. §\ref{subsubsec:objects} below), without adding some new kind
+  (cf. \S\ref{subsubsec:objects} below), without adding some new kind
   of values.} (represented in a 64 bits machine word, holding some
 pointer or some tagged integer) : they can be immutable, or objects
 (and such objects are the only kind of mutable data).
@@ -103,7 +103,7 @@ They include
   \item \textbf{closure}. A \index{closure}{closure} is like a node
     (it has a connective and sons), but its connective is interpreted
     as the object giving the \index{routine}{routine} (see
-    §\ref{subsubsec:objects} below) to be called when that closure is
+    \S\ref{subsubsec:objects} below) to be called when that closure is
     applied, and its sons are considered as closed values.
         
 \end{itemize}
@@ -136,7 +136,7 @@ $2^{31} - 1$ but is generally much smaller (often less than a few
 dozens) and could be 0.
 
 Mutable values outside of objects (and their payload, see
-§\ref{subsubsec:objects} below) cannot exist.
+\S\ref{subsubsec:objects} below) cannot exist.
 
 Values (even references to objects, e.g. inside sequences or nodes)
 are represented as a machine pointer and fit in a 64 bits word. When
@@ -302,7 +302,7 @@ them at a given instant).
           payloads, in particular for web exchanges and web sessions,
           cannot be created programmatically by public functions or by
           Bismon code. Web exchange and web session payloads (cf
-          §\ref{subsec:webinterf}) are only internally created by the
+          \S\ref{subsec:webinterf}) are only internally created by the
           HTTP server code in \emph{bismon}, and cannot and should not
           be persisted.} is a pointer (possibly nil) to some client
         data owned by the object; the payload is usually not a value
@@ -372,7 +372,7 @@ mark\&sweep stop-the-world \index{garbage collector}{garbage
 is running, the agenda has been de-activated, and no tasklets are
 running. Our initial GC is known to not scale well and to be
 unfriendly to serious interactive usage, so it should be replaced (see
-footnote \ref{fn:initial-gc} in §\ref{subsubsec:about-bismon} above).
+footnote \ref{fn:initial-gc} in \S\ref{subsubsec:about-bismon} above).
 
 In contrast to most GC implementations (but inspired by the habits of
 \emph{GCC} itself -in its \emph{Ggc} garbage collector- in that area),
@@ -503,7 +503,7 @@ Notice that in \emph{Bismon} only the \emph{heap} is persisted, but
   and architecture- specific and tricky code. Even generated C as a
   portable assembler don't know about the call stack.}  are \emph{not
   persisted}~\footnote{Some data related to the agenda
-  (cf. §\ref{subsec:multithreadist}) might be persisted. Persisting
+  (cf. \S\ref{subsec:multithreadist}) might be persisted. Persisting
   continuations is however an interesting research topic (to be
   worked out outside of \textsc{Chariot}).} by themselves.
 
@@ -602,10 +602,10 @@ still quite far from that ideal. Existing bootstrapped
 \subsubsection{persisting objects}
 \label{subsubsec:persistobj}
 
-Obviously, the objects of \emph{Bismon} (§~\ref{subsubsec:objects})
+Obviously, the objects of \emph{Bismon} (\S~\ref{subsubsec:objects})
 may have circular references, and circularity can only happen thru
 objects (since other composite values such as nodes or sets are
-immutable, §~\ref{subsubsec:immutvalues}). So the initial loader of
+immutable, \S~\ref{subsubsec:immutvalues}). So the initial loader of
 the persistent state proceeds in two passes. The first pass is
 creating all the persisted objects as empty and loads the modules
 needed by them, and the second pass is filling these objects.

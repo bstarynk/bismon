@@ -10,7 +10,7 @@ configuring and programming it.
 
 Most of that should be generated from data persisted inside \emph{bismon}. Perhaps
 should be exchanged with the ``static analysis'' chapter
-(§\ref{sec:staticanalys}).
+(\S\ref{sec:staticanalys}).
 
 %\bigskip
 
@@ -579,8 +579,8 @@ set \texttt{\{ €\_3dmcFZldt €\_6vMEdC0qxd \}} that is to
 
 The Web interface \index{web interface} of \emph{bismon} is supposed
 to be used without malice (see
-§\ref{subsubsec:leveraging-static-analysis} and
-§\ref{subsubsec:about-bismon}), with a \emph{recent} graphical web
+\S\ref{subsubsec:leveraging-static-analysis} and
+\S\ref{subsubsec:about-bismon}), with a \emph{recent} graphical web
 browser~\footnote{Such as Firefox 60.7 or later, or Google Chrome 75.0
   or later, both exist in 2019Q2.}  using HTTP/1.1. In particular,
 \emph{bismon} does not take any measure against
@@ -666,14 +666,14 @@ named \texttt{BISMONCOOKIE} which contains~\footnote{A practical
   numbers, \texttt{\_6IHYL1fOROi\_58xJPnBLCTe} is the
   randomly-generated objid of the web session object.} a cryptographic
 quality hash (in practice unforgeable) and mentions the objid
-\index{objid} (cf §\ref{subsubsec:objects}) of some web session
+\index{objid} (cf \S\ref{subsubsec:objects}) of some web session
 object. If there is no cookie, or if the \index{cookie} cookie is
 invalid or wrong (e.g. forged), a login \index{login} form is
 returned. So any HTTP request for a dynamic content (that is which is
 not handled as a static resource like above) is rejected (with HTTP
 status \texttt{403 Forbidden}) if the user (a \index{contributor}
 contributor in \emph{bismon} parlance,
-cf. §\ref{subsubsec:bismon-evolving}) is not logged in.
+cf. \S\ref{subsubsec:bismon-evolving}) is not logged in.
 
 Dynamic requests are reified as very temporary \emph{bismon} objects
 of class \texttt{webexchange\_object}. Their \emph{web exchange}
@@ -708,7 +708,7 @@ in about an hour~\footnote{See the
 
 Of course, web request objects or web session objects are
 \index{transient} transient and are not and should not be persisted at
-dump \index{dump} time (cf. §\ref{subsec:persistence}). So after each
+dump \index{dump} time (cf. \S\ref{subsec:persistence}). So after each
 restart of the \emph{bismon} monitor, its web users
 (i.e. contributors) should login \index{login} again.
 
@@ -720,7 +720,7 @@ should be answered in a couple~\footnote{See the
 \index{web handler} closure is applied to the remaining URL path
 string and to the web exchange object created in the
 \texttt{libonion}-specific thread dealing with the HTTP request, so
-outside of the agenda machinery (cf §\ref{subsec:multithreadist}), and
+outside of the agenda machinery (cf \S\ref{subsec:multithreadist}), and
 usually would add some \index{tasklet} tasklet into the \index{agenda}
 agenda. Most of the time, a fraction of a second later, some other
 tasklet would complete the filling the web request object and give
@@ -756,7 +756,7 @@ class \index{webhandler dict object@\texttt{webhandler\_dict\_object}}
 as {\relsize{-1}{\texttt{http://localhost:8086/}}} for example), its
 \texttt{web\_empty\_handler} attribute is~\footnote{Since dictionnary
   objects map \emph{non-empty} strings to non-nil values
-  (cf. §\ref{subsubsec:objects}).} used.  If finally no web handler
+  (cf. \S\ref{subsubsec:objects}).} used.  If finally no web handler
 closure is found, an \texttt{404 Not found} status is returned. The
 \texttt{the\_web\_sessions} predefined object stores the dictionnary
 of transient web session objects and associates a cookie string to its

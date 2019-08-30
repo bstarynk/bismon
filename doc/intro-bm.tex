@@ -49,12 +49,12 @@ We refer to \textsc{Chariot} \emph{Grant Agreement} (GA). See table \ref{tab:map
       & {a single deliverable (with two versions of it, a preliminary
           draft one D1.3\textsuperscript{v1} and a final one
           D1.3\textsuperscript{v2}) describes the
-          work. §\ref{sec:intro} is an overview and introduces the
-          main concepts. §\ref{sec:datapersist} explains
-          persistence. §\ref{sec:staticanalys} relates to static
-          analysis. §\ref{sec:using} will become a user
-          manual. §\ref{sec:miscwork} relates miscellanous work. The
-          conclusion is in §\ref{sec:conclusion}.} \\      
+          work. \S\ref{sec:intro} is an overview and introduces the
+          main concepts. \S\ref{sec:datapersist} explains
+          persistence. \S\ref{sec:staticanalys} relates to static
+          analysis. \S\ref{sec:using} will become a user
+          manual. \S\ref{sec:miscwork} relates miscellanous work. The
+          conclusion is in \S\ref{sec:conclusion}.} \\      
       \hline
       \multicolumn{4}{|c|}{{\large \textbf{tasks}}} \\
       \hline
@@ -65,26 +65,26 @@ We refer to \textsc{Chariot} \emph{Grant Agreement} (GA). See table \ref{tab:map
         \end{minipage}
       }
       & \textbf{ST1.3.1} definition of data formats and protocols
-      & §\ref{sec:datapersist}; §\ref{subsec:compilinkext}
-      & The persistent monitor data and format are described in §\ref{sec:datapersist}.
-      The protocol to interact with \textsc{Chariot}'s blockchain is related to §\ref{subsec:compilinkext} and chapter 6 of D1.2 \\
+      & \S\ref{sec:datapersist}; \S\ref{subsec:compilinkext}
+      & The persistent monitor data and format are described in \S\ref{sec:datapersist}.
+      The protocol to interact with \textsc{Chariot}'s blockchain is related to \S\ref{subsec:compilinkext} and chapter 6 of D1.2 \\
       \cline{2-4}
       & \textbf{ST1.3.2} significant patches to existing free software components
-      & §\ref{subsec:contribfree}
-      & Section §\ref{subsec:contribfree} describe past work, and why future contributions to \emph{GCC} could be needed. \\
+      & \S\ref{subsec:contribfree}
+      & Section \S\ref{subsec:contribfree} describe past work, and why future contributions to \emph{GCC} could be needed. \\
       \cline{2-4}
       & \textbf{ST1.3.3} design and implementation of the persistent monitor
-      & §\ref{subsec:chariotvision};  §\ref{subsec:principles-bismon};  §\ref{subsec:multithreadist};  §\ref{sec:datapersist};
-      &  §\ref{subsec:chariotvision} gives the \textsc{Chariot} vision of (informal) static analysis;
-      §\ref{subsec:principles-bismon} explains the driving principles of our \emph{Bismon} persistent monitor,
-      and (in  §\ref{subsec:multithreadist}) its multi-threaded and distributed aspects;
-      §\ref{sec:datapersist} explains its persistent data.  \\
+      & \S\ref{subsec:chariotvision};  \S\ref{subsec:principles-bismon};  \S\ref{subsec:multithreadist};  \S\ref{sec:datapersist};
+      &  \S\ref{subsec:chariotvision} gives the \textsc{Chariot} vision of (informal) static analysis;
+      \S\ref{subsec:principles-bismon} explains the driving principles of our \emph{Bismon} persistent monitor,
+      and (in  \S\ref{subsec:multithreadist}) its multi-threaded and distributed aspects;
+      \S\ref{sec:datapersist} explains its persistent data.  \\
       \cline{2-4}
       & \textbf{ST1.3.4} design and implementation of the compiler and linker extension
-      & §\ref{sec:staticanalys}; §\ref{subsec:compilinkext}
+      & \S\ref{sec:staticanalys}; \S\ref{subsec:compilinkext}
       & static analysis involves \emph{generated} GCC plugins, as (in this D1.3\textsuperscript{v1} preliminary draft)
-      partly explained in §\ref{sec:staticanalys}; compiler and linker extensions
-      are (in D1.3\textsuperscript{v1}) drafted in §\ref{subsec:compilinkext}  \\
+      partly explained in \S\ref{sec:staticanalys}; compiler and linker extensions
+      are (in D1.3\textsuperscript{v1}) drafted in \S\ref{subsec:compilinkext}  \\
       \hline
 %-      \multirow{4}{*}{%
 %-     \begin{minipage}[t]{0.18\textwidth}
@@ -96,13 +96,13 @@ We refer to \textsc{Chariot} \emph{Grant Agreement} (GA). See table \ref{tab:map
 %-
 %-       \smallskip
 %-      \end{minipage} &
-%-      \emph{ST1.3.1} definition of the data format and protocols & §XXX & tobewrittenA \\
+%-      \emph{ST1.3.1} definition of the data format and protocols & \SXXX & tobewrittenA \\
 %-      \hline
-%-      \emph{ST1.3.2} significant patches to existing free software components & §YYYY & tobewrittenB \\
+%-      \emph{ST1.3.2} significant patches to existing free software components & \SYYYY & tobewrittenB \\
 %-      \hline
-%-      \emph{ST1.3.3} design and implementation of the persistent monitor & §ZZZZ & hasbeenwritten \\
+%-      \emph{ST1.3.3} design and implementation of the persistent monitor & \SZZZZ & hasbeenwritten \\
 %-      \hline
-%-      \emph{ST1.3.4} design and implementation of the compiler and linker extension & §TTTT & tobewrittenB \\
+%-      \emph{ST1.3.4} design and implementation of the compiler and linker extension & \STTTT & tobewrittenB \\
 %-      \hline
        
       
@@ -120,7 +120,7 @@ This \textsc{Chariot} deliverable D1.3\textsuperscript{v1} is the
 \textbf{T1.3} \emph{Specialized Static Analysis tools for more secure
   and safer IoT software development}.
 
-The introduction (this §\ref{sec:intro}) describes the
+The introduction (this \S\ref{sec:intro}) describes the
 \textsc{Chariot} vision on static source code\footnote{Our favorite
   definition of \emph{source code} is inspired by the
   \href{https://www.fsf.org/}{FSF}: the source code is the preferred
@@ -132,20 +132,20 @@ The introduction (this §\ref{sec:intro}) describes the
   or in some \index{forge}
   \href{https://en.wikipedia.org/wiki/Forge\_(software)}{software
     forge}.}  \index{source code} (mostly of C and C++ code for IoT
-firmware and application) analysis (see §\ref{subsec:chariotvision}),
+firmware and application) analysis (see \S\ref{subsec:chariotvision}),
 proposing a simple static analysis \emph{framework} leveraging on the
 powerful recent \emph{GCC} [cross-]compiler and explaining the
 necessity of persistence, then gives the driving principles of our
-\emph{Bismon} persistent monitor (in §\ref{subsec:principles-bismon});
+\emph{Bismon} persistent monitor (in \S\ref{subsec:principles-bismon});
 and explains its multi-threaded and distributed aspects (in
-§\ref{subsec:multithreadist}). The data and its persistence is
-detailed (in §\ref{sec:datapersist}, notably §\ref{subsec:dataproc}
-for the processed data, §\ref{subsec:gcvalobj} for the garbage
-collection, §\ref{subsec:persistence} for persistence).  The
-§\ref{sec:staticanalys} needs still to be mostly written and will
+\S\ref{subsec:multithreadist}). The data and its persistence is
+detailed (in \S\ref{sec:datapersist}, notably \S\ref{subsec:dataproc}
+for the processed data, \S\ref{subsec:gcvalobj} for the garbage
+collection, \S\ref{subsec:persistence} for persistence).  The
+\S\ref{sec:staticanalys} needs still to be mostly written and will
 describe (in the D1.3v2) how static analysis works. The
-§\ref{sec:using} will contain the (mostly generated) user
-documentation. The §\ref{sec:miscwork} describes some miscellanous
+\S\ref{sec:using} will contain the (mostly generated) user
+documentation. The \S\ref{sec:miscwork} describes some miscellanous
 work.
 
 
@@ -263,6 +263,16 @@ C++) is expected to:
     \bmurl{https://clang-analyzer.llvm.org/}}, ..., and be aware of
   \index{compiler} compiler concepts and technologies (read
   \cite{Aho:2006:DragonBook}).
+
+  \item be interested by knowledge base tools and symbolic artificial
+    intelligence approaches (cf \cite{nouira:1996:knowledge,
+      Pitrat:1990:Metaconnaissances, Pitrat:1996:FGCS,
+      Polito:2014:Bootstrapping-pharo, RAJ-2018-NoSQL,
+      Rodriguez:2019:AgileLean, doyle:1985:expert,
+      Starynkevitch-1990-EUM}) to software engineeering problems (see
+    \cite{rich2014readings, beckert2007verification,
+      happel2006applications, rus2002knowledge, Baudin2002CaveatAT,
+      TWO:2001:WAPATV, Starynkevitch2007Multistage}).
 
 \item be familiar with operating systems principles
   (see \cite{Tanenbaum:92:OS,ArpaciDusseau14-Book}) and well
@@ -470,7 +480,7 @@ be~\footnote{This is a gross simplification! In practice, there is a
       optimization (e.g. compiling and \emph{linking} with \texttt{gcc
         -O2 -flto -Wall -Wextra} using GCC) slows down the build time by more than a
       factor of two since the intermediate internal representation (IR) of the
-      compiler (e.g. Gimple \index{Gimple} for \emph{GCC}, see \cite{gcc-internals} §12) is kept in object files and
+      compiler (e.g. Gimple \index{Gimple} for \emph{GCC}, see \cite{gcc-internals} \S12) is kept in object files and
       reload at ``link-time'' which is done by the \emph{compiler}
       working on the whole program's IR, so is rarely used.}  enabled. Of
     course, these simpler approaches give many false positive warnings
@@ -564,7 +574,7 @@ them.
 
 In contrast, \textsc{Chariot} focuses mainly on a \emph{systems of
   systems} (e.g. networks of systems and systems of networks)
-approach, so~\footnote{Taken in october 2018 from \bmurl{https://www.chariotproject.eu/About}, \emph{§Technical Approach}.}
+approach, so~\footnote{Taken in october 2018 from \bmurl{https://www.chariotproject.eu/About}, \emph{\S Technical Approach}.}
 ``aims to address how safety-critical-systems should
 be securely and appropriately managed and integrated with a fog
 network made up of heterogeneous IoT devices and gateways.''. Within
@@ -631,7 +641,7 @@ also the \emph{junior} IoT software developer. Of course the \emph
 {details} of compilation commands would change, the commands shown in
 the figure \ref{fig:chariotcompil} are grossly simplified! The
 compilation and linking processes are communicating -via some
-additional \emph{GCC} plugins (cf. \cite{gcc-internals} §24) doing
+additional \emph{GCC} plugins (cf. \cite{gcc-internals} \S24) doing
 inter-process communication- with our \index{persistent monitor}
 \index{persistent!monitor} \emph{persistent monitor}, tentatively
 called \texttt{bismon} \index{Bismon}. It is preferable (see
@@ -723,7 +733,7 @@ specific.
 The table \ref{tab:factinlinecsrc} shows a simple example of C code
 (file \texttt{factinline12.c}). After preprocessing and parsing, it
 becomes quickly expanded in some \emph{Gimple}\index{gimple}
-representation (cf. §12 of \cite{gcc-internals}), whose elementary
+representation (cf. \S12 of \cite{gcc-internals}), whose elementary
 instructions are arithmetic with two operands, or simple tests with
 jumps, or simple calls (in so called \emph{A-normal form}
 \index{A-normal form}, where nested calls like \verb+a=f(g(x),y);+ get
@@ -754,7 +764,7 @@ After gimplification, many other optimizations happen. \textbf{The
   \emph{GCC} compiler runs more than two hundred optimization passes
   !}\index{optimization}\index{pass!optimization}. The table
 \ref{tab:factinlinessa} shows the ``static single assignment'' form
-(SSA, see \cite{pop:ssa} and \cite{gcc-internals} §13), where variables are duplicated so that each SSA
+(SSA, see \cite{pop:ssa} and \cite{gcc-internals} \S13), where variables are duplicated so that each SSA
 variable gets assigned only \emph{once}. The control flow is reduced
 to \index{basic block} \emph{basic blocks} (with a single entry point
 at start, and perhaps several conditional exit edges). Then special
@@ -1175,7 +1185,7 @@ following features:
       monitor} is \index{garbage collection}{\textbf{garbage
         collected}} (cf. \cite{Jones:2016:GC-handbook}). The initial
     GC of the monitor is a crude, mark and sweep, precise garbage
-    collector, but multi-thread compatible (cf. §\ref{subsec:gcvalobj}
+    collector, but multi-thread compatible (cf. \S\ref{subsec:gcvalobj}
     below); it uses a naive stop-the-world mark\&sweep algorithm. That
     GC should be replaced by a better one, such as
     \href{https://www.ravenbrook.com/project/mps/}{Ravenbrook MPS}
@@ -1226,7 +1236,7 @@ following features:
     continuation represented as a reified call stack, cf
     \cite{fouet-starynkevitch:describing-control:1987,
       fouet-1987:gosseyn, Starynkevitch-1990-EUM,
-      Reynolds:1993:continuations} and §\ref{subsubsec:bismon-dsl}) is
+      Reynolds:1993:continuations} and \S\ref{subsubsec:bismon-dsl}) is
     accessible by the DSL.
 
     \item \textbf{translated}\footnote{See also the
@@ -1249,7 +1259,7 @@ following features:
       GCC plugins \index{plugin} performing static analysis of a single translation
       unit should be generated (this was also done in GCC MELT, see \cite{Starynkevitch-DSL2011}).
 
-    \item with \textbf{collaborative web interface}\footnote{See also the \href{https://en.wikipedia.org/wiki/Web\_application}{\emph{web application}} wikipage, but \texttt{bismon} has highly specific pecularities, detailed more in §\ref{subsec:webinterf} below.}, \index{web interface} used
+    \item with \textbf{collaborative web interface}\footnote{See also the \href{https://en.wikipedia.org/wiki/Web\_application}{\emph{web application}} wikipage, but \texttt{bismon} has highly specific pecularities, detailed more in \S\ref{subsec:webinterf} below.}, \index{web interface} used
       by a \emph{small} team of \emph{trusted and well-behaving}
       developers~\footnote{The initial \texttt{bismon} implementation
         had a hand-coded crude GTK interface, nearly unusable. That
@@ -1332,7 +1342,7 @@ following features:
         interact using a web interface to \emph{modify} and
         \emph{enhance} the persistent store (like old Lisp machines or
         Smalltalk machines did in the 1980s), partially shown in a web
-        browser (see also §\ref{subsec:webinterf} below). That web
+        browser (see also \S\ref{subsec:webinterf} below). That web
         interface is facilitating \emph{refactoring} of DSL code.
 \end{itemize}
 
@@ -1391,7 +1401,7 @@ browsing and changing some internal representations thru the
   that Web interface was incomplete, and I still had to temporarily
   use some obsolete GTK-based interface that even I find so disgusting
   that I won't explain it, and sometimes even to edit manually some
-  \texttt{store2.bmon} data file, cf §~\ref{subsubsec:filestate}.};
+  \texttt{store2.bmon} data file, cf \S~\ref{subsubsec:filestate}.};
 see also \cite{Myers:2000:PPF} for a survey) and interacts with
 \textit{Bismon} to do that. There is no really any \index{abstract
   syntax tree}{abstract syntax \emph{tree}} (or AST) \index{AST} in
@@ -1410,7 +1420,7 @@ or
 to C. It is \emph{essentially} (unlike most Scheme or Python or
 JavaScript implementations) a \emph{multi-threaded} language, since
 the emitted routines can run in parallel in our agenda machinery
-(cf. §\ref{subsec:multithreadist} below). Meta-programming techniques
+(cf. \S\ref{subsec:multithreadist} below). Meta-programming techniques
 (inspired by Lisp macro systems, see \cite{Queinnec:1996:LSP}, and
 largely experimented in \emph{GCC MELT}) will ease the extension of
 that language.
@@ -1421,11 +1431,11 @@ The base \emph{Bismon} DSL is currently implemented~\footnote{See
   might require replacing later these hand-written files by better,
   \emph{bismon} generated, modules.} as a naive transpiler to C code
 (respecting the coding rules of our implementation, in particular of
-our garbage collector, see §\ref{subsec:gcvalobj}).
+our garbage collector, see \S\ref{subsec:gcvalobj}).
 
 Our initial DSL is designed in terms of code representations as
-objects (see §\ref{subsubsec:objects} below) and immutable values (see
-§\ref{subsubsec:immutvalues} below). It is not defined by some EBNF
+objects (see \S\ref{subsubsec:objects} below) and immutable values (see
+\S\ref{subsubsec:immutvalues} below). It is not defined by some EBNF
 textual syntax. For example, an assign statement $\alpha$ \texttt{=} $\beta$
 is represented by an object of class \texttt{basiclo\_assign}
     \index{basiclo assign@\texttt{basiclo\_assign}} with its
@@ -1462,7 +1472,7 @@ Statements of our DSL include:
     for side effects (similar to expression statements in C or Go). As
     a special (and rather common) case, that operand can be a ``code
     chunk'' \index{code chunk} (conceptually similar to GCC MELT's
-    code chunks, see \cite{Starynkevitch-DSL2011} §3.4.1), that is a
+    code chunks, see \cite{Starynkevitch-DSL2011} \S3.4.1), that is a
     node of connective \texttt{chunk} providing a ``template'' for
     expansion as C code.
 
@@ -1490,7 +1500,7 @@ Statements of our DSL include:
     \index{basiclo fail@\texttt{basiclo\_fail}} 
         of class \texttt{basiclo\_fail}. Failures are not exceptions,
         but prematurely terminate the tasklet (of the agenda, see
-        §\ref{subsec:multithreadist} below) running the function
+        \S\ref{subsec:multithreadist} below) running the function
         containing that statement.
 
       \item locking of objects use a \texttt{basiclo\_lockobj} class
@@ -1644,7 +1654,7 @@ this experience:
   collector~\footnote{See also
     \bmurl{https://stackoverflow.com/q/43141659/841108} about GTK and
     Boehm's conservative GC.}, like the one in \emph{Bismon} (cf
-  §\ref{subsec:gcvalobj} below), in particular because GTK may have
+  \S\ref{subsec:gcvalobj} below), in particular because GTK may have
   several nested event loops, so many local garbage collector pointers
   in internal call frames (which are not accessible from routines
   above).
@@ -1713,10 +1723,10 @@ plugins, leveraging on the experience of GCC MELT (see
 \cite{Starynkevitch-DSL2011,Starynkevitch2007Multistage,Starynkevitch-GCCMELTweb}). The
 C++ code generator will have a design similar to (and share some code
 and classes with) our internal initial DSL (cf
-§\ref{subsubsec:bismon-dsl}). It is extremely likely that in many
+\S\ref{subsubsec:bismon-dsl}). It is extremely likely that in many
 cases, such a generated GCC plugin would just insert its appropriate
-passes by using the pass manager (cf \cite{gcc-internals} §9 and
-§24.3), and these passes will ``serialize'' internal representations
+passes by using the pass manager (cf \cite{gcc-internals} \S9 and
+\S24.3), and these passes will ``serialize'' internal representations
 (either in JSON, or using Google protocol buffer, or using a textual
 format close to our dump syntax, see figure \ref{fig:dumpvalsyntax}
 below, etc...)  such as \emph{Gimple}-s, \emph{Basic Block}-s and
@@ -1736,7 +1746,7 @@ consumed call stack, whole program wide.
 
 Several design decisions have been made regarding the style of the
 generated C++ code of GCC plugins: it will use existing scalar data
-and \texttt{GTY}-ed classes (see \cite{gcc-internals} §23), to take
+and \texttt{GTY}-ed classes (see \cite{gcc-internals} \S23), to take
 advantage of the existing GCC garbage collector
 (\emph{Ggc}). Contrarily to GCC MELT, it won't provide a generational
 garbage collector (because most of the processing happens in the
@@ -1803,7 +1813,7 @@ front, or at the end, of a queue of given priority), and it may remove
 existing tasklets from the agenda. Of course tasklets run in parallel
 since there are several worker threads to run the agenda. The agenda
 itself is not persisted as a whole, but tasklets\footnote{Actually
-  tasklets are objects (see §\ref{subsubsec:objects} page
+  tasklets are objects (see \S\ref{subsubsec:objects} page
   \pageref{subsubsec:objects} below), and to run them, the agenda is
   sending them a message with the predefined selector
   \texttt{\emph{run\_tasklet}}.}  themselves may be
