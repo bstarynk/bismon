@@ -35,7 +35,7 @@
 \usepackage{catchfile}
 \usepackage{lastpage}
 \usepackage{stmaryrd}
-%\usepackage{ucs}
+\usepackage{ucs}
 %\usepackage{stix}
 \usepackage{newunicodechar}
 % bigfoot enables \verb in footnotes
@@ -50,6 +50,7 @@
 
 
 % see also http://www.sascha-frank.com/Arrow/latex-arrows.html
+% and http://tug.ctan.org/info/symbols/comprehensive/symbols-a4.pdf
 % and https://ctan.math.illinois.edu/macros/latex/contrib/newunicodechar/newunicodechar.pdf
 %%%% keep in order
 %U+21A6 RIGHTWARDS ARROW FROM BAR
@@ -58,7 +59,14 @@
 \newunicodechar{↳}{\rotatebox[origin=c]{180}{$\Lsh$}}
 %U+2208 ELEMENT OF
 \newunicodechar{∈}{$\in$}
-
+% U+00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
+\newunicodechar{«}{\guillemotleft}
+% U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK
+\newunicodechar{»}{\guillemotright}
+% U+00B1 PLUS-MINUS SIGN
+\newunicodechar{±}{$\pm$}
+% U+00B5 MICRO SIGN
+\newunicodechar{µ}{$\mu$}
 
 
 %see https://tex.stackexchange.com/a/51656/42406 
