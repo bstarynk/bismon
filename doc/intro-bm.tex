@@ -292,8 +292,8 @@ C++) is expected to:
       language} \index{DSL} domain specific ones.
 
     \item is aware that \emph{most software projects
-      fail}~\footnote{See
-      \bmurl{https://www.geneca.com/why-up-to-75-of-software-projects-will-fail/}}
+    fail}~\footnote{See
+    \bmurl{https://www.geneca.com/why-up-to-75-of-software-projects-will-fail/}}
       (for \emph{some} definition of failure; see also
       \cite{Brooks:1995:MM, Khan:2016-GSEPIM,
         Attarzadeh:2008:proj-man}, etc...), and that obviously
@@ -301,31 +301,32 @@ C++) is expected to:
       and any IoT software in general. I believe that such a high
       failure rate is
       \emph{intrinsic}~\footnote{\href{https://en.wiktionary.org/wiki/IMHO}{IMHO},
-        allocation of much more time and efforts, including code
-        reviews, on software development is necessary - but sadly it
-        is not sufficient - to lower that failure rate. Read about the
-        \emph{Joel Test} on
-        \bmurl{https://www.joelonsoftware.com/2000/08/09/the-joel-test-12-steps-to-better-code/}
-        for more.}  to any non-trivial software developed by humans
+      allocation of much more time and efforts, including code
+      reviews, on software development is necessary - but sadly it is
+      not sufficient - to lower that failure rate. Read about the
+      \emph{Joel Test} on
+      \bmurl{https://www.joelonsoftware.com/2000/08/09/the-joel-test-12-steps-to-better-code/}
+      for more.}  to any non-trivial software developed by humans
       (because of \cite{Braun:1956:magical-seven}, of ``leaky
       abstractions''~\footnote{Cf. Spolsky's \emph{Law of leaky
-          abstractions} \index{abstraction} on \\
-        \bmurl{https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/}
-        etc... for more.}  and of the
+      abstractions} \index{abstraction} on
+      \\ \bmurl{https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/}
+      etc... for more.}  and of the
       \href{https://en.wikipedia.org/wiki/Halting\_problem}{\emph{Halting
-          problem}}, etc...), and that formal methods approaches are
+        problem}}, etc...), and that formal methods approaches are
       still vulnerable \index{vulnerability} \index{specificaton} to
       specification~\footnote{A speculative example of a tragic
-        specification bug might include something inside the Boeing
-        737 MAX - see
-        \bmurl{https://en.wikipedia.org/wiki/Boeing\_737\_MAX} - which
-        could have recent crashes related to bugs in specifications,
-        and probably developed with the most serious formal methods
-        approaches, dictated by DO-178-C -see
-        \bmurl{https://en.wikipedia.org/wiki/DO-178C} etc... But in
-        mid-2019 this is only a speculation (details are unknown to
-        me).} bugs. Agile and lean approaches could be effective for
-      improving IoT software development processes (see
+      specification bug might include something inside the Boeing 737
+      MAX - see \bmurl{https://en.wikipedia.org/wiki/Boeing\_737\_MAX}
+      - which could have recent crashes related to bugs in
+      specifications, and probably developed with the most serious
+      formal methods approaches, dictated by DO-178-C -see
+      \bmurl{https://en.wikipedia.org/wiki/DO-178C} etc... But in
+      mid-2019 this is only a speculation (details are unknown to
+      me). See also the controversial but interesting analysis of
+      \cite{graeber:2018:bullshit} explaining the plausibility of such
+      speculations.}  bugs. Agile and lean approaches could be
+      effective for improving IoT software development processes (see
       \cite{Rodriguez:2019:AgileLean}).
       
 
@@ -1286,11 +1287,11 @@ following features:
 
       Since \textit{Bismon} should be usable by a small team of
       developers (perhaps two or a dozen of them)\footnote{So
-        \textit{Bismon}, considered as a Web application, would have
-        at most a dozen of \index{browser}{browsers} -and associated
-        users- accessing it. Hence, scalability to many HTTP
-        connections is not at all a concern (in contrast with most
-        usual web applications).}, it is handling some \index{personal
+      \textit{Bismon}, considered as a Web application, would have at
+      most a dozen of \index{browser}{browsers} -and associated users-
+      accessing it. Hence, scalability to many HTTP connections is not
+      at all a concern (in contrast with most usual web
+      applications).}, it is handling some \index{personal
         data}{personal data} (relevant to \index{GDPR}{GDPR}), such as
       the first and last names (or pseudos) of users and their email
       and maintain a password file (used in the Web
@@ -1300,29 +1301,30 @@ following features:
       scope and should be in charge of the entities and/or persons
       using and/or deploying \textit{Bismon}. The login \index{login
         template} form template \footnote{on
-        \bmurl{https://github.com/bstarynk/bismon/blob/master/login\_ONIONBM.thtml}}
+      \bmurl{https://github.com/bstarynk/bismon/blob/master/login\_ONIONBM.thtml}}
       could and probably should be adapted on each deployment site (by
       giving there site-specific contacts, such as the GDPR data
       controller, and perhaps add corporate logos and social rules,
       etc...). We are sadly aware\footnote{Rabelais wrote in his
-        \href{https://en.wikipedia.org/wiki/Gargantua\_and\_Pantagruel#Pantagruel}{\emph{Pantagruel}}
-        :
-        ``\href{https://www.linguee.com/french-english/translation/sciences+sans+conscience+n\%27est+que+ruine+de+l\%27\%C3\%A2me.html}{Science
-          sans conscience n'est que ruine de l'âme}.''  and that very
-        polysemic (so quite difficult to translate) sentence was
-        written in 1532!} that a mature \textit{Bismon} system might
-      -exactly like even \href{http://git-scm.com}{\texttt{git}}
+      \href{https://en.wikipedia.org/wiki/Gargantua\_and\_Pantagruel#Pantagruel}{\emph{Pantagruel}}
+      :
+      ``\href{https://www.linguee.com/french-english/translation/sciences+sans+conscience+n\%27est+que+ruine+de+l\%27\%C3\%A2me.html}{Science
+        sans conscience n'est que ruine de l'âme}.''  and that very
+      polysemic (so quite difficult to translate) sentence was written
+      in 1532!} that a mature \textit{Bismon} system might -exactly
+      like even \href{http://git-scm.com}{\texttt{git}}
       \index{git@\texttt{git}} could be, and for quite similar
-      reasons- in the future be unethically [ab-]used (as most current
-      other
+      reasons- in the future be unethically \index{ethics} [ab-]used
+      (as most current other
       \href{https://en.wikipedia.org/wiki/Distributed\_computing}{distributed}
       or \href{https://en.wikipedia.org/wiki/Cloud\_computing}{Cloud}
       digital technologies, \cite{thain:2005:distributed-computing,
         dikaiakos:2009:cloud, attiya:2004:distributed,
         peleg:2000:distributed}) in abusive ways (e.g. excessive
-      surveillance \cite{helbing:2019:big-data-democracy,
-        zuboff:2015:big-other} of developers using it), especially
-      when combined with other intrusive automated personel
+      \index{surveillance} surveillance
+      \cite{helbing:2019:big-data-democracy, zuboff:2015:big-other,
+        oneil:2016:weapons} of developers using it), especially when
+      combined with other intrusive automated personel
       \index{personel} monitoring techniques, such as face recognition
       \index{face recognition} (cf \cite{jain:2011:face-recognition}),
       \index{email classification} email classification
