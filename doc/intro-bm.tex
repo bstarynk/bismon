@@ -485,7 +485,7 @@ be~\footnote{This is a gross simplification! In practice, there is a
       working on the whole program's IR, so is rarely used.}  enabled. Of
     course, these simpler approaches give many false positive warnings
     (cf \cite{Nadeem:2012:HFP}), but machine learning techniques (cf
-    \cite{Perl:2015:VFP}) using bug databases could help.
+    \cite{Perl:2015:VFP, flach:2012:machine-learning}) using bug databases could help.
     
 \end{itemize}
 
@@ -1294,20 +1294,48 @@ following features:
         data}{personal data} (relevant to \index{GDPR}{GDPR}), such as
       the first and last names (or pseudos) of users and their email
       and maintain a password file (used in the Web
-      \index{login}{login} form). Compliance to regulations
-      (e.g. European GDPR) is out of scope and should be in charge of
-      the entities and/or persons using and/or deploying
-      \textit{Bismon}. The login form template \footnote{on
+      \index{login}{login} form). Compliance to
+      \index{regulation!compliance to} regulations (e.g. European GDPR
+      \cite{voigt:2017:eu-gdpr, zuboff:2015:big-other}) is out of
+      scope and should be in charge of the entities and/or persons
+      using and/or deploying \textit{Bismon}. The login \index{login
+        template} form template \footnote{on
         \bmurl{https://github.com/bstarynk/bismon/blob/master/login\_ONIONBM.thtml}}
       could and probably should be adapted on each deployment site (by
       giving there site-specific contacts, such as the GDPR data
-      controller, and perhaps add corporate logos and social
-      rules, etc...).
+      controller, and perhaps add corporate logos and social rules,
+      etc...). We are sadly aware\footnote{Rabelais wrote in his
+        \href{https://en.wikipedia.org/wiki/Gargantua\_and\_Pantagruel#Pantagruel}{\emph{Pantagruel}}
+        :
+        ``\href{https://www.linguee.com/french-english/translation/sciences+sans+conscience+n\%27est+que+ruine+de+l\%27\%C3\%A2me.html}{Science
+          sans conscience n'est que ruine de l'âme}.''  and that very
+        polysemic (so quite difficult to translate) sentence was
+        written in 1532!} that a mature \textit{Bismon} system might
+      -exactly like even \href{http://git-scm.com}{\texttt{git}}
+      \index{git@\texttt{git}} could be, and for quite similar
+      reasons- in the future be unethically [ab-]used (as most current
+      other
+      \href{https://en.wikipedia.org/wiki/Distributed\_computing}{distributed}
+      or \href{https://en.wikipedia.org/wiki/Cloud\_computing}{Cloud}
+      digital technologies, \cite{thain:2005:distributed-computing,
+        dikaiakos:2009:cloud, attiya:2004:distributed,
+        peleg:2000:distributed}) in abusive ways (e.g. excessive
+      surveillance \cite{helbing:2019:big-data-democracy,
+        zuboff:2015:big-other} of developers using it), especially
+      when combined with other intrusive automated personel
+      \index{personel} monitoring techniques, such as face recognition
+      \index{face recognition} (cf \cite{jain:2011:face-recognition}),
+      \index{email classification} email classification
+      (e.g. \cite{klimt:2004:enron}) or systems like Chinese
+      \index{social credit system}
+      \href{https://en.wikipedia.org/wiki/Social\_Credit\_System}{Social
+        Credit System}.
 
       \item \textbf{multi-threaded} - as many ``server'' like
         programs, \emph{Bismon} should practically be
         \href{https://en.wikipedia.org/wiki/Thread_(computing)}{multi-threaded}
-        \index{multi-threading} to take advantage of current
+        \index{multi-threading} \index{threading!multi-} to take
+        advantage of current
         \href{https://en.wikipedia.org/wiki/Multi-core\_processor}{multi-core
           processors} \index{processor!multi-core} with
         \href{https://en.wikipedia.org/wiki/Shared\_memory}{shared}

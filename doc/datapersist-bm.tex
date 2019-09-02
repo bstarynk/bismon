@@ -476,11 +476,16 @@ source code makes a large IoT firmware~\footnote{Most of the firmware
 RAM. Hence \emph{Bismon} favors a (nearly) orthogonal persistence. The
 only action required to keep its state is a full dump of its entire
 persistent heap. An important insight is the similarity between the
-algorithm used to dump \index{dump} a persistent \index{persistent
-  state} state, and classical copying garbage collection
-\index{garbage collection} algorithms (such as
-\cite{Cheney:1970:CopyingGc}, or more recent generational copying GCs,
-see \cite{Jones:2016:GC-handbook}).
+depth-first \index{depth-first} \index{exploration!depth-first}
+\index{search!depth-first} exploration \index{algorithm} algorithm
+(see also \cite{Cormen:2009:Intro-algo, Christian:2017:algorithms})
+used to dump \index{dump} a persistent \index{persistent state} state,
+and classical copying or
+\href{https://en.wikipedia.org/wiki/Tracing\_garbage\_collection}{tracing
+  garbage collection} \index{garbage collection}
+\index{tracing!garbage collection} \index{copying!garbage collection}
+algorithms (such as \cite{Cheney:1970:CopyingGc}, or more recent
+generational copying GCs, see \cite{Jones:2016:GC-handbook}).
 
 The persistent state should be considered as precious and as valuable
 as source code of most software, so it should be backed-up and
