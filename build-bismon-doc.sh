@@ -22,8 +22,15 @@ mkdir -p doc/htmldoc/
 mv -vfb doc/bismon-chariot-doc.pdf doc/bismon-chariot-doc.pdf% 
 
 # generate the git tag and date
-bmgittag=$(git log --format=oneline -1 --abbrev=16 --abbrev-commit -q|cut -d' ' -f1)
-git log --format=oneline -1 --abbrev=16 --abbrev-commit -q | awk '{printf "\\newcommand{\\bmgitcommit}[0]{%s}\n", $1}' > doc/generated/git-commit.tex
+bmrawgittag="$(git log --format=oneline -1 --abbrev=16 --abbrev-commit -q|cut -d' ' -f1)"
+if git status -s > /dev/null ; then
+    [ -f doc/generated/git-commit.tex ] && mv -vf doc/generated/git-commit.tex doc/generated/git-commit.tex+clean~
+    bmgittag=$(printf "%s..." "$bmrawgittag")
+else
+    [ -f doc/generated/git-commit.tex ] && mv -vf doc/generated/git-commit.tex doc/generated/git-commit.tex+dirty%
+    bmgittag=$(printf "%s++" "$bmrawgittag")
+fi
+printf "\\\\newcommand{\\\\bmgitcommit}[0]{%s}\n" "$bmgittag" > doc/generated/git-commit.tex
 git log -1 '--format=tformat:\newcommand{\bmgitdate}[0]{%ad}' --date=format:%Y-%b-%d >> doc/generated/git-commit.tex
 # generate the number of commits; should be doable in a more efficient way
 nbc=$(git log | grep '^commit' | wc -l)
