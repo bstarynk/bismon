@@ -1,7 +1,7 @@
 #!/usr/bin/env guile
 ;; file send-bismon-html-email.scm -*- scheme -*-
 ;; GPLv3+ licensed, see http://github.com/bstarynk/bismon/
-;; invocation: send-bismon-html-email.sh <subject> <contributor-oid> [<attached-file>]
+;; invocation: send-bismon-html-email.scm <subject> <contributor-oid> [<attached-file>]
 ;; the stdin being the HTML body of the message
 !#
 
@@ -40,5 +40,51 @@
  ;; https://www.gnu.org/software/guile/manual/html_node/File-Tree-Walk.html
  (ice-9 ftw)
  ;;;
+ ;; https://www.gnu.org/software/guile/manual/html_node/Textual-I_002fO.html
+ (ice-9 textual-ports)
+ ;;;
  )
 
+(define bm-script-arglist (command-line))
+
+(define bm-subject (cadr bm-script-arglist))
+
+(define bm-contributor-oid (caddr bm-script-arglist))
+
+(define bm-attachment (and (pair? (cdddr bm-script-arglist))
+			   (cadddr bm-script-arglist)))
+
+(define bm-body #f)
+
+(define bm-send-email? #t)
+
+(call-with-input-file
+    "/dev/stdin"
+  (lambda (inp)
+    (let ( (bodylist (list))
+	   )
+      (letrec ( (readloop
+		 (lambda ()
+		   (let ( (curlin (get-line (current-input-port)) )
+			  )
+		     (cond ( (eof? curlin)
+			     bodylist)
+			   (else 
+			    (append! bodylist curlin)
+			    (readloop)))
+		     )
+		   )
+		 )
+		)
+	(set! bm-body (readloop))
+	)
+      )
+    )
+  #f 					;dont guess encoding
+  "UTF-8" 				;force input encoding
+  )
+
+;; should load ~/.bismon-mail.scm if it exists
+;; should add debug, etc...
+
+;; end of send-bismon-html-email.scm
