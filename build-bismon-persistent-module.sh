@@ -1,5 +1,6 @@
 #!/bin/bash
 # file build-bismon-persistent-module.sh
+# GPLv3+ licensed, see http://github.com/bstarynk/bismon/
 MODULEID=$1
 logger --id=$$ -s -t build-bismon-persistent-module -p user.debug starting moduleid $MODULEID in $(pwd) at $(date +%c)
 #echo '@*@*@' $0 "$@" '::: in' $(pwd) > /dev/tty
