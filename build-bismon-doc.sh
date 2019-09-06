@@ -23,12 +23,13 @@ mv -vfb doc/bismon-chariot-doc.pdf doc/bismon-chariot-doc.pdf%
 
 # generate the git tag and date
 bmrawgittag="$(git log --format=oneline -1 --abbrev=16 --abbrev-commit -q|cut -d' ' -f1)"
-if git status -s > /dev/null ; then
-    [ -f doc/generated/git-commit.tex ] && mv -vf doc/generated/git-commit.tex doc/generated/git-commit.tex+clean~
-    bmgittag=$(printf "%s..." "$bmrawgittag")
-else
+export BISMON_GIT_TAG=$bmrawgittag
+if git status -s | grep -q '^.M' > /dev/null ; then
     [ -f doc/generated/git-commit.tex ] && mv -vf doc/generated/git-commit.tex doc/generated/git-commit.tex+dirty%
     bmgittag=$(printf "%s++" "$bmrawgittag")
+else
+    [ -f doc/generated/git-commit.tex ] && mv -vf doc/generated/git-commit.tex doc/generated/git-commit.tex+clean~
+    bmgittag=$(printf "%s..." "$bmrawgittag")
 fi
 printf "\\\\newcommand{\\\\bmgitcommit}[0]{%s}\n" "$bmgittag" > doc/generated/git-commit.tex
 git log -1 '--format=tformat:\newcommand{\bmgitdate}[0]{%ad}' --date=format:%Y-%b-%d >> doc/generated/git-commit.tex
@@ -100,7 +101,7 @@ if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
     lualatex -halt-on-error bismon-chariot-doc 
     bibtex bismon-chariot-doc < /dev/null
     lualatex -halt-on-error bismon-chariot-doc || (echo failed lualatex -halt-on-error bismon-chariot-doc got $? ; exit $? >/dev/stderr)
-    [ -d $HOME/tmp/ ] && cp -v bismon-chariot-doc.pdf $HOME/tmp/bismon-chariot-doc-$bmgittag.pdf && (cd $HOME/tmp; ln -svf bismon-chariot-doc-$bmgittag.pdf bismon-chariot-doc.pdf)
+    [ -d $HOME/tmp/ ] && cp -v bismon-chariot-doc.pdf $HOME/tmp/bismon-chariot-doc-$bmrawgittag.pdf && (cd $HOME/tmp; ln -svf bismon-chariot-doc-$bmrawgittag.pdf bismon-chariot-doc.pdf)
 
     ls -l $PWD/*aux $PWD/*/*aux $PWD/*bbl $PWD/*/*bbl
 fi
