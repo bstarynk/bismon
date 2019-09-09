@@ -1,4 +1,4 @@
-#!/usr/bin/env guile
+#!/usr/bin/guile --debug
 ;; file send-bismon-html-email.scm -*- scheme -*-
 ;; GPLv3+ licensed, see http://github.com/bstarynk/bismon/
 ;; invocation: send-bismon-html-email.scm <subject> <contributor-oid> [<attached-file>]
@@ -46,13 +46,17 @@
  )
 
 (define bm-script-arglist (command-line))
+(format #t "#; bm-script-arglist::: ~a~%" bm-script-arglist)
 
 (define bm-subject (cadr bm-script-arglist))
+(format #t "#; bm-subject::: ~a~%" bm-subject)
 
 (define bm-contributor-oid (caddr bm-script-arglist))
+(format #t "#; bm-contributor-oid::: ~a~%" bm-contributor-oid)
 
 (define bm-attachment (and (pair? (cdddr bm-script-arglist))
 			   (cadddr bm-script-arglist)))
+(format #t "#; bm-attachement::: ~a~%" bm-attachment)
 
 (define bm-body #f)
 
@@ -83,8 +87,22 @@
   #f 					;dont guess encoding
   "UTF-8" 				;force input encoding
   )
+(format #t "#; bm-body::: ~a~%" bm-body)
 
 ;; should load ~/.bismon-mail.scm if it exists
+
+
 ;; should add debug, etc...
 
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; how to test this script?
+;;;;;;;; without attachment
+;;; ./send-bismon-html-email.scm test-subject _6UYrSn7piPM_3eYhLtoXlmL < /etc/motd
+;;;;;;;; with an attachment
+;;; ./send-bismon-html-email.scm test-attach  _6UYrSn7piPM_3eYhLtoXlmL webroot/favicon.ico < /etc/motd
+;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; end of send-bismon-html-email.scm
