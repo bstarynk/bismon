@@ -67,32 +67,41 @@
 (call-with-input-file
     "/dev/stdin"
   (lambda (inp)
+    (format #t "#; stdin inp ~a~%" inp)
     (let ( (bodylist (list))
 	   )
-      (letrec ( (readloop
+      (format #t "#; bodylist ~a~%" bodylist)
+      (letrec (
+	       (lincount 0)
+	       (readloop
 		 (lambda ()
 		   (let ( (curlin (get-line (current-input-port)) )
 			  )
-		     (cond ( (eof? curlin)
+		     (set! lincount (+ lincount 1))
+		     (format #t "#; lincount ~a; curlin ~s~%"
+			     lincount curlin)
+		     (cond ( (eof-object? curlin)
 			     bodylist)
 			   (else 
-			    (append! bodylist curlin)
+			    (set! bodylist (append bodylist (list curlin)))
 			    (readloop)))
 		     )
 		   )
 		 )
 		)
+	(format #t "#; readloop ~a~%" readloop)
 	(set! bm-body (readloop))
+	(format #t "#; bm-body becomes ~a~%" bm-body)
 	)
       )
     )
-  #f 					;dont guess encoding
-  "UTF-8" 				;force input encoding
+  #:guess-encoding #f 					;dont guess encoding
+  #:encoding "UTF-8" 				;force input encoding
   )
 (format #t "#; bm-body::: ~a~%" bm-body)
 
 ;; should load ~/.bismon-mail.scm if it exists
-(let ( (configsrcpath (format #f "~s/.bismon-mail.scm" (getenv "HOME")))
+(let ( (configsrcpath (format #f "~a/.bismon-mail.scm" (getenv "HOME")))
        )
   (format #t "; configsrcpath= ~a~%" configsrcpath)
   (cond ( (access? configsrcpath R_OK)
