@@ -64,6 +64,8 @@
 
 (define bm-send-email? #t)
 
+(define bm-email-to #f)
+
 (call-with-input-file
     "/dev/stdin"
   (lambda (inp)
@@ -111,6 +113,10 @@
 	(else
 	 (format #t "; inaccessible configsrcpath= ~a~%" configsrcpath)
 	 )))
+
+
+;;; should parse our contributors_BM file either in $HOME or in
+;;; current directory
 
 ;; should add debug, etc...
 
