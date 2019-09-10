@@ -19,7 +19,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-----
+    ----
     Contact me (Basile Starynkevitch) by email
     basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 ***/
@@ -152,7 +152,7 @@ static bool want_cleanup_bm;    /* to make valgrind more happy; see http://valgr
 int count_init_afterload_bm;    /* used count in arr_init_afterload_bm */
 int size_init_afterload_bm;     /* allocated size of arr_init_afterload_bm */
 char **arr_init_afterload_bm;   // allocated size is size_init_afterload_bm
-                           // and each string is strdup-ed
+// and each string is strdup-ed
 
 #define MAXADDEDPREDEF_BM 16
 struct
@@ -1021,7 +1021,18 @@ main (int argc, char **argv)
   memset ((char *) myhostname_BM, 0, sizeof (myhostname_BM));
   if (gethostname ((char *) myhostname_BM, sizeof (myhostname_BM) - 1))
     FATAL_BM ("gethostname failure %m");
-  check_locale_BM ();
+  {
+    // check the locale(7), unless using print-contributor-of-oid
+    bool skiplocalcheck = false;
+    for (int ix = 0; ix < argc && !skiplocalcheck; ix++)
+      if (!strncmp
+          (argv[ix], "--print-contributor-of-oid",
+           strlen ("--print-contributor-of-oid")))
+        skiplocalcheck = true;
+    if (!skiplocalcheck)
+      check_locale_BM ();
+  }
+  ///
   {
     double nwt = clocktime_BM (CLOCK_REALTIME);
     intptr_t y2kwt = timetoY2Kmillisec_BM (nwt);
