@@ -3,9 +3,9 @@
 ;; GPLv3+ licensed, see http://github.com/bstarynk/bismon/
 ;; invocation: send-bismon-html-email.scm <subject> <contributor-oid> [<attached-file>]
 ;; the stdin being the HTML body of the message
-!#
-
-
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;;    BISMON 
 ;;   Copyright © 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
 ;;   contributed by Basile Starynkevitch.
@@ -28,6 +28,8 @@
 ;;   basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 !#     ;; this is ending a block comment
 ;;;###############################################################
+
+
 (use-modules
  ;; see https://www.gnu.org/software/guile/manual/html_node/Modules.html
  (ice-9 readline)
@@ -90,7 +92,16 @@
 (format #t "#; bm-body::: ~a~%" bm-body)
 
 ;; should load ~/.bismon-mail.scm if it exists
-
+(let ( (configsrcpath (format #f "~s/.bismon-mail.scm" (getenv "HOME")))
+       )
+  (format #t "; configsrcpath= ~a~%" configsrcpath)
+  (cond ( (access? configsrcpath R_OK)
+	  (format #t "; loading accessible configsrcpath= ~a ....~%"
+		  configsrcpath)
+	  (load configsrcpath))
+	(else
+	 (format #t "; inaccessible configsrcpath= ~a~%" configsrcpath)
+	 )))
 
 ;; should add debug, etc...
 
