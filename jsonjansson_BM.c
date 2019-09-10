@@ -165,7 +165,7 @@ objputjanssonpayl_BM (objectval_tyBM * objarg, value_tyBM valarg,
   if (!objputjansjsonpayl_BM
       (_.obj, jansjsonfromvalue_BM (_.valv, _.valv, _.ctxv, 0, CURFRAME_BM)))
     {
-      _.errorv = makenode3_BM (k_json, _.obj, _.valv, _.ctxv);
+      _.errorv = (value_tyBM) makenode3_BM (k_json, _.obj, _.valv, _.ctxv);
       PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
     }
 }                               /* end objputjanssonpayl_BM */

@@ -1,5 +1,5 @@
-// file user_BM.c; management of European GDPR related personal data;
-// see also userlogin.md
+// file user_BM.c; management of European GDPR related personal data
+// for Bismon contributors; see also userlogin.md
 
 /***
     BISMON 
@@ -30,6 +30,8 @@
 #include "bismon.h"
 #include "user_BM.const.h"
 
+
+static const char *quickfindcontriboid_bm;
 
 static void
 write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
@@ -491,7 +493,8 @@ find_contributor_BM (const char *str, struct stackframe_stBM *stkf)
         }
       objunlock_BM (BMP_contributors);
     }
-  // sleep a tiny random amount of time, to make this call unpredictable and a bit costly
+  // sleep a tiny random amount of time, to make this call more
+  // unpredictable to outside and a bit costly
   usleep (100 + g_random_int () % 1024);
   DBGPRINTF_BM ("find_contributor_BM str '%s' gives %s",
                 str, objectdbg_BM (_.contribob));
@@ -500,14 +503,31 @@ find_contributor_BM (const char *str, struct stackframe_stBM *stkf)
 
 
 
+#define LOADEDCONTRIBDATAMAGIC_BM 0x3d10b193    /*1024504211 */
+struct loadedcontribdata_bm
+{
+  unsigned lcda_magic;
+  const char *lcda_curcontrib;
+  const char *lcda_rcpath;
+  rawid_tyBM lcda_curid;
+  int lcda_lincnt;
+  objectval_tyBM **lcda_pcontribob;
+  value_tyBM *lcda_pnamev;
+  objectval_tyBM **lcda_phsetob;
+  const char *lcda_curoidstr;
+  const char *lcda_curemail;
+  const char *lcda_curalias;
+};
 
+static void
+handle_loaded_contributor_bm (struct stackframe_stBM *stkf,
+                              struct loadedcontribdata_bm *ldat);
 
 // this check is done only once, during load...
 void
 check_and_load_contributors_file_BM (struct loader_stBM *ld,
                                      struct stackframe_stBM *stkf)
 {
-  objectval_tyBM *k_contributor_class = BMK_5BAqWtmxAH6_9rCGuxiNbfc;
   struct stat mystat = { };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * contribob;    //current contributor object
@@ -614,48 +634,36 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
         FATAL_BM
           ("in %s line#%d has invalid alias %s for contributor %s : %s",
            rcpath, lincnt, curalias, curcontrib, errmsg);
-      _.contribob = findobjofid_BM (curid);
-      if (!_.contribob)
-        FATAL_BM
-          ("in %s line#%d contributor %s of oid %s is missing in persistent heap,"
-           " so remove or comment out that line, then add that contributor",
-           rcpath, lincnt, curcontrib, curoidstr);
-      if (objhashsetcontainspayl_BM (_.hsetob, _.contribob))
-        FATAL_BM
-          ("in %s line#%d contributor %s of oid %s and object %s is duplicated",
-           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
-      if (!objhashsetcontainspayl_BM (BMP_contributors, _.contribob))
-        FATAL_BM
-          ("in %s line#%d contributor %s of oid %s and object %s in not in `contributors` hashset-object",
-           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
-      objlock_BM (_.contribob);
-      if (!objectisinstance_BM (_.contribob, k_contributor_class))
-        FATAL_BM
-          ("in %s line#%d for contributor %s of oid %s the object %s is not of `contributor_class`",
-           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
-      objclearpayload_BM (_.contribob);
-      {
-        struct user_stBM *us =
-          allocgcty_BM (typayl_user_BM, sizeof (struct user_stBM));
-        us->user_ownobj = _.contribob;
-        us->user_namev = _.namev = (value_tyBM) makestring_BM (curcontrib);
-        objputpayload_BM (_.contribob, us);
-        DBGPRINTF_BM
-          ("check_and_load_contributors_file lincnt#%d contribob %s with name %s, us@%p",
-           lincnt, objectdbg_BM (_.contribob), curcontrib, us);
-        ASSERT_BM (objpayload_BM (_.contribob) == us);
-      }
-      objunlock_BM (_.contribob);
-      objhashsetaddpayl_BM (_.hsetob, _.contribob);
-      if (!isstring_BM (_.namev))
-        FATAL_BM
-          ("in %s line#%d contributor %s of oid %s and object %s has no user-name",
-           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
-      if (strcmp (bytstring_BM (_.namev), curcontrib))
-        FATAL_BM
-          ("in %s line#%d contributor %s of oid %s and object %s which has unexpected name %s",
-           rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob),
-           bytstring_BM (_.namev));
+      if (quickfindcontriboid_bm)
+        {
+          if (!strcmp (quickfindcontriboid_bm, curoidstr))
+            {
+              printf ("%s\t%s\t%s\t%s\n",
+                      /*full name: */ curcontrib,
+                      /*objid: */ curoidstr,
+                      /*email: */ curemail,
+                      /*alias: */ curalias ? curalias : "");
+              fflush (NULL);
+              exit (EXIT_SUCCESS);
+            }
+        }
+      else
+        {
+          struct loadedcontribdata_bm lcdata =
+            {.lcda_magic = LOADEDCONTRIBDATAMAGIC_BM,
+            .lcda_rcpath = rcpath,
+            .lcda_curid = curid,
+            .lcda_lincnt = lincnt,
+            .lcda_pcontribob = &_.contribob,
+            .lcda_pnamev = &_.namev,
+            .lcda_phsetob = &_.hsetob,
+            .lcda_curoidstr = curoidstr,
+            .lcda_curemail = curemail,
+            .lcda_curalias = curalias,
+          };
+          handle_loaded_contributor_bm (CURFRAME_BM, &lcdata);
+        };
+
       _.namev = NULL;
       _.contribob = NULL;
       nbcontrib++;
@@ -694,6 +702,72 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
     ("check and load of %d contributors in file %s completed successfully\n",
      nbcontrib, rcpath);
 }                               /* end check_and_load_contributors_file_BM */
+
+static void
+handle_loaded_contributor_bm (struct stackframe_stBM *stkf,
+                              struct loadedcontribdata_bm *pd)
+{
+  objectval_tyBM *k_contributor_class = BMK_5BAqWtmxAH6_9rCGuxiNbfc;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * contribob;    //current contributor object
+                 objectval_tyBM * hsetob;       //hash set of parsed contributors
+                 value_tyBM namev;      /* string value, name of contributor object */
+                 value_tyBM contribsetv;        /* set of keys in hsetob */
+    );
+  ASSERT_BM (pd && pd->lcda_magic == LOADEDCONTRIBDATAMAGIC_BM);
+  const char *rcpath = pd->lcda_rcpath;
+  rawid_tyBM curid = pd->lcda_curid;
+  const char *curcontrib = pd->lcda_curcontrib;
+  const char *curoidstr = pd->lcda_curoidstr;
+  //const char* curemail = pd->lcda_curemail;
+  //const char* curalias = pd->lcda_curalias;
+  int lincnt = pd->lcda_lincnt;
+  _.contribob = findobjofid_BM (curid);
+  if (!_.contribob)
+    FATAL_BM
+      ("in %s line#%d contributor %s of oid %s is missing in persistent heap,"
+       " so remove or comment out that line, then add that contributor",
+       rcpath, lincnt, curcontrib, curoidstr);
+  if (objhashsetcontainspayl_BM (_.hsetob, _.contribob))
+    FATAL_BM
+      ("in %s line#%d contributor %s of oid %s and object %s is duplicated",
+       rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
+  if (!objhashsetcontainspayl_BM (BMP_contributors, _.contribob))
+    FATAL_BM
+      ("in %s line#%d contributor %s of oid %s and object %s in not in `contributors` hashset-object",
+       rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
+  objlock_BM (_.contribob);
+  if (!objectisinstance_BM (_.contribob, k_contributor_class))
+    FATAL_BM
+      ("in %s line#%d for contributor %s of oid %s the object %s is not of `contributor_class`",
+       rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
+  objclearpayload_BM (_.contribob);
+  {
+    struct user_stBM *us =
+      allocgcty_BM (typayl_user_BM, sizeof (struct user_stBM));
+    us->user_ownobj = _.contribob;
+    us->user_namev = _.namev = (value_tyBM) makestring_BM (curcontrib);
+    objputpayload_BM (_.contribob, us);
+    DBGPRINTF_BM
+      ("check_and_load_contributors_file lincnt#%d contribob %s with name %s, us@%p",
+       lincnt, objectdbg_BM (_.contribob), curcontrib, us);
+    ASSERT_BM (objpayload_BM (_.contribob) == us);
+  }
+  objunlock_BM (_.contribob);
+  objhashsetaddpayl_BM (_.hsetob, _.contribob);
+  if (!isstring_BM (_.namev))
+    FATAL_BM
+      ("in %s line#%d contributor %s of oid %s and object %s has no user-name",
+       rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob));
+  if (strcmp (bytstring_BM (_.namev), curcontrib))
+    FATAL_BM
+      ("in %s line#%d contributor %s of oid %s and object %s which has unexpected name %s",
+       rcpath, lincnt, curcontrib, curoidstr, objectdbg_BM (_.contribob),
+       bytstring_BM (_.namev));
+  *(pd->lcda_pnamev) = _.namev;
+  *(pd->lcda_phsetob) = _.hsetob;
+  *(pd->lcda_pcontribob) = _.contribob;
+}                               /* end of handle_loaded_contributor_bm */
 
 ////////////////
 
@@ -2057,5 +2131,21 @@ write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
   ftruncate (fileno (passfil), ln);
   DBGPRINTF_BM ("write_password_file end ln %ld", ln);
 }                               /* end write_password_file_BM */
+
+
+////////////////////////////////////////////////////////////////
+
+
+// this gets called before loading the persistent store, when the
+// bismon program is invoked with --print-contributor-of-oid <oid>
+void
+tabular_print_contributor_of_objid_BM (const char *oidstr)
+{
+  quickfindcontriboid_bm = oidstr;
+  FATAL_BM ("unimplemented tabular_print_contributor_of_objid_BM"
+            " oidstr='%s'", oidstr);
+#warning unimplemented tabular_print_contributor_of_objid_BM
+}                               /* tabular_print_contributor_of_objid_BM */
+
 
 /// end of file user_BM.c

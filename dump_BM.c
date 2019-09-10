@@ -586,7 +586,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
         {
           garbage_collect_if_wanted_BM (CURFRAME_BM);
 #ifdef BISMONGTK
-	  // CAUTION: this is brittle and GC-unfriendly
+          // CAUTION: this is brittle and GC-unfriendly
           if (guirun)
             guirun = !gtk_main_iteration_do (false);
 #endif     /*BISMONGTK*/
@@ -605,7 +605,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
     guirun = !gtk_main_iteration_do (false);
   // CAUTION: this is brittle and GC-unfriendly
   if (guirun)
-    WARNPRINTF_BM("dump_emit_space is brittle, but did GTK");
+    WARNPRINTF_BM ("dump_emit_space is brittle, but did GTK");
 #endif /*BISMONGTK*/
 }                               /* end  dump_emit_space_BM */
 

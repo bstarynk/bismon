@@ -145,6 +145,7 @@ char *comment_bm;
 char *module_to_emit_bm;
 int count_emit_has_predef_bm;
 int nb_added_predef_bm;
+char *print_contributor_of_oid_bm;
 static bool want_finalgc_bm;    /* to run a final GC */
 static bool want_cleanup_bm;    /* to make valgrind more happy; see http://valgrind.org/ for more */
 
@@ -539,7 +540,7 @@ const GOptionEntry optionstab_bm[] = {
    .description = "add new predefined named PREDEFNAME",
    .arg_description = "PREDEFNAME"},
 
-  //
+  ////
   {.long_name = "contributor",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
@@ -551,7 +552,16 @@ const GOptionEntry optionstab_bm[] = {
    CONTRIBUTORS_FILE_BM ")",
    .arg_description = "CONTRIBUTOR"},
 
-  //
+  ////
+  {.long_name = "print-contributor-of-oid",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &print_contributor_of_oid_bm,
+   .description =
+   "print tab-separated: (full name, objid, email, alias) of contributor of given CONTRIBOID then exit,",
+   .arg_description = "CONTRIBOID"},
+
+  ////
   {.long_name = "remove-contributor",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
@@ -1092,6 +1102,8 @@ main (int argc, char **argv)
                 run_onion_BM ? "true" : "false");
   if (give_version_bm)
     give_prog_version_BM (myprogname_BM);
+  if (print_contributor_of_oid_bm)
+    tabular_print_contributor_of_objid_BM (print_contributor_of_oid_bm);
   if (nbworkjobs_BM == 0)
     {
       int nbcores = get_nprocs ();
