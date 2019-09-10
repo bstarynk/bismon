@@ -2142,9 +2142,18 @@ void
 tabular_print_contributor_of_objid_BM (const char *oidstr)
 {
   quickfindcontriboid_bm = oidstr;
-  FATAL_BM ("unimplemented tabular_print_contributor_of_objid_BM"
-            " oidstr='%s'", oidstr);
-#warning unimplemented tabular_print_contributor_of_objid_BM
+  struct loader_stBM *ld =      //
+    allocgcty_BM (typayl_loader_BM, sizeof (struct loader_stBM));
+  // ((typedhead_tyBM *) ld)->htyp = typayl_loader_BM;
+  // ((typedhead_tyBM *) ld)->hgc = 0;
+  ((typedhead_tyBM *) ld)->rlen = 0;
+  ld->ld_magic = LOADERMAGIC_BM;
+  ld->ld_startelapsedtime = elapsedtime_BM ();
+  ld->ld_startcputime = cputime_BM ();
+  check_and_load_contributors_file_BM (ld, NULL);
+  fprintf (stderr, "## no contributor of oid %s\n", oidstr);
+  fflush (NULL);
+  exit (EXIT_FAILURE);
 }                               /* tabular_print_contributor_of_objid_BM */
 
 

@@ -1114,7 +1114,10 @@ main (int argc, char **argv)
   if (give_version_bm)
     give_prog_version_BM (myprogname_BM);
   if (print_contributor_of_oid_bm)
-    tabular_print_contributor_of_objid_BM (print_contributor_of_oid_bm);
+    {
+      initialize_contributors_path_BM ();
+      tabular_print_contributor_of_objid_BM (print_contributor_of_oid_bm);
+    }
   if (nbworkjobs_BM == 0)
     {
       int nbcores = get_nprocs ();
@@ -1561,8 +1564,9 @@ initialize_contributors_path_BM (void)
   if (access (contributors_filepath_BM, R_OK))
     FATAL_BM ("cannot read real contributors file %s - %m",
               contributors_filepath_BM);
-  INFOPRINTF_BM ("using %s as the contributors file\n",
-                 contributors_filepath_BM);
+  if (!print_contributor_of_oid_bm)     // otherwise silence
+    INFOPRINTF_BM ("using %s as the contributors file",
+                   contributors_filepath_BM);
 }                               /* end initialize_contributors_path_BM */
 
 
