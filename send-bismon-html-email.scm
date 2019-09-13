@@ -115,8 +115,16 @@
 	 )))
 
 
-;;; should parse our contributors_BM file either in $HOME or in
-;;; current directory
+;; use "./bismon --print-contributor-of-oid=<oid>" command since it
+;; would output with separating tabs, the (name, oid, email, alias)
+;; tuple...
+(let ( (cmdstr (format #f "./bismon --print-contributor-of-oid=~a"
+		       bm-contributor-oid))
+       )
+  (format #t ";; cmdstr= ~s~%" cmdstr)
+  )
+  
+	       
 
 ;; should add debug, etc...
 
