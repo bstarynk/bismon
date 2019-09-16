@@ -76,6 +76,22 @@
 (define bm-contributor-alias #f)
 
 
+(define (bm-simple-email-sender email)
+  (format #t ";; bm-simple-email-sender email ~s subject ~s;  oid ~a;  attach ~a ~%;;body:~a~%"
+	  email bm-subject bm-contributor-oid bm-attachment bm-body)
+  )
+
+(define (bm-fake-email-sender email)
+  (format #t ";; bm-fake-email-sender email ~s subject ~s;  oid ~a;  attach ~a ~%;;body:~a~%"
+	  email bm-subject bm-contributor-oid bm-attachment bm-body)
+  )
+
+(define (bm-indirect-email-sender email)
+  (format #t ";; bm-indirect-email-sender email ~s subject ~s;  oid ~a;  attach ~a ~%;;body:~a~%"
+	  email bm-subject bm-contributor-oid bm-attachment bm-body)
+  )
+
+
 (call-with-input-file
     "/dev/stdin"
   (lambda (inp)
