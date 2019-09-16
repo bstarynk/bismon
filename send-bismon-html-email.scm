@@ -75,7 +75,7 @@
 
 (define bm-contributor-alias #f)
 
-(define bm-bismon-from "bismon@localhost")
+(define bm-bismon-from-addr "bismon@localhost")
 
 
 (define (bm-simple-email-sender email)
@@ -93,6 +93,29 @@
 	  email bm-subject bm-contributor-oid bm-attachment bm-body)
   )
 
+
+(define (bm-email-host-part email)
+  (and (string? email)
+  (let ( (atix (string-rindex email #\@))
+	 )
+    (and atix (substring email (+ atix 1)))))
+  )
+
+(define (bm-fake-email-addr? email)
+  (format #t ";;bm-fake-email-addr? email= ~s~%" email)
+  (let ( (hostpart (bm-email-host-part email))
+	 )
+    (format #t ";;bm-fake-email-addr? hostpart=~s~%" hostpart)
+    (equal? hostpart "fake.email")
+  ))
+
+(define (bm-fake-indirect-addr? email)
+  (format #t ";;bm-fake-indirect-addr? email= ~s~%" email)
+  (let ( (hostpart (bm-email-host-part email))
+	 )
+    (format #t ";;bm-fake-indirect-addr? hostpart=~s~%" hostpart)
+    (equal? hostpart "fake.indirect")
+  ))
 
 (call-with-input-file
     "/dev/stdin"
@@ -174,6 +197,8 @@
 	   (set! bm-contributor-email contribemail)
 	   (set! bm-contributor-alias contribalias)
 	   (format #t ";; good contributor ~a ~%" bm-contributor-name)
+	   (format #t ";; hostemail ~s ~%" (bm-email-host-part contribemail))
+	   (format #t ";; hostalias ~s ~%" (bm-email-host-part contribalias))
 	   )
 	 (else
 	  (format #t ";; bad contributor ~s ~%" bm-contributor-oid)
