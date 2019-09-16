@@ -78,20 +78,6 @@
 (define bm-bismon-from-addr "bismon@localhost")
 
 
-(define (bm-simple-email-sender email)
-  (format #t ";; bm-simple-email-sender email ~s subject ~s;  oid ~a;  attach ~a ~%;;body:~a~%"
-	  email bm-subject bm-contributor-oid bm-attachment bm-body)
-  )
-
-(define (bm-fake-email-sender email)
-  (format #t ";; bm-fake-email-sender email ~s subject ~s;  oid ~a;  attach ~a ~%;;body:~a~%"
-	  email bm-subject bm-contributor-oid bm-attachment bm-body)
-  )
-
-(define (bm-indirect-email-sender email)
-  (format #t ";; bm-indirect-email-sender email ~s subject ~s;  oid ~a;  attach ~a ~%;;body:~a~%"
-	  email bm-subject bm-contributor-oid bm-attachment bm-body)
-  )
 
 
 (define (bm-email-host-part email)
@@ -101,6 +87,9 @@
     (and atix (substring email (+ atix 1)))))
   )
 
+
+;; only the primary email could be faked or indirect
+;; the alias is missing or a genuine email
 (define (bm-fake-email-addr? email)
   (format #t ";;bm-fake-email-addr? email= ~s~%" email)
   (let ( (hostpart (bm-email-host-part email))
@@ -153,6 +142,18 @@
   )
 (format #t "#; bm-body::: ~a~%" bm-body)
 
+(define (bm-emit-simple-email!)
+  (format #t "; bm-emit-simple-email! oid ~s, name ~s, email ~s, alias ~s ~%"
+	  bm-contributor-oid bm-contributor-name bm-contributor-email bm-contributor-alias)
+  ;; incomplete
+  )
+
+(define (bm-emit-attached-email!)
+  (format #t "; bm-emit-attached-email! oid ~s, name ~s, email ~s, alias ~s, attach ~s ~%"
+	  bm-contributor-oid bm-contributor-name bm-contributor-email bm-contributor-alias bm-attachment)
+  ;; incomplete
+  )
+
 ;; should load ~/.bismon-mail.scm if it exists
 (let ( (configsrcpath (format #f "~a/.bismon-mail.scm" (getenv "HOME")))
        )
@@ -199,6 +200,29 @@
 	   (format #t ";; good contributor ~a ~%" bm-contributor-name)
 	   (format #t ";; hostemail ~s ~%" (bm-email-host-part contribemail))
 	   (format #t ";; hostalias ~s ~%" (bm-email-host-part contribalias))
+	   (cond ( (not bm-send-email?)
+		   (format #t "email is not sent ~%"))
+		 ( bm-attachment
+		   (cond
+		    ( (bm-fake-email-addr? bm-contributor-email)
+		      (format #t "email with fake ~s and attachment ~s ~%" bm-contributor-email bm-attachment)
+		      )
+		    ( (bm-fake-indirect-addr? bm-contributor-email)
+		      (format #t "email with indirection ~s  and attachment ~s ~%" bm-contributor-email bm-attachment))
+		    (else
+		     (format #t "email to ~s with attachment ~s ~%" bm-contributor-email  bm-attachment)
+		     )
+		    )
+		   )
+		 ( (bm-fake-email-addr? bm-contributor-email)
+		   (format #t "email with fake ~s no attachment ~%" bm-contributor-email)
+		   )
+		 ( (bm-fake-indirect-addr? bm-contributor-email)
+		   (format #t "email with indirection ~s  no attachment ~%" bm-contributor-email))
+		 (else
+		  (format #t "email to ~s no attachment ~%" bm-contributor-email  bm-attachment)
+		  )
+		 )
 	   )
 	 (else
 	  (format #t ";; bad contributor ~s ~%" bm-contributor-oid)
