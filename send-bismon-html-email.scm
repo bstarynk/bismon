@@ -139,7 +139,7 @@
 	    contribcmdport contribstr)
     (let* ( (closecontrib (close-pipe contribcmdport))
 	    (contriblist (string-split contribstr #\tab))
-	   )
+	    )
       (format #t ";; closecontrib ~a contriblist ~s ~%"
 	      closecontrib contriblist)
       (let ( (contribname (car contriblist))
@@ -150,6 +150,17 @@
 	     )
 	(format #t ";; contribname ~s; contriboid ~s; contribemail ~s; contribalias ~s; ~%"
 		contribname contriboid contribemail contribalias)
+	(cond
+	 ( (equal? contriboid bm-contributor-oid)
+	   (set! bm-contributor-name contribname)
+	   (set! bm-contributor-email contribemail)
+	   (set! bm-contributor-alias contribalias)
+	   (format #t ";; good contributor ~a ~%" bm-contributor-name)
+	   )
+	 (else
+	  (format #t ";; bad contributor ~s ~%" bm-contributor-oid)
+	  )
+	 )
 	)
       )
     )
