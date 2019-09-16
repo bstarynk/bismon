@@ -69,7 +69,12 @@
 
 (define bm-send-email? #t)
 
-(define bm-email-to #f)
+(define bm-contributor-name #f)
+
+(define bm-contributor-email #f)
+
+(define bm-contributor-alias #f)
+
 
 (call-with-input-file
     "/dev/stdin"
@@ -132,9 +137,20 @@
 	  )
     (format #t ";; contribcmdport= ~a contribstr= ~s~%"
 	    contribcmdport contribstr)
-    (let ( (closecontrib (close-pipe contribcmdport))
+    (let* ( (closecontrib (close-pipe contribcmdport))
+	    (contriblist (string-split contribstr #\tab))
 	   )
-      (format #t ";; closecontrib ~a~%" closecontrib)
+      (format #t ";; closecontrib ~a contriblist ~s ~%"
+	      closecontrib contriblist)
+      (let ( (contribname (car contriblist))
+	     (contriboid (cadr contriblist))
+	     (contribemail (caddr contriblist))
+	     (contribalias (and (pair? (cdddr contriblist))
+				(cadddr contriblist)))
+	     )
+	(format #t ";; contribname ~s; contriboid ~s; contribemail ~s; contribalias ~s; ~%"
+		contribname contriboid contribemail contribalias)
+	)
       )
     )
   )
