@@ -45,6 +45,11 @@
  ;; https://www.gnu.org/software/guile/manual/html_node/Textual-I_002fO.html
  (ice-9 textual-ports)
  ;;;
+ ;; https://www.gnu.org/software/guile/manual/html_node/Pipes.html
+ (ice-9 popen)
+  ;;;
+ ;; https://www.gnu.org/software/guile/docs/master/guile.html/Line_002fDelimited.html
+ (ice-9 rdelim)
  )
 
 (define bm-script-arglist (command-line))
@@ -76,21 +81,21 @@
       (letrec (
 	       (lincount 0)
 	       (readloop
-		 (lambda ()
-		   (let ( (curlin (get-line (current-input-port)) )
-			  )
-		     (set! lincount (+ lincount 1))
-		     (format #t "#; lincount ~a; curlin ~s~%"
-			     lincount curlin)
-		     (cond ( (eof-object? curlin)
-			     bodylist)
-			   (else 
-			    (set! bodylist (append bodylist (list curlin)))
-			    (readloop)))
-		     )
-		   )
-		 )
+		(lambda ()
+		  (let ( (curlin (get-line (current-input-port)) )
+			 )
+		    (set! lincount (+ lincount 1))
+		    (format #t "#; lincount ~a; curlin ~s~%"
+			    lincount curlin)
+		    (cond ( (eof-object? curlin)
+			    bodylist)
+			  (else 
+			   (set! bodylist (append bodylist (list curlin)))
+			   (readloop)))
+		    )
+		  )
 		)
+	       )
 	(format #t "#; readloop ~a~%" readloop)
 	(set! bm-body (readloop))
 	(format #t "#; bm-body becomes ~a~%" bm-body)
@@ -122,9 +127,18 @@
 		       bm-contributor-oid))
        )
   (format #t ";; cmdstr= ~s~%" cmdstr)
+  (let* ( (contribcmdport (open-input-pipe cmdstr))
+	  (contribstr (read-line contribcmdport))
+	  )
+    (format #t ";; contribcmdport= ~a contribstr= ~s~%"
+	    contribcmdport contribstr)
+    (let ( (closecontrib (close-pipe contribcmdport))
+	   )
+      (format #t ";; closecontrib ~a~%" closecontrib)
+      )
+    )
   )
-  
-	       
+
 
 ;; should add debug, etc...
 
