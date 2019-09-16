@@ -63,7 +63,7 @@
 
 (define bm-attachment (and (pair? (cdddr bm-script-arglist))
 			   (cadddr bm-script-arglist)))
-(format #t "#; bm-attachement::: ~a~%" bm-attachment)
+(format #t "#; bm-attachment::: ~a~%" bm-attachment)
 
 (define bm-body #f)
 
@@ -74,6 +74,8 @@
 (define bm-contributor-email #f)
 
 (define bm-contributor-alias #f)
+
+(define bm-bismon-from "bismon@localhost")
 
 
 (define (bm-simple-email-sender email)

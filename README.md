@@ -165,6 +165,9 @@ source code, and configure it to provide them.). An old GCC
   where *Guile* is used to generate the `build.ninja` script used by
   the [ninja](http://ninja-build.org/) builder.
 
+* a recent Guile-enhanced `mailutils`, that is the Debian
+  `mailutils-guile` providing the `/usr/bin/guimb`  executable.
+
 * [GTK](http://gtk.org/) 3.22 or better. **This is a *temporary*
   dependency** (to be deprecated), we hope to have some web interface
   (above [libonion](http://www.coralbits.com/libonion) probably) soon.
@@ -205,7 +208,7 @@ source code, and configure it to provide them.). An old GCC
 On Debian/Unstable or recent Ubuntu, `apt-get install build-essential
 make ninja-build gcc-8 g++-8 gcc-8-plugin-dev libgccjit-8-dev ccache
 gcc-8-mipsel-linux-gnu inkscape hevea texlive-full xindy
-fonts-inconsolata ttf-ubuntu-font-family fonts-ubuntu ttfautohint guile-2.2` for
+fonts-inconsolata ttf-ubuntu-font-family fonts-ubuntu ttfautohint guile-2.2 mailutils-guile` for
 the building infrastructure; notice that `gcc-8-mipsel-linux-gnu` is
 the MIPSel GCC cross-compiler - it is *conflicting* with
 `gcc-multilib*` packages; `inkscape`, `hevea`, `texlive-full` (a
