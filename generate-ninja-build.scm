@@ -42,6 +42,15 @@
  ;; https://www.gnu.org/software/guile/manual/html_node/File-Tree-Walk.html
  (ice-9 ftw)
  ;;;
+ ;;;
+ ;; https://www.gnu.org/software/guile/manual/html_node/Textual-I_002fO.html
+ (ice-9 textual-ports)
+ ;;;
+ ;; https://www.gnu.org/software/guile/manual/html_node/Pipes.html
+ (ice-9 popen)
+  ;;;
+ ;; https://www.gnu.org/software/guile/docs/master/guile.html/Line_002fDelimited.html
+ (ice-9 rdelim)
  )
 
 
@@ -94,6 +103,7 @@
 (define bm-packages '("glib-2.0" "jansson" "gtk+-3.0"))
 (define bm-gcc "gcc")
 (define bm-g++ "g++")
+(define bm-pkgconfig "pkg-config")
 (define bm-cfiles
   (filter-files-starting-alpha-BM (files-ending-with-BM "BM.c")))
 (define bm-cxxfiles
@@ -102,11 +112,29 @@
   (filter-files-starting-alpha-BM (files-ending-with-BM "BM.thtml")))
 
 (format #t "## DONT EDIT this build.ninja file ; it was generated ...~%")
-(format #t "## ... at ~a by generate-ninja-build ~%"
+(format #t "## ... at ~a by generate-ninja-build.scm ~%"
 	(strftime "%c" (localtime (current-time))))
 (format #t "#; bm-cfiles::: ~a~%" bm-cfiles)
 (format #t "#; bm-cxxfiles::: ~a~%" bm-cxxfiles)
 (format #t "#; bm-webtemplates::: ~a~%" bm-webtemplates)
+
+(let ( (cflagslist (list))
+       (libeslist (list))
+       )
+  (for-each
+   (lambda (curpkg)
+     (format #t "#; curpkg::: ~a~%" curpkg)
+     (let ( (testcmd (format #f "~a ~a" bm-pkgconfig curpkg))
+	    (cflagcmd (format #f "~a --cflags ~a" bm-pkgconfig curpkg))
+	    (libescmd (format #f "~a --libes ~a" bm-pkgconfig curpkg))
+	    )
+       (format #t "##; testcmd ~s cflagcmd ~s libescmd ~s~%" testcmd cflagcmd libescmd)
+       ;; TODO: should popen all these cmd...
+       )
+     )
+   bm-packages)
+  )
+      
 
 ;; ================================================================
 ;; ================================================================
