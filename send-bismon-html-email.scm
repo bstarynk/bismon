@@ -216,11 +216,18 @@
 		   )
 		 ( (bm-fake-email-addr? bm-contributor-email)
 		   (format #t "email with fake ~s no attachment ~%" bm-contributor-email)
+		   ;;; TODO: incomplete code, should handle @fake.email
+		   ;;------------------------
 		   )
 		 ( (bm-fake-indirect-addr? bm-contributor-email)
-		   (format #t "email with indirection ~s  no attachment ~%" bm-contributor-email))
+		   (format #t "email with indirection ~s  no attachment ~%" bm-contributor-email)
+		   ;;; TODO: incomplete code, should handle @fake.indirect
+		   ;;------------------------
+		   )
 		 (else
-		  (format #t "email to ~s no attachment ~%" bm-contributor-email  bm-attachment)
+		  (format #t "email to ~s no attachment. Body:~%~s~%......~a.......~%~%"
+			  bm-contributor-email
+			  bm-body bm-contributor-oid)
 		  )
 		 )
 	   )
