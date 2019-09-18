@@ -99,6 +99,21 @@
 	  listfiles)
   )					;end filter-files-starting-alpha-BM
 
+
+
+;; do a thunk with input from a popen command
+(define (with-input-popen-BM cmdstr thunk)
+  (let ( (cmdport (open-output-pipe cmdstr))
+	 )
+    (and (port? cmdport)
+	 (procedure? thunk)
+	 (let ( (res (thunk cmdport))
+		)
+	   (if res (begin
+		     (close-pipe cmdport)
+		     res))))
+  ))					;end with-input-popen-BM
+
 ;;;;;;;;;;;;;;;; constants
 (define bm-packages '("glib-2.0" "jansson" "gtk+-3.0"))
 (define bm-gcc "gcc")
