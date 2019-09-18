@@ -114,6 +114,17 @@
 		     res))))
   ))					;end with-input-popen-BM
 
+
+(define (input-popen-first-line-BM cmdstr)
+  (let ( (linstr #f)
+	 )
+  (with-input-popen-BM
+   cmdstr
+   (lambda (pipeport)
+     (set! linstr (read-line pipeport))
+     linstr
+     ))))				;end input-popen-first-line-BM
+
 ;;;;;;;;;;;;;;;; constants
 (define bm-packages '("glib-2.0" "jansson" "gtk+-3.0"))
 (define bm-gcc "gcc")
