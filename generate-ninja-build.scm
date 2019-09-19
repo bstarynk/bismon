@@ -197,10 +197,22 @@
        )
      )
    bm-packages)
-  (format #t "#; cflagslist ~a;~% libslist ~a;~%" cflagslist libslist)
+  (format #t "#; cflagslist ~a;~% libslist ~a;~%~%" cflagslist libslist)
+  (format #t "~%pkg_cflags = ")
+  (for-each (lambda (curcflag) (format #t " ~a" curcflag)) cflagslist)
+  (format #t "~%")
+  (format #t "~%pkg_libes = ")
+  (for-each (lambda (curlib) (format #t " ~a" curlib)) libslist)
+  (format #t "~%~%")
   )
       
-
+(format #t "~%~%###### our compilers and their flags ######~%")
+(format #t "cc = ~a~%" bm-gcc)
+(format #t "cxx = ~a~%" bm-g++)
+(format #t "bm_commonwarnflags =  -Wall -Wextra -Wstack-usage=2048 -fdiagnostics-color=auto~%")
+(format #t "cwarnflags = $bm_commonwarnflags -Wmissing-prototypes~%")
+(format #t "cxxwarnflags = $bm_commonwarnflags~%")
+(format #t "defpreproflags = -DBISMONION -DBISMONGTK  -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED~%")
 ;; ================================================================
 ;; ================================================================
 ;; ---------------- end of file generate-ninja-build.scm ----------
