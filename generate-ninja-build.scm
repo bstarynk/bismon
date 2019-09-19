@@ -109,10 +109,37 @@
 	 (procedure? thunk)
 	 (let ( (res (thunk cmdport))
 		)
-	   (if res (begin
-		     (close-pipe cmdport)
-		     res))))
-  ))					;end with-input-popen-BM
+	   (if res
+	       (let (
+		     (clostat (close-pipe cmdport))
+		     )
+		 (let ( (cloex (status:exit-val clostat))
+			(signum #f)
+			)
+		   (cond ((> cloex 0)
+			  (format (current-error-port)
+				  "failed popen ~s got error code ~a~%" cmdstr cloex)
+			  #f)
+			 ((== cloex 0)
+			  res)
+			 ( (let ( (termsig (status:term-sig clostat))
+				  )
+			     (and termsig (set! signum termsig) #t))
+			   (format (current-error-port)
+				   "failed popen ~s got terminating signal ~a~%" cmdstr signum)
+			   #f
+			   )
+			 ( (let ( (stopsig (status:stop-sig clostat))
+				  )
+			     (and stopsig (set! signum stopsig) #t))
+			   (format (current-error-port)
+				   "failed popen ~s got stopping signal ~a~%" cmdstr signum)
+			   #f
+			   )
+			 )
+		   )
+		 res))))
+    ))					;end with-input-popen-BM
 
 
 (define (input-popen-first-line-BM cmdstr)
