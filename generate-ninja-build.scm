@@ -213,6 +213,26 @@
 (format #t "cwarnflags = $bm_commonwarnflags -Wmissing-prototypes~%")
 (format #t "cxxwarnflags = $bm_commonwarnflags~%")
 (format #t "defpreproflags = -DBISMONION -DBISMONGTK  -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED~%")
+(format #t "incflags = -I. -I/usr/local/include~%")
+(let ( (envoptim (getenv "OPTIMFLAGS"))
+       (envbmopt (getenv "BISMON_OPTIMFLAGS"))
+       )
+  (cond
+   (envoptim
+    (format #t "optimflags = -DBISMON_WITH_OPTIMFLAGS ~a~%" envoptim))
+   (envbmopt
+    (format #t "optimflags = -DBISMON_HAS_OPTIMFLAGS ~a~%" envbmopt))
+   (else
+    (format #t "optimflags = -DBISMON_DEFAULT_OPTIMFLAGS -O1 -g3~%"))
+   ))
+
+(format #t "cflags = $cwarnflags $defpreproflags $incflags $optimflags $pkg_cflags~%")
+(format #t "cxxflags = $cxxwarnflags $defpreproflags $incflags $optimflags $pkg_cflags~%")
+
+(format #t "~%~%#for web template files *.thtml related to onion otemplate generator~%")
+(format #t "otemplate = otemplate~%")
+
+
 ;; ================================================================
 ;; ================================================================
 ;; ---------------- end of file generate-ninja-build.scm ----------
