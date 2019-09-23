@@ -310,7 +310,7 @@
 
 (format #t "~%~%# link the entire bismon program~%")
 (format #t "rule LINKALLBISMON_r~%")
-(format #t "  command =  $cxx  $cxxwarnflags  $incflags $optimflags $in $bm_ldflags $bm_libs -o $out && mv -vf __timestamp.c __timestamp.c~ && rm __timestamp.o ~%")
+(format #t "  command =  $cxx  $cxxwarnflags  $incflags $optimflags $in $bm_ldflags $bm_libs -o $out && mv -vf __timestamp.c __timestamp.c~~ && rm __timestamp.o ~%")
 (format #t "  description = LINKALLBISMON $out~%")
 
 
@@ -329,6 +329,20 @@
 (format #t "rule CONFIG_r~%")
 (format #t "  command =./generate-ninja-build.scm > $out.tmp ; mv -v --backup $out.tmp $out ~%")
 (format #t "  description = CONFIG $out~%")
+
+(format #t "~%~%# BUILD ninja statements ~%")
+(format #t "~%~%# C files: ~%")
+(for-each (lambda (curcf)
+	    (let* ( (curbasnam (basename curcf ".c"))
+		    (curconstf (format #f "~a.const.h" curbasnam))
+		   )
+	      (format #t "#; curcf= ~a; curbasnam ~a; curconstf ~a ~%"
+		      curcf curbasnam curconstf)
+	      )
+	    )
+	  bm-cfiles)
+
+
 (format #t "~%~%########### end of generated build.ninja by generate-ninja-build.scm~%~%")
   
 ;; ================================================================
