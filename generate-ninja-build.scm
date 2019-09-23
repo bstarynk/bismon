@@ -165,8 +165,9 @@
   (filter-files-starting-alpha-BM (files-ending-with-BM "BM.thtml")))
 
 (format #t "## DONT EDIT this build.ninja file ; it was generated ...~%")
-(format #t "## ... at ~a by generate-ninja-build.scm ~%"
+(format #t "## ... at ~a by generate-ninja-build.scm ~%~%"
 	(strftime "%c" (localtime (current-time))))
+(format #t "ninja_required_version = 1.8~%~")
 (format #t "#; bm-cfiles::: ~a~%" bm-cfiles)
 (format #t "#; bm-cxxfiles::: ~a~%" bm-cxxfiles)
 (format #t "#; bm-webtemplates::: ~a~%" bm-webtemplates)
@@ -230,9 +231,23 @@
 (format #t "cxxflags = $cxxwarnflags $defpreproflags $incflags $optimflags $pkg_cflags~%")
 
 (format #t "~%~%#for web template files *.thtml related to onion otemplate generator~%")
-(format #t "otemplate = otemplate~%")
+(format #t "otemplate = otemplate~%~%~")
+
+(format #t "#our link flags for bismon ~%")
+(format #t "bm_ldflags = -L/usr/local/lib -rdynamic -pthread~%~%")
+(format #t "#our libraries for bismon ~%")
+(format #t "bm_libs =  -lonion -lbacktrace $pkg_libes -lcrypt -ldl -lm~%~%")
+
+(let ( (bmheaderslist (filter-files-starting-alpha-BM  (files-ending-with-BM "BM.h")))
+       )
+  (format #t "#; bmheaderslist= ~a~%" bmheaderslist)
+  (format #t "bm_headers = bismon.h ")
+  (for-each (lambda (curh) (format #t " ~a" curh))
+	    bmheaderslist)
+  (format #t "~%~%")
+  )
 
 
-;; ================================================================
+  
 ;; ================================================================
 ;; ---------------- end of file generate-ninja-build.scm ----------
