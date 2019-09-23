@@ -308,6 +308,27 @@
 (format #t "  description = BMALLCONSTSC $out~%")
 
 
+(format #t "~%~%# link the entire bismon program~%")
+(format #t "rule LINKALLBISMON_r~%")
+(format #t "  command =  $cxx  $cxxwarnflags  $incflags $optimflags $in $bm_ldflags $bm_libs -o $out && mv -vf __timestamp.c __timestamp.c~ && rm __timestamp.o ~%")
+(format #t "  description = LINKALLBISMON $out~%")
+
+
+(format #t "~%~%# timestamp the bismon program~%")
+(format #t "rule TIMESTAMP_r~%")
+(format #t "  command = ./timestamp-emit.sh $in~%")
+(format #t "  description = TIMESTAMP $out~%")
+
+(format #t "~%~%# cflags for modules~%")
+(format #t "rule CFLAGSMODULE_r_r~%")
+(format #t "  command =  (printf #generated %s file from %s\nBISMONMODULECFLAGS = %s\nBISMONHEADERS = %s\\n\"  $out $in \"$cflags\" \"$bm_headers $bm_generatedheaders\"; date +\"#generated %c%n\") > $out' ~%")
+(format #t "  description = CFLAGSMODULE $out~%")
+
+
+(format #t "~%~%# reconfiguration ~%")
+(format #t "rule CONFIG_r~%")
+(format #t "  command =./generate-ninja-build.scm > $out.tmp ; mv -v --backup $out.tmp $out ~%")
+(format #t "  description = CONFIG $out~%")
 (format #t "~%~%########### end of generated build.ninja by generate-ninja-build.scm~%~%")
   
 ;; ================================================================
