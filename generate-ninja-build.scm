@@ -240,14 +240,75 @@
 
 (let ( (bmheaderslist (filter-files-starting-alpha-BM  (files-ending-with-BM "BM.h")))
        )
-  (format #t "#; bmheaderslist= ~a~%" bmheaderslist)
-  (format #t "bm_headers = bismon.h ")
+  (format #t "~%# handwritten C/C++ headers:~%bm_headers = bismon.h ")
   (for-each (lambda (curh) (format #t " ~a" curh))
 	    bmheaderslist)
-  (format #t "~%~%")
+  (format #t " $~%~%")
   )
 
+(let ( (bmtemplist (filter-files-starting-alpha-BM (files-ending-with-BM "BM.thtml")))
+       )
+  (format #t "~%# handwritten web templates for onion~% bm_webtemplates = ")
+  (for-each (lambda (curt) (format #t " ~a" curt))
+	    bmtemplist)
+  (format #t " $~%~%")
+  )
 
+(let ( (allh (files-ending-with-BM ".h"))
+       )
+  (format #t "~%# generated persistent headers~% bm_generated_headers = ")
+  (for-each (lambda (curh)
+	      (if (string=? (string-take curh 3) "_bm")
+		  (format #t " ~a" curh))
+	      )
+	    allh)
+  (format #t " $~%~%"))
+
+(format #t "~%~%######## RULES for ninja~%~%")
+(format #t "~%~%# compile a C file into an object file~%")
+(format #t "rule CC_r~%")
+(format #t "  command = $cc -MMD -MT $out -MF $out.mkd $cflags -c $in -o $out~%")
+(format #t "  description = CC $out~%")
+(format #t "  depfile = $out.mkd~%")
+(format #t "  deps = gcc~%")
+
+(format #t "~%~%# compile a naked C file into an object file~%")
+(format #t "rule NAKEDCC_r~%")
+(format #t "  command = $cc  -Wall -g -O -o $out -c $in~%")
+(format #t "  description = NAKEDCC $out~%")
+
+(format #t "~%~%# compile a C++ file into an object file~%")
+(format #t "rule CXX_r~%")
+(format #t "  command = $cxx -MMD -MT $out -MF $out.mkd $cflags -c $in -o $out~%")
+(format #t "  description = CXX $out~%")
+(format #t "  depfile = $out.mkd~%")
+(format #t "  deps = gcc~%")
+
+(format #t "~%~%# compile a selfsufficient C++ program with Glib & id_BM.o~%")
+(format #t "rule SOLOCXXPROG_r~%")
+(format #t "  command = $cxx -MMD -MT $out -MF $out.mkd $cflags -c $in -o $out id_BM.o $pkg_libes~%")
+(format #t "  description = SOLOCXXPROG $out~%")
+
+
+(format #t "~%~%# make a XXX_BM.const.h header with constants in XXX_BM.c~%")
+(format #t "rule BMCONSTH_r~%")
+(format #t "  command = ./BM_makeconst -H $out $in~%")
+(format #t "  description = BMCONSTH $out~%")
+
+
+(format #t "~%~%# make _XXX_ONIONBM.c & _XXX_ONIONBM.h from web template XXX_ONIONBM.thtml~%")
+(format #t "rule OTEMPLATE_r~%")
+(format #t "  command = $otemplate -a $out_h $in_thtml $out_c~%")
+(format #t "  description = OTEMPLATE asset $out_h code $out_c template $in_thtml~%")
+
+
+(format #t "~%~%# make the _bm_allconsts.c file~%")
+(format #t "rule BMALLCONSTSC_r~%")
+(format #t "  command = ./BM_makeconst -C $out $in~%")
+(format #t "  description = BMALLCONSTSC $out~%")
+
+
+(format #t "~%~%########### end of generated build.ninja by generate-ninja-build.scm~%~%")
   
 ;; ================================================================
 ;; ---------------- end of file generate-ninja-build.scm ----------
