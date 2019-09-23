@@ -51,6 +51,9 @@
   ;;;
  ;; https://www.gnu.org/software/guile/docs/master/guile.html/Line_002fDelimited.html
  (ice-9 rdelim)
+ ;;
+ ;; https://www.gnu.org/software/guile/manual/html_node/SRFI_002d1-Searching.html#index-every
+ (srfi srfi-1)
  )
 
 
@@ -145,12 +148,12 @@
 (define (input-popen-first-line-BM cmdstr)
   (let ( (linstr #f)
 	 )
-  (with-input-popen-BM
-   cmdstr
-   (lambda (pipeport)
-     (set! linstr (read-line pipeport))
-     linstr
-     ))))				;end input-popen-first-line-BM
+    (with-input-popen-BM
+     cmdstr
+     (lambda (pipeport)
+       (set! linstr (read-line pipeport))
+       linstr
+       ))))				;end input-popen-first-line-BM
 
 ;;;;;;;;;;;;;;;; constants
 (define bm-packages '("glib-2.0" "jansson" "gtk+-3.0"))
@@ -206,7 +209,7 @@
   (for-each (lambda (curlib) (format #t " ~a" curlib)) libslist)
   (format #t "~%~%")
   )
-      
+
 (format #t "~%~%###### our compilers and their flags ######~%")
 (format #t "cc = ~a~%" bm-gcc)
 (format #t "cxx = ~a~%" bm-g++)
@@ -246,7 +249,7 @@
   (format #t " $~%~%")
   )
 
-(let ( (bmtemplist (filter-files-starting-alpha-BM (files-ending-with-BM "BM.thtml")))
+(let ( (bmtemplist  bm-webtemplates)
        )
   (format #t "~%# handwritten web templates for onion~% bm_webtemplates = ")
   (for-each (lambda (curt) (format #t " ~a" curt))
@@ -331,49 +334,79 @@
 (format #t "  description = CONFIG $out~%")
 
 (format #t "~%~%# BUILD ninja statements ~%")
-(format #t "~%~%# C files: ~%")
-(for-each
- (lambda (curcf)
-   (let* ( (curbasnam (basename curcf ".c"))
-	   (curconstf (format #f "~a.const.h" curbasnam))
-	   (occlin #f)
-	   )
-     (format #t "#; curcf= ~a; curbasnam ~a; curconstf ~a ~%"
-	     curcf curbasnam curconstf)
-     (call-with-input-file curcf
-       (lambda (inp)
-	 (letrec ( (loopread
-		    (lambda (cnt)
-		      (if (> cnt 100)
-			  #f
-			  (let ( (curlin (get-line inp) )
-				 )
-			    (cond ( (not (string? curlin))
-				    #f)
-				  ( (string-contains curlin curconstf)
-				    cnt)
-				  (else 
-				   (loopread (+ cnt 1)))
-				  )
-			    )
-			  )
-		      )
-		    )
-		   )
-	   (set! occlin (loopread 0))
-	   )
-	 )
-       #:guess-encoding #f		;dont guess encoding
-       #:encoding "UTF-8"		;force input encoding
+(format #t "~%~%# hand-written C files: ~%")
+(let ( (basetemplist (map
+		      (lambda (curtempl)  (basename curtempl ".thtml"))
+		      bm-webtemplates))
        )
-     (format #t "#; curcf ~a; occlin ~a curconstf ~s ~%" curcf occlin curconstf)
-     ;;; incomplete, should test occlin
+  (format #t "#; basetemplist ~a~%" basetemplist)
+  (for-each
+   (lambda (curcf)
+     (let* ( (curbasnam (basename curcf ".c"))
+	     (curconstf (format #f "~a.const.h" curbasnam))
+	     (occlin #f)
+	     (curlistempbase (list))
+	     )
+       ;; (format #t "#; curcf= ~a; curbasnam ~a; curconstf ~a ~%"
+       ;;	     curcf curbasnam curconstf)
+       (call-with-input-file curcf
+	 (lambda (inp)
+	   (letrec ( (loopread
+		      (lambda (cnt)
+			(if (> cnt 100)
+			    #f
+			    (let ( (curlin (get-line inp) )
+				   )
+			      (cond ( (not (string? curlin))
+				      #f)
+				    ( (string-contains curlin curconstf)
+				      (set! occlin cnt)
+				      )
+				    ( (any (lambda (curtempbase)
+					     (and (string-contains curlin curtempbase)
+						  (set! curlistempbase (append curlistempbase curtempbase))
+						  #t)
+					     )
+					   basetemplist)
+				      )
+				    )
+			      (loopread (+ cnt 1))
+			      )
+			    )
+			)
+		      )
+		     )
+	     (set! occlin (loopread 0))
+	     )
+	   )
+	 #:guess-encoding #f		;dont guess encoding
+	 #:encoding "UTF-8"		;force input encoding
+	 )
+       ;; (format #t "#; curcf ~a; occlin ~a curconstf ~s ~%" curcf occlin curconstf)
+       (format #t "~% build ~a.o: CC_r ~a" curbasnam curcf)
+       (if occlin
+	   (format #t " | ~a" curconstf)
+	   )
+       (for-each
+	(lambda (curtempbase)
+	  (format #t " _~a.h" curtempbase))
+	curlistempbase)
+       (format #t "~%~%")
+       )
      )
-   )
- bm-cfiles)
+   bm-cfiles)
+  )
 
+
+(format #t "~%~%# hand-written C++ files: ~%")
+(for-each
+ (lambda (curcxxf)
+   (format #t "~% build ~a.o: CXX_r ~a~%"
+	   (basename curcxxf ".cc")
+	   curcxxf))
+ bm-cxxfiles)
 
 (format #t "~%~%########### end of generated build.ninja by generate-ninja-build.scm~%~%")
-  
+
 ;; ================================================================
 ;; ---------------- end of file generate-ninja-build.scm ----------
