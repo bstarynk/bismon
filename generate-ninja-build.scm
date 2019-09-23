@@ -332,15 +332,45 @@
 
 (format #t "~%~%# BUILD ninja statements ~%")
 (format #t "~%~%# C files: ~%")
-(for-each (lambda (curcf)
-	    (let* ( (curbasnam (basename curcf ".c"))
-		    (curconstf (format #f "~a.const.h" curbasnam))
+(for-each
+ (lambda (curcf)
+   (let* ( (curbasnam (basename curcf ".c"))
+	   (curconstf (format #f "~a.const.h" curbasnam))
+	   (occlin #f)
+	   )
+     (format #t "#; curcf= ~a; curbasnam ~a; curconstf ~a ~%"
+	     curcf curbasnam curconstf)
+     (call-with-input-file curcf
+       (lambda (inp)
+	 (letrec ( (loopread
+		    (lambda (cnt)
+		      (if (> cnt 100)
+			  #f
+			  (let ( (curlin (get-line inp) )
+				 )
+			    (cond ( (not (string? curlin))
+				    #f)
+				  ( (string-contains curlin curconstf)
+				    cnt)
+				  (else 
+				   (loopread (+ cnt 1)))
+				  )
+			    )
+			  )
+		      )
+		    )
 		   )
-	      (format #t "#; curcf= ~a; curbasnam ~a; curconstf ~a ~%"
-		      curcf curbasnam curconstf)
-	      )
-	    )
-	  bm-cfiles)
+	   (set! occlin (loopread 0))
+	   )
+	 )
+       #:guess-encoding #f		;dont guess encoding
+       #:encoding "UTF-8"		;force input encoding
+       )
+     (format #t "#; curcf ~a; occlin ~a curconstf ~s ~%" curcf occlin curconstf)
+     ;;; incomplete, should test occlin
+     )
+   )
+ bm-cfiles)
 
 
 (format #t "~%~%########### end of generated build.ninja by generate-ninja-build.scm~%~%")
