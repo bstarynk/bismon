@@ -432,7 +432,40 @@
 (format #t "build BM_makeconst: SOLOCXXPROG_r BM_makeconst.cc | id_BM.o~%~%")
 
 
-(format #t "~%~%########### end of generated build.ninja by generate-ninja-build.scm~%~%")
+;; the generated constant headers
+(format #t "~%~%#generated constant header files~%")
+(for-each
+ (lambda (curconstfil)
+   (format #t "build ~a: BMCONSTH_r ~a.c | BM_makeconst ~%"
+	   curconstfil (basename curconstfil ".const.h"))
+   )
+ bm-constfiles-list)
+
+
+;; the single generated all-constants file
+(format #t "~%~%#generated all constants summary C file and corresponding object file~%")
+(format #t "build _bm_allconsts.c: BMALLCONSTSC_r ")
+(for-each
+ (lambda (curconstfil)
+   (format #t " ~a.c" (basename curconstfil ".const.h")))
+ bm-constfiles-list)
+(format #t " | BM_makeconst~%")
+(format #t "build _bm_allconsts.o: NAKEDCC_r _bm_allconsts.c~%")
+
+;; the web templates
+(format #t "~%~%# web templates for onion~%")
+(for-each
+ (lambda (curtempl)
+   (format "#; curtempl ~a ~%" curtempl)
+   )
+ bm-webtemplates)
+
+(format #t "~%~%## for Emacs ~%")
+(format #t "## Local variables: ;;~%")
+(format #t "## mode-name: \"ninja-mode\" ;;~%")
+(format #t "## compile-command: \"ninja\" ;;~%")
+(format #t "## End: ;;~%")
+(format #t "~%########### end of generated build.ninja by generate-ninja-build.scm~%~%")
 
 ;; ================================================================
 ;; ---------------- end of file generate-ninja-build.scm ----------
