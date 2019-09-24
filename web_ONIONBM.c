@@ -511,6 +511,20 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
       if (err)
         FATAL_BM ("failed to do onion_listen (err#%d / %s)", err,
                   strerror (err));
+      /// show some networking information
+      printf ("\n**** Bismon pid %d networking information ***\n",
+              (int) getpid ());
+      fflush (NULL);
+      {
+        int cod = system (SHOW_NET_COMMAND_BM);
+        if (cod > 0)
+          WARNPRINTF_BM ("command '%s' failed with #%d", SHOW_NET_COMMAND_BM,
+                         cod);
+        fflush (NULL);
+      }
+      printf ("***** end of bismon pid %d networking information ***\n",
+              (int) getpid ());
+      fflush (NULL);
       ///
       /// should add our event loop, at least related to queued processes
       /// (and their output pipes), to SIGCHLD and SIGTERM + SIGQUIT

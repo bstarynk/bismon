@@ -457,4 +457,6 @@ extern void weakassertfailureat_BM (const char *condmsg, const char *fil,
 // agenda support
 #define MAXNBWORKJOBS_BM 24
 #define MINNBWORKJOBS_BM 2
+/// the command run after onion initialization
+#define SHOW_NET_COMMAND_BM "ip addr"
 #endif /*CMACROS_BM_INCLUDED */
