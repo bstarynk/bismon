@@ -334,10 +334,14 @@
 (format #t "  description = CONFIG $out~%")
 
 (format #t "~%~%# BUILD ninja statements ~%")
+
+(define bm-constfiles-list #f)
 (format #t "~%~%# hand-written C files: ~%")
 (let ( (basetemplist (map
 		      (lambda (curtempl)  (basename curtempl ".thtml"))
 		      bm-webtemplates))
+       (htblconstfiles (make-hash-table
+			(+ 10 (length bm-webtemplates) (length bm-cfiles) (length bm-cxxfiles))))
        )
   (format #t "#; basetemplist ~a bm-cfiles ~a ~%" basetemplist bm-cfiles)
   (for-each
@@ -360,12 +364,13 @@
 			      (cond ( (not (string? curlin))
 				      #f)
 				    ( (string-contains curlin curconstf)
+				      (hashq-set! htblconstfiles curconstf curconstf)
 				      (set! occlin cnt)
 				      )
 				    ( (any (lambda (curtempbase)
 					     (and (string-contains curlin curtempbase)
 						  (begin (set! curevlistempbase (cons curtempbase curevlistempbase))
-							 (format #t "#; curlin ~a curtempbase ~a~%" curlin curtempbase)
+							 ;; (format #t "#; curlin ~a curtempbase ~a~%" curlin curtempbase)
 							 #t)
 						  )
 					     )
@@ -384,7 +389,7 @@
 	 #:guess-encoding #f		;dont guess encoding
 	 #:encoding "UTF-8"		;force input encoding
 	 )
-       (format #t "#; curcf ~a; occlin ~a curconstf ~s curevlistempbase ~a ~%" curcf occlin curconstf curevlistempbase)
+       ;; (format #t "#; curcf ~a; occlin ~a curconstf ~s curevlistempbase ~a ~%" curcf occlin curconstf curevlistempbase)
        (format #t "~% build ~a.o: CC_r ~a" curbasnam curcf)
        (cond (occlin
 	      (format #t " | ~a" curconstf))
@@ -399,9 +404,19 @@
      (format #t "~%~%")
      )
    bm-cfiles)
+  (let ( (rawconstfilist '())
+	 )
+    (hash-for-each
+     (lambda (key val) (set! rawconstfilist (cons key rawconstfilist)))
+     htblconstfiles)
+    (format #t "#; rawconstfilist ~a ~%" rawconstfilist)
+    (if (pair? rawconstfilist)
+	(set!  bm-constfiles-list (sort-list rawconstfilist string<)))
+    (format #t "#; bm-constfiles-list ~a ~%" bm-constfiles-list)
+    )
   )
 
-
+;;; the hand-written C++ files
 (format #t "~%~%# hand-written C++ files: ~%")
 (for-each
  (lambda (curcxxf)
@@ -411,17 +426,10 @@
  bm-cxxfiles)
 
 
-;;;     (format #t "~%~%# link the entire bismon program~%")
-;;;     (format #t "rule LINKALLBISMON_r~%")
-;;;     (format #t "  command = $cxx  $cxxwarnflags  $incflags $optimflags $in $bm_ldflags $bm_libs -o $out && mv -vf __timestamp.c __timestamp.c~ && rm __timestamp.o~%")
-;;;     (format #t "  description = LINKALLBISMON $out~%~%")
-;;;
-;;;
-;;;
-;;;     (format #t "~%~%# timestamp the bismon program~%")
-;;;     (format #t "rule TIMESTAMP_r~%")
-;;;     (format #t "  command =  ./timestamp-emit.sh $in~%")
-;;;     (format #t "  description = TIMESTAMP $out~%~%")
+
+;;; the BM_makeconst metaprogram
+(format #t "~%~%#solo C++ program to deal with BISMON constants~%")
+(format #t "build BM_makeconst: SOLOCXXPROG_r BM_makeconst.cc | id_BM.o~%~%")
 
 
 (format #t "~%~%########### end of generated build.ninja by generate-ninja-build.scm~%~%")
