@@ -456,16 +456,24 @@
 (format #t "~%~%# web templates for onion~%")
 (for-each
  (lambda (curtempl)
-   (format "#; curtempl ~a ~%" curtempl)
-   )
+   (format #t "~%#; curtempl ~a ~%" curtempl)
+   (let ( (curtempbas (basename curtempl ".thtml"))
+	  )
+     (format #t "~% build _~a.c _~a.h : OTEMPLATE_r ~a~%"
+	     curtempbas curtempbas curtempl)
+     (format #t "~%  in_thtml = ~a~%" curtempl)
+     (format #t "~%  out_h = _~a.h~%" curtempbas)
+     (format #t "~%  out_c = _~a.c~%" curtempbas)
+     (format #t "~%build  _~a.o: CC_r _~a.c~%" curtempbas curtempbas)
+   ))
  bm-webtemplates)
 
-(format #t "~%~%## for Emacs ~%")
+(format #t "~%~%###### for Emacs ~%")
 (format #t "## Local variables: ;;~%")
 (format #t "## mode-name: \"ninja-mode\" ;;~%")
 (format #t "## compile-command: \"ninja\" ;;~%")
 (format #t "## End: ;;~%")
-(format #t "~%########### end of generated build.ninja by generate-ninja-build.scm~%~%")
+(format #t "########### end of generated build.ninja by generate-ninja-build.scm~%~%")
 
 ;; ================================================================
 ;; ---------------- end of file generate-ninja-build.scm ----------
