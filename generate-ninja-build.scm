@@ -323,8 +323,8 @@
 (format #t "  description = TIMESTAMP $out~%")
 
 (format #t "~%~%# cflags for modules~%")
-(format #t "rule CFLAGSMODULE_r_r~%")
-(format #t "  command =  (printf #generated %s file from %s\nBISMONMODULECFLAGS = %s\nBISMONHEADERS = %s\\n\"  $out $in \"$cflags\" \"$bm_headers $bm_generatedheaders\"; date +\"#generated %c%n\") > $out' ~%")
+(format #t "rule CFLAGSMODULE_r~%")
+(format #t "  command =  (printf '#generated %s file from %s'\\nBISMONMODULECFLAGS = %s\\nBISMONHEADERS = %s\\n\"  $out $in \"$cflags\" \"$bm_headers $bm_generatedheaders\"; date +\"#generated %c%n\") > $out' ~%")
 (format #t "  description = CFLAGSMODULE $out~%")
 
 
@@ -390,7 +390,7 @@
 	 #:encoding "UTF-8"		;force input encoding
 	 )
        ;; (format #t "#; curcf ~a; occlin ~a curconstf ~s curevlistempbase ~a ~%" curcf occlin curconstf curevlistempbase)
-       (format #t "~% build ~a.o: CC_r ~a" curbasnam curcf)
+       (format #t "~%build ~a.o: CC_r ~a" curbasnam curcf)
        (cond (occlin
 	      (format #t " | ~a" curconstf))
 	     ((pair? curevlistempbase)
@@ -420,7 +420,7 @@
 (format #t "~%~%# hand-written C++ files: ~%")
 (for-each
  (lambda (curcxxf)
-   (format #t "~% build ~a.o: CXX_r ~a~%"
+   (format #t "~%build ~a.o: CXX_r ~a~%"
 	   (basename curcxxf ".cc")
 	   curcxxf))
  bm-cxxfiles)
@@ -459,7 +459,7 @@
    (format #t "~%#; curtempl ~a ~%" curtempl)
    (let ( (curtempbas (basename curtempl ".thtml"))
 	  )
-     (format #t "~% build _~a.c _~a.h : OTEMPLATE_r ~a~%"
+     (format #t "~%build _~a.c _~a.h : OTEMPLATE_r ~a~%"
 	     curtempbas curtempbas curtempl)
      (format #t "  in_thtml = ~a~%" curtempl)
      (format #t "  out_h = _~a.h~%" curtempbas)
@@ -501,6 +501,12 @@
 (format #t "## compile-command: ~s ;;~%" "ninja")
 (format #t "## End: ~a ~%" ";;")
 (format #t "########### end of generated build.ninja by generate-ninja-build.scm~%~%")
+
+
+;;;;;;;;;;;;;;;;
+;; possible test command:
+;;; ./generate-ninja-build.scm > /tmp/guile-ninjabismon; ninja -f /tmp/guile-ninjabismon
+;;;;;;;;;;;;;;;;;;;
 
 ;; ================================================================
 ;; ---------------- end of file generate-ninja-build.scm ----------
