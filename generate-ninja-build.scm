@@ -324,7 +324,7 @@
 
 (format #t "~%~%# cflags for modules~%")
 (format #t "rule CFLAGSMODULE_r~%")
-(format #t "  command =  (printf '#generated %s file from %s'\\nBISMONMODULECFLAGS = %s\\nBISMONHEADERS = %s\\n\"  $out $in \"$cflags\" \"$bm_headers $bm_generatedheaders\"; date +\"#generated %c%n\") > $out' ~%")
+(format #t "  command =  (printf '#generated %s file from %s\\nBISMONMODULECFLAGS = %s\\nBISMONHEADERS = %s\\n'  $out $in \"$cflags\" \"$bm_headers $bm_generatedheaders\" ; date +\"#generated %c%n\") > $out ~%")
 (format #t "  description = CFLAGSMODULE $out~%")
 
 
@@ -520,7 +520,7 @@
 
 ;;;;;;;;;;;;;;;;
 ;; possible test command:
-;;; ./generate-ninja-build.scm > /tmp/guile-ninjabismon; ninja -f /tmp/guile-ninjabismon
+;;; ./generate-ninja-build.scm > /tmp/guile-ninjabismon && ninja -f /tmp/guile-ninjabismon
 ;;;;;;;;;;;;;;;;;;;
 
 ;; ================================================================
