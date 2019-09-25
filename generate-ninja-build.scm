@@ -489,7 +489,22 @@
    (format #t " _~a.o" (basename curtempl ".thtml")))
  bm-webtemplates)
 (format #t "~%~%# build of the cflags for make-ing modules~%")
-(format #t "~%~%build _cflagsmodule.mk: CFLAGSMODULE_r build.ninja~%")
+(format #t "build _cflagsmodule.mk: CFLAGSMODULE_r build.ninja~%")
+(format #t "~%~%# build the timestamp and its object file~%")
+(format #t "build __timestamp.c: TIMESTAMP_r ")
+(for-each 
+ (lambda (curcsrc)   (format #t " ~a" curcsrc))
+ bm-cfiles)
+(format #t " $~% ")
+(for-each 
+ (lambda (curcxxsrc)   (format #t " ~a" curcxxsrc))
+ bm-cxxfiles)
+(format #t " $~% ")
+(for-each 
+ (lambda (curwtempl)   (format #t " ~a" curwtempl))
+ bm-webtemplates)
+(format #t "~%build __timestamp.o: NAKEDCC_r __timestamp.c~%")
+
 (format #t "~%~%#### default build~%")
 (format #t "default bismon _cflagsmodule.mk~%")
 (format #t "~%#==================================================~%")
