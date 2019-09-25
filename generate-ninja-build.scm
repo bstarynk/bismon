@@ -170,7 +170,7 @@
 (format #t "## DONT EDIT this build.ninja file ; it was generated ...~%")
 (format #t "## ... at ~a by generate-ninja-build.scm ~%~%"
 	(strftime "%c" (localtime (current-time))))
-(format #t "ninja_required_version = 1.8~%~")
+(format #t "ninja_required_version = 1.8~%~%")
 (format #t "#; bm-cfiles::: ~a~%" bm-cfiles)
 (format #t "#; bm-cxxfiles::: ~a~%" bm-cxxfiles)
 (format #t "#; bm-webtemplates::: ~a~%" bm-webtemplates)
@@ -201,7 +201,7 @@
        )
      )
    bm-packages)
-  (format #t "#; cflagslist ~a;~% libslist ~a;~%~%" cflagslist libslist)
+  (format #t "#; cflagslist ~a;~%#; libslist ~a;~%~%" cflagslist libslist)
   (format #t "~%pkg_cflags = ")
   (for-each (lambda (curcflag) (format #t " ~a" curcflag)) cflagslist)
   (format #t "~%")
@@ -234,7 +234,7 @@
 (format #t "cxxflags = $cxxwarnflags $defpreproflags $incflags $optimflags $pkg_cflags~%")
 
 (format #t "~%~%#for web template files *.thtml related to onion otemplate generator~%")
-(format #t "otemplate = otemplate~%~%~")
+(format #t "otemplate = otemplate~%~%~%")
 
 (format #t "#our link flags for bismon ~%")
 (format #t "bm_ldflags = -L/usr/local/lib -rdynamic -pthread~%~%")
@@ -251,7 +251,7 @@
 
 (let ( (bmtemplist  bm-webtemplates)
        )
-  (format #t "~%# handwritten web templates for onion~% bm_webtemplates = ")
+  (format #t "~%# handwritten web templates for onion~%bm_webtemplates = ")
   (for-each (lambda (curt) (format #t " ~a" curt))
 	    bmtemplist)
   (format #t " $~%~%")
@@ -259,7 +259,7 @@
 
 (let ( (allh (files-ending-with-BM ".h"))
        )
-  (format #t "~%# generated persistent headers~% bm_generated_headers = ")
+  (format #t "~%# generated persistent headers~%bm_generated_headers = ")
   (for-each (lambda (curh)
 	      (if (string=? (string-take curh 3) "_bm")
 		  (format #t " ~a" curh))
