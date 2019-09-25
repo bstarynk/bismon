@@ -489,7 +489,7 @@
    (format #t " _~a.o" (basename curtempl ".thtml")))
  bm-webtemplates)
 (format #t "~%~%# build of the cflags for make-ing modules~%")
-(format #t "~%~%build _cflagsmodule.mk: CFLAGSMODULE build.ninja~%")
+(format #t "~%~%build _cflagsmodule.mk: CFLAGSMODULE_r build.ninja~%")
 (format #t "~%~%#### default build~%")
 (format #t "default bismon _cflagsmodule.mk~%")
 (format #t "~%#==================================================~%")
