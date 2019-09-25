@@ -461,18 +461,45 @@
 	  )
      (format #t "~% build _~a.c _~a.h : OTEMPLATE_r ~a~%"
 	     curtempbas curtempbas curtempl)
-     (format #t "~%  in_thtml = ~a~%" curtempl)
-     (format #t "~%  out_h = _~a.h~%" curtempbas)
-     (format #t "~%  out_c = _~a.c~%" curtempbas)
+     (format #t "  in_thtml = ~a~%" curtempl)
+     (format #t "  out_h = _~a.h~%" curtempbas)
+     (format #t "  out_c = _~a.c~%" curtempbas)
      (format #t "~%build  _~a.o: CC_r _~a.c~%" curtempbas curtempbas)
    ))
  bm-webtemplates)
 
+
+(format #t "~%~%# build of the bismon server program~%")
+(format #t "build bismon: LINKALLBISMON_r __timestamp.o _bm_allconsts.o $~% ")
+
+(for-each
+ (lambda (curcsrc)
+   (format #t " ~a.o" (basename curcsrc ".c"))
+   )
+ bm-cfiles)
+(format #t " $~% ")
+(for-each
+ (lambda (curcxsrc)
+   (format #t " ~a.o" (basename curcxsrc ".cc"))
+   )
+ bm-cxxfiles)
+(format #t " $~% ")
+(for-each
+ (lambda (curtempl)
+   (format #t " _~a.o" (basename curtempl ".thtml")))
+ bm-webtemplates)
+(format #t "~%~%# build of the cflags for make-ing modules~%")
+(format #t "~%~%build _cflagsmodule.mk: CFLAGSMODULE build.ninja~%")
+(format #t "~%~%#### default build~%")
+(format #t "default bismon _cflagsmodule.mk~%")
+(format #t "~%#==================================================~%")
+
+
 (format #t "~%~%###### for Emacs ~%")
-(format #t "## Local variables: ;;~%")
-(format #t "## mode-name: \"ninja-mode\" ;;~%")
-(format #t "## compile-command: \"ninja\" ;;~%")
-(format #t "## End: ;;~%")
+(format #t "## Local ~a: ;;~%" "variables")
+(format #t "## mode-name: ~s ;;~%" "ninja-mode")
+(format #t "## compile-command: ~s ;;~%" "ninja")
+(format #t "## End: ~a ~%" ";;")
 (format #t "########### end of generated build.ninja by generate-ninja-build.scm~%~%")
 
 ;; ================================================================
