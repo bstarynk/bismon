@@ -289,7 +289,7 @@
 
 (format #t "~%~%# compile a selfsufficient C++ program with Glib & id_BM.o~%")
 (format #t "rule SOLOCXXPROG_r~%")
-(format #t "  command = $cxx -MMD -MT $out -MF $out.mkd $cflags -c $in -o $out id_BM.o $pkg_libes~%")
+(format #t "  command = $cxx -MMD -MT $out -MF $out.mkd $cxxflags  $in id_BM.o $pkg_libes  -o $out ~%")
 (format #t "  description = SOLOCXXPROG $out~%")
 
 
