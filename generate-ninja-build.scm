@@ -54,6 +54,9 @@
  ;;
  ;; https://www.gnu.org/software/guile/manual/html_node/SRFI_002d1-Searching.html#index-every
  (srfi srfi-1)
+ ;;
+ ;; https://www.gnu.org/software/guile/manual/html_node/SRFI_002d111.html
+ (srfi srfi-111)
  )
 
 
@@ -348,7 +351,7 @@
    (lambda (curcf)
      (let* ( (curbasnam (basename curcf ".c"))
 	     (curconstf (format #f "~a.const.h" curbasnam))
-	     (occlin #f)
+	     (occlinbox (box #f))
 	     (curevlistempbase (list))
 	     )
        ;; (format #t "#; curcf= ~a; curbasnam ~a; curconstf ~a ~%"
@@ -358,7 +361,7 @@
 	   (letrec ( (loopread
 		      (lambda (cnt)
 			(if (> cnt 100)
-			    #f
+			    (unbox occlinbox)
 			    (let ( (curlin (get-line inp) )
 				   )
 			      (format #t "#-; curcf ~s cnt ~a curlin ~s~%" curcf cnt curlin)
@@ -366,8 +369,9 @@
 				      #f)
 				    ( (string-contains curlin curconstf)
 				      (hashq-set! htblconstfiles curconstf curconstf)
-				      (format #t "#; occlin ~a curlin ~s~%" occlin curlin)
-				      (set! occlin cnt)
+				      (format #t "#; occlinbox ~a [old ~a] curlin ~s cnt ~a~%"
+					      occlinbox (unbox occlinbox) curlin cnt)
+				      (set-box! occlinbox cnt)
 				      )
 				    ( (any (lambda (curtempbase)
 					     (and (string-contains curlin curtempbase)
@@ -385,15 +389,16 @@
 			)
 		      )
 		     )
-	     (set! occlin (loopread 0))
+	     (loopread 0)
 	     )
 	   )
 	 #:guess-encoding #f		;dont guess encoding
 	 #:encoding "UTF-8"		;force input encoding
 	 )
-       (format #t "~%#; curcf ~a; occlin ~a curconstf ~s curevlistempbase ~a " curcf occlin curconstf curevlistempbase)
+       (format #t "~%#; curcf ~a; occlinbox ~a [~a] curconstf ~s curevlistempbase ~a "
+	       curcf occlinbox (unbox occlinbox) curconstf curevlistempbase)
        (format #t "~%build ~a.o: CC_r ~a" curbasnam curcf)
-       (cond (occlin
+       (cond ((unbox occlinbox)
 	      (format #t " ~a" curconstf))
 	     ((pair? curevlistempbase)
 	      (format #t "  ")
