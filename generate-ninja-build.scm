@@ -270,8 +270,8 @@
 (format #t "~%~%######## RULES for ninja~%~%")
 (format #t "~%~%# compile a C file into an object file~%")
 (format #t "rule CC_r~%")
-(format #t "  command = $cc -MMD -MT $out -MF $out.mkd $cflags -c $in -o $out~%")
-(format #t "  description = CC $out~%")
+(format #t "  command = $cc -MMD -MT $c_file -MF $out.mkd $cflags -c $c_file -o $out~%")
+(format #t "  description = CC $out <- $c_file ~%")
 (format #t "  depfile = $out.mkd~%")
 (format #t "  deps = gcc~%")
 
@@ -282,8 +282,8 @@
 
 (format #t "~%~%# compile a C++ file into an object file~%")
 (format #t "rule CXX_r~%")
-(format #t "  command = $cxx -MMD -MT $out -MF $out.mkd $cflags -c $in -o $out~%")
-(format #t "  description = CXX $out~%")
+(format #t "  command = $cxx -MMD -MT $out -MF $out.mkd $cflags -c $cxx_file -o $out~%")
+(format #t "  description = CXX $out <- $cxx_file~%")
 (format #t "  depfile = $out.mkd~%")
 (format #t "  deps = gcc~%")
 
@@ -361,16 +361,18 @@
 			    #f
 			    (let ( (curlin (get-line inp) )
 				   )
+			      (format #t "#-; curcf ~s cnt ~a curlin ~s~%" curcf cnt curlin)
 			      (cond ( (not (string? curlin))
 				      #f)
 				    ( (string-contains curlin curconstf)
 				      (hashq-set! htblconstfiles curconstf curconstf)
+				      (format #t "#; occlin ~a curlin ~s~%" occlin curlin)
 				      (set! occlin cnt)
 				      )
 				    ( (any (lambda (curtempbase)
 					     (and (string-contains curlin curtempbase)
 						  (begin (set! curevlistempbase (cons curtempbase curevlistempbase))
-							 ;; (format #t "#; curlin ~a curtempbase ~a~%" curlin curtempbase)
+							 (format #t "#; curlin ~a curtempbase ~a~%" curlin curtempbase)
 							 #t)
 						  )
 					     )
@@ -389,19 +391,19 @@
 	 #:guess-encoding #f		;dont guess encoding
 	 #:encoding "UTF-8"		;force input encoding
 	 )
-       ;; (format #t "#; curcf ~a; occlin ~a curconstf ~s curevlistempbase ~a ~%" curcf occlin curconstf curevlistempbase)
+       (format #t "~%#; curcf ~a; occlin ~a curconstf ~s curevlistempbase ~a " curcf occlin curconstf curevlistempbase)
        (format #t "~%build ~a.o: CC_r ~a" curbasnam curcf)
        (cond (occlin
-	      (format #t " | ~a" curconstf))
+	      (format #t " ~a" curconstf))
 	     ((pair? curevlistempbase)
-	      (format #t " |  ")
+	      (format #t "  ")
 	      ))
        (for-each
 	(lambda (curtempbase)
 	  (format #t " _~a.h" curtempbase))
 	(reverse curevlistempbase))
        )
-     (format #t "~%~%")
+     (format #t "~% c_file = ~a ~%" curcf)
      )
    bm-cfiles)
   (let ( (rawconstfilist '())
@@ -420,9 +422,9 @@
 (format #t "~%~%# hand-written C++ files: ~%")
 (for-each
  (lambda (curcxxf)
-   (format #t "~%build ~a.o: CXX_r ~a~%"
+   (format #t "~%build ~a.o: CXX_r ~a~% cxx_file= ~a~%"
 	   (basename curcxxf ".cc")
-	   curcxxf))
+	   curcxxf curcxxf))
  bm-cxxfiles)
 
 
