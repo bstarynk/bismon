@@ -2304,18 +2304,34 @@ add_defer_command_gtk_BM (void)
 #endif /*BISMONGTK*/
 ////////////////////////////////////////////////////////////////
 /// mail testing
-  void
+void
 do_test_mailhtml_bm (void)
 {
+  LOCALFRAME_BM (NULL, /*descr: */NULL,
+                 objectval_tyBM * contribob;      //
+		 );
   DBGPRINTF_BM
     ("do_test_mailhtml_bm start: mailhtml (file='%s' contributor='%s' subject='%s' attachment %s)",
      mailhtml_file_bm, mailhtml_contributor_bm, mailhtml_subject_bm,
      mailhtml_attachment_bm ? : "*none*");
-#warning do_test_mailhtml_bm is very incomplete
-  FATAL_BM
-    ("incomplete do_test_mailhtml_bm (file='%s' contributor='%s' subject='%s' attachment %s)",
-     mailhtml_file_bm, mailhtml_contributor_bm, mailhtml_subject_bm,
-     mailhtml_attachment_bm ? : "*none*");
+  // find and check the contributor
+  {
+    rawid_tyBM contid = {0,0};
+    char* errmsg = NULL;
+    char* endc = NULL;
+    _.contribob = NULL;
+    if (mailhtml_contributor_bm[0] == '_' && validid_BM((contid = parse_rawid_BM(mailhtml_contributor_bm, &endc)))) {
+      _.contribob = findobjofid_BM(contid);
+    }
+    else if (valid_contributor_name_BM(mailhtml_contributor_bm, &errmsg)) {
+      _.contribob = find_contributor_BM(mailhtml_contributor_bm, CURFRAME_BM);
+    };
+    char contidbuf[32] = {};
+    idtocbuf32_BM (contid, contidbuf);
+    if (!objhascontributorpayl_BM(_.contrib))
+      FATAL_BM("bad mailhtml contributor %s =%s/%s", mailhtml_contributor_bm, objectdbg_BM(_.contribob), contidbuf);
+    DBGPRINTF_BM("do_test_mailhtml_bm contributor='%s' == %s", mailhtml_contributor_bm, objectdbg_BM(_.contribob));
+  }
   bool popenfile = mailhtml_file[0] == '|';
   FILE *infil =
     popenfile ? popen (mailhtml_file, "r") : fopen (mailhtml_file, "r");
@@ -2326,8 +2342,8 @@ do_test_mailhtml_bm (void)
   size_t bufsiz = 0;
   FILE *bufil = open_memstream (&bufzon, &bufsiz);
   if (!bufil)
-    FATAL_BM ("open_memstream failure for %s contributor %s - %m",
-              mailhtml_file, mailhtml_contributor_bm);
+    FATAL_BM ("open_memstream failure for %s contributor %s / %s - %m",
+              mailhtml_file, mailhtml_contributor_bm, objectdbg_BM(_.contribob));
   char *linbuf = NULL;
   int linsiz = 0;
   do
@@ -2335,8 +2351,20 @@ do_test_mailhtml_bm (void)
       int linlen = getline (&linbuf, &linsiz, infil);
       if (linlen < 0)
         break;
+      /**** 
+       *  should handle the following "processing instructions":
+       * <?bismon-contributor?>
+       * <?bismon-contribobject?>
+       * <?bismon-contriboid?>
+       * <?bismon-subject?>
+       ****/
     }
   while (!feof (infil));
+#warning do_test_mailhtml_bm is very incomplete
+  FATAL_BM
+    ("incomplete do_test_mailhtml_bm (file='%s' contributor='%s' subject='%s' attachment %s)",
+     mailhtml_file_bm, mailhtml_contributor_bm, mailhtml_subject_bm,
+     mailhtml_attachment_bm ? : "*none*");
 }                               /* end do_test_mailhtml_bm */
 
 
