@@ -2157,4 +2157,21 @@ tabular_print_contributor_of_objid_BM (const char *oidstr)
 }                               /* tabular_print_contributor_of_objid_BM */
 
 
+void
+send_html_email_to_contributor_BM (const char *subject, const char *htmlbody,
+                                   objectval_tyBM * contribobarg,
+                                   struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * contribob;    //contributor object
+    );
+  _.contribob = contribobarg;
+  ASSERT_BM (subject && subject[0]);
+  ASSERT_BM (htmlbody && htmlbody[0] == '<');
+  FATAL_BM
+    ("send_html_email_to_contributor_BM contribob subject '%s' contribob %s unimplemented",
+     subject, objectdbg_BM (_.contribob));
+#warning send_html_email_to_contributor_BM unimplemented
+}                               /* end send_html_email_to_contributor_BM */
+
 /// end of file user_BM.c

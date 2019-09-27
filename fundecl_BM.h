@@ -1739,6 +1739,10 @@ const stringval_tyBM *objcontributornamepayl_BM (const objectval_tyBM * obj);
 // for the --print-contributor-of-oid option
 extern void tabular_print_contributor_of_objid_BM (const char *oidstr);
 
+extern void
+send_html_email_to_contributor_BM (const char *subject, const char *htmlbody,
+                                   objectval_tyBM * contribobarg,
+                                   struct stackframe_stBM *stkf);
 ////////////////////////////////////////////////////////////////
 // defer a dump (after a GC) while the agenda is running. Once dump is
 // completed, the closure is called on the arg1v, arg2v, arg3v, and a
