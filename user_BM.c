@@ -2160,6 +2160,7 @@ tabular_print_contributor_of_objid_BM (const char *oidstr)
 #define SEND_BISMON_HTML_EMAIL_SCRIPT_BM "send-bismon-html-email.scm"
 void
 send_html_email_to_contributor_BM (const char *subject, const char *htmlbody,
+                                   const char *attachment,
                                    objectval_tyBM * contribobarg,
                                    struct stackframe_stBM *stkf)
 {
@@ -2172,13 +2173,13 @@ send_html_email_to_contributor_BM (const char *subject, const char *htmlbody,
   size_t bodylen = strlen (htmlbody);
   ASSERT_BM (bodylen < MAXSIZE_BM / 32);
   DBGPRINTF_BM
-    ("send_html_email_to_contributor_BM start subject '%s' contribob %s\n"
-     "htmlbody::::\n%s\n", subject, objectdbg_BM (_.contribob), htmlbody);
+    ("send_html_email_to_contributor_BM start subject '%s' contribob %s attach %s\n"
+     "htmlbody::::\n%s\n", subject, objectdbg_BM (_.contribob),
+     attachment ? attachment : "*none*", htmlbody);
   WEAKASSERTRET_BM (objhascontributorpayl_BM (_.contribob));
   char bufprog[128];
   char contribidbuf[32];
   int piparr[2] = { -1, -1 };
-  memset (argarr, 0, sizeof (argarr));
   memset (bufprog, 0, sizeof (bufprog));
   memset (contribidbuf, 0, sizeof (contribidbuf));
   snprintf (bufprog, sizeof (bufprog),
@@ -2186,6 +2187,9 @@ send_html_email_to_contributor_BM (const char *subject, const char *htmlbody,
   idtocbuf32_BM (objid_BM (_.contribob), contribidbuf);
   if (access (bufprog, R_OK | X_OK))
     FATAL_BM ("inaccessible emailing script '%s' - %m", bufprog);
+  if (attachment && access (attachment, R_OK))
+    FATAL_BM ("inaccessible email attached file '%s' - %m", attachment);
+
   if (pipe (piparr))
     FATAL_BM ("pipe failed in emailing script '%s' to %s - %m", subject,
               contribidbuf);
@@ -2195,15 +2199,16 @@ send_html_email_to_contributor_BM (const char *subject, const char *htmlbody,
   if (scripid == 0)
     {
       // child process
-      char argarr[5] = { };
+      const char* argarr[5] = { };
+      memset (argarr, 0, sizeof (argarr));
       argarr[0] = SEND_BISMON_HTML_EMAIL_SCRIPT_BM;
       argarr[1] = subject;
       argarr[2] = contribidbuf;
-      argarr[3] = 0;
+      argarr[3] = attachment;
       (void) close (wrpip);
       if (dup2 (rdpip, STDIN_FILENO))
         FATAL_BM ("dup2 rdpip failed in emailing script '%s' to %s - %m",
-                  bufprog, subject, contribidbuf);
+                  subject, contribidbuf);
       execv (bufprog, argarr);
       FATAL_BM ("exec %s failed in emailing script '%s' to %s - %m", bufprog,
                 subject, contribidbuf);

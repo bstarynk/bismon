@@ -1741,6 +1741,7 @@ extern void tabular_print_contributor_of_objid_BM (const char *oidstr);
 
 extern void
 send_html_email_to_contributor_BM (const char *subject, const char *htmlbody,
+                                   const char *attachment,
                                    objectval_tyBM * contribobarg,
                                    struct stackframe_stBM *stkf);
 ////////////////////////////////////////////////////////////////
