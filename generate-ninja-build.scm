@@ -479,6 +479,9 @@
      (format #t "  out_c = _~a.c~%" curtempbas)
      (format #t "  templ_base = ~a~%" curtempbas)
      (format #t "~%build  _~a.o: CC_r _~a.c~%" curtempbas curtempbas)
+     (format #t " c_file =  _~a.c~%" curtempbas)
+     (format #t " c_base =  _~a~%~%" curtempbas)
+     
    ))
  bm-webtemplates)
 
