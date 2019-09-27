@@ -273,9 +273,9 @@
 (format #t "~%~%######## RULES for ninja~%~%")
 (format #t "~%~%# compile a C file into an object file~%")
 (format #t "rule CC_r~%")
-(format #t "  command = $cc -MMD -MT $c_file -MF $out.mkd $cflags -c $c_file -o $out~%")
+(format #t "  command = $cc -MMD -MT $c_file -MF $c_base.mkd $cflags -c $c_file -o $out~%")
 (format #t "  description = CC $out <- $c_file ~%")
-(format #t "  depfile = $out.mkd~%")
+(format #t "  depfile = $c_base.mkd~%")
 (format #t "  deps = gcc~%")
 
 (format #t "~%~%# compile a naked C file into an object file~%")
@@ -285,15 +285,17 @@
 
 (format #t "~%~%# compile a C++ file into an object file~%")
 (format #t "rule CXX_r~%")
-(format #t "  command = $cxx -MMD -MT $out -MF $out.mkd $cflags -c $cxx_file -o $out~%")
+(format #t "  command = $cxx -MMD -MT $out -MF $cxx_base.mkd $cflags -c $cxx_file -o $out~%")
 (format #t "  description = CXX $out <- $cxx_file~%")
-(format #t "  depfile = $out.mkd~%")
+(format #t "  depfile = $cxx_base.mkd~%")
 (format #t "  deps = gcc~%")
 
 (format #t "~%~%# compile a selfsufficient C++ program with Glib & id_BM.o~%")
 (format #t "rule SOLOCXXPROG_r~%")
-(format #t "  command = $cxx -MMD -MT $out -MF $out.mkd $cxxflags  $in id_BM.o $pkg_libes  -o $out ~%")
+(format #t "  command = $cxx -MMD -MT $out -MF $solo_base.mkd $cxxflags  $in id_BM.o $pkg_libes  -o $out ~%")
 (format #t "  description = SOLOCXXPROG $out~%")
+(format #t "  depfile = $solo_base.mkd~%")
+(format #t "  deps = gcc~%")
 
 
 (format #t "~%~%# make a XXX_BM.const.h header with constants in XXX_BM.c~%")
@@ -395,8 +397,8 @@
 	 #:guess-encoding #f		;dont guess encoding
 	 #:encoding "UTF-8"		;force input encoding
 	 )
-       (format #t "~%#; curcf ~a; occlinbox ~a [~a] curconstf ~s curevlistempbase ~a "
-	       curcf occlinbox (unbox occlinbox) curconstf curevlistempbase)
+       ;; (format #t "~%#; curcf ~a; occlinbox ~a [~a] curconstf ~s curevlistempbase ~a "
+       ;;         curcf occlinbox (unbox occlinbox) curconstf curevlistempbase)
        (format #t "~%build ~a.o: CC_r ~a" curbasnam curcf)
        (cond ((unbox occlinbox)
 	      (format #t " ~a" curconstf))
@@ -407,8 +409,8 @@
 	(lambda (curtempbase)
 	  (format #t " _~a.h" curtempbase))
 	(reverse curevlistempbase))
-       (format #t "~% c_file = ~a ~%" curcf)
-       (format #t " c_base = ~a ~%~%" curbasnam)
+       (format #t "~% c_file = ~a~%" curcf)
+       (format #t " c_base = ~a~%~%" curbasnam)
        )
      )
    bm-cfiles)
@@ -439,7 +441,8 @@
 
 ;;; the BM_makeconst metaprogram
 (format #t "~%~%#solo C++ program to deal with BISMON constants~%")
-(format #t "build BM_makeconst: SOLOCXXPROG_r BM_makeconst.cc | id_BM.o~%~%")
+(format #t "build BM_makeconst: SOLOCXXPROG_r BM_makeconst.cc | id_BM.o~%")
+(format #t "  solo_base = BM_makeconst~%")
 
 
 ;; the generated constant headers
@@ -474,6 +477,7 @@
      (format #t "  in_thtml = ~a~%" curtempl)
      (format #t "  out_h = _~a.h~%" curtempbas)
      (format #t "  out_c = _~a.c~%" curtempbas)
+     (format #t "  templ_base = ~a~%" curtempbas)
      (format #t "~%build  _~a.o: CC_r _~a.c~%" curtempbas curtempbas)
    ))
  bm-webtemplates)
