@@ -26,6 +26,7 @@
 # for GNU make
 ################################################################
 NINJA= ninja
+NINJAFLAGS= 
 GCC= gcc
 GXX= g++
 CC= $(GCC)
@@ -53,20 +54,26 @@ BM_CSOURCES= $(wildcard [a-z]*BM.c)
 
 
 
-all: programs modules jstimestamp #doc
+all:
+	@printf "\n\n\n******* start making all in %s *********\n\n" $$PWD
+	$(MAKE) programs modules jstimestamp #doc
+	@printf "\n******* done making all in %s *********\n" $$PWD
 
 programs: bismon modules
 
 verbose: | build.ninja
 	$(NINJA) -v
 
-bismon: build.ninja $(wildcard *BM.c *_BM.cc)  $(wildcard store*bmon)
-	$(NINJA) $@
+bismon:
+	@printf "\n\n\n******* start making bismon in %s *********\n\n" $$PWD
+	$(MAKE) build.ninja $(wildcard *BM.c *_BM.cc)  $(wildcard store*bmon)
+	$(NINJA) $(NINJAFLAGS) $@
+	@printf "\n******* done making bismon in %s *********\n" $$PWD
 
 _cflagsmodule.mk: build.ninja 
-	$(NINJA) $@
+	$(NINJA) $(NINJAFLAGS) $@
 
-build.ninja: generate-ninja-builder.sh
+build.ninja: generate-ninja-build.scm
 	./$^ > $@.tmp; mv --backup -v $@.tmp $@
 
 #checksum:
@@ -141,6 +148,7 @@ id_BM-g.o: id_BM.c id_BM.h
 
 
 clean:
+	@printf "\n\n\n******* start cleaning bismon in %s *********\n\n" $$PWD
 	[ -f build.ninja ] && $(NINJA) -t clean
 	if ls *.log ; then tar cvzf /tmp/bismon-prev-log.tar.gz _*.log; fi
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
@@ -158,6 +166,7 @@ clean:
 	$(RM)  doc/generated/* doc/htmldoc/*  doc/*/*~
 	$(RM) doc/*.aux doc/*.log doc/*.bbl doc/*.blg doc/*.idx doc/*.ilg doc/*.ind doc/*.log doc/*.out doc/*.toc doc/*.haux doc/*.hind doc/*.html doc/*.htoc
 	$(RM) doc/bismon-html-doc.tar.gz
+	@printf "\n******* done cleaning bismon in %s *********\n\n" $$PWD
 
 indent: .indent.pro
 	@printf "\n *** headers *** \n"
