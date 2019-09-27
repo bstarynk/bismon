@@ -2164,57 +2164,89 @@ send_html_email_to_contributor_BM (const char *subject, const char *htmlbody,
                                    struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-		  objectval_tyBM * contribob;    //contributor object
-		  );
+                 objectval_tyBM * contribob;    //contributor object
+    );
   _.contribob = contribobarg;
   ASSERT_BM (subject && subject[0]);
   ASSERT_BM (htmlbody && htmlbody[0] == '<');
-  size_t bodylen = strlen(htmlbody);
-  ASSERT_BM(bodylen < MAXSIZE_BM/32);
-  DBGPRINTF_BM("send_html_email_to_contributor_BM start subject '%s' contribob %s\n"
-	       "htmlbody::::\n%s\n",
-	       subject, objectdbg_BM(_.contribob), htmlbody);
-  WEAKASSERTRET_BM(objhascontributorpayl_BM(_.contribob));
+  size_t bodylen = strlen (htmlbody);
+  ASSERT_BM (bodylen < MAXSIZE_BM / 32);
+  DBGPRINTF_BM
+    ("send_html_email_to_contributor_BM start subject '%s' contribob %s\n"
+     "htmlbody::::\n%s\n", subject, objectdbg_BM (_.contribob), htmlbody);
+  WEAKASSERTRET_BM (objhascontributorpayl_BM (_.contribob));
   char bufprog[128];
   char contribidbuf[32];
-  int piparr[2] = {-1, -1};
-  memset (argarr, 0, sizeof(argarr));
-  memset (bufprog, 0, sizeof(bufprog));
-  memset (contribidbuf, 0, sizeof(contribidbuf));
-  snprintf(bufprog, sizeof(bufprog),
-	   "%s/%s", bismon_directory, SEND_BISMON_HTML_EMAIL_SCRIPT_BM);
+  int piparr[2] = { -1, -1 };
+  memset (argarr, 0, sizeof (argarr));
+  memset (bufprog, 0, sizeof (bufprog));
+  memset (contribidbuf, 0, sizeof (contribidbuf));
+  snprintf (bufprog, sizeof (bufprog),
+            "%s/%s", bismon_directory, SEND_BISMON_HTML_EMAIL_SCRIPT_BM);
   idtocbuf32_BM (objid_BM (_.contribob), contribidbuf);
-  if (access(bufprog, R_OK|X_OK))
-    FATAL_BM("inaccessible emailing script '%s' - %m",
-	     bufprog);
-  if (pipe(piparr))
-    FATAL_BM("pipe failed in emailing script '%s' to %s - %m", subject, contribidbuf);
+  if (access (bufprog, R_OK | X_OK))
+    FATAL_BM ("inaccessible emailing script '%s' - %m", bufprog);
+  if (pipe (piparr))
+    FATAL_BM ("pipe failed in emailing script '%s' to %s - %m", subject,
+              contribidbuf);
   int rdpip = piparr[0];
   int wrpip = piparr[1];
-  pid_t scripid = fork();
-  if (scripid == 0) {
-    // child process
-    char argarr[5] = {};
-    argarr[0] = SEND_BISMON_HTML_EMAIL_SCRIPT_BM;
-    argarr[1] = subject;
-    argarr[2] = contribidbuf;
-    argarr[3] = 0;
-    close(wrpip);
-    dup2(rdpip, STDIN_FILENO);
-    execv(bufprog, argarr);
-    FATAL_BM("exec %s failed in emailing script '%s' to %s - %m", bufprog, subject, contribidbuf);
-  }
-  else if (scripid<0)
-    FATAL_BM("fork failed in emailing script '%s' to %s - %m", subject, contribidbuf);
-  else {
-    // parent process
-    close(rdpip);
-  }
-  FATAL_BM
-    ("send_html_email_to_contributor_BM subject '%s' contribob %s unimplemented",
+  pid_t scripid = fork ();
+  if (scripid == 0)
+    {
+      // child process
+      char argarr[5] = { };
+      argarr[0] = SEND_BISMON_HTML_EMAIL_SCRIPT_BM;
+      argarr[1] = subject;
+      argarr[2] = contribidbuf;
+      argarr[3] = 0;
+      (void) close (wrpip);
+      if (dup2 (rdpip, STDIN_FILENO))
+        FATAL_BM ("dup2 rdpip failed in emailing script '%s' to %s - %m",
+                  bufprog, subject, contribidbuf);
+      execv (bufprog, argarr);
+      FATAL_BM ("exec %s failed in emailing script '%s' to %s - %m", bufprog,
+                subject, contribidbuf);
+    }
+  else if (scripid < 0)
+    FATAL_BM ("fork failed in emailing script '%s' to %s - %m", subject,
+              contribidbuf);
+  else
+    {
+      // parent process
+      (void) close (rdpip);
+      const char *endhtml = htmlbody + bodylen;
+      const char *curbuf = htmlbody;
+      while (curbuf < endhtml)
+        {
+          size_t sizbuf = endhtml - curbuf;
+          if (sizbuf > PIPE_BUF)
+            sizbuf = PIPE_BUF;
+          ssize_t wcnt = write (wrpip, curbuf, sizbuf);
+          if (wcnt < 0)
+            FATAL_BM
+              ("write failure to wrpip#%d offset %ld in emailing script '%s' to %s - %m",
+               wrpip, (long) (curbuf - htmlbody), subject, contribidbuf);
+          else if (wcnt == 0)
+            break;
+          else
+            curbuf += wcnt;
+        };
+      close (wrpip);
+      int wsta = 0;
+      pid_t wp = waitpid (scripid, &wsta, 0);
+      if (wp < 0)
+        FATAL_BM ("waitpid failed in emailing script '%s' to %s pid %d - %m",
+                  subject, contribidbuf, (int) scripid);
+      if (wsta != 0)
+        FATAL_BM ("emailing script '%s' to %s pid %d failed (status#%d)",
+                  subject, contribidbuf, (int) scripid, wsta);
+    }
+  DBGPRINTF_BM
+    ("send_html_email_to_contributor_BM subject '%s' contribob %s completed",
      subject, objectdbg_BM (_.contribob));
-  
-#warning send_html_email_to_contributor_BM unimplemented
 }                               /* end send_html_email_to_contributor_BM */
+
+
 
 /// end of file user_BM.c
