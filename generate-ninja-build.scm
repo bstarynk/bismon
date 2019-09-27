@@ -364,19 +364,19 @@
 			    (unbox occlinbox)
 			    (let ( (curlin (get-line inp) )
 				   )
-			      (format #t "#-; curcf ~s cnt ~a curlin ~s~%" curcf cnt curlin)
+			      ;;(format #t "#-; curcf ~s cnt ~a curlin ~s~%" curcf cnt curlin)
 			      (cond ( (not (string? curlin))
 				      #f)
 				    ( (string-contains curlin curconstf)
 				      (hashq-set! htblconstfiles curconstf curconstf)
-				      (format #t "#; occlinbox ~a [old ~a] curlin ~s cnt ~a~%"
-					      occlinbox (unbox occlinbox) curlin cnt)
+				      ;; (format #t "#; occlinbox ~a [old ~a] curlin ~s cnt ~a~%"
+				      ;;	      occlinbox (unbox occlinbox) curlin cnt)
 				      (set-box! occlinbox cnt)
 				      )
 				    ( (any (lambda (curtempbase)
 					     (and (string-contains curlin curtempbase)
 						  (begin (set! curevlistempbase (cons curtempbase curevlistempbase))
-							 (format #t "#; curlin ~a curtempbase ~a~%" curlin curtempbase)
+							 ;;(format #t "#; curlin ~a curtempbase ~a~%" curlin curtempbase)
 							 #t)
 						  )
 					     )
@@ -407,8 +407,9 @@
 	(lambda (curtempbase)
 	  (format #t " _~a.h" curtempbase))
 	(reverse curevlistempbase))
+       (format #t "~% c_file = ~a ~%" curcf)
+       (format #t " c_base = ~a ~%~%" curbasnam)
        )
-     (format #t "~% c_file = ~a ~%" curcf)
      )
    bm-cfiles)
   (let ( (rawconstfilist '())
@@ -416,7 +417,7 @@
     (hash-for-each
      (lambda (key val) (set! rawconstfilist (cons key rawconstfilist)))
      htblconstfiles)
-    (format #t "#; rawconstfilist ~a ~%" rawconstfilist)
+    ;;(format #t "#; rawconstfilist ~a ~%" rawconstfilist)
     (if (pair? rawconstfilist)
 	(set!  bm-constfiles-list (sort-list rawconstfilist string<)))
     (format #t "#; bm-constfiles-list ~a ~%" bm-constfiles-list)
@@ -427,9 +428,11 @@
 (format #t "~%~%# hand-written C++ files: ~%")
 (for-each
  (lambda (curcxxf)
-   (format #t "~%build ~a.o: CXX_r ~a~% cxx_file= ~a~%"
-	   (basename curcxxf ".cc")
-	   curcxxf curcxxf))
+   (let ( (cxxbase (basename curcxxf ".cc"))
+	  )
+   (format #t "~%build ~a.o: CXX_r ~a~% cxx_file = ~a~% cxx_base = ~a~%"
+	   cxxbase curcxxf curcxxf cxxbase))
+   )
  bm-cxxfiles)
 
 
