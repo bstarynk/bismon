@@ -68,6 +68,7 @@ bismon:
 	@printf "\n\n\n******* start making bismon in %s *********\n\n" $$PWD
 	$(MAKE) build.ninja $(wildcard *BM.c *_BM.cc)  $(wildcard store*bmon)
 	$(NINJA) $(NINJAFLAGS) $@
+	@[ -x $@ ] || (echo no bismon > /dev/stderr; exit 1)
 	@printf "\n******* done making bismon in %s *********\n" $$PWD
 
 _cflagsmodule.mk: build.ninja 
