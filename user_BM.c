@@ -2199,7 +2199,7 @@ send_html_email_to_contributor_BM (const char *subject, const char *htmlbody,
   if (scripid == 0)
     {
       // child process
-      const char* argarr[5] = { };
+      const char *argarr[5] = { };
       memset (argarr, 0, sizeof (argarr));
       argarr[0] = SEND_BISMON_HTML_EMAIL_SCRIPT_BM;
       argarr[1] = subject;

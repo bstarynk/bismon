@@ -146,6 +146,10 @@ char *module_to_emit_bm;
 int count_emit_has_predef_bm;
 int nb_added_predef_bm;
 char *print_contributor_of_oid_bm;
+char *mailhtml_file_bm;
+char *mailhtml_contributor_bm;
+char *mailhtml_subject_bm;
+char *mailhtml_attachment_bm;
 static bool want_finalgc_bm;    /* to run a final GC */
 static bool want_cleanup_bm;    /* to make valgrind more happy; see http://valgrind.org/ for more */
 
@@ -263,6 +267,7 @@ fatal_stop_at_BM (const char *fil, int lineno)
 
 
 static void add_new_predefined_bm (void);
+static void do_test_mailhtml_bm (void);
 static void init_afterload_bm (void);
 
 static bool
@@ -642,6 +647,35 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &module_to_emit_bm,
    .description = "emit module MODULEOBJ",
    .arg_description = "MODULEOBJ"},
+  //
+  {.long_name = "mailhtml-file",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &mailhtml_file_bm,
+   .description = " FILE is the file, in HTML, to be sent to contributor",
+   .arg_description = "FILE"},
+  //
+  {.long_name = "mailhtml-subject",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &mailhtml_subject_bm,
+   .description =
+   " SUBJECT is the subject of the email to be sent to contributor",
+   .arg_description = "SUBJECT"},
+  //
+  {.long_name = "mailhtml-contributor",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &mailhtml_contributor_bm,
+   .description = " CONTRIBUTOR is to whom the email will be sent",
+   .arg_description = "CONTRIBUTOR"},
+  //
+  {.long_name = "mailhtml-attachment",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &mailhtml_attachment_bm,
+   .description = " ATTACHEDFILE is the attached file of the email",
+   .arg_description = "ATTACHEDFILE"},
   //
   //
   {.long_name = "version",.short_name = (char) 0,
@@ -1255,6 +1289,17 @@ main (int argc, char **argv)
                      load_dir_bm);
       debugmsg_BM = true;
     };
+  if (mailhtml_file_bm || mailhtml_subject_bm || mailhtml_contributor_bm
+      || mailhtml_attachment_bm)
+    {
+      if (!mailhtml_file_bm)
+        FATAL_BM ("missing --mailhtml-file FILE option");
+      if (!mailhtml_subject_bm)
+        FATAL_BM ("missing --mailhtml-subject SUBJECT option");
+      if (!mailhtml_contributor_bm)
+        FATAL_BM ("missing --mailhtml-contributor CONTRIBUTOR option");
+      do_test_mailhtml_bm ();
+    }
   DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
                 run_gtk_BM ? "true" : "false",
                 run_onion_BM ? "true" : "false");
@@ -2258,7 +2303,46 @@ add_defer_command_gtk_BM (void)
 
 #endif /*BISMONGTK*/
 ////////////////////////////////////////////////////////////////
+/// mail testing
   void
+do_test_mailhtml_bm (void)
+{
+  DBGPRINTF_BM
+    ("do_test_mailhtml_bm start: mailhtml (file='%s' contributor='%s' subject='%s' attachment %s)",
+     mailhtml_file_bm, mailhtml_contributor_bm, mailhtml_subject_bm,
+     mailhtml_attachment_bm ? : "*none*");
+#warning do_test_mailhtml_bm is very incomplete
+  FATAL_BM
+    ("incomplete do_test_mailhtml_bm (file='%s' contributor='%s' subject='%s' attachment %s)",
+     mailhtml_file_bm, mailhtml_contributor_bm, mailhtml_subject_bm,
+     mailhtml_attachment_bm ? : "*none*");
+  bool popenfile = mailhtml_file[0] == '|';
+  FILE *infil =
+    popenfile ? popen (mailhtml_file, "r") : fopen (mailhtml_file, "r");
+  if (!infil)
+    FATAL_BM ("fail to %s mail input %s - %m",
+              popenfile ? "popen" : "fopen", mailhtml_file);
+  char *bufzon = NULL;
+  size_t bufsiz = 0;
+  FILE *bufil = open_memstream (&bufzon, &bufsiz);
+  if (!bufil)
+    FATAL_BM ("open_memstream failure for %s contributor %s - %m",
+              mailhtml_file, mailhtml_contributor_bm);
+  char *linbuf = NULL;
+  int linsiz = 0;
+  do
+    {
+      int linlen = getline (&linbuf, &linsiz, infil);
+      if (linlen < 0)
+        break;
+    }
+  while (!feof (infil));
+}                               /* end do_test_mailhtml_bm */
+
+
+
+////////////////////////////////////////////////////////////////
+void
 give_prog_version_BM (const char *progname)
 {
   printf ("%s: version information\n", progname);
