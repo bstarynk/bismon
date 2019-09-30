@@ -1670,12 +1670,19 @@ backtrace~\footnote{Ian L. Taylor's
 \end{figure}
 
 This crude GTK3 interface~\footnote{It is implemented in 12.5KLOC of C
-  code in \texttt{gui\_GTKBM.c}, \texttt{newgui\_GTKBM.c} and
-  \texttt{guicode\_BM.c}. We won't debug that code -which crashes
-  often- but will remove it once it can be replaced by a web
-  interface.} is buggy and not satisfactory. It will and needs to be
-replaced by a Web interface. Several lessons have been gained with
-this experience:
+code in \texttt{gui\_GTKBM.c}, \texttt{newgui\_GTKBM.c} and
+\texttt{guicode\_BM.c}}. Anonymous objects are displayed also with
+their \index{comment!\texttt{comment}} \texttt{comment} predefined
+attribute\footnote{See not only the
+\href{https://en.wikipedia.org/wiki/Comment\_(computer\_programming)}{comment}
+wikipage but think of a \texttt{comment} macro in \textsc{Lisp},
+\textsc{Scheme} or \textsc{Gcc Melt} which would ignore all its
+arguments and stays macro-expanded to nil.}. We won't debug that GTK
+code -which crashes often\footnote{Because of a design bug related to
+garbage collection, practically too costly to be fixed.}- but will
+remove it once it can be replaced by a web interface. It will and
+needs to be replaced by a Web interface. Several lessons have been
+gained with this experience:
 
 \begin{itemize}
 \item using GTK~\footnote{Since GTK is a free software library, we
@@ -1709,10 +1716,12 @@ more priority to a Web interface, which is required once a small team
 of \emph{several} IoT developers need to interact with the
 \emph{bismon} persistent monitor. The GTK interface is just
 temporarily needed to fill the persistent store (till our web
-interface is usable). At end of 2018 (or first quarter of 2019) it
-will be entirely scrapped, and the static analysis expert (and other
-users pof \emph{Bismon}) will interact with \emph{bismon} thru some
-Web interface.
+interface is usable). We hope that it will be entirely scrapped and
+should be replaced by a web interface\footnote{Notice that
+\index{copy-paste} copy/pasting becomes then a difficult issue, see
+\bmurl{https://softwareengineering.stackexchange.com/q/393837/40065}.}
+, and the static analysis expert (and other users pof \emph{Bismon})
+will interact with \emph{bismon} thru some Web interface.
 
 Work on the future Web interface has significantly progressed
 ~\footnote{With the hand-written \texttt{web\_ONIONBM.c} using
