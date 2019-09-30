@@ -2374,6 +2374,7 @@ do_test_mailhtml_bm (void)
        * <?bismon-attachment?>
        ****/
       char *pc = linbuf;
+      char *prevpc = pc;
       char *pi = NULL;
       char *npc = NULL;
       char *repl = NULL;
@@ -2382,9 +2383,9 @@ do_test_mailhtml_bm (void)
           int lnpi = 0;
           npc = NULL;
 #define MAIL_WITH_PI_bm(CurPi)			\
-	((lnpi=strlen(CurPi))>0			\
-	 && !strncmp(pi,CurPi,lnpi)		\
-	 && (npc=pc+lnpi))
+	  ((lnpi=strlen(CurPi))>0		\
+	   && !strncmp(pi,CurPi,lnpi)		\
+	   && (npc=pc+lnpi))
           if (MAIL_WITH_PI_bm ("<?bismon-contributor?>"))
             repl = dyncontrib;
           else if (MAIL_WITH_PI_bm ("<?bismon-subject?>"))
@@ -2392,14 +2393,21 @@ do_test_mailhtml_bm (void)
           else if (MAIL_WITH_PI_bm ("<?bismon-attachment?>"))
             repl = mailhtml_attachment_bm;
           else
-            npc = pc + strlen ("<?bismon");
-        }
-      FATAL_BM ("incomplete do_test_mailhtml_bm linbuf %s", linbuf);
-#warning incomplete do_test_mailhtml_bm linbuf
+            {
+              npc = pc + strlen ("<?bismon");
+              repl = "<?bismon";
+            }
+          fwrite (prevpc, pc - prevpc, 1, bufil);
+          fputs (repl, bufil);
+          prevpc = pc;
+          pc = npc;
+        };
+      fwrite (pc, linbuf + linlen - pc, 1, bufil);
 #undef MAIL_WITH_PI_bm
       pc = npc;
     }
   while (!feof (infil));
+  fflush (bufil);
   free (linbuf), linbuf = NULL;
   free (dyncontrib), dyncontrib = NULL;
   linsiz = 0;
