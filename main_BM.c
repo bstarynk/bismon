@@ -1186,6 +1186,7 @@ main (int argc, char **argv)
     INFOPRINTF_BM ("batch mode requested without Web or GUI (%d jobs)",
                    nbworkjobs_BM);
   //
+#warning not sure of this....
   initialize_contributors_path_BM ();
   initialize_passwords_path_BM ();
   //
