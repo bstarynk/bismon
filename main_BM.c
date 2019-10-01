@@ -2345,9 +2345,9 @@ do_test_mailhtml_bm (void)
   }
   _.contnamev = objcontributornamepayl_BM (_.contribob);
   bool popenfile = mailhtml_file_bm[0] == '|';
-  FILE *infil =
-    popenfile ? popen (mailhtml_file_bm + 1, "r") : fopen (mailhtml_file_bm,
-                                                           "r");
+  FILE *infil = popenfile       //
+    ? popen (mailhtml_file_bm + 1, "r") //
+    : fopen (mailhtml_file_bm, "r");
   if (!infil)
     FATAL_BM ("fail to %s mail input %s - %m",
               popenfile ? "popen" : "fopen", mailhtml_file_bm);
@@ -2409,14 +2409,20 @@ do_test_mailhtml_bm (void)
     }
   while (!feof (infil));
   fflush (bufil);
+  long buflen = ftell (bufil);
+  if (!bufzon || buflen < 0 || buflen > bufsiz)
+    FATAL_BM
+      ("do_test_mailhtml_bm corrupted bufil (bufzon@%p buflen=%ld bufsiz=%ld) %m",
+       bufzon, buflen, (long) bufsiz);
+  bufzon[buflen] = (char) 0;
+  send_html_email_to_contributor_BM (mailhtml_subject_bm, bufzon,
+                                     mailhtml_attachment_bm, _.contribob,
+                                     CURFRAME_BM);
+  fclose (bufil);
+  free (bufzon), bufzon = NULL;
   free (linbuf), linbuf = NULL;
   free (dyncontrib), dyncontrib = NULL;
   linsiz = 0;
-#warning do_test_mailhtml_bm is very incomplete
-  FATAL_BM
-    ("incomplete do_test_mailhtml_bm (file='%s' contributor='%s' subject='%s' attachment %s)",
-     mailhtml_file_bm, mailhtml_contributor_bm, mailhtml_subject_bm,
-     mailhtml_attachment_bm ? : "*none*");
 }                               /* end do_test_mailhtml_bm */
 
 
