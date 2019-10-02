@@ -28,11 +28,11 @@
 
 
 ##### NOTICES
-## This script should be run from Bismon source directory
-## git cloned from github.com/bstarynk/bismon/
+## This script should be copied into /tmp/ then run from Bismon source
+## directory git cloned from github.com/bstarynk/bismon/
 ##
 ## the expected invocation could be
-## git bisect run misc/bisect-redump.sh
+## git bisect run /tmp/bisect-redump.sh
 ################
 make clean
 make all || (printf "\n\n*** make all failure %s ****\n" $(git log -1 | head -24c) > /dev/stderr ; exit 10)
