@@ -41,10 +41,11 @@
 ################
 make clean
 curcommitid=$(git log -1 | head -24c | cut -d' ' -f2)
-make all || (printf "\n\n*** make all failure %s ****\n" $curcommitid > /dev/stderr ; exit 10)
-mkdir /tmp/bismon-$curcommitid || (printf "\n\n*** bismon mkdir failure /tmp/bismon-%s ****\n" $curcommitid  > /dev/stderr ; exit 11)
-./bismon --dump-after-load /tmp/bismon-$curcommitid $BISMON_REDUMP_OPTIONS --batch || (printf "\n\n*** bismon dump failure %s ****\n" $curcommitid  > /dev/stderr ; exit 12)
-./bismon --load /tmp/bismon-$curcommitid $BISMON_REDUMP_OPTIONS --batch || (printf "\n\n*** bismon load failure %s ****\n" $curcommitid  > /dev/stderr ; exit 13)
+make all || {printf "\n\n*** make all failure %s ****\n" $curcommitid > /dev/stderr ; exit 10; ;}
+sync
+mkdir /tmp/bismon-$curcommitid || {printf "\n\n*** bismon mkdir failure /tmp/bismon-%s ****\n" $curcommitid  > /dev/stderr ; exit 11 ;}
+./bismon --dump-after-load /tmp/bismon-$curcommitid $BISMON_REDUMP_OPTIONS --batch || { printf "\n\n*** bismon dump failure %s ****\n" $curcommitid  > /dev/stderr ; exit 12 ;}
+./bismon --load /tmp/bismon-$curcommitid $BISMON_REDUMP_OPTIONS --batch || { printf "\n\n*** bismon load failure %s ****\n" $curcommitid  > /dev/stderr ; exit 13 ;}
 printf "\n**** bisect-redump ok for %s ****\n\n\n" $curcommitid 
 
 ###     make redump worked in commit 9c485536b3cf2dc4b41c 
