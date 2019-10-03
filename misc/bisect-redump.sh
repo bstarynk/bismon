@@ -41,7 +41,7 @@
 ################
 make clean
 curcommitid=$(git log -1 | head -24c | cut -d' ' -f2)
-make all || {printf "\n\n*** make all failure %s ****\n" $curcommitid > /dev/stderr ; exit 10; ;}
+make all || { printf "\n\n*** make all failure %s ****\n" $curcommitid > /dev/stderr ; exit 10 ;}
 sync
 mkdir /tmp/bismon-$curcommitid || {printf "\n\n*** bismon mkdir failure /tmp/bismon-%s ****\n" $curcommitid  > /dev/stderr ; exit 11 ;}
 ./bismon --dump-after-load /tmp/bismon-$curcommitid $BISMON_REDUMP_OPTIONS --batch || { printf "\n\n*** bismon dump failure %s ****\n" $curcommitid  > /dev/stderr ; exit 12 ;}
