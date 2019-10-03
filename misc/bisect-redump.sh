@@ -32,10 +32,20 @@
 ## directory git cloned from github.com/bstarynk/bismon/
 ##
 ## the expected invocation could be
-## git bisect run /tmp/bisect-redump.sh
+## cp misc/bisect-redump.sh $HOME/tmp/bisect-redump.sh
+## git bisect start
+## git bisect bad 9d78aadbb4b660 # this commit is bad
+## git bisect good 9c485536b3cf2dc4b # this commit is good
+## git bisect run $HOME/tmp/bisect-redump.sh
+## git bisect reset
 ################
 make clean
-make all || (printf "\n\n*** make all failure %s ****\n" $(git log -1 | head -24c) > /dev/stderr ; exit 10)
-./bismon --dump-after-load . $BISMON_REDUMP_OPTIONS --batch || (printf "\n\n*** make all failure %s ****\n" $(git log -1 | head -24c)  > /dev/stderr ; exit 11)
+curcommitid=$(git log -1 | head -24c | cut -d' ' -f2)
+make all || (printf "\n\n*** make all failure %s ****\n" $curcommitid > /dev/stderr ; exit 10)
+./bismon --dump-after-load /tmp/bismon-$curcommitid $BISMON_REDUMP_OPTIONS --batch || (printf "\n\n*** bismon dump failure %s ****\n" $curcommitid  > /dev/stderr ; exit 11)
+./bismon --load /tmp/bismon-$curcommitid $BISMON_REDUMP_OPTIONS --batch || (printf "\n\n*** bismon load failure %s ****\n" $curcommitid  > /dev/stderr ; exit 12)
+printf "\n**** bisect-redump ok for %s ****\n\n\n" $curcommitid 
 
+###     make redump worked in commit 9c485536b3cf2dc4b41c 
+###     make redump fails in commit 9d78aadbb4b6606da5d76
 ### eof misc/bisect-redump.sh
