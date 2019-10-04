@@ -34,8 +34,8 @@
 ## the expected invocation could be
 ## cp misc/bisect-redump.sh $HOME/tmp/bisect-redump.sh
 ## git bisect start
-## git bisect bad 9d78aadbb4b660 # this commit is bad
-## git bisect good 9c485536b3cf2dc4b # this commit is good
+## git bisect bad  9d78aadbb4b660 # this commit is bad
+## git bisect good 14a8a83d79958a # this commit is good
 ## git bisect run $HOME/tmp/bisect-redump.sh
 ## git bisect reset
 ################
