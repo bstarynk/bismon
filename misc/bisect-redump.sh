@@ -32,6 +32,7 @@
 ## directory git cloned from github.com/bstarynk/bismon/
 ##
 ## the expected invocation could be
+## rm -rf /tmp/bismonbi*
 ## cp misc/bisect-redump.sh $HOME/tmp/bisect-redump.sh
 ## git bisect start
 ## git bisect bad  9d78aadbb4b660 # this commit is bad
@@ -39,14 +40,14 @@
 ## git bisect run $HOME/tmp/bisect-redump.sh
 ## git bisect reset
 ################
-make clean
 curcommitid=$(git log -1 | head -24c | cut -d' ' -f2)
-make all || { printf "\n\n*** make all failure %s ****\n" $curcommitid > /dev/stderr ; exit 10 ;}
-sync
-bismontmpdir="/tmp/bismon-$curcommitid"
+bismontmpdir="/tmp/bismonbi-$curcommitid"
 mkdir $bismontmpdir || { printf "\n\n*** bismon mkdir failure /tmp/bismon-%s ****\n" $curcommitid  > /dev/stderr ; exit 11 ;}
 git log --name-status -1 > $bismontmpdir/_gitlog 2>&1
 [ -f  "$bismontmpdir/_gitlog" ] || { printf "\n\n*** bismon missing %s ****\n"  "$bismontmpdir/_gitlog"  > /dev/stderr ; exit 12 ;}
+make clean
+make all || { printf "\n\n*** make all failure %s ****\n" $curcommitid > /dev/stderr ; exit 100 ;}
+sync
 ./bismon --dump-after-load $bismontmpdir $BISMON_REDUMP_OPTIONS --batch || { printf "\n\n*** bismon dump failure %s ****\n" $curcommitid  > /dev/stderr ; exit 13 ;}
 ./bismon --load $bismontmpdir $BISMON_REDUMP_OPTIONS --batch || { printf "\n\n*** bismon load failure %s ****\n" $curcommitid  > /dev/stderr ; exit 14 ;}
 printf "\n**** bisect-redump ok for %s ****\n\n\n" $curcommitid 
