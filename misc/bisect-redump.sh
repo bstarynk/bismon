@@ -40,6 +40,7 @@
 ## git bisect run $HOME/tmp/bisect-redump.sh
 ## git bisect reset
 ### 6de222b6e329a01a84 is the first bad commit
+### 68e469314cb2bf9e72 is the last good commit
 ################
 curcommitid=$(git log -1 | head -24c | cut -d' ' -f2)
 bismontmpdir="/tmp/bismonbi-$curcommitid"
