@@ -752,6 +752,7 @@ handle_loaded_contributor_bm (struct stackframe_stBM *stkf,
       ("check_and_load_contributors_file lincnt#%d contribob %s with name %s, us@%p",
        lincnt, objectdbg_BM (_.contribob), curcontrib, us);
     ASSERT_BM (objpayload_BM (_.contribob) == us);
+    ASSERT_BM (curcontrib != NULL);
   }
   objunlock_BM (_.contribob);
   objhashsetaddpayl_BM (_.hsetob, _.contribob);
