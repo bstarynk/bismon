@@ -511,6 +511,7 @@ struct loadedcontribdata_bm
   const char *lcda_rcpath;
   rawid_tyBM lcda_curid;
   int lcda_lincnt;
+  int lcda_curlineno;
   objectval_tyBM **lcda_pcontribob;
   value_tyBM *lcda_pnamev;
   objectval_tyBM **lcda_phsetob;
@@ -652,8 +653,10 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
           struct loadedcontribdata_bm lcdata =
             {.lcda_magic = LOADEDCONTRIBDATAMAGIC_BM,
             .lcda_rcpath = rcpath,
+	    .lcda_curcontrib = curcontrib,
             .lcda_curid = curid,
             .lcda_lincnt = lincnt,
+            .lcda_curlineno = __LINE__,
             .lcda_pcontribob = &_.contribob,
             .lcda_pnamev = &_.namev,
             .lcda_phsetob = &_.hsetob,
