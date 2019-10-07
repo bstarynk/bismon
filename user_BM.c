@@ -584,6 +584,7 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
   /// read loop
   for (;;)
     {
+      ASSERT_BM (objhashashsetpayl_BM (_.hsetob));
       _.contribob = NULL;
       _.namev = NULL;
       ssize_t linlen = getline (&linbuf, &linsiz, fil);
@@ -726,6 +727,7 @@ handle_loaded_contributor_bm (struct stackframe_stBM *stkf,
   //const char* curalias = pd->lcda_curalias;
   int lincnt = pd->lcda_lincnt;
   _.contribob = findobjofid_BM (curid);
+  _.hsetob = pd->lcda_phsetob?(*pd->lcda_phsetob):NULL;
   if (!_.contribob)
     FATAL_BM
       ("in %s line#%d contributor %s of oid %s is missing in persistent heap,"
