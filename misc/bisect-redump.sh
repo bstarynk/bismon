@@ -39,6 +39,7 @@
 ## git bisect good 14a8a83d79958a # this commit is good
 ## git bisect run $HOME/tmp/bisect-redump.sh
 ## git bisect reset
+### 6de222b6e329a01a84 is the first bad commit
 ################
 curcommitid=$(git log -1 | head -24c | cut -d' ' -f2)
 bismontmpdir="/tmp/bismonbi-$curcommitid"
