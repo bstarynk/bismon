@@ -2415,9 +2415,9 @@ do_test_mailhtml_bm (void)
               npc = pc + strlen ("<?bismon");
               repl = "<?bismon";
             }
-          fwrite (prevpc, pc - prevpc, 1, bufil);
+          fwrite (prevpc, pi - prevpc, 1, bufil);
           fputs (repl, bufil);
-          prevpc = pc + lnpi;
+          prevpc = pi + lnpi;
           pc = npc;
         };
       fwrite (pc, linbuf + linlen - pc, 1, bufil);
