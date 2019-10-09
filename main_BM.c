@@ -1836,6 +1836,7 @@ parse_contact_BM (void)
   if (!valid_email_BM (contact_email_BM, CHECKDNS_BM, &errmsg))
     FATAL_BM ("invalid contact email (%s) after parsing %s", errmsg,
               contact_filepath_BM);
+#warning the contact should be used in send-bismon-html-email.scm and handled for login_ONIONBM.thtml
 }                               /* end parse_contact_BM */
 
 
