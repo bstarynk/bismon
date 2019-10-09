@@ -2417,7 +2417,7 @@ do_test_mailhtml_bm (void)
             }
           fwrite (prevpc, pc - prevpc, 1, bufil);
           fputs (repl, bufil);
-          prevpc = pc;
+          prevpc = pc + lnpi;
           pc = npc;
         };
       fwrite (pc, linbuf + linlen - pc, 1, bufil);
