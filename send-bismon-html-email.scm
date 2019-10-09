@@ -99,7 +99,7 @@
 		      bm-contributor-email))
 	  )
 	 )
-    (format #t ";;bm-really-emit-just-email mailcmd ~s~%body ~a~%" mailcmd bm-body-list)
+    (format #t ";;bm-really-emit-just-email mailcmd ~s~%body ~a~%" mailcmdstr bm-body-list)
     (let ( (mailcmdport (open-output-pipe mailcmdstr))
 	   )
       (if bm-body-list
@@ -137,7 +137,7 @@
 		      bm-subject
 		      bm-contributor-alias
 		      bm-contributor-email)
-	      (format #f "/usr/bin/mail.mailutils -a'Content-Type:text/html;charset=UTF-8' -r ~s -s ~s -A ~s ~s"
+	      (format #f "~a -a'Content-Type:text/html;charset=UTF-8' -r ~s -s ~s -A ~s ~s"
 		      bm-attached-mail-program
 		      bm-bismon-from-addr
 		      bm-subject
@@ -234,13 +234,17 @@
 (define (bm-emit-simple-email!)
   (format #t "; bm-emit-simple-email! oid ~s, name ~s, email ~s, alias ~s ~%"
 	  bm-contributor-oid bm-contributor-name bm-contributor-email bm-contributor-alias)
-  ;; incomplete
+  (bm-really-emit-just-email bm-contributor-email)
+  (format #t "; bm-emit-simple-email! done oid ~s, email ~s~%"
+	  bm-contributor-oid bm-contributor-email)
   )
 
 (define (bm-emit-attached-email!)
   (format #t "; bm-emit-attached-email! oid ~s, name ~s, email ~s, alias ~s, attach ~s ~%"
 	  bm-contributor-oid bm-contributor-name bm-contributor-email bm-contributor-alias bm-attachment)
-  ;; incomplete
+  (bm-really-emit-email-with-attachment bm-contributor-email)
+  (format #t "; bm-emit-attached-email! done oid ~s, email ~s~%"
+	  bm-contributor-oid bm-contributor-email)
   )
 
 ;; should load ~/.bismon-mail.scm if it exists
@@ -306,6 +310,7 @@
 		      (format #t "email with indirection ~s  and attachment ~s ~%" bm-contributor-email bm-attachment))
 		    (else
 		     (format #t "email to ~s with attachment ~s ~%" bm-contributor-email  bm-attachment)
+		     (bm-emit-attached-email!)
 		     )
 		    )
 		   )
@@ -323,6 +328,7 @@
 		  (format #t "email to ~s no attachment. Body:~%~s~%......~a.......~%~%"
 			  bm-contributor-email
 			  bm-body-list bm-contributor-oid)
+		  (bm-emit-simple-email!)
 		  )
 		 )
 	   )
