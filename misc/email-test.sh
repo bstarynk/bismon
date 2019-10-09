@@ -50,6 +50,7 @@ fi
 make bismon all
 
 function bmcleanup () {
+    date +"bmcleanup %c %n"
 }
 
 trap bmcleanup EXIT INT TERM ERR

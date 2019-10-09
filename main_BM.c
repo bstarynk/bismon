@@ -2392,7 +2392,7 @@ do_test_mailhtml_bm (void)
 #define MAIL_WITH_PI_bm(CurPi)			\
 	  ((lnpi=strlen(CurPi))>0		\
 	   && !strncmp(pi,CurPi,lnpi)		\
-	   && (npc=pc+lnpi))
+	   && (npc=pi+lnpi))
           if (MAIL_WITH_PI_bm ("<?bismon-contributor?>"))
             repl = dyncontrib;
           else if (MAIL_WITH_PI_bm ("<?bismon-subject?>"))
@@ -2427,6 +2427,7 @@ do_test_mailhtml_bm (void)
   while (!feof (infil));
   fflush (bufil);
   long buflen = ftell (bufil);
+  DBGPRINTF_BM("do_test_mailhtml_bm buflen=%ld; bufzon:\n%s\n", buflen, bufzon);
   if (!bufzon || buflen < 0 || buflen > bufsiz)
     FATAL_BM
       ("do_test_mailhtml_bm corrupted bufil (bufzon@%p buflen=%ld bufsiz=%ld) %m",
