@@ -60,10 +60,37 @@ cat >$htmltempfile <<-ENDHTML
 <!doctype html>
 <html>
 <head>
-<title>testing email in Bismon to <?bismon-contributor?>: <?bismon-subject?></title>
+<title>bismon email-test to <?bismon-contributor?>: <?bismon-subject?></title>
 </head>
 <body>
-<h1>
+<h1>bismon email-test</h1>
+<dl>
+<dd><tt>bismon-contributor</tt>: </dd>
+<dt><i><?bismon-contributor?></i></dt>
+
+<dd><tt>bismon-subject</tt>: </dd>
+<dt><i><?bismon-subject?></i></dt>
+
+<dd><tt>bismon-pid</tt>: </dd>
+<dt><i><?bismon-pid?></i></dt>
+
+<dd><tt>bismon-host</tt>: </dd>
+<dt><i><?bismon-host?></i></dt>
+
+<dd><tt>bismon-lastgitcommit</tt>: </dd>
+<dt><i><?bismon-lastgitcommit?></i></dt>
+
+<dd><tt>bismon-timestamp</tt>: </dd>
+<dt><i><?bismon-timestamp?></i></dt>
+
+</dl>
 </body>
 </html>
 ENDHTML
+################
+./bismon $bismonflags --mailhtml-file=$htmltempfile \
+	 --mailhtml-subject='email-test-plain' \
+	 --mailhtml-contributor=_6UYrSn7piPM_3eYhLtoXlmL \
+	 --batch
+################################################################
+#### eof email-test.sh
