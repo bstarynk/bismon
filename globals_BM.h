@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -46,7 +46,9 @@ extern FILE *gui_command_log_file_BM;
 /// these will be realpath-s after initialization
 extern const char *contributors_filepath_BM;
 extern const char *passwords_filepath_BM;
-
+extern const char *contact_filepath_BM;
+extern char *contact_name_BM;
+extern char *contact_email_BM;
 
 extern const char *myprogname_BM;
 

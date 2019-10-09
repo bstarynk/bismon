@@ -167,6 +167,7 @@
 
 #define CONTRIBUTORS_FILE_BM "contributors_BM"
 #define PASSWORDS_FILE_BM "passwords_BM"
+#define CONTACT_FILE_BM "contact_BM"
 #define MODULESRCDIR_BM "modules"
 #define MODULEBINDIR_BM "modubin"
 #define MODULEPREFIX_BM "modbm"

@@ -46,6 +46,12 @@ const char myhostname_BM[80];
 const char *contributors_filepath_BM;
 const char *passwords_filepath_BM;
 const char *added_passwords_filepath_BM;
+const char *contact_filepath_BM;
+char *contact_name_BM;
+char *contact_email_BM;
+
+
+
 static const char *chdir_after_load_bm;
 thread_local struct threadinfo_stBM *curthreadinfo_BM;
 thread_local volatile struct failurehandler_stBM *curfailurehandle_BM;
@@ -461,6 +467,14 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &passwords_filepath_BM,
    .description = "use PATH as the password file;\n"
    "\t .. default is passwords_BM or $HOME/passwords_BM",
+   .arg_description = "PATH"},
+  //
+  {.long_name = "contact-file",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &contact_filepath_BM,
+   .description = "use PATH as the master contact file;\n"
+   "\t .. default is contact_BM or $HOME/contact_BM",
    .arg_description = "PATH"},
   //
   {.long_name = "add-passwords",.short_name = (char) 0,
@@ -898,6 +912,8 @@ static void add_contributors_after_load_BM (void);
 static void remove_contributors_after_load_BM (void);
 static void initialize_contributors_path_BM (void);
 static void initialize_passwords_path_BM (void);
+static void initialize_contact_path_BM (void);
+static void parse_contact_BM (void);
 static void emit_has_predef_BM (void);
 static void do_dump_after_load_BM (void);
 static bool is_nice_locale_BM (const char *);
@@ -1189,6 +1205,8 @@ main (int argc, char **argv)
 #warning not sure of this....
   initialize_contributors_path_BM ();
   initialize_passwords_path_BM ();
+  initialize_contact_path_BM ();
+  parse_contact_BM ();
   //
   if (count_emit_has_predef_bm > 0)
     emit_has_predef_BM ();
@@ -1250,6 +1268,10 @@ main (int argc, char **argv)
     FATAL_BM ("--passwords-file path '%s' cannot start with minus,\n"
               "... use '--passwords-file ./%s' instead",
               passwords_filepath_BM, passwords_filepath_BM);
+  if (contact_filepath_BM && contact_filepath_BM[0] == '-')
+    FATAL_BM ("--contact-file path '%s' cannot start with minus,\n"
+              "... use '--contact-file ./%s' instead",
+              contact_filepath_BM, contact_filepath_BM);
   if (pid_filepath_bm && pid_filepath_bm[0] == '-')
     FATAL_BM ("--pid-file path '%s' cannot start with minus,\n"
               "... use '--pid-file ./%s' instead",
@@ -1682,6 +1704,139 @@ initialize_passwords_path_BM (void)
   INFOPRINTF_BM ("using %s as the password file", passwords_filepath_BM);
 }                               /* end initialize_passwords_path_BM */
 
+
+void
+initialize_contact_path_BM (void)
+{
+  if (!contact_filepath_BM)     // no --passwords-file program option
+    {
+      char *path = NULL;
+      char *homepath = NULL;
+      if (!access (CONTACT_FILE_BM, R_OK))
+        contact_filepath_BM = CONTACT_FILE_BM;
+      else if ((homepath = getenv ("HOME")) != NULL
+               && asprintf (&path, "%s/" CONTACT_FILE_BM, homepath) > 0
+               && path != NULL && (!access (path, R_OK)
+                                   || (free (path), (path = NULL))))
+        contact_filepath_BM = path;
+      if (!contact_filepath_BM)
+        {
+          char cwdbuf[128];
+          memset (cwdbuf, 0, sizeof (cwdbuf));
+          if (!getcwd (cwdbuf, sizeof (cwdbuf)))
+            strcpy (cwdbuf, "./");
+          FATAL_BM
+            ("no %s file found here in %s or in $HOME %s, pass --contact-file=... option to give one",
+             CONTACT_FILE_BM, cwdbuf, homepath);
+        }
+      if (access (contact_filepath_BM, R_OK))
+        FATAL_BM ("cannot read contact file %s - %m", contact_filepath_BM);
+      char *rcpath = realpath (contact_filepath_BM, NULL);
+      if (!rcpath)
+        FATAL_BM ("cannot get real path of contact file %s - %m",
+                  contact_filepath_BM);
+      if (path && rcpath != path)
+        free (path), path = NULL;
+      contact_filepath_BM = rcpath;
+    }
+  else
+    {                           // some given contact_filepath_bm with --contact-path= ... argument
+      if (access (contact_filepath_BM, R_OK))
+        FATAL_BM ("cannot read contact file %s - %m", contact_filepath_BM);
+      char *rcpath = realpath (contact_filepath_BM, NULL);
+      if (!rcpath)
+        FATAL_BM ("cannot get real path of contact file %s - %m",
+                  contact_filepath_BM);
+      contact_filepath_BM = rcpath;
+    }
+  if (access (contact_filepath_BM, R_OK))
+    FATAL_BM ("cannot read real contact file %s - %m", contact_filepath_BM);
+  struct stat mystat = { };
+  if (stat (contact_filepath_BM, &mystat))
+    FATAL_BM ("cannot stat real contact file %s - %m", contact_filepath_BM);
+  if ((mystat.st_mode & S_IFMT) != S_IFREG)
+    FATAL_BM ("real contact file %s is not a regular file",
+              contact_filepath_BM);
+  if ((mystat.st_mode & (S_IRWXG | S_IRWXO)) != 0)
+    FATAL_BM
+      ("real contact file %s should not be group or others readable/writable but only by owner; run chmod go-rwx on it",
+       contact_filepath_BM);
+  INFOPRINTF_BM ("using %s as the contact file", contact_filepath_BM);
+}                               /* end initialize_contact_path_BM */
+
+void
+parse_contact_BM (void)
+{
+#define CONTACT_MAXLEN_BM 256
+  FILE *cfil = fopen (contact_filepath_BM, "r");
+  if (!cfil)
+    FATAL_BM ("failed to open contact file %s - %m", contact_filepath_BM);
+  char linbuf[CONTACT_MAXLEN_BM];
+  int lineno = 0;
+  while (memset (linbuf, 0, sizeof (linbuf)),
+         fgets (linbuf, sizeof (linbuf), cfil))
+    {
+      lineno++;
+      if (linbuf[0] == '#' || linbuf[0] == '\n' || !linbuf[0])
+        continue;
+      int linlen = strlen (linbuf);
+      if (linlen > 0 && linbuf[linlen - 1] == '\n')
+        linbuf[--linlen] = (char) 0;
+      char *lt = strchr (linbuf, '<');
+      if (!lt)
+        FATAL_BM ("bad line#%d without '<' in contact file %s: %s",
+                  lineno, contact_filepath_BM, linbuf);
+      char *at = strchr (lt, '@');
+      if (!at)
+        FATAL_BM ("bad line#%d without '@' in contact file %s: %s",
+                  lineno, contact_filepath_BM, linbuf);
+      char *gt = strchr (at, '>');
+      if (!gt)
+        FATAL_BM ("bad line#%d without '>' in contact file %s: %s",
+                  lineno, contact_filepath_BM, linbuf);
+      if (contact_name_BM)
+        FATAL_BM ("bad line#%d in contact file %s (duplicate name): %s",
+                  lineno, contact_filepath_BM, linbuf);
+      if (contact_email_BM)
+        FATAL_BM ("bad line#%d in contact file %s (duplicate email): %s",
+                  lineno, contact_filepath_BM, linbuf);
+      {
+        char *endname = lt - 1;
+        while (endname > linbuf && isspace (*endname))
+          endname--;
+        char *begname = linbuf;
+        while (isspace (*begname) && begname < endname)
+          begname++;
+        int namlen = endname - begname;
+        contact_name_BM = calloc (namlen + 1, 1);
+        if (!contact_name_BM)
+          FATAL_BM ("failed to calloc contact name (%d bytes)", namlen + 1);
+        strncpy (contact_name_BM, begname, namlen);
+      }
+      {
+        char *endemail = gt - 1;
+        char *startemail = lt + 1;
+        if (startemail >= endemail)
+          FATAL_BM ("bad email in line#%d in contact file %s: %s",
+                    lineno, contact_filepath_BM, linbuf);
+        contact_email_BM = calloc (endemail - startemail + 1, 1);
+        if (!contact_email_BM)
+          FATAL_BM ("failed to calloc contact email (%d bytes)",
+                    endemail - startemail + 1);
+        strncpy (contact_email_BM, startemail, endemail - startemail);
+      }
+    }
+  fclose (cfil);
+#undef CONTACT_MAXLEN_BM
+  if (!contact_name_BM)
+    FATAL_BM ("missing contact name after parsing %s", contact_filepath_BM);
+  if (!contact_email_BM)
+    FATAL_BM ("missing contact email after parsing %s", contact_filepath_BM);
+  char *errmsg = NULL;
+  if (!valid_email_BM (contact_email_BM, CHECKDNS_BM, &errmsg))
+    FATAL_BM ("invalid contact email (%s) after parsing %s", errmsg,
+              contact_filepath_BM);
+}                               /* end parse_contact_BM */
 
 
 ////////////////
@@ -2385,10 +2540,10 @@ do_test_mailhtml_bm (void)
       char *repl = NULL;
       while ((pi = strstr (pc, "<?bismon")) != NULL)
         {
-	  char smallbuf[64];
+          char smallbuf[64];
           int lnpi = 0;
           npc = NULL;
-	  memset (smallbuf, 0, sizeof(smallbuf));
+          memset (smallbuf, 0, sizeof (smallbuf));
 #define MAIL_WITH_PI_bm(CurPi)			\
 	  ((lnpi=strlen(CurPi))>0		\
 	   && !strncmp(pi,CurPi,lnpi)		\
@@ -2399,17 +2554,18 @@ do_test_mailhtml_bm (void)
             repl = mailhtml_subject_bm;
           else if (MAIL_WITH_PI_bm ("<?bismon-attachment?>"))
             repl = mailhtml_attachment_bm;
-	  else if (MAIL_WITH_PI_bm ("<?bismon-pid?>")) {
-	    snprintf(smallbuf, sizeof(smallbuf),
-		     "pid %ld", (long)getpid());
-	    repl = smallbuf;
-	  }
-	  else if (MAIL_WITH_PI_bm ("<?bismon-host?>")) 
-	    repl = myhostname_BM;
-	  else if (MAIL_WITH_PI_bm ("<?bismon-lastgitcommit?>")) 
-	    repl = bismon_lastgitcommit;
-	  else if (MAIL_WITH_PI_bm ("<?bismon-timestamp?>")) 
-	    repl = bismon_timestamp;
+          else if (MAIL_WITH_PI_bm ("<?bismon-pid?>"))
+            {
+              snprintf (smallbuf, sizeof (smallbuf),
+                        "pid %ld", (long) getpid ());
+              repl = smallbuf;
+            }
+          else if (MAIL_WITH_PI_bm ("<?bismon-host?>"))
+            repl = myhostname_BM;
+          else if (MAIL_WITH_PI_bm ("<?bismon-lastgitcommit?>"))
+            repl = bismon_lastgitcommit;
+          else if (MAIL_WITH_PI_bm ("<?bismon-timestamp?>"))
+            repl = bismon_timestamp;
           else
             {
               npc = pc + strlen ("<?bismon");
@@ -2427,7 +2583,8 @@ do_test_mailhtml_bm (void)
   while (!feof (infil));
   fflush (bufil);
   long buflen = ftell (bufil);
-  DBGPRINTF_BM("do_test_mailhtml_bm buflen=%ld; bufzon:\n%s\n", buflen, bufzon);
+  DBGPRINTF_BM ("do_test_mailhtml_bm buflen=%ld; bufzon:\n%s\n", buflen,
+                bufzon);
   if (!bufzon || buflen < 0 || buflen > bufsiz)
     FATAL_BM
       ("do_test_mailhtml_bm corrupted bufil (bufzon@%p buflen=%ld bufsiz=%ld) %m",
