@@ -90,8 +90,8 @@ ENDHTML
 ################
 echo '********' $htmltempfile is '*******'
 cat -n $htmltempfile
+echo '=======' eof $htmltempfile '======='
 echo
-
 
 ./bismon $bismonflags --mailhtml-file=$htmltempfile \
 	 --mailhtml-subject='email-test-plain' \
