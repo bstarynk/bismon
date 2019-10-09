@@ -88,6 +88,11 @@ cat >$htmltempfile <<-ENDHTML
 </html>
 ENDHTML
 ################
+echo '********' $htmltempfile is '*******'
+cat -n $htmltempfile
+echo
+
+
 ./bismon $bismonflags --mailhtml-file=$htmltempfile \
 	 --mailhtml-subject='email-test-plain' \
 	 --mailhtml-contributor=_6UYrSn7piPM_3eYhLtoXlmL \
