@@ -2373,6 +2373,10 @@ do_test_mailhtml_bm (void)
        * <?bismon-contributor?>
        * <?bismon-subject?>
        * <?bismon-attachment?>
+       * <?bismon-pid?>
+       * <?bismon-host?>
+       * <?bismon-lastgitcommit?>
+       * <?bismon-timestamp?>
        ****/
       char *pc = linbuf;
       char *prevpc = pc;
@@ -2381,8 +2385,10 @@ do_test_mailhtml_bm (void)
       char *repl = NULL;
       while ((pi = strstr (pc, "<?bismon")) != NULL)
         {
+	  char smallbuf[64];
           int lnpi = 0;
           npc = NULL;
+	  memset (smallbuf, 0, sizeof(smallbuf));
 #define MAIL_WITH_PI_bm(CurPi)			\
 	  ((lnpi=strlen(CurPi))>0		\
 	   && !strncmp(pi,CurPi,lnpi)		\
@@ -2393,6 +2399,17 @@ do_test_mailhtml_bm (void)
             repl = mailhtml_subject_bm;
           else if (MAIL_WITH_PI_bm ("<?bismon-attachment?>"))
             repl = mailhtml_attachment_bm;
+	  else if (MAIL_WITH_PI_bm ("<?bismon-pid?>")) {
+	    snprintf(smallbuf, sizeof(smallbuf),
+		     "pid %ld", (long)getpid());
+	    repl = smallbuf;
+	  }
+	  else if (MAIL_WITH_PI_bm ("<?bismon-host?>")) 
+	    repl = myhostname_BM;
+	  else if (MAIL_WITH_PI_bm ("<?bismon-lastgitcommit?>")) 
+	    repl = bismon_lastgitcommit;
+	  else if (MAIL_WITH_PI_bm ("<?bismon-timestamp?>")) 
+	    repl = bismon_timestamp;
           else
             {
               npc = pc + strlen ("<?bismon");
