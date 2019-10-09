@@ -58,9 +58,17 @@ trap bmcleanup EXIT INT TERM ERR
 ################
 echo
 
+echo running: \
 ./bismon $bismonflags --mailhtml-file=misc/protoemail.html \
 	 --mailhtml-subject='email-test-plain-proto' \
 	 --mailhtml-contributor=_6UYrSn7piPM_3eYhLtoXlmL \
 	 --batch
+echo
+
+./bismon $bismonflags --mailhtml-file=misc/protoemail.html \
+	 --mailhtml-subject='email-test-plain-proto' \
+	 --mailhtml-contributor=_6UYrSn7piPM_3eYhLtoXlmL \
+	 --batch
+
 ################################################################
 #### eof email-test.sh
