@@ -1334,9 +1334,10 @@ do_forgot_email_onion_handler_BM (const char *formuser,
 {
   objectval_tyBM *k_forgot_email_onion_handler = BMK_1u5f1jbZq8B_2Pyfxp9jdyh;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_forgot_email_onion_handler,
-                 objectval_tyBM * contribob;
+		  objectval_tyBM * contribob; //
     );
-  WARNPRINTF_BM ("do_forgot_email_onion_handler_BM '%s' unimplemented", formuser);
+  WARNPRINTF_BM ("do_forgot_email_onion_handler_BM '%s' unimplemented (contact name '%s' email '%s')",
+		 formuser, contact_name_BM, contact_email_BM);
 
   char *respbuf = NULL;
   size_t respsiz = 0;
@@ -1891,7 +1892,7 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
           WARNPRINTF_BM
             ("failed to put JSON object in  webexob %s reqpath '%s' for size %ld\n"
              "... and data *****\n%s\n****\n", objectdbg_BM (_.webexob),
-             reqpath, bldata);
+             reqpath, (long) blsiz, bldata);
         objtouchnow_BM (_.jsonob);
       }
   }

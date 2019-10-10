@@ -1807,10 +1807,10 @@ parse_contact_BM (void)
         char *begname = linbuf;
         while (isspace (*begname) && begname < endname)
           begname++;
-        int namlen = endname - begname;
-        contact_name_BM = calloc (namlen + 1, 1);
+        int namlen = endname - begname + 1;
+        contact_name_BM = calloc (namlen + 2, 1);
         if (!contact_name_BM)
-          FATAL_BM ("failed to calloc contact name (%d bytes)", namlen + 1);
+          FATAL_BM ("failed to calloc contact name (%d bytes)", namlen + 2);
         strncpy (contact_name_BM, begname, namlen);
       }
       {
