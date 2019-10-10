@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>{# file forgotemail_ONIONBM.thtml #}
+{# a template file for libOnion's template system #}
+<head>
+<title>Login to Bismon</title>
+<meta charset="utf-8">
+<style>
+  body { background-color: lightcyan; }
+  p.tinyinfo_cl { background-color: azure; font-size: 80% }
+  p.explain_cl { background-color: lavenderblush; font-size: 105%; }
+  span.smallspan_cl { background-color: ivory; font-size: 90% }
+  label.expl_cl { background-color: peachpuff; foreground-color: navy; font-size: 75%; font-family: Serif }
+  a.contact_cl { bachground-color: oldlace };
+</style>
+</head>
+<body>
+<h1>forgotten Bismon password on {{bismon_host}} for {{contributor_name}}</h1>
+
+<p>Someone, probably you {{contributor_name}} at
+<tt>{{contributor_email}}</tt> (of oid <tt>{{contributor_oid}}</tt>),
+claim to have forgotten the login password for the <a
+href='https://github.com/bstarynk/bismon'>bismon</a> process
+{{bismon_pid}} on {{bismon_host}}. If you want to change your password, browse <a href='{{bismon_forgot_email_url}}'>{{bismon_forgot_email_url}}</a> within ten minutes.</p>
+
+  <p class='tinyinfo_cl'><i>This particular</i> <tt>Bismon</tt> server is managed by {{contact_name}}, who can be contacted by email to <a class='contact_cl' href='mailto:{{contact_email}}'>{{contact_email}}</a>, notably for help.</p>
+  
+
+  <p class='tinyinfo_cl'><b>PS:</b> to customize this, edit the <tt>forgotemail_ONIONBM.thtml</tt> file.</p>
+  </body>
+</html>
