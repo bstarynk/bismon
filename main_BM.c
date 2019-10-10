@@ -1822,7 +1822,7 @@ parse_contact_BM (void)
         contact_email_BM = calloc (endemail - startemail + 2, 1);
         if (!contact_email_BM)
           FATAL_BM ("failed to calloc contact email (%d bytes)",
-                    endemail - startemail + 2);
+                    (int) (endemail - startemail + 2));
         strncpy (contact_email_BM, startemail, endemail - startemail + 1);
       }
     }

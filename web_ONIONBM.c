@@ -1321,15 +1321,18 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
 }                               /* end login_onion_handler_BM */
 
 
+
+
+
 static onion_connection_status
 do_forgot_email_onion_handler_BM (const char *formuser,
                     onion_request * req, onion_response * resp)
 {
-  objectval_tyBM *k_forgot_email_onion_handler = BMK__1u5f1jbZq8B_2Pyfxp9jdyh;
+  objectval_tyBM *k_forgot_email_onion_handler = BMK_1u5f1jbZq8B_2Pyfxp9jdyh;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_forgot_email_onion_handler,
                  objectval_tyBM * contribob;
     );
-  WARNPRINTF_BM ("do_forgot_email_onion_handler_BM %s unimplemented", formuser);
+  WARNPRINTF_BM ("do_forgot_email_onion_handler_BM '%s' unimplemented", formuser);
 
   char *respbuf = NULL;
   size_t respsiz = 0;

@@ -60,6 +60,14 @@
   <p class='tinyinfo_cl'>Login form generated at {{gentime}}.</p>
 
   <p  class='explain_cl'>Please contact <a class='contact_cl' href='mailto:basile.starynkevitch@cea.fr'>Basile Starynkevitch <i>by email</i></a> for hopefully constructive suggestions.</p>
+
+  <p class='tinyinfo_cl'>For <i>this</i> particular <tt>Bismon</tt>
+  server instance, the responsible person is <i>{{contact_name}}</i>
+  of
+  email <a class='contact_cl' href='mailto:{{contact_email}}'><tt>{{contact_email}}</tt></a>
+  and might be contacted
+  for any <a href='https://en.wikipedia.org/wiki/General_Data_Protection_Regulation'>GDPR</a>
+  related topics.</p>.
   
   <hr/>
   <p class='tinyinfo_cl'><b>NB:</b> The development
@@ -77,4 +85,5 @@ programme, <a href='http://decoder-project.eu'>DECODER</a> project
   Any opinions are only those of the authors and contributors of <a href='http://github.com/bstarynk/bismon/'><tt>Bismon</tt></a>.</p>
 
   
+  <p class='tinyinfo_cl'><b>PS:</b> to customize this, edit the <tt>login_ONIONBM.thtml</tt> file.</p>
 </html>
