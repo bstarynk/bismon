@@ -423,7 +423,7 @@ static onion_connection_status
 login_onion_handler_BM (void *clientdata,
                         onion_request * req, onion_response * resp);
 static onion_connection_status
-do_forgot_onion_BM (const char *username,
+do_forgot_email_onion_handler_BM (const char *username,
                     onion_request * req, onion_response * resp);
 
 static onion_connection_status
@@ -1309,10 +1309,9 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
         }
       else if (formuser && formdoforgot)
         {
-          DBGPRINTF_BM
-            ("login_ONIONBM_thtml doforgot %s user '%s' unimplemented",
-             formdoforgot, formuser);
-          return do_forgot_onion_BM (formuser, req, resp);
+          DBGPRINTF_BM ("login_ONIONBM_thtml doforgot %s user '%s'",
+			formdoforgot, formuser);
+          return do_forgot_email_onion_handler_BM (formuser, req, resp);
         }
     }
   /// temporary
@@ -1323,10 +1322,14 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
 
 
 static onion_connection_status
-do_forgot_onion_BM (const char *formuser,
+do_forgot_email_onion_handler_BM (const char *formuser,
                     onion_request * req, onion_response * resp)
 {
-  WARNPRINTF_BM ("do_forgot_onion_BM %s unimplemented", formuser);
+  objectval_tyBM *k_forgot_email_onion_handler = BMK__1u5f1jbZq8B_2Pyfxp9jdyh;
+  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_forgot_email_onion_handler,
+                 objectval_tyBM * contribob;
+    );
+  WARNPRINTF_BM ("do_forgot_email_onion_handler_BM %s unimplemented", formuser);
 
   char *respbuf = NULL;
   size_t respsiz = 0;
@@ -1366,7 +1369,7 @@ do_forgot_onion_BM (const char *formuser,
   onion_response_flush (resp);
   free (respbuf), respbuf = NULL;
   return OCS_PROCESSED;
-}                               /* end do_forgot_onion_BM */
+}                               /* end do_forgot_email_onion_BM */
 
 
 
