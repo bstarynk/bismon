@@ -1827,8 +1827,9 @@ parse_contact_BM (void)
       }
     }
   fclose (cfil);
-  DBGPRINTF_BM ("parse_contact_BM: contact filepath '%s' name '%s' email '%s'",
-		contact_filepath_BM, contact_name_BM, contact_email_BM);
+  DBGPRINTF_BM
+    ("parse_contact_BM: contact filepath '%s' name '%s' email '%s'",
+     contact_filepath_BM, contact_name_BM, contact_email_BM);
 #undef CONTACT_MAXLEN_BM
   if (!contact_name_BM)
     FATAL_BM ("missing contact name after parsing %s", contact_filepath_BM);

@@ -1091,8 +1091,10 @@ custom_onion_handler_BM (void *clientdata,
                           OD_DUP_VALUE);
           onion_dict_add (ctxdic, "checksum", bismon_checksum, OD_DUP_VALUE);
           onion_dict_add (ctxdic, "gentime", nowbuf, OD_DUP_VALUE);
-	  onion_dict_add (ctxdic, "contact_name", contact_name_BM, OD_DUP_VALUE);
-	  onion_dict_add (ctxdic, "contact_email", contact_email_BM, OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "contact_name", contact_name_BM,
+                          OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "contact_email", contact_email_BM,
+                          OD_DUP_VALUE);
           login_ONIONBM_thtml (ctxdic, resp);
           onion_dict_free (ctxdic);
           result = OCS_PROCESSED;
