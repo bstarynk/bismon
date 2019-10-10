@@ -59,7 +59,9 @@
 
   <p class='tinyinfo_cl'>Login form generated at {{gentime}}.</p>
 
-  <p  class='explain_cl'>Please contact <a class='contact_cl' href='mailto:basile.starynkevitch@cea.fr'>Basile Starynkevitch <i>by email</i></a> for hopefully constructive suggestions.</p>
+  <p class='tinyinfo_cl'><i>This particular</i> <tt>Bismon</tt> server is managed by {{contact_name}}, who can be contacted by email to <a class='contact_cl' href='mailto:{{contact_email}}'>{{contact_email}}</a>.</p>
+
+  <p  class='explain_cl'>Please contact <a class='contact_cl' href='mailto:basile@starynkevitch.net'>Basile Starynkevitch <i>by email</i></a> for hopefully constructive suggestions.</p>
   
   <hr/>
   <p class='tinyinfo_cl'><b>NB:</b> The development
