@@ -284,7 +284,12 @@ A main human responsible contact should be given in a `contact_BM`
 file (comments starting with `#` are accepted inside, but it should
 have a line inspired by `John Doe <bismon.master@example.com>`). That
 file should be in the current directory or your home directory or
-explicitly given with `--contact-file=PATH`.
+explicitly given with `--contact-file=PATH`. My `~/contact_BM` file could be:
+
+```
+# file $HOME/contact_BM
+Bismon master (Basile Starynkevitch) <bismon-master@example.com>
+```
 
 #### extra `git` configuration
 

@@ -707,6 +707,8 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
      nbcontrib, rcpath);
 }                               /* end check_and_load_contributors_file_BM */
 
+
+
 static void
 handle_loaded_contributor_bm (struct stackframe_stBM *stkf,
                               struct loadedcontribdata_bm *pd)
@@ -774,6 +776,7 @@ handle_loaded_contributor_bm (struct stackframe_stBM *stkf,
   *(pd->lcda_phsetob) = _.hsetob;
   *(pd->lcda_pcontribob) = _.contribob;
 }                               /* end of handle_loaded_contributor_bm */
+
 
 ////////////////
 
@@ -2205,12 +2208,13 @@ send_html_email_to_contributor_BM (const char *subject, const char *htmlbody,
   if (scripid == 0)
     {
       // child process
-      const char *argarr[5] = { };
+      const char *argarr[8] = { };
       memset (argarr, 0, sizeof (argarr));
       argarr[0] = SEND_BISMON_HTML_EMAIL_SCRIPT_BM;
-      argarr[1] = subject;
-      argarr[2] = contribidbuf;
-      argarr[3] = attachment;
+      argarr[1] = contact_email_BM;
+      argarr[2] = subject;
+      argarr[3] = contribidbuf;
+      argarr[4] = attachment;
       (void) close (wrpip);
       if (dup2 (rdpip, STDIN_FILENO))
         FATAL_BM ("dup2 rdpip failed in emailing script '%s' to %s - %m",

@@ -1819,14 +1819,16 @@ parse_contact_BM (void)
         if (startemail >= endemail)
           FATAL_BM ("bad email in line#%d in contact file %s: %s",
                     lineno, contact_filepath_BM, linbuf);
-        contact_email_BM = calloc (endemail - startemail + 1, 1);
+        contact_email_BM = calloc (endemail - startemail + 2, 1);
         if (!contact_email_BM)
           FATAL_BM ("failed to calloc contact email (%d bytes)",
-                    endemail - startemail + 1);
-        strncpy (contact_email_BM, startemail, endemail - startemail);
+                    endemail - startemail + 2);
+        strncpy (contact_email_BM, startemail, endemail - startemail + 1);
       }
     }
   fclose (cfil);
+  DBGPRINTF_BM ("parse_contact_BM: contact filepath '%s' name '%s' email '%s'",
+		contact_filepath_BM, contact_name_BM, contact_email_BM);
 #undef CONTACT_MAXLEN_BM
   if (!contact_name_BM)
     FATAL_BM ("missing contact name after parsing %s", contact_filepath_BM);
