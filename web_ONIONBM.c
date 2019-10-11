@@ -2669,7 +2669,15 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
     case SIGCHLD:
       {
         pid_t pid = siginf.ssi_pid;
-        DBGPRINTF_BM ("read_sigfd_BM got SIGCHLD pid=%d", (int) pid);
+	if (debugmsg_BM) {
+	  char exebuf[64];
+	  char pathbuf[64];
+	  memset(exebuf, 0, sizeof(exebuf));
+	  memset(pathbuf, 0, sizeof(pathbuf));
+	  snprintf(pathbuf, sizeof(pathbuf), "/proc/%d/exe", pid);
+	  readlink(pathbuf, exebuf, sizeof(exebuf)-1);
+	  DBGPRINTF_BM ("read_sigfd_BM got SIGCHLD pid=%d (%s)", (int) pid, exebuf);
+	}
         handle_sigchld_BM (pid);
         return false;
       }
@@ -2772,6 +2780,7 @@ handle_sigchld_BM (pid_t pid)
     }
   else
     {
+      DBGPRINTF_BM("handle_sigchld_BM pid%d wpid%d", (int) pid, (int) wpid);
       char pidbuf[128];
       memset (pidbuf, 0, sizeof (pidbuf));
       snprintf (pidbuf, sizeof (pidbuf), "/proc/%d/cmdline", (int) pid);
