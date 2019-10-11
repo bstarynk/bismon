@@ -523,7 +523,7 @@ agenda_continue_after_gc_BM (void)
          (long) gettid_BM (), elapsedtime_BM ());
       webonion_continue_after_gc_BM ();
     }
-    usleep (5);
+  usleep (5);
   DBGPRINTF_BM ("agenda_continue_after_gc end tid#%ld elapsed %.3f s",
                 (long) gettid_BM (), elapsedtime_BM ());
 }                               /* end agenda_continue_after_gc_BM */

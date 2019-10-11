@@ -1551,7 +1551,6 @@ extern parser_decorate_string_inside_sigBM parsstringinside_guicmd_BM;
 ////////////////////////////////////////////////////////////////
 //**************************************************************
 ////////////////////////////////////////////////////////////////
-
 /// web specific functions
 extern void initialize_webonion_BM (void);      // initialize webonion before loading 
 // GC support for websessiondata & webexchangedata

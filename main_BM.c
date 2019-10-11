@@ -72,7 +72,6 @@ int defer_gtk_writepipefd_BM = -1;
 static void rungui_BM (int nbjobs);
 #endif /*BISMONGTK*/
 ////////////////
-
 const char *onion_ssl_certificate_BM;
 const char *onion_web_base_BM;
 const char *onion_anon_web_session_BM;
@@ -629,7 +628,7 @@ const GOptionEntry optionstab_bm[] = {
    .description = "run web interface with ONION",
    .arg_description = NULL},
 #endif /*BISMONGTK*/
-  //
+    //
   {.long_name = "batch",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
@@ -751,7 +750,7 @@ const GOptionEntry optionstab_bm[] = {
    .description =
    "Create an anonymous web session, and write its cookie in the given COOKIEFILE",
    .arg_description = "COOKIEFILE"},
-    /// end of options
+  /// end of options
   {}
 };
 
@@ -1143,8 +1142,8 @@ main (int argc, char **argv)
                   opterr ? opterr->message : "??");
       g_option_context_free (weboptctx);
     }
-    ///
-    if (debugmsg_BM)
+  ///
+  if (debugmsg_BM)
     fprintf (stderr,
              "debug messages enabled %s pid %d timestamp %s commit %s\n",
              myprogname_BM, (int) getpid (), bismon_timestamp,
@@ -1232,9 +1231,9 @@ main (int argc, char **argv)
           initialize_webonion_BM ();
         }
     }
-    DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
-                  run_gtk_BM ? "true" : "false",
-                  run_onion_BM ? "true" : "false");
+  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
+                run_gtk_BM ? "true" : "false",
+                run_onion_BM ? "true" : "false");
   if (!load_dir_bm)
     load_dir_bm = ".";
   else if (load_dir_bm[0] == '-')
@@ -1424,8 +1423,8 @@ main (int argc, char **argv)
           run_onionweb_BM (nbworkjobs_BM);
         }
     }
-    ///
-    if (run_onion_BM)
+  ///
+  if (run_onion_BM)
     {
       stop_onion_event_loop_BM ();
     }

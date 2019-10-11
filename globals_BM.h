@@ -210,8 +210,6 @@ extern struct parenoffset_stBM commandblinkparens_BM;   /// offsets are absolute
 extern const struct parserops_stBM parsop_command_build_BM;
 extern const struct parserops_stBM parsop_command_nobuild_BM;
 #endif /*BISMONGTK*/
-
-
 /*****************************************************************/
 extern const char *onion_ssl_certificate_BM;
 extern const char *onion_web_base_BM;

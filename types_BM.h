@@ -67,8 +67,8 @@ enum gctyenum_BM
   /// for webonion
   typayl_websession_BM,
   typayl_webexchange_BM,
-    ///
-    typayl_jansjson_BM,
+  ///
+  typayl_jansjson_BM,
   typayl_user_BM,
   typayl_dict_BM,
 #define typayl_LAST_BM typayl_dict_BM
@@ -770,7 +770,7 @@ struct webexchangedata_stBM
 
 ////////////////////////////////////////////////////////////////
 /// NB: struct browsedval_stBM & struct browsedobj_stBM are in globals_BM.h
-  struct garbcoll_stBM
+struct garbcoll_stBM
 {
   uint32_t gc_magic;
   uint32_t gc_spareunsigned;

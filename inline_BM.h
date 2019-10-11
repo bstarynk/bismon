@@ -718,8 +718,7 @@ objhasstrbufferpayl_BM (const objectval_tyBM * obj)
   if (!payl)
     return false;
   int pt = valtype_BM ((const value_tyBM) payl);
-  return (pt == typayl_strbuffer_BM
-          || pt == typayl_webexchange_BM);
+  return (pt == typayl_strbuffer_BM || pt == typayl_webexchange_BM);
 }                               /* end objhasstrbuffer_BM */
 
 
@@ -731,8 +730,7 @@ objgetstrbufferpayl_BM (objectval_tyBM * obj)
   if (!payl)
     return NULL;
   int pt = valtype_BM ((const value_tyBM) payl);
-  if (pt == typayl_strbuffer_BM
-      || pt == typayl_webexchange_BM)
+  if (pt == typayl_strbuffer_BM || pt == typayl_webexchange_BM)
     return (struct strbuffer_stBM *) payl;
   return NULL;
 }                               /* end objgetstrbufferpayl_BM */

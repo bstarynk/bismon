@@ -755,7 +755,7 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   gcmarknewgui_BM (&GCdata);
 #endif /*BISMONGTK*/
     gcmarkwebonion_BM (&GCdata);
-    gcmarkagenda_BM (&GCdata);
+  gcmarkagenda_BM (&GCdata);
   gcmarkmodules_BM (&GCdata);
   gcframemark_BM (&GCdata, stkfram, 0);
   unsigned long nbobjscan = 0;
