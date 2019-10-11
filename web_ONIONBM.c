@@ -424,7 +424,7 @@ login_onion_handler_BM (void *clientdata,
                         onion_request * req, onion_response * resp);
 static onion_connection_status
 do_forgot_email_onion_handler_BM (const char *username,
-                    onion_request * req, onion_response * resp);
+                                  onion_request * req, onion_response * resp);
 
 static onion_connection_status
 do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
@@ -1314,7 +1314,7 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
       else if (formuser && formdoforgot)
         {
           DBGPRINTF_BM ("login_ONIONBM_thtml doforgot %s user '%s'",
-			formdoforgot, formuser);
+                        formdoforgot, formuser);
           return do_forgot_email_onion_handler_BM (formuser, req, resp);
         }
     }
@@ -1330,14 +1330,15 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
 
 static onion_connection_status
 do_forgot_email_onion_handler_BM (const char *formuser,
-                    onion_request * req, onion_response * resp)
+                                  onion_request * req, onion_response * resp)
 {
   objectval_tyBM *k_forgot_email_onion_handler = BMK_1u5f1jbZq8B_2Pyfxp9jdyh;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_forgot_email_onion_handler,
-		  objectval_tyBM * contribob; //
+                 objectval_tyBM * contribob;    //
     );
-  WARNPRINTF_BM ("do_forgot_email_onion_handler_BM '%s' unimplemented (contact name '%s' email '%s')",
-		 formuser, contact_name_BM, contact_email_BM);
+  WARNPRINTF_BM
+    ("do_forgot_email_onion_handler_BM '%s' unimplemented (contact name '%s' email '%s')",
+     formuser, contact_name_BM, contact_email_BM);
 
   char *respbuf = NULL;
   size_t respsiz = 0;
@@ -2770,7 +2771,34 @@ handle_sigchld_BM (pid_t pid)
       }
     }
   else
-    FATAL_BM ("handle_sigchld_BM waitpid failure pid#%d", pid);
+    {
+      char pidbuf[128];
+      memset (pidbuf, 0, sizeof (pidbuf));
+      snprintf (pidbuf, sizeof (pidbuf), "/proc/%d/cmdline", (int) pid);
+      FILE *pf = fopen (pidbuf, "r");
+      if (pf)
+        {
+          size_t ln = fread (pidbuf, sizeof (pidbuf) - 1, 1, pf);
+          if (ln > 0)
+            {
+              pidbuf[ln] = (char) 0;
+              for (int ix = 0; ix < ln; ix++)
+                if (pidbuf[ix] == 0)
+                  pidbuf[ix] = ' ';
+            }
+          else
+            strcpy (pidbuf, "??");
+          fclose (pf);
+        }
+      else
+        {
+          memset (pidbuf, 0, sizeof (pidbuf));
+          snprintf (pidbuf, sizeof (pidbuf), "/proc/%d/exe", (int) pid);
+          readlink (pidbuf, pidbuf, sizeof (pidbuf));
+        }
+      FATAL_BM ("handle_sigchld_BM waitpid failure pid#%d '%s' status#%d",
+                pid, pidbuf, wstatus);
+    }
   if (didfork)
     usleep (1000);              // sleep a little bit, to let the child process start
 }                               /* end handle_sigchld_BM */
