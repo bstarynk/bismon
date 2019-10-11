@@ -719,10 +719,7 @@ objhasstrbufferpayl_BM (const objectval_tyBM * obj)
     return false;
   int pt = valtype_BM ((const value_tyBM) payl);
   return (pt == typayl_strbuffer_BM
-#ifdef BISMONION
-          || pt == typayl_webexchange_BM
-#endif     /*BISMONION*/
-    );
+          || pt == typayl_webexchange_BM);
 }                               /* end objhasstrbuffer_BM */
 
 
@@ -735,10 +732,7 @@ objgetstrbufferpayl_BM (objectval_tyBM * obj)
     return NULL;
   int pt = valtype_BM ((const value_tyBM) payl);
   if (pt == typayl_strbuffer_BM
-#ifdef BISMONION
-      || pt == typayl_webexchange_BM
-#endif /*BISMONION*/
-    )
+      || pt == typayl_webexchange_BM)
     return (struct strbuffer_stBM *) payl;
   return NULL;
 }                               /* end objgetstrbufferpayl_BM */
@@ -2385,7 +2379,6 @@ objhashmapvalmakenodeofkeyspayl_BM (objectval_tyBM * obj,
 
 
 ////////////////////////////////////////////////////////////////
-#ifdef BISMONION
 bool
 objhaswebexchangepayl_BM (const objectval_tyBM * obj)
 {
@@ -2654,6 +2647,5 @@ objgetwebsessionpayl_BM (const objectval_tyBM * obj)
   return NULL;
 }                               /* end objgetwebsessionpayl_BM */
 
-#endif /*BISMONION*/
 ////////////////////////////////////////////////////////////////
 #endif /*INLINE_BM_INCLUDED */

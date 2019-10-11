@@ -88,7 +88,8 @@ using std::atomic_store;
 #ifdef BISMONGTK
 #include <gtk/gtk.h>
 #endif /*BISMONGTK*/
-#ifdef BISMONION
+
+
 // libonion from http://www.coralbits.com/libonion/ &
 // https://github.com/davidmoreno/onion
 #include <onion/onion.h>
@@ -103,7 +104,8 @@ using std::atomic_store;
 #include <onion/exportlocal.h>
 #include <onion/internal_status.h>
 #include <onion/websocket.h>
-#endif /*BISMONION */
+
+
 #include "cmacros_BM.h"
 #include "id_BM.h"
 #include "types_BM.h"

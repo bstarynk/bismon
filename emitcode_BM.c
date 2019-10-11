@@ -4464,7 +4464,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     }
 #else
 #warning emit_module°plain_module should be improved without BISMONGTK
-  WARNPRINTF_BM ("emit_module°plain_module BISMONION not implemented...\n"     //
+  WARNPRINTF_BM ("emit_module°plain_module without BISMONGTK not implemented...\n"     //
                  " ... srcpathstr %s modulob %s modgenob %s srcdirstrv %s\n",   //
                  srcpathstr, objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),      //
                  debug_outstr_value_BM (_.srcdirstrv, CURFRAME_BM, 0));

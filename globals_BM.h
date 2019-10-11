@@ -210,13 +210,15 @@ extern struct parenoffset_stBM commandblinkparens_BM;   /// offsets are absolute
 extern const struct parserops_stBM parsop_command_build_BM;
 extern const struct parserops_stBM parsop_command_nobuild_BM;
 #endif /*BISMONGTK*/
+
+
 /*****************************************************************/
-#ifdef BISMONION
 extern const char *onion_ssl_certificate_BM;
 extern const char *onion_web_base_BM;
 extern const char *onion_anon_web_session_BM;
-#endif /*BISMONION*/
 /*****************************************************************/
+
+
 #define UNSPECIFIED_BM ((void*)(&unspecifieddata_BM))
 #define HAS_GLOBAL_BM(Nam) extern objectval_tyBM*globdata_##Nam##_BM;
 #include "_bm_global.h"

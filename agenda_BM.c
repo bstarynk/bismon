@@ -108,6 +108,8 @@ agenda_wait_gc_BM (void)
   pthread_mutex_unlock (&ti_agendamtx_BM);
 }                               /* end agenda_wait_gc_BM */
 
+
+
 // the work routine, passed to pthread_create
 void *
 run_agendaworker_BM (void *ad)
@@ -227,14 +229,19 @@ run_agendaworker_BM (void *ad)
   return NULL;
 }                               /* end run_agendaworker_BM */
 
+
+
 int
 agenda_nb_work_jobs_BM (void)
 {
   return ti_nbworkers_BM;
 }                               /* end agenda_nb_work_jobs_BM */
 
+
+
 extern double taskletcputime_BM (void) __attribute__((optimize ("-O3")));
 extern double taskletelapsedtime_BM (void) __attribute__((optimize ("-O3")));
+
 
 double
 taskletcputime_BM (void)
@@ -244,6 +251,7 @@ taskletcputime_BM (void)
     return clocktime_BM (CLOCK_THREAD_CPUTIME_ID) - ths;
   return NAN;
 }                               // end taskletcputime_BM
+
 
 double
 taskletelapsedtime_BM (void)
@@ -485,11 +493,9 @@ agenda_suspend_for_gc_BM (void)
       else
         break;
     }
-#ifdef BISMONION
   DBGPRINTF_BM
     ("agenda_suspend_for_gc_BM before webonion_suspend_before_gc_BM");
   webonion_suspend_before_gc_BM ();
-#endif //BISMONION
   DBGPRINTF_BM ("agenda_suspend_for_gc_BM done");
 #warning perhaps agenda_suspend_for_gc_BM should interact with web onion...
 }                               /* end agenda_suspend_for_gc_BM */
@@ -510,7 +516,6 @@ agenda_continue_after_gc_BM (void)
   }
   pthread_cond_broadcast (&ti_agendacond_BM);
   atomic_store (&ti_needgc_BM, false);
-#ifdef BISMONION
   if (bismon_has_web_BM ())
     {
       DBGPRINTF_BM
@@ -518,7 +523,6 @@ agenda_continue_after_gc_BM (void)
          (long) gettid_BM (), elapsedtime_BM ());
       webonion_continue_after_gc_BM ();
     }
-#endif /*BISMONION*/
     usleep (5);
   DBGPRINTF_BM ("agenda_continue_after_gc end tid#%ld elapsed %.3f s",
                 (long) gettid_BM (), elapsedtime_BM ());
@@ -580,6 +584,8 @@ agenda_run_deferred_after_gc_BM (void)
     }
   curfailurehandle_BM = oldflh;
 }                               /* end agenda_run_deferred_after_gc_BM */
+
+
 
 void
 agenda_defer_after_gc_BM (deferredaftergc_sigBM * rout,
@@ -649,6 +655,8 @@ agenda_internal_remove_tasklet_BM (objectval_tyBM * taskob)
   return false;
 }                               /* end agenda_internal_remove_tasklet_BM */
 
+
+
 void
 agenda_add_very_high_priority_tasklet_BM (objectval_tyBM * taskob)
 {
@@ -662,6 +670,7 @@ agenda_add_very_high_priority_tasklet_BM (objectval_tyBM * taskob)
   pthread_cond_broadcast (&ti_agendacond_BM);
 }                               /* end agenda_add_very_high_priority_tasklet_BM */
 
+
 void
 agenda_add_high_priority_tasklet_BM (objectval_tyBM * taskob)
 {
@@ -673,6 +682,7 @@ agenda_add_high_priority_tasklet_BM (objectval_tyBM * taskob)
   pthread_mutex_unlock (&ti_agendamtx_BM);
   pthread_cond_broadcast (&ti_agendacond_BM);
 }                               /* end agenda_add_high_priority_tasklet_BM */
+
 
 void
 agenda_add_normal_priority_tasklet_BM (objectval_tyBM * taskob)
@@ -710,6 +720,7 @@ agenda_add_very_low_priority_tasklet_BM (objectval_tyBM * taskob)
   pthread_cond_broadcast (&ti_agendacond_BM);
 }                               /* end agenda_add_low_priority_tasklet_BM */
 
+
 bool
 agenda_remove_tasklet_BM (objectval_tyBM * taskob)
 {
@@ -722,6 +733,7 @@ agenda_remove_tasklet_BM (objectval_tyBM * taskob)
   pthread_cond_broadcast (&ti_agendacond_BM);
   return r;
 }                               /* end agenda_remove_tasklet_BM */
+
 
 long
 agenda_get_counts_BM (long *pveryhigh, long *phigh, long *pnormal, long *plow,
@@ -762,6 +774,8 @@ agenda_get_counts_BM (long *pveryhigh, long *phigh, long *pnormal, long *plow,
   pthread_mutex_unlock (&ti_agendamtx_BM);
   return totcnt;
 }                               /* end agenda_get_counts_BM */
+
+
 
 long
 agenda_get_sets_BM (value_tyBM * pveryhighset,
@@ -805,6 +819,8 @@ agenda_get_sets_BM (value_tyBM * pveryhighset,
   pthread_mutex_unlock (&ti_agendamtx_BM);
   return totcnt;
 }                               /* end agenda_get_sets_BM */
+
+
 
 void
 run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,

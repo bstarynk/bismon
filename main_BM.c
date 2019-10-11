@@ -72,12 +72,12 @@ int defer_gtk_writepipefd_BM = -1;
 static void rungui_BM (int nbjobs);
 #endif /*BISMONGTK*/
 ////////////////
-#ifdef BISMONION
+
 const char *onion_ssl_certificate_BM;
 const char *onion_web_base_BM;
 const char *onion_anon_web_session_BM;
 extern void run_onionweb_BM (int nbjobs);
-#endif /*BISMONION*/
+
 extern void weakfailure_BM (void);
 
 // consider putting a gdb breakpoint here 
@@ -425,9 +425,6 @@ remove_contributor_bm (const gchar * optname __attribute__((unused)),
 }                               /* end remove_contributor_bm */
 
 
-#if defined(BISMONION) && defined (BISMONGTK)
-#pragma message "both BISMONION and BISMONGTK are defined"
-#endif
 
 ////////////////////////////////////////////////////////////////
 const GOptionEntry optionstab_bm[] = {
@@ -612,9 +609,9 @@ const GOptionEntry optionstab_bm[] = {
    "forcibly run a final garbage collection (after any dump or event loop)",
    .arg_description = NULL},
   //
-#if defined(BISMONION) && defined (BISMONGTK)
+#if defined (BISMONGTK)
   //
-  /* when both BISMONION and BISMONGTK */
+  /* when BISMONGTK and web */
   {.long_name = "gui",          //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
@@ -631,8 +628,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &run_onion_BM,
    .description = "run web interface with ONION",
    .arg_description = NULL},
-  /* end when both BISMONION and BISMONGTK */
-#endif /*both BISMONION and BISMONGTK */
+#endif /*BISMONGTK*/
   //
   {.long_name = "batch",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
@@ -732,7 +728,6 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "FILE"},
 #endif /*BISMONGTK*/
     //////////////////
-#ifdef BISMONION
     //
   {.long_name = "ssl-certificate",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
@@ -756,8 +751,6 @@ const GOptionEntry optionstab_bm[] = {
    .description =
    "Create an anonymous web session, and write its cookie in the given COOKIEFILE",
    .arg_description = "COOKIEFILE"},
-
-#endif /*BISMONION*/
     /// end of options
   {}
 };
@@ -1038,8 +1031,8 @@ main (int argc, char **argv)
   myprogname_BM = argv[0];
   if (argc > 1 && (!strcmp (argv[1], "-D") || !strcmp (argv[1], "--debug")))
     debugmsg_BM = true;
-#if defined(BISMONION) && defined (BISMONGTK)
-  /* when both BISMONION and BISMONGTK */
+#if defined (BISMONGTK)
+  /* when  BISMONGTK */
   if (strstr (basename (myprogname_BM), "gtk")
       || (argc > 1 && !strcmp (argv[1], "--gui"))
       || (argc > 2 && argv[1][0] == '-' && !strcmp (argv[1], "--gui")))
@@ -1057,7 +1050,7 @@ main (int argc, char **argv)
     }
   if (run_gtk_BM && run_onion_BM)
     INFOPRINTF_BM ("running both GUI (GTK) & Web (Onion) interfaces");
-#endif /*both BISMONION and BISMONGTK */
+#endif /* BISMONGTK */
   DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
                 run_gtk_BM ? "true" : "false",
                 run_onion_BM ? "true" : "false");
@@ -1137,7 +1130,6 @@ main (int argc, char **argv)
                   run_onion_BM ? "true" : "false",
                   argc, guiok ? "true" : "false");
   ////
-#ifdef BISMONION
   if (!guiok)
     {
       GOptionContext *weboptctx =
@@ -1151,7 +1143,6 @@ main (int argc, char **argv)
                   opterr ? opterr->message : "??");
       g_option_context_free (weboptctx);
     }
-#endif /*BISMONION*/
     ///
     if (debugmsg_BM)
     fprintf (stderr,
@@ -1230,7 +1221,6 @@ main (int argc, char **argv)
     DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
                   run_gtk_BM ? "true" : "false",
                   run_onion_BM ? "true" : "false");
-#ifdef BISMONION
   if (!batch_bm)
     {
       if (run_onion_BM)
@@ -1242,7 +1232,6 @@ main (int argc, char **argv)
           initialize_webonion_BM ();
         }
     }
-#endif /*BISMONION*/
     DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
                   run_gtk_BM ? "true" : "false",
                   run_onion_BM ? "true" : "false");
@@ -1380,7 +1369,6 @@ main (int argc, char **argv)
           rungui_BM (nbworkjobs_BM);
         }
     }
-#ifdef BISMONION
   else if (run_onion_BM && run_gtk_BM)
     {
       DBGPRINTF_BM ("both onion & gtk");
@@ -1393,7 +1381,7 @@ main (int argc, char **argv)
           fprintf (pidfile, "%d\n", (int) getpid ());
           fclose (pidfile);
           INFOPRINTF_BM
-            ("wrote pid %d (BISMONGTK & BISMONION) in pid-file %s",
+            ("wrote pid %d (BISMONGTK) in pid-file %s",
              (int) getpid (), pid_filepath_bm);
         }
       INFOPRINTF_BM ("running Web interface with ONION (& Gui!) for %d jobs",
@@ -1403,16 +1391,14 @@ main (int argc, char **argv)
                      nbworkjobs_BM);
       rungui_BM (nbworkjobs_BM);
     }
-#endif /*BISMONION with BISMONGTK */
 #endif /*BISMONGTK*/
     //
     DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
                   run_gtk_BM ? "true" : "false",
                   run_onion_BM ? "true" : "false");
-#ifdef BISMONION
   if (run_onion_BM && !run_gtk_BM)
     {
-      DBGPRINTF_BM ("BISMONION with run_onion_BM without run_gtk_BM");
+      DBGPRINTF_BM ("run_onion_BM without run_gtk_BM");
       if (batch_bm)
         {
           nbworkjobs_BM = 0;
@@ -1428,7 +1414,7 @@ main (int argc, char **argv)
                 FATAL_BM ("failed to open pid file %s - %m", pid_filepath_bm);
               fprintf (pidfile, "%d\n", (int) getpid ());
               fclose (pidfile);
-              INFOPRINTF_BM ("wrote pid %d (BISMONION) in pid-file %s",
+              INFOPRINTF_BM ("wrote pid %d in pid-file %s",
                              (int) getpid (), pid_filepath_bm);
             }
           INFOPRINTF_BM ("running ONION web interface for %d jobs %s",
@@ -1438,7 +1424,6 @@ main (int argc, char **argv)
           run_onionweb_BM (nbworkjobs_BM);
         }
     }
-#endif /*BISMONION*/
     ///
     if (run_onion_BM)
     {
@@ -2408,6 +2393,7 @@ startguilog_BM (void)
     }
 }                               /* end startguilog_BM */
 
+
 void
 endguilog_BM (void)
 {
@@ -2425,6 +2411,7 @@ endguilog_BM (void)
   gui_command_log_file_BM = NULL;
   fflush (NULL);
 }                               /* end endguilog_BM */
+
 
 void
 add_defer_command_gtk_BM (void)
@@ -2771,13 +2758,11 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
                           const closure_tyBM * endclosarg,
                           struct stackframe_stBM *stkf);
 #endif
-#ifdef BISMONION
   extern void
     onion_queue_process_BM (const stringval_tyBM * dirstrarg,
                             const node_tyBM * cmdnodarg,
                             const closure_tyBM * endclosarg,
                             struct stackframe_stBM *stkf);
-#endif
 #ifdef BISMONGTK
   if (gui_is_running_BM)
     {
@@ -2785,13 +2770,12 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
       return;
     }
 #endif
-#ifdef BISMONION
+  //
   if (web_is_running_BM)
     {
       onion_queue_process_BM (dirstrarg, cmdnodarg, endclosarg, stkf);
       return;
     }
-#endif
   FATAL_BM ("queue_process_BM without web or GUI");
 }                               /* end queue_process_BM */
 
@@ -2801,9 +2785,7 @@ log_begin_message_BM (void)
 #ifdef BISMONGTK
   extern void gtk_log_begin_message_BM (void);
 #endif
-#ifdef BISMONION
   extern void onion_log_begin_message_BM (void);
-#endif
 #ifdef BISMONGTK
   if (gui_is_running_BM)
     {
@@ -2811,13 +2793,11 @@ log_begin_message_BM (void)
       return;
     };
 #endif /*BISMONGTK*/
-#ifdef BISMONION
     if (web_is_running_BM)
     {
       onion_log_begin_message_BM ();
       return;
     }
-#endif
   FATAL_BM ("log_begin_message_BM without web or GUI");
 }                               /* end log_begin_message_BM */
 
@@ -2829,9 +2809,7 @@ log_end_message_BM (void)
 #ifdef BISMONGTK
   extern void gtk_log_end_message_BM (void);
 #endif
-#ifdef BISMONION
   extern void onion_log_end_message_BM (void);
-#endif
 #ifdef BISMONGTK
   if (gui_is_running_BM)
     {
@@ -2839,13 +2817,11 @@ log_end_message_BM (void)
       return;
     };
 #endif /*BISMONGTK*/
-#ifdef BISMONION
     if (web_is_running_BM)
     {
       onion_log_end_message_BM ();
       return;
     }
-#endif
   FATAL_BM ("log_end_message_BM without web or GUI");
 }                               /* end log_end_message_BM */
 
@@ -2857,9 +2833,7 @@ log_puts_message_BM (const char *str)
 #ifdef BISMONGTK
   extern void gtk_log_puts_message_BM (const char *);
 #endif
-#ifdef BISMONION
   extern void onion_log_puts_message_BM (const char *);
-#endif
 #ifdef BISMONGTK
   if (gui_is_running_BM)
     {
@@ -2867,13 +2841,11 @@ log_puts_message_BM (const char *str)
       return;
     };
 #endif /*BISMONGTK*/
-#ifdef BISMONION
     if (web_is_running_BM)
     {
       onion_log_puts_message_BM (str);
       return;
     }
-#endif
   FATAL_BM ("log_puts_message_BM without web or GUI for: %s", str);
 }                               /* end log_puts_message_BM */
 
@@ -2883,9 +2855,7 @@ log_object_message_BM (const objectval_tyBM * obj)
 #ifdef BISMONGTK
   extern void gtk_log_object_message_BM (const objectval_tyBM *);
 #endif
-#ifdef BISMONION
   extern void onion_log_object_message_BM (const objectval_tyBM *);
-#endif
 #ifdef BISMONGTK
   if (gui_is_running_BM)
     {
@@ -2893,13 +2863,11 @@ log_object_message_BM (const objectval_tyBM * obj)
       return;
     };
 #endif /*BISMONGTK*/
-#ifdef BISMONION
     if (web_is_running_BM)
     {
       onion_log_object_message_BM (obj);
       return;
     }
-#endif
   FATAL_BM ("log_object_message_BM without web or GUI for %s",
             objectdbg_BM (obj));
 }                               /* end log_object_message_BM */

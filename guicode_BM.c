@@ -1839,7 +1839,6 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // gtk_browse_data°sbuf_object
                                           &browserit_BM, bufmsg, -1,
                                           miscomm_brotag_BM, NULL);
       }
-#ifdef BISMONION
     if (objhaswebexchangepayl_BM (_.objbrows))
       {
         gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
@@ -1868,7 +1867,6 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // gtk_browse_data°sbuf_object
             free (buf), buf = NULL;
           }
       }
-#endif /* BISMONION */
   }
 #else /*!BISMONGTK */
   weakassertfailureat_BM

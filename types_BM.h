@@ -65,13 +65,8 @@ enum gctyenum_BM
   typayl_hashmapval_BM,
   typayl_hashmapbucket_BM,
   /// for webonion
-#ifdef BISMONION
   typayl_websession_BM,
   typayl_webexchange_BM,
-#else
-  typayl_hole1_BM,
-  typayl_hole2_BM,
-#endif /*BISMONION*/
     ///
     typayl_jansjson_BM,
   typayl_user_BM,
@@ -716,7 +711,6 @@ struct jansjson_stBM
 
 ////////////////////////////////////////////////////////////////
 ////// web related
-#ifdef BISMONION
 
 /// inspired by my (Basile Starynkevitch's) previous code in
 /// https://github.com/bstarynk/old-melt-monitor/ files monimelt.h &
@@ -773,7 +767,7 @@ struct webexchangedata_stBM
   onion_request *webx_requ;
   onion_response *webx_resp;
 };                              /* end webexchangedata_stBM */
-#endif /*BISMONION*/
+
 ////////////////////////////////////////////////////////////////
 /// NB: struct browsedval_stBM & struct browsedobj_stBM are in globals_BM.h
   struct garbcoll_stBM

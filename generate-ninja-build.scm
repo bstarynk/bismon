@@ -219,7 +219,7 @@
 (format #t "bm_commonwarnflags =  -Wall -Wextra -Wstack-usage=2048 -fdiagnostics-color=auto~%")
 (format #t "cwarnflags = $bm_commonwarnflags -Wmissing-prototypes~%")
 (format #t "cxxwarnflags = $bm_commonwarnflags~%")
-(format #t "defpreproflags = -DBISMONION -DBISMONGTK  -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED~%")
+(format #t "defpreproflags =  -DBISMONGTK  -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED~%")
 (format #t "incflags = -I. -I/usr/local/include~%")
 (let ( (envoptim (getenv "OPTIMFLAGS"))
        (envbmopt (getenv "BISMON_OPTIMFLAGS"))
