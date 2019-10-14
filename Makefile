@@ -128,13 +128,13 @@ heveadoc:  bismon bismongtk modules $(wildcard doc/*.tex doc/images/* doc/*.bib 
 count:
 	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n
 
-redump: bismon bismongtk bismonion modules
+redump: bismon  modules
 	@for f in $(GENERATED_HEADERS) $(GENERATED_CSOURCES) $(MODULES_SOURCES) *.bmon ; \
            do cp -vab $$f $$f%~ ; done
-	time ./bismongtk --dump-after-load . --batch
-	$(MAKE)  bismonion
+	time ./bismon --web --dump-after-load . --batch
+	$(MAKE)  bismon
 	printf "\n\n\n **** second redump run ***\n"
-	time ./bismonion --dump-after-load . --batch
+	time ./bismon --web --dump-after-load . --batch
 
 outdump: bismon bismongtk bismonion  modules
 	time ./bismongtk  --run-command 'rm -rvf /tmp/bd'  --dump-after-load /tmp/bd --batch
