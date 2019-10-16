@@ -66,6 +66,27 @@ static struct agenda_defer_stBM *agd_first_BM;
 static struct agenda_defer_stBM *agd_last_BM;
 
 
+
+
+struct agenda_postpone_stBM
+{
+  unsigned agpo_magic;
+  struct agenda_postpone_stBM *agpo_next;
+  struct agenda_postpone_stBM *agpo_prev;
+  double agpo_timestamp;
+  value_tyBM agpo_todo;         /* closure to apply or selector to send */
+  value_tyBM agpo_recv;         /* reciever, when sending */
+  value_tyBM agpo_arg1;
+  value_tyBM agpo_arg2;
+  value_tyBM agpo_arg3;
+};                              /* end of agenda_postpone_stBM */
+static struct agenda_postpone_stBM *agpostpone_first_BM;
+static static agenda_postpone_stBM *agpostpone_last_BM;
+
+
+
+
+
 static void *run_agendaworker_BM (void *);
 static void run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
                                             struct failurelockset_stBM *flh);
@@ -830,8 +851,8 @@ run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
     FATAL_BM ("bad tasklet object @%p", obtk);
   ASSERT_BM (flh != NULL);
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * obtk;
-                 value_tyBM failres;);
+                 objectval_tyBM * obtk; value_tyBM failres;
+    );
   _.obtk = obtk;
   curfailurehandle_BM = NULL;
   objlock_BM (_.obtk);
@@ -876,15 +897,12 @@ defer_module_dynload_BM (objectval_tyBM * modulobarg, const closure_tyBM * postc
   objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
   LOCALFRAME_BM (stkf, /*descr: */ k_defer_module_dynload,
                  objectval_tyBM * modulob;      //
-                 const closure_tyBM * postclos;
-                 value_tyBM arg1v;      //
+                 const closure_tyBM * postclos; value_tyBM arg1v;       //
                  value_tyBM arg2v;      //
                  value_tyBM arg3v;      //
                  objectval_tyBM * curob;        //
                  objectval_tyBM * routob;       //
-                 value_tyBM causev;
-                 value_tyBM errorv;
-    );
+                 value_tyBM causev; value_tyBM errorv;);
   extern void deferred_do_module_dynload_BM (value_tyBM * valarr, unsigned nbval, void *data);  /* in misc_BM.cc */
   _.modulob = objectcast_BM (modulobarg);
   _.postclos = closurecast_BM ((value_tyBM) postclosarg);
@@ -1011,5 +1029,67 @@ failure:
   PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 
 }                               /* end defer_module_dynload_BM */
+
+
+
+////////////////////////////////////////////////////////////////
+
+/// potstponed things to do
+#define POSTPONED_MINI_DELAY_MILLISEC_BM 512
+
+void
+do_postpone_defer_apply3_BM (int delayms, value_tyBM closarg,
+                             value_tyBM arg1arg, value_tyBM arg2arg,
+                             value_tyBM arg3arg, struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev stackf: */ stkf, /*descr: */ NULL,
+                 value_tyBM closv;      // closure
+                 value_tyBM arg1v;      // first argument
+                 value_tyBM arg2v;      // second argument
+                 value_tyBM arg3v;      // third argument
+                 value_tyBM tmpv;);
+  _.closv = closarg;
+  _.arg1v = arg1arg;
+  _.arg2v = arg2arg;
+  _.arg3v = arg3arg;
+  if (delayms < POSTPONED_MINI_DELAY_MILLISEC_BM)
+    delayms = POSTPONED_MINI_DELAY_MILLISEC_BM;
+  FATAL_BM
+    ("unimplemented do_postpone_defer_apply3_BM delayms#%d closv=%s arg1v=%s arg2v=%s arg3v=%s",
+     delayms, OUTSTRVALUE_BM (_.closv), OUTSTRVALUE_BM (_.arg1v),
+     OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v));
+#warning unimplemented do_postpone_defer_apply3_BM
+}                               /* end do_postpone_defer_apply3_BM */
+
+
+
+// defer a message send, running in the main thread
+void
+do_postpone_defer_send3_BM (int delayms, value_tyBM recvarg,
+                            objectval_tyBM * obselarg, value_tyBM arg1arg,
+                            value_tyBM arg2arg, value_tyBM arg3arg,
+                            struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev stackf: */ stkf, /*descr: */ NULL,
+                 value_tyBM recv;       // reciever
+                 objectval_tyBM * obsel;        // selector
+                 value_tyBM arg1v;      // first argument
+                 value_tyBM arg2v;      // second argument
+                 value_tyBM arg3v;      // third argument
+                 value_tyBM tmpv;);
+  _.recv = recvarg;
+  _.obsel = obselarg;
+  _.arg1v = arg1arg;
+  _.arg2v = arg2arg;
+  _.arg3v = arg3arg;
+  if (delayms < POSTPONED_MINI_DELAY_MILLISEC_BM)
+    delayms = POSTPONED_MINI_DELAY_MILLISEC_BM;
+  FATAL_BM
+    ("unimplemented do_postpone_defer_send3_BM delayms#%d recv=%s obsel=%s arg1v=%s arg2v=%s arg3v=%s",
+     delayms, OUTSTRVALUE_BM (_.recv), objectdbg_BM (_.obsel),
+     OUTSTRVALUE_BM (_.arg1v), OUTSTRVALUE_BM (_.arg2v),
+     OUTSTRVALUE_BM (_.arg3v));
+#warning unimplemented do_postpone_defer_send3_BM
+}                               /* end do_postpone_defer_send3_BM */
 
 /***** end of file agenda_BM.c ****/
