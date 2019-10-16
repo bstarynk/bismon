@@ -68,9 +68,10 @@ static struct agenda_defer_stBM *agd_last_BM;
 
 
 
+#define POSTPONE_MAGIC_BM 0x18e6b7a9    /*417773481 */
 struct agenda_postpone_stBM
 {
-  unsigned agpo_magic;
+  unsigned agpo_magic;          /*always  POSTPONE_MAGIC_BM */
   struct agenda_postpone_stBM *agpo_next;
   struct agenda_postpone_stBM *agpo_prev;
   double agpo_timestamp;
@@ -851,8 +852,8 @@ run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
     FATAL_BM ("bad tasklet object @%p", obtk);
   ASSERT_BM (flh != NULL);
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * obtk;
-                 value_tyBM failres;);
+                 objectval_tyBM * obtk; value_tyBM failres;
+    );
   _.obtk = obtk;
   curfailurehandle_BM = NULL;
   objlock_BM (_.obtk);
@@ -897,15 +898,12 @@ defer_module_dynload_BM (objectval_tyBM * modulobarg, const closure_tyBM * postc
   objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
   LOCALFRAME_BM (stkf, /*descr: */ k_defer_module_dynload,
                  objectval_tyBM * modulob;      //
-                 const closure_tyBM * postclos;
-                 value_tyBM arg1v;      //
+                 const closure_tyBM * postclos; value_tyBM arg1v;       //
                  value_tyBM arg2v;      //
                  value_tyBM arg3v;      //
                  objectval_tyBM * curob;        //
                  objectval_tyBM * routob;       //
-                 value_tyBM causev;
-                 value_tyBM errorv;
-    );
+                 value_tyBM causev; value_tyBM errorv;);
   extern void deferred_do_module_dynload_BM (value_tyBM * valarr, unsigned nbval, void *data);  /* in misc_BM.cc */
   _.modulob = objectcast_BM (modulobarg);
   _.postclos = closurecast_BM ((value_tyBM) postclosarg);
@@ -1037,6 +1035,10 @@ failure:
 
 ////////////////////////////////////////////////////////////////
 
+
+static void enqueue_postpone_bm (struct agenda_postpone_stBM *apo,
+                                 struct stackframe_stBM *stkf);
+
 /// potstponed things to do
 #define POSTPONED_MINI_DELAY_MILLISEC_BM 512
 
@@ -1046,25 +1048,41 @@ do_postpone_defer_apply3_BM (int delayms, value_tyBM closarg,
                              value_tyBM arg3arg, struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_do_postpone_defer_apply3 = BMK_60MoTMcUOQS_5XuFzMzNDN0;
-  LOCALFRAME_BM ( /*prev stackf: */ stkf, /*descr: */
-                 k_do_postpone_defer_apply3,
-                 value_tyBM closv;      // closure
+  LOCALFRAME_BM ( /*prev stackf: */ stkf,       /*descr: */
+                 k_do_postpone_defer_apply3, value_tyBM closv;  // closure
                  value_tyBM arg1v;      // first argument
                  value_tyBM arg2v;      // second argument
                  value_tyBM arg3v;      // third argument
-                 value_tyBM tmpv;
-    );
+                 value_tyBM tmpv;);
   _.closv = closarg;
   _.arg1v = arg1arg;
   _.arg2v = arg2arg;
   _.arg3v = arg3arg;
   if (delayms < POSTPONED_MINI_DELAY_MILLISEC_BM)
     delayms = POSTPONED_MINI_DELAY_MILLISEC_BM;
-  FATAL_BM
-    ("unimplemented do_postpone_defer_apply3_BM delayms#%d closv=%s arg1v=%s arg2v=%s arg3v=%s",
-     delayms, OUTSTRVALUE_BM (_.closv), OUTSTRVALUE_BM (_.arg1v),
-     OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v));
-#warning unimplemented do_postpone_defer_apply3_BM
+  if (!isclosure_BM (_.closv))
+    {
+      WARNPRINTF_BM
+        ("do_postpone_defer_apply3 delayms#%d called with bad closure %s arg1:%s arg2:%s arg3:%s",
+         delayms, OUTSTRVALUE_BM (_.closv), OUTSTRVALUE_BM (_.arg1v),
+         OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v));
+      WEAKASSERTWARN_BM ("do_postpone_defer_apply3 bad closure" && false);
+      LOCALRETURN_BM (NULL);
+    }
+  struct agenda_postpone_stBM *apo =
+    calloc (sizeof (struct agenda_postpone_stBM), 1);
+  if (!apo)
+    FATAL_BM ("failed to calloc in do_postpone_defer_apply3");
+  apo->agpo_magic = POSTPONE_MAGIC_BM;
+  apo->agpo_next = NULL;
+  apo->agpo_prev = NULL;
+  apo->agpo_timestamp = (double) delayms + elapsedtime_BM ();
+  apo->agpo_todo = _.closv;
+  apo->agpo_recv = NULL;
+  apo->agpo_arg1 = _.arg1v;
+  apo->agpo_arg2 = _.arg2v;
+  apo->agpo_arg3 = _.arg3v;
+  enqueue_postpone_bm (apo, CURFRAME_BM);
 }                               /* end do_postpone_defer_apply3_BM */
 
 
@@ -1077,15 +1095,13 @@ do_postpone_defer_send3_BM (int delayms, value_tyBM recvarg,
                             struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_do_postpone_defer_send3 = BMK_8fmRLMCFhgf_0owpXXFFJZE;
-  LOCALFRAME_BM ( /*prev stackf: */ stkf, /*descr: */
-                 k_do_postpone_defer_send3,
-                 value_tyBM recv;       // reciever
+  LOCALFRAME_BM ( /*prev stackf: */ stkf,       /*descr: */
+                 k_do_postpone_defer_send3, value_tyBM recv;    // reciever
                  objectval_tyBM * obsel;        // selector
                  value_tyBM arg1v;      // first argument
                  value_tyBM arg2v;      // second argument
                  value_tyBM arg3v;      // third argument
-                 value_tyBM tmpv;
-    );
+                 value_tyBM tmpv;);
   _.recv = recvarg;
   _.obsel = obselarg;
   _.arg1v = arg1arg;
@@ -1093,12 +1109,49 @@ do_postpone_defer_send3_BM (int delayms, value_tyBM recvarg,
   _.arg3v = arg3arg;
   if (delayms < POSTPONED_MINI_DELAY_MILLISEC_BM)
     delayms = POSTPONED_MINI_DELAY_MILLISEC_BM;
+  // we don't handle the case when the method is installed or removed
+  // after the call here!
+  if (!valfindmethod_BM (_.recv, _.obsel))
+    {
+      WARNPRINTF_BM
+        ("do_postpone_defer_send3 delayms#%d wrongly called recv=%s obsel:%s arg1:%s arg2:%s arg3:%s",
+         delayms, OUTSTRVALUE_BM (_.recv), objectdbg_BM (_.obsel),
+         OUTSTRVALUE_BM (_.arg1v), OUTSTRVALUE_BM (_.arg2v),
+         OUTSTRVALUE_BM (_.arg3v));
+      WEAKASSERTWARN_BM ("do_postpone_defer_send3 wrongly called" && false);
+      LOCALRETURN_BM (NULL);
+    }
   FATAL_BM
     ("unimplemented do_postpone_defer_send3_BM delayms#%d recv=%s obsel=%s arg1v=%s arg2v=%s arg3v=%s",
      delayms, OUTSTRVALUE_BM (_.recv), objectdbg_BM (_.obsel),
      OUTSTRVALUE_BM (_.arg1v), OUTSTRVALUE_BM (_.arg2v),
      OUTSTRVALUE_BM (_.arg3v));
-#warning unimplemented do_postpone_defer_send3_BM
+  struct agenda_postpone_stBM *apo =
+    calloc (sizeof (struct agenda_postpone_stBM), 1);
+  if (!apo)
+    FATAL_BM ("failed to calloc in do_postpone_defer_apply3");
+  apo->agpo_magic = POSTPONE_MAGIC_BM;
+  apo->agpo_next = NULL;
+  apo->agpo_prev = NULL;
+  apo->agpo_timestamp = (double) delayms + elapsedtime_BM ();
+  apo->agpo_todo = _.obsel;
+  apo->agpo_recv = _.recv;
+  apo->agpo_arg1 = _.arg1v;
+  apo->agpo_arg2 = _.arg2v;
+  apo->agpo_arg3 = _.arg3v;
+  enqueue_postpone_bm (apo, CURFRAME_BM);
 }                               /* end do_postpone_defer_send3_BM */
+
+
+
+void
+enqueue_postpone_bm (struct agenda_postpone_stBM *apo,
+                     struct stackframe_stBM *stkf)
+{
+  ASSERT_BM (apo != NULL && apo->agpo_magic == POSTPONE_MAGIC_BM);
+  ASSERT_BM (stkf != NULL);
+  FATAL_BM ("unimplemented enqueue_postpone_bm apo@%p", apo);
+#warning enqueue_postpone_bm unimplemented
+}                               /* end enqueue_postpone_bm */
 
 /***** end of file agenda_BM.c ****/
