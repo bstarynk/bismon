@@ -1323,50 +1323,91 @@ do_forgot_email_onion_handler_BM (const char *formuser,
                  objectval_tyBM * contribob;    //
     );
   _.contribob = find_contributor_BM (formuser, CURFRAME_BM);
-  DBGPRINTF_BM ("do_forgot_email_onion_handler formuser='%s' contribob=%s",
-	       formuser, objectdbg_BM(_.contribob));
-  WARNPRINTF_BM
-    ("do_forgot_email_onion_handler_BM '%s' unimplemented (contact name '%s' email '%s')",
-     formuser, contact_name_BM, contact_email_BM);
+  const char *reqpath = onion_request_get_path (req);
+  DBGPRINTF_BM
+    ("do_forgot_email_onion_handler formuser='%s' contribob=%s reqpath='%s'",
+     formuser, objectdbg_BM (_.contribob), reqpath);
+  if (_.contribob)
+    {
+      // did found contributor
+      WARNPRINTF_BM
+        ("do_forgot_email_onion_handler_BM '%s' unimplemented (contact name '%s' email '%s')",
+         formuser, contact_name_BM, contact_email_BM);
 #warning do_forgot_email_onion_handler_BM unimplemented
-  char *respbuf = NULL;
-  size_t respsiz = 0;
-  FILE *fresp = open_memstream (&respbuf, &respsiz);
-  if (!fresp)
-    FATAL_BM ("login_onion_handler open_memstream failure %m");
-  fprintf (fresp, "<!DOCTYPE html>\n");
-  fprintf (fresp,
-           "<html><head><title>Bismon forgot password unimplemented</title></head>\n");
-  fprintf (fresp,
-           "<body><h1>Bismon <i>forgot password</i> feature unimplemented</h1>\n");
-  fprintf (fresp,
-           "<p>The <i>forgot password</i> feature (for user <tt>%s</tt>)"
-           " is <b>not implemented</b> yet.\n", formuser);
-  fprintf (fresp,
-           "Sorry about that. So temporarily, use the <tt>--add-passwords</tt>"
-           " program option on the Bismon server to change your password.<br/>\n"
-           "See our <a href='https://github.com/bstarynk/bismon/blob/master/README.md'>"
-           "README.md</a> file for more.</p>\n");
-  fprintf (fresp, "<hr/>\n");
-  time_t nowt = 0;
-  time (&nowt);
-  struct tm nowtm;
-  char nowbuf[64];
-  memset (nowbuf, 0, sizeof (nowbuf));
-  memset (&nowtm, 0, sizeof (nowtm));
-  localtime_r (&nowt, &nowtm);
-  strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
-  fprintf (fresp, "<p><small>generated on <i>%s</i></small></p>\n", nowbuf);
-  fprintf (fresp, "</body></html>\n");
-  fflush (fresp);
-  long ln = ftell (fresp);
-  fclose (fresp), fresp = NULL;
-  onion_response_set_length (resp, ln);
-  onion_response_set_code (resp, HTTP_NOT_IMPLEMENTED);
-  onion_response_write (resp, respbuf, ln);
-  onion_response_flush (resp);
-  free (respbuf), respbuf = NULL;
-  return OCS_PROCESSED;
+      char *respbuf = NULL;
+      size_t respsiz = 0;
+      FILE *fresp = open_memstream (&respbuf, &respsiz);
+      if (!fresp)
+        FATAL_BM ("login_onion_handler open_memstream failure %m");
+      fprintf (fresp, "<!DOCTYPE html>\n");
+      fprintf (fresp,
+               "<html><head><title>Bismon forgot password unimplemented</title></head>\n");
+      fprintf (fresp,
+               "<body><h1>Bismon <i>forgot password</i> feature still unimplemented for contributor <tt>%s</tt></h1>\n",
+               objectdbg_BM (_.contribob));
+      fprintf (fresp,
+               "<p>The <i>forgot password</i> feature (for user <tt>%s</tt>)"
+               " is <b>not implemented</b> yet.\n", formuser);
+      fprintf (fresp,
+               "Sorry about that. So temporarily, use the <tt>--add-passwords</tt>"
+               " program option on the Bismon server to change your password.<br/>\n"
+               "See our <a href='https://github.com/bstarynk/bismon/blob/master/README.md'>"
+               "README.md</a> file for more.</p>\n");
+      fprintf (fresp, "<hr/>\n");
+      time_t nowt = 0;
+      time (&nowt);
+      struct tm nowtm;
+      char nowbuf[64];
+      memset (nowbuf, 0, sizeof (nowbuf));
+      memset (&nowtm, 0, sizeof (nowtm));
+      localtime_r (&nowt, &nowtm);
+      strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
+      fprintf (fresp, "<p><small>generated on <i>%s</i></small></p>\n",
+               nowbuf);
+      fprintf (fresp, "</body></html>\n");
+      fflush (fresp);
+      long ln = ftell (fresp);
+      fclose (fresp), fresp = NULL;
+      onion_response_set_length (resp, ln);
+      onion_response_set_code (resp, HTTP_NOT_IMPLEMENTED);
+      onion_response_write (resp, respbuf, ln);
+      onion_response_flush (resp);
+      free (respbuf), respbuf = NULL;
+      return OCS_PROCESSED;
+    }
+  else
+    {
+      // not found any contributor
+      time_t nowt = 0;
+      time (&nowt);
+      struct tm nowtm;
+      char nowbuf[64];
+      char pidbuf[16];
+      memset (nowbuf, 0, sizeof (nowbuf));
+      memset (pidbuf, 0, sizeof (pidbuf));
+      memset (&nowtm, 0, sizeof (nowtm));
+      snprintf (pidbuf, sizeof (pidbuf), "%d", (int) getpid ());
+      localtime_r (&nowt, &nowtm);
+      strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
+      onion_dict *ctxdic = onion_dict_new ();
+      {
+        const char *origpath = (reqpath && reqpath[0]) ? reqpath : "/";
+        onion_dict_add (ctxdic, "origpath", origpath, OD_DUP_VALUE);
+      }
+      onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
+      onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
+      onion_dict_add (ctxdic, "extra", "Invalid user.", OD_DUP_VALUE);
+      onion_dict_add (ctxdic, "buildtime", bismon_timestamp, OD_DUP_VALUE);
+      onion_dict_add (ctxdic, "lastgitcommit", bismon_lastgitcommit,
+                      OD_DUP_VALUE);
+      onion_dict_add (ctxdic, "gentime", nowbuf, OD_DUP_VALUE);
+      onion_dict_add (ctxdic, "checksum", bismon_checksum, OD_DUP_VALUE);
+      onion_response_set_code (resp, HTTP_UNAUTHORIZED);
+      DBGPRINTF_BM ("login_onion_handler POST unauthorized");
+      login_ONIONBM_thtml (ctxdic, resp);
+      onion_dict_free (ctxdic);
+      return OCS_PROCESSED;
+    }
 }                               /* end do_forgot_email_onion_BM */
 
 
@@ -2658,15 +2699,17 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
     case SIGCHLD:
       {
         pid_t pid = siginf.ssi_pid;
-	if (debugmsg_BM) {
-	  char exebuf[64];
-	  char pathbuf[64];
-	  memset(exebuf, 0, sizeof(exebuf));
-	  memset(pathbuf, 0, sizeof(pathbuf));
-	  snprintf(pathbuf, sizeof(pathbuf), "/proc/%d/exe", pid);
-	  readlink(pathbuf, exebuf, sizeof(exebuf)-1);
-	  DBGPRINTF_BM ("read_sigfd_BM got SIGCHLD pid=%d (%s)", (int) pid, exebuf);
-	}
+        if (debugmsg_BM)
+          {
+            char exebuf[64];
+            char pathbuf[64];
+            memset (exebuf, 0, sizeof (exebuf));
+            memset (pathbuf, 0, sizeof (pathbuf));
+            snprintf (pathbuf, sizeof (pathbuf), "/proc/%d/exe", pid);
+            readlink (pathbuf, exebuf, sizeof (exebuf) - 1);
+            DBGPRINTF_BM ("read_sigfd_BM got SIGCHLD pid=%d (%s)", (int) pid,
+                          exebuf);
+          }
         handle_sigchld_BM (pid);
         return false;
       }
@@ -2769,7 +2812,7 @@ handle_sigchld_BM (pid_t pid)
     }
   else
     {
-      DBGPRINTF_BM("handle_sigchld_BM pid%d wpid%d", (int) pid, (int) wpid);
+      DBGPRINTF_BM ("handle_sigchld_BM pid%d wpid%d", (int) pid, (int) wpid);
       char pidbuf[128];
       memset (pidbuf, 0, sizeof (pidbuf));
       snprintf (pidbuf, sizeof (pidbuf), "/proc/%d/cmdline", (int) pid);
@@ -2794,8 +2837,9 @@ handle_sigchld_BM (pid_t pid)
           snprintf (pidbuf, sizeof (pidbuf), "/proc/%d/exe", (int) pid);
           readlink (pidbuf, pidbuf, sizeof (pidbuf));
         }
-      WARNPRINTF_BM ("handle_sigchld_BM waitpid failure pid#%d '%s' status#%d",
-		     pid, pidbuf, wstatus);
+      WARNPRINTF_BM
+        ("handle_sigchld_BM waitpid failure pid#%d '%s' status#%d", pid,
+         pidbuf, wstatus);
       WEAKASSERTWARN_BM ("handle_sigchld_BM failed" && false);
     }
   if (didfork)

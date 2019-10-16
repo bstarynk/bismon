@@ -297,21 +297,21 @@ run_command_bm (const gchar * optname __attribute__((unused)),  //
 void
 show_net_info_bm (void)
 {
-      /// show some networking information
-      printf ("\n**** Bismon pid %d networking information ***\n",
-              (int) getpid ());
-      fflush (NULL);
-      {
-        int cod = system (SHOW_NET_COMMAND_BM);
-        if (cod > 0)
-          WARNPRINTF_BM ("command '%s' failed with #%d", SHOW_NET_COMMAND_BM,
-                         cod);
-        fflush (NULL);
-      }
-      printf ("***** end of bismon pid %d networking information ***\n",
-              (int) getpid ());
-      fflush (NULL);
-} /* end show_net_info_bm */
+  /// show some networking information
+  printf ("\n**** Bismon pid %d networking information ***\n",
+          (int) getpid ());
+  fflush (NULL);
+  {
+    int cod = system (SHOW_NET_COMMAND_BM);
+    if (cod > 0)
+      WARNPRINTF_BM ("command '%s' failed with #%d", SHOW_NET_COMMAND_BM,
+                     cod);
+    fflush (NULL);
+  }
+  printf ("***** end of bismon pid %d networking information ***\n",
+          (int) getpid ());
+  fflush (NULL);
+}                               /* end show_net_info_bm */
 
 
 static bool
