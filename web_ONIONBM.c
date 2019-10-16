@@ -1322,10 +1322,13 @@ do_forgot_email_onion_handler_BM (const char *formuser,
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_forgot_email_onion_handler,
                  objectval_tyBM * contribob;    //
     );
+  _.contribob = find_contributor_BM (formuser, CURFRAME_BM);
+  DBGPRINTF_BM ("do_forgot_email_onion_handler formuser='%s' contribob=%s",
+	       formuser, objectdbg_BM(_.contribob));
   WARNPRINTF_BM
     ("do_forgot_email_onion_handler_BM '%s' unimplemented (contact name '%s' email '%s')",
      formuser, contact_name_BM, contact_email_BM);
-
+#warning do_forgot_email_onion_handler_BM unimplemented
   char *respbuf = NULL;
   size_t respsiz = 0;
   FILE *fresp = open_memstream (&respbuf, &respsiz);
