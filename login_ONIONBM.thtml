@@ -12,7 +12,7 @@
   label.expl_cl { background-color: peachpuff; foreground-color: navy; font-size: 75%; font-family: Serif }
   a.contact_cl { bachground-color: oldlace };
 </style>
-<script src='jscript/jquery.js'/>
+<script src='jscript/jquery.js'></script>
 </head>
 <body>
   <h1>Login to Bismon</h1>
@@ -53,8 +53,8 @@
 
   <p class='tinyinfo_cl'>You need a <i>recent</i> HTML5 conforming web
   browser (such
-  as <a href='https://www.mozilla.org/en-US/firefox/'>FireFox</a> 61
-  or better, or <a href='https://www.google.com/chrome'>Chrome</a> 67
+  as <a href='https://www.mozilla.org/en-US/firefox/'>FireFox</a> 67
+  or better, or <a href='https://www.google.com/chrome'>Chrome</a> 77
   or better) to use <tt>Bismon</tt> (and you should enable JavaScript and WebSockets in that browser).</p>
 
     <p class='tinyinfo_cl'>After a successful login, you'll be redirected to <tt>{{origpath}}</tt></p>
