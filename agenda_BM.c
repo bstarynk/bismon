@@ -81,6 +81,8 @@ struct agenda_postpone_stBM
   value_tyBM agpo_arg2;
   value_tyBM agpo_arg3;
 };                              /* end of agenda_postpone_stBM */
+
+/// under ti_agendamtx_BM mutex lock!!
 static struct agenda_postpone_stBM *agpostpone_first_BM;
 static struct agenda_postpone_stBM *agpostpone_last_BM;
 
@@ -852,8 +854,8 @@ run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
     FATAL_BM ("bad tasklet object @%p", obtk);
   ASSERT_BM (flh != NULL);
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * obtk; value_tyBM failres;
-    );
+                 objectval_tyBM * obtk;
+                 value_tyBM failres;);
   _.obtk = obtk;
   curfailurehandle_BM = NULL;
   objlock_BM (_.obtk);
@@ -898,12 +900,15 @@ defer_module_dynload_BM (objectval_tyBM * modulobarg, const closure_tyBM * postc
   objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
   LOCALFRAME_BM (stkf, /*descr: */ k_defer_module_dynload,
                  objectval_tyBM * modulob;      //
-                 const closure_tyBM * postclos; value_tyBM arg1v;       //
+                 const closure_tyBM * postclos;
+                 value_tyBM arg1v;      //
                  value_tyBM arg2v;      //
                  value_tyBM arg3v;      //
                  objectval_tyBM * curob;        //
                  objectval_tyBM * routob;       //
-                 value_tyBM causev; value_tyBM errorv;);
+                 value_tyBM causev;
+                 value_tyBM errorv;
+    );
   extern void deferred_do_module_dynload_BM (value_tyBM * valarr, unsigned nbval, void *data);  /* in misc_BM.cc */
   _.modulob = objectcast_BM (modulobarg);
   _.postclos = closurecast_BM ((value_tyBM) postclosarg);
@@ -1053,7 +1058,8 @@ do_postpone_defer_apply3_BM (int delayms, value_tyBM closarg,
                  value_tyBM arg1v;      // first argument
                  value_tyBM arg2v;      // second argument
                  value_tyBM arg3v;      // third argument
-                 value_tyBM tmpv;);
+                 value_tyBM tmpv;
+    );
   _.closv = closarg;
   _.arg1v = arg1arg;
   _.arg2v = arg2arg;
@@ -1101,7 +1107,8 @@ do_postpone_defer_send3_BM (int delayms, value_tyBM recvarg,
                  value_tyBM arg1v;      // first argument
                  value_tyBM arg2v;      // second argument
                  value_tyBM arg3v;      // third argument
-                 value_tyBM tmpv;);
+                 value_tyBM tmpv;
+    );
   _.recv = recvarg;
   _.obsel = obselarg;
   _.arg1v = arg1arg;
@@ -1150,8 +1157,55 @@ enqueue_postpone_bm (struct agenda_postpone_stBM *apo,
 {
   ASSERT_BM (apo != NULL && apo->agpo_magic == POSTPONE_MAGIC_BM);
   ASSERT_BM (stkf != NULL);
-  FATAL_BM ("unimplemented enqueue_postpone_bm apo@%p", apo);
-#warning enqueue_postpone_bm unimplemented
+  ASSERT_BM (apo->agpo_prev == NULL && apo->agpo_next == NULL);
+  pthread_mutex_lock (&ti_agendamtx_BM);
+  if (UNLIKELY_BM (agpostpone_first_BM == NULL))
+    {
+      ASSERT_BM (agpostpone_last_BM == NULL);
+      agpostpone_first_BM = agpostpone_last_BM = apo;
+    }
+  else
+    {
+      ASSERT_BM (agpostpone_first_BM->agpo_magic == POSTPONE_MAGIC_BM);
+      double timsta = apo->agpo_timestamp;
+      if (timsta < agpostpone_first_BM->agpo_timestamp)
+        {
+          ASSERT_BM (agpostpone_first_BM->agpo_prev == NULL);
+          agpostpone_first_BM->agpo_prev = apo;
+          apo->agpo_next = agpostpone_first_BM;
+          apo->agpo_prev = NULL;
+          agpostpone_first_BM = apo;
+        }
+      else
+        for (struct agenda_postpone_stBM * curapo = agpostpone_first_BM;
+             curapo != NULL; curapo = curapo->agpo_next)
+          {
+            ASSERT_BM (curapo->agpo_magic == POSTPONE_MAGIC_BM);
+            struct agenda_postpone_stBM *nextapo = curapo->agpo_next;
+            ASSERT_BM (nextapo == NULL
+                       || nextapo->agpo_magic == POSTPONE_MAGIC_BM);
+            struct agenda_postpone_stBM *prevapo = curapo->agpo_prev;
+            ASSERT_BM (prevapo == NULL
+                       || prevapo->agpo_magic == POSTPONE_MAGIC_BM);
+            double timnext = nextapo ? nextapo->agpo_timestamp : +INFINITY;
+            if (timsta >= curapo->agpo_timestamp && timsta < timnext)
+              {
+                curapo->agpo_next = apo;
+                apo->agpo_prev = curapo;
+                apo->agpo_next = nextapo;
+                if (nextapo != NULL)
+                  nextapo->agpo_prev = apo;
+                else
+                  {
+                    ASSERT_BM (curapo == agpostpone_last_BM);
+                    agpostpone_last_BM = apo;
+                  }
+                break;
+              }
+          }
+    }
+  pthread_mutex_unlock (&ti_agendamtx_BM);
+  pthread_cond_broadcast (&ti_agendacond_BM);
 }                               /* end enqueue_postpone_bm */
 
 /***** end of file agenda_BM.c ****/
