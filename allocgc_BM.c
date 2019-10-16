@@ -758,6 +758,7 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   gcmarkagenda_BM (&GCdata);
   gcmarkmodules_BM (&GCdata);
   gcframemark_BM (&GCdata, stkfram, 0);
+  gcmarkpostponed_BM (&GCdata);
   unsigned long nbobjscan = 0;
   ASSERT_BM (GCdata.gc_scanlist != NULL);
   ((typedhead_tyBM *) GCdata.gc_scanlist)->hgc = MARKGC_BM;

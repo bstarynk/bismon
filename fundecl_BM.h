@@ -1418,7 +1418,7 @@ extern value_tyBM simple_module_initialize_BM (const value_tyBM arg1,   //
                                                struct stackframe_stBM *stkf);
 
 extern void gcmarkmodules_BM (struct garbcoll_stBM *gc);
-
+extern void gcmarkpostponed_BM (struct garbcoll_stBM *gc);
 
 
 // defer an application, running in the main thread
@@ -1436,14 +1436,16 @@ do_main_defer_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
 // postpone after a delay an application or a message send, running in
 // postpone thread
 void
-do_postpone_defer_apply3_BM (int delaymillisec, value_tyBM closv, value_tyBM arg1, value_tyBM arg2,
-                         value_tyBM arg3, struct stackframe_stBM *stkf);
+do_postpone_defer_apply3_BM (int delaymillisec, value_tyBM closv,
+                             value_tyBM arg1, value_tyBM arg2,
+                             value_tyBM arg3, struct stackframe_stBM *stkf);
 
 // defer a message send, running in the main thread
 void
-do_postpone_defer_send3_BM (int delaymillisec, value_tyBM recv, objectval_tyBM * obsel,
-                        value_tyBM arg1, value_tyBM arg2, value_tyBM arg3,
-                        struct stackframe_stBM *stkf);
+do_postpone_defer_send3_BM (int delaymillisec, value_tyBM recv,
+                            objectval_tyBM * obsel, value_tyBM arg1,
+                            value_tyBM arg2, value_tyBM arg3,
+                            struct stackframe_stBM *stkf);
 
 
 ////////////////////////////////////////////////////////////////

@@ -1208,4 +1208,24 @@ enqueue_postpone_bm (struct agenda_postpone_stBM *apo,
   pthread_cond_broadcast (&ti_agendacond_BM);
 }                               /* end enqueue_postpone_bm */
 
+
+void
+gcmarkpostponed_BM (struct garbcoll_stBM *gc)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  pthread_mutex_lock (&ti_agendamtx_BM);
+  for (struct agenda_postpone_stBM * curapo = agpostpone_first_BM;
+       curapo != NULL; curapo = curapo->agpo_next)
+    {
+      ASSERT_BM (curapo->agpo_magic == POSTPONE_MAGIC_BM);
+      VALUEGCPROC_BM (gc, curapo->agpo_todo, 0);
+      if (curapo->agpo_recv)
+        gcobjmark_BM (gc, curapo->agpo_recv);
+      VALUEGCPROC_BM (gc, curapo->agpo_arg1, 0);
+      VALUEGCPROC_BM (gc, curapo->agpo_arg2, 0);
+      VALUEGCPROC_BM (gc, curapo->agpo_arg3, 0);
+    }
+  pthread_mutex_unlock (&ti_agendamtx_BM);
+}                               /* end gcmarkpostponed_BM */
+
 /***** end of file agenda_BM.c ****/
