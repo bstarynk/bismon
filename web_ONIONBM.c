@@ -511,20 +511,6 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
       if (err)
         FATAL_BM ("failed to do onion_listen (err#%d / %s)", err,
                   strerror (err));
-      /// show some networking information
-      printf ("\n**** Bismon pid %d networking information ***\n",
-              (int) getpid ());
-      fflush (NULL);
-      {
-        int cod = system (SHOW_NET_COMMAND_BM);
-        if (cod > 0)
-          WARNPRINTF_BM ("command '%s' failed with #%d", SHOW_NET_COMMAND_BM,
-                         cod);
-        fflush (NULL);
-      }
-      printf ("***** end of bismon pid %d networking information ***\n",
-              (int) getpid ());
-      fflush (NULL);
       ///
       /// should add our event loop, at least related to queued processes
       /// (and their output pipes), to SIGCHLD and SIGTERM + SIGQUIT
@@ -2454,7 +2440,7 @@ initialize_webonion_BM (void)
   if (sigprocmask (SIG_BLOCK, &mysigset, NULL) == -1)
     FATAL_BM ("initialize_webonion: sigprocmask mysigset failure");
   sigfd_BM = signalfd (-1, &mysigset, SFD_NONBLOCK | SFD_CLOEXEC);
-  DBGPRINTF_BM ("initialize_webonion_BM sigfd_BM=%d", sigfd_BM);
+  DBGBACKTRACEPRINTF_BM ("initialize_webonion_BM sigfd_BM=%d", sigfd_BM);
   if (sigfd_BM < 0)
     FATAL_BM ("signalfd failed in initialize_webonion");
 }                               /* end initialize_webonion_BM */
@@ -2805,8 +2791,9 @@ handle_sigchld_BM (pid_t pid)
           snprintf (pidbuf, sizeof (pidbuf), "/proc/%d/exe", (int) pid);
           readlink (pidbuf, pidbuf, sizeof (pidbuf));
         }
-      FATAL_BM ("handle_sigchld_BM waitpid failure pid#%d '%s' status#%d",
-                pid, pidbuf, wstatus);
+      WARNPRINTF_BM ("handle_sigchld_BM waitpid failure pid#%d '%s' status#%d",
+		     pid, pidbuf, wstatus);
+      WEAKASSERTWARN_BM ("handle_sigchld_BM failed" && false);
     }
   if (didfork)
     usleep (1000);              // sleep a little bit, to let the child process start

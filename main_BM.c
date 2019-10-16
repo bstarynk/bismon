@@ -274,6 +274,7 @@ fatal_stop_at_BM (const char *fil, int lineno)
 static void add_new_predefined_bm (void);
 static void do_test_mailhtml_bm (void);
 static void init_afterload_bm (void);
+static void show_net_info_bm (void);
 
 static bool
 run_command_bm (const gchar * optname __attribute__((unused)),  //
@@ -293,6 +294,24 @@ run_command_bm (const gchar * optname __attribute__((unused)),  //
 
 
 
+void
+show_net_info_bm (void)
+{
+      /// show some networking information
+      printf ("\n**** Bismon pid %d networking information ***\n",
+              (int) getpid ());
+      fflush (NULL);
+      {
+        int cod = system (SHOW_NET_COMMAND_BM);
+        if (cod > 0)
+          WARNPRINTF_BM ("command '%s' failed with #%d", SHOW_NET_COMMAND_BM,
+                         cod);
+        fflush (NULL);
+      }
+      printf ("***** end of bismon pid %d networking information ***\n",
+              (int) getpid ());
+      fflush (NULL);
+} /* end show_net_info_bm */
 
 
 static bool
@@ -1220,17 +1239,6 @@ main (int argc, char **argv)
     DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
                   run_gtk_BM ? "true" : "false",
                   run_onion_BM ? "true" : "false");
-  if (!batch_bm)
-    {
-      if (run_onion_BM)
-        {
-          if (!run_gtk_BM)
-            INFOPRINTF_BM ("initializing ONION");
-          else
-            INFOPRINTF_BM ("initializing ONION, but GTK also requested");
-          initialize_webonion_BM ();
-        }
-    }
   DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
                 run_gtk_BM ? "true" : "false",
                 run_onion_BM ? "true" : "false");
@@ -1300,6 +1308,18 @@ main (int argc, char **argv)
                      load_dir_bm);
       debugmsg_BM = true;
     };
+  show_net_info_bm ();
+  if (!batch_bm)
+    {
+      if (run_onion_BM)
+        {
+          if (!run_gtk_BM)
+            INFOPRINTF_BM ("initializing ONION");
+          else
+            INFOPRINTF_BM ("initializing ONION, but GTK also requested");
+          initialize_webonion_BM ();
+        }
+    }
   if (mailhtml_file_bm || mailhtml_subject_bm || mailhtml_contributor_bm
       || mailhtml_attachment_bm)
     {
