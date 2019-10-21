@@ -98,13 +98,21 @@ They include
     of a node don't change with time. Since a node is immutable and
     knows all its sons at creation time, circularity (e.g. a node
     having itself as some grand-son) inside it is impossible, and the
-    node has a finite depth.
+    node has a finite depth. Nodes whose connective is an instance of
+    \index{transient connective
+      object@\texttt{transient\_connective\_object}}
+    \texttt{transient\_connective\_object} are not dumped so are
+    transient. \index{transient!node} \index{node!transient}
 
   \item \textbf{closure}. A \index{closure}{closure} is like a node
     (it has a connective and sons), but its connective is interpreted
     as the object giving the \index{routine}{routine} (see
     \S\ref{subsubsec:objects} below) to be called when that closure is
-    applied, and its sons are considered as closed values.
+    applied, and its sons are considered as closed values. Closures
+    whose connective is an instance of \index{transient connective
+      object@\texttt{transient\_connective\_object}}
+    \texttt{transient\_connective\_object} are not dumped so are
+    transient.
         
 \end{itemize}
 
@@ -415,11 +423,15 @@ objects to be scanned is maintained, with an hash-set of marked
 objects. Initially, we visit the GC roots above. Visiting a value
 involves marking it (recursively for sequences, nodes, closures, ...)
 and if it is a newly marked object absent from the hash-set, adding
-that object to the scan queue and to the hash set of marked
-objects. We repeatedly extract objects to be scanned from the queue
-and visit their content (including their attributes, their components,
-their signature and payload and the values inside that payload). When
-the scan queue is empty, GC is finished.
+that object to the scan queue and to the hash set of marked objects,
+but nodes or closures whose connective is an instance of
+\index{transient connective
+  object@\texttt{transient\_connective\_object}}
+\texttt{transient\_connective\_object} are ignored so transient. We
+repeatedly extract objects to be scanned from the queue and visit
+their content (including their attributes, their components, their
+signature and payload and the values inside that payload). When the
+scan queue is empty, GC is finished.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{persistence in \emph{Bismon}}

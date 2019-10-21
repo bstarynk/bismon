@@ -75,8 +75,13 @@ obdumpobjisdumpable_BM (objectval_tyBM * dumpob, const objectval_tyBM * obj)
 bool
 obdumpvalisdumpable_BM (objectval_tyBM * dumpob, const value_tyBM val)
 {
+  objectval_tyBM* k_transient_connective_object //
+    = BMK_5NXebtEFXd3_17ziuxzTfC1;
   struct dumper_stBM *du = obdumpgetdumper_BM (dumpob);
   if (!du)
+    return false;
+  if (istree_BM(val)
+      && objectisinstance_BM(treeconn_BM(val), k_transient_connective_object))
     return false;
   if (val && !isobject_BM (val))
     return true;
@@ -92,6 +97,8 @@ bool
 obdumpvalisfullydumpabledepth_BM (struct dumper_stBM *du,
                                   const value_tyBM val, int depth)
 {
+  objectval_tyBM* k_transient_connective_object //
+    = BMK_5NXebtEFXd3_17ziuxzTfC1;
   ASSERT_BM (((typedhead_tyBM *) du)->htyp == typayl_dumper_BM);
   if (depth > MAXDEPTHGC_BM)
     return false;
@@ -120,6 +127,8 @@ obdumpvalisfullydumpabledepth_BM (struct dumper_stBM *du,
     case tyClosure_BM:
       {
         const tree_tyBM *tree = val;
+	if (objectisinstance_BM(tree->nodt_conn, k_transient_connective_object))
+	  return false;
         if (!hashsetobj_contains_BM (du->dump_hset, tree->nodt_conn))
           return false;
         for (int ix = (int)(((const typedsize_tyBM *)tree)->size) - 1;
@@ -174,6 +183,8 @@ obdumpscanobj_BM (objectval_tyBM * dumpob, const objectval_tyBM * obj)
 void
 obdumpscanvalue_BM (objectval_tyBM * dumpob, const value_tyBM val, int depth)
 {
+  objectval_tyBM* k_transient_connective_object //
+    = BMK_5NXebtEFXd3_17ziuxzTfC1;
   struct dumper_stBM *du = obdumpgetdumper_BM (dumpob);
   if (!du)
     return;
@@ -194,6 +205,8 @@ obdumpscanvalue_BM (objectval_tyBM * dumpob, const value_tyBM val, int depth)
     case tyClosure_BM:
       {
         const tree_tyBM *tree = (const tree_tyBM *) val;
+	if (objectisinstance_BM(tree->nodt_conn, k_transient_connective_object))
+	  return;
         obdumpscanobj_BM (dumpob, tree->nodt_conn);
         if (!obdumpobjisdumpable_BM (dumpob, tree->nodt_conn))
           return;

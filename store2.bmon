@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3285 objects
+// for 3286 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -10530,6 +10530,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
  1
 
 »_3DB5p6fxoKz_3UuCr6DjJov
+
+
+
+«_5NXebtEFXd3_17ziuxzTfC1 |=transient_connective_object|
+!~ name (~ transient_connective_object ~)
+± 1571667018.976
+∈ _0LK4TzFd6u1_0JFUsrQ4odG |=class|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for connectives of trees (nodes, closures) which should not be dumped"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
+»_5NXebtEFXd3_17ziuxzTfC1
 
 
 
