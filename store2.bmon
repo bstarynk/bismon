@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3284 objects
+// for 3285 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -11709,6 +11709,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
  "gives the empty handler in web dictionnary"
 
 »_8Rwc7G3hQ0G_230O74aoi1w
+
+
+
+«_74VNUG6Vqq4_700i8h0o8EI |=web_plain_event_loop|
+!~ name (~ web_plain_event_loop ~)
+± 1571665853.265
+∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "describe the function web_plain_event_loop_BM in web_ONIONBM.c"
+
+»_74VNUG6Vqq4_700i8h0o8EI
 
 
 

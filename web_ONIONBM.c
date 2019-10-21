@@ -2497,13 +2497,14 @@ initialize_webonion_BM (void)
 /// remember that only web_plain_event_loop_BM is allowed to *remove*
 /// things from onionrunprocarr_BM or onionrunpro_list_BM
 void
-web_plain_event_loop_BM (void)
+web_plain_event_loop_BM (void) /// called from run_onionweb_BM
 {
+  objectval_tyBM* k_web_plain_event_loop = BMK_74VNUG6Vqq4_700i8h0o8EI;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * bufob;);
   atomic_init (&onionlooprunning_BM, true);
 
-  DBGPRINTF_BM ("web_plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",       //
+  DBGBACKTRACEPRINTF_BM ("web_plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",       //
                 sigfd_BM, (long) gettid_BM (), elapsedtime_BM ());
   long loopcnt = 0;
   INFOPRINTF_BM ("start loop of web_plain_event_loop_BM");
@@ -2516,8 +2517,9 @@ web_plain_event_loop_BM (void)
       memset (endedprocarr, 0, sizeof (endedprocarr));
       int nbpoll = 0;
       enum
-      { pollix_sigfd,
-        pollix_cmdp, pollix__last
+	{ pollix_sigfd, // got a signalfd
+	  pollix_cmdp, // the command pipe
+	pollix__last
       };
       pollarr[pollix_sigfd].fd = sigfd_BM;
       pollarr[pollix_sigfd].events = POLL_IN;
