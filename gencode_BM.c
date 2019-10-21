@@ -4667,7 +4667,15 @@ ROUTINEOBJNAME_BM (_9BWLfKtt9ID_2YwNGH3zu9Q)    // miniscan_node_conn#send
         miniscan_expr_BM (_.subexpv, _.routprepob, depth + 1,
                           _.fromob, CURFRAME_BM);
       if (_.subtypob != BMP_object && _.subtypob != BMP_value)
-        FAILHERE (makenode2_BM (BMP_node, taggedint_BM (ix + 2), _.subtypob));
+        {
+          WARNPRINTF_BM
+            ("miniscan_node_conn#send failing ix#%d connob %s routprepob %s depth#%d expv %s subexpv %s subtypob %s",
+             ix, objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob), depth,
+             OUTSTRVALUE_BM (_.expv), OUTSTRVALUE_BM (_.subexpv),
+             objectdbg2_BM (_.subtypob));
+          FAILHERE (makenode2_BM
+                    (BMP_node, taggedint_BM (ix + 2), _.subtypob));
+        }
       _.subexpv = NULL;
       _.subtypob = NULL;
     }
