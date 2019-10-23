@@ -1448,7 +1448,7 @@ do_postpone_defer_send3_BM (int delaymillisec, value_tyBM recv,
                             struct stackframe_stBM *stkf);
 
 value_tyBM
-get_newest_postpone_BM (double* pdelay, struct stackframe_stBM *stkf);
+get_newest_postpone_BM (double *pdelay, struct stackframe_stBM *stkf);
 ////////////////////////////////////////////////////////////////
 //**************************************************************
 ////////////////////////////////////////////////////////////////

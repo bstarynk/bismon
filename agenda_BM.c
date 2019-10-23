@@ -1101,8 +1101,10 @@ do_postpone_defer_send3_BM (int delayms, value_tyBM recvarg,
                             struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_do_postpone_defer_send3 = BMK_8fmRLMCFhgf_0owpXXFFJZE;
-  LOCALFRAME_BM ( /*prev stackf: */ stkf,       /*descr: */
-                 k_do_postpone_defer_send3, value_tyBM recv;    // reciever
+  LOCALFRAME_BM ( /*prev stackf: */ stkf,
+                 /*descr: */ k_do_postpone_defer_send3,
+                 //
+                 value_tyBM recv;       // reciever
                  objectval_tyBM * obsel;        // selector
                  value_tyBM arg1v;      // first argument
                  value_tyBM arg2v;      // second argument
@@ -1207,6 +1209,33 @@ enqueue_postpone_bm (struct agenda_postpone_stBM *apo,
   pthread_mutex_unlock (&ti_agendamtx_BM);
   pthread_cond_broadcast (&ti_agendacond_BM);
 }                               /* end enqueue_postpone_bm */
+
+
+
+value_tyBM
+get_newest_postpone_BM (double *pdelay, struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_get_newest_postpone = BMK_5CLivLxNfck_3LvC9xLO1oc;
+  objectval_tyBM *k_postponed_apply = BMK_6kxUF3055z5_3pRMhBvXESe;
+  objectval_tyBM *k_postponed_send = BMK_0poxpCxWsPO_8Uy4OL9eziR;
+  LOCALFRAME_BM ( /*prev stackf: */ stkf,
+                 /*descr: */ k_get_newest_postpone,
+                 //
+                 value_tyBM recv;       // reciever
+                 objectval_tyBM * obsel;        // selector
+                 value_tyBM arg1v;      // first argument
+                 value_tyBM arg2v;      // second argument
+                 value_tyBM arg3v;      // third argument
+                 value_tyBM tmpv;
+                 value_tyBM resv;
+    );
+  if (pdelay)
+    *pdelay = 0.0;
+  _.resv = NULL;
+  FATAL_BM ("get_newest_postpone_BM unimplemented");
+#warning get_newest_postpone_BM unimplemented
+  return _.resv;
+}                               /* end of get_newest_postpone_BM */
 
 
 void

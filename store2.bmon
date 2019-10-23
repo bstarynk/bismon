@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3286 objects
+// for 3289 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -2503,6 +2503,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 ∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 
 »_2LPrNfUHb6Y_1qOPmENNXqB
+
+
+
+«_5CLivLxNfck_3LvC9xLO1oc |=get_newest_postpone|
+!~ name (~ get_newest_postpone ~)
+± 1571834342.008
+∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "descriptor of get_newest_postpone_BM in agenda_BM.c"
+
+»_5CLivLxNfck_3LvC9xLO1oc
 
 
 
@@ -9207,6 +9218,28 @@ _17mrxkMdNtH_2CduQ2WDIy5 _8g1WBJBhDT9_1QK8IcuWYx2) ~)
  "class for non-dumpable temporary modules"
 !~ class (~ |supercl plain_module:| _8g1WBJBhDT9_1QK8IcuWYx2 ~)
 »_1oEp0eAAyFN_4lsobepyr1T
+
+
+
+«_6kxUF3055z5_3pRMhBvXESe |=postponed_apply|
+!~ name (~ postponed_apply ~)
+± 1571830313.560
+∈ _5NXebtEFXd3_17ziuxzTfC1 |=transient_connective_object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "connective for postponed applications: *postponed_apply(closure,arg1,arg2,arg3)"
+
+»_6kxUF3055z5_3pRMhBvXESe
+
+
+
+«_0poxpCxWsPO_8Uy4OL9eziR |=postponed_send|
+!~ name (~ postponed_send ~)
+± 1571830360.647
+∈ _5NXebtEFXd3_17ziuxzTfC1 |=transient_connective_object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "connective for postponed message sending:"& " *postponed_send(objrecv,selector,arg1,arg2,arg3)"
+
+»_0poxpCxWsPO_8Uy4OL9eziR
 
 
 

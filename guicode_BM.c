@@ -146,8 +146,8 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
     _.classob = objclass_BM (_.objbrows);
     if (_.classob)
       {
-        gtk_text_buffer_insert (brobuf, &browserit_BM, //
-				"∈ "/*U+2208 ELEMENT OF */, -1);
+        gtk_text_buffer_insert (brobuf, &browserit_BM,  //
+                                "∈ " /*U+2208 ELEMENT OF */ , -1);
         browse_value_BM ((const value_tyBM) _.classob, CURFRAME_BM, 2, 0);
         gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       };

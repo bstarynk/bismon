@@ -173,7 +173,7 @@ ROUTINEOBJNAME_BM (_5v30KC0IMxx_53ZzXprJTM6)    //
  const value_tyBM arg4,         // depth
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM* k_transient_connective_object //
+  objectval_tyBM * k_transient_connective_object        //
     = BMK_5NXebtEFXd3_17ziuxzTfC1;
   ASSERT_BM (isnode_BM (arg1)); // the node to dump
   // arg2 is the bufob
@@ -181,11 +181,9 @@ ROUTINEOBJNAME_BM (_5v30KC0IMxx_53ZzXprJTM6)    //
   ASSERT_BM (istaggedint_BM (arg4));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const node_tyBM * recv;
-		  objectval_tyBM * dumpob;
-		  objectval_tyBM * bufob;
-		  value_tyBM depthv;
-		  value_tyBM curson;
-		  const objectval_tyBM * connobj;
+                 objectval_tyBM * dumpob;
+                 objectval_tyBM * bufob; value_tyBM depthv; value_tyBM curson;
+                 const objectval_tyBM * connobj;
     );
   _.recv = (arg1);
   _.bufob = objectcast_BM (arg2);
@@ -200,7 +198,7 @@ ROUTINEOBJNAME_BM (_5v30KC0IMxx_53ZzXprJTM6)    //
       objstrbufferprintfpayl_BM (_.bufob, " __");
       LOCALRETURN_BM (_.bufob);
     }
-  if (objectisinstance_BM( _.connobj, k_transient_connective_object))
+  if (objectisinstance_BM (_.connobj, k_transient_connective_object))
     {
       objstrbufferprintfpayl_BM (_.bufob, " __");
       LOCALRETURN_BM (_.bufob);
@@ -252,7 +250,7 @@ ROUTINEOBJNAME_BM (_6jvRZetUz36_978V6SKIWZC)    //
  const value_tyBM arg4,         // depthv
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
-  objectval_tyBM* k_transient_connective_object //
+  objectval_tyBM * k_transient_connective_object        //
     = BMK_5NXebtEFXd3_17ziuxzTfC1;
   ASSERT_BM (isclosure_BM (arg1));      // the closure to dump
   // arg2 is the bufob
@@ -271,7 +269,7 @@ ROUTINEOBJNAME_BM (_6jvRZetUz36_978V6SKIWZC)    //
   _.depthv = arg4;
   unsigned depth = getint_BM (_.depthv);
   _.connobj = closureconn_BM ((const value_tyBM) _.recv);
-  if (objectisinstance_BM( _.connobj, k_transient_connective_object))
+  if (objectisinstance_BM (_.connobj, k_transient_connective_object))
     {
       objstrbufferprintfpayl_BM (_.bufob, " __");
       LOCALRETURN_BM (_.bufob);
