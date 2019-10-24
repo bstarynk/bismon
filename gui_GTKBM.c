@@ -625,8 +625,7 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
         return;
     };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * objbrows;
-    );
+                 const objectval_tyBM * objbrows;);
   _.objbrows = objbrows;
   int lo = 0, hi = browserobulen_BM, md = 0;
   while (lo + 8 < hi)
@@ -1073,8 +1072,7 @@ browse_object_gui_content_BM (const objectval_tyBM * objbrows,
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * objbrows;
-                 const objectval_tyBM * objsel;
-    );
+                 const objectval_tyBM * objsel;);
   _.objbrows = objbrows;
   _.objsel = objsel;
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
@@ -1143,8 +1141,7 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
     browsdepth = BROWSE_MAXDEPTH_BM;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * objbrows;
-                 const objectval_tyBM * objsel;
-    );
+                 const objectval_tyBM * objsel;);
   _.objbrows = objbrows;
   _.objsel = objsel;
   start_browse_object_BM (objbrows, objsel, browsdepth);
@@ -1159,9 +1156,8 @@ browse_value_gui_content_BM (const stringval_tyBM * namev,
                              int browsdepth, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const stringval_tyBM * namev; value_tyBM val;
-                 const objectval_tyBM * objsel;
-    );
+                 const stringval_tyBM * namev;
+                 value_tyBM val; const objectval_tyBM * objsel;);
   _.namev = namev;
   _.val = (value_tyBM) val;
   _.objsel = objsel;
@@ -1211,9 +1207,8 @@ browse_named_value_gui_BM (const stringval_tyBM * namev,
   else if (browsdepth > BROWSE_MAXDEPTH_BM)
     browsdepth = BROWSE_MAXDEPTH_BM;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const stringval_tyBM * namev; value_tyBM val;
-                 const objectval_tyBM * objsel;
-    );
+                 const stringval_tyBM * namev;
+                 value_tyBM val; const objectval_tyBM * objsel;);
   _.namev = namev;
   _.val = (value_tyBM) val;
   _.objsel = objsel;
@@ -1230,8 +1225,9 @@ refresh_browse_BM (struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * objbrows;
-                 const objectval_tyBM * objsel;
-                 value_tyBM valbrows; const stringval_tyBM * valname;);
+                 const objectval_tyBM * objsel; value_tyBM valbrows;
+                 const stringval_tyBM * valname;
+    );
   DBGPRINTF_BM ("refresh_browse_BM start");
   browserblinkstop_BM ();
   /// reinitialize the browsed objects
@@ -1732,8 +1728,7 @@ parsdollarval_guicmd_BM (struct parser_stBM *pars,
 {
   const char *varstr = NULL;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM val;
-    );
+                 value_tyBM val;);
   ASSERT_BM (isparser_BM (pars));
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
@@ -1770,8 +1765,7 @@ parsdollarobj_guicmd_BM (struct parser_stBM *pars,
 {
 
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM val;
-    );
+                 value_tyBM val;);
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
   const char *varstr = NULL;
@@ -1809,8 +1803,9 @@ const objectval_tyBM *parsmakenewname_guicmd_BM
    const value_tyBM varname, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * namedobj; const stringval_tyBM * strnam;
-                 objectval_tyBM * parsob;);
+                 objectval_tyBM * namedobj;
+                 const stringval_tyBM * strnam; objectval_tyBM * parsob;
+    );
   if (!isparser_BM (pars))
     return NULL;
   _.parsob = checkedparserowner_BM (pars);
@@ -1848,11 +1843,11 @@ parseobjectcompl_guicmd_BM (struct parser_stBM *pars,
   if (!isparser_BM (pars))
     return false;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM comp; objectval_tyBM * targobj;
-                 objectval_tyBM * obattr; objectval_tyBM * obclass;
-                 objectval_tyBM * obsel; const stringval_tyBM * name;
-                 objectval_tyBM * parsob; value_tyBM args[MAXARGS_BM];
-    );
+                 value_tyBM comp;
+                 objectval_tyBM * targobj; objectval_tyBM * obattr;
+                 objectval_tyBM * obclass; objectval_tyBM * obsel;
+                 const stringval_tyBM * name; objectval_tyBM * parsob;
+                 value_tyBM args[MAXARGS_BM];);
   _.parsob = checkedparserowner_BM (pars);
   _.targobj = targobj;
   struct parstoken_stBM tok = {
@@ -2333,13 +2328,11 @@ parsvalexp_guicmd_BM (struct parser_stBM *pars, unsigned lineno,
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM resval;
-                 value_tyBM srcval;
-                 objectval_tyBM * obj; objectval_tyBM * obsel;
-                 objectval_tyBM * parsob; objectval_tyBM * obattr;
-                 closure_tyBM * clos; value_tyBM otherval;
-                 const stringval_tyBM * name; value_tyBM args[MAXARGS_BM];
-    );
+                 value_tyBM resval; value_tyBM srcval; objectval_tyBM * obj;
+                 objectval_tyBM * obsel; objectval_tyBM * parsob;
+                 objectval_tyBM * obattr; closure_tyBM * clos;
+                 value_tyBM otherval; const stringval_tyBM * name;
+                 value_tyBM args[MAXARGS_BM];);
   _.parsob = checkedparserowner_BM (pars);
   unsigned srclineno = parserlineno_BM (pars);
   unsigned srccolpos = parsercolpos_BM (pars);
@@ -2690,8 +2683,11 @@ value_tyBM parsreadmacroexp_guicmd_BM
    const node_tyBM * nod, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM resval; const node_tyBM * nod; value_tyBM crm;
-                 const objectval_tyBM * conn; objectval_tyBM * parsob;);
+                 value_tyBM resval;
+                 const node_tyBM * nod;
+                 value_tyBM crm; const objectval_tyBM * conn;
+                 objectval_tyBM * parsob;
+    );
   _.parsob = checkedparserowner_BM (pars);
   _.nod = nod;
   if (depth > MAXDEPTHPARSE_BM)
@@ -2736,9 +2732,9 @@ parsobjexp_guicmd_BM (struct parser_stBM *pars,
   const struct parserops_stBM *parsops = pars->pars_ops;
   bool nobuild = parsops && parsops->parsop_nobuild;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * obj; const stringval_tyBM * namev;
-                 objectval_tyBM * oldnamedob; value_tyBM val;
-    );
+                 objectval_tyBM * obj;
+                 const stringval_tyBM * namev; objectval_tyBM * oldnamedob;
+                 value_tyBM val;);
   ASSERT_BM (isparser_BM (pars));
   parserskipspaces_BM (pars, CURFRAME_BM);
   unsigned oblineno = parserlineno_BM (pars);
@@ -2923,9 +2919,11 @@ parsecommandbuf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf)
   if (!isparser_BM (pars))
     return;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM comp; objectval_tyBM * obj;
-                 objectval_tyBM * parsob; objectval_tyBM * oldfocusobj;
-                 const stringval_tyBM * name; const stringval_tyBM * result;);
+                 value_tyBM comp;
+                 objectval_tyBM * obj; objectval_tyBM * parsob;
+                 objectval_tyBM * oldfocusobj; const stringval_tyBM * name;
+                 const stringval_tyBM * result;
+    );
   _.parsob = checkedparserowner_BM (pars);
   const struct parserops_stBM *parsops = pars->pars_ops;
   ASSERT_BM (!parsops || parsops->parsop_magic == PARSOPMAGIC_BM);
@@ -4268,7 +4266,8 @@ runcommand_BM (bool erase)
       gtk_text_buffer_set_text (commandbuf_BM, cmdstr, -1);
     }
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * parsownob;);
+                 objectval_tyBM * parsownob;
+    );
   _.parsownob = makeobj_BM ();
   struct parser_stBM *cmdpars =
     makeparser_memopen_BM (cmdstr, -1, _.parsownob);
@@ -5125,13 +5124,32 @@ browse_value_BM (const value_tyBM val,
 
 
 ////////////////
-void
+static gboolean postponed_gui_handler_bm (gpointer udata);
+
 register_gui_postponed_BM (double nextimstamp)
 {
-  FATAL_BM
-    ("register_gui_postponed_BM unimplemented nextimstamp=%g = %.3f seconds from now",
-     nextimstamp, nextimstamp - clocktime_BM (CLOCK_MONOTONIC));
-#warning register_gui_postponed_BM unimplemented
+#define MAX_POSTPONED_MILLISEC_BM 2500
+#define MIN_POSTPONED_MILLISEC_BM 20
+  double deltat = nextimstamp - clocktime_BM (CLOCK_MONOTONIC);
+  int deltams = 0;
+  if (deltat > MAX_POSTPONED_MILLISEC_BM * 1.0e-3)
+    deltams = MAX_POSTPONED_MILLISEC_BM;
+  else
+    deltams = (int) (deltat * 1.0e-3);
+  if (deltams < MIN_POSTPONED_MILLISEC_BM)
+    deltams = MIN_POSTPONED_MILLISEC_BM;
+  (void) g_timeout_add (deltams, postponed_gui_handler_bm, NULL);
 }                               /* end register_gui_postponed_BM */
+
+
+
+gboolean
+postponed_gui_handler_bm (gpointer udata)
+{
+  ASSERT_BM (udata == NULL);
+  FATAL_BM ("unimplemented postponed_gui_handler_bm");
+#warning unimplemented postponed_gui_handler_bm
+}                               /* end postponed_gui_handler_bm */
+
 
 ////////////////// eof gui_GTKBM.c
