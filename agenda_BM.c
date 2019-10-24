@@ -1217,7 +1217,7 @@ get_newest_postpone_BM (double *pdelay, struct stackframe_stBM *stkf)
                  /*descr: */ k_get_newest_postpone,
                  //
                  value_tyBM recv;       // reciever
-		  value_tyBM todov;//
+                 value_tyBM todov;      //
                  value_tyBM arg1v;      // first argument
                  value_tyBM arg2v;      // second argument
                  value_tyBM arg3v;      // third argument
@@ -1234,7 +1234,7 @@ get_newest_postpone_BM (double *pdelay, struct stackframe_stBM *stkf)
       ASSERT_BM (agpostpone_last_BM == NULL);
       goto end;
     };
-  ASSERT_BM(agpostpone_first_BM->agpo_magic == POSTPONE_MAGIC_BM);
+  ASSERT_BM (agpostpone_first_BM->agpo_magic == POSTPONE_MAGIC_BM);
   double ts = agpostpone_first_BM->agpo_timestamp;
   missing = false;
   _.todov = agpostpone_first_BM->agpo_todo;
@@ -1242,18 +1242,41 @@ get_newest_postpone_BM (double *pdelay, struct stackframe_stBM *stkf)
   _.arg1v = agpostpone_first_BM->agpo_arg1;
   _.arg2v = agpostpone_first_BM->agpo_arg2;
   _.arg3v = agpostpone_first_BM->agpo_arg3;
- end:
+end:
   pthread_mutex_unlock (&ti_agendamtx_BM);
-  if (!missing) {
-#warning get_newest_postpone_BM unimplemented
-    FATAL_BM("get_newest_postpone_BM unimplemented todo %s, recv %s,\n"
-	     ".. arg1=%s, arg2=%s, arg3=%s",
-	     OUTSTRVALUE_BM(_.todov),
-	     OUTSTRVALUE_BM(_.recv),
-	     OUTSTRVALUE_BM(_.arg1v),
-	     OUTSTRVALUE_BM(_.arg2v),
-	     OUTSTRVALUE_BM(_.arg3v));
-  }
+  if (!missing)
+    {
+      DBGPRINTF_BM ("get_newest_postpone_BM todo %s, recv %s,\n"
+                    ".. arg1=%s, arg2=%s, arg3=%s",
+                    OUTSTRVALUE_BM (_.todov),
+                    OUTSTRVALUE_BM (_.recv),
+                    OUTSTRVALUE_BM (_.arg1v),
+                    OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v));
+      if (isclosure_BM (_.todov))
+        {                       // postponed apply of todov closure
+          ASSERT_BM (_.recv == NULL);
+          _.resv =
+            makenode4_BM (k_postponed_apply, _.recv, _.arg1v, _.arg2v,
+                          _.arg3v);
+        }
+      else if (isobject_BM (_.todov))
+        {                       // postponed send of todov selector
+          _.resv =
+            makenode5_BM (k_postponed_send, _.recv, _.todov, _.arg1v, _.arg2v,
+                          _.arg3v);
+        }
+      else
+        {                       // should never happen
+          FATAL_BM ("get_newest_postpone_BM bad todo %s, recv %s,\n"
+                    ".. arg1=%s, arg2=%s, arg3=%s",
+                    OUTSTRVALUE_BM (_.todov),
+                    OUTSTRVALUE_BM (_.recv),
+                    OUTSTRVALUE_BM (_.arg1v),
+                    OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v));
+        };
+      if (pdelay != NULL)
+	*pdelay = ts;
+    }
   return _.resv;
 }                               /* end of get_newest_postpone_BM */
 
