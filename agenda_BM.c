@@ -854,8 +854,8 @@ run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
     FATAL_BM ("bad tasklet object @%p", obtk);
   ASSERT_BM (flh != NULL);
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * obtk;
-                 value_tyBM failres;);
+                 objectval_tyBM * obtk; value_tyBM failres;
+    );
   _.obtk = obtk;
   curfailurehandle_BM = NULL;
   objlock_BM (_.obtk);
@@ -900,15 +900,12 @@ defer_module_dynload_BM (objectval_tyBM * modulobarg, const closure_tyBM * postc
   objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
   LOCALFRAME_BM (stkf, /*descr: */ k_defer_module_dynload,
                  objectval_tyBM * modulob;      //
-                 const closure_tyBM * postclos;
-                 value_tyBM arg1v;      //
+                 const closure_tyBM * postclos; value_tyBM arg1v;       //
                  value_tyBM arg2v;      //
                  value_tyBM arg3v;      //
                  objectval_tyBM * curob;        //
                  objectval_tyBM * routob;       //
-                 value_tyBM causev;
-                 value_tyBM errorv;
-    );
+                 value_tyBM causev; value_tyBM errorv;);
   extern void deferred_do_module_dynload_BM (value_tyBM * valarr, unsigned nbval, void *data);  /* in misc_BM.cc */
   _.modulob = objectcast_BM (modulobarg);
   _.postclos = closurecast_BM ((value_tyBM) postclosarg);
@@ -1058,8 +1055,7 @@ do_postpone_defer_apply3_BM (int delayms, value_tyBM closarg,
                  value_tyBM arg1v;      // first argument
                  value_tyBM arg2v;      // second argument
                  value_tyBM arg3v;      // third argument
-                 value_tyBM tmpv;
-    );
+                 value_tyBM tmpv;);
   _.closv = closarg;
   _.arg1v = arg1arg;
   _.arg2v = arg2arg;
@@ -1109,8 +1105,7 @@ do_postpone_defer_send3_BM (int delayms, value_tyBM recvarg,
                  value_tyBM arg1v;      // first argument
                  value_tyBM arg2v;      // second argument
                  value_tyBM arg3v;      // third argument
-                 value_tyBM tmpv;
-    );
+                 value_tyBM tmpv;);
   _.recv = recvarg;
   _.obsel = obselarg;
   _.arg1v = arg1arg;
@@ -1295,6 +1290,93 @@ end:
   return _.resv;
 }                               /* end of get_newest_postpone_BM */
 
+
+
+value_tyBM
+pop_newest_postpone_BM (double *pdelay, struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_pop_newest_postpone = BMK_0zcVE3vaq9X_5ThchgCp23w;
+  objectval_tyBM *k_postponed_apply = BMK_6kxUF3055z5_3pRMhBvXESe;
+  objectval_tyBM *k_postponed_send = BMK_0poxpCxWsPO_8Uy4OL9eziR;
+  LOCALFRAME_BM ( /*prev stackf: */ stkf,
+                 /*descr: */ k_pop_newest_postpone,
+                 //
+                 value_tyBM recv;       // reciever
+                 value_tyBM todov;      //
+                 value_tyBM arg1v;      // first argument
+                 value_tyBM arg2v;      // second argument
+                 value_tyBM arg3v;      // third argument
+                 value_tyBM tmpv;       //
+                 value_tyBM resv;       //
+    );
+  bool missing = true;
+  if (pdelay)
+    *pdelay = 0.0;
+  _.resv = NULL;
+  pthread_mutex_lock (&ti_agendamtx_BM);
+  if (UNLIKELY_BM (agpostpone_first_BM == NULL))
+    {
+      ASSERT_BM (agpostpone_last_BM == NULL);
+      goto end;
+    };
+  ASSERT_BM (agpostpone_first_BM->agpo_magic == POSTPONE_MAGIC_BM);
+  double ts = agpostpone_first_BM->agpo_timestamp;
+  missing = false;
+  _.todov = agpostpone_first_BM->agpo_todo;
+  _.recv = agpostpone_first_BM->agpo_recv;
+  _.arg1v = agpostpone_first_BM->agpo_arg1;
+  _.arg2v = agpostpone_first_BM->agpo_arg2;
+  _.arg3v = agpostpone_first_BM->agpo_arg3;
+  if (agpostpone_first_BM == agpostpone_last_BM)
+    {
+      free (agpostpone_first_BM);
+      agpostpone_first_BM = NULL;
+      agpostpone_last_BM = NULL;
+    }
+  else
+    {
+      struct agenda_postpone_stBM *apo = agpostpone_first_BM;
+      agpostpone_first_BM = apo->agpo_next;
+      memset (apo, 0, sizeof (*apo));
+      free (apo);
+    }
+end:
+  pthread_mutex_unlock (&ti_agendamtx_BM);
+  if (!missing)
+    {
+      DBGPRINTF_BM ("pop_newest_postpone_BM todo %s, recv %s,\n"
+                    ".. arg1=%s, arg2=%s, arg3=%s",
+                    OUTSTRVALUE_BM (_.todov),
+                    OUTSTRVALUE_BM (_.recv),
+                    OUTSTRVALUE_BM (_.arg1v),
+                    OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v));
+      if (isclosure_BM (_.todov))
+        {                       // postponed apply of todov closure
+          ASSERT_BM (_.recv == NULL);
+          _.resv =
+            makenode4_BM (k_postponed_apply, _.recv, _.arg1v, _.arg2v,
+                          _.arg3v);
+        }
+      else if (isobject_BM (_.todov))
+        {                       // postponed send of todov selector
+          _.resv =
+            makenode5_BM (k_postponed_send, _.recv, _.todov, _.arg1v, _.arg2v,
+                          _.arg3v);
+        }
+      else
+        {                       // should never happen
+          FATAL_BM ("pop_newest_postpone_BM bad todo %s, recv %s,\n"
+                    ".. arg1=%s, arg2=%s, arg3=%s",
+                    OUTSTRVALUE_BM (_.todov),
+                    OUTSTRVALUE_BM (_.recv),
+                    OUTSTRVALUE_BM (_.arg1v),
+                    OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v));
+        };
+      if (pdelay != NULL)
+        *pdelay = ts;
+    }
+  return _.resv;
+}                               /* end of pop_newest_postpone_BM */
 
 
 double

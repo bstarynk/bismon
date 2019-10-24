@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3289 objects
+// for 3290 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -9218,6 +9218,17 @@ _17mrxkMdNtH_2CduQ2WDIy5 _8g1WBJBhDT9_1QK8IcuWYx2) ~)
  "class for non-dumpable temporary modules"
 !~ class (~ |supercl plain_module:| _8g1WBJBhDT9_1QK8IcuWYx2 ~)
 »_1oEp0eAAyFN_4lsobepyr1T
+
+
+
+«_0zcVE3vaq9X_5ThchgCp23w |=pop_newest_postpone|
+!~ name (~ pop_newest_postpone ~)
+± 1571920932.049
+∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "descriptor of the pop_newest_postpon_BM"
+
+»_0zcVE3vaq9X_5ThchgCp23w
 
 
 
