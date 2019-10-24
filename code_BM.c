@@ -180,8 +180,7 @@ ROUTINEOBJNAME_BM (_5v30KC0IMxx_53ZzXprJTM6)    //
   // arg3 is the obdumper
   ASSERT_BM (istaggedint_BM (arg4));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * recv;
-                 objectval_tyBM * dumpob;
+                 const node_tyBM * recv; objectval_tyBM * dumpob;
                  objectval_tyBM * bufob; value_tyBM depthv; value_tyBM curson;
                  const objectval_tyBM * connobj;
     );

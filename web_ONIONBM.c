@@ -36,6 +36,7 @@ static onion *myonion_BM;
 static int cmdpipe_rd_BM = -1, cmdpipe_wr_BM = -1;
 
 static int sigfd_BM = -1;
+static atomic_int oniontimerfd_BM = -1;
 extern void add_defer_command_onion_BM (void);
 
 extern void
@@ -2492,6 +2493,16 @@ initialize_webonion_BM (void)
   if (sigfd_BM < 0)
     FATAL_BM ("signalfd failed in initialize_webonion");
 }                               /* end initialize_webonion_BM */
+
+
+void
+register_web_postponed_BM (double nextimstamp)
+{
+  FATAL_BM
+    ("register_web_postponed_BM unimplemented nextimstamp=%g = %.3f seconds from now",
+     nextimstamp, nextimstamp - clocktime_BM (CLOCK_MONOTONIC));
+#warning register_web_postponed_BM unimplemented
+}                               /* end register_web_postponed_BM */
 
 
 /// remember that only web_plain_event_loop_BM is allowed to *remove*

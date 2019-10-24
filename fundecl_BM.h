@@ -1419,7 +1419,10 @@ extern value_tyBM simple_module_initialize_BM (const value_tyBM arg1,   //
 
 extern void gcmarkmodules_BM (struct garbcoll_stBM *gc);
 extern void gcmarkpostponed_BM (struct garbcoll_stBM *gc);
-
+#ifdef BISMONGTK
+extern void register_gui_postponed_BM (double nextimstamp);
+#endif /*BISMONGTK*/
+extern void register_web_postponed_BM (double nextimstamp);
 
 // defer an application, running in the main thread
 void

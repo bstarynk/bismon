@@ -5122,4 +5122,16 @@ browse_value_BM (const value_tyBM val,
 }                               /* end browse_value_BM */
 
 
-// eof gui_GTKBM.c
+
+
+////////////////
+void
+register_gui_postponed_BM (double nextimstamp)
+{
+  FATAL_BM
+    ("register_gui_postponed_BM unimplemented nextimstamp=%g = %.3f seconds from now",
+     nextimstamp, nextimstamp - clocktime_BM (CLOCK_MONOTONIC));
+#warning register_gui_postponed_BM unimplemented
+}                               /* end register_gui_postponed_BM */
+
+////////////////// eof gui_GTKBM.c
