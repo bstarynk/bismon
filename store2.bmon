@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3290 objects
+// for 3291 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -9566,6 +9566,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
  % _7sg0DjYTA8n_66vhff9SgXH ()
 
 »_4RFtYFUdfau_7Vm5jZ4Wm8e
+
+
+
+«_3S8QZc90hhJ_7Ss6IRxe13m |=run_postponed_node|
+!~ name (~ run_postponed_node ~)
+± 1571924871.197
+∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "descriptor of run_postponed_node_BM in agenda_BM.c"
+
+»_3S8QZc90hhJ_7Ss6IRxe13m
 
 
 

@@ -1266,7 +1266,7 @@ end:
         {                       // postponed apply of todov closure
           ASSERT_BM (_.recv == NULL);
           _.resv =
-            makenode4_BM (k_postponed_apply, _.recv, _.arg1v, _.arg2v,
+            makenode4_BM (k_postponed_apply, _.todov, _.arg1v, _.arg2v,
                           _.arg3v);
         }
       else if (isobject_BM (_.todov))
@@ -1354,7 +1354,7 @@ end:
         {                       // postponed apply of todov closure
           ASSERT_BM (_.recv == NULL);
           _.resv =
-            makenode4_BM (k_postponed_apply, _.recv, _.arg1v, _.arg2v,
+            makenode4_BM (k_postponed_apply, _.todov, _.arg1v, _.arg2v,
                           _.arg3v);
         }
       else if (isobject_BM (_.todov))
@@ -1392,6 +1392,83 @@ timestamp_newest_pospone_BM (void)
   pthread_mutex_unlock (&ti_agendamtx_BM);
   return timestamp;
 }                               /* end timestamp_newest_pospone_BM */
+
+
+value_tyBM
+run_postponed_node_BM (value_tyBM nodarg, struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_run_postponed_node = BMK_3S8QZc90hhJ_7Ss6IRxe13m;
+  objectval_tyBM *k_postponed_apply = BMK_6kxUF3055z5_3pRMhBvXESe;
+  objectval_tyBM *k_postponed_send = BMK_0poxpCxWsPO_8Uy4OL9eziR;
+  LOCALFRAME_BM ( /*prev stackf: */ stkf,
+                 /*descr: */ k_run_postponed_node,
+                 //
+                 value_tyBM nodv;       //
+                 objectval_tyBM * connob;       //
+                 value_tyBM recv;       // reciever
+                 value_tyBM todov;      //
+                 value_tyBM doclosv;    //
+                 objectval_tyBM * obsel;        //
+                 value_tyBM arg1v;      // first argument
+                 value_tyBM arg2v;      // second argument
+                 value_tyBM arg3v;      // third argument
+                 value_tyBM tmpv;       //
+                 value_tyBM resv;       //
+    );
+  _.nodv = nodarg;
+  DBGPRINTF_BM ("run_postponed_node_BM start nodv=%s",
+                OUTSTRVALUE_BM (_.nodv));
+  if (!isnode_BM (_.nodv))
+    LOCALRETURN_BM (NULL);
+  _.connob = nodeconn_BM (_.nodv);
+  unsigned nodw = nodewidth_BM (_.nodv);
+  if (_.connob == k_postponed_apply && nodw == 4)
+    {
+      _.doclosv = nodenthson_BM (_.nodv, 0);
+      _.arg1v = nodenthson_BM (_.nodv, 1);
+      _.arg2v = nodenthson_BM (_.nodv, 2);
+      _.arg3v = nodenthson_BM (_.nodv, 3);
+      DBGPRINTF_BM
+        ("run_postponed_node_BM apply doclosv=%s arg1v=%s arg2v=%s arg3v=%s",
+         OUTSTRVALUE_BM (_.doclosv), OUTSTRVALUE_BM (_.arg1v),
+         OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v));
+      _.resv = apply3_BM (_.doclosv, CURFRAME_BM, _.arg1v, _.arg2v, _.arg3v);
+      DBGPRINTF_BM
+        ("run_postponed_node_BM applied doclosv=%s  arg1v=%s arg2v=%s arg3v=%s got resv=%s",
+         OUTSTRVALUE_BM (_.doclosv), OUTSTRVALUE_BM (_.arg1v),
+         OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v),
+         OUTSTRVALUE_BM (_.resv));
+    }
+  else if (_.connob == k_postponed_send && nodw == 5)
+    {
+      _.recv = nodenthson_BM (_.nodv, 0);
+      _.obsel = objectcast_BM (nodenthson_BM (_.nodv, 1));
+      _.arg1v = nodenthson_BM (_.nodv, 2);
+      _.arg2v = nodenthson_BM (_.nodv, 3);
+      _.arg3v = nodenthson_BM (_.nodv, 4);
+      DBGPRINTF_BM
+        ("run_postponed_node_BM should send recv=%s obsel=%s arg1v=%s arg2v=%s arg3v=%s",
+         OUTSTRVALUE_BM (_.recv), objectdbg_BM (_.obsel),
+         OUTSTRVALUE_BM (_.arg1v), OUTSTRVALUE_BM (_.arg2v),
+         OUTSTRVALUE_BM (_.arg3v));
+      _.resv =
+        send3_BM (_.recv, _.obsel, CURFRAME_BM, _.arg1v, _.arg2v, _.arg3v);
+      DBGPRINTF_BM
+        ("run_postponed_node_BM sent recv=%s obsel=%s arg1v=%s arg2v=%s arg3v=%s got resv=%s",
+         OUTSTRVALUE_BM (_.recv), objectdbg_BM (_.obsel),
+         OUTSTRVALUE_BM (_.arg1v), OUTSTRVALUE_BM (_.arg2v),
+         OUTSTRVALUE_BM (_.arg3v), OUTSTRVALUE_BM (_.resv));
+    }
+  else
+    {
+      WARNPRINTF_BM ("run_postponed_node_BM bad nodv=%s",
+                     OUTSTRVALUE_BM (_.nodv));
+      WEAKASSERTWARN_BM (false && "run_postponed_node_BM bad nodv");
+      LOCALRETURN_BM (NULL);
+    }
+  LOCALRETURN_BM (_.resv);
+}                               /* end run_postponed_BM */
+
 
 void
 gcmarkpostponed_BM (struct garbcoll_stBM *gc)

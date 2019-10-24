@@ -1424,6 +1424,9 @@ extern void register_gui_postponed_BM (double nextimstamp);
 #endif /*BISMONGTK*/
 extern void register_web_postponed_BM (double nextimstamp);
 
+value_tyBM
+run_postponed_node_BM (value_tyBM nodarg, struct stackframe_stBM *stkf);
+
 // defer an application, running in the main thread
 void
 do_main_defer_apply3_BM (value_tyBM closv, value_tyBM arg1, value_tyBM arg2,
