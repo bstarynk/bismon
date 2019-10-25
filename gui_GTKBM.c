@@ -5143,6 +5143,8 @@ register_gui_postponed_BM (double nextimstamp)
     deltams = (int) (deltat * 1.0e-3);
   if (deltams < MIN_POSTPONED_MILLISEC_BM)
     deltams = MIN_POSTPONED_MILLISEC_BM;
+  if (postponed_timeoutid_bm > 0)
+    g_source_remove (postponed_timeoutid_bm), postponed_timeoutid_bm = 0;
   postponed_timeoutid_bm =
     g_timeout_add (deltams, postponed_guigtk_cbBM, NULL);
   pthread_mutex_unlock (&postponedmtx_gtkbm);
@@ -5163,7 +5165,7 @@ postponed_guigtk_cbBM (gpointer udata)
                  value_tyBM errorv;     //
                  objectval_tyBM * connob;       //
     );
-  double delay = 0.0;
+  double timestamp = 0.0;
   ASSERT_BM (udata == NULL);
   ASSERT_BM (pthread_self () == mainthreadid_BM);
   struct failurehandler_stBM *prevfailureh = curfailurehandle_BM;
@@ -5211,27 +5213,43 @@ postponed_guigtk_cbBM (gpointer udata)
     }
   else
     {                           /* no failcod: */
-      delay = 0.0;
-      _.postponedv = pop_newest_postpone_BM (&delay, CURFRAME_BM);
-      DBGPRINTF_BM ("postponed_guigtk postponedv=%s delay=%.4f",
-                    OUTSTRVALUE_BM (_.postponedv), delay);
-      if (_.postponedv)
+      timestamp = timestamp_newest_postpone_BM ();
+      DBGPRINTF_BM ("postponed_guigtk newest timestamp=%g=now%+.4f",
+                    timestamp, timestamp - clocktime_BM (CLOCK_MONOTONIC));
+      if (timestamp >= clocktime_BM (CLOCK_MONOTONIC))
         {
-          ASSERT_BM (isnode_BM (_.postponedv));
-          _.resv = run_postponed_node_BM (_.postponedv, CURFRAME_BM);
-          if (_.resv == NULL)
+          _.postponedv = pop_newest_postpone_BM (&timestamp, CURFRAME_BM);
+          DBGPRINTF_BM
+            ("postponed_guigtk postponedv=%s timestamp=%g=now%+.4f",
+             OUTSTRVALUE_BM (_.postponedv), timestamp,
+             timestamp - clocktime_BM (CLOCK_MONOTONIC));
+          if (_.postponedv)
             {
-              WARNPRINTF_BM ("postponed_guigtk failed to run %s",
-                             OUTSTRVALUE_BM (_.postponedv));
-              fflush (NULL);
-              _.errorv = makenode1_BM (k_postponed_guigtk, _.postponedv);
-              PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+              ASSERT_BM (isnode_BM (_.postponedv));
+              _.resv = run_postponed_node_BM (_.postponedv, CURFRAME_BM);
+              if (_.resv == NULL)
+                {
+                  WARNPRINTF_BM ("postponed_guigtk failed to run %s",
+                                 OUTSTRVALUE_BM (_.postponedv));
+                  fflush (NULL);
+                  _.errorv = makenode1_BM (k_postponed_guigtk, _.postponedv);
+                  PLAINFAILURE_BM (__LINE__, _.errorv, CURFRAME_BM);
+                }
+              double nexttimestamp = timestamp_newest_postpone_BM ();
+              DBGPRINTF_BM ("postponed_guigtk nexttimestamp=%g=now%+.4f",
+                            nexttimestamp,
+                            nexttimestamp - clocktime_BM (CLOCK_MONOTONIC));
+              if (nexttimestamp > 0)
+                {
+                  register_gui_postponed_BM (nexttimestamp);
+                  return G_SOURCE_CONTINUE;
+                }
             }
         }
+      else
+        return G_SOURCE_CONTINUE;
     }
-  /// should queue the next delay somehow
-  FATAL_BM ("unimplemented postponed_guigtk_cbBM");
-#warning unimplemented postponed_guigtk_cbBM
+  return G_SOURCE_REMOVE;
 }                               /* end postponed_guigtk_cbBM */
 
 

@@ -1298,7 +1298,7 @@ end:
 
 
 value_tyBM
-pop_newest_postpone_BM (double *pdelay, struct stackframe_stBM *stkf)
+pop_newest_postpone_BM (double *ptimestamp, struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_pop_newest_postpone = BMK_0zcVE3vaq9X_5ThchgCp23w;
   objectval_tyBM *k_postponed_apply = BMK_6kxUF3055z5_3pRMhBvXESe;
@@ -1315,8 +1315,8 @@ pop_newest_postpone_BM (double *pdelay, struct stackframe_stBM *stkf)
                  value_tyBM resv;       //
     );
   bool missing = true;
-  if (pdelay)
-    *pdelay = 0.0;
+  if (ptimestamp)
+    *ptimestamp = 0.0;
   _.resv = NULL;
   pthread_mutex_lock (&ti_agendamtx_BM);
   if (UNLIKELY_BM (agpostpone_first_BM == NULL))
@@ -1377,15 +1377,15 @@ end:
                     OUTSTRVALUE_BM (_.arg1v),
                     OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v));
         };
-      if (pdelay != NULL)
-        *pdelay = ts;
+      if (ptimestamp != NULL)
+        *ptimestamp = ts;
     }
   return _.resv;
 }                               /* end of pop_newest_postpone_BM */
 
 
 double
-timestamp_newest_pospone_BM (void)
+timestamp_newest_postpone_BM (void)
 {
   double timestamp = 0.0;
   pthread_mutex_lock (&ti_agendamtx_BM);

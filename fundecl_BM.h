@@ -1458,7 +1458,7 @@ value_tyBM get_newest_postpone_BM (double *pdelay,
 value_tyBM pop_newest_postpone_BM (double *pdelay,
                                    struct stackframe_stBM *stkf);
 
-double timestamp_newest_pospone_BM (void);
+double timestamp_newest_postpone_BM (void);
 ////////////////////////////////////////////////////////////////
 //**************************************************************
 ////////////////////////////////////////////////////////////////
