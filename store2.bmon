@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3291 objects
+// for 3292 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -9240,6 +9240,17 @@ _17mrxkMdNtH_2CduQ2WDIy5 _8g1WBJBhDT9_1QK8IcuWYx2) ~)
  "connective for postponed applications: *postponed_apply(closure,arg1,arg2,arg3)"
 
 »_6kxUF3055z5_3pRMhBvXESe
+
+
+
+«_4DzpsR0MDLS_1GMNlJhyPX5 |=postponed_guigtk|
+!~ name (~ postponed_guigtk ~)
+± 1571992933.349
+∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "descriptor of postponed_guigtk_cbBM for register_gui_postponed in gui_GTKBM.c"
+
+»_4DzpsR0MDLS_1GMNlJhyPX5
 
 
 
