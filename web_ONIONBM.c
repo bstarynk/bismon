@@ -35,8 +35,16 @@ static onion *myonion_BM;
 // the command pipe contains bytes, each considered as a different message
 static int cmdpipe_rd_BM = -1, cmdpipe_wr_BM = -1;
 
-static int sigfd_BM = -1;
-static atomic_int oniontimerfd_BM = -1;
+enum cmd_charcode_enBM {
+			cmdcod__none_bm = 0,
+			cmdcod_execdefer_bm = 'X',
+			cmdcod_rungc_bm = 'G',
+			cmdcod_postponetimer_bm = 'T',
+};
+
+static int sigfd_BM = -1; /* for signalfd(2) */
+static atomic_int oniontimerfd_BM = -1; /* for timerfd_create(2) */
+
 extern void add_defer_command_onion_BM (void);
 
 extern void
@@ -2872,11 +2880,22 @@ read_commandpipe_BM (void)
   int nbr = read (cmdpipe_rd_BM, buf, 1);
   if (nbr == 1)
     {
-      DBGPRINTF_BM ("read_commandpipe_BM '%s' incomplete", buf);
-      WARNPRINTF_BM ("read_commandpipe_BM unimplemented");
+      DBGPRINTF_BM ("read_commandpipe_BM '%s'", buf);
+      switch (buf[0]) {
+      case cmdcod_execdefer_bm: // 'X'
+	break;
+      case cmdcod_rungc_bm: // 'G'
+	break;
+      case cmdcod_postponetimer_bm: // 'T'
+	break;
+      default:
+	WARNPRINTF_BM ("read_commandpipe_BM  '%s' unknown", buf);
+      }
       // if buf[0] is 'X', execute a deferred command
       // if buf[0] is 'G', run the garbage collector. Not sure!
+      // if buf[0] is 'T', something changed about postponed timers
 #warning read_commandpipe_BM incomplete
+      FATAL_BM("read_commandpipe_BM  '%s' unimplemented", buf);
       // should handle the command
     }
   else
