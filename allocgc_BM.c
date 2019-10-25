@@ -59,9 +59,18 @@ initialize_garbage_collector_BM (void)
 void
 request_delayed_garbage_collection_BM (void)
 {
+  extern void add_rungarbcoll_command_onion_BM ();
   // this should be the only place where want_garbage_collection_BM
   // becomes true
   atomic_store (&want_garbage_collection_BM, true);     // request delayed GC
+  if (web_is_running_BM
+#ifdef BISMONGTK
+      && !gui_is_running_BM
+#endif /*BISMONGTK*/
+    )
+    {
+      add_rungarbcoll_command_onion_BM ();
+    }
   agenda_notify_BM ();
 }                               /* end request_delayed_garbage_collection_BM */
 

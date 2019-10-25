@@ -5075,7 +5075,7 @@ guiperiodicgarbagecollection_BM (gpointer data __attribute__((unused)))
     {
       full_garbage_collection_BM (NULL);
     }
-  return TRUE;                  // repeat again later
+  return G_SOURCE_CONTINUE;     // repeat again later
 }                               /* end guiperiodicgarbagecollection_BM */
 
 void

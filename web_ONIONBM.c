@@ -35,14 +35,15 @@ static onion *myonion_BM;
 // the command pipe contains bytes, each considered as a different message
 static int cmdpipe_rd_BM = -1, cmdpipe_wr_BM = -1;
 
-enum cmd_charcode_enBM {
-			cmdcod__none_bm = 0,
-			cmdcod_execdefer_bm = 'X',
-			cmdcod_rungc_bm = 'G',
-			cmdcod_postponetimer_bm = 'T',
+enum cmd_charcode_enBM
+{
+  cmdcod__none_bm = 0,
+  cmdcod_execdefer_bm = 'X',
+  cmdcod_rungc_bm = 'G',
+  cmdcod_postponetimer_bm = 'T',
 };
 
-static int sigfd_BM = -1; /* for signalfd(2) */
+static int sigfd_BM = -1;       /* for signalfd(2) */
 static atomic_int oniontimerfd_BM = -1; /* for timerfd_create(2) */
 
 extern void add_defer_command_onion_BM (void);
@@ -2875,27 +2876,32 @@ handle_sigchld_BM (pid_t pid)
 static void
 read_commandpipe_BM (void)
 {
+  extern bool did_deferred_BM (void);
   char buf[4];
   memset (&buf, 0, sizeof (buf));
   int nbr = read (cmdpipe_rd_BM, buf, 1);
   if (nbr == 1)
     {
       DBGPRINTF_BM ("read_commandpipe_BM '%s'", buf);
-      switch (buf[0]) {
-      case cmdcod_execdefer_bm: // 'X'
-	break;
-      case cmdcod_rungc_bm: // 'G'
-	break;
-      case cmdcod_postponetimer_bm: // 'T'
-	break;
-      default:
-	WARNPRINTF_BM ("read_commandpipe_BM  '%s' unknown", buf);
-      }
-      // if buf[0] is 'X', execute a deferred command
-      // if buf[0] is 'G', run the garbage collector. Not sure!
-      // if buf[0] is 'T', something changed about postponed timers
+      switch (buf[0])
+        {
+          // if buf[0] is 'X', execute a deferred command
+        case cmdcod_execdefer_bm:      // 'X'
+          if (!did_deferred_BM ())
+            WARNPRINTF_BM ("read_commandpipe_BM failed to do deferred");
+          return;
+        case cmdcod_rungc_bm:  // 'G'
+          // if buf[0] is 'G', run the garbage collector. Not sure!
+          garbage_collect_if_wanted_BM (NULL);
+          return;
+        case cmdcod_postponetimer_bm:  // 'T'
+          // if buf[0] is 'T', something changed about postponed timers
+          break;
+        default:
+          WARNPRINTF_BM ("read_commandpipe_BM  '%s' unknown", buf);
+        }
 #warning read_commandpipe_BM incomplete
-      FATAL_BM("read_commandpipe_BM  '%s' unimplemented", buf);
+      FATAL_BM ("read_commandpipe_BM  '%s' unimplemented", buf);
       // should handle the command
     }
   else
@@ -2908,7 +2914,7 @@ add_defer_command_onion_BM (void)
 {
   char buf[4];
   memset (&buf, 0, sizeof (buf));
-  buf[0] = 'X';
+  buf[0] = cmdcod_execdefer_bm /* 'X' */ ;
   int count = 0;
   while (count < 256)
     {                           /* this loop usually runs once */
@@ -2927,6 +2933,34 @@ add_defer_command_onion_BM (void)
     }
   FATAL_BM ("add_defer_command_onion_BM failed");
 }                               /* end add_defer_command_onion_BM */
+
+
+void
+add_rungarbcoll_command_onion_BM (void)
+{
+  char buf[4];
+  memset (&buf, 0, sizeof (buf));
+  buf[0] = cmdcod_rungc_bm;     /* 'G' */
+  int count = 0;
+  while (count < 256)
+    {                           /* this loop usually runs once */
+      int nbw = write (cmdpipe_wr_BM, buf, 1);
+      if (nbw < 0 && errno == EINTR)
+        continue;
+      if (nbw < 0 && errno == EWOULDBLOCK)
+        {
+          usleep (2000);
+          continue;
+        };
+      if (nbw == 1)
+        return;
+      FATAL_BM ("add_rungarbcoll_command_onion_BM nbw %d - %s", nbw,
+                (nbw < 0) ? strerror (errno) : "--");
+    }
+  FATAL_BM ("add_rungarbcoll_command_onion_BM failed");
+}                               /* end add_defer_command_onion_BM */
+
+
 
 ////////////////////////////////////////////////////////////////
 
