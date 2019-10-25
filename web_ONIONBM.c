@@ -2507,6 +2507,10 @@ initialize_webonion_BM (void)
 void
 register_web_postponed_BM (double nextimstamp)
 {
+  DBGBACKTRACEPRINTF_BM ("register_web_postponed_BM nextimstamp=%g=now%+.4f",
+                         nextimstamp,
+                         nextimstamp - clocktime_BM (CLOCK_MONOTONIC));
+  add_postponetimer_command_onion_BM ();
   FATAL_BM
     ("register_web_postponed_BM unimplemented nextimstamp=%g = %.3f seconds from now",
      nextimstamp, nextimstamp - clocktime_BM (CLOCK_MONOTONIC));
@@ -2940,6 +2944,7 @@ add_rungarbcoll_command_onion_BM (void)
 {
   char buf[4];
   memset (&buf, 0, sizeof (buf));
+  DBGBACKTRACEPRINTF_BM ("add_rungarbcoll_command_onion_BM");
   buf[0] = cmdcod_rungc_bm;     /* 'G' */
   int count = 0;
   while (count < 256)
@@ -2959,6 +2964,33 @@ add_rungarbcoll_command_onion_BM (void)
     }
   FATAL_BM ("add_rungarbcoll_command_onion_BM failed");
 }                               /* end add_defer_command_onion_BM */
+
+
+void
+add_postponetimer_command_onion_BM (void)
+{
+  char buf[4];
+  memset (&buf, 0, sizeof (buf));
+  DBGBACKTRACEPRINTF_BM ("add_postponetimer_command_onion_BM");
+  buf[0] = cmdcod_postponetimer_bm;     /* 'T' */
+  int count = 0;
+  while (count < 256)
+    {                           /* this loop usually runs once */
+      int nbw = write (cmdpipe_wr_BM, buf, 1);
+      if (nbw < 0 && errno == EINTR)
+        continue;
+      if (nbw < 0 && errno == EWOULDBLOCK)
+        {
+          usleep (2000);
+          continue;
+        };
+      if (nbw == 1)
+        return;
+      FATAL_BM ("add_postponetimer_command_onion_BM nbw %d - %s", nbw,
+                (nbw < 0) ? strerror (errno) : "--");
+    }
+  FATAL_BM ("add_postponetimer_command_onion_BM failed");
+}                               /* end add_postponetimer_command_onion_BM */
 
 
 
