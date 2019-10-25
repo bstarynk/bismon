@@ -35,6 +35,7 @@ static onion *myonion_BM;
 // the command pipe contains bytes, each considered as a different message
 static int cmdpipe_rd_BM = -1, cmdpipe_wr_BM = -1;
 
+#define MAXTIMER_SECONDS_BM 0.5
 enum cmd_charcode_enBM
 {
   cmdcod__none_bm = 0,
@@ -2880,6 +2881,7 @@ handle_sigchld_BM (pid_t pid)
 static void
 read_commandpipe_BM (void)
 {
+#define NANOSECONDS_PER_SECOND_bm   (1000*1000*1000)
   extern bool did_deferred_BM (void);
   char buf[4];
   memset (&buf, 0, sizeof (buf));
@@ -2900,6 +2902,41 @@ read_commandpipe_BM (void)
           return;
         case cmdcod_postponetimer_bm:  // 'T'
           // if buf[0] is 'T', something changed about postponed timers
+          {
+            struct itimerspec its;
+            memset (&its, 0, sizeof (its));
+            if (UNLIKELY_BM (oniontimerfd_BM < 0))
+              {
+                oniontimerfd_BM =
+                  timerfd_create (CLOCK_MONOTONIC, TFD_CLOEXEC);
+                if (oniontimerfd_BM < 0)
+                  FATAL_BM
+                    ("read_commandpipe_BM fail on timerfd_create - %m");
+                DBGPRINTF_BM ("read_commandpipe_BM oniontimerfd_BM=%d",
+                              oniontimerfd_BM);
+              }
+            double timestamp = timestamp_newest_postpone_BM ();
+            double deltatime = timestamp - elapsedtime_BM ();
+            if (deltatime > MAXTIMER_SECONDS_BM)
+              deltatime = MAXTIMER_SECONDS_BM;
+            DBGPRINTF_BM ("read_commandpipe_BM deltatime=%.5f", deltatime);
+            if (deltatime > 0.0)
+              {
+                clock_gettime (CLOCK_MONOTONIC, &its.it_value);
+                its.it_value.tv_sec += (long) (floor (deltatime));
+                its.it_value.tv_nsec += (long) (deltatime * 1.0e9);
+                while (its.it_value.tv_nsec > NANOSECONDS_PER_SECOND_bm)
+                  {
+                    its.it_value.tv_sec++;
+                    its.it_value.tv_nsec -= NANOSECONDS_PER_SECOND_bm;
+                  }
+                if (timerfd_settime
+                    (oniontimerfd_BM, TFD_TIMER_ABSTIME, &its, NULL))
+                  FATAL_BM
+                    ("read_commandpipe_BM timerfd_settime failure deltatime=%.4f / %m",
+                     deltatime);
+              }
+          }
           break;
         default:
           WARNPRINTF_BM ("read_commandpipe_BM  '%s' unknown", buf);

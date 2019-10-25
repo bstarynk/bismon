@@ -69,6 +69,7 @@ using std::atomic_store;
 #include <sys/ioctl.h>
 #include <sys/file.h>
 #include <sys/signalfd.h>
+#include <sys/timerfd.h>
 #include <elf.h>
 #include <errno.h>
 #include <netdb.h>
