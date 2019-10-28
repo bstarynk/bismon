@@ -1942,7 +1942,6 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
         objtouchnow_BM (_.jsonob);
       }
   }
-
   objputpayload_BM (_.webexob, wexda);
   objtouchnow_BM (_.webexob);
   wexda->webx_magic = BISMONION_WEBX_MAGIC;

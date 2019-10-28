@@ -852,6 +852,19 @@ static inline void objdatavectputnthpayl_BM (objectval_tyBM * obj,
                                              const value_tyBM valcomp);
 ////////////////////////////////
 
+/// decayed vectors payload, for typayl_decayed_BM
+
+static inline unsigned
+decayedvectlen_BM (const struct decayedvectpayl_stBM *dvec);
+static inline const value_tyBM *
+decayedvectdata_BM (const struct decayedvectpayl_stBM *dvec);
+static inline value_tyBM
+decayedvectnth_BM (const struct decayedvectpayl_stBM *dvec, int rk);
+static inline value_tyBM
+decayedvectlast_BM (const struct decayedvectpayl_stBM *dvec);
+static inline void decayedvectputnth_BM (struct decayedvectpayl_stBM *dvec,
+					 int rk, const value_tyBM valcomp);
+///////////////////////////////
 
 extern struct listtop_stBM *makelist_BM (void);
 static inline bool islist_BM (const value_tyBM);

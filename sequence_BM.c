@@ -1051,4 +1051,10 @@ datavectgcproc_BM (struct garbcoll_stBM *gc,
 }                               /* end datavectgcproc_BM  */
 
 
+
+
+
+////////////////////////////////////////////////////////////////
+///// decaying payload
+
 // end of file sequence_BM.c

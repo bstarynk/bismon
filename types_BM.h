@@ -71,7 +71,8 @@ enum gctyenum_BM
   typayl_jansjson_BM,
   typayl_user_BM,
   typayl_dict_BM,
-#define typayl_LAST_BM typayl_dict_BM
+  typayl_decayed_BM,
+#define typayl_LAST_BM typayl_decayed_BM
   typayl__SpareA_BM,
   typayl__SpareB_BM,
   typayl__SpareC_BM,
@@ -193,6 +194,7 @@ struct strbuffer_stBM;          /* forward */
 struct dumper_stBM;             /* forward */
 struct dict_stBM;               /* forward */
 struct user_stBM;               /* forward */
+struct decayedvectpayl_stBM;	/* forward */
 
 typedef void anyassoc_tyBM;
 
@@ -706,6 +708,13 @@ struct jansjson_stBM
 };
 
 
+// a decayed payload vector auto-destroys itself after some elapsed limiting time
+struct decayedvectpayl_stBM // for typayl_decayed_BM, see file sequence_BM.c
+{
+  typedhead_tyBM pa; /// rlen is allocated size, size is used length
+  double decayp_limitime;
+  value_tyBM decayp_arr[];   // of rlen elements
+};
 
 
 

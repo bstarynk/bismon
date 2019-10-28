@@ -1111,6 +1111,63 @@ objdatavecttotuplepayl_BM (objectval_tyBM * obj)
   return datavect_to_tuple_BM (dvec);
 }                               /* end objdatavecttotuplepayl_BM */
 
+
+////////////////////////////////////////////////////////////////
+
+unsigned
+decayedvectlen_BM (const struct decayedvectpayl_stBM *dvec)
+{
+  if (valtype_BM ((const value_tyBM) dvec) != typayl_decayed_BM)
+    return 0;
+  if (dvec->decayp_limitime < elapsedtime_BM())
+    return 0;
+  return ((typedsize_tyBM *) dvec)->size;
+}                               /* end decayedvectlen_BM */
+
+const value_tyBM *
+decayedvectdata_BM (const struct decayedvectpayl_stBM *dvec)
+{
+  if (valtype_BM ((const value_tyBM) dvec) != typayl_decayed_BM)
+    return NULL;
+  if (dvec->decayp_limitime < elapsedtime_BM())
+    return NULL;
+  return dvec->decayp_arr;
+}                               /* end decayedvectdata_BM */
+
+value_tyBM
+decayedvectnth_BM (const struct decayedvectpayl_stBM *dvec, int rk)
+{
+  unsigned sz = decayedvectlen_BM (dvec);
+  if (sz == 0) return NULL;
+  if (rk < 0)
+    rk += (int) sz;
+  if (rk >= 0 && rk < (int) sz)
+    return dvec->decayp_arr[rk];
+  return NULL;
+}                               /* end decayedvectnth_BM */
+
+value_tyBM
+decayedvectlast_BM (const struct decayedvectpayl_stBM *dvec)
+{
+  unsigned sz = decayedvectlen_BM (dvec);
+  if (sz == 0) return NULL;
+  return dvec->decayp_arr[sz - 1];
+}                               /* end decayedvectlast_BM */
+
+void
+decayedvectputnth_BM (struct decayedvectpayl_stBM *dvec,
+                   int rk, const value_tyBM valcomp)
+{
+  unsigned sz = decayedvectlen_BM (dvec);
+  if (!sz)
+    return;
+  if (rk < 0)
+    rk += (int) sz;
+  if (rk >= 0 && rk < (int) sz)
+    dvec->decayp_arr[rk] = valcomp;
+}                               /* end decayedvectputnth_BM */
+
+
 ////////////////////////////////
 bool
 isset_BM (const value_tyBM v)
