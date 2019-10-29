@@ -1128,7 +1128,7 @@ bool
 isdecayedvect_BM (const value_tyBM v)
 {
   return valtype_BM (v) == typayl_decayed_BM;
-} /* end isdecayedvect_BM */
+}                               /* end isdecayedvect_BM */
 
 const value_tyBM *
 decayedvectdata_BM (const struct decayedvectpayl_stBM *dvec)
@@ -1145,7 +1145,7 @@ islivedecayedvect_BM (const value_tyBM v)
 {
   if (!isdecayedvect_BM (v))
     return false;
-  return decayedvectdata_BM ((const struct decayedvectpayl_stBM*) v) != NULL;
+  return decayedvectdata_BM ((const struct decayedvectpayl_stBM *) v) != NULL;
 }                               /* end islivedecayedvect_BM */
 
 value_tyBM

@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -1071,5 +1071,26 @@ decayedvectorgcmark_BM (struct garbcoll_stBM *gc,
   FATAL_BM ("unimplemented decayedvectorgcmark_BM");
 #warning unimplemented decayedvectorgcmark_BM
 }                               /* end of decayedvectorgcmark_BM */
+
+void
+decayedvectordestroy_BM (struct garbcoll_stBM *gc,
+                         struct decayedvectpayl_stBM *dvec)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (isdecayedvect_BM ((const value_tyBM) dvec));
+  FATAL_BM ("unimplemented decayedvectordestroy_BM");
+#warning unimplemented decayedvectordestroy_BM
+}                               /* end of decayedvectordestroy_BM */
+
+void
+decayedvectorgckeep_BM (struct garbcoll_stBM *gc,
+                        struct decayedvectpayl_stBM *dvec)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (isdecayedvect_BM ((const value_tyBM) dvec));
+  FATAL_BM ("unimplemented decayedvectorgckeep_BM");
+#warning unimplemented decayedvectorgckeep_BM
+}                               /* end of decayedvectorgckeep_BM */
+
 
 // end of file sequence_BM.c

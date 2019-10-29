@@ -376,6 +376,9 @@ valgcdestroy_BM (struct garbcoll_stBM *gc, value_tyBM val)
     case typayl_websession_BM:
       websessiondatagcdestroy_BM (gc, (struct websessiondata_stBM *) val);
       return;
+    case typayl_decayed_BM:
+      decayedvectordestroy_BM (gc, (struct decayedvectpayl_stBM *) val);
+      return;
     case typayl_FailureHandler_BM:
       return;
     case typayl_hashsetval_BM:
@@ -526,6 +529,8 @@ deleteobjectpayload_BM (objectval_tyBM * obj, extendedval_tyBM payl)
       return;
     case typayl_vectval_BM:
       return;
+    case typayl_decayed_BM:
+      return;
     case typayl_classinfo_BM:
       return;
     case typayl_dict_BM:
@@ -604,6 +609,9 @@ valgckeep_BM (struct garbcoll_stBM *gc, value_tyBM val)
       return;
     case typayl_vectval_BM:
       datavectgckeep_BM (gc, (struct datavectval_stBM *) val);
+      return;
+    case typayl_decayed_BM:
+      decayedvectorgckeep_BM (gc, (struct decayedvectpayl_stBM *) val);
       return;
     case typayl_loader_BM:
       loadergckeep_BM (gc, (struct loader_stBM *) val);
