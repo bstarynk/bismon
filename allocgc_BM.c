@@ -279,6 +279,11 @@ extendedgcproc_BM (struct garbcoll_stBM *gc, extendedval_tyBM xval,
       webexchangedatagcmark_BM (gc, (struct webexchangedata_stBM *) xval,
                                 fromob, depth);
       return xval;
+    case typayl_decayed_BM:
+      decayedvectorgcmark_BM (gc,
+                              (struct decayedvectpayl_stBM *) xval,
+                              fromob, depth);
+      return xval;
     case typayl_FailureHandler_BM:
       {
         struct failurehandler_stBM *fh = (struct failurehandler_stBM *) xval;

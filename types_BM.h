@@ -194,7 +194,7 @@ struct strbuffer_stBM;          /* forward */
 struct dumper_stBM;             /* forward */
 struct dict_stBM;               /* forward */
 struct user_stBM;               /* forward */
-struct decayedvectpayl_stBM;	/* forward */
+struct decayedvectpayl_stBM;    /* forward */
 
 typedef void anyassoc_tyBM;
 
@@ -709,11 +709,11 @@ struct jansjson_stBM
 
 
 // a decayed payload vector auto-destroys itself after some elapsed limiting time
-struct decayedvectpayl_stBM // for typayl_decayed_BM, see file sequence_BM.c
+struct decayedvectpayl_stBM     // for typayl_decayed_BM, see file sequence_BM.c
 {
-  typedhead_tyBM pa; /// rlen is allocated size, size is used length
+  typedhead_tyBM pa;            /// rlen is allocated size, size is used length
   double decayp_limitime;
-  value_tyBM decayp_arr[];   // of rlen elements
+  value_tyBM decayp_arr[];      // of rlen elements
 };
 
 

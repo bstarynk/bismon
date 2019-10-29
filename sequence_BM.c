@@ -1055,6 +1055,21 @@ datavectgcproc_BM (struct garbcoll_stBM *gc,
 
 
 ////////////////////////////////////////////////////////////////
-///// decaying payload
+///// decaying vector  payload
+void
+decayedvectorgcmark_BM (struct garbcoll_stBM *gc,
+                        struct decayedvectpayl_stBM *dvec,
+                        objectval_tyBM * fromob, int depth)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  ASSERT_BM (isdecayedvect_BM ((const value_tyBM) dvec));
+  uint8_t oldmark = ((typedhead_tyBM *) dvec)->hgc;
+  if (oldmark)
+    return;
+  ((typedhead_tyBM *) dvec)->hgc = MARKGC_BM;
+  gc->gc_nbmarks++;
+  FATAL_BM ("unimplemented decayedvectorgcmark_BM");
+#warning unimplemented decayedvectorgcmark_BM
+}                               /* end of decayedvectorgcmark_BM */
 
 // end of file sequence_BM.c
