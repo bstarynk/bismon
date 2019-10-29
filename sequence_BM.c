@@ -1056,6 +1056,11 @@ datavectgcproc_BM (struct garbcoll_stBM *gc,
 
 ////////////////////////////////////////////////////////////////
 ///// decaying vector  payload
+// allocated size:
+#define DECAYEDVECTOR_ASIZ_bm(Dvec)   ((typedhead_tyBM*)(Dvec))->rlen
+// used count:
+#define DECAYEDVECTOR_UCNT_bm(Dvec)   ((typedsize_tyBM*)(Dvec))->size
+
 void
 decayedvectorgcmark_BM (struct garbcoll_stBM *gc,
                         struct decayedvectpayl_stBM *dvec,
@@ -1067,9 +1072,29 @@ decayedvectorgcmark_BM (struct garbcoll_stBM *gc,
   if (oldmark)
     return;
   ((typedhead_tyBM *) dvec)->hgc = MARKGC_BM;
+  if (islivedecayedvect_BM ((const value_tyBM) dvec))
+    {
+      unsigned ucnt = DECAYEDVECTOR_UCNT_bm (dvec);
+      ASSERT_BM (ucnt <= DECAYEDVECTOR_ASIZ_bm (dvec));
+      value_tyBM *valarr = dvec->decayp_arr;
+      for (unsigned ix = 0; ix < ucnt; ix++)
+        {
+          if (!valarr[ix])
+            continue;
+          VALUEGCPROC_BM (gc, valarr[ix], depth + 1);
+        }
+    }
+  else
+    {
+      unsigned ucnt = DECAYEDVECTOR_UCNT_bm (dvec);
+      ASSERT_BM (ucnt <= DECAYEDVECTOR_ASIZ_bm (dvec));
+      value_tyBM *valarr = dvec->decayp_arr;
+      for (unsigned ix = 0; ix < ucnt; ix++)
+        {
+          valarr[ix] = NULL;
+        }
+    }
   gc->gc_nbmarks++;
-  FATAL_BM ("unimplemented decayedvectorgcmark_BM");
-#warning unimplemented decayedvectorgcmark_BM
 }                               /* end of decayedvectorgcmark_BM */
 
 void
@@ -1078,8 +1103,16 @@ decayedvectordestroy_BM (struct garbcoll_stBM *gc,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (isdecayedvect_BM ((const value_tyBM) dvec));
-  FATAL_BM ("unimplemented decayedvectordestroy_BM");
-#warning unimplemented decayedvectordestroy_BM
+  unsigned ucnt = DECAYEDVECTOR_UCNT_bm (dvec);
+  unsigned asiz = DECAYEDVECTOR_ASIZ_bm (dvec);
+  ASSERT_BM (ucnt <= asiz);
+  value_tyBM *valarr = dvec->decayp_arr;
+  for (unsigned ix = 0; ix < ucnt; ix++)
+    {
+      valarr[ix] = NULL;
+    }
+  free ((void *) dvec);
+  gc->gc_freedbytes += sizeof (*dvec) + asiz * sizeof (value_tyBM);
 }                               /* end of decayedvectordestroy_BM */
 
 void
@@ -1088,8 +1121,11 @@ decayedvectorgckeep_BM (struct garbcoll_stBM *gc,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (isdecayedvect_BM ((const value_tyBM) dvec));
-  FATAL_BM ("unimplemented decayedvectorgckeep_BM");
-#warning unimplemented decayedvectorgckeep_BM
+  unsigned ucnt = DECAYEDVECTOR_UCNT_bm (dvec);
+  unsigned asiz = DECAYEDVECTOR_ASIZ_bm (dvec);
+  ASSERT_BM (ucnt <= asiz);
+  const value_tyBM *valarr = dvec->decayp_arr;
+  gc->gc_keptbytes += sizeof (*dvec) + asiz * sizeof (value_tyBM);
 }                               /* end of decayedvectorgckeep_BM */
 
 

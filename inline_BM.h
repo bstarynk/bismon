@@ -1121,7 +1121,7 @@ decayedvectlen_BM (const struct decayedvectpayl_stBM *dvec)
     return 0;
   if (dvec->decayp_limitime < elapsedtime_BM ())
     return 0;
-  return ((typedsize_tyBM *) dvec)->size;
+  return ((typedsize_tyBM *) dvec)->size;       // DECAYEDVECTOR_UCNT_bm
 }                               /* end decayedvectlen_BM */
 
 bool
