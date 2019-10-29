@@ -1129,4 +1129,27 @@ decayedvectorgckeep_BM (struct garbcoll_stBM *gc,
 }                               /* end of decayedvectorgckeep_BM */
 
 
+
+bool
+objputdecayedvectorpayl_BM (objectval_tyBM * obj, unsigned asiz)
+{
+  if (!isobject_BM ((value_tyBM) obj))
+    return false;
+  if (asiz > MAXSIZE_BM)
+    FATAL_BM ("too big asiz %u in objputdecayedvectorpayl_BM", asiz);
+  asiz = prime_above_BM (asiz);
+  struct decayedvectpayl_stBM *dvec =   //
+    allocgcty_BM (typayl_decayed_BM,
+                  sizeof (*dvec) + asiz * sizeof (value_tyBM));
+  if (dvec)
+    {
+      DECAYEDVECTOR_ASIZ_bm (dvec) = asiz;
+      DECAYEDVECTOR_UCNT_bm (dvec) = 0;
+      objputpayload_BM (obj, dvec);
+      return true;
+    }
+  return false;
+}                               /* end objputdecayedvectorpayl_BM */
+
+
 // end of file sequence_BM.c

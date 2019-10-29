@@ -854,8 +854,9 @@ static inline void objdatavectputnthpayl_BM (objectval_tyBM * obj,
 
 /// decayed vectors payload, for typayl_decayed_BM
 
+static inline unsigned decayedvectlen_BM (const struct decayedvectpayl_stBM *dvec);     // used length
 static inline unsigned
-decayedvectlen_BM (const struct decayedvectpayl_stBM *dvec);
+decayedvectallocsize_BM (const struct decayedvectpayl_stBM *dvec);
 static inline bool isdecayedvect_BM (const value_tyBM v);
 static inline bool islivedecayedvect_BM (const value_tyBM v);
 static inline const value_tyBM *decayedvectdata_BM (const struct
@@ -875,6 +876,11 @@ extern void decayedvectordestroy_BM (struct garbcoll_stBM *gc,
                                      struct decayedvectpayl_stBM *dvec);
 extern void decayedvectorgckeep_BM (struct garbcoll_stBM *gc,
                                     struct decayedvectpayl_stBM *dvec);
+
+extern bool objputdecayedvectorpayl_BM (objectval_tyBM * obj, unsigned asiz);
+static inline struct decayedvectpayl_stBM
+  *objgetdecayedvectorpayl_BM (objectval_tyBM * obj);
+static inline bool objhasdecayedvectorpayl_BM (objectval_tyBM * obj);
 ///////////////////////////////
 
 extern struct listtop_stBM *makelist_BM (void);

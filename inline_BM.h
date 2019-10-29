@@ -1124,6 +1124,15 @@ decayedvectlen_BM (const struct decayedvectpayl_stBM *dvec)
   return ((typedsize_tyBM *) dvec)->size;       // DECAYEDVECTOR_UCNT_bm
 }                               /* end decayedvectlen_BM */
 
+unsigned
+decayedvectallocsize_BM (const struct decayedvectpayl_stBM *dvec)
+{
+  if (valtype_BM ((const value_tyBM) dvec) != typayl_decayed_BM)
+    return 0;
+  return ((typedhead_tyBM *) dvec)->rlen;       // DECAYEDVECTOR_ASIZ_bm
+}                               /* end decayedvectallocsize_BM */
+
+
 bool
 isdecayedvect_BM (const value_tyBM v)
 {
@@ -1182,6 +1191,23 @@ decayedvectputnth_BM (struct decayedvectpayl_stBM *dvec,
   if (rk >= 0 && rk < (int) sz)
     dvec->decayp_arr[rk] = valcomp;
 }                               /* end decayedvectputnth_BM */
+
+struct decayedvectpayl_stBM *
+objgetdecayedvectorpayl_BM (objectval_tyBM * obj)
+{
+  if (!isobject_BM (obj))
+    return NULL;
+  void *obpayl = objpayload_BM (obj);
+  if (isdecayedvect_BM (obpayl))
+    return (struct decayedvectpayl_stBM *) obpayl;
+  return NULL;
+}                               /* end of objgetdecayedvectorpayl_BM */
+
+bool
+objhasdecayedvectorpayl_BM (objectval_tyBM * obj)
+{
+  return objgetdecayedvectorpayl_BM (obj) != NULL;
+}                               /* end objhasdecayedvectorpayl_BM */
 
 
 ////////////////////////////////
