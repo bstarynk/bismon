@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3292 objects
+// for 3294 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -1364,6 +1364,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 
 
+«_87e9wrUSdIs_0tppKPUo41v |=decaying_vector_object|
+!~ name (~ decaying_vector_object ~)
+± 1573044839.316
+∈ _0LK4TzFd6u1_0JFUsrQ4odG |=class|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for decaying objects - see  objputdecayedvectorpayl_BM"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
+»_87e9wrUSdIs_0tppKPUo41v
+
+
+
 «_0Ost4Do2yhq_95ticPFRmQO |=default|
 !~ name (~ default ~)
 ± 1526288682.100
@@ -2434,6 +2445,17 @@ _0SinERsgdvQ_57dLCP63i9r
 ∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 
 »_1u5f1jbZq8B_2Pyfxp9jdyh
+
+
+
+«_1el0vAC6atu_1DCbieyBwzI |=forgotten_emails_hset|
+!~ name (~ forgotten_emails_hset ~)
+± 1573045284.276
+∈ _8c9otZ4pwR6_55k81qyyYV2 |=hset_object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "set of declayed objects related to forgotten emails"
+
+»_1el0vAC6atu_1DCbieyBwzI
 
 
 
