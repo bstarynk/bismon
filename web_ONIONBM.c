@@ -1336,6 +1336,7 @@ do_forgot_email_onion_handler_BM (const char *formuser,
   objectval_tyBM *k_forgot_email_onion_handler = BMK_1u5f1jbZq8B_2Pyfxp9jdyh;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_forgot_email_onion_handler,
                  objectval_tyBM * contribob;    //
+                 value_tyBM contribnamv;
     );
   _.contribob = find_contributor_BM (formuser, CURFRAME_BM);
   const char *reqpath = onion_request_get_path (req);
@@ -1344,10 +1345,13 @@ do_forgot_email_onion_handler_BM (const char *formuser,
      formuser, objectdbg_BM (_.contribob), reqpath);
   if (_.contribob)
     {
+      _.contribnamv = objcontributornamepayl_BM (_.contribob);
       // did found contributor
       WARNPRINTF_BM
-        ("do_forgot_email_onion_handler_BM '%s' unimplemented (contact name '%s' email '%s')",
-         formuser, contact_name_BM, contact_email_BM);
+        ("do_forgot_email_onion_handler_BM '%s' (contributor %s named %s), unimplemented\n"
+         "...(contact name '%s' email '%s')",
+         formuser, objectdbg_BM (_.contribob),
+         OUTSTRVALUE_BM (_.contribnamv), contact_name_BM, contact_email_BM);
 #warning do_forgot_email_onion_handler_BM unimplemented
       char *respbuf = NULL;
       size_t respsiz = 0;
