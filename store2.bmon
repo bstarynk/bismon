@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3294 objects
+// for 3295 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -11924,6 +11924,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 ↳ _79dmjQ4v7Oq_1iLagDqA8vn 
 // emitted persistent module modbm_1zCsXG4OTPr_8PwkDAWr16S.c
 »_1zCsXG4OTPr_8PwkDAWr16S
+
+
+
+«_2NlCdv8k607_8Auo9BVVvb0 |=webonion_send_forgotten_email|
+!~ name (~ webonion_send_forgotten_email ~)
+± 1573119829.674
+∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "descriptor of webonion_send_forgotten_email_BM in web_ONIONBM.c"
+
+»_2NlCdv8k607_8Auo9BVVvb0
 
 
 

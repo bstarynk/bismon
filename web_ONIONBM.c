@@ -3040,8 +3040,10 @@ webonion_send_forgotten_email_BM (objectval_tyBM * contribobarg,
                                   objectval_tyBM * decayobarg,
                                   struct stackframe_stBM *stkf)
 {
-  objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
-  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_queue_process, //
+  objectval_tyBM *k_webonion_send_forgotten_email
+    = BMK_2NlCdv8k607_8Auo9BVVvb0;
+  LOCALFRAME_BM ( /*prev: */ stkf,
+		  /*descr: */ k_webonion_send_forgotten_email, //
                  objectval_tyBM * contribob;    // the contributor
                  objectval_tyBM * decayob;      // the decayed object
                  // holding a closure
