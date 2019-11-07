@@ -1742,6 +1742,12 @@ extern void webonion_continue_after_gc_BM (void);
 extern void stop_onion_event_loop_BM (void);
 extern void gcmarkwebonion_BM (struct garbcoll_stBM *gc);
 
+// send an email; both contribob and decayob should have been locked
+// by the caller; the decayob would become a decayed vector whose
+// first component is a closure setting the password
+extern void webonion_send_forgotten_email_BM (objectval_tyBM * contribob,
+                                              objectval_tyBM * decayob,
+                                              struct stackframe_stBM *stkf);
 
 ////////////////////////////////////////////////////////////////
 // user data support - in scalar_BM.c

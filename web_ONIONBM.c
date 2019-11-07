@@ -3035,6 +3035,32 @@ add_postponetimer_command_onion_BM (void)
 
 
 ////////////////////////////////////////////////////////////////
+void
+webonion_send_forgotten_email_BM (objectval_tyBM * contribobarg,
+                                  objectval_tyBM * decayobarg,
+                                  struct stackframe_stBM *stkf)
+{
+  objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_queue_process, //
+                 objectval_tyBM * contribob;    // the contributor
+                 objectval_tyBM * decayob;      // the decayed object
+                 // holding a closure
+                 value_tyBM tmpv;       // temporary
+    );
+  _.contribob = contribobarg;
+  _.decayob = decayobarg;
+  ASSERT_BM (isobject_BM (_.contribob));
+  ASSERT_BM (isobject_BM (_.decayob));
+  ASSERT_BM (objislocked_BM (_.contribob));
+  ASSERT_BM (objislocked_BM (_.decayob));
+  ASSERT_BM (objhascontributorpayl_BM (_.contribob));
+  FATAL_BM
+    ("webonion_send_forgotten_email_BM unimplemented, contribob %s decayob %s",
+     objectdbg_BM (_.contribob), objectdbg1_BM (_.decayob));
+#warning webonion_send_forgotten_email_BM unimplemented
+}                               /* end webonion_send_forgotten_email_BM */
+
+////////////////////////////////////////////////////////////////
 
 
 

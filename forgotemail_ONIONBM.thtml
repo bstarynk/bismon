@@ -18,13 +18,21 @@
 
 <p>Someone, probably you {{contributor_name}} at
 <tt>{{contributor_email}}</tt> (of oid <tt>{{contributor_oid}}</tt>),
-claim to have forgotten the login password for the <a
-href='https://github.com/bstarynk/bismon'>bismon</a> process
-{{bismon_pid}} on {{bismon_host}}. If you want to change your password, browse <a href='{{bismon_forgot_email_url}}'>{{bismon_forgot_email_url}}</a> within ten minutes.</p>
+claim to have forgotten the login password for
+the <a href='https://github.com/bstarynk/bismon'>bismon</a> process
+{{bismon_pid}} on {{bismon_host}}. If indeed you want to change your
+password,
+visit <a href='{{bismon_forgot_email_url}}'>{{bismon_forgot_email_url}}</a>
+within ten minutes.</p>
 
-  <p class='tinyinfo_cl'><i>This particular</i> <tt>Bismon</tt> server is managed by {{contact_name}}, who can be contacted by email to <a class='contact_cl' href='mailto:{{contact_email}}'>{{contact_email}}</a>, notably for help.</p>
+  <p class='tinyinfo_cl'><i>This particular</i> <tt>Bismon</tt> server
+  is managed by {{contact_name}}, who can be contacted by email
+  to <a class='contact_cl'
+  href='mailto:{{contact_email}}'>{{contact_email}}</a>, notably for
+  help.</p>
   
 
-  <p class='tinyinfo_cl'><b>PS:</b> to customize this, edit the <tt>forgotemail_ONIONBM.thtml</tt> file.</p>
+  <p class='tinyinfo_cl'><b>PS:</b> to customize this message, edit
+  the <tt>forgotemail_ONIONBM.thtml</tt> source file.</p>
   </body>
 </html>
