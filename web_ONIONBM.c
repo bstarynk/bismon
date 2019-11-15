@@ -1337,7 +1337,8 @@ do_forgot_email_onion_handler_BM (const char *formuser,
   objectval_tyBM *k_forgot_email_onion_handler = BMK_1u5f1jbZq8B_2Pyfxp9jdyh;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_forgot_email_onion_handler,
                  objectval_tyBM * contribob;    //
-                 value_tyBM contribnamv;
+                 value_tyBM contribnamv;        //
+                 value_tyBM contribemailv;      //
     );
   _.contribob = find_contributor_BM (formuser, CURFRAME_BM);
   const char *reqpath = onion_request_get_path (req);
@@ -1350,6 +1351,7 @@ do_forgot_email_onion_handler_BM (const char *formuser,
       extern void forgotemail_ONIONBM_thtml (onion_dict * context,
                                              onion_response * res);
       _.contribnamv = objcontributornamepayl_BM (_.contribob);
+      _.contribemailv = objcontributoremailpayl_BM (_.contribob);
       // did found contributor
       WARNPRINTF_BM
         ("do_forgot_email_onion_handler_BM '%s' (contributor %s named %s), unimplemented\n"
@@ -1370,6 +1372,7 @@ do_forgot_email_onion_handler_BM (const char *formuser,
       // "contact_name"
       // "contact_email"
       // "forgot_timestamp"
+      // "email_subject"
       onion_dict_free (mailctxdic);
 
 #warning do_forgot_email_onion_handler_BM unimplemented

@@ -1797,6 +1797,7 @@ objectval_tyBM *find_contributor_BM (const char *str,
 // contributors is only possible on the command line!
 static inline bool objhascontributorpayl_BM (const objectval_tyBM * obj);
 const stringval_tyBM *objcontributornamepayl_BM (const objectval_tyBM * obj);
+const stringval_tyBM *objcontributoremailpayl_BM (const objectval_tyBM * obj);
 
 // for the --print-contributor-of-oid option
 extern void tabular_print_contributor_of_objid_BM (const char *oidstr);

@@ -10,7 +10,7 @@
   p.explain_cl { background-color: lavenderblush; font-size: 105%; }
   span.smallspan_cl { background-color: ivory; font-size: 90% }
   label.expl_cl { background-color: peachpuff; foreground-color: navy; font-size: 75%; font-family: Serif }
-  a.contact_cl { bachground-color: oldlace };
+  a.contact_cl { background-color: oldlace };
 </style>
 <script src='jscript/jquery.js'></script>
 </head>

@@ -62,6 +62,8 @@ usergcmark_BM (struct garbcoll_stBM *gc,
     gcobjmark_BM (gc, us->user_ownobj);
   if (us->user_namev)
     EXTENDEDGCPROC_BM (gc, us->user_namev, fromob, depth + 1);
+  if (us->user_emailv)
+    EXTENDEDGCPROC_BM (gc, us->user_emailv, fromob, depth + 1);
 }                               /* end usergcmark_BM */
 
 void
@@ -69,8 +71,9 @@ usergcdestroy_BM (struct garbcoll_stBM *gc, struct user_stBM *us)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((value_tyBM) us) == typayl_user_BM);
-  DBGPRINTF_BM ("usergcdestroy_BM us@%p, usname %s, usownobj %s",
+  DBGPRINTF_BM ("usergcdestroy_BM us@%p, usname %s, usemail %s, usownobj %s",
                 us, bytstring_BM (us->user_namev),
+                bytstring_BM (us->user_emailv),
                 objectdbg1_BM (us->user_ownobj));
   if (us->user_ownobj)
     {
@@ -91,8 +94,9 @@ usergckeep_BM (struct garbcoll_stBM *gc, struct user_stBM *us)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((value_tyBM) us) == typayl_user_BM);
-  DBGPRINTF_BM ("usergckeep_BM us@%p, usname %s, usownobj %s",
+  DBGPRINTF_BM ("usergckeep_BM us@%p, usname %s usemail %s, usownobj %s",
                 us, bytstring_BM (us->user_namev),
+                bytstring_BM (us->user_emailv),
                 objectdbg1_BM (us->user_ownobj));
   gc->gc_keptbytes += sizeof (*us);
 }                               /* end usergckeep_BM */
@@ -108,6 +112,17 @@ objcontributornamepayl_BM (const objectval_tyBM * obj)
     return NULL;
   return usp->user_namev;
 }                               /* end objcontributornamepayl_BM */
+
+const stringval_tyBM *
+objcontributoremailpayl_BM (const objectval_tyBM * obj)
+{
+  if (!objhascontributorpayl_BM (obj))
+    return NULL;
+  struct user_stBM *usp = objpayload_BM (obj);
+  if (valtype_BM ((extendedval_tyBM) usp) != typayl_user_BM)
+    return NULL;
+  return usp->user_emailv;
+}                               /* end objcontributoremailpayl_BM */
 
 
 static void
@@ -718,6 +733,7 @@ handle_loaded_contributor_bm (struct stackframe_stBM *stkf,
                  objectval_tyBM * contribob;    //current contributor object
                  objectval_tyBM * hsetob;       //hash set of parsed contributors
                  value_tyBM namev;      /* string value, name of contributor object */
+                 value_tyBM mailv;      /* string value, mail of contributor object */
                  value_tyBM contribsetv;        /* set of keys in hsetob */
     );
   ASSERT_BM (pd && pd->lcda_magic == LOADEDCONTRIBDATAMAGIC_BM);
@@ -725,7 +741,7 @@ handle_loaded_contributor_bm (struct stackframe_stBM *stkf,
   rawid_tyBM curid = pd->lcda_curid;
   const char *curcontrib = pd->lcda_curcontrib;
   const char *curoidstr = pd->lcda_curoidstr;
-  //const char* curemail = pd->lcda_curemail;
+  const char *curemail = pd->lcda_curemail;
   //const char* curalias = pd->lcda_curalias;
   int lincnt = pd->lcda_lincnt;
   _.contribob = findobjofid_BM (curid);
@@ -754,10 +770,11 @@ handle_loaded_contributor_bm (struct stackframe_stBM *stkf,
       allocgcty_BM (typayl_user_BM, sizeof (struct user_stBM));
     us->user_ownobj = _.contribob;
     us->user_namev = _.namev = (value_tyBM) makestring_BM (curcontrib);
+    us->user_emailv = _.mailv = (value_tyBM) makestring_BM (curemail);
     objputpayload_BM (_.contribob, us);
     DBGPRINTF_BM
-      ("check_and_load_contributors_file lincnt#%d contribob %s with name %s, us@%p",
-       lincnt, objectdbg_BM (_.contribob), curcontrib, us);
+      ("check_and_load_contributors_file lincnt#%d contribob %s with name %s email %s, us@%p",
+       lincnt, objectdbg_BM (_.contribob), curcontrib, curemail, us);
     ASSERT_BM (objpayload_BM (_.contribob) == us);
     ASSERT_BM (curcontrib != NULL);
   }
@@ -1079,6 +1096,7 @@ objectval_tyBM *add_contributor_name_email_alias_BM
       objhashsetaddpayl_BM (BMP_contributors, _.newcontribob);
       objputspacenum_BM (_.newcontribob, GlobalSp_BM);
       _.emailv = (value_tyBM) makestring_BM (email);
+      us->user_emailv = _.emailv;
       _.aliasv = (alias
                   && alias[0]) ? (value_tyBM) makestring_BM (alias) : NULL;
       _.nodev =
