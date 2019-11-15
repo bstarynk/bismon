@@ -1354,23 +1354,39 @@ do_forgot_email_onion_handler_BM (const char *formuser,
       _.contribemailv = objcontributoremailpayl_BM (_.contribob);
       // did found contributor
       WARNPRINTF_BM
-        ("do_forgot_email_onion_handler_BM '%s' (contributor %s named %s), unimplemented\n"
+        ("do_forgot_email_onion_handler_BM '%s' (contributor %s named %s email %s), \n"
          "...(contact name '%s' email '%s')",
          formuser, objectdbg_BM (_.contribob),
-         OUTSTRVALUE_BM (_.contribnamv), contact_name_BM, contact_email_BM);
+         OUTSTRVALUE_BM (_.contribnamv), OUTSTRVALUE_BM (_.contribemailv),
+         contact_name_BM, contact_email_BM);
       ASSERT_BM (isstring_BM (_.contribnamv));
+      ASSERT_BM (isstring_BM (_.contribemailv));
       //@@@@@ TODO: complete this code
       onion_dict *mailctxdic = onion_dict_new ();
       onion_dict_add (mailctxdic, "contributor_name",
                       bytstring_BM (_.contribnamv), OD_DUP_VALUE);
-      // "contributor_email"
-      // "contributor_oid"
-      // "bismon_pid"
-      // "bismon_host"
-      // "bismon_gitid"
+      onion_dict_add (mailctxdic, "contributor_email",
+                      bytstring_BM (_.contribemailv), OD_DUP_VALUE);
+      {
+        char contribidbuf[32];
+        memset (contribidbuf, 0, sizeof (contribidbuf));
+        idtocbuf32_BM (objid_BM (_.contribob), contribidbuf);
+        onion_dict_add (mailctxdic, "contributor_oid",
+                        contribidbuf, OD_DUP_VALUE);
+      }
+      {
+        char pidbuf[40];
+        memset (pidbuf, 0, sizeof (pidbuf));
+        snprintf (pidbuf, sizeof (pidbuf), "%ld", (long) getpid ());
+        onion_dict_add (mailctxdic, "bismon_pid", pidbuf, OD_DUP_VALUE);
+      }
+      onion_dict_add (mailctxdic, "bismon_host", myhostname_BM, OD_DUP_VALUE);
+      onion_dict_add (mailctxdic, "bismon_gitid", bismon_gitid, OD_DUP_VALUE);
+      onion_dict_add (mailctxdic, "contact_name", contact_name_BM,
+                      OD_DUP_VALUE);
+      onion_dict_add (mailctxdic, "contact_email", contact_email_BM,
+                      OD_DUP_VALUE);
       // "bismon_forgot_email_url"
-      // "contact_name"
-      // "contact_email"
       // "forgot_timestamp"
       // "email_subject"
       onion_dict_free (mailctxdic);
