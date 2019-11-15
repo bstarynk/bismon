@@ -31,8 +31,9 @@ within ten minutes.</p>
   href='mailto:{{contact_email}}'>{{contact_email}}</a>, notably for
   help.</p>
   
+  <p class='tinyinfo_cl'>Automatically generated message, on <i>{{forgot_timestamp}}</i>. <b>Do not reply!</b></p>.
 
   <p class='tinyinfo_cl'><b>PS:</b> to customize this message, edit
-  the <tt>forgotemail_ONIONBM.thtml</tt> source file.</p>
+  the <tt>forgotemail_ONIONBM.thtml</tt> source file. gitid <tt>{{bismon_gitid}}</tt>. </p>
   </body>
 </html>

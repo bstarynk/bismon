@@ -24,6 +24,7 @@
 #include "bismon.h"
 #include "web_ONIONBM.const.h"
 #include "_login_ONIONBM.h"
+#include "_forgotemail_ONIONBM.h"
 
 // expiration delay for user session, in seconds (more than an hour,
 // but increased on every web interaction)
@@ -1345,6 +1346,9 @@ do_forgot_email_onion_handler_BM (const char *formuser,
      formuser, objectdbg_BM (_.contribob), reqpath);
   if (_.contribob)
     {
+      // in generated _forgotemail_ONIONBM.c
+      extern void forgotemail_ONIONBM_thtml (onion_dict * context,
+                                             onion_response * res);
       _.contribnamv = objcontributornamepayl_BM (_.contribob);
       // did found contributor
       WARNPRINTF_BM
@@ -1352,6 +1356,22 @@ do_forgot_email_onion_handler_BM (const char *formuser,
          "...(contact name '%s' email '%s')",
          formuser, objectdbg_BM (_.contribob),
          OUTSTRVALUE_BM (_.contribnamv), contact_name_BM, contact_email_BM);
+      ASSERT_BM (isstring_BM (_.contribnamv));
+      //@@@@@ TODO: complete this code
+      onion_dict *mailctxdic = onion_dict_new ();
+      onion_dict_add (mailctxdic, "contributor_name",
+                      bytstring_BM (_.contribnamv), OD_DUP_VALUE);
+      // "contributor_email"
+      // "contributor_oid"
+      // "bismon_pid"
+      // "bismon_host"
+      // "bismon_gitid"
+      // "bismon_forgot_email_url"
+      // "contact_name"
+      // "contact_email"
+      // "forgot_timestamp"
+      onion_dict_free (mailctxdic);
+
 #warning do_forgot_email_onion_handler_BM unimplemented
       char *respbuf = NULL;
       size_t respsiz = 0;
@@ -3043,7 +3063,8 @@ webonion_send_forgotten_email_BM (objectval_tyBM * contribobarg,
   objectval_tyBM *k_webonion_send_forgotten_email
     = BMK_2NlCdv8k607_8Auo9BVVvb0;
   LOCALFRAME_BM ( /*prev: */ stkf,
-		  /*descr: */ k_webonion_send_forgotten_email, //
+                 /*descr: */ k_webonion_send_forgotten_email,
+                 //
                  objectval_tyBM * contribob;    // the contributor
                  objectval_tyBM * decayob;      // the decayed object
                  // holding a closure
