@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>{# file forgotwebpage_ONIONBM.thtml #}
+{# a template file for libOnion's template system #}
+<head>
+<title>Bismon forgotten password</title>
+<meta charset="utf-8">
+<style>
+  body { background-color: lightcyan; }
+  p.tinyinfo_cl { background-color: azure; font-size: 80% }
+  p.explain_cl { background-color: lavenderblush; font-size: 105%; }
+  span.smallspan_cl { background-color: ivory; font-size: 90% }
+  label.expl_cl { background-color: peachpuff; foreground-color: navy; font-size: 75%; font-family: Serif }
+  a.contact_cl { background-color: oldlace };
+</style>
+</head>
+<body>
+  <h1>Bismon forgotten password for {{contributor_name}}</h1>
+
+<p>Hello, {{contributor_name}} (of oid <tt>{{contributor_oid}}). You
+have forgotten your password. An HTML email of subject
+<i>{{email_subject}}</i> is sent to <tt>{{contributor_email}}</tt>
+and contains a temporary link to reset your password. That temporary
+hyperlink is valid for fifteen minutes. Please visit it quickly to
+change your password.</p>
+
+
+  <p class='tinyinfo_cl'><i>This particular</i> <tt>Bismon</tt> server process of pid  {{bismon_pid}} on <tt>{{bismon_host}}</tt>, 
+  is managed by {{contact_name}}, who can be contacted by email
+  to <a class='contact_cl'
+  href='mailto:{{contact_email}}'>{{contact_email}}</a>, notably for
+  help.</p>
+  
+  <p class='tinyinfo_cl'>Automatically generated web page, on <i>{{forgot_timestamp}}</i>.</p>.
+
+  <p class='tinyinfo_cl'><b>PS:</b> to customize this message, edit
+  the <tt>forgotwebpage_ONIONBM.thtml</tt> source file. gitid <tt>{{bismon_gitid}}</tt>. </p>
+  </body>
+</html>
