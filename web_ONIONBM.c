@@ -1373,19 +1373,36 @@ do_forgot_email_onion_handler_BM (const char *formuser,
         idtocbuf32_BM (objid_BM (_.contribob), contribidbuf);
         onion_dict_add (mailctxdic, "contributor_oid",
                         contribidbuf, OD_DUP_VALUE);
+        DBGPRINTF_BM ("do_forgot_email_onion_handler_BM %s\n"
+                      ".. contributor_name '%s'\n"
+                      ".. contributor_email '%s'\n"
+                      ".. contributor_oid '%s'\n",
+                      objectdbg_BM (_.contribob),
+                      bytstring_BM (_.contribnamv),
+                      bytstring_BM (_.contribemailv), contribidbuf);
       }
       {
         char pidbuf[40];
         memset (pidbuf, 0, sizeof (pidbuf));
         snprintf (pidbuf, sizeof (pidbuf), "%ld", (long) getpid ());
         onion_dict_add (mailctxdic, "bismon_pid", pidbuf, OD_DUP_VALUE);
+	onion_dict_add (mailctxdic, "bismon_host", myhostname_BM, OD_DUP_VALUE);
+	onion_dict_add (mailctxdic, "bismon_gitid", bismon_gitid, OD_DUP_VALUE);
+	onion_dict_add (mailctxdic, "contact_name", contact_name_BM,
+			OD_DUP_VALUE);
+	onion_dict_add (mailctxdic, "contact_email", contact_email_BM,
+			OD_DUP_VALUE);
+	DBGPRINTF_BM ("do_forgot_email_onion_handler_BM %s\n"
+		      ".. bismon_pid '%s'\n"
+		      ".. bismon_host '%s'\n"
+		      ".. bismon_gitid '%s'\n"
+		      ".. contact_name '%s'\n"
+		      ".. contact_email '%s'\n",
+		      objectdbg_BM (_.contribob),
+		      pidbuf,
+		      myhostname_BM,
+		      bismon_gitid, contact_name_BM, contact_email_BM);
       }
-      onion_dict_add (mailctxdic, "bismon_host", myhostname_BM, OD_DUP_VALUE);
-      onion_dict_add (mailctxdic, "bismon_gitid", bismon_gitid, OD_DUP_VALUE);
-      onion_dict_add (mailctxdic, "contact_name", contact_name_BM,
-                      OD_DUP_VALUE);
-      onion_dict_add (mailctxdic, "contact_email", contact_email_BM,
-                      OD_DUP_VALUE);
       // "bismon_forgot_email_url"
       // "forgot_timestamp"
       // "email_subject"
