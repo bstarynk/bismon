@@ -1405,10 +1405,10 @@ do_forgot_email_onion_handler_BM (const char *formuser,
                       ".. bismon_pid '%s'\n" ".. bismon_host '%s'\n"
                       ".. bismon_gitid '%s'\n" ".. contact_name '%s'\n"
                       ".. contact_email '%s'\n"
-		      ".. forgotten_emails_hset %s", objectdbg_BM (_.contribob),
-                      pidbuf, myhostname_BM, bismon_gitid, contact_name_BM,
-                      contact_email_BM,
-		      objectdbg1_BM(k_forgotten_emails_hset));
+                      ".. forgotten_emails_hset %s",
+                      objectdbg_BM (_.contribob), pidbuf, myhostname_BM,
+                      bismon_gitid, contact_name_BM, contact_email_BM,
+                      objectdbg1_BM (k_forgotten_emails_hset));
       }
       ASSERT_BM (isobject_BM (k_forgotten_emails_hset)
                  && objhashashsetpayl_BM (k_forgotten_emails_hset));
@@ -1420,12 +1420,21 @@ do_forgot_email_onion_handler_BM (const char *formuser,
       DBGPRINTF_BM ("do_forgot_email_onion_handler_BM %s\n"
                     ".. decayforgotob %s", objectdbg_BM (_.contribob),
                     objectdbg1_BM (_.decayforgotob));
-      // "bismon_forgot_email_url"
+      uint32_t rn = g_random_int () % 100000000;
+      char decayforgotidbuf[32];
+      idtocbuf32_BM (objid_BM (_.decayforgotob), decayforgotidbuf);
+      char reseturlbuf[64];
+      snprintf (reseturlbuf, sizeof (reseturlbuf), "_resetpass?oid=%s&r=%d",
+                decayforgotidbuf, (int) rn);
+      DBGPRINTF_BM ("do_forgot_email_onion_handler_BM reseturlbuf %s",
+                    reseturlbuf);
+      onion_dict_add (mailctxdic, "bismon_forgot_email_url", reseturlbuf,
+                      OD_DUP_VALUE);
       // "forgot_timestamp"
       // "email_subject"
-      WARNPRINTF_BM("do_forgot_email_onion_handler_BM %s incomplete decayforgotob %s",
-		    objectdbg_BM (_.contribob),
-                    objectdbg1_BM (_.decayforgotob));
+      WARNPRINTF_BM
+        ("do_forgot_email_onion_handler_BM %s incomplete decayforgotob %s",
+         objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob));
 #warning do_forgot_email_onion_handler_BM incomplete
       onion_dict_free (mailctxdic);
       char *respbuf = NULL;
