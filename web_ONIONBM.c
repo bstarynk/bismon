@@ -1334,9 +1334,16 @@ static onion_connection_status
 do_forgot_email_onion_handler_BM (const char *formuser,
                                   onion_request * req, onion_response * resp)
 {
+  // descriptor of this function:
   objectval_tyBM *k_forgot_email_onion_handler = BMK_1u5f1jbZq8B_2Pyfxp9jdyh;
+  // hashed set of forgotten emails:
+  objectval_tyBM *k_forgotten_emails_hset = BMK_1el0vAC6atu_1DCbieyBwzI;
+  // class of decaying vector objects:
+  objectval_tyBM *k_decaying_vector_object = BMK_87e9wrUSdIs_0tppKPUo41v;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_forgot_email_onion_handler,
                  objectval_tyBM * contribob;    //
+                 objectval_tyBM * decayforgotob;        // created decaying forgotting object
+                 value_tyBM forgotclosv;        //
                  value_tyBM contribnamv;        //
                  value_tyBM contribemailv;      //
     );
@@ -1386,23 +1393,31 @@ do_forgot_email_onion_handler_BM (const char *formuser,
         memset (pidbuf, 0, sizeof (pidbuf));
         snprintf (pidbuf, sizeof (pidbuf), "%ld", (long) getpid ());
         onion_dict_add (mailctxdic, "bismon_pid", pidbuf, OD_DUP_VALUE);
-	onion_dict_add (mailctxdic, "bismon_host", myhostname_BM, OD_DUP_VALUE);
-	onion_dict_add (mailctxdic, "bismon_gitid", bismon_gitid, OD_DUP_VALUE);
-	onion_dict_add (mailctxdic, "contact_name", contact_name_BM,
-			OD_DUP_VALUE);
-	onion_dict_add (mailctxdic, "contact_email", contact_email_BM,
-			OD_DUP_VALUE);
-	DBGPRINTF_BM ("do_forgot_email_onion_handler_BM %s\n"
-		      ".. bismon_pid '%s'\n"
-		      ".. bismon_host '%s'\n"
-		      ".. bismon_gitid '%s'\n"
-		      ".. contact_name '%s'\n"
-		      ".. contact_email '%s'\n",
-		      objectdbg_BM (_.contribob),
-		      pidbuf,
-		      myhostname_BM,
-		      bismon_gitid, contact_name_BM, contact_email_BM);
+        onion_dict_add (mailctxdic, "bismon_host", myhostname_BM,
+                        OD_DUP_VALUE);
+        onion_dict_add (mailctxdic, "bismon_gitid", bismon_gitid,
+                        OD_DUP_VALUE);
+        onion_dict_add (mailctxdic, "contact_name", contact_name_BM,
+                        OD_DUP_VALUE);
+        onion_dict_add (mailctxdic, "contact_email", contact_email_BM,
+                        OD_DUP_VALUE);
+        DBGPRINTF_BM ("do_forgot_email_onion_handler_BM %s\n"
+                      ".. bismon_pid '%s'\n" ".. bismon_host '%s'\n"
+                      ".. bismon_gitid '%s'\n" ".. contact_name '%s'\n"
+                      ".. contact_email '%s'\n", objectdbg_BM (_.contribob),
+                      pidbuf, myhostname_BM, bismon_gitid, contact_name_BM,
+                      contact_email_BM);
       }
+      ASSERT_BM (isobject_BM (k_forgotten_emails_hset)
+                 && objhashashsetpayl_BM (k_forgotten_emails_hset));
+      _.decayforgotob = makeobj_BM ();
+      objputclass_BM (_.decayforgotob, k_decaying_vector_object);
+      if (!objputdecayedvectorpayl_BM (_.decayforgotob, 2))
+        FATAL_BM ("failed to put decaying vector in %s",
+                  objectdbg_BM (_.decayforgotob));
+      DBGPRINTF_BM ("do_forgot_email_onion_handler_BM %s\n"
+                    ".. decayforgotob %s", objectdbg_BM (_.contribob),
+                    objectdbg1_BM (_.decayforgotob));
       // "bismon_forgot_email_url"
       // "forgot_timestamp"
       // "email_subject"
