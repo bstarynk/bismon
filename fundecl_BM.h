@@ -881,6 +881,13 @@ extern bool objputdecayedvectorpayl_BM (objectval_tyBM * obj, unsigned asiz);
 static inline struct decayedvectpayl_stBM
   *objgetdecayedvectorpayl_BM (objectval_tyBM * obj);
 static inline bool objhasdecayedvectorpayl_BM (objectval_tyBM * obj);
+static inline value_tyBM objdecayedvectornthpayl_BM (objectval_tyBM * obj,
+                                                     int rk);
+static inline value_tyBM objdecayedvectorlastpayl_BM (objectval_tyBM * obj);
+static inline const value_tyBM *objdecayedvectdatapayl_BM (objectval_tyBM *
+                                                           obj);
+static inline unsigned objdecayedvectlenpayl_BM (objectval_tyBM * obj);
+static inline unsigned objdecayedvectallocsizepayl_BM (objectval_tyBM * obj);
 ///////////////////////////////
 
 extern struct listtop_stBM *makelist_BM (void);

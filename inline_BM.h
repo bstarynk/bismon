@@ -1209,6 +1209,51 @@ objhasdecayedvectorpayl_BM (objectval_tyBM * obj)
   return objgetdecayedvectorpayl_BM (obj) != NULL;
 }                               /* end objhasdecayedvectorpayl_BM */
 
+value_tyBM
+objdecayedvectornthpayl_BM (objectval_tyBM * obj, int rk)
+{
+  struct decayedvectpayl_stBM *dy = objgetdecayedvectorpayl_BM (obj);
+  if (!dy)
+    return NULL;
+  return decayedvectnth_BM (dy, rk);
+}                               /* end objdecayedvectornthpayl_BM */
+
+
+value_tyBM
+objdecayedvectorlastpayl_BM (objectval_tyBM * obj)
+{
+  struct decayedvectpayl_stBM *dy = objgetdecayedvectorpayl_BM (obj);
+  if (!dy)
+    return NULL;
+  return decayedvectlast_BM (dy);
+}                               /* end objdecayedvectorlastpayl_BM */
+
+const value_tyBM *
+objdecayedvectdatapayl_BM (objectval_tyBM * obj)
+{
+  struct decayedvectpayl_stBM *dy = objgetdecayedvectorpayl_BM (obj);
+  if (!dy)
+    return NULL;
+  return decayedvectdata_BM (dy);
+}                               /* end objdecayedvectdatapayl_BM */
+
+unsigned
+objdecayedvectlenpayl_BM (objectval_tyBM * obj)
+{
+  struct decayedvectpayl_stBM *dy = objgetdecayedvectorpayl_BM (obj);
+  if (!dy)
+    return 0;
+  return decayedvectlen_BM (dy);
+}                               /* end of objdecayedvectlenpayl_BM   */
+
+unsigned
+objdecayedvectallocsizepayl_BM (objectval_tyBM * obj)
+{
+  struct decayedvectpayl_stBM *dy = objgetdecayedvectorpayl_BM (obj);
+  if (!dy)
+    return 0;
+  return decayedvectallocsize_BM (dy);
+}                               /* end of objdecayedvectallocsizepayl_BM   */
 
 ////////////////////////////////
 bool
