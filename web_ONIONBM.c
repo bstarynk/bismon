@@ -1404,9 +1404,11 @@ do_forgot_email_onion_handler_BM (const char *formuser,
         DBGPRINTF_BM ("do_forgot_email_onion_handler_BM %s\n"
                       ".. bismon_pid '%s'\n" ".. bismon_host '%s'\n"
                       ".. bismon_gitid '%s'\n" ".. contact_name '%s'\n"
-                      ".. contact_email '%s'\n", objectdbg_BM (_.contribob),
+                      ".. contact_email '%s'\n"
+		      ".. forgotten_emails_hset %s", objectdbg_BM (_.contribob),
                       pidbuf, myhostname_BM, bismon_gitid, contact_name_BM,
-                      contact_email_BM);
+                      contact_email_BM,
+		      objectdbg1_BM(k_forgotten_emails_hset));
       }
       ASSERT_BM (isobject_BM (k_forgotten_emails_hset)
                  && objhashashsetpayl_BM (k_forgotten_emails_hset));
@@ -1421,9 +1423,11 @@ do_forgot_email_onion_handler_BM (const char *formuser,
       // "bismon_forgot_email_url"
       // "forgot_timestamp"
       // "email_subject"
+      WARNPRINTF_BM("do_forgot_email_onion_handler_BM %s incomplete decayforgotob %s",
+		    objectdbg_BM (_.contribob),
+                    objectdbg1_BM (_.decayforgotob));
+#warning do_forgot_email_onion_handler_BM incomplete
       onion_dict_free (mailctxdic);
-
-#warning do_forgot_email_onion_handler_BM unimplemented
       char *respbuf = NULL;
       size_t respsiz = 0;
       FILE *fresp = open_memstream (&respbuf, &respsiz);
