@@ -6,6 +6,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass{beamer}
+\usepackage{relsize}
+\usepackage{luacode}
+\usepackage{xcolor}
+\usepackage{alltt}
+
+
 
 \usetheme[hideothersubsections]{Bismon}
 
@@ -17,14 +23,24 @@ a static source code analysis framework using some symbolic artificial intellige
 \date{November 21\textsuperscript{st}, 2019}
 
 \begin{document}
+ \begin{luacode*}
+   local gitpip=io.popen("git log --no-color --format=oneline -1 --abbrev=16 --abbrev-commit -q | cut -d' ' -f1")
+   gitid=gitpip:read()
+   gitpip:close()
+ \end{luacode*}
+ \newcommand{\mygitid}{\luadirect{tex.print(gitid)}}
 
 %{% open a Local TeX Group
 %\setbeamertemplate{sidebar}{}
-\begin{frame}
+ \begin{frame}
+   \begin{relsize}{-1}
         \titlepage
         \begin{center}
-    \href{mailto:basile.starynkevitch@cea.fr}{\color{blue}{\texttt{basile.starynkevitch@cea.fr}}} and \href{mailto:basile@starynkevitch.net}{\color{blue}{\texttt{basile@starynkevitch.net}}}
+          \href{mailto:basile.starynkevitch@cea.fr}{\color{blue}{\texttt{basile.starynkevitch@cea.fr}}} and \href{mailto:basile@starynkevitch.net}{\color{blue}{\texttt{basile@starynkevitch.net}}}
+
+          git \texttt{\mygitid}
         \end{center}
+   \end{relsize}
 \end{frame}
 %}% end Local TeX Group
 
@@ -139,3 +155,8 @@ a static source code analysis framework using some symbolic artificial intellige
 \end{frame}
     
 \end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Local Variables: ;;
+%% compile-command: "./build.sh" ;;
+%% End: ;;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
