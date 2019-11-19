@@ -1386,7 +1386,7 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
                     OD_DUP_VALUE);
     onion_dict_add (mailctxdic, "contact_email", contact_email_BM,
                     OD_DUP_VALUE);
-    DBGPRINTF_BM ("make_onion_dict_forfgotten_email_BM %s\n"
+    DBGPRINTF_BM ("make_onion_dict_forgotten_email_BM %s\n"
                   ".. bismon_pid '%s'\n" ".. bismon_host '%s'\n"
                   ".. bismon_gitid '%s'\n" ".. contact_name '%s'\n"
                   ".. contact_email '%s'\n"
@@ -1410,8 +1410,36 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
       onion_dict_add (mailctxdic, "bismon_forgot_email_url", reseturlbuf,
                       OD_DUP_VALUE);
     }
-  // "forgot_timestamp"
-  // "email_subject"
+  {
+    // "forgot_timestamp"
+    time_t nowt = time (NULL);
+    struct tm locnowtm;
+    char timbuf[64];
+    memset (&locnowtm, 0, sizeof (locnowtm));
+    memset (timbuf, 0, sizeof (timbuf));
+    localtime_r (&nowt, &locnowtm);
+    strftime (timbuf, sizeof (timbuf), "%c", &locnowtm);
+    onion_dict_add (mailctxdic, "forgot_timestamp", timbuf, OD_DUP_VALUE);
+    DBGPRINTF_BM
+      ("make_onion_dict_forgotten_email_BM contribob %s forgotimstamp '%s'",
+       objectdbg_BM (_.contribob), timbuf);
+  }
+  {
+    // "email_subject"
+    char *dbuf = NULL;
+    int bufsiz = asprintf (&dbuf, "forgotten Bismon password on %s for %s",
+                           myhostname_BM,
+                           bytstring_BM (_.contribnamv));
+    if (bufsiz <= 0)
+      FATAL_BM
+        ("failed asprintf for forgotten Bismon password on %s for %s (%m)",
+         myhostname_BM, bytstring_BM (_.contribnamv));
+    onion_dict_add (mailctxdic, "email_subject", dbuf, OD_DUP_VALUE);
+    DBGPRINTF_BM
+      ("make_onion_dict_forgotten_email_BM contribob %s emailsubj '%s'",
+       objectdbg_BM (_.contribob), dbuf);
+    free (dbuf), dbuf = NULL;
+  }
   DBGBACKTRACEPRINTF_BM
     ("incomplete make_onion_dict_forgotten_email_BM contribob %s decayforgotob %s rn %u",
      objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
