@@ -1327,7 +1327,101 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
 }                               /* end login_onion_handler_BM */
 
 
-
+static onion_dict *
+make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
+                                    objectval_tyBM * decayforgotobarg,
+                                    uint32_t rn, struct stackframe_stBM *stkf)
+{
+  // hashed set of forgotten emails:
+  objectval_tyBM *k_forgotten_emails_hset = BMK_1el0vAC6atu_1DCbieyBwzI;
+  // class of decaying vector objects:
+  objectval_tyBM *k_decaying_vector_object = BMK_87e9wrUSdIs_0tppKPUo41v;
+  onion_dict *mailctxdic = NULL;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * contribob;    //
+                 objectval_tyBM * decayforgotob;        //
+                 value_tyBM contribnamv;        //
+                 value_tyBM contribemailv;      //
+    );
+  _.contribob = contribobarg;
+  _.decayforgotob = decayforgotobarg;
+  DBGPRINTF_BM
+    ("make_onion_dict_forgotten_email_BM start contribob %s decayforgotob %s rn %u",
+     objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
+     (unsigned) rn);
+  ASSERT_BM (objhascontributorpayl_BM (_.contribob));
+  ASSERT_BM (!_.decayforgotob
+             || objhasdecayedvectorpayl_BM (_.decayforgotob));
+  _.contribnamv = objcontributornamepayl_BM (_.contribob);
+  _.contribemailv = objcontributoremailpayl_BM (_.contribob);
+  ASSERT_BM (isstring_BM (_.contribnamv));
+  ASSERT_BM (isstring_BM (_.contribemailv));
+  mailctxdic = onion_dict_new ();
+  onion_dict_add (mailctxdic, "contributor_name",
+                  bytstring_BM (_.contribnamv), OD_DUP_VALUE);
+  onion_dict_add (mailctxdic, "contributor_email",
+                  bytstring_BM (_.contribemailv), OD_DUP_VALUE);
+  {
+    char contribidbuf[32];
+    memset (contribidbuf, 0, sizeof (contribidbuf));
+    idtocbuf32_BM (objid_BM (_.contribob), contribidbuf);
+    onion_dict_add (mailctxdic, "contributor_oid",
+                    contribidbuf, OD_DUP_VALUE);
+    DBGPRINTF_BM ("make_onion_dict_forfgotten_email_BM %s\n"
+                  ".. contributor_name '%s'\n"
+                  ".. contributor_email '%s'\n"
+                  ".. contributor_oid '%s'\n",
+                  objectdbg_BM (_.contribob),
+                  bytstring_BM (_.contribnamv),
+                  bytstring_BM (_.contribemailv), contribidbuf);
+  }
+  {
+    char pidbuf[40];
+    memset (pidbuf, 0, sizeof (pidbuf));
+    snprintf (pidbuf, sizeof (pidbuf), "%ld", (long) getpid ());
+    onion_dict_add (mailctxdic, "bismon_pid", pidbuf, OD_DUP_VALUE);
+    onion_dict_add (mailctxdic, "bismon_host", myhostname_BM, OD_DUP_VALUE);
+    onion_dict_add (mailctxdic, "bismon_gitid", bismon_gitid, OD_DUP_VALUE);
+    onion_dict_add (mailctxdic, "contact_name", contact_name_BM,
+                    OD_DUP_VALUE);
+    onion_dict_add (mailctxdic, "contact_email", contact_email_BM,
+                    OD_DUP_VALUE);
+    DBGPRINTF_BM ("make_onion_dict_forfgotten_email_BM %s\n"
+                  ".. bismon_pid '%s'\n" ".. bismon_host '%s'\n"
+                  ".. bismon_gitid '%s'\n" ".. contact_name '%s'\n"
+                  ".. contact_email '%s'\n"
+                  ".. forgotten_emails_hset %s",
+                  objectdbg_BM (_.contribob), pidbuf, myhostname_BM,
+                  bismon_gitid, contact_name_BM, contact_email_BM,
+                  objectdbg1_BM (k_forgotten_emails_hset));
+  }
+  ASSERT_BM (isobject_BM (k_forgotten_emails_hset)
+             && objhashashsetpayl_BM (k_forgotten_emails_hset));
+  if (isobject_BM (_.decayforgotob)
+      && objhasdecayedvectorpayl_BM (_.decayforgotob))
+    {
+      char decayforgotidbuf[32];
+      idtocbuf32_BM (objid_BM (_.decayforgotob), decayforgotidbuf);
+      char reseturlbuf[64];
+      snprintf (reseturlbuf, sizeof (reseturlbuf), "_resetpass?oid=%s&r=%d",
+                decayforgotidbuf, (int) rn);
+      DBGPRINTF_BM ("make_onion_dict_forgotten_email_BM reseturlbuf %s",
+                    reseturlbuf);
+      onion_dict_add (mailctxdic, "bismon_forgot_email_url", reseturlbuf,
+                      OD_DUP_VALUE);
+    }
+  // "forgot_timestamp"
+  // "email_subject"
+  DBGBACKTRACEPRINTF_BM
+    ("incomplete make_onion_dict_forgotten_email_BM contribob %s decayforgotob %s rn %u",
+     objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
+     (unsigned) rn);
+  WARNPRINTF_BM
+    ("incomplete make_onion_dict_forgotten_email_BM contribob %s decayforgotob %s rn %u",
+     objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
+     (unsigned) rn);
+  return mailctxdic;
+}                               /* end of make_onion_dict_forgotten_email_BM */
 
 
 static onion_connection_status
@@ -1357,59 +1451,6 @@ do_forgot_email_onion_handler_BM (const char *formuser,
       // in generated _forgotemail_ONIONBM.c
       extern void forgotemail_ONIONBM_thtml (onion_dict * context,
                                              onion_response * res);
-      _.contribnamv = objcontributornamepayl_BM (_.contribob);
-      _.contribemailv = objcontributoremailpayl_BM (_.contribob);
-      // did found contributor
-      WARNPRINTF_BM
-        ("do_forgot_email_onion_handler_BM '%s' (contributor %s named %s email %s), \n"
-         "...(contact name '%s' email '%s')",
-         formuser, objectdbg_BM (_.contribob),
-         OUTSTRVALUE_BM (_.contribnamv), OUTSTRVALUE_BM (_.contribemailv),
-         contact_name_BM, contact_email_BM);
-      ASSERT_BM (isstring_BM (_.contribnamv));
-      ASSERT_BM (isstring_BM (_.contribemailv));
-      //@@@@@ TODO: complete this code
-      onion_dict *mailctxdic = onion_dict_new ();
-      onion_dict_add (mailctxdic, "contributor_name",
-                      bytstring_BM (_.contribnamv), OD_DUP_VALUE);
-      onion_dict_add (mailctxdic, "contributor_email",
-                      bytstring_BM (_.contribemailv), OD_DUP_VALUE);
-      {
-        char contribidbuf[32];
-        memset (contribidbuf, 0, sizeof (contribidbuf));
-        idtocbuf32_BM (objid_BM (_.contribob), contribidbuf);
-        onion_dict_add (mailctxdic, "contributor_oid",
-                        contribidbuf, OD_DUP_VALUE);
-        DBGPRINTF_BM ("do_forgot_email_onion_handler_BM %s\n"
-                      ".. contributor_name '%s'\n"
-                      ".. contributor_email '%s'\n"
-                      ".. contributor_oid '%s'\n",
-                      objectdbg_BM (_.contribob),
-                      bytstring_BM (_.contribnamv),
-                      bytstring_BM (_.contribemailv), contribidbuf);
-      }
-      {
-        char pidbuf[40];
-        memset (pidbuf, 0, sizeof (pidbuf));
-        snprintf (pidbuf, sizeof (pidbuf), "%ld", (long) getpid ());
-        onion_dict_add (mailctxdic, "bismon_pid", pidbuf, OD_DUP_VALUE);
-        onion_dict_add (mailctxdic, "bismon_host", myhostname_BM,
-                        OD_DUP_VALUE);
-        onion_dict_add (mailctxdic, "bismon_gitid", bismon_gitid,
-                        OD_DUP_VALUE);
-        onion_dict_add (mailctxdic, "contact_name", contact_name_BM,
-                        OD_DUP_VALUE);
-        onion_dict_add (mailctxdic, "contact_email", contact_email_BM,
-                        OD_DUP_VALUE);
-        DBGPRINTF_BM ("do_forgot_email_onion_handler_BM %s\n"
-                      ".. bismon_pid '%s'\n" ".. bismon_host '%s'\n"
-                      ".. bismon_gitid '%s'\n" ".. contact_name '%s'\n"
-                      ".. contact_email '%s'\n"
-                      ".. forgotten_emails_hset %s",
-                      objectdbg_BM (_.contribob), pidbuf, myhostname_BM,
-                      bismon_gitid, contact_name_BM, contact_email_BM,
-                      objectdbg1_BM (k_forgotten_emails_hset));
-      }
       ASSERT_BM (isobject_BM (k_forgotten_emails_hset)
                  && objhashashsetpayl_BM (k_forgotten_emails_hset));
       _.decayforgotob = makeobj_BM ();
@@ -1421,17 +1462,9 @@ do_forgot_email_onion_handler_BM (const char *formuser,
                     ".. decayforgotob %s", objectdbg_BM (_.contribob),
                     objectdbg1_BM (_.decayforgotob));
       uint32_t rn = g_random_int () % 100000000;
-      char decayforgotidbuf[32];
-      idtocbuf32_BM (objid_BM (_.decayforgotob), decayforgotidbuf);
-      char reseturlbuf[64];
-      snprintf (reseturlbuf, sizeof (reseturlbuf), "_resetpass?oid=%s&r=%d",
-                decayforgotidbuf, (int) rn);
-      DBGPRINTF_BM ("do_forgot_email_onion_handler_BM reseturlbuf %s",
-                    reseturlbuf);
-      onion_dict_add (mailctxdic, "bismon_forgot_email_url", reseturlbuf,
-                      OD_DUP_VALUE);
-      // "forgot_timestamp"
-      // "email_subject"
+      onion_dict *mailctxdic =
+        make_onion_dict_forgotten_email_BM (_.contribob, _.decayforgotob, rn,
+                                            CURFRAME_BM);
       WARNPRINTF_BM
         ("do_forgot_email_onion_handler_BM %s incomplete decayforgotob %s",
          objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob));
