@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3295 objects
+// for 3298 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -11965,13 +11965,13 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 «_9dQJgjsq7hs_2T2RqXLkU0A |=webxhtml_module|
 !~ name (~ webxhtml_module ~)
-± 1554985321.150
+± 1574261211.266
 ∈ _5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "module for web HTML"
 ↦ _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _3poYCpSsBfJ_8W7XNwG50hS }
-!# 15
+!# 16
 
 ↳ _0FRLxSGQlZ0_0qrrUZlEeKp 
 ↳ _5NH940lCHYJ_3nuRm3flnzc 
@@ -11988,6 +11988,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 ↳ _8sdgc5Y7vPU_9Nvj5CtRqaQ 
 ↳ _3owspX08bkm_6vBzqS5jskf 
 ↳ _5T8fxyaeOFA_4UrB3BPbWdn 
+↳ _6aWaLxHQBv4_9bcZim3ljEh 
 // emitted persistent module modbm_9dQJgjsq7hs_2T2RqXLkU0A.c
 »_9dQJgjsq7hs_2T2RqXLkU0A
 
@@ -22581,6 +22582,34 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 _1g2wHNuth12_1FfLuyW1CWJ
 
 »_2i32BebJ6xg_6L8P7oUtpf1
+
+
+
+«_2ilkN4Z1AkN_5IqmVEk5M7P
+± 1574262076.204
+∈ _4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug start _forgotemail-webhandler (v_restpath o_webex)"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_5PRyZSIifoB_0wQbMIOsxDI
+↦ _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "start" 
+  " "  "_forgotemail"  "-"  "webhandler" 
+  " "  "(" _6QhNRfe1Cte_0niVlWfAlmO  " " 
+ _5JuT4FgNFFh_7McrTYeT3jx  ")*/"  "\n"  "DBGPRINTF_BM" 
+  "(\""  "start"  " "  "_forgotemail" 
+  "-"  "webhandler"  " "  "€%." 
+  "9s"  " " _6QhNRfe1Cte_0niVlWfAlmO  "=%" 
+  "s"  " " _5JuT4FgNFFh_7McrTYeT3jx  "=%" 
+  "s"  "\","  "\n"  " " 
+  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\"," 
+ " " 
+  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6QhNRfe1Cte_0niVlWfAlmO) 
+ ")," 
+  " "  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5JuT4FgNFFh_7McrTYeT3jx) 
+  "));"  "\n")
+
+»_2ilkN4Z1AkN_5IqmVEk5M7P
 
 
 
@@ -37335,6 +37364,20 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+«_5PRyZSIifoB_0wQbMIOsxDI
+± 1574261807.490
+∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of _forgotemail-webhandler"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_6aWaLxHQBv4_9bcZim3ljEh
+!# 1
+
+↳ _2ilkN4Z1AkN_5IqmVEk5M7P 
+»_5PRyZSIifoB_0wQbMIOsxDI
+
+
+
 «_5Q3PYMPHvTx_4fFBJ55MgRf
 ± 1544448437.323
 ∈ _3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
@@ -38967,6 +39010,23 @@ _3QmxfIKpDVI_0C4Z01aFVxK
 ↳ _0xTYoGypzrv_9WaOYz6kK8x 
 ↳ _0PBD9V6Bt7u_3TVTWHbNtLI 
 »_6aA6aV2YRMt_1NEYDaXpeC7
+
+
+
+«_6aWaLxHQBv4_9bcZim3ljEh
+Σ *
+± 1574261269.998
+∈ _2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "_forgotemail-webhandler (v_restpath o_webex)"
+↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _6QhNRfe1Cte_0niVlWfAlmO _5JuT4FgNFFh_7McrTYeT3jx ]
+↦ _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+↦ _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_5PRyZSIifoB_0wQbMIOsxDI
+
+»_6aWaLxHQBv4_9bcZim3ljEh
 
 
 
