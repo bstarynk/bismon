@@ -94,7 +94,7 @@ a static source code analysis framework using \textit{some} symbolic artificial 
     \item my PhD work (1985 - 1990)
     \item my past \href{http://starynkevitch.net/Basile/gcc-melt/}{\textsc{Gcc Melt}} work (2008 - 2016)
     \item \href{http://frama-c.com/}{\textsc{Frama-C}} and \textit{non-relational} databases
-    \item \href{http://gcc.gnu.org/}{\textsc{Gcc}}  $> 10$MLOC of \textit{C++} {\relsize{-1}{(with \texttt{g++ -O2 -flto})}}
+    \item \href{http://gcc.gnu.org/}{\textsc{Gcc}}  $> 10$MLOC of \textit{C++} {\relsize{-1}{(bootstrapped with \texttt{g++ -O2 -flto})}}
  and a dozen of \href{https://en.wikipedia.org/wiki/Domain-specific_language}{DSL}s
     \end{itemize}
 
@@ -121,6 +121,19 @@ a static source code analysis framework using \textit{some} symbolic artificial 
       \includegraphics[width=0.90\textwidth]{bismon-monitor}
     \end{center}
     
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Data and persistence}
+
+\begin{frame}
+    \frametitle{Data and persistence}
+    \framesubtitle{the \emph{Bismon} heap \textbf{\large greatly simplified}}
+
+    \begin{center}
+      \includegraphics[width=0.72\textwidth]{heap-bismon}
+    \end{center}
 \end{frame}
 
 \end{document}
