@@ -5,15 +5,25 @@
 % inspired by http://cse.unl.edu/~cbourke/latex/UNLTheme.tex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass{beamer}
+\documentclass[xcolor=svgnames,final,smaller,a4]{beamer}
 \usepackage{relsize}
 \usepackage{luacode}
 \usepackage{xcolor}
 \usepackage{alltt}
+\usepackage{listings}
+\usepackage{hyperref}
 
 
+\hypersetup{
+  colorlinks   = true, %Colours links instead of ugly boxes
+  urlcolor     = NavyBlue, %Colour for external hyperlinks
+  linkcolor    = DarkGreen, %Colour of internal links
+  citecolor   = DarkMagenta, %Colour of citations
+  frenchlinks = true,
+}
 
 \usetheme[hideothersubsections]{Bismon}
+
 
 
 \title{\textsc{Bismon} \\
@@ -29,6 +39,7 @@ a static source code analysis framework using some symbolic artificial intellige
    gitpip:close()
  \end{luacode*}
  \newcommand{\mygitid}{\luadirect{tex.print(gitid)}}
+ \newcommand{\Bismon}{\href{https://github.com/bstarynk/bismon}{\textsc{Bismon}}}
 
 %{% open a Local TeX Group
 %\setbeamertemplate{sidebar}{}
@@ -49,108 +60,20 @@ a static source code analysis framework using some symbolic artificial intellige
 
 \begin{frame}
     \frametitle{Introduction}
-    \framesubtitle{}
+    \framesubtitle{funding}
 
-    \texttt{Beamer} is a wonderful \LaTeX\ document class that produces
-    high quality PDF slide presentations.
+    {\Bismon} is funded by two \href{https://ec.europa.eu/programmes/horizon2020/en}{Horizon 2020} research and innnovation actions:
     
-    Moreover, you can customize and develop your own themes!
-
-\end{frame}
-
-\section{UNL Theme}    
-
-\begin{frame}
-    \frametitle{UNL Theme}
-    \framesubtitle{}
-
-    This theme was developed for the University of Nebraska--Lincoln.
-    
-    The theme itself was developed from the PaloAlto, sidebar and sidbartab
-    themes available by default in beamer.
-    
-    However, this theme has several unique features and customizations:
     \begin{itemize}
-      \item The color theme uses UNL's ``scarlet and creme'' colors.
-      \item Improved spacing.
-      \item Math mode preserves \LaTeX's serif font.
-      \item Incorporates UNL's Logo automatically.
-      \item Unique drop shadows on the top and side bars!
+    \item \href{https://www.chariotproject.eu/}{\textsc{Chariot}}, under Grant Agreement 780075.
+      \item \href{http://decoder-project.eu/}{\textsc{Decoder}}, under Grant Agreement 824231.
     \end{itemize}
 
-\end{frame}
+    So  {\Bismon} is European.
 
-\begin{frame}  %---------------------------------------------------------------
-    \frametitle{Other Features}
-    \framesubtitle{}
-    
-    For convenience, if you are in handout mode, all features, including the
-    navigation symbols at the bottom right are shut off!
-
-
-    Beamer boxes are by default, rounded and have a drop shadow.  All beamer
-    boxes (definition, theorem, etc) have the same color scheme.
-
-    \begin{definition}
-      This is my definition
-      $$A = \{p \mid \textrm{$p$ is prime }\}$$
-    \end{definition}
-    
-    \begin{theorem}
-      The set $A$ is countable.
-    \end{theorem}
-
-\end{frame}
-
-\section{Using The Theme}
-
-\begin{frame}[fragile]
-    \frametitle{How To Use The Theme}
-    \framesubtitle{Theme Options}
-    
-    To use the UNL Theme, after your document class declaration, simply use:
-    
-    \begin{verbatim}\usetheme{UNLTheme}\end{verbatim}
-    
-    To pass options to the package, use
-    
-    \verb"\usetheme[left,hideothersubsections,width=2.5cm]{UNLTheme}"
-    
-\end{frame}
-
-\begin{frame}[fragile]
-    \frametitle{How To Use The Theme}
-    \framesubtitle{Theme Options}
-        
-    There are also several options that you can pass:
-    \begin{itemize}
-      \item \texttt{hideothersubsections} -- This hides subsections in the 
-            sidebar \emph{other than} the subsections of the current section.
-      \item \texttt{hideallsubsections} -- This option doesn't print \emph{any}
-            subsections in the sidebar.
-      \item \texttt{width} -- sets the width of the sidebar, default is 
-      	    \verb"2.5\baselineskip"
-      \item \texttt{height} -- sets the height of the header, default is 
-      	    \verb"2.5\baselineskip"
-      \item \texttt{left} -- sets the sidebar to the left of the slide (default).
-      \item \texttt{right} -- sets the sidebar to the right of the slide.
-    \end{itemize}
-    
-\end{frame}
-
-\begin{frame}
-    \frametitle{How To Get The Theme}
-    \framesubtitle{}
-    
-    The theme is available from my home page,
-    \textcolor{blue}{\url{http://www.cse.unl.edu/~cbourke/}}
-    
-
-    You need \texttt{You need beamerthemeUNLTheme.sty} and \texttt{UNL.pdf}
-    (the UNL logo).
-    
-    Place them in the working directory or add them to \texttt{beamer/themes/theme}
-    or somewhere in your \LaTeX\ path and you're good to go!
+    \begin{center}
+      \includegraphics[width=0.15\textwidth]{Flag-of-Europe} \raisebox{0.4cm}[1pt][1pt]{(100\% funded by the European Commission)}.
+    \end{center}
     
 \end{frame}
     
