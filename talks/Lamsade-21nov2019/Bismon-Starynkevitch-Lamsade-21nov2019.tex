@@ -28,8 +28,10 @@
 
 \title{\textsc{Bismon} \\
 a static source code analysis framework using some symbolic artificial intelligence techniques.}
-\author{Basile \textsc{Starynkevitch}} %
-\institute{CEA/LIST (DILS) - laboratoire de Sûreté des Logiciels}
+\author[B.Starynkevitch]{Basile \textsc{Starynkevitch} - \href{http://starynkevitch.net/Basile/}{\texttt{starynkevitch.net/Basile}}\\
+  \href{mailto:basile.starynkevitch@cea.fr}{\color{blue}{\texttt{basile.starynkevitch@cea.fr}}} and \href{mailto:basile@starynkevitch.net}{\color{blue}{\texttt{basile@starynkevitch.net}}}
+} %
+\institute{ \raisebox{0.4cm}{CEA/LIST (DILS) - laboratoire de Sûreté des Logiciels -} \includegraphics[scale=0.14]{CEA-LIST-logo}}
 \date{November 21\textsuperscript{st}, 2019}
 
 \begin{document}
@@ -44,10 +46,14 @@ a static source code analysis framework using some symbolic artificial intellige
 %{% open a Local TeX Group
 %\setbeamertemplate{sidebar}{}
  \begin{frame}
-   \begin{relsize}{-1}
+   
+   
+   \begin{relsize}{-1.5}
         \titlepage
+        \textcolor{brown}{{\large \textbf{Opinions are only mines}} (not from  CEA or E.C.)}
+        
         \begin{center}
-          \href{mailto:basile.starynkevitch@cea.fr}{\color{blue}{\texttt{basile.starynkevitch@cea.fr}}} and \href{mailto:basile@starynkevitch.net}{\color{blue}{\texttt{basile@starynkevitch.net}}}
+         
 
           git \texttt{\mygitid}
         \end{center}
@@ -77,6 +83,34 @@ a static source code analysis framework using some symbolic artificial intellige
     
 \end{frame}
     
+\begin{frame}
+    \frametitle{Introduction}
+    \framesubtitle{AI and other inspirations}
+
+    \begin{itemize}
+
+    \item D.Lenat work on \textsc{RLL-1} then \textsc{Eurisko}
+    \item J.Pitrat (1934 - 2019) pionneering work on \textsc{Caia}
+    \item my PhD work (1985 - 1990)
+    \item my past \href{http://starynkevitch.net/Basile/gcc-melt/}{\textsc{Gcc Melt}} work (2008 - 2016)
+    \item \href{http://frama-c.com/}{\textsc{Frama-C}}
+    \item \href{http://gcc.gnu.org/}{\textsc{Gcc}} $> 10$MLOC of \textit{C++}
+ and a dozen of \href{https://en.wikipedia.org/wiki/Domain-specific_language}{DSL}s
+    \end{itemize}
+
+    For references, see the \href{http://starynkevitch.net/Basile/bismon-chariot-doc.pdf}{{\Bismon} \textbf{draft} report} {\relsize{-1}{on my home page}}
+
+    Some GPLv3+ code for \textsc{Linux/x86-64} desktop is available
+    \href{http://github.com/bstarynk/bismon}{\texttt{github.com/bstarynk/bismon}}
+
+    \hrule
+    
+    These slides are under \href{https://creativecommons.org/licenses/by-sa/4.0/}{\includegraphics[scale=0.75]{CC-BY-SA-4}} \relsize{-1}{(CC-BY-SA-4)} and linked from my home page \href{http://starynkevitch.net/Basile/}{\texttt{starynkevitch.net/Basile/}}.
+
+    
+    
+\end{frame}
+
 \end{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Local Variables: ;;
