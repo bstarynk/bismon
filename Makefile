@@ -102,17 +102,17 @@ modules: _cflagsmodule.mk  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES
 
 
 
-doc: $(MARKDOWN_SOURCES) bismon bismongtk modules $(wildcard doc/*.tex doc/images/* doc/*.bib doc/*.hva)
+doc: $(MARKDOWN_SOURCES) bismon modules $(wildcard doc/*.tex doc/images/* doc/*.bib doc/*.hva)
 	for f in $(MARKDOWN_SOURCES) ; do  $(MARKDOWN) $$f > $$(basename $$f .md).html ; done
 	./build-bismon-doc.sh
 
-latexdoc: bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
+latexdoc: bismon  modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
 	[ -d $$HOME/tmp/ ] || mkdir -v $$HOME/tmp
 	$(RM) $(shell realpath $$HOME/tmp/bismon-chariot-doc.pdf)
 	./build-bismon-doc.sh LaTeX
 	ls -lt ~/tmp/bismon-chariot-doc*
 
-latexcleandoc: bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
+latexcleandoc: bismon modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
 	[ -d $$HOME/tmp/ ] || mkdir -v $$HOME/tmp
 	$(RM) $(shell realpath $$HOME/tmp/bismon-chariot-doc.pdf)
 	$(RM) doc/bismon-chariot-doc.{aux,bbl,blg,idx,log,log,lot,out,toc,pdf} 
@@ -122,7 +122,7 @@ latexcleandoc: bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/image
 	ls -lt ~/tmp/bismon-chariot-doc*
 
 
-heveadoc:  bismon bismongtk modules $(wildcard doc/*.tex doc/images/* doc/*.bib doc/*.hva)
+heveadoc:  bismon modules $(wildcard doc/*.tex doc/images/* doc/*.bib doc/*.hva)
 	./build-bismon-doc.sh HeVeA
 
 count:
@@ -136,8 +136,8 @@ redump: bismon  modules
 	printf "\n\n\n **** second redump run ***\n"
 	time ./bismon --web --dump-after-load . --batch
 
-outdump: bismon bismongtk bismonion  modules
-	time ./bismongtk  --run-command 'rm -rvf /tmp/bd'  --dump-after-load /tmp/bd --batch
+outdump: bismon   modules
+	time ./bismon  --run-command 'rm -rvf /tmp/bd'  --dump-after-load /tmp/bd --batch
 	for f in /tmp/bd/* ; do cmp $$f $$(basename $$f); done
 
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
