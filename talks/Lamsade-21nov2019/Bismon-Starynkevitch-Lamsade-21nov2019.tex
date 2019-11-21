@@ -260,18 +260,39 @@ a static source code analysis framework using \textit{some} symbolic artificial 
     \begin{itemize}
     \item its \textcolor{red}{\textbf{globally unique}}, \textit{randomly generated,}  \textbf{constant} \textcolor{red}{\textbf{objid}} like \texttt{\_8dgEp1oxLMz\_5iGP2Eq1wn7} ($\approx 128 bits$)
     \item its {\href{http://man7.org/linux/man-pages/man7/pthreads.7.html}{\texttt{pthread(7)}}} \textbf{mutex} lock for synchronization
-    \item its {\textcolor{red}{\textbf{class}}} - itself an object
-%-  \item its \textcolor{red}{\textbf{attributes}, associating key \emph{objects} to non-nil values
-%-  \item its \textcolor{red}{\textbf{components}, a vector of values
-%-      \item some optional {\textcolor{red}{\textbf{payload}}} which is a data owned by the object. 
+    \item its space number
+    \item its modification time
+    \item its atomic {\textcolor{red}{\textbf{class}}} - itself an object
+    \item its {\textcolor{red}{\textbf{attributes}}}, associating key \textit{objects} to non-nil values
+    \item its optional \textbf{routine} pointer, with ...
+    \item an optional object describing the \textbf{signature} of that routine.
+  \item its {\textcolor{red}{\textbf{components}}}, a vector of values
+  \item some optional {\textcolor{red}{\textbf{payload}}} which is a data owned by the object. 
     \end{itemize}
-    
+
 \end{frame}
 
 
 \begin{frame}
     \frametitle{Data and persistence}
     \framesubtitle{Objects in \Bismon ~ (2)}
+    
+Of course, the class, the attributes, the components, the payload may
+change, usually under protection of the mutex.  The routine and
+signature change thru
+{\href{http://man7.org/linux/man-pages/man3/dlsym.3.html}{\texttt{dlsym(3)}}}.
+
+Examples of payloads include :
+\begin{itemize}
+\item mutable vector of values
+\item mutable hashed set of objects
+\item Web sessions
+\item dictionnaries associating strings to objects
+\item class information (vector of superclasses, method dictionnary)
+\item etc ...
+\end{itemize}
+
+So objects are very versatile.
 \end{frame}
 
 
