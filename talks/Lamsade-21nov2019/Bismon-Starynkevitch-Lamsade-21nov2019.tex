@@ -254,7 +254,7 @@ a static source code analysis framework using \textit{some} symbolic artificial 
 
 \begin{frame}
     \frametitle{Data and persistence}
-    \framesubtitle{Objects in \Bismon ~ (1)}
+    \framesubtitle{Objects in \Bismon ~ (1 / 2)}
 
     Every \textcolor{red}{\textbf{object}} has : 
     \begin{itemize}
@@ -275,7 +275,7 @@ a static source code analysis framework using \textit{some} symbolic artificial 
 
 \begin{frame}
     \frametitle{Data and persistence}
-    \framesubtitle{Objects in \Bismon ~ (2)}
+    \framesubtitle{Objects in \Bismon ~ (2 / 2)}
     
 Of course, the class, the attributes, the components, the payload may
 change, usually under protection of the mutex.  The routine and
@@ -288,11 +288,13 @@ Examples of payloads include :
 \item mutable hashed set of objects
 \item Web sessions
 \item dictionnaries associating strings to objects
-\item class information (vector of superclasses, method dictionnary)
+\item class information {\relsize{-1}{(vector of superclasses, dictionnary of methods, ...)}}
 \item etc ...
 \end{itemize}
 
-So objects are very versatile.
+So objects are very versatile {\relsize{-1}{(similar to those of \textsc{Eurisko} or
+\textsc{Caia}, more general that \textsc{JavaScript} objects, with
+\textsc{ObjVLisp} model ...)}}.
 \end{frame}
 
 
