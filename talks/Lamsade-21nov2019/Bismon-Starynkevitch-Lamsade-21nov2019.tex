@@ -310,10 +310,10 @@ signature change thru
 Examples of payloads include :
 \begin{itemize}
 \item mutable vector of values
+\item mutable class information {\relsize{-1}{(vector of superclasses, dictionnary of methods, ...)}}
 \item mutable hashed set of objects
-\item Web sessions
+\item Web sessions or user information
 \item dictionnaries associating strings to objects
-\item class information {\relsize{-1}{(vector of superclasses, dictionnary of methods, ...)}}
 \item etc ...
 \end{itemize}
 
@@ -375,11 +375,46 @@ The persistence machinery starts the dump from a few \textbf{predefined
 {\textcolor{DarkGreen}{\texttt{\textbf{the\_system}}}}
 i.e. \texttt{€\_4ggW2XwfXdp}.... It uses a depth-first approach with
 an hashed set of dumped objects, and a \textsc{fifo} queue of objects
-to be scanned then dumped. Generated \textit{C} code is re-emitted at dump time.
+to be scanned then dumped. \textcolor{purple}{Generated \textit{C} code is re-emitted at dump time}.
 
 \end{frame}
     
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Metaprogramming approach}
 
+\begin{frame}
+    \frametitle{Metaprogramming approach}
+    \framesubtitle{Past experience: \textsc{Gcc Melt}}
+
+\textsc{Gcc Melt} was a \textsc{Lisp}-like bootstrapped domain
+specific language translated (or ``transpiled'') to C++ plugin
+code of \textsc{Gcc}
+
+%!\begin{relsize}{-1.5}
+%!\begin{alltt}
+%!\textit{;;; citerator on lists}\\
+%!(defciterator foreach\_pair\_component\_in\_list\\
+%!  (lis)					\textit{;start formals}\\
+%!  eachlist				\textit{;state}\\
+%!  (curpair curcomp)			\textit{;local formals\\
+%!\end{alltt}
+%! :doc #{The \$FOREACH\_PAIR\_COMPONENT\_IN\_LIST iterator goes within a list, given by
+%!he start formal \$LIS. Local formals are \$CURPAIR, bound to the
+%!urrent pair, and \$CURCOMP, bound to the current component within the
+%!ist.}#
+%!  #{/* start foreach\_pair\_component\_in\_list \$EACHLIST */
+%!  for (\$CURPAIR = melt\_list\_first( (melt\_ptr\_t)\$LIS);
+%!       melt\_magic\_discr((melt\_ptr\_t) \$curpair) == MELTOBMAG\_PAIR;
+%!       \$CURPAIR = melt\_pair\_tail((melt\_ptr\_t) \$CURPAIR)) {
+%!       \$CURCOMP = melt\_pair\_head((melt\_ptr\_t) \$CURPAIR); }#
+%!  #{ } /* end foreach\_pair\_component\_in\_list \$EACHLIST */
+%!    \$CURPAIR = NULL;
+%!    \$CURCOMP = NULL;
+%!  }#
+%! )
+%!\end{relsize}
+
+\end{frame}
 \end{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Local Variables: ;;
