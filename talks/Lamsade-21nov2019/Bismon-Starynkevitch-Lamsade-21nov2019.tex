@@ -13,6 +13,27 @@
 \usepackage{wasysym}
 \usepackage{listings}
 \usepackage{hyperref}
+\usepackage{newunicodechar}
+
+% see also http://www.sascha-frank.com/Arrow/latex-arrows.html
+% and http://tug.ctan.org/info/symbols/comprehensive/symbols-a4.pdf
+% and https://ctan.math.illinois.edu/macros/latex/contrib/newunicodechar/newunicodechar.pdf
+%%%% keep in order
+%U+21A6 RIGHTWARDS ARROW FROM BAR
+\newunicodechar{↦}{$\mapsto$}
+%U+21B3 DOWNWARDS ARROW WITH TIP RIGHTWARDS
+\newunicodechar{↳}{\rotatebox[origin=c]{180}{$\Lsh$}}
+%U+2208 ELEMENT OF
+\newunicodechar{∈}{$\in$}
+% U+00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
+\newunicodechar{«}{\guillemotleft}
+% U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK
+\newunicodechar{»}{\guillemotright}
+% U+00B1 PLUS-MINUS SIGN
+\newunicodechar{±}{$\pm$}
+% U+00B5 MICRO SIGN
+\newunicodechar{µ}{$\mu$}
+
 
 
 \hypersetup{
@@ -82,7 +103,9 @@ a static source code analysis framework using \textit{some} symbolic artificial 
       \includegraphics[width=0.15\textwidth]{Flag-of-Europe} \raisebox{0.4cm}[1pt][1pt]{(100\% funded by the European Commission)}.
     \end{center}
     
-    \textcolor{brown}{{\large \textbf{Opinions are only mines}} (not from  CEA or E.C.)}
+    {\textcolor{brown}{{\large \textbf{Opinions are only mines}} (not from  CEA or E.C.)}}
+
+    {\textcolor{red}{\textbf{Work in progress !}}}
     
 \end{frame}
     
@@ -160,6 +183,8 @@ a static source code analysis framework using \textit{some} symbolic artificial 
     \item \textbf{mutable and lockable} so ``heavy'' \textbf{\textcolor{red}{objects}} {\relsize{-1}{(each having its \textit{unique objid} e.g. \texttt{\_5t7pTgRckFK\_7hOY5yvx8v3})}}
     \end{itemize}
 
+    The \textsc{nil} pointer denotes a lack of value. \textcolor{red}{Every value has its class} (an object).
+    
     In addition, our GC manages \textbf{quasi-values} as an
     \textit{implementation detail}. A quasi-value is simply a GC-ed
     memory zone which could belong to some value or object.
@@ -292,12 +317,68 @@ Examples of payloads include :
 \item etc ...
 \end{itemize}
 
-So objects are very versatile {\relsize{-1}{(similar to those of \textsc{Eurisko} or
+So {\Bismon} {\textcolor{red}{\textbf{objects are very versatile}}} {\relsize{-1}{(similar to those of \textsc{Eurisko} or
 \textsc{Caia}, more general that \textsc{JavaScript} objects, with
 \textsc{ObjVLisp} model ...)}}.
 \end{frame}
 
+%%%%%%%%%%%%%%%%
 
+\begin{frame}
+    \frametitle{Data and persistence}
+    \framesubtitle{Orthogonal persistence (1 / 2)}
+
+Most of the {\Bismon} \textcolor{purple}{\textbf{heap}}
+{\relsize{-1}{(but not the call stacks)}} is
+{\textcolor{red}{persisted in \textbf{textual files}}}
+{\relsize{-1}{(so {\href{http://git-scm.com/}{\texttt{git}}}
+    friendly)}}. For example in our \texttt{store2.bmon} file :
+
+\begin{relsize}{-1}
+\begin{alltt}              
+«\_6dKbq51BdxU\_7XmAmI0XbBR \textcolor{Brown}{\relsize{-1}{\textrm{\textit{objid}}}}\\
+± 1544448437.314 \textcolor{Brown}{\relsize{-1}{\textrm{\textit{modtime}}}}\\\
+∈ \_4GJJnvyrLyW\_5mhopCYvh8h  \textcolor{LimeGreen}{|=basiclo\_cexpansion|} \textcolor{Brown}{\relsize{-1}{\textrm{\textit{class}}}}\\
+↦ \_01h86SAfOfg\_1q2oMegGRwW  \textcolor{LimeGreen}{|=comment|} \textcolor{Brown}{\relsize{-1}{\textrm{\textit{attribute key}}}}\\
+ "emit int v\_comp" ~ \textcolor{Brown}{\relsize{-1}{\textrm{\textit{corresponding attribute value}}}}\\
+↦ \_0jFqaPPHgYH\_5JpjOPxQ67p  \textcolor{LimeGreen}{|=arguments|}\\
+* \_0jFqaPPHgYH\_5JpjOPxQ67p ( \_41F1rKwGbaA\_30OJWKsqNWy\\
+         ~ ~                     * \_5MLPTLuT4ey\_0YKIUpvXybX ( \_0ZL8gaI6sH8\_7UPhmAQcwMe))\\
+↦ \_9OzBvYbDWm8\_3XA4wkArOmo  \textcolor{LimeGreen}{|=expander|}\\
+\_6cFSE2rDxvF\_99QhDhtBeS4\\
+»\_6dKbq51BdxU\_7XmAmI0XbBR \textcolor{Brown}{\relsize{-1}{\textrm{\textit{end objid}}}}\\
+\end{alltt}
+\end{relsize}
+
+In november 2019, we have nearly 3370 persisted objects.
+\end{frame}
+    
+%%%%%%%%%%%%%%%%
+
+\begin{frame}
+    \frametitle{Data and persistence}
+    \framesubtitle{Orthogonal persistence (2 / 2)}
+
+
+Most values are persisted. Some values are not, they are
+\textcolor{red}{\textbf{transient}}. Obviously the user interface is
+reified as transient values.
+
+At startup, the {\Bismon} process \textbf{loads} the persisted heap.
+Before exiting, the {\Bismon} process \textbf{dumps} the persisted
+heap. Then it usually would be \texttt{git commit}-ed.
+
+Conceptually, \textcolor{red}{\textbf{the}} {\Bismon}  \textcolor{red}{\textbf{heap never dies}} : process {\texttt{./bismon}} would be started at morning and dumps its updated state at evening.
+
+The persistence machinery starts the dump from a few \textbf{predefined
+  objects} in space 1, notably
+{\textcolor{DarkGreen}{\texttt{\textbf{the\_system}}}}
+i.e. \texttt{€\_4ggW2XwfXdp}.... It uses a depth-first approach with
+an hashed set of dumped objects, and a \textsc{fifo} queue of objects
+to be scanned then dumped. Generated \textit{C} code is re-emitted at dump time.
+
+\end{frame}
+    
 
 \end{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
