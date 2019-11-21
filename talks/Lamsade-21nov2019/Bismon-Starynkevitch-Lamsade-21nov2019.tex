@@ -136,6 +136,27 @@ a static source code analysis framework using \textit{some} symbolic artificial 
     \end{center}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Data and persistence}
+    \framesubtitle{garbage-collected values in \Bismon}
+
+    \begin{itemize}
+    \item {\textcolor{red}{\textbf{immutable values}}}  {\relsize{-1}{(often with \href{https://en.wikipedia.org/wiki/Flexible_array_member}{flexible array members} in \textit{C} code)}} : \begin{itemize}
+    \item scalar values: tagged 63 bits \textbf{integers}, boxed \textbf{strings}, boxed \textbf{doubles} {\relsize{-1}{(not \texttt{NaN}, since it is uncomparable)}} \ldots
+    \item composite values : \begin{itemize}
+    \item ordered \textbf{sets} of objects with $O(\log n)$ membership test
+    \item sequential \textbf{tuples} of objects {\relsize{-1}{(same layout in memory as sets)}}
+    \item \textbf{nodes} with an object connective and zero or more son values.
+      \item \textbf{closures} with their code represented by an object, and zero or more closed values {\relsize{-1}{(same data layout as nodes)}}
+    \end{itemize}
+    \end{itemize}
+    \item \textbf{mutable and lockable} so ``heavy'' \textbf{\textcolor{red}{objects}} {\relsize{-1}{(each having its \textit{unique objid} e.g. \texttt{\_5t7pTgRckFK\_7hOY5yvx8v3})}}
+    \end{itemize}
+
+    In addition, our GC manages \textbf{quasi-values} as an
+    \textit{implementation detail}. A quasi-value is simply a GC-ed
+    memory zone which could belong to some value or object.
+\end{frame}
 \end{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Local Variables: ;;
