@@ -11,7 +11,6 @@
 \usepackage{xcolor}
 \usepackage{alltt}
 \usepackage{wasysym}
-\usepackage{listings}
 \usepackage{hyperref}
 \usepackage{newunicodechar}
 
@@ -390,30 +389,26 @@ to be scanned then dumped. \textcolor{purple}{Generated \textit{C} code is re-em
 specific language translated (or ``transpiled'') to C++ plugin
 code of \textsc{Gcc}
 
-%!\begin{relsize}{-1.5}
-%!\begin{alltt}
-%!\textit{;;; citerator on lists}\\
-%!(defciterator foreach\_pair\_component\_in\_list\\
-%!  (lis)					\textit{;start formals}\\
-%!  eachlist				\textit{;state}\\
-%!  (curpair curcomp)			\textit{;local formals\\
-%!\end{alltt}
-%! :doc #{The \$FOREACH\_PAIR\_COMPONENT\_IN\_LIST iterator goes within a list, given by
-%!he start formal \$LIS. Local formals are \$CURPAIR, bound to the
-%!urrent pair, and \$CURCOMP, bound to the current component within the
-%!ist.}#
-%!  #{/* start foreach\_pair\_component\_in\_list \$EACHLIST */
-%!  for (\$CURPAIR = melt\_list\_first( (melt\_ptr\_t)\$LIS);
-%!       melt\_magic\_discr((melt\_ptr\_t) \$curpair) == MELTOBMAG\_PAIR;
-%!       \$CURPAIR = melt\_pair\_tail((melt\_ptr\_t) \$CURPAIR)) {
-%!       \$CURCOMP = melt\_pair\_head((melt\_ptr\_t) \$CURPAIR); }#
-%!  #{ } /* end foreach\_pair\_component\_in\_list \$EACHLIST */
-%!    \$CURPAIR = NULL;
-%!    \$CURCOMP = NULL;
-%!  }#
-%! )
-%!\end{relsize}
+\begin{relsize}{-1.5}
+\begin{alltt}
+  \textit{;;; citerator on lists}\\
+(defciterator foreach\_pair\_component\_in\_list\\
+~  (lis)                                 \textit{;start formals}\\
+~  eachlist                              \textit{;state}\\
+~  (curpair curcomp)                     \textit{;local formals}\\
+~ :doc \textcolor{purple}{\#\{}The \$FOREACH\_PAIR\_COMPONENT\_IN\_LIST iterator goes within a\\
+~  list, given by the start formal \$LIS \ldots \textcolor{purple}{\}\#}\\
+~  \textcolor{purple}{\#\{}/* start foreach\_pair\_component\_in\_list \$EACHLIST */\\
+~  for (\$CURPAIR = melt\_list\_first( (melt\_ptr\_t)\$LIS);\\
+~ ~       melt\_magic\_discr((melt\_ptr\_t) \$curpair) == MELTOBMAG\_PAIR;\\
+~ ~       \$CURPAIR = melt\_pair\_tail((melt\_ptr\_t) \$CURPAIR)) \{\\
+~ ~       \$CURCOMP = melt\_pair\_head((melt\_ptr\_t) \$CURPAIR); \textcolor{purple}{\}\#}\\
+~  \textcolor{purple}{\#\{} \} /* end foreach\_pair\_component\_in\_list \$EACHLIST */\\
+~    \$CURPAIR = NULL; \$CURCOMP = NULL; \textcolor{purple}{\}\#}
+\end{alltt}
+\end{relsize}
 
+So \textit{C} or \textit{C++} code with holes or metavariables in macrostrings
 \end{frame}
 \end{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
