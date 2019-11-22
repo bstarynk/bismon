@@ -1188,27 +1188,29 @@ decayedvectputnth_BM (struct decayedvectpayl_stBM *dvec,
     return false;
   if (rk < 0)
     rk += (int) sz;
-  if (rk >= 0 && rk < (int) sz) {
-    dvec->decayp_arr[rk] = valcomp;
-    return true;
-  }
+  if (rk >= 0 && rk < (int) sz)
+    {
+      dvec->decayp_arr[rk] = valcomp;
+      return true;
+    }
   return false;
 }                               /* end decayedvectputnth_BM */
 
 
 bool
 decayedvectappend_BM (struct decayedvectpayl_stBM *dvec,
-		      const value_tyBM valcomp) {
+                      const value_tyBM valcomp)
+{
   unsigned sz = decayedvectallocsize_BM (dvec);
   if (!sz)
     return false;
-  unsigned ln = ((typedsize_tyBM *) dvec)->size;       // DECAYEDVECTOR_UCNT_bm
+  unsigned ln = ((typedsize_tyBM *) dvec)->size;        // DECAYEDVECTOR_UCNT_bm
   if (ln >= sz)
     return false;
   dvec->decayp_arr[ln] = valcomp;
-  ((typedsize_tyBM *) dvec)->size++;     // DECAYEDVECTOR_UCNT_bm
+  ((typedsize_tyBM *) dvec)->size++;    // DECAYEDVECTOR_UCNT_bm
   return true;
-} /* end decayedvectappend_BM  */
+}                               /* end decayedvectappend_BM  */
 
 
 struct decayedvectpayl_stBM *
@@ -1275,24 +1277,25 @@ objdecayedvectallocsizepayl_BM (objectval_tyBM * obj)
 }                               /* end of objdecayedvectallocsizepayl_BM   */
 
 
-bool objdecayedvectorputnthpayl_BM (objectval_tyBM * obj,
-				    int rk, const value_tyBM valcomp)
+bool
+objdecayedvectorputnthpayl_BM (objectval_tyBM * obj,
+                               int rk, const value_tyBM valcomp)
 {
   struct decayedvectpayl_stBM *dy = objgetdecayedvectorpayl_BM (obj);
   if (!dy)
     return false;
   return decayedvectputnth_BM (dy, rk, valcomp);
-} /* end of objdecayedvectorputnthpayl_BM */
+}                               /* end of objdecayedvectorputnthpayl_BM */
 
 
-bool objdecayedvectorappendpayl_BM (objectval_tyBM * obj,
-				    const value_tyBM valcomp)
+bool
+objdecayedvectorappendpayl_BM (objectval_tyBM * obj, const value_tyBM valcomp)
 {
   struct decayedvectpayl_stBM *dy = objgetdecayedvectorpayl_BM (obj);
   if (!dy)
     return false;
   return decayedvectappend_BM (dy, valcomp);
-} /* end of objdecayedvectorappendpayl_BM */
+}                               /* end of objdecayedvectorappendpayl_BM */
 
 
 ////////////////////////////////////////////////

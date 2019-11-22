@@ -891,9 +891,10 @@ static inline const value_tyBM *objdecayedvectdatapayl_BM (objectval_tyBM *
 static inline unsigned objdecayedvectlenpayl_BM (objectval_tyBM * obj);
 static inline unsigned objdecayedvectallocsizepayl_BM (objectval_tyBM * obj);
 static inline bool objdecayedvectorputnthpayl_BM (objectval_tyBM * obj,
-                                         int rk, const value_tyBM valcomp);
+                                                  int rk,
+                                                  const value_tyBM valcomp);
 static inline bool objdecayedvectorappendpayl_BM (objectval_tyBM * obj,
-                                         const value_tyBM valcomp);
+                                                  const value_tyBM valcomp);
 ///////////////////////////////
 
 extern struct listtop_stBM *makelist_BM (void);

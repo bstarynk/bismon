@@ -1352,6 +1352,7 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
                  objectval_tyBM * decayforgotob;        //
                  value_tyBM contribnamv;        //
                  value_tyBM contribemailv;      //
+                 value_tyBM closv;
     );
   _.contribob = contribobarg;
   _.decayforgotob = decayforgotobarg;
@@ -1470,12 +1471,33 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
     }
   else
     {
+      _.closv = makeclosure3_BM (k_forgotemail_webhandler,
+                                 _.contribob, _.decayforgotob,
+                                 taggedint_BM (rn));
       DBGBACKTRACEPRINTF_BM
         ("make_onion_dict_forgotten_email_BM contribob %s empty-decay\n"
-         ".. decayforgotob %s (len%u,asiz%u) filled rn %u",
+         ".. decayforgotob %s (len%u,asiz%u) filled rn %u\n" ".. closv %s",
          objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
          objdecayedvectlenpayl_BM (_.decayforgotob),
-         objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn);
+         objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn,
+         OUTSTRVALUE_BM (_.closv));
+      if (!objdecayedvectorappendpayl_BM (_.decayforgotob,      //DECAYFORGOTTENCONTRIBIX_bm
+                                          _.contribob))
+        /// should never happen
+        FATAL_BM ("failed to append into decayforgotob %s the contribob %s",
+                  objectdbg_BM (_.decayforgotob),
+                  objectdbg1_BM (_.contribob));
+      if (!objdecayedvectorappendpayl_BM (_.decayforgotob,      //DECAYFORGOTTENCLOSUREIX_bm
+                                          _.closv))
+        /// should never happen
+        FATAL_BM ("failed to append into decayforgotob %s the closv %s",
+                  objectdbg_BM (_.decayforgotob), OUTSTRVALUE_BM (_.closv));
+      if (!objdecayedvectorappendpayl_BM (_.decayforgotob,      //DECAYFORGOTTENRANDOMIX_bm
+                                          taggedint_BM (rn)))
+        /// should never happen
+        FATAL_BM
+          ("failed to append into decayforgotob %s the random number %u",
+           objectdbg_BM (_.decayforgotob), rn);
     };
   DBGBACKTRACEPRINTF_BM
     ("incomplete make_onion_dict_forgotten_email_BM contribob %s\n"
