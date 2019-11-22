@@ -1345,7 +1345,7 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
   // class of decaying vector objects:
   objectval_tyBM *k_decaying_vector_object = BMK_87e9wrUSdIs_0tppKPUo41v;
   // the _forgotemail-webhandler in webxhtml_module and store2.bmon
-  //objectval_tyBM k_forgotemail_webhandler = BMK_6aWaLxHQBv4_9bcZim3ljEh;
+  objectval_tyBM *k_forgotemail_webhandler = BMK_6aWaLxHQBv4_9bcZim3ljEh;
   onion_dict *mailctxdic = NULL;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * contribob;    //

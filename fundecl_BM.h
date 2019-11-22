@@ -866,8 +866,10 @@ static inline value_tyBM decayedvectnth_BM (const struct decayedvectpayl_stBM
                                             *dvec, int rk);
 static inline value_tyBM decayedvectlast_BM (const struct decayedvectpayl_stBM
                                              *dvec);
-static inline void decayedvectputnth_BM (struct decayedvectpayl_stBM *dvec,
+static inline bool decayedvectputnth_BM (struct decayedvectpayl_stBM *dvec,
                                          int rk, const value_tyBM valcomp);
+static inline bool decayedvectappend_BM (struct decayedvectpayl_stBM *dvec,
+                                         const value_tyBM valcomp);
 // GC support for decayed vector
 extern void decayedvectorgcmark_BM (struct garbcoll_stBM *gc,
                                     struct decayedvectpayl_stBM *dvec,
@@ -888,6 +890,10 @@ static inline const value_tyBM *objdecayedvectdatapayl_BM (objectval_tyBM *
                                                            obj);
 static inline unsigned objdecayedvectlenpayl_BM (objectval_tyBM * obj);
 static inline unsigned objdecayedvectallocsizepayl_BM (objectval_tyBM * obj);
+static inline bool objdecayedvectorputnthpayl_BM (objectval_tyBM * obj,
+                                         int rk, const value_tyBM valcomp);
+static inline bool objdecayedvectorappendpayl_BM (objectval_tyBM * obj,
+                                         const value_tyBM valcomp);
 ///////////////////////////////
 
 extern struct listtop_stBM *makelist_BM (void);
