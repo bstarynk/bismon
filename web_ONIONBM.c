@@ -1327,11 +1327,12 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
 }                               /* end login_onion_handler_BM */
 
 
-enum {
-      DECAYFORGOTTENCONTRIBIX_bm, // index of contributor object
-      DECAYFORGOTTENCLOSUREIX_bm, // index of closure
-      DECAYFORGOTTENRANDOMIX_bm,  // index of random number
-      DECAYFORGOTTEN__LASTINDEX_bm 
+enum
+{
+  DECAYFORGOTTENCONTRIBIX_bm,   // index of contributor object
+  DECAYFORGOTTENCLOSUREIX_bm,   // index of closure
+  DECAYFORGOTTENRANDOMIX_bm,    // index of random number
+  DECAYFORGOTTEN__LASTINDEX_bm
 } decayforgottenemail_enBM;
 
 static onion_dict *
@@ -1447,15 +1448,39 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
        objectdbg_BM (_.contribob), dbuf);
     free (dbuf), dbuf = NULL;
   }
-  if (objdecayedvectallocsizepayl_BM(_.decayforgotob)
-      >= 3 &&  objdecayedvectlenpayl_BM(_.decayforgotob)) {
-  }
+  if (objdecayedvectallocsizepayl_BM (_.decayforgotob) >=
+      DECAYFORGOTTEN__LASTINDEX_bm
+      && objdecayedvectlenpayl_BM (_.decayforgotob))
+    {
+      DBGBACKTRACEPRINTF_BM
+        ("make_onion_dict_forgotten_email_BM contribob %s filled-decay\n"
+         "decayforgotob %s (len%u,asiz%u) with [contrib: %s, closure: %s, random: %s\n"
+         " filled rn %u",
+         objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
+         objdecayedvectlenpayl_BM (_.decayforgotob),
+         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM (_.decayforgotob,
+                                                     DECAYFORGOTTENCONTRIBIX_bm)),
+         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM (_.decayforgotob,
+                                                     DECAYFORGOTTENCLOSUREIX_bm)),
+         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM (_.decayforgotob,
+                                                     DECAYFORGOTTENRANDOMIX_bm)),
+         objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn);
+    }
+  else
+    {
+      DBGBACKTRACEPRINTF_BM
+        ("make_onion_dict_forgotten_email_BM contribob %s empty-decay\n"
+         ".. decayforgotob %s (len%u,asiz%u) filled rn %u",
+         objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
+         objdecayedvectlenpayl_BM (_.decayforgotob),
+         objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn);
+    };
   DBGBACKTRACEPRINTF_BM
-    ("incomplete make_onion_dict_forgotten_email_BM contribob %s decayforgotob %s (len%u,asiz%u) rn %u",
+    ("incomplete make_onion_dict_forgotten_email_BM contribob %s\n"
+     ".. decayforgotob %s (len%u,asiz%u) rn %u",
      objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
-     objdecayedvectlenpayl_BM(_.decayforgotob),
-     objdecayedvectallocsizepayl_BM(_.decayforgotob),
-     (unsigned) rn);
+     objdecayedvectlenpayl_BM (_.decayforgotob),
+     objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn);
   WARNPRINTF_BM
     ("incomplete make_onion_dict_forgotten_email_BM contribob %s decayforgotob %s rn %u",
      objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
