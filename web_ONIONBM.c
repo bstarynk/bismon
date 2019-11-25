@@ -1498,6 +1498,20 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
         FATAL_BM
           ("failed to append into decayforgotob %s the random number %u",
            objectdbg_BM (_.decayforgotob), rn);
+      DBGPRINTF_BM
+        ("make_onion_dict_forgotten_email_BM contribob %s filled-empty-decay\n"
+         "decayforgotob %s (len%u,asiz%u) with [contrib: %s, closure: %s, random: %s\n"
+         " filled rn %u",
+         objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
+         objdecayedvectlenpayl_BM (_.decayforgotob),
+         objdecayedvectallocsizepayl_BM (_.decayforgotob),
+         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM (_.decayforgotob,
+                                                     DECAYFORGOTTENCONTRIBIX_bm)),
+         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM (_.decayforgotob,
+                                                     DECAYFORGOTTENCLOSUREIX_bm)),
+         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM (_.decayforgotob,
+                                                     DECAYFORGOTTENRANDOMIX_bm)),
+         objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn);
     };
   DBGBACKTRACEPRINTF_BM
     ("incomplete make_onion_dict_forgotten_email_BM contribob %s\n"
