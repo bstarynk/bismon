@@ -196,6 +196,14 @@ indent: .indent.pro
 	  if cmp -s $$c $$c% ; then echo unchanged $$c ; mv $$c% $$c ; \
 	  else echo '*indented' $$c ; fi ; \
 	done
+	@printf "\n *** C testplugins *** \n"
+	@for c in $(wildcard drafts/testplugin*.c); do \
+	  cp -a $$c $$c% ; \
+	  $(INDENT) $(INDENTFLAGS) $$c ; \
+	  $(INDENT) $(INDENTFLAGS) $$c ; \
+	  if cmp -s $$c $$c% ; then echo unchanged $$c ; mv $$c% $$c ; \
+	  else echo '*indented' $$c ; fi ; \
+	done
 #!-      @printf "\n *** C modules sources *** \n"
 #!-      @for c in $(MODULES_SOURCES); do \
 #!-        cp -a $$c $$c% ; \
@@ -205,7 +213,7 @@ indent: .indent.pro
 #!-        else echo '*indented' $$c ; fi ; \
 #!-      done
 	@printf "\n *** C++ sources *** \n"
-	@for x in $(BM_CXXSOURCES); do \
+	@for x in $(BM_CXXSOURCES) id_BM.h; do \
 	  $(ASTYLE) $(ASTYLEFLAGS) $$x ; \
 	done
 	@printf "\n *** C++ tool source *** \n"
