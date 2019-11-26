@@ -16,7 +16,7 @@
 <body>
   <h1>Bismon forgotten password for {{contributor_name}}</h1>
 
-<p>Hello, {{contributor_name}} (of oid <tt>{{contributor_oid}}). You
+<p>Hello, {{contributor_name}} (of oid <tt>{{contributor_oid}}</tt>). You
 have forgotten your password. An HTML email of subject
 <i>{{email_subject}}</i> is sent to <tt>{{contributor_email}}</tt>
 and contains a temporary link to reset your password. That temporary
@@ -30,8 +30,9 @@ change your password.</p>
   href='mailto:{{contact_email}}'>{{contact_email}}</a>, notably for
   help.</p>
   
-  <p class='tinyinfo_cl'>Automatically generated web page, on <i>{{forgot_timestamp}}</i>.</p>.
+  <p class='tinyinfo_cl'>Automatically generated web page, on <i>{{forgot_timestamp}}</i>.</p>
 
+  <hr/>
   <p class='tinyinfo_cl'><b>PS:</b> to customize this message, edit
   the <tt>forgotwebpage_ONIONBM.thtml</tt> source file. gitid <tt>{{bismon_gitid}}</tt>. </p>
   </body>
