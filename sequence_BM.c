@@ -1148,10 +1148,15 @@ objputdecayedvectorpayl_BM (objectval_tyBM * obj, unsigned asiz,
       DECAYEDVECTOR_UCNT_bm (dvec) = 0;
       dvec->decayp_limitime = elapsedtime_BM () + 1.0e-3 * delayms;
       objputpayload_BM (obj, dvec);
+      DBGPRINTF_BM ("objputdecayedvectorpayl_BM obj %s asiz %d\n"
+                    ".. decayp_limitime %.4f (elasped + %.3f) dvec@%p",
+                    objectdbg_BM (obj), asiz, dvec->decayp_limitime,
+                    dvec->decayp_limitime - elapsedtime_BM (), (void *) dvec);
       DBGPRINTF_BM
-        ("objputdecayedvectorpayl_BM obj %s asiz %d decayp_limitime %.4f (elasped + %.3f) dvec@%p",
-         objectdbg_BM (obj), asiz, dvec->decayp_limitime,
-         dvec->decayp_limitime - elapsedtime_BM (), (void *) dvec);
+        ("objputdecayedvectorpayl_BM obj %s dvec@%p DECAYEDVECTOR_ASIZ_bm@%p:%u DECAYEDVECTOR_UCNT_bm@%p:%u",
+         objectdbg_BM (obj), dvec, &DECAYEDVECTOR_ASIZ_bm (dvec),
+         DECAYEDVECTOR_ASIZ_bm (dvec), &DECAYEDVECTOR_UCNT_bm (dvec),
+         DECAYEDVECTOR_UCNT_bm (dvec));
       return true;
     }
   return false;
