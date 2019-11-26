@@ -216,6 +216,7 @@ indent: .indent.pro
 	@for x in $(BM_CXXSOURCES) id_BM.h; do \
 	  $(ASTYLE) $(ASTYLEFLAGS) $$x ; \
 	done
+	@sed -i 's/operator  */operator /g' id_BM.h
 	@printf "\n *** C++ tool source *** \n"
 	@$(ASTYLE) $(ASTYLEFLAGS)  BM_makeconst.cc
 	@printf "\n"

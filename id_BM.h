@@ -146,7 +146,7 @@ int cmpid_BM (rawid_tyBM id1, rawid_tyBM id2)
 struct IdLess_BM
 {
   inline bool                 //
-  operator        ()        //
+  operator ()             //
   (const rawid_tyBM & id1, const rawid_tyBM & id2)
   {
     return cmpid_BM (id1, id2) < 0;
