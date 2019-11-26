@@ -1577,8 +1577,11 @@ do_forgot_email_onion_handler_BM (const char *formuser,
       WARNPRINTF_BM
         ("do_forgot_email_onion_handler_BM %s incomplete decayforgotob %s",
          objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob));
-#warning do_forgot_email_onion_handler_BM incomplete
+      extern void forgotemail_ONIONBM_thtml(onion_dict *context, onion_response *res);
+      onion_response *fakeresp = onion_response_new(req);
       // we should call forgotemail_ONIONBM_thtml(mailctxdic, some-virtual-response)
+      forgotemail_ONIONBM_thtml(mailctxdic, fakeresp);
+#warning do_forgot_email_onion_handler_BM incomplete
       onion_dict_free (mailctxdic);
       return restat;
     }
