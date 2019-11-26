@@ -19,11 +19,11 @@ decayedob_initest_BM (struct stackframe_stBM *stkf,
                 objectdbg_BM (k_decaying_vector_object_bm));
 }                               /* end of decayedob_initest_BM */
 
-void
+int
 decayedob_runtest_BM (struct stackframe_stBM *stkf,
                       const char *pluginame, int pluginrk)
 {
-  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_decaying_vector_object,
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_decaying_vector_object_bm,
                  objectval_tyBM * tmpob;        //
     );
   _.tmpob = makeobj_BM ();
@@ -33,12 +33,13 @@ decayedob_runtest_BM (struct stackframe_stBM *stkf,
   objputclass_BM (_.tmpob, k_decaying_vector_object_bm);
   if (!objputdecayedvectorpayl_BM (_.tmpob, 2, 40 * 1000))
     FATAL_BM ("failed to put decaying vector in %s", objectdbg_BM (_.tmpob));
-  objputattr_BM (BMP_the_system, k_decaying_vector_object, _.tmpob);
+  objputattr_BM (BMP_the_system, k_decaying_vector_object_bm, _.tmpob);
   DBGPRINTF_BM ("decayedob_runtest_BM after putattr the_system tmpob %s",
                 objectdbg_BM (_.tmpob));
   INFOPRINTF_BM
     ("decayedob_runtest_BM put in `the_system` attribute `decaying_vector_object` object %s",
      objectdbg_BM (_.tmpob));
+  return 0;
 }                               /* end of decayedob_runtest_BM */
 
 // end file drafts/testplugin_decayedob.c
