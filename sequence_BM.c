@@ -1070,7 +1070,10 @@ decayedvectorgcmark_BM (struct garbcoll_stBM *gc,
   if (islivedecayedvect_BM ((const value_tyBM) dvec))
     {
       unsigned ucnt = DECAYEDVECTOR_UCNT_bm (dvec);
-      ASSERT_BM (ucnt <= DECAYEDVECTOR_ASIZ_bm (dvec));
+      unsigned asiz = DECAYEDVECTOR_ASIZ_bm (dvec);
+      if (ucnt > asiz)
+        FATAL_BM ("corrupted decayed vector @%p ucnt %u > asiz %u",
+                  dvec, ucnt, asiz);
       value_tyBM *valarr = dvec->decayp_arr;
       for (unsigned ix = 0; ix < ucnt; ix++)
         {
