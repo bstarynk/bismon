@@ -1514,16 +1514,17 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
                                                      DECAYFORGOTTENRANDOMIX_bm)),
          objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn);
     };
-  DBGBACKTRACEPRINTF_BM
-    ("incomplete make_onion_dict_forgotten_email_BM contribob %s\n"
-     ".. decayforgotob %s (len%u,asiz%u) rn %u",
-     objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
-     objdecayedvectlenpayl_BM (_.decayforgotob),
-     objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn);
-  WARNPRINTF_BM
-    ("incomplete make_onion_dict_forgotten_email_BM contribob %s decayforgotob %s rn %u",
-     objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
-     (unsigned) rn);
+DBGBACKTRACEPRINTF_BM
+  ("ending make_onion_dict_forgotten_email_BM contribob %s\n"
+   ".. decayforgotob %s (len%u,asiz%u) rn %u mailctxdic@%p",
+   objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
+   objdecayedvectlenpayl_BM (_.decayforgotob),
+   objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn,
+   mailctxdic);
+//WARNPRINTF_BM
+//  ("incomplete make_onion_dict_forgotten_email_BM contribob %s decayforgotob %s rn %u",
+//   objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
+//   (unsigned) rn);
   return mailctxdic;
 }                               /* end of make_onion_dict_forgotten_email_BM */
 
@@ -1571,51 +1572,15 @@ do_forgot_email_onion_handler_BM (const char *formuser,
       onion_dict *mailctxdic =
         make_onion_dict_forgotten_email_BM (_.contribob, _.decayforgotob, rn,
                                             CURFRAME_BM);
+      onion_connection_status restat = forgotwebpage_ONIONBM_thtml_handler_page(mailctxdic, req, resp);
+      DBGPRINTF_BM("after forgotwebpage_ONIONBM_thtml_handler_page restat#%d", (int)restat);
       WARNPRINTF_BM
         ("do_forgot_email_onion_handler_BM %s incomplete decayforgotob %s",
          objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob));
 #warning do_forgot_email_onion_handler_BM incomplete
+      // we should call forgotemail_ONIONBM_thtml(mailctxdic, some-virtual-response)
       onion_dict_free (mailctxdic);
-      char *respbuf = NULL;
-      size_t respsiz = 0;
-      FILE *fresp = open_memstream (&respbuf, &respsiz);
-      if (!fresp)
-        FATAL_BM ("login_onion_handler open_memstream failure %m");
-      fprintf (fresp, "<!DOCTYPE html>\n");
-      fprintf (fresp,
-               "<html><head><title>Bismon forgot password unimplemented</title></head>\n");
-      fprintf (fresp,
-               "<body><h1>Bismon <i>forgot password</i> feature still unimplemented for contributor <tt>%s</tt></h1>\n",
-               objectdbg_BM (_.contribob));
-      fprintf (fresp,
-               "<p>The <i>forgot password</i> feature (for user <tt>%s</tt>)"
-               " is <b>not implemented</b> yet.\n", formuser);
-      fprintf (fresp,
-               "Sorry about that. So temporarily, use the <tt>--add-passwords</tt>"
-               " program option on the Bismon server to change your password.<br/>\n"
-               "See our <a href='https://github.com/bstarynk/bismon/blob/master/README.md'>"
-               "README.md</a> file for more.</p>\n");
-      fprintf (fresp, "<hr/>\n");
-      time_t nowt = 0;
-      time (&nowt);
-      struct tm nowtm;
-      char nowbuf[64];
-      memset (nowbuf, 0, sizeof (nowbuf));
-      memset (&nowtm, 0, sizeof (nowtm));
-      localtime_r (&nowt, &nowtm);
-      strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
-      fprintf (fresp, "<p><small>generated on <i>%s</i></small></p>\n",
-               nowbuf);
-      fprintf (fresp, "</body></html>\n");
-      fflush (fresp);
-      long ln = ftell (fresp);
-      fclose (fresp), fresp = NULL;
-      onion_response_set_length (resp, ln);
-      onion_response_set_code (resp, HTTP_NOT_IMPLEMENTED);
-      onion_response_write (resp, respbuf, ln);
-      onion_response_flush (resp);
-      free (respbuf), respbuf = NULL;
-      return OCS_PROCESSED;
+      return restat;
     }
   else
     {
