@@ -458,6 +458,8 @@ extern void weakassertfailureat_BM (const char *condmsg, const char *fil,
 // agenda support
 #define MAXNBWORKJOBS_BM 24
 #define MINNBWORKJOBS_BM 2
+// minimal delay, in milliseconds, for decayed vectors
+#define MINDELAY_DECAYED_MILLISECOND_BM 125
 /// the command run to show network information
 #define SHOW_NET_COMMAND_BM "echo Bismon SHOW_NET_COMMAND pid $$ && ip addr"
 #endif /*CMACROS_BM_INCLUDED */
