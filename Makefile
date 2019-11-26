@@ -43,6 +43,8 @@ RM= rm -fv
 -include _cflagsmodule.mk
 MARKDOWN_SOURCES= $(sort $(wildcard *.md))
 MODULES_SOURCES= $(sort $(wildcard modules/modbm*.c))
+TESTPLUGINS_SOURCES= $(sort $(wildcard drafts/testplugin_*.c))
+
 BM_HEADERS= $(wildcard [a-z]*BM.h bismon.h)
 BM_CSOURCES= $(wildcard [a-z]*BM.c)
 
@@ -90,6 +92,13 @@ modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
               -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' \
               -DBISMON_PERSISTENT_MODULE -shared $< -o $@
 
+
+## the drafts/testplugin_*.c pattern is known in main_BM.c function
+## run_testplugins_after_load_BM
+drafts/testplugin_%.so: drafts/testplugin_%.c $(BISMONHEADERS) | _cflagsmodule.mk
+	$(CCACHE) $(LINK.c) -g -fPIC   $(BISMONMODULECFLAGS) \
+	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TTESTPLUGIN='"$(basename $@)"' \
+	     -shared $< -o $@
 
 modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
 	$(CCACHE) $(LINK.c) -fPIC   $(BISMONMODULECFLAGS) \

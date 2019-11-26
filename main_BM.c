@@ -183,6 +183,10 @@ int size_removed_contributors_bm;
 char *parsed_values_after_loadarr_bm[MAXPARSED_VALUES_AFTER_LOAD_BM];
 int nb_parsed_values_after_load_bm;
 
+#define MAXTESTPLUGINS_AFTER_LOAD_BM 10
+char *testplugins_after_loadarr_bm[MAXTESTPLUGINS_AFTER_LOAD_BM];
+int nb_testplugins_after_load_bm;
+
 
 bool batch_bm;
 bool give_version_bm;
@@ -362,6 +366,22 @@ get_parse_value_after_load_bm (const gchar * optname __attribute__((unused)),
   parsed_values_after_loadarr_bm[nb_parsed_values_after_load_bm++] =
     strdup (val);
 }                               /* end get_parse_value_after_load_bm */
+
+
+
+static void
+get_testplugin_after_load_bm (const gchar * optname __attribute__((unused)),
+                              const gchar * val,
+                              gpointer data __attribute__((unused)),
+                              GError ** perr __attribute__((unused)))
+{
+  if (nb_testplugins_after_load_bm >= MAXTESTPLUGINS_AFTER_LOAD_BM)
+    FATAL_BM ("too many %d testplugins after load with --test-plugin",
+              nb_testplugins_after_load_bm);
+  DBGPRINTF_BM ("get_testplugin_after_load_bm #%d.. valen=%d:\n%s",
+                nb_testplugins_after_load_bm, (int) strlen (val), val);
+  testplugins_after_loadarr_bm[nb_testplugins_after_load_bm++] = strdup (val);
+}                               /* end get_testplugin_after_load_bm */
 
 
 static bool
@@ -557,6 +577,15 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &get_parse_value_after_load_bm,
    .description = "parse (after loading) the value EXPR",
    .arg_description = "EXPR"},
+
+  //
+  {.long_name = "test-plugin",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &get_testplugin_after_load_bm,
+   .description =
+   "run the drafts/testplugin_PLUGINAME.so (after loading) the test-plugin PLUGINAME",
+   .arg_description = "PLUGINAME"},
 
   //
   {.long_name = "comment-predef",.short_name = (char) 0,
@@ -1338,6 +1367,8 @@ main (int argc, char **argv)
     add_new_predefined_bm ();
   if (nb_parsed_values_after_load_bm > 0)
     parse_values_after_load_BM ();
+  if (nb_testplugins_after_load_bm > 0)
+    run_testplugins_after_load_BM ();
   if (count_added_contributors_bm > 0)
     add_contributors_after_load_BM ();
   if (count_removed_contributors_bm > 0)
@@ -1884,7 +1915,124 @@ parse_values_after_load_BM (void)
                  nb_parsed_values_after_load_bm);
 }                               /* end parse_values_after_load_BM */
 
-
+void
+run_testplugins_after_load_BM (void)
+{
+  void *testplugindlharr[MAXTESTPLUGINS_AFTER_LOAD_BM] = { };
+  double startelapsedtime = elapsedtime_BM ();
+  double startcputime = cputime_BM ();
+  LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
+                 value_tyBM pluginamv;  //
+                 objectval_tyBM * pluginob;
+    );
+  // check sanity of test plugins
+  static char cwdbuf[200];
+  if (!getcwd (cwdbuf, sizeof (cwdbuf) - 1))
+    FATAL_BM ("run_testplugins_after_load_BM: getcwd failed %m");
+#define TESTPLUGIN_MAXNAMELEN_BM 40
+  for (int ix = 0; ix < nb_testplugins_after_load_bm; ix++)
+    {
+      char pluginsrcbuf[2 * TESTPLUGIN_MAXNAMELEN_BM];
+      char pluginbinbuf[2 * TESTPLUGIN_MAXNAMELEN_BM];
+      memset (pluginsrcbuf, 0, sizeof (pluginsrcbuf));
+      memset (pluginbinbuf, 0, sizeof (pluginbinbuf));
+      char *curtestplugin = testplugins_after_loadarr_bm[ix];
+      if (!curtestplugin)
+        FATAL_BM ("NULL testplugin #%d", ix);
+      if (strlen (curtestplugin) > TESTPLUGIN_MAXNAMELEN_BM)
+        FATAL_BM ("too long testplugin #%d '%s' (maxlen %d)", ix,
+                  curtestplugin, TESTPLUGIN_MAXNAMELEN_BM);
+      for (const char *pc = curtestplugin; *pc; pc++)
+        if (!isalnum (*pc) && *pc != '_')
+          FATAL_BM ("bad testplugin #%d '%s'", ix, curtestplugin);
+      DBGPRINTF_BM ("run_testplugins_after_load curtestplugin '%s' ix#%d",
+                    curtestplugin, ix);
+      snprintf (pluginsrcbuf, sizeof (pluginsrcbuf), "drafts/testplugin_%s.c",
+                curtestplugin);
+      FILE *fsrc = fopen (pluginsrcbuf, "r");
+      if (!fsrc)
+        FATAL_BM ("testplugin #%d fopen '%s' failed in '%s' - %m",
+                  ix, pluginsrcbuf, cwdbuf);
+      if (fscanf (fsrc, "// BISMON TESTPLUGIN %40s", pluginbinbuf) < 1
+          || strcmp (pluginbinbuf, curtestplugin))
+        FATAL_BM
+          ("testplugin #%d file '%s' in '%s' should start with '// BISMON TESTPLUGIN %s'",
+           ix, pluginsrcbuf, cwdbuf, curtestplugin);
+      fclose (fsrc), fsrc = NULL;
+      snprintf (pluginbinbuf, sizeof (pluginbinbuf),
+                "make drafts/testplugin_%s.so", curtestplugin);
+      INFOPRINTF_BM ("testplugin running command %s (#%d)\n", pluginbinbuf,
+                     ix);
+      fflush (NULL);
+      int failmake = system (pluginbinbuf);
+      if (failmake)
+        FATAL_BM ("testplugin command %s failed with code %d", pluginbinbuf,
+                  failmake);
+      snprintf (pluginbinbuf, sizeof (pluginbinbuf),
+                "drafts/testplugin_%s.so", curtestplugin);
+      if (access (pluginbinbuf, R_OK))
+        FATAL_BM ("testplugin access %s failed %m", pluginbinbuf);
+      fflush (NULL);
+      void *testpluginhdl = dlopen (pluginbinbuf, RTLD_NOW | RTLD_GLOBAL);
+      if (!testpluginhdl)
+        FATAL_BM ("testplugin dlopen %s failed - %s", pluginbinbuf,
+                  dlerror ());
+      DBGPRINTF_BM ("run_testplugins_after_load dlopen-ed '%s' ix#%d @%p",
+                    curtestplugin, ix, testpluginhdl);
+      testplugindlharr[ix] = testpluginhdl;
+      char initestname[TESTPLUGIN_MAXNAMELEN_BM + sizeof ("FOO_initest_BM")];
+      snprintf (initestname, sizeof (initestname), "%s_initest_BM",
+                curtestplugin);
+      testplugininit_sigBM *inifun =
+        (testplugininit_sigBM *) dlsym (testpluginhdl, initestname);
+      if (inifun)
+        {
+          DBGPRINTF_BM
+            ("run_testplugins_after_load initestname %s before inifun @%p #%d",
+             initestname, inifun, ix);
+          (*inifun) (CURFRAME_BM, curtestplugin, ix);
+          DBGPRINTF_BM
+            ("run_testplugins_after_load initestname %s  after inifun @%p #%d\n",
+             initestname, inifun, ix);
+        };
+    }                           /* end for ix, initialization */
+  INFOPRINTF_BM ("loaded %d test plugins\n", nb_testplugins_after_load_bm);
+  fflush (NULL);
+  for (int ix = 0; ix < nb_testplugins_after_load_bm; ix++)
+    {
+      char *curtestplugin = testplugins_after_loadarr_bm[ix];
+      ASSERT_BM (curtestplugin);
+      ASSERT_BM (testplugindlharr[ix]);
+      char runtestname[TESTPLUGIN_MAXNAMELEN_BM + sizeof ("FOO_runtest_BM")];
+      snprintf (runtestname, sizeof (runtestname), "%s_runtest_BM",
+                curtestplugin);
+      testpluginrun_sigBM *runfun = dlsym (testplugindlharr[ix], runtestname);
+      if (!runfun)
+        FATAL_BM ("dlsym %s failed for testplugin %s #%d - %s",
+                  runtestname, curtestplugin, ix, dlerror ());
+      DBGPRINTF_BM
+        ("run_testplugins_after_load runtestname %s  before runfun @%p #%d",
+         runtestname, runfun, ix);
+      int runres = (*runfun) (CURFRAME_BM, curtestplugin, ix);
+      DBGPRINTF_BM
+        ("run_testplugins_after_load runtestname %s  after runfun @%p #%d runres %d",
+         runtestname, runfun, ix, runres);
+      if (runres > 0)
+        FATAL_BM
+          ("testplugin %s runtestname %s failed (ix#%d) with result %d",
+           curtestplugin, runtestname, ix, runres);
+      else
+        INFOPRINTF_BM ("testplugin %s runtestname %s successful (ix#%d)\n",
+                       curtestplugin, runtestname, ix);
+      fflush (NULL);
+    }                           /* end for ix, running */
+  double endelapsedtime = elapsedtime_BM ();
+  double endcputime = cputime_BM ();
+  INFOPRINTF_BM
+    ("run_testplugins_after_load_BM done for %d testplugins, %.3f elapsed, %.3f cpu seconds\n",
+     nb_testplugins_after_load_bm, endelapsedtime - startelapsedtime,
+     endcputime - startcputime);
+}                               /* end of run_testplugins_after_load_BM */
 
 ////////////////
 /// run initializations, if any, after the load

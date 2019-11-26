@@ -205,6 +205,23 @@ findobjofid_BM (const rawid_tyBM id)
   return NULL;
 }                               /* end of findobjofid_BM */
 
+
+objectval_tyBM *
+findobjofstrid_BM (const char *idstr)
+{
+  char *end = NULL;
+  rawid_tyBM oid = parse_rawid_BM (idstr, &end);
+  if (!end)
+    return NULL;
+  if (*end && !isspace (*end))
+    return NULL;
+  if (!validid_BM (oid))
+    return NULL;
+  return findobjofid_BM (oid);
+}                               /* end findobjofstrid_BM */
+
+
+
 static void
 addtobucket_BM (struct objbucket_stBM *buck, objectval_tyBM * ob)
 {

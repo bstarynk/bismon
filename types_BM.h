@@ -382,6 +382,15 @@ typedef value_tyBM moduleinit_sigBM (struct stackframe_stBM *stkf,
 typedef void deferredaftergc_sigBM (value_tyBM * valarr, unsigned nbval,
                                     void *data);
 
+
+/// signature of testplugin initialization; a testplugin FOO may have
+/// a FOO_initest_BM function of signature
+typedef void testplugininit_sigBM (struct stackframe_stBM *stkf,
+                                   const char *pluginame, int pluginrk);
+/// signature of testplugin run; a testplugin FOO should have a FOO_runtest_BM function of signature
+typedef int testpluginrun_sigBM (struct stackframe_stBM *stkf,
+                                 const char *pluginame, int pluginrk);
+/// if that FOO_runtest_BM returns non-zero it has failed.
 struct object_stBM              /*tyObject_BM */
 {
   typedhead_tyBM pA;
