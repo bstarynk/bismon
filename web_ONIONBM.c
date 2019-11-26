@@ -1335,6 +1335,7 @@ enum
   DECAYFORGOTTEN__LASTINDEX_bm
 } decayforgottenemail_enBM;
 
+#define FORGOTEMAIL_DELAY_MILLISEC_BM  (720*1000)       /*720 seconds is 12 minutes */
 static onion_dict *
 make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
                                     objectval_tyBM * decayforgotobarg,
@@ -1558,7 +1559,9 @@ do_forgot_email_onion_handler_BM (const char *formuser,
                  && objhashashsetpayl_BM (k_forgotten_emails_hset));
       _.decayforgotob = makeobj_BM ();
       objputclass_BM (_.decayforgotob, k_decaying_vector_object);
-      if (!objputdecayedvectorpayl_BM (_.decayforgotob, 2))
+      if (!objputdecayedvectorpayl_BM
+          (_.decayforgotob, DECAYFORGOTTEN__LASTINDEX_bm,
+           FORGOTEMAIL_DELAY_MILLISEC_BM))
         FATAL_BM ("failed to put decaying vector in %s",
                   objectdbg_BM (_.decayforgotob));
       DBGPRINTF_BM ("do_forgot_email_onion_handler_BM %s\n"

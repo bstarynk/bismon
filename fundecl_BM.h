@@ -880,7 +880,8 @@ extern void decayedvectordestroy_BM (struct garbcoll_stBM *gc,
 extern void decayedvectorgckeep_BM (struct garbcoll_stBM *gc,
                                     struct decayedvectpayl_stBM *dvec);
 
-extern bool objputdecayedvectorpayl_BM (objectval_tyBM * obj, unsigned asiz);
+extern bool objputdecayedvectorpayl_BM (objectval_tyBM * obj, unsigned asiz,
+                                        unsigned delayms);
 static inline struct decayedvectpayl_stBM
   *objgetdecayedvectorpayl_BM (objectval_tyBM * obj);
 static inline bool objhasdecayedvectorpayl_BM (objectval_tyBM * obj);

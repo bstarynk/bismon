@@ -726,6 +726,11 @@ struct decayedvectpayl_stBM     // for typayl_decayed_BM, see file sequence_BM.c
   value_tyBM decayp_arr[];      // of rlen elements
 };
 
+// allocated size:
+#define DECAYEDVECTOR_ASIZ_bm(Dvec)   ((typedhead_tyBM*)(Dvec))->rlen
+// used count:
+#define DECAYEDVECTOR_UCNT_bm(Dvec)   ((typedsize_tyBM*)(Dvec))->size
+
 
 
 ////////////////////////////////////////////////////////////////

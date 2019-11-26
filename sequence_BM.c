@@ -1056,11 +1056,6 @@ datavectgcproc_BM (struct garbcoll_stBM *gc,
 
 ////////////////////////////////////////////////////////////////
 ///// decaying vector  payload
-// allocated size:
-#define DECAYEDVECTOR_ASIZ_bm(Dvec)   ((typedhead_tyBM*)(Dvec))->rlen
-// used count:
-#define DECAYEDVECTOR_UCNT_bm(Dvec)   ((typedsize_tyBM*)(Dvec))->size
-
 void
 decayedvectorgcmark_BM (struct garbcoll_stBM *gc,
                         struct decayedvectpayl_stBM *dvec,
@@ -1131,10 +1126,13 @@ decayedvectorgckeep_BM (struct garbcoll_stBM *gc,
 
 
 bool
-objputdecayedvectorpayl_BM (objectval_tyBM * obj, unsigned asiz)
+objputdecayedvectorpayl_BM (objectval_tyBM * obj, unsigned asiz,
+                            unsigned delayms)
 {
   if (!isobject_BM ((value_tyBM) obj))
     return false;
+  if (delayms < MINDELAY_DECAYED_MILLISECOND_BM)
+    delayms = MINDELAY_DECAYED_MILLISECOND_BM;
   if (asiz > MAXSIZE_BM)
     FATAL_BM ("too big asiz %u in objputdecayedvectorpayl_BM", asiz);
   asiz = prime_above_BM (asiz);
@@ -1145,6 +1143,7 @@ objputdecayedvectorpayl_BM (objectval_tyBM * obj, unsigned asiz)
     {
       DECAYEDVECTOR_ASIZ_bm (dvec) = asiz;
       DECAYEDVECTOR_UCNT_bm (dvec) = 0;
+      dvec->decayp_limitime = elapsedtime_BM () + 1.0e-3 * delayms;
       objputpayload_BM (obj, dvec);
       return true;
     }

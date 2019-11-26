@@ -31,8 +31,14 @@ decayedob_runtest_BM (struct stackframe_stBM *stkf,
     ("decayedob_runtest_BM start pluginame %s pluginrk %d tmpob %s",
      pluginame, pluginrk, objectdbg_BM (_.tmpob));
   objputclass_BM (_.tmpob, k_decaying_vector_object_bm);
-  if (!objputdecayedvectorpayl_BM (_.tmpob, 2))
+  if (!objputdecayedvectorpayl_BM (_.tmpob, 2, 40 * 1000))
     FATAL_BM ("failed to put decaying vector in %s", objectdbg_BM (_.tmpob));
+  objputattr_BM (BMP_the_system, k_decaying_vector_object, _.tmpob);
+  DBGPRINTF_BM ("decayedob_runtest_BM after putattr the_system tmpob %s",
+                objectdbg_BM (_.tmpob));
+  INFOPRINTF_BM
+    ("decayedob_runtest_BM put in `the_system` attribute `decaying_vector_object` object %s",
+     objectdbg_BM (_.tmpob));
 }                               /* end of decayedob_runtest_BM */
 
 // end file drafts/testplugin_decayedob.c

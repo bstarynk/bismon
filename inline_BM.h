@@ -1121,7 +1121,7 @@ decayedvectlen_BM (const struct decayedvectpayl_stBM *dvec)
     return 0;
   if (dvec->decayp_limitime < elapsedtime_BM ())
     return 0;
-  return ((typedsize_tyBM *) dvec)->size;       // DECAYEDVECTOR_UCNT_bm
+  return DECAYEDVECTOR_UCNT_bm(dvec);      
 }                               /* end decayedvectlen_BM */
 
 unsigned
@@ -1129,7 +1129,7 @@ decayedvectallocsize_BM (const struct decayedvectpayl_stBM *dvec)
 {
   if (valtype_BM ((const value_tyBM) dvec) != typayl_decayed_BM)
     return 0;
-  return ((typedhead_tyBM *) dvec)->rlen;       // DECAYEDVECTOR_ASIZ_bm
+  return DECAYEDVECTOR_ASIZ_bm(dvec);
 }                               /* end decayedvectallocsize_BM */
 
 
