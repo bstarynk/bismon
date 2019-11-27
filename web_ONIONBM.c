@@ -1514,13 +1514,13 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
                                                      DECAYFORGOTTENRANDOMIX_bm)),
          objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn);
     };
-DBGBACKTRACEPRINTF_BM
-  ("ending make_onion_dict_forgotten_email_BM contribob %s\n"
-   ".. decayforgotob %s (len%u,asiz%u) rn %u mailctxdic@%p",
-   objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
-   objdecayedvectlenpayl_BM (_.decayforgotob),
-   objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn,
-   mailctxdic);
+  DBGBACKTRACEPRINTF_BM
+    ("ending make_onion_dict_forgotten_email_BM contribob %s\n"
+     ".. decayforgotob %s (len%u,asiz%u) rn %u mailctxdic@%p",
+     objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
+     objdecayedvectlenpayl_BM (_.decayforgotob),
+     objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn,
+     mailctxdic);
 //WARNPRINTF_BM
 //  ("incomplete make_onion_dict_forgotten_email_BM contribob %s decayforgotob %s rn %u",
 //   objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
@@ -1572,17 +1572,25 @@ do_forgot_email_onion_handler_BM (const char *formuser,
       onion_dict *mailctxdic =
         make_onion_dict_forgotten_email_BM (_.contribob, _.decayforgotob, rn,
                                             CURFRAME_BM);
-      onion_connection_status restat = forgotwebpage_ONIONBM_thtml_handler_page(mailctxdic, req, resp);
-      DBGPRINTF_BM("after forgotwebpage_ONIONBM_thtml_handler_page restat#%d", (int)restat);
-      WARNPRINTF_BM
-        ("do_forgot_email_onion_handler_BM %s incomplete decayforgotob %s",
-         objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob));
-      extern void forgotemail_ONIONBM_thtml(onion_dict *context, onion_response *res);
-      onion_response *fakeresp = onion_response_new(req);
+      onion_connection_status restat =
+        forgotwebpage_ONIONBM_thtml_handler_page (mailctxdic, req, resp);
+      DBGPRINTF_BM
+        ("after forgotwebpage_ONIONBM_thtml_handler_page restat#%d",
+         (int) restat);
+      extern void forgotemail_ONIONBM_thtml (onion_dict * context,
+                                             onion_response * res);
+      onion_response *fakeresp = onion_response_new (req);
       // we should call forgotemail_ONIONBM_thtml(mailctxdic, some-virtual-response)
-      forgotemail_ONIONBM_thtml(mailctxdic, fakeresp);
+      forgotemail_ONIONBM_thtml (mailctxdic, fakeresp);
+      WARNPRINTF_BM
+        ("do_forgot_email_onion_handler_BM after forgotemail_ONIONBM_thtml fakeresp@%p contribob %s incomplete",
+         fakeresp, objectdbg_BM (_.contribob));
+      int flres = onion_response_flush (fakeresp);
 #warning do_forgot_email_onion_handler_BM incomplete
       onion_dict_free (mailctxdic);
+      DBGBACKTRACEPRINTF_BM
+        ("ending forgotwebpage_ONIONBM_thtml_handler_page restat#%d flres#%d fakeresp@%p",
+         (int) restat, flres, fakeresp);
       return restat;
     }
   else
