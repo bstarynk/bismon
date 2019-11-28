@@ -1539,12 +1539,15 @@ do_forgot_email_onion_handler_BM (const char *formuser,
   objectval_tyBM *k_forgotten_emails_hset = BMK_1el0vAC6atu_1DCbieyBwzI;
   // class of decaying vector objects:
   objectval_tyBM *k_decaying_vector_object = BMK_87e9wrUSdIs_0tppKPUo41v;
+  // minifunction forgotemailsender (o_contrib o_decayemail)
+  objectval_tyBM *k_forgotemailsender = BMK_6STwOZTcBwM_6wz4Akuletb;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_forgot_email_onion_handler,
                  objectval_tyBM * contribob;    //
                  objectval_tyBM * decayforgotob;        // created decaying forgotting object
                  value_tyBM forgotclosv;        //
                  value_tyBM contribnamv;        //
                  value_tyBM contribemailv;      //
+                 value_tyBM resapplyv;  //
     );
   _.contribob = find_contributor_BM (formuser, CURFRAME_BM);
   const char *reqpath = onion_request_get_path (req);
@@ -1575,22 +1578,30 @@ do_forgot_email_onion_handler_BM (const char *formuser,
       onion_connection_status restat =
         forgotwebpage_ONIONBM_thtml_handler_page (mailctxdic, req, resp);
       DBGPRINTF_BM
-        ("after forgotwebpage_ONIONBM_thtml_handler_page restat#%d",
-         (int) restat);
-      extern void forgotemail_ONIONBM_thtml (onion_dict * context,
-                                             onion_response * res);
-      onion_response *fakeresp = onion_response_new (req);
-      // we should call forgotemail_ONIONBM_thtml(mailctxdic, some-virtual-response)
-      forgotemail_ONIONBM_thtml (mailctxdic, fakeresp);
-      WARNPRINTF_BM
-        ("do_forgot_email_onion_handler_BM after forgotemail_ONIONBM_thtml fakeresp@%p contribob %s incomplete",
-         fakeresp, objectdbg_BM (_.contribob));
-      int flres = onion_response_flush (fakeresp);
-#warning do_forgot_email_onion_handler_BM incomplete
-      onion_dict_free (mailctxdic);
+        ("after forgotwebpage_ONIONBM_thtml_handler_page restat#%d\n"
+         " .. before apply forgotemailsender %s contribob %s decayforgotob %s",
+         (int) restat,
+         objectdbg_BM (k_forgotemailsender),
+         objectdbg1_BM (_.contribob), objectdbg2_BM (_.decayforgotob));
+      _.resapplyv = apply2_BM (k_forgotemailsender,
+                               CURFRAME_BM,
+                               (value_tyBM) _.contribob,
+                               (value_tyBM) _.decayforgotob);
       DBGBACKTRACEPRINTF_BM
-        ("ending forgotwebpage_ONIONBM_thtml_handler_page restat#%d flres#%d fakeresp@%p",
-         (int) restat, flres, fakeresp);
+        ("after forgotwebpage_ONIONBM_thtml_handler_page restat#%d\n"
+         " .. after apply forgotemailsender %s contribob %s decayforgotob %s\n"
+         " .. resapplyv= %s",
+         (int) restat,
+         objectdbg_BM (k_forgotemailsender),
+         objectdbg1_BM (_.contribob), objectdbg2_BM (_.decayforgotob),
+         OUTSTRVALUE_BM (_.resapplyv));
+      if (!_.resapplyv)
+        {
+          WARNPRINTF_BM
+            ("forgotwebpage_ONIONBM_thtml_handler_page failed to send email for contribob %s decayforgotob %s",
+             objectdbg1_BM (_.contribob), objectdbg2_BM (_.decayforgotob));
+          return OCS_INTERNAL_ERROR;
+        };
       return restat;
     }
   else
