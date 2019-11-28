@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3298 objects
+// for 3303 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -4710,6 +4710,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 _7T9OwSFlgov_0wVJaK1eZbn
 
 »_2LvSvKJFCCF_3QyFpcrySIi
+
+
+
+«_8Xesa6KOGm4_8rC68xDuR2P |=o_decayemail|
+!~ name (~ o_decayemail ~)
+± 1574934294.348
+∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
+↦ _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+
+»_8Xesa6KOGm4_8rC68xDuR2P
 
 
 
@@ -11965,13 +11976,13 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 «_9dQJgjsq7hs_2T2RqXLkU0A |=webxhtml_module|
 !~ name (~ webxhtml_module ~)
-± 1574261211.266
+± 1574934489.197
 ∈ _5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "module for web HTML"
 ↦ _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _3poYCpSsBfJ_8W7XNwG50hS }
-!# 16
+!# 17
 
 ↳ _0FRLxSGQlZ0_0qrrUZlEeKp 
 ↳ _5NH940lCHYJ_3nuRm3flnzc 
@@ -11989,6 +12000,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 ↳ _3owspX08bkm_6vBzqS5jskf 
 ↳ _5T8fxyaeOFA_4UrB3BPbWdn 
 ↳ _6aWaLxHQBv4_9bcZim3ljEh 
+↳ _6STwOZTcBwM_6wz4Akuletb 
 // emitted persistent module modbm_9dQJgjsq7hs_2T2RqXLkU0A.c
 »_9dQJgjsq7hs_2T2RqXLkU0A
 
@@ -16772,6 +16784,19 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
+«_160pmVixE1q_0RLuDpytNXw
+± 1574934970.563
+∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of forgotemailsender"
+!# 2
+
+↳ _8XhQ2Jjwe95_1SIty2jCPZQ 
+↳ _1lvpq8N4FRd_91GxvUgbsYc 
+»_160pmVixE1q_0RLuDpytNXw
+
+
+
 «_163LYFoPRpv_6YhLXnmvvcf
 ± 1535532369.123
 ∈ _4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -17886,6 +17911,26 @@ _2z5wZyWhJId_3qRwMQOiLBm
 ↳ _58n2IHCyrnJ_19R71AKw5aF 
 ↳ _4QR8kuWiKxV_9oKMeD79KDQ 
 »_1lmLI285f7p_4im4Ls4Xewh
+
+
+
+«_1lvpq8N4FRd_91GxvUgbsYc
+± 1574934970.563
+∈ _4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "weakasserts forgotemailsender on o_contrib & o_decayemail"
+↦ _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "weakasserts"  " "  "forgotemailsender" 
+  " "  "on"  " " _4oqlg02xVwJ_918wypibNLb 
+  " "  "&"  " " _8Xesa6KOGm4_8rC68xDuR2P 
+  "*/"  "\n"  "WEAKASSERT_BM"  "(" 
+  "objhascontributorpayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4oqlg02xVwJ_918wypibNLb) 
+ "));" 
+  "\n"  "WEAKASSERT_BM"  "("  "objhasdecayedvectorpayl_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _8Xesa6KOGm4_8rC68xDuR2P)  "));" 
+ "\n")
+
+»_1lvpq8N4FRd_91GxvUgbsYc
 
 
 
@@ -42114,6 +42159,22 @@ _41F1rKwGbaA_30OJWKsqNWy)
 
 
 
+«_6STwOZTcBwM_6wz4Akuletb
+± 1574934489.197
+∈ _2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "forgotemailsender (o_contrib o_decayemail)"
+↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _4oqlg02xVwJ_918wypibNLb _8Xesa6KOGm4_8rC68xDuR2P ]
+↦ _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+↦ _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_160pmVixE1q_0RLuDpytNXw
+
+»_6STwOZTcBwM_6wz4Akuletb
+
+
+
 «_6SU5XsaVhWV_7dx5mdYtIKt
 ± 1544974548.038
 ∈ _4Af5NOOf7Qe_7KQdGPoNdJ0 |=basiclo_while|
@@ -50662,6 +50723,31 @@ _7daWyW7jPyL_0EvyGgObjJm
 ↳ _0uATzRk8Ajt_6bIBwn6a86I 
 ↳  * _1iRMAZlHGbs_9rPqm9Nc1eT (  * _9179OMUDUQW_3gyzCFNJ7fQ ( _13K9OfeXRZR_84nyRTtoj81  * _0e54seiZEXF_1Myf620cHoB ( _44NljSAEYAG_6V0bFt87z2B))) 
 »_8XcOZssv9yG_0iW6luBuBfk
+
+
+
+«_8XhQ2Jjwe95_1SIty2jCPZQ
+± 1574934769.251
+∈ _4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug forgotemailsender o_contrib o_decayemail"
+↦ _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  " "  "debug"  " " 
+  "forgotemailsender"  " " _4oqlg02xVwJ_918wypibNLb  " " 
+ _8Xesa6KOGm4_8rC68xDuR2P  " "  "start"  "*/" 
+  "\n"  "DBGPRINTF_BM"  "(\""  "forgotemailsender" 
+  " "  "start"  " "  "€%." 
+  "9s"  " " _4oqlg02xVwJ_918wypibNLb  "=%" 
+  "s"  " " _8Xesa6KOGm4_8rC68xDuR2P  "=%" 
+  "s"  "\","  "\n"  " " 
+  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\"," 
+ " " 
+  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4oqlg02xVwJ_918wypibNLb) 
+ ")," 
+  " "  "objectdbg1_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _8Xesa6KOGm4_8rC68xDuR2P) 
+  "));"  "\n")
+
+»_8XhQ2Jjwe95_1SIty2jCPZQ
 
 
 
