@@ -1740,16 +1740,18 @@ value_tyBM crout_6STwOZTcBwM_6wz4Akuletb_BM //#10
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 3 local values:
+    /// 5 local values:
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ; // v_r
+    objectval_tyBM* o_41F1rKwGbaA_30OJWKsqNWy; // o_strbuf
     objectval_tyBM* o_4oqlg02xVwJ_918wypibNLb; // o_contrib
+    value_tyBM v_5GhvzWWP1jl_41tgAIAAa2X; // v_resapp
     objectval_tyBM* o_8Xesa6KOGm4_8rC68xDuR2P; // o_decayemail
     /// 0 local numbers:
    } _;
    memset (&_, 0, sizeof(struct frame_6STwOZTcBwM_6wz4Akuletb_BMst));
    _.stkfram_head.htyp = typayl_StackFrame_BM;
    _.stkfram_head.hgc = 0;
-   _.stkfram_head.rlen = 3;
+   _.stkfram_head.rlen = 5;
    _.stkfram_descr = constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[65] /*|_6STwOZTcBwM_6wz4Akuletb*/;
    ASSERT_BM (!stkf
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
@@ -1785,6 +1787,7 @@ WEAKASSERT_BM(objhasdecayedvectorpayl_BM( /*o_decayemail:*/_.o_8Xesa6KOGm4_8rC68
 ; 
 } // end run _1lvpq8N4FRd_91GxvUgbsYc 
  
+//+ #2/4 of block _160pmVixE1q_0RLuDpytNXw :: 
  
  
 { // run _78ltVdIuAm5_3a1ivM8UyQy 
@@ -1799,6 +1802,10 @@ DBGPRINTF_BM("forgotemailsender €%.9s o_contrib=%s o_decayemail=%s\n"
 );
 ; 
 } // end run _78ltVdIuAm5_3a1ivM8UyQy 
+ 
+ 
+ /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy = //assign _4hysUSjl0ph_065P1rITUyN  
+/*makeobj:*/makeobj_BM(); 
  
 /* !endingblock _160pmVixE1q_0RLuDpytNXw */ 
 goto endblock__160pmVixE1q_0RLuDpytNXw; 
