@@ -1785,6 +1785,21 @@ WEAKASSERT_BM(objhasdecayedvectorpayl_BM( /*o_decayemail:*/_.o_8Xesa6KOGm4_8rC68
 ; 
 } // end run _1lvpq8N4FRd_91GxvUgbsYc 
  
+ 
+ 
+{ // run _78ltVdIuAm5_3a1ivM8UyQy 
+/* debug forgotemailsender o_contrib o_decayemail 3 sons*/
+DBGPRINTF_BM("forgotemailsender start €%.9s o_contrib=%s o_decayemail=%s\n"
+ ".. decayed sons #0: %s, #1: %s, #2: %s, len#%d",
+ "_78ltVdIuAm5_3a1ivM8UyQy", objectdbg_BM( /*o_contrib:*/_.o_4oqlg02xVwJ_918wypibNLb), objectdbg1_BM( /*o_decayemail:*/_.o_8Xesa6KOGm4_8rC68xDuR2P),
+ OUTSTRVALUE_BM (objdecayedvectornthpayl_BM ( /*o_decayemail:*/_.o_8Xesa6KOGm4_8rC68xDuR2P, 0)),
+ OUTSTRVALUE_BM (objdecayedvectornthpayl_BM ( /*o_decayemail:*/_.o_8Xesa6KOGm4_8rC68xDuR2P, 1)),
+ OUTSTRVALUE_BM (objdecayedvectornthpayl_BM ( /*o_decayemail:*/_.o_8Xesa6KOGm4_8rC68xDuR2P, 2)),
+  objdecayedvectlenpayl_BM ( /*o_decayemail:*/_.o_8Xesa6KOGm4_8rC68xDuR2P)
+);
+; 
+} // end run _78ltVdIuAm5_3a1ivM8UyQy 
+ 
 /* !endingblock _160pmVixE1q_0RLuDpytNXw */ 
 goto endblock__160pmVixE1q_0RLuDpytNXw; 
 endblock__160pmVixE1q_0RLuDpytNXw: ; 
