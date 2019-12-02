@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3308 objects
+// for 3309 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -16827,11 +16827,11 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 «_160pmVixE1q_0RLuDpytNXw
-± 1575289978.051
+± 1575295435.837
 ∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of forgotemailsender"
-!# 6
+!# 7
 
 ↳ _8XhQ2Jjwe95_1SIty2jCPZQ 
 ↳ _1lvpq8N4FRd_91GxvUgbsYc 
@@ -16839,6 +16839,7 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 ↳ _4hysUSjl0ph_065P1rITUyN 
 ↳ _0Vl5o9Qpmkj_29jEKIkXF8X 
 ↳ _0dLuQ3ORKYd_6Ij9NW8eWz0 
+↳ _7z4eboeZqpE_7SBD4WIWIMS 
 »_160pmVixE1q_0RLuDpytNXw
 
 
@@ -45083,6 +45084,20 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 ↳ _6KzoPNta5a2_7EsZceEn0Px 
 ↳  * _0hQ0Z6kxEQr_8YX2zplGDxQ (  * _9179OMUDUQW_3gyzCFNJ7fQ ( _6Ef2ORO1Mni_0tpNoRQGmrW  * _0e54seiZEXF_1Myf620cHoB ( _64Nwpjx4gnk_2y263bTCaB3))) 
 »_7yAtINJUXoh_8n4bqYuxD2N
+
+
+
+«_7z4eboeZqpE_7SBD4WIWIMS
+± 1575295435.837
+∈ _9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "output the prologue, including the head of the email for forgotten password"
+↦ _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
+_41F1rKwGbaA_30OJWKsqNWy
+!# 1
+
+↳  * _4T8am97muLl_5969SR22Ecq (  "<!DOCTYPE html>\n<html>\n<head>\n<title>forgotten"& " password to Bismon</title>\n<meta charset=\"utf-8\">"+ "<style>\n  body { background-color: lightcyan;"& " }\n  p.tinyinfo_cl { background-color: azure;"& " font-size: 80% }\n  p.explain_cl { background-color:"& " lavenderblush; font-size: 105%; }\n  span.smallspan_cl"& " { background-color: ivory; font-size: 90%"& " }\n  label.expl_cl { background-color: peachpuff;"& " foreground-color: navy; font-size: 75%;"& " font-family: Serif }\n  a.contact_cl { bachground-color:"& " oldlace };\n </style>\n</head>\n") 
+»_7z4eboeZqpE_7SBD4WIWIMS
 
 
 
