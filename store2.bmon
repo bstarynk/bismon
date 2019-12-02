@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3305 objects
+// for 3307 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -16009,6 +16009,18 @@ _8NgOdlJACWN_8pbYZXkHpCj
 
 
 
+«_0Vl5o9Qpmkj_29jEKIkXF8X
+± 1575289075.211
+∈ _4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "objputstrbufferpayl (o_strbuf \'initial size of forgotemail strbuffer\')"
+↦ _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _2FXiwIpgvSK_8ToB2yuiBe4 ( _41F1rKwGbaA_30OJWKsqNWy _2zA2gehRNpj_87XNZoZ1mt8)
+
+»_0Vl5o9Qpmkj_29jEKIkXF8X
+
+
+
 «_0Vnb5tJpsaA_9C18YQWoCmH
 ± 1527689011.093
 ∈ _0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
@@ -16785,16 +16797,17 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 «_160pmVixE1q_0RLuDpytNXw
-± 1575039992.255
+± 1575289075.211
 ∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of forgotemailsender"
-!# 4
+!# 5
 
 ↳ _8XhQ2Jjwe95_1SIty2jCPZQ 
 ↳ _1lvpq8N4FRd_91GxvUgbsYc 
 ↳ _78ltVdIuAm5_3a1ivM8UyQy 
 ↳ _4hysUSjl0ph_065P1rITUyN 
+↳ _0Vl5o9Qpmkj_29jEKIkXF8X 
 »_160pmVixE1q_0RLuDpytNXw
 
 
@@ -24004,6 +24017,25 @@ _0ZL8gaI6sH8_7UPhmAQcwMe)
   "         ")
 
 »_2zpnLMawggN_4g2YyiGB7Dx
+
+
+
+«_2zA2gehRNpj_87XNZoZ1mt8
+± 1575289166.856
+∈ _9bCobYhqBV5_5tIWuHnUPMX |=basiclo_constant_object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "initial size of forgotemail strbuffer"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_0Vl5o9Qpmkj_29jEKIkXF8X
+↦ _3pQnBS9ZjkQ_0uGmqUUhAum |=chunk|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  1024  " "  "/*"  "initial" 
+  " "  "size"  " "  "of" 
+  " "  "forgotemail"  " "  "strbuffer" 
+  "*/")
+↦ _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+
+»_2zA2gehRNpj_87XNZoZ1mt8
 
 
 

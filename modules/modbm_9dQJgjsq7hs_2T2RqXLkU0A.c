@@ -1787,7 +1787,7 @@ WEAKASSERT_BM(objhasdecayedvectorpayl_BM( /*o_decayemail:*/_.o_8Xesa6KOGm4_8rC68
 ; 
 } // end run _1lvpq8N4FRd_91GxvUgbsYc 
  
-//+ #2/4 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #2/5 of block _160pmVixE1q_0RLuDpytNXw :: 
  
  
 { // run _78ltVdIuAm5_3a1ivM8UyQy 
@@ -1806,6 +1806,12 @@ DBGPRINTF_BM("forgotemailsender €%.9s o_contrib=%s o_decayemail=%s\n"
  
  /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy = //assign _4hysUSjl0ph_065P1rITUyN  
 /*makeobj:*/makeobj_BM(); 
+ 
+ 
+ 
+{ // run _0Vl5o9Qpmkj_29jEKIkXF8X 
+/*objputstrbufferpayl:*/objputstrbufferpayl_BM (( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),(/*chunk-constob _2zA2gehRNpj_87XNZoZ1mt8:*/(1024 /*initial size of forgotemail strbuffer*/))); 
+} // end run _0Vl5o9Qpmkj_29jEKIkXF8X 
  
 /* !endingblock _160pmVixE1q_0RLuDpytNXw */ 
 goto endblock__160pmVixE1q_0RLuDpytNXw; 
