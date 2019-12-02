@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3309 objects
+// for 3312 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -743,6 +743,21 @@ _4T8am97muLl_5969SR22Ecq
 _4T8am97muLl_5969SR22Ecq
 
 »_50H69VarX44_2PAlJEqjRBN
+
+
+
+«_8N3ZMGjpYV4_0WbymKK7e42 |=bismon_host|
+!~ name (~ bismon_host ~)
+± 1575298711.613
+∈ _9bCobYhqBV5_5tIWuHnUPMX |=basiclo_constant_object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "bismon_host gives the C string of the hostname"
+↦ _3pQnBS9ZjkQ_0uGmqUUhAum |=chunk|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _8N3ZMGjpYV4_0WbymKK7e42  ":*/"  "myhostname_BM")
+↦ _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_4T8am97muLl_5969SR22Ecq
+
+»_8N3ZMGjpYV4_0WbymKK7e42
 
 
 
@@ -16827,11 +16842,11 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 «_160pmVixE1q_0RLuDpytNXw
-± 1575295435.837
+± 1575298778.956
 ∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of forgotemailsender"
-!# 7
+!# 9
 
 ↳ _8XhQ2Jjwe95_1SIty2jCPZQ 
 ↳ _1lvpq8N4FRd_91GxvUgbsYc 
@@ -16840,6 +16855,8 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 ↳ _0Vl5o9Qpmkj_29jEKIkXF8X 
 ↳ _0dLuQ3ORKYd_6Ij9NW8eWz0 
 ↳ _7z4eboeZqpE_7SBD4WIWIMS 
+↳ _5c85Zj4Yce8_9k1Iswn4rve 
+↳ _7vep5dXJezn_18BtFE9nTy6 
 »_160pmVixE1q_0RLuDpytNXw
 
 
@@ -34734,6 +34751,20 @@ _41F1rKwGbaA_30OJWKsqNWy
 
 
 
+«_5c85Zj4Yce8_9k1Iswn4rve
+± 1575298439.292
+∈ _9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit \'<body><h1>forgotten Bismon password on \'"
+↦ _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
+_41F1rKwGbaA_30OJWKsqNWy
+!# 1
+
+↳  * _4T8am97muLl_5969SR22Ecq (  "<body>\n<h1>forgotten Bismon password on ") 
+»_5c85Zj4Yce8_9k1Iswn4rve
+
+
+
 «_5cgc6snNLpL_6eLKUcOit2O
 ± 1551707542.288
 ∈ _3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
@@ -44859,6 +44890,22 @@ _27bDca0oCOf_41QFrC0lVa1
 
 
 
+«_7vep5dXJezn_18BtFE9nTy6
+± 1575298812.059
+∈ _9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit bismon_host"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_160pmVixE1q_0RLuDpytNXw
+↦ _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
+_41F1rKwGbaA_30OJWKsqNWy
+!# 1
+
+↳  * _4T8am97muLl_5969SR22Ecq ( _8N3ZMGjpYV4_0WbymKK7e42) 
+»_7vep5dXJezn_18BtFE9nTy6
+
+
+
 «_7vlMCZ0yvva_6tx0lFlqBG8
 Σ *
 ± 1522939134.490
@@ -45088,10 +45135,12 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 «_7z4eboeZqpE_7SBD4WIWIMS
-± 1575295435.837
+± 1575298261.483
 ∈ _9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "output the prologue, including the head of the email for forgotten password"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_160pmVixE1q_0RLuDpytNXw
 ↦ _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
 _41F1rKwGbaA_30OJWKsqNWy
 !# 1
