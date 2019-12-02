@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3307 objects
+// for 3308 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -12857,6 +12857,36 @@ _2ZoqAiU7COz_0EfxfZbOgZj
 
 
 
+«_0dLuQ3ORKYd_6Ij9NW8eWz0
+± 1575289978.051
+∈ _4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug forgotemailsender o_contrib o_decayemail o_strbuf"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_160pmVixE1q_0RLuDpytNXw
+↦ _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "forgotemailsender" 
+  " " _4oqlg02xVwJ_918wypibNLb  " " _8Xesa6KOGm4_8rC68xDuR2P 
+  " " _41F1rKwGbaA_30OJWKsqNWy  "*/"  "\n" 
+  "DBGPRINTF_BM"  "(\""  "debug"  " " 
+  "forgotemailsender"  " "  "€%."  "9s" 
+  " " _4oqlg02xVwJ_918wypibNLb  "=%"  "s" 
+  " " _8Xesa6KOGm4_8rC68xDuR2P  "=%"  "s" 
+  " " _41F1rKwGbaA_30OJWKsqNWy  "=%"  "s" 
+  "\","  "\n"  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+  "\","  " "  "objectdbg_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _4oqlg02xVwJ_918wypibNLb)  "),"  " " 
+ "objectdbg1_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _8Xesa6KOGm4_8rC68xDuR2P)  ")," 
+ " " 
+  "objectdbg2_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _41F1rKwGbaA_30OJWKsqNWy) 
+ "));" 
+  "\n")
+
+»_0dLuQ3ORKYd_6Ij9NW8eWz0
+
+
+
 «_0dMaVldspfJ_8enHfCHKmXn
 ± 1556384684.664
 ∈ _3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
@@ -16797,17 +16827,18 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 «_160pmVixE1q_0RLuDpytNXw
-± 1575289075.211
+± 1575289978.051
 ∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of forgotemailsender"
-!# 5
+!# 6
 
 ↳ _8XhQ2Jjwe95_1SIty2jCPZQ 
 ↳ _1lvpq8N4FRd_91GxvUgbsYc 
 ↳ _78ltVdIuAm5_3a1ivM8UyQy 
 ↳ _4hysUSjl0ph_065P1rITUyN 
 ↳ _0Vl5o9Qpmkj_29jEKIkXF8X 
+↳ _0dLuQ3ORKYd_6Ij9NW8eWz0 
 »_160pmVixE1q_0RLuDpytNXw
 
 
