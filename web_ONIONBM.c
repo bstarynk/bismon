@@ -1543,7 +1543,7 @@ value_tyBM
 forgotpasswd_urlstring_BM (objectval_tyBM * decayforgotarg,
                            struct stackframe_stBM *stkf)
 {
-  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * decayforgotob;        // created decaying forgotting object
                  objectval_tyBM * contribob;    // contributor
                  value_tyBM closv;      // closure
