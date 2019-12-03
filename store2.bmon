@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3325 objects
+// for 3326 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -2478,6 +2478,26 @@ _0SinERsgdvQ_57dLCP63i9r
 ∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 
 »_1u5f1jbZq8B_2Pyfxp9jdyh
+
+
+
+«_22npJjZU3BD_6gnTuSqAj0U |=forgotpasswd_urlstring|
+!~ name (~ forgotpasswd_urlstring ~)
+± 1575382145.248
+∈ _2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "forgotpasswd_urlstring (o1) givesz the URL"& " for decayedobj o1 for forgotten password"& " handler"
+↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+↦ _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _22npJjZU3BD_6gnTuSqAj0U  ":*/("  "forgotpasswd_urlstring_BM" 
+  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ " " 
+  "CURFRAME_BM"  "))")
+↦ _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+
+»_22npJjZU3BD_6gnTuSqAj0U
 
 
 
