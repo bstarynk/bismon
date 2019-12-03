@@ -1539,6 +1539,53 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
 }                               /* end of make_onion_dict_forgotten_email_BM */
 
 
+value_tyBM
+forgotpasswd_urlstring_BM (objectval_tyBM * decayforgotarg,
+                           struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
+                 objectval_tyBM * decayforgotob;        // created decaying forgotting object
+                 objectval_tyBM * contribob;    // contributor
+                 value_tyBM closv;      // closure
+                 value_tyBM randv;      // random
+                 value_tyBM resv;       // result
+    );
+  _.decayforgotob = decayforgotarg;
+  DBGPRINTF_BM ("forgotpasswd_urlstring start decayforgotob %s",
+                objectdbg_BM (_.decayforgotob));
+  WEAKASSERT_BM (objdecayedvectlenpayl_BM (_.decayforgotob) >=
+                 DECAYFORGOTTEN__LASTINDEX_bm);
+  _.contribob =
+    objectcast_BM (objdecayedvectornthpayl_BM
+                   (_.decayforgotob, DECAYFORGOTTENCONTRIBIX_bm));
+  _.closv =
+    objdecayedvectornthpayl_BM (_.decayforgotob, DECAYFORGOTTENCLOSUREIX_bm);
+  _.randv =
+    objdecayedvectornthpayl_BM (_.decayforgotob, DECAYFORGOTTENRANDOMIX_bm);
+  DBGPRINTF_BM
+    ("forgotpasswd_urlstring contribob=%s closv=%s randv=%s from decayforgotob=%s",
+     objectdbg_BM (_.contribob), OUTSTRVALUE_BM (_.closv),
+     OUTSTRVALUE_BM (_.randv), objectdbg1_BM (_.decayforgotob));
+  WEAKASSERT_BM (isclosure_BM (_.closv) && istaggedint_BM (_.randv)
+                 && objhascontributorpayl_BM (_.contribob));
+  char contribuf[32];
+  memset (contribuf, 0, sizeof (contribuf));
+  idtocbuf32_BM (objid_BM (_.contribob), contribuf);
+  if (onion_ssl_certificate_BM)
+    _.resv = (value_tyBM) sprintfstring_BM ("https://%s/_forgotpasswd/%s/%u",
+                                            onion_web_base_BM, contribuf,
+                                            (unsigned) getint_BM (_.randv));
+  else
+    _.resv = (value_tyBM) sprintfstring_BM ("http://%s/_forgotpasswd/%s/%u",
+                                            onion_web_base_BM, contribuf,
+                                            (unsigned) getint_BM (_.randv));
+  DBGPRINTF_BM ("forgotpasswd_urlstring decayforgotob %s gives %s",
+                objectdbg_BM (_.decayforgotob), OUTSTRVALUE_BM (_.resv));
+  LOCALRETURN_BM (_.resv);
+}                               /* end forgotpasswd_urlstring_BM */
+
+
+
 static onion_connection_status
 do_forgot_email_onion_handler_BM (const char *formuser,
                                   onion_request * req, onion_response * resp)

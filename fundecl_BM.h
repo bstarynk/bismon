@@ -1765,6 +1765,11 @@ extern void webonion_send_forgotten_email_BM (objectval_tyBM * contribob,
                                               objectval_tyBM * decayob,
                                               struct stackframe_stBM *stkf);
 
+// given a decayed object, returns the string value of the URL for forgotten password
+extern
+  value_tyBM
+forgotpasswd_urlstring_BM (objectval_tyBM * decayforgotarg,
+                           struct stackframe_stBM *stkf);
 ////////////////////////////////////////////////////////////////
 // user data support - in scalar_BM.c
 /// user in GC
