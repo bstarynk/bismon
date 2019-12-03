@@ -435,6 +435,9 @@ static onion_connection_status
 login_onion_handler_BM (void *clientdata,
                         onion_request * req, onion_response * resp);
 static onion_connection_status
+forgotpasswd_onion_handler_BM (void *clientdata,
+                               onion_request * req, onion_response * resp);
+static onion_connection_status
 do_forgot_email_onion_handler_BM (const char *username,
                                   onion_request * req, onion_response * resp);
 
@@ -914,6 +917,13 @@ custom_onion_handler_BM (void *clientdata,
     {
       DBGPRINTF_BM ("custom_onion_handler login page reqpath %s", reqpath);
       return login_onion_handler_BM (clientdata, req, resp);
+    }
+  else if (!strcmp (reqpath, "_forgotpasswd")
+           || !strcmp (reqpath, "/_forgotpasswd"))
+    {
+      DBGPRINTF_BM ("custom_onion_handler _forgotpasswd page reqpath %s",
+                    reqpath);
+      return forgotpasswd_onion_handler_BM (clientdata, req, resp);
     }
   // for some reason, I can't make the webroot/ work reliably with this.
   // so I special-case when the request corresponds to an existing file path
@@ -1810,6 +1820,27 @@ websocket_onion_handler_BM (void *clientdata,
      wsess ? objectdbg_BM (wsess->websess_ownobj) : "?*none*?");
 }                               /* end websocket_onion_handler_BM */
 
+
+
+onion_connection_status
+forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
+                               onion_request * req, onion_response * resp)
+{
+  objectval_tyBM *k_login_onion_handler = BMK_8qHowkDvzRL_03sltCgsDN2;
+  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_login_onion_handler,
+                 objectval_tyBM * contribob;
+    );
+  const char *reqpath = onion_request_get_path (req);
+  unsigned reqflags = onion_request_get_flags (req);
+  unsigned reqmeth = (reqflags & OR_METHODS);
+  DBGPRINTF_BM
+    ("forgotpasswd_onion_handler_BM start reqpath=%s fullpath=%s reqflags #%d reqmeth#%d:%s",
+     reqpath, onion_request_get_fullpath (req), reqflags, reqmeth,
+     onion_request_methods[reqmeth]);
+  FATAL_BM ("unimplemented forgotpasswd_onion_handler_BM fullpath=%s",
+            onion_request_get_fullpath (req));
+#warning unimplemented forgotpasswd_onion_handler_BM
+}                               /* end of forgotpasswd_onion_handler_BM */
 
 
 void
