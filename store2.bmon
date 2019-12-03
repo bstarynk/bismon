@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3316 objects
+// for 3317 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -5575,6 +5575,26 @@ _97rnxb0KFqq_44veN75DG2E)  "),"
 "))")
 
 »_5NXk7JaUJxk_08Io37mzhAV
+
+
+
+«_8UnMJNVZBVS_71ylKzIumsp |=objcontributoremailpayl|
+!~ name (~ objcontributoremailpayl ~)
+± 1575365829.787
+∈ _2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "give the string value of the email of contributor o1 or else nil"
+↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E ]
+↦ _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _8UnMJNVZBVS_71ylKzIumsp  ":*/(("  "value_tyBM" 
+  ")("  "objcontributoremailpayl_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_97rnxb0KFqq_44veN75DG2E) 
+  "))))")
+↦ _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_7bbeIqUSje9_4jVgC7ZJmvx
+
+»_8UnMJNVZBVS_71ylKzIumsp
 
 
 
