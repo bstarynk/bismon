@@ -1897,7 +1897,7 @@ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, idbuf_
  
 { // run _4Jls0A0Ns0m_5IrxiK9tzuG 
 /*debug forgotemailsender URL o_contrib o_decayemail v_str o_strbuf*/
-DBGPRINTF_BM("debug forgotemailsender €.9s URL o_contrib=%s o_decayemail=%s v_str=%s o_strbuf=%s/L%u:\n%s\n"
+DBGPRINTF_BM("debug forgotemailsender €%.9s URL o_contrib=%s o_decayemail=%s v_str=%s o_strbuf=%s/L%u:\n%s\n"
  "_4Jls0A0Ns0m_5IrxiK9tzuG",
  objectdbg_BM( /*o_contrib:*/_.o_4oqlg02xVwJ_918wypibNLb),
  objectdbg1_BM( /*o_decayemail:*/_.o_8Xesa6KOGm4_8rC68xDuR2P),
