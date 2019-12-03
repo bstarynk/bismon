@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3314 objects
+// for 3316 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -16858,11 +16858,11 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 «_160pmVixE1q_0RLuDpytNXw
-± 1575299538.093
+± 1575358374.271
 ∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of forgotemailsender"
-!# 11
+!# 13
 
 ↳ _8XhQ2Jjwe95_1SIty2jCPZQ 
 ↳ _1lvpq8N4FRd_91GxvUgbsYc 
@@ -16875,6 +16875,8 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 ↳ _7vep5dXJezn_18BtFE9nTy6 
 ↳ _2D7txnLCuVk_6PrIlbRb7Cy 
 ↳ _0CrkCn91CRa_1eUa5y89hmW 
+↳ _9iYDGpvmr5S_9Eezx9H7ypj 
+↳ _2EdAEc6bss9_2veL1O5WSzN 
 »_160pmVixE1q_0RLuDpytNXw
 
 
@@ -24463,6 +24465,20 @@ _41F1rKwGbaA_30OJWKsqNWy
 
 ↳ _1OAohQpw0hI_0cFegLnGKE2 
 »_2DKCDbImSCJ_4MR3ZOl0e76
+
+
+
+«_2EdAEc6bss9_2veL1O5WSzN
+± 1575358374.271
+∈ _9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit htmlenc name of o_contrib in forgotemailsender"
+↦ _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
+_41F1rKwGbaA_30OJWKsqNWy
+!# 1
+
+↳  * _3QmxfIKpDVI_0C4Z01aFVxK (  * _65LACLrHMTz_08IziohYl0i (  * _4IutT3Ehz9r_7yJ41rbU841 ( _4oqlg02xVwJ_918wypibNLb))) 
+»_2EdAEc6bss9_2veL1O5WSzN
 
 
 
@@ -52311,6 +52327,20 @@ _5wKdFyGNJ5j_50nIjxm7LLY
  "method to put_method in class"
 
 »_9imDBaAxOpp_2HI9AuWrEKD
+
+
+
+«_9iYDGpvmr5S_9Eezx9H7ypj
+± 1575358226.425
+∈ _9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit \'</h1> Someone, probably you\' in forgotemailsender"
+↦ _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
+_41F1rKwGbaA_30OJWKsqNWy
+!# 1
+
+↳  * _4T8am97muLl_5969SR22Ecq (  "</h1>\n<p>Someone, probably you ") 
+»_9iYDGpvmr5S_9Eezx9H7ypj
 
 
 

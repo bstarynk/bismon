@@ -1787,7 +1787,7 @@ WEAKASSERT_BM(objhasdecayedvectorpayl_BM( /*o_decayemail:*/_.o_8Xesa6KOGm4_8rC68
 ; 
 } // end run _1lvpq8N4FRd_91GxvUgbsYc 
  
-//+ #2/11 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #2/13 of block _160pmVixE1q_0RLuDpytNXw :: 
  
  
 { // run _78ltVdIuAm5_3a1ivM8UyQy 
@@ -1807,7 +1807,7 @@ DBGPRINTF_BM("forgotemailsender €%.9s o_contrib=%s o_decayemail=%s\n"
  /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy = //assign _4hysUSjl0ph_065P1rITUyN  
 /*makeobj:*/makeobj_BM(); 
  
-//+ #4/11 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #4/13 of block _160pmVixE1q_0RLuDpytNXw :: 
  
  
 { // run _0Vl5o9Qpmkj_29jEKIkXF8X 
@@ -1823,7 +1823,7 @@ DBGPRINTF_BM("debug forgotemailsender €%.9s o_contrib=%s o_decayemail=%s o_str
 ; 
 } // end run _0dLuQ3ORKYd_6Ij9NW8eWz0 
  
-//+ #6/11 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #6/13 of block _160pmVixE1q_0RLuDpytNXw :: 
  
 { // start out _7z4eboeZqpE_7SBD4WIWIMS to o_strbuf  
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "<!DOCTYPE html>\n<html>\n<head>\n<title>forgotten password to Bismon</title>\n<meta charset=\"utf-8\">\n<style>\n  body { background-color: lightcyan; }\n  p.tinyinfo_cl { background-color: azure; font-size: 80% }\n  p.explain_cl { background-color: lavenderblush; font-size: 105%; }\n  span.smallspan_cl { background-color: ivory; font-size: 90% }\n  label.expl_cl { background-color: peachpuff; foreground-color: navy; font-size: 75%; font-family: Serif }\n  a.contact_cl { bachground-color: oldlace };\n </style>\n</head>\n"); 
@@ -1834,7 +1834,7 @@ DBGPRINTF_BM("debug forgotemailsender €%.9s o_contrib=%s o_decayemail=%s o_str
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "<body>\n<h1>forgotten Bismon password on "); 
 } // end out _5c85Zj4Yce8_9k1Iswn4rve 
  
-//+ #8/11 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #8/13 of block _160pmVixE1q_0RLuDpytNXw :: 
  
 { // start out _7vep5dXJezn_18BtFE9nTy6 to o_strbuf  
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, /*chunk-constob bismon_host:*/(/*bismon_host:*/myhostname_BM)); 
@@ -1845,10 +1845,21 @@ DBGPRINTF_BM("debug forgotemailsender €%.9s o_contrib=%s o_decayemail=%s o_str
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  " for "); 
 } // end out _2D7txnLCuVk_6PrIlbRb7Cy 
  
+//+ #10/13 of block _160pmVixE1q_0RLuDpytNXw :: 
  
 { // start out _0CrkCn91CRa_1eUa5y89hmW to o_strbuf  
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, /*bytstring:*/bytstring_BM((const stringval_tyBM*)(/*objcontributornamepayl:*/((value_tyBM)(objcontributornamepayl_BM(( /*o_contrib:*/_.o_4oqlg02xVwJ_918wypibNLb))))))); 
 } // end out _0CrkCn91CRa_1eUa5y89hmW 
+ 
+ 
+{ // start out _9iYDGpvmr5S_9Eezx9H7ypj to o_strbuf  
+/*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "</h1>\n<p>Someone, probably you "); 
+} // end out _9iYDGpvmr5S_9Eezx9H7ypj 
+ 
+ 
+{ // start out _2EdAEc6bss9_2veL1O5WSzN to o_strbuf  
+/*out html_enc:*/ objstrbufferencodedhtmlpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, /*bytstring:*/bytstring_BM((const stringval_tyBM*)(/*objcontributornamepayl:*/((value_tyBM)(objcontributornamepayl_BM(( /*o_contrib:*/_.o_4oqlg02xVwJ_918wypibNLb)))))), -1); 
+} // end out _2EdAEc6bss9_2veL1O5WSzN 
  
 /* !endingblock _160pmVixE1q_0RLuDpytNXw */ 
 goto endblock__160pmVixE1q_0RLuDpytNXw; 
