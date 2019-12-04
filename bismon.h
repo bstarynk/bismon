@@ -63,6 +63,7 @@ using std::atomic_store;
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/socket.h>
+#include <sys/wait.h>
 #include <fcntl.h>
 #include <poll.h>
 #include <termios.h>

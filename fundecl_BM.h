@@ -68,6 +68,8 @@ static inline bool valequal_BM (const value_tyBM v1, const value_tyBM v2);
 extern bool valsamecontent_BM (const value_tyBM v1, const value_tyBM v2,
                                int depth);
 static inline int valcmp_BM (const value_tyBM v1, const value_tyBM v2);
+extern int valcmpdepth_BM (const value_tyBM v1, const value_tyBM v2,
+                           int depth);
 extern int valqcmp_BM (const void *, const void *);     // for qsort
 static inline void valarrqsort_BM (value_tyBM * arr, unsigned siz);
 

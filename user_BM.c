@@ -2237,7 +2237,7 @@ send_html_email_to_contributor_BM (const char *subject, const char *htmlbody,
       if (dup2 (rdpip, STDIN_FILENO))
         FATAL_BM ("dup2 rdpip failed in emailing script '%s' to %s - %m",
                   subject, contribidbuf);
-      execv (bufprog, argarr);
+      execv (bufprog, (char *const *) argarr);
       FATAL_BM ("exec %s failed in emailing script '%s' to %s - %m", bufprog,
                 subject, contribidbuf);
     }

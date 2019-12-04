@@ -725,7 +725,7 @@ objstrbuffertostringvaluepayl_BM (objectval_tyBM * obj)
   struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (obj);
   if (!sbuf)
     return NULL;
-  return makestring_BM (sbuf->sbuf_dbuf);
+  return (value_tyBM) makestring_BM (sbuf->sbuf_dbuf);
 }                               /* end objstrbuffertostringvaluepayl_BM */
 
 
@@ -966,7 +966,7 @@ objstrbufferunsafeappendcstrpayl_BM (objectval_tyBM * obj, const char *cstr)
   if (nloffset >= 0)
     {
       sbuf->sbuf_lastnl = sbuf->sbuf_curp + nloffset;
-      for (char *pc = cstr; *pc; pc++)
+      for (char *pc = (char *)cstr; *pc; pc++)
         if (*pc == '\n')
           sbuf->sbuf_linecount++;
     }
@@ -1007,7 +1007,7 @@ objstrbufferunsafeappendstartstr_BM (objectval_tyBM * obj,
   if (nloffset >= 0)
     {
       sbuf->sbuf_lastnl = sbuf->sbuf_curp + nloffset;
-      for (char *pc = cstr; *pc; pc++)
+      for (char *pc = (char *)cstr; *pc; pc++)
         if (*pc == '\n')
           sbuf->sbuf_linecount++;
     }
@@ -1044,7 +1044,7 @@ objstrbufferappendstartstrpayl_BM (objectval_tyBM * obj, const char *cstr,
   size_t slen = strlen (cstr);
   if (len < 0)
     len = slen;
-  if (len > slen)
+  if (len > (int) slen)
     len = slen;
   struct strbuffer_stBM *sbuf = objgetstrbufferpayl_BM (obj);
   if (!sbuf)
@@ -1796,19 +1796,19 @@ fill_the_system_with_bismon_BM (struct stackframe_stBM *stkf)
   objlock_BM (_.sysob);
   {
     /// bismon_directory
-    _.val = makestring_BM (bismon_directory);
+    _.val = (value_tyBM) makestring_BM (bismon_directory);
     objputattr_BM (_.sysob, k_bismon_directory, _.val);
     /// bismon_gitid
-    _.val = makestring_BM (bismon_gitid);
+    _.val = (value_tyBM) makestring_BM (bismon_gitid);
     objputattr_BM (_.sysob, k_bismon_gitid, _.val);
     /// bismon_lastgitcommit
-    _.val = makestring_BM (bismon_lastgitcommit);
+    _.val = (value_tyBM) makestring_BM (bismon_lastgitcommit);
     objputattr_BM (_.sysob, k_bismon_lastgitcommit, _.val);
     /// bismon_time
     _.val = taggedint_BM (bismon_timelong);
     objputattr_BM (_.sysob, k_bismon_time, _.val);
     /// bismon_timestamp
-    _.val = makestring_BM (bismon_timestamp);
+    _.val = (value_tyBM) makestring_BM (bismon_timestamp);
     objputattr_BM (_.sysob, k_bismon_timestamp, _.val);
   }
   objunlock_BM (_.sysob);

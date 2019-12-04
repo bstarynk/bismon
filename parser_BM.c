@@ -335,7 +335,6 @@ parsererrorprintf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf,
       if (parsops && parsops->parsop_error_rout)
         {
           parsops->parsop_error_rout (pars, stkf, line, col, buf);
-          return;
         }
     };
   FATAL_BM ("%s:%d:%d: PARSER ERROR : %s", pars->pars_path, line, col, buf);
@@ -364,7 +363,6 @@ objparserrorprintf_BM (objectval_tyBM * obpars, struct stackframe_stBM *stkf,
           if (parsops && parsops->parsop_error_rout)
             {
               parsops->parsop_error_rout (pars, stkf, line, col, buf);
-              return;
             }
         };
       FATAL_BM ("%s:%d:%d: OBJPARSER ERROR <%s>: %s", pars->pars_path, line,

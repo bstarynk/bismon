@@ -2743,7 +2743,7 @@ do_test_mailhtml_bm (void)
   long buflen = ftell (bufil);
   DBGPRINTF_BM ("do_test_mailhtml_bm buflen=%ld; bufzon:\n%s\n", buflen,
                 bufzon);
-  if (!bufzon || buflen < 0 || buflen > bufsiz)
+  if (!bufzon || buflen < 0 || buflen > (int) bufsiz)
     FATAL_BM
       ("do_test_mailhtml_bm corrupted bufil (bufzon@%p buflen=%ld bufsiz=%ld) %m",
        bufzon, buflen, (long) bufsiz);
