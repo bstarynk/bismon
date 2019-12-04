@@ -1811,7 +1811,7 @@ DBGPRINTF_BM("forgotemailsender €%.9s o_contrib=%s o_decayemail=%s\n"
  
  
 { // run _0Vl5o9Qpmkj_29jEKIkXF8X 
-/*objputstrbufferpayl:*/objputstrbufferpayl_BM (( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),(/*chunk-constob _2zA2gehRNpj_87XNZoZ1mt8:*/(1024 /*initial size of forgotemail strbuffer*/))); 
+/*objputstrbufferpayl:*/objputstrbufferpayl_BM (( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),(/*chunk-constob _2zA2gehRNpj_87XNZoZ1mt8:*/((/*initial size of forgotemail strbuffer €_2zA2gehRN:*/32768)))); 
 } // end run _0Vl5o9Qpmkj_29jEKIkXF8X 
  
  
