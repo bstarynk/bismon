@@ -1569,16 +1569,16 @@ forgotpasswd_urlstring_BM (objectval_tyBM * decayforgotarg,
      OUTSTRVALUE_BM (_.randv), objectdbg1_BM (_.decayforgotob));
   WEAKASSERT_BM (isclosure_BM (_.closv) && istaggedint_BM (_.randv)
                  && objhascontributorpayl_BM (_.contribob));
-  char contribuf[32];
-  memset (contribuf, 0, sizeof (contribuf));
-  idtocbuf32_BM (objid_BM (_.contribob), contribuf);
+  char decaybuf[32];
+  memset (decaybuf, 0, sizeof (decaybuf));
+  idtocbuf32_BM (objid_BM (_.decayforgotob), decaybuf);
   if (onion_ssl_certificate_BM)
     _.resv = (value_tyBM) sprintfstring_BM ("https://%s/_forgotpasswd/%s/%u",
-                                            onion_web_base_BM, contribuf,
+                                            onion_web_base_BM, decaybuf,
                                             (unsigned) getint_BM (_.randv));
   else
     _.resv = (value_tyBM) sprintfstring_BM ("http://%s/_forgotpasswd/%s/%u",
-                                            onion_web_base_BM, contribuf,
+                                            onion_web_base_BM, decaybuf,
                                             (unsigned) getint_BM (_.randv));
   DBGPRINTF_BM ("forgotpasswd_urlstring decayforgotob %s gives %s",
                 objectdbg_BM (_.decayforgotob), OUTSTRVALUE_BM (_.resv));
@@ -1911,9 +1911,10 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
     }
   _.decayob = findobjofid_BM (oid);
   DBGPRINTF_BM
-    ("forgotpasswd_onion_handler_BM reqpath=%s decayob=%s/L%u randnum=%u",
-     reqpath, objectdbg_BM (_.decayob), objdecayedvectlenpayl_BM (_.decayob),
-     randnum);
+    ("forgotpasswd_onion_handler_BM reqpath=%s decayob=%s/L%u,S%u randnum=%u",
+     reqpath, objectdbg_BM (_.decayob),
+     objdecayedvectlenpayl_BM (_.decayob),
+     objdecayedvectallocsizepayl_BM (_.decayob), randnum);
   if (objdecayedvectlenpayl_BM (_.decayob) >= DECAYFORGOTTEN__LASTINDEX_bm)
     {
       _.decaycontribv =
@@ -1922,17 +1923,36 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
         objdecayedvectornthpayl_BM (_.decayob, DECAYFORGOTTENCLOSUREIX_bm);
       _.decayrandomv =
         objdecayedvectornthpayl_BM (_.decayob, DECAYFORGOTTENRANDOMIX_bm);
-
       DBGPRINTF_BM
         ("forgotpasswd_onion_handler_BM reqpath=%s decaycontribv=%s decayclosurev=%s decayrandomv=%s",
+         reqpath,
          OUTSTRVALUE_BM (_.decaycontribv),
          OUTSTRVALUE_BM (_.decayclosurev), OUTSTRVALUE_BM (_.decayrandomv));
+      if (isobject_BM (_.decaycontribv)
+          && objhascontributorpayl_BM (objectcast_BM (_.decaycontribv))
+          && isclosure_BM (_.decayclosurev)
+          && istaggedint_BM (_.decayrandomv)
+          && getint_BM (_.decayrandomv) == randnum)
+        {
+          DBGPRINTF_BM
+            ("forgotpasswd_onion_handler_BM reqpath=%s good", reqpath);
+        }
+      else
+        {
+          snprintf (errmsg, sizeof (errmsg), "bad request path %s", reqpath);
+          WARNPRINTF_BM
+            ("forgotpasswd_onion_handler_BM bad decayob %s: %s",
+             objectdbg_BM (_.decayob), errmsg);
+        }
+
     }
   WARNPRINTF_BM ("unimplemented forgotpasswd_onion_handler_BM fullpath=%s",
                  onion_request_get_fullpath (req));
   return OCS_NOT_IMPLEMENTED;
 #warning unimplemented forgotpasswd_onion_handler_BM
 }                               /* end of forgotpasswd_onion_handler_BM */
+
+
 
 
 void
