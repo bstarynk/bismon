@@ -1965,6 +1965,9 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                           bytstring_BM (_.contribnamv), OD_DUP_VALUE);
           onion_dict_add (ctxdic, "contributor_email",
                           bytstring_BM (_.contribemailv), OD_DUP_VALUE);
+#warning some missing code for changepasswd_* things in forgotpasswd_onion_handler_BM
+          WARNPRINTF_BM
+            ("forgotpasswd_onion_handler_BM missing code for request %s", reqpath);
           onion_dict_add (ctxdic, "changepasswd_time",
                           "?changepasswdtime?", OD_DUP_VALUE);
           onion_dict_add (ctxdic, "changepasswd_url",
