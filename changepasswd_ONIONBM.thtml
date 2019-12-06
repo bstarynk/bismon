@@ -23,7 +23,7 @@ the <a href='https://github.com/bstarynk/bismon'>bismon</a> process
     <input type='hidden' name='pid'> value='{{bismon_pid}}'/>
     <input type='hidden' name='decayob' value='{{changepasswd_decayob}}'/>
     <input type='hidden' name='random' value='{{changepasswd_random}}'/>
-    <input type='hidden' name='otherand' value='{{otherand}}'/>
+    <input type='hidden' name='otherand' value='{{changepasswd_otherand}}'/>
     <b>New password:</b><input type='password' name='password'/>&nbsp;
     <label for='password' class='expl_cl'>(enter new password)</label><br/>
     <b>Confirm password:</b><input type='password' name='confirm'/>&nbsp;
@@ -36,6 +36,10 @@ the <a href='https://github.com/bstarynk/bismon'>bismon</a> process
     <label for='doforgot' class='expl_cl'>(to clear fields)</label>
 </form>
 
+  
+  <p class='tinyinfo_cl'>Contact {{contact_name}} at <a href='mailto:{{contact_email}}'>{{contact_email}}</a> for help.
+  
+  <p class='tinyinfo_cl'>{{changepasswd_extramessage}}</p>
   
   <p class='tinyinfo_cl'><b>PS:</b> to customize this, edit the <tt>changepasswd_ONIONBM.thtml</tt> file.</p>
 

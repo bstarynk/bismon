@@ -1087,10 +1087,12 @@ custom_onion_handler_BM (void *clientdata,
             }
           else
             {
-              onion_dict_add (ctxdic, "origpath",
-                              (reqpath
-                               && reqpath[0]) ? reqpath : "/", OD_DUP_VALUE);
+              char pidbuf[40];
+              memset (pidbuf, 0, sizeof (pidbuf));
+              snprintf (pidbuf, sizeof (pidbuf), "%ld", (long) getpid ());
+              onion_dict_add (ctxdic, "bismon_pid", pidbuf, OD_DUP_VALUE);
             }
+          onion_dict_add (ctxdic, "bismon_host", myhostname_BM, OD_DUP_VALUE);
           onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
           onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
           onion_dict_add (ctxdic, "extra", "initial login", OD_DUP_VALUE);
@@ -1343,7 +1345,7 @@ enum
   DECAYFORGOTTENCONTRIBIX_bm,   // index of contributor object
   DECAYFORGOTTENCLOSUREIX_bm,   // index of closure
   DECAYFORGOTTENRANDOMIX_bm,    // index of random number
-  DECAYFORGOTTENOTHERANDIX_bm,	// index of other random
+  DECAYFORGOTTENOTHERANDIX_bm,  // index of other random
   DECAYFORGOTTEN__LASTINDEX_bm
 } decayforgottenemail_enBM;
 
@@ -1882,7 +1884,9 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                  value_tyBM decaycontribv;      //
                  value_tyBM decayclosurev;      //
                  value_tyBM decayrandomv;       //
-                 value_tyBM decayotherv;       //
+                 value_tyBM decayotherv;        //
+                 value_tyBM contribnamv;        //
+                 value_tyBM contribemailv;      //
     );
   char oidbuf[32];
   char errmsg[200];
@@ -1938,9 +1942,44 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
           && istaggedint_BM (_.decayrandomv)
           && getint_BM (_.decayrandomv) == randnum)
         {
-	  WEAKASSERT_BM(!_.decayotherv);
+          WEAKASSERT_BM (!_.decayotherv);
+          _.contribnamv = objcontributornamepayl_BM (_.contribob);
+          _.contribemailv = objcontributoremailpayl_BM (_.contribob);
+          ASSERT_BM (isstring_BM (_.contribnamv));
+          ASSERT_BM (isstring_BM (_.contribemailv));
           DBGPRINTF_BM
             ("forgotpasswd_onion_handler_BM reqpath=%s good", reqpath);
+          onion_dict *ctxdic = onion_dict_new ();
+          {
+            char pidbuf[40];
+            memset (pidbuf, 0, sizeof (pidbuf));
+            snprintf (pidbuf, sizeof (pidbuf), "%ld", (long) getpid ());
+            onion_dict_add (ctxdic, "bismon_pid", pidbuf, OD_DUP_VALUE);
+          }
+          onion_dict_add (ctxdic, "bismon_host", myhostname_BM, OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "buildtime", bismon_timestamp,
+                          OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "lastgitcommit", bismon_lastgitcommit,
+                          OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "contributor_name",
+                          bytstring_BM (_.contribnamv), OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "contributor_email",
+                          bytstring_BM (_.contribemailv), OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "changepasswd_time",
+                          "?changepasswdtime?", OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "changepasswd_url",
+                          "?changepasswdurl?", OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "changepasswd_decayob",
+                          "?changepasswddecayob?", OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "changepasswd_random",
+                          "?changepasswdrandom?", OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "changepasswd_otherand",
+                          "?changepasswdotherand?", OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "changepasswd_extramessage",
+                          "?changepasswdextramessage?", OD_DUP_VALUE);
+          changepasswd_ONIONBM_thtml (ctxdic, resp);
+          onion_dict_free (ctxdic);
+          return OCS_PROCESSED;
         }
       else
         {
