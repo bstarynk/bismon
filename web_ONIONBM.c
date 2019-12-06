@@ -918,8 +918,9 @@ custom_onion_handler_BM (void *clientdata,
       DBGPRINTF_BM ("custom_onion_handler login page reqpath %s", reqpath);
       return login_onion_handler_BM (clientdata, req, resp);
     }
-  else if (!strcmp (reqpath, "_forgotpasswd")
-           || !strcmp (reqpath, "/_forgotpasswd"))
+  else if (!strncmp (reqpath, "_forgotpasswd/", strlen ("_forgotpasswd/"))
+           || !strncmp (reqpath, "/_forgotpasswd/",
+                        strlen ("/_forgotpasswd/")))
     {
       DBGPRINTF_BM ("custom_onion_handler _forgotpasswd page reqpath %s",
                     reqpath);
