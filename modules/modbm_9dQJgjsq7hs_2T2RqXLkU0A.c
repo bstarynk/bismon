@@ -1878,9 +1878,9 @@ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, idbuf_
 { // start out _9hhu81QF0ns_0Dga4kpRj11 to o_strbuf  
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "claim to have forgotten the login password for\nthe <a href=\'https://github.com/bstarynk/bismon\'>bismon</a> process\n");  
 /*out int:*/ objstrbufferprintfpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, "%lld", (long long) /*bismon_pid:*/((intptr_t)(getpid())));  
-/*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  " on ");  
+/*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  " on <tt>");  
 /*out html_enc:*/ objstrbufferencodedhtmlpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, /*chunk-constob bismon_host:*/(/*bismon_host:*/myhostname_BM), -1);  
-/*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  ".\n"); 
+/*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "</tt>.\n"); 
 } // end out _9hhu81QF0ns_0Dga4kpRj11 
  
  
@@ -1914,7 +1914,7 @@ DBGPRINTF_BM("debug forgotemailsender €%.9s URL o_contrib=%s o_decayemail=%s v
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "<a href=\'");  
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, /*bytstring:*/bytstring_BM((const stringval_tyBM*)( /*v_str:*/_.v_167WczZjWtG_3FofhJxQWJi)));  
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "\'>");  
-/*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, /*bytstring:*/bytstring_BM((const stringval_tyBM*)( /*v_str:*/_.v_167WczZjWtG_3FofhJxQWJi)));  
+/*out html_enc:*/ objstrbufferencodedhtmlpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, /*bytstring:*/bytstring_BM((const stringval_tyBM*)( /*v_str:*/_.v_167WczZjWtG_3FofhJxQWJi)), -1);  
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "</a> within ten minutes.</p>\n"); 
 } // end out _8kbSLWduQ6m_0najSnzSniJ 
  
