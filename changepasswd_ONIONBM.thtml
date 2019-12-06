@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>{# file changepasswd_ONIONBM.thtml #}
+{# a template file for libOnion's template system #}
+<head>
+<title>Change Password to Bismon</title>
+<meta charset="utf-8">
+<style>
+  body { background-color: lightcyan; }
+  p.tinyinfo_cl { background-color: azure; font-size: 80% }
+  p.explain_cl { background-color: lavenderblush; font-size: 105%; }
+  span.smallspan_cl { background-color: ivory; font-size: 90% }
+  label.expl_cl { background-color: peachpuff; foreground-color: navy; font-size: 75%; font-family: Serif }
+  a.contact_cl { bachground-color: oldlace };
+</style>
+</head>
+<body>
+<h1>change Bismon password on {{bismon_host}} for {{contributor_name}}</h1>
+
+<p>Changing password of <tt>{{contributor_email}}</tt> for
+the <a href='https://github.com/bstarynk/bismon'>bismon</a> process
+{{bismon_pid}} on {{bismon_host}} at <i>{{changepasswd_time}}</i>.<br/>
+<form action='{{changepasswd_url}}' method='post'>
+    <input type='hidden' name='pid'> value='{{bismon_pid}}'/>
+    <input type='hidden' name='decayob' value='{{changepasswd_decayob}}'/>
+    <input type='hidden' name='random' value='{{changepasswd_random}}'/>
+    <input type='hidden' name='otherand' value='{{otherand}}'/>
+    <b>New password:</b><input type='password' name='password'/>&nbsp;
+    <label for='password' class='expl_cl'>(enter new password)</label><br/>
+    <b>Confirm password:</b><input type='password' name='confirm'/>&nbsp;
+    <label for='password' class='expl_cl'>(confirm same new password)</label>
+    <br/>
+    <b>Change your password:</b> <input type='submit' name='dochange' value='Set password'/> &nbsp;
+    <label for='doforgot' class='expl_cl'>(to set your new password)</label>
+    <br/>
+    <b>Clear:</b> <input type='clear' name='doclear' value='Clear'/> &nbsp;
+    <label for='doforgot' class='expl_cl'>(to clear fields)</label>
+</form>
+
+  
+  <p class='tinyinfo_cl'><b>PS:</b> to customize this, edit the <tt>changepasswd_ONIONBM.thtml</tt> file.</p>
+
+</body>
+</html>

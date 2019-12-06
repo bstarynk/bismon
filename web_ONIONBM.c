@@ -24,7 +24,7 @@
 #include "bismon.h"
 #include "web_ONIONBM.const.h"
 #include "_login_ONIONBM.h"
-#include "_forgotemail_ONIONBM.h"
+#include "_changepasswd_ONIONBM.h"
 
 // expiration delay for user session, in seconds (more than an hour,
 // but increased on every web interaction)
@@ -1343,6 +1343,7 @@ enum
   DECAYFORGOTTENCONTRIBIX_bm,   // index of contributor object
   DECAYFORGOTTENCLOSUREIX_bm,   // index of closure
   DECAYFORGOTTENRANDOMIX_bm,    // index of random number
+  DECAYFORGOTTENOTHERANDIX_bm,	// index of other random
   DECAYFORGOTTEN__LASTINDEX_bm
 } decayforgottenemail_enBM;
 
@@ -1881,6 +1882,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                  value_tyBM decaycontribv;      //
                  value_tyBM decayclosurev;      //
                  value_tyBM decayrandomv;       //
+                 value_tyBM decayotherv;       //
     );
   char oidbuf[32];
   char errmsg[200];
@@ -1923,6 +1925,8 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
         objdecayedvectornthpayl_BM (_.decayob, DECAYFORGOTTENCLOSUREIX_bm);
       _.decayrandomv =
         objdecayedvectornthpayl_BM (_.decayob, DECAYFORGOTTENRANDOMIX_bm);
+      _.decayotherv =
+        objdecayedvectornthpayl_BM (_.decayob, DECAYFORGOTTENOTHERANDIX_bm);
       DBGPRINTF_BM
         ("forgotpasswd_onion_handler_BM reqpath=%s decaycontribv=%s decayclosurev=%s decayrandomv=%s",
          reqpath,
@@ -1934,6 +1938,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
           && istaggedint_BM (_.decayrandomv)
           && getint_BM (_.decayrandomv) == randnum)
         {
+	  WEAKASSERT_BM(!_.decayotherv);
           DBGPRINTF_BM
             ("forgotpasswd_onion_handler_BM reqpath=%s good", reqpath);
         }
