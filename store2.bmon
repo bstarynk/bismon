@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3337 objects
+// for 3338 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -16983,7 +16983,7 @@ _6jZqk9RP0Pe_12cIgV9WMFC
  "body of forgotemailsender"
 ↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _6STwOZTcBwM_6wz4Akuletb
-!# 27
+!# 28
 
 ↳ _8XhQ2Jjwe95_1SIty2jCPZQ 
 ↳ _1lvpq8N4FRd_91GxvUgbsYc 
@@ -16993,6 +16993,7 @@ _6STwOZTcBwM_6wz4Akuletb
 ↳ _963UhXc9DrO_6iXultoQvTP 
 ↳ _0Vl5o9Qpmkj_29jEKIkXF8X 
 ↳ _0dLuQ3ORKYd_6Ij9NW8eWz0 
+↳ _2QpQJJnYvOO_5oEDtL78ztU 
 ↳ _7z4eboeZqpE_7SBD4WIWIMS 
 ↳ _5c85Zj4Yce8_9k1Iswn4rve 
 ↳ _7vep5dXJezn_18BtFE9nTy6 
@@ -25324,6 +25325,23 @@ _4I0ksnAasRT_1bREYU29xgL
 
 
 
+«_2QpQJJnYvOO_5oEDtL78ztU
+± 1575632973.739
+∈ _9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "out o_subjbuf \'forgotten Bismon password"& " on $bismon_host for $contributorname-o_contrib\'"
+↦ _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
+_2vpoJExI154_9g8xyyrbJSw
+!# 4
+
+↳  * _4T8am97muLl_5969SR22Ecq (  "forgotten Bismon password on ") 
+↳  * _4T8am97muLl_5969SR22Ecq ( _8N3ZMGjpYV4_0WbymKK7e42) 
+↳  * _4T8am97muLl_5969SR22Ecq (  " for ") 
+↳  * _4T8am97muLl_5969SR22Ecq (  * _65LACLrHMTz_08IziohYl0i (  * _4IutT3Ehz9r_7yJ41rbU841 ( _4oqlg02xVwJ_918wypibNLb))) 
+»_2QpQJJnYvOO_5oEDtL78ztU
+
+
+
 «_2Qv627ZT2Ot_42KOOsZ6KSp
 ± 1553596747.821
 ∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
@@ -28764,7 +28782,7 @@ _0ncEyxweiqi_5Vj5U2xvh82
 
 
 «_3JxtnJWYQF3_9qoPcnRFhm7
-± 1575626193.545
+± 1575633187.532
 ∈ _4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "send forgotten password email o_strbuf to o_contrib"
@@ -28772,18 +28790,20 @@ _0ncEyxweiqi_5Vj5U2xvh82
 _160pmVixE1q_0RLuDpytNXw
 ↦ _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _5P2fpxElfqT_7NlO7H9TYGI  " "  "forgotten" 
-  " "  "password"  " "  "email" 
-  " " _41F1rKwGbaA_30OJWKsqNWy  " "  "to" 
-  " " _4oqlg02xVwJ_918wypibNLb  "*/"  "\n" 
-  "send_html_email_to_contributor_BM"  "(\""  "Forgotten"  " " 
-  "Bismon"  " "  "passwrd"  "\"," 
-  "\n"  " "  "objstrbufferbytespayl_BM"  "(" 
-  * _5ucAZimYynS_4VA0XHvr1nW ( _41F1rKwGbaA_30OJWKsqNWy)  "),"  "\n" 
- " " 
-  "NULL"  ","  "\n"  " " 
-  * _5ucAZimYynS_4VA0XHvr1nW ( _4oqlg02xVwJ_918wypibNLb)  ","  "\n" 
- " " 
-  "CURFRAME_BM"  ");"  "\n")
+  " "  "password"  " " _2vpoJExI154_9g8xyyrbJSw 
+  " "  "email"  " " _41F1rKwGbaA_30OJWKsqNWy 
+  " "  "to"  " " _4oqlg02xVwJ_918wypibNLb 
+  "*/"  "\n"  "send_html_email_to_contributor_BM"  "\n" 
+  "  "  "("  "objstrbufferbytespayl_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _2vpoJExI154_9g8xyyrbJSw)  "),"  "\n" 
+ "  " 
+  "objstrbufferbytespayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _41F1rKwGbaA_30OJWKsqNWy) 
+ ")," 
+  "\n"  "  "  "NULL"  "," 
+  "\n"  " "  * _5ucAZimYynS_4VA0XHvr1nW ( _4oqlg02xVwJ_918wypibNLb) 
+ "," 
+  "\n"  " "  "CURFRAME_BM"  ");" 
+  "\n")
 
 »_3JxtnJWYQF3_9qoPcnRFhm7
 
