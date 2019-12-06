@@ -1876,8 +1876,11 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
 {
   objectval_tyBM *k_login_onion_handler = BMK_8qHowkDvzRL_03sltCgsDN2;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_login_onion_handler,
-                 objectval_tyBM * contribob;
-                 objectval_tyBM * decayob;
+                 objectval_tyBM * contribob;    //
+                 objectval_tyBM * decayob;      //
+                 value_tyBM decaycontribv;      //
+                 value_tyBM decayclosurev;      //
+                 value_tyBM decayrandomv;       //
     );
   char oidbuf[32];
   char errmsg[200];
@@ -1908,11 +1911,26 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
     }
   _.decayob = findobjofid_BM (oid);
   DBGPRINTF_BM
-    ("forgotpasswd_onion_handler_BM reqpath=%s decayob=%s randnum=%u",
-     reqpath, objectdbg_BM (_.decayob), randnum);
+    ("forgotpasswd_onion_handler_BM reqpath=%s decayob=%s/L%u randnum=%u",
+     reqpath, objectdbg_BM (_.decayob), objdecayedvectlenpayl_BM (_.decayob),
+     randnum);
+  if (objdecayedvectlenpayl_BM (_.decayob) >= DECAYFORGOTTEN__LASTINDEX_bm)
+    {
+      _.decaycontribv =
+        objdecayedvectornthpayl_BM (_.decayob, DECAYFORGOTTENCONTRIBIX_bm);
+      _.decayclosurev =
+        objdecayedvectornthpayl_BM (_.decayob, DECAYFORGOTTENCLOSUREIX_bm);
+      _.decayrandomv =
+        objdecayedvectornthpayl_BM (_.decayob, DECAYFORGOTTENRANDOMIX_bm);
 
-  FATAL_BM ("unimplemented forgotpasswd_onion_handler_BM fullpath=%s",
-            onion_request_get_fullpath (req));
+      DBGPRINTF_BM
+        ("forgotpasswd_onion_handler_BM reqpath=%s decaycontribv=%s decayclosurev=%s decayrandomv=%s",
+         OUTSTRVALUE_BM (_.decaycontribv),
+         OUTSTRVALUE_BM (_.decayclosurev), OUTSTRVALUE_BM (_.decayrandomv));
+    }
+  WARNPRINTF_BM ("unimplemented forgotpasswd_onion_handler_BM fullpath=%s",
+                 onion_request_get_fullpath (req));
+  return OCS_NOT_IMPLEMENTED;
 #warning unimplemented forgotpasswd_onion_handler_BM
 }                               /* end of forgotpasswd_onion_handler_BM */
 
