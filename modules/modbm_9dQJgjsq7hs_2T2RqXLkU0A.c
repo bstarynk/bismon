@@ -1740,8 +1740,9 @@ value_tyBM crout_6STwOZTcBwM_6wz4Akuletb_BM //#10
     value_tyBM stkfram_callfun;
     int stkfram_state;
     int stkfram_extra;
-    /// 5 local values:
+    /// 6 local values:
     value_tyBM v_167WczZjWtG_3FofhJxQWJi; // v_str
+    objectval_tyBM* o_2vpoJExI154_9g8xyyrbJSw; // o_subjbuf
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ; // v_r
     objectval_tyBM* o_41F1rKwGbaA_30OJWKsqNWy; // o_strbuf
     objectval_tyBM* o_4oqlg02xVwJ_918wypibNLb; // o_contrib
@@ -1751,7 +1752,7 @@ value_tyBM crout_6STwOZTcBwM_6wz4Akuletb_BM //#10
    memset (&_, 0, sizeof(struct frame_6STwOZTcBwM_6wz4Akuletb_BMst));
    _.stkfram_head.htyp = typayl_StackFrame_BM;
    _.stkfram_head.hgc = 0;
-   _.stkfram_head.rlen = 5;
+   _.stkfram_head.rlen = 6;
    _.stkfram_descr = constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[66] /*|_6STwOZTcBwM_6wz4Akuletb*/;
    ASSERT_BM (!stkf
              || stkf->stkfram_pA.htyp == typayl_StackFrame_BM
@@ -1787,7 +1788,7 @@ WEAKASSERT_BM(objhasdecayedvectorpayl_BM( /*o_decayemail:*/_.o_8Xesa6KOGm4_8rC68
 ; 
 } // end run _1lvpq8N4FRd_91GxvUgbsYc 
  
-//+ #2/25 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #2/27 of block _160pmVixE1q_0RLuDpytNXw :: 
  
  
 { // run _78ltVdIuAm5_3a1ivM8UyQy 
@@ -1804,10 +1805,21 @@ DBGPRINTF_BM("forgotemailsender €%.9s o_contrib=%s o_decayemail=%s\n"
 } // end run _78ltVdIuAm5_3a1ivM8UyQy 
  
  
+ /*o_subjbuf:*/_.o_2vpoJExI154_9g8xyyrbJSw = //assign _1sL8tno3qO2_8UuqCTL0ELO  
+/*makeobj:*/makeobj_BM(); 
+ 
+//+ #4/27 of block _160pmVixE1q_0RLuDpytNXw :: 
+ 
  /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy = //assign _4hysUSjl0ph_065P1rITUyN  
 /*makeobj:*/makeobj_BM(); 
  
-//+ #4/25 of block _160pmVixE1q_0RLuDpytNXw :: 
+ 
+ 
+{ // run _963UhXc9DrO_6iXultoQvTP 
+/*objputstrbufferpayl:*/objputstrbufferpayl_BM (( /*o_subjbuf:*/_.o_2vpoJExI154_9g8xyyrbJSw),( 256)); 
+} // end run _963UhXc9DrO_6iXultoQvTP 
+ 
+//+ #6/27 of block _160pmVixE1q_0RLuDpytNXw :: 
  
  
 { // run _0Vl5o9Qpmkj_29jEKIkXF8X 
@@ -1817,13 +1829,18 @@ DBGPRINTF_BM("forgotemailsender €%.9s o_contrib=%s o_decayemail=%s\n"
  
  
 { // run _0dLuQ3ORKYd_6Ij9NW8eWz0 
-/*debug forgotemailsender o_contrib o_decayemail o_strbuf*/
-DBGPRINTF_BM("debug forgotemailsender €%.9s o_contrib=%s o_decayemail=%s o_strbuf=%s",
-"_0dLuQ3ORKYd_6Ij9NW8eWz0", objectdbg_BM( /*o_contrib:*/_.o_4oqlg02xVwJ_918wypibNLb), objectdbg1_BM( /*o_decayemail:*/_.o_8Xesa6KOGm4_8rC68xDuR2P), objectdbg2_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy));
+/*debug forgotemailsender o_contrib o_decayemail o_strbuf o_subjbuf*/
+DBGPRINTF_BM("debug forgotemailsender €%.9s o_contrib=%s o_decayemail=%s o_strbuf=%s o_subjbuf=%s",
+ "_0dLuQ3ORKYd_6Ij9NW8eWz0",
+ objectdbg_BM( /*o_contrib:*/_.o_4oqlg02xVwJ_918wypibNLb),
+ objectdbg1_BM( /*o_decayemail:*/_.o_8Xesa6KOGm4_8rC68xDuR2P),
+ objectdbg2_BM( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy),
+ objectdbg3_BM( /*o_subjbuf:*/_.o_2vpoJExI154_9g8xyyrbJSw)
+);
 ; 
 } // end run _0dLuQ3ORKYd_6Ij9NW8eWz0 
  
-//+ #6/25 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #8/27 of block _160pmVixE1q_0RLuDpytNXw :: 
  
 { // start out _7z4eboeZqpE_7SBD4WIWIMS to o_strbuf  
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "<!DOCTYPE html>\n<html>\n<head>\n<title>forgotten password to Bismon</title>\n<meta charset=\"utf-8\">\n<style>\n  body { background-color: lightcyan; }\n  p.tinyinfo_cl { background-color: azure; font-size: 80% }\n  p.explain_cl { background-color: lavenderblush; font-size: 105%; }\n  span.smallspan_cl { background-color: ivory; font-size: 90% }\n  label.expl_cl { background-color: peachpuff; foreground-color: navy; font-size: 75%; font-family: Serif }\n  a.contact_cl { bachground-color: oldlace };\n </style>\n</head>\n"); 
@@ -1834,7 +1851,7 @@ DBGPRINTF_BM("debug forgotemailsender €%.9s o_contrib=%s o_decayemail=%s o_str
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "<body>\n<h1>forgotten Bismon password on "); 
 } // end out _5c85Zj4Yce8_9k1Iswn4rve 
  
-//+ #8/25 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #10/27 of block _160pmVixE1q_0RLuDpytNXw :: 
  
 { // start out _7vep5dXJezn_18BtFE9nTy6 to o_strbuf  
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, /*chunk-constob bismon_host:*/(/*bismon_host:*/myhostname_BM)); 
@@ -1845,7 +1862,7 @@ DBGPRINTF_BM("debug forgotemailsender €%.9s o_contrib=%s o_decayemail=%s o_str
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  " for "); 
 } // end out _2D7txnLCuVk_6PrIlbRb7Cy 
  
-//+ #10/25 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #12/27 of block _160pmVixE1q_0RLuDpytNXw :: 
  
 { // start out _0CrkCn91CRa_1eUa5y89hmW to o_strbuf  
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, /*bytstring:*/bytstring_BM((const stringval_tyBM*)(/*objcontributornamepayl:*/((value_tyBM)(objcontributornamepayl_BM(( /*o_contrib:*/_.o_4oqlg02xVwJ_918wypibNLb))))))); 
@@ -1856,7 +1873,7 @@ DBGPRINTF_BM("debug forgotemailsender €%.9s o_contrib=%s o_decayemail=%s o_str
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "</h1>\n<p>Someone, probably you "); 
 } // end out _9iYDGpvmr5S_9Eezx9H7ypj 
  
-//+ #12/25 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #14/27 of block _160pmVixE1q_0RLuDpytNXw :: 
  
 { // start out _2EdAEc6bss9_2veL1O5WSzN to o_strbuf  
 /*out html_enc:*/ objstrbufferencodedhtmlpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, /*bytstring:*/bytstring_BM((const stringval_tyBM*)(/*objcontributornamepayl:*/((value_tyBM)(objcontributornamepayl_BM(( /*o_contrib:*/_.o_4oqlg02xVwJ_918wypibNLb)))))), -1); 
@@ -1873,7 +1890,7 @@ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, idbuf_
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "</tt>),\n"); 
 } // end out _9WW7zjFS88b_6HhF3rsglGw 
  
-//+ #14/25 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #16/27 of block _160pmVixE1q_0RLuDpytNXw :: 
  
 { // start out _9hhu81QF0ns_0Dga4kpRj11 to o_strbuf  
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "claim to have forgotten the login password for\nthe <a href=\'https://github.com/bstarynk/bismon\'>bismon</a> process\n");  
@@ -1887,7 +1904,7 @@ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, idbuf_
  /*v_str:*/_.v_167WczZjWtG_3FofhJxQWJi = //assign _2HA5GVtfcW3_25FsJWG0E8P  
 /*forgotpasswd_urlstring:*/(forgotpasswd_urlstring_BM(( /*o_decayemail:*/_.o_8Xesa6KOGm4_8rC68xDuR2P), CURFRAME_BM)); 
  
-//+ #16/25 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #18/27 of block _160pmVixE1q_0RLuDpytNXw :: 
  
 { // start out _6RNwjqF0Ibs_3s4LjYNbTr8 to o_strbuf  
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "If indeed you want to change your password, visit "); 
@@ -1908,7 +1925,7 @@ DBGPRINTF_BM("debug forgotemailsender €%.9s URL o_contrib=%s o_decayemail=%s v
 ; 
 } // end run _4Jls0A0Ns0m_5IrxiK9tzuG 
  
-//+ #18/25 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #20/27 of block _160pmVixE1q_0RLuDpytNXw :: 
  
 { // start out _8kbSLWduQ6m_0najSnzSniJ to o_strbuf  
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "<a href=\'");  
@@ -1923,7 +1940,7 @@ DBGPRINTF_BM("debug forgotemailsender €%.9s URL o_contrib=%s o_decayemail=%s v
 /*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "<p class=\'tinyinfo_cl\'><i>this particular</i> <tt>Bismon</tt> server is managed by "); 
 } // end out _3iSZp8KpRjI_4kJ9QaX0yPu 
  
-//+ #20/25 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #22/27 of block _160pmVixE1q_0RLuDpytNXw :: 
  
 { // start out _2XnGApRnkDF_3ndj0kOtved to o_strbuf  
 /*out html_enc:*/ objstrbufferencodedhtmlpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, /*chunk-constob contact_name:*/((/*contact_name:*/contact_name_BM)), -1);  
@@ -1949,7 +1966,7 @@ objstrbufferprintfpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy, "%.12s", i
 /*out newline:*/ objstrbuffernewlinepayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy); 
 } // end out _78YkbFGzIxo_4wO60wDXjMw 
  
-//+ #22/25 of block _160pmVixE1q_0RLuDpytNXw :: 
+//+ #24/27 of block _160pmVixE1q_0RLuDpytNXw :: 
  
  
 { // run _2tID18D0P5q_55DA1kEp9My 

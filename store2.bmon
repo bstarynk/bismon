@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3334 objects
+// for 3337 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -5216,6 +5216,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 _7T9OwSFlgov_0wVJaK1eZbn
 
 »_41F1rKwGbaA_30OJWKsqNWy
+
+
+
+«_2vpoJExI154_9g8xyyrbJSw |=o_subjbuf|
+!~ name (~ o_subjbuf ~)
+± 1575629382.127
+∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
+↦ _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+
+»_2vpoJExI154_9g8xyyrbJSw
 
 
 
@@ -12975,30 +12986,36 @@ _2ZoqAiU7COz_0EfxfZbOgZj
 
 
 «_0dLuQ3ORKYd_6Ij9NW8eWz0
-± 1575289978.051
+± 1575629850.291
 ∈ _4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
- "debug forgotemailsender o_contrib o_decayemail o_strbuf"
+ "debug forgotemailsender o_contrib o_decayemail o_strbuf o_subjbuf"
 ↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _160pmVixE1q_0RLuDpytNXw
 ↦ _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "forgotemailsender" 
   " " _4oqlg02xVwJ_918wypibNLb  " " _8Xesa6KOGm4_8rC68xDuR2P 
-  " " _41F1rKwGbaA_30OJWKsqNWy  "*/"  "\n" 
-  "DBGPRINTF_BM"  "(\""  "debug"  " " 
-  "forgotemailsender"  " "  "€%."  "9s" 
-  " " _4oqlg02xVwJ_918wypibNLb  "=%"  "s" 
-  " " _8Xesa6KOGm4_8rC68xDuR2P  "=%"  "s" 
-  " " _41F1rKwGbaA_30OJWKsqNWy  "=%"  "s" 
-  "\","  "\n"  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
-  "\","  " "  "objectdbg_BM"  "(" 
-  * _5ucAZimYynS_4VA0XHvr1nW ( _4oqlg02xVwJ_918wypibNLb)  "),"  " " 
- "objectdbg1_BM" 
-  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _8Xesa6KOGm4_8rC68xDuR2P)  ")," 
+  " " _41F1rKwGbaA_30OJWKsqNWy  " " _2vpoJExI154_9g8xyyrbJSw 
+  "*/"  "\n"  "DBGPRINTF_BM"  "(\"" 
+  "debug"  " "  "forgotemailsender"  " " 
+  "€%."  "9s"  " " _4oqlg02xVwJ_918wypibNLb 
+  "=%"  "s"  " " _8Xesa6KOGm4_8rC68xDuR2P 
+  "=%"  "s"  " " _41F1rKwGbaA_30OJWKsqNWy 
+  "=%"  "s"  " " _2vpoJExI154_9g8xyyrbJSw 
+  "=%"  "s"  "\","  "\n" 
+  " "  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "\"," 
+  "\n"  " "  "objectdbg_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _4oqlg02xVwJ_918wypibNLb)  "),"  "\n" 
  " " 
-  "objectdbg2_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _41F1rKwGbaA_30OJWKsqNWy) 
- "));" 
-  "\n")
+  "objectdbg1_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _8Xesa6KOGm4_8rC68xDuR2P) 
+ ")," 
+  "\n"  " "  "objectdbg2_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _41F1rKwGbaA_30OJWKsqNWy)  "),"  "\n" 
+ " " 
+  "objectdbg3_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2vpoJExI154_9g8xyyrbJSw) 
+ ")" 
+  "\n"  ");"  "\n")
 
 »_0dLuQ3ORKYd_6Ij9NW8eWz0
 
@@ -16966,12 +16983,14 @@ _6jZqk9RP0Pe_12cIgV9WMFC
  "body of forgotemailsender"
 ↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _6STwOZTcBwM_6wz4Akuletb
-!# 25
+!# 27
 
 ↳ _8XhQ2Jjwe95_1SIty2jCPZQ 
 ↳ _1lvpq8N4FRd_91GxvUgbsYc 
 ↳ _78ltVdIuAm5_3a1ivM8UyQy 
+↳ _1sL8tno3qO2_8UuqCTL0ELO 
 ↳ _4hysUSjl0ph_065P1rITUyN 
+↳ _963UhXc9DrO_6iXultoQvTP 
 ↳ _0Vl5o9Qpmkj_29jEKIkXF8X 
 ↳ _0dLuQ3ORKYd_6Ij9NW8eWz0 
 ↳ _7z4eboeZqpE_7SBD4WIWIMS 
@@ -18805,6 +18824,21 @@ _2wGWzItVmrN_2CBwG6iHWFO
 _6FcmuIO2DrS_7mzsaVpTMOI
 
 »_1smwkzMAMAi_5asL8fzyE2l
+
+
+
+«_1sL8tno3qO2_8UuqCTL0ELO
+± 1575629472.663
+∈ _3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "o_subjbuf := makeobj() //forgotemailsender"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_160pmVixE1q_0RLuDpytNXw
+!# 2
+
+↳ _2vpoJExI154_9g8xyyrbJSw 
+↳  * _9uuMot5qvtW_7J7V6SlaKg2 () 
+»_1sL8tno3qO2_8UuqCTL0ELO
 
 
 
@@ -42626,14 +42660,15 @@ _41F1rKwGbaA_30OJWKsqNWy)
 
 «_6STwOZTcBwM_6wz4Akuletb
 Σ *
-± 1575383589.312
+± 1575629371.484
 ∈ _2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "forgotemailsender (o_contrib o_decayemail)"
 ↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _4oqlg02xVwJ_918wypibNLb _8Xesa6KOGm4_8rC68xDuR2P ]
 ↦ _24sSVIADeHm_0Sx34wQfG7W |=locals|
- { _167WczZjWtG_3FofhJxQWJi _41F1rKwGbaA_30OJWKsqNWy }
+ { 
+ _167WczZjWtG_3FofhJxQWJi _2vpoJExI154_9g8xyyrbJSw _41F1rKwGbaA_30OJWKsqNWy }
 ↦ _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3qw9bnATIhq_8loBraLeXzQ
 ↦ _7DQyvJFMOrC_9IfC3CtYknn |=body|
@@ -51921,6 +51956,18 @@ _4gjtBqgrY3i_67ZPUd9LxPU
 
 ↳  "Bismon" 
 »_95vgIuQGatW_7hJM1HDXdrE
+
+
+
+«_963UhXc9DrO_6iXultoQvTP
+± 1575629624.143
+∈ _4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "objputstrbufferpayl(o_subjbuf 256) // in forgotemailsender"
+↦ _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _2FXiwIpgvSK_8ToB2yuiBe4 ( _2vpoJExI154_9g8xyyrbJSw  256)
+
+»_963UhXc9DrO_6iXultoQvTP
 
 
 
