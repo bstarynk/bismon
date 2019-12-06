@@ -1877,14 +1877,40 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
   objectval_tyBM *k_login_onion_handler = BMK_8qHowkDvzRL_03sltCgsDN2;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_login_onion_handler,
                  objectval_tyBM * contribob;
+                 objectval_tyBM * decayob;
     );
+  char oidbuf[32];
+  char errmsg[200];
   const char *reqpath = onion_request_get_path (req);
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);
+  memset (oidbuf, 0, sizeof (oidbuf));
+  memset (errmsg, 0, sizeof (errmsg));
+  unsigned randnum = 0;
   DBGPRINTF_BM
     ("forgotpasswd_onion_handler_BM start reqpath=%s fullpath=%s reqflags #%d reqmeth#%d:%s",
      reqpath, onion_request_get_fullpath (req), reqflags, reqmeth,
      onion_request_methods[reqmeth]);
+  if (sscanf (reqpath, "_forgotpasswd/%25[0-9A-Za-z_]/%u", oidbuf, &randnum) <
+      2)
+    {
+      WARNPRINTF_BM ("forgotpasswd_onion_handler_BM bad reqpath %s", reqpath);
+      snprintf (errmsg, sizeof (errmsg), "invalid reqpath %s", reqpath);
+    }
+  char *end = NULL;
+  rawid_tyBM oid = parse_rawid_BM (oidbuf, &end);
+  if (!validid_BM (oid) || (end && *end))
+    {
+      WARNPRINTF_BM
+        ("forgotpasswd_onion_handler_BM  reqpath %s with bad oidbuf", reqpath,
+         oidbuf);
+      snprintf (errmsg, sizeof (errmsg), "invalid oid %s", oidbuf);
+    }
+  _.decayob = findobjofid_BM (oid);
+  DBGPRINTF_BM
+    ("forgotpasswd_onion_handler_BM reqpath=%s decayob=%s randnum=%u",
+     reqpath, objectdbg_BM (_.decayob), randnum);
+
   FATAL_BM ("unimplemented forgotpasswd_onion_handler_BM fullpath=%s",
             onion_request_get_fullpath (req));
 #warning unimplemented forgotpasswd_onion_handler_BM
