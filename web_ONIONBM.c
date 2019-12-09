@@ -1965,7 +1965,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                    objdecayedvectallocsizepayl_BM (_.decayob),
                    objdecayedvectorlimitimepayl_BM (_.decayob),
                    objdecayedvectorlimitimepayl_BM (_.decayob) -
-                   clocktime_BM (CLOCK_REALTIME));
+                   elapsedtime_BM ());
               }
             else
               {
@@ -2224,8 +2224,9 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                         objectdbg_BM (_.decayob));
             onion_dict_add (ctxdic, "changepasswd_otherand", otherbuf,
                             OD_DUP_VALUE);
-            DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST otherandnum %u",
-                          otherandnum);
+            DBGPRINTF_BM
+              ("forgotpasswd_onion_handler_BM POST otherandnum %u updated decayob %s",
+               otherandnum, objectdbg_BM (_.decayob));
           }
           //// @@@@TODO: complete
           onion_dict_add (ctxdic, "changepasswd_extramessage",
