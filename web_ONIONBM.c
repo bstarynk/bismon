@@ -1914,9 +1914,6 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
      onion_request_methods[reqmeth]);
   if (reqmeth == OR_POST)
     {
-      DBGBACKTRACEPRINTF_BM
-        ("forgotpasswd_onion_handler_BM POST reqpath=%s unimplemented",
-         reqpath);
       // pid
       int post_pid = 0;
       {
@@ -1957,11 +1954,75 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
              reqpath);
       }
       // random
+      unsigned rand = 0;
+      {
+        const char *randstr = onion_request_get_post (req, "random");
+        if (randstr)
+          {
+            rand = atoi (randstr);
+            DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST rand %u", rand);
+          }
+        else
+          DBGPRINTF_BM
+            ("forgotpasswd_onion_handler_BM POST reqpath %s no rand",
+             reqpath);
+      }
       // otherand
+      unsigned otherand = 0;
+      {
+        const char *otherandstr = onion_request_get_post (req, "otherand");
+        if (otherandstr)
+          {
+            otherand = atoi (otherandstr);
+            DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST otherand %u",
+                          otherand);
+          }
+        else
+          DBGPRINTF_BM
+            ("forgotpasswd_onion_handler_BM POST reqpath %s no otherand",
+             reqpath);
+      }
       // newpassword
+      const char *newpasswdstr = onion_request_get_post (req, "newpasswdstr");
+      if (newpasswdstr)
+        DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST newpasswd '%s'",
+                      newpasswdstr);
+      DBGPRINTF_BM
+        ("forgotpasswd_onion_handler_BM POST reqpath %s no newpasswd",
+         reqpath);
+
       // confirmpasswd
+      const char *confirmpasswdstr =
+        onion_request_get_post (req, "confirmpasswdstr");
+      if (confirmpasswdstr)
+        DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST confirmpasswd '%s'",
+                      confirmpasswdstr);
+      else
+        DBGPRINTF_BM
+          ("forgotpasswd_onion_handler_BM POST reqpath %s no confirmpasswd",
+           reqpath);
       // dochange
+      const char *dochangestr = onion_request_get_post (req, "dochangestr");
+      if (dochangestr)
+        DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST dochange '%s'",
+                      dochangestr);
+      else
+        DBGPRINTF_BM
+          ("forgotpasswd_onion_handler_BM POST reqpath %s no dochange",
+           reqpath);
       // doclear
+      const char *doclearstr = onion_request_get_post (req, "doclearstr");
+      if (doclearstr)
+        DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST doclear '%s'",
+                      doclearstr);
+      else
+        DBGPRINTF_BM
+          ("forgotpasswd_onion_handler_BM POST reqpath %s no doclear",
+           reqpath);
+      ///
+      DBGBACKTRACEPRINTF_BM
+        ("forgotpasswd_onion_handler_BM POST reqpath=%s unimplemented",
+         reqpath);
 #warning forgotpasswd_onion_handler_BM POST unimplemented
       return OCS_INTERNAL_ERROR;
     }
