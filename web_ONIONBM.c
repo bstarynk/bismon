@@ -1912,6 +1912,49 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
     ("forgotpasswd_onion_handler_BM start reqpath=%s fullpath=%s reqflags #%d reqmeth#%d:%s",
      reqpath, onion_request_get_fullpath (req), reqflags, reqmeth,
      onion_request_methods[reqmeth]);
+  if (reqmeth == OR_POST)
+    {
+      DBGBACKTRACEPRINTF_BM
+        ("forgotpasswd_onion_handler_BM POST reqpath=%s unimplemented",
+         reqpath);
+      // pid
+      int post_pid = 0;
+      {
+        const char *pidstr = onion_request_get_post (req, "pid");
+        if (pidstr)
+          post_pid = atoi (pidstr);
+        DBGPRINTF_BM ("forgotpasswd_onion_handler_BM post_pid=%d", post_pid);
+      }
+      // decayob
+      {
+        _.decayob = NULL;
+        const char *decayobstr = onion_request_get_post (req, "decayob");
+        if (decayobstr)
+          {
+            char *end = NULL;
+            rawid_tyBM oid = parse_rawid_BM (decayobstr, &end);
+            if (!validid_BM (oid) || (end && *end))
+              {
+                WARNPRINTF_BM
+                  ("forgotpasswd_onion_handler_BM POST reqpath %s with bad decayob %s",
+                   reqpath, decayobstr);
+                snprintf (errmsg, sizeof (errmsg), "invalid oid %s", oidbuf);
+              }
+            else
+              _.decayob = findobjofid_BM (oid);
+          }
+        DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST decayob %s",
+                      objectdbg_BM (_.decayob));
+      }
+      // random
+      // otherand
+      // newpassword
+      // confirmpasswd
+      // dochange
+      // doclear
+#warning forgotpasswd_onion_handler_BM POST unimplemented
+      return OCS_INTERNAL_ERROR;
+    }
   if (sscanf (reqpath, "_forgotpasswd/%25[0-9A-Za-z_]/%u", oidbuf, &randnum) <
       2)
     {
