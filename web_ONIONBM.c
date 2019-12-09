@@ -2034,22 +2034,34 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
       const char *dochangestr = onion_request_get_post (req, "dochange");
       if (dochangestr)
         {
+          _.decayrandomv = NULL;
+          _.decayotherv = NULL;
+          _.decaycontribv = NULL;
+          _.decayclosurev = NULL;
           DBGBACKTRACEPRINTF_BM
             ("forgotpasswd_onion_handler_BM POST dochange '%s'", dochangestr);
           if (post_pid == (int) getpid () && isobject_BM (_.decayob)
               && objhasdecayedvectorpayl_BM (_.decayob)
               && objdecayedvectlenpayl_BM (_.decayob) >=
               DECAYFORGOTTEN__LASTINDEX_bm && rand > 0 && otherand > 0
+              //
               && (_.decayrandomv =
                   objdecayedvectornthpayl_BM (_.decayob,
                                               DECAYFORGOTTENRANDOMIX_bm))
               && istaggedint_BM (_.decayrandomv)
               && taggedint_BM (_.decayrandomv) == rand
+              //
+              && (_.decayclosurev =
+                  objdecayedvectornthpayl_BM (_.decayob,
+                                              DECAYFORGOTTENCLOSUREIX_bm))
+              && isclosure_BM (_.decayclosurev)
+              //
               && (_.decayotherv =
                   objdecayedvectornthpayl_BM (_.decayob,
                                               DECAYFORGOTTENOTHERANDIX_bm))
               && istaggedint_BM (_.decayotherv)
               && taggedint_BM (_.decayotherv) == otherand
+              //
               && (_.decaycontribv =
                   objdecayedvectornthpayl_BM (_.decayob,
                                               DECAYFORGOTTENCONTRIBIX_bm))
@@ -2057,13 +2069,17 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
               && (_.contribob == objectcast_BM (_.decaycontribv)))
             {
               DBGPRINTF_BM
-                ("forgotpasswd_onion_handler_BM POST nice dochange contribob %s",
-                 objectdbg_BM (_.contribob));
+                ("forgotpasswd_onion_handler_BM POST nice dochange contribob %s, decayclosurev %s",
+                 objectdbg_BM (_.contribob),
+                 OUTSTRVALUE_BM (_.decayclosurev));
             }
           else
             {
               DBGPRINTF_BM
-                ("forgotpasswd_onion_handler_BM POST ugly dochange decayrandomv %s, decayotherv %s, decaycontribv %s",
+                ("forgotpasswd_onion_handler_BM POST ugly dochange decayob %s\n"
+                 " decayclosurev %s, decayrandomv %s, decayotherv %s, decaycontribv %s",
+                 objectdbg_BM (_.decayob),
+                 OUTSTRVALUE_BM (_.decayclosurev),
                  OUTSTRVALUE_BM (_.decayrandomv),
                  OUTSTRVALUE_BM (_.decayotherv),
                  OUTSTRVALUE_BM (_.decaycontribv));
