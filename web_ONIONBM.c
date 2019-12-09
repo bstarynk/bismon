@@ -1914,6 +1914,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
      onion_request_methods[reqmeth]);
   if (reqmeth == OR_POST)
     {
+      ///// keep in sync with changepasswd_ONIONBM.thtml
       // pid
       int post_pid = 0;
       {
@@ -1967,10 +1968,10 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
             ("forgotpasswd_onion_handler_BM POST reqpath %s no rand",
              reqpath);
       }
-      // otherand
+      // changepasswd_otherand
       unsigned otherand = 0;
       {
-        const char *otherandstr = onion_request_get_post (req, "otherand");
+        const char *otherandstr = onion_request_get_post (req, "changepasswd_otherand");
         if (otherandstr)
           {
             otherand = atoi (otherandstr);
@@ -1983,7 +1984,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
              reqpath);
       }
       // newpassword
-      const char *newpasswdstr = onion_request_get_post (req, "newpasswdstr");
+      const char *newpasswdstr = onion_request_get_post (req, "newpasswd");
       if (newpasswdstr)
         DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST newpasswd '%s'",
                       newpasswdstr);
@@ -1993,7 +1994,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
 
       // confirmpasswd
       const char *confirmpasswdstr =
-        onion_request_get_post (req, "confirmpasswdstr");
+        onion_request_get_post (req, "confirmpasswd");
       if (confirmpasswdstr)
         DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST confirmpasswd '%s'",
                       confirmpasswdstr);
