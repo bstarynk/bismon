@@ -164,7 +164,7 @@ clean:
 	if ls *.log ; then tar cvzf /tmp/bismon-prev-log.tar.gz _*.log; fi
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
 	$(RM) .ninja* *mkd  _cflagsmodule.mk
-	$(RM) build.ninja
+	$(RM) build.ninja _bismon.pid
 	$(RM) core* *.i *.ii *prof.out gmon.out
 	$(RM) *BM.const.h _bm_allconsts*.c
 	$(RM) $(patsubst %.thtml, _%.c, $(ONIONBM_WEBTEMPLATES))
