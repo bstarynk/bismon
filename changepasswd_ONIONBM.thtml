@@ -20,7 +20,7 @@
 the <a href='https://github.com/bstarynk/bismon'>bismon</a> process
 {{bismon_pid}} on {{bismon_host}} at <i>{{changepasswd_time}}</i>.<br/>
 <form action='{{changepasswd_url}}' method='post'>
-    <input type='hidden' name='pid'> value='{{bismon_pid}}'/>
+    <input type='hidden' name='pid' value='{{bismon_pid}}'/>
     <input type='hidden' name='decayob' value='{{changepasswd_decayob}}'/>
     <input type='hidden' name='random' value='{{changepasswd_random}}'/>
     <input type='hidden' name='otherand' value='{{changepasswd_otherand}}'/>
