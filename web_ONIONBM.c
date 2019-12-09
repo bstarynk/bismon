@@ -1644,7 +1644,7 @@ do_forgot_email_onion_handler_BM (const char *formuser,
                     objectdbg_BM (_.contribob),
                     objectdbg1_BM (_.decayforgotob),
                     objdecayedvectallocsizepayl_BM (_.decayforgotob));
-      uint32_t rn = g_random_int () % 100000000;
+      uint32_t rn = 2 + (g_random_int () % 100000000);
       onion_dict *mailctxdic =
         make_onion_dict_forgotten_email_BM (_.contribob, _.decayforgotob, rn,
                                             CURFRAME_BM);
@@ -2077,11 +2077,33 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                           contact_name_BM, OD_DUP_VALUE);
           onion_dict_add (ctxdic, "contact_email",
                           contact_email_BM, OD_DUP_VALUE);
+          {
+            char randbuf[32];
+            memset (randbuf, 0, sizeof (randbuf));
+            snprintf (randbuf, sizeof (randbuf) - 1, "%u", randnum);
+            onion_dict_add (ctxdic, "changepasswd_random",
+                            randbuf, OD_DUP_VALUE);
+            DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST randum %u",
+                          randnum);
+          }
+          uint32_t otherandnum = 10 + (g_random_int () % 100000000);
+          {
+            char otherbuf[32];
+            memset (otherbuf, 0, sizeof (otherbuf));
+            snprintf (otherbuf, sizeof (otherbuf) - 1, "%u",
+                      (unsigned) otherandnum);
+            if (!objdecayedvectorputnthpayl_BM
+                (_.decayob, DECAYFORGOTTENOTHERANDIX_bm,
+                 taggedint_BM (otherandnum)))
+              // this should never happen
+              FATAL_BM ("failed to put other random in decayob %s",
+                        objectdbg_BM (_.decayob));
+            onion_dict_add (ctxdic, "changepasswd_otherand", otherbuf,
+                            OD_DUP_VALUE);
+            DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST otherandnum %u",
+                          otherandnum);
+          }
           //// @@@@TODO: complete
-          onion_dict_add (ctxdic, "changepasswd_random",
-                          "?changepasswdrandom?", OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "changepasswd_otherand",
-                          "?changepasswdotherand?", OD_DUP_VALUE);
           onion_dict_add (ctxdic, "changepasswd_extramessage",
                           "?changepasswdextramessage?", OD_DUP_VALUE);
 #warning some missing code for changepasswd_* things in forgotpasswd_onion_handler_BM
