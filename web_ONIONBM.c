@@ -1983,22 +1983,53 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                           bytstring_BM (_.contribnamv), OD_DUP_VALUE);
           onion_dict_add (ctxdic, "contributor_email",
                           bytstring_BM (_.contribemailv), OD_DUP_VALUE);
-#warning some missing code for changepasswd_* things in forgotpasswd_onion_handler_BM
-          WARNPRINTF_BM
-            ("forgotpasswd_onion_handler_BM missing code for request %s",
-             reqpath);
-          onion_dict_add (ctxdic, "changepasswd_time", "?changepasswdtime?",
-                          OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "changepasswd_url", "?changepasswdurl?",
-                          OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "changepasswd_decayob",
-                          "?changepasswddecayob?", OD_DUP_VALUE);
+          // the change passwd time is now
+          {
+            time_t nowt = time (NULL);
+            struct tm nowtm;
+            memset (&nowtm, 0, sizeof (nowtm));
+            if (!localtime_r (&nowt, &nowtm))
+              FATAL_BM ("localtime_r failed %m");
+            char nowbuf[64];
+            memset (nowbuf, 0, sizeof (nowbuf));
+            strftime (nowbuf, sizeof (nowbuf) - 1, "%c", &nowtm);
+            DBGPRINTF_BM ("forgotpasswd_onion_handler_BM nowbuf=%s", nowbuf);
+            onion_dict_add (ctxdic, "changepasswd_time", nowbuf,
+                            OD_DUP_VALUE);
+          }
+          // the POST URL
+          {
+            char posturl[96];
+            memset (posturl, 0, sizeof (posturl));
+            if (onion_ssl_certificate_BM)
+              snprintf (posturl, sizeof (posturl) - 1,
+                        "https://%s/_forgotpasswd/", onion_web_base_BM);
+            else
+              snprintf (posturl, sizeof (posturl) - 1,
+                        "http://%s/_forgotpasswd/", onion_web_base_BM);
+            DBGPRINTF_BM ("forgotpasswd_onion_handler_BM posturl=%s",
+                          posturl);
+            onion_dict_add (ctxdic, "changepasswd_url", posturl,
+                            OD_DUP_VALUE);
+          }
+          /// the decayob
+          {
+            char decaybuf[32];
+            memset (decaybuf, 0, sizeof (decaybuf));
+            idtocbuf32_BM (objid_BM (_.decayob), decaybuf);
+            onion_dict_add (ctxdic, "changepasswd_decayob",
+                            decaybuf, OD_DUP_VALUE);
+          }
           onion_dict_add (ctxdic, "changepasswd_random",
                           "?changepasswdrandom?", OD_DUP_VALUE);
           onion_dict_add (ctxdic, "changepasswd_otherand",
                           "?changepasswdotherand?", OD_DUP_VALUE);
           onion_dict_add (ctxdic, "changepasswd_extramessage",
                           "?changepasswdextramessage?", OD_DUP_VALUE);
+#warning some missing code for changepasswd_* things in forgotpasswd_onion_handler_BM
+          WARNPRINTF_BM
+            ("forgotpasswd_onion_handler_BM missing code for request %s",
+             reqpath);
           changepasswd_ONIONBM_thtml (ctxdic, resp);
           onion_dict_free (ctxdic);
           return OCS_PROCESSED;
