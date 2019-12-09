@@ -38,8 +38,10 @@ the <a href='https://github.com/bstarynk/bismon'>bismon</a> process
 
   
   <p class='tinyinfo_cl'>Contact {{contact_name}} at <a href='mailto:{{contact_email}}'>{{contact_email}}</a> for help.
-  
+
+  {% if changepasswd_extramessage %}
   <p class='tinyinfo_cl'>{{changepasswd_extramessage}}</p>
+  {% endif %}
   
   <p class='tinyinfo_cl'><b>PS:</b> to customize this, edit the <tt>changepasswd_ONIONBM.thtml</tt> file.</p>
 
