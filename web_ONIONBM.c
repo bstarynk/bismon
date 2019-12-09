@@ -1914,6 +1914,16 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
      onion_request_methods[reqmeth]);
   if (reqmeth == OR_POST)
     {
+      if (debugmsg_BM)
+        {
+          const onion_dict *postdict = onion_request_get_post_dict (req);
+          onion_block *postblock = onion_dict_to_json (postdict);
+          DBGPRINTF_BM ("forgotpasswd_onion_handler_BM postdict count %d\n"
+                        ".. postblock:\n"
+                        "%s\n", onion_dict_count (postdict),
+                        onion_block_data (postblock));
+          onion_block_free (postblock), postblock = NULL;
+        };
       ///// keep in sync with changepasswd_ONIONBM.thtml
       // pid
       int post_pid = 0;
@@ -1971,7 +1981,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
       // changepasswd_otherand
       unsigned otherand = 0;
       {
-        const char *otherandstr = onion_request_get_post (req, "changepasswd_otherand");
+        const char *otherandstr = onion_request_get_post (req, "otherand");
         if (otherandstr)
           {
             otherand = atoi (otherandstr);
@@ -1984,29 +1994,55 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
              reqpath);
       }
       // newpassword
-      const char *newpasswdstr = onion_request_get_post (req, "newpasswd");
-      if (newpasswdstr)
-        DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST newpasswd '%s'",
-                      newpasswdstr);
+      const char *newpasswordstr =
+        onion_request_get_post (req, "newpassword");
+      if (newpasswordstr)
+        DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST newpassword '%s'",
+                      newpasswordstr);
       DBGPRINTF_BM
-        ("forgotpasswd_onion_handler_BM POST reqpath %s no newpasswd",
+        ("forgotpasswd_onion_handler_BM POST reqpath %s no newpassword",
          reqpath);
 
       // confirmpasswd
-      const char *confirmpasswdstr =
-        onion_request_get_post (req, "confirmpasswd");
-      if (confirmpasswdstr)
-        DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST confirmpasswd '%s'",
-                      confirmpasswdstr);
+      const char *confirmpasswordstr =
+        onion_request_get_post (req, "confirmpassword");
+      if (confirmpasswordstr)
+        DBGPRINTF_BM
+          ("forgotpasswd_onion_handler_BM POST confirmpassword '%s'",
+           confirmpasswordstr);
       else
         DBGPRINTF_BM
-          ("forgotpasswd_onion_handler_BM POST reqpath %s no confirmpasswd",
+          ("forgotpasswd_onion_handler_BM POST reqpath %s no confirmpassword",
            reqpath);
       // dochange
-      const char *dochangestr = onion_request_get_post (req, "dochangestr");
+      const char *dochangestr = onion_request_get_post (req, "dochange");
       if (dochangestr)
-        DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST dochange '%s'",
-                      dochangestr);
+        {
+          DBGBACKTRACEPRINTF_BM
+            ("forgotpasswd_onion_handler_BM POST dochange '%s'", dochangestr);
+          if (post_pid == (int) getpid () && isobject_BM (_.decayob)
+              && objhasdecayedvectorpayl_BM (_.decayob)
+              && objdecayedvectlenpayl_BM (_.decayob) >=
+              DECAYFORGOTTEN__LASTINDEX_bm && rand > 0 && otherand > 0
+              && (_.decayrandomv =
+                  objdecayedvectornthpayl_BM (_.decayob,
+                                              DECAYFORGOTTENRANDOMIX_bm))
+              && istaggedint_BM (_.decayrandomv)
+              && taggedint_BM (_.decayrandomv) == rand
+              && (_.decayotherv =
+                  objdecayedvectornthpayl_BM (_.decayob,
+                                              DECAYFORGOTTENOTHERANDIX_bm))
+              && istaggedint_BM (_.decayotherv)
+              && taggedint_BM (_.decayotherv) == otherand
+              && (_.decaycontribv =
+                  objdecayedvectornthpayl_BM (_.decayob,
+                                              DECAYFORGOTTENCONTRIBIX_bm))
+              && isobject_BM (_.decaycontribv)
+              && (_.contribob == objectcast_BM (_.decaycontribv)))
+            DBGPRINTF_BM
+              ("forgotpasswd_onion_handler_BM POST nice  dochange contribob %s",
+               objectdbg_BM (_.contribob));
+        }
       else
         DBGPRINTF_BM
           ("forgotpasswd_onion_handler_BM POST reqpath %s no dochange",
