@@ -1513,19 +1513,25 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
         FATAL_BM
           ("failed to append into decayforgotob %s the random number %u",
            objectdbg_BM (_.decayforgotob), rn);
+      if (!objdecayedvectorappendpayl_BM (_.decayforgotob,      //DECAYFORGOTTENOTHERANDIX_bm
+                                          NULL))
+        /// should never happen
+        FATAL_BM
+          ("failed to append into decayforgotob %s the null for otherrandix",
+           objectdbg_BM (_.decayforgotob));
       DBGPRINTF_BM
         ("make_onion_dict_forgotten_email_BM contribob %s filled-empty-decay\n"
          "decayforgotob %s (len%u,asiz%u) with [contrib: %s, closure: %s, random: %s]\n"
-         " filled rn %u",
-         objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
+         " filled rn %u", objectdbg_BM (_.contribob),
+         objectdbg1_BM (_.decayforgotob),
          objdecayedvectlenpayl_BM (_.decayforgotob),
          objdecayedvectallocsizepayl_BM (_.decayforgotob),
-         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM (_.decayforgotob,
-                                                     DECAYFORGOTTENCONTRIBIX_bm)),
-         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM (_.decayforgotob,
-                                                     DECAYFORGOTTENCLOSUREIX_bm)),
-         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM (_.decayforgotob,
-                                                     DECAYFORGOTTENRANDOMIX_bm)),
+         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM
+                         (_.decayforgotob, DECAYFORGOTTENCONTRIBIX_bm)),
+         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM
+                         (_.decayforgotob, DECAYFORGOTTENCLOSUREIX_bm)),
+         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM
+                         (_.decayforgotob, DECAYFORGOTTENRANDOMIX_bm)),
          objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn);
     };
   DBGBACKTRACEPRINTF_BM
@@ -1555,8 +1561,12 @@ forgotpasswd_urlstring_BM (objectval_tyBM * decayforgotarg,
                  value_tyBM resv;       // result
     );
   _.decayforgotob = decayforgotarg;
-  DBGPRINTF_BM ("forgotpasswd_urlstring start decayforgotob %s",
-                objectdbg_BM (_.decayforgotob));
+  DBGPRINTF_BM
+    ("forgotpasswd_urlstring start decayforgotob %s, decaylen#%d, decaysize#%d, LASTINDEX:%d",
+     objectdbg_BM (_.decayforgotob),
+     objdecayedvectlenpayl_BM (_.decayforgotob),
+     objdecayedvectallocsizepayl_BM (_.decayforgotob),
+     DECAYFORGOTTEN__LASTINDEX_bm);
   WEAKASSERT_BM (objdecayedvectlenpayl_BM (_.decayforgotob) >=
                  DECAYFORGOTTEN__LASTINDEX_bm);
   _.contribob =
@@ -1630,8 +1640,10 @@ do_forgot_email_onion_handler_BM (const char *formuser,
         FATAL_BM ("failed to put decaying vector in %s",
                   objectdbg_BM (_.decayforgotob));
       DBGPRINTF_BM ("do_forgot_email_onion_handler_BM %s\n"
-                    ".. decayforgotob %s", objectdbg_BM (_.contribob),
-                    objectdbg1_BM (_.decayforgotob));
+                    ".. decayforgotob %s allocsize %u",
+                    objectdbg_BM (_.contribob),
+                    objectdbg1_BM (_.decayforgotob),
+                    objdecayedvectallocsizepayl_BM (_.decayforgotob));
       uint32_t rn = g_random_int () % 100000000;
       onion_dict *mailctxdic =
         make_onion_dict_forgotten_email_BM (_.contribob, _.decayforgotob, rn,
@@ -1967,11 +1979,12 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                           bytstring_BM (_.contribemailv), OD_DUP_VALUE);
 #warning some missing code for changepasswd_* things in forgotpasswd_onion_handler_BM
           WARNPRINTF_BM
-            ("forgotpasswd_onion_handler_BM missing code for request %s", reqpath);
-          onion_dict_add (ctxdic, "changepasswd_time",
-                          "?changepasswdtime?", OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "changepasswd_url",
-                          "?changepasswdurl?", OD_DUP_VALUE);
+            ("forgotpasswd_onion_handler_BM missing code for request %s",
+             reqpath);
+          onion_dict_add (ctxdic, "changepasswd_time", "?changepasswdtime?",
+                          OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "changepasswd_url", "?changepasswdurl?",
+                          OD_DUP_VALUE);
           onion_dict_add (ctxdic, "changepasswd_decayob",
                           "?changepasswddecayob?", OD_DUP_VALUE);
           onion_dict_add (ctxdic, "changepasswd_random",
