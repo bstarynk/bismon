@@ -1956,8 +1956,24 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
               }
             else
               _.decayob = findobjofid_BM (oid);
-            DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST decayob %s",
-                          objectdbg_BM (_.decayob));
+            if (objhasdecayedvectorpayl_BM (_.decayob))
+              {
+                DBGPRINTF_BM
+                  ("forgotpasswd_onion_handler_BM POST decayob %s with decaying len#%d alsiz#%d limitime %.3f=now %+.3f",
+                   objectdbg_BM (_.decayob),
+                   objdecayedvectlenpayl_BM (_.decayob),
+                   objdecayedvectallocsizepayl_BM (_.decayob),
+                   objdecayedvectorlimitimepayl_BM (_.decayob),
+                   objdecayedvectorlimitimepayl_BM (_.decayob) -
+                   clocktime_BM (CLOCK_REALTIME));
+              }
+            else
+              {
+                DBGPRINTF_BM
+                  ("forgotpasswd_onion_handler_BM POST decayob %s nondecayvect",
+                   objectdbg_BM (_.decayob));
+              }
+
           }
         else
           DBGPRINTF_BM

@@ -865,6 +865,9 @@ static inline bool islivedecayedvect_BM (const value_tyBM v);
 static inline const value_tyBM *decayedvectdata_BM (const struct
                                                     decayedvectpayl_stBM
                                                     *dvec);
+/// return 0.0 if non decayedvect
+static inline double decayedvectlimitime_BM (const struct
+                                             decayedvectpayl_stBM *dvec);
 static inline value_tyBM decayedvectnth_BM (const struct decayedvectpayl_stBM
                                             *dvec, int rk);
 static inline value_tyBM decayedvectlast_BM (const struct decayedvectpayl_stBM
@@ -887,6 +890,7 @@ extern bool objputdecayedvectorpayl_BM (objectval_tyBM * obj, unsigned asiz,
 static inline struct decayedvectpayl_stBM
   *objgetdecayedvectorpayl_BM (objectval_tyBM * obj);
 static inline bool objhasdecayedvectorpayl_BM (objectval_tyBM * obj);
+static inline double objdecayedvectorlimitimepayl_BM (objectval_tyBM * obj);
 static inline value_tyBM objdecayedvectornthpayl_BM (objectval_tyBM * obj,
                                                      int rk);
 static inline value_tyBM objdecayedvectorlastpayl_BM (objectval_tyBM * obj);

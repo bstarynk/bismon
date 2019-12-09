@@ -1149,6 +1149,15 @@ decayedvectdata_BM (const struct decayedvectpayl_stBM *dvec)
   return dvec->decayp_arr;
 }                               /* end decayedvectdata_BM */
 
+double
+decayedvectlimitime_BM (const struct decayedvectpayl_stBM *dvec)
+{
+  if (valtype_BM ((const value_tyBM) dvec) != typayl_decayed_BM)
+    return 0;
+  return dvec->decayp_limitime;
+}                               /* end decayedvectlimitime_BM */
+
+
 bool
 islivedecayedvect_BM (const value_tyBM v)
 {
@@ -1229,6 +1238,16 @@ objhasdecayedvectorpayl_BM (objectval_tyBM * obj)
 {
   return objgetdecayedvectorpayl_BM (obj) != NULL;
 }                               /* end objhasdecayedvectorpayl_BM */
+
+double
+objdecayedvectorlimitimepayl_BM (objectval_tyBM * obj)
+{
+  struct decayedvectpayl_stBM *dy = objgetdecayedvectorpayl_BM (obj);
+  if (!dy)
+    return 0.0;
+  return decayedvectlimitime_BM (dy);
+}                               /* end objdecayedvectorlimitimepayl_BM */
+
 
 value_tyBM
 objdecayedvectornthpayl_BM (objectval_tyBM * obj, int rk)
