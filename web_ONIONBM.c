@@ -1999,10 +1999,10 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
       if (newpasswordstr)
         DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST newpassword '%s'",
                       newpasswordstr);
-      DBGPRINTF_BM
-        ("forgotpasswd_onion_handler_BM POST reqpath %s no newpassword",
-         reqpath);
-
+      else
+        DBGPRINTF_BM
+          ("forgotpasswd_onion_handler_BM POST reqpath %s no newpassword",
+           reqpath);
       // confirmpasswd
       const char *confirmpasswordstr =
         onion_request_get_post (req, "confirmpassword");
@@ -2039,9 +2039,19 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                                               DECAYFORGOTTENCONTRIBIX_bm))
               && isobject_BM (_.decaycontribv)
               && (_.contribob == objectcast_BM (_.decaycontribv)))
-            DBGPRINTF_BM
-              ("forgotpasswd_onion_handler_BM POST nice  dochange contribob %s",
-               objectdbg_BM (_.contribob));
+            {
+              DBGPRINTF_BM
+                ("forgotpasswd_onion_handler_BM POST nice dochange contribob %s",
+                 objectdbg_BM (_.contribob));
+            }
+          else
+            {
+              DBGPRINTF_BM
+                ("forgotpasswd_onion_handler_BM POST ugly dochange decayrandomv %s, decayotherv %s, decaycontribv %s",
+                 OUTSTRVALUE_BM (_.decayrandomv),
+                 OUTSTRVALUE_BM (_.decayotherv),
+                 OUTSTRVALUE_BM (_.decaycontribv));
+            }
         }
       else
         DBGPRINTF_BM
@@ -3135,6 +3145,8 @@ initialize_webonion_BM (void)
     FATAL_BM ("signalfd failed in initialize_webonion");
 }                               /* end initialize_webonion_BM */
 
+
+void add_postponetimer_command_onion_BM (void);
 
 void
 register_web_postponed_BM (double nextimstamp)
