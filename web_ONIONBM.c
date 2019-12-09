@@ -1955,8 +1955,14 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
           && getint_BM (_.decayrandomv) == randnum)
         {
           WEAKASSERT_BM (!_.decayotherv);
+          _.contribob = objectcast_BM (_.decaycontribv);
           _.contribnamv = objcontributornamepayl_BM (_.contribob);
           _.contribemailv = objcontributoremailpayl_BM (_.contribob);
+          DBGPRINTF_BM ("forgotpasswd_onion_handler_BM contribob=%s\n"
+                        " .. contribnamv %s, contribemailv %s",
+                        objectdbg_BM (_.contribob),
+                        OUTSTRVALUE_BM (_.contribnamv),
+                        OUTSTRVALUE_BM (_.contribemailv));
           ASSERT_BM (isstring_BM (_.contribnamv));
           ASSERT_BM (isstring_BM (_.contribemailv));
           DBGPRINTF_BM
@@ -3048,8 +3054,7 @@ web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
                                 WARNPRINTF_BM
                                   ("unexpected null byte from process pid#%d command node %s in %s",
                                    (int) onionrunprocarr_BM[runix].rp_pid,
-                                   debug_outstr_value_BM
-                                   (onproc->rp_cmdnodv, CURFRAME_BM, 0),
+                                   OUTSTRVALUE_BM (onproc->rp_cmdnodv),
                                    bytstring_BM (onproc->rp_dirstrv) ? :
                                    "./");
                                 if (kill (onproc->rp_pid, SIGTERM) == 0)
@@ -3465,6 +3470,9 @@ webonion_send_forgotten_email_BM (objectval_tyBM * contribobarg,
     );
   _.contribob = contribobarg;
   _.decayob = decayobarg;
+  DBGBACKTRACEPRINTF_BM
+    ("start webonion_send_forgotten_email_BM contribob=%s decayob=%s",
+     objectdbg_BM (_.contribob), objectdbg1_BM (_.decayob));
   ASSERT_BM (isobject_BM (_.contribob));
   ASSERT_BM (isobject_BM (_.decayob));
   ASSERT_BM (objislocked_BM (_.contribob));
