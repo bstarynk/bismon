@@ -1922,8 +1922,14 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
       {
         const char *pidstr = onion_request_get_post (req, "pid");
         if (pidstr)
-          post_pid = atoi (pidstr);
-        DBGPRINTF_BM ("forgotpasswd_onion_handler_BM post_pid=%d", post_pid);
+          {
+            post_pid = atoi (pidstr);
+            DBGPRINTF_BM ("forgotpasswd_onion_handler_BM post_pid=%d",
+                          post_pid);
+          }
+        else
+          DBGPRINTF_BM
+            ("forgotpasswd_onion_handler_BM reqpath %s POST no pid", reqpath);
       }
       // decayob
       {
@@ -1942,9 +1948,13 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
               }
             else
               _.decayob = findobjofid_BM (oid);
+            DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST decayob %s",
+                          objectdbg_BM (_.decayob));
           }
-        DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST decayob %s",
-                      objectdbg_BM (_.decayob));
+        else
+          DBGPRINTF_BM
+            ("forgotpasswd_onion_handler_BM POST reqpath %s no decayob",
+             reqpath);
       }
       // random
       // otherand
