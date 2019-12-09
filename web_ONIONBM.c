@@ -2020,6 +2020,11 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
             onion_dict_add (ctxdic, "changepasswd_decayob",
                             decaybuf, OD_DUP_VALUE);
           }
+          onion_dict_add (ctxdic, "contact_name",
+                          contact_name_BM, OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "contact_email",
+                          contact_email_BM, OD_DUP_VALUE);
+          //// @@@@TODO: complete
           onion_dict_add (ctxdic, "changepasswd_random",
                           "?changepasswdrandom?", OD_DUP_VALUE);
           onion_dict_add (ctxdic, "changepasswd_otherand",
