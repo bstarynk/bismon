@@ -24,9 +24,9 @@ the <a href='https://github.com/bstarynk/bismon'>bismon</a> process
     <input type='hidden' name='decayob' value='{{changepasswd_decayob}}'/>
     <input type='hidden' name='random' value='{{changepasswd_random}}'/>
     <input type='hidden' name='otherand' value='{{changepasswd_otherand}}'/>
-    <b>New password:</b><input type='password' name='password' value=''/>&nbsp;
+    <b>New password:</b><input type='password' name='newpassword' value=''/>&nbsp;
     <label for='password' class='expl_cl'>(enter new password)</label><br/>
-    <b>Confirm password:</b><input type='password' name='confirm' value=''/>&nbsp;
+    <b>Confirm password:</b><input type='password' name='confirmpassword' value=''/>&nbsp;
     <label for='password' class='expl_cl'>(confirm same new password)</label>
     <br/>
     <b>Change your password:</b> <input type='submit' name='dochange' value='Set password'/> &nbsp;
