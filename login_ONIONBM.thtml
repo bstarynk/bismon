@@ -42,7 +42,9 @@
     <label for='doforgot' class='expl_cl'>(get an email if you forgot your password)</label>
   </form>
 
+  {% if extra %}
   <p id='explainextra_id' class='explain_cl'>{{extra}}</p>
+  {% endif %}
   
   <p>If you login, you have agreed for
   our <a href='https://en.wikipedia.org/wiki/HTTP_cookie'>web
