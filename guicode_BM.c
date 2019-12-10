@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -1137,6 +1137,79 @@ ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO)    // gtk_browse_data°contributor_
 #endif /*BISMONGTK*/
     LOCALRETURN_BM (_.objbrows);
 }                               /* end  gtk_browse_data°contributor_class  _7xwUcosBMjj_3Sa2de3sCGO */
+
+
+
+
+////////////////
+extern objrout_sigBM ROUTINEOBJNAME_BM (_5W7KY9crMlv_1Q6deHedMZ5);
+
+value_tyBM
+ROUTINEOBJNAME_BM (_5W7KY9crMlv_1Q6deHedMZ5)    // gtk_browse_data°decaying_vector_object 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         //objbrow
+ const value_tyBM arg2,         //maxdepth
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ BMK_5W7KY9crMlv_1Q6deHedMZ5,
+                 const objectval_tyBM * objbrows;       //
+                 value_tyBM compv;      // decayed component
+    );
+  if (!isobject_BM (arg1))
+    FATAL_BM
+      ("non-object for method to gtk_browse_data for decaying_vector_object");
+  _.objbrows = (const objectval_tyBM *) arg1;
+  int depth = getint_BM (arg2);
+  ASSERT_BM (isobject_BM ((const value_tyBM) _.objbrows));
+  DBGPRINTF_BM
+    ("gtk_browse_data°decaying_vector_object objbrows %s depth %d",
+     objectdbg_BM (_.objbrows), depth);
+#ifdef BISMONGTK
+  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
+  void *payl = objpayload_BM (_.objbrows);
+  if (!payl)
+    {
+      gtk_text_buffer_insert_with_tags (brobuf,
+                                        &browserit_BM, "|no decayed payload|",
+                                        -1, miscomm_brotag_BM, NULL);
+      gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+      LOCALRETURN_BM (_.objbrows);
+    }
+  else if (objhasdecayedvectorpayl_BM (_.objbrows))
+    {
+      char msgbuf[128];
+      memset (msgbuf, 0, sizeof (msgbuf));
+      unsigned len = objdecayedvectlenpayl_BM (_.objbrows);
+      unsigned asiz = objdecayedvectallocsizepayl_BM (_.objbrows);
+      snprintf (msgbuf, sizeof (msgbuf) - 1,
+                "|decayed vector payload asiz%u, len%u, limitim %.3f= now %+.3f|",
+                asiz, len,
+                objdecayedvectorlimitimepayl_BM (_.objbrows),
+                objdecayedvectorlimitimepayl_BM (_.objbrows) -
+                elapsedtime_BM ());
+      gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, msgbuf, -1,
+                                        miscomm_brotag_BM, NULL);
+      for (unsigned ix = 0; ix < len; ix++)
+        {
+          gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+          _.compv = objdecayedvectornthpayl_BM (_.objbrows, ix);
+          memset (msgbuf, 0, sizeof (msgbuf));
+          snprintf (msgbuf, sizeof (msgbuf) - 1, "|decayed#%u:| ", ix);
+          gtk_text_buffer_insert_with_tags (brobuf,
+                                            &browserit_BM, msgbuf, -1,
+                                            miscomm_brotag_BM, NULL);
+          browse_value_BM ((const value_tyBM) _.compv, CURFRAME_BM, depth, 0);
+        }
+      if (len > 0)
+        gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+      LOCALRETURN_BM (_.objbrows);
+    }
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
+}                               /* end _5W7KY9crMlv_1Q6deHedMZ5 gtk_browse_data°decaying_vector_object */
+
 
 
 

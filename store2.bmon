@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3338 objects
+// for 3339 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -1431,7 +1431,8 @@ _4T8am97muLl_5969SR22Ecq
 ∈ _0LK4TzFd6u1_0JFUsrQ4odG |=class|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class for decaying objects - see  objputdecayedvectorpayl_BM"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
+~: _9uRC9w2Gte9_5mW0NanaS19  % _5W7KY9crMlv_1Q6deHedMZ5 () ~)
 »_87e9wrUSdIs_0tppKPUo41v
 
 
@@ -38430,6 +38431,17 @@ _2RUj1oyJ2rf_1ICZWr844Sv
  "expertise command_handler"
 
 »_5W4PPQFYdj2_3HYUlMsu3oZ
+
+
+
+«_5W7KY9crMlv_1Q6deHedMZ5
+Σ *
+± 1575971389.320
+∈ _2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "method for gtk_browse_data°decaying_vector_object(obj"& " maxdepth) in guicode_BM.c"
+
+»_5W7KY9crMlv_1Q6deHedMZ5
 
 
 

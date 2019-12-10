@@ -1652,10 +1652,12 @@ do_forgot_email_onion_handler_BM (const char *formuser,
         forgotwebpage_ONIONBM_thtml_handler_page (mailctxdic, req, resp);
       DBGPRINTF_BM
         ("after forgotwebpage_ONIONBM_thtml_handler_page restat#%d\n"
-         " .. before apply forgotemailsender %s contribob %s decayforgotob %s",
+         " .. before apply forgotemailsender %s contribob %s decayforgotob %s, decaylen%u, decayasiz%u",
          (int) restat,
          objectdbg_BM (k_forgotemailsender),
-         objectdbg1_BM (_.contribob), objectdbg2_BM (_.decayforgotob));
+         objectdbg1_BM (_.contribob), objectdbg2_BM (_.decayforgotob),
+         objdecayedvectlenpayl_BM (_.decayforgotob),
+         objdecayedvectallocsizepayl_BM (_.decayforgotob));
       _.resapplyv = apply2_BM (k_forgotemailsender,
                                CURFRAME_BM,
                                (value_tyBM) _.contribob,
