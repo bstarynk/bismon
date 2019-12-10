@@ -1945,6 +1945,8 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
       FATAL_BM ("calloc failed for crypt_data");
     memset (salt, 0, sizeof (salt));
     compute_crypt_salt32_BM (salt, _.contribob);
+    DBGPRINTF_BM ("put_contributor_password_BM contribob=%s salt'%s'",
+		  objectdbg_BM(_.contribob), salt);
     crydat->initialized = 0;
     char *cryp = crypt_r (passwd, salt, crydat);
     if (cryp)
