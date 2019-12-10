@@ -1835,8 +1835,9 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
   _.contribob = contribobarg;
   FILE *passfil = NULL;
   bool ok = false;
-  DBGBACKTRACEPRINTF_BM ("put_contributor_password_BM contribob=%s passwd=%s",
-                         objectdbg_BM (_.contribob), passwd);
+  DBGBACKTRACEPRINTF_BM
+    ("put_contributor_password_BM start contribob=%s passwd=%s",
+     objectdbg_BM (_.contribob), passwd);
   static long putcount;
 #define REJECT() do { DBGPRINTF_BM("put_contributor_password_BM rejects contribob %s passwd '%s'", \
   objectdbg_BM(_.contribob), passwd); ok=false; goto end; } while(0)
@@ -1943,6 +1944,9 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
     char *cryp = crypt_r (passwd, salt, crydat);
     if (cryp)
       strncpy (encrypassbuf, cryp, sizeof (encrypassbuf) - 8);
+    DBGPRINTF_BM
+      ("put_contributor_password_BM contribob =%s passwd '%s' encrypassbuf '%s'",
+       objectdbg_BM (_.contribob), passwd, encrypassbuf);
     memset (crydat, 0, sizeof (struct crypt_data));
     // the test below is always false, but we need the compiler to
     // emit it.  We don't want crypting secrets to leak, even with very
