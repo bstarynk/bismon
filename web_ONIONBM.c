@@ -2051,22 +2051,22 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                   objdecayedvectornthpayl_BM (_.decayob,
                                               DECAYFORGOTTENCONTRIBIX_bm))
               && isobject_BM (_.decaycontribv)
-              && (_.contribob == objectcast_BM (_.decaycontribv))
+              && (_.contribob = objectcast_BM (_.decaycontribv)) != NULL
               // closure at ix 1
               && (_.decayclosurev =
                   objdecayedvectornthpayl_BM (_.decayob,
-                                              DECAYFORGOTTENCLOSUREIX_bm))
-              && isclosure_BM (_.decayclosurev)
+                                              DECAYFORGOTTENCLOSUREIX_bm)) !=
+              NULL && isclosure_BM (_.decayclosurev)
               // random at ix 2
               && (_.decayrandomv =
                   objdecayedvectornthpayl_BM (_.decayob,
-                                              DECAYFORGOTTENRANDOMIX_bm))
-              && istaggedint_BM (_.decayrandomv)
+                                              DECAYFORGOTTENRANDOMIX_bm)) !=
+              NULL && istaggedint_BM (_.decayrandomv)
               // otherand at ix 3
               && (_.decayotherv =
                   objdecayedvectornthpayl_BM (_.decayob,
-                                              DECAYFORGOTTENOTHERANDIX_bm))
-              && istaggedint_BM (_.decayotherv)
+                                              DECAYFORGOTTENOTHERANDIX_bm)) !=
+              NULL && istaggedint_BM (_.decayotherv)
               // good random numbers
               && taggedint_BM (_.decayrandomv) == rand
               && taggedint_BM (_.decayotherv) == otherand)
