@@ -1562,7 +1562,7 @@ compute_crypt_salt32_BM (char salt[32], objectval_tyBM * contribob)
   ASSERT_BM (isstring_BM ((value_tyBM) namstr));
   hash_tyBM hnam = valhash_BM ((value_tyBM) namstr);
   ASSERT_BM (hnam > 0);
-  snprintf (salt, 32, "$6$%.12s%04x", idbuf + 1, hnam & 0xffff);
+  snprintf (salt, 32, "$6$%.8s%04x", idbuf + 1, hnam & 0xffff);
 }                               /* end compute_crypt_salt32_BM */
 
 
@@ -1946,7 +1946,7 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
     memset (salt, 0, sizeof (salt));
     compute_crypt_salt32_BM (salt, _.contribob);
     DBGPRINTF_BM ("put_contributor_password_BM contribob=%s salt'%s'",
-		  objectdbg_BM(_.contribob), salt);
+                  objectdbg_BM (_.contribob), salt);
     crydat->initialized = 0;
     char *cryp = crypt_r (passwd, salt, crydat);
     if (cryp)
