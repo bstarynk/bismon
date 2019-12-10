@@ -2068,19 +2068,26 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                                               DECAYFORGOTTENOTHERANDIX_bm)) !=
               NULL && istaggedint_BM (_.decayotherv)
               // good random numbers
-              && taggedint_BM (_.decayrandomv) == rand
-              && taggedint_BM (_.decayotherv) == otherand)
+              && getint_BM (_.decayrandomv) == rand
+              && getint_BM (_.decayotherv) == otherand)
             {
               DBGPRINTF_BM
-                ("forgotpasswd_onion_handler_BM POST nice dochange contribob %s, decayclosurev %s",
-                 objectdbg_BM (_.contribob),
-                 OUTSTRVALUE_BM (_.decayclosurev));
+                ("forgotpasswd_onion_handler_BM POST nice dochange decayob %s\n"
+                 ".. decayclosurev %s,\n"
+		 ".. decayrandomv %s, decayotherv %s, decaycontribv %s\n"
+                 ".. rand %u, otherand %u",
+                 objectdbg_BM (_.decayob),
+                 OUTSTRVALUE_BM (_.decayclosurev),
+                 OUTSTRVALUE_BM (_.decayrandomv),
+                 OUTSTRVALUE_BM (_.decayotherv),
+                 OUTSTRVALUE_BM (_.decaycontribv), rand, otherand);
             }
           else
             {
               DBGPRINTF_BM
                 ("forgotpasswd_onion_handler_BM POST ugly dochange decayob %s\n"
-                 ".. decayclosurev %s, decayrandomv %s, decayotherv %s, decaycontribv %s\n"
+                 ".. decayclosurev %s,\n"
+		 ".. decayrandomv %s, decayotherv %s, decaycontribv %s\n"
                  ".. rand %u, otherand %u",
                  objectdbg_BM (_.decayob),
                  OUTSTRVALUE_BM (_.decayclosurev),
