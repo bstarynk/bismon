@@ -2034,7 +2034,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
            reqpath);
       // dochange
       const char *dochangestr = onion_request_get_post (req, "dochange");
-      if (dochangestr)
+      if (dochangestr && newpasswordstr && confirmpasswordstr)
         {
           _.decayrandomv = NULL;
           _.decayotherv = NULL;
@@ -2074,20 +2074,49 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
               DBGPRINTF_BM
                 ("forgotpasswd_onion_handler_BM POST nice dochange decayob %s\n"
                  ".. decayclosurev %s,\n"
-		 ".. decayrandomv %s, decayotherv %s, decaycontribv %s\n"
-                 ".. rand %u, otherand %u",
+                 ".. decayrandomv %s, decayotherv %s, decaycontribv %s\n"
+                 ".. rand %u, otherand %u, newpassword='%s', confirmpassword='%s'",
                  objectdbg_BM (_.decayob),
                  OUTSTRVALUE_BM (_.decayclosurev),
                  OUTSTRVALUE_BM (_.decayrandomv),
                  OUTSTRVALUE_BM (_.decayotherv),
-                 OUTSTRVALUE_BM (_.decaycontribv), rand, otherand);
-            }
+                 OUTSTRVALUE_BM (_.decaycontribv), rand, otherand,
+                 newpasswordstr, confirmpasswordstr);
+              char *errmsg = NULL;
+              if (strcmp (newpasswordstr, confirmpasswordstr))
+                {
+                  errmsg = strdup ("non-identical passwords");
+                }
+              else if (valid_password_BM (newpasswordstr, &errmsg))
+                {
+                  ASSERT_BM (errmsg == NULL);
+                  DBGPRINTF_BM
+                    ("forgotpasswd_onion_handler_BM POST should change contribob %s password to '%s'",
+                     objectdbg_BM (_.contribob), newpasswordstr);
+                  if (put_contributor_password_BM
+                      (_.contribob, newpasswordstr, CURFRAME_BM))
+                    {
+                      DBGPRINTF_BM
+                        ("forgotpasswd_onion_handler_BM POST did change contribob %s password",
+                         objectdbg_BM (_.contribob));
+                    }
+                  else
+                    {
+                      DBGPRINTF_BM
+                        ("forgotpasswd_onion_handler_BM POST failed to change contribob %s password",
+                         objectdbg_BM (_.contribob));
+                    }
+                }
+              WARNPRINTF_BM
+                ("forgotpasswd_onion_handler_BM POST nice dochange incomplete");
+#warning forgotpasswd_onion_handler_BM POST nice dochange incomplete
+            }                   /* end if nice dochange */
           else
             {
               DBGPRINTF_BM
                 ("forgotpasswd_onion_handler_BM POST ugly dochange decayob %s\n"
                  ".. decayclosurev %s,\n"
-		 ".. decayrandomv %s, decayotherv %s, decaycontribv %s\n"
+                 ".. decayrandomv %s, decayotherv %s, decaycontribv %s\n"
                  ".. rand %u, otherand %u",
                  objectdbg_BM (_.decayob),
                  OUTSTRVALUE_BM (_.decayclosurev),
