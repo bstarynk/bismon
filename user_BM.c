@@ -1774,10 +1774,15 @@ check_contributor_password_BM (objectval_tyBM * contribobarg,
           FATAL_BM ("calloc failed for crypt_data");
         memset (salt, 0, sizeof (salt));
         compute_crypt_salt32_BM (salt, _.contribob);
+        DBGPRINTF_BM
+          ("check_contributor_password_BM contribob %s salt '%s' passwd '%s'",
+           objectdbg_BM (_.contribob), salt, passwd);
         crydat->initialized = 0;
         char *cryp = crypt_r (passwd, salt, crydat);
         if (cryp)
           strncpy (encrypassbuf, cryp, sizeof (encrypassbuf) - 8);
+        else
+          strcpy (encrypassbuf, "?!?");
         memset (crydat, 0, sizeof (struct crypt_data));
         // the test below is always false, but we need the compiler to
         // emit it. We don't want crypting secrets to leak!
