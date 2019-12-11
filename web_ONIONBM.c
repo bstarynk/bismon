@@ -1335,7 +1335,7 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
     }
   /// temporary. We should output a message mentioning the
   /// --init-after-load option of the bismon program
-  WARNPRINTF_BM ("login_onion_handler incomplete;\n"
+  WARNPRINTF_BM ("login_onion_handler to nowhere;\n"
                  ".. perhaps missing  --init-after-load program option");
   char *respbuf = NULL;
   size_t respsiz = 0;
@@ -1347,8 +1347,8 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
   fprintf (fresp, "<meta charset='utf-8'>\n");
   fprintf (fresp, "</head>\n<body>\n");
   fprintf (fresp, "<h1>Bismon login nowhere (not found)</h1>\n");
-  fprintf (fresp, "<p>Nowhere to login."
-           "Probable missing <tt>--init-after-load</tt> <i>initializer</i> program option<br/>");
+  fprintf (fresp, "<p>Nowhere to login. "
+           "Probable <b>missing</b> <tt>--init-after-load <i>initializer</i></tt> <b>program option</b> ...<br/>");
   fprintf (fresp,
            "<a href='http://github.com/bstarynk/bismon/'>Bismon</a> on <tt>%s</tt> pid %d,\n"
            " build <i>%s</i> git commit <tt>%s</tt></br>\n", myhostname_BM,
