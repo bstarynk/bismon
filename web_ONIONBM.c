@@ -1336,9 +1336,44 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
   /// temporary. We should output a message mentioning the
   /// --init-after-load option of the bismon program
   WARNPRINTF_BM ("login_onion_handler incomplete;\n"
-		 ".. perhaps missing  --init-after-load program option");
-#warning login_onion_handler_BM incomplete
-  return OCS_FORBIDDEN;
+                 ".. perhaps missing  --init-after-load program option");
+  char *respbuf = NULL;
+  size_t respsiz = 0;
+  FILE *fresp = open_memstream (&respbuf, &respsiz);
+  if (!fresp)
+    FATAL_BM ("login_onion_handler_BM  open_memstream failure %m");
+  fprintf (fresp, "<!DOCTYPE html>\n");
+  fprintf (fresp, "<html><head><title>Bismon login nowhere</title>\n");
+  fprintf (fresp, "<meta charset='utf-8'>\n");
+  fprintf (fresp, "</head>\n<body>\n");
+  fprintf (fresp, "<h1>Bismon login nowhere (not found)</h1>\n");
+  fprintf (fresp, "<p>Nowhere to login."
+           "Probable missing <tt>--init-after-load</tt> <i>initializer</i> program option<br/>");
+  fprintf (fresp,
+           "<a href='http://github.com/bstarynk/bismon/'>Bismon</a> on <tt>%s</tt> pid %d,\n"
+           " build <i>%s</i> git commit <tt>%s</tt></br>\n", myhostname_BM,
+           (int) getpid (), bismon_timestamp, bismon_lastgitcommit);
+  {
+    time_t nowt = time (NULL);
+    struct tm nowtm;
+    memset (&nowtm, 0, sizeof (nowtm));
+    if (!localtime_r (&nowt, &nowtm))
+      FATAL_BM ("localtime_r failed %m");
+    char nowbuf[64];
+    memset (nowbuf, 0, sizeof (nowbuf));
+    strftime (nowbuf, sizeof (nowbuf) - 1, "%c", &nowtm);
+    fprintf (fresp, "generated on <i>%s</i>\n", nowbuf);
+  }
+  fprintf (fresp, "</p>\n</body>\n</html>\n");
+  fflush (fresp);
+  long ln = ftell (fresp);
+  fclose (fresp), fresp = NULL;
+  onion_response_set_code (resp, HTTP_NOT_FOUND);
+  onion_response_set_length (resp, ln);
+  onion_response_write (resp, respbuf, ln);
+  onion_response_flush (resp);
+  free (respbuf), respbuf = NULL;
+  return OCS_PROCESSED;
 }                               /* end login_onion_handler_BM */
 
 
