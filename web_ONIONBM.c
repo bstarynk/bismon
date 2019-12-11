@@ -2222,9 +2222,26 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                          objectdbg_BM (_.contribob));
                     }
                 }
-              WARNPRINTF_BM
-                ("forgotpasswd_onion_handler_BM POST nice dochange incomplete");
-#warning forgotpasswd_onion_handler_BM POST nice dochange incomplete
+              /// show the login_ONIONBM with "password changed ..."
+              /// message as extra
+              onion_dict *loginctxdic =
+                forgotpasswd_ctxdic_bm (_.decayob, CURFRAME_BM);
+              ASSERT_BM (loginctxdic != NULL);
+              char *extramsg = NULL;
+              if (asprintf (&extramsg, "password changed for %s",
+                            bytstring_BM (objcontributornamepayl_BM
+                                          (_.contribob))) < 0 || !extramsg)
+                FATAL_BM ("failed to make extramsg for %s - %m",
+                          objectdbg_BM (_.contribob));
+              onion_dict_add (loginctxdic, "extra", extramsg, OD_DUP_VALUE);
+              login_ONIONBM_thtml (loginctxdic, resp);
+              free (extramsg), extramsg = NULL;
+              onion_dict_free (loginctxdic);
+              DBGPRINTF_BM
+                ("forgotpasswd_onion_handler_BM POST done change contribob %s password",
+                 objectdbg_BM (_.contribob));
+
+              return OCS_PROCESSED;
             }                   /* end if nice dochange */
           else
             {
