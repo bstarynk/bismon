@@ -1886,6 +1886,121 @@ websocket_onion_handler_BM (void *clientdata,
 }                               /* end websocket_onion_handler_BM */
 
 
+static onion_dict *forgotpasswd_ctxdic_bm (objectval_tyBM * decayob,
+                                           struct stackframe_stBM *stkf);
+
+static onion_dict *
+forgotpasswd_ctxdic_bm (objectval_tyBM * decayobarg,
+                        struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * decayob;      //
+                 value_tyBM decaycontribv;      //
+                 value_tyBM decayclosurev;      //
+                 value_tyBM decayrandomv;       //
+                 value_tyBM decayotherv;        //
+                 objectval_tyBM * contribob;    //
+                 value_tyBM contribnamv;        //
+                 value_tyBM contribemailv;      //
+    );
+  _.decayob = decayobarg;
+  if (!(isobject_BM (_.decayob)
+        && objhasdecayedvectorpayl_BM (_.decayob)
+        && objdecayedvectlenpayl_BM (_.decayob) >=
+        DECAYFORGOTTEN__LASTINDEX_bm))
+    return NULL;
+  // contrib at ix 0
+  _.decaycontribv =
+    objdecayedvectornthpayl_BM (_.decayob, DECAYFORGOTTENCONTRIBIX_bm);
+  if (!isobject_BM (_.decaycontribv))
+    return NULL;
+  _.contribob = objectcast_BM (_.decaycontribv);
+  // closure at ix 1
+  _.decayclosurev =
+    objdecayedvectornthpayl_BM (_.decayob, DECAYFORGOTTENCLOSUREIX_bm);
+  if (!isclosure_BM (_.decayclosurev))
+    return NULL;
+  // random at ix 2
+  _.decayrandomv =
+    objdecayedvectornthpayl_BM (_.decayob, DECAYFORGOTTENRANDOMIX_bm);
+  if (!istaggedint_BM (_.decayrandomv))
+    return NULL;
+  unsigned randnum = getint_BM (_.decayrandomv);
+  onion_dict *ctxdic = onion_dict_new ();
+  {
+    char pidbuf[40];
+    memset (pidbuf, 0, sizeof (pidbuf));
+    snprintf (pidbuf, sizeof (pidbuf), "%ld", (long) getpid ());
+    onion_dict_add (ctxdic, "bismon_pid", pidbuf, OD_DUP_VALUE);
+  }
+  onion_dict_add (ctxdic, "bismon_host", myhostname_BM, OD_DUP_VALUE);
+  onion_dict_add (ctxdic, "buildtime", bismon_timestamp, OD_DUP_VALUE);
+  onion_dict_add (ctxdic, "lastgitcommit", bismon_lastgitcommit,
+                  OD_DUP_VALUE);
+  onion_dict_add (ctxdic, "contributor_name",
+                  bytstring_BM (_.contribnamv), OD_DUP_VALUE);
+  onion_dict_add (ctxdic, "contributor_email",
+                  bytstring_BM (_.contribemailv), OD_DUP_VALUE);
+  // the change passwd time is now
+  {
+    time_t nowt = time (NULL);
+    struct tm nowtm;
+    memset (&nowtm, 0, sizeof (nowtm));
+    if (!localtime_r (&nowt, &nowtm))
+      FATAL_BM ("localtime_r failed %m");
+    char nowbuf[64];
+    memset (nowbuf, 0, sizeof (nowbuf));
+    strftime (nowbuf, sizeof (nowbuf) - 1, "%c", &nowtm);
+    DBGPRINTF_BM ("forgotpasswd_ctxdic_bm nowbuf=%s", nowbuf);
+    onion_dict_add (ctxdic, "changepasswd_time", nowbuf, OD_DUP_VALUE);
+  }
+  // the POST URL
+  {
+    char posturl[96];
+    memset (posturl, 0, sizeof (posturl));
+    if (onion_ssl_certificate_BM)
+      snprintf (posturl, sizeof (posturl) - 1,
+                "https://%s/_forgotpasswd/", onion_web_base_BM);
+    else
+      snprintf (posturl, sizeof (posturl) - 1,
+                "http://%s/_forgotpasswd/", onion_web_base_BM);
+    DBGPRINTF_BM ("forgotpasswd_ctxdic_bm posturl=%s", posturl);
+    onion_dict_add (ctxdic, "changepasswd_url", posturl, OD_DUP_VALUE);
+  }
+  /// the decayob
+  {
+    char decaybuf[32];
+    memset (decaybuf, 0, sizeof (decaybuf));
+    idtocbuf32_BM (objid_BM (_.decayob), decaybuf);
+    onion_dict_add (ctxdic, "changepasswd_decayob", decaybuf, OD_DUP_VALUE);
+  }
+  onion_dict_add (ctxdic, "contact_name", contact_name_BM, OD_DUP_VALUE);
+  onion_dict_add (ctxdic, "contact_email", contact_email_BM, OD_DUP_VALUE);
+  {
+    char randbuf[32];
+    memset (randbuf, 0, sizeof (randbuf));
+    snprintf (randbuf, sizeof (randbuf) - 1, "%u", randnum);
+    onion_dict_add (ctxdic, "changepasswd_random", randbuf, OD_DUP_VALUE);
+    DBGPRINTF_BM ("forgotpasswd_ctxdic_bm randum %u", randnum);
+  }
+  uint32_t otherandnum = 10 + (g_random_int () % 100000000);
+  {
+    char otherbuf[32];
+    memset (otherbuf, 0, sizeof (otherbuf));
+    snprintf (otherbuf, sizeof (otherbuf) - 1, "%u", (unsigned) otherandnum);
+    if (!objdecayedvectorputnthpayl_BM
+        (_.decayob, DECAYFORGOTTENOTHERANDIX_bm, taggedint_BM (otherandnum)))
+      // this should never happen
+      FATAL_BM ("failed to put other random in decayob %s",
+                objectdbg_BM (_.decayob));
+    onion_dict_add (ctxdic, "changepasswd_otherand", otherbuf, OD_DUP_VALUE);
+    DBGPRINTF_BM
+      ("forgotpasswd_ctxdic_bm otherandnum %u updated decayob %s",
+       otherandnum, objectdbg_BM (_.decayob));
+  }
+  return ctxdic;
+}                               /* end forgotpasswd_ctxdic_bm */
+
 
 onion_connection_status
 forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
@@ -2200,90 +2315,8 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
           ASSERT_BM (isstring_BM (_.contribemailv));
           DBGPRINTF_BM
             ("forgotpasswd_onion_handler_BM reqpath=%s good", reqpath);
-          onion_dict *ctxdic = onion_dict_new ();
-          {
-            char pidbuf[40];
-            memset (pidbuf, 0, sizeof (pidbuf));
-            snprintf (pidbuf, sizeof (pidbuf), "%ld", (long) getpid ());
-            onion_dict_add (ctxdic, "bismon_pid", pidbuf, OD_DUP_VALUE);
-          }
-          onion_dict_add (ctxdic, "bismon_host", myhostname_BM, OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "buildtime", bismon_timestamp,
-                          OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "lastgitcommit", bismon_lastgitcommit,
-                          OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "contributor_name",
-                          bytstring_BM (_.contribnamv), OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "contributor_email",
-                          bytstring_BM (_.contribemailv), OD_DUP_VALUE);
-          // the change passwd time is now
-          {
-            time_t nowt = time (NULL);
-            struct tm nowtm;
-            memset (&nowtm, 0, sizeof (nowtm));
-            if (!localtime_r (&nowt, &nowtm))
-              FATAL_BM ("localtime_r failed %m");
-            char nowbuf[64];
-            memset (nowbuf, 0, sizeof (nowbuf));
-            strftime (nowbuf, sizeof (nowbuf) - 1, "%c", &nowtm);
-            DBGPRINTF_BM ("forgotpasswd_onion_handler_BM nowbuf=%s", nowbuf);
-            onion_dict_add (ctxdic, "changepasswd_time", nowbuf,
-                            OD_DUP_VALUE);
-          }
-          // the POST URL
-          {
-            char posturl[96];
-            memset (posturl, 0, sizeof (posturl));
-            if (onion_ssl_certificate_BM)
-              snprintf (posturl, sizeof (posturl) - 1,
-                        "https://%s/_forgotpasswd/", onion_web_base_BM);
-            else
-              snprintf (posturl, sizeof (posturl) - 1,
-                        "http://%s/_forgotpasswd/", onion_web_base_BM);
-            DBGPRINTF_BM ("forgotpasswd_onion_handler_BM posturl=%s",
-                          posturl);
-            onion_dict_add (ctxdic, "changepasswd_url", posturl,
-                            OD_DUP_VALUE);
-          }
-          /// the decayob
-          {
-            char decaybuf[32];
-            memset (decaybuf, 0, sizeof (decaybuf));
-            idtocbuf32_BM (objid_BM (_.decayob), decaybuf);
-            onion_dict_add (ctxdic, "changepasswd_decayob",
-                            decaybuf, OD_DUP_VALUE);
-          }
-          onion_dict_add (ctxdic, "contact_name",
-                          contact_name_BM, OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "contact_email",
-                          contact_email_BM, OD_DUP_VALUE);
-          {
-            char randbuf[32];
-            memset (randbuf, 0, sizeof (randbuf));
-            snprintf (randbuf, sizeof (randbuf) - 1, "%u", randnum);
-            onion_dict_add (ctxdic, "changepasswd_random",
-                            randbuf, OD_DUP_VALUE);
-            DBGPRINTF_BM ("forgotpasswd_onion_handler_BM POST randum %u",
-                          randnum);
-          }
-          uint32_t otherandnum = 10 + (g_random_int () % 100000000);
-          {
-            char otherbuf[32];
-            memset (otherbuf, 0, sizeof (otherbuf));
-            snprintf (otherbuf, sizeof (otherbuf) - 1, "%u",
-                      (unsigned) otherandnum);
-            if (!objdecayedvectorputnthpayl_BM
-                (_.decayob, DECAYFORGOTTENOTHERANDIX_bm,
-                 taggedint_BM (otherandnum)))
-              // this should never happen
-              FATAL_BM ("failed to put other random in decayob %s",
-                        objectdbg_BM (_.decayob));
-            onion_dict_add (ctxdic, "changepasswd_otherand", otherbuf,
-                            OD_DUP_VALUE);
-            DBGPRINTF_BM
-              ("forgotpasswd_onion_handler_BM POST otherandnum %u updated decayob %s",
-               otherandnum, objectdbg_BM (_.decayob));
-          }
+          onion_dict *ctxdic =
+            forgotpasswd_ctxdic_bm (_.decayob, CURFRAME_BM);
           //// @@@@TODO: complete
           onion_dict_add (ctxdic, "changepasswd_extramessage",
                           "?changepasswdextramessage?", OD_DUP_VALUE);
