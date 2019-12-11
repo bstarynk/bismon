@@ -2255,6 +2255,18 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                  OUTSTRVALUE_BM (_.decayrandomv),
                  OUTSTRVALUE_BM (_.decayotherv),
                  OUTSTRVALUE_BM (_.decaycontribv), rand, otherand);
+              onion_dict *uglyctxdic =
+                forgotpasswd_ctxdic_bm (_.decayob, CURFRAME_BM);
+              ASSERT_BM (uglyctxdic != NULL);
+              onion_dict_add (uglyctxdic, "changepasswd_extramessage",
+                              "invalid or incompatible password",
+                              OD_DUP_VALUE);
+              changepasswd_ONIONBM_thtml (uglyctxdic, resp);
+              onion_dict_free (uglyctxdic);
+              DBGPRINTF_BM
+                ("forgotpasswd_onion_handler_BM POST ugly done decayob %s contribob %s",
+                 objectdbg_BM (_.decayob), objectdbg1_BM (_.contribob));
+              return OCS_PROCESSED;
             }
         }
       else
