@@ -55,7 +55,7 @@ function hide_appmenu(ev) {
     return false;
 };
 
-$(function () {
+function bmhwroot_initialize() {
     var topmenu_title = $("#topmtitle_6G1xOyeten5_7SqZ4EcQe8T")
     console.group("bismon-hwroot start");
     appmenu_button = $("#topbut_4m9twhDXB7k_88CBTgLfGvs");
@@ -77,6 +77,11 @@ $(function () {
     console.trace();
     console.debug("bismon-hwroot did start");
     console.groupEnd();
+};
+
+$(function() {
+    console.debug("bismon-hwroot document initialize");
+    bmhwroot_initialize();
 });
 
 
