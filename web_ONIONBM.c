@@ -1333,8 +1333,10 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
           return do_forgot_email_onion_handler_BM (formuser, req, resp);
         }
     }
-  /// temporary
-  WARNPRINTF_BM ("login_onion_handler incomplete");
+  /// temporary. We should output a message mentioning the
+  /// --init-after-load option of the bismon program
+  WARNPRINTF_BM ("login_onion_handler incomplete;\n"
+		 ".. perhaps missing  --init-after-load program option");
 #warning login_onion_handler_BM incomplete
   return OCS_FORBIDDEN;
 }                               /* end login_onion_handler_BM */
