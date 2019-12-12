@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3343 objects
+// for 3345 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -5006,6 +5006,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 _7T9OwSFlgov_0wVJaK1eZbn
 
 »_5V0w37YnN4F_8dZ6I79V60O
+
+
+
+«_0kRPCsvLkdT_75x9PWrFQYz |=o_json|
+!~ name (~ o_json ~)
+± 1576158679.021
+∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
+↦ _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_7T9OwSFlgov_0wVJaK1eZbn
+
+»_0kRPCsvLkdT_75x9PWrFQYz
 
 
 
@@ -39967,14 +39978,15 @@ _4lKK08v9A0t_0GGsir35UxP _4bYUiDmxrKK_6nPPlEl8y8x) ~)
 
 «_6hjNLfcccy7_6HuJuP6y0Ut
 Σ *
-± 1576155875.327
+± 1576158679.022
 ∈ _2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "neweval_ajax-handler(v_restpath o_webex)"
 ↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _6QhNRfe1Cte_0niVlWfAlmO _5JuT4FgNFFh_7McrTYeT3jx ]
 ↦ _24sSVIADeHm_0Sx34wQfG7W |=locals|
- { _0ZL8gaI6sH8_7UPhmAQcwMe _6Ef2ORO1Mni_0tpNoRQGmrW }
+ { 
+ _0kRPCsvLkdT_75x9PWrFQYz _0ZL8gaI6sH8_7UPhmAQcwMe _6Ef2ORO1Mni_0tpNoRQGmrW }
 ↦ _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _3ayHp9M82jt_864Z18Gf0eU }
 ↦ _7bD9VtDkGSn_7lxHeYuuFLR |=result|
@@ -48084,29 +48096,34 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 
 
 «_8cMLRk1CITl_8D2KITRNzyh
-± 1576156173.670
+± 1576159034.342
 ∈ _4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
- "debug neweval_ajax-handler start v_restpath o_webex"
+ "debug neweval_ajax-handler start v_restpath o_webex o_json"
 ↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _8LfVVn1aQnn_5StV71VcY8c
 ↦ _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
  * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "neweval_ajax" 
   "-"  "handler"  " "  "start" 
   " " _6QhNRfe1Cte_0niVlWfAlmO  " " _5JuT4FgNFFh_7McrTYeT3jx 
-  "*/"  "\n"  "DBGPRINTF_BM"  "(\"" 
-  "debug"  " "  "neweval_ajax"  "-" 
-  "handler"  " "  "start"  " " 
-  "€%."  "9s"  " " _6QhNRfe1Cte_0niVlWfAlmO 
-  "=%"  "s"  " " _5JuT4FgNFFh_7McrTYeT3jx 
-  "=%"  "s"  "\","  "\n" 
-  " "  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
- "\"," 
-  "\n"  " "  "OUTSTRVALUE_BM"  "(" 
-  * _5ucAZimYynS_4VA0XHvr1nW ( _6QhNRfe1Cte_0niVlWfAlmO)  "),"  "\n" 
+  " " _0kRPCsvLkdT_75x9PWrFQYz  "*/"  "\n" 
+  "DBGPRINTF_BM"  "(\""  "debug"  " " 
+  "neweval_ajax"  "-"  "handler"  " " 
+  "start"  " "  "€%."  "9s" 
+  " " _6QhNRfe1Cte_0niVlWfAlmO  "=%"  "s" 
+  " " _5JuT4FgNFFh_7McrTYeT3jx  "=%"  "s" 
+  " " _0kRPCsvLkdT_75x9PWrFQYz  "=%"  "s" 
+  "\","  "\n"  " "  "\"" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\","  "\n" 
  " " 
-  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5JuT4FgNFFh_7McrTYeT3jx) 
- "));")
+  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6QhNRfe1Cte_0niVlWfAlmO) 
+ ")," 
+  "\n"  " "  "objectdbg_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5JuT4FgNFFh_7McrTYeT3jx)  "),"  "\n" 
+ " " 
+  "objectdbg1_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0kRPCsvLkdT_75x9PWrFQYz) 
+ "));" 
+  "\n")
 
 »_8cMLRk1CITl_8D2KITRNzyh
 
@@ -50332,6 +50349,21 @@ _6cFSE2rDxvF_99QhDhtBeS4
 
 
 
+«_8Jyob4UjBhk_3brORYJbXIr
+± 1576158871.238
+∈ _3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "o_json := *objwebexchangejsonpayl(o_webex) //neweval_ajax-handler"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_8LfVVn1aQnn_5StV71VcY8c
+!# 2
+
+↳ _0kRPCsvLkdT_75x9PWrFQYz 
+↳  * _3v18bLdjMRP_4CrjvtrZteq ( _5JuT4FgNFFh_7McrTYeT3jx) 
+»_8Jyob4UjBhk_3brORYJbXIr
+
+
+
 «_8JDrCZMRgRv_0wm7l71XJUj
 ± 1557333675.298
 ∈ _9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
@@ -50476,8 +50508,9 @@ _5AqofhXYnzK_3leeJoJgmTJ
  "body of neweval_ajax-handler"
 ↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _6hjNLfcccy7_6HuJuP6y0Ut
-!# 1
+!# 2
 
+↳ _8Jyob4UjBhk_3brORYJbXIr 
 ↳ _8cMLRk1CITl_8D2KITRNzyh 
 »_8LfVVn1aQnn_5StV71VcY8c
 
