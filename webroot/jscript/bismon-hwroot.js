@@ -74,6 +74,7 @@ function bmhwroot_initialize() {
     appmenu_button.mouseup(hide_appmenu);
     topmenu_title.mouseup(hide_appmenu);
     appmenu_menu.mouseup(hide_appmenu);
+    /// the neweval_button should trigger an /neweval_ajax POST request with AJAX
     appmenu_menu.hide();
     console.debug("bismon-hwroot hided appmenu_menu=%o", appmenu_menu);
     console.trace();
