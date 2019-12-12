@@ -35,6 +35,7 @@ export var appmenu_menu;
 export var dump_menuitem;
 export var exit_menuitem;
 export var quit_menuitem;
+export var neweval_button;
 
 function show_appmenu(ev) {
     console.debug("show_appmenu %o", ev);
@@ -61,11 +62,12 @@ function bmhwroot_initialize() {
     appmenu_button = $("#topbut_4m9twhDXB7k_88CBTgLfGvs");
     appmenu_menuid = "#topmenu_2hnb4LnCzga_48CQrsBJofR";
     appmenu_menu = $(appmenu_menuid);
+    neweval_button = $("#topbut_3ayHp9M82jt_864Z18Gf0eU");
     dump_menuitem = $("#topmitem_1SiDnlyQRR6_5meHUV4d3iF");
     exit_menuitem = $("#topmitem_9ZmJrhdpjae_79WiEHOVpbE");
     quit_menuitem = $("#topmitem_2nguorns5mY_2UnseYw0xRf");
-    console.debug("bismon-hwroot start topmenu_title=%o\n.. appmenu_button=%o appmenu_menu=%o dump_menuitem=%o exit_menuitem=%o quit_menuitem=%o",
-		  topmenu_title, appmenu_button, appmenu_menu, dump_menuitem,  exit_menuitem, quit_menuitem);
+    console.debug("bismon-hwroot start topmenu_title=%o\n.. appmenu_button=%o appmenu_menu=%o dump_menuitem=%o exit_menuitem=%o quit_menuitem=%o neweval_button=%o",
+		  topmenu_title, appmenu_button, appmenu_menu, dump_menuitem,  exit_menuitem, quit_menuitem, neweval_button);
     appmenu_menu.menu();
     appmenu_button.contextmenu(show_appmenu);
     appmenu_button.click(show_appmenu);
