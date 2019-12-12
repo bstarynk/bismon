@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3346 objects
+// for 3347 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -40340,6 +40340,39 @@ _6CNxxDuR549_5nVIV57U3hP
 ↳ _0CZF0izuznT_8qWyrzuY1Q0 
 ↳  * _30UWIU9ljmf_8rICvftAnIX ( _0ZL8gaI6sH8_7UPhmAQcwMe) 
 »_6nNiNUxZfxf_3g6oMpGlSmQ
+
+
+
+«_6nQKqrCqfKh_8Nnsh1gIeZU
+± 1576163686.207
+∈ _2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "get neweval_counter from JSON payload of o1 or else i2"
+↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+↦ _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _2LPrNfUHb6Y_1qOPmENNXqB  " "  "neweval_counter" 
+  " " _1YX5DiyMYdm_8wQmGBtI3SD  " "  "JSON" 
+  ":*/"  "\n"  "objhasjansjsonpayl_BM"  " " 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")?" 
+ "\n" 
+  "({" _0vgCFjXblkx_4zCMhMAWjVK  " "  "i6nQkqrC" 
+  "="  " "  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  
+";" 
+  " \n"  "  "  "(!"  "json_unpack" 
+  "("  "objgetjansjsonpayl_BM"  " "  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  "),\"{"  "s" 
+ ":" 
+  "i"  "}\","  " "  "\"" 
+  "neweval_counter"  "\","  " "  "&" 
+  "i6nQkqrC"  "))"  "\n"  " " 
+  "?"  " "  "i6nQkqrC"  "\n" 
+  ":("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  ");})" 
+ "\n")
+↦ _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+
+»_6nQKqrCqfKh_8Nnsh1gIeZU
 
 
 
