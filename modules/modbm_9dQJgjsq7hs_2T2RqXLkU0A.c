@@ -1609,7 +1609,8 @@ value_tyBM crout_6hjNLfcccy7_6HuJuP6y0Ut_BM //#9
     objectval_tyBM* o_5JuT4FgNFFh_7McrTYeT3jx; // o_webex
     objectval_tyBM* o_6Ef2ORO1Mni_0tpNoRQGmrW; // o_helem
     value_tyBM v_6QhNRfe1Cte_0niVlWfAlmO; // v_restpath
-    /// 0 local numbers:
+    /// 1 local numbers:
+    intptr_t n_2tUYLYs6CDE_5SlPd7sgYtY; // i_rank
    } _;
    memset (&_, 0, sizeof(struct frame_6hjNLfcccy7_6HuJuP6y0Ut_BMst));
    _.stkfram_head.htyp = typayl_StackFrame_BM;
@@ -1647,6 +1648,30 @@ DBGPRINTF_BM("debug neweval_ajax-handler start €%.9s v_restpath=%s o_webex=%s 
  objectdbg1_BM( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz));
 ; 
 } // end run _8cMLRk1CITl_8D2KITRNzyh 
+ 
+//+ #2/4 of block _8LfVVn1aQnn_5StV71VcY8c :: 
+ 
+ /*i_rank:*/_.n_2tUYLYs6CDE_5SlPd7sgYtY = //assign _5sDHzm4InAA_14dd6w68KvI  
+ ({/*get neweval_counter from JSON €_6nQKqrCqf statementexpr:*/
+ int i6nQkqrC=   -1; int j6nQkqrC= -999;
+ if (objhasjansjsonpayl_BM ( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz)
+   && !json_unpack(objgetjansjsonpayl_BM ( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz), "{s:i}", "neweval_counter", &j6nQkqrC))
+   i6nQkqrC= j6nQkqrC;
+ else   i6nQkqrC= ( -1);
+ /*statementexpr€_6nQKqrCqf gives:*/ i6nQkqrC;})
+; 
+ 
+ 
+ 
+{ // run _1wgH068S8Rm_1k6PTV0Fvds 
+/*debug neweval_ajax-handler i_rank o_webex o_json*/
+DBGPRINTF_BM("debug neweval_ajax-handler €%.9s i_rank=%ld o_webex=%s o_json=%s",
+ "_1wgH068S8Rm_1k6PTV0Fvds", 
+ (long) ( /*i_rank:*/_.n_2tUYLYs6CDE_5SlPd7sgYtY),
+ objectdbg_BM( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx),
+ objectdbg1_BM( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz));
+; 
+} // end run _1wgH068S8Rm_1k6PTV0Fvds 
  
 /* !endingblock _8LfVVn1aQnn_5StV71VcY8c */ 
 goto endblock__8LfVVn1aQnn_5StV71VcY8c; 
