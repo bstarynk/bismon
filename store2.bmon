@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3345 objects
+// for 3346 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -3609,7 +3609,8 @@ _0vgCFjXblkx_4zCMhMAWjVK
 ∈ _0LK4TzFd6u1_0JFUsrQ4odG |=class|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "class of objects with Jansson JSON payloads"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
+~: _9uRC9w2Gte9_5mW0NanaS19  % _2SwBWHiHN6V_64WhvTifJL4 () ~)
 »_7hNqn2hxg1M_3wNHCtOf9IF
 
 
@@ -25500,6 +25501,17 @@ _6Z4UU939WbU_8BK9xcKsXNb
 ↳ _2uDNkqkHtpx_5dh6n3A4poW 
 ↳ _6xtapDnCQe0_46oF5qki5s8 
 »_2SgLYmVUkRv_6tqP5YRR5eC
+
+
+
+«_2SwBWHiHN6V_64WhvTifJL4
+Σ *
+± 1576161482.127
+∈ _2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "json_object°gtk_browse_data(obrowe depth)"
+
+»_2SwBWHiHN6V_64WhvTifJL4
 
 
 

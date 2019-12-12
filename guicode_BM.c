@@ -1072,7 +1072,7 @@ ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO)    // gtk_browse_data°contributor_
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
  const value_tyBM arg2,         //
- const value_tyBM arg3,         //
+ const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
@@ -1212,6 +1212,75 @@ ROUTINEOBJNAME_BM (_5W7KY9crMlv_1Q6deHedMZ5)    // gtk_browse_data°decaying_vec
 
 
 
+
+
+//// gtk_browse_data°json_object
+extern objrout_sigBM ROUTINEOBJNAME_BM (_2SwBWHiHN6V_64WhvTifJL4);
+
+value_tyBM ROUTINEOBJNAME_BM (_2SwBWHiHN6V_64WhvTifJL4) (struct stackframe_stBM * stkf, //
+                                                         const value_tyBM arg1, // objbrows
+                                                         const value_tyBM arg2, // depth
+                                                         const value_tyBM arg3_ __attribute__((unused)),        //
+                                                         const value_tyBM arg4_ __attribute__((unused)),        //
+                                                         const quasinode_tyBM
+                                                         * restargs_
+                                                         __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf,          /*descr _2SwBWHiHN6V_64WhvTifJL4:: */
+                 BMK_2SwBWHiHN6V_64WhvTifJL4,
+                 const objectval_tyBM * objbrows;       //
+                 value_tyBM resultv;
+    );
+  if (!isobject_BM (arg1))
+    FATAL_BM ("non-object for method to gtk_browse_data for json_object");
+  _.objbrows = (const objectval_tyBM *) arg1;
+  int depth = getint_BM (arg2);
+  ASSERT_BM (isobject_BM ((const value_tyBM) _.objbrows));
+  DBGPRINTF_BM
+    ("gtk_browse_data°json_object objbrows %s depth %d",
+     objectdbg_BM (_.objbrows), depth);
+#ifdef BISMONGTK
+  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
+  void *payl = objpayload_BM (_.objbrows);
+  if (!payl)
+    {
+      gtk_text_buffer_insert_with_tags (brobuf,
+                                        &browserit_BM, "|no json payload|",
+                                        -1, miscomm_brotag_BM, NULL);
+      gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+      LOCALRETURN_BM (_.objbrows);
+    }
+  else if (objhasjansjsonpayl_BM (_.objbrows))
+    {
+      gtk_text_buffer_insert_with_tags (brobuf,
+                                        &browserit_BM, "|json payload:|",
+                                        -1, miscomm_brotag_BM, NULL);
+      gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+      json_t *js = objgetjansjsonpayl_BM (_.objbrows);
+      char *jsbuf =
+        json_dumps (js, JSON_SORT_KEYS | JSON_INDENT (1) | JSON_ENCODE_ANY);
+      if (!jsbuf)
+        FATAL_BM
+          ("json_dumps failed gtk_browse_data°json_object €_2SwBWHiH objbrows=%s",
+           objectdbg_BM (_.objbrows));
+      gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, jsbuf, -1,
+                                        str_brotag_BM, NULL);
+      gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+      free (jsbuf), jsbuf = NULL;
+      LOCALRETURN_BM (_.objbrows);
+    }
+  else
+    {
+      gtk_text_buffer_insert_with_tags (brobuf,
+                                        &browserit_BM,
+                                        "|unexpected json payload|", -1,
+                                        miscomm_brotag_BM, NULL);
+      gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+      LOCALRETURN_BM (_.objbrows);
+    };
+#endif /*BISMONGTK*/
+    LOCALRETURN_BM (_.objbrows);
+}                               /* end gtk_browse_data°json_object _2SwBWHiHN6V_64WhvTifJL4 */
 
 ////////////////////////////////////////////////////////////////
 
