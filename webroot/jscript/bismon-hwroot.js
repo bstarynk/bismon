@@ -37,6 +37,8 @@ export var exit_menuitem;
 export var quit_menuitem;
 export var neweval_button;
 
+var neweval_counter=0;
+
 function show_appmenu(ev) {
     console.debug("show_appmenu %o", ev);
     // WRONG
@@ -75,6 +77,30 @@ function bmhwroot_initialize() {
     topmenu_title.mouseup(hide_appmenu);
     appmenu_menu.mouseup(hide_appmenu);
     /// the neweval_button should trigger an /neweval_ajax POST request with AJAX
+    neweval_button.click(
+	function (ev) {
+	    console.group ("neweval_button!click");
+	    neweval_counter++
+	    console.debug("newevalclick ev=%o, neweval_counter=%d", ev, neweval_counter);
+	    $.ajax({
+		url: "/neweval_ajax",
+		dataType: "json",
+		type: "post",
+		contentType: "application/json",
+                data: JSON.stringify( { "neweval_counter":neweval_counter } ),
+		success: function(data,textStatus,jQxhr){
+		    console.debug("newevalclick ajax#%d success data=%o, textStatus=%o, jQxhr=%o",
+				  neweval_counter, data, textStatus, jQxhr);
+		},
+		error: function(jqXhr,textStatus,errorThrown){
+		    console.log("newevalclick ajax#%d error: jqXhr=%o, textStatus=%o, errorThrown=%o",
+				neweval_counter, jqXhr, textStatus, errorThrown);
+		}
+	    });
+	    console.debug("newevalclick#%d ev=%o ending", neweval_counter, ev);
+	    console.groupEnd();
+	}
+    );
     appmenu_menu.hide();
     console.debug("bismon-hwroot hided appmenu_menu=%o", appmenu_menu);
     console.trace();
