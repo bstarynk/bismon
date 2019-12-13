@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3358 objects
+// for 3359 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -4310,6 +4310,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 _0vgCFjXblkx_4zCMhMAWjVK
 
 »_3kJHggsAf4x_09dtbT2azSU
+
+
+
+«_8DLg9YQkjEk_3RuncAGye6y |=neweval_dialog_object|
+!~ name (~ neweval_dialog_object ~)
+± 1576246353.771
+∈ _0LK4TzFd6u1_0JFUsrQ4odG |=class|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for neweval dialog instances"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
+»_8DLg9YQkjEk_3RuncAGye6y
 
 
 
