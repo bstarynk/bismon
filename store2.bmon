@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3366 objects
+// for 3369 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -31060,6 +31060,20 @@ _2TaoEvH5OQU_8nKYBgAvkmW
 
 
 
+«_4f2WfIonLAr_9Wzd6SLec52
+± 1576257251.994
+∈ _6dfdSwPGgR8_2EaBHYhuZ5G |=basiclo_return|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "return (o_helem) //neweval_ajax-handler"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_8LfVVn1aQnn_5StV71VcY8c
+↦ _2DH0ucElTgh_62vxjxLcfev |=return|
+_6Ef2ORO1Mni_0tpNoRQGmrW
+
+»_4f2WfIonLAr_9Wzd6SLec52
+
+
+
 «_4fh1339mQXL_1tYitrVTLhj
 ± 1556867604.628
 ∈ _3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
@@ -38009,6 +38023,22 @@ _7WjaQkqwdaZ_6PRtbDrJHnf
 
 ↳ _6kMu9FzjNaV_81NFYpU63dZ 
 »_5NpWcVegQxj_1RHui16VqMR
+
+
+
+«_5NxJcWAji00_6bLDj8UN74M
+± 1576256876.848
+∈ _4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "objwebexchangecompletepayl (o_webex HTTP_OK"& " \"application/json\") // neweval_ajax-handler"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_8LfVVn1aQnn_5StV71VcY8c
+↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ * _0jFqaPPHgYH_5JpjOPxQ67p ( _5JuT4FgNFFh_7McrTYeT3jx _3urOyDey7XM_7wRigC9AM2k  "application/json")
+↦ _9OzBvYbDWm8_3XA4wkArOmo |=expander|
+_0ncEyxweiqi_5Vj5U2xvh82
+
+»_5NxJcWAji00_6bLDj8UN74M
 
 
 
@@ -45584,6 +45614,39 @@ _0qTBOEAT5pa_2fz1SKfHrMV
 
 
 
+«_7tEOzX19Ls5_5pJxQTkFun5
+± 1576257180.613
+∈ _4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug end neweval_ajax-handler o_helem o_webex"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_8LfVVn1aQnn_5StV71VcY8c
+↦ _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "end" 
+  " "  "neweval_ajax"  "-"  "handler" 
+  " " _6Ef2ORO1Mni_0tpNoRQGmrW  " " _5JuT4FgNFFh_7McrTYeT3jx 
+  "*/"  "\n"  "DBGPRINTF_BM"  "(\"" 
+  "debug"  " "  "end"  " " 
+  "neweval_ajax"  "-"  "handler"  " " 
+  "€%."  "9s"  " " _6Ef2ORO1Mni_0tpNoRQGmrW 
+  "=%"  "s"  " " _5JuT4FgNFFh_7McrTYeT3jx 
+  "/"  "L"  "%"  "u" 
+  ":\\"  "n"  "%"  "s" 
+  "\\"  "n"  "\","  "\n" 
+  " "  "objectdbg_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _6Ef2ORO1Mni_0tpNoRQGmrW) 
+  "),"  "\n"  " "  "objectdbg1_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5JuT4FgNFFh_7McrTYeT3jx)  ")," 
+ "\n" 
+  " "  "objstrbufferlengthpayl_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW (  
+_5JuT4FgNFFh_7McrTYeT3jx) 
+  "),"  "\n"  " "  "objstrbufferbytespayl_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _5JuT4FgNFFh_7McrTYeT3jx)  "));" 
+ "\n")
+
+»_7tEOzX19Ls5_5pJxQTkFun5
+
+
+
 «_7tGKB7q9JK8_9HV0ZrXPH16
 ± 1544350680.491
 ∈ _4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -50809,13 +50872,13 @@ _5AqofhXYnzK_3leeJoJgmTJ
 
 
 «_8LfVVn1aQnn_5StV71VcY8c
-± 1576251895.525
+± 1576257251.994
 ∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of neweval_ajax-handler"
 ↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _6hjNLfcccy7_6HuJuP6y0Ut
-!# 14
+!# 17
 
 ↳ _8Jyob4UjBhk_3brORYJbXIr 
 ↳ _8cMLRk1CITl_8D2KITRNzyh 
@@ -50831,6 +50894,9 @@ _6hjNLfcccy7_6HuJuP6y0Ut
 ↳ _5e9zBOd6yHa_0jJLXpLyicP 
 ↳ _9E0je1yhabx_0bugvCjRS6C 
 ↳ _8Xo9ejIJv2Q_1hJQqrDP991 
+↳ _5NxJcWAji00_6bLDj8UN74M 
+↳ _7tEOzX19Ls5_5pJxQTkFun5 
+↳ _4f2WfIonLAr_9Wzd6SLec52 
 »_8LfVVn1aQnn_5StV71VcY8c
 
 
