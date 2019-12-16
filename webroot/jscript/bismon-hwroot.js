@@ -71,10 +71,25 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 	classes: {
 	    "ui-dialog_content": "bmcl_neweval"
 	},
-	close: function (ev, ui) {
+	close: function (evclose, ui) {
 	    console.group("create_neweval_dialog close");
-	    console.debug("newevaldialog close ev=%o ui=%o newevaldiv=%o", ev, ui, newevaldiv);
+	    console.debug("newevaldialog close evclose=%o ui=%o newevaldiv=%o cnt=%d id=%o", evclose, ui, newevaldiv, cnt, id);
 	    /// should do some AJAX here
+	    $.ajax({
+		url: "/newevclose_ajax",
+		dataType: "json",
+		type: "post",
+		contentType: "application/json",
+                data: JSON.stringify( { "newevclose_rank": cnt, "newevclose_id": id } ),
+		success: function(data,textStatus,jQxhr){
+		    console.debug("newevclose_ajax id=%o newevaldiv=%o success data=%o, textStatus=%o, jQxhr=%o",
+				  id, newevaldiv, data, textStatus, jQxhr);
+		},
+		error: function(jqXhr,textStatus,errorThrown){
+		    console.log("newevclose_ajax id=%o newevaldiv=%o error jqXhr=%o, textStatus=%o, errorThrown=%o",
+				id, newevaldiv, jqXhr, textStatus, errorThrown);
+		}
+	    }); // end AJAX of newevclose_ajax
 	    console.groupEnd();
 	}
     });
