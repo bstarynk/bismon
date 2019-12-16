@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3376 objects
+// for 3378 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -14038,6 +14038,21 @@ _5J5pv8d2W5o_5oKsK4Eu12b
 
 
 
+«_0ouHyl6tEXf_9rr1g1EMloX
+± 1576503169.051
+∈ _3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "i_rank := get newevclose_rank in o_json or else -1 // newevclose_ajax"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_8S8vCPGEYC1_9EMZV4h98oD
+!# 2
+
+↳ _2tUYLYs6CDE_5SlPd7sgYtY 
+↳  * _2kd1ajElaih_0mYQMBw9bDA ( _0kRPCsvLkdT_75x9PWrFQYz  -1) 
+»_0ouHyl6tEXf_9rr1g1EMloX
+
+
+
 «_0pg30NIiY38_4OYvjSkm7he
 ± 1545380833.893
 ∈ _3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
@@ -23279,6 +23294,49 @@ _44Xro7p814I_406P69WFbq4
 ↳ _2fCLTOH2aaY_8dawB4UbMuF 
 ↳ _0wUo5cKndJT_0xbbASzSb0k 
 »_2kanmkRxrZV_3xnDrbqgMjR
+
+
+
+«_2kd1ajElaih_0mYQMBw9bDA
+± 1576502908.275
+∈ _2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "get newevclose_rank from JSON payload of o1 or else i2"
+↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb ]
+↦ _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "({/*" _2LPrNfUHb6Y_1qOPmENNXqB  " "  "newevclose_rank" 
+  " "  "€_"  "2kd1ajEla"  " " 
+ _1YX5DiyMYdm_8wQmGBtI3SD  " " _97rnxb0KFqq_44veN75DG2E  " " 
+  "else"  " " _2Z396p8p48p_848KxWmzoSb  " " 
+  "statementexpr"  ":*/"  "\n" _0vgCFjXblkx_4zCMhMAWjVK 
+  " "  "i2kd1ajE"  "="  " " 
+  "-"  1  ";"  " " 
+ _0vgCFjXblkx_4zCMhMAWjVK  " "  "j2kd1ajE"  "=" 
+  " "  "-"  999  ";" 
+  "\n"  "if"  " "  "(" 
+  "objhasjansjsonpayl_BM"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+  ")"  "\n"  "  "  "&&" 
+  " "  "!"  "json_unpack"  "(" 
+  "objgetjansjsonpayl_BM"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+  "),"  " "  "\"{"  "s" 
+  ":"  "i"  "}\","  " " 
+  "\""  "newevclose_rank"  "\","  " " 
+  "&"  "j2kd1ajE"  "))"  "\n" 
+  "  "  "i2kd1ajE"  "="  " " 
+  "j2kd1ajE"  ";"  "\n"  "else" 
+  "\n"  " "  "i2kd1ajE"  "=" 
+  " "  "(" _0vgCFjXblkx_4zCMhMAWjVK  ")" 
+  " "  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  ";"  
+"\n" 
+  "//"  "statementexpr"  "€_"  "2kd1ajElai" 
+  " "  "gives"  ":"  "\n" 
+  " "  "("  "intptr_t"  ")" 
+  "  "  "i2kd1ajE"  ";})"  "\n")
+↦ _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
+_0vgCFjXblkx_4zCMhMAWjVK
+
+»_2kd1ajElaih_0mYQMBw9bDA
 
 
 
@@ -51555,19 +51613,20 @@ _4xwDKklt2v4_2lEbck0j4qs
 
 
 «_8S8vCPGEYC1_9EMZV4h98oD
-± 1576497013.716
+± 1576503169.051
 ∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of newevclose_ajax-handler"
 ↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _9bzPSZJ7Kyh_11hYc25mz7O
-!# 5
+!# 6
 
 ↳ _8WOJzNWfPdb_7qlPaN9ey6o 
 ↳ _7XwmYM0QUIp_2Mfty4m92nh 
 ↳ _18P4YOBXUOf_5ClNPHTwLxt 
 ↳ _8CUg5Hi37wd_5Qjabugd7S6 
 ↳ _9z0DPSLhsry_6fjn8Kyl5E1 
+↳ _0ouHyl6tEXf_9rr1g1EMloX 
 »_8S8vCPGEYC1_9EMZV4h98oD
 
 
