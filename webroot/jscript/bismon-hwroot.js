@@ -58,6 +58,31 @@ function hide_appmenu(ev) {
     return false;
 };
 
+function bmhwroot_create_neweval_dialog(ev, cnt, id) {
+    console.group("bmhwroot_create_neweval_dialog start");
+    console.debug("ev=%o cnt=%d id=%o", ev, cnt, id);
+    var newevaldiv = $("<div>", {id: "nwevdial" + id, "class": "bmcl_neweval"});
+    $('body').append(newevaldiv);
+    newevaldiv.dialog({
+	title: "neweval#" + cnt,
+	resizable: true,
+	minWidth: 200,
+	minHeight: 100,
+	classes: {
+	    "ui-dialog_content": "bmcl_neweval"
+	},
+	close: function (ev, ui) {
+	    console.group("create_neweval_dialog close");
+	    console.debug("newevaldialog close ev=%o ui=%o newevaldiv=%o", ev, ui, newevaldiv);
+	    /// should do some AJAX here
+	    console.groupEnd();
+	}
+    });
+    console.debug("newevaldiv=%o", newevaldiv);
+    console.groupEnd();
+    return newevaldiv;
+};
+
 function bmhwroot_initialize() {
     var topmenu_title = $("#topmtitle_6G1xOyeten5_7SqZ4EcQe8T")
     console.group("bismon-hwroot start");
@@ -89,8 +114,11 @@ function bmhwroot_initialize() {
 		contentType: "application/json",
                 data: JSON.stringify( { "neweval_counter":neweval_counter } ),
 		success: function(data,textStatus,jQxhr){
-		    console.debug("newevalclick ajax#%d success data=%o, textStatus=%o, jQxhr=%o",
-				  neweval_counter, data, textStatus, jQxhr);
+		    var curcnt = data.neweval_counter;
+		    var curid = data.neweval_id;
+		    console.debug("newevalclick ajax#%d success data=%o, textStatus=%o, jQxhr=%o\n.. curcnt=%d, curid=%s",
+				  neweval_counter, data, textStatus, jQxhr, curcnt, curid);
+		    bmhwroot_create_neweval_dialog(ev, curcnt, curid);
 		},
 		error: function(jqXhr,textStatus,errorThrown){
 		    console.log("newevalclick ajax#%d error: jqXhr=%o, textStatus=%o, errorThrown=%o",

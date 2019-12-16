@@ -80,5 +80,8 @@ tt.bmcl_cookie {
     display: inline;
     padding: 2px;
 }
-	   
+	
+div.bmcl_neweval {
+    background-color: #FBD0ED;
+}   
 /* end of themes/second-theme.css */
