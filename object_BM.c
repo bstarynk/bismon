@@ -221,7 +221,8 @@ findobjofstrid_BM (const char *idstr)
 }                               /* end findobjofstrid_BM */
 
 
-static pthread_mutex_t findobmtx_bm = PTHREAD_MUTEX_INITIALIZER;;
+static pthread_mutex_t findobmtx_bm = PTHREAD_MUTEX_INITIALIZER;
+
 objectval_tyBM *
 lockedfindobjofstrid_BM (const char *idstr)
 {
