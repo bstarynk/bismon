@@ -352,6 +352,7 @@ extern void sortnamedobjarr_BM (objectval_tyBM ** obarr, size_t arrsiz);
 
 extern objectval_tyBM *findobjofid_BM (const rawid_tyBM id);
 extern objectval_tyBM *findobjofstrid_BM (const char *idstr);
+extern objectval_tyBM *lockedfindobjofstrid_BM (const char *idstr);
 extern objectval_tyBM *makeobjofid_BM (const rawid_tyBM id);
 
 // from obconst, instance of basiclo_constant_object, retrieves its

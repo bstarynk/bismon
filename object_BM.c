@@ -221,6 +221,18 @@ findobjofstrid_BM (const char *idstr)
 }                               /* end findobjofstrid_BM */
 
 
+static pthread_mutex_t findobmtx_bm = PTHREAD_MUTEX_INITIALIZER;;
+objectval_tyBM *
+lockedfindobjofstrid_BM (const char *idstr)
+{
+  if (!idstr || idstr[0] != '_')
+    return NULL;
+  objectval_tyBM *resob = NULL;
+  pthread_mutex_lock (&findobmtx_bm);
+  resob = findobjofstrid_BM (idstr);
+  pthread_mutex_unlock (&findobmtx_bm);
+  return resob;
+}                               /* end lockedfindobjofstrid_BM */
 
 static void
 addtobucket_BM (struct objbucket_stBM *buck, objectval_tyBM * ob)

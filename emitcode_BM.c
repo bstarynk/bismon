@@ -2402,7 +2402,7 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
                  objectval_tyBM * emptybindhsetob;      //
                  value_tyBM errorv;     //
                  value_tyBM causev;
-		 );
+    );
   int depth = -1;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   objectval_tyBM *k_cexpansion = BMK_7yoiT31GmV4_2iTjHx3P2hb;
@@ -2510,52 +2510,56 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
         if (isnode_BM (_.chunksonv)
             && nodeconn_BM (_.chunksonv) == k_variable
             && nodewidth_BM (_.chunksonv) == 1)
-	  {
-	    _.varob = objectcast_BM (nodenthson_BM (_.chunksonv, 0));
-	    WEAKASSERT_BM (_.varob);
-	    if (_.varob == k_from) {
-	      if (isobject_BM(_.fromob)) {
-		char fromidbuf[32];
-		memset (fromidbuf, 0, sizeof (fromidbuf));
-		idtocbuf32_BM (objid_BM (_.fromob), fromidbuf);
-		objstrbufferprintfpayl_BM (_.modgenob, "%s", fromidbuf);
-	      }
-	      else objstrbufferprintfpayl_BM (_.modgenob, "___");
-	    }
-	    else {
-	      _.cursubexpv = objassocgetattrpayl_BM (_.substob, _.varob);
-	      if (_.cursubexpv)
-		{
-		  miniemit_expression_BM (CURFRAME_BM, _.cursubexpv,
-					  _.modgenob,
-					  _.routprepob, _.fromob, depth + 1);
-		}
-	      else if (objhashsetcontainspayl_BM (_.emptybindhsetob, _.varob))
-		{
-		  objstrbufferprintfpayl_BM (_.modgenob, " NULL");
-		}
-	      else
-		{
-		  DBGPRINTF_BM
-		    ("miniemit_node_conn°basiclo_primitive connob=%s unbound varob=%s cix#%d fromob %s substob %s expv %s",
-		     objectdbg_BM (_.connob), objectdbg1_BM (_.varob), cix,
-		     objectdbg2_BM (_.fromob), objectdbg3_BM (_.substob),
-		     debug_outstr_value_BM (_.expv, CURFRAME_BM, 0));
-		  FAILHERE (makenode4_BM
-			    (k_unbound_variable_error, _.varob, _.expv, _.substob,
-			     taggedint_BM (cix)));
-		}
-	    }
-	  }
-	else
-	  FAILHERE (makenode2_BM (k_chunk, _.chunksonv, taggedint_BM (cix)));
+        {
+          _.varob = objectcast_BM (nodenthson_BM (_.chunksonv, 0));
+          WEAKASSERT_BM (_.varob);
+          if (_.varob == k_from)
+            {
+              if (isobject_BM (_.fromob))
+                {
+                  char fromidbuf[32];
+                  memset (fromidbuf, 0, sizeof (fromidbuf));
+                  idtocbuf32_BM (objid_BM (_.fromob), fromidbuf);
+                  objstrbufferprintfpayl_BM (_.modgenob, "%s", fromidbuf);
+                }
+              else
+                objstrbufferprintfpayl_BM (_.modgenob, "___");
+            }
+          else
+            {
+              _.cursubexpv = objassocgetattrpayl_BM (_.substob, _.varob);
+              if (_.cursubexpv)
+                {
+                  miniemit_expression_BM (CURFRAME_BM, _.cursubexpv,
+                                          _.modgenob,
+                                          _.routprepob, _.fromob, depth + 1);
+                }
+              else if (objhashsetcontainspayl_BM (_.emptybindhsetob, _.varob))
+                {
+                  objstrbufferprintfpayl_BM (_.modgenob, " NULL");
+                }
+              else
+                {
+                  DBGPRINTF_BM
+                    ("miniemit_node_conn°basiclo_primitive connob=%s unbound varob=%s cix#%d fromob %s substob %s expv %s",
+                     objectdbg_BM (_.connob), objectdbg1_BM (_.varob), cix,
+                     objectdbg2_BM (_.fromob), objectdbg3_BM (_.substob),
+                     debug_outstr_value_BM (_.expv, CURFRAME_BM, 0));
+                  FAILHERE (makenode4_BM
+                            (k_unbound_variable_error, _.varob, _.expv,
+                             _.substob, taggedint_BM (cix)));
+                }
+            }
+        }
+      else
+        FAILHERE (makenode2_BM (k_chunk, _.chunksonv, taggedint_BM (cix)));
     }
   DBGPRINTF_BM
     ("miniemit_node_conn°basiclo_primitive connob=%s exp=%s ended",
      objectdbg_BM (_.connob), debug_outstr_value_BM (_.expv, CURFRAME_BM, 0));
   LOCALRETURN_BM (_.connob);
 #undef FAILHERE
- failure:
+failure:
   DBGPRINTF_BM ("miniemit_node_conn°basiclo_primitive failin %d connob %s routprep %s cause %s",       //
                 failin, objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob),  //
                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
