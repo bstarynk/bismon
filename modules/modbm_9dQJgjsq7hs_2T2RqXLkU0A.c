@@ -1660,13 +1660,16 @@ DBGPRINTF_BM("debug neweval_ajax-handler start €%.9s v_restpath=%s o_webex=%s 
  
  
  /*i_rank:*/_.n_2tUYLYs6CDE_5SlPd7sgYtY = //assign _5sDHzm4InAA_14dd6w68KvI  
- ({/*get neweval_counter from JSON €_6nQKqrCqf statementexpr:*/
- int i6nQkqrC=   -1; int j6nQkqrC= -999;
- if (objhasjansjsonpayl_BM ( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz)
-   && !json_unpack(objgetjansjsonpayl_BM ( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz), "{s:i}", "neweval_counter", &j6nQkqrC))
-   i6nQkqrC= j6nQkqrC;
- else   i6nQkqrC= ( -1);
- /*statementexpr€_6nQKqrCqf gives:*/ i6nQkqrC;})
+({ /*get neweval_counter from JSON €_6nQKqrCqf statementexpr in _5sDHzm4InAA_14dd6w68KvI: */
+int i_5sDHzm4InAA_14dd6w68KvI =  -1; int j_5sDHzm4InAA_14dd6w68KvI = -999;
+if (objhasjansjsonpayl_BM ( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz)
+ && !json_unpack(objgetjansjsonpayl_BM( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz,
+ "{s:i}, "neweval_counter", & j_5sDHzm4InAA_14dd6w68KvI))
+  i_5sDHzm4InAA_14dd6w68KvI = j_5sDHzm4InAA_14dd6w68KvI;
+else
+ i_5sDHzm4InAA_14dd6w68KvI =  -1;
+/*statementexpr in _5sDHzm4InAA_14dd6w68KvI gives:*/ i_5sDHzm4InAA_14dd6w68KvI;
+})
 ; 
  
 //+ #4/17 of block _8LfVVn1aQnn_5StV71VcY8c :: 
@@ -5076,15 +5079,18 @@ DBGPRINTF_BM("newevclose_ajax €%.9s o_webex=%s o_websess=%s o_json=%s o_dialma
  
  
  /*i_rank:*/_.n_2tUYLYs6CDE_5SlPd7sgYtY = //assign _0ouHyl6tEXf_9rr1g1EMloX  
-({/*get newevclose_rank €_2kd1ajEla from o1 else i2 statementexpr:*/
-int i2kd1ajE= -1; int j2kd1ajE= -999;
+({/*get newevclose_rank €_2kd1ajEla from o1 else i2 statementexpr from _0ouHyl6tEXf_9rr1g1EMloX:*/
+int i_0ouHyl6tEXf_9rr1g1EMloX = (int) -1;
+int j_0ouHyl6tEXf_9rr1g1EMloX = - __LINE__;
 if (objhasjansjsonpayl_BM ( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz)
-  && !json_unpack(objgetjansjsonpayl_BM ( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz), "{s:i}", "newevclose_rank", &j2kd1ajE))
-  i2kd1ajE= j2kd1ajE;
-else
- i2kd1ajE= (int)  -1;
-//statementexpr€_2kd1ajElai gives:
- (intptr_t)  i2kd1ajE;})
+ && !json_unpack(objgetjansjsonpayl_BM ( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz, "{s:i}", "newevclose_rank",
+  & j_0ouHyl6tEXf_9rr1g1EMloX))
+ i_0ouHyl6tEXf_9rr1g1EMloX = j_0ouHyl6tEXf_9rr1g1EMloX;
+else 
+ i_0ouHyl6tEXf_9rr1g1EMloX = (int) -1;
+/*newevclose_rank statementexpr in _0ouHyl6tEXf_9rr1g1EMloX gives:*/
+i_0ouHyl6tEXf_9rr1g1EMloX;
+})
 ; 
  
 /* !endingblock _8S8vCPGEYC1_9EMZV4h98oD */ 
