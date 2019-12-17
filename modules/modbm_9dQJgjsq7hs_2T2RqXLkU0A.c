@@ -5053,7 +5053,7 @@ DBGPRINTF_BM("debug newevclose_ajax start €%.9s v_restpath=%s o_webex=%s",
  /*o_websess:*/_.o_7UzdV9wjuq2_2PRgXcyAlMi = //assign _7XwmYM0QUIp_2Mfty4m92nh  
 /*objwebexchangesessionpayl:*/objwebexchangesessionpayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx)); 
  
-//+ #2/6 of block _8S8vCPGEYC1_9EMZV4h98oD :: 
+//+ #2/7 of block _8S8vCPGEYC1_9EMZV4h98oD :: 
  
  /*o_dialmap:*/_.o_3qGvc1qvequ_8wtsT73p0e6 = //assign _18P4YOBXUOf_5ClNPHTwLxt  
 /*as_object:*/objectcast_BM(/*objgetattr:*/objgetattr_BM(( /*o_websess:*/_.o_7UzdV9wjuq2_2PRgXcyAlMi),( (constob_9dQJgjsq7hs_2T2RqXLkU0A_BM[6] /*!neweval_dialogs_map*/)))); 
@@ -5062,7 +5062,7 @@ DBGPRINTF_BM("debug newevclose_ajax start €%.9s v_restpath=%s o_webex=%s",
  /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz = //assign _8CUg5Hi37wd_5Qjabugd7S6  
 /*objwebexchangejsonpayl:*/objwebexchangejsonpayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx)); 
  
-//+ #4/6 of block _8S8vCPGEYC1_9EMZV4h98oD :: 
+//+ #4/7 of block _8S8vCPGEYC1_9EMZV4h98oD :: 
  
  
 { // run _9z0DPSLhsry_6fjn8Kyl5E1 
@@ -5091,6 +5091,22 @@ else
 /*newevclose_rank statementexpr in _0ouHyl6tEXf_9rr1g1EMloX gives:*/
 i_0ouHyl6tEXf_9rr1g1EMloX;
 })
+; 
+ 
+ 
+ /*o_helem:*/_.o_6Ef2ORO1Mni_0tpNoRQGmrW = //assign _9VhqdloEmfo_2Z8rnwNjpvP  
+
+({/* get object named newevclose_id from JSON o1 or else o2, €_9CabVuPMWG, statementexpr from _9VhqdloEmfo_2Z8rnwNjpvP: */
+const char*idstr_9VhqdloEmfo_2Z8rnwNjpvP = NULL;
+objectval_tyNM*ob_9VhqdloEmfo_2Z8rnwNjpvP = NULL;
+if (objhasjansjsonpayl_BM ( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz)
+  && !json_unpack(objgetjansjsonpayl_BM( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz), "{s:s}", "newevclose_id", &idstr_9VhqdloEmfo_2Z8rnwNjpvP))
+  ob_9VhqdloEmfo_2Z8rnwNjpvP = lockedfindobjofstrid_BM (idstr_9VhqdloEmfo_2Z8rnwNjpvP);
+else
+ ob_9VhqdloEmfo_2Z8rnwNjpvP = /*null_object:*/ ((objectval_tyBM*)NULL);
+/*get object named newevclose_id statementexpr in _9VhqdloEmfo_2Z8rnwNjpvP gives: */
+ob_9VhqdloEmfo_2Z8rnwNjpvP;
+}) /*end statementexpr from _9VhqdloEmfo_2Z8rnwNjpvP, using €_9CabVuPMWG*/
 ; 
  
 /* !endingblock _8S8vCPGEYC1_9EMZV4h98oD */ 

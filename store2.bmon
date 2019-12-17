@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3379 objects
+// for 3380 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -51636,13 +51636,13 @@ _4xwDKklt2v4_2lEbck0j4qs
 
 
 «_8S8vCPGEYC1_9EMZV4h98oD
-± 1576503169.051
+± 1576592547.605
 ∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of newevclose_ajax-handler"
 ↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
 _9bzPSZJ7Kyh_11hYc25mz7O
-!# 6
+!# 7
 
 ↳ _8WOJzNWfPdb_7qlPaN9ey6o 
 ↳ _7XwmYM0QUIp_2Mfty4m92nh 
@@ -51650,6 +51650,7 @@ _9bzPSZJ7Kyh_11hYc25mz7O
 ↳ _8CUg5Hi37wd_5Qjabugd7S6 
 ↳ _9z0DPSLhsry_6fjn8Kyl5E1 
 ↳ _0ouHyl6tEXf_9rr1g1EMloX 
+↳ _9VhqdloEmfo_2Z8rnwNjpvP 
 »_8S8vCPGEYC1_9EMZV4h98oD
 
 
@@ -56153,6 +56154,21 @@ _0qTBOEAT5pa_2fz1SKfHrMV
 _4gjtBqgrY3i_67ZPUd9LxPU
 
 »_9VgZzSbyOHr_8c9vx0gyTwr
+
+
+
+«_9VhqdloEmfo_2Z8rnwNjpvP
+± 1576593275.835
+∈ _3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "o_helem := get object named newevclose_id from o_json"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_8S8vCPGEYC1_9EMZV4h98oD
+!# 2
+
+↳ _6Ef2ORO1Mni_0tpNoRQGmrW 
+↳  * _9CabVuPMWGX_2FIrScK6526 ( _0kRPCsvLkdT_75x9PWrFQYz _5wZJ5RA9Dww_2S0cGLDXup0) 
+»_9VhqdloEmfo_2Z8rnwNjpvP
 
 
 
