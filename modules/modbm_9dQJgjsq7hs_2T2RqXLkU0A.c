@@ -1663,8 +1663,8 @@ DBGPRINTF_BM("debug neweval_ajax-handler start €%.9s v_restpath=%s o_webex=%s 
 ({ /*get neweval_counter from JSON €_6nQKqrCqf statementexpr in _5sDHzm4InAA_14dd6w68KvI: */
 int i_5sDHzm4InAA_14dd6w68KvI =  -1; int j_5sDHzm4InAA_14dd6w68KvI = -999;
 if (objhasjansjsonpayl_BM ( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz)
- && !json_unpack(objgetjansjsonpayl_BM( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz,
- "{s:i}, "neweval_counter", & j_5sDHzm4InAA_14dd6w68KvI))
+ && !json_unpack(objgetjansjsonpayl_BM( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz),
+ "{s:i}", "neweval_counter", & j_5sDHzm4InAA_14dd6w68KvI))
   i_5sDHzm4InAA_14dd6w68KvI = j_5sDHzm4InAA_14dd6w68KvI;
 else
  i_5sDHzm4InAA_14dd6w68KvI =  -1;
@@ -5083,7 +5083,7 @@ DBGPRINTF_BM("newevclose_ajax €%.9s o_webex=%s o_websess=%s o_json=%s o_dialma
 int i_0ouHyl6tEXf_9rr1g1EMloX = (int) -1;
 int j_0ouHyl6tEXf_9rr1g1EMloX = - __LINE__;
 if (objhasjansjsonpayl_BM ( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz)
- && !json_unpack(objgetjansjsonpayl_BM ( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz, "{s:i}", "newevclose_rank",
+ && !json_unpack(objgetjansjsonpayl_BM ( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz), "{s:i}", "newevclose_rank",
   & j_0ouHyl6tEXf_9rr1g1EMloX))
  i_0ouHyl6tEXf_9rr1g1EMloX = j_0ouHyl6tEXf_9rr1g1EMloX;
 else 

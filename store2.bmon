@@ -23326,7 +23326,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
   "\n"  " "  "&&"  " " 
   "!"  "json_unpack"  "("  "objgetjansjsonpayl_BM" 
   " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  
-"," 
+")," 
   " "  "\"{"  "s"  ":" 
   "i"  "}\","  " "  "\"" 
   "newevclose_rank"  "\","  "\n"  "  " 
@@ -40696,10 +40696,10 @@ _6CNxxDuR549_5nVIV57U3hP
 ")" 
   "\n"  " "  "&&"  " " 
   "!"  "json_unpack"  "("  "objgetjansjsonpayl_BM" 
-  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ","  
-"\n" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E)  ")," 
+ "\n" 
   " "  "\"{"  "s"  ":" 
-  "i"  "},"  " "  "\"" 
+  "i"  "}\","  " "  "\"" 
   "neweval_counter"  "\","  " "  "&" 
   " "  "j"  * _5ucAZimYynS_4VA0XHvr1nW ( _1YX5DiyMYdm_8wQmGBtI3SD)  
 "))" 
