@@ -66,8 +66,8 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
     newevaldiv.dialog({
 	title: "neweval#" + cnt,
 	resizable: true,
-	minWidth: 200,
-	minHeight: 100,
+	minWidth: 220,
+	minHeight: 110,
 	classes: {
 	    "ui-dialog_content": "bmcl_neweval"
 	},
@@ -94,6 +94,29 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 	}
     });
     console.debug("newevaldiv=%o", newevaldiv);
+    var newevalbox =  $("<div>", {id: "nwevdialbox" + id, "class": "bmcl_newevalbox"});
+    newevaldiv.append(newevalbox);
+    console.debug("newevalbox=%o", newevalbox);
+    var newevalquilldiv =  $("<div>", {id: "nwevdialquilldiv" + id});
+    newevalbox.append(newevalquilldiv);
+    console.debug("newevalquilldiv=%o", newevalquilldiv);
+    //-var newevalquillcont =  $("<div>", {id: "nwevdialquillcont" + id});
+    //-newevalquilldiv.append(newevalquillcont);
+    //-console.debug("newevalquillcont=%o", newevalquillcont);
+    //
+    var newevalquillcont = $('#nwevdialquilldiv' + id).get(0);
+    console.debug("newevalquillcont=%o", newevalquillcont);
+    var newevalquill =
+    //!  //new Quill(newevalquilldiv[0],
+    //!  //new Quill(newevalquilldiv,
+    //!            {
+    //!                theme: 'snow'
+	//!            });
+	new Quill(newevalquillcont,
+		  {
+		      theme: 'snow'
+		  });
+    console.debug("newevalquill=%o", newevalquill);
     console.groupEnd();
     return newevaldiv;
 };

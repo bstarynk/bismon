@@ -83,5 +83,14 @@ tt.bmcl_cookie {
 	
 div.bmcl_neweval {
     background-color: #FBD0ED;
-}   
+}
+
+div.bmcl_newevalbox {
+    margin: 4px;
+    padding: 2px;
+    border-style: dashed;
+    border-width: 1px;
+    border-color: navy;
+}
+
 /* end of themes/second-theme.css */
