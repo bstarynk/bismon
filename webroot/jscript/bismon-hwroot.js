@@ -100,6 +100,9 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
     var newevalquilldiv =  $("<div>", {id: "nwevdialquilldiv" + id});
     newevalbox.append(newevalquilldiv);
     console.debug("newevalquilldiv=%o", newevalquilldiv);
+    /*****
+	  this does not work, we probably need to use https://github.com/webfashionist/RichText
+     *****/
     //-var newevalquillcont =  $("<div>", {id: "nwevdialquillcont" + id});
     //-newevalquilldiv.append(newevalquillcont);
     //-console.debug("newevalquillcont=%o", newevalquillcont);
