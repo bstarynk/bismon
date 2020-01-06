@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -59,6 +59,9 @@ thread_local volatile struct failurehandler_stBM *curfailurehandle_BM;
 volatile struct backstrace_state *backtracestate_BM;
 static void backtracerrorcb_BM (void *data, const char *msg, int errnum);
 
+
+
+extern void run_testplugins_after_load_BM (void);
 
 static void add_passwords_from_file_BM (const char *addedpasspath);
 
