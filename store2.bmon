@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
-/// This data file, generated in 2019, is GPLv3+ licensed.
-// for 3388 objects
+/// This data file, generated in 2020, is GPLv3+ licensed.
+// for 3389 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -16925,6 +16925,18 @@ _73hC7TDRQc7_7AAWITxnirb
 
 
 
+«_13kmwN7d4cZ_7HvSMkPDbnH
+± 1578390599.324
+∈ _8Lqg0cPFwGr_3Nmu1EAnYbx |=simple_html_void_element_object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "script-jquery.richtext-html-element"
+↦ _64Nwpjx4gnk_2y263bTCaB3 |=emit_xhtml_open|
+ % _8oKFbiPI4JW_7EPg4RP1e4Q (  "script"  "src=\'/jscript/jquery.richtext.js\' type=\'text/javascript\'")
+
+»_13kmwN7d4cZ_7HvSMkPDbnH
+
+
+
 «_13zkrw8w8YT_3erup1bBeRM
 ± 1556867604.629
 ∈ _0eCRnBKQ0eQ_1atum3gUgEz |=basiclo_cond|
@@ -18910,11 +18922,12 @@ _3poYCpSsBfJ_8W7XNwG50hS
  % _9hEreAemqXg_0uoN1Fr1ly4 (  "head"  "bmcl_head"  "headp" _1sitXrzOdqd_1fP4WAF9ww9)
 ↦ _84d7WOdRsJh_4Ud9BryxYUr |=html_spacing|
 _2wGWzItVmrN_2CBwG6iHWFO
-!# 9
+!# 10
 
 ↳ _1yXAklDk0LE_8ravSds7ObH 
 ↳ _7pzlWqA1e0P_6M4xMzDiTbo 
 ↳ _37OSgkA0YMt_6ggggIhuigT 
+↳ _13kmwN7d4cZ_7HvSMkPDbnH 
 ↳ _7CbJCH86Jg1_39UYMeCz6vK 
 ↳ _1ekuIkeTLO0_8zjm6NaOV6Z 
 ↳ _278dlMgNGE3_1mSYZAe3U02 
