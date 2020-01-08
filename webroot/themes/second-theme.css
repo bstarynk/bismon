@@ -83,6 +83,7 @@ tt.bmcl_cookie {
 	
 div.bmcl_neweval {
     background-color: #FBD0ED;
+    font-family: "Lucida Console", Monaco, monospace;
 }
 
 div.bmcl_newevalbox {
@@ -91,6 +92,13 @@ div.bmcl_newevalbox {
     border-style: dashed;
     border-width: 1px;
     border-color: navy;
+    background-color: #F2FACF;
+}
+
+span.bmcl_evalprompt {
+    margin: 3px;
+    color: #3014BD;
+    background-color: white;
 }
 
 /* end of themes/second-theme.css */

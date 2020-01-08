@@ -4,7 +4,7 @@
 
 /***
     BISMON 
-    Copyright © 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2019, 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -94,35 +94,26 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 	}
     });
     console.debug("newevaldiv=%o", newevaldiv);
-    var newevalbox =  $("<div>", {id: "nwevdialbox" + id, "class": "bmcl_newevalbox"});
+    var newevalbox =  $("<div>", {id: "nwevdialbox" + id,
+				  "class": "bmcl_newevalbox",
+				  "contenteditable": true});
     newevaldiv.append(newevalbox);
-    console.debug("newevalbox=%o", newevalbox);
-    var newevalquilldiv =  $("<div>", {id: "nwevdialquilldiv" + id});
-    newevalbox.append(newevalquilldiv);
-    console.debug("newevalquilldiv=%o", newevalquilldiv);
-    /*****
-	  this does not work, we probably need to use https://github.com/webfashionist/RichText
-     *****/
-    //-var newevalquillcont =  $("<div>", {id: "nwevdialquillcont" + id});
-    //-newevalquilldiv.append(newevalquillcont);
-    //-console.debug("newevalquillcont=%o", newevalquillcont);
-    //
-    var newevalquillcont = $('#nwevdialquilldiv' + id).get(0);
-    console.debug("newevalquillcont=%o", newevalquillcont);
-    var newevalquill =
-    //!  //new Quill(newevalquilldiv[0],
-    //!  //new Quill(newevalquilldiv,
-    //!            {
-    //!                theme: 'snow'
-	//!            });
-	new Quill(newevalquillcont,
-		  {
-		      theme: 'snow'
-		  });
-    console.debug("newevalquill=%o", newevalquill);
+    var newevalprompt =  $("<span>",{id: "nwevdialprompt" + id,
+				     "class": "bmcl_evalprompt",
+				     "contenteditable": false});
+    newevalbox.append(newevalprompt);
+    newevalprompt.append("⁈");
+    newevalbox.append(" ");
+    newevalbox.keypress(function(ev) {
+	console.debug("newevaldialog keypress newevalbox=%o, ev=%o key=%s charcode=%d",
+		      newevalbox, ev, ev.key, ev.charCode);
+    });
+    console.debug("newevalbox=%o, newevalprompt=%o", newevalbox,newevalprompt);
     console.groupEnd();
     return newevaldiv;
-};
+}; // end bmhwroot_create_neweval_dialog
+
+
 
 function bmhwroot_initialize() {
     var topmenu_title = $("#topmtitle_6G1xOyeten5_7SqZ4EcQe8T")
