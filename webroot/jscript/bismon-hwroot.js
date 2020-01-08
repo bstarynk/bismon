@@ -95,20 +95,37 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
     });
     console.debug("newevaldiv=%o", newevaldiv);
     var newevalbox =  $("<div>", {id: "nwevdialbox" + id,
-				  "class": "bmcl_newevalbox",
-				  "contenteditable": true});
+				  "class": "bmcl_newevalbox"
+				 });
     newevaldiv.append(newevalbox);
+    var newevaltransptext =  $("<span>",{id: "nwevdialprompt" + id,
+					 "class": "bmcl_evaltranstextarea",
+					 "tabindex": 0,
+				      });
+    newevaldiv.append(newevaltransptext);
     var newevalprompt =  $("<span>",{id: "nwevdialprompt" + id,
-				     "class": "bmcl_evalprompt",
-				     "contenteditable": false});
+				     "class": "bmcl_evalprompt"
+				    });
     newevalbox.append(newevalprompt);
     newevalprompt.append("⁈");
     newevalbox.append(" ");
-    newevalbox.keypress(function(ev) {
-	console.debug("newevaldialog keypress newevalbox=%o, ev=%o key=%s charcode=%d",
+    newevaltransptext.keypress(function(ev) {
+	var keystr= ev.key;
+	console.debug("newevaldialog keypress newevalbox=%o, ev=%o key=%o charcode=%d",
+		      newevalbox, ev, keystr, ev.charCode);
+	//https://stackoverflow.com/a/32567789/841108 test for a letter
+	if (keystr.toLowerCase() != keystr.toUpperCase()) {
+	    console.debug("newevaldialog keypress letter keystr=%o", keystr);
+	    //newevalbox.append(keystr);
+	    return true;
+	}
+    });
+    newevaltransptext.keydown(function(ev) {
+	console.debug("newevaldialog keydown newevalbox=%o, ev=%o key=%o charcode=%d",
 		      newevalbox, ev, ev.key, ev.charCode);
     });
-    console.debug("newevalbox=%o, newevalprompt=%o", newevalbox,newevalprompt);
+    console.debug("newevalbox=%o, newevalprompt=%o, newevaltransptext",
+		  newevalbox, newevalprompt, newevaltransptext);
     console.groupEnd();
     return newevaldiv;
 }; // end bmhwroot_create_neweval_dialog

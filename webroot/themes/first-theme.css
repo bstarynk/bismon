@@ -96,6 +96,7 @@ div.bmcl_newevalbox {
     border-width: 1px;
     border-color: darkred;
     background-color: #CFFAF8;
+    position: relative;
 }
 
 span.bmcl_evalprompt {
@@ -103,5 +104,18 @@ span.bmcl_evalprompt {
     color: #40146D;
     background-color: white;
 }
+
+
+textarea.bmcl_evaltransptextarea {
+  background: transparent;
+  color: transparent;
+  resize: none;
+  border: 0 none;
+  width: 100%;
+  font-size: 5em;
+  outline: none;
+  height: 100%;
+  position: absolute;
+};
 
 /* end of themes/first-theme.css */
