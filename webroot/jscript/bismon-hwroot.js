@@ -109,6 +109,7 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
     newevalbox.append(newevalprompt);
     newevalprompt.append("⁈");
     newevalbox.append(" ");
+    /// maybe we should use https://github.com/Alex-D/Trumbowyg
     newevaltransptext.keypress(function(ev) {
 	var keystr= ev.key;
 	console.debug("newevaldialog keypress newevalbox=%o, ev=%o key=%o charcode=%d",
