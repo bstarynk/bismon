@@ -121,6 +121,8 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 	    return true;
 	}
     });
+    // should consider a canvas approach, using perhaps
+    // https://projects.calebevans.me/jcanvas/
     newevaltransptext.keydown(function(ev) {
 	console.debug("newevaldialog keydown newevalbox=%o, ev=%o key=%o charcode=%d",
 		      newevalbox, ev, ev.key, ev.charCode);
