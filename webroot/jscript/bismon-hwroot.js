@@ -62,6 +62,8 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
     console.group("bmhwroot_create_neweval_dialog start");
     console.debug("ev=%o cnt=%d id=%o", ev, cnt, id);
     var newevaldiv = $("<div>", {id: "nwevdial" + id, "class": "bmcl_neweval"});
+    var newevalbox = null;
+    var newevalcanvas = null;
     $('body').append(newevaldiv);
     newevaldiv.dialog({
 	title: "neweval#" + cnt,
@@ -74,6 +76,24 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 	resizeStop: function (evresiz, ui) {
 	    console.group("create_neweval_dialog resizeStop");
 	    console.debug("neweval_dialog resizeStop evresiz=%o ui=%o", evresiz, ui);
+	    var oldwidth = ui.originalSize.width;
+	    var oldheight = ui.originalSize.height;
+	    var widthnew = ui.size.width;
+	    var heightnew = ui.size.height;
+	    console.debug("neweval_dialog resizeStop oldwidth=%f oldheight=%f widthnew=%f heightnew=%f newevaldiv=%o newevalbox=%o newevalcanvas=%o",
+			  oldwidth, oldheight, widthnew, heightnew, newevaldiv, newevalbox, newevalcanvas);
+	    //https://stackoverflow.com/a/18953446/841108
+	    var boxheight = Math.ceil(0.9*heightnew/5+0.7)*5;
+	    var boxwidth = Math.ceil(0.9*widthnew/5+0.7)*5;
+	    newevalbox.height(boxheight);
+	    newevalbox.width(boxwidth);
+	    var canvheight = Math.ceil(0.9*boxheight/5+0.7)*5;
+	    var canvwidth = Math.ceil(0.9*boxwidth/5+0.7)*5;
+	    newevalcanvas.height(canvheight);
+	    newevalcanvas.width(canvwidth);
+	    /// we should redraw and probably reorganize the canvas
+	    console.debug("neweval_dialog resizeStop newevalcanvas=%o boxheight=%d boxwidth=%d canvheight=%d canvwidth=%d",
+			  newevalcanvas, boxheight, boxwidth, canvheight, canvwidth);
 	    console.groupEnd();
 	},
 	close: function (evclose, ui) {
@@ -99,7 +119,7 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 	}
     });
     console.debug("newevaldiv=%o", newevaldiv);
-    var newevalbox =  $("<div>", {id: "nwevdialbox" + id,
+     newevalbox =  $("<div>", {id: "nwevdialbox" + id,
 				  "class": "bmcl_newevalbox",
 					height: 0.9*newevaldiv.height() + 5,
 					width: 0.9*newevaldiv.width() + 5
@@ -108,7 +128,7 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
     newevaldiv.bmevalbox = newevalbox;
     // should consider a canvas approach, using perhaps
     // https://projects.calebevans.me/jcanvas/
-    var newevalcanvas = $("<canvas>",  {id: "nwevdialcanvas" + id,
+     newevalcanvas = $("<canvas>",  {id: "nwevdialcanvas" + id,
 					"class": "bmcl_newevalcanvas",
 					height: 0.9*newevalbox.height() + 5,
 					width: 0.9*newevalbox.width() + 5
