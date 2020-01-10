@@ -87,6 +87,9 @@ tt.bmcl_cookie {
 div.bmcl_neweval {
     background-color: #FBEBD0;
     font-family: "Lucida Console", Monaco, monospace;
+    border-style: dashed;
+    border-width: 1px;
+    border-color: grey;
 }
 
 div.bmcl_newevalbox {
@@ -96,26 +99,21 @@ div.bmcl_newevalbox {
     border-width: 1px;
     border-color: darkred;
     background-color: #CFFAF8;
+    width: 90%;
+    height: 90%;
     position: relative;
 }
 
+/*
 span.bmcl_evalprompt {
     margin: 3px;
     color: #40146D;
     background-color: white;
 }
+*/
 
-
-textarea.bmcl_evaltransptextarea {
-  background: transparent;
-  color: transparent;
-  resize: none;
-  border: 0 none;
-  width: 100%;
-  font-size: 5em;
-  outline: none;
-  height: 100%;
-  position: absolute;
-};
-
+canvas.bmcl_newevalcanvas {
+    margin: 2px;
+    background-color: peachpuff;
+}
 /* end of themes/first-theme.css */

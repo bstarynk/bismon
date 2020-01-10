@@ -66,8 +66,8 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
     newevaldiv.dialog({
 	title: "neweval#" + cnt,
 	resizable: true,
-	minWidth: 220,
-	minHeight: 110,
+	minWidth: 320,
+	minHeight: 210,
 	classes: {
 	    "ui-dialog_content": "bmcl_neweval"
 	},
@@ -95,21 +95,22 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
     });
     console.debug("newevaldiv=%o", newevaldiv);
     var newevalbox =  $("<div>", {id: "nwevdialbox" + id,
-				  "class": "bmcl_newevalbox"
+				  "class": "bmcl_newevalbox",
+					height: 0.9*newevaldiv.height() + 5,
+					width: 0.9*newevaldiv.width() + 5
 				 });
     newevaldiv.append(newevalbox);
-    var newevaltransptext =  $("<span>",{id: "nwevdialprompt" + id,
-					 "class": "bmcl_evaltranstextarea",
-					 "tabindex": 0,
-				      });
-    newevaldiv.append(newevaltransptext);
-    var newevalprompt =  $("<span>",{id: "nwevdialprompt" + id,
-				     "class": "bmcl_evalprompt"
-				    });
-    newevalbox.append(newevalprompt);
-    newevalprompt.append("⁈");
-    newevalbox.append(" ");
-    /// maybe we should use https://github.com/Alex-D/Trumbowyg
+    // should consider a canvas approach, using perhaps
+    // https://projects.calebevans.me/jcanvas/
+    var newevalcanvas = $("<canvas>",  {id: "nwevdialcanvas" + id,
+					"class": "bmcl_newevalcanvas",
+					height: 0.9*newevalbox.height() + 5,
+					width: 0.9*newevalbox.width() + 5
+				       });
+    newevalbox.append(newevalcanvas);
+    console.debug("newevalbox=%o, newevalcanvas=%o",
+		  newevalbox, newevalcanvas);
+    /***
     newevaltransptext.keypress(function(ev) {
 	var keystr= ev.key;
 	console.debug("newevaldialog keypress newevalbox=%o, ev=%o key=%o charcode=%d",
@@ -121,14 +122,20 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 	    return true;
 	}
     });
-    // should consider a canvas approach, using perhaps
-    // https://projects.calebevans.me/jcanvas/
-    newevaltransptext.keydown(function(ev) {
-	console.debug("newevaldialog keydown newevalbox=%o, ev=%o key=%o charcode=%d",
-		      newevalbox, ev, ev.key, ev.charCode);
+    ***/
+    newevalcanvas.drawText({
+	text: "⁈",
+	x: 10, y: 10,
+	fontFamily: "Verdana, sans-serif",
+	fillStyle: '#f12',
+	fontSize: 16
     });
-    console.debug("newevalbox=%o, newevalprompt=%o, newevaltransptext",
-		  newevalbox, newevalprompt, newevaltransptext);
+    newevalcanvas.keydown(function(ev) {
+	console.debug("newevaldialog keydown newevalcanvas=%o, ev=%o key=%o charcode=%d",
+		      newevalcanvas, ev, ev.key, ev.charCode);
+    });
+    console.debug("again newevalbox=%o, newevalcanvas=%o",
+		  newevalbox, newevalcanvas);
     console.groupEnd();
     return newevaldiv;
 }; // end bmhwroot_create_neweval_dialog
