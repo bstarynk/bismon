@@ -71,6 +71,11 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 	classes: {
 	    "ui-dialog_content": "bmcl_neweval"
 	},
+	resize: function (evresiz, ui) {
+	    console.group("create_neweval_dialog resize");
+	    console.debug("neweval_dialog resize evresiz=%o ui=%o", evresiz, ui);
+	    console.groupEnd();
+	},
 	close: function (evclose, ui) {
 	    console.group("create_neweval_dialog close");
 	    console.debug("newevaldialog close evclose=%o ui=%o newevaldiv=%o cnt=%d id=%o", evclose, ui, newevaldiv, cnt, id);
@@ -100,6 +105,7 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 					width: 0.9*newevaldiv.width() + 5
 				 });
     newevaldiv.append(newevalbox);
+    newevaldiv.bmevalbox = newevalbox;
     // should consider a canvas approach, using perhaps
     // https://projects.calebevans.me/jcanvas/
     var newevalcanvas = $("<canvas>",  {id: "nwevdialcanvas" + id,
@@ -108,6 +114,7 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 					width: 0.9*newevalbox.width() + 5
 				       });
     newevalbox.append(newevalcanvas);
+    newevaldiv.bmevalcanvas = newevalcanvas;
     console.debug("newevalbox=%o, newevalcanvas=%o",
 		  newevalbox, newevalcanvas);
     /***
