@@ -71,9 +71,9 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 	classes: {
 	    "ui-dialog_content": "bmcl_neweval"
 	},
-	resize: function (evresiz, ui) {
-	    console.group("create_neweval_dialog resize");
-	    console.debug("neweval_dialog resize evresiz=%o ui=%o", evresiz, ui);
+	resizeStop: function (evresiz, ui) {
+	    console.group("create_neweval_dialog resizeStop");
+	    console.debug("neweval_dialog resizeStop evresiz=%o ui=%o", evresiz, ui);
 	    console.groupEnd();
 	},
 	close: function (evclose, ui) {
@@ -130,6 +130,11 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 	}
     });
     ***/
+    newevalcanvas.keypress(function (ev) {
+	var keystr= ev.key;
+	console.debug("newevaldialog keypress newevalcanvas=%o, newevalbox=%o, ev=%o key=%o charcode=%d",
+		      newevalcanvas, newevalbox, ev, keystr, ev.charCode);
+    });
     newevalcanvas.drawText({
 	text: "⁈",
 	x: 10, y: 10,
