@@ -32,6 +32,7 @@ extern bool bismon_has_gui_BM (void);
 extern bool bismon_has_web_BM (void);
 
 static inline const char *basename_BM (const char *);
+extern const char*bismon_home_BM(void);
 
 extern void
 backtrace_print_BM (struct backtrace_state *state, int skip, FILE * f);
