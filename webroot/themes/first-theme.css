@@ -104,13 +104,15 @@ div.bmcl_newevalbox {
     position: relative;
 }
 
-/*
+
 span.bmcl_evalprompt {
     margin: 3px;
     color: #40146D;
+    font-family: "Courier New", Monaco, monospace;
+    font-size: 90%;
     background-color: white;
 }
-*/
+
 
 canvas.bmcl_newevalcanvas {
     margin: 2px;
