@@ -58,6 +58,45 @@ function hide_appmenu(ev) {
     return false;
 };
 
+var bm_default_canvas;
+
+class Canvas_element_bm {
+    constructor (canv) {
+	if (canv == undefined || canv == null) {
+	    canv = bm_default_canvas;
+	};
+	this.bm_canvas = canv;
+	console.debug("Canvas_element_bm this=%o", this);
+    }
+    canvas () { return this.bm_canvas; }
+};				// end Canvas_element_bm
+
+
+class Canvas_string_bm extends Canvas_element_bm {
+    constructor (canv, str) {
+	super (canv);
+	if (typeof(str) != "string") {
+	    console.error("bad str %o to Canvas_element_bm", str);
+	    throw new Error("bad string to Canvas_string_bm:" + str);
+	}
+	this.bm_str = str;
+    }
+};				// end Canvas_string_bm
+
+class Canvas_hbox_bm extends Canvas_element_bm {
+    constructor (canv, ...etc) {
+	super(canv);
+	this.bm_sons = etc;
+    }
+};				// end Canvas_hbox_bm
+
+class Canvas_vbox_bm extends Canvas_element_bm {
+    constructor (canv, ...etc) {
+	super(canv);
+	this.bm_sons = etc;
+    }
+};				// end Canvas_vbox_bm
+
 function bmhwroot_create_neweval_dialog(ev, cnt, id) {
     console.group("bmhwroot_create_neweval_dialog start");
     console.debug("ev=%o cnt=%d id=%o", ev, cnt, id);
