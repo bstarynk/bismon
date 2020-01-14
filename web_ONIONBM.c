@@ -428,12 +428,18 @@ fork_onion_process_at_slot_BM (int slotpos,
 static onion_connection_status
 custom_onion_handler_BM (void *clientdata,
                          onion_request * req, onion_response * resp);
+
 static onion_connection_status
 websocket_onion_handler_BM (void *clientdata,
                             onion_websocket * ws, ssize_t data_ready_len);
 static onion_connection_status
 login_onion_handler_BM (void *clientdata,
                         onion_request * req, onion_response * resp);
+
+static onion_connection_status
+bismon_settings_json_handler_BM (struct stackframe_stBM*stkf,	objectval_tyBM *sessionob,
+				 onion_request * req, onion_response * resp);
+
 static onion_connection_status
 forgotpasswd_onion_handler_BM (void *clientdata,
                                onion_request * req, onion_response * resp);
@@ -996,7 +1002,14 @@ custom_onion_handler_BM (void *clientdata,
       }
     else
       _.sessionob = NULL;
-    objunlock_BM (BMP_the_web_sessions);
+    objunlock_BM (BMP_the_web_sessions);  
+  if (!strcmp(reqpath, "_bismon_settings.json")
+      || !strcmp(reqpath, "/_bismon_settings.json"))
+    {
+      DBGPRINTF_BM ("custom_onion_handler _bismon_settings.json page reqpath %s sessionob %s",
+		    reqpath, objectdbg_BM(_.sessionob));
+      return bismon_settings_json_handler_BM (CURFRAME_BM, _.sessionob, req, resp);
+    }
     perhaps_suspend_for_gc_onion_thread_stack_BM (CURFRAME_BM);
     DBGPRINTF_BM ("custom_onion_handler reqpath '%s' sessionob %s",
                   reqpath, objectdbg_BM (_.sessionob));
@@ -1217,6 +1230,21 @@ custom_onion_handler_BM (void *clientdata,
 }                               /* end custom_onion_handler_BM */
 
 
+static pthread_mutex_t settingmtx_bm = PTHREAD_MUTEX_INITIALIZER;
+
+  //// handling of /_bismon_settings.json
+onion_connection_status
+bismon_settings_json_handler_BM (struct stackframe_stBM*stkf,	objectval_tyBM *sessionobarg,
+			      onion_request * req, onion_response * resp)
+{
+  objectval_tyBM *k_bismon_settings_json = BMK_2EZk8Ud8f0s_3WuUVMlorZG;
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_bismon_settings_json,
+		  objectval_tyBM*sessionob; //
+    );
+  _.sessionob = sessionobarg;
+  pthread_mutex_lock(&settingmtx_bm);
+  pthread_mutex_unlock(&settingmtx_bm);
+} /* end of bismon_settings_handler_BM */
 
 onion_connection_status
 login_onion_handler_BM (void *_clientdata __attribute__((unused)),
