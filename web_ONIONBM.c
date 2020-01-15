@@ -1251,7 +1251,17 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
   json_t *jsonobpayl = NULL;
   json_t *jsonhome = NULL;
   json_t *jsonbuiltin = NULL;
+  json_t *jsonmerge = NULL;
+  const char *reqpath = onion_request_get_path (req);
+  unsigned reqflags = onion_request_get_flags (req);
+  unsigned reqmeth = (reqflags & OR_METHODS);
   _.sessionob = sessionobarg;
+  DBGPRINTF_BM ("bismon_settings_json_handler_BM start reqpath=%s"
+                " [%s] sessionob=%s",
+                reqpath, onion_request_methods[reqmeth],
+                objectdbg_BM (_.sessionob));
+  if (reqmeth != OR_GET && reqmeth != OR_HEAD)
+    return OCS_NOT_IMPLEMENTED;
   pthread_mutex_lock (&settingmtx_bm);
   /// compute jsonobpayl from web session
   if (_.sessionob)
@@ -1323,8 +1333,40 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
       WARNPRINTF_BM ("failed to read Json builtin settings from %s - %m",
                      builtinpathbuf);
   }
+  //// merge in that order jsonobpayl + jsonhome + jsonbuiltin into
+  //// jsonmerge
+  jsonmerge = json_object ();
+  if (json_is_object (jsonobpayl))
+    json_object_update_missing (jsonmerge, jsonobpayl);
+  if (json_is_object (jsonhome))
+    json_object_update_missing (jsonmerge, jsonhome);
+  if (json_is_object (jsonbuiltin))
+    json_object_update_missing (jsonmerge, jsonbuiltin);
+  char *strj = json_dumps (jsonmerge,
+                           JSON_INDENT (1) | JSON_SORT_KEYS |
+                           JSON_REAL_PRECISION (6));
+  if (!strj)
+    FATAL_BM ("json_dumps failed in bismon_settings_json_handler_BM");
+  DBGPRINTF_BM ("bismon_settings_json_handler_BM strj:\n%s\n", strj);
 #warning incomplete bismon_settings_json_handler_BM
   pthread_mutex_unlock (&settingmtx_bm);
+  onion_response_set_header (resp, "Content-Type", "application/json");
+  onion_response_set_code (resp, HTTP_OK);
+  size_t sizej = strlen (strj);
+  onion_response_set_length (resp, sizej + 1);
+  onion_response_write (resp, strj, sizej);
+  onion_response_write (resp, "\n", 1);
+  onion_response_flush (resp);
+  free (strj), strj = NULL;
+  if (jsonobpayl)
+    json_decref (jsonobpayl), jsonobpayl = NULL;
+  if (jsonhome)
+    json_decref (jsonhome), jsonhome = NULL;
+  if (jsonbuiltin)
+    json_decref (jsonbuiltin), jsonbuiltin = NULL;
+  if (jsonmerge)
+    json_decref (jsonmerge), jsonmerge = NULL;
+  return OCS_PROCESSED;
 }                               /* end of bismon_settings_handler_BM */
 
 
