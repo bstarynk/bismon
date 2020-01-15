@@ -165,9 +165,38 @@
 #define EMPTY_TOKEN_BM (struct parstoken_stBM) { \
     .tok_kind= plex__NONE, .tok_line= -1, .tok_col= -1, .tok_ptr= NULL }
 
+/// The contributor file is inspired from /etc/passwd and it contains
+/// user names, their object ids, and their email and alias. That
+/// contributor file is in the current directory, or the Bismon home
+/// one (see bismon_home_BM function). The contributor file can also
+/// be given thru the --contributors-file program option.
 #define CONTRIBUTORS_FILE_BM "contributors_BM"
+
+/// The password file is inspired from /etc/shadow or from Apache
+/// .htpasswd and contains encrypted form of passwords for some
+/// contributors.  It is needed for the login Web form. That password
+/// file is in the Bismon home directory.  The password file can also
+/// be given thru the --passwords-file program option. Lines starting
+/// with # are skipped. Important lines (one per contributor) have
+/// <username>;<oid>;<encrypted-password>
 #define PASSWORDS_FILE_BM "passwords_BM"
+
+/// The contact file defines who can be contacted for this particular
+/// Bismon service.  It is needed for the login Web form. It is in the
+/// Bismon home directory, but can be also given thru the
+/// --contact-file program option. Lines starting with # are
+/// skipped. The single important line is <contact-name>
+/// <contact-email> with the contact-email having the format
+/// <someone@some.email>
 #define CONTACT_FILE_BM "contact_BM"
+
+/// The Json settings file is gotten from the source directory and
+/// from the Bismon home, then joined (also inside the the web session
+/// object, as attribute `bismon_settings_json` €_2EZk8Ud8f0s), to be
+/// sent to the Web browser as the /_bismon_settings.json internal
+/// URL.
+#define JSON_SETTINGS_FILE_BM "settings_BM.json"
+
 #define MODULESRCDIR_BM "modules"
 #define MODULEBINDIR_BM "modubin"
 #define MODULEPREFIX_BM "modbm"

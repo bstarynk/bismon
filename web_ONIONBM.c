@@ -437,8 +437,9 @@ login_onion_handler_BM (void *clientdata,
                         onion_request * req, onion_response * resp);
 
 static onion_connection_status
-bismon_settings_json_handler_BM (struct stackframe_stBM*stkf,	objectval_tyBM *sessionob,
-				 onion_request * req, onion_response * resp);
+bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
+                                 objectval_tyBM * sessionob,
+                                 onion_request * req, onion_response * resp);
 
 static onion_connection_status
 forgotpasswd_onion_handler_BM (void *clientdata,
@@ -1002,14 +1003,16 @@ custom_onion_handler_BM (void *clientdata,
       }
     else
       _.sessionob = NULL;
-    objunlock_BM (BMP_the_web_sessions);  
-  if (!strcmp(reqpath, "_bismon_settings.json")
-      || !strcmp(reqpath, "/_bismon_settings.json"))
-    {
-      DBGPRINTF_BM ("custom_onion_handler _bismon_settings.json page reqpath %s sessionob %s",
-		    reqpath, objectdbg_BM(_.sessionob));
-      return bismon_settings_json_handler_BM (CURFRAME_BM, _.sessionob, req, resp);
-    }
+    objunlock_BM (BMP_the_web_sessions);
+    if (!strcmp (reqpath, "_bismon_settings.json")
+        || !strcmp (reqpath, "/_bismon_settings.json"))
+      {
+        DBGPRINTF_BM
+          ("custom_onion_handler _bismon_settings.json page reqpath %s sessionob %s",
+           reqpath, objectdbg_BM (_.sessionob));
+        return bismon_settings_json_handler_BM (CURFRAME_BM, _.sessionob, req,
+                                                resp);
+      }
     perhaps_suspend_for_gc_onion_thread_stack_BM (CURFRAME_BM);
     DBGPRINTF_BM ("custom_onion_handler reqpath '%s' sessionob %s",
                   reqpath, objectdbg_BM (_.sessionob));
@@ -1232,19 +1235,99 @@ custom_onion_handler_BM (void *clientdata,
 
 static pthread_mutex_t settingmtx_bm = PTHREAD_MUTEX_INITIALIZER;
 
-  //// handling of /_bismon_settings.json
+  //// handling of /_bismon_settings.json; this is useful in our
+  //// JavaScript code to get some settings related to the session or
+  //// else to the entire system.
 onion_connection_status
-bismon_settings_json_handler_BM (struct stackframe_stBM*stkf,	objectval_tyBM *sessionobarg,
-			      onion_request * req, onion_response * resp)
+bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
+                                 objectval_tyBM * sessionobarg,
+                                 onion_request * req, onion_response * resp)
 {
   objectval_tyBM *k_bismon_settings_json = BMK_2EZk8Ud8f0s_3WuUVMlorZG;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_bismon_settings_json,
-		  objectval_tyBM*sessionob; //
+                 objectval_tyBM * sessionob;    //
+                 objectval_tyBM * jsonob;       //
     );
+  json_t *jsonobpayl = NULL;
+  json_t *jsonhome = NULL;
+  json_t *jsonbuiltin = NULL;
   _.sessionob = sessionobarg;
-  pthread_mutex_lock(&settingmtx_bm);
-  pthread_mutex_unlock(&settingmtx_bm);
-} /* end of bismon_settings_handler_BM */
+  pthread_mutex_lock (&settingmtx_bm);
+  /// compute jsonobpayl from web session
+  if (_.sessionob)
+    {
+      objlock_BM (_.sessionob);
+      _.jsonob = objectcast_BM (objgetattr_BM (_.sessionob,
+                                               k_bismon_settings_json));
+      objunlock_BM (_.sessionob);
+    };
+  if (_.jsonob)
+    {
+      objlock_BM (_.jsonob);
+      jsonobpayl = objgetjansjsonpayl_BM (_.jsonob);
+      objunlock_BM (_.jsonob);
+      if (jsonobpayl && json_typeof (jsonobpayl) != JSON_OBJECT)
+        {
+          char *strjson =
+            json_dumps (jsonobpayl, JSON_SORT_KEYS | JSON_INDENT (1));
+          WARNPRINTF_BM ("web session %s has non JSON object %s",
+                         objectdbg_BM (_.sessionob),
+                         strjson ? strjson : "???");
+          if (strjson)
+            free (strjson);
+        }
+    };
+  //// compute jsonhome from JSON_SETTINGS_FILE_BM, usually from
+  //// ~/settings_BM.json (actually Bismon home)
+  {
+    static char homepathbuf[256];
+    memset (homepathbuf, 0, sizeof (homepathbuf));
+    snprintf (homepathbuf, sizeof (homepathbuf),
+              "%s/" JSON_SETTINGS_FILE_BM, bismon_home_BM ());
+    FILE *fjson = fopen (homepathbuf, "r");
+    if (fjson)
+      {
+        json_error_t jerr;
+        memset (&jerr, 0, sizeof (jerr));
+        jsonhome = json_loadf (fjson, 0, &jerr);
+        if (!jsonhome)
+          WARNPRINTF_BM ("failed to load Json settings from %s line %d - %s",
+                         homepathbuf, jerr.line, jerr.text);
+        else
+          ASSERT_BM (json_typeof (jsonhome) == JSON_OBJECT);
+        fclose (fjson);
+      };
+  }
+  //// compute jsonbuiltin from builtin-settings-BM.json in the source
+  //// directory
+  {
+    static char builtinpathbuf[256];
+    memset (builtinpathbuf, 0, sizeof (builtinpathbuf));
+    snprintf (builtinpathbuf, sizeof (builtinpathbuf),
+              "%s/" "builtin-settings-BM.json", bismon_directory);
+    FILE *fbuiltin = fopen (builtinpathbuf, "r");
+    if (fbuiltin)
+      {
+        json_error_t jerr;
+        memset (&jerr, 0, sizeof (jerr));
+        jsonbuiltin = json_loadf (fbuiltin, 0, &jerr);
+        if (!jsonbuiltin)
+          WARNPRINTF_BM
+            ("failed to load Json builtin settings from %s line %d - %s",
+             builtinpathbuf, jerr.line, jerr.text);
+        else
+          ASSERT_BM (json_typeof (jsonbuiltin) == JSON_OBJECT);
+        fclose (fbuiltin);
+      }
+    else
+      WARNPRINTF_BM ("failed to read Json builtin settings from %s - %m",
+                     builtinpathbuf);
+  }
+#warning incomplete bismon_settings_json_handler_BM
+  pthread_mutex_unlock (&settingmtx_bm);
+}                               /* end of bismon_settings_handler_BM */
+
+
 
 onion_connection_status
 login_onion_handler_BM (void *_clientdata __attribute__((unused)),

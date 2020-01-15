@@ -83,21 +83,23 @@ extern void run_onionweb_BM (int nbjobs);
 extern void weakfailure_BM (void);
 
 
-const char*bismon_home_BM(void)
+const char *
+bismon_home_BM (void)
 {
-  static const char*bh;
-  if (UNLIKELY_BM(!bh)) {
-    const char* bismon_home = getenv("BISMON_HOME");
-    const char* home = getenv("HOME");
-    if (bismon_home)
-      bh = bismon_home;
-    else if (home)
-      bh = home;
-    if (!bh)
-      FATAL_BM("improbable bismon_home_BM failure (%m)");
-  };
+  static const char *bh;
+  if (UNLIKELY_BM (!bh))
+    {
+      const char *bismon_home = getenv ("BISMON_HOME");
+      const char *home = getenv ("HOME");
+      if (bismon_home)
+        bh = bismon_home;
+      else if (home)
+        bh = home;
+      if (!bh)
+        FATAL_BM ("improbable bismon_home_BM failure (%m)");
+    };
   return bh;
-} /* end bismon_home_BM */
+}                               /* end bismon_home_BM */
 
 
 // consider putting a gdb breakpoint here 
@@ -1648,7 +1650,7 @@ initialize_contributors_path_BM (void)
       char *homepath = NULL;
       if (!access (CONTRIBUTORS_FILE_BM, R_OK))
         contributors_filepath_BM = CONTRIBUTORS_FILE_BM;
-      else if ((homepath = bismon_home_BM()) != NULL
+      else if ((homepath = bismon_home_BM ()) != NULL
                && asprintf (&path, "%s/" CONTRIBUTORS_FILE_BM, homepath) > 0
                && path != NULL && (!access (path, R_OK)
                                    || (free (path), (path = NULL))))
@@ -1706,7 +1708,7 @@ initialize_passwords_path_BM (void)
       char *homepath = NULL;
       if (!access (PASSWORDS_FILE_BM, R_OK))
         passwords_filepath_BM = PASSWORDS_FILE_BM;
-      else if ((homepath = bismon_home_BM()) != NULL
+      else if ((homepath = bismon_home_BM ()) != NULL
                && asprintf (&path, "%s/" PASSWORDS_FILE_BM, homepath) > 0
                && path != NULL && (!access (path, R_OK)
                                    || (free (path), (path = NULL))))
@@ -1770,7 +1772,7 @@ initialize_contact_path_BM (void)
       char *homepath = NULL;
       if (!access (CONTACT_FILE_BM, R_OK))
         contact_filepath_BM = CONTACT_FILE_BM;
-      else if ((homepath = bismon_home_BM()) != NULL
+      else if ((homepath = bismon_home_BM ()) != NULL
                && asprintf (&path, "%s/" CONTACT_FILE_BM, homepath) > 0
                && path != NULL && (!access (path, R_OK)
                                    || (free (path), (path = NULL))))
