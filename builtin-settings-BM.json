@@ -1,0 +1,5 @@
+# file builtin-settings-BM.json in Bismon
+# see https://github.com/bstarynk/bismon/
+{
+    "bismon-setting-format" : "BISMON2020a"
+}

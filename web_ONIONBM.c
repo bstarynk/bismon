@@ -97,6 +97,9 @@ struct onionstackinfo_stBM
 static struct onionstackinfo_stBM onionstackinfo_bm[MAXNBWORKJOBS_BM + 1];
 static thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
 
+static json_t *bismon_json_loadf_bm (const char *path, FILE * fil,
+                                     size_t flags, json_error_t * jerr);
+
 // return a malloced percent-encoded string for all the query arguments
 static char *percent_encode_onion_query_args_BM (onion_request * req);
 
@@ -1233,6 +1236,46 @@ custom_onion_handler_BM (void *clientdata,
 }                               /* end custom_onion_handler_BM */
 
 
+
+
+json_t *
+bismon_json_loadf_bm (const char *path, FILE * fil, size_t flags,
+                      json_error_t * pjerr)
+{
+  json_t *jres = NULL;
+  if (!fil)
+    return NULL;
+  int linum = 0;
+  /// skip the initial lines starting with #
+  for (;;)
+    {
+      long curoff = ftell (fil);
+      char linbuf[128];
+      memset (linbuf, 0, sizeof (linbuf));
+      char *l = fgets (linbuf, sizeof (linbuf), fil);
+      linum++;
+      if (l && strlen (l) >= sizeof (linbuf) - 2)
+        FATAL_BM ("too long comment in JSON file %s, line#%d", path, linum);
+      if (!l)
+        FATAL_BM ("premature EOF in %s, line#%d", path, linum);
+      if (linbuf[0] == '#')
+        continue;
+      else
+        {
+          fseek (fil, curoff, SEEK_SET);
+          break;
+        }
+    }
+  json_error_t jerr;
+  memset (&jerr, 0, sizeof (jerr));
+  jres = json_loadf (fil, flags, pjerr);
+  if (!jres && pjerr)
+    pjerr->line += linum;
+  return jres;
+}                               /* end of bismon_json_loadf_bm */
+
+
+
 static pthread_mutex_t settingmtx_bm = PTHREAD_MUTEX_INITIALIZER;
 
   //// handling of /_bismon_settings.json; this is useful in our
@@ -1335,7 +1378,7 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
       {
         json_error_t jerr;
         memset (&jerr, 0, sizeof (jerr));
-        jsonhome = json_loadf (fjson, 0, &jerr);
+        jsonhome = bismon_json_loadf_bm (homepathbuf, fjson, 0, &jerr);
         if (!jsonhome)
           WARNPRINTF_BM ("failed to load Json settings from %s line %d - %s",
                          homepathbuf, jerr.line, jerr.text);
@@ -1356,7 +1399,8 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
       {
         json_error_t jerr;
         memset (&jerr, 0, sizeof (jerr));
-        jsonbuiltin = json_loadf (fbuiltin, 0, &jerr);
+        jsonbuiltin =
+          bismon_json_loadf_bm (builtinpathbuf, fbuiltin, 0, &jerr);
         if (!jsonbuiltin)
           WARNPRINTF_BM
             ("failed to load Json builtin settings from %s line %d - %s",
@@ -1371,7 +1415,11 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
   }
   //// merge in that order jsonobpayl + jsonhome + jsonbuiltin into
   //// jsonmerge
-  jsonmerge = json_object ();
+  jsonmerge = json_pack ("{s:s,s:s,s:s,s:i}",
+                         "bismon-gitid", bismon_gitid,
+                         "bismon-timestamp", bismon_timestamp,
+                         "bismon-host", myhostname_BM,
+                         "bismon-pid", (int) getpid ());
   if (json_is_object (jsoncontribpayl))
     json_object_update_missing (jsonmerge, jsoncontribpayl);
   if (json_is_object (jsonobpayl))
@@ -1408,6 +1456,10 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
     json_decref (jsonmerge), jsonmerge = NULL;
   return OCS_PROCESSED;
 }                               /* end of bismon_settings_handler_BM */
+
+
+
+
 
 
 
