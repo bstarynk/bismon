@@ -103,6 +103,21 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
     var newevaldiv = $("<div>", {id: "nwevdial" + id, "class": "bmcl_neweval"});
     var newevalbox = null;
     var newevalcanvas = null;
+    var jsonsettings = null;
+    $.ajax({
+	url: "/_bismon_settings.json",
+	dataType: "json",
+	type: "get",
+	contentType: "application/json",
+	success: function(data,textStatus,jQxhr){
+	    console.debug("bismonsettings id=%o newevaldiv=%o success data=%o, textStatus=%o, jQxhr=%o",
+			  id, newevaldiv, data, textStatus, jQxhr);
+	},
+	error: function(jqXhr,textStatus,errorThrown){
+	    console.log("bismonsettings id=%o newevaldiv=%o error jqXhr=%o, textStatus=%o, errorThrown=%o",
+			id, newevaldiv, jqXhr, textStatus, errorThrown);
+	}
+    }); // end AJAX of bismonsettings
     $('body').append(newevaldiv);
     newevaldiv.dialog({
 	title: "neweval#" + cnt,
