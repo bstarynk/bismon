@@ -1247,19 +1247,22 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_bismon_settings_json,
                  objectval_tyBM * sessionob;    //
                  objectval_tyBM * jsonob;       //
+                 objectval_tyBM * jsoncontribob;        //
+                 objectval_tyBM * contribob;    //
     );
   json_t *jsonobpayl = NULL;
   json_t *jsonhome = NULL;
+  json_t *jsoncontribpayl = NULL;
   json_t *jsonbuiltin = NULL;
   json_t *jsonmerge = NULL;
   const char *reqpath = onion_request_get_path (req);
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);
   _.sessionob = sessionobarg;
-  DBGPRINTF_BM ("bismon_settings_json_handler_BM start reqpath=%s"
-                " [%s] sessionob=%s",
-                reqpath, onion_request_methods[reqmeth],
-                objectdbg_BM (_.sessionob));
+  DBGBACKTRACEPRINTF_BM ("bismon_settings_json_handler_BM start reqpath=%s"
+                         " [%s] sessionob=%s",
+                         reqpath, onion_request_methods[reqmeth],
+                         objectdbg_BM (_.sessionob));
   if (reqmeth != OR_GET && reqmeth != OR_HEAD)
     return OCS_NOT_IMPLEMENTED;
   pthread_mutex_lock (&settingmtx_bm);
@@ -1267,10 +1270,26 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
   if (_.sessionob)
     {
       objlock_BM (_.sessionob);
-      _.jsonob = objectcast_BM (objgetattr_BM (_.sessionob,
-                                               k_bismon_settings_json));
+      _.contribob = objwebsessioncontributorpayl_BM (_.sessionob);
+      DBGPRINTF_BM
+        ("bismon_settings_json_handler_BM sessionob %s, contributor %s",
+         objectdbg_BM (_.sessionob), objectdbg1_BM (_.contribob));
+      _.jsonob =
+        objectcast_BM (objgetattr_BM (_.sessionob, k_bismon_settings_json));
       objunlock_BM (_.sessionob);
+      DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob %s, jsonob=%s",
+                    objectdbg_BM (_.sessionob), objectdbg1_BM (_.jsonob));
     };
+  if (_.contribob)
+    {
+      objlock_BM (_.contribob);
+      _.jsoncontribob = objectcast_BM (objgetattr_BM (_.contribob,
+                                                      k_bismon_settings_json));
+      objunlock_BM (_.contribob);
+      DBGPRINTF_BM
+        ("bismon_settings_json_handler_BM contribob %s, jsoncontribob=%s",
+         objectdbg_BM (_.contribob), objectdbg1_BM (_.jsoncontribob));
+    }
   if (_.jsonob)
     {
       objlock_BM (_.jsonob);
@@ -1285,6 +1304,23 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
                          strjson ? strjson : "???");
           if (strjson)
             free (strjson);
+        }
+    };
+  if (_.jsoncontribob)
+    {
+      objlock_BM (_.jsoncontribob);
+      jsoncontribpayl = objgetjansjsonpayl_BM (_.jsoncontribob);
+      objunlock_BM (_.jsoncontribob);
+      if (jsoncontribpayl && json_typeof (jsoncontribpayl) != JSON_OBJECT)
+        {
+          char *strjsonc =
+            json_dumps (jsoncontribpayl, JSON_SORT_KEYS | JSON_INDENT (1));
+          WARNPRINTF_BM
+            ("web session %s and contributor %s has non JSON contrib object %s",
+             objectdbg_BM (_.sessionob), objectdbg1_BM (_.contribob),
+             objectdbg2_BM (_.jsoncontribob), strjsonc ? strjsonc : "???");
+          if (strjsonc)
+            free (strjsonc);
         }
     };
   //// compute jsonhome from JSON_SETTINGS_FILE_BM, usually from
@@ -1336,6 +1372,8 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
   //// merge in that order jsonobpayl + jsonhome + jsonbuiltin into
   //// jsonmerge
   jsonmerge = json_object ();
+  if (json_is_object (jsoncontribpayl))
+    json_object_update_missing (jsonmerge, jsoncontribpayl);
   if (json_is_object (jsonobpayl))
     json_object_update_missing (jsonmerge, jsonobpayl);
   if (json_is_object (jsonhome))
@@ -1358,6 +1396,8 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
   onion_response_write (resp, "\n", 1);
   onion_response_flush (resp);
   free (strj), strj = NULL;
+  if (jsoncontribpayl)
+    json_decref (jsoncontribpayl), jsoncontribpayl = NULL;
   if (jsonobpayl)
     json_decref (jsonobpayl), jsonobpayl = NULL;
   if (jsonhome)
