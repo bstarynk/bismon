@@ -2366,8 +2366,10 @@ _6YnYKKsHo3f_9nIEOZMp744
 
 «_0fP2AJNPfro_3k7iHzO2AaR |=first_web_theme|
 !~ name (~ first_web_theme ~)
-± 1553193082.906
+± 1579265065.585
 ∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
+↦ _1jJjA6LcXiX_1V4ZcXlje09 |=name|
+ "first-theme"
 ↦ _7brFPQS8mP9_4K0sGjTwZ3T |=file_path|
  "/themes/first-theme.css"
 
@@ -9956,8 +9958,10 @@ _8yXqsN7LuB3_0vODsT2M9Lh
 
 «_2gEhgfMqAJE_3TifBtAgQrw |=second_web_theme|
 !~ name (~ second_web_theme ~)
-± 1553193095.070
+± 1579265094.689
 ∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
+↦ _1jJjA6LcXiX_1V4ZcXlje09 |=name|
+ "second-theme"
 ↦ _7brFPQS8mP9_4K0sGjTwZ3T |=file_path|
  "/themes/second-theme.css"
 

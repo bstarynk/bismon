@@ -1287,17 +1287,22 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
                                  onion_request * req, onion_response * resp)
 {
   objectval_tyBM *k_bismon_settings_json = BMK_2EZk8Ud8f0s_3WuUVMlorZG;
+  objectval_tyBM *k_name = BMK_1jJjA6LcXiX_1V4ZcXlje09;
+  objectval_tyBM *k_web_theme = BMK_4HR54GlXs46_4rDg4Tb637x;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_bismon_settings_json,
                  objectval_tyBM * sessionob;    //
                  objectval_tyBM * jsonob;       //
                  objectval_tyBM * jsoncontribob;        //
                  objectval_tyBM * contribob;    //
+                 objectval_tyBM * webthemeob;   //
+                 value_tyBM * themenamev;       //
     );
   json_t *jsonobpayl = NULL;
   json_t *jsonhome = NULL;
   json_t *jsoncontribpayl = NULL;
   json_t *jsonbuiltin = NULL;
   json_t *jsonmerge = NULL;
+  json_t *jsonthemename = NULL;
   const char *reqpath = onion_request_get_path (req);
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);
@@ -1319,9 +1324,12 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
          objectdbg_BM (_.sessionob), objectdbg1_BM (_.contribob));
       _.jsonob =
         objectcast_BM (objgetattr_BM (_.sessionob, k_bismon_settings_json));
+      _.webthemeob = objectcast_BM (objgetattr_BM (_.sessionob, k_web_theme));
       objunlock_BM (_.sessionob);
-      DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob %s, jsonob=%s",
-                    objectdbg_BM (_.sessionob), objectdbg1_BM (_.jsonob));
+      DBGPRINTF_BM
+        ("bismon_settings_json_handler_BM sessionob %s, jsonob=%s webthemeob=%s",
+         objectdbg_BM (_.sessionob), objectdbg1_BM (_.jsonob),
+         objectdbg2_BM (_.webthemeob));
     };
   if (_.contribob)
     {
@@ -1332,6 +1340,15 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
       DBGPRINTF_BM
         ("bismon_settings_json_handler_BM contribob %s, jsoncontribob=%s",
          objectdbg_BM (_.contribob), objectdbg1_BM (_.jsoncontribob));
+    }
+  if (_.webthemeob)
+    {
+      objlock_BM (_.webthemeob);
+      _.themenamev = (value_tyBM)
+        stringcast_BM (objgetattr_BM (_.webthemeob, k_name));
+      if (isstring_BM (_.themenamev))
+        jsonthemename = json_string (bytstring_BM (_.themenamev));
+      objunlock_BM (_.webthemeob);
     }
   if (_.jsonob)
     {
@@ -1420,6 +1437,22 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
                          "bismon-timestamp", bismon_timestamp,
                          "bismon-host", myhostname_BM,
                          "bismon-pid", (int) getpid ());
+  if (isobject_BM (_.webthemeob))
+    {
+      char themidbuf[32];
+      memset (themidbuf, 0, sizeof (themidbuf));
+      idtocbuf32_BM (objid_BM (_.webthemeob), themidbuf);
+      json_object_set (jsonmerge, "bismon-theme-id", themidbuf);
+    }
+  if (isobject_BM (_.contribob))
+    {
+      char contridbuf[32];
+      memset (contridbuf, 0, sizeof (contridbuf));
+      idtocbuf32_BM (objid_BM (_.contribob), contridbuf);
+      json_object_set (jsonmerge, "bismon-contributor-id", contridbuf);
+    }
+  if (jsonthemename)
+    json_object_set (jsonmerge, "bismon-theme-name", jsonthemename);
   if (json_is_object (jsoncontribpayl))
     json_object_update_missing (jsonmerge, jsoncontribpayl);
   if (json_is_object (jsonobpayl))
