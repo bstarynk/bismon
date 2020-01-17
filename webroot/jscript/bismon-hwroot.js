@@ -92,12 +92,12 @@ class Canvas_box_bm extends Canvas_element_bm {
 	if (!son)
 	    return;
 	else if (Array.isArray(son)) {
-	    for comp in son {
+	    for (comp in son) {
 		if (comp)
 		    this.append1(comp);
 	    }
 	}
-	else if typeof(son) == "object" && (son instanceof Canvas_element_bm) {
+	else if (typeof(son) == "object" && (son instanceof Canvas_element_bm)) {
 	    bm_sons.push(son);
 	}
 	return this;
@@ -113,7 +113,8 @@ class Canvas_box_bm extends Canvas_element_bm {
 	}
 	return this;
     }
-}
+}; // end class  Canvas_box_bm 
+
 class Canvas_hbox_bm extends Canvas_box_bm {
     constructor (canv, ...etc) {
 	super(canv);
