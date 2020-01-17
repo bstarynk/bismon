@@ -2209,15 +2209,18 @@ value_tyBM ROUTINEOBJNAME_BM (_1tcgbIFhbTu_9WdGaq8NHWp) (struct stackframe_stBM 
   int maxdepth = getint_BM (arg2);
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   {
-    char bufmsg[48];
+    char bufmsg[64];
     memset (bufmsg, 0, sizeof (bufmsg));
     snprintf (bufmsg, sizeof (bufmsg), "|websession rank %d:|",
               objwebsessionrankpayl_BM (_.objbrows));
     gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, bufmsg, -1,
                                       miscomm_brotag_BM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
-    snprintf (bufmsg, sizeof (bufmsg), "|websession expires %.3f:|",
-              objwebsessionexpiretimepayl_BM (_.objbrows));
+    snprintf (bufmsg, sizeof (bufmsg),
+              "|websession expires %.3f = now + %.3f seconds:|",
+              objwebsessionexpiretimepayl_BM (_.objbrows),
+              objwebsessionexpiretimepayl_BM (_.objbrows) -
+              clocktime_BM (CLOCK_REALTIME));
     gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, bufmsg, -1,
                                       miscomm_brotag_BM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
