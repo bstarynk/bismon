@@ -2,5 +2,7 @@
 # see https://github.com/bstarynk/bismon/
 # and its web_ONIONBM.c file, function bismon_settings_handler_BM
 {
+    "first-theme!_!fontFamily": "Verdana, sans-serif",
+    "first-theme!_!fontSize": 12,
     "bismon-setting-format" : "BISMON2020a"
 }
