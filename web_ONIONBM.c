@@ -1349,6 +1349,8 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
       if (isstring_BM (_.themenamev))
         jsonthemename = json_string (bytstring_BM (_.themenamev));
       objunlock_BM (_.webthemeob);
+      DBGPRINTF_BM ("bismon_settings_json_handler_BM contribob %s, themenamev=%s",
+         objectdbg_BM (_.contribob), OUTSTRVALUE_BM (_.themenamev));
     }
   if (_.jsonob)
     {
@@ -1451,6 +1453,10 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
       idtocbuf32_BM (objid_BM (_.contribob), contridbuf);
       json_object_set (jsonmerge, "bismon-contributor-id", contridbuf);
     }
+  DBGPRINTF_BM
+    ("bismon_settings_json_handler_BM sessionob=%s webthemeob=%s contribob=%s",
+     objectdbg_BM (_.sessionob), objectdbg1_BM (_.webthemeob),
+     objectdbg2_BM (_.contribob));
   if (jsonthemename)
     json_object_set (jsonmerge, "bismon-theme-name", jsonthemename);
   if (json_is_object (jsoncontribpayl))
@@ -1465,7 +1471,23 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
                            JSON_INDENT (1) | JSON_SORT_KEYS |
                            JSON_REAL_PRECISION (6));
   if (!strj)
-    FATAL_BM ("json_dumps failed in bismon_settings_json_handler_BM");
+    {
+      WARNPRINTF_BM
+        ("json_dumps failed in bismon_settings_json_handler_BM, sessionob %s",
+         objectdbg_BM (_.sessionob));
+      pthread_mutex_unlock (&settingmtx_bm);
+      if (jsoncontribpayl)
+        json_decref (jsoncontribpayl), jsoncontribpayl = NULL;
+      if (jsonobpayl)
+        json_decref (jsonobpayl), jsonobpayl = NULL;
+      if (jsonhome)
+        json_decref (jsonhome), jsonhome = NULL;
+      if (jsonbuiltin)
+        json_decref (jsonbuiltin), jsonbuiltin = NULL;
+      if (jsonmerge)
+        json_decref (jsonmerge), jsonmerge = NULL;
+      return OCS_FORBIDDEN;
+    }
   {
     json_t *jformat = json_object_get (jsonmerge, "bismon-setting-format");
     char *formatcstr = NULL;
