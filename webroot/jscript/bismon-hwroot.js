@@ -83,19 +83,52 @@ class Canvas_string_bm extends Canvas_element_bm {
     }
 };				// end Canvas_string_bm
 
-class Canvas_hbox_bm extends Canvas_element_bm {
+class Canvas_box_bm extends Canvas_element_bm {
+    constructor (canv) {
+	super (canv);
+	this.bm_sons = new Array();
+    }
+    append1(son) {
+	if (!son)
+	    return;
+	else if (Array.isArray(son)) {
+	    for comp in son {
+		if (comp)
+		    this.append1(comp);
+	    }
+	}
+	else if typeof(son) == "object" && (son instanceof Canvas_element_bm) {
+	    bm_sons.push(son);
+	}
+	return this;
+    }
+    append(...etc) {
+	var curson;
+	for (curson in etc) {
+	    if (!curson) {
+		continue;
+	    }
+	    else
+		append1(curson);
+	}
+	return this;
+    }
+}
+class Canvas_hbox_bm extends Canvas_box_bm {
     constructor (canv, ...etc) {
 	super(canv);
-	this.bm_sons = etc;
+	append1(etc);
     }
 };				// end Canvas_hbox_bm
 
-class Canvas_vbox_bm extends Canvas_element_bm {
+
+class Canvas_vbox_bm extends Canvas_box_bm {
     constructor (canv, ...etc) {
 	super(canv);
-	this.bm_sons = etc;
+	append1(etc);
     }
 };				// end Canvas_vbox_bm
+
 
 function bmhwroot_create_neweval_dialog(ev, cnt, id) {
     console.group("bmhwroot_create_neweval_dialog start");
