@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2020, is GPLv3+ licensed.
-// for 3391 objects
+// for 3392 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -12154,7 +12154,8 @@ _7T9OwSFlgov_0wVJaK1eZbn
 ∈ _0LK4TzFd6u1_0JFUsrQ4odG |=class|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the class of web sessions"
-!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn 
+~: _9uRC9w2Gte9_5mW0NanaS19  % _1tcgbIFhbTu_9WdGaq8NHWp () ~)
 »_56KY6TzyCU5_12De0mHE48M
 
 
@@ -19015,6 +19016,17 @@ _2RUj1oyJ2rf_1ICZWr844Sv
  * _4bNJRwDDAwq_0d4dKUTkMgd ( _5D1GbyYKAgk_9ureezAahw3  * _3fb1EHtMPwQ_7XEPTUgUmX4 (  * _3fb1EHtMPwQ_7XEPTUgUmX4 (  * _97rJwcN7l9B_1w3sSfoRM6l ( _8pbpqrN1W4l_7mZmRSPBjYz)  * _97rJwcN7l9B_1w3sSfoRM6l ( _3lXKQCJ5IpM_1W5tqNbhFtx))  4))
 
 »_1tblNbUO9U6_3Nkb4aEs1hD
+
+
+
+«_1tcgbIFhbTu_9WdGaq8NHWp
+Σ *
+± 1579256803.856
+∈ _2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "gtk_browse_data°websession_object"
+
+»_1tcgbIFhbTu_9WdGaq8NHWp
 
 
 

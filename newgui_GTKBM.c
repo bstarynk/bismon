@@ -1931,8 +1931,9 @@ const objectval_tyBM *parsobjexp_newguicmd_BM
                                          "{\n"
                                          "  LOCALFRAME_BM (stkf, /*descr ");
                   log_object_message_BM (_.obj);
-                  log_printf_message_BM ("::*/ NULL,\n"
-                                         "   value_tyBM resultv;\n" "  );\n");
+                  log_printf_message_BM ("::*/ BMK_%s,\n"
+                                         "   value_tyBM resultv;\n" "  );\n",
+                                         objectdbg_BM (_.obj));
                   log_printf_message_BM ("#warning unimplemented ");
                   log_object_message_BM (_.obj);
                   log_printf_message_BM (" routine\n");

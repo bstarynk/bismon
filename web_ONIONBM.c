@@ -1,7 +1,7 @@
 // file web_ONIONBM.c
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -1433,8 +1433,16 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
                            JSON_REAL_PRECISION (6));
   if (!strj)
     FATAL_BM ("json_dumps failed in bismon_settings_json_handler_BM");
+  {
+    json_t *jformat = json_object_get (jsonmerge, "bismon-setting-format");
+    char *formatcstr = NULL;
+    if (!jformat || !(formatcstr = json_string_value (jformat))
+        || strcmp (formatcstr, "BISMON2020a"))
+      WARNPRINTF_BM ("bismon_settings_json_handler_BM session %s:\n" "%s\n"     //
+                     "... has bad bismon-setting-format, expecting 'BISMON2020a'",
+                     objectdbg_BM (_.sessionob), strj);
+  }
   DBGPRINTF_BM ("bismon_settings_json_handler_BM strj:\n%s\n", strj);
-#warning incomplete bismon_settings_json_handler_BM
   pthread_mutex_unlock (&settingmtx_bm);
   onion_response_set_header (resp, "Content-Type", "application/json");
   onion_response_set_code (resp, HTTP_OK);

@@ -2183,6 +2183,60 @@ ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //gtk_browse_data°hashmapval_ob
 
 
 
+// code for _1tcgbIFhbTu_9WdGaq8NHWp gtk_browse_data°websession_object
+extern objrout_sigBM ROUTINEOBJNAME_BM (_1tcgbIFhbTu_9WdGaq8NHWp);
+
+value_tyBM ROUTINEOBJNAME_BM (_1tcgbIFhbTu_9WdGaq8NHWp) (struct stackframe_stBM * stkf, // //
+                                                         const value_tyBM arg1, // object
+                                                         const value_tyBM arg2, // depth
+                                                         const value_tyBM arg3_ __attribute__((unused)),        //
+                                                         const value_tyBM arg4_ __attribute__((unused)),        //
+                                                         const quasinode_tyBM
+                                                         * restargs_
+                                                         __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf,          /*descr _1tcgbIFhbTu_9WdGaq8NHWp:: */
+                 BMK_1tcgbIFhbTu_9WdGaq8NHWp,
+                 value_tyBM resultv;    //
+                 objectval_tyBM * objbrows;     //
+                 objectval_tyBM * objcontrib;   //
+    );
+  WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
+  if (!isobject_BM (arg1))
+    FATAL_BM
+      ("non-object for method to gtk_browse_data for h_object-s _0M2jApBzFAy_8H8cpCjGpTi");
+  _.objbrows = (const objectval_tyBM *) arg1;
+  int maxdepth = getint_BM (arg2);
+  GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
+  {
+    char bufmsg[48];
+    memset (bufmsg, 0, sizeof (bufmsg));
+    snprintf (bufmsg, sizeof (bufmsg), "|websession rank %d:|",
+              objwebsessionrankpayl_BM (_.objbrows));
+    gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, bufmsg, -1,
+                                      miscomm_brotag_BM, NULL);
+    gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+    snprintf (bufmsg, sizeof (bufmsg), "|websession expires %.3f:|",
+              objwebsessionexpiretimepayl_BM (_.objbrows));
+    gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, bufmsg, -1,
+                                      miscomm_brotag_BM, NULL);
+    gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+  }
+  _.objcontrib = objwebsessioncontributorpayl_BM (_.objbrows);
+  if (_.objcontrib)
+    {
+      gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "\342\232\255 contributor:",     // U+26AD MARRIAGE SYMBOL ⚭);
+                                        -1, nest_brotag_BM, NULL);
+      gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+      browse_value_BM ((const value_tyBM) _.objcontrib, CURFRAME_BM, maxdepth,
+                       1);
+      gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
+    }
+  _.resultv = _.objbrows;
+  LOCALRETURN_BM (_.resultv);
+}                               /* end routine gtk_browse_data°websession_object _1tcgbIFhbTu_9WdGaq8NHWp */
+
+
 ////////////////////////////////////////////////////////////////
 // test_agenda command_handler _1eQ1a8KHixZ_1XDNH5iTQ0I
 extern objrout_sigBM ROUTINEOBJNAME_BM (_1eQ1a8KHixZ_1XDNH5iTQ0I);
