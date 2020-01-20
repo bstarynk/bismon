@@ -66,9 +66,17 @@ class Canvas_element_bm {
 	    canv = bm_default_canvas;
 	};
 	this.bm_canvas = canv;
+	
 	console.debug("Canvas_element_bm this=%o", this);
     }
     canvas () { return this.bm_canvas; }
+    /// see https://projects.calebevans.me/jcanvas/docs/text/#measuring-text
+    measure () {
+	// by convention should return a {width, height}
+	console.error("Canvas_element_bm measure this=%o", this);
+	throw new Error("unimplemented Canvas_element.measure");
+    };
+    
 };				// end Canvas_element_bm
 
 
@@ -76,10 +84,21 @@ class Canvas_string_bm extends Canvas_element_bm {
     constructor (canv, str) {
 	super (canv);
 	if (typeof(str) != "string") {
-	    console.error("bad str %o to Canvas_element_bm", str);
+	    console.error("bad str %o to Canvas_element_bm %o", str, this);
 	    throw new Error("bad string to Canvas_string_bm:" + str);
 	}
-	this.bm_str = str;
+	this.bm_font_size = 10;
+	this.bm_font_family = "XXX";
+	this.bm_text = str;
+	this.bm_role = "_";
+    }
+    set_role(rolestr) {
+	if (typeof(rolestr) != "string") {
+	    console.error("bad role_str %o to Canvas_element_bm.set_role %o", str, this);
+	    throw new Error("bad role_string to Canvas_string_bm:" + rolestr);
+	}
+	this.bm_role = rolestr;
+	return this;
     }
 };				// end Canvas_string_bm
 
@@ -90,7 +109,7 @@ class Canvas_box_bm extends Canvas_element_bm {
     }
     append1(son) {
 	if (!son)
-	    return;
+	    return this;
 	else if (Array.isArray(son)) {
 	    for (comp in son) {
 		if (comp)
