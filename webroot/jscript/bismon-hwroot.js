@@ -38,6 +38,7 @@ export var quit_menuitem;
 export var neweval_button;
 
 var neweval_counter=0;
+var jsonsettings_bm = null;
 
 function show_appmenu(ev) {
     console.debug("show_appmenu %o", ev);
@@ -91,7 +92,7 @@ class Canvas_string_bm extends Canvas_element_bm {
 	this.bm_font_family = "XXX";
 	this.bm_text = str;
 	this.bm_role = "_";
-    }
+    };
     set_role(rolestr) {
 	if (typeof(rolestr) != "string") {
 	    console.error("bad role_str %o to Canvas_element_bm.set_role %o", str, this);
@@ -99,6 +100,8 @@ class Canvas_string_bm extends Canvas_element_bm {
 	}
 	this.bm_role = rolestr;
 	return this;
+    };
+    measure() {
     }
 };				// end Canvas_string_bm
 
@@ -156,7 +159,6 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
     var newevaldiv = $("<div>", {id: "nwevdial" + id, "class": "bmcl_neweval"});
     var newevalbox = null;
     var newevalcanvas = null;
-    var jsonsettings = null;
     $.ajax({
 	url: "/_bismon_settings.json",
 	dataType: "json",
