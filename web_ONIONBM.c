@@ -1349,7 +1349,8 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
       if (isstring_BM (_.themenamev))
         jsonthemename = json_string (bytstring_BM (_.themenamev));
       objunlock_BM (_.webthemeob);
-      DBGPRINTF_BM ("bismon_settings_json_handler_BM contribob %s, themenamev=%s",
+      DBGPRINTF_BM
+        ("bismon_settings_json_handler_BM contribob %s, themenamev=%s",
          objectdbg_BM (_.contribob), OUTSTRVALUE_BM (_.themenamev));
     }
   if (_.jsonob)
@@ -1439,12 +1440,21 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
                          "bismon-timestamp", bismon_timestamp,
                          "bismon-host", myhostname_BM,
                          "bismon-pid", (int) getpid ());
+  char *jsbuf = NULL;
+  DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s jsonmerge@%p: %s", objectdbg_BM (_.sessionob), jsonmerge, //
+                (jsbuf = json_dumps (jsonmerge, JSON_INDENT (1))));
+  if (jsbuf)
+    free (jsbuf), jsbuf = NULL;
   if (isobject_BM (_.webthemeob))
     {
       char themidbuf[32];
       memset (themidbuf, 0, sizeof (themidbuf));
       idtocbuf32_BM (objid_BM (_.webthemeob), themidbuf);
       json_object_set (jsonmerge, "bismon-theme-id", themidbuf);
+      DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s jsonmerge@%p: %s", objectdbg_BM (_.sessionob), jsonmerge,     //
+                    (jsbuf = json_dumps (jsonmerge, JSON_INDENT (1))));
+      if (jsbuf)
+        free (jsbuf), jsbuf = NULL;
     }
   if (isobject_BM (_.contribob))
     {
@@ -1452,19 +1462,31 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
       memset (contridbuf, 0, sizeof (contridbuf));
       idtocbuf32_BM (objid_BM (_.contribob), contridbuf);
       json_object_set (jsonmerge, "bismon-contributor-id", contridbuf);
+      DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s jsonmerge@%p: %s", objectdbg_BM (_.sessionob), jsonmerge,     //
+                    (jsbuf = json_dumps (jsonmerge, JSON_INDENT (1))));
+      if (jsbuf)
+        free (jsbuf), jsbuf = NULL;
     }
-  DBGPRINTF_BM
-    ("bismon_settings_json_handler_BM sessionob=%s webthemeob=%s contribob=%s",
-     objectdbg_BM (_.sessionob), objectdbg1_BM (_.webthemeob),
-     objectdbg2_BM (_.contribob));
+  DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s webthemeob=%s contribob=%s jsonmerge@%p: %s", objectdbg_BM (_.sessionob), objectdbg1_BM (_.webthemeob), objectdbg2_BM (_.contribob), (void *) jsonmerge,  //
+                (jsbuf = json_dumps (jsonmerge, JSON_INDENT (1))));
+  if (jsbuf)
+    free (jsbuf), jsbuf = NULL;
   if (jsonthemename)
     json_object_set (jsonmerge, "bismon-theme-name", jsonthemename);
   if (json_is_object (jsoncontribpayl))
     json_object_update_missing (jsonmerge, jsoncontribpayl);
+  DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s jsonmerge@%p: %s", objectdbg_BM (_.sessionob), jsonmerge, //
+                (jsbuf = json_dumps (jsonmerge, JSON_INDENT (1))));
+  if (jsbuf)
+    free (jsbuf), jsbuf = NULL;
   if (json_is_object (jsonobpayl))
     json_object_update_missing (jsonmerge, jsonobpayl);
   if (json_is_object (jsonhome))
     json_object_update_missing (jsonmerge, jsonhome);
+  DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s jsonmerge@%p: %s", objectdbg_BM (_.sessionob), jsonmerge, //
+                (jsbuf = json_dumps (jsonmerge, JSON_INDENT (1))));
+  if (jsbuf)
+    free (jsbuf), jsbuf = NULL;
   if (json_is_object (jsonbuiltin))
     json_object_update_missing (jsonmerge, jsonbuiltin);
   char *strj = json_dumps (jsonmerge,
@@ -1696,8 +1718,10 @@ enum
 
 #define FORGOTEMAIL_DELAY_MILLISEC_BM  (720*1000)       /*720 seconds is 12 minutes */
 static onion_dict *
-make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
-                                    objectval_tyBM * decayforgotobarg,
+make_onion_dict_forgotten_email_BM (objectval_tyBM *
+                                    contribobarg,
+                                    objectval_tyBM *
+                                    decayforgotobarg,
                                     uint32_t rn, struct stackframe_stBM *stkf)
 {
   // hashed set of forgotten emails:
@@ -1799,8 +1823,7 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM * contribobarg,
     // "email_subject"
     char *dbuf = NULL;
     int bufsiz = asprintf (&dbuf, "forgotten Bismon password on %s for %s",
-                           myhostname_BM,
-                           bytstring_BM (_.contribnamv));
+                           myhostname_BM, bytstring_BM (_.contribnamv));
     if (bufsiz <= 0)
       FATAL_BM
         ("failed asprintf for forgotten Bismon password on %s for %s (%m)",
@@ -1931,9 +1954,10 @@ forgotpasswd_urlstring_BM (objectval_tyBM * decayforgotarg,
   memset (decaybuf, 0, sizeof (decaybuf));
   idtocbuf32_BM (objid_BM (_.decayforgotob), decaybuf);
   if (onion_ssl_certificate_BM)
-    _.resv = (value_tyBM) sprintfstring_BM ("https://%s/_forgotpasswd/%s/%u",
-                                            onion_web_base_BM, decaybuf,
-                                            (unsigned) getint_BM (_.randv));
+    _.resv =
+      (value_tyBM) sprintfstring_BM ("https://%s/_forgotpasswd/%s/%u",
+                                     onion_web_base_BM, decaybuf,
+                                     (unsigned) getint_BM (_.randv));
   else
     _.resv = (value_tyBM) sprintfstring_BM ("http://%s/_forgotpasswd/%s/%u",
                                             onion_web_base_BM, decaybuf,
@@ -2077,8 +2101,9 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
                  value_tyBM cookiestrv;);
   ASSERT_BM (isobject_BM (contribobarg));
   _.contribob = contribobarg;
-  DBGPRINTF_BM ("do_login_redirect_onion_BM start contribob %s location '%s'",
-                objectdbg_BM (_.contribob), location);
+  DBGPRINTF_BM
+    ("do_login_redirect_onion_BM start contribob %s location '%s'",
+     objectdbg_BM (_.contribob), location);
   /// create the session
   char sessidbuf[32];
   memset (sessidbuf, 0, sizeof (sessidbuf));
@@ -2123,11 +2148,7 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
   }
   bool addedcookie =            //
     onion_response_add_cookie   //
-    (resp, "BISMONCOOKIE",
-     bytstring_BM (_.cookiestrv),
-     (time_t) (wsess->websess_expiretime - clocktime_BM (CLOCK_REALTIME)),
-     "/",
-     NULL,                      /// domain
+    (resp, "BISMONCOOKIE", bytstring_BM (_.cookiestrv), (time_t) (wsess->websess_expiretime - clocktime_BM (CLOCK_REALTIME)), "/", NULL,        /// domain
      0);
   onion_response_set_code (resp, HTTP_REDIRECT);
   onion_response_set_header (resp, "Location", location);
@@ -2728,8 +2749,9 @@ create_anonymous_web_session_BM (void)
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * sessionob;    //
                  value_tyBM cookiestrv;);
-  DBGPRINTF_BM ("create_anonymous_web_session start onionanonwebsession '%s'",
-                onion_anon_web_session_BM);
+  DBGPRINTF_BM
+    ("create_anonymous_web_session start onionanonwebsession '%s'",
+     onion_anon_web_session_BM);
   // backup cookie file, if it exists
   if (!access (onion_anon_web_session_BM, R_OK))
     {
@@ -2800,7 +2822,8 @@ create_anonymous_web_session_BM (void)
 
 void
 objwebsessionsendjsonwebsocketpayl_BM (objectval_tyBM * objarg,
-                                       value_tyBM jsonarg, value_tyBM ctxtarg,
+                                       value_tyBM jsonarg,
+                                       value_tyBM ctxtarg,
                                        struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
