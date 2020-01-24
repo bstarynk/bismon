@@ -1441,7 +1441,7 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
                          "bismon-host", myhostname_BM,
                          "bismon-pid", (int) getpid ());
   char *jsbuf = NULL;
-  DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s jsonmerge@%p: %s", objectdbg_BM (_.sessionob), jsonmerge, //
+  DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s initial jsonmerge@%p: %s", objectdbg_BM (_.sessionob), jsonmerge, //
                 (jsbuf = json_dumps (jsonmerge, JSON_INDENT (1))));
   if (jsbuf)
     free (jsbuf), jsbuf = NULL;
@@ -1450,8 +1450,8 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
       char themidbuf[32];
       memset (themidbuf, 0, sizeof (themidbuf));
       idtocbuf32_BM (objid_BM (_.webthemeob), themidbuf);
-      json_object_set (jsonmerge, "bismon-theme-id", themidbuf);
-      DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s jsonmerge@%p: %s", objectdbg_BM (_.sessionob), jsonmerge,     //
+      json_object_set (jsonmerge, "bismon-theme-id", json_string (themidbuf));
+      DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s themeid jsonmerge@%p: %s", objectdbg_BM (_.sessionob), jsonmerge,     //
                     (jsbuf = json_dumps (jsonmerge, JSON_INDENT (1))));
       if (jsbuf)
         free (jsbuf), jsbuf = NULL;
@@ -1461,18 +1461,24 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
       char contridbuf[32];
       memset (contridbuf, 0, sizeof (contridbuf));
       idtocbuf32_BM (objid_BM (_.contribob), contridbuf);
-      json_object_set (jsonmerge, "bismon-contributor-id", contridbuf);
-      DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s jsonmerge@%p: %s", objectdbg_BM (_.sessionob), jsonmerge,     //
+      json_object_set (jsonmerge, "bismon-contributor-id",
+                       json_string (contridbuf));
+      DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s contribid jsonmerge@%p: %s", objectdbg_BM (_.sessionob), jsonmerge,   //
                     (jsbuf = json_dumps (jsonmerge, JSON_INDENT (1))));
       if (jsbuf)
         free (jsbuf), jsbuf = NULL;
     }
-  DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s webthemeob=%s contribob=%s jsonmerge@%p: %s", objectdbg_BM (_.sessionob), objectdbg1_BM (_.webthemeob), objectdbg2_BM (_.contribob), (void *) jsonmerge,  //
+  DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s webthemeob=%s contribob=%s after contribid jsonmerge@%p: %s", objectdbg_BM (_.sessionob), objectdbg1_BM (_.webthemeob), objectdbg2_BM (_.contribob), (void *) jsonmerge,  //
                 (jsbuf = json_dumps (jsonmerge, JSON_INDENT (1))));
   if (jsbuf)
     free (jsbuf), jsbuf = NULL;
   if (jsonthemename)
-    json_object_set (jsonmerge, "bismon-theme-name", jsonthemename);
+    {
+      json_object_set (jsonmerge, "bismon-theme-name",
+                       json_string (jsonthemename));
+      DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s webthemeob=%s contribob=%s after themename jsonmerge@%p: %s", objectdbg_BM (_.sessionob), objectdbg1_BM (_.webthemeob), objectdbg2_BM (_.contribob), (void *) jsonmerge,      //
+                    (jsbuf = json_dumps (jsonmerge, JSON_INDENT (1))));
+    }
   if (json_is_object (jsoncontribpayl))
     json_object_update_missing (jsonmerge, jsoncontribpayl);
   DBGPRINTF_BM ("bismon_settings_json_handler_BM sessionob=%s jsonmerge@%p: %s", objectdbg_BM (_.sessionob), jsonmerge, //
