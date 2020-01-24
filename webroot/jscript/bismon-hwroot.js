@@ -165,6 +165,7 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 	type: "get",
 	contentType: "application/json",
 	success: function(data,textStatus,jQxhr){
+	    newevaldiv.bismon_settings = data;
 	    console.debug("bismonsettings id=%o newevaldiv=%o success data=%o, textStatus=%o, jQxhr=%o",
 			  id, newevaldiv, data, textStatus, jQxhr);
 	},
