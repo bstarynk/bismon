@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -647,6 +647,7 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
   ASSERT_BM (ld && ld->ld_magic == LOADERMAGIC_BM);
   ASSERT_BM (ix >= 0 && ix <= (int) ld->ld_maxnum);
   char *curldpath = ld->ld_storepatharr[ix];
+  char *debugjson = getenv ("BISMON_DEBUG_JSON");
   ASSERT_BM (curldpath != NULL);
   ASSERT_BM (ldpars != NULL);
   ASSERT_BM (isobject_BM (argcurldobj));
@@ -659,6 +660,14 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
   _.curldobj = argcurldobj;
   unsigned lineno = parserlineno_BM (ldpars);
   unsigned colpos = parsercolpos_BM (ldpars);
+  bool removedebug = false;
+  if (debugjson && !debugmsg_BM)
+    {
+      debugmsg_BM = true;
+      removedebug = true;
+      DBGBACKTRACEPRINTF_BM ("load_modif_json_BM ix=%d L%uC%u debugjson=%s",
+                             ix, lineno, colpos, debugjson);
+    }
   parstoken_tyBM tokopen = parsertokenget_BM (ldpars, CURFRAME_BM);
   if (tokopen.tok_kind != plex_DELIM
       || tokopen.tok_delim != delim_leftparentilde)
@@ -685,6 +694,7 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
               && ldpars->pars_linebuf[1] == ')'))
         {
           endjs = true;
+          break;
         }
       else
         {
@@ -726,6 +736,15 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
   fclose (memfil);
   free (membuf), membuf = NULL;
   objputjansjsonpayl_BM (_.curldobj, js);
+  if (removedebug)
+    {
+      char *strjs = json_dumps (js, JSON_SORT_KEYS | JSON_INDENT (1));
+      DBGBACKTRACEPRINTF_BM
+        ("load_modif_json_BM ix=%d L%uC%u end debugjson=%s curldobj=%s strjs=\n%s\n",
+         ix, lineno, colpos, debugjson, objectdbg_BM (_.curldobj), strjs);
+      free (strjs);
+      debugmsg_BM = false;
+    }
 }                               /* end load_modif_json_BM */
 
 
@@ -747,9 +766,11 @@ load_modif_todo_BM (struct loader_stBM *ld, int ix,
   LOCALFRAME_BM (parstkfrm, NULL,       //
                  struct parser_stBM *ldparser;  //
                  objectval_tyBM * curldobj;     //
-                 value_tyBM valv;
-                 value_tyBM todov; const closure_tyBM * closv;
-                 objectval_tyBM * obselv; value_tyBM args[TODO_MAXARGS_BM];
+                 value_tyBM valv;       //
+                 value_tyBM todov;      //
+                 const closure_tyBM * closv;    //
+                 objectval_tyBM * obselv;       //
+                 value_tyBM args[TODO_MAXARGS_BM];
     );
   _.ldparser = ldpars;
   _.curldobj = argcurldobj;
