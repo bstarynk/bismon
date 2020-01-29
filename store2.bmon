@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2020, is GPLv3+ licensed.
-// for 3392 objects
+// for 3393 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -23536,6 +23536,16 @@ _95J5VWlxn7h_9P3UNOuvpbl
 
 
 
+«_2msS16w7aJn_2L0FejG935R
+± 1580288338.654
+∈ _7hNqn2hxg1M_3wNHCtOf9IF |=json_object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "Json settings of Basile"
+
+»_2msS16w7aJn_2L0FejG935R
+
+
+
 «_2mDaGPlajHX_0SEEQ46mQRJ
 ± 1544448437.314
 ∈ _3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
@@ -43500,8 +43510,10 @@ _41F1rKwGbaA_30OJWKsqNWy)
 
 
 «_6UYrSn7piPM_3eYhLtoXlmL
-± 1556875942.380
+± 1580288338.654
 ∈ _5BAqWtmxAH6_9rCGuxiNbfc |=contributor_class|
+↦ _2EZk8Ud8f0s_3WuUVMlorZG |=bismon_settings_json|
+_2msS16w7aJn_2L0FejG935R
 ↦ _5WVPhZvvSuo_7HL6xrPJQa0 |=chariot_demo2Q2019_projects|
  { _70DUbNp62lB_5JRG5at7rJu }
 
