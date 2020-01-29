@@ -679,7 +679,8 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
         getline (&ldpars->pars_linebuf, &ldpars->pars_linesiz,
                  ldpars->pars_file);
       if (ldpars->pars_linelen <= 0
-          || (ldpars->pars_linebuf[0] == '~'
+          || (ldpars->pars_linelen >= 2
+              && ldpars->pars_linebuf[0] == '~'
               && ldpars->pars_linebuf[1] == ')'))
         {
           endjs = true;
