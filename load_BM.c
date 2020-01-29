@@ -672,6 +672,7 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
               lineno, colpos, ldpars->pars_path);
   fputs (ldpars->pars_linebuf + tokopen.tok_col + 1, memfil);
   bool endjs = false;
+  int nbjsline = 0;
   do
     {
       ldpars->pars_linebuf[0] = (char) 0;
@@ -690,6 +691,14 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
           fputs (ldpars->pars_linebuf, memfil);
         }
       parsernextline_BM (ldpars);
+      nbjsline++;
+      if (nbjsline % 64 == 0)
+        {
+          fflush (memfil);
+          WARNPRINTF_BM
+            ("load_modif_json_BM L%uC%u curldobj=%s, quite long (%d lines) JSON-membuf=\n%s\n//----\n",
+             lineno, colpos, objectdbg_BM (_.curldobj), nbjsline, membuf);
+        }
     }
   while (!endjs);
   fputc ('\n', memfil);
