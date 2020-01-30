@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2020, is GPLv3+ licensed.
-// for 3393 objects
+// for 3394 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -9394,6 +9394,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
  "in c_enum-s give the own enumerators"
 
 »_4ot0ZxxA31Y_8GVFlcbckIH
+
+
+
+«_3TSb1gHwWeh_511ECqpl4oW |=persistent_json_object|
+!~ name (~ persistent_json_object ~)
+± 1580376887.670
+∈ _0LK4TzFd6u1_0JFUsrQ4odG |=class|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "subclass of persistent jsonn object"
+!~ class (~ |supercl json_object:| _7hNqn2hxg1M_3wNHCtOf9IF ~)
+»_3TSb1gHwWeh_511ECqpl4oW
 
 
 
@@ -23538,14 +23549,14 @@ _95J5VWlxn7h_9P3UNOuvpbl
 
 «_2msS16w7aJn_2L0FejG935R
 ± 1580288338.654
-∈ _7hNqn2hxg1M_3wNHCtOf9IF |=json_object|
+∈ _3TSb1gHwWeh_511ECqpl4oW  |=persistent_json_object|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "Json settings of Basile"
 !~ json (~
- {
-  "bismon-test-canvas" : true
- }
-
+  {
+   "bismon-test-canvas" : true
+  }
+ 
 ~)
 
 »_2msS16w7aJn_2L0FejG935R
