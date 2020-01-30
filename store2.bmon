@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2020, is GPLv3+ licensed.
-// for 3394 objects
+// for 3398 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -2311,13 +2311,13 @@ _6YnYKKsHo3f_9nIEOZMp744
 
 «_3BFt4NfJmZC_7iYi2dwM38B |=first_misc_module|
 !~ name (~ first_misc_module ~)
-± 1560953724.842
+± 1580378838.217
 ∈ _5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "a module with various simple minifunc-s"
 ↦ _4rz1Bi4weGz_8Y03gU81cRL |=see|
  [ _1kz7viwMzTp_6PgLhdZzMEy ]
-!# 21
+!# 22
 
 ↳ _2nl9zcaSUwe_8UBiMp1OuMk 
 ↳ _8imWClcIFKt_6w2H2ouB4I6 
@@ -2340,6 +2340,7 @@ _6YnYKKsHo3f_9nIEOZMp744
 ↳ _0g1CBaxjMIB_7NZdyHUikLG 
 ↳ _7MtjMTkmErH_2zSJ1YDKHVi 
 ↳ _110awzb480c_0n4frovb2yV 
+↳ _4qnxZdea4qp_3ghonuiHfNf 
 // emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
 »_3BFt4NfJmZC_7iYi2dwM38B
 
@@ -9403,7 +9404,8 @@ _7T9OwSFlgov_0wVJaK1eZbn
 ∈ _0LK4TzFd6u1_0JFUsrQ4odG |=class|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "subclass of persistent jsonn object"
-!~ class (~ |supercl json_object:| _7hNqn2hxg1M_3wNHCtOf9IF ~)
+!~ class (~ |supercl json_object:| _7hNqn2hxg1M_3wNHCtOf9IF 
+~: _0pSnxYMjpqQ_3opFGfXeh5o  % _4qnxZdea4qp_3ghonuiHfNf () ~)
 »_3TSb1gHwWeh_511ECqpl4oW
 
 
@@ -23549,15 +23551,9 @@ _95J5VWlxn7h_9P3UNOuvpbl
 
 «_2msS16w7aJn_2L0FejG935R
 ± 1580288338.654
-∈ _3TSb1gHwWeh_511ECqpl4oW  |=persistent_json_object|
+∈ _3TSb1gHwWeh_511ECqpl4oW |=persistent_json_object|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "Json settings of Basile"
-!~ json (~
-  {
-   "bismon-test-canvas" : true
-  }
- 
-~)
 
 »_2msS16w7aJn_2L0FejG935R
 
@@ -29794,6 +29790,36 @@ _2nl9zcaSUwe_8UBiMp1OuMk
 
 
 
+«_3TO1oP0OiOx_5ye8bwZUpLK
+± 1580379639.278
+∈ _4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug start dump_data°persistent_json_object o_json o_dump o_strbuf"
+↦ _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "start" 
+  " " _0pSnxYMjpqQ_3opFGfXeh5o  "°" _3TSb1gHwWeh_511ECqpl4oW 
+  " " _0kRPCsvLkdT_75x9PWrFQYz  " " _0iwWM98KNVX_0tO8Cz41val 
+  " " _41F1rKwGbaA_30OJWKsqNWy  "*/"  "\n" 
+  "DBGPRINTF_BM"  "(\""  "start"  " " 
+ _0pSnxYMjpqQ_3opFGfXeh5o  "°" _3TSb1gHwWeh_511ECqpl4oW  " " 
+  "€%."  "9s"  " " _0kRPCsvLkdT_75x9PWrFQYz 
+  "=%"  "s"  " " _0iwWM98KNVX_0tO8Cz41val 
+  "=%"  "s"  " " _41F1rKwGbaA_30OJWKsqNWy 
+  "=%"  "s"  "\","  "\n" 
+  " "  "\""  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej) 
+ "\"," 
+  "\n"  " "  "objectdbg_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _0kRPCsvLkdT_75x9PWrFQYz)  "),"  "\n" 
+ " " 
+  "objectdbg1_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _0iwWM98KNVX_0tO8Cz41val) 
+ ")," 
+  "\n"  " "  "objectdbg2_BM"  "(" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _41F1rKwGbaA_30OJWKsqNWy)  "));"  "\n")
+
+»_3TO1oP0OiOx_5ye8bwZUpLK
+
+
+
 «_3TPB3xZxoql_5X5J7RdvF34
 ± 1553000855.661
 ∈ _3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
@@ -32298,6 +32324,26 @@ _3oMW0T4HlXx_8r7NLpyK1J8
 
 
 
+«_4qnxZdea4qp_3ghonuiHfNf
+Σ *
+± 1580378838.217
+∈ _2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "dump_data°persistent_json_object<o_json (o_dumper o_strbuf)"
+↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ 
+ _0kRPCsvLkdT_75x9PWrFQYz _0iwWM98KNVX_0tO8Cz41val _41F1rKwGbaA_30OJWKsqNWy ]
+↦ _24sSVIADeHm_0Sx34wQfG7W |=locals|
+ { _167WczZjWtG_3FofhJxQWJi }
+↦ _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+↦ _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_9lbn8XYjnv9_50alo8Io3Lx
+
+»_4qnxZdea4qp_3ghonuiHfNf
+
+
+
 «_4qnPIzPNrRM_6ZEJvaKcNmT
 ± 1554707132.552
 ∈ _3fvdRZNCmJS_5bTAPr83mXg |=basiclo_when|
@@ -32933,6 +32979,24 @@ _13K9OfeXRZR_84nyRTtoj81
 
 ↳ _3fycBOpG51y_7Jfx9BLe3U2 
 »_4yZW46frHxN_6EbkzZ0uHHJ
+
+
+
+«_4z97h3W9aUs_0H2aWPef783
+± 1580381100.004
+∈ _9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "// emit \'!~ json (~\' dump_data°persistent_json_object"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_9lbn8XYjnv9_50alo8Io3Lx
+↦ _0EmM9kH8Wgr_7fpd0oIo9xQ |=out|
+_41F1rKwGbaA_30OJWKsqNWy
+!# 3
+
+↳  * _2wGWzItVmrN_2CBwG6iHWFO () 
+↳  * _4T8am97muLl_5969SR22Ecq (  "!~ json (~") 
+↳  * _2wGWzItVmrN_2CBwG6iHWFO () 
+»_4z97h3W9aUs_0H2aWPef783
 
 
 
@@ -53943,6 +54007,21 @@ _5lJoYIhtFKG_8s9jow2GLIp
 
 ↳ _4bt3mp8e1a2_7XsOs7auvrU 
 »_9l1kqklfeho_8gvTSpVHJs0
+
+
+
+«_9lbn8XYjnv9_50alo8Io3Lx
+± 1580381003.148
+∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of dump_data°persistent_json_object"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_4qnxZdea4qp_3ghonuiHfNf
+!# 2
+
+↳ _3TO1oP0OiOx_5ye8bwZUpLK 
+↳ _4z97h3W9aUs_0H2aWPef783 
+»_9lbn8XYjnv9_50alo8Io3Lx
 
 
 
