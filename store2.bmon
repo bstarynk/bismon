@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2020, is GPLv3+ licensed.
-// for 3398 objects
+// for 3400 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -9695,9 +9695,11 @@ _0vgCFjXblkx_4zCMhMAWjVK
 
 «_2EDrV58DM9y_5GXjoUigj3r |=raw_string|
 !~ name (~ raw_string ~)
-± 1547559639.536
-∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
-
+± 1580466433.206
+∈ _0LK4TzFd6u1_0JFUsrQ4odG |=class|
+↦ _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+ "char*"
+!~ class (~ |supercl c_type:| _83kM1HtO8K3_6k0F2KYQT3W ~)
 »_2EDrV58DM9y_5GXjoUigj3r
 
 
@@ -10677,7 +10679,7 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 «_66DuQtJBPqt_8w9fOCyxJve |=temp_test_module|
 !~ name (~ temp_test_module ~)
-± 1551891607.909
+± 1580473205.498
 ∈ _0277f6mOd9j_0tVZSXnTzUK |=basiclo_temporary_module|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "temporary test module"
@@ -10686,9 +10688,10 @@ _7bbeIqUSje9_4jVgC7ZJmvx
  _0hEcY9UzFy6_81oAjjDMu3D _2bqYsdDkB6J_35rYPGvtKa2 _364Qj8mb098_1ZKW5WqeFWg 
  _3vI0Qc3FHQG_1g4fmHYkxSA _87zGbEccv7h_5gRm35estXS _8imWClcIFKt_6w2H2ouB4I6 
  _8VzbBncLSEl_2dNNPe0VjQh }
-!# 1
+!# 2
 
 ↳ _5gAcBFb7oLW_6e5LZ0baMye 
+↳ _10OHU8afgUt_2ardYazVxxc 
 »_66DuQtJBPqt_8w9fOCyxJve
 
 
@@ -12460,6 +12463,16 @@ _6FcmuIO2DrS_7mzsaVpTMOI
 _2tEGXc8XwDB_3luMnYYAdZn
 
 »_04Du9TPik7B_4c1jk59AMbA
+
+
+
+«_04FtJr2MMnO_3CLxdgBCRej
+± 1580473205.498
+∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of testroutine-rawstring"
+
+»_04FtJr2MMnO_3CLxdgBCRej
 
 
 
@@ -16744,6 +16757,22 @@ _2W2LFnO44dr_973izSVn0hU
 ↳ _3kHUgpOuycP_0n0jO2VY4Dh 
 ↳ _7gliKK4XRvp_9hHvC2gJHKE 
 »_10BvirGtJ7c_4nWC6tymo1Z
+
+
+
+«_10OHU8afgUt_2ardYazVxxc
+± 1580473205.498
+∈ _2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "testroutine-rawstring"
+↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ _167WczZjWtG_3FofhJxQWJi ]
+↦ _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+↦ _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_04FtJr2MMnO_3CLxdgBCRej
+
+»_10OHU8afgUt_2ardYazVxxc
 
 
 
