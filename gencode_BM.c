@@ -85,6 +85,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                  objectval_tyBM * obresult;     //
                  const setval_tyBM * setlocals; //
                  const setval_tyBM * setnumbers;        //
+                 const setval_tyBM * setscalars;        //
                  const setval_tyBM * setconsts; //
                  objectval_tyBM * curvar;       //
                  value_tyBM curol;      //
@@ -102,6 +103,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   objectval_tyBM *k_locals = BMK_24sSVIADeHm_0Sx34wQfG7W;
   objectval_tyBM *k_numbers = BMK_32eKNcTZ9HN_80t0nk47Mha;
   objectval_tyBM *k_body = BMK_7DQyvJFMOrC_9IfC3CtYknn;
+  objectval_tyBM *k_scalars = BMK_3pPxQecoSkC_7izL0jcxZiS;
   objectval_tyBM *k_simple_routine_preparation = BMK_80060zKi6Un_3isCStegT8A;
   objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   objectval_tyBM *k_assoc_object = BMK_6ZQ05nCv3Ys_8LA6B5LkZgm;
@@ -163,6 +165,13 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     _.attrv = NULL;
   }
   {
+    _.attrv = objgetattr_BM (_.recv, k_scalars);
+    _.setscalars = setcast_BM (_.attrv);
+    if (_.attrv && !_.setscalars)
+      FAILHERE (makenode1_BM (k_scalars, _.attrv));
+    _.attrv = NULL;
+  }
+  {
     _.attrv = objgetattr_BM (_.recv, k_constants);
     _.setconsts = setcast_BM (_.attrv);
     if (_.attrv && !_.setconsts)
@@ -170,15 +179,12 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     _.attrv = NULL;
   }
   DBGPRINTF_BM
-    ("prepare_routine°basiclo_minifunction recv=%s tupargs=%s tupclosed=%s obresult=%s"
-     "\n.. setlocals=%s setnumbers=%s setconsts=%s",
-     objectdbg_BM (_.recv),
-     debug_outstr_value_BM ((value_tyBM) _.tupargs, CURFRAME_BM, 0),
-     debug_outstr_value_BM ((value_tyBM) _.tupclosed, CURFRAME_BM, 0),
-     objectdbg2_BM (_.obresult),
-     debug_outstr_value_BM ((value_tyBM) _.setlocals, CURFRAME_BM, 0),
-     debug_outstr_value_BM ((value_tyBM) _.setnumbers, CURFRAME_BM, 0),
-     debug_outstr_value_BM ((value_tyBM) _.setconsts, CURFRAME_BM, 0));
+    ("prepare_routine°basiclo_minifunction recv=%s tupargs=%s tupclosed=%s"
+     "\n..  obresult=%s, setlocals=%s, setnumbers=%s, setscalars=%s, setconsts=%s",
+     objectdbg_BM (_.recv), OUTSTRVALUE_BM (_.tupargs),
+     OUTSTRVALUE_BM (_.tupclosed), objectdbg2_BM (_.obresult),
+     OUTSTRVALUE_BM (_.setlocals), OUTSTRVALUE_BM (_.setscalars),
+     OUTSTRVALUE_BM (_.setconsts));
   _.bodyv = objgetattr_BM (_.recv, k_body);
   if (!isobject_BM (_.bodyv))
     {
@@ -200,14 +206,15 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   unsigned nbclosed = tuplesize_BM (_.tupclosed);
   unsigned nblocals = setcardinal_BM (_.setlocals);
   unsigned nbnumbers = setcardinal_BM (_.setnumbers);
+  unsigned nbscalars = setcardinal_BM (_.setscalars);
   unsigned nbconsts = setcardinal_BM (_.setconsts);
   DBGPRINTF_BM
-    ("start prepare_routine°basiclo_minifunction recv %s routprepob %s nbargs=%u nbclosed=%u nblocals=%u nbnumbers=%u nbconsts=%u",
+    ("start prepare_routine°basiclo_minifunction recv %s routprepob %s nbargs=%u nbclosed=%u nblocals=%u nbnumbers=%u nbscalars=%u nbconsts=%u",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob), nbargs, nbclosed,
-     nblocals, nbnumbers, nbconsts);
+     nblocals, nbnumbers, nbscalars, nbconsts);
   objputassocpayl_BM (_.routprepob,
-                      2 + nbargs + nbclosed + nblocals + nbnumbers +
-                      nbconsts);
+                      2 + nbargs + nbclosed + nblocals + nbnumbers
+                      + nbscalars + nbconsts);
   objtouchnow_BM (_.routprepob);
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction recv %s routprepob %s obresult %s",
@@ -315,7 +322,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       objassocaddattrpayl_BM (_.routprepob, _.curvar, _.curol);
       _.curol = NULL;
     }
-  /// bind the locals
+  /// bind the numbers
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction recv %s routprepob %s setnumbers %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
@@ -336,6 +343,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       objassocaddattrpayl_BM (_.routprepob, _.curvar, _.curol);
       _.curol = NULL;
     }
+  ///
+#warning start prepare_routine°basiclo_minifunction should bind the scalars here
+  ///
   // bind the constants
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction recv %s routprepob %s setconsts %s",
