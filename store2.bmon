@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2020, is GPLv3+ licensed.
-// for 3400 objects
+// for 3402 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -11669,6 +11669,17 @@ _7bbeIqUSje9_4jVgC7ZJmvx
 
 
 
+«_3As0a225cux_6I7tccmqVOP |=v_rawstr|
+!~ name (~ v_rawstr ~)
+± 1580474144.489
+∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
+↦ _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_2EDrV58DM9y_5GXjoUigj3r
+
+»_3As0a225cux_6I7tccmqVOP
+
+
+
 «_5GhvzWWP1jl_41tgAIAAa2X |=v_resapp|
 !~ name (~ v_resapp ~)
 ± 1547276317.105
@@ -12316,6 +12327,19 @@ _2ZoqAiU7COz_0EfxfZbOgZj
 
 
 
+«_022uKw1KiyF_5bkTWbIpBvg
+± 1580474388.386
+∈ _3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "v_rawstr := bytstring(v_str) // testroutine-rawstring €_10OHU8afg"
+!# 2
+
+↳ _3As0a225cux_6I7tccmqVOP 
+↳  * _65LACLrHMTz_08IziohYl0i ( _167WczZjWtG_3FofhJxQWJi) 
+»_022uKw1KiyF_5bkTWbIpBvg
+
+
+
 «_0255NhyJ7Dq_2SDnpSnNtCD
 ± 1547134588.546
 ∈ _4GJJnvyrLyW_5mhopCYvh8h |=basiclo_cexpansion|
@@ -12467,11 +12491,15 @@ _2tEGXc8XwDB_3luMnYYAdZn
 
 
 «_04FtJr2MMnO_3CLxdgBCRej
-± 1580473205.498
+± 1580474388.386
 ∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "body of testroutine-rawstring"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_10OHU8afgUt_2ardYazVxxc
+!# 1
 
+↳ _022uKw1KiyF_5bkTWbIpBvg 
 »_04FtJr2MMnO_3CLxdgBCRej
 
 
@@ -16761,12 +16789,14 @@ _2W2LFnO44dr_973izSVn0hU
 
 
 «_10OHU8afgUt_2ardYazVxxc
-± 1580473205.498
+± 1580474144.489
 ∈ _2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "testroutine-rawstring"
 ↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _167WczZjWtG_3FofhJxQWJi ]
+↦ _24sSVIADeHm_0Sx34wQfG7W |=locals|
+ { _3As0a225cux_6I7tccmqVOP }
 ↦ _7bD9VtDkGSn_7lxHeYuuFLR |=result|
 _3qw9bnATIhq_8loBraLeXzQ
 ↦ _7DQyvJFMOrC_9IfC3CtYknn |=body|
