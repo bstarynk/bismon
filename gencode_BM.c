@@ -301,6 +301,10 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       objlock_BM (_.curvar);
       _.curtypob = objectcast_BM (objgetattr_BM (_.curvar, k_c_type));
       objunlock_BM (_.curvar);
+      DBGPRINTF_BM
+        ("start prepare_routine°basiclo_minifunction recv %s, routprepob %s, curvar %s, curtypob %s",
+         objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
+         objectdbg2_BM (_.curvar), objectdbg3_BM (_.curtypob));
       if (!_.curtypob)
         _.curtypob = BMP_value;
       if (_.curtypob != BMP_value && _.curtypob != BMP_object)
