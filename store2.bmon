@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2020, is GPLv3+ licensed.
-// for 3402 objects
+// for 3403 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -9872,6 +9872,17 @@ _0vgCFjXblkx_4zCMhMAWjVK
 ∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 
 »_5qJ7wfXtzlW_30GNcoDmv10
+
+
+
+«_3pPxQecoSkC_7izL0jcxZiS |=scalars|
+!~ name (~ scalars ~)
+± 1580475728.410
+∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "attribute giving scalar automatic variables of routines"
+
+»_3pPxQecoSkC_7izL0jcxZiS
 
 
 
