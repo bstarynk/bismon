@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -326,7 +326,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   DBGPRINTF_BM
     ("start prepare_routine°basiclo_minifunction recv %s routprepob %s setnumbers %s",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
-     debug_outstr_value_BM ((value_tyBM) _.setnumbers, CURFRAME_BM, 0));
+     OUTSTRVALUE_BM ((value_tyBM) _.setnumbers));
   // bind the number vars
   for (unsigned numix = 0; numix < nbnumbers; numix++)
     {
@@ -344,7 +344,29 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       _.curol = NULL;
     }
   ///
-#warning start prepare_routine°basiclo_minifunction should bind the scalars here
+  /// bind the scalars
+  DBGPRINTF_BM
+    ("start prepare_routine°basiclo_minifunction recv %s routprepob %s setscalars %s",
+     objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
+     OUTSTRVALUE_BM ((value_tyBM) _.setscalars));
+  // bind the scalars vars
+  for (unsigned scalix = 0; scalix < nbnumbers; scalix++)
+    {
+      _.curvar = setelemnth_BM (_.setscalars, scalix);
+      DBGPRINTF_BM
+        ("start prepare_routine°basiclo_minifunction scalix=%u number curvar=%s",
+         scalix, objectdbg_BM (_.curvar));
+      _.oldrol = objassocgetattrpayl_BM (_.routprepob, _.curvar);
+      if (_.oldrol)
+        {
+          FAILHERE (makenode2_BM (k_scalars, _.curvar, _.oldrol));
+        }
+#warning start prepare_routine°basiclo_minifunction should query the scalar type
+      _.curol = (value_tyBM) makenode1_BM (k_scalars, taggedint_BM (scalix));
+      objassocaddattrpayl_BM (_.routprepob, _.curvar, _.curol);
+      _.curol = NULL;
+    }
+  ///
   ///
   // bind the constants
   DBGPRINTF_BM
