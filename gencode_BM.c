@@ -354,14 +354,26 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     {
       _.curvar = setelemnth_BM (_.setscalars, scalix);
       DBGPRINTF_BM
-        ("start prepare_routine°basiclo_minifunction scalix=%u number curvar=%s",
+        ("start prepare_routine°basiclo_minifunction scalix=%u scalar curvar=%s",
          scalix, objectdbg_BM (_.curvar));
       _.oldrol = objassocgetattrpayl_BM (_.routprepob, _.curvar);
       if (_.oldrol)
         {
           FAILHERE (makenode2_BM (k_scalars, _.curvar, _.oldrol));
-        }
-#warning start prepare_routine°basiclo_minifunction should query the scalar type
+        };
+      {
+        objlock_BM (_.curvar);
+        _.curtypob = objectcast_BM (objgetattr_BM (_.curvar, k_c_type));
+        objunlock_BM (_.curvar);
+        DBGBACKTRACEPRINTF_BM
+          ("start prepare_routine°basiclo_minifunction scalix=%u scalar curvar=%s curtypob=%s",
+           scalix, objectdbg_BM (_.curvar), objectdbg1_BM (_.curtypob));
+        if (!_.curtypob)
+          {
+            FAILHERE (makenode2_BM (k_scalars, _.curvar, k_c_type));
+          };
+#warning prepare_routine°basiclo_minifunction should query the c_type of curtypob for scalars
+      }
       _.curol = (value_tyBM) makenode1_BM (k_scalars, taggedint_BM (scalix));
       objassocaddattrpayl_BM (_.routprepob, _.curvar, _.curol);
       _.curol = NULL;
