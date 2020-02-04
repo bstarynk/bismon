@@ -88,6 +88,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
                  const setval_tyBM * setscalars;        //
                  const setval_tyBM * setconsts; //
                  objectval_tyBM * curvar;       //
+                 objectval_tyBM * scalctypob;   //
                  value_tyBM curol;      //
                  value_tyBM oldrol;     //
                  value_tyBM bodyv;      //
@@ -104,6 +105,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   objectval_tyBM *k_numbers = BMK_32eKNcTZ9HN_80t0nk47Mha;
   objectval_tyBM *k_body = BMK_7DQyvJFMOrC_9IfC3CtYknn;
   objectval_tyBM *k_scalars = BMK_3pPxQecoSkC_7izL0jcxZiS;
+  objectval_tyBM *k_scalar_c_type = BMK_68ZSdtDWjWk_4Dex1apSdO7;
   objectval_tyBM *k_simple_routine_preparation = BMK_80060zKi6Un_3isCStegT8A;
   objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   objectval_tyBM *k_assoc_object = BMK_6ZQ05nCv3Ys_8LA6B5LkZgm;
@@ -372,9 +374,27 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
           {
             FAILHERE (makenode2_BM (k_scalars, _.curvar, k_c_type));
           };
-#warning prepare_routine°basiclo_minifunction should query the c_type of curtypob for scalars
+        _.scalctypob = NULL;
+        objlock_BM (_.curtypob);
+        _.scalctypob =
+          objectcast_BM (objgetattr_BM (_.curtypob, k_scalar_c_type));
+        objunlock_BM (_.curtypob);
+        DBGBACKTRACEPRINTF_BM
+          ("start prepare_routine°basiclo_minifunction scalar curvar=%s curtypob=%s scalctypob=%s",
+           objectdbg_BM (_.curvar), objectdbg1_BM (_.curtypob),
+           objectdbg2_BM (_.scalctypob));
+        if (!_.scalctypob)
+          {
+            FAILHERE (makenode2_BM (k_scalar_c_type, _.curvar, _.curtypob));
+          }
       }
-      _.curol = (value_tyBM) makenode1_BM (k_scalars, taggedint_BM (scalix));
+      _.curol =
+        (value_tyBM) makenode2_BM (k_scalars, taggedint_BM (scalix),
+                                   _.curtypob);
+      DBGBACKTRACEPRINTF_BM
+        ("start prepare_routine°basiclo_minifunction scalar routprepob=%s curvar=%s curol=%s",
+         objectdbg1_BM (_.routprepob), objectdbg1_BM (_.curvar),
+         OUTSTRVALUE_BM (_.curol));
       objassocaddattrpayl_BM (_.routprepob, _.curvar, _.curol);
       _.curol = NULL;
     }
