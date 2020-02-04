@@ -560,7 +560,7 @@ miniscan_var_BM (objectval_tyBM * varob,
                  value_tyBM errorv;
     );
   int failin = -1;
-#define FAILHERE(V) do { failin = __LINE__ ; _.causev = (value_tyBM)(V);\
+#define FAILHERE(V) do { failin = __LINE__ ; _.causev = (value_tyBM)(V); \
     goto failure; } while(0)
   _.varob = objectcast_BM (varob);
   _.routprepob = objectcast_BM (routprepob);
@@ -610,7 +610,12 @@ miniscan_var_BM (objectval_tyBM * varob,
         FAILHERE (_.vrolv);
     }
   else
-    FAILHERE (_.vrolv);
+    {
+      DBGBACKTRACEPRINTF_BM ("miniscan_var failing routprepob=%s varob=%s vrolv=%s",
+			     objectdbg_BM (_.routprepob), objectdbg1_BM (_.varob),
+			     OUTSTRVALUE_BM (_.vrolv));
+      FAILHERE (_.vrolv);
+    }
 #warning incomplete miniscan_var_BM
   DBGPRINTF_BM ("miniscan_var end varob=%s", objectdbg_BM (_.varob));
   LOCALRETURN_BM (NULL);
