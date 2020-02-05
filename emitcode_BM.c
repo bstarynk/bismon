@@ -386,6 +386,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                  objectval_tyBM * varob;        //
                  objectval_tyBM * lockob;       //
                  value_tyBM emitv;      //
+                 value_tyBM bindv;      //
                  objectval_tyBM * typob;        //
                  value_tyBM errorv;     //
                  value_tyBM causev;
@@ -586,9 +587,11 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   for (unsigned scalix = 0; scalix < nbscal; scalix++)
     {
       _.varob = setelemnth_BM (_.setscalarsv, scalix);
+      _.bindv = objassocgetattrpayl_BM (_.routprepob, _.varob);
       DBGPRINTF_BM
-        ("emit_definition°simple_routine_preparation routprepob=%s scalix#%d varob=%s",
-         objectdbg_BM (_.routprepob), scalix, objectdbg1_BM (_.varob));
+        ("emit_definition°simple_routine_preparation routprepob=%s scalix#%d varob=%s bindv=%s",
+         objectdbg_BM (_.routprepob), scalix, objectdbg1_BM (_.varob),
+         OUTSTRVALUE_BM (_.bindv));
 #warning emit_definition°simple_routine_preparation missing declaration of scalar
       objstrbufferprintfpayl_BM (_.modgenob,
                                  "#error should declare scalar %s\n",
