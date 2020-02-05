@@ -2354,6 +2354,7 @@ miniemit_var_BM (struct stackframe_stBM *stkf,
 {
   objectval_tyBM *k_emit_reference = BMK_6qzzDyr2eIo_3SapnOUpg6S;
   objectval_tyBM *k_variable = BMK_5ucAZimYynS_4VA0XHvr1nW;
+  objectval_tyBM *k_scalars = BMK_3pPxQecoSkC_7izL0jcxZiS;
   //objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
   //objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
   //objectval_tyBM *k_object = BMK_7T9OwSFlgov_0wVJaK1eZbn;
@@ -2391,7 +2392,7 @@ miniemit_var_BM (struct stackframe_stBM *stkf,
     {
       _.typob =
         miniscan_var_BM (_.refob, _.routprepob, depth, _.fromob, CURFRAME_BM);
-      DBGPRINTF_BM ("emit_var refob=%s avalv=%s typob=%s",
+      DBGPRINTF_BM ("miniemit_var refob=%s avalv=%s typob=%s",
                     objectdbg_BM (_.refob),
                     debug_outstr_value_BM (_.avalv, CURFRAME_BM, 0),
                     objectdbg2_BM (_.typob));
@@ -2421,6 +2422,20 @@ miniemit_var_BM (struct stackframe_stBM *stkf,
                                        varidbuf);
           else
             objstrbufferprintfpayl_BM (_.modgenob, " _.n%s", varidbuf);
+        }
+      else if (nodeconn_BM (_.avalv) == k_scalars
+               && nodewidth_BM (_.avalv) >= 2)
+        {
+          DBGBACKTRACEPRINTF_BM
+            ("miniemit_var_BM bad refob=%s scalars aval=%s typob=%s routprepob=%s",
+             objectdbg_BM (_.refob), OUTSTRVALUE_BM (_.avalv),
+             objectdbg1_BM (_.typob), objectdbg2_BM (_.routprepob));
+          const char *varnam = findobjectname_BM (_.refob);
+          if (varnam)
+            objstrbufferprintfpayl_BM (_.modgenob, " /*%s:*/_.sc%s", varnam,
+                                       varidbuf);
+          else
+            objstrbufferprintfpayl_BM (_.modgenob, " _.sc%s", varidbuf);
         }
       else
         {
