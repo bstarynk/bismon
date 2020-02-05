@@ -599,8 +599,9 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
     }
   //////////////// end frame
   DBGPRINTF_BM
-    ("emit_definition°simple_routine_preparation routprepob=%s bodyob=%s",
-     objectdbg_BM (_.routprepob), objectdbg1_BM (_.bodyob));
+    ("emit_definition°simple_routine_preparation routprepob=%s bodyob=%s modgenob=%s",
+     objectdbg_BM (_.routprepob), objectdbg1_BM (_.bodyob),
+     objectdbg1_BM (_.modgenob));
   objstrbufferprintfpayl_BM (_.modgenob, "   } _;\n");
   objstrbufferprintfpayl_BM (_.modgenob,
                              "   memset (&_, 0, sizeof(struct frame%s_BMst));\n",
