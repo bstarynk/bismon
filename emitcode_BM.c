@@ -2,7 +2,7 @@
 
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -126,6 +126,7 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
                  value_tyBM blocksetv;  //
                  objectval_tyBM * hsetvalob;    //
                  objectval_tyBM * hsetnumob;    //
+                 objectval_tyBM * hsetscalarob; //
                  objectval_tyBM * keyob;        //
                  objectval_tyBM * bindconnob;   //
                  value_tyBM resultv;    //
@@ -143,6 +144,7 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
   objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   objectval_tyBM *k_value_set = BMK_6Fl0Z0OTtV9_8QTsq3uDu4q;
   objectval_tyBM *k_number_set = BMK_5uPst3m4mdx_05Xl1AoTnZL;
+  objectval_tyBM *k_scalars_set = BMK_5B8evsiToX9_6tWQdNw2rSv;
   objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   objectval_tyBM *k_locals = BMK_24sSVIADeHm_0Sx34wQfG7W;
@@ -154,6 +156,7 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
   objectval_tyBM *k_emit_declaration = BMK_3NGaoN3yhbn_8yUwbtZfvp9;
   objectval_tyBM *k_constants = BMK_5l2zSKsFaVm_9zs6qDOP87i;
   objectval_tyBM *k_locking = BMK_8yqFC2Qz7I2_7KoZMWLE0U3;
+  objectval_tyBM *k_scalars = BMK_3pPxQecoSkC_7izL0jcxZiS;
   WEAKASSERT_BM (isobject_BM (arg1));
   _.routprepob = objectcast_BM (arg1);
   WEAKASSERT_BM (isobject_BM (arg2));
@@ -196,9 +199,15 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
       objputattr_BM (_.routprepob, k_number_set, _.hsetnumob);
       objputattr_BM (_.hsetnumob, k_in, _.routprepob);
       objputhashsetpayl_BM (_.hsetnumob, 11);
+      _.hsetscalarob = makeobj_BM ();
+      objputclass_BM (_.hsetscalarob, k_hset_object);
+      objputattr_BM (_.routprepob, k_scalars_set, _.hsetscalarob);
+      objputattr_BM (_.hsetscalarob, k_in, _.routprepob);
+      objputhashsetpayl_BM (_.hsetscalarob, 7);
       _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.routprepob);
-      DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s hsetvalob=%s hsetnumob=%s keyset=%s", objectdbg_BM (_.routprepob), objectdbg1_BM (_.hsetvalob), objectdbg2_BM (_.hsetnumob),    //
-                    debug_outstr_value_BM (_.keysetv, CURFRAME_BM, 0));
+      DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s hsetvalob=%s hsetnumob=%s hsetscalarob=%s keyset=%s", objectdbg_BM (_.routprepob), objectdbg1_BM (_.hsetvalob), //
+                    objectdbg2_BM (_.hsetnumob), objectdbg2_BM (_.hsetscalarob),        //
+                    OUTSTRVALUE_BM (_.keysetv));
       unsigned nbkeys = setcardinal_BM (_.keysetv);
       for (unsigned kix = 0; kix < nbkeys; kix++)
         {
