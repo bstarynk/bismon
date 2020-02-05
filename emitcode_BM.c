@@ -354,6 +354,7 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   objectval_tyBM *k_value_set = BMK_6Fl0Z0OTtV9_8QTsq3uDu4q;
   objectval_tyBM *k_number_set = BMK_5uPst3m4mdx_05Xl1AoTnZL;
   objectval_tyBM *k_scalars_set = BMK_5B8evsiToX9_6tWQdNw2rSv;
+  objectval_tyBM *k_scalar_c_type = BMK_68ZSdtDWjWk_4Dex1apSdO7;
   objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
   objectval_tyBM *k_object = BMK_7T9OwSFlgov_0wVJaK1eZbn;
   objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
@@ -387,6 +388,8 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                  objectval_tyBM * lockob;       //
                  value_tyBM emitv;      //
                  value_tyBM bindv;      //
+                 value_tyBM vscalctypv; //
+                 value_tyBM vctypv;     //
                  objectval_tyBM * typob;        //
                  value_tyBM errorv;     //
                  value_tyBM causev;
@@ -588,14 +591,30 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
     {
       _.varob = setelemnth_BM (_.setscalarsv, scalix);
       _.bindv = objassocgetattrpayl_BM (_.routprepob, _.varob);
+      _.typob = objectcast_BM (nodenthson_BM (_.bindv, 1));
       DBGPRINTF_BM
-        ("emit_definition°simple_routine_preparation routprepob=%s scalix#%d varob=%s bindv=%s",
+        ("emit_definition°simple_routine_preparation routprepob=%s scalix#%d varob=%s bindv=%s typob=%s",
          objectdbg_BM (_.routprepob), scalix, objectdbg1_BM (_.varob),
-         OUTSTRVALUE_BM (_.bindv));
-#warning emit_definition°simple_routine_preparation missing declaration of scalar
+         OUTSTRVALUE_BM (_.bindv), objectdbg2_BM (_.typob));
+      WEAKASSERT_BM (_.typob);
+      {
+        objlock_BM (_.typob);
+        _.vscalctypv = objgetattr_BM (_.typob, k_scalar_c_type);
+        _.vctypv = objgetattr_BM (_.typob, k_c_type);
+        objunlock_BM (_.typob);
+      }
+      char varidbuf[32];
+      memset (varidbuf, 0, sizeof (varidbuf));
+      idtocbuf32_BM (objid_BM (_.varob), varidbuf);
+      DBGPRINTF_BM
+        ("emit_definition°simple_routine_preparation scalix#%d vscalctypv=%s vctypv=%s",
+         scalix, OUTSTRVALUE_BM (_.vscalctypv), OUTSTRVALUE_BM (_.vctypv));
+      WEAKASSERT_BM (_.vscalctypv);
+      WEAKASSERT_BM (isstring_BM (_.vctypv));
       objstrbufferprintfpayl_BM (_.modgenob,
-                                 "#error should declare scalar %s\n",
-                                 objectdbg1_BM (_.varob));
+                                 "    %s sc%s; // %s\n",
+                                 bytstring_BM (_.vctypv), varidbuf,
+                                 objectdbg_BM (_.varob));
     }
   //////////////// end frame
   DBGPRINTF_BM
