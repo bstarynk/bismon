@@ -241,6 +241,10 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
             {
               objhashsetaddpayl_BM (_.hsetnumob, _.keyob);
             }
+          else if (_.bindconnob == k_scalars)
+            {
+              objhashsetaddpayl_BM (_.hsetscalarob, _.keyob);
+            }
           else if (_.bindconnob == k_constants)
             {
             }
@@ -251,7 +255,12 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
       objputattr_BM (_.routprepob, k_value_set, _.setv);
       DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s value_set %s",  //
                     objectdbg_BM (_.routprepob),        //
-                    debug_outstr_value_BM (_.setv, CURFRAME_BM, 0));
+                    OUTSTRVALUE_BM (_.setv));
+      _.setv = (value_tyBM) objhashsettosetpayl_BM (_.hsetscalarob);
+      objputattr_BM (_.routprepob, k_scalars_set, _.setv);
+      DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s scalars_set %s",        //
+                    objectdbg_BM (_.routprepob),        //
+                    OUTSTRVALUE_BM (_.setv));
       _.setv = (value_tyBM) objhashsettosetpayl_BM (_.hsetnumob);
       objputattr_BM (_.routprepob, k_number_set, _.setv);
       DBGPRINTF_BM ("emit_declaration°simple_routine_preparation routprepob=%s number_set %s", //
