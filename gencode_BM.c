@@ -171,6 +171,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     _.setscalars = setcast_BM (_.attrv);
     if (_.attrv && !_.setscalars)
       FAILHERE (makenode1_BM (k_scalars, _.attrv));
+    DBGPRINTF_BM
+      ("prepare_routine°basiclo_minifunction recv=%s setscalars %s",
+       objectdbg_BM (_.recv), OUTSTRVALUE_BM (_.setscalars));
     _.attrv = NULL;
   }
   {
@@ -293,14 +296,14 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     }
   /// bind the locals
   DBGPRINTF_BM
-    ("start prepare_routine°basiclo_minifunction recv %s routprepob %s setlocals %s",
+    ("prepare_routine°basiclo_minifunction recv %s routprepob %s setlocals %s nb#%d",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
-     debug_outstr_value_BM ((value_tyBM) _.setlocals, CURFRAME_BM, 0));
+     OUTSTRVALUE_BM ((value_tyBM) _.setlocals), nblocals);
   for (unsigned locix = 0; locix < nblocals; locix++)
     {
       _.curvar = setelemnth_BM (_.setlocals, locix);
       DBGPRINTF_BM
-        ("start prepare_routine°basiclo_minifunction locix=%u local curvar=%s",
+        ("prepare_routine°basiclo_minifunction locix=%u local curvar=%s",
          locix, objectdbg_BM (_.curvar));
       _.oldrol = objassocgetattrpayl_BM (_.routprepob, _.curvar);
       if (_.oldrol)
@@ -326,9 +329,9 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     }
   /// bind the numbers
   DBGPRINTF_BM
-    ("start prepare_routine°basiclo_minifunction recv %s routprepob %s setnumbers %s",
+    ("prepare_routine°basiclo_minifunction recv %s routprepob %s setnumbers %s nb#%u",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
-     OUTSTRVALUE_BM ((value_tyBM) _.setnumbers));
+     OUTSTRVALUE_BM ((value_tyBM) _.setnumbers), nbnumbers);
   // bind the number vars
   for (unsigned numix = 0; numix < nbnumbers; numix++)
     {
@@ -348,15 +351,15 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   ///
   /// bind the scalars
   DBGPRINTF_BM
-    ("start prepare_routine°basiclo_minifunction recv %s routprepob %s setscalars %s",
+    ("prepare_routine°basiclo_minifunction recv %s routprepob %s setscalars %s nb#%u",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
-     OUTSTRVALUE_BM ((value_tyBM) _.setscalars));
+     OUTSTRVALUE_BM ((value_tyBM) _.setscalars), nbscalars);
   // bind the scalars vars
-  for (unsigned scalix = 0; scalix < nbnumbers; scalix++)
+  for (unsigned scalix = 0; scalix < nbscalars; scalix++)
     {
       _.curvar = setelemnth_BM (_.setscalars, scalix);
       DBGPRINTF_BM
-        ("start prepare_routine°basiclo_minifunction scalix=%u scalar curvar=%s",
+        ("prepare_routine°basiclo_minifunction scalix=%u scalar curvar=%s",
          scalix, objectdbg_BM (_.curvar));
       _.oldrol = objassocgetattrpayl_BM (_.routprepob, _.curvar);
       if (_.oldrol)
@@ -368,7 +371,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
         _.curtypob = objectcast_BM (objgetattr_BM (_.curvar, k_c_type));
         objunlock_BM (_.curvar);
         DBGBACKTRACEPRINTF_BM
-          ("start prepare_routine°basiclo_minifunction scalix=%u scalar curvar=%s curtypob=%s",
+          ("prepare_routine°basiclo_minifunction scalix=%u scalar curvar=%s curtypob=%s",
            scalix, objectdbg_BM (_.curvar), objectdbg1_BM (_.curtypob));
         if (!_.curtypob)
           {
@@ -402,14 +405,14 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   ///
   // bind the constants
   DBGPRINTF_BM
-    ("start prepare_routine°basiclo_minifunction recv %s routprepob %s setconsts %s",
+    (" prepare_routine°basiclo_minifunction recv %s routprepob %s setconsts %s nb#%u",
      objectdbg_BM (_.recv), objectdbg1_BM (_.routprepob),
-     debug_outstr_value_BM ((value_tyBM) _.setconsts, CURFRAME_BM, 0));
+     OUTSTRVALUE_BM ((value_tyBM) _.setconsts), nbconsts);
   for (unsigned cstix = 0; cstix < nbconsts; cstix++)
     {
       _.curvar = setelemnth_BM (_.setconsts, cstix);
       DBGPRINTF_BM
-        ("start prepare_routine°basiclo_minifunction cstix=%u constant curvar=%s",
+        ("prepare_routine°basiclo_minifunction cstix=%u constant curvar=%s",
          cstix, objectdbg_BM (_.curvar));
       _.oldrol = objassocgetattrpayl_BM (_.routprepob, _.curvar);
       if (_.oldrol)
