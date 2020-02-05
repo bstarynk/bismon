@@ -1636,7 +1636,8 @@ value_tyBM crout_4qnxZdea4qp_3ghonuiHfNf_BM //#14
     value_tyBM v_3qw9bnATIhq_8loBraLeXzQ; // v_r
     objectval_tyBM* o_41F1rKwGbaA_30OJWKsqNWy; // o_strbuf
     /// 0 local numbers:
-    /// 0 scalar values:
+    /// 1 scalar values:
+    char * sc_3As0a225cux_6I7tccmqVOP; // v_rawstr
    } _;
    memset (&_, 0, sizeof(struct frame_4qnxZdea4qp_3ghonuiHfNf_BMst));
    _.stkfram_head.htyp = typayl_StackFrame_BM;
