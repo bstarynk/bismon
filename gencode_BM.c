@@ -550,6 +550,7 @@ miniscan_var_BM (objectval_tyBM * varob,
   objectval_tyBM *k_locals = BMK_24sSVIADeHm_0Sx34wQfG7W;
   objectval_tyBM *k_miniscan_var = BMK_6jh60mO0Cgd_84B0HiNphqA;
   objectval_tyBM *k_numbers = BMK_32eKNcTZ9HN_80t0nk47Mha;
+  objectval_tyBM *k_scalars = BMK_3pPxQecoSkC_7izL0jcxZiS;
   objectval_tyBM *k_result = BMK_7bD9VtDkGSn_7lxHeYuuFLR;
   objectval_tyBM *k_simple_routine_preparation = BMK_80060zKi6Un_3isCStegT8A;
   objectval_tyBM *k_value = BMK_7bbeIqUSje9_4jVgC7ZJmvx;
@@ -581,7 +582,7 @@ miniscan_var_BM (objectval_tyBM * varob,
   WEAKASSERT_BM (objhasassocpayl_BM (_.routprepob));
   _.vrolv = objassocgetattrpayl_BM (_.routprepob, _.varob);
   DBGPRINTF_BM ("miniscan_var vrol=%s", //
-                debug_outstr_value_BM (_.vrolv, CURFRAME_BM, 0));
+                OUTSTRVALUE_BM (_.vrolv));
   if (isnode_BM (_.vrolv))
     {
       _.rolconnob = nodeconn_BM (_.vrolv);
@@ -601,6 +602,15 @@ miniscan_var_BM (objectval_tyBM * varob,
       else if (_.rolconnob == k_numbers)
         {
           LOCALRETURN_BM (k_int);
+        }
+      else if (_.rolconnob == k_scalars)
+        {
+          DBGBACKTRACEPRINTF_BM
+            ("unimplemented scalar miniscan_var vrol=%s routprepob=%s depth#%d fromob=%s",
+             OUTSTRVALUE_BM (_.vrolv), objectdbg_BM (_.routprepob), depth,
+             objectdbg1_BM (_.fromob));
+#warning unimplemented scalar miniscan_var
+          FAILHERE (_.vrolv);
         }
       else
         FAILHERE (_.vrolv);
