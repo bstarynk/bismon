@@ -1913,6 +1913,7 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                   objstrbufferprintfpayl_BM (_.modgenob, " _.n%s", varidbuf);
               }
             else
+#warning emit_expr should handle scalar variables appropriately using miniemit_variable 
               {
                 DBGPRINTF_BM ("emit_expr variable expob %s of unexpected type %s routprepob %s fromob %s", objectdbg_BM (_.expob), objectdbg1_BM (_.typob),     //
                               objectdbg2_BM (_.routprepob),
