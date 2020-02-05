@@ -184,12 +184,14 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
     _.attrv = NULL;
   }
   DBGPRINTF_BM
-    ("prepare_routine°basiclo_minifunction recv=%s tupargs=%s tupclosed=%s"
-     "\n..  obresult=%s, setlocals=%s, setnumbers=%s, setscalars=%s, setconsts=%s",
+    ("prepare_routine°basiclo_minifunction recv=%s tupargs=%s tupclosed=%s  obresult=%s",
      objectdbg_BM (_.recv), OUTSTRVALUE_BM (_.tupargs),
-     OUTSTRVALUE_BM (_.tupclosed), objectdbg2_BM (_.obresult),
-     OUTSTRVALUE_BM (_.setlocals), OUTSTRVALUE_BM (_.setscalars),
-     OUTSTRVALUE_BM (_.setconsts));
+     OUTSTRVALUE_BM (_.tupclosed), objectdbg2_BM (_.obresult));
+  DBGPRINTF_BM
+    ("prepare_routine°basiclo_minifunction recv=%s setlocals=%s, setnumbers=%s, setscalars=%s, setconsts=%s",
+     objectdbg_BM (_.recv),
+     OUTSTRVALUE_BM (_.setlocals), OUTSTRVALUE_BM (_.setnumbers),
+     OUTSTRVALUE_BM (_.setscalars), OUTSTRVALUE_BM (_.setconsts));
   _.bodyv = objgetattr_BM (_.recv, k_body);
   if (!isobject_BM (_.bodyv))
     {
