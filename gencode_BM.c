@@ -606,10 +606,16 @@ miniscan_var_BM (objectval_tyBM * varob,
       else if (_.rolconnob == k_scalars)
         {
           DBGBACKTRACEPRINTF_BM
-            ("unimplemented scalar miniscan_var vrol=%s routprepob=%s depth#%d fromob=%s",
+            ("scalar miniscan_var vrol=%s routprepob=%s depth#%d fromob=%s",
              OUTSTRVALUE_BM (_.vrolv), objectdbg_BM (_.routprepob), depth,
              objectdbg1_BM (_.fromob));
-#warning unimplemented scalar miniscan_var
+          if (nodewidth_BM (_.vrolv) == 2)
+            {
+              DBGPRINTF_BM ("miniscan_var scalar varob=%s =gives %s",
+                            objectdbg_BM (_.varob),
+                            OUTSTRVALUE_BM (nodenthson_BM (_.vrolv, 1)));
+              LOCALRETURN_BM (nodenthson_BM (_.vrolv, 1));
+            }
           FAILHERE (_.vrolv);
         }
       else
