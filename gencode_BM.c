@@ -391,11 +391,11 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       _.curol =
         (value_tyBM) makenode2_BM (k_scalars, taggedint_BM (scalix),
                                    _.curtypob);
-      DBGBACKTRACEPRINTF_BM
-        ("start prepare_routine°basiclo_minifunction scalar routprepob=%s curvar=%s curol=%s",
-         objectdbg1_BM (_.routprepob), objectdbg1_BM (_.curvar),
-         OUTSTRVALUE_BM (_.curol));
       objassocaddattrpayl_BM (_.routprepob, _.curvar, _.curol);
+      DBGBACKTRACEPRINTF_BM
+        ("start prepare_routine°basiclo_minifunction scalar#%d routprepob=%s curvar=%s curol=%s",
+         scalix, objectdbg1_BM (_.routprepob), objectdbg1_BM (_.curvar),
+         OUTSTRVALUE_BM (_.curol));
       _.curol = NULL;
     }
   ///
@@ -611,9 +611,10 @@ miniscan_var_BM (objectval_tyBM * varob,
     }
   else
     {
-      DBGBACKTRACEPRINTF_BM ("miniscan_var failing routprepob=%s varob=%s vrolv=%s",
-			     objectdbg_BM (_.routprepob), objectdbg1_BM (_.varob),
-			     OUTSTRVALUE_BM (_.vrolv));
+      DBGBACKTRACEPRINTF_BM
+        ("miniscan_var failing routprepob=%s varob=%s vrolv=%s",
+         objectdbg_BM (_.routprepob), objectdbg1_BM (_.varob),
+         OUTSTRVALUE_BM (_.vrolv));
       FAILHERE (_.vrolv);
     }
 #warning incomplete miniscan_var_BM
