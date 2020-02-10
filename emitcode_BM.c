@@ -1915,7 +1915,8 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
             else
 #warning emit_expr should handle scalar variables appropriately using miniemit_variable
               {
-                DBGBACKTRACEPRINTF_BM ("emit_expr variable expob %s" " of unexpected type %s routprepob %s fromob %s",  //
+                DBGBACKTRACEPRINTF_BM ("emit_expr variable expob %s"    //
+                                       " of unexpected type %s routprepob %s fromob %s",        //
                                        objectdbg_BM (_.expob), objectdbg1_BM (_.typob), //
                                        objectdbg2_BM (_.routprepob),
                                        objectdbg3_BM (_.fromob));
