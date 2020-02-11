@@ -1697,6 +1697,8 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
   objectval_tyBM *k_prepare_routine = BMK_6qi1DW0Ygkl_4Aqdxq4n5IV;
   objectval_tyBM *k_null_object = BMK_5wZJ5RA9Dww_2S0cGLDXup0;
   objectval_tyBM *k_null_value = BMK_2rFOCfhpUXp_9z1SVC5OYo9;
+  objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
+  objectval_tyBM *k_scalar_c_type = BMK_68ZSdtDWjWk_4Dex1apSdO7;
   LOCALFRAME_BM (stkf, /*descr: */ k_emit_expression,
                  value_tyBM expv;       //
                  value_tyBM avalv;      //
@@ -1716,6 +1718,8 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                  value_tyBM compv;      //
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
+                 value_tyBM ctypv;      //
+                 value_tyBM scalv;      //
                  value_tyBM resv;       //
                  value_tyBM constantsv; //
     );
@@ -1912,14 +1916,22 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                 else
                   objstrbufferprintfpayl_BM (_.modgenob, " _.n%s", varidbuf);
               }
-            else
+            else if (isobject_BM (_.typob))
 #warning emit_expr should handle scalar variables appropriately using miniemit_variable
               {
+                {
+                  objlock_BM (_.typob);
+                  _.ctypv = objgetattr_BM (_.typob, k_c_type);
+                  _.scalv = objgetattr_BM (_.typob, k_scalar_c_type);
+                  objunlock_BM (_.typob);
+                }
                 DBGBACKTRACEPRINTF_BM ("emit_expr variable expob %s"    //
-                                       " of unexpected type %s routprepob %s fromob %s",        //
+                                       " of strange type %s routprepob %s fromob %s ctypv=%s scalv=%s", //
                                        objectdbg_BM (_.expob), objectdbg1_BM (_.typob), //
                                        objectdbg2_BM (_.routprepob),
-                                       objectdbg3_BM (_.fromob));
+                                       objectdbg3_BM (_.fromob),
+                                       OUTSTRVALUE_BM (_.ctypv),
+                                       OUTSTRVALUE_BM (_.scalv));
                 FAILHERE (makenode2_BM (k_variable, _.expob, _.typob));
               }
             LOCALJUSTRETURN_BM ();
