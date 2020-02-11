@@ -1857,8 +1857,7 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
         idtocbuf32_BM (objid_BM (_.expob), varidbuf);
         DBGPRINTF_BM ("emit_expr expob=%s avalv=%s routprepob=%s",
                       objectdbg_BM (_.expob),
-                      debug_outstr_value_BM (_.avalv, CURFRAME_BM, 0),
-                      objectdbg2_BM (_.routprepob));
+                      OUTSTRVALUE_BM (_.avalv), objectdbg2_BM (_.routprepob));
         if (_.avalv != NULL)
           {
             _.typob =
@@ -1866,8 +1865,7 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                                CURFRAME_BM);
             DBGPRINTF_BM ("emit_expr expob=%s avalv=%s typob=%s",
                           objectdbg_BM (_.expob),
-                          debug_outstr_value_BM (_.avalv, CURFRAME_BM, 0),
-                          objectdbg2_BM (_.typob));
+                          OUTSTRVALUE_BM (_.avalv), objectdbg2_BM (_.typob));
             if (_.typob == BMP_value)
               {
                 const char *varnam = findobjectname_BM (_.expob);
@@ -1932,7 +1930,13 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
                                        objectdbg3_BM (_.fromob),
                                        OUTSTRVALUE_BM (_.ctypv),
                                        OUTSTRVALUE_BM (_.scalv));
-                FAILHERE (makenode2_BM (k_variable, _.expob, _.typob));
+                if (_.scalv)
+                  {
+                    miniemit_var_BM (CURFRAME_BM, _.expob, _.modgenob,
+                                     _.routprepob, _.fromob, depth);
+                  }
+                else
+                  FAILHERE (makenode2_BM (k_variable, _.expob, _.typob));
               }
             LOCALJUSTRETURN_BM ();
           }
