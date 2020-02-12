@@ -1680,6 +1680,39 @@ DBGPRINTF_BM("start dump_data°persistent_json_object €%.9s o_json=%s o_dump=%
 /*out newline:*/ objstrbuffernewlinepayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy); 
 } // end out _4z97h3W9aUs_0H2aWPef783 
  
+//+ #2/6 of block _9lbn8XYjnv9_50alo8Io3Lx :: 
+ 
+ 
+{ // run _38ttG1Te65E_0mjeMWVgY9R 
+///v_rawstr = json_dumps(objgetjansjsonpayl_BM(o_json), JSON_SORT_KEYS | JSON_INDENT (1))
+  /*v_rawstr:*/_.sc_3As0a225cux_6I7tccmqVOP = /*_38ttG1Te65E_0mjeMWVgY9R*/
+   json_dumps(objgetjansjsonpayl_BM ( /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz), JSON_SORT_KEYS | JSON_INDENT (1));
+; 
+} // end run _38ttG1Te65E_0mjeMWVgY9R 
+ 
+ 
+{ // start out _7monFZzTS2d_16YarRZWsjD to o_strbuf  
+/*out newline:*/ objstrbuffernewlinepayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy);  
+/*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  /*v_rawstr:*/_.sc_3As0a225cux_6I7tccmqVOP);  
+/*out newline:*/ objstrbuffernewlinepayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy);  
+/*out string:*/ objstrbufferappendcstrpayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy,  "~)");  
+/*out newline:*/ objstrbuffernewlinepayl_BM ( /*o_strbuf:*/_.o_41F1rKwGbaA_30OJWKsqNWy); 
+} // end out _7monFZzTS2d_16YarRZWsjD 
+ 
+//+ #4/6 of block _9lbn8XYjnv9_50alo8Io3Lx :: 
+ 
+ 
+{ // run _05e3o09maMk_6kZTUOLmWA9 
+//free and clear v_rawstr
+ free( /*v_rawstr:*/_.sc_3As0a225cux_6I7tccmqVOP),  /*v_rawstr:*/_.sc_3As0a225cux_6I7tccmqVOP = NULL;
+; 
+} // end run _05e3o09maMk_6kZTUOLmWA9 
+ 
+ 
+/*return _85ZcTOEPKbK_2uhA2CtZkUH:*/  /*v_r:*/_.v_3qw9bnATIhq_8loBraLeXzQ = // returned 
+ /*o_json:*/_.o_0kRPCsvLkdT_75x9PWrFQYz; 
+ goto epilog_4qnxZdea4qp_3ghonuiHfNf; 
+ 
 /* !endingblock _9lbn8XYjnv9_50alo8Io3Lx */ 
 goto endblock__9lbn8XYjnv9_50alo8Io3Lx; 
 endblock__9lbn8XYjnv9_50alo8Io3Lx: ; 
