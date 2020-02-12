@@ -23683,6 +23683,13 @@ _95J5VWlxn7h_9P3UNOuvpbl
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "Json settings of Basile"
 
+!~ json (~
+   {
+    "bismon-test-canvas" : true
+   }
+   
+~)
+
 »_2msS16w7aJn_2L0FejG935R
 
 
