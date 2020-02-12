@@ -4714,10 +4714,14 @@ ROUTINEOBJNAME_BM (_9BWLfKtt9ID_2YwNGH3zu9Q)    // miniscan_node_conn#send
                  objectval_tyBM * subtypob;     //
                  objectval_tyBM * recvtypob;    //
                  objectval_tyBM * seltypob;     //
+                 value_tyBM subctypv;   //
+                 value_tyBM subscalv;   //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
                  value_tyBM resultv;    //
     );
+  objectval_tyBM *k_c_type = BMK_83kM1HtO8K3_6k0F2KYQT3W;
+  objectval_tyBM *k_scalar_c_type = BMK_68ZSdtDWjWk_4Dex1apSdO7;
   int depth = -1;
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
@@ -4761,22 +4765,49 @@ ROUTINEOBJNAME_BM (_9BWLfKtt9ID_2YwNGH3zu9Q)    // miniscan_node_conn#send
       _.subtypob =
         miniscan_expr_BM (_.subexpv, _.routprepob, depth + 1,
                           _.fromob, CURFRAME_BM);
-      if (_.subtypob != BMP_object && _.subtypob != BMP_value)
+      if (!_.subtypob)
         {
           WARNPRINTF_BM
-            ("miniscan_node_conn#send failing ix#%d connob %s routprepob %s depth#%d expv %s subexpv %s subtypob %s",
+            ("miniscan_node_conn#send failing ix#%d connob %s routprepob %s depth#%d expv %s subexpv %s no subtypob",
              ix, objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob), depth,
-             OUTSTRVALUE_BM (_.expv), OUTSTRVALUE_BM (_.subexpv),
-             objectdbg2_BM (_.subtypob));
-          FAILHERE (makenode2_BM
-                    (BMP_node, taggedint_BM (ix + 2), _.subtypob));
+             OUTSTRVALUE_BM (_.expv), OUTSTRVALUE_BM (_.subexpv));
+          FAILHERE (makenode1_BM (BMP_node, taggedint_BM (ix + 2)));
+        }
+      else if (_.subtypob != BMP_object && _.subtypob != BMP_value)
+        {
+          objlock_BM (_.subtypob);
+          _.subctypv = objgetattr_BM (_.subtypob, k_c_type);
+          _.subscalv = objgetattr_BM (_.subtypob, k_scalar_c_type);
+          objunlock_BM (_.subtypob);
+          if (_.subscalv)
+            {
+              DBGPRINTF_BM
+                ("miniscan_node_conn#send  ix#%d connob %s routprepob %s depth#%d expv %s subexpv %s scalar subtypob %s subctypv %s subscalv %s",
+                 ix, objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob),
+                 depth, OUTSTRVALUE_BM (_.expv), OUTSTRVALUE_BM (_.subexpv),
+                 objectdbg2_BM (_.subtypob), OUTSTRVALUE_BM (_.subctypv),
+                 OUTSTRVALUE_BM (_.subscalv));
+              LOCALRETURN_BM (_.subtypob);
+            }
+          else
+            {
+              WARNPRINTF_BM
+                ("miniscan_node_conn#send failing ix#%d connob %s routprepob %s depth#%d expv %s subexpv %s strange subtypob %s subctypv %s subscalv %s",
+                 ix, objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob),
+                 depth, OUTSTRVALUE_BM (_.expv), OUTSTRVALUE_BM (_.subexpv),
+                 objectdbg2_BM (_.subtypob), OUTSTRVALUE_BM (_.subctypv),
+                 OUTSTRVALUE_BM (_.subscalv));
+              FAILHERE (makenode2_BM
+                        (BMP_node, taggedint_BM (ix + 2), _.subtypob));
+            }
         }
       _.subexpv = NULL;
       _.subtypob = NULL;
+      _.subscalv = NULL;
+      _.subctypv = NULL;
     }
   DBGPRINTF_BM ("miniscan_node_conn#send end routprepob %s depth %d exp %s",
-                objectdbg_BM (_.routprepob), depth,
-                debug_outstr_value_BM (_.expv, CURFRAME_BM, 0));
+                objectdbg_BM (_.routprepob), depth, OUTSTRVALUE_BM (_.expv));
   LOCALRETURN_BM (BMP_value);
 failure:
 #undef FAILHERE
