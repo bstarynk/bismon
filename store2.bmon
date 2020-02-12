@@ -2341,6 +2341,7 @@ _6YnYKKsHo3f_9nIEOZMp744
 ↳ _7MtjMTkmErH_2zSJ1YDKHVi 
 ↳ _110awzb480c_0n4frovb2yV 
 ↳ _4qnxZdea4qp_3ghonuiHfNf 
+// emitted persistent module modbm_3BFt4NfJmZC_7iYi2dwM38B.c
 »_3BFt4NfJmZC_7iYi2dwM38B
 
 
@@ -23684,12 +23685,11 @@ _95J5VWlxn7h_9P3UNOuvpbl
  "Json settings of Basile"
 
 !~ json (~
-   {
-    "bismon-test-canvas" : true
-   }
-   
-~)
 
+{
+ "bismon-test-canvas": true
+}
+~)
 »_2msS16w7aJn_2L0FejG935R
 
 
