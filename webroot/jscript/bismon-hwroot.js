@@ -273,6 +273,13 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 	console.debug("newevaldialog keypress newevalcanvas=%o, newevalbox=%o, ev=%o key=%o charcode=%d",
 		      newevalcanvas, newevalbox, ev, keystr, ev.charCode);
     });
+    var topvbox = null;
+    var inhbox = null;
+    var incstr = new Canvas_string_bm(newevalbox, "¤");
+    inhbox = new Canvas_hbox_bm(newevalbox, incstr);
+    topvbox = new Canvas_vbox_bm(newevalbox, inhbox);
+    console.debug("newevaldialog topvbox=%o inhbox=%o incstr=%o",
+		  topvbox, inhbox, incstr);
     newevalcanvas.drawText({
 	text: "⁈",
 	x: 10, y: 10,
