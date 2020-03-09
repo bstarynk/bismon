@@ -4,7 +4,7 @@
 
 /***
     BISMON 
-    Copyright © 2019, 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2019 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -27,7 +27,7 @@
 // VERY INCOMPLETE
 
 import {bismonjs_timestamp, bismonjs_timelong, bismonjs_lastgitcommit}
-  from "/jscript/_timestamp.mjs";
+from "/jscript/_timestamp.mjs";
 
 export var appmenu_button;
 export var appmenu_menuid;
@@ -67,15 +67,18 @@ class Canvas_element_bm {
 	    canv = bm_default_canvas;
 	};
 	this.bm_canvas = canv;
-	
 	console.debug("Canvas_element_bm this=%o", this);
     }
     canvas () { return this.bm_canvas; }
-    /// see https://projects.calebevans.me/jcanvas/docs/text/#measuring-text
     measure () {
 	// by convention should return a {width, height}
 	console.error("Canvas_element_bm measure this=%o", this);
 	throw new Error("unimplemented Canvas_element.measure");
+    };
+    draw () {
+	// by convention should draw the element
+	console.error("Canvas_element_bm draw this=%o", this);
+	throw new Error("unimplemented Canvas_element.draw");
     };
     
 };				// end Canvas_element_bm
@@ -92,6 +95,7 @@ class Canvas_string_bm extends Canvas_element_bm {
 	this.bm_font_family = "XXX";
 	this.bm_text = str;
 	this.bm_role = "_";
+	console.debug("Canvas_string_bm this=%o", this);
     };
     set_role(rolestr) {
 	if (typeof(rolestr) != "string") {
@@ -102,15 +106,24 @@ class Canvas_string_bm extends Canvas_element_bm {
 	return this;
     };
     measure() {
-    }
+	/// see https://projects.calebevans.me/jcanvas/docs/text/#measuring-text
+    };
+    draw() {
+    };
 };				// end Canvas_string_bm
+
+
+
+
 
 class Canvas_box_bm extends Canvas_element_bm {
     constructor (canv) {
 	super (canv);
 	this.bm_sons = new Array();
+	console.debug("Canvas_box_bm this=%o", this);
     }
     append1(son) {
+	console.debug("Canvas_box_bm::append1 this=%o son=%o", this, son);
 	if (!son)
 	    return this;
 	else if (Array.isArray(son)) {
@@ -125,6 +138,7 @@ class Canvas_box_bm extends Canvas_element_bm {
 	return this;
     }
     append(...etc) {
+	console.debug("Canvas_box_bm::append this=%o etc=%o", this, etc);
 	var curson;
 	for (curson in etc) {
 	    if (!curson) {
@@ -139,16 +153,20 @@ class Canvas_box_bm extends Canvas_element_bm {
 
 class Canvas_hbox_bm extends Canvas_box_bm {
     constructor (canv, ...etc) {
+	console.debug("Canvas_hbox_bm start this=%o", this);
 	super(canv);
 	append1(etc);
+	console.debug("Canvas_hbox_bm this=%o", this);
     }
 };				// end Canvas_hbox_bm
 
 
 class Canvas_vbox_bm extends Canvas_box_bm {
     constructor (canv, ...etc) {
+	console.debug("Canvas_vbox_bm start this=%o", this);
 	super(canv);
 	append1(etc);
+	console.debug("Canvas_vbox_bm this=%o", this);
     }
 };				// end Canvas_vbox_bm
 
@@ -236,11 +254,11 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
 	}
     });
     console.debug("newevaldiv=%o", newevaldiv);
-     newevalbox =  $("<div>", {id: "nwevdialbox" + id,
-				  "class": "bmcl_newevalbox",
-					height: 0.9*newevaldiv.height() + 5,
-					width: 0.9*newevaldiv.width() + 5
-				 });
+    newevalbox =  $("<div>", {id: "nwevdialbox" + id,
+			      "class": "bmcl_newevalbox",
+			      height: 0.9*newevaldiv.height() + 5,
+			      width: 0.9*newevaldiv.width() + 5
+			     });
     newevaldiv.append(newevalbox);
     newevaldiv.bmevalbox = newevalbox;
     // should consider a canvas approach, using perhaps
@@ -256,17 +274,17 @@ function bmhwroot_create_neweval_dialog(ev, cnt, id) {
     console.debug("newevalbox=%o, newevalcanvas=%o",
 		  newevalbox, newevalcanvas);
     /***
-    newevaltransptext.keypress(function(ev) {
+	newevaltransptext.keypress(function(ev) {
 	var keystr= ev.key;
 	console.debug("newevaldialog keypress newevalbox=%o, ev=%o key=%o charcode=%d",
-		      newevalbox, ev, keystr, ev.charCode);
+	newevalbox, ev, keystr, ev.charCode);
 	//https://stackoverflow.com/a/32567789/841108 test for a letter
 	if (keystr.toLowerCase() != keystr.toUpperCase()) {
-	    console.debug("newevaldialog keypress letter keystr=%o", keystr);
-	    //newevalbox.append(keystr);
-	    return true;
+	console.debug("newevaldialog keypress letter keystr=%o", keystr);
+	//newevalbox.append(keystr);
+	return true;
 	}
-    });
+	});
     ***/
     newevalcanvas.keypress(function (ev) {
 	var keystr= ev.key;
