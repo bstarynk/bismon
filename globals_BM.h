@@ -37,7 +37,7 @@ extern const int bmnbconsts;
 extern void **bmconstaddrs[];
 extern const char *bmconstidstrings[];
 
-extern const char myhostname_BM[];
+extern char myhostname_BM[];
 extern atomic_bool want_garbage_collection_BM;
 extern bool gui_is_running_BM;
 extern bool web_is_running_BM;

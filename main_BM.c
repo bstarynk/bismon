@@ -42,7 +42,7 @@ bool parsedebugmsg_BM;
 int nbworkjobs_BM;
 int randomseed_BM;
 bool debug_after_load_BM;
-const char myhostname_BM[80];
+char myhostname_BM[80];
 const char *contributors_filepath_BM;
 const char *passwords_filepath_BM;
 const char *added_passwords_filepath_BM;
