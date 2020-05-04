@@ -156,6 +156,9 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
   //// show attributes
   {
     unsigned nbattrs = objnbattrs_BM (_.objbrows);
+    DBGPRINTF_BM
+      ("gtk_browse_in_object°object objbrows %s, nbattrs=%u maxdepth %d",
+       objectdbg_BM (_.objbrows), nbattrs, maxdepth);
     if (nbattrs == 0)
       {
         gtk_text_buffer_insert_with_tags (brobuf,
@@ -168,6 +171,9 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
         char commbuf[64];
         memset (commbuf, 0, sizeof (commbuf));
         _.setattrs = objsetattrs_BM (_.objbrows);
+        DBGPRINTF_BM
+          ("gtk_browse_in_object°object objbrows %s, nbattrs %u, maxdepth %d",
+           objectdbg_BM (_.objbrows), nbattrs, maxdepth);
         snprintf (commbuf, sizeof (commbuf), "|%d attributes:|", nbattrs);
         gtk_text_buffer_insert_with_tags (brobuf,
                                           &browserit_BM, commbuf, -1,
@@ -210,6 +216,9 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
   //// show the components
   {
     unsigned nbcomps = objnbcomps_BM (_.objbrows);
+    DBGPRINTF_BM
+      ("gtk_browse_in_object°object objbrows %s, nbcomps=%u maxdepth %d",
+       objectdbg_BM (_.objbrows), nbcomps, maxdepth);
     if (nbcomps == 0)
       {
         gtk_text_buffer_insert_with_tags (brobuf,
@@ -220,6 +229,9 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
     else
       {
         char commbuf[64];
+        DBGPRINTF_BM
+          ("gtk_browse_in_object°object objbrows %s, nbcomp %u, maxdepth %d",
+           objectdbg_BM (_.objbrows), nbcomp, maxdepth);
         memset (commbuf, 0, sizeof (commbuf));
         snprintf (commbuf, sizeof (commbuf), "|%d components:|", nbcomps);
         gtk_text_buffer_insert_with_tags (brobuf,
@@ -246,11 +258,17 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
   extendedval_tyBM payl = objpayload_BM (_.objbrows);
   if (payl)
     {
-      send1_BM ((const value_tyBM) _.objbrows, BMP_gtk_browse_data,
-                CURFRAME_BM, taggedint_BM (maxdepth));
+      DBGPRINTF_BM ("gtk_browse_in_object°object objbrows %s with payload",
+                    objectdbg_BM (_.objbrows));
+      send1_BM ((const value_tyBM) _.objbrows,
+                BMP_gtk_browse_data, CURFRAME_BM, taggedint_BM (maxdepth));
+      DBGPRINTF_BM ("gtk_browse_in_object°object objbrows %s did payload",
+                    objectdbg_BM (_.objbrows));
     }
   else
     {
+      DBGPRINTF_BM ("gtk_browse_in_object°object objbrows %s no payload",
+                    objectdbg_BM (_.objbrows));
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "|\342\246\260|",        //U+29B0 REVERSED EMPTY SET ⦰
                                         -1, miscomm_brotag_BM, NULL);
     }
@@ -390,6 +408,9 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // gtk_browse_data°class
       ("non-object for method to gtk_browse_data for class-s _09DxyieS5Wz_7pkad4F88FA");
   _.objbrows = (const objectval_tyBM *) arg1;
   int depth = getint_BM (arg2);
+  DBGPRINTF_BM
+    ("gtk_browse_data°class €_09DxyieS start objbrows=%s depth=%d",
+     objectdbg_BM (_.objbrows), depth);
   ASSERT_BM (isobject_BM ((const value_tyBM) _.objbrows));
   ASSERT_BM (objhasclassinfo_BM (_.objbrows));
   _.setsel = objgetclassinfosetofselectors_BM (_.objbrows);
@@ -405,9 +426,12 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // gtk_browse_data°class
   for (unsigned ix = 0; ix < nbmeth; ix++)
     arr[ix] = setelemnth_BM (_.setsel, ix);
   sortnamedobjarr_BM (arr, nbmeth);
-  gtk_text_buffer_insert_with_tags (brobuf,
-                                    &browserit_BM,
-                                    "!~ class (~ ", -1, NULL, NULL);
+  DBGPRINTF_BM
+    ("gtk_browse_data°class €_09DxyieS  objbrows=%s setsel=%s supercla=%s nbmeth=%u",
+     objectdbg_BM (_.objbrows), OUTSTRVALUE_BM (_.setsel),
+     objectdbg1_BM (_.supercla), nbmeth);
+  gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "!~ class (~ ", -1,
+                                    NULL, NULL);
   if (_.supercla)
     {
       gtk_text_buffer_insert_with_tags (brobuf,
@@ -444,6 +468,9 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // gtk_browse_data°class
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "|\342\207\242|",        //U+21E2 RIGHTWARDS DASHED ARROW ⇢
                                         -1, miscomm_brotag_BM, NULL);
       browsespacefordepth_BM (1);
+      DBGPRINTF_BM
+        ("gtk_browse_data°class €_09DxyieS objbrows=%s meth.ix=%d curval=%s depth=%d",
+         objectdbg_BM (_.objbrows), ix, OUTSTRVALUE_BM (_.curval), depth);
       browse_value_BM ((const value_tyBM) _.curval, CURFRAME_BM, depth, 1);
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, "\n", -1, NULL, NULL);
@@ -457,7 +484,10 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // gtk_browse_data°class
     ("noGTK gtk_browse_data°class _09DxyieS5Wz_7pkad4F88FA", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
-    LOCALRETURN_BM (_.objbrows);
+    DBGPRINTF_BM
+    ("gtk_browse_data°class €_09DxyieS end objbrows=%s depth=%d",
+     objectdbg_BM (_.objbrows), depth);
+  LOCALRETURN_BM (_.objbrows);
 }                               /* end gtk_browse_data°class _09DxyieS5Wz_7pkad4F88FA */
 
 
@@ -474,7 +504,7 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    // gtk_browse_value°tuple
 {
   if (!istuple_BM (arg1))
     FATAL_BM
-      ("non-tuple for  method to gtk_browse_value for tuple-s _0BAnB0xjs23_0WEOCOi5Nb");
+      ("non-tuple for method to gtk_browse_value for tuple-s _0BAnB0xjs23_0WEOCOi5Nb");
   ASSERT_BM (istaggedint_BM (arg2));
   ASSERT_BM (istaggedint_BM (arg3));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -964,8 +994,11 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    // gtk_browse_value°closure
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
                                     "%", -1, nest_brotag_BM, NULL);
   gtk_text_buffer_insert (brobuf, &browserit_BM, " ", 1);
-  browse_value_BM ((const value_tyBM) _.connob, CURFRAME_BM,
-                   (maxdepth), (curdepth + 1));
+  DBGPRINTF_BM
+    ("gtk_browse_value°closure €_7CohjJ9tk connob=%s curdepth=%d",
+     objectdbg_BM (_.connob), curdepth);
+  browse_value_BM ((const value_tyBM) _.connob, CURFRAME_BM, (maxdepth),
+                   (curdepth + 1));
   browsespacefordepth_BM (curdepth + 1);
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
