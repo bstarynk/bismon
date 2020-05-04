@@ -359,8 +359,8 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    // gtk_browse_value°object
   else
     {                           // anonymous
       DBGPRINTF_BM
-        (" gtk_browse_value°object €_0BAnB0xjs2 anonymous objbrows=%s",
-         objectdbg_BM (_.objbrows));
+        (" gtk_browse_value°object €_0BAnB0xjs2 anonymous objbrows=%s idbuf='%s'",
+         objectdbg_BM (_.objbrows), idbuf);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
                                         idbuf, -1, objid_brotag_BM, NULL);
       if (isstring_BM (_.commentv) && curdepth <= 2)
