@@ -187,6 +187,10 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
           {
             _.curattr = arr[aix];
             _.curval = objgetattr_BM (_.objbrows, _.curattr);
+            DBGPRINTF_BM
+              ("gtk_browse_in_object°object objbrows=%s aix#%u curattr=%s curval=%s",
+               objectdbg_BM (_.objbrows), aix, objectdbg1_BM (_.curattr),
+               OUTSTRVALUE_BM (_.curval));
             gtk_text_buffer_insert (brobuf, &browserit_BM, "!: ", -1);
             browse_value_BM ((const value_tyBM) _.curattr,
                              CURFRAME_BM, maxdepth, 2);
@@ -292,6 +296,9 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    // gtk_browse_value°object
   ASSERT_BM (maxdepth > 0);
   int curdepth = getint_BM (arg3);
   //  ASSERT_BM (curdepth <= maxdepth);
+  DBGPRINTF_BM
+    (" gtk_browse_value°object €_0BAnB0xjs2 start objbrows=%s curdepth=%d",
+     objectdbg_BM (_.objbrows), curdepth);
   const char *objnam = findobjectname_BM (_.objbrows);
   _.commentv = objgetattr_BM (_.objbrows, BMP_comment);
 #ifdef BISMONGTK
@@ -351,7 +358,10 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    // gtk_browse_value°object
     ("noGTK gtk_browse_value°object _0BAnB0xjs23_0WEOCOi5Nbe", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
-    LOCALRETURN_BM (_.objbrows);
+    DBGPRINTF_BM
+    (" gtk_browse_value°object €_0BAnB0xjs2 end objbrows=%s curdepth=%d",
+     objectdbg_BM (_.objbrows), curdepth);
+  LOCALRETURN_BM (_.objbrows);
 }                               /* end gtk_browse_value°object _0BAnB0xjs23_0WEOCOi5Nbe */
 
 
@@ -474,6 +484,9 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    // gtk_browse_value°tuple
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   ASSERT_BM (curdepth <= maxdepth);
+  DBGPRINTF_BM
+    ("gtk_browse_value°tuple €_0BAnB0xjs start tupbrows=%s curdepth=%d",
+     OUTSTRVALUE_BM (_.tupbrows), curdepth);
 #ifdef BISMONGTK
   int oboff = browse_show_start_offset_BM ();
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
@@ -511,7 +524,10 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    // gtk_browse_value°tuple
     ("noGTK gtk_browse_value°tuple _0BAnB0xjs23_0WEOCOi5Nb ", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
-    LOCALRETURN_BM (_.objbrows);
+    DBGPRINTF_BM
+    ("gtk_browse_value°tuple €_0BAnB0xjs end tupbrows=%s curdepth=%d",
+     OUTSTRVALUE_BM (_.tupbrows), curdepth);
+  LOCALRETURN_BM (_.objbrows);
 }                               /* end gtk_browse_value°tuple _0BAnB0xjs23_0WEOCOi5Nb  */
 
 
@@ -542,6 +558,9 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //gtk_browse_value°set
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   ASSERT_BM (curdepth <= maxdepth);
+  DBGPRINTF_BM
+    ("gtk_browse_value°set €_3rne4qb start setbrows=%s curdepth=%d",
+     OUTSTRVALUE_BM (_.setbrows), curdepth);
 #ifdef BISMONGTK
   int oboff = browse_show_start_offset_BM ();
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
@@ -590,7 +609,10 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //gtk_browse_value°set
     ("noGTK gtk_browse_value°set _3rne4qbpnV9_0pywzeJp3Qr", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
-    LOCALRETURN_BM (_.objbrows);
+    DBGPRINTF_BM
+    ("gtk_browse_value°set €_3rne4qb end setbrows=%s curdepth=%d",
+     OUTSTRVALUE_BM (_.setbrows), curdepth);
+  LOCALRETURN_BM (_.objbrows);
 }                               /* end gtk_browse_value°set _3rne4qbpnV9_0pywzeJp3Qr  */
 
 
@@ -616,6 +638,8 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    // gtk_browse_value°int
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
     );
   intptr_t i = getint_BM (arg1);
+  DBGPRINTF_BM ("gtk_browse_value°int €_0HBMCM5C start i=%ld curdepth=%d",
+                (long) i, curdepth);
 #ifdef BISMONGTK
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   char ibuf[32];
@@ -628,7 +652,9 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    // gtk_browse_value°int
     ("noGTK gtk_browse_value°int _0HBMCM5CeLn_7L5YEV2jO7Y", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
-    LOCALRETURN_BM (arg1);
+    DBGPRINTF_BM ("gtk_browse_value°int €_0HBMCM5C end i=%ld curdepth=%d",
+                  (long) i, curdepth);
+  LOCALRETURN_BM (arg1);
 }                               /* end  gtk_browse_value°int _0HBMCM5CeLn_7L5YEV2jO7Y  */
 
 
@@ -652,6 +678,9 @@ ROUTINEOBJNAME_BM (_6KYa0K6vqt5_00xCqyfhJhY)    // gtk_browse_value°double_floa
 #ifdef BISMONGTK
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   double d = getdouble_BM ((value_tyBM) _.dblbrows);
+  DBGPRINTF_BM
+    ("gtk_browse_value°double_float €_6KYa0K6v  d=%g curdepth=%d", d,
+     curdepth);
   char buf[32];
   memset (buf, 0, sizeof (buf));
   snprintf (buf, sizeof (buf), "%#.9f", d);
@@ -688,6 +717,9 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    // gtk_browse_value°string
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   ASSERT_BM (curdepth <= maxdepth);
+  DBGPRINTF_BM
+    ("gtk_browse_value°string €_63ZPkXUI start strbrows=%s curdepth=%d",
+     OUTSTRVALUE_BM (_.strbrows), curdepth);
 #ifdef BISMONGTK
   unsigned l = lenstring_BM (_.strbrows);
   const char *str = bytstring_BM (_.strbrows);
@@ -806,7 +838,10 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    // gtk_browse_value°string
     ("noGTK gtk_browse_value°string _63ZPkXUI2Uv_6Cp3qmh6Uud", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
-    LOCALRETURN_BM (arg1);
+    DBGPRINTF_BM
+    ("gtk_browse_value°string €_63ZPkXUI end strbrows=%s curdepth=%d",
+     OUTSTRVALUE_BM (_.strbrows), curdepth);
+  LOCALRETURN_BM (arg1);
 }                               /* end gtk_browse_value°string _63ZPkXUI2Uv_6Cp3qmh6Uud */
 
 
@@ -834,6 +869,9 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    // gtk_browse_value°node
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   ASSERT_BM (curdepth <= maxdepth);
+  DBGPRINTF_BM
+    ("gtk_browse_value°node €_7fJKfG4SN start nodbrows=%s curdepth=%d",
+     OUTSTRVALUE_BM (_.nodbrows), curdepth);
   unsigned nw = nodewidth_BM ((const value_tyBM) _.nodbrows);
   _.connob = nodeconn_BM ((const value_tyBM) _.nodbrows);
   ASSERT_BM (isobject_BM ((const value_tyBM) _.connob));
@@ -880,7 +918,10 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    // gtk_browse_value°node
     ("noGTK gtk_browse_value°node _7fJKfG4SN0U_1QTu5J832xg", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
-    LOCALRETURN_BM (arg1);
+    DBGPRINTF_BM
+    ("gtk_browse_value°node €_7fJKfG4SN end nodbrows=%s curdepth=%d",
+     OUTSTRVALUE_BM (_.nodbrows), curdepth);
+  LOCALRETURN_BM (arg1);
 }                               /* end gtk_browse_value°node _7fJKfG4SN0U_1QTu5J832xg */
 
 
@@ -910,6 +951,9 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    // gtk_browse_value°closure
   int maxdepth = getint_BM (arg2);
   int curdepth = getint_BM (arg3);
   ASSERT_BM (curdepth <= maxdepth);
+  DBGPRINTF_BM
+    ("gtk_browse_value°closure €_7CohjJ9tk start clobrows=%s curdepth=%d",
+     OUTSTRVALUE_BM (_.clobrows), curdepth);
   unsigned cw = closurewidth_BM ((const value_tyBM) _.clobrows);
   _.connob = closureconn_BM ((const value_tyBM) _.clobrows);
   ASSERT_BM (isobject_BM ((const value_tyBM) _.connob));
@@ -956,7 +1000,10 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    // gtk_browse_value°closure
     ("noGTK browse_value°closure _7CohjJ9tkfZ_4UMAIZCgwac", __FILE__,
      __LINE__);
 #endif /*BISMONGTK*/
-    LOCALRETURN_BM (arg1);
+    DBGPRINTF_BM
+    ("gtk_browse_value°closure €_7CohjJ9tk end clobrows=%s curdepth=%d",
+     OUTSTRVALUE_BM (_.clobrows), curdepth);
+  LOCALRETURN_BM (arg1);
 }                               /* end gtk_browse_value°closure  _7CohjJ9tkfZ_4UMAIZCgwac */
 
 
