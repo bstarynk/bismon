@@ -687,7 +687,7 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
     {
       parsernextline_BM (ldpars);
       DBGPRINTF_BM
-        ("load_modif_json_BM store%d.bmon L%u linlen %u linbuf '%s'", ix,
+        ("load_modif_json_BM store%d.bmon L%u linlen %ld linbuf '%s'", ix,
          lineno + nbjsline, ldpars->pars_linelen, ldpars->pars_linebuf);
       if (ldpars->pars_linelen <= 0
           || (ldpars->pars_linelen >= 2 && ldpars->pars_linebuf[0] == '~'

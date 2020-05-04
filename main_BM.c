@@ -2698,7 +2698,7 @@ do_test_mailhtml_bm (void)
   char *dyncontrib = NULL;
   asprintf (&dyncontrib, "%s (%s)", bytstring_BM (_.contnamev),
             objectdbg_BM (_.contribob));
-  int linsiz = 0;
+  size_t linsiz = 0;
   do
     {
       int linlen = getline (&linbuf, &linsiz, infil);
