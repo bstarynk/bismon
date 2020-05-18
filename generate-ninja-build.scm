@@ -66,7 +66,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;; functions
 ;; collect in the current directory the list of files with the given suffix
-(define (files-ending-with-BM suffixstr)
+;; a single optional directory could be given
+(define (files-ending-with-BM suffixstr . dirpath)
   (let ( (suffixlen (string-length suffixstr))
 	 )
     (let ( (is-good-path
@@ -89,10 +90,16 @@
 	      )
 	    )
 	   )
-      (scandir "."
-	       is-good-path
-	       ))
-    ))					;end files-ending-with-BM
+      (if (pair? dirpath)
+	  (let ( (dirstr (car dirpath))
+		 )
+	    (format #t ";;## files-ending-with-BM dirpath=~a~ dirstr=~%%" dirpath dirstr)
+	    (scandir dirstr is-good-path)
+	    )
+	  (scandir "."
+		   is-good-path
+		   ))
+      )))					;end files-ending-with-BM
 
 
 
@@ -226,6 +233,8 @@
 (format #t "~%~%###### our compilers and their flags ######~%")
 (format #t "cc = ~a~%" bm-gcc)
 (format #t "cxx = ~a~%" bm-g++)
+(format #t "iot_cc = ~a~%" bm-iot-gcc)
+(format #t "iot_cxx = ~a~%" bm-iot-g++)
 (format #t "bm_commonwarnflags =  -Wall -Wextra -Wstack-usage=2048 -fdiagnostics-color=auto~%")
 (format #t "cwarnflags = $bm_commonwarnflags -Wmissing-prototypes~%")
 (format #t "cxxwarnflags = $bm_commonwarnflags~%")
