@@ -4,7 +4,7 @@
 ;; in replacement of generate-ninja-builder.sh
 ;; 
 ;;    BISMON 
-;;   Copyright © 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+;;   Copyright © 2019-2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
 ;;   contributed by Basile Starynkevitch.
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
@@ -162,6 +162,11 @@
 (define bm-packages '("glib-2.0" "jansson" "gtk+-3.0"))
 (define bm-gcc "gcc")
 (define bm-g++ "g++")
+
+;;; these are the GCC compilers used to compile IoT code
+(define bm-iot-gcc bm-gcc)
+(define bm-iot-g++ bm-g++)
+
 (define bm-pkgconfig "pkg-config")
 (define bm-cfiles
   (filter-files-starting-alpha-BM (files-ending-with-BM "BM.c")))
@@ -177,6 +182,9 @@
 (format #t "#; bm-cfiles::: ~a~%" bm-cfiles)
 (format #t "#; bm-cxxfiles::: ~a~%" bm-cxxfiles)
 (format #t "#; bm-webtemplates::: ~a~%" bm-webtemplates)
+
+(format #t "#; bm-iot-gcc:: ~a~%" bm-iot-gcc)
+(format #t "#; bm-iot-g++:: ~a~%" bm-iot-g++)
 
 (let ( (cflagslist (list))
        (libslist (list))

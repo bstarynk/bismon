@@ -1,1 +1,3 @@
-the gccplugins/ directory contain generated code of GCC plugins
+the gccplugins/ directory contain C++ code of GCC plugins.
+The initial hope was to generate that C++ code.
+
