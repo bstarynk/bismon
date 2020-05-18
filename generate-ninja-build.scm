@@ -195,6 +195,12 @@
 (format #t "#; bm-iot-gcc:: ~a~%" bm-iot-gcc)
 (format #t "#; bm-iot-g++:: ~a~%" bm-iot-g++)
 
+(define bm-gccplugin-dir
+  (input-popen-first-line-BM
+   (format #f "~s -print-file-name=plugin" bm-iot-gcc)))
+(format #t "#; bm-gccplugin-dir:: ~a~%" bm-gccplugin-dir)
+
+
 (let ( (cflagslist (list))
        (libslist (list))
        )
