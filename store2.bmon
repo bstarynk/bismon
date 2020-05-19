@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2020, is GPLv3+ licensed.
-// for 3412 objects
+// for 3415 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -12258,13 +12258,13 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 «_9dQJgjsq7hs_2T2RqXLkU0A |=webxhtml_module|
 !~ name (~ webxhtml_module ~)
-± 1576489915.879
+± 1589897719.251
 ∈ _5bP4nozCTp0_1DPPTK398m1 |=basiclo_dumpable_module|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "module for web HTML"
 ↦ _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _3poYCpSsBfJ_8W7XNwG50hS }
-!# 19
+!# 20
 
 ↳ _0FRLxSGQlZ0_0qrrUZlEeKp 
 ↳ _5NH940lCHYJ_3nuRm3flnzc 
@@ -12285,6 +12285,7 @@ _7T9OwSFlgov_0wVJaK1eZbn
 ↳ _6STwOZTcBwM_6wz4Akuletb 
 ↳ _6hjNLfcccy7_6HuJuP6y0Ut 
 ↳ _9bzPSZJ7Kyh_11hYc25mz7O 
+↳ _7ZvKhmYyteR_9H8rycClpxy 
 // emitted persistent module modbm_9dQJgjsq7hs_2T2RqXLkU0A.c
 »_9dQJgjsq7hs_2T2RqXLkU0A
 
@@ -14303,6 +14304,20 @@ _1g2wHNuth12_1FfLuyW1CWJ
 
 
 
+«_0pZwXLTMbzk_064kncRCuwO
+± 1589898253.795
+∈ _4bYUiDmxrKK_6nPPlEl8y8x |=basiclo_block|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "body of emit-html-gitshortid"
+↦ _0eMGYofuNVh_8ZP2mXdhtHO |=in|
+_7ZvKhmYyteR_9H8rycClpxy
+!# 1
+
+↳ _5aZfe0y6j2O_8mUgeFncbnj 
+»_0pZwXLTMbzk_064kncRCuwO
+
+
+
 «_0q1q2o2CrJD_6BqJwqIrT0Y
 ± 1536155416.395
 ∈ _3HIw09Tmj0d_3CrcFHrGJab |=basiclo_assign|
@@ -14652,7 +14667,7 @@ _2W7Ckt2WxEM_4NVYgEWE73B
 
 
 «_0uAT1v6dH9d_1o3q8wzbV7K
-± 1589886171.872
+± 1589897294.095
 ∈ _6HpZa1bRy0k_0KxrTwBFmDK |=simple_html_element_object|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "hello-p-html-element"
@@ -14662,14 +14677,15 @@ _46W9FNT1hxi_57OUfg10l4Q
  % _9hEreAemqXg_0uoN1Fr1ly4 (  "p"  "bmcl_hellopara"  "hellop" _0uAT1v6dH9d_1o3q8wzbV7K)
 ↦ _84d7WOdRsJh_4Ud9BryxYUr |=html_spacing|
 _35gLacRFhq5_90zAPxiDIlh
-!# 6
+!# 7
 
 ↳  "Hello" 
 ↳  % _3owspX08bkm_6vBzqS5jskf () 
 ↳  " your web session is" 
 ↳ _23cSJEr8aqG_98hKhnIaCGZ 
 ↳  * _3Sa7WXi2wOe_3Bmfw05hp08 (  % _5T8fxyaeOFA_4UrB3BPbWdn ()) 
-↳  " on " 
+↳ _23cSJEr8aqG_98hKhnIaCGZ 
+↳  "hosted on " 
 »_0uAT1v6dH9d_1o3q8wzbV7K
 
 
@@ -35813,6 +35829,37 @@ _05IHFluwEai_9VxTGg7FVeQ
 
 
 
+«_5aZfe0y6j2O_8mUgeFncbnj
+± 1589898253.795
+∈ _4SHgzjNdlGo_1CxI9hBNDrC |=basiclo_run|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "debug emit-html-gitshortid start o_emitctx o_strbuf v_depth"
+↦ _4RFtYFUdfau_7Vm5jZ4Wm8e |=run|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*"  "debug"  " "  "emit" 
+  "-"  "html"  "-"  "gitshortid" 
+  " "  "start"  " " _9nXRmTATjN4_5F9V7RvvgW0 
+  " " _41F1rKwGbaA_30OJWKsqNWy  " " _4nJKFtMqlkA_1teQSqofNux 
+  "*/"  "\n"  "DBGBACKTRACEPRINTF_BM"  "(\"" 
+  "debug"  " "  "emit"  "-" 
+  "html"  "-"  "gitshortid"  " " 
+  "start"  " "  "€%."  "9s" 
+  " " _9nXRmTATjN4_5F9V7RvvgW0  "=%"  "s" 
+  " " _41F1rKwGbaA_30OJWKsqNWy  "=%"  "s" 
+  " " _4nJKFtMqlkA_1teQSqofNux  "=%"  "s" 
+  "\","  "\n"  " "  "\"" 
+  * _5ucAZimYynS_4VA0XHvr1nW ( _5Z5WNOYHi9A_29s2a7qpJej)  "\","  " " 
+ "objectdbg_BM" 
+  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _9nXRmTATjN4_5F9V7RvvgW0)  ")," 
+ " " 
+  "objectdbg1_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _41F1rKwGbaA_30OJWKsqNWy) 
+ ")," 
+  " "  "OUTSTRVALUE_BM"  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _4nJKFtMqlkA_1teQSqofNux) 
+  "));"  "\n")
+
+»_5aZfe0y6j2O_8mUgeFncbnj
+
+
+
 «_5bFdl5EUltP_424dDzsfj0V
 ± 1547045303.862
 ∈ _9LFIEAPDbzj_9zfBn99RgU4 |=basiclo_outstmt|
@@ -48049,6 +48096,24 @@ _0o8bMUSb0El_8cRNhyRuvjD
 ↳ _7il9W2D3X8q_9zzCW4kDBba 
 ↳ _0PBD9V6Bt7u_3TVTWHbNtLI 
 »_7ZmgWpB8hAR_9ZTbneZMSU1
+
+
+
+«_7ZvKhmYyteR_9H8rycClpxy
+Σ *
+± 1589897719.251
+∈ _2Z04aTH1OXJ_4ekKKdOCiOM |=basiclo_minifunction|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "emit-html-gitshortid minfunc"
+↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
+ [ 
+ _9nXRmTATjN4_5F9V7RvvgW0 _41F1rKwGbaA_30OJWKsqNWy _4nJKFtMqlkA_1teQSqofNux ]
+↦ _7bD9VtDkGSn_7lxHeYuuFLR |=result|
+_3qw9bnATIhq_8loBraLeXzQ
+↦ _7DQyvJFMOrC_9IfC3CtYknn |=body|
+_0pZwXLTMbzk_064kncRCuwO
+
+»_7ZvKhmYyteR_9H8rycClpxy
 
 
 
