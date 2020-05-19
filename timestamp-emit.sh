@@ -16,8 +16,9 @@ fi
  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n';
      echo $endgitid)  >> __timestamp.tmp
 
-(printf 'const char bismon_shortgitid[]="%.16s%s\n'  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n';
-     echo $endgitid)  >> __timestamp.tmp
+(printf 'const char bismon_shortgitid[]="%.16s%s\n' \
+	$(git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n') \
+	$endgitid)  >> __timestamp.tmp
 
 
 
