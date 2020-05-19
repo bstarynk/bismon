@@ -1,6 +1,6 @@
 //!€Bismon generated persistent data file store2.bmon (Unicode UTF-8 encoded).
 /// This data file, generated in 2020, is GPLv3+ licensed.
-// for 3410 objects
+// for 3411 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -802,6 +802,21 @@ _0vgCFjXblkx_4zCMhMAWjVK
  "for  handling of /_bismon_settings.json"
 
 »_2EZk8Ud8f0s_3WuUVMlorZG
+
+
+
+«_7HXEBMzTNfY_0dDYyxr1ZeO |=bismon_shortgitid|
+!~ name (~ bismon_shortgitid ~)
+± 1589878835.734
+∈ _9bCobYhqBV5_5tIWuHnUPMX |=basiclo_constant_object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "the short gitid of the entire bismon system"
+↦ _3pQnBS9ZjkQ_0uGmqUUhAum |=chunk|
+ * _3pQnBS9ZjkQ_0uGmqUUhAum ( _7HXEBMzTNfY_0dDYyxr1ZeO)
+↦ _83kM1HtO8K3_6k0F2KYQT3W |=c_type|
+_4T8am97muLl_5969SR22Ecq
+
+»_7HXEBMzTNfY_0dDYyxr1ZeO
 
 
 
