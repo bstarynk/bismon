@@ -185,7 +185,7 @@
 (format #t "## DONT EDIT this build.ninja file for https://ninja-build.org/ ; it was ...~%")
 (format #t "## ...  generated at ~a by generate-ninja-build.scm ~%"
 	(strftime "%c" (localtime (current-time))))
-(format #t "## see https://github.com/bstarynk/bismon/~%~%")
+(format #t "## see https://github.com/bstarynk/bismon/   -*- ninja -*-~%~%")
 (format #t "ninja_required_version = 1.9~%~%")
 (format #t "#; bm-cfiles::: ~a~%" bm-cfiles)
 (format #t "#; bm-cxxfiles::: ~a~%" bm-cxxfiles)
@@ -312,6 +312,13 @@
 (format #t "rule CXX_r~%")
 (format #t "  command = $cxx -MMD -MT $out -MF $cxx_base.mkd $cflags -c $cxx_file -o $out~%")
 (format #t "  description = CXX $out <- $cxx_file~%")
+(format #t "  depfile = $cxx_base.mkd~%")
+(format #t "  deps = gcc~%")
+
+(format #t "~%~%# compile a C++ GCC plugin file into an object file~%")
+(format #t "rule GCCPLUGIN_CXX_r~%")
+(format #t "  command = $cxx -I$-MMD -MT $out -MF $cxx_base.mkd $cflags -c $cxx_file -o $out~%")
+(format #t "  description = GCCPLUGIN_CXX $out <- $cxx_file~%")
 (format #t "  depfile = $cxx_base.mkd~%")
 (format #t "  deps = gcc~%")
 
