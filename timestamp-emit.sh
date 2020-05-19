@@ -16,6 +16,11 @@ fi
  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n';
      echo $endgitid)  >> __timestamp.tmp
 
+(printf 'const char bismon_shortgitid[]="%.16s%s\n'  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n';
+     echo $endgitid)  >> __timestamp.tmp
+
+
+
 (echo -n 'const char bismon_lastgittag[]="'; (git describe --abbrev=0 --all || echo '*notag*') | tr -d '\n\r\f\"\\\\'; echo '";') >> __timestamp.tmp
 
 (echo -n 'const char bismon_checksum[]="'; cat $* | md5sum | cut -d' ' -f1 | tr -d '\n\r\f\"\\' ; echo '";') >> __timestamp.tmp
