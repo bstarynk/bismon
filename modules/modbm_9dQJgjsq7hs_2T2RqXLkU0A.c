@@ -3049,7 +3049,7 @@ startblock__3DcbHfTP2te_8Zw8Uhy9eU6: __attribute__((unused));
  
 { // run _77pFBDGOZZQ_7iw2p047w0a 
 /*debug start emit_xhtml v_html o_emitctx o_strbuf depth*/
-DBGPRINTF_BM("emit_xhtml start €%.9s v_html=%s o_emitctx=%s\n... o_strbuf=%s/L%u (lin:%u col:%u last'%s') depth#%ld",
+DBGBACKTRACEPRINTF_BM("emit_xhtml start €%.9s v_html=%s o_emitctx=%s\n... o_strbuf=%s/L%u (lin:%u col:%u last'%s') depth#%ld",
 "_77pFBDGOZZQ_7iw2p047w0a",
 OUTSTRVALUE_BM( /*v_html:*/_.v_0DmuWueFbx9_5bzv8xgw3fu),
 objectdbg_BM( /*o_emitctx:*/_.o_9nXRmTATjN4_5F9V7RvvgW0),
