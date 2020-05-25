@@ -171,6 +171,8 @@
 (define bm-g++ "g++")
 
 ;;; these are the GCC compilers used to compile IoT code
+(define bm-gccplugin-packages '("glib-2.0" "jansson" "libcurl" "libssh2" "uuid" "openssl"))
+
 (define bm-iot-gcc bm-gcc)
 (define bm-iot-g++ bm-g++)
 
@@ -201,6 +203,9 @@
 (format #t "#; bm-gccplugin-dir:: ~a~%" bm-gccplugin-dir)
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; BISMON related packages
 (let ( (cflagslist (list))
        (libslist (list))
        )
@@ -227,6 +232,7 @@
        )
      )
    bm-packages)
+  
   (format #t "#; cflagslist ~a;~%#; libslist ~a;~%~%" cflagslist libslist)
   (format #t "~%pkg_cflags = ")
   (for-each (lambda (curcflag) (format #t " ~a" curcflag)) cflagslist)
@@ -235,6 +241,47 @@
   (for-each (lambda (curlib) (format #t " ~a" curlib)) libslist)
   (format #t "~%~%")
   )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+;;; GCC plugin related packages
+(let ( (cflagslist (list))
+       (libslist (list))
+       )
+  (for-each
+   (lambda (curpkg)
+     ;(format #t "#; curpkg::: ~a~%" curpkg)
+     (let ( (testcmd (format #f "~a ~a" bm-pkgconfig curpkg))
+	    (cflagcmd (format #f "~a --cflags ~a" bm-pkgconfig curpkg))
+	    (libescmd (format #f "~a --libs ~a" bm-pkgconfig curpkg))
+	    )
+       ;(format #t "##; testcmd ~s cflagcmd ~s libescmd ~s~%" testcmd cflagcmd libescmd)
+       (and (with-input-popen-BM testcmd
+				 (lambda (piport)
+				   #t))
+	    (let* (
+		   (cflagstr (input-popen-first-line-BM cflagcmd))
+		   (libestr (input-popen-first-line-BM libescmd))
+		   )
+	     ; (format #t "##; curpkg ~s, cflagstr ~s, libestr ~s ~%" curpkg cflagstr libestr)
+	      (set! cflagslist (append cflagslist (list cflagstr)))
+	      (set! libslist (append libslist (list libestr)))
+	      )
+	    )
+       )
+     )
+   bm-gccplugin-packages)
+
+  (format #t "~%gccplugin_packages = ")
+  (for-each
+   (lambda (curpkg) (format #t " ~a" curpkg))
+   bm-gccplugin-packages)
+  (format #t "~%gccplugin_pkg_cflags = ")
+  (for-each (lambda (curcflag) (format #t " ~a" curcflag)) cflagslist)
+  (format #t "~%gccplugin_pkg_libes = ")
+  (for-each (lambda (curlib) (format #t " ~a" curlib)) libslist)
+  (format #t "~%~%")
+  )
+
 
 (format #t "~%~%###### our compilers and their flags ######~%")
 (format #t "cc = ~a~%" bm-gcc)
