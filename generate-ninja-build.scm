@@ -90,15 +90,23 @@
 	      )
 	    )
 	   )
-      (if (pair? dirpath)
-	  (let ( (dirstr (car dirpath))
+     ;; (format #t "## files-ending-with-BM dirpath=~a suffixstr=~a~%" dirpath suffixstr)
+      (cond (
+	     (pair? dirpath)
+	     (let ( (dirstr (car dirpath))
 		 )
-	    (format #t ";;## files-ending-with-BM dirpath=~a~ dirstr=~%%" dirpath dirstr)
 	    (scandir dirstr is-good-path)
+	    ))
+	    ;;
+	    (
+	     (string? dirpath)
+	     (scandir dirpath
+		      is-good-path
+		      )
+	     )
+	    (#t
+	     (scandir "." is-good-path))
 	    )
-	  (scandir "."
-		   is-good-path
-		   ))
       )))					;end files-ending-with-BM
 
 
@@ -106,7 +114,8 @@
 ;; from some given list of files, remove those not starting with a letter
 (define (filter-files-starting-alpha-BM listfiles)
   (filter (lambda (filpath)
-	    (and (> (string-length filpath) 1)
+	    (and (string? filpath)
+		 (> (string-length filpath) 1)
 		 (char-alphabetic? (string-ref filpath 0)))
 	    )
 	  listfiles)
@@ -282,7 +291,6 @@
   (format #t "~%~%")
   )
 
-
 (format #t "~%~%###### our compilers and their flags ######~%")
 (format #t "cc = ~a~%" bm-gcc)
 (format #t "cxx = ~a~%" bm-g++)
@@ -314,6 +322,14 @@
       (format #t "gccplugin_optimflags = -DBISMON_GCCPLUGINDEFAULT_OPTIMFLAGS -O1 -g~%")
       )
   )
+
+
+(define bm-gccplugin-cxxfiles (files-ending-with-BM "_BMGCC.cc" "gccplugins"))
+(format #t "~%#bm-gccplugin-cxxfiles: ~a~%gccplugin_cxxfiles = " bm-gccplugin-cxxfiles)
+(for-each (lambda (curplugincxx) (format #t " ~a" curplugincxx))
+	  bm-gccplugin-cxxfiles)
+(format #t "~%")
+
 
 (format #t "gccplugin_preproflags = -I/usr/local/include -I~a/include~%" bm-gccplugin-dir)
 (format #t "cflags = $cwarnflags $defpreproflags $incflags $optimflags $pkg_cflags~%")
