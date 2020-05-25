@@ -268,6 +268,7 @@
       )
   )
 
+(format #t "gccplugin_preproflags = -I/usr/local/include -I~a/include~%" bm-gccplugin-dir)
 (format #t "cflags = $cwarnflags $defpreproflags $incflags $optimflags $pkg_cflags~%")
 (format #t "cxxflags = $cxxwarnflags $defpreproflags $incflags $optimflags $pkg_cflags~%")
 
