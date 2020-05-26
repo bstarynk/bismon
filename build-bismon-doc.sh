@@ -15,6 +15,9 @@
 
 docmode=$1
 
+## old inkscape had --without-gui option, which changed in Inkscape 1.0
+bismon_inkscape_batch_option="--batch-process"
+
 mkdir -p doc/generated/
 mkdir -p doc/htmldoc/
 
@@ -55,10 +58,10 @@ for svgfile in images/*.svg ; do
     sbase="$(basename "$svgfile" .svg)"
     if [ -f "$svgfile" ]; then
 	if [ ! -f "generated/$sbase-fig.pdf" -o "$svgfile" -nt "generated/$sbase-fig.pdf"  ]; then
-	    inkscape --without-gui --export-pdf="generated/$sbase-fig.pdf" "$svgfile"
+	    inkscape $bismon_inkscape_batch_option --export-pdf="generated/$sbase-fig.pdf" "$svgfile"
 	fi
 	if  [ ! -f "generated/$sbase-fig.eps"  -o "$svgfile" -nt  "generated/$sbase-fig.eps" ]; then
-	    inkscape --without-gui --export-eps="generated/$sbase-fig.eps" "$svgfile"
+	    inkscape $bismon_inkscape_batch_option --export-eps="generated/$sbase-fig.eps" "$svgfile"
 	fi
 	cp -v "$svgfile" "htmldoc/$sbase-fig.svg"
     fi
