@@ -58,10 +58,10 @@ for svgfile in images/*.svg ; do
     sbase="$(basename "$svgfile" .svg)"
     if [ -f "$svgfile" ]; then
 	if [ ! -f "generated/$sbase-fig.pdf" -o "$svgfile" -nt "generated/$sbase-fig.pdf"  ]; then
-	    inkscape $bismon_inkscape_batch_option --export-pdf="generated/$sbase-fig.pdf" "$svgfile"
+	    inkscape $bismon_inkscape_batch_option --export-filename="generated/$sbase-fig.pdf" "$svgfile" || exit 1
 	fi
 	if  [ ! -f "generated/$sbase-fig.eps"  -o "$svgfile" -nt  "generated/$sbase-fig.eps" ]; then
-	    inkscape $bismon_inkscape_batch_option --export-eps="generated/$sbase-fig.eps" "$svgfile"
+	    inkscape $bismon_inkscape_batch_option --export-filename="generated/$sbase-fig.eps" "$svgfile" || exit 1
 	fi
 	cp -v "$svgfile" "htmldoc/$sbase-fig.svg"
     fi
