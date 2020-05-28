@@ -44,6 +44,36 @@ examples of simple, IoT focused, whole-program static source code
 analysis performed by \emph{bismon}. So the final
 D1.3~\textsuperscript{v2} document will contain a longer conclusion.
 
+Within the timeframe allocated for \textsc{Chariot} it was not
+realistically possible in May 2020 to partly or fully generate
+\href{https://gcc.gnu.org/onlinedocs/gccint/Plugins.html}{GCC plugins}
+C++ code (like past
+\href{http://starynkevitch.net/Basile/gcc-melt/}{GCC MELT} did), in
+particular because \textsc{Bismon} has no usable documentation, and
+understanding its persistent heap of 3485 objects is not realistic
+without such a documentation. A garbage collection
+\cite{Jones:2016:GC-handbook} design bug (and its subtle interaction
+with the powerful but complex \href{https://www.gtk.org/}{GTK}
+graphical toolkit) makes the current \textsc{Bismon} (of git
+\href{https://github.com/bstarynk/bismon/commit/cb1c4ccfe3802fa330d48fc97c2913943736ba2f}{id
+  \texttt{cb1c4ccfe3802fa33}}....) extremely brittle, to the point of
+being barely usable. The original insight was to generate most parts
+of such \emph{Bismon} documentation, per the
+\href{https://en.wikipedia.org/wiki/Unix_philosophy}{Unix philosophy}
+and decade of related practice (from the original
+\href{https://www.troff.org/}{\texttt{troff}} to prior practice in
+\href{http://starynkevitch.net/Basile/gcc-melt/}{GCC MELT}, or to
+\href{https://www.doxygen.nl/}{\textsc{Doxygen}} or
+\href{http://ocaml.org/}{\textsc{Ocaml}} ...) but such a
+documentation, even if it is quite reasonably easy to generate from an
+orthogonally persistent
+\href{https://en.wikipedia.org/wiki/Semantic_network}{semantic
+  network} such as \textsc{Bismon}'s heap, would largely overflow the
+70 pages hard limit (\textsc{Chariot} consortium defined) of this
+report: the generated
+\href{http://starynkevitch.net/Basile/gcc-melt/}{GCC MELT}
+documentation had hundreds of A4 pages....
+
 Machine learning techniques inspired by \cite{zhang:2019:learned}
 could be relevant in \textsc{Bismon}. See also the
 \href{http://refpersys.org/}{\textsc{RefPerSys}}
