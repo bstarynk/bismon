@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -xv
 # file build-bismon-doc.sh
 ## requirement: generate PDF (with hyperlinks) and HTML5
 # considering following typesetters
