@@ -391,7 +391,7 @@
 
 (format #t "~%~%# compile a C++ GCC plugin file into an object file~%")
 (format #t "rule GCCPLUGIN_CXX_r~%")
-(format #t "  command = $cxx -I$-MMD -MT $out -MF $cxx_base.mkd $cflags -c $cxx_file -o $out~%")
+(format #t "  command = $cxx $gccplugin_preproflags $gccplugin_cxxwarnflags $gccplugin_optimflags -MMD -MT $out -MF $plugcxx_base.mkd $cflags -c $plugcxx_file -o $out~%")
 (format #t "  description = GCCPLUGIN_CXX $out <- $cxx_file~%")
 (format #t "  depfile = $cxx_base.mkd~%")
 (format #t "  deps = gcc~%")
@@ -544,6 +544,21 @@
  bm-cxxfiles)
 
 
+;;; the GCC plugin
+(format #t "~%~%# GCC plugin ~d files : ~a ~%" (length bm-gccplugin-cxxfiles)  bm-gccplugin-cxxfiles)
+(for-each (lambda (curplugincxx)
+	    (format #t "## GCCplugin file ~a~%" curplugincxx)
+	    (let* (
+		   (curpluginbas (basename curplugincxx ".cc"))
+		   )
+	      (format #t "~%build ~a.o: GCCPLUGIN_CXX_r ~a~%" curpluginbas curplugincxx)
+	      (format #t " plugcxx_base = ~a~%" curpluginbas)
+	      (format #t " plugcxx_file = ~a~%" curplugincxx)
+	      )
+	    )
+	  bm-gccplugin-cxxfiles)
+
+(format #t "#- end of GCC plugin ~d files~%~%"  (length bm-gccplugin-cxxfiles))
 
 ;;; the BM_makeconst metaprogram
 (format #t "~%~%#solo C++ program to deal with BISMON constants~%")
