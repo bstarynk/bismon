@@ -46,6 +46,17 @@ source code analysis, even of programming languages which are not tied
 to \emph{GCC}. Of course, some significant work related to parsing is
 then required.
 
+The \href{http://www.barrelfish.org/}{\textsc{Barrelfish} operating
+  system} \index{Barrelfish OS@\textsc{Barelfish} operating system} (see \cite{gerber:2018:authorization,
+    giceva:2016:customized, Schupbach:2008:embracing}...) has a
+  \emph{System Knowledge Base} ``used to store, query, unify, and
+  compute on a variety of data about the current running state of the
+  system'' which is ``based on a port of the
+  \href{https://eclipseclp.org/}{\textsc{eCLiPse}} constraint logic
+  programming system'' \cite{Apt:2006:constraint} (from
+  \cite{barrelfish:2013:overview}), and \textsc{Barrelfish} aims be
+  used for IoT computer networks.
+
 %%%%%%%%%%%%%%%%
 \subsubsection{Immutable values}
 \label{subsubsec:immutvalues}
@@ -438,15 +449,18 @@ scan queue is empty, GC is finished.
 \label{subsec:persistence}
 
 \index{persistence}{\emph{Persistence}} is an essential feature of the
-\emph{Bismon monitor}. \index{load} It always starts by loading some
-previous persisted \index{state}{state}, and usually dumps
-\index{dump} its current state before termination. On the next run,
-that new state is loaded, etc....  For convenience and portability,
-\emph{the persistent state is a set of textual files}~\footnote{A
-  gross analogy is the textual dump of some SQL database. That dump is
-  the only way to reliably recover the database, so it should be done
-  frequently and the backed-up \texttt{database.sql} textual dump can
-  be a large file of many gigabytes.}.
+\emph{Bismon monitor}, and did inspire the ongoing work in
+\index{RefPerSys project@\textsc{RefPerSys} project}
+\href{http://refpersys.org/}{\textsc{RefPerSys}}.  \index{load} It
+always starts by loading some previous persisted \index{state}{state},
+and usually dumps \index{dump} its current state before
+termination. On the next run, that new state is loaded, etc....  For
+convenience and portability, \emph{the persistent state is a set of
+  textual files}~\footnote{A gross analogy is the textual dump of some
+  SQL database. That dump is the only way to reliably recover the
+  database, so it should be done frequently and the backed-up
+  \texttt{database.sql} textual dump can be a large file of many
+  gigabytes.}.
 
 In the Internet world, persistence is generally handled \emph{outside}
 of the application, by using \index{database} databases. These
