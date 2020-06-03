@@ -326,7 +326,7 @@
 
 (define bm-gccplugin-cxxfiles (files-ending-with-BM "_BMGCC.cc" "gccplugins"))
 (format #t "~%#bm-gccplugin-cxxfiles: ~a~%gccplugin_cxxfiles = " bm-gccplugin-cxxfiles)
-(for-each (lambda (curplugincxx) (format #t " ~a" curplugincxx))
+(for-each (lambda (curplugincxx) (format #t " gccplugins/~a" curplugincxx))
 	  bm-gccplugin-cxxfiles)
 (format #t "~%")
 
@@ -392,7 +392,7 @@
 (format #t "~%~%# compile a C++ GCC plugin file into an object file~%")
 (format #t "rule GCCPLUGIN_CXX_r~%")
 (format #t "  command = $cxx $gccplugin_preproflags $gccplugin_cxxwarnflags $gccplugin_optimflags -MMD -MT $out -MF $plugcxx_base.mkd $cflags -c $plugcxx_file -o $out~%")
-(format #t "  description = GCCPLUGIN_CXX $out <- $cxx_file~%")
+(format #t "  description = GCCPLUGIN_CXX $out <- $plugcxx_file~%")
 (format #t "  depfile = $cxx_base.mkd~%")
 (format #t "  deps = gcc~%")
 
@@ -549,14 +549,14 @@
  bm-cxxfiles)
 
 
-;;; the GCC plugin
+;;; the GCC plugins
 (format #t "~%~%# GCC plugin ~d files : ~a ~%" (length bm-gccplugin-cxxfiles)  bm-gccplugin-cxxfiles)
 (for-each (lambda (curplugincxx)
 	    (format #t "## GCCplugin file ~a~%" curplugincxx)
 	    (let* (
 		   (curpluginbas (basename curplugincxx ".cc"))
 		   )
-	      (format #t "~%build ~a.o: GCCPLUGIN_CXX_r ~a~%" curpluginbas curplugincxx)
+	      (format #t "~%build gccplugins/~a.o: GCCPLUGIN_CXX_r gccplugins/~a~%" curpluginbas curplugincxx)
 	      (format #t " plugcxx_base = ~a~%" curpluginbas)
 	      (format #t " plugcxx_file = ~a~%" curplugincxx)
 	      )
@@ -564,6 +564,19 @@
 	  bm-gccplugin-cxxfiles)
 
 (format #t "#- end of GCC plugin ~d files~%~%"  (length bm-gccplugin-cxxfiles))
+
+(format #t "~%~%# the bismon GCC metaplugin~%")
+(format #t "build gccplugins/bismon-metaplugin.so: GCCPLUGIN_LINK_r")
+(for-each (lambda (curplugincxx)
+	    (let* (
+		   (curpluginbas (basename curplugincxx ".cc"))
+		   )
+	      (format #t " gccplugins/~a.o" curpluginbas)
+	      )
+	    )
+	  bm-gccplugin-cxxfiles)
+(format #t "~%~%")
+	      
 
 ;;; the BM_makeconst metaprogram
 (format #t "~%~%#solo C++ program to deal with BISMON constants~%")
@@ -649,7 +662,7 @@
 (format #t "~%build __timestamp.o: NAKEDCC_r __timestamp.c~%")
 
 (format #t "~%~%#### default build~%")
-(format #t "default bismon _cflagsmodule.mk~%")
+(format #t "default bismon _cflagsmodule.mk gccplugins/bismon-metaplugin.so~%")
 (format #t "~%#==================================================~%")
 
 
