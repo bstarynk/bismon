@@ -483,7 +483,7 @@ be~\footnote{This is a gross simplification! In practice, there is a
       optimization (e.g. compiling and \emph{linking} with \texttt{gcc
         -O2 -flto -Wall -Wextra} using GCC) slows down the build time by more than a
       factor of two since the intermediate internal representation (IR) of the
-      compiler (e.g. Gimple \index{Gimple} for \emph{GCC}, see \cite{gcc-internals} \S12) is kept in object files and
+      compiler (e.g. Gimple \index{Gimple} for \emph{GCC}, see \cite{gcc-internals} \S{12}) is kept in object files and
       reload at ``link-time'' which is done by the \emph{compiler}
       working on the whole program's IR, so is rarely used.}  enabled. Of
     course, these simpler approaches give many false positive warnings
@@ -736,7 +736,7 @@ specific.
 The table \ref{tab:factinlinecsrc} shows a simple example of C code
 (file \texttt{factinline12.c}). After preprocessing and parsing, it
 becomes quickly expanded in some \emph{Gimple}\index{gimple}
-representation (cf. \S12 of \cite{gcc-internals}), whose elementary
+representation (cf. \S{12} of \cite{gcc-internals}), whose elementary
 instructions are arithmetic with two operands, or simple tests with
 jumps, or simple calls (in so called \emph{A-normal form}
 \index{A-normal form}, where nested calls like \verb+a=f(g(x),y);+ get
