@@ -396,6 +396,11 @@
 (format #t "  depfile = $cxx_base.mkd~%")
 (format #t "  deps = gcc~%")
 
+(format #t "~%~%# link several gccplugin objects into a plugin shared object~%")
+(format #t "rule GCCPLUGIN_LINK_r~%")
+(format #t "  command = $cxx $gccplugin_cxxwarnflags $gccplugin_optimflags -shared -o $out $in $gccplugin_pkg_libes~%")
+(format #t "  description = GCCPLUGIN_LINK $out <- $in~%")
+
 (format #t "~%~%# compile a selfsufficient C++ program with Glib & id_BM.o~%")
 (format #t "rule SOLOCXXPROG_r~%")
 (format #t "  command = $cxx -MMD -MT $out -MF $solo_base.mkd $cxxflags  $in id_BM.o $pkg_libes  -o $out ~%")
