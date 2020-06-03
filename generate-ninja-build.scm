@@ -558,7 +558,7 @@
 		   )
 	      (format #t "~%build gccplugins/~a.o: GCCPLUGIN_CXX_r gccplugins/~a~%" curpluginbas curplugincxx)
 	      (format #t " plugcxx_base = ~a~%" curpluginbas)
-	      (format #t " plugcxx_file = ~a~%" curplugincxx)
+	      (format #t " plugcxx_file = gccplugins/~a~%" curplugincxx)
 	      )
 	    )
 	  bm-gccplugin-cxxfiles)

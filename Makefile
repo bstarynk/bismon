@@ -51,7 +51,8 @@ BM_CSOURCES= $(wildcard [a-z]*BM.c)
 
 .PHONY: all programs clean verbose indent count modules measure \
   doc latexdoc latexcleandoc heveadoc redump outdump checksum \
-  indentsinglemodule indenttempmodule jstimestamp chariotdemo-bismon
+  indentsinglemodule indenttempmodule jstimestamp chariotdemo-bismon \
+  bismon-metaplugin
 
 
 
@@ -108,7 +109,12 @@ modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
 
 modules: _cflagsmodule.mk  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES)) 
 
-
+bismon-metaplugin: bismon | build.ninja
+	@printf "\n\n\n******* start making bismon-metaplugin in %s *********\n\n" $$PWD
+	$(MAKE) build.ninja $(wildcard *BM.c *_BM.cc)  $(wildcard store*bmon)
+	$(NINJA) $(NINJAFLAGS) gccplugins/bismon-metaplugin.so
+	@[ -x gccplugins/bismon-metaplugin.so ] || (echo no  gccplugins/bismon-metaplugin.so > /dev/stderr; exit 1)
+	@printf "\n******* done making bismon-metaplugin in %s *********\n" $$PWD
 
 
 doc: $(MARKDOWN_SOURCES) bismon modules $(wildcard doc/*.tex doc/images/* doc/*.bib doc/*.hva)
