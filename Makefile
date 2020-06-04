@@ -57,9 +57,9 @@ BM_CSOURCES= $(wildcard [a-z]*BM.c)
 
 
 
-all:
+all: | build.ninja
 	@printf "\n\n\n******* start making all in %s *********\n\n" $$PWD
-	$(MAKE) programs modules jstimestamp #doc
+	$(MAKE) programs modules jstimestamp bismon-metaplugin
 	@printf "\n******* done making all in %s *********\n" $$PWD
 
 programs: bismon modules
@@ -110,7 +110,7 @@ modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
 modules: _cflagsmodule.mk  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES)) 
 
 bismon-metaplugin: bismon | build.ninja
-	@printf "\n\n\n******* start making bismon-metaplugin in %s *********\n\n" $$PWD
+	@printf "\n\n\n******* start making bismon-metaplugin in %s *********\n\n" $$(pwd)
 	$(MAKE) build.ninja $(wildcard *BM.c *_BM.cc)  $(wildcard store*bmon)
 	$(NINJA) $(NINJAFLAGS) gccplugins/bismon-metaplugin.so
 	@[ -x gccplugins/bismon-metaplugin.so ] || (echo no  gccplugins/bismon-metaplugin.so > /dev/stderr; exit 1)
