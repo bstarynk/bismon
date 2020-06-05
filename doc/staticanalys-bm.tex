@@ -64,9 +64,31 @@ will thus stay persistently in the \emph{Bismon} monitor, but should
 be updated at each release of \emph{GCC}. We care mostly about API
 related to optimization passes, \emph{GENERIC}, \emph{Gimple},
 \emph{SSA} and \emph{Optimized-Gimple}. We probably don't need to go
-at the \emph{RTL} level.
+at the \emph{RTL} level. The version
+\href{https://gcc.gnu.org/gcc-10/}{10 of \textsc{Gcc}} (released in
+May 2020) incorporates several
+\href{https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html}{static
+  analysis options}, that are activated with the \texttt{-fanalyzer}
+option to \texttt{g++} or \texttt{gcc}. The version
+\href{http://lists.llvm.org/pipermail/llvm-announce/2020-March/000087.html}{10
+  of \textsc{Clang}} (released in March 2020) contains an improved
+\href{https://clang-analyzer.llvm.org/}{Clang static analyzer} and
+\href{https://clang.llvm.org/extra/clang-tidy/}{\texttt{clang-tidy}}
+``linter'' like tool, check both coding styles and portability
+related conventions. Both compilers are open source and available
+\footnote{Both recent \textsc{Gcc} and \textsc{Clang} are buildable as
+cross compiler for major 32 bits or 64 bits architectures such as
+PowerPC, x86, x86-64, or ARM, provided one download their source
+code.} on a \textsc{Linux} desktop and both should be of interest for
+advanced \emph{IoT} software developers coding in C or in C++ and
+capable of using the command line. \textsc{Gcc} analysis features be
+configured thru appropriate \texttt{\#pragma}-s, and \textsc{Clang}
+analysis features are changeable by conventional comments such as
+\texttt{// NOLINT(google-explicit-constructor, google-runtime-int)}.
 
-Additional content of this \S\ref{subsec:analygcc} will be written for the final D1.3\textsuperscript{v2}.
+%Additional content of this \S\ref{subsec:analygcc} will be written
+%for the final D1.3\textsuperscript{v2}.
+
 
 \subsection{static analysis of IoT firmware or application code}
 \label{subsec:analysiot}
