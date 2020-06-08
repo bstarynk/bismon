@@ -32,7 +32,8 @@ GXX= g++
 CC= $(GCC)
 CXX= $(GXX)
 #if you don't have or want ccache, set the below variable to empty
-CCACHE= ccache
+#CCACHE= ccache
+CCACHE=
 MARKDOWN= markdown
 INDENT= indent
 ASTYLE= astyle
