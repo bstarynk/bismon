@@ -176,14 +176,14 @@
 
 ;;;;;;;;;;;;;;;; constants
 (define bm-packages '("glib-2.0" "jansson" "gtk+-3.0"))
-(define bm-gcc "gcc")
-(define bm-g++ "g++")
+(define bm-gcc "gcc-9")
+(define bm-g++ "g++-9")
 
 ;;; these are the GCC compilers used to compile IoT code
 (define bm-gccplugin-packages '("glib-2.0" "jansson" "libcurl" "libssh2" "uuid" "openssl"))
 
-(define bm-iot-gcc bm-gcc)
-(define bm-iot-g++ bm-g++)
+(define bm-iot-gcc "gcc-10")
+(define bm-iot-g++ "g++-10")
 
 (define bm-pkgconfig "pkg-config")
 (define bm-cfiles
