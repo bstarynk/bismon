@@ -79,9 +79,9 @@
 
 
 
-int plugin_is_GPL_compatible;
+extern "C" int plugin_is_GPL_compatible;
 
 
 
 #endif /*GCC10_METAPLUGIN_BISMON_INCLUDED_*/
-/* end of header file 
+/* end of header file gcc10-metaplugin.hh */

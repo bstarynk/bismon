@@ -20,6 +20,8 @@
 
 **/
 
+#include "gcc10-metaplugin.hh"
+
 int plugin_is_GPL_compatible;
 
 ////////////////////////////////////////////////////////////////
