@@ -132,19 +132,40 @@ or \texttt{VSCode}. It might even later use the new
   for more.}  protocol, designed for communication between static
 source code analyser.
 
-Notice that according to \href{https://www.zdnet.com/article/chrome-70-of-all-security-bugs-are-memory-safety-issues/}{this webpage},
-nearly 70\% of security bugs affecting the Chrome web browser (by Google)
-are related to memory management issues in C++.  It is expected that junior
-European software developers of non-critical IoT systems would experiment
-a similar bug distribution in their IoT code. A long-term approach could
-be the costly training of IoT software engineers to switch to programming
-languages with better memory management, such as \href{https://golang.org/}{Go}
-or \href{https://www.rust-lang.org/}{Rust}. However, rewriting an entire IoT code
-base is too costly, and mixing several programming languages\footnote{See
-\href{https://softwareengineering.stackexchange.com/questions/370135/why-are-multiple-programming-languages-used-in-the-development-of-one-product-or}[this}
-for a discussion of why is that interesting. Notice that recent \href{http://gcc.gnu.org/}{GCC} compilers share some common internal representations
-between several language front-ends.} in the
-same software product can be worthwhile but requires some rare and qualified labor.
+Notice that according to
+\href{https://www.zdnet.com/article/chrome-70-of-all-security-bugs-are-memory-safety-issues/}{this
+  webpage}, nearly 70\% of security bugs affecting the Chrome web
+browser (by Google) are related to memory management issues in C++.
+It is expected that junior European software developers of
+non-critical IoT systems would experiment a similar bug distribution
+in their IoT code. A long-term approach could be the costly training
+of IoT software engineers to switch to programming languages with
+better memory management, such as \href{https://golang.org/}{Go} or
+\href{https://www.rust-lang.org/}{Rust}. However, rewriting an entire
+IoT code base is too costly, and mixing several programming
+languages\footnote{See
+\href{https://softwareengineering.stackexchange.com/questions/370135/why-are-multiple-programming-languages-used-in-the-development-of-one-product-or}{this}
+for a discussion of why is that interesting. Notice that recent
+\href{http://gcc.gnu.org/}{GCC} compilers share some common internal
+representations between several language front-ends.} in the same
+software product can be worthwhile but requires some rare and
+qualified labor. \href{https://gcc.gnu.org/gcc-10}{GCC 10} has a new
+\href{https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html}{static
+  analysis} framework (with its \texttt{-fanalyzer} compiler option)
+and powerful warning options\footnote{It is helpful to pass
+\texttt{-Wall -Wextra} to the \texttt{gcc} or \texttt{g++} compiler,
+usually thru some
+\href{https://en.wikipedia.org/wiki/Build_automation}{build
+  automation} tool such as
+\href{http://ninja-build.org/}{\texttt{ninja}}}. The
+\href{https://clang-analyzer.llvm.org/}{\textsc{Clang} static
+  analyzer} could be useful. Some coding rules (such as
+\cite{Holzmann:2006:power-of-10} or \index{Misra@\textsc{Misra C}}
+\href{https://www.misra.org.uk/}{\textsc{Misra C}}) are available, but
+the \href{https://en.wikipedia.org/wiki/Rice's_theorem}{Rice's
+  theorem} \index{Rice's theorem} forbids the possibility of a sound
+and complete static analyzer: false alarms cannot be avoided, and code \index{code review}
+reviews by senior programmers is still necessary.
 
 We probably would also take as an example the analysis of some
 \href{http://mqtt.org/}{MQTT library}. The insight is to trust some
@@ -161,25 +182,27 @@ An interesting \textsc{Chariot}-compatible approach could be to use
 \cite{Chazal:2017:topodatanalys}) techniques, combined with some
 machine learning (cf \cite{flach:2012:machine-learning}) and big data
 \index{big data} / data mining \index{data mining} (cf
-\cite{wu:2013:big-data-mining, clarke:2016:big-data-risks, zuboff:2015:big-other, helbing:2019:big-data-democracy})
-approaches, on some of the several directed graphs (notably the
-\emph{control flow graph}, the \emph{call graph}, the \emph{dependency
-  graph} for example) of the whole analyzed program. Reputable free
-software libraries\footnote{See \textsc{TensorFlow} on
-  \bmurl{https://www.tensorflow.org/}, and \textsc{Gudhi} on
-  \bmurl{http://gudhi.gforge.inria.fr/}, and many other similar
-  libraries.} are available on Linux. In principle, such an approach
+\cite{wu:2013:big-data-mining, clarke:2016:big-data-risks,
+  zuboff:2015:big-other, helbing:2019:big-data-democracy}) approaches,
+on some of the several directed graphs (notably the \emph{control flow
+graph}, the \emph{call graph}, the \emph{dependency graph} for
+example) of the whole analyzed program. Reputable free software
+libraries\footnote{See \textsc{TensorFlow} on
+\bmurl{https://www.tensorflow.org/}, and \textsc{Gudhi} on
+\bmurl{http://gudhi.gforge.inria.fr/}, and many other similar
+libraries.} are available on Linux. In principle, such an approach
 might be used in \texttt{bismon} for a \emph{semi-automatic} detection
 of \index{code smell} \index{smell!code} \emph{code smells}. Sadly,
 the lack of allocated human resources, and the strong focus (see
 \cite{Heder:2017:TRL}) \index{TRL} on high
 TRL\footnote{\emph{Technical Readiness Level} and the
-  \href{https://en.wikipedia.org/wiki/Technology\_readiness_level}{TRL
-    wikipage} for more.} results, forbids even trying such an
+\href{https://en.wikipedia.org/wiki/Technology\_readiness_level}{TRL
+  wikipage} for more.} results, forbids even trying such an
 interesting approach in \textsc{Chariot}, taking into account that
 industrial corporations are not even dreaming of it. However, these
 approaches might be tried in some other projects, perhaps
-\textsc{Decoder}.
+\index{decoder@\textsc{Decoder}}
+\href{https://www.decoder-project.eu/}{\textsc{Decoder}}.
 
 \bigskip
 
