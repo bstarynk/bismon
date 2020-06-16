@@ -207,8 +207,12 @@
 (format #t "#; bm-iot-g++:: ~a~%" bm-iot-g++)
 
 (define bm-gccplugin-dir
-  (input-popen-first-line-BM
-   (format #f "~s -print-file-name=plugin" bm-iot-gcc)))
+  (let ( (queryplugincmd (format #f "~a -print-file-name=plugin" bm-iot-gcc)
+			 )
+	 )
+    (format #t "## queryplugincmd ~a~%" queryplugincmd)
+    (input-popen-first-line-BM queryplugincmd)
+    ))
 (format #t "#; bm-gccplugin-dir:: ~a~%" bm-gccplugin-dir)
 
 
@@ -330,7 +334,7 @@
 	  bm-gccplugin-cxxfiles)
 (format #t "~%")
 
-
+(format #t "## bm-gccplugin-dir= ~a before gccplugin_preproflags~%" bm-gccplugin-dir)
 (format #t "gccplugin_preproflags = -DBISMONGCCPLUGIN -H -I/usr/local/include -I~a/include~%" bm-gccplugin-dir)
 (format #t "cflags = $cwarnflags $defpreproflags $incflags $optimflags $pkg_cflags~%")
 (format #t "cxxflags = $cxxwarnflags $defpreproflags $incflags $optimflags $pkg_cflags~%")
