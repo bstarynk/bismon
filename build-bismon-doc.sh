@@ -1,4 +1,4 @@
-#!/bin/bash -xv
+#!/bin/bash
 # file build-bismon-doc.sh
 ## requirement: generate PDF (with hyperlinks) and HTML5
 # considering following typesetters
@@ -18,8 +18,8 @@ docmode=$1
 ## old inkscape had --without-gui option, which changed in Inkscape 1.0
 bismon_inkscape_batch_option="--batch-process"
 
-mkdir -p doc/generated/
-mkdir -p doc/htmldoc/
+mkdir -pv doc/generated/
+mkdir -pv doc/htmldoc/
 
 ## backup the old pdf file
 mv -vfb doc/bismon-chariot-doc.pdf doc/bismon-chariot-doc.pdf% 
@@ -43,7 +43,12 @@ printf '\\newcommand{\\bmgitnumbercommits}[0]{%d}\n' $nbc >> doc/generated/git-c
 # generate the dates
 date +'\newcommand{\bmdoctimestamp}[0]{%c}%n\newcommand{\bmdocdate}[0]{%b %d, %Y}' > doc/generated/timestamp.tex
 
+
+
+
 cd doc
+
+printf "@@@BISMONdoc %s process %d is in %s\n\n" $0 $$ $(cwd) > /dev/stderr
 
 
 for gscript in genscripts/[0-9]*.sh ; do
@@ -91,6 +96,8 @@ for pngfile in images/*.png ; do
 done
 
 if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
+
+    printf "@@@BISMONdoc %s process %d LaTeXing in %s\n\n" $0 $$ $(cwd) > /dev/stderr
     lualatex -halt-on-error bismon-chariot-doc 
     bibtex bismon-chariot-doc < /dev/null
     lualatex -halt-on-error bismon-chariot-doc 
@@ -110,6 +117,7 @@ if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
 fi
 
 if [ -z  "$docmode" -o "$docmode" == "HeVeA" ]; then
+    printf "@@@BISMONdoc %s process %d HeVeA-ing in %s\n\n" $0 $$ $(cwd) > /dev/stderr
     hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex svg.hva bismon-hevea.hva bismon-chariot-doc
 #bibhva bismon-chariot-doc
     bibhva htmldoc/bismon-htmldoc
@@ -118,4 +126,5 @@ if [ -z  "$docmode" -o "$docmode" == "HeVeA" ]; then
     #hacha -o htmldoc/index.html  htmldoc/bismon-htmldoc.html
 fi
 
+printf "\n@@@BISMONdoc %s process %d making final tarball in %s\n" $0 $$ $(pwd)
 tar -c -f - htmldoc/ | tardy -Remove_Prefix htmldoc -Prefix bismon-html-doc -User_NAme bismon -Group_NAme bismon | gzip -9 > bismon-html-doc.tar.gz
