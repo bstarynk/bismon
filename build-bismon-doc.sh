@@ -48,7 +48,7 @@ date +'\newcommand{\bmdoctimestamp}[0]{%c}%n\newcommand{\bmdocdate}[0]{%b %d, %Y
 
 cd doc
 
-printf "@@@BISMONdoc %s process %d is in %s\n\n" $0 $$ $(cwd) > /dev/stderr
+printf "@@@BISMONdoc %s process %d is in %s\n\n" $0 $$ $(pwd) > /dev/stderr
 
 
 for gscript in genscripts/[0-9]*.sh ; do
@@ -97,7 +97,7 @@ done
 
 if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
 
-    printf "@@@BISMONdoc %s process %d LaTeXing in %s\n\n" $0 $$ $(cwd) > /dev/stderr
+    printf "@@@BISMONdoc %s process %d LaTeXing in %s\n\n" $0 $$ $(pwd) > /dev/stderr
     lualatex -halt-on-error bismon-chariot-doc 
     bibtex bismon-chariot-doc < /dev/null
     lualatex -halt-on-error bismon-chariot-doc 
@@ -117,7 +117,7 @@ if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
 fi
 
 if [ -z  "$docmode" -o "$docmode" == "HeVeA" ]; then
-    printf "@@@BISMONdoc %s process %d HeVeA-ing in %s\n\n" $0 $$ $(cwd) > /dev/stderr
+    printf "@@@BISMONdoc %s process %d HeVeA-ing in %s\n\n" $0 $$ $(pwd) > /dev/stderr
     hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex svg.hva bismon-hevea.hva bismon-chariot-doc
 #bibhva bismon-chariot-doc
     bibhva htmldoc/bismon-htmldoc
