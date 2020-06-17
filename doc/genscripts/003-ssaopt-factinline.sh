@@ -3,6 +3,11 @@
 # file doc/genscripts/003-ssaopt-factinline.sh this script is running
 # in doc/ directory and extracts the SSA & optimized forms of
 # examples/factinline12.c
+
+printf "@@@BISMONDOC starting %s %s cwd %s:\n" "$0" "$@" $(pwd) > /dev/stderr
+
+/bin/ls -lst generated/factinline12.c*  > /dev/stderr
+
 cd generated/
 if [ ! -f factinline12.c.[0-9]*t.ssa ]; then
     echo missing single 'factinline12.c.[0-9]*t.ssa' file > /dev/stderr

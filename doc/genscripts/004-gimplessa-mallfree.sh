@@ -3,6 +3,9 @@
 # file doc/genscripts/004-gimplessa-mallfree.sh this script is running
 # in doc/ directory and extracts the gimple and SSA forms of
 # examples/mallfree.c
+
+printf "@@@BISMONDOC starting %s %s cwd %s:\n" "$0" "$@" $(pwd) > /dev/stderr
+
 source genscripts/straight-gcc-config.bash
 cd generated/
 
