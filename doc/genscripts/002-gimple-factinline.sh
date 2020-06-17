@@ -1,7 +1,8 @@
 #!/bin/bash
 # file doc/genscripts/002-gimple-factinline.sh
 # this script is running in doc/ directory and extracts the gimple of examples/factinline12.c
-echo running genscripts/002-gimple-factinline.sh in $(pwd) 1>&2
+printf "@@@BISMONDOC starting %s %s cwd %s:\n" "$0" "$*" $(pwd) > /dev/stderr
+
 source genscripts/cross-gcc-config.bash
 cd generated/
 rm -vf factinline12.c.[0-9]*t.[a-z]* 1>&2
