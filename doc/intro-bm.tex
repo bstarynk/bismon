@@ -985,10 +985,17 @@ contain no calls to \texttt{malloc} or \texttt{free}, hence contains the same co
 \medskip
 
 This \texttt{mallfree.c} example could look artificial (because human
-developers won't code this way). However, a similar example might
-happen in real life after preprocessor expansion and inlining in large
-header-mostly libraries. In addition, most genuine C++11 \index{C++11} code
-(e.g. using standard container \index{container!C++} templates from \texttt{<map>} or
+developers won't \emph{directly} code this way). However, a similar
+example might happen in real life after preprocessor expansion and
+inlining in large header-mostly libraries. Also, equivalent code
+happens (perhaps after some inline expansion done by any optimizing
+compiler) with machine generated C code (e.g. by tools like
+\href{https://antlr.org/}{\textsc{Antlr}} or
+\href{https://www.gnu.org/software/bison/}{\textsc{Bison}} parser
+generators, in some \href{http://json.org/}{\textsc{Json}} libraries
+or \href{https://www.jsonrpc.org/}{\textsc{JsonRpc} services}) In
+addition, most genuine C++11 \index{C++11} code (e.g. using standard
+container \index{container!C++} templates from \texttt{<map>} or
 \texttt{<vector>} standard headers) would produce conceptually similar
 code (since many standard constructors and destructors would call
 internally the standard \texttt{::operator new} and \texttt{::operator

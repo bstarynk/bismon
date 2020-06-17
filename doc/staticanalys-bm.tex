@@ -204,11 +204,45 @@ approaches might be tried in some other projects, perhaps
 \index{decoder@\textsc{Decoder}}
 \href{https://www.decoder-project.eu/}{\textsc{Decoder}}.
 
+\medskip
+\subsection{static analysis related to pointers}
+\label{subsec:analysptr}
+
+Pointers \index{pointer} are an important part of the C11 and C++11
+language specifications (see \cite{C11:std, CplusPlus11:std})}, but
+  are difficult to understand. They need several chapters\footnote{A
+    novice programmer should be explained that after \texttt{int
+      tab[4]; int* p = \&tab+1;} both \texttt{tab[2]} and
+    \index{alias!pointer} \texttt{p[1]} are pointer aliases, but
+    \texttt{sizeof(tab)} is not \texttt{sizeof(p-1)} even if
+    \texttt{tab == p-1}.}  in C or C++ textbooks such as
+  \cite{gusted:t2019:modern, Stroustrup:2014:CplusPlus}. Practically
+  \index{null@\texttt{NULL} in C}
+  \index{nullptr@\texttt{\textbf{nullptr}} in C++} speaking, a pointer
+  is an address, with \texttt{NULL} (in C) or
+  \texttt{\textbf{nullptr}} (in C++) having a special and
+  distinguished meaning: it is never the same as the result of the
+  \index{address} \emph{address-of} operator (unary \texttt{\&} prefix
+  operator).
+
+ From the IoT or firmware developer's point of view, pointers -viewed
+ as addresses- may behave strangely in practice, and differently from
+ the language specifications: in theory, the \texttt{NULL} pointer
+ might not sit at address 0. In practice, IoT or firmware developers
+ do know that (on most implementations) it \emph{is} at address
+ 0. Dereferencing the \texttt{NULL} pointer is the prototypical
+ example of \emph{undefined behavior}, yet some firmware
+ code\footnote{A typical example would be some \textsc{Bios} or
+   \textsc{Uefi} firmware or operating system kernel on most PC
+   desktop motherboards, see
+   \href{https://osdev.org/}{\texttt{osdev.org}} and
+   \href{http://tinyvga.com/}{\texttt{tinyvga.com}} for more} may do
+ that with good reasons.
+ 
 \bigskip
 
 \hrule
 
-\medskip
 
 Additional content of this \S\ref{subsec:analysiot} will be written for the final D1.3\textsuperscript{v2}.
 
