@@ -205,7 +205,7 @@ approaches might be tried in some other projects, perhaps
 \href{https://www.decoder-project.eu/}{\textsc{Decoder}}.
 
 \medskip
-\subsection{static analysis related to pointers}
+\subsection{static analysis related to pointers and addresses}
 \label{subsec:analysptr}
 
 Pointers \index{pointer} are an important part of the C11 and C++11
@@ -240,18 +240,49 @@ language specifications (see \cite{C11:std, CplusPlus11:std})}, but
  that with good reasons. For example, some
  \href{https://en.wikipedia.org/wiki/AVR_microcontrollers}{\textsc{Avr}
    microcontrollers} \index{avr@\textsc{Avr} microcontroller} (used in
- \index{arduino@\textscr{Arduino} platform}
- \href{https://arduino.cc/}{\textscr{Arduino} platforms} ``the working
+ \index{arduino@\textsc{Arduino} platform}
+ \href{https://arduino.cc/}{\textsc{Arduino} platforms} ``the working
  registers are mapped in as the first 32 memory addresses'' (from the
  \href{https://en.wikipedia.org/wiki/AVR_microcontrollers}{AVR
-   microcontrollers} wikipage).
+   microcontrollers} wikipage). The
+ \href{https://en.wikipedia.org/wiki/MIPS_architecture}{\textsc{Mips}
+   architecture} (used by some \textsc{Chariot} partners) has an
+ \index{mips@\textsc{Mips} architecture} instruction set without
+ proper I/O ports (see
+ \href{https://www2.cs.duke.edu/courses/fall13/compsci250/MIPS32\_QRC.pdf}{this}),
+ so input/output happens by accessing some dedicated memory locations:
+ from the IoT programmer's point of view, physical I/O happens by
+ writing into documented memory locations. The opensource
+ \href{https://riscv.org/}{\textsc{Risc-V} architecture}
+ \index{riscv@\textsc{Risc-V} architecture}, used in IoT (see
+ \cite{lee:2020:miot, waterman:2016:riscv-design})) also has
+ memory-based input/output, but admit extensions with separate
+ input/output ports.
+
+ Most IoT used operating system kernels (see
+ \cite{ArpaciDusseau14-Book}, \index{Linux@\textsc{Linux} operating
+   system} \index{kernel!operating system} \index{operating system}
+ \index{FreeBSD@\textsc{FreeBSD} operating system}
+ \index{FreeRTOS@\texts{FreeRTOS} kernel}
+ \href{https://osdev.org}{\texttt{osdev.org}}) such as the
+ \textsc{Linux} \href{http://kernel.org/}{kernel} (see also
+ \href{https://kernelnewbies.org}{\texttt{kernelnewbies.org}} and
+ \href{https://stackoverflow.com/}{\texttt{stackoverflow.com}}),
+ \href{https://www.freebsd.org/}{\textsc{FreeBSD}} and
+ \href{https://freertos.org/}{\textsc{FreeRTOS}} are managing
+ \href{https://en.wikipedia.org/wiki/Process_(computing)}{processes}
+ having each their own
+ \href{https://en.wikipedia.org/wiki/Virtual_address_space}{virtual
+   address space}and provide the
+ \href{https://en.wikipedia.org/wiki/Virtual_memory}{virtual memory}
+ abstraction, with some
+ \href{https://en.wikipedia.org/wiki/File_system}{file systems} to
+ application code.
  
 \bigskip
 
-\hrule
 
-
-Additional content of this \S\ref{subsec:analysiot} will be written for the final D1.3\textsuperscript{v2}.
+%Additional content of this \S\ref{subsec:analysiot} will be written for the final D1.3\textsuperscript{v2}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
