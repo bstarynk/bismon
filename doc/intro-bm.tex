@@ -347,6 +347,26 @@ C++) is expected to:
         {Technical Readiness Level}} \index{TRL} (TRL) and its
       implication in innovative projects, notably H2020 \index{h2020@\emph{\textsc{h2020}}} ones (see
       \cite{Heder:2017:TRL}).
+
+      \item is familiar with the idea of generating documentation from
+        software source code, either thru
+        \href{https://en.wikipedia.org/wiki/Literate_programming}{literate
+          programming} techniques, such as the
+        \index{nuweb@\texttt{nuweb} system} \index{LaTeX@\LaTeX
+          formatter} \index{doxygen@\texttt{doxygen} documentation
+          generator} \index{ocamldoc@\texttt{ocamldoc} documentation
+          generator}\index{lout@\texttt{lout} document formatter}
+        \href{http://nuweb.sourceforge.net/}{\texttt{nuweb} system}
+        combined with \href{https://www.latex-project.org/}{\LaTeX},
+        or with dedicated documentation generating tools such as
+        \href{https://www.doxygen.nl/}{\texttt{doxygen} documentation
+          generator} or
+        \href{https://caml.inria.fr/pub/docs/manual-ocaml/ocamldoc.html}{\texttt{ocamldoc}
+          documentation generator}. Documentation framework tools like
+        \href{https://pandoc.org/}{\texttt{pandoc} document converter}, small batch document formatters like \href{https://en.wikipedia.org/wiki/Lout_(software)}{\textsc{Lout} software}
+        or schemas such as
+        \href{https://docbook.org/}{\textsc{DocBook} document schama}
+        are also relevant.
       
 \end{itemize}
 
@@ -710,37 +730,37 @@ for industrial systems built in small series.
 The \textbf{\textsc{Chariot} approach} to static source analysis
 \textbf{leverages on} an \textbf{\emph{existing}} \emph{recent}
 \textbf{GCC cross-compiler}~\footnote{The actual version and the
-  concrete configuation of \emph{GCC} are important; we want to stick
-  -when reasonably possible- to the latest GCC releases, e.g. to
-  \href{https://gcc.gnu.org/gcc-8/}{GCC 8} in autumn 2018. In the
-  usual case, that \emph{GCC} is a cross-compiler. In the rare case
-  where the IoT system runs on an x86-64 device under Linux, that
-  \emph{GCC} is not a cross-, but a straight compiler.} so focuses on
+concrete configuation of \emph{GCC} are important; we want to stick
+-when reasonably possible- to the latest GCC releases, e.g. to
+\href{https://gcc.gnu.org/gcc-10/}{GCC 10} in summer 2020. In the
+usual case, that \emph{GCC} is a cross-compiler. In the rare case
+where the IoT system runs on an x86-64 device under Linux, that
+\emph{GCC} is not a cross-, but a straight compiler.} so focuses on
 GCC-compiled languages\footnote{The 2019
-  \href{https://gcc.gnu.org/}{Gnu Compiler Collection} is able to
-  compile code written in C, C++, Objective-C, Fortran, Ada, Go,
-  and/or D.}. Hence, the IoT software developer following the
-\textsc{Chariot} methodology would just add some additional flags to
-\emph{existing} \texttt{gcc} or \texttt{g++} cross-compilation
-commands, and needs simply to change slightly his/her build automation
-scripts (e.g. add a few lines to his \texttt{Makefile}). Such a gentle
-approach (see figure \ref{fig:chariotcompil}) has the advantage of not
-disturbing much the usual developer workflow and habit, and addresses
-also the \emph{junior} IoT software developer. Of course the \emph
-{details} of compilation commands would change, the commands shown in
-the figure \ref{fig:chariotcompil} are grossly simplified! The
-compilation and linking processes are communicating -via some
-additional \emph{GCC} plugins (cf. \cite{gcc-internals} \S24) doing
-inter-process communication- with our \index{persistent monitor}
+\href{https://gcc.gnu.org/}{Gnu Compiler Collection} is able to
+compile code written in C, C++, Objective-C, Fortran, Ada, Go, and/or
+D.}. Hence, the IoT software developer following the \textsc{Chariot}
+methodology would just add some additional flags to \emph{existing}
+\texttt{gcc} or \texttt{g++} cross-compilation commands, and needs
+simply to change slightly his/her build automation scripts (e.g. add a
+few lines to his \texttt{Makefile}). Such a gentle approach (see
+figure \ref{fig:chariotcompil}) has the advantage of not disturbing
+much the usual developer workflow and habit, and addresses also the
+\emph{junior} IoT software developer. Of course the \emph {details} of
+compilation commands would change, the commands shown in the figure
+\ref{fig:chariotcompil} are grossly simplified! The compilation and
+linking processes are communicating -via some additional \emph{GCC}
+plugins (cf. \cite{gcc-internals} \S24) doing inter-process
+communication- with our \index{persistent monitor}
 \index{persistent!monitor} \emph{persistent monitor}, tentatively
 called \texttt{bismon} \index{Bismon}. It is preferable (see
 \cite{gcc-runtime-library-exception}) to use free software GCC plugins
 (or free software generators for them) when compiling proprietary
 firmware with the help of these plugins; otherwise, there might
 be~\footnote{Of course, I -Basile Starynkevitch- am not a lawyer, and
-  you should check any potential licensing issues with your own
-  lawyer.} some licensing issues on the obtained proprietary binary
-firmware blob, if it was compiled with the help of some hypothetical
+you should check any potential licensing issues with your own lawyer.}
+some licensing issues on the obtained proprietary binary firmware
+blob, if it was compiled with the help of some hypothetical
 \emph{proprietary} GCC plugin.
 
 \begin{figure}[h]
