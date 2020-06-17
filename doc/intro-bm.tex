@@ -422,6 +422,81 @@ holds even for specialized Linux distributions\footnote{The Raspbian
 non-critical embedded and connected IoT systems.
 
 
+Language specifications and their implementations allow weird
+behavior; for example, simply testing in \emph{C++} or \emph{C} code
+an unitialized `bool` variable may crash the entire program (as
+explained \href{https://stackoverflow.com/a/54125820/841108}{here}),
+even if implementations doing so are not common (but definitely could
+happen in the IoT world with DSP embedded processors with VLIW
+architecture), related to so called \emph{trap representations}
+permitted by language standards (see \cite{CplusPlus11:std,
+  C11:std}). Also, some implementations of C have
+\texttt{sizeof(char)}, \texttt{sizeof(int)}, \texttt{sizeof(long)},
+\texttt{sizeof(void*)} and \texttt{alignof(char)},
+\texttt{alignof(long)} being one (e.g. on word-addressable but not
+byte-addressable Harvard architectures). \index{ia-32@\textsc{ia-32}
+  architecture} \index{x86@\textsc{x86} architecture}. The common
+Intel x86 \textsc{ia-32} bits processor architecture (still used in
+\href{https://en.wikipedia.org/wiki/Vortex86}{\textsc{Vortex86}
+  chips}) allow -with some runtime performance penalty- access to
+misaligned 64 bits floating point numbers, but the same C code would
+crash on e.g. \index{arm@\textsc{arm} architecture}
+\href{https://en.wikipedia.org/wiki/ARM_architecture}{\textsc{Arm}}
+systems, such as \index{raspberrypi@\textsc{RaspBerryPi} system}
+\href{https://raspberrypi.org/}{\textsc{RaspBerryPi}} boards. Of
+course \index{endianness}
+\href{https://en.wikipedia.org/wiki/Endianness}{endianness} matters a
+lot in any IoT devices and is very important in binary communication
+protocols
+(e.g. \href{https://en.wikipedia.org/wiki/Serial_ATA}{\textsc{Sata}}
+\index{sata@\textsc{Sata} protocol},
+\href{https://en.wikipedia.org/wiki/Ethernet}{\textsc{Ethernet}}
+\index{ethernet@\textsc{Ethernet} protocol} or
+\href{https://en.wikipedia.org/wiki/IEEE_802.11}{\textsc{Ieee 802.11}}
+\index{ieee802@\textsc{Ieee 802.11} protocol} \index{wifi}
+\textsc{Wifi}, \textsc{Li-Fi} (see \cite{Khandal:2014:lifi})
+\index{lifi@\textsc{Li-Fi} protocol} or \index{usb@\textsc{Usb}
+  protocol} \href{https://en.wikipedia.org/wiki/USB}{USB} or in the
+automotive industry the
+\href{https://en.wikipedia.org/wiki/CAN_bus}{\textsc{CAN} bus}. It
+also matters in network protocol stacks, including
+\index{ip@\textsc{Ip} protocol}
+\href{https://en.wikipedia.org/wiki/Internet_protocol_suite}{\textsc{Ip}}
+(see \cite{Cerf:2005:protocol}) or \index{asn1@\textsc{ASN-1}}
+\href{https://en.wikipedia.org/wiki/ASN.1}{\textsc{Asn-1}} (see
+\cite{Barry:1992:ASN1}), used in cryptographic certificates (such as
+\href{https://en.wikipedia.org/wiki/X.509}{X.509} for
+\index{x509@\textsc{X.509} protocol}
+\href{https://en.wikipedia.org/wiki/HTTPS}{\textsc{Https}}
+\index{https@\textsc{Https} protocol} secure web servers. The recent
+\href{https://en.wikipedia.org/wiki/HTTP/2}{\textsc{Http/2}} web
+protocol is a binary one and requires to care about endianness also.
+\index{Xwin@\textsc{X11} window system}
+\href{https://en.wikipedia.org/wiki/X_Window_System_protocols_and_architecture}{X
+  Window System protocols}, \index{Wayland@\textsc{Wayland} display
+  server}
+\href{https://en.wikipedia.org/wiki/Wayland_(display_server_protocol)}{\textsc{Wayland}
+  display protocols} \index{ssh@\textsc{Ssh} secure shell}
+\href{https://en.wikipedia.org/wiki/Secure_Shell}{SSH},
+\index{rfb@\textsc{Rfb} - remote framebuffer protocol}
+\href{https://en.wikipedia.org/wiki/RFB_protocol}{\textsc{Rfb}
+  protocol} are also binary, with endianness issues, and extremely
+popular in non-critical IoT systems based on Linux. For multimedia
+connected consumer devices,
+\href{https://en.wikipedia.org/wiki/HDMI}{\textsc{Hdmi}} on the
+hardware side, and
+\href{https://en.wikipedia.org/wiki/MPEG-4}{\textsc{Mpeg-4}} for
+audio/video encoding are also binary protocols or encodings. The
+\href{https://en.wikipedia.org/wiki/Ogg}{\textsc{Ogg} container
+  format} is free of patent and should be prefered for audio
+encoding. The many \index{jpeg@\textsc{Jpeg} image encoding}
+\href{https://en.wikipedia.org/wiki/JPEG}{\textsc{Jpeg} digital image
+  formats}, very common in digital consumer
+photography\index{photography!digital}, needs also endian-sensitive
+binary processing, and is increasingly used in most IoT connected
+cameras (presumably Linux based), some of which are still designed in
+Europe.
+
 \medskip
 
 Static source code analysis tools \index{static analysis!tool} can -generally speaking-
