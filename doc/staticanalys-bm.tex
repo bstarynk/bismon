@@ -289,7 +289,7 @@ language specifications (see \cite{C11:std, CplusPlus11:std})}, but
  or C++ libraries and started thru their \texttt{main} function), for
  example some web server running under \textsc{Linux} on something
  similar to a \index{raspberrypi@\textsc{RaspBerryPi} system}
- \textsc{RaspBerryPi}} board), dynamically allocated memory is very
+ \textsc{RaspBerryPi} board), dynamically allocated memory is very
    important in practice.
 
  In hosted environments, dynamic memory allocation often uses
@@ -320,7 +320,7 @@ language specifications (see \cite{C11:std, CplusPlus11:std})}, but
  important concerns: \index{buffer overflow} \index{call stack}
  \index{stack overflow}
  \href{https://en.wikipedia.org/wiki/Buffer_overflow}{buffer
-   overflows} and \href{https://en.wikipedia.org/wiki/Call_stack}[call
+   overflows} and \href{https://en.wikipedia.org/wiki/Call_stack}{call
    stack} management, including avoidance of
  \href{https://en.wikipedia.org/wiki/Stack_overflow}{stack
    overflow}. Call stacks are needed for any multi-threading or
@@ -344,18 +344,19 @@ language specifications (see \cite{C11:std, CplusPlus11:std})}, but
  Depending on the development efforts (so costs) available and on the
  criticity of the IoT software,
  \href{https://en.wikipedia.org/wiki/Out_of_memory}{out of memory
-   condition} \index{out of memory} are handled differently. A lot of
+   conditions} \index{out of memory} are handled differently. A lot of
  C code incorrectly assumes that \texttt{malloc} always\footnote{See
    \href{https://stackoverflow.com/a/8460584/841108}{this
      joke-implementation of \texttt{malloc}}, conforming to the letter
    but not the spirit of the C standard.} succeed. In practice, this
- assumption is generally\footnote{On Linux, be aware of \href{memory
-     overcommit}{http://www.etalabs.net/overcommit.html} which could
-   \href{https://unix.stackexchange.com/q/441364/50557}{be disliked}.}
- correct, so for non-critical IoT software\footnote{As a consumer, I
-   guess that most consumer rented Internet boxes - generally running
-   some Linux - do have some memory leaks, and that could explain why
-   rebooting them weeking improve the user experience.} it does have
+ assumption is generally\footnote{On Linux, be aware of
+   \href{http://www.etalabs.net/overcommit.html}{memory overcommit}
+   which could \href{https://unix.stackexchange.com/q/441364/50557}{be
+     disliked}.}  correct, so for non-critical IoT
+ software\footnote{As a consumer, I guess that most consumer rented
+   Internet boxes - generally running some Linux - do have some
+   system-wide memory leaks, and that observation could explain why
+   rebooting them weekly improve the user experience.} it does have
  some economical sense.
  
 \bigskip
