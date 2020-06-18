@@ -13,13 +13,13 @@ non-stability of \emph{GCC} internal representations justify some
 semi-automatic approach in extracting them (see \S\ref{subsec:analygcc}
 below).
 
-The rest of this chapter will be written in the final D1.3\textsuperscript{v2} version.
+%The rest of this chapter will be written in the final D1.3\textsuperscript{v2} version.
 
-A significant part of this chapter should be generated (like \emph{GCC
-  MELT} generated its documentation, see
-\cite{Starynkevitch-GCCMELTweb}) from the persistent state of
-\emph{Bismon}. Perhaps this chapter should be put after the ``using
-Bismon'' chapter (\S\ref{sec:using}).
+%-A significant part of this chapter should be generated (like \emph{GCC
+%-  MELT} generated its documentation, see
+%-\cite{Starynkevitch-GCCMELTweb}) from the persistent state of
+%-\emph{Bismon}. Perhaps this chapter should be put after the ``using
+%-Bismon'' chapter (\S\ref{sec:using}).
 
 \subsection{static analysis of \emph{GCC} code}
 \label{subsec:analygcc}
@@ -278,6 +278,85 @@ language specifications (see \cite{C11:std, CplusPlus11:std})}, but
  abstraction, with some
  \href{https://en.wikipedia.org/wiki/File_system}{file systems} to
  application code.
+
+ \medskip
+
+ In most C or C++ source programs, either in some \emph{freestanding
+   environment} (like operating system kernels, low-end embedded
+ software without any \texttt{main}, e.g. cheap
+ \index{arduino@\textsc{Arduino} platform} \textsc{Arduino}-like
+ devices) or in a \emph{hosted environment} (so using the standard C
+ or C++ libraries and started thru their \texttt{main} function), for
+ example some web server running under \textsc{Linux} on something
+ similar to a \index{raspberrypi@\textsc{RaspBerryPi} system}
+ \textsc{RaspBerryPi}} board), dynamically allocated memory is very
+   important in practice.
+
+ In hosted environments, dynamic memory allocation often uses
+ functions like
+ \href{https://man7.org/linux/man-pages/man3/malloc.3.html}{\texttt{malloc}}
+ or its friends \texttt{calloc} with \texttt{realloc} and
+ \texttt{free}. On some operating systems, it could happen thru
+ lower-level system calls such as
+ \href{https://man7.org/linux/man-pages/man2/mmap.2.html}{\texttt{mmap}}
+ or
+ \href{https://man7.org/linux/man-pages/man2/sbrk.2.html}{\texttt{sbrk}}. Deallocation
+ would use other system calls such as
+ \href{https://man7.org/linux/man-pages/man2/munmap.2.html}{\texttt{munmap}}.
+
+ Many freestanding environments provide more or less equivalent memory
+ allocation facilities. For instance,
+ \index{FreeRTOS@\textsc{FreeRTOS} kernel} the \textsc{FreeRTOS}
+ kernel has in some cases a \texttt{pvPortMalloc} function with a
+ behavior close to \texttt{malloc}, and the
+ \index{Linux@\textsc{Linux} kernel} the \textsc{Linux} kernel
+ \href{http://www.jikos.cz/jikos/Kmalloc_Internals.html}{uses
+   \texttt{kmalloc}}, with other deallocating functions close in
+ behavior to \texttt{free}. But on \index{arduino@\textsc{Arduino}
+   platform} \textsc{Arduino} devices using \texttt{malloc} is indeed
+ \href{https://arduino.stackexchange.com/q/682/12068}{discouraged}.
+
+ Dynamic memory allocation is often used but relevant for two
+ important concerns: \index{buffer overflow} \index{call stack}
+ \index{stack overflow}
+ \href{https://en.wikipedia.org/wiki/Buffer_overflow}{buffer
+   overflows} and \href{https://en.wikipedia.org/wiki/Call_stack}[call
+   stack} management, including avoidance of
+ \href{https://en.wikipedia.org/wiki/Stack_overflow}{stack
+   overflow}. Call stacks are needed for any multi-threading or
+ multi-tasking approach. Junior developers may easily write code that
+ blows them up (e.g. with a too naive recursion in C, or by having
+ huge automatic variables). A rule of thumb is to avoid needing, in
+ hosted environments, call stacks above a megabyte, or call frames
+ bigger than a few kilobytes. With recent \texttt{gcc} compilers,
+ \index{wstackusage@\texttt{-Wstack-usage} warning option} passing
+ something like \texttt{-Wstack-usage=2048} to the \texttt{gcc}
+ compilation command is practically helpful.
+
+ Of course, call stacks are a scare resource, and even on Linux it is
+ generally unreasonable to have many thousands of them in the same
+ process. This explains why \index{thread} \emph{thread}-s are
+ expensive, and why the \index{pthread@\textsc{Pthread} library}
+ \href{https://computing.llnl.gov/tutorials/pthreads/}{\textsc{Pthread}}
+ function \texttt{pthread \_create} (or C++11 \texttt{std::thread}-s)
+ should be used with caution.
+
+ Depending on the development efforts (so costs) available and on the
+ criticity of the IoT software,
+ \href{https://en.wikipedia.org/wiki/Out_of_memory}{out of memory
+   condition} \index{out of memory} are handled differently. A lot of
+ C code incorrectly assumes that \texttt{malloc} always\footnote{See
+   \href{https://stackoverflow.com/a/8460584/841108}{this
+     joke-implementation of \texttt{malloc}}, conforming to the letter
+   but not the spirit of the C standard.} succeed. In practice, this
+ assumption is generally\footnote{On Linux, be aware of \href{memory
+     overcommit}{http://www.etalabs.net/overcommit.html} which could
+   \href{https://unix.stackexchange.com/q/441364/50557}{be disliked}.}
+ correct, so for non-critical IoT software\footnote{As a consumer, I
+   guess that most consumer rented Internet boxes - generally running
+   some Linux - do have some memory leaks, and that could explain why
+   rebooting them weeking improve the user experience.} it does have
+ some economical sense.
  
 \bigskip
 
