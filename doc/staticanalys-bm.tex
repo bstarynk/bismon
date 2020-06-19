@@ -282,7 +282,7 @@ language specifications (see \cite{C11:std, CplusPlus11:std})}, but
  \medskip
 
  In most C or C++ source programs, either in some \emph{freestanding
-   environment} (like operating system kernels, low-end embedded
+ environment} (like operating system kernels, low-end embedded
  software without any \texttt{main}, e.g. cheap
  \index{arduino@\textsc{Arduino} platform} \textsc{Arduino}-like
  devices) or in a \emph{hosted environment} (so using the standard C
@@ -290,7 +290,9 @@ language specifications (see \cite{C11:std, CplusPlus11:std})}, but
  example some web server running under \textsc{Linux} on something
  similar to a \index{raspberrypi@\textsc{RaspBerryPi} system}
  \textsc{RaspBerryPi} board), dynamically allocated memory is very
-   important in practice.
+ important in practice. See also \cite{karvinen:2014:make} and
+ \href{https://www.raspberrypi.org/}{\texttt{raspberrypi.org}} and
+ \href{https://www.arduino.cc/}{\texttt{arduino.cc}} websites.
 
  In hosted environments, dynamic memory allocation often uses
  functions like
@@ -340,8 +342,8 @@ language specifications (see \cite{C11:std, CplusPlus11:std})}, but
  \href{https://computing.llnl.gov/tutorials/pthreads/}{\textsc{Pthread}}
  function \texttt{pthread\_create} (or C++11 \texttt{std::thread}-s)
  should be used with caution. See also
- \href{https://man7.org/linux/man-pages/man7/pthreads.7.html}{\texttt{pthreads(7)},
-   \href{https://man7.org/linux/man-pages/man7/nptl.7.html}{\texttt{nptl(7)}
+ \href{https://man7.org/linux/man-pages/man7/pthreads.7.html}{\texttt{pthreads(7)}},
+   \href{https://man7.org/linux/man-pages/man7/nptl.7.html}{\texttt{nptl(7)}}
      and the source code of \index{glibc@\textsc{Glibc} library}
      \index{musl@\textsc{Musl libc} library}
      \href{https://www.gnu.org/software/libc/}{GNU \textsc{Glibc}} and
@@ -429,11 +431,12 @@ language specifications (see \cite{C11:std, CplusPlus11:std})}, but
  \end{itemize}
 
  Pragmatically good reasons to avoid testing such error conditions
- \index{error condition} include: cost of additional development
- efforts for extra C code which is difficult to or reproduce
- \index{test} \index{fault injection} \index{reproducing!faults} test
- without fault injections, and code memory space \index{code}
- \index{memory!code} on cheap devices.
+ \index{error condition} include: 1. cost of additional development
+ efforts for extra C code which is difficult to test in a reproducible
+ way \index{test} \index{fault injection} \index{reproducing!faults}
+ without fault injections; 2. scarse code memory space \index{code}
+ \index{memory!code} (e.g. in some read-only memory) \index{read-only
+   memory} on cheap devices.
 
  Please notice that above error conditions are related: for example, a
  loss of time may corrupt an entire file system,
@@ -547,8 +550,9 @@ language specifications (see \cite{C11:std, CplusPlus11:std})}, but
    keyword} \texttt{decltype} keywords are enabling some \emph{type
  inference} \index{type inference} (see \cite{pierce:2002:types,
    Stroustrup:2014:CplusPlus, Stroustrup:2020:thriving,
-   CplusPlus11:std}). In practice, compilers don't even try to find
- the best register allocation possible, but just a good enough one.
+   CplusPlus11:std}). In practice, industrial compilers don't even try
+ to find the best register allocation possible, but just a good enough
+ one (otherwise compilation time could be prohibitive). Be aware that
  \href{https://en.wikipedia.org/wiki/Flexible_array_member}{flexible
    array members} are also a C language feature, which, combined with
  \index{cast!pointer} \index{union@\texttt{union}} pointer casts (or
