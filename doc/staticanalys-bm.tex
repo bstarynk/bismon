@@ -407,7 +407,25 @@ language specifications (see \cite{C11:std, CplusPlus11:std})}, but
        \href{https://en.wikipedia.org/wiki/Ntpd}{\textsc{NTPd}
          service}
 
-       \item synchronization bugs related to multi-threading or concurrent systems, e.g. with \textsc{Posix threads}, See \cite{goubault:2005:practical, sangiorgi:2003:pi, david:2013:everything, guerraoui:2018:concurrent-systems}
+       \item synchronization bugs related to multi-threading or
+         concurrent systems, e.g. with \textsc{Posix threads}, See
+         \cite{goubault:2005:practical, sangiorgi:2003:pi,
+           david:2013:everything,
+           guerraoui:2018:concurrent-systems}. Concurrency is also a
+         concern of client-server architectures, including
+         \href{https://en.wikipedia.org/wiki/Web_service}{Web
+           services} \index{web service} using
+         \href{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol}{HTTP}
+         \index{http@\emph{HTTP} (web protocol)},
+         \href{https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol}{SMTP}
+         \index{smtp@\emph{SMTP} (mail sending protocol)},
+         \href{https://en.wikipedia.org/wiki/Internet_Message_Access_Protocol}{IMAP}
+         \index{imap@\emph{IMAP} (email retrieval protocol)}
+         \index{email} (perhaps mixed with
+         \href{https://en.wikipedia.org/wiki/Transport_Layer_Security}{TLS}
+         \index{tls@\emph{TLS} cryptographic protocol}
+         \index{cryptographic protocol}).
+         
  \end{itemize}
 
  Pragmatically good reasons to avoid testing such error conditions
@@ -502,11 +520,40 @@ language specifications (see \cite{C11:std, CplusPlus11:std})}, but
  developers of both genders, given the complexity of current software
  intensive systems).
 
- Notice that exact static prediction of call stack depth is
- impossible, because of
+ Notice that exact static prediction of call stack depth is in
+ practice impossible, because of
  \href{https://en.wikipedia.org/wiki/Rice's_theorem}{Rice's theorem}
- \index{rice@Rice's theorem}, and since compilers may put automatic
- variables in processor registers.
+ \index{rice@Rice's theorem} -and usage in C code of the
+ \href{https://man7.org/linux/man-pages/man3/alloca.3.html}{\texttt{alloca(3)}}
+ stack allocation primitive, or of
+ \href{https://en.wikipedia.org/wiki/Variable-length_array}{variable-length
+   arrays} - and since compilers may put automatic variables in
+ \index{asm@\texttt{asm} keyword} processor registers. For C or C++
+ compilers handling the \texttt{asm} keyword (in recent \textsc{Gcc}
+ compilers, it provides even
+ \href{https://gcc.gnu.org/onlinedocs/gcc/Using-Assembly-Language-with-C.html}{powerful
+   language extensions} to C or C++), register allocation becomes a
+ nightmare for the compiler writer, since the \texttt{register}
+ \index{register@\texttt{register} keyword} keyword tend to become
+ obsolete or ill-defined \index{volatile@\texttt{volatile} keyword}
+ (like the \texttt{volatile} one). So it is strongly tied to the
+ \href{https://en.wikipedia.org/wiki/Register_allocation}{register
+   allocation} issue, which is a difficult sub-problem inside most
+ optimizing compilers (see \cite{eisl:2016:traceregalloc,
+   Chaitin:1981:regalloc, Aho:2006:DragonBook}).  \index{register
+   allocation} \index{alloca@\texttt{alloca} stack-allocation
+   primitive}. In recent C++ language dialects, the \texttt{auto} and
+ \index{auto@\texttt{auto} keyword} \index{decltype@\texttt{decltype}
+   keyword} \texttt{decltype} keywords are enabling some \emph{type
+ inference} \index{type inference} (see \cite{pierce:2002:types,
+   Stroustrup:2014:CplusPlus, Stroustrup:2020:thriving,
+   CplusPlus11:std}). In practice, compilers don't even try to find
+ the best register allocation possible, but just a good enough one.
+ \href{https://en.wikipedia.org/wiki/Flexible_array_member}{flexible
+   array members} are also a C language feature, which, combined with
+ \index{cast!pointer} \index{union@\texttt{union}} pointer casts (or
+ equivalently used in \texttt{union} of pointers), permit compilers to
+ do arbitrarily sophisticated optimizations.
  
 \bigskip
 
