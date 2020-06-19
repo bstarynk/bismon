@@ -338,26 +338,175 @@ language specifications (see \cite{C11:std, CplusPlus11:std})}, but
  process. This explains why \index{thread} \emph{thread}-s are
  expensive, and why the \index{pthread@\textsc{Pthread} library}
  \href{https://computing.llnl.gov/tutorials/pthreads/}{\textsc{Pthread}}
- function \texttt{pthread \_create} (or C++11 \texttt{std::thread}-s)
- should be used with caution.
+ function \texttt{pthread\_create} (or C++11 \texttt{std::thread}-s)
+ should be used with caution. See also
+ \href{https://man7.org/linux/man-pages/man7/pthreads.7.html}{\texttt{pthreads(7)},
+   \href{https://man7.org/linux/man-pages/man7/nptl.7.html}{\texttt{nptl(7)}
+     and the source code of \index{glibc@\textsc{Glibc} library}
+     \index{musl@\textsc{Musl libc} library}
+     \href{https://www.gnu.org/software/libc/}{GNU \textsc{Glibc}} and
+     of \href{https://musl.libc.org/}{\texttt{musl libc}}.
 
  Depending on the development efforts (so costs) available and on the
  criticity of the IoT software,
  \href{https://en.wikipedia.org/wiki/Out_of_memory}{out of memory
    conditions} \index{out of memory} are handled differently. A lot of
- C code incorrectly assumes that \texttt{malloc} always\footnote{See
-   \href{https://stackoverflow.com/a/8460584/841108}{this
-     joke-implementation of \texttt{malloc}}, conforming to the letter
-   but not the spirit of the C standard.} succeed. In practice, this
+ C code incorrectly assumes that \index{malloc@\texttt{malloc}}
+ \texttt{malloc} always\footnote{See
+ \href{https://stackoverflow.com/a/8460584/841108}{this
+   joke-implementation of \texttt{malloc}}, conforming to the letter
+ but not the spirit of the C standard.} succeed. In practice, this
  assumption is generally\footnote{On Linux, be aware of
-   \href{http://www.etalabs.net/overcommit.html}{memory overcommit}
-   which could \href{https://unix.stackexchange.com/q/441364/50557}{be
-     disliked}.}  correct, so for non-critical IoT
- software\footnote{As a consumer, I guess that most consumer rented
-   Internet boxes - generally running some Linux - do have some
-   system-wide memory leaks, and that observation could explain why
-   rebooting them weekly improve the user experience.} it does have
- some economical sense.
+ \href{http://www.etalabs.net/overcommit.html}{memory overcommit}
+ which could \href{https://unix.stackexchange.com/q/441364/50557}{be
+   disliked}.}  correct, so for non-critical IoT software\footnote{As
+ a consumer, I guess that most consumer rented Internet boxes -
+ generally running some Linux - do have some system-wide memory leaks,
+ and that observation could explain why rebooting them weekly improve
+ the user experience.} it does have some economical sense.
+
+
+ Most non-critical IoT software (e.g. inside consumer devices, perhaps
+ \index{raspberrypi@\textsc{RaspBerryPi} system} \textsc{RaspBerryPi}
+ based, or wifi routers based upon \index{openwrt@\textsc{OpenWrt}
+   router} \href{https://openwrt.org/}{\textsc{OpenWrt} router}
+ software) won't care about and won't even handle (or even try to
+ cleverly detect and report) rare error conditions or failures
+ \index{failure!of standard C functions} such as :
+
+ \begin{itemize}
+
+ \item rare out of memory conditions \index{memory} (e.g. \texttt{malloc} failures)
+
+ \item file system \index{file system} errors (e.g. \texttt{fopen}
+   failure on some \index{configuration file} \index{file system}
+   \index{etc@\texttt{/etc/} configuration directory} configuration
+   file under \texttt{/etc/}), including I/O errors \index{I/O error}
+   \index{fscanf@\texttt{fscanf} function} \index{fread@\texttt{fread}
+     function} (e.g. \texttt{fscanf} or \texttt{fread} failures) due
+   \index{USB storage} to hardware failure (like malfunctioning USB
+   storage keys).
+
+     \item floating point \index{floating point!precision} precision
+       issues. \index{precision} See the \index{stance@\textsc{Stance}
+         project} \href{http://www.stance-project.eu/}{\textsc{Stance}
+         European project} (grant 317753), the
+       \href{https://floating-point-gui.de/}{\texttt{floating-point-gui.de}}
+       website, and \cite{Kiss:2015:combining, goubault:2011:static}.
+
+     \item losing \index{time} time. See the
+       \index{time7@\texttt{time(7)}}
+       \href{https://man7.org/linux/man-pages/man7/time.7.html}{\texttt{time(7)}}
+       \texttt{man} page for an interesting overview. A battery
+       powered \index{clock!real-time}
+       \href{https://en.wikipedia.org/wiki/Real-time_clock}{real-time
+         clock} chip is cheap, but in most IoT consumer devices
+       (typically routers or printers) it is not useful enough, since
+       they are often connected to some distant
+       \index{ntp@\textsc{NTP} - network time protocol}
+       \href{https://en.wikipedia.org/wiki/Ntpd}{\textsc{NTPd}
+         service}
+
+       \item synchronization bugs related to multi-threading or concurrent systems, e.g. with \textsc{Posix threads}, See \cite{goubault:2005:practical, sangiorgi:2003:pi, david:2013:everything, guerraoui:2018:concurrent-systems}
+ \end{itemize}
+
+ Pragmatically good reasons to avoid testing such error conditions
+ \index{error condition} include: cost of additional development
+ efforts for extra C code which is difficult to or reproduce
+ \index{test} \index{fault injection} \index{reproducing!faults} test
+ without fault injections, and code memory space \index{code}
+ \index{memory!code} on cheap devices.
+
+ Please notice that above error conditions are related: for example, a
+ loss of time may corrupt an entire file system,
+ \index{corruption!file system} and timing information (or meta-data)
+ \index{timing} \index{meta-data} is quite often kept and needed in
+ small \href{http://sqlite.org/}{\textsc{Sqlite} databases}.
+ \index{sqlite@\textsc{Sqlite} database library}. The remote backup
+ \index{database} \index{remote backup} \index{backup!remote} of such
+ small or large databases (see \cite{Date:2005:Database-in-Depth,
+   kornacker:2015:impala}) could happen on a periodical basis (see
+ \href{https://man7.org/linux/man-pages/man5/crontab.5.html}{\texttt{crontab(5)}}
+ and \index{crontab@\texttt{crontab(5)}}
+ \index{rsync@\texttt{rsync(1)}}
+ \href{https://man7.org/linux/man-pages/man1/rsync.1.html}{\texttt{rsync(1)}}
+ for
+ more). \href{https://softwareengineering.stackexchange.com/a/332071/40065}{Large}
+ relational databases are practically needed for most machine learning
+ \index{machine learning} algorithms (see
+ \cite{flach:2012:machine-learning}), which are usually concurrent
+ \index{concurrency} programs. So a non-critical machine-learning
+ distributed IoT system would probably be made of cheap IoT devices
+ communicating with some powerful, semi-centralized, database
+ \index{weather prediction} \index{meteorological!computing grids}
+ \index{computing grids} servers. Current meteorological computing
+ grids for
+ \href{https://en.wikipedia.org/wiki/Numerical_weather_prediction}{numerical
+   weather prediction} operated by national meteorological services
+ such as \href{http://meteofrance.com/}{Météo-France} require such
+ continent-wide IoT networks, and so does \index{forecast!avalanche}
+ \index{avalanche} avalanche detection and forecasting in European
+ \index{smart cities} \index{city!smart} \index{grid!smart}
+ \index{power!grid}
+ mountains. \href{https://en.wikipedia.org/wiki/Smart_city}{Smart
+   cities} networks and
+ \href{https://en.wikipedia.org/wiki/Smart_grid}{smart grids} (see
+ \cite{belarbi:2004:vehicle, mclaren:2015:sharing,
+   delons:2008:pirandello, bakken:2014:smart-grids} and
+ \index{\textsc{Grid4eu} project} the
+ \href{https://www.enedis.fr/grid4eu}{\textsc{Grid4Eu} project}) also
+ need a large grid of many communicating IoT devices.
+
+ In \emph{some} even critical IoT devices (e.g. medical devices
+ \index{medical device} such \index{Covid-19@\textsc{Covid 19}
+   illness} as a \href{https://github.com/Recovid/}{Covid-19 breathing
+   ventilator}), losing power or time for a few seconds is acceptable,
+ as long as there is some hardware alarm (e.g. electronic bell)
+ informing professional users (e.g. medical nurses).
+
+ Most non-critical IoT devices could \emph{sometimes} access by the
+ network a remote database \index{database} \index{remote!database},
+ such as some \href{https://www.postgresql.org/}{\textsc{PostGreSQL}
+   server}, or some \href{https://www.mongodb.com/}{\textsc{MongoDB}
+   document database}. Losing the connection to such a remote database
+ is generally affordable, if the connection loss don't last too
+ long. On the other hand, a posteriori adding database checkpoint
+ \index{checkpointing!application} \index{scientific code} \index{oil
+   industry} \index{automotive crash} \index{super-compuiters}
+ \index{code refactoring} \index{refactoring!code}
+ \index{code!scientific} \index{code!refactoring} facilities to some
+ existing large long-running scientific code (think of oil industry
+ simulation software, or digital twins for automotive crash
+ \index{simulation software} \index{twins!digital} simulations, both
+ running for months of super computer time) requires some significant
+ development efforts or code refactoring. Of course European particle
+ accelerators such as
+ \href{https://home.cern/science/accelerators/}{CERN \textsc{Elena} or
+   \textsc{Lhc} installations} are deploying wide networks of
+ heterogenous IoT devices, but probably can afford partial failure of
+ some of them. Cyber-attacks on smart grids
+ (e.g. \cite{lee:2016:analysis-cyberattack}) could justify an increase
+ of European research funding on long-term mixed static analysis and
+ dynamic machine learning based techniques, but require funding of
+ projects with a time span above three years and involving tight
+ cooperation thru open source projects (see \cite{Brooks:1995:MM,
+   Lerner-Tirole:2000:economics-open-source,
+   Tirole:2018:eco-bien-commun, hashem:2015:rise}). See also the related
+ \index{softwareheritage@\textsc{SoftwareHeritage} project}
+ \href{https://www.softwareheritage.org/}{\textsc{SoftwareHeritage}}
+ project. See
+ \href{https://en.wikipedia.org/wiki/Brooks's_law}{Brook's law} and
+ observation -in 1975- that ``while it takes one woman nine months to
+ make one baby, "nine women can't make a baby in one month"'' (to be
+ scaled in 2020 by a factor of 10x and generalized to software
+ developers of both genders, given the complexity of current software
+ intensive systems).
+
+ Notice that exact static prediction of call stack depth is
+ impossible, because of
+ \href{https://en.wikipedia.org/wiki/Rice's_theorem}{Rice's theorem}
+ \index{rice@Rice's theorem}, and since compilers may put automatic
+ variables in processor registers.
  
 \bigskip
 
