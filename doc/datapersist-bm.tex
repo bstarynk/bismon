@@ -777,30 +777,32 @@ objects to be scanned is also used. Then an emission phase is dumping
 them (one data file per object space). A \emph{dumper} \index{dumper}
 transient object -of class \texttt{dumper\_object} \index{dumper
   object@\texttt{dumper\_object}} is made to reify the ``global'' dump
-status (notably the queue of objects to scan, and the hash-set of dumped
-objects). So dumping happens by sending messages with selectors -used
-by the dumping routine sending messages- like \texttt{dump\_scan},
-\texttt{dump\_value}, \texttt{dump\_data}.  The \texttt{dump\_scan}
-\index{dump scan@\texttt{dump\_scan}} message is sent\footnote{The
-  \emph{dumper} object is the additional argument to
-  \texttt{dump\_scan}.} to a scanned object having some payload during
+status (notably the queue of objects to scan, and the hash-set of
+dumped objects). So dumping happens by sending messages with selectors
+-used by the dumping routine sending messages- like
+\texttt{dump\_scan}, \texttt{dump\_value}, \texttt{dump\_data}.  The
+\texttt{dump\_scan} \index{dump scan@\texttt{dump\_scan}} message is
+sent\footnote{The \emph{dumper} object is the additional argument to
+\texttt{dump\_scan}.} to a scanned object having some payload during
 the scanning phase. The \texttt{dump\_value} \index{dump
   value@\texttt{dump\_value}} message is sent\footnote{Additional
-  arguments to to \texttt{dump\_value} are a string buffer object, the
-  \emph{dumper} object, and the depth as a tagged integer. Notice that
-  dumping of integers is implemented with the \texttt{dump\_value}
-  method of class \texttt{int}, dumping of tuples is implemented with
-  the \texttt{dump\_value} method of class \texttt{tuple}, dumping of
-  object references as objids \index{objid} is implemented with the
-  \texttt{dump\_value} method of class \texttt{object}, etc....} is to
+arguments to to \texttt{dump\_value} are a string buffer object, the
+\emph{dumper} object, and the depth as a tagged integer. Notice that
+dumping of integers is implemented with the \texttt{dump\_value}
+method of class \texttt{int}, dumping of tuples is implemented with
+the \texttt{dump\_value} method of class \texttt{tuple}, dumping of
+object references as objids \index{objid} is implemented with the
+\texttt{dump\_value} method of class \texttt{object}, etc....} is to
 dumped values during the emission phase.  The \texttt{dump\_data}
 \index{dump data@\texttt{dump\_data}} message is sent\footnote{Extra
-  arguments to \texttt{dump\_value} are: the \emph{dumper} object and
-  the string buffer object.} when emitting an object content -notably
+arguments to \texttt{dump\_value} are: the \emph{dumper} object and
+the string buffer object.} when emitting an object content -notably
 its payload - \index{payload} if relevant-, after having dumped its
 class, attributes and components. But attributes \index{attribute}
 which are direct or indirect instances of
-\texttt{temporary\_attribute\_object} are not dumped.
+\texttt{temporary\_attribute\_object} are not dumped. Coupling
+databases with graphical interfaces and \textsc{Gcc} plugins have been
+achieved in \cite{Dean:2009:visual}.
 
 
 
