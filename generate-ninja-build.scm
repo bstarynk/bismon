@@ -179,8 +179,10 @@
 (define bm-gcc (or (getenv "BISMON_CC") "gcc-9"))
 (define bm-g++ (or (getenv "BISMON_CXX") "g++-9"))
 
-;;; these are the GCC compilers used to compile IoT code
-(define bm-gccplugin-packages '("glib-2.0" "jansson" "libcurl" "libssh2" "uuid" "openssl"))
+;;; these are the GCC compilers used to compile IoT code ; we use the
+;;; glibmm (see https://developer.gnome.org/glibmm/stable/) in GCC
+;;; plugins
+(define bm-gccplugin-packages '("glibmm-2.4" "glib-2.0" "jansson" "libcurl" "libssh2" "uuid" "openssl"))
 
 (define bm-iot-gcc (or (getenv "IOTBISMON_CC") "gcc-10"))
 (define bm-iot-g++ (or (getenv "IOTBISMON_CXX") "g++-10"))
@@ -335,7 +337,7 @@
 (format #t "~%")
 
 (format #t "## bm-gccplugin-dir= ~a before gccplugin_preproflags~%" bm-gccplugin-dir)
-(format #t "gccplugin_preproflags = -DBISMONGCCPLUGIN -H -I/usr/local/include -I~a/include~%" bm-gccplugin-dir)
+(format #t "gccplugin_preproflags = -DBISMONGCCPLUGIN -H -I/usr/local/include -I~a/include $gccplugin_pkg_cflags~%" bm-gccplugin-dir)
 (format #t "cflags = $cwarnflags $defpreproflags $incflags $optimflags $pkg_cflags~%")
 (format #t "cxxflags = $cxxwarnflags $defpreproflags $incflags $optimflags $pkg_cflags~%")
 
@@ -553,7 +555,7 @@
  bm-cxxfiles)
 
 
-;;; the GCC plugins
+;;; the GCC plugins (as C++ code)
 (format #t "~%~%# GCC plugin ~d files : ~a ~%" (length bm-gccplugin-cxxfiles)  bm-gccplugin-cxxfiles)
 (for-each (lambda (curplugincxx)
 	    (format #t "## GCCplugin file ~a~%" curplugincxx)

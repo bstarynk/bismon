@@ -47,6 +47,7 @@
 
 #include <curl/curl.h>
 
+#include <glibmm/keyfile.h>
 
 #include "gcc-plugin.h"
 #include "config.h"

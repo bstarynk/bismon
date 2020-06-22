@@ -47,6 +47,8 @@ plugin_init (struct plugin_name_args *plugin_info,
          " (l@%d)\n",
          (int) getpid(), __LINE__);
 
+  Glib::KeyFile keyfile;
+  
   return 0;
 } // end plugin_init
 
