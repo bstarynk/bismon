@@ -1,4 +1,5 @@
 // file BM_makeconst.cc
+// SPDX-License-Identifier: GPL-3.0-or-later
 
 /***
     BISMON
