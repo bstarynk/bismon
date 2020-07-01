@@ -1,5 +1,5 @@
 // file cmacros_BM.h
-
+// SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
     Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)

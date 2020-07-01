@@ -63,7 +63,13 @@ all: | build.ninja
 	$(MAKE) programs modules jstimestamp bismon-metaplugin
 	@printf "\n******* done making all in %s *********\n" $$PWD
 
-programs: bismon modules
+BM_compile_module: BM_compile_module.cc
+	$(COMPILE.cc)  -O -g -Wall -Wextra $< -o $@
+
+BM_compile_tempmodule: BM_compile_tempmodule.cc
+	$(COMPILE.cc)  -O -g -Wall -Wextra $< -o $@
+
+programs: bismon BM_compile_module BM_compile_tempmodule modules
 
 verbose: | build.ninja
 	$(NINJA) -v
@@ -89,7 +95,8 @@ build.ninja: generate-ninja-build.scm
 
 
 modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
-	$(CCACHE) $(LINK.c) -fPIC $(BISMONMODULECFLAGS) \
+	( [ -f "$(wildcard modules/modbm_%.env)" ] &&  source "$(wildcard modules/modbm_%.env)" ) ; \
+	$(CCACHE) $(LINK.c) -fPIC  $$$$BISMONMODULE_%_FLAGS $(BISMONMODULECFLAGS) \
 	      -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<)  \
               -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' \
               -DBISMON_PERSISTENT_MODULE -shared $< -o $@
@@ -98,12 +105,13 @@ modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
 ## the drafts/testplugin_*.c pattern is known in main_BM.c function
 ## run_testplugins_after_load_BM
 drafts/testplugin_%.so: drafts/testplugin_%.c $(BISMONHEADERS) | _cflagsmodule.mk
-	$(CCACHE) $(LINK.c) -g -fPIC   $(BISMONMODULECFLAGS) \
+	$(CCACHE) $(LINK.c) -g -fPIC  $(BISMONMODULECFLAGS) \
 	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TTESTPLUGIN='"$(basename $@)"' \
 	     -shared $< -o $@
 
 modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
-	$(CCACHE) $(LINK.c) -fPIC   $(BISMONMODULECFLAGS) \
+	( [ -f "$(wildcard modules/tmpmobm_%.env)" ] &&  source "$(wildcard modules/tmpmobm_%.env)" ) ; \
+	$(CCACHE) $(LINK.c) -fPIC  $$$$BISMONTEMPMODULE_%_FLAGS $(BISMONMODULECFLAGS) \
 	     -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) \
 	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE \
 	     -shared $< -o $@
@@ -160,6 +168,7 @@ BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
 BM_makeconst-g.o: BM_makeconst.cc id_BM.h
 	$(COMPILE.cc)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+
 id_BM-g.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
 ################################################################

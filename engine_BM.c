@@ -1,5 +1,5 @@
 // file engine_BM.c
-
+// SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
     Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)

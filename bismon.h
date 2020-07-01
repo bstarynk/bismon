@@ -1,7 +1,7 @@
 // file bismon.h
 #ifndef BISMON_INCLUDED
 #define BISMON_INCLUDED
-
+// SPDX-License-Identifier: GPL-3.0-or-later
 /**
     BISMON 
     Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)

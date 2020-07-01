@@ -1,6 +1,6 @@
 // file user_BM.c; management of European GDPR related personal data
 // for Bismon contributors; see also userlogin.md
-
+// SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
 

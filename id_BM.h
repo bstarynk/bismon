@@ -1,4 +1,5 @@
 // file id_BM.h - declarations and inline functions for objid-s
+// SPDX-License-Identifier: GPL-3.0-or-later
 
 /***
     BISMON

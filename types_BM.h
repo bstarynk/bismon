@@ -1,4 +1,5 @@
 // file types_BM.h
+// SPDX-License-Identifier: GPL-3.0-or-later
 
 /***
     BISMON 
