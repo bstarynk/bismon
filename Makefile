@@ -1,4 +1,5 @@
 ## the Bismon Makefile
+## SPDX-License-Identifier: GPL-3.0-or-later
 ## GPLv3+ licensed, from http://github.com/bstarynk/bismon
 # file generate-ninja-builder.sh is generating the build.ninja file
 # 
@@ -63,16 +64,19 @@ all: | build.ninja
 	$(MAKE) programs modules jstimestamp bismon-metaplugin
 	@printf "\n******* done making all in %s *********\n" $$PWD
 
-BM_compile_module: BM_compile_module.cc
-	$(COMPILE.cc)  -O -g -Wall -Wextra $< -o $@
+BM_compile_module: BM_compile_module.cc __timestamp.o
+	$(LINK.cc)  -O -g -Wall -Wextra $^ -o $@
 
-BM_compile_tempmodule: BM_compile_tempmodule.cc
-	$(COMPILE.cc)  -O -g -Wall -Wextra $< -o $@
+BM_compile_tempmodule: BM_compile_tempmodule.cc __timestamp.o
+	$(LINK.cc)  -O -g -Wall -Wextra $^ -o $@
 
-programs: bismon BM_compile_module BM_compile_tempmodule modules
+programs: bismon BM_compile_module modules
 
 verbose: | build.ninja
 	$(NINJA) -v
+
+__timestamp.o:  | build.ninja
+	$(NINJA) $@
 
 bismon:
 	@printf "\n\n\n******* start making bismon in %s *********\n\n" $$PWD
@@ -116,7 +120,7 @@ modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
 	     -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) \
 	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE \
 	     -shared $< -o $@
-
+#                                                                                                           
 modules: _cflagsmodule.mk  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES)) 
 
 bismon-metaplugin: bismon | build.ninja
@@ -184,6 +188,7 @@ clean:
 	$(RM) build.ninja _bismon.pid
 	$(RM) core* *.i *.ii *prof.out gmon.out
 	$(RM) *BM.const.h _bm_allconsts*.c
+	$(RM) BM_compile_module
 	$(RM) $(patsubst %.thtml, _%.c, $(ONIONBM_WEBTEMPLATES))
 	$(RM) $(patsubst %.thtml, _%.h, $(ONIONBM_WEBTEMPLATES))
 	$(RM) modubin/*.so modules/*.i modules/*% modules/*~ modules/*- bismon BM_makeconst

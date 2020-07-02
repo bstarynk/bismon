@@ -526,8 +526,10 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   fprintf (spfil,
            "/// This data file, generated in %d, is GPLv3+ licensed.\n",
            nowyear);
+  fputs("/// SPDX-License-Identifier: GPL-3.0-or-later\n"
+	"/// see  https://www.gnu.org/licenses/gpl-3.0.en.html\n", spfil);
   unsigned nbobj = setcardinal_BM (_.setobjs);
-  fprintf (spfil, "// for %u objects\n", nbobj);
+  fprintf (spfil, "/// for %u objects\n", nbobj);
   fputs ("\n///‼ Notice that '" STORE_OBJECTOPEN_PREFIX_BM "' and '" STORE_OBJECTOPEN_ALTPREFIX_BM "' for object opening,\n"  //.
          "///‼… '" STORE_OBJECTCLOSE_PREFIX_BM "' and '" STORE_OBJECTCLOSE_ALTPREFIX_BM "' for object closing;"     //&
          " '" STORE_MODULE_PREFIX_BM "' and '" STORE_MODULE_ALTPREFIX_BM "' for modules,\n"     //.

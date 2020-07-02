@@ -8,6 +8,7 @@ _*.mjs
 bismon
 passwords_BM
 BM_makeconst
+BM_compile_module
 BM_makeconst_dbg
 
 _bm_allconsts*.c
