@@ -241,6 +241,7 @@ indent: .indent.pro
 	@sed -i 's/operator  */operator /g' id_BM.h
 	@printf "\n *** C++ tool source *** \n"
 	@$(ASTYLE) $(ASTYLEFLAGS)  BM_makeconst.cc
+	@$(ASTYLE) $(ASTYLEFLAGS)  BM_compile_module.cc
 	@printf "\n"
 
 ################
