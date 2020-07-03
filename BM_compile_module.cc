@@ -38,6 +38,7 @@
 #include <cassert>
 #include <unistd.h>
 #include <syslog.h>
+#include <getopt.h>
 #include "id_BM.h"
 
 
@@ -52,8 +53,13 @@ extern "C" const char bismon_makefile[];
 extern "C" const char bismon_gitid[];
 extern "C" const char bismon_shortgitid[];
 
+void bmc_parse_options(int& argc, char**argv);
 
-/******************* 
+void bmc_show_usage(const char*progname);
+
+void bmc_show_version(const char*progname);
+
+/*******************
  * In commit 49345835c49e747dd6 a generated Bismon module is compiled thru the following Makefile rule:
  *
  *     modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
@@ -63,19 +69,19 @@ extern "C" const char bismon_shortgitid[];
  *              -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' \
  *              -DBISMON_PERSISTENT_MODULE -shared $< -o $@
  *
- * 
+ *
  * We want to use just:
  *     modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | BM_compile_module
  *        ./BM_compile_module --module % --in $$PWD
  * In commit 49345835c49e747dd6 a generated Bismon temporary module is compiled thru the following Makefile rule:
- *							   
- *  modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk				   
- *  	( [ -f "$(wildcard modules/tmpmobm_%.env)" ] &&  source "$(wildcard modules/tmpmobm_%.env)" ) ; \  
- *  	$(CCACHE) $(LINK.c) -fPIC  $$$$BISMONTEMPMODULE_%_FLAGS $(BISMONMODULECFLAGS) \			   
- *  	     -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) \					   
- *  	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE \		       
- *  	     -shared $< -o $@										   
- *  #                                                                                                          
+ *
+ *  modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
+ *  	( [ -f "$(wildcard modules/tmpmobm_%.env)" ] &&  source "$(wildcard modules/tmpmobm_%.env)" ) ; \
+ *  	$(CCACHE) $(LINK.c) -fPIC  $$$$BISMONTEMPMODULE_%_FLAGS $(BISMONMODULECFLAGS) \
+ *  	     -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) \
+ *  	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE \
+ *  	     -shared $< -o $@
+ *  #
  * We want to use just:
  *     modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | BM_compile_module
  *        ./BM_compile_module --tempmodule % --in $$PWD
@@ -85,23 +91,74 @@ int
 main(int argc, char**argv)
 {
   openlog(basename(argv[0])?:argv[0], LOG_CONS|LOG_PID|LOG_NDELAY|LOG_PERROR, LOG_USER);
-  try {
+  try
+    {
+      bmc_parse_options(argc, argv);
 #warning incomplete BM_compile_module, see Makefile
-  /* we should use syslog and the $BISMON_CXX variable, etc... */
-  } catch (std::exception& exc) {
-    std::string msg{"FAILURE OF"};
-    std::clog << "failure of ";
-    for (int i=0; i<argc; i++) {
-      std::clog << ' ' << argv[i];
-      msg += " ";
-      msg += argv[i];
+      /* we should use syslog and the $BISMON_CXX variable, etc... */
     }
-    std::clog << std::endl;
-    std::clog << "pid " << (long) getpid() << " got exception:" << exc.what() << std::endl;
-    syslog(LOG_ERR, "%s: got exception: %s (git id %s)", argv[0], msg.c_str(), bismon_shortgitid);
-    abort();
-  };
+  catch (std::exception& exc)
+    {
+      std::string msg{"FAILURE OF"};
+      std::clog << "failure of ";
+      for (int i=0; i<argc; i++)
+        {
+          std::clog << ' ' << argv[i];
+          msg += " ";
+          msg += argv[i];
+        }
+      std::clog << std::endl;
+      std::clog << "pid " << (long) getpid() << " got exception:" << exc.what() << std::endl;
+      syslog(LOG_ERR, "%s: got exception: %s (git id %s)", argv[0], msg.c_str(), bismon_shortgitid);
+      abort();
+    };
 } // end main
 
+
+static const struct option
+  bmc_long_options[] =
+{
+  {"version", no_argument, 0, 'V'},
+  {"help",    no_argument, 0, 'h'},
+  {0,0,0,0}
+};
+
+void
+bmc_parse_options(int& argc, char**argv)
+{
+  for (;;)
+    {
+      int optix= -1;
+      int optres = getopt_long(argc, argv, "Vh", bmc_long_options, &optix);
+      if (optres < 0)
+        break;
+      switch (optres)
+        {
+        case 'h':
+          bmc_show_usage(argv[0]);
+          exit(EXIT_SUCCESS);
+          break;
+        case 'V':
+          bmc_show_version(argv[0]);
+          exit(EXIT_SUCCESS);
+          break;
+        }
+    }
+} // end of bmc_parse_options
+
+void
+bmc_show_usage(const char*progname)
+{
+  std::cerr << progname << " usage:" << std::endl;
+  std::cerr << " --version | -V # give version information" << std::endl;
+  std::cerr << " --help | -h # give help message" << std::endl;
+} // end bmc_show_usage
+
+
+void
+bmc_show_version(const char*progname)
+{
+  std::cerr << progname << " version information:" << std::endl;
+} // end bmc_show_version
 
 //// end of file  BM_compile_module.cc
