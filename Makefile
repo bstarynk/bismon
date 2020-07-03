@@ -67,10 +67,7 @@ all: | build.ninja
 BM_compile_module: BM_compile_module.cc __timestamp.o
 	$(LINK.cc)  -O -g -Wall -Wextra $^ -o $@
 
-BM_compile_tempmodule: BM_compile_tempmodule.cc __timestamp.o
-	$(LINK.cc)  -O -g -Wall -Wextra $^ -o $@
-
-programs: bismon BM_compile_module modules
+programs: BM_compile_module BM_makeconst bismon modules
 
 verbose: | build.ninja
 	$(NINJA) -v
@@ -113,7 +110,7 @@ drafts/testplugin_%.so: drafts/testplugin_%.c $(BISMONHEADERS) | _cflagsmodule.m
 	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TTESTPLUGIN='"$(basename $@)"' \
 	     -shared $< -o $@
 
-## should use BM_compile_tempmodule when it is ready
+## should use BM_compile_module when it is ready
 modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
 	( [ -f "$(wildcard modules/tmpmobm_%.env)" ] &&  source "$(wildcard modules/tmpmobm_%.env)" ) ; \
 	$(CCACHE) $(LINK.c) -fPIC  $$$$BISMONTEMPMODULE_%_FLAGS $(BISMONMODULECFLAGS) \

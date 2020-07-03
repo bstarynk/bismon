@@ -54,10 +54,13 @@ extern "C" const char bismon_gitid[];
 extern "C" const char bismon_shortgitid[];
 
 void bmc_parse_options(int& argc, char**argv);
-
 void bmc_show_usage(const char*progname);
-
 void bmc_show_version(const char*progname);
+
+
+static char*bmc_module_idstr;
+static char*bmc_tempmodule_idstr;
+static char*bmc_plugin_idstr;
 
 /*******************
  * In commit 49345835c49e747dd6 a generated Bismon module is compiled thru the following Makefile rule:
@@ -115,11 +118,22 @@ main(int argc, char**argv)
 } // end main
 
 
+enum bmc_longopt_en
+{
+  BMCOPT__longoptstart=1024,
+  BMCOPT_module,
+  BMCOPT_tempmodule,
+  BMCOPT_plugin,
+};
+
 static const struct option
   bmc_long_options[] =
 {
-  {"version", no_argument, 0, 'V'},
-  {"help",    no_argument, 0, 'h'},
+  {"version",     no_argument,        0, 'V'},
+  {"help",        no_argument,        0, 'h'},
+  {"module",      required_argument,  0, BMCOPT_module},
+  {"tempmodule",  required_argument,  0, BMCOPT_tempmodule},
+  {"plugin",      required_argument,  0, BMCOPT_plugin},
   {0,0,0,0}
 };
 
@@ -141,6 +155,30 @@ bmc_parse_options(int& argc, char**argv)
         case 'V':
           bmc_show_version(argv[0]);
           exit(EXIT_SUCCESS);
+          break;
+        case BMCOPT_module:
+          if (bmc_module_idstr)
+            {
+              std::cerr << argv[0] << " duplicate --module " << bmc_module_idstr << " and " << optarg << std::endl;
+              exit(EXIT_FAILURE);
+            };
+          bmc_module_idstr = optarg;
+          break;
+        case BMCOPT_tempmodule:
+          if (bmc_tempmodule_idstr)
+            {
+              std::cerr << argv[0] << " duplicate --tempmodule " << bmc_tempmodule_idstr << " and " << optarg << std::endl;
+              exit(EXIT_FAILURE);
+            };
+          bmc_tempmodule_idstr = optarg;
+          break;
+        case BMCOPT_plugin:
+          if (bmc_plugin_idstr)
+            {
+              std::cerr << argv[0] << " duplicate --plugin " << bmc_plugin_idstr << " and " << optarg << std::endl;
+              exit(EXIT_FAILURE);
+            };
+          bmc_plugin_idstr = optarg;
           break;
         }
     }
