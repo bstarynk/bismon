@@ -64,8 +64,8 @@ all: | build.ninja
 	$(MAKE) programs modules jstimestamp bismon-metaplugin
 	@printf "\n******* done making all in %s *********\n" $$PWD
 
-BM_compile_module: BM_compile_module.cc __timestamp.o
-	$(LINK.cc)  -O -g -Wall -Wextra $^ -o $@
+BM_compile_module: BM_compile_module.cc __timestamp.o 
+	$(COMPILE.cc)  -O -g -Wall  $$(pkg-config --cflags glib-2.0) -Wextra $<  $$(pkg-config --libs glib-2.0) __timestamp.o -o $@
 
 programs: BM_compile_module BM_makeconst bismon modules
 
@@ -168,6 +168,10 @@ outdump: bismon   modules
 
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
+
+BM_makeconst: BM_makeconst.o id_BM.o
+	$(LINK.cc) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
+
 BM_makeconst-g.o: BM_makeconst.cc id_BM.h
 	$(COMPILE.cc)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
 
