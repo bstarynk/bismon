@@ -65,7 +65,7 @@ all: | build.ninja
 	@printf "\n******* done making all in %s *********\n" $$PWD
 
 BM_compile_module: BM_compile_module.cc __timestamp.o 
-	$(COMPILE.cc)  -O -g -Wall  $$(pkg-config --cflags glib-2.0) -Wextra $<  $$(pkg-config --libs glib-2.0) __timestamp.o -o $@
+	$(COMPILE.cc)  -O -g -Wall  $$(pkg-config --cflags glib-2.0 glibmm-2.4) -Wextra $<  $$(pkg-config --libs glib-2.0 glibmm-2.4) __timestamp.o -o $@
 
 programs: BM_compile_module BM_makeconst bismon modules
 

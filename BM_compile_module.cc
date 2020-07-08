@@ -39,6 +39,7 @@
 #include <unistd.h>
 #include <syslog.h>
 #include <getopt.h>
+#include <glibmm/checksum.h>
 #include "id_BM.h"
 
 
@@ -124,6 +125,8 @@ enum bmc_longopt_en
   BMCOPT_module,
   BMCOPT_tempmodule,
   BMCOPT_plugin,
+  BMCOPT_in,
+  BMCOPT_oid,
 };
 
 static const struct option
@@ -134,6 +137,8 @@ static const struct option
   {"module",      required_argument,  0, BMCOPT_module},
   {"tempmodule",  required_argument,  0, BMCOPT_tempmodule},
   {"plugin",      required_argument,  0, BMCOPT_plugin},
+  {"in",      required_argument,  0, BMCOPT_in},
+  {"oid",      required_argument,  0, BMCOPT_oid},
   {0,0,0,0}
 };
 
@@ -190,6 +195,14 @@ bmc_show_usage(const char*progname)
   std::cerr << progname << " usage:" << std::endl;
   std::cerr << " --version | -V # give version information" << std::endl;
   std::cerr << " --help | -h # give help message" << std::endl;
+  std::cerr << " --in <directory> # set the source directory" << std::endl;
+  std::cerr << " --module <binary-module-dir> # compile and build a persistent module (*.so)" << std::endl;
+  std::cerr << " --tempmodule <temporary-module-dir> # compile and build a temporary module (*.so)" << std::endl;
+  std::cerr << " --plugin <gcc-plugin-dir> # compile and build a GCC plugin (*.so)" << std::endl;
+  std::cerr << " --oid <object-id> # for the given Bismon id" << std::endl;
+  std::cerr << "# See also https://github.com/bstarynk/bismon" << std::endl;
+  std::cerr << "# Funded by https://www.chariotproject.eu/ https://www.decoder-project.eu/" << std::endl;
+  std::cerr << "# this is GPLv3+ licensed software, see https://www.gnu.org/licenses/gpl-3.0.en.html ** NO WARRANTY" << std::endl;
 } // end bmc_show_usage
 
 
