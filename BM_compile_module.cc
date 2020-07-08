@@ -210,6 +210,14 @@ void
 bmc_show_version(const char*progname)
 {
   std::cerr << progname << " version information:" << std::endl;
+  std::cerr << " source file: " << __FILE__ << std::endl;
+  std::cerr << " timestamp: " << bismon_timestamp << " (" << bismon_timelong << " since Unix Epoch)" << std::endl;
+  std::cerr << " last git commit: " << bismon_lastgitcommit << std::endl;
+  std::cerr << " last git tag:" << bismon_lastgittag << std::endl;
+  std::cerr << " checksum:" << bismon_checksum << std::endl;
+  std::cerr << " source directory:" << bismon_directory << std::endl;
+  std::cerr << " our Makefile:" << bismon_makefile << std::endl;
+  std::cerr << "################################" << std::endl;
 } // end bmc_show_version
 
 //// end of file  BM_compile_module.cc

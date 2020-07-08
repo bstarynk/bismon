@@ -442,7 +442,7 @@
 (format #t "~%~%# timestamp the bismon program~%")
 (format #t "rule TIMESTAMP_r~%")
 (format #t "  command = ./timestamp-emit.sh $in~%")
-(format #t "  description = TIMESTAMP $out~%")
+(format #t "  description = TIMESTAMP $out <- $in~%")
 
 (format #t "~%~%# cflags for modules~%")
 (format #t "rule CFLAGSMODULE_r~%")
