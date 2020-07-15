@@ -175,6 +175,8 @@ BM_makeconst: BM_makeconst.o id_BM.o
 BM_makeconst-g.o: BM_makeconst.cc id_BM.h
 	$(COMPILE.cc)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
 
+id_BM.o: id_BM.c id_BM.h
+	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0)  -Wall -c $< -o $@
 id_BM-g.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
 ################################################################
