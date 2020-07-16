@@ -226,7 +226,7 @@ bmc_show_usage(const char*progname)
   std::cerr << " --guile <guile> # a script for GNU guile, see https://www.gnu.org/software/guile/" << std::endl;
   std::cerr << "    If <guile> starts with a dot, evaluate string after dot, otherwise it is a file path to be loaded." << std::endl;
   std::cerr << "    Several GUILE scripts or expressions could be given." << std::endl;
-  std::cerr << "    Pass --guile '.(bmc-help)' to get help about our primitives." << std::endl;
+  std::cerr << "    Pass --guile '.(bmc:help)' to get help about our primitives." << std::endl;
   std::cerr << "# See also https://github.com/bstarynk/bismon" << std::endl;
   std::cerr << "# Funded by https://www.chariotproject.eu/ https://www.decoder-project.eu/" << std::endl;
   std::cerr << "# this is GPLv3+ licensed software, see https://www.gnu.org/licenses/gpl-3.0.en.html ** NO WARRANTY" << std::endl;
@@ -248,8 +248,20 @@ bmc_show_version(const char*progname)
 } // end bmc_show_version
 
 
-void* bmc_run_guile(void*vec)
+static SCM
+bmc_scm_help (SCM) {
+  std::clog << ";; lisp of BM_compile_module Guile primitives." << std::endl;
+  std::clog << "(bmc:help) ;; gives this help" << std::endl;
+  return SCM_unspecified;
+} // end bmc_scm_help
+
+void*
+bmc_run_guile(void*vec)
 {
+  assert (vec == &bmc_guile_vec);
+  /// define our extra Guile primitives
+  scm_c_define_gsubr("bmc:help", /*requested:*/0, /*optional:*/0, /*rest:*/0,
+		     bmc_scm_help);
 } // end of bmc_run_guile
 
 int
