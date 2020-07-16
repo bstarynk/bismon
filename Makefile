@@ -49,7 +49,7 @@ TESTPLUGINS_SOURCES= $(sort $(wildcard drafts/testplugin_*.c))
 
 BM_HEADERS= $(wildcard [a-z]*BM.h bismon.h)
 BM_CSOURCES= $(wildcard [a-z]*BM.c)
-
+BM_COMPILE_MODULE_PACKAGES=  glib-2.0 glibmm-2.4 guile-3.0
 
 .PHONY: all programs clean verbose indent count modules measure \
   doc latexdoc latexcleandoc heveadoc redump outdump checksum \
@@ -65,7 +65,8 @@ all: | build.ninja
 	@printf "\n******* done making all in %s *********\n" $$PWD
 
 BM_compile_module: BM_compile_module.cc __timestamp.o 
-	$(LINK.cc)  -O -g -Wall -Wextra $^ $$(pkg-config --cflags glib-2.0 glibmm-2.4) $$(pkg-config --libs glib-2.0 glibmm-2.4) -o $@
+	$(LINK.cc)  -O -g -Wall -Wextra $$(pkg-config --cflags $(BM_COMPILE_MODULE_PACKAGES)) \
+	$^ $$(pkg-config --libs  $(BM_COMPILE_MODULE_PACKAGES)) -o $@
 
 programs: BM_compile_module BM_makeconst bismon modules
 
