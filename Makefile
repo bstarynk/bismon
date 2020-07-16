@@ -95,7 +95,8 @@ build.ninja: generate-ninja-build.scm
 
 
 ## should use BM_compile_module when it is ready
-modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
+modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) $(warning modules should use BM_compile_module) | BM_compile_module _cflagsmodule.mk
+	@printf "should build %s with BM_compile_module from %s\n" $@ "$^" > /dev/stderr
 	( [ -f "$(wildcard modules/modbm_%.env)" ] &&  source "$(wildcard modules/modbm_%.env)" ) ; \
 	$(CCACHE) $(LINK.c) -fPIC  $$$$BISMONMODULE_%_FLAGS $(BISMONMODULECFLAGS) \
 	      -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<)  \
@@ -111,7 +112,8 @@ drafts/testplugin_%.so: drafts/testplugin_%.c $(BISMONHEADERS) | _cflagsmodule.m
 	     -shared $< -o $@
 
 ## should use BM_compile_module when it is ready
-modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
+modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) $(warning tempmodules should use BM_compile_module) | BM_compile_module _cflagsmodule.mk
+	@printf "should build %s with BM_compile_module from %s\n" $@ "$^" > /dev/stderr
 	( [ -f "$(wildcard modules/tmpmobm_%.env)" ] &&  source "$(wildcard modules/tmpmobm_%.env)" ) ; \
 	$(CCACHE) $(LINK.c) -fPIC  $$$$BISMONTEMPMODULE_%_FLAGS $(BISMONMODULECFLAGS) \
 	     -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) \
