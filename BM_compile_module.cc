@@ -64,7 +64,7 @@ extern "C" void* bmc_run_guile(void*);
 static char*bmc_module_idstr;
 static char*bmc_tempmodule_idstr;
 static char*bmc_plugin_idstr;
-std::vector<std::string> bmc_guile_pathvec;
+std::vector<std::string> bmc_guile_vec;
 std::map<std::string,std::string> bmc_param_map;
 
 /*******************
@@ -126,7 +126,7 @@ static const struct option
 void
 bmc_parse_options(int& argc, char**argv)
 {
-  bmc_guile_pathvec.reserve(3+argc/2);
+  bmc_guile_vec.reserve(3+argc/2);
   for (;;)
     {
       int optix= -1;
@@ -205,7 +205,7 @@ bmc_parse_options(int& argc, char**argv)
               std::cerr << argv[0] << " fails to access GUILE script " << optarg << ":" << strerror(errno) << std::endl;
               exit(EXIT_FAILURE);
             }
-          bmc_guile_pathvec.push_back(std::string(optarg));
+          bmc_guile_vec.push_back(std::string(optarg));
           break;
         }
     }
@@ -223,7 +223,10 @@ bmc_show_usage(const char*progname)
   std::cerr << " --plugin <gcc-plugin-dir> # compile and build a GCC plugin (*.so)" << std::endl;
   std::cerr << " --oid <object-id> # for the given Bismon id" << std::endl;
   std::cerr << " --param | -P <param-name>=<param-value> # set additional parameter name; <param-name> should be C-like and less than 60 bytes" << std::endl;
-  std::cerr << " --guile <guile-script-file> # a script for GNU guile, see https://www.gnu.org/software/guile/ " << std::endl;
+  std::cerr << " --guile <guile> # a script for GNU guile, see https://www.gnu.org/software/guile/" << std::endl;
+  std::cerr << "    If <guile> starts with a dot, evaluate string after dot, otherwise it is a file path to be loaded." << std::endl;
+  std::cerr << "    Several GUILE scripts or expressions could be given." << std::endl;
+  std::cerr << "    Pass --guile '.(bmc-help)' to get help about our primitives." << std::endl;
   std::cerr << "# See also https://github.com/bstarynk/bismon" << std::endl;
   std::cerr << "# Funded by https://www.chariotproject.eu/ https://www.decoder-project.eu/" << std::endl;
   std::cerr << "# this is GPLv3+ licensed software, see https://www.gnu.org/licenses/gpl-3.0.en.html ** NO WARRANTY" << std::endl;
@@ -256,16 +259,16 @@ main(int argc, char**argv)
   try
     {
       bmc_parse_options(argc, argv);
-      if (bmc_guile_pathvec.empty())
+      if (bmc_guile_vec.empty())
         {
         }
       else   // some guile scripts
         {
-          if (scm_with_guile( bmc_run_guile, &bmc_guile_pathvec) == nullptr)
+          if (scm_with_guile( bmc_run_guile, &bmc_guile_vec) == nullptr)
             {
               char errmsg[64];
               memset(errmsg, 0, sizeof(errmsg));
-              snprintf(errmsg, sizeof(errmsg), "failed to run %d guile scripts", (int)(bmc_guile_pathvec.size()));
+              snprintf(errmsg, sizeof(errmsg), "failed to run %d guile scripts or commands", (int)(bmc_guile_vec.size()));
               throw std::runtime_error(errmsg);
             }
         }
