@@ -39,6 +39,7 @@
 #include <unistd.h>
 #include <syslog.h>
 #include <getopt.h>
+#include <libguile.h>
 #include <glibmm/checksum.h>
 #include "id_BM.h"
 
@@ -62,6 +63,7 @@ void bmc_show_version(const char*progname);
 static char*bmc_module_idstr;
 static char*bmc_tempmodule_idstr;
 static char*bmc_plugin_idstr;
+std::vector<std::string> bmc_guile_pathvec;
 
 /*******************
  * In commit 49345835c49e747dd6 a generated Bismon module is compiled thru the following Makefile rule:
@@ -127,6 +129,7 @@ enum bmc_longopt_en
   BMCOPT_plugin,
   BMCOPT_in,
   BMCOPT_oid,
+  BMCOPT_guile,
 };
 
 static const struct option
@@ -139,12 +142,14 @@ static const struct option
   {"plugin",      required_argument,  0, BMCOPT_plugin},
   {"in",      required_argument,  0, BMCOPT_in},
   {"oid",      required_argument,  0, BMCOPT_oid},
+  {"guile",      required_argument,  0, BMCOPT_guile},
   {0,0,0,0}
 };
 
 void
 bmc_parse_options(int& argc, char**argv)
 {
+  bmc_guile_pathvec.reserve(3+argc/2);
   for (;;)
     {
       int optix= -1;
@@ -185,6 +190,19 @@ bmc_parse_options(int& argc, char**argv)
             };
           bmc_plugin_idstr = optarg;
           break;
+        case BMCOPT_guile:
+          if (!optarg)
+            {
+              std::cerr  << argv[0] << " with --guile but no path" << std::endl;
+              exit(EXIT_FAILURE);
+            };
+          if (access(optarg, R_OK))
+            {
+              std::cerr << argv[0] << " fails to access GUILE script " << optarg << ":" << strerror(errno) << std::endl;
+              exit(EXIT_FAILURE);
+            }
+          bmc_guile_pathvec.push_back(std::string(optarg));
+          break;
         }
     }
 } // end of bmc_parse_options
@@ -200,6 +218,7 @@ bmc_show_usage(const char*progname)
   std::cerr << " --tempmodule <temporary-module-dir> # compile and build a temporary module (*.so)" << std::endl;
   std::cerr << " --plugin <gcc-plugin-dir> # compile and build a GCC plugin (*.so)" << std::endl;
   std::cerr << " --oid <object-id> # for the given Bismon id" << std::endl;
+  std::cerr << " --guile <guile-script-file> # a script for GNU guile, see https://www.gnu.org/software/guile/" << std::endl;
   std::cerr << "# See also https://github.com/bstarynk/bismon" << std::endl;
   std::cerr << "# Funded by https://www.chariotproject.eu/ https://www.decoder-project.eu/" << std::endl;
   std::cerr << "# this is GPLv3+ licensed software, see https://www.gnu.org/licenses/gpl-3.0.en.html ** NO WARRANTY" << std::endl;
