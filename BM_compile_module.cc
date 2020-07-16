@@ -34,6 +34,7 @@
 #include <cstring>
 #include <cctype>
 #include <set>
+#include <map>
 #include <string>
 #include <cassert>
 #include <unistd.h>
@@ -58,12 +59,13 @@ extern "C" const char bismon_shortgitid[];
 void bmc_parse_options(int& argc, char**argv);
 void bmc_show_usage(const char*progname);
 void bmc_show_version(const char*progname);
-
+extern "C" void* bmc_run_guile(void*);
 
 static char*bmc_module_idstr;
 static char*bmc_tempmodule_idstr;
 static char*bmc_plugin_idstr;
 std::vector<std::string> bmc_guile_pathvec;
+std::map<std::string,std::string> bmc_param_map;
 
 /*******************
  * In commit 49345835c49e747dd6 a generated Bismon module is compiled thru the following Makefile rule:
@@ -93,32 +95,6 @@ std::vector<std::string> bmc_guile_pathvec;
  *        ./BM_compile_module --tempmodule % --in $$PWD
  *******************/
 
-int
-main(int argc, char**argv)
-{
-  openlog(basename(argv[0])?:argv[0], LOG_CONS|LOG_PID|LOG_NDELAY|LOG_PERROR, LOG_USER);
-  try
-    {
-      bmc_parse_options(argc, argv);
-#warning incomplete BM_compile_module, see Makefile
-      /* we should use syslog and the $BISMON_CXX variable, etc... */
-    }
-  catch (std::exception& exc)
-    {
-      std::string msg{"FAILURE OF"};
-      std::clog << "failure of ";
-      for (int i=0; i<argc; i++)
-        {
-          std::clog << ' ' << argv[i];
-          msg += " ";
-          msg += argv[i];
-        }
-      std::clog << std::endl;
-      std::clog << "pid " << (long) getpid() << " got exception:" << exc.what() << std::endl;
-      syslog(LOG_ERR, "%s: got exception: %s (git id %s)", argv[0], msg.c_str(), bismon_shortgitid);
-      abort();
-    };
-} // end main
 
 
 enum bmc_longopt_en
@@ -137,6 +113,7 @@ static const struct option
 {
   {"version",     no_argument,        0, 'V'},
   {"help",        no_argument,        0, 'h'},
+  {"param",        required_argument,        0, 'P'},
   {"module",      required_argument,  0, BMCOPT_module},
   {"tempmodule",  required_argument,  0, BMCOPT_tempmodule},
   {"plugin",      required_argument,  0, BMCOPT_plugin},
@@ -166,6 +143,33 @@ bmc_parse_options(int& argc, char**argv)
           bmc_show_version(argv[0]);
           exit(EXIT_SUCCESS);
           break;
+        case 'P': // parameter <param-name>:<param-value>
+        {
+          char paramname[64];
+          memset (paramname, 0, sizeof(paramname));
+          char*paramvalue = nullptr;
+          int parampos = -1;
+          if (sscanf(optarg, "%60[A-Za-z0-9_]=%n", paramname, &parampos) < 1 || parampos <2)
+            {
+              std::cerr << argv[0] << " needs a parameter, e.g. --param FOO=bar or -Pfoo=bar" << std::endl;
+              exit(EXIT_FAILURE);
+            }
+          if (parampos>0)
+            paramvalue = optarg+parampos;
+          std::string paramstrname{paramname};
+          if (bmc_param_map.find(paramstrname) != bmc_param_map.end())
+            {
+              std::cerr << argv[0] << " has parameter " << paramstrname << " given more than once." << std::endl;
+              exit(EXIT_FAILURE);
+            };
+          if (!paramvalue)
+            {
+              std::cerr <<  argv[0] << " has parameter " << paramstrname << " without value." << std::endl;
+              exit(EXIT_FAILURE);
+            };
+          bmc_param_map.insert({paramstrname, std::string(paramvalue)});
+        }
+        break;
         case BMCOPT_module:
           if (bmc_module_idstr)
             {
@@ -218,7 +222,8 @@ bmc_show_usage(const char*progname)
   std::cerr << " --tempmodule <temporary-module-dir> # compile and build a temporary module (*.so)" << std::endl;
   std::cerr << " --plugin <gcc-plugin-dir> # compile and build a GCC plugin (*.so)" << std::endl;
   std::cerr << " --oid <object-id> # for the given Bismon id" << std::endl;
-  std::cerr << " --guile <guile-script-file> # a script for GNU guile, see https://www.gnu.org/software/guile/" << std::endl;
+  std::cerr << " --param | -P <param-name>=<param-value> # set additional parameter name; <param-name> should be C-like and less than 60 bytes" << std::endl;
+  std::cerr << " --guile <guile-script-file> # a script for GNU guile, see https://www.gnu.org/software/guile/ " << std::endl;
   std::cerr << "# See also https://github.com/bstarynk/bismon" << std::endl;
   std::cerr << "# Funded by https://www.chariotproject.eu/ https://www.decoder-project.eu/" << std::endl;
   std::cerr << "# this is GPLv3+ licensed software, see https://www.gnu.org/licenses/gpl-3.0.en.html ** NO WARRANTY" << std::endl;
@@ -238,5 +243,50 @@ bmc_show_version(const char*progname)
   std::cerr << " our Makefile:" << bismon_makefile << std::endl;
   std::cerr << "################################" << std::endl;
 } // end bmc_show_version
+
+
+void* bmc_run_guile(void*vec)
+{
+} // end of bmc_run_guile
+
+int
+main(int argc, char**argv)
+{
+  openlog(basename(argv[0])?:argv[0], LOG_CONS|LOG_PID|LOG_NDELAY|LOG_PERROR, LOG_USER);
+  try
+    {
+      bmc_parse_options(argc, argv);
+      if (bmc_guile_pathvec.empty())
+        {
+        }
+      else   // some guile scripts
+        {
+          if (scm_with_guile( bmc_run_guile, &bmc_guile_pathvec) == nullptr)
+            {
+              char errmsg[64];
+              memset(errmsg, 0, sizeof(errmsg));
+              snprintf(errmsg, sizeof(errmsg), "failed to run %d guile scripts", (int)(bmc_guile_pathvec.size()));
+              throw std::runtime_error(errmsg);
+            }
+        }
+#warning incomplete BM_compile_module, see Makefile
+      /* we should use syslog and the $BISMON_CXX variable, etc... */
+    }
+  catch (std::exception& exc)
+    {
+      std::string msg{"FAILURE OF"};
+      std::clog << "failure of ";
+      for (int i=0; i<argc; i++)
+        {
+          std::clog << ' ' << argv[i];
+          msg += " ";
+          msg += argv[i];
+        }
+      std::clog << std::endl;
+      std::clog << "pid " << (long) getpid() << " got exception:" << exc.what() << std::endl;
+      syslog(LOG_ERR, "%s: got exception: %s (git id %s)", argv[0], msg.c_str(), bismon_shortgitid);
+      abort();
+    };
+} // end main
 
 //// end of file  BM_compile_module.cc
