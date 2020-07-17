@@ -54,7 +54,9 @@ BM_CSOURCES= $(wildcard [a-z]*BM.c)
 BM_COMPILE_MODULE_PACKAGES=  glib-2.0 glibmm-2.4 guile-3.0
 BM_COMPILE_CFLAGS:= $(shell pkg-config --cflags $(BM_COMPILE_MODULE_PACKAGES))
 BM_COMPILE_LIBES:= $(shell pkg-config --libs $(BM_COMPILE_MODULE_PACKAGES))
-
+BM_COMPILE_MODULE ?= ./BM_compile_module
+# we could add --guile <guile> or --param <param>=<value> below
+BM_COMPILE_MODULE_EXTRAFLAGS ?= 
 .PHONY: all programs clean verbose indent count modules measure \
   doc latexdoc latexcleandoc heveadoc redump outdump checksum \
   indentsinglemodule indenttempmodule jstimestamp chariotdemo-bismon \
@@ -109,13 +111,8 @@ build.ninja: generate-ninja-build.scm
 
 
 ## should use BM_compile_module when it is ready
-modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) $(warning modules should use BM_compile_module) | BM_compile_module _cflagsmodule.mk
-	@printf "should build %s with BM_compile_module from %s\n" $@ "$^" > /dev/stderr
-	( [ -f "$(wildcard modules/modbm_%.env)" ] &&  source "$(wildcard modules/modbm_%.env)" ) ; \
-	$(CCACHE) $(LINK.c) -fPIC  $$$$BISMONMODULE_%_FLAGS $(BISMONMODULECFLAGS) \
-	      -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<)  \
-              -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' \
-              -DBISMON_PERSISTENT_MODULE -shared $< -o $@
+modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | $(BM_COMPILE_MODULE) _cflagsmodule.mk
+	$(BM_COMPILE_MODULE)  --oid $(patsubst modules/modbm_%.c,_%,$<) --module modubin/ --in modules/ $(BM_COMPILE_MODULE_EXTRAFLAGS)
 
 
 ## the drafts/testplugin_*.c pattern is known in main_BM.c function
@@ -126,13 +123,8 @@ drafts/testplugin_%.so: drafts/testplugin_%.c $(BISMONHEADERS) | _cflagsmodule.m
 	     -shared $< -o $@
 
 ## should use BM_compile_module when it is ready
-modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) $(warning tempmodules should use BM_compile_module) | BM_compile_module _cflagsmodule.mk
-	@printf "should build %s with BM_compile_module from %s\n" $@ "$^" > /dev/stderr
-	( [ -f "$(wildcard modules/tmpmobm_%.env)" ] &&  source "$(wildcard modules/tmpmobm_%.env)" ) ; \
-	$(CCACHE) $(LINK.c) -fPIC  $$$$BISMONTEMPMODULE_%_FLAGS $(BISMONMODULECFLAGS) \
-	     -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) \
-	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE \
-	     -shared $< -o $@
+modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) $(warning tempmodules should use BM_compile_module) | $(BM_COMPILE_MODULE) _cflagsmodule.mk
+	$(BM_COMPILE_MODULE)  --oid $(patsubst modules/modbm_%.c,_%,$<) --tempmodule modubin/ --in modules/  $(BM_COMPILE_MODULE_EXTRAFLAGS)
 #                                                                                                           
 modules: _cflagsmodule.mk  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES)) 
 
