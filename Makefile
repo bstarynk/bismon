@@ -50,6 +50,8 @@ TESTPLUGINS_SOURCES= $(sort $(wildcard drafts/testplugin_*.c))
 BM_HEADERS= $(wildcard [a-z]*BM.h bismon.h)
 BM_CSOURCES= $(wildcard [a-z]*BM.c)
 BM_COMPILE_MODULE_PACKAGES=  glib-2.0 glibmm-2.4 guile-3.0
+BM_COMPILE_CFLAGS:= $(shell pkg-config --cflags $(BM_COMPILE_MODULE_PACKAGES))
+BM_COMPILE_LIBES:= $(shell pkg-config --libs $(BM_COMPILE_MODULE_PACKAGES))
 
 .PHONY: all programs clean verbose indent count modules measure \
   doc latexdoc latexcleandoc heveadoc redump outdump checksum \
@@ -64,9 +66,16 @@ all: | build.ninja
 	$(MAKE) programs modules jstimestamp bismon-metaplugin
 	@printf "\n******* done making all in %s *********\n" $$PWD
 
-BM_compile_module: BM_compile_module.cc __timestamp.o 
-	$(LINK.cc)  -O -g -Wall -Wextra $$(pkg-config --cflags $(BM_COMPILE_MODULE_PACKAGES)) \
-	$^ $$(pkg-config --libs  $(BM_COMPILE_MODULE_PACKAGES)) -o $@
+BM_compile_module: BM_compile_module.o BM_compmod_guile.o __timestamp.o 
+	$(LINK.cc)  -O -g -Wall -Wextra  $^ $(BM_COMPILE_LIBES) -o $@
+	@ls -l $@
+
+BM_compile_module.o: BM_compile_module.cc BM_compmod.hh
+	$(COMPILE.cc)  -O -g -Wall -Wextra $(BM_COMPILE_CFLAGS) $<
+
+BM_compmod_guile.o: BM_compmod_guile.cc BM_compmod.hh
+	$(COMPILE.cc)  -O -g -Wall -Wextra $(BM_COMPILE_CFLAGS) $<
+
 
 programs: BM_compile_module BM_makeconst bismon modules
 

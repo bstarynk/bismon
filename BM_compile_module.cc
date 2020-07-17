@@ -7,7 +7,9 @@
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
-    BM_compile_module: a standalone program to compile a BISMON generated module
+    BM_compile_module: a standalone program to compile a BISMON
+    generated module or GCC plugin. This file BM_compile_module.cc is
+    the main file.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,47 +25,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ***/
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE 1
-#endif
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <set>
-#include <map>
-#include <string>
-#include <cassert>
-#include <unistd.h>
-#include <syslog.h>
-#include <getopt.h>
-#include <libguile.h>
-#include <glibmm/checksum.h>
-#include "id_BM.h"
 
-
-// from generated _timestamp.c
-extern "C" const char bismon_timestamp[];
-extern "C" const unsigned long bismon_timelong;
-extern "C" const char bismon_lastgitcommit[];
-extern "C" const char bismon_lastgittag[];
-extern "C" const char bismon_checksum[];
-extern "C" const char bismon_directory[];
-extern "C" const char bismon_makefile[];
-extern "C" const char bismon_gitid[];
-extern "C" const char bismon_shortgitid[];
-
-void bmc_parse_options(int& argc, char**argv);
-void bmc_show_usage(const char*progname);
-void bmc_show_version(const char*progname);
-extern "C" void* bmc_run_guile(void*);
+#include "BM_compmod.hh"
 
 static char*bmc_module_idstr;
 static char*bmc_tempmodule_idstr;
 static char*bmc_plugin_idstr;
+
+
 std::vector<std::string> bmc_guile_vec;
 std::map<std::string,std::string> bmc_param_map;
 
@@ -247,22 +216,6 @@ bmc_show_version(const char*progname)
   std::cerr << "################################" << std::endl;
 } // end bmc_show_version
 
-
-static SCM
-bmc_scm_help (SCM) {
-  std::clog << ";; lisp of BM_compile_module Guile primitives." << std::endl;
-  std::clog << "(bmc:help) ;; gives this help" << std::endl;
-  return SCM_unspecified;
-} // end bmc_scm_help
-
-void*
-bmc_run_guile(void*vec)
-{
-  assert (vec == &bmc_guile_vec);
-  /// define our extra Guile primitives
-  scm_c_define_gsubr("bmc:help", /*requested:*/0, /*optional:*/0, /*rest:*/0,
-		     bmc_scm_help);
-} // end of bmc_run_guile
 
 int
 main(int argc, char**argv)
