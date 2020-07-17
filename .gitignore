@@ -20,6 +20,7 @@ _*ONIONBM.[ch]
 *%
 *.orig
 
+_BM_compmod_*
 
 _cflagsmodule.mk
 *BM.const.h

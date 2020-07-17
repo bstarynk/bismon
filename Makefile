@@ -35,6 +35,8 @@ CXX= $(GXX)
 #if you don't have or want ccache, set the below variable to empty
 #CCACHE= ccache
 CCACHE=
+#see https://www.gnu.org/software/guile/manual/html_node/Function-Snarfing.html
+GUILE_SNARF= guile-snarf
 MARKDOWN= markdown
 INDENT= indent
 ASTYLE= astyle
@@ -70,12 +72,14 @@ BM_compile_module: BM_compile_module.o BM_compmod_guile.o __timestamp.o
 	$(LINK.cc)  -O -g -Wall -Wextra  $^ $(BM_COMPILE_LIBES) -o $@
 	@ls -l $@
 
-BM_compile_module.o: BM_compile_module.cc BM_compmod.hh
+BM_compile_module.o: BM_compile_module.cc BM_compmod.hh | _BM_compmod_guile.snarf.h
 	$(COMPILE.cc)  -O -g -Wall -Wextra $(BM_COMPILE_CFLAGS) $<
 
 BM_compmod_guile.o: BM_compmod_guile.cc BM_compmod.hh
 	$(COMPILE.cc)  -O -g -Wall -Wextra $(BM_COMPILE_CFLAGS) $<
 
+_BM_compmod_guile.snarf.h: BM_compmod_guile.cc
+	$(GUILE_SNARF) -o $@ $(BM_COMPILE_CFLAGS)  $<
 
 programs: BM_compile_module BM_makeconst bismon modules
 
@@ -204,6 +208,7 @@ clean:
 	$(RM) core* *.i *.ii *prof.out gmon.out
 	$(RM) *BM.const.h _bm_allconsts*.c
 	$(RM) BM_compile_module
+	$(RM) $(wildcard _BM_comp*)
 	$(RM) $(patsubst %.thtml, _%.c, $(ONIONBM_WEBTEMPLATES))
 	$(RM) $(patsubst %.thtml, _%.h, $(ONIONBM_WEBTEMPLATES))
 	$(RM) modubin/*.so modules/*.i modules/*% modules/*~ modules/*- bismon BM_makeconst
