@@ -239,6 +239,10 @@ main(int argc, char**argv)
         }
 #warning incomplete BM_compile_module, see Makefile
       /* we should use syslog and the $BISMON_CXX variable, etc... */
+      syslog (LOG_WARNING, "%s (file %s at " __DATE__ "@" __TIME__ ") incomplete"
+	      " - git %s (directory %s)",
+	      argv[0], bismon_shortgitid, bismon_directory);
+      throw std::runtime_error(std::string("incomplete ")+argv[0]);
     }
   catch (std::exception& exc)
     {
