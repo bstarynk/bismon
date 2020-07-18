@@ -7,6 +7,14 @@ sold by Intel. See \href{https://pmem.io/}{\texttt{pmem.io}} and
 \cite{Scargall:2020:programming}. With care and programming efforts,
 such hardware could be used by the \emph{Bismon monitor}.
 
+Several checkpoint/restarting mechanisms, such as the
+\href{https://github.com/checkpoint-restore/criu}{\textsc{Criu}
+  library}, are conceptually similar to the persistence
+mechanism\footnote{See
+\href{https://stackoverflow.com/a/62927624/841108}{\texttt{stackoverflow.com/a/62927624/841108}}
+for more.} existing in \textsc{Bismon}, but have been developed with
+different trade-offs, and no concern for portability.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Data processed in \emph{Bismon}}
 
