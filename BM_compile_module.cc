@@ -77,11 +77,28 @@ enum bmc_longopt_en
   BMCOPT_guile,
 };
 
+
+bool bmc_debug_flag;
+
+// typical usage could be BMC_DEBUG("something bad x=" << x)
+#define BMC_DEBUG_AT_BIS(Fil,Lin,...) do {			\
+  if (bmc_debug_flag) {						\
+    std::clog << "¿" /* U+00BF INVERTED QUESTION MARK */	\
+	      << (Fil) << ":" << Lin << ":: "			\
+	      << __VA_ARGS__ << std::endl; } } while(0)
+
+#define BMC_DEBUG_AT(Fil,Lin,...) BMC_DEBUG_AT_BIS(Fil,Lin,##__VA_ARGS__)
+
+// typical usage would be BMC_DEBUG("annoying x=" << x)
+#define BMC_DEBUG(...) BMC_DEBUG_AT(__FILE__,__LINE__,##__VA_ARGS__)
+
+
 static const struct option
   bmc_long_options[] =
 {
   {"version",     no_argument,        0, 'V'},
   {"help",        no_argument,        0, 'h'},
+  {"debug",        no_argument,        0, 'D'},
   {"param",        required_argument,        0, 'P'},
   {"module",      required_argument,  0, BMCOPT_module},
   {"tempmodule",  required_argument,  0, BMCOPT_tempmodule},
@@ -104,13 +121,16 @@ bmc_parse_options(int& argc, char**argv)
         break;
       switch (optres)
         {
-        case 'h':
+        case 'h': // --help
           bmc_show_usage(argv[0]);
           exit(EXIT_SUCCESS);
           break;
-        case 'V':
+        case 'V': // --version
           bmc_show_version(argv[0]);
           exit(EXIT_SUCCESS);
+          break;
+        case 'D': // --debug
+          bmc_debug_flag = true;
           break;
         case 'P': // parameter <param-name>:<param-value>
         {
@@ -220,12 +240,16 @@ bmc_show_version(const char*progname)
 int
 main(int argc, char**argv)
 {
+  if (argc>1 && (!strcmp(argv[1], "-D") || !strcmp(argv[1], "--debug")))
+    bmc_debug_flag = true;
   openlog(basename(argv[0])?:argv[0], LOG_CONS|LOG_PID|LOG_NDELAY|LOG_PERROR, LOG_USER);
   try
     {
       bmc_parse_options(argc, argv);
+      BMC_DEBUG("parsed " << argc << " options");
       if (bmc_guile_vec.empty())
         {
+          BMC_DEBUG("no guile");
         }
       else   // some guile scripts
         {
@@ -240,8 +264,8 @@ main(int argc, char**argv)
 #warning incomplete BM_compile_module, see Makefile
       /* we should use syslog and the $BISMON_CXX variable, etc... */
       syslog (LOG_WARNING, "%s (file %s at " __DATE__ "@" __TIME__ ") incomplete"
-	      " - git %s (directory %s)",
-	      argv[0], bismon_shortgitid, bismon_directory);
+              " - git %s (directory %s)",
+              argv[0], bismon_shortgitid, bismon_directory);
       throw std::runtime_error(std::string("incomplete ")+argv[0]);
     }
   catch (std::exception& exc)
@@ -256,7 +280,7 @@ main(int argc, char**argv)
         }
       std::clog << std::endl;
       std::clog << "pid " << (long) getpid() << " got exception:" << exc.what() << std::endl
-		<< " (" << __FILE__ << ":" << __LINE__ << ")" << std::endl;
+                << " (" << __FILE__ << ":" << __LINE__ << ")" << std::endl;
       syslog(LOG_ERR, "%s: got exception: %s (git id %s)", argv[0], msg.c_str(), bismon_shortgitid);
       abort();
     };
