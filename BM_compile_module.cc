@@ -31,7 +31,7 @@
 static char*bmc_module_idstr;
 static char*bmc_tempmodule_idstr;
 static char*bmc_plugin_idstr;
-
+static char*bmc_oid_idstr;
 
 std::vector<std::string> bmc_guile_vec;
 std::map<std::string,std::string> bmc_param_map;
@@ -182,6 +182,9 @@ bmc_parse_options(int& argc, char**argv)
             }
           bmc_guile_vec.push_back(std::string(optarg));
           break;
+        case BMCOPT_oid:
+          bmc_oid_idstr = optarg;
+          break;
         }
     }
 } // end of bmc_parse_options
@@ -237,7 +240,8 @@ main(int argc, char**argv)
         {
           BMC_DEBUG("no guile, moduleid=" << (bmc_module_idstr?:"*nul*")
                     << " tempmoduleid=" << (bmc_tempmodule_idstr?:"*nul*")
-                    << " pluginid=" << (bmc_plugin_idstr?:"*nul*"));
+                    << " pluginid=" << (bmc_plugin_idstr?:"*nul*")
+                    << " oid=" << (bmc_oid_idstr?:"*nul*"));
         }
       else   // some guile scripts
         {
@@ -254,7 +258,8 @@ main(int argc, char**argv)
               << std::endl
               << "..  moduleid=" << (bmc_module_idstr?:"*nul*")
               << " tempmoduleid=" << (bmc_tempmodule_idstr?:"*nul*")
-              << " pluginid=" << (bmc_plugin_idstr?:"*nul*"));
+              << " pluginid=" << (bmc_plugin_idstr?:"*nul*")
+              << " oid=" << (bmc_oid_idstr?:"*nul*"));
           if (scm_with_guile(bmc_run_guile, &bmc_guile_vec) == nullptr)
             {
               BMC_DEBUG("failed scm_with_guile " << bmc_guile_vec.size());
