@@ -42,6 +42,7 @@
 #include <set>
 #include <map>
 #include <string>
+#include <functional>
 #include <cassert>
 #include <unistd.h>
 #include <syslog.h>
@@ -69,6 +70,28 @@ extern "C" void* bmc_run_guile(void*);
 
 extern "C" std::vector<std::string> bmc_guile_vec;
 extern "C" std::map<std::string,std::string> bmc_param_map;
+
+extern "C" bool bmc_debug_flag;
+
+// typical usage could be BMC_DEBUG("something bad x=" << x)
+#define BMC_DEBUG_AT_BIS(Fil,Lin,...) do {			\
+  if (bmc_debug_flag) {						\
+    std::clog << "¿" /* U+00BF INVERTED QUESTION MARK */	\
+	      << (Fil) << ":" << Lin << ":: "			\
+	      << __VA_ARGS__ << std::endl; } } while(0)
+
+#define BMC_DEBUG_AT(Fil,Lin,...) BMC_DEBUG_AT_BIS(Fil,Lin,##__VA_ARGS__)
+
+// typical usage would be BMC_DEBUG("annoying x=" << x)
+#define BMC_DEBUG(...) BMC_DEBUG_AT(__FILE__,__LINE__,##__VA_ARGS__)
+
+
+inline
+std::ostream&operator << (std::ostream&out, std::function<void(std::ostream&)> f) {
+  f(out);
+  return out;
+}
+#define BMC_OUT(Out,...) [&](std::ostream& Out){__VA_ARGS__;}
 
 #endif /*BM_COMPMOD_INCLUDED_*/
 

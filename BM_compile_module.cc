@@ -77,21 +77,7 @@ enum bmc_longopt_en
   BMCOPT_guile,
 };
 
-
 bool bmc_debug_flag;
-
-// typical usage could be BMC_DEBUG("something bad x=" << x)
-#define BMC_DEBUG_AT_BIS(Fil,Lin,...) do {			\
-  if (bmc_debug_flag) {						\
-    std::clog << "¿" /* U+00BF INVERTED QUESTION MARK */	\
-	      << (Fil) << ":" << Lin << ":: "			\
-	      << __VA_ARGS__ << std::endl; } } while(0)
-
-#define BMC_DEBUG_AT(Fil,Lin,...) BMC_DEBUG_AT_BIS(Fil,Lin,##__VA_ARGS__)
-
-// typical usage would be BMC_DEBUG("annoying x=" << x)
-#define BMC_DEBUG(...) BMC_DEBUG_AT(__FILE__,__LINE__,##__VA_ARGS__)
-
 
 static const struct option
   bmc_long_options[] =
@@ -116,7 +102,7 @@ bmc_parse_options(int& argc, char**argv)
   for (;;)
     {
       int optix= -1;
-      int optres = getopt_long(argc, argv, "Vh", bmc_long_options, &optix);
+      int optres = getopt_long(argc, argv, "DVh", bmc_long_options, &optix);
       if (optres < 0)
         break;
       switch (optres)
@@ -253,19 +239,30 @@ main(int argc, char**argv)
         }
       else   // some guile scripts
         {
-          if (scm_with_guile( bmc_run_guile, &bmc_guile_vec) == nullptr)
+          BMC_DEBUG("with guile "
+                    << BMC_OUT(out,
+          {
+            int cnt=0;
+            for (auto it: bmc_guile_vec)
+              {
+                if (cnt++ > 0) out << ' ';
+                out << "[" << cnt << "]:" << it;
+              }
+          }));
+          if (scm_with_guile(bmc_run_guile, &bmc_guile_vec) == nullptr)
             {
               char errmsg[64];
               memset(errmsg, 0, sizeof(errmsg));
               snprintf(errmsg, sizeof(errmsg), "failed to run %d guile scripts or commands", (int)(bmc_guile_vec.size()));
               throw std::runtime_error(errmsg);
-            }
+            };
+          BMC_DEBUG("done guile " << bmc_guile_vec.size());
         }
 #warning incomplete BM_compile_module, see Makefile
       /* we should use syslog and the $BISMON_CXX variable, etc... */
       syslog (LOG_WARNING, "%s (file %s at " __DATE__ "@" __TIME__ ") incomplete"
               " - git %s (directory %s)",
-              argv[0], bismon_shortgitid, bismon_directory);
+              argv[0], __FILE__, bismon_shortgitid, bismon_directory);
       throw std::runtime_error(std::string("incomplete ")+argv[0]);
     }
   catch (std::exception& exc)
