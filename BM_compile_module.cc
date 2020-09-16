@@ -235,7 +235,9 @@ main(int argc, char**argv)
       BMC_DEBUG("parsed " << argc << " options");
       if (bmc_guile_vec.empty())
         {
-          BMC_DEBUG("no guile");
+          BMC_DEBUG("no guile, moduleid=" << (bmc_module_idstr?:"*nul*")
+                    << " tempmoduleid=" << (bmc_tempmodule_idstr?:"*nul*")
+                    << " pluginid=" << (bmc_plugin_idstr?:"*nul*"));
         }
       else   // some guile scripts
         {
@@ -248,9 +250,14 @@ main(int argc, char**argv)
                 if (cnt++ > 0) out << ' ';
                 out << "[" << cnt << "]:" << it;
               }
-          }));
+          })
+              << std::endl
+              << "..  moduleid=" << (bmc_module_idstr?:"*nul*")
+              << " tempmoduleid=" << (bmc_tempmodule_idstr?:"*nul*")
+              << " pluginid=" << (bmc_plugin_idstr?:"*nul*"));
           if (scm_with_guile(bmc_run_guile, &bmc_guile_vec) == nullptr)
             {
+              BMC_DEBUG("failed scm_with_guile " << bmc_guile_vec.size());
               char errmsg[64];
               memset(errmsg, 0, sizeof(errmsg));
               snprintf(errmsg, sizeof(errmsg), "failed to run %d guile scripts or commands", (int)(bmc_guile_vec.size()));
