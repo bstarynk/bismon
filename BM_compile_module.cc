@@ -255,7 +255,8 @@ main(int argc, char**argv)
           msg += argv[i];
         }
       std::clog << std::endl;
-      std::clog << "pid " << (long) getpid() << " got exception:" << exc.what() << std::endl;
+      std::clog << "pid " << (long) getpid() << " got exception:" << exc.what() << std::endl
+		<< " (" << __FILE__ << ":" << __LINE__ ")" << std::endl;
       syslog(LOG_ERR, "%s: got exception: %s (git id %s)", argv[0], msg.c_str(), bismon_shortgitid);
       abort();
     };
