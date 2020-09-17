@@ -32,6 +32,17 @@
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE 1
 #endif
+
+
+extern "C" {
+#include <unistd.h>
+#include <syslog.h>
+#include <getopt.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+};
+
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -44,9 +55,8 @@
 #include <string>
 #include <functional>
 #include <cassert>
-#include <unistd.h>
-#include <syslog.h>
-#include <getopt.h>
+
+
 #include <libguile.h>
 #include <glibmm/checksum.h>
 #include "id_BM.h"

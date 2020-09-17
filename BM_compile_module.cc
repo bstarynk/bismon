@@ -283,21 +283,36 @@ main(int argc, char**argv)
         }
 #warning incomplete BM_compile_module, see Makefile; the arguments have been parsed....
       {
-	Glib::Checksum md5cs(Glib::Checksum::CHECKSUM_MD5);
+        Glib::Checksum md5cs(Glib::Checksum::CHECKSUM_MD5);
 #warning FIXME: the input stream to md5sum is wrong...
-	std::string fipath;
-	if (bmc_in_idstr && bmc_oid_idstr)
-	  fipath = std::string(bmc_in_idstr) + "/modbm" + bmc_oid_idstr + ".c";
-	BMC_DEBUG("fipath=" << fipath);
-	std::ifstream ins(bmc_in_idstr);
-	int linecnt = 0;
-	for (std::string line; std::getline(ins,line); ) {
-	  md5cs.update(line);
-	  linecnt++;
-	}
-	std::string md5hex = md5cs.get_string();
-	BMC_DEBUG("for in=" <<  (bmc_in_idstr?:"*nul*") << " md5hex=" << md5hex
-		  << " with " << linecnt << " lines.");
+        std::string fipath;
+        if (bmc_in_idstr && bmc_oid_idstr)
+          fipath = std::string(bmc_in_idstr) + "/modbm" + bmc_oid_idstr + ".c";
+        BMC_DEBUG("fipath=" << fipath);
+        int fd = open(fipath.c_str(), O_RDONLY);
+        if (fd<0)
+          throw std::runtime_error(std::string{"failed to open "}+fipath
+                                   +":" + strerror(errno));
+        unsigned char buf[1024];
+        int bytecnt = 0;
+        constexpr int max_nb_bytes = 16777216; //2^24
+        for(;;)
+          {
+            memset (buf, 0, sizeof(buf));
+            int nbr = read(fd, buf, sizeof(buf));
+            if (nbr<=0) break;
+            md5cs.update((unsigned char*)buf, nbr);
+            bytecnt += nbr;
+            if (bytecnt > max_nb_bytes)
+              throw std::runtime_error(std::string("too many bytes ")
+                                       +std::to_string(bytecnt)
+                                       +std::string(" in file ")
+                                       +fipath);
+          }
+        close(fd), fd= -1;
+        std::string md5hex = md5cs.get_string();
+        BMC_DEBUG("for in=" <<  (bmc_in_idstr?:"*nul*") << " md5hex=" << md5hex
+                  << " with " << bytecnt << " bytes.");
       }
       const char*cxx_bismon = getenv("BISMON_CXX");
       /* we should use syslog and the $BISMON_CXX variable, etc... */
