@@ -290,11 +290,14 @@ main(int argc, char**argv)
 	  fipath = std::string(bmc_in_idstr) + "/modbm" + bmc_oid_idstr + ".c";
 	BMC_DEBUG("fipath=" << fipath);
 	std::ifstream ins(bmc_in_idstr);
+	int linecnt = 0;
 	for (std::string line; std::getline(ins,line); ) {
 	  md5cs.update(line);
+	  linecnt++;
 	}
 	std::string md5hex = md5cs.get_string();
-	BMC_DEBUG("for in=" <<  (bmc_in_idstr?:"*nul*") << " md5hex=" << md5hex);
+	BMC_DEBUG("for in=" <<  (bmc_in_idstr?:"*nul*") << " md5hex=" << md5hex
+		  << " with " << linecnt << " lines.");
       }
       const char*cxx_bismon = getenv("BISMON_CXX");
       /* we should use syslog and the $BISMON_CXX variable, etc... */
