@@ -315,6 +315,7 @@ main(int argc, char**argv)
                   << " with " << bytecnt << " bytes.");
       }
       const char*cxx_bismon = getenv("BISMON_CXX");
+      BMC_DEBUG("cxx_bismon= " << (cxx_bismon?:"*nul*"));
       /* we should use syslog and the $BISMON_CXX variable, etc... */
       syslog (LOG_WARNING, "%s (file %s at " __DATE__ "@" __TIME__ ") incomplete"
               " - git %s (directory %s)",
