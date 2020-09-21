@@ -28,7 +28,7 @@
 ################################################################
 ## see https://ninja-build.org/
 NINJA= ninja
-NINJAFLAGS= --verbose
+NINJAFLAGS= --verbose -k 1
 GCC= gcc
 GXX= g++
 CC= $(GCC)
