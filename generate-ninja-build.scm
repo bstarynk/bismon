@@ -176,8 +176,8 @@
 
 ;;;;;;;;;;;;;;;; constants
 (define bm-packages '("glib-2.0" "jansson" "gtk+-3.0"))
-(define bm-gcc (or (getenv "BISMON_CC") "gcc-9"))
-(define bm-g++ (or (getenv "BISMON_CXX") "g++-9"))
+(define bm-gcc (or (getenv "BISMON_CC") "gcc-10"))
+(define bm-g++ (or (getenv "BISMON_CXX") "g++-10"))
 
 ;;; these are the GCC compilers used to compile IoT code ; we use the
 ;;; glibmm (see https://developer.gnome.org/glibmm/stable/) in GCC
