@@ -2,6 +2,7 @@
 ;; a GPLv3+ licensed Guile script from http://github.com/bstarynk/bismon
 ;; file generate-ninja-build.scm is generating the build.ninja file
 ;; in replacement of generate-ninja-builder.sh
+;; for http://ninja-build.org/ (i.e. Debian ninja-build package)
 ;; 
 ;;    BISMON 
 ;;   Copyright © 2019-2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
@@ -23,7 +24,6 @@
 ;;---
 ;;   Contact me (Basile Starynkevitch) by email
 ;;   basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
-;; for http://ninja-build.org/ (i.e. Debian ninja-build package)
 !#     ;; this is ending a block comment
 ;;;###############################################################
 (use-modules
