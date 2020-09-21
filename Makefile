@@ -26,8 +26,9 @@
 ######
 # for GNU make
 ################################################################
+## see https://ninja-build.org/
 NINJA= ninja
-NINJAFLAGS= 
+NINJAFLAGS= --verbose
 GCC= gcc
 GXX= g++
 CC= $(GCC)
