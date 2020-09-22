@@ -56,6 +56,8 @@ BM_COMPILE_MODULE_PACKAGES=  glib-2.0 glibmm-2.4 guile-3.0
 BM_COMPILE_CFLAGS:= $(shell pkg-config --cflags $(BM_COMPILE_MODULE_PACKAGES))
 BM_COMPILE_LIBES:= $(shell pkg-config --libs $(BM_COMPILE_MODULE_PACKAGES))
 BM_COMPILE_MODULE ?= ./BM_compile_module
+BM_COMPILE_FLAGS ?= --debug
+
 # we could add --guile <guile> or --param <param>=<value> below
 BM_COMPILE_MODULE_EXTRAFLAGS ?= 
 .PHONY: all programs clean verbose indent count modules measure \
@@ -113,7 +115,7 @@ build.ninja: generate-ninja-build.scm
 
 ## should use BM_compile_module when it is ready
 modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | $(BM_COMPILE_MODULE) _cflagsmodule.mk
-	$(BM_COMPILE_MODULE)  --oid $(patsubst modules/modbm_%.c,_%,$<) --module modubin/ --in modules/ $(BM_COMPILE_MODULE_EXTRAFLAGS)
+	$(BM_COMPILE_MODULE) $(BM_COMPILE_FLAGS) --oid $(patsubst modules/modbm_%.c,_%,$<) --module modubin/ --in modules/ $(BM_COMPILE_MODULE_EXTRAFLAGS)
 
 
 ## the drafts/testplugin_*.c pattern is known in main_BM.c function
@@ -125,7 +127,7 @@ drafts/testplugin_%.so: drafts/testplugin_%.c $(BISMONHEADERS) | _cflagsmodule.m
 
 ## should use BM_compile_module when it is ready
 modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) $(warning tempmodules should use BM_compile_module) | $(BM_COMPILE_MODULE) _cflagsmodule.mk
-	$(BM_COMPILE_MODULE)  --oid $(patsubst modules/modbm_%.c,_%,$<) --tempmodule modubin/ --in modules/  $(BM_COMPILE_MODULE_EXTRAFLAGS)
+	$(BM_COMPILE_MODULE) $(BM_COMPILE_FLAGS) --oid $(patsubst modules/modbm_%.c,_%,$<) --tempmodule modubin/ --in modules/  $(BM_COMPILE_MODULE_EXTRAFLAGS)
 #                                                                                                           
 modules: _cflagsmodule.mk  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES)) 
 
