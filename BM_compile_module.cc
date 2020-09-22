@@ -317,9 +317,10 @@ main(int argc, char**argv)
       const char*cxx_bismon = getenv("BISMON_CXX");
       BMC_DEBUG("cxx_bismon= " << (cxx_bismon?:"*nul*"));
       /* we should use syslog and the $BISMON_CXX variable, etc... */
-      syslog (LOG_WARNING, "%s (file %s at " __DATE__ "@" __TIME__ ") incomplete"
+      syslog (LOG_WARNING, "%s (%s:%d at " __DATE__ "@" __TIME__ ") incomplete"
               " - git %s (directory %s)",
-              argv[0], __FILE__, bismon_shortgitid, bismon_directory);
+              argv[0], __FILE__, __LINE__,
+	      bismon_shortgitid, bismon_directory);
       throw std::runtime_error(std::string("incomplete ")+argv[0]);
     }
   catch (std::exception& exc)
