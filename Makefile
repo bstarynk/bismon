@@ -115,6 +115,7 @@ build.ninja: generate-ninja-build.scm
 
 ## should use BM_compile_module when it is ready
 modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | $(BM_COMPILE_MODULE) _cflagsmodule.mk
+	$(warning should use BM_compile_module for $@)
 	$(BM_COMPILE_MODULE) $(BM_COMPILE_FLAGS) --oid $(patsubst modules/modbm_%.c,_%,$<) --module modubin/ --in modules/ $(BM_COMPILE_MODULE_EXTRAFLAGS)
 
 
@@ -126,7 +127,8 @@ drafts/testplugin_%.so: drafts/testplugin_%.c $(BISMONHEADERS) | _cflagsmodule.m
 	     -shared $< -o $@
 
 ## should use BM_compile_module when it is ready
-modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) $(warning tempmodules should use BM_compile_module) | $(BM_COMPILE_MODULE) _cflagsmodule.mk
+modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | $(BM_COMPILE_MODULE) _cflagsmodule.mk
+	$(warning should use BM_compile_module for $@)
 	$(BM_COMPILE_MODULE) $(BM_COMPILE_FLAGS) --oid $(patsubst modules/modbm_%.c,_%,$<) --tempmodule modubin/ --in modules/  $(BM_COMPILE_MODULE_EXTRAFLAGS)
 #                                                                                                           
 modules: _cflagsmodule.mk  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES)) 
