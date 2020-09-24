@@ -1,8 +1,9 @@
 // file misc_BM.cc
-
+// SPDX-License-Identifier: GPL-3.0-or-later
+// see https://github.com/bstarynk/bismon/
 /***
     BISMON
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
     with help from Franck Védrine.
