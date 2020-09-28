@@ -128,16 +128,43 @@ won't work on 32 bits machines!) :
 ## prerequisites ##
 
 
-See also the [dependencies](dependencies/) subdirectory and its [README-dependencies](dependencies//README-dependencies.md).
+You should be able to compile many [open
+source](http://opensource.org/) software package for their source
+code. You should have a recent
+[GNU/Linux](https://www.gnu.org/gnu/why-gnu-linux.en.html) system with
+[root](https://geek-university.com/linux/root-account/) acesss,
+preferably 32Gigabytes or more of RAM, some
+[x86-64](https://en.wikipedia.org/wiki/X86-64) processor with at least
+4 [cores](https://en.wikipedia.org/wiki/Multi-core_processor), and at
+least 250Gbytes of free disk space. You are expected to be fluent with
+the Linux [command-line
+interface](https://en.wikipedia.org/wiki/Command-line_interface), and
+[unix shells](https://en.wikipedia.org/wiki/Unix_shell) such as [GNU
+bash](https://www.gnu.org/software/bash/) or
+[zsh](http://zsh.org/). You should be able and allowed to compile [GCC
+10](https://gcc.gnu.org/gcc-10/) from its [source
+code](https://en.wikipedia.org/wiki/Source_code) and familiar with
+source code editors such as [GNU
+emacs](https://www.gnu.org/software/emacs/), [vim](https://vim.org/),
+[geany](https://www.geany.org/) etc... You enjoyed reading
+[SICP](https://mitpress.mit.edu/sites/default/files/sicp/index.html).
 
-* recent [GCC](http://gcc.gnu.org/) (so [GCC 7](https://gcc.gnu.org/gcc-7/) 
-or *preferably* [GCC 8](https://gcc.gnu.org/gcc-8/) ...), with C and C++ and JIT
-support and plugins enabled (check with `gcc -v`; if your system `gcc`
-and `g++` lack support for plugins and
+See also the [dependencies](dependencies/) subdirectory and its
+[README-dependencies](dependencies//README-dependencies.md) - perhaps
+not updated.
+
+* recent [GCC](http://gcc.gnu.org/) (so [GCC
+9](https://gcc.gnu.org/gcc-9/) or *preferably* [GCC
+10](https://gcc.gnu.org/gcc-10/) ...), with C and C++ and JIT support
+and plugins enabled (check with `gcc -v`; if your system `gcc` and
+`g++` lack support for plugins and
 [libgccjit](https://gcc.gnu.org/onlinedocs/jit/), you should build and
 [install](https://gcc.gnu.org/install/) a recent GCC release from its
-source code, and configure it to provide them.). An old GCC
-(e.g. version 6 or earlier) cannot be used.
+source code, and configure it to provide them.). **An old GCC**
+(e.g. version 8 or earlier) **cannot be used.**
+
+* a recent [Python 3](http://python.org/) with
+  [pip](https://pypi.org/project/pip/) installed.
 
 
 * the documentation needs a `/usr/bin/mipsel-linux-gnu-gcc-8`
