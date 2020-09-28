@@ -24,8 +24,9 @@
 ## Contact me (Basile Starynkevitch) by email
 ## basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 ##
-import os
-import subprocess
+import os                       # https://docs.python.org/3/library/os.html
+import subprocess               # https://docs.python.org/3/library/subprocess.html
+import argparse                 # https://docs.python.org/3/library/argparse.html
 
 ## we first need a working GCC 10 compiler, which could be overridden
 ## with the $BISMON_CC environment variable
