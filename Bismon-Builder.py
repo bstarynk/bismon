@@ -47,7 +47,7 @@ class Bismon_Builder:
         return 'Bismon_Builder<repo:{0}, git-commit:{1}>'.format(self.this_repo.path, self.git_id.__str__()[:12])
     def parse_program_arguments(self):
         argparser = argparse.ArgumentParser()
-        argparser.add_argument("--version", help="show script version")
+        argparser.add_argument('-V', "--version", help="show script version of %(prog)s", version= ('Bismon_builder {0}' % (self.git_id.str())))
 
 
 builder = Bismon_Builder()
