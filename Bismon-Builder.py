@@ -57,3 +57,10 @@ builder.parse_program_arguments()
 print (builder)
 # bismon_cc_version= subprocess.Popen([bismon_cc, "--version"])
 # print("Bismon C compiler version is", bismon_cc_version)
+
+##-**************
+##-                           for Emacs...
+##- Local Variables: ;;
+##- compile-command: "pylint Bismon-Builder.py" ;;
+##- End: ;;
+##-**************/
