@@ -45,8 +45,14 @@ class Bismon_Builder:
         self.git_id = self.last_commit.oid
     def __str__(self):
         return 'Bismon_Builder<repo:{0}, git-commit:{1}>'.format(self.this_repo.path, self.git_id.__str__()[:12])
+    def parse_program_arguments(self):
+        argparser = argparse.ArgumentParser()
+        argparser.add_argument("--version", help="show script version")
+
 
 builder = Bismon_Builder()
+
+builder.parse_program_arguments()
 
 print (builder)
 # bismon_cc_version= subprocess.Popen([bismon_cc, "--version"])
