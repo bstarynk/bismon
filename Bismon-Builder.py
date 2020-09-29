@@ -31,10 +31,20 @@ import pygit2                   # https://www.pygit2.org/
 
 ## we first need a working GCC 10 compiler, which could be overridden
 ## with the $BISMON_CC environment variable
-bismon_cc="gcc"
-if os.environ["BISMON_CC"]:
-    bismon_cc=os.environ["BISMON_CC"]
+# https://stackoverflow.com/q/40697845/841108
+bismon_cc= os.getenv("BISMON_CC", "gcc")
 
 
-bismon_cc_version= subprocess.Popen([bismon_cc, "--version"])
-print("Bismon C compiler version is", bismon_cc_version)
+
+class Bismon_Builder:
+    def __init__(self):
+        from pygit2 import Repository
+        self.this_repo = Repository(".")
+        self.last_commit = self.this_repo.revparse_single('HEAD')
+        self.git_id = self.last_commit.oid
+
+builder = Bismon_Builder()
+
+print (builder)
+# bismon_cc_version= subprocess.Popen([bismon_cc, "--version"])
+# print("Bismon C compiler version is", bismon_cc_version)
