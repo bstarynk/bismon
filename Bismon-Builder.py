@@ -31,6 +31,7 @@ import pygit2                   # https://www.pygit2.org/
 
 ## we first need a working GCC 10 compiler, which could be overridden
 ## with the $BISMON_CC environment variable
+global bismon_cc
 # https://stackoverflow.com/q/40697845/841108
 bismon_cc= os.getenv("BISMON_CC", "gcc")
 
@@ -42,6 +43,8 @@ class Bismon_Builder:
         self.this_repo = Repository(".")
         self.last_commit = self.this_repo.revparse_single('HEAD')
         self.git_id = self.last_commit.oid
+    def __str__(self):
+        return 'Bismon_Builder<repo:{0}, git:{1}>'.format(self.this_repo.path, self.git_id)
 
 builder = Bismon_Builder()
 
