@@ -27,6 +27,7 @@
 import os                       # https://docs.python.org/3/library/os.html
 import subprocess               # https://docs.python.org/3/library/subprocess.html
 import argparse                 # https://docs.python.org/3/library/argparse.html
+import pygit2                   # https://www.pygit2.org/
 
 ## we first need a working GCC 10 compiler, which could be overridden
 ## with the $BISMON_CC environment variable
