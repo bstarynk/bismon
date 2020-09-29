@@ -44,7 +44,7 @@ class Bismon_Builder:
         self.last_commit = self.this_repo.revparse_single('HEAD')
         self.git_id = self.last_commit.oid
     def __str__(self):
-        return 'Bismon_Builder<repo:{0}, git:{1}>'.format(self.this_repo.path, self.git_id)
+        return 'Bismon_Builder<repo:{0}, git-commit:{1}>'.format(self.this_repo.path, self.git_id.__str__()[:12])
 
 builder = Bismon_Builder()
 
