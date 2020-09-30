@@ -29,6 +29,7 @@ The bismon_builder.py script (for Python 3) is used to generate the build relate
 of the Bismon static analyzer (GPLv3+ licensed). See https://github.com/bstarynk/bismon
 for more.
 '''
+
 import os                       # https://docs.python.org/3/library/os.html
 import subprocess               # https://docs.python.org/3/library/subprocess.html
 import argparse                 # https://docs.python.org/3/library/argparse.html
@@ -36,9 +37,9 @@ import pygit2                   # https://www.pygit2.org/
 
 ## we first need a working GCC 10 compiler, which could be overridden
 ## with the $BISMON_CC environment variable
-global bismon_cc
+global BISMON_CC
 # https://stackoverflow.com/q/40697845/841108
-bismon_cc = os.getenv("BISMON_CC", "gcc")
+BISMON_CC = os.getenv("BISMON_CC", "gcc")
 
 
 
