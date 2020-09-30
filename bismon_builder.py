@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 ## SPDX-License-Identifier: GPL-3.0-or-later
 ## See https://github.com/bstarynk/bismon/
-## file Bismon_Builder.py
+## file bismon_builder.py
 ##
 ## BISMON
 ## Copyright © 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
@@ -24,6 +24,11 @@
 ## Contact me (Basile Starynkevitch) by email
 ## basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 ##
+'''
+The bismon_builder.py script (for Python 3) is used to generate the build related files
+of the Bismon static analyzer (GPLv3+ licensed). See https://github.com/bstarynk/bismon
+for more.
+'''
 import os                       # https://docs.python.org/3/library/os.html
 import subprocess               # https://docs.python.org/3/library/subprocess.html
 import argparse                 # https://docs.python.org/3/library/argparse.html
@@ -69,6 +74,6 @@ print(builder)
 ##-**************
 ##-                           for Emacs...
 ##- Local Variables: ;;
-##- compile-command: "pylint Bismon_uilder.py" ;;
+##- compile-command: "pylint bismon_builder.py" ;;
 ##- End: ;;
 ##-**************/
