@@ -2,10 +2,17 @@
 
 # Overview and philosophy #
 
-`bismon` (this is a *temporary* name) is a **persistent monitor** which (in the future) would interact with the [GCC](http://gcc.gnu.org/) compiler thru plugins.
-It is (or will become) somehow a successor to my old [GCC MELT](http://starynkevitch.net/Basile/gcc-melt/) project; the medium-term goal is also [static program source code analysis](https://en.wikipedia.org/wiki/Static_program_analysis) with the help of [GCC](http://gcc.gnu.org/). The source code repository (GPLv3+ licensed) is on https://github.com/bstarynk/bismon ..
-My ([Basile Starynkevitch](http://starynkevitch.net/Basile/), employed
-at [CEA, LIST](http://www-list.cea.fr/) in France) work on `bismon` is
+`bismon` (this is a *temporary* name) is a **persistent monitor**
+which (in the future) would interact with the
+[GCC](http://gcc.gnu.org/) compiler thru plugins.  It is (or will
+become) somehow a successor to my old [GCC
+MELT](http://starynkevitch.net/Basile/gcc-melt/) project; the
+medium-term goal is also [static program source code
+analysis](https://en.wikipedia.org/wiki/Static_program_analysis) with
+the help of [GCC](http://gcc.gnu.org/). The source code repository
+(GPLv3+ licensed) is on https://github.com/bstarynk/bismon ..  My
+([Basile Starynkevitch](http://starynkevitch.net/Basile/), employed at
+[CEA, LIST](http://www-list.cea.fr/) in France) work on `bismon` is
 partly funded (from start of 2018 to end of 2020) by the European
 Union, Horizon H2020 programme, [CHARIOT](http://chariotproject.eu/)
 project, under Grant Agreement No 780075. Within CHARIOT I will focus
@@ -17,12 +24,17 @@ partly funded by the [DECODER](http://decoder-project.eu/) H2020
 project, under Grant Agreement 824231 (related to its *Persistent
 Knowledge Monitor* WP1).
 
-Currently (start of 2019) `bismon` still in **pre alpha**-stage, and it is *free software* under [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.en.html) license. It is intended for a Linux x86-64 desktop developer's workstation (won't work on Windows or MacOSX or Android).
+Currently (start of 2019) `bismon` still in **pre alpha**-stage, and
+it is *free software* under
+[GPLv3+](https://www.gnu.org/licenses/gpl-3.0.en.html) license. It is
+intended for a Linux x86-64 desktop developer's workstation (won't
+work on Windows or MacOSX or Android).
 
 Some *still incomplete* documentation (as a technical report
 `doc/bismon-chariot-doc.pdf` in PDF) can be generated (with `make`
 then `make doc`; that command requires you to have a writable
-`$HOME/tmp/` directory). An early draft of it might be available on
+`$HOME/tmp/` directory). An early (unofficial) draft of that report
+might be available on
 http://starynkevitch.net/Basile/bismon-chariot-doc.pdf
 
 
@@ -35,8 +47,9 @@ generic ***framework*, with a *lot of additional work*** (years, not
 months), **for many other purposes** (the most significant limit being
 your imagination, and the power of your computer), including perhaps
 even some kind of
-[AI](https://en.wikipedia.org/wiki/Artificial_intelligence),
-sophisticated
+[AI](https://en.wikipedia.org/wiki/Artificial_intelligence) system
+(read J.Pitrat's book *Artificial Beings: the conscious of a conscious
+machine*, ISBN: 978-1848211018), sophisticated
 [desktop](https://en.wikipedia.org/wiki/Desktop_environment)-like
 graphical environments, many interactive web-based [collaborative
 software](https://en.wikipedia.org/wiki/Collaborative_software) tools
