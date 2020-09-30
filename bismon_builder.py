@@ -37,21 +37,22 @@ import pygit2                   # https://www.pygit2.org/
 
 ## we first need a working GCC 10 compiler, which could be overridden
 ## with the $BISMON_CC environment variable
-global BISMON_CC
 # https://stackoverflow.com/q/40697845/841108
 BISMON_CC = os.getenv("BISMON_CC", "gcc")
 
 
 
-class Bismon_Builder:
+class BismonBuilder:
+    '''the BismonBuilder class is used to generate build automation files related to
+https://github.com/bstarynk/bismon/ open source static analysis software.
+    '''
     def __init__(self):
-        from pygit2 import Repository
-        self.this_repo = Repository(".")
+        self.this_repo = pygit2.Repository(".")
         self.last_commit = self.this_repo.revparse_single('HEAD')
         self.git_id = self.last_commit.oid
     def __str__(self):
-        return 'Bismon_Builder<repo:{0}, git-commit:{1}>'.format(self.this_repo.path,
-                                                                 self.git_id.__str__()[:12])
+        return 'BismonBuilder<repo:{0}, git-commit:{1}>'.format(self.this_repo.path,
+                                                                self.git_id.__str__()[:12])
     def parse_program_arguments(self):
         argparser = argparse.ArgumentParser(description=
                                             '''the builder of the Bismon static source code analyzer
@@ -64,7 +65,7 @@ class Bismon_Builder:
                                version=('Bismon_builder {0}' % (self.git_id.str())))
 
 
-builder = Bismon_Builder()
+builder = BismonBuilder()
 
 builder.parse_program_arguments()
 
