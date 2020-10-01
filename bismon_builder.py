@@ -31,7 +31,7 @@ for more.
 '''
 
 import os                       # https://docs.python.org/3/library/os.html
-import subprocess               # https://docs.python.org/3/library/subprocess.html
+#import subprocess               # https://docs.python.org/3/library/subprocess.html
 import argparse                 # https://docs.python.org/3/library/argparse.html
 import pygit2                   # https://www.pygit2.org/
 
@@ -54,6 +54,7 @@ https://github.com/bstarynk/bismon/ open source static analysis software.
         return 'BismonBuilder<repo:{0}, git-commit:{1}>'.format(self.this_repo.path,
                                                                 self.git_id.__str__()[:12])
     def parse_program_arguments(self):
+        '''Parse the program arguments, i.e. to execve(2) of this script.'''
         argparser = argparse.ArgumentParser(description=
                                             '''the builder of the Bismon static source code analyzer
 (GPLv3+ licensed, on github.com/bstarynk/bismon/ ...)''',
@@ -63,13 +64,25 @@ https://github.com/bstarynk/bismon/ open source static analysis software.
                                             )
         argparser.add_argument('-V', "--version", help="show script version of %(prog)s",
                                version=('Bismon_builder {0}' % (self.git_id.str())))
+        argparser.add_argument('-M', '--module', metavar='MODULE_DIR',
+                               help='''compile a persistent module  of given --oid
+(whose C++ code is in directory <MODULE_DIR>/ as file modbm_<OID>.cc)''')
+        argparser.add_argument('-T', '--tempmodule', metavar='TEMP_MODULE_DIR',
+                               help='''compile a temporary module  of given --oid
+(whose C++ code is in directory <TEMP_MODULE_DIR>/ as file tmpmobm_<OID>.cc)''')
+        argparser.add_argument('-O', '--oid', metavar='OID',
+                               help='''gives the object-id of a temporary or persistent module
+(see also --module <MODULE_DIR> and -- tempmodule <TEMP_MODULE_DIR> options''')
+        argparser.add_argument('-N', '--ninja',
+                               help='''Generates a ninja.build file for ninja
+(see www.ninja-build.org)''')
 
 
-builder = BismonBuilder()
+BUILDER = BismonBuilder()
 
-builder.parse_program_arguments()
+BUILDER.parse_program_arguments()
 
-print(builder)
+print(BUILDER)
 # bismon_cc_version= subprocess.Popen([bismon_cc, "--version"])
 # print("Bismon C compiler version is", bismon_cc_version)
 
