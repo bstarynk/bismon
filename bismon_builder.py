@@ -26,8 +26,10 @@
 ##
 '''
 The bismon_builder.py script (for Python 3) is used to generate the build related files
-of the Bismon static analyzer (GPLv3+ licensed). See https://github.com/bstarynk/bismon
-for more.
+of the Bismon static analyzer (GPLv3+ licensed). 
+See https://github.com/bstarynk/bismon for more.
+Debugging of this script might be done with the help of pdb.
+See https://docs.python.org/3/library/pdb.html for more.
 '''
 
 import os                       # https://docs.python.org/3/library/os.html
@@ -75,7 +77,8 @@ https://github.com/bstarynk/bismon/ open source static analysis software.
 (see also --module <MODULE_DIR> and -- tempmodule <TEMP_MODULE_DIR> options''')
         argparser.add_argument('-N', '--ninja',
                                help='''Generates a ninja.build file for ninja
-(see www.ninja-build.org)''')
+(see www.ninja-build.org)''',
+                               action='store_true')
 
 
 BUILDER = BismonBuilder()
