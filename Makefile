@@ -73,20 +73,21 @@ all: | build.ninja
 	$(MAKE) programs modules jstimestamp bismon-metaplugin
 	@printf "\n******* done making all in %s *********\n" $$PWD
 
-BM_compile_module: BM_compile_module.o BM_compmod_guile.o __timestamp.o 
-	$(LINK.cc)  -O -g -Wall -Wextra  $^ $(BM_COMPILE_LIBES) -o $@
-	@ls -l $@
-
-BM_compile_module.o: BM_compile_module.cc BM_compmod.hh | _BM_compmod_guile.snarf.h
-	$(COMPILE.cc)  -O -g -Wall -Wextra $(BM_COMPILE_CFLAGS) $<
-
-BM_compmod_guile.o: BM_compmod_guile.cc BM_compmod.hh
-	$(COMPILE.cc)  -O -g -Wall -Wextra $(BM_COMPILE_CFLAGS) $<
-
-_BM_compmod_guile.snarf.h: BM_compmod_guile.cc
-	$(GUILE_SNARF) -o $@ $(BM_COMPILE_CFLAGS)  $<
-
-programs: BM_compile_module BM_makeconst bismon modules
+#- BM_compile_module: BM_compile_module.o BM_compmod_guile.o __timestamp.o 
+#- 	$(LINK.cc)  -O -g -Wall -Wextra  $^ $(BM_COMPILE_LIBES) -o $@
+#- 	@ls -l $@
+#-
+#- BM_compile_module.o: BM_compile_module.cc BM_compmod.hh | _BM_compmod_guile.snarf.h
+#- 	$(COMPILE.cc)  -O -g -Wall -Wextra $(BM_COMPILE_CFLAGS) $<
+#-
+#- BM_compmod_guile.o: BM_compmod_guile.cc BM_compmod.hh
+#- 	$(COMPILE.cc)  -O -g -Wall -Wextra $(BM_COMPILE_CFLAGS) $<
+#-
+#- _BM_compmod_guile.snarf.h: BM_compmod_guile.cc
+#- 	$(GUILE_SNARF) -o $@ $(BM_COMPILE_CFLAGS)  $<
+#-   
+#- programs: BM_compile_module BM_makeconst bismon modules
+programs: bismon modules
 
 verbose: | build.ninja
 	$(NINJA) -v
@@ -114,8 +115,8 @@ build.ninja: generate-ninja-build.scm
 
 
 ## should use BM_compile_module when it is ready
-modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | $(BM_COMPILE_MODULE) _cflagsmodule.mk
-	$(warning should use BM_compile_module for $@)
+modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
+	$(error should use bismon_builder.py instead of BM_compile_module for $@)
 	$(BM_COMPILE_MODULE) $(BM_COMPILE_FLAGS) --oid $(patsubst modules/modbm_%.c,_%,$<) --module modubin/ --in modules/ $(BM_COMPILE_MODULE_EXTRAFLAGS)
 
 
@@ -127,8 +128,8 @@ drafts/testplugin_%.so: drafts/testplugin_%.c $(BISMONHEADERS) | _cflagsmodule.m
 	     -shared $< -o $@
 
 ## should use BM_compile_module when it is ready
-modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | $(BM_COMPILE_MODULE) _cflagsmodule.mk
-	$(warning should use BM_compile_module for $@)
+modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
+	$(error should use bismon_builder.py instead of BM_compile_module for $@)
 	$(BM_COMPILE_MODULE) $(BM_COMPILE_FLAGS) --oid $(patsubst modules/modbm_%.c,_%,$<) --tempmodule modubin/ --in modules/  $(BM_COMPILE_MODULE_EXTRAFLAGS)
 #                                                                                                           
 modules: _cflagsmodule.mk  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES)) 
