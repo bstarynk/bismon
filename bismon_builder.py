@@ -66,24 +66,53 @@ https://github.com/bstarynk/bismon/ open source static analysis software.
                                             allow_abbrev=True
                                             )
         argparser.add_argument('-V', "--version", help="show script version of %(prog)s",
+                               action='version',
                                version=('Bismon_builder {0}'.format(self.git_id)))
         argparser.add_argument('-M', '--module', metavar='MODULE_DIR',
+                               required=True,
                                help='''compile a persistent module  of given --oid
 (whose C++ code is in directory <MODULE_DIR>/ as file modbm_<OID>.cc)''')
-        argparser.add_argument('-T', '--tempmodule', metavar='TEMP_MODULE_DIR',
+        argparser.add_argument('-n', '--dry-run',
+                               metavar='DRY_RUN',
+                               action='store_true',
+                               help='''just show the compilation command but do not run it''')
+        argparser.add_argument('-D', '--debug',
+                               metavar='DEBUG',
+                               action='store_true',
+                               help='''debug output of this script''')
+        argparser.add_argument('-T', '--tempmodule',
+                               metavar='TEMP_MODULE_DIR',
+                               required=True,
                                help='''compile a temporary module  of given --oid
 (whose C++ code is in directory <TEMP_MODULE_DIR>/ as file tmpmobm_<OID>.cc)''')
         argparser.add_argument('-O', '--oid', metavar='OID',
+                               required=True,
                                help='''gives the object-id of a temporary or persistent module
 (see also --module <MODULE_DIR> and -- tempmodule <TEMP_MODULE_DIR> options''')
         argparser.add_argument('-N', '--ninja',
                                help='''Generates a ninja.build file for ninja
 (see www.ninja-build.org)''',
+                               metavar='NINJA',
                                action='store_true')
         argparser.add_argument('-C', '--cflags', metavar='CFLAGS',
+                               required=True,
                                help='''give the compilation flags for GCC''')
+                                                          self.git_id[:12])
+    def run(self):
+        if (self.DEBUG):
+            print("BismonBuilder debugging:", self)
+            print("BismonBuilder CFLAGS:", self.CFLAGS)
+            print("BismonBuilder DRY_RUN:", self.DRY_RUN)
+            print("BismonBuilder MODULE_DIR:", self.MODULE_DIR)
+            print("BismonBuilder NINJA:", self.NINJA)
+            print("BismonBuilder OID:", self.OID)
+            print("BismonBuilder TEMP_MODULE_DIR:", self.TEMP_MODULE_DIR)
+        raise RuntimeError("BismonBuilder.run unimplemented")
 
+    # other methods of BismonBuilder should go here...
+## end class BismonBuilder
 
+################
 BUILDER = BismonBuilder()
 
 BUILDER.parse_program_arguments()
