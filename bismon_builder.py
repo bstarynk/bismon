@@ -53,9 +53,12 @@ https://github.com/bstarynk/bismon/ open source static analysis software.
         self.this_repo = pygit2.Repository(".")
         self.last_commit = self.this_repo.revparse_single('HEAD')
         self.git_id = self.last_commit.hex
+        self.args = None
+    #
     def __str__(self):
         return 'BismonBuilder<repo:{0}, git-commit:{1}>'.format(self.this_repo.path,
                                                                 self.git_id[:12])
+    #
     def parse_program_arguments(self):
         '''Parse the program arguments, i.e. to execve(2) of this script.'''
         argparser = argparse.ArgumentParser(description=
@@ -97,16 +100,19 @@ https://github.com/bstarynk/bismon/ open source static analysis software.
         argparser.add_argument('-C', '--cflags', metavar='CFLAGS',
                                required=True,
                                help='''give the compilation flags for GCC''')
-                                                          self.git_id[:12])
+        self.args = argparser.parse_args()
+    #
     def run(self):
-        if (self.DEBUG):
+        '''run appropriate processes'''
+        if self.args.DEBUG:
             print("BismonBuilder debugging:", self)
-            print("BismonBuilder CFLAGS:", self.CFLAGS)
-            print("BismonBuilder DRY_RUN:", self.DRY_RUN)
-            print("BismonBuilder MODULE_DIR:", self.MODULE_DIR)
-            print("BismonBuilder NINJA:", self.NINJA)
-            print("BismonBuilder OID:", self.OID)
-            print("BismonBuilder TEMP_MODULE_DIR:", self.TEMP_MODULE_DIR)
+            print("BismonBuilder args:", self.args)
+            print("BismonBuilder CFLAGS:", self.args.CFLAGS)
+            print("BismonBuilder DRY_RUN:", self.args.DRY_RUN)
+            print("BismonBuilder MODULE_DIR:", self.args.MODULE_DIR)
+            print("BismonBuilder NINJA:", self.args.NINJA)
+            print("BismonBuilder OID:", self.args.OID)
+            print("BismonBuilder TEMP_MODULE_DIR:", self.args.TEMP_MODULE_DIR)
         raise RuntimeError("BismonBuilder.run unimplemented")
 
     # other methods of BismonBuilder should go here...
@@ -118,6 +124,9 @@ BUILDER = BismonBuilder()
 BUILDER.parse_program_arguments()
 
 print(BUILDER)
+
+BUILDER.run()
+
 # bismon_cc_version= subprocess.Popen([bismon_cc, "--version"])
 # print("Bismon C compiler version is", bismon_cc_version)
 
