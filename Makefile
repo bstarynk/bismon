@@ -115,9 +115,10 @@ build.ninja: generate-ninja-build.scm
 
 
 ## should use BM_compile_module when it is ready
-modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
-	$(error should use bismon_builder.py instead of BM_compile_module for $@)
-	$(BM_COMPILE_MODULE) $(BM_COMPILE_FLAGS) --oid $(patsubst modules/modbm_%.c,_%,$<) --module modubin/ --in modules/ $(BM_COMPILE_MODULE_EXTRAFLAGS)
+modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | bismon_builder.py  _cflagsmodule.mk
+	$(warning should use bismon_builder.py for $@ BM_COMPILE_CFLAGS= $(BM_COMPILE_CFLAGS) BM_COMPILE_MODULE_EXTRAFLAGS= $(BM_COMPILE_MODULE_EXTRAFLAGS))
+	./bismon_builder.py --oid "$(patsubst modules/modbm_%.c,_%,$<)"  --module modubin/ --in modules/ --cflags "$(BM_COMPILE_CFLAGS) $(BM_COMPILE_MODULE_EXTRAFLAGS)"
+#	$(BM_COMPILE_MODULE) $(BM_COMPILE_FLAGS) --oid $(patsubst modules/modbm_%.c,_%,$<) --module modubin/ --in modules/ $(BM_COMPILE_MODULE_EXTRAFLAGS)
 
 
 ## the drafts/testplugin_*.c pattern is known in main_BM.c function

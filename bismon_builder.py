@@ -80,6 +80,8 @@ https://github.com/bstarynk/bismon/ open source static analysis software.
                                help='''Generates a ninja.build file for ninja
 (see www.ninja-build.org)''',
                                action='store_true')
+        argparser.add_argument('-C', '--cflags', metavar='CFLAGS',
+                               help='''give the compilation flags for GCC''')
 
 
 BUILDER = BismonBuilder()
