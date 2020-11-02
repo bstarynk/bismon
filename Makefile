@@ -58,6 +58,8 @@ BM_COMPILE_LIBES:= $(shell pkg-config --libs $(BM_COMPILE_MODULE_PACKAGES))
 BM_COMPILE_MODULE ?= ./BM_compile_module
 BM_COMPILE_FLAGS ?= --debug
 
+BISMON_BUILDER_FLAGS ?= --debug
+
 # we could add --guile <guile> or --param <param>=<value> below
 BM_COMPILE_MODULE_EXTRAFLAGS ?= 
 .PHONY: all programs clean verbose indent count modules measure \
@@ -117,7 +119,7 @@ build.ninja: generate-ninja-build.scm
 ## should use BM_compile_module when it is ready
 modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | bismon_builder.py  _cflagsmodule.mk
 	$(warning should use bismon_builder.py for $@ BM_COMPILE_CFLAGS= $(BM_COMPILE_CFLAGS) BM_COMPILE_MODULE_EXTRAFLAGS= $(BM_COMPILE_MODULE_EXTRAFLAGS))
-	./bismon_builder.py --oid "$(patsubst modules/modbm_%.c,_%,$<)"  --module modubin/ --in modules/ --cflags "$(BM_COMPILE_CFLAGS) $(BM_COMPILE_MODULE_EXTRAFLAGS)"
+	./bismon_builder.py $(BISMON_BUILDER_FLAGS) --oid "$(patsubst modules/modbm_%.c,_%,$<)"  --module modubin/ --in modules/ --cflags "$(BM_COMPILE_CFLAGS) $(BM_COMPILE_MODULE_EXTRAFLAGS)"
 #	$(BM_COMPILE_MODULE) $(BM_COMPILE_FLAGS) --oid $(patsubst modules/modbm_%.c,_%,$<) --module modubin/ --in modules/ $(BM_COMPILE_MODULE_EXTRAFLAGS)
 
 
@@ -130,8 +132,9 @@ drafts/testplugin_%.so: drafts/testplugin_%.c $(BISMONHEADERS) | _cflagsmodule.m
 
 ## should use BM_compile_module when it is ready
 modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
-	$(error should use bismon_builder.py instead of BM_compile_module for $@)
-	$(BM_COMPILE_MODULE) $(BM_COMPILE_FLAGS) --oid $(patsubst modules/modbm_%.c,_%,$<) --tempmodule modubin/ --in modules/  $(BM_COMPILE_MODULE_EXTRAFLAGS)
+	$(warning should use bismon_builder.py instead of BM_compile_module for $@ BM_COMPILE_CFLAGS= $(BM_COMPILE_CFLAGS) BM_COMPILE_MODULE_EXTRAFLAGS= $(BM_COMPILE_MODULE_EXTRAFLAGS))
+	./bismon_builder.py $(BISMON_BUILDER_FLAGS) --oid "$(patsubst modules/modbm_%.c,_%,$<)"  --module modubin/ --in modules/ --cflags "$(BM_COMPILE_CFLAGS) $(BM_COMPILE_MODULE_EXTRAFLAGS)"
+#	$(BM_COMPILE_MODULE) $(BISMON_BUILDER_FLAGS) $(BM_COMPILE_FLAGS) --oid $(patsubst modules/modbm_%.c,_%,$<) --tempmodule modubin/ --in modules/  $(BM_COMPILE_MODULE_EXTRAFLAGS)
 #                                                                                                           
 modules: _cflagsmodule.mk  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES)) 
 
