@@ -3,7 +3,7 @@
 
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -118,7 +118,15 @@ extern GtkTextTag *stresc_brotag_BM;
 extern GtkTextTag *miscomm_brotag_BM;
 extern GtkTextTag *epilogue_brotag_BM;
 
+extern GtkWidget *appdebug_BM;
+extern GtkWidget *appparsedebug_BM;
 
+extern GtkWidget *mainwin_BM;
+extern GtkWidget *errormessagedialog_BM;
+extern FILE *gui_command_log_file_BM;
+extern int  browserdepth_BM;
+extern char *complcommonprefix_BM;
+extern bool complbyid_BM;
 ////////////////
 /// the browsed objects
 extern unsigned browserobsize_BM;       /* allocated size of browsedobj_BM */

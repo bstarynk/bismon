@@ -491,4 +491,17 @@ extern void weakassertfailureat_BM (const char *condmsg, const char *fil,
 #define MINDELAY_DECAYED_MILLISECOND_BM 125
 /// the command run to show network information
 #define SHOW_NET_COMMAND_BM "echo Bismon SHOW_NET_COMMAND pid $$ && ip addr"
+
+
+
+////////////////////////////////////////////////////////////////
+//// GTK interface related constants:
+#ifdef BISMONGTK
+
+#define BLINKDELAYMILLISEC_BM 750
+#define UNBLINKDELAYMILLISEC_BM 400
+
+#endif/* BISMONGTK*/
+
+
 #endif /*CMACROS_BM_INCLUDED */

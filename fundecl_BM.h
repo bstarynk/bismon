@@ -138,6 +138,11 @@ extern void marksetbrows_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
 extern void clear_command_BM(void);
 
 extern const char *gobjectclassnamedbg_BM (GObject * ptr);
+
+extern void gtk_log_puts_message_BM (const char *msg);
+extern void gtk_log_begin_message_BM (void);
+extern void gtk_log_end_message_BM (void);
+extern void gtk_log_object_message_BM (const objectval_tyBM * obj);
 #endif /*BISMONGTK*/
 //////////////////////////////////////////////////////////////// end GTK code
 
