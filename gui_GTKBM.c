@@ -113,16 +113,6 @@ static parser_expand_readmacro_sigBM parsreadmacroexp_guicmd_BM;
 // jongjmp to jmperrorcmd_BM
 static parser_error_sigBM parserror_guicmd_BM;
 int commandnumber_BM;
-/// stop completely the blinking
-static void browserblinkstop_BM (void);
-
-// unblink temporarily
-static int browserblinkoff_BM (gpointer);
-// blink temporarily
-static int browserblinkon_BM (gpointer);
-
-// start the blinking
-static void browserblinkstart_BM (void);
 
 
 /// the completion set - should be a GC root
@@ -137,18 +127,6 @@ bool complbyid_BM;
 static GtkWidget *appdebug_bm;
 static GtkWidget *appparsedebug_bm;
 
-// browse the named value
-static void browse_named_value_gui_BM (const stringval_tyBM * namev,
-                                       const value_tyBM val,
-                                       const objectval_tyBM * objsel,
-                                       int browsdepth,
-                                       struct stackframe_stBM *stkf);
-// hide the named value
-static void hide_named_value_gui_BM (const stringval_tyBM * namev,
-                                     struct stackframe_stBM *stkf);
-
-// find the named value
-static value_tyBM find_named_value_gui_BM (const char *name);
 
 
 //////////////// command
@@ -275,22 +253,6 @@ const struct parserops_stBM parsop_command_nobuild_BM = {
 
 
 
-static void start_browse_object_BM (const objectval_tyBM * obj,
-                                    const objectval_tyBM * objsel, int depth);
-
-static void start_browse_named_value_BM (const stringval_tyBM * namev,
-                                         const value_tyBM val, int depth);
-
-
-static void refresh_browse_BM (struct stackframe_stBM *);
-
-static void runcommand_BM (bool erase);
-static void run_then_erase_command_BM (void);
-static void run_then_keep_command_BM (void);
-static void marksetcmd_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
-                           gpointer);
-static void marksetbrows_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
-                             gpointer);
 
 const char *
 textiterstrdbg_BM (GtkTextIter * it)
@@ -334,16 +296,6 @@ clear_command_BM (void)
   log_end_message_BM ();
 }                               /* end clear_command_BM */
 
-
-
-
-const char *
-gobjectclassnamedbg_BM (GObject * ptr)
-{
-  if (!ptr)
-    return "*nil*";
-  return G_OBJECT_CLASS_NAME (G_OBJECT_GET_CLASS (ptr));
-}                               /* end gobjectclassnamedbg_BM */
 
 
 

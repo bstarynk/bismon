@@ -87,11 +87,61 @@ extern const char *objectdbg5_BM (const objectval_tyBM * obj);  // non reentrant
 extern const char *objectdbg6_BM (const objectval_tyBM * obj);  // non reentrant!
 extern const char *objectdbg7_BM (const objectval_tyBM * obj);  // non reentrant!
 
+
+
+//////////////////////////////////////////////////////////////// GTK code
 #ifdef BISMONGTK
 extern const char *gobjectclassnamedbg_BM (GObject * ptr);
 // return an static string for a textiter, for debugging only
 extern const char *textiterstrdbg_BM (GtkTextIter *);
+
+// browse the named value
+extern void browse_named_value_gui_BM (const stringval_tyBM * namev,
+                                       const value_tyBM val,
+                                       const objectval_tyBM * objsel,
+                                       int browsdepth,
+                                       struct stackframe_stBM *stkf);
+
+// hide the named value
+extern void hide_named_value_gui_BM (const stringval_tyBM * namev,
+                                     struct stackframe_stBM *stkf);
+
+// find the named value
+extern value_tyBM find_named_value_gui_BM (const char *name);
+/// stop completely the blinking
+extern void browserblinkstop_BM (void);
+
+// unblink temporarily
+extern int browserblinkoff_BM (gpointer);
+// blink temporarily
+extern int browserblinkon_BM (gpointer);
+
+// start the blinking
+extern void browserblinkstart_BM (void);
+
+extern void start_browse_object_BM (const objectval_tyBM * obj,
+                                    const objectval_tyBM * objsel, int depth);
+
+extern void start_browse_named_value_BM (const stringval_tyBM * namev,
+                                         const value_tyBM val, int depth);
+
+
+extern void refresh_browse_BM (struct stackframe_stBM *);
+
+extern void runcommand_BM (bool erase);
+extern void run_then_erase_command_BM (void);
+extern void run_then_keep_command_BM (void);
+extern void marksetcmd_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
+                           gpointer);
+extern void marksetbrows_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
+                             gpointer);
+extern void clear_command_BM(void);
+
+extern const char *gobjectclassnamedbg_BM (GObject * ptr);
 #endif /*BISMONGTK*/
+//////////////////////////////////////////////////////////////// end GTK code
+
+
 extern void *allocgcty_BM (unsigned type, size_t sz);
 
 
