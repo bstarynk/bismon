@@ -40,4 +40,79 @@
 #include <fstream>
 #include <string>
 
+enum bmc_longopt_en
+{
+  BMCOPT__longoptstart=1024,
+  BMCOPT_with_gtk,
+};
+
+bool bmc_debug_flag;
+bool bmc_gtk_flag;
+std::string bmc_target_gcc;
+std::string bmc_target_gxx;
+enum bmc_longopt_en
+{
+  BMCOPT__longoptstart=1024,
+  BMCOPT_with_gtk,
+  BMCOPT_target_gcc,
+  BMCOPT_target_gxx,
+};
+
+static const struct option
+  bmc_long_options[] =
+{
+  {"version",     no_argument,        0, 'V'},
+  {"help",        no_argument,        0, 'h'},
+  {"debug",       no_argument,        0, 'D'},
+  {"with-gtk",    no_argument,  0,       BMCOPT_with_gtk},
+  {"target-gcc",  required_argument,  0,       BMCOPT_target_gcc},
+  {"target-g++",  required_argument,  0,       BMCOPT_target_gxx},
+  {0,0,0,0}
+};
+
+
+  for (;;)
+    {
+      int optix= -1;
+      int optres = getopt_long(argc, argv, "DVh", bmc_long_options, &optix);
+      if (optres < 0)
+        break;
+      switch (optres)
+        {
+        case 'h': // --help
+          bmc_show_usage(argv[0]);
+          exit(EXIT_SUCCESS);
+          break;
+        case 'V': // --version
+          bmc_show_version(argv[0]);
+          exit(EXIT_SUCCESS);
+          break;
+        case 'D': // --debug
+          bmc_debug_flag = true;
+          break;
+	case BMCOPT_with_gtk:
+	  bmc_gtk_flag = true;
+	  break;
+	case BMCOPT_target_gcc:
+	  bmc_target_gcc = optarg;
+	  break;
+	case BMCOPT_target_gxx:
+	  bmc_target_gxx = optarg;
+	  break;
+        }
+    }
+} // end of bmc_parse_options
+
+void
+bmc_show_usage(const char*progname)
+{
+  std::cerr << progname << " usage:" << std::endl;
+  std::cerr << " --version | -V # give version information" << std::endl;
+  std::cerr << " --help | -h # give help message" << std::endl;
+  std::cerr << " --debug | -D # debug this program " << progname << std::endl;
+  std::cerr << " --with-gtk # enable GTK3 Graphical User Interface in bismon" << std::endl;
+  std::cerr << " --target-gcc # set the target GCC compiler for C code" << std::endl;
+  std::cerr << " --target-gxx # set the target GCC compiler for C++ code" << std::endl;
+}
+
 #error BISMON-config.cc should be coded
