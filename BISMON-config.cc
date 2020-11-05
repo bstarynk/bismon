@@ -37,7 +37,7 @@
 // C++ headers
 #include <map>
 #include <set>
-#include <ifstream>
+#include <fstream>
 #include <string>
 
 #error BISMON-config.cc should be coded
