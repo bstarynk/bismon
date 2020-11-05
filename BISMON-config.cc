@@ -22,7 +22,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 #ifndef _GNU_SOURCE
-#define _GNU_SOURCE
+#define _GNU_SOURCE 1
 #endif /*_GNU_SOURCE*/
 
 // Linux headers
@@ -39,17 +39,24 @@
 #include <set>
 #include <fstream>
 #include <string>
-
-enum bmc_longopt_en
-{
-  BMCOPT__longoptstart=1024,
-  BMCOPT_with_gtk,
-};
+#include <iostream>
 
 bool bmc_debug_flag;
 bool bmc_gtk_flag;
 std::string bmc_target_gcc;
 std::string bmc_target_gxx;
+
+// from generated _timestamp.c
+extern "C" const char bismon_timestamp[];
+extern "C" const unsigned long bismon_timelong;
+extern "C" const char bismon_lastgitcommit[];
+extern "C" const char bismon_lastgittag[];
+extern "C" const char bismon_checksum[];
+extern "C" const char bismon_directory[];
+extern "C" const char bismon_makefile[];
+extern "C" const char bismon_gitid[];
+extern "C" const char bismon_shortgitid[];
+
 enum bmc_longopt_en
 {
   BMCOPT__longoptstart=1024,
@@ -70,7 +77,29 @@ static const struct option
   {0,0,0,0}
 };
 
+extern "C" bool bmc_debug_flag;
 
+// typical usage could be BMC_DEBUG("something bad x=" << x)
+#define BMC_DEBUG_AT_BIS(Fil,Lin,...) do {			\
+  if (bmc_debug_flag) {						\
+    std::clog << "¿" /* U+00BF INVERTED QUESTION MARK */	\
+	      << (Fil) << ":" << Lin << ":: "			\
+	      << __VA_ARGS__ << std::endl; } } while(0)
+
+#define BMC_DEBUG_AT(Fil,Lin,...) BMC_DEBUG_AT_BIS(Fil,Lin,##__VA_ARGS__)
+
+// typical usage would be BMC_DEBUG("annoying x=" << x)
+#define BMC_DEBUG(...) BMC_DEBUG_AT(__FILE__,__LINE__,##__VA_ARGS__)
+
+
+
+void bmc_show_usage(const char*progname);
+
+void bmc_show_version(const char*progname);
+
+void
+bmc_parse_options(int& argc, char**argv)
+{
   for (;;)
     {
       int optix= -1;
@@ -90,15 +119,15 @@ static const struct option
         case 'D': // --debug
           bmc_debug_flag = true;
           break;
-	case BMCOPT_with_gtk:
-	  bmc_gtk_flag = true;
-	  break;
-	case BMCOPT_target_gcc:
-	  bmc_target_gcc = optarg;
-	  break;
-	case BMCOPT_target_gxx:
-	  bmc_target_gxx = optarg;
-	  break;
+        case BMCOPT_with_gtk:
+          bmc_gtk_flag = true;
+          break;
+        case BMCOPT_target_gcc:
+          bmc_target_gcc = optarg;
+          break;
+        case BMCOPT_target_gxx:
+          bmc_target_gxx = optarg;
+          break;
         }
     }
 } // end of bmc_parse_options

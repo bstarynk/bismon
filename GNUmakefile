@@ -60,12 +60,30 @@ BM_PACKAGES=  glib-2.0 gtk+-3.0 gtkmm-2.0
 ### object files:
 BM_OBJECTS= $(patsubst %.c,%.o,$(BM_CSOURCES))  $(patsubst %.c,%.o,$(BM_CXXSOURCES))
 
-.PHONY: all config
+BISMON_SHORT_GIT:=$(shell git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)$(shell if git status |grep 'nothing to commit'; then echo; else echo +; fi)
+.PHONY: all config count
 
 -include _bismon-config.mk
 
 ### the configurator program
 BISMON-config: BISMON-config.cc
-	$(GXX) $(BM_CXX_STANDARD_FLAGS) -Wall -Wextra -O -g $^ -lreadline  -o $@
+	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -Wall -Wextra -O -g $^ -lreadline  -o $@
 
 _bismon-config.mk: ./BISMON-config
+
+count:
+	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n
+
+BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
+	$(CXX) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
+
+BM_makeconst: BM_makeconst.o id_BM.o
+	$(LINK.cc) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
+
+BM_makeconst-g.o: BM_makeconst.cc id_BM.h
+	$(COMPILE.cc)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+
+id_BM.o: id_BM.c id_BM.h
+	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0)  -Wall -c $< -o $@
+id_BM-g.o: id_BM.c id_BM.h
+	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
