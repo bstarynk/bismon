@@ -124,9 +124,11 @@ bmc_parse_options(int& argc, char**argv)
           break;
         case BMCOPT_target_gcc:
           bmc_target_gcc = optarg;
+	  BMC_DEBUG("target GCC:" << bmc_target_gcc);
           break;
         case BMCOPT_target_gxx:
           bmc_target_gxx = optarg;
+	  BMC_DEBUG("target GXX:" << bmc_target_gxx);
           break;
         }
     }
@@ -144,4 +146,15 @@ bmc_show_usage(const char*progname)
   std::cerr << " --target-gxx # set the target GCC compiler for C++ code" << std::endl;
 }
 
-#error BISMON-config.cc should be coded
+#warning BISMON-config.cc should be coded
+
+
+int
+main (int argc, char**argv) {
+  if (argc>1 && (!strcmp(argv[1], "-D") || !strcmp(argv[1], "--debug")))
+    bmc_debug_flag = true;
+  bmc_parse_options(argc, argv);
+}
+
+
+// end of file BISMON-config.cc 
