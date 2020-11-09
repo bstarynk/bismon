@@ -70,7 +70,8 @@ BISMON-config: BISMON-config.cc __timestamp.o
 	@echo for BISMON-config BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -Wall -Wextra -O -g $^ -lreadline  -o $@
 
-_bismon-config.mk: ./BISMON-config
+_bismon-config.mk _bm_config.h: ./BISMON-config
+	./BISMON-config
 
 count:
 	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n

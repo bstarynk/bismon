@@ -27,10 +27,13 @@
 
 // Linux headers
 #include <stdio.h>
-#include <unistd.h>
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include <fcntl.h>
 #include <getopt.h>
+#include <dirent.h>
+#include <sys/types.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
@@ -45,6 +48,7 @@ extern "C" bool bmc_debug_flag;
 extern "C" bool bmc_gtk_flag;
 std::string bmc_target_gcc;
 std::string bmc_target_gxx;
+std::string bmc_out_directory;
 
 // from generated _timestamp.c
 extern "C" const char bismon_timestamp[];
@@ -65,17 +69,19 @@ enum bmc_longopt_en
   BMCOPT_with_gtk,
   BMCOPT_target_gcc,
   BMCOPT_target_gxx,
+  BMCOPT_output_directory,
 };
 
 static const struct option
   bmc_long_options[] =
 {
-  {"version",     no_argument,        0, 'V'},
-  {"help",        no_argument,        0, 'h'},
-  {"debug",       no_argument,        0, 'D'},
-  {"with-gtk",    no_argument,  0,       BMCOPT_with_gtk},
-  {"target-gcc",  required_argument,  0,       BMCOPT_target_gcc},
-  {"target-g++",  required_argument,  0,       BMCOPT_target_gxx},
+  {"version",     	 no_argument,        0, 'V'},
+  {"help",        	 no_argument,        0, 'h'},
+  {"debug",       	 no_argument,        0, 'D'},
+  {"with-gtk",    	 no_argument,  0,       BMCOPT_with_gtk},
+  {"target-gcc",  	 required_argument,  0,       BMCOPT_target_gcc},
+  {"target-g++",  	 required_argument,  0,       BMCOPT_target_gxx},
+  {"output-directory",   required_argument,  0,       BMCOPT_output_directory},
   {0,0,0,0}
 };
 
@@ -126,11 +132,15 @@ bmc_parse_options(int& argc, char**argv)
           break;
         case BMCOPT_target_gcc:
           bmc_target_gcc = optarg;
-	  BMC_DEBUG("target GCC:" << bmc_target_gcc);
+          BMC_DEBUG("target GCC:" << bmc_target_gcc);
           break;
         case BMCOPT_target_gxx:
           bmc_target_gxx = optarg;
-	  BMC_DEBUG("target GXX:" << bmc_target_gxx);
+          BMC_DEBUG("target GXX:" << bmc_target_gxx);
+          break;
+        case BMCOPT_output_directory:
+          bmc_out_directory = optarg;
+          BMC_DEBUG("output directory :" << bmc_out_directory);
           break;
         }
     }
@@ -146,32 +156,77 @@ bmc_show_usage(const char*progname)
   std::cerr << " --with-gtk # enable GTK3 Graphical User Interface in bismon" << std::endl;
   std::cerr << " --target-gcc # set the target GCC compiler for C code" << std::endl;
   std::cerr << " --target-gxx # set the target GCC compiler for C++ code" << std::endl;
+  std::cerr << " --output-directory # set the output directory - default is " << bismon_directory << std::endl;
 } // end bmc_show_usage
 
 void
 bmc_show_version(const char*progname)
 {
   std::cout << progname
-	    << " version "  BISMON_SHORTGIT
-	    << " built on " << __DATE__ "@" << __TIME__ << " from " << __FILE__
-	    << std::endl
-	    << "... for last git commit " << bismon_lastgitcommit
-	    << std::endl
-	    << "... in directory " << bismon_directory
-	    << " timestamp " << bismon_timestamp << std::endl
-	    << "... checksum " << bismon_checksum
-	    << std::endl;
+            << " version "  BISMON_SHORTGIT
+            << " built on " << __DATE__ "@" << __TIME__ << " from " << __FILE__
+            << std::endl
+            << "... for last git commit " << bismon_lastgitcommit
+            << std::endl
+            << "... in directory " << bismon_directory
+            << " timestamp " << bismon_timestamp << std::endl
+            << "... checksum " << bismon_checksum
+            << std::endl;
 } // end bmc_show_version
 
-#warning BISMON-config.cc should be coded
+static void
+bmc_check_output_directory(const char*progname)
+{
+  struct stat st;
+  memset (&st, 0, sizeof(st));
+  if (stat(bmc_out_directory.c_str(), &st))
+    {
+      std::cerr << progname << " failed to stat output directory:"
+                << strerror(errno) << std::endl;
+      exit (EXIT_FAILURE);
+    }
+  if (!S_ISDIR(st.st_mode))
+    {
+      std::cerr << progname << " has bad output directory " << bmc_out_directory
+                << std::endl;
+      exit (EXIT_FAILURE);
+    }
+  if ((st.st_mode & S_IRWXU) != S_IRWXU)
+    {
+      std::cerr << progname << ": output directory "  << bmc_out_directory
+                << " is not rwx for user." << std::endl;
+      exit (EXIT_FAILURE);
+    }
+}
+// end bmc_check_output_directory
 
+void
+bmc_print_config_header(void)
+{
+  std::string headerpath = bmc_out_directory + "_bm_config.h";
+  if (!access(headerpath.c_str(), F_OK))
+    {
+      std::string backup = headerpath + "~";
+      rename (headerpath.c_str(), backup.c_str());
+    }
+  std::ofstream outf (headerpath);
+  outf << "/// GENERATED FILE " << headerpath << " - DO NOT EDIT" << std::endl;
+  outf << "/// See http://github.com/bstarynk/bismon/" << std::endl;
+} // end bmc_print_config_header
 
 int
-main (int argc, char**argv) {
+main (int argc, char**argv)
+{
   if (argc>1 && (!strcmp(argv[1], "-D") || !strcmp(argv[1], "--debug")))
     bmc_debug_flag = true;
   bmc_parse_options(argc, argv);
-}
+  if (bmc_out_directory.empty())
+    bmc_out_directory = bismon_directory;
+  bmc_check_output_directory(argv[0]);
+  std::cerr << __FILE__ << ":" << __LINE__ << " incomplete" << std::endl;
+#warning incomplete main
+  exit(EXIT_FAILURE);
+} // end function main
 
 
-// end of file BISMON-config.cc 
+// end of file BISMON-config.cc
