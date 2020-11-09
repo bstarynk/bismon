@@ -41,8 +41,8 @@
 #include <string>
 #include <iostream>
 
-bool bmc_debug_flag;
-bool bmc_gtk_flag;
+extern "C" bool bmc_debug_flag;
+extern "C" bool bmc_gtk_flag;
 std::string bmc_target_gcc;
 std::string bmc_target_gxx;
 
@@ -57,6 +57,8 @@ extern "C" const char bismon_makefile[];
 extern "C" const char bismon_gitid[];
 extern "C" const char bismon_shortgitid[];
 
+bool bmc_debug_flag;
+bool bmc_gtk_flag;
 enum bmc_longopt_en
 {
   BMCOPT__longoptstart=1024,
@@ -144,7 +146,22 @@ bmc_show_usage(const char*progname)
   std::cerr << " --with-gtk # enable GTK3 Graphical User Interface in bismon" << std::endl;
   std::cerr << " --target-gcc # set the target GCC compiler for C code" << std::endl;
   std::cerr << " --target-gxx # set the target GCC compiler for C++ code" << std::endl;
-}
+} // end bmc_show_usage
+
+void
+bmc_show_version(const char*progname)
+{
+  std::cout << progname
+	    << " version "  BISMON_SHORTGIT
+	    << " built on " << __DATE__ "@" << __TIME__ << " from " << __FILE__
+	    << std::endl
+	    << "... for last git commit " << bismon_lastgitcommit
+	    << std::endl
+	    << "... in directory " << bismon_directory
+	    << " timestamp " << bismon_timestamp << std::endl
+	    << "... checksum " << bismon_checksum
+	    << std::endl;
+} // end bmc_show_version
 
 #warning BISMON-config.cc should be coded
 
