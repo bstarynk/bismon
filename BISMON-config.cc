@@ -67,6 +67,7 @@ extern "C" const char bismon_makefile[];
 extern "C" const char bismon_gitid[];
 extern "C" const char bismon_shortgitid[];
 
+bool bmc_batch_flag;
 bool bmc_debug_flag;
 bool bmc_gtk_flag;
 bool bmc_given_gtk_flag;
@@ -76,6 +77,7 @@ enum bmc_longopt_en
 {
   BMCOPT__longoptstart=1024,
   BMCOPT_with_gtk,
+  BMCOPT_batch,
   BMCOPT_without_gtk,
   BMCOPT_target_gcc,
   BMCOPT_target_gxx,
@@ -92,6 +94,7 @@ static const struct option
   {"with-gtk",    	 no_argument,  0,       BMCOPT_with_gtk},
   {"without-gtk",    	 no_argument,  0,       BMCOPT_without_gtk},
   {"dry-run",    	 no_argument,  0,       BMCOPT_dry_run},
+  {"batch",    	         no_argument,  0,       BMCOPT_batch},
   {"target-gcc",  	 required_argument,  0,       BMCOPT_target_gcc},
   {"target-g++",  	 required_argument,  0,       BMCOPT_target_gxx},
   {"output-directory",   required_argument,  0,       BMCOPT_output_directory},
@@ -99,6 +102,7 @@ static const struct option
 };
 
 extern "C" bool bmc_debug_flag;
+extern "C" bool bmc_batch_flag;
 
 // typical usage could be BMC_DEBUG("something bad x=" << x)
 #define BMC_DEBUG_AT_BIS(Fil,Lin,...) do {			\
@@ -140,6 +144,9 @@ bmc_parse_options(int& argc, char**argv)
         case 'D': // --debug
           bmc_debug_flag = true;
           break;
+        case BMCOPT_batch:
+          bmc_batch_flag = true;
+          break;
         case BMCOPT_with_gtk:
           bmc_gtk_flag = true;
           bmc_given_gtk_flag = true;
@@ -174,15 +181,16 @@ void
 bmc_show_usage(const char*progname)
 {
   std::cerr << progname << " usage:" << std::endl;
-  std::cerr << " --version | -V # give version information" << std::endl;
-  std::cerr << " --help | -h # give help message" << std::endl;
-  std::cerr << " --debug | -D # debug this configurator program " << progname << std::endl;
-  std::cerr << " --with-gtk # enable GTK3 Graphical User Interface in Bismon" << std::endl;
-  std::cerr << " --without-gtk # disable GTK3 Graphical User Interface in Bismon" << std::endl;
-  std::cerr << " --dry-run # wont fork target compilation commands" << std::endl;
-  std::cerr << " --target-gcc # set the target GCC compiler for C code" << std::endl;
-  std::cerr << " --target-gxx # set the target GCC compiler for C++ code" << std::endl;
-  std::cerr << " --output-directory # set the output directory - default is " << bismon_directory << std::endl;
+  std::cerr << " --version | -V         # give version information" << std::endl;
+  std::cerr << " --help | -h            # give this help message" << std::endl;
+  std::cerr << " --debug | -D           # debug this configurator program " << progname << std::endl;
+  std::cerr << " --batch                # dont ask for missing arguments even in terminal" << std::endl;
+  std::cerr << " --with-gtk             # enable GTK3 Graphical User Interface in Bismon" << std::endl;
+  std::cerr << " --without-gtk          # disable GTK3 Graphical User Interface in Bismon" << std::endl;
+  std::cerr << " --dry-run              # wont fork target compilation commands" << std::endl;
+  std::cerr << " --target-gcc=PATH      # set to PATH the target GCC compiler executable for C code" << std::endl;
+  std::cerr << " --target-gxx=PATH      # set to PATH the target GCC compiler for C++ code" << std::endl;
+  std::cerr << " --output-directory=DIR # set the output directory to DIR - default is " << bismon_directory << std::endl;
   std::cerr << "## See github.com/bstarynk/bismon/ for more about Bismon." << std::endl;
 } // end bmc_show_usage
 
@@ -364,7 +372,11 @@ bmc_print_config_make(void)
 
 const char* bmc_readline(const char*progname, const char*prompt)
 {
-  char*ans = readline(prompt);
+  char realprompt[64];
+  memset (realprompt, 0, sizeof(realprompt));
+  /// the prompt is in bold, see https://en.wikipedia.org/wiki/ANSI_escape_code
+  snprintf (realprompt, sizeof(realprompt), "\033[1m%s\033[0m", prompt);
+  char*ans = readline(realprompt);
   if (!ans)
     {
       std::cerr << progname << " failed to readline for " << prompt << " :: " << strerror(errno) << std::endl;
@@ -377,7 +389,8 @@ void
 bmc_ask_missing_configuration(const char*progname)
 {
   BMC_DEBUG("bmc_ask_missing_configuration start progname=" << progname);
-  std::cout << "***** BISMON Configurator.  See github.com/bstarynk/bismon/ for more. ****" << std::endl;
+  std::cout << std::endl << "***** BISMON Configurator.  See github.com/bstarynk/bismon/ for more. ****"
+            << std::endl << "(this program " << progname << " uses GNU readline, so <tab> key is for autocompletion, and your input lines are editable)" << std::endl;
   /// ask about GTK
   while (!bmc_given_gtk_flag)
     {
@@ -395,6 +408,7 @@ bmc_ask_missing_configuration(const char*progname)
         }
       free ((void*)gtkgui), gtkgui = nullptr;
     }
+  std::cout << std::endl;
   /// ask about target GCC compilers for C and for C++
   while (bmc_target_gcc.empty())
     {
@@ -415,6 +429,8 @@ bmc_ask_missing_configuration(const char*progname)
   /// ask about the output directory, into which files would be written
   char cwdbuf[256];
   memset (cwdbuf, 0, sizeof(cwdbuf));
+  std::cout << std::endl;
+  errno = 0;
   if (!getcwd(cwdbuf, sizeof(cwdbuf)-1))
     {
       std::cerr << progname << ": failed to getcwd - " << strerror(errno) << std::endl;
@@ -432,6 +448,7 @@ bmc_ask_missing_configuration(const char*progname)
         bmc_out_directory.assign(cwdbuf);
       free ((void*)outdir), outdir = nullptr;
     }
+  std::cout << std::endl;
 } // end bmc_ask_missing_configuration
 
 int
