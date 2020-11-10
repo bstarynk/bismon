@@ -86,6 +86,9 @@ enum bmc_longopt_en
   BMCOPT_output_directory,
 };
 
+//see https://en.wikipedia.org/wiki/ANSI_escape_code
+#define BMC_BOLD_ESCAPE "\033[1m"
+#define BMC_PLAIN_ESCAPE "\033[0m"
 static const struct option
   bmc_long_options[] =
 {
@@ -376,7 +379,8 @@ const char* bmc_readline(const char*progname, const char*prompt)
   char realprompt[64];
   memset (realprompt, 0, sizeof(realprompt));
   /// the prompt is in bold, see https://en.wikipedia.org/wiki/ANSI_escape_code
-  snprintf (realprompt, sizeof(realprompt), "\033[1m%s\033[0m", prompt);
+  snprintf (realprompt, sizeof(realprompt),
+	    BMC_BOLD_ESCAPE "%s" BMC_PLAIN_ESCAPE, prompt);
   char*ans = readline(realprompt);
   if (!ans)
     {
@@ -390,8 +394,11 @@ void
 bmc_ask_missing_configuration(const char*progname)
 {
   BMC_DEBUG("bmc_ask_missing_configuration start progname=" << progname);
-  std::cout << std::endl << "***** BISMON Configurator.  See github.com/bstarynk/bismon/ for more. ****"
-            << std::endl << "(this program " << progname << " uses GNU readline, so <tab> key is for autocompletion, and your input lines are editable)" << std::endl;
+  using_history();
+  std::cout << std::endl << "***** " BMC_BOLD_ESCAPE "BISMON Configurator" BMC_PLAIN_ESCAPE " ****" << std::endl
+            << std::endl << "(this program " << progname << " uses GNU readline, so you could use the <tab> key is for autocompletion," << std::endl;
+  std::cout << "... and your input lines are editable.  For more about GNU readline, see www.gnu.org/software/readline ...)" << std::endl;
+  std::cout << "For more about Bismon, see github.com/bstarynk/bismon ...." << std::endl << std::endl;
   /// ask about GTK
   while (!bmc_given_gtk_flag)
     {
@@ -422,7 +429,7 @@ bmc_ask_missing_configuration(const char*progname)
   while (bmc_target_gxx.empty())
     {
       std::cout << "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 10. See gcc.gnu.org...." << std::endl;
-      std::cout << "(it is preferable to enter some absolute path, such as /usr/local/bin/g++-10)" << std::endl;
+      std::cout << "(it is recommended to enter some absolute path, such as /usr/local/bin/g++-10)" << std::endl;
       const char*gxxtarget = bmc_readline(progname, "BISMON target GXX? ");
       bmc_target_gxx.assign(gxxtarget);
       free ((void*)gxxtarget), gxxtarget = nullptr;
@@ -441,7 +448,7 @@ bmc_ask_missing_configuration(const char*progname)
     {
       std::cout << "Bismon output source directory. If none is given, defaults to current directory " << cwdbuf << std::endl;
       std::cout << "This configurator " << progname << " will write some textual files -a header file and a Makefile fragment- in it." << std::endl;
-      std::cout << "(it is preferable to enter some absolute path, such as /usr/src/Bismon or /home/foo/bismon ....)" << std::endl;
+      std::cout << "(it is recommended to enter some absolute path, such as /usr/src/Bismon or /home/foo/bismon ....)" << std::endl;
       const char*outdir = bmc_readline(progname, "BISMON output sourcedir? ");
       if (outdir[0])
         bmc_out_directory.assign(outdir);
@@ -470,7 +477,7 @@ main (int argc, char**argv)
       bmc_print_config_header();
       bmc_print_config_make();
     }
-  if (isatty(STDIN_FILENO))
+  if (isatty(STDIN_FILENO) && !bmc_batch_flag)
     {
       std::cout << "### look also into refpersys.org for another free software project of the same author." << std::endl;
     }
