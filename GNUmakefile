@@ -64,7 +64,15 @@ BISMON_CONFIG_OPTIONS=
 ### object files:
 BM_OBJECTS= $(patsubst %.c,%.o,$(BM_CSOURCES))  $(patsubst %.c,%.o,$(BM_CXXSOURCES))
 
-BISMON_SHORT_GIT:=$(shell git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16 ; if git status | grep 'nothing to commit'; then echo; else echo +; fi)
+
+## internal make variables...
+BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
+BISMON_SHGIT2:= $(shell if git status | grep 'nothing to commit'; then echo; else echo +; fi)
+
+## The short git id, such as 34ae25e8127fc354 (for a clean source)
+## or 3ae25e8127fc354d+ (for some edited source tree)
+BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
+
 .PHONY: all config count
 
 -include _bismon-config.mk
