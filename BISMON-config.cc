@@ -46,6 +46,7 @@
 
 extern "C" bool bmc_debug_flag;
 extern "C" bool bmc_gtk_flag;
+extern "C" bool bmc_dryrun_flag;
 std::string bmc_target_gcc;
 std::string bmc_target_gxx;
 std::string bmc_out_directory;
@@ -63,12 +64,15 @@ extern "C" const char bismon_shortgitid[];
 
 bool bmc_debug_flag;
 bool bmc_gtk_flag;
+bool bmc_dryrun_flag;
+
 enum bmc_longopt_en
 {
   BMCOPT__longoptstart=1024,
   BMCOPT_with_gtk,
   BMCOPT_target_gcc,
   BMCOPT_target_gxx,
+  BMCOPT_dry_run,
   BMCOPT_output_directory,
 };
 
@@ -79,6 +83,7 @@ static const struct option
   {"help",        	 no_argument,        0, 'h'},
   {"debug",       	 no_argument,        0, 'D'},
   {"with-gtk",    	 no_argument,  0,       BMCOPT_with_gtk},
+  {"dry-run",    	 no_argument,  0,       BMCOPT_dry_run},
   {"target-gcc",  	 required_argument,  0,       BMCOPT_target_gcc},
   {"target-g++",  	 required_argument,  0,       BMCOPT_target_gxx},
   {"output-directory",   required_argument,  0,       BMCOPT_output_directory},
@@ -129,6 +134,11 @@ bmc_parse_options(int& argc, char**argv)
           break;
         case BMCOPT_with_gtk:
           bmc_gtk_flag = true;
+          BMC_DEBUG("with GTK");
+          break;
+        case BMCOPT_dry_run:
+          bmc_dryrun_flag = true;
+          BMC_DEBUG("dry run - won't fork compilation commands");
           break;
         case BMCOPT_target_gcc:
           bmc_target_gcc = optarg;
@@ -154,6 +164,7 @@ bmc_show_usage(const char*progname)
   std::cerr << " --help | -h # give help message" << std::endl;
   std::cerr << " --debug | -D # debug this program " << progname << std::endl;
   std::cerr << " --with-gtk # enable GTK3 Graphical User Interface in bismon" << std::endl;
+  std::cerr << " --dry-run # wont fork target compilation commands" << std::endl;
   std::cerr << " --target-gcc # set the target GCC compiler for C code" << std::endl;
   std::cerr << " --target-gxx # set the target GCC compiler for C++ code" << std::endl;
   std::cerr << " --output-directory # set the output directory - default is " << bismon_directory << std::endl;
@@ -177,6 +188,7 @@ bmc_show_version(const char*progname)
 static void
 bmc_check_output_directory(const char*progname)
 {
+  BMC_DEBUG("bmc_check_output_directory progname=" << progname);
   struct stat st;
   memset (&st, 0, sizeof(st));
   if (stat(bmc_out_directory.c_str(), &st))
@@ -199,6 +211,73 @@ bmc_check_output_directory(const char*progname)
     }
 }
 // end bmc_check_output_directory
+
+
+static void
+bmc_check_target_compiler(const char*progname, bool forcplusplus)
+{
+  std::string compiler = forcplusplus ? bmc_target_gxx : bmc_target_gcc;
+  BMC_DEBUG("bmc_check_target_compiler compiler=" << compiler << " progname=" << progname);
+  if (compiler.empty())
+    {
+      std::cerr << progname << ": no cross-compiler given for " << (forcplusplus?"C++":"C") << std::endl;
+      exit (EXIT_FAILURE);
+    }
+  for (char c: compiler)
+    {
+      if (!isalnum(c) && c != '_' && c != '+' && c != '-' && c != '.' && c != '/')
+        {
+          std::cerr << progname << ": invalid " << (forcplusplus?"C++":"C") << " compiler: " << compiler << std::endl;
+          std::cerr << "(only letters, digits, plus, minus, underscore, dot and slash are allowed)" << std::endl;
+          exit (EXIT_FAILURE);
+        }
+    }
+  if (bmc_dryrun_flag)
+    {
+      std::cout << progname << " should check the target GCC compiler " << compiler << std::endl;
+      std::cout << "See also http://gcc.gnu.org/ and notice that a GCC 10 compiler" << std::endl;
+      std::cout << "... is required for Bismon, with plugins enabled." << std::endl;
+      std::cout << "Try to run your GCC [cross-]compiler with just the -v program option." << std::endl;
+    }
+  else
+    {
+      std::string compcmd = compiler + " -v";
+      BMC_DEBUG("bmc_check_target_compiler compcmd: " << compcmd);
+      FILE* compilepipe = popen(compcmd.c_str(), "r");
+      if (!compilepipe)
+        {
+          std::cerr << progname << " failed to popen " << compcmd << " : " << strerror(errno) << std::endl;
+          exit (EXIT_FAILURE);
+        }
+      std::string cmdstr;
+      int gccversion_major=0, gccversion_minor=0;
+      while (cmdstr.size() < 2048)
+        {
+          char linbuf[128];
+          memset (linbuf, 0, sizeof(linbuf));
+          if (!fgets(linbuf, sizeof(linbuf), compilepipe))
+            {
+              std::cerr << progname << ": fgets failed on popen " << compcmd  << " : " << strerror(errno) << std::endl;
+              exit(EXIT_FAILURE);
+            }
+          cmdstr.append(linbuf);
+          if (gccversion_major==0)
+            sscanf(linbuf, "gcc version %d.%d", &gccversion_major, &gccversion_minor);
+        }
+      BMC_DEBUG("bmc_check_target_compiler compcmd: " << compcmd << " got cmdstr " << std::endl
+                << cmdstr << std::endl);
+      BMC_DEBUG("bmc_check_target_compiler gccversion_major=" << gccversion_major << ", gccversion_minor=" << gccversion_minor);
+      if (gccversion_major != 10)
+        {
+          std::cerr << progname << ": Bismon requires a GCC 10 compiler." << std::endl ;
+          if (gccversion_major > 0)
+            std::cerr << "But " << compiler << " is a GCC " << gccversion_major << "." << gccversion_minor
+                      << " compiler." << std::endl;
+          std::cerr << "See http://gcc.gnu.org/ for more about GCC, and github.com/bstarynk/bismon for more about Bismon." << std::endl;
+          exit(EXIT_FAILURE);
+        }
+    }
+} // end bmc_check_target_compiler
 
 void
 bmc_print_config_header(void)
@@ -240,6 +319,8 @@ main (int argc, char**argv)
   if (bmc_out_directory.empty())
     bmc_out_directory = bismon_directory;
   bmc_check_output_directory(argv[0]);
+  bmc_check_target_compiler(argv[0], false); // for C
+  bmc_check_target_compiler(argv[0], true); // for C++
   std::cerr << __FILE__ << ":" << __LINE__ << " incomplete" << std::endl;
 #warning incomplete main
   exit(EXIT_FAILURE);
