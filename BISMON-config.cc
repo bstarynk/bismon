@@ -257,7 +257,7 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
     }
   else
     {
-      std::string compcmd = compiler + " -v";
+      std::string compcmd = compiler + " -v 2>&1";
       BMC_DEBUG("bmc_check_target_compiler compcmd: " << compcmd);
       FILE* compilepipe = popen(compcmd.c_str(), "r");
       if (!compilepipe)
@@ -265,12 +265,14 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
           std::cerr << progname << " failed to popen " << compcmd << " : " << strerror(errno) << std::endl;
           exit (EXIT_FAILURE);
         }
+      BMC_DEBUG("bmc_check_target_compiler compilepipe fd#" << fileno(compilepipe) << " pid#" << (int)getpid());
       std::string cmdstr;
       int gccversion_major=0, gccversion_minor=0;
       while (cmdstr.size() < 2048)
         {
           char linbuf[128];
           memset (linbuf, 0, sizeof(linbuf));
+          errno = 0;
           if (!fgets(linbuf, sizeof(linbuf), compilepipe))
             {
               std::cerr << progname << ": fgets failed on popen " << compcmd  << " : " << strerror(errno) << std::endl;
@@ -449,6 +451,10 @@ main (int argc, char**argv)
     {
       bmc_print_config_header();
       bmc_print_config_make();
+    }
+  if (isatty(STDIN_FILENO))
+    {
+      std::cout << "### look also into refpersys.org for another free software project of the same author." << std::endl;
     }
   return 0;
 } // end function main
