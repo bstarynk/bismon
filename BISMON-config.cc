@@ -25,6 +25,10 @@
 #define _GNU_SOURCE 1
 #endif /*_GNU_SOURCE*/
 
+
+//// Please use astyle (see http://astyle.sourceforge.net/ ...) to format this C++ file
+//// using astyle --style=gnu -s2 BISMON-config.cc  ....
+
 // Linux headers
 #include <stdio.h>
 #include <sys/types.h>
@@ -46,6 +50,7 @@
 
 extern "C" bool bmc_debug_flag;
 extern "C" bool bmc_gtk_flag;
+extern "C" bool bmc_given_gtk_flag;
 extern "C" bool bmc_dryrun_flag;
 std::string bmc_target_gcc;
 std::string bmc_target_gxx;
@@ -64,12 +69,14 @@ extern "C" const char bismon_shortgitid[];
 
 bool bmc_debug_flag;
 bool bmc_gtk_flag;
+bool bmc_given_gtk_flag;
 bool bmc_dryrun_flag;
 
 enum bmc_longopt_en
 {
   BMCOPT__longoptstart=1024,
   BMCOPT_with_gtk,
+  BMCOPT_without_gtk,
   BMCOPT_target_gcc,
   BMCOPT_target_gxx,
   BMCOPT_dry_run,
@@ -83,6 +90,7 @@ static const struct option
   {"help",        	 no_argument,        0, 'h'},
   {"debug",       	 no_argument,        0, 'D'},
   {"with-gtk",    	 no_argument,  0,       BMCOPT_with_gtk},
+  {"without-gtk",    	 no_argument,  0,       BMCOPT_without_gtk},
   {"dry-run",    	 no_argument,  0,       BMCOPT_dry_run},
   {"target-gcc",  	 required_argument,  0,       BMCOPT_target_gcc},
   {"target-g++",  	 required_argument,  0,       BMCOPT_target_gxx},
@@ -134,7 +142,13 @@ bmc_parse_options(int& argc, char**argv)
           break;
         case BMCOPT_with_gtk:
           bmc_gtk_flag = true;
+          bmc_given_gtk_flag = true;
           BMC_DEBUG("with GTK");
+          break;
+        case BMCOPT_without_gtk:
+          bmc_gtk_flag = false;
+          bmc_given_gtk_flag = true;
+          BMC_DEBUG("without GTK");
           break;
         case BMCOPT_dry_run:
           bmc_dryrun_flag = true;
@@ -162,12 +176,14 @@ bmc_show_usage(const char*progname)
   std::cerr << progname << " usage:" << std::endl;
   std::cerr << " --version | -V # give version information" << std::endl;
   std::cerr << " --help | -h # give help message" << std::endl;
-  std::cerr << " --debug | -D # debug this program " << progname << std::endl;
-  std::cerr << " --with-gtk # enable GTK3 Graphical User Interface in bismon" << std::endl;
+  std::cerr << " --debug | -D # debug this configurator program " << progname << std::endl;
+  std::cerr << " --with-gtk # enable GTK3 Graphical User Interface in Bismon" << std::endl;
+  std::cerr << " --without-gtk # disable GTK3 Graphical User Interface in Bismon" << std::endl;
   std::cerr << " --dry-run # wont fork target compilation commands" << std::endl;
   std::cerr << " --target-gcc # set the target GCC compiler for C code" << std::endl;
   std::cerr << " --target-gxx # set the target GCC compiler for C++ code" << std::endl;
   std::cerr << " --output-directory # set the output directory - default is " << bismon_directory << std::endl;
+  std::cerr << "## See github.com/bstarynk/bismon/ for more about Bismon." << std::endl;
 } // end bmc_show_usage
 
 void
@@ -283,6 +299,7 @@ void
 bmc_print_config_header(void)
 {
   std::string headerpath = bmc_out_directory + "_bm_config.h";
+  BMC_DEBUG("bmc_print_config_header: headerpath=" << headerpath);
   if (!access(headerpath.c_str(), F_OK))
     {
       std::string backup = headerpath + "~";
@@ -291,6 +308,33 @@ bmc_print_config_header(void)
   std::ofstream headoutf (headerpath);
   headoutf << "/// GENERATED Bismon HEADER FILE " << headerpath << " - DO NOT EDIT" << std::endl;
   headoutf << "/// See http://github.com/bstarynk/bismon/" << std::endl;
+  headoutf << "#ifndef BISMON_CONFIG" << std::endl;
+  headoutf << "#define BISMON_CONFIG \"" << BISMON_SHORTGIT << "\"" << std::endl;
+  headoutf << std::endl;
+  headoutf << "#define BISMON_TIMESTAMP \"" << bismon_timestamp << "\"" << std::endl;
+  headoutf << "#define BISMON_BUILDTIME " << bismon_timelong << std::endl;
+  headoutf << "#define BISMON_DIRECTORY  \"" << bismon_directory << "\"" << std::endl;
+  headoutf << "#define BISMON_CHECKSUM  \"" << bismon_checksum << "\"" << std::endl;
+  headoutf << "#define BISMON_MAKEFILE  \"" << bismon_makefile << "\"" << std::endl;
+  headoutf << "#define BISMON_GIT_ID  \"" << bismon_gitid << "\"" << std::endl;
+  headoutf << "#define BISMON_SHORT_GIT_ID  \"" << bismon_shortgitid << "\"" << std::endl;
+  if (bmc_gtk_flag)
+    headoutf << "#define BISMONGTK 1" << std::endl;
+  else
+    headoutf << "#undef BISMONGTK" << std::endl;
+  if (!bmc_target_gcc.empty())
+    headoutf << "#define BISMON_TARGET_GCC \"" << bmc_target_gcc << "\"" << std::endl;
+  if (!bmc_target_gxx.empty())
+    headoutf << "#define BISMON_TARGET_GXX \"" << bmc_target_gxx << "\"" << std::endl;
+  if (!bmc_out_directory.empty())
+    headoutf << "#define BISMON_OUT_DIRECTORY \"" << bmc_out_directory << "\"" << std::endl;
+  if (bmc_debug_flag)
+    headoutf << "#define BISMON_DEBUG 1" << std::endl;
+  else
+    headoutf << "#undef BISMON_DEBUG" << std::endl;
+  headoutf << std::endl;
+  headoutf << "#endif /*BISMON_CONFIG*/" << std::endl;
+  BMC_DEBUG("bmc_print_config_header ending headerpath=" << headerpath);
 } // end bmc_print_config_header
 
 
@@ -298,6 +342,7 @@ void
 bmc_print_config_make(void)
 {
   std::string makepath = bmc_out_directory + "_bismon-config.mk";
+  BMC_DEBUG("bmc_print_config_make: makepath=" << makepath);
   if (!access(makepath.c_str(), F_OK))
     {
       std::string backup = makepath + "~";
@@ -307,8 +352,85 @@ bmc_print_config_make(void)
   /// make prologue
   makeoutf << "### GENERATED Bismon GNUMakefile CONFIGURATION FILE " <<
            makepath << " - DO NOT EDIT" << std::endl;
-  makeoutf << "/// See http://github.com/bstarynk/bismon/" << std::endl;
+  makeoutf << "### See github.com/bstarynk/bismon/ for more about Bismon." << std::endl;
+  std::cerr << __FILE__ << ":" << __LINE__ << " bmc_print_config_make incomplete" << std::endl;
+#warning incomplete bmc_print_config_make
+  exit(EXIT_FAILURE);
+  BMC_DEBUG("bmc_print_config_make ending makepath=" << makepath);
 } // end bmc_print_config_make
+
+
+const char* bmc_readline(const char*progname, const char*prompt)
+{
+  char*ans = readline(prompt);
+  if (!ans)
+    {
+      std::cerr << progname << " failed to readline for " << prompt << " :: " << strerror(errno) << std::endl;
+      exit(EXIT_FAILURE);
+    }
+  return ans;
+} // end bmc_readline
+
+void
+bmc_ask_missing_configuration(const char*progname)
+{
+  BMC_DEBUG("bmc_ask_missing_configuration start progname=" << progname);
+  std::cout << "***** BISMON Configurator.  See github.com/bstarynk/bismon/ for more. ****" << std::endl;
+  /// ask about GTK
+  while (!bmc_given_gtk_flag)
+    {
+      std::cout << "Build Bismon with a buggy GTK3 graphical user interface? [y/n]" << std::endl;
+      const char*gtkgui = bmc_readline(progname, "BISMON with GTK? ");
+      if (gtkgui[0] == 'y' || gtkgui[0] == 'Y' || gtkgui[0] == '1')
+        {
+          bmc_given_gtk_flag = true;
+          bmc_gtk_flag = true;
+        }
+      else if (gtkgui[0] == 'n' || gtkgui[0] == 'N' || gtkgui[0] == '0')
+        {
+          bmc_given_gtk_flag = true;
+          bmc_gtk_flag = false;
+        }
+      free ((void*)gtkgui), gtkgui = nullptr;
+    }
+  /// ask about target GCC compilers for C and for C++
+  while (bmc_target_gcc.empty())
+    {
+      std::cout << "Target Bismon GCC [cross-]compiler for C code. Should be at least a GCC 10. See gcc.gnu.org...." << std::endl;
+      std::cout << "(it is preferable to enter some absolute path, such as /usr/local/bin/gcc-10)" << std::endl;
+      const char*gcctarget = bmc_readline(progname, "BISMON target GCC? ");
+      bmc_target_gcc.assign(gcctarget);
+      free ((void*)gcctarget), gcctarget = nullptr;
+    }
+  while (bmc_target_gxx.empty())
+    {
+      std::cout << "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 10. See gcc.gnu.org...." << std::endl;
+      std::cout << "(it is preferable to enter some absolute path, such as /usr/local/bin/g++-10)" << std::endl;
+      const char*gxxtarget = bmc_readline(progname, "BISMON target GXX? ");
+      bmc_target_gxx.assign(gxxtarget);
+      free ((void*)gxxtarget), gxxtarget = nullptr;
+    }
+  /// ask about the output directory, into which files would be written
+  char cwdbuf[256];
+  memset (cwdbuf, 0, sizeof(cwdbuf));
+  if (!getcwd(cwdbuf, sizeof(cwdbuf)-1))
+    {
+      std::cerr << progname << ": failed to getcwd - " << strerror(errno) << std::endl;
+      exit(EXIT_FAILURE);
+    }
+  while (bmc_out_directory.empty())
+    {
+      std::cout << "Bismon output source directory. If none is given, defaults to current directory " << cwdbuf << std::endl;
+      std::cout << "This configurator " << progname << " will write some textual files -a header file and a Makefile fragment- in it." << std::endl;
+      std::cout << "(it is preferable to enter some absolute path, such as /usr/src/Bismon or /home/foo/bismon ....)" << std::endl;
+      const char*outdir = bmc_readline(progname, "BISMON output sourcedir? ");
+      if (outdir[0])
+        bmc_out_directory.assign(outdir);
+      else
+        bmc_out_directory.assign(cwdbuf);
+      free ((void*)outdir), outdir = nullptr;
+    }
+} // end bmc_ask_missing_configuration
 
 int
 main (int argc, char**argv)
@@ -321,9 +443,13 @@ main (int argc, char**argv)
   bmc_check_output_directory(argv[0]);
   bmc_check_target_compiler(argv[0], false); // for C
   bmc_check_target_compiler(argv[0], true); // for C++
-  std::cerr << __FILE__ << ":" << __LINE__ << " incomplete" << std::endl;
-#warning incomplete main
-  exit(EXIT_FAILURE);
+  bmc_ask_missing_configuration(argv[0]);
+  if (!bmc_dryrun_flag)
+    {
+      bmc_print_config_header();
+      bmc_print_config_make();
+    }
+  return 0;
 } // end function main
 
 
