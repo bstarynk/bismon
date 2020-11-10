@@ -71,7 +71,7 @@ BISMON_SHORT_GIT:=$(shell git log --format=oneline -q -1 | cut '-d '  -f1 | tr -
 
 ### the configurator program
 BISMON-config: BISMON-config.cc __timestamp.o
-	@echo for BISMON-config BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
+	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -Wall -Wextra -O -g $^ -lreadline  -o $@
 
 _bismon-config.mk _bm_config.h: ./BISMON-config

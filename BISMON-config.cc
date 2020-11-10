@@ -255,7 +255,8 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
     {
       if (!isalnum(c) && c != '_' && c != '+' && c != '-' && c != '.' && c != '/')
         {
-          std::cerr << progname << ": invalid " << (forcplusplus?"C++":"C") << " compiler: " << compiler << std::endl;
+          std::cerr << progname << ": invalid " << (forcplusplus?"C++":"C")
+		    << " compiler '" << compiler << "'" << std::endl;
           std::cerr << "(only letters, digits, plus, minus, underscore, dot and slash are allowed)" << std::endl;
           exit (EXIT_FAILURE);
         }
@@ -323,7 +324,6 @@ bmc_print_config_header(void)
   headoutf << "/// GENERATED Bismon HEADER FILE " << headerpath << " - DO NOT EDIT" << std::endl;
   headoutf << "/// See http://github.com/bstarynk/bismon/" << std::endl;
   headoutf << "#ifndef BISMON_CONFIG" << std::endl;
-  headoutf << "#define BISMON_CONFIG \"" << BISMON_SHORTGIT << "\"" << std::endl;
   headoutf << std::endl;
   headoutf << "#define BISMON_TIMESTAMP \"" << bismon_timestamp << "\"" << std::endl;
   headoutf << "#define BISMON_BUILDTIME " << bismon_timelong << std::endl;
@@ -347,6 +347,7 @@ bmc_print_config_header(void)
   else
     headoutf << "#undef BISMON_DEBUG" << std::endl;
   headoutf << std::endl;
+  headoutf << "#define BISMON_CONFIG \"" << BISMON_SHORTGIT << "\"" << std::endl;
   headoutf << "#endif /*BISMON_CONFIG*/" << std::endl;
   BMC_DEBUG("bmc_print_config_header ending headerpath=" << headerpath);
 } // end bmc_print_config_header
@@ -364,12 +365,39 @@ bmc_print_config_make(void)
     }
   std::ofstream makeoutf (makepath);
   /// make prologue
-  makeoutf << "### GENERATED Bismon GNUMakefile CONFIGURATION FILE " <<
+  makeoutf << "### GENERATED Bismon CONFIGURATION FILE " <<
            makepath << " - DO NOT EDIT" << std::endl;
+  makeoutf << "### this is for inclusion thru GNU make." << std::endl;
   makeoutf << "### See github.com/bstarynk/bismon/ for more about Bismon." << std::endl;
-  std::cerr << __FILE__ << ":" << __LINE__ << " bmc_print_config_make incomplete" << std::endl;
-#warning incomplete bmc_print_config_make
-  exit(EXIT_FAILURE);
+  makeoutf << "BISMONMK_TIMESTAMP=" << bismon_timestamp << std::endl;
+  makeoutf << "BISMONMK_BUILDTIME=" << bismon_timelong << std::endl;
+  makeoutf << "BISMONMK_DIRECTORY=" << bismon_directory << std::endl;
+  makeoutf << "BISMONMK_CHECKSUM=" << bismon_checksum << std::endl;
+  makeoutf << "BISMONMK_MAKEFILE=" << bismon_makefile << std::endl;
+  makeoutf << "BISMONMK_GITID=" << bismon_gitid << std::endl;
+  makeoutf << "BISMONMK_SHORTGITID=" << bismon_shortgitid << std::endl;
+  if (bmc_gtk_flag)
+    makeoutf << "BISMONMK_GTK=$(shell pkg-config --modversion gtk+-3.0)" << std::endl;
+  else
+    makeoutf << "#no BISMONMK_GTK" << std::endl;
+  if (!bmc_target_gcc.empty())
+    makeoutf << "BISMONMK_TARGET_GCC=" << bmc_target_gcc << std::endl;
+  else
+    makeoutf << "#no BISMONMK_TARGET_GCC" << std::endl;
+  if (!bmc_target_gxx.empty())
+    makeoutf << "BISMONMK_TARGET_GXX=" << bmc_target_gxx << std::endl;
+  else
+    makeoutf << "#no BISMONMK_TARGET_GXX" << std::endl;
+  if (!bmc_out_directory.empty())
+    makeoutf << "BISMONMK_OUT_DIRECTORY=" << bmc_out_directory << std::endl;
+  else
+    makeoutf << "#no BISMONMK_OUT_DIRECTORY" << std::endl;
+  if (bmc_debug_flag)
+    makeoutf << "BISMONMK_DEBUG=1" << std::endl;
+  else
+    makeoutf << "#no BISMONMK_DEBUG" << std::endl;
+  makeoutf << "BISMONMK_CONFIGPATH=" << makepath << std::endl;
+  makeoutf << "### end of generated file " << makepath << " (by " << __FILE__ << ")" << std::endl;
   BMC_DEBUG("bmc_print_config_make ending makepath=" << makepath);
 } // end bmc_print_config_make
 
@@ -380,7 +408,7 @@ const char* bmc_readline(const char*progname, const char*prompt)
   memset (realprompt, 0, sizeof(realprompt));
   /// the prompt is in bold, see https://en.wikipedia.org/wiki/ANSI_escape_code
   snprintf (realprompt, sizeof(realprompt),
-	    BMC_BOLD_ESCAPE "%s" BMC_PLAIN_ESCAPE, prompt);
+            BMC_BOLD_ESCAPE "%s" BMC_PLAIN_ESCAPE, prompt);
   char*ans = readline(realprompt);
   if (!ans)
     {
@@ -423,16 +451,24 @@ bmc_ask_missing_configuration(const char*progname)
       std::cout << "Target Bismon GCC [cross-]compiler for C code. Should be at least a GCC 10. See gcc.gnu.org...." << std::endl;
       std::cout << "(it is preferable to enter some absolute path, such as /usr/local/bin/gcc-10)" << std::endl;
       const char*gcctarget = bmc_readline(progname, "BISMON target GCC? ");
-      bmc_target_gcc.assign(gcctarget);
-      free ((void*)gcctarget), gcctarget = nullptr;
+      if (gcctarget)
+        {
+          bmc_target_gcc.assign(gcctarget);
+          add_history(gcctarget);
+          free ((void*)gcctarget), gcctarget = nullptr;
+        }
     }
   while (bmc_target_gxx.empty())
     {
       std::cout << "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 10. See gcc.gnu.org...." << std::endl;
       std::cout << "(it is recommended to enter some absolute path, such as /usr/local/bin/g++-10)" << std::endl;
       const char*gxxtarget = bmc_readline(progname, "BISMON target GXX? ");
-      bmc_target_gxx.assign(gxxtarget);
-      free ((void*)gxxtarget), gxxtarget = nullptr;
+      if (gxxtarget)
+        {
+          bmc_target_gxx.assign(gxxtarget);
+          add_history(gxxtarget);
+          free ((void*)gxxtarget), gxxtarget = nullptr;
+        }
     }
   /// ask about the output directory, into which files would be written
   char cwdbuf[256];
@@ -457,7 +493,11 @@ bmc_ask_missing_configuration(const char*progname)
       free ((void*)outdir), outdir = nullptr;
     }
   std::cout << std::endl;
+  clear_history();
 } // end bmc_ask_missing_configuration
+
+
+
 
 int
 main (int argc, char**argv)
@@ -479,7 +519,8 @@ main (int argc, char**argv)
     }
   if (isatty(STDIN_FILENO) && !bmc_batch_flag)
     {
-      std::cout << "### look also into refpersys.org for another free software project of the same author." << std::endl;
+      std::cout << "### See also refpersys.org for another free software project."
+                << std::endl;
     }
   return 0;
 } // end function main
