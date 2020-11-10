@@ -64,7 +64,7 @@ BISMON_CONFIG_OPTIONS=
 ### object files:
 BM_OBJECTS= $(patsubst %.c,%.o,$(BM_CSOURCES))  $(patsubst %.c,%.o,$(BM_CXXSOURCES))
 
-BISMON_SHORT_GIT:=$(shell git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)$(shell if git status |grep 'nothing to commit'; then echo; else echo +; fi)
+BISMON_SHORT_GIT:=$(shell git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16 ; if git status | grep 'nothing to commit'; then echo; else echo +; fi)
 .PHONY: all config count
 
 include _bismon-config.mk

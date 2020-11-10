@@ -49,6 +49,7 @@
 #include <iostream>
 
 extern "C" bool bmc_debug_flag;
+extern "C" bool bmc_batch_flag;
 extern "C" bool bmc_gtk_flag;
 extern "C" bool bmc_given_gtk_flag;
 extern "C" bool bmc_dryrun_flag;
