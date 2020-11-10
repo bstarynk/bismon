@@ -438,12 +438,13 @@ main (int argc, char**argv)
   if (argc>1 && (!strcmp(argv[1], "-D") || !strcmp(argv[1], "--debug")))
     bmc_debug_flag = true;
   bmc_parse_options(argc, argv);
+  if (isatty(STDIN_FILENO))
+    bmc_ask_missing_configuration(argv[0]);
   if (bmc_out_directory.empty())
     bmc_out_directory = bismon_directory;
   bmc_check_output_directory(argv[0]);
   bmc_check_target_compiler(argv[0], false); // for C
   bmc_check_target_compiler(argv[0], true); // for C++
-  bmc_ask_missing_configuration(argv[0]);
   if (!bmc_dryrun_flag)
     {
       bmc_print_config_header();
