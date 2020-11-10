@@ -101,3 +101,7 @@ id_BM.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0)  -Wall -c $< -o $@
 id_BM-g.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+
+
+__timestamp.c:  timestamp-emit.sh |  GNUmakefile
+	./timestamp-emit.sh $(BM_CSOURCES) $(BM_CXXSOURCES)
