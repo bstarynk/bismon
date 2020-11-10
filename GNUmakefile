@@ -57,6 +57,10 @@ BM_CXXSOURCES= $(wildcard [a-z]*BM.cc)
 ## CONVENTION: packages for pkg-config
 BM_PACKAGES=  glib-2.0 gtk+-3.0 gtkmm-2.0
 
+## CONVENTION: potential options for BISMON-config configurator. Could
+## be overwritten by command line...
+BISMON_CONFIG_OPTIONS=
+
 ### object files:
 BM_OBJECTS= $(patsubst %.c,%.o,$(BM_CSOURCES))  $(patsubst %.c,%.o,$(BM_CXXSOURCES))
 
@@ -71,7 +75,7 @@ BISMON-config: BISMON-config.cc __timestamp.o
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -Wall -Wextra -O -g $^ -lreadline  -o $@
 
 _bismon-config.mk _bm_config.h: ./BISMON-config
-	./BISMON-config
+	./BISMON-config $(BISMON_CONFIG_OPTIONS)
 
 count:
 	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n

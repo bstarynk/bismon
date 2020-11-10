@@ -209,10 +209,27 @@ bmc_print_config_header(void)
       std::string backup = headerpath + "~";
       rename (headerpath.c_str(), backup.c_str());
     }
-  std::ofstream outf (headerpath);
-  outf << "/// GENERATED FILE " << headerpath << " - DO NOT EDIT" << std::endl;
-  outf << "/// See http://github.com/bstarynk/bismon/" << std::endl;
+  std::ofstream headoutf (headerpath);
+  headoutf << "/// GENERATED Bismon HEADER FILE " << headerpath << " - DO NOT EDIT" << std::endl;
+  headoutf << "/// See http://github.com/bstarynk/bismon/" << std::endl;
 } // end bmc_print_config_header
+
+
+void
+bmc_print_config_make(void)
+{
+  std::string makepath = bmc_out_directory + "_bismon-config.mk";
+  if (!access(makepath.c_str(), F_OK))
+    {
+      std::string backup = makepath + "~";
+      rename (makepath.c_str(), backup.c_str());
+    }
+  std::ofstream makeoutf (makepath);
+  /// make prologue
+  makeoutf << "### GENERATED Bismon GNUMakefile CONFIGURATION FILE " <<
+           makepath << " - DO NOT EDIT" << std::endl;
+  makeoutf << "/// See http://github.com/bstarynk/bismon/" << std::endl;
+} // end bmc_print_config_make
 
 int
 main (int argc, char**argv)
