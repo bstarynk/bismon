@@ -73,9 +73,17 @@ BISMON_SHGIT2:= $(shell if git status | grep 'nothing to commit'; then echo; els
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
-.PHONY: all config count
+.PHONY: all config count clean
 
+.DEFAULTS: all
+
+config: _bismon-config.mk _bm_config.h
+
+## include _bismon-config.mk only if it exists.
+ifeq($(strip $(wildcard _bismon-config.mk)),_bismon-config.mk)
 -include _bismon-config.mk
+endif
+
 
 ### the configurator program
 BISMON-config: BISMON-config.cc __timestamp.o
