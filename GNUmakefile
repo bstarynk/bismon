@@ -93,14 +93,15 @@ BISMON-config: BISMON-config.cc __timestamp.o
 	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"' -Wall -Wextra -O -g $^ -lreadline  -o $@
 
-_bismon-config.mk _bm_config.h: ./BISMON-config
+_bismon-config.mk _bm_config.h:
+	if [ ! -x ./BISMON-config ]; then $(MAKE)  ./BISMON-config ; fi
 	./BISMON-config $(BISMON_CONFIG_OPTIONS)
 
 count:
 	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n
 
 clean:
-	$(RM) *.o bismon modubin/*.so modubin/*.o *~
+	$(RM) *.o BISMON-config bismon bismon-gtk  modubin/*.so modubin/*.o *~
 
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
