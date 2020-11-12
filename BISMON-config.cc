@@ -288,6 +288,8 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
           errno = 0;
           if (!fgets(linbuf, sizeof(linbuf), compilepipe))
             {
+	      if (feof(compilepipe))
+		break;
               std::cerr << progname << ": fgets failed on popen " << compcmd  << " : " << strerror(errno) << std::endl;
               exit(EXIT_FAILURE);
             }
@@ -313,7 +315,7 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
 void
 bmc_print_config_header(void)
 {
-  std::string headerpath = bmc_out_directory + "_bm_config.h";
+  std::string headerpath = bmc_out_directory + "/_bm_config.h";
   BMC_DEBUG("bmc_print_config_header: headerpath=" << headerpath);
   if (!access(headerpath.c_str(), F_OK))
     {
@@ -350,13 +352,15 @@ bmc_print_config_header(void)
   headoutf << "#define BISMON_CONFIG \"" << BISMON_SHORTGIT << "\"" << std::endl;
   headoutf << "#endif /*BISMON_CONFIG*/" << std::endl;
   BMC_DEBUG("bmc_print_config_header ending headerpath=" << headerpath);
+  if (!bmc_batch_flag)
+    std::cout << "# generated Bismon configuration header file " << headerpath << std::endl;
 } // end bmc_print_config_header
 
 
 void
 bmc_print_config_make(void)
 {
-  std::string makepath = bmc_out_directory + "_bismon-config.mk";
+  std::string makepath = bmc_out_directory + "/_bismon-config.mk";
   BMC_DEBUG("bmc_print_config_make: makepath=" << makepath);
   if (!access(makepath.c_str(), F_OK))
     {
@@ -399,10 +403,13 @@ bmc_print_config_make(void)
   makeoutf << "BISMONMK_CONFIGPATH=" << makepath << std::endl;
   makeoutf << "### end of generated file " << makepath << " (by " << __FILE__ << ")" << std::endl;
   BMC_DEBUG("bmc_print_config_make ending makepath=" << makepath);
+  if (!bmc_batch_flag)
+    std::cout << "# generated Bismon configuration GNU make file " << makepath << std::endl;
 } // end bmc_print_config_make
 
 
-const char* bmc_readline(const char*progname, const char*prompt)
+const char*
+bmc_readline(const char*progname, const char*prompt)
 {
   char realprompt[64];
   memset (realprompt, 0, sizeof(realprompt));
