@@ -96,6 +96,9 @@ _bismon-config.mk _bm_config.h: ./BISMON-config
 count:
 	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n
 
+clean:
+	$(RM) *.o bismon modubin/*.so modubin/*.o *~
+
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
 
