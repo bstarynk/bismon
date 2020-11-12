@@ -49,10 +49,13 @@ BM_GENMODULES_CXXSOURCES= $(sort $(wildcard modules/modbm*.cc))
 BM_HEADERS= $(wildcard [a-z]*BM.h bismon.h)
 
 ## CONVENTION: handwritten C files are...
-BM_CSOURCES= $(wildcard [a-z]*BM.c)
+BM_CSOURCES= $(wildcard [a-z]*_BM.c)
+
+## CONVENTION: handwritten GTK related C files are...
+BM_GTKCSOURCES= $(wildcard [a-z]*_GTKBM.c)
 
 ## CONVENTION: handwritten C++ files are...
-BM_CXXSOURCES= $(wildcard [a-z]*BM.cc)
+BM_CXXSOURCES= $(wildcard [a-z]*_BM.cc)
 
 ## CONVENTION: packages for pkg-config
 BM_PACKAGES=  glib-2.0 gtk+-3.0 gtkmm-2.0
@@ -63,7 +66,7 @@ BISMON_CONFIG_OPTIONS=
 
 ### object files:
 BM_OBJECTS= $(patsubst %.c,%.o,$(BM_CSOURCES))  $(patsubst %.c,%.o,$(BM_CXXSOURCES))
-
+BM_GTKOBJECTS= $(patsubst %.c,%.o,$(BM_GTKCSOURCES))
 
 ## internal make variables...
 BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
