@@ -386,14 +386,14 @@ bmc_print_config_make(void)
     {
       makeoutf << "BISMONMK_GTK=$(shell pkg-config --modversion gtk+-3.0)" << std::endl;
       makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS) $(BM_GTKOBJECTS)" << std::endl;
-      makeoutf << "BISMONMK_PACKAGES= glib-2.0 gobject-2.0 gtk+-3.0" << std::endl;
+      makeoutf << "BISMONMK_PACKAGES= glib-2.0 gobject-2.0 jansson gtk+-3.0" << std::endl;
       makeoutf << "BISMONMK_EXECUTABLE= bismon-gtk" << std::endl;
     }
   else
     {
       makeoutf << "#no BISMONMK_GTK" << std::endl;
       makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS)" << std::endl;
-      makeoutf << "BISMONMK_PACKAGES= glib-2.0 gobject-2.0" << std::endl;
+      makeoutf << "BISMONMK_PACKAGES= glib-2.0 gobject-2.0 jansson" << std::endl;
       makeoutf << "BISMONMK_EXECUTABLE= bismon" << std::endl;
     }
   if (!bmc_target_gcc.empty())
