@@ -80,7 +80,7 @@ BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 config: _bismon-config.mk _bm_config.h
 
 ## include _bismon-config.mk only if it exists.
-ifeq($(strip $(wildcard _bismon-config.mk)),_bismon-config.mk)
+ifeq ($(strip $(wildcard _bismon-config.mk)),_bismon-config.mk)
 -include _bismon-config.mk
 endif
 

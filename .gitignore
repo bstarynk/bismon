@@ -1,4 +1,5 @@
 ## file .gitignore
+## in Bismon - see github.com/bstarynk/bismon for more.
 *.o
 *.so
 *.gch
@@ -20,6 +21,9 @@ _*ONIONBM.[ch]
 *-
 *%
 *.orig
+
+_bismon-config.mk
+_bm_config.h
 
 _BM_compmod_*
 
