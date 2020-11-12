@@ -256,7 +256,7 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
       if (!isalnum(c) && c != '_' && c != '+' && c != '-' && c != '.' && c != '/')
         {
           std::cerr << progname << ": invalid " << (forcplusplus?"C++":"C")
-		    << " compiler '" << compiler << "'" << std::endl;
+                    << " compiler '" << compiler << "'" << std::endl;
           std::cerr << "(only letters, digits, plus, minus, underscore, dot and slash are allowed)" << std::endl;
           exit (EXIT_FAILURE);
         }
@@ -288,8 +288,8 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
           errno = 0;
           if (!fgets(linbuf, sizeof(linbuf), compilepipe))
             {
-	      if (feof(compilepipe))
-		break;
+              if (feof(compilepipe))
+                break;
               std::cerr << progname << ": fgets failed on popen " << compcmd  << " : " << strerror(errno) << std::endl;
               exit(EXIT_FAILURE);
             }
@@ -307,6 +307,8 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
             std::cerr << "But " << compiler << " is a GCC " << gccversion_major << "." << gccversion_minor
                       << " compiler." << std::endl;
           std::cerr << "See http://gcc.gnu.org/ for more about GCC, and github.com/bstarynk/bismon for more about Bismon." << std::endl;
+          std::cerr << "However " << compcmd << " gave:" << std::endl
+                    << cmdstr << std::endl;
           exit(EXIT_FAILURE);
         }
     }
