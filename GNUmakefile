@@ -76,7 +76,7 @@ BISMON_SHGIT2:= $(shell if git status | grep 'nothing to commit'; then echo; els
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
-.PHONY: all config count clean
+.PHONY: all config count executable clean
 
 .DEFAULTS: all
 
@@ -119,3 +119,14 @@ id_BM-g.o: id_BM.c id_BM.h
 
 __timestamp.c:  timestamp-emit.sh |  GNUmakefile
 	./timestamp-emit.sh $(BM_CSOURCES) $(BM_CXXSOURCES)
+
+all: config executable
+
+executable: _bismon-config.mk
+	$(MAKE) $(BISMONMK_EXECUTABLE)
+
+bismon:  _bismon-config.mk _bm_config.h
+	$(MAKE) $(BISMONMK_OBJECTS)
+
+bismon-gtk:  _bismon-config.mk _bm_config.h
+	$(MAKE) $(BISMONMK_OBJECTS)
