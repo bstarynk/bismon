@@ -383,9 +383,15 @@ bmc_print_config_make(void)
   makeoutf << "BISMONMK_GITID=" << bismon_gitid << std::endl;
   makeoutf << "BISMONMK_SHORTGITID=" << bismon_shortgitid << std::endl;
   if (bmc_gtk_flag)
-    makeoutf << "BISMONMK_GTK=$(shell pkg-config --modversion gtk+-3.0)" << std::endl;
+    {
+      makeoutf << "BISMONMK_GTK=$(shell pkg-config --modversion gtk+-3.0)" << std::endl;
+      makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS) $(BM_GTKOBJECTS)" << std::endl;
+    }
   else
-    makeoutf << "#no BISMONMK_GTK" << std::endl;
+    {
+      makeoutf << "#no BISMONMK_GTK" << std::endl;
+      makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS)" << std::endl;
+    }
   if (!bmc_target_gcc.empty())
     makeoutf << "BISMONMK_TARGET_GCC=" << bmc_target_gcc << std::endl;
   else
