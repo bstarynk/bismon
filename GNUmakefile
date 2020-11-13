@@ -76,11 +76,11 @@ BISMON_SHGIT2:= $(shell if git status | grep 'nothing to commit'; then echo; els
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
-.PHONY: all config count executable clean
+.PHONY: all config count executable clean runconfig
 
 .DEFAULTS: all
 
-config: _bismon-config.mk _bm_config.h
+config: _bismon-config.mk _bm_config.h  _bm_config.c
 
 ## include _bismon-config.mk only if it exists.
 ifeq ($(strip $(wildcard _bismon-config.mk)),_bismon-config.mk)
@@ -93,15 +93,18 @@ BISMON-config: BISMON-config.cc __timestamp.o
 	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"' -Wall -Wextra -O -g $^ -lreadline  -o $@
 
-_bismon-config.mk _bm_config.h _bm_config.c:
-	if [ ! -x ./BISMON-config ]; then $(MAKE)  ./BISMON-config ; fi
+_bismon-config.mk _bm_config.h _bm_config.c: BISMON-config.cc
+	if [ ! -x ./BISMON-config -a "$(MAKELEVEL)" -lt 2 ]; then $(MAKE)  ./BISMON-config ; fi
+	$(MAKE) runconfig
+
+runconfig:
 	./BISMON-config $(BISMON_CONFIG_OPTIONS)
 
 count:
 	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n
 
 clean:
-	$(RM) *.o BISMON-config bismon bismon-gtk  modubin/*.so modubin/*.o *~
+	$(RM) *.o BISMON-config bismon bismon-gtk _bm_config.h _bm_config.c  modubin/*.so modubin/*.o *~ *% *.cc.orig
 
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
