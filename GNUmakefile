@@ -93,7 +93,7 @@ BISMON-config: BISMON-config.cc __timestamp.o
 	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"' -Wall -Wextra -O -g $^ -lreadline  -o $@
 
-_bismon-config.mk _bm_config.h:
+_bismon-config.mk _bm_config.h _bm_config.c:
 	if [ ! -x ./BISMON-config ]; then $(MAKE)  ./BISMON-config ; fi
 	./BISMON-config $(BISMON_CONFIG_OPTIONS)
 

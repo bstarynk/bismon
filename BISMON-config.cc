@@ -42,6 +42,8 @@
 #include <readline/history.h>
 
 // C++ headers
+#include <vector>
+#include <string>
 #include <map>
 #include <set>
 #include <fstream>
@@ -311,11 +313,18 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
                     << cmdstr << std::endl;
           exit(EXIT_FAILURE);
         }
+      int clcod = pclose(compilepipe);
+      if (clcod != 0)
+        {
+          std::cerr << progname << ": compiler command " << compcmd << " pclose failure (code " << clcod << ")" << std::endl;
+          exit(EXIT_FAILURE);
+        }
+      compilepipe = nullptr;
     }
 } // end bmc_check_target_compiler
 
 void
-bmc_print_config_header(void)
+bmc_print_config_header(const char*progname)
 {
   std::string headerpath = bmc_out_directory + "/_bm_config.h";
   BMC_DEBUG("bmc_print_config_header: headerpath=" << headerpath);
@@ -325,6 +334,11 @@ bmc_print_config_header(void)
       rename (headerpath.c_str(), backup.c_str());
     }
   std::ofstream headoutf (headerpath);
+  if (!headoutf.good())
+    {
+      std::cerr << progname << " failed to open generated header " << headerpath << " : " << strerror(errno) << std::endl;
+      exit(EXIT_FAILURE);
+    }
   headoutf << "/// GENERATED Bismon HEADER FILE " << headerpath << " - DO NOT EDIT" << std::endl;
   headoutf << "/// See http://github.com/bstarynk/bismon/" << std::endl;
   headoutf << "#ifndef BISMON_CONFIG" << std::endl;
@@ -353,14 +367,121 @@ bmc_print_config_header(void)
   headoutf << std::endl;
   headoutf << "#define BISMON_CONFIG \"" << BISMON_SHORTGIT << "\"" << std::endl;
   headoutf << "#endif /*BISMON_CONFIG*/" << std::endl;
+  headoutf << "// end of Bismon generated configuration header file " << headerpath << std::endl;
   BMC_DEBUG("bmc_print_config_header ending headerpath=" << headerpath);
   if (!bmc_batch_flag)
     std::cout << "# generated Bismon configuration header file " << headerpath << std::endl;
 } // end bmc_print_config_header
 
+void
+bmc_print_config_data(const char*progname)
+{
+#define BMC_GITLS_COMMAND "git ls-files"
+  std::string datapath = bmc_out_directory + "/_bm_config.c";
+  BMC_DEBUG("bmc_print_config_data: datapath=" << datapath);
+  if (!access(datapath.c_str(), F_OK))
+    {
+      std::string backup = datapath + "~";
+      rename (datapath.c_str(), backup.c_str());
+    }
+  std::ofstream dataoutf (datapath);
+  if (!dataoutf.good())
+    {
+      std::cerr << progname << " failed to open generated data " << datapath << " : " << strerror(errno) << std::endl;
+      exit(EXIT_FAILURE);
+    }
+  dataoutf << "/// *** GENERATED Bismon DATA FILE " << datapath << " - DO NOT EDIT ***" << std::endl;
+  dataoutf << "/// see github.com/bstarynk/bismon for more about Bismon." << std::endl << std::endl;
+  dataoutf << "const char bismon_confdata_gitid[]=\"" << bismon_gitid << "\";" << std::endl;
+  FILE*gitpipe = popen(BMC_GITLS_COMMAND, "r");
+  if (!gitpipe)
+    {
+      std::cerr << progname << " failed to popen " BMC_GITLS_COMMAND << ":" << strerror(errno) << std::endl;
+      exit(EXIT_FAILURE);
+    }
+  std::vector<std::string> vecgitfilepath;
+  std::vector<std::string> vecgitlinkpath;
+  std::vector<std::string> vecgitdirpath;
+  int linenopip = 0;
+  do
+    {
+      char gitlinbuf[128];
+      memset (gitlinbuf, 0, sizeof(gitlinbuf));
+      if (!fgets(gitlinbuf, sizeof(gitlinbuf), gitpipe))
+        break;
+      int linl = (int)strlen(gitlinbuf);
+      if (linl > 0 && gitlinbuf[linl-1] == '\n')
+        gitlinbuf[linl-1] = (char)0;
+      linenopip ++;
+      BMC_DEBUG("bmc_print_config_data gitls #" << linenopip << ":" << gitlinbuf);
+      for (int cix=0; cix<linl; cix++)
+        if (!isalnum(gitlinbuf[cix]) && gitlinbuf[cix] != '_' && gitlinbuf[cix] != '/'
+            && gitlinbuf[cix] != '+' && gitlinbuf[cix] != '-' && gitlinbuf[cix] != '.')
+          {
+            char cwdbuf[256];
+            memset(cwdbuf, 0, sizeof(cwdbuf));
+            if (!getcwd(cwdbuf, sizeof(cwdbuf)-1))
+              cwdbuf[0] = '.';
+            std::cerr << progname << " pipe " << BMC_GITLS_COMMAND << " output line#" << linenopip << ":" << gitlinbuf
+                      << " - unexpected file name in directory " << cwdbuf << std::endl;
+            std::cerr << "Expecting letters, digits, or one of '_/+-.' characters." << std::endl;
+            exit(EXIT_FAILURE);
+          }
+      struct stat curgitst;
+      memset(&curgitst, 0, sizeof(curgitst));
+      if (stat(gitlinbuf, &curgitst))
+        {
+          std::cerr << progname << " pipe " << BMC_GITLS_COMMAND << " output line#" << linenopip << ":" << gitlinbuf
+                    << " - stat(2) failed:" << strerror(errno) << std::endl;
+          exit(EXIT_FAILURE);
+        }
+      switch(curgitst.st_mode & S_IFMT)
+        {
+        case S_IFREG:
+          vecgitfilepath.push_back(std::string{gitlinbuf});
+          BMC_DEBUG("bmc_print_config_data git file " << gitlinbuf);
+          break;
+        case S_IFLNK:
+          vecgitlinkpath.push_back(std::string{gitlinbuf});
+          BMC_DEBUG("bmc_print_config_data git symlink " << gitlinbuf);
+          break;
+        case S_IFDIR:
+          vecgitdirpath.push_back(std::string{gitlinbuf});
+          BMC_DEBUG("bmc_print_config_data git directory " << gitlinbuf);
+          break;
+        default:
+          std::cerr << progname << ": unexpected git-listed file " << gitlinbuf << " (not a plain file, or symlink, or directory)" << std::endl;
+          exit(EXIT_FAILURE);
+        } // end switch ...
+    }
+  while (!feof(gitpipe));
+  int pclocod = pclose(gitpipe);
+  if (pclocod != 0)
+    {
+      std::cerr << progname << " pipe " << BMC_GITLS_COMMAND << " pclose failed (code " << pclocod << ")" << std::endl;
+      exit(EXIT_FAILURE);
+    }
+  gitpipe = nullptr;
+  dataoutf << "const char*const bismonconf_git_files[] = {" << std::endl;
+  for (auto filepath: vecgitfilepath)
+    dataoutf << "  \"" << filepath << "\"," << std::endl;
+  dataoutf << "  (const char*)0 }; // end bismonconf_git_files" << std::endl;
+  dataoutf << "const char*const bismonconf_git_symlinks[] = {" << std::endl;
+  for (auto linkpath: vecgitlinkpath)
+    dataoutf << "  \"" << linkpath << "\"," << std::endl;
+  dataoutf << "  (const char*)0 }; // end bismonconf_git_symlinks" << std::endl;
+  dataoutf << "const char*const bismonconf_git_dirs[] = {" << std::endl;
+  for (auto dirpath: vecgitdirpath)
+    dataoutf << "  \"" << dirpath << "/\"," << std::endl;
+  dataoutf << "  (const char*)0 }; // end bismonconf_git_dirs" << std::endl;
+  //
+  dataoutf << std::endl << "/// end of Bismon generated data " << datapath << std::endl;
+  if (!bmc_batch_flag)
+    std::cout << "# generated Bismon configuration data file " << datapath << std::endl;
+} // end bmc_print_config_data
 
 void
-bmc_print_config_make(void)
+bmc_print_config_make(const char*progname)
 {
   std::string makepath = bmc_out_directory + "/_bismon-config.mk";
   BMC_DEBUG("bmc_print_config_make: makepath=" << makepath);
@@ -370,6 +491,11 @@ bmc_print_config_make(void)
       rename (makepath.c_str(), backup.c_str());
     }
   std::ofstream makeoutf (makepath);
+  if (!makeoutf.good())
+    {
+      std::cerr << progname << " failed to open generated file " << makepath << " for GNU make : " << strerror(errno) << std::endl;
+      exit(EXIT_FAILURE);
+    }
   /// make prologue
   makeoutf << "### GENERATED Bismon CONFIGURATION FILE " <<
            makepath << " - DO NOT EDIT" << std::endl;
@@ -413,7 +539,7 @@ bmc_print_config_make(void)
   else
     makeoutf << "#no BISMONMK_DEBUG" << std::endl;
   makeoutf << "BISMONMK_CONFIGPATH=" << makepath << std::endl;
-  makeoutf << "### end of generated file " << makepath << " (by " << __FILE__ << ")" << std::endl;
+  makeoutf << "### end of Bismon generated file for GNU make " << makepath << " (by " << __FILE__ << ")" << std::endl;
   BMC_DEBUG("bmc_print_config_make ending makepath=" << makepath);
   if (!bmc_batch_flag)
     std::cout << "# generated Bismon configuration GNU make file " << makepath << std::endl;
@@ -533,8 +659,9 @@ main (int argc, char**argv)
   bmc_check_target_compiler(argv[0], true); // for C++
   if (!bmc_dryrun_flag)
     {
-      bmc_print_config_header();
-      bmc_print_config_make();
+      bmc_print_config_header(argv[0]);
+      bmc_print_config_make(argv[0]);
+      bmc_print_config_data(argv[0]);
     }
   if (isatty(STDIN_FILENO) && !bmc_batch_flag)
     {
