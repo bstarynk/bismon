@@ -58,7 +58,7 @@ extern "C" bool bmc_dryrun_flag;
 std::string bmc_target_gcc;
 std::string bmc_target_gxx;
 std::string bmc_out_directory;
-
+std::vector<std::string> bmc_source_files;
 // from generated _timestamp.c
 extern "C" const char bismon_timestamp[];
 extern "C" const unsigned long bismon_timelong;
@@ -414,10 +414,12 @@ bmc_print_config_data(const char*progname)
         gitlinbuf[linl-1] = (char)0;
       linenopip ++;
       BMC_DEBUG("bmc_print_config_data gitls #" << linenopip << ":" << gitlinbuf);
-      for (int cix=0; cix<linl; cix++)
+      for (int cix=0; cix<linl && gitlinbuf[cix]; cix++)
         if (!isalnum(gitlinbuf[cix]) && gitlinbuf[cix] != '_' && gitlinbuf[cix] != '/'
-            && gitlinbuf[cix] != '+' && gitlinbuf[cix] != '-' && gitlinbuf[cix] != '.')
+            && gitlinbuf[cix] != '+' && gitlinbuf[cix] != '-' && gitlinbuf[cix] != '.'
+            && !strstr(gitlinbuf, "README"))
           {
+            BMC_DEBUG("bmc_print_config_data bad gitlinbuf='" << gitlinbuf << "' cix=" << cix << " linl=" << linl);
             char cwdbuf[256];
             memset(cwdbuf, 0, sizeof(cwdbuf));
             if (!getcwd(cwdbuf, sizeof(cwdbuf)-1))
@@ -440,6 +442,11 @@ bmc_print_config_data(const char*progname)
         case S_IFREG:
           vecgitfilepath.push_back(std::string{gitlinbuf});
           BMC_DEBUG("bmc_print_config_data git file " << gitlinbuf);
+          if (linl>5 && !strcmp(gitlinbuf+linl-4, "BM.c"))
+            {
+              BMC_DEBUG("bmc_print_config_data git source " << gitlinbuf);
+              bmc_source_files.push_back(std::string{gitlinbuf});
+            }
           break;
         case S_IFLNK:
           vecgitlinkpath.push_back(std::string{gitlinbuf});
@@ -474,6 +481,10 @@ bmc_print_config_data(const char*progname)
   for (auto dirpath: vecgitdirpath)
     dataoutf << "  \"" << dirpath << "/\"," << std::endl;
   dataoutf << "  (const char*)0 }; // end bismonconf_git_dirs" << std::endl;
+  dataoutf << "const char*const bismonconf_git_sources[] = {" << std::endl;
+  for (auto srcpath: bmc_source_files)
+    dataoutf << "  \"" << srcpath << "\"," << std::endl;
+  dataoutf << "  (const char*)0 }; // end bismonconf_git_sources" << std::endl;
   //
   dataoutf << std::endl << "/// end of Bismon generated data " << datapath << std::endl;
   if (!bmc_batch_flag)
@@ -660,8 +671,9 @@ main (int argc, char**argv)
   if (!bmc_dryrun_flag)
     {
       bmc_print_config_header(argv[0]);
-      bmc_print_config_make(argv[0]);
       bmc_print_config_data(argv[0]);
+      /// should be last, since depends upon git directory parsing above
+      bmc_print_config_make(argv[0]);
     }
   if (isatty(STDIN_FILENO) && !bmc_batch_flag)
     {
