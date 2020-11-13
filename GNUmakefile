@@ -94,7 +94,7 @@ BISMON-config: BISMON-config.cc __timestamp.o
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"' -Wall -Wextra -O -g $^ -lreadline  -o $@
 
 _bismon-config.mk _bm_config.h _bm_config.c: BISMON-config.cc
-	if [ ! -x ./BISMON-config -a "$(MAKELEVEL)" -lt 2 ]; then $(MAKE)  ./BISMON-config ; fi
+	if [ ! -x ./BISMON-config ]; then if [ $(MAKELEVEL) -lt 2 ]; then bash -x -c '$(MAKE)  ./BISMON-config' ; fi ; fi
 	$(MAKE) runconfig
 
 runconfig:
@@ -120,6 +120,11 @@ id_BM.o: id_BM.c id_BM.h
 id_BM-g.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
 
+%_BM.o: %_BM.c bismon.h
+	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
+
+%_BM-g.o: %_BM.c bismon.h
+	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
 
 __timestamp.c:  timestamp-emit.sh |  GNUmakefile
 	./timestamp-emit.sh $(BM_CSOURCES) $(BM_CXXSOURCES)
