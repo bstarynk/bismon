@@ -35,6 +35,7 @@ MD5SUM= md5sum
 INDENTFLAGS= --gnu-style --no-tabs --honour-newlines
 ASTYLEFLAGS= --style=gnu -s2
 RM= rm -fv
+GAWK= gawk
 BM_CXX_STANDARD_FLAGS= -std=gnu++17
 
 ## CONVENTION: handwritten markdown files are...
@@ -52,9 +53,6 @@ BM_HEADERS= $(wildcard [a-z]*BM.h bismon.h)
 ## CONVENTION: handwritten C files are...
 BM_CSOURCES= $(wildcard [a-z]*_BM.c)
 
-## CONVENTION: handwritten GTK related C files are...
-BM_GTKCSOURCES= $(wildcard [a-z]*_GTKBM.c)
-
 ## CONVENTION: handwritten C++ files are...
 BM_CXXSOURCES= $(wildcard [a-z]*_BM.cc)
 
@@ -67,7 +65,6 @@ BISMON_CONFIG_OPTIONS=
 
 ### object files:
 BM_OBJECTS= $(patsubst %.c,%.o,$(BM_CSOURCES))  $(patsubst %.c,%.o,$(BM_CXXSOURCES))
-BM_GTKOBJECTS= $(patsubst %.c,%.o,$(BM_GTKCSOURCES))
 
 ## internal make variables...
 BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
@@ -110,11 +107,11 @@ clean:
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
 
-BM_makeconst: BM_makeconst.o id_BM.o
-	$(LINK.cc) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
+BM_makeconst: BM_makeconst.cc id_BM.c | id_BM.h
+	$(LINK.cc) -std=gnu++17 -O -g -Wall  $^  $(shell pkg-config --cflags --libs glib-2.0) -o $@
 
 BM_makeconst-g.o: BM_makeconst.cc id_BM.h
-	$(COMPILE.cc)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+	$(COMPILE.cc) -std=gnu++17   $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
 
 id_BM.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0)  -Wall -c $< -o $@
@@ -122,13 +119,20 @@ id_BM-g.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
 
 %_BM.o: %_BM.c bismon.h
+	@echo building $@ from $^
+	@echo should $(MAKE) bismon.h $(shell $(GAWK) '/^#include *"\([a-zA-Z_.]*\\)"/' '{print $$2}')
+	$(MAKE) bismon.h $(shell $(GAWK) '/^#include *\"\([a-zA-Z_.]*\\)\"/' '{print $$2}')
 	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
 
 %_BM-g.o: %_BM.c bismon.h
+	$(MAKE) bismon.h $(shell $(GAWK) '/^#include *\"\([a-zA-Z_.]*\\)\"/' '{print $$2}')
 	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
 
 __timestamp.c:  timestamp-emit.sh |  GNUmakefile
 	env BISMON_MAKE="$(MAKE)" ./timestamp-emit.sh $(BM_CSOURCES) $(BM_CXXSOURCES)
+
+%_BM.const.h: %_BM.c | BM_makeconst
+	./BM_makeconst
 
 all: config executable
 
@@ -138,5 +142,4 @@ executable: _bismon-config.mk
 bismon:  _bismon-config.mk _bm_config.h
 	$(MAKE) $(BISMONMK_OBJECTS)
 
-bismon-gtk:  _bismon-config.mk _bm_config.h
-	$(MAKE) $(BISMONMK_OBJECTS)
+-include $(wildcard _*.mkd)
