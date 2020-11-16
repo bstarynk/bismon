@@ -604,11 +604,6 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
       if (obix % 64 == 0 && obix > 0)
         {
           garbage_collect_if_wanted_BM (CURFRAME_BM);
-#ifdef BISMONGTK
-          // CAUTION: this is brittle and GC-unfriendly
-          if (guirun)
-            guirun = !gtk_main_iteration_do (false);
-#endif     /*BISMONGTK*/
         };
     }
   free (objarr), objarr = NULL;

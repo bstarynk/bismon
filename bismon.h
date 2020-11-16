@@ -87,23 +87,23 @@ using std::atomic_store;
 
 #include <glib.h>
 
-#ifdef BISMONGTK
-#include <gtk/gtk.h>
-#endif /*BISMONGTK*/
-// libonion from http://www.coralbits.com/libonion/ &
-// https://github.com/davidmoreno/onion
-#include <onion/onion.h>
-#include <onion/low.h>
-#include <onion/request.h>
-#include <onion/response.h>
-#include <onion/block.h>
-#include <onion/handler.h>
-#include <onion/dict.h>
-#include <onion/log.h>
-#include <onion/shortcuts.h>
-#include <onion/exportlocal.h>
-#include <onion/internal_status.h>
-#include <onion/websocket.h>
+/// We temporarily don't even use libonion from
+/// http://www.coralbits.com/libonion/ on
+/// https://github.com/davidmoreno/onion
+
+/// #include <onion/onion.h>
+/// #include <onion/low.h>
+/// #include <onion/request.h>
+/// #include <onion/response.h>
+/// #include <onion/block.h>
+/// #include <onion/handler.h>
+/// #include <onion/dict.h>
+/// #include <onion/log.h>
+/// #include <onion/shortcuts.h>
+/// #include <onion/exportlocal.h>
+/// #include <onion/internal_status.h>
+/// #include <onion/websocket.h>
+
 #include "cmacros_BM.h"
 #include "id_BM.h"
 #include "types_BM.h"

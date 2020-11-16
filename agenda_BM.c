@@ -1211,11 +1211,6 @@ enqueue_postpone_bm (struct agenda_postpone_stBM *apo,
              && agpostpone_first_BM->agpo_magic == POSTPONE_MAGIC_BM);
   double nextimstamp = agpostpone_first_BM->agpo_timestamp;
   pthread_mutex_unlock (&ti_agendamtx_BM);
-#ifdef BISMONGTK
-  if (gui_is_running_BM)
-    register_gui_postponed_BM (nextimstamp);
-  else
-#endif /*BISMONGTK*/
     if (web_is_running_BM)
     register_web_postponed_BM (nextimstamp);
   pthread_cond_broadcast (&ti_agendacond_BM);

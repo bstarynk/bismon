@@ -4366,13 +4366,10 @@ ROUTINEOBJNAME_BM (_7XDuHagbhi8_3V9zhBpbrrV)    //
   if (rk < 3 || (rk < 10 && rk % 2 == 0)
       || rk % 10000 == 0 || (rk % 64 == 0 && g_random_int () % 64 == 0))
     {
-#ifdef BISMONGTK
-      NONPRINTF_BM ("todo!test_agenda defergtk %s rk#%d",       //
-                    objectdbg_BM (_.taskob), rk);
-      do_main_defer_apply3_BM (kk_defer_show, _.taskob, _.rankv, NULL,
-                               CURFRAME_BM);
-      usleep (1000);
-#endif /*BISMONGTK*/
+      /// this make sense only with GTK ...
+      if (0)
+	do_main_defer_apply3_BM (kk_defer_show, _.taskob, _.rankv, NULL,
+				 CURFRAME_BM);
     }
   NONPRINTF_BM ("todo!test_agenda end taskob %s rk#%d",
                 objectdbg_BM (_.taskob), rk);

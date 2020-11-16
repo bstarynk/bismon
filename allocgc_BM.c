@@ -63,11 +63,7 @@ request_delayed_garbage_collection_BM (void)
   // this should be the only place where want_garbage_collection_BM
   // becomes true
   atomic_store (&want_garbage_collection_BM, true);     // request delayed GC
-  if (web_is_running_BM
-#ifdef BISMONGTK
-      && !gui_is_running_BM
-#endif /*BISMONGTK*/
-    )
+  if (web_is_running_BM)
     {
       add_rungarbcoll_command_onion_BM ();
     }
@@ -773,10 +769,7 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   gcmarkconstants_BM (&GCdata);
   gcmarkglobals_BM (&GCdata);
   gcmarkdefer_BM (&GCdata);
-#ifdef BISMONGTK
-  gcmarknewgui_BM (&GCdata);
-#endif /*BISMONGTK*/
-    gcmarkwebonion_BM (&GCdata);
+  gcmarkwebonion_BM (&GCdata);
   gcmarkagenda_BM (&GCdata);
   gcmarkmodules_BM (&GCdata);
   gcframemark_BM (&GCdata, stkfram, 0);
@@ -946,17 +939,6 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   fprintf (fil, "-------\n\n");
   fflush (fil);
   last_gctime_BM = clocktime_BM (CLOCK_REALTIME);
-#ifdef BISMONGTK
-  if (fil != stderr)
-    {
-      ASSERT_BM (gui_is_running_BM);
-      ASSERT_BM (buf != NULL);
-      fputs (buf, stderr);
-      gui_gc_message_BM (buf);
-      fclose (fil);
-      free (buf), buf = NULL;
-    };
-#endif /*BISMONGTK*/
     DBGPRINTF_BM
     ("full_garbage_collection_BM before agenda_run_deferred_after_gc_BM");
   agenda_run_deferred_after_gc_BM ();

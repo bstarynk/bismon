@@ -4583,30 +4583,12 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
       free (linkstr), linkstr = NULL;
     }
   ///
-#ifdef BISMONGTK
-  if (gui_is_running_BM)
-    {
-      _.srcdirstrv = (value_tyBM) makestring_BM (srcdirstr);
-      char cwdbuf[64];
-      DBGBACKTRACEPRINTF_BM
-        ("emit_module°plain_module srcdirstr= %s, modulob= %s\n"
-         "... modgenob= %s, deferred_compilation_of_module= %s, cwd= %s",
-         srcdirstr, objectdbg_BM (_.modulob),
-         objectdbg1_BM (_.modgenob),
-         objectdbg2_BM (kk_deferred_compilation_of_module),
-         getcwd (cwdbuf, sizeof (cwdbuf)));
-      do_main_defer_apply3_BM (kk_deferred_compilation_of_module,
-                               _.modulob, _.modgenob, _.srcdirstrv,
-                               CURFRAME_BM);
-    }
-#else
 #warning emit_module°plain_module should be improved without BISMONGTK
-  WARNPRINTF_BM ("emit_module°plain_module without BISMONGTK not implemented...\n"     //
+  WARNPRINTF_BM ("emit_module°plain_module without BISMONGTK ...\n"     //
                  " ... srcpathstr %s modulob %s modgenob %s srcdirstrv %s\n",   //
                  srcpathstr, objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),      //
                  debug_outstr_value_BM (_.srcdirstrv, CURFRAME_BM, 0));
   fflush (stderr);
-#endif /*BISMONGTK*/
     if (srcdirstr)
     INFOPRINTF_BM ("*!* ended emitting %s module %s/%s in %s *!*\n",
                    modulistemporary ? "temporary" : "persistent",
