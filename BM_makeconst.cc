@@ -3,7 +3,7 @@
 
 /***
     BISMON
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -42,6 +42,10 @@ To process a single file and generate its header
 
 To process all the files and generate the constants
     ./BM_makeconst -C _bm_allconsts.c *_BM.c misc_BM.cc
+
+To output, if it is #include-d, the _BM.const.h file related to scalar_BM.c
+    ./BM_makeconst -S scalar_BM.c
+otherwise exit code is 1
 ***/
 
 #define BMPREFIXSIZE 4 /* the length of both "BMK_" and "BMH_" prefixes */
@@ -109,7 +113,7 @@ int parse_cfile(const char*path, set_of_ids_BM &bmconstset, set_of_ids_BM &bmhas
             {
               const char*bmkcptr = line.c_str() + bmkpos;
               const char*endbmk = nullptr;
-              rawid_tyBM bmkid = parse_rawid_BM(bmkcptr+BMPREFIXSIZE-1, &endbmk);
+              const rawid_tyBM bmkid = parse_rawid_BM(bmkcptr+BMPREFIXSIZE-1, &endbmk);
               if (validid_BM(bmkid) && endbmk != nullptr)
                 {
                   bmconstset.insert(bmkid);
@@ -150,14 +154,47 @@ int parse_cfile(const char*path, set_of_ids_BM &bmconstset, set_of_ids_BM &bmhas
 } // end parse_cfile
 
 
+/// return true if some #include "foo_BM.const.h" was found in start of foo_BM.c, also output that included header
+bool
+seek_header_in_cfile(const char*path)
+{
+  std::ifstream srcin(path);
+  int linecnt = 0;
+  int nbincl = 0;
+  do
+    {
+      std::string line;
+      std::getline(srcin, line);
+      ssize_t linesize = line.size();
+      linecnt ++;
+      char inclbuf[64];
+      memset (inclbuf, 0, sizeof(inclbuf));
+      int eol= -1;
+      if (linesize > 8 && line[0] == '#'
+	  && sscanf(line.c_str(), "# include \"%60[A-Za-z0-9_.]\" %n",
+		    inclbuf, &eol) >= 1
+	  && eol > 16) {
+	if (strstr(line.c_str(), "_BM.const.h")) {
+	  std::cout << inclbuf << std::endl;
+	  nbincl ++;
+	}
+      }
+    }
+  while (linecnt < 128);
+  return nbincl>0;
+} // end seek_header_in_cfile
+
+
 
 int main(int argc, char**argv)
 {
-  if (argc < 3)
+  if (argc < 3 || (argc>1 && !strcmp(argv[1], "--help")))
+  show_usage:
     {
       fprintf(stderr, "%s expects at least three arguments:\n"
-              "\t -H <generated-header> <C-file>\n"
-              "\t -C <generated-code> <C-files>...\n", argv[0]);
+              "\t -H <generated-header> <C-file>   # generate *.const.h\n"
+              "\t -S <C-file>                      # output included *.const.h, or else fail\n"
+              "\t -C <generated-code> <C-files>... # generate the global const file\n", argv[0]);
       exit(EXIT_FAILURE);
     }
   if (!strcmp(argv[1], "-H"))
@@ -242,10 +279,15 @@ int main(int argc, char**argv)
       printf("processed %d lines in %d files with %d occurrences of %d constants\n",
              nblines, argc-3, totalnbkocc, (int) bmconstset.size());
     }
+  else if (!strcmp(argv[1], "-S") && argc == 3)
+    {
+      if (!seek_header_in_cfile(argv[2]))
+	exit(EXIT_FAILURE);
+    }
   else
     {
-      fprintf(stderr, "%s: expects -H <header> <C-source> or -C <code> <C-source-files>\n", argv[0]);
-      exit(EXIT_FAILURE);
+      fprintf(stderr, "%s: expected usage:\n", argv[0]);
+      goto show_usage;
     }
   return 0;
 } // end main

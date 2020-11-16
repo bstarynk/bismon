@@ -102,21 +102,21 @@ count:
 	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n
 
 clean:
-	$(RM) *.o BISMON-config bismon bismon-gtk _bm_config.h _bm_config.c  modubin/*.so modubin/*.o *~ *% *.cc.orig
+	$(RM) *.o BISMON-config BM_makeconst bismon _bm_config.h _bm_config.c  modubin/*.so modubin/*.o *~ *% *.cc.orig
 
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
-	$(CXX) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
+	$(CXX)  -std=gnu++14 -g -Wall -Wextra   BM_makeconst-g.o id_BM-g.o $(shell pkg-config --libs glib-2.0) -o $@
 
-BM_makeconst: BM_makeconst.cc id_BM.c | id_BM.h
-	$(LINK.cc) -std=gnu++17 -O -g -Wall  $^  $(shell pkg-config --cflags --libs glib-2.0) -o $@
+BM_makeconst: BM_makeconst.cc id_BM.o | id_BM.h
+	$(LINK.cc) -std=gnu++14 -O -g -Wall  -Wextra BM_makeconst.cc id_BM.o  $(shell pkg-config --cflags --libs glib-2.0) -o $@
 
 BM_makeconst-g.o: BM_makeconst.cc id_BM.h
-	$(COMPILE.cc) -std=gnu++17   $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+	$(COMPILE.cc) -std=gnu++14   $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
 
 id_BM.o: id_BM.c id_BM.h
-	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0)  -Wall -c $< -o $@
+	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -O -g -Wall -Wextra -c $< -o $@
 id_BM-g.o: id_BM.c id_BM.h
-	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -g -Wall -Wextra -c $< -o $@
 
 %_BM.o: %_BM.c bismon.h
 	@echo building $@ from $^
