@@ -14,6 +14,7 @@ BM_makeconst_dbg
 BISMON-config
 
 _bm_allconsts*.c
+_bm_config.c
 *_BM.const.h
 _*ONIONBM.[ch]
 .ninja*
