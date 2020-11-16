@@ -52,8 +52,6 @@
 
 extern "C" bool bmc_debug_flag;
 extern "C" bool bmc_batch_flag;
-extern "C" bool bmc_gtk_flag;
-extern "C" bool bmc_given_gtk_flag;
 extern "C" bool bmc_dryrun_flag;
 std::string bmc_target_gcc;
 std::string bmc_target_gxx;
@@ -72,16 +70,12 @@ extern "C" const char bismon_shortgitid[];
 
 bool bmc_batch_flag;
 bool bmc_debug_flag;
-bool bmc_gtk_flag;
-bool bmc_given_gtk_flag;
 bool bmc_dryrun_flag;
 
 enum bmc_longopt_en
 {
   BMCOPT__longoptstart=1024,
-  BMCOPT_with_gtk,
   BMCOPT_batch,
-  BMCOPT_without_gtk,
   BMCOPT_target_gcc,
   BMCOPT_target_gxx,
   BMCOPT_dry_run,
@@ -97,8 +91,6 @@ static const struct option
   {"version",     	 no_argument,        0, 'V'},
   {"help",        	 no_argument,        0, 'h'},
   {"debug",       	 no_argument,        0, 'D'},
-  {"with-gtk",    	 no_argument,  0,       BMCOPT_with_gtk},
-  {"without-gtk",    	 no_argument,  0,       BMCOPT_without_gtk},
   {"dry-run",    	 no_argument,  0,       BMCOPT_dry_run},
   {"batch",    	         no_argument,  0,       BMCOPT_batch},
   {"target-gcc",  	 required_argument,  0,       BMCOPT_target_gcc},
@@ -153,16 +145,6 @@ bmc_parse_options(int& argc, char**argv)
         case BMCOPT_batch:
           bmc_batch_flag = true;
           break;
-        case BMCOPT_with_gtk:
-          bmc_gtk_flag = true;
-          bmc_given_gtk_flag = true;
-          BMC_DEBUG("with GTK");
-          break;
-        case BMCOPT_without_gtk:
-          bmc_gtk_flag = false;
-          bmc_given_gtk_flag = true;
-          BMC_DEBUG("without GTK");
-          break;
         case BMCOPT_dry_run:
           bmc_dryrun_flag = true;
           BMC_DEBUG("dry run - won't fork compilation commands");
@@ -191,8 +173,6 @@ bmc_show_usage(const char*progname)
   std::cerr << " --help | -h            # give this help message" << std::endl;
   std::cerr << " --debug | -D           # debug this configurator program " << progname << std::endl;
   std::cerr << " --batch                # dont ask for missing arguments even in terminal" << std::endl;
-  std::cerr << " --with-gtk             # enable GTK3 Graphical User Interface in Bismon" << std::endl;
-  std::cerr << " --without-gtk          # disable GTK3 Graphical User Interface in Bismon" << std::endl;
   std::cerr << " --dry-run              # wont fork target compilation commands" << std::endl;
   std::cerr << " --target-gcc=PATH      # set to PATH the target GCC compiler executable for C code" << std::endl;
   std::cerr << " --target-gxx=PATH      # set to PATH the target GCC compiler for C++ code" << std::endl;
@@ -350,10 +330,6 @@ bmc_print_config_header(const char*progname)
   headoutf << "#define BISMON_MAKEFILE  \"" << bismon_makefile << "\"" << std::endl;
   headoutf << "#define BISMON_GIT_ID  \"" << bismon_gitid << "\"" << std::endl;
   headoutf << "#define BISMON_SHORT_GIT_ID  \"" << bismon_shortgitid << "\"" << std::endl;
-  if (bmc_gtk_flag)
-    headoutf << "#define BISMONGTK 1" << std::endl;
-  else
-    headoutf << "#undef BISMONGTK" << std::endl;
   if (!bmc_target_gcc.empty())
     headoutf << "#define BISMON_TARGET_GCC \"" << bmc_target_gcc << "\"" << std::endl;
   if (!bmc_target_gxx.empty())
@@ -519,20 +495,10 @@ bmc_print_config_make(const char*progname)
   makeoutf << "BISMONMK_MAKEFILE=" << bismon_makefile << std::endl;
   makeoutf << "BISMONMK_GITID=" << bismon_gitid << std::endl;
   makeoutf << "BISMONMK_SHORTGITID=" << bismon_shortgitid << std::endl;
-  if (bmc_gtk_flag)
-    {
-      makeoutf << "BISMONMK_GTK=$(shell pkg-config --modversion gtk+-3.0)" << std::endl;
-      makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS) $(BM_GTKOBJECTS)" << std::endl;
-      makeoutf << "BISMONMK_PACKAGES= glib-2.0 gobject-2.0 jansson gtk+-3.0" << std::endl;
-      makeoutf << "BISMONMK_EXECUTABLE= bismon-gtk" << std::endl;
-    }
-  else
-    {
-      makeoutf << "#no BISMONMK_GTK" << std::endl;
-      makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS)" << std::endl;
-      makeoutf << "BISMONMK_PACKAGES= glib-2.0 gobject-2.0 jansson" << std::endl;
-      makeoutf << "BISMONMK_EXECUTABLE= bismon" << std::endl;
-    }
+  makeoutf << "#without BISMONMK_gtk" << std::endl;
+  makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS)" << std::endl;
+  makeoutf << "BISMONMK_PACKAGES= glib-2.0 gobject-2.0 jansson readline" << std::endl;
+  makeoutf << "BISMONMK_EXECUTABLE= bismon" << std::endl;
   if (!bmc_target_gcc.empty())
     makeoutf << "BISMONMK_TARGET_GCC=" << bmc_target_gcc << std::endl;
   else
@@ -583,24 +549,6 @@ bmc_ask_missing_configuration(const char*progname)
             << std::endl << "(this program " << progname << " uses GNU readline, so you could use the <tab> key is for autocompletion," << std::endl;
   std::cout << "... and your input lines are editable.  For more about GNU readline, see www.gnu.org/software/readline ...)" << std::endl;
   std::cout << "For more about Bismon, see github.com/bstarynk/bismon ...." << std::endl << std::endl;
-  /// ask about GTK
-  while (!bmc_given_gtk_flag)
-    {
-      std::cout << "Build Bismon with a buggy GTK3 graphical user interface? [y/n]" << std::endl;
-      const char*gtkgui = bmc_readline(progname, "BISMON with GTK? ");
-      if (gtkgui[0] == 'y' || gtkgui[0] == 'Y' || gtkgui[0] == '1')
-        {
-          bmc_given_gtk_flag = true;
-          bmc_gtk_flag = true;
-        }
-      else if (gtkgui[0] == 'n' || gtkgui[0] == 'N' || gtkgui[0] == '0')
-        {
-          bmc_given_gtk_flag = true;
-          bmc_gtk_flag = false;
-        }
-      free ((void*)gtkgui), gtkgui = nullptr;
-    }
-  std::cout << std::endl;
   /// ask about target GCC compilers for C and for C++
   while (bmc_target_gcc.empty())
     {
