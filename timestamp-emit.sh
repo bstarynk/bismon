@@ -32,4 +32,8 @@ fi
 
 (echo -n 'const char bismon_makefile[]="'; echo -n  $(realpath Makefile); echo '";') >> __timestamp.tmp
 
+if [ -n "$BISMON_MAKE" ] ; then
+    (echo -n 'const char bismon_make[]="'; echo -n $BISMON_MAKE;  echo '";') >> __timestamp.tmp
+fi
+
 mv __timestamp.tmp __timestamp.c
