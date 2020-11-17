@@ -116,7 +116,7 @@ _bismon-config.mk _bm_config.h _bm_config.c:
 endif
 
 runconfig: BISMON-config
-	./BISMON-config $(BISMON_CONFIG_OPTIONS)
+	./BISMON-config --skip=for_runconfig $(BISMON_CONFIG_OPTIONS)
 
 count:
 	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n
@@ -142,11 +142,11 @@ id_BM-g.o: id_BM.c id_BM.h
 %_BM.o: %_BM.c bismon.h | BISMON-config BM_makeconst
 	@echo building $@ from $^
 	@echo should $(MAKE) bismon.h $(shell ./BISMON-config --const-depend $^)
-	$(MAKE) bismon.h  $(shell ./BISMON-config --const-depend $^)
+	$(MAKE) bismon.h  $(shell ./BISMON-config --skip=for_constdep --const-depend $^)
 	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
 
 %_BM-g.o: %_BM.c bismon.h | BISMON-config BM_makeconst
-	$(MAKE) bismon.h $(shell ./BISMON-config --const-depend $^)
+	$(MAKE) bismon.h $(shell ./BISMON-config --skip=for_constdep_dbg ---const-depend $^)
 	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
 
 __timestamp.c:  timestamp-emit.sh |  GNUmakefile
