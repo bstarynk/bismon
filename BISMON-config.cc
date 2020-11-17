@@ -73,6 +73,7 @@ bool bmc_batch_flag;
 bool bmc_debug_flag;
 bool bmc_dryrun_flag;
 bool bmc_constdepend_flag;
+bool bmc_silent_flag;
 
 char bmc_hostname[64];
 enum bmc_longopt_en
@@ -95,6 +96,7 @@ static const struct option
   {"version",     	 no_argument,        0,    'V'},
   {"help",        	 no_argument,        0,    'h'},
   {"debug",       	 no_argument,        0,    'D'},
+  {"silent",       	 no_argument,        0,    'S'},
   {"dry-run",    	 no_argument,        0,    BMCOPT_dry_run},
   {"batch",    	         no_argument,        0,    BMCOPT_batch},
   {"const-depend",    	 no_argument,        0,    BMCOPT_const_depend},
@@ -132,7 +134,7 @@ bmc_parse_options(int& argc, char**argv)
   for (;;)
     {
       int optix= -1;
-      int optres = getopt_long(argc, argv, "DVh", bmc_long_options, &optix);
+      int optres = getopt_long(argc, argv, "DVSh", bmc_long_options, &optix);
       if (optres < 0)
         break;
       switch (optres)
@@ -565,11 +567,6 @@ bmc_ask_missing_configuration(const char*progname)
 {
   BMC_DEBUG("bmc_ask_missing_configuration start progname=" << progname);
   using_history();
-  std::cout << std::endl << std::endl << "***** " BMC_BOLD_ESCAPE "BISMON Configurator" BMC_PLAIN_ESCAPE " ****" << std::endl
-            << std::endl << "(this program " << progname << " uses GNU readline, so you could use the <tab> key is for autocompletion," << std::endl;
-  std::cout << "... and your input lines are editable.  For more about GNU readline, see www.gnu.org/software/readline ...)" << std::endl;
-  std::cout << "For more about Bismon, see github.com/bstarynk/bismon ...."
-            << std::endl << std::endl;
   /// ask about target GCC compilers for C and for C++
   while (bmc_target_gcc.empty())
     {
@@ -624,19 +621,41 @@ bmc_ask_missing_configuration(const char*progname)
 } // end bmc_ask_missing_configuration
 
 
-
+void
+bmc_print_const_dependencies(const char*progname)
+{
+  BMC_DEBUG("bmc_print_const_dependencies start progname=" << progname << " ESHELL=" << (getenv("ESHELL")?:"**none**"));
+#warning bmc_print_const_dependencies is incomplete
+} // end bmc_print_const_dependencies
 
 int
 main (int argc, char**argv)
 {
-  if (argc>1 && (!strcmp(argv[1], "-D") || !strcmp(argv[1], "--debug")))
+  bool earlydebug = false;
+  if (argc>1 && (!strcmp(argv[1], "-D") || !strcmp(argv[1], "--debug"))) {
     bmc_debug_flag = true;
-  bmc_parse_options(argc, argv);
+    earlydebug = true;
+    if (isatty(STDOUT_FILENO)) {
+      std::cout << std::endl << std::endl << "***** " BMC_BOLD_ESCAPE "BISMON Debugged Configurator" BMC_PLAIN_ESCAPE " ****" << std::endl;
+    }
+    usleep (1024*8);
+  }
   gethostname(bmc_hostname, sizeof(bmc_hostname)-1);
-  std::cout << "# running " << __FILE__ " @"  __DATE__ << " on " << bmc_hostname << " pid " << (int)getpid()
-	    << " parentpid " << (int)getppid() << std::endl;
+  bmc_parse_options(argc, argv);
+  if (isatty(STDOUT_FILENO) && !bmc_silent_flag) {
+    if (!earlydebug)
+      std::cout << std::endl << std::endl << "***** " BMC_BOLD_ESCAPE "BISMON Configurator" BMC_PLAIN_ESCAPE " ****" << std::endl;
+    std::cout 
+      << std::endl << "(this program " << argv[0] << " uses GNU readline, so you could use the <tab> key is for autocompletion," << std::endl;
+    std::cout << "... and your input lines are editable.  For more about GNU readline, see www.gnu.org/software/readline ...)" << std::endl;
+    std::cout << "For more about Bismon, see github.com/bstarynk/bismon ...."
+	      << std::endl;
+    std::cout << "For more about GCC, see gcc.gnu.org ...." << std::endl;
+    std::cout << "# running " << __FILE__ " @"  __DATE__ << " on " << bmc_hostname << " pid " << (int)getpid()
+	      << " parentpid " << (int)getppid() << std::endl;
+  }
   usleep(1024*16);
-  if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
+  if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO) && !bmc_batch_flag)
     bmc_ask_missing_configuration(argv[0]);
   if (bmc_out_directory.empty())
     bmc_out_directory = bismon_directory;
@@ -649,8 +668,10 @@ main (int argc, char**argv)
       bmc_print_config_data(argv[0]);
       /// should be last, since depends upon git directory parsing above
       bmc_print_config_make(argv[0]);
+      if (bmc_constdepend_flag)
+	bmc_print_const_dependencies(argv[0]);
     }
-  if (isatty(STDIN_FILENO) && !bmc_batch_flag)
+  if (isatty(STDIN_FILENO) && !bmc_batch_flag && !bmc_silent_flag)
     {
       std::cout << "### See also refpersys.org for another free software project."
                 << std::endl << std::endl;
