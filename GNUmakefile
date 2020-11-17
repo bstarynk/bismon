@@ -68,7 +68,7 @@ BM_OBJECTS= $(patsubst %.c,%.o,$(BM_CSOURCES))  $(patsubst %.c,%.o,$(BM_CXXSOURC
 
 ## internal make variables...
 BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
-BISMON_SHGIT2:= $(shell if git status | grep 'nothing to commit'; then echo; else echo +; fi)
+BISMON_SHGIT2:= $(shell if git status | grep 'nothing to commit' > /dev/null; then echo ; else echo +; fi)
 
 ## The short git id, such as 34ae25e8127fc354 (for a clean source)
 ## or 3ae25e8127fc354d+ (for some edited source tree)
@@ -89,13 +89,23 @@ endif
 ### the configurator program
 BISMON-config: BISMON-config.cc __timestamp.o
 	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
+	@mv -v $@ $@~
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"' -Wall -Wextra -O -g $^ -lreadline  -o $@
 
-_bismon-config.mk _bm_config.h _bm_config.c: BISMON-config.cc
-	if [ ! -x ./BISMON-config ]; then if [ $(MAKELEVEL) -lt 2 ]; then bash -x -c '$(MAKE)  ./BISMON-config' ; fi ; fi
-	$(MAKE) runconfig
 
-runconfig:
+ifeq ($(MAKELEVEL),0)
+_bismon-config.mk _bm_config.h _bm_config.c: BISMON-config.cc
+	sleep 0.05
+	if [ ! -x ./BISMON-config ]; then bash -x -c '$(MAKE)  ./BISMON-config' ; fi
+	sleep 0.1
+	$(MAKE) runconfig
+else
+_bismon-config.mk _bm_config.h _bm_config.c:
+	sleep 0.3
+	$(MAKE) runconfig
+endif
+
+runconfig: BISMON-config
 	./BISMON-config $(BISMON_CONFIG_OPTIONS)
 
 count:
