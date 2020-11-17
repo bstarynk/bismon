@@ -136,7 +136,8 @@ void bmc_failure_at(const char*reason, int lineno)
 {
   std::cerr << bmc_main_argv[0] << " failure: " << reason << " at " << __FILE__ << ":" << lineno << std::endl;
   std::cerr << "\t invoked as: ";
-  for (int ix=0; ix<bmc_main_argc; ix++) std::cerr << bmc_main_argv[ix];
+  for (int ix=0; ix<bmc_main_argc; ix++)
+    std::cerr << ' ' << bmc_main_argv[ix];
   std::cerr << std::endl;
   exit(EXIT_FAILURE);
 } // end bmc_failure_at
