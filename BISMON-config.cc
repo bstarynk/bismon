@@ -84,6 +84,7 @@ enum bmc_longopt_en
   BMCOPT_target_gxx,
   BMCOPT_const_depend,
   BMCOPT_dry_run,
+  BMCOPT_skip,
   BMCOPT_output_directory,
 };
 
@@ -102,6 +103,7 @@ static const struct option
   {"const-depend",    	 no_argument,        0,    BMCOPT_const_depend},
   {"target-gcc",  	 required_argument,  0,    BMCOPT_target_gcc},
   {"target-gxx",  	 required_argument,  0,    BMCOPT_target_gxx},
+  {"skip",  	         required_argument,  0,    BMCOPT_skip},
   {"output-directory",   required_argument,  0,    BMCOPT_output_directory},
   {0,0,0,0}
 };
@@ -190,6 +192,9 @@ bmc_parse_options(int& argc, char**argv)
           bmc_out_directory = optarg;
           BMC_DEBUG("output directory :" << bmc_out_directory);
           break;
+        case BMCOPT_skip: // --skip=XXXX
+          BMC_DEBUG("skipping :" << optarg);
+          break;
         }
     }
   BMC_DEBUG("constdepix=" << constdepix);
@@ -213,6 +218,7 @@ bmc_show_usage(const char*progname)
   std::cerr << " --batch                # dont ask for missing arguments even in terminal" << std::endl;
   std::cerr << " --dry-run              # wont fork target compilation commands" << std::endl;
   std::cerr << " --const-depend *_BM.c  # output the dependencies on #include-s *.const.h files" << std::endl;
+  std::cerr << " --skip=IGNORED         # ignored argument, would appear on failure message" << std::endl;
   std::cerr << " --target-gcc=PATH      # set to PATH the target GCC compiler executable for C code" << std::endl;
   std::cerr << " --target-gxx=PATH      # set to PATH the target GCC compiler for C++ code" << std::endl;
   std::cerr << " --output-directory=DIR # set the output directory to DIR - default is " << bismon_directory << std::endl;
