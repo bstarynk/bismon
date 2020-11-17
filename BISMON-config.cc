@@ -131,33 +131,33 @@ bmc_parse_options(int& argc, char**argv)
         break;
       switch (optres)
         {
-        case 'h': // --help
+        case 'h':                     // --help
           bmc_show_usage(argv[0]);
           exit(EXIT_SUCCESS);
           break;
-        case 'V': // --version
+        case 'V':                     // --version
           bmc_show_version(argv[0]);
           exit(EXIT_SUCCESS);
           break;
-        case 'D': // --debug
+        case 'D':                     // --debug
           bmc_debug_flag = true;
           break;
-        case BMCOPT_batch:
+        case BMCOPT_batch:            // --batch
           bmc_batch_flag = true;
           break;
-        case BMCOPT_dry_run:
+        case BMCOPT_dry_run:          // --dry-run
           bmc_dryrun_flag = true;
           BMC_DEBUG("dry run - won't fork compilation commands");
           break;
-        case BMCOPT_target_gcc:
+        case BMCOPT_target_gcc:       // --target-gcc=PATH
           bmc_target_gcc = optarg;
           BMC_DEBUG("target GCC:" << bmc_target_gcc);
           break;
-        case BMCOPT_target_gxx:
+        case BMCOPT_target_gxx:       // --target-gxx=PATH
           bmc_target_gxx = optarg;
           BMC_DEBUG("target GXX:" << bmc_target_gxx);
           break;
-        case BMCOPT_output_directory:
+        case BMCOPT_output_directory: // --output-directory=DIR
           bmc_out_directory = optarg;
           BMC_DEBUG("output directory :" << bmc_out_directory);
           break;
@@ -618,7 +618,7 @@ main (int argc, char**argv)
     bmc_out_directory = bismon_directory;
   bmc_check_output_directory(argv[0]);
   bmc_check_target_compiler(argv[0], false); // for C
-  bmc_check_target_compiler(argv[0], true); // for C++
+  bmc_check_target_compiler(argv[0], true);  // for C++
   if (!bmc_dryrun_flag)
     {
       bmc_print_config_header(argv[0]);
