@@ -545,10 +545,11 @@ bmc_ask_missing_configuration(const char*progname)
 {
   BMC_DEBUG("bmc_ask_missing_configuration start progname=" << progname);
   using_history();
-  std::cout << std::endl << "***** " BMC_BOLD_ESCAPE "BISMON Configurator" BMC_PLAIN_ESCAPE " ****" << std::endl
+  std::cout << std::endl << std::endl << "***** " BMC_BOLD_ESCAPE "BISMON Configurator" BMC_PLAIN_ESCAPE " ****" << std::endl
             << std::endl << "(this program " << progname << " uses GNU readline, so you could use the <tab> key is for autocompletion," << std::endl;
   std::cout << "... and your input lines are editable.  For more about GNU readline, see www.gnu.org/software/readline ...)" << std::endl;
-  std::cout << "For more about Bismon, see github.com/bstarynk/bismon ...." << std::endl << std::endl;
+  std::cout << "For more about Bismon, see github.com/bstarynk/bismon ...."
+            << std::endl << std::endl;
   /// ask about target GCC compilers for C and for C++
   while (bmc_target_gcc.empty())
     {
@@ -562,6 +563,7 @@ bmc_ask_missing_configuration(const char*progname)
           free ((void*)gcctarget), gcctarget = nullptr;
         }
     }
+  std::cout << std::endl;
   while (bmc_target_gxx.empty())
     {
       std::cout << "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 10. See gcc.gnu.org...." << std::endl;
@@ -574,6 +576,7 @@ bmc_ask_missing_configuration(const char*progname)
           free ((void*)gxxtarget), gxxtarget = nullptr;
         }
     }
+  std::cout << std::endl;
   /// ask about the output directory, into which files would be written
   char cwdbuf[256];
   memset (cwdbuf, 0, sizeof(cwdbuf));
@@ -626,7 +629,7 @@ main (int argc, char**argv)
   if (isatty(STDIN_FILENO) && !bmc_batch_flag)
     {
       std::cout << "### See also refpersys.org for another free software project."
-                << std::endl;
+                << std::endl << std::endl;
     }
   return 0;
 } // end function main
