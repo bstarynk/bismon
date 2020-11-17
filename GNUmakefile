@@ -35,7 +35,6 @@ MD5SUM= md5sum
 INDENTFLAGS= --gnu-style --no-tabs --honour-newlines
 ASTYLEFLAGS= --style=gnu -s2
 RM= rm -fv
-GAWK= gawk
 BM_CXX_STANDARD_FLAGS= -std=gnu++17
 
 ## CONVENTION: handwritten markdown files are...
@@ -131,12 +130,12 @@ id_BM-g.o: id_BM.c id_BM.h
 
 %_BM.o: %_BM.c bismon.h | BISMON-config BM_makeconst
 	@echo building $@ from $^
-	@echo should $(MAKE) bismon.h $(shell $(GAWK) '/^#include *"\([a-zA-Z_.]*\\)"/' '{print $$2}')
-	$(MAKE) bismon.h $(shell $(GAWK) '/^#include *\"\([a-zA-Z_.]*\\)\"/' '{print $$2}')
+	@echo should $(MAKE) bismon.h $(shell ./BISMON-config --const-depend $^)
+	$(MAKE) bismon.h  $(shell ./BISMON-config --const-depend $^)
 	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
 
 %_BM-g.o: %_BM.c bismon.h | BISMON-config BM_makeconst
-	$(MAKE) bismon.h $(shell $(GAWK) '/^#include *\"\([a-zA-Z_.]*\\)\"/' '{print $$2}')
+	$(MAKE) bismon.h $(shell ./BISMON-config --const-depend $^)
 	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
 
 __timestamp.c:  timestamp-emit.sh |  GNUmakefile

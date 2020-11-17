@@ -302,7 +302,9 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
             sscanf(linbuf, "gcc version %d.%d", &gccversion_major, &gccversion_minor);
         }
       BMC_DEBUG("bmc_check_target_compiler compcmd: " << compcmd << " got cmdstr " << std::endl
-                << cmdstr << std::endl);
+                << "####++++++++++++++++++++++++++++++++++++++++ " << std::endl
+                << cmdstr << std::endl
+                << "####---------------------------------------- " << compcmd <<std::endl);
       BMC_DEBUG("bmc_check_target_compiler gccversion_major=" << gccversion_major << ", gccversion_minor=" << gccversion_minor);
       if (gccversion_major != 10)
         {
@@ -622,9 +624,64 @@ bmc_ask_missing_configuration(const char*progname)
 
 
 void
+bmc_scan_for_const_dependencies(const char*progname, const std::string&filnam, int rk)
+{
+  BMC_DEBUG("bmc_scan_for_const_dependencies start " << filnam << " #" << rk);
+  int curlineno = 0;
+  std::string objfilnam = filnam;
+  int filnamlen = filnam.size();
+  if (filnamlen > 3 && objfilnam[filnamlen-2] == '.' && objfilnam[filnamlen-1] == 'c')
+    objfilnam[filnamlen-1] = 'o';
+  FILE* fil = fopen(filnam.c_str(), "r");
+  if (!fil)
+    {
+      std::cerr << progname << ": failed to fopen #" << rk << " " << filnam << ":" << strerror(errno) << std::endl;
+      exit(EXIT_FAILURE);
+    }
+  BMC_DEBUG("bmc_scan_for_const_dependencies " << filnam << " #" << rk << " object file:" << objfilnam);
+  int nbdep=0;
+  std::cout << std::endl << objfilnam << ":";
+  do
+    {
+      char linbuf[80];
+      memset(linbuf, 0, sizeof(linbuf));
+      if (!fgets(linbuf, sizeof(linbuf), fil))
+        break;
+      curlineno ++;
+      if (curlineno > 128)
+        break;
+      int eol= -1;
+      char pathbuf[64];
+      memset(pathbuf, 0, sizeof(pathbuf));
+      if (sscanf(linbuf, "# include \"%60[a-zA-Z0-9._]\"%n", pathbuf, &eol)<1 || eol<=0)
+        continue;
+      BMC_DEBUG("bmc_scan_for_const_dependencies " << filnam << ":" << curlineno << " pathbuf=" << pathbuf);
+      if (strstr(pathbuf, "_BM.const.h"))
+        {
+          nbdep++;
+          std::cout << " " << pathbuf << std::flush;
+        }
+    }
+  while (!feof(fil));
+  fclose(fil);
+  std::cout << std::endl << std::endl;
+  BMC_DEBUG("bmc_scan_for_const_dependencies end " << filnam << " #" << rk << " with " << nbdep << " dependencies." << std::endl);
+} // end bmc_scan_for_const_dependencies
+
+
+
+void
 bmc_print_const_dependencies(const char*progname)
 {
-  BMC_DEBUG("bmc_print_const_dependencies start progname=" << progname << " ESHELL=" << (getenv("ESHELL")?:"**none**"));
+  BMC_DEBUG("bmc_print_const_dependencies start progname=" << progname << " ESHELL=" << (getenv("ESHELL")?:"**none**")
+            << " " << bmc_constdep_files.size() << " files");
+  int i=0;
+  for (auto cdstr : bmc_constdep_files)
+    {
+      i++;
+      BMC_DEBUG("bmc_print_const_dependencies [" << i << "]:" << cdstr);
+      bmc_scan_for_const_dependencies(progname, cdstr, i);
+    }
 #warning bmc_print_const_dependencies is incomplete
 } // end bmc_print_const_dependencies
 
@@ -632,28 +689,31 @@ int
 main (int argc, char**argv)
 {
   bool earlydebug = false;
-  if (argc>1 && (!strcmp(argv[1], "-D") || !strcmp(argv[1], "--debug"))) {
-    bmc_debug_flag = true;
-    earlydebug = true;
-    if (isatty(STDOUT_FILENO)) {
-      std::cout << std::endl << std::endl << "***** " BMC_BOLD_ESCAPE "BISMON Debugged Configurator" BMC_PLAIN_ESCAPE " ****" << std::endl;
+  if (argc>1 && (!strcmp(argv[1], "-D") || !strcmp(argv[1], "--debug")))
+    {
+      bmc_debug_flag = true;
+      earlydebug = true;
+      if (isatty(STDOUT_FILENO))
+        {
+          std::cout << std::endl << std::endl << "***** " BMC_BOLD_ESCAPE "BISMON Debugged Configurator" BMC_PLAIN_ESCAPE " ****" << std::endl;
+        }
+      usleep (1024*8);
     }
-    usleep (1024*8);
-  }
   gethostname(bmc_hostname, sizeof(bmc_hostname)-1);
   bmc_parse_options(argc, argv);
-  if (isatty(STDOUT_FILENO) && !bmc_silent_flag) {
-    if (!earlydebug)
-      std::cout << std::endl << std::endl << "***** " BMC_BOLD_ESCAPE "BISMON Configurator" BMC_PLAIN_ESCAPE " ****" << std::endl;
-    std::cout 
-      << std::endl << "(this program " << argv[0] << " uses GNU readline, so you could use the <tab> key is for autocompletion," << std::endl;
-    std::cout << "... and your input lines are editable.  For more about GNU readline, see www.gnu.org/software/readline ...)" << std::endl;
-    std::cout << "For more about Bismon, see github.com/bstarynk/bismon ...."
-	      << std::endl;
-    std::cout << "For more about GCC, see gcc.gnu.org ...." << std::endl;
-    std::cout << "# running " << __FILE__ " @"  __DATE__ << " on " << bmc_hostname << " pid " << (int)getpid()
-	      << " parentpid " << (int)getppid() << std::endl;
-  }
+  if (isatty(STDOUT_FILENO) && !bmc_silent_flag)
+    {
+      if (!earlydebug)
+        std::cout << std::endl << std::endl << "***** " BMC_BOLD_ESCAPE "BISMON Configurator" BMC_PLAIN_ESCAPE " ****" << std::endl;
+      std::cout
+          << std::endl << "(this program " << argv[0] << " uses GNU readline, so you could use the <tab> key is for autocompletion," << std::endl;
+      std::cout << "... and your input lines are editable.  For more about GNU readline, see www.gnu.org/software/readline ...)" << std::endl;
+      std::cout << "For more about Bismon, see github.com/bstarynk/bismon ...."
+                << std::endl;
+      std::cout << "For more about GCC, see gcc.gnu.org ...." << std::endl;
+      std::cout << "# running " << __FILE__ " @"  __DATE__ << " on " << bmc_hostname << " pid " << (int)getpid()
+                << " parentpid " << (int)getppid() << std::endl;
+    }
   usleep(1024*16);
   if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO) && !bmc_batch_flag)
     bmc_ask_missing_configuration(argv[0]);
@@ -669,7 +729,7 @@ main (int argc, char**argv)
       /// should be last, since depends upon git directory parsing above
       bmc_print_config_make(argv[0]);
       if (bmc_constdepend_flag)
-	bmc_print_const_dependencies(argv[0]);
+        bmc_print_const_dependencies(argv[0]);
     }
   if (isatty(STDIN_FILENO) && !bmc_batch_flag && !bmc_silent_flag)
     {
