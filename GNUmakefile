@@ -84,6 +84,17 @@ ifeq ($(strip $(wildcard _bismon-config.mk)),_bismon-config.mk)
 -include _bismon-config.mk
 endif
 
+ifdef BISMONMK_TARGET_GCC
+BISMON_CONFIG_OPTIONS+= --target-gcc=$(BISMONMK_TARGET_GCC)
+endif
+
+ifdef BISMONMK_TARGET_GCC
+BISMON_CONFIG_OPTIONS+= --target-gxx=$(BISMONMK_TARGET_GXX)
+endif
+
+ifdef BISMONMK_OUT_DIRECTORY
+BISMON_CONFIG_OPTIONS+= --output-directory=$(BISMONMK_OUT_DIRECTORY)
+endif
 
 ### the configurator program
 BISMON-config: BISMON-config.cc __timestamp.o
