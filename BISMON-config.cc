@@ -88,14 +88,14 @@ enum bmc_longopt_en
 static const struct option
   bmc_long_options[] =
 {
-  {"version",     	 no_argument,        0, 'V'},
-  {"help",        	 no_argument,        0, 'h'},
-  {"debug",       	 no_argument,        0, 'D'},
-  {"dry-run",    	 no_argument,  0,       BMCOPT_dry_run},
-  {"batch",    	         no_argument,  0,       BMCOPT_batch},
-  {"target-gcc",  	 required_argument,  0,       BMCOPT_target_gcc},
-  {"target-g++",  	 required_argument,  0,       BMCOPT_target_gxx},
-  {"output-directory",   required_argument,  0,       BMCOPT_output_directory},
+  {"version",     	 no_argument,        0,    'V'},
+  {"help",        	 no_argument,        0,    'h'},
+  {"debug",       	 no_argument,        0,    'D'},
+  {"dry-run",    	 no_argument,        0,    BMCOPT_dry_run},
+  {"batch",    	         no_argument,        0,    BMCOPT_batch},
+  {"target-gcc",  	 required_argument,  0,    BMCOPT_target_gcc},
+  {"target-g++",  	 required_argument,  0,    BMCOPT_target_gxx},
+  {"output-directory",   required_argument,  0,    BMCOPT_output_directory},
   {0,0,0,0}
 };
 
