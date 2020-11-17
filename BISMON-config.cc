@@ -57,6 +57,7 @@ std::string bmc_target_gcc;
 std::string bmc_target_gxx;
 std::string bmc_out_directory;
 std::vector<std::string> bmc_source_files;
+std::vector<std::string> bmc_constdep_files;
 // from generated _timestamp.c
 extern "C" const char bismon_timestamp[];
 extern "C" const unsigned long bismon_timelong;
@@ -71,6 +72,7 @@ extern "C" const char bismon_shortgitid[];
 bool bmc_batch_flag;
 bool bmc_debug_flag;
 bool bmc_dryrun_flag;
+bool bmc_constdepend_flag;
 
 enum bmc_longopt_en
 {
@@ -78,6 +80,7 @@ enum bmc_longopt_en
   BMCOPT_batch,
   BMCOPT_target_gcc,
   BMCOPT_target_gxx,
+  BMCOPT_const_depend,
   BMCOPT_dry_run,
   BMCOPT_output_directory,
 };
@@ -93,6 +96,7 @@ static const struct option
   {"debug",       	 no_argument,        0,    'D'},
   {"dry-run",    	 no_argument,        0,    BMCOPT_dry_run},
   {"batch",    	         no_argument,        0,    BMCOPT_batch},
+  {"const-depend",    	 no_argument,        0,    BMCOPT_const_depend},
   {"target-gcc",  	 required_argument,  0,    BMCOPT_target_gcc},
   {"target-g++",  	 required_argument,  0,    BMCOPT_target_gxx},
   {"output-directory",   required_argument,  0,    BMCOPT_output_directory},
@@ -123,6 +127,7 @@ void bmc_show_version(const char*progname);
 void
 bmc_parse_options(int& argc, char**argv)
 {
+  int constdepix= -1;
   for (;;)
     {
       int optix= -1;
@@ -145,6 +150,10 @@ bmc_parse_options(int& argc, char**argv)
         case BMCOPT_batch:            // --batch
           bmc_batch_flag = true;
           break;
+        case BMCOPT_const_depend:     // --const-depend
+          constdepix= optix;
+          bmc_constdepend_flag = true;
+          break;
         case BMCOPT_dry_run:          // --dry-run
           bmc_dryrun_flag = true;
           BMC_DEBUG("dry run - won't fork compilation commands");
@@ -163,6 +172,15 @@ bmc_parse_options(int& argc, char**argv)
           break;
         }
     }
+  BMC_DEBUG("constdepix=" << constdepix);
+  if (constdepix>0 && constdepix<argc)
+    {
+      for (int kix=constdepix; kix<argc; kix++)
+        {
+          BMC_DEBUG("constdep kix=" << kix << ": " << argv[kix]);
+          bmc_constdep_files.push_back(std::string{argv[kix]});
+        }
+    }
 } // end of bmc_parse_options
 
 void
@@ -174,6 +192,7 @@ bmc_show_usage(const char*progname)
   std::cerr << " --debug | -D           # debug this configurator program " << progname << std::endl;
   std::cerr << " --batch                # dont ask for missing arguments even in terminal" << std::endl;
   std::cerr << " --dry-run              # wont fork target compilation commands" << std::endl;
+  std::cerr << " --const-depend *_BM.c  # output the dependencies on #include-s *.const.h files" << std::endl;
   std::cerr << " --target-gcc=PATH      # set to PATH the target GCC compiler executable for C code" << std::endl;
   std::cerr << " --target-gxx=PATH      # set to PATH the target GCC compiler for C++ code" << std::endl;
   std::cerr << " --output-directory=DIR # set the output directory to DIR - default is " << bismon_directory << std::endl;
@@ -612,7 +631,7 @@ main (int argc, char**argv)
   if (argc>1 && (!strcmp(argv[1], "-D") || !strcmp(argv[1], "--debug")))
     bmc_debug_flag = true;
   bmc_parse_options(argc, argv);
-  if (isatty(STDIN_FILENO))
+  if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
     bmc_ask_missing_configuration(argv[0]);
   if (bmc_out_directory.empty())
     bmc_out_directory = bismon_directory;
