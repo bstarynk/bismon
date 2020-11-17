@@ -74,6 +74,7 @@ bool bmc_debug_flag;
 bool bmc_dryrun_flag;
 bool bmc_constdepend_flag;
 
+char bmc_hostname[64];
 enum bmc_longopt_en
 {
   BMCOPT__longoptstart=1024,
@@ -631,6 +632,10 @@ main (int argc, char**argv)
   if (argc>1 && (!strcmp(argv[1], "-D") || !strcmp(argv[1], "--debug")))
     bmc_debug_flag = true;
   bmc_parse_options(argc, argv);
+  gethostname(bmc_hostname, sizeof(bmc_hostname)-1);
+  std::cout << "# running " << __FILE__ " @"  __DATE__ << " on " << bmc_hostname << " pid " << (int)getpid()
+	    << " parentpid " << (int)getppid() << std::endl;
+  usleep(1024*16);
   if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
     bmc_ask_missing_configuration(argv[0]);
   if (bmc_out_directory.empty())
