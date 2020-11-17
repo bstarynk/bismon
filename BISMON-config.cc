@@ -101,7 +101,7 @@ static const struct option
   {"batch",    	         no_argument,        0,    BMCOPT_batch},
   {"const-depend",    	 no_argument,        0,    BMCOPT_const_depend},
   {"target-gcc",  	 required_argument,  0,    BMCOPT_target_gcc},
-  {"target-g++",  	 required_argument,  0,    BMCOPT_target_gxx},
+  {"target-gxx",  	 required_argument,  0,    BMCOPT_target_gxx},
   {"output-directory",   required_argument,  0,    BMCOPT_output_directory},
   {0,0,0,0}
 };
@@ -682,7 +682,7 @@ bmc_print_const_dependencies(const char*progname)
       BMC_DEBUG("bmc_print_const_dependencies [" << i << "]:" << cdstr);
       bmc_scan_for_const_dependencies(progname, cdstr, i);
     }
-#warning bmc_print_const_dependencies is incomplete
+  BMC_DEBUG("bmc_print_const_dependencies end progname=" << progname << std::endl);
 } // end bmc_print_const_dependencies
 
 int
