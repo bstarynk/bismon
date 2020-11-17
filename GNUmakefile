@@ -89,7 +89,7 @@ endif
 ### the configurator program
 BISMON-config: BISMON-config.cc __timestamp.o
 	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
-	@mv -v $@ $@~
+	@bash -c "if [ -f $@ ] ; then mv -v $@ $@~ ; fi"
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"' -Wall -Wextra -O -g $^ -lreadline  -o $@
 
 
@@ -113,6 +113,7 @@ count:
 
 clean:
 	$(RM) *.o BISMON-config BM_makeconst bismon _bm_config.h _bm_config.c  modubin/*.so modubin/*.o *~ *% *.cc.orig
+	$(RM) _*.mkd _*conf*.mk
 
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX)  -std=gnu++14 -g -Wall -Wextra   BM_makeconst-g.o id_BM-g.o $(shell pkg-config --libs glib-2.0) -o $@
@@ -128,13 +129,13 @@ id_BM.o: id_BM.c id_BM.h
 id_BM-g.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -g -Wall -Wextra -c $< -o $@
 
-%_BM.o: %_BM.c bismon.h
+%_BM.o: %_BM.c bismon.h | BISMON-config BM_makeconst
 	@echo building $@ from $^
 	@echo should $(MAKE) bismon.h $(shell $(GAWK) '/^#include *"\([a-zA-Z_.]*\\)"/' '{print $$2}')
 	$(MAKE) bismon.h $(shell $(GAWK) '/^#include *\"\([a-zA-Z_.]*\\)\"/' '{print $$2}')
 	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
 
-%_BM-g.o: %_BM.c bismon.h
+%_BM-g.o: %_BM.c bismon.h | BISMON-config BM_makeconst
 	$(MAKE) bismon.h $(shell $(GAWK) '/^#include *\"\([a-zA-Z_.]*\\)\"/' '{print $$2}')
 	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
 
