@@ -48,6 +48,7 @@
 #include <set>
 #include <fstream>
 #include <string>
+#include <cassert>
 #include <iostream>
 
 extern "C" bool bmc_debug_flag;
@@ -591,6 +592,7 @@ void
 bmc_ask_missing_configuration(const char*progname)
 {
   BMC_DEBUG("bmc_ask_missing_configuration start progname=" << progname);
+  assert (!bmc_batch_flag);
   using_history();
   /// ask about target GCC compilers for C and for C++
   while (bmc_target_gcc.empty())

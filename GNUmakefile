@@ -140,13 +140,14 @@ id_BM-g.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -g -Wall -Wextra -c $< -o $@
 
 %_BM.o: %_BM.c bismon.h | BISMON-config BM_makeconst
-	@echo building $@ from $^
-	@echo should $(MAKE) bismon.h $(shell ./BISMON-config --const-depend $^)
-	$(MAKE) bismon.h  $(shell ./BISMON-config --skip=for_constdep --const-depend $^)
+	@echo building $@ from prerequisites $^ with BISMON_CONFIG_OPTIONS= $(BISMON_CONFIG_OPTIONS)
+	@echo should $(MAKE) bismon.h $(shell ./BISMON-config --skip=for_bismon_object --batch $(BISMON_CONFIG_OPTIONS) --const-depend $<)
+	$(MAKE) bismon.h  $(shell ./BISMON-config --skip=for_bismon_object_sh $(BISMON_CONFIG_OPTIONS) --const-depend $<)
 	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
 
 %_BM-g.o: %_BM.c bismon.h | BISMON-config BM_makeconst
-	$(MAKE) bismon.h $(shell ./BISMON-config --skip=for_constdep_dbg ---const-depend $^)
+	@echo building $@ fromprerequisites  $^ with BISMON_CONFIG_OPTIONS= $(BISMON_CONFIG_OPTIONS)
+	$(MAKE) bismon.h $(shell ./BISMON-config --skip=for_bismon_object_shdbg  --batch $(BISMON_CONFIG_OPTIONS) ---const-depend $<)
 	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
 
 __timestamp.c:  timestamp-emit.sh |  GNUmakefile
