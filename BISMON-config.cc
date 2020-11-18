@@ -75,6 +75,7 @@ bool bmc_debug_flag;
 bool bmc_dryrun_flag;
 bool bmc_constdepend_flag;
 bool bmc_silent_flag;
+bool bmc_force_flag;
 
 char bmc_hostname[64];
 enum bmc_longopt_en
@@ -99,6 +100,7 @@ static const struct option
   {"help",        	 no_argument,        0,    'h'},
   {"debug",       	 no_argument,        0,    'D'},
   {"silent",       	 no_argument,        0,    'S'},
+  {"force",       	 no_argument,        0,    'f'},
   {"dry-run",    	 no_argument,        0,    BMCOPT_dry_run},
   {"batch",    	         no_argument,        0,    BMCOPT_batch},
   {"const-depend",    	 no_argument,        0,    BMCOPT_const_depend},
@@ -170,6 +172,9 @@ bmc_parse_options(int& argc, char**argv)
         case 'D':                     // --debug
           bmc_debug_flag = true;
           break;
+        case 'f':		      // --force
+          bmc_force_flag = true;
+          break;
         case BMCOPT_batch:            // --batch
           bmc_batch_flag = true;
           break;
@@ -216,6 +221,7 @@ bmc_show_usage(const char*progname)
   std::cerr << " --version | -V         # give version information" << std::endl;
   std::cerr << " --help | -h            # give this help message" << std::endl;
   std::cerr << " --debug | -D           # debug this configurator program " << progname << std::endl;
+  std::cerr << " --force | -f           # force overwriting of existing generated files." << std::endl;
   std::cerr << " --batch                # dont ask for missing arguments even in terminal" << std::endl;
   std::cerr << " --dry-run              # wont fork target compilation commands" << std::endl;
   std::cerr << " --const-depend *_BM.c  # output the dependencies on #include-s *.const.h files" << std::endl;
@@ -358,8 +364,16 @@ bmc_print_config_header(const char*progname)
   BMC_DEBUG("bmc_print_config_header: headerpath=" << headerpath);
   if (!access(headerpath.c_str(), F_OK))
     {
-      std::string backup = headerpath + "~";
-      rename (headerpath.c_str(), backup.c_str());
+      if (bmc_force_flag)
+        {
+          std::string backup = headerpath + "~";
+          rename (headerpath.c_str(), backup.c_str());
+        }
+      else
+        {
+          std::cerr << progname << " has already generated " << headerpath << " (use --force option to overwrite)" << std::endl;
+          return;
+        }
     }
   std::ofstream headoutf (headerpath);
   if (!headoutf.good())
@@ -405,8 +419,16 @@ bmc_print_config_data(const char*progname)
   BMC_DEBUG("bmc_print_config_data: datapath=" << datapath);
   if (!access(datapath.c_str(), F_OK))
     {
-      std::string backup = datapath + "~";
-      rename (datapath.c_str(), backup.c_str());
+      if (bmc_force_flag)
+        {
+          std::string backup = datapath + "~";
+          rename (datapath.c_str(), backup.c_str());
+        }
+      else
+        {
+          std::cerr << progname << " has already generated " << datapath << " (use --force option to overwrite)" << std::endl;
+          return;
+        }
     }
   std::ofstream dataoutf (datapath);
   if (!dataoutf.good())
@@ -515,6 +537,8 @@ bmc_print_config_data(const char*progname)
     std::cout << "# generated Bismon configuration data file " << datapath << std::endl;
 } // end bmc_print_config_data
 
+
+
 void
 bmc_print_config_make(const char*progname)
 {
@@ -522,8 +546,16 @@ bmc_print_config_make(const char*progname)
   BMC_DEBUG("bmc_print_config_make: makepath=" << makepath);
   if (!access(makepath.c_str(), F_OK))
     {
-      std::string backup = makepath + "~";
-      rename (makepath.c_str(), backup.c_str());
+      if (bmc_force_flag)
+        {
+          std::string backup = makepath + "~";
+          rename (makepath.c_str(), backup.c_str());
+        }
+      else
+        {
+          std::cerr << progname << " has already generated " << makepath << " (use --force option to overwrite)" << std::endl;
+          return;
+        }
     }
   std::ofstream makeoutf (makepath);
   if (!makeoutf.good())
@@ -645,15 +677,16 @@ bmc_ask_missing_configuration(const char*progname)
       std::cout << "This configurator " << progname << " will write some textual files -a header file and a Makefile fragment- in it." << std::endl;
       std::cout << "(it is recommended to enter some absolute path, such as /usr/src/Bismon or /home/foo/bismon ....)" << std::endl;
       const char*outdir = bmc_readline(progname, "BISMON output sourcedir? ");
-      if (outdir[0]) {
-	DIR* outdirhdl = opendir(outdir);
-	if (outdirhdl)
-	  closedir(outdirhdl);
-	else
-	  std::cerr << progname << ": WARNING: cannot opendir " << outdir
-		    << " : " << strerror(errno) << std::endl;
-        bmc_out_directory.assign(outdir);
-      }
+      if (outdir[0])
+        {
+          DIR* outdirhdl = opendir(outdir);
+          if (outdirhdl)
+            closedir(outdirhdl);
+          else
+            std::cerr << progname << ": WARNING: cannot opendir " << outdir
+                      << " : " << strerror(errno) << std::endl;
+          bmc_out_directory.assign(outdir);
+        }
       else
         bmc_out_directory.assign(cwdbuf);
       free ((void*)outdir), outdir = nullptr;
@@ -761,19 +794,24 @@ main (int argc, char**argv)
                 << " parentpid " << (int)getppid() << std::endl;
     }
   usleep(1024*16);
-  if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO) && !bmc_batch_flag)
+  if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO)
+      && !bmc_batch_flag && !bmc_constdepend_flag)
     bmc_ask_missing_configuration(argv[0]);
   if (bmc_out_directory.empty())
     bmc_out_directory = bismon_directory;
-  bmc_check_output_directory(argv[0]);
-  bmc_check_target_compiler(argv[0], false); // for C
-  bmc_check_target_compiler(argv[0], true);  // for C++
-  if (!bmc_silent_flag) {
-    std::cout << "#|";
-    for (int ix=0; ix < argc; ix++)
-      std::cout << ' ' << argv[ix];
-    std::cout << std::endl;
-  }
+  if (!bmc_constdepend_flag)
+    {
+      bmc_check_output_directory(argv[0]);
+      bmc_check_target_compiler(argv[0], false); // for C
+      bmc_check_target_compiler(argv[0], true);  // for C++
+    };
+  if (!bmc_silent_flag)
+    {
+      std::cout << "#|";
+      for (int ix=0; ix < argc; ix++)
+        std::cout << ' ' << argv[ix];
+      std::cout << std::endl;
+    }
   if (!bmc_dryrun_flag)
     {
       bmc_print_config_header(argv[0]);
