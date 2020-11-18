@@ -109,6 +109,7 @@ _bismon-config.mk _bm_config.h _bm_config.c: BISMON-config.cc
 	if [ ! -x ./BISMON-config ]; then bash -x -c '$(MAKE)  ./BISMON-config' ; fi
 	sleep 0.1
 	$(MAKE) runconfig
+	sleep 0.02
 else
 _bismon-config.mk _bm_config.h _bm_config.c:
 	sleep 0.3
