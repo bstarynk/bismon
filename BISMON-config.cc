@@ -57,6 +57,7 @@ extern "C" bool bmc_dryrun_flag;
 std::string bmc_target_gcc;
 std::string bmc_target_gxx;
 std::string bmc_out_directory;
+std::string bmc_ninja_file;
 std::vector<std::string> bmc_source_files;
 std::vector<std::string> bmc_constdep_files;
 // from generated _timestamp.c
@@ -82,6 +83,7 @@ enum bmc_longopt_en
 {
   BMCOPT__longoptstart=1024,
   BMCOPT_batch,
+  BMCOPT_ninja,
   BMCOPT_target_gcc,
   BMCOPT_target_gxx,
   BMCOPT_const_depend,
@@ -104,6 +106,7 @@ static const struct option
   {"dry-run",    	 no_argument,        0,    BMCOPT_dry_run},
   {"batch",    	         no_argument,        0,    BMCOPT_batch},
   {"const-depend",    	 no_argument,        0,    BMCOPT_const_depend},
+  {"ninja",              required_argument,  0,    BMCOPT_ninja},
   {"target-gcc",  	 required_argument,  0,    BMCOPT_target_gcc},
   {"target-gxx",  	 required_argument,  0,    BMCOPT_target_gxx},
   {"skip",  	         required_argument,  0,    BMCOPT_skip},
@@ -186,6 +189,10 @@ bmc_parse_options(int& argc, char**argv)
           bmc_dryrun_flag = true;
           BMC_DEBUG("dry run - won't fork compilation commands");
           break;
+        case BMCOPT_ninja:       // --ninja=PATH
+          bmc_ninja_file = optarg;
+          BMC_DEBUG("ninja file:" << bmc_ninja_file);
+          break;
         case BMCOPT_target_gcc:       // --target-gcc=PATH
           bmc_target_gcc = optarg;
           BMC_DEBUG("target GCC:" << bmc_target_gcc);
@@ -228,6 +235,7 @@ bmc_show_usage(const char*progname)
   std::cerr << " --skip=IGNORED         # ignored argument, would appear on failure message" << std::endl;
   std::cerr << " --target-gcc=PATH      # set to PATH the target GCC compiler executable for C code" << std::endl;
   std::cerr << " --target-gxx=PATH      # set to PATH the target GCC compiler for C++ code" << std::endl;
+  std::cerr << " --ninja=PATH           # generate a PATH for ninja builder - see ninja-build.org # usually --ninja=build.ninja" << std::endl;
   std::cerr << " --output-directory=DIR # set the output directory to DIR - default is " << bismon_directory << std::endl;
   std::cerr << "## See github.com/bstarynk/bismon/ for more about Bismon." << std::endl;
 } // end bmc_show_usage
@@ -602,6 +610,16 @@ bmc_print_config_make(const char*progname)
     std::cout << "# generated Bismon configuration GNU make file " << makepath << std::endl;
 } // end bmc_print_config_make
 
+
+void
+bmc_print_config_ninja(const char*progname)
+{
+  std::string ninjapath = bmc_out_directory + "/" + bmc_ninja_file;
+  BMC_DEBUG("bmc_print_config_make ninjapath=" << ninjapath);
+  std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
+  BMC_FAILURE ("unimplemented bmc_print_config_ninja");
+#warning unimplemented bmc_print_config_ninja
+} // end bmc_print_config_ninja
 
 const char*
 bmc_readline(const char*progname, const char*prompt)
