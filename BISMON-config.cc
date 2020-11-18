@@ -616,6 +616,31 @@ bmc_print_config_ninja(const char*progname)
 {
   std::string ninjapath = bmc_out_directory + "/" + bmc_ninja_file;
   BMC_DEBUG("bmc_print_config_make ninjapath=" << ninjapath);
+  if (!access(ninjapath.c_str(), F_OK))
+    {
+      if (bmc_force_flag)
+        {
+          std::string backup = ninjapath + "~";
+          rename (ninjapath.c_str(), backup.c_str());
+        }
+      else
+        {
+          std::cerr << progname << " has already generated " << ninjapath << " (use --force option to overwrite)" << std::endl;
+          return;
+        }
+    }
+  std::ofstream ninjaoutf (ninjapath);
+  if (!ninjaoutf.good())
+    {
+      std::cerr << progname << " failed to open generated file " << ninjapath << " for GNU make : " << strerror(errno) << std::endl;
+      BMC_FAILURE ("failed to output make configuration file");
+    }
+  ninjaoutf << "# GENERATED file for ninja-build.org - " << ninjapath << std::endl;
+  ninjaoutf << "# for Bismon, see https://github.com/bstarynk/bismon -*- ninja -*-" << std::endl;
+  ninjaoutf << "ninja_required_version= 1.10" << std::endl;
+  ninjaoutf << std::endl
+	    << "njbm_target_gcc= " << bmc_target_gcc << std::endl
+	    << "njbm_target_gxx= " << bmc_target_gxx << std::endl;
   std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
   BMC_FAILURE ("unimplemented bmc_print_config_ninja");
 #warning unimplemented bmc_print_config_ninja
