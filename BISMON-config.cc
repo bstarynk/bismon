@@ -602,6 +602,10 @@ bmc_ask_missing_configuration(const char*progname)
       const char*gcctarget = bmc_readline(progname, "BISMON target GCC? ");
       if (gcctarget)
         {
+          if (access(gcctarget, R_OK))
+            std::cerr << progname << ": WARNING: target GCC " << gcctarget
+                      << " is not accessible: " << strerror(errno) << std::endl;
+          std::cerr << "... but it could be a command." << std::endl;
           bmc_target_gcc.assign(gcctarget);
           add_history(gcctarget);
           free ((void*)gcctarget), gcctarget = nullptr;
@@ -615,6 +619,10 @@ bmc_ask_missing_configuration(const char*progname)
       const char*gxxtarget = bmc_readline(progname, "BISMON target GXX? ");
       if (gxxtarget)
         {
+          if (access(gxxtarget, R_OK))
+            std::cerr << progname << ": WARNING: target GXX " << gxxtarget
+                      << " is not accessible: " << strerror(errno) << std::endl;
+          std::cerr << "... but it could be a command." << std::endl;
           bmc_target_gxx.assign(gxxtarget);
           add_history(gxxtarget);
           free ((void*)gxxtarget), gxxtarget = nullptr;
