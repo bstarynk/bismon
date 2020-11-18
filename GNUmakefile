@@ -118,6 +118,7 @@ endif
 
 runconfig: BISMON-config
 	./BISMON-config --skip=for_runconfig $(BISMON_CONFIG_OPTIONS)
+	$(MAKE) _bismon-constdep.mk
 
 count:
 	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n
@@ -166,3 +167,12 @@ bismon:  _bismon-config.mk _bm_config.h
 	$(MAKE) $(BISMONMK_OBJECTS)
 
 -include $(wildcard _*.mkd)
+
+ifeq ($(strip $(wildcard _bismon-constdep.mk)),_bismon-constdep.mk)
+-include _bismon-constdep.mk
+endif
+
+
+_bismon-constdep.mk: BISMON-config $(BM_CSOURCES)
+	@if [ -f $@ ]; then mv -v $@ $@~ ; fi
+	./BISMON-config --skip=for_constdep $(BISMON_CONFIG_OPTIONS) --const-depend  $(BM_CSOURCES) > _bismon-constdep.mk
