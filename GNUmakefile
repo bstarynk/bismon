@@ -138,6 +138,7 @@ count:
 clean:
 	$(RM) *.o BISMON-config BM_makeconst bismon _bm_config.h _bm_config.c  modubin/*.so modubin/*.o *~ *% *.cc.orig
 	$(RM) _*.mkd _*conf*.mk
+	$(RM) *_BM.const.h
 
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX)  -std=gnu++14 -g -Wall -Wextra   BM_makeconst-g.o id_BM-g.o $(shell pkg-config --libs glib-2.0) -o $@
@@ -147,6 +148,10 @@ BM_makeconst: BM_makeconst.cc id_BM.o | id_BM.h
 
 BM_makeconst-g.o: BM_makeconst.cc id_BM.h
 	$(COMPILE.cc) -std=gnu++14   $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+
+ifeq ($(strip $(wildcard _bismon-constdep.mk)),_bismon-constdep.mk)
+-include _bismon-constdep.mk
+endif
 
 id_BM.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -O -g -Wall -Wextra -c $< -o $@
@@ -179,7 +184,7 @@ executable: _bismon-config.mk
 _bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
 	./BM_makeconst -C $@ $(BM_CSOURCES)
 
-bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c
+bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c _bismon-constdep.mk
 	$(MAKE) $(BISMONMK_OBJECTS) _bismon-constants.o __timestamp.o
 	$(LINK.cc)  $(BISMONMK_OBJECTS) _bismon-constants.o __timestamp.o \
 	    $(shell pkg-config --libs $(BM_PACKAGES)) -o $@
@@ -187,10 +192,6 @@ bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c
 	mv __timestamp.c __timestamp.c~
 
 -include $(wildcard _*.mkd)
-
-ifeq ($(strip $(wildcard _bismon-constdep.mk)),_bismon-constdep.mk)
--include _bismon-constdep.mk
-endif
 
 
 _bismon-constdep.mk: BISMON-config $(BM_CSOURCES)
