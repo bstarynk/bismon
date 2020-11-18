@@ -393,7 +393,7 @@ bmc_print_config_header(const char*progname)
   headoutf << "#endif /*BISMON_CONFIG*/" << std::endl;
   headoutf << "// end of Bismon generated configuration header file " << headerpath << std::endl;
   BMC_DEBUG("bmc_print_config_header ending headerpath=" << headerpath);
-  if (!bmc_batch_flag)
+  if (!bmc_batch_flag && !bmc_silent_flag)
     std::cout << "# generated Bismon configuration header file " << headerpath << std::endl;
 } // end bmc_print_config_header
 
@@ -511,7 +511,7 @@ bmc_print_config_data(const char*progname)
   dataoutf << "  (const char*)0 }; // end bismonconf_git_sources" << std::endl;
   //
   dataoutf << std::endl << "/// end of Bismon generated data " << datapath << std::endl;
-  if (!bmc_batch_flag)
+  if (!bmc_batch_flag && !bmc_silent_flag)
     std::cout << "# generated Bismon configuration data file " << datapath << std::endl;
 } // end bmc_print_config_data
 
@@ -566,7 +566,7 @@ bmc_print_config_make(const char*progname)
   makeoutf << "BISMONMK_CONFIGPATH=" << makepath << std::endl;
   makeoutf << "### end of Bismon generated file for GNU make " << makepath << " (by " << __FILE__ << ")" << std::endl;
   BMC_DEBUG("bmc_print_config_make ending makepath=" << makepath);
-  if (!bmc_batch_flag)
+  if (!bmc_batch_flag && !bmc_silent_flag)
     std::cout << "# generated Bismon configuration GNU make file " << makepath << std::endl;
 } // end bmc_print_config_make
 
@@ -645,8 +645,15 @@ bmc_ask_missing_configuration(const char*progname)
       std::cout << "This configurator " << progname << " will write some textual files -a header file and a Makefile fragment- in it." << std::endl;
       std::cout << "(it is recommended to enter some absolute path, such as /usr/src/Bismon or /home/foo/bismon ....)" << std::endl;
       const char*outdir = bmc_readline(progname, "BISMON output sourcedir? ");
-      if (outdir[0])
+      if (outdir[0]) {
+	DIR* outdirhdl = opendir(outdir);
+	if (outdirhdl)
+	  closedir(outdirhdl);
+	else
+	  std::cerr << progname << ": WARNING: cannot opendir " << outdir
+		    << " : " << strerror(errno) << std::endl;
         bmc_out_directory.assign(outdir);
+      }
       else
         bmc_out_directory.assign(cwdbuf);
       free ((void*)outdir), outdir = nullptr;
@@ -708,6 +715,8 @@ bmc_print_const_dependencies(const char*progname)
 {
   BMC_DEBUG("bmc_print_const_dependencies start progname=" << progname << " ESHELL=" << (getenv("ESHELL")?:"**none**")
             << " " << bmc_constdep_files.size() << " files");
+  if (!bmc_batch_flag || !bmc_silent_flag)
+    std::cout << "# constant dependencies for GNU make by " << progname << std::endl;
   int i=0;
   for (auto cdstr : bmc_constdep_files)
     {
@@ -715,6 +724,8 @@ bmc_print_const_dependencies(const char*progname)
       BMC_DEBUG("bmc_print_const_dependencies [" << i << "]:" << cdstr);
       bmc_scan_for_const_dependencies(progname, cdstr, i);
     }
+  if (!bmc_batch_flag || !bmc_silent_flag)
+    std::cout << "# emitted " << i << " constant dependencies for GNU make." << std::endl;
   BMC_DEBUG("bmc_print_const_dependencies end progname=" << progname << std::endl);
 } // end bmc_print_const_dependencies
 
@@ -757,6 +768,12 @@ main (int argc, char**argv)
   bmc_check_output_directory(argv[0]);
   bmc_check_target_compiler(argv[0], false); // for C
   bmc_check_target_compiler(argv[0], true);  // for C++
+  if (!bmc_silent_flag) {
+    std::cout << "#|";
+    for (int ix=0; ix < argc; ix++)
+      std::cout << ' ' << argv[ix];
+    std::cout << std::endl;
+  }
   if (!bmc_dryrun_flag)
     {
       bmc_print_config_header(argv[0]);
