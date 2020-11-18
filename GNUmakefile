@@ -36,6 +36,12 @@ INDENTFLAGS= --gnu-style --no-tabs --honour-newlines
 ASTYLEFLAGS= --style=gnu -s2
 RM= rm -fv
 BM_CXX_STANDARD_FLAGS= -std=gnu++17
+BM_WARNING_FLAGS= -Wall -Wextra
+BM_C_STANDARD_FLAGS= -std=gnu11
+BM_OPTIM_FLAGS= -O1
+BM_DEBUG_FLAGS= -g
+
+
 
 ## CONVENTION: handwritten markdown files are...
 MARKDOWN_SOURCES= $(sort $(wildcard *.md))
@@ -63,11 +69,17 @@ BM_PACKAGES=  glib-2.0 gtk+-3.0 gtkmm-2.0
 BISMON_CONFIG_OPTIONS=
 
 ### object files:
-BM_OBJECTS= $(patsubst %.c,%.o,$(BM_CSOURCES))  $(patsubst %.c,%.o,$(BM_CXXSOURCES))
+BM_OBJECTS= $(patsubst %.c,%.o,$(BM_CSOURCES))  $(patsubst %.cc,%.o,$(BM_CXXSOURCES))
 
 ## internal make variables...
 BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
 BISMON_SHGIT2:= $(shell if git status | grep 'nothing to commit' > /dev/null; then echo ; else echo +; fi)
+
+CFLAGS += $(BM_C_STANDARD_FLAGS) $(pkg-config --cflags $(BM_PACKAGES)) \
+          $(BM_WARNING_FLAGS) $(BM_OPTIM_FLAGS) $(BM_DEBUG_FLAGS)
+
+CXXFLAGS += $(BM_CXX_STANDARD_FLAGS) $(pkg-config --cflags $(BM_PACKAGES)) \
+          $(BM_WARNING_FLAGS) $(BM_OPTIM_FLAGS) $(BM_DEBUG_FLAGS)
 
 ## The short git id, such as 34ae25e8127fc354 (for a clean source)
 ## or 3ae25e8127fc354d+ (for some edited source tree)
@@ -156,15 +168,23 @@ __timestamp.c:  timestamp-emit.sh |  GNUmakefile
 	env BISMON_MAKE="$(MAKE)" ./timestamp-emit.sh $(BM_CSOURCES) $(BM_CXXSOURCES)
 
 %_BM.const.h: %_BM.c | BM_makeconst
-	./BM_makeconst
+	./BM_makeconst -H $@ $^
 
 all: config executable
 
 executable: _bismon-config.mk
 	$(MAKE) $(BISMONMK_EXECUTABLE)
 
-bismon:  _bismon-config.mk _bm_config.h
-	$(MAKE) $(BISMONMK_OBJECTS)
+
+_bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
+	./BM_makeconst -C $@ $(BM_CSOURCES)
+
+bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c
+	$(MAKE) $(BISMONMK_OBJECTS) _bismon-constants.o __timestamp.o
+	$(LINK.cc)  $(BISMONMK_OBJECTS) _bismon-constants.o __timestamp.o \
+	    $(shell pkg-config --libs $(BM_PACKAGES)) -o $@
+	$(RM) __timestamp.o
+	mv __timestamp.c __timestamp.c~
 
 -include $(wildcard _*.mkd)
 
