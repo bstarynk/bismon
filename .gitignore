@@ -26,6 +26,7 @@ _*ONIONBM.[ch]
 _bismon-config.mk
 _bismon-constdep.mk
 _bm_config.h
+_bismon-constants.c
 
 _BM_compmod_*
 
