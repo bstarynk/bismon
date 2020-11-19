@@ -646,7 +646,7 @@ bmc_print_config_ninja(const char*progname)
 	    << "njbm_pkgconfig_packages= ";
   if (bismon_packages)
     ninjaoutf << bismon_packages;
-  ninjaoutf << std::endl
+  ninjaoutf << std::endl;
   std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
   BMC_FAILURE ("unimplemented bmc_print_config_ninja");
 #warning unimplemented bmc_print_config_ninja
