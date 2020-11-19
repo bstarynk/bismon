@@ -36,4 +36,8 @@ if [ -n "$BISMON_MAKE" ] ; then
     (echo -n 'const char bismon_make[]="'; echo -n $BISMON_MAKE;  echo '";') >> __timestamp.tmp
 fi
 
+if [ -n "$BISMON_PACKAGES" ] ; then
+    (echo -n 'const char bismon_packages[]="'; echo -n $BISMON_PACKAGES;  echo '";') >> __timestamp.tmp
+fi
+
 mv __timestamp.tmp __timestamp.c
