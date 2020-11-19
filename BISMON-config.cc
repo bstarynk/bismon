@@ -70,6 +70,7 @@ extern "C" const char bismon_directory[];
 extern "C" const char bismon_makefile[];
 extern "C" const char bismon_gitid[];
 extern "C" const char bismon_shortgitid[];
+extern "C" const char bismon_packages[] __attribute__((weak));
 
 bool bmc_batch_flag;
 bool bmc_debug_flag;
@@ -641,6 +642,11 @@ bmc_print_config_ninja(const char*progname)
   ninjaoutf << std::endl
 	    << "njbm_target_gcc= " << bmc_target_gcc << std::endl
 	    << "njbm_target_gxx= " << bmc_target_gxx << std::endl;
+  ninjaoutf << std::endl
+	    << "njbm_pkgconfig_packages= ";
+  if (bismon_packages)
+    ninjaoutf << bismon_packages;
+  ninjaoutf << std::endl
   std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
   BMC_FAILURE ("unimplemented bmc_print_config_ninja");
 #warning unimplemented bmc_print_config_ninja
