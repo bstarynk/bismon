@@ -197,3 +197,8 @@ bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c _bismon-constdep.mk
 _bismon-constdep.mk: BISMON-config $(BM_CSOURCES)
 	@if [ -f $@ ]; then mv -v $@ $@~ ; fi
 	./BISMON-config --skip=for_constdep $(BISMON_CONFIG_OPTIONS) --const-depend  $(BM_CSOURCES) > _bismon-constdep.mk
+
+ifeq ($(MAKELEVEL),0)
+build.ninja: GNUmakefile BISMON-config   _bismon-config.mk _bm_config.h
+	./BISMON-config --skip=for_ninja  $(BISMON_CONFIG_OPTIONS) --ninja=$@
+endif
