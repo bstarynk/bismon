@@ -635,7 +635,16 @@ rule CXX_rlBM
                -MD -MF  _$out.mkd $$
               $in -o $out
 
+# compilation of generated modules/modbm_.c into a modubin/*.so shared object
+rule MODCC_rlBM
+  depfile = _$out.mkd
+  command = $NJBM_host_cxx -fPIC -shared $NJBM_host_warn_flags $$
+            $NJBM_host_optimflags $NJBM_host_debug_flags $NJBM_host_prepro_flags $$
+               -MD -MF  _$out.mkd $$
+              $in -o $out
+
 )NinjaRules";
+
 
 
 void
