@@ -856,10 +856,17 @@ main (int argc, char**argv)
     };
   if (!bmc_silent_flag)
     {
+      std::cout
+	<<  "#| Generated output by " __FILE__ " - DONT EDIT" << std::endl
+	<<  "#| See github.com/bstarynk/bismon for more.  Invocation was:"
+	<< std::endl;
       std::cout << "#|";
-      for (int ix=0; ix < argc; ix++)
+      for (int ix=0; ix < argc; ix++) {
+	if (ix+2 < argc && (ix+1) % 4 == 0)
+	  std::cout << std::endl << "#|...";
         std::cout << ' ' << argv[ix];
-      std::cout << std::endl;
+      }
+      std::cout << std::endl << std::endl;
     }
   if (!bmc_dryrun_flag)
     {
