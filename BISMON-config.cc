@@ -60,13 +60,14 @@ std::string bmc_out_directory;
 std::string bmc_ninja_file;
 std::vector<std::string> bmc_source_files;
 std::vector<std::string> bmc_constdep_files;
-// from generated _timestamp.c
+// from generated __timestamp.c - see timestamp-emit.sh script
 extern "C" const char bismon_timestamp[];
 extern "C" const unsigned long bismon_timelong;
 extern "C" const char bismon_lastgitcommit[];
 extern "C" const char bismon_lastgittag[];
 extern "C" const char bismon_checksum[];
 extern "C" const char bismon_directory[];
+extern "C" const char bismon_make[];
 extern "C" const char bismon_makefile[];
 extern "C" const char bismon_gitid[];
 extern "C" const char bismon_shortgitid[];
@@ -612,6 +613,31 @@ bmc_print_config_make(const char*progname)
 } // end bmc_print_config_make
 
 
+
+const char bmc_ninja_rules[] =
+R"NinjaRules(
+# our hardcoded rules for ninja - conventionally ended by _rlBM
+# see https://ninja-build.org/manual.html
+###########
+# compilation of _BM.c files
+rule CC_rlBM
+  depfile = _$out.mkd - handwritten C code
+  command = $NJBM_host_cc -c $NJBM_host_warn_flags $NJBM_host_cwarn_flags $$
+            $NJBM_host_optimflags $NJBM_host_debug_flags $NJBM_host_prepro_flags $$
+               -MD -MF _$out.mkd $$
+               $in -o $out
+
+# compilation of _BM.cc files - handwritten C++ code
+rule CXX_rlBM
+  depfile = _$out.mkd
+  command = $NJBM_host_cxx -c $NJBM_host_warn_flags $$
+            $NJBM_host_optimflags $NJBM_host_debug_flags $NJBM_host_prepro_flags $$
+               -MD -MF  _$out.mkd $$
+              $in -o $out
+
+)NinjaRules";
+
+
 void
 bmc_print_config_ninja(const char*progname)
 {
@@ -640,21 +666,29 @@ bmc_print_config_ninja(const char*progname)
   ninjaoutf << "# for Bismon, see https://github.com/bstarynk/bismon -*- ninja -*-" << std::endl;
   ninjaoutf << "ninja_required_version= 1.10" << std::endl;
   ninjaoutf << std::endl
-	    << "njbm_short_gitid= " << bismon_shortgitid << std::endl;
-  ninjaoutf << "njbm_directory= " << bismon_directory << std::endl;
-  ninjaoutf << "njbm_make= " << bismon_make << std::endl;
+	    << "NJBM_short_gitid= " << bismon_shortgitid << std::endl;
+  ninjaoutf << "NJBM_directory= " << bismon_directory << std::endl;
+  ninjaoutf << "NJBM_make= " << bismon_make << std::endl;
   ninjaoutf << std::endl
-            << "njbm_target_gcc= " << bmc_target_gcc << std::endl
-            << "njbm_target_gxx= " << bmc_target_gxx << std::endl;
+            << "NJBM_target_gcc= " << bmc_target_gcc << std::endl
+            << "NJBM_target_gxx= " << bmc_target_gxx << std::endl;
   ninjaoutf << std::endl
-            << "njbm_pkgconfig_packages= ";
+            << "NJBM_pkgconfig_packages= ";
   if (bismon_packages)
     ninjaoutf << bismon_packages;
   ninjaoutf << std::endl;
-  ninjaoutf << "njbm_host_cc= "
-	    << getenv("CC")?:"gcc" << std::endl;
-  ninjaoutf << "njbm_host_cxx= "
-	    << getenv("CXX")?:"g++" << std::endl;
+  ninjaoutf << "NJBM_host_cc= "
+	    << (getenv("CC")?:"gcc") << std::endl;
+  ninjaoutf << "NJBM_host_cxx= "
+	    << (getenv("CXX")?:"g++") << std::endl;
+ninjaoutf << "NJBM_host_optim_flags= -O" << std::endl;
+ninjaoutf << "NJBM_host_prepro_flags= -I/usr/local/include " << std::endl;
+ninjaoutf << "NJBM_host_debug_flags= -g" << std::endl;
+ninjaoutf << "NJBM_host_warn_flags= -Wall -Wextra" << std::endl;
+ninjaoutf << "NJBM_host_cwarn_flags= -Wmissing-prototypes" << std::endl;
+  ///////////////////////////////////////////
+  ///// output ninja rules
+  ninjaoutf << bmc_ninja_rules << std::endl;
   std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
   BMC_FAILURE ("unimplemented bmc_print_config_ninja");
 #warning unimplemented bmc_print_config_ninja
