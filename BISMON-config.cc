@@ -640,6 +640,10 @@ bmc_print_config_ninja(const char*progname)
   ninjaoutf << "# for Bismon, see https://github.com/bstarynk/bismon -*- ninja -*-" << std::endl;
   ninjaoutf << "ninja_required_version= 1.10" << std::endl;
   ninjaoutf << std::endl
+	    << "njbm_short_gitid= " << bismon_shortgitid << std::endl;
+  ninjaoutf << "njbm_directory= " << bismon_directory << std::endl;
+  ninjaoutf << "njbm_make= " << bismon_make << std::endl;
+  ninjaoutf << std::endl
             << "njbm_target_gcc= " << bmc_target_gcc << std::endl
             << "njbm_target_gxx= " << bmc_target_gxx << std::endl;
   ninjaoutf << std::endl
@@ -647,6 +651,10 @@ bmc_print_config_ninja(const char*progname)
   if (bismon_packages)
     ninjaoutf << bismon_packages;
   ninjaoutf << std::endl;
+  ninjaoutf << "njbm_host_cc= "
+	    << getenv("CC")?:"gcc" << std::endl;
+  ninjaoutf << "njbm_host_cxx= "
+	    << getenv("CXX")?:"g++" << std::endl;
   std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
   BMC_FAILURE ("unimplemented bmc_print_config_ninja");
 #warning unimplemented bmc_print_config_ninja
