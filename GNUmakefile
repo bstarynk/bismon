@@ -25,6 +25,10 @@
 ######
 # for GNU make only, see https://www.gnu.org/software/make
 
+
+## tell make to export all variables by default
+export
+
 GCC= gcc
 GXX= g++
 CC= $(GCC)
