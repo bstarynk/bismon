@@ -30,14 +30,32 @@ fi
 
 (echo -n 'const char bismon_directory[]="'; /bin/pwd | tr -d '\n\\"' ; echo '";') >> __timestamp.tmp
 
-(echo -n 'const char bismon_makefile[]="'; echo -n  $(realpath Makefile); echo '";') >> __timestamp.tmp
+(echo -n 'const char bismon_gnumakefile[]="'; echo -n  $(realpath GNUmakefile); echo '";') >> __timestamp.tmp
 
 if [ -n "$BISMON_MAKE" ] ; then
-    (echo -n 'const char bismon_make[]="'; echo -n $BISMON_MAKE;  echo '";') >> __timestamp.tmp
+    (echo -n 'const char* bismon_make ="'; echo -n $BISMON_MAKE;  echo '";') >> __timestamp.tmp
+else
+    echo 'const char* bismon_make;' >> __timestamp.tmp
 fi
 
 if [ -n "$BISMON_PACKAGES" ] ; then
-    (echo -n 'const char bismon_packages[]="'; echo -n $BISMON_PACKAGES;  echo '";') >> __timestamp.tmp
+    (echo -n 'const char* bismon_packages = "'; echo -n $BISMON_PACKAGES;  echo '";') >> __timestamp.tmp
+else
+    echo 'const char* bismon_packages;' >> __timestamp.tmp
 fi
+
+if [ -n "$BISMONMK_TARGET_GCC" ]; then
+    (echo -n 'const char* bismon_target_gcc = "'; echo -n $BISMONMK_TARGET_GCC;  echo '";') >> __timestamp.tmp
+else
+    echo 'const char* bismon_target_gcc;' >> __timestamp.tmp
+fi
+    
+
+if [ -n "$BISMONMK_TARGET_GXX" ]; then
+    (echo -n 'const char* bismon_target_gxx = "'; echo -n $BISMONMK_TARGET_GXX;  echo '";') >> __timestamp.tmp
+else
+    echo 'const char* bismon_target_gxx;' >> __timestamp.tmp
+fi
+    
 
 mv __timestamp.tmp __timestamp.c

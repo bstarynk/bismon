@@ -30,9 +30,13 @@ extern const char bismon_lastgitcommit[];
 extern const char bismon_lastgittag[];
 extern const char bismon_checksum[];
 extern const char bismon_directory[];
-extern const char bismon_makefile[];
+extern const char bismon_gnumakefile[];
 extern const char bismon_gitid[];
 extern const char bismon_shortgitid[];
+extern const char* bismon_make;
+extern const char* bismon_packages;
+extern const char* bismon_target_gcc;
+extern const char* bismon_target_gxx;
 
 // from generated _bm_allconsts.c
 extern const int bmnbconsts;

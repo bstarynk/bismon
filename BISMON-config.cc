@@ -67,11 +67,14 @@ extern "C" const char bismon_lastgitcommit[];
 extern "C" const char bismon_lastgittag[];
 extern "C" const char bismon_checksum[];
 extern "C" const char bismon_directory[];
-extern "C" const char bismon_make[];
-extern "C" const char bismon_makefile[];
+extern "C" const char bismon_gnumakefile[];
 extern "C" const char bismon_gitid[];
 extern "C" const char bismon_shortgitid[];
-extern "C" const char bismon_packages[] __attribute__((weak));
+extern "C" const char* bismon_make;
+extern "C" const char* bismon_packages;
+extern "C" const char* bismon_target_gcc;
+extern "C" const char* bismon_target_gxx;
+
 
 bool bmc_batch_flag;
 bool bmc_debug_flag;
@@ -399,7 +402,7 @@ bmc_print_config_header(const char*progname)
   headoutf << "#define BISMON_BUILDTIME " << bismon_timelong << std::endl;
   headoutf << "#define BISMON_DIRECTORY  \"" << bismon_directory << "\"" << std::endl;
   headoutf << "#define BISMON_CHECKSUM  \"" << bismon_checksum << "\"" << std::endl;
-  headoutf << "#define BISMON_MAKEFILE  \"" << bismon_makefile << "\"" << std::endl;
+  headoutf << "#define BISMON_GNUMAKEFILE  \"" << bismon_gnumakefile << "\"" << std::endl;
   headoutf << "#define BISMON_GIT_ID  \"" << bismon_gitid << "\"" << std::endl;
   headoutf << "#define BISMON_SHORT_GIT_ID  \"" << bismon_shortgitid << "\"" << std::endl;
   if (!bmc_target_gcc.empty())
@@ -582,7 +585,7 @@ bmc_print_config_make(const char*progname)
   makeoutf << "BISMONMK_BUILDTIME=" << bismon_timelong << std::endl;
   makeoutf << "BISMONMK_DIRECTORY=" << bismon_directory << std::endl;
   makeoutf << "BISMONMK_CHECKSUM=" << bismon_checksum << std::endl;
-  makeoutf << "BISMONMK_MAKEFILE=" << bismon_makefile << std::endl;
+  makeoutf << "BISMONMK_MAKEFILE=" << bismon_gnumakefile << std::endl;
   makeoutf << "BISMONMK_GITID=" << bismon_gitid << std::endl;
   makeoutf << "BISMONMK_SHORTGITID=" << bismon_shortgitid << std::endl;
   makeoutf << "#without BISMONMK_gtk" << std::endl;
