@@ -54,6 +54,8 @@
 extern "C" bool bmc_debug_flag;
 extern "C" bool bmc_batch_flag;
 extern "C" bool bmc_dryrun_flag;
+std::string bmc_make;
+std::string bmc_packages;
 std::string bmc_target_gcc;
 std::string bmc_target_gxx;
 std::string bmc_out_directory;
@@ -618,7 +620,7 @@ bmc_print_config_make(const char*progname)
 
 
 const char bmc_ninja_rules[] =
-R"NinjaRules(
+  R"NinjaRules(
 # our hardcoded rules for ninja - conventionally ended by _rlBM
 # see https://ninja-build.org/manual.html
 ###########
@@ -626,7 +628,7 @@ R"NinjaRules(
 rule CC_rlBM
   depfile = _$out.mkd - handwritten C code
   command = $NJBM_host_cc -c $NJBM_host_warn_flags $NJBM_host_cwarn_flags $$
-            $NJBM_host_optimflags $NJBM_host_debug_flags $NJBM_host_prepro_flags $$
+            $NJBM_host_optim_flags $NJBM_host_debug_flags $NJBM_host_prepro_flags $$
                -MD -MF _$out.mkd $$
                $in -o $out
 
@@ -634,7 +636,7 @@ rule CC_rlBM
 rule CXX_rlBM
   depfile = _$out.mkd
   command = $NJBM_host_cxx -c $NJBM_host_warn_flags $$
-            $NJBM_host_optimflags $NJBM_host_debug_flags $NJBM_host_prepro_flags $$
+            $NJBM_host_optim_flags $NJBM_host_debug_flags $NJBM_host_prepro_flags $$
                -MD -MF  _$out.mkd $$
               $in -o $out
 
@@ -865,6 +867,28 @@ bmc_print_const_dependencies(const char*progname)
   BMC_DEBUG("bmc_print_const_dependencies end progname=" << progname << std::endl);
 } // end bmc_print_const_dependencies
 
+
+void
+bmc_initialize_global_variables(const char*progname)
+{
+  if (bismon_make) {
+    bmc_make = std::string(bismon_make);
+    BMC_DEBUG("bmc_make initialized to " << bmc_make);
+  };
+  if (bismon_packages) {
+    bmc_packages = std::string(bismon_packages);
+    BMC_DEBUG("bmc_packages initialized to " << bmc_packages);
+  };
+  if (bismon_target_gcc) {
+    bmc_target_gcc = std::string(bismon_target_gcc);
+    BMC_DEBUG("bmc_target_gcc initialized to " << bmc_target_gcc);
+  };
+  if (bismon_target_gxx) {
+    bmc_target_gxx = std::string(bismon_target_gxx);
+    BMC_DEBUG("bmc_target_gxx initialized to " << bmc_target_gcc);
+  };
+} // end bmc_initialize_global_variables
+
 int
 main (int argc, char**argv)
 {
@@ -882,6 +906,7 @@ main (int argc, char**argv)
       usleep (1024*8);
     }
   gethostname(bmc_hostname, sizeof(bmc_hostname)-1);
+  bmc_initialize_global_variables (argv[0]);
   bmc_parse_options(argc, argv);
   if (isatty(STDOUT_FILENO) && !bmc_silent_flag)
     {
