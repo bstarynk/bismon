@@ -1,9 +1,10 @@
 ## the Bismon Makefile
+## SPDX-License-Identifier: GPL-3.0-or-later
 ## GPLv3+ licensed, from http://github.com/bstarynk/bismon
 # file generate-ninja-builder.sh is generating the build.ninja file
 # 
 #    BISMON 
-#   Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+#   Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
 #   contributed by Basile Starynkevitch.
 #
 #   This program is free software: you can redistribute it and/or modify
@@ -25,13 +26,18 @@
 ######
 # for GNU make
 ################################################################
+## see https://ninja-build.org/
 NINJA= ninja
+NINJAFLAGS= --verbose -k 1
 GCC= gcc
 GXX= g++
 CC= $(GCC)
 CXX= $(GXX)
 #if you don't have or want ccache, set the below variable to empty
-CCACHE= ccache
+#CCACHE= ccache
+CCACHE=
+#see https://www.gnu.org/software/guile/manual/html_node/Function-Snarfing.html
+GUILE_SNARF= guile-snarf
 MARKDOWN= markdown
 INDENT= indent
 ASTYLE= astyle
@@ -42,31 +48,67 @@ RM= rm -fv
 -include _cflagsmodule.mk
 MARKDOWN_SOURCES= $(sort $(wildcard *.md))
 MODULES_SOURCES= $(sort $(wildcard modules/modbm*.c))
+TESTPLUGINS_SOURCES= $(sort $(wildcard drafts/testplugin_*.c))
+
 BM_HEADERS= $(wildcard [a-z]*BM.h bismon.h)
 BM_CSOURCES= $(wildcard [a-z]*BM.c)
+BM_COMPILE_MODULE_PACKAGES=  glib-2.0 glibmm-2.4 guile-3.0
+BM_COMPILE_CFLAGS:= $(shell pkg-config --cflags $(BM_COMPILE_MODULE_PACKAGES))
+BM_COMPILE_LIBES:= $(shell pkg-config --libs $(BM_COMPILE_MODULE_PACKAGES))
+BM_COMPILE_MODULE ?= ./BM_compile_module
+BM_COMPILE_FLAGS ?= --debug
 
+BISMON_BUILDER_FLAGS ?= --debug
 
+# we could add --guile <guile> or --param <param>=<value> below
+BM_COMPILE_MODULE_EXTRAFLAGS ?= 
 .PHONY: all programs clean verbose indent count modules measure \
   doc latexdoc latexcleandoc heveadoc redump outdump checksum \
-  indentsinglemodule indenttempmodule jstimestamp chariotdemo-bismon
+  indentsinglemodule indenttempmodule jstimestamp chariotdemo-bismon \
+  bismon-metaplugin
 
 
 
 
-all: programs modules jstimestamp #doc
+all: | build.ninja
+	@printf "\n\n\n******* start making all in %s *********\n\n" $$PWD
+	$(MAKE) programs modules jstimestamp bismon-metaplugin
+	@printf "\n******* done making all in %s *********\n" $$PWD
 
+#- BM_compile_module: BM_compile_module.o BM_compmod_guile.o __timestamp.o 
+#- 	$(LINK.cc)  -O -g -Wall -Wextra  $^ $(BM_COMPILE_LIBES) -o $@
+#- 	@ls -l $@
+#-
+#- BM_compile_module.o: BM_compile_module.cc BM_compmod.hh | _BM_compmod_guile.snarf.h
+#- 	$(COMPILE.cc)  -O -g -Wall -Wextra $(BM_COMPILE_CFLAGS) $<
+#-
+#- BM_compmod_guile.o: BM_compmod_guile.cc BM_compmod.hh
+#- 	$(COMPILE.cc)  -O -g -Wall -Wextra $(BM_COMPILE_CFLAGS) $<
+#-
+#- _BM_compmod_guile.snarf.h: BM_compmod_guile.cc
+#- 	$(GUILE_SNARF) -o $@ $(BM_COMPILE_CFLAGS)  $<
+#-   
+#- programs: BM_compile_module BM_makeconst bismon modules
 programs: bismon modules
 
 verbose: | build.ninja
 	$(NINJA) -v
 
-bismon: build.ninja $(wildcard *BM.c *_BM.cc)  $(wildcard store*bmon)
+__timestamp.o:  | build.ninja
 	$(NINJA) $@
+
+bismon:
+	@printf "\n\n\n******* start making bismon in %s *********\n\n" $$PWD
+	$(MAKE) build.ninja $(wildcard *BM.c *_BM.cc)  $(wildcard store*bmon)
+	$(RM) bismon
+	$(NINJA) $(NINJAFLAGS) $@
+	@[ -x $@ ] || (echo no bismon > /dev/stderr; exit 1)
+	@printf "\n******* done making bismon in %s *********\n" $$PWD
 
 _cflagsmodule.mk: build.ninja 
-	$(NINJA) $@
+	$(NINJA) $(NINJAFLAGS) $@
 
-build.ninja: generate-ninja-builder.sh
+build.ninja: generate-ninja-build.scm
 	./$^ > $@.tmp; mv --backup -v $@.tmp $@
 
 #checksum:
@@ -74,36 +116,47 @@ build.ninja: generate-ninja-builder.sh
  -C -E $< | sed s:^#://#: > $@
 
 
+## should use BM_compile_module when it is ready
+modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | bismon_builder.py  _cflagsmodule.mk
+	$(warning should use bismon_builder.py for $@ BM_COMPILE_CFLAGS= $(BM_COMPILE_CFLAGS) BM_COMPILE_MODULE_EXTRAFLAGS= $(BM_COMPILE_MODULE_EXTRAFLAGS))
+	./bismon_builder.py $(BISMON_BUILDER_FLAGS) --oid "$(patsubst modules/modbm_%.c,_%,$<)"  --module modubin/ --in modules/ --cflags "$(BM_COMPILE_CFLAGS) $(BM_COMPILE_MODULE_EXTRAFLAGS)"
+#	$(BM_COMPILE_MODULE) $(BM_COMPILE_FLAGS) --oid $(patsubst modules/modbm_%.c,_%,$<) --module modubin/ --in modules/ $(BM_COMPILE_MODULE_EXTRAFLAGS)
 
-modubin/modbm_%.so: modules/modbm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
-	$(CCACHE) $(LINK.c) -fPIC $(BISMONMODULECFLAGS) \
-	      -DBISMON_MODID=$(patsubst modules/modbm_%.c,_%,$<)  \
-              -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' \
-              -DBISMON_PERSISTENT_MODULE -shared $< -o $@
 
-
-modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
-	$(CCACHE) $(LINK.c) -fPIC   $(BISMONMODULECFLAGS) \
-	     -DBISMON_MODID=$(patsubst modules/tmpmobm_%.c,_%,$<) \
-	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TEMPORARY_MODULE \
+## the drafts/testplugin_*.c pattern is known in main_BM.c function
+## run_testplugins_after_load_BM
+drafts/testplugin_%.so: drafts/testplugin_%.c $(BISMONHEADERS) | _cflagsmodule.mk
+	$(CCACHE) $(LINK.c) -g -fPIC  $(BISMONMODULECFLAGS) \
+	     -DBISMON_MOMD5='"$(shell md5sum $< | cut '-d ' -f1)"' -DBISMON_TTESTPLUGIN='"$(basename $@)"' \
 	     -shared $< -o $@
 
+## should use BM_compile_module when it is ready
+modubin/tmpmobm_%.so: modules/tmpmobm_%.c $(BISMONHEADERS) | _cflagsmodule.mk
+	$(warning should use bismon_builder.py instead of BM_compile_module for $@ BM_COMPILE_CFLAGS= $(BM_COMPILE_CFLAGS) BM_COMPILE_MODULE_EXTRAFLAGS= $(BM_COMPILE_MODULE_EXTRAFLAGS))
+	./bismon_builder.py $(BISMON_BUILDER_FLAGS) --oid "$(patsubst modules/modbm_%.c,_%,$<)"  --module modubin/ --in modules/ --cflags "$(BM_COMPILE_CFLAGS) $(BM_COMPILE_MODULE_EXTRAFLAGS)"
+#	$(BM_COMPILE_MODULE) $(BISMON_BUILDER_FLAGS) $(BM_COMPILE_FLAGS) --oid $(patsubst modules/modbm_%.c,_%,$<) --tempmodule modubin/ --in modules/  $(BM_COMPILE_MODULE_EXTRAFLAGS)
+#                                                                                                           
 modules: _cflagsmodule.mk  $(patsubst modules/%.c,modubin/%.so,$(MODULES_SOURCES)) 
 
+bismon-metaplugin: bismon | build.ninja
+	@printf "\n\n\n******* start making bismon-metaplugin in %s *********\n\n" $$(pwd)
+	$(MAKE) build.ninja $(wildcard *BM.c *_BM.cc)  $(wildcard store*bmon)
+	$(NINJA) $(NINJAFLAGS) gccplugins/bismon-metaplugin.so
+	@[ -x gccplugins/bismon-metaplugin.so ] || (echo no  gccplugins/bismon-metaplugin.so > /dev/stderr; exit 1)
+	@printf "\n******* done making bismon-metaplugin in %s *********\n" $$PWD
 
 
-
-doc: $(MARKDOWN_SOURCES) bismon bismongtk modules $(wildcard doc/*.tex doc/images/* doc/*.bib doc/*.hva)
+doc: $(MARKDOWN_SOURCES) bismon modules $(wildcard doc/*.tex doc/images/* doc/*.bib doc/*.hva)
 	for f in $(MARKDOWN_SOURCES) ; do  $(MARKDOWN) $$f > $$(basename $$f .md).html ; done
 	./build-bismon-doc.sh
 
-latexdoc: bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
+latexdoc: bismon  modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
 	[ -d $$HOME/tmp/ ] || mkdir -v $$HOME/tmp
 	$(RM) $(shell realpath $$HOME/tmp/bismon-chariot-doc.pdf)
 	./build-bismon-doc.sh LaTeX
 	ls -lt ~/tmp/bismon-chariot-doc*
 
-latexcleandoc: bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
+latexcleandoc: bismon modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
 	[ -d $$HOME/tmp/ ] || mkdir -v $$HOME/tmp
 	$(RM) $(shell realpath $$HOME/tmp/bismon-chariot-doc.pdf)
 	$(RM) doc/bismon-chariot-doc.{aux,bbl,blg,idx,log,log,lot,out,toc,pdf} 
@@ -113,41 +166,51 @@ latexcleandoc: bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/image
 	ls -lt ~/tmp/bismon-chariot-doc*
 
 
-heveadoc:  bismon bismongtk modules $(wildcard doc/*.tex doc/images/* doc/*.bib doc/*.hva)
+heveadoc:  bismon modules $(wildcard doc/*.tex doc/images/* doc/*.bib doc/*.hva)
 	./build-bismon-doc.sh HeVeA
 
 count:
 	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n
 
-redump: bismon bismongtk bismonion modules
+redump: bismon  modules
 	@for f in $(GENERATED_HEADERS) $(GENERATED_CSOURCES) $(MODULES_SOURCES) *.bmon ; \
            do cp -vab $$f $$f%~ ; done
-	time ./bismongtk --dump-after-load . --batch
-	$(MAKE)  bismonion
+	time ./bismon --web --dump-after-load . --batch
+	$(MAKE)  bismon
 	printf "\n\n\n **** second redump run ***\n"
-	time ./bismonion --dump-after-load . --batch
+	time ./bismon --web --dump-after-load . --batch
 
-outdump: bismon bismongtk bismonion  modules
-	time ./bismongtk  --run-command 'rm -rvf /tmp/bd'  --dump-after-load /tmp/bd --batch
+outdump: bismon   modules
+	time ./bismon  --run-command 'rm -rvf /tmp/bd'  --dump-after-load /tmp/bd --batch
 	for f in /tmp/bd/* ; do cmp $$f $$(basename $$f); done
 
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
+
+BM_makeconst: BM_makeconst.o id_BM.o
+	$(LINK.cc) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
+
 BM_makeconst-g.o: BM_makeconst.cc id_BM.h
 	$(COMPILE.cc)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+
+id_BM.o: id_BM.c id_BM.h
+	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0)  -Wall -c $< -o $@
 id_BM-g.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
 ################################################################
 
 
 clean:
+	@printf "\n\n\n******* start cleaning bismon in %s *********\n\n" $$PWD
 	[ -f build.ninja ] && $(NINJA) -t clean
 	if ls *.log ; then tar cvzf /tmp/bismon-prev-log.tar.gz _*.log; fi
 	$(RM) .*~ *~ *% *.o *.so */*.so *.log */*~ */*.orig *.i *.orig *.gch README.html
 	$(RM) .ninja* *mkd  _cflagsmodule.mk
-	$(RM) build.ninja
+	$(RM) build.ninja _bismon.pid
 	$(RM) core* *.i *.ii *prof.out gmon.out
 	$(RM) *BM.const.h _bm_allconsts*.c
+	$(RM) BM_compile_module
+	$(RM) $(wildcard _BM_comp*)
 	$(RM) $(patsubst %.thtml, _%.c, $(ONIONBM_WEBTEMPLATES))
 	$(RM) $(patsubst %.thtml, _%.h, $(ONIONBM_WEBTEMPLATES))
 	$(RM) modubin/*.so modules/*.i modules/*% modules/*~ modules/*- bismon BM_makeconst
@@ -158,6 +221,7 @@ clean:
 	$(RM)  doc/generated/* doc/htmldoc/*  doc/*/*~
 	$(RM) doc/*.aux doc/*.log doc/*.bbl doc/*.blg doc/*.idx doc/*.ilg doc/*.ind doc/*.log doc/*.out doc/*.toc doc/*.haux doc/*.hind doc/*.html doc/*.htoc
 	$(RM) doc/bismon-html-doc.tar.gz
+	@printf "\n******* done cleaning bismon in %s *********\n\n" $$PWD
 
 indent: .indent.pro
 	@printf "\n *** headers *** \n"
@@ -176,6 +240,14 @@ indent: .indent.pro
 	  if cmp -s $$c $$c% ; then echo unchanged $$c ; mv $$c% $$c ; \
 	  else echo '*indented' $$c ; fi ; \
 	done
+	@printf "\n *** C testplugins *** \n"
+	@for c in $(wildcard drafts/testplugin*.c); do \
+	  cp -a $$c $$c% ; \
+	  $(INDENT) $(INDENTFLAGS) $$c ; \
+	  $(INDENT) $(INDENTFLAGS) $$c ; \
+	  if cmp -s $$c $$c% ; then echo unchanged $$c ; mv $$c% $$c ; \
+	  else echo '*indented' $$c ; fi ; \
+	done
 #!-      @printf "\n *** C modules sources *** \n"
 #!-      @for c in $(MODULES_SOURCES); do \
 #!-        cp -a $$c $$c% ; \
@@ -185,11 +257,13 @@ indent: .indent.pro
 #!-        else echo '*indented' $$c ; fi ; \
 #!-      done
 	@printf "\n *** C++ sources *** \n"
-	@for x in $(BM_CXXSOURCES); do \
+	@for x in $(BM_CXXSOURCES) id_BM.h; do \
 	  $(ASTYLE) $(ASTYLEFLAGS) $$x ; \
 	done
+	@sed -i 's/operator  */operator /g' id_BM.h
 	@printf "\n *** C++ tool source *** \n"
 	@$(ASTYLE) $(ASTYLEFLAGS)  BM_makeconst.cc
+	@$(ASTYLE) $(ASTYLEFLAGS)  BM_compile_module.cc
 	@printf "\n"
 
 ################
