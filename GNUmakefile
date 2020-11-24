@@ -74,8 +74,6 @@ BM_PACKAGES=  glib-2.0 gtk+-3.0 gtkmm-2.0
 ## be overwritten by command line...
 BISMON_CONFIG_OPTIONS=
 
-### object files:
-BM_OBJECTS= $(patsubst %.c,%.o,$(BM_CSOURCES))  $(patsubst %.cc,%.o,$(BM_CXXSOURCES))
 
 ## internal make variables...
 BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
@@ -164,16 +162,16 @@ id_BM.o: id_BM.c id_BM.h
 id_BM-g.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -g -Wall -Wextra -c $< -o $@
 
-%_BM.o: %_BM.c bismon.h | BISMON-config BM_makeconst
-	@echo building $@ from prerequisites $^ with BISMON_CONFIG_OPTIONS= $(BISMON_CONFIG_OPTIONS)
-	@echo should $(MAKE) bismon.h $(shell ./BISMON-config --skip=for_bismon_object --batch $(BISMON_CONFIG_OPTIONS) --const-depend $<)
-	$(MAKE) bismon.h  $(shell ./BISMON-config --skip=for_bismon_object_sh $(BISMON_CONFIG_OPTIONS) --const-depend $<)
-	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
-
-%_BM-g.o: %_BM.c bismon.h | BISMON-config BM_makeconst
-	@echo building $@ fromprerequisites  $^ with BISMON_CONFIG_OPTIONS= $(BISMON_CONFIG_OPTIONS)
-	$(MAKE) bismon.h $(shell ./BISMON-config --skip=for_bismon_object_shdbg  --batch $(BISMON_CONFIG_OPTIONS) ---const-depend $<)
-	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
+#°    %_BM.o: %_BM.c bismon.h | BISMON-config BM_makeconst
+#°            @echo building $@ from prerequisites $^ with BISMON_CONFIG_OPTIONS= $(BISMON_CONFIG_OPTIONS)
+#°            @echo should $(MAKE) bismon.h $(shell ./BISMON-config --skip=for_bismon_object --batch $(BISMON_CONFIG_OPTIONS) --const-depend $<)
+#°            $(MAKE) bismon.h  $(shell ./BISMON-config --skip=for_bismon_object_sh $(BISMON_CONFIG_OPTIONS) --const-depend $<)
+#°            $(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
+#° 
+#°    %_BM-g.o: %_BM.c bismon.h | BISMON-config BM_makeconst
+#°            @echo building $@ fromprerequisites  $^ with BISMON_CONFIG_OPTIONS= $(BISMON_CONFIG_OPTIONS)
+#°            $(MAKE) bismon.h $(shell ./BISMON-config --skip=for_bismon_object_shdbg  --batch $(BISMON_CONFIG_OPTIONS) ---const-depend $<)
+#°            $(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
 
 __timestamp.c:  timestamp-emit.sh |  GNUmakefile
 	env BISMON_MAKE="$(MAKE)" BISMON_PACKAGES="$(BM_PACKAGES)" ./timestamp-emit.sh $(BM_CSOURCES) $(BM_CXXSOURCES)
@@ -191,7 +189,8 @@ _bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
 	./BM_makeconst -C $@ $(BM_CSOURCES)
 
 bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c _bismon-constdep.mk
-	$(MAKE) $(BISMONMK_OBJECTS) _bismon-constants.o __timestamp.o build.ninja
+	$(MAKE) build.ninja
+	@echo $(MAKE) will build bismon using $(BM_NICE) $(BM_NINJA) $(BM_NINJA_FLAGS) bismon
 	$(BM_NICE) $(BM_NINJA) $(BM_NINJA_FLAGS) bismon
 	$(RM) __timestamp.o
 	mv __timestamp.c __timestamp.c~
