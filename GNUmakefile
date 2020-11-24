@@ -186,6 +186,7 @@ all: config executable
 
 executable: _bismon-config.mk
 	$(MAKE) $(BISMONMK_EXECUTABLE)
+	$(MAKE) bismon
 
 
 _bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
