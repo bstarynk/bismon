@@ -618,7 +618,7 @@ bmc_print_config_make(const char*progname)
 } // end bmc_print_config_make
 
 
-
+const int bmc_ninja_rules_lineno = __LINE__+2;
 const char bmc_ninja_rules[] =
   R"NinjaRules(
 # our hardcoded rules for ninja - conventionally ended by _rlBM
@@ -627,6 +627,7 @@ const char bmc_ninja_rules[] =
 # compilation of _BM.c files
 rule CC_rlBM
   depfile = _$out.mkd - handwritten C code
+  description = CC_rlBM $out < $in (handwritten C code)
   command = $NJBM_host_cc -c $NJBM_host_warn_flags $NJBM_host_cwarn_flags $$
             $NJBM_host_optim_flags $NJBM_host_debug_flags $NJBM_host_prepro_flags $$
                -MD -MF _$out.mkd $$
@@ -635,6 +636,7 @@ rule CC_rlBM
 # compilation of _BM.cc files - handwritten C++ code
 rule CXX_rlBM
   depfile = _$out.mkd
+  description = CXX_rlBM $out < $in (handwritten C++ code)
   command = $NJBM_host_cxx -c $NJBM_host_warn_flags $$
             $NJBM_host_optim_flags $NJBM_host_debug_flags $NJBM_host_prepro_flags $$
                -MD -MF  _$out.mkd $$
@@ -643,10 +645,19 @@ rule CXX_rlBM
 # compilation of generated modules/modbm_.c into a modubin/*.so shared object
 rule MODCC_rlBM
   depfile = _$out.mkd
+  description = MODCC_rlBM  $out < $in (generated C module)
   command = $NJBM_host_cxx -fPIC -shared $NJBM_host_warn_flags $$
             $NJBM_host_optim_flags $NJBM_host_debug_flags $NJBM_host_prepro_flags $$
                -MD -MF  _$out.mkd $$
               $in -o $out
+
+# linking of all Bismon
+rule LINKALLBISMON_rlBM
+  description = LINKALLBISMON_rlBM (link everything into $out, BUGGY rule)
+  command = $NJBM_host_cxx  $NJBM_host_warn_flags $$
+            $NJBM_host_optim_flags $NJBM_host_debug_flags $$
+            $in 
+            -o $out
 
 )NinjaRules";
 
@@ -702,8 +713,9 @@ ninjaoutf << "NJBM_host_warn_flags= -Wall -Wextra" << std::endl;
 ninjaoutf << "NJBM_host_cwarn_flags= -Wmissing-prototypes" << std::endl;
   ///////////////////////////////////////////
   ///// output ninja rules
-  ninjaoutf << bmc_ninja_rules << std::endl;
-  ninjaoutf << "## unimplemented bmc_print_config_ninja " << __FILE << ":" << __LINE__ << std::endl;
+ ninjaoutf << "# hardcoded rules from " << __FILE__ << ":" << bmc_ninja_rules_lineno << std::endl;
+  ninjaoutf << bmc_ninja_rules << std::endl << std::endl;
+  ninjaoutf << "## unimplemented bmc_print_config_ninja " << __FILE__ << ":" << __LINE__ << std::endl;
   std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
   BMC_FAILURE ("unimplemented bmc_print_config_ninja");
 #warning unimplemented bmc_print_config_ninja
