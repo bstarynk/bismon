@@ -80,7 +80,7 @@ extern pthread_mutex_t allocationmutex_BM;
 #define HAS_PREDEF_BM(Id,Hi,Lo,Hash) \
   extern objectval_tyBM predefdata##Id##_BM; \
   extern objectval_tyBM* predefptr##Id##_BM;
-#include "_bm_predef.h"
+#include "genbm_predef.h"
 
 #define PREDEF_BM(Id) (predefptr##Id##_BM)
 
@@ -233,5 +233,5 @@ extern const char *onion_anon_web_session_BM;
 
 #define UNSPECIFIED_BM ((void*)(&unspecifieddata_BM))
 #define HAS_GLOBAL_BM(Nam) extern objectval_tyBM*globdata_##Nam##_BM;
-#include "_bm_global.h"
+#include "genbm_global.h"
 #endif /*GLOBALS_BM_INCLUDED */

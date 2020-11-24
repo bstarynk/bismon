@@ -1,5 +1,5 @@
-// generated code file for globals _bm_global.h
-// this generated file _bm_global.h is GPLv3+ licensed
+// generated code file for globals genbm_global.h
+// this generated file genbm_global.h is GPLv3+ licensed
 #ifndef HAS_GLOBAL_BM
 #error missing HAS_GLOBAL_BM
 #endif
@@ -12,4 +12,4 @@ HAS_GLOBAL_BM(varglob)
 #undef HAS_GLOBAL_BM
 
 
-// end of generated file _bm_global.h
+// end of generated file genbm_global.h

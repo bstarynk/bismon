@@ -70,6 +70,9 @@ BM_CXXSOURCES= $(wildcard [a-z]*_BM.cc)
 ## CONVENTION: packages for pkg-config
 BM_PACKAGES=  glib-2.0 gtk+-3.0 gtkmm-2.0
 
+## CONVENTION: persistent generated header files are
+BM_PERSISTENT_HEADERS= $(wildcard genbm_*.h)
+
 ## CONVENTION: potential options for BISMON-config configurator. Could
 ## be overwritten by command line...
 BISMON_CONFIG_OPTIONS=
@@ -89,7 +92,7 @@ CXXFLAGS += $(BM_CXX_STANDARD_FLAGS) $(pkg-config --cflags $(BM_PACKAGES)) \
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
-.PHONY: all config count executable clean runconfig
+.PHONY: all config count executable clean runconfig distclean
 
 .DEFAULTS: all
 
@@ -144,7 +147,14 @@ clean:
 	if [ -f build.ninja ] ; then $(BM_NICE) $(BM_NINJA) $(BM_NINJA_FLAGS) -t clean ; fi
 	$(RM) *.o BISMON-config BM_makeconst bismon _bm_config.h _bm_config.c  modubin/*.so modubin/*.o *~ *% *.cc.orig
 	$(RM) _*.mkd _*conf*.mk
+	$(RM) *~ *%
 	$(RM) *_BM.const.h
+	$(RM) build.ninja
+
+distclean:
+	sleep 0.05
+	$(RM)  *~ *%
+	$(RM) *.o BISMON-config BM_makeconst bismon _bm_config.h _bm_config.c  modubin/*.so modubin/*.o *~ *% *.cc.orig
 	$(RM) build.ninja
 
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
