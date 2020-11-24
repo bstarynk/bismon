@@ -140,6 +140,8 @@ count:
 	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n
 
 clean:
+	sleep 0.05
+	if [ -f build.ninja ] ; then $(BM_NICE) $(BM_NINJA) $(BM_NINJA_FLAGS) -t clean ; fi
 	$(RM) *.o BISMON-config BM_makeconst bismon _bm_config.h _bm_config.c  modubin/*.so modubin/*.o *~ *% *.cc.orig
 	$(RM) _*.mkd _*conf*.mk
 	$(RM) *_BM.const.h
@@ -205,5 +207,8 @@ _bismon-constdep.mk: BISMON-config $(BM_CSOURCES)
 
 ifeq ($(MAKELEVEL),0)
 build.ninja: GNUmakefile BISMON-config   _bismon-config.mk _bm_config.h
-	./BISMON-config --skip=for_ninja  $(BISMON_CONFIG_OPTIONS) --ninja=$@
+	./BISMON-config --skip=for_base_ninja  $(BISMON_CONFIG_OPTIONS) --ninja=$@
+else
+build.ninja: GNUmakefile BISMON-config
+	./BISMON-config --skip=for_$(strip $(MAKELEVEL))_ninja  $(BISMON_CONFIG_OPTIONS) --ninja=$@
 endif
