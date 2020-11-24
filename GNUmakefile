@@ -39,12 +39,14 @@ MD5SUM= md5sum
 INDENTFLAGS= --gnu-style --no-tabs --honour-newlines
 ASTYLEFLAGS= --style=gnu -s2
 RM= rm -fv
+BM_NINJA= ninja
+BM_NICE= nice
 BM_CXX_STANDARD_FLAGS= -std=gnu++17
 BM_WARNING_FLAGS= -Wall -Wextra
 BM_C_STANDARD_FLAGS= -std=gnu11
 BM_OPTIM_FLAGS= -O1
 BM_DEBUG_FLAGS= -g
-
+BM_NINJA_FLAGS= --verbose -l 7
 
 
 ## CONVENTION: handwritten markdown files are...
@@ -189,9 +191,8 @@ _bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
 	./BM_makeconst -C $@ $(BM_CSOURCES)
 
 bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c _bismon-constdep.mk
-	$(MAKE) $(BISMONMK_OBJECTS) _bismon-constants.o __timestamp.o
-	$(LINK.cc)  $(BISMONMK_OBJECTS) _bismon-constants.o __timestamp.o \
-	    $(shell pkg-config --libs $(BM_PACKAGES)) -o $@
+	$(MAKE) $(BISMONMK_OBJECTS) _bismon-constants.o __timestamp.o build.ninja
+	$(BM_NICE) $(BM_NINJA) $(BM_NINJA_FLAGS) bismon
 	$(RM) __timestamp.o
 	mv __timestamp.c __timestamp.c~
 
