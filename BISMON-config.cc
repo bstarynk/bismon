@@ -50,6 +50,7 @@
 #include <string>
 #include <cassert>
 #include <iostream>
+#include <sstream>
 
 extern "C" bool bmc_debug_flag;
 extern "C" bool bmc_batch_flag;
@@ -697,23 +698,71 @@ bmc_print_config_ninja(const char*progname)
   ninjaoutf << std::endl
             << "NJBM_target_gcc= " << bmc_target_gcc << std::endl
             << "NJBM_target_gxx= " << bmc_target_gxx << std::endl;
-  ninjaoutf << std::endl
-            << "NJBM_pkgconfig_packages= ";
-  if (bismon_packages)
-    ninjaoutf << bismon_packages;
+  if (bismon_packages) {
+    ninjaoutf << std::endl
+	      << "NJBM_pkgconfig_packages= ";
+    ninjaoutf << bismon_packages << std::endl;
+    /// run pkg-config --cflags
+    {
+      ninjaoutf << "NJBM_pkgconfig_cflags=" ;
+      std::string cflpkgcmd = std::string("pkg-config --cflags ") + bismon_packages;
+      FILE*pipcflpkg = popen(cflpkgcmd.c_str(), "r");
+      if (!pipcflpkg) {
+	std::ostringstream outs;
+	outs << progname << " failed to popen " << cflpkgcmd << " : " << strerror(errno) << std::flush;
+	BMC_FAILURE(outs.str().c_str());
+      }
+      char*pipcfbuf = nullptr;
+      size_t pipcfsiz = 0;
+      ssize_t pipcflen = -1;
+      while ((pipcflen = getline(&pipcfbuf, &pipcfsiz, pipcflpkg)) >0) {
+	ninjaoutf << pipcfbuf;
+	if (!feof(pipcflpkg))
+	  ninjaoutf << " $$" << std::endl;
+      };
+      pclose(pipcflpkg), pipcflpkg = nullptr;
+      free (pipcfbuf), pipcfbuf = nullptr;
+    }
+    /// run pkg-config --libs
+    {
+      ninjaoutf << "NJBM_pkgconfig_libs=" ;
+      std::string libpkgcmd = std::string("pkg-config --libs ") + bismon_packages;
+      FILE*piplibpkg = popen(libpkgcmd.c_str(), "r");
+      if (!piplibpkg) {
+	std::ostringstream outs;
+	outs << progname << " failed to popen " << libpkgcmd << " : " << strerror(errno) << std::flush;
+	BMC_FAILURE(outs.str().c_str());
+      };
+      char*piplibuf = nullptr;
+      ssize_t piplilen = -1;
+      size_t piplisiz = 0;
+      while (( piplilen = getline(&piplibuf, &piplisiz, piplibpkg))>0) {
+	ninjaoutf << piplibuf;
+	if (!feof(piplibpkg))
+	  ninjaoutf << " $$" << std::endl;
+      };
+      pclose(piplibpkg), piplibpkg = nullptr;
+      free (piplibuf), piplibuf = nullptr;
+    }
+  }
+  else {
+    ninjaoutf << "# no bismon_packages" << std::endl
+	      << "NJBM_pkgconfig_packages =" << std::endl
+	      << "NJBM_pkgconfig_cflags =" << std::endl << "NJBM_pkgconfig_libs =" << std::endl;    
+  };
   ninjaoutf << std::endl;
   ninjaoutf << "NJBM_host_cc= "
 	    << (getenv("CC")?:"gcc") << std::endl;
   ninjaoutf << "NJBM_host_cxx= "
 	    << (getenv("CXX")?:"g++") << std::endl;
-ninjaoutf << "NJBM_host_optim_flags= -O" << std::endl;
-ninjaoutf << "NJBM_host_prepro_flags= -I/usr/local/include " << std::endl;
-ninjaoutf << "NJBM_host_debug_flags= -g" << std::endl;
-ninjaoutf << "NJBM_host_warn_flags= -Wall -Wextra" << std::endl;
-ninjaoutf << "NJBM_host_cwarn_flags= -Wmissing-prototypes" << std::endl;
+  ninjaoutf << "NJBM_host_optim_flags= -O" << std::endl;
+  ninjaoutf << "NJBM_host_prepro_flags= -I/usr/local/include " << std::endl;
+  ninjaoutf << "NJBM_host_debug_flags= -g" << std::endl;
+  ninjaoutf << "NJBM_host_warn_flags= -Wall -Wextra" << std::endl;
+  ninjaoutf << "NJBM_host_cwarn_flags= -Wmissing-prototypes" << std::endl;
   ///////////////////////////////////////////
   ///// output ninja rules
- ninjaoutf << "# hardcoded rules from " << __FILE__ << ":" << bmc_ninja_rules_lineno << std::endl;
+  ninjaoutf << "# hardcoded rules from " << __FILE__ << ":" << bmc_ninja_rules_lineno << std::endl;
   ninjaoutf << bmc_ninja_rules << std::endl << std::endl;
   ninjaoutf << "## unimplemented bmc_print_config_ninja " << __FILE__ << ":" << __LINE__ << std::endl;
   std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
