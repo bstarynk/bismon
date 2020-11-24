@@ -703,6 +703,7 @@ ninjaoutf << "NJBM_host_cwarn_flags= -Wmissing-prototypes" << std::endl;
   ///////////////////////////////////////////
   ///// output ninja rules
   ninjaoutf << bmc_ninja_rules << std::endl;
+  ninjaoutf << "## unimplemented bmc_print_config_ninja " << __FILE << ":" << __LINE__ << std::endl;
   std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
   BMC_FAILURE ("unimplemented bmc_print_config_ninja");
 #warning unimplemented bmc_print_config_ninja
