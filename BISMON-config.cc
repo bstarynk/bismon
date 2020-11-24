@@ -868,25 +868,32 @@ bmc_print_const_dependencies(const char*progname)
 } // end bmc_print_const_dependencies
 
 
-void
+int
 bmc_initialize_global_variables(const char*progname)
 {
+  int nbinit=0;
   if (bismon_make) {
     bmc_make = std::string(bismon_make);
     BMC_DEBUG("bmc_make initialized to " << bmc_make);
+    nbinit++;
   };
   if (bismon_packages) {
     bmc_packages = std::string(bismon_packages);
     BMC_DEBUG("bmc_packages initialized to " << bmc_packages);
+    nbinit++;
   };
   if (bismon_target_gcc) {
     bmc_target_gcc = std::string(bismon_target_gcc);
     BMC_DEBUG("bmc_target_gcc initialized to " << bmc_target_gcc);
+    nbinit++;
   };
   if (bismon_target_gxx) {
     bmc_target_gxx = std::string(bismon_target_gxx);
     BMC_DEBUG("bmc_target_gxx initialized to " << bmc_target_gcc);
+    nbinit++;
   };
+  BMC_DEBUG("bmc_initialize_global_variables did " << nbinit << " initializations for " << progname << std::endl);
+  return nbinit;
 } // end bmc_initialize_global_variables
 
 int
@@ -895,6 +902,7 @@ main (int argc, char**argv)
   bmc_main_argc = argc;
   bmc_main_argv = argv;
   bool earlydebug = false;
+  int nbinit= 0;
   if (argc>1 && (!strcmp(argv[1], "-D") || !strcmp(argv[1], "--debug")))
     {
       bmc_debug_flag = true;
@@ -906,7 +914,7 @@ main (int argc, char**argv)
       usleep (1024*8);
     }
   gethostname(bmc_hostname, sizeof(bmc_hostname)-1);
-  bmc_initialize_global_variables (argv[0]);
+  nbinit = bmc_initialize_global_variables (argv[0]);
   bmc_parse_options(argc, argv);
   if (isatty(STDOUT_FILENO) && !bmc_silent_flag)
     {
@@ -920,6 +928,8 @@ main (int argc, char**argv)
       std::cout << "For more about GCC, see gcc.gnu.org ...." << std::endl;
       std::cout << "# running " << __FILE__ " @"  __DATE__ << " on " << bmc_hostname << " pid " << (int)getpid()
                 << " parentpid " << (int)getppid() << std::endl;
+      if (nbinit)
+	std::cout << "# " << nbinit << " variables initialized from previous __timestamp.c ..." << std::endl;
     }
   usleep(1024*16);
   if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO)
