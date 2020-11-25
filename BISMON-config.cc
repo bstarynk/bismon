@@ -718,6 +718,7 @@ bmc_print_config_ninja(const char*progname)
       ninjaoutf << "NJBM_pkgconfig_cflags=" ;
       std::string cflpkgcmd = std::string("pkg-config --cflags ") + bismon_packages;
       FILE*pipcflpkg = popen(cflpkgcmd.c_str(), "r");
+      int lineno=0;
       BMC_DEBUG("popen " << cflpkgcmd);
       if (!pipcflpkg) {
 	std::ostringstream outs;
@@ -728,11 +729,16 @@ bmc_print_config_ninja(const char*progname)
       size_t pipcfsiz = 0;
       ssize_t pipcflen = -1;
       while ((pipcflen = getline(&pipcfbuf, &pipcfsiz, pipcflpkg)) >0) {
-	BMC_DEBUG("pipcfbuf=" << pipcfbuf);
-	ninjaoutf << pipcfbuf;
-	if (!feof(pipcflpkg))
+	if (lineno>0)
 	  ninjaoutf << " $$" << std::endl;
+	lineno++;
+	BMC_DEBUG("pipcfbuf='" << pipcfbuf << "', pipcflen=" << pipcflen << ", line#" << lineno);
+	if (pipcflen >0 && pipcfbuf[(int)pipcflen-1] == '\n')
+	  pipcfbuf[pipcflen-1] = (char)0;
+	ninjaoutf << pipcfbuf;
       };
+      ninjaoutf << std::endl;
+      BMC_DEBUG("pclosing " << cflpkgcmd << " lineno=" << lineno);
       pclose(pipcflpkg), pipcflpkg = nullptr;
       free (pipcfbuf), pipcfbuf = nullptr;
     }
@@ -742,6 +748,7 @@ bmc_print_config_ninja(const char*progname)
       ninjaoutf << "NJBM_pkgconfig_libs=" ;
       std::string libpkgcmd = std::string("pkg-config --libs ") + bismon_packages;
       FILE*piplibpkg = popen(libpkgcmd.c_str(), "r");
+      int lineno=0;
       BMC_DEBUG("popen " << libpkgcmd);
       if (!piplibpkg) {
 	std::ostringstream outs;
@@ -752,13 +759,18 @@ bmc_print_config_ninja(const char*progname)
       ssize_t piplilen = -1;
       size_t piplisiz = 0;
       while (( piplilen = getline(&piplibuf, &piplisiz, piplibpkg))>0) {
-	BMC_DEBUG("piplibuf=" << piplibuf);
-	ninjaoutf << piplibuf;
-	if (!feof(piplibpkg))
+	if (lineno>0)
 	  ninjaoutf << " $$" << std::endl;
+	lineno++;
+	BMC_DEBUG("piplibuf='" << piplibuf << "', piplilen=" << piplilen);
+	if (piplilen>0 && piplibuf[(int)piplilen-1] == '\n')
+	  piplibuf[piplilen-1] = (char)0;
+	ninjaoutf << piplibuf;
       };
+      BMC_DEBUG("pclosing " << libpkgcmd << " lineno=" << lineno);
       pclose(piplibpkg), piplibpkg = nullptr;
       free (piplibuf), piplibuf = nullptr;
+      ninjaoutf << std::endl;
     }
   }
   else {
