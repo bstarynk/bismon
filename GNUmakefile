@@ -154,6 +154,7 @@ clean:
 distclean:
 	sleep 0.05
 	$(RM)  *~ *%
+	$(RM) __timestamp* bismon
 	$(RM) *.o BISMON-config BM_makeconst bismon _bm_config.h _bm_config.c  modubin/*.so modubin/*.o *~ *% *.cc.orig
 	$(RM) build.ninja
 
