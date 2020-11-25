@@ -77,7 +77,7 @@ extern "C" const char* bismon_make;
 extern "C" const char* bismon_packages;
 extern "C" const char* bismon_target_gcc;
 extern "C" const char* bismon_target_gxx;
-
+extern "C" const char* const bismon_sources[];
 
 bool bmc_batch_flag;
 bool bmc_debug_flag;
@@ -639,27 +639,32 @@ rule CXX_rlBM
   depfile = _$out.mkd
   description = CXX_rlBM $out < $in (handwritten C++ code)
   command = $NJBM_host_cxx -c $NJBM_host_warn_flags $$
-            $NJBM_host_optim_flags $NJBM_host_debug_flags $NJBM_host_prepro_flags $$
-               -MD -MF  _$out.mkd $$
-              $in -o $out
+            $NJBM_host_optim_flags $NJBM_host_debug_flags $$
+            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $$
+            -MD -MF  _$out.mkd $$
+            $in -o $out
+
 
 # compilation of generated modules/modbm_.c into a modubin/*.so shared object
 rule MODCC_rlBM
   depfile = _$out.mkd
   description = MODCC_rlBM  $out < $in (generated C module)
   command = $NJBM_host_cxx -fPIC -shared $NJBM_host_warn_flags $$
-            $NJBM_host_optim_flags $NJBM_host_debug_flags $NJBM_host_prepro_flags $$
-               -MD -MF  _$out.mkd $$
-              $in -o $out
+            $NJBM_host_optim_flags $NJBM_host_debug_flags $$
+            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $$
+            -MD -MF  _$out.mkd $$
+            $in -o $out
+
 
 # linking of all Bismon
 rule LINKALLBISMON_rlBM
-  description = LINKALLBISMON_rlBM (link everything into $out, BUGGY rule)
+  description = LINKALLBISMON_rlBM (link everything into $out)
   command = $NJBM_host_cxx  $NJBM_host_warn_flags $$
             $NJBM_host_optim_flags $NJBM_host_debug_flags $$
-            $in 
+            $in $NJBM_pkgconfig_libs
             -o $out
 
+################### end of NinjaRules ###################
 )NinjaRules";
 
 
@@ -793,7 +798,34 @@ bmc_print_config_ninja(const char*progname)
   ///////////////////////////////////////////
   ///// output ninja rules
   ninjaoutf << "# hardcoded rules from " << __FILE__ << ":" << bmc_ninja_rules_lineno << std::endl;
-  ninjaoutf << bmc_ninja_rules << std::endl << std::endl;
+  ninjaoutf << "#+++++++++++++++++++++++++++" << std::endl;
+  ninjaoutf << bmc_ninja_rules << std::endl;
+  ninjaoutf << "#---------------------------" << std::endl << std::endl;
+
+  ninjaoutf << "# build object files :::::::::" << std::endl;
+  for (const char*const* pcursrc = bismon_sources; *pcursrc; pcursrc++) {
+    std::string cursrc (*pcursrc);
+    auto curlen = cursrc.size();
+    if (curlen > sizeof("_BM.c")
+	&& cursrc.substr(curlen-sizeof("_BM.c")) == std::string("_BM.c")) {
+      std::string curobp = cursrc;
+      curobp[curlen-1] = 'o';
+      BMC_DEBUG("_BM source cursrc='" << cursrc
+		<< "', curobp='" << curobp << "'");
+      ninjaoutf << "build " << curobp << ": CC_rlBM " << cursrc
+		<< std::endl;
+    }
+    if (curlen > sizeof("_BM.cc")
+	&& cursrc.substr(curlen-sizeof("_BM.cc")) == std::string("_BM.cc")) {
+      std::string curobp = cursrc;
+      curobp[curlen-1] = 'o';
+      BMC_DEBUG("_BM source cursrc='" << cursrc
+		<< "', curobp='" << curobp << "'");
+      ninjaoutf << "build " << curobp << ": CXX_rlBM " << cursrc
+		<< std::endl;
+    }
+  }
+  
   ninjaoutf << "## unimplemented bmc_print_config_ninja " << __FILE__ << ":" << __LINE__ << std::endl;
   std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
   BMC_DEBUG("incomplete bmc_print_config_ninja");
