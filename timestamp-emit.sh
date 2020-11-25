@@ -23,6 +23,11 @@ fi
 	$endgitid)  >> __timestamp.tmp
 
 
+(echo  'const char* const bismon_sources[] = {';
+ for src in $* ; do
+     printf '  "%s",\n' $src;
+ done;
+ printf '    (const char*)0 }; // end bismon_sources\n') >> __timestamp.tmp
 
 (echo -n 'const char bismon_lastgittag[]="'; (git describe --abbrev=0 --all || echo '*notag*') | tr -d '\n\r\f\"\\\\'; echo '";') >> __timestamp.tmp
 
