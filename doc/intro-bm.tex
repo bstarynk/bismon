@@ -2032,7 +2032,7 @@ cooperating Linux processes:
   \item sometimes \emph{Bismon} would generate some
     \texttt{modules/*.c} file during execution, and fork a (direct)
     compilation of it (technically forking a
-    \texttt{./build-bismon-persistent-module.sh} -for persistent
+    \texttt{./persistent-module-build-bismon.sh} -for persistent
     modules- or a \texttt{./build-bismon-temporary-module.sh} -for
     temporary modules- shell script, which invokes \texttt{make} which
     runs some \texttt{gcc} command) into a ``plugin'' module

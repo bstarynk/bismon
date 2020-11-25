@@ -1,8 +1,8 @@
 #!/bin/bash
-# file build-bismon-persistent-module.sh
+# file persistent-module-build-bismon.sh
 # GPLv3+ licensed, see http://github.com/bstarynk/bismon/
 MODULEID=$1
-logger --id=$$ -s -t build-bismon-persistent-module -p user.debug starting moduleid $MODULEID in $(pwd) at $(date +%c)
+logger --id=$$ -s -t persistent-module-build-bismon -p user.debug starting moduleid $MODULEID in $(pwd) at $(date +%c)
 #echo '@*@*@' $0 "$@" '::: in' $(pwd) > /dev/tty
 #echo '@*@!!@*@' ls -ls  mod*/*${MODULEID}* > /dev/tty
 #ls -ls mod*/*${MODULEID}* > /dev/tty
@@ -14,9 +14,9 @@ makestatus=$?
 #echo '@*@!!@*@' in $(pwd) makestatus $makestatus > /dev/tty
 if [ $makestatus -ne 0 ]; then
     cp -v modules/modbm${MODULEID}.c modules/badmodbm${MODULEID}.c
-    logger --id=$$ -s -t build-bismon-persistent-module -p user.debug make for $MODULEID failed with $makestatus
+    logger --id=$$ -s -t persistent-module-build-bismon -p user.debug make for $MODULEID failed with $makestatus
     exit $makestatus
 else
-    logger --id=$$ -s -t build-bismon-persistent-module -p user.debug make for $MODULEID completed
+    logger --id=$$ -s -t persistent-module-build-bismon -p user.debug make for $MODULEID completed
 fi
 

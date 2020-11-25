@@ -4114,7 +4114,7 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
               "%s/build-bismon-temporary-module.sh", bismon_directory);
   else
     snprintf (buildscriptbuf, sizeof (buildscriptbuf),
-              "%s/build-bismon-persistent-module.sh", bismon_directory);
+              "%s/persistent-module-build-bismon.sh", bismon_directory);
   compilargs[0] = buildscriptbuf;
   compilargs[1] = modulidbuf;
   int nbargs = 2;
