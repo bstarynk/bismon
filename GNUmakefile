@@ -68,7 +68,7 @@ BM_CSOURCES= $(wildcard [a-z]*_BM.c)
 BM_CXXSOURCES= $(wildcard [a-z]*_BM.cc)
 
 ## CONVENTION: packages for pkg-config
-BM_PACKAGES=  glib-2.0
+BM_PACKAGES=  glib-2.0 readline
 
 ## CONVENTION: persistent generated header files are
 BM_PERSISTENT_HEADERS= $(wildcard genbm_*.h)
