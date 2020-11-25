@@ -723,6 +723,7 @@ bmc_print_config_ninja(const char*progname)
       pclose(pipcflpkg), pipcflpkg = nullptr;
       free (pipcfbuf), pipcfbuf = nullptr;
     }
+    ninjaoutf << std::endl;
     /// run pkg-config --libs
     {
       ninjaoutf << "NJBM_pkgconfig_libs=" ;
