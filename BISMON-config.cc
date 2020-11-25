@@ -702,11 +702,13 @@ bmc_print_config_ninja(const char*progname)
     ninjaoutf << std::endl
 	      << "NJBM_pkgconfig_packages= ";
     ninjaoutf << bismon_packages << std::endl;
+    BMC_DEBUG("bismon_packages= " << bismon_packages);
     /// run pkg-config --cflags
     {
       ninjaoutf << "NJBM_pkgconfig_cflags=" ;
       std::string cflpkgcmd = std::string("pkg-config --cflags ") + bismon_packages;
       FILE*pipcflpkg = popen(cflpkgcmd.c_str(), "r");
+      BMC_DEBUG("popen " << cflpkgcmd);
       if (!pipcflpkg) {
 	std::ostringstream outs;
 	outs << progname << " failed to popen " << cflpkgcmd << " : " << strerror(errno) << std::flush;
@@ -716,6 +718,7 @@ bmc_print_config_ninja(const char*progname)
       size_t pipcfsiz = 0;
       ssize_t pipcflen = -1;
       while ((pipcflen = getline(&pipcfbuf, &pipcfsiz, pipcflpkg)) >0) {
+	BMC_DEBUG("pipcfbuf=" << pipcfbuf);
 	ninjaoutf << pipcfbuf;
 	if (!feof(pipcflpkg))
 	  ninjaoutf << " $$" << std::endl;
@@ -729,6 +732,7 @@ bmc_print_config_ninja(const char*progname)
       ninjaoutf << "NJBM_pkgconfig_libs=" ;
       std::string libpkgcmd = std::string("pkg-config --libs ") + bismon_packages;
       FILE*piplibpkg = popen(libpkgcmd.c_str(), "r");
+      BMC_DEBUG("popen " << libpkgcmd);
       if (!piplibpkg) {
 	std::ostringstream outs;
 	outs << progname << " failed to popen " << libpkgcmd << " : " << strerror(errno) << std::flush;
@@ -738,6 +742,7 @@ bmc_print_config_ninja(const char*progname)
       ssize_t piplilen = -1;
       size_t piplisiz = 0;
       while (( piplilen = getline(&piplibuf, &piplisiz, piplibpkg))>0) {
+	BMC_DEBUG("piplibuf=" << piplibuf);
 	ninjaoutf << piplibuf;
 	if (!feof(piplibpkg))
 	  ninjaoutf << " $$" << std::endl;
@@ -752,6 +757,7 @@ bmc_print_config_ninja(const char*progname)
 	      << "NJBM_pkgconfig_cflags =" << std::endl << "NJBM_pkgconfig_libs =" << std::endl;    
   };
   ninjaoutf << std::endl;
+  BMC_DEBUG("handled bismon_packages= " << bismon_packages);
   ninjaoutf << "NJBM_host_cc= "
 	    << (getenv("CC")?:"gcc") << std::endl;
   ninjaoutf << "NJBM_host_cxx= "
@@ -767,9 +773,12 @@ bmc_print_config_ninja(const char*progname)
   ninjaoutf << bmc_ninja_rules << std::endl << std::endl;
   ninjaoutf << "## unimplemented bmc_print_config_ninja " << __FILE__ << ":" << __LINE__ << std::endl;
   std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
+  BMC_DEBUG("incomplete bmc_print_config_ninja");
   BMC_FAILURE ("unimplemented bmc_print_config_ninja");
-#warning unimplemented bmc_print_config_ninja
+#warning incomplete bmc_print_config_ninja
 } // end bmc_print_config_ninja
+
+
 
 const char*
 bmc_readline(const char*progname, const char*prompt)
