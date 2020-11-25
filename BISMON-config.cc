@@ -690,6 +690,16 @@ bmc_print_config_ninja(const char*progname)
     }
   ninjaoutf << "# GENERATED file for ninja-build.org - " << ninjapath << std::endl;
   ninjaoutf << "# for Bismon, see https://github.com/bstarynk/bismon -*- ninja -*-" << std::endl;
+  {
+    time_t nowt = time(nullptr);
+    char timbuf[64];
+    memset (timbuf, 0, sizeof(timbuf));
+    ctime_r(&nowt, timbuf);
+    ninjaoutf << "# generated on " << timbuf << std::flush;
+    ninjaoutf << "# by " << __FILE__ << " git " << BISMON_SHORTGIT << std::endl;
+    ninjaoutf << std::endl << std::endl;
+  }
+  ////
   ninjaoutf << "ninja_required_version= 1.10" << std::endl;
   ninjaoutf << std::endl
 	    << "NJBM_short_gitid= " << bismon_shortgitid << std::endl;
@@ -767,6 +777,7 @@ bmc_print_config_ninja(const char*progname)
   ninjaoutf << "NJBM_host_debug_flags= -g" << std::endl;
   ninjaoutf << "NJBM_host_warn_flags= -Wall -Wextra" << std::endl;
   ninjaoutf << "NJBM_host_cwarn_flags= -Wmissing-prototypes" << std::endl;
+  ninjaoutf << std::endl;
   ///////////////////////////////////////////
   ///// output ninja rules
   ninjaoutf << "# hardcoded rules from " << __FILE__ << ":" << bmc_ninja_rules_lineno << std::endl;
