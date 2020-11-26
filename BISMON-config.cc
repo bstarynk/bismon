@@ -818,6 +818,7 @@ bmc_print_config_ninja(const char*progname)
   for (const char*const* pcursrc = bismon_sources; *pcursrc; pcursrc++) {
     std::string cursrc (*pcursrc);
     auto curlen = cursrc.size();
+    BMC_DEBUG("cursrc='" << cursrc << "' curlen=" << curlen);
     if (curlen > sizeof("_BM.c")
 	&& cursrc.substr(curlen-sizeof("_BM.c")) == std::string("_BM.c")) {
       std::string curobp = cursrc;
