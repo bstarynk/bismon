@@ -818,31 +818,34 @@ bmc_print_config_ninja(const char*progname)
   for (const char*const* pcursrc = bismon_sources; *pcursrc; pcursrc++) {
     std::string cursrc (*pcursrc);
     auto curlen = cursrc.size();
-    BMC_DEBUG("cursrc='" << cursrc << "' curlen=" << curlen);
+    BMC_DEBUG("cursrc='" << cursrc << "' curlen=" << curlen
+	      << " sizeof(\"_BM.c\")=" << sizeof("_BM.c"));
     if (curlen > sizeof("_BM.c")
-	&& cursrc.substr(curlen-sizeof("_BM.c")) == std::string("_BM.c")) {
+	&& cursrc.substr(curlen+1-sizeof("_BM.c")) == std::string("_BM.c")) {
       std::string curobp = cursrc;
       curobp[curlen-1] = 'o';
       BMC_DEBUG("_BM source cursrc='" << cursrc
 		<< "', curobp='" << curobp << "'");
       ninjaoutf << "build " << curobp << ": CC_rlBM " << cursrc
-		<< std::endl;
+		<< std::endl << std::endl;
       nbsrc++;
     }
     if (curlen > sizeof("_BM.cc")
-	&& cursrc.substr(curlen-sizeof("_BM.cc")) == std::string("_BM.cc")) {
+	&& cursrc.substr(curlen+1-sizeof("_BM.cc")) == std::string("_BM.cc")) {
       std::string curobp = cursrc;
-      curobp[curlen-1] = 'o';
+      curobp[curlen-2] = 'o';
+      curobp.resize(curlen-1);
       BMC_DEBUG("_BM source cursrc='" << cursrc
 		<< "', curobp='" << curobp << "'");
       ninjaoutf << "build " << curobp << ": CXX_rlBM " << cursrc
-		<< std::endl;
+		<< std::endl << std::endl;
       nbsrc++;
     }
   }
   BMC_DEBUG("has " << nbsrc
 	    << " C or C++ source files, with bismon_source_number = "
 	    << bismon_source_number);
+#warning missing emission of rule for bismon executable and for ONION stuff.
   ninjaoutf << "## unimplemented bmc_print_config_ninja " << __FILE__ << ":" << __LINE__ << std::endl;
   std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
   BMC_DEBUG("incomplete bmc_print_config_ninja");
