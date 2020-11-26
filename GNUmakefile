@@ -157,15 +157,16 @@ distclean:
 	$(RM) __timestamp* bismon
 	$(RM) *.o BISMON-config BM_makeconst bismon _bm_config.h _bm_config.c  modubin/*.so modubin/*.o *~ *% *.cc.orig
 	$(RM) build.ninja
+	$(RM) _bismon-constdep.mk _bismon-config.mk
 
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX)  -std=gnu++14 -g -Wall -Wextra   BM_makeconst-g.o id_BM-g.o $(shell pkg-config --libs glib-2.0) -o $@
 
 BM_makeconst: BM_makeconst.cc id_BM.o | id_BM.h
-	$(LINK.cc) -std=gnu++14 -O -g -Wall  -Wextra BM_makeconst.cc id_BM.o  $(shell pkg-config --cflags --libs glib-2.0) -o $@
+	$(LINK.cc) -std=gnu++14 -O -g -Wall  -Wextra '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"'  BM_makeconst.cc id_BM.o  $(shell pkg-config --cflags --libs glib-2.0) -o $@
 
 BM_makeconst-g.o: BM_makeconst.cc id_BM.h
-	$(COMPILE.cc) -std=gnu++14   $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+	$(COMPILE.cc) -std=gnu++14   $(shell pkg-config --cflags glib-2.0) -g -Wall  -Wextra '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"' -c $< -o $@
 
 ifeq ($(strip $(wildcard _bismon-constdep.mk)),_bismon-constdep.mk)
 -include _bismon-constdep.mk
