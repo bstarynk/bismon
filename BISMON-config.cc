@@ -81,6 +81,7 @@ extern "C" const char* bismon_packages;
 extern "C" const char* bismon_target_gcc;
 extern "C" const char* bismon_target_gxx;
 extern "C" const char* const bismon_sources[];
+extern "C" const int bismon_source_number;
 
 bool bmc_batch_flag;
 bool bmc_debug_flag;
@@ -809,7 +810,11 @@ bmc_print_config_ninja(const char*progname)
   ninjaoutf << bmc_ninja_rules << std::endl;
   ninjaoutf << "#---------------------------" << std::endl << std::endl;
 
-  ninjaoutf << "# build object files :::::::::" << std::endl;
+  ninjaoutf << "# build " << bismon_source_number
+	    << " object files :::::::::" << std::endl;
+  ninjaoutf << "# .... from " << __FILE__ << ":" << __LINE__ << std::endl;
+  BMC_DEBUG("bismon_source_number = " << bismon_source_number);
+  int nbsrc = 0;
   for (const char*const* pcursrc = bismon_sources; *pcursrc; pcursrc++) {
     std::string cursrc (*pcursrc);
     auto curlen = cursrc.size();
@@ -821,6 +826,7 @@ bmc_print_config_ninja(const char*progname)
 		<< "', curobp='" << curobp << "'");
       ninjaoutf << "build " << curobp << ": CC_rlBM " << cursrc
 		<< std::endl;
+      nbsrc++;
     }
     if (curlen > sizeof("_BM.cc")
 	&& cursrc.substr(curlen-sizeof("_BM.cc")) == std::string("_BM.cc")) {
@@ -830,9 +836,12 @@ bmc_print_config_ninja(const char*progname)
 		<< "', curobp='" << curobp << "'");
       ninjaoutf << "build " << curobp << ": CXX_rlBM " << cursrc
 		<< std::endl;
+      nbsrc++;
     }
   }
-  
+  BMC_DEBUG("has " << nbsrc
+	    << " C or C++ source files, with bismon_source_number = "
+	    << bismon_source_number);
   ninjaoutf << "## unimplemented bmc_print_config_ninja " << __FILE__ << ":" << __LINE__ << std::endl;
   std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
   BMC_DEBUG("incomplete bmc_print_config_ninja");

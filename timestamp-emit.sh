@@ -29,6 +29,8 @@ fi
  done;
  printf '    (const char*)0 }; // end bismon_sources\n') >> __timestamp.tmp
 
+(printf  'const int bismon_source_number =\n   (sizeof(bismon_sources)/sizeof(bismon_sources[0])) - 1;\n\n') >> __timestamp.tmp
+
 (echo -n 'const char bismon_lastgittag[]="'; (git describe --abbrev=0 --all || echo '*notag*') | tr -d '\n\r\f\"\\\\'; echo '";') >> __timestamp.tmp
 
 (echo -n 'const char bismon_checksum[]="'; cat $* | md5sum | cut -d' ' -f1 | tr -d '\n\r\f\"\\' ; echo '";') >> __timestamp.tmp
