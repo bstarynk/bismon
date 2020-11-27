@@ -848,7 +848,8 @@ bmc_print_config_ninja(const char*progname)
   BMC_DEBUG("has " << nbsrc
 	    << " C or C++ source files, with bismon_source_number = "
 	    << bismon_source_number);
-  ninjaoutf << std::endl << "## building bismon executable:" << std::endl;
+  ninjaoutf << std::endl << "## building bismon executable - object files:"
+	    << std::endl;
   {
     int nbob = 0;
     ninjaoutf << "NJBM_object_files=";
@@ -860,6 +861,10 @@ bmc_print_config_ninja(const char*progname)
     }
     ninjaoutf << std::endl;
   }
+  ninjaoutf << std::endl << "## building the bismon executable itself:"
+	    << std::endl;
+  ninjaoutf << "build bismon: LINKALLBISMON_rlBM $NJBM_object_files"
+	    << std::endl;
 #warning missing emission of rule for bismon executable and for ONION stuff.
   ninjaoutf << "## unimplemented bmc_print_config_ninja " << __FILE__ << ":" << __LINE__ << std::endl;
   std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
