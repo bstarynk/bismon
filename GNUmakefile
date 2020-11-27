@@ -228,6 +228,6 @@ endif
 
 
 doc: build-bismon-doc.sh $(wildcard doc/*.tex) doc/bismon-biblio.bib
-	./build-bismon-doc.sh
+	./build-bismon-doc.sh LaTeX
 
 ### end of file GNUmakefile in github.com/bstarynk/bismon
