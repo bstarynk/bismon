@@ -1,8 +1,13 @@
-#!/bin/bash
+#!/bin/bash -x
+## SPDX-License-Identifier: GPL-3.0-or-later
+# On github.com/bstarynk/bismon file doc/genscripts/004-gimplessa-mallfree.sh
 
-# file doc/genscripts/004-gimplessa-mallfree.sh this script is running
-# in doc/ directory and extracts the gimple and SSA forms of
-# examples/mallfree.c
+#    BISMON
+#   Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+#   contributed by Basile Starynkevitch.
+
+# This script is running in doc/ directory and extracts the gimple and
+# SSA forms of examples/mallfree.c
 
 printf "@@@BISMONDOC starting %s %s cwd %s:\n" "$0" "$@" $(pwd) > /dev/stderr
 
@@ -43,4 +48,4 @@ tail -n +$nbskip mallfree.s | sed s:../examples/::g >> mallfree-tail.s
 
 (pwd; ls -ls mallfree*)  1>&2
 
-printf "%% 004-gimplessa-mallfree.sh done\n"
+printf "%% 004-gimplessa-mallfree.sh done %s in %s\n" $0 $(pwd)
