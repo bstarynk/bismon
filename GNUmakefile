@@ -92,7 +92,7 @@ CXXFLAGS += $(BM_CXX_STANDARD_FLAGS) $(pkg-config --cflags $(BM_PACKAGES)) \
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
-.PHONY: all config count executable clean runconfig distclean
+.PHONY: all config count executable clean runconfig distclean doc
 
 .DEFAULTS: all
 
@@ -225,3 +225,9 @@ else
 build.ninja: GNUmakefile BISMON-config
 	./BISMON-config --skip=for_$(strip $(MAKELEVEL))_ninja  $(BISMON_CONFIG_OPTIONS) --ninja=$@
 endif
+
+
+doc: build-bismon-doc.sh $(wildcard doc/*.tex) doc/bismon-biblio.bib
+	./build-bismon-doc.sh
+
+### end of file GNUmakefile in github.com/bstarynk/bismon
