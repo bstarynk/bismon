@@ -126,7 +126,12 @@ if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
     printf '\n\n\n#### second pass latexing bismon chariot doc #####\n'
     lualatex -halt-on-error bismon-chariot-doc 
     bibtex bismon-chariot-doc < /dev/null
-    lualatex -halt-on-error bismon-chariot-doc || (echo failed lualatex -halt-on-error bismon-chariot-doc got $? ; exit $? >/dev/stderr)
+    if lualatex -halt-on-error bismon-chariot-doc ; then
+	printf "@@@BISMONdoc %s succeeded lualatex-ing bismon-chariot-doc\n" $0
+    else
+	printf "\n****\n@@@BISMONdoc %s failed lualatex-ing bismon-chariot-doc *****\n\n" $0 >& /dev/stderr
+	exit 1
+    fi
     [ -d $HOME/tmp/ ] && cp -v bismon-chariot-doc.pdf $HOME/tmp/bismon-chariot-doc-$bmrawgittag.pdf && (cd $HOME/tmp; ln -svf bismon-chariot-doc-$bmrawgittag.pdf bismon-chariot-doc.pdf)
 
     ls -l $PWD/*aux $PWD/*/*aux $PWD/*bbl $PWD/*/*bbl
