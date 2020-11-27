@@ -66,7 +66,12 @@ for gscript in genscripts/[0-9]*.sh ; do
     gbase="$(basename $gscript .sh)"
     mv -vf "generated/$gbase.tex" "generated/$gbase.tex~"
     $gscript > "generated/$gbase.tex"
-    echo "script-generated" $(wc -l "generated/$gbase.tex")
+    if [ -s "generated/$gbase.tex" ]; then
+	printf "%s: script-generated %s with %d lines\n" $0 "generated/$gbase.tex"  $(wc -l "generated/$gbase.tex")
+    else
+	printf "\n@@@BISMONdoc %s process %d failed in %s to generate %s\n" $0 $$ $(pwd) "generated/$gbase.tex" > /dev/stderr
+	exit 1
+    fi
 done
 
 # generate vector SVG images
@@ -112,7 +117,7 @@ if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
     lualatex -halt-on-error bismon-chariot-doc 
     bibtex bismon-chariot-doc < /dev/null
     lualatex -halt-on-error bismon-chariot-doc 
-    ## on Debian texindy & xindy is inside indy package
+    ## on Debian texindy & xindy is inside xindy package
     pwd && ls -lt bismon-chariot-doc.*
     texindy -v -C utf8 -I latex bismon-chariot-doc.idx >& /tmp/texindy-bismon.log || true
     if texindy -v -C utf8 -I latex bismon-chariot-doc.idx ; then
