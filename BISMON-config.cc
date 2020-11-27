@@ -856,7 +856,7 @@ bmc_print_config_ninja(const char*progname)
       nbob++;
       if (nbob%4 == 0)
 	ninjaoutf << " $$" << std::endl << " ";
-      ninjaoutf << curob;
+      ninjaoutf << " " << curob;
     }
     ninjaoutf << std::endl;
   }
