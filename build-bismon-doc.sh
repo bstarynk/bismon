@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 # file build-bismon-doc.sh
 ## requirement: generate PDF (with hyperlinks) and HTML5
 # considering following typesetters
@@ -13,7 +13,18 @@
 # perhaps LEPTON: http://www.math.univ-paris13.fr/~lithiao/Lepton.html
 # perhaps ANT: http://mirror.hmc.edu/ctan/systems/ant/
 
+## the optional program argument could be LaTeX or HeVeA or left empty
 docmode=$1
+
+if [ -n "$docmode" ]; then
+    case "$docmode" in
+	LaTeX) break;;
+	HeVeA) break;;
+	*)
+	    printf "%s: invalid mode %s, expecting LaTeX or HeVeA\n" $0 "$docmode" > /dev/stderr
+	    exit 1
+    esac
+fi
 
 ## old inkscape had --without-gui option, which changed in Inkscape 1.0
 bismon_inkscape_batch_option="--batch-process"
@@ -128,3 +139,7 @@ fi
 
 printf "\n@@@BISMONdoc %s process %d making final tarball in %s\n" $0 $$ $(pwd)
 tar -c -f - htmldoc/ | tardy -Remove_Prefix htmldoc -Prefix bismon-html-doc -User_NAme bismon -Group_NAme bismon | gzip -9 > bismon-html-doc.tar.gz
+
+printf "\n@@@BISMONdoc %s generated:\n" $0
+/bin/ls -lt bismon-html-doc.tar.gz doc/bismon-chariot-doc.pdf || exit 1
+printf "\n\n\n"
