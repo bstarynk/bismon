@@ -805,6 +805,7 @@ bmc_print_config_ninja(const char*progname)
   ninjaoutf << std::endl;
   ///////////////////////////////////////////
   ///// output ninja rules
+  std::vector<std::string> objectvect;
   ninjaoutf << "# hardcoded rules from " << __FILE__ << ":" << bmc_ninja_rules_lineno << std::endl;
   ninjaoutf << "#+++++++++++++++++++++++++++" << std::endl;
   ninjaoutf << bmc_ninja_rules << std::endl;
@@ -828,6 +829,7 @@ bmc_print_config_ninja(const char*progname)
 		<< "', curobp='" << curobp << "'");
       ninjaoutf << "build " << curobp << ": CC_rlBM " << cursrc
 		<< std::endl << std::endl;
+      objectvect.push_back(std::string{curobp});
       nbsrc++;
     }
     if (curlen > sizeof("_BM.cc")
@@ -840,11 +842,24 @@ bmc_print_config_ninja(const char*progname)
       ninjaoutf << "build " << curobp << ": CXX_rlBM " << cursrc
 		<< std::endl << std::endl;
       nbsrc++;
+      objectvect.push_back(std::string{curobp});
     }
   }
   BMC_DEBUG("has " << nbsrc
 	    << " C or C++ source files, with bismon_source_number = "
 	    << bismon_source_number);
+  ninjaoutf << std::endl << "## building bismon executable:" << std::endl;
+  {
+    int nbob = 0;
+    ninjaoutf << "NJBM_object_files=";
+    for (auto curob: objectvect) {
+      nbob++;
+      if (nbob%4 == 0)
+	ninjaoutf << " $$" << std::endl << " ";
+      ninjaoutf << curob;
+    }
+    ninjaoutf << std::endl;
+  }
 #warning missing emission of rule for bismon executable and for ONION stuff.
   ninjaoutf << "## unimplemented bmc_print_config_ninja " << __FILE__ << ":" << __LINE__ << std::endl;
   std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
