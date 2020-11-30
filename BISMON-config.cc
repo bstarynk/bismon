@@ -636,19 +636,19 @@ const char bmc_ninja_rules[] =
 rule CC_rlBM
   depfile = _$out.mkd - handwritten C code
   description = CC_rlBM $out < $in (handwritten C code)
-  command = $NJBM_host_cc -c $NJBM_host_warn_flags $NJBM_host_cwarn_flags $$
-            $NJBM_host_optim_flags $NJBM_host_debug_flags $NJBM_host_prepro_flags $$
-               -MD -MF _$out.mkd $$
+  command = $NJBM_host_cc -c $NJBM_host_warn_flags $NJBM_host_cwarn_flags $
+            $NJBM_host_optim_flags $NJBM_host_debug_flags $NJBM_host_prepro_flags $
+               -MD -MF _$out.mkd $
                $in -o $out
 
 # compilation of _BM.cc files - handwritten C++ code
 rule CXX_rlBM
   depfile = _$out.mkd
   description = CXX_rlBM $out < $in (handwritten C++ code)
-  command = $NJBM_host_cxx -c $NJBM_host_warn_flags $$
-            $NJBM_host_optim_flags $NJBM_host_debug_flags $$
-            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $$
-            -MD -MF  _$out.mkd $$
+  command = $NJBM_host_cxx -c $NJBM_host_warn_flags $
+            $NJBM_host_optim_flags $NJBM_host_debug_flags $
+            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $
+            -MD -MF  _$out.mkd $
             $in -o $out
 
 
@@ -656,18 +656,18 @@ rule CXX_rlBM
 rule MODCC_rlBM
   depfile = _$out.mkd
   description = MODCC_rlBM  $out < $in (generated C module)
-  command = $NJBM_host_cxx -fPIC -shared $NJBM_host_warn_flags $$
-            $NJBM_host_optim_flags $NJBM_host_debug_flags $$
-            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $$
-            -MD -MF  _$out.mkd $$
+  command = $NJBM_host_cxx -fPIC -shared $NJBM_host_warn_flags $
+            $NJBM_host_optim_flags $NJBM_host_debug_flags $
+            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $
+            -MD -MF  _$out.mkd $
             $in -o $out
 
 
 # linking of all Bismon
 rule LINKALLBISMON_rlBM
   description = LINKALLBISMON_rlBM (link everything into $out)
-  command = $NJBM_host_cxx  $NJBM_host_warn_flags $$
-            $NJBM_host_optim_flags $NJBM_host_debug_flags $$
+  command = $NJBM_host_cxx  $NJBM_host_warn_flags $
+            $NJBM_host_optim_flags $NJBM_host_debug_flags $
             $in $NJBM_pkgconfig_libs
             -o $out
 
@@ -743,7 +743,7 @@ bmc_print_config_ninja(const char*progname)
       ssize_t pipcflen = -1;
       while ((pipcflen = getline(&pipcfbuf, &pipcfsiz, pipcflpkg)) >0) {
 	if (lineno>0)
-	  ninjaoutf << " $$" << std::endl;
+	  ninjaoutf << " $" << std::endl;
 	lineno++;
 	BMC_DEBUG("pipcfbuf='" << pipcfbuf << "', pipcflen=" << pipcflen << ", line#" << lineno);
 	if (pipcflen >0 && pipcfbuf[(int)pipcflen-1] == '\n')
@@ -773,7 +773,7 @@ bmc_print_config_ninja(const char*progname)
       size_t piplisiz = 0;
       while (( piplilen = getline(&piplibuf, &piplisiz, piplibpkg))>0) {
 	if (lineno>0)
-	  ninjaoutf << " $$" << std::endl;
+	  ninjaoutf << " $" << std::endl;
 	lineno++;
 	BMC_DEBUG("piplibuf='" << piplibuf << "', piplilen=" << piplilen);
 	if (piplilen>0 && piplibuf[(int)piplilen-1] == '\n')
@@ -856,7 +856,7 @@ bmc_print_config_ninja(const char*progname)
     for (auto curob: objectvect) {
       nbob++;
       if (nbob%4 == 0)
-	ninjaoutf << " $$" << std::endl << " ";
+	ninjaoutf << " $" << std::endl << " ";
       ninjaoutf << " " << curob;
     }
     ninjaoutf << std::endl;
