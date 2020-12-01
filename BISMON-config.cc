@@ -637,7 +637,8 @@ rule CC_rlBM
   depfile = _$out.mkd - handwritten C code
   description = CC_rlBM $out < $in (handwritten C code)
   command = $NJBM_host_cc -c $NJBM_host_warn_flags $NJBM_host_cwarn_flags $
-            $NJBM_host_optim_flags $NJBM_host_debug_flags $NJBM_host_prepro_flags $
+            $NJBM_host_optim_flags $NJBM_host_debug_flags $
+            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $
                -MD -MF _$out.mkd $
                $in -o $out
 
