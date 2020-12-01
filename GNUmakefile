@@ -196,7 +196,7 @@ __timestamp.c:  timestamp-emit.sh |  GNUmakefile
 
 all: config executable
 
-executable: _bismon-config.mk
+executable: _bismon-config.mk build.ninja
 	$(MAKE) $(BISMONMK_EXECUTABLE)
 	$(MAKE) bismon
 
