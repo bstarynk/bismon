@@ -668,7 +668,7 @@ rule LINKALLBISMON_rlBM
   description = LINKALLBISMON_rlBM (link everything into $out)
   command = $NJBM_host_cxx  $NJBM_host_warn_flags $
             $NJBM_host_optim_flags $NJBM_host_debug_flags $
-            $in $NJBM_pkgconfig_libs
+            $in $NJBM_pkgconfig_libs $
             -o $out
 
 ################### end of NinjaRules ###################
