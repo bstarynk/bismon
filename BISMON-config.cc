@@ -152,6 +152,8 @@ void bmc_show_version(const char*progname);
 void bmc_failure_at (const char*reason, int lineno);
 #define BMC_FAILURE(Reason) bmc_failure_at((Reason),__LINE__)
 
+void bmc_set_readline_buffer(const std::string& str);
+
 void bmc_failure_at(const char*reason, int lineno)
 {
   std::cerr << bmc_main_argv[0] << " failure: " << reason << " at " << __FILE__ << ":" << lineno << std::endl;
@@ -696,6 +698,7 @@ bmc_set_readline_buffer(const std::string& str)
   memcpy (rl_line_buffer, str.c_str(), slen);
   rl_point = 0;
   rl_line_buffer_len = roundlen;
+  add_history(str.c_str());
 } // end bmc_set_readline_buffer
 
 void
@@ -937,6 +940,10 @@ bmc_ask_missing_configuration(const char*progname)
     {
       std::cout << "Target Bismon GCC [cross-]compiler for C code. Should be at least a GCC 10. See gcc.gnu.org...." << std::endl;
       std::cout << "(it is preferable to enter some absolute path, such as /usr/local/bin/gcc-10)" << std::endl;
+      if (!access("/usr/bin/gcc-10", X_OK) && isatty(STDOUT_FILENO)) {
+	BMC_DEBUG("defaulting target GCC to /usr/bin/gcc-10");
+	bmc_set_readline_buffer("/usr/bin/gcc-10");
+      }
       const char*gcctarget = bmc_readline(progname, "BISMON target GCC? ");
       if (gcctarget)
         {
@@ -954,6 +961,10 @@ bmc_ask_missing_configuration(const char*progname)
     {
       std::cout << "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 10. See gcc.gnu.org...." << std::endl;
       std::cout << "(it is recommended to enter some absolute path, such as /usr/local/bin/g++-10)" << std::endl;
+      if (!access("/usr/bin/g++-10", X_OK) && isatty(STDOUT_FILENO)) {
+	BMC_DEBUG("defaulting target GXX to /usr/bin/g++-10");
+	bmc_set_readline_buffer("/usr/bin/g++-10");
+      }
       const char*gxxtarget = bmc_readline(progname, "BISMON target GXX? ");
       if (gxxtarget)
         {
@@ -1128,8 +1139,10 @@ main (int argc, char**argv)
 	      localtime_r(&bmc_start_time, &start_tm));
     bmc_start_str_ctime = std::string(timbuf);
   }
-  if (isatty(STDOUT_FILENO))
+  if (isatty(STDOUT_FILENO)) {
     rl_initialize();		// initialize GNU readline;
+    using_history();
+  }
 
   nbinit = bmc_initialize_global_variables (argv[0]);
   bmc_parse_options(argc, argv);
