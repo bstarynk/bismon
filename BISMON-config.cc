@@ -1146,6 +1146,23 @@ main (int argc, char**argv)
 
   nbinit = bmc_initialize_global_variables (argv[0]);
   bmc_parse_options(argc, argv);
+  if (getenv("ESHELL") && isatty(STDOUT_FILENO) && !bmc_silent_flag) {
+      if (!earlydebug)
+        std::cout << std::endl << std::endl << "***** BISMON Configurator (emacs-ed ESHELL="
+		  << getenv("ESHELL")
+		  << ") ****" << std::endl;
+      std::cout
+          << std::endl << "(this program " << argv[0] << " uses GNU readline, so you could use the <tab> key is for autocompletion," << std::endl;
+      std::cout << "... and your input lines are editable.  For more about GNU readline, see www.gnu.org/software/readline ...)" << std::endl;
+      std::cout << "For more about Bismon, see github.com/bstarynk/bismon ...."
+                << std::endl;
+      std::cout << "For more about GCC, see gcc.gnu.org ...." << std::endl;
+      std::cout << "# running " << __FILE__ " @"  __DATE__ << " on " << bmc_hostname << " pid " << (int)getpid()
+                << " parentpid " << (int)getppid() << std::endl;
+      if (nbinit)
+	std::cout << "# " << nbinit << " variables initialized from previous __timestamp.c ..." << std::endl;
+      std::cout << "# " << argv[0] << " git " << BISMON_SHORTGIT << " started on " << bmc_start_str_ctime << std::endl;
+  }
   if (isatty(STDOUT_FILENO) && !bmc_silent_flag)
     {
       if (!earlydebug)
