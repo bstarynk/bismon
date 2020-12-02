@@ -938,12 +938,16 @@ bmc_ask_missing_configuration(const char*progname)
   /// ask about target GCC compilers for C and for C++
   while (bmc_target_gcc.empty())
     {
-      std::cout << "Target Bismon GCC [cross-]compiler for C code. Should be at least a GCC 10. See gcc.gnu.org...." << std::endl;
-      std::cout << "(it is preferable to enter some absolute path, such as /usr/local/bin/gcc-10)" << std::endl;
+      std::cout << "Target Bismon GCC [cross-]compiler for C code. Should be at least a GCC 10."
+		<< std::endl << "... See gcc.gnu.org for more about GCC...." << std::endl;
+      std::cout << "(it is preferable to enter some absolute path, such as /usr/local/bin/gcc-10 ..." << std::endl;
       if (!access("/usr/bin/gcc-10", X_OK) && isatty(STDOUT_FILENO)) {
+	std::cout << "... Found some /usr/bin/gcc-10)" << std::endl;
 	BMC_DEBUG("defaulting target GCC to /usr/bin/gcc-10");
 	bmc_set_readline_buffer("/usr/bin/gcc-10");
       }
+      else
+	std::cout << ")" << std::endl;
       const char*gcctarget = bmc_readline(progname, "BISMON target GCC? ");
       if (gcctarget)
         {
@@ -956,15 +960,19 @@ bmc_ask_missing_configuration(const char*progname)
           free ((void*)gcctarget), gcctarget = nullptr;
         }
     }
-  std::cout << std::endl;
+  std::cout << ")" << std::endl<< std::endl;
   while (bmc_target_gxx.empty())
     {
-      std::cout << "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 10. See gcc.gnu.org...." << std::endl;
-      std::cout << "(it is recommended to enter some absolute path, such as /usr/local/bin/g++-10)" << std::endl;
+      std::cout << "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 10."
+		<< std::endl << "... See gcc.gnu.org for more about GCC...." << std::endl;
+      std::cout << "(it is recommended to enter some absolute path, such as /usr/local/bin/g++-10 ..." << std::endl;
       if (!access("/usr/bin/g++-10", X_OK) && isatty(STDOUT_FILENO)) {
+	std::cout << "... Found some /usr/bin/g++-10)" << std::endl;
 	BMC_DEBUG("defaulting target GXX to /usr/bin/g++-10");
 	bmc_set_readline_buffer("/usr/bin/g++-10");
       }
+      else
+	std::cout << ")" << std::endl;
       const char*gxxtarget = bmc_readline(progname, "BISMON target GXX? ");
       if (gxxtarget)
         {
@@ -1151,27 +1159,19 @@ main (int argc, char**argv)
         std::cout << std::endl << std::endl << "***** BISMON Configurator (emacs-ed ESHELL="
 		  << getenv("ESHELL")
 		  << ") ****" << std::endl;
-      std::cout
-          << std::endl << "(this program " << argv[0] << " uses GNU readline, so you could use the <tab> key is for autocompletion," << std::endl;
-      std::cout << "... and your input lines are editable.  For more about GNU readline, see www.gnu.org/software/readline ...)" << std::endl;
-      std::cout << "For more about Bismon, see github.com/bstarynk/bismon ...."
-                << std::endl;
-      std::cout << "For more about GCC, see gcc.gnu.org ...." << std::endl;
-      std::cout << "# running " << __FILE__ " @"  __DATE__ << " on " << bmc_hostname << " pid " << (int)getpid()
-                << " parentpid " << (int)getppid() << std::endl;
-      if (nbinit)
-	std::cout << "# " << nbinit << " variables initialized from previous __timestamp.c ..." << std::endl;
-      std::cout << "# " << argv[0] << " git " << BISMON_SHORTGIT << " started on " << bmc_start_str_ctime << std::endl;
   }
-  if (isatty(STDOUT_FILENO) && !bmc_silent_flag)
+  else if (isatty(STDOUT_FILENO) && !bmc_silent_flag)
     {
-      if (!earlydebug)
+      if (!earlydebug && !getenv("ESHELL"))
         std::cout << std::endl << std::endl << "***** " BMC_BOLD_ESCAPE "BISMON Configurator" BMC_PLAIN_ESCAPE " ****" << std::endl;
       std::cout
           << std::endl << "(this program " << argv[0] << " uses GNU readline, so you could use the <tab> key is for autocompletion," << std::endl;
       std::cout << "... and your input lines are editable.  For more about GNU readline, see www.gnu.org/software/readline ...)" << std::endl;
-      std::cout << "For more about Bismon, see github.com/bstarynk/bismon ...."
-                << std::endl;
+    };
+  if (isatty(STDOUT_FILENO) && !bmc_silent_flag) {
+      std::cout << "For more about BISMON, see github.com/bstarynk/bismon ...."
+                << std::endl
+		<< "... and perhaps the *DRAFT* report on starynkevitch.net/Basile/bismon-chariot-doc.pdf" << std::endl;
       std::cout << "For more about GCC, see gcc.gnu.org ...." << std::endl;
       std::cout << "# running " << __FILE__ " @"  __DATE__ << " on " << bmc_hostname << " pid " << (int)getpid()
                 << " parentpid " << (int)getppid() << std::endl;
@@ -1179,6 +1179,11 @@ main (int argc, char**argv)
 	std::cout << "# " << nbinit << " variables initialized from previous __timestamp.c ..." << std::endl;
       std::cout << "# " << argv[0] << " git " << BISMON_SHORTGIT << " started on " << bmc_start_str_ctime << std::endl;
     }
+  if (isatty(STDOUT_FILENO) && !bmc_silent_flag) {
+    usleep (1000);
+    std::cout << "This " << argv[0] << " program is, like BISMON, GPLv3+ licensed so *WITHOUT ANY WARRANTY*." << std::endl;
+    std::cout << "... see www.gnu.org/licenses/gpl-3.0.en.html for details." << std::endl;
+  }
   usleep(1024*16);
   if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO)
       && !bmc_batch_flag && !bmc_constdepend_flag)
