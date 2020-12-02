@@ -810,7 +810,9 @@ bmc_print_config_ninja(const char*progname)
   ninjaoutf << "# hardcoded rules from " << __FILE__ << ":" << bmc_ninja_rules_lineno << std::endl;
   ninjaoutf << "#+++++++++++++++++++++++++++" << std::endl;
   ninjaoutf << bmc_ninja_rules << std::endl;
-  ninjaoutf << "#---------------------------" << std::endl << std::endl;
+  ninjaoutf << "#--------------------------- from "
+	    << __FILE__ ":" << __LINE__
+	    << std::endl << std::endl << std::endl;
 
   ninjaoutf << "# build " << bismon_source_number
 	    << " object files :::::::::" << std::endl;
