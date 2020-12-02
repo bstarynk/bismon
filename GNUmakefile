@@ -125,7 +125,7 @@ endif
 ifeq ($(MAKELEVEL),0)
 _bismon-config.mk _bm_config.h _bm_config.c: BISMON-config.cc
 	sleep 0.05
-	bash -x -c 'if [ ! -x ./BISMON-config -a "$(MAKELEVEL)" = 0 ] ; then ; /bin/sleep 0.1 ; $(MAKE)  ./BISMON-config ; fi'
+	bash -x -c 'if [ ! -x ./BISMON-config -a "$(MAKELEVEL)" = 0 ] ; then /bin/sleep 0.1 ; $(MAKE)  ./BISMON-config ; fi'
 	sleep 0.1
 	$(MAKE) runconfig
 	sleep 0.02
@@ -159,13 +159,9 @@ clean:
 	$(RM) *_BM.const.h
 	$(RM) build.ninja
 
-distclean:
-	sleep 0.05
-	$(RM)  *~ *%
-	$(RM) __timestamp* bismon
-	$(RM) *.o BISMON-config BM_makeconst bismon _bm_config.h _bm_config.c  modubin/*.so modubin/*.o *~ *% *.cc.orig
-	$(RM) build.ninja
-	$(RM) _bismon-constdep.mk _bismon-config.mk
+distclean: | distclean-script.bash
+	./distclean-script.bash
+	$(RM) *~ *%
 
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX)  -std=gnu++14 -g -Wall -Wextra   BM_makeconst-g.o id_BM-g.o $(shell pkg-config --libs glib-2.0) -o $@
@@ -223,7 +219,7 @@ bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c _bismon-constdep.mk 
 
 
 _bismon-constdep.mk: BISMON-config $(BM_CSOURCES)
-	@if [ -f $@ ]; then mv -v $@ $@~ ; fi
+	@if [ -f $@ ] ; then mv -v $@ $@~ ; fi
 	./BISMON-config --skip=for_constdep $(BISMON_CONFIG_OPTIONS) --const-depend  $(BM_CSOURCES) > _bismon-constdep.mk
 
 ifeq ($(MAKELEVEL),0)
