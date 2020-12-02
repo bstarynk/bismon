@@ -92,10 +92,16 @@ CXXFLAGS += $(BM_CXX_STANDARD_FLAGS) $(pkg-config --cflags $(BM_PACKAGES)) \
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
-.PHONY: all config count executable clean runconfig distclean doc
 
-.DEFAULTS: all
+## see https://www.gnu.org/software/make/manual/html_node/Special-Targets.html
+.DEFAULT: all
 
+.PHONY: all config count executable distclean clean runconfig  doc
+
+.EXPORT_ALL_VARIABLES:
+
+
+################
 config: _bismon-config.mk _bm_config.h  _bm_config.c
 
 ## include _bismon-config.mk only if it exists.
