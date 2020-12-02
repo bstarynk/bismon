@@ -193,7 +193,8 @@ seek_header_in_cfile(const char*path)
 
 
 
-int main(int argc, char**argv)
+int
+main(int argc, char**argv)
 {
   if (argc < 3 || (argc>1 && !strcmp(argv[1], "--help")))
 show_usage:
@@ -202,9 +203,21 @@ show_usage:
               "\t -H <generated-header> <C-file>   # generate *.const.h\n"
               "\t -S <C-file>                      # output included *.const.h, or else fail\n"
               "\t -C <generated-code> <C-files>... # generate the global const file\n", argv[0]);
+      fprintf(stderr, "%s also accepts --version and --help, per GNU habits.\n",
+              argv[0]);
+      fprintf(stderr, "See github.com/bstarynk/bismon and perhaps the DRAFT on starynkevitch.net/Basile/bismon-chariot-doc.pdf\n");
+      fprintf(stderr, "This is a GPLv3+ licensed software *WITHOUT ANY WARRANTY*, see www.gnu.org/licenses/gpl-3.0.en.html\n");
       exit(EXIT_FAILURE);
     }
-  if (!strcmp(argv[1], "-H"))
+  if (argc >= 2 && !strcmp(argv[1], "--version"))
+    {
+      printf("%s built from %s shortgit %s at %s\n",
+             argv[0], __FILE__, BISMON_SHORTGIT, __DATE__ "@" __TIME__);
+      printf("See github.com/bstarynk/bismon and perhaps the DRAFT on starynkevitch.net/Basile/bismon-chariot-doc.pdf\n");
+      printf("This is a GPLv3+ licensed software *WITHOUT ANY WARRANTY*, see www.gnu.org/licenses/gpl-3.0.en.html\n");
+      exit(EXIT_SUCCESS);
+    };
+  if (argc >= 2 && !strcmp(argv[1], "-H"))
     {
       auto hpath = argv[2];
       set_of_ids_KBM bmconstset;
@@ -238,7 +251,7 @@ show_usage:
         }
       outh << "//- eof generated header " << hpath << std::endl;
     }
-  else if (!strcmp(argv[1], "-C"))
+  else if (argc >= 2 && !strcmp(argv[1], "-C"))
     {
       auto spath = argv[2];
       int nblines = 0;
@@ -290,7 +303,7 @@ show_usage:
       printf("processed %d lines in %d files with %d occurrences of %d constants\n",
              nblines, argc-3, totalnbkocc, (int) bmconstset.size());
     }
-  else if (!strcmp(argv[1], "-S") && argc == 3)
+  else if (argc >= 2 && !strcmp(argv[1], "-S") && argc == 3)
     {
       if (!seek_header_in_cfile(argv[2]))
         exit(EXIT_FAILURE);
