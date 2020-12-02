@@ -204,7 +204,7 @@ executable: _bismon-config.mk build.ninja
 _bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
 	./BM_makeconst -C $@ $(BM_CSOURCES)
 
-bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c _bismon-constdep.mk
+bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c _bismon-constdep.mk | $(BM_CSOURCES) $(BM_CXXSOURCES) BISMON-config.cc
 	$(MAKE) build.ninja
 	@echo $(MAKE) will build bismon using $(BM_NICE) $(BM_NINJA) $(BM_NINJA_FLAGS) bismon
 	$(BM_NICE) $(BM_NINJA) $(BM_NINJA_FLAGS) bismon
