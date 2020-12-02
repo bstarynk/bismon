@@ -102,7 +102,7 @@ BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
 
 ################
-config: _bismon-config.mk _bm_config.h  _bm_config.c
+config: _bismon-config.mk _bm_config.h  _bm_config.c $(warning $(MAKE) config at level $(MAKELEVEL))
 
 ## include _bismon-config.mk only if it exists.
 ifeq ($(strip $(wildcard _bismon-config.mk)),_bismon-config.mk)
@@ -122,7 +122,7 @@ BISMON_CONFIG_OPTIONS+= --output-directory=$(BISMONMK_OUT_DIRECTORY)
 endif
 
 ### the configurator program
-BISMON-config: BISMON-config.cc __timestamp.o
+BISMON-config: BISMON-config.cc __timestamp.o $(warning $(MAKE) BISMON-config at level $(MAKELEVEL))
 	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
 	@bash -c "if [ -f $@ ] ; then mv -v $@ $@~ ; fi"
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"' -Wall -Wextra -O -g $^ -lreadline  -o $@
@@ -141,7 +141,7 @@ _bismon-config.mk _bm_config.h _bm_config.c:
 	$(MAKE) runconfig
 endif
 
-runconfig: BISMON-config
+runconfig: BISMON-config $(warning $(MAKE) runconfig at level $(MAKELEVEL))
 	./BISMON-config --skip=for_runconfig $(BISMON_CONFIG_OPTIONS)
 	$(MAKE) _bismon-constdep.mk
 
@@ -200,9 +200,9 @@ __timestamp.c:  timestamp-emit.sh |  GNUmakefile
 %_BM.const.h: %_BM.c | BM_makeconst
 	./BM_makeconst -H $@ $^
 
-all: config executable
+all: config executable $(warning $(MAKE) all at level $(MAKELEVEL))
 
-executable: _bismon-config.mk build.ninja
+executable: _bismon-config.mk build.ninja $(warning $(MAKE) executable at level $(MAKELEVEL))
 	$(MAKE) $(BISMONMK_EXECUTABLE)
 	$(MAKE) bismon
 
@@ -210,7 +210,7 @@ executable: _bismon-config.mk build.ninja
 _bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
 	./BM_makeconst -C $@ $(BM_CSOURCES)
 
-bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c _bismon-constdep.mk | $(BM_CSOURCES) $(BM_CXXSOURCES) BISMON-config.cc
+bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c _bismon-constdep.mk  $(warning $(MAKE) bismon at level $(MAKELEVEL)) | $(BM_CSOURCES) $(BM_CXXSOURCES) BISMON-config.cc
 	$(MAKE) build.ninja
 	@echo $(MAKE) will build bismon using $(BM_NICE) $(BM_NINJA) $(BM_NINJA_FLAGS) bismon
 	$(BM_NICE) $(BM_NINJA) $(BM_NINJA_FLAGS) bismon
@@ -225,10 +225,10 @@ _bismon-constdep.mk: BISMON-config $(BM_CSOURCES)
 	./BISMON-config --skip=for_constdep $(BISMON_CONFIG_OPTIONS) --const-depend  $(BM_CSOURCES) > _bismon-constdep.mk
 
 ifeq ($(MAKELEVEL),0)
-build.ninja: GNUmakefile BISMON-config   _bismon-config.mk _bm_config.h
+build.ninja: GNUmakefile BISMON-config   _bismon-config.mk _bm_config.h $(warning $(MAKE) build.ninja at zero level) 
 	./BISMON-config --skip=for_base_ninja  $(BISMON_CONFIG_OPTIONS) --ninja=$@
 else
-build.ninja: GNUmakefile BISMON-config
+build.ninja: GNUmakefile BISMON-config $(warning $(MAKE) build.ninja at level $(MAKELEVEL)) 
 	./BISMON-config --skip=for_$(strip $(MAKELEVEL))_ninja  $(BISMON_CONFIG_OPTIONS) --ninja=$@
 endif
 
