@@ -675,7 +675,28 @@ rule LINKALLBISMON_rlBM
 ################### end of NinjaRules ###################
 )NinjaRules";
 
+// see file readline.c near line 250 of GNU readline 8
+extern "C" char* rl_line_buffer;
+extern "C" int rl_line_buffer_len;
 
+void
+bmc_set_readline_buffer(const std::string& str)
+{
+  if (str.empty())
+    return;
+  unsigned slen = str.size();
+  unsigned roundlen = ((slen + 3) | 0xff) + 1;
+  std::string oldrlbuf(rl_line_buffer?:"");
+  if (rl_line_buffer)
+    free(rl_line_buffer), rl_line_buffer = nullptr;
+  rl_line_buffer = (char*) malloc(roundlen);
+  if (!rl_line_buffer)
+    BMC_FAILURE("failed to malloc rl_line_buffer");
+  memset (rl_line_buffer, 0, roundlen);
+  memcpy (rl_line_buffer, str.c_str(), slen);
+  rl_point = 0;
+  rl_line_buffer_len = roundlen;
+} // end bmc_set_readline_buffer
 
 void
 bmc_print_config_ninja(const char*progname)
@@ -1107,6 +1128,9 @@ main (int argc, char**argv)
 	      localtime_r(&bmc_start_time, &start_tm));
     bmc_start_str_ctime = std::string(timbuf);
   }
+  if (isatty(STDOUT_FILENO))
+    rl_initialize();		// initialize GNU readline;
+
   nbinit = bmc_initialize_global_variables (argv[0]);
   bmc_parse_options(argc, argv);
   if (isatty(STDOUT_FILENO) && !bmc_silent_flag)
