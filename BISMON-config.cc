@@ -85,6 +85,9 @@ extern "C" const char* bismon_target_gcc;
 extern "C" const char* bismon_target_gxx;
 extern "C" const char* const bismon_sources[];
 extern "C" const int bismon_source_number;
+extern "C" const char* bismon_onion_includedir;
+extern "C" const char* bismon_onion_libdir;
+
 
 bool bmc_batch_flag;
 bool bmc_debug_flag;
@@ -1173,25 +1176,45 @@ int
 bmc_initialize_global_variables(const char*progname)
 {
   int nbinit=0;
-  if (bismon_make) {
+  if (bismon_make && bismon_make[0]) {
     bmc_make = std::string(bismon_make);
     BMC_DEBUG("bmc_make initialized to " << bmc_make);
     nbinit++;
   };
-  if (bismon_packages) {
+  if (bismon_packages && bismon_packages[0]) {
     bmc_packages = std::string(bismon_packages);
     BMC_DEBUG("bmc_packages initialized to " << bmc_packages);
     nbinit++;
   };
-  if (bismon_target_gcc) {
+  if (bismon_target_gcc && bismon_target_gcc[0]) {
     bmc_target_gcc = std::string(bismon_target_gcc);
     BMC_DEBUG("bmc_target_gcc initialized to " << bmc_target_gcc);
     nbinit++;
   };
-  if (bismon_target_gxx) {
+  if (bismon_target_gxx && bismon_target_gxx[0]) {
     bmc_target_gxx = std::string(bismon_target_gxx);
     BMC_DEBUG("bmc_target_gxx initialized to " << bmc_target_gcc);
     nbinit++;
+  };
+  if (bismon_onion_includedir && bismon_onion_includedir[0]) {
+    std::string onincdir(bismon_onion_includedir);
+    if (onincdir[onincdir.size()-1] != '/')
+      onincdir += "/";
+    if (!access((onincdir+"onion/onion.h").c_str(), R_OK)) {
+      bmc_onion_includedir = std::string(bismon_onion_includedir);
+      BMC_DEBUG("bmc_onion_includedir initialized to " << bmc_onion_includedir);
+      nbinit++;
+    }
+  };
+  if (bismon_onion_libdir && bismon_onion_libdir[0]) {
+    std::string onlibdir(bismon_onion_libdir);
+    if (onlibdir[onlibdir.size()-1] != '/')
+      onlibdir += "/";
+    if (!access((onlibdir+"libonion.so").c_str(), R_OK)) {
+      bmc_onion_libdir = std::string(bismon_onion_libdir);
+      BMC_DEBUG("bmc_onion_includedir initialized to " << bmc_onion_includedir);
+      nbinit++;
+    }
   };
   BMC_DEBUG("bmc_initialize_global_variables did " << nbinit << " initializations for " << progname << std::endl);
   return nbinit;
