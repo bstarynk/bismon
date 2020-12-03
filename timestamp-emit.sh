@@ -63,6 +63,19 @@ if [ -n "$BISMONMK_TARGET_GXX" ]; then
 else
     echo 'const char* bismon_target_gxx;' >> __timestamp.tmp
 fi
-    
+
+
+if [ -n "$BISMONMK_ONION_INCLUDEDIR" ]; then
+    (echo -n 'const char* bismon_onion_includedir = "'; echo -n $BISMONMK_ONION_INCLUDEDIR;  echo '";') >> __timestamp.tmp
+else
+    echo 'const char* bismon_onion_includedir;' >> __timestamp.tmp
+fi
+
+
+if [ -n "$BISMONMK_ONION_LIBDIR" ]; then
+    (echo -n 'const char* bismon_onion_libdir = "'; echo -n $BISMONMK_ONION_LIBDIR;  echo '";') >> __timestamp.tmp
+else
+    echo 'const char* bismon_onion_libdir;' >> __timestamp.tmp
+fi
 
 mv __timestamp.tmp __timestamp.c
