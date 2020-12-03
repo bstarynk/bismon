@@ -64,6 +64,9 @@ std::string bmc_target_gcc;
 std::string bmc_target_gxx;
 std::string bmc_out_directory;
 std::string bmc_ninja_file;
+std::string bmc_onion_includedir;
+std::string bmc_onion_libdir;
+
 std::vector<std::string> bmc_source_files;
 std::vector<std::string> bmc_constdep_files;
 // from generated __timestamp.c - see timestamp-emit.sh script
@@ -251,7 +254,7 @@ bmc_show_usage(const char*progname)
   std::cerr << " --target-gxx=PATH      # set to PATH the target GCC compiler for C++ code" << std::endl;
   std::cerr << " --ninja=PATH           # generate a PATH for ninja builder - see ninja-build.org # usually --ninja=build.ninja" << std::endl;
   std::cerr << " --output-directory=DIR # set the output directory to DIR - default is " << bismon_directory << std::endl;
-  std::cerr << "## See github.com/bstarynk/bismon/ for more about Bismon." << std::endl;
+  std::cerr << "## See github.com/bstarynk/bismon/ for more about BISMON." << std::endl;
 } // end bmc_show_usage
 
 void
@@ -321,7 +324,7 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
     {
       std::cout << progname << " should check the target GCC compiler " << compiler << std::endl;
       std::cout << "See also http://gcc.gnu.org/ and notice that a GCC 10 compiler" << std::endl;
-      std::cout << "... is required for Bismon, with plugins enabled." << std::endl;
+      std::cout << "... is required for BISMON, with plugins enabled." << std::endl;
       std::cout << "Try to run your GCC [cross-]compiler with just the -v program option." << std::endl;
     }
   else
@@ -360,11 +363,11 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
       BMC_DEBUG("bmc_check_target_compiler gccversion_major=" << gccversion_major << ", gccversion_minor=" << gccversion_minor);
       if (gccversion_major != 10)
         {
-          std::cerr << progname << ": Bismon requires a GCC 10 compiler." << std::endl ;
+          std::cerr << progname << ": BISMON requires a GCC 10 compiler." << std::endl ;
           if (gccversion_major > 0)
             std::cerr << "But " << compiler << " is a GCC " << gccversion_major << "." << gccversion_minor
                       << " compiler." << std::endl;
-          std::cerr << "See http://gcc.gnu.org/ for more about GCC, and github.com/bstarynk/bismon for more about Bismon." << std::endl;
+          std::cerr << "See http://gcc.gnu.org/ for more about GCC, and github.com/bstarynk/bismon for more about BISMON." << std::endl;
           std::cerr << "However " << compcmd << " gave:" << std::endl
                     << cmdstr << std::endl;
           BMC_FAILURE ("invalid GCC version");
@@ -986,6 +989,76 @@ bmc_ask_missing_configuration(const char*progname)
         }
     }
   std::cout << std::endl;
+  //////////////////////////////
+  /// ask about the libonion - see www.coralbits.com/libonion/ and github.com/davidmoreno/onion
+  /// libonion include header - with onion/onion.h
+  if (bmc_onion_includedir.empty() || bmc_onion_libdir.empty()) {
+    std::cout << std::endl;
+    std::cout << "BISMON needs the libonion web server (HTTP+HTTPS) library." << std::endl;
+    std::cout << "See www.coralbits.com/libonion and github.com/davidmoreno/onion for more." << std::endl;
+  }
+  while (bmc_onion_includedir.empty()) {
+    std::cout << "Include directory for libonion ; it should contain the <onion/onion.h> header file."
+	      << std::endl;
+    if (!access("/usr/local/include/onion/onion.h", R_OK) && isatty(STDOUT_FILENO)) {
+      std::cout << "... Found /usr/local/include/onion/onion.h" << std::endl;
+      BMC_DEBUG("defaulting libonion header directory to /usr/local/include");
+      bmc_set_readline_buffer("/usr/local/include");
+    }
+    else if (!access("/usr/include/onion/onion.h", R_OK) && isatty(STDOUT_FILENO)) {
+      std::cout << "... Found /usr/include/onion/onion.h" << std::endl;
+      BMC_DEBUG("defaulting libonion header directory to /usr/include");
+      bmc_set_readline_buffer("/usr/include");
+    }
+    const char*onionincl = bmc_readline(progname, "Libonion included-header directory? ");
+    if (onionincl && strlen(onionincl)>2) {
+      std::string stronionincl(onionincl);
+      if (stronionincl[stronionincl.size()-1] != '/')
+	stronionincl += "/";
+      BMC_DEBUG("stronionincl='" << stronionincl << "'");
+      std::string onionh = stronionincl+"onion/onion.h";
+      if (!access(onionh.c_str(), R_OK)) {
+	bmc_onion_includedir = stronionincl;
+	BMC_DEBUG("setting bmc_onion_includedir to " << stronionincl);
+      } else
+	std::cerr << "Wrong libonion include dir " << stronionincl << " since " << onionh << " cannot be read."
+		  << std::endl;
+    }
+  } // end while bmc_onion_includedir.empty()
+#warning  bmc_onion_include should be kept from a previous configuation
+  /////////////
+  /// libonion library directory, with libonion.so
+  while (bmc_onion_libdir.empty()) {
+    std::cout << "library directory for libonion ; it should contain the libonion.so shared object."
+	      << std::endl;
+    if (!access("/usr/local/lib/libonion.so", R_OK) && isatty(STDOUT_FILENO)) {
+      std::cout << "... Found /usr/local/lib/libonion.so" << std::endl;
+      BMC_DEBUG("defaulting libonion library directory to /usr/local/lib");
+      bmc_set_readline_buffer("/usr/local/lib");
+    }
+    else if (!access("/usr/lib/libonion.so", R_OK) && isatty(STDOUT_FILENO)) {
+      std::cout << "... Found /usr/lib/libonion.so" << std::endl;
+      BMC_DEBUG("defaulting libonion library directory to /usr/lib");
+      bmc_set_readline_buffer("/usr/lib");
+    }
+    const char*onionlib = bmc_readline(progname, "Libonion shared library directory? ");
+    if (onionlib && strlen(onionlib)>2) {
+      std::string stronionlib(onionlib);
+      if (stronionlib[stronionlib.size()-1] != '/')
+	stronionlib += "/";
+      BMC_DEBUG("stronionlib='" << stronionlib << "'");
+      std::string onionlib = stronionlib+"libonion.so";
+      if (!access(onionlib.c_str(), R_OK)) {
+	bmc_onion_libdir = stronionlib;
+	BMC_DEBUG("setting bmc_onion_libdir to " << stronionlib);
+      } else
+	std::cerr << "Wrong libonion shared library directory " << stronionlib
+		  << " since " << onionlib << " cannot be read."
+		  << std::endl;
+    }
+  } // end while bmc_onion_libdir.empty()
+#warning  bmc_onion_libdir should be kept from a previous configuation
+  ////////////////////////
   /// ask about the output directory, into which files would be written
   char cwdbuf[256];
   memset (cwdbuf, 0, sizeof(cwdbuf));
@@ -998,7 +1071,7 @@ bmc_ask_missing_configuration(const char*progname)
     }
   while (bmc_out_directory.empty())
     {
-      std::cout << "Bismon output source directory. If none is given, defaults to current directory " << cwdbuf << std::endl;
+      std::cout << "BISMON output source directory. If none is given, defaults to current directory " << cwdbuf << std::endl;
       std::cout << "This configurator " << progname << " will write some textual files -a header file and a Makefile fragment- in it." << std::endl;
       std::cout << "(it is recommended to enter some absolute path, such as /usr/src/Bismon or /home/foo/bismon ....)" << std::endl;
       const char*outdir = bmc_readline(progname, "BISMON output sourcedir? ");
