@@ -606,6 +606,14 @@ bmc_print_config_make(const char*progname)
   makeoutf << "#without BISMONMK_gtk" << std::endl;
   makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS)" << std::endl;
   makeoutf << "BISMONMK_PACKAGES= glib-2.0 gobject-2.0 jansson readline" << std::endl;
+  if (!bmc_onion_includedir.empty())
+    makeoutf << "BISMONMK_ONION_INCLUDEDIR=" << bmc_onion_includedir << std::endl;
+  else
+    makeoutf << "#without BISMONMK_ONION_INCLUDE" << std::endl;
+  if (!bmc_onion_libdir.empty())
+    makeoutf << "BISMONMK_ONION_LIBDIR=" << bmc_onion_libdir << std::endl;
+  else
+    makeoutf << "#without BISMONMK_ONION_LIBDIR" << std::endl;
   makeoutf << "BISMONMK_EXECUTABLE= bismon" << std::endl;
   if (!bmc_target_gcc.empty())
     makeoutf << "BISMONMK_TARGET_GCC=" << bmc_target_gcc << std::endl;
