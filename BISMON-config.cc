@@ -664,7 +664,7 @@ rule CXX_rlBM
   description = CXX_rlBM $out < $in (handwritten C++ code)
   command = $NJBM_host_cxx -c $NJBM_host_warn_flags $
             $NJBM_host_optim_flags $NJBM_host_debug_flags $
-            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $
+            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $NJBM_onion_cflags $
             -MD -MF  _$out.mkd $
             $in -o $out
 
@@ -675,7 +675,7 @@ rule MODCC_rlBM
   description = MODCC_rlBM  $out < $in (generated C module)
   command = $NJBM_host_cxx -fPIC -shared $NJBM_host_warn_flags $
             $NJBM_host_optim_flags $NJBM_host_debug_flags $
-            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $
+            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $NJBM_onion_cflags $
             -MD -MF  _$out.mkd $
             $in -o $out
 
@@ -685,7 +685,7 @@ rule LINKALLBISMON_rlBM
   description = LINKALLBISMON_rlBM (link everything into $out)
   command = $NJBM_host_cxx  $NJBM_host_warn_flags $
             $NJBM_host_optim_flags $NJBM_host_debug_flags $
-            $in $NJBM_pkgconfig_libs $
+            $in $NJBM_pkgconfig_libs $NJBM_onion_linkflags $
             -o $out
 
 ################### end of NinjaRules ###################
@@ -832,6 +832,16 @@ bmc_print_config_ninja(const char*progname)
   };
   ninjaoutf << std::endl;
   BMC_DEBUG("handled bismon_packages= " << bismon_packages);
+  if (bismon_onion_includedir && bismon_onion_includedir[0])
+    ninjaoutf << "NJBM_onion_cflags= -I " << bismon_onion_includedir << std::endl;
+  else
+    ninjaoutf << "NJBM_onion_cflags =" << std::endl;
+  if (bismon_onion_libdir && bismon_onion_libdir[0]) {
+    ninjaoutf << "NJBM_onion_linkflags= -L" << bismon_onion_libdir << " -lonion" << std::endl;
+  }
+  else
+    ninjaoutf << "NJBM_onion_linkflags =" << std::endl;
+  ninjaoutf << std::endl;
   ninjaoutf << "NJBM_host_cc= "
 	    << (getenv("CC")?:"gcc") << std::endl;
   ninjaoutf << "NJBM_host_cxx= "
@@ -916,12 +926,9 @@ bmc_print_config_ninja(const char*progname)
     }
     ninjaoutf << std::endl;
   }
-#warning missing emission of rule for bismon executable and for ONION stuff.
-  ninjaoutf << "## unimplemented bmc_print_config_ninja " << __FILE__ << ":" << __LINE__ << std::endl;
-  std::cerr << progname << " unimplemented bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
-  BMC_DEBUG("incomplete bmc_print_config_ninja");
-  BMC_FAILURE ("unimplemented bmc_print_config_ninja");
-#warning incomplete bmc_print_config_ninja
+  ninjaoutf << "## perhaps incomplete bmc_print_config_ninja " << __FILE__ << ":" << __LINE__ << std::endl;
+  std::cerr << progname << " maybe incomplete bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
+  BMC_DEBUG("maybe incomplete bmc_print_config_ninja");
 } // end bmc_print_config_ninja
 
 
@@ -1255,9 +1262,9 @@ main (int argc, char**argv)
     rl_initialize();		// initialize GNU readline;
     using_history();
   }
-
   nbinit = bmc_initialize_global_variables (argv[0]);
   bmc_parse_options(argc, argv);
+  const char* makelevel = getenv("MAKELEVEL");
   if (getenv("ESHELL") && isatty(STDOUT_FILENO) && !bmc_silent_flag) {
       if (!earlydebug)
         std::cout << std::endl << std::endl << "***** BISMON Configurator (emacs-ed ESHELL="
@@ -1275,6 +1282,13 @@ main (int argc, char**argv)
           << std::endl << "(this program " << argv[0] << " uses GNU readline, so you could use the <tab> key is for autocompletion," << std::endl;
       std::cout << "... and your input lines are editable.  For more about GNU readline, see www.gnu.org/software/readline ...)" << std::endl;
     };
+  if (makelevel != nullptr) {
+    int mklev = atoi(makelevel);
+    if (mklev>2) {
+      std::cerr << argv[0] << " is running with MAKELEVEL at " << mklev << " so exiting quickly." << std::endl;
+      exit (EXIT_SUCCESS);
+    }
+  }
   if (isatty(STDOUT_FILENO) && !bmc_silent_flag) {
       std::cout << "For more about BISMON, see github.com/bstarynk/bismon ...."
                 << std::endl
@@ -1294,7 +1308,6 @@ main (int argc, char**argv)
       if (parentrl > 0 && parentrl < (ssize_t) sizeof(parprogbuf)) {
 	std::cout << argv[0] << " parent process " << getppid()
 		  << " is running " << parprogbuf;
-	const char*makelevel = getenv("MAKELEVEL");
 	if (makelevel)
 	  std::cout << " with MAKELEVEL=" << makelevel;
 	std::cout << std::endl;
