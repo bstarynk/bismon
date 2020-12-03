@@ -18,3 +18,24 @@ command line is required\footnote{For example, the reader is expected
   their source code.}, with \texttt{root} access (e.g. using
 \texttt{sudo}).
 
+
+\subsection{Prerequisites for building \texttt{bismon}}
+\label{subsec:prereq-bismon}
+
+The \texttt{bismon} source code is on
+\href{https://github.com/bstarynk/bismon/}{\texttt{\textbf{github.com/bstarynk/bismon/}}}
+and the reader is expected to be capable of getting that source code
+on his/her Linux workstation. A possible command might be \texttt{git
+  clone https://github.com/bstarynk/bismon.git} to obtain a
+\emph{fresh} \texttt[bismon/} subdirectory containing the source
+code. About 100Mbytes of disk space (for less than 2000 inodes) is
+required.
+
+A recent \texttt{libonion} library\footnote{This is an open source
+library for web HTTP and HTTPS service. It is LGPL licensed.} is
+required. Fetch the source code from
+\href{https://github.com/davidmoreno/onion}{\texttt{\textbf{github.com/davidmoreno/onion/}}}. That
+library needs \texttt{cmake} and several libraries (in particular
+support for \texttt{openssl}, \texttt{gcrypt}, \texttt{systemd},
+\texttt{sqlite3}, \texttt{lzma}, \texttt{libicu}, \texttt{libpam}) to
+be built.
