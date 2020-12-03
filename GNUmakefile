@@ -131,16 +131,34 @@ _bismon-config.mk _bm_config.h _bm_config.c: BISMON-config.cc
 	sleep 0.02
 
 ### the configurator program
-BISMON-config: BISMON-config.cc __timestamp.o $(warning $(MAKE) BISMON-config at level $(MAKELEVEL))
+BISMON-config: BISMON-config.cc __timestamp.o $(warning $(MAKE) BISMON-config at level zero)
 	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
 	@bash -c "if [ -f $@ ] ; then /bin/mv -v $@ $@~ ; fi"
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"' -Wall -Wextra -O -g $^ -lreadline  -o $@
+endif
 
+
+ifeq ($(MAKELEVEL),1)
+_bismon-config.mk _bm_config.h _bm_config.c: BISMON-config.cc
+	sleep 0.01
+	bash -x -c 'if [ ! -x ./BISMON-config -a "$(MAKELEVEL)" = 0 ] ; then /bin/sleep 0.1 ; $(MAKE)  ./BISMON-config ; fi'
+	sleep 0.2
+	$(MAKE) runconfig
+	sleep 0.03
+
+### the configurator program
+BISMON-config: BISMON-config.cc __timestamp.o $(warning $(MAKE) BISMON-config at level one)
+	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT) at level one
+	@bash -c "if [ -f $@ ] ; then /bin/mv -v $@ $@~ ; fi"
+	$(GXX) $(BM_CXX_STANDARD_FLAGS) '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"' -Wall -Wextra -O -g $^ -lreadline  -o $@
+endif
+
+ifeq ($(findstring $(MAKELEVEL),0 1),)
 else
 _bismon-config.mk _bm_config.h _bm_config.c:
 	sleep 0.3
 	$(MAKE) runconfig
-BISMON-config: $(error wrongly doing:  $(MAKE) BISMON-config at level $(MAKELEVEL))
+BISMON-config: $(warning wrongly doing:  $(MAKE) BISMON-config at level $(MAKELEVEL))
 endif
 
 runconfig: BISMON-config $(warning $(MAKE) runconfig at level $(MAKELEVEL))
