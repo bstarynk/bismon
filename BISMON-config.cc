@@ -108,6 +108,8 @@ enum bmc_longopt_en
   BMCOPT_dry_run,
   BMCOPT_skip,
   BMCOPT_output_directory,
+  BMCOPT_onion_incldir,
+  BMCOPT_onion_libdir,
 };
 
 //see https://en.wikipedia.org/wiki/ANSI_escape_code
@@ -129,6 +131,8 @@ static const struct option
   {"target-gxx",  	 required_argument,  0,    BMCOPT_target_gxx},
   {"skip",  	         required_argument,  0,    BMCOPT_skip},
   {"output-directory",   required_argument,  0,    BMCOPT_output_directory},
+  {"onion-incldir",      required_argument,  0,    BMCOPT_onion_incldir},
+  {"onion-libdir",       required_argument,  0,    BMCOPT_onion_libdir},
   {0,0,0,0}
 };
 
@@ -225,9 +229,35 @@ bmc_parse_options(int& argc, char**argv)
           bmc_out_directory = optarg;
           BMC_DEBUG("output directory :" << bmc_out_directory);
           break;
-        case BMCOPT_skip: // --skip=XXXX
+        case BMCOPT_skip:             // --skip=XXXX
           BMC_DEBUG("skipping :" << optarg);
           break;
+	case BMCOPT_onion_incldir:    // --onion-incldir=XXXX
+          BMC_DEBUG("given libonion include directory :" << optarg);
+	  if (!bmc_dryrun_flag) {
+	    DIR* incldir = opendir(optarg);
+	    if (!incldir) {
+	      std::cerr << argv[0] << " failed to opendir libonion include directory " << optarg
+			<< " : " << strerror(errno) << std::endl;
+	      BMC_FAILURE("failed to open libonion include directory");
+	    }
+	    else
+	      closedir(incldir);
+	  }
+	  break;
+	case BMCOPT_onion_libdir:     // --onion-libdir=XXXX
+          BMC_DEBUG("given libonion library directory :" << optarg);
+	  if (!bmc_dryrun_flag) {
+	    DIR* libdir = opendir(optarg);
+	    if (!libdir) {
+	      std::cerr << argv[0] << " failed to opendir libonion library directory " << optarg
+			<< " : " << strerror(errno) << std::endl;
+	      BMC_FAILURE("failed to open libonion library directory");
+	    }
+	    else
+	      closedir(libdir);
+	  }
+	  break;	  
         }
     }
   BMC_DEBUG("constdepix=" << constdepix);
@@ -257,7 +287,14 @@ bmc_show_usage(const char*progname)
   std::cerr << " --target-gxx=PATH      # set to PATH the target GCC compiler for C++ code" << std::endl;
   std::cerr << " --ninja=PATH           # generate a PATH for ninja builder - see ninja-build.org # usually --ninja=build.ninja" << std::endl;
   std::cerr << " --output-directory=DIR # set the output directory to DIR - default is " << bismon_directory << std::endl;
-  std::cerr << "## See github.com/bstarynk/bismon/ for more about BISMON." << std::endl;
+  std::cerr << " --onion-incldir=DIR    # set to DIR the include directory for libonion - see  www.coralbits.com/libonion" << std::endl;
+  if (bismon_onion_includedir)
+    std::cerr << "## known libonion include directory is " << bismon_onion_includedir << std::endl;
+  std::cerr << " --onion-libdir=DIR    # set to DIR the shared library directory for libonion" << std::endl;
+  if (bismon_onion_libdir)
+    std::cerr << "## known libonion library directory is " << bismon_onion_libdir << std::endl;
+  std::cerr << std::endl;
+  std::cerr << "######## See github.com/bstarynk/bismon/ for more about BISMON." << std::endl << std::endl;
 } // end bmc_show_usage
 
 void
