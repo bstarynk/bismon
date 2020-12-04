@@ -693,33 +693,30 @@ const char bmc_ninja_rules[] =
 ###########
 # compilation of _BM.c files
 rule CC_rlBM
-  depfile = _$out.mkd - handwritten C code
-  description = CC_rlBM $out < $in (handwritten C code)
+  description = CC_rlBM $out < $in (handwritten C code) ° $depfile
   command = $NJBM_host_cc -c $NJBM_host_warn_flags $NJBM_host_cwarn_flags $
             $NJBM_host_optim_flags $NJBM_host_debug_flags $
             $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $
-               -MD -MF _$out.mkd $
+               -MD -MF $depfile $
                $in -o $out
 
 # compilation of _BM.cc files - handwritten C++ code
 rule CXX_rlBM
-  depfile = _$out.mkd
-  description = CXX_rlBM $out < $in (handwritten C++ code)
+  description = CXX_rlBM $out < $in (handwritten C++ code) ° $depfile
   command = $NJBM_host_cxx -c $NJBM_host_warn_flags $
             $NJBM_host_optim_flags $NJBM_host_debug_flags $
             $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $NJBM_onion_cflags $
-            -MD -MF  _$out.mkd $
+            -MD -MF $depfile $
             $in -o $out
 
 
 # compilation of generated modules/modbm_.c into a modubin/*.so shared object
 rule MODCC_rlBM
-  depfile = _$out.mkd
-  description = MODCC_rlBM  $out < $in (generated C module)
+  description = MODCC_rlBM  $out < $in (generated C module) ° $depfile
   command = $NJBM_host_cxx -fPIC -shared $NJBM_host_warn_flags $
             $NJBM_host_optim_flags $NJBM_host_debug_flags $
             $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $NJBM_onion_cflags $
-            -MD -MF  _$out.mkd $
+            -MD -MF  $depfile $
             $in -o $out
 
 
@@ -919,10 +916,16 @@ bmc_print_config_ninja(const char*progname)
 	&& cursrc.substr(curlen+1-sizeof("_BM.c")) == std::string("_BM.c")) {
       std::string curobp = cursrc;
       curobp[curlen-1] = 'o';
+      std::string curdepfil = std::string("_") + cursrc;
+      curdepfil.resize(curlen);
+      curdepfil += ".njdep_C%";
       BMC_DEBUG("_BM source cursrc='" << cursrc
-		<< "', curobp='" << curobp << "'");
+		<< "', curobp='" << curobp << "', curdepfil='"
+		<< curdepfil << "'");
       ninjaoutf << "build " << curobp << ": CC_rlBM " << cursrc
-		<< std::endl << std::endl;
+		<< std::endl
+		<< "  depfile = " << curdepfil
+		<< std::endl;
       objectvect.push_back(std::string{curobp});
       nbsrc++;
     }
@@ -931,10 +934,15 @@ bmc_print_config_ninja(const char*progname)
       std::string curobp = cursrc;
       curobp[curlen-2] = 'o';
       curobp.resize(curlen-1);
+      std::string curdepfil = std::string("_") + cursrc;
+      curdepfil.resize(curlen);
+      curdepfil += ".njdep_CXX%";
       BMC_DEBUG("_BM source cursrc='" << cursrc
-		<< "', curobp='" << curobp << "'");
+		<< "', curobp='" << curobp << "', curdepfil='"
+		<< curdepfil << "'");
       ninjaoutf << "build " << curobp << ": CXX_rlBM " << cursrc
-		<< std::endl << std::endl;
+		<< std::endl
+		<< "  depfile = " << curdepfil << std::endl;
       nbsrc++;
       objectvect.push_back(std::string{curobp});
     }
@@ -970,6 +978,7 @@ bmc_print_config_ninja(const char*progname)
     ninjaoutf << std::endl;
   }
   ninjaoutf << "## perhaps incomplete bmc_print_config_ninja " << __FILE__ << ":" << __LINE__ << std::endl;
+  ninjaoutf << "##**## end of generated file " << ninjapath << " ##**##" << std::endl;
   std::cerr << progname << " maybe incomplete bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
   BMC_DEBUG("maybe incomplete bmc_print_config_ninja");
 } // end bmc_print_config_ninja
