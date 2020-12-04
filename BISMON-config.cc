@@ -1206,7 +1206,10 @@ bmc_print_const_dependencies(const char*progname)
   BMC_DEBUG("bmc_print_const_dependencies start progname=" << progname << " ESHELL=" << (getenv("ESHELL")?:"**none**")
             << " " << bmc_constdep_files.size() << " files");
   if (!bmc_batch_flag || !bmc_silent_flag)
-    std::cout << "# constant dependencies for GNU make by " << progname << std::endl;
+    std::cout << "# constant dependencies for GNU make by " << progname
+	      << " [" __FILE__ ":" << __LINE__ << "] git "
+	      << BISMON_SHORTGIT
+	      << std::endl;
   int i=0;
   for (auto cdstr : bmc_constdep_files)
     {
@@ -1217,6 +1220,11 @@ bmc_print_const_dependencies(const char*progname)
   if (!bmc_batch_flag || !bmc_silent_flag)
     std::cout << "# emitted " << i << " constant dependencies for GNU make." << std::endl;
   BMC_DEBUG("bmc_print_const_dependencies end progname=" << progname << std::endl);
+  if (!bmc_batch_flag || !bmc_silent_flag)
+    std::cout << "# end of constant dependencies for GNU make by " << progname
+	      << " [" __FILE__ ":" << __LINE__ << "] git "
+	      << BISMON_SHORTGIT
+	      << std::endl << std::endl;
 } // end bmc_print_const_dependencies
 
 
