@@ -1325,8 +1325,8 @@ main (int argc, char**argv)
     };
   if (makelevel != nullptr) {
     int mklev = atoi(makelevel);
-    if (mklev>2) {
-      std::cerr << argv[0] << " is running with MAKELEVEL at " << mklev << " so exiting quickly." << std::endl;
+    if (mklev>1) {
+      std::cerr << argv[0] << " pid " << getpid() << " is running with MAKELEVEL at " << mklev << " so exiting quickly." << std::endl;
       exit (EXIT_SUCCESS);
     }
   }
