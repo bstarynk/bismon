@@ -1327,15 +1327,17 @@ main (int argc, char**argv)
     }
   }
   if (isatty(STDOUT_FILENO) && !bmc_silent_flag) {
-      std::cout << "For more about BISMON, see github.com/bstarynk/bismon ...."
-                << std::endl
-		<< "... and perhaps the *DRAFT* report on starynkevitch.net/Basile/bismon-chariot-doc.pdf" << std::endl;
-      std::cout << "For more about GCC, see gcc.gnu.org ...." << std::endl;
-      std::cout << "# running " << __FILE__ " @"  __DATE__ << " on " << bmc_hostname << " pid " << (int)getpid()
-                << " parentpid " << (int)getppid() << std::endl;
-      if (nbinit)
-	std::cout << "# " << nbinit << " variables initialized from previous __timestamp.c ..." << std::endl;
-      std::cout << "# " << argv[0] << " git " << BISMON_SHORTGIT << " started on " << bmc_start_str_ctime << std::endl;
+    std::cout << "For more about BISMON, see github.com/bstarynk/bismon ...."
+	      << std::endl
+	      << "... and perhaps the *DRAFT* report on starynkevitch.net/Basile/bismon-chariot-doc.pdf" << std::endl;
+    std::cout << "For more about GCC, see gcc.gnu.org ...." << std::endl;
+    std::cout << "# running " << __FILE__ " @"  __DATE__ << " on " << bmc_hostname << " pid " << (int)getpid()
+	      << " parentpid " << (int)getppid() << std::endl;
+    if (nbinit)
+      std::cout << "# " << nbinit << " variables initialized from previous __timestamp.c ..." << std::endl;
+    std::cout << "# " << argv[0] << " git " << BISMON_SHORTGIT << " started on " << bmc_start_str_ctime << std::endl;
+    /// show some information on parent process executable
+    {
       char ppidbuf[48];
       memset (ppidbuf, 0, sizeof(ppidbuf));
       snprintf (ppidbuf, sizeof(ppidbuf), "/proc/%d/exe", (int)getppid());
@@ -1350,6 +1352,44 @@ main (int argc, char**argv)
 	std::cout << std::endl;
       }
     }
+    /// show some information on parent process status and about grand parent process executable
+    {
+      char ppidbuf[48];
+      memset (ppidbuf, 0, sizeof(ppidbuf));
+      snprintf (ppidbuf, sizeof(ppidbuf), "/proc/%d/stat", (int)getppid());
+      FILE *ppf = fopen(ppidbuf, "r");
+      if (ppf) {
+	char ppidstat[64];
+	memset (ppidstat, 0, sizeof(ppidstat));
+	char *statlin = fgets(ppidstat, sizeof(ppidstat), ppf);
+	if (statlin) {
+	  std::cout << argv[0] << " parent process " << getppid() << " stat file has " << statlin << std::endl;
+	  char parcmd[64];
+	  memset(parcmd, 0, sizeof(parcmd));
+	  int curpid= -1;
+	  int grandparentpid= -1;
+	  char grandparstat=0;
+	  if (sscanf(statlin, "%d (%60[a-zA-Z0-9_/.]) %c %d", &curpid, parcmd, &grandparstat, &grandparentpid) > 2 && grandparentpid>0) {
+	    char grparprogbuf[64];
+	    memset (grparprogbuf, 0, sizeof(grparprogbuf));
+	    snprintf (grparprogbuf, sizeof(grparprogbuf), "/proc/%d/exe", grandparentpid);
+	    char grparexe[80];
+	    memset(grparexe, 0, sizeof(grparexe));
+	    auto grparentrl = readlink(grparprogbuf, grparexe, sizeof(grparexe));
+	    if (grparentrl >0 && strlen(grparexe)>0) 
+	      std::cout << argv[0] << " grand parent process " << grandparentpid << " of status " << grandparstat
+			<< " is running " << grparexe
+			<< std::endl;
+	  }
+	}
+	else
+	  perror(ppidbuf);
+	fclose (ppf);
+      }
+      else
+	perror(ppidbuf);
+    }
+  }
   if (isatty(STDOUT_FILENO) && !bmc_silent_flag) {
     usleep (1000);
     std::cout << "This " << argv[0] << " program is, like BISMON, GPLv3+ licensed so *WITHOUT ANY WARRANTY*." << std::endl;
