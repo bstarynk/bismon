@@ -221,6 +221,7 @@ _bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
 
 bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c _bismon-constdep.mk  $(warning $(MAKE) bismon at level $(MAKELEVEL)) | $(BM_CSOURCES) $(BM_CXXSOURCES) BISMON-config.cc
 	$(MAKE) build.ninja
+	/bin/ls -l build.ninja
 	@echo $(MAKE) will build $@ using $(BM_NICE) $(BM_NINJA) $(BM_NINJA_FLAGS) bismon "_-_" $(warning should build $@)
 	$(BM_NICE) $(BM_NINJA) $(BM_NINJA_FLAGS) bismon
 	$(RM) __timestamp.o
