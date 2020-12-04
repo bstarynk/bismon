@@ -232,32 +232,36 @@ bmc_parse_options(int& argc, char**argv)
         case BMCOPT_skip:             // --skip=XXXX
           BMC_DEBUG("skipping :" << optarg);
           break;
-	case BMCOPT_onion_incldir:    // --onion-incldir=XXXX
+        case BMCOPT_onion_incldir:    // --onion-incldir=XXXX
           BMC_DEBUG("given libonion include directory :" << optarg);
-	  if (!bmc_dryrun_flag) {
-	    DIR* incldir = opendir(optarg);
-	    if (!incldir) {
-	      std::cerr << argv[0] << " failed to opendir libonion include directory " << optarg
-			<< " : " << strerror(errno) << std::endl;
-	      BMC_FAILURE("failed to open libonion include directory");
-	    }
-	    else
-	      closedir(incldir);
-	  }
-	  break;
-	case BMCOPT_onion_libdir:     // --onion-libdir=XXXX
+          if (!bmc_dryrun_flag)
+            {
+              DIR* incldir = opendir(optarg);
+              if (!incldir)
+                {
+                  std::cerr << argv[0] << " failed to opendir libonion include directory " << optarg
+                            << " : " << strerror(errno) << std::endl;
+                  BMC_FAILURE("failed to open libonion include directory");
+                }
+              else
+                closedir(incldir);
+            }
+          break;
+        case BMCOPT_onion_libdir:     // --onion-libdir=XXXX
           BMC_DEBUG("given libonion library directory :" << optarg);
-	  if (!bmc_dryrun_flag) {
-	    DIR* libdir = opendir(optarg);
-	    if (!libdir) {
-	      std::cerr << argv[0] << " failed to opendir libonion library directory " << optarg
-			<< " : " << strerror(errno) << std::endl;
-	      BMC_FAILURE("failed to open libonion library directory");
-	    }
-	    else
-	      closedir(libdir);
-	  }
-	  break;	  
+          if (!bmc_dryrun_flag)
+            {
+              DIR* libdir = opendir(optarg);
+              if (!libdir)
+                {
+                  std::cerr << argv[0] << " failed to opendir libonion library directory " << optarg
+                            << " : " << strerror(errno) << std::endl;
+                  BMC_FAILURE("failed to open libonion library directory");
+                }
+              else
+                closedir(libdir);
+            }
+          break;
         }
     }
   BMC_DEBUG("constdepix=" << constdepix);
@@ -1376,10 +1380,28 @@ main (int argc, char**argv)
 	    char grparexe[80];
 	    memset(grparexe, 0, sizeof(grparexe));
 	    auto grparentrl = readlink(grparprogbuf, grparexe, sizeof(grparexe));
-	    if (grparentrl >0 && strlen(grparexe)>0) 
+	    if (grparentrl >0 && strlen(grparexe)>0) {
 	      std::cout << argv[0] << " grand parent process " << grandparentpid << " of status " << grandparstat
 			<< " is running " << grparexe
 			<< std::endl;
+	      char grparcmdbuf[64];
+	      memset (grparcmdbuf, 0, sizeof(grparcmdbuf));
+	      snprintf (grparcmdbuf, sizeof(grparcmdbuf), "/proc/%d/cmdline", grandparentpid);
+	      FILE* fcmd = fopen(grparcmdbuf, "r");
+	      if (fcmd) {
+		char grparcmdline[256];
+		memset(grparcmdline, 0, sizeof(grparcmdline));
+		size_t grparcmdlen = fread(grparcmdline, 1, sizeof(grparcmdline)-1, fcmd);
+		if (grparcmdline[0] && strlen(grparcmdline) < sizeof(grparcmdline)-1) {
+		  for (int i=0; i<(int)grparcmdlen; i++)
+		    if (grparcmdline[i]==(char)0)
+		      grparcmdline[i]=' ';
+		  std::cout << argv[0] << " grand parent process " << grandparentpid << " command is "
+			    << grparcmdline << std::endl;
+		}
+		fclose(fcmd);
+	      }
+	    }
 	  }
 	}
 	else
