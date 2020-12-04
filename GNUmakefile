@@ -226,6 +226,7 @@ bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c _bismon-constdep.mk 
 	$(BM_NICE) $(BM_NINJA) $(BM_NINJA_FLAGS) bismon
 	$(RM) __timestamp.o
 	mv __timestamp.c __timestamp.c~
+	/bin/ls -l $@
 
 -include $(wildcard _*.mkd)
 
