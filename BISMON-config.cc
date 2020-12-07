@@ -1410,9 +1410,10 @@ main (int argc, char**argv)
   if (makelevel != nullptr) {
     int mklev = atoi(makelevel);
     if (mklev>1) {
-      std::cerr << argv[0] << " pid " << getpid()
+      std::cerr << argv[0] << " pid " << getpid() << " ppid " << getppid()
+		<< " on " << bmc_hostname
 		<< " git " BISMON_SHORTGIT
-		<< " is running with MAKELEVEL at " << mklev << " so exiting quickly." << std::endl;
+		<< " is running with MAKELEVEL " << mklev << " so exiting quickly." << std::endl;
       exit (EXIT_SUCCESS);
     }
   }
