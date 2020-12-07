@@ -209,7 +209,7 @@ bmc_parse_options(int& argc, char**argv)
         case BMCOPT_emit_const_depend:     // --const-depend
           constdepix= optix;
           bmc_constdepend_flag = true;
-	  bmc_emit_constdep_path = optarg;
+          bmc_emit_constdep_path = optarg;
           break;
         case BMCOPT_dry_run:          // --dry-run
           bmc_dryrun_flag = true;
@@ -979,6 +979,18 @@ bmc_print_config_ninja(const char*progname)
   }
   ninjaoutf << "## perhaps incomplete bmc_print_config_ninja " << __FILE__ << ":" << __LINE__ << std::endl;
   ninjaoutf << "##**## end of generated file " << ninjapath << " ##**##" << std::endl;
+  ninjaoutf << std::flush;
+  sync();
+  usleep (1000);
+  {
+    struct stat ninjastat;
+    memset (&ninjastat, 0, sizeof(ninjastat));
+    if (stat(ninjapath.c_str(), &ninjastat))
+      BMC_FAILURE((std::string("failed to stat the generated ninja file ") + ninjapath + ":" + strerror(errno)).c_str());
+    std::cout << "#:" << progname
+	      << " [" __FILE__ ":" << __LINE__ << "°" BISMON_SHORTGIT "] "
+	      << " generated ninja file " << ninjapath << " with " << ninjastat.st_size << " bytes." << std::endl;
+  }
   std::cerr << progname << " maybe incomplete bmc_print_config_ninja ninjapath=" << ninjapath << std::endl;
   BMC_DEBUG("maybe incomplete bmc_print_config_ninja");
 } // end bmc_print_config_ninja
