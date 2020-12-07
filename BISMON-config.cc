@@ -1110,6 +1110,11 @@ bmc_ask_missing_configuration(const char*progname)
   //////////////////////////////
   /// ask about the libonion - see www.coralbits.com/libonion/ and github.com/davidmoreno/onion
   /// libonion include header - with onion/onion.h
+  if (bismon_onion_includedir && bismon_onion_includedir[0]) { // from __timestamp.c
+    BMC_DEBUG("got bismon_onion_includedir " << bismon_onion_includedir);
+#warning we should check that bismon_onion_includedir from __timestamp.c is a genuine directory
+    bmc_onion_includedir = std::string(bismon_onion_includedir);
+  };
   if (bmc_onion_includedir.empty() || bmc_onion_libdir.empty()) {
     std::cout << std::endl;
     std::cout << "BISMON needs the libonion web server (HTTP+HTTPS) library." << std::endl;
@@ -1143,7 +1148,11 @@ bmc_ask_missing_configuration(const char*progname)
 		  << std::endl;
     }
   } // end while bmc_onion_includedir.empty()
-#warning  bmc_onion_include should be kept from a previous configuation
+  if (bismon_onion_libdir && bismon_onion_libdir[0]) { // from __timestamp.c
+    BMC_DEBUG("got bismon_onion_includedir " << bismon_onion_includedir);
+#warning we should check that bismon_onion_libdir from __timestamp.c is a genuine directory
+    bmc_onion_includedir = std::string(bismon_onion_includedir);
+  };
   /////////////
   /// libonion library directory, with libonion.so
   while (bmc_onion_libdir.empty()) {
