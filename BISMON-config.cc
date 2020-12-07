@@ -1442,6 +1442,10 @@ main (int argc, char**argv)
 		<< " on " << bmc_hostname
 		<< " git " BISMON_SHORTGIT
 		<< " is running with MAKELEVEL " << mklev << " so exiting quickly." << std::endl;
+      char pscmd[64];
+      memset(pscmd, 0, sizeof(pscmd));
+      snprintf(pscmd, sizeof(pscmd), "/bin/ps %ld > /dev/stderr", getppid());
+      system (pscmd);
       exit (EXIT_SUCCESS);
     }
   }

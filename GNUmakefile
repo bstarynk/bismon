@@ -82,6 +82,9 @@ BM_PERSISTENT_HEADERS= $(wildcard genbm_*.h)
 BISMON_CONFIG_OPTIONS=
 
 
+### the pid of the make
+BM_MAKEPID:= $(shell /bin/grep -w Pid: /proc/self/status | /usr/bin/cut -f2)
+
 ## internal make variables...
 BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
 BISMON_SHGIT2:= $(shell if git status | grep 'nothing to commit' > /dev/null; then echo ; else echo +; fi)
@@ -243,11 +246,15 @@ ifeq ($(MAKELEVEL),0)
 build.ninja: GNUmakefile BISMON-config |  _bismon-config.mk _bm_config.h $(warning $(MAKE) build.ninja at zero level)
 	-mv -f $@ $@~
 	./BISMON-config --skip=for_base_ninja  $(BISMON_CONFIG_OPTIONS) --ninja=$@
+	@echo -n $(warning build.ninja level zero BM_MAKEPID= $(BM_MAKEPID))
+	/bin/ps $(BM_MAKEPID)
 	/bin/ls -l $@
 else
 build.ninja: GNUmakefile BISMON-config | $(warning $(MAKE) build.ninja at level $(MAKELEVEL))
 	-mv -f $@ $@~$(strip $(MAKELEVEL))%
 	./BISMON-config --skip=for_$(strip $(MAKELEVEL))_ninja  $(BISMON_CONFIG_OPTIONS) --ninja=$@
+	@echo -n $(warning build.ninja level $(MAKELEVEL) BM_MAKEPID= $(BM_MAKEPID))
+	/bin/ps $(BM_MAKEPID)
 	/bin/ls -l $@
 endif
 
