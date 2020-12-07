@@ -46,7 +46,11 @@ BM_WARNING_FLAGS= -Wall -Wextra
 BM_C_STANDARD_FLAGS= -std=gnu11
 BM_OPTIM_FLAGS= -O1
 BM_DEBUG_FLAGS= -g
-BM_NINJA_FLAGS= --verbose -l 7
+## for ninja, -k 1 means: keep going until 1 job fails
+## ... -l 7 means: do not start new jobs if load average above 7
+## ... -w list gives warnings, such as ....
+## ... -w phonycycle={err,warn} or -w dupbuild={err,warn}
+BM_NINJA_FLAGS= --verbose -k 1 -l 7 -w phonycycle=warn -w dupbuild=warn
 
 
 ## CONVENTION: handwritten markdown files are...
@@ -236,11 +240,15 @@ _bismon-constdep.mk: BISMON-config $(BM_CSOURCES)
 	./BISMON-config --skip=for_constdep $(BISMON_CONFIG_OPTIONS) --emit-const-dep=$@  $(BM_CSOURCES)
 
 ifeq ($(MAKELEVEL),0)
-build.ninja: GNUmakefile BISMON-config   _bismon-config.mk _bm_config.h $(warning $(MAKE) build.ninja at zero level) 
+build.ninja: GNUmakefile BISMON-config |  _bismon-config.mk _bm_config.h $(warning $(MAKE) build.ninja at zero level)
+	-mv -f $@ $@~
 	./BISMON-config --skip=for_base_ninja  $(BISMON_CONFIG_OPTIONS) --ninja=$@
+	/bin/ls -l $@
 else
-build.ninja: GNUmakefile BISMON-config $(warning $(MAKE) build.ninja at level $(MAKELEVEL)) 
+build.ninja: GNUmakefile BISMON-config | $(warning $(MAKE) build.ninja at level $(MAKELEVEL))
+	-mv -f $@ $@~$(strip $(MAKELEVEL))%
 	./BISMON-config --skip=for_$(strip $(MAKELEVEL))_ninja  $(BISMON_CONFIG_OPTIONS) --ninja=$@
+	/bin/ls -l $@
 endif
 
 
