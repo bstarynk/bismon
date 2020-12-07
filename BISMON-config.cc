@@ -479,11 +479,24 @@ bmc_print_config_header(const char*progname)
   headoutf << std::endl;
   headoutf << "#define BISMON_CONFIG \"" << BISMON_SHORTGIT << "\"" << std::endl;
   headoutf << "#endif /*BISMON_CONFIG*/" << std::endl;
-  headoutf << "// end of Bismon generated configuration header file " << headerpath << std::endl;
+  headoutf << "// end of Bismon generated configuration header file " << headerpath
+	   << std::endl << std::flush;
+  sync();
+  usleep (1000);
   BMC_DEBUG("bmc_print_config_header ending headerpath=" << headerpath);
-  if (!bmc_batch_flag && !bmc_silent_flag)
-    std::cout << "# generated Bismon configuration header file " << headerpath << std::endl;
+  if (!bmc_batch_flag && !bmc_silent_flag) {
+    std::cout << "#: generated Bismon configuration header file " << headerpath << std::endl;
+    struct stat headerstat;
+    memset (&headerstat, 0, sizeof(headerstat));
+    if (stat(headerpath.c_str(), &headerstat))
+      BMC_FAILURE((std::string("failed to stat the generated header file ") + headerpath + ":" + strerror(errno)).c_str());
+    std::cout << "#:" << progname
+	      << " [" __FILE__ ":" << __LINE__ << "°" BISMON_SHORTGIT "] "
+	      << " generated header file " << headerpath << " with " << headerstat.st_size << " bytes." << std::endl;
+  }
 } // end bmc_print_config_header
+
+
 
 void
 bmc_print_config_data(const char*progname)
@@ -607,8 +620,19 @@ bmc_print_config_data(const char*progname)
   dataoutf << "  (const char*)0 }; // end bismonconf_git_sources" << std::endl;
   //
   dataoutf << std::endl << "/// end of Bismon generated data " << datapath << std::endl;
-  if (!bmc_batch_flag && !bmc_silent_flag)
-    std::cout << "# generated Bismon configuration data file " << datapath << std::endl;
+  sync ();
+  usleep (1000);
+  BMC_DEBUG("bmc_print_config_data ending datapath=" << datapath);
+  if (!bmc_batch_flag && !bmc_silent_flag) {
+    std::cout << "#: generated Bismon configuration data file " << datapath << std::endl;
+    struct stat datastat;
+    memset (&datastat, 0, sizeof(datastat));
+    if (stat(datapath.c_str(), &datastat))
+      BMC_FAILURE((std::string("failed to stat the generated data file ") + datapath + ":" + strerror(errno)).c_str());
+    std::cout << "#:" << progname
+	      << " [" __FILE__ ":" << __LINE__ << "°" BISMON_SHORTGIT "] "
+	      << " generated data file " << datapath << " with " << datastat.st_size << " bytes." << std::endl;
+  }
 } // end bmc_print_config_data
 
 
@@ -639,7 +663,7 @@ bmc_print_config_make(const char*progname)
     }
   /// make prologue
   makeoutf << "### GENERATED Bismon CONFIGURATION FILE " <<
-           makepath << " - DO NOT EDIT" << std::endl;
+    makepath << " - DO NOT EDIT" << std::endl;
   makeoutf << "### this is for inclusion thru GNU make." << std::endl;
   makeoutf << "### See github.com/bstarynk/bismon/ for more about Bismon." << std::endl;
   makeoutf << "BISMONMK_TIMESTAMP=" << bismon_timestamp << std::endl;
@@ -678,10 +702,21 @@ bmc_print_config_make(const char*progname)
   else
     makeoutf << "#no BISMONMK_DEBUG" << std::endl;
   makeoutf << "BISMONMK_CONFIGPATH=" << makepath << std::endl;
-  makeoutf << "### end of Bismon generated file for GNU make " << makepath << " (by " << __FILE__ << ")" << std::endl;
+  makeoutf << "### end of Bismon generated file for GNU make " << makepath << " (by " << __FILE__ << ")"
+	   << std::endl << std::flush;
   BMC_DEBUG("bmc_print_config_make ending makepath=" << makepath);
-  if (!bmc_batch_flag && !bmc_silent_flag)
-    std::cout << "# generated Bismon configuration GNU make file " << makepath << std::endl;
+  sync();
+  usleep (1000);
+  if (!bmc_batch_flag && !bmc_silent_flag) {
+    std::cout << "#: generated Bismon configuration GNU make file " << makepath << std::endl;
+    struct stat makestat;
+    memset (&makestat, 0, sizeof(makestat));
+    if (stat(makepath.c_str(), &makestat))
+      BMC_FAILURE((std::string("failed to stat the generated GNU make file ") + makepath + ":" + strerror(errno)).c_str());
+    std::cout << "#:" << progname
+	      << " [" __FILE__ ":" << __LINE__ << "°" BISMON_SHORTGIT "] "
+	      << " generated GNU make file " << makepath << " with " << makestat.st_size << " bytes." << std::endl;
+  }
 } // end bmc_print_config_make
 
 
@@ -982,7 +1017,7 @@ bmc_print_config_ninja(const char*progname)
   ninjaoutf << std::flush;
   sync();
   usleep (1000);
-  {
+  if (!bmc_batch_flag && !bmc_silent_flag) {
     struct stat ninjastat;
     memset (&ninjastat, 0, sizeof(ninjastat));
     if (stat(ninjapath.c_str(), &ninjastat))
@@ -1008,7 +1043,8 @@ bmc_readline(const char*progname, const char*prompt)
   char*ans = readline(realprompt);
   if (!ans)
     {
-      std::cerr << progname << " failed to readline for " << prompt << " :: " << strerror(errno) << std::endl;
+      std::cerr << progname << " failed to readline for " << prompt << " :: " << strerror(errno)
+		<< " pid " << getpid() << std::endl;
       BMC_FAILURE ("readline failure");
     }
   return ans;
