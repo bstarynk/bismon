@@ -226,8 +226,8 @@ executable: _bismon-config.mk build.ninja $(warning $(MAKE) executable at level 
 _bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
 	./BM_makeconst -C $@ $(BM_CSOURCES)
 
-bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c _bismon-constdep.mk  $(warning $(MAKE) bismon at level $(MAKELEVEL)) | $(BM_CSOURCES) $(BM_CXXSOURCES) BISMON-config.cc
-	$(MAKE) build.ninja
+bismon: $(warning $(MAKE) bismon at level $(MAKELEVEL)) | $(BM_CSOURCES) $(BM_CXXSOURCES) BISMON-config.cc
+	$(MAKE) build.ninja _bismon-config.mk _bm_config.h _bismon-constants.c _bismon-constdep.mk
 	/bin/ls -l build.ninja
 	@echo $(MAKE) will build $@ using $(BM_NICE) $(BM_NINJA) $(BM_NINJA_FLAGS) bismon "_-_" $(warning should build $@)
 	$(BM_NICE) $(BM_NINJA) $(BM_NINJA_FLAGS) bismon
@@ -235,7 +235,8 @@ bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c _bismon-constdep.mk 
 	mv __timestamp.c __timestamp.c~
 	/bin/ls -l $@
 
--include $(wildcard _*.mkd)
+## we don't have any *.mkd anymore
+#-include $(wildcard _*.mkd)
 
 
 _bismon-constdep.mk: BISMON-config $(BM_CSOURCES)
