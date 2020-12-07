@@ -947,6 +947,9 @@ bmc_print_config_ninja(const char*progname)
     auto curlen = cursrc.size();
     BMC_DEBUG("cursrc='" << cursrc << "' curlen=" << curlen
 	      << " sizeof(\"_BM.c\")=" << sizeof("_BM.c"));
+    if (nbsrc % 8 == 0)
+      ninjaoutf << std::endl << std::endl
+		<< "#/ source #" << nbsrc << " from " __FILE__ ":" << __LINE__ << std::endl;
     if (curlen > sizeof("_BM.c")
 	&& cursrc.substr(curlen+1-sizeof("_BM.c")) == std::string("_BM.c")) {
       std::string curobp = cursrc;
@@ -957,7 +960,7 @@ bmc_print_config_ninja(const char*progname)
       BMC_DEBUG("_BM source cursrc='" << cursrc
 		<< "', curobp='" << curobp << "', curdepfil='"
 		<< curdepfil << "'");
-      ninjaoutf << "build " << curobp << ": CC_rlBM " << cursrc
+      ninjaoutf << std::endl << "build " << curobp << ": CC_rlBM " << cursrc
 		<< std::endl
 		<< "  depfile = " << curdepfil
 		<< std::endl;
@@ -975,7 +978,7 @@ bmc_print_config_ninja(const char*progname)
       BMC_DEBUG("_BM source cursrc='" << cursrc
 		<< "', curobp='" << curobp << "', curdepfil='"
 		<< curdepfil << "'");
-      ninjaoutf << "build " << curobp << ": CXX_rlBM " << cursrc
+      ninjaoutf  << std::endl  << "build " << curobp << ": CXX_rlBM " << cursrc
 		<< std::endl
 		<< "  depfile = " << curdepfil << std::endl;
       nbsrc++;
