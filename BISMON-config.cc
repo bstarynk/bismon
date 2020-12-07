@@ -1444,7 +1444,7 @@ main (int argc, char**argv)
 		<< " is running with MAKELEVEL " << mklev << " so exiting quickly." << std::endl;
       char pscmd[64];
       memset(pscmd, 0, sizeof(pscmd));
-      snprintf(pscmd, sizeof(pscmd), "/bin/ps %ld > /dev/stderr", getppid());
+      snprintf(pscmd, sizeof(pscmd), "/bin/ps --no-headers --pid %ld >/dev/stderr", getppid());
       system (pscmd);
       exit (EXIT_SUCCESS);
     }
