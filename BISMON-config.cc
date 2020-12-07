@@ -1112,8 +1112,29 @@ bmc_ask_missing_configuration(const char*progname)
   /// libonion include header - with onion/onion.h
   if (bismon_onion_includedir && bismon_onion_includedir[0]) { // from __timestamp.c
     BMC_DEBUG("got bismon_onion_includedir " << bismon_onion_includedir);
-#warning we should check that bismon_onion_includedir from __timestamp.c is a genuine directory
+    DIR*dirincl = opendir(bismon_onion_includedir);
+    if (dirincl)
+      closedir(dirincl);
+    else {
+      std::cerr << progname << ": the libONION include directory " << bismon_onion_includedir
+		<< " is a bad one: " << strerror(errno) << " (from __timestamp.* file)" << std::endl;
+      std::cerr << "... consider running `make distclean` then `make runconfig` then `make bismon`..." << std::endl;
+      BMC_FAILURE("bad libONION include directory");
+    };
     bmc_onion_includedir = std::string(bismon_onion_includedir);
+  };
+  if (bismon_onion_libdir && bismon_onion_libdir[0]) { // from __timestamp.c
+    BMC_DEBUG("got bismon_onion_libdir " << bismon_onion_libdir);
+    DIR*dirlib = opendir(bismon_onion_includedir);
+    if (dirlib)
+      closedir(dirlib);
+    else {
+      std::cerr << progname << ": the libONION library directory " << bismon_onion_libdir
+		<< " is a bad one: " << strerror(errno) << " (from __timestamp.* file)" << std::endl;
+      std::cerr << "... consider running `make distclean` then `make runconfig` then `make bismon`..." << std::endl;
+      BMC_FAILURE("bad libONION library directory");
+    };
+    bmc_onion_libdir = std::string(bismon_onion_libdir);
   };
   if (bmc_onion_includedir.empty() || bmc_onion_libdir.empty()) {
     std::cout << std::endl;
@@ -1148,11 +1169,6 @@ bmc_ask_missing_configuration(const char*progname)
 		  << std::endl;
     }
   } // end while bmc_onion_includedir.empty()
-  if (bismon_onion_libdir && bismon_onion_libdir[0]) { // from __timestamp.c
-    BMC_DEBUG("got bismon_onion_includedir " << bismon_onion_includedir);
-#warning we should check that bismon_onion_libdir from __timestamp.c is a genuine directory
-    bmc_onion_includedir = std::string(bismon_onion_includedir);
-  };
   /////////////
   /// libonion library directory, with libonion.so
   while (bmc_onion_libdir.empty()) {
