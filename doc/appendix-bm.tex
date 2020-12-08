@@ -25,6 +25,10 @@ source code and probably also some recent
 and should budget several days of work for that.
 
 
+{\large Be aware that \textbf{\texttt{bismon} requires specifically some
+  \href{https://gcc.gnu.org/gcc-10/}{GCC 10} compiler} and won't work
+  with e.g. a GCC 9 compiler.}
+
 \subsection{Prerequisites for building \texttt{bismon}}
 \label{subsec:prereq-bismon}
 
@@ -190,7 +194,9 @@ The \emph{Bismon} project uses two \href{https://en.wikipedia.org/wiki/Build_aut
   \item The \texttt{emitcode\_BM.c} file contains many Bismon routines
     for \index{emission} emission or \index{generation} of C code in
     \index{module} modules.
-  \item The \texttt{engine\_BM.c} file is related to \index{tasklet}-s.
+
+  \item The \texttt{engine\_BM.c} file is related to \index{tasklet} tasklets in the agenda (see \S
+    \ref{subsec:multithreadist} above).
 
   \item \texttt{gencode\_BM.c} is related to C code generation.
 
