@@ -18,15 +18,19 @@ docmode=$1
 
 if [ -n "$docmode" ]; then
     case "$docmode" in
-	LaTeX) break;;
-	HeVeA) break;;
+	LaTeX) printf "%s will produce a PDF document using LuaLaTeX - see www.latex-project.org and www.luatex.org\n" $0;;
+	HeVeA) printf "%s should produce an HTML document using HeVeA - see hevea.inria.fr\n" $0;;
 	*)
 	    printf "%s: invalid mode %s, expecting LaTeX or HeVeA\n" $0 "$docmode" > /dev/stderr
 	    exit 1
     esac
 fi
 
+inkscape --version
+lualatex --version
+
 ## old inkscape had --without-gui option, which changed in Inkscape 1.0
+## this script requires Inkscape 1.0 ; check with inkscape --version
 bismon_inkscape_batch_option="--batch-process"
 
 mkdir -pv doc/generated/
