@@ -42,7 +42,7 @@ A recent \texttt{libonion} library\footnote{This is an open source
 (version 0.8 at least) is required. Fetch \texttt{libonion}'s source
 code from
 \href{https://github.com/davidmoreno/onion}{\texttt{\textbf{github.com/davidmoreno/onion/}}}
-and follow it build instructions: probably \texttt{mkdir \_build} then
+and follow its build instructions: probably \texttt{mkdir \_build} then
 \texttt{cd \_build} then \texttt{cmake ..} then \texttt{make} and at
 last \texttt{sudo make install}. That \texttt{libonion} library needs
 less than 25Mbytes of disk space,
@@ -60,3 +60,117 @@ particular support for \texttt{openssl}, \texttt{gcrypt},
   \href{https://github.com/davidmoreno/onion/commit/43128b03199518d4878074c311ff71ff0018aea8}{git
     commit \texttt{43128b031995}}....}, it should have some
 \texttt{ONION\_VERSION} close to \texttt{0.8.150} at least.
+
+The \href{https://www.gnu.org/software/readline/}{GNU readline}
+(GPLv3+ licensed) library is required, at version 8. It is useful for
+autocompletion abilities in interactive situations.
+
+Ian Lance Taylor's
+\href{https://github.com/ianlancetaylor/libbacktrace}{libbacktrace}
+library is needed for backtraces on error and in warnings, and
+possibly for future (generated) introspective code. This library takes
+advantage of \href{https://en.wikipedia.org/wiki/DWARF}{DWARF}
+debugging metadata in object files and executable, so it is advised to
+compile every \emph{Bismon} source file (either handwritten or
+generated) with \texttt{-g} (and possibly also \texttt{-O2} for
+optimization) flag to \texttt{gcc} or \texttt{g++}.
+
+\subsubsection{Naming conventions and source files organization for \texttt{bismon}}
+
+\medskip
+
+{\large \textbf{naming and coding conventions in hand-written \emph{C} code}}
+
+\begin{itemize}
+
+  \item \textbf{All} public
+    \href{https://en.wikipedia.org/wiki/Executable_and_Linkable_Format}{ELF}
+    \textbf{names of hand-written functions or global variables} (as
+    known to
+    \href{https://man7.org/linux/man-pages/man1/nm.1.html}{\texttt{nm(1)}},
+    \href{https://man7.org/linux/man-pages/man1/objdump.1.html}{\texttt{objdump(1)}}
+    or to
+    \href{https://man7.org/linux/man-pages/man3/dlsym.3.html}{\texttt{dlsym(3)}}
+    \textbf{are conventionally suffixed by}
+           {\texttt{\textbf{\_BM}}}\,. For example, we have some
+           \texttt{prime\_above\_BM} function giving some prime number
+           above a given reasonable positive integer.
+
+\item \textbf{We have conventional suffixes:} Our public
+  \texttt{struct}-s are generally tagged with a name ending with
+         {\texttt{\textbf{\_stBM}}}\,; Our \texttt{typedef}-ed types
+         are suffixed with {\texttt{\textbf{\_tyBM}}}\,; usually their
+         field names is globally unique and share a common prefix
+         (e.g. in \texttt{struct parstoken\_stBM} field names all
+         start with \texttt{tok}). Public signatures (useful for C
+         function pointers) are suffixed with
+         {\texttt{\textbf{\_sigBM}}}\, (for example, the
+         initialization of generated modules is a C function of
+         signature \texttt{moduleinit\_sigBM}\,). Most public
+         \texttt{enum}-s have their name ending with
+                {\texttt{\textbf{\_enBM}}}\, e.g. \texttt{space\_enBM}
+                for space numbers.
+
+              \item Preprocessor symbols or macros are in all capital
+                ending with {\texttt{\textbf{\_BM}}}\,, notably the
+                important \texttt{LOCALFRAME\_BM} variadic macro for
+                local roots known to our garbage collector.
+\end{itemize}
+
+{\large \textbf{Hand-written \emp{C} code files}}
+
+\begin{itemize}
+  \item The header file \texttt{bismon.h} is our only public header file,
+    and is \texttt{\#include}d everywhere. It includes system headers (e.g. \texttt{<unistd.h>} or \texttt{<pthread.h>}, and the following ``internal'' headers:
+    \begin{enumerate}
+      \item \texttt{cmacros_BM.h} is \texttt{\#define}-ing important
+        global preprocessor macros, including \texttt{FATAL\_BM} for
+        fatal errors, \texttt{LOCALFRAME\_BM} variadic macro for local
+        roots, \texttt{DBGPRINTF\_BM} for debugging output,
+        \texttt{WARNPRINTF\_BM} for warning messages,
+        \texttt{INFOPRINTF\_BM} for informational messages, etc... The
+        \texttt{ROUTINEOBJNAME\_BM} macro is giving the routine name of
+        a given object id.
+
+      \item \texttt{id\_BM.h} is implementing our object ids.
+
+      \item \texttt{types\_BM.h} is defining our global types,
+        \texttt{struct}-s, etc... Notice the \texttt{value\_tyBM}
+        opaque type (a \texttt{void*} pointer) for Bismon values.
+
+        \item \texttt{global\_BM.h} is declaring our \texttt{extern}al
+          global data, some of which is generated.
+        \item \texttt{fundecl\_BM.h} is declaring our global
+          hand-written functions. Some of them are \texttt{static
+            inline} for efficiency reasons (for example
+          \texttt{elapsedtime\_BM} returning the elapsed clock time as
+          a \texttt{double} number in seconds, or \texttt{valhash\_BM}
+          to compute the hash code of a Bismon value.
+
+        \item \texttt{inline\_BM.h} is implementing our global \texttt{static
+            inline} functions.
+    \end{enumerate}
+
+  \item \texttt{agenda\_BM.c} is implementing our agenda
+    \index{agenda} with tasklets \index{tasklet} (see \S
+    \ref{subsec:multithreadist} above).
+
+  \item \texttt{allocgc\_BM.c} is implementing low-level memory
+    allocation and garbage collector \index{garbage collector} (see \S
+    \ref{subsec:gcvalobj} above).
+  
+  \item \texttt{assoc\_BM.c} is implementing associative lists and
+    tables, \index{object} \index{attribute} \index{association} in
+    particular for object attributes.
+
+  \item The \texttt{code\_BM.c} file contains many Bismon routines for
+    \index{closure} closures.
+
+  \item The \texttt{dump\_BM.c} file is implementing the \index{dump} dump of the
+      persistent store. \index{persistence} \index{store} See \S
+      \ref{subsec:persistence}.
+
+  \item The \texttt{emitcode\_BM.c} file contains many Bismon routines
+    for \index{emission} emission or \index{generation} of C code in
+    \index{module} modules.
+\end{itemize}
