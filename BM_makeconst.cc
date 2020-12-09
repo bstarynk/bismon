@@ -43,6 +43,20 @@
 #warning BISMON_SHORTGIT should be defined with -D in compilation command
 #endif /*BISMON_SHORTGIT*/
 
+char* bmk_progname;
+extern "C" void  bmk_fatal_stop_at(const char*fil, int lin);
+#define BMK_FATALOUT_AT_BIS(Fil,Lin,...) do {	\
+    std::cerr << "** " << bmk_progname << " FATAL! "	\
+	      << (Fil) << ":" << Lin << ":: "	\
+	      << __VA_ARGS__ << std::endl;	\
+    bmk_fatal_stop_at (Fil,Lin); } while(0)
+
+#define BMK_FATALOUT_AT(Fil,Lin,...) BMK_FATALOUT_AT_BIS(Fil,Lin,##__VA_ARGS__)
+
+// typical usage would be BMK_FATALOUT("x=" << x)
+#define BMK_FATALOUT(...) BMK_FATALOUT_AT(__FILE__,__LINE__,##__VA_ARGS__)
+
+
 // see https://www.gnu.org/software/libc/manual/html_node/Argp.html
 #warning we should have more options and parse them with argp
 
@@ -64,7 +78,6 @@ typedef std::set<rawid_tyBM, IdLess_BM> set_of_ids_KBM;
 // for program argument parsing using argp
 // see https://www.gnu.org/software/libc/manual/html_node/Argp.html
 void bmk_parse_program_options(int argc, char**argv);
-char* bmk_progname;
 static error_t bmk_parse1opt (int key, char *arg, struct argp_state *state);
 enum bmk_progoption_en {
   BMKPROGOPT__NONE,
@@ -211,6 +224,7 @@ seek_header_in_cfile(const char*path)
 } // end seek_header_in_cfile
 
 
+/// heavily inspired by similar code I wrote for RefPerSys - see http://refpersys.org/ for more...
 struct argp_option
 bmk_progoptions[] =
 {
@@ -267,6 +281,12 @@ bmk_parse1opt (int key, char *arg, struct argp_state *state)
       
     case BMKPROGOPT_GENERATE_CONST_HEADER:
       {
+	if (side_effect) {
+	  if (!arg)
+	    BMK_FATALOUT("Program option --generate-const-header requires a given HEADER argument. Try "
+			 << bmk_progname << " --help.");
+#warning incomplete code in bmk_parse1opt
+	}
       }
 
     case BMKPROGOPT_GENERATE_ALL_CONST:
@@ -279,7 +299,36 @@ bmk_parse1opt (int key, char *arg, struct argp_state *state)
 void
 bmk_parse_program_options(int argc, char**argv)
 {
+  errno = 0;
+  struct argp_state argstate;
+  memset (&argstate, 0, sizeof(argstate));
+  static struct argp argparser;
+  argparser.options = bmk_progoptions;
+  argparser.parser = bmk_parse1opt;
+  argparser.args_doc = " ; # ";
+  argparser.doc = "BM_makeconst is an internal utility (GPLv3+ licensed) [meta-]program generating some C files inside the BISMON project.\n"
+    "see starynkevitch.net/Basile/bismon-chariot-doc.pdf and github.com/bstarynk/bismon/ for more about BISMON.\n"
+    "You should have received a copy of the GNU General Public License\n"
+    "along with this program.  If not, see https://www.gnu.org/licenses\n"
+    "**NO WARRANTY, not even for FITNESS FOR A PARTICULAR PURPOSE**\n"
+    "+++ use at your own risk +++\n"
+    "\n Accepted program options are:\n";    
+  argparser.children = nullptr;
+  argparser.help_filter = nullptr;
+  argparser.argp_domain = nullptr;
+  if (argp_parse(&argparser, argc, argv, 0, nullptr, nullptr))
+    BMK_FATALOUT("invalid program arguments - run " << bmk_progname << " --help for more.");
 } // end bmk_parse_program_options
+
+
+const char*bmk_fatal_file;
+int bmk_fatal_line;
+void bmk_fatal_stop_at(const char*fil, int lin)
+{
+  bmk_fatal_file = fil;
+  bmk_fatal_line = lin;
+  abort();
+} // end of bmk_fatal_stop_at
 
 int
 main(int argc, char**argv)
