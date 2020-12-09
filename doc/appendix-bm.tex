@@ -250,9 +250,12 @@ notation); more precisely
   \textbf{\texttt{modules/}}\,.
 
 \item other \texttt{store\textcolor{blue}{\textbf{\textit{i}}}.bmon}
-  contains\footnote{So there cannot be any \texttt{store0.bmon} file,
-    since space 0 is for transient objects which are not dumped.}
-  objects in space ranked $i$ \ldots
+  textual files contain\footnote{So there cannot be any
+    \texttt{store0.bmon} file, since space 0 is for transient objects
+    which are not dumped.}  objects in space ranked $i$ \ldots. Notice
+  that all these files are both loaded and dumped, and should be
+  backed-up (like the \textbf{\texttt{modules/}}\, directory)
+  regularily.
 
 \end{itemize}
 
