@@ -41,6 +41,9 @@
 #warning BISMON_SHORTGIT should be defined with -D in compilation command
 #endif /*BISMON_SHORTGIT*/
 
+// see https://www.gnu.org/software/libc/manual/html_node/Argp.html
+#warning we should have more options and parse them with argp
+
 /** examples of invocation:
 To process a single file and generate its header
     ./BM_makeconst -H user_BM.const.h user_BM.c
