@@ -34,6 +34,8 @@
 #include <set>
 #include <string>
 #include <unistd.h>
+#include <argp.h>
+
 #include "id_BM.h"
 
 #ifndef BISMON_SHORTGIT
@@ -58,6 +60,20 @@ otherwise exit code is 1
 
 #define BMPREFIXSIZE 4 /* the length of both "BMK_" and "BMH_" prefixes */
 typedef std::set<rawid_tyBM, IdLess_BM> set_of_ids_KBM;
+
+// for program argument parsing using argp
+// see https://www.gnu.org/software/libc/manual/html_node/Argp.html
+void bmk_parse_program_options(int argc, char**argv);
+char* bmk_progname;
+static error_t bmk_parse1opt (int key, char *arg, struct argp_state *state);
+enum bmk_progoption_en {
+  BMKPROGOPT__NONE,
+  BMKPROGOPT_VERSION= 1000,
+  BMKPROGOPT_GENERATE_CONST_HEADER,
+  BMKPROGOPT_GENERATE_ALL_CONST,
+};				// end enum bmk_progoption_en
+
+
 
 
 int totalnbkocc;		// total cumulated number of occurrences of BMK_ for constants
@@ -195,10 +211,80 @@ seek_header_in_cfile(const char*path)
 } // end seek_header_in_cfile
 
 
+struct argp_option
+bmk_progoptions[] =
+{
+  /* ======= give version information ======= */
+  {/*name:*/ "version", ///
+    /*key:*/ BMKPROGOPT_VERSION, ///
+    /*arg:*/ nullptr, ///
+    /*flags:*/ 0, ///
+    /*doc:*/ "give version information", ///
+    /*group:*/0 ///
+  },
+  /* ======= generate a foo_BM.const.h header for foo_BM.c ======= */
+  {/*name:*/ "generate-const-header", ///
+    /*key:*/ BMKPROGOPT_GENERATE_CONST_HEADER, ///
+    /*arg:*/ "HEADER", ///
+    /*flags:*/ 0, ///
+    /*doc:*/ "generate the HEADER constant file for a given <foo>_BM.c;\n"
+    " usually for <foo>_BM.c your HEADER should be <foo>_BM.const.h", ///
+    /*group:*/0 ///
+  },
+  /* ======= generate the all-constants CONSTFILE file for several *_BM.c ======= */
+  {/*name:*/ "generate-all-constants", ///
+    /*key:*/ BMKPROGOPT_GENERATE_ALL_CONST, ///
+    /*arg:*/ "CONSTFILE", ///
+    /*flags:*/ 0, ///
+    /*doc:*/ "generate the CONSTFILE all-persistent-constants file for several given *_BM.c files;"
+    " usually CONSTFILE should be _bismon-constants.c", ///
+    /*group:*/0 ///
+  },
+  /* ======= terminating empty option ======= */
+  {/*name:*/(const char*)0, ///
+    /*key:*/0, ///
+    /*arg:*/(const char*)0, ///
+    /*flags:*/0, ///
+    /*doc:*/(const char*)0, ///
+    /*group:*/0 ///
+  }
+};				// end bmk_progoptions
+
+error_t
+bmk_parse1opt (int key, char *arg, struct argp_state *state)
+{
+  bool side_effect = state != nullptr;
+  switch (key)
+    {
+    case BMKPROGOPT_VERSION:
+      {
+      if (side_effect)
+        {
+	  std::cout << bmk_progname << " compiled from " __FILE__ " at " __DATE__ << " git " BISMON_SHORTGIT << std::endl;
+	}
+      return 0;
+      }
+      
+    case BMKPROGOPT_GENERATE_CONST_HEADER:
+      {
+      }
+
+    case BMKPROGOPT_GENERATE_ALL_CONST:
+      {
+      }
+    }
+  return ARGP_ERR_UNKNOWN;
+} // end bmk_parse1opt
+
+void
+bmk_parse_program_options(int argc, char**argv)
+{
+} // end bmk_parse_program_options
 
 int
 main(int argc, char**argv)
 {
+  bmk_progname = argv[0];
   if (argc < 3 || (argc>1 && !strcmp(argv[1], "--help")))
 show_usage:
     {
