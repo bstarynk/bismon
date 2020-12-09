@@ -1,14 +1,14 @@
 % file appendix-bm.tex, which is \input from bismon-chariot-doc.tex
 % see https://github.com/bstarynk/bismon for more about Bismon
-\section{Appendix}
+\section*{Appendix}
 \label{sec:appendix}
 
 \subsection{Building \texttt{bismon} from its source code}
 \label{subsec:building-bismon}
 
 We focus here on how to build \texttt{bismon} from its source code on
-\href{http://debian.org/}{Debian}-like distributions running on
-x86-64 computers, such as
+\href{http://debian.org/}{Debian}-like distributions running on x86-64
+computers, such as
 \href{https://www.debian.org/releases/stable/}{Debian Buster 10.6}, or
 \href{https://ubuntu.com/}{Ubuntu 20.04}, or
 \href{https://linuxmint.com/}{Linux Mint 20}. Familiarity with the
@@ -16,7 +16,10 @@ command line is required\footnote{For example, the reader is expected
   of being able to build \href{https://www.gnu.org/software/make/}{GNU
     make} or \href{https://www.gnu.org/software/bash/}{GNU bash} from
   their source code.}, with \texttt{root} access (e.g. using
-\texttt{sudo}).
+\texttt{sudo}). Fluency with \href{https://git-scm.com/}{\texttt{git}}
+is expected, and it is strongly advised to \texttt{git commit} every
+few hours (including your persistent store, when \texttt{bismon} is
+\emph{not running}).
 
 The reader is expected to be authorized (by his/her management, if
 that build is done professionally) to build \texttt{bismon} from its
@@ -229,6 +232,42 @@ The \emph{Bismon} project uses two \href{https://en.wikipedia.org/wiki/Build_aut
   \item \texttt{misc\_BM.cc} is a \textbf{C++} file, to take advantage of some standard C++ containers.
 \end{itemize}
 
+{\large \textbf{The persistent store}}
+
+The persistent data (see \S \ref{sec:datapersist} above) sits in files
+\texttt{store*.bmon} (using
+\href{https://man7.org/linux/man-pages/man7/glob.7.html}{\texttt{glob(7)}}
+notation); more precisely
+
+\begin{itemize}
+
+\item \texttt{store1.bmon} is for predefined objects. The header file
+  \texttt{genbm\_predef.h} is generated from them at dump time.
+
+\item \texttt{store2.bmon} contains the global object space. Several
+  global objects describe modules whose C code is generated (e.g. at
+  dump time) \index{dump} \index{module} under sub-directory
+  \textbf{\texttt{modules/}}\,.
+
+\item other \texttt{store\textcolor{blue}{\textbf{\textit{i}}}.bmon}
+  contains\footnote{So there cannot be any \texttt{store0.bmon} file,
+    since space 0 is for transient objects which are not dumped.}
+  objects in space ranked $i$ \ldots
+
+\end{itemize}
+
+These \emph{generated} textual
+\texttt{store\textcolor{blue}{\textit{\textbf{i}}}.bmon} \emph{files}
+should be \emph{version controlled} by the
+\href{https://git-scm.com/}{\texttt{git}} tool. You might use the \texttt{make
+  redump} command to regenerate the persistent store and the modules,
+and it is advised\footnote{Once \texttt{make redump} fails, the
+  persistent store is inconsistent and corrupted. This should not
+  happen, but when it does, use
+  \href{https://git-scm.com/docs/git-bisect}{\texttt{git bisect}} to
+  find the latest consistent state of your \textit{Bismon} repository.}
+to run it daily.
+  
 \subsubsection{Generators and meta-programs in \texttt{bismon}}
 
 {\textcolor{red}{\large @@TO BE WRITTEN}}
