@@ -374,4 +374,46 @@ to run it daily.
   
 \subsubsection{Generators and meta-programs in \texttt{bismon}}
 
+Generating code is one of the core ideas of Bismon. Such code
+generation happens both at build time and at run time. The generated
+code is usually some C file\footnote{With additional funding and more
+time, we could have used
+\href{https://gcc.gnu.org/onlinedocs/jit/}{\texttt{libgccjit}} to
+generate directly some \texttt{*.so} shared object.}.
+
+At build time, two meta-programs are involved; each of them has a
+single handwritten C++ source code file:
+
+\begin{itemize}
+  \item \texttt{BISMON-config}
+    \index{bismon-config@\texttt{BISMON-config} metaprogram} is
+    querying some parameters from the user (that is the Linux sysadmin
+    installing \texttt{bismon}) and generates some C++ files.
+
+  \item \texttt{BM\_makeconst}
+    \index{bm-makeconst@\texttt{BM\_makeconst} metaprogram} is usually
+    scanning some handwritten C file (for example, our
+    \texttt{engine\_BM.c} file, etc...)  and producing some headers or
+    utility files.
+\end{itemize}
+
+But once the \texttt{bismon} executable exists, the above metaprograms
+are not useful anymore.
+
+At run time, the \texttt{bismon} executable is routinely generating C
+or C++ code. Some C code (under the \textbf{\texttt{modules/}}\,
+directory) is generated to extend the behevior of \texttt{bismon}
+itself : the generated C code is compiled, and the resulting shared
+object is
+\href{https://man7.org/linux/man-pages/man3/dlopen.3.html}{\texttt{dlopen(3)}}-ed
+but never\footnote{Not \texttt{dlclose}-ing is of course some kind of
+\href{https://en.wikipedia.org/wiki/Memory_leak}{memory leak}, since
+the \href{https://en.wikipedia.org/wiki/Virtual_address_space}{virtual
+  address space} of the process running \texttt{bismon} is never
+shrinking.}
+\href{https://man7.org/linux/man-pages/man3/dlclose.3.html}{\texttt{dlclose(3)}}-ed. Our
+\href{https://github.com/bstarynk/misc-basile/blob/master/manydl.c}{\texttt{manydl.c}}
+program demonstrates that doing so many thousands of times is
+practically possible on modern \textsc{Linux} workstations.
+
 {\textcolor{red}{\large @@TO BE WRITTEN}}
