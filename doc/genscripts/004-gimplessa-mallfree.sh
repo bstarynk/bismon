@@ -30,22 +30,22 @@ if [ ! -f mallfree.c.[0-9]*t.gimple ]; then
     echo missing single 'mallfree.c.[0-9]*t.gimple' file > /dev/stderr
     exit 1
 fi
-ln -svf mallfree.c.0*t.gimple $PWD/mallfree-gimple.c 1>&2
+/bin/ln -svf mallfree.c.0*t.gimple $PWD/mallfree-gimple.c 1>&2
 
 if [ ! -f mallfree.c.[0-9]*t.ssa ]; then
     echo missing single 'mallfree.c.[0-9]*t.ssa' file > /dev/stderr
     exit 1
 fi
-ln -svf mallfree.c.[0-9]*t.ssa $PWD/mallfree-ssa.c 1>&2
-sed -i mallfree-ssa.c -e '1,2s/decl_uid/\n;;;  decl_uid/'
+/bin/ln -svf mallfree.c.[0-9]*t.ssa $PWD/mallfree-ssa.c 1>&2
+/bin/sed -i mallfree-ssa.c -e '1,2s/decl_uid/\n;;;  decl_uid/'
 
-ln -svf mallfree.c.[0-9]*t.optimized $PWD/mallfree-optimized.c 1>&2
-sed -i mallfree-optimized.c -e '1,2s/decl_uid/\n;;;  decl_uid/'
+/bin/ln -svf mallfree.c.[0-9]*t.optimized $PWD/mallfree-optimized.c 1>&2
+/bin/sed -i mallfree-optimized.c -e '1,2s/decl_uid/\n;;;  decl_uid/'
 
 nbskip=$(fgrep -n .text mallfree.s | cut -d: -f1)
 printf "## %d lines removed\n" $nbskip > mallfree-tail.s
-tail -n +$nbskip mallfree.s | sed s:../examples/::g >> mallfree-tail.s
+/usr/bin/tail -n +$nbskip mallfree.s | /bin/sed s:../examples/::g >> mallfree-tail.s
 
-(pwd; ls -ls mallfree*)  1>&2
+(/bin/pwd; /bin/ls -ls mallfree*)  1>&2
 
 printf "%% 004-gimplessa-mallfree.sh done %s in %s\n" $0 $(pwd)
