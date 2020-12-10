@@ -26,14 +26,24 @@ export  LC_TELEPHONE=en_US.UTF-8
 export  LC_NAME=en_US.UTF-8
 export  LC_ADDRESS=en_US.UTF-8
 
-declare -a bm_lualatex
+declare -a bm_lualatex_args
+
+
 
 if [ "$1" = "-d" -o "$1" = "--debug" ]; then
-    bm_lualatex=(lualatex --debug-format)
+    bm_lualatex_args=(--debug-format --halt-on-error --file-line-error  --interaction=batchmode  --recorder)
     shift
 else
-    bm_lualatex=(lualatex)
+    bm_lualatex_args=(--halt-on-error --file-line-error --interaction=batchmode --recorder)
 fi
+
+function bm_run_lualatex () {
+    if lualatex $bm_lualatex_args $* ; then
+	printf "lualatex good for %s\n" "$@"
+    else
+	printf "lualatex failed for %s - %s\n" "$@" $(caller())
+    fi
+}
 
 ## the optional program argument could be LaTeX or HeVeA or left empty
 docmode=$1
@@ -47,6 +57,8 @@ if [ -n "$docmode" ]; then
 	    exit 1
     esac
 fi
+
+## we cannot pass --jobname to lualatex, since it defines the name of the generated PDF file
 
 ### inkscape could be in /usr/local/bin since inkscape 1.0 is needed
 inkscape --version
@@ -142,9 +154,9 @@ done
 if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
 
     printf "@@@BISMONdoc %s process %d LaTeXing in %s\n\n" $0 $$ $(pwd) > /dev/stderr
-    $bm_lualatex --halt-on-error --file-line-error --shell-restricted --debug-format --draftmode --interaction=batchmode bismon-chariot-doc
+    bm_run_lualatex --draftmode bismon-chariot-doc && /bin/true
     bibtex bismon-chariot-doc < /dev/null
-    $bm_lualatex --halt-on-error --file-line-error  --interaction=batchmode bismon-chariot-doc
+    bm_run_lualatex  bismon-chariot-doc && /bin/true
     ## on Debian texindy & xindy is inside xindy package
     pwd && /bin/ls -lt bismon-chariot-doc.*
     texindy -v -C utf8 -I latex bismon-chariot-doc.idx >& /tmp/texindy-bismon.log || true
@@ -152,13 +164,13 @@ if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
 	echo error texindy failure in $PWD >& /dev/stderr
     fi
     printf '\n\n\n#### %s second pass latexing bismon chariot doc #####\n' "$0" 
-    $bm_lualatex --halt-on-error  --file-line-error  --interaction=batchmode bismon-chariot-doc
+    bm_run_lualatex   bismon-chariot-doc && /bin/true
     bibtex bismon-chariot-doc < /dev/null
-    if $bm_lualatex --halt-on-error --file-line-error  --interaction=batchmode bismon-chariot-doc ; then
-	printf "@@@BISMONdoc %s succeeded %s-ing bismon-chariot-doc\n" $0 "$bm_lualatex"
+    if bm_run_lualatex  bismon-chariot-doc ; then
+	printf "@@@BISMONdoc %s succeeded lualatexing-ing bismon-chariot-doc\n" $0 
 	/bin/ls -lt bismon-chariot-doc.pdf
     else
-	printf "\n\n****\n@@@BISMONdoc %s failed to %s -halt-on-error bismon-chariot-doc *****\n\n" $0 "$bm_lualatex" >& /dev/stderr
+	printf "\n\n****\n@@@BISMONdoc %s failed to %s bismon-chariot-doc *****\n\n" $0 "$bm_lualatex" >& /dev/stderr
 	exit 1
     fi
     [ -d $HOME/tmp/ ] && cp -v bismon-chariot-doc.pdf $HOME/tmp/bismon-chariot-doc-$bmrawgittag.pdf && (cd $HOME/tmp; ln -svf bismon-chariot-doc-$bmrawgittag.pdf bismon-chariot-doc.pdf)
