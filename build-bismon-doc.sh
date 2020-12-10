@@ -26,6 +26,15 @@ export  LC_TELEPHONE=en_US.UTF-8
 export  LC_NAME=en_US.UTF-8
 export  LC_ADDRESS=en_US.UTF-8
 
+declare -a bm_lualatex
+
+if [ "$1" = "-d" -o "$1" = "--debug" ]; then
+    bm_lualatex=(lualatex --debug-format)
+    shift
+else
+    bm_lualatex=(lualatex)
+fi
+
 ## the optional program argument could be LaTeX or HeVeA or left empty
 docmode=$1
 
@@ -66,7 +75,7 @@ fi
 printf "\\\\newcommand{\\\\bmgitcommit}[0]{%s}\n" "$bmgittag" > doc/generated/git-commit.tex
 /usr/bin/git log -1 '--format=tformat:\newcommand{\bmgitdate}[0]{%ad}' --date=format:%Y-%b-%d >> doc/generated/git-commit.tex
 # generate the number of commits; should be doable in a more efficient way
-nbc=$(/usr/bin/git log | /bin/grep '^commit' | wc -l)
+nbc=$(/usr/bin/git log | /bin/grep '^commit' | /usr/bin/wc -l)
 printf '\\newcommand{\\bmgitnumbercommits}[0]{%d}\n' $nbc >> doc/generated/git-commit.tex
 
 # generate the dates
@@ -133,9 +142,9 @@ done
 if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
 
     printf "@@@BISMONdoc %s process %d LaTeXing in %s\n\n" $0 $$ $(pwd) > /dev/stderr
-    lualatex --halt-on-error --file-line-error --shell-restricted --debug-format --draftmode --interaction=batchmode bismon-chariot-doc
+    $bm_lualatex --halt-on-error --file-line-error --shell-restricted --debug-format --draftmode --interaction=batchmode bismon-chariot-doc
     bibtex bismon-chariot-doc < /dev/null
-    lualatex --halt-on-error --file-line-error  --interaction=batchmode bismon-chariot-doc
+    $bm_lualatex --halt-on-error --file-line-error  --interaction=batchmode bismon-chariot-doc
     ## on Debian texindy & xindy is inside xindy package
     pwd && /bin/ls -lt bismon-chariot-doc.*
     texindy -v -C utf8 -I latex bismon-chariot-doc.idx >& /tmp/texindy-bismon.log || true
@@ -143,13 +152,13 @@ if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
 	echo error texindy failure in $PWD >& /dev/stderr
     fi
     printf '\n\n\n#### %s second pass latexing bismon chariot doc #####\n' "$0" 
-    lualatex --halt-on-error  --file-line-error  --interaction=batchmode bismon-chariot-doc
+    $bm_lualatex --halt-on-error  --file-line-error  --interaction=batchmode bismon-chariot-doc
     bibtex bismon-chariot-doc < /dev/null
-    if lualatex --halt-on-error --file-line-error  --interaction=batchmode --debug-format  bismon-chariot-doc ; then
-	printf "@@@BISMONdoc %s succeeded lualatex-ing bismon-chariot-doc\n" $0
+    if $bm_lualatex --halt-on-error --file-line-error  --interaction=batchmode bismon-chariot-doc ; then
+	printf "@@@BISMONdoc %s succeeded %s-ing bismon-chariot-doc\n" $0 "$bm_lualatex"
 	/bin/ls -lt bismon-chariot-doc.pdf
     else
-	printf "\n\n****\n@@@BISMONdoc %s failed to lualatex -halt-on-error bismon-chariot-doc *****\n\n" $0 >& /dev/stderr
+	printf "\n\n****\n@@@BISMONdoc %s failed to %s -halt-on-error bismon-chariot-doc *****\n\n" $0 "$bm_lualatex" >& /dev/stderr
 	exit 1
     fi
     [ -d $HOME/tmp/ ] && cp -v bismon-chariot-doc.pdf $HOME/tmp/bismon-chariot-doc-$bmrawgittag.pdf && (cd $HOME/tmp; ln -svf bismon-chariot-doc-$bmrawgittag.pdf bismon-chariot-doc.pdf)
