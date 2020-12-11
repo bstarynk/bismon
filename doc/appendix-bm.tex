@@ -338,26 +338,26 @@ executables.
 
 The persistent data (see \S \ref{sec:datapersist} above) sits in files
 \index{persistent!store} \index{store!persistent}
-\index{store-bm@\texttt{store*.bmon} files} \texttt{store*.bmon}
+\index{store-bm@\texttt{store*§.bmon} files} \texttt{store§*.bmon}
 (using
 \href{https://man7.org/linux/man-pages/man7/glob.7.html}{\texttt{glob(7)}}
 notation); more precisely
 
 \begin{itemize}
 
-\item \texttt{store1.bmon} is for predefined objects. The header file
+\item \texttt{store§1.bmon} is for predefined objects. The header file
   \index{genbm-predef@\texttt{genbm-predef} file}
   \texttt{genbm\_predef.h} is generated from them at dump time.
 
-\item \texttt{store2.bmon} contains the global object space. Several
+\item \texttt{store§2.bmon} contains the global object space. Several
   global objects describe modules whose C code is generated (e.g. at
   dump time) \index{dump} \index{module} under sub-directory
   \index{modules-dir@\texttt{modules/} directory}
   \textbf{\texttt{modules/}}\,.
 
-\item other \texttt{store\textcolor{blue}{\textbf{\textit{i}}}.bmon}
+\item other \texttt{store§\textcolor{blue}{\textbf{\textit{i}}}.bmon}
   textual files contain\footnote{So there cannot be any
-    \texttt{store0.bmon} file, since space 0 is for transient objects
+    \texttt{store§0.bmon} file, since space 0 is for transient objects
     which are not dumped.}  objects in space ranked $i$ \ldots. Notice
   that all these files are both loaded and dumped, and should be
   backed-up (like the \textbf{\texttt{modules/}}\, directory)
@@ -425,5 +425,10 @@ program demonstrates that
 many thousands of times is practically possible on modern
 \textsc{Linux} workstations.}
 \href{https://man7.org/linux/man-pages/man3/dlclose.3.html}{\texttt{dlclose(3)}}-ed.
+
+
+Conventionally, we want the generated persistent files to contain the
+\texttt{§GENERATED\_PERSISTENT§} string, and if possible to have a
+\texttt{§} inside the file path.
 
 {\textcolor{red}{\large @@TO BE WRITTEN}}

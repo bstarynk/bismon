@@ -406,7 +406,7 @@ show_usage:
       for (int ix=3; ix<argc; ix++)
         nblines += parse_cfile(argv[ix], bmconstset, bmhashset, false);
       std::ofstream outs(spath);
-      outs << "/** generated persistent constant file " << spath << std::endl;
+      outs << "/** §GENERATED_PERSISTENT§ constant file " << spath << std::endl;
       outs << "  from:";
       for (int ix=3; ix<argc; ix++)
         {
