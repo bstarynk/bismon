@@ -161,7 +161,10 @@ if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
     pwd && /bin/ls -lt bismon-chariot-doc.*
     texindy -v -C utf8 -I latex bismon-chariot-doc.idx >& /tmp/texindy-bismon.log || true
     if texindy -v -C utf8 -I latex bismon-chariot-doc.idx ; then
-	echo error texindy failure in $PWD >& /dev/stderr
+	printf '\n### %s - texindy succeeded in %s\n' $0 $(pwd)
+    else
+	echo error $0: texindy failure in $PWD >& /dev/stderr
+	exit 1
     fi
     printf '\n\n\n#### %s second pass latexing bismon chariot doc #####\n' "$0" 
     bm_run_lualatex   bismon-chariot-doc && /bin/true
