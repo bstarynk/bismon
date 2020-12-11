@@ -241,7 +241,8 @@ bmk_progoptions[] =
     /*key:*/ BMKPROGOPT_GENERATE_CONST_HEADER, ///
     /*arg:*/ "HEADER", ///
     /*flags:*/ 0, ///
-    /*doc:*/ "generate the HEADER constant file for a given <foo>_BM.c;\n"
+    /*doc:*/ "generate the (temporary) HEADER constant file for a given"
+    " <foo>_BM.c;\n"
     " usually for <foo>_BM.c your HEADER should be <foo>_BM.const.h", ///
     /*group:*/0 ///
   },
