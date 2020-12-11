@@ -452,7 +452,7 @@ bmc_print_config_header(const char*progname)
       std::cerr << progname << " failed to open generated header " << headerpath << " : " << strerror(errno) << std::endl;
       BMC_FAILURE ("failed to open generated header");
     }
-  headoutf << "/// GENERATED Bismon HEADER FILE " << headerpath << " - DO NOT EDIT" << std::endl;
+  headoutf << "/// ¤" "GENERATED¤ Bismon HEADER FILE " << headerpath << " - DO NOT EDIT" << std::endl;
   headoutf << "/// See http://github.com/bstarynk/bismon/" << std::endl;
   headoutf << "/// generated at " << bmc_start_str_ctime << " on " << bmc_hostname << std::endl;
   headoutf << "/// ... using " << __FILE__ << " git " << BISMON_SHORTGIT << std::endl
@@ -485,7 +485,7 @@ bmc_print_config_header(const char*progname)
   usleep (1000);
   BMC_DEBUG("bmc_print_config_header ending headerpath=" << headerpath);
   if (!bmc_batch_flag && !bmc_silent_flag) {
-    std::cout << "#: generated Bismon configuration header file " << headerpath << std::endl;
+    std::cout << "#: ¤" "GENERATED¤ Bismon configuration header file " << headerpath << std::endl;
     struct stat headerstat;
     memset (&headerstat, 0, sizeof(headerstat));
     if (stat(headerpath.c_str(), &headerstat))
@@ -523,7 +523,7 @@ bmc_print_config_data(const char*progname)
       std::cerr << progname << " failed to open generated data " << datapath << " : " << strerror(errno) << std::endl;
       BMC_FAILURE ("failed to open generated data");
     }
-  dataoutf << "/// *** GENERATED Bismon DATA FILE " << datapath << " - DO NOT EDIT ***" << std::endl;
+  dataoutf << "/// *** ¤" "GENERATED¤ Bismon DATA FILE " << datapath << " - DO NOT EDIT ***" << std::endl;
   dataoutf << "/// see github.com/bstarynk/bismon for more about Bismon." << std::endl << std::endl;
   dataoutf << "const char bismon_confdata_gitid[]=\"" << bismon_gitid << "\";" << std::endl;
   FILE*gitpipe = popen(BMC_GITLS_COMMAND, "r");
@@ -662,7 +662,7 @@ bmc_print_config_make(const char*progname)
       BMC_FAILURE ("failed to output make configuration file");
     }
   /// make prologue
-  makeoutf << "### GENERATED Bismon CONFIGURATION FILE " <<
+  makeoutf << "### ¤" "GENERATED¤ Bismon GNU-MAKE CONFIGURATION FILE " <<
     makepath << " - DO NOT EDIT" << std::endl;
   makeoutf << "### this is for inclusion thru GNU make." << std::endl;
   makeoutf << "### See github.com/bstarynk/bismon/ for more about Bismon." << std::endl;
@@ -814,7 +814,7 @@ bmc_print_config_ninja(const char*progname)
       std::cerr << progname << " failed to open generated file " << ninjapath << " for GNU make : " << strerror(errno) << std::endl;
       BMC_FAILURE ("failed to output make configuration file");
     }
-  ninjaoutf << "# GENERATED file for ninja-build.org - " << ninjapath << " - DONT EDIT" << std::endl;
+  ninjaoutf << "# ¤" "GENERATED¤ file for ninja-build.org - " << ninjapath << " - DONT EDIT" << std::endl;
   ninjaoutf << "# ... for Bismon, see https://github.com/bstarynk/bismon -*- ninja -*-" << std::endl;
   ninjaoutf << "# ... generated at " <<  bmc_start_str_ctime << " on " << bmc_hostname << std::endl;
   ninjaoutf << "# ... by " __FILE__ " git " << BISMON_SHORTGIT << std::endl << std::endl;

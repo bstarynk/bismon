@@ -1,6 +1,6 @@
 #!/bin/bash
 # script timestamp-emit.sh
-printf "// generated file __timestamp.c, see http://github.com/bstarynk/bismon\n" > __timestamp.tmp
+printf "// %sGENERATED¤ file __timestamp.c, see http://github.com/bstarynk/bismon\n" "¤" > __timestamp.tmp
 printf "// generated with %s %s\n" $0 "$*"  >> __timestamp.tmp
 date +'const char bismon_timestamp[]="%c";%n const unsigned long bismon_timelong=%sL;' >> __timestamp.tmp
 
