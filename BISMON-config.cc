@@ -553,11 +553,12 @@ bmc_print_config_data(const char*progname)
 	    && rk >0 && endpos >= linl-1) {
 	  BMC_DEBUG("bmc_print_config_data gitls store file rk=" << rk
 		    << " endpos=" << endpos);
+	  if (!access(gitlinbuf, R_OK))
+	    dataoutf << "#° " << gitlinbuf << std::endl;
 	  continue;
 	}
       }
       for (int cix=0; cix<linl && gitlinbuf[cix]; cix++) {
-#warning bmc_print_config_data should test for § character in gitlinbug 
         if (!isalnum(gitlinbuf[cix]) && gitlinbuf[cix] != '_' && gitlinbuf[cix] != '/'
             && gitlinbuf[cix] != '+' && gitlinbuf[cix] != '-' && gitlinbuf[cix] != '.'
             && !strstr(gitlinbuf, "README"))
