@@ -547,7 +547,8 @@ bmc_print_config_data(const char*progname)
         gitlinbuf[linl-1] = (char)0;
       linenopip ++;
       BMC_DEBUG("bmc_print_config_data gitls #" << linenopip << ":" << gitlinbuf);
-      for (int cix=0; cix<linl && gitlinbuf[cix]; cix++)
+      for (int cix=0; cix<linl && gitlinbuf[cix]; cix++) {
+#warning bmc_print_config_data should test for § character in gitlinbug 
         if (!isalnum(gitlinbuf[cix]) && gitlinbuf[cix] != '_' && gitlinbuf[cix] != '/'
             && gitlinbuf[cix] != '+' && gitlinbuf[cix] != '-' && gitlinbuf[cix] != '.'
             && !strstr(gitlinbuf, "README"))
@@ -559,9 +560,12 @@ bmc_print_config_data(const char*progname)
               cwdbuf[0] = '.';
             std::cerr << progname << " pipe " << BMC_GITLS_COMMAND << " output line#" << linenopip << ":" << gitlinbuf
                       << " - unexpected file name in directory " << cwdbuf << std::endl;
-            std::cerr << "Expecting letters, digits, or one of '_/+-.' characters." << std::endl;
+            std::cerr << "Expecting letters, digits, or one of '_/+-.§' characters."
+		      << " [" __FILE__ ":" << __LINE__ << "]"
+		      << std::endl;
             BMC_FAILURE ("bad file name in directory");
           }
+      }
       struct stat curgitst;
       memset(&curgitst, 0, sizeof(curgitst));
       if (stat(gitlinbuf, &curgitst))
