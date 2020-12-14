@@ -547,6 +547,15 @@ bmc_print_config_data(const char*progname)
         gitlinbuf[linl-1] = (char)0;
       linenopip ++;
       BMC_DEBUG("bmc_print_config_data gitls #" << linenopip << ":" << gitlinbuf);
+      {
+	int rk= -1, endpos= -1;
+	if (sscanf(gitlinbuf, "store§%d.bmon%n", &rk, &endpos) > 1
+	    && rk >0 && endpos >= linl-1) {
+	  BMC_DEBUG("bmc_print_config_data gitls store file rk=" << rk
+		    << " endpos=" << endpos);
+	  continue;
+	}
+      }
       for (int cix=0; cix<linl && gitlinbuf[cix]; cix++) {
 #warning bmc_print_config_data should test for § character in gitlinbug 
         if (!isalnum(gitlinbuf[cix]) && gitlinbuf[cix] != '_' && gitlinbuf[cix] != '/'
