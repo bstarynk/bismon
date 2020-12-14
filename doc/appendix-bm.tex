@@ -338,27 +338,27 @@ executables.
 
 The persistent data (see \S \ref{sec:datapersist} above) sits in files
 \index{persistent!store} \index{store!persistent}
-\index{store-bm@\texttt{store*§.bmon} files} \texttt{store§*.bmon}
+\index{store-bm@\texttt{store\textsection*.bmon} files} \texttt{store\textsection*.bmon}
 (using
 \href{https://man7.org/linux/man-pages/man7/glob.7.html}{\texttt{glob(7)}}
 notation); more precisely
 
 \begin{itemize}
 
-\item \texttt{store§1.bmon} is for predefined objects. The header file
+\item \texttt{store\textsection{1}.bmon} is for predefined objects. The header file
   \index{genbm-predef@\texttt{genbm-predef} file}
   \texttt{genbm\_predef.h} is generated from them at dump time.
 
-\item \texttt{store§2.bmon} contains the global object space. Several
+\item file \texttt{store\textsection{2}.bmon} contains the global object space. Several
   global objects describe modules whose C code is generated (e.g. at
   dump time) \index{dump} \index{module} under sub-directory
   \index{modules-dir@\texttt{modules/} directory}
   \textbf{\texttt{modules/}}\,.
 
-\item other \texttt{store§\textcolor{blue}{\textbf{\textit{i}}}.bmon}
+\item other \texttt{store\textsection\textcolor{blue}{\textbf{\textit{i}}}.bmon}
   textual files contain\footnote{So there cannot be any
-    \texttt{store§0.bmon} file, since space 0 is for transient objects
-    which are not dumped.}  objects in space ranked $i$ \ldots. Notice
+    \texttt{store\textsection{0}.bmon} file, since space 0 is for transient objects
+    which are never dumped.}  objects in space ranked $i$ \ldots. Notice
   that all these files are both loaded and dumped, and should be
   backed-up (like the \textbf{\texttt{modules/}}\, directory)
   regularily.
@@ -366,8 +366,8 @@ notation); more precisely
 \end{itemize}
 
 These \emph{generated} textual
-  \index{storei-bm@\texttt{store\textit{i}.bmon} files}
-\texttt{store\textcolor{blue}{\textit{\textbf{i}}}.bmon} \emph{files}
+  \index{storei-bm@\texttt{store\textsection\textit{i}.bmon} files}
+\texttt{store\textsection\textcolor{blue}{\textit{\textbf{i}}}.bmon} \emph{files}
 should be \emph{version controlled} by the
 \index{git@\texttt{git}}
 \href{https://git-scm.com/}{\texttt{git}} tool. You might use the \texttt{make
@@ -426,9 +426,16 @@ many thousands of times is practically possible on modern
 \textsc{Linux} workstations.}
 \href{https://man7.org/linux/man-pages/man3/dlclose.3.html}{\texttt{dlclose(3)}}-ed.
 
-
-Conventionally, we want the generated persistent files to contain the
-\texttt{§GENERATED\_PERSISTENT§} string, and if possible to have a
-\texttt{§} inside the file path.
+\index{file!generated} \index{generation!of files} Conventionally, we
+want the generated persistent files to contain the
+\texttt{\textsection{GENERATED\_PERSISTENT}\textsection} string, and
+\index{generated-persistent@\texttt{\textsection{GENERATED\_PERSISTENT}\textsection}}
+if possible to have a \texttt{\textsection} inside the file path.  But
+generated temporary (or transient) files should contain the
+\texttt{\textcurrency{GENERATED}\textcurrency} string, and if possible
+\index{generated@\texttt{\textcurrency{GENERATED}\textcurrency}} have
+a starting underscore (that is, a
+\textcolor{blue}{\large\textbf{\texttt{\_}}} character) in their file
+name.
 
 {\textcolor{red}{\large @@TO BE WRITTEN}}
