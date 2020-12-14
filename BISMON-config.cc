@@ -545,22 +545,35 @@ bmc_print_config_data(const char*progname)
       int linl = (int)strlen(gitlinbuf);
       if (linl > 0 && gitlinbuf[linl-1] == '\n')
         gitlinbuf[linl-1] = (char)0;
+      std::string gitlinstr;
+      if (isalnum(gitlinbuf[0]))
+	gitlinstr.assign(gitlinbuf);
       linenopip ++;
       BMC_DEBUG("bmc_print_config_data gitls #" << linenopip << ":" << gitlinbuf);
       {
 	int rk= -1, endpos= -1;
-	if (sscanf(gitlinbuf, "store§%d.bmon%n", &rk, &endpos) > 1
+	if (linl>12 && sscanf(gitlinbuf, "\"store§%d.bmon\"%n", &rk, &endpos) > 1
 	    && rk >0 && endpos >= linl-1) {
 	  BMC_DEBUG("bmc_print_config_data gitls store file rk=" << rk
 		    << " endpos=" << endpos);
-	  if (!access(gitlinbuf, R_OK))
-	    dataoutf << "#° " << gitlinbuf << std::endl;
-	  continue;
+	  gitlinstr.assign(gitlinbuf+1, endpos-2);
 	}
       }
+      if (access(gitlinstr.c_str(), R_OK))
+	{
+	  int accerr= errno;
+	  std::string errmsg
+	    {"bmc_print_config_data cannot access git versioned file "};
+	  errmsg += gitlinstr;
+	  errmsg += " : ";
+	  errmsg += strerror(accerr);
+	  BMC_FAILURE(errmsg.c_str());
+	};
       for (int cix=0; cix<linl && gitlinbuf[cix]; cix++) {
-        if (!isalnum(gitlinbuf[cix]) && gitlinbuf[cix] != '_' && gitlinbuf[cix] != '/'
-            && gitlinbuf[cix] != '+' && gitlinbuf[cix] != '-' && gitlinbuf[cix] != '.'
+        if (!isalnum(gitlinbuf[cix])
+	    && gitlinbuf[cix] != '_' && gitlinbuf[cix] != '/'
+            && gitlinbuf[cix] != '+' && gitlinbuf[cix] != '-'
+	    && gitlinbuf[cix] != '.'
             && !strstr(gitlinbuf, "README"))
           {
             BMC_DEBUG("bmc_print_config_data bad gitlinbuf='" << gitlinbuf << "' cix=" << cix << " linl=" << linl);
@@ -569,7 +582,9 @@ bmc_print_config_data(const char*progname)
             if (!getcwd(cwdbuf, sizeof(cwdbuf)-1))
               cwdbuf[0] = '.';
             std::cerr << progname << " pipe " << BMC_GITLS_COMMAND << " output line#" << linenopip << ":" << gitlinbuf
-                      << " - unexpected file name in directory " << cwdbuf << std::endl;
+                      << " - unexpected file name "
+		      << gitlinbuf
+		      << " in directory " << cwdbuf << std::endl;
             std::cerr << "Expecting letters, digits, or one of '_/+-.§' characters."
 		      << " [" __FILE__ ":" << __LINE__ << "]"
 		      << std::endl;
