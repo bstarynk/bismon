@@ -507,6 +507,10 @@ bmc_print_config_header(const char*progname)
     headoutf << "#define BISMON_TARGET_GCC \"" << bmc_target_gcc << "\"" << std::endl;
   if (!bmc_target_gxx.empty())
     headoutf << "#define BISMON_TARGET_GXX \"" << bmc_target_gxx << "\"" << std::endl;
+  if (!bmc_host_cc.empty())
+    headoutf << "#define BISMON_HOST_CC \"" << bmc_host_cc << "\"" << std::endl;
+  if (!bmc_host_cxx.empty())
+    headoutf << "#define BISMON_HOST_CXX \"" << bmc_host_cxx << "\"" << std::endl;
   if (!bmc_out_directory.empty())
     headoutf << "#define BISMON_OUT_DIRECTORY \"" << bmc_out_directory << "\"" << std::endl;
   if (bmc_debug_flag)
@@ -741,6 +745,14 @@ bmc_print_config_make(const char*progname)
   makeoutf << "BISMONMK_SHORTGITID=" << bismon_shortgitid << std::endl;
   makeoutf << "#without BISMONMK_gtk" << std::endl;
   makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS)" << std::endl;
+  if (!bmc_host_cc.empty() && !access(bmc_host_cc.c_str(), X_OK))
+    makeoutf << "BISMONMK_HOST_CC=" << bmc_host_cc << std::endl;
+  else
+    makeoutf << "#without BISMONMK_HOST_CC" << std::endl;
+  if (!bmc_host_cxx.empty() && !access(bmc_host_cxx.c_str(), X_OK))
+    makeoutf << "BISMONMK_HOST_CXX=" << bmc_host_cc << std::endl;
+  else
+    makeoutf << "#without BISMONMK_HOST_CXX" << std::endl;
   makeoutf << "BISMONMK_PACKAGES= glib-2.0 gobject-2.0 jansson readline" << std::endl;
   if (!bmc_onion_includedir.empty())
     makeoutf << "BISMONMK_ONION_INCLUDEDIR=" << bmc_onion_includedir << std::endl;
@@ -901,6 +913,14 @@ bmc_print_config_ninja(const char*progname)
   ninjaoutf << std::endl
             << "NJBM_target_gcc= " << bmc_target_gcc << std::endl
             << "NJBM_target_gxx= " << bmc_target_gxx << std::endl;
+  if (!bmc_host_cc.empty())
+    ninjaoutf << "NJBM_host_cc=" << bmc_host_cc << std::endl;
+  else
+    ninjaoutf << "NJBM_host_cc = cc" << std::endl;
+  if (!bmc_host_cxx.empty())
+    ninjaoutf << "NJBM_host_cxx=" << bmc_host_cxx << std::endl;
+  else
+    ninjaoutf << "NJBM_host_cxx = c++" << std::endl;
   if (bismon_packages) {
     ninjaoutf << std::endl
 	      << "NJBM_pkgconfig_packages= ";
