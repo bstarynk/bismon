@@ -604,12 +604,11 @@ bmc_print_config_data(const char*progname)
       if (access(gitlinstr.c_str(), R_OK))
 	{
 	  int accerr= errno;
-	  std::string errmsg
-	    {"bmc_print_config_data cannot access git versioned file '"};
-	  errmsg += gitlinstr;
-	  errmsg += "' : ";
-	  errmsg += strerror(accerr);
-	  BMC_FAILURE(errmsg.c_str());
+	  std::ostringstream errout;
+	  errout << "bmc_print_config_data cannot access git versioned file '" << gitlinstr << "' : " << strerror(accerr) << std::endl;
+	  errout << "... from line#" << linenopip << " given by command "
+		 << BMC_GITLS_COMMAND << std::flush;
+	    BMC_FAILURE(errout.str().c_str());
 	};
       for (int cix=0; cix<linl && gitlinbuf[cix]; cix++) {
         if (!isalnum(gitlinbuf[cix])
