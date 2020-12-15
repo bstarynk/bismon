@@ -51,6 +51,8 @@ else
     echo 'const char* bismon_packages;' >> __timestamp.tmp
 fi
 
+### target cross-compilers
+echo "//// target cross-compilers:" >> __timestamp.tmp
 if [ -n "$BISMONMK_TARGET_GCC" ]; then
     (echo -n 'const char* bismon_target_gcc = "'; echo -n $BISMONMK_TARGET_GCC;  echo '";') >> __timestamp.tmp
 else
@@ -65,6 +67,24 @@ else
 fi
 
 
+### host compilers
+echo "//// host compilers:" >> __timestamp.tmp
+if [ -n "$BISMONMK_HOST_CC" ]; then
+    (echo -n 'const char* bismon_host_cc = "'; echo -n $BISMONMK_HOST_CC;  echo '";') >> __timestamp.tmp
+else
+    echo 'const char* bismon_host_cc;' >> __timestamp.tmp
+fi
+
+
+if [ -n "$BISMONMK_HOST_CXX" ]; then
+    (echo -n 'const char* bismon_host_cxx = "'; echo -n $BISMONMK_HOST_CXX;  echo '";') >> __timestamp.tmp
+else
+    echo 'const char* bismon_host_cxx;' >> __timestamp.tmp
+fi
+
+
+### libonion
+echo "//// libonion for Web service:" >> _timestamp.tmp
 if [ -n "$BISMONMK_ONION_INCLUDEDIR" ]; then
     (echo -n 'const char* bismon_onion_includedir = "'; echo -n $BISMONMK_ONION_INCLUDEDIR;  echo '";') >> __timestamp.tmp
 else
