@@ -62,6 +62,8 @@ std::string bmc_make;
 std::string bmc_packages;
 std::string bmc_target_gcc;
 std::string bmc_target_gxx;
+std::string bmc_host_cc;
+std::string bmc_host_cxx;
 std::string bmc_out_directory;
 std::string bmc_emit_constdep_path;
 std::string bmc_ninja_file;
@@ -105,6 +107,8 @@ enum bmc_longopt_en
   BMCOPT_ninja,
   BMCOPT_target_gcc,
   BMCOPT_target_gxx,
+  BMCOPT_host_cc,
+  BMCOPT_host_cxx,
   BMCOPT_emit_const_depend,
   BMCOPT_dry_run,
   BMCOPT_skip,
@@ -130,6 +134,8 @@ static const struct option
   {"ninja",              required_argument,  0,    BMCOPT_ninja},
   {"target-gcc",  	 required_argument,  0,    BMCOPT_target_gcc},
   {"target-gxx",  	 required_argument,  0,    BMCOPT_target_gxx},
+  {"host-cc",  	         required_argument,  0,    BMCOPT_host_cc},
+  {"host-cxx",  	 required_argument,  0,    BMCOPT_host_cxx},
   {"skip",  	         required_argument,  0,    BMCOPT_skip},
   {"output-directory",   required_argument,  0,    BMCOPT_output_directory},
   {"onion-incldir",      required_argument,  0,    BMCOPT_onion_incldir},
@@ -227,6 +233,34 @@ bmc_parse_options(int& argc, char**argv)
           bmc_target_gxx = optarg;
           BMC_DEBUG("target GXX:" << bmc_target_gxx);
           break;
+        case BMCOPT_host_cc:       // --host_cc=PATH
+          bmc_host_cc = optarg;
+          BMC_DEBUG("host C compiler:" << bmc_host_cc);
+          if (!bmc_dryrun_flag) {
+	    if (access(bmc_host_cc.c_str(), X_OK)) {
+	      int erc = errno;
+	      std::string errstr = "given host C compiler ";
+	      errstr += bmc_host_cc;
+	      errstr += " is not executable: ";
+	      errstr += strerror(erc);
+	      BMC_FAILURE(errstr.c_str());
+	    }
+	  }
+          break;
+        case BMCOPT_host_cxx:       // --host_cxx=PATH
+          bmc_host_cxx = optarg;
+          BMC_DEBUG("host C++ compiler:" << bmc_host_cxx);
+          if (!bmc_dryrun_flag) {
+	    if (access(bmc_host_cxx.c_str(), X_OK)) {
+	      int erc = errno;
+	      std::string errstr = "given host C++ compiler ";
+	      errstr += bmc_host_cxx;
+	      errstr += " is not executable: ";
+	      errstr += strerror(erc);
+	      BMC_FAILURE(errstr.c_str());
+	    }
+	  }
+          break;
         case BMCOPT_output_directory: // --output-directory=DIR
           bmc_out_directory = optarg;
           BMC_DEBUG("output directory :" << bmc_out_directory);
@@ -234,7 +268,7 @@ bmc_parse_options(int& argc, char**argv)
         case BMCOPT_skip:             // --skip=XXXX
           BMC_DEBUG("skipping :" << optarg);
           break;
-        case BMCOPT_onion_incldir:    // --onion-incldir=XXXX
+        case BMCOPT_onion_incldir:    // --onion-incldir=XXXX2
           BMC_DEBUG("given libonion include directory :" << optarg);
           if (!bmc_dryrun_flag)
             {
@@ -291,6 +325,8 @@ bmc_show_usage(const char*progname)
   std::cerr << " --skip=IGNORED         # ignored argument, would appear on failure message" << std::endl;
   std::cerr << " --target-gcc=PATH      # set to PATH the target GCC compiler executable for C code" << std::endl;
   std::cerr << " --target-gxx=PATH      # set to PATH the target GCC compiler for C++ code" << std::endl;
+  std::cerr << " --host-cc=PATH         # set to PATH the host C compiler executable for C code" << std::endl;
+  std::cerr << " --host-cxx=PATH        # set to PATH the host C++ compiler for C++ code" << std::endl;
   std::cerr << " --ninja=PATH           # generate a PATH for ninja builder - see ninja-build.org # usually --ninja=build.ninja" << std::endl;
   std::cerr << " --output-directory=DIR # set the output directory to DIR - default is " << bismon_directory << std::endl;
   std::cerr << " --onion-incldir=DIR    # set to DIR the include directory for libonion - see  www.coralbits.com/libonion" << std::endl;
@@ -299,6 +335,7 @@ bmc_show_usage(const char*progname)
   std::cerr << " --onion-libdir=DIR    # set to DIR the shared library directory for libonion" << std::endl;
   if (bismon_onion_libdir)
     std::cerr << "## known libonion library directory is " << bismon_onion_libdir << std::endl;
+  std::cerr <<  "##-- This executable " << progname << " was built " << __DATE__ "@" __TIME__ " from " __FILE__ " git " << BISMON_SHORTGIT << std::endl;
   std::cerr << std::endl;
   std::cerr << "######## See github.com/bstarynk/bismon/ for more about BISMON." << std::endl << std::endl;
 } // end bmc_show_usage
