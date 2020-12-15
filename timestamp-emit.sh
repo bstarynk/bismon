@@ -84,7 +84,7 @@ fi
 
 
 ### libonion
-echo "//// libonion for Web service:" >> _timestamp.tmp
+echo "//// libonion for Web service:" >> __timestamp.tmp
 if [ -n "$BISMONMK_ONION_INCLUDEDIR" ]; then
     (echo -n 'const char* bismon_onion_includedir = "'; echo -n $BISMONMK_ONION_INCLUDEDIR;  echo '";') >> __timestamp.tmp
 else
