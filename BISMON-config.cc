@@ -600,13 +600,14 @@ bmc_print_config_data(const char*progname)
 	  gitlinstr.assign(gitlinbuf+1, endpos-2);
 	}
       }
+      BMC_DEBUG("bmc_print_config_data gitls #" << linenopip << ", gitlinstr='" << gitlinstr << "'");
       if (access(gitlinstr.c_str(), R_OK))
 	{
 	  int accerr= errno;
 	  std::string errmsg
-	    {"bmc_print_config_data cannot access git versioned file "};
+	    {"bmc_print_config_data cannot access git versioned file '"};
 	  errmsg += gitlinstr;
-	  errmsg += " : ";
+	  errmsg += "' : ";
 	  errmsg += strerror(accerr);
 	  BMC_FAILURE(errmsg.c_str());
 	};
