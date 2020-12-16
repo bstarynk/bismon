@@ -88,16 +88,20 @@ BM_MAKEPID:= $(shell /bin/grep -w Pid: /proc/self/status | /usr/bin/cut -f2)
 ## internal make variables...
 BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
 BISMON_SHGIT2:= $(shell if git status | grep 'nothing to commit' > /dev/null; then echo ; else echo +; fi)
-
-CFLAGS += $(BM_C_STANDARD_FLAGS) $(pkg-config --cflags $(BM_PACKAGES)) \
-          $(BM_WARNING_FLAGS) $(BM_OPTIM_FLAGS) $(BM_DEBUG_FLAGS)
-
-CXXFLAGS += $(BM_CXX_STANDARD_FLAGS) $(pkg-config --cflags $(BM_PACKAGES)) \
-          $(BM_WARNING_FLAGS) $(BM_OPTIM_FLAGS) $(BM_DEBUG_FLAGS)
-
 ## The short git id, such as 34ae25e8127fc354 (for a clean source)
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
+
+ifeq ($(MAKELEVEL),0)
+CFLAGS += $(BM_C_STANDARD_FLAGS) $(pkg-config --cflags $(BM_PACKAGES)) \
+	  '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"'  \
+          $(BM_WARNING_FLAGS) $(BM_OPTIM_FLAGS) $(BM_DEBUG_FLAGS)
+
+CXXFLAGS += $(BM_CXX_STANDARD_FLAGS) $(pkg-config --cflags $(BM_PACKAGES)) \
+	  '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"'  \
+          $(BM_WARNING_FLAGS) $(BM_OPTIM_FLAGS) $(BM_DEBUG_FLAGS)
+endif
+
 
 
 ## see https://www.gnu.org/software/make/manual/html_node/Special-Targets.html
@@ -141,7 +145,7 @@ _bismon-config.mk _bm_config.h _bm_config.c: BISMON-config.cc
 BISMON-config: BISMON-config.cc __timestamp.o $(warning $(MAKE) BISMON-config at level zero)
 	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
 	@bash -c "if [ -f $@ ] ; then /bin/mv -v $@ $@~ ; fi"
-	$(GXX) $(BM_CXX_STANDARD_FLAGS) '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"' -Wall -Wextra -O -g $^ -lreadline  -o $@
+	$(GXX) $(BM_CXX_STANDARD_FLAGS) -Wall -Wextra -O -g $^ -lreadline  -o $@
 endif
 
 
@@ -162,7 +166,11 @@ endif
 
 
 runconfig: BISMON-config $(warning $(MAKE) runconfig at level $(MAKELEVEL))
-	./BISMON-config --skip=for_runconfig $(BISMON_CONFIG_OPTIONS)
+	./BISMON-config --skip=for_runconfig_first $(BISMON_CONFIG_OPTIONS)
+	$(MAKE) __timestamp.c
+	/bin/mv ./BISMON-config ./BISMON-config%
+	$(MAKE) ./BISMON-config
+	./BISMON-config --skip=for_runconfig_second $(BISMON_CONFIG_OPTIONS)
 	$(MAKE) _bismon-constdep.mk
 
 count:
