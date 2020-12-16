@@ -169,17 +169,22 @@ void bmc_show_usage(const char*progname);
 
 void bmc_show_version(const char*progname);
 
-void bmc_failure_at (const char*reason, int lineno);
+extern "C" void bmc_failure_at (const char*reason, int lineno);
 #define BMC_FAILURE(Reason) bmc_failure_at((Reason),__LINE__)
 
 void bmc_set_readline_buffer(const std::string& str);
 
-void bmc_failure_at(const char*reason, int lineno)
+void
+bmc_failure_at(const char*reason, int lineno)
 {
-  std::cerr << bmc_main_argv[0] << " failure: " << reason << " at " << __FILE__ << ":" << lineno << std::endl;
+  std::cerr << bmc_main_argv[0] << " failure at " << __FILE__ << ":" << lineno << std::endl;
+  std::cerr << " ***** " << reason << " ****" << std::endl;
+  std::cerr << "(git " << BISMON_SHORTGIT << " built " <<  __DATE__ "@" __TIME__ " from " __FILE__ ")" << std::endl;
   std::cerr << "\t invoked as: ";
   for (int ix=0; ix<bmc_main_argc; ix++)
     std::cerr << ' ' << bmc_main_argv[ix];
+  std::cerr << std::endl;
+  std::cerr << "((pid " << getpid() << ", parentpid " << getppid() << ", host " << bmc_hostname << "))" << std::endl;
   std::cerr << std::endl;
   exit(EXIT_FAILURE);
 } // end bmc_failure_at
@@ -610,10 +615,13 @@ bmc_print_config_data(const char*progname)
       if (linl > 0 && gitlinbuf[linl-1] == '\n')
         gitlinbuf[linl-1] = (char)0;
       std::string gitlinstr;
-      if (isalnum(gitlinbuf[0]))
-	gitlinstr.assign(gitlinbuf);
       linenopip ++;
       BMC_DEBUG("bmc_print_config_data gitls #" << linenopip << ":" << gitlinbuf);
+      /// skip files like .gdbinit or .indent.pro, etc..
+      if (gitlinbuf[0] == '.' && isalpha(gitlinbuf[1]))
+	continue;
+      if (isalnum(gitlinbuf[0]))
+	gitlinstr.assign(gitlinbuf);
       {
 	int rk= -1, endpos= -1;
 	if (linl>12 && sscanf(gitlinbuf, "\"store§%d.bmon\"%n", &rk, &endpos) > 1
@@ -915,7 +923,7 @@ bmc_print_config_ninja(const char*progname)
       std::cerr << progname << " failed to open generated file " << ninjapath << " for GNU make : " << strerror(errno) << std::endl;
       BMC_FAILURE ("failed to output make configuration file");
     }
-  ninjaoutf << "# ¤" "GENERATED¤ file for ninja-build.org - " << ninjapath << " - DONT EDIT" << std::endl;
+  ninjaoutf << "# ¤" "GENERATED¤ file for ninja-build.org - " << ninjapath << " -- DONT EDIT" << std::endl;
   ninjaoutf << "# ... for Bismon, see https://github.com/bstarynk/bismon -*- ninja -*-" << std::endl;
   ninjaoutf << "# ... generated at " <<  bmc_start_str_ctime << " on " << bmc_hostname << std::endl;
   ninjaoutf << "# ... by " __FILE__ " git " << BISMON_SHORTGIT << std::endl << std::endl;
