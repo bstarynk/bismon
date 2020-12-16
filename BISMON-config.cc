@@ -528,6 +528,9 @@ bmc_print_config_header(const char*progname)
   headoutf << "/// generated at " << bmc_start_str_ctime << " on " << bmc_hostname << std::endl;
   headoutf << "/// ... using " << __FILE__ << " git " << BISMON_SHORTGIT << std::endl
            << std::endl;
+#ifdef BISMON_MAKELEVEL
+  headoutf << "/// with BISMON_MAKELEVEL=" << BISMON_MAKELEVEL << std::endl;
+#endif
   headoutf << "#ifndef BISMON_CONFIG" << std::endl;
   headoutf << std::endl;
   headoutf << "#define BISMON_TIMESTAMP \"" << bismon_timestamp << "\"" << std::endl;
@@ -561,6 +564,9 @@ bmc_print_config_header(const char*progname)
   BMC_DEBUG("bmc_print_config_header ending headerpath=" << headerpath);
   if (!bmc_batch_flag && !bmc_silent_flag) {
     std::cout << "#: ¤" "GENERATED¤ Bismon configuration header file " << headerpath << std::endl;
+#ifdef BISMON_MAKELEVEL
+    std::cout << "#:: with BISMON_MAKELEVEL=" << BISMON_MAKELEVEL << std::endl;
+#endif
     struct stat headerstat;
     memset (&headerstat, 0, sizeof(headerstat));
     if (stat(headerpath.c_str(), &headerstat))
@@ -601,6 +607,9 @@ bmc_print_config_data(const char*progname)
   dataoutf << "/// *** ¤" "GENERATED¤ Bismon DATA FILE " << datapath << " - DO NOT EDIT ***" << std::endl;
   dataoutf << "/// see github.com/bstarynk/bismon for more about Bismon." << std::endl << std::endl;
   dataoutf << "const char bismon_confdata_gitid[]=\"" << bismon_gitid << "\";" << std::endl;
+#ifdef BISMON_MAKELEVEL
+  dataoutf << "/// with BISMON_MAKELEVEL=" << BISMON_MAKELEVEL << std::endl;
+#endif
   FILE*gitpipe = popen(BMC_GITLS_COMMAND, "r");
   if (!gitpipe)
     {
@@ -773,6 +782,9 @@ bmc_print_config_make(const char*progname)
     makepath << " - DO NOT EDIT" << std::endl;
   makeoutf << "### this is for inclusion thru GNU make." << std::endl;
   makeoutf << "### See github.com/bstarynk/bismon/ for more about Bismon." << std::endl;
+#ifdef BISMON_MAKELEVEL
+  makeoutf << "### with BISMON_MAKELEVEL=" << BISMON_MAKELEVEL << std::endl;
+#endif
   makeoutf << "BISMONMK_TIMESTAMP=" << bismon_timestamp << std::endl;
   makeoutf << "BISMONMK_BUILDTIME=" << bismon_timelong << std::endl;
   makeoutf << "BISMONMK_DIRECTORY=" << bismon_directory << std::endl;
@@ -953,6 +965,9 @@ bmc_print_config_ninja(const char*progname)
       ninjaoutf << " \\" << std::endl << "#|  ";
   }
   ninjaoutf << std::endl << std::endl;
+#ifdef BISMON_MAKELEVEL
+  ninjaoutf << "### with BISMON_MAKELEVEL=" << BISMON_MAKELEVEL << std::endl;
+#endif
   ////
   ninjaoutf << "ninja_required_version= 1.10" << std::endl;
   ninjaoutf << std::endl
