@@ -317,8 +317,10 @@ bmc_parse_options(int& argc, char**argv)
 void
 bmc_show_usage(const char*progname)
 {
+  std::cerr << "###### see github.com/bstarynk/bismon and the DRAFT report on starynkevitch.net/Basile/bismon-chariot-doc.pdf"
+	    << std::endl;
   std::cerr << progname << " usage:" << std::endl;
-  std::cerr << " --version | -V         # give version information" << std::endl;
+  std::cerr << " --version | -V         # give version information - git " BISMON_SHORTGIT << std::endl;
   std::cerr << " --help | -h            # give this help message" << std::endl;
   std::cerr << " --debug | -D           # debug this configurator program " << progname << std::endl;
   std::cerr << " --force | -f           # force overwriting of existing generated files." << std::endl;
@@ -342,16 +344,24 @@ bmc_show_usage(const char*progname)
   std::cerr << " --ninja=PATH           # generate a PATH for ninja builder - see ninja-build.org" << std::endl;
   std::cerr << "           	        # usually --ninja=build.ninja" << std::endl;
   std::cerr << " --output-directory=DIR # set the output directory to DIR - default is " << bismon_directory << std::endl;
-  std::cerr << " --onion-incldir=DIR    # set to DIR the include directory for libonion - see  www.coralbits.com/libonion" << std::endl;
+  std::cerr << "# The libonion is for web services.  See www.coralbits.com/libonion & github.com/davidmoreno/onion ..." << std::endl;
+  std::cerr << " --onion-incldir=DIR    # set to DIR the include directory for libonion e.g. <onion/onion.h>" << std::endl;
+  std::cerr << "           	        # for example: --onion-incldir=/usr/local/include" << std::endl;
   if (bismon_onion_includedir)
     std::cerr << "## known libonion include directory is " << bismon_onion_includedir << std::endl;
-  std::cerr << " --onion-libdir=DIR    # set to DIR the shared library directory for libonion" << std::endl;
+  std::cerr << " --onion-libdir=DIR     # set to DIR the shared library directory for libonion.so" << std::endl;
+  std::cerr << "           	        # for example: --onion-libdir=/usr/local/lib" << std::endl;
   if (bismon_onion_libdir)
     std::cerr << "## known libonion library directory is " << bismon_onion_libdir << std::endl;
+  std::cerr << "#####################################" << std::endl;
   std::cerr <<  "##-- This executable " << progname << " was built " << __DATE__ "@" __TIME__ " from " __FILE__ " git " << BISMON_SHORTGIT << std::endl;
   std::cerr << std::endl;
-  std::cerr << "######## See github.com/bstarynk/bismon/ for more about BISMON." << std::endl << std::endl;
+  std::cerr << "######## See github.com/bstarynk/bismon/ for more about BISMON." << std::endl;
+  std::cerr << "## BISMON, so " << progname << " is free software, GPLv3+ licensed, WITHOUT WARRANTY." << std::endl;
+  std::cerr << "## See www.gnu.org/licenses/gpl-3.0.en.html " << std::endl;
+  std::cerr << std::endl;
 } // end bmc_show_usage
+
 
 void
 bmc_show_version(const char*progname)
