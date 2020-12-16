@@ -79,7 +79,8 @@ typedef std::set<rawid_tyBM, IdLess_BM> set_of_ids_KBM;
 // see https://www.gnu.org/software/libc/manual/html_node/Argp.html
 void bmk_parse_program_options(int argc, char**argv);
 static error_t bmk_parse1opt (int key, char *arg, struct argp_state *state);
-enum bmk_progoption_en {
+enum bmk_progoption_en
+{
   BMKPROGOPT__NONE,
   BMKPROGOPT_VERSION= 1000,
   BMKPROGOPT_GENERATE_CONST_HEADER,
@@ -226,7 +227,7 @@ seek_header_in_cfile(const char*path)
 
 /// heavily inspired by similar code I wrote for RefPerSys - see http://refpersys.org/ for more...
 struct argp_option
-bmk_progoptions[] =
+  bmk_progoptions[] =
 {
   /* ======= give version information ======= */
   {/*name:*/ "version", ///
@@ -272,27 +273,28 @@ bmk_parse1opt (int key, char *arg, struct argp_state *state)
   switch (key)
     {
     case BMKPROGOPT_VERSION:
-      {
+    {
       if (side_effect)
         {
-	  std::cout << bmk_progname << " compiled from " __FILE__ " at " __DATE__ << " git " BISMON_SHORTGIT << std::endl;
-	}
+          std::cout << bmk_progname << " compiled from " __FILE__ " at " __DATE__ << " git " BISMON_SHORTGIT << std::endl;
+        }
       return 0;
-      }
-      
+    }
+
     case BMKPROGOPT_GENERATE_CONST_HEADER:
-      {
-	if (side_effect) {
-	  if (!arg)
-	    BMK_FATALOUT("Program option --generate-const-header requires a given HEADER argument. Try "
-			 << bmk_progname << " --help.");
+    {
+      if (side_effect)
+        {
+          if (!arg)
+            BMK_FATALOUT("Program option --generate-const-header requires a given HEADER argument. Try "
+                         << bmk_progname << " --help.");
 #warning incomplete code in bmk_parse1opt
-	}
-      }
+        }
+    }
 
     case BMKPROGOPT_GENERATE_ALL_CONST:
-      {
-      }
+    {
+    }
     }
   return ARGP_ERR_UNKNOWN;
 } // end bmk_parse1opt
@@ -308,12 +310,12 @@ bmk_parse_program_options(int argc, char**argv)
   argparser.parser = bmk_parse1opt;
   argparser.args_doc = " ; # ";
   argparser.doc = "BM_makeconst is an internal utility (GPLv3+ licensed) [meta-]program generating some C files inside the BISMON project.\n"
-    "see starynkevitch.net/Basile/bismon-chariot-doc.pdf and github.com/bstarynk/bismon/ for more about BISMON.\n"
-    "You should have received a copy of the GNU General Public License\n"
-    "along with this program.  If not, see https://www.gnu.org/licenses\n"
-    "**NO WARRANTY, not even for FITNESS FOR A PARTICULAR PURPOSE**\n"
-    "+++ use at your own risk +++\n"
-    "\n Accepted program options are:\n";    
+                  "see starynkevitch.net/Basile/bismon-chariot-doc.pdf and github.com/bstarynk/bismon/ for more about BISMON.\n"
+                  "You should have received a copy of the GNU General Public License\n"
+                  "along with this program.  If not, see https://www.gnu.org/licenses\n"
+                  "**NO WARRANTY, not even for FITNESS FOR A PARTICULAR PURPOSE**\n"
+                  "+++ use at your own risk +++\n"
+                  "\n Accepted program options are:\n";
   argparser.children = nullptr;
   argparser.help_filter = nullptr;
   argparser.argp_domain = nullptr;
