@@ -782,14 +782,26 @@ bmc_print_config_make(const char*progname)
   makeoutf << "BISMONMK_SHORTGITID=" << bismon_shortgitid << std::endl;
   makeoutf << "#without BISMONMK_gtk" << std::endl;
   makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS)" << std::endl;
+  errno = 0;
   if (!bmc_host_cc.empty() && !access(bmc_host_cc.c_str(), X_OK))
     makeoutf << "BISMONMK_HOST_CC=" << bmc_host_cc << std::endl;
-  else
-    makeoutf << "#without BISMONMK_HOST_CC" << std::endl;
+  else {
+    int er = errno;
+    makeoutf << "#without BISMONMK_HOST_CC";
+    if (!bmc_host_cc.empty() && er != 0)
+      makeoutf << " - bad " << bmc_host_cc << " : " << strerror(er);
+    makeoutf << std::endl;
+  }
+  errno = 0;
   if (!bmc_host_cxx.empty() && !access(bmc_host_cxx.c_str(), X_OK))
     makeoutf << "BISMONMK_HOST_CXX=" << bmc_host_cc << std::endl;
-  else
-    makeoutf << "#without BISMONMK_HOST_CXX" << std::endl;
+  else {
+    int er = errno;
+    makeoutf << "#without BISMONMK_HOST_CXX" ;
+    if (!bmc_host_cxx.empty() && er != 0)
+      makeoutf << " - bad " << bmc_host_cxx << " : " << strerror(er);
+    makeoutf << std::endl;
+  }
   makeoutf << "BISMONMK_PACKAGES= glib-2.0 gobject-2.0 jansson readline" << std::endl;
   if (!bmc_onion_includedir.empty())
     makeoutf << "BISMONMK_ONION_INCLUDEDIR=" << bmc_onion_includedir << std::endl;
