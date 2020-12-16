@@ -26,6 +26,10 @@
 #endif /*_GNU_SOURCE*/
 
 
+#ifndef BISMON_SHORTGIT
+#error BISMON_SHORTGIT should be defined in compilation command
+#endif
+
 //// Please use astyle (see http://astyle.sourceforge.net/ ...) to format this C++ file
 //// using astyle --style=gnu -s2 BISMON-config.cc  ....
 
@@ -113,7 +117,7 @@ enum bmc_longopt_en
   BMCOPT_host_compflags,
   BMCOPT_emit_const_depend,
   BMCOPT_dry_run,
-  BMCOPT_skip,
+  BMCOPT_skiplabel,
   BMCOPT_output_directory,
   BMCOPT_onion_incldir,
   BMCOPT_onion_libdir,
@@ -139,7 +143,8 @@ static const struct option
   {"host-cc",  	         required_argument,  0,    BMCOPT_host_cc},
   {"host-cxx",  	 required_argument,  0,    BMCOPT_host_cxx},
   {"host-compflags",  	 required_argument,  0,    BMCOPT_host_compflags},
-  {"skip",  	         required_argument,  0,    BMCOPT_skip},
+  {"skip",  	         required_argument,  0,    BMCOPT_skiplabel},
+  {"label",  	         required_argument,  0,    BMCOPT_skiplabel},
   {"output-directory",   required_argument,  0,    BMCOPT_output_directory},
   {"onion-incldir",      required_argument,  0,    BMCOPT_onion_incldir},
   {"onion-libdir",       required_argument,  0,    BMCOPT_onion_libdir},
@@ -273,8 +278,8 @@ bmc_parse_options(int& argc, char**argv)
           bmc_out_directory = optarg;
           BMC_DEBUG("output directory :" << bmc_out_directory);
           break;
-        case BMCOPT_skip:             // --skip=XXXX
-          BMC_DEBUG("skipping :" << optarg);
+        case BMCOPT_skiplabel:             // --skip=XXXX or --label=XXX
+          BMC_DEBUG("skipping label:" << optarg);
           break;
         case BMCOPT_onion_incldir:    // --onion-incldir=XXXX2
           BMC_DEBUG("given libonion include directory :" << optarg);
@@ -333,7 +338,8 @@ bmc_show_usage(const char*progname)
   std::cerr << " --dry-run              # wont fork target compilation commands" << std::endl;
   std::cerr << " --const-depend *_BM.c  # output the dependencies on #include-s *.const.h files" << std::endl;
   std::cerr << " --skip=IGNORED         # ignored argument, would appear on failure message" << std::endl;
-  std::cerr << "           	        # for example: --skip=that_thing" << std::endl;
+  std::cerr << " --label=IGNORED        # ignored argument, would appear on failure message" << std::endl;
+  std::cerr << "           	        # for example: --skip=that_thing or --label=first_run" << std::endl;
   std::cerr << "# the target cross-compilers below should be some GCC 10 with plugins enabled. See  gcc.gnu.org for more." << std::endl;
   std::cerr << " --target-gcc=PATH      # set to PATH the target GCC cross-compiler executable for C code" << std::endl;
   std::cerr << "           	        # for example: --target-gcc=/usr/local/bin/arm-lnux-gnueabi-gcc-10" << std::endl;
