@@ -64,6 +64,7 @@ std::string bmc_target_gcc;
 std::string bmc_target_gxx;
 std::string bmc_host_cc;
 std::string bmc_host_cxx;
+std::string bmc_host_compflags;
 std::string bmc_out_directory;
 std::string bmc_emit_constdep_path;
 std::string bmc_ninja_file;
@@ -109,6 +110,7 @@ enum bmc_longopt_en
   BMCOPT_target_gxx,
   BMCOPT_host_cc,
   BMCOPT_host_cxx,
+  BMCOPT_host_compflags,
   BMCOPT_emit_const_depend,
   BMCOPT_dry_run,
   BMCOPT_skip,
@@ -136,6 +138,7 @@ static const struct option
   {"target-gxx",  	 required_argument,  0,    BMCOPT_target_gxx},
   {"host-cc",  	         required_argument,  0,    BMCOPT_host_cc},
   {"host-cxx",  	 required_argument,  0,    BMCOPT_host_cxx},
+  {"host-compflags",  	 required_argument,  0,    BMCOPT_host_compflags},
   {"skip",  	         required_argument,  0,    BMCOPT_skip},
   {"output-directory",   required_argument,  0,    BMCOPT_output_directory},
   {"onion-incldir",      required_argument,  0,    BMCOPT_onion_incldir},
@@ -323,10 +326,19 @@ bmc_show_usage(const char*progname)
   std::cerr << " --dry-run              # wont fork target compilation commands" << std::endl;
   std::cerr << " --const-depend *_BM.c  # output the dependencies on #include-s *.const.h files" << std::endl;
   std::cerr << " --skip=IGNORED         # ignored argument, would appear on failure message" << std::endl;
-  std::cerr << " --target-gcc=PATH      # set to PATH the target GCC compiler executable for C code" << std::endl;
-  std::cerr << " --target-gxx=PATH      # set to PATH the target GCC compiler for C++ code" << std::endl;
+  std::cerr << "           	        # for example: --skip=that_thing" << std::endl;
+  std::cerr << "# the target cross-compilers below should be some GCC 10 with plugins enabled. See  gcc.gnu.org for more." << std::endl;
+  std::cerr << " --target-gcc=PATH      # set to PATH the target GCC cross-compiler executable for C code" << std::endl;
+  std::cerr << "           	        # for example: --target-gcc=/usr/local/bin/arm-lnux-gnueabi-gcc-10" << std::endl;
+  std::cerr << " --target-gxx=PATH      # set to PATH the target GCC cross-compiler for C++ code" << std::endl;
+  std::cerr << "           	        # for example: --target-gxx=/usr/local/bin/mipsel-linux-gnu-g++-10" << std::endl;
+  std::cerr << "# the host compilers below would be used to compile BISMON and generated GCC plugin code (C++)." << std::endl;
   std::cerr << " --host-cc=PATH         # set to PATH the host C compiler executable for C code" << std::endl;
+  std::cerr << "           	        # for example: --host-cc=/usr/bin/gcc" << std::endl;
   std::cerr << " --host-cxx=PATH        # set to PATH the host C++ compiler for C++ code" << std::endl;
+  std::cerr << "           	        # for example: --host-cxx=/usr/bin/clang++" << std::endl;
+  std::cerr << " --host-cflags=FLAGS    # set common compilation flags for both host C and C++ compilers" << std::endl;
+  std::cerr << "           	        # for example: --host-cflags='-O2 -g -flto -I /usr/local/include'" << std::endl;
   std::cerr << " --ninja=PATH           # generate a PATH for ninja builder - see ninja-build.org # usually --ninja=build.ninja" << std::endl;
   std::cerr << " --output-directory=DIR # set the output directory to DIR - default is " << bismon_directory << std::endl;
   std::cerr << " --onion-incldir=DIR    # set to DIR the include directory for libonion - see  www.coralbits.com/libonion" << std::endl;
