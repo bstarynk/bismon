@@ -339,7 +339,8 @@ bmc_show_usage(const char*progname)
   std::cerr << "           	        # for example: --host-cxx=/usr/bin/clang++" << std::endl;
   std::cerr << " --host-cflags=FLAGS    # set common compilation flags for both host C and C++ compilers" << std::endl;
   std::cerr << "           	        # for example: --host-cflags='-O2 -g -flto -I /usr/local/include'" << std::endl;
-  std::cerr << " --ninja=PATH           # generate a PATH for ninja builder - see ninja-build.org # usually --ninja=build.ninja" << std::endl;
+  std::cerr << " --ninja=PATH           # generate a PATH for ninja builder - see ninja-build.org" << std::endl;
+  std::cerr << "           	        # usually --ninja=build.ninja" << std::endl;
   std::cerr << " --output-directory=DIR # set the output directory to DIR - default is " << bismon_directory << std::endl;
   std::cerr << " --onion-incldir=DIR    # set to DIR the include directory for libonion - see  www.coralbits.com/libonion" << std::endl;
   if (bismon_onion_includedir)
