@@ -31,6 +31,7 @@ echo running $0 with "$@" as pid $$
 /bin/rm -f _[a-zA-Z]*~
 /bin/rm -f _bismon-constdep.mk
 /bin/rm -f _bismon-config.mk
+/bin/rm -f _bismon-constants.c
 /bin/rm -f BISMON-config
 /bin/rm -f build.ninja
 /bin/rm -f BM_makeconst
