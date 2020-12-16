@@ -523,11 +523,12 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   fprintf (spfil, "%s generated persistent data file %s (Unicode UTF-8 encoded).\n",    //
            STORE_CONTENTMAGIC_PREFIX_BM /*which is "//!€Bismon" ... */ ,
            basename (bytstring_BM (_.pathv)));
-  fprintf (spfil,
-           "/// This data file, §GENERATED_PERSISTENT§ in %d, is GPLv3+ licensed.\n",
-           nowyear);
   fputs ("/// SPDX-License-Identifier: GPL-3.0-or-later\n"
          "/// see  https://www.gnu.org/licenses/gpl-3.0.en.html\n", spfil);
+  fprintf (spfil,
+           "/// This data file, §" "GENERATED_PERSISTENT§ by " __FILE__ " in %d, is GPLv3+ licensed.\n",
+           nowyear);
+  fputs("/// In BISMON, see github.com/bstarynk/bismon\n", spfil);
   unsigned nbobj = setcardinal_BM (_.setobjs);
   fprintf (spfil, "/// for %u objects\n", nbobj);
   fputs ("\n///‼ Notice that '" STORE_OBJECTOPEN_PREFIX_BM "' and '" STORE_OBJECTOPEN_ALTPREFIX_BM "' for object opening,\n"  //.
