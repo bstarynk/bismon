@@ -12,7 +12,7 @@ BM_makeconst
 BM_compile_module
 BM_makeconst_dbg
 BISMON-config
-
+BISMON-config[0-9]
 _bm_allconsts*.c
 _bm_config.c
 *_BM.const.h

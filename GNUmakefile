@@ -142,7 +142,7 @@ _bismon-config.mk _bm_config.h _bm_config.c: BISMON-config.cc
 	sleep 0.02
 
 ### the configurator program
-BISMON-config: BISMON-config.cc __timestamp.o $(warning $(MAKE) BISMON-config at level zero)
+BISMON-config$(MAKELEVEL): BISMON-config.cc __timestamp.o $(warning $(MAKE) BISMON-config at level zero)
 	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT) caret= $^
 	@bash -c "if [ -f $@ ] ; then /bin/mv -v $@ $@~ ; fi"
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -DBISMON_MAKELEVEL=$(MAKELEVEL) \
@@ -160,13 +160,13 @@ _bismon-config.mk _bm_config.h _bm_config.c: BISMON-config
 	sleep 0.03
 
 ### the configurator program at level one
-BISMON-config: BISMON-config.cc  $(warning $(MAKE) BISMON-config at level one)
-	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
+BISMON-config$(MAKELEVEL): BISMON-config.cc  $(warning $(MAKE) BISMON-config at level one)
+	@echo Building BISMON-config$(MAKELEVEL) using BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
 	-/bin/mv -f __timestamp.c __timestamp.c%%
 	-/bin/rm -f __timestamp.o
 	$(MAKE) __timestamp.o
 	@bash -c "if [ -f $@ ] ; then /bin/mv -v $@ $@~ ; fi"
-	@echo building BISMON-config caret= $^
+	@echo building BISMON-config$(MAKELEVEL) caret= $^
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -DBISMON_MAKELEVEL=$(MAKELEVEL) \
                -DBISMON_config_second \
                -Wall -Wextra -O -g $^ __timestamp.o -lreadline  -o $@
