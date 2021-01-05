@@ -3,7 +3,7 @@
 ## GPLv3+ licensed, from http://github.com/bstarynk/bismon
 # 
 #    BISMON 
-#   Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+#   Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
 #   contributed by Basile Starynkevitch.
 #
 #   This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,8 @@
 ######
 # for GNU make only, see https://www.gnu.org/software/make
 
+## we may want to use https://github.com/mrtazz/checkmake/ to check
+## this GNU makefile ...
 
 ## tell make to export all variables by default
 export
@@ -147,9 +149,10 @@ BISMON-config0: BISMON-config.cc __timestamp.o $(warning $(MAKE) BISMON-config a
 	@bash -c "if [ -f $@ ] ; then /bin/mv -v $@ $@~ ; fi"
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -DBISMON_MAKELEVEL=$(MAKELEVEL) \
 	       -DBISMON_config_first \
+                $(warning doing $(MAKE) $@) \
                -Wall -Wextra -O -g $^ -lreadline  -o $@
 BISMON-config1: BISMON-config0
-	$(MAKE) $@
+	$(MAKE) $@ $(warning doing $(MAKE) $@) 
 endif
 
 
@@ -158,7 +161,7 @@ _bismon-config.mk _bm_config.h _bm_config.c: BISMON-config0
 	sleep 0.01
 	bash -x -c 'if [ ! -x ./BISMON-config1 -a "$(MAKELEVEL)" = 0 ] ; then /bin/sleep 0.1 ; $(MAKE)  ./BISMON-config1 ; fi'
 	sleep 0.2
-	$(MAKE) runconfig
+	$(MAKE) runconfig $(warning doing $(MAKE) $@) 
 	sleep 0.03
 
 else
@@ -172,7 +175,7 @@ BISMON-config$(MAKELEVEL): BISMON-config.cc  $(warning $(MAKE) BISMON-config at 
 	@echo building BISMON-config$(MAKELEVEL) caret= $^
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -DBISMON_MAKELEVEL=$(MAKELEVEL) \
                -DBISMON_config_$(MAKELEVEL) \
-	       $(warning for $@) \
+	       $(warning  doing $(MAKE) for $@) \
                -Wall -Wextra -O -g $^ __timestamp.o -lreadline  -o $@
 endif
 
@@ -187,7 +190,7 @@ BISMON-config1: BISMON-config.cc  $(warning $(MAKE) BISMON-config at level one)
 	@echo building BISMON-config1 caret= $^
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -DBISMON_MAKELEVEL=$(MAKELEVEL) \
                -DBISMON_config_one \
-	       $(warning for $@) \
+	       $(warning doing $(MAKE) for $@) \
                -Wall -Wextra -O -g $^ __timestamp.o -lreadline  -o $@
 
 ### the same at level 0
@@ -200,14 +203,14 @@ BISMON-config0: BISMON-config.cc  $(warning $(MAKE) BISMON-config at level zero)
 	@echo building BISMON-config0 caret= $^
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -DBISMON_MAKELEVEL=$(MAKELEVEL) \
                -DBISMON_config_zero \
-	       $(warning for $@) \
+	       $(warning  doing $(MAKE) for $@) \
                -Wall -Wextra -O -g $^ __timestamp.o -lreadline  -o $@
 
 runconfig: BISMON-config1 $(warning $(MAKE) runconfig at level $(MAKELEVEL))
 	./BISMON-config1 --label=for_runconfig_first $(BISMON_CONFIG_OPTIONS)
 	$(MAKE) __timestamp.c
 	/bin/mv ./BISMON-config1 ./BISMON-config1%
-	$(MAKE) ./BISMON-config1
+	$(MAKE) ./BISMON-config1 $(warning  doing $(MAKE) for $@)
 	./BISMON-config1 --label=for_runconfig_second $(BISMON_CONFIG_OPTIONS)
 	$(MAKE) _bismon-constdep.mk
 
@@ -231,7 +234,7 @@ BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX)  -std=gnu++14 -g -Wall -Wextra   BM_makeconst-g.o id_BM-g.o $(shell pkg-config --libs glib-2.0) -o $@
 
 BM_makeconst: BM_makeconst.cc id_BM.o | id_BM.h
-	$(LINK.cc) -std=gnu++14 -O -g -Wall  -Wextra '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"'  BM_makeconst.cc id_BM.o  $(shell pkg-config --cflags --libs glib-2.0) -o $@
+	$(LINK.cc) -std=gnu++14 -O -g -Wall  -Wextra '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"'  BM_makeconst.cc id_BM.o  $(shell pkg-config --cflags --libs glib-2.0) -o $@ $(warning  doing $(MAKE) for $@)
 
 BM_makeconst-g.o: BM_makeconst.cc id_BM.h
 	$(COMPILE.cc) -std=gnu++14   $(shell pkg-config --cflags glib-2.0) -g -Wall  -Wextra '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"' -c $< -o $@
@@ -264,7 +267,7 @@ __timestamp.c:  timestamp-emit.sh |  GNUmakefile
 
 all: config executable $(warning $(MAKE) all at level $(MAKELEVEL))
 
-executable: _bismon-config.mk build.ninja $(warning $(MAKE) executable at level $(MAKELEVEL))
+executable: _bismon-config.mk build.ninja $(warning $(MAKE) executable at level $(MAKELEVEL)) $(warning  doing $(MAKE) for $@)
 	$(MAKE) $(BISMONMK_EXECUTABLE)
 	$(MAKE) bismon
 
@@ -295,14 +298,14 @@ _bismon-constdep.mk: BISMON-config1 $(BM_CSOURCES)
 
 ifeq ($(MAKELEVEL),0)
 build.ninja: GNUmakefile BISMON-config0 |  _bismon-config.mk _bm_config.h $(warning $(MAKE) build.ninja at zero level)
-	-mv -f $@ $@~
+	-/bin/mv -v -f $@ $@~
 	./BISMON-config0 --label=for_base_ninja  $(BISMON_CONFIG_OPTIONS) --ninja=$@
 	@echo -n $(warning build.ninja level zero BM_MAKEPID= $(BM_MAKEPID))
 	/bin/ps $(BM_MAKEPID)
 	/bin/ls -l $@
 else
 build.ninja: GNUmakefile BISMON-config1 | $(warning $(MAKE) build.ninja at level $(MAKELEVEL))
-	-mv -f $@ $@~$(strip $(MAKELEVEL))%
+	-/bin/mv -v -f $@ $@~$(strip $(MAKELEVEL))%
 	./BISMON-config1 --label=for_$(strip $(MAKELEVEL))_ninja  $(BISMON_CONFIG_OPTIONS) --ninja=$@
 	@echo -n $(warning build.ninja level $(MAKELEVEL) BM_MAKEPID= $(BM_MAKEPID))
 	/bin/ps $(BM_MAKEPID)
