@@ -223,6 +223,7 @@ clean:
 	$(RM) *.o BISMON-config[0-9]* BM_makeconst bismon _bm_config.h _bm_config.c  modubin/*.so modubin/*.o *~ *% *.cc.orig
 	$(RM) _*.mkd _*conf*.mk
 	$(RM) *~ *%
+	$(RM) __timestamp*
 	$(RM) *_BM.const.h
 	$(RM) build.ninja
 
