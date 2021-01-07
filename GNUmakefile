@@ -148,7 +148,7 @@ BISMON-config0: BISMON-config.cc __timestamp.o $(warning $(MAKE) BISMON-config a
 	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT) caret= $^
 	@bash -c "if [ -f $@ ] ; then /bin/mv -v $@ $@~ ; fi"
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -DBISMON_MAKELEVEL=$(MAKELEVEL) \
-	       -DBISMON_config_first \
+	       -DBISMON_config_zero_first \
                 $(warning doing $(MAKE) $@) \
                -Wall -Wextra -O -g $^ -lreadline  -o $@
 BISMON-config1: BISMON-config0
@@ -174,7 +174,7 @@ BISMON-config$(MAKELEVEL): BISMON-config.cc  $(warning $(MAKE) BISMON-config at 
 	@bash -c "if [ -f $@ ] ; then /bin/mv -v $@ $@~ ; fi"
 	@echo building BISMON-config$(MAKELEVEL) caret= $^
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -DBISMON_MAKELEVEL=$(MAKELEVEL) \
-               -DBISMON_config_$(MAKELEVEL) \
+               -DBISMON_config_$(MAKELEVEL)_here \
 	       $(warning  doing $(MAKE) for $@) \
                -Wall -Wextra -O -g $^ __timestamp.o -lreadline  -o $@
 endif
@@ -189,7 +189,7 @@ BISMON-config1: BISMON-config.cc  $(warning $(MAKE) BISMON-config at level one)
 	@bash -c "if [ -f $@ ] ; then /bin/mv -v $@ $@~ ; fi"
 	@echo building BISMON-config1 caret= $^
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -DBISMON_MAKELEVEL=$(MAKELEVEL) \
-               -DBISMON_config_one \
+               -DBISMON_config_one_first \
 	       $(warning doing $(MAKE) for $@) \
                -Wall -Wextra -O -g $^ __timestamp.o -lreadline  -o $@
 
@@ -202,7 +202,7 @@ BISMON-config0: BISMON-config.cc  $(warning $(MAKE) BISMON-config at level zero)
 	@bash -c "if [ -f $@ ] ; then /bin/mv -v $@ $@~ ; fi"
 	@echo building BISMON-config0 caret= $^
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -DBISMON_MAKELEVEL=$(MAKELEVEL) \
-               -DBISMON_config_zero \
+               -DBISMON_config_zero_second \
 	       $(warning  doing $(MAKE) for $@) \
                -Wall -Wextra -O -g $^ __timestamp.o -lreadline  -o $@
 
@@ -305,6 +305,7 @@ build.ninja: GNUmakefile BISMON-config0 |  _bismon-config.mk _bm_config.h $(warn
 	/bin/ls -l $@
 else
 build.ninja: GNUmakefile BISMON-config1 | $(warning $(MAKE) build.ninja at level $(MAKELEVEL))
+	-/bin/ls -l BISMON-config1
 	-/bin/mv -v -f $@ $@~$(strip $(MAKELEVEL))%
 	./BISMON-config1 --label=for_$(strip $(MAKELEVEL))_ninja  $(BISMON_CONFIG_OPTIONS) --ninja=$@
 	@echo -n $(warning build.ninja level $(MAKELEVEL) BM_MAKEPID= $(BM_MAKEPID))
