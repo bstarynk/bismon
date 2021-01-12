@@ -148,8 +148,8 @@ BISMON-config0: BISMON-config.cc __timestamp.o $(warning $(MAKE) BISMON-config a
 	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT) caret= $^
 	@bash -c "if [ -f $@ ] ; then /bin/mv -v $@ $@~ ; fi"
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -DBISMON_MAKELEVEL=$(MAKELEVEL) \
-	       -DBISMON_config_zero_first \
-                $(warning doing $(MAKE) $@) \
+               -DBISMON_CONFIG_LABEL=\"$@ BISMON_config_first\" \
+	       -DBISMON_config_first \
                -Wall -Wextra -O -g $^ -lreadline  -o $@
 BISMON-config1: BISMON-config0
 	$(MAKE) $@ $(warning doing $(MAKE) $@) 
@@ -174,8 +174,9 @@ BISMON-config$(MAKELEVEL): BISMON-config.cc  $(warning $(MAKE) BISMON-config at 
 	@bash -c "if [ -f $@ ] ; then /bin/mv -v $@ $@~ ; fi"
 	@echo building BISMON-config$(MAKELEVEL) caret= $^
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -DBISMON_MAKELEVEL=$(MAKELEVEL) \
-               -DBISMON_config_$(MAKELEVEL)_here \
-	       $(warning  doing $(MAKE) for $@) \
+               -DBISMON_config_$(MAKELEVEL) \
+               -DBISMON_CONFIG_LABEL=\"$@ BISMON_config$(MAKELEVEL) here\" \
+	       $(warning for $@) \
                -Wall -Wextra -O -g $^ __timestamp.o -lreadline  -o $@
 endif
 
@@ -189,7 +190,8 @@ BISMON-config1: BISMON-config.cc  $(warning $(MAKE) BISMON-config at level one)
 	@bash -c "if [ -f $@ ] ; then /bin/mv -v $@ $@~ ; fi"
 	@echo building BISMON-config1 caret= $^
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -DBISMON_MAKELEVEL=$(MAKELEVEL) \
-               -DBISMON_config_one_first \
+               -DBISMON_config_one \
+               -DBISMON_CONFIG_LABEL=\"$@ BISMON_config_one here\" \
 	       $(warning doing $(MAKE) for $@) \
                -Wall -Wextra -O -g $^ __timestamp.o -lreadline  -o $@
 
@@ -203,7 +205,8 @@ BISMON-config0: BISMON-config.cc  $(warning $(MAKE) BISMON-config at level zero)
 	@echo building BISMON-config0 caret= $^
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -DBISMON_MAKELEVEL=$(MAKELEVEL) \
                -DBISMON_config_zero_second \
-	       $(warning  doing $(MAKE) for $@) \
+               -DBISMON_CONFIG_LABEL=\"$@ Bismon_config_zero here\" \
+	       $(warning doing $(MAKE) for $@) \
                -Wall -Wextra -O -g $^ __timestamp.o -lreadline  -o $@
 
 runconfig: BISMON-config1 $(warning $(MAKE) runconfig at level $(MAKELEVEL))

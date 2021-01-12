@@ -3,7 +3,7 @@
 // see https://github.com/bstarynk/bismon/
 /***
     BISMON
-    Copyright © 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2020 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
     with help from Franck Védrine.
@@ -153,6 +153,15 @@ static const struct option
 
 extern "C" bool bmc_debug_flag;
 extern "C" bool bmc_batch_flag;
+
+#ifndef BISMON_CONFIG_LABEL
+#error BISMON_CONFIG_LABEL should be defined in compilation command
+#endif /*BISMON_CONFIG_LABEL*/
+
+extern "C" const char bismon_config_label[];
+const char bismon_config_label[] =
+  BISMON_CONFIG_LABEL ":" __FILE__ " compiled at " __DATE__
+  " git " BISMON_SHORTGIT;
 
 // typical usage could be BMC_DEBUG("something bad x=" << x)
 #define BMC_DEBUG_AT_BIS(Fil,Lin,...) do {			\
