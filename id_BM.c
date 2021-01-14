@@ -40,7 +40,7 @@ randomserial63_BM (void)
 
 // return the number of bytes written into cbuf
 int
-serial63tocbuf16_BM (serial63_tyBM s, char cbuf[static 16])
+serial63tocbuf16_BM (serial63_tyBM s, char cbuf[/*static 16*/])
 {
   memset (cbuf, 0, 16);
   if (s == 0)
@@ -93,7 +93,7 @@ parse_serial63_BM (const char *buf, const char **pend)
             *pend = buf;
           return 0;
         };
-      char *str = strchr (b62digits, buf[i + 1]);
+      const char *str = strchr (b62digits, buf[i + 1]);
       if (!str)
         {
           if (pend)
@@ -126,7 +126,7 @@ randomid_BM (void)
 
 // return the number of bytes written into cbuf
 int
-idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32])
+idtocbuf32_BM (rawid_tyBM id, char cbuf[/*static 32*/])
 {
   memset (cbuf, 0, 32);
   if (!validid_BM (id))

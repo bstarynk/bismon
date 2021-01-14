@@ -46,6 +46,9 @@ using std::atomic_store;
 #define thread_local _Thread_local
 #endif
 
+/// usual GNU/Linux header files
+/// see also man7.org/linux/man-pages/man2/syscalls.2.html
+/// and man7.org/linux/man-pages/man3/intro.3.html
 
 #include <stdlib.h>
 #include <stdbool.h>
@@ -77,7 +80,6 @@ using std::atomic_store;
 #include <locale.h>
 #include <crypt.h>
 #include <string.h>
-#include <jansson.h>
 #include <sys/syscall.h>
 #include <unistd.h>
 #include <pthread.h>
@@ -85,13 +87,16 @@ using std::atomic_store;
 #include <backtrace.h>
 #include <regex.h>
 
+/// the Jansson JSON library from digip.org/jansson/ - see also
+/// www.json.org/json-en.html for more about JSON
+#include <jansson.h>
+
+/// the Glib low-level utility library from developer.gnome.org/glib/
 #include <glib.h>
 
-#ifdef BISMONGTK
-#include <gtk/gtk.h>
-#endif /*BISMONGTK*/
-// libonion from http://www.coralbits.com/libonion/ &
-// https://github.com/davidmoreno/onion
+/// We need the libonion HTTP server library from
+/// http://www.coralbits.com/libonion/ on
+/// https://github.com/davidmoreno/onion
 #include <onion/onion.h>
 #include <onion/low.h>
 #include <onion/request.h>
@@ -104,6 +109,12 @@ using std::atomic_store;
 #include <onion/exportlocal.h>
 #include <onion/internal_status.h>
 #include <onion/websocket.h>
+
+
+/// We need the GNU readline 8 library from www.gnu.org/software/readline/
+#include <readline/readline.h>
+
+
 #include "cmacros_BM.h"
 #include "id_BM.h"
 #include "types_BM.h"

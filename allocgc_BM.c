@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -63,11 +63,7 @@ request_delayed_garbage_collection_BM (void)
   // this should be the only place where want_garbage_collection_BM
   // becomes true
   atomic_store (&want_garbage_collection_BM, true);     // request delayed GC
-  if (web_is_running_BM
-#ifdef BISMONGTK
-      && !gui_is_running_BM
-#endif /*BISMONGTK*/
-    )
+  if (web_is_running_BM)
     {
       add_rungarbcoll_command_onion_BM ();
     }
@@ -773,10 +769,7 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   gcmarkconstants_BM (&GCdata);
   gcmarkglobals_BM (&GCdata);
   gcmarkdefer_BM (&GCdata);
-#ifdef BISMONGTK
-  gcmarknewgui_BM (&GCdata);
-#endif /*BISMONGTK*/
-    gcmarkwebonion_BM (&GCdata);
+  gcmarkwebonion_BM (&GCdata);
   gcmarkagenda_BM (&GCdata);
   gcmarkmodules_BM (&GCdata);
   gcframemark_BM (&GCdata, stkfram, 0);
@@ -946,17 +939,6 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   fprintf (fil, "-------\n\n");
   fflush (fil);
   last_gctime_BM = clocktime_BM (CLOCK_REALTIME);
-#ifdef BISMONGTK
-  if (fil != stderr)
-    {
-      ASSERT_BM (gui_is_running_BM);
-      ASSERT_BM (buf != NULL);
-      fputs (buf, stderr);
-      gui_gc_message_BM (buf);
-      fclose (fil);
-      free (buf), buf = NULL;
-    };
-#endif /*BISMONGTK*/
     DBGPRINTF_BM
     ("full_garbage_collection_BM before agenda_run_deferred_after_gc_BM");
   agenda_run_deferred_after_gc_BM ();
@@ -995,7 +977,7 @@ clear_gcroots_bm (void)
     };
   // clear the globals
 #define HAS_GLOBAL_BM(Glob) GLOBAL_BM(Glob) = NULL;
-#include "_bm_global.h"
+#include "genbm_global.h"
   // clear the predefined objects except `object` & `class`
 #define HAS_PREDEF_BM(Id,Hi,Lo,Hash) do {	\
     objectval_tyBM* curprobj = PREDEF_BM(Id);	\
@@ -1008,7 +990,7 @@ clear_gcroots_bm (void)
     }						\
   } while(0);
 #define HAS_NAMED_PREDEF_BM(Nam,id)
-#include "_bm_predef.h"
+#include "genbm_predef.h"
   // at the very last, clear `object` and `class` predefined
   objlock_BM (BMP_class);
   objlock_BM (BMP_object);

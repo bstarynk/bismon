@@ -494,14 +494,5 @@ extern void weakassertfailureat_BM (const char *condmsg, const char *fil,
 
 
 
-////////////////////////////////////////////////////////////////
-//// GTK interface related constants:
-#ifdef BISMONGTK
-
-#define BLINKDELAYMILLISEC_BM 750
-#define UNBLINKDELAYMILLISEC_BM 400
-
-#endif/* BISMONGTK*/
-
 
 #endif /*CMACROS_BM_INCLUDED */

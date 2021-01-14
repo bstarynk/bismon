@@ -449,9 +449,9 @@ dump_emit_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
         {
           char *oldpathbuf = NULL;
           char *backpathbuf = NULL;
-          if (asprintf (&oldpathbuf, "%s/store%u.bmon",
+          if (asprintf (&oldpathbuf, "%s/store§%u.bmon",
                         bytstring_BM (du->dump_dir), spix) < 0
-              || asprintf (&backpathbuf, "%s/store%u.bmon~",
+              || asprintf (&backpathbuf, "%s/store§%u.bmon~",
                            bytstring_BM (du->dump_dir), spix) < 0)
             FATAL_BM ("asprintf backup in %s failed",
                       bytstring_BM (du->dump_dir));
@@ -495,7 +495,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   char randidbuf[32];
   memset (randidbuf, 0, sizeof (randidbuf));
   idtocbuf32_BM (du->dump_randomid, randidbuf);
-  _.pathv = sprintfstring_BM ("%s/store%u.bmon",
+  _.pathv = sprintfstring_BM ("%s/store§%u.bmon",
                               bytstring_BM (du->dump_dir), spix);
   _.tempathv =
     sprintfstring_BM ("%s+%s%%", bytstring_BM (_.pathv), randidbuf);
@@ -523,11 +523,12 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   fprintf (spfil, "%s generated persistent data file %s (Unicode UTF-8 encoded).\n",    //
            STORE_CONTENTMAGIC_PREFIX_BM /*which is "//!€Bismon" ... */ ,
            basename (bytstring_BM (_.pathv)));
-  fprintf (spfil,
-           "/// This data file, generated in %d, is GPLv3+ licensed.\n",
-           nowyear);
   fputs ("/// SPDX-License-Identifier: GPL-3.0-or-later\n"
          "/// see  https://www.gnu.org/licenses/gpl-3.0.en.html\n", spfil);
+  fprintf (spfil,
+           "/// This data file, §" "GENERATED_PERSISTENT§ by " __FILE__ " in %d, is GPLv3+ licensed.\n",
+           nowyear);
+  fputs("/// In BISMON, see github.com/bstarynk/bismon\n", spfil);
   unsigned nbobj = setcardinal_BM (_.setobjs);
   fprintf (spfil, "/// for %u objects\n", nbobj);
   fputs ("\n///‼ Notice that '" STORE_OBJECTOPEN_PREFIX_BM "' and '" STORE_OBJECTOPEN_ALTPREFIX_BM "' for object opening,\n"  //.
@@ -604,11 +605,6 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
       if (obix % 64 == 0 && obix > 0)
         {
           garbage_collect_if_wanted_BM (CURFRAME_BM);
-#ifdef BISMONGTK
-          // CAUTION: this is brittle and GC-unfriendly
-          if (guirun)
-            guirun = !gtk_main_iteration_do (false);
-#endif     /*BISMONGTK*/
         };
     }
   free (objarr), objarr = NULL;

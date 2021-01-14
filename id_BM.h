@@ -50,13 +50,43 @@ typedef uint32_t hash_tyBM;
 
 typedef uint64_t serial63_tyBM;
 
-struct rawid_stBM
-{
-  serial63_tyBM id_hi;
-  serial63_tyBM id_lo;
-};
 typedef struct rawid_stBM rawid_tyBM;
 
+struct rawid_stBM
+{
+#if __cplusplus
+  const
+#endif /* C++ */
+  serial63_tyBM id_hi,  id_lo;
+  
+#if __cplusplus
+
+  inline bool operator < (const rawid_tyBM&r) const {
+    return id_hi<r.id_hi || (id_hi==r.id_hi && id_lo<r.id_lo);
+  }
+  inline bool operator <= (const rawid_tyBM&r) const {
+    return id_hi<r.id_hi || (id_hi==r.id_hi && id_lo<=r.id_lo);
+  }
+
+  inline bool operator > (const rawid_tyBM&r) const {
+    return id_hi>r.id_hi || (id_hi==r.id_hi && id_lo>r.id_lo);
+  }
+  inline bool operator >= (const rawid_tyBM&r) const {
+    return id_hi>r.id_hi || (id_hi==r.id_hi && id_lo>=r.id_lo);
+  }
+
+  inline bool operator == (const rawid_tyBM&r) const {
+    return id_hi==r.id_hi && id_lo==r.id_lo;
+  }
+
+  inline bool operator != (const rawid_tyBM&r) const {
+    return id_hi!=r.id_hi || id_lo!=r.id_lo;
+  }
+
+#endif // _cplusplus compare operators 
+  
+};				/* end struct rawid_tyBM */
+  
 
 static inline bool validserial63_BM (serial63_tyBM s);
 extern serial63_tyBM randomserial63_BM (void);

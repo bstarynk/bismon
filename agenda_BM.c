@@ -432,14 +432,14 @@ start_agenda_work_threads_BM (int nbjobs)
       ti_array_BM[ix].ti_thstartelapsedtime = 0.0;
       ti_array_BM[ix].ti_thstartcputime = 0.0;
     };
-  usleep (5);
+  usleep (2000+100*nbjobs);
   for (int ix = 1; ix <= nbjobs; ix++)
     {
-      usleep (25);
+      usleep (333);
       pthread_create (&ti_array_BM[ix].ti_pthread, &at,
                       run_agendaworker_BM, (void *) (intptr_t) ix);
     }
-  usleep (5);
+  usleep (100);
   pthread_attr_destroy (&at);
 }                               /* end start_agenda_work_threads_BM */
 
@@ -457,12 +457,12 @@ stop_agenda_work_threads_BM (void)
       atomic_store (&ti_array_BM[tix].ti_stop, true);
     pthread_mutex_unlock (&ti_agendamtx_BM);
   }
-  usleep (5);
+  usleep (50);
   pthread_cond_broadcast (&ti_agendacond_BM);
   usleep (1000);
   do
     {
-      usleep (10);
+      usleep (100);
       pthread_mutex_lock (&ti_agendamtx_BM);
       struct timespec ts = { 0, 0 };
       get_realtimespec_delayedms_BM (&ts, STOPWAITMILLISECONDS_BM);
@@ -1211,11 +1211,6 @@ enqueue_postpone_bm (struct agenda_postpone_stBM *apo,
              && agpostpone_first_BM->agpo_magic == POSTPONE_MAGIC_BM);
   double nextimstamp = agpostpone_first_BM->agpo_timestamp;
   pthread_mutex_unlock (&ti_agendamtx_BM);
-#ifdef BISMONGTK
-  if (gui_is_running_BM)
-    register_gui_postponed_BM (nextimstamp);
-  else
-#endif /*BISMONGTK*/
     if (web_is_running_BM)
     register_web_postponed_BM (nextimstamp);
   pthread_cond_broadcast (&ti_agendacond_BM);

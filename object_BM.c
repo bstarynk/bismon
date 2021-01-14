@@ -29,14 +29,14 @@
   }; \
   objectval_tyBM* predefptr##Id##_BM = &predefdata##Id##_BM;
 
-#include "_bm_predef.h"
+#include "genbm_predef.h"
 
 
 
 /// declare the globals
 #define HAS_GLOBAL_BM(Gnam) objectval_tyBM* GLOBAL_BM(Gnam);
 
-#include "_bm_global.h"
+#include "genbm_global.h"
 
 static pthread_mutexattr_t objmutexattr_BM;
 
@@ -1060,7 +1060,7 @@ initialize_predefined_objects_BM (void)
 		      (rawid_tyBM){Hi,Lo}));		\
     register_predefined_object_BM(PREDEF_BM(Id)); };
   //
-#include "_bm_predef.h"
+#include "genbm_predef.h"
   //
   fflush (NULL);
   ASSERT_BM (findobjofid_BM
@@ -1087,7 +1087,7 @@ gcmarkpredefinedobjects_BM (struct garbcoll_stBM *gc)
     if (predefdata##Id##_BM.ob_space == PredefSp_BM)			\
       ((typedhead_tyBM*)&predefdata##Id##_BM)->hgc = CLEARMGC_BM;	\
   }
-#include "_bm_predef.h"
+#include "genbm_predef.h"
   //
   hashsetgcmark_BM (gc, hashset_predefined_objects_BM, NULL);
 }                               /* end gcmarkpredefinedobjects_BM */

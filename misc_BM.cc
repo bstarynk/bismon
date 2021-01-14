@@ -178,7 +178,7 @@ initialize_predefined_names_BM (void)
   objhashtable_BM.reserve(3*BM_NB_PREDEFINED+100);
 #define HAS_NAMED_PREDEF_BM(Nam,Id) \
   add_predefined_name_BM(#Nam,PREDEF_BM(Id));
-#include "_bm_predef.h"
+#include "genbm_predef.h"
 }                               /* end initialize_predefined_names_BM */
 
 
@@ -387,7 +387,7 @@ void initialize_globals_BM(void)
 	  == mapglobals_BM.end());		\
   mapglobals_BM[#Gnam] = &GLOBAL_BM(Gnam);	\
 } while(0);
-#include "_bm_global.h"
+#include "genbm_global.h"
 } // end of initialize_globals_BM
 
 void

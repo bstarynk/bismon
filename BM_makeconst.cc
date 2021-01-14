@@ -3,7 +3,7 @@
 
 /***
     BISMON
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -34,7 +34,34 @@
 #include <set>
 #include <string>
 #include <unistd.h>
+#include <time.h>
+#include <argp.h>
+
 #include "id_BM.h"
+
+#ifndef BISMON_SHORTGIT
+#define BISMON_SHORTGIT "???"
+#warning BISMON_SHORTGIT should be defined with -D in compilation command
+#endif /*BISMON_SHORTGIT*/
+
+char bmk_datestr[24];
+
+char* bmk_progname;
+extern "C" void  bmk_fatal_stop_at(const char*fil, int lin);
+#define BMK_FATALOUT_AT_BIS(Fil,Lin,...) do {	\
+    std::cerr << "** " << bmk_progname << " FATAL! "	\
+	      << (Fil) << ":" << Lin << ":: "	\
+	      << __VA_ARGS__ << std::endl;	\
+    bmk_fatal_stop_at (Fil,Lin); } while(0)
+
+#define BMK_FATALOUT_AT(Fil,Lin,...) BMK_FATALOUT_AT_BIS(Fil,Lin,##__VA_ARGS__)
+
+// typical usage would be BMK_FATALOUT("x=" << x)
+#define BMK_FATALOUT(...) BMK_FATALOUT_AT(__FILE__,__LINE__,##__VA_ARGS__)
+
+
+// see https://www.gnu.org/software/libc/manual/html_node/Argp.html
+#warning we should have more options and parse them with argp
 
 /** examples of invocation:
 To process a single file and generate its header
@@ -42,17 +69,35 @@ To process a single file and generate its header
 
 To process all the files and generate the constants
     ./BM_makeconst -C _bm_allconsts.c *_BM.c misc_BM.cc
+
+To output, if it is #include-d, the _BM.const.h file related to scalar_BM.c
+    ./BM_makeconst -S scalar_BM.c
+otherwise exit code is 1
 ***/
 
 #define BMPREFIXSIZE 4 /* the length of both "BMK_" and "BMH_" prefixes */
-typedef std::set<rawid_tyBM, IdLess_BM> set_of_ids_BM;
+typedef std::set<rawid_tyBM, IdLess_BM> set_of_ids_KBM;
+
+// for program argument parsing using argp
+// see https://www.gnu.org/software/libc/manual/html_node/Argp.html
+void bmk_parse_program_options(int argc, char**argv);
+static error_t bmk_parse1opt (int key, char *arg, struct argp_state *state);
+enum bmk_progoption_en
+{
+  BMKPROGOPT__NONE,
+  BMKPROGOPT_VERSION= 1000,
+  BMKPROGOPT_GENERATE_CONST_HEADER,
+  BMKPROGOPT_GENERATE_ALL_CONST,
+};				// end enum bmk_progoption_en
+
+
 
 
 int totalnbkocc;		// total cumulated number of occurrences of BMK_ for constants
 
 int totalnbhocc;		// total cumulated number of occurrences of BMH_ for hashes
 
-int parse_cfile(const char*path, set_of_ids_BM &bmconstset, set_of_ids_BM &bmhashset, bool verbose=false)
+int parse_cfile(const char*path, set_of_ids_KBM &bmconstset, set_of_ids_KBM &bmhashset, bool verbose=false)
 {
   if (access(path, R_OK))
     {
@@ -109,7 +154,7 @@ int parse_cfile(const char*path, set_of_ids_BM &bmconstset, set_of_ids_BM &bmhas
             {
               const char*bmkcptr = line.c_str() + bmkpos;
               const char*endbmk = nullptr;
-              rawid_tyBM bmkid = parse_rawid_BM(bmkcptr+BMPREFIXSIZE-1, &endbmk);
+              const rawid_tyBM bmkid = parse_rawid_BM(bmkcptr+BMPREFIXSIZE-1, &endbmk);
               if (validid_BM(bmkid) && endbmk != nullptr)
                 {
                   bmconstset.insert(bmkid);
@@ -150,28 +195,201 @@ int parse_cfile(const char*path, set_of_ids_BM &bmconstset, set_of_ids_BM &bmhas
 } // end parse_cfile
 
 
-
-int main(int argc, char**argv)
+/// return true if some #include "foo_BM.const.h" was found in start of foo_BM.c, also output that included header
+bool
+seek_header_in_cfile(const char*path)
 {
-  if (argc < 3)
+  std::ifstream srcin(path);
+  int linecnt = 0;
+  int nbincl = 0;
+  do
     {
-      fprintf(stderr, "%s expects at least three arguments:\n"
-              "\t -H <generated-header> <C-file>\n"
-              "\t -C <generated-code> <C-files>...\n", argv[0]);
+      std::string line;
+      std::getline(srcin, line);
+      ssize_t linesize = line.size();
+      linecnt ++;
+      char inclbuf[64];
+      memset (inclbuf, 0, sizeof(inclbuf));
+      int eol= -1;
+      if (linesize > 8 && line[0] == '#'
+          && sscanf(line.c_str(), "# include \"%60[A-Za-z0-9_.]\" %n",
+                    inclbuf, &eol) >= 1
+          && eol > 16)
+        {
+          if (strstr(line.c_str(), "_BM.const.h"))
+            {
+              std::cout << inclbuf << std::endl;
+              nbincl ++;
+            }
+        }
+    }
+  while (linecnt < 128);
+  return nbincl>0;
+} // end seek_header_in_cfile
+
+
+/// heavily inspired by similar code I wrote for RefPerSys - see http://refpersys.org/ for more...
+struct argp_option
+  bmk_progoptions[] =
+{
+  /* ======= give version information ======= */
+  {/*name:*/ "version", ///
+    /*key:*/ BMKPROGOPT_VERSION, ///
+    /*arg:*/ nullptr, ///
+    /*flags:*/ 0, ///
+    /*doc:*/ "give version information", ///
+    /*group:*/0 ///
+  },
+  /* ======= generate a foo_BM.const.h header for foo_BM.c ======= */
+  {/*name:*/ "generate-const-header", ///
+    /*key:*/ BMKPROGOPT_GENERATE_CONST_HEADER, ///
+    /*arg:*/ "HEADER", ///
+    /*flags:*/ 0, ///
+    /*doc:*/ "generate the (temporary) HEADER constant file for a given"
+    " <foo>_BM.c;\n"
+    " usually for <foo>_BM.c your HEADER should be <foo>_BM.const.h", ///
+    /*group:*/0 ///
+  },
+  /* ======= generate the all-constants CONSTFILE file for several *_BM.c ======= */
+  {/*name:*/ "generate-all-constants", ///
+    /*key:*/ BMKPROGOPT_GENERATE_ALL_CONST, ///
+    /*arg:*/ "CONSTFILE", ///
+    /*flags:*/ 0, ///
+    /*doc:*/ "generate the CONSTFILE all-persistent-constants file for several given *_BM.c files;"
+    " usually CONSTFILE should be _bismon-constants.c", ///
+    /*group:*/0 ///
+  },
+  /* ======= terminating empty option ======= */
+  {/*name:*/(const char*)0, ///
+    /*key:*/0, ///
+    /*arg:*/(const char*)0, ///
+    /*flags:*/0, ///
+    /*doc:*/(const char*)0, ///
+    /*group:*/0 ///
+  }
+};				// end bmk_progoptions
+
+error_t
+bmk_parse1opt (int key, char *arg, struct argp_state *state)
+{
+  bool side_effect = state != nullptr;
+  switch (key)
+    {
+    case BMKPROGOPT_VERSION:
+    {
+      if (side_effect)
+        {
+          std::cout << bmk_progname << " compiled from " __FILE__ " at " __DATE__ << " git " BISMON_SHORTGIT << std::endl;
+        }
+      return 0;
+    }
+
+    case BMKPROGOPT_GENERATE_CONST_HEADER:
+    {
+      if (side_effect)
+        {
+          if (!arg)
+            BMK_FATALOUT("Program option --generate-const-header requires a given HEADER argument. Try "
+                         << bmk_progname << " --help.");
+#warning incomplete code in bmk_parse1opt
+        }
+    }
+
+    case BMKPROGOPT_GENERATE_ALL_CONST:
+    {
+    }
+    }
+  return ARGP_ERR_UNKNOWN;
+} // end bmk_parse1opt
+
+void
+bmk_parse_program_options(int argc, char**argv)
+{
+  errno = 0;
+  struct argp_state argstate;
+  memset (&argstate, 0, sizeof(argstate));
+  static struct argp argparser;
+  argparser.options = bmk_progoptions;
+  argparser.parser = bmk_parse1opt;
+  argparser.args_doc = " ; # ";
+  argparser.doc = "BM_makeconst is an internal utility (GPLv3+ licensed) [meta-]program generating some C files inside the BISMON project.\n"
+                  "see starynkevitch.net/Basile/bismon-chariot-doc.pdf and github.com/bstarynk/bismon/ for more about BISMON.\n"
+                  "You should have received a copy of the GNU General Public License\n"
+                  "along with this program.  If not, see https://www.gnu.org/licenses\n"
+                  "**NO WARRANTY, not even for FITNESS FOR A PARTICULAR PURPOSE**\n"
+                  "+++ use at your own risk +++\n"
+                  "\n Accepted program options are:\n";
+  argparser.children = nullptr;
+  argparser.help_filter = nullptr;
+  argparser.argp_domain = nullptr;
+  if (argp_parse(&argparser, argc, argv, 0, nullptr, nullptr))
+    BMK_FATALOUT("invalid program arguments - run " << bmk_progname << " --help for more.");
+} // end bmk_parse_program_options
+
+
+const char*bmk_fatal_file;
+int bmk_fatal_line;
+void bmk_fatal_stop_at(const char*fil, int lin)
+{
+  bmk_fatal_file = fil;
+  bmk_fatal_line = lin;
+  abort();
+} // end of bmk_fatal_stop_at
+
+int
+main(int argc, char**argv)
+{
+  bmk_progname = argv[0];
+  {
+    time_t nowt=0;
+    time(&nowt);
+    struct tm nowtm={};
+    localtime_r(&nowt, &nowtm);
+    strftime(bmk_datestr,sizeof(bmk_datestr), "%Y_%b_%d", &nowtm);
+  }
+  if (argc < 3 || (argc>1 && !strcmp(argv[1], "--help")))
+show_usage:
+    {
+      fprintf(stderr, "%s expects one of the following invocations:\n"
+              "\t -H <generated-header> <C-file>   # generate *.const.h\n"
+              "\t -S <C-file>                      # output included *.const.h, or else fail\n"
+              "\t -C <generated-code> <C-files>... # generate the global const file\n", argv[0]);
+      fprintf(stderr, "%s also accepts --version and --help, per GNU habits.\n",
+              argv[0]);
+      fprintf(stderr, "\n"
+              "See github.com/bstarynk/bismon and perhaps the DRAFT on starynkevitch.net/Basile/bismon-chariot-doc.pdf\n");
+      fprintf(stderr, "This is a GPLv3+ licensed software *WITHOUT ANY WARRANTY*, see www.gnu.org/licenses/gpl-3.0.en.html\n");
       exit(EXIT_FAILURE);
     }
-  if (!strcmp(argv[1], "-H"))
+  if (argc >= 2 && !strcmp(argv[1], "--version"))
+    {
+      printf("%s built from %s shortgit %s at %s\n",
+             argv[0], __FILE__, BISMON_SHORTGIT, __DATE__ "@" __TIME__);
+      printf("See github.com/bstarynk/bismon and perhaps the DRAFT on starynkevitch.net/Basile/bismon-chariot-doc.pdf\n");
+      printf("This is a GPLv3+ licensed software *WITHOUT ANY WARRANTY*, see www.gnu.org/licenses/gpl-3.0.en.html\n");
+      exit(EXIT_SUCCESS);
+    };
+  //// a build.ninja file should have been generated by make.  If there is none, something is perhaps wrong....
+  if (access("build.ninja", R_OK))
+    {
+      fprintf(stderr, "%s - warning, missing build.ninja file (%s). Maybe you should 'make' it...\n", argv[0], strerror(errno));
+      fprintf(stderr, "Check also the GNUmakefile.   See ninja-build.org and www.gnu.org/software/make/ ...\n");
+      fprintf(stderr, "See github.com/bstarynk/bismon and perhaps the DRAFT on starynkevitch.net/Basile/bismon-chariot-doc.pdf\n");
+    }
+  if (argc >= 2 && !strcmp(argv[1], "-H"))
     {
       auto hpath = argv[2];
-      set_of_ids_BM bmconstset;
-      set_of_ids_BM bmhashset;
+      set_of_ids_KBM bmconstset;
+      set_of_ids_KBM bmhashset;
       for (int ix=3; ix<argc; ix++)
         parse_cfile(argv[ix], bmconstset, bmhashset, true);
       std::ofstream outh(hpath);
-      outh << "// generated header " << hpath << " for "
+      outh << "// Generated header " << hpath << " for "
            << bmconstset.size() << " constants and "
            << bmhashset.size() << " hashes;"
            " DONT EDIT" << std::endl;
+      outh << "// ... generated by " __FILE__ " git " << BISMON_SHORTGIT << " on " << bmk_datestr << std::endl;
+      outh << "// ... see github.com/bstarynk/bismon ...." << std::endl;
       outh << std::endl << "// " << bmconstset.size() << " constants:" << std::endl;
       for (auto id: bmconstset)
         {
@@ -192,16 +410,16 @@ int main(int argc, char**argv)
         }
       outh << "//- eof generated header " << hpath << std::endl;
     }
-  else if (!strcmp(argv[1], "-C"))
+  else if (argc >= 2 && !strcmp(argv[1], "-C"))
     {
       auto spath = argv[2];
       int nblines = 0;
-      set_of_ids_BM bmconstset;
-      set_of_ids_BM bmhashset;
+      set_of_ids_KBM bmconstset;
+      set_of_ids_KBM bmhashset;
       for (int ix=3; ix<argc; ix++)
         nblines += parse_cfile(argv[ix], bmconstset, bmhashset, false);
       std::ofstream outs(spath);
-      outs << "/** generated constant file " << spath << std::endl;
+      outs << "/** §GENERATED_PERSISTENT§ constant file " << spath << std::endl;
       outs << "  from:";
       for (int ix=3; ix<argc; ix++)
         {
@@ -209,7 +427,9 @@ int main(int argc, char**argv)
             outs << std::endl << " ...";
           outs<< ' ' << argv[ix];
         }
-      outs << std::endl << " DONT EDIT**/" << std::endl;
+      outs << std::endl << " DONT EDIT, but keep this file... **/" << std::endl;
+      outs << "// ... generated by " __FILE__ " git " << BISMON_SHORTGIT << " on " << bmk_datestr << std::endl;
+      outs << "// ... see github.com/bstarynk/bismon for more." << std::endl;
       outs << std::endl << std::endl;
       for (auto id: bmconstset)
         {
@@ -242,10 +462,15 @@ int main(int argc, char**argv)
       printf("processed %d lines in %d files with %d occurrences of %d constants\n",
              nblines, argc-3, totalnbkocc, (int) bmconstset.size());
     }
+  else if (argc >= 2 && !strcmp(argv[1], "-S") && argc == 3)
+    {
+      if (!seek_header_in_cfile(argv[2]))
+        exit(EXIT_FAILURE);
+    }
   else
     {
-      fprintf(stderr, "%s: expects -H <header> <C-source> or -C <code> <C-source-files>\n", argv[0]);
-      exit(EXIT_FAILURE);
+      fprintf(stderr, "%s: expected usage:\n", argv[0]);
+      goto show_usage;
     }
   return 0;
 } // end main

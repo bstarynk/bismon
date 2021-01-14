@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -89,62 +89,6 @@ extern const char *objectdbg7_BM (const objectval_tyBM * obj);  // non reentrant
 
 
 
-//////////////////////////////////////////////////////////////// GTK code
-#ifdef BISMONGTK
-extern const char *gobjectclassnamedbg_BM (GObject * ptr);
-// return an static string for a textiter, for debugging only
-extern const char *textiterstrdbg_BM (GtkTextIter *);
-
-// browse the named value
-extern void browse_named_value_gui_BM (const stringval_tyBM * namev,
-                                       const value_tyBM val,
-                                       const objectval_tyBM * objsel,
-                                       int browsdepth,
-                                       struct stackframe_stBM *stkf);
-
-// hide the named value
-extern void hide_named_value_gui_BM (const stringval_tyBM * namev,
-                                     struct stackframe_stBM *stkf);
-
-// find the named value
-extern value_tyBM find_named_value_gui_BM (const char *name);
-/// stop completely the blinking
-extern void browserblinkstop_BM (void);
-
-// unblink temporarily
-extern int browserblinkoff_BM (gpointer);
-// blink temporarily
-extern int browserblinkon_BM (gpointer);
-
-// start the blinking
-extern void browserblinkstart_BM (void);
-
-extern void start_browse_object_BM (const objectval_tyBM * obj,
-                                    const objectval_tyBM * objsel, int depth);
-
-extern void start_browse_named_value_BM (const stringval_tyBM * namev,
-                                         const value_tyBM val, int depth);
-
-
-extern void refresh_browse_BM (struct stackframe_stBM *);
-
-extern void runcommand_BM (bool erase);
-extern void run_then_erase_command_BM (void);
-extern void run_then_keep_command_BM (void);
-extern void marksetcmd_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
-                           gpointer);
-extern void marksetbrows_BM (GtkTextBuffer *, GtkTextIter *, GtkTextMark *,
-                             gpointer);
-extern void clear_command_BM(void);
-
-extern const char *gobjectclassnamedbg_BM (GObject * ptr);
-
-extern void gtk_log_puts_message_BM (const char *msg);
-extern void gtk_log_begin_message_BM (void);
-extern void gtk_log_end_message_BM (void);
-extern void gtk_log_object_message_BM (const objectval_tyBM * obj);
-#endif /*BISMONGTK*/
-//////////////////////////////////////////////////////////////// end GTK code
 
 
 extern void *allocgcty_BM (unsigned type, size_t sz);
@@ -1528,9 +1472,6 @@ extern value_tyBM simple_module_initialize_BM (const value_tyBM arg1,   //
 
 extern void gcmarkmodules_BM (struct garbcoll_stBM *gc);
 extern void gcmarkpostponed_BM (struct garbcoll_stBM *gc);
-#ifdef BISMONGTK
-extern void register_gui_postponed_BM (double nextimstamp);
-#endif /*BISMONGTK*/
 extern void register_web_postponed_BM (double nextimstamp);
 
 value_tyBM
@@ -1570,120 +1511,6 @@ value_tyBM pop_newest_postpone_BM (double *pdelay,
 double timestamp_newest_postpone_BM (void);
 ////////////////////////////////////////////////////////////////
 //**************************************************************
-////////////////////////////////////////////////////////////////
-#ifdef BISMONGTK
-/// support for GUI, in misc_BM.cc
-void cmd_clear_parens_BM (void);        /* clear all parenthesis in cmd */
-void cmd_add_parens_BM (struct parenoffset_stBM *par);
-bool parens_surrounds_BM (struct parenoffset_stBM *par, int off);
-struct parenoffset_stBM *cmd_find_enclosing_parens_BM (int off);
-///
-extern void initialize_gui_BM (const char *builderfile, const char *cssfile);
-extern void initialize_newgui_BM (const char *builderfile,
-                                  const char *cssfile);
-extern void show_answer_value_newgui_BM (value_tyBM val,
-                                         struct stackframe_stBM *stkf);
-extern void show_failure_value_newgui_BM (value_tyBM val,
-                                          struct stackframe_stBM *stkf);
-extern void initialize_gui_tags_BM (GtkBuilder * bld);
-extern GtkWidget *initialize_gui_menubar_BM (GtkWidget * mainvbox,
-                                             GtkBuilder * bld);
-extern GtkWidget *initialize_oldgui_command_scrollview_BM (void);
-extern GtkWidget *initialize_newgui_command_scrollview_BM (void);
-extern GtkWidget *initialize_log_scrollview_BM (void);
-// the periodic GC function
-extern gboolean guiperiodicgarbagecollection_BM (gpointer);
-
-////////////////////////////////////////////////////////////////
-/******** GUI functions ***********/
-// browse the object objbrows, using the selector objsel
-extern void browse_object_gui_BM (const objectval_tyBM * objbrows,
-                                  const objectval_tyBM * objsel,
-                                  int browsdepth,
-                                  struct stackframe_stBM *stkf);
-extern void hide_object_gui_BM (const objectval_tyBM * objbrows,
-                                struct stackframe_stBM *stkf);
-
-extern void clear_command_BM (void);
-// internal, inside browsing methods
-extern void browse_value_BM (const value_tyBM val,
-                             struct stackframe_stBM *stkf,
-                             int maxdepth, int curdepth);
-
-
-extern void browsespacefordepth_BM (int depth);
-extern void browsenewlinefordepth_BM (int depth);
-
-// the function to handle tabautocomplete in command
-void tabautocomplete_gui_cmd_BM (void);
-extern void gcmarknewgui_BM (struct garbcoll_stBM *gc);
-extern void gui_gc_message_BM (const char *msg);
-extern void
-browse_value_BM (const value_tyBM val,
-                 struct stackframe_stBM *stkf, int maxdepth, int curdepth);
-
-extern int browse_show_start_offset_BM (void);
-
-extern struct browsedobj_stBM *find_browsed_object_BM
-  (const objectval_tyBM * obj);
-
-extern struct browsedval_stBM *find_browsed_named_value_BM
-  (const char *valname);
-
-extern void browse_add_parens_BM (int openoff, int closeoff,
-                                  int xtraoff, unsigned openlen,
-                                  unsigned closelen, unsigned xtralen,
-                                  int depth, struct stackframe_stBM *stkf);
-extern void newgui_browse_add_parens_BM (int openoff, int closeoff,
-                                         int xtraoff, unsigned openlen,
-                                         unsigned closelen, unsigned xtralen,
-                                         int depth,
-                                         struct stackframe_stBM *stkf);
-
-extern const char *textiterstrdbg_BM (GtkTextIter * it);
-
-extern void cssparsingerror_BM (GtkCssProvider *, GtkCssSection *, GError *,
-                                gpointer) __attribute__((noreturn));
-
-extern void quitgui_BM (void);
-extern void exitgui_BM (void);
-extern void dumpgui_BM (void);
-extern void garbage_collect_from_gui_BM (void);
-extern bool deletemainwin_BM (GtkWidget *, GdkEvent *, gpointer);
-extern GtkTextBuffer *newgui_get_browsebuf_BM (void);
-
-// decorate e.g. // or | with commentsign_cmdtag
-extern parser_decorate_comment_sign_sigBM parscommentsign_guicmd_BM;
-
-// decorate with commentinside_cmdtag
-extern parser_decorate_comment_inside_sigBM parscommentinside_guicmd_BM;
-
-// decorate with delim_cmdtag
-extern parser_decorate_delimiter_sigBM parsdelim_guicmd_BM;
-
-// decorate with id_cmdtag
-extern parser_decorate_id_sigBM parsid_guicmd_BM;
-
-// decorate with knowname_cmdtag
-extern parser_decorate_name_sigBM parsknowname_guicmd_BM;
-
-// decorate with newname_cmdtag
-extern parser_decorate_name_sigBM parsnewname_guicmd_BM;
-
-// decorate open/close with nesting_cmdtag & open/close tags
-extern parser_decorate_nesting_sigBM parsnesting_guicmd_BM;
-
-// decorate start/open/close with nesting_cmdtag & start/open/close tags
-extern parser_decorate_start_nesting_sigBM parsstartnesting_guicmd_BM;
-
-// decorate numbers
-extern parser_decorate_number_sigBM parsnumber_guicmd_BM;
-
-// decorate strings
-extern parser_decorate_string_sign_sigBM parsstringsign_guicmd_BM;
-extern parser_decorate_string_inside_sigBM parsstringinside_guicmd_BM;
-#endif /*BISMONGTK*/
-////////////////////////////////////////////////////////////////
 //**************************************************************
 ////////////////////////////////////////////////////////////////
 /// web specific functions

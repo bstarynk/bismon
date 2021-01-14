@@ -1567,7 +1567,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the dumper of globals"
 ↦ _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|
- % _4ENXjApm7Qb_3bXo8F6Jg9z (  "_bm_global.h")
+ % _4ENXjApm7Qb_3bXo8F6Jg9z (  "genbm_global.h")
 
 »_5XDRkXDAUAk_9AuvN0J1d53
 
@@ -1580,7 +1580,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the dumper of predefined objects"
 ↦ _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|
- % _075tZNHCAMa_7XNNBaNM4qv (  "_bm_predef.h")
+ % _075tZNHCAMa_7XNNBaNM4qv (  "genbm_predef.h")
 
 »_4dGXIiALafP_2bxdkvN34Qa
 
@@ -1593,7 +1593,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "the dumper of types declarations"
 ↦ _0pSnxYMjpqQ_3opFGfXeh5o |=dump_data|
- % _3yJPC4SxGtF_6ilaF37wdxG (  "_bm_types.h"  [  
+ % _3yJPC4SxGtF_6ilaF37wdxG (  "genbm_types.h"  [  
  _7bbeIqUSje9_4jVgC7ZJmvx _9Hh1Ovg8SBy_5GpqPq7wC5v _2KnapuxOyVt_79DU64sgMcF  
  _93m7hQouFiF_4cFcYfZ1b7i _535ulGVFUfw_4yWLeDp4Pxd _0ap8ZTtBsU9_6E2IyCg45Gu  
  _2mRvIPRgAOn_7i3eKQzyvhk _4hIFpPfuaR1_39hcoYwRAm0 _4mNIezUtVkz_1qg63n8juIs  

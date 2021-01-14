@@ -3,7 +3,7 @@
     BISMON related GCC10 metaplugin header gcc10-metaplugin.hh
     See https://github.com/bstarynk/bismon/
 
-    Copyright © 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2020 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch.
 
     This program is free software: you can redistribute it and/or modify
@@ -47,7 +47,6 @@
 
 #include <curl/curl.h>
 
-#include <glibmm/keyfile.h>
 
 #include "gcc-plugin.h"
 #include "config.h"

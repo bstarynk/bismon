@@ -2794,7 +2794,7 @@ give_prog_version_BM (const char *progname)
   printf ("\t last git tag: %s\n", bismon_lastgittag);
   printf ("\t source checksum: %s\n", bismon_checksum);
   printf ("\t source dir: %s\n", bismon_directory);
-  printf ("\t makefile: %s\n", bismon_makefile);
+  printf ("\t GNUmakefile: %s\n", bismon_gnumakefile);
   printf ("########\n");
   printf ("run\n" "\t   %s --help\n" "to get help.\n", progname);
   exit (EXIT_SUCCESS);
