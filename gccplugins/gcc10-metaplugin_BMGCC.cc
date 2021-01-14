@@ -52,4 +52,10 @@ plugin_init (struct plugin_name_args *plugin_info,
   return 0;
 } // end plugin_init
 
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./build-gcc10-metaplugin.sh" ;;
+ ** End: ;;
+ ****************/
 ////// end of file bismon/gccplugins/gcc10-metaplugin_BMGCC.cc
