@@ -1,3 +1,4 @@
 # file genscripts/straight-gcc-config.bash
-# to be source-d by scripts
-GCC=/usr/bin/gcc-8 
+# project BISMON - see github.com/bstarynk/bismon
+# to be source-d by shell scripts related to documentation under doc/
+GCC=/usr/bin/gcc-10

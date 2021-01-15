@@ -1,10 +1,13 @@
 % file appendix-bm.tex, which is \input from bismon-chariot-doc.tex
 % see https://github.com/bstarynk/bismon for more about Bismon
-\section*{Appendix}
-\label{sec:appendix}
 
-\subsection{Building \texttt{bismon} from its source code}
-\label{subsec:building-bismon}
+% https://tex.stackexchange.com/a/226497/42406
+
+\begin{appendices}
+
+
+\section{Building \texttt{bismon} from its source code}
+\label{sec:building-bismon}
 
 We focus here on how to build \texttt{bismon} from its source code on
 \href{http://debian.org/}{Debian}-like distributions running on x86-64
@@ -31,6 +34,26 @@ and should budget several days of work for that.
 {\large Be aware that \textbf{\texttt{bismon} requires specifically some
   \href{https://gcc.gnu.org/gcc-10/}{GCC 10} compiler} and won't work
   with e.g. a GCC 9 compiler.}
+
+
+\medskip
+
+The build procedure happens in two phases:
+
+\begin{itemize}
+
+\item a \textbf{configuration step}, to be run only once in a while,
+  or when your Linux distribution has changed or upgraded, or when you
+  have added extra useful libraries, or have upgraded your GCC
+  compiler.
+
+\item a \textbf{compilation step}, to be run more frequently
+  (e.g. every night using
+  \href{https://man7.org/linux/man-pages/man1/crontab.1.html}{\texttt{crontab(1)}}....)
+
+\end{itemize}
+
+\medskip
 
 \subsection{Prerequisites for building \texttt{bismon}}
 \label{subsec:prereq-bismon}
@@ -101,7 +124,7 @@ The \emph{Bismon} project \index{build!automation} uses two \href{https://en.wik
 
 \end{itemize}
   
-\subsubsection{File naming conventions in \texttt{bismon}}
+\subsection{File naming conventions in \texttt{bismon}}
 
 By our conventions, files \index{file} \index{naming!conventions}
 whose base name\footnote{In the sense of the
@@ -141,7 +164,7 @@ executables.
 
 \medskip
 
-\subsubsection{Naming conventions and source files organization for \texttt{bismon}}
+\subsection{Naming conventions and source files organization for \texttt{bismon}}
 
 \medskip
 
@@ -377,7 +400,7 @@ and it is advised\footnote{Once \texttt{make redump} fails, the
   find the latest consistent state of your \textit{Bismon} repository.}
 to run it daily.
   
-\subsubsection{Generators and meta-programs in \texttt{bismon}}
+\subsection{Generators and meta-programs in \texttt{bismon}}
 
 \textcolor{brown}{\textbf{Generating code is one of the core ideas of \textsc{Bismon}}}. Such code
 generation happens both at build time and at run time. The generated
@@ -402,8 +425,13 @@ single handwritten C++ source code file:
     utility files.
 \end{itemize}
 
-But once the \texttt{bismon} executable exists, the above metaprograms
-are not useful anymore.
+But once the \texttt{bismon}
+\href{https://en.wikipedia.org/wiki/Executable_and_Linkable_Format}{ELF}
+executable exists, the above metaprograms are not useful
+anymore. However, they are needed to recompile \texttt{bismon} (which
+you might want to do periodically, i.e. every evening).
+
+\medskip
 
 At run time, the \texttt{bismon} executable is routinely generating C
 or C++ code. Some C code (under the \textbf{\texttt{modules/}}\,
@@ -437,3 +465,5 @@ a starting underscore (that is, a
 name.
 
 {\textcolor{red}{\large @@TO BE WRITTEN}}
+
+\end{appendices}
