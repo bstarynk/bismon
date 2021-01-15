@@ -3,7 +3,7 @@
 ## GPLv3+ licensed, from http://github.com/bstarynk/bismon
 # 
 #    BISMON 
-#   Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+#   Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
 #   contributed by Basile Starynkevitch.
 #
 #   This program is free software: you can redistribute it and/or modify
@@ -93,9 +93,14 @@ BISMON-config: BISMON-config.cc __timestamp.o
 	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
 	$(GXX) $(BM_CXX_STANDARD_FLAGS) '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"' -Wall -Wextra -O -g $^ -lreadline  -o $@
 
-_bismon-config.mk _bm_config.h _bm_config.c: BISMON-config.cc
-	if [ ! -x ./BISMON-config ]; then if [ $(MAKELEVEL) -lt 2 ]; then bash -x -c '$(MAKE)  ./BISMON-config' ; fi ; fi
+
+ifeq($(MAKELEVEL),0)
+_bismon-config.mk _bm_config.h _bm_config.c: BISMON-config
 	$(MAKE) runconfig
+else
+_bismon-config.mk _bm_config.h _bm_config.c: BISMON-config.cc
+	$(MAKE) runconfig
+endif
 
 runconfig:
 	./BISMON-config $(BISMON_CONFIG_OPTIONS)
