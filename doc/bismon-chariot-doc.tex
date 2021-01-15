@@ -1,10 +1,13 @@
-% file bismon/doc/bismon-chariot-doc.tex; please read both
+% File bismon/doc/bismon-chariot-doc.tex on github.com/bstarynk/bismon
+% by <basile.starynkevitch@cea.fr> ... Please read both
 % bismon/README.md and bismon/dependencies/README-dependencies.md
-% before processing this LaTeX document using the "make doc" command
-% from bismon/ source directory.
+% before processing this LaTeX document on Debian related Linux
+% distributions using the "make doc" command from bismon/ source
+% directory.
 \documentclass[11pt,a4paper,svgnames]{article}
 \usepackage[T1]{fontenc}
-\usepackage[utf8x]{inputenc}
+% inputenc is not needed with lualatex
+% \usepackage[utf8x]{inputenc}
 \usepackage{alltt}
 % https://tex.stackexchange.com/a/342804/42406
 % IMPORTANT! see also: https://tex.stackexchange.com/a/500963/42406
@@ -31,7 +34,7 @@
 \usepackage{listings}
 \usepackage{relsize}
 \usepackage{verbatimbox}
-\usepackage{filecontents}
+%\usepackage{filecontents}
 \usepackage{catchfile}
 \usepackage{lastpage}
 \usepackage{stmaryrd}
@@ -42,6 +45,8 @@
 \usepackage{bigfoot}
 \usepackage{makeidx}
 \usepackage{times}
+% https://tex.stackexchange.com/a/413066/42406
+\usepackage{apptools}
 \usepackage[a4paper, margin=2cm]{geometry}
 \usepackage{hyperref}
 
@@ -201,7 +206,9 @@ Industrial~\textbf{IoT}}
 \end{tabular}
 \end{relsize}
 
-\bigskip
+\medskip
+
+{\textcolor{red}{\large unverified, unapproved, unchecked draft \textbf{Ful of Mistaks}}}
 
 \vspace{3cm}
 
@@ -538,6 +545,11 @@ programme under the Grant Agreement No 780075.
 \newpage
 \input{conclus-bm}
 
+\newpage
+\addcontentsline{toc}{section}{Appendix}
+\appendix
+\input{appendix-bm}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \clearpage
@@ -682,6 +694,6 @@ Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 \end{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Local Variables: ;;
-%% compile-command: "cd ..; ./build-bismon-doc.sh" ;;
+%% compile-command: "cd ..; ./build-bismon-doc.sh LaTeX" ;;
 %% End: ;;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
