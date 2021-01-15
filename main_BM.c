@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -28,9 +28,6 @@
 /* for get_nprocs(3) */
 #include <sys/sysinfo.h>
 
-#ifdef BISMONGTK
-#include <glib/giochannel.h>
-#endif /* BISMONGTK */
 
 struct timespec startrealtimespec_BM;
 void *dlprog_BM;
