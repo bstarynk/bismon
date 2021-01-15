@@ -41,3 +41,5 @@ $CXX -Wall -Wextra -O -g -DBISMON_SHORTGIT=\"$BISMON_SHORT_GIT\" \
      -DBISMON_CONFIG_LABEL=\"from-$BISMON_CONFIGURE_REAL_PATH\" \
      BISMON-config.cc __timestampconf.c -o BISMON-config -lreadline
 mv __timestampconf.c __timestampconf.c~
+
+### incomplete
