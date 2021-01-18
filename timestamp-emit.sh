@@ -1,17 +1,30 @@
 #!/bin/bash
 # script timestamp-emit.sh
 ##   BISMON - see github.com/bstarynk/bismon/
+##   Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+##   contributed by Basile Starynkevitch (working at CEA, LIST, France)
+##   <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
+# there should be at most one argument....
 output_timestamp=$1
 if [ -z "$output_timestamp" ]; then
     output_timestamp=__timestamp.c
 fi
+
+if [ ! -d ".git" ]; then
+    printf "%s should be invoked from a .git versioned directory\n" $0 > /dev/stderr
+    exit 1
+fi
+
+if [ $# -gt 1 ]; then
+    printf "%s should be invoked with at most one argument, the timestamp file to be generated...\n" $0 > /dev/stderr
+    exit 1
+fi
+
+
 tempoutput="$output_timestamp-tmp$$"
 
-##   Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
-##   contributed by Basile Starynkevitch (working at CEA, LIST, France)
-##   <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 printf "// %sGENERATED¤ file __timestamp.c, see http://github.com/bstarynk/bismon\n" "¤" > $tempoutput
-printf "// generated with %s %s\n" $0 "$*"  >> $tempoutput
+printf "// generated with %s %s on %s\n" $0 "$*"  $(date +"%Y %b %d") >> $tempoutput
 date +'const char bismon_timestamp[]="%c";%n const unsigned long bismon_timelong=%sL;' >> $tempoutput
 
 (echo -n 'const char bismon_lastgitcommit[]="' ; \
@@ -34,9 +47,7 @@ fi
 
 
 (echo  'const char* const bismon_sources[] = {';
- for src in $* ; do
-     printf '  "%s",\n' $src;
- done;
+ git  ls-tree -r --name-only --full-name HEAD | ./emit-git-sources.gawk
  printf '    (const char*)0 }; // end bismon_sources\n') >> $tempoutput
 
 (printf  'const int bismon_source_number =\n   (sizeof(bismon_sources)/sizeof(bismon_sources[0])) - 1;\n\n') >> $tempoutput
