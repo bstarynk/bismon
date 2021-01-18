@@ -409,7 +409,7 @@ time, we could have used
 \href{https://gcc.gnu.org/onlinedocs/jit/}{\texttt{libgccjit}} to
 generate directly some \texttt{*.so} shared object.}.
 
-At build time, two meta-programs are involved; each of them has a
+At build time, two meta-programs and some shell or GNU awk scripts are involved; each of these two metaprograms has a
 single handwritten C++ source code file:
 
 \begin{itemize}
@@ -423,6 +423,16 @@ single handwritten C++ source code file:
     scanning some handwritten C file (for example, our
     \texttt{engine\_BM.c} file, etc...)  and producing some headers or
     utility files.
+
+  \item \texttt{timestamp-emit.sh} is a shell script
+    \index{timestamp-emit.sh@\texttt{timestamp-emit.sh} shell script}
+    (using internally the \texttt{emit-git-sources.gawk} GNU gawk
+    script)
+    \index{emit-git-sources.gawk@\texttt{emit-git-sources.gawk}
+      internal \textsc{gawk} script} which emits a simple C file
+    (containing only data) with the timestamp and some metadata
+    information about the build.
+    
 \end{itemize}
 
 But once the \texttt{bismon}
