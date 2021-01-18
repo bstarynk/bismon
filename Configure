@@ -23,19 +23,20 @@
 ##   basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 ########################################
 
-# the C++ compiler; some GCC (see http://gcc.gnu.org/ ...)
+# the C++ and C compilers; some GCC (see http://gcc.gnu.org/ ...)
 CXX=g++
+CC=gcc
 
 # the short git id.... 
-BISMON_SHGIT1=$(git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
-BISMON_SHGIT2=$(if git status | grep 'nothing to commit'; then echo; else echo +; fi)
-BISMON_SHORT_GIT="$BISMON_SHGIT1$BISMON_SHGIT2"
-# Now BISMON_SHORT_GIT could be a string like 6f60bfd0a2dad6bd+ if the
+BISMONCONF_SHGIT1=$(git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
+BISMONCONF_SHGIT2=$(if git status | grep 'nothing to commit' > /dev/null; then echo; else echo +; fi)
+BISMONCONF_SHORT_GIT="$BISMONCONF_SHGIT1$BISMONCONF_SHGIT2"
+# Now BISMONCONF_SHORT_GIT could be a string like 6f60bfd0a2dad6bd+ if the
 # git repository is dirty, and like 9f60bfd0a2dad6bd if it is clean of
 # local changes.
 
 if [ "$1" == "--version" ]; then
-    printf "%s: version gitid %s\n" $(realpath $0) $BISMON_SHORT_GIT
+    printf "%s: version gitid %s\n" $(realpath $0) $BISMONCONF_SHORT_GIT
     exit 0
 fi
 
@@ -46,16 +47,19 @@ if [ -f BISMON-config ]; then
     /bin/mv -vf BISMON-config BISMON-config~
 fi
 
-if $CXX -Wall -Wextra -O -g -DBISMON_SHORTGIT=\"$BISMON_SHORT_GIT\" \
+$CC -O -Wall -c __timestampconf.c || (printf "%s failed to compile __timestampconf.c\n" > /dev/stderr; exit 1)
+
+/bin/mv -f __timestampconf.c __timestampconf.c~
+    
+if $CXX -Wall -Wextra -O -g -DBISMON_SHORTGIT=\"$BISMONCONF_SHORT_GIT\" \
      -DBISMON_CONFIG_LABEL=\"from-$BISMON_CONFIGURE_REAL_PATH\" \
-     BISMON-config.cc __timestampconf.c -o BISMON-config -lreadline ; then
+     BISMON-config.cc  __timestampconf.o -o BISMON-config -lreadline ; then
     printf "%s: successfully build %s\n" "$0" $(realpath BISMON-config)
 else
     printf "%s: failed to build BISMON-config in %s\n" "$0" $(pwd) > /dev/stderr
     exit 1
 fi
 
-/bin/mv -f __timestampconf.c __timestampconf.c~
 
 exec ./BISMON-config "$@"
 
