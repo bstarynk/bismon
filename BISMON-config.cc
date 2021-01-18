@@ -656,6 +656,8 @@ bmc_print_config_data(const char*progname)
 	}
       }
       BMC_DEBUG("bmc_print_config_data gitls #" << linenopip << ", gitlinstr='" << gitlinstr << "'");
+      if (gitlinstr.empty())
+	continue;
       if (access(gitlinstr.c_str(), R_OK))
 	{
 	  int accerr= errno;
