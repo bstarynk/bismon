@@ -132,7 +132,7 @@ id_BM-g.o: id_BM.c id_BM.h
 	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
 
 __timestamp.c:  timestamp-emit.sh |  GNUmakefile
-	env BISMON_MAKE="$(MAKE)" ./timestamp-emit.sh $(BM_CSOURCES) $(BM_CXXSOURCES)
+	env BISMON_MAKE="$(MAKE)" ./timestamp-emit.sh
 
 all: config executable
 
