@@ -109,10 +109,10 @@ id_BM-g.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
 
 %_BM.o: %_BM.c bismon.h
-	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
+	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
 
 %_BM-g.o: %_BM.c bismon.h
-	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
+	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
 
 __timestamp.c:  timestamp-emit.sh |  GNUmakefile
 	env BISMON_MAKE="$(MAKE)" ./timestamp-emit.sh
@@ -124,3 +124,5 @@ executable: _bismon-config.mk
 
 bismon:  _bismon-config.mk _bm_config.h
 	$(MAKE) $(BISMONMK_OBJECTS)
+
+$(error missing target for _bm_predef.h)
