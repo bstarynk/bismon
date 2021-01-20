@@ -1,4 +1,5 @@
-## the Bismon GNUmakefile
+#!/usr/bin/make -f
+## the Bismon GNUmakefile - for GNU make 4
 ## SPDX-License-Identifier: GPL-3.0-or-later
 ## GPLv3+ licensed, from http://github.com/bstarynk/bismon
 # 
@@ -39,34 +40,30 @@ BM_CXX_STANDARD_FLAGS= -std=gnu++17
 ## CONVENTION: handwritten markdown files are...
 MARKDOWN_SOURCES= $(sort $(wildcard *.md))
 
-## CONVENTION: generated C files are
-BM_GENMODULES_CSOURCES= $(sort $(wildcard modules/modbm*.c))
+## CONVENTION: generated modules C files are
+BM_GENMODULES_C_SOURCES= $(sort $(wildcard modules/modbm*.c))
 
-## CONVENTION: generated C++ files are
-BM_GENMODULES_CXXSOURCES= $(sort $(wildcard modules/modbm*.cc))
+## CONVENTION: generated modules C++ files could be
+BM_GENMODULES_CXX_SOURCES= $(sort $(wildcard modules/modbm*.cc))
 
 ## CONVENTION: handwritten headers are...
 BM_HEADERS= $(wildcard [a-z]*BM.h bismon.h)
 
 ## CONVENTION: handwritten C files are...
-BM_CSOURCES= $(wildcard [a-z]*_BM.c)
-
-## CONVENTION: handwritten GTK related C files are...
-BM_GTKCSOURCES= $(wildcard [a-z]*_GTKBM.c)
+BM_C_SOURCES= $(wildcard [a-z]*_BM.c)
 
 ## CONVENTION: handwritten C++ files are...
-BM_CXXSOURCES= $(wildcard [a-z]*_BM.cc)
+BM_CXX_SOURCES= $(wildcard [a-z]*_BM.cc)
 
 ## CONVENTION: packages for pkg-config
-BM_PACKAGES=  glib-2.0 gtk+-3.0 gtkmm-2.0
+BM_PACKAGES=  glib-2.0
 
 ## CONVENTION: potential options for BISMON-config configurator. Could
 ## be overwritten by command line...
 BISMON_CONFIG_OPTIONS=
 
 ### object files:
-BM_OBJECTS= $(patsubst %.c,%.o,$(BM_CSOURCES))  $(patsubst %.c,%.o,$(BM_CXXSOURCES))
-BM_GTKOBJECTS= $(patsubst %.c,%.o,$(BM_GTKCSOURCES))
+BM_OBJECTS= $(patsubst %.c,%.o,$(BM_C_SOURCES))  $(patsubst %.c,%.o,$(BM_CXX_SOURCES))
 
 ## internal make variables...
 BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
@@ -82,34 +79,20 @@ BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
 config: _bismon-config.mk _bm_config.h  _bm_config.c
 
-## include _bismon-config.mk only if it exists.
-ifeq ($(strip $(wildcard _bismon-config.mk)),_bismon-config.mk)
--include _bismon-config.mk
-endif
+include _bismon-config.mk
 
-
-### the configurator program
-BISMON-config: BISMON-config.cc __timestamp.o
-	@echo Building BISMON-config using BISMON_SHORTGIT=$(BISMON_SHORT_GIT)
-	$(GXX) $(BM_CXX_STANDARD_FLAGS) '-DBISMON_SHORTGIT="$(BISMON_SHORT_GIT)"' -Wall -Wextra -O -g $^ -lreadline  -o $@
-
-
-ifeq($(MAKELEVEL),0)
-_bismon-config.mk _bm_config.h _bm_config.c: BISMON-config
-	$(MAKE) runconfig
-else
-_bismon-config.mk _bm_config.h _bm_config.c: BISMON-config.cc
-	$(MAKE) runconfig
-endif
-
-runconfig:
-	./BISMON-config $(BISMON_CONFIG_OPTIONS)
-
-count:
-	@wc -cl $(wildcard *.c *.h *.cc modules/_*.c) | sort -n
 
 clean:
-	$(RM) *.o BISMON-config bismon bismon-gtk _bm_config.h _bm_config.c  modubin/*.so modubin/*.o *~ *% *.cc.orig
+	$(RM) *.o BISMON-config bismon   modubin/*.so modubin/*.o *~ *% *.cc.orig
+
+_bismon-config.mk:
+	@echo you should run the Configure script in $(pwd) for $@ > /dev/stderr
+	exit 1
+
+_bm_config.h _bm_config.c:
+	@echo you should run the Configure script in $(pwd) for $@ > /dev/stderr
+	exit 1
+
 
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
@@ -140,7 +123,4 @@ executable: _bismon-config.mk
 	$(MAKE) $(BISMONMK_EXECUTABLE)
 
 bismon:  _bismon-config.mk _bm_config.h
-	$(MAKE) $(BISMONMK_OBJECTS)
-
-bismon-gtk:  _bismon-config.mk _bm_config.h
 	$(MAKE) $(BISMONMK_OBJECTS)
