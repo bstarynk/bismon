@@ -25,3 +25,35 @@
 
 
 ### incomplete Build script
+
+
+### check that the Configure script was run
+
+if [ ! -x BISMON-config ]; then
+    echo Missing BISMON-config in $(pwd) > /dev/stderr
+    echo You need to run the ./Configure script  > /dev/stderr
+    exit 1
+fi
+
+if [ ! -f _bismon-config.mk ]; then
+    echo Missing _bismon-config.mk  in $(pwd) > /dev/stderr
+    echo You need to run the ./Configure script  > /dev/stderr
+    exit 1
+fi
+
+if [ ! -f _bm_config.h ]; then
+    echo Missing _bm_config.h  in $(pwd) > /dev/stderr
+    echo You need to run the ./Configure script  > /dev/stderr
+    exit 1
+fi
+
+
+### build the object files in parallel
+nbproc=$(grep '^processor' /proc/cpuinfo | wc -l)
+
+make --jobs=$[$nbproc/2 + 1] object || (
+    echo Failed to make objects in $(pwd) > /dev/stderr
+    exit 1
+)
+
+exec make bismon
