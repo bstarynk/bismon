@@ -664,6 +664,15 @@ bmc_print_config_data(const char*progname)
 	continue;
       if (isalnum(gitlinbuf[0]))
 	gitlinstr.assign(gitlinbuf);
+#warning FIXME: the store§*.bmon file convention is bad, and should be changed everywhere.
+      /** We need to change all at once the following files:
+       * this BISMON-config.cc
+       * doc/genscripts/001-extract-firsttestmodule-dump.sh
+       * dump_BM.c
+       * load_BM.c
+       * the store§*.bmon files (using git mv...)
+       * the doc/appendix-bm.tex documentation
+      **/ 
       {
 	int rk= -1, endpos= -1;
 	if (linl>12 && sscanf(gitlinbuf, "\"store§%d.bmon\"%n", &rk, &endpos) > 1
