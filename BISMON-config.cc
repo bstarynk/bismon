@@ -523,7 +523,8 @@ bmc_print_config_header(const char*progname)
         }
       else
         {
-          std::cerr << progname << " has already generated " << headerpath << " (use --force option to overwrite)" << std::endl;
+          std::cerr << progname << " did already generate " << headerpath << std::endl
+		    << " (use --force option to overwrite)" << std::endl;
           return;
         }
     }
@@ -614,7 +615,9 @@ bmc_print_config_data(const char*progname)
         }
       else
         {
-          std::cerr << progname << " has already generated " << datapath << " (use --force option to overwrite)" << std::endl;
+          std::cerr << progname << " did already generate " << datapath
+		    << std::endl
+		    << " (use --force option to overwrite)" << std::endl;
           return;
         }
     }
@@ -795,7 +798,8 @@ bmc_print_config_make(const char*progname)
         }
       else
         {
-          std::cerr << progname << " has already generated " << makepath << " (use --force option to overwrite)" << std::endl;
+          std::cerr << progname << " did already generate " << makepath << std::endl
+		    << " (use --force option to overwrite)" << std::endl;
           return;
         }
     }
@@ -886,7 +890,8 @@ bmc_print_config_make(const char*progname)
       BMC_FAILURE((std::string("failed to stat the generated GNU make file ") + makepath + ":" + strerror(errno)).c_str());
     std::cout << "#:" << progname
 	      << " [" __FILE__ ":" << __LINE__ << "°" BISMON_SHORTGIT "] "
-	      << " generated GNU make file " << makepath << " with " << makestat.st_size << " bytes." << std::endl;
+	      << " did generate" << std::endl
+	      << "#:...  GNU make file " << makepath << " with " << makestat.st_size << " bytes." << std::endl << std::endl;
   }
 } // end bmc_print_config_make
 
@@ -975,7 +980,8 @@ bmc_print_config_ninja(const char*progname)
         }
       else
         {
-          std::cerr << progname << " has already generated " << ninjapath << " (use --force option to overwrite)" << std::endl;
+          std::cerr << progname << " did already generate " << ninjapath << std::endl
+		    << " (use --force option to overwrite)" << std::endl;
           return;
         }
     }
@@ -1388,7 +1394,6 @@ bmc_ask_missing_configuration(const char*progname)
 		  << std::endl;
     }
   } // end while bmc_onion_libdir.empty()
-#warning  bmc_onion_libdir should be kept from a previous configuation
   ////////////////////////
   /// ask about the output directory, into which files would be written
   char cwdbuf[256];
@@ -1726,6 +1731,11 @@ main (int argc, char**argv)
     std::cout << std::endl;
     std::cout << "This " << argv[0] << " program is, like BISMON, GPLv3+ licensed so *WITHOUT ANY WARRANTY*." << std::endl;
     std::cout << "... see www.gnu.org/licenses/gpl-3.0.en.html for details." << std::endl;
+    std::cout << "Interactive input to " << argv[0] << " is using GNU readline ...." << std::endl
+	      << ".... so you can use the arrow keys of your keyboard for edition." << std::endl
+	      << ".... Use the up-arrow key to get some default, when available." << std::endl
+	      << "The interactive prompt is " BMC_BOLD_ESCAPE "in bold"  BMC_PLAIN_ESCAPE " below." << std::endl
+	      << std::endl;
   }
   usleep(1024*16);
   if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO)
