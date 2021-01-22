@@ -590,7 +590,10 @@ bmc_print_config_header(const char*progname)
       BMC_FAILURE((std::string("failed to stat the generated header file ") + headerpath + ":" + strerror(errno)).c_str());
     std::cout << "#:" << progname
 	      << " [" __FILE__ ":" << __LINE__ << "°" BISMON_SHORTGIT "] "
-	      << " generated header file " << headerpath << " with " << headerstat.st_size << " bytes." << std::endl;
+	      << " did generate ..." << std::endl
+	      << "#: the header file " << headerpath
+	      << " with " << headerstat.st_size << " bytes."
+	      << std::endl << std::endl;
   }
 } // end bmc_print_config_header
 
@@ -770,7 +773,9 @@ bmc_print_config_data(const char*progname)
       BMC_FAILURE((std::string("failed to stat the generated data file ") + datapath + ":" + strerror(errno)).c_str());
     std::cout << "#:" << progname
 	      << " [" __FILE__ ":" << __LINE__ << "°" BISMON_SHORTGIT "] "
-	      << " generated data file " << datapath << " with " << datastat.st_size << " bytes." << std::endl;
+	      << " did generate" << std::endl
+	      << "#: ... the data file " << datapath << " with "
+	      << datastat.st_size << " bytes." << std::endl << std::endl;
   }
 } // end bmc_print_config_data
 
