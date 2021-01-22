@@ -1,4 +1,4 @@
-#!/bin/gawk -f
+#!/usr/bin/gawk -f
 # internal script emit-git-sources.gawk - for GNU awk ; invoked by timestamp-emit.sh
 ## the input is the command git  ls-tree -r --name-only --full-name HEAD
 ##   BISMON - see github.com/bstarynk/bismon/

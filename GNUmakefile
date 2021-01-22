@@ -125,4 +125,4 @@ executable: _bismon-config.mk
 bismon:  _bismon-config.mk _bm_config.h
 	$(MAKE) $(BISMONMK_OBJECTS)
 
-$(error missing target for _bm_predef.h)
+## _bm_predef.h is obsolete since renamed genbm_predef.h

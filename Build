@@ -35,6 +35,12 @@ if [ ! -x BISMON-config ]; then
     exit 1
 fi
 
+if [ BISMON-config.cc -nt BISMON-config ]; then
+    echo File BISMON-config.cc is newer than executable BISMON-config in $(pwd) > /dev/stderr
+    echo You need to run again the ./Configure script > /dev/stderr
+    exit 1
+fi
+
 if [ ! -f _bismon-config.mk ]; then
     echo Missing _bismon-config.mk  in $(pwd) > /dev/stderr
     echo You need to run the ./Configure script  > /dev/stderr
