@@ -12,6 +12,7 @@ BM_makeconst
 BM_compile_module
 BM_makeconst_dbg
 BISMON-config
+_bismon-makedep.mk
 
 _bm_allconsts*.c
 *_BM.const.h
