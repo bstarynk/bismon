@@ -53,6 +53,8 @@ if [ ! -f _bm_config.h ]; then
     exit 1
 fi
 
+## build make dependencies
+make _bismon-makedep.mk
 
 ### build the object files in parallel
 nbproc=$(grep '^processor' /proc/cpuinfo | wc -l)
