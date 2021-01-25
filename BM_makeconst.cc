@@ -313,7 +313,7 @@ bmk_parse_program_options(int argc, char**argv)
   argparser.parser = bmk_parse1opt;
   argparser.args_doc = " ; # ";
   argparser.doc = "BM_makeconst is an internal utility (GPLv3+ licensed) [meta-]program generating some C files inside the BISMON project.\n"
-                  "see starynkevitch.net/Basile/bismon-chariot-doc.pdf and github.com/bstarynk/bismon/ for more about BISMON.\n"
+                  "see starynkevitch.net/Basile/bismon-doc.pdf and github.com/bstarynk/bismon/ for more about BISMON.\n"
                   "You should have received a copy of the GNU General Public License\n"
                   "along with this program.  If not, see https://www.gnu.org/licenses\n"
                   "**NO WARRANTY, not even for FITNESS FOR A PARTICULAR PURPOSE**\n"
@@ -357,7 +357,7 @@ show_usage:
       fprintf(stderr, "%s also accepts --version and --help, per GNU habits.\n",
               argv[0]);
       fprintf(stderr, "\n"
-              "See github.com/bstarynk/bismon and perhaps the DRAFT on starynkevitch.net/Basile/bismon-chariot-doc.pdf\n");
+              "See github.com/bstarynk/bismon and perhaps the DRAFT on starynkevitch.net/Basile/bismon-doc.pdf\n");
       fprintf(stderr, "This is a GPLv3+ licensed software *WITHOUT ANY WARRANTY*, see www.gnu.org/licenses/gpl-3.0.en.html\n");
       exit(EXIT_FAILURE);
     }
@@ -365,7 +365,7 @@ show_usage:
     {
       printf("%s built from %s shortgit %s at %s\n",
              argv[0], __FILE__, BISMON_SHORTGIT, __DATE__ "@" __TIME__);
-      printf("See github.com/bstarynk/bismon and perhaps the DRAFT on starynkevitch.net/Basile/bismon-chariot-doc.pdf\n");
+      printf("See github.com/bstarynk/bismon and perhaps the DRAFT on starynkevitch.net/Basile/bismon-doc.pdf\n");
       printf("This is a GPLv3+ licensed software *WITHOUT ANY WARRANTY*, see www.gnu.org/licenses/gpl-3.0.en.html\n");
       exit(EXIT_SUCCESS);
     };
@@ -374,7 +374,7 @@ show_usage:
     {
       fprintf(stderr, "%s - warning, missing build.ninja file (%s). Maybe you should 'make' it...\n", argv[0], strerror(errno));
       fprintf(stderr, "Check also the GNUmakefile.   See ninja-build.org and www.gnu.org/software/make/ ...\n");
-      fprintf(stderr, "See github.com/bstarynk/bismon and perhaps the DRAFT on starynkevitch.net/Basile/bismon-chariot-doc.pdf\n");
+      fprintf(stderr, "See github.com/bstarynk/bismon and perhaps the DRAFT on starynkevitch.net/Basile/bismon-doc.pdf\n");
     }
   if (argc >= 2 && !strcmp(argv[1], "-H"))
     {

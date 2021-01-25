@@ -1,4 +1,4 @@
-% File bismon/doc/bismon-chariot-doc.tex on github.com/bstarynk/bismon
+% File bismon/doc/bismon-doc.tex on github.com/bstarynk/bismon
 % by <basile.starynkevitch@cea.fr> ... Please read both
 % bismon/README.md and bismon/dependencies/README-dependencies.md
 % before processing this LaTeX document on Debian related Linux
@@ -135,9 +135,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\rhead{\textsc{Chariot} D1.3~\textsuperscript{v2-}}
-\lhead{\textmd{Specialized Static Analysis tools for  for more secure and safer \\
-  IoT software development} [draft] \hspace{3cm} \emph{(Bismon)}}
+\rhead{the \textsc{Bismon} static source code analyzer}
 \renewcommand{\footrulewidth}{0.4pt}
 % https://tex.stackexchange.com/a/317531/42406
 \futurelet\TMPfootrule\def\footrule{{\color{orange}\TMPfootrule}}
@@ -151,129 +149,99 @@
 
   \begin{center}
     
-    %   \bmincludewidthgraphics{width=194pt}{CHARIOT-logo-fig}{eps}{eps}
-    \includegraphics[width=194pt]{images/CHARIOT-logo}
+    {\Large documentation of the \textsc{Bismon} static source code analyzer.}
 
-    {\large \textbf{C}ognitive \textbf{H}eterogeneous  \textbf{Ar}chitecture for
-Industrial~\textbf{IoT}}
-    
-    {\color{orange}\Huge {D1.3~\textsuperscript{v2-}~Specialized Static Analysis tools for more secure and safer IoT software development.}\\
-    {\Large \emph{Bismon} documentation.}}
+  \end{center}
 
-  
-\begin{relsize}{-0.1}
-\subsection*{Document Summary Information}
-  \begin{tabular}{|l|l|l|l|}
-    \hline 
-  \textbf{Grant Agreement} & 780075 & \textbf{Acronym} & \textsc{Chariot} \\
-  \hline 
-    {\textbf{Full title}} & %
-    \multicolumn{3}{l|}{\textbf{\relsize{+0.5}{C}}ognitive \textbf{\relsize{+0.5}{H}}eterogeneous \textbf{\relsize{+0.5}{A}}rchitecture for Industrial {\relsize{+0.5}{\textbf{IoT}}}}  \\
-    \hline
-    \textbf{Start date} & 01/01/2018 & \textbf{Duration} & 36 months \\
-    \hline
-  \textbf{Project URL} & \multicolumn{3}{l|}{{\large \href{http://www.chariotproject.eu}{\textbf{\texttt{www.chariotproject.eu}}}}} \\
-    \hline
-  \textbf{Deliverable} & \multicolumn{3}{p{9.5cm}|}{{\textbf{D1.3} Specialized Static Analysis tools for more secure and safer IoT software development.}} \\
-    \hline
-  \textbf{Workpackage} & \multicolumn{3}{l|}{\textbf{WP1}} \\
-    \hline
-  \textbf{Dissemination level} & \multicolumn{3}{l|}{\textbf{Public report} {\large {[DRAFT]}}} \\
-    \hline
-  \textbf{Contractual due date} & {31/06/2020} (M30) & \textbf{Actual submission date} & - \\
-    \hline
-  \textbf{Nature} & R {\small (report)} & \textbf{dissemination level} & PU  {\small (public)} \\
-    \hline
- \textbf{Lead beneficiary} & \multicolumn{3}{l|}{CEA, LIST} \\
- \hline
- \textbf{Responsible author} & \multicolumn{3}{l|}{%
+  \medskip
+
+  \begin{quote}
+
+\begin{relsize}{-0.5}
+    This report and the \emph{Bismon} static analyzer has been funded
+    by European H2020 projects
+    \href{http://www.chariotproject.eu}{\textbf{\texttt{www.chariotproject.eu}}}
+    (grant 780075) and
+    \href{http://www.decoder-project.eu}{\textbf{\texttt{www.decoder-project.eu}}} (grant 824231).
+
+    The opinions are those of the author(s) only. The content of the publication
+      herein is the sole responsibility of the publishers and it does
+      not necessarily represent the views expressed by the European
+      Commission or its services.
+\end{relsize}
+
+\medskip
+
+\hline
+\textbf{Responsible author}: 
    \begin{minipage}{8cm}\smallskip 
      Basile \textsc{Starynkevitch} (CEA, LIST) ~ {\relsize{-1.5}{DILS/LSL}} \\
      {\relsize{-1.5}{from its \textsc{Software Security Laboratory}}} \\
      {\relsize{-1}{\bmemail{basile.starynkevitch@cea.fr}}} \\
      {\relsize{-1}{\bmurl{http://starynkevitch.net/Basile/}}} \\
      \smallskip
-   \end{minipage}}
-\\
-  \hline
-  \textbf{Contributions from} &\multicolumn{3}{l|}{ - }
-  \\
-    \hline
-  \textbf{Revision} &\multicolumn{3}{p{9cm}|}{git commit \texttt{\bmgitcommit} on \textit{\bmgitdate}} \\
-    \hline 
-  {\emph{{\LaTeX}-generated}} &\multicolumn{3}{p{9cm}|}{{\scriptsize\textit{\bmdoctimestamp}}} \\
-    \hline
-  {{\relsize{-1}{\emph{draft downloadable from}}}} &\multicolumn{3}{p{12cm}|}{{\relsize{-0.5}{\bmurl{http://starynkevitch.net/Basile/bismon-chariot-doc.pdf}}}} \\
-    \hline
-\end{tabular}
-\end{relsize}
+   \end{minipage}
+   
+\medskip
+
+  \end{quote}
+  
+  
+%-  \begin{relsize}{-0.1}
+%-  \subsection*{Document Summary Information}
+%-    \begin{tabular}{|l|l|l|l|}
+%-      \hline 
+%-    \textbf{Grant Agreement} & 780075 & \textbf{Acronym} & \textsc{Chariot} \\
+%-    \hline 
+%-      {\textbf{Full title}} & %
+%-      \multicolumn{3}{l|}{\textbf{\relsize{+0.5}{C}}ognitive \textbf{\relsize{+0.5}{H}}eterogeneous \textbf{\relsize{+0.5}{A}}rchitecture for Industrial {\relsize{+0.5}{\textbf{IoT}}}}  \\
+%-      \hline
+%-      \textbf{Start date} & 01/01/2018 & \textbf{Duration} & 36 months \\
+%-      \hline
+%-    \textbf{Project URL} & \multicolumn{3}{l|}{{\large \href{http://www.chariotproject.eu}{\textbf{\texttt{www.chariotproject.eu}}}}} \\
+%-      \hline
+%-    \textbf{Deliverable} & \multicolumn{3}{p{9.5cm}|}{{\textbf{D1.3} Specialized Static Analysis tools for more secure and safer IoT software development.}} \\
+%-      \hline
+%-    \textbf{Workpackage} & \multicolumn{3}{l|}{\textbf{WP1}} \\
+%-      \hline
+%-    \textbf{Dissemination level} & \multicolumn{3}{l|}{\textbf{Public report} {\large {[DRAFT]}}} \\
+%-      \hline
+%-    \textbf{Contractual due date} & {31/06/2020} (M30) & \textbf{Actual submission date} & - \\
+%-      \hline
+%-    \textbf{Nature} & R {\small (report)} & \textbf{dissemination level} & PU  {\small (public)} \\
+%-      \hline
+%-   \textbf{Lead beneficiary} & \multicolumn{3}{l|}{CEA, LIST} \\
+%-   \hline
+%-   \textbf{Responsible author} & \multicolumn{3}{l|}{%
+%-     \begin{minipage}{8cm}\smallskip 
+%-       Basile \textsc{Starynkevitch} (CEA, LIST) ~ {\relsize{-1.5}{DILS/LSL}} \\
+%-       {\relsize{-1.5}{from its \textsc{Software Security Laboratory}}} \\
+%-       {\relsize{-1}{\bmemail{basile.starynkevitch@cea.fr}}} \\
+%-       {\relsize{-1}{\bmurl{http://starynkevitch.net/Basile/}}} \\
+%-       \smallskip
+%-     \end{minipage}}
+%-  \\
+%-    \hline
+%-    \textbf{Contributions from} &\multicolumn{3}{l|}{ - }
+%-    \\
+%-      \hline
+%-    \textbf{Revision} &\multicolumn{3}{p{9cm}|}{git commit \texttt{\bmgitcommit} on \textit{\bmgitdate}} \\
+%-      \hline 
+%-    {\emph{{\LaTeX}-generated}} &\multicolumn{3}{p{9cm}|}{{\scriptsize\textit{\bmdoctimestamp}}} \\
+%-      \hline
+%-    {{\relsize{-1}{\emph{draft downloadable from}}}} &\multicolumn{3}{p{12cm}|}{{\relsize{-0.5}{\bmurl{http://starynkevitch.net/Basile/bismon-doc.pdf}}}} \\
+%-      \hline
+%-  \end{tabular}
+%-  \end{relsize}
 
 \medskip
 
-{\textcolor{red}{\large unverified, unapproved, unchecked draft \textbf{Ful of Mistaks}}}
+{\textcolor{red}{\large unverified, unapproved, unchecked draft \textbf{Ful of Mistaks}}}.
 
-\vspace{3cm}
+\medskip
 
-\bigskip
+Some version of this \textbf{DRAFT} report might be downloadable from {\bmurl{http://starynkevitch.net/Basile/bismon-doc.pdf}}}} 
 
- \begin{tabular}{c l}
-   \hline
-       \raisebox{-0.3cm}{{\bmincludewidthgraphics{0.08\textwidth}{Flag-of-Europe-fig}{eps}{svg}}}
-       &
-       \begin{minipage}{0.7\textwidth}\smallskip
-         \begin{relsize}{-0.2}
-           This \textsc{Chariot} project has received funding from the European Union’s Horizon 2020 research and innovation programme under the Grant Agreement No 780075.
-         \end{relsize}\\
-         \end{minipage}
-       \\
-   \hline
- \end{tabular}
-
-  \end{center}
-
-  \newpage
-
-
-  \begin{center}
-      \Ovalbox{
-        \begin{minipage}{0.85\textwidth}
-          \medskip
-
-    \begin{relsize}{-1.5}
-      The astute and busy reader unrelated to the \textsc{Chariot}
-      H2020 \index{h2020} project is invited to skip directly to
-      section \S \ref{subsec:audience}, since the text written
-      immediately below is targetted for evaluators or partners of
-      \textsc{Chariot} and its understanding may require access to
-      some confidential material.
-    \end{relsize}
-          
-    \medskip
-    
-    \end{minipage}
-  }
-  \end{center}
-  
-  
-  \subsection*{Revision history (including peer reviewing \& quality control)}
-  
-  \begin{tabular}{|p{0.15\textwidth}|p{0.15\textwidth}|p{0.15\textwidth}|l|l|}
-    \hline
-    \textbf{Version} & \textbf{Issue date} & \textbf{\% Complete} & \textbf{Changes} & \textbf{Contributor(s)} \\
-    \hline
-    % D1.3 v1 & 30/11/2018 & 100\% & Version 1 & B. Starynkevitch \\
-    \multicolumn{5}{|c|}{\parbox[c][1cm][c]{0.5\textwidth}{\Large \textbf{\emph{Not Applicable}}} - see explanation below} \\
-    \hline
-  \end{tabular}
-
-  \medskip
-  
-%- {\large {\color{red}{@@For CHARIOT consortium: I (Basile Starynkevitch) could give a few \texttt{git commit}-s but not all of them. If you require them to be listed, then which \emph{precise}
-%-       \texttt{git commit}-s could be considered as having been
-%-       peer-reviewed and quality-controlled? Please list them
-%-       extensively and send an email to me, \href{mailto:basile.starynkevitch@cea.fr}{\texttt{basile.starynkevitch@cea.fr}}. Thanks!}}}
-%-
-%- \medskip
   
 This partly generated document and the \emph{Bismon} software itself
 are co-developed in an agile and incremental manner, and have exactly
@@ -310,41 +278,41 @@ For convenience to the reader, here are the last~\footnote{Obtained by the
   \input{generated/000-lastgitcommits.tex}
 \end{relsize}
 
-There is no notion of any identifiable ``version'' in \emph{bismon}, so
-also in this D1.3~\textsuperscript{v2-} deliverable. The work is incremental and the
-development is agile.
+There is no notion of any identifiable ``version'' in \emph{bismon},
+so also in this report. The work is incremental and the development is
+agile.
 
 \bigskip
 
-\subsection*{disclaimer}
+%-  \subsection*{disclaimer}
+%-
+%-  \begin{center}
+%-    \fbox{\parbox{0.92\textwidth}{ \small The content of the publication
+%-        herein is the sole responsibility of the publishers and it does
+%-        not necessarily represent the views expressed by the European
+%-        Commission or its services.
+%-
+%-        While the information contained in
+%-        the documents is believed to be accurate, the authors(s) or any
+%-        other participant in the \textsc{Chariot} consortium make no
+%-        warranty of any kind with regard to this material including, but
+%-        not limited to the implied warranties of merchantability and
+%-        fitness for a particular purpose.
+%-
+%-        Neither the \textsc{Chariot}
+%-        Consortium nor any of its members, their officers, employees or
+%-        agents shall be responsible or liable in negligence or otherwise
+%-        howsoever in respect of any inaccuracy or omission herein.
+%-        
+%-        Without derogating from the generality of the foregoing neither
+%-        the \textsc{Chariot} Consortium nor any of its members, their
+%-        officers, employees or agents shall be liable for any direct or
+%-        indirect or consequential loss or damage caused by or arising
+%-        from any information advice or inaccuracy or omission herein.  }
+%-    }
+%-  \end{center}
 
-\begin{center}
-  \fbox{\parbox{0.92\textwidth}{ \small The content of the publication
-      herein is the sole responsibility of the publishers and it does
-      not necessarily represent the views expressed by the European
-      Commission or its services.
-
-      While the information contained in
-      the documents is believed to be accurate, the authors(s) or any
-      other participant in the \textsc{Chariot} consortium make no
-      warranty of any kind with regard to this material including, but
-      not limited to the implied warranties of merchantability and
-      fitness for a particular purpose.
-
-      Neither the \textsc{Chariot}
-      Consortium nor any of its members, their officers, employees or
-      agents shall be responsible or liable in negligence or otherwise
-      howsoever in respect of any inaccuracy or omission herein.
-      
-      Without derogating from the generality of the foregoing neither
-      the \textsc{Chariot} Consortium nor any of its members, their
-      officers, employees or agents shall be liable for any direct or
-      indirect or consequential loss or damage caused by or arising
-      from any information advice or inaccuracy or omission herein.  }
-  }
-\end{center}
-
-\smallskip
+    \smallskip
 
 
 
@@ -356,7 +324,7 @@ development is agile.
      \medskip
      
     
-       Copyright ~ \textcopyright ~ 2018 - 2020 CEA {\relsize{-0.2}{(Commissariat à
+       Copyright ~ \textcopyright ~ 2018 - 2021 CEA {\relsize{-0.2}{(Commissariat à
            l'énergie atomique et aux énergies alternatives)}}.
 
        \bigskip 
@@ -377,50 +345,50 @@ development is agile.
  \smallskip
  
 
-  \subsection*{Executive Summary}
-
-  This D1.3\textsuperscript{v1} \textsc{Chariot} deliverable is
-  {\color{red}{(was)}} a first \textbf{draft} -and \emph{preliminary}-
-  version (at M12) of D1.3\textsuperscript{v2} scheduled at M30 on
-  ``Specialized Static Analysis tools for more secure and safer IoT
-  software development''.
-
-But {\color{red}{\textbf{incremental work has begun on
-      D1.3\textsuperscript{v2} in early 2019}}}, hence the
-D1.3\textsuperscript{v2-} in the header.
-
-It describes the \textsc{Chariot} vision on static source code (mostly
-of C and C++ code for IoT firmware and application) analysis. It
-proposes a \emph{simple} static analysis \emph{framework} leveraging
-on the powerful recent \emph{GCC} [cross-]compiler. A \emph{persistent
-  monitor} (tentatively named \texttt{bismon}) is being designed and
-implemented as a GPLv3+ free software for Linux, using
-meta-programming techniques (leveraging on experience gained in the
-former GCC MELT project) to \emph{generate} GCC plugins, and able to
-keep some intermediate results (of compilation or static analysis)
-during the entire life of the IoT project, and giving to the IoT
-developers (thru a web interface) a whole-program view of the source
-code (as digested by the \emph{GCC} cross-compiler) and of its static
-analysis properties. That framework is configurable and scriptable by
-static analysis experts, hence permitting different IoT projects to
-address various concerns, while keeping the usual IoT development
-workflow (running as usual their \emph{GCC} cross-compiler on Linux,
-with extra plugin-related compilation flags).  The deliverable has
-been structured starting from the identification of the software and
-tool users and the document expected audience as well as the vision on
-specialized source code analysis towards more secure and safer IoT
-software development. The report then describes its strong alignment
-to adding capabilities to \emph{GCC} as well as the driving principles of the
-tools. Data and their persistence character are also described
-including mutable and non-mutable values/types while persistence is
-considered to start by loading some previous persisted state, usually
-dumping its current state before termination and loading the next
-state on the next load-up. The framework for static code analysis is
-also defined as part of the \emph{GCC} compilation process. The described
-work is also analysed in terms of contributing to other free software
-projects.
-
-\medskip
+%-    \subsection*{Executive Summary}
+%-
+%-    This D1.3\textsuperscript{v1} \textsc{Chariot} deliverable is
+%-    {\color{red}{(was)}} a first \textbf{draft} -and \emph{preliminary}-
+%-    version (at M12) of D1.3\textsuperscript{v2} scheduled at M30 on
+%-    ``Specialized Static Analysis tools for more secure and safer IoT
+%-    software development''.
+%-
+%-  But {\color{red}{\textbf{incremental work has begun on
+%-        D1.3\textsuperscript{v2} in early 2019}}}, hence the
+%-  D1.3\textsuperscript{v2-} in the header.
+%-
+%-  It describes the \textsc{Chariot} vision on static source code (mostly
+%-  of C and C++ code for IoT firmware and application) analysis. It
+%-  proposes a \emph{simple} static analysis \emph{framework} leveraging
+%-  on the powerful recent \emph{GCC} [cross-]compiler. A \emph{persistent
+%-    monitor} (tentatively named \texttt{bismon}) is being designed and
+%-  implemented as a GPLv3+ free software for Linux, using
+%-  meta-programming techniques (leveraging on experience gained in the
+%-  former GCC MELT project) to \emph{generate} GCC plugins, and able to
+%-  keep some intermediate results (of compilation or static analysis)
+%-  during the entire life of the IoT project, and giving to the IoT
+%-  developers (thru a web interface) a whole-program view of the source
+%-  code (as digested by the \emph{GCC} cross-compiler) and of its static
+%-  analysis properties. That framework is configurable and scriptable by
+%-  static analysis experts, hence permitting different IoT projects to
+%-  address various concerns, while keeping the usual IoT development
+%-  workflow (running as usual their \emph{GCC} cross-compiler on Linux,
+%-  with extra plugin-related compilation flags).  The deliverable has
+%-  been structured starting from the identification of the software and
+%-  tool users and the document expected audience as well as the vision on
+%-  specialized source code analysis towards more secure and safer IoT
+%-  software development. The report then describes its strong alignment
+%-  to adding capabilities to \emph{GCC} as well as the driving principles of the
+%-  tools. Data and their persistence character are also described
+%-  including mutable and non-mutable values/types while persistence is
+%-  considered to start by loading some previous persisted state, usually
+%-  dumping its current state before termination and loading the next
+%-  state on the next load-up. The framework for static code analysis is
+%-  also defined as part of the \emph{GCC} compilation process. The described
+%-  work is also analysed in terms of contributing to other free software
+%-  projects.
+%-
+%-  \medskip
 
 \bigskip
 
@@ -445,27 +413,6 @@ programme under the Grant Agreement No 780075.
 
 \hspace{2cm}
 
-\begin{center}
-%{\small git commit: \texttt{\bmgitcommit}}
-%
-%{\small generated: \textit{\bmdoctimestamp}}
-%
-%\hspace{1cm}
-
-\begin{tabular}{cc}
-  \bmincludewidthgraphics{72pt}{CHARIOT-logo-img}{png}{png} %
-  & \bmincludewidthgraphics{64pt}{Flag-of-Europe-fig}{eps}{svg}
-\end{tabular}
-
-
-\hspace{1cm}
-
-\hrule
-
-\bigskip
-
-\textbf{Deliverable created during the \href{http://chariotproject.eu/}{\textsc{Chariot}} project.}
-\end{center}
 \end{titlepage}
 
 
@@ -686,7 +633,7 @@ Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
     (git commit \texttt{\bmgitcommit}; generated on
     \textit{\bmdoctimestamp})\\
     Some variant of this draft report is
-    downloadable from \bmurl{http://starynkevitch.net/Basile/bismon-chariot-doc.pdf} and
+    downloadable from \bmurl{http://starynkevitch.net/Basile/bismon-doc.pdf} and
     elsewhere.
   \end{relsize}
 \end{flushright}

@@ -99,18 +99,18 @@ doc: $(MARKDOWN_SOURCES) bismon bismongtk modules $(wildcard doc/*.tex doc/image
 
 latexdoc: bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
 	[ -d $$HOME/tmp/ ] || mkdir -v $$HOME/tmp
-	$(RM) $(shell realpath $$HOME/tmp/bismon-chariot-doc.pdf)
+	$(RM) $(shell realpath $$HOME/tmp/bismon-doc.pdf)
 	./build-bismon-doc.sh LaTeX
-	ls -lt ~/tmp/bismon-chariot-doc*
+	ls -lt ~/tmp/bismon-doc*
 
 latexcleandoc: bismon bismongtk modules $(wildcard doc/*.tex doc/*.bib doc/images/*)
 	[ -d $$HOME/tmp/ ] || mkdir -v $$HOME/tmp
-	$(RM) $(shell realpath $$HOME/tmp/bismon-chariot-doc.pdf)
-	$(RM) doc/bismon-chariot-doc.{aux,bbl,blg,idx,log,log,lot,out,toc,pdf} 
+	$(RM) $(shell realpath $$HOME/tmp/bismon-doc.pdf)
+	$(RM) doc/bismon-doc.{aux,bbl,blg,idx,log,log,lot,out,toc,pdf} 
 	./build-bismon-doc.sh LaTeX
 	echo remaking latexdoc
 	-$(MAKE) latexdoc
-	ls -lt ~/tmp/bismon-chariot-doc*
+	ls -lt ~/tmp/bismon-doc*
 
 
 heveadoc:  bismon bismongtk modules $(wildcard doc/*.tex doc/images/* doc/*.bib doc/*.hva)

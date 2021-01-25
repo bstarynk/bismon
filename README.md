@@ -24,18 +24,18 @@ partly funded by the [DECODER](http://decoder-project.eu/) H2020
 project, under Grant Agreement 824231 (related to its *Persistent
 Knowledge Monitor* WP1).
 
-Currently (start of 2019) `bismon` still in **pre alpha**-stage, and
+Currently (start of 2021) `bismon` still in **beta**-stage, and
 it is *free software* under
 [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.en.html) license. It is
 intended for a Linux x86-64 desktop developer's workstation (won't
 work on Windows or MacOSX or Android).
 
 Some *still incomplete* documentation (as a technical report
-`doc/bismon-chariot-doc.pdf` in PDF) can be generated (with `make`
+`doc/bismon-doc.pdf` in PDF) can be generated (with `make`
 then `make doc`; that command requires you to have a writable
 `$HOME/tmp/` directory). An early (unofficial) draft of that report
 might be available on
-http://starynkevitch.net/Basile/bismon-chariot-doc.pdf
+http://starynkevitch.net/Basile/bismon-doc.pdf
 
 
 ### Potential future usages
@@ -201,7 +201,7 @@ source code, and configure it to provide them.). **An old GCC**
   [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language))
   dialects such as [Scheme](https://schemers.org/) (the language
   implemented by *Guile*) are strongly relevant to [understand
-  *Bismon*](http://starynkevitch.net/Basile/bismon-chariot-doc.pdf),
+  *Bismon*](http://starynkevitch.net/Basile/bismon-doc.pdf),
   where *Guile* is used to generate the `build.ninja` script used by
   the [ninja](http://ninja-build.org/) builder.
 

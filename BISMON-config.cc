@@ -337,7 +337,7 @@ bmc_parse_options(int& argc, char**argv)
 void
 bmc_show_usage(const char*progname)
 {
-  std::cerr << "###### see github.com/bstarynk/bismon and the DRAFT report on starynkevitch.net/Basile/bismon-chariot-doc.pdf"
+  std::cerr << "###### see github.com/bstarynk/bismon and the DRAFT report on starynkevitch.net/Basile/bismon-doc.pdf"
 	    << std::endl;
   std::cerr << progname << " usage:" << std::endl;
   std::cerr << " --version | -V         # give version information - git " BISMON_SHORTGIT << std::endl;
@@ -1649,7 +1649,7 @@ main (int argc, char**argv)
   if (isatty(STDOUT_FILENO) && !bmc_silent_flag) {
     std::cout << "For more about BISMON, see github.com/bstarynk/bismon ...."
 	      << std::endl
-	      << "... and perhaps the *DRAFT* report on starynkevitch.net/Basile/bismon-chariot-doc.pdf" << std::endl;
+	      << "... and perhaps the *DRAFT* report on starynkevitch.net/Basile/bismon-doc.pdf" << std::endl;
     std::cout << "For more about GCC, see gcc.gnu.org ...." << std::endl;
     std::cout << "# running " << __FILE__ " @"  __DATE__ << " on " << bmc_hostname << " pid " << (int)getpid()
 	      << " parentpid " << (int)getppid() << std::endl;

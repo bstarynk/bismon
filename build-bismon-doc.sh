@@ -72,7 +72,7 @@ bismon_inkscape_batch_option="--batch-process"
 /bin/mkdir -pv doc/htmldoc/
 
 ## backup the old pdf file
-/bin/mv -vfb doc/bismon-chariot-doc.pdf doc/bismon-chariot-doc.pdf% 
+/bin/mv -vfb doc/bismon-doc.pdf doc/bismon-doc.pdf% 
 
 # generate the git tag and date
 bmrawgittag="$(git log --format=oneline -1 --abbrev=16 --abbrev-commit -q|cut -d' ' -f1)"
@@ -154,40 +154,40 @@ done
 if [ -z "$docmode" -o "$docmode" == "LaTeX" ]; then
 
     printf "@@@BISMONdoc %s process %d LaTeXing in %s\n\n" $0 $$ $(pwd) > /dev/stderr
-    bm_run_lualatex --draftmode bismon-chariot-doc && /bin/true
-    bibtex bismon-chariot-doc < /dev/null
-    bm_run_lualatex  bismon-chariot-doc && /bin/true
+    bm_run_lualatex --draftmode bismon-doc && /bin/true
+    bibtex bismon-doc < /dev/null
+    bm_run_lualatex  bismon-doc && /bin/true
     ## on Debian texindy & xindy is inside xindy package
-    pwd && /bin/ls -lt bismon-chariot-doc.*
-    texindy -v -C utf8 -I latex bismon-chariot-doc.idx >& /tmp/texindy-bismon.log || true
-    if texindy -v -C utf8 -I latex bismon-chariot-doc.idx ; then
+    pwd && /bin/ls -lt bismon-doc.*
+    texindy -v -C utf8 -I latex bismon-doc.idx >& /tmp/texindy-bismon.log || true
+    if texindy -v -C utf8 -I latex bismon-doc.idx ; then
 	printf '\n### %s - texindy succeeded in %s\n' $0 $(pwd)
     else
 	echo error $0: texindy failure in $PWD >& /dev/stderr
 	exit 1
     fi
     printf '\n\n\n#### %s second pass latexing bismon chariot doc #####\n' "$0" 
-    bm_run_lualatex   bismon-chariot-doc && /bin/true
-    bibtex bismon-chariot-doc < /dev/null
-    if bm_run_lualatex  bismon-chariot-doc ; then
-	printf "@@@BISMONdoc %s succeeded lualatexing-ing bismon-chariot-doc\n" $0 
-	/bin/ls -lt bismon-chariot-doc.pdf
+    bm_run_lualatex   bismon-doc && /bin/true
+    bibtex bismon-doc < /dev/null
+    if bm_run_lualatex  bismon-doc ; then
+	printf "@@@BISMONdoc %s succeeded lualatexing-ing bismon-doc\n" $0 
+	/bin/ls -lt bismon-doc.pdf
     else
-	printf "\n\n****\n@@@BISMONdoc %s failed to %s bismon-chariot-doc *****\n\n" $0 "$bm_lualatex" >& /dev/stderr
+	printf "\n\n****\n@@@BISMONdoc %s failed to %s bismon-doc *****\n\n" $0 "$bm_lualatex" >& /dev/stderr
 	exit 1
     fi
-    [ -d $HOME/tmp/ ] && cp -v bismon-chariot-doc.pdf $HOME/tmp/bismon-chariot-doc-$bmrawgittag.pdf && (cd $HOME/tmp; ln -svf bismon-chariot-doc-$bmrawgittag.pdf bismon-chariot-doc.pdf)
+    [ -d $HOME/tmp/ ] && cp -v bismon-doc.pdf $HOME/tmp/bismon-doc-$bmrawgittag.pdf && (cd $HOME/tmp; ln -svf bismon-doc-$bmrawgittag.pdf bismon-doc.pdf)
 
     /bin/ls -l $PWD/*aux $PWD/*/*aux $PWD/*bbl $PWD/*/*bbl
 fi
 
 if [ -z  "$docmode" -o "$docmode" == "HeVeA" ]; then
     printf "@@@BISMONdoc %s process %d HeVeA-ing in %s\n\n" $0 $$ $(pwd) > /dev/stderr
-    hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex svg.hva bismon-hevea.hva bismon-chariot-doc
-#bibhva bismon-chariot-doc
+    hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex svg.hva bismon-hevea.hva bismon-doc
+#bibhva bismon-doc
     bibhva htmldoc/bismon-htmldoc
     ls -l $PWD/*aux $PWD/*/*aux 
-    hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-chariot-doc
+    hevea -v -o htmldoc/bismon-htmldoc.html -e bismon-latex.tex -fix svg.hva bismon-hevea.hva bismon-doc
     #hacha -o htmldoc/index.html  htmldoc/bismon-htmldoc.html
 fi
 
@@ -195,5 +195,5 @@ printf "\n@@@BISMONdoc %s process %d making final tarball in %s\n" $0 $$ $(pwd)
 /bin/tar -c -f - htmldoc/ | /usr/bin/tardy -Remove_Prefix htmldoc -Prefix bismon-html-doc -User_NAme bismon -Group_NAme bismon | /bin/gzip -9 > bismon-html-doc.tar.gz
 
 printf "\n@@@BISMONdoc %s generated:\n" $0
-/bin/ls -lt bismon-html-doc.tar.gz doc/bismon-chariot-doc.pdf || exit 1
+/bin/ls -lt bismon-html-doc.tar.gz doc/bismon-doc.pdf || exit 1
 printf "\n\n\n"
