@@ -3,7 +3,7 @@
 
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -449,9 +449,9 @@ dump_emit_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
         {
           char *oldpathbuf = NULL;
           char *backpathbuf = NULL;
-          if (asprintf (&oldpathbuf, "%s/store§%u.bmon",
+          if (asprintf (&oldpathbuf, "%s/store%u-BISMON.bmon",
                         bytstring_BM (du->dump_dir), spix) < 0
-              || asprintf (&backpathbuf, "%s/store§%u.bmon~",
+              || asprintf (&backpathbuf, "%s/store%u-BISMON.bmon~",
                            bytstring_BM (du->dump_dir), spix) < 0)
             FATAL_BM ("asprintf backup in %s failed",
                       bytstring_BM (du->dump_dir));
@@ -495,7 +495,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   char randidbuf[32];
   memset (randidbuf, 0, sizeof (randidbuf));
   idtocbuf32_BM (du->dump_randomid, randidbuf);
-  _.pathv = sprintfstring_BM ("%s/store§%u.bmon",
+  _.pathv = sprintfstring_BM ("%s/store%u-BISMON.bmon",
                               bytstring_BM (du->dump_dir), spix);
   _.tempathv =
     sprintfstring_BM ("%s+%s%%", bytstring_BM (_.pathv), randidbuf);
