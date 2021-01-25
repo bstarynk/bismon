@@ -829,7 +829,10 @@ bmc_print_config_make(const char*progname)
   makeoutf << "BISMONMK_GITID=" << bismon_gitid << std::endl;
   makeoutf << "BISMONMK_SHORTGITID=" << bismon_shortgitid << std::endl;
   makeoutf << "#without BISMONMK_gtk" << std::endl;
-  makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS)" << std::endl;
+  if (bmc_onion_includedir.empty())
+    makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS)" << std::endl;
+  else
+    makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS) $(BM_ONION_OBJECTS)" << std::endl
   errno = 0;
   if (!bmc_host_cc.empty() && !access(bmc_host_cc.c_str(), X_OK))
     makeoutf << "BISMONMK_HOST_CC=" << bmc_host_cc << std::endl;
