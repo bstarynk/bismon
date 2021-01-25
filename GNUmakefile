@@ -55,6 +55,9 @@ BM_C_SOURCES= $(wildcard [a-z]*_BM.c)
 ## CONVENTION: handwritten C++ files are...
 BM_CXX_SOURCES= $(wildcard [a-z]*_BM.cc)
 
+## CONVENTION: handwritten C files for web using libonion
+BM_C_ONION_SOURCES= $(wildcard [a-z]*_ONIONBM.c)
+
 ## CONVENTION: packages for pkg-config
 BM_PACKAGES=  glib-2.0
 
@@ -64,6 +67,8 @@ BISMON_CONFIG_OPTIONS=
 
 ### object files:
 BM_OBJECTS= $(patsubst %.c,%.o,$(BM_C_SOURCES))  $(patsubst %.c,%.o,$(BM_CXX_SOURCES))
+
+BM_ONION_OBJECTS= $(patsubst %.c,%.o,$(BM_C_ONION_SOURCES))
 
 ## internal make variables...
 BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
@@ -117,6 +122,8 @@ id_BM-g.o: id_BM.c id_BM.h
 __timestamp.c:  timestamp-emit.sh |  GNUmakefile
 	env BISMON_MAKE="$(MAKE)" ./timestamp-emit.sh
 
+-include _bismon-makedep.mk
+
 all: config executable
 
 executable: _bismon-config.mk
@@ -125,4 +132,6 @@ executable: _bismon-config.mk
 bismon:  _bismon-config.mk _bm_config.h
 	$(MAKE) $(BISMONMK_OBJECTS)
 
+_bismon-makedep.mk: GNUmakefile emit-make-dependencies.bash
+	./emit-make-dependencies.bash $(BM_C_SOURCES) $(BM_CXX_SOURCES) $(BM_C_ONION_SOURCES)
 ## _bm_predef.h is obsolete since renamed genbm_predef.h
