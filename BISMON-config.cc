@@ -517,7 +517,8 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
 void
 bmc_print_config_header(const char*progname)
 {
-  std::string headerpath = bmc_out_directory + "/_bm_config.h";
+  assert (!bmc_out_directory.empty() && bmc_out_directory[bmc_out_directory.size()-1] == '/');
+  std::string headerpath = bmc_out_directory + "_bm_config.h";
   BMC_DEBUG("bmc_print_config_header: headerpath=" << headerpath);
   if (!access(headerpath.c_str(), F_OK))
     {
@@ -609,8 +610,9 @@ bmc_print_config_header(const char*progname)
 void
 bmc_print_config_data(const char*progname)
 {
+  assert (!bmc_out_directory.empty() && bmc_out_directory[bmc_out_directory.size()-1] == '/');
 #define BMC_GITLS_COMMAND "git ls-files"
-  std::string datapath = bmc_out_directory + "/_bm_config.c";
+  std::string datapath = bmc_out_directory + "_bm_config.c";
   BMC_DEBUG("bmc_print_config_data: datapath=" << datapath);
   if (!access(datapath.c_str(), F_OK))
     {
@@ -796,7 +798,8 @@ bmc_print_config_data(const char*progname)
 void
 bmc_print_config_make(const char*progname)
 {
-  std::string makepath = bmc_out_directory + "/_bismon-config.mk";
+  assert (!bmc_out_directory.empty() && bmc_out_directory[bmc_out_directory.size()-1] == '/');
+  std::string makepath = bmc_out_directory + "_bismon-config.mk";
   BMC_DEBUG("bmc_print_config_make: makepath=" << makepath);
   if (!access(makepath.c_str(), F_OK))
     {
@@ -842,7 +845,7 @@ bmc_print_config_make(const char*progname)
     makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS)" << std::endl;
   else
     makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS) $(BM_ONION_OBJECTS)"
-	     << std::endl;
+             << std::endl;
   errno = 0;
   if (!bmc_host_cc.empty() && !access(bmc_host_cc.c_str(), X_OK))
     makeoutf << "BISMONMK_HOST_CC=" << bmc_host_cc << std::endl;
@@ -985,6 +988,7 @@ bmc_set_readline_buffer(const std::string& str)
 void
 bmc_print_config_ninja(const char*progname)
 {
+  assert (!bmc_out_directory.empty() && bmc_out_directory[bmc_out_directory.size()-1] == '/');
   std::string ninjapath = bmc_out_directory + "/" + bmc_ninja_file;
   BMC_DEBUG("bmc_print_config_make ninjapath=" << ninjapath);
   if (!access(ninjapath.c_str(), F_OK))
@@ -1297,7 +1301,7 @@ bmc_ask_missing_configuration(const char*progname)
       std::cout << "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 10."
 		<< std::endl << "... See gcc.gnu.org for more about GCC...." << std::endl;
       std::cout << "(it is recommended to enter some absolute path, such as /usr/local/bin/g++-10 ..." << std::endl;
-          std::cerr << "... but that cross C++ compiler could be some script." << std::endl;
+      std::cerr << "... but that cross C++ compiler could be some script." << std::endl;
       if (!access("/usr/bin/g++-10", X_OK) && isatty(STDOUT_FILENO)) {
 	std::cout << "... Found some /usr/bin/g++-10)" << std::endl;
 	BMC_DEBUG("defaulting target GXX to /usr/bin/g++-10");
@@ -1356,13 +1360,13 @@ bmc_ask_missing_configuration(const char*progname)
 	      << std::endl;
     if (!access("/usr/local/include/onion/onion.h", R_OK) && isatty(STDOUT_FILENO)) {
       std::cout << "... Found /usr/local/include/onion/onion.h" << std::endl;
-      BMC_DEBUG("defaulting libonion header directory to /usr/local/include");
-      bmc_set_readline_buffer("/usr/local/include");
+      BMC_DEBUG("defaulting libonion header directory to /usr/local/include/");
+      bmc_set_readline_buffer("/usr/local/include/");
     }
     else if (!access("/usr/include/onion/onion.h", R_OK) && isatty(STDOUT_FILENO)) {
       std::cout << "... Found /usr/include/onion/onion.h" << std::endl;
-      BMC_DEBUG("defaulting libonion header directory to /usr/include");
-      bmc_set_readline_buffer("/usr/include");
+      BMC_DEBUG("defaulting libonion header directory to /usr/include/");
+      bmc_set_readline_buffer("/usr/include/");
     }
     const char*onionincl = bmc_readline(progname, "Libonion included-header directory? ");
     if (onionincl && strlen(onionincl)>2) {
@@ -1386,12 +1390,12 @@ bmc_ask_missing_configuration(const char*progname)
 	      << std::endl;
     if (!access("/usr/local/lib/libonion.so", R_OK) && isatty(STDOUT_FILENO)) {
       std::cout << "... Found /usr/local/lib/libonion.so" << std::endl;
-      BMC_DEBUG("defaulting libonion library directory to /usr/local/lib");
-      bmc_set_readline_buffer("/usr/local/lib");
+      BMC_DEBUG("defaulting libonion library directory to /usr/local/lib/");
+      bmc_set_readline_buffer("/usr/local/lib/");
     }
     else if (!access("/usr/lib/libonion.so", R_OK) && isatty(STDOUT_FILENO)) {
       std::cout << "... Found /usr/lib/libonion.so" << std::endl;
-      BMC_DEBUG("defaulting libonion library directory to /usr/lib");
+      BMC_DEBUG("defaulting libonion library directory to /usr/lib/");
       bmc_set_readline_buffer("/usr/lib");
     }
     const char*onionlib = bmc_readline(progname, "Libonion shared library directory? ");
@@ -1421,6 +1425,16 @@ bmc_ask_missing_configuration(const char*progname)
       std::cerr << progname << ": failed to getcwd - " << strerror(errno) << std::endl;
       BMC_FAILURE ("getcwd failure");
     }
+  {
+    int cwdlen = (int)strlen(cwdbuf);
+    if (cwdlen<(int)sizeof(cwdbuf)-1) {
+      if (cwdbuf[cwdlen-1] != '/') {
+	cwdbuf[cwdlen] = '/';
+	cwdlen++;
+      }
+      bmc_set_readline_buffer(cwdbuf);
+    }
+  }
   while (bmc_out_directory.empty())
     {
       std::cout << "BISMON output source directory?" << std::endl
