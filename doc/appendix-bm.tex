@@ -345,26 +345,26 @@ executables.
 
 The persistent data (see \S \ref{sec:datapersist} above) sits in files
 \index{persistent!store} \index{store!persistent}
-\index{store-bm@\texttt{store\textsection*.bmon} files} \texttt{store\textsection*.bmon}
+\index{store-bm@\texttt{store*BISMON.bmon} files} \texttt{store*BISMON.bmon}
 (using
 \href{https://man7.org/linux/man-pages/man7/glob.7.html}{\texttt{glob(7)}}
 notation); more precisely
 
 \begin{itemize}
 
-\item \texttt{store\textsection{1}.bmon} is for predefined objects. The header file
+\item \texttt{store{1}-BISMON.bmon} is for predefined objects. The header file
   \index{genbm-predef@\texttt{genbm-predef} file}
   \texttt{genbm\_predef.h} is generated from them at dump time.
 
-\item file \texttt{store\textsection{2}.bmon} contains the global object space. Several
+\item file \texttt{store{2}-BISMON.bmon} contains the global object space. Several
   global objects describe modules whose C code is generated (e.g. at
   dump time) \index{dump} \index{module} under sub-directory
   \index{modules-dir@\texttt{modules/} directory}
   \textbf{\texttt{modules/}}\,.
 
-\item other \texttt{store\textsection\textcolor{blue}{\textbf{\textit{i}}}.bmon}
+\item other \texttt{store\textcolor{blue}{\textbf{\textit{i}}}-BISMON.bmon}
   textual files contain\footnote{So there cannot be any
-    \texttt{store\textsection{0}.bmon} file, since space 0 is for transient objects
+    \texttt{store{0}-BISMON.bmon} file, since space 0 is for transient objects
     which are never dumped.}  objects in space ranked $i$ \ldots. Notice
   that all these files are both loaded and dumped, and should be
   backed-up (like the \textbf{\texttt{modules/}}\, directory)
@@ -373,8 +373,8 @@ notation); more precisely
 \end{itemize}
 
 These \emph{generated} textual
-  \index{storei-bm@\texttt{store\textsection\textit{i}.bmon} files}
-\texttt{store\textsection\textcolor{blue}{\textit{\textbf{i}}}.bmon} \emph{files}
+  \index{storei-bm@\texttt{store\textit{i}-BISMON.bmon} files}
+\texttt{store\textcolor{blue}{\textit{\textbf{i}}}-BISMON.bmon} \emph{files}
 should be \emph{version controlled} by the
 \index{git@\texttt{git}}
 \href{https://git-scm.com/}{\texttt{git}} tool. You might use the \texttt{make
@@ -503,7 +503,8 @@ well., and you need to run that command regularily.
 It is practically important to use the periodically
 \href{http://git-scm.com/}{\texttt{git} version control} system on the
 repository, and this includes the persistent heap dump files
-\texttt{store\textsection*.bmon} - when \texttt{bismon} is \textbf{not
-  running}. It is recommended to \texttt{git commit} twice a day at least.
+\texttt{store*BISMON.bmon} - when \texttt{bismon} is \textbf{not
+  running}. It is recommended to \texttt{git commit} these files twice
+a day at least, when the \texttt{bismon} executable is not running.
 
 \end{appendices}
