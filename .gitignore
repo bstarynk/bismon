@@ -25,7 +25,7 @@ _*ONIONBM.[ch]
 
 _bismon-config.mk
 _bm_config.h
-
+_bm_config.c
 _BM_compmod_*
 
 _cflagsmodule.mk
