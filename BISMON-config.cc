@@ -849,6 +849,16 @@ bmc_print_config_make(const char*progname)
   errno = 0;
   if (!bmc_host_cc.empty() && !access(bmc_host_cc.c_str(), X_OK))
     makeoutf << "BISMONMK_HOST_CC=" << bmc_host_cc << std::endl;
+  else if (!access("/usr/bin/gcc", X_OK))
+    {
+      makeoutf << "#guessed BISMONMK_HOST_CC - GCC - from " __FILE__ ":" << __LINE__ << std::endl
+               << "BISMONMK_HOST_CC=/usr/bin/gcc" << std::endl;
+    }
+  else if (!access("/usr/bin/clang", X_OK))
+    {
+      makeoutf << "#guessed BISMONMK_HOST_CC - Clang - from " __FILE__ ":" << __LINE__ << std::endl
+               << "BISMONMK_HOST_CC=/usr/bin/clang" << std::endl;
+    }
   else
     {
       int er = errno;
@@ -860,6 +870,16 @@ bmc_print_config_make(const char*progname)
   errno = 0;
   if (!bmc_host_cxx.empty() && !access(bmc_host_cxx.c_str(), X_OK))
     makeoutf << "BISMONMK_HOST_CXX=" << bmc_host_cc << std::endl;
+  else if (!access("/usr/bin/g++", X_OK))
+    {
+      makeoutf << "#guessed BISMONMK_HOST_CXX - GCC - from " __FILE__ ":" << __LINE__ << std::endl
+               << "BISMONMK_HOST_CXX=/usr/bin/g++" << std::endl;
+    }
+  else if (!access("/usr/bin/clang++", X_OK))
+    {
+      makeoutf << "#guessed BISMONMK_HOST_CXX - Clang - from " __FILE__ ":" << __LINE__ << std::endl
+               << "BISMONMK_HOST_CXX=/usr/bin/clang++" << std::endl;
+    }
   else
     {
       int er = errno;
