@@ -122,6 +122,8 @@ BM_makeconst-g.o: BM_makeconst.cc id_BM.h
 BM_makeconst.o: BM_makeconst.cc id_BM.h
 	$(COMPILE.cc)  $(shell pkg-config --cflags glib-2.0) -g -O -Wall -c $< -o $@
 
+-include _bismon-makedep.mk
+
 id_BM.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0)  -Wall -c $< -o $@
 id_BM-g.o: id_BM.c id_BM.h
@@ -133,10 +135,11 @@ id_BM-g.o: id_BM.c id_BM.h
 %_BM-g.o: %_BM.c bismon.h
 	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
 
+%BM.const.h: %BM.c BM_makeconst
+	./BM_makeconst -H $@ $<
+
 __timestamp.c:  timestamp-emit.sh |  GNUmakefile
 	env BISMON_MAKE="$(MAKE)" ./timestamp-emit.sh
-
--include _bismon-makedep.mk
 
 all: config executable
 
