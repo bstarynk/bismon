@@ -59,6 +59,12 @@ make _bismon-makedep.mk || (
     exit 1
 )
 
+### build the BM_makeconst generator
+make BM_makeconst  || (
+    echo Failed to make generator BM_makeconst in $(pwd) > /dev/stderr
+    exit 1
+)
+
 ### build the object files in parallel
 nbproc=$(grep '^processor' /proc/cpuinfo | wc -l)
 
