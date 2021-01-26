@@ -43,6 +43,7 @@
 #include <dirent.h>
 #include <sys/types.h>
 #include <string.h>
+#include <errno.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
@@ -259,30 +260,34 @@ bmc_parse_options(int& argc, char**argv)
         case BMCOPT_host_cc:       // --host_cc=PATH
           bmc_host_cc = optarg;
           BMC_DEBUG("host C compiler:" << bmc_host_cc);
-          if (!bmc_dryrun_flag) {
-	    if (access(bmc_host_cc.c_str(), X_OK)) {
-	      int erc = errno;
-	      std::string errstr = "given host C compiler ";
-	      errstr += bmc_host_cc;
-	      errstr += " is not executable: ";
-	      errstr += strerror(erc);
-	      BMC_FAILURE(errstr.c_str());
-	    }
-	  }
+          if (!bmc_dryrun_flag)
+            {
+              if (access(bmc_host_cc.c_str(), X_OK))
+                {
+                  int erc = errno;
+                  std::string errstr = "given host C compiler ";
+                  errstr += bmc_host_cc;
+                  errstr += " is not executable: ";
+                  errstr += strerror(erc);
+                  BMC_FAILURE(errstr.c_str());
+                }
+            }
           break;
         case BMCOPT_host_cxx:       // --host_cxx=PATH
           bmc_host_cxx = optarg;
           BMC_DEBUG("host C++ compiler:" << bmc_host_cxx);
-          if (!bmc_dryrun_flag) {
-	    if (access(bmc_host_cxx.c_str(), X_OK)) {
-	      int erc = errno;
-	      std::string errstr = "given host C++ compiler ";
-	      errstr += bmc_host_cxx;
-	      errstr += " is not executable: ";
-	      errstr += strerror(erc);
-	      BMC_FAILURE(errstr.c_str());
-	    }
-	  }
+          if (!bmc_dryrun_flag)
+            {
+              if (access(bmc_host_cxx.c_str(), X_OK))
+                {
+                  int erc = errno;
+                  std::string errstr = "given host C++ compiler ";
+                  errstr += bmc_host_cxx;
+                  errstr += " is not executable: ";
+                  errstr += strerror(erc);
+                  BMC_FAILURE(errstr.c_str());
+                }
+            }
           break;
         case BMCOPT_output_directory: // --output-directory=DIR
           bmc_out_directory = optarg;
@@ -338,7 +343,7 @@ void
 bmc_show_usage(const char*progname)
 {
   std::cerr << "###### see github.com/bstarynk/bismon and the DRAFT report on starynkevitch.net/Basile/bismon-doc.pdf"
-	    << std::endl;
+            << std::endl;
   std::cerr << progname << " usage:" << std::endl;
   std::cerr << " --version | -V         # give version information - git " BISMON_SHORTGIT << std::endl;
   std::cerr << " --help | -h            # give this help message" << std::endl;
@@ -524,7 +529,7 @@ bmc_print_config_header(const char*progname)
       else
         {
           std::cerr << progname << " did already generate " << headerpath << std::endl
-		    << " (use --force option to overwrite)" << std::endl;
+                    << " (use --force option to overwrite)" << std::endl;
           return;
         }
     }
@@ -538,8 +543,8 @@ bmc_print_config_header(const char*progname)
   headoutf << "/// See http://github.com/bstarynk/bismon/" << std::endl;
   headoutf << "/// generated at " << bmc_start_str_ctime << " on " << bmc_hostname << std::endl;
   headoutf << "/// ... using " << __FILE__ "@" <<  __LINE__ << std::endl
-	   << "///... compiled on " __DATE__
-	   << " git " << BISMON_SHORTGIT << std::endl
+           << "///... compiled on " __DATE__
+           << " git " << BISMON_SHORTGIT << std::endl
            << std::endl;
 #ifdef BISMON_MAKELEVEL
   headoutf << "/// with BISMON_MAKELEVEL=" << BISMON_MAKELEVEL << std::endl;
@@ -571,31 +576,32 @@ bmc_print_config_header(const char*progname)
   headoutf << "#define BISMON_CONFIG \"" << BISMON_SHORTGIT << "\"" << std::endl;
   headoutf << "#endif /*BISMON_CONFIG*/" << std::endl;
   headoutf << "// end of Bismon generated configuration header file " << headerpath
-	   << std::endl << std::flush;
+           << std::endl << std::flush;
   sync();
   usleep (1000);
   BMC_DEBUG("bmc_print_config_header ending headerpath=" << headerpath);
-  if (!bmc_batch_flag && !bmc_silent_flag) {
-    std::cout << "#: ¤" "GENERATED¤ Bismon configuration header file " << headerpath << std::endl;
-    std::cout << "#: generated at " << bmc_start_str_ctime << " on " << bmc_hostname << std::endl;
-    std::cout << "#: ... using " << __FILE__ "@" <<  __LINE__ << std::endl
-	   << "#: ... compiled on " __DATE__
-	   << " git " << BISMON_SHORTGIT << std::endl
-           << std::endl;
+  if (!bmc_batch_flag && !bmc_silent_flag)
+    {
+      std::cout << "#: ¤" "GENERATED¤ Bismon configuration header file " << headerpath << std::endl;
+      std::cout << "#: generated at " << bmc_start_str_ctime << " on " << bmc_hostname << std::endl;
+      std::cout << "#: ... using " << __FILE__ "@" <<  __LINE__ << std::endl
+                << "#: ... compiled on " __DATE__
+                << " git " << BISMON_SHORTGIT << std::endl
+                << std::endl;
 #ifdef BISMON_MAKELEVEL
-    std::cout << "#:: with BISMON_MAKELEVEL=" << BISMON_MAKELEVEL << std::endl;
+      std::cout << "#:: with BISMON_MAKELEVEL=" << BISMON_MAKELEVEL << std::endl;
 #endif
-    struct stat headerstat;
-    memset (&headerstat, 0, sizeof(headerstat));
-    if (stat(headerpath.c_str(), &headerstat))
-      BMC_FAILURE((std::string("failed to stat the generated header file ") + headerpath + ":" + strerror(errno)).c_str());
-    std::cout << "#:" << progname
-	      << " [" __FILE__ ":" << __LINE__ << "°" BISMON_SHORTGIT "] "
-	      << " did generate ..." << std::endl
-	      << "#: the header file " << headerpath
-	      << " with " << headerstat.st_size << " bytes."
-	      << std::endl << std::endl;
-  }
+      struct stat headerstat;
+      memset (&headerstat, 0, sizeof(headerstat));
+      if (stat(headerpath.c_str(), &headerstat))
+        BMC_FAILURE((std::string("failed to stat the generated header file ") + headerpath + ":" + strerror(errno)).c_str());
+      std::cout << "#:" << progname
+                << " [" __FILE__ ":" << __LINE__ << "°" BISMON_SHORTGIT "] "
+                << " did generate ..." << std::endl
+                << "#: the header file " << headerpath
+                << " with " << headerstat.st_size << " bytes."
+                << std::endl << std::endl;
+    }
 } // end bmc_print_config_header
 
 
@@ -616,8 +622,8 @@ bmc_print_config_data(const char*progname)
       else
         {
           std::cerr << progname << " did already generate " << datapath
-		    << std::endl
-		    << " (use --force option to overwrite)" << std::endl;
+                    << std::endl
+                    << " (use --force option to overwrite)" << std::endl;
           return;
         }
     }
@@ -630,9 +636,9 @@ bmc_print_config_data(const char*progname)
   dataoutf << "/// *** ¤" "GENERATED¤ Bismon DATA FILE " << datapath << " - DO NOT EDIT ***" << std::endl;
   dataoutf << "/// See github.com/bstarynk/bismon for more about Bismon." << std::endl << std::endl;
   dataoutf << "/// This file '" << basename(datapath.c_str())
-	   << "' was generated by " __FILE__ "@" <<  __LINE__ << std::endl
-	   << "///... compiled on " __DATE__
-	   << " git " BISMON_SHORTGIT << std::endl;
+           << "' was generated by " __FILE__ "@" <<  __LINE__ << std::endl
+           << "///... compiled on " __DATE__
+           << " git " BISMON_SHORTGIT << std::endl;
   dataoutf << "const char bismon_confdata_gitid[]=\"" << bismon_gitid << "\";" << std::endl;
 #ifdef BISMON_MAKELEVEL
   dataoutf << "/// with BISMON_MAKELEVEL=" << BISMON_MAKELEVEL << std::endl;
@@ -661,52 +667,54 @@ bmc_print_config_data(const char*progname)
       BMC_DEBUG("bmc_print_config_data gitls #" << linenopip << ":" << gitlinbuf);
       /// skip files like .gdbinit or .indent.pro, etc..
       if (gitlinbuf[0] == '.' && isalpha(gitlinbuf[1]))
-	continue;
+        continue;
       if (isalnum(gitlinbuf[0]))
-	gitlinstr.assign(gitlinbuf);
+        gitlinstr.assign(gitlinbuf);
       {
-	int rk= -1, endpos= -1;
-	if (linl>12 && sscanf(gitlinbuf, "store%d-BISMON.bmon%n", &rk, &endpos) > 1
-	    && rk >0 && endpos >= linl-1) {
-	  BMC_DEBUG("bmc_print_config_data gitls store file rk=" << rk
-		    << " endpos=" << endpos);
-	  gitlinstr.assign(gitlinbuf+1, endpos-2);
-	}
+        int rk= -1, endpos= -1;
+        if (linl>12 && sscanf(gitlinbuf, "store%d-BISMON.bmon%n", &rk, &endpos) > 1
+            && rk >0 && endpos >= linl-1)
+          {
+            BMC_DEBUG("bmc_print_config_data gitls store file rk=" << rk
+                      << " endpos=" << endpos);
+            gitlinstr.assign(gitlinbuf+1, endpos-2);
+          }
       }
       BMC_DEBUG("bmc_print_config_data gitls #" << linenopip << ", gitlinstr='" << gitlinstr << "'");
       if (gitlinstr.empty())
-	continue;
+        continue;
       if (access(gitlinstr.c_str(), R_OK))
-	{
-	  int accerr= errno;
-	  std::ostringstream errout;
-	  errout << "bmc_print_config_data cannot access git versioned file '" << gitlinstr << "' : " << strerror(accerr) << std::endl;
-	  errout << "... from line#" << linenopip << " given by command "
-		 << BMC_GITLS_COMMAND << std::flush;
-	    BMC_FAILURE(errout.str().c_str());
-	};
-      for (int cix=0; cix<linl && gitlinbuf[cix]; cix++) {
-        if (!isalnum(gitlinbuf[cix])
-	    && gitlinbuf[cix] != '_' && gitlinbuf[cix] != '/'
-            && gitlinbuf[cix] != '+' && gitlinbuf[cix] != '-'
-	    && gitlinbuf[cix] != '.'
-            && !strstr(gitlinbuf, "README"))
-          {
-            BMC_DEBUG("bmc_print_config_data bad gitlinbuf='" << gitlinbuf << "' cix=" << cix << " linl=" << linl);
-            char cwdbuf[256];
-            memset(cwdbuf, 0, sizeof(cwdbuf));
-            if (!getcwd(cwdbuf, sizeof(cwdbuf)-1))
-              cwdbuf[0] = '.';
-            std::cerr << progname << " pipe " << BMC_GITLS_COMMAND << " output line#" << linenopip << ":" << gitlinbuf
-                      << " - unexpected file name "
-		      << gitlinbuf
-		      << " in directory " << cwdbuf << std::endl;
-            std::cerr << "Expecting letters, digits, or one of '_/+-.§' characters."
-		      << " [" __FILE__ ":" << __LINE__ << "]"
-		      << std::endl;
-            BMC_FAILURE ("bad file name in directory");
-          }
-      }
+        {
+          int accerr= errno;
+          std::ostringstream errout;
+          errout << "bmc_print_config_data cannot access git versioned file '" << gitlinstr << "' : " << strerror(accerr) << std::endl;
+          errout << "... from line#" << linenopip << " given by command "
+                 << BMC_GITLS_COMMAND << std::flush;
+          BMC_FAILURE(errout.str().c_str());
+        };
+      for (int cix=0; cix<linl && gitlinbuf[cix]; cix++)
+        {
+          if (!isalnum(gitlinbuf[cix])
+              && gitlinbuf[cix] != '_' && gitlinbuf[cix] != '/'
+              && gitlinbuf[cix] != '+' && gitlinbuf[cix] != '-'
+              && gitlinbuf[cix] != '.'
+              && !strstr(gitlinbuf, "README"))
+            {
+              BMC_DEBUG("bmc_print_config_data bad gitlinbuf='" << gitlinbuf << "' cix=" << cix << " linl=" << linl);
+              char cwdbuf[256];
+              memset(cwdbuf, 0, sizeof(cwdbuf));
+              if (!getcwd(cwdbuf, sizeof(cwdbuf)-1))
+                cwdbuf[0] = '.';
+              std::cerr << progname << " pipe " << BMC_GITLS_COMMAND << " output line#" << linenopip << ":" << gitlinbuf
+                        << " - unexpected file name "
+                        << gitlinbuf
+                        << " in directory " << cwdbuf << std::endl;
+              std::cerr << "Expecting letters, digits, or one of '_/+-.§' characters."
+                        << " [" __FILE__ ":" << __LINE__ << "]"
+                        << std::endl;
+              BMC_FAILURE ("bad file name in directory");
+            }
+        }
       struct stat curgitst;
       memset(&curgitst, 0, sizeof(curgitst));
       if (stat(gitlinbuf, &curgitst))
@@ -768,18 +776,19 @@ bmc_print_config_data(const char*progname)
   sync ();
   usleep (1000);
   BMC_DEBUG("bmc_print_config_data ending datapath=" << datapath);
-  if (!bmc_batch_flag && !bmc_silent_flag) {
-    std::cout << "#: generated Bismon configuration data file " << datapath << std::endl;
-    struct stat datastat;
-    memset (&datastat, 0, sizeof(datastat));
-    if (stat(datapath.c_str(), &datastat))
-      BMC_FAILURE((std::string("failed to stat the generated data file ") + datapath + ":" + strerror(errno)).c_str());
-    std::cout << "#:" << progname
-	      << " [" __FILE__ ":" << __LINE__ << "°" BISMON_SHORTGIT "] "
-	      << " did generate" << std::endl
-	      << "#: ... the data file " << datapath << " with "
-	      << datastat.st_size << " bytes." << std::endl << std::endl;
-  }
+  if (!bmc_batch_flag && !bmc_silent_flag)
+    {
+      std::cout << "#: generated Bismon configuration data file " << datapath << std::endl;
+      struct stat datastat;
+      memset (&datastat, 0, sizeof(datastat));
+      if (stat(datapath.c_str(), &datastat))
+        BMC_FAILURE((std::string("failed to stat the generated data file ") + datapath + ":" + strerror(errno)).c_str());
+      std::cout << "#:" << progname
+                << " [" __FILE__ ":" << __LINE__ << "°" BISMON_SHORTGIT "] "
+                << " did generate" << std::endl
+                << "#: ... the data file " << datapath << " with "
+                << datastat.st_size << " bytes." << std::endl << std::endl;
+    }
 } // end bmc_print_config_data
 
 
@@ -799,7 +808,7 @@ bmc_print_config_make(const char*progname)
       else
         {
           std::cerr << progname << " did already generate " << makepath << std::endl
-		    << " (use --force option to overwrite)" << std::endl;
+                    << " (use --force option to overwrite)" << std::endl;
           return;
         }
     }
@@ -811,11 +820,11 @@ bmc_print_config_make(const char*progname)
     }
   /// make prologue
   makeoutf << "### ¤" "GENERATED¤ Bismon GNU-MAKE CONFIGURATION FILE " <<
-    makepath << " - DO NOT EDIT" << std::endl;
+           makepath << " - DO NOT EDIT" << std::endl;
   makeoutf << "### This file '" << basename(makepath.c_str())
-	   << "' was generated by " __FILE__ "@" <<  __LINE__  <<  std::endl
-	   << "### ... compiled on " __DATE__
-	   << " git " BISMON_SHORTGIT << std::endl;
+           << "' was generated by " __FILE__ "@" <<  __LINE__  <<  std::endl
+           << "### ... compiled on " __DATE__
+           << " git " BISMON_SHORTGIT << std::endl;
   makeoutf << "### this is for inclusion thru GNU make." << std::endl;
   makeoutf << "### See github.com/bstarynk/bismon/ for more about Bismon." << std::endl;
 #ifdef BISMON_MAKELEVEL
@@ -832,27 +841,30 @@ bmc_print_config_make(const char*progname)
   if (bmc_onion_includedir.empty())
     makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS)" << std::endl;
   else
-    makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS) $(BM_ONION_OBJECTS)" << std::endl
+    makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS) $(BM_ONION_OBJECTS)"
+	     << std::endl;
   errno = 0;
   if (!bmc_host_cc.empty() && !access(bmc_host_cc.c_str(), X_OK))
     makeoutf << "BISMONMK_HOST_CC=" << bmc_host_cc << std::endl;
-  else {
-    int er = errno;
-    makeoutf << "#without BISMONMK_HOST_CC";
-    if (!bmc_host_cc.empty() && er != 0)
-      makeoutf << " - bad " << bmc_host_cc << " : " << strerror(er);
-    makeoutf << std::endl;
-  }
+  else
+    {
+      int er = errno;
+      makeoutf << "#without BISMONMK_HOST_CC";
+      if (!bmc_host_cc.empty() && er != 0)
+        makeoutf << " - bad " << bmc_host_cc << " : " << strerror(er);
+      makeoutf << std::endl;
+    }
   errno = 0;
   if (!bmc_host_cxx.empty() && !access(bmc_host_cxx.c_str(), X_OK))
     makeoutf << "BISMONMK_HOST_CXX=" << bmc_host_cc << std::endl;
-  else {
-    int er = errno;
-    makeoutf << "#without BISMONMK_HOST_CXX" ;
-    if (!bmc_host_cxx.empty() && er != 0)
-      makeoutf << " - bad " << bmc_host_cxx << " : " << strerror(er);
-    makeoutf << std::endl;
-  }
+  else
+    {
+      int er = errno;
+      makeoutf << "#without BISMONMK_HOST_CXX" ;
+      if (!bmc_host_cxx.empty() && er != 0)
+        makeoutf << " - bad " << bmc_host_cxx << " : " << strerror(er);
+      makeoutf << std::endl;
+    }
   makeoutf << "BISMONMK_PACKAGES= glib-2.0 gobject-2.0 jansson readline" << std::endl;
   if (!bmc_onion_includedir.empty())
     makeoutf << "BISMONMK_ONION_INCLUDEDIR=" << bmc_onion_includedir << std::endl;
@@ -881,21 +893,22 @@ bmc_print_config_make(const char*progname)
     makeoutf << "#no BISMONMK_DEBUG" << std::endl;
   makeoutf << "BISMONMK_CONFIGPATH=" << makepath << std::endl;
   makeoutf << "### end of Bismon generated file for GNU make " << makepath << " (by " << __FILE__ << ")"
-	   << std::endl << std::flush;
+           << std::endl << std::flush;
   BMC_DEBUG("bmc_print_config_make ending makepath=" << makepath);
   sync();
   usleep (1000);
-  if (!bmc_batch_flag && !bmc_silent_flag) {
-    std::cout << "#: generated Bismon configuration GNU make file " << makepath << std::endl;
-    struct stat makestat;
-    memset (&makestat, 0, sizeof(makestat));
-    if (stat(makepath.c_str(), &makestat))
-      BMC_FAILURE((std::string("failed to stat the generated GNU make file ") + makepath + ":" + strerror(errno)).c_str());
-    std::cout << "#:" << progname
-	      << " [" __FILE__ ":" << __LINE__ << "°" BISMON_SHORTGIT "] "
-	      << " did generate" << std::endl
-	      << "#:...  GNU make file " << makepath << " with " << makestat.st_size << " bytes." << std::endl << std::endl;
-  }
+  if (!bmc_batch_flag && !bmc_silent_flag)
+    {
+      std::cout << "#: generated Bismon configuration GNU make file " << makepath << std::endl;
+      struct stat makestat;
+      memset (&makestat, 0, sizeof(makestat));
+      if (stat(makepath.c_str(), &makestat))
+        BMC_FAILURE((std::string("failed to stat the generated GNU make file ") + makepath + ":" + strerror(errno)).c_str());
+      std::cout << "#:" << progname
+                << " [" __FILE__ ":" << __LINE__ << "°" BISMON_SHORTGIT "] "
+                << " did generate" << std::endl
+                << "#:...  GNU make file " << makepath << " with " << makestat.st_size << " bytes." << std::endl << std::endl;
+    }
 } // end bmc_print_config_make
 
 
