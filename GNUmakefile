@@ -148,6 +148,8 @@ executable: _bismon-config.mk
 
 bismon:  _bismon-config.mk _bm_config.h
 	$(MAKE) $(BISMONMK_OBJECTS)
+	echo $(warning incomplete GNUmakefile for bismon)
+	false
 
 _bismon-makedep.mk: GNUmakefile emit-make-dependencies.bash
 	./emit-make-dependencies.bash $(BM_C_SOURCES) $(BM_CXX_SOURCES) $(BM_C_ONION_SOURCES)
