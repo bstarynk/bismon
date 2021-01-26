@@ -530,7 +530,7 @@ bmc_print_config_header(const char*progname)
       else
         {
           std::cerr << progname << " did already generate " << headerpath << std::endl
-                    << " (use --force option to overwrite)" << std::endl;
+                    << " (use --force option to overwrite, or maybe run distclean-script.bash)" << std::endl;
           return;
         }
     }
@@ -625,7 +625,7 @@ bmc_print_config_data(const char*progname)
         {
           std::cerr << progname << " did already generate " << datapath
                     << std::endl
-                    << " (use --force option to overwrite)" << std::endl;
+                    << " (use --force option to overwrite, or maybe run distclean-script.bash)" << std::endl;
           return;
         }
     }
@@ -811,7 +811,7 @@ bmc_print_config_make(const char*progname)
       else
         {
           std::cerr << progname << " did already generate " << makepath << std::endl
-                    << " (use --force option to overwrite)" << std::endl;
+                    << " (use --force option to overwrite, or maybe run distclean-script.bash)" << std::endl;
           return;
         }
     }
@@ -1001,7 +1001,7 @@ bmc_print_config_ninja(const char*progname)
       else
         {
           std::cerr << progname << " did already generate " << ninjapath << std::endl
-		    << " (use --force option to overwrite)" << std::endl;
+		    << " (use --force option to overwrite, or maybe run ./distclean-script.bash)" << std::endl;
           return;
         }
     }
