@@ -54,12 +54,15 @@ if [ ! -f _bm_config.h ]; then
 fi
 
 ## build make dependencies
-make _bismon-makedep.mk
+make _bismon-makedep.mk || (
+    echo Failed to make dependencies _bismon-makedep.mk in $(pwd) > /dev/stderr
+    exit 1
+)
 
 ### build the object files in parallel
 nbproc=$(grep '^processor' /proc/cpuinfo | wc -l)
 
-make --jobs=$[$nbproc/2 + 1] object || (
+make --jobs=$[$nbproc/2 + 1] objects || (
     echo Failed to make objects in $(pwd) > /dev/stderr
     exit 1
 )
