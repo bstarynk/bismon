@@ -54,7 +54,7 @@ fi
 
 (echo -n 'const char bismon_lastgittag[]="'; (git describe --abbrev=0 --all || echo '*notag*') | tr -d '\n\r\f\"\\\\'; echo '";') >> $tempoutput
 
-(echo -n 'const char bismon_checksum[]="'; cat $* | md5sum | cut -d' ' -f1 | tr -d '\n\r\f\"\\' ; echo '";') >> $tempoutput
+(echo -n 'const char bismon_checksum[]="'; cat $(git  ls-tree -r  --full-name HEAD | awk '/^100/{print $4}') | md5sum | cut -d' ' -f1 | tr -d '\n\r\f\"\\' ; echo '";') >> $tempoutput
 
 (echo -n 'const char bismon_directory[]="'; /bin/pwd | tr -d '\n\\"' ; echo '";') >> $tempoutput
 
