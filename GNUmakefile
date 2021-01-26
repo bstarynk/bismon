@@ -86,6 +86,17 @@ config: _bismon-config.mk _bm_config.h  _bm_config.c
 
 include _bismon-config.mk
 
+ifdef BISMONMK_HOST_CC
+CC=$(BISMONMK_HOST_CC)
+else
+CC=gcc
+endif
+
+ifdef BISMONMK_HOST_CXX
+CXX=$(BISMONMK_HOST_CXX)
+else
+CXX=g++
+endif
 
 clean:
 	$(RM) *.o BISMON-config bismon   modubin/*.so modubin/*.o *~ *% *.cc.orig
@@ -103,10 +114,13 @@ BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
 
 BM_makeconst: BM_makeconst.o id_BM.o
-	$(LINK.cc) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
+	$(LINK.cc) -g -O -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
 
 BM_makeconst-g.o: BM_makeconst.cc id_BM.h
 	$(COMPILE.cc)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+
+BM_makeconst.o: BM_makeconst.cc id_BM.h
+	$(COMPILE.cc)  $(shell pkg-config --cflags glib-2.0) -g -O -Wall -c $< -o $@
 
 id_BM.o: id_BM.c id_BM.h
 	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0)  -Wall -c $< -o $@
