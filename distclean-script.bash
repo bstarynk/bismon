@@ -57,8 +57,8 @@ initialkilobytes=$(/usr/bin/du -csk . | /usr/bin/gawk '/total/{print $1}')
 # generated headers and file by BM_makeconst
 /bin/rm -f *BM.const.h _bm_*.c
 
-# onion generated files
-/bin/rm -f _*ONIONBM.[ch]
+# onion generated files (assets.h is generated for buggy otemplate command in our GNUmakefile)
+/bin/rm -f _*ONIONBM.[ch] assets.h
 
 ## editor or metaprogram backups
 /bin/rm -f *~ *%
