@@ -38,12 +38,19 @@ sleep 2.0
 /bin/rm -f build.ninja
 /bin/rm -f BM_makeconst
 
-/bin/rm -f [a-ZA-Z]*.o
+/bin/rm -f [a-zA-Z]*.o
 /bin/rm -f _*.o
 /bin/rm -f _bm_config.c
 /bin/rm -f _bm_config.h
 /bin/rm -f id_BM.o
 
+# generated makefile dependencies
+/bin/rm -f *.mkd
+
+# generated headers by BM_makeconst
+/bin/rm -f *_BM.const.h
+
+## editor or metaprogram backups
 /bin/rm -f *~ *%
 /bin/rm -f *.orig
 
