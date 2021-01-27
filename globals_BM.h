@@ -30,7 +30,7 @@ extern const char bismon_lastgitcommit[];
 extern const char bismon_lastgittag[];
 extern const char bismon_checksum[];
 extern const char bismon_directory[];
-extern const char bismon_makefile[];
+extern const char bismon_gnumakefile[];
 extern const char bismon_gitid[];
 extern const char bismon_shortgitid[];
 
