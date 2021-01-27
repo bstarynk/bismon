@@ -36,6 +36,10 @@ INDENTFLAGS= --gnu-style --no-tabs --honour-newlines
 ASTYLEFLAGS= --style=gnu -s2
 RM= rm -fv
 BM_CXX_STANDARD_FLAGS= -std=gnu++17
+## libonion from github.com/davidmoreno/onion is an HTTP/HTTPS server library
+
+## template generator from libonion
+ONION_TEMPLATE_GENERATOR= otemplate
 
 ## CONVENTION: handwritten markdown files are...
 MARKDOWN_SOURCES= $(sort $(wildcard *.md))
@@ -58,6 +62,14 @@ BM_CXX_SOURCES= $(wildcard [a-z]*_BM.cc)
 ## CONVENTION: handwritten C files for web using libonion
 BM_C_ONION_SOURCES= $(wildcard [a-z]*_ONIONBM.c)
 
+
+## CONVENTION: templates for libonion
+BM_ONION_TEMPLATES= $(wildcard [a-z]*ONIONBM.thtml)
+
+BM_ONIONTEMPL_HEADERS= $(patsubst %.thtml,_%.h,$(BM_ONION_TEMPLATES))
+BM_ONIONTEMPL_C_CODE= $(patsubst %.thtml,_%.c,$(BM_ONION_TEMPLATES))
+BM_ONIONTEMPL_OBJECTS= $(patsubst %.c,%.o,$(BM_ONIONTEMPL_C_CODE))
+
 ## CONVENTION: packages for pkg-config
 BM_PACKAGES=  glib-2.0
 
@@ -68,7 +80,7 @@ BISMON_CONFIG_OPTIONS=
 ### object files:
 BM_OBJECTS= $(patsubst %.c,%.o,$(BM_C_SOURCES))  $(patsubst %.cc,%.o,$(BM_CXX_SOURCES))
 
-BM_ONION_OBJECTS= $(patsubst %.c,%.o,$(BM_C_ONION_SOURCES))
+BM_ONION_OBJECTS= $(patsubst %.c,%.o,$(BM_C_ONION_SOURCES)) $(BM_ONIONTEMPL_OBJECTS)
 
 ## internal make variables...
 BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
@@ -170,6 +182,12 @@ executable: _bismon-config.mk
 _bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
 	./BM_makeconst -C $@ $(BM_CSOURCES)
 
+
+_%_ONIONBM.c: %_ONIONBM.thtml
+	$(ONION_TEMPLATE_GENERATOR) $^ $@
+
+_%_ONIONBM.h: %_ONIONBM.thtml
+	$(ONION_TEMPLATE_GENERATOR) --asset-file=$^ $@
 
 ## a phony target, used in Build script
 objects:  $(BISMONMK_OBJECTS)
