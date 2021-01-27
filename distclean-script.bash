@@ -48,8 +48,14 @@ sleep 2.0
 /bin/rm -f *.mkd
 /bin/rm -f _*.mk
 
-# generated headers by BM_makeconst
-/bin/rm -f *BM.const.h
+# generated plugins
+/bin/rm -f */*.so
+
+# generated headers and file by BM_makeconst
+/bin/rm -f *BM.const.h _bm_*.c
+
+# onion generated files
+/bin/rm -f _*ONIONBM.[ch]
 
 ## editor or metaprogram backups
 /bin/rm -f *~ *%
