@@ -167,6 +167,8 @@ id_BM-g.o: id_BM.c id_BM.h
 %_ONIONBM-g.o: %_ONIONBM.c bismon.h
 	$(COMPILE.c) $(BISMON_CFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
 
+web_ONIONBM.o: web_ONIONBM.c _login_ONIONBM.h _changepasswd_ONIONBM.h
+
 %BM.const.h: %BM.c BM_makeconst
 	./BM_makeconst -H $@ $<
 
@@ -183,11 +185,11 @@ _bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
 	./BM_makeconst -C $@ $(BM_CSOURCES)
 
 
-_%_ONIONBM.c: %_ONIONBM.thtml
-	$(ONION_TEMPLATE_GENERATOR) $^ $@
-
-_%_ONIONBM.h: %_ONIONBM.thtml
-	$(ONION_TEMPLATE_GENERATOR) --asset-file=$^ $@
+_%_ONIONBM.h _%_ONIONBM.c: %_ONIONBM.thtml
+	/bin/cp $^ $^~
+	/bin/mv -f $(patsubst %.thtml,_%.h,$^) $(patsubst %.thtml,_%.h~,$^)
+	/bin/mv -f $(patsubst %.thtml,_%.c,$^) $(patsubst %.thtml,_%.c~,$^)
+	$(ONION_TEMPLATE_GENERATOR) --asset-file $(patsubst %.thtml,_%.h,$^) $^ $(patsubst %.thtml,_%.c,$^)
 
 ## a phony target, used in Build script
 objects:  $(BISMONMK_OBJECTS)
