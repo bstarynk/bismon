@@ -135,6 +135,12 @@ id_BM-g.o: id_BM.c id_BM.h
 %_BM-g.o: %_BM.c bismon.h
 	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
 
+%_ONIONBM.o: %_ONIONBM.c bismon.h
+	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
+
+%_ONIONBM-g.o: %_ONIONBM.c bismon.h
+	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
+
 %BM.const.h: %BM.c BM_makeconst
 	./BM_makeconst -H $@ $<
 
