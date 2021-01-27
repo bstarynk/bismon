@@ -46,9 +46,10 @@ sleep 2.0
 
 # generated makefile dependencies
 /bin/rm -f *.mkd
+/bin/rm -f _*.mk
 
 # generated headers by BM_makeconst
-/bin/rm -f *_BM.const.h
+/bin/rm -f *BM.const.h
 
 ## editor or metaprogram backups
 /bin/rm -f *~ *%
