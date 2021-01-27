@@ -66,7 +66,7 @@ BM_PACKAGES=  glib-2.0
 BISMON_CONFIG_OPTIONS=
 
 ### object files:
-BM_OBJECTS= $(patsubst %.c,%.o,$(BM_C_SOURCES))  $(patsubst %.c,%.o,$(BM_CXX_SOURCES))
+BM_OBJECTS= $(patsubst %.c,%.o,$(BM_C_SOURCES))  $(patsubst %.cc,%.o,$(BM_CXX_SOURCES))
 
 BM_ONION_OBJECTS= $(patsubst %.c,%.o,$(BM_C_ONION_SOURCES))
 
