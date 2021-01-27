@@ -79,5 +79,6 @@ initialkilobytes=$(/usr/bin/du -csk . | /usr/bin/gawk '/total/{print $1}')
 
 finalkilobytes=$(/usr/bin/du -csk . | /usr/bin/gawk '/total/{print $1}')
 ################################################################
-echo -n $0 done cleaning gaining $[$initialkilobytes - $finalkilobytes] kilobytes in '(user+system seconds, self then children): '
+echo $0 done cleaning gaining $[$initialkilobytes - $finalkilobytes] kilobytes ...
+echo ... in '(user+system seconds, self then children):'
 times
