@@ -78,7 +78,7 @@ BISMON_SHGIT2:= $(shell if git status | grep 'nothing to commit'; then echo; els
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
-.PHONY: all config count executable clean runconfig
+.PHONY: all config count executable clean runconfig objects
 
 .DEFAULTS: all
 
@@ -96,6 +96,14 @@ ifdef BISMONMK_HOST_CXX
 CXX=$(BISMONMK_HOST_CXX)
 else
 CXX=g++
+endif
+
+ifndef BISMON_CFLAGS
+BISMON_CFLAGS= -O -g -Wall -Wextra
+endif
+
+ifndef BISMON_CXXFLAGS
+BISMON_CXXFLAGS= -O -g -Wall -Wextra
 endif
 
 clean:
@@ -125,21 +133,27 @@ BM_makeconst.o: BM_makeconst.cc id_BM.h
 -include _bismon-makedep.mk
 
 id_BM.o: id_BM.c id_BM.h
-	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0)  -Wall -c $< -o $@
+	$(COMPILE.c) $(BISMON_CFLAGS)  $(shell pkg-config --cflags glib-2.0)  -Wall -c $< -o $@
 id_BM-g.o: id_BM.c id_BM.h
-	$(COMPILE.c)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+	$(COMPILE.c)  $(BISMON_CFLAGS) -g $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
 
 %_BM.o: %_BM.c bismon.h
-	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
+	$(COMPILE.c)  $(BISMON_CFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
 
 %_BM-g.o: %_BM.c bismon.h
-	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
+	$(COMPILE.c)  $(BISMON_CFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
+
+%_BM.o: %_BM.cc bismon.h
+	$(COMPILE.cc)  $(BISMON_CXXFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
+
+%_BM-g.o: %_BM.cc bismon.h
+	$(COMPILE.cc)  $(BISMON_CXXFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
 
 %_ONIONBM.o: %_ONIONBM.c bismon.h
 	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MM -MF $(patsubst %.o, _%.mkd, $@) -Wall -c $< -o $@
 
 %_ONIONBM-g.o: %_ONIONBM.c bismon.h
-	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
+	$(COMPILE.c) $(BISMON_CFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MM -MF $(patsubst %.o, _%-g.mkd, $@)  -g -Wall -c $< -o $@
 
 %BM.const.h: %BM.c BM_makeconst
 	./BM_makeconst -H $@ $<
@@ -152,10 +166,19 @@ all: config executable
 executable: _bismon-config.mk
 	$(MAKE) $(BISMONMK_EXECUTABLE)
 
+
+_bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
+	./BM_makeconst -C $@ $(BM_CSOURCES)
+
+
+## a phony target, used in Build script
+objects:  $(BISMONMK_OBJECTS)
+
 bismon:  _bismon-config.mk _bm_config.h
-	$(MAKE) $(BISMONMK_OBJECTS)
-	echo $(warning incomplete GNUmakefile for bismon)
-	false
+	$(MAKE) $(BISMONMK_OBJECTS) __timestamp.o
+	$(LINK.cc)  $(BISMONMK_OBJECTS) __timestamp.o -L$(BISMONMK_ONION_LIBDIR) -lonion \
+                    $(shell pkg-config --libs $(BISMONMK_PACKAGES)) -rdynamic -o $@
+
 
 _bismon-makedep.mk: GNUmakefile emit-make-dependencies.bash
 	./emit-make-dependencies.bash $(BM_C_SOURCES) $(BM_CXX_SOURCES) $(BM_C_ONION_SOURCES)
