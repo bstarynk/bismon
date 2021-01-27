@@ -25,7 +25,7 @@
 ## basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 ##
 
-echo running $0 with "$@" as pid $$
+echo Running $0 with "$@" as pid $$ for Bismon on github.com/bstarynk/bismon
 printf "%s could remove important generated files,\n.... so you can interrupt it with Ctrl-C during the next two seconds.\n" $0
 sleep 2.0
 
