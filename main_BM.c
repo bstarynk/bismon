@@ -48,6 +48,7 @@ char *contact_name_BM;
 char *contact_email_BM;
 
 
+extern void parse_program_options_BM(int argc, char**argv);
 
 static const char *chdir_after_load_bm;
 thread_local struct threadinfo_stBM *curthreadinfo_BM;
@@ -155,7 +156,6 @@ abort_BM (void)
 char *load_dir_bm;
 char *dump_dir_BM;
 char *dump_after_load_dir_bm;
-char *builder_file_bm = "bismon.ui";
 char *css_file_bm = "bismon.css";
 char *gui_log_name_bm = "_bismon.log";  /* default log file */
 char *pid_filepath_bm = "_bismon.pid";  /* default pid file */
@@ -1039,6 +1039,8 @@ main (int argc, char **argv)
   myprogname_BM = argv[0];
   if (argc > 1 && (!strcmp (argv[1], "-D") || !strcmp (argv[1], "--debug")))
     debugmsg_BM = true;
+  if (argc > 1 && !strcmp (argv[1], "--version")) 
+    give_prog_version_BM(argv[0]);
   DBGPRINTF_BM ("run_onion is %s",
                 run_onion_BM ? "true" : "false");
   dlprog_BM = dlopen (NULL, RTLD_NOW | RTLD_GLOBAL);
@@ -1082,6 +1084,7 @@ main (int argc, char **argv)
         ("set -using g_random_set_seed- the Glib PRNG random seed to %d",
          randomseed_BM);
     }
+  parse_program_options_BM (argc, argv);
   initialize_garbage_collector_BM ();
   check_delims_BM ();
   initialize_globals_BM ();
@@ -2210,218 +2213,6 @@ do_internal_deferred_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
 
 
 ////////////////////////////////////////////////////////////////
-#ifdef BISMONGTK
-extern bool did_deferred_BM (void);
-
-static gboolean
-deferpipereadhandler_BM (GIOChannel * source,
-                         GIOCondition condition __attribute__((unused)),
-                         gpointer data __attribute__((unused)))
-{
-  NONPRINTF_BM ("deferpipereadhandler_BM start tid#%ld", (long) gettid_BM ());
-  if (!source)
-    return false;
-  gchar buf[8] = "";
-  for (;;)
-    {
-      memset (buf, 0, sizeof (buf));
-      gsize nbrd = 0;
-      // reading more than one byte each time can block the program
-      GIOStatus st = g_io_channel_read_chars (source, buf, 1,
-                                              &nbrd, NULL);
-      NONPRINTF_BM ("deferpipereadhandler_BM nbrd=%d buf '%s' st#%d tid#%ld",
-                    (int) nbrd, buf, (int) st, (long) gettid_BM ());
-      if (st == G_IO_STATUS_EOF)
-        return FALSE;
-      if (!did_deferred_BM ())
-        return TRUE;
-      if (st == G_IO_STATUS_NORMAL && nbrd > 0)
-        return TRUE;
-    }
-  return TRUE;                  // to keep watching
-}                               /* end deferpipereadhandler_BM */
-
-
-extern void add_defer_command_gtk_BM (void);
-
-static void startguilog_BM (void);
-static void endguilog_BM (void);
-
-
-////////////////////////////////////////////////////////////////
-void
-rungui_BM (int nbjobs)
-{
-  NONPRINTF_BM ("rungui nbjobs %d start tid#%ld",
-                nbjobs, (long) gettid_BM ());
-  int deferpipes[2] = { -1, -1 };
-  if (pipe (deferpipes) < 0)
-    FATAL_BM ("failed to pipe GTK deferpipe");
-  defer_gtk_readpipefd_BM = deferpipes[0];
-  defer_gtk_writepipefd_BM = deferpipes[1];
-  NONPRINTF_BM ("rungui defer_gtk_readpipefd=%d defer_gtk_writepipefd_BM=%d",
-                defer_gtk_readpipefd_BM, defer_gtk_writepipefd_BM);
-  defer_gtk_readpipechan_BM = g_io_channel_unix_new (defer_gtk_readpipefd_BM);
-  g_io_add_watch (defer_gtk_readpipechan_BM, G_IO_IN, deferpipereadhandler_BM,
-                  NULL);
-  gui_is_running_BM = true;
-  startguilog_BM ();
-  start_agenda_work_threads_BM (nbjobs);
-  NONPRINTF_BM ("rungui nbjobs %d before gtkmain", nbjobs);
-  gtk_main ();
-  NONPRINTF_BM
-    ("rungui nbjobs %d after gtkmain before stopagendawork tid#%ld elapsed %.3f s",
-     nbjobs, (long) gettid_BM (), elapsedtime_BM ());
-  stop_agenda_work_threads_BM ();
-  NONPRINTF_BM ("rungui nbjobs %d after stopagendawork elapsed %.3f s",
-                nbjobs, elapsedtime_BM ());
-  g_io_channel_shutdown (defer_gtk_readpipechan_BM, false, NULL);
-  g_io_channel_unref (defer_gtk_readpipechan_BM), defer_gtk_readpipechan_BM =
-    NULL;
-  close (defer_gtk_readpipefd_BM), defer_gtk_readpipefd_BM = -1;
-  close (defer_gtk_writepipefd_BM), defer_gtk_writepipefd_BM = -1;
-  gui_is_running_BM = false;
-  if (gui_command_log_file_BM)
-    endguilog_BM ();
-  NONPRINTF_BM ("rungui nbjobs %d ending tid#%ld elapsed %.3f s",
-                nbjobs, (long) gettid_BM (), elapsedtime_BM ());
-}                               /* end rungui_BM */
-
-
-void
-startguilog_BM (void)
-{
-  if (!gui_log_name_bm || !gui_log_name_bm[0])
-    {
-      gui_command_log_file_BM = NULL;
-      printf ("no GUI log\n");
-    }
-  else if (!strcmp (gui_log_name_bm, "-"))
-    {
-      gui_command_log_file_BM = stdout;
-      printf ("GUI log to stdout\n");
-    }
-  else
-    {
-      if (!access (gui_log_name_bm, R_OK))
-        {
-          char *backupath = NULL;
-          asprintf (&backupath, "%s~", gui_log_name_bm);
-          if (!backupath)
-            FATAL_BM ("asprintf fail for backupath %s (%m)", gui_log_name_bm);
-          if (!access (backupath, R_OK))
-            {
-              char *backup2path = NULL;
-              asprintf (&backup2path, "%s~%%", gui_log_name_bm);
-              if (backup2path)
-                {
-                  if (!rename (backupath, backup2path))
-                    INFOPRINTF_BM ("logfile backup^2: %s -> %s", backupath,
-                                   backup2path);
-                }
-              free (backup2path);
-            }
-          if (!rename (gui_log_name_bm, backupath))
-            INFOPRINTF_BM ("logfile backup: %s -> %s", gui_log_name_bm,
-                           backupath);
-          free (backupath), backupath = NULL;
-        };
-      gui_command_log_file_BM = fopen (gui_log_name_bm, "w");
-      if (!gui_command_log_file_BM)
-        FATAL_BM ("fopen GUI log %s failure (%m)", gui_log_name_bm);
-      INFOPRINTF_BM ("GUI log to %s\n", gui_log_name_bm);
-      fprintf (gui_command_log_file_BM, "// GUI command log file %s\n",
-               basename (gui_log_name_bm));
-    }
-  if (gui_command_log_file_BM)
-    {
-      {
-        time_t nowtim = time (NULL);
-        struct tm nowtm = { };
-        localtime_r (&nowtim, &nowtm);
-        char nowbuf[64];
-        memset (nowbuf, 0, sizeof (nowbuf));
-        strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
-        fprintf (gui_command_log_file_BM,
-                 "// bismon GUI log at %s on %s pid %d\n",
-                 nowbuf, myhostname_BM, (int) getpid ());
-      }
-      fprintf (gui_command_log_file_BM,
-               "// bismon checksum %s lastgitcommit %s\n", bismon_checksum,
-               bismon_lastgitcommit);
-      fprintf (gui_command_log_file_BM,
-               "// bismon timestamp %s directory %s\n", bismon_timestamp,
-               bismon_directory);
-      {
-        char curdirpath[128];
-        memset (curdirpath, 0, sizeof (curdirpath));
-        if (getcwd (curdirpath, sizeof (curdirpath) - 1))
-          fprintf (gui_command_log_file_BM,
-                   "// bismon current directory %s\n", curdirpath);
-        else
-          FATAL_BM ("getcwd failure %m");
-      }
-      fflush (gui_command_log_file_BM);
-    }
-}                               /* end startguilog_BM */
-
-
-void
-endguilog_BM (void)
-{
-  time_t nowtim = time (NULL);
-  struct tm nowtm = { };
-  localtime_r (&nowtim, &nowtm);
-  char nowbuf[64];
-  memset (nowbuf, 0, sizeof (nowbuf));
-  strftime (nowbuf, sizeof (nowbuf), "%c", &nowtm);
-  fprintf (gui_command_log_file_BM,
-           "\n\f/// end of bismon GUI command log file %s at %s\n",
-           gui_log_name_bm, nowbuf);
-  if (gui_command_log_file_BM != stdout && gui_command_log_file_BM != stderr)
-    fclose (gui_command_log_file_BM);
-  gui_command_log_file_BM = NULL;
-  fflush (NULL);
-}                               /* end endguilog_BM */
-
-
-void
-add_defer_command_gtk_BM (void)
-{
-  DBGPRINTF_BM ("add_defer_command_gtk_BM start");
-  ASSERT_BM (defer_gtk_writepipefd_BM > 0);
-  int count = 0;
-  do
-    {                           /* most of the time, that loop runs once */
-      int nbw = write (defer_gtk_writepipefd_BM, "X", 1);
-      if (nbw < 0)
-        {
-          if (errno == EINTR)
-            {
-              count++;
-              continue;
-            }
-          if (errno == EWOULDBLOCK)
-            {
-              usleep (6500);
-              count++;
-              continue;
-            }
-          else
-            FATAL_BM ("add_defer_command_gtk_BM failed write, count %d - %m",
-                      count);
-        }
-      if (nbw == 1)
-        return;
-      usleep (1000);
-      count++;
-    }
-  while (count < 256);
-  FATAL_BM ("add_defer_command_gtk_BM failure count#%d", count);
-}                               /* end add_defer_command_gtk_BM */
-
-#endif /*BISMONGTK*/
-////////////////////////////////////////////////////////////////
 /// mail testing
   void
 do_test_mailhtml_bm (void)
@@ -2867,5 +2658,26 @@ log_printf_message_BM (const char *fmt, ...)
   if (buf != smallbuf)
     free (buf);
 }                               /* end log_printf_message_BM */
+
+
+
+void
+parse_program_options_BM(int argc, char**argv)
+{
+  int initialargc = argc;
+  GOptionContext *gctx = g_option_context_new("Bismon static source code analyzer");
+  GError* errp = NULL;
+  g_option_context_set_summary(gctx, "BISMON is a static source code analyzer, using GCC.\n"
+			       "see github.com/bstarynk/bismon ...\n"
+			       "WITHOUT WARRANTY, since GPLv3+ licensed");
+  g_option_context_add_main_entries(gctx, optionstab_bm, NULL);
+  if (!g_option_context_parse(gctx, &argc, &argv, &errp)) {
+    FATAL_BM("%s failed to parse program options (pid #%d, host %s):\n... %s",
+	     argv[0], (int)getpid(), myhostname_BM, errp->message);
+  }
+  g_option_context_free(gctx);
+  DBGPRINTF_BM("end parse_program_options_BM, argc wad %d now %d", initialargc, argc);
+} /* end parse_program_options_BM */
+
 
 /*** end of file main_BM.c ***/
