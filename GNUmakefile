@@ -182,8 +182,9 @@ executable: _bismon-config.mk
 
 
 _bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
-	./BM_makeconst -C $@ $(BM_CSOURCES)
+	./BM_makeconst -C $@ $(BM_C_SOURCES) $(BM_C_ONION_SOURCES) $(BM_CXX_SOURCES)
 
+_bismon-constants.o: _bismon-constants.c
 
 _%_ONIONBM.h _%_ONIONBM.c: %_ONIONBM.thtml
 	/bin/cp $^ $^~ $(warning processing $^)
@@ -196,10 +197,12 @@ _%_ONIONBM.h _%_ONIONBM.c: %_ONIONBM.thtml
 ## a phony target, used in Build script
 objects:  $(BISMONMK_OBJECTS)
 
-bismon:  _bismon-config.mk _bm_config.h
-	$(MAKE) $(BISMONMK_OBJECTS) __timestamp.o
-	$(LINK.cc)  $(BISMONMK_OBJECTS) __timestamp.o -L$(BISMONMK_ONION_LIBDIR) -lonion \
-                    $(shell pkg-config --libs $(BISMONMK_PACKAGES)) -lpthread -ldl -rdynamic -o $@
+bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c
+	$(MAKE) $(BISMONMK_OBJECTS) _bismon-constants.o __timestamp.o
+	$(LINK.cc)  $(BISMONMK_OBJECTS) _bismon-constants.o  __timestamp.o \
+                    -L$(BISMONMK_ONION_LIBDIR) -lonion \
+                    $(shell pkg-config --libs $(BISMONMK_PACKAGES)) \
+                    -lbacktrace -lcrypt -lpthread -ldl -rdynamic -o $@
 
 
 _bismon-makedep.mk: GNUmakefile emit-make-dependencies.bash

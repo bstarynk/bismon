@@ -27,6 +27,7 @@ _bismon-config.mk
 _bm_config.h
 _bm_config.c
 _BM_compmod_*
+_bismon-constants.c
 
 _cflagsmodule.mk
 *BM.const.h

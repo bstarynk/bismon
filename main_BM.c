@@ -1294,9 +1294,7 @@ main (int argc, char **argv)
                              (int) getpid (), pid_filepath_bm);
             }
           INFOPRINTF_BM ("running ONION web interface for %d jobs %s",
-                         nbworkjobs_BM,
-                         bismon_has_gui_BM ()? "also with a GUI" :
-                         "alone (no GUI)");
+                         nbworkjobs_BM);
           run_onionweb_BM (nbworkjobs_BM);
         }
     }
