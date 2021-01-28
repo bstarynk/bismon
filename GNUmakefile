@@ -199,7 +199,7 @@ objects:  $(BISMONMK_OBJECTS)
 bismon:  _bismon-config.mk _bm_config.h
 	$(MAKE) $(BISMONMK_OBJECTS) __timestamp.o
 	$(LINK.cc)  $(BISMONMK_OBJECTS) __timestamp.o -L$(BISMONMK_ONION_LIBDIR) -lonion \
-                    $(shell pkg-config --libs $(BISMONMK_PACKAGES)) -rdynamic -o $@
+                    $(shell pkg-config --libs $(BISMONMK_PACKAGES)) -lpthread -ldl -rdynamic -o $@
 
 
 _bismon-makedep.mk: GNUmakefile emit-make-dependencies.bash
