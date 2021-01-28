@@ -53,14 +53,20 @@ if [ ! -f _bm_config.h ]; then
     exit 1
 fi
 
+
+### some GNU make 4, or perhaps a variant of remake
+### 
+BISMON_MAKE?=make
+export BISMON_MAKE
+
 ## build make dependencies
-make _bismon-makedep.mk || (
+$(BISMON_MAKE) _bismon-makedep.mk || (
     echo Failed to make dependencies _bismon-makedep.mk in $(pwd) > /dev/stderr
     exit 1
 )
 
 ### build the BM_makeconst generator
-make BM_makeconst  || (
+$(BISMON_MAKE)  BM_makeconst  || (
     echo Failed to make generator BM_makeconst in $(pwd) > /dev/stderr
     exit 1
 )
@@ -68,7 +74,7 @@ make BM_makeconst  || (
 ### build the object files in parallel
 nbproc=$(grep '^processor' /proc/cpuinfo | wc -l)
 
-make --jobs=$[$nbproc/2 + 1] objects || (
+$(BISMON_MAKE) --jobs=$[$nbproc/2 + 1] objects || (
     echo Failed to make objects in $(pwd) > /dev/stderr
     exit 1
 )
