@@ -62,7 +62,6 @@ extern void run_testplugins_after_load_BM (void);
 
 static void add_passwords_from_file_BM (const char *addedpasspath);
 
-bool run_gtk_BM = false;
 bool run_onion_BM = false;
 
 ////////////////
@@ -1040,8 +1039,7 @@ main (int argc, char **argv)
   myprogname_BM = argv[0];
   if (argc > 1 && (!strcmp (argv[1], "-D") || !strcmp (argv[1], "--debug")))
     debugmsg_BM = true;
-  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
-                run_gtk_BM ? "true" : "false",
+  DBGPRINTF_BM ("run_onion is %s",
                 run_onion_BM ? "true" : "false");
   dlprog_BM = dlopen (NULL, RTLD_NOW | RTLD_GLOBAL);
   if (!dlprog_BM)
@@ -1121,9 +1119,10 @@ main (int argc, char **argv)
     nbworkjobs_BM = MINNBWORKJOBS_BM + 1;
   else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
-  if (!batch_bm && !run_gtk_BM && !run_onion_BM)
+  if (!batch_bm &&  !run_onion_BM)
     FATAL_BM
-      ("no batch or gtk or onion option; please run with --batch or --web or --gui");
+      ("no batch or onion option; please run with --batch or --web;\n"
+       "... or run: %s --help", argv[0]);
   /// running as root is really unreasonable.
   if (getuid () == 0)
     FATAL_BM ("bismon should not be running as root real user (and euid#%d)",
@@ -1132,15 +1131,10 @@ main (int argc, char **argv)
     FATAL_BM
       ("bismon should not be running as root effective user (and uid#%d)",
        (int) getuid ());
-  if (run_gtk_BM && run_onion_BM)
-    INFOPRINTF_BM ("both GUI and Web interfaces requested (%d jobs)",
-                   nbworkjobs_BM);
-  else if (run_onion_BM)
+  if (run_onion_BM)
     INFOPRINTF_BM ("Web interface requested alone (%d jobs)", nbworkjobs_BM);
-  else if (run_gtk_BM)
-    INFOPRINTF_BM ("GUI interface requested alone (%d jobs)", nbworkjobs_BM);
   else if (batch_bm)
-    INFOPRINTF_BM ("batch mode requested without Web or GUI (%d jobs)",
+    INFOPRINTF_BM ("batch mode requested without Web (%d jobs)",
                    nbworkjobs_BM);
   //
 #warning not sure of this....
@@ -1187,8 +1181,6 @@ main (int argc, char **argv)
     FATAL_BM ("--chdir-after-load directory '%s' cannot start with minus,\n"
               "... use '--chdir-after-load ./%s' instead",
               chdir_after_load_bm, chdir_after_load_bm);
-  if (run_gtk_BM && run_onion_BM)
-    WARNPRINTF_BM ("bismon trying to run both GTK and ONION");
   INFOPRINTF_BM ("bismon should load directory %s - git commit: %s",
                  load_dir_bm, bismon_lastgitcommit);
   load_initial_BM (load_dir_bm);
@@ -1224,10 +1216,7 @@ main (int argc, char **argv)
     {
       if (run_onion_BM)
         {
-          if (!run_gtk_BM)
-            INFOPRINTF_BM ("initializing ONION");
-          else
-            INFOPRINTF_BM ("initializing ONION, but GTK also requested");
+	  INFOPRINTF_BM ("initializing ONION for Web services");
           initialize_webonion_BM ();
         }
     }
