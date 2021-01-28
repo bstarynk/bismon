@@ -492,6 +492,85 @@ script} for \texttt{/bin/bash}. \textbf{Then run that script} using the
 \index{building!\texttt{bismon}}
 
 
+\subsection{Checking the version of \texttt{bismon}}
+
+Once the \texttt{./Build} script did work correctly, there should be
+some \texttt{bismon} executable file. Check first using the
+\texttt{file ./bismon} command, it should give you something similar
+to:
+
+\begin{verbatim}
+./bismon: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked,
+ interpreter /lib64/ld-linux-x86-64.so.2,
+BuildID[sha1]=b4e74f225dff6115a01764abfe361a1b7757a208, for GNU/Linux 3.2.0,
+with debug_info, not stripped
+\end{verbatim}
+
+Then use \texttt{ldd ./bismon} to verify that all dependencies are
+present. On some computer, I am getting the following output:
+
+\begin{verbatim}
+ % ldd ./bismon
+	linux-vdso.so.1 (0x00007ffee532a000)
+	libonion.so.0 => /usr/local/lib/libonion.so.0 (0x00007f5ee9ec2000)
+	libglib-2.0.so.0 => /lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007f5ee9d99000)
+	libjansson.so.4 => /usr/local/lib/libjansson.so.4 (0x00007f5ee9d8a000)
+	libcrypt.so.1 => /lib/x86_64-linux-gnu/libcrypt.so.1 (0x00007f5ee9d4f000)
+	libpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007f5ee9d2c000)
+	libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007f5ee9d24000)
+	libstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f5ee9b43000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f5ee99f4000)
+	libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f5ee99d9000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f5ee97e7000)
+	libxml2.so.2 => /lib/x86_64-linux-gnu/libxml2.so.2 (0x00007f5ee962d000)
+	libpam.so.0 => /lib/x86_64-linux-gnu/libpam.so.0 (0x00007f5ee961b000)
+	libgcrypt.so.20 => /lib/x86_64-linux-gnu/libgcrypt.so.20 (0x00007f5ee94fb000)
+	libgnutls.so.30 => /lib/x86_64-linux-gnu/libgnutls.so.30 (0x00007f5ee9325000)
+	libsqlite3.so.0 => /lib/x86_64-linux-gnu/libsqlite3.so.0 (0x00007f5ee91fc000)
+	libhiredis.so.0.14 => /lib/x86_64-linux-gnu/libhiredis.so.0.14 (0x00007f5ee91e9000)
+	libsystemd.so.0 => /lib/x86_64-linux-gnu/libsystemd.so.0 (0x00007f5ee913a000)
+	libpcre.so.3 => /lib/x86_64-linux-gnu/libpcre.so.3 (0x00007f5ee90c7000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007f5eea0b9000)
+	libicuuc.so.66 => /lib/x86_64-linux-gnu/libicuuc.so.66 (0x00007f5ee8edf000)
+	libz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x00007f5ee8ec3000)
+	liblzma.so.5 => /lib/x86_64-linux-gnu/liblzma.so.5 (0x00007f5ee8e9a000)
+	libaudit.so.1 => /lib/x86_64-linux-gnu/libaudit.so.1 (0x00007f5ee8e6e000)
+	libgpg-error.so.0 => /lib/x86_64-linux-gnu/libgpg-error.so.0 (0x00007f5ee8e4b000)
+	libp11-kit.so.0 => /lib/x86_64-linux-gnu/libp11-kit.so.0 (0x00007f5ee8d13000)
+	libidn2.so.0 => /lib/x86_64-linux-gnu/libidn2.so.0 (0x00007f5ee8cf2000)
+	libunistring.so.2 => /lib/x86_64-linux-gnu/libunistring.so.2 (0x00007f5ee8b70000)
+	libtasn1.so.6 => /lib/x86_64-linux-gnu/libtasn1.so.6 (0x00007f5ee8b5a000)
+	libnettle.so.7 => /lib/x86_64-linux-gnu/libnettle.so.7 (0x00007f5ee8b20000)
+	libhogweed.so.5 => /lib/x86_64-linux-gnu/libhogweed.so.5 (0x00007f5ee8ae8000)
+	libgmp.so.10 => /lib/x86_64-linux-gnu/libgmp.so.10 (0x00007f5ee8a62000)
+	librt.so.1 => /lib/x86_64-linux-gnu/librt.so.1 (0x00007f5ee8a57000)
+	liblz4.so.1 => /lib/x86_64-linux-gnu/liblz4.so.1 (0x00007f5ee8a36000)
+	libicudata.so.66 => /lib/x86_64-linux-gnu/libicudata.so.66 (0x00007f5ee6f75000)
+	libcap-ng.so.0 => /lib/x86_64-linux-gnu/libcap-ng.so.0 (0x00007f5ee6f6d000)
+	libffi.so.7 => /lib/x86_64-linux-gnu/libffi.so.7 (0x00007f5ee6f5f000)
+\end{verbatim}
+
+At last, you can ask \texttt{bismon} to give its version information
+using \texttt{./bismon --version} which might output something like:
+
+\begin{verbatim}
+% ./bismon --version
+./bismon: version information
+	 timestamp: jeu. 28 janv. 2021 13:32:53
+	 git id: d62d320623ad2a7e73019e736870039508c36d02
+	 last git commit: d62d320623ad tell about the Build script in end of BISMON-config.cc
+	 last git tag: heads/master
+	 source checksum: d929d9edebcd6a76618901c7ebbaed71
+	 source dir: /home/basile/bismon-master
+	 GNUmakefile: /home/basile/bismon-master/GNUmakefile
+########
+run
+	   ./bismon --help
+to get help.
+\end{verbatim}
+
+Please report the output of \texttt{./bismon --version} before any question on \textsc{Bismon}.
+
 \section{Dumping and restoring the \texttt{bismon} persistent heap}
 \label{sec:dumping-restoring-heap}
 
