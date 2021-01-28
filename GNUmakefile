@@ -186,9 +186,11 @@ _bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
 
 
 _%_ONIONBM.h _%_ONIONBM.c: %_ONIONBM.thtml
-	/bin/cp $^ $^~
-	/bin/mv -f $(patsubst %.thtml,_%.h,$^) $(patsubst %.thtml,_%.h~,$^)
-	/bin/mv -f $(patsubst %.thtml,_%.c,$^) $(patsubst %.thtml,_%.c~,$^)
+	/bin/cp $^ $^~ $(warning processing $^)
+	if [ -f  $(patsubst %.thtml,_%.h,$^) ] ; then \
+	   /bin/mv -vf $(patsubst %.thtml,_%.h,$^) $(patsubst %.thtml,_%.h~,$^) ; fi
+	if [ -f  $(patsubst %.thtml,_%.c,$^) ] ; then \
+	   /bin/mv -vf $(patsubst %.thtml,_%.c,$^) $(patsubst %.thtml,_%.c~,$^) ; fi
 	$(ONION_TEMPLATE_GENERATOR) --asset-file $(patsubst %.thtml,_%.h,$^) $^ $(patsubst %.thtml,_%.c,$^)
 
 ## a phony target, used in Build script
