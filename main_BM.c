@@ -65,12 +65,6 @@ static void add_passwords_from_file_BM (const char *addedpasspath);
 bool run_gtk_BM = false;
 bool run_onion_BM = false;
 
-#ifdef BISMONGTK
-GIOChannel *defer_gtk_readpipechan_BM;
-int defer_gtk_readpipefd_BM = -1;
-int defer_gtk_writepipefd_BM = -1;
-static void rungui_BM (int nbjobs);
-#endif /*BISMONGTK*/
 ////////////////
 const char *onion_ssl_certificate_BM;
 const char *onion_web_base_BM;
@@ -676,26 +670,6 @@ const GOptionEntry optionstab_bm[] = {
    "forcibly run a final garbage collection (after any dump or event loop)",
    .arg_description = NULL},
   //
-#if defined (BISMONGTK)
-  //
-  /* when BISMONGTK and web */
-  {.long_name = "gui",          //
-   .short_name = (char) 0,
-   .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_NONE,
-   .arg_data = &run_gtk_BM,
-   .description = "run GUI with GTK",
-   .arg_description = NULL},
-  //  #warning both gtk & onion options
-  //
-  {.long_name = "web",          //
-   .short_name = (char) 0,
-   .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_NONE,
-   .arg_data = &run_onion_BM,
-   .description = "run web interface with ONION",
-   .arg_description = NULL},
-#endif /*BISMONGTK*/
     //
   {.long_name = "batch",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
@@ -762,38 +736,6 @@ const GOptionEntry optionstab_bm[] = {
    .description = "gives version information",
    .arg_description = NULL},
   //
-#ifdef BISMONGTK
-  //////////////////
-  {.long_name = "gui-builder",.short_name = (char) 0,
-   .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_FILENAME,
-   .arg_data = &builder_file_bm,
-   .description = "with GTK builder file FILE (default: bismon.ui)",
-   .arg_description = "FILE"},
-  //
-  {.long_name = "gui-style",.short_name = (char) 0,
-   .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_FILENAME,
-   .arg_data = &css_file_bm,
-   .description = "with GTK style CSS file FILE (default: bismon.css)",
-   .arg_description = "FILE"},
-  //
-  {.long_name = "gui-log",.short_name = (char) 0,
-   .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_FILENAME,
-   .arg_data = &gui_log_name_bm,
-   .description =
-   "GUI log file name (none if empty, - is stdout, default is _bismon.log)",
-   .arg_description = "FILE"},
-  //
-  {.long_name = "gui-init-command",.short_name = (char) 0,
-   .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_FILENAME,
-   .arg_data = &gui_init_cmd_file_BM,
-   .description =
-   "GUI initial command FILE path, whose content goes into the command subwindow at startup",
-   .arg_description = "FILE"},
-#endif /*BISMONGTK*/
     //////////////////
     //
   {.long_name = "ssl-certificate",.short_name = (char) 0,
@@ -1098,26 +1040,6 @@ main (int argc, char **argv)
   myprogname_BM = argv[0];
   if (argc > 1 && (!strcmp (argv[1], "-D") || !strcmp (argv[1], "--debug")))
     debugmsg_BM = true;
-#if defined (BISMONGTK)
-  /* when  BISMONGTK */
-  if (strstr (basename (myprogname_BM), "gtk")
-      || (argc > 1 && !strcmp (argv[1], "--gui"))
-      || (argc > 2 && argv[1][0] == '-' && !strcmp (argv[1], "--gui")))
-    run_gtk_BM = true;
-  if (strstr (basename (myprogname_BM), "onion")
-      || (argc > 1 && !strcmp (argv[1], "--web"))
-      || (argc > 2 && argv[1][0] == '-' && !strcmp (argv[1], "--web")))
-    run_onion_BM = true;
-  for (int ix = 1; ix < argc; ix++)
-    {
-      if (!strcmp (argv[ix], "--gui"))
-        run_gtk_BM = true;
-      else if (!strcmp (argv[ix], "--web"))
-        run_onion_BM = true;
-    }
-  if (run_gtk_BM && run_onion_BM)
-    INFOPRINTF_BM ("running both GUI (GTK) & Web (Onion) interfaces");
-#endif /* BISMONGTK */
   DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
                 run_gtk_BM ? "true" : "false",
                 run_onion_BM ? "true" : "false");
@@ -1169,55 +1091,16 @@ main (int argc, char **argv)
   initialize_predefined_names_BM ();
   initialize_agenda_BM ();
   GError *opterr = NULL;
-  bool guiok = false;
-  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s (argc=%d)",
-                run_gtk_BM ? "true" : "false",
+  DBGPRINTF_BM ("run_onion is %s (argc=%d)",
                 run_onion_BM ? "true" : "false", argc);
-#ifdef BISMONGTK
-  if (run_gtk_BM)
-    /// should actually use gtk_init_with_args so define some
-    /// GOptionEntry array
-    guiok = gtk_init_with_args (&argc, &argv,
-                                " - The bismon[gtk] program (with GTK GUI)",
-                                optionstab_bm, NULL, &opterr);
-  if (onion_web_base_BM)
-    {
-      DBGPRINTF_BM ("force run_onion with onion_web_base_BM '%s'",
-                    onion_web_base_BM);
-      run_onion_BM = true;
-    };
-  if (guiok)
-    {
-      DBGPRINTF_BM ("force run_gtk with guiok");
-      run_gtk_BM = true;
-    }
-#endif /*BISMONGTK*/
-    DBGPRINTF_BM ("run_gtk is %s & run_onion is %s (argc=%d); guiok=%s",
-                  run_gtk_BM ? "true" : "false",
-                  run_onion_BM ? "true" : "false",
-                  argc, guiok ? "true" : "false");
   ////
-  if (!guiok)
-    {
-      GOptionContext *weboptctx =
-        g_option_context_new
-        ("- The bismon[ion] program (with Web interface)");
-      if (!weboptctx)
-        FATAL_BM ("no option context");
-      g_option_context_add_main_entries (weboptctx, optionstab_bm, NULL);
-      if (!g_option_context_parse (weboptctx, &argc, &argv, &opterr))
-        FATAL_BM ("bismonion failed to parse options - %s",
-                  opterr ? opterr->message : "??");
-      g_option_context_free (weboptctx);
-    }
   ///
   if (debugmsg_BM)
     fprintf (stderr,
              "debug messages enabled %s pid %d timestamp %s commit %s\n",
              myprogname_BM, (int) getpid (), bismon_timestamp,
              bismon_lastgitcommit);
-  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
-                run_gtk_BM ? "true" : "false",
+  DBGPRINTF_BM ("run_onion is %s",
                 run_onion_BM ? "true" : "false");
   if (give_version_bm)
     give_prog_version_BM (myprogname_BM);
@@ -1268,28 +1151,7 @@ main (int argc, char **argv)
   //
   if (count_emit_has_predef_bm > 0)
     emit_has_predef_BM ();
-  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
-                run_gtk_BM ? "true" : "false",
-                run_onion_BM ? "true" : "false");
-#ifdef BISMONGTK
-  if (!guiok && !batch_bm && run_gtk_BM)
-    FATAL_BM ("gtk_init_with_args failed : %s",
-              opterr ? opterr->message : "???");
-  if (!batch_bm)
-    {
-      if (run_gtk_BM)
-        {
-          INFOPRINTF_BM ("initializing GTK with builder %s & css %s",
-                         builder_file_bm, css_file_bm);
-          initialize_newgui_BM (builder_file_bm, css_file_bm);
-        }
-    }
-#endif /*BISMONGTK*/
-    DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
-                  run_gtk_BM ? "true" : "false",
-                  run_onion_BM ? "true" : "false");
-  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
-                run_gtk_BM ? "true" : "false",
+  DBGPRINTF_BM ("run_onion is %s",
                 run_onion_BM ? "true" : "false");
   if (!load_dir_bm)
     load_dir_bm = ".";
@@ -1380,8 +1242,7 @@ main (int argc, char **argv)
         FATAL_BM ("missing --mailhtml-contributor CONTRIBUTOR option");
       do_test_mailhtml_bm ();
     }
-  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
-                run_gtk_BM ? "true" : "false",
+  DBGPRINTF_BM ("run_onion is %s",
                 run_onion_BM ? "true" : "false");
   if (nb_added_predef_bm > 0)
     add_new_predefined_bm ();
@@ -1409,66 +1270,11 @@ main (int argc, char **argv)
         }
       do_dump_after_load_BM ();
     };
-  DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
-                run_gtk_BM ? "true" : "false",
+  DBGPRINTF_BM ("run_onion is %s",
                 run_onion_BM ? "true" : "false");
-#ifdef BISMONGTK
-  if (batch_bm)
-    {
-      nbworkjobs_BM = 0;
-      INFOPRINTF_BM ("no GUI in batch mode\n");
-    }
-  else if (!run_onion_BM)
-    {
-      DBGPRINTF_BM ("no onion, with BISMONGTK");
-      if (pid_filepath_bm && pid_filepath_bm[0]
-          && strcmp (pid_filepath_bm, "-"))
-        {
-          FILE *pidfile = fopen (pid_filepath_bm, "w");
-          if (!pidfile)
-            FATAL_BM ("failed to open pid file %s - %m", pid_filepath_bm);
-          fprintf (pidfile, "%d\n", (int) getpid ());
-          fclose (pidfile);
-          INFOPRINTF_BM ("wrote pid %d (BISMONGTK) in pid-file %s",
-                         (int) getpid (), pid_filepath_bm);
-        }
-      if (run_gtk_BM)
-        {
-          INFOPRINTF_BM ("running GUI interface with GTK for %d jobs",
-                         nbworkjobs_BM);
-          rungui_BM (nbworkjobs_BM);
-        }
-    }
-  else if (run_onion_BM && run_gtk_BM)
-    {
-      DBGPRINTF_BM ("both onion & gtk");
-      if (pid_filepath_bm && pid_filepath_bm[0]
-          && strcmp (pid_filepath_bm, "-"))
-        {
-          FILE *pidfile = fopen (pid_filepath_bm, "w");
-          if (!pidfile)
-            FATAL_BM ("failed to open pid file %s - %m", pid_filepath_bm);
-          fprintf (pidfile, "%d\n", (int) getpid ());
-          fclose (pidfile);
-          INFOPRINTF_BM
-            ("wrote pid %d (BISMONGTK) in pid-file %s",
-             (int) getpid (), pid_filepath_bm);
-        }
-      INFOPRINTF_BM ("running Web interface with ONION (& Gui!) for %d jobs",
-                     nbworkjobs_BM);
-      run_onionweb_BM (nbworkjobs_BM);
-      INFOPRINTF_BM ("running GUI interface with GTK (& Web!) for %d jobs",
-                     nbworkjobs_BM);
-      rungui_BM (nbworkjobs_BM);
-    }
-#endif /*BISMONGTK*/
     //
-    DBGPRINTF_BM ("run_gtk is %s & run_onion is %s",
-                  run_gtk_BM ? "true" : "false",
-                  run_onion_BM ? "true" : "false");
-  if (run_onion_BM && !run_gtk_BM)
+  if (run_onion_BM)
     {
-      DBGPRINTF_BM ("run_onion_BM without run_gtk_BM");
       if (batch_bm)
         {
           nbworkjobs_BM = 0;
@@ -1507,8 +1313,7 @@ main (int argc, char **argv)
       full_garbage_collection_BM (NULL);
 
     }
-  DBGPRINTF_BM ("ending BISMON run_gtk_BM %s run_onion_BM %s batch_bm %s",
-                run_gtk_BM ? "true" : "false",
+  DBGPRINTF_BM ("ending BISMON run_onion_BM %s batch_bm %s",
                 run_onion_BM ? "true" : "false", batch_bm ? "true" : "false");
   free ((void *) contributors_filepath_BM), contributors_filepath_BM = NULL;
   free ((void *) passwords_filepath_BM), passwords_filepath_BM = NULL;
@@ -1556,13 +1361,6 @@ is_nice_locale_BM (const char *locstr)
     return true;
 }                               /* end is_nice_locale_BM */
 
-
-
-bool
-bismon_has_gui_BM (void)
-{
-  return gui_is_running_BM || run_gtk_BM;
-}                               /* end bismon_has_gui_BM */
 
 
 bool
