@@ -656,8 +656,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_NONE,
    .arg_data = &want_cleanup_bm,
    .description =
-   "cleanup memory at end to make valgrind happier\n"
-   "\t ... (see http://valgrind.org/ for more).",
+   "cleanup memory at end (for valgrind)\n"
+   "\t ... (see valgrind.org for more).",
    .arg_description = NULL},
   ///
   {.long_name = "final-gc",     //
@@ -674,7 +674,7 @@ const GOptionEntry optionstab_bm[] = {
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
    .arg_data = &batch_bm,
-   .description = "run in batch mode without GUI",
+   .description = "run in batch mode without user interface",
    .arg_description = NULL},
   //
   {.long_name = "debug",.short_name = (char) 'D',
@@ -1053,16 +1053,14 @@ main (int argc, char **argv)
   memset ((char *) myhostname_BM, 0, sizeof (myhostname_BM));
   if (gethostname ((char *) myhostname_BM, sizeof (myhostname_BM) - 1))
     FATAL_BM ("gethostname failure %m");
+    bool skiplocalcheck = false;
   {
     // check the locale(7), unless using print-contributor-of-oid
-    bool skiplocalcheck = false;
     for (int ix = 0; ix < argc && !skiplocalcheck; ix++)
       if (!strncmp
           (argv[ix], "--print-contributor-of-oid",
            strlen ("--print-contributor-of-oid")))
         skiplocalcheck = true;
-    if (!skiplocalcheck)
-      check_locale_BM ();
   }
   ///
   {
@@ -1077,6 +1075,7 @@ main (int argc, char **argv)
                             /*errorcb: */
                             backtracerrorcb_BM,
                             /*data: */ NULL);
+  parse_program_options_BM (argc, argv);
   if (randomseed_BM > 0)
     {
       g_random_set_seed (randomseed_BM);
@@ -1084,7 +1083,8 @@ main (int argc, char **argv)
         ("set -using g_random_set_seed- the Glib PRNG random seed to %d",
          randomseed_BM);
     }
-  parse_program_options_BM (argc, argv);
+  if (!skiplocalcheck)
+    check_locale_BM ();
   initialize_garbage_collector_BM ();
   check_delims_BM ();
   initialize_globals_BM ();
@@ -2665,7 +2665,7 @@ void
 parse_program_options_BM(int argc, char**argv)
 {
   int initialargc = argc;
-  GOptionContext *gctx = g_option_context_new("Bismon static source code analyzer");
+  GOptionContext *gctx = g_option_context_new("* the BISMON static source code analyzer *");
   GError* errp = NULL;
   g_option_context_set_summary(gctx, "BISMON is a static source code analyzer, using GCC.\n"
 			       "see github.com/bstarynk/bismon ...\n"
