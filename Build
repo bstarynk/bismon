@@ -55,27 +55,28 @@ fi
 
 
 ### some GNU make 4, or perhaps a variant of remake
-### 
-BISMON_MAKE?=make
-export BISMON_MAKE
+###
+if [ -z $BISMON_MAKE ]; then
+    export BISMON_MAKE=make
+fi
 
 ## build make dependencies
-$(BISMON_MAKE) _bismon-makedep.mk || (
+$BISMON_MAKE _bismon-makedep.mk || (
     echo Failed to make dependencies _bismon-makedep.mk in $(pwd) > /dev/stderr
     exit 1
 )
 
 ### build the BM_makeconst generator
-$(BISMON_MAKE)  BM_makeconst  || (
-    echo Failed to make generator BM_makeconst in $(pwd) > /dev/stderr
+$BISMON_MAKE  BM_makeconst  || (
+    echo Failed to make generator BM_makeconst  using $BISMON_MAKE in $(pwd) > /dev/stderr
     exit 1
 )
 
 ### build the object files in parallel
 nbproc=$(grep '^processor' /proc/cpuinfo | wc -l)
 
-$(BISMON_MAKE) --jobs=$[$nbproc/2 + 1] objects || (
-    echo Failed to make objects in $(pwd) > /dev/stderr
+$BISMON_MAKE --jobs=$[$nbproc/2 + 1] objects || (
+    echo Failed to make objects using $BISMON_MAKE in $(pwd) > /dev/stderr
     exit 1
 )
 
