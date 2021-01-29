@@ -28,7 +28,6 @@ static inline pid_t gettid_BM (void);
 extern int64_t prime_above_BM (int64_t n);
 extern int64_t prime_below_BM (int64_t n);
 
-extern bool bismon_has_gui_BM (void);
 extern bool bismon_has_web_BM (void);
 
 static inline const char *basename_BM (const char *);

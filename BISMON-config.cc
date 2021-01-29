@@ -1830,6 +1830,7 @@ main (int argc, char**argv)
     {
       std::cout << "### See also refpersys.org for another free software project."
                 << std::endl << std::endl;
+      std::cout << "### you may want to review, and later run, the ./Build script...." << std::endl;
     }
   return 0;
 } // end function main

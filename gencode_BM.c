@@ -4595,13 +4595,6 @@ simple_module_initialize_BM (const value_tyBM arg1,     //
       log_printf_message_BM (" /%s with %u constants and %u routines at %s.",
                              modulid, nbconstid, nbroutid, nowbuf);
       log_end_message_BM ();
-#ifdef BISMONGTK
-      if (gui_command_log_file_BM)
-        fprintf (gui_command_log_file_BM,
-                 "\n//// initialized simple module %s /%s  with %u constants and %u routines at %s\n",
-                 objectdbg_BM (_.modulob), modulid, nbconstid, nbroutid,
-                 nowbuf);
-#endif /*BISMONGTK*/
     }
   return (value_tyBM) makenode5_BM (k_simple_module_initialize, _.constsetv,
                                     _.routupv, _.arg1v, _.arg2v, _.arg3v);

@@ -987,7 +987,7 @@ objstrbufferunsafeappendstartstr_BM (objectval_tyBM * obj,
     return;
   if (len < 0)
     len = strlen (cstr);
-  ASSERT_BM (len <= strlen (cstr));
+  ASSERT_BM (len <= (int) strlen (cstr));
   ASSERT_BM (sbuf->sbuf_dbuf);
   size_t siz = sbuf->sbuf_size;
   unsigned maxsiz = ((typedhead_tyBM *) sbuf)->rlen;

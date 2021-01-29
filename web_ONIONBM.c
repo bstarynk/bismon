@@ -542,19 +542,11 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
       /// (and their output pipes), to SIGCHLD and SIGTERM + SIGQUIT
       /// see https://groups.google.com/a/coralbits.com/d/msg/onion-dev/m-wH-BY2MA0/QJqLNcHvAAAJ
       /// and https://groups.google.com/a/coralbits.com/d/msg/onion-dev/ImjNf1EIp68/R37DW3mZAAAJ
-      if (bismon_has_gui_BM ())
-        {
-          INFOPRINTF_BM
-            ("run_onionweb dont run web_plain_event_loop because we have GTK GUI");
-        }
-      else
-        {
-          INFOPRINTF_BM ("run_onionweb runs web_plain_event_loop");
-          web_is_running_BM = true;
-          web_plain_event_loop_BM ();
-          web_is_running_BM = false;
-          INFOPRINTF_BM ("run_onionweb ended web_plain_event_loop");
-        }
+      INFOPRINTF_BM ("run_onionweb runs web_plain_event_loop");
+      web_is_running_BM = true;
+      web_plain_event_loop_BM ();
+      web_is_running_BM = false;
+      INFOPRINTF_BM ("run_onionweb ended web_plain_event_loop");
     }
 }                               /* end run_onionweb_BM */
 
