@@ -386,6 +386,50 @@ and it is advised\footnote{Once \texttt{make redump} fails, the
   find the latest consistent state of your \textit{Bismon} repository.}
 to run it daily.
   
+{\large \textbf{Users and contributors related files}}
+
+The \textsc{Bismon} system does need some minimal data about
+users. The reader of this report is expected to verify (perhaps with
+the help of lawyers) that such data is compliant and compatible with
+regulations like the European \index{GDPR} GDPR.
+
+\begin{itemize}
+\item the textual file \texttt{contributors\_BM} describes the
+  known\index{contributors-bm@\texttt{contributors\_BM} file}
+  contributors to the \textsc{Bismon} software. That file has comments
+  (or ignored lines) starting with the \texttt{\#}
+  character. Non-comment lines contain three or four fields, separated
+  by semi-colons (i.e. \texttt{;}):
+
+  \begin{enumerate}
+  \item the user or contributor name, as known to the system. It could be some pseudo.
+  \item the unique objid of the \textsc{Bismon} object describing that user or contributor
+  \item the email of that user.
+  \item an optional email alias of the same user
+  \end{enumerate}
+
+
+\item the textual file \texttt{passwords\_BM} associates an objid with
+  some encrypted password.
+  known\index{passwords-bm@\texttt{passwords\_BM} file} This is used
+  for the login form of the web interface, and should not be readable
+  by group or others. Lines inside this files are either comments (or
+  ignored lines) starting with the \texttt{\#} character, or entry
+  lines with a user name, then a semicolon, then the objid, then a
+  semi-colon, then the encrypted password.
+
+\end{itemize}
+
+Since the main author of this draft report is known to \textsc{Bismon}
+and reified in the object of objid \texttt{\_6UYrSn7piPM\_3eYhLtoXl},
+the file \texttt{contributors\_BM} should at least contain a line like
+perhaps {\relsize{-1.5}{ \texttt{Basile
+      Starynkevitch;\_6UYrSn7piPM\_3eYhLtoXlmL;bstarynkevitch@email.invalid;bstarynk@localhost}}}
+
+It is preferable to run the \texttt{./bismon} software with specific
+command lines argument to update the contributors file and the
+passwords file.
+
 \subsection{Generators and meta-programs in \texttt{bismon}}
 
 \textcolor{brown}{\textbf{Generating code is one of the core ideas of \textsc{Bismon}}}. Such code
@@ -553,6 +597,7 @@ present. On some computer, I am possibly getting the following output:
 At last, you can ask \texttt{bismon} to give its version information
 using \texttt{./bismon --version} which might output something like:
 
+\begin{relsize}{-1}
 \begin{verbatim}
 % ./bismon --version
 ./bismon: version information
@@ -568,12 +613,14 @@ run
 	   ./bismon --help
 to get help.
 \end{verbatim}
-
+\end{relsize}
 Please report the output of \texttt{./bismon --version} before any question on \textsc{Bismon}.
 
 The output of \texttt{./bismon --help} is giving up to date information about invoking \texttt{./bismon} (e.g. in some \texttt{cron} script). For example:
 
+\begin{relsize}{-1.5}
 \verbatiminput{generated/005-bismon-help.tex}
+\end{relsize}
 
 \section{Dumping and restoring the \texttt{bismon} persistent heap}
 \label{sec:dumping-restoring-heap}
