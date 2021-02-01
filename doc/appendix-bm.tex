@@ -507,7 +507,7 @@ with debug_info, not stripped
 \end{verbatim}
 
 Then use \texttt{ldd ./bismon} to verify that all dependencies are
-present. On some computer, I am getting the following output:
+present. On some computer, I am possibly getting the following output:
 
 \begin{verbatim}
  % ldd ./bismon
@@ -570,6 +570,10 @@ to get help.
 \end{verbatim}
 
 Please report the output of \texttt{./bismon --version} before any question on \textsc{Bismon}.
+
+The output of \texttt{./bismon --help} is giving up to date information about invoking \texttt{./bismon} (e.g. in some \texttt{cron} script). For example:
+
+\verbatiminput{generated/005-bismon-help.tex}
 
 \section{Dumping and restoring the \texttt{bismon} persistent heap}
 \label{sec:dumping-restoring-heap}

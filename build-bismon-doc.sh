@@ -1,5 +1,6 @@
 #!/bin/bash -x
 # file build-bismon-doc.sh
+# for BISMON - see github.com/bstarynk/bismon/
 ## requirement: generate PDF (with hyperlinks) and HTML5
 # considering following typesetters
 # LuaLaTeX https://www.tug.org/texlive/ http://www.luatex.org/
