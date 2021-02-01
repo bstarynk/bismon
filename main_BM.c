@@ -484,21 +484,21 @@ const GOptionEntry optionstab_bm[] = {
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &load_dir_bm,
-   .description = "load directory DIR (default is .)",
+   .description = "load persistent heap from directory DIR (default is .)",
    .arg_description = "DIR"},
   //
   {.long_name = "dump",.short_name = 'd',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &dump_dir_BM,
-   .description = "dump directory DIR",
+   .description = "dump persistent heap into directory DIR",
    .arg_description = "DIR"},
   //
   {.long_name = "dump-after-load",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &dump_after_load_dir_bm,
-   .description = "dump after load directory DIR",
+   .description = "dump after load the persistent heap into directory DIR",
    .arg_description = "DIR"},
   //
   {.long_name = "contributors-file",.short_name = (char) 0,
@@ -2667,9 +2667,13 @@ parse_program_options_BM(int argc, char**argv)
   int initialargc = argc;
   GOptionContext *gctx = g_option_context_new("* the BISMON static source code analyzer *");
   GError* errp = NULL;
-  g_option_context_set_summary(gctx, "BISMON is a static source code analyzer, using GCC.\n"
-			       "see github.com/bstarynk/bismon ...\n"
-			       "WITHOUT WARRANTY, since GPLv3+ licensed");
+  static char summarybuf[512];
+  snprintf(summarybuf, sizeof(summarybuf),
+	   "BISMON is a static source code analyzer, using GCC.\n"
+	   "see github.com/bstarynk/bismon commit %s...\n"
+	   "WITHOUT WARRANTY, since GPLv3+ licensed",
+	   bismon_shortgitid);
+  g_option_context_set_summary(gctx, summarybuf);
   g_option_context_add_main_entries(gctx, optionstab_bm, NULL);
   if (!g_option_context_parse(gctx, &argc, &argv, &errp)) {
     FATAL_BM("%s failed to parse program options (pid #%d, host %s):\n... %s",
