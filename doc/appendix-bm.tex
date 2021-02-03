@@ -36,6 +36,45 @@ and should budget several days of work for that.
   with e.g. a GCC 9 compiler.}
 
 
+If you have to build GCC 10 from its source code, take into account the following advices:
+
+\begin{itemize}
+
+\item if your distribution has some slightly older version of \texttt{gcc}, get all the build dependencies of that package[s]. On Debian or Ubuntu, that means running as root some command similar to \texttt{aptitude build-dep gcc-9 g++-9}
+
+\item run \texttt{gcc -v} and write on paper the output. It will
+  inspire the configuration command you will have to run later. If the
+  output does not mention \texttt{--enable-plugin} you need to
+  recompile GCC. If the version is not GCC 10, you also need to
+  recompile GCC. Otherwise, you could use your system's GCC.
+
+\item the GCC compiler needs to be built \textit{outside of its source tree}. Practically speaking, you should:
+  \begin{enumerate}
+  \item download some \texttt{gcc-10.2.0.tar.xz} file (into \texttt{/tmp/} ...) from a mirror site close to your location (probably check its integrity using \texttt{sha512sum}).
+  \item extract that tarball: \texttt{tar xvf /tmp/gcc-10.2.0.tar.xz}
+    in some existing writable directory (you should not be root), for example your \texttt{\$HOME/gnu/} directory. You'll need
+    about a gigabyte of disk space for that source code with more than
+    a hundred thousands inodes. You'll get a fresh \texttt{gcc-10.2*}
+    source directory.
+  \item create a fresh build directory, e.g. \texttt{MyGCC-10-Build},
+    using some \texttt{mkdir MyGCC-10-Build} command from the
+    \textit{parent} directory (same example: from your
+    \texttt{\$HOME/gnu/} directory, but \textbf{not} from
+    \texttt{\$HOME/gnu/gcc-10.2}...).
+  \item Read carefully the \href{https://gcc.gnu.org/install/}{Installing GCC} chapter. Read it several times (the URL is \href{https://gcc.gnu.org/install/}{gcc.gnu.org/install/}).
+  \item Take some rest if needed, and whatever nutriment is the best
+    to raise your attention (a cup of tea, coffee, etc...)
+  \item Configure with great care your GCC compiler from inside
+    {MyGCC-10-Build}... You'll certainly want the
+    \texttt{--enable-plugin --enable-languages=c,c++,jit
+      --enable-host-shared} options to
+    \texttt{\$HOME/gnu/gcc-10.2/configure} and you probably want more
+    of them. That configure step lasts a few seconds, but is lazy
+    (most of the configuration would happen later).
+  \end{enumerate}
+
+  
+\end{itemize}
 \medskip
 
 The build procedure happens in two phases:
