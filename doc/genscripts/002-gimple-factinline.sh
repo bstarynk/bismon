@@ -4,6 +4,12 @@
 printf "@@@BISMONDOC starting %s %s cwd %s:\n" "$0" "$*" $(pwd) > /dev/stderr
 
 source genscripts/cross-gcc-config.bash
+
+if [ ! -x "$XGCC" ]; then
+    printf "@@@@BISMONDOC %s: missing GCC cross-compiler %s\n" $0 "$XGCC" > /dev/stderr
+    exit 1
+fi
+
 cd generated/
 rm -vf factinline12.c.[0-9]*t.[a-z]* 1>&2
 rm -vf factinline12-gimple* 1>&2
