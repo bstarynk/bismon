@@ -2671,7 +2671,8 @@ parse_program_options_BM(int argc, char**argv)
   snprintf(summarybuf, sizeof(summarybuf),
 	   "BISMON is a static source code analyzer, using GCC.\n"
 	   "see github.com/bstarynk/bismon commit %s...\n"
-	   "WITHOUT WARRANTY, since GPLv3+ licensed",
+	   "WITHOUT WARRANTY, since GPLv3+ licensed.\n"
+	   "A DRAFT report might be available on starynkevitch.net/Basile/bismon-doc.pdf\n",
 	   bismon_shortgitid);
   g_option_context_set_summary(gctx, summarybuf);
   g_option_context_add_main_entries(gctx, optionstab_bm, NULL);
