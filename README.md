@@ -208,20 +208,15 @@ source code, and configure it to provide them.). **An old GCC**
 * a recent Guile-enhanced `mailutils`, that is the Debian
   `mailutils-guile` providing the `/usr/bin/guimb`  executable.
 
-* [GTK](http://gtk.org/) 3.22 or better. **This is a *temporary*
-  dependency** (to be deprecated), we hope to have some web interface
-  (above [libonion](http://www.coralbits.com/libonion) probably) soon.
-  
 * [Glib](https://developer.gnome.org/glib/stable/) 2.58 or better
   (which is also needed to GTK above), because some low level routines,
-  notably [UTF-8](https://utf8everywhere.org/) related, are needed
-  (even when GTK won't be used anymore).
+  notably [UTF-8](https://utf8everywhere.org/) related, are needed.
 
 * [Jansson](http://www.digip.org/jansson/) 2.12 or better is needed
   for JSON (used in relation to WebSockets).
 
 * [libonion](http://www.coralbits.com/libonion) is needed for the web
-  interface (later than end of march 2019).
+  interface.
 
 * [GNU make](https://www.gnu.org/software/make/) 4 or better
 
