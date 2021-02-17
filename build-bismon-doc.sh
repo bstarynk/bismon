@@ -2,6 +2,16 @@
 # file build-bismon-doc.sh
 # for BISMON - see github.com/bstarynk/bismon/
 ## requirement: generate PDF (with hyperlinks) and HTML5
+##
+## usually invoked as
+###     build-bismon-doc.sh LaTeX
+## or as
+###     build-bismon-doc.sh HeVeA (unsupported)
+## but there is some
+###     build-bismon-doc.sh --help
+## option
+##########
+### could be used with git bisect
 # considering following typesetters
 # LuaLaTeX https://www.tug.org/texlive/ http://www.luatex.org/
 # & HeVeA http://hevea.inria.fr/
