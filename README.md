@@ -61,6 +61,18 @@ practically also be GPLv3+ (but other licensing schemes could be
 possible, contact me on `basile.starynkevitch@cea.fr` for more;
 however, [IANAL](https://en.wiktionary.org/wiki/IANAL) ...)
 
+
+### Related readings
+
+[Joint Strike Fighter Air Vehicule C++ coding standards]
+(https://www.stroustrup.com/JSF-AV-rules.pdf)
+
+[Zero-overhead deterministic exceptions: Throwing values]
+(http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p0709r4.pdf)
+
+[C++ standardization, papers 2021]
+(http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/)
+
 ## Approach ##
 
 *Develop some kind of* high-level (more expressive, more declarative)
