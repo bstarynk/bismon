@@ -468,3 +468,12 @@ by email the author to get possible workarounds. Notice that such
 temporary bugs known to the author are *not* registered as [Bismon
 `gitlab` issues](https://github.com/bstarynk/bismon/issues), since
 this software is yet unreleased.
+
+
+#### Bug in documentation
+
+In commit 24e400e4b25ea8fbd91 the documentation fails to be generated.
+
+* observation 1
+
+Removing `\input{appendix-bm}` from file `bismon-doc.tex` dont solve that bug.
