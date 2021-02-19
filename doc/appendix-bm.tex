@@ -31,6 +31,10 @@ source code and probably also some recent
 and should budget several days of work for that.
 
 
+We use violet Courier font like {\textcolor{violet}{\texttt{echo this}}}
+to typeset literal or sample commands to be typed in a terminal
+emulator.
+  
 {\large Be aware that \textbf{\texttt{bismon} requires specifically some
   \href{https://gcc.gnu.org/gcc-10/}{GCC 10} compiler} and won't work
   with e.g. a GCC 9 compiler.}
@@ -40,18 +44,25 @@ If you have to build GCC 10 from its source code, take into account the followin
 
 \begin{itemize}
 
-\item if your distribution has some slightly older version of \texttt{gcc}, get all the build dependencies of that package[s]. On Debian or Ubuntu, that means running as root some command similar to \texttt{aptitude build-dep gcc-9 g++-9}
+\item if your distribution has some slightly older version of
+  \texttt{gcc}, get all the build dependencies of that package[s]. On
+  Debian or Ubuntu, that means running as root some command similar to
+  {\textcolor{violet}{\texttt{aptitude build-dep gcc-9 g++-9}}... Of
+    course replace the \texttt{9} by your particular version of
+    \textit{GCC}.
 
-\item run \texttt{gcc -v} and write on paper the output. It will
-  inspire the configuration command you will have to run later. If the
-  output does not mention \texttt{--enable-plugin} you need to
-  recompile GCC. If the version is not GCC 10, you also need to
-  recompile GCC. Otherwise, you could use your system's GCC.
+\item run {\textcolor{violet}{\texttt{gcc -v}}} and write on paper the
+  output. It will inspire the configuration command you will have to
+  run later. If the output does not mention \texttt{--enable-plugin}
+  you need to recompile GCC. If the version is not GCC 10, you also
+  need to recompile GCC. Otherwise, you could use your system's GCC.
 
 \item the GCC compiler needs to be built \textit{outside of its source tree}. Practically speaking, you should:
   \begin{enumerate}
-  \item download some \texttt{gcc-10.2.0.tar.xz} file (into \texttt{/tmp/} ...) from a mirror site close to your location (probably check its integrity using \texttt{sha512sum}).
-  \item extract that tarball: \texttt{tar xvf /tmp/gcc-10.2.0.tar.xz}
+  \item download some \texttt{gcc-10.2.0.tar.xz} file (into
+    \texttt{/tmp/} ...) from a mirror site close to your geographical
+    location (probably check its integrity using \texttt{sha512sum}).
+  \item extract that tarball: {\textcolor{violet}{\texttt{tar xvf /tmp/gcc-10.2.0.tar.xz}}}
     in some existing writable directory (you should not be root), for example your \texttt{\$HOME/gnu/} directory. You'll need
     about a gigabyte of disk space for that source code with more than
     a hundred thousands inodes. You'll get a fresh \texttt{gcc-10.2*}
@@ -61,7 +72,8 @@ If you have to build GCC 10 from its source code, take into account the followin
     \textit{parent} directory (same example: from your
     \texttt{\$HOME/gnu/} directory, but \textbf{not} from
     \texttt{\$HOME/gnu/gcc-10.2}...).
-  \item Read carefully the \href{https://gcc.gnu.org/install/}{Installing GCC} chapter. Read it several times (the URL is \href{https://gcc.gnu.org/install/}{gcc.gnu.org/install/}).
+  \item Read carefully the \href{https://gcc.gnu.org/install/}{Installing GCC} chapter.
+    Read it several times (the URL is \href{https://gcc.gnu.org/install/}{gcc.gnu.org/install/}).
   \item Take some rest if needed, and whatever nutriment is the best
     to raise your attention (a cup of tea, coffee, etc...)
   \item Configure with great care your GCC compiler from inside
@@ -72,9 +84,9 @@ If you have to build GCC 10 from its source code, take into account the followin
     of them. That configure step lasts a few seconds, but is lazy
     (most of the configuration would happen later).
   \end{enumerate}
-
   
 \end{itemize}
+
 \medskip
 
 The build procedure happens in two phases:
@@ -462,8 +474,8 @@ regulations like the European \index{GDPR} GDPR.
 Since the main author of this draft report is known to \textsc{Bismon}
 and reified in the object of objid \texttt{\_6UYrSn7piPM\_3eYhLtoXl},
 the file \texttt{contributors\_BM} should at least contain a line like
-perhaps {\relsize{-1.5}{ \texttt{Basile
-      Starynkevitch;\_6UYrSn7piPM\_3eYhLtoXlmL;bstarynkevitch@email.invalid;bstarynk@localhost}}}
+perhaps\\ {\parbox{8cm}{{\relsize{-1.3}{ \texttt{Basile
+      Starynkevitch;\_6UYrSn7piPM\_3eYhLtoXlmL;b.star@email.invalid;bstarynk@localhost}}}}}
 
 It is preferable to run the \texttt{./bismon} software with specific
 command lines argument to update the contributors file and the
@@ -570,7 +582,7 @@ been successfully run.
 
 First, \textbf{inspect, and \emph{improve if needed}, the \texttt{Build} shell
 script} for \texttt{/bin/bash}. \textbf{Then run that script} using the
-\texttt{./Build} command. 
+\textcolor{\texttt{./Build}} command. 
 \index{build@\texttt{Build} script}
 \index{building!\texttt{bismon}}
 
@@ -592,6 +604,7 @@ with debug_info, not stripped
 Then use \texttt{ldd ./bismon} to verify that all dependencies are
 present. On some computer, I am possibly getting the following output:
 
+\begin{relsize}{-1}
 \begin{verbatim}
  % ldd ./bismon
 	linux-vdso.so.1 (0x00007ffee532a000)
@@ -632,6 +645,7 @@ present. On some computer, I am possibly getting the following output:
 	libcap-ng.so.0 => /lib/x86_64-linux-gnu/libcap-ng.so.0 (0x00007f5ee6f6d000)
 	libffi.so.7 => /lib/x86_64-linux-gnu/libffi.so.7 (0x00007f5ee6f5f000)
 \end{verbatim}
+\end{relsize}
 
 At last, you can ask \texttt{bismon} to give its version information
 using \texttt{./bismon --version} which might output something like:
@@ -653,9 +667,12 @@ run
 to get help.
 \end{verbatim}
 \end{relsize}
+
 Please report the output of \texttt{./bismon --version} before any question on \textsc{Bismon}.
 
-The output of \texttt{./bismon --help} is giving up to date information about invoking \texttt{./bismon} (e.g. in some \texttt{cron} script). For example:
+The output of \texttt{./bismon --help} is giving up to date
+information about invoking \texttt{./bismon} (e.g. in some
+\texttt{cron} script). For example:
 
 \begin{relsize}{-1.5}
 \verbatiminput{generated/005-bismon-help.tex}
