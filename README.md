@@ -494,10 +494,17 @@ Removing `\input{appendix-bm}` from file `bismon-doc.tex` dont solve that bug.
 
 The preferred way to report them is to add some new [issue](https://github.com/bstarynk/bismon/issues) on https://github.com/bstarynk/bismon
 
-Of course, an issue should be self-contained.
+Of course, an issue should be self-contained. Some give *explicitly*
+the output of `bismon --version` if you have been able to build it.
 
-Alternatively, send an email (UTF-8 encoded, HTML5 is preferable) in
-English, or in French, (or perhaps in Russian) to
+If the issue is related to building, give *explicitly* all the Linux
+commands you have run (after having examined and *successfully* run
+the `distclean-script.bash` script, or just after some *fresh* `git clone`
+command). Mention the output of `git log -3`.
+
+Alternatively (if you don't want to add a `github` issue), send an
+email (UTF-8 encoded, HTML5 is preferable) in English, or in French,
+(or perhaps in Russian) to
 [basile.starynkevitch@cea.fr](mailto:basile.starynkevitch@cea.fr).  I
 will try to answer in English or in French (since my written Russian
 is so bad).
