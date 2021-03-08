@@ -494,17 +494,20 @@ Removing `\input{appendix-bm}` from file `bismon-doc.tex` dont solve that bug.
 
 The preferred way to report them is to add some new [issue](https://github.com/bstarynk/bismon/issues) on https://github.com/bstarynk/bismon
 
-Of course, an issue should be self-contained. Some give *explicitly*
-the output of `bismon --version` if you have been able to build it.
+Of course, an issue should be self-contained. Please give *explicitly*
+the output of `bismon --version` on your computer if you have been
+able to build `bismon`.
 
-If the issue is related to building, give *explicitly* all the Linux
-commands you have run (after having examined and *successfully* run
-the `distclean-script.bash` script, or just after some *fresh* `git clone`
-command). Mention the output of `git log -3`.
+If the issue is related to building the `bismon` executable, give
+*explicitly* all the Linux commands you have run (after having
+examined and *successfully* run the `distclean-script.bash` script, or
+just after some *fresh* `git clone` command). Mention the output of
+`git log -3`.
 
 Alternatively (if you don't want to add a `github` issue), send an
 email (UTF-8 encoded, HTML5 is preferable) in English, or in French,
-(or perhaps in Russian) to
+(or perhaps in Russian, only if you cannot send an email in English or
+French) to
 [basile.starynkevitch@cea.fr](mailto:basile.starynkevitch@cea.fr).  I
 will try to answer in English or in French (since my written Russian
 is so bad).
@@ -521,6 +524,10 @@ them. Give me explicitly the `tar` command I need to run (on Linux) to
 extract your archive. You could assume I have [GNU
 tar](https://www.gnu.org/software/tar/) version 1.30 or better on my
 Linux computer.
+
+If you send me some C or C++ code to be processed by `bismon`, allow
+me *explicitly* to compile it and add comments (UTF8 encoded) in
+English, French or Russian.
 
 If possible, add some shell script (for [GNU
 bash](https://www.gnu.org/software/bash/) or for
