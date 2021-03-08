@@ -489,3 +489,40 @@ In commit 24e400e4b25ea8fbd91 the documentation fails to be generated.
 * observation 1
 
 Removing `\input{appendix-bm}` from file `bismon-doc.tex` dont solve that bug.
+
+# Reporting bugs, feature requests, issues #
+
+The preferred way to report them is to add some new [issue](https://github.com/bstarynk/bismon/issues) on https://github.com/bstarynk/bismon
+
+Of course, an issue should be self-contained.
+
+Alternatively, send an email (UTF-8 encoded, HTML5 is preferable) in
+English, or in French, (or perhaps in Russian) to
+[basile.starynkevitch@cea.fr](mailto:basile.starynkevitch@cea.fr).  I
+will try to answer in English or in French (since my written Russian
+is so bad).
+
+If you need to send a screenshot, attach some image encoded as JPEG or
+PNG to your email.
+
+If you want or need to send several files, archive all of them in a
+unique directory (whose
+[basename(1)](https://man7.org/linux/man-pages/man1/basename.1.html)
+contains only letters, digits, and some underscore `_`) and make some
+[tar(1)](https://man7.org/linux/man-pages/man1/tar.1.html) archive of
+them. Give me explicitly the `tar` command I need to run (on Linux) to
+extract your archive. You could assume I have [GNU
+tar](https://www.gnu.org/software/tar/) version 1.30 or better on my
+Linux computer.
+
+If possible, add some shell script (for [GNU
+bash](https://www.gnu.org/software/bash/) or for
+[zsh](https://zsh.org/) ....) which enables me to reproduce that bug,
+and name that script in your email or bug report.
+
+My employer (if you are outside of [CEA](https://www.cea.fr/) ....)
+could prefer also some information related to funding, formal
+collaboration, etc... If possible mention them explicitly in English
+or in French in your email.
+
+
