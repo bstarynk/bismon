@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -232,7 +232,7 @@ onion_queue_process_BM (const stringval_tyBM * dirstrarg,
                         struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
-  objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
+  //objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_queue_process, //
                  const stringval_tyBM * dirstrv;        //
                  const node_tyBM * cmdnodv;     //
@@ -560,7 +560,8 @@ percent_encode_onion_query_args_BM (onion_request * req)
   char *res = NULL;
   if (!req)
     return NULL;
-  onion_dict *odic = onion_request_get_query_dict (req);
+  /// TODO: not sure if following cast is valid.
+  onion_dict *odic = (onion_dict*)onion_request_get_query_dict (req);
   if (!odic)
     return NULL;
   size_t bufsiz = 128;
@@ -770,7 +771,7 @@ websessiondelete_BM (objectval_tyBM * ownobj, struct websessiondata_stBM *wsd)
          objectdbg_BM (ownobj), wsd->websess_magic);
       return;
     }
-  WEAKASSERT_BM (wsd->websess_ownobj == ownobj);
+  WEAKASSERTRET_BM (wsd->websess_ownobj == ownobj);
   // websessions are rare enough, so we can inform about their deletion
   INFOPRINTF_BM ("deleting websession %s", objectdbg_BM (ownobj));
   {
@@ -1372,7 +1373,7 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
           char *strjsonc =
             json_dumps (jsoncontribpayl, JSON_SORT_KEYS | JSON_INDENT (1));
           WARNPRINTF_BM
-            ("web session %s and contributor %s has non JSON contrib object %s",
+            ("web session %s and contributor %s has non JSON contrib object %s - %s",
              objectdbg_BM (_.sessionob), objectdbg1_BM (_.contribob),
              objectdbg2_BM (_.jsoncontribob), strjsonc ? strjsonc : "???");
           if (strjsonc)
@@ -1831,6 +1832,7 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
          " filled rn %u",
          objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
          objdecayedvectlenpayl_BM (_.decayforgotob),
+	 objdecayedvectallocsizepayl_BM(_.decayforgotob),
          OUTSTRVALUE_BM (objdecayedvectornthpayl_BM (_.decayforgotob,
                                                      DECAYFORGOTTENCONTRIBIX_bm)),
          OUTSTRVALUE_BM (objdecayedvectornthpayl_BM (_.decayforgotob,
