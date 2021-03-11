@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -173,7 +173,7 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
       FAILHERE (makenode1_BM (k_scalars, _.attrv));
     DBGPRINTF_BM
       ("prepare_routine°basiclo_minifunction recv=%s setscalars %s",
-       objectdbg_BM (_.recv), OUTSTRVALUE_BM (_.setscalars));
+       objectdbg_BM (_.recv), OUTSTRVALUE_BM ((value_tyBM)_.setscalars));
     _.attrv = NULL;
   }
   {
@@ -185,13 +185,13 @@ ROUTINEOBJNAME_BM (_07qYMXftJRR_9dde2ASz4e9)    //  prepare_routine°basiclo_min
   }
   DBGPRINTF_BM
     ("prepare_routine°basiclo_minifunction recv=%s tupargs=%s tupclosed=%s  obresult=%s",
-     objectdbg_BM (_.recv), OUTSTRVALUE_BM (_.tupargs),
-     OUTSTRVALUE_BM (_.tupclosed), objectdbg2_BM (_.obresult));
+     objectdbg_BM (_.recv), OUTSTRVALUE_BM ((value_tyBM)_.tupargs),
+     OUTSTRVALUE_BM ((value_tyBM)_.tupclosed), objectdbg2_BM (_.obresult));
   DBGPRINTF_BM
     ("prepare_routine°basiclo_minifunction recv=%s setlocals=%s, setnumbers=%s, setscalars=%s, setconsts=%s",
      objectdbg_BM (_.recv),
-     OUTSTRVALUE_BM (_.setlocals), OUTSTRVALUE_BM (_.setnumbers),
-     OUTSTRVALUE_BM (_.setscalars), OUTSTRVALUE_BM (_.setconsts));
+     OUTSTRVALUE_BM ((value_tyBM)_.setlocals), OUTSTRVALUE_BM ((value_tyBM)_.setnumbers),
+     OUTSTRVALUE_BM ((value_tyBM)_.setscalars), OUTSTRVALUE_BM ((value_tyBM)_.setconsts));
   _.bodyv = objgetattr_BM (_.recv, k_body);
   if (!isobject_BM (_.bodyv))
     {
@@ -2145,7 +2145,7 @@ stopscan_objswitch_comp_bm (struct stackframe_stBM *stkf,
 {
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
   objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
-  objectval_tyBM *k_when = BMK_7KdDnQYcbeY_4LbTWNwFIFY;
+  //objectval_tyBM *k_when = BMK_7KdDnQYcbeY_4LbTWNwFIFY;
   objectval_tyBM *k_duplicate = BMK_2YrbiKQ6lxP_3KNUOnU6TF5;
   objectval_tyBM *k_miniscan_stmt = BMK_6DdZwyaWLyK_7tS2BmECOJ0;
   LOCALFRAME_BM (stkf, NULL, objectval_tyBM * compob;   //
@@ -2273,7 +2273,7 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
   objectval_tyBM *k_modgenob = BMK_0Bl5ro9usp6_1Hll14QwC8f;
   objectval_tyBM *k_statement_properties = BMK_0OM3NoUpOBd_1nzwCJKw54A;
   objectval_tyBM *k_switch = BMK_5PJV21P82kA_2KfQTz95vdH;
-  objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
+  //objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
   objectval_tyBM *k_when = BMK_7KdDnQYcbeY_4LbTWNwFIFY;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_5nFFthyf8y9_00k5H4R0G6b,
                  objectval_tyBM * stmtob;       //
@@ -4047,7 +4047,9 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
   log_end_message_BM ();
   char cwdpath[128];
   memset (cwdpath, 0, sizeof (cwdpath));
-  getcwd (cwdpath, sizeof (cwdpath));
+  if (!getcwd (cwdpath, sizeof (cwdpath)))
+    FATAL_BM("failed to getcwd in defer-compilation-of-modgenob for source dir %s",
+	     bytstring_BM (_.srcdirstrv));
   DBGPRINTF_BM
     ("defer-compilation-of-modgenob modulob %s srcdir %s cwdpath %s",
      objectdbg_BM (_.modulob), bytstring_BM (_.srcdirstrv), cwdpath);
@@ -4259,7 +4261,9 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
         {
           char cwdbuf[80];
           memset (cwdbuf, 0, sizeof (cwdbuf));
-          getcwd (cwdbuf, sizeof (cwdbuf));
+          if (!getcwd (cwdbuf, sizeof (cwdbuf)))
+	    FATAL_BM("after-compilation-of-module %s failed to getcwd",
+		     objectdbg_BM (_.modulob));
           DBGPRINTF_BM
             ("after-compilation-of-module %s failed renaming %s -> %s failed with #%d: %s in %s",
              objectdbg_BM (_.modulob), prevpathstr, srcpathstr, err,
