@@ -1675,12 +1675,17 @@ parse_contact_BM (void)
      contact_filepath_BM, contact_name_BM, contact_email_BM);
 #undef CONTACT_MAXLEN_BM
   if (!contact_name_BM)
-    FATAL_BM ("missing contact name after parsing %s", contact_filepath_BM);
+    FATAL_BM ("missing contact name after parsing %s\n"
+	      "## that file might have a line like: John Doe <bismon.master@example.com>",
+	      contact_filepath_BM);
   if (!contact_email_BM)
-    FATAL_BM ("missing contact email after parsing %s", contact_filepath_BM);
+    FATAL_BM ("missing contact email after parsing %s\n"
+	      "## that file might have a line like: John Doe <bismon.master@example.com>",
+	      contact_filepath_BM);
   char *errmsg = NULL;
   if (!valid_email_BM (contact_email_BM, CHECKDNS_BM, &errmsg))
-    FATAL_BM ("invalid contact email (%s) after parsing %s", errmsg,
+    FATAL_BM ("invalid contact email (%s) after parsing %s\n"
+	      "## that file might have a line like: John Doe <bismon.master@example.com>", errmsg,
               contact_filepath_BM);
 #warning the contact should be used in send-bismon-html-email.scm and handled for login_ONIONBM.thtml
 }                               /* end parse_contact_BM */
