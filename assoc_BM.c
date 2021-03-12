@@ -776,6 +776,7 @@ hashsetvalgcmark_BM (struct garbcoll_stBM *gc, struct hashsetval_stBM *hsv,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (ishashsetval_BM ((value_tyBM) hsv));
+  ASSERT_BM (fromob != NULL || isobject_BM(fromob));
   uint8_t oldmark = ((typedhead_tyBM *) hsv)->hgc;
   if (oldmark)
     return;
@@ -799,7 +800,7 @@ hashsetvbucketgcmark_BM (struct garbcoll_stBM *gc,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (ishashsetvbucket_BM ((value_tyBM) hvb));
-  ASSERT_BM (!fromob || isobject_BM (fromob));
+  ASSERT_BM (fromob == NULL || isobject_BM (fromob));
   uint8_t oldmark = ((typedhead_tyBM *) hvb)->hgc;
   if (oldmark)
     return;

@@ -592,7 +592,7 @@ void
 objectinteriorgcmark_BM (struct garbcoll_stBM *gc, objectval_tyBM * obj)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
-  ASSERT_BM (isobject_BM (obj));
+  ASSERT_BM (obj != NULL && isobject_BM (obj));
   ASSERT_BM (((typedhead_tyBM *) obj)->hgc == MARKGC_BM);
   objectval_tyBM *oclass = objclass_BM (obj);
   if (oclass)
@@ -963,7 +963,7 @@ hashsetgcmark_BM (struct garbcoll_stBM *gc, struct hashsetobj_stBM *hset,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((const value_tyBM) hset) == typayl_hashsetobj_BM);
-  ASSERT_BM (!fromob || isobject_BM (fromob));
+  ASSERT_BM (fromob == NULL || isobject_BM (fromob));
   uint8_t oldmark = ((typedhead_tyBM *) hset)->hgc;
   if (oldmark)
     return;
@@ -1184,7 +1184,7 @@ classinfogcmark_BM (struct garbcoll_stBM *gc, struct classinfo_stBM *clinf,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((const value_tyBM) clinf) == typayl_classinfo_BM);
-  ASSERT_BM (!fromob || isobject_BM (fromob));
+  ASSERT_BM (fromob == NULL || isobject_BM (fromob));
   uint8_t oldmark = ((typedhead_tyBM *) clinf)->hgc;
   if (oldmark)
     return;

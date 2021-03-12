@@ -29,7 +29,7 @@ jansjsongcmark_BM (struct garbcoll_stBM *gc,
                    objectval_tyBM * fromob, int depth)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
-  ASSERT_BM (!fromob || isobject_BM (fromob));
+  ASSERT_BM (fromob == NULL || isobject_BM (fromob));
   ASSERT_BM (depth >= 0);
   ASSERT_BM (((typedhead_tyBM *) jjs)->htyp == typayl_jansjson_BM);
   uint8_t oldmark = ((typedhead_tyBM *) jjs)->hgc;

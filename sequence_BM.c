@@ -1063,6 +1063,7 @@ decayedvectorgcmark_BM (struct garbcoll_stBM *gc,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (isdecayedvect_BM ((const value_tyBM) dvec));
+  ASSERT_BM (fromob == NULL || isobject_BM (fromob));
   uint8_t oldmark = ((typedhead_tyBM *) dvec)->hgc;
   if (oldmark)
     return;

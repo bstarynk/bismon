@@ -31,8 +31,8 @@ dumpgcmark_BM (struct garbcoll_stBM *gc, struct dumper_stBM *du,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (((typedhead_tyBM *) du)->htyp == typayl_dumper_BM);
-  ASSERT_BM (!fromob || isobject_BM (fromob));
-  ASSERT_BM (!fromob || fromob == du->dump_object);
+  ASSERT_BM (fromob == NULL || isobject_BM (fromob));
+  ASSERT_BM (fromob == NULL || fromob == du->dump_object);
   uint8_t oldmark = ((typedhead_tyBM *) du)->hgc;
   if (oldmark)
     return;

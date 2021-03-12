@@ -689,7 +689,7 @@ webexchangedatagcmark_BM (struct garbcoll_stBM *gc,
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((value_tyBM) wex) == typayl_webexchange_BM);
   ASSERT_BM (wex->webx_magic == BISMONION_WEBX_MAGIC);
-  ASSERT_BM (!fromob || isobject_BM (fromob));
+  ASSERT_BM (fromob == NULL || isobject_BM (fromob));
   ASSERT_BM (depth >= 0);
   ASSERT_BM (!fromob || !wex->webx_ownobj || wex->webx_ownobj == fromob);
   if (wex->webx_ownobj)

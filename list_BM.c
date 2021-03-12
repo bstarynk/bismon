@@ -390,7 +390,7 @@ listgcmark_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((const value_tyBM) lis) == typayl_listtop_BM);
-  ASSERT_BM (!fromob || isobject_BM (fromob));
+  ASSERT_BM (fromob == NULL || isobject_BM (fromob));
   uint8_t oldmark = ((typedhead_tyBM *) lis)->hgc;
   if (oldmark)
     return;

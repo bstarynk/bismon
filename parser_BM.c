@@ -134,7 +134,7 @@ parsergcmark_BM (struct garbcoll_stBM *gc, struct parser_stBM *pars,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (isparser_BM (pars));
-  ASSERT_BM (!fromob || isobject_BM (fromob));
+  ASSERT_BM (fromob == NULL || isobject_BM (fromob));
   uint8_t oldmark = ((typedhead_tyBM *) pars)->hgc;
   if (oldmark)
     return;

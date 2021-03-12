@@ -46,7 +46,7 @@ usergcmark_BM (struct garbcoll_stBM *gc,
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   ASSERT_BM (valtype_BM ((value_tyBM) us) == typayl_user_BM);
-  ASSERT_BM (!fromob || isobject_BM (fromob));
+  ASSERT_BM (fromob == NULL || isobject_BM (fromob));
   ASSERT_BM (!fromob || !us->user_ownobj || us->user_ownobj == fromob);
   ASSERT_BM (depth >= 0);
   uint8_t oldmark = ((typedhead_tyBM *) us)->hgc;
