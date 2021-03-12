@@ -467,7 +467,11 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
     }
   if (::stat(binmodpath.c_str(), &binmodstat))
     {
-      WARNPRINTF_BM("missing module binary %s (%m)\n", binmodpath.c_str());
+      WARNPRINTF_BM("missing module binary %s (%m) related to module source %s\n",
+		    binmodpath.c_str(), srcmodpath.c_str());
+      WARNPRINTF_BM("consider running %s/persistent-module-build-bismon.sh %s",
+		    bismon_directory, modidbuf);
+
       return false;
     }
   if (srcmodstat.st_mtime > binmodstat.st_mtime)
