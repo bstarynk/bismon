@@ -9,7 +9,7 @@ logger --id=$$ -s -t persistent-module-build-bismon -p user.debug starting modul
 #(ls -lsd modules modubin; pwd) > /dev/tty
 # remove --silent in make
 #echo '@*@!!@*@' in $(pwd) should-make "-f $(dirname $0)/Makefile -e "VPATH=$(pwd):$(dirname $0)" modubin/modbm$MODULEID.so" > /dev/tty
-make -f $(dirname $0)/Makefile -e "VPATH=$(pwd):$(dirname $0)" modubin/modbm$MODULEID.so
+make -f $(dirname $0)/GNUmakefile -e "VPATH=$(pwd):$(dirname $0)" modubin/modbm$MODULEID.so
 makestatus=$?
 #echo '@*@!!@*@' in $(pwd) makestatus $makestatus > /dev/tty
 if [ $makestatus -ne 0 ]; then
