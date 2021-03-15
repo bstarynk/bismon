@@ -90,7 +90,7 @@ BISMON_SHGIT2:= $(shell if git status | grep 'nothing to commit'; then echo; els
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
-.PHONY: all config count executable clean runconfig objects
+.PHONY: all config count executable clean runconfig objects redump
 
 .DEFAULTS: all
 
@@ -207,4 +207,8 @@ bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c
 
 _bismon-makedep.mk: GNUmakefile emit-make-dependencies.bash
 	./emit-make-dependencies.bash $(BM_C_SOURCES) $(BM_CXX_SOURCES) $(BM_C_ONION_SOURCES)
+
+redump: bismon $(wildcard store*.bmon)
+	./bismon --batch --dump-after-load=.
+	
 ## _bm_predef.h is obsolete since renamed genbm_predef.h
