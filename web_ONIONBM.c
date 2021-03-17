@@ -3703,7 +3703,7 @@ web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
         DBGPRINTF_BM
           ("web_plain_event_loop_BM before poll nbpoll=%d loop#%ld", nbpoll,
            loopcnt);
-      int nbready = poll (&pollarr, nbpoll, POLL_DELAY_MILLISECS_BM);
+      int nbready = poll (pollarr, nbpoll, POLL_DELAY_MILLISECS_BM);
       if (loopcnt % 4 == 0)
         DBGPRINTF_BM ("web_plain_event_loop_BM nbready %d loop#%ld", nbready,
                       loopcnt);
