@@ -853,7 +853,7 @@ webexchangedelete_BM (objectval_tyBM * ownobj,
          objectdbg_BM (ownobj), wex->webx_magic);
       return;
     }
-  WEAKASSERT_BM (wex->webx_ownobj == ownobj);
+  WEAKASSERTRET_BM (wex->webx_ownobj == ownobj);
   DBGPRINTF_BM ("webexchangedelete ownobj %s", objectdbg_BM (ownobj));
   {
     objlock_BM (ownobj);
@@ -1548,7 +1548,6 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);
   const char *bcookie = onion_request_get_cookie (req, "BISMONCOOKIE");
-  char dbgmethbuf[16];
   DBGPRINTF_BM ("login_onion_handler reqpath '%s' fullpath '%s' reqflags %#x:%s bcookie %s",    //
                 reqpath, onion_request_get_fullpath (req), reqflags,    //
                 onion_request_methods[reqmeth], bcookie ? bcookie : "*none*");
@@ -1715,7 +1714,7 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
   // hashed set of forgotten emails:
   objectval_tyBM *k_forgotten_emails_hset = BMK_1el0vAC6atu_1DCbieyBwzI;
   // class of decaying vector objects:
-  objectval_tyBM *k_decaying_vector_object = BMK_87e9wrUSdIs_0tppKPUo41v;
+  // objectval_tyBM *k_decaying_vector_object = BMK_87e9wrUSdIs_0tppKPUo41v;
   // the _forgotemail-webhandler in webxhtml_module and store2.bmon
   objectval_tyBM *k_forgotemail_webhandler = BMK_6aWaLxHQBv4_9bcZim3ljEh;
   onion_dict *mailctxdic = NULL;
@@ -2417,7 +2416,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
         const char *decayobstr = onion_request_get_post (req, "decayob");
         if (decayobstr)
           {
-            char *end = NULL;
+            const char *end = NULL;
             rawid_tyBM oid = parse_rawid_BM (decayobstr, &end);
             if (!validid_BM (oid) || (end && *end))
               {
@@ -2650,12 +2649,13 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
       WARNPRINTF_BM ("forgotpasswd_onion_handler_BM bad reqpath %s", reqpath);
       snprintf (errmsg, sizeof (errmsg), "invalid reqpath %s", reqpath);
     }
-  char *end = NULL;
+  const char *end = NULL;
   rawid_tyBM oid = parse_rawid_BM (oidbuf, &end);
   if (!validid_BM (oid) || (end && *end))
     {
       WARNPRINTF_BM
-        ("forgotpasswd_onion_handler_BM  reqpath %s with bad oidbuf", reqpath,
+        ("forgotpasswd_onion_handler_BM  reqpath %s with bad oidbuf %s",
+	 reqpath,
          oidbuf);
       snprintf (errmsg, sizeof (errmsg), "invalid oid %s", oidbuf);
     }
