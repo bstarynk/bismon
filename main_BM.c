@@ -1285,7 +1285,7 @@ main (int argc, char **argv)
               INFOPRINTF_BM ("wrote pid %d in pid-file %s",
                              (int) getpid (), pid_filepath_bm);
             }
-          INFOPRINTF_BM ("running ONION web interface for %d jobs %s",
+          INFOPRINTF_BM ("running ONION web interface for %d jobs or working pthreads",
                          nbworkjobs_BM);
           run_onionweb_BM (nbworkjobs_BM);
         }
@@ -1554,7 +1554,7 @@ initialize_contact_path_BM (void)
   if (!contact_filepath_BM)     // no --passwords-file program option
     {
       char *path = NULL;
-      char *homepath = NULL;
+      const char *homepath = NULL;
       if (!access (CONTACT_FILE_BM, R_OK))
         contact_filepath_BM = CONTACT_FILE_BM;
       else if ((homepath = bismon_home_BM ()) != NULL
@@ -2296,7 +2296,7 @@ do_test_mailhtml_bm (void)
       char *prevpc = pc;
       char *pi = NULL;
       char *npc = NULL;
-      char *repl = NULL;
+      const char *repl = NULL;
       while ((pi = strstr (pc, "<?bismon")) != NULL)
         {
           char smallbuf[64];
@@ -2670,7 +2670,8 @@ void
 parse_program_options_BM(int argc, char**argv)
 {
   int initialargc = argc;
-  GOptionContext *gctx = g_option_context_new("* the BISMON static source code analyzer *");
+  GOptionContext *gctx =
+    g_option_context_new("\n*** the BISMON static source code analyzer for C and C++ code ***");
   GError* errp = NULL;
   static char summarybuf[512];
   snprintf(summarybuf, sizeof(summarybuf),
