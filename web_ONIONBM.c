@@ -3519,7 +3519,7 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
   DBGPRINTF_BM ("find_web_handler word '%s' path '%s' not found in dictob %s",
                 word, path, objectdbg_BM (_.dictob));
   if (word && word != wordbuf)
-    free (word);
+    free ((void*)word);
   LOCALRETURN_BM (NULL);
 }                               /* end find_web_handler_BM */
 
@@ -3767,7 +3767,7 @@ web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
                                 WARNPRINTF_BM
                                   ("unexpected null byte from process pid#%d command node %s in %s",
                                    (int) onionrunprocarr_BM[runix].rp_pid,
-                                   OUTSTRVALUE_BM (onproc->rp_cmdnodv),
+                                   OUTSTRVALUE_BM ((value_tyBM) onproc->rp_cmdnodv),
                                    bytstring_BM (onproc->rp_dirstrv) ? :
                                    "./");
                                 if (kill (onproc->rp_pid, SIGTERM) == 0)
