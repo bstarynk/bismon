@@ -4073,10 +4073,15 @@ read_commandpipe_BM (void)
           }
           break;
         default:
+	  /// this should not happen....
           WARNPRINTF_BM ("read_commandpipe_BM  '%s' unknown", buf);
+	  backtrace_print_BM((struct backtrace_state *)
+			     backtracestate_BM, 0,
+			     stdout);
+	  printf("%s:%d: unexpected command %s\n", __FILE__, __LINE__,
+		 buf);
+	  fflush(stdout);
         }
-#warning read_commandpipe_BM incomplete
-      FATAL_BM ("read_commandpipe_BM  '%s' unimplemented", buf);
       // should handle the command
     }
   else
