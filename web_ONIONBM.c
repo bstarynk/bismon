@@ -561,7 +561,7 @@ percent_encode_onion_query_args_BM (onion_request * req)
   if (!req)
     return NULL;
   /// TODO: not sure if following cast is valid.
-  onion_dict *odic = (onion_dict*)onion_request_get_query_dict (req);
+  onion_dict *odic = (onion_dict *) onion_request_get_query_dict (req);
   if (!odic)
     return NULL;
   size_t bufsiz = 128;
@@ -902,8 +902,7 @@ custom_onion_handler_BM (void *clientdata,
   objectval_tyBM *k_custom_onion_handler = BMK_5C5Dfd8eVkR_3306NWk09Bn;
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_custom_onion_handler,
-                 objectval_tyBM * sessionob;
-    );
+                 objectval_tyBM * sessionob;);
   while (agenda_need_gc_BM ())
     {
       DBGPRINTF_BM ("custom_onion_handler need GC");
@@ -1542,8 +1541,7 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
 {
   objectval_tyBM *k_login_onion_handler = BMK_8qHowkDvzRL_03sltCgsDN2;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_login_onion_handler,
-                 objectval_tyBM * contribob;
-    );
+                 objectval_tyBM * contribob;);
   const char *reqpath = onion_request_get_path (req);
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);
@@ -1723,8 +1721,7 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
                  objectval_tyBM * decayforgotob;        //
                  value_tyBM contribnamv;        //
                  value_tyBM contribemailv;      //
-                 value_tyBM closv;
-    );
+                 value_tyBM closv;);
   _.contribob = contribobarg;
   _.decayforgotob = decayforgotobarg;
   DBGPRINTF_BM
@@ -1831,7 +1828,7 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
          " filled rn %u",
          objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
          objdecayedvectlenpayl_BM (_.decayforgotob),
-	 objdecayedvectallocsizepayl_BM(_.decayforgotob),
+         objdecayedvectallocsizepayl_BM (_.decayforgotob),
          OUTSTRVALUE_BM (objdecayedvectornthpayl_BM (_.decayforgotob,
                                                      DECAYFORGOTTENCONTRIBIX_bm)),
          OUTSTRVALUE_BM (objdecayedvectornthpayl_BM (_.decayforgotob,
@@ -2086,7 +2083,8 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * contribob;    //
                  objectval_tyBM * sessionob;    //
-                 value_tyBM cookiestrv;);
+                 value_tyBM cookiestrv;
+    );
   ASSERT_BM (isobject_BM (contribobarg));
   _.contribob = contribobarg;
   DBGPRINTF_BM
@@ -2655,8 +2653,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
     {
       WARNPRINTF_BM
         ("forgotpasswd_onion_handler_BM  reqpath %s with bad oidbuf %s",
-	 reqpath,
-         oidbuf);
+         reqpath, oidbuf);
       snprintf (errmsg, sizeof (errmsg), "invalid oid %s", oidbuf);
     }
   _.decayob = findobjofid_BM (oid);
@@ -2737,7 +2734,8 @@ create_anonymous_web_session_BM (void)
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * sessionob;    //
-                 value_tyBM cookiestrv;);
+                 value_tyBM cookiestrv;
+    );
   DBGPRINTF_BM
     ("create_anonymous_web_session start onionanonwebsession '%s'",
      onion_anon_web_session_BM);
@@ -2816,8 +2814,9 @@ objwebsessionsendjsonwebsocketpayl_BM (objectval_tyBM * objarg,
                                        struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * websessob;
-                 value_tyBM jsonv; value_tyBM ctxv;);
+                 objectval_tyBM * websessob; value_tyBM jsonv;
+                 value_tyBM ctxv;
+    );
   _.websessob = objarg;
   _.jsonv = jsonarg;
   _.ctxv = ctxtarg;
@@ -3470,7 +3469,7 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
   if (isclosure_BM (_.valv))
     {
       if (word && word != wordbuf)
-        free (word);
+        free ((void *) word);
       LOCALRETURN_BM (_.valv);
     }
   else if (isobject_BM (_.valv))
@@ -3492,7 +3491,7 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
          word, path, objectdbg_BM (_.nextdictob), depth,
          debug_outstr_value_BM (_.valv, CURFRAME_BM, 0));
       if (word && word != wordbuf)
-        free ((void*) word);
+        free ((void *) word);
       LOCALRETURN_BM (_.valv);
     }
   else if (!_.valv && _.thendictob
@@ -3510,7 +3509,7 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
                     objectdbg_BM (_.thendictob), depth,
                     OUTSTRVALUE_BM (_.thenvalv), off);
       if (word && word != wordbuf)
-        free ((void*)word);
+        free ((void *) word);
       if (_.thenvalv
           && (isclosure_BM (_.thenvalv) || isobject_BM (_.thenvalv)))
         *poffset = off;
@@ -3519,7 +3518,7 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
   DBGPRINTF_BM ("find_web_handler word '%s' path '%s' not found in dictob %s",
                 word, path, objectdbg_BM (_.dictob));
   if (word && word != wordbuf)
-    free ((void*)word);
+    free ((void *) word);
   LOCALRETURN_BM (NULL);
 }                               /* end find_web_handler_BM */
 
@@ -3601,7 +3600,8 @@ webonion_suspend_before_gc_BM (void)
          nbonionthreads, nbonionsuspended, (long) gettid_BM (),
          elapsedtime_BM ());
       if (nbonionthreads > 0 && nbonionsuspended < nbonionthreads)
-        pthread_cond_timedwait (&onionstack_condchange_bm, &onionstack_mtx_bm, &ts);
+        pthread_cond_timedwait (&onionstack_condchange_bm, &onionstack_mtx_bm,
+                                &ts);
       pthread_mutex_unlock (&onionstack_mtx_bm);
     }
   while (nbonionthreads > 0 && nbonionsuspended < nbonionthreads);
@@ -3659,9 +3659,10 @@ register_web_postponed_BM (double nextimstamp)
 void
 web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
 {
-  objectval_tyBM *k_web_plain_event_loop = BMK_74VNUG6Vqq4_700i8h0o8EI;
+  //  objectval_tyBM *k_web_plain_event_loop = BMK_74VNUG6Vqq4_700i8h0o8EI;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * bufob;);
+                 objectval_tyBM * bufob;
+    );
   atomic_init (&onionlooprunning_BM, true);
 
   DBGBACKTRACEPRINTF_BM ("web_plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",      //
@@ -3767,9 +3768,10 @@ web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
                                 WARNPRINTF_BM
                                   ("unexpected null byte from process pid#%d command node %s in %s",
                                    (int) onionrunprocarr_BM[runix].rp_pid,
-                                   OUTSTRVALUE_BM ((value_tyBM) onproc->rp_cmdnodv),
-                                   bytstring_BM (onproc->rp_dirstrv) ? :
-                                   "./");
+                                   OUTSTRVALUE_BM ((value_tyBM) onproc->
+                                                   rp_cmdnodv),
+                                   bytstring_BM (onproc->
+                                                 rp_dirstrv) ? : "./");
                                 if (kill (onproc->rp_pid, SIGTERM) == 0)
                                   WARNPRINTF_BM ("sent SIGTERM to pid#%d",
                                                  onproc->rp_pid);
@@ -3827,7 +3829,7 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
     FATAL_BM ("read_sigfd_BM: read fail (%d bytes read, want %d) - %m",
               nbr, (int) sizeof (siginf));
   DBGPRINTF_BM ("read_sigfd_BM signo=%d", siginf.ssi_signo);
-#warning incomplete read_sigfd_BM
+  // TODO: is this read_sigfd_BM incomplete?
   switch (siginf.ssi_signo)
     {
     case SIGTERM:
@@ -3924,25 +3926,26 @@ handle_sigchld_BM (pid_t pid)
               {
                 ASSERT_BM (chix < 0);
                 chix = oix;
-                _.chdirstrv = onproc->rp_dirstrv;
-                _.chcmdnodv = onproc->rp_cmdnodv;
-                _.chclosv = onproc->rp_closv;
-                _.chbufob = onproc->rp_bufob;
+                _.chdirstrv = (value_tyBM) onproc->rp_dirstrv;
+                _.chcmdnodv = (value_tyBM) onproc->rp_cmdnodv;
+                _.chclosv = (value_tyBM) onproc->rp_closv;
+                _.chbufob = (value_tyBM) onproc->rp_bufob;
                 memset ((void *) onproc, 0, sizeof (struct onionproc_stBM));
               }
           }
-        _.qnodv = nodecast_BM (listfirst_BM (onionrunpro_list_BM));
+        _.qnodv =
+          (value_tyBM) nodecast_BM (listfirst_BM (onionrunpro_list_BM));
         if (_.qnodv)
           {
             ASSERT_BM (nodeconn_BM (_.qnodv) == k_queue_process);
             if (nbruncmds <= nbworkjobs_BM)
               {
                 listpopfirst_BM (onionrunpro_list_BM);
-                _.newdirstrv =
+                _.newdirstrv = (value_tyBM)
                   stringcast_BM ((value_tyBM) nodenthson_BM (_.qnodv, 0));
-                _.newcmdnodv =
+                _.newcmdnodv = (value_tyBM)
                   nodecast_BM ((value_tyBM) nodenthson_BM (_.qnodv, 1));
-                _.newendclosv =
+                _.newendclosv = (value_tyBM)
                   nodecast_BM ((value_tyBM) nodenthson_BM (_.qnodv, 2));
                 ASSERT_BM (isnode_BM (_.newcmdnodv));
                 ASSERT_BM (isclosure_BM (_.newendclosv));
@@ -4073,14 +4076,12 @@ read_commandpipe_BM (void)
           }
           break;
         default:
-	  /// this should not happen....
+          /// this should not happen....
           WARNPRINTF_BM ("read_commandpipe_BM  '%s' unknown", buf);
-	  backtrace_print_BM((struct backtrace_state *)
-			     backtracestate_BM, 0,
-			     stdout);
-	  printf("%s:%d: unexpected command %s\n", __FILE__, __LINE__,
-		 buf);
-	  fflush(stdout);
+          backtrace_print_BM ((struct backtrace_state *)
+                              backtracestate_BM, 0, stdout);
+          printf ("%s:%d: unexpected command %s\n", __FILE__, __LINE__, buf);
+          fflush (stdout);
         }
       // should handle the command
     }
