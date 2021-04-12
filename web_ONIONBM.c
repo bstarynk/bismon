@@ -3492,7 +3492,7 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
          word, path, objectdbg_BM (_.nextdictob), depth,
          debug_outstr_value_BM (_.valv, CURFRAME_BM, 0));
       if (word && word != wordbuf)
-        free (word);
+        free ((void*) word);
       LOCALRETURN_BM (_.valv);
     }
   else if (!_.valv && _.thendictob
@@ -3510,7 +3510,7 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
                     objectdbg_BM (_.thendictob), depth,
                     OUTSTRVALUE_BM (_.thenvalv), off);
       if (word && word != wordbuf)
-        free (word);
+        free ((void*)word);
       if (_.thenvalv
           && (isclosure_BM (_.thenvalv) || isobject_BM (_.thenvalv)))
         *poffset = off;
@@ -3601,7 +3601,7 @@ webonion_suspend_before_gc_BM (void)
          nbonionthreads, nbonionsuspended, (long) gettid_BM (),
          elapsedtime_BM ());
       if (nbonionthreads > 0 && nbonionsuspended < nbonionthreads)
-        pthread_cond_timedwait (&onionstack_mtx_bm, &onionstack_mtx_bm, &ts);
+        pthread_cond_timedwait (&onionstack_condchange_bm, &onionstack_mtx_bm, &ts);
       pthread_mutex_unlock (&onionstack_mtx_bm);
     }
   while (nbonionthreads > 0 && nbonionsuspended < nbonionthreads);
