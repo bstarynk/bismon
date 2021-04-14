@@ -83,5 +83,7 @@ extern "C" int plugin_is_GPL_compatible;
 
 
 
+#warning we may need types with Gty annotations here, and extern variables...
+/* see comments in file build-gcc10-metaplugin.sh */
 #endif /*GCC10_METAPLUGIN_BISMON_INCLUDED_*/
 /* end of header file gcc10-metaplugin.hh */

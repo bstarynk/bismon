@@ -2,6 +2,7 @@
 ##
 ##
 ## BISMON related GCC10 metaplugin builder
+## file gccplugins/build-gcc10-metaplugin.sh
 ## See https://github.com/bstarynk/bismon/
 ## Copyright © 2020 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
 ## contributed by Basile Starynkevitch 

@@ -2,7 +2,7 @@
 /**
     BISMON related GCC10 metaplugin gcc10-metaplugin_BMGCC.cc
     See https://github.com/bstarynk/bismon/
-    Copyright © 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2020 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch and Franck Védrine
 
     This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@
 #include "gcc10-metaplugin.hh"
 
 int plugin_is_GPL_compatible;
+
 
 ////////////////////////////////////////////////////////////////
 int
@@ -47,7 +48,6 @@ plugin_init (struct plugin_name_args *plugin_info,
          " (l@%d)\n",
          (int) getpid(), __LINE__);
 
-  Glib::KeyFile keyfile;
   
   return 0;
 } // end plugin_init
