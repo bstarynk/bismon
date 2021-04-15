@@ -82,6 +82,11 @@
 extern "C" int plugin_is_GPL_compatible;
 
 
+extern "C" const pass_data BM_gimple_pass_data;
+
+class BM_gimple_pass : public gimple_opt_pass {
+#warning TODO: incomplete BM_gimple_pass
+};				// end BM_gimple_pass
 
 #warning we may need types with Gty annotations here, and extern variables...
 /* see comments in file build-gcc10-metaplugin.sh */
