@@ -25,6 +25,19 @@
 int plugin_is_GPL_compatible;
 
 
+const pass_data BM_gimple_pass_data =
+{
+  GIMPLE_PASS, /* type */
+  "BM_gimple_pass", /* name */
+  OPTGROUP_NONE, /* optinfo_flags */
+  TV_NONE, /* tv_id */
+  ( PROP_ssa | PROP_cfg | PROP_gimple_leh ), /* properties_required */
+  0, /* properties_provided */
+  0, /* properties_destroyed */
+  0, /* todo_flags_start */
+  0, /* todo_flags_finish */
+};    // end BM_gimple_pass_data
+
 ////////////////////////////////////////////////////////////////
 int
 plugin_init (struct plugin_name_args *plugin_info,
@@ -33,7 +46,7 @@ plugin_init (struct plugin_name_args *plugin_info,
   const char *plugin_name = plugin_info->base_name;
   if (!plugin_default_version_check (version, &gcc_version))
     {
-      warning(UNKNOWN_LOCATION, "BISMON_GCC10_METAPLUGIN: fail version check for %s:\n"
+      warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: fail version check for %s:"
               " got %s/%s/%s/%s wanted %s/%s/%s/%s", plugin_name,
               version->basever, version->datestamp, version->devphase, version->revision,
               gcc_version.basever, gcc_version.datestamp, gcc_version.devphase, gcc_version.revision);
@@ -41,11 +54,11 @@ plugin_init (struct plugin_name_args *plugin_info,
     }
 
   ///
-  inform(UNKNOWN_LOCATION, "BISMON_GCC10_METAPLUGIN: built " __DATE__ " on " __TIME__ " process %d"
+  inform(UNKNOWN_LOCATION, "Bismon GCC10 metaplugin built " __DATE__ " on " __TIME__ " process %d"
 #ifdef PLUGINGITID
-         "\n(gitid " PLUGINGITID ") "
+         " (gitid " PLUGINGITID ")"
 #endif
-         " (l@%d)\n",
+         " (l@%d)",
          (int) getpid(), __LINE__);
 
   
