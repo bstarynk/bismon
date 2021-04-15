@@ -22,10 +22,10 @@
 ##
 
 ## C++ compiler used to compile the plugin
-PLUGINGXX=g++-10
+PLUGINGXX=/usr/bin/g++-10
 
 ## target compiler for the plugin
-TARGETGCC=g++-10
+TARGETGCC=/usr/bin/g++-10
 
 TARGETPLUGINDIR=$($TARGETGCC -print-file-name=plugin)
 # run the gengtype utility, see https://gcc.gnu.org/onlinedocs/gccint/Files.html#Files
@@ -34,7 +34,9 @@ TARGETGENGTYPE=$TARGETPLUGINDIR/gengtype
 $TARGETGENGTYPE --read-state $TARGETPLUGINDIR/gtype.state \
 		--plugin _gcc10-metaplugin-gty.h \
 		gcc10-metaplugin_BMGCC.cc gcc-10.metaplugin.hh
-				     
+
+SHORTGITID=$(git log --format=oneline -q -1 | head -16c)
+
 ### TODOs
 ### get the gitid into PLUGINGITID preprocessor
 ### declare some GTY-ed set of functions
@@ -50,4 +52,5 @@ $PLUGINGXX -Wall -Wextra -O1 -g3 \
 	   -I $($TARGETGCC -print-file-name=plugin)/include/ \
 	   -shared -Wl,export-all-symbols -fno-rtti -fPIC \
 	   $(pkg-config --cflags --libs jsoncpp) \
+	   -DPLUGINGITID=\"$SHORTGITID\" \
 	   gcc10-metaplugin_BMGCC.cc -o gcc10-metaplugin_BMGCC.so
