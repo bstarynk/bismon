@@ -68,3 +68,5 @@ doc/*.lof
 doc/*.lot
 doc/htmldoc/*
 doc/bismon-html-doc.tar.gz
+
+gccplugins/_*gty.h
