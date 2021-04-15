@@ -33,7 +33,7 @@ TARGETPLUGINDIR=$($TARGETGCC -print-file-name=plugin)
 TARGETGENGTYPE=$TARGETPLUGINDIR/gengtype
 $TARGETGENGTYPE --read-state $TARGETPLUGINDIR/gtype.state \
 		--plugin _gcc10-metaplugin-gty.h \
-		gcc10-metaplugin_BMGCC.cc gcc-10.metaplugin.hh
+		gcc10-metaplugin_BMGCC.cc gcc10-metaplugin.hh
 
 SHORTGITID=$(git log --format=oneline -q -1 | head -16c)
 
@@ -50,7 +50,10 @@ SHORTGITID=$(git log --format=oneline -q -1 | head -16c)
 ### finish event to interact with Bismon
 $PLUGINGXX -Wall -Wextra -O1 -g3 \
 	   -I $($TARGETGCC -print-file-name=plugin)/include/ \
-	   -shared -Wl,export-all-symbols -fno-rtti -fPIC \
+	   -shared -fno-rtti -fPIC \
 	   $(pkg-config --cflags --libs jsoncpp) \
 	   -DPLUGINGITID=\"$SHORTGITID\" \
 	   gcc10-metaplugin_BMGCC.cc -o gcc10-metaplugin_BMGCC.so
+
+##FIXME: GCC documentation suggests linking with -shared
+## -Wl,export-all-symbols which seems to not work above...
