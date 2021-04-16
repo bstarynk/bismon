@@ -38,6 +38,51 @@ const pass_data BM_gimple_pass_data =
   0, /* todo_flags_finish */
 };    // end BM_gimple_pass_data
 
+
+opt_pass*
+BM_gimple_pass::clone() {
+  return new BM_gimple_pass(m_ctxt);
+} // end BM_gimple_pass::clone
+
+bool
+BM_gimple_pass::gate(function* func) {
+  if (!func)
+    return false;
+  if (!func->decl)
+    return false;
+  if (lookup_attribute("bismon_skip",  DECL_ATTRIBUTES (func->decl)))
+    return false;
+  return true;
+} // end BM_gimple_pass::gate
+
+unsigned int
+BM_gimple_pass::execute(function* func) {
+  if (!func)
+    return 0;
+  if (!func->decl)
+    return 0;
+  basic_block bb;
+#warning BM_gimple_pass::execute should store the func in some "global"
+  FOR_EACH_BB_FN (bb, func) {
+#warning should do something with the bb in BM_gimple_pass::execute
+  };
+  return 0;
+} // end BM_gimple_pass::execute
+
+
+////////////////////////////////////////////////////////////////
+//// Gty user support for class BM_set_of_functions
+void
+gt_ggc_mx (BM_set_of_functions *setfun)
+{
+  gcc_assert(setfun);
+  setfun->check_magic();
+  for (function* f: setfun->set_funptr) {
+    gcc_assert(f);
+    gt_ggc_mx(*f);
+  };
+} // end gt_ggc_mx (BM_set_of_functions *setfun)
+
 ////////////////////////////////////////////////////////////////
 int
 plugin_init (struct plugin_name_args *plugin_info,

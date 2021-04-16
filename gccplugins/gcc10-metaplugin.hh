@@ -33,6 +33,7 @@
 #include <unordered_set>
 #include <map>
 #include <set>
+#include <functional>
 
 #include <cstdio>
 #include <cassert>
@@ -76,7 +77,7 @@
 #include "plugin-version.h"
 #include "diagnostic.h"
 #include "context.h"
-
+#include "attribs.h"
 
 
 extern "C" int plugin_is_GPL_compatible;
@@ -85,8 +86,53 @@ extern "C" int plugin_is_GPL_compatible;
 extern "C" const pass_data BM_gimple_pass_data;
 
 class BM_gimple_pass : public gimple_opt_pass {
-#warning TODO: incomplete BM_gimple_pass
+public:
+  BM_gimple_pass(gcc::context* ctxt)
+    : gimple_opt_pass(BM_gimple_pass_data, ctxt) {
+  };
+  /* opt_pass methods: */
+  opt_pass* clone();
+  virtual bool gate (function *);
+  virtual unsigned int execute(function*);
 };				// end BM_gimple_pass
+
+extern void gt_ggc_mx (class BM_set_of_functions *setfun);
+
+extern void gt_ggc_mx (function& f);
+
+class GTY((user)) BM_set_of_functions {
+  static constexpr unsigned setfun_required_magic = 135889017; /*0x8198079*/
+  unsigned set_magic;
+  std::set<function*> set_funptr;
+  friend void gt_ggc_mx (BM_set_of_functions *setfun);
+ public:
+  typedef void do_functionptr_plain_t(function*);
+  BM_set_of_functions() : set_magic(setfun_required_magic), set_funptr() {};
+  ~BM_set_of_functions() {
+    set_magic = 0;
+    set_funptr.clear();
+  };
+  void check_magic(void) const {
+    if (set_magic != setfun_required_magic)
+      fatal_error(UNKNOWN_LOCATION, "corrupted bismon set of functions");
+  };
+  void add_funptr(function*func) {
+    gcc_assert(func != nullptr);
+    set_funptr.insert(func);
+  };
+  void every_funptr_do(do_functionptr_plain_t*do_f) {
+    for (function* funptr : set_funptr) {
+      gcc_assert(funptr != nullptr);
+      (*do_f)(funptr);
+    }
+  }; 
+  void every_funptr_do_lambda(std::function<void(function*)> do_it) {
+    for (function* funptr : set_funptr) {
+      gcc_assert(funptr != nullptr);
+      do_it(funptr);
+    }
+  }
+};				// end class BM_set_of_functions
 
 #warning we may need types with Gty annotations here, and extern variables...
 /* see comments in file build-gcc10-metaplugin.sh */
