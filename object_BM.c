@@ -209,7 +209,7 @@ findobjofid_BM (const rawid_tyBM id)
 objectval_tyBM *
 findobjofstrid_BM (const char *idstr)
 {
-  char *end = NULL;
+  const char *end = NULL;
   rawid_tyBM oid = parse_rawid_BM (idstr, &end);
   if (!end)
     return NULL;

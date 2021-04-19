@@ -1123,7 +1123,7 @@ decayedvectorgckeep_BM (struct garbcoll_stBM *gc,
   unsigned ucnt = DECAYEDVECTOR_UCNT_bm (dvec);
   unsigned asiz = DECAYEDVECTOR_ASIZ_bm (dvec);
   ASSERT_BM (ucnt <= asiz);
-  const value_tyBM *valarr = dvec->decayp_arr;
+  // const value_tyBM *valarr = dvec->decayp_arr;
   gc->gc_keptbytes += sizeof (*dvec) + asiz * sizeof (value_tyBM);
 }                               /* end of decayedvectorgckeep_BM */
 
