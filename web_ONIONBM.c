@@ -1825,7 +1825,7 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
       DBGBACKTRACEPRINTF_BM
         ("make_onion_dict_forgotten_email_BM contribob %s filled-decay\n"
          "decayforgotob %s (len%u,asiz%u) with [contrib: %s, closure: %s, random: %s\n"
-         " filled rn %u",
+         " filled %u, rn %u",
          objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
          objdecayedvectlenpayl_BM (_.decayforgotob),
          objdecayedvectallocsizepayl_BM (_.decayforgotob),
@@ -1875,7 +1875,8 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
       DBGPRINTF_BM
         ("make_onion_dict_forgotten_email_BM contribob %s filled-empty-decay\n"
          "decayforgotob %s (len%u,asiz%u) with [contrib: %s, closure: %s, random: %s]\n"
-         " filled rn %u", objectdbg_BM (_.contribob),
+         " filled %u, rn %u", //
+	 objectdbg_BM (_.contribob),
          objectdbg1_BM (_.decayforgotob),
          objdecayedvectlenpayl_BM (_.decayforgotob),
          objdecayedvectallocsizepayl_BM (_.decayforgotob),
