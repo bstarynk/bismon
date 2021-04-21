@@ -111,6 +111,64 @@ plugin_init (struct plugin_name_args *plugin_info,
 } // end plugin_init
 
 
+typedef void plugin_arghandler_sig(const char*);
+struct pluginarg_handler_BMCC {
+  const char*parg_name;
+  plugin_arghandler_sig* parg_handler;
+  const char*parg_help;
+};
+
+std::string bismon_url_prefix_BMCC;
+std::string bismon_project_BMCC;
+
+static void handle_bismon_url_arg_BMCC(const char*);
+static void handle_bismon_project_arg_BMCC(const char*);
+
+const pluginarg_handler_BMCC
+pluginargsarr_BMCC[] =
+  {
+   /// bismon-url= <some-url> # e.g. bismon-url=http://localhost:8088/
+   {
+    .parg_name="bismon-url",
+    .parg_handler= handle_bismon_url_arg_BMCC,
+    .parg_help="gives the URL prefix to contact the Bismon server"
+   },
+   /// bismon-url= <some-url> # e.g. bismon-url=http://localhost:8088/
+   {
+    .parg_name="bismon-project",
+    .parg_handler= handle_bismon_project_arg_BMCC,
+    .parg_help="gives the mandatory project name - should be the same for every translation unit"
+   },
+   ///
+   { .parg_name=nullptr, .parg_handler=nullptr, .parg_help=nullptr }
+  };
+
+void
+handle_bismon_url_arg_BMCC(const char*argval) {
+  if (argval)
+    bismon_url_prefix_BMCC.assign(argval);
+} // end handle_bismon_url_arg_BMCC
+
+void
+handle_bismon_project_arg_BMCC(const char*argval) {
+  if (argval)
+    bismon_project_BMCC.assign(argval);
+}
+
+static
+void show_help_BMGCC(const char*plugin_name)
+{
+  std::cout << "Bismon metaplugin arguments to be passed with -fplugin-arg-" << plugin_name << "; e.g. this help given by  -fplugin-arg-" << plugin_name << "-help" << std::endl;
+  for (int aix=0; aix < sizeof(pluginargsarr_BMCC)/sizeof(pluginargsarr_BMCC[0]); aix++) {
+    if (pluginargsarr_BMCC[aix].parg_name == nullptr)
+      break;
+    if (pluginargsarr_BMCC[aix].parg_name != nullptr
+	&& pluginargsarr_BMCC[aix].parg_handler
+	&& pluginargsarr_BMCC[aix].parg_help)
+      std::cout << "\t" << pluginargsarr_BMCC[aix].parg_name << ":" << pluginargsarr_BMCC[aix].parg_help << std::endl;
+  }
+} // end show_help_BMGCC
+
 void
 parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_args)
 {
@@ -123,6 +181,19 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
 #endif
 	   " built " __DATE__
 	   " with JsonCPP " JSONCPP_VERSION_STRING);
+  assert (plugin_args->version == nullptr);
+  plugin_args->version = versbuf;
+  int argix=0;
+  for (struct plugin_argument* plcurarg = plugin_args->argv;
+       (argix<plargc)?(plcurarg = plugin_args->argv+argix):nullptr; argix++)
+    {
+      const char*curkey = plcurarg->key;
+      const char*curval = plcurarg->value;
+      if (!strcmp(curkey, "help"))
+	show_help_BMGCC(plugin_name);
+      else {
+      }
+    };
 } // end parse_plugin_arguments
 
 /****************
