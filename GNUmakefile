@@ -210,5 +210,7 @@ _bismon-makedep.mk: GNUmakefile emit-make-dependencies.bash
 
 redump: bismon $(wildcard store*.bmon)
 	./bismon --batch --dump-after-load=.
-	
+
+modubin/modbm_%.so: modules/modbm_%.c | bismon _bismon-config.mk _bm_config.h
+	$(LINK.c)  $(BISMON_CFLAGS) -shared -DBISMON_MODID=\"$(BISMON_MODULE_ID)\" -DBISMON_MODMD5=\"$(BISMON_MODULE_MD5SUM)\" -fPIC -I. $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -rdynamic -Wall  $< -o $@
 ## _bm_predef.h is obsolete since renamed genbm_predef.h
