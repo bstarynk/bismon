@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 ##
 ##
 ## BISMON related GCC10 metaplugin builder
@@ -50,10 +50,11 @@ SHORTGITID=$(git log --format=oneline -q -1 | head -16c)
 ### finish event to interact with Bismon
 $PLUGINGXX -Wall -Wextra -O1 -g3 \
 	   -I $($TARGETGCC -print-file-name=plugin)/include/ \
-	   -shared -fno-rtti -fPIC \
-	   $(pkg-config --cflags --libs jsoncpp) \
+	   -shared -fno-rtti -fPIC -rdynamic \
 	   -DPLUGINGITID=\"$SHORTGITID\" \
-	   gcc10-metaplugin_BMGCC.cc -o gcc10-metaplugin_BMGCC.so
+	   gcc10-metaplugin_BMGCC.cc \
+           $(pkg-config --cflags --libs jsoncpp curlpp) \
+	   -o gcc10-metaplugin_BMGCC.so
 
 ##FIXME: GCC documentation suggests linking with -shared
 ## -Wl,export-all-symbols which seems to not work above...
