@@ -110,6 +110,21 @@ plugin_init (struct plugin_name_args *plugin_info,
   return 0;
 } // end plugin_init
 
+
+void
+parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_args)
+{
+  int plargc = plugin_args->argc;
+  static char versbuf[256];
+  snprintf(versbuf, sizeof(versbuf),
+	   "Bismon GCC10 metaplugin "
+#ifdef PLUGINGITID
+	   " (gitid " PLUGINGITID ")"
+#endif
+	   " built " __DATE__
+	   " with JsonCPP " JSONCPP_VERSION_STRING);
+} // end parse_plugin_arguments
+
 /****************
  **                           for Emacs...
  ** Local Variables: ;;

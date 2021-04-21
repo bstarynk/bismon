@@ -46,7 +46,7 @@
 #include <jsoncpp/json/value.h>
 
 
-#include <curl/curl.h>
+#include <curlpp/Easy.hpp>
 
 
 #include "gcc-plugin.h"
