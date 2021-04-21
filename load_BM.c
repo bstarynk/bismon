@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -73,6 +73,7 @@ load_initial_BM (const char *ldirpath)
   if (!ldirpath)
     ldirpath = ".";
   DIR *ldir = opendir (ldirpath);
+  char *projectstate = NULL;
   if (!ldir)
     FATAL_BM ("load_initial failed to opendir %s : %m", ldirpath);
   if (project_name_BM) {
