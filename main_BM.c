@@ -46,7 +46,7 @@ const char *added_passwords_filepath_BM;
 const char *contact_filepath_BM;
 char *contact_name_BM;
 char *contact_email_BM;
-
+const char*project_name_BM;
 
 extern void parse_program_options_BM(int argc, char**argv);
 
@@ -308,6 +308,29 @@ run_command_bm (const gchar * optname __attribute__((unused)),  //
   return FALSE;
 }                               /* end run_command_bm */
 
+static bool
+set_project_name_bm (const gchar * optname __attribute__((unused)),  //
+                const gchar * val,      //
+                gpointer data __attribute__((unused)),  //
+                GError ** perr)
+{
+  if (val == NULL)
+    FATAL_BM("missing project name");
+  bool goodname = true;
+  if (!isalpha(val[0]) && val[0] != '_')
+    goodname = false;
+  for (const gchar* pc = val; *pc && goodname; pc++)
+    if (!isalnum(*pc) && *pc != '_')
+      goodname = false;
+  if (!goodname) {
+    WARNPRINTF_BM("invalid project name %s, should be C-identifier like", (const char*)val);
+    g_set_error (perr, 0, 1, "invalid project name %s, should be C-identifier like", (const char*)val);
+    return FALSE;
+  }
+  project_name_BM = g_strdup(val);
+  INFOPRINTF_BM("using Bismon project name %s", project_name_BM);
+}                               /* end set_project_name_bm */
+
 
 
 
@@ -568,6 +591,13 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &run_command_bm,
    .description = "run the command CMD",
    .arg_description = "CMD"},
+  //
+  {.long_name = "project-name",.short_name = (char) 'P',
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &set_project_name_bm,
+   .description = "define the project name",
+   .arg_description = "PROJECT_NAME"},
   //
   {.long_name = "init-after-load",.short_name = 'i',
    .flags = G_OPTION_FLAG_NONE,

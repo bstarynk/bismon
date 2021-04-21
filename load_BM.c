@@ -75,6 +75,10 @@ load_initial_BM (const char *ldirpath)
   DIR *ldir = opendir (ldirpath);
   if (!ldir)
     FATAL_BM ("load_initial failed to opendir %s : %m", ldirpath);
+  if (project_name_BM) {
+#warning load_initial_BM should load project space
+    WARNPRINTF_BM("load_initial_BM should load project space for %s", project_name_BM);
+  }
   ASSERT_BM (strlen (STORE_OBJECTOPEN_PREFIX_BM) ==
              strlen (STORE_OBJECTOPEN_ALTPREFIX_BM));
   ASSERT_BM (strlen (STORE_OBJECTCLOSE_PREFIX_BM) ==

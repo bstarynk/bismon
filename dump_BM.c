@@ -252,6 +252,10 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   forget_the_system_with_bismon_BM (CURFRAME_BM);
   struct dumper_stBM *duptr = NULL;
   INFOPRINTF_BM ("start dumping into %s\n", dirname);
+  if (project_name_BM) {
+    #warning dump_BM should dump project data
+    WARNPRINTF_BM("dump_BM should dump for project %s", project_name_BM);
+  }
   if (g_mkdir_with_parents (dirname, 0750))
     FATAL_BM ("failed to mkdir with parents %s", dirname);
   _.dudirv = makestring_BM (dirname);

@@ -183,6 +183,8 @@ enum space_enBM
   UserCsp_BM = 5,
   UserDsp_BM = 6,
   UserEsp_BM = 7,
+  ProjectSp_BM = 254,
+#warning special code missing for project space load and dump
   LASTSPACE__BM
 };
 
