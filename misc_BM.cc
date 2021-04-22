@@ -3,7 +3,7 @@
 // see https://github.com/bstarynk/bismon/
 /***
     BISMON
-    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
     with help from Franck Védrine.
@@ -465,26 +465,30 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       WARNPRINTF_BM("missing module source %s (%m)\n", srcmodpath.c_str());
       return false;
     }
-  if (::stat(binmodpath.c_str(), &binmodstat))
+  if (::stat(binmodpath.c_str(), &binmodstat)
+      || srcmodstat.st_mtime > binmodstat.st_mtime)
     {
-      WARNPRINTF_BM("missing module binary %s (%m) related to module source %s\n",
+      WARNPRINTF_BM("missing or old module binary %s (%m) related to module source %s\n",
 		    binmodpath.c_str(), srcmodpath.c_str());
-      WARNPRINTF_BM("consider running %s/persistent-module-build-bismon.sh %s",
+      INFOPRINTF_BM("before running %s/persistent-module-build-bismon.sh %s",
 		    bismon_directory, modidbuf);
-
-      return false;
-    }
-  if (srcmodstat.st_mtime > binmodstat.st_mtime)
-    {
-      struct tm srctm = {};
-      struct tm bintm = {};
-      char srcti[64] = "", binti[64] = "";
-      strftime(srcti, sizeof(srcti), "%c", localtime_r(&srcmodstat.st_mtime, &srctm));
-      strftime(binti, sizeof(binti), "%c", localtime_r(&binmodstat.st_mtime, &bintm));
-      WARNPRINTF_BM("module source code %s [%s]\n... younger than its binary %s [%s]\n"
-		    "Consider running again the `make` command then starting again %s\n",
-		    srcmodpath.c_str(), srcti, binmodpath.c_str(), binti, myprogname_BM);
-      //return false;
+      fflush(nullptr);
+      std::string buildcmd{bismon_directory};
+      buildcmd += "/persistent-module-build-bism.sh ";
+      buildcmd += modidbuf;
+      int buildret = system(buildcmd.c_str());
+      if (buildret) {
+	WARNPRINTF_BM("module build %s failed with %d",
+		      buildcmd.c_str(), buildret);
+	return false;
+      }
+      else if (!access(binmodpath.c_str(), R_OK))
+	INFOPRINTF_BM("module of id %s was successfully compiled to binary %s",
+		      modidbuf, binmodpath.c_str());
+      else
+	FATAL_BM("unexpected failure of %s to build %s", buildcmd.c_str(), binmodpath.c_str());
+      if (::stat(binmodpath.c_str(), &binmodstat))
+	FATAL_BM("unexpected stat failure of %s (%m) after module build", binmodpath.c_str());
     }
   if (modulemap_BM.find(modid) != modulemap_BM.end())
     {
