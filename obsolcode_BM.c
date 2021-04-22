@@ -173,6 +173,45 @@ OBSOLETEROUTINE_BM (_0FdMKAvShgD_7itPSCL8D6P)    // command_handler#find_object
 }                               /* endobsol  command_handler#find_object_0FdMKAvShgD_  */
 
 
+/// method to gtk_browse_value for int-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y);
+value_tyBM
+OBSOLETEROUTINE_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    // gtk_browse_value°int
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3,         // the current depth
+ const value_tyBM arg4 __attribute__((unused)), //
+ const quasinode_tyBM * restargs __attribute__((unused)))
+{
+  FATAL_BM
+    ("°°obsolete gtk_browse_value for int %ld",
+     (long) getint_BM(arg1));
+} /* endobsol gtk_browse_value for int-s _0HBMCM5CeLn_7L5YEV2jO7Y */
+
+
+// gtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi
+extern objrout_sigBM ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi);
+
+value_tyBM
+OBSOLETEROUTINE_BM (_0M2jApBzFAy_8H8cpCjGpTi)  //gtk_browse_data°hashmapval_object 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // object
+ const value_tyBM arg2,         // depth
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf,  NULL,
+                 const objectval_tyBM * recv;       //
+    );
+  _.recv = arg1;
+  FATAL_BM
+    ("°°obsolete gtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTirecv %s",
+     objectdbg_BM(_.recv));
+}  /* endobsol gtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi  */
+
+
 /*** TODO:
  more obsolete routines should be added by running ./Build then make
  redump ; if it fails with a ./bismon: undefined symbol: crout_XXX
