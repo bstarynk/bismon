@@ -207,10 +207,26 @@ OBSOLETEROUTINE_BM (_0M2jApBzFAy_8H8cpCjGpTi)  //gtk_browse_data°hashmapval_obj
     );
   _.recv = arg1;
   FATAL_BM
-    ("°°obsolete gtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTirecv %s",
+    ("°°obsolete gtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi recv %s",
      objectdbg_BM(_.recv));
 }  /* endobsol gtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi  */
 
+
+
+////////////////////////////////////////////////////////////////
+// test_agenda command_handler _1eQ1a8KHixZ_1XDNH5iTQ0I
+extern objrout_sigBM ROUTINEOBJNAME_BM (_1eQ1a8KHixZ_1XDNH5iTQ0I);
+value_tyBM
+OBSOLETEROUTINE_BM (_1eQ1a8KHixZ_1XDNH5iTQ0I)
+{
+  LOCALFRAME_BM (stkf, /*descr:*/  NULL,
+                 const objectval_tyBM * recv;       //
+    );
+  _.recv = arg1;
+  FATAL_BM
+    ("°°obsolete test_agenda command_handler _1eQ1a8KHixZ_1XDNH5iTQ0I recv %s",
+     objectdbg_BM(_.recv));
+} /* endobsol  test_agenda command_handler _1eQ1a8KHixZ_1XDNH5iTQ0I */
 
 /*** TODO:
  more obsolete routines should be added by running ./Build then make
