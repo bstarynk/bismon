@@ -421,6 +421,70 @@ OBSOLETEROUTINE_BM (_4IshjBIv6ol_5korHKUIjeK)   // gtk_browse_data°hset_object
      objectdbg_BM (_.recv));
 }                               /* endobsol  gtk_browse_data°hset_object _4IshjBIv6ol_5korHKUIjeK  */
 
+// dump command_handler _5oSaKNehPiO_3GSlpH5boCW
+extern objrout_sigBM ROUTINEOBJNAME_BM (_5oSaKNehPiO_3GSlpH5boCW);
+value_tyBM
+OBSOLETEROUTINE_BM (_5oSaKNehPiO_3GSlpH5boCW)   //
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // optional dumpstring
+ const value_tyBM arg2_,        //
+ const value_tyBM arg3_,        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ NULL,        //
+                 value_tyBM recv;       //
+    );
+  _.recv = arg1;
+  FATAL_BM
+    ("°°obsolete dump command_handler _5oSaKNehPiO_3GSlpH5boCW recv %s",
+     OUTSTRVALUE_BM (_.recv));
+}                               /* endobsol dump command_handler _5oSaKNehPiO_3GSlpH5boCW  */
+
+
+/// command handler for ,add
+extern objrout_sigBM ROUTINEOBJNAME_BM (_5v5ChlG1IYh_1Pv87MZJFPl);
+value_tyBM                      //
+OBSOLETEROUTINE_BM (_5v5ChlG1IYh_1Pv87MZJFPl)   //
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // 
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ NULL,        //
+                 const objectval_tyBM * recv;   //
+    );
+  _.recv = arg1;
+  FATAL_BM
+    ("°°obsolete command handler ,add _5v5ChlG1IYh_1Pv87MZJFPl recv %s",
+     objectdbg_BM (_.recv));
+}                               /* endobsol  command handler ,add _5v5ChlG1IYh_1Pv87MZJFPl */
+
+
+////////////////
+extern objrout_sigBM ROUTINEOBJNAME_BM (_5W7KY9crMlv_1Q6deHedMZ5);
+
+value_tyBM                      //
+OBSOLETEROUTINE_BM (_5W7KY9crMlv_1Q6deHedMZ5)   // gtk_browse_data°decaying_vector_object
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // 
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ NULL,        //
+                 const objectval_tyBM * recv;   //
+    );
+  _.recv = arg1;
+  FATAL_BM
+    ("°°obsolete gtk_browse_data°decaying_vector_object _5W7KY9crMlv_1Q6deHedMZ5 recv %s",
+     objectdbg_BM (_.recv));
+}                               /* endobsol gtk_browse_data°decaying_vector_object _5W7KY9crMlv_1Q6deHedMZ5 */
+
+
 /*** TODO:
  more obsolete routines should be added by running ./Build then make
  redump ; if it fails with a ./bismon: undefined symbol: crout_XXX
