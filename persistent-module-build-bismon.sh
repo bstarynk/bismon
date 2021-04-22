@@ -19,10 +19,14 @@ if ! [ -f $(dirname $0)/GNUmakefile ]; then
     logger --id=$$ -s -t persistent-module-build-bismon -p user.notice missing  $(dirname $0)/GNUmakefile  in $(pwd)
     exit 11
 fi
-       
+
+MODULEMD5=$(/usr/bin/md5sum modules/modbm$MODULEID.c | cut -d\   -f1)
+
+logger --id=$$ -s -t persistent-module-build-bismon -p user.debug before make BISMON_MODULE_ID=$MODULEID BISMON_MODULE_MD5SUM=$MODULEMD5 modubin/modbm$MODULEID.so
+
 make -f $(dirname $0)/GNUmakefile -e "VPATH=$(pwd):$(dirname $0)" \
      BISMON_MODULE_ID=$MODULEID \
-     BISMON_MODULE_MD5SUM=$(/usr/bin/md5sum modules/modbm$MODULEID.c | cut -d\   -f1)
+     BISMON_MODULE_MD5SUM=$MODULEMD5 \
      modubin/modbm$MODULEID.so
 makestatus=$?
 #echo '@*@!!@*@' in $(pwd) makestatus $makestatus > /dev/tty
