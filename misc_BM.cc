@@ -523,7 +523,16 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       return false;
     }
   _.modulob = objmod;
-  INFOPRINTF_BM("open_module_for_loader module %s", objectdbg_BM(_.modulob));
+  {
+    char cwdbuf[128];
+    memset(cwdbuf, 0, sizeof(cwdbuf));
+    if (getcwd(cwdbuf, sizeof(cwdbuf)-1))
+      INFOPRINTF_BM("open_module_for_loader module %s dlopened %s from %s",
+		    objectdbg_BM(_.modulob), binmodpath.c_str(), cwdbuf);
+    else
+      INFOPRINTF_BM("open_module_for_loader module %s dlopened %s",
+		    objectdbg_BM(_.modulob), binmodpath.c_str());
+  }
   ld->ld_modhset = hashsetobj_add_BM(ld->ld_modhset, objmod);
   (void) modulemap_BM.insert({modid,ModuleData_BM{.mod_id=modid, .mod_dlh=dlh, .mod_obj=_.modulob, .mod_data=nullptr}});
   ////
