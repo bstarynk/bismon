@@ -474,7 +474,7 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
 		    bismon_directory, modidbuf);
       fflush(nullptr);
       std::string buildcmd{bismon_directory};
-      buildcmd += "/persistent-module-build-bism.sh ";
+      buildcmd += "/persistent-module-build-bismon.sh ";
       buildcmd += modidbuf;
       int buildret = system(buildcmd.c_str());
       if (buildret) {
