@@ -485,8 +485,111 @@ OBSOLETEROUTINE_BM (_5W7KY9crMlv_1Q6deHedMZ5)   // gtk_browse_data°decaying_vec
 }                               /* endobsol gtk_browse_data°decaying_vector_object _5W7KY9crMlv_1Q6deHedMZ5 */
 
 
-/*** TODO:
- more obsolete routines should be added by running ./Build then make
- redump ; if it fails with a ./bismon: undefined symbol: crout_XXX
- message add that obsolete routine from attic/guicode_GTKBM.c
-***/
+
+// gtk_browse_value°double_float
+extern objrout_sigBM ROUTINEOBJNAME_BM (_6KYa0K6vqt5_00xCqyfhJhY);
+value_tyBM
+OBSOLETEROUTINE_BM (_6KYa0K6vqt5_00xCqyfhJhY)   // gtk_browse_value°double_float
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3,         // the current depth
+ const value_tyBM arg4 __attribute__((unused)), //
+ const quasinode_tyBM * restargs __attribute__((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const doubleval_tyBM * dblbrows;);
+  _.dblbrows = doublecast_BM (arg1);
+  FATAL_BM
+    ("°°obsolete  gtk_browse_value°double_float _6KYa0K6vqt5_00xCqyfhJhY dblbrows %g",
+     getdouble_BM ((value_tyBM) _.dblbrows));
+}                               /* endobsol _6KYa0K6vqt5_00xCqyfhJhY)   gtk_browse_value°double_float  */
+
+
+/// method to gtk_browse_value for string-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud);
+
+value_tyBM
+OBSOLETEROUTINE_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)   // gtk_browse_value°string
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3,         // the current depth
+ const value_tyBM arg4 __attribute__((unused)), //
+ const quasinode_tyBM * restargs __attribute__((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 value_tyBM valbrow;);
+  _.valbrow = arg1;
+  FATAL_BM
+    ("°°obsolete gtk_browse_value for string _63ZPkXUI2Uv_6Cp3qmh6Uud recv %s",
+     OUTSTRVALUE_BM (_.valbrow));
+}                               /* endobsol _63ZPkXUI2Uv_6Cp3qmh6Uud gtk_browse_value°string */
+
+/////
+// gtk_browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE
+extern objrout_sigBM ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE);
+
+value_tyBM
+OBSOLETEROUTINE_BM (_6xPQJolJkUw_2jCiJ3IOKXE)   //gtk_browse_data°dict_object 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ NULL,        //
+                 const objectval_tyBM * recv;   //
+    );
+  _.recv = arg1;
+  FATAL_BM
+    ("°°obsolete gtk_browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE recv %s",
+     objectdbg_BM (_.recv));
+}                               /* endobsol gtk_browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE */
+
+/// command handler for ,init_class
+extern objrout_sigBM ROUTINEOBJNAME_BM (_797zacMjvvt_3I2uxNJRfdq);
+value_tyBM
+OBSOLETEROUTINE_BM (_797zacMjvvt_3I2uxNJRfdq)   //
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the superclass
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        // 
+ const quasinode_tyBM * restargs __attribute__((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * recv;
+    );
+  _.recv = arg1;
+  FATAL_BM
+    ("°°obsolete command ,init_class _6xPQJolJkUw_2jCiJ3IOKXE recv %s",
+     objectdbg_BM (_.recv));
+}                               /* endobsol command handler for ,init_class _797zacMjvvt_3I2uxNJRfdq */
+
+/// method to gtk_browse_value for node-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg);
+value_tyBM
+OBSOLETEROUTINE_BM (_7fJKfG4SN0U_1QTu5J832xg)   // gtk_browse_value°node
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3,         // the current depth
+ const value_tyBM arg4 __attribute__((unused)), // 
+ const quasinode_tyBM * restargs __attribute__((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const node_tyBM * nodbrows; const objectval_tyBM * connob;
+                 value_tyBM curson;
+    );
+  _.nodbrows = arg1;
+  FATAL_BM
+    ("°°obsolete gtk_browse_value for node _7fJKfG4SN0U_1QTu5J832xg recv %s",
+     OUTSTRVALUE_BM (_.nodbrows));
+}                               /* endobsol  gtk_browse_value for node-s _7fJKfG4SN0U_1QTu5J832xg */
+
+/*** TODO: more obsolete routines should be added by running ./Build
+ * then make redump ; if it fails with a ./bismon: undefined symbol:
+ * crout_XXX message add that obsolete routine from
+ * attic/guicode_GTKBM.c */
