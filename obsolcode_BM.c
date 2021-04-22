@@ -42,8 +42,7 @@ OBSOLETEROUTINE_BM (_01zabIzVKNR_8AGQGMBkSd7)   //commandhandler#,insert
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv;
-    );
+                 objectval_tyBM * recv;);
   _.recv = arg1;
   FATAL_BM
     ("°°obsolete commandhandler#,insert  _01zabIzVKNR_8AGQGMBkSd7 recv %s",
@@ -62,8 +61,7 @@ OBSOLETEROUTINE_BM (_09DxyieS5Wz_7pkad4F88FA)   // gtk_browse_data°class
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv;
-    );
+                 objectval_tyBM * recv;);
   _.recv = arg1;
   FATAL_BM
     ("°°obsolete gtk_browse_data for class-s _09DxyieS5Wz_7pkad4F88FA recv %s",
@@ -103,8 +101,8 @@ OBSOLETEROUTINE_BM (_0zf6nSKwSlU_6Cv3LMh1MmV)   //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv;
-                 value_tyBM attv;);
+                 objectval_tyBM * recv; value_tyBM attv;
+    );
   _.recv = arg1;
   FATAL_BM
     ("°°obsolete ,remove command handler _0f1S28bCE26_3X6Vpz9lG4A recv %s",
@@ -124,8 +122,7 @@ OBSOLETEROUTINE_BM (_0B1PYH9bN34_3RZdP24AVyt)   // gtk_browse_value°tuple
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const tupleval_tyBM * tupbrows;
-                 const objectval_tyBM * objbrows;
-    );
+                 const objectval_tyBM * objbrows;);
   _.tupbrows = (const tupleval_tyBM *) arg1;
   FATAL_BM
     ("°°obsolete gtk_browse_value for tuple _0f1S28bCE26_3X6Vpz9lG4A recv %s",
@@ -501,8 +498,7 @@ OBSOLETEROUTINE_BM (_6KYa0K6vqt5_00xCqyfhJhY)   // gtk_browse_value°double_floa
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const doubleval_tyBM * dblbrows;
-    );
+                 const doubleval_tyBM * dblbrows;);
   _.dblbrows = doublecast_BM (arg1);
   FATAL_BM
     ("°°obsolete  gtk_browse_value°double_float _6KYa0K6vqt5_00xCqyfhJhY dblbrows %g",
@@ -523,8 +519,7 @@ OBSOLETEROUTINE_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)   // gtk_browse_value°string
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM valbrow;
-    );
+                 value_tyBM valbrow;);
   _.valbrow = arg1;
   FATAL_BM
     ("°°obsolete gtk_browse_value for string _63ZPkXUI2Uv_6Cp3qmh6Uud recv %s",
@@ -565,7 +560,8 @@ OBSOLETEROUTINE_BM (_797zacMjvvt_3I2uxNJRfdq)   //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv;);
+                 objectval_tyBM * recv;
+    );
   _.recv = arg1;
   FATAL_BM
     ("°°obsolete command ,init_class _6xPQJolJkUw_2jCiJ3IOKXE recv %s",
@@ -584,8 +580,9 @@ OBSOLETEROUTINE_BM (_7fJKfG4SN0U_1QTu5J832xg)   // gtk_browse_value°node
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * nodbrows;
-                 const objectval_tyBM * connob; value_tyBM curson;);
+                 const node_tyBM * nodbrows; const objectval_tyBM * connob;
+                 value_tyBM curson;
+    );
   _.nodbrows = arg1;
   FATAL_BM
     ("°°obsolete gtk_browse_value for node _7fJKfG4SN0U_1QTu5J832xg recv %s",
@@ -605,13 +602,37 @@ OBSOLETEROUTINE_BM (_7rRjqfXs3QI_4Nwk2Lfm569)   //test_agenda-log
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ NULL,
-                 objectval_tyBM * taskob;
-                 value_tyBM rankv; value_tyBM resultv;);
+                 objectval_tyBM * taskob; value_tyBM rankv;
+                 value_tyBM resultv;
+    );
   _.taskob = objectcast_BM (arg1);
   FATAL_BM
-    ("°°obsolete test_agenda-log_7fJKfG4SN0U_1QTu5J832xg recv %s",
+    ("°°obsolete test_agenda-log _7fJKfG4SN0U_1QTu5J832xg recv %s",
      objectdbg_BM (_.taskob));
 }                               /* endobsol  test_agenda-log _7rRjqfXs3QI_4Nwk2Lfm569 */
+
+
+
+// gtk_browse_data°contributor_class _7xwUcosBMjj_3Sa2de3sCGO
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO);
+
+value_tyBM
+OBSOLETEROUTINE_BM (_7xwUcosBMjj_3Sa2de3sCGO)   // gtk_browse_data°contributor_class 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         //
+ const value_tyBM arg2,         //
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ NULL,
+                 const objectval_tyBM * objbrows;       //
+                 value_tyBM namev;);
+  _.objbrows = arg1;
+  FATAL_BM
+    ("°°obsolete gtk_browse_data°contributor_class _7xwUcosBMjj_3Sa2de3sCGO recv %s",
+     objectdbg_BM (_.objbrows));
+}                               /* endobsol  gtk_browse_data°contributor_class _7xwUcosBMjj_3Sa2de3sCGO */
 
 /*** TODO: more obsolete routines should be added by running ./Build
  * then make redump ; if it fails with a ./bismon: undefined symbol:
