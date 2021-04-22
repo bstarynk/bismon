@@ -217,7 +217,13 @@ OBSOLETEROUTINE_BM (_0M2jApBzFAy_8H8cpCjGpTi)  //gtk_browse_data°hashmapval_obj
 // test_agenda command_handler _1eQ1a8KHixZ_1XDNH5iTQ0I
 extern objrout_sigBM ROUTINEOBJNAME_BM (_1eQ1a8KHixZ_1XDNH5iTQ0I);
 value_tyBM
-OBSOLETEROUTINE_BM (_1eQ1a8KHixZ_1XDNH5iTQ0I)
+OBSOLETEROUTINE_BM (_1eQ1a8KHixZ_1XDNH5iTQ0I) 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // object
+ const value_tyBM arg2,         // depth
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr:*/  NULL,
                  const objectval_tyBM * recv;       //
