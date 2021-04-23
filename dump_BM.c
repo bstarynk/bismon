@@ -242,9 +242,7 @@ struct dumpinfo_stBM
 dump_BM (const char *dirname, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * duobj;
-                 const stringval_tyBM * dudirv;
-    );
+                 objectval_tyBM * duobj; const stringval_tyBM * dudirv;);
   if (!dirname || dirname[0] == (char) 0)
     dirname = ".";
   DBGPRINTF_BM ("dump_BM dirname %s start tid#%ld",
@@ -252,10 +250,11 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   forget_the_system_with_bismon_BM (CURFRAME_BM);
   struct dumper_stBM *duptr = NULL;
   INFOPRINTF_BM ("start dumping into %s\n", dirname);
-  if (project_name_BM) {
-    #warning dump_BM should dump project data
-    WARNPRINTF_BM("dump_BM should dump for project %s", project_name_BM);
-  }
+  if (project_name_BM)
+    {
+#warning dump_BM should dump project data
+      WARNPRINTF_BM ("dump_BM should dump for project %s", project_name_BM);
+    }
   if (g_mkdir_with_parents (dirname, 0750))
     FATAL_BM ("failed to mkdir with parents %s", dirname);
   _.dudirv = makestring_BM (dirname);
@@ -298,8 +297,7 @@ void
 dump_run_todo_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * curclo;
-    );
+                 const closure_tyBM * curclo;);
   ASSERT_BM (valtype_BM ((const value_tyBM) du) == typayl_dumper_BM);
   while (listlength_BM (du->dump_todolist) > 0)
     {
@@ -325,9 +323,7 @@ dump_scan_object_content_BM (struct dumper_stBM *du,
                  objectval_tyBM * obdump;       //
                  objectval_tyBM * curobj;       //
                  const setval_tyBM * setattrs;  //
-                 const objectval_tyBM * curattrobj;
-                 value_tyBM curval;
-    );
+                 const objectval_tyBM * curattrobj; value_tyBM curval;);
   ASSERT_BM (valtype_BM ((const value_tyBM) du) == typayl_dumper_BM);
   ASSERT_BM (valtype_BM ((const value_tyBM) objarg) == tyObject_BM);
   _.obdump = du->dump_object;
@@ -385,15 +381,15 @@ dump_scan_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const setval_tyBM * predefset; //
                  const setval_tyBM * globalset; //
-                 const objectval_tyBM * curobj;
-                 objectval_tyBM * obdump;
-    );
+                 const objectval_tyBM * curobj; objectval_tyBM * obdump;);
   ASSERT_BM (valtype_BM ((const value_tyBM) du) == typayl_dumper_BM);
   _.obdump = du->dump_object;
   _.predefset = setpredefinedobjects_BM ();
   _.globalset = setglobalobjects_BM ();
   obdumpscanvalue_BM (_.obdump, (value_tyBM) _.predefset, 0);
   obdumpscanvalue_BM (_.obdump, (value_tyBM) _.globalset, 0);
+  if (GLOBAL_BM (project_obj))
+    obdumpscanobj_BM (_.obdump, GLOBAL_BM (project_obj));
   for (int kix = 0; kix < bmnbconsts; kix++)
     {
       if (*(bmconstaddrs[kix]))
@@ -421,8 +417,7 @@ dump_emit_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * curobj; //
                  objectval_tyBM * curhsetob;
-                 objectval_tyBM * hsetspacob[LASTSPACE__BM];
-    );
+                 objectval_tyBM * hsetspacob[LASTSPACE__BM];);
   ASSERT_BM (valtype_BM ((const value_tyBM) du) == typayl_dumper_BM);
   for (unsigned spix = PredefSp_BM; spix < LASTSPACE__BM; spix++)
     {
@@ -481,26 +476,24 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
                     objectval_tyBM * hspob, struct stackframe_stBM *stkf)
 {
   ASSERT_BM (valtype_BM ((const value_tyBM) du) == typayl_dumper_BM);
-  ASSERT_BM (spix >= PredefSp_BM && spix < LASTSPACE__BM);
+  ASSERT_BM ((spix >= PredefSp_BM && spix < LASTSPACE__BM)
+             || (spix == ProjectSp_BM));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * modhsetob;
-                 objectval_tyBM * hspob;
-                 const setval_tyBM * setobjs;
-                 const stringval_tyBM * pathv;
-                 const stringval_tyBM * backupv;
-                 const stringval_tyBM * tempathv;
-                 objectval_tyBM * curobj;       //
+                 objectval_tyBM * modhsetob; objectval_tyBM * hspob; const setval_tyBM * setobjs; const stringval_tyBM * pathv; const stringval_tyBM * backupv; const stringval_tyBM * tempathv; objectval_tyBM * curobj;       //
                  const objectval_tyBM * modobj; //
-                 const setval_tyBM * setmodules;
-    );
+                 const setval_tyBM * setmodules;);
   FILE *spfil = NULL;
   _.hspob = hspob;
   _.setobjs = objhashsettosetpayl_BM (hspob);
   char randidbuf[32];
   memset (randidbuf, 0, sizeof (randidbuf));
   idtocbuf32_BM (du->dump_randomid, randidbuf);
-  _.pathv = sprintfstring_BM ("%s/store%u-BISMON.bmon",
-                              bytstring_BM (du->dump_dir), spix);
+  if (spix == ProjectSp_BM && project_name_BM)
+    _.pathv = sprintfstring_BM ("%s/project-%s-BISMON.bmonp",
+                                bytstring_BM (du->dump_dir), project_name_BM);
+  else
+    _.pathv = sprintfstring_BM ("%s/store%u-BISMON.bmon",
+                                bytstring_BM (du->dump_dir), spix);
   _.tempathv =
     sprintfstring_BM ("%s+%s%%", bytstring_BM (_.pathv), randidbuf);
   _.backupv = sprintfstring_BM ("%s~", bytstring_BM (_.pathv));
@@ -524,15 +517,26 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
    * and that magic string is on purpose also starting a Bismon line
    * comment.
    **/
-  fprintf (spfil, "%s generated persistent data file %s (Unicode UTF-8 encoded).\n",    //
-           STORE_CONTENTMAGIC_PREFIX_BM /*which is "//!€Bismon" ... */ ,
-           basename (bytstring_BM (_.pathv)));
+  if (spix == ProjectSp_BM)
+    fprintf (spfil, "%s generated persistent project data file %s (Unicode UTF-8 encoded).\n",  //
+             STORE_CONTENTMAGIC_PREFIX_BM /*which is "//!€Bismon" ... */ ,
+             basename (bytstring_BM (_.pathv)));
+  else
+    fprintf (spfil, "%s generated persistent data file %s (Unicode UTF-8 encoded).\n",  //
+             STORE_CONTENTMAGIC_PREFIX_BM /*which is "//!€Bismon" ... */ ,
+             basename (bytstring_BM (_.pathv)));
   fputs ("/// SPDX-License-Identifier: GPL-3.0-or-later\n"
          "/// see  https://www.gnu.org/licenses/gpl-3.0.en.html\n", spfil);
-  fprintf (spfil,
-           "/// This data file, §" "GENERATED_PERSISTENT§ by " __FILE__ " in %d, is GPLv3+ licensed.\n",
-           nowyear);
-  fputs("/// In BISMON, see github.com/bstarynk/bismon\n", spfil);
+  if (spix == ProjectSp_BM)
+    fprintf (spfil,
+             "/// This project data file for %s, §"
+             "GENERATED_PERSISTENT§ by " __FILE__
+             " in %d, is GPLv3+ licensed.\n", project_name_BM, nowyear);
+  else
+    fprintf (spfil,
+             "/// This data file, §" "GENERATED_PERSISTENT§ by " __FILE__
+             " in %d, is GPLv3+ licensed.\n", nowyear);
+  fputs ("/// In BISMON, see github.com/bstarynk/bismon\n", spfil);
   unsigned nbobj = setcardinal_BM (_.setobjs);
   fprintf (spfil, "/// for %u objects\n", nbobj);
   fputs ("\n///‼ Notice that '" STORE_OBJECTOPEN_PREFIX_BM "' and '" STORE_OBJECTOPEN_ALTPREFIX_BM "' for object opening,\n"  //.
@@ -638,8 +642,7 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
                  objectval_tyBM * classob;      //
                  const objectval_tyBM * curattr;        //
                  value_tyBM curval;     //
-                 const setval_tyBM * attrset;
-                 objectval_tyBM * bufob;        //
+                 const setval_tyBM * attrset; objectval_tyBM * bufob;   //
                  value_tyBM dumpres;    //
     );
   _.dumpob = du->dump_object;
@@ -789,9 +792,7 @@ debug_outstr_value_BM (const value_tyBM val, struct stackframe_stBM *stkf,
                        int curdepth)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM valv;
-                 objectval_tyBM * bufob;
-    );
+                 value_tyBM valv; objectval_tyBM * bufob;);
   _.valv = val;
   if (!val)
     return "__";
