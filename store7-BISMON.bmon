@@ -1,6 +1,9 @@
-//!€Bismon generated persistent data file store7.bmon (Unicode UTF-8 encoded).
-/// This data file, generated in 2020, is GPLv3+ licensed.
-// for 6 objects
+//!€Bismon generated persistent data file store7-BISMON.bmon (Unicode UTF-8 encoded).
+/// SPDX-License-Identifier: GPL-3.0-or-later
+/// see  https://www.gnu.org/licenses/gpl-3.0.en.html
+/// This data file, §GENERATED_PERSISTENT§ by dump_BM.c in 2021, is GPLv3+ licensed.
+/// In BISMON, see github.com/bstarynk/bismon
+/// for 6 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -86,4 +89,4 @@ _8lV53mLyu1H_3Z1SI8wDBK1
 
 
 
-// end of file store7.bmon
+// end of file store7-BISMON.bmon
