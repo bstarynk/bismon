@@ -1726,6 +1726,18 @@ const quasinode_tyBM * restargs __attribute__((unused)))
   objstrbufferprintfpayl_BM (_.prsbufob,
                              "// this generated file %s is GPLv3+ licensed\n",
                              basepath);
+  {
+    time_t nowtim = 0;
+    time (&nowtim);
+    char nowtimbuf[64];
+    memset (nowtimbuf, 0, sizeof(nowtimbuf));
+    struct tm nowtm = {};
+    gmtime_r(&nowtim, &nowtm);
+    strftime(nowtimbuf, sizeof(nowtimbuf), "%Y, %b, %d", &nowtm);
+    if (nowtimbuf[0])
+      objstrbufferprintfpayl_BM (_.prsbufob,
+				 "// generated in %s\n", nowtimbuf);
+  }
   objstrbufferprintfpayl_BM (_.prsbufob,
                              "#ifndef HAS_GLOBAL_BM\n"
                              "#error missing HAS_GLOBAL_BM\n" "#endif\n\n");
