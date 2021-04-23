@@ -634,6 +634,138 @@ OBSOLETEROUTINE_BM (_7xwUcosBMjj_3Sa2de3sCGO)   // gtk_browse_data°contributor_
      objectdbg_BM (_.objbrows));
 }                               /* endobsol  gtk_browse_data°contributor_class _7xwUcosBMjj_3Sa2de3sCGO */
 
+
+/// obsolete method to gtk_browse_value for closure-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac);
+value_tyBM
+OBSOLETEROUTINE_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    // gtk_browse_value°closure
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3,         // the current depth
+ const value_tyBM arg4 __attribute__((unused)), //
+ const quasinode_tyBM * restargs __attribute__((unused)))
+{
+
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const closure_tyBM * clobrows;
+                 const objectval_tyBM * connob; value_tyBM curson;);
+  _.clobrows = arg1;
+  FATAL_BM
+    ("°°obsolete gtk_browse_value for closure _7CohjJ9tkfZ_4UMAIZCgwac recv %s",
+     OUTSTRVALUE_BM (_.clobrows));
+} /*endobsol  method to gtk_browse_value for closure-s _7CohjJ9tkfZ_4UMAIZCgwac */
+
+// obsolete final function -the todo added into the findrun_object _7EgSAlg8UbA_6x0iNxUOrYE
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_7EgSAlg8UbA_6x0iNxUOrYE);
+
+value_tyBM
+OBSOLETEROUTINE_BM (_7EgSAlg8UbA_6x0iNxUOrYE)    // final-find_object
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1_ __attribute__((unused)),        //
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ NULL,
+                 value_tyBM resultv;
+    );
+  FATAL_BM
+    ("°°obsolete final function -the todo  _7EgSAlg8UbA_6x0iNxUOrYE");
+} /* end obsolete final function -the todo added */
+
+//////
+// gtk_browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX
+
+extern objrout_sigBM ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX);
+
+value_tyBM
+OBSOLETEROUTINE_BM (_8L6mTIICJRt_4RccFDlgACX)    // gtk_browse_data°sbuf_object 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ NULL,
+                 value_tyBM resultv;
+                 const objectval_tyBM * objbrows;
+    );
+  _.objbrows = (const objectval_tyBM *) arg1;
+  FATAL_BM
+    ("°°obsolete gtk_browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX recv %s",
+     objectdbg_BM (_.objbrows));
+} /* endobsol  gtk_browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX */
+  
+/////
+// gtk_browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe);
+
+
+
+value_tyBM
+OBSOLETEROUTINE_BM (_9dKLCRPRn9Z_1tczFz5weBe)    //gtk_browse_data°hashsetval_object 
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         //
+ const value_tyBM arg2,         //
+ const value_tyBM arg3,         //
+ const value_tyBM arg4,         //
+ const quasinode_tyBM * restargs_ __attribute__((unused)))
+{
+  LOCALFRAME_BM (stkf, /*descr: */ NULL,
+                 value_tyBM resultv; const objectval_tyBM * objbrows;
+                 value_tyBM nodv; value_tyBM cursonv;
+    ); 
+  _.objbrows = (const objectval_tyBM *) arg1;
+  FATAL_BM
+    ("°°obsolete gtk_browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe recv %s",
+     objectdbg_BM (_.objbrows));  
+} /* endobsol gtk_browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe*/
+
+
+/// method to gtk_browse_data for basiclo_function-s
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA);
+value_tyBM
+OBSOLETEROUTINE_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    // gtk_browse_data°basiclo_function
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the browse maxdepth
+ const value_tyBM arg3 __attribute__((unused)), const value_tyBM arg4 __attribute__((unused)),  //
+ const quasinode_tyBM * restargs __attribute__((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 const objectval_tyBM * objbrows;
+                 value_tyBM curval;);
+  _.objbrows = (const objectval_tyBM *) arg1;
+  FATAL_BM
+    ("°°obsolete gtk_browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA recv %s",
+     objectdbg_BM (_.objbrows));   
+} /* endobsol gtk_browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA */
+
+/// command handler for ,put_method
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9QuovXgtk9K_17pMbAD0XmX);
+value_tyBM
+OBSOLETEROUTINE_BM (_9QuovXgtk9K_17pMbAD0XmX)    //
+(struct stackframe_stBM * stkf, //
+ const value_tyBM arg1,         // the reciever
+ const value_tyBM arg2,         // the selector
+ const value_tyBM arg3,         // the closure
+ const value_tyBM arg4_ __attribute__((unused)),        // 
+ const quasinode_tyBM * restargs __attribute__((unused)))
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 objectval_tyBM * recv; objectval_tyBM * obselv;
+                 value_tyBM closv;
+    );
+  _.recv = (objectval_tyBM *) arg1;
+  FATAL_BM
+    ("°°obsolete command handler for ,put_method recv %s",
+     objectdbg_BM (_.recv));  
+} /* endobsol    command handler for ,put_method _9QuovXgtk9K_17pMbAD0XmX */
+
 /*** TODO: more obsolete routines should be added by running ./Build
  * then make redump ; if it fails with a ./bismon: undefined symbol:
  * crout_XXX message add that obsolete routine from
