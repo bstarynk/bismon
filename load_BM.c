@@ -73,13 +73,17 @@ load_initial_BM (const char *ldirpath)
   if (!ldirpath)
     ldirpath = ".";
   DIR *ldir = opendir (ldirpath);
-  char *projectstate = NULL;
+  char *projectstatefilename = NULL;
   if (!ldir)
     FATAL_BM ("load_initial failed to opendir %s : %m", ldirpath);
-  if (project_name_BM) {
-#warning load_initial_BM should load project space
-    WARNPRINTF_BM("load_initial_BM should load project space for %s", project_name_BM);
-  }
+  if (project_name_BM)
+    {
+      if (asprintf
+          (&projectstatefilename, "project-%s-BISMON.bmonp",
+           project_name_BM) < 0)
+        FATAL_BM ("load_initial fail to asprintf for project %s : %m",
+                  project_name_BM);
+    }
   ASSERT_BM (strlen (STORE_OBJECTOPEN_PREFIX_BM) ==
              strlen (STORE_OBJECTOPEN_ALTPREFIX_BM));
   ASSERT_BM (strlen (STORE_OBJECTCLOSE_PREFIX_BM) ==
@@ -92,6 +96,7 @@ load_initial_BM (const char *ldirpath)
   char *todopath = NULL;
   int maxnum = 0;
   int nbfiles = 0;
+  bool foundprojectfile = false;
   char *patharr[MAXLOADEDFILES_BM] = { };
   while ((de = readdir (ldir)) != NULL)
     {
@@ -143,6 +148,11 @@ load_initial_BM (const char *ldirpath)
           ASSERT_BM (patharr[0] == NULL);
           patharr[0] = buf;
         }
+      else if (projectstatefilename
+               && !strcmp (de->d_name, projectstatefilename))
+        {
+          foundprojectfile = true;
+        }
     }
   closedir (ldir);
   if (maxnum > MAXLOADEDFILES_BM)
@@ -165,6 +175,16 @@ load_initial_BM (const char *ldirpath)
   ld->ld_storepatharr = calloc (maxnum + 2, sizeof (void *));
   if (!ld->ld_storepatharr)
     FATAL_BM ("cannot calloc for %d store files (%m)", maxnum);
+  if (foundprojectfile)
+    {
+      if (asprintf
+          (&ld->ld_projectstatepath, "%s/%s", ldirpath,
+           projectstatefilename) < 0)
+        FATAL_BM
+          ("failed to make project state path for loaded directory %s and project file %s",
+           ldirpath, projectstatefilename);
+      free (projectstatefilename), projectstatefilename = NULL;
+    }
   for (int ix = 1; ix <= maxnum; ix++)
     {
       char *pa = patharr[ix];
@@ -211,6 +231,7 @@ load_initial_BM (const char *ldirpath)
       ld->ld_parsarr[ix] = NULL;
     }
   free (ld->ld_storepatharr), ld->ld_storepatharr = NULL;
+  free (ld->ld_projectstatepath), ld->ld_projectstatepath = NULL;
   free (ld->ld_parsarr), ld->ld_parsarr = NULL;
   ld->ld_objhset = NULL;
   ld->ld_modhset = NULL;
@@ -615,8 +636,7 @@ load_modif_value_BM (struct loader_stBM *ld, int ix,
   LOCALFRAME_BM (parstkfrm, NULL,       //
                  struct parser_stBM *ldparser;  //
                  objectval_tyBM * curldobj;     //
-                 value_tyBM valv;
-    );
+                 value_tyBM valv;);
   _.ldparser = ldpars;
   _.curldobj = argcurldobj;
   unsigned lineno = parserlineno_BM (ldpars);
@@ -660,8 +680,7 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
   LOCALFRAME_BM (parstkfrm, NULL,       //
                  struct parser_stBM *ldparser;  //
                  objectval_tyBM * curldobj;     //
-                 value_tyBM valv;
-    );
+                 value_tyBM valv;);
   _.ldparser = ldpars;
   _.curldobj = argcurldobj;
   unsigned lineno = parserlineno_BM (ldpars);
@@ -692,8 +711,8 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
     {
       parsernextline_BM (ldpars);
       DBGPRINTF_BM
-        ("load_modif_json_BM store%d-BISMON.bmon L%u linlen %ld linbuf '%s'", ix,
-         lineno + nbjsline, ldpars->pars_linelen, ldpars->pars_linebuf);
+        ("load_modif_json_BM store%d-BISMON.bmon L%u linlen %ld linbuf '%s'",
+         ix, lineno + nbjsline, ldpars->pars_linelen, ldpars->pars_linebuf);
       if (ldpars->pars_linelen <= 0
           || (ldpars->pars_linelen >= 2 && ldpars->pars_linebuf[0] == '~'
               && ldpars->pars_linebuf[1] == ')'))
@@ -776,8 +795,7 @@ load_modif_todo_BM (struct loader_stBM *ld, int ix,
                  value_tyBM todov;      //
                  const closure_tyBM * closv;    //
                  objectval_tyBM * obselv;       //
-                 value_tyBM args[TODO_MAXARGS_BM];
-    );
+                 value_tyBM args[TODO_MAXARGS_BM];);
   _.ldparser = ldpars;
   _.curldobj = argcurldobj;
   unsigned lineno = parserlineno_BM (ldpars);
@@ -875,12 +893,10 @@ load_postpone_modif_BM (struct loader_stBM *ld, int ix,
 {
 
   LOCALFRAME_BM (parstkfrm, NULL,       //
-                 struct loader_stBM *ld;
-                 struct parser_stBM *ldparser;  //
+                 struct loader_stBM *ld; struct parser_stBM *ldparser;  //
                  objectval_tyBM * curldobj;     //
                  value_tyBM datav;      //
-                 const closure_tyBM * clos;
-    );
+                 const closure_tyBM * clos;);
   ASSERT_BM (ld && ld->ld_magic == LOADERMAGIC_BM);
   ASSERT_BM (ix >= 0 && ix <= (int) ld->ld_maxnum);
   ASSERT_BM (data != NULL);
@@ -933,8 +949,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                  value_tyBM attrval;    //
                  value_tyBM compval;    //
                  objectval_tyBM * classobj;     //
-                 };
-    );
+                 };);
   _.ldparsownob = makeobj_BM ();
   struct parser_stBM *ldpars = makeparser_of_file_BM (fil, _.ldparsownob);
   ASSERT_BM (ldpars != NULL);
@@ -1189,9 +1204,8 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                        curidbuf32) >= (int) sizeof (bufname))
                     {
                       buf = NULL;
-                      asprintf (&buf, "%s%s" ROUTINESUFFIX_BM,
-                                bytstring_BM (_.routbuilder), curidbuf32);
-                      if (!buf)
+                      if (asprintf (&buf, "%s%s" ROUTINESUFFIX_BM,
+                                    bytstring_BM (_.routbuilder), curidbuf32))
                         FATAL_BM ("asprintf failure for %s+%s - %m",
                                   bytstring_BM (_.routbuilder), curidbuf32);
                     };
@@ -1348,8 +1362,7 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
 {
   ASSERT_BM (ld && ld->ld_magic == LOADERMAGIC_BM);
   ASSERT_BM (_parentframe != NULL);
-  LOCALFRAME_BM (_parentframe, NULL, value_tyBM firsttodo;
-    );
+  LOCALFRAME_BM (_parentframe, NULL, value_tyBM firsttodo;);
   /// run the first pass to create every object
   for (int ix = 1; ix <= (int) ld->ld_maxnum; ix++)
     if (ld->ld_storepatharr[ix])
@@ -1455,9 +1468,8 @@ const quasinode_tyBM * restargs __attribute__((unused)))
     closix__LAST
   };
   LOCALFRAME_BM (stkf, BMP_postpone_load_modification,  //
-                 objectval_tyBM * curldobj; value_tyBM data;
-                 closure_tyBM * cclos;
-    );
+                 objectval_tyBM * curldobj;
+                 value_tyBM data; closure_tyBM * cclos;);
   LOCALGETFUNV_BM (_.cclos);
   WEAKASSERT_BM (isclosure_BM (_.cclos)
                  && closurewidth_BM ((value_tyBM) _.cclos) >= closix__LAST);
@@ -1538,9 +1550,7 @@ ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh)    // load_module
   extern void postpone_loader_module_BM (objectval_tyBM * modulob,
                                          struct stackframe_stBM *stkf);
   LOCALFRAME_BM (stkf, BMP_load_module, //
-                 objectval_tyBM * modulob;
-                 value_tyBM callingclosv;
-    );
+                 objectval_tyBM * modulob; value_tyBM callingclosv;);
   LOCALGETFUNV_BM (_.callingclosv);
   _.modulob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
   char modulidbuf[32];

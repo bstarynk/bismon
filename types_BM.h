@@ -3,7 +3,7 @@
 
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -500,6 +500,7 @@ struct loader_stBM              // malloc-ed then free-d at load time
   struct listtop_stBM *ld_todolist;
   // in the store arrays below, index 0 is for the store_todo
   char **ld_storepatharr;       /* calloc-ed array of malloc-ed string paths */
+  char*ld_projectstatepath; /* malloc-ed string containing the project state */
   struct parser_stBM **ld_parsarr;      /* calloc-ed array of parsers */
   value_tyBM ld_data;           /* common data */
   char *ld_dir;                 /* malloc-ed directory path */
