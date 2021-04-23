@@ -5,8 +5,9 @@
 #endif
 
 #undef BM_NB_GLOBAL
-#define BM_NB_GLOBAL 2
+#define BM_NB_GLOBAL 3
 HAS_GLOBAL_BM(gui_focus_obj)
+HAS_GLOBAL_BM(project_obj)
 HAS_GLOBAL_BM(varglob)
 
 #undef HAS_GLOBAL_BM
