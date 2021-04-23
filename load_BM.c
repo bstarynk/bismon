@@ -288,8 +288,12 @@ static void
 load_first_pass_BM (struct loader_stBM *ld, int ix)
 {
   ASSERT_BM (ld && ld->ld_magic == LOADERMAGIC_BM);
-  ASSERT_BM (ix >= 0 && ix <= (int) ld->ld_maxnum);
-  char *curldpath = ld->ld_storepatharr[ix];
+  ASSERT_BM ((ix >= 0 && ix <= (int) ld->ld_maxnum) || ix == ProjectSp_BM);
+  char *curldpath = NULL;
+  if (ix >= 0 && ix <= (int) ld->ld_maxnum)
+    curldpath = ld->ld_storepatharr[ix];
+  else if (ix == ProjectSp_BM)
+    curldpath = ld->ld_projectstatepath;
   ASSERT_BM (curldpath != NULL);
   size_t linsiz = 256;
   char *linbuf = malloc (linsiz);
@@ -933,8 +937,12 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                      struct stackframe_stBM *parstkfrm)
 {
   ASSERT_BM (ld && ld->ld_magic == LOADERMAGIC_BM);
-  ASSERT_BM (ix >= 0 && ix <= (int) ld->ld_maxnum);
-  char *curldpath = ld->ld_storepatharr[ix];
+  ASSERT_BM ((ix >= 0 && ix <= (int) ld->ld_maxnum) || ix == ProjectSp_BM);
+  char *curldpath = NULL;
+  if (ix >= 0 && ix <= (int) ld->ld_maxnum)
+    curldpath = ld->ld_storepatharr[ix];
+  else if (ix == ProjectSp_BM)
+    curldpath = ld->ld_projectstatepath;  
   ASSERT_BM (curldpath != NULL);
   FILE *fil = fopen (curldpath, "r");
   if (!fil)
@@ -1369,6 +1377,8 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       load_first_pass_BM (ld, ix);
   if (ld->ld_storepatharr[0])
     load_first_pass_BM (ld, 0);
+  if (ld->ld_projectstatepath && !access(ld->ld_projectstatepath, R_OK))
+    load_first_pass_BM(ld, ProjectSp_BM);
   /// set the constants
   for (int kix = 0; kix < bmnbconsts; kix++)
     {
@@ -1393,6 +1403,8 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       load_second_pass_BM (ld, ix, CURFRAME_BM);
   if (ld->ld_storepatharr[0])
     load_second_pass_BM (ld, 0, CURFRAME_BM);
+  if (ld->ld_projectstatepath && !access(ld->ld_projectstatepath, R_OK))
+    load_second_pass_BM (ld, ProjectSp_BM, CURFRAME_BM);
   /// run the todo list
   long todocnt = 0;
   while (islist_BM (ld->ld_todolist) && listlength_BM (ld->ld_todolist) > 0)
