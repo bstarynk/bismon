@@ -36,7 +36,7 @@
 /// declare the globals
 #define HAS_GLOBAL_BM(Gnam) objectval_tyBM* GLOBAL_BM(Gnam);
 
-#include "genbm_global.h"
+#include "_genbm_global.h"
 
 static pthread_mutexattr_t objmutexattr_BM;
 

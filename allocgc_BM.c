@@ -977,7 +977,7 @@ clear_gcroots_bm (void)
     };
   // clear the globals
 #define HAS_GLOBAL_BM(Glob) GLOBAL_BM(Glob) = NULL;
-#include "genbm_global.h"
+#include "_genbm_global.h"
   // clear the predefined objects except `object` & `class`
 #define HAS_PREDEF_BM(Id,Hi,Lo,Hash) do {	\
     objectval_tyBM* curprobj = PREDEF_BM(Id);	\

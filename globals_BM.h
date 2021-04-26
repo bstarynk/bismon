@@ -96,5 +96,5 @@ extern const char *onion_anon_web_session_BM;
 
 #define UNSPECIFIED_BM ((void*)(&unspecifieddata_BM))
 #define HAS_GLOBAL_BM(Nam) extern objectval_tyBM*globdata_##Nam##_BM;
-#include "genbm_global.h"
+#include "_genbm_global.h"
 #endif /*GLOBALS_BM_INCLUDED */

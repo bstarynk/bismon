@@ -387,7 +387,7 @@ void initialize_globals_BM(void)
 	  == mapglobals_BM.end());		\
   mapglobals_BM[#Gnam] = &GLOBAL_BM(Gnam);	\
 } while(0);
-#include "genbm_global.h"
+#include "_genbm_global.h"
 } // end of initialize_globals_BM
 
 void
