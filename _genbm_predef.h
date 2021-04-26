@@ -1,5 +1,5 @@
-// generated header file for predefined genbm_predef.h
-// this generated header file genbm_predef.h is GPLv3+ licensed
+// generated header file for predefined _genbm_predef.h
+// this generated header file _genbm_predef.h is GPLv3+ licensed
 #if !defined(HAS_PREDEF_BM) && !defined(HAS_NAMED_PREDEF_BM)
 #error missing HAS_PREDEF_BM or HAS_NAMED_PREDEF_BM
 #endif
@@ -443,4 +443,4 @@ HAS_NAMED_PREDEF_BM(word,_7zPvMEsQeeE_6zyBWbegVpo)
 #undef HAS_NAMED_PREDEF_BM
 #endif/*HAS_NAMED_PREDEF_BM*/
 
-// end of generated predefined file genbm_predef.h
+// end of generated predefined file _genbm_predef.h
