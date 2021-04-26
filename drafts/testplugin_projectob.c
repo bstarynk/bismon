@@ -20,11 +20,18 @@ projectob_runtest_BM (struct stackframe_stBM *stkf,
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * projclassob;        //
+		  objectval_tyBM *hashsetvalob; //
+		  objectval_tyBM *selinitclassob; //
+		  value_tyBM initclassresv; // 
     );
   _.projclassob = makeobj_BM ();
+  _.hashsetvalob = BMP_hashsetval_object;
+  _.selinitclassob = lockedfindobjofstrid_BM("_75gnoii3mMp_41wgHkvJVyN");
   DBGPRINTF_BM
-    ("projectob_runtest_BM start pluginame %s pluginrk %d projclassob %s",
-     pluginame, pluginrk, objectdbg_BM (_.projclassob));
+    ("projectob_runtest_BM start pluginame %s pluginrk %d projclassob %s hashsetvalob %s selinitclassob %s",
+     pluginame, pluginrk, objectdbg_BM (_.projclassob),
+     objectdbg1_BM(_.hashsetvalob), objectdbg2_BM(_.selinitclassob));
+  ASSERT_BM(_.hashsetvalob != NULL);
   /// should send init_class (<superclass>) to projclassob
   WARNPRINTF_BM("projectob_runtest_BM is incomplete");
 #warning projectob_runtest_BM should create the project_class object...
