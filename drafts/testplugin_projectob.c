@@ -19,12 +19,13 @@ projectob_runtest_BM (struct stackframe_stBM *stkf,
                       const char *pluginame, int pluginrk)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * tmpob;        //
+                 objectval_tyBM * projclassob;        //
     );
-  _.tmpob = makeobj_BM ();
+  _.projclassob = makeobj_BM ();
   DBGPRINTF_BM
-    ("projectob_runtest_BM start pluginame %s pluginrk %d tmpob %s",
-     pluginame, pluginrk, objectdbg_BM (_.tmpob));
+    ("projectob_runtest_BM start pluginame %s pluginrk %d projclassob %s",
+     pluginame, pluginrk, objectdbg_BM (_.projclassob));
+  /// should send init_class (<superclass>) to projclassob
   WARNPRINTF_BM("projectob_runtest_BM is incomplete");
 #warning projectob_runtest_BM should create the project_class object...
 #if 0

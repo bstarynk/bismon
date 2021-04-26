@@ -78,7 +78,7 @@ extern pthread_mutex_t allocationmutex_BM;
 #define HAS_PREDEF_BM(Id,Hi,Lo,Hash) \
   extern objectval_tyBM predefdata##Id##_BM; \
   extern objectval_tyBM* predefptr##Id##_BM;
-#include "genbm_predef.h"
+#include "_genbm_predef.h"
 
 #define PREDEF_BM(Id) (predefptr##Id##_BM)
 
