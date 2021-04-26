@@ -29,7 +29,11 @@
 
 
 const char webonion_timestamp_BM[] =
-  __FILE__ " compiled at " __DATE__ " on " __TIME__;
+  __FILE__ " compiled at " __DATE__ " on " __TIME__
+#ifdef BISMON_GITID
+  " git " BISMON_GITID
+#endif /*BISMON_GITID*/
+  ;
 
 // expiration delay for user session, in seconds (more than an hour,
 // but increased on every web interaction)
