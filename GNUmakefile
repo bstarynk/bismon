@@ -162,10 +162,10 @@ id_BM-g.o: id_BM.c id_BM.h
 	$(COMPILE.cc)  $(BISMON_CXXFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
 
 %_ONIONBM.o: %_ONIONBM.c bismon.h
-	$(COMPILE.c) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  $< -o $@
+	$(COMPILE.c) -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  $< -o $@
 
 %_ONIONBM-g.o: %_ONIONBM.c bismon.h
-	$(COMPILE.c) $(BISMON_CFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
+	$(COMPILE.c) $(BISMON_CFLAGS) -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $-g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
 
 web_ONIONBM.o: web_ONIONBM.c _login_ONIONBM.h _changepasswd_ONIONBM.h
 
