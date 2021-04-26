@@ -27,6 +27,10 @@
 #include "_login_ONIONBM.h"
 #include "_changepasswd_ONIONBM.h"
 
+
+const char webonion_timestamp_BM[] =
+  __FILE__ " compiled at " __DATE__ " on " __TIME__;
+
 // expiration delay for user session, in seconds (more than an hour,
 // but increased on every web interaction)
 #define USER_WEBSESSION_EXPIRATION_DELAY 4000.0
@@ -542,7 +546,8 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
       /// (and their output pipes), to SIGCHLD and SIGTERM + SIGQUIT
       /// see https://groups.google.com/a/coralbits.com/d/msg/onion-dev/m-wH-BY2MA0/QJqLNcHvAAAJ
       /// and https://groups.google.com/a/coralbits.com/d/msg/onion-dev/ImjNf1EIp68/R37DW3mZAAAJ
-      INFOPRINTF_BM ("run_onionweb runs web_plain_event_loop");
+      INFOPRINTF_BM ("run_onionweb_BM runs web_plain_event_loop, timestamped %s",
+		     webonion_timestamp_BM);
       web_is_running_BM = true;
       web_plain_event_loop_BM ();
       web_is_running_BM = false;
