@@ -35,9 +35,25 @@ fi
 if [ ! -f "$BISMON_MSH_SOURCE/src/builtins.c" \
 	 || ! -f "$BISMON_MSH_SOURCE/src/shellFunctions.c" \
 	 || ! -f "$BISMON_MSH_SOURCE/include/shellFunctions.h" ]; then
-    printf "invalid MSH source for Bismon %s\n" "$BISMON_MSH_SOURCE" > /dev/stderr
+    printf "%s: invalid MSH source for Bismon %s\n" "$0" "$BISMON_MSH_SOURCE" > /dev/stderr
     exit 1
 fi
+
+if [ ! -x bismon ]; then
+    ./Build
+fi
+
+if [ ! -x bismon ]; then
+    printf "%s: missing bismon executable in %s\n" "$0" $(pwd) > /dev/stderr
+    exit 1
+fi
+
+for f in *.[ch] ; do
+    if [ "$f" -nt bismon ]; then
+	printf "%s: source file %s newer than bismon executable in %s\n" "$0" "$f" $(pwd) > /dev/stderr
+	exit 1
+    fi
+done
 
 ### incomplete Msh-Analyze script
 ########################################
