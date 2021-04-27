@@ -1,4 +1,5 @@
 #!/bin/bash
+## FIXME: this should probably becaome a GNU guile script
 
 ##   BISMON  ---- simple analysis of the Msh shell
 ##   Copyright ©  2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
