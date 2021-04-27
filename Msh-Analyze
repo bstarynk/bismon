@@ -56,4 +56,6 @@ for f in *.[ch] ; do
 done
 
 ### incomplete Msh-Analyze script
+printf "%s: incomplete - should run bismon\n" "$0" > /dev/stderr
+exit 1
 ########################################
