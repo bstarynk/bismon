@@ -3709,7 +3709,7 @@ web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
             }
         unlockonion_runpro_mtx_at_BM (__LINE__);
       }
-#define POLL_DELAY_MILLISECS_BM 750
+#define POLL_DELAY_MILLISECS_BM 1750
       if (loopcnt % 4 == 0)
         DBGPRINTF_BM
           ("web_plain_event_loop_BM before poll nbpoll=%d loop#%ld", nbpoll,
