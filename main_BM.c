@@ -2717,6 +2717,12 @@ parse_program_options_BM(int argc, char**argv)
 	     argv[0], (int)getpid(), myhostname_BM, errp->message);
   }
   g_option_context_free(gctx);
+  if (onion_web_base_BM && *onion_web_base_BM) {
+    INFOPRINTF_BM("%s: will run web service with onion web base %s (pid #%d, host %s)",
+		  argv[0], onion_web_base_BM, (int)getpid(), myhostname_BM);
+    run_onion_BM = true;
+  };
+  ///
   DBGPRINTF_BM("end parse_program_options_BM, argc wad %d now %d", initialargc, argc);
 } /* end parse_program_options_BM */
 
