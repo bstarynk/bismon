@@ -46,9 +46,9 @@ const char *added_passwords_filepath_BM;
 const char *contact_filepath_BM;
 char *contact_name_BM;
 char *contact_email_BM;
-const char*project_name_BM;
+const char *project_name_BM;
 
-extern void parse_program_options_BM(int argc, char**argv);
+extern void parse_program_options_BM (int argc, char **argv);
 
 static const char *chdir_after_load_bm;
 thread_local struct threadinfo_stBM *curthreadinfo_BM;
@@ -309,26 +309,30 @@ run_command_bm (const gchar * optname __attribute__((unused)),  //
 }                               /* end run_command_bm */
 
 static bool
-set_project_name_bm (const gchar * optname __attribute__((unused)),  //
-                const gchar * val,      //
-                gpointer data __attribute__((unused)),  //
-                GError ** perr)
+set_project_name_bm (const gchar * optname __attribute__((unused)),     //
+                     const gchar * val, //
+                     gpointer data __attribute__((unused)),     //
+                     GError ** perr)
 {
   if (val == NULL)
-    FATAL_BM("missing project name");
+    FATAL_BM ("missing project name");
   bool goodname = true;
-  if (!isalpha(val[0]) && val[0] != '_')
+  if (!isalpha (val[0]) && val[0] != '_')
     goodname = false;
-  for (const gchar* pc = val; *pc && goodname; pc++)
-    if (!isalnum(*pc) && *pc != '_')
+  for (const gchar * pc = val; *pc && goodname; pc++)
+    if (!isalnum (*pc) && *pc != '_')
       goodname = false;
-  if (!goodname) {
-    WARNPRINTF_BM("invalid project name %s, should be C-identifier like", (const char*)val);
-    g_set_error (perr, 0, 1, "invalid project name %s, should be C-identifier like", (const char*)val);
-    return FALSE;
-  }
-  project_name_BM = g_strdup(val);
-  INFOPRINTF_BM("using Bismon project name %s", project_name_BM);
+  if (!goodname)
+    {
+      WARNPRINTF_BM ("invalid project name %s, should be C-identifier like",
+                     (const char *) val);
+      g_set_error (perr, 0, 1,
+                   "invalid project name %s, should be C-identifier like",
+                   (const char *) val);
+      return FALSE;
+    }
+  project_name_BM = g_strdup (val);
+  INFOPRINTF_BM ("using Bismon project name %s", project_name_BM);
 }                               /* end set_project_name_bm */
 
 
@@ -699,7 +703,7 @@ const GOptionEntry optionstab_bm[] = {
    "forcibly run a final garbage collection (after any dump or event loop)",
    .arg_description = NULL},
   //
-    //
+  //
   {.long_name = "batch",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
@@ -765,8 +769,8 @@ const GOptionEntry optionstab_bm[] = {
    .description = "gives version information",
    .arg_description = NULL},
   //
-    //////////////////
-    //
+  //////////////////
+  //
   {.long_name = "ssl-certificate",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
@@ -783,6 +787,296 @@ const GOptionEntry optionstab_bm[] = {
    "A string like <host>:<port>, default is localhost:8086, describing the base of web URLs served by bismon",
    .arg_description = "WEB_BASE"},
   {.long_name = "anon-web-session",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &onion_anon_web_session_BM,
+   .description =
+   "Create an anonymous web session, and write its cookie in the given COOKIEFILE",
+   .arg_description = "COOKIEFILE"},
+  ////
+  ////
+  ////
+  /******************************************************************
+   * same long options, all prefixed by --bismon
+   ******************************************************************/
+  {.long_name = "bismon-load",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &load_dir_bm,
+   .description = "load persistent heap from directory DIR (default is .)",
+   .arg_description = "DIR"},
+  //
+  {.long_name = "bismon-dump",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &dump_dir_BM,
+   .description = "dump persistent heap into directory DIR",
+   .arg_description = "DIR"},
+  //
+  {.long_name = "bismon-dump-after-load",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &dump_after_load_dir_bm,
+   .description = "dump after load the persistent heap into directory DIR",
+   .arg_description = "DIR"},
+  //
+  {.long_name = "bismon-contributors-file",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &contributors_filepath_BM,
+   .description = "use PATH as the contributors file;\n"
+   "\t .. default is contributors_BM or $HOME/contributors_BM",
+   .arg_description = "PATH"},
+  //
+  {.long_name = "bismon-passwords-file",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &passwords_filepath_BM,
+   .description = "use PATH as the password file;\n"
+   "\t .. default is passwords_BM or $HOME/passwords_BM",
+   .arg_description = "PATH"},
+  //
+  {.long_name = "bismon-contact-file",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &contact_filepath_BM,
+   .description = "use PATH as the master contact file;\n"
+   "\t .. default is contact_BM or $HOME/contact_BM",
+   .arg_description = "PATH"},
+  //
+  {.long_name = "bismon-add-passwords",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &added_passwords_filepath_BM,
+   .description =
+   "use the given PASSWORDENTRIES file (if it is -, stdin) containing lines like <username>:<password> to add passwords",
+   .arg_description = "PASSWORDENTRIES"},
+  //
+  {.long_name = "bismon-emit-has-predef",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_INT,
+   .arg_data = &count_emit_has_predef_bm,
+   .description = "emit NB 'HAS_PREDEF_BM'",
+   .arg_description = "NB"},
+  //
+  {.long_name = "bismon-job",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_INT,
+   .arg_data = &nbworkjobs_BM,
+   .description = "number of worker threads NBJOBS (>=2, <16)",
+   .arg_description = "NBJOBS"},
+  //
+  {.long_name = "bismon-random-seed",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_INT,
+   .arg_data = &randomseed_BM,
+   .description = "set the initial PRNG seed for g_random_int to given SEED",
+   .arg_description = "SEED"},
+  //
+  {.long_name = "bismon-pid-file",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &pid_filepath_bm,
+   .description = "use PATH as the pid file;\n"
+   "\t .. default is _bismon.pid",
+   .arg_description = "PATH"},
+  //
+  {.long_name = "bismon-run-command",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &run_command_bm,
+   .description = "run the command CMD",
+   .arg_description = "CMD"},
+  //
+  {.long_name = "bismon-project-name",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &set_project_name_bm,
+   .description = "define the project name",
+   .arg_description = "PROJECT_NAME"},
+  //
+  {.long_name = "bismon-init-after-load",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &handle_init_afterload_bm,
+   .description = "do the <closure> after loading, as initialization",
+   .arg_description = "<closure> (or object)"},
+  //
+  {.long_name = "bismon-chdir-after-load",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &chdir_after_load_bm,
+   .description = "change directory after load to DIR (perhaps making it)",
+   .arg_description = "DIR"},
+
+  //
+  {.long_name = "bismon-parse-value",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &get_parse_value_after_load_bm,
+   .description = "parse (after loading) the value EXPR",
+   .arg_description = "EXPR"},
+
+  //
+  {.long_name = "bismon-test-plugin",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &get_testplugin_after_load_bm,
+   .description =
+   "run the drafts/testplugin_PLUGINAME.so (after loading) the test-plugin PLUGINAME",
+   .arg_description = "PLUGINAME"},
+
+  //
+  {.long_name = "bismon-comment-predef",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &comment_bm,
+   .description = "set comment of next predefined to COMM",
+   .arg_description = "COMM"},
+
+  //
+  {.long_name = "bismon-add-predef",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &add_predef_bm,
+   .description = "add new predefined named PREDEFNAME",
+   .arg_description = "PREDEFNAME"},
+
+  ////
+  {.long_name = "bismon-contributor",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &add_contributor_bm,
+   .description = "add or change contributor CONTRIBUTOR,\n"
+   "\t like 'First Lastname <email@example.com>'\n"
+   "\t or 'First Lastname;email@example.com;aliasmail@example.org'\n"
+   "\t (this puts personal information relevant to European GDPR in file "
+   CONTRIBUTORS_FILE_BM ")",
+   .arg_description = "CONTRIBUTOR"},
+
+  ////
+  {.long_name = "bismon-print-contributor-of-oid",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &print_contributor_of_oid_bm,
+   .description =
+   "print tab-separated: (full name, objid, email, alias) of contributor of given CONTRIBOID then exit,",
+   .arg_description = "CONTRIBOID"},
+
+  ////
+  {.long_name = "bismon-remove-contributor",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &remove_contributor_bm,
+   .description = "remove existing contributor CONTRIBUTOR,\n"
+   "\t like 'First Lastname'\n"
+   "\t or email@example.com\n"
+   "\t or some existing contributor oid similar to _2PFRochKb3N_3e8RFFAUi9K\n"
+   "\t (this should remove personal information relevant to European GDPR in file "
+   CONTRIBUTORS_FILE_BM ")",
+   .arg_description = "CONTRIBUTOR"},
+  ///
+  {.long_name = "bismon-cleanup",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &want_cleanup_bm,
+   .description =
+   "cleanup memory at end (for valgrind)\n"
+   "\t ... (see valgrind.org for more).",
+   .arg_description = NULL},
+  ///
+  {.long_name = "bismon-final-gc",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &want_finalgc_bm,
+   .description =
+   "forcibly run a final garbage collection (after any dump or event loop)",
+   .arg_description = NULL},
+  //
+  //
+  {.long_name = "bismon-batch",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &batch_bm,
+   .description = "run in batch mode without user interface",
+   .arg_description = NULL},
+  //
+  {.long_name = "bismon-debug",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &debugmsg_BM,
+   .description = "gives lots of debug messages",
+   .arg_description = NULL},
+  //
+  {.long_name = "bismon-debug-after-load",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &debug_after_load_BM,
+   .description = "enable debug messages after load",
+   .arg_description = NULL},
+  //
+  {.long_name = "bismon-emit-module",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &module_to_emit_bm,
+   .description = "emit module MODULEOBJ",
+   .arg_description = "MODULEOBJ"},
+  //
+  {.long_name = "bismon-mailhtml-file",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &mailhtml_file_bm,
+   .description = " FILE is the file, in HTML, to be sent to contributor",
+   .arg_description = "FILE"},
+  //
+  {.long_name = "bismon-mailhtml-subject",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &mailhtml_subject_bm,
+   .description =
+   " SUBJECT is the subject of the email to be sent to contributor",
+   .arg_description = "SUBJECT"},
+  //
+  {.long_name = "bismon-mailhtml-contributor",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &mailhtml_contributor_bm,
+   .description = " CONTRIBUTOR is to whom the email will be sent",
+   .arg_description = "CONTRIBUTOR"},
+  //
+  {.long_name = "bismon-mailhtml-attachment",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &mailhtml_attachment_bm,
+   .description = " ATTACHEDFILE is the attached file of the email",
+   .arg_description = "ATTACHEDFILE"},
+  //
+  //
+  {.long_name = "bismon-version",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &give_version_bm,
+   .description = "gives version information",
+   .arg_description = NULL},
+  //
+  //////////////////
+  //
+  {.long_name = "bismon-ssl-certificate",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &onion_ssl_certificate_BM,
+   .description =
+   "Uses FILEPREFIX.pem & FILEPREFIX.key for SSL certificate to libonion",
+   .arg_description = "FILEPREFIX"},
+  //
+  {.long_name = "bismon-web-base",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &onion_web_base_BM,
+   .description =
+   "A string like <host>:<port>, default is localhost:8086, describing the base of web URLs served by bismon",
+   .arg_description = "WEB_BASE"},
+  {.long_name = "bismon-anon-web-session",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &onion_anon_web_session_BM,
@@ -1069,10 +1363,9 @@ main (int argc, char **argv)
   myprogname_BM = argv[0];
   if (argc > 1 && (!strcmp (argv[1], "-D") || !strcmp (argv[1], "--debug")))
     debugmsg_BM = true;
-  if (argc > 1 && !strcmp (argv[1], "--version")) 
-    give_prog_version_BM(argv[0]);
-  DBGPRINTF_BM ("run_onion is %s",
-                run_onion_BM ? "true" : "false");
+  if (argc > 1 && !strcmp (argv[1], "--version"))
+    give_prog_version_BM (argv[0]);
+  DBGPRINTF_BM ("run_onion is %s", run_onion_BM ? "true" : "false");
   dlprog_BM = dlopen (NULL, RTLD_NOW | RTLD_GLOBAL);
   if (!dlprog_BM)
     {
@@ -1083,7 +1376,7 @@ main (int argc, char **argv)
   memset ((char *) myhostname_BM, 0, sizeof (myhostname_BM));
   if (gethostname ((char *) myhostname_BM, sizeof (myhostname_BM) - 1))
     FATAL_BM ("gethostname failure %m");
-    bool skiplocalcheck = false;
+  bool skiplocalcheck = false;
   {
     // check the locale(7), unless using print-contributor-of-oid
     for (int ix = 0; ix < argc && !skiplocalcheck; ix++)
@@ -1131,8 +1424,7 @@ main (int argc, char **argv)
              "debug messages enabled %s pid %d timestamp %s commit %s\n",
              myprogname_BM, (int) getpid (), bismon_timestamp,
              bismon_lastgitcommit);
-  DBGPRINTF_BM ("run_onion is %s",
-                run_onion_BM ? "true" : "false");
+  DBGPRINTF_BM ("run_onion is %s", run_onion_BM ? "true" : "false");
   if (give_version_bm)
     give_prog_version_BM (myprogname_BM);
   if (print_contributor_of_oid_bm)
@@ -1152,7 +1444,7 @@ main (int argc, char **argv)
     nbworkjobs_BM = MINNBWORKJOBS_BM + 1;
   else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
-  if (!batch_bm &&  !run_onion_BM)
+  if (!batch_bm && !run_onion_BM)
     FATAL_BM
       ("no batch or onion option; please run with --batch or --web;\n"
        "... or run: %s --help", argv[0]);
@@ -1178,8 +1470,7 @@ main (int argc, char **argv)
   //
   if (count_emit_has_predef_bm > 0)
     emit_has_predef_BM ();
-  DBGPRINTF_BM ("run_onion is %s",
-                run_onion_BM ? "true" : "false");
+  DBGPRINTF_BM ("run_onion is %s", run_onion_BM ? "true" : "false");
   if (!load_dir_bm)
     load_dir_bm = ".";
   else if (load_dir_bm[0] == '-')
@@ -1249,7 +1540,7 @@ main (int argc, char **argv)
     {
       if (run_onion_BM)
         {
-	  INFOPRINTF_BM ("initializing ONION for Web services");
+          INFOPRINTF_BM ("initializing ONION for Web services");
           initialize_webonion_BM ();
         }
     }
@@ -1264,8 +1555,7 @@ main (int argc, char **argv)
         FATAL_BM ("missing --mailhtml-contributor CONTRIBUTOR option");
       do_test_mailhtml_bm ();
     }
-  DBGPRINTF_BM ("run_onion is %s",
-                run_onion_BM ? "true" : "false");
+  DBGPRINTF_BM ("run_onion is %s", run_onion_BM ? "true" : "false");
   if (nb_added_predef_bm > 0)
     add_new_predefined_bm ();
   if (nb_parsed_values_after_load_bm > 0)
@@ -1292,9 +1582,8 @@ main (int argc, char **argv)
         }
       do_dump_after_load_BM ();
     };
-  DBGPRINTF_BM ("run_onion is %s",
-                run_onion_BM ? "true" : "false");
-    //
+  DBGPRINTF_BM ("run_onion is %s", run_onion_BM ? "true" : "false");
+  //
   if (run_onion_BM)
     {
       if (batch_bm)
@@ -1315,8 +1604,9 @@ main (int argc, char **argv)
               INFOPRINTF_BM ("wrote pid %d in pid-file %s",
                              (int) getpid (), pid_filepath_bm);
             }
-          INFOPRINTF_BM ("running ONION web interface for %d jobs or working pthreads",
-                         nbworkjobs_BM);
+          INFOPRINTF_BM
+            ("running ONION web interface for %d jobs or working pthreads",
+             nbworkjobs_BM);
           run_onionweb_BM (nbworkjobs_BM);
         }
     }
@@ -1706,17 +1996,17 @@ parse_contact_BM (void)
 #undef CONTACT_MAXLEN_BM
   if (!contact_name_BM)
     FATAL_BM ("missing contact name after parsing %s\n"
-	      "## that file might have a line like: John Doe <bismon.master@example.com>",
-	      contact_filepath_BM);
+              "## that file might have a line like: John Doe <bismon.master@example.com>",
+              contact_filepath_BM);
   if (!contact_email_BM)
     FATAL_BM ("missing contact email after parsing %s\n"
-	      "## that file might have a line like: John Doe <bismon.master@example.com>",
-	      contact_filepath_BM);
+              "## that file might have a line like: John Doe <bismon.master@example.com>",
+              contact_filepath_BM);
   char *errmsg = NULL;
   if (!valid_email_BM (contact_email_BM, CHECKDNS_BM, &errmsg))
     FATAL_BM ("invalid contact email (%s) after parsing %s\n"
-	      "## that file might have a line like: John Doe <bismon.master@example.com>", errmsg,
-              contact_filepath_BM);
+              "## that file might have a line like: John Doe <bismon.master@example.com>",
+              errmsg, contact_filepath_BM);
 #warning the contact should be used in send-bismon-html-email.scm and handled for login_ONIONBM.thtml
 }                               /* end parse_contact_BM */
 
@@ -1726,9 +2016,7 @@ void
 parse_values_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * parsob;
-                 value_tyBM parsedval;
-    );
+                 objectval_tyBM * parsob; value_tyBM parsedval;);
   _.parsob = makeobj_BM ();
   INFOPRINTF_BM ("parsing %d values after load %s using parsob %s\n",
                  nb_parsed_values_after_load_bm, load_dir_bm,
@@ -1766,8 +2054,7 @@ run_testplugins_after_load_BM (void)
   double startcputime = cputime_BM ();
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  value_tyBM pluginamv;  //
-                 objectval_tyBM * pluginob;
-    );
+                 objectval_tyBM * pluginob;);
   // check sanity of test plugins
   static char cwdbuf[200];
   if (!getcwd (cwdbuf, sizeof (cwdbuf) - 1))
@@ -1883,9 +2170,8 @@ void
 init_afterload_bm ()
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * parsob; value_tyBM parsedval;
-                 value_tyBM resval;
-    );
+                 objectval_tyBM * parsob;
+                 value_tyBM parsedval; value_tyBM resval;);
   _.parsob = makeobj_BM ();
   INFOPRINTF_BM ("doing %d closures after load %s using parsob %s\n",
                  count_init_afterload_bm, load_dir_bm,
@@ -1932,8 +2218,7 @@ void
 add_contributors_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * userob;
-    );
+                 objectval_tyBM * userob;);
   ASSERT_BM (count_added_contributors_bm > 0);
   ASSERT_BM (added_contributors_arr_bm != NULL);
   INFOPRINTF_BM ("adding %d contributors after load",
@@ -1968,8 +2253,7 @@ void
 remove_contributors_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * oldcontribob;
-    );
+                 objectval_tyBM * oldcontribob;);
   ASSERT_BM (count_removed_contributors_bm > 0);
   INFOPRINTF_BM ("removing %d contributors after load",
                  count_removed_contributors_bm);
@@ -2004,8 +2288,7 @@ void
 add_passwords_from_file_BM (const char *addedpasspath)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * contribob;
-    );
+                 objectval_tyBM * contribob;);
   ASSERT_BM (addedpasspath != NULL);
   DBGPRINTF_BM ("add_passwords_from_file start addedpasspath %s",
                 addedpasspath);
@@ -2111,8 +2394,7 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  value_tyBM funv;       //
                  objectval_tyBM * funob;        //
-                 value_tyBM arg1v, arg2v, arg3v;
-                 value_tyBM resappv;    //
+                 value_tyBM arg1v, arg2v, arg3v; value_tyBM resappv;    //
                  value_tyBM failres;    //
                  value_tyBM failplace;  //
     );
@@ -2198,9 +2480,7 @@ do_internal_deferred_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
                                value_tyBM arg3)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * obsel;
-                 value_tyBM recva, arg1v, arg2v, arg3v;
-                 value_tyBM failres;    //
+                 objectval_tyBM * obsel; value_tyBM recva, arg1v, arg2v, arg3v; value_tyBM failres;     //
                  value_tyBM failplace;  //
     );
   _.recva = recv;
@@ -2249,7 +2529,7 @@ do_internal_deferred_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
 
 ////////////////////////////////////////////////////////////////
 /// mail testing
-  void
+void
 do_test_mailhtml_bm (void)
 {
   LOCALFRAME_BM (NULL, /*descr: */ NULL,
@@ -2697,34 +2977,40 @@ log_printf_message_BM (const char *fmt, ...)
 
 
 void
-parse_program_options_BM(int argc, char**argv)
+parse_program_options_BM (int argc, char **argv)
 {
   int initialargc = argc;
   GOptionContext *gctx =
-    g_option_context_new("\n*** the BISMON static source code analyzer for C and C++ code ***");
-  GError* errp = NULL;
+    g_option_context_new
+    ("\n*** the BISMON static source code analyzer for C and C++ code ***");
+  GError *errp = NULL;
   static char summarybuf[512];
-  snprintf(summarybuf, sizeof(summarybuf),
-	   "BISMON is a static source code analyzer, using GCC.\n"
-	   "see github.com/bstarynk/bismon commit %s...\n"
-	   "WITHOUT WARRANTY, since GPLv3+ licensed.\n"
-	   "A DRAFT report might be available on starynkevitch.net/Basile/bismon-doc.pdf\n",
-	   bismon_shortgitid);
-  g_option_context_set_summary(gctx, summarybuf);
-  g_option_context_add_main_entries(gctx, optionstab_bm, NULL);
-  if (!g_option_context_parse(gctx, &argc, &argv, &errp)) {
-    FATAL_BM("%s failed to parse program options (pid #%d, host %s):\n... %s",
-	     argv[0], (int)getpid(), myhostname_BM, errp->message);
-  }
-  g_option_context_free(gctx);
-  if (onion_web_base_BM && *onion_web_base_BM) {
-    INFOPRINTF_BM("%s: will run web service with onion web base %s (pid #%d, host %s)",
-		  argv[0], onion_web_base_BM, (int)getpid(), myhostname_BM);
-    run_onion_BM = true;
-  };
+  snprintf (summarybuf, sizeof (summarybuf),
+            "BISMON is a static source code analyzer, using GCC.\n"
+            "see github.com/bstarynk/bismon commit %s...\n"
+            "WITHOUT WARRANTY, since GPLv3+ licensed.\n"
+            "A DRAFT report might be available on starynkevitch.net/Basile/bismon-doc.pdf\n",
+            bismon_shortgitid);
+  g_option_context_set_summary (gctx, summarybuf);
+  g_option_context_add_main_entries (gctx, optionstab_bm, NULL);
+  if (!g_option_context_parse (gctx, &argc, &argv, &errp))
+    {
+      FATAL_BM
+        ("%s failed to parse program options (pid #%d, host %s):\n... %s",
+         argv[0], (int) getpid (), myhostname_BM, errp->message);
+    }
+  g_option_context_free (gctx);
+  if (onion_web_base_BM && *onion_web_base_BM)
+    {
+      INFOPRINTF_BM
+        ("%s: will run web service with onion web base %s (pid #%d, host %s)",
+         argv[0], onion_web_base_BM, (int) getpid (), myhostname_BM);
+      run_onion_BM = true;
+    };
   ///
-  DBGPRINTF_BM("end parse_program_options_BM, argc wad %d now %d", initialargc, argc);
-} /* end parse_program_options_BM */
+  DBGPRINTF_BM ("end parse_program_options_BM, argc wad %d now %d",
+                initialargc, argc);
+}                               /* end parse_program_options_BM */
 
 
 /*** end of file main_BM.c ***/
