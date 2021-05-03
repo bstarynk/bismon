@@ -56,6 +56,25 @@ for f in *.[ch] ; do
     fi
 done
 
+declare -a bismon_msh_args
+
+for f in "$@"; do
+    case "$f" in
+	--bismon*) bismon_msh_args=($bismon_msh_args $f);;
+    esac
+done
+
+echo "$0:" bismon arguments $bismon_msh_args in $(pwd) > /dev/stderr
+
+## kill any running bismon
+pkill bismon || true
+
+
+## start a fresh bismon
+./bismon $bismon_msh_args &
+
+### missing GCC compilation commands....
+
 ### incomplete Msh-Analyze script
 printf "%s: incomplete - should run bismon\n" "$0" > /dev/stderr
 exit 1
