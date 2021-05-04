@@ -33,6 +33,10 @@ if [ -z "$BISMON_MSH_SOURCE" ]; then
     export BISMON_MSH_SOURCE=/usr/src/Shell/msh/
 fi
 
+if [ -z "$BISMON_GCC" ]; then
+    export BISMON_GCC=/usr/bin/gcc-10
+fi
+
 if [ ! -f "$BISMON_MSH_SOURCE/src/builtins.c" \
 	 || ! -f "$BISMON_MSH_SOURCE/src/shellFunctions.c" \
 	 || ! -f "$BISMON_MSH_SOURCE/include/shellFunctions.h" ]; then
@@ -61,10 +65,14 @@ declare -a bismon_msh_args
 for f in "$@"; do
     case "$f" in
 	--bismon*) bismon_msh_args=($bismon_msh_args $f);;
+	--msh-source=*) export BISMON_MSH_SOURCE=$(echo $f | /bin/sed -e s/--msh-source=//);;
+	--gcc=*) export BISMON_GCC=$(echo $f | /bin/sed -e s/--gcc=//);;
     esac
 done
 
 echo "$0:" bismon arguments $bismon_msh_args in $(pwd) > /dev/stderr
+
+echo "$0:" msh source $BISMON_MSH_SOURCE > /dev/stderr
 
 ## kill any running bismon
 pkill bismon || true
@@ -72,6 +80,16 @@ pkill bismon || true
 
 ## start a fresh bismon
 ./bismon $bismon_msh_args &
+
+sleep 0.3
+
+
+## should compile the GCC10 metaplugin....
+
+for src in $BISMON_MSH_SOURCE/src/*.c ; do
+    printf "\n\n%s: **** compiling %s ****\n" $0 $src
+    time $BISMON_GCC -Wall -Wextra  -std=gnu11 -g -O -c -c -I $BISMON_MSH_SOURCE/include  $src
+done
 
 ### missing GCC compilation commands....
 
