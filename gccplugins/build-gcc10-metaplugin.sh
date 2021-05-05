@@ -1,10 +1,12 @@
 #!/bin/bash -x
-##
+##// SPDX-License-Identifier: GPL-3.0-or-later
+##### this shell script could be invoked from Msh-Analyze
 ##
 ## BISMON related GCC10 metaplugin builder
 ## file gccplugins/build-gcc10-metaplugin.sh
 ## See https://github.com/bstarynk/bismon/
 ## Copyright © 2020 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+################################################################
 ## contributed by Basile Starynkevitch 
 ##
 ## This program is free software: you can redistribute it and/or modify
@@ -20,6 +22,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
+################################################################
 
 ## C++ compiler used to compile the plugin
 PLUGINGXX=/usr/bin/g++-10
