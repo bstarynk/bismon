@@ -74,6 +74,28 @@ echo "$0:" bismon arguments $bismon_msh_args in $(pwd) > /dev/stderr
 
 echo "$0:" msh source $BISMON_MSH_SOURCE > /dev/stderr
 
+
+
+############### should compile the GCC10 metaplugin....
+
+#### check existence of needed files
+
+if [ ! -f gccplugins/gcc10-metaplugin_BMGCC.cc ]; then
+    echo  "$0:" missing gccplugins/gcc10-metaplugin_BMGCC.cc in $(pwd) > /dev/stderr
+    exit 1
+fi
+
+if [ ! -f gccplugins/gcc10-metaplugin.hh ]; then
+    echo  "$0:" missing gccplugins/gcc10-metaplugin.hh in $(pwd) > /dev/stderr
+    exit 1
+fi
+
+if [ ! -x gccplugins/build-gcc10-metaplugin.sh ]; then
+    echo  "$0:" missing or bad gccplugins/build-gcc10-metaplugin.sh script in $(pwd) > /dev/stderr
+    exit 1
+fi
+
+
 ## kill any running bismon
 pkill bismon || true
 
@@ -83,8 +105,6 @@ pkill bismon || true
 
 sleep 0.3
 
-
-## should compile the GCC10 metaplugin....
 
 for src in $BISMON_MSH_SOURCE/src/*.c ; do
     printf "\n\n%s: **** compiling %s ****\n" $0 $src
