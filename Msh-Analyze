@@ -80,6 +80,11 @@ echo "$0:" msh source $BISMON_MSH_SOURCE > /dev/stderr
 
 #### check existence of needed files
 
+if [ ! -d gccplugins/ ]; then
+    echo "$0:" missing gccplugins/ directory in $(pwd) > /dev/stderr
+    exit 1
+fi
+
 if [ ! -f gccplugins/gcc10-metaplugin_BMGCC.cc ]; then
     echo  "$0:" missing gccplugins/gcc10-metaplugin_BMGCC.cc in $(pwd) > /dev/stderr
     exit 1
@@ -95,6 +100,9 @@ if [ ! -x gccplugins/build-gcc10-metaplugin.sh ]; then
     exit 1
 fi
 
+pushd gccplugins
+./build-gcc10-metaplugin.sh
+popd 
 
 ## kill any running bismon
 pkill bismon || true
