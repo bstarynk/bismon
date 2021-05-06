@@ -85,6 +85,11 @@ for f in "$@"; do
     esac
 done
 
+# https://serverfault.com/a/477506
+if [ ${#bismon_msh_args[@]} -eq 0 ]; then
+    bismon_msh_args=( --bismon-web-base=localhost:8086 )
+fi
+
 echo "$0:" bismon arguments $bismon_msh_args in $(pwd) > /dev/stderr
 
 echo "$0:" msh source $BISMON_MSH_SOURCE > /dev/stderr
@@ -121,7 +126,6 @@ popd
 
 ## kill any running bismon
 pkill bismon || true
-
 
 ## start a fresh bismon
 ./bismon $bismon_msh_args &
