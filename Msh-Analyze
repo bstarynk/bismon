@@ -38,8 +38,8 @@ if [ -z "$BISMON_GCC" ]; then
 fi
 
 if [ ! -f "$BISMON_MSH_SOURCE/src/builtins.c" \
-	 || ! -f "$BISMON_MSH_SOURCE/src/shellFunctions.c" \
-	 || ! -f "$BISMON_MSH_SOURCE/include/shellFunctions.h" ]; then
+       -o ! -f "$BISMON_MSH_SOURCE/src/shellFunctions.c" \
+       -o ! -f "$BISMON_MSH_SOURCE/include/shellFunctions.h" ] ; then
     printf "%s: invalid MSH source for Bismon %s\n" "$0" "$BISMON_MSH_SOURCE" > /dev/stderr
     exit 1
 fi
