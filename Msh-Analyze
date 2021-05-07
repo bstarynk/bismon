@@ -41,7 +41,11 @@ if [ ! -d "$BISMON_MSH_SOURCE" ]; then
     printf "%s: invalid MSH source directory for Bismon %s\n" "$0" "$BISMON_MSH_SOURCE" > /dev/stderr
     exit 1
 fi
-    
+
+if [ -z "$BISMON_GCC_PLUGIN" ]; then
+    export BISMON_GCC_PLUGIN=$(realpath gccplugins/gcc10-metaplugin_BMGCC.so)
+fi
+
 if [ ! -f "$BISMON_MSH_SOURCE/src/builtins.c" ]; then
     printf "%s: invalid MSH source for Bismon %s without src/builtins.c\n" "$0" "$BISMON_MSH_SOURCE" > /dev/stderr
     exit 1
@@ -67,6 +71,7 @@ if [ ! -x bismon ]; then
     printf "%s: missing bismon executable in %s\n" "$0" $(pwd) > /dev/stderr
     exit 1
 fi
+
 
 for f in *.[ch] ; do
     if [ "$f" -nt bismon ]; then
@@ -96,8 +101,6 @@ echo "$0:" msh source $BISMON_MSH_SOURCE > /dev/stderr
 
 
 
-############### should compile the GCC10 metaplugin....
-
 #### check existence of needed files
 
 if [ ! -d gccplugins/ ]; then
@@ -124,6 +127,13 @@ pushd gccplugins
 ./build-gcc10-metaplugin.sh
 popd 
 
+if [ ! -f "$BISMON_GCC_PLUGIN" ]; then
+    printf "%s: missing GCC plugin for Bismon (maybe set %s shell variable)\n" "$0" 'BISMON_GCC_PLUGIN' > /dev/stderr
+    exit 1
+fi
+
+export BISMON_GCC_NAME_PLUGIN=$(basename "$BISMON_GCC_PLUGIN" .so)
+
 ## kill any running bismon
 pkill bismon || true
 
@@ -135,8 +145,9 @@ sleep 0.3
 
 for src in $BISMON_MSH_SOURCE/src/*.c ; do
     printf "\n\n%s: **** compiling %s ****\n" $0 $src
-    echo "#§ " $BISMON_GCC -Wall -Wextra  -std=gnu11 -g -O -c -c -I$BISMON_MSH_SOURCE  $src
-    time $BISMON_GCC -Wall -Wextra  -std=gnu11 -g -O -c -c -I$BISMON_MSH_SOURCE  $src
+    ## plugin arguments should be passed with -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-<argname>
+    echo "#§ " $BISMON_GCC -fplugin="$BISMON_GCC_PLUGIN" -Wall -Wextra  -std=gnu11 -g -O -c -c -I$BISMON_MSH_SOURCE  $src
+    time $BISMON_GCC -fplugin="$BISMON_GCC_PLUGIN" -Wall -Wextra  -std=gnu11 -g -O -c -c -I$BISMON_MSH_SOURCE  $src
 done
 
 ### missing GCC compilation commands....
