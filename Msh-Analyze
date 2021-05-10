@@ -76,6 +76,7 @@ fi
 for f in *.[ch] ; do
     if [ "$f" -nt bismon ]; then
 	printf "%s: source file %s newer than bismon executable in %s\n" "$0" "$f" $(pwd) > /dev/stderr
+	printf "... consider running the Build script in %s\n" $(pwd) > /dev/stderr
 	exit 1
     fi
 done
