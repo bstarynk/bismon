@@ -6,7 +6,7 @@
 
 # 
 #    BISMON 
-#    Copyright © 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+#    Copyright © 2019 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
 #    contributed by Basile Starynkevitch (working at CEA, LIST, France)
 #    <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 #
@@ -93,7 +93,7 @@ function runbismon () {
     if [ -z "$BISMON_WRAPPER" ] ; then 
 	echo run bismon: $title args: "$args"
 	if ./bismon $bismonflags \
-		    --anon-web-session=/tmp/bismoncookie --web \
+		    --anon-web-cookie=/tmp/bismoncookie --web \
 		    --init-after-load init_testjsonextract \
 		    "$@" ; then
 	    echo OK bismon: $title
@@ -107,7 +107,7 @@ function runbismon () {
     else
 	echo wrap "$BISMON_WRAPPER" bismon: $title args: "$args"
 	if $BISMON_WRAPPER ./bismon $bismonflags \
-		    --anon-web-session=/tmp/bismoncookie --web \
+		    --anon-web-cookie=/tmp/bismoncookie --web \
 		    --init-after-load init_testjsonextract \
 		    "$@" ; then
 	    echo OK wrap "$BISMON_WRAPPER" bismon: $title
