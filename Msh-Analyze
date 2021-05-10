@@ -37,6 +37,14 @@ if [ -z "$BISMON_GCC" ]; then
     export BISMON_GCC=/usr/bin/gcc-10
 fi
 
+if [ -z "$BISMON_WEB_BASE" ]; then
+    export BISMON_WEB_BASE=localhost:8086
+fi
+
+if [ -z "$BISMON_MSH_PROJECT" ]; then
+    export BISMON_MSH_PROJECT=msh_bismon_project
+fi
+
 if [ ! -d "$BISMON_MSH_SOURCE" ]; then
     printf "%s: invalid MSH source directory for Bismon %s\n" "$0" "$BISMON_MSH_SOURCE" > /dev/stderr
     exit 1
@@ -93,7 +101,7 @@ done
 
 # https://serverfault.com/a/477506
 if [ ${#bismon_msh_args[@]} -eq 0 ]; then
-    bismon_msh_args=( --bismon-web-base=localhost:8086 )
+    bismon_msh_args=( --bismon-web-base=$BISMON_WEB_BASE --bismon-project-name=$BISMON_MSH_PROJECT )
 fi
 
 echo "$0:" bismon arguments $bismon_msh_args in $(pwd) > /dev/stderr
@@ -147,8 +155,14 @@ sleep 0.3
 for src in $BISMON_MSH_SOURCE/src/*.c ; do
     printf "\n\n%s: **** compiling %s ****\n" $0 $src
     ## plugin arguments should be passed with -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-<argname>
-    echo "#§ " $BISMON_GCC -fplugin="$BISMON_GCC_PLUGIN" -Wall -Wextra  -std=gnu11 -g -O -c -c -I$BISMON_MSH_SOURCE  $src
-    time $BISMON_GCC -fplugin="$BISMON_GCC_PLUGIN" -Wall -Wextra  -std=gnu11 -g -O -c -c -I$BISMON_MSH_SOURCE  $src
+    echo "#§ " $BISMON_GCC -fplugin="$BISMON_GCC_PLUGIN" \
+	 -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-bismon-url=$BISMON_WEB_BASE \
+	 -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-bismon-project=$BISMON_MSH_PROJECT \
+	 -Wall -Wextra  -std=gnu11 -g -O -c -c -I$BISMON_MSH_SOURCE  $src
+    time $BISMON_GCC -fplugin="$BISMON_GCC_PLUGIN" \
+	 -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-bismon-url=$BISMON_WEB_BASE \
+	 -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-bismon-project=$BISMON_MSH_PROJECT \
+	 -Wall -Wextra  -std=gnu11 -g -O -c -c -I$BISMON_MSH_SOURCE  $src
 done
 
 ### missing GCC compilation commands....
