@@ -45,6 +45,10 @@ if [ -z "$BISMON_MSH_PROJECT" ]; then
     export BISMON_MSH_PROJECT=msh_bismon_project
 fi
 
+if [ -z "$BISMON_COOKIE_FILE" ]; then
+    export BISMON_COOKIE_FILE=/tmp/bismon_msh_{$$}_cookie
+fi
+
 if [ ! -d "$BISMON_MSH_SOURCE" ]; then
     printf "%s: invalid MSH source directory for Bismon %s\n" "$0" "$BISMON_MSH_SOURCE" > /dev/stderr
     exit 1
