@@ -115,60 +115,70 @@ plugin_init (struct plugin_name_args *plugin_info,
 
 
 typedef void plugin_arghandler_sig(const char*);
-struct pluginarg_handler_BMCC {
+struct pluginarg_handler_BMPCC {
   const char*parg_name;
   plugin_arghandler_sig* parg_handler;
   const char*parg_help;
 };
 
-std::string bismon_url_prefix_BMCC;
-std::string bismon_project_BMCC;
+std::string bismon_url_prefix_BMPCC;
+std::string bismon_project_BMPCC;
 
-static void handle_bismon_url_arg_BMCC(const char*);
-static void handle_bismon_project_arg_BMCC(const char*);
+static void handle_bismon_url_arg_BMPCC(const char*);
+static void handle_bismon_project_arg_BMPCC(const char*);
 
-const pluginarg_handler_BMCC
-pluginargsarr_BMCC[] =
+const pluginarg_handler_BMPCC
+pluginargsarr_BMPCC[] =
   {
    /// bismon-url= <some-url> # e.g. bismon-url=http://localhost:8088/
    {
     .parg_name="bismon-url",
-    .parg_handler= handle_bismon_url_arg_BMCC,
+    .parg_handler= handle_bismon_url_arg_BMPCC,
     .parg_help="gives the URL prefix to contact the Bismon server"
    },
-   /// bismon-url= <some-url> # e.g. bismon-url=http://localhost:8088/
+   /// bismon-project= <some-name> # e.g. bismon-project=Your_Project01
    {
     .parg_name="bismon-project",
-    .parg_handler= handle_bismon_project_arg_BMCC,
-    .parg_help="gives the mandatory project name - should be the same for every translation unit"
+    .parg_handler= handle_bismon_project_arg_BMPCC,
+    .parg_help="gives the mandatory project name - should be the same for every translation unit (i.e. *.c or *.cc file)"
    },
    ///
    { .parg_name=nullptr, .parg_handler=nullptr, .parg_help=nullptr }
   };
 
 void
-handle_bismon_url_arg_BMCC(const char*argval) {
+handle_bismon_url_arg_BMPCC(const char*argval) {
+  if (!bismon_url_prefix_BMPCC.empty() && argval) {
+    error("bismon-url plugin argument given twice: %qE and %qE",
+	  bismon_url_prefix_BMPCC.c_str(), argval);
+  }
   if (argval)
-    bismon_url_prefix_BMCC.assign(argval);
-} // end handle_bismon_url_arg_BMCC
+    bismon_url_prefix_BMPCC.assign(argval);
+} // end handle_bismon_url_arg_BMPCC
 
 void
-handle_bismon_project_arg_BMCC(const char*argval) {
+handle_bismon_project_arg_BMPCC(const char*argval) {
+  if (!bismon_project_BMPCC.empty() && argval) {
+    error("bismon-project plugin argument given twice: %qE and %qE",
+	  bismon_project_BMPCC.c_str(), argval);
+  }
   if (argval)
-    bismon_project_BMCC.assign(argval);
-}
+    bismon_project_BMPCC.assign(argval);
+} // end handle_bismon_project_arg_BMPCC
 
 static
 void show_help_BMGCC(const char*plugin_name)
 {
   std::cout << "Bismon metaplugin arguments to be passed with -fplugin-arg-" << plugin_name << "; e.g. this help given by  -fplugin-arg-" << plugin_name << "-help" << std::endl;
-  for (int aix=0; aix < sizeof(pluginargsarr_BMCC)/sizeof(pluginargsarr_BMCC[0]); aix++) {
-    if (pluginargsarr_BMCC[aix].parg_name == nullptr)
+  for (int aix=0;
+       aix < (int) (sizeof(pluginargsarr_BMPCC)/sizeof(pluginargsarr_BMPCC[0]));
+       aix++) {
+    if (pluginargsarr_BMPCC[aix].parg_name == nullptr)
       break;
-    if (pluginargsarr_BMCC[aix].parg_name != nullptr
-	&& pluginargsarr_BMCC[aix].parg_handler
-	&& pluginargsarr_BMCC[aix].parg_help)
-      std::cout << "\t" << pluginargsarr_BMCC[aix].parg_name << ":" << pluginargsarr_BMCC[aix].parg_help << std::endl;
+    if (pluginargsarr_BMPCC[aix].parg_name != nullptr
+	&& pluginargsarr_BMPCC[aix].parg_handler
+	&& pluginargsarr_BMPCC[aix].parg_help)
+      std::cout << "\t" << pluginargsarr_BMPCC[aix].parg_name << ":" << pluginargsarr_BMPCC[aix].parg_help << std::endl;
   }
 } // end show_help_BMGCC
 
