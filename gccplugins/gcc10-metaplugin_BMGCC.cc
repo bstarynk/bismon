@@ -123,9 +123,11 @@ struct pluginarg_handler_BMPCC {
 
 std::string bismon_url_prefix_BMPCC;
 std::string bismon_project_BMPCC;
+std::string bismon_cookie_file_BMPCC;
 
 static void handle_bismon_url_arg_BMPCC(const char*);
 static void handle_bismon_project_arg_BMPCC(const char*);
+static void handle_bismon_cookie_file_BMPCC(const char*);
 
 const pluginarg_handler_BMPCC
 pluginargsarr_BMPCC[] =
@@ -141,6 +143,12 @@ pluginargsarr_BMPCC[] =
     .parg_name="bismon-project",
     .parg_handler= handle_bismon_project_arg_BMPCC,
     .parg_help="gives the mandatory project name - should be the same for every translation unit (i.e. *.c or *.cc file)"
+  },
+  /// bismon-cookie-file= <some-path> # e.g. bismon-cookie-file=/tmp/bismoncookie
+  {
+    .parg_name="bismon-cookie-file",
+    .parg_handler= handle_bismon_cookie_file_BMPCC,
+    .parg_help="gives some HTTP cookie file written by Bismon"
   },
   ///
   { .parg_name=nullptr, .parg_handler=nullptr, .parg_help=nullptr }
@@ -165,6 +173,16 @@ handle_bismon_project_arg_BMPCC(const char*argval) {
   if (argval)
     bismon_project_BMPCC.assign(argval);
 } // end handle_bismon_project_arg_BMPCC
+
+void
+handle_bismon_cookie_file_BMPCC(const char*argval) {
+  if (!bismon_cookie_file_BMPCC.empty() && argval) {
+    error("bismon-cookie-file plugin argument given twice: %qs and %qs",
+          bismon_cookie_file_BMPCC.c_str(), argval);
+  }
+  if (argval)
+    bismon_cookie_file_BMPCC.assign(argval);
+} // end handle_bismon_cookie_file_BMPCC
 
 static
 void show_help_BMGCC(const char*plugin_name)
@@ -208,7 +226,7 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
       show_help_BMGCC(plugin_name);
     else {
       for (int paix=0;
-           paix<(int) sizeof(pluginargsarr_BMPCC)/sizeof(pluginargsarr_BMPCC[0]);
+           paix<(int) (sizeof(pluginargsarr_BMPCC)/sizeof(pluginargsarr_BMPCC[0]));
            paix++) {
         const pluginarg_handler_BMPCC* curpa = pluginargsarr_BMPCC+paix;
         if (!curpa->parg_name)
