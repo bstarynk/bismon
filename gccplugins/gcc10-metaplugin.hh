@@ -24,6 +24,8 @@
 #ifndef GCC10_METAPLUGIN_BISMON_INCLUDED_
 #define  GCC10_METAPLUGIN_BISMON_INCLUDED_ 1
 
+//// the conventional prefix or suffix in names is BMP - for BisMon Plugin
+
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif
@@ -82,33 +84,35 @@
 
 extern "C" int plugin_is_GPL_compatible;
 
+extern "C" std::string projectname_BMP;
 
-extern "C" const pass_data BM_gimple_pass_data;
 
-class BM_gimple_pass : public gimple_opt_pass {
+extern "C" const pass_data BMP_gimple_pass_data;
+
+class BMP_gimple_pass : public gimple_opt_pass {
 public:
-  BM_gimple_pass(gcc::context* ctxt)
-    : gimple_opt_pass(BM_gimple_pass_data, ctxt) {
+  BMP_gimple_pass(gcc::context* ctxt)
+    : gimple_opt_pass(BMP_gimple_pass_data, ctxt) {
   };
   /* opt_pass methods: */
   opt_pass* clone();
   virtual bool gate (function *);
   virtual unsigned int execute(function*);
-};				// end BM_gimple_pass
+};				// end BMP_gimple_pass
 
-extern void gt_ggc_mx (class BM_set_of_functions *setfun);
+extern void gt_ggc_mx (class BMP_set_of_functions *setfun);
 
 extern void gt_ggc_mx (function& f);
 
-class GTY((user)) BM_set_of_functions {
+class GTY((user)) BMP_set_of_functions {
   static constexpr unsigned setfun_required_magic = 135889017; /*0x8198079*/
   unsigned set_magic;
   std::set<function*> set_funptr;
-  friend void gt_ggc_mx (BM_set_of_functions *setfun);
+  friend void gt_ggc_mx (BMP_set_of_functions *setfun);
  public:
   typedef void do_functionptr_plain_t(function*);
-  BM_set_of_functions() : set_magic(setfun_required_magic), set_funptr() {};
-  ~BM_set_of_functions() {
+  BMP_set_of_functions() : set_magic(setfun_required_magic), set_funptr() {};
+  ~BMP_set_of_functions() {
     set_magic = 0;
     set_funptr.clear();
   };
@@ -132,7 +136,7 @@ class GTY((user)) BM_set_of_functions {
       do_it(funptr);
     }
   }
-};				// end class BM_set_of_functions
+};				// end class BMP_set_of_functions
 
 #warning we may need types with Gty annotations here, and extern variables...
 /* see comments in file build-gcc10-metaplugin.sh */

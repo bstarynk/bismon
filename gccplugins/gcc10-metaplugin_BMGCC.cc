@@ -20,15 +20,18 @@
 
 **/
 
+
+//// the conventional prefix or suffix in names is BMP - for BisMon Plugin
+
 #include "gcc10-metaplugin.hh"
 
 int plugin_is_GPL_compatible;
 
 
-const pass_data BM_gimple_pass_data =
+const pass_data BMP_gimple_pass_data =
 {
   GIMPLE_PASS, /* type */
-  "BM_gimple_pass", /* name */
+  "BMP_gimple_pass", /* name */
   OPTGROUP_NONE, /* optinfo_flags */
   TV_NONE, /* tv_id */
   ( PROP_ssa | PROP_cfg | PROP_gimple_leh ), /* properties_required */
@@ -36,16 +39,16 @@ const pass_data BM_gimple_pass_data =
   0, /* properties_destroyed */
   0, /* todo_flags_start */
   0, /* todo_flags_finish */
-};    // end BM_gimple_pass_data
+};    // end BMP_gimple_pass_data
 
 
 opt_pass*
-BM_gimple_pass::clone() {
-  return new BM_gimple_pass(m_ctxt);
-} // end BM_gimple_pass::clone
+BMP_gimple_pass::clone() {
+  return new BMP_gimple_pass(m_ctxt);
+} // end BMP_gimple_pass::clone
 
 bool
-BM_gimple_pass::gate(function* func) {
+BMP_gimple_pass::gate(function* func) {
   if (!func)
     return false;
   if (!func->decl)
@@ -53,27 +56,27 @@ BM_gimple_pass::gate(function* func) {
   if (lookup_attribute("bismon_skip",  DECL_ATTRIBUTES (func->decl)))
     return false;
   return true;
-} // end BM_gimple_pass::gate
+} // end BMP_gimple_pass::gate
 
 unsigned int
-BM_gimple_pass::execute(function* func) {
+BMP_gimple_pass::execute(function* func) {
   if (!func)
     return 0;
   if (!func->decl)
     return 0;
   basic_block bb;
-#warning BM_gimple_pass::execute should store the func in some "global"
+#warning BMP_gimple_pass::execute should store the func in some "global"
   FOR_EACH_BB_FN (bb, func) {
-#warning should do something with the bb in BM_gimple_pass::execute
+#warning should do something with the bb in BMP_gimple_pass::execute
   };
   return 0;
-} // end BM_gimple_pass::execute
+} // end BMP_gimple_pass::execute
 
 
 ////////////////////////////////////////////////////////////////
-//// Gty user support for class BM_set_of_functions
+//// Gty user support for class BMP_set_of_functions
 void
-gt_ggc_mx (BM_set_of_functions *setfun)
+gt_ggc_mx (BMP_set_of_functions *setfun)
 {
   gcc_assert(setfun);
   setfun->check_magic();
@@ -81,7 +84,7 @@ gt_ggc_mx (BM_set_of_functions *setfun)
     gcc_assert(f);
     gt_ggc_mx(*f);
   };
-} // end gt_ggc_mx (BM_set_of_functions *setfun)
+} // end gt_ggc_mx (BMP_set_of_functions *setfun)
 
 ////////////////////////////////////////////////////////////////
 int
