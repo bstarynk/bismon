@@ -92,6 +92,8 @@ extern "C" std::string bismon_cookie_file_BMPCC;
 
 extern "C" const pass_data BMP_gimple_pass_data;
 
+extern "C" void BMP_start_unit_handler(void*gccdata,void*userdata);
+
 class BMP_gimple_pass : public gimple_opt_pass {
 public:
   BMP_gimple_pass(gcc::context* ctxt)

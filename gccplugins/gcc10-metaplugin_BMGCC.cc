@@ -87,6 +87,7 @@ gt_ggc_mx (BMP_set_of_functions *setfun)
 } // end gt_ggc_mx (BMP_set_of_functions *setfun)
 
 ////////////////////////////////////////////////////////////////
+///// the plugin_init name is dlsym-ed by GCC.
 int
 plugin_init (struct plugin_name_args *plugin_info,
              struct plugin_gcc_version *version)
@@ -239,7 +240,35 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
       }
     }
   };
+  /// show an informational message
+  {
+    char thishostname[80];
+    memset (thishostname, 0, sizeof(thishostname));
+    gethostname(thishostname, sizeof(thishostname)-1);
+    inform(UNKNOWN_LOCATION, "Bismon plugin %qs initialized (%s:%d) - version %qs pid %d on %s", plugin_name, __FILE__, __LINE__,
+	   versbuf, (int)getpid(), thishostname);
+  }
+  /// register some GCC plugin events
+  {
+    register_callback (plugin_name, PLUGIN_START_UNIT, BMP_start_unit_handler, NULL);
+#warning we probably need some PLUGIN_PASS_MANAGER_SETUP & PLUGIN_START_PARSE_FUNCTION event...
+    /****
+     * TODO: document more events
+     ****/
+  }
 } // end parse_plugin_arguments
+
+ void
+ BMP_start_unit_handler(void*gccdata,void*userdata)
+ {
+#warning BMP_start_unit_handler is uncomplete
+   assert(userdata == nullptr);
+   warning(UNKNOWN_LOCATION, "incomplete handling of PLUGIN_START_UNIT in %s:%d", __FILE__, __LINE__);
+   /****
+    * TODO: code some curlpp request to Bismon
+    ****/
+ } // end  BMP_start_unit_handler
+
 
 /****************
  **                           for Emacs...
