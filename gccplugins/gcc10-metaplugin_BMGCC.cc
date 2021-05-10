@@ -93,13 +93,13 @@ plugin_init (struct plugin_name_args *plugin_info,
 {
   const char *plugin_name = plugin_info->base_name;
   if (!plugin_default_version_check (version, &gcc_version))
-    {
-      warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: fail version check for %s:"
-              " got %s/%s/%s/%s wanted %s/%s/%s/%s", plugin_name,
-              version->basever, version->datestamp, version->devphase, version->revision,
-              gcc_version.basever, gcc_version.datestamp, gcc_version.devphase, gcc_version.revision);
-      return 1;
-    }
+  {
+    warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: fail version check for %s:"
+            " got %s/%s/%s/%s wanted %s/%s/%s/%s", plugin_name,
+            version->basever, version->datestamp, version->devphase, version->revision,
+            gcc_version.basever, gcc_version.datestamp, gcc_version.devphase, gcc_version.revision);
+    return 1;
+  }
 
   ///
   inform(UNKNOWN_LOCATION, "Bismon GCC10 metaplugin built " __DATE__ " on " __TIME__ " process %d"
@@ -109,7 +109,7 @@ plugin_init (struct plugin_name_args *plugin_info,
          " (l@%d)",
          (int) getpid(), __LINE__);
 
-  
+
   return 0;
 } // end plugin_init
 
@@ -129,28 +129,28 @@ static void handle_bismon_project_arg_BMPCC(const char*);
 
 const pluginarg_handler_BMPCC
 pluginargsarr_BMPCC[] =
+{
+  /// bismon-url= <some-url> # e.g. bismon-url=http://localhost:8088/
   {
-   /// bismon-url= <some-url> # e.g. bismon-url=http://localhost:8088/
-   {
     .parg_name="bismon-url",
     .parg_handler= handle_bismon_url_arg_BMPCC,
     .parg_help="gives the URL prefix to contact the Bismon server"
-   },
-   /// bismon-project= <some-name> # e.g. bismon-project=Your_Project01
-   {
+  },
+  /// bismon-project= <some-name> # e.g. bismon-project=Your_Project01
+  {
     .parg_name="bismon-project",
     .parg_handler= handle_bismon_project_arg_BMPCC,
     .parg_help="gives the mandatory project name - should be the same for every translation unit (i.e. *.c or *.cc file)"
-   },
-   ///
-   { .parg_name=nullptr, .parg_handler=nullptr, .parg_help=nullptr }
-  };
+  },
+  ///
+  { .parg_name=nullptr, .parg_handler=nullptr, .parg_help=nullptr }
+};
 
 void
 handle_bismon_url_arg_BMPCC(const char*argval) {
   if (!bismon_url_prefix_BMPCC.empty() && argval) {
-    error("bismon-url plugin argument given twice: %qE and %qE",
-	  bismon_url_prefix_BMPCC.c_str(), argval);
+    error("bismon-url plugin argument given twice: %qs and %qs",
+          bismon_url_prefix_BMPCC.c_str(), argval);
   }
   if (argval)
     bismon_url_prefix_BMPCC.assign(argval);
@@ -159,8 +159,8 @@ handle_bismon_url_arg_BMPCC(const char*argval) {
 void
 handle_bismon_project_arg_BMPCC(const char*argval) {
   if (!bismon_project_BMPCC.empty() && argval) {
-    error("bismon-project plugin argument given twice: %qE and %qE",
-	  bismon_project_BMPCC.c_str(), argval);
+    error("bismon-project plugin argument given twice: %qs and %qs",
+          bismon_project_BMPCC.c_str(), argval);
   }
   if (argval)
     bismon_project_BMPCC.assign(argval);
@@ -176,37 +176,51 @@ void show_help_BMGCC(const char*plugin_name)
     if (pluginargsarr_BMPCC[aix].parg_name == nullptr)
       break;
     if (pluginargsarr_BMPCC[aix].parg_name != nullptr
-	&& pluginargsarr_BMPCC[aix].parg_handler
-	&& pluginargsarr_BMPCC[aix].parg_help)
+        && pluginargsarr_BMPCC[aix].parg_handler
+        && pluginargsarr_BMPCC[aix].parg_help)
       std::cout << "\t" << pluginargsarr_BMPCC[aix].parg_name << ":" << pluginargsarr_BMPCC[aix].parg_help << std::endl;
   }
 } // end show_help_BMGCC
 
+
+// the name parse_plugin_arguments is dlsym-ed by GCC!
 void
 parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_args)
 {
   int plargc = plugin_args->argc;
   static char versbuf[256];
   snprintf(versbuf, sizeof(versbuf),
-	   "Bismon GCC10 metaplugin "
+           "Bismon GCC10 metaplugin "
 #ifdef PLUGINGITID
-	   " (gitid " PLUGINGITID ")"
+           " (gitid " PLUGINGITID ")"
 #endif
-	   " built " __DATE__
-	   " with JsonCPP " JSONCPP_VERSION_STRING);
+           " built " __DATE__
+           " with JsonCPP " JSONCPP_VERSION_STRING);
   assert (plugin_args->version == nullptr);
   plugin_args->version = versbuf;
   int argix=0;
   for (struct plugin_argument* plcurarg = plugin_args->argv;
        (argix<plargc)?(plcurarg = plugin_args->argv+argix):nullptr; argix++)
-    {
-      const char*curkey = plcurarg->key;
-      const char*curval = plcurarg->value;
-      if (!strcmp(curkey, "help"))
-	show_help_BMGCC(plugin_name);
-      else {
+  {
+    const char*curkey = plcurarg->key;
+    const char*curval = plcurarg->value;
+    if (!strcmp(curkey, "help"))
+      show_help_BMGCC(plugin_name);
+    else {
+      for (int paix=0;
+           paix<(int) sizeof(pluginargsarr_BMPCC)/sizeof(pluginargsarr_BMPCC[0]);
+           paix++) {
+        const pluginarg_handler_BMPCC* curpa = pluginargsarr_BMPCC+paix;
+        if (!curpa->parg_name)
+          break;
+        if (strcmp(curkey, curpa->parg_name))
+          continue;
+        if (curpa->parg_handler) {
+          (*(curpa->parg_handler))(curval);
+        }
       }
-    };
+    }
+  };
 } // end parse_plugin_arguments
 
 /****************
