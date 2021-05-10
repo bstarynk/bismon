@@ -197,7 +197,7 @@ _%_ONIONBM.h _%_ONIONBM.c: %_ONIONBM.thtml
 ## a phony target, used in Build script
 objects:  $(BISMONMK_OBJECTS)
 
-bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c
+bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c $(wildcard _genbm_*.h)
 	$(MAKE) $(BISMONMK_OBJECTS) _bismon-constants.o __timestamp.o
 	$(LINK.cc)  $(BISMONMK_OBJECTS) _bismon-constants.o  __timestamp.o \
                     -L$(BISMONMK_ONION_LIBDIR) -lonion \
