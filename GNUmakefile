@@ -84,7 +84,7 @@ BM_ONION_OBJECTS= $(patsubst %.c,%.o,$(BM_C_ONION_SOURCES)) $(BM_ONIONTEMPL_OBJE
 
 ## internal make variables...
 BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
-BISMON_SHGIT2:= $(shell if git status | grep 'nothing to commit'; then echo; else echo +; fi)
+BISMON_SHGIT2:= $(shell if git status | grep -q 'nothing to commit'; then echo; else echo +; fi)
 
 ## The short git id, such as 34ae25e8127fc354 (for a clean source)
 ## or 3ae25e8127fc354d+ (for some edited source tree)
