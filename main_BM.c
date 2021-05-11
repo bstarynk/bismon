@@ -48,6 +48,16 @@ char *contact_name_BM;
 char *contact_email_BM;
 const char *project_name_BM;
 
+
+/// these ONION variables may need to be declared even when
+/// web_ONIONBM.c is not linked, so
+const char *onion_ssl_certificate_BM;
+const char *onion_web_base_BM;
+const char *onion_anon_web_session_BM;
+
+
+
+////////////////////////////////////////////////////////////////
 extern void parse_program_options_BM (int argc, char **argv);
 
 static const char *chdir_after_load_bm;
