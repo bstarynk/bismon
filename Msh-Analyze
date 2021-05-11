@@ -105,7 +105,7 @@ done
 
 # https://serverfault.com/a/477506
 if [ ${#bismon_msh_args[@]} -eq 0 ]; then
-    bismon_msh_args=( --bismon-web-base=$BISMON_WEB_BASE --bismon-project-name=$BISMON_MSH_PROJECT )
+    bismon_msh_args=( --bismon-web-base=$BISMON_WEB_BASE --bismon-project-name=$BISMON_MSH_PROJECT --bismon-pid-file=/tmp/_bismon_msh.pid)
 fi
 
 echo "$0:" bismon arguments $bismon_msh_args in $(pwd) > /dev/stderr
@@ -150,13 +150,15 @@ export BISMON_GCC_NAME_PLUGIN=$(basename "$BISMON_GCC_PLUGIN" .so)
 ## kill any running bismon
 pkill bismon || true
 
+printf "\n\n\n ==== %s: starting Bismon ======\n\n" "$0"
 ## start a fresh bismon
 ./bismon $bismon_msh_args &
 
-sleep 0.3
+sleep 0.8
 
 
 for src in $BISMON_MSH_SOURCE/src/*.c ; do
+    sleep 0.1
     printf "\n\n%s: **** compiling %s ****\n" $0 $src
     ## plugin arguments should be passed with -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-<argname>
     echo "#§ " $BISMON_GCC -fplugin="$BISMON_GCC_PLUGIN" \
@@ -169,9 +171,9 @@ for src in $BISMON_MSH_SOURCE/src/*.c ; do
 	 -Wall -Wextra  -std=gnu11 -g -O -c -c -I$BISMON_MSH_SOURCE  $src
 done
 
-### missing GCC compilation commands....
+kill -TERM $(cat /tmp/_bismon_msh.pid)
 
-### incomplete Msh-Analyze script
-printf "%s: incomplete - should run bismon\n" "$0" > /dev/stderr
-exit 1
+sleep 0.5
+
+printf "\n%s: *** ended successfully ***\n\n" $0 
 ########################################
