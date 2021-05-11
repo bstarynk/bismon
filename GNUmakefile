@@ -162,6 +162,7 @@ id_BM-g.o: id_BM.c id_BM.h
 	$(COMPILE.cc)  $(BISMON_CXXFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
 
 %_ONIONBM.o: %_ONIONBM.c bismon.h
+	@printf "for $@ BISMON_SHORT_GIT is '%s'\n" '$(BISMON_SHORT_GIT)'
 	$(COMPILE.c) -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  $< -o $@
 
 %_ONIONBM-g.o: %_ONIONBM.c bismon.h
